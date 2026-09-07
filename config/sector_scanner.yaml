@@ -1,0 +1,22 @@
+{
+  "contract_version": "sector-scanner-contract-v1.2-evidence-binding",
+  "rule_version": "sector-scanner-ruleset-v1.2-evidence-binding",
+  "statistical_validity_version": "sector-statistical-validity-v1.1-branch-bound",
+  "membership_basis": "CURRENT_TDX_MEMBERSHIP",
+  "pit_membership": false,
+  "historical_backtest_safe": false,
+  "ranking_basis": "SAME_SECTOR_TYPE_VALID_ONLY_AVERAGE_PERCENTILE",
+  "null_behavior": "ANY_NULL_REQUIRED_FIELD_FAILS_THE_SCANNER_CONDITION",
+  "precedence": ["REACCELERATION", "STABILIZATION", "CURRENT_STRENGTH"],
+  "hard_gates": {"sector_valid": true, "coverage_min": 0.70, "valid_member_count_min": 5, "excluded_role": "EXCLUDE_FROM_THEME_RANK"},
+  "tags": {
+    "LOW_COVERAGE": {"coverage_min_inclusive": 0.70, "coverage_max_exclusive": 0.85},
+    "BREADTH_EXPANSION": {"breadth5_minus_breadth20_min": 0.10, "breadth5_min": 0.55},
+    "HIGH_CONCENTRATION": {"top3_concentration_min": 0.60, "finite_required": true, "veto": false}
+  },
+  "scanners": {
+    "CURRENT_STRENGTH": {"ret20_min_exclusive": 0, "rs20_pct_min": 0.80, "breadth20_min": 0.60, "pos60_min": 0.60, "mdd20_min_exclusive": -0.15},
+    "STABILIZATION": {"rs20_pct_min": 0.35, "rs20_pct_max_exclusive": 0.75, "ret5_min_exclusive": 0, "rs5_pct_min": 0.60, "breadth5_min": 0.55, "breadth_delta_min": 0.10, "amount_ratio_min": 0.90, "prior_damage_any": ["ret20<=0", "mdd20<=-0.08", "pos60<0.50"], "branch_condition_and_coverage_bound": true},
+    "REACCELERATION": {"rs60_pct_min": 0.65, "rs20_pct_min": 0.70, "ret20_min_exclusive": 0, "ret5_min_exclusive": 0, "rs5_pct_min": 0.75, "breadth5_min": 0.60, "breadth_delta_min": 0.08, "amount_ratio_min": 1.00, "pullback_any": ["mdd20<=-0.03", "dist_high20<=-0.03"], "branch_condition_and_coverage_bound": true}
+  }
+}

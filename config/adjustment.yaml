@@ -1,0 +1,17 @@
+adjustment:
+  contract_version: adjustment-contract-v0.3
+  project_price_basis: FORWARD_ADJUSTED
+  price_basis: TDX_NATIVE_QFQ
+  adjustment_identity: TDX_NATIVE_AFFINE_QFQ
+  adjustment_status: VERIFIED_REPRODUCIBLE_TDX_NATIVE
+  production_data_source: LOCAL_TDX_ONLY
+  engine_version: tdx-affine-qfq-v0.2
+  decoder_version: tdx-local-gbbq-v0.2
+  formal_trend_scanners_allowed: true
+  external_vendor_exact_match_required: false
+  applicable_event_category: 1
+  unknown_event_rule: RETAIN_AND_EXCLUDE_FROM_QFQ
+  amount_basis: RAW
+  volume_basis: RAW
+  price_rounding: ROUND_HALF_UP_0.01
+  future_exday_rule: IGNORE_AFTER_SNAPSHOT_ANCHOR

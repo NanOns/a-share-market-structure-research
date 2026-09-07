@@ -1,0 +1,53 @@
+# Python bytecode and tool caches
+__pycache__/
+*.py[cod]
+*.pyd
+.pytest_cache/
+.pytest-r0-temp/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual environments and local environment files
+.venv/
+venv/
+env/
+.env
+.env.*
+!.env.example
+
+# Runtime data and generated research artifacts
+data/
+reports/
+logs/
+runtime/
+
+# External source/reference checkouts
+references/
+
+# Generated tabular, database, and binary artifacts
+*.parquet
+*.feather
+*.arrow
+*.csv
+*.tsv
+*.db
+*.sqlite
+*.sqlite3
+
+# Temporary and editor files
+*.tmp
+*.temp
+*.bak
+*.log
+*.lock
+~$*
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Local research-workbench launchers contain machine-local paths
+OPEN_RESEARCH_WORKBENCH.cmd
+RUN_DAILY_SCANNER.cmd

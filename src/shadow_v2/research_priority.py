@@ -1,0 +1,21 @@
+from __future__ import annotations
+
+RULESET_ID="research-priority-v2-shadow-v1.0"
+V2_PRIORITY_IS_QUEUE_BASED=True
+V2_GLOBAL_WEIGHTED_SCORE=False
+STRUCTURE_COUNT_STACKING=False
+DISPLAY_ORDER_ONLY=True
+
+MAPPINGS={
+ "STEADY_QUEUE":{"STEADY_CORE":"CORE","STEADY_ACCEPTABLE":"SUPPORTED"},
+ "PULLBACK_QUEUE":{"PULLBACK_CORE":"CORE","PULLBACK_STRUCTURE_ONLY":"SUPPORTED"},
+ "BREAKOUT_QUEUE":{"BREAKOUT_CORE":"CORE","BREAKOUT_RANGE_ONLY":"SUPPORTED"},
+ "LEADER_QUEUE":{"LEADER_CORE":"CORE","LEADER_SUPPORTED":"SUPPORTED"},
+ "EARLY_QUEUE":{"EARLY_CORE":"CORE","EARLY_SUPPORTED":"SUPPORTED"},
+}
+def queue_tier(queue,source_class):return MAPPINGS[queue].get(source_class)
+def research_band(tiers):
+ values=tuple(x for x in tiers if x)
+ if "CORE" in values:return "CORE_RESEARCH"
+ if "SUPPORTED" in values:return "SUPPORTED_RESEARCH"
+ return "DIAGNOSTIC_ONLY"

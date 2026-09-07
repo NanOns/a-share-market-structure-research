@@ -1,0 +1,99 @@
+{
+  "rule_version": "research-priority-ruleset-v1.1-correctness",
+  "semantics": "DAILY_CROSS_SECTIONAL_RESEARCH_PRIORITY",
+  "bases": {
+    "SECTOR_LEADER": 40,
+    "BREAKOUT_PREP": 34,
+    "STRONG_PULLBACK": 32,
+    "STEADY_TREND": 28,
+    "EARLY_MOVER_ONLY": 22
+  },
+  "pattern_sorts": {
+    "SECTOR_LEADER": [
+      [
+        "best_sector_rs20_pct",
+        false
+      ],
+      [
+        "primary_member_rs20_pct",
+        false
+      ],
+      [
+        "stock_rs20_pct",
+        false
+      ]
+    ],
+    "BREAKOUT_PREP": [
+      [
+        "stock_rs20_pct",
+        false
+      ],
+      [
+        "DIST_HIGH20",
+        false
+      ],
+      [
+        "TREND_R2_20",
+        false
+      ]
+    ],
+    "STRONG_PULLBACK": [
+      [
+        "stock_rs60_pct",
+        false
+      ],
+      [
+        "MDD20",
+        false
+      ],
+      [
+        "RS20",
+        false
+      ]
+    ],
+    "STEADY_TREND": [
+      [
+        "stock_rs20_pct",
+        false
+      ],
+      [
+        "TREND_R2_20",
+        false
+      ],
+      [
+        "MDD20",
+        false
+      ]
+    ],
+    "EARLY_MOVER_ONLY": [
+      [
+        "stock_rs5_pct",
+        false
+      ],
+      [
+        "AMOUNT_RATIO_5_20",
+        false
+      ],
+      [
+        "RET5",
+        false
+      ]
+    ]
+  },
+  "sector_context_cap": 20,
+  "quality_base": 10,
+  "quality_deductions": {
+    "LATE_EXTENSION_WARNING": 3,
+    "HIGH_CONCENTRATION_SECTOR_CONTEXT": 2,
+    "LOW_SECTOR_COVERAGE_CONTEXT": 3
+  },
+  "ratings": {
+    "A+": ">=0.95",
+    "A": ">=0.85,<0.95",
+    "B": ">=0.65,<0.85",
+    "C": "<0.65"
+  },
+  "no_linear_hit_count_scoring": true,
+  "no_membership_count_scoring": true,
+  "no_leader_sector_count_scoring": true
+}

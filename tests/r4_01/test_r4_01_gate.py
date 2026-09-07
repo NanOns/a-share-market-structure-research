@@ -1,0 +1,3 @@
+from forward.live import LIVE_CONTRACT_VERSION,HORIZONS,ORCHESTRATION_ORDER
+from forward.observation import FORWARD_ONLY,NO_HISTORICAL_BACKFILL,NO_FUTURE_BACKWRITE
+def test_gate():assert LIVE_CONTRACT_VERSION=="r4-live-daily-forward-capture-v1.2-model-preflight" and HORIZONS==(1,5,10,20) and len(ORCHESTRATION_ORDER)==9 and all((FORWARD_ONLY,NO_HISTORICAL_BACKFILL,NO_FUTURE_BACKWRITE))

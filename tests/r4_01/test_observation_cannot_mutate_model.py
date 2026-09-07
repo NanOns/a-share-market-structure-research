@@ -1,0 +1,2 @@
+from forward.observation import OBSERVATION_CANNOT_MUTATE_MODEL
+def test_guard():assert OBSERVATION_CANNOT_MUTATE_MODEL

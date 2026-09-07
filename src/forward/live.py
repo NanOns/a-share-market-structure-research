@@ -78,6 +78,21 @@ def latest_revision(root,cutoff):
     revisions=sorted((p for p in base.glob("revision_*") if p.is_dir() and _complete_revision(root,cutoff,p)),key=lambda p:int(p.name.split("_")[-1]))
     return revisions[-1] if revisions else None
 
+def next_revision_number(root, cutoff):
+    """Allocate after every occupied revision, including invalid evidence.
+
+    Readers ignore incomplete or hash-invalid revisions, but writers must never
+    reuse their directory number because those files remain audit evidence.
+    """
+    root=Path(root);numbers=set()
+    for base in (root/"data/forward/observations"/str(cutoff),root/"reports/forward"/str(cutoff)):
+        if not base.is_dir():continue
+        for path in base.glob("revision_*"):
+            if not path.is_dir():continue
+            suffix=path.name.removeprefix("revision_")
+            if suffix.isdigit():numbers.add(int(suffix))
+    return max(numbers,default=0)+1
+
 def sealed_sequence(root):
     base=Path(root)/"data/forward/observations";return sorted(p.name for p in base.iterdir() if p.is_dir() and latest_revision(root,p.name))
 

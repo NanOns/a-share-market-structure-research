@@ -12,7 +12,7 @@ import pytest
 
 import run_live_forward
 import run_r3_integrated_seal
-from forward.live import latest_revision, publish_observation
+from forward.live import latest_revision, next_revision_number, publish_observation
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -69,6 +69,19 @@ def test_forward_cli_block_does_not_overwrite_committed_revision(tmp_path, monke
     assert receipt.read_bytes() == before
     assert latest_revision(tmp_path, "20260904").name == "revision_1"
     assert json.loads((tmp_path / "runtime/forward/LAST_BLOCKED_RUN.json").read_text())["stage"] == "MODEL_IDENTITY_PREFLIGHT"
+
+
+def test_invalid_revision_is_preserved_and_next_number_skips_it(tmp_path):
+    data = tmp_path / "data/forward/observations/20260904/revision_2"
+    report = tmp_path / "reports/forward/20260904/revision_2"
+    data.mkdir(parents=True)
+    report.mkdir(parents=True)
+    (data / "invalid-evidence").write_text("preserve", encoding="utf8")
+    (report / "invalid-evidence").write_text("preserve", encoding="utf8")
+
+    assert next_revision_number(tmp_path, "20260904") == 3
+    assert (data / "invalid-evidence").read_text(encoding="utf8") == "preserve"
+    assert (report / "invalid-evidence").read_text(encoding="utf8") == "preserve"
 
 
 @pytest.mark.parametrize("mutation", ["swapped_classes", "duplicate_membership"])

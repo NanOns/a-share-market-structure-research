@@ -16,7 +16,7 @@ from run_forward_evaluation import run as refresh_forward_evaluation
 from forward.live import *
 from forward.observation import OBSERVATION_SCHEMA_VERSION,OUTCOME_SCHEMA_VERSION
 
-TDX=resolve_tdx_root(ROOT);SEALED_MODEL="6eb1f68a4192b3e8f8423cc8f4f2b0d458a8a4f9aea6b5a4cfe079a7c42882a8"
+TDX=resolve_tdx_root(ROOT);SEALED_MODEL="cb3bdd356f01dfaad5990a393a44d10149cf81f9805c533219124d773aad8c94"
 MODULES=("run_shadow_v2","run_steady_trend_v2","run_strong_pullback_v2","run_breakout_prep_v2","run_sector_leader_v2","run_early_mover_v2","run_priority_v2")
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 def source_snapshot(tdx):
@@ -172,7 +172,7 @@ def run(requested="latest",root=ROOT,tdx=TDX,services=None,fail_before_commit=Fa
         base["workbench"]=workbench
         if len(statuses)!=7 or any(str(x.get("cutoff"))!=resolved or x.get("status")!="PASS" for x in statuses):raise RuntimeError("V2_CUTOFF_ALIGNMENT_BLOCKED")
         if hasattr(services,"current_source_identity") and services.current_source_identity(root,tdx,resolved)!=source:raise RuntimeError("SOURCE_CHANGED_DURING_V2")
-        base["steps_completed"]=list(ORCHESTRATION_ORDER[:5]);revision=int(prior_rev.name.split("_")[-1])+1 if event=="SAME_CUTOFF_SOURCE_REVISION" else 1
+        base["steps_completed"]=list(ORCHESTRATION_ORDER[:5]);revision=next_revision_number(root,resolved)
         prior_path=latest_revision(root,cutoff);prior=read_observation(prior_path)
         priority_identity=json.loads((root/f"reports/shadow/v2/{resolved}/priority/V2_PRIORITY_SHADOW_IDENTITY.json").read_text("utf8")) if isinstance(services,ProductionServices) else {}
         runtime_snapshot=statuses[-1].get("runtime_snapshot",{})

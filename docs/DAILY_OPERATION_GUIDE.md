@@ -39,4 +39,4 @@ Running the command again is supported. When there is no accepted new data, it p
 
 ## Acceptance status
 
-Current engineering status is `REPAIR_IMPLEMENTED / PENDING_EXTERNAL_REAUDIT`. Routine execution is available, but production acceptance still requires Astra's independent post-repair audit and the first real trading date after `20260904`.
+Current engineering status is `EXTERNAL_AUDIT_PASS / FORWARD_ENABLED`. The approved integrated model identity is `cb3bdd356f01dfaad5990a393a44d10149cf81f9805c533219124d773aad8c94`. The first real trading date after `20260904` remains the next live operational acceptance event.

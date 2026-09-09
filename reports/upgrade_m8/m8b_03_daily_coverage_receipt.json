@@ -1,0 +1,32 @@
+{
+  "contract_version": "m8b-03-daily-coverage-receipt-v1.0",
+  "stage": "M8B-03",
+  "implementation_contract": "HISTORICAL_COVERAGE_V2_1_RECONSTRUCTED",
+  "status": "PASS",
+  "scope": [
+    "date-level technical/member/structure coverage",
+    "price basis and capability reporting",
+    "five queue hit counts",
+    "unique hit security count",
+    "NOT_BUILT versus zero-hit distinction",
+    "reconstructed versus real observation separation"
+  ],
+  "tests": {
+    "targeted": {"status": "PASS", "passed": 5, "failed": 0},
+    "full_suite": {"status": "PASS", "passed": 626, "failed": 0}
+  },
+  "data_contract": {
+    "history_basis": "RECONSTRUCTED",
+    "real_observation": false,
+    "observation_compatible": false,
+    "missing_policy": "date-local; no forward fill",
+    "structure_policy": "NOT_BUILT is distinct from AVAILABLE with zero hits"
+  },
+  "formal_database": {
+    "migration_applied": false,
+    "publication_heads_changed": false,
+    "observations_changed": false,
+    "outcomes_changed": false
+  },
+  "next_step": "M8C-01 or M9-01 after M8B gate"
+}

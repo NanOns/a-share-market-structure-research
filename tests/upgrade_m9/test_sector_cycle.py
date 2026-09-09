@@ -1,0 +1,45 @@
+import pandas as pd
+import pytest
+
+from workbench_analysis.sector_cycle import SectorCycleError, build_sector_cycle_daily
+
+
+def _inputs():
+    technical = pd.DataFrame([
+        {"security_id": "SH.1", "trade_date": "2026-09-07", "ret1": .01, "ret5": .05, "ret20": .20, "raw_amount": 100},
+        {"security_id": "SH.2", "trade_date": "2026-09-07", "ret1": -.01, "ret5": .02, "ret20": .10, "raw_amount": 200},
+        {"security_id": "SH.1", "trade_date": "2026-09-08", "ret1": .02, "ret5": .06, "ret20": .22, "raw_amount": 110},
+        {"security_id": "SH.2", "trade_date": "2026-09-08", "ret1": .01, "ret5": .03, "ret20": .12, "raw_amount": 210},
+    ])
+    memberships = pd.DataFrame([
+        {"security_id": "SH.1", "trade_date": "2026-09-07", "sector_id": "INDUSTRY:A", "sector_name": "A", "sector_type": "industry"},
+        {"security_id": "SH.2", "trade_date": "2026-09-07", "sector_id": "INDUSTRY:A", "sector_name": "A", "sector_type": "industry"},
+        {"security_id": "SH.1", "trade_date": "2026-09-08", "sector_id": "INDUSTRY:A", "sector_name": "A", "sector_type": "industry"},
+        {"security_id": "SH.2", "trade_date": "2026-09-08", "sector_id": "INDUSTRY:A", "sector_name": "A", "sector_type": "industry"},
+        {"security_id": "SH.1", "trade_date": "2026-09-08", "sector_id": "THEME:X", "sector_name": "X", "sector_type": "theme"},
+    ])
+    return technical, memberships
+
+
+def test_daily_vector_keeps_board_quote_separate_and_deduplicates_by_sector():
+    technical, memberships = _inputs()
+    result = build_sector_cycle_daily(technical, memberships, cutoff="2026-09-08", board_quotes=pd.DataFrame([{"sector_id": "INDUSTRY:A", "trade_date": "2026-09-08", "board_quote_ret1": .03, "board_quote_source": "fixture"}]))
+    row = result[(result.sector_id == "INDUSTRY:A") & (result.trade_date.astype(str) == "2026-09-08")].iloc[0]
+    assert row.total_member_count == 2
+    assert row.member_amount_sum == 320
+    assert row.board_quote_ret1 == .03
+    assert row.member_ret1_median == pytest.approx(.015)
+    assert row.sector_rs20_pct == 1.0
+    assert row["rank"] == 1
+
+
+def test_daily_vector_is_stable_under_input_order_and_rejects_future_or_conflict():
+    technical, memberships = _inputs()
+    left = build_sector_cycle_daily(technical, memberships, cutoff="2026-09-08")
+    right = build_sector_cycle_daily(technical.sample(frac=1, random_state=1), memberships.sample(frac=1, random_state=2), cutoff="2026-09-08")
+    pd.testing.assert_frame_equal(left, right)
+    with pytest.raises(SectorCycleError, match="FUTURE_SECTOR_CYCLE_INPUT"):
+        build_sector_cycle_daily(technical.assign(trade_date="2026-09-09"), memberships, cutoff="2026-09-08")
+    conflict = pd.concat([memberships, memberships.iloc[[0]].assign(sector_name="changed")], ignore_index=True)
+    with pytest.raises(SectorCycleError, match="MEMBERSHIP_DUPLICATE_CONFLICT"):
+        build_sector_cycle_daily(technical, conflict, cutoff="2026-09-08")

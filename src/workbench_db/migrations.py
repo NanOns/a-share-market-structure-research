@@ -35,7 +35,10 @@ def _sha256(text: str) -> str:
 class MigrationExecutor:
     """Apply migration files in dependency order inside one DB transaction."""
 
-    DEPENDENCIES = {"007_history_identity": (BASE_SCHEMA_VERSION,)}
+    DEPENDENCIES = {
+        "007_history_identity": (BASE_SCHEMA_VERSION,),
+        "008_technical_history": ("007_history_identity",),
+    }
     CHECK_TABLE_SQL = """
         CREATE TABLE IF NOT EXISTS schema_migration_checks (
             version VARCHAR PRIMARY KEY,

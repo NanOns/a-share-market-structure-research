@@ -1,0 +1,36 @@
+{
+  "contract_version": "m8a-01-technical-receipt-v1.0",
+  "stage": "M8A-01",
+  "implementation_contract": "TECHNICAL_HISTORY_V2_1_PREVIEW",
+  "status": "PASS",
+  "scope": [
+    "008_technical_history migration",
+    "stock_technical_daily immutable storage",
+    "same-anchor MA and return factors",
+    "legacy amount_ratio20 preservation",
+    "prior-exclusive amount and volume ratios",
+    "explainable amount classes and MA alignment",
+    "API10 read-only snapshot-bound query skeleton"
+  ],
+  "tests": {
+    "targeted": {"status": "PASS", "passed": 8, "failed": 0},
+    "full_suite": {"status": "PASS", "passed": 605, "failed": 0}
+  },
+  "migration": {
+    "version": "008_technical_history",
+    "dependency": "007_history_identity",
+    "temporary_database_apply": "PASS",
+    "formal_database_applied": false
+  },
+  "data_contract": {
+    "price_basis": "TDX_NATIVE_QFQ",
+    "calendar_basis": "MASTER_TRADING_CALENDAR",
+    "missing_window_policy": "NULL_WITH_QUALITY_CODE",
+    "future_input_policy": "REJECT"
+  },
+  "formal_database": {
+    "publication_heads_changed": false,
+    "analysis_bindings_changed": false
+  },
+  "next_step": "M8A-02 新高与RPS"
+}

@@ -23,12 +23,13 @@ def test_007_applies_atomically_and_records_hash_identity(tmp_path):
         result = MigrationExecutor(connection).apply()
         assert result["status"] == "APPLIED"
         assert result["applied"][0]["version"] == "007_history_identity"
-        assert set(connection.execute("select version from schema_migrations").fetchall()) == {(BASE_SCHEMA_VERSION,), ("007_history_identity",)}
-        assert connection.execute("select count(*) from schema_migration_checks").fetchone()[0] == 1
+        assert set(connection.execute("select version from schema_migrations").fetchall()) == {(BASE_SCHEMA_VERSION,), ("007_history_identity",), ("008_technical_history",)}
+        assert connection.execute("select count(*) from schema_migration_checks").fetchone()[0] == 2
         stored = connection.execute("select sql_sha256 from schema_migration_checks where version='007_history_identity'").fetchone()[0]
         expected = hashlib.sha256((ROOT / "src/workbench_db/migrations/007_history_identity.sql").read_text(encoding="utf-8").encode()).hexdigest()
         assert stored == expected
         assert connection.execute("select count(*) from analysis_snapshots").fetchone()[0] == 0
+        assert "stock_technical_daily" in {row[0] for row in connection.execute("show tables").fetchall()}
     finally:
         connection.close()
 

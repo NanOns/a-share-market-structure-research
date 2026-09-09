@@ -185,6 +185,26 @@ class Api:
     item['quote_valid_count']=len(values)
   return result
  def stocks(self,p,q,page,size): return self._add_quotes(p,self._rows('stock_daily',p,'and '+A_SHARE_SQL.format(id='security_id')+' and (security_name ilike ? or security_id ilike ?)',(f'%{q}%',f'%{q}%'),'security_id',page,size))
+ def technical(self,p,page=1,size=50,basis='AUTO',ma_state='',rps_window='',rps_min='',amount_class_filter='',turnover_min=''):
+  if basis not in ('AUTO','OBSERVED','RECONSTRUCTED'): raise ValueError('BASIS_UNSUPPORTED')
+  bindings=self._analysis_bindings(p);requested={'OBSERVED':'LOCAL_OBSERVED','RECONSTRUCTED':'LOCAL_RECONSTRUCTED'}.get(basis)
+  selected=bindings.get(requested) if requested else bindings.get('LOCAL_OBSERVED') or bindings.get('LOCAL_RECONSTRUCTED')
+  if not selected: raise ValueError('ANALYSIS_NOT_BUILT')
+  size=max(1,min(MAX_PAGE_SIZE,int(size)));page=max(1,int(page))
+  if rps_window or rps_min: raise ValueError('RPS_NOT_BUILT')
+  if turnover_min not in ('',None): raise ValueError('TURNOVER_NOT_BUILT')
+  filters=['e.snapshot_id=?'];params=[selected['snapshot_id']]
+  if ma_state: filters.append('t.ma_alignment=?');params.append(ma_state)
+  if amount_class_filter: filters.append('t.amount_class=?');params.append(amount_class_filter)
+  where=' and '.join(filters)
+  with self._con() as c:
+   total=c.execute("select count(*) from analysis_snapshot_entries e join stock_technical_daily t on t.slice_id=e.slice_id and t.trade_date=e.trade_date where e.domain='technical' and "+where,params).fetchone()[0]
+   rows=c.execute("select t.security_id,t.trade_date,t.contract_id,t.price_basis,t.raw_close,t.adj_close,t.quote_ret1,t.raw_amount,t.raw_volume,t.ma5,t.ma10,t.ma20,t.ma60,t.ret5,t.ret10,t.ret20,t.ret60,t.rs5,t.rs10,t.rs20,t.rs60,t.amount_ma5,t.amount_ma10,t.amount_ma20,t.amount_ratio20,t.amount_vs_prior20,t.volume_vs_prior20,t.amount_class,t.ma_alignment,t.validity,t.quality_codes,t.basis_json from analysis_snapshot_entries e join stock_technical_daily t on t.slice_id=e.slice_id and t.trade_date=e.trade_date where e.domain='technical' and "+where+f" order by t.trade_date desc,t.ret20 desc nulls last,t.security_id limit ? offset ?",params+[size,(page-1)*size]).fetchall()
+  names=('security_id','trade_date','contract_id','price_basis','raw_close','adj_close','quote_ret1','raw_amount','raw_volume','ma5','ma10','ma20','ma60','ret5','ret10','ret20','ret60','rs5','rs10','rs20','rs60','amount_ma5','amount_ma10','amount_ma20','amount_ratio20','amount_vs_prior20','volume_vs_prior20','amount_class','ma_alignment','validity','quality_codes','basis')
+  items=[]
+  for row in rows:
+   item=dict(zip(names,row));item['trade_date']=str(item['trade_date']);item['quality_codes']=json.loads(item['quality_codes']) if item['quality_codes'] else [];item['basis']=json.loads(item['basis']) if item['basis'] else {};items.append(item)
+  return {'publication_id':p,'page':page,'page_size':size,'total':total,'basis':basis,'snapshot_id':selected['snapshot_id'],'snapshot_capability':'AVAILABLE','items':items}
  def universe_summary(self,p):
   trade_date,source_revision=self._pub(p)
   with self._con() as c:
@@ -363,6 +383,7 @@ def make_handler(root,db):
     elif u.path=='/api/dashboard': out=api.dashboard(x['publication_id'])
     elif u.path=='/api/sectors': out=api.sectors(x['publication_id'],x.get('q',''),x.get('page',1),x.get('page_size',50),x.get('type',''))
     elif u.path=='/api/stocks': out=api.stocks(x['publication_id'],x.get('q',''),x.get('page',1),x.get('page_size',50))
+    elif u.path=='/api/stocks/technical': out=api.technical(x['publication_id'],x.get('page',1),x.get('page_size',50),x.get('basis','AUTO'),x.get('ma_state',''),x.get('rps_window',''),x.get('rps_min',''),x.get('amount_class',''),x.get('turnover_min',''))
     elif u.path=='/api/candidates': out=api.candidates(x['publication_id'],x.get('q',''),x.get('page',1),x.get('page_size',50),x.get('grade',''),x.get('pattern',''))
     elif u.path=='/api/queues': out=api.queues(x['publication_id'],x.get('queue','STEADY'),x.get('page',1),x.get('page_size',50),x.get('q',''),x.get('band',''))
     elif u.path=='/api/evidence': out=api.evidence(x['publication_id'],x['queue'],x['security_id'])
@@ -421,7 +442,9 @@ def make_handler(root,db):
     elif u.path=='/fixes.js': return self._send(200,(static/'fixes.js').read_bytes(),'application/javascript; charset=utf-8')
     else:return self._send(404,{'code':'NOT_FOUND','message':'页面不存在','retryable':False,'next_action':'检查地址'})
     self._send(200,out)
-   except (KeyError,ValueError) as e:self._send(400,{'code':str(e).strip("'"),'message':'请求参数或发布版本无效','retryable':False,'next_action':'重新选择日期'})
+   except (KeyError,ValueError) as e:
+    code=str(e).strip("'");status=409 if code in ('ANALYSIS_NOT_BUILT','BASIS_UNAVAILABLE') else 400
+    self._send(status,{'code':code,'message':'请求参数或发布版本无效','retryable':False,'next_action':'重新选择日期'})
    except Exception:self._send(500,{'code':'INTERNAL_ERROR','message':'读取失败','retryable':True,'next_action':'稍后重试'})
   def do_POST(self):
    try:

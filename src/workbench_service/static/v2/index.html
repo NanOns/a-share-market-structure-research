@@ -1,86 +1,207 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>统一研究工作台 · v2 预览</title>
-  <link rel="stylesheet" href="/v2/styles.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>统一研究工作台 · v2 预览</title>
+    <link rel="stylesheet" href="/v2/styles.css">
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand"><span class="brand-mark">M7</span><div><strong>统一研究工作台</strong><small>Workbench v2 Preview</small></div></div>
+<header class="topbar">
+    <div class="brand"><span class="brand-mark">M7</span>
+        <div><strong>统一研究工作台</strong><small>Workbench v2 Preview</small></div>
+    </div>
     <label class="publication-picker">发布版本
-      <select id="publication-select" aria-label="选择发布版本"></select>
+        <select id="publication-select" aria-label="选择发布版本"></select>
     </label>
     <div class="context" id="page-context">正在读取版本上下文…</div>
     <a class="ops-link" href="/operations">运维中心</a>
-  </header>
-  <nav class="nav" aria-label="工作台页面">
+</header>
+<nav class="nav" aria-label="工作台页面">
     <button class="nav-item active" data-page="overview" type="button">总览</button>
     <button class="nav-item" data-page="sectors" type="button">板块</button>
     <button class="nav-item" data-page="stocks" type="button">个股技术</button>
     <button class="nav-item" data-page="candidates" type="button">候选</button>
     <button class="nav-item" data-page="queues" type="button">队列</button>
     <button class="nav-item" data-page="linkage" type="button">联动</button>
-  </nav>
-  <main class="content">
+</nav>
+<main class="content">
     <section class="page-heading">
-      <div><p class="eyebrow">M7A · 7A-05</p><h1 id="page-title">研究总览</h1><p id="page-description">公共 UI 层预览：版本、输入身份与统一股票范围。</p></div>
-      <span class="preview-badge">预览路由 /v2</span>
+        <div><p class="eyebrow">M7A · 7A-05</p>
+            <h1 id="page-title">研究总览</h1>
+            <p id="page-description">公共 UI 层预览：版本、输入身份与统一股票范围。</p></div>
+        <span class="preview-badge">预览路由 /v2</span>
     </section>
     <div id="notice" class="notice" role="status" aria-live="polite">正在加载…</div>
     <div id="overview-page">
-      <section class="cards" aria-label="版本摘要">
-        <article class="card"><div class="card-label">发布版本</div><div id="publication-value" class="card-value">—</div><div id="publication-detail" class="card-detail">—</div></article>
-        <article class="card"><div class="card-label">输入身份</div><div id="identity-value" class="card-value">—</div><div id="identity-detail" class="card-detail">—</div><button id="identity-evidence" class="evidence-button" type="button">查看证据</button></article>
-        <article class="card"><div class="card-label">统一股票范围</div><div id="universe-value" class="card-value">—</div><div id="universe-detail" class="card-detail">—</div><button id="universe-evidence" class="evidence-button" type="button">查看边界</button></article>
-      </section>
-      <section class="panel">
-        <div class="panel-heading"><div><h2>版本上下文</h2><p>只请求当前发布版本的摘要接口，明细页面按升级步骤接入。</p></div></div>
-        <div id="context-table" class="table-wrap"></div>
-      </section>
+        <section class="cards" aria-label="版本摘要">
+            <article class="card">
+                <div class="card-label">发布版本</div>
+                <div id="publication-value" class="card-value">—</div>
+                <div id="publication-detail" class="card-detail">—</div>
+            </article>
+            <article class="card">
+                <div class="card-label">输入身份</div>
+                <div id="identity-value" class="card-value">—</div>
+                <div id="identity-detail" class="card-detail">—</div>
+                <button id="identity-evidence" class="evidence-button" type="button">查看证据</button>
+            </article>
+            <article class="card">
+                <div class="card-label">统一股票范围</div>
+                <div id="universe-value" class="card-value">—</div>
+                <div id="universe-detail" class="card-detail">—</div>
+                <button id="universe-evidence" class="evidence-button" type="button">查看边界</button>
+            </article>
+        </section>
+        <section class="panel">
+            <div class="panel-heading">
+                <div><h2>版本上下文</h2>
+                    <p>只请求当前发布版本的摘要接口，明细页面按升级步骤接入。</p></div>
+            </div>
+            <div id="context-table" class="table-wrap"></div>
+        </section>
     </div>
     <section id="technical-page" class="technical-page" hidden>
-      <section class="panel filters-panel">
-        <div class="filter-row">
-          <label>视图<select id="technical-mode"><option value="highs">创新高 · RPS</option><option value="technical">技术状态</option></select></label>
-          <label>新高窗口<select id="technical-window"><option value="20">20日</option><option value="30">30日</option><option value="60">60日</option><option value="100">100日</option></select></label>
-          <label>RPS20 百分位 ≥ <select id="technical-rps-min"><option value="">不限</option><option value="0.8">0.80</option><option value="0.9">0.90</option><option value="0.95">0.95</option></select></label>
-          <label>连续新高天数 ≥ <input id="technical-streak-min" type="number" min="0" step="1" placeholder="不限"></label>
-          <label>均线状态<select id="technical-ma-state"><option value="">不限</option><option value="BULLISH">多头</option><option value="BEARISH">空头</option><option value="MIXED">混合</option></select></label>
-          <label>量额状态<select id="technical-amount-class"><option value="">不限</option><option value="NORMAL">正常</option><option value="INCREASED">放量</option><option value="NOTABLE">显著放量</option><option value="SIGNIFICANT">大幅放量</option></select></label>
-          <button id="technical-refresh" class="evidence-button filter-button" type="button">刷新</button>
-        </div>
-        <div id="technical-basis" class="basis-note">当前发布版本绑定的分析快照与价格口径将在这里显示。</div>
-      </section>
-      <section class="panel">
-        <div class="field-guide"><h2>字段说明与使用方法</h2><p>用于筛选和比较，不代表概率或买卖建议。数值只来自当前发布版本绑定的本地分析快照；表格只显示截止日最新记录。</p><div class="guide-grid"><div><b>RET20</b><span>当前调整后收盘价相对 20 个交易日前的涨跌幅；用于看中期趋势。</span></div><div><b>MA5 / MA20 / MA60</b><span>5、20、60 日调整后收盘价均线；用来观察短中长期方向，页面统一保留两位小数。</span></div><div><b>RPS20</b><span>同一交易日合格股票中的相对强度百分位，0.80 表示位于前 20%；不是收益预测。</span></div><div><b>有效样本</b><span>参与 RPS20 横向排名的合格股票数量，所以同一交易日通常相同；它是排名分母，不是每只股票的独立评分。</span></div><div><b>额比20</b><span>当日成交额 ÷ 含当日的 20 日平均成交额；大于 1 表示高于近期平均。</span></div><div><b>量比前20</b><span>当日成交量 ÷ 前 20 日（不含当日）平均成交量；用于识别量能变化。</span></div><div><b>量额状态</b><span>根据额比20分为正常、放量、显著放量和大幅放量。</span></div><div><b>质量 / 研究级别</b><span>质量说明数据完整度；研究级别说明结构观察优先级。没有结构命中时显示“诊断参考”，只有确实缺少输入时才显示“资料不足”。</span></div></div></div>
-        <div class="panel-heading"><div><h2 id="technical-heading">创新高-RPS</h2><p id="technical-description">严格使用前序窗口；并列前高、左删失和缺失值不被伪装成有效信号。</p></div></div>
-        <div id="technical-table" class="table-wrap"></div>
-        <div class="pager"><button id="technical-prev" type="button">上一页</button><span id="technical-page-label">第 1 页</span><button id="technical-next" type="button">下一页</button></div>
-      </section>
+        <section class="panel filters-panel">
+            <div class="filter-row">
+                <label>视图<select id="technical-mode">
+                    <option value="highs">创新高 · RPS</option>
+                    <option value="technical">技术状态</option>
+                </select></label>
+                <label>新高窗口<select id="technical-window">
+                    <option value="20">20日</option>
+                    <option value="30">30日</option>
+                    <option value="60">60日</option>
+                    <option value="100">100日</option>
+                </select></label>
+                <label>RPS20 百分位 ≥ <select id="technical-rps-min">
+                    <option value="">不限</option>
+                    <option value="0.8">0.80</option>
+                    <option value="0.9">0.90</option>
+                    <option value="0.95">0.95</option>
+                </select></label>
+                <label>连续新高天数 ≥ <input id="technical-streak-min" type="number" min="0" step="1"
+                                             placeholder="不限"></label>
+                <label>均线状态<select id="technical-ma-state">
+                    <option value="">不限</option>
+                    <option value="BULLISH">多头</option>
+                    <option value="BEARISH">空头</option>
+                    <option value="MIXED">混合</option>
+                </select></label>
+                <label>量额状态<select id="technical-amount-class">
+                    <option value="">不限</option>
+                    <option value="NORMAL">正常</option>
+                    <option value="INCREASED">放量</option>
+                    <option value="NOTABLE">显著放量</option>
+                    <option value="SIGNIFICANT">大幅放量</option>
+                </select></label>
+                <label>研究级别<select id="technical-research-band">
+                    <option value="">不限</option>
+                    <option value="CORE_RESEARCH">核心研究</option>
+                    <option value="SUPPORTED_RESEARCH">支持观察</option>
+                    <option value="DIAGNOSTIC_ONLY">诊断参考</option>
+                </select></label>
+                <button id="technical-refresh" class="evidence-button filter-button" type="button">刷新</button>
+            </div>
+            <div id="technical-basis" class="basis-note">当前发布版本绑定的分析快照与价格口径将在这里显示。</div>
+        </section>
+        <section class="panel">
+            <div class="field-guide"><h2>字段说明与使用方法</h2>
+                <p>
+                    用于筛选和比较，不代表概率或买卖建议。数值只来自当前发布版本绑定的本地分析快照；表格只显示截止日最新记录。</p>
+                <div class="guide-grid">
+                    <div><b>RET20</b><span>当前调整后收盘价相对 20 个交易日前的涨跌幅；用于看中期趋势。</span></div>
+                    <div><b>MA5 / MA20 /
+                        MA60</b><span>5、20、60 日调整后收盘价均线；用来观察短中长期方向，页面统一保留两位小数。</span></div>
+                    <div><b>RPS20</b><span>同一交易日合格股票中的相对强度百分位，0.80 表示位于前 20%；不是收益预测。</span>
+                    </div>
+                    <div>
+                        <b>有效样本</b><span>参与 RPS20 横向排名的合格股票数量，所以同一交易日通常相同；它是排名分母，不是每只股票的独立评分。</span>
+                    </div>
+                    <div><b>额比20</b><span>当日成交额 ÷ 含当日的 20 日平均成交额；大于 1 表示高于近期平均。</span></div>
+                    <div><b>量比前20</b><span>当日成交量 ÷ 前 20 日（不含当日）平均成交量；用于识别量能变化。</span></div>
+                    <div><b>量额状态</b><span>根据额比20分为正常、放量、显著放量和大幅放量。</span></div>
+                    <div><b>质量 /
+                        研究级别</b><span>质量说明数据完整度；研究级别说明结构观察优先级。没有结构命中时显示“诊断参考”，只有确实缺少输入时才显示“资料不足”。</span>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-heading">
+                <div><h2 id="technical-heading">创新高-RPS</h2>
+                    <p id="technical-description">严格使用前序窗口；并列前高、左删失和缺失值不被伪装成有效信号。</p></div>
+            </div>
+            <div id="technical-table" class="table-wrap"></div>
+            <div class="pager">
+                <button id="technical-prev" type="button">上一页</button>
+                <span id="technical-page-label">第 1 页</span>
+                <button id="technical-next" type="button">下一页</button>
+            </div>
+        </section>
     </section>
     <section id="sectors-page" class="sectors-page" hidden>
-      <section class="panel filters-panel">
-        <div class="filter-row">
-          <label>板块分类<select id="sector-type"><option value="INDUSTRY" selected>行业板块</option><option value="THEME">概念板块</option><option value="REGION">地区板块</option><option value="STYLE">通达信风格标签</option><option value="">全部分类</option></select></label>
-          <label>交易日列数<select id="sector-days"><option value="5">5日</option><option value="10" selected>10日</option><option value="20">20日</option><option value="30">30日</option></select></label>
-          <button id="sector-refresh" class="evidence-button filter-button" type="button">刷新周期</button>
-        </div>
-        <div id="sector-basis" class="basis-note">周期矩阵读取当前发布绑定的历史板块快照。</div>
-      </section>
-      <section class="panel">
-        <div class="field-guide"><h2>板块周期说明与使用方法</h2><p>行业、概念、地区、通达信风格标签分开加载，默认只展示前 15 个。行业板块按本地 TDX 行业编码识别父子层级，不把“近期强势”等风格标签混作行业。</p><div class="guide-grid"><div><b>一级大板块</b><span>行业编码的五位父级，例如“有色金属”；用于先判断大方向。</span></div><div><b>细分行业</b><span>行业编码的七位子级，例如“铜”；页面会显示其上级板块。</span></div><div><b>概念板块</b><span>按主题/概念观察题材强弱；不与行业名次直接横向混比。</span></div><div><b>地区 / 风格</b><span>只有输入明确提供时才展示；“近期强势”等属于风格标签，不是行业或概念。</span></div><div><b>RPS20 百分位</b><span>同一分类内的相对强度百分位，越接近 1 越强；排名数字越小越靠前。</span></div><div><b>时间线与覆盖率</b><span>点击“查看”在弹窗核对周期、成员和代表状态；覆盖率低时应谨慎比较。</span></div></div></div>
-        <div class="panel-heading"><div><h2>板块周期矩阵</h2><p>默认只展示当前分类前 15 个板块；单元格显示名次与强度百分位，详细成员和代表状态在弹窗查看。</p></div></div>
-        <div id="sector-cycle-table" class="table-wrap"></div>
-      </section>
+        <section class="panel filters-panel">
+            <div class="filter-row">
+                <label>板块分类<select id="sector-type">
+                    <option value="INDUSTRY" selected>行业板块</option>
+                    <option value="THEME">概念板块</option>
+                    <option value="STYLE">通达信风格标签</option>
+                </select></label>
+                <label>交易日列数<select id="sector-days">
+                    <option value="5">5日</option>
+                    <option value="10" selected>10日</option>
+                    <option value="20">20日</option>
+                    <option value="30">30日</option>
+                </select></label>
+                <button id="sector-refresh" class="evidence-button filter-button" type="button">刷新周期</button>
+            </div>
+            <div id="sector-basis" class="basis-note">周期矩阵读取当前发布绑定的历史板块快照。</div>
+        </section>
+        <section class="panel">
+            <div class="field-guide"><h2>板块周期说明与使用方法</h2>
+                <p>
+                    行业板块的一级大板块和细分行业独立排名；概念板块当前没有可审计的父子编码，保持平级排名；当前本地源没有地区板块数据，因此不再提供地区选项。</p>
+                <div class="guide-grid">
+                    <div><b>一级大板块</b><span>行业编码的五位父级，例如“有色金属”；只和其他一级行业比较。</span></div>
+                    <div><b>细分行业</b><span>行业编码的七位子级，例如“铜”；只和其他细分行业比较，并显示上级板块。</span>
+                    </div>
+                    <div><b>概念板块</b><span>按主题/概念观察题材强弱；当前没有审计到父子关系，全部保持平级。</span></div>
+                    <div><b>风格标签</b><span>通达信风格标签是平级标签，不与行业、概念混合解释。</span></div>
+                    <div><b>RPS20
+                        百分位</b><span>同一分类、同一层级内的相对强度百分位，越接近 1 越强；排名数字越小越靠前。</span>
+                    </div>
+                    <div><b>时间线与覆盖率</b><span>点击“查看”在弹窗核对周期、成员和代表状态；覆盖率低时应谨慎比较。</span>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-heading">
+                <div><h2>板块周期矩阵</h2>
+                    <p>行业板块按一级大板块、细分行业分成两个表格；概念板块与通达信风格标签保持一个平级表格。单元格显示本层级名次与强度百分位，详细成员和代表状态在弹窗查看。</p>
+                </div>
+            </div>
+            <div id="sector-industry-tables">
+                <section class="sector-table-block">
+                    <div class="panel-heading"><div><h3>一级大板块</h3><p>仅与其他一级行业比较。</p></div></div>
+                    <div id="sector-root-table" class="table-wrap"></div>
+                </section>
+                <section class="sector-table-block">
+                    <div class="panel-heading"><div><h3>细分行业</h3><p>仅与其他细分行业比较，并显示上级板块。</p></div></div>
+                    <div id="sector-leaf-table" class="table-wrap"></div>
+                </section>
+            </div>
+            <div id="sector-flat-tables" hidden>
+                <section class="sector-table-block">
+                    <div class="panel-heading"><div><h3>平级板块</h3><p>当前分类没有可审计的父子层级，所有板块统一比较。</p></div></div>
+                    <div id="sector-flat-table" class="table-wrap"></div>
+                </section>
+            </div>
+        </section>
     </section>
-  </main>
-  <div id="modal" class="modal" hidden aria-hidden="true"></div>
-  <script src="/v2/api.js"></script>
-  <script src="/v2/format.js"></script>
-  <script src="/v2/table.js"></script>
-  <script src="/v2/modal.js"></script>
-  <script src="/v2/app.js"></script>
+</main>
+<div id="modal" class="modal" hidden aria-hidden="true"></div>
+<script src="/v2/api.js"></script>
+<script src="/v2/format.js"></script>
+<script src="/v2/table.js"></script>
+<script src="/v2/modal.js"></script>
+<script src="/v2/app.js"></script>
 </body>
 </html>

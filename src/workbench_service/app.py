@@ -21,6 +21,53 @@ from workbench_analysis.chart import ChartCache, build_chart_points, chart_cache
 
 MAX_PAGE_SIZE=100
 
+def _sector_code(sector_id):
+ return str(sector_id).split(':',1)[-1]
+
+def _sector_rank_desc(values):
+ finite=[value for value in values if isinstance(value,(int,float)) and math.isfinite(value)]
+ if not finite:return [None for _ in values],[None for _ in values]
+ ranks=[];percentiles=[]
+ for value in values:
+  if not isinstance(value,(int,float)) or not math.isfinite(value):
+   ranks.append(None);percentiles.append(None);continue
+  greater=sum(other>value for other in finite)
+  tied=sum(other==value for other in finite)
+  rank=greater+(tied+1)/2
+  ranks.append(rank);percentiles.append((len(finite)-rank+1)/len(finite))
+ return ranks,percentiles
+
+def _annotate_sector_hierarchy(items,dates):
+ # Industry parentage is derived only from the audited TDX code prefix.  Theme
+ # and style sources do not expose an audited parent relation and stay flat.
+ sector_names={(item['sector_type'],_sector_code(item['sector_id'])):item['sector_name'] for item in items}
+ for item in items:
+  item['sector_code']=_sector_code(item['sector_id'])
+  item['parent_sector_id']=None;item['parent_sector_name']=None
+  if item['sector_type']=='INDUSTRY':
+   code=item['sector_code']
+   parents=[parent for kind,parent in sector_names if kind=='INDUSTRY' and len(parent)>=5 and len(parent)<len(code) and code.startswith(parent)]
+   if parents:
+    parent=max(parents,key=len)
+    item['parent_sector_id']='INDUSTRY:'+parent;item['parent_sector_name']=sector_names[('INDUSTRY',parent)]
+  if item['sector_type']=='INDUSTRY':
+   item['hierarchy_level_code']='LEAF' if item['parent_sector_id'] else 'ROOT'
+   item['hierarchy_level']='细分行业' if item['parent_sector_id'] else '一级大板块'
+  else:
+   item['hierarchy_level_code']='FLAT';item['hierarchy_level']='平级板块'
+  item['rank_scope']=f"{item['sector_type']}_{item['hierarchy_level_code']}"
+ for date_index,_ in enumerate(dates):
+  buckets={}
+  for item_index,item in enumerate(items):
+   cell=item['cells'][date_index]
+   buckets.setdefault((item['sector_type'],item['hierarchy_level_code']),[]).append((item_index,cell.get('sector_rs20')))
+  for members in buckets.values():
+   ranks,percentiles=_sector_rank_desc([value for _,value in members])
+   for (item_index,_),rank,percentile in zip(members,ranks,percentiles):
+    items[item_index]['cells'][date_index]['hierarchy_rank']=rank
+    items[item_index]['cells'][date_index]['hierarchy_sector_rs20_pct']=percentile
+ return items
+
 def _finite_or_none(value):
  if isinstance(value,float) and not math.isfinite(value):return None
  return value
@@ -60,7 +107,7 @@ class Api:
   result={'items':items,'latest_publication_id':rows[0][1] if rows else None}
   if include_analysis: result['api_contract']=API_CONTRACT
   return result
- def sector_cycle(self,p,page=1,size=20,sector_type='',q='',days=10,metric='rank'):
+ def sector_cycle(self,p,page=1,size=20,sector_type='',q='',days=10,metric='rank',hierarchy_level=''):
   if metric not in ('rank','sector_rs20_pct','breadth_ret1'): raise ValueError('SECTOR_CYCLE_METRIC_UNSUPPORTED')
   days=max(1,min(30,int(days)));size=max(1,min(MAX_PAGE_SIZE,int(size)));page=max(1,int(page));self._pub(p)
   bindings=self._analysis_bindings(p);selected=bindings.get('LOCAL_OBSERVED') or bindings.get('LOCAL_RECONSTRUCTED')
@@ -77,26 +124,16 @@ class Api:
    item=dict(zip(names,raw));item['trade_date']=str(item['trade_date']);item['window_stats']=json.loads(item['window_stats']) if item['window_stats'] else {};date_values.append(item['trade_date']);key=(item['sector_id'],item['sector_type']);grouped.setdefault(key,{'sector_id':item['sector_id'],'sector_name':item['sector_name'],'sector_type':item['sector_type'],'_rows':[]})['_rows'].append(item)
   dates=sorted(set(date_values));items=[]
   for item in grouped.values():
-   cells={row['trade_date']:row for row in item.pop('_rows')};item['cells']=[{'trade_date':day,'rank':cells[day]['rank'] if day in cells else None,'sector_rs20_pct':cells[day]['sector_rs20_pct'] if day in cells else None,'board_quote_ret1':cells[day]['board_quote_ret1'] if day in cells else None,'member_ret1_median':cells[day]['member_ret1_median'] if day in cells else None,'breadth_ret1':cells[day]['breadth_ret1'] if day in cells else None,'coverage':cells[day]['coverage'] if day in cells else None,'diffusion_state':None} for day in dates];items.append(item)
-  # TDX industry codes carry a stable hierarchy.  A seven-character leaf
-  # such as T020201 belongs to the five-character parent T0202.  The
-  # three-character TDX root is an implementation sentinel, not a display
-  # level.  Theme/style sources have no audited parent relation and stay flat.
-  sector_names={(item['sector_type'],str(item['sector_id']).split(':',1)[-1]):item['sector_name'] for item in items}
-  for item in items:
-   item['sector_code']=str(item['sector_id']).split(':',1)[-1]
-   item['parent_sector_id']=None;item['parent_sector_name']=None
-   if item['sector_type']=='INDUSTRY':
-    code=item['sector_code']
-    parents=[parent for kind,parent in sector_names if kind=='INDUSTRY' and len(parent)>=5 and len(parent)<len(code) and code.startswith(parent)]
-    if parents:
-     parent=max(parents,key=len)
-     item['parent_sector_id']='INDUSTRY:'+parent;item['parent_sector_name']=sector_names[('INDUSTRY',parent)]
-   item['hierarchy_level']='细分行业' if item['parent_sector_id'] else ('一级大板块' if item['sector_type']=='INDUSTRY' else '平级板块')
+   cells={row['trade_date']:row for row in item.pop('_rows')};item['cells']=[{'trade_date':day,'rank':cells[day]['rank'] if day in cells else None,'hierarchy_rank':None,'hierarchy_sector_rs20_pct':None,'sector_rs20':cells[day]['sector_rs20'] if day in cells else None,'sector_rs20_pct':cells[day]['sector_rs20_pct'] if day in cells else None,'board_quote_ret1':cells[day]['board_quote_ret1'] if day in cells else None,'member_ret1_median':cells[day]['member_ret1_median'] if day in cells else None,'breadth_ret1':cells[day]['breadth_ret1'] if day in cells else None,'coverage':cells[day]['coverage'] if day in cells else None,'diffusion_state':None} for day in dates];items.append(item)
+  _annotate_sector_hierarchy(items,dates)
+  level_filter=str(hierarchy_level or '').upper()
+  if level_filter not in ('','ALL','ROOT','LEAF','FLAT'): raise ValueError('SECTOR_HIERARCHY_LEVEL_UNSUPPORTED')
+  if level_filter and level_filter!='ALL': items=[item for item in items if item['hierarchy_level_code']==level_filter]
   latest_index=len(dates)-1
-  items.sort(key=lambda value: ((value['cells'][latest_index]['rank'] if latest_index >= 0 and value['cells'][latest_index]['rank'] is not None else 10**9),value['sector_id']))
+  level_order={'ROOT':0,'LEAF':1,'FLAT':0}
+  items.sort(key=lambda value: (level_order.get(value['hierarchy_level_code'],9),(value['cells'][latest_index]['hierarchy_rank'] if latest_index >= 0 and value['cells'][latest_index]['hierarchy_rank'] is not None else 10**9),value['sector_id']))
   total=len(items);start=(page-1)*size
-  return {'publication_id':p,'snapshot_id':selected['snapshot_id'],'page':page,'page_size':size,'total':total,'days':days,'dates':dates,'metric':metric,'as_of_trade_date':dates[-1] if dates else None,'items':items[start:start+size]}
+  return {'publication_id':p,'snapshot_id':selected['snapshot_id'],'page':page,'page_size':size,'total':total,'days':days,'dates':dates,'metric':metric,'hierarchy_level_filter':level_filter or 'ALL','hierarchy_levels':sorted({item['hierarchy_level_code'] for item in items}),'as_of_trade_date':dates[-1] if dates else None,'items':items[start:start+size]}
  def sector_timeline(self,p,sector_id,days=30):
   days=max(1,min(250,int(days)));self._pub(p);bindings=self._analysis_bindings(p);selected=bindings.get('LOCAL_OBSERVED') or bindings.get('LOCAL_RECONSTRUCTED')
   if not selected: raise ValueError('ANALYSIS_NOT_BUILT')
@@ -106,7 +143,20 @@ class Api:
   for raw in rows:
    item=dict(zip(names,raw));item['trade_date']=str(item['trade_date']);item['member_amount_sum']=float(item['member_amount_sum']) if item['member_amount_sum'] is not None else None;item['window_stats']=json.loads(item['window_stats']) if item['window_stats'] else {};points.append(item)
   if not points: return {'publication_id':p,'sector_id':sector_id,'snapshot_id':selected['snapshot_id'],'points':[],'status':'NOT_FOUND'}
-  return {'publication_id':p,'sector_id':sector_id,'snapshot_id':selected['snapshot_id'],'sector_name':points[-1]['sector_name'],'sector_type':points[-1]['sector_type'],'history_basis':selected['domain'].removeprefix('LOCAL_'),'points':points}
+  hierarchy_item=None;sector_type=points[-1]['sector_type'];page=1
+  while hierarchy_item is None:
+   matrix=self.sector_cycle(p,page=page,size=MAX_PAGE_SIZE,sector_type=sector_type,days=min(days,30),hierarchy_level='ALL')
+   hierarchy_item=next((item for item in matrix['items'] if item['sector_id']==sector_id),None)
+   if hierarchy_item is not None or page*MAX_PAGE_SIZE>=matrix['total']:break
+   page+=1
+  rank_by_date={cell['trade_date']:cell.get('hierarchy_rank') for cell in hierarchy_item['cells']} if hierarchy_item else {}
+  pct_by_date={cell['trade_date']:cell.get('hierarchy_sector_rs20_pct') for cell in hierarchy_item['cells']} if hierarchy_item else {}
+  for point in points:
+   point['hierarchy_rank']=rank_by_date.get(point['trade_date']);point['hierarchy_sector_rs20_pct']=pct_by_date.get(point['trade_date'])
+  result={'publication_id':p,'sector_id':sector_id,'snapshot_id':selected['snapshot_id'],'sector_name':points[-1]['sector_name'],'sector_type':points[-1]['sector_type'],'history_basis':selected['domain'].removeprefix('LOCAL_'),'points':points}
+  if hierarchy_item:
+   result.update({'hierarchy_level':hierarchy_item['hierarchy_level'],'hierarchy_level_code':hierarchy_item['hierarchy_level_code'],'parent_sector_id':hierarchy_item['parent_sector_id'],'parent_sector_name':hierarchy_item['parent_sector_name'],'rank_scope':hierarchy_item['rank_scope']})
+  return result
  def sector_members_history(self,p,sector_id,days=10,page=1,size=50,state='',security_id=''):
   allowed={'ALL','ADDED','REMOVED','RETAINED','ENTERED','EXITED','UNKNOWN','UNCHANGED'};state=str(state or 'ALL').upper()
   if state not in allowed: raise ValueError('MEMBER_HISTORY_STATE_UNSUPPORTED')
@@ -311,9 +361,11 @@ class Api:
     item['quote_valid_count']=len(values)
   return result
  def stocks(self,p,q,page,size): return self._add_quotes(p,self._rows('stock_daily',p,'and '+A_SHARE_SQL.format(id='security_id')+' and (security_name ilike ? or security_id ilike ?)',(f'%{q}%',f'%{q}%'),'security_id',page,size))
- def technical(self,p,page=1,size=50,basis='AUTO',ma_state='',rps_window='',rps_min='',amount_class_filter='',turnover_min='',quality_filter=''):
+ def technical(self,p,page=1,size=50,basis='AUTO',ma_state='',rps_window='',rps_min='',amount_class_filter='',turnover_min='',quality_filter='',research_band=''):
   if basis not in ('AUTO','OBSERVED','RECONSTRUCTED'): raise ValueError('BASIS_UNSUPPORTED')
   if quality_filter not in ('','INCLUDE_UNKNOWN'): raise ValueError('QUALITY_FILTER_UNSUPPORTED')
+  research_band=str(research_band or '').strip().upper()
+  if research_band not in ('','CORE_RESEARCH','SUPPORTED_RESEARCH','DIAGNOSTIC_ONLY'): raise ValueError('RESEARCH_BAND_UNSUPPORTED')
   bindings=self._analysis_bindings(p);requested={'OBSERVED':'LOCAL_OBSERVED','RECONSTRUCTED':'LOCAL_RECONSTRUCTED'}.get(basis)
   selected=bindings.get(requested) if requested else bindings.get('LOCAL_OBSERVED') or bindings.get('LOCAL_RECONSTRUCTED')
   if not selected: raise ValueError('ANALYSIS_NOT_BUILT')
@@ -338,6 +390,7 @@ class Api:
   if ma_state:filters.append('(t.ma_alignment=?'+(' or t.ma_alignment is null)' if include_unknown else ')'));params.append(ma_state)
   if amount_class_filter:filters.append('(t.amount_class=?'+(' or t.amount_class is null)' if include_unknown else ')'));params.append(amount_class_filter)
   if rps_value is not None:filters.append(f'(st.rps{rps_width}>=?'+(f' or st.rps{rps_width} is null)' if include_unknown else ')'));params.append(rps_value)
+  if research_band:filters.append("coalesce(ss.research_band,'DIAGNOSTIC_ONLY')=?");params.append(research_band)
   where=' and '.join(filters)
   select="t.security_id,t.trade_date,t.contract_id,t.price_basis,t.raw_close,t.adj_close,t.quote_ret1,t.raw_amount,t.raw_volume,t.ma5,t.ma10,t.ma20,t.ma60,t.ret5,t.ret10,t.ret20,t.ret60,t.rs5,t.rs10,t.rs20,t.rs60,t.amount_ma5,t.amount_ma10,t.amount_ma20,t.amount_ratio20,t.amount_vs_prior20,t.volume_vs_prior20,t.amount_class,t.ma_alignment,t.validity,t.quality_codes,t.basis_json,st.rps5,st.rps10,st.rps20,st.rps60,st.rps_valid_universe_count5,st.rps_valid_universe_count10,st.rps_valid_universe_count20,st.rps_valid_universe_count60,coalesce(ss.research_band,'DIAGNOSTIC_ONLY'),coalesce(ss.research_band_quality,'DATA_INSUFFICIENT')"
   with self._con() as c:
@@ -351,8 +404,10 @@ class Api:
   security_names=self._security_names(p,{item['security_id'] for item in items if item.get('security_id')})
   for item in items:item['security_name']=security_names.get(item.get('security_id'))
   return self._add_quotes(p,result)
- def new_highs(self,p,page=1,size=50,basis='AUTO',window=20,streak_min='',include_ties=False,rps_min=''):
+ def new_highs(self,p,page=1,size=50,basis='AUTO',window=20,streak_min='',include_ties=False,rps_min='',research_band=''):
   if basis not in ('AUTO','OBSERVED','RECONSTRUCTED'): raise ValueError('BASIS_UNSUPPORTED')
+  research_band=str(research_band or '').strip().upper()
+  if research_band not in ('','CORE_RESEARCH','SUPPORTED_RESEARCH','DIAGNOSTIC_ONLY'): raise ValueError('RESEARCH_BAND_UNSUPPORTED')
   try: window=int(window)
   except (TypeError,ValueError): raise ValueError('WINDOW_UNSUPPORTED')
   if window not in (20,30,60,100): raise ValueError('WINDOW_UNSUPPORTED')
@@ -367,13 +422,15 @@ class Api:
    with self._con() as check:
     if not check.execute("select count(*) from analysis_snapshot_entries where snapshot_id=? and domain='strength'",[selected['snapshot_id']]).fetchone()[0]: raise ValueError('RPS_NOT_BUILT')
    filters.append('st.rps20>=?');params.append(rps_value)
+  if research_band:filters.append("coalesce(ss.research_band,'DIAGNOSTIC_ONLY')=?");params.append(research_band)
   where=' and '.join(filters)
+  summary_joins=" left join analysis_snapshot_entries ue on ue.snapshot_id=he.snapshot_id and ue.domain='summary' and ue.trade_date=he.trade_date left join stock_structure_summary_daily ss on ss.slice_id=ue.slice_id and ss.trade_date=ue.trade_date and ss.security_id=h.security_id"
   with self._con() as c:
    available=c.execute("select count(*) from analysis_snapshot_entries where snapshot_id=? and domain='high'",[selected['snapshot_id']]).fetchone()[0]
    if not available: raise ValueError('ANALYSIS_NOT_BUILT')
-   total=c.execute('select count(*) from analysis_snapshot_entries he join stock_high_daily h on h.slice_id=he.slice_id and h.trade_date=he.trade_date left join analysis_snapshot_entries se on se.snapshot_id=he.snapshot_id and se.domain=\'strength\' and se.trade_date=he.trade_date left join stock_strength_daily st on st.slice_id=se.slice_id and st.trade_date=se.trade_date and st.security_id=h.security_id where '+where,params).fetchone()[0]
-   rows=c.execute('select h.security_id,h.trade_date,h."window",h.contract_id,h.price_basis,h.prior_max_close,h.new_high,h.at_prior_high,h.streak,h.is_left_censored,h.dist_prior_high,h.valid_n,h.quality_codes,h.basis_json,st.rps5,st.rps10,st.rps20,st.rps60,st.rps_valid_universe_count5,st.rps_valid_universe_count10,st.rps_valid_universe_count20,st.rps_valid_universe_count60,st.quality_codes,st.basis_json from analysis_snapshot_entries he join stock_high_daily h on h.slice_id=he.slice_id and h.trade_date=he.trade_date left join analysis_snapshot_entries se on se.snapshot_id=he.snapshot_id and se.domain=\'strength\' and se.trade_date=he.trade_date left join stock_strength_daily st on st.slice_id=se.slice_id and st.trade_date=se.trade_date and st.security_id=h.security_id where '+where+' order by h.streak desc nulls last,st.rps20 desc nulls last,h.security_id limit ? offset ?',params+[size,(page-1)*size]).fetchall()
-  names=('security_id','trade_date','window','contract_id','price_basis','prior_max_close','new_high','at_prior_high','streak','is_left_censored','dist_prior_high','valid_n','quality_codes','basis','rps5','rps10','rps20','rps60','rps_valid_universe_count5','rps_valid_universe_count10','rps_valid_universe_count20','rps_valid_universe_count60','strength_quality_codes','strength_basis')
+   total=c.execute('select count(*) from analysis_snapshot_entries he join stock_high_daily h on h.slice_id=he.slice_id and h.trade_date=he.trade_date left join analysis_snapshot_entries se on se.snapshot_id=he.snapshot_id and se.domain=\'strength\' and se.trade_date=he.trade_date left join stock_strength_daily st on st.slice_id=se.slice_id and st.trade_date=se.trade_date and st.security_id=h.security_id'+summary_joins+' where '+where,params).fetchone()[0]
+   rows=c.execute('select h.security_id,h.trade_date,h."window",h.contract_id,h.price_basis,h.prior_max_close,h.new_high,h.at_prior_high,h.streak,h.is_left_censored,h.dist_prior_high,h.valid_n,h.quality_codes,h.basis_json,st.rps5,st.rps10,st.rps20,st.rps60,st.rps_valid_universe_count5,st.rps_valid_universe_count10,st.rps_valid_universe_count20,st.rps_valid_universe_count60,st.quality_codes,st.basis_json,coalesce(ss.research_band,\'DIAGNOSTIC_ONLY\'),coalesce(ss.research_band_quality,\'DATA_INSUFFICIENT\') from analysis_snapshot_entries he join stock_high_daily h on h.slice_id=he.slice_id and h.trade_date=he.trade_date left join analysis_snapshot_entries se on se.snapshot_id=he.snapshot_id and se.domain=\'strength\' and se.trade_date=he.trade_date left join stock_strength_daily st on st.slice_id=se.slice_id and st.trade_date=se.trade_date and st.security_id=h.security_id'+summary_joins+' where '+where+' order by h.streak desc nulls last,st.rps20 desc nulls last,h.security_id limit ? offset ?',params+[size,(page-1)*size]).fetchall()
+  names=('security_id','trade_date','window','contract_id','price_basis','prior_max_close','new_high','at_prior_high','streak','is_left_censored','dist_prior_high','valid_n','quality_codes','basis','rps5','rps10','rps20','rps60','rps_valid_universe_count5','rps_valid_universe_count10','rps_valid_universe_count20','rps_valid_universe_count60','strength_quality_codes','strength_basis','research_band','research_band_quality')
   items=[]
   for row in rows:
    item=dict(zip(names,row));item['trade_date']=str(item['trade_date']);item['quality_codes']=json.loads(item['quality_codes']) if item['quality_codes'] else [];item['basis']=json.loads(item['basis']) if item['basis'] else {};item['strength_quality_codes']=json.loads(item['strength_quality_codes']) if item['strength_quality_codes'] else [];item['strength_basis']=json.loads(item['strength_basis']) if item['strength_basis'] else {};items.append(item)
@@ -638,7 +695,7 @@ def make_handler(root,db):
     if u.path=='/api/publications': out=api.publications(x.get('include_analysis')=='1')
     elif u.path=='/api/dashboard': out=api.dashboard(x['publication_id'])
     elif u.path=='/api/sectors': out=api.sectors(x['publication_id'],x.get('q',''),x.get('page',1),x.get('page_size',50),x.get('type',''))
-    elif u.path=='/api/sectors/cycle': out=api.sector_cycle(x['publication_id'],x.get('page',1),x.get('page_size',20),x.get('sector_type',x.get('type','')),x.get('q',''),x.get('days',10),x.get('metric','rank'))
+    elif u.path=='/api/sectors/cycle': out=api.sector_cycle(x['publication_id'],x.get('page',1),x.get('page_size',20),x.get('sector_type',x.get('type','')),x.get('q',''),x.get('days',10),x.get('metric','rank'),x.get('hierarchy_level',''))
     elif u.path.startswith('/api/sectors/') and u.path.endswith('/timeline'):
      sector_id=unquote(u.path[len('/api/sectors/'): -len('/timeline')].strip('/'));out=api.sector_timeline(x['publication_id'],sector_id,x.get('days',30))
     elif u.path.startswith('/api/sectors/') and u.path.endswith('/members/history'):
@@ -646,8 +703,8 @@ def make_handler(root,db):
     elif u.path.startswith('/api/sectors/') and u.path.endswith('/leader-history'):
      sector_id=unquote(u.path[len('/api/sectors/'): -len('/leader-history')].strip('/'));out=api.sector_leader_history(x['publication_id'],sector_id,x.get('days',30))
     elif u.path=='/api/stocks': out=api.stocks(x['publication_id'],x.get('q',''),x.get('page',1),x.get('page_size',50))
-    elif u.path=='/api/stocks/technical': out=api.technical(x['publication_id'],x.get('page',1),x.get('page_size',50),x.get('basis','AUTO'),x.get('ma_state',''),x.get('rps_window',''),x.get('rps_min',''),x.get('amount_class',''),x.get('turnover_min',''),x.get('quality_filter',''))
-    elif u.path=='/api/stocks/new-highs': out=api.new_highs(x['publication_id'],x.get('page',1),x.get('page_size',50),x.get('basis','AUTO'),x.get('window',20),x.get('streak_min',''),x.get('include_ties','0')=='1',x.get('rps_min',''))
+    elif u.path=='/api/stocks/technical': out=api.technical(x['publication_id'],x.get('page',1),x.get('page_size',50),x.get('basis','AUTO'),x.get('ma_state',''),x.get('rps_window',''),x.get('rps_min',''),x.get('amount_class',''),x.get('turnover_min',''),x.get('quality_filter',''),x.get('research_band',''))
+    elif u.path=='/api/stocks/new-highs': out=api.new_highs(x['publication_id'],x.get('page',1),x.get('page_size',50),x.get('basis','AUTO'),x.get('window',20),x.get('streak_min',''),x.get('include_ties','0')=='1',x.get('rps_min',''),x.get('research_band',''))
     elif u.path.startswith('/api/stocks/') and u.path.endswith('/technical-history'):
      security_id=unquote(u.path[len('/api/stocks/'): -len('/technical-history')].strip('/'));out=api.technical_history(x['publication_id'],security_id,x.get('days',20),x.get('price_basis','ADJUSTED'),x.get('fields',''))
     elif u.path.startswith('/api/stocks/') and u.path.endswith('/structure-history'):

@@ -78,6 +78,7 @@ def test_cycle_and_timeline_apis_read_only_bound_sector_cycle_snapshot(tmp_path)
     assert len(matrix["items"][0]["cells"]) == 2
     timeline = api.sector_timeline("pub-1", "INDUSTRY:A", days=2)
     assert [point["trade_date"] for point in timeline["points"]] == ["2026-09-07", "2026-09-08"]
+    assert timeline["points"][-1]["hierarchy_rank"] == 1.0
     members_history = api.sector_members_history("pub-1", "INDUSTRY:A", days=2)
     assert members_history["total"] == 0
     leader_history = api.sector_leader_history("pub-1", "INDUSTRY:A", days=2)

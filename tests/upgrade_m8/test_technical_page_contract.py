@@ -14,6 +14,7 @@ def test_technical_page_exposes_m8a04_filters_and_pagination():
         'id="technical-rps-min"',
         'id="technical-ma-state"',
         'id="technical-amount-class"',
+        'id="technical-research-band"',
         'id="technical-prev"',
         'id="technical-next"',
     ):
@@ -30,6 +31,7 @@ def test_technical_page_calls_api10_api11_api12_and_keeps_null_quality_visible()
     assert "api.newHighs(technicalParams())" in app
     assert "api.technical(technicalParams())" in app
     assert "api.technicalHistory" in app
+    assert "research_band: technicalState.researchBand" in app
     assert "RPS 尚未构建" in app
     assert "NULL 保持 NULL" in app
     assert "innerHTML" not in app

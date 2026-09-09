@@ -15,6 +15,7 @@ from workbench_service.quotes import QuoteService
 from workbench_service.catalog import API_CONTRACT, field_catalog
 from workbench_service.window_planner import MAX_OUTPUT_DAYS, load_dependencies, plan_window
 from workbench_service.history_jobs import HistoryJobError, HistoryJobService
+from workbench_service.analysis_activation import AnalysisActivationError, AnalysisActivationService
 
 MAX_PAGE_SIZE=100
 
@@ -293,7 +294,7 @@ class Api:
   return {'publication_id':p,'page':page,'page_size':size,'total':total,'sector_member_count':sector_member_count,'sector_member_rank_basis':'stock_rs20_pct_desc_then_ret20_desc_then_security_id','items':items}
 
 def make_handler(root,db):
- api=Api(db); history=HistoryJobService(root,db); history.recover_interrupted(background=True); operations=OperationsConfig(root,db); storage=StorageGovernance(root,db); backups=BackupService(root,db); maintenance=MaintenanceService(root,db); static=Path(root)/'src/workbench_service/static';csrf=secrets.token_urlsafe(24);publishers={};daily_jobs={}
+ api=Api(db); history=HistoryJobService(root,db); history.recover_interrupted(background=True); activation=AnalysisActivationService(root,db); operations=OperationsConfig(root,db); storage=StorageGovernance(root,db); backups=BackupService(root,db); maintenance=MaintenanceService(root,db); static=Path(root)/'src/workbench_service/static';csrf=secrets.token_urlsafe(24);publishers={};daily_jobs={}
  def today_status(job_id):
   task=daily_jobs.get(job_id)
   if not task: return None
@@ -426,6 +427,9 @@ def make_handler(root,db):
      threading.Thread(target=lambda:(time.sleep(.4),self.server.shutdown()),daemon=True).start();return
     if self.path=='/api/history/jobs':
      return self._send(202,history.submit(body))
+    if self.path.startswith('/api/history/jobs/') and self.path.endswith('/activate'):
+     job_id=unquote(self.path.split('/api/history/jobs/',1)[1][:-len('/activate')]).strip('/')
+     return self._send(202,activation.activate(job_id,expected_head_id=str(body.get('expected_head_id') or ''),idempotency_key=str(body.get('idempotency_key') or '')))
     if self.path.startswith('/api/history/jobs/') and self.path.endswith('/cancel'):
      job_id=unquote(self.path.split('/api/history/jobs/',1)[1][:-len('/cancel')]).strip('/')
      return self._send(202,history.cancel(job_id,body.get('expected_attempt')))
@@ -434,8 +438,11 @@ def make_handler(root,db):
     thread=threading.Thread(target=run_today,args=(job_id,body),daemon=True,name=job_id);thread.start()
     self._send(202,{'job_id':job_id,'status':'QUEUED','message':'已提交当日输入更新与发布任务'})
    except HistoryJobError as e:
-    code=str(e);status=404 if code=='JOB_NOT_FOUND' else 409 if code in ('ATTEMPT_MISMATCH','JOB_NOT_CANCELLABLE','JOB_NOT_INTERRUPTED') else 400
-    self._send(status,{'code':code,'message':'历史分析任务请求未通过','retryable':status in (409,500)})
+     code=str(e);status=404 if code=='JOB_NOT_FOUND' else 409 if code in ('ATTEMPT_MISMATCH','JOB_NOT_CANCELLABLE','JOB_NOT_INTERRUPTED') else 400
+     self._send(status,{'code':code,'message':'历史分析任务请求未通过','retryable':status in (409,500)})
+   except AnalysisActivationError as e:
+    code=str(e);status=404 if code=='JOB_NOT_FOUND' else 409 if code in ('EXPECTED_HEAD_MISMATCH','ACTIVATION_IDENTITY_CONFLICT','PUBLICATION_IDENTITY_CONFLICT','SNAPSHOT_IDENTITY_CONFLICT','PUBLICATION_SNAPSHOT_BINDING_CONFLICT') else 400
+    self._send(status,{'code':code,'message':'历史分析快照激活未通过','retryable':status in (409,500)})
    except ConfigConflict as e:self._send(409,{'code':str(e),'message':'配置已被其他操作更新，请先重新读取','retryable':True})
    except ConfigValidationError as e:self._send(400,{'code':str(e),'message':'配置校验未通过，未应用任何变更','retryable':False})
    except (ValueError,KeyError) as e:self._send(400,{'code':str(e).strip("'"),'message':'无法提交生成任务','retryable':False})

@@ -254,6 +254,7 @@ class HistoryJobService:
             "progress": payload.get("progress", attempt_payload.get("progress", {})),
             "error": payload.get("error", attempt_payload.get("error")),
             "latest_event": latest_event,
+            "activation": payload.get("activation"),
             "updated_at_utc": payload.get("progress", {}).get("updated_at_utc"),
         }
 

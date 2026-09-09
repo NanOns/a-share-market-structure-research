@@ -8,6 +8,8 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
+from .immutable import immutable_slice_state
+
 
 CONTRACT_VERSION = "SECTOR_MEMBER_STATE_V1_0"
 HISTORY_BASIS = "RECONSTRUCTED"
@@ -194,3 +196,33 @@ def rows_for_storage(frame: pd.DataFrame, slice_id: str) -> list[tuple[Any, ...]
 
 def change_rows_for_storage(frame: pd.DataFrame, slice_id: str) -> list[tuple[Any, ...]]:
     return [(slice_id, row.sector_id, row.security_id, row.trade_date, row.change_type, row.basis_version, row.reason) for row in frame.itertuples()]
+
+
+def insert_member_state_rows(connection: Any, slice_id: str, frame: pd.DataFrame) -> int:
+    """Insert an immutable member-state slice, rejecting identity conflicts."""
+    rows = rows_for_storage(frame, slice_id)
+    existing = connection.execute(
+        "select * from sector_member_state_daily where slice_id=?", [slice_id]
+    ).fetchall()
+    if immutable_slice_state(existing, rows, key_indexes=(1, 2, 3), conflict_code="MEMBER_STATE_SLICE_IDENTITY_CONFLICT"):
+        return len(rows)
+    connection.executemany(
+        "insert into sector_member_state_daily values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+        rows,
+    )
+    return len(rows)
+
+
+def insert_membership_change_rows(connection: Any, slice_id: str, frame: pd.DataFrame) -> int:
+    """Insert an immutable membership-change slice, rejecting identity conflicts."""
+    rows = change_rows_for_storage(frame, slice_id)
+    existing = connection.execute(
+        "select * from sector_membership_changes where slice_id=?", [slice_id]
+    ).fetchall()
+    if immutable_slice_state(existing, rows, key_indexes=(1, 2, 3, 4), conflict_code="MEMBERSHIP_CHANGE_SLICE_IDENTITY_CONFLICT"):
+        return len(rows)
+    connection.executemany(
+        "insert into sector_membership_changes values (?,?,?,?,?,?,?)",
+        rows,
+    )
+    return len(rows)

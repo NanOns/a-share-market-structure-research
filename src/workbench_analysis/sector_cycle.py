@@ -172,7 +172,12 @@ def build_sector_cycle_daily(
 
 def rows_for_storage(frame: pd.DataFrame, slice_id: str) -> list[tuple[Any, ...]]:
     columns = ("sector_id", "trade_date", "sector_name", "sector_type", "history_basis", "contract_id", "board_quote_ret1", "board_quote_source", "member_ret1_median", "member_ret5_median", "member_ret20_median", "member_amount_sum", "amount_valid_count", "total_member_count", "quote_valid_count", "factor_valid_count", "coverage", "breadth_ret1", "breadth_ma20", "sector_rs5", "sector_rs20", "sector_rs5_pct", "sector_rs20_pct", "amount_vs_prior20", "rank", "rank_change", "window_stats")
-    return [tuple([slice_id] + [row.get(column) for column in columns]) for _, row in frame.iterrows()]
+    def storage(value: Any) -> Any:
+        try:
+            return None if pd.isna(value) else value.item() if hasattr(value, "item") else value
+        except (TypeError, ValueError):
+            return value
+    return [tuple([slice_id] + [storage(row.get(column)) for column in columns]) for _, row in frame.iterrows()]
 
 
 def insert_sector_cycle_rows(connection: Any, slice_id: str, frame: pd.DataFrame) -> int:

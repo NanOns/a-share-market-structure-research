@@ -3,7 +3,7 @@ import json, mimetypes, os, secrets, subprocess, sys, threading, time, uuid
 from datetime import date
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from urllib.parse import parse_qs, urlparse
+from urllib.parse import parse_qs, unquote, urlparse
 import duckdb
 from workbench_publish.orchestrator import submit_one_click, ControlledProduction
 from workbench_publish import OneClickPublisher
@@ -309,6 +309,16 @@ def make_handler(root,db):
     elif u.path=='/api/jobs':
      publisher=publishers.get(x['job_id'])
      out=(publisher if isinstance(publisher,OneClickPublisher) else OneClickPublisher(root,db)).status(x['job_id'])
+    elif u.path in ('/v2','/v2/','/v2/index.html'):
+     return self._send(200,(static/'v2/index.html').read_bytes(),'text/html; charset=utf-8')
+    elif u.path.startswith('/v2/'):
+     relative=unquote(u.path[len('/v2/'):])
+     candidate=(static/'v2'/relative).resolve()
+     v2_root=(static/'v2').resolve()
+     if v2_root not in candidate.parents or not candidate.is_file():
+      return self._send(404,{'code':'NOT_FOUND','message':'v2资源不存在','retryable':False,'next_action':'检查地址'})
+     content_type=mimetypes.guess_type(candidate.name)[0] or 'application/octet-stream'
+     return self._send(200,candidate.read_bytes(),content_type+'; charset=utf-8' if content_type.startswith(('text/','application/javascript')) else content_type)
     elif u.path=='/view': return self._send(200,legacy_workbench(x['publication_id']),'text/html; charset=utf-8')
     elif u.path=='/operations': return self._send(200,(static/'operations.html').read_text('utf-8').replace('__CSRF_TOKEN__',csrf).replace('</body>','<script src="/operations-i18n.js"></script></body>').encode(),'text/html; charset=utf-8')
     elif u.path=='/operations-i18n.js': return self._send(200,(static/'operations-i18n.js').read_bytes(),'application/javascript; charset=utf-8')

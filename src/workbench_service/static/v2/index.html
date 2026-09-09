@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>统一研究工作台 · v2 预览</title>
+  <link rel="stylesheet" href="/v2/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark">M7</span><div><strong>统一研究工作台</strong><small>Workbench v2 Preview</small></div></div>
+    <label class="publication-picker">发布版本
+      <select id="publication-select" aria-label="选择发布版本"></select>
+    </label>
+    <div class="context" id="page-context">正在读取版本上下文…</div>
+    <a class="ops-link" href="/operations">运维中心</a>
+  </header>
+  <nav class="nav" aria-label="工作台页面">
+    <button class="nav-item active" data-page="overview" type="button">总览</button>
+    <button class="nav-item" data-page="sectors" type="button">板块</button>
+    <button class="nav-item" data-page="stocks" type="button">个股</button>
+    <button class="nav-item" data-page="candidates" type="button">候选</button>
+    <button class="nav-item" data-page="queues" type="button">队列</button>
+    <button class="nav-item" data-page="linkage" type="button">联动</button>
+  </nav>
+  <main class="content">
+    <section class="page-heading">
+      <div><p class="eyebrow">M7A · 7A-05</p><h1 id="page-title">研究总览</h1><p id="page-description">公共 UI 层预览：版本、输入身份与统一股票范围。</p></div>
+      <span class="preview-badge">预览路由 /v2</span>
+    </section>
+    <div id="notice" class="notice" role="status" aria-live="polite">正在加载…</div>
+    <section class="cards" aria-label="版本摘要">
+      <article class="card"><div class="card-label">发布版本</div><div id="publication-value" class="card-value">—</div><div id="publication-detail" class="card-detail">—</div></article>
+      <article class="card"><div class="card-label">输入身份</div><div id="identity-value" class="card-value">—</div><div id="identity-detail" class="card-detail">—</div><button id="identity-evidence" class="evidence-button" type="button">查看证据</button></article>
+      <article class="card"><div class="card-label">统一股票范围</div><div id="universe-value" class="card-value">—</div><div id="universe-detail" class="card-detail">—</div><button id="universe-evidence" class="evidence-button" type="button">查看边界</button></article>
+    </section>
+    <section class="panel">
+      <div class="panel-heading"><div><h2>版本上下文</h2><p>只请求当前发布版本的摘要接口，明细页面将在后续步骤接入。</p></div></div>
+      <div id="context-table" class="table-wrap"></div>
+    </section>
+  </main>
+  <div id="modal" class="modal" hidden aria-hidden="true"></div>
+  <script src="/v2/api.js"></script>
+  <script src="/v2/format.js"></script>
+  <script src="/v2/table.js"></script>
+  <script src="/v2/modal.js"></script>
+  <script src="/v2/app.js"></script>
+</body>
+</html>

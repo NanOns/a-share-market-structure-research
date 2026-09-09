@@ -5,13 +5,13 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 import duckdb
-import pyarrow.parquet as pq
 from workbench_publish.orchestrator import submit_one_click, ControlledProduction
 from workbench_publish import OneClickPublisher
 from workbench_ops import OperationsConfig, ConfigConflict, ConfigValidationError
 from workbench_ops import StorageGovernance, BackupService, MaintenanceService
 from workbench_service.strength_association import choose_association
-from workbench_service.universe import A_SHARE_SQL, is_a_share_security_id, summarize_universe
+from workbench_service.universe import A_SHARE_SQL, summarize_universe
+from workbench_service.quotes import QuoteService
 
 MAX_PAGE_SIZE=100
 
@@ -31,7 +31,7 @@ def resolve_workbench_path(root,trade_date,publication_id):
  return matches[0]
 
 class Api:
- def __init__(self,db): self.db=str(Path(db).resolve());self._quote_cache={};self._quote_lock=threading.Lock();self._association_cache={};self._association_lock=threading.Lock()
+ def __init__(self,db): self.db=str(Path(db).resolve());self._quote_cache={};self._quote_lock=threading.Lock();self._quote_service=QuoteService(Path(self.db).parents[1]/'normalized/adjusted_daily.parquet');self._association_cache={};self._association_lock=threading.Lock()
  def _con(self):
   # DuckDB refuses a read_only connection while the publisher owns a normal
   # writer connection.  A normal read connection participates in DuckDB MVCC:
@@ -63,19 +63,9 @@ class Api:
    if p not in self._quote_cache:self._quote_cache[p]=self._load_quotes(p)
   return self._quote_cache[p]
  def _load_quotes(self,p):
-  trade_date,_=self._pub(p); current=date.fromisoformat(trade_date);parquet=Path(self.db).parents[1]/'normalized/adjusted_daily.parquet'
-  if not parquet.is_file(): return {}
-  with self._con() as c:
-   previous=c.execute("select max(h.trade_date) from publication_heads h join publications p using(publication_id) where p.status='SUCCESS' and h.trade_date<?",[current]).fetchone()[0]
-  selected=[current]+([previous] if previous else [])
-  rows=pq.read_table(parquet,columns=['security_id','date','adj_close','raw_amount'],filters=[('date','in',selected)]).to_pylist()
-  by_day={(row['security_id'],row['date']):row for row in rows if is_a_share_security_id(row['security_id'])}
-  result={}
-  for (sid,day),row in by_day.items():
-   if day!=current:continue
-   close=row.get('adj_close');prior=by_day.get((sid,previous),{}).get('adj_close') if previous else None
-   result[sid]={'latest_price':float(close) if close is not None else None,'turnover_amount':float(row['raw_amount']) if row.get('raw_amount') is not None else None,'RET1':float(close/prior-1) if close and prior and prior>0 else None}
-  return result
+  trade_date,_=self._pub(p); current=date.fromisoformat(trade_date)
+  identity=self.identity(p)
+  return self._quote_service.load(trade_date=current,publication_id=p,source_identity_sha256=identity.get('source_identity_sha256'))
  def _add_quotes(self,p,result):
   quotes=self._quotes(p)
   for item in result['items']: item.update(quotes.get(item.get('security_id'),{}))

@@ -43,10 +43,10 @@
     <section id="technical-page" class="technical-page" hidden>
       <section class="panel filters-panel">
         <div class="filter-row">
-          <label>视图<select id="technical-mode"><option value="highs">创新高-RPS</option><option value="technical">技术状态</option></select></label>
+          <label>视图<select id="technical-mode"><option value="highs">创新高 · RPS</option><option value="technical">技术状态</option></select></label>
           <label>新高窗口<select id="technical-window"><option value="20">20日</option><option value="30">30日</option><option value="60">60日</option><option value="100">100日</option></select></label>
-          <label>RPS20 ≥ <select id="technical-rps-min"><option value="">不限</option><option value="0.8">0.80</option><option value="0.9">0.90</option><option value="0.95">0.95</option></select></label>
-          <label>连续新高 ≥ <input id="technical-streak-min" type="number" min="0" step="1" placeholder="不限"></label>
+          <label>RPS20 百分位 ≥ <select id="technical-rps-min"><option value="">不限</option><option value="0.8">0.80</option><option value="0.9">0.90</option><option value="0.95">0.95</option></select></label>
+          <label>连续新高天数 ≥ <input id="technical-streak-min" type="number" min="0" step="1" placeholder="不限"></label>
           <label>均线状态<select id="technical-ma-state"><option value="">不限</option><option value="BULLISH">多头</option><option value="BEARISH">空头</option><option value="MIXED">混合</option></select></label>
           <label>量额状态<select id="technical-amount-class"><option value="">不限</option><option value="NORMAL">正常</option><option value="INCREASED">放量</option><option value="NOTABLE">显著放量</option><option value="SIGNIFICANT">大幅放量</option></select></label>
           <button id="technical-refresh" class="evidence-button filter-button" type="button">刷新</button>
@@ -54,6 +54,7 @@
         <div id="technical-basis" class="basis-note">当前发布版本绑定的分析快照与价格口径将在这里显示。</div>
       </section>
       <section class="panel">
+        <div class="field-guide"><h2>字段说明与使用方法</h2><p>用于筛选和比较，不代表概率或买卖建议。数值只来自当前发布版本绑定的本地分析快照。</p><div class="guide-grid"><div><b>RET20</b><span>当前调整后收盘价相对 20 个交易日前的涨跌幅；用于看中期趋势。</span></div><div><b>MA5 / MA20 / MA60</b><span>5、20、60 日调整后收盘价均线；用来观察短中长期方向，金额统一保留两位小数。</span></div><div><b>RPS20</b><span>同一交易日合格股票中的相对强度百分位，0.80 表示位于前 20%；不是收益预测。</span></div><div><b>有效样本</b><span>参与 RPS20 计算的合格股票数量；样本越少，横向比较越不稳定。</span></div><div><b>额比20</b><span>当日成交额 ÷ 含当日的 20 日平均成交额；大于 1 表示高于近期平均。</span></div><div><b>量比前20</b><span>当日成交量 ÷ 前 20 日（不含当日）平均成交量；用于识别量能变化。</span></div><div><b>量额状态</b><span>根据额比20分为正常、放量、显著放量和大幅放量。</span></div><div><b>质量 / 研究级别</b><span>质量说明数据是否完整；研究级别说明观察优先级，缺失显示“暂无”，不会用“-”掩盖。</span></div></div></div>
         <div class="panel-heading"><div><h2 id="technical-heading">创新高-RPS</h2><p id="technical-description">严格使用前序窗口；并列前高、左删失和缺失值不被伪装成有效信号。</p></div></div>
         <div id="technical-table" class="table-wrap"></div>
         <div class="pager"><button id="technical-prev" type="button">上一页</button><span id="technical-page-label">第 1 页</span><button id="technical-next" type="button">下一页</button></div>
@@ -62,13 +63,14 @@
     <section id="sectors-page" class="sectors-page" hidden>
       <section class="panel filters-panel">
         <div class="filter-row">
-          <label>板块类型<select id="sector-type"><option value="">全部</option><option value="industry">行业</option><option value="theme">题材</option><option value="normal_style">正常风格</option></select></label>
+          <label>板块类型<select id="sector-type"><option value="">全部</option><option value="INDUSTRY">行业</option><option value="THEME">题材</option><option value="NORMAL_STYLE">正常风格</option><option value="STYLE">风格</option></select></label>
           <label>交易日列数<select id="sector-days"><option value="5">5日</option><option value="10" selected>10日</option><option value="20">20日</option><option value="30">30日</option></select></label>
           <button id="sector-refresh" class="evidence-button filter-button" type="button">刷新周期</button>
         </div>
         <div id="sector-basis" class="basis-note">周期矩阵读取当前发布绑定的历史板块快照。</div>
       </section>
       <section class="panel">
+        <div class="field-guide"><h2>板块周期说明与使用方法</h2><p>当前显示的是本地重建历史，覆盖已有快照日期；板块排名用于比较强弱，不代表预测。</p><div class="guide-grid"><div><b>最新名次</b><span>同一板块类型内按板块 RS20 从强到弱排序，数字越小越靠前。</span></div><div><b>RPS20 百分位</b><span>板块相对于同类板块的强度百分位，越接近 1 越强。</span></div><div><b>周期单元格</b><span>按交易日展示名次变化，用于观察强弱是否持续或转弱。</span></div><div><b>时间线</b><span>点击后在弹窗查看板块指标、成员强弱变化和代表状态。</span></div><div><b>覆盖率</b><span>有有效 20 日因子数据的成员占全部成员的比例，低覆盖率时应谨慎比较。</span></div><div><b>历史基础</b><span>“重建”表示使用当前本地可追溯快照回算，不宣称历史 PIT 成员身份。</span></div></div></div>
         <div class="panel-heading"><div><h2>板块周期矩阵</h2><p>单元格显示板块名次与强度百分位；板块自身行情和成员统计保持分列。</p></div></div>
         <div id="sector-cycle-table" class="table-wrap"></div>
       </section>

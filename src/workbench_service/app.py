@@ -73,7 +73,7 @@ class Api:
    item=dict(zip(names,raw));item['trade_date']=str(item['trade_date']);item['window_stats']=json.loads(item['window_stats']) if item['window_stats'] else {};date_values.append(item['trade_date']);key=(item['sector_id'],item['sector_type']);grouped.setdefault(key,{'sector_id':item['sector_id'],'sector_name':item['sector_name'],'sector_type':item['sector_type'],'_rows':[]})['_rows'].append(item)
   dates=sorted(set(date_values));items=[]
   for item in grouped.values():
-   cells={row['trade_date']:row for row in item.pop('_rows')};item['cells']=[{'trade_date':day,'rank':cells[day]['rank'] if day in cells else None,'sector_rs20_pct':cells[day]['sector_rs20_pct'] if day in cells else None,'board_quote_ret1':cells[day]['board_quote_ret1'] if day in cells else None,'member_ret1_median':cells[day]['member_ret1_median'] if day in cells else None,'breadth_ret1':cells[day]['breadth_ret1'] if day in cells else None,'diffusion_state':None} for day in dates];items.append(item)
+   cells={row['trade_date']:row for row in item.pop('_rows')};item['cells']=[{'trade_date':day,'rank':cells[day]['rank'] if day in cells else None,'sector_rs20_pct':cells[day]['sector_rs20_pct'] if day in cells else None,'board_quote_ret1':cells[day]['board_quote_ret1'] if day in cells else None,'member_ret1_median':cells[day]['member_ret1_median'] if day in cells else None,'breadth_ret1':cells[day]['breadth_ret1'] if day in cells else None,'coverage':cells[day]['coverage'] if day in cells else None,'diffusion_state':None} for day in dates];items.append(item)
   latest_index=len(dates)-1
   items.sort(key=lambda value: ((value['cells'][latest_index]['rank'] if latest_index >= 0 and value['cells'][latest_index]['rank'] is not None else 10**9),value['sector_id']))
   total=len(items);start=(page-1)*size
@@ -328,6 +328,11 @@ class Api:
   if cached is not None: return cached
   self._quotes(p)
   source_info=self._source_cache.get(p)
+  if not source_info:
+   with self._con() as check:
+    reconstructed=check.execute("select 1 from publication_analysis_snapshots where publication_id=? and domain='LOCAL_RECONSTRUCTED'",[p]).fetchone()
+   fallback=self._root/'data/normalized/adjusted_daily.parquet'
+   if reconstructed and fallback.is_file(): source_info=(fallback,{'preview':True});self._source_cache[p]=source_info
   if not source_info: raise ValueError('SOURCE_NOT_FROZEN')
   source_path,_=source_info;cutoff=date.fromisoformat(selected['cutoff_date'])
   with duckdb.connect() as source:

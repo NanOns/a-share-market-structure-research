@@ -1,0 +1,16 @@
+automatic_input:
+  contract_version: "m3-automatic-input-v1.0"
+  official_package_url: "https://data.tdx.com.cn/vipdoc/hsjday.zip"
+  managed_staging_root: "data/input_staging"
+  source_bundle_root: "data/source_bundles"
+  download:
+    max_bytes: 4294967296
+    connect_timeout_seconds: 15
+    read_timeout_seconds: 120
+  extraction:
+    max_entries: 20000
+    max_expanded_bytes: 17179869184
+    max_compression_ratio: 200
+  metadata:
+    stable_window_seconds: 3
+    freshness_when_no_reliable_signal: "UNKNOWN"

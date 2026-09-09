@@ -26,6 +26,11 @@ def _copy_seal_fixture(tmp_path: Path) -> Path:
         target = root / relative
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(ROOT / relative, target)
+    pointer_path = root / "reports/current/CURRENT_RELEASE.json"
+    pointer = json.loads(pointer_path.read_text(encoding="utf8"))
+    historical = json.loads((ROOT / "reports/releases/20260904/695c7ae5affd4abbb3d86eddb4b154e0/PRODUCTION_RECEIPT.json").read_text(encoding="utf8"))
+    pointer["latest_release"] = {**pointer["latest_release"], **historical}
+    pointer_path.write_text(json.dumps(pointer, ensure_ascii=False, indent=2), encoding="utf8")
     for relative in run_r3_integrated_seal.FILES:
         target = root / relative
         target.parent.mkdir(parents=True, exist_ok=True)

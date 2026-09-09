@@ -1,0 +1,12 @@
+workbench:
+  config_version: "workbench-config-v1.0"
+  database:
+    engine: "duckdb"
+    path: "data/database/market_research.duckdb"
+    schema_version: "workbench-schema-v1.0"
+    single_owner_required: true
+  migration:
+    logical_digest_contract: "m1-logical-digest-v1.1"
+    historical_head_dates:
+      - "20260904"
+      - "20260907"

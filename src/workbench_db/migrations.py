@@ -43,6 +43,7 @@ class MigrationExecutor:
         "010_historical_structure": ("009_sector_base_history",),
         "008_m8_contract_completion": ("010_historical_structure",),
         "011_m9_sector_cycle": ("008_m8_contract_completion",),
+        "012_m9_member_state": ("011_m9_sector_cycle",),
     }
     CHECK_TABLE_SQL = """
         CREATE TABLE IF NOT EXISTS schema_migration_checks (

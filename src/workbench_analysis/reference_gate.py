@@ -29,6 +29,8 @@ def _date(value: Any):
 def _bool(value: Any) -> bool:
     if value is None:
         return False
+    if isinstance(value, str):
+        return value.strip().upper() in {"TRUE", "1", "YES"}
     try:
         return bool(value) if not pd.isna(value) else False
     except (TypeError, ValueError):

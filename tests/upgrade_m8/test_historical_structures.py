@@ -68,3 +68,10 @@ def test_future_and_duplicate_structure_inputs_are_rejected():
     duplicate = pd.concat([_frame(), _frame().iloc[[0]]], ignore_index=True)
     with pytest.raises(StructureAdapterError, match="STRUCTURE_DUPLICATE_SECURITY_DATE"):
         build_historical_structure_rows(duplicate, cutoff="2026-09-08")
+
+
+def test_unrecognized_string_flags_remain_unknown():
+    frame = pd.DataFrame([{"security_id": "SH.600009", "trade_date": "2026-09-08", "v1_steady_trend": "unknown"}])
+    rows = build_historical_structure_rows(frame, cutoff="2026-09-08")
+    steady = rows[rows.queue_name == "STEADY_QUEUE"].iloc[0]
+    assert steady.source_class == "DATA_INSUFFICIENT" and pd.isna(steady.hit)

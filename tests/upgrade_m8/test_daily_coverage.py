@@ -59,3 +59,11 @@ def test_coverage_rejects_future_duplicate_and_non_reconstructed_inputs():
         build_historical_coverage(technical.assign(trade_date="2026-09-09"), memberships, structures, cutoff="2026-09-08")
     with pytest.raises(CoverageAdapterError, match="DUPLICATE"):
         build_historical_coverage(pd.concat([technical, technical.iloc[[0]]]), memberships, structures, cutoff="2026-09-08")
+
+
+def test_coverage_never_falls_back_to_a_different_price_basis():
+    technical, memberships, structures = _inputs()
+    with pytest.raises(CoverageAdapterError, match="PRICE_BASIS_COLUMN_MISSING:RAW:raw_close"):
+        build_historical_coverage(technical.drop(columns=["raw_close"]), memberships, structures, cutoff="2026-09-08", price_basis="RAW")
+    with pytest.raises(CoverageAdapterError, match="PRICE_BASIS_COLUMN_MISSING:TDX_NATIVE_QFQ:adj_close"):
+        build_historical_coverage(technical.drop(columns=["adj_close"]), memberships, structures, cutoff="2026-09-08", price_basis="TDX_NATIVE_QFQ")

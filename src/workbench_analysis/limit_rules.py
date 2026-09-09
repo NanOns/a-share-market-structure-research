@@ -39,6 +39,22 @@ def _day(value: Any, field: str = "date") -> date:
         raise LimitRuleError(f"{field}_INVALID") from exc
 
 
+def _flag(value: Any, field: str) -> bool:
+    if value is None:
+        return False
+    if isinstance(value, str):
+        normalized = value.strip().upper()
+        if normalized in {"TRUE", "1", "YES"}:
+            return True
+        if normalized in {"FALSE", "0", "NO", ""}:
+            return False
+        raise LimitRuleError(f"{field}_INVALID")
+    try:
+        return bool(value) if not pd.isna(value) else False
+    except (TypeError, ValueError) as exc:
+        raise LimitRuleError(f"{field}_INVALID") from exc
+
+
 @dataclass(frozen=True)
 class LimitRuleVersion:
     rule_id: str
@@ -129,7 +145,12 @@ class LimitStateService:
     def evaluate(self, row: Mapping[str, Any]) -> dict[str, Any]:
         trade_date = _day(row.get("trade_date"), "trade_date")
         base = {"contract_id": CONTRACT_VERSION, "trade_date": trade_date, "security_id": row.get("security_id"), "reference_basis": "UNKNOWN", "rule_id": None, "limit_up_price": None, "limit_down_price": None, "limit_state": "UNKNOWN", "streak_known": False, "reason": None}
-        if bool(row.get("suspended")):
+        try:
+            suspended = _flag(row.get("suspended"), "SUSPENDED")
+        except LimitRuleError as exc:
+            base["reason"] = str(exc)
+            return base
+        if suspended:
             base.update(reference_basis="SUSPENDED", limit_state="SUSPENDED", streak_known=True, reason="SUSPENDED")
             return base
         if str(row.get("reference_status") or "KNOWN").upper() != "KNOWN":
@@ -147,7 +168,12 @@ class LimitStateService:
         if rule.special_period_policy.get("limit_state") in {"NO_LIMIT", "UNKNOWN"} or rule.limit_ratio is None:
             base.update(reference_basis="RULE_VERSIONED", reason="NO_APPLICABLE_LIMIT_RULE")
             return base
-        if bool(row.get("ex_rights_reference_unknown")):
+        try:
+            ex_rights_unknown = _flag(row.get("ex_rights_reference_unknown"), "EX_RIGHTS_REFERENCE_UNKNOWN")
+        except LimitRuleError as exc:
+            base["reason"] = str(exc)
+            return base
+        if ex_rights_unknown:
             base.update(reference_basis="RULE_VERSIONED", reason="EX_RIGHTS_REFERENCE_UNKNOWN")
             return base
         try:

@@ -8,6 +8,8 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
+from .immutable import immutable_slice_state
+
 
 CONTRACT_VERSION = "TECHNICAL_HISTORY_V2_1_PREVIEW"
 PRICE_BASIS = "TDX_NATIVE_QFQ"
@@ -90,12 +92,8 @@ def high_rows_for_storage(frame: pd.DataFrame, slice_id: str) -> list[tuple[Any,
 
 def insert_high_rows(connection: Any, slice_id: str, frame: pd.DataFrame) -> int:
     rows = high_rows_for_storage(frame, slice_id)
-    existing = connection.execute('select security_id,trade_date,"window" from stock_high_daily where slice_id=?', [slice_id]).fetchall()
-    expected = {(str(row[1]), str(row[2]), int(row[3])) for row in rows}
-    actual = {(str(row[0]), str(row[1]), int(row[2])) for row in existing}
-    if actual and actual != expected:
-        raise ValueError("HIGH_SLICE_IDENTITY_CONFLICT")
-    if actual:
+    existing = connection.execute('select * from stock_high_daily where slice_id=?', [slice_id]).fetchall()
+    if immutable_slice_state(existing, rows, key_indexes=(1, 2, 3), conflict_code="HIGH_SLICE_IDENTITY_CONFLICT"):
         return len(rows)
     connection.executemany("insert into stock_high_daily values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", rows)
     return len(rows)

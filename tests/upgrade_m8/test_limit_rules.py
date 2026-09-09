@@ -43,6 +43,14 @@ def test_missing_rule_reference_and_ex_rights_are_unknown():
     assert ex_rights["limit_state"] == "UNKNOWN" and ex_rights["reason"] == "EX_RIGHTS_REFERENCE_UNKNOWN"
 
 
+def test_string_boolean_flags_are_parsed_explicitly():
+    service = LimitStateService(_rules())
+    not_suspended = service.evaluate({"trade_date": "2026-09-08", "exchange": "SH", "board": "MAIN", "risk_status": "NORMAL", "quote_prev_close": "10", "close": "10", "suspended": "false"})
+    invalid = service.evaluate({"trade_date": "2026-09-08", "exchange": "SH", "board": "MAIN", "risk_status": "NORMAL", "quote_prev_close": "10", "close": "10", "suspended": "maybe"})
+    assert not_suspended["limit_state"] == "NOT_LIMIT"
+    assert invalid["limit_state"] == "UNKNOWN" and invalid["reason"] == "SUSPENDED_INVALID"
+
+
 def test_rule_ranges_must_not_overlap_and_rounding_is_decimal():
     overlap = _rules()[:1] + [{**_rules()[0], "rule_id": "A-10-OVERLAP", "valid_from": "2026-09-15"}]
     with pytest.raises(LimitRuleError, match="OVERLAP"):

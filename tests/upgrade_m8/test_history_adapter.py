@@ -85,3 +85,13 @@ def test_sector_base_requires_aligned_trade_dates():
     technical["trade_date"] = pd.to_datetime(technical.date).dt.date
     with pytest.raises(HistoryAdapterError, match="MEMBERSHIP_DATE_MISSING"):
         guard_history_inputs(technical, memberships.iloc[:0], "2026-09-08")
+
+
+def test_conflicting_duplicate_membership_is_rejected_instead_of_last_wins():
+    technical = pd.DataFrame([{"security_id": "SH.600001", "date": "2026-09-08", "ret20": 0.1}])
+    memberships = pd.DataFrame([
+        {"security_id": "SH.600001", "trade_date": "2026-09-08", "sector_id": "INDUSTRY:A", "sector_name": "A"},
+        {"security_id": "SH.600001", "trade_date": "2026-09-08", "sector_id": "INDUSTRY:A", "sector_name": "B"},
+    ])
+    with pytest.raises(HistoryAdapterError, match="MEMBERSHIP_DUPLICATE_CONFLICT"):
+        guard_history_inputs(technical, memberships, "2026-09-08")

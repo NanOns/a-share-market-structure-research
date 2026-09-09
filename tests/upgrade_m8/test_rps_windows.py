@@ -7,6 +7,7 @@ from datetime import datetime, timezone
 
 from workbench_analysis.highs import calculate_high_daily, insert_high_rows
 from workbench_analysis.strength import average_rank_percentile, calculate_strength_daily, insert_strength_rows
+from workbench_analysis.technical import insert_technical_rows
 from workbench_db.migrations import BASE_SCHEMA_VERSION, MigrationExecutor
 from workbench_service.app import Api
 
@@ -102,14 +103,24 @@ def test_api11_reads_only_snapshot_bound_high_slices(tmp_path):
         prices = pd.DataFrame({"security_id": "SH.600000", "date": dates, "adj_close": [10.0] * 21})
         insert_high_rows(connection, "slice-1", calculate_high_daily(prices))
         connection.execute("insert into analysis_snapshot_entries values (?,?,?,?)", ["snapshot-1", "high", dates[-1].date(), "slice-1"])
+        technical_slice = pd.DataFrame({"security_id": ["SH.600000"], "date": [dates[-1]], "raw_close": [10.0], "adj_close": [10.0], "raw_amount": [100.0], "raw_volume": [1000.0], "universe_status": ["IN_NORMAL_UNIVERSE"]})
+        connection.execute("insert into analysis_slices values (?,?,?,?,?,?,?,?,?,?,?,?)", ["slice-tech", "technical", "2026-01-29", "c", "i", "d", "{}", 1, "l", "DUCKDB", None, now])
+        insert_technical_rows(connection, "slice-tech", calculate_strength_daily(technical_slice))
+        insert_strength_rows(connection, "slice-tech", calculate_strength_daily(technical_slice))
+        connection.execute("insert into analysis_snapshot_entries values (?,?,?,?)", ["snapshot-1", "technical", dates[-1].date(), "slice-tech"])
+        connection.execute("insert into analysis_snapshot_entries values (?,?,?,?)", ["snapshot-1", "strength", dates[-1].date(), "slice-tech"])
         connection.close()
         api = Api(tmp_path / "api.duckdb", root=tmp_path)
         result = api.new_highs("pub-1", include_ties=True)
         assert result["snapshot_id"] == "snapshot-1"
         assert result["total"] == 1
         assert result["items"][0]["at_prior_high"] is True
-        with pytest.raises(ValueError, match="RPS_NOT_BUILT"):
-            api.new_highs("pub-1", rps_min="0.8")
+        filtered_highs = api.new_highs("pub-1", rps_min="0.8")
+        assert filtered_highs["total"] == 0
+        technical_result = api.technical("pub-1", rps_window="20")
+        assert technical_result["rps_window"] == 20
+        assert technical_result["total"] == 1
+        assert technical_result["items"][0]["rps20"] is None
     finally:
         if connection:
             try:

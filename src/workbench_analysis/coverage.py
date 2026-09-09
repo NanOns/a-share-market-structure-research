@@ -87,7 +87,10 @@ def build_historical_coverage(
         tech = frames["technical"].loc[frames["technical"]["trade_date"].eq(trade_date)]
         members = frames["memberships"].loc[frames["memberships"]["trade_date"].eq(trade_date)]
         structure = frames["structures"].loc[frames["structures"]["trade_date"].eq(trade_date)]
-        price = _finite(tech["raw_close" if price_basis == "RAW" and "raw_close" in tech else "adj_close" if "adj_close" in tech else "raw_close"])
+        price_column = "raw_close" if price_basis == "RAW" else "adj_close"
+        if price_column not in tech.columns:
+            raise CoverageAdapterError(f"COVERAGE_PRICE_BASIS_COLUMN_MISSING:{price_basis}:{price_column}")
+        price = _finite(tech[price_column])
         quote_valid = int(price.sum())
         factor_valid = int(tech["validity"].eq("VALID").sum()) if "validity" in tech.columns else int(_finite(tech["ret20"]).sum()) if "ret20" in tech.columns else 0
         member_ids = set(members["security_id"].dropna().astype(str))

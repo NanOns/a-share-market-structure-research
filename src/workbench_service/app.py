@@ -1,5 +1,5 @@
 from __future__ import annotations
-import json, mimetypes, os, secrets, subprocess, sys, threading, time, uuid
+import json, math, mimetypes, os, secrets, subprocess, sys, threading, time, uuid
 from datetime import date
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -188,25 +188,43 @@ class Api:
   return result
  def stocks(self,p,q,page,size): return self._add_quotes(p,self._rows('stock_daily',p,'and '+A_SHARE_SQL.format(id='security_id')+' and (security_name ilike ? or security_id ilike ?)',(f'%{q}%',f'%{q}%'),'security_id',page,size))
  def technical(self,p,page=1,size=50,basis='AUTO',ma_state='',rps_window='',rps_min='',amount_class_filter='',turnover_min=''):
-  if basis not in ('AUTO','OBSERVED','RECONSTRUCTED'): raise ValueError('BASIS_UNSUPPORTED')
-  bindings=self._analysis_bindings(p);requested={'OBSERVED':'LOCAL_OBSERVED','RECONSTRUCTED':'LOCAL_RECONSTRUCTED'}.get(basis)
-  selected=bindings.get(requested) if requested else bindings.get('LOCAL_OBSERVED') or bindings.get('LOCAL_RECONSTRUCTED')
-  if not selected: raise ValueError('ANALYSIS_NOT_BUILT')
-  size=max(1,min(MAX_PAGE_SIZE,int(size)));page=max(1,int(page))
-  if rps_window or rps_min: raise ValueError('RPS_NOT_BUILT')
-  if turnover_min not in ('',None): raise ValueError('TURNOVER_NOT_BUILT')
-  filters=['e.snapshot_id=?'];params=[selected['snapshot_id']]
-  if ma_state: filters.append('t.ma_alignment=?');params.append(ma_state)
-  if amount_class_filter: filters.append('t.amount_class=?');params.append(amount_class_filter)
-  where=' and '.join(filters)
-  with self._con() as c:
-   total=c.execute("select count(*) from analysis_snapshot_entries e join stock_technical_daily t on t.slice_id=e.slice_id and t.trade_date=e.trade_date where e.domain='technical' and "+where,params).fetchone()[0]
-   rows=c.execute("select t.security_id,t.trade_date,t.contract_id,t.price_basis,t.raw_close,t.adj_close,t.quote_ret1,t.raw_amount,t.raw_volume,t.ma5,t.ma10,t.ma20,t.ma60,t.ret5,t.ret10,t.ret20,t.ret60,t.rs5,t.rs10,t.rs20,t.rs60,t.amount_ma5,t.amount_ma10,t.amount_ma20,t.amount_ratio20,t.amount_vs_prior20,t.volume_vs_prior20,t.amount_class,t.ma_alignment,t.validity,t.quality_codes,t.basis_json from analysis_snapshot_entries e join stock_technical_daily t on t.slice_id=e.slice_id and t.trade_date=e.trade_date where e.domain='technical' and "+where+f" order by t.trade_date desc,t.ret20 desc nulls last,t.security_id limit ? offset ?",params+[size,(page-1)*size]).fetchall()
-  names=('security_id','trade_date','contract_id','price_basis','raw_close','adj_close','quote_ret1','raw_amount','raw_volume','ma5','ma10','ma20','ma60','ret5','ret10','ret20','ret60','rs5','rs10','rs20','rs60','amount_ma5','amount_ma10','amount_ma20','amount_ratio20','amount_vs_prior20','volume_vs_prior20','amount_class','ma_alignment','validity','quality_codes','basis')
-  items=[]
-  for row in rows:
-   item=dict(zip(names,row));item['trade_date']=str(item['trade_date']);item['quality_codes']=json.loads(item['quality_codes']) if item['quality_codes'] else [];item['basis']=json.loads(item['basis']) if item['basis'] else {};items.append(item)
-  return {'publication_id':p,'page':page,'page_size':size,'total':total,'basis':basis,'snapshot_id':selected['snapshot_id'],'snapshot_capability':'AVAILABLE','items':items}
+   if basis not in ('AUTO','OBSERVED','RECONSTRUCTED'): raise ValueError('BASIS_UNSUPPORTED')
+   bindings=self._analysis_bindings(p);requested={'OBSERVED':'LOCAL_OBSERVED','RECONSTRUCTED':'LOCAL_RECONSTRUCTED'}.get(basis)
+   selected=bindings.get(requested) if requested else bindings.get('LOCAL_OBSERVED') or bindings.get('LOCAL_RECONSTRUCTED')
+   if not selected: raise ValueError('ANALYSIS_NOT_BUILT')
+   size=max(1,min(MAX_PAGE_SIZE,int(size)));page=max(1,int(page))
+   if turnover_min not in ('',None): raise ValueError('TURNOVER_NOT_BUILT')
+   rps_window_value=str(rps_window or '').strip();rps_width=None
+   if rps_window_value:
+    try: rps_width=int(rps_window_value)
+    except (TypeError,ValueError): raise ValueError('RPS_WINDOW_UNSUPPORTED')
+    if rps_width not in (5,10,20,60): raise ValueError('RPS_WINDOW_UNSUPPORTED')
+   elif rps_min not in ('',None): rps_width=20
+   rps_value=None
+   if rps_min not in ('',None):
+    try: rps_value=float(rps_min)
+    except (TypeError,ValueError): raise ValueError('RPS_THRESHOLD_UNSUPPORTED')
+    if not math.isfinite(rps_value): raise ValueError('RPS_THRESHOLD_UNSUPPORTED')
+   rps_join='';rps_select='';rps_filter=''
+   if rps_width is not None:
+    with self._con() as check:
+     if not check.execute("select count(*) from analysis_snapshot_entries where snapshot_id=? and domain='strength'",[selected['snapshot_id']]).fetchone()[0]: raise ValueError('RPS_NOT_BUILT')
+    rps_join=" left join analysis_snapshot_entries se on se.snapshot_id=e.snapshot_id and se.domain='strength' and se.trade_date=e.trade_date left join stock_strength_daily st on st.slice_id=se.slice_id and st.trade_date=se.trade_date and st.security_id=t.security_id"
+    rps_select=f',st.rps{rps_width}'
+    if rps_value is not None: rps_filter=f' and st.rps{rps_width}>=?'
+   filters=['e.snapshot_id=?'];params=[selected['snapshot_id']]
+   if ma_state: filters.append('t.ma_alignment=?');params.append(ma_state)
+   if amount_class_filter: filters.append('t.amount_class=?');params.append(amount_class_filter)
+   if rps_value is not None: params.append(rps_value)
+   where=' and '.join(filters)
+   with self._con() as c:
+    total=c.execute("select count(*) from analysis_snapshot_entries e join stock_technical_daily t on t.slice_id=e.slice_id and t.trade_date=e.trade_date"+rps_join+" where e.domain='technical' and "+where+rps_filter,params).fetchone()[0]
+    rows=c.execute("select t.security_id,t.trade_date,t.contract_id,t.price_basis,t.raw_close,t.adj_close,t.quote_ret1,t.raw_amount,t.raw_volume,t.ma5,t.ma10,t.ma20,t.ma60,t.ret5,t.ret10,t.ret20,t.ret60,t.rs5,t.rs10,t.rs20,t.rs60,t.amount_ma5,t.amount_ma10,t.amount_ma20,t.amount_ratio20,t.amount_vs_prior20,t.volume_vs_prior20,t.amount_class,t.ma_alignment,t.validity,t.quality_codes,t.basis_json"+rps_select+" from analysis_snapshot_entries e join stock_technical_daily t on t.slice_id=e.slice_id and t.trade_date=e.trade_date"+rps_join+" where e.domain='technical' and "+where+rps_filter+f" order by t.trade_date desc,t.ret20 desc nulls last,t.security_id limit ? offset ?",params+[size,(page-1)*size]).fetchall()
+   names=('security_id','trade_date','contract_id','price_basis','raw_close','adj_close','quote_ret1','raw_amount','raw_volume','ma5','ma10','ma20','ma60','ret5','ret10','ret20','ret60','rs5','rs10','rs20','rs60','amount_ma5','amount_ma10','amount_ma20','amount_ratio20','amount_vs_prior20','volume_vs_prior20','amount_class','ma_alignment','validity','quality_codes','basis')+((f'rps{rps_width}',) if rps_width is not None else ())
+   items=[]
+   for row in rows:
+    item=dict(zip(names,row));item['trade_date']=str(item['trade_date']);item['quality_codes']=json.loads(item['quality_codes']) if item['quality_codes'] else [];item['basis']=json.loads(item['basis']) if item['basis'] else {};items.append(item)
+   return {'publication_id':p,'page':page,'page_size':size,'total':total,'basis':basis,'rps_window':rps_width,'snapshot_id':selected['snapshot_id'],'snapshot_capability':'AVAILABLE','items':items}
  def new_highs(self,p,page=1,size=50,basis='AUTO',window=20,streak_min='',include_ties=False,rps_min=''):
   if basis not in ('AUTO','OBSERVED','RECONSTRUCTED'): raise ValueError('BASIS_UNSUPPORTED')
   try: window=int(window)

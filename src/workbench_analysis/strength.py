@@ -9,6 +9,7 @@ import numpy as np
 import pandas as pd
 
 from .technical import CONTRACT_VERSION, PRICE_BASIS, WINDOWS, calculate_technical_daily
+from .immutable import immutable_slice_state
 
 
 def average_rank_percentile(values: pd.Series) -> pd.Series:
@@ -69,12 +70,8 @@ def strength_rows_for_storage(frame: pd.DataFrame, slice_id: str) -> list[tuple[
 
 def insert_strength_rows(connection: Any, slice_id: str, frame: pd.DataFrame) -> int:
     rows = strength_rows_for_storage(frame, slice_id)
-    existing = connection.execute("select security_id,trade_date from stock_strength_daily where slice_id=?", [slice_id]).fetchall()
-    expected = {(str(row[1]), str(row[2])) for row in rows}
-    actual = {(str(row[0]), str(row[1])) for row in existing}
-    if actual and actual != expected:
-        raise ValueError("STRENGTH_SLICE_IDENTITY_CONFLICT")
-    if actual:
+    existing = connection.execute("select * from stock_strength_daily where slice_id=?", [slice_id]).fetchall()
+    if immutable_slice_state(existing, rows, key_indexes=(1, 2), conflict_code="STRENGTH_SLICE_IDENTITY_CONFLICT"):
         return len(rows)
     connection.executemany("insert into stock_strength_daily values (?,?,?,?,? ,?,?,?,? ,?,?,?,? ,?,?,?,? ,?,?,?,? ,?,?)", rows)
     return len(rows)

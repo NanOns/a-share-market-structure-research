@@ -1,0 +1,57 @@
+{
+  "receipt_version": "M8_POST_REPAIR_RECEIPT_V1",
+  "status": "DEGRADED_PASS",
+  "release_gate": "NOT_RELEASE_READY",
+  "branch": "codex/workbench-m7-m15-upgrade",
+  "head_before_commit": "533d572",
+  "repair_scope": [
+    "content-checked immutable slice writes",
+    "strict RAW and adjusted price-basis selection",
+    "conflicting historical membership rejection",
+    "stable membership identity includes all input fields",
+    "explicit boolean parsing for rule, gate, and structure flags",
+    "API10 RPS window and threshold filtering"
+  ],
+  "tests": {
+    "m8_targeted": {
+      "status": "PASS",
+      "passed": 41,
+      "failed": 0
+    },
+    "full_suite": {
+      "status": "PASS",
+      "passed": 641,
+      "failed": 0
+    },
+    "compileall": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "formal_database": {
+    "path": "data/database/market_research.duckdb",
+    "migrations_applied": [
+      "007_history_identity",
+      "008_technical_history",
+      "008_technical_history_rps",
+      "009_sector_base_history",
+      "010_historical_structure"
+    ],
+    "m8_derived_rows": {
+      "stock_technical_daily": 0,
+      "stock_high_daily": 0,
+      "stock_strength_daily": 0,
+      "sector_base_daily": 0,
+      "historical_structure_daily": 0,
+      "stock_structure_summary_daily": 0,
+      "market_reference_daily": 0,
+      "limit_rule_versions": 0
+    },
+    "analysis_bindings": 0,
+    "publication_heads_changed": false,
+    "interpretation": "M8 implementation is repaired and regression-clean; formal derived capabilities remain NOT_BUILT and no production entry switch is authorized."
+  },
+  "guardrails": {
+    "tdx_sources_modified": false,
+    "network_data_used": false,
+    "formal_observations_or_outcomes_written": false
+  }
+}

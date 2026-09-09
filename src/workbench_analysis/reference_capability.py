@@ -8,6 +8,8 @@ from typing import Any, Iterable
 import numpy as np
 import pandas as pd
 
+from .immutable import immutable_slice_state
+
 
 CONTRACT_VERSION = "REFERENCE_CAPABILITY_V1_0"
 KNOWN_SHARE_UNITS = frozenset({"SHARES", "SHARE", "股"})
@@ -144,12 +146,12 @@ def rows_for_storage(frame: pd.DataFrame, slice_id: str) -> list[tuple[Any, ...]
 
 def insert_market_reference_rows(connection: Any, slice_id: str, frame: pd.DataFrame) -> int:
     rows = rows_for_storage(frame, slice_id)
-    expected = {(str(row[1]), str(row[2])) for row in rows}
-    existing = connection.execute("select security_id,trade_date from market_reference_daily where slice_id=?", [slice_id]).fetchall()
-    actual = {(str(row[0]), str(row[1])) for row in existing}
-    if actual and actual != expected:
-        raise ReferenceCapabilityError("REFERENCE_SLICE_IDENTITY_CONFLICT")
-    if actual:
+    existing = connection.execute("select * from market_reference_daily where slice_id=?", [slice_id]).fetchall()
+    try:
+        already_present = immutable_slice_state(existing, rows, key_indexes=(1, 2), conflict_code="REFERENCE_SLICE_IDENTITY_CONFLICT")
+    except ValueError as exc:
+        raise ReferenceCapabilityError(str(exc)) from exc
+    if already_present:
         return len(rows)
     connection.executemany("insert into market_reference_daily (slice_id,security_id,quote_prev_close,limit_up_price,limit_down_price,float_shares,shares_basis,status_known,rule_id,source_ref,observed_at) values (?,?,?,?,?,?,?,?,?,?,?)", rows)
     return len(rows)

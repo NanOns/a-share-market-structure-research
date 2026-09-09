@@ -8,6 +8,8 @@ from typing import Any, Iterable
 import numpy as np
 import pandas as pd
 
+from .immutable import immutable_slice_state
+
 
 CONTRACT_VERSION = "TECHNICAL_HISTORY_V2_1_PREVIEW"
 PRICE_BASIS = "TDX_NATIVE_QFQ"
@@ -147,13 +149,9 @@ def insert_technical_rows(connection: Any, slice_id: str, frame: pd.DataFrame) -
     """Insert a complete immutable slice, rejecting any existing conflict."""
     rows = rows_for_storage(frame, slice_id)
     existing = connection.execute(
-        "select security_id,trade_date from stock_technical_daily where slice_id=?", [slice_id]
+        "select * from stock_technical_daily where slice_id=?", [slice_id]
     ).fetchall()
-    expected_keys = {(str(row[1]), str(row[2])) for row in rows}
-    actual_keys = {(str(row[0]), str(row[1])) for row in existing}
-    if actual_keys and actual_keys != expected_keys:
-        raise ValueError("TECHNICAL_SLICE_IDENTITY_CONFLICT")
-    if actual_keys:
+    if immutable_slice_state(existing, rows, key_indexes=(1, 2), conflict_code="TECHNICAL_SLICE_IDENTITY_CONFLICT"):
         return len(rows)
     connection.executemany(
         "insert into stock_technical_daily values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",

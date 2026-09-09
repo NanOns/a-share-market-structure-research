@@ -19,6 +19,7 @@ from shadow_v2.strong_pullback import classify as classify_pullback
 from shadow_v2.strong_pullback import depth_status, segment_status, volume_status
 from shadow_v2.steady_trend import classify as classify_steady
 from shadow_v2.steady_trend import continuity_class, pulse_class
+from .immutable import immutable_slice_state
 
 
 CONTRACT_VERSION = "HISTORICAL_STRUCTURE_V2_1_RECONSTRUCTED"
@@ -48,10 +49,12 @@ def _bool(value: Any) -> bool | None:
     if value is None or pd.isna(value):
         return None
     if isinstance(value, str):
-        if value.upper() in {"TRUE", "1", "YES"}:
+        normalized = value.strip().upper()
+        if normalized in {"TRUE", "1", "YES"}:
             return True
-        if value.upper() in {"FALSE", "0", "NO"}:
+        if normalized in {"FALSE", "0", "NO"}:
             return False
+        return None
     return bool(value)
 
 
@@ -210,12 +213,12 @@ def rows_for_storage(frame: pd.DataFrame, slice_id: str) -> list[tuple[Any, ...]
 
 def insert_historical_structure_rows(connection: Any, slice_id: str, frame: pd.DataFrame) -> int:
     rows = rows_for_storage(frame, slice_id)
-    existing = connection.execute("select security_id,trade_date,queue_name from historical_structure_daily where slice_id=?", [slice_id]).fetchall()
-    expected = {(str(row[1]), str(row[2]), str(row[3])) for row in rows}
-    actual = {(str(row[0]), str(row[1]), str(row[2])) for row in existing}
-    if actual and actual != expected:
-        raise StructureAdapterError("STRUCTURE_SLICE_IDENTITY_CONFLICT")
-    if actual:
+    existing = connection.execute("select * from historical_structure_daily where slice_id=?", [slice_id]).fetchall()
+    try:
+        already_present = immutable_slice_state(existing, rows, key_indexes=(1, 2, 3), conflict_code="STRUCTURE_SLICE_IDENTITY_CONFLICT")
+    except ValueError as exc:
+        raise StructureAdapterError(str(exc)) from exc
+    if already_present:
         return len(rows)
     connection.executemany("insert into historical_structure_daily values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", rows)
     return len(rows)

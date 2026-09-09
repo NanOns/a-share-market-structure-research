@@ -48,3 +48,10 @@ def test_gate_is_order_invariant_and_json_report_has_no_nan():
 def test_gate_rejects_duplicate_keys():
     with pytest.raises(ReferenceGateError, match="DUPLICATE"):
         build_capability_gate(pd.concat([_references(), _references().iloc[[0]]], ignore_index=True))
+
+
+def test_string_false_rule_verification_cannot_open_capability():
+    references = pd.DataFrame([{"security_id": "SH.600001", "trade_date": "2026-09-08", "quote_capability": "EXACT", "shares_capability": "EXACT"}])
+    result = build_capability_gate(references, limit_results=[{"security_id": "SH.600001", "trade_date": "2026-09-08", "limit_state": "LIMIT_UP", "rule_verified": "false"}])
+    item = result["items"].iloc[0]
+    assert item["limit_capability"] == "UNKNOWN" and bool(item["available"]) is False

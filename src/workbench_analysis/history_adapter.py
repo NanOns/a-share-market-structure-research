@@ -58,10 +58,12 @@ def _normal_security_mask(frame: pd.DataFrame) -> pd.Series:
 
 
 def _stable_membership_id(memberships: pd.DataFrame) -> str:
-    keys = memberships[["trade_date", "sector_id", "security_id"]].astype(str).sort_values(
-        ["trade_date", "sector_id", "security_id"], kind="mergesort"
-    )
-    payload = "\n".join("|".join(row) for row in keys.itertuples(index=False, name=None))
+    normalized = memberships.copy()
+    for column in normalized.columns:
+        normalized[column] = normalized[column].map(lambda value: "" if pd.isna(value) else str(value))
+    columns = sorted(normalized.columns)
+    normalized = normalized.reindex(columns=columns).sort_values(columns, kind="mergesort")
+    payload = "\n".join("|".join(row) for row in normalized.itertuples(index=False, name=None))
     return "reconstructed-membership-" + hashlib.sha256(payload.encode("utf-8")).hexdigest()[:24]
 
 
@@ -89,7 +91,14 @@ def guard_history_inputs(
             raise HistoryAdapterError("HISTORY_INPUT_COLUMNS_MISSING:sector_id")
     if stocks[["security_id", "trade_date"]].duplicated().any():
         raise HistoryAdapterError("TECHNICAL_DUPLICATE_SECURITY_DATE")
-    members = members.drop_duplicates(["trade_date", "sector_id", "security_id"], keep="last")
+    membership_keys = ["trade_date", "sector_id", "security_id"]
+    duplicate_members = members[members.duplicated(membership_keys, keep=False)]
+    if not duplicate_members.empty:
+        value_columns = [column for column in members.columns if column not in membership_keys]
+        for _, group in duplicate_members.groupby(membership_keys, sort=False, dropna=False):
+            if value_columns and len(group[value_columns].astype(str).drop_duplicates()) > 1:
+                raise HistoryAdapterError("MEMBERSHIP_DUPLICATE_CONFLICT")
+    members = members.drop_duplicates(membership_keys, keep="first")
     if (stocks["trade_date"] > cutoff_date).any() or (members["trade_date"] > cutoff_date).any():
         raise HistoryAdapterError("HISTORY_INPUT_AFTER_CUTOFF")
     if membership_basis == CURRENT_MEMBERSHIP_BASIS and (members["trade_date"] < cutoff_date).any():

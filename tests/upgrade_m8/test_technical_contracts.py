@@ -77,6 +77,10 @@ def test_technical_rows_are_immutable_and_written_to_008_table(tmp_path):
         calculated = calculate_technical_daily(_frame(1))
         assert insert_technical_rows(connection, "slice-1", calculated) == 1
         assert insert_technical_rows(connection, "slice-1", calculated) == 1
+        changed_payload = calculated.copy()
+        changed_payload["raw_close"] = 999.0
+        with pytest.raises(ValueError, match="TECHNICAL_SLICE_IDENTITY_CONFLICT"):
+            insert_technical_rows(connection, "slice-1", changed_payload)
         different = calculated.copy()
         different["security_id"] = "SZ.000001"
         with pytest.raises(ValueError, match="TECHNICAL_SLICE_IDENTITY_CONFLICT"):

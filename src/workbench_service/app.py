@@ -13,6 +13,7 @@ from workbench_service.strength_association import choose_association
 from workbench_service.universe import A_SHARE_SQL, summarize_universe
 from workbench_service.quotes import QuoteService
 from workbench_service.catalog import API_CONTRACT, field_catalog
+from workbench_service.window_planner import MAX_OUTPUT_DAYS, load_dependencies, plan_window
 
 MAX_PAGE_SIZE=100
 
@@ -32,7 +33,7 @@ def resolve_workbench_path(root,trade_date,publication_id):
  return matches[0]
 
 class Api:
- def __init__(self,db): self.db=str(Path(db).resolve());self._quote_cache={};self._quote_lock=threading.Lock();self._quote_service=QuoteService(Path(self.db).parents[1]/'normalized/adjusted_daily.parquet');self._association_cache={};self._association_lock=threading.Lock()
+ def __init__(self,db): self.db=str(Path(db).resolve());self._root=Path(self.db).parents[2];self._quote_cache={};self._quote_lock=threading.Lock();self._quote_service=QuoteService(Path(self.db).parents[1]/'normalized/adjusted_daily.parquet');self._association_cache={};self._association_lock=threading.Lock();self._window_dependencies=load_dependencies(self._root);self._window_sessions_cache=None
  def _con(self):
   # DuckDB refuses a read_only connection while the publisher owns a normal
   # writer connection.  A normal read connection participates in DuckDB MVCC:
@@ -230,6 +231,22 @@ class Api:
   return result
  def field_catalog(self,api_contract=API_CONTRACT,language='zh-CN'):
   return field_catalog(api_contract,language)
+ def _window_sessions(self):
+  if self._window_sessions_cache is None:
+   path=Path(self.db).parents[1]/'normalized/adjusted_daily.parquet'
+   with duckdb.connect() as c:
+    sessions=c.execute('select distinct date from read_parquet(?) where is_master_session order by date',[str(path)]).fetchall()
+    observed=c.execute('select distinct date from read_parquet(?) where is_master_session and data_observed order by date',[str(path)]).fetchall()
+   self._window_sessions_cache=([row[0] for row in sessions],[row[0] for row in observed])
+  return self._window_sessions_cache
+ def history_coverage(self,p,days=MAX_OUTPUT_DAYS,basis='AUTO'):
+  if basis not in ('AUTO','OBSERVED','RECONSTRUCTED'):
+   raise ValueError('BASIS_UNSUPPORTED')
+  cutoff_text,_=self._pub(p); cutoff=date.fromisoformat(cutoff_text)
+  sessions,observed=self._window_sessions()
+  result=plan_window(sessions,cutoff_date=cutoff,output_days=int(days),observed_sessions=observed,dependencies=self._window_dependencies)
+  result.update({'api_contract':API_CONTRACT,'publication_id':p,'snapshot_id':None,'snapshot_capability':'NOT_BUILT','requested_basis':basis,'resolved_basis':'OBSERVED' if basis=='AUTO' else basis})
+  return {'publication_id':p,'item':result}
  def linkage(self,p,sector,security,page=1,size=100,q=''):
   size=max(1,min(MAX_PAGE_SIZE,int(size))); page=max(1,int(page))
   self._pub(p)
@@ -314,6 +331,7 @@ def make_handler(root,db):
     elif u.path=='/api/evidence': out=api.evidence(x['publication_id'],x['queue'],x['security_id'])
     elif u.path=='/api/identity': out=api.identity(x['publication_id'],x.get('include_analysis')=='1')
     elif u.path=='/api/metadata/field-catalog': out=api.field_catalog(x.get('api_contract',API_CONTRACT),x.get('language','zh-CN'))
+    elif u.path=='/api/history/coverage': out=api.history_coverage(x['publication_id'],x.get('days',MAX_OUTPUT_DAYS),x.get('basis','AUTO'))
     elif u.path=='/api/universe/summary': out=api.universe_summary(x['publication_id'])
     elif u.path=='/api/linkage': out=api.linkage(x['publication_id'],x.get('sector_id'),x.get('security_id'),x.get('page',1),x.get('page_size',100),x.get('q',''))
     elif u.path=='/api/input/latest': out=api.latest_bundle()

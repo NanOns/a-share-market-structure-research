@@ -1,0 +1,14 @@
+{
+  "contract_version": "history-window-dependency-v1.0",
+  "calendar_basis": "MASTER_TRADING_CALENDAR",
+  "max_output_days": 250,
+  "dependencies": [
+    {"domain": "quote", "consumer": "stock_quote_daily", "windows": [1], "lookback_sessions": 1, "reason": "参考前收需要前一交易日"},
+    {"domain": "technical", "consumer": "stock_technical_daily", "windows": [5, 10, 20, 60], "lookback_sessions": 60, "reason": "复用因子注册表最长60日窗口"},
+    {"domain": "strength", "consumer": "stock_strength_daily", "windows": [5, 10, 20, 60], "lookback_sessions": 60, "reason": "RET/RPS最长60日窗口"},
+    {"domain": "high", "consumer": "stock_high_daily", "windows": [20, 30, 60, 100], "lookback_sessions": 100, "reason": "新高合同最长100日比较窗口"},
+    {"domain": "structure", "consumer": "historical_structure_daily", "windows": [20, 60], "lookback_sessions": 60, "reason": "五类结构复用技术与趋势状态最长窗口"},
+    {"domain": "sector_cycle", "consumer": "sector_cycle_daily", "windows": [5, 10, 20, 30], "lookback_sessions": 30, "reason": "板块周期统计窗口"},
+    {"domain": "market", "consumer": "market_cycle_daily", "windows": [5, 10, 20, 30, 60], "lookback_sessions": 60, "reason": "市场聚合与MA覆盖最长60日窗口"}
+  ]
+}

@@ -17,6 +17,7 @@ from workbench_service.window_planner import MAX_OUTPUT_DAYS, load_dependencies,
 from workbench_service.history_jobs import HistoryJobError, HistoryJobService
 from workbench_service.analysis_activation import AnalysisActivationError, AnalysisActivationService
 from workbench_service.source_freezer import SourceFreezeError, validate_source_manifest
+from workbench_analysis.chart import ChartCache, build_chart_points, chart_cache_key
 
 MAX_PAGE_SIZE=100
 
@@ -36,7 +37,7 @@ def resolve_workbench_path(root,trade_date,publication_id):
  return matches[0]
 
 class Api:
- def __init__(self,db,root=None): self.db=str(Path(db).resolve());self._root=Path(root).resolve() if root else Path(__file__).resolve().parents[2];self._quote_cache={};self._quote_lock=threading.Lock();self._association_cache={};self._association_lock=threading.Lock();self._window_dependencies=load_dependencies(self._root);self._window_sessions_cache=None
+ def __init__(self,db,root=None): self.db=str(Path(db).resolve());self._root=Path(root).resolve() if root else Path(__file__).resolve().parents[2];self._quote_cache={};self._quote_lock=threading.Lock();self._source_cache={};self._chart_cache=ChartCache();self._association_cache={};self._association_lock=threading.Lock();self._window_dependencies=load_dependencies(self._root);self._window_sessions_cache=None
  def _con(self):
   # DuckDB refuses a read_only connection while the publisher owns a normal
   # writer connection.  A normal read connection participates in DuckDB MVCC:
@@ -109,6 +110,7 @@ class Api:
   source_path=(self._root/relative).resolve()
   if relative.is_absolute() or self._root not in source_path.parents:return {}
   if not source_path.is_file():return {}
+  self._source_cache[p]=(source_path,manifest)
   return QuoteService(source_path).load(trade_date=current,publication_id=p,source_identity_sha256=identity.get('source_identity_sha256'),expected_file_sha256=source['sha256'],source_path=relative.as_posix())
  def _add_quotes(self,p,result):
   quotes=self._quotes(p)
@@ -232,6 +234,29 @@ class Api:
   for row in rows:
    item=dict(zip(names,row));item['trade_date']=str(item['trade_date']);item['quality_codes']=json.loads(item['quality_codes']) if item['quality_codes'] else [];item['basis']=json.loads(item['basis']) if item['basis'] else {};item['strength_quality_codes']=json.loads(item['strength_quality_codes']) if item['strength_quality_codes'] else [];item['strength_basis']=json.loads(item['strength_basis']) if item['strength_basis'] else {};items.append(item)
   return {'publication_id':p,'page':page,'page_size':size,'total':total,'basis':basis,'window':window,'snapshot_id':selected['snapshot_id'],'snapshot_capability':'AVAILABLE','items':items}
+ def technical_history(self,p,security_id,days=20,price_basis='ADJUSTED',fields=''):
+  if price_basis not in ('RAW','ADJUSTED','TDX_NATIVE_QFQ'): raise ValueError('PRICE_BASIS_UNSUPPORTED')
+  bindings=self._analysis_bindings(p);selected=bindings.get('LOCAL_OBSERVED') or bindings.get('LOCAL_RECONSTRUCTED')
+  if not selected: raise ValueError('ANALYSIS_NOT_BUILT')
+  days=int(days);requested=tuple(x for x in str(fields).split(',') if x) if fields else ('ohlc','ma','amount','rps')
+  key=chart_cache_key(selected['snapshot_id'],security_id,price_basis,selected['cutoff_date'],days,requested)
+  cached=self._chart_cache.get(key)
+  if cached is not None: return cached
+  self._quotes(p)
+  source_info=self._source_cache.get(p)
+  if not source_info: raise ValueError('SOURCE_NOT_FROZEN')
+  source_path,_=source_info;cutoff=date.fromisoformat(selected['cutoff_date'])
+  with duckdb.connect() as source:
+   frame=source.execute('select date,raw_open,raw_high,raw_low,raw_close,adj_open,adj_high,adj_low,adj_close,raw_volume,raw_amount from read_parquet(?) where security_id=? and date<=? order by date',[str(source_path),security_id,cutoff]).df()
+   expected=[row[0] for row in source.execute('select distinct date from read_parquet(?) where is_master_session and date<=? order by date',[str(source_path),cutoff]).fetchall()]
+  rps={}
+  with self._con() as c:
+   rows=c.execute("""select s.trade_date,s.rps20 from analysis_snapshot_entries e join stock_strength_daily s on s.slice_id=e.slice_id and s.trade_date=e.trade_date and s.security_id=? where e.snapshot_id=? and e.domain='strength'""",[security_id,selected['snapshot_id']]).fetchall()
+  rps={row[0]:row[1] for row in rows}
+  result=build_chart_points(frame,cutoff=cutoff,days=days,price_basis=price_basis,fields=requested,expected_dates=expected,rps_by_date=rps)
+  result.update({'publication_id':p,'security_id':security_id,'snapshot_id':selected['snapshot_id'],'factor_evidence_basis':{'snapshot_id':selected['snapshot_id'],'rps_available':bool(rps)},'rps_capability':'AVAILABLE' if rps else 'NOT_BUILT'})
+  self._chart_cache.put(key,result)
+  return result
  def universe_summary(self,p):
   trade_date,source_revision=self._pub(p)
   with self._con() as c:
@@ -412,6 +437,8 @@ def make_handler(root,db):
     elif u.path=='/api/stocks': out=api.stocks(x['publication_id'],x.get('q',''),x.get('page',1),x.get('page_size',50))
     elif u.path=='/api/stocks/technical': out=api.technical(x['publication_id'],x.get('page',1),x.get('page_size',50),x.get('basis','AUTO'),x.get('ma_state',''),x.get('rps_window',''),x.get('rps_min',''),x.get('amount_class',''),x.get('turnover_min',''))
     elif u.path=='/api/stocks/new-highs': out=api.new_highs(x['publication_id'],x.get('page',1),x.get('page_size',50),x.get('basis','AUTO'),x.get('window',20),x.get('streak_min',''),x.get('include_ties','0')=='1',x.get('rps_min',''))
+    elif u.path.startswith('/api/stocks/') and u.path.endswith('/technical-history'):
+     security_id=unquote(u.path[len('/api/stocks/'): -len('/technical-history')].strip('/'));out=api.technical_history(x['publication_id'],security_id,x.get('days',20),x.get('price_basis','ADJUSTED'),x.get('fields',''))
     elif u.path=='/api/candidates': out=api.candidates(x['publication_id'],x.get('q',''),x.get('page',1),x.get('page_size',50),x.get('grade',''),x.get('pattern',''))
     elif u.path=='/api/queues': out=api.queues(x['publication_id'],x.get('queue','STEADY'),x.get('page',1),x.get('page_size',50),x.get('q',''),x.get('band',''))
     elif u.path=='/api/evidence': out=api.evidence(x['publication_id'],x['queue'],x['security_id'])
@@ -471,7 +498,7 @@ def make_handler(root,db):
     else:return self._send(404,{'code':'NOT_FOUND','message':'页面不存在','retryable':False,'next_action':'检查地址'})
     self._send(200,out)
    except (KeyError,ValueError) as e:
-    code=str(e).strip("'");status=409 if code in ('ANALYSIS_NOT_BUILT','BASIS_UNAVAILABLE') else 400
+    code=str(e).strip("'");status=409 if code in ('ANALYSIS_NOT_BUILT','BASIS_UNAVAILABLE','SOURCE_NOT_FROZEN') else 400
     self._send(status,{'code':code,'message':'请求参数或发布版本无效','retryable':False,'next_action':'重新选择日期'})
    except Exception:self._send(500,{'code':'INTERNAL_ERROR','message':'读取失败','retryable':True,'next_action':'稍后重试'})
   def do_POST(self):

@@ -1,0 +1,32 @@
+{
+  "contract_version": "m8a-03-chart-receipt-v1.0",
+  "stage": "M8A-03",
+  "implementation_contract": "TECHNICAL_CHART_V2_1_PREVIEW",
+  "status": "PASS",
+  "scope": [
+    "single-security frozen-source chart transformation",
+    "RAW and TDX_NATIVE_QFQ chart bases",
+    "one adjustment anchor per chart",
+    "same-anchor OHLC and MA",
+    "explicit calendar gap points",
+    "snapshot/security/basis/anchor/window/fields LRU cache",
+    "API12 read-only technical-history endpoint"
+  ],
+  "tests": {
+    "targeted": {"status": "PASS", "passed": 17, "failed": 0},
+    "full_suite": {"status": "PASS", "passed": 614, "failed": 0}
+  },
+  "data_contract": {
+    "raw_chart_basis": "RAW_UNADJUSTED",
+    "adjusted_chart_basis": "TDX_NATIVE_QFQ@cutoff_date",
+    "gap_policy": "EXPLICIT_POINT_WITH_NULL_PRICE_FIELDS",
+    "future_input_policy": "REJECT",
+    "cache_policy": "LRU_ENTRY_AND_APPROXIMATE_BYTE_LIMIT"
+  },
+  "formal_database": {
+    "migration_applied": false,
+    "publication_heads_changed": false,
+    "analysis_bindings_changed": false
+  },
+  "next_step": "M8A-04 技术页"
+}

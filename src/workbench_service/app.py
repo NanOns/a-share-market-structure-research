@@ -1,5 +1,5 @@
 from __future__ import annotations
-import json, mimetypes, os, re, secrets, subprocess, sys, threading, time, uuid
+import json, mimetypes, os, secrets, subprocess, sys, threading, time, uuid
 from datetime import date
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -11,10 +11,9 @@ from workbench_publish import OneClickPublisher
 from workbench_ops import OperationsConfig, ConfigConflict, ConfigValidationError
 from workbench_ops import StorageGovernance, BackupService, MaintenanceService
 from workbench_service.strength_association import choose_association
+from workbench_service.universe import A_SHARE_SQL, is_a_share_security_id, summarize_universe
 
 MAX_PAGE_SIZE=100
-A_SHARE_SQL="(regexp_matches({id}, '^SH\\.(600|601|603|605|688|689)[0-9]{{3}}$') or regexp_matches({id}, '^SZ\\.(000|001|002|003|300|301)[0-9]{{3}}$') or regexp_matches({id}, '^BJ\\.92[0-9]{{4}}$'))"
-A_SHARE_RE=re.compile(r'^(?:SH\.(?:600|601|603|605|688|689)\d{3}|SZ\.(?:000|001|002|003|300|301)\d{3}|BJ\.92\d{4})$')
 
 def resolve_workbench_path(root,trade_date,publication_id):
  base=Path(root)/'reports/workbench'/str(trade_date).replace('-','')/publication_id
@@ -70,7 +69,7 @@ class Api:
    previous=c.execute("select max(h.trade_date) from publication_heads h join publications p using(publication_id) where p.status='SUCCESS' and h.trade_date<?",[current]).fetchone()[0]
   selected=[current]+([previous] if previous else [])
   rows=pq.read_table(parquet,columns=['security_id','date','adj_close','raw_amount'],filters=[('date','in',selected)]).to_pylist()
-  by_day={(row['security_id'],row['date']):row for row in rows if A_SHARE_RE.fullmatch(str(row['security_id']))}
+  by_day={(row['security_id'],row['date']):row for row in rows if is_a_share_security_id(row['security_id'])}
   result={}
   for (sid,day),row in by_day.items():
    if day!=current:continue
@@ -145,6 +144,25 @@ class Api:
     item['total_member_count']=len(values)
   return result
  def stocks(self,p,q,page,size): return self._add_quotes(p,self._rows('stock_daily',p,'and '+A_SHARE_SQL.format(id='security_id')+' and (security_name ilike ? or security_id ilike ?)',(f'%{q}%',f'%{q}%'),'security_id',page,size))
+ def universe_summary(self,p):
+  trade_date,source_revision=self._pub(p)
+  with self._con() as c:
+   rows=c.execute('select security_id,payload_json from stock_daily where publication_id=? order by security_id',[p]).fetchall()
+  records=[]
+  for security_id,payload in rows:
+   record=json.loads(payload);record['security_id']=security_id
+   records.append(record)
+  summary=summarize_universe(records,quote_valid_ids=set(self._quotes(p)))
+  summary.pop('items',None)
+  identity=self.identity(p)
+  summary.update({
+   'publication_id':p,
+   'trade_date':trade_date,
+   'source_revision_id':source_revision,
+   'source_identity_sha256':identity.get('source_identity_sha256'),
+   'source_manifest_sha256':identity.get('source_manifest_sha256'),
+  })
+  return {'publication_id':p,'item':summary}
  def candidates(self,p,q,page,size,grade='',pattern=''):
   extra='and (security_name ilike ? or security_id ilike ?)'; args=(f'%{q}%',f'%{q}%')
   if grade: extra+=' and research_priority=?'; args += (grade,)
@@ -272,6 +290,7 @@ def make_handler(root,db):
     elif u.path=='/api/queues': out=api.queues(x['publication_id'],x.get('queue','STEADY'),x.get('page',1),x.get('page_size',50),x.get('q',''),x.get('band',''))
     elif u.path=='/api/evidence': out=api.evidence(x['publication_id'],x['queue'],x['security_id'])
     elif u.path=='/api/identity': out=api.identity(x['publication_id'])
+    elif u.path=='/api/universe/summary': out=api.universe_summary(x['publication_id'])
     elif u.path=='/api/linkage': out=api.linkage(x['publication_id'],x.get('sector_id'),x.get('security_id'),x.get('page',1),x.get('page_size',100),x.get('q',''))
     elif u.path=='/api/input/latest': out=api.latest_bundle()
     elif u.path=='/api/operations/config': out=operations.current()

@@ -1,6 +1,14 @@
 universe:
+  contract_id: "workbench-universe-v2.1"
   security_id_format: "MARKET.CODE"
+  included_markets: ["SH", "SZ", "BJ"]
+  a_share_code_prefixes:
+    SH: ["600", "601", "603", "605", "688", "689"]
+    SZ: ["000", "001", "002", "003", "300", "301", "302"]
+    BJ: ["4", "8", "92"]
   normal_security_type: "A_STOCK"
+  excluded_security_types: ["B_STOCK", "NEW_THIRD_BOARD", "INDEX", "FUND_OR_ETF", "CONVERTIBLE_BOND"]
+  unknown_status_is_not_delisted: true
   min_history_days: 120
   recent_valid_days: 20
   recent_calendar_window: 20

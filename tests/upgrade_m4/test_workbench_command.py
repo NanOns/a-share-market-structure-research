@@ -26,6 +26,7 @@ def test_workbench_post_returns_job_and_get_reads_status(tmp_path,monkeypatch):
   repo.connection.execute("insert into source_bundles values (?,?)",['bundle-1',json.dumps(bundle)])
   repo.connection.execute("insert into jobs values ('job-test','key-test','QUEUED','{}')")
  fake_publisher=Mock();fake_publisher.status.return_value={'status':'QUEUED','progress':{'status':'QUEUED'},'updated_at_utc':None}
+ fake_publisher.wait.return_value={'status':'SUCCESS','publication_id':'m4-test'}
  monkeypatch.setattr(app,'submit_one_click',lambda *args:(fake_publisher, 'job-test'))
  monkeypatch.setattr(app.subprocess,'run',lambda *args,**kwargs:Mock(returncode=0,stderr=''))
  server=ThreadingHTTPServer(('127.0.0.1',0),app.make_handler(root,db));threading.Thread(target=server.serve_forever,daemon=True).start()

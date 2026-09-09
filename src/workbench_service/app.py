@@ -50,7 +50,7 @@ class Api:
   return duckdb.connect(self.db)
  def publications(self,include_analysis=False):
   with self._con() as c:
-   rows=c.execute("select cast(h.trade_date as varchar),h.publication_id,p.revision,p.production_version from publication_heads h join publications p using(publication_id) where p.status='SUCCESS' order by h.trade_date desc").fetchall()
+   rows=c.execute("select cast(h.trade_date as varchar),h.publication_id,p.revision,p.production_version from publication_heads h join publications p using(publication_id) where p.status='SUCCESS' and (p.production_version not like 'm4-%' or exists (select 1 from publication_analysis_snapshots a where a.publication_id=p.publication_id and a.domain='LOCAL_RECONSTRUCTED')) order by h.trade_date desc").fetchall()
   items=[]
   for d,p,revision,production_version in rows:
    item={'trade_date':d,'publication_id':p}
@@ -587,7 +587,7 @@ def make_handler(root,db):
   task=daily_jobs.get(job_id)
   if not task: return None
   publisher=task.get('publisher')
-  if publisher:
+  if publisher and task.get('phase')!='ANALYSIS_BINDING':
    child=publisher.status(task['publication_job_id'])
    task.update(status=child['status'],progress=child.get('progress',{}),updated_at_utc=child.get('updated_at_utc'))
   return {'job_id':job_id,'status':task['status'],'details':{'trade_date':task.get('trade_date'),'source_bundle_id':task.get('source_bundle_id')},'progress':task.get('progress',{}),'updated_at_utc':task.get('updated_at_utc')}
@@ -601,7 +601,15 @@ def make_handler(root,db):
   bundle=receipt['source_bundle_id'];day=receipt['day_validation']['target_trade_date'];trade_date=date(int(str(day)[:4]),int(str(day)[4:6]),int(str(day)[6:]))
   task.update(source_bundle_id=bundle,trade_date=trade_date.isoformat(),progress={'status':'PUBLISHING'})
   publisher,publication_job_id=submit_one_click(Path(root),bundle,trade_date,body.get('economic_model_id','current-economic-model'),body.get('computation_contract_id','current-computation-contract'),db)
-  task.update(publisher=publisher,publication_job_id=publication_job_id,status='RUNNING')
+  task.update(publisher=publisher,publication_job_id=publication_job_id,status='RUNNING',progress={'status':'PUBLISHING'})
+  published=publisher.wait(publication_job_id,timeout=3600)
+  if published.get('status')!='SUCCESS':
+   task.update(status='FAILED',progress={'status':'PUBLISH_FAILED','error':published.get('error') or published.get('details') or 'M4发布未完成'});return
+  task.update(phase='ANALYSIS_BINDING',progress={'status':'ANALYSIS_BINDING'})
+  preview=subprocess.run([sys.executable,str(Path(root)/'scripts/build_m8_m9_preview.py')],cwd=root,capture_output=True,text=True,timeout=3600)
+  if preview.returncode:
+   task.update(status='FAILED',progress={'status':'ANALYSIS_BINDING_FAILED','error':preview.stderr[-1000:] or preview.stdout[-1000:]});return
+  task.update(phase='READY',status='SUCCESS',progress={'status':'READY','publication_id':published.get('publication_id')})
  def legacy_workbench(publication_id):
   trade_date,_=api._pub(publication_id)
   return resolve_workbench_path(root,trade_date,publication_id).read_bytes()

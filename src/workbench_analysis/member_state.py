@@ -221,6 +221,8 @@ def insert_membership_change_rows(connection: Any, slice_id: str, frame: pd.Data
     ).fetchall()
     if immutable_slice_state(existing, rows, key_indexes=(1, 2, 3, 4), conflict_code="MEMBERSHIP_CHANGE_SLICE_IDENTITY_CONFLICT"):
         return len(rows)
+    if not rows:
+        return 0
     connection.executemany(
         "insert into sector_membership_changes values (?,?,?,?,?,?,?)",
         rows,

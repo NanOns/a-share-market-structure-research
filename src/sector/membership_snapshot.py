@@ -10,7 +10,19 @@ VERSION="sector-membership-snapshot-v1.0"
 
 def build_snapshot(tdx: Path, cutoff) -> tuple[pd.DataFrame,dict]:
     cache=Path(tdx)/"T0002/hq_cache"; paths=[cache/n for n in ("tdxhy.cfg","tdxzs.cfg","infoharbor_block.dat")]
-    rows=build_industry_memberships(read_industry_assignments(paths[0]),read_industry_names(paths[1]))
+    industry_names=read_industry_names(paths[1])
+    rows=build_industry_memberships(read_industry_assignments(paths[0]),industry_names)
+    # TDX stores many level-one industry nodes only in tdxzs.cfg; they do not
+    # appear in tdxhy.cfg because stocks are assigned to their leaf nodes.
+    # Materialize those audited parent memberships as the union of their
+    # children so the workbench can show e.g. 有色金属 -> 铜/铝/黄金.
+    parent_rows=[]
+    for row in rows:
+        code=str(row.get("sector_code") or "")
+        parent=code[:5] if len(code)>5 else ""
+        if parent and parent in industry_names:
+            parent_rows.append({**row,"sector_code":parent,"sector_name":industry_names[parent],"source":"tdxhy.cfg:DERIVED_PARENT"})
+    rows.extend(parent_rows)
     extra,meta=read_infoharbor_memberships(paths[2]); rows += [v for v in extra if v["sector_type"] in ("concept","style")]
     frame=pd.DataFrame(rows).drop_duplicates(["sector_type","sector_code","security_id"]).copy()
     frame["sector_type"]=frame.sector_type.map({"industry":"INDUSTRY","concept":"THEME","style":"STYLE"})

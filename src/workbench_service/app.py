@@ -78,10 +78,25 @@ class Api:
   dates=sorted(set(date_values));items=[]
   for item in grouped.values():
    cells={row['trade_date']:row for row in item.pop('_rows')};item['cells']=[{'trade_date':day,'rank':cells[day]['rank'] if day in cells else None,'sector_rs20_pct':cells[day]['sector_rs20_pct'] if day in cells else None,'board_quote_ret1':cells[day]['board_quote_ret1'] if day in cells else None,'member_ret1_median':cells[day]['member_ret1_median'] if day in cells else None,'breadth_ret1':cells[day]['breadth_ret1'] if day in cells else None,'coverage':cells[day]['coverage'] if day in cells else None,'diffusion_state':None} for day in dates];items.append(item)
+  # TDX industry codes carry a stable hierarchy.  A seven-character leaf
+  # such as T020201 belongs to the five-character parent T0202.  The
+  # three-character TDX root is an implementation sentinel, not a display
+  # level.  Theme/style sources have no audited parent relation and stay flat.
+  sector_names={(item['sector_type'],str(item['sector_id']).split(':',1)[-1]):item['sector_name'] for item in items}
+  for item in items:
+   item['sector_code']=str(item['sector_id']).split(':',1)[-1]
+   item['parent_sector_id']=None;item['parent_sector_name']=None
+   if item['sector_type']=='INDUSTRY':
+    code=item['sector_code']
+    parents=[parent for kind,parent in sector_names if kind=='INDUSTRY' and len(parent)>=5 and len(parent)<len(code) and code.startswith(parent)]
+    if parents:
+     parent=max(parents,key=len)
+     item['parent_sector_id']='INDUSTRY:'+parent;item['parent_sector_name']=sector_names[('INDUSTRY',parent)]
+   item['hierarchy_level']='细分行业' if item['parent_sector_id'] else ('一级大板块' if item['sector_type']=='INDUSTRY' else '平级板块')
   latest_index=len(dates)-1
   items.sort(key=lambda value: ((value['cells'][latest_index]['rank'] if latest_index >= 0 and value['cells'][latest_index]['rank'] is not None else 10**9),value['sector_id']))
   total=len(items);start=(page-1)*size
-  return {'publication_id':p,'snapshot_id':selected['snapshot_id'],'page':page,'page_size':size,'total':total,'days':days,'dates':dates,'metric':metric,'items':items[start:start+size]}
+  return {'publication_id':p,'snapshot_id':selected['snapshot_id'],'page':page,'page_size':size,'total':total,'days':days,'dates':dates,'metric':metric,'as_of_trade_date':dates[-1] if dates else None,'items':items[start:start+size]}
  def sector_timeline(self,p,sector_id,days=30):
   days=max(1,min(250,int(days)));self._pub(p);bindings=self._analysis_bindings(p);selected=bindings.get('LOCAL_OBSERVED') or bindings.get('LOCAL_RECONSTRUCTED')
   if not selected: raise ValueError('ANALYSIS_NOT_BUILT')
@@ -319,12 +334,12 @@ class Api:
    with self._con() as check:
     if not check.execute("select count(*) from analysis_snapshot_entries where snapshot_id=? and domain='strength'",[selected['snapshot_id']]).fetchone()[0]:raise ValueError('RPS_NOT_BUILT')
   joins=" left join analysis_snapshot_entries se on se.snapshot_id=e.snapshot_id and se.domain='strength' and se.trade_date=e.trade_date left join stock_strength_daily st on st.slice_id=se.slice_id and st.trade_date=se.trade_date and st.security_id=t.security_id left join analysis_snapshot_entries ue on ue.snapshot_id=e.snapshot_id and ue.domain='summary' and ue.trade_date=e.trade_date left join stock_structure_summary_daily ss on ss.slice_id=ue.slice_id and ss.trade_date=ue.trade_date and ss.security_id=t.security_id"
-  include_unknown=quality_filter=='INCLUDE_UNKNOWN';filters=['e.snapshot_id=?'];params=[selected['snapshot_id']]
+  include_unknown=quality_filter=='INCLUDE_UNKNOWN';filters=['e.snapshot_id=?',"e.trade_date=(select max(trade_date) from analysis_snapshot_entries where snapshot_id=? and domain='technical')"];params=[selected['snapshot_id'],selected['snapshot_id']]
   if ma_state:filters.append('(t.ma_alignment=?'+(' or t.ma_alignment is null)' if include_unknown else ')'));params.append(ma_state)
   if amount_class_filter:filters.append('(t.amount_class=?'+(' or t.amount_class is null)' if include_unknown else ')'));params.append(amount_class_filter)
   if rps_value is not None:filters.append(f'(st.rps{rps_width}>=?'+(f' or st.rps{rps_width} is null)' if include_unknown else ')'));params.append(rps_value)
   where=' and '.join(filters)
-  select="t.security_id,t.trade_date,t.contract_id,t.price_basis,t.raw_close,t.adj_close,t.quote_ret1,t.raw_amount,t.raw_volume,t.ma5,t.ma10,t.ma20,t.ma60,t.ret5,t.ret10,t.ret20,t.ret60,t.rs5,t.rs10,t.rs20,t.rs60,t.amount_ma5,t.amount_ma10,t.amount_ma20,t.amount_ratio20,t.amount_vs_prior20,t.volume_vs_prior20,t.amount_class,t.ma_alignment,t.validity,t.quality_codes,t.basis_json,st.rps5,st.rps10,st.rps20,st.rps60,st.rps_valid_universe_count5,st.rps_valid_universe_count10,st.rps_valid_universe_count20,st.rps_valid_universe_count60,ss.research_band,ss.research_band_quality"
+  select="t.security_id,t.trade_date,t.contract_id,t.price_basis,t.raw_close,t.adj_close,t.quote_ret1,t.raw_amount,t.raw_volume,t.ma5,t.ma10,t.ma20,t.ma60,t.ret5,t.ret10,t.ret20,t.ret60,t.rs5,t.rs10,t.rs20,t.rs60,t.amount_ma5,t.amount_ma10,t.amount_ma20,t.amount_ratio20,t.amount_vs_prior20,t.volume_vs_prior20,t.amount_class,t.ma_alignment,t.validity,t.quality_codes,t.basis_json,st.rps5,st.rps10,st.rps20,st.rps60,st.rps_valid_universe_count5,st.rps_valid_universe_count10,st.rps_valid_universe_count20,st.rps_valid_universe_count60,coalesce(ss.research_band,'DIAGNOSTIC_ONLY'),coalesce(ss.research_band_quality,'DATA_INSUFFICIENT')"
   with self._con() as c:
    total=c.execute("select count(*) from analysis_snapshot_entries e join stock_technical_daily t on t.slice_id=e.slice_id and t.trade_date=e.trade_date"+joins+" where e.domain='technical' and "+where,params).fetchone()[0]
    rows=c.execute("select "+select+" from analysis_snapshot_entries e join stock_technical_daily t on t.slice_id=e.slice_id and t.trade_date=e.trade_date"+joins+" where e.domain='technical' and "+where+" order by st.rps20 desc nulls last,t.ret20 desc nulls last,t.security_id limit ? offset ?",params+[size,(page-1)*size]).fetchall()
@@ -332,7 +347,7 @@ class Api:
   items=[]
   for row in rows:
    item=dict(zip(names,row));item['trade_date']=str(item['trade_date']);item['quality_codes']=json.loads(item['quality_codes']) if item['quality_codes'] else [];item['basis']=json.loads(item['basis']) if item['basis'] else {};items.append(item)
-  result={'publication_id':p,'page':page,'page_size':size,'total':total,'basis':basis,'rps_window':rps_width,'snapshot_id':selected['snapshot_id'],'snapshot_capability':'AVAILABLE','items':items}
+  result={'publication_id':p,'page':page,'page_size':size,'total':total,'basis':basis,'rps_window':rps_width,'as_of_trade_date':str(max(item['trade_date'] for item in items)) if items else None,'snapshot_id':selected['snapshot_id'],'snapshot_capability':'AVAILABLE','items':items}
   security_names=self._security_names(p,{item['security_id'] for item in items if item.get('security_id')})
   for item in items:item['security_name']=security_names.get(item.get('security_id'))
   return self._add_quotes(p,result)
@@ -344,7 +359,7 @@ class Api:
   bindings=self._analysis_bindings(p);requested={'OBSERVED':'LOCAL_OBSERVED','RECONSTRUCTED':'LOCAL_RECONSTRUCTED'}.get(basis)
   selected=bindings.get(requested) if requested else bindings.get('LOCAL_OBSERVED') or bindings.get('LOCAL_RECONSTRUCTED')
   if not selected: raise ValueError('ANALYSIS_NOT_BUILT')
-  size=max(1,min(MAX_PAGE_SIZE,int(size)));page=max(1,int(page));filters=["he.snapshot_id=?","he.domain='high'",'h."window"=?'];params=[selected['snapshot_id'],window]
+  size=max(1,min(MAX_PAGE_SIZE,int(size)));page=max(1,int(page));filters=["he.snapshot_id=?","he.domain='high'",'h."window"=?',"he.trade_date=(select max(trade_date) from analysis_snapshot_entries where snapshot_id=? and domain='high')"];params=[selected['snapshot_id'],window,selected['snapshot_id']]
   if not include_ties: filters.append('h.new_high=true')
   if streak_min not in ('',None): filters.append('h.streak>=?');params.append(int(streak_min))
   if rps_min not in ('',None):
@@ -362,7 +377,7 @@ class Api:
   items=[]
   for row in rows:
    item=dict(zip(names,row));item['trade_date']=str(item['trade_date']);item['quality_codes']=json.loads(item['quality_codes']) if item['quality_codes'] else [];item['basis']=json.loads(item['basis']) if item['basis'] else {};item['strength_quality_codes']=json.loads(item['strength_quality_codes']) if item['strength_quality_codes'] else [];item['strength_basis']=json.loads(item['strength_basis']) if item['strength_basis'] else {};items.append(item)
-  result={'publication_id':p,'page':page,'page_size':size,'total':total,'basis':basis,'window':window,'snapshot_id':selected['snapshot_id'],'snapshot_capability':'AVAILABLE','items':items}
+  result={'publication_id':p,'page':page,'page_size':size,'total':total,'basis':basis,'window':window,'as_of_trade_date':str(max(item['trade_date'] for item in items)) if items else None,'snapshot_id':selected['snapshot_id'],'snapshot_capability':'AVAILABLE','items':items}
   return self._add_quotes(p,self._add_stock_payloads(p,result))
  def technical_history(self,p,security_id,days=20,price_basis='ADJUSTED',fields=''):
   if price_basis not in ('RAW','ADJUSTED','TDX_NATIVE_QFQ'): raise ValueError('PRICE_BASIS_UNSUPPORTED')
@@ -623,7 +638,7 @@ def make_handler(root,db):
     if u.path=='/api/publications': out=api.publications(x.get('include_analysis')=='1')
     elif u.path=='/api/dashboard': out=api.dashboard(x['publication_id'])
     elif u.path=='/api/sectors': out=api.sectors(x['publication_id'],x.get('q',''),x.get('page',1),x.get('page_size',50),x.get('type',''))
-    elif u.path=='/api/sectors/cycle': out=api.sector_cycle(x['publication_id'],x.get('page',1),x.get('page_size',20),x.get('type',''),x.get('q',''),x.get('days',10),x.get('metric','rank'))
+    elif u.path=='/api/sectors/cycle': out=api.sector_cycle(x['publication_id'],x.get('page',1),x.get('page_size',20),x.get('sector_type',x.get('type','')),x.get('q',''),x.get('days',10),x.get('metric','rank'))
     elif u.path.startswith('/api/sectors/') and u.path.endswith('/timeline'):
      sector_id=unquote(u.path[len('/api/sectors/'): -len('/timeline')].strip('/'));out=api.sector_timeline(x['publication_id'],sector_id,x.get('days',30))
     elif u.path.startswith('/api/sectors/') and u.path.endswith('/members/history'):

@@ -4,7 +4,8 @@ Contract: `history-recovery-cleanup-v1.0`.
 
 An M7B history backup is an offline, maintenance-window operation. It copies
 the DuckDB file after `CHECKPOINT`, verifies the copied database, and writes an
-immutable manifest for every active storage object marked as referenced. Each
+immutable manifest for every active storage object referenced by the database,
+including all registered `analysis_slices`; it does not trust only a payload flag. Each
 external object is copied atomically, and both the source and copied bytes are
 checked against SHA-256. The TDX root and all paths outside configured managed
 write roots are rejected.
@@ -15,9 +16,11 @@ referenced object hash. The result is written atomically as
 `restore_report.json`; a successful drill does not replace the live database.
 
 Cleanup preview is audit-only. An object is protected when it is referenced by
-an analysis slice or successful analysis publication, held by an active
+a successful analysis publication, held by an active
 history job, covered by an active lease, explicitly referenced by the catalog,
-or inside the retention window. Age alone never authorizes deletion. Existing
+or inside the retention window. A sealed but unbound analysis slice may become
+a candidate after retention; unregistered content-addressed files are reported
+for manual review. Age alone never authorizes deletion. Existing
 quarantine/delete operations remain the only separately confirmed cleanup
 actions.
 

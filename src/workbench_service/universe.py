@@ -98,7 +98,7 @@ def classify_security_id(security_id: object, metadata: Mapping[str, object] | N
     declared_type = _normal(metadata.get("security_type") or metadata.get("asset_type"))
     status = _normal(metadata.get("status") or metadata.get("trade_status") or metadata.get("universe_status"))
     explicitly_delisted = _bool(metadata.get("is_delisted")) is True or status in DELISTED_STATUSES
-    status_unknown = status in UNKNOWN_STATUSES or status.endswith("_UNKNOWN")
+    status_unknown = not status or status in UNKNOWN_STATUSES or status.endswith("_UNKNOWN")
 
     if explicitly_delisted:
         return UniverseDecision(raw, market, code, "DELISTED", True, False, False, "EXPLICIT_DELISTED")

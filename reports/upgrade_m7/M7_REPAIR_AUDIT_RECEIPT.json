@@ -1,0 +1,78 @@
+{
+  "contract_version": "m7-repair-audit-receipt-v1.0",
+  "stage": "M7",
+  "plan_version": "WORKBENCH_M7_M15_IMPLEMENTATION_PLAN_V2_1",
+  "created_at_utc": "2026-09-09T03:36:15.9696197Z",
+  "status": "DEGRADED_PASS",
+  "summary": "All independently audited M7 implementation defects are repaired and regression-tested. Remaining degradations are evidence or rollout state, not open source defects.",
+  "verification": {
+    "full_test_suite": {
+      "status": "PASS",
+      "passed": 600,
+      "failed": 0,
+      "duration_seconds": 42.25
+    },
+    "python_compile": "PASS",
+    "git_diff_check": "PASS",
+    "m6_v1_computation_identity": {
+      "status": "PASS",
+      "sealed_sha256": "41f4030eaff55b041bcbb05ce0bc39ed3d8736f438d5aa24eb4c14cdac5db51b",
+      "current_sha256": "41f4030eaff55b041bcbb05ce0bc39ed3d8736f438d5aa24eb4c14cdac5db51b"
+    },
+    "source_freeze": {
+      "status": "PASS",
+      "manifest": "reports/upgrade_m7/source_manifest_20260907_83864b3443a8875c.json",
+      "manifest_sha256": "83864b3443a8875c7ddf7923b5ba0b303b9b5fc0cc7b5a429fe5ad3e834d3bbb",
+      "directory_entry_count": 12399,
+      "directory_tree_sha256": "5214b24fb09fba788ca589c7c8e269cfb86f1245cd06d3851893c8dad0f5352b"
+    },
+    "slice_coordination": {
+      "status": "PASS",
+      "slice_id": "slice-8a733f9e4c18378b5f513fdc51ee4c2e5372e834aa1ce0bca446260199f3efe9",
+      "receipt": "reports/upgrade_m7/m7b_04_repair_receipt_20260907.json"
+    },
+    "history_job": {
+      "status": "SUCCESS",
+      "job_id": "job-history-be1110333f284493ab65cf6cba6f76da",
+      "request_identity": "901aacd896481be9b64daebd3b2e75ff2049c8b09f22eb4314a66e8c0ff4ea93",
+      "receipt": "reports/upgrade_m7/m7b_05_repair_job_receipt_20260907.json"
+    },
+    "isolated_activation": {
+      "status": "SUCCESS",
+      "publication_id": "pub-history-6ef9b8dee952604ed38263889ba9dbdf",
+      "analysis_snapshot_id": "snapshot-6ef9b8dee952604ed38263889ba9dbdf3280377421624f6fb2574a424a0a4d13",
+      "receipt": "reports/upgrade_m7/m7b_06_repair_activation_receipt.json"
+    },
+    "isolated_recovery": {
+      "status": "PASS",
+      "database_sha256": "6d97fc794e6121bf9d4edd75a0fc64b28a21a7a35a6ef473cf0ac7827c4e872e",
+      "restored_object_count": 1,
+      "receipt": "reports/upgrade_m7/m7b_07_repair_recovery_receipt.json"
+    }
+  },
+  "formal_database": {
+    "publication_heads_unchanged": true,
+    "analysis_binding_count": 0,
+    "publication_heads": {
+      "2026-09-04": "695c7ae5affd4abbb3d86eddb4b154e0",
+      "2026-09-07": "m4-5212a91982eb6d63b7455d8855676fa5",
+      "2026-09-08": "m4-44e401cad4337d38105b496077a4f36e"
+    }
+  },
+  "closed_findings": [
+    "M6 computation identity contamination by M7 universe configuration",
+    "mutable global quote parquet accepted as publication-bound evidence",
+    "analysis snapshot entry identity conflict silently ignored",
+    "Api repository root inferred from temporary database location",
+    "restore omitted database hash and Parquet readability verification",
+    "activated analysis snapshot absent from API identity and capability",
+    "frozen source directory verified only by entry count",
+    "analysis object cleanup references driven by static flags or all slices"
+  ],
+  "degradations": [
+    "Legacy publications without a matching content-verified quote manifest expose explicit SOURCE_NOT_FROZEN nulls.",
+    "The repaired activation and recovery chain was verified on an isolated database copy; no formal publication head was changed.",
+    "Independent M6 business acceptance remains a separate release gate."
+  ],
+  "blockers": []
+}

@@ -38,6 +38,20 @@ def sha256_file(path: str | Path) -> str:
     return digest.hexdigest()
 
 
+def directory_digest(path: str | Path) -> dict[str, Any]:
+    root = Path(path).resolve()
+    entries = []
+    total_bytes = 0
+    candidates = sorted((item for item in root.rglob("*") if item.is_file()), key=lambda item: item.relative_to(root).as_posix())
+    for candidate in candidates:
+        if candidate.is_symlink() or root not in candidate.resolve().parents:
+            raise SourceFreezeError("SOURCE_DIRECTORY_SYMLINK_OR_ESCAPE")
+        size = candidate.stat().st_size
+        total_bytes += size
+        entries.append({"path": candidate.relative_to(root).as_posix(), "size_bytes": size, "sha256": sha256_file(candidate)})
+    return {"entry_count": len(entries), "total_bytes": total_bytes, "tree_sha256": _sha_bytes(_canonical({"entries": entries}))}
+
+
 def _manifest_hash(value: dict[str, Any]) -> str:
     payload = dict(value)
     payload.pop("manifest_sha256", None)
@@ -147,8 +161,16 @@ def verify_source_manifest(root: str | Path, value: dict[str, Any]) -> dict[str,
         elif item["kind"] == "directory":
             if not path.is_dir():
                 mismatches.append({"path": item["path"], "reason": "DIRECTORY_MISSING"})
-            elif "entry_count" in item and sum(1 for candidate in path.rglob("*") if candidate.is_file()) != item["entry_count"]:
-                mismatches.append({"path": item["path"], "reason": "ENTRY_COUNT_MISMATCH"})
+            else:
+                actual = directory_digest(path)
+                if not item.get("tree_sha256"):
+                    mismatches.append({"path": item["path"], "reason": "TREE_HASH_MISSING"})
+                elif actual["tree_sha256"] != item["tree_sha256"]:
+                    mismatches.append({"path": item["path"], "reason": "TREE_HASH_MISMATCH"})
+                elif "entry_count" in item and actual["entry_count"] != item["entry_count"]:
+                    mismatches.append({"path": item["path"], "reason": "ENTRY_COUNT_MISMATCH"})
+                elif "total_bytes" in item and actual["total_bytes"] != item["total_bytes"]:
+                    mismatches.append({"path": item["path"], "reason": "TOTAL_BYTES_MISMATCH"})
             checked += 1
         else:
             raise SourceFreezeError(f"SOURCE_INPUT_KIND_UNSUPPORTED:{item['kind']}")
@@ -248,7 +270,10 @@ class SourceFreezer:
         extracted_path = _safe_local_path(self.root, extracted_root)
         if not extracted_path.is_dir():
             raise SourceFreezeError("SOURCE_EXTRACTION_ROOT_MISSING")
-        inputs.append({"path": extracted_root, "kind": "directory", "role": "raw_day_source", "entry_count": int(bundle["extraction"]["entry_count"]), "source_bundle_id": bundle_id, "source_bundle_sha256": bundle["package"]["sha256"], "observed_at": observed_at, "effective_date": effective_date, "date_scope": scope})
+        tree = directory_digest(extracted_path)
+        if tree["entry_count"] != int(bundle["extraction"]["entry_count"]):
+            raise SourceFreezeError("SOURCE_EXTRACTION_ENTRY_COUNT_MISMATCH")
+        inputs.append({"path": extracted_root, "kind": "directory", "role": "raw_day_source", **tree, "source_bundle_id": bundle_id, "source_bundle_sha256": bundle["package"]["sha256"], "observed_at": observed_at, "effective_date": effective_date, "date_scope": scope})
         result = build_source_manifest(
             publication_id=publication_id,
             cutoff_date=cutoff,

@@ -238,7 +238,8 @@ class SliceCoordinator:
             "row_count": row_count,
             "contract_version": CONTRACT_VERSION,
             "state": "ACTIVE",
-            "referenced": True,
+            "referenced": False,
+            "successful_date": trade_date,
             "registered_at_utc": created_at.isoformat(),
         }
         try:

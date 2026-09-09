@@ -4,6 +4,8 @@
 适用步骤：`M7A / 7A-02`
 状态：preview；不改变已封存发布，不触发正式入口切换。
 
+M7 专用配置位于 `config/workbench_universe.yaml`；不得修改被 V1 计算身份封存的 `config/universe.yaml`。
+
 ## 范围规则
 
 工作台的正常 A 股范围是沪深北三市场的六位证券代码前缀：

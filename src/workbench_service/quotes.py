@@ -1,6 +1,7 @@
 """Quote binding and safe single-day return calculation for M7A."""
 from __future__ import annotations
 
+import hashlib
 from datetime import date, timedelta
 from pathlib import Path
 from typing import Mapping
@@ -122,15 +123,24 @@ class QuoteService:
     def __init__(self, parquet_path: str | Path):
         self.parquet_path = Path(parquet_path)
 
-    def load(self, *, trade_date: date, publication_id: str, source_identity_sha256: str | None = None) -> dict[str, dict]:
+    def load(self, *, trade_date: date, publication_id: str, source_identity_sha256: str | None = None,
+             expected_file_sha256: str | None = None, source_path: str = SOURCE_PATH) -> dict[str, dict]:
         if not self.parquet_path.is_file():
             return {}
+        if expected_file_sha256:
+            digest = hashlib.sha256()
+            with self.parquet_path.open("rb") as handle:
+                for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+                    digest.update(chunk)
+            if digest.hexdigest() != expected_file_sha256:
+                return {}
         lookback_start = trade_date - timedelta(days=14)
         columns = [
             "security_id", "date", "raw_open", "raw_high", "raw_low", "raw_close", "raw_amount",
             "qfq_mul", "qfq_add", "adjustment_status", "adjustment_version", "tradable",
             "has_actual_bar", "data_observed", "is_synthetic_fill", "missing_state",
             "security_type", "universe_status",
+            "is_master_session",
         ]
         rows = pq.read_table(
             self.parquet_path,
@@ -138,7 +148,7 @@ class QuoteService:
             filters=[("date", ">=", lookback_start), ("date", "<=", trade_date)],
         ).to_pylist()
         rows = [row for row in rows if is_a_share_security_id(row.get("security_id"))]
-        sessions = sorted({row["date"] for row in rows if row.get("date") and _ordinary_bar(row)})
+        sessions = sorted({row["date"] for row in rows if row.get("date") and _truth(row.get("is_master_session"))})
         previous_session = max((item for item in sessions if item < trade_date), default=None)
         current_rows = {row["security_id"]: row for row in rows if row.get("date") == trade_date}
         previous_rows = {
@@ -150,7 +160,7 @@ class QuoteService:
                 previous_rows.get(security_id),
                 publication_id=publication_id,
                 source_identity_sha256=source_identity_sha256,
-                source_path=SOURCE_PATH,
+                source_path=source_path,
             )
             for security_id, current in current_rows.items()
         }

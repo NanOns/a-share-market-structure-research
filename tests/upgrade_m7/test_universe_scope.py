@@ -11,7 +11,7 @@ from workbench_service.universe import (
 
 def test_hushenbei_prefixes_are_one_shared_a_share_scope() -> None:
     for security_id in ("SH.600000", "SZ.000001", "SZ.300750", "SZ.302132", "BJ.400001", "BJ.830001", "BJ.920000"):
-        decision = classify_security_id(security_id)
+        decision = classify_security_id(security_id, {"status": "LISTED"})
         assert decision.classification == "A_STOCK"
         assert decision.display_eligible is True
         assert decision.quote_eligible is True
@@ -40,6 +40,9 @@ def test_unknown_status_is_not_delisted() -> None:
     assert decision.display_eligible and decision.quote_eligible
     assert not decision.structure_eligible
     assert decision.exclusion_reason == "STATUS_UNKNOWN_FOR_STRUCTURE"
+    missing = classify_security_id("SH.600000")
+    assert missing.classification == "A_STOCK"
+    assert missing.display_eligible and not missing.structure_eligible
 
 
 def test_identity_mismatch_cannot_promote_an_id() -> None:
@@ -52,7 +55,7 @@ def test_identity_mismatch_cannot_promote_an_id() -> None:
 def test_summary_keeps_three_eligibility_denominators_explainable() -> None:
     result = summarize_universe(
         [
-            {"security_id": "SH.600000"},
+            {"security_id": "SH.600000", "status": "LISTED"},
             {"security_id": "SH.900901"},
             {"security_id": "NQ.430001"},
             {"security_id": "SZ.000001", "status": "UNKNOWN"},

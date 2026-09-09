@@ -21,6 +21,7 @@
 ## 来源绑定与不变量
 
 - `source_ref` 精确到源文件、证券和日期；`source_identity_sha256` 绑定所选发布的输入身份。
+- API 只读取与所选 publication、日期、source identity 和文件 SHA-256 全部匹配的 SourceManifest。缺少绑定或文件哈希变化时返回报价不可用，不回退到当前全局文件。
 - 所有报价均绑定 `publication_id` 和 `quote_date`，当前文件变化不能静默重写旧发布的报价解释。
 - `quote_ret1` 只描述历史价格变化，不代表未来涨跌或交易建议。
 - 未验证的参考前收、除权状态或交易状态不得伪装成精确涨幅；旧 `RET1` 也必须保留相同的安全状态。

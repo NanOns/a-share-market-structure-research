@@ -107,6 +107,7 @@ ENUM_CATALOG = {
         "MISSING_PREVIOUS_CLOSE": "缺少参考前收",
         "UNKNOWN_CORPORATE_ACTION": "公司行为未确定",
         "MISSING": "缺少当日报价",
+        "SOURCE_NOT_FROZEN": "该发布未封存原始报价",
     },
     "queue_name": {
         "STEADY_QUEUE": "稳健趋势队列",

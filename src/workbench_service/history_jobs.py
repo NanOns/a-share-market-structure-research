@@ -71,18 +71,25 @@ class HistoryJobService:
         if not row:
             raise HistoryJobError("PUBLICATION_NOT_FOUND")
         cutoff, source_identity = row
-        path = self.root / "reports/upgrade_m7" / f"source_manifest_{str(cutoff).replace('-', '')}.json"
-        if not path.is_file():
+        paths = sorted((self.root / "reports/upgrade_m7").glob(f"source_manifest_{str(cutoff).replace('-', '')}*.json"))
+        if not paths:
             raise HistoryJobError("SOURCE_MANIFEST_NOT_FOUND")
-        try:
-            manifest = json.loads(path.read_text(encoding="utf-8"))
-            verify_source_manifest(self.root, manifest)
-        except (OSError, json.JSONDecodeError, SourceFreezeError) as exc:
-            raise HistoryJobError(f"SOURCE_MANIFEST_INVALID:{exc}") from exc
-        if manifest.get("publication_id") != publication_id or manifest.get("cutoff_date") != cutoff:
-            raise HistoryJobError("SOURCE_MANIFEST_PUBLICATION_MISMATCH")
-        if source_identity and manifest.get("source_identity_sha256") != source_identity:
-            raise HistoryJobError("SOURCE_MANIFEST_IDENTITY_MISMATCH")
+        selected = None
+        for path in paths:
+            try:
+                candidate = json.loads(path.read_text(encoding="utf-8"))
+                if candidate.get("publication_id") != publication_id or candidate.get("cutoff_date") != cutoff:
+                    continue
+                if source_identity and candidate.get("source_identity_sha256") != source_identity:
+                    continue
+                verification = verify_source_manifest(self.root, candidate)
+                if verification["status"] == "PASS":
+                    selected = (candidate, path)
+            except (OSError, json.JSONDecodeError, SourceFreezeError):
+                continue
+        if not selected:
+            raise HistoryJobError("SOURCE_MANIFEST_INVALID_OR_IDENTITY_MISMATCH")
+        manifest, path = selected
         return manifest, cutoff, path.relative_to(self.root).as_posix()
 
     def _validate_request(self, request: Mapping[str, Any]) -> tuple[dict[str, Any], str, str, str]:

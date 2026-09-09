@@ -70,6 +70,7 @@ class BackupService:
             con.execute("CHECKPOINT")
             verification=self._verify(con)
             object_rows=con.execute("SELECT storage_object_id,payload_json FROM storage_objects").fetchall() if self._has_table(con,"storage_objects") else []
+            referenced_ids=self._referenced_object_ids(con,object_rows)
         database_sha=hashlib.sha256(self.database_path.read_bytes()).hexdigest()
         backup_id="backup-"+datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")+"-"+database_sha[:12]
         final=backup_root/(backup_id+".duckdb")
@@ -84,7 +85,7 @@ class BackupService:
             self._verify_file(temp_db,verification)
             for object_id,raw in object_rows:
                 item=json.loads(raw)
-                if item.get("state") != "ACTIVE" or not item.get("referenced"):
+                if item.get("state") != "ACTIVE" or object_id not in referenced_ids:
                     continue
                 source=self._validate_external_object(item.get("path"))
                 if not source.is_file():
@@ -103,7 +104,7 @@ class BackupService:
                 copied=hashlib.sha256(target.read_bytes()).hexdigest()
                 if copied != actual:
                     raise ConfigValidationError("BACKUP_OBJECT_COPY_HASH_MISMATCH:"+str(object_id))
-                objects.append({"storage_object_id":object_id,"source_path":str(source),"relative_path":str(relative_path).replace("\\","/"),"sha256":actual,"size_bytes":source.stat().st_size})
+                objects.append({"storage_object_id":object_id,"source_path":str(source),"relative_path":str(relative_path).replace("\\","/"),"sha256":actual,"size_bytes":source.stat().st_size,"storage_kind":item.get("storage_kind") or item.get("kind"),"row_count":item.get("row_count")})
             temp_object_root.mkdir(parents=True,exist_ok=True)
             manifest={"contract_version":"history-backup-manifest-v1.0","backup_id":backup_id,"created_at_utc":datetime.now(timezone.utc).isoformat(),"database":{"path":str(final),"sha256":database_sha,"verification":verification},"objects_root":str(object_root),"objects":sorted(objects,key=lambda x:x["storage_object_id"])}
             manifest["manifest_sha256"]=hashlib.sha256(_dump(manifest).encode()).hexdigest()
@@ -134,6 +135,9 @@ class BackupService:
         if not source.is_file(): raise ConfigValidationError("BACKUP_FILE_MISSING")
         if target.exists(): raise ConfigValidationError("RESTORE_DRILL_TARGET_EXISTS")
         target.parent.mkdir(parents=True,exist_ok=True); shutil.copy2(source,target)
+        if hashlib.sha256(target.read_bytes()).hexdigest() != record["sha256"]:
+            target.unlink(missing_ok=True)
+            raise ConfigValidationError("RESTORE_DATABASE_HASH_MISMATCH")
         self._verify_file(target,record["verification"])
         result={"backup_id":backup_id,"restore_drill_path":str(target),"status":"PASS","verification":record["verification"]}
         manifest_path=Path(record["manifest_path"]).resolve() if record.get("manifest_path") else None
@@ -155,6 +159,14 @@ class BackupService:
                 destination.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(source,destination)
                 actual=hashlib.sha256(destination.read_bytes()).hexdigest()
                 if actual != item["sha256"]: raise ConfigValidationError("RESTORE_OBJECT_HASH_MISMATCH:"+item["storage_object_id"])
+                if item.get("storage_kind") == "PARQUET":
+                    try:
+                        with duckdb.connect() as check:
+                            rows=int(check.execute("select count(*) from read_parquet(?)",[str(destination)]).fetchone()[0])
+                    except Exception as exc:
+                        raise ConfigValidationError("RESTORE_PARQUET_QUERY_FAILED:"+item["storage_object_id"]) from exc
+                    if item.get("row_count") is not None and rows != int(item["row_count"]):
+                        raise ConfigValidationError("RESTORE_PARQUET_ROW_COUNT_MISMATCH:"+item["storage_object_id"])
                 restored.append({"storage_object_id":item["storage_object_id"],"path":str(destination),"sha256":actual,"size_bytes":destination.stat().st_size})
             result.update({"manifest_path":str(manifest_path),"manifest_sha256":expected_manifest_hash,"restored_objects":restored,"object_count":len(restored)})
         report=target_root/"restore_report.json"
@@ -183,6 +195,12 @@ class BackupService:
     @staticmethod
     def _has_table(con, name: str) -> bool:
         return bool(con.execute("SELECT count(*) FROM information_schema.tables WHERE table_name=?",[name]).fetchone()[0])
+
+    def _referenced_object_ids(self, con, object_rows) -> set[str]:
+        result={object_id for object_id,raw in object_rows if json.loads(raw).get("referenced")}
+        if self._has_table(con,"analysis_slices"):
+            result.update(row[0] for row in con.execute("SELECT storage_object_id FROM analysis_slices WHERE storage_object_id IS NOT NULL").fetchall())
+        return {str(value) for value in result if value}
 
     @staticmethod
     def _verify(con):

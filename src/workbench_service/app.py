@@ -10,12 +10,13 @@ from workbench_publish import OneClickPublisher
 from workbench_ops import OperationsConfig, ConfigConflict, ConfigValidationError
 from workbench_ops import StorageGovernance, BackupService, MaintenanceService
 from workbench_service.strength_association import choose_association
-from workbench_service.universe import A_SHARE_SQL, summarize_universe
+from workbench_service.universe import A_SHARE_SQL, is_a_share_security_id, summarize_universe
 from workbench_service.quotes import QuoteService
 from workbench_service.catalog import API_CONTRACT, field_catalog
 from workbench_service.window_planner import MAX_OUTPUT_DAYS, load_dependencies, plan_window
 from workbench_service.history_jobs import HistoryJobError, HistoryJobService
 from workbench_service.analysis_activation import AnalysisActivationError, AnalysisActivationService
+from workbench_service.source_freezer import SourceFreezeError, validate_source_manifest
 
 MAX_PAGE_SIZE=100
 
@@ -35,7 +36,7 @@ def resolve_workbench_path(root,trade_date,publication_id):
  return matches[0]
 
 class Api:
- def __init__(self,db): self.db=str(Path(db).resolve());self._root=Path(self.db).parents[2];self._quote_cache={};self._quote_lock=threading.Lock();self._quote_service=QuoteService(Path(self.db).parents[1]/'normalized/adjusted_daily.parquet');self._association_cache={};self._association_lock=threading.Lock();self._window_dependencies=load_dependencies(self._root);self._window_sessions_cache=None
+ def __init__(self,db,root=None): self.db=str(Path(db).resolve());self._root=Path(root).resolve() if root else Path(__file__).resolve().parents[2];self._quote_cache={};self._quote_lock=threading.Lock();self._association_cache={};self._association_lock=threading.Lock();self._window_dependencies=load_dependencies(self._root);self._window_sessions_cache=None
  def _con(self):
   # DuckDB refuses a read_only connection while the publisher owns a normal
   # writer connection.  A normal read connection participates in DuckDB MVCC:
@@ -57,13 +58,20 @@ class Api:
  def _analysis_capabilities(self,p):
   with self._con() as c:
    counts={table:c.execute(f'select count(*) from {table} where publication_id=?',[p]).fetchone()[0] for table in ('stock_daily','sector_daily','queue_memberships')}
+  bindings=self._analysis_bindings(p)
   return {
    'overview':'AVAILABLE' if counts['stock_daily'] else 'UNAVAILABLE',
    'universe':'AVAILABLE' if counts['stock_daily'] else 'UNAVAILABLE',
    'sector':'AVAILABLE' if counts['sector_daily'] else 'UNAVAILABLE',
    'structure':'AVAILABLE' if counts['queue_memberships'] else 'UNAVAILABLE',
-   'history_analysis':'NOT_BUILT',
+   'history_analysis':'AVAILABLE' if bindings else 'NOT_BUILT',
   }
+ def _analysis_bindings(self,p):
+  with self._con() as c:
+   rows=c.execute('''select b.domain,b.snapshot_id,cast(s.cutoff_date as varchar),cast(s.query_start as varchar),s.manifest_hash
+      from publication_analysis_snapshots b join analysis_snapshots s using(snapshot_id)
+     where b.publication_id=? and s.status='SUCCESS' order by case b.domain when 'LOCAL_OBSERVED' then 0 else 1 end''',[p]).fetchall()
+  return {row[0]:{'domain':row[0],'snapshot_id':row[1],'cutoff_date':row[2],'query_start':row[3],'manifest_hash':row[4]} for row in rows}
  def latest_bundle(self):
   with self._con() as c: rows=c.execute("select source_bundle_id,payload_json from source_bundles").fetchall()
   values=[]
@@ -87,10 +95,28 @@ class Api:
  def _load_quotes(self,p):
   trade_date,_=self._pub(p); current=date.fromisoformat(trade_date)
   identity=self.identity(p)
-  return self._quote_service.load(trade_date=current,publication_id=p,source_identity_sha256=identity.get('source_identity_sha256'))
+  manifests=[]
+  for manifest_path in sorted((self._root/'reports/upgrade_m7').glob(f"source_manifest_{trade_date.replace('-','')}*.json")):
+   try:
+    candidate=json.loads(manifest_path.read_text('utf-8'));validate_source_manifest(candidate)
+   except (OSError,json.JSONDecodeError,SourceFreezeError):continue
+   if candidate.get('publication_id')==p and candidate.get('cutoff_date')==trade_date and (not identity.get('source_identity_sha256') or candidate.get('source_identity_sha256')==identity.get('source_identity_sha256')):manifests.append(candidate)
+  if not manifests:return {}
+  manifest=manifests[-1]
+  source=next((item for item in manifest.get('inputs',[]) if item.get('role')=='normalized_raw_price' and item.get('kind')=='file'),None)
+  if not source:return {}
+  relative=Path(str(source.get('path','')))
+  source_path=(self._root/relative).resolve()
+  if relative.is_absolute() or self._root not in source_path.parents:return {}
+  if not source_path.is_file():return {}
+  return QuoteService(source_path).load(trade_date=current,publication_id=p,source_identity_sha256=identity.get('source_identity_sha256'),expected_file_sha256=source['sha256'],source_path=relative.as_posix())
  def _add_quotes(self,p,result):
   quotes=self._quotes(p)
-  for item in result['items']: item.update(quotes.get(item.get('security_id'),{}))
+  trade_date,_=self._pub(p)
+  source_identity=self.identity(p).get('source_identity_sha256')
+  for item in result['items']:
+   security_id=item.get('security_id')
+   item.update(quotes.get(security_id,{'quote_contract_id':'workbench-quote-v2.1','security_id':security_id,'quote_date':trade_date,'raw_close':None,'latest_price':None,'quote_prev_close':None,'quote_ret1':None,'RET1':None,'raw_amount':None,'turnover_amount':None,'quote_ret1_basis':'UNAVAILABLE','quote_state':'SOURCE_NOT_FROZEN','publication_id':p,'source_ref':None,'source_identity_sha256':source_identity}))
   return result
  def _add_strength_associations(self,p,result):
   security_ids=[item.get('security_id') for item in result['items'] if item.get('security_id')]
@@ -146,14 +172,17 @@ class Api:
   if ids:
    snap=self.identity(p).get('membership_snapshot_id')
    with self._con() as c: members=c.execute('select sector_id,security_id from membership_entries where membership_snapshot_id=? and sector_id in ('+','.join('?' for _ in ids)+')',[snap,*ids]).fetchall()
-   grouped={sid:[] for sid in ids}
+   grouped={sid:{'members':[],'quotes':[]} for sid in ids}
    for sid,security_id in members:
-    if security_id in quotes: grouped[sid].append(quotes[security_id])
+    if is_a_share_security_id(security_id):
+     grouped[sid]['members'].append(security_id)
+     if security_id in quotes: grouped[sid]['quotes'].append(quotes[security_id])
    for item in result['items']:
-    values=grouped[item['sector_id']];returns=sorted(x['RET1'] for x in values if x.get('RET1') is not None)
+    group=grouped[item['sector_id']];values=group['quotes'];returns=sorted(x['RET1'] for x in values if x.get('RET1') is not None)
     item['sector_ret1_median']=returns[len(returns)//2] if len(returns)%2 else (returns[len(returns)//2-1]+returns[len(returns)//2])/2 if returns else None
     item['sector_turnover_amount']=sum(x['turnover_amount'] for x in values if x.get('turnover_amount') is not None)
-    item['total_member_count']=len(values)
+    item['total_member_count']=len(group['members'])
+    item['quote_valid_count']=len(values)
   return result
  def stocks(self,p,q,page,size): return self._add_quotes(p,self._rows('stock_daily',p,'and '+A_SHARE_SQL.format(id='security_id')+' and (security_name ilike ? or security_id ilike ?)',(f'%{q}%',f'%{q}%'),'security_id',page,size))
  def universe_summary(self,p):
@@ -220,22 +249,24 @@ class Api:
    membership=c.execute('select membership_snapshot_id from publication_memberships where publication_id=?',[p]).fetchone()
   result={'publication_id':p,'trade_date':d,'source_revision_id':rev,'source_manifest_sha256':x[0],'source_identity_sha256':x[1],'computation_identity_sha256':x[2],'render_identity_sha256':x[3],'membership_snapshot_id':membership[0] if membership else None,'api_contract':'m2-read-only-api-v1.2'}
   if include_analysis:
+   bindings=self._analysis_bindings(p);preferred=bindings.get('LOCAL_OBSERVED') or bindings.get('LOCAL_RECONSTRUCTED')
    result.update({
     'api_contract':API_CONTRACT,
     'revision':x[4],
     'production_version':x[5],
     'cutoff_date':d,
-    'analysis_snapshot_id':None,
+    'analysis_snapshot_id':preferred['snapshot_id'] if preferred else None,
+    'analysis_snapshots':bindings,
     'contracts':{'universe':'workbench-universe-v2.1','quote':'workbench-quote-v2.1','semantic':'workbench-semantic-v2.1','publication':'m4-one-click-publication-contract-v1.1'},
     'capabilities':self._analysis_capabilities(p),
-    'data_quality':{'status':'PARTIAL','codes':['HISTORY_ANALYSIS_NOT_BUILT'],'field_coverage':{}},
+    'data_quality':{'status':'AVAILABLE' if preferred else 'PARTIAL','codes':[] if preferred else ['HISTORY_ANALYSIS_NOT_BUILT'],'field_coverage':{}},
    })
   return result
  def field_catalog(self,api_contract=API_CONTRACT,language='zh-CN'):
   return field_catalog(api_contract,language)
  def _window_sessions(self):
   if self._window_sessions_cache is None:
-   path=Path(self.db).parents[1]/'normalized/adjusted_daily.parquet'
+   path=self._root/'data/normalized/adjusted_daily.parquet'
    with duckdb.connect() as c:
     sessions=c.execute('select distinct date from read_parquet(?) where is_master_session order by date',[str(path)]).fetchall()
     observed=c.execute('select distinct date from read_parquet(?) where is_master_session and data_observed order by date',[str(path)]).fetchall()
@@ -247,7 +278,11 @@ class Api:
   cutoff_text,_=self._pub(p); cutoff=date.fromisoformat(cutoff_text)
   sessions,observed=self._window_sessions()
   result=plan_window(sessions,cutoff_date=cutoff,output_days=int(days),observed_sessions=observed,dependencies=self._window_dependencies)
-  result.update({'api_contract':API_CONTRACT,'publication_id':p,'snapshot_id':None,'snapshot_capability':'NOT_BUILT','requested_basis':basis,'resolved_basis':'OBSERVED' if basis=='AUTO' else basis})
+  bindings=self._analysis_bindings(p)
+  requested_domain={'OBSERVED':'LOCAL_OBSERVED','RECONSTRUCTED':'LOCAL_RECONSTRUCTED'}.get(basis)
+  selected=(bindings.get(requested_domain) if requested_domain else bindings.get('LOCAL_OBSERVED') or bindings.get('LOCAL_RECONSTRUCTED'))
+  resolved=(selected['domain'].removeprefix('LOCAL_') if selected else ('OBSERVED' if basis=='AUTO' else basis))
+  result.update({'api_contract':API_CONTRACT,'publication_id':p,'snapshot_id':selected['snapshot_id'] if selected else None,'snapshot_capability':'AVAILABLE' if selected else 'NOT_BUILT','requested_basis':basis,'resolved_basis':resolved,'analysis_capability':'AVAILABLE' if selected else 'NOT_BUILT'})
   return {'publication_id':p,'item':result}
  def linkage(self,p,sector,security,page=1,size=100,q=''):
   size=max(1,min(MAX_PAGE_SIZE,int(size))); page=max(1,int(page))
@@ -294,7 +329,7 @@ class Api:
   return {'publication_id':p,'page':page,'page_size':size,'total':total,'sector_member_count':sector_member_count,'sector_member_rank_basis':'stock_rs20_pct_desc_then_ret20_desc_then_security_id','items':items}
 
 def make_handler(root,db):
- api=Api(db); history=HistoryJobService(root,db); history.recover_interrupted(background=True); activation=AnalysisActivationService(root,db); operations=OperationsConfig(root,db); storage=StorageGovernance(root,db); backups=BackupService(root,db); maintenance=MaintenanceService(root,db); static=Path(root)/'src/workbench_service/static';csrf=secrets.token_urlsafe(24);publishers={};daily_jobs={}
+ api=Api(db,root=root); history=HistoryJobService(root,db); history.recover_interrupted(background=True); activation=AnalysisActivationService(root,db); operations=OperationsConfig(root,db); storage=StorageGovernance(root,db); backups=BackupService(root,db); maintenance=MaintenanceService(root,db); static=Path(root)/'src/workbench_service/static';csrf=secrets.token_urlsafe(24);publishers={};daily_jobs={}
  def today_status(job_id):
   task=daily_jobs.get(job_id)
   if not task: return None
@@ -441,7 +476,7 @@ def make_handler(root,db):
      code=str(e);status=404 if code=='JOB_NOT_FOUND' else 409 if code in ('ATTEMPT_MISMATCH','JOB_NOT_CANCELLABLE','JOB_NOT_INTERRUPTED') else 400
      self._send(status,{'code':code,'message':'历史分析任务请求未通过','retryable':status in (409,500)})
    except AnalysisActivationError as e:
-    code=str(e);status=404 if code=='JOB_NOT_FOUND' else 409 if code in ('EXPECTED_HEAD_MISMATCH','ACTIVATION_IDENTITY_CONFLICT','PUBLICATION_IDENTITY_CONFLICT','SNAPSHOT_IDENTITY_CONFLICT','PUBLICATION_SNAPSHOT_BINDING_CONFLICT') else 400
+    code=str(e);status=404 if code=='JOB_NOT_FOUND' else 409 if code in ('EXPECTED_HEAD_MISMATCH','ACTIVATION_IDENTITY_CONFLICT','PUBLICATION_IDENTITY_CONFLICT','SNAPSHOT_IDENTITY_CONFLICT','SNAPSHOT_ENTRY_IDENTITY_CONFLICT','SNAPSHOT_ENTRY_SET_MISMATCH','PUBLICATION_SNAPSHOT_BINDING_CONFLICT') else 400
     self._send(status,{'code':code,'message':'历史分析快照激活未通过','retryable':status in (409,500)})
    except ConfigConflict as e:self._send(409,{'code':str(e),'message':'配置已被其他操作更新，请先重新读取','retryable':True})
    except ConfigValidationError as e:self._send(400,{'code':str(e),'message':'配置校验未通过，未应用任何变更','retryable':False})

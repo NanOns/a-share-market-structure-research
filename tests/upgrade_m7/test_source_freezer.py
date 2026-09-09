@@ -8,6 +8,7 @@ from workbench_service.source_freezer import (
     SourceFreezeError,
     atomic_write_manifest,
     build_source_manifest,
+    directory_digest,
     verify_source_manifest,
 )
 
@@ -59,3 +60,18 @@ def test_manifest_rejects_workspace_escape(tmp_path):
     escaped["manifest_sha256"] = __import__('hashlib').sha256(json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":"), default=str).encode()).hexdigest()
     with pytest.raises(SourceFreezeError, match="SOURCE_PATH_OUTSIDE_WORKSPACE"):
         verify_source_manifest(tmp_path, escaped)
+
+
+def test_directory_tree_hash_detects_content_change_without_count_change(tmp_path):
+    folder = tmp_path / "raw"
+    folder.mkdir()
+    (folder / "a.day").write_bytes(b"one")
+    tree = directory_digest(folder)
+    _, manifest = _manifest(tmp_path)
+    manifest["inputs"] = [{"path": "raw", "kind": "directory", "role": "raw_day_source", **tree}]
+    payload = dict(manifest)
+    payload.pop("manifest_sha256", None)
+    manifest["manifest_sha256"] = __import__('hashlib').sha256(json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":"), default=str).encode()).hexdigest()
+    assert verify_source_manifest(tmp_path, manifest)["status"] == "PASS"
+    (folder / "a.day").write_bytes(b"two")
+    assert verify_source_manifest(tmp_path, manifest)["status"] == "FAIL"

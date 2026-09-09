@@ -4,8 +4,11 @@ from datetime import date, timedelta, timezone, datetime
 from pathlib import Path
 
 import duckdb
+import pytest
+import pyarrow as pa
+import pyarrow.parquet as pq
 
-from workbench_ops import BackupService, StorageGovernance
+from workbench_ops import BackupService, ConfigValidationError, StorageGovernance
 
 
 def _root(tmp_path):
@@ -30,9 +33,9 @@ def test_history_backup_restores_database_and_referenced_object(tmp_path):
     db = _root(tmp_path)
     obj = tmp_path / "data/analysis_objects/slice.parquet"
     obj.parent.mkdir(parents=True)
-    obj.write_bytes(b"immutable-slice")
+    pq.write_table(pa.Table.from_pylist([{"security_id": "SH.600000", "value": 1}]), obj)
     digest = hashlib.sha256(obj.read_bytes()).hexdigest()
-    payload = {"storage_object_id": "slice-1", "path": str(obj), "relative_path": "data/analysis_objects/slice.parquet", "physical_sha256": digest, "referenced": True, "state": "ACTIVE"}
+    payload = {"storage_object_id": "slice-1", "path": str(obj), "relative_path": "data/analysis_objects/slice.parquet", "physical_sha256": digest, "referenced": True, "state": "ACTIVE", "storage_kind": "PARQUET", "row_count": 1}
     with duckdb.connect(str(db)) as con:
         con.execute("INSERT INTO storage_objects VALUES (?, ?)", ["slice-1", json.dumps(payload)])
     service = BackupService(tmp_path, db)
@@ -41,9 +44,19 @@ def test_history_backup_restores_database_and_referenced_object(tmp_path):
     result = service.restore_drill(record["backup_id"], drill_root=tmp_path / "runtime/drill")
     assert result["status"] == "PASS" and result["object_count"] == 1
     restored = Path(result["restored_objects"][0]["path"])
-    assert restored.read_bytes() == b"immutable-slice"
+    assert pq.read_table(restored).num_rows == 1
     with duckdb.connect(result["restore_drill_path"], read_only=True) as con:
         assert con.execute("SELECT count(*) FROM publication_heads").fetchone()[0] == 1
+
+
+def test_restore_rejects_database_hash_change_even_when_counts_match(tmp_path):
+    db = _root(tmp_path)
+    service = BackupService(tmp_path, db)
+    record = service.create_history_backup(maintenance_window=True)
+    with Path(record["path"]).open("ab") as handle:
+        handle.write(b"tampered")
+    with pytest.raises(ConfigValidationError, match="RESTORE_DATABASE_HASH_MISMATCH"):
+        service.restore_drill(record["backup_id"], drill_root=tmp_path / "runtime/tampered-drill")
 
 
 def test_cleanup_preview_protects_active_lease_and_preparing_job(tmp_path):
@@ -67,3 +80,18 @@ def test_cleanup_preview_protects_active_lease_and_preparing_job(tmp_path):
         con.execute("UPDATE jobs SET status='SUCCESS'")
     plan = storage.preview_cleanup(as_of=date(2026, 9, 8))
     assert {item["storage_object_id"] for item in plan["eligible"]} == {lease_id, job_id}
+
+
+def test_unbound_analysis_slice_can_be_previewed_after_retention(tmp_path):
+    db = _root(tmp_path)
+    storage = StorageGovernance(tmp_path, db)
+    path = tmp_path / "data/analysis_objects/analysis-obj-unbound.parquet"
+    path.parent.mkdir(parents=True)
+    path.write_bytes(b"slice")
+    payload = {"storage_object_id": "analysis-obj-unbound", "path": str(path), "kind": "ANALYSIS_SLICE", "state": "ACTIVE", "referenced": True}
+    with duckdb.connect(str(db)) as con:
+        con.execute("CREATE TABLE analysis_slices (slice_id VARCHAR, storage_object_id VARCHAR, trade_date DATE)")
+        con.execute("INSERT INTO analysis_slices VALUES ('slice-unbound','analysis-obj-unbound','2026-09-01')")
+        con.execute("INSERT INTO storage_objects VALUES ('analysis-obj-unbound',?)", [json.dumps(payload)])
+    plan = storage.preview_cleanup(as_of=date(2026, 9, 8))
+    assert plan["eligible_object_ids"] == ["analysis-obj-unbound"]

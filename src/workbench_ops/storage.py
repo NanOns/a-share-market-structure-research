@@ -92,6 +92,7 @@ class StorageGovernance:
             referenced=self._database_references(con)
             active_jobs=self._active_job_references(con)
             lease_refs=self._active_lease_references(con)
+            object_dates=self._analysis_object_dates(con)
         eligible=[]; protected=[]
         for (raw,) in rows:
             item=json.loads(raw)
@@ -102,15 +103,19 @@ class StorageGovernance:
             lease=item.get("lease_until_utc")
             object_lease=lease and datetime.fromisoformat(lease.replace("Z","+00:00")) > datetime.now(timezone.utc)
             if item.get("state") != "ACTIVE": protected.append({"object":item,"reason":"NOT_ACTIVE"})
-            elif object_id in referenced or item.get("referenced"): protected.append({"object":item,"reason":"DATABASE_REFERENCED"})
+            elif object_id in referenced or (item.get("referenced") and item.get("kind") != "ANALYSIS_SLICE"): protected.append({"object":item,"reason":"DATABASE_REFERENCED"})
             elif object_id in active_jobs: protected.append({"object":item,"reason":"ACTIVE_JOB_REFERENCE"})
             elif object_id in lease_refs or object_lease: protected.append({"object":item,"reason":"ACTIVE_LEASE"})
             else:
-                try: age=(as_of-date.fromisoformat(item["successful_date"])).days
-                except (KeyError, ValueError): protected.append({"object":item,"reason":"INVALID_SUCCESSFUL_DATE"});continue
+                successful_date=item.get("successful_date") or object_dates.get(object_id)
+                try: age=(as_of-date.fromisoformat(successful_date)).days
+                except (KeyError, TypeError, ValueError): protected.append({"object":item,"reason":"INVALID_SUCCESSFUL_DATE"});continue
                 if age < retention: protected.append({"object":item,"reason":"RETENTION_WINDOW"})
                 else: eligible.append(item)
-        plan_body={"contract_version":"history-cleanup-preview-v1.0","as_of":as_of.isoformat(),"retention_successful_days":retention,"eligible_object_ids":sorted(x["storage_object_id"] for x in eligible),"reference_audit":{"database":sorted(referenced),"active_jobs":sorted(active_jobs),"leases":sorted(lease_refs)}}
+        registered={json.loads(raw).get("path") for (raw,) in rows}
+        object_root=self.root/"data/analysis_objects"
+        unregistered=[{"path":str(path.resolve()),"reason":"UNREGISTERED_REVIEW_REQUIRED"} for path in sorted(object_root.glob("analysis-obj-*.parquet")) if str(path.resolve()) not in registered]
+        plan_body={"contract_version":"history-cleanup-preview-v1.0","as_of":as_of.isoformat(),"retention_successful_days":retention,"eligible_object_ids":sorted(x["storage_object_id"] for x in eligible),"reference_audit":{"database":sorted(referenced),"active_jobs":sorted(active_jobs),"leases":sorted(lease_refs)},"unregistered_objects":unregistered}
         created_at=datetime.now(timezone.utc).isoformat()
         # A preview is an immutable decision record.  It must not reuse an
         # earlier plan that may already have been restored or deleted.
@@ -126,8 +131,6 @@ class StorageGovernance:
 
     def _database_references(self, con) -> set[str]:
         refs=set()
-        if self._table_exists(con,"analysis_slices"):
-            refs.update(row[0] for row in con.execute("SELECT storage_object_id FROM analysis_slices WHERE storage_object_id IS NOT NULL").fetchall())
         if self._table_exists(con,"publication_analysis_snapshots") and self._table_exists(con,"analysis_snapshot_entries") and self._table_exists(con,"analysis_slices"):
             refs.update(row[0] for row in con.execute("""
                 SELECT s.storage_object_id
@@ -138,6 +141,11 @@ class StorageGovernance:
                 WHERE s.storage_object_id IS NOT NULL
             """).fetchall())
         return {x for x in refs if x}
+
+    def _analysis_object_dates(self, con) -> dict[str,str]:
+        if not self._table_exists(con,"analysis_slices"):
+            return {}
+        return {row[0]:row[1] for row in con.execute("SELECT storage_object_id,cast(max(trade_date) as varchar) FROM analysis_slices WHERE storage_object_id IS NOT NULL GROUP BY storage_object_id").fetchall()}
 
     def _active_job_references(self, con) -> set[str]:
         refs=set()
@@ -183,10 +191,13 @@ class StorageGovernance:
         planned=set(plan.get("eligible_object_ids",[])); moved=[]; moves=[]
         with duckdb.connect(str(self.database_path)) as con:
             catalog={object_id:json.loads(payload) for object_id,payload in con.execute("SELECT storage_object_id,payload_json FROM storage_objects").fetchall()}
+            referenced=self._database_references(con);active_jobs=self._active_job_references(con);lease_refs=self._active_lease_references(con)
             for object_id in sorted(planned):
                 item=catalog.get(object_id)
-                if not item or item.get("state") != "ACTIVE" or item.get("referenced"):
+                legacy_reference=item and item.get("referenced") and item.get("kind") != "ANALYSIS_SLICE"
+                if not item or item.get("state") != "ACTIVE" or legacy_reference or object_id in referenced or object_id in active_jobs:
                     raise ConfigValidationError("CLEANUP_PLAN_STALE")
+                if object_id in lease_refs: raise ConfigValidationError("CLEANUP_PLAN_STALE_ACTIVE_LEASE")
                 lease=item.get("lease_until_utc")
                 if lease and datetime.fromisoformat(lease.replace("Z","+00:00")) > datetime.now(timezone.utc):
                     raise ConfigValidationError("CLEANUP_PLAN_STALE_ACTIVE_LEASE")

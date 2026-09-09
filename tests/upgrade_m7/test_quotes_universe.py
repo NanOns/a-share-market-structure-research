@@ -88,13 +88,19 @@ def test_real_service_uses_previous_market_session_not_previous_publication() ->
 
 def test_api_quotes_bind_source_and_use_raw_close() -> None:
     api = Api(Path("data/database/market_research.duckdb"))
-    result = api._quotes("m4-44e401cad4337d38105b496077a4f36e")["SH.600000"]
-    assert result["raw_close"] == 9.28
-    assert result["latest_price"] == 9.28
-    assert result["quote_prev_close"] == 9.23
+    publication_id = "452811b8e0c54c029560aae46c6d3081"
+    result = api._quotes(publication_id)["SH.600000"]
+    assert result["raw_close"] == 9.23
+    assert result["latest_price"] == 9.23
+    assert result["quote_prev_close"] == 9.43
     assert result["quote_ret1_basis"] == "RAW_CLOSE_PREVIOUS_TRADING_DAY"
-    assert result["publication_id"] == "m4-44e401cad4337d38105b496077a4f36e"
+    assert result["publication_id"] == publication_id
     assert "data/normalized/adjusted_daily.parquet#security_id=SH.600000" in result["source_ref"]
+
+
+def test_api_refuses_publication_without_a_matching_quote_manifest() -> None:
+    api = Api(Path("data/database/market_research.duckdb"))
+    assert api._quotes("m4-44e401cad4337d38105b496077a4f36e") == {}
 
 
 def test_quote_contract_is_versioned_and_preserves_legacy_fields() -> None:

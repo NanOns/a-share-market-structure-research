@@ -72,9 +72,15 @@ class AnalysisActivationService:
             raise AnalysisActivationError("SOURCE_MANIFEST_NOT_FOUND")
         try:
             source_manifest = json.loads(source_manifest_path.read_text(encoding="utf-8"))
-            verify_source_manifest(self.root, source_manifest)
+            verification = verify_source_manifest(self.root, source_manifest)
+            if verification["status"] != "PASS":
+                raise SourceFreezeError("SOURCE_MANIFEST_INPUT_MISMATCH")
         except (OSError, json.JSONDecodeError, SourceFreezeError) as exc:
             raise AnalysisActivationError(f"SOURCE_MANIFEST_INVALID:{exc}") from exc
+        if source_manifest.get("manifest_sha256") != request.get("source_manifest_sha256"):
+            raise AnalysisActivationError("SOURCE_MANIFEST_REQUEST_MISMATCH")
+        if source_manifest.get("publication_id") != base_publication_id:
+            raise AnalysisActivationError("SOURCE_MANIFEST_PUBLICATION_MISMATCH")
         with self._connect() as connection:
             publication = connection.execute("select cast(trade_date as varchar),source_revision_id,source_manifest_sha256,source_identity_sha256,computation_identity_sha256,render_identity_sha256,production_version,source_path from publications where publication_id=? and status='SUCCESS'", [base_publication_id]).fetchone()
             rows = connection.execute("select slice_id,domain,cast(trade_date as varchar),input_hash,dependency_hash,logical_hash,row_count from analysis_slices where slice_id in (" + ",".join("?" for _ in completed) + ") order by domain,trade_date,slice_id", completed).fetchall()
@@ -133,14 +139,29 @@ class AnalysisActivationService:
             finally:
                 temporary.unlink(missing_ok=True)
         with self._connect() as connection:
-            connection.execute("insert into analysis_snapshots values (?,?,?,?,?,?,?,?) on conflict(snapshot_id) do nothing", [snapshot_id, date.fromisoformat(manifest["cutoff_date"]), date.fromisoformat(manifest["query_start"]), manifest["universe_contract"], config_hash, manifest["manifest_hash"], "PREPARED", datetime.now(timezone.utc)])
-            stored = connection.execute("select cutoff_date,query_start,universe_contract,config_hash,manifest_hash,status from analysis_snapshots where snapshot_id=?", [snapshot_id]).fetchone()
-            expected = (date.fromisoformat(manifest["cutoff_date"]), date.fromisoformat(manifest["query_start"]), manifest["universe_contract"], config_hash, manifest["manifest_hash"])
-            if stored[:5] != expected:
-                raise AnalysisActivationError("SNAPSHOT_IDENTITY_CONFLICT")
-            for entry in manifest["entries"]:
-                connection.execute("insert into analysis_snapshot_entries values (?,?,?,?) on conflict(snapshot_id,domain,trade_date) do nothing", [snapshot_id, entry["domain"], date.fromisoformat(entry["trade_date"]), entry["slice_id"]])
-        return {"snapshot_id": snapshot_id, "manifest_hash": manifest["manifest_hash"], "manifest_path": path.relative_to(self.root).as_posix(), "binding_domain": binding_domain, "status": "PREPARED"}
+            connection.execute("begin transaction")
+            try:
+                connection.execute("insert into analysis_snapshots values (?,?,?,?,?,?,?,?) on conflict(snapshot_id) do nothing", [snapshot_id, date.fromisoformat(manifest["cutoff_date"]), date.fromisoformat(manifest["query_start"]), manifest["universe_contract"], config_hash, manifest["manifest_hash"], "PREPARED", datetime.now(timezone.utc)])
+                stored = connection.execute("select cutoff_date,query_start,universe_contract,config_hash,manifest_hash,status from analysis_snapshots where snapshot_id=?", [snapshot_id]).fetchone()
+                expected = (date.fromisoformat(manifest["cutoff_date"]), date.fromisoformat(manifest["query_start"]), manifest["universe_contract"], config_hash, manifest["manifest_hash"])
+                if not stored or stored[:5] != expected or stored[5] == "FAILED":
+                    raise AnalysisActivationError("SNAPSHOT_IDENTITY_CONFLICT")
+                for entry in manifest["entries"]:
+                    trade_date = date.fromisoformat(entry["trade_date"])
+                    existing = connection.execute("select slice_id from analysis_snapshot_entries where snapshot_id=? and domain=? and trade_date=?", [snapshot_id, entry["domain"], trade_date]).fetchone()
+                    if existing and existing[0] != entry["slice_id"]:
+                        raise AnalysisActivationError("SNAPSHOT_ENTRY_IDENTITY_CONFLICT")
+                    if not existing:
+                        connection.execute("insert into analysis_snapshot_entries values (?,?,?,?)", [snapshot_id, entry["domain"], trade_date, entry["slice_id"]])
+                actual = connection.execute("select domain,cast(trade_date as varchar),slice_id from analysis_snapshot_entries where snapshot_id=? order by domain,trade_date", [snapshot_id]).fetchall()
+                expected_entries = sorted((entry["domain"], entry["trade_date"], entry["slice_id"]) for entry in manifest["entries"])
+                if actual != expected_entries:
+                    raise AnalysisActivationError("SNAPSHOT_ENTRY_SET_MISMATCH")
+                connection.execute("commit")
+            except Exception:
+                connection.execute("rollback")
+                raise
+        return {"snapshot_id": snapshot_id, "manifest_hash": manifest["manifest_hash"], "manifest_path": path.relative_to(self.root).as_posix(), "binding_domain": binding_domain, "status": stored[5]}
 
     def _event(self, connection, job_id: str, attempt: int, status: str, **details: Any) -> None:
         sequence = connection.execute("select coalesce(max(sequence),0)+1 from job_events where job_id=? and attempt=?", [job_id, attempt]).fetchone()[0]

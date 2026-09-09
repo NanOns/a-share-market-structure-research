@@ -95,7 +95,11 @@ def test_default_stock_scope_is_a_share_and_quotes_are_enriched():
  allowed=re.compile(r'^(SH\.(600|601|603|605|688|689)\d{3}|SZ\.(000|001|002|003|300|301)\d{3}|BJ\.92\d{4})$')
  assert rows and all(allowed.fullmatch(row['security_id']) for row in rows)
  assert all({'latest_price','RET1','turnover_amount'} <= row.keys() for row in rows)
- assert all(row['latest_price']>0 and row['turnover_amount']>=0 for row in rows)
+ assert all(
+  (row['latest_price'] is not None and row['latest_price']>0 and row['turnover_amount'] is not None and row['turnover_amount']>=0)
+  or (row.get('quote_state')=='SOURCE_NOT_FROZEN' and row['latest_price'] is None and row['turnover_amount'] is None)
+  for row in rows
+ )
 
 
 def test_queue_api_uses_contract_rank_order_and_sector_has_daily_market_fields():

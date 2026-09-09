@@ -38,6 +38,7 @@ class MigrationExecutor:
     DEPENDENCIES = {
         "007_history_identity": (BASE_SCHEMA_VERSION,),
         "008_technical_history": ("007_history_identity",),
+        "008_technical_history_rps": ("008_technical_history",),
     }
     CHECK_TABLE_SQL = """
         CREATE TABLE IF NOT EXISTS schema_migration_checks (

@@ -1,0 +1,38 @@
+{
+  "contract_version": "m8a-02-high-rps-receipt-v1.0",
+  "stage": "M8A-02",
+  "implementation_contract": "TECHNICAL_HISTORY_V2_1_PREVIEW",
+  "status": "PASS",
+  "scope": [
+    "stock_high_daily immutable storage",
+    "20/30/60/100 day strict prior-window highs",
+    "tie-at-prior-high state and independent streaks",
+    "left-censored and unknown-window quality states",
+    "same-date average-tie RPS for 5/10/20/60 windows",
+    "same-date RS benchmark separation",
+    "API11 read-only snapshot-bound new-high query"
+  ],
+  "tests": {
+    "targeted": {"status": "PASS", "passed": 14, "failed": 0},
+    "full_suite": {"status": "PASS", "passed": 611, "failed": 0}
+  },
+  "migration": {
+    "version": "008_technical_history_rps",
+    "dependency": "008_technical_history",
+    "temporary_database_apply": "PASS",
+    "formal_database_applied": false
+  },
+  "data_contract": {
+    "price_basis": "TDX_NATIVE_QFQ",
+    "new_high_rule": "ADJ_CLOSE_T_GREATER_THAN_PRIOR_N_CLOSES",
+    "tie_rule": "EQUAL_PRIOR_MAX_IS_NOT_NEW_HIGH",
+    "rps_rule": "AVERAGE_TIE_RANK_DIVIDED_BY_SAME_DATE_VALID_N",
+    "rps_min_universe": 100,
+    "missing_window_policy": "NULL_WITH_QUALITY_CODE"
+  },
+  "formal_database": {
+    "publication_heads_changed": false,
+    "analysis_bindings_changed": false
+  },
+  "next_step": "M8A-03 图表变换"
+}

@@ -167,16 +167,40 @@ class Api:
     candidate=json.loads(manifest_path.read_text('utf-8'));validate_source_manifest(candidate)
    except (OSError,json.JSONDecodeError,SourceFreezeError):continue
    if candidate.get('publication_id')==p and candidate.get('cutoff_date')==trade_date and (not identity.get('source_identity_sha256') or candidate.get('source_identity_sha256')==identity.get('source_identity_sha256')):manifests.append(candidate)
-  if not manifests:return {}
-  manifest=manifests[-1]
-  source=next((item for item in manifest.get('inputs',[]) if item.get('role')=='normalized_raw_price' and item.get('kind')=='file'),None)
-  if not source:return {}
-  relative=Path(str(source.get('path','')))
-  source_path=(self._root/relative).resolve()
-  if relative.is_absolute() or self._root not in source_path.parents:return {}
+  if manifests:
+   manifest=manifests[-1]
+   source=next((item for item in manifest.get('inputs',[]) if item.get('role')=='normalized_raw_price' and item.get('kind')=='file'),None)
+   if source:
+    relative=Path(str(source.get('path','')))
+    source_path=(self._root/relative).resolve()
+    if not relative.is_absolute() and self._root in source_path.parents and source_path.is_file():
+     self._source_cache[p]=(source_path,manifest)
+     return QuoteService(source_path).load(trade_date=current,publication_id=p,source_identity_sha256=identity.get('source_identity_sha256'),expected_file_sha256=source['sha256'],source_path=relative.as_posix())
+  # M4 publications are backed by a verified source bundle, but do not have
+  # an M7 history manifest yet.  The controlled compute uses the same local
+  # normalized parquet; bind it only when the publication explicitly points
+  # at a source bundle whose cutoff matches the selected publication.  This
+  # restores V1 quote fields without weakening the older manifest/hash path.
+  with self._con() as c:
+   row=c.execute("select production_version,source_manifest_sha256 from publications where publication_id=?",[p]).fetchone()
+  if not row or not str(row[0] or '').startswith('m4-'):return {}
+  bundle_id=str(row[1] or '')
+  bundle_path=self._root/'data/source_bundles'/bundle_id/'source_bundle.json'
+  if not bundle_path.is_file():return {}
+  try: bundle=json.loads(bundle_path.read_text('utf-8'))
+  except (OSError,json.JSONDecodeError):return {}
+  if str(bundle.get('target_trade_date',''))!=trade_date:return {}
+  source_path=self._root/'data/normalized/adjusted_daily.parquet'
   if not source_path.is_file():return {}
+  source_path=source_path.resolve()
+  try:
+   with duckdb.connect() as parquet_con:
+    normalized_latest=parquet_con.execute('select max(date) from read_parquet(?)',[str(source_path)]).fetchone()[0]
+  except Exception:return {}
+  if normalized_latest!=current:return {}
+  manifest={'contract':'m4-normalized-quote-binding-v1','source_bundle_id':bundle_id,'source_path':'data/normalized/adjusted_daily.parquet','source_identity_sha256':identity.get('source_identity_sha256')}
   self._source_cache[p]=(source_path,manifest)
-  return QuoteService(source_path).load(trade_date=current,publication_id=p,source_identity_sha256=identity.get('source_identity_sha256'),expected_file_sha256=source['sha256'],source_path=relative.as_posix())
+  return QuoteService(source_path).load(trade_date=current,publication_id=p,source_identity_sha256=identity.get('source_identity_sha256'),source_path='data/normalized/adjusted_daily.parquet')
  def _add_quotes(self,p,result):
   quotes=self._quotes(p)
   trade_date,_=self._pub(p)

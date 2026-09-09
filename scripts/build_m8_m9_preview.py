@@ -9,11 +9,15 @@ from __future__ import annotations
 
 import hashlib
 import json
+import sys
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 import duckdb
 import pandas as pd
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src"))
 
 from workbench_analysis.highs import calculate_high_daily, insert_high_rows
 from workbench_analysis.member_state import (
@@ -35,7 +39,6 @@ from workbench_analysis.technical import calculate_technical_daily, insert_techn
 from workbench_ops.backup import BackupService
 
 
-ROOT = Path(__file__).resolve().parents[1]
 DB_PATH = ROOT / "data/database/market_research.duckdb"
 NORMALIZED_PATH = ROOT / "data/normalized/adjusted_daily.parquet"
 MEMBERSHIP_PATH = ROOT / "data/sectors/sector_membership_daily.parquet"
@@ -78,10 +81,14 @@ def source_file(name: str) -> Path:
 def load_inputs() -> tuple[pd.DataFrame, pd.DataFrame, list[date], dict[str, str]]:
     membership = pd.read_parquet(MEMBERSHIP_PATH)
     membership["trade_date"] = pd.to_datetime(membership.pop("date"), errors="raise").dt.date
-    dates = sorted(pd.unique(membership["trade_date"]))
-    if not dates or len(dates) != 3:
-        raise RuntimeError(f"PREVIEW_DATES_EXPECTED_THREE:{dates}")
+    dates = sorted(pd.unique(membership["trade_date"]))[-3:]
+    if not dates:
+        raise RuntimeError(f"PREVIEW_DATES_EMPTY:{dates}")
     cutoff = max(dates)
+    global SHADOW_ROOT
+    SHADOW_ROOT = ROOT / "reports/shadow/v2_runs" / cutoff.strftime("%Y%m%d")
+    if not SHADOW_ROOT.is_dir():
+        raise RuntimeError(f"SHADOW_ROOT_MISSING:{SHADOW_ROOT}")
     lower = cutoff - timedelta(days=300)
 
     con = duckdb.connect()

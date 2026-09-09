@@ -56,6 +56,38 @@ class Api:
   result={'items':items,'latest_publication_id':rows[0][1] if rows else None}
   if include_analysis: result['api_contract']=API_CONTRACT
   return result
+ def sector_cycle(self,p,page=1,size=20,sector_type='',q='',days=10,metric='rank'):
+  if metric not in ('rank','sector_rs20_pct','breadth_ret1'): raise ValueError('SECTOR_CYCLE_METRIC_UNSUPPORTED')
+  days=max(1,min(30,int(days)));size=max(1,min(MAX_PAGE_SIZE,int(size)));page=max(1,int(page));self._pub(p)
+  bindings=self._analysis_bindings(p);selected=bindings.get('LOCAL_OBSERVED') or bindings.get('LOCAL_RECONSTRUCTED')
+  if not selected: raise ValueError('ANALYSIS_NOT_BUILT')
+  filters=['e.snapshot_id=?',"e.domain='sector_cycle'"];args=[selected['snapshot_id']]
+  if sector_type: filters.append('c.sector_type=?');args.append(sector_type)
+  if q: filters.append('(c.sector_id ilike ? or c.sector_name ilike ?)');args.extend([f'%{q}%',f'%{q}%'])
+  where=' and '.join(filters)
+  query="with recent_dates as (select distinct trade_date from analysis_snapshot_entries where snapshot_id=? and domain='sector_cycle' order by trade_date desc limit ?) select c.sector_id,c.trade_date,c.sector_name,c.sector_type,c.board_quote_ret1,c.board_quote_source,c.member_ret1_median,c.member_ret5_median,c.member_ret20_median,c.member_amount_sum,c.amount_valid_count,c.total_member_count,c.quote_valid_count,c.factor_valid_count,c.coverage,c.breadth_ret1,c.breadth_ma20,c.sector_rs5,c.sector_rs20,c.sector_rs5_pct,c.sector_rs20_pct,c.amount_vs_prior20,c.rank,c.rank_change,c.window_stats from recent_dates d join analysis_snapshot_entries e on e.snapshot_id=? and e.domain='sector_cycle' and e.trade_date=d.trade_date join sector_cycle_daily c on c.slice_id=e.slice_id and c.trade_date=e.trade_date where "+where+" order by c.trade_date,c.rank nulls last,c.sector_id"
+  with self._con() as c: rows=c.execute(query,[selected['snapshot_id'],days,selected['snapshot_id'],*args]).fetchall()
+  names=('sector_id','trade_date','sector_name','sector_type','board_quote_ret1','board_quote_source','member_ret1_median','member_ret5_median','member_ret20_median','member_amount_sum','amount_valid_count','total_member_count','quote_valid_count','factor_valid_count','coverage','breadth_ret1','breadth_ma20','sector_rs5','sector_rs20','sector_rs5_pct','sector_rs20_pct','amount_vs_prior20','rank','rank_change','window_stats')
+  grouped={};date_values=[]
+  for raw in rows:
+   item=dict(zip(names,raw));item['trade_date']=str(item['trade_date']);item['window_stats']=json.loads(item['window_stats']) if item['window_stats'] else {};date_values.append(item['trade_date']);key=(item['sector_id'],item['sector_type']);grouped.setdefault(key,{'sector_id':item['sector_id'],'sector_name':item['sector_name'],'sector_type':item['sector_type'],'_rows':[]})['_rows'].append(item)
+  dates=sorted(set(date_values));items=[]
+  for item in grouped.values():
+   cells={row['trade_date']:row for row in item.pop('_rows')};item['cells']=[{'trade_date':day,'rank':cells[day]['rank'] if day in cells else None,'sector_rs20_pct':cells[day]['sector_rs20_pct'] if day in cells else None,'board_quote_ret1':cells[day]['board_quote_ret1'] if day in cells else None,'member_ret1_median':cells[day]['member_ret1_median'] if day in cells else None,'breadth_ret1':cells[day]['breadth_ret1'] if day in cells else None,'diffusion_state':None} for day in dates];items.append(item)
+  latest_index=len(dates)-1
+  items.sort(key=lambda value: ((value['cells'][latest_index]['rank'] if latest_index >= 0 and value['cells'][latest_index]['rank'] is not None else 10**9),value['sector_id']))
+  total=len(items);start=(page-1)*size
+  return {'publication_id':p,'snapshot_id':selected['snapshot_id'],'page':page,'page_size':size,'total':total,'days':days,'dates':dates,'metric':metric,'items':items[start:start+size]}
+ def sector_timeline(self,p,sector_id,days=30):
+  days=max(1,min(250,int(days)));self._pub(p);bindings=self._analysis_bindings(p);selected=bindings.get('LOCAL_OBSERVED') or bindings.get('LOCAL_RECONSTRUCTED')
+  if not selected: raise ValueError('ANALYSIS_NOT_BUILT')
+  with self._con() as c:
+   rows=c.execute("with recent_dates as (select distinct e.trade_date from analysis_snapshot_entries e join sector_cycle_daily c on c.slice_id=e.slice_id and c.trade_date=e.trade_date where e.snapshot_id=? and e.domain='sector_cycle' and c.sector_id=? order by e.trade_date desc limit ?) select c.trade_date,c.sector_id,c.sector_name,c.sector_type,c.board_quote_ret1,c.board_quote_source,c.member_ret1_median,c.member_ret5_median,c.member_ret20_median,c.member_amount_sum,c.amount_valid_count,c.total_member_count,c.quote_valid_count,c.factor_valid_count,c.coverage,c.breadth_ret1,c.breadth_ma20,c.sector_rs5,c.sector_rs20,c.sector_rs5_pct,c.sector_rs20_pct,c.amount_vs_prior20,c.rank,c.rank_change,c.window_stats from recent_dates d join analysis_snapshot_entries e on e.snapshot_id=? and e.domain='sector_cycle' and e.trade_date=d.trade_date join sector_cycle_daily c on c.slice_id=e.slice_id and c.trade_date=e.trade_date where c.sector_id=? order by c.trade_date",[selected['snapshot_id'],sector_id,days,selected['snapshot_id'],sector_id]).fetchall()
+  names=('trade_date','sector_id','sector_name','sector_type','board_quote_ret1','board_quote_source','member_ret1_median','member_ret5_median','member_ret20_median','member_amount_sum','amount_valid_count','total_member_count','quote_valid_count','factor_valid_count','coverage','breadth_ret1','breadth_ma20','sector_rs5','sector_rs20','sector_rs5_pct','sector_rs20_pct','amount_vs_prior20','rank','rank_change','window_stats');points=[]
+  for raw in rows:
+   item=dict(zip(names,raw));item['trade_date']=str(item['trade_date']);item['window_stats']=json.loads(item['window_stats']) if item['window_stats'] else {};points.append(item)
+  if not points: return {'publication_id':p,'sector_id':sector_id,'snapshot_id':selected['snapshot_id'],'points':[],'status':'NOT_FOUND'}
+  return {'publication_id':p,'sector_id':sector_id,'snapshot_id':selected['snapshot_id'],'sector_name':points[-1]['sector_name'],'sector_type':points[-1]['sector_type'],'history_basis':selected['domain'].removeprefix('LOCAL_'),'points':points}
  def _analysis_capabilities(self,p):
   with self._con() as c:
    counts={table:c.execute(f'select count(*) from {table} where publication_id=?',[p]).fetchone()[0] for table in ('stock_daily','sector_daily','queue_memberships')}
@@ -508,6 +540,9 @@ def make_handler(root,db):
     if u.path=='/api/publications': out=api.publications(x.get('include_analysis')=='1')
     elif u.path=='/api/dashboard': out=api.dashboard(x['publication_id'])
     elif u.path=='/api/sectors': out=api.sectors(x['publication_id'],x.get('q',''),x.get('page',1),x.get('page_size',50),x.get('type',''))
+    elif u.path=='/api/sectors/cycle': out=api.sector_cycle(x['publication_id'],x.get('page',1),x.get('page_size',20),x.get('type',''),x.get('q',''),x.get('days',10),x.get('metric','rank'))
+    elif u.path.startswith('/api/sectors/') and u.path.endswith('/timeline'):
+     sector_id=unquote(u.path[len('/api/sectors/'): -len('/timeline')].strip('/'));out=api.sector_timeline(x['publication_id'],sector_id,x.get('days',30))
     elif u.path=='/api/stocks': out=api.stocks(x['publication_id'],x.get('q',''),x.get('page',1),x.get('page_size',50))
     elif u.path=='/api/stocks/technical': out=api.technical(x['publication_id'],x.get('page',1),x.get('page_size',50),x.get('basis','AUTO'),x.get('ma_state',''),x.get('rps_window',''),x.get('rps_min',''),x.get('amount_class',''),x.get('turnover_min',''),x.get('quality_filter',''))
     elif u.path=='/api/stocks/new-highs': out=api.new_highs(x['publication_id'],x.get('page',1),x.get('page_size',50),x.get('basis','AUTO'),x.get('window',20),x.get('streak_min',''),x.get('include_ties','0')=='1',x.get('rps_min',''))

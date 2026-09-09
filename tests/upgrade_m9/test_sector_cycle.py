@@ -1,7 +1,12 @@
 import pandas as pd
 import pytest
+import duckdb
+from datetime import datetime, timezone
+from pathlib import Path
 
-from workbench_analysis.sector_cycle import SectorCycleError, build_sector_cycle_daily
+from workbench_analysis.sector_cycle import SectorCycleError, build_sector_cycle_daily, insert_sector_cycle_rows
+from workbench_db.migrations import BASE_SCHEMA_VERSION, MigrationExecutor
+from workbench_service.app import Api
 
 
 def _inputs():
@@ -43,3 +48,33 @@ def test_daily_vector_is_stable_under_input_order_and_rejects_future_or_conflict
     conflict = pd.concat([memberships, memberships.iloc[[0]].assign(sector_name="changed")], ignore_index=True)
     with pytest.raises(SectorCycleError, match="MEMBERSHIP_DUPLICATE_CONFLICT"):
         build_sector_cycle_daily(technical, conflict, cutoff="2026-09-08")
+
+
+def test_cycle_and_timeline_apis_read_only_bound_sector_cycle_snapshot(tmp_path):
+    root = Path(__file__).parents[2]
+    (tmp_path / "config").mkdir()
+    (tmp_path / "config/history_windows.yaml").write_text((root / "config/history_windows.yaml").read_text(encoding="utf-8"), encoding="utf-8")
+    con = duckdb.connect(str(tmp_path / "cycle.duckdb"))
+    try:
+        con.execute((root / "src/workbench_db/schema.sql").read_text(encoding="utf-8"))
+        con.execute("insert into schema_migrations values (?, current_timestamp)", [BASE_SCHEMA_VERSION])
+        MigrationExecutor(con).apply()
+        now = datetime.now(timezone.utc)
+        con.execute("insert into publications values (?,?,?,?,?,?,?,?,?,?,?,?)", ["pub-1", "2026-09-08", 1, "SUCCESS", 1, "test", None, None, None, None, "fixture", now])
+        con.execute("insert into analysis_snapshots values (?,?,?,?,?,?,?,?)", ["snapshot-1", "2026-09-08", "2026-09-01", "CN_A_LISTED_V2", "config", "manifest", "SUCCESS", now])
+        con.execute("insert into publication_analysis_snapshots values (?,?,?,?)", ["pub-1", "LOCAL_RECONSTRUCTED", "snapshot-1", now])
+        tech, members = _inputs()
+        vectors = build_sector_cycle_daily(tech, members, cutoff="2026-09-08")
+        con.execute("insert into analysis_slices values (?,?,?,?,?,?,?,?,?,?,?,?)", ["slice-cycle", "sector_cycle", "2026-09-08", "c", "i", "d", "{}", len(vectors), "l", "DUCKDB", None, now])
+        assert insert_sector_cycle_rows(con, "slice-cycle", vectors) == len(vectors)
+        for day in vectors.trade_date.unique():
+            con.execute("insert into analysis_snapshot_entries values (?,?,?,?)", ["snapshot-1", "sector_cycle", day, "slice-cycle"])
+    finally:
+        con.close()
+    api = Api(tmp_path / "cycle.duckdb", root=tmp_path)
+    matrix = api.sector_cycle("pub-1", days=2, size=20)
+    assert matrix["dates"] == ["2026-09-07", "2026-09-08"]
+    assert matrix["total"] == 2
+    assert len(matrix["items"][0]["cells"]) == 2
+    timeline = api.sector_timeline("pub-1", "INDUSTRY:A", days=2)
+    assert [point["trade_date"] for point in timeline["points"]] == ["2026-09-07", "2026-09-08"]

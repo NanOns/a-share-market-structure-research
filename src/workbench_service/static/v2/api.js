@@ -18,6 +18,11 @@
     publications:function(includeAnalysis){return get('/api/publications',{include_analysis:includeAnalysis?'1':undefined});},
     identity:function(publicationId,includeAnalysis){return get('/api/identity',{publication_id:publicationId,include_analysis:includeAnalysis?'1':undefined});},
     universeSummary:function(publicationId){return get('/api/universe/summary',{publication_id:publicationId});},
+    sectorCycle:function(params){return get('/api/sectors/cycle',params);},
+    sectorTimeline:function(params){
+      var sectorId=encodeURIComponent(params.sector_id);var query=Object.assign({},params);delete query.sector_id;
+      return get('/api/sectors/'+sectorId+'/timeline',query);
+    },
     technical:function(params){return get('/api/stocks/technical',params);},
     newHighs:function(params){return get('/api/stocks/new-highs',params);},
     technicalHistory:function(params){

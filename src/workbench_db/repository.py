@@ -15,6 +15,7 @@ import pyarrow.parquet as pq
 
 from .digest import VERSION as DIGEST_VERSION, logical_digest, normalize_csv_row
 from .owner import DatabaseOwner
+from .migrations import MigrationExecutor
 
 
 SCHEMA_VERSION = "workbench-schema-v1.0"
@@ -72,6 +73,7 @@ class WorkbenchRepository:
             self.connection = duckdb.connect(str(self.database_path))
             self.connection.execute((Path(__file__).with_name("schema.sql")).read_text(encoding="utf-8"))
             self.connection.execute("INSERT INTO schema_migrations VALUES (?, ?) ON CONFLICT DO NOTHING", [SCHEMA_VERSION, datetime.now(timezone.utc)])
+            self.migration_receipt = MigrationExecutor(self.connection).apply()
         except Exception:
             self.owner.release()
             raise
@@ -80,7 +82,7 @@ class WorkbenchRepository:
     def close(self) -> None:
         if self.connection is not None:
             self.connection.close()
-            self.connection = None
+        self.connection = None
         self.owner.release()
 
     def __enter__(self) -> "WorkbenchRepository":

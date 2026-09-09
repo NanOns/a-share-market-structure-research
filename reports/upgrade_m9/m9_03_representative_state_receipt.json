@@ -1,0 +1,30 @@
+{
+  "receipt_id": "M9_03_REPRESENTATIVE_STATE_20260909",
+  "contract_version": "sector-representative-state-v1.0",
+  "stage": "M9-03",
+  "status": "PREVIEW_PASS",
+  "release_ready": false,
+  "scope": "candidate, confirmation and stale state machine",
+  "implemented": [
+    "deterministic first and second representative ranking",
+    "candidate starts on first differing day",
+    "confirmation requires two consecutive valid dates",
+    "A-to-B-to-A does not confirm B",
+    "missing or invalid representative day preserves old confirmation and marks stale",
+    "first observation does not fabricate a prior replacement event",
+    "immutable representative_state_daily storage writer"
+  ],
+  "formal_database": {
+    "migration": "013_m9_representative_state",
+    "migration_state": "APPLIED",
+    "backup_id": "backup-20260909T083240Z-0c2470c9e7aa",
+    "backup_state": "VERIFIED",
+    "publication_heads_unchanged": true,
+    "production_rows_written": 0
+  },
+  "verification": {
+    "m9_03_tests": "7 passed",
+    "tdx_source_modified": false
+  },
+  "next_step": "M9-04 cycle matrix and historical sector APIs"
+}

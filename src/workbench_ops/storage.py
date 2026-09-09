@@ -5,7 +5,7 @@ import json
 import os
 import shutil
 import uuid
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
@@ -58,26 +58,59 @@ class StorageGovernance:
             con.execute("INSERT INTO storage_objects VALUES (?, ?) ON CONFLICT(storage_object_id) DO UPDATE SET payload_json=excluded.payload_json", [object_id, _payload(value)])
         return object_id
 
+    def acquire_lease(self, *, lease_id: str, object_ids: list[str], owner: str, ttl_seconds: int = 300) -> dict[str, Any]:
+        """Protect immutable objects for an active reader/job until expiry."""
+        if not lease_id or not owner or not isinstance(object_ids,list) or not object_ids:
+            raise ConfigValidationError("LEASE_REQUEST_INVALID")
+        if not isinstance(ttl_seconds,int) or isinstance(ttl_seconds,bool) or ttl_seconds < 1:
+            raise ConfigValidationError("LEASE_TTL_INVALID")
+        now=datetime.now(timezone.utc)
+        expires=(now+timedelta(seconds=ttl_seconds)).isoformat()
+        with duckdb.connect(str(self.database_path)) as con:
+            rows=con.execute("SELECT storage_object_id,payload_json FROM storage_objects WHERE storage_object_id IN (SELECT * FROM UNNEST(?))",[object_ids]).fetchall()
+            found={row[0] for row in rows}
+            missing=sorted(set(object_ids)-found)
+            if missing: raise ConfigValidationError("LEASE_OBJECT_NOT_FOUND:"+",".join(missing))
+            payload={"lease_id":lease_id,"owner":owner,"storage_object_ids":sorted(set(object_ids)),"acquired_at_utc":now.isoformat(),"expires_at_utc":expires,"state":"ACTIVE"}
+            con.execute("INSERT INTO leases VALUES (?, ?) ON CONFLICT(lease_id) DO UPDATE SET payload_json=excluded.payload_json",[lease_id,_payload(payload)])
+        return payload
+
+    def release_lease(self, *, lease_id: str, owner: str) -> dict[str, Any]:
+        with duckdb.connect(str(self.database_path)) as con:
+            row=con.execute("SELECT payload_json FROM leases WHERE lease_id=?",[lease_id]).fetchone()
+            if not row: raise ConfigValidationError("LEASE_NOT_FOUND")
+            payload=json.loads(row[0])
+            if payload.get("owner") != owner: raise ConfigValidationError("LEASE_OWNER_MISMATCH")
+            payload.update(state="RELEASED",released_at_utc=datetime.now(timezone.utc).isoformat())
+            con.execute("UPDATE leases SET payload_json=? WHERE lease_id=?",[_payload(payload),lease_id])
+        return payload
+
     def preview_cleanup(self, *, as_of: date) -> dict[str, Any]:
         retention = self.config.current()["config"]["retention_successful_days"]
         with duckdb.connect(str(self.database_path)) as con:
             rows = con.execute("SELECT payload_json FROM storage_objects").fetchall()
+            referenced=self._database_references(con)
+            active_jobs=self._active_job_references(con)
+            lease_refs=self._active_lease_references(con)
         eligible=[]; protected=[]
         for (raw,) in rows:
             item=json.loads(raw)
             try: object_path=self._validate_managed_path(item.get("path", ""))
             except ConfigValidationError as exc: protected.append({"object":item,"reason":str(exc)}); continue
             if object_path in self._protected_paths(): protected.append({"object":item,"reason":"PROTECTED_RUNTIME_PATH"}); continue
-            try: age=(as_of-date.fromisoformat(item["successful_date"])).days
-            except (KeyError, ValueError): protected.append({"object":item,"reason":"INVALID_SUCCESSFUL_DATE"});continue
+            object_id=item.get("storage_object_id")
             lease=item.get("lease_until_utc")
-            leased=lease and datetime.fromisoformat(lease.replace("Z","+00:00")) > datetime.now(timezone.utc)
+            object_lease=lease and datetime.fromisoformat(lease.replace("Z","+00:00")) > datetime.now(timezone.utc)
             if item.get("state") != "ACTIVE": protected.append({"object":item,"reason":"NOT_ACTIVE"})
-            elif item.get("referenced"): protected.append({"object":item,"reason":"DATABASE_REFERENCED"})
-            elif leased: protected.append({"object":item,"reason":"ACTIVE_LEASE"})
-            elif age < retention: protected.append({"object":item,"reason":"RETENTION_WINDOW"})
-            else: eligible.append(item)
-        plan_body={"as_of":as_of.isoformat(),"retention_successful_days":retention,"eligible_object_ids":sorted(x["storage_object_id"] for x in eligible)}
+            elif object_id in referenced or item.get("referenced"): protected.append({"object":item,"reason":"DATABASE_REFERENCED"})
+            elif object_id in active_jobs: protected.append({"object":item,"reason":"ACTIVE_JOB_REFERENCE"})
+            elif object_id in lease_refs or object_lease: protected.append({"object":item,"reason":"ACTIVE_LEASE"})
+            else:
+                try: age=(as_of-date.fromisoformat(item["successful_date"])).days
+                except (KeyError, ValueError): protected.append({"object":item,"reason":"INVALID_SUCCESSFUL_DATE"});continue
+                if age < retention: protected.append({"object":item,"reason":"RETENTION_WINDOW"})
+                else: eligible.append(item)
+        plan_body={"contract_version":"history-cleanup-preview-v1.0","as_of":as_of.isoformat(),"retention_successful_days":retention,"eligible_object_ids":sorted(x["storage_object_id"] for x in eligible),"reference_audit":{"database":sorted(referenced),"active_jobs":sorted(active_jobs),"leases":sorted(lease_refs)}}
         created_at=datetime.now(timezone.utc).isoformat()
         # A preview is an immutable decision record.  It must not reuse an
         # earlier plan that may already have been restored or deleted.
@@ -86,6 +119,59 @@ class StorageGovernance:
         with duckdb.connect(str(self.database_path)) as con:
             con.execute("INSERT INTO cleanup_jobs VALUES (?, ?) ON CONFLICT(cleanup_job_id) DO NOTHING", [plan_id,_payload(plan)])
         return plan
+
+    @staticmethod
+    def _table_exists(con, name: str) -> bool:
+        return bool(con.execute("SELECT count(*) FROM information_schema.tables WHERE table_name=?",[name]).fetchone()[0])
+
+    def _database_references(self, con) -> set[str]:
+        refs=set()
+        if self._table_exists(con,"analysis_slices"):
+            refs.update(row[0] for row in con.execute("SELECT storage_object_id FROM analysis_slices WHERE storage_object_id IS NOT NULL").fetchall())
+        if self._table_exists(con,"publication_analysis_snapshots") and self._table_exists(con,"analysis_snapshot_entries") and self._table_exists(con,"analysis_slices"):
+            refs.update(row[0] for row in con.execute("""
+                SELECT s.storage_object_id
+                FROM publication_analysis_snapshots p
+                JOIN analysis_snapshots a ON a.snapshot_id=p.snapshot_id AND a.status='SUCCESS'
+                JOIN analysis_snapshot_entries e ON e.snapshot_id=a.snapshot_id
+                JOIN analysis_slices s ON s.slice_id=e.slice_id
+                WHERE s.storage_object_id IS NOT NULL
+            """).fetchall())
+        return {x for x in refs if x}
+
+    def _active_job_references(self, con) -> set[str]:
+        refs=set()
+        if not self._table_exists(con,"jobs"):
+            return refs
+        rows=con.execute("SELECT payload_json FROM jobs WHERE status IN ('QUEUED','RUNNING','INTERRUPTED')").fetchall()
+        slice_ids=[]
+        for (raw,) in rows:
+            try:
+                payload=json.loads(raw or "{}")
+            except json.JSONDecodeError:
+                continue
+            pending=payload.get("pending_storage_object_ids",[])
+            if isinstance(pending,list): refs.update(str(x) for x in pending)
+            ids=payload.get("completed_slice_ids",[])
+            if isinstance(ids,list): slice_ids.extend(str(x) for x in ids)
+        if slice_ids and self._table_exists(con,"analysis_slices"):
+            refs.update(row[0] for row in con.execute("SELECT storage_object_id FROM analysis_slices WHERE slice_id IN (SELECT * FROM UNNEST(?)) AND storage_object_id IS NOT NULL",[slice_ids]).fetchall())
+        return {x for x in refs if x}
+
+    def _active_lease_references(self, con) -> set[str]:
+        if not self._table_exists(con,"leases"):
+            return set()
+        now=datetime.now(timezone.utc)
+        refs=set()
+        for (raw,) in con.execute("SELECT payload_json FROM leases").fetchall():
+            try: payload=json.loads(raw or "{}")
+            except json.JSONDecodeError: continue
+            if payload.get("state") != "ACTIVE": continue
+            expires=payload.get("expires_at_utc") or payload.get("lease_until_utc")
+            try: active=expires and datetime.fromisoformat(str(expires).replace("Z","+00:00")) > now
+            except ValueError: active=False
+            if active and isinstance(payload.get("storage_object_ids"),list): refs.update(str(x) for x in payload["storage_object_ids"])
+        return refs
 
     def quarantine(self, cleanup_job_id: str) -> dict[str, Any]:
         """Move eligible registered objects to a same-volume trash directory."""

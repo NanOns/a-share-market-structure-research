@@ -23,6 +23,14 @@
       var sectorId=encodeURIComponent(params.sector_id);var query=Object.assign({},params);delete query.sector_id;
       return get('/api/sectors/'+sectorId+'/timeline',query);
     },
+    sectorMembersHistory:function(params){
+      var sectorId=encodeURIComponent(params.sector_id);var query=Object.assign({},params);delete query.sector_id;
+      return get('/api/sectors/'+sectorId+'/members/history',query);
+    },
+    sectorLeaderHistory:function(params){
+      var sectorId=encodeURIComponent(params.sector_id);var query=Object.assign({},params);delete query.sector_id;
+      return get('/api/sectors/'+sectorId+'/leader-history',query);
+    },
     technical:function(params){return get('/api/stocks/technical',params);},
     newHighs:function(params){return get('/api/stocks/new-highs',params);},
     technicalHistory:function(params){

@@ -1,0 +1,28 @@
+{
+  "receipt_id": "M9_05_HISTORY_UI_20260909",
+  "contract_version": "sector-history-ui-v1.0",
+  "stage": "M9-05",
+  "status": "PREVIEW_PASS",
+  "release_ready": false,
+  "scope": "member history, representative history APIs and V2 sector cycle slice",
+  "implemented": [
+    "API19 /api/sectors/{sector_id}/members/history",
+    "API20 /api/sectors/{sector_id}/leader-history",
+    "V2 sector cycle navigation and bounded date matrix",
+    "matrix row timeline evidence modal loads timeline/member/leader history",
+    "state and basis fields remain explicit in read responses"
+  ],
+  "formal_database": {
+    "migration_dependency": "013_m9_representative_state",
+    "migration_state": "ALREADY_APPLIED",
+    "publication_heads_unchanged": true,
+    "production_rows_written": 0
+  },
+  "verification": {
+    "m9_05_tests": "3 passed",
+    "full_tests": "650 passed",
+    "frontend_js_syntax": "PASS",
+    "tdx_source_modified": false
+  },
+  "next_step": "M9 independent audit and production short-window build gate"
+}

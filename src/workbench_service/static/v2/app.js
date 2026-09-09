@@ -1,8 +1,9 @@
 (function(){
   'use strict';
   var api=window.WorkbenchV2Api,format=window.WorkbenchV2Format,table=window.WorkbenchV2Table,modal=window.WorkbenchV2Modal;
-  var select=document.getElementById('publication-select'),notice=document.getElementById('notice'),context=document.getElementById('page-context'),tableTarget=document.getElementById('context-table'),overview=document.getElementById('overview-page'),technicalPage=document.getElementById('technical-page'),current=null,currentPage='overview';
+  var select=document.getElementById('publication-select'),notice=document.getElementById('notice'),context=document.getElementById('page-context'),tableTarget=document.getElementById('context-table'),overview=document.getElementById('overview-page'),technicalPage=document.getElementById('technical-page'),sectorsPage=document.getElementById('sectors-page'),current=null,currentPage='overview';
   var technicalState={mode:'highs',page:1,pageSize:50,window:20,rpsMin:'',streakMin:'',maState:'',amountClass:''};
+  var sectorState={days:10,type:''};
   function setText(id,value){document.getElementById(id).textContent=value===undefined||value===null||value===''?'—':String(value);}
   function first(obj,keys){for(var i=0;i<keys.length;i++)if(obj&&obj[keys[i]]!==undefined&&obj[keys[i]]!==null)return obj[keys[i]];return null;}
   function publicationRows(items){return items.map(function(item){var option=document.createElement('option');option.value=item.publication_id;option.textContent=item.trade_date+' · '+item.publication_id;return option;});}
@@ -54,10 +55,25 @@
       document.getElementById('technical-table').replaceChildren();var empty=document.createElement('p');empty.className='empty';empty.textContent=error.message.indexOf('RPS_NOT_BUILT')>=0?'RPS 尚未构建，当前筛选不会降级为伪造结果。':'暂无可用数据：'+error.message;document.getElementById('technical-table').appendChild(empty);document.getElementById('technical-basis').textContent='当前发布版本未提供可用分析快照或该字段能力。';setNotice(error.message.indexOf('RPS_NOT_BUILT')>=0?'RPS 尚未构建。':'技术数据读取失败：'+error.message,true);
     });
   }
+  function showSectorTimeline(row){
+    modal.open('板块时间线 · '+row.sector_name,'正在读取…');
+    Promise.all([api.sectorTimeline({publication_id:current.publication_id,sector_id:row.sector_id,days:30}),api.sectorMembersHistory({publication_id:current.publication_id,sector_id:row.sector_id,days:10,state:'ALL'}),api.sectorLeaderHistory({publication_id:current.publication_id,sector_id:row.sector_id,days:30})]).then(function(values){modal.open('板块时间线 · '+row.sector_name,JSON.stringify({timeline:values[0],member_history:values[1],leader_history:values[2]},null,2));}).catch(function(error){modal.open('板块时间线 · '+row.sector_name,'读取失败：'+error.message);});
+  }
+  function loadSectors(){
+    if(!current)return;setNotice('正在读取板块周期…');
+    api.sectorCycle({publication_id:current.publication_id,page:1,page_size:100,days:sectorState.days,type:sectorState.type}).then(function(result){
+      document.getElementById('sector-basis').textContent='snapshot_id '+format.text(result.snapshot_id)+' · '+result.dates.length+' 个交易日 · 当前结果只读。';
+      table.render(document.getElementById('sector-cycle-table'),[
+        {label:'板块',key:'sector_name'},{label:'类型',key:'sector_type'},{label:'最新名次',value:function(row){var c=row.cells[row.cells.length-1];return c&&c.rank!==null?c.rank:'—';}},{label:'最新RPS20百分位',value:function(row){var c=row.cells[row.cells.length-1];return c&&c.sector_rs20_pct!==null?format.number(c.sector_rs20_pct,3):'—';}},{label:'周期单元格',value:function(row){return row.cells.map(function(c){return c.trade_date+': '+(c.rank===null?'—':'#'+c.rank);}).join(' · '); }},{label:'时间线',action:{label:'查看',onClick:showSectorTimeline}}
+      ],result.items||[]);setNotice('已加载 '+(result.total||0)+' 个板块。');
+    }).catch(function(error){document.getElementById('sector-cycle-table').replaceChildren();var empty=document.createElement('p');empty.className='empty';empty.textContent='暂无周期数据：'+error.message;document.getElementById('sector-cycle-table').appendChild(empty);setNotice('板块周期读取失败：'+error.message,true);});
+  }
   function showPage(page){
     currentPage=page;document.querySelectorAll('.nav-item').forEach(function(item){item.classList.toggle('active',item.dataset.page===page);});
-    if(page==='overview'){overview.hidden=false;technicalPage.hidden=true;document.getElementById('page-title').textContent='研究总览';document.getElementById('page-description').textContent='公共 UI 层：版本、输入身份与统一股票范围。';return;}
-    if(page==='stocks'){overview.hidden=true;technicalPage.hidden=false;document.getElementById('page-title').textContent='个股技术';document.getElementById('page-description').textContent='新高窗口、RPS、均线与量额状态；每个结果带有可追溯的分析口径。';loadTechnical();return;}
+    overview.hidden=page!=='overview';technicalPage.hidden=page!=='stocks';sectorsPage.hidden=page!=='sectors';
+    if(page==='overview'){document.getElementById('page-title').textContent='研究总览';document.getElementById('page-description').textContent='公共 UI 层：版本、输入身份与统一股票范围。';return;}
+    if(page==='stocks'){document.getElementById('page-title').textContent='个股技术';document.getElementById('page-description').textContent='新高窗口、RPS、均线与量额状态；每个结果带有可追溯的分析口径。';loadTechnical();return;}
+    if(page==='sectors'){document.getElementById('page-title').textContent='板块周期';document.getElementById('page-description').textContent='历史板块矩阵、成员统计与可追溯时间线。';loadSectors();return;}
     document.querySelector('[data-page="overview"]').click();modal.open('页面预览',document.querySelector('[data-page="'+page+'"]').textContent+' 页面将在后续升级步骤接入。');
   }
   function load(publication){
@@ -70,6 +86,7 @@
     var controls=['technical-mode','technical-window','technical-rps-min','technical-streak-min','technical-ma-state','technical-amount-class'];
     controls.forEach(function(id){document.getElementById(id).addEventListener('change',function(){technicalState.mode=document.getElementById('technical-mode').value;technicalState.window=Number(document.getElementById('technical-window').value);technicalState.rpsMin=document.getElementById('technical-rps-min').value;technicalState.streakMin=document.getElementById('technical-streak-min').value;technicalState.maState=document.getElementById('technical-ma-state').value;technicalState.amountClass=document.getElementById('technical-amount-class').value;technicalState.page=1;loadTechnical();});});
     document.getElementById('technical-refresh').addEventListener('click',function(){loadTechnical();});document.getElementById('technical-prev').addEventListener('click',function(){if(technicalState.page>1){technicalState.page--;loadTechnical();}});document.getElementById('technical-next').addEventListener('click',function(){technicalState.page++;loadTechnical();});
+    document.getElementById('sector-type').addEventListener('change',function(){sectorState.type=this.value;loadSectors();});document.getElementById('sector-days').addEventListener('change',function(){sectorState.days=Number(this.value);loadSectors();});document.getElementById('sector-refresh').addEventListener('click',function(){loadSectors();});
   }
   bindTechnicalControls();
   api.publications(true).then(function(result){var items=result.items||[];select.replaceChildren.apply(select,publicationRows(items));if(!items.length){setNotice('没有可用的成功发布版本',true);return;}var wanted=new URLSearchParams(location.search).get('publication_id');current=items.find(function(item){return item.publication_id===wanted;})||items[0];select.value=current.publication_id;select.addEventListener('change',function(){load(items.find(function(item){return item.publication_id===select.value;}));});load(current);}).catch(function(error){setNotice('版本列表读取失败：'+error.message,true);});

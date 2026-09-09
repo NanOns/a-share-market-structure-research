@@ -88,6 +88,30 @@ class Api:
    item=dict(zip(names,raw));item['trade_date']=str(item['trade_date']);item['window_stats']=json.loads(item['window_stats']) if item['window_stats'] else {};points.append(item)
   if not points: return {'publication_id':p,'sector_id':sector_id,'snapshot_id':selected['snapshot_id'],'points':[],'status':'NOT_FOUND'}
   return {'publication_id':p,'sector_id':sector_id,'snapshot_id':selected['snapshot_id'],'sector_name':points[-1]['sector_name'],'sector_type':points[-1]['sector_type'],'history_basis':selected['domain'].removeprefix('LOCAL_'),'points':points}
+ def sector_members_history(self,p,sector_id,days=10,page=1,size=50,state='',security_id=''):
+  allowed={'ALL','ADDED','REMOVED','RETAINED','ENTERED','EXITED','UNKNOWN','UNCHANGED'};state=str(state or 'ALL').upper()
+  if state not in allowed: raise ValueError('MEMBER_HISTORY_STATE_UNSUPPORTED')
+  days=max(1,min(30,int(days)));size=max(1,min(MAX_PAGE_SIZE,int(size)));page=max(1,int(page));self._pub(p);bindings=self._analysis_bindings(p);selected=bindings.get('LOCAL_OBSERVED') or bindings.get('LOCAL_RECONSTRUCTED')
+  if not selected: raise ValueError('ANALYSIS_NOT_BUILT')
+  filters=['e.snapshot_id=?',"e.domain='member_state'",'s.sector_id=?'];args=[selected['snapshot_id'],sector_id]
+  if security_id: filters.append('s.security_id=?');args.append(security_id)
+  if state!='ALL': filters.append('s.member_change_kind=?');args.append(state)
+  where=' and '.join(filters)
+  query="with recent_dates as (select distinct trade_date from analysis_snapshot_entries where snapshot_id=? and domain='member_state' order by trade_date desc limit ?) select s.sector_id,s.security_id,s.trade_date,s.member_present,s.member_rank,s.rank_valid_count,s.member_percentile,s.strong_state,s.strong_predicates,s.structure_hit,s.high_hit,s.member_change_kind,s.strength_change_kind,s.previous_rank,s.rank_delta,s.queue_refs,s.high_refs,s.history_basis,s.contract_id from recent_dates d join analysis_snapshot_entries e on e.snapshot_id=? and e.domain='member_state' and e.trade_date=d.trade_date join sector_member_state_daily s on s.slice_id=e.slice_id and s.trade_date=e.trade_date where "+where+" order by s.trade_date desc,s.member_rank nulls last,s.security_id"
+  with self._con() as c: rows=c.execute(query,[selected['snapshot_id'],days,selected['snapshot_id'],*args]).fetchall()
+  names=('sector_id','security_id','trade_date','member_present','member_rank','rank_valid_count','member_percentile','strong_state','strong_predicates','structure_hit','high_hit','member_change_kind','strength_change_kind','previous_rank','rank_delta','queue_refs','high_refs','history_basis','contract_id');items=[]
+  for raw in rows:
+   item=dict(zip(names,raw));item['trade_date']=str(item['trade_date']);item['strong_predicates']=json.loads(item['strong_predicates']) if item['strong_predicates'] else {};item['queue_refs']=json.loads(item['queue_refs']) if item['queue_refs'] else [];item['high_refs']=json.loads(item['high_refs']) if item['high_refs'] else [];items.append(item)
+  total=len(items);return {'publication_id':p,'sector_id':sector_id,'snapshot_id':selected['snapshot_id'],'page':page,'page_size':size,'days':days,'state':state,'total':total,'items':items[(page-1)*size:page*size]}
+ def sector_leader_history(self,p,sector_id,days=30):
+  days=max(1,min(250,int(days)));self._pub(p);bindings=self._analysis_bindings(p);selected=bindings.get('LOCAL_OBSERVED') or bindings.get('LOCAL_RECONSTRUCTED')
+  if not selected: raise ValueError('ANALYSIS_NOT_BUILT')
+  with self._con() as c:
+   rows=c.execute("with recent_dates as (select distinct e.trade_date from analysis_snapshot_entries e join representative_state_daily r on r.slice_id=e.slice_id and r.trade_date=e.trade_date where e.snapshot_id=? and e.domain='representative' and r.sector_id=? order by e.trade_date desc limit ?) select r.sector_id,r.trade_date,r.ranked_first_id,r.ranked_second_id,r.rank_gap,r.confirmed_id,r.candidate_id,r.candidate_since,r.candidate_streak,r.confirmed_since,r.confirmation_event,r.previous_confirmed_id,r.stale,r.representative_rank_basis,r.history_basis,r.contract_id from recent_dates d join analysis_snapshot_entries e on e.snapshot_id=? and e.domain='representative' and e.trade_date=d.trade_date join representative_state_daily r on r.slice_id=e.slice_id and r.trade_date=e.trade_date where r.sector_id=? order by r.trade_date",[selected['snapshot_id'],sector_id,days,selected['snapshot_id'],sector_id]).fetchall()
+  names=('sector_id','trade_date','ranked_first_id','ranked_second_id','rank_gap','confirmed_id','candidate_id','candidate_since','candidate_streak','confirmed_since','confirmation_event','previous_confirmed_id','stale','representative_rank_basis','history_basis','contract_id');points=[]
+  for raw in rows:
+   item=dict(zip(names,raw));item['trade_date']=str(item['trade_date']);item['candidate_since']=str(item['candidate_since']) if item['candidate_since'] else None;item['confirmed_since']=str(item['confirmed_since']) if item['confirmed_since'] else None;points.append(item)
+  return {'publication_id':p,'sector_id':sector_id,'snapshot_id':selected['snapshot_id'],'days':days,'points':points,'status':'AVAILABLE' if points else 'NOT_FOUND'}
  def _analysis_capabilities(self,p):
   with self._con() as c:
    counts={table:c.execute(f'select count(*) from {table} where publication_id=?',[p]).fetchone()[0] for table in ('stock_daily','sector_daily','queue_memberships')}
@@ -543,6 +567,10 @@ def make_handler(root,db):
     elif u.path=='/api/sectors/cycle': out=api.sector_cycle(x['publication_id'],x.get('page',1),x.get('page_size',20),x.get('type',''),x.get('q',''),x.get('days',10),x.get('metric','rank'))
     elif u.path.startswith('/api/sectors/') and u.path.endswith('/timeline'):
      sector_id=unquote(u.path[len('/api/sectors/'): -len('/timeline')].strip('/'));out=api.sector_timeline(x['publication_id'],sector_id,x.get('days',30))
+    elif u.path.startswith('/api/sectors/') and u.path.endswith('/members/history'):
+     sector_id=unquote(u.path[len('/api/sectors/'): -len('/members/history')].strip('/'));out=api.sector_members_history(x['publication_id'],sector_id,x.get('days',10),x.get('page',1),x.get('page_size',50),x.get('state','ALL'),x.get('security_id',''))
+    elif u.path.startswith('/api/sectors/') and u.path.endswith('/leader-history'):
+     sector_id=unquote(u.path[len('/api/sectors/'): -len('/leader-history')].strip('/'));out=api.sector_leader_history(x['publication_id'],sector_id,x.get('days',30))
     elif u.path=='/api/stocks': out=api.stocks(x['publication_id'],x.get('q',''),x.get('page',1),x.get('page_size',50))
     elif u.path=='/api/stocks/technical': out=api.technical(x['publication_id'],x.get('page',1),x.get('page_size',50),x.get('basis','AUTO'),x.get('ma_state',''),x.get('rps_window',''),x.get('rps_min',''),x.get('amount_class',''),x.get('turnover_min',''),x.get('quality_filter',''))
     elif u.path=='/api/stocks/new-highs': out=api.new_highs(x['publication_id'],x.get('page',1),x.get('page_size',50),x.get('basis','AUTO'),x.get('window',20),x.get('streak_min',''),x.get('include_ties','0')=='1',x.get('rps_min',''))

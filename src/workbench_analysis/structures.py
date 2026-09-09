@@ -32,6 +32,17 @@ class StructureAdapterError(ValueError):
     pass
 
 
+def _storage(value: Any) -> Any:
+    if value is None:
+        return None
+    try:
+        if bool(pd.isna(value)):
+            return None
+    except (TypeError, ValueError):
+        pass
+    return value.item() if hasattr(value, "item") else value
+
+
 def _value(row: pd.Series, *names: str) -> Any:
     for name in names:
         value = row.get(name)
@@ -208,7 +219,7 @@ def calculate_historical_structures(frame: pd.DataFrame, *, cutoff: Any | None =
 
 
 def rows_for_storage(frame: pd.DataFrame, slice_id: str) -> list[tuple[Any, ...]]:
-    return [(slice_id, row.security_id, row.trade_date, row.queue_name, row.hit, row.tier, row.source_class, row.research_band, row.queue_rank, row.tier_rank, row.transition, row.structure_basis, row.contract_id, json.dumps(_jsonable(row.evidence), ensure_ascii=False, sort_keys=True), json.dumps(_jsonable(row.quality_codes), ensure_ascii=False)) for row in frame.itertuples()]
+    return [tuple(_storage(value) for value in (slice_id, row.security_id, row.trade_date, row.queue_name, row.hit, row.tier, row.source_class, row.research_band, row.queue_rank, row.tier_rank, row.transition, row.structure_basis, row.contract_id, json.dumps(_jsonable(row.evidence), ensure_ascii=False, sort_keys=True), json.dumps(_jsonable(row.quality_codes), ensure_ascii=False))) for row in frame.itertuples()]
 
 
 def insert_historical_structure_rows(connection: Any, slice_id: str, frame: pd.DataFrame) -> int:
@@ -221,4 +232,21 @@ def insert_historical_structure_rows(connection: Any, slice_id: str, frame: pd.D
     if already_present:
         return len(rows)
     connection.executemany("insert into historical_structure_daily values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", rows)
+    return len(rows)
+
+
+def summary_rows_for_storage(frame: pd.DataFrame, slice_id: str) -> list[tuple[Any, ...]]:
+    return [tuple(_storage(value) for value in (slice_id, row.security_id, row.trade_date, row.queues_json, row.research_band, row.research_band_quality, int(row.unique_hit_count), row.queue_contract)) for row in frame.itertuples()]
+
+
+def insert_structure_summary_rows(connection: Any, slice_id: str, frame: pd.DataFrame) -> int:
+    rows = summary_rows_for_storage(frame, slice_id)
+    existing = connection.execute("select * from stock_structure_summary_daily where slice_id=?", [slice_id]).fetchall()
+    try:
+        present = immutable_slice_state(existing, rows, key_indexes=(1, 2), conflict_code="STRUCTURE_SUMMARY_SLICE_IDENTITY_CONFLICT")
+    except ValueError as exc:
+        raise StructureAdapterError(str(exc)) from exc
+    if present:
+        return len(rows)
+    connection.executemany("insert into stock_structure_summary_daily values (?,?,?,?,?,?,?,?)", rows)
     return len(rows)

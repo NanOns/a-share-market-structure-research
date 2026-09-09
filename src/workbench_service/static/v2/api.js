@@ -24,6 +24,11 @@
       var securityId=encodeURIComponent(params.security_id);
       var query=Object.assign({},params);delete query.security_id;
       return get('/api/stocks/'+securityId+'/technical-history',query);
+    },
+    structureHistory:function(params){
+      var securityId=encodeURIComponent(params.security_id);
+      var query=Object.assign({},params);delete query.security_id;
+      return get('/api/stocks/'+securityId+'/structure-history',query);
     }
   };
 }());

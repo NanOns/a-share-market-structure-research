@@ -23,8 +23,8 @@ def test_007_applies_atomically_and_records_hash_identity(tmp_path):
         result = MigrationExecutor(connection).apply()
         assert result["status"] == "APPLIED"
         assert result["applied"][0]["version"] == "007_history_identity"
-        assert set(connection.execute("select version from schema_migrations").fetchall()) == {(BASE_SCHEMA_VERSION,), ("007_history_identity",), ("008_technical_history",), ("008_technical_history_rps",), ("009_sector_base_history",), ("010_historical_structure",)}
-        assert connection.execute("select count(*) from schema_migration_checks").fetchone()[0] == 5
+        assert set(connection.execute("select version from schema_migrations").fetchall()) == {(BASE_SCHEMA_VERSION,), ("007_history_identity",), ("008_technical_history",), ("008_technical_history_rps",), ("009_sector_base_history",), ("010_historical_structure",), ("008_m8_contract_completion",)}
+        assert connection.execute("select count(*) from schema_migration_checks").fetchone()[0] == 6
         stored = connection.execute("select sql_sha256 from schema_migration_checks where version='007_history_identity'").fetchone()[0]
         expected = hashlib.sha256((ROOT / "src/workbench_db/migrations/007_history_identity.sql").read_text(encoding="utf-8").encode()).hexdigest()
         assert stored == expected
@@ -35,6 +35,8 @@ def test_007_applies_atomically_and_records_hash_identity(tmp_path):
         assert "sector_base_daily" in {row[0] for row in connection.execute("show tables").fetchall()}
         assert "historical_structure_daily" in {row[0] for row in connection.execute("show tables").fetchall()}
         assert "stock_structure_summary_daily" in {row[0] for row in connection.execute("show tables").fetchall()}
+        assert "historical_coverage_daily" in {row[0] for row in connection.execute("show tables").fetchall()}
+        assert "trade_date" in {row[1] for row in connection.execute("pragma table_info('market_reference_daily')").fetchall()}
     finally:
         connection.close()
 

@@ -9,6 +9,7 @@ import numpy as np
 import pandas as pd
 
 from .structures import QUEUE_NAMES, STRUCTURE_BASIS
+from .immutable import immutable_slice_state
 
 
 CONTRACT_VERSION = "HISTORICAL_COVERAGE_V2_1_RECONSTRUCTED"
@@ -16,6 +17,17 @@ CONTRACT_VERSION = "HISTORICAL_COVERAGE_V2_1_RECONSTRUCTED"
 
 class CoverageAdapterError(ValueError):
     pass
+
+
+def _storage(value: Any) -> Any:
+    if value is None:
+        return None
+    try:
+        if bool(pd.isna(value)):
+            return None
+    except (TypeError, ValueError):
+        pass
+    return value.item() if hasattr(value, "item") else value
 
 
 def _dates(frame: pd.DataFrame, name: str = "trade_date") -> pd.Series:
@@ -150,3 +162,28 @@ def coverage_summary(frame: pd.DataFrame) -> dict[str, Any]:
         "structure_not_built_dates": int(frame["structure_capability"].eq("NOT_BUILT").sum()),
         "membership_unavailable_dates": int(frame["membership_capability"].eq("UNAVAILABLE").sum()),
     }
+
+
+def coverage_rows_for_storage(frame: pd.DataFrame, slice_id: str) -> list[tuple[Any, ...]]:
+    columns = (
+        "trade_date", "contract_id", "history_basis", "real_observation", "observation_compatible",
+        "membership_basis", "membership_observation_class", "membership_snapshot_id", "price_basis",
+        "expected_security_count", "technical_row_count", "quote_valid_count", "quote_coverage",
+        "factor_valid_count", "factor_coverage", "member_count", "member_sector_count",
+        "membership_capability", "structure_capability", "structure_known_row_count",
+        "structure_unknown_row_count", "structure_unique_hit_security_count", "queue_hit_counts_json", "quality_codes",
+    )
+    return [tuple(_storage(value) for value in [slice_id] + [row.get(column) for column in columns]) for _, row in frame.iterrows()]
+
+
+def insert_coverage_rows(connection: Any, slice_id: str, frame: pd.DataFrame) -> int:
+    rows = coverage_rows_for_storage(frame, slice_id)
+    existing = connection.execute("select * from historical_coverage_daily where slice_id=?", [slice_id]).fetchall()
+    try:
+        present = immutable_slice_state(existing, rows, key_indexes=(1,), conflict_code="COVERAGE_SLICE_IDENTITY_CONFLICT")
+    except ValueError as exc:
+        raise CoverageAdapterError(str(exc)) from exc
+    if present:
+        return len(rows)
+    connection.executemany("insert into historical_coverage_daily values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", rows)
+    return len(rows)

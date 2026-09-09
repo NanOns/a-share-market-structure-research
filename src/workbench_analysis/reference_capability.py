@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 from datetime import date
+import json
+from decimal import Decimal
 from typing import Any, Iterable
 
 import numpy as np
@@ -137,10 +139,11 @@ def build_reference_capability_report(
 
 
 def rows_for_storage(frame: pd.DataFrame, slice_id: str) -> list[tuple[Any, ...]]:
-    """Convert capability rows to the existing 007 reference table shape."""
+    """Convert capability rows to the date-keyed M8 reference table shape."""
     rows = []
     for row in frame.itertuples():
-        rows.append((slice_id, row.security_id, row.quote_prev_close, None, None, row.float_shares, row.shares_basis, bool(row.status_known), row.rule_id, row.source_ref, row.observed_at))
+        quote = None if row.quote_prev_close is None or pd.isna(row.quote_prev_close) else Decimal(str(row.quote_prev_close)).quantize(Decimal("0.0001"))
+        rows.append((slice_id, row.security_id, row.trade_date, quote, None, None, row.float_shares, row.shares_basis, bool(row.status_known), row.rule_id, row.source_ref, row.observed_at, CONTRACT_VERSION, json.dumps(row.quality_codes, ensure_ascii=False, sort_keys=True)))
     return rows
 
 
@@ -153,5 +156,5 @@ def insert_market_reference_rows(connection: Any, slice_id: str, frame: pd.DataF
         raise ReferenceCapabilityError(str(exc)) from exc
     if already_present:
         return len(rows)
-    connection.executemany("insert into market_reference_daily (slice_id,security_id,quote_prev_close,limit_up_price,limit_down_price,float_shares,shares_basis,status_known,rule_id,source_ref,observed_at) values (?,?,?,?,?,?,?,?,?,?,?)", rows)
+    connection.executemany("insert into market_reference_daily (slice_id,security_id,trade_date,quote_prev_close,limit_up_price,limit_down_price,float_shares,shares_basis,status_known,rule_id,source_ref,observed_at,contract_id,quality_codes) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)", rows)
     return len(rows)

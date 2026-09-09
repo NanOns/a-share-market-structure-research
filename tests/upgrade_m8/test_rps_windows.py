@@ -8,6 +8,7 @@ from datetime import datetime, timezone
 from workbench_analysis.highs import calculate_high_daily, insert_high_rows
 from workbench_analysis.strength import average_rank_percentile, calculate_strength_daily, insert_strength_rows
 from workbench_analysis.technical import insert_technical_rows
+from workbench_analysis.structures import calculate_historical_structures, insert_historical_structure_rows
 from workbench_db.migrations import BASE_SCHEMA_VERSION, MigrationExecutor
 from workbench_service.app import Api
 
@@ -109,6 +110,10 @@ def test_api11_reads_only_snapshot_bound_high_slices(tmp_path):
         insert_strength_rows(connection, "slice-tech", calculate_strength_daily(technical_slice))
         connection.execute("insert into analysis_snapshot_entries values (?,?,?,?)", ["snapshot-1", "technical", dates[-1].date(), "slice-tech"])
         connection.execute("insert into analysis_snapshot_entries values (?,?,?,?)", ["snapshot-1", "strength", dates[-1].date(), "slice-tech"])
+        connection.execute("insert into analysis_slices values (?,?,?,?,?,?,?,?,?,?,?,?)", ["slice-structure", "structure", "2026-01-29", "c", "i", "d", "{}", 5, "l", "DUCKDB", None, now])
+        structures = calculate_historical_structures(pd.DataFrame([{"security_id": "SH.600000", "trade_date": dates[-1], "v1_steady_trend": True, "continuity_value": 0.7, "continuity_valid_count": 20, "continuity_valid_ratio": 1.0, "pulse_value": 0.1}]))["structures"]
+        insert_historical_structure_rows(connection, "slice-structure", structures)
+        connection.execute("insert into analysis_snapshot_entries values (?,?,?,?)", ["snapshot-1", "structure", dates[-1].date(), "slice-structure"])
         connection.close()
         api = Api(tmp_path / "api.duckdb", root=tmp_path)
         result = api.new_highs("pub-1", include_ties=True)
@@ -121,6 +126,15 @@ def test_api11_reads_only_snapshot_bound_high_slices(tmp_path):
         assert technical_result["rps_window"] == 20
         assert technical_result["total"] == 1
         assert technical_result["items"][0]["rps20"] is None
+        structure_history = api.structure_history("pub-1", "SH.600000", days=20, queue="STEADY")
+        assert len(structure_history["points"]) == 1
+        assert structure_history["window_left_censored"] is True
+        analysis_queue = api.queues("pub-1", "STEADY", 1, 50, include_analysis=True)
+        assert analysis_queue["total"] == 1
+        assert analysis_queue["items"][0]["rps20"] is None
+        grouped = api.evidence("pub-1", "STEADY", "SH.600000", format="groups")
+        assert grouped["status"] == "AVAILABLE"
+        assert grouped["item"]["groups"][0]["items"]
     finally:
         if connection:
             try:

@@ -77,10 +77,15 @@ def build_chart_points(
     if "date" not in work or (pd.to_datetime(work["date"]).dt.date > cutoff).any():
         raise ValueError("FUTURE_CHART_INPUT")
     work["date"] = pd.to_datetime(work["date"]).dt.date
-    work = work[work["date"] <= cutoff].sort_values("date", kind="mergesort").drop_duplicates("date", keep="last")
+    if work["date"].duplicated().any():
+        raise ValueError("CHART_DUPLICATE_DATE")
+    work = work[work["date"] <= cutoff].sort_values("date", kind="mergesort")
     close_name = "raw_close" if PRICE_BASES[price_basis] == "RAW" else "adj_close"
     available_dates = list(work["date"])
-    expected = sorted(set(expected_dates if expected_dates is not None else available_dates))
+    expected_values = [pd.Timestamp(value).date() for value in (expected_dates if expected_dates is not None else available_dates)]
+    if any(value > cutoff for value in expected_values):
+        raise ValueError("FUTURE_CHART_INPUT")
+    expected = sorted(set(expected_values))
     if expected:
         work["_source_present"] = True
         work = work.set_index("date").reindex(expected).rename_axis("date").reset_index()

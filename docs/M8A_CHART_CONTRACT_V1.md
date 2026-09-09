@@ -9,6 +9,8 @@ API12 的历史图表按选定发布解析一个成功绑定的分析快照，�
   并固定 `adjustment_as_of=cutoff_date`；返回值中的 OHLC 与 MA 不混用价格基准。
 - MA5/10/20/60 在完整的主交易日历行上计算。证券无行或价格无效时返回明确的
   gap 点，不能将前后日期压缩，也不能用旧值填充。
+- 输入证券日期必须唯一；重复日期返回 `CHART_DUPLICATE_DATE`。主交易日历的
+  `expected_dates` 同样不得晚于 `cutoff_date`，否则返回 `FUTURE_CHART_INPUT`。
 - 返回 `chart_basis` 与 `factor_evidence_basis`；图表锚与技术因子证据用途分开。
 - 缓存键固定包含 `snapshot_id`、证券、价格口径、调整锚、days、fields 和合同版本，
   使用有条目数和近似字节上限的 LRU；不无限增长。

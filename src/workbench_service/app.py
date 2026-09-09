@@ -120,6 +120,15 @@ class Api:
    security_id=item.get('security_id')
    item.update(quotes.get(security_id,{'quote_contract_id':'workbench-quote-v2.1','security_id':security_id,'quote_date':trade_date,'raw_close':None,'latest_price':None,'quote_prev_close':None,'quote_ret1':None,'RET1':None,'raw_amount':None,'turnover_amount':None,'quote_ret1_basis':'UNAVAILABLE','quote_state':'SOURCE_NOT_FROZEN','publication_id':p,'source_ref':None,'source_identity_sha256':source_identity}))
   return result
+ def _add_stock_payloads(self,p,result):
+  security_ids=sorted({item.get('security_id') for item in result['items'] if item.get('security_id')})
+  if not security_ids:return result
+  placeholders=','.join('?' for _ in security_ids)
+  with self._con() as c:rows=c.execute(f'select security_id,payload_json from stock_daily where publication_id=? and security_id in ({placeholders})',[p,*security_ids]).fetchall()
+  payloads={security_id:json.loads(payload) for security_id,payload in rows if payload}
+  for item in result['items']:
+   merged={**payloads.get(item.get('security_id'),{}),**item};item.clear();item.update(merged)
+  return result
  def _add_strength_associations(self,p,result):
   security_ids=[item.get('security_id') for item in result['items'] if item.get('security_id')]
   missing=[sid for sid in security_ids if (p,sid) not in self._association_cache]
@@ -187,44 +196,44 @@ class Api:
     item['quote_valid_count']=len(values)
   return result
  def stocks(self,p,q,page,size): return self._add_quotes(p,self._rows('stock_daily',p,'and '+A_SHARE_SQL.format(id='security_id')+' and (security_name ilike ? or security_id ilike ?)',(f'%{q}%',f'%{q}%'),'security_id',page,size))
- def technical(self,p,page=1,size=50,basis='AUTO',ma_state='',rps_window='',rps_min='',amount_class_filter='',turnover_min=''):
-   if basis not in ('AUTO','OBSERVED','RECONSTRUCTED'): raise ValueError('BASIS_UNSUPPORTED')
-   bindings=self._analysis_bindings(p);requested={'OBSERVED':'LOCAL_OBSERVED','RECONSTRUCTED':'LOCAL_RECONSTRUCTED'}.get(basis)
-   selected=bindings.get(requested) if requested else bindings.get('LOCAL_OBSERVED') or bindings.get('LOCAL_RECONSTRUCTED')
-   if not selected: raise ValueError('ANALYSIS_NOT_BUILT')
-   size=max(1,min(MAX_PAGE_SIZE,int(size)));page=max(1,int(page))
-   if turnover_min not in ('',None): raise ValueError('TURNOVER_NOT_BUILT')
-   rps_window_value=str(rps_window or '').strip();rps_width=None
-   if rps_window_value:
-    try: rps_width=int(rps_window_value)
-    except (TypeError,ValueError): raise ValueError('RPS_WINDOW_UNSUPPORTED')
-    if rps_width not in (5,10,20,60): raise ValueError('RPS_WINDOW_UNSUPPORTED')
-   elif rps_min not in ('',None): rps_width=20
-   rps_value=None
-   if rps_min not in ('',None):
-    try: rps_value=float(rps_min)
-    except (TypeError,ValueError): raise ValueError('RPS_THRESHOLD_UNSUPPORTED')
-    if not math.isfinite(rps_value): raise ValueError('RPS_THRESHOLD_UNSUPPORTED')
-   rps_join='';rps_select='';rps_filter=''
-   if rps_width is not None:
-    with self._con() as check:
-     if not check.execute("select count(*) from analysis_snapshot_entries where snapshot_id=? and domain='strength'",[selected['snapshot_id']]).fetchone()[0]: raise ValueError('RPS_NOT_BUILT')
-    rps_join=" left join analysis_snapshot_entries se on se.snapshot_id=e.snapshot_id and se.domain='strength' and se.trade_date=e.trade_date left join stock_strength_daily st on st.slice_id=se.slice_id and st.trade_date=se.trade_date and st.security_id=t.security_id"
-    rps_select=f',st.rps{rps_width}'
-    if rps_value is not None: rps_filter=f' and st.rps{rps_width}>=?'
-   filters=['e.snapshot_id=?'];params=[selected['snapshot_id']]
-   if ma_state: filters.append('t.ma_alignment=?');params.append(ma_state)
-   if amount_class_filter: filters.append('t.amount_class=?');params.append(amount_class_filter)
-   if rps_value is not None: params.append(rps_value)
-   where=' and '.join(filters)
-   with self._con() as c:
-    total=c.execute("select count(*) from analysis_snapshot_entries e join stock_technical_daily t on t.slice_id=e.slice_id and t.trade_date=e.trade_date"+rps_join+" where e.domain='technical' and "+where+rps_filter,params).fetchone()[0]
-    rows=c.execute("select t.security_id,t.trade_date,t.contract_id,t.price_basis,t.raw_close,t.adj_close,t.quote_ret1,t.raw_amount,t.raw_volume,t.ma5,t.ma10,t.ma20,t.ma60,t.ret5,t.ret10,t.ret20,t.ret60,t.rs5,t.rs10,t.rs20,t.rs60,t.amount_ma5,t.amount_ma10,t.amount_ma20,t.amount_ratio20,t.amount_vs_prior20,t.volume_vs_prior20,t.amount_class,t.ma_alignment,t.validity,t.quality_codes,t.basis_json"+rps_select+" from analysis_snapshot_entries e join stock_technical_daily t on t.slice_id=e.slice_id and t.trade_date=e.trade_date"+rps_join+" where e.domain='technical' and "+where+rps_filter+f" order by t.trade_date desc,t.ret20 desc nulls last,t.security_id limit ? offset ?",params+[size,(page-1)*size]).fetchall()
-   names=('security_id','trade_date','contract_id','price_basis','raw_close','adj_close','quote_ret1','raw_amount','raw_volume','ma5','ma10','ma20','ma60','ret5','ret10','ret20','ret60','rs5','rs10','rs20','rs60','amount_ma5','amount_ma10','amount_ma20','amount_ratio20','amount_vs_prior20','volume_vs_prior20','amount_class','ma_alignment','validity','quality_codes','basis')+((f'rps{rps_width}',) if rps_width is not None else ())
-   items=[]
-   for row in rows:
-    item=dict(zip(names,row));item['trade_date']=str(item['trade_date']);item['quality_codes']=json.loads(item['quality_codes']) if item['quality_codes'] else [];item['basis']=json.loads(item['basis']) if item['basis'] else {};items.append(item)
-   return {'publication_id':p,'page':page,'page_size':size,'total':total,'basis':basis,'rps_window':rps_width,'snapshot_id':selected['snapshot_id'],'snapshot_capability':'AVAILABLE','items':items}
+ def technical(self,p,page=1,size=50,basis='AUTO',ma_state='',rps_window='',rps_min='',amount_class_filter='',turnover_min='',quality_filter=''):
+  if basis not in ('AUTO','OBSERVED','RECONSTRUCTED'): raise ValueError('BASIS_UNSUPPORTED')
+  if quality_filter not in ('','INCLUDE_UNKNOWN'): raise ValueError('QUALITY_FILTER_UNSUPPORTED')
+  bindings=self._analysis_bindings(p);requested={'OBSERVED':'LOCAL_OBSERVED','RECONSTRUCTED':'LOCAL_RECONSTRUCTED'}.get(basis)
+  selected=bindings.get(requested) if requested else bindings.get('LOCAL_OBSERVED') or bindings.get('LOCAL_RECONSTRUCTED')
+  if not selected: raise ValueError('ANALYSIS_NOT_BUILT')
+  size=max(1,min(MAX_PAGE_SIZE,int(size)));page=max(1,int(page))
+  if turnover_min not in ('',None): raise ValueError('TURNOVER_NOT_BUILT')
+  rps_window_value=str(rps_window or '').strip();rps_width=None
+  if rps_window_value:
+   try:rps_width=int(rps_window_value)
+   except (TypeError,ValueError):raise ValueError('RPS_WINDOW_UNSUPPORTED')
+   if rps_width not in (5,10,20,60):raise ValueError('RPS_WINDOW_UNSUPPORTED')
+  elif rps_min not in ('',None):rps_width=20
+  rps_value=None
+  if rps_min not in ('',None):
+   try:rps_value=float(rps_min)
+   except (TypeError,ValueError):raise ValueError('RPS_THRESHOLD_UNSUPPORTED')
+   if not math.isfinite(rps_value):raise ValueError('RPS_THRESHOLD_UNSUPPORTED')
+  if rps_width is not None:
+   with self._con() as check:
+    if not check.execute("select count(*) from analysis_snapshot_entries where snapshot_id=? and domain='strength'",[selected['snapshot_id']]).fetchone()[0]:raise ValueError('RPS_NOT_BUILT')
+  joins=" left join analysis_snapshot_entries se on se.snapshot_id=e.snapshot_id and se.domain='strength' and se.trade_date=e.trade_date left join stock_strength_daily st on st.slice_id=se.slice_id and st.trade_date=se.trade_date and st.security_id=t.security_id left join analysis_snapshot_entries ue on ue.snapshot_id=e.snapshot_id and ue.domain='structure' and ue.trade_date=e.trade_date left join stock_structure_summary_daily ss on ss.slice_id=ue.slice_id and ss.trade_date=ue.trade_date and ss.security_id=t.security_id"
+  include_unknown=quality_filter=='INCLUDE_UNKNOWN';filters=['e.snapshot_id=?'];params=[selected['snapshot_id']]
+  if ma_state:filters.append('(t.ma_alignment=?'+(' or t.ma_alignment is null)' if include_unknown else ')'));params.append(ma_state)
+  if amount_class_filter:filters.append('(t.amount_class=?'+(' or t.amount_class is null)' if include_unknown else ')'));params.append(amount_class_filter)
+  if rps_value is not None:filters.append(f'(st.rps{rps_width}>=?'+(f' or st.rps{rps_width} is null)' if include_unknown else ')'));params.append(rps_value)
+  where=' and '.join(filters)
+  select="t.security_id,t.trade_date,t.contract_id,t.price_basis,t.raw_close,t.adj_close,t.quote_ret1,t.raw_amount,t.raw_volume,t.ma5,t.ma10,t.ma20,t.ma60,t.ret5,t.ret10,t.ret20,t.ret60,t.rs5,t.rs10,t.rs20,t.rs60,t.amount_ma5,t.amount_ma10,t.amount_ma20,t.amount_ratio20,t.amount_vs_prior20,t.volume_vs_prior20,t.amount_class,t.ma_alignment,t.validity,t.quality_codes,t.basis_json,st.rps5,st.rps10,st.rps20,st.rps60,ss.research_band,ss.research_band_quality,ss.queues_json"
+  with self._con() as c:
+   total=c.execute("select count(*) from analysis_snapshot_entries e join stock_technical_daily t on t.slice_id=e.slice_id and t.trade_date=e.trade_date"+joins+" where e.domain='technical' and "+where,params).fetchone()[0]
+   rows=c.execute("select "+select+" from analysis_snapshot_entries e join stock_technical_daily t on t.slice_id=e.slice_id and t.trade_date=e.trade_date"+joins+" where e.domain='technical' and "+where+" order by st.rps20 desc nulls last,t.ret20 desc nulls last,t.security_id limit ? offset ?",params+[size,(page-1)*size]).fetchall()
+  names=('security_id','trade_date','contract_id','price_basis','raw_close','adj_close','quote_ret1','raw_amount','raw_volume','ma5','ma10','ma20','ma60','ret5','ret10','ret20','ret60','rs5','rs10','rs20','rs60','amount_ma5','amount_ma10','amount_ma20','amount_ratio20','amount_vs_prior20','volume_vs_prior20','amount_class','ma_alignment','validity','quality_codes','basis','rps5','rps10','rps20','rps60','research_band','research_band_quality','queues_json')
+  items=[]
+  for row in rows:
+   item=dict(zip(names,row));item['trade_date']=str(item['trade_date']);item['quality_codes']=json.loads(item['quality_codes']) if item['quality_codes'] else [];item['basis']=json.loads(item['basis']) if item['basis'] else {};item['queues']=json.loads(item.pop('queues_json')) if item.get('queues_json') else None;items.append(item)
+  result={'publication_id':p,'page':page,'page_size':size,'total':total,'basis':basis,'rps_window':rps_width,'snapshot_id':selected['snapshot_id'],'snapshot_capability':'AVAILABLE','items':items}
+  return self._add_quotes(p,self._add_stock_payloads(p,result))
  def new_highs(self,p,page=1,size=50,basis='AUTO',window=20,streak_min='',include_ties=False,rps_min=''):
   if basis not in ('AUTO','OBSERVED','RECONSTRUCTED'): raise ValueError('BASIS_UNSUPPORTED')
   try: window=int(window)
@@ -246,12 +255,13 @@ class Api:
    available=c.execute("select count(*) from analysis_snapshot_entries where snapshot_id=? and domain='high'",[selected['snapshot_id']]).fetchone()[0]
    if not available: raise ValueError('ANALYSIS_NOT_BUILT')
    total=c.execute('select count(*) from analysis_snapshot_entries he join stock_high_daily h on h.slice_id=he.slice_id and h.trade_date=he.trade_date left join analysis_snapshot_entries se on se.snapshot_id=he.snapshot_id and se.domain=\'strength\' and se.trade_date=he.trade_date left join stock_strength_daily st on st.slice_id=se.slice_id and st.trade_date=se.trade_date and st.security_id=h.security_id where '+where,params).fetchone()[0]
-   rows=c.execute('select h.security_id,h.trade_date,h."window",h.contract_id,h.price_basis,h.prior_max_close,h.new_high,h.at_prior_high,h.streak,h.is_left_censored,h.dist_prior_high,h.valid_n,h.quality_codes,h.basis_json,st.rps5,st.rps10,st.rps20,st.rps60,st.rps_valid_universe_count5,st.rps_valid_universe_count10,st.rps_valid_universe_count20,st.rps_valid_universe_count60,st.quality_codes,st.basis_json from analysis_snapshot_entries he join stock_high_daily h on h.slice_id=he.slice_id and h.trade_date=he.trade_date left join analysis_snapshot_entries se on se.snapshot_id=he.snapshot_id and se.domain=\'strength\' and se.trade_date=he.trade_date left join stock_strength_daily st on st.slice_id=se.slice_id and st.trade_date=se.trade_date and st.security_id=h.security_id where '+where+' order by h.streak desc nulls last,h.dist_prior_high desc nulls last,h.security_id limit ? offset ?',params+[size,(page-1)*size]).fetchall()
+   rows=c.execute('select h.security_id,h.trade_date,h."window",h.contract_id,h.price_basis,h.prior_max_close,h.new_high,h.at_prior_high,h.streak,h.is_left_censored,h.dist_prior_high,h.valid_n,h.quality_codes,h.basis_json,st.rps5,st.rps10,st.rps20,st.rps60,st.rps_valid_universe_count5,st.rps_valid_universe_count10,st.rps_valid_universe_count20,st.rps_valid_universe_count60,st.quality_codes,st.basis_json from analysis_snapshot_entries he join stock_high_daily h on h.slice_id=he.slice_id and h.trade_date=he.trade_date left join analysis_snapshot_entries se on se.snapshot_id=he.snapshot_id and se.domain=\'strength\' and se.trade_date=he.trade_date left join stock_strength_daily st on st.slice_id=se.slice_id and st.trade_date=se.trade_date and st.security_id=h.security_id where '+where+' order by h.streak desc nulls last,st.rps20 desc nulls last,h.security_id limit ? offset ?',params+[size,(page-1)*size]).fetchall()
   names=('security_id','trade_date','window','contract_id','price_basis','prior_max_close','new_high','at_prior_high','streak','is_left_censored','dist_prior_high','valid_n','quality_codes','basis','rps5','rps10','rps20','rps60','rps_valid_universe_count5','rps_valid_universe_count10','rps_valid_universe_count20','rps_valid_universe_count60','strength_quality_codes','strength_basis')
   items=[]
   for row in rows:
    item=dict(zip(names,row));item['trade_date']=str(item['trade_date']);item['quality_codes']=json.loads(item['quality_codes']) if item['quality_codes'] else [];item['basis']=json.loads(item['basis']) if item['basis'] else {};item['strength_quality_codes']=json.loads(item['strength_quality_codes']) if item['strength_quality_codes'] else [];item['strength_basis']=json.loads(item['strength_basis']) if item['strength_basis'] else {};items.append(item)
-  return {'publication_id':p,'page':page,'page_size':size,'total':total,'basis':basis,'window':window,'snapshot_id':selected['snapshot_id'],'snapshot_capability':'AVAILABLE','items':items}
+  result={'publication_id':p,'page':page,'page_size':size,'total':total,'basis':basis,'window':window,'snapshot_id':selected['snapshot_id'],'snapshot_capability':'AVAILABLE','items':items}
+  return self._add_quotes(p,self._add_stock_payloads(p,result))
  def technical_history(self,p,security_id,days=20,price_basis='ADJUSTED',fields=''):
   if price_basis not in ('RAW','ADJUSTED','TDX_NATIVE_QFQ'): raise ValueError('PRICE_BASIS_UNSUPPORTED')
   bindings=self._analysis_bindings(p);selected=bindings.get('LOCAL_OBSERVED') or bindings.get('LOCAL_RECONSTRUCTED')
@@ -275,6 +285,24 @@ class Api:
   result.update({'publication_id':p,'security_id':security_id,'snapshot_id':selected['snapshot_id'],'factor_evidence_basis':{'snapshot_id':selected['snapshot_id'],'rps_available':bool(rps)},'rps_capability':'AVAILABLE' if rps else 'NOT_BUILT'})
   self._chart_cache.put(key,result)
   return result
+ def structure_history(self,p,security_id,days=20,queue=''):
+  bindings=self._analysis_bindings(p);selected=bindings.get('LOCAL_OBSERVED') or bindings.get('LOCAL_RECONSTRUCTED')
+  if not selected:raise ValueError('ANALYSIS_NOT_BUILT')
+  days=int(days)
+  if not 1<=days<=250:raise ValueError('STRUCTURE_DAYS_OUT_OF_RANGE')
+  canonical=str(queue).removesuffix('_QUEUE').upper()+'_QUEUE' if queue else ''
+  if canonical and canonical not in ('STEADY_QUEUE','PULLBACK_QUEUE','BREAKOUT_QUEUE','LEADER_QUEUE','EARLY_QUEUE'):raise ValueError('QUEUE_UNSUPPORTED')
+  params=[selected['snapshot_id'],security_id,days]
+  queue_filter=''
+  if canonical:queue_filter=' and h.queue_name=?';params.append(canonical)
+  with self._con() as c:
+   available=c.execute("select count(*) from analysis_snapshot_entries where snapshot_id=? and domain='structure'",[selected['snapshot_id']]).fetchone()[0]
+   if not available:raise ValueError('ANALYSIS_NOT_BUILT')
+   rows=c.execute("with recent_dates as (select distinct e.trade_date from analysis_snapshot_entries e join historical_structure_daily h on h.slice_id=e.slice_id and h.trade_date=e.trade_date where e.snapshot_id=? and e.domain='structure' and h.security_id=? order by e.trade_date desc limit ?) select h.trade_date,h.queue_name,h.hit,h.tier,h.source_class,h.research_band,h.queue_rank,h.tier_rank,h.transition,h.structure_basis,h.contract_id,h.evidence,h.quality_codes from recent_dates d join analysis_snapshot_entries e on e.snapshot_id=? and e.domain='structure' and e.trade_date=d.trade_date join historical_structure_daily h on h.slice_id=e.slice_id and h.trade_date=e.trade_date where h.security_id=?"+queue_filter+" order by h.trade_date,h.queue_name",params[:3]+[selected['snapshot_id'],security_id]+params[3:]).fetchall()
+  names=('trade_date','queue_name','hit','tier','source_class','research_band','queue_rank','tier_rank','transition','source_basis','contract_id','evidence','quality_codes');points=[]
+  for row in rows:
+   item=dict(zip(names,row));item['trade_date']=str(item['trade_date']);item['evidence']=json.loads(item['evidence']) if item['evidence'] else {};item['quality_codes']=json.loads(item['quality_codes']) if item['quality_codes'] else [];points.append(item)
+  return {'publication_id':p,'security_id':security_id,'snapshot_id':selected['snapshot_id'],'history_basis':selected['domain'].removeprefix('LOCAL_'),'window_left_censored':len({item['trade_date'] for item in points})<days,'points':points}
  def universe_summary(self,p):
   trade_date,source_revision=self._pub(p)
   with self._con() as c:
@@ -301,7 +329,8 @@ class Api:
   extra='and '+A_SHARE_SQL.format(id='security_id')+' '+extra
   result=self._rows('candidate_daily',p,extra,args,"case research_priority when 'A+' then 0 when 'A' then 1 when 'B' then 2 when 'C' then 3 else 9 end, cast(json_extract_string(payload_json,'$.priority_score') as double) desc, security_id",page,size)
   return self._add_quotes(p,self._add_strength_associations(p,result))
- def queues(self,p,name,page,size,q='',band=''):
+ def queues(self,p,name,page,size,q='',band='',include_analysis=False):
+  if include_analysis:return self._analysis_queues(p,name,page,size,q,band)
   canonical=str(name).removesuffix('_QUEUE').upper()+'_QUEUE'
   size=max(1,min(MAX_PAGE_SIZE,int(size))); page=max(1,int(page)); self._pub(p)
   filters=['q.publication_id=?','q.queue_name=?',A_SHARE_SQL.format(id='q.security_id')]; args=[p,canonical]
@@ -326,12 +355,39 @@ class Api:
    items.append(merged)
   result={'publication_id':p,'page':page,'page_size':size,'total':total,'items':items}
   return self._add_quotes(p,self._add_strength_associations(p,result))
- def evidence(self,p,queue,security):
+ def _analysis_queues(self,p,name,page,size,q='',band=''):
+  canonical=str(name).removesuffix('_QUEUE').upper()+'_QUEUE'
+  if canonical not in ('STEADY_QUEUE','PULLBACK_QUEUE','BREAKOUT_QUEUE','LEADER_QUEUE','EARLY_QUEUE'):raise ValueError('QUEUE_UNSUPPORTED')
+  size=max(1,min(MAX_PAGE_SIZE,int(size)));page=max(1,int(page));self._pub(p)
+  bindings=self._analysis_bindings(p);selected=bindings.get('LOCAL_OBSERVED') or bindings.get('LOCAL_RECONSTRUCTED')
+  if not selected:raise ValueError('ANALYSIS_NOT_BUILT')
+  with self._con() as c:latest=c.execute("select max(trade_date) from analysis_snapshot_entries where snapshot_id=? and domain='structure'",[selected['snapshot_id']]).fetchone()[0]
+  if latest is None:raise ValueError('ANALYSIS_NOT_BUILT')
+  filters=["e.snapshot_id=?","e.domain='structure'","e.trade_date=?","h.queue_name=?","h.hit=true","h.tier in ('CORE','SUPPORTED')"];where_params=[selected['snapshot_id'],latest,canonical]
+  if q:filters.append("(h.security_id ilike ? or json_extract_string(sd.payload_json,'$.security_name') ilike ?)");where_params.extend([f'%{q}%',f'%{q}%'])
+  bands=[value for value in str(band).split(',') if value]
+  if bands:filters.append('h.research_band in ('+','.join('?' for _ in bands)+')');where_params.extend(bands)
+  where=' and '.join(filters);joins=" from analysis_snapshot_entries e join historical_structure_daily h on h.slice_id=e.slice_id and h.trade_date=e.trade_date left join stock_daily sd on sd.publication_id=? and sd.security_id=h.security_id left join analysis_snapshot_entries te on te.snapshot_id=e.snapshot_id and te.domain='technical' and te.trade_date=e.trade_date left join stock_technical_daily t on t.slice_id=te.slice_id and t.trade_date=te.trade_date and t.security_id=h.security_id left join analysis_snapshot_entries se on se.snapshot_id=e.snapshot_id and se.domain='strength' and se.trade_date=e.trade_date left join stock_strength_daily st on st.slice_id=se.slice_id and st.trade_date=se.trade_date and st.security_id=h.security_id"
+  params=[p,*where_params]
+  with self._con() as c:
+   total=c.execute('select count(*)'+joins+' where '+where,params).fetchone()[0]
+   rows=c.execute('select h.security_id,h.trade_date,h.queue_name,h.hit,h.tier,h.source_class,h.research_band,h.queue_rank,h.tier_rank,h.transition,h.structure_basis,h.contract_id,h.evidence,h.quality_codes,t.ret20,st.rps20,t.ma_alignment,t.amount_class,sd.payload_json'+joins+' where '+where+' order by h.queue_rank nulls last,h.security_id limit ? offset ?',params+[size,(page-1)*size]).fetchall()
+  names=('security_id','trade_date','queue_name','hit','tier','source_class','research_band','queue_rank','tier_rank','transition','source_basis','contract_id','evidence','quality_codes','ret20','rps20','ma_alignment','amount_class','stock_payload');items=[]
+  for index,row in enumerate(rows):
+   item=dict(zip(names,row));payload=json.loads(item.pop('stock_payload')) if item.get('stock_payload') else {};item={**payload,**item};item['trade_date']=str(item['trade_date']);item['evidence']=json.loads(item['evidence']) if item['evidence'] else {};item['quality_codes']=json.loads(item['quality_codes']) if item['quality_codes'] else [];item['filtered_row_number']=(page-1)*size+index+1;items.append(item)
+  result={'publication_id':p,'snapshot_id':selected['snapshot_id'],'trade_date':str(latest),'page':page,'page_size':size,'total':total,'items':items}
+  return self._add_quotes(p,result)
+ def evidence(self,p,queue,security,format=''):
   # The UI uses stable lowercase route keys while the publication contract
   # stores queue names in uppercase.  Normalize both forms before lookup.
   detail=str(queue).removesuffix('_QUEUE').upper(); canonical=detail+'_QUEUE'
-  with self._con() as c: row=c.execute('select payload_json from structure_details where publication_id=? and queue_name=? and security_id=?',[p,detail,security]).fetchone()
-  return {'publication_id':p,'item':json.loads(row[0]) if row else None}
+  if format!='groups':
+   with self._con() as c: row=c.execute('select payload_json from structure_details where publication_id=? and queue_name=? and security_id=?',[p,detail,security]).fetchone()
+   return {'publication_id':p,'item':json.loads(row[0]) if row else None}
+  history=self.structure_history(p,security,20,canonical)
+  if not history['points']:return {'publication_id':p,'item':None,'status':'NOT_FOUND'}
+  latest=history['points'][-1]
+  return {'publication_id':p,'item':{'summary':{'security_id':security,'queue_name':canonical,'trade_date':latest['trade_date'],'hit':latest['hit'],'tier':latest['tier'],'source_basis':latest['source_basis']},'groups':[{'group_id':'historical_structure','label':'历史结构证据','items':history['points']}],'contracts':[latest['contract_id']]},'status':'AVAILABLE'}
  def identity(self,p,include_analysis=False):
   d,rev=self._pub(p)
   with self._con() as c:
@@ -453,13 +509,15 @@ def make_handler(root,db):
     elif u.path=='/api/dashboard': out=api.dashboard(x['publication_id'])
     elif u.path=='/api/sectors': out=api.sectors(x['publication_id'],x.get('q',''),x.get('page',1),x.get('page_size',50),x.get('type',''))
     elif u.path=='/api/stocks': out=api.stocks(x['publication_id'],x.get('q',''),x.get('page',1),x.get('page_size',50))
-    elif u.path=='/api/stocks/technical': out=api.technical(x['publication_id'],x.get('page',1),x.get('page_size',50),x.get('basis','AUTO'),x.get('ma_state',''),x.get('rps_window',''),x.get('rps_min',''),x.get('amount_class',''),x.get('turnover_min',''))
+    elif u.path=='/api/stocks/technical': out=api.technical(x['publication_id'],x.get('page',1),x.get('page_size',50),x.get('basis','AUTO'),x.get('ma_state',''),x.get('rps_window',''),x.get('rps_min',''),x.get('amount_class',''),x.get('turnover_min',''),x.get('quality_filter',''))
     elif u.path=='/api/stocks/new-highs': out=api.new_highs(x['publication_id'],x.get('page',1),x.get('page_size',50),x.get('basis','AUTO'),x.get('window',20),x.get('streak_min',''),x.get('include_ties','0')=='1',x.get('rps_min',''))
     elif u.path.startswith('/api/stocks/') and u.path.endswith('/technical-history'):
      security_id=unquote(u.path[len('/api/stocks/'): -len('/technical-history')].strip('/'));out=api.technical_history(x['publication_id'],security_id,x.get('days',20),x.get('price_basis','ADJUSTED'),x.get('fields',''))
+    elif u.path.startswith('/api/stocks/') and u.path.endswith('/structure-history'):
+     security_id=unquote(u.path[len('/api/stocks/'): -len('/structure-history')].strip('/'));out=api.structure_history(x['publication_id'],security_id,x.get('days',20),x.get('queue',''))
     elif u.path=='/api/candidates': out=api.candidates(x['publication_id'],x.get('q',''),x.get('page',1),x.get('page_size',50),x.get('grade',''),x.get('pattern',''))
-    elif u.path=='/api/queues': out=api.queues(x['publication_id'],x.get('queue','STEADY'),x.get('page',1),x.get('page_size',50),x.get('q',''),x.get('band',''))
-    elif u.path=='/api/evidence': out=api.evidence(x['publication_id'],x['queue'],x['security_id'])
+    elif u.path=='/api/queues': out=api.queues(x['publication_id'],x.get('queue','STEADY'),x.get('page',1),x.get('page_size',50),x.get('q',''),x.get('band',''),x.get('include_analysis')=='1')
+    elif u.path=='/api/evidence': out=api.evidence(x['publication_id'],x['queue'],x['security_id'],x.get('format',''))
     elif u.path=='/api/identity': out=api.identity(x['publication_id'],x.get('include_analysis')=='1')
     elif u.path=='/api/metadata/field-catalog': out=api.field_catalog(x.get('api_contract',API_CONTRACT),x.get('language','zh-CN'))
     elif u.path=='/api/history/coverage': out=api.history_coverage(x['publication_id'],x.get('days',MAX_OUTPUT_DAYS),x.get('basis','AUTO'))

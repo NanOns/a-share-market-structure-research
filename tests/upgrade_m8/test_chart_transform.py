@@ -59,3 +59,12 @@ def test_chart_rejects_future_input_and_cache_key_separates_basis_and_fields():
     cache.put(adjusted_key, {"value": 2})
     assert cache.get(raw_key) is None
     assert cache.get(adjusted_key) == {"value": 2}
+
+
+def test_chart_rejects_future_calendar_dates_and_duplicate_security_dates():
+    frame = _frame()
+    with pytest.raises(ValueError, match="FUTURE_CHART_INPUT"):
+        build_chart_points(frame, cutoff=date(2026, 4, 1), expected_dates=[date(2026, 4, 2)])
+    duplicate = pd.concat([frame, frame.iloc[[-1]]], ignore_index=True)
+    with pytest.raises(ValueError, match="CHART_DUPLICATE_DATE"):
+        build_chart_points(duplicate, cutoff=date(2026, 4, 1))

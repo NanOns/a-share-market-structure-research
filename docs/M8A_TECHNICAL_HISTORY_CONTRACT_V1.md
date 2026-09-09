@@ -3,8 +3,8 @@
 ## 1. 范围
 
 本合同实现 `TECHNICAL_HISTORY_V2_1_PREVIEW` 的 M8A-01：使用已封存的
-`TDX_NATIVE_QFQ` 输入，按主交易日历计算个股技术日因子。它不实现 M8A-02
-的新高/RPS、不实现 M8C 的参考价/股本能力，也不改变 M6/V1 已封存字段。
+`TDX_NATIVE_QFQ` 输入，按主交易日历计算个股技术日因子。M8A-02 已通过独立
+strength 分片提供新高/RPS；M8C 参考价/股本能力仍保持独立，不改变 M6/V1 已封存字段。
 
 ## 2. 因子口径
 
@@ -26,9 +26,9 @@
 ## 3. 存储与接口
 
 迁移 `008_technical_history` 建立不可变 `stock_technical_daily`，主键为
-`(slice_id, security_id, trade_date)`。同一 `slice_id` 再次写入时只允许完全相同
-的键集合，不允许静默覆盖。
+`(slice_id, security_id, trade_date)`。同一 `slice_id` 再次写入时只允许键集合和
+全部持久化内容完全相同，不允许静默覆盖。
 
 API10 为 `GET /api/stocks/technical`，只读取所选发布成功绑定的分析快照及其
-`technical` entries。未绑定快照返回 `409 ANALYSIS_NOT_BUILT`；M8A-02 前传入
-RPS筛选返回 `RPS_NOT_BUILT`，不以空值冒充已完成能力。
+`technical` entries。未绑定快照返回 `409 ANALYSIS_NOT_BUILT`；RPS 查询读取同一
+快照的 strength entries，缺失时返回 `RPS_NOT_BUILT`，不以空值冒充已完成能力。

@@ -41,6 +41,7 @@ class MigrationExecutor:
         "008_technical_history_rps": ("008_technical_history",),
         "009_sector_base_history": ("008_technical_history_rps",),
         "010_historical_structure": ("009_sector_base_history",),
+        "008_m8_contract_completion": ("010_historical_structure",),
     }
     CHECK_TABLE_SQL = """
         CREATE TABLE IF NOT EXISTS schema_migration_checks (
@@ -62,7 +63,26 @@ class MigrationExecutor:
         for path in sorted(self.migrations_dir.glob("*.sql")):
             version = path.stem
             values.append(Migration(version, path, tuple(self.DEPENDENCIES.get(version, ()))))
-        return tuple(values)
+        by_version = {migration.version: migration for migration in values}
+        ordered: list[Migration] = []
+        emitted: set[str] = set()
+        while len(ordered) < len(values):
+            ready = sorted(
+                (
+                    migration
+                    for migration in values
+                    if migration.version not in emitted
+                    and all(dependency not in by_version or dependency in emitted for dependency in migration.dependencies)
+                ),
+                key=lambda migration: migration.version,
+            )
+            if not ready:
+                unresolved = ",".join(sorted(set(by_version) - emitted))
+                raise MigrationError(f"MIGRATION_DEPENDENCY_CYCLE:{unresolved}")
+            for migration in ready:
+                ordered.append(migration)
+                emitted.add(migration.version)
+        return tuple(ordered)
 
     def _tables(self) -> set[str]:
         return {row[0] for row in self.connection.execute("SHOW TABLES").fetchall()}

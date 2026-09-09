@@ -8,6 +8,7 @@ and leaves publication/activation to the existing snapshot services.
 from __future__ import annotations
 
 import hashlib
+import json
 from typing import Any, Iterable
 
 import numpy as np
@@ -15,6 +16,7 @@ import pandas as pd
 
 from scanner.sector_scanner import add_percentiles, scan as scan_sectors
 from sector.roles import sector_role
+from .immutable import immutable_slice_state
 
 
 CONTRACT_VERSION = "HISTORICAL_SECTOR_ADAPTER_V1_0"
@@ -25,6 +27,17 @@ WINDOWS = (5, 10, 20, 60)
 
 class HistoryAdapterError(ValueError):
     """Raised when historical inputs cannot be aligned without fabrication."""
+
+
+def _storage(value: Any) -> Any:
+    if value is None:
+        return None
+    try:
+        if bool(pd.isna(value)):
+            return None
+    except (TypeError, ValueError):
+        pass
+    return value.item() if hasattr(value, "item") else value
 
 
 def _date_series(frame: pd.DataFrame, name: str) -> pd.Series:
@@ -301,3 +314,38 @@ def serializable_summary(result: dict[str, Any]) -> dict[str, Any]:
         "sector_base_rows": len(result["sector_base"]),
         "sector_scanner_rows": len(result["sector_scanner"]),
     }
+
+
+def sector_rows_for_storage(frame: pd.DataFrame, slice_id: str) -> list[tuple[Any, ...]]:
+    """Convert reconstructed sector rows to the immutable sector-base table."""
+    rows = []
+    for _, row in frame.iterrows():
+        predicates = row.get("base_predicates") or {}
+        quality = row.get("quality_codes") or ([row.get("quality_flag")] if row.get("quality_flag") else [])
+        rows.append(tuple(_storage(value) for value in (
+            slice_id, str(row["sector_id"]), row["trade_date"], str(row.get("sector_name") or row["sector_id"]),
+            str(row.get("sector_type") or "OTHER"), str(row.get("sector_role") or "OTHER"), row.get("bucket"),
+            bool(row.get("sector_valid")), int(row.get("total_member_count") or 0), int(row.get("quote_valid_count") or 0),
+            int(row.get("factor_valid_count") or 0), row.get("coverage"), row.get("sector_rs5"), row.get("sector_rs10"),
+            row.get("sector_rs20"), row.get("sector_rs60"), row.get("sector_rs5_pct"), row.get("sector_rs20_pct"),
+            row.get("display_rank"), str(row.get("base_pattern") or "NONE"),
+            predicates if isinstance(predicates, str) else json.dumps(predicates, ensure_ascii=False, sort_keys=True, default=str),
+            str(row.get("semantic_version") or "UNAVAILABLE"), str(row.get("membership_snapshot_id")),
+            str(row.get("membership_basis") or HISTORY_BASIS), str(row.get("price_basis") or "TDX_NATIVE_QFQ"),
+            str(row.get("history_basis") or HISTORY_BASIS), CONTRACT_VERSION,
+            quality if isinstance(quality, str) else json.dumps(quality, ensure_ascii=False, sort_keys=True, default=str),
+        )))
+    return rows
+
+
+def insert_sector_base_rows(connection: Any, slice_id: str, frame: pd.DataFrame) -> int:
+    rows = sector_rows_for_storage(frame, slice_id)
+    existing = connection.execute("select * from sector_base_daily where slice_id=?", [slice_id]).fetchall()
+    try:
+        present = immutable_slice_state(existing, rows, key_indexes=(1, 2), conflict_code="SECTOR_BASE_SLICE_IDENTITY_CONFLICT")
+    except ValueError as exc:
+        raise HistoryAdapterError(str(exc)) from exc
+    if present:
+        return len(rows)
+    connection.executemany("insert into sector_base_daily values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", rows)
+    return len(rows)

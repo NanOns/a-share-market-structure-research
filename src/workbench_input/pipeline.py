@@ -33,6 +33,25 @@ def _atomic_json(path: Path, value: dict) -> None:
     tmp.write_text(json.dumps(value,ensure_ascii=False,sort_keys=True,indent=2)+"\n",encoding="utf-8")
     os.replace(tmp,path)
 
+def replace_with_retry(source: Path, destination: Path, *, delays=(0.25, 0.5, 1.0, 2.0, 4.0, 8.0, 16.0, 32.0)) -> None:
+    """Replace a staged artifact, tolerating short Windows file locks.
+
+    Antivirus/indexer scans can briefly hold a newly-created directory or
+    file.  The operation remains atomic; retries only apply to the transient
+    ``PermissionError`` and never fall back to copy/delete semantics.
+    """
+    last_error = None
+    for delay in (0.0, *delays):
+        if delay:
+            time.sleep(delay)
+        try:
+            os.replace(source, destination)
+            return
+        except PermissionError as exc:
+            last_error = exc
+    if last_error is not None:
+        raise last_error
+
 @dataclass(frozen=True)
 class DownloadPolicy:
     max_bytes: int = 4 * 1024**3
@@ -143,7 +162,7 @@ def safe_extract_zip(package: Path, destination: Path, policy: ExtractionPolicy=
                 target.parent.mkdir(parents=True,exist_ok=True)
                 with z.open(info) as src, target.open("xb") as dst: shutil.copyfileobj(src,dst,1024*1024)
         if destination.exists(): raise ValueError("EXTRACTION_DESTINATION_EXISTS")
-        os.replace(stage,destination)
+        replace_with_retry(stage,destination)
         return {"entry_count":count,"expanded_bytes":expanded,"package_sha256":_hash(package)}
     except Exception:
         shutil.rmtree(stage,ignore_errors=True)

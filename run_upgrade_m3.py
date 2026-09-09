@@ -5,12 +5,13 @@ from pathlib import Path
 import hashlib, json, os, re, shutil, subprocess, sys, uuid
 
 ROOT=Path(__file__).resolve().parent; sys.path.insert(0,str(ROOT/"src"))
+from common.run_lock import ActiveRunLock, RunLock
 from common.paths import resolve_tdx_root
 from tdx.security_master import read_industry_assignments, current_a_stock_ids
 from workbench_db import WorkbenchRepository
 from workbench_input import (analyze_dynamic_metadata, capture_stable_metadata,
     download_official_package_curl, safe_extract_zip, seal_source_bundle,
-    validate_extracted_day_data, verify_source_bundle)
+    validate_extracted_day_data, verify_source_bundle, replace_with_retry)
 OFFICIAL_URL="https://data.tdx.com.cn/vipdoc/hsjday.zip"
 
 def atomic(path,text):
@@ -43,7 +44,7 @@ def stage_inputs(day):
   target=staging/"packages"/day/"hsjday.zip";target.parent.mkdir(parents=True,exist_ok=True)
   if target.exists():
    if sha(target)!=package["sha256"]:raise ValueError("STAGED_PACKAGE_IDENTITY_CONFLICT")
-  else:os.replace(downloaded,target)
+  else:replace_with_retry(downloaded,target)
   extraction=staging/"extracted"/day
   if extraction.is_symlink():raise ValueError("STAGED_EXTRACTION_SYMLINK")
   if extraction.exists():shutil.rmtree(extraction)
@@ -53,11 +54,11 @@ def stage_inputs(day):
   if metadata.exists():
    if manifest(metadata)!=meta["files"]:raise ValueError("STAGED_METADATA_IDENTITY_CONFLICT")
    shutil.rmtree(captured)
-  else:metadata.parent.mkdir(parents=True,exist_ok=True);os.replace(captured,metadata)
+  else:metadata.parent.mkdir(parents=True,exist_ok=True);replace_with_retry(captured,metadata)
   package["staged_path"]=str(target.relative_to(ROOT)).replace("\\","/")
   return package,extraction,metadata,extraction_result
  finally:shutil.rmtree(scratch,ignore_errors=True)
-def main():
+def _main():
  tests=subprocess.run([sys.executable,"-m","pytest","-q","tests/upgrade_m3"],cwd=ROOT,text=True,capture_output=True);blockers=[];info=official_info();package_meta={};validation={};catalog={};bundle={}
  try:
   if info.get("status")!="PASS":raise ValueError("OFFICIAL_DATE_UNVERIFIED")
@@ -75,4 +76,15 @@ def main():
  if tests.returncode:blockers.append("IMPLEMENTATION_TESTS_FAILED")
  status="FULL_PASS" if not blockers else "BLOCKED";receipt={"phase":"M3_AUTOMATIC_INPUT","contract":"m3-automatic-input-v1.2","created_at_utc":datetime.now(timezone.utc).isoformat(),"official_info":info,"implementation_tests":"PASS" if not tests.returncode else "FAIL","test_output":tests.stdout.strip(),"fresh_official_download":bool(package_meta),"package_sha256":package_meta.get("sha256"),"source_bundle_sealed":bool(bundle and not blockers),"source_bundle_id":bundle.get("source_bundle_id"),"day_validation":validation,"dynamic_metadata":{"security_count":len(catalog.get("securities",{})),"sector_count":len(catalog.get("sectors",{})),"membership_count":len(catalog.get("memberships",[]))},"final_status":status,"blockers":blockers,"next_stage":"M4_ONE_CLICK_PUBLICATION" if status=="FULL_PASS" else "NONE"}
  out=ROOT/"reports/upgrade_m3";atomic(out/"M3_AUTOMATIC_INPUT_RECEIPT.json",json.dumps(receipt,ensure_ascii=False,indent=2)+"\n");atomic(out/"M3_AUTOMATIC_INPUT.md",f"# M3 自动输入验收\n\n- 状态：`{status}`\n- 测试：`{receipt['test_output']}`\n- 官方更新时间：`{info.get('update_time')}`\n- SHA-256：`{receipt['package_sha256']}`\n- bundle：`{receipt['source_bundle_id']}`\n- 阻断项：`{blockers}`\n");print(json.dumps(receipt,ensure_ascii=False,indent=2));return 0 if status=="FULL_PASS" else 2
+def main():
+ lock=RunLock(ROOT/"runtime/locks/m3_input.lock",run_id=uuid.uuid4().hex)
+ try:
+  lock.acquire()
+ except ActiveRunLock as exc:
+  receipt={"phase":"M3_AUTOMATIC_INPUT","contract":"m3-automatic-input-v1.2","created_at_utc":datetime.now(timezone.utc).isoformat(),"implementation_tests":"NOT_RUN","fresh_official_download":False,"source_bundle_sealed":False,"final_status":"BLOCKED","blockers":[str(exc)],"next_stage":"NONE"}
+  out=ROOT/"reports/upgrade_m3";atomic(out/"M3_AUTOMATIC_INPUT_RECEIPT.json",json.dumps(receipt,ensure_ascii=False,indent=2)+"\n");print(json.dumps(receipt,ensure_ascii=False,indent=2));return 2
+ try:
+  return _main()
+ finally:
+  lock.release()
 if __name__=="__main__":raise SystemExit(main())

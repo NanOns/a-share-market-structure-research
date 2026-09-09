@@ -5,7 +5,7 @@ import pytest
 
 from workbench_input.pipeline import (
     DownloadPolicy, ExtractionPolicy, analyze_dynamic_metadata,
-    capture_stable_metadata, download_official_package, safe_extract_zip,
+    capture_stable_metadata, download_official_package, replace_with_retry, safe_extract_zip,
     seal_source_bundle,
 )
 
@@ -48,6 +48,22 @@ def test_case_collision_and_expansion_limits(tmp_path):
     with pytest.raises(ValueError,match="ZIP_CASE_COLLISION"): safe_extract_zip(package,tmp_path/"out")
     bomb=tmp_path/"bomb.zip"; bomb.write_bytes(zip_bytes([("a.day",b"0"*1000)]))
     with pytest.raises(ValueError): safe_extract_zip(bomb,tmp_path/"bomb",ExtractionPolicy(max_expanded_bytes=100))
+
+def test_extraction_replace_retries_transient_windows_lock(tmp_path, monkeypatch):
+    package=tmp_path/"input.zip"; package.write_bytes(zip_bytes([("sh/lday/sh600001.day",b"x")]))
+    destination=tmp_path/"out"; calls={"count":0}
+    real_replace=__import__("workbench_input.pipeline",fromlist=["os"]).os.replace
+
+    def flaky_replace(source,dest):
+        calls["count"]+=1
+        if calls["count"]<3: raise PermissionError(13,"access denied")
+        return real_replace(source,dest)
+
+    monkeypatch.setattr("workbench_input.pipeline.os.replace",flaky_replace)
+    result=safe_extract_zip(package,destination)
+    assert result["entry_count"]==1
+    assert destination.joinpath("sh/lday/sh600001.day").read_bytes()==b"x"
+    assert calls["count"]==3
 
 def metadata_files(root):
     cache=root/"T0002/hq_cache"; cache.mkdir(parents=True)

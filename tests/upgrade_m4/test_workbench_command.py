@@ -3,6 +3,7 @@ from datetime import date
 from http.server import ThreadingHTTPServer
 from pathlib import Path
 from unittest.mock import Mock
+import pytest
 from workbench_db import WorkbenchRepository
 from workbench_publish import PublicationRequest
 from workbench_publish.orchestrator import ControlledProduction
@@ -33,6 +34,10 @@ def test_workbench_post_returns_job_and_get_reads_status(tmp_path,monkeypatch):
   req=urllib.request.Request(base+'/api/jobs',data=b'{}',method='POST',headers={'Content-Type':'application/json','X-CSRF-Token':token})
   submitted=json.loads(urllib.request.urlopen(req).read());status=json.loads(urllib.request.urlopen(base+'/api/jobs?job_id='+submitted['job_id']).read())
   assert submitted['job_id'].startswith('daily-') and status['status'] in ('QUEUED','RUNNING')
+  with pytest.raises(urllib.error.HTTPError) as duplicate:
+   urllib.request.urlopen(req)
+  assert duplicate.value.code==409
+  assert json.loads(duplicate.value.read())['code']=='DAILY_INPUT_ALREADY_RUNNING'
  finally:server.shutdown();server.server_close()
 
 def test_read_api_remains_available_during_publisher_transaction(tmp_path):

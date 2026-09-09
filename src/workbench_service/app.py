@@ -558,7 +558,7 @@ class Api:
   return {'publication_id':p,'page':page,'page_size':size,'total':total,'sector_member_count':sector_member_count,'sector_member_rank_basis':'stock_rs20_pct_desc_then_ret20_desc_then_security_id','items':items}
 
 def make_handler(root,db):
- api=Api(db,root=root); history=HistoryJobService(root,db); history.recover_interrupted(background=True); activation=AnalysisActivationService(root,db); operations=OperationsConfig(root,db); storage=StorageGovernance(root,db); backups=BackupService(root,db); maintenance=MaintenanceService(root,db); static=Path(root)/'src/workbench_service/static';csrf=secrets.token_urlsafe(24);publishers={};daily_jobs={}
+ api=Api(db,root=root); history=HistoryJobService(root,db); history.recover_interrupted(background=True); activation=AnalysisActivationService(root,db); operations=OperationsConfig(root,db); storage=StorageGovernance(root,db); backups=BackupService(root,db); maintenance=MaintenanceService(root,db); static=Path(root)/'src/workbench_service/static';csrf=secrets.token_urlsafe(24);publishers={};daily_jobs={};daily_jobs_lock=threading.Lock()
  def today_status(job_id):
   task=daily_jobs.get(job_id)
   if not task: return None
@@ -713,7 +713,10 @@ def make_handler(root,db):
      job_id=unquote(self.path.split('/api/history/jobs/',1)[1][:-len('/cancel')]).strip('/')
      return self._send(202,history.cancel(job_id,body.get('expected_attempt')))
     if self.path!='/api/jobs':return self._send(404,{'code':'NOT_FOUND','message':'接口不存在','retryable':False})
-    job_id='daily-'+uuid.uuid4().hex;daily_jobs[job_id]={'status':'QUEUED','progress':{'status':'INPUT_QUEUED'}}
+    with daily_jobs_lock:
+     active=next((task for task in daily_jobs.values() if task.get('status') in ('QUEUED','RUNNING')),None)
+     if active:return self._send(409,{'code':'DAILY_INPUT_ALREADY_RUNNING','message':'已有当日数据生成任务正在运行，请稍后查看任务状态','retryable':True})
+     job_id='daily-'+uuid.uuid4().hex;daily_jobs[job_id]={'status':'QUEUED','progress':{'status':'INPUT_QUEUED'}}
     thread=threading.Thread(target=run_today,args=(job_id,body),daemon=True,name=job_id);thread.start()
     self._send(202,{'job_id':job_id,'status':'QUEUED','message':'已提交当日输入更新与发布任务'})
    except HistoryJobError as e:

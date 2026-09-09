@@ -31,7 +31,7 @@ from workbench_analysis.structures import (
     insert_historical_structure_rows,
     insert_structure_summary_rows,
 )
-from workbench_analysis.technical import insert_technical_rows
+from workbench_analysis.technical import calculate_technical_daily, insert_technical_rows
 from workbench_ops.backup import BackupService
 
 
@@ -40,7 +40,7 @@ DB_PATH = ROOT / "data/database/market_research.duckdb"
 NORMALIZED_PATH = ROOT / "data/normalized/adjusted_daily.parquet"
 MEMBERSHIP_PATH = ROOT / "data/sectors/sector_membership_daily.parquet"
 SHADOW_ROOT = ROOT / "reports/shadow/v2_runs/20260908"
-PREVIEW_PREFIX = "m8-m9-local-reconstructed-preview"
+PREVIEW_PREFIX = "m8-m9-local-reconstructed-preview-v2"
 
 
 def sha256_file(path: Path) -> str:
@@ -117,20 +117,24 @@ def load_inputs() -> tuple[pd.DataFrame, pd.DataFrame, list[date], dict[str, str
 
 def build_frames(raw: pd.DataFrame, membership: pd.DataFrame, dates: list[date]) -> dict[str, pd.DataFrame]:
     cutoff = max(dates)
-    factors = pd.read_parquet(ROOT / "data/factors/factors_daily.parquet")
-    factors["date"] = pd.to_datetime(factors["date"], errors="raise").dt.date
-    factors = factors[factors["date"].isin(dates)].copy()
-    raw_target = raw[raw["date"].isin(dates)].copy()
-    technical = raw_target.merge(factors, on=["security_id", "date"], how="inner", suffixes=("", "_factor"))
+    # Calculate rolling fields over the full local history first, then keep the
+    # three published dates.  Calculating only on the preview dates makes every
+    # 20/60-day field appear empty even though the local parquet contains the
+    # required lookback window.
+    technical = calculate_technical_daily(
+        raw[["security_id", "date", "raw_close", "adj_close", "raw_amount", "raw_volume", "quote_prev_close", "universe_status", "data_quality_flag", "is_synthetic_fill"]],
+        cutoff=cutoff,
+    )
+    technical = technical[technical["date"].isin(dates)].copy()
     if technical.empty:
-        raise RuntimeError("FACTORS_PREVIEW_JOIN_EMPTY")
+        raise RuntimeError("TECHNICAL_PREVIEW_CALCULATION_EMPTY")
     for width in (5, 10, 20, 60):
-        technical[f"ret{width}"] = pd.to_numeric(technical[f"RET{width}"], errors="coerce")
-        technical[f"rs{width}"] = pd.to_numeric(technical[f"RS{width}"], errors="coerce")
-        technical[f"ma{width}"] = pd.to_numeric(technical[f"MA{width}"], errors="coerce")
-        amount_column = f"AMOUNT_MA{width}"
-        technical[f"amount_ma{width}"] = pd.to_numeric(technical[amount_column], errors="coerce") if amount_column in technical else pd.NA
-    technical["amount_ratio20"] = pd.to_numeric(technical["AMOUNT_RATIO20"], errors="coerce")
+        technical[f"ret{width}"] = pd.to_numeric(technical[f"ret{width}"], errors="coerce")
+        technical[f"rs{width}"] = pd.NA
+        technical[f"rps{width}"] = pd.NA
+        technical[f"rps_valid_universe_count{width}"] = 0
+        technical[f"ma{width}"] = pd.to_numeric(technical[f"ma{width}"], errors="coerce")
+        technical[f"amount_ma{width}"] = pd.to_numeric(technical[f"amount_ma{width}"], errors="coerce")
     for trade_date, indexes in technical.groupby("date", sort=False).groups.items():
         subset = technical.loc[list(indexes)]
         eligible = subset.get("universe_status", pd.Series(True, index=subset.index)).eq("IN_NORMAL_UNIVERSE")
@@ -303,6 +307,13 @@ def insert_preview(frames: dict[str, pd.DataFrame], dates: list[date], input_has
             )
             for trade_date in sorted(pd.unique(frame["trade_date"])):
                 con.execute("insert into analysis_snapshot_entries values (?,?,?,?)", [snapshot_id, domain, trade_date, slice_id])
+        # One publication exposes one active local reconstructed binding.  A
+        # rebuilt preview replaces that binding atomically while retaining the
+        # previous snapshot rows for audit/rollback.
+        con.execute(
+            "delete from publication_analysis_snapshots where publication_id=? and domain=?",
+            [publication_id, "LOCAL_RECONSTRUCTED"],
+        )
         con.execute(
             "insert into publication_analysis_snapshots values (?,?,?,?)",
             [publication_id, "LOCAL_RECONSTRUCTED", snapshot_id, now],

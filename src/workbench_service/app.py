@@ -294,22 +294,24 @@ class Api:
   if rps_width is not None:
    with self._con() as check:
     if not check.execute("select count(*) from analysis_snapshot_entries where snapshot_id=? and domain='strength'",[selected['snapshot_id']]).fetchone()[0]:raise ValueError('RPS_NOT_BUILT')
-  joins=" left join analysis_snapshot_entries se on se.snapshot_id=e.snapshot_id and se.domain='strength' and se.trade_date=e.trade_date left join stock_strength_daily st on st.slice_id=se.slice_id and st.trade_date=se.trade_date and st.security_id=t.security_id left join analysis_snapshot_entries ue on ue.snapshot_id=e.snapshot_id and ue.domain='structure' and ue.trade_date=e.trade_date left join stock_structure_summary_daily ss on ss.slice_id=ue.slice_id and ss.trade_date=ue.trade_date and ss.security_id=t.security_id"
+  joins=" left join analysis_snapshot_entries se on se.snapshot_id=e.snapshot_id and se.domain='strength' and se.trade_date=e.trade_date left join stock_strength_daily st on st.slice_id=se.slice_id and st.trade_date=se.trade_date and st.security_id=t.security_id left join analysis_snapshot_entries ue on ue.snapshot_id=e.snapshot_id and ue.domain='summary' and ue.trade_date=e.trade_date left join stock_structure_summary_daily ss on ss.slice_id=ue.slice_id and ss.trade_date=ue.trade_date and ss.security_id=t.security_id"
   include_unknown=quality_filter=='INCLUDE_UNKNOWN';filters=['e.snapshot_id=?'];params=[selected['snapshot_id']]
   if ma_state:filters.append('(t.ma_alignment=?'+(' or t.ma_alignment is null)' if include_unknown else ')'));params.append(ma_state)
   if amount_class_filter:filters.append('(t.amount_class=?'+(' or t.amount_class is null)' if include_unknown else ')'));params.append(amount_class_filter)
   if rps_value is not None:filters.append(f'(st.rps{rps_width}>=?'+(f' or st.rps{rps_width} is null)' if include_unknown else ')'));params.append(rps_value)
   where=' and '.join(filters)
-  select="t.security_id,t.trade_date,t.contract_id,t.price_basis,t.raw_close,t.adj_close,t.quote_ret1,t.raw_amount,t.raw_volume,t.ma5,t.ma10,t.ma20,t.ma60,t.ret5,t.ret10,t.ret20,t.ret60,t.rs5,t.rs10,t.rs20,t.rs60,t.amount_ma5,t.amount_ma10,t.amount_ma20,t.amount_ratio20,t.amount_vs_prior20,t.volume_vs_prior20,t.amount_class,t.ma_alignment,t.validity,t.quality_codes,t.basis_json,st.rps5,st.rps10,st.rps20,st.rps60,ss.research_band,ss.research_band_quality,ss.queues_json"
+  select="t.security_id,t.trade_date,t.contract_id,t.price_basis,t.raw_close,t.adj_close,t.quote_ret1,t.raw_amount,t.raw_volume,t.ma5,t.ma10,t.ma20,t.ma60,t.ret5,t.ret10,t.ret20,t.ret60,t.rs5,t.rs10,t.rs20,t.rs60,t.amount_ma5,t.amount_ma10,t.amount_ma20,t.amount_ratio20,t.amount_vs_prior20,t.volume_vs_prior20,t.amount_class,t.ma_alignment,t.validity,t.quality_codes,t.basis_json,st.rps5,st.rps10,st.rps20,st.rps60,st.rps_valid_universe_count5,st.rps_valid_universe_count10,st.rps_valid_universe_count20,st.rps_valid_universe_count60,ss.research_band,ss.research_band_quality"
   with self._con() as c:
    total=c.execute("select count(*) from analysis_snapshot_entries e join stock_technical_daily t on t.slice_id=e.slice_id and t.trade_date=e.trade_date"+joins+" where e.domain='technical' and "+where,params).fetchone()[0]
    rows=c.execute("select "+select+" from analysis_snapshot_entries e join stock_technical_daily t on t.slice_id=e.slice_id and t.trade_date=e.trade_date"+joins+" where e.domain='technical' and "+where+" order by st.rps20 desc nulls last,t.ret20 desc nulls last,t.security_id limit ? offset ?",params+[size,(page-1)*size]).fetchall()
-  names=('security_id','trade_date','contract_id','price_basis','raw_close','adj_close','quote_ret1','raw_amount','raw_volume','ma5','ma10','ma20','ma60','ret5','ret10','ret20','ret60','rs5','rs10','rs20','rs60','amount_ma5','amount_ma10','amount_ma20','amount_ratio20','amount_vs_prior20','volume_vs_prior20','amount_class','ma_alignment','validity','quality_codes','basis','rps5','rps10','rps20','rps60','research_band','research_band_quality','queues_json')
+  names=('security_id','trade_date','contract_id','price_basis','raw_close','adj_close','quote_ret1','raw_amount','raw_volume','ma5','ma10','ma20','ma60','ret5','ret10','ret20','ret60','rs5','rs10','rs20','rs60','amount_ma5','amount_ma10','amount_ma20','amount_ratio20','amount_vs_prior20','volume_vs_prior20','amount_class','ma_alignment','validity','quality_codes','basis','rps5','rps10','rps20','rps60','rps_valid_universe_count5','rps_valid_universe_count10','rps_valid_universe_count20','rps_valid_universe_count60','research_band','research_band_quality')
   items=[]
   for row in rows:
-   item=dict(zip(names,row));item['trade_date']=str(item['trade_date']);item['quality_codes']=json.loads(item['quality_codes']) if item['quality_codes'] else [];item['basis']=json.loads(item['basis']) if item['basis'] else {};item['queues']=json.loads(item.pop('queues_json')) if item.get('queues_json') else None;items.append(item)
+   item=dict(zip(names,row));item['trade_date']=str(item['trade_date']);item['quality_codes']=json.loads(item['quality_codes']) if item['quality_codes'] else [];item['basis']=json.loads(item['basis']) if item['basis'] else {};items.append(item)
   result={'publication_id':p,'page':page,'page_size':size,'total':total,'basis':basis,'rps_window':rps_width,'snapshot_id':selected['snapshot_id'],'snapshot_capability':'AVAILABLE','items':items}
-  return self._add_quotes(p,self._add_stock_payloads(p,result))
+  security_names=self._security_names(p,{item['security_id'] for item in items if item.get('security_id')})
+  for item in items:item['security_name']=security_names.get(item.get('security_id'))
+  return self._add_quotes(p,result)
  def new_highs(self,p,page=1,size=50,basis='AUTO',window=20,streak_min='',include_ties=False,rps_min=''):
   if basis not in ('AUTO','OBSERVED','RECONSTRUCTED'): raise ValueError('BASIS_UNSUPPORTED')
   try: window=int(window)

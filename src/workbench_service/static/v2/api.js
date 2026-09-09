@@ -15,8 +15,8 @@
   }
   window.WorkbenchV2Api={
     get:get,
-    publications:function(){return get('/api/publications');},
-    identity:function(publicationId){return get('/api/identity',{publication_id:publicationId});},
+    publications:function(includeAnalysis){return get('/api/publications',{include_analysis:includeAnalysis?'1':undefined});},
+    identity:function(publicationId,includeAnalysis){return get('/api/identity',{publication_id:publicationId,include_analysis:includeAnalysis?'1':undefined});},
     universeSummary:function(publicationId){return get('/api/universe/summary',{publication_id:publicationId});}
   };
 }());

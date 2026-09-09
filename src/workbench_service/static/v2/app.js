@@ -17,7 +17,7 @@
   function load(publication){
     current=publication;notice.className='notice';notice.textContent='正在读取当前发布版本摘要…';context.textContent='交易日 '+format.text(publication.trade_date)+' · publication_id '+format.text(publication.publication_id);
     setText('publication-value',publication.trade_date);setText('publication-detail',publication.publication_id);
-    Promise.all([api.identity(publication.publication_id),api.universeSummary(publication.publication_id)]).then(function(values){
+    Promise.all([api.identity(publication.publication_id,true),api.universeSummary(publication.publication_id)]).then(function(values){
       var identity=values[0]||{},universe=values[1]||{};
       setText('identity-value',first(identity,['source_revision_id','source_bundle_id','status'])||'已绑定');setText('identity-detail',first(identity,['api_contract','contract'])||'输入身份可追溯');
       var count=first(universe,['display_count','quote_valid_count','total']);setText('universe-value',count===null?'已加载':format.number(count,0));setText('universe-detail',first(universe,['scope','classification_summary'])||'统一 A 股范围');
@@ -26,7 +26,7 @@
       document.getElementById('universe-evidence').onclick=function(){modal.open('统一股票范围边界',JSON.stringify(universe,null,2));};
     }).catch(function(error){notice.className='notice error';notice.textContent='摘要读取失败：'+error.message;});
   }
-  api.publications().then(function(result){
+  api.publications(true).then(function(result){
     var items=result.items||[];select.replaceChildren.apply(select,publicationRows(items));
     if(!items.length){notice.className='notice error';notice.textContent='没有可用的成功发布版本';return;}
     var wanted=new URLSearchParams(location.search).get('publication_id');current=items.find(function(item){return item.publication_id===wanted;})||items[0];select.value=current.publication_id;select.addEventListener('change',function(){load(items.find(function(item){return item.publication_id===select.value;}));});load(current);

@@ -12,6 +12,7 @@ from workbench_ops import StorageGovernance, BackupService, MaintenanceService
 from workbench_service.strength_association import choose_association
 from workbench_service.universe import A_SHARE_SQL, summarize_universe
 from workbench_service.quotes import QuoteService
+from workbench_service.catalog import API_CONTRACT, field_catalog
 
 MAX_PAGE_SIZE=100
 
@@ -38,10 +39,28 @@ class Api:
   # it sees the last committed publication while the writer's transaction is
   # in flight, so the workbench remains readable throughout publication.
   return duckdb.connect(self.db)
- def publications(self):
+ def publications(self,include_analysis=False):
   with self._con() as c:
-   rows=c.execute("select cast(h.trade_date as varchar),h.publication_id from publication_heads h join publications p using(publication_id) where p.status='SUCCESS' order by h.trade_date desc").fetchall()
-  return {'items':[{'trade_date':d,'publication_id':p} for d,p in rows],'latest_publication_id':rows[0][1] if rows else None}
+   rows=c.execute("select cast(h.trade_date as varchar),h.publication_id,p.revision,p.production_version from publication_heads h join publications p using(publication_id) where p.status='SUCCESS' order by h.trade_date desc").fetchall()
+  items=[]
+  for d,p,revision,production_version in rows:
+   item={'trade_date':d,'publication_id':p}
+   if include_analysis:
+    item.update({'revision':revision,'production_version':production_version,'analysis_capabilities':self._analysis_capabilities(p)})
+   items.append(item)
+  result={'items':items,'latest_publication_id':rows[0][1] if rows else None}
+  if include_analysis: result['api_contract']=API_CONTRACT
+  return result
+ def _analysis_capabilities(self,p):
+  with self._con() as c:
+   counts={table:c.execute(f'select count(*) from {table} where publication_id=?',[p]).fetchone()[0] for table in ('stock_daily','sector_daily','queue_memberships')}
+  return {
+   'overview':'AVAILABLE' if counts['stock_daily'] else 'UNAVAILABLE',
+   'universe':'AVAILABLE' if counts['stock_daily'] else 'UNAVAILABLE',
+   'sector':'AVAILABLE' if counts['sector_daily'] else 'UNAVAILABLE',
+   'structure':'AVAILABLE' if counts['queue_memberships'] else 'UNAVAILABLE',
+   'history_analysis':'NOT_BUILT',
+  }
  def latest_bundle(self):
   with self._con() as c: rows=c.execute("select source_bundle_id,payload_json from source_bundles").fetchall()
   values=[]
@@ -191,12 +210,26 @@ class Api:
   detail=str(queue).removesuffix('_QUEUE').upper(); canonical=detail+'_QUEUE'
   with self._con() as c: row=c.execute('select payload_json from structure_details where publication_id=? and queue_name=? and security_id=?',[p,detail,security]).fetchone()
   return {'publication_id':p,'item':json.loads(row[0]) if row else None}
- def identity(self,p):
+ def identity(self,p,include_analysis=False):
   d,rev=self._pub(p)
   with self._con() as c:
-   x=c.execute('select source_manifest_sha256,source_identity_sha256,computation_identity_sha256,render_identity_sha256 from publications where publication_id=?',[p]).fetchone()
+   x=c.execute('select source_manifest_sha256,source_identity_sha256,computation_identity_sha256,render_identity_sha256,revision,production_version from publications where publication_id=?',[p]).fetchone()
    membership=c.execute('select membership_snapshot_id from publication_memberships where publication_id=?',[p]).fetchone()
-  return {'publication_id':p,'trade_date':d,'source_revision_id':rev,'source_manifest_sha256':x[0],'source_identity_sha256':x[1],'computation_identity_sha256':x[2],'render_identity_sha256':x[3],'membership_snapshot_id':membership[0] if membership else None,'api_contract':'m2-read-only-api-v1.2'}
+  result={'publication_id':p,'trade_date':d,'source_revision_id':rev,'source_manifest_sha256':x[0],'source_identity_sha256':x[1],'computation_identity_sha256':x[2],'render_identity_sha256':x[3],'membership_snapshot_id':membership[0] if membership else None,'api_contract':'m2-read-only-api-v1.2'}
+  if include_analysis:
+   result.update({
+    'api_contract':API_CONTRACT,
+    'revision':x[4],
+    'production_version':x[5],
+    'cutoff_date':d,
+    'analysis_snapshot_id':None,
+    'contracts':{'universe':'workbench-universe-v2.1','quote':'workbench-quote-v2.1','semantic':'workbench-semantic-v2.1','publication':'m4-one-click-publication-contract-v1.1'},
+    'capabilities':self._analysis_capabilities(p),
+    'data_quality':{'status':'PARTIAL','codes':['HISTORY_ANALYSIS_NOT_BUILT'],'field_coverage':{}},
+   })
+  return result
+ def field_catalog(self,api_contract=API_CONTRACT,language='zh-CN'):
+  return field_catalog(api_contract,language)
  def linkage(self,p,sector,security,page=1,size=100,q=''):
   size=max(1,min(MAX_PAGE_SIZE,int(size))); page=max(1,int(page))
   self._pub(p)
@@ -272,14 +305,15 @@ def make_handler(root,db):
   def do_GET(self):
    u=urlparse(self.path); x={k:v[0] for k,v in parse_qs(u.query).items()}
    try:
-    if u.path=='/api/publications': out=api.publications()
+    if u.path=='/api/publications': out=api.publications(x.get('include_analysis')=='1')
     elif u.path=='/api/dashboard': out=api.dashboard(x['publication_id'])
     elif u.path=='/api/sectors': out=api.sectors(x['publication_id'],x.get('q',''),x.get('page',1),x.get('page_size',50),x.get('type',''))
     elif u.path=='/api/stocks': out=api.stocks(x['publication_id'],x.get('q',''),x.get('page',1),x.get('page_size',50))
     elif u.path=='/api/candidates': out=api.candidates(x['publication_id'],x.get('q',''),x.get('page',1),x.get('page_size',50),x.get('grade',''),x.get('pattern',''))
     elif u.path=='/api/queues': out=api.queues(x['publication_id'],x.get('queue','STEADY'),x.get('page',1),x.get('page_size',50),x.get('q',''),x.get('band',''))
     elif u.path=='/api/evidence': out=api.evidence(x['publication_id'],x['queue'],x['security_id'])
-    elif u.path=='/api/identity': out=api.identity(x['publication_id'])
+    elif u.path=='/api/identity': out=api.identity(x['publication_id'],x.get('include_analysis')=='1')
+    elif u.path=='/api/metadata/field-catalog': out=api.field_catalog(x.get('api_contract',API_CONTRACT),x.get('language','zh-CN'))
     elif u.path=='/api/universe/summary': out=api.universe_summary(x['publication_id'])
     elif u.path=='/api/linkage': out=api.linkage(x['publication_id'],x.get('sector_id'),x.get('security_id'),x.get('page',1),x.get('page_size',100),x.get('q',''))
     elif u.path=='/api/input/latest': out=api.latest_bundle()

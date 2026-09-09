@@ -21,6 +21,10 @@ from workbench_analysis.chart import ChartCache, build_chart_points, chart_cache
 
 MAX_PAGE_SIZE=100
 
+def _finite_or_none(value):
+ if isinstance(value,float) and not math.isfinite(value):return None
+ return value
+
 def resolve_workbench_path(root,trade_date,publication_id):
  base=Path(root)/'reports/workbench'/str(trade_date).replace('-','')/publication_id
  matches=[]
@@ -101,7 +105,9 @@ class Api:
   with self._con() as c: rows=c.execute(query,[selected['snapshot_id'],days,selected['snapshot_id'],*args]).fetchall()
   names=('sector_id','security_id','trade_date','member_present','member_rank','rank_valid_count','member_percentile','strong_state','strong_predicates','structure_hit','high_hit','member_change_kind','strength_change_kind','previous_rank','rank_delta','queue_refs','high_refs','history_basis','contract_id');items=[]
   for raw in rows:
-   item=dict(zip(names,raw));item['trade_date']=str(item['trade_date']);item['strong_predicates']=json.loads(item['strong_predicates']) if item['strong_predicates'] else {};item['queue_refs']=json.loads(item['queue_refs']) if item['queue_refs'] else [];item['high_refs']=json.loads(item['high_refs']) if item['high_refs'] else [];items.append(item)
+   item=dict(zip(names,raw));item['trade_date']=str(item['trade_date']);item['member_rank']=_finite_or_none(item['member_rank']);item['rank_valid_count']=_finite_or_none(item['rank_valid_count']);item['member_percentile']=_finite_or_none(item['member_percentile']);item['previous_rank']=_finite_or_none(item['previous_rank']);item['rank_delta']=_finite_or_none(item['rank_delta']);item['strong_predicates']=json.loads(item['strong_predicates']) if item['strong_predicates'] else {};item['queue_refs']=json.loads(item['queue_refs']) if item['queue_refs'] else [];item['high_refs']=json.loads(item['high_refs']) if item['high_refs'] else [];items.append(item)
+  security_names=self._security_names(p,{item['security_id'] for item in items if item.get('security_id')})
+  for item in items:item['security_name']=security_names.get(item.get('security_id'))
   total=len(items);return {'publication_id':p,'sector_id':sector_id,'snapshot_id':selected['snapshot_id'],'page':page,'page_size':size,'days':days,'state':state,'total':total,'items':items[(page-1)*size:page*size]}
  def sector_leader_history(self,p,sector_id,days=30):
   days=max(1,min(250,int(days)));self._pub(p);bindings=self._analysis_bindings(p);selected=bindings.get('LOCAL_OBSERVED') or bindings.get('LOCAL_RECONSTRUCTED')
@@ -111,6 +117,9 @@ class Api:
   names=('sector_id','trade_date','ranked_first_id','ranked_second_id','rank_gap','confirmed_id','candidate_id','candidate_since','candidate_streak','confirmed_since','confirmation_event','previous_confirmed_id','stale','representative_rank_basis','history_basis','contract_id');points=[]
   for raw in rows:
    item=dict(zip(names,raw));item['trade_date']=str(item['trade_date']);item['candidate_since']=str(item['candidate_since']) if item['candidate_since'] else None;item['confirmed_since']=str(item['confirmed_since']) if item['confirmed_since'] else None;points.append(item)
+  security_ids={item.get(key) for item in points for key in ('ranked_first_id','ranked_second_id','confirmed_id','candidate_id','previous_confirmed_id') if item.get(key)};security_names=self._security_names(p,security_ids)
+  for item in points:
+   for key in ('ranked_first_id','ranked_second_id','confirmed_id','candidate_id','previous_confirmed_id'):item[key.replace('_id','_name')]=security_names.get(item.get(key))
   return {'publication_id':p,'sector_id':sector_id,'snapshot_id':selected['snapshot_id'],'days':days,'points':points,'status':'AVAILABLE' if points else 'NOT_FOUND'}
  def _analysis_capabilities(self,p):
   with self._con() as c:
@@ -175,6 +184,17 @@ class Api:
   for item in result['items']:
    security_id=item.get('security_id')
    item.update(quotes.get(security_id,{'quote_contract_id':'workbench-quote-v2.1','security_id':security_id,'quote_date':trade_date,'raw_close':None,'latest_price':None,'quote_prev_close':None,'quote_ret1':None,'RET1':None,'raw_amount':None,'turnover_amount':None,'quote_ret1_basis':'UNAVAILABLE','quote_state':'SOURCE_NOT_FROZEN','publication_id':p,'source_ref':None,'source_identity_sha256':source_identity}))
+  return result
+ def _security_names(self,p,security_ids):
+  ids=sorted({str(value) for value in security_ids if value})
+  if not ids:return {}
+  placeholders=','.join('?' for _ in ids)
+  with self._con() as c:rows=c.execute(f'select security_id,payload_json from stock_daily where publication_id=? and security_id in ({placeholders})',[p,*ids]).fetchall()
+  result={}
+  for security_id,payload in rows:
+   try:data=json.loads(payload) if payload else {}
+   except json.JSONDecodeError:data={}
+   result[security_id]=data.get('security_name') or data.get('name') or security_id
   return result
  def _add_stock_payloads(self,p,result):
   security_ids=sorted({item.get('security_id') for item in result['items'] if item.get('security_id')})

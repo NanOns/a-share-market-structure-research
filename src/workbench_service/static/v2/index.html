@@ -63,15 +63,15 @@
     <section id="sectors-page" class="sectors-page" hidden>
       <section class="panel filters-panel">
         <div class="filter-row">
-          <label>板块类型<select id="sector-type"><option value="">全部</option><option value="INDUSTRY">行业</option><option value="THEME">题材</option><option value="NORMAL_STYLE">正常风格</option><option value="STYLE">风格</option></select></label>
+          <label>板块分类<select id="sector-type"><option value="INDUSTRY" selected>行业板块</option><option value="THEME">概念板块</option><option value="REGION">地区板块</option><option value="STYLE">通达信风格标签</option><option value="">全部分类</option></select></label>
           <label>交易日列数<select id="sector-days"><option value="5">5日</option><option value="10" selected>10日</option><option value="20">20日</option><option value="30">30日</option></select></label>
           <button id="sector-refresh" class="evidence-button filter-button" type="button">刷新周期</button>
         </div>
         <div id="sector-basis" class="basis-note">周期矩阵读取当前发布绑定的历史板块快照。</div>
       </section>
       <section class="panel">
-        <div class="field-guide"><h2>板块周期说明与使用方法</h2><p>当前显示的是本地重建历史，覆盖已有快照日期；板块排名用于比较强弱，不代表预测。</p><div class="guide-grid"><div><b>最新名次</b><span>同一板块类型内按板块 RS20 从强到弱排序，数字越小越靠前。</span></div><div><b>RPS20 百分位</b><span>板块相对于同类板块的强度百分位，越接近 1 越强。</span></div><div><b>周期单元格</b><span>按交易日展示名次变化，用于观察强弱是否持续或转弱。</span></div><div><b>时间线</b><span>点击后在弹窗查看板块指标、成员强弱变化和代表状态。</span></div><div><b>覆盖率</b><span>有有效 20 日因子数据的成员占全部成员的比例，低覆盖率时应谨慎比较。</span></div><div><b>历史基础</b><span>“重建”表示使用当前本地可追溯快照回算，不宣称历史 PIT 成员身份。</span></div></div></div>
-        <div class="panel-heading"><div><h2>板块周期矩阵</h2><p>单元格显示板块名次与强度百分位；板块自身行情和成员统计保持分列。</p></div></div>
+        <div class="field-guide"><h2>板块周期说明与使用方法</h2><p>当前只按一个分类加载，默认展示前 15 个，避免首屏渲染全部板块。分类之间不会混排；当前快照没有独立的地区板块源时，地区分类会明确显示暂无数据。</p><div class="guide-grid"><div><b>行业板块</b><span>按行业层级观察产业方向；适合先看行业内部的相对强弱。</span></div><div><b>概念板块</b><span>按主题/概念观察题材强弱；不与行业名次直接横向混比。</span></div><div><b>地区板块</b><span>只有输入明确提供地区类型时才展示；不会根据名称猜测地区归属。</span></div><div><b>通达信风格标签</b><span>近期强势等属于风格标签，仅用于描述行情状态，不当作独立行业或概念。</span></div><div><b>RPS20 百分位</b><span>同一分类内的相对强度百分位，越接近 1 越强；排名数字越小越靠前。</span></div><div><b>时间线与覆盖率</b><span>点击“查看”在弹窗核对周期、成员和代表状态；覆盖率低时应谨慎比较。</span></div></div></div>
+        <div class="panel-heading"><div><h2>板块周期矩阵</h2><p>默认只展示当前分类前 15 个板块；单元格显示名次与强度百分位，详细成员和代表状态在弹窗查看。</p></div></div>
         <div id="sector-cycle-table" class="table-wrap"></div>
       </section>
     </section>

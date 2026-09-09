@@ -40,6 +40,7 @@ class MigrationExecutor:
         "008_technical_history": ("007_history_identity",),
         "008_technical_history_rps": ("008_technical_history",),
         "009_sector_base_history": ("008_technical_history_rps",),
+        "010_historical_structure": ("009_sector_base_history",),
     }
     CHECK_TABLE_SQL = """
         CREATE TABLE IF NOT EXISTS schema_migration_checks (

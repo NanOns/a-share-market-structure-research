@@ -14,6 +14,7 @@ from workbench_service.universe import A_SHARE_SQL, summarize_universe
 from workbench_service.quotes import QuoteService
 from workbench_service.catalog import API_CONTRACT, field_catalog
 from workbench_service.window_planner import MAX_OUTPUT_DAYS, load_dependencies, plan_window
+from workbench_service.history_jobs import HistoryJobError, HistoryJobService
 
 MAX_PAGE_SIZE=100
 
@@ -292,7 +293,7 @@ class Api:
   return {'publication_id':p,'page':page,'page_size':size,'total':total,'sector_member_count':sector_member_count,'sector_member_rank_basis':'stock_rs20_pct_desc_then_ret20_desc_then_security_id','items':items}
 
 def make_handler(root,db):
- api=Api(db); operations=OperationsConfig(root,db); storage=StorageGovernance(root,db); backups=BackupService(root,db); maintenance=MaintenanceService(root,db); static=Path(root)/'src/workbench_service/static';csrf=secrets.token_urlsafe(24);publishers={};daily_jobs={}
+ api=Api(db); history=HistoryJobService(root,db); history.recover_interrupted(background=True); operations=OperationsConfig(root,db); storage=StorageGovernance(root,db); backups=BackupService(root,db); maintenance=MaintenanceService(root,db); static=Path(root)/'src/workbench_service/static';csrf=secrets.token_urlsafe(24);publishers={};daily_jobs={}
  def today_status(job_id):
   task=daily_jobs.get(job_id)
   if not task: return None
@@ -332,6 +333,12 @@ def make_handler(root,db):
     elif u.path=='/api/identity': out=api.identity(x['publication_id'],x.get('include_analysis')=='1')
     elif u.path=='/api/metadata/field-catalog': out=api.field_catalog(x.get('api_contract',API_CONTRACT),x.get('language','zh-CN'))
     elif u.path=='/api/history/coverage': out=api.history_coverage(x['publication_id'],x.get('days',MAX_OUTPUT_DAYS),x.get('basis','AUTO'))
+    elif u.path.startswith('/api/history/jobs/'):
+     job_id=unquote(u.path.split('/api/history/jobs/',1)[1]).strip('/')
+     try: out=history.status(job_id)
+     except HistoryJobError as e:
+      if str(e)=='JOB_NOT_FOUND': return self._send(404,{'code':'JOB_NOT_FOUND','message':'任务不存在','retryable':False})
+      raise
     elif u.path=='/api/universe/summary': out=api.universe_summary(x['publication_id'])
     elif u.path=='/api/linkage': out=api.linkage(x['publication_id'],x.get('sector_id'),x.get('security_id'),x.get('page',1),x.get('page_size',100),x.get('q',''))
     elif u.path=='/api/input/latest': out=api.latest_bundle()
@@ -417,10 +424,18 @@ def make_handler(root,db):
      flags=subprocess.CREATE_NO_WINDOW if os.name=='nt' else 0;subprocess.Popen(command,cwd=root,creationflags=flags)
      self._send(202,{'state':'DRAINING','message':'受控重启已启动，页面将自动重连'})
      threading.Thread(target=lambda:(time.sleep(.4),self.server.shutdown()),daemon=True).start();return
+    if self.path=='/api/history/jobs':
+     return self._send(202,history.submit(body))
+    if self.path.startswith('/api/history/jobs/') and self.path.endswith('/cancel'):
+     job_id=unquote(self.path.split('/api/history/jobs/',1)[1][:-len('/cancel')]).strip('/')
+     return self._send(202,history.cancel(job_id,body.get('expected_attempt')))
     if self.path!='/api/jobs':return self._send(404,{'code':'NOT_FOUND','message':'接口不存在','retryable':False})
     job_id='daily-'+uuid.uuid4().hex;daily_jobs[job_id]={'status':'QUEUED','progress':{'status':'INPUT_QUEUED'}}
     thread=threading.Thread(target=run_today,args=(job_id,body),daemon=True,name=job_id);thread.start()
     self._send(202,{'job_id':job_id,'status':'QUEUED','message':'已提交当日输入更新与发布任务'})
+   except HistoryJobError as e:
+    code=str(e);status=404 if code=='JOB_NOT_FOUND' else 409 if code in ('ATTEMPT_MISMATCH','JOB_NOT_CANCELLABLE','JOB_NOT_INTERRUPTED') else 400
+    self._send(status,{'code':code,'message':'历史分析任务请求未通过','retryable':status in (409,500)})
    except ConfigConflict as e:self._send(409,{'code':str(e),'message':'配置已被其他操作更新，请先重新读取','retryable':True})
    except ConfigValidationError as e:self._send(400,{'code':str(e),'message':'配置校验未通过，未应用任何变更','retryable':False})
    except (ValueError,KeyError) as e:self._send(400,{'code':str(e).strip("'"),'message':'无法提交生成任务','retryable':False})

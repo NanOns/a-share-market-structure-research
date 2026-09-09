@@ -1,0 +1,32 @@
+{
+  "contract_version": "m8a-04-technical-page-receipt-v1.0",
+  "stage": "M8A-04",
+  "implementation_contract": "M8A_TECHNICAL_PAGE_V1",
+  "status": "PASS",
+  "scope": [
+    "v2 individual technical page",
+    "API10 technical-state view",
+    "API11 new-high-RPS view",
+    "API12 technical-history evidence dialog",
+    "20/30/60/100-day window selection",
+    "RPS, streak, MA and amount filters",
+    "snapshot/basis/quality visibility",
+    "fixed-size pagination"
+  ],
+  "tests": {
+    "targeted": {"status": "PASS", "passed": 9, "failed": 0},
+    "full_suite": {"status": "PASS", "passed": 616, "failed": 0}
+  },
+  "data_contract": {
+    "publication_boundary": "selected publication_id",
+    "null_policy": "display NULL as unavailable; never client-fill",
+    "analysis_policy": "read-only; no build or activation from UI",
+    "security_policy": "DOM textContent only; no result innerHTML"
+  },
+  "formal_database": {
+    "migration_applied": false,
+    "publication_heads_changed": false,
+    "analysis_bindings_changed": false
+  },
+  "next_step": "M8B-01 or M8C-01"
+}

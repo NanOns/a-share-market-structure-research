@@ -17,6 +17,13 @@
     get:get,
     publications:function(includeAnalysis){return get('/api/publications',{include_analysis:includeAnalysis?'1':undefined});},
     identity:function(publicationId,includeAnalysis){return get('/api/identity',{publication_id:publicationId,include_analysis:includeAnalysis?'1':undefined});},
-    universeSummary:function(publicationId){return get('/api/universe/summary',{publication_id:publicationId});}
+    universeSummary:function(publicationId){return get('/api/universe/summary',{publication_id:publicationId});},
+    technical:function(params){return get('/api/stocks/technical',params);},
+    newHighs:function(params){return get('/api/stocks/new-highs',params);},
+    technicalHistory:function(params){
+      var securityId=encodeURIComponent(params.security_id);
+      var query=Object.assign({},params);delete query.security_id;
+      return get('/api/stocks/'+securityId+'/technical-history',query);
+    }
   };
 }());

@@ -59,6 +59,20 @@
         <div class="pager"><button id="technical-prev" type="button">上一页</button><span id="technical-page-label">第 1 页</span><button id="technical-next" type="button">下一页</button></div>
       </section>
     </section>
+    <section id="sectors-page" class="sectors-page" hidden>
+      <section class="panel filters-panel">
+        <div class="filter-row">
+          <label>板块类型<select id="sector-type"><option value="">全部</option><option value="industry">行业</option><option value="theme">题材</option><option value="normal_style">正常风格</option></select></label>
+          <label>交易日列数<select id="sector-days"><option value="5">5日</option><option value="10" selected>10日</option><option value="20">20日</option><option value="30">30日</option></select></label>
+          <button id="sector-refresh" class="evidence-button filter-button" type="button">刷新周期</button>
+        </div>
+        <div id="sector-basis" class="basis-note">周期矩阵读取当前发布绑定的历史板块快照。</div>
+      </section>
+      <section class="panel">
+        <div class="panel-heading"><div><h2>板块周期矩阵</h2><p>单元格显示板块名次与强度百分位；板块自身行情和成员统计保持分列。</p></div></div>
+        <div id="sector-cycle-table" class="table-wrap"></div>
+      </section>
+    </section>
   </main>
   <div id="modal" class="modal" hidden aria-hidden="true"></div>
   <script src="/v2/api.js"></script>

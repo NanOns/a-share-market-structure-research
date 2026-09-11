@@ -13,6 +13,8 @@ from typing import Any, Callable
 
 from workbench_db.repository import WorkbenchRepository
 from workbench_input import verify_source_bundle
+from workbench_service.legacy_relation_import import LEGACY_SOURCE_SCOPE
+from workbench_service.relation_repository import RelationRepository
 
 CONTRACT_VERSION = "m4-one-click-publication-contract-v1.1"
 
@@ -81,23 +83,89 @@ class OneClickPublisher:
         con.execute("INSERT INTO job_events VALUES (?, ?, ?, ?, ?)", [job_id, attempt, seq, datetime.now(timezone.utc), _json({"status": status, **details})])
 
     @staticmethod
-    def _write_memberships(con, publication_id: str, trade_date: date, memberships: tuple[dict[str, Any], ...]) -> None:
-        rows=sorted(memberships,key=lambda x:(x["sector_id"],x["security_id"]))
-        snapshot_id=_hash(rows)
-        existing=con.execute("SELECT membership_snapshot_id FROM membership_snapshots WHERE trade_date=? AND logical_sha256=?",[trade_date,snapshot_id]).fetchone()
+    def _write_relation_binding(
+        con,
+        publication_id: str,
+        trade_date: date,
+        source_bundle_id: str,
+        memberships: tuple[dict[str, Any], ...],
+    ) -> dict[str, Any] | None:
+        if not memberships:
+            return None
+        existing = con.execute(
+            "SELECT observation_id, revision_no, attribute_version_id, hierarchy_version FROM relation_publication_bindings WHERE publication_id=? AND source_scope=?",
+            [publication_id, LEGACY_SOURCE_SCOPE],
+        ).fetchone()
         if existing:
-            actual=con.execute("SELECT count(*) FROM membership_entries WHERE membership_snapshot_id=?",[existing[0]]).fetchone()[0]
-            if actual==len(rows):
-                con.execute("INSERT INTO publication_memberships VALUES (?, ?) ON CONFLICT(publication_id) DO UPDATE SET membership_snapshot_id=excluded.membership_snapshot_id",[publication_id,existing[0]])
-                return
-        con.execute("INSERT INTO membership_snapshots VALUES (?, ?, ?, ?, ?) ON CONFLICT DO NOTHING",[snapshot_id,trade_date,"m4-source-bundle-v1",snapshot_id,len(rows)])
-        batch=pa.Table.from_pylist([{"membership_snapshot_id":snapshot_id,"sector_id":row["sector_id"],"security_id":row["security_id"],"payload_json":_json(row)} for row in rows])
-        con.register("_m4_membership_batch",batch)
-        try:
-            con.execute("INSERT INTO membership_entries SELECT membership_snapshot_id,sector_id,security_id,payload_json::JSON FROM _m4_membership_batch ON CONFLICT DO NOTHING")
-        finally:
-            con.unregister("_m4_membership_batch")
-        con.execute("INSERT INTO publication_memberships VALUES (?, ?) ON CONFLICT(publication_id) DO UPDATE SET membership_snapshot_id=excluded.membership_snapshot_id",[publication_id,snapshot_id])
+            return {
+                "status": "EXISTING",
+                "observation_id": str(existing[0]),
+                "revision_no": int(existing[1]),
+                "attribute_version_id": existing[2],
+                "hierarchy_version": existing[3],
+            }
+
+        def source_kind(row: dict[str, Any]) -> str | None:
+            source = str(row.get("source") or "").strip().lower()
+            if source == "tdxhy.cfg:derived_parent":
+                return None
+            if source in {"tdxhy.cfg", "infoharbor_block.dat"} or not source:
+                return "DIRECT"
+            return "LEGACY_EXPLICIT"
+
+        edges = []
+        attributes = {}
+        for row in memberships:
+            kind = source_kind(row)
+            if kind is not None:
+                edges.append({"sector_id": row.get("sector_id"), "security_id": row.get("security_id"), "source_kind": kind})
+            sector_id = str(row.get("sector_id") or "").strip()
+            if sector_id:
+                attributes[sector_id] = {
+                    "sector_id": sector_id,
+                    "name": row.get("sector_name") or sector_id,
+                    "type": row.get("sector_type") or sector_id.split(":", 1)[0].upper(),
+                    "role": row.get("sector_role"),
+                    "semantic_bucket": row.get("semantic_bucket"),
+                }
+        if not edges:
+            raise ValueError("PUBLICATION_RELATION_SOURCE_EMPTY")
+        observation_id = f"relation-publication-observation-{publication_id}"
+        recorded = RelationRepository(con).record_observation(
+            source_scope=LEGACY_SOURCE_SCOPE,
+            edges=edges,
+            attributes=tuple(attributes.values()),
+            observed_at=datetime.now(timezone.utc),
+            source_effective_date=trade_date,
+            source_file_hashes={"source_bundle_id": source_bundle_id, "membership_rows": len(memberships)},
+            observation_id=observation_id,
+            manage_transaction=False,
+        )
+        if recorded["status"] not in {"UPDATED", "UNCHANGED"}:
+            raise ValueError(f"PUBLICATION_RELATION_NOT_READY:{recorded['status']}")
+        con.execute(
+            """
+            INSERT INTO relation_publication_bindings
+                (publication_id, source_scope, observation_id, revision_no,
+                 attribute_version_id, hierarchy_version)
+            VALUES (?, ?, ?, ?, ?, ?)
+            """,
+            [
+                publication_id,
+                LEGACY_SOURCE_SCOPE,
+                observation_id,
+                recorded["revision_no"],
+                recorded.get("attribute_version_id"),
+                None,
+            ],
+        )
+        return {
+            "status": recorded["status"],
+            "observation_id": observation_id,
+            "revision_no": recorded["revision_no"],
+            "attribute_version_id": recorded.get("attribute_version_id"),
+            "hierarchy_version": None,
+        }
 
     @staticmethod
     def _bulk(con, name: str, table: str, columns: list[str], rows: list[dict[str,Any]]) -> None:
@@ -202,7 +270,7 @@ class OneClickPublisher:
                     already=con.execute("SELECT status FROM publications WHERE publication_id=?",[publication_id]).fetchone()
                     if already and already[0]=="SUCCESS":
                         if prepared.memberships:
-                            self._write_memberships(con,publication_id,request.trade_date,prepared.memberships)
+                            self._write_relation_binding(con,publication_id,request.trade_date,request.source_bundle_id,prepared.memberships)
                         con.execute("UPDATE job_attempts SET status='SUCCESS' WHERE job_id=? AND attempt=?", [job_id, attempt])
                         con.execute("UPDATE jobs SET status='SUCCESS',payload_json=? WHERE job_id=?",[_json({"contract":CONTRACT_VERSION,"publication_id":publication_id,"request":prepared.persisted(include_results=False)}),job_id])
                         self._event(con, job_id, attempt, "COMMITTED", publication_id=publication_id)
@@ -219,7 +287,7 @@ class OneClickPublisher:
                     self._bulk(con,"_m4_board","unified_board",["publication_id","security_id","trade_date","payload_json"],[{"publication_id":publication_id,"security_id":r["security_id"],"trade_date":request.trade_date,"payload_json":_json(r)} for r in prepared.unified_board])
                     self._bulk(con,"_m4_rankings","queue_rankings",["publication_id","security_id","payload_json"],[{"publication_id":publication_id,"security_id":r["security_id"],"payload_json":_json(r)} for r in prepared.queue_rankings])
                     if prepared.memberships:
-                        self._write_memberships(con,publication_id,request.trade_date,prepared.memberships)
+                        self._write_relation_binding(con,publication_id,request.trade_date,request.source_bundle_id,prepared.memberships)
                     self._bulk(con,"_m4_observations","observations",["observation_id","publication_id","payload_json"],[{"observation_id":r.get("observation_id") or _hash({"publication_id":publication_id,**r}),"publication_id":publication_id,"payload_json":_json(r)} for r in prepared.observations])
                     for row in prepared.outcomes:
                         bound=con.execute("SELECT 1 FROM observations WHERE observation_id=?",[row["observation_id"]]).fetchone()

@@ -16,6 +16,8 @@ import pyarrow.parquet as pq
 from .digest import VERSION as DIGEST_VERSION, logical_digest, normalize_csv_row
 from .owner import DatabaseOwner
 from .migrations import MigrationExecutor
+from workbench_service.legacy_relation_import import LEGACY_SOURCE_SCOPE
+from workbench_service.relation_repository import RelationRepository
 
 
 SCHEMA_VERSION = "workbench-schema-v1.0"
@@ -226,12 +228,54 @@ class WorkbenchRepository:
         rows = [row for row in all_rows if str(row.get("date")) == trade_date.isoformat()]
         if not rows: raise ValueError(f"MEMBERSHIP_DATE_MISSING:{trade_date}")
         digest = logical_digest(rows, columns, ["sector_id", "security_id"])
-        snapshot_id = digest["sha256"]
         artifacts["membership_entries"] = self._artifact(con, publication_id, "membership_entries", membership_path, rows, columns, ["sector_id", "security_id"])
-        con.execute("INSERT INTO membership_snapshots VALUES (?, ?, ?, ?, ?)", [snapshot_id, trade_date, rows[0].get("snapshot_version", "UNKNOWN"), digest["sha256"], digest["row_count"]])
-        batch = [{"membership_snapshot_id": snapshot_id, "sector_id": row["sector_id"], "security_id": row["security_id"], "payload_json": _json(row)} for row in rows]
-        _bulk_insert(con, "membership_entries", batch, ["membership_snapshot_id", "sector_id", "security_id", "payload_json"])
-        con.execute("INSERT INTO publication_memberships VALUES (?, ?)", [publication_id, snapshot_id])
+        def source_kind(row: dict[str, Any]) -> str | None:
+            source = str(row.get("source") or "").strip().lower()
+            if source == "tdxhy.cfg:derived_parent":
+                return None
+            if source in {"tdxhy.cfg", "infoharbor_block.dat"} or not source:
+                return "DIRECT"
+            return "LEGACY_EXPLICIT"
+
+        edges = []
+        attributes: dict[str, dict[str, Any]] = {}
+        for row in rows:
+            kind = source_kind(row)
+            if kind is not None:
+                edges.append({"sector_id": row.get("sector_id"), "security_id": row.get("security_id"), "source_kind": kind})
+            sector_id = str(row.get("sector_id") or "").strip()
+            if sector_id:
+                attributes[sector_id] = {
+                    "sector_id": sector_id,
+                    "name": row.get("sector_name") or sector_id,
+                    "type": row.get("sector_type") or sector_id.split(":", 1)[0].upper(),
+                    "role": row.get("sector_role"),
+                    "semantic_bucket": row.get("semantic_bucket"),
+                }
+        if not edges:
+            raise ValueError("PUBLICATION_RELATION_SOURCE_EMPTY")
+        observation_id = f"relation-publication-observation-{publication_id}"
+        recorded = RelationRepository(con).record_observation(
+            source_scope=LEGACY_SOURCE_SCOPE,
+            edges=edges,
+            attributes=tuple(attributes.values()),
+            observed_at=datetime.now(timezone.utc),
+            source_effective_date=trade_date,
+            source_file_hashes={"membership_file_sha256": _sha(membership_path), "row_count": digest["row_count"]},
+            observation_id=observation_id,
+            manage_transaction=False,
+        )
+        if recorded["status"] not in {"UPDATED", "UNCHANGED"}:
+            raise ValueError(f"PUBLICATION_RELATION_NOT_READY:{recorded['status']}")
+        con.execute(
+            """
+            INSERT INTO relation_publication_bindings
+                (publication_id, source_scope, observation_id, revision_no,
+                 attribute_version_id, hierarchy_version)
+            VALUES (?, ?, ?, ?, ?, ?)
+            """,
+            [publication_id, LEGACY_SOURCE_SCOPE, observation_id, recorded["revision_no"], recorded.get("attribute_version_id"), None],
+        )
 
     def table_count(self, table: str, publication_id: str | None = None) -> int:
         assert self.connection is not None

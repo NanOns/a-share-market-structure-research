@@ -232,6 +232,7 @@ class RelationRepository:
         hierarchy_version: str | None = None,
         source_complete: bool = True,
         observation_id: str | None = None,
+        manage_transaction: bool = True,
     ) -> dict[str, Any]:
         scope = validate_source_scope(source_scope)
         observation = observation_id or f"relation-observation-{uuid.uuid4().hex}"
@@ -243,6 +244,7 @@ class RelationRepository:
         if not source_complete:
             return self._record_invalid_observation(
                 observation, scope, timestamp, effective_date, hashes_json, current, hierarchy_version,
+                manage_transaction=manage_transaction,
             )
 
         try:
@@ -252,6 +254,7 @@ class RelationRepository:
                 raise
             return self._record_invalid_observation(
                 observation, scope, timestamp, effective_date, hashes_json, current, hierarchy_version,
+                manage_transaction=manage_transaction,
             )
         normalized_attributes = normalize_attributes(attributes, scope)
         previous_edges = self.resolver.edges_at(scope, current) if current is not None else ()
@@ -262,7 +265,8 @@ class RelationRepository:
                 "SELECT edge_content_hash FROM relation_revisions WHERE source_scope=? AND revision_no=?", [scope, current]
             ).fetchone()[0]
 
-        self.connection.execute("BEGIN TRANSACTION")
+        if manage_transaction:
+            self.connection.execute("BEGIN TRANSACTION")
         try:
             attributes_result = self._prepare_attributes(scope, normalized_attributes)
             if current is not None and old_hash == new_hash:
@@ -299,9 +303,11 @@ class RelationRepository:
                 hierarchy_version,
                 VALID_QUALITY,
             )
-            self.connection.execute("COMMIT")
+            if manage_transaction:
+                self.connection.execute("COMMIT")
         except Exception:
-            self.connection.execute("ROLLBACK")
+            if manage_transaction:
+                self.connection.execute("ROLLBACK")
             raise
         return {
             "status": status,
@@ -322,8 +328,11 @@ class RelationRepository:
         source_file_hashes: str,
         current_revision: int | None,
         hierarchy_version: str | None,
+        *,
+        manage_transaction: bool = True,
     ) -> dict[str, Any]:
-        self.connection.execute("BEGIN TRANSACTION")
+        if manage_transaction:
+            self.connection.execute("BEGIN TRANSACTION")
         try:
             self._insert_observation(
                 observation_id,
@@ -336,9 +345,11 @@ class RelationRepository:
                 hierarchy_version,
                 INVALID_QUALITY,
             )
-            self.connection.execute("COMMIT")
+            if manage_transaction:
+                self.connection.execute("COMMIT")
         except Exception:
-            self.connection.execute("ROLLBACK")
+            if manage_transaction:
+                self.connection.execute("ROLLBACK")
             raise
         return {"status": INVALID_QUALITY, "updated": False, "observation_id": observation_id, "revision_no": current_revision}
 

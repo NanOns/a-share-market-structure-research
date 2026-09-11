@@ -34,6 +34,7 @@ from workbench_service.window_planner import MAX_OUTPUT_DAYS, load_dependencies,
 from workbench_service.history_jobs import HistoryJobError, HistoryJobService
 from workbench_service.analysis_activation import AnalysisActivationError, AnalysisActivationService
 from workbench_service.source_freezer import SourceFreezeError, validate_source_manifest
+from workbench_service.membership_resolver import VersionedMembershipResolver
 from workbench_analysis.chart import ChartCache, build_chart_points, chart_cache_key
 from workbench_analysis.hierarchy import load_bound_nodes
 from workbench_analysis.mainline import mainline_history_policy
@@ -184,6 +185,12 @@ class Api:
     yield connection
    finally:
     connection.close()
+ def _publication_relation(self, connection, publication_id):
+  return VersionedMembershipResolver(connection).publication_binding(publication_id)
+ def _publication_edges(self, connection, publication_id):
+  resolver=VersionedMembershipResolver(connection);binding=resolver.publication_binding(publication_id)
+  if not binding:return binding,()
+  return binding,resolver.edges_at(str(binding['source_scope']),int(binding['revision_no']))
  def _hierarchy_nodes(self,snapshot_id):
   if snapshot_id in self._hierarchy_cache:return self._hierarchy_cache[snapshot_id]
   with self._hierarchy_lock:
@@ -649,42 +656,49 @@ class Api:
    merged={**payloads.get(item.get('security_id'),{}),**item};item.clear();item.update(merged)
   return result
  def _add_strength_associations(self,p,result):
-  security_ids=[item.get('security_id') for item in result['items'] if item.get('security_id')]
-  missing=[sid for sid in security_ids if (p,sid) not in self._association_cache]
-  if missing:
-   with self._association_lock:
-    missing=[sid for sid in missing if (p,sid) not in self._association_cache]
-    if missing:
-     with self._con() as c:
-      snap=c.execute('select membership_snapshot_id from publication_memberships where publication_id=?',[p]).fetchone()
-      if snap:
-       placeholders=','.join('?' for _ in missing)
-       rows=c.execute(f'''select m.security_id,m.sector_id,d.payload_json
-          from membership_entries m join sector_daily d on d.publication_id=? and d.sector_id=m.sector_id
-         where m.membership_snapshot_id=? and m.security_id in ({placeholders})''',[p,snap[0],*missing]).fetchall()
-       sector_payloads={sector_id:json.loads(payload) for _,sector_id,payload in rows}
-       sector_ids=sorted(sector_payloads)
-       grouped={sector_id:[] for sector_id in sector_ids}
-       if sector_ids:
-        sector_placeholders=','.join('?' for _ in sector_ids)
-       member_rows=c.execute(f'''select m.sector_id,m.security_id,
-                    json_extract_string(m.payload_json,'$.member_rank'),
-                    json_extract_string(m.payload_json,'$.rank_valid_count'),
-                    json_extract_string(s.payload_json,'$.RET5'),
-                    json_extract_string(s.payload_json,'$.RET20')
-           from membership_entries m join stock_daily s on s.publication_id=? and s.security_id=m.security_id
-          where m.membership_snapshot_id=? and m.sector_id in ({sector_placeholders})
-            and {WORKBENCH_SCOPE_SQL.format(id='m.security_id')}''',[p,snap[0],*sector_ids]).fetchall()
-       for sector_id,security_id,member_rank,rank_valid_count,ret5,ret20 in member_rows:
-         grouped[sector_id].append({'security_id':security_id,'member_rank':member_rank,'rank_valid_count':rank_valid_count,'RET5':ret5,'RET20':ret20})
-       memberships={sid:[] for sid in missing}
-       for sid,sector_id,_ in rows:
-        memberships[sid].append((sector_payloads[sector_id],grouped.get(sector_id,[])))
-       for sid in missing:self._association_cache[p,sid]=choose_association(sid,memberships[sid])
-      else:
-       for sid in missing:self._association_cache[p,sid]=choose_association(sid,[])
-  for item in result['items']:item.update(self._association_cache.get((p,item.get('security_id')),choose_association(item.get('security_id'),[])))
-  return result
+   security_ids=[item.get('security_id') for item in result['items'] if item.get('security_id')]
+   missing=[sid for sid in security_ids if (p,sid) not in self._association_cache]
+   if missing:
+    with self._association_lock:
+     missing=[sid for sid in missing if (p,sid) not in self._association_cache]
+     if missing:
+      with self._con() as c:
+       binding,relation_edges=self._publication_edges(c,p)
+       if binding:
+        wanted=set(missing)
+        rows=[(edge.security_id,edge.sector_id) for edge in relation_edges if edge.security_id in wanted]
+        sector_ids=sorted({sector_id for _,sector_id in rows})
+        if sector_ids:
+         placeholders=','.join('?' for _ in sector_ids)
+         sector_rows=c.execute(f'''select sector_id,payload_json from sector_daily
+           where publication_id=? and sector_id in ({placeholders})''',[p,*sector_ids]).fetchall()
+         sector_payloads={sector_id:json.loads(payload) for sector_id,payload in sector_rows if payload}
+        else: sector_payloads={}
+        sector_ids=sorted(sector_payloads)
+        grouped={sector_id:[] for sector_id in sector_ids}
+        member_edges={}
+        for edge in relation_edges:
+         if edge.sector_id in grouped and is_workbench_statistical_security_id(edge.security_id,self._root):
+          member_edges[(edge.sector_id,edge.security_id)]=edge
+        member_ids=sorted({security_id for _,security_id in member_edges})
+        stock_payloads={}
+        if member_ids:
+         placeholders=','.join('?' for _ in member_ids)
+         stock_rows=c.execute(f'''select security_id,payload_json from stock_daily
+           where publication_id=? and security_id in ({placeholders})''',[p,*member_ids]).fetchall()
+         stock_payloads={security_id:json.loads(payload) for security_id,payload in stock_rows if payload}
+        for sector_id,security_id in sorted(member_edges):
+         payload=stock_payloads.get(security_id,{})
+         grouped[sector_id].append({'security_id':security_id,'member_rank':None,'rank_valid_count':0,'RET5':payload.get('RET5'),'RET20':payload.get('RET20')})
+        memberships={sid:[] for sid in missing}
+        for security_id,sector_id in rows:
+         if sector_id in sector_payloads:
+          memberships[security_id].append((sector_payloads[sector_id],grouped.get(sector_id,[])))
+        for sid in missing:self._association_cache[p,sid]=choose_association(sid,memberships[sid])
+       else:
+        for sid in missing:self._association_cache[p,sid]=choose_association(sid,[])
+   for item in result['items']:item.update(self._association_cache.get((p,item.get('security_id')),choose_association(item.get('security_id'),[])))
+   return result
  def _rows(self,table,p,where='',args=(),order='',page=1,size=50):
   size=max(1,min(MAX_PAGE_SIZE,int(size))); page=max(1,int(page)); self._pub(p)
   q=f" from {table} where publication_id=? {where}"; params=[p,*args]
@@ -822,8 +836,9 @@ class Api:
   result=self._rows('sector_daily',p,extra,args,'display_rank nulls last, sector_id',page,size)
   ids={item['sector_id'] for item in result['items']};quotes=self._quotes(p)
   if ids:
-   snap=self.identity(p).get('membership_snapshot_id')
-   with self._con() as c: members=c.execute('select sector_id,security_id from membership_entries where membership_snapshot_id=? and sector_id in ('+','.join('?' for _ in ids)+')',[snap,*ids]).fetchall()
+   with self._con() as c:
+    _,relation_edges=self._publication_edges(c,p)
+    members=sorted({(edge.sector_id,edge.security_id) for edge in relation_edges if edge.sector_id in ids and is_workbench_statistical_security_id(edge.security_id,self._root)})
    grouped={sid:{'members':[],'quotes':[]} for sid in ids}
    for sid,security_id in members:
     if is_workbench_statistical_security_id(security_id, self._root):
@@ -1412,8 +1427,8 @@ class Api:
   d,rev=self._pub(p)
   with self._con() as c:
    x=c.execute('select source_manifest_sha256,source_identity_sha256,computation_identity_sha256,render_identity_sha256,revision,production_version from publications where publication_id=?',[p]).fetchone()
-   membership=c.execute('select membership_snapshot_id from publication_memberships where publication_id=?',[p]).fetchone()
-  result={'publication_id':p,'trade_date':d,'source_revision_id':rev,'source_manifest_sha256':x[0],'source_identity_sha256':x[1],'computation_identity_sha256':x[2],'render_identity_sha256':x[3],'membership_snapshot_id':membership[0] if membership else None,'api_contract':'m2-read-only-api-v1.2'}
+   relation=self._publication_relation(c,p)
+  result={'publication_id':p,'trade_date':d,'source_revision_id':rev,'source_manifest_sha256':x[0],'source_identity_sha256':x[1],'computation_identity_sha256':x[2],'render_identity_sha256':x[3],'membership_snapshot_id':relation.get('legacy_snapshot_id') if relation else None,'relation_source_scope':relation.get('source_scope') if relation else None,'relation_observation_id':relation.get('observation_id') if relation else None,'relation_revision':relation.get('revision_no') if relation else None,'relation_attribute_version_id':relation.get('attribute_version_id') if relation else None,'relation_hierarchy_version':relation.get('hierarchy_version') if relation else None,'relation_binding_mode':'PUBLICATION' if relation and relation.get('legacy_snapshot_id') is None else 'LEGACY_ID_BRIDGE' if relation else 'UNAVAILABLE','api_contract':'m2-read-only-api-v1.2'}
   if include_analysis:
    bindings=self._analysis_bindings(p);preferred=bindings.get('LOCAL_OBSERVED') or bindings.get('LOCAL_RECONSTRUCTED');context=self._analysis_context(p) if preferred else None
    quality=context['quality'] if context else {'status':'PARTIAL','codes':['HISTORY_ANALYSIS_NOT_BUILT'],'field_coverage':{}}
@@ -1541,45 +1556,45 @@ class Api:
   size=max(1,min(MAX_PAGE_SIZE,int(size))); page=max(1,int(page))
   self._pub(p)
   with self._con() as c:
-   snap=c.execute('select membership_snapshot_id from publication_memberships where publication_id=?',[p]).fetchone()
-   if not snap:return {'publication_id':p,'page':page,'page_size':size,'total':0,'items':[]}
    if not sector and not security: raise ValueError('LINKAGE_KEY_REQUIRED')
-   # Rank every member before applying the stock/search filter.  This keeps a
-   # stock's sector rank stable in both directions and across pagination.
-   scope=' and m.sector_id=?' if sector else ''
-   scope_args=[sector] if sector else []
-   cte=f'''with ranked as (
-    select m.payload_json membership_payload,s.payload_json stock_payload,u.payload_json board_payload,
-           m.sector_id,m.security_id,
-           row_number() over(partition by m.sector_id order by
-             try_cast(json_extract_string(u.payload_json,'$.stock_rs20_pct') as double) desc nulls last,
-             try_cast(json_extract_string(s.payload_json,'$.RET20') as double) desc nulls last,
-             m.security_id) sector_member_rank,
-           count(*) over(partition by m.sector_id) sector_member_count
-      from membership_entries m
-      left join stock_daily s on s.publication_id=? and s.security_id=m.security_id
-      left join unified_board u on u.publication_id=? and u.security_id=m.security_id
-     where m.membership_snapshot_id=?{scope} and {WORKBENCH_SCOPE_SQL.format(id='m.security_id')})'''
-   params=[p,p,snap[0],*scope_args]
-   filters=[]; filter_args=[]
-   if security: filters.append('security_id=?'); filter_args.append(security)
-   if q:
-    filters.append("(json_extract_string(stock_payload,'$.security_name') ilike ? or security_id ilike ?)")
-    filter_args += [f'%{q}%',f'%{q}%']
-   where=(' where '+' and '.join(filters)) if filters else ''
-   total=c.execute(cte+' select count(*) from ranked'+where,params+filter_args).fetchone()[0]
-   vals=c.execute(cte+' select membership_payload,stock_payload,board_payload,sector_member_rank,sector_member_count from ranked'+where+' order by sector_id,sector_member_rank limit ? offset ?',params+filter_args+[size,(page-1)*size]).fetchall()
-  items=[]
-  for parts in vals:
-   merged={}
-   for value in parts[:3]:
-    if value: merged.update(json.loads(value))
-   merged['sector_member_rank']=int(parts[3])
-   merged['sector_member_count']=int(parts[4])
-   merged.update(self._quotes(p).get(merged.get('security_id'),{}))
-   items.append(merged)
-  sector_member_count=(items[0]['sector_member_count'] if sector and items else total if sector and not q else None)
-  return {'publication_id':p,'page':page,'page_size':size,'total':total,'sector_member_count':sector_member_count,'sector_member_rank_basis':'stock_rs20_pct_desc_then_ret20_desc_then_security_id','items':items}
+   _,relation_edges=self._publication_edges(c,p)
+   if not relation_edges:return {'publication_id':p,'page':page,'page_size':size,'total':0,'items':[]}
+   edge_map={(edge.sector_id,edge.security_id):edge for edge in relation_edges if (not sector or edge.sector_id==sector) and is_workbench_statistical_security_id(edge.security_id,self._root)}
+   sector_ids=sorted({sector_id for sector_id,_ in edge_map})
+   security_ids=sorted({security_id for _,security_id in edge_map})
+   def payload_rows(table,ids):
+    if not ids:return {}
+    placeholders=','.join('?' for _ in ids)
+    rows=c.execute(f'select '+('sector_id' if table=='sector_daily' else 'security_id')+',payload_json from '+table+f' where publication_id=? and '+('sector_id' if table=='sector_daily' else 'security_id')+f' in ({placeholders})',[p,*ids]).fetchall()
+    return {key:json.loads(payload) for key,payload in rows if payload}
+   sector_payloads=payload_rows('sector_daily',sector_ids)
+   stock_payloads=payload_rows('stock_daily',security_ids)
+   board_payloads=payload_rows('unified_board',security_ids)
+   grouped={sector_id:[] for sector_id in sector_ids if sector_id in sector_payloads}
+   for sector_id,security_id in sorted(edge_map):
+    if sector_id not in grouped:continue
+    merged={**sector_payloads.get(sector_id,{}),**stock_payloads.get(security_id,{}),**board_payloads.get(security_id,{})}
+    merged.update({'sector_id':sector_id,'security_id':security_id,'member_present':True})
+    grouped[sector_id].append(merged)
+   def rank_key(item):
+    rs20=item.get('stock_rs20_pct')
+    ret20=item.get('RET20')
+    try:rs20=float(rs20);rs20_ok=math.isfinite(rs20)
+    except (TypeError,ValueError):rs20=None;rs20_ok=False
+    try:ret20=float(ret20);ret20_ok=math.isfinite(ret20)
+    except (TypeError,ValueError):ret20=None;ret20_ok=False
+    return (not rs20_ok,-rs20 if rs20_ok else 0,not ret20_ok,-ret20 if ret20_ok else 0,str(item.get('security_id') or ''))
+   ranked=[]
+   for sector_id,rows in grouped.items():
+    rows.sort(key=rank_key)
+    for rank,item in enumerate(rows,1):
+     item['sector_member_rank']=rank;item['sector_member_count']=len(rows);ranked.append(item)
+   filtered=[item for item in ranked if (not security or item['security_id']==security) and (not q or q.lower() in str(item.get('security_name') or item.get('name') or '').lower() or q.lower() in item['security_id'].lower())]
+   filtered.sort(key=lambda item:(item['sector_id'],item['sector_member_rank']))
+   total=len(filtered);items=filtered[(page-1)*size:page*size]
+   for item in items:item.update(self._quotes(p).get(item.get('security_id'),{}))
+   sector_member_count=(len(grouped.get(sector,())) if sector else None)
+   return {'publication_id':p,'page':page,'page_size':size,'total':total,'sector_member_count':sector_member_count,'sector_member_rank_basis':'stock_rs20_pct_desc_then_ret20_desc_then_security_id','items':items}
 
 def make_handler(root,db):
  api=Api(db,root=root); history=HistoryJobService(root,db); history.recover_interrupted(background=True); activation=AnalysisActivationService(root,db); operations=OperationsConfig(root,db); storage=StorageGovernance(root,db); backups=BackupService(root,db); maintenance=MaintenanceService(root,db); static=Path(root)/'src/workbench_service/static';csrf=secrets.token_urlsafe(24);publishers={};daily_jobs={};daily_jobs_lock=threading.Lock()

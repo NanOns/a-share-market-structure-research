@@ -211,7 +211,31 @@ class AnalysisActivationService:
                     for table, columns in clone_specs.items():
                         connection.execute(f"insert into {table} (publication_id,{columns}) select ?,{columns} from {table} where publication_id=?", [new_publication_id, manifest["base_publication_id"]])
                     connection.execute("insert into publication_artifacts select ?,artifact_name,source_path,file_sha256,logical_digest_version,logical_sha256,row_count,columns_json,primary_key_json from publication_artifacts where publication_id=?", [new_publication_id, manifest["base_publication_id"]])
-                    connection.execute("insert into publication_memberships select ?,membership_snapshot_id from publication_memberships where publication_id=?", [new_publication_id, manifest["base_publication_id"]])
+                    relation_binding = connection.execute(
+                        """
+                        SELECT source_scope, observation_id, revision_no,
+                               attribute_version_id, hierarchy_version
+                        FROM relation_publication_bindings
+                        WHERE publication_id=?
+                        ORDER BY source_scope
+                        LIMIT 1
+                        """,
+                        [manifest["base_publication_id"]],
+                    ).fetchone()
+                    if relation_binding:
+                        connection.execute(
+                            """
+                            INSERT INTO relation_publication_bindings
+                                (publication_id, source_scope, observation_id,
+                                 revision_no, attribute_version_id, hierarchy_version)
+                            VALUES (?, ?, ?, ?, ?, ?)
+                            """,
+                            [new_publication_id, *relation_binding],
+                        )
+                    else:
+                        # Historical publications still use the immutable
+                        # legacy-ID bridge until their source is retired.
+                        connection.execute("insert into publication_memberships select ?,membership_snapshot_id from publication_memberships where publication_id=?", [new_publication_id, manifest["base_publication_id"]])
                 connection.execute("update analysis_snapshots set status='SUCCESS' where snapshot_id=?", [snapshot_id])
                 connection.execute("insert into publication_analysis_snapshots values (?,?,?,?) on conflict(publication_id,domain) do nothing", [new_publication_id, binding_domain, snapshot_id, datetime.now(timezone.utc)])
                 bound = connection.execute("select snapshot_id from publication_analysis_snapshots where publication_id=? and domain=?", [new_publication_id, binding_domain]).fetchone()

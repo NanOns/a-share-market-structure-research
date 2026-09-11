@@ -95,15 +95,17 @@ def test_all_workbench_result_groups_commit_together(tmp_path):
       for table in ("stock_daily","sector_daily","candidate_daily","structure_details","queue_memberships","unified_board","queue_rankings","observations","outcomes"):
         assert repo.connection.execute(f"select count(*) from {table}").fetchone()[0]==1
 
-def test_membership_snapshot_requires_content_hash_not_only_row_count(tmp_path):
+def test_publication_relation_binding_requires_content_hash_not_only_row_count(tmp_path):
     pub=publisher(tmp_path)
     first=PublicationRequest(date(2026,9,7),"bundle-1","model-1","compute-1",memberships=({"sector_id":"concept:A","security_id":"SH.600001"},))
     second=PublicationRequest(date(2026,9,7),"bundle-1","model-2","compute-1",memberships=({"sector_id":"concept:B","security_id":"SH.600001"},))
     pub.run(first); pub.run(second)
     from workbench_db.repository import WorkbenchRepository
     with WorkbenchRepository(tmp_path,pub.database_path) as repo:
-        snapshots=repo.connection.execute("select membership_snapshot_id from publication_memberships order by publication_id").fetchall()
-    assert len(set(snapshots))==2
+        bindings=repo.connection.execute("select publication_id,revision_no from relation_publication_bindings order by publication_id").fetchall()
+        snapshots=repo.connection.execute("select count(*) from membership_entries").fetchone()[0]
+    assert len(bindings)==2 and {row[1] for row in bindings}=={1,2}
+    assert snapshots==0
 
 def test_conflicting_outcome_payload_is_blocked(tmp_path):
     pub=publisher(tmp_path);pub.run(request())

@@ -55,6 +55,7 @@ class MigrationExecutor:
         "022_m13_market_cycle": ("021_m13_limit_promotion",),
         "023_m8c_audit_v11": ("022_m13_market_cycle",),
         "024_m14_online": ("023_m8c_audit_v11",),
+        "025_v3_relations": ("024_m14_online",),
     }
     CHECK_TABLE_SQL = """
         CREATE TABLE IF NOT EXISTS schema_migration_checks (

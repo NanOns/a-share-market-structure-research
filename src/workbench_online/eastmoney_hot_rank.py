@@ -124,5 +124,8 @@ def fetch_eastmoney_hot_rank(
         "decoder_version": DECODER_VERSION,
         "source_as_of": source_as_of,
         "time_semantics": "SOURCE_EXACT_TIME" if source_as_of else "MULTIPLE_OR_MISSING_SOURCE_TIMES",
+        "upstream_paged": True,
+        "upstream_total": None,
+        "upstream_has_more": None,
         "rows": normalized,
     }

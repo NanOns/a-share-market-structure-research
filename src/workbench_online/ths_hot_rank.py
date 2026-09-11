@@ -61,5 +61,8 @@ def fetch_ths_hot_rank(
         "capability_status": "PERSONAL_RESEARCH_ONLY",
         "source_as_of": None,
         "time_semantics": "OBSERVED_AT_ONLY_SOURCE_AS_OF_MISSING",
+        "upstream_paged": False,
+        "upstream_total": len(normalized),
+        "upstream_has_more": False,
         "rows": normalized,
     }

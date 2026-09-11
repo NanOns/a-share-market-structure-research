@@ -26,6 +26,7 @@
 
 | P00-03 | PASS | codex/v3-upgrade-analysis @ 3815435；V3 主实施文档工作区版本 | 新增 V3 配置、DTO/schema、reason catalog、合成夹具、合同校验器和 P00-03 测试；未改数据库和旧业务路径 | tests/upgrade_v3/test_p00_03_contracts.py：5 passed；覆盖参数哈希、枚举、未知字段、NULL规则、reason 标签和合成夹具标记 | 冻结 RESEARCH_V3_PREVIEW_1、CURRENT/POTENTIAL/股票角色阈值、分页/排序/NULL策略、API01–15 核心 DTO；7 个夹具全部 synthetic | 生产 app 尚未消费 V3 合同资产，属于本阶段刻意边界；HOT_RANKINGS 继承旧 direct-ephemeral 状态，但 V3 在线能力仍等待 P09-01 复核 | P01-01：缩短数据库锁作用域 |
 | P01-01 | PASS | codex/v3-upgrade-analysis @ 3f6f664；主实施文档工作区版本；未访问 TDX | 修改 `src/workbench_service/app.py`：热榜 GET 退出请求级锁、远程等待后批量补名称、响应写入处理客户端断开；新增 `docs/V3_P01_01_LOCK_SCOPE.md` 与阶段回归测试 | `tests/upgrade_v3/test_p01_01_lock_scope.py` 3 passed；P00-03 5 passed；M14 hot-rank 3 passed；py_compile 与 diff check 通过 | 注入最长 8 秒 direct 等待期间，同一 Api 的本地 publication 读 `<0.5s`；普通 GET 仍保留 request_scope；POST 写任务边界未扩大；无数据库/TDX/热榜持久化写入 | M15 既有资源版本断言 `m15-03` 与当前 `m15-04` 不一致，未纳入本阶段；HOT_RANKINGS V3 capability 仍等 P09-01 | P01-02：修复热榜分页与单源失败语义 |
+| P01-02 | PASS | codex/v3-upgrade-analysis @ bc5882b；主实施文档工作区版本；未访问或修改 TDX/数据库 | 修改 `src/workbench_service/online_hot_rank.py` 及两个 hot-rank adapter；新增 `docs/V3_P01_02_HOT_RANK.md` 与合成分页/失败/超时回归 | `tests/upgrade_v3/test_p01_02_hot_rank.py` 5 passed；M14 hot-rank API/adapter 7 passed；py_compile 与 diff check 通过；未修改旧测试预期 | 第2页20条报价只请求本页；100条完整集合 `total=100`；上游页不二次偏移；源独立并发；源A失败源B显示；12秒总预算超时；`cache:false` 与零热榜持久化不变 | M15 既有资源版本断言继续独立跟踪；HOT_RANKINGS V3 capability 仍等 P09-01 | P01-03：修证据弹窗和返回路径 |
 
 ### P00-01 阶段合同
 

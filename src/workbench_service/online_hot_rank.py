@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import hashlib
 import json
+import time
+from concurrent.futures import ThreadPoolExecutor, TimeoutError as FutureTimeoutError
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Callable
@@ -18,6 +20,7 @@ from workbench_online.ths_hot_rank import fetch_ths_hot_rank
 CONTRACT_ID = "M14_HOT_RANK_API_V2_0"
 LEGACY_CONTRACT_ID = "M14_HOT_RANK_API_V1_0"
 MAX_PAGE_SIZE = 100
+ONLINE_TOTAL_TIMEOUT_SECONDS = 12.0
 SOURCE_IDS = ("EASTMONEY_HOT_RANK", "TONGHUASHUN_HOT_RANK")
 DIRECT_FETCHERS = {
     "EASTMONEY_HOT_RANK": fetch_eastmoney_hot_rank,
@@ -206,7 +209,21 @@ def _direct_source_view(
     if fetcher is None:
         raise ValueError("HOT_RANK_SOURCE_UNSUPPORTED")
     result, normalized = fetcher(policy, **({"page": page} if source_id == "EASTMONEY_HOT_RANK" else {}))
-    rows = _direct_rows(normalized, name_lookup)
+    raw_rows = list(normalized.get("rows") or [])
+    upstream_paged = bool(normalized.get("upstream_paged", source_id == "EASTMONEY_HOT_RANK"))
+    if upstream_paged:
+        # The source already selected page N.  Do not apply a second page
+        # offset, which would turn a valid upstream page into an empty page.
+        selected_rows = raw_rows[:page_size]
+        total = normalized.get("upstream_total")
+        has_more = normalized.get("upstream_has_more")
+    else:
+        start = (page - 1) * page_size
+        selected_rows = raw_rows[start : start + page_size]
+        total = normalized.get("upstream_total", len(raw_rows))
+        has_more = start + len(selected_rows) < total if isinstance(total, int) else None
+    selected_normalized = {**normalized, "rows": selected_rows}
+    rows = _direct_rows(selected_normalized, name_lookup)
     quote_status = "NOT_REQUESTED"
     if quote_fetcher:
         quote_ids = [row["security_id"] for row in rows if row.get("security_id")]
@@ -220,11 +237,6 @@ def _direct_source_view(
             for row in rows:
                 row["quote"] = None
             quote_status = f"UNAVAILABLE:{type(exc).__name__}"
-    if source_id == "TONGHUASHUN_HOT_RANK":
-        start = (page - 1) * page_size
-        rows = rows[start : start + page_size]
-    else:
-        rows = rows[:page_size]
     return {
         "api_contract": CONTRACT_ID,
         "storage_scope": "EPHEMERAL_ONLINE",
@@ -237,13 +249,75 @@ def _direct_source_view(
         "time_semantics": normalized.get("time_semantics"),
         "page": page,
         "page_size": page_size,
-        "total": len(rows),
+        "total": total if isinstance(total, int) and total >= 0 else None,
+        "upstream_total": total if isinstance(total, int) and total >= 0 else None,
+        "returned_count": len(rows),
+        "has_more": has_more if isinstance(has_more, bool) else None,
         "items": rows,
+        "status": "READY",
         "capability_status": "AVAILABLE",
         "quote_status": quote_status,
         "reason_status": "UNAVAILABLE_NO_VERIFIED_REASON_SOURCE",
         "local_snapshot_mutated": False,
     }
+
+
+def _source_error_code(exc: Exception) -> str:
+    value = str(exc).strip()
+    if value and len(value) <= 80 and "\n" not in value and "\r" not in value:
+        return value
+    return type(exc).__name__
+
+
+def _unavailable_source_view(source_id: str, page: int, page_size: int, exc: Exception) -> dict:
+    return {
+        "api_contract": CONTRACT_ID,
+        "storage_scope": "EPHEMERAL_ONLINE",
+        "dataset": "HOT_RANKINGS",
+        "source_id": source_id,
+        "list_type": None,
+        "mode": "LATEST",
+        "source_as_of": None,
+        "observed_at_utc": None,
+        "time_semantics": "UNAVAILABLE",
+        "page": page,
+        "page_size": page_size,
+        "total": None,
+        "upstream_total": None,
+        "returned_count": 0,
+        "has_more": None,
+        "items": [],
+        "status": "UNAVAILABLE",
+        "error_code": _source_error_code(exc),
+        "capability_status": "UNAVAILABLE",
+        "quote_status": "NOT_REQUESTED",
+        "reason_status": "UNAVAILABLE_NO_VERIFIED_REASON_SOURCE",
+        "local_snapshot_mutated": False,
+    }
+
+
+def _direct_source_view_safe(
+    source_id: str,
+    *,
+    page: int,
+    page_size: int,
+    policy: OnlineFetchPolicy,
+    name_lookup: Callable[[list[str]], dict[str, str]] | None,
+    fetchers: dict[str, Callable] | None,
+    quote_fetcher: Callable | None,
+) -> dict:
+    try:
+        return _direct_source_view(
+            source_id,
+            page=page,
+            page_size=page_size,
+            policy=policy,
+            name_lookup=name_lookup,
+            fetchers=fetchers,
+            quote_fetcher=quote_fetcher,
+        )
+    except Exception as exc:
+        return _unavailable_source_view(source_id, page, page_size, exc)
 
 
 def build_hot_rank_direct_response(
@@ -262,10 +336,14 @@ def build_hot_rank_direct_response(
     if page < 1 or page_size < 1 or page_size > MAX_PAGE_SIZE:
         raise ValueError("HOT_RANK_PAGE_INVALID")
     source_key = source.upper()
+    if source_key != "ALL" and source_key not in SOURCE_IDS:
+        raise ValueError("HOT_RANK_SOURCE_UNSUPPORTED")
     sources = list(SOURCE_IDS) if source_key == "ALL" or co_listed else [source_key]
     effective_policy = policy or OnlineFetchPolicy(cache_ttl_seconds=0, personal_research_only=True)
-    views = [
-        _direct_source_view(
+    executor = ThreadPoolExecutor(max_workers=len(sources), thread_name_prefix="hot-rank")
+    futures = [
+        executor.submit(
+            _direct_source_view_safe,
             source_id,
             page=page,
             page_size=page_size,
@@ -276,14 +354,31 @@ def build_hot_rank_direct_response(
         )
         for source_id in sources
     ]
+    deadline = time.monotonic() + ONLINE_TOTAL_TIMEOUT_SECONDS
+    views = []
+    try:
+        for source_id, future in zip(sources, futures):
+            remaining = max(0.0, deadline - time.monotonic())
+            try:
+                views.append(future.result(timeout=remaining))
+            except FutureTimeoutError:
+                future.cancel()
+                views.append(_unavailable_source_view(source_id, page, page_size, TimeoutError("UPSTREAM_TIMEOUT")))
+            except Exception as exc:
+                views.append(_unavailable_source_view(source_id, page, page_size, exc))
+    finally:
+        executor.shutdown(wait=False, cancel_futures=True)
     if len(views) == 1:
         return views[0]
+    statuses = {view.get("status") for view in views}
+    overall_status = "READY" if statuses == {"READY"} else "PARTIAL" if "READY" in statuses else "UNAVAILABLE"
     return {
         "api_contract": CONTRACT_ID,
         "storage_scope": "EPHEMERAL_ONLINE",
         "dataset": "HOT_RANKINGS",
         "mode": "LATEST",
         "co_listed": True,
+        "status": overall_status,
         "source_views": views,
         "local_snapshot_mutated": False,
     }

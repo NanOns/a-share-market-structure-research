@@ -22,6 +22,8 @@
 |---|---|---|---|---|---|---|---|
 | P00-01 | PASS | codex/v3-upgrade-analysis @ 6afd5c1；主实施文档为工作区最新版本 | 新增本台账；未修改业务代码、配置、数据库、TDX 输入 | 只读源代码检索、路由/页面/表读写映射、git 状态与文档哈希核对；未用测试替代阶段验收 | 已覆盖 V3 第 2 章全部 20 项旧能力，分类成员表和切片相关命中，解释当前生产/预览写入点 | 独立预览脚本的生命周期和后续退役边界尚需在后续阶段明确；当前已按“手工预览写入器”分类，不构成未解释写入点 | P00-02：只读容量基线与历史覆盖核验 |
 
+| P00-02 | PASS | codex/v3-upgrade-analysis @ 5ae8de4；主库以 read_only=True 打开；采集时间 2026-09-12T00:15:38+08:00 | 新增 docs/V3_P00_02_CAPACITY_BASELINE.md；未修改数据库、data、runtime、TDX | DuckDB PRAGMA database_size、全表 COUNT、业务键/slice 键、hash 分组、目录字节/文件数、发布引用链；不以测试替代容量验收 | 75 表行数、数据库块占用、库外目录、关系边摘要、high window、内容摘要重复和当前发布引用均已固化 | storage_objects 标记 referenced=true 但当前 publication 链实际引用 0；backup catalog 与物理文件需后续对照；可回收大小均按证据标注 UNKNOWN | P00-03：冻结配置、DTO、合成夹具和 capability 状态 |
+
 ### P00-01 阶段合同
 
 本阶段只做只读基线审计：
@@ -151,4 +153,6 @@ app.py 的 handler 初始化 HistoryJobService、AnalysisActivationService、One
 - 检索 membership_entries、*_daily、表名写入调用、API route 和前端请求。
 - 对每个命中按生产读取、生产写入、分析物化、快照/切片、预览、运维、测试/审计、废弃/文本进行分类。
 
-验收结论：P00-01 PASS。V3 第 2 章 20 项旧能力均有映射；membership_entries 和切片相关命中均已分类；当前可见生产写入点均有来源和角色说明。按照 V3 阶段门，下一阶段为 P00-02；在 P00-02 完成前不启动 scanner。
+验收结论：P00-01、P00-02 均 PASS。P00-02 已完成只读容量与历史覆盖基线，未执行任何清理或数据库写入；下一阶段为 P00-03。在 P00-03 完成前不启动 scanner。
+
+P00-02 详细报告：[V3_P00_02_CAPACITY_BASELINE.md](V3_P00_02_CAPACITY_BASELINE.md)。

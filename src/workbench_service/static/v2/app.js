@@ -27,7 +27,8 @@
     var overviewState = {page: 1, pageSize: 50, q: '', grade: '', pattern: '', requestId: 0};
     var mainlineState = {className: '', days: 30, historyPolicy: null};
     var linkageState = {mode: 'attributes', page: 1, days: 10, attributeType: '', attributeBucket: '', attributeQuery: '', sectorId: '', securityId: '', stockQuery: '', tradeDate: '', includeSectors: '', operator: 'INTERSECTION', excludeSectors: '', selectionCollapsed: false};
-    var insightRequestId = 0, insightAbortController = null, insightRouteActive = false, openingInsight = false;
+    var insightRequestId = 0, insightAbortController = null, insightRouteActive = false, openingInsight = false,
+        modalRequestId = 0, modalAbortController = null;
     var viewRequests = {};
     function beginViewRequest(key) {
         var previous = viewRequests[key];
@@ -73,11 +74,27 @@
     function cancelInsightRequest() {
         if (insightAbortController) { insightAbortController.abort(); insightAbortController = null; }
     }
+    function cancelModalRequest() {
+        if (modalAbortController) { modalAbortController.abort(); modalAbortController = null; }
+        modalRequestId += 1;
+    }
+    function beginModalRequest() {
+        if (modalAbortController) modalAbortController.abort();
+        var controller = typeof AbortController === 'function' ? new AbortController() : null;
+        var token = {id: ++modalRequestId, controller: controller, signal: controller && controller.signal};
+        modalAbortController = controller;
+        return token;
+    }
+    function modalRequestActive(token) { return token && token.id === modalRequestId; }
+    function releaseModalRequest(token) {
+        if (modalRequestActive(token)) modalAbortController = null;
+    }
     function clearInsightRoute() {
         insightRouteActive = false;
         writeInsightRoute(null, 'replace');
     }
     modal.onClose(function () {
+        cancelModalRequest();
         insightRequestId += 1;
         cancelInsightRequest();
         if (insightRouteActive && !openingInsight) clearInsightRoute();
@@ -601,13 +618,16 @@
 
     function showHistory(row) {
         modal.open('技术历史 · ' + securityLabel(row), '正在读取历史数据…');
+        var token = beginModalRequest();
         api.technicalHistory({
             publication_id: current.publication_id,
             security_id: row.security_id,
             days: 60,
             price_basis: 'ADJUSTED',
             fields: 'ohlc,ma,amount,rps'
-        }).then(function (result) {
+        }, {signal: token.signal}).then(function (result) {
+            if (!modalRequestActive(token)) return;
+            releaseModalRequest(token);
             var rows = historyRows(result.points || []);
             modal.open('技术历史 · ' + securityLabel(row), modalContent('历史用于观察状态延续与变化，不是自动买卖信号。价格口径：调整后；RET20、额比20和量比前20由历史序列按页面说明计算。', [{
                 title: '历史数据（最近30个交易日）',
@@ -631,6 +651,8 @@
                 }, {label: '历史基础', value: '本地重建'}, {label: 'RPS能力', value: display(result.rps_capability)}]
             }]));
         }).catch(function (error) {
+            if (!modalRequestActive(token) || error.name === 'AbortError') return;
+            releaseModalRequest(token);
             modal.open('技术历史 · ' + securityLabel(row), modalContent('历史数据暂时无法读取。', [{
                 title: '原因',
                 rows: [{label: '提示', value: error.message}]
@@ -796,9 +818,15 @@
 
     function openMarketDetail(row) {
         if (!current || !row || !row.trade_date) return;
-        api.marketDayDetail({publication_id: current.publication_id, trade_date: row.trade_date, basis: 'RECONSTRUCTED'}).then(function (detail) {
+        modal.open('市场日明细 · ' + row.trade_date, '正在读取单日明细…');
+        var token = beginModalRequest();
+        api.marketDayDetail({publication_id: current.publication_id, trade_date: row.trade_date, basis: 'RECONSTRUCTED'}, {signal: token.signal}).then(function (detail) {
+            if (!modalRequestActive(token)) return;
+            releaseModalRequest(token);
             modal.open('市场日明细 · ' + row.trade_date, modalContent('单日明细绑定同一分析快照；涨跌停能力未构建时保持暂无。', [{title: '广度与成交', rows: [{label: '有效报价', value: detail.item.quote_valid_count}, {label: '上涨', value: detail.item.up_count}, {label: '下跌', value: detail.item.down_count}, {label: '平盘', value: detail.item.flat_count}, {label: '成交额', value: amountOrDash(detail.item.amount_sum)}, {label: '涨跌停能力', value: detail.item.capabilities && detail.item.capabilities.limit_state}]}, {title: '下钻接口', rows: [{label: '技术', value: detail.drilldown.technical}, {label: '新高', value: detail.drilldown.new_highs}, {label: '队列', value: detail.drilldown.queues}]}]));
         }).catch(function (error) {
+            if (!modalRequestActive(token) || error.name === 'AbortError') return;
+            releaseModalRequest(token);
             modal.open('市场日明细 · ' + row.trade_date, modalContent('单日明细暂时无法读取。', [{title: '原因', rows: [{label: '提示', value: error.message}]}]));
         });
     }
@@ -1121,14 +1149,15 @@
         });
     }
 
-    function evidenceDetails(title, body) {
-        var details = document.createElement('details');
-        details.className = 'evidence-details';
-        var summary = document.createElement('summary');
-        summary.textContent = title;
-        details.appendChild(summary);
-        if (body && body.nodeType) details.appendChild(body);
-        return details;
+    function evidenceSection(title, body) {
+        var section = document.createElement('section');
+        section.className = 'evidence-section';
+        var heading = document.createElement('h4');
+        heading.className = 'evidence-section-title';
+        heading.textContent = title;
+        section.appendChild(heading);
+        if (body && body.nodeType) section.appendChild(body);
+        return section;
     }
 
     function evidencePointTable(points) {
@@ -1156,7 +1185,7 @@
     }
 
     function externalEvidencePlaceholder() {
-        return evidenceDetails('在线增强 · 当前不可用（默认折叠）', modalContent('在线能力尚未接入；该状态不阻塞本地个股透视首屏。', [{
+        return evidenceSection('在线增强 · 当前不可用', modalContent('在线能力尚未接入；该状态不阻塞本地个股透视首屏。', [{
             title: '能力状态',
             rows: [
                 {label: '当前状态', value: 'NOT_BUILT'},
@@ -1208,7 +1237,7 @@
                 return {kind: item.association_rank === 1 ? '主关联' : '备选关联', sector: item.sector_name, rank: item.association_rank, eligibility: item.eligible, pattern: item.pattern, reason: (item.rejection_reasons || []).map(evidenceDisplay).join('、') || '满足关联门槛', contract: evidenceDisplay(item.contract_id), basis: item.history_basis, evidence: evidenceDisplay(item.evidence_json || {})};
             }));
             content.replaceChildren();
-            content.appendChild(modalContent('证据按来源分组展示；摘要固定 5 项，详情默认折叠；未通过或缺失条件不转译为强势结论。', [{
+            content.appendChild(modalContent('证据按来源分组展示；未通过或缺失条件不转译为强势结论。', [{
                 title: '证据摘要（5项）', rows: [
                     {label: '数据状态', value: result.status},
                     {label: '分析快照', value: result.snapshot_id},
@@ -1234,9 +1263,9 @@
                 {label: '证据摘要', key: 'evidence'}
             ], rows);
             var associationStatus = sector.evidence_status || (rows.length ? 'AVAILABLE' : 'NO_ELIGIBLE_ASSOCIATION');
-            groups.appendChild(evidenceDetails('M11 板块关联 · ' + rows.length + ' 条 · ' + evidenceDisplay(associationStatus), associationBody));
+            groups.appendChild(evidenceSection('M11 板块关联 · ' + rows.length + ' 条 · ' + evidenceDisplay(associationStatus), associationBody));
             var queueRows = evidenceQueueSummary(structures.queues || {});
-            groups.appendChild(evidenceDetails('结构摘要 · ' + queueRows.length + ' 个队列', modalTable([
+            groups.appendChild(evidenceSection('结构摘要 · ' + queueRows.length + ' 个队列', modalTable([
                 {label: '队列', key: 'queue'},
                 {label: '命中', key: 'hit'},
                 {label: '层级', key: 'tier'},
@@ -1247,31 +1276,31 @@
                 var noQueue = document.createElement('p');
                 noQueue.className = 'modal-empty';
                 noQueue.textContent = '当前没有命中结构队列，未生成 API15 结构详情；缺失不替换为零值。';
-                groups.appendChild(evidenceDetails('API15 结构详情 · 暂无命中队列', noQueue));
+                groups.appendChild(evidenceSection('API15 结构详情 · 暂无命中队列', noQueue));
             } else {
                 activeQueues.forEach(function (queueName) {
                     var loading = document.createElement('p');
                     loading.className = 'modal-empty';
                     loading.textContent = '正在读取本地分组证据…';
-                    var details = evidenceDetails(evidenceDisplay(queueName) + ' · API15 详情', loading);
+                    var details = evidenceSection(evidenceDisplay(queueName) + ' · API15 详情', loading);
                     groups.appendChild(details);
                     api.evidence({publication_id: current.publication_id, queue: queueName, security_id: row.security_id, format: 'groups', basis: 'RECONSTRUCTED'}, {signal: insightAbortController && insightAbortController.signal}).then(function (evidence) {
                         if (requestId !== insightRequestId) return;
                         var evidenceGroups = evidence.item && evidence.item.groups || [];
                         var group = evidenceGroups.find(function (candidate) { return candidate.group_id === 'historical_structure'; }) || evidenceGroups[0];
                         var body = group ? evidencePointTable(group.items) : modalContent('当前队列暂无可展示的本地详情。', [{title: '状态', rows: [{label: '接口状态', value: evidence.status}]}]);
-                        var summary = details.querySelector('summary');
-                        summary.textContent = evidenceDisplay(queueName) + ' · API15 详情 · ' + (group && group.items ? group.items.length : 0) + ' 条';
-                        details.replaceChildren(summary, body);
+                        var heading = details.querySelector('.evidence-section-title');
+                        heading.textContent = evidenceDisplay(queueName) + ' · API15 详情 · ' + (group && group.items ? group.items.length : 0) + ' 条';
+                        details.replaceChildren(heading, body);
                     }).catch(function (error) {
                         if (requestId !== insightRequestId || error.name === 'AbortError') return;
-                        var summary = details.querySelector('summary');
-                        summary.textContent = evidenceDisplay(queueName) + ' · API15 详情 · 暂不可用';
-                        details.replaceChildren(summary, modalContent('本地分组证据暂时无法读取。', [{title: '原因', rows: [{label: '提示', value: error.message}]}]));
+                        var heading = details.querySelector('.evidence-section-title');
+                        heading.textContent = evidenceDisplay(queueName) + ' · API15 详情 · 暂不可用';
+                        details.replaceChildren(heading, modalContent('本地分组证据暂时无法读取。', [{title: '原因', rows: [{label: '提示', value: error.message}]}]));
                     });
                 });
             }
-            groups.appendChild(evidenceDetails('合同与基础 · 默认折叠', modalContent('该分组只展示当前发布版本的可追溯元数据。', [{title: '合同与基础', rows: [{label: '关联合同', value: sector.contract_id}, {label: '结构合同', value: structures.queue_contract}, {label: '技术质量', value: technical.quality_codes}, {label: '分析快照', value: result.snapshot_id}, {label: '截止日期', value: result.cutoff_date || result.trade_date || result.as_of_trade_date}]}])));
+            groups.appendChild(evidenceSection('合同与基础', modalContent('该分组只展示当前发布版本的可追溯元数据。', [{title: '合同与基础', rows: [{label: '关联合同', value: sector.contract_id}, {label: '结构合同', value: structures.queue_contract}, {label: '技术质量', value: technical.quality_codes}, {label: '分析快照', value: result.snapshot_id}, {label: '截止日期', value: result.cutoff_date || result.trade_date || result.as_of_trade_date}]}])));
             groups.appendChild(externalEvidencePlaceholder());
             content.appendChild(groups);
         }
@@ -1550,6 +1579,7 @@
 
     function showSectorTimeline(row) {
         modal.open('板块时间线 · ' + display(row.sector_name), '正在读取板块历史…');
+        var token = beginModalRequest();
 
         function optional(request) {
             return request.then(function (value) {
@@ -1563,19 +1593,21 @@
             publication_id: current.publication_id,
             sector_id: row.sector_id,
             days: 30
-        })).then(function (timelineResult) {
+        }, {signal: token.signal})).then(function (timelineResult) {
             var timeline = timelineResult.value || {};
             optional(api.sectorMembersHistory({
                 publication_id: current.publication_id,
                 sector_id: row.sector_id,
                 days: 10,
                 state: 'ALL'
-            })).then(function (memberResult) {
+            }, {signal: token.signal})).then(function (memberResult) {
                 optional(api.sectorLeaderHistory({
                     publication_id: current.publication_id,
                     sector_id: row.sector_id,
                     days: 30
-                })).then(function (leaderResult) {
+                }, {signal: token.signal})).then(function (leaderResult) {
+                    if (!modalRequestActive(token)) return;
+                    releaseModalRequest(token);
                     var members = memberResult.value || {items: timeline.member_state || []};
                     if (!members.items || !members.items.length) members = {items: timeline.member_state || []};
                     var leaders = leaderResult.value || {};
@@ -1827,11 +1859,14 @@
 
     function showMainlineEvidence(row) {
         modal.open('主线证据 · ' + display(row.sector_name), '正在读取主线证据…');
+        var token = beginModalRequest();
         api.mainlineEvidence({
             publication_id: current.publication_id,
             sector_id: row.sector_id,
             days: mainlineState.days
-        }).then(function (result) {
+        }, {signal: token.signal}).then(function (result) {
+            if (!modalRequestActive(token)) return;
+            releaseModalRequest(token);
             mainlineState.historyPolicy = result.history_policy || mainlineState.historyPolicy;
             var points = (result.points || []).slice().reverse().map(function (point) {
                 return {
@@ -1868,6 +1903,8 @@
                 rows: points
             }])));
         }).catch(function (error) {
+            if (!modalRequestActive(token) || error.name === 'AbortError') return;
+            releaseModalRequest(token);
             modal.open('主线证据 · ' + display(row.sector_name), modalContent('主线证据暂时无法读取。', [{title: '原因', rows: [{label: '提示', value: error.message}]}]));
         });
     }

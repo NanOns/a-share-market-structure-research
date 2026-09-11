@@ -69,27 +69,27 @@
     },
     evidence:function(params,options){return get('/api/evidence',params||{},options);},
     marketCycle:function(params,options){return get('/api/market/cycle',params||{},options);},
-    marketDayDetail:function(params){return get('/api/market/day-detail',params||{});},
+    marketDayDetail:function(params,options){return get('/api/market/day-detail',params||{},options);},
     hotRankings:function(params,options){return get('/api/hot-rankings',params||{},Object.assign({cache:false},options||{}));},
     limitLadder:function(params,options){return get('/api/limit-ladder',params||{},options);},
     limitPromotionHistory:function(params,options){return get('/api/limit-ladder/promotion-history',params||{},options);},
     sectorCycle:function(params,options){return get('/api/sectors/cycle',params,options);},
     mainlines:function(params,options){return get('/api/mainlines',params,options);},
-    mainlineEvidence:function(params){
+    mainlineEvidence:function(params,options){
       var sectorId=encodeURIComponent(params.sector_id);var query=Object.assign({},params);delete query.sector_id;
-      return get('/api/mainlines/'+sectorId+'/evidence',query);
+      return get('/api/mainlines/'+sectorId+'/evidence',query,options);
     },
-    sectorTimeline:function(params){
+    sectorTimeline:function(params,options){
       var sectorId=encodeURIComponent(params.sector_id);var query=Object.assign({},params);delete query.sector_id;
-      return get('/api/sectors/'+sectorId+'/timeline',query);
+      return get('/api/sectors/'+sectorId+'/timeline',query,options);
     },
-    sectorMembersHistory:function(params){
+    sectorMembersHistory:function(params,options){
       var sectorId=encodeURIComponent(params.sector_id);var query=Object.assign({},params);delete query.sector_id;
-      return get('/api/sectors/'+sectorId+'/members/history',query);
+      return get('/api/sectors/'+sectorId+'/members/history',query,options);
     },
-    sectorLeaderHistory:function(params){
+    sectorLeaderHistory:function(params,options){
       var sectorId=encodeURIComponent(params.sector_id);var query=Object.assign({},params);delete query.sector_id;
-      return get('/api/sectors/'+sectorId+'/leader-history',query);
+      return get('/api/sectors/'+sectorId+'/leader-history',query,options);
     },
     technical:function(params,options){return get('/api/stocks/technical',params,options);},
     newHighs:function(params,options){return get('/api/stocks/new-highs',params,options);},

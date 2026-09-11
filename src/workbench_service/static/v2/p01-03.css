@@ -1,0 +1,37 @@
+/* V3 P01-03: evidence stays in one modal and uses the documented viewport contract. */
+.modal {
+    padding: 16px;
+}
+
+.modal-card {
+    width: min(960px, 100%);
+    max-height: 85vh;
+}
+
+.evidence-section {
+    margin-top: 16px;
+    padding: 14px;
+    border: 1px solid #e1e8f1;
+    border-radius: 9px;
+    background: #fff;
+}
+
+.evidence-section:first-child {
+    margin-top: 0;
+}
+
+.evidence-section-title {
+    margin: 0 0 10px;
+    color: #215b88;
+    font-size: 14px;
+}
+
+@media (max-width: 800px) {
+    .modal {
+        padding: 16px;
+    }
+
+    .modal-card {
+        max-height: 85vh;
+    }
+}

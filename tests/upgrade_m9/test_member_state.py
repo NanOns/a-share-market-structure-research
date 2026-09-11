@@ -1,3 +1,5 @@
+import json
+
 import pandas as pd
 import pytest
 
@@ -18,10 +20,10 @@ def _inputs():
         {"sector_id": "INDUSTRY:A", "security_id": "SH.3", "trade_date": "2026-09-08"},
     ])
     structures = pd.DataFrame([
-        {"security_id": "SH.1", "trade_date": "2026-09-07", "hit": True},
-        {"security_id": "SH.2", "trade_date": "2026-09-07", "hit": False},
-        {"security_id": "SH.1", "trade_date": "2026-09-08", "hit": True},
-        {"security_id": "SH.3", "trade_date": "2026-09-08", "hit": True},
+        {"security_id": "SH.1", "trade_date": "2026-09-07", "hit": True, "research_band": "CORE_RESEARCH"},
+        {"security_id": "SH.2", "trade_date": "2026-09-07", "hit": False, "research_band": "SUPPORTED_RESEARCH"},
+        {"security_id": "SH.1", "trade_date": "2026-09-08", "hit": True, "research_band": "SUPPORTED_RESEARCH"},
+        {"security_id": "SH.3", "trade_date": "2026-09-08", "hit": True, "research_band": "CORE_RESEARCH"},
     ])
     return technical, memberships, structures
 
@@ -49,3 +51,46 @@ def test_unknown_is_not_false_and_future_duplicate_inputs_are_rejected():
     duplicate = pd.concat([memberships, memberships.iloc[[0]]], ignore_index=True)
     with pytest.raises(MemberStateError, match="MEMBERSHIP_DUPLICATE_CONFLICT"):
         build_sector_member_state_daily(technical, duplicate, structures=structures)
+
+
+def test_member_rank_uses_ret20_without_rs20_fallback_or_preference():
+    technical = pd.DataFrame([
+        {"security_id": "SH.1", "trade_date": "2026-09-08", "ret20": .20, "rs20": -.20, "rps20": .90},
+        {"security_id": "SH.2", "trade_date": "2026-09-08", "ret20": .10, "rs20": .30, "rps20": .90},
+    ])
+    memberships = pd.DataFrame([
+        {"sector_id": "INDUSTRY:A", "security_id": "SH.1", "trade_date": "2026-09-08"},
+        {"sector_id": "INDUSTRY:A", "security_id": "SH.2", "trade_date": "2026-09-08"},
+    ])
+    structures = pd.DataFrame([
+        {"security_id": "SH.1", "trade_date": "2026-09-08", "hit": True, "research_band": "CORE_RESEARCH"},
+        {"security_id": "SH.2", "trade_date": "2026-09-08", "hit": True, "research_band": "SUPPORTED_RESEARCH"},
+    ])
+
+    states = build_sector_member_state_daily(technical, memberships, structures=structures)
+    first = states.sort_values("member_rank").iloc[0]
+    assert first.security_id == "SH.1"
+    assert first.member_rank == 1
+    assert first.rank_valid_count == 2
+
+
+def test_diagnostic_only_hit_does_not_participate_in_strong_state():
+    technical = pd.DataFrame([
+        {"security_id": "SH.1", "trade_date": "2026-09-08", "ret20": .20, "rps20": .90},
+    ])
+    memberships = pd.DataFrame([
+        {"sector_id": "INDUSTRY:A", "security_id": "SH.1", "trade_date": "2026-09-08"},
+    ])
+    structures = pd.DataFrame([
+        {"security_id": "SH.1", "trade_date": "2026-09-08", "hit": True, "research_band": "DIAGNOSTIC_ONLY"},
+    ])
+    highs = pd.DataFrame([
+        {"security_id": "SH.1", "trade_date": "2026-09-08", "new_high_20": False, "new_high_30": False, "new_high_60": False, "new_high_100": False},
+    ])
+
+    state = build_sector_member_state_daily(technical, memberships, structures=structures, highs=highs).iloc[0]
+    assert state.structure_hit == False
+    assert state.strong_state == False
+    predicates = json.loads(state.strong_predicates)
+    assert predicates["qualified_structure"] is False
+    assert predicates["structure_or_high"] is False

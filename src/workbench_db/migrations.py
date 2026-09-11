@@ -45,6 +45,16 @@ class MigrationExecutor:
         "011_m9_sector_cycle": ("008_m8_contract_completion",),
         "012_m9_member_state": ("011_m9_sector_cycle",),
         "013_m9_representative_state": ("012_m9_member_state",),
+        "015_m9_sector_hierarchy": ("013_m9_representative_state",),
+        "016_m10_common_breadth": ("011_m9_sector_cycle",),
+        "017_m9_cycle_state_metrics": ("016_m10_common_breadth",),
+        "018_m10_sector_amount": ("017_m9_cycle_state_metrics",),
+        "019_m11_association": ("018_m10_sector_amount",),
+        "020_m13_limit_ladder": ("008_m8_contract_completion",),
+        "021_m13_limit_promotion": ("020_m13_limit_ladder",),
+        "022_m13_market_cycle": ("021_m13_limit_promotion",),
+        "023_m8c_audit_v11": ("022_m13_market_cycle",),
+        "024_m14_online": ("023_m8c_audit_v11",),
     }
     CHECK_TABLE_SQL = """
         CREATE TABLE IF NOT EXISTS schema_migration_checks (

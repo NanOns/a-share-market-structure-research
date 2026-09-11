@@ -11,8 +11,8 @@ def _references():
     return normalize_reference_rows(
         pd.DataFrame(
             [
-                {"security_id": "SH.600001", "trade_date": "2026-09-08", "quote_prev_close": 10, "float_shares": 1000, "shares_unit": "SHARES", "shares_basis": "FLOAT_SHARES", "source_ref": "local:1"},
-                {"security_id": "SH.600002", "trade_date": "2026-09-08", "quote_prev_close": 10, "float_shares": 1000, "shares_unit": "SHARES", "shares_basis": "APPROXIMATE", "source_ref": "local:2"},
+                {"security_id": "SH.600001", "trade_date": "2026-09-08", "quote_prev_close": 10, "float_shares": 1000, "shares_unit": "SHARES", "shares_basis": "FLOAT_SHARES", "source_ref": "local:1", "ex_rights_reference_unknown": False},
+                {"security_id": "SH.600002", "trade_date": "2026-09-08", "quote_prev_close": 10, "float_shares": 1000, "shares_unit": "SHARES", "shares_basis": "APPROXIMATE", "source_ref": "local:2", "ex_rights_reference_unknown": False},
                 {"security_id": "SH.600003", "trade_date": "2026-09-08", "quote_prev_close": None, "float_shares": None, "source_ref": None},
             ]
         )
@@ -51,7 +51,7 @@ def test_gate_rejects_duplicate_keys():
 
 
 def test_string_false_rule_verification_cannot_open_capability():
-    references = pd.DataFrame([{"security_id": "SH.600001", "trade_date": "2026-09-08", "quote_capability": "EXACT", "shares_capability": "EXACT"}])
+    references = pd.DataFrame([{"security_id": "SH.600001", "trade_date": "2026-09-08", "quote_capability": "EXACT", "reference_status": "KNOWN", "reference_basis": "LOCAL_REFERENCE_EXPLICIT", "ex_rights_reference_unknown": False, "shares_capability": "EXACT"}])
     result = build_capability_gate(references, limit_results=[{"security_id": "SH.600001", "trade_date": "2026-09-08", "limit_state": "LIMIT_UP", "rule_verified": "false"}])
     item = result["items"].iloc[0]
     assert item["limit_capability"] == "UNKNOWN" and bool(item["available"]) is False

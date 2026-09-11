@@ -9,6 +9,7 @@
     {"domain": "high", "consumer": "stock_high_daily", "windows": [20, 30, 60, 100], "lookback_sessions": 100, "reason": "新高合同最长100日比较窗口"},
     {"domain": "structure", "consumer": "historical_structure_daily", "windows": [20, 60], "lookback_sessions": 60, "reason": "五类结构复用技术与趋势状态最长窗口"},
     {"domain": "sector_cycle", "consumer": "sector_cycle_daily", "windows": [5, 10, 20, 30], "lookback_sessions": 30, "reason": "板块周期统计窗口"},
+    {"domain": "mainline", "consumer": "mainline_daily", "windows": [3, 5, 10, 20, 30], "lookback_sessions": 30, "reason": "主线状态分类及可审计证据窗口"},
     {"domain": "market", "consumer": "market_cycle_daily", "windows": [5, 10, 20, 30, 60], "lookback_sessions": 60, "reason": "市场聚合与MA覆盖最长60日窗口"}
   ]
 }

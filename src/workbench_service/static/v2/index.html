@@ -3,8 +3,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="__CSRF_TOKEN__">
     <title>统一研究工作台 · v2 预览</title>
-    <link rel="stylesheet" href="/v2/styles.css">
+    <link rel="stylesheet" href="/v2/styles.css?v=m15-04">
 </head>
 <body>
 <header class="topbar">
@@ -21,9 +22,9 @@
     <button class="nav-item active" data-page="overview" type="button">总览</button>
     <button class="nav-item" data-page="sectors" type="button">板块</button>
     <button class="nav-item" data-page="stocks" type="button">个股技术</button>
-    <button class="nav-item" data-page="candidates" type="button">候选</button>
-    <button class="nav-item" data-page="queues" type="button">队列</button>
     <button class="nav-item" data-page="linkage" type="button">联动</button>
+    <button class="nav-item" data-page="market" type="button">市场周期</button>
+    <button class="nav-item" data-page="data-info" type="button">数据能力</button>
 </nav>
 <main class="content">
     <section class="page-heading">
@@ -47,7 +48,7 @@
                 <button id="identity-evidence" class="evidence-button" type="button">查看证据</button>
             </article>
             <article class="card">
-                <div class="card-label">统一股票范围</div>
+                <div class="card-label">个股展示 / 统计范围</div>
                 <div id="universe-value" class="card-value">—</div>
                 <div id="universe-detail" class="card-detail">—</div>
                 <button id="universe-evidence" class="evidence-button" type="button">查看边界</button>
@@ -60,7 +61,80 @@
             </div>
             <div id="context-table" class="table-wrap"></div>
         </section>
+        <section id="overview-analysis" class="overview-analysis" aria-live="polite">
+            <section class="panel">
+                <div class="panel-heading"><div><h2>今日研究摘要</h2><p id="overview-analysis-basis">正在读取 API30/API31…</p></div></div>
+                <div id="overview-market-cards" class="overview-market-cards"></div>
+            </section>
+            <section class="panel">
+                <div class="panel-heading"><div><h2>强势板块</h2><p>行业与概念分开排名；仅展示当前快照前 10 个，点击可进入对应板块周期。</p></div></div>
+                <div id="overview-sector-groups" class="overview-sector-groups"></div>
+            </section>
+            <section class="panel">
+                <div class="panel-heading"><div><h2>主线状态</h2><p>按版本化主线分类统计；缺少 M10 快照时保留明确不可用状态。</p></div></div>
+                <div id="overview-mainline-counts" class="overview-mainline-counts"></div>
+            </section>
+            <section class="panel">
+                <div class="panel-heading"><div><h2>代表个股</h2><p>同一股票跨板块只展示一次，并保留全部关联板块来源。</p></div></div>
+                <div id="overview-representatives" class="table-wrap"></div>
+            </section>
+            <section class="panel">
+                <div class="panel-heading"><div><h2>优先研究</h2><p>API31 保留 V1 研究顺序；点击股票打开统一个股透视。</p></div></div>
+                <div class="filter-row overview-priority-filters">
+                    <label>股票/代码<input id="overview-priority-q" type="search" placeholder="输入名称或代码"></label>
+                    <label>研究级别<select id="overview-priority-grade"><option value="">全部级别</option><option value="A+">A+</option><option value="A">A</option><option value="B">B</option><option value="C">C</option></select></label>
+                    <label>主要结构<select id="overview-priority-pattern"><option value="">全部结构</option><option value="CURRENT_STRENGTH">当前强势</option><option value="SECTOR_LEADER">板块龙头</option><option value="STRONG_PULLBACK">强势回踩</option><option value="BREAKOUT_PREP">突破准备</option><option value="EARLY_MOVER">早期启动</option></select></label>
+                    <button id="overview-priority-filter" class="evidence-button filter-button" type="button">应用筛选</button>
+                </div>
+                <div id="overview-priority-table" class="table-wrap"></div>
+                <div class="pager"><button id="overview-priority-prev" type="button" disabled>上一页</button><span id="overview-priority-page-label">第 1 页</span><button id="overview-priority-next" type="button" disabled>下一页</button></div>
+            </section>
+        </section>
     </div>
+    <section id="market-page" class="market-page" hidden>
+        <section class="panel filters-panel">
+            <div class="filter-row">
+                <label>历史窗口<select id="market-days"><option value="30">30日</option><option value="60" selected>60日</option><option value="90">90日</option><option value="120">120日</option><option value="250">250日</option></select></label>
+                <button id="market-refresh" class="evidence-button filter-button" type="button">刷新市场周期</button>
+            </div>
+            <div id="market-basis" class="basis-note">市场广度、成交额与均线覆盖按股票去重；缺少能力显示为暂无。</div>
+        </section>
+        <section class="panel">
+            <div class="field-guide"><h2>市场周期说明</h2><p>上涨、下跌、平盘只在报价有效分母内统计，三者恒等于有效报价数；成交额按统计范围内股票去重求和，默认包含科创板和北交所。点击下钻到个股页面时，才按个股展示权限隐藏两者。未具备涨跌停参考数据时保持 NULL，不用 0 代替未知。</p></div>
+            <div class="panel-heading"><div><h2>市场历史聚合</h2><p>点击日期查看固定快照下的单日明细。</p></div></div>
+            <div id="market-charts" class="market-chart-grid" aria-live="polite">
+                <section class="market-chart-card"><h3>市场广度</h3><div id="market-breadth-chart" class="market-chart" role="img" aria-label="市场广度图"></div><p class="market-chart-note">上涨、下跌、平盘均按有效报价分母绘制；点击日期查看单日明细。</p></section>
+                <section class="market-chart-card"><h3>量额与 MA 覆盖</h3><div id="market-amount-chart" class="market-chart" role="img" aria-label="成交额与均线覆盖图"></div><p class="market-chart-note">柱形为成交额；折线为 MA20/MA60 上方数 ÷ 各自有效样本，缺失保持 NULL。</p></section>
+                <section class="market-chart-card"><h3>涨跌停 / 新高 / 队列</h3><div id="market-structure-chart" class="market-chart" role="img" aria-label="涨跌停新高与队列图"></div><p class="market-chart-note">涨跌停能力未构建时不补零；新高与队列使用各自有效分母和能力状态。</p></section>
+            </div>
+            <div id="market-table" class="table-wrap"></div>
+        </section>
+        <section class="panel hot-rank-panel">
+            <div class="field-guide"><h2>平台热榜</h2><p>实时读取东方财富和同花顺当前热榜；结果只存在于当前请求内，不保存热榜快照。平台排名与本地分析独立，报价为独立行情补充，涨停原因没有可靠来源时明确显示不可用。</p></div>
+            <div class="filter-row">
+                <label>来源<select id="hot-rank-source"><option value="ALL">东方财富 + 同花顺</option><option value="EASTMONEY_HOT_RANK">东方财富</option><option value="TONGHUASHUN_HOT_RANK">同花顺</option></select></label>
+                <button id="hot-rank-refresh" class="evidence-button filter-button" type="button">刷新热榜</button>
+            </div>
+            <div id="hot-rank-basis" class="basis-note">尚未请求热榜。</div>
+            <div id="hot-rank-table" class="table-wrap" aria-live="polite"></div>
+            <div class="pager"><button id="hot-rank-prev" type="button" disabled>上一页</button><span id="hot-rank-page-label">第 1 页</span><button id="hot-rank-next" type="button" disabled>下一页</button></div>
+        </section>
+        <section class="panel">
+            <div class="field-guide"><h2>收盘梯队与晋级</h2><p>梯队只展示本地 M8C 已确认的涨停状态；晋级分母按昨日确认涨停、今日可判断且有涨跌幅限制计算。未知、停牌和无涨跌幅限制分别排除，不把尚未构建渲染为 0。</p></div>
+            <div class="filter-row">
+                <label>梯队层级<select id="limit-ladder-level"><option value="ALL">全部层级</option><option value="4PLUS">4板及以上</option><option value="3">3板</option><option value="2">2板</option><option value="1">1板</option></select></label>
+                <label>状态<select id="limit-ladder-state"><option value="ALL">全部状态</option><option value="UP">涨停</option><option value="DOWN">跌停</option><option value="NONE">未涨跌停</option><option value="UNKNOWN">未知</option><option value="NO_LIMIT">无涨跌幅限制</option><option value="SUSPENDED">停牌</option></select></label>
+                <label>晋级状态<select id="limit-ladder-promotion"><option value="ALL">全部</option><option value="SUCCESS">晋级</option><option value="NOT_ELIGIBLE">未晋级</option><option value="UNKNOWN">未知</option><option value="SUSPENDED">停牌</option><option value="NO_LIMIT">无涨跌幅限制</option><option value="NOT_EVALUATED">未评估</option></select></label>
+                <label>晋级前一日层级<select id="limit-promotion-level"><option value="ALL">全部层级</option><option value="4PLUS">4板及以上</option><option value="3">3板</option><option value="2">2板</option><option value="1">1板</option></select></label>
+                <button id="limit-ladder-refresh" class="evidence-button filter-button" type="button">刷新梯队</button>
+            </div>
+            <div id="limit-ladder-basis" class="basis-note">正在读取收盘梯队能力…</div>
+            <div class="market-chart-grid">
+                <section class="market-chart-card"><h3>收盘梯队</h3><p class="market-chart-note">层级降序；未知状态独立保留。</p><div id="limit-ladder-counts" class="basis-note">分层数量：暂无</div><div id="limit-ladder-table" class="table-wrap"></div><div class="pager"><button id="limit-ladder-prev" type="button">上一页</button><span id="limit-ladder-page-label">第 1 页</span><button id="limit-ladder-next" type="button">下一页</button></div></section>
+                <section class="market-chart-card"><h3>晋级历史</h3><p class="market-chart-note">比率为描述性历史分数；分母为合格集合，不代表概率。</p><div id="limit-promotion-table" class="table-wrap"></div></section>
+            </div>
+        </section>
+    </section>
     <section id="technical-page" class="technical-page" hidden>
         <section class="panel filters-panel">
             <div class="filter-row">
@@ -138,14 +212,112 @@
             </div>
         </section>
     </section>
+    <section id="mainlines-page" class="mainlines-page" hidden>
+        <div class="secondary-nav" aria-label="板块二级页面">
+            <button class="secondary-nav-item" data-sector-subpage="sectors" type="button">板块周期</button>
+            <button class="secondary-nav-item active" data-sector-subpage="mainlines" type="button">主线周期</button>
+        </div>
+        <section class="panel filters-panel">
+            <div class="filter-row">
+                <label>主线分类<select id="mainline-class">
+                    <option value="">全部分类</option>
+                    <option value="FADING">退潮</option>
+                    <option value="HIGH_LEVEL_CONTRACTION">高位收缩</option>
+                    <option value="REACCELERATING">再加速</option>
+                    <option value="SUSTAINED">持续</option>
+                    <option value="NEW">新晋</option>
+                    <option value="BROADENING">扩散</option>
+                    <option value="OBSERVING">观察</option>
+                    <option value="DATA_INSUFFICIENT">数据不足</option>
+                </select></label>
+                <label>证据天数<select id="mainline-days">
+                    <option value="10">10日</option>
+                    <option value="20">20日</option>
+                    <option value="30" selected>30日</option>
+                </select></label>
+                <button id="mainline-refresh" class="evidence-button filter-button" type="button">刷新主线</button>
+            </div>
+            <div id="mainline-basis" class="basis-note">主线分类读取当前发布绑定的 M10 分析快照；3日进入短期观察，5日允许快速状态，10日允许稳定状态，20日用于完整证据。</div>
+        </section>
+        <section class="panel">
+            <div class="field-guide"><h2>主线周期说明</h2>
+                <p>主线分类使用板块强度、上涨宽度、成交额扩张和强势成员变化的版本化硬条件；未知字段不会被当作不通过，也不使用隐藏综合分。3日先进入短期观察池，5日才判断快速状态，10日才判断稳定状态；20日只补充完整证据。行业按层级分表，概念平级展示，不混合排名。</p>
+                <div class="guide-grid">
+                    <div><b>观察池</b><span>历史达到3日但尚未达到快速或稳定状态门槛，只作为当前轮动候选观察。</span></div>
+                    <div><b>持续</b><span>至少10日历史，多次进入强势区间，连续性、宽度和成员留存同时满足条件。</span></div>
+                    <div><b>新晋</b><span>当前首次或重新进入强势区间，并伴随宽度、成交额和成员进入扩张。</span></div>
+                    <div><b>再加速</b><span>中期强度仍在高位，近几日强度、宽度和成交额重新改善。</span></div>
+                    <div><b>高位收缩 / 退潮</b><span>分别表示高位但宽度或留存下降，以及强度、宽度和成交额共同转弱。</span></div>
+                </div>
+            </div>
+            <div class="panel-heading">
+                <div><h2>主线状态</h2><p id="mainline-description">每个区块独立展示和排序；点击证据查看条件的业务解释、结果和缺失原因。</p></div>
+            </div>
+            <div id="mainline-status-cards" class="mainline-status-cards" aria-label="主线状态数量"></div>
+            <div class="mainline-group-grid">
+                <section class="mainline-group panel"><h3>一级行业</h3><p>行业父级板块，排名分母只包含一级行业；默认显示前10个。</p><div id="mainline-industry-root-table" class="table-wrap"></div></section>
+                <section class="mainline-group panel"><h3>细分行业</h3><p>行业子级板块，排名分母只包含细分行业；默认显示前20个。</p><div id="mainline-industry-leaf-table" class="table-wrap"></div></section>
+                <section class="mainline-group panel"><h3>概念板块</h3><p>平级概念，不与行业混合；默认显示前20个。</p><div id="mainline-theme-table" class="table-wrap"></div></section>
+            </div>
+        </section>
+    </section>
+    <section id="linkage-page" class="linkage-page" hidden>
+        <section class="panel filters-panel">
+            <div class="linkage-tabs" role="tablist" aria-label="联动子页面">
+                <button class="linkage-tab active" data-linkage-mode="attributes" type="button">属性库</button>
+                <button class="linkage-tab" data-linkage-mode="linkage" type="button">关联联动</button>
+                <button class="linkage-tab" data-linkage-mode="intersection" type="button">交叉筛选</button>
+            </div>
+            <div class="linkage-selection-head">
+                <div>
+                    <h2 id="linkage-heading">属性库</h2>
+                    <p id="linkage-description">按板块类型和语义查看可追溯的板块属性；标签不自动当作强势关联。</p>
+                </div>
+                <button id="linkage-toggle-selection" class="evidence-button filter-button" type="button" aria-expanded="true">折叠选择栏</button>
+            </div>
+            <div id="linkage-selection-panel" class="linkage-selection-panel">
+                <div id="linkage-attributes-controls" class="filter-row">
+                    <label>板块类型<select id="linkage-attribute-type"><option value="">全部</option><option value="INDUSTRY">行业</option><option value="THEME">概念</option></select></label>
+                    <label>语义桶<select id="linkage-attribute-bucket"><option value="">全部</option><option value="NORMAL_ATTRIBUTE">普通属性</option><option value="PRICE_BEHAVIOR_TAG">行情标签</option><option value="EXCLUDE_FROM_THEME_RANK">排除排名</option></select></label>
+                    <label>搜索板块<input id="linkage-attribute-query" type="search" placeholder="名称或板块ID"></label>
+                </div>
+                <div id="linkage-linkage-controls" class="filter-row" hidden>
+                    <label>板块ID<input id="linkage-sector-id" type="search" placeholder="例如 THEME:880652"></label>
+                    <label>股票代码<input id="linkage-security-id" type="search" placeholder="例如 SZ.002793"></label>
+                    <label>名称/代码筛选<input id="linkage-stock-query" type="search" placeholder="只过滤展示，不重排"></label>
+                    <label>交易日<input id="linkage-trade-date" type="date"></label>
+                </div>
+                <div id="linkage-intersection-controls" class="filter-row" hidden>
+                    <label>纳入板块（名称或ID，逗号分隔）<input id="linkage-include-sectors" type="search" placeholder="例如：人工智能，新能源汽车"></label>
+                    <label>集合方式<select id="linkage-operator"><option value="INTERSECTION">交集</option><option value="UNION">并集</option></select></label>
+                    <label>排除板块（可选，名称或ID）<input id="linkage-exclude-sectors" type="search" placeholder="例如：ST板块，THEME:880652"></label>
+                </div>
+                <div class="filter-row linkage-actions">
+                    <label>历史天数<select id="linkage-days"><option value="1">1日</option><option value="2">2日</option><option value="10" selected>10日</option><option value="30">30日</option></select></label>
+                    <button id="linkage-refresh" class="evidence-button filter-button" type="button">刷新结果</button>
+                </div>
+            </div>
+            <div id="linkage-basis" class="basis-note">结果将显示当前发布版本、分析快照和历史基础。</div>
+        </section>
+        <section class="panel">
+            <div class="field-guide"><h2>联动使用说明</h2><p>属性库、关联联动和交叉筛选是三个独立子页面。成员名次来自已物化的同一日快照；筛选只影响展示，不重新排名。关联结果包含主选/备选或明确拒绝原因，不代表概率或买卖建议。</p></div>
+            <div class="panel-heading"><div><h2>联动结果</h2><p id="linkage-result-description">先从属性库选择板块，再进入关联联动或交叉筛选。</p></div></div>
+            <div id="linkage-table" class="table-wrap"></div>
+            <div class="pager"><button id="linkage-prev" type="button">上一页</button><span id="linkage-page-label">第 1 页</span><button id="linkage-next" type="button">下一页</button></div>
+        </section>
+    </section>
     <section id="sectors-page" class="sectors-page" hidden>
         <section class="panel filters-panel">
+            <div class="secondary-nav" aria-label="板块二级页面">
+                <button class="secondary-nav-item active" data-sector-subpage="sectors" type="button">板块周期</button>
+                <button class="secondary-nav-item" data-sector-subpage="mainlines" type="button">主线周期</button>
+            </div>
             <div class="filter-row">
                 <label>板块分类<select id="sector-type">
                     <option value="INDUSTRY" selected>行业板块</option>
                     <option value="THEME">概念板块</option>
-                    <option value="STYLE">通达信风格标签</option>
                 </select></label>
+                <label>板块筛选<input id="sector-query" type="search" placeholder="名称或板块ID"></label>
                 <label>交易日列数<select id="sector-days">
                     <option value="5">5日</option>
                     <option value="10" selected>10日</option>
@@ -158,14 +330,13 @@
         </section>
         <section class="panel">
             <div class="field-guide"><h2>板块周期说明与使用方法</h2>
-                <p>
-                    行业板块的一级大板块和细分行业独立排名；概念板块当前没有可审计的父子编码，保持平级排名；当前本地源没有地区板块数据，因此不再提供地区选项。</p>
+                    <p>
+                    行业板块的一级大板块和细分行业独立排名；概念板块当前没有可审计的父子编码，保持平级排名；当前本地源没有地区板块数据，因此不再提供地区选项。风格标签保留在底层数据中，但不作为本工作台的关注对象。</p>
                 <div class="guide-grid">
                     <div><b>一级大板块</b><span>行业编码的五位父级，例如“有色金属”；只和其他一级行业比较。</span></div>
                     <div><b>细分行业</b><span>行业编码的七位子级，例如“铜”；只和其他细分行业比较，并显示上级板块。</span>
                     </div>
                     <div><b>概念板块</b><span>按主题/概念观察题材强弱；当前没有审计到父子关系，全部保持平级。</span></div>
-                    <div><b>风格标签</b><span>通达信风格标签是平级标签，不与行业、概念混合解释。</span></div>
                     <div><b>RPS20
                         百分位</b><span>同一分类、同一层级内的相对强度百分位，越接近 1 越强；排名数字越小越靠前。</span>
                     </div>
@@ -175,7 +346,7 @@
             </div>
             <div class="panel-heading">
                 <div><h2>板块周期矩阵</h2>
-                    <p>行业板块按一级大板块、细分行业分成两个表格；概念板块与通达信风格标签保持一个平级表格。单元格显示本层级名次与强度百分位，详细成员和代表状态在弹窗查看。</p>
+                    <p>行业板块按一级大板块、细分行业分成两个表格；概念板块单独平级展示。单元格显示本层级名次与强度百分位，详细成员和代表状态在弹窗查看。</p>
                 </div>
             </div>
             <div id="sector-industry-tables">
@@ -196,12 +367,23 @@
             </div>
         </section>
     </section>
+    <section id="data-info-page" class="data-info-page" hidden>
+        <section class="panel">
+            <div class="panel-heading"><div><h2>数据能力与来源</h2><p>只展示当前发布版本实际绑定的合同、快照和能力状态；不可用能力不会用估算值补齐。</p></div></div>
+            <div id="data-info-basis" class="basis-note">正在读取当前发布上下文…</div>
+            <div id="data-info-table" class="table-wrap"></div>
+        </section>
+        <section class="panel">
+            <div class="field-guide"><h2>口径提示</h2><p>OBSERVED 表示封存观测，RECONSTRUCTED 表示按当前绑定输入重新计算。在线热榜只在请求时读取，不进入本地快照、历史结果或研究排序。接口失败时保留明确空态和下一步提示。</p></div>
+        </section>
+    </section>
 </main>
 <div id="modal" class="modal" hidden aria-hidden="true"></div>
-<script src="/v2/api.js"></script>
-<script src="/v2/format.js"></script>
-<script src="/v2/table.js"></script>
-<script src="/v2/modal.js"></script>
-<script src="/v2/app.js"></script>
+<script src="/v2/api.js?v=m15-04"></script>
+<script src="/v2/format.js?v=m15-04"></script>
+<script src="/v2/table.js?v=m15-04"></script>
+<script src="/v2/modal.js?v=m15-04"></script>
+<script src="/v2/router.js?v=m15-04"></script>
+<script src="/v2/app.js?v=m15-04"></script>
 </body>
 </html>

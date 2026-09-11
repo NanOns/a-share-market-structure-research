@@ -1,4 +1,6 @@
 from pathlib import Path
+from decimal import Decimal
+import json
 
 
 ROOT = Path(__file__).parents[2]
@@ -9,7 +11,7 @@ def test_v2_preview_assets_are_modular_and_not_the_legacy_iframe():
     index = (V2 / "index.html").read_text(encoding="utf-8")
     assert "<iframe" not in index
     for asset in ("api.js", "format.js", "table.js", "modal.js", "app.js", "styles.css"):
-        assert f'"/v2/{asset}"' in index or f"'/v2/{asset}'" in index
+        assert f'"/v2/{asset}' in index or f"'/v2/{asset}" in index
 
 
 def test_v2_public_layer_has_versioned_contract_and_safe_evidence_flow():
@@ -29,3 +31,21 @@ def test_legacy_view_route_and_v2_route_are_both_bound():
     assert "u.path in ('/v2','/v2/','/v2/index.html')" in source
     assert "u.path=='/view'" in source
     assert "unquote(u.path[len('/v2/'):])" in source
+
+
+def test_v2_http_serializes_duckdb_decimal_values():
+    source = (ROOT / "src/workbench_service/app.py").read_text(encoding="utf-8")
+    assert "default=_json_default" in source
+    from workbench_service.app import _json_default, _json_safe
+
+    assert json.dumps({"amount": Decimal("1.25")}, default=_json_default) == '{"amount": 1.25}'
+    assert "allow_nan=False" in source
+    assert _json_safe(float("nan")) is None
+
+
+def test_v2_renders_modal_rows_and_compacts_amounts():
+    app = (V2 / "app.js").read_text(encoding="utf-8")
+    format_js = (V2 / "format.js").read_text(encoding="utf-8")
+    assert "t.appendChild(tr)" in app
+    assert "amountOrDash(row.amount_sum)" in app
+    assert "万亿" in format_js and "亿" in format_js and "万" in format_js

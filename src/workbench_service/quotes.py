@@ -6,7 +6,7 @@ from datetime import date, timedelta
 from pathlib import Path
 from typing import Mapping
 
-import pyarrow.parquet as pq
+import pyarrow.dataset as ds
 
 from workbench_service.universe import is_a_share_security_id
 
@@ -50,9 +50,21 @@ def _ordinary_bar(row: Mapping[str, object] | None) -> bool:
     )
 
 
-def _adjustment_changed(current: Mapping[str, object], previous: Mapping[str, object]) -> bool:
+def _adjustment_changed(current: Mapping[str, object], previous: Mapping[str, object]) -> bool | None:
+    """Return change status, or UNKNOWN when the two rows are incomparable."""
     keys = ("qfq_mul", "qfq_add", "adjustment_version", "adjustment_status")
-    return any(current.get(key) != previous.get(key) for key in keys if current.get(key) is not None and previous.get(key) is not None)
+    values: list[tuple[object, object]] = []
+    for key in keys:
+        current_value = current.get(key)
+        previous_value = previous.get(key)
+        if current_value is None or previous_value is None:
+            return None
+        if isinstance(current_value, str) and not current_value.strip():
+            return None
+        if isinstance(previous_value, str) and not previous_value.strip():
+            return None
+        values.append((current_value, previous_value))
+    return any(current_value != previous_value for current_value, previous_value in values)
 
 
 def build_quote(
@@ -79,8 +91,12 @@ def build_quote(
         basis = "REFERENCE_PREV_CLOSE"
         state = "VALID" if ret1 is not None else "INVALID_REFERENCE_PREV_CLOSE"
     elif _ordinary_bar(current) and _ordinary_bar(previous):
-        if _adjustment_changed(current, previous):
+        adjustment_changed = _adjustment_changed(current, previous)
+        if adjustment_changed is True:
             basis = "CORPORATE_ACTION_UNSAFE"
+            state = "UNKNOWN_CORPORATE_ACTION"
+        elif adjustment_changed is None:
+            basis = "ADJUSTMENT_METADATA_UNAVAILABLE"
             state = "UNKNOWN_CORPORATE_ACTION"
         else:
             previous_close = _number(previous.get("raw_close"))
@@ -122,9 +138,14 @@ class QuoteService:
 
     def __init__(self, parquet_path: str | Path):
         self.parquet_path = Path(parquet_path)
+        # Reuse the dataset scanner for repeated request-time quote bindings.
+        # The source is frozen/read-only, so this cache cannot change snapshot
+        # identity; it only avoids rebuilding the parquet fragment index.
+        self._dataset = ds.dataset(self.parquet_path, format="parquet") if self.parquet_path.is_file() else None
 
     def load(self, *, trade_date: date, publication_id: str, source_identity_sha256: str | None = None,
-             expected_file_sha256: str | None = None, source_path: str = SOURCE_PATH) -> dict[str, dict]:
+             expected_file_sha256: str | None = None, source_path: str = SOURCE_PATH,
+             security_ids: set[str] | None = None) -> dict[str, dict]:
         if not self.parquet_path.is_file():
             return {}
         if expected_file_sha256:
@@ -142,11 +163,20 @@ class QuoteService:
             "security_type", "universe_status",
             "is_master_session",
         ]
-        rows = pq.read_table(
-            self.parquet_path,
-            columns=columns,
-            filters=[("date", ">=", lookback_start), ("date", "<=", trade_date)],
-        ).to_pylist()
+        filters: list[tuple[str, str, object]] = [
+            ("date", ">=", lookback_start),
+            ("date", "<=", trade_date),
+        ]
+        if security_ids:
+            filters.append(("security_id", "in", sorted(str(value) for value in security_ids)))
+        if self._dataset is None:
+            return {}
+        filter_expr = (ds.field("date") >= lookback_start) & (ds.field("date") <= trade_date)
+        if security_ids:
+            filter_expr = filter_expr & ds.field("security_id").isin(
+                sorted(str(value) for value in security_ids)
+            )
+        rows = self._dataset.to_table(columns=columns, filter=filter_expr).to_pylist()
         rows = [row for row in rows if is_a_share_security_id(row.get("security_id"))]
         sessions = sorted({row["date"] for row in rows if row.get("date") and _truth(row.get("is_master_session"))})
         previous_session = max((item for item in sessions if item < trade_date), default=None)

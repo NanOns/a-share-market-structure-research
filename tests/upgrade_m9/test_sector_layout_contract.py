@@ -13,6 +13,6 @@ def test_sector_page_uses_separate_industry_tables_and_flat_table():
     assert 'id="sector-root-table"' in index
     assert 'id="sector-leaf-table"' in index
     assert 'id="sector-flat-table"' in index
-    assert "sectorRequest('ROOT')" in app
-    assert "sectorRequest('LEAF')" in app
-    assert "sectorRequest('FLAT')" in app
+    assert "sectorRequest('ROOT'," in app
+    assert "sectorRequest('LEAF'," in app
+    assert "sectorRequest('FLAT'," in app

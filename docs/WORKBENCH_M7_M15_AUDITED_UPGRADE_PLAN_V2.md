@@ -195,7 +195,7 @@ RS/RPS按window长表或独立明确列存储均可，DDL签发时固定，不�
 7. 旧发布无分析绑定时现有功能仍可看；新历史组件显示“该发布未生成历史分析”。补算以新修订绑定，不后台修改旧发布。
    旧发布如没有可核实的冻结原始报价，也不能将今天全局文件的数据补上后称“旧发布原值”；该字段显示未封存，或在新修订回算视图补充。
 8. 源历史修订使被影响日期及其窗口下游失效；递归状态如连板、代表股状态需重算到结果稳定或截止日。算法配置变化同样进入身份。
-9. 在线批次独立于本地快照，刷新热榜不需要重新发布本地全部历史；禁止联网写入进程与正式DB争夺owner。
+9. 在线增强不改写本地快照；热榜采用请求时直取并在内存中展示，刷新不产生热榜快照、不写正式DB。其他确需历史留存的在线能力仍须独立owner和独立批次。
 
 ### 6.5 schema与备份
 
@@ -384,11 +384,11 @@ API：/api/market/cycle、/day-detail、/api/limit-ladder、/promotion-history�
 
 ### 14.1 来源准入与适配
 
-只测A级正式开放/明确许可免费能力、B级公开网页能力；网页公开不自动等于许可。记录来源官方说明、入口、字段、时间语义、请求预算和实际样本。B级条款不明保持待验证；不使用龙字诀私有会员服务及凭据，不做签名/验证码绕过。
+热榜改为展示型在线能力：打开或主动刷新时分别直取东方财富和同花顺当前榜单；响应只存在于当前请求内，不保存原文、行、批次或历史热榜。请求仍须受项目规则、超时、响应长度和有限重试预算约束。
 
-适配器能力声明supports_history、supports_quote、supports_rank、supports_reason；fetch_latest与fetch_history分开。不支持历史的端点不得接受日期却返回当天数据冒充历史。
+热榜适配器只声明supports_rank，固定LATEST语义，不接受as_of/batch_id，不计算本地跨刷新rank_delta。平台返回的rank_change只按来源原字段展示。
 
-观察10个交易日，每日最少一个目标场景样本；首版可用性目标成功≥95%、必要字段≥99%，代码误映射=0，日期错误不入库。样本报告保存分母；遇429尊重Retry-After；默认低频5–15分钟缓存并服从来源更严限制。没有稳定来源时记UNAVAILABLE，不用“页面可降级”算热榜交付完成。
+响应在内存中完成解码、字段校验、source_code到本地security_id的精确映射，并从本地证券主数据补充security_name及已有基础字段；不能模糊拼接或重排平台原始名次。异常返回UNAVAILABLE/DEGRADED，不阻塞本地分析主流程。
 
 ### 14.2 数据库
 
@@ -401,18 +401,14 @@ API：/api/market/cycle、/day-detail、/api/limit-ladder、/promotion-history�
 | online_evidence | evidence_id；source、security_id、event_time、published_at、first_seen_at、text_hash、raw_ref | 原因/资讯时间与内容 |
 | online_security_map | source、source_code、valid_from；security_id、exchange、mapping_version | 不靠去掉前缀模糊拼接 |
 
-热榜“同时上榜”必须使用时间差≤配置阈值（首版15分钟）的有效批次，否则提示不可比较。原因多源并列；重复内容引用同一正文，来源分别保留。
-
-排名变化同时返回comparison_batch_id与比较口径（上次抓取/前一交易日同时间段）；不存在可比批次就显示暂无，不能把平台提供的另一种名次差混用。过滤非A股仅影响展示行，不重编原平台排名。一次列表和分页请求固定batch_id，翻页期间不能悄悄换批。
-
-历史观测页要求published_at与first_seen_at不晚于as_of；后补原因只可在“事后补充”单独展示。时间未知则不参加严格历史视图。实时页允许展示最新批次，但清楚标本地快照日期与在线截至时间。
+热榜不做跨平台同时上榜历史比较，也不合并两个平台的名次。co_listed只表示一次请求内分别展示两个来源当前结果。分页固定本次请求内存结果；下一次刷新才重新请求，上一结果不作为项目数据资产保留。
 
 ### 14.3 接口、UI和测试
 
-后端暴露/data-sources/status、/hot-rankings、/external-evidence、/quotes/latest（若准入）；在线接口返回batch_id和source_as_of，不伪装analysis_snapshot_id本地内容。HTTP客户端有连接/总超时、最大响应长度、重试总预算。
+后端暴露/data-sources/status、/hot-rankings、/external-evidence、/quotes/latest（若准入）；热榜只返回source_as_of、observed_at和本次结果，不返回batch_id、comparison_batch_id或本地热榜快照身份。HTTP客户端有连接/总超时、最大响应长度和有限重试预算。
 
 平台热榜在市场周期二级页；个股在线报价以独立小区块补充；“生成今日数据”不等待所有在线来源。前端渲染外部文字用textContent，链接协议白名单，不执行正文HTML。
-验收：超时/429/空表/乱码/字段漂移/代码歧义/历史伪返回；重复抓取保留观测；相同本地snapshot在在线更新前后本地结果哈希不变；个人凭据不入日志。
+验收：超时/429/空表/乱码/字段漂移/代码歧义可见；刷新不生成本地热榜快照、不修改本地snapshot；名称补齐准确；个人凭据不入日志。
 
 ## 15. 页面架构与统一API
 

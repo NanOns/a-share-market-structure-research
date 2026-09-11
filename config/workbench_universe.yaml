@@ -9,3 +9,11 @@ workbench_universe:
   normal_security_type: "A_STOCK"
   excluded_security_types: ["B_STOCK", "NEW_THIRD_BOARD", "INDEX", "FUND_OR_ETF", "CONVERTIBLE_BOND"]
   unknown_status_is_not_delisted: true
+  display:
+    # 沪深北 A 股全部进入股票展示范围；统计范围与展示范围保持同口径。
+    show_star_stocks: true
+    excluded_board_prefixes: []
+  statistics:
+    # Market/sector aggregates与股票展示均包含科创板和北交所。
+    include_star_stocks: true
+    include_bj_stocks: true

@@ -14,7 +14,7 @@
 
 1. 当日行情存在受信任的 `reference_prev_close`（或等价已绑定字段）时，使用它，`quote_ret1_basis=REFERENCE_PREV_CLOSE`，状态为 `VALID`。
 2. 没有参考前收时，仅当当前日和前一市场交易日都有真实、可交易、非合成的原始 K 线，且复权因子未发生变化，才使用原始收盘比，标记 `RAW_CLOSE_PREVIOUS_TRADING_DAY` 和 `VALID_DEGRADED`。
-3. 复权因子变化时返回 `UNKNOWN_CORPORATE_ACTION`，不生成涨幅；没有真实前收时返回 `MISSING_PREVIOUS_CLOSE`，不以最后已知价冒充当日涨幅。
+3. 复权因子变化时返回 `UNKNOWN_CORPORATE_ACTION`，不生成涨幅；复权因子字段缺失或两日无法比较时，`quote_ret1_basis=ADJUSTMENT_METADATA_UNAVAILABLE`、状态仍为 `UNKNOWN_CORPORATE_ACTION`，同样不生成涨幅；没有真实前收时返回 `MISSING_PREVIOUS_CLOSE`，不以最后已知价冒充当日涨幅。
 
 上一市场交易日由数据中的实际市场日期序列确定，不由“上一条发布头”推断；停牌证券缺少当日真实 K 线时不生成有效当日涨幅。
 

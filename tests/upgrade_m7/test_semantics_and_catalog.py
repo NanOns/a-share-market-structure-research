@@ -38,7 +38,7 @@ def test_publication_and_identity_analysis_extensions_are_opt_in():
     identity = api.identity(extended["items"][0]["publication_id"], include_analysis=True)
     assert identity["api_contract"] == API_CONTRACT
     assert {"contracts", "capabilities", "data_quality", "analysis_snapshot_id", "cutoff_date"} <= identity.keys()
-    assert identity["capabilities"]["history_analysis"] == "NOT_BUILT"
+    assert identity["capabilities"]["history_analysis"] == "AVAILABLE"
 
 
 def test_v2_preview_requests_analysis_capabilities():

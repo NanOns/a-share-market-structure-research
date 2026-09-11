@@ -11,7 +11,7 @@ from typing import Any, Iterable, Mapping
 import pandas as pd
 
 
-CONTRACT_VERSION = "REFERENCE_CAPABILITY_GATE_V1_0"
+CONTRACT_VERSION = "REFERENCE_CAPABILITY_GATE_V1_1"
 CAPABILITY_STATES = ("EXACT", "APPROXIMATE", "UNKNOWN")
 
 
@@ -47,11 +47,13 @@ def _state(value: Any, *, exact: bool = False, approximate: bool = False) -> str
 
 def assess_reference_row(reference: Mapping[str, Any], limit_result: Mapping[str, Any] | None = None) -> dict[str, Any]:
     """Classify one date/security row; unverified data cannot become AVAILABLE."""
-    quote = _state(reference.get("quote_capability"), exact=reference.get("quote_capability") == "EXACT", approximate=str(reference.get("reference_basis") or "").upper() in {"APPROXIMATE", "RAW_PREV_CLOSE_APPROXIMATE"})
+    quote = _state(reference.get("quote_capability"), exact=reference.get("quote_capability") == "EXACT" and str(reference.get("reference_status") or "").upper() == "KNOWN", approximate=str(reference.get("reference_basis") or "").upper() in {"APPROXIMATE", "RAW_PREV_CLOSE_APPROXIMATE"})
+    ex_rights_unknown = reference.get("ex_rights_reference_unknown") is not False
+    limit_quote = "UNKNOWN" if ex_rights_unknown else quote
     shares = _state(reference.get("shares_capability"), exact=reference.get("shares_capability") == "EXACT", approximate=str(reference.get("shares_basis") or "").upper() in {"APPROXIMATE", "ESTIMATED"})
     limit_result = limit_result or {}
     rule_verified = _bool(limit_result.get("rule_verified"))
-    if limit_result and not rule_verified:
+    if limit_result and (not rule_verified or limit_quote != "EXACT"):
         limit = "UNKNOWN"
     elif limit_result and str(limit_result.get("limit_state") or "UNKNOWN") in {"LIMIT_UP", "LIMIT_DOWN", "NOT_LIMIT", "SUSPENDED"}:
         limit = "EXACT"
@@ -66,6 +68,10 @@ def assess_reference_row(reference: Mapping[str, Any], limit_result: Mapping[str
         quality.append("SHARES_NOT_EXACT")
     if limit_result and not rule_verified:
         quality.append("RULE_NOT_VERIFIED")
+    if limit_result and limit_quote != "EXACT":
+        quality.append("QUOTE_NOT_EXACT_FOR_LIMIT")
+    if ex_rights_unknown:
+        quality.append("EX_RIGHTS_REFERENCE_UNKNOWN")
     available = reference_state == "EXACT" and limit == "EXACT"
     return {
         "security_id": str(reference.get("security_id")),
@@ -73,6 +79,7 @@ def assess_reference_row(reference: Mapping[str, Any], limit_result: Mapping[str
         "reference_capability": reference_state,
         "limit_capability": limit,
         "turnover_capability": turnover,
+        "limit_available": limit == "EXACT",
         "available": available,
         "rule_verified": rule_verified,
         "quality_codes": sorted(set(quality)),

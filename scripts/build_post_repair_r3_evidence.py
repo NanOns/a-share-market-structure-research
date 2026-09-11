@@ -24,6 +24,58 @@ def load(relative: str) -> dict:
     return json.loads((ROOT / relative).read_text(encoding="utf-8"))
 
 
+def resolve_v1_baseline(pointer: dict) -> tuple[dict, str, str, str]:
+    """Resolve the historical V1 release bound to the R3 cutoff receipts.
+
+    The live CURRENT_RELEASE pointer may legitimately advance after a shadow
+    cutoff.  R3 evidence must remain bound to the cutoff release instead of
+    silently switching to that newer pointer.
+    """
+    r3_00 = load("reports/shadow/v2/20260904/R3_00_RECEIPT.json")
+    cutoff = str(r3_00.get("cutoff", "20260904"))
+    baseline_run = str(r3_00.get("v1_baseline_run_id", ""))
+    baseline_identity = str(r3_00.get("v1_computation_identity_sha256", ""))
+    if not baseline_run or not baseline_identity:
+        raise RuntimeError("R3_V1_BASELINE_BINDING_MISSING")
+
+    release_path = ROOT / "reports" / "releases" / cutoff / baseline_run / "PRODUCTION_RECEIPT.json"
+    if release_path.is_file():
+        release = json.loads(release_path.read_text(encoding="utf-8"))
+        release_identity = release.get("computation_identity", {}).get("sha256")
+        if release.get("run_id") == baseline_run and release_identity == baseline_identity:
+            return release, cutoff, baseline_run, baseline_identity
+
+    latest = pointer.get("latest_release", {})
+    if latest.get("run_id") == baseline_run and latest.get("computation_identity", {}).get("sha256") == baseline_identity:
+        return latest, cutoff, baseline_run, baseline_identity
+    raise RuntimeError("R3_V1_BASELINE_RELEASE_NOT_FOUND_OR_MISMATCHED:" + baseline_run)
+
+
+def resolve_forward_receipt(cutoff: str) -> Path:
+    """Select the latest complete forward receipt for the cutoff.
+
+    Invalid or preserved revisions are intentionally skipped; their existence
+    must not make the post-repair evidence point at a missing or tampered file.
+    """
+    report_root = ROOT / "reports" / "forward" / cutoff
+    revisions = sorted(
+        report_root.glob("revision_*/DAILY_FORWARD_CAPTURE_RECEIPT.json"),
+        key=lambda path: int(path.parent.name.split("_", 1)[1]),
+        reverse=True,
+    )
+    for receipt_path in revisions:
+        manifest_path = receipt_path.parent / "manifest.json"
+        if not manifest_path.is_file():
+            continue
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        if manifest.get("files", {}).get(receipt_path.name) != sha256(receipt_path):
+            continue
+        receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+        if receipt.get("final_status") == "PASS":
+            return receipt_path
+    raise RuntimeError("FORWARD_RECEIPT_NOT_FOUND_OR_INVALID:" + cutoff)
+
+
 def atomic_json(path: Path, value: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     body = (json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True, default=str) + "\n").encode("utf-8")
@@ -67,12 +119,7 @@ def artifact_evidence(relative: str, class_column: str | None = None) -> dict:
 def main() -> int:
     pointer_path = ROOT / "reports/current/CURRENT_RELEASE.json"
     pointer = json.loads(pointer_path.read_text(encoding="utf-8"))
-    release = pointer["latest_release"]
-    cutoff = str(release["date"])
-    if cutoff != "20260904":
-        raise RuntimeError("R3_EVIDENCE_CUTOFF_NOT_SUPPORTED:" + cutoff)
-    baseline_run = release["run_id"]
-    baseline_identity = release["computation_identity"]["sha256"]
+    release, cutoff, baseline_run, baseline_identity = resolve_v1_baseline(pointer)
 
     test = subprocess.run(
         [sys.executable, "-m", "pytest", "-q"],
@@ -212,7 +259,7 @@ def main() -> int:
     forward_result = json.loads(forward_guard.stdout)
     if forward_guard.returncode == 0 or forward_result.get("stage") != "MODEL_IDENTITY_PREFLIGHT":
         raise RuntimeError("FORWARD_PRE_EXTERNAL_REVIEW_GUARD_FAILED")
-    forward_receipt = ROOT / "reports/forward/20260904/revision_2/DAILY_FORWARD_CAPTURE_RECEIPT.json"
+    forward_receipt = resolve_forward_receipt(cutoff)
     evidence_files = [path for path, _ in receipts] + sorted(integrated.glob("R3_*.json")) + [forward_receipt]
     evidence_index = {
         "version": "post-repair-reaudit-evidence-v1.0",

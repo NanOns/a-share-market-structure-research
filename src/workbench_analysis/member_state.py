@@ -11,7 +11,7 @@ import pandas as pd
 from .immutable import immutable_slice_state
 
 
-CONTRACT_VERSION = "SECTOR_MEMBER_STATE_V1_0"
+CONTRACT_VERSION = "SECTOR_MEMBER_STATE_V1_2_EXCLUDE_DIAGNOSTIC"
 HISTORY_BASIS = "RECONSTRUCTED"
 
 
@@ -56,11 +56,28 @@ def _json(value: Any) -> str:
 def _structure_state(frame: pd.DataFrame) -> dict[tuple[str, Any], bool | None]:
     if frame is None or frame.empty:
         return {}
-    source = _normalise(frame, ("security_id", "trade_date", "hit"), "STRUCTURE")
+    source = _normalise(frame, ("security_id", "trade_date", "hit", "research_band"), "STRUCTURE")
     result = {}
     for key, group in source.groupby(["security_id", "trade_date"], sort=False):
-        values = [_tri(value) for value in group["hit"]]
-        result[key] = True if True in values else None if None in values else False
+        unknown = False
+        qualified_hit = False
+        for _, row in group.iterrows():
+            band = row["research_band"]
+            band = str(band).strip().upper() if band is not None and not pd.isna(band) else None
+            hit = _tri(row["hit"])
+            if band in {"CORE_RESEARCH", "SUPPORTED_RESEARCH"}:
+                if hit is True:
+                    qualified_hit = True
+                    break
+                if hit is None:
+                    unknown = True
+            elif band == "DIAGNOSTIC_ONLY":
+                # A diagnostic row is a known non-qualification, even if its
+                # underlying shadow queue happened to report hit=True.
+                continue
+            else:
+                unknown = True
+        result[key] = True if qualified_hit else None if unknown else False
     return result
 
 
@@ -108,9 +125,10 @@ def build_sector_member_state_daily(
                 return pd.to_numeric(joined[name], errors="coerce")
         return pd.Series(np.nan, index=joined.index, dtype="float64")
     ret20 = numeric("ret20", "RET20")
-    rs20 = numeric("rs20", "stock_rs20")
     rps20 = numeric("rps20", "rps20_pct")
-    rank_metric = rs20.where(rs20.notna(), ret20)
+    # M9 defines the within-sector member rank by RET20.  RS20 is a separate
+    # factor and must not silently replace or backfill that ranking input.
+    rank_metric = ret20
     joined["_rank_metric"] = rank_metric
     joined["_rps20"] = rps20
     joined["_ret20"] = ret20
@@ -122,13 +140,13 @@ def build_sector_member_state_daily(
     rows: list[dict[str, Any]] = []
     for _, row in joined.iterrows():
         pair = (row.security_id, row.trade_date)
-        data_valid = _finite(row._ret20) or _finite(row._rank_metric)
+        data_valid = _finite(row._ret20)
         market_rps = _tri(float(row._rps20) >= .80) if _finite(row._rps20) else None
         sector_percentile = _tri(float(row._member_percentile) >= .80) if _finite(row._member_percentile) else None
         structure_hit = structure.get(pair)
         high_hit = high.get(pair)
         structure_or_high = True if structure_hit is True or high_hit is True else None if structure_hit is None or high_hit is None else False
-        predicates = {"data_valid": data_valid, "market_rps20_ge_080": market_rps, "sector_member_percentile_ge_080": sector_percentile, "structure_or_high": structure_or_high}
+        predicates = {"data_valid": data_valid, "market_rps20_ge_080": market_rps, "sector_member_percentile_ge_080": sector_percentile, "qualified_structure": structure_hit, "structure_qualification_basis": "CORE_RESEARCH_OR_SUPPORTED_RESEARCH_ONLY", "structure_or_high": structure_or_high}
         known = [value for value in predicates.values() if value is not None]
         strong = True if len(known) == len(predicates) and all(known) else False if len(known) == len(predicates) else None
         rows.append({"sector_id": str(row.sector_id), "security_id": str(row.security_id), "trade_date": row.trade_date, "member_present": True, "member_rank": float(row._rank) if _finite(row._rank) else None, "rank_valid_count": int(row._rank_valid_count), "member_percentile": float(row._member_percentile) if _finite(row._member_percentile) else None, "strong_state": strong, "strong_predicates": _json(predicates), "structure_hit": structure_hit, "high_hit": high_hit, "member_change_kind": None, "strength_change_kind": None, "previous_rank": None, "rank_delta": None, "queue_refs": _json([]), "high_refs": _json([]), "history_basis": history_basis, "contract_id": CONTRACT_VERSION})

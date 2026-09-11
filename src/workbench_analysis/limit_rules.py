@@ -9,12 +9,13 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import date
 from decimal import Decimal, InvalidOperation, ROUND_DOWN, ROUND_HALF_EVEN, ROUND_HALF_UP, ROUND_UP
+import json
 from typing import Any, Iterable, Mapping
 
 import pandas as pd
 
 
-CONTRACT_VERSION = "LIMIT_RULES_V1_0"
+CONTRACT_VERSION = "LIMIT_RULES_V1_1"
 ROUNDING = {"DOWN": ROUND_DOWN, "UP": ROUND_UP, "HALF_UP": ROUND_HALF_UP, "HALF_EVEN": ROUND_HALF_EVEN}
 
 
@@ -68,6 +69,11 @@ class LimitRuleVersion:
     rounding_mode: str
     special_period_policy: Mapping[str, Any]
     source_ref: str
+    rule_verified: bool = False
+    source_sha256: str = ""
+    audit_status: str = "PENDING_REVIEW"
+    audit_reason: str = ""
+    audited_at: Any = None
 
     @classmethod
     def from_mapping(cls, value: Mapping[str, Any]) -> "LimitRuleVersion":
@@ -89,9 +95,21 @@ class LimitRuleVersion:
         if rounding_mode not in ROUNDING:
             raise LimitRuleError("ROUNDING_MODE_UNSUPPORTED")
         policy = value.get("special_period_policy") or {}
+        if isinstance(policy, str):
+            try:
+                policy = json.loads(policy)
+            except (TypeError, ValueError, json.JSONDecodeError) as exc:
+                raise LimitRuleError("SPECIAL_PERIOD_POLICY_INVALID") from exc
         if not isinstance(policy, Mapping):
             raise LimitRuleError("SPECIAL_PERIOD_POLICY_INVALID")
-        return cls(rule_id, str(value.get("exchange") or ""), str(value.get("board") or ""), str(value.get("risk_status") or ""), valid_from, valid_to, ratio, tick, rounding_mode, dict(policy), source_ref)
+        rule_verified = _flag(value.get("rule_verified"), "RULE_VERIFIED")
+        source_sha256 = str(value.get("source_sha256") or "")
+        if rule_verified and not source_sha256:
+            raise LimitRuleError("VERIFIED_RULE_SOURCE_HASH_REQUIRED")
+        audit_status = str(value.get("audit_status") or ("VERIFIED" if rule_verified else "PENDING_REVIEW")).upper()
+        if audit_status not in {"VERIFIED", "PENDING_REVIEW", "REJECTED"}:
+            raise LimitRuleError("AUDIT_STATUS_INVALID")
+        return cls(rule_id, str(value.get("exchange") or ""), str(value.get("board") or ""), str(value.get("risk_status") or ""), valid_from, valid_to, ratio, tick, rounding_mode, dict(policy), source_ref, rule_verified, source_sha256, audit_status, str(value.get("audit_reason") or ""), value.get("audited_at"))
 
 
 def validate_rule_versions(rules: Iterable[LimitRuleVersion | Mapping[str, Any]]) -> tuple[LimitRuleVersion, ...]:
@@ -124,6 +142,12 @@ def compute_limit_prices(previous_close: Any, rule: LimitRuleVersion) -> tuple[D
         raise LimitRuleError("LIMIT_RULE_NOT_APPLICABLE")
     up = round_to_tick(previous * (Decimal("1") + rule.limit_ratio), rule.tick, rule.rounding_mode)
     down = round_to_tick(previous * (Decimal("1") - rule.limit_ratio), rule.tick, rule.rounding_mode)
+    # The exchange rules require at least one minimum-price-unit movement when
+    # the rounded boundary would collapse onto the previous close.
+    if abs(up - previous) < rule.tick:
+        up = previous + rule.tick
+    if abs(previous - down) < rule.tick:
+        down = previous - rule.tick
     if down <= 0 or up <= 0 or down >= up:
         raise LimitRuleError("LIMIT_PRICE_RANGE_INVALID")
     return up, down
@@ -144,7 +168,7 @@ class LimitStateService:
 
     def evaluate(self, row: Mapping[str, Any]) -> dict[str, Any]:
         trade_date = _day(row.get("trade_date"), "trade_date")
-        base = {"contract_id": CONTRACT_VERSION, "trade_date": trade_date, "security_id": row.get("security_id"), "reference_basis": "UNKNOWN", "rule_id": None, "limit_up_price": None, "limit_down_price": None, "limit_state": "UNKNOWN", "streak_known": False, "reason": None}
+        base = {"contract_id": CONTRACT_VERSION, "trade_date": trade_date, "security_id": row.get("security_id"), "reference_basis": "UNKNOWN", "rule_id": None, "rule_verified": False, "limit_up_price": None, "limit_down_price": None, "limit_state": "UNKNOWN", "streak_known": False, "reason": None}
         try:
             suspended = _flag(row.get("suspended"), "SUSPENDED")
         except LimitRuleError as exc:
@@ -153,7 +177,7 @@ class LimitStateService:
         if suspended:
             base.update(reference_basis="SUSPENDED", limit_state="SUSPENDED", streak_known=True, reason="SUSPENDED")
             return base
-        if str(row.get("reference_status") or "KNOWN").upper() != "KNOWN":
+        if str(row.get("reference_status") or "UNKNOWN").upper() != "KNOWN":
             base["reason"] = "REFERENCE_PRICE_UNKNOWN"
             return base
         try:
@@ -165,11 +189,32 @@ class LimitStateService:
             base["reason"] = "RULE_NOT_FOUND"
             return base
         base["rule_id"] = rule.rule_id
+        base["rule_verified"] = rule.rule_verified
+        if not rule.rule_verified or rule.audit_status != "VERIFIED":
+            base.update(reference_basis="RULE_VERSIONED", reason="RULE_NOT_VERIFIED")
+            return base
+        listing_phase = str(row.get("listing_phase") or "").strip().upper()
+        if not listing_phase:
+            listing_phase = "UNKNOWN"
+        no_limit_phases = {
+            str(value).strip().upper()
+            for value in rule.special_period_policy.get("no_limit_listing_phases", ())
+        }
+        if listing_phase and listing_phase in no_limit_phases:
+            base.update(reference_basis="RULE_VERSIONED", reason="NO_PRICE_LIMIT_SPECIAL_PERIOD")
+            return base
+        if listing_phase in {"UNKNOWN", "UNAVAILABLE"}:
+            base.update(reference_basis="RULE_VERSIONED", reason="LISTING_PHASE_UNKNOWN")
+            return base
         if rule.special_period_policy.get("limit_state") in {"NO_LIMIT", "UNKNOWN"} or rule.limit_ratio is None:
             base.update(reference_basis="RULE_VERSIONED", reason="NO_APPLICABLE_LIMIT_RULE")
             return base
         try:
-            ex_rights_unknown = _flag(row.get("ex_rights_reference_unknown"), "EX_RIGHTS_REFERENCE_UNKNOWN")
+            ex_rights_value = row.get("ex_rights_reference_unknown")
+            if ex_rights_value is None or str(ex_rights_value).strip().upper() in {"", "UNKNOWN", "UNAVAILABLE"}:
+                ex_rights_unknown = True
+            else:
+                ex_rights_unknown = _flag(ex_rights_value, "EX_RIGHTS_REFERENCE_UNKNOWN")
         except LimitRuleError as exc:
             base["reason"] = str(exc)
             return base
@@ -181,6 +226,15 @@ class LimitStateService:
             close = _decimal(row.get("close"), "close")
         except LimitRuleError as exc:
             base.update(reference_basis="RULE_VERSIONED", reason=str(exc))
+            return base
+        if close <= 0:
+            base.update(reference_basis="RULE_VERSIONED", reason="CLOSE_NONPOSITIVE")
+            return base
+        if round_to_tick(close, rule.tick, "DOWN") != close:
+            base.update(reference_basis="RULE_VERSIONED", reason="CLOSE_TICK_INVALID")
+            return base
+        if close < down or close > up:
+            base.update(reference_basis="RULE_VERSIONED", reason="CLOSE_OUTSIDE_LIMIT_RANGE")
             return base
         state = "LIMIT_UP" if close == up else "LIMIT_DOWN" if close == down else "NOT_LIMIT"
         base.update(reference_basis="RULE_VERSIONED", limit_up_price=up, limit_down_price=down, limit_state=state, streak_known=True)

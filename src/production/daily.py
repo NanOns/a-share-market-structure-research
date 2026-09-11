@@ -396,8 +396,15 @@ def _run_daily_unlocked(root,tdx,requested='latest',dry_run=False,verify_only=Fa
             binding=published_release_binding(pointer_value,target,run_id)
             result={'status':'VERIFIED_NO_NEW_DATA','run_id':run_id,**binding,'input_snapshot_manifest_sha256':old_receipt.get('input_snapshot_manifest_sha256'),**resolution,**fingerprint,'changed_source_components':[],'verification':verification,'source_identity':src_id,'computation_identity':binding['published_computation_identity'],'current_computation_identity':comp_id,'render_identity':rend_id};(log_dir/f'{cutoff}_{run_id}.log').write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf8');return EXIT_SUCCESS,result
         if verify_only:return EXIT_NOT_READY,{'status':'INPUT_NOT_READY','error':'No existing publication to verify',**resolution}
+        # A dry run is a readiness decision, not merely a filesystem probe.
+        # Keep it aligned with the real publication gate so callers cannot
+        # mistake a partial update or a small future outlier for a runnable
+        # daily build.
+        if resolution.get('cutoff_status') in ('PARTIAL_UPDATE','INVALID_FUTURE_OUTLIER','INPUT_NOT_READY'):
+            if dry_run:
+                return EXIT_NOT_READY,{'status':'DRY_RUN_BLOCKED','run_id':run_id,'error':resolution['cutoff_status'],**resolution,'readiness_file_count':len(required)}
+            raise RuntimeError(resolution['cutoff_status'])
         if dry_run:return EXIT_SUCCESS,{'status':'DRY_RUN_READY','run_id':run_id,**resolution,'readiness_file_count':len(required)}
-        if resolution.get('cutoff_status') in ('PARTIAL_UPDATE','INVALID_FUTURE_OUTLIER','INPUT_NOT_READY'):raise RuntimeError(resolution['cutoff_status'])
         failure_stage='PHASES';source_before=tdx_hashes(tdx)
         if decision!='SAME_CUTOFF_RENDER_REVISION':
             old_env=os.environ.get('TDX_RUN_CALENDAR');os.environ['TDX_RUN_CALENDAR']=str(calendar_path)

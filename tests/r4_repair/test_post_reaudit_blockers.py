@@ -55,6 +55,25 @@ def test_integrated_seal_accepts_unmodified_bound_artifacts(tmp_path, monkeypatc
     assert result["identity"] == "cb3bdd356f01dfaad5990a393a44d10149cf81f9805c533219124d773aad8c94"
 
 
+def test_integrated_seal_binds_cutoff_release_when_current_pointer_is_newer(tmp_path):
+    baseline_run = "historical-r3-run"
+    baseline_identity = "historical-r3-identity"
+    release = tmp_path / "reports/releases/20260904" / baseline_run / "PRODUCTION_RECEIPT.json"
+    release.parent.mkdir(parents=True)
+    release.write_text(
+        json.dumps({"run_id": baseline_run, "computation_identity": {"sha256": baseline_identity}}),
+        encoding="utf8",
+    )
+    receipts = {"R3-00": {"v1_baseline_run_id": baseline_run, "v1_computation_identity_sha256": baseline_identity}}
+    current = {"latest_release": {"run_id": "newer-release", "computation_identity": {"sha256": "newer-identity"}}}
+
+    result = run_r3_integrated_seal.resolve_v1_baseline(tmp_path, receipts, current)
+
+    assert result["run_id"] == baseline_run
+    assert result["identity"] == baseline_identity
+    assert result["source"].endswith("reports/releases/20260904/historical-r3-run/PRODUCTION_RECEIPT.json")
+
+
 def test_forward_cli_block_does_not_overwrite_committed_revision(tmp_path, monkeypatch):
     row = {
         "security_id": "SH.600000", "candidate_state": "NEW",

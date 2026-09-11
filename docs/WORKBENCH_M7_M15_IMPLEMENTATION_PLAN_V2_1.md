@@ -1,7 +1,9 @@
 # 工作台 M7–M15 完整实施方案 v2.1
 
-版本：workbench-upgrade-plan-v2.1；修订日期：2026-09-09。
-状态：可据此启动分阶段开发；运行验收尚未执行。本文完整替代v1.1及v2.0，不需要同时阅读旧方案才能实施。
+版本：workbench-upgrade-plan-v2.1；金额专项修订：2026-09-10（设计与实现已完成，待独立验收记录）。
+
+> M10 金额 A 最新实施口径见本文第27章及 [金额 A 设计裁定](M10_AMOUNT_A_DESIGN_DECISION_V1.md)。正式实现已使用 `SECTOR_AMOUNT_COMMON_AGG_V1` 与 `MAINLINE_STATE_V2_4_PREVIEW`；旧 v2.3-preview 中的成员金额比中位数保留为诊断代理，不得继续作为新正式金额 A；冲突条款以第27章为准。
+状态：金额 A C–F 实施已完成，独立验收结果见第27.7节。本文完整替代v1.1及v2.0，不需要同时阅读旧方案才能实施。
 配套：[后续发展计划](WORKBENCH_POST_M15_ROADMAP.md)。
 旧稿只用于历史审计；本文已经完整保留v2.0的范围、23项审计发现、公式、依赖、发布/存储设计和24个验收场景，并补齐API、字段合同、迁移批次、开发任务及页面交互。
 
@@ -197,7 +199,7 @@ RS/RPS按window长表或独立明确列存储均可，DDL签发时固定，不�
 7. 旧发布无分析绑定时现有功能仍可看；新历史组件显示“该发布未生成历史分析”。补算以新修订绑定，不后台修改旧发布。
    旧发布如没有可核实的冻结原始报价，也不能将今天全局文件的数据补上后称“旧发布原值”；该字段显示未封存，或在新修订回算视图补充。
 8. 源历史修订使被影响日期及其窗口下游失效；递归状态如连板、代表股状态需重算到结果稳定或截止日。算法配置变化同样进入身份。
-9. 在线批次独立于本地快照，刷新热榜不需要重新发布本地全部历史；禁止联网写入进程与正式DB争夺owner。
+9. 在线增强不改写本地快照；热榜采用请求时直取并在内存中展示，刷新不产生热榜快照、不写正式DB。其他确需历史留存的在线能力仍须独立owner和独立批次。
 
 ### 6.5 schema与备份
 
@@ -313,9 +315,9 @@ API：/api/sectors/cycle、/{id}/timeline、/{id}/members/history、/{id}/leader
 
 ## 10. M10：主线状态
 
-分类实现合同固定为MAINLINE_STATE_V2_1_PREVIEW，以下阈值可以直接编码并做测试，但不代表已验证的有效策略。先按本版配置执行对照和边界验收；改阈值必须产生新版本。调参不能选择未来涨幅最大的结果当理由。
+分类实现合同当前为MAINLINE_STATE_V2_4_PREVIEW，以下阈值可以直接编码并做测试，但不代表已验证的有效策略。主线采用3日观察、5日快速状态、10日稳定状态、20日完整证据的分层门槛；改阈值必须产生新版本。调参不能选择未来涨幅最大的结果当理由。
 
-定义P为当前20日同类强度百分位；B为共同有效成员上涨宽度；A为板块成员金额/前20日均额；R为共同强势成员留存率。上榜=P≥0.8。所有输入来自M9固定口径，资金扩张不称净流入。
+定义P为当前20日同类强度百分位；B为共同有效成员上涨宽度；A为第27章定义的同一可比成员集合上的板块成交额聚合比 sector_amount_vs_prior20；R为共同强势成员留存率。上榜=P≥0.8。A不等于个股金额比中位数，不从每日变化成员的总额直接滚动。1.10/1.20仅保留为新合同预览阈值，须重新验收；资金扩张不称净流入。
 
 按以下顺序确定唯一class，同时返回全部predicate及冲突解释：
 
@@ -324,13 +326,13 @@ API：/api/sectors/cycle、/{id}/timeline、/{id}/members/history、/{id}/leader
 | 1 | DATA_INSUFFICIENT | 当前覆盖<0.8、所需成员比较不足、或当前状态必需窗口未知；另返回缺哪些字段 |
 | 2 | FADING | 过去20日曾上榜；P<0.6且较3日前下降≥0.15；共同B和A均较3日前下降 |
 | 3 | HIGH_LEVEL_CONTRACTION | P≥0.8且共同B较3日前下降≥0.10或R<0.5；括号固定为P条件 AND (宽度条件 OR 留存条件) |
-| 4 | REACCELERATING | 20日上榜≥6次，P≥0.8且较3日前提高≥0.10，B提高≥0.10，A≥1.2 |
+| 4 | REACCELERATING | 10日上榜≥3次，P≥0.8且较3日前提高≥0.10，B提高≥0.10，A≥1.2 |
 | 5 | SUSTAINED | 5日上榜≥3次、连续≥2日；P≥0.8、B≥0.5、R≥0.6；先经过高位收缩优先判断 |
 | 6 | NEW | P≥0.8、此前5日上榜≤1次、B≥0.55、A≥1.1、共同进入>退出 |
 | 7 | BROADENING | P≥0.7、共同进入>退出、共同B较前日提高≥0.10 |
 | 8 | OBSERVING | 所需数据均有效但未满足任何状态 |
 
-首版完整class使用至少20个有效观察日及3日差值所需数据，30日次数单独不足可NULL；不因一个非必需的30日字段缺失把全部判定封死。不足20日可展示各项已知证据和“观察期”，不偷用10日数据代替20日。
+当前版本不把20日作为所有class的总闸门：不足3日为DATA_INSUFFICIENT，3至4日进入观察池，5至9日允许快速状态，10日以上允许稳定状态，20日只补充完整证据；未知字段仍保持UNKNOWN，不偷用不存在的历史。
 
 计数窗口按连续市场交易日定义，窗口中缺失必须影响valid_n，不能向更早日期滑动补满20个“有数据日”。覆盖门通过后才能执行上述类别顺序；若一个更高优先类别仍为UNKNOWN、较低类别为TRUE，首版保守输出DATA_INSUFFICIENT并列出该冲突，不偷跳过未知类别。
 
@@ -386,11 +388,13 @@ API：/api/market/cycle、/day-detail、/api/limit-ladder、/promotion-history�
 
 ### 14.1 来源准入与适配
 
-只测A级正式开放/明确许可免费能力、B级公开网页能力；网页公开不自动等于许可。记录来源官方说明、入口、字段、时间语义、请求预算和实际样本。B级条款不明保持待验证；不使用龙字诀私有会员服务及凭据，不做签名/验证码绕过。
+热榜改为“展示型在线能力”：用户打开或主动刷新热榜时，分别向东方财富和同花顺请求当前榜单；响应只在当前请求内存在，不保存热榜原文、热榜行、批次快照或历史热榜。这里的“直接获取”不等于绕过来源的访问控制；请求仍须使用公开可访问接口、明确的超时/响应上限和项目允许的来源策略。
 
-适配器能力声明supports_history、supports_quote、supports_rank、supports_reason；fetch_latest与fetch_history分开。不支持历史的端点不得接受日期却返回当天数据冒充历史。
+热榜适配器只声明supports_rank，不为热榜实现supports_history。接口固定为LATEST语义；不再接受as_of、batch_id或历史查询，也不计算本地跨刷新rank_delta。平台返回的rank_change只能作为“平台原始变化字段”展示，并明确标注来源口径。
 
-观察10个交易日，每日最少一个目标场景样本；首版可用性目标成功≥95%、必要字段≥99%，代码误映射=0，日期错误不入库。样本报告保存分母；遇429尊重Retry-After；默认低频5–15分钟缓存并服从来源更严限制。没有稳定来源时记UNAVAILABLE，不用“页面可降级”算热榜交付完成。
+热榜响应在内存中完成三步：来源字段解码与结构校验、source_code到本地security_id的精确映射、从本地证券主数据补充security_name及已有基础字段。东方财富缺少名称时，以本地证券主数据为准；找不到精确映射的行显示为UNMAPPED并可丢弃，不能模糊拼接或重排平台原始名次。
+
+每次刷新只允许有限请求，不做无限重试、不建立后台抓取任务、不写入正式DB。超时、429、空表、字段漂移或映射失败时返回可见的UNAVAILABLE/DEGRADED状态，不阻塞本地分析主流程。
 
 ### 14.2 数据库
 
@@ -403,18 +407,18 @@ API：/api/market/cycle、/day-detail、/api/limit-ladder、/promotion-history�
 | online_evidence | evidence_id；source、security_id、event_time、published_at、first_seen_at、text_hash、raw_ref | 原因/资讯时间与内容 |
 | online_security_map | source、source_code、valid_from；security_id、exchange、mapping_version | 不靠去掉前缀模糊拼接 |
 
-热榜“同时上榜”必须使用时间差≤配置阈值（首版15分钟）的有效批次，否则提示不可比较。原因多源并列；重复内容引用同一正文，来源分别保留。
+热榜直取模式不写入`online_payloads`、`online_batches`或`online_rank_entries`；上述在线表仅保留给其他明确需要历史留存的能力。热榜本身只在请求内存中解码、映射和分页，接口返回后释放。
 
-排名变化同时返回comparison_batch_id与比较口径（上次抓取/前一交易日同时间段）；不存在可比批次就显示暂无，不能把平台提供的另一种名次差混用。过滤非A股仅影响展示行，不重编原平台排名。一次列表和分页请求固定batch_id，翻页期间不能悄悄换批。
+热榜不做跨平台“同时上榜”历史比较，也不合并两个平台的名次。`co_listed=1`只表示一次请求内分别展示两个来源的当前结果；两个来源各自保留平台原始排名，不能生成统一总榜。
 
-历史观测页要求published_at与first_seen_at不晚于as_of；后补原因只可在“事后补充”单独展示。时间未知则不参加严格历史视图。实时页允许展示最新批次，但清楚标本地快照日期与在线截至时间。
+分页必须绑定本次请求内的不可变内存结果，不能在同一响应周期内重抓导致翻页漂移。页面刷新才产生新请求；刷新完成后，上一结果不再作为项目数据资产保留。响应只回显source_as_of/observed_at，不伪装为本地analysis_snapshot_id。
 
 ### 14.3 接口、UI和测试
 
-后端暴露/data-sources/status、/hot-rankings、/external-evidence、/quotes/latest（若准入）；在线接口返回batch_id和source_as_of，不伪装analysis_snapshot_id本地内容。HTTP客户端有连接/总超时、最大响应长度、重试总预算。
+后端暴露/data-sources/status、/hot-rankings、/external-evidence、/quotes/latest（若准入）；热榜接口只返回source_as_of、observed_at和本次请求结果，不返回batch_id、comparison_batch_id或本地热榜快照身份。HTTP客户端有连接/总超时、最大响应长度和有限重试预算。
 
-平台热榜在市场周期二级页；个股在线报价以独立小区块补充；“生成今日数据”不等待所有在线来源。前端渲染外部文字用textContent，链接协议白名单，不执行正文HTML。
-验收：超时/429/空表/乱码/字段漂移/代码歧义/历史伪返回；重复抓取保留观测；相同本地snapshot在在线更新前后本地结果哈希不变；个人凭据不入日志。
+平台热榜在市场周期二级页；热榜行可挂载独立报价补充区，但报价失败不影响热榜；原因区没有独立来源时明确显示UNAVAILABLE，不把平台标签当原因；“生成今日数据”不等待所有在线来源。前端渲染外部文字用textContent，链接协议白名单，不执行正文HTML。
+验收：超时/429/空表/乱码/字段漂移/代码歧义可见；热榜刷新不产生本地快照、不修改本地snapshot；本地名称补齐准确；个人凭据不入日志。
 
 ## 15. 页面架构与统一API
 
@@ -685,12 +689,12 @@ API19/26是分页事件/日期行而非全成员×全日笛卡尔积；针对完
 | API34 M13b | GET /api/limit-ladder，新增 | P,L,level=ALL/1/2/3/4PLUS,state,promotion | items=LimitRow；层级降序、金额降序、ID；UNKNOWN独立筛选 | limit_ladder,reference |
 | API35 M13b | GET /api/limit-ladder/promotion-history，新增 | P,days=30,previous_level | points含success_count,eligible_count,excluded_unknown/suspended/no_limit,rate | limit晋级聚合 |
 | API36 M14 | GET /api/data-sources/status，新增 | source_id可选 | items=SourceStatus；全局状态无需publication | sources,fetch_runs |
-| API37 M14 | GET /api/hot-rankings，新增 | P,source,list_type,batch_id,L；mode=AS_OF/LATEST,co_listed | items=StockQuote＋platform_rank/rank_change/batch；默认平台原名次 | online batches/rank entries |
+| API37 M14 | GET /api/hot-rankings，新增 | source,list_type,page,page_size,co_listed；固定LATEST | items=StockQuote＋platform_rank/source_rank_change；东方财富名称由本地证券主数据补齐 | 当前请求内存结果，不落热榜快照 |
 | API38 M14 | GET /api/stocks/{security_id}/external-evidence，新增 | P,type,mode=AS_OF/LATEST,page/page_size | items=OnlineEvidence＋source_as_of；事后补充独立分组 | online_evidence |
 | API39 M14可选 | GET /api/quotes/latest，新增 | security_ids≤50；source | item/报价数组＋batch_id/source_as_of；不要求本地publication | 独立在线报价批次 |
 | API40 M14 | POST /api/data-sources/{source_id}/refresh，新增 | dataset,idempotency_key | 202 fetch job；受频率限制；不在GET访问时无限抓取 | fetch_runs/任务队列 |
 
-API37初次mode=AS_OF按本地cutoff与观测时间选择合规批次；mode=LATEST须UI明确选择盘中视图。已固定batch的后续分页不重新解析。跨平台同时上榜返回两个batch_id组成batch_set_id，后续分页固定整个batch_set；超过15分钟不同步不称同时。
+API37每次打开/刷新分别直取东方财富和同花顺的当前榜单；分页使用本次请求内存结果，下一次刷新才重新请求。东方财富缺少名称时通过本地证券主数据精确映射补齐；两个来源分栏展示，不生成统一排名、历史排名变化或本地热榜快照。
 
 ### 20.4 三个完整请求样例
 
@@ -842,12 +846,12 @@ stock_strength_daily补rps而不改原RS字段合同；summary.hit_count仅为�
 | 表/域 | 实体PK（均加slice_id） | 物理字段 |
 |---|---|---|
 | sector_base_daily（DUCKDB） | sector_id:S | name:S!,type:S!,bucket:S!,sector_valid:B!,total_member_count:I!,quote_valid_count:I!,factor_valid_count:I!,coverage:F,rs5/10/20/60:F,rs5_pct/rs20_pct:F,display_rank:I,base_pattern:S,base_predicates:J!,semantic_version:S!,membership_snapshot_id:S! |
-| sector_cycle_daily（DUCKDB） | sector_id:S | board_quote_ret1:F,board_quote_source:S,member_ret1_median:F,member_amount_sum:F,amount_valid_count:I!,amount_vs_prior20:F,breadth_ret1:F,breadth_ma20:F,strong_count:I,high20/30/60/100_count:I,high20/30/60/100_valid_count:I,rank_change:I,comparable_count:I,previous_strong_total:I,comparable_previous_strong:I,retained_count:I,entered_count:I,exited_count:I,uncomparable_count:I,retention_rate:F,comparison_coverage:F,diffusion_state:S!,window_stats:J! |
+| sector_cycle_daily（DUCKDB） | sector_id:S | board_quote_ret1:F,board_quote_source:S,member_ret1_median:F,member_amount_sum:F,amount_valid_count:I!,amount_vs_prior20:F,member_amount_ratio_median_vs_prior20:F,sector_amount_vs_prior20:F,sector_amount_comparable_sum:F,sector_amount_prior20_mean:F,amount_comparable_member_count:I,amount_target_member_count:I,amount_comparable_coverage:F,amount_window_coverage:F,amount_basis:S,amount_quality_codes:J,amount_member_set_hash:S,amount_membership_snapshot_id:S,amount_window_start/end:D,amount_contract_id:S,sector_amount_ratio_delta_3sessions_common:F,amount_comparison_evidence:J,breadth_ret1:F,breadth_ma20:F,strong_count:I,high20/30/60/100_count:I,high20/30/60/100_valid_count:I,rank_change:I,comparable_count:I,previous_strong_total:I,comparable_previous_strong:I,retained_count:I,entered_count:I,exited_count:I,uncomparable_count:I,retention_rate:F,comparison_coverage:F,diffusion_state:S!,window_stats:J! |
 | sector_member_state_daily（PARQUET） | sector_id:S,security_id:S | member_rank:I,rank_valid_count:I!,ret20_pct:F,strong_state:B,strong_predicates:J!,member_change_kind:S,strength_change_kind:S,previous_rank:I,rank_delta:I,queue_refs:J!,high_refs:J! |
 | sector_membership_changes（PARQUET） | sector_id:S,security_id:S,change_type:S | previous_snapshot_id:S,current_snapshot_id:S!,observed_interval_start:TS,observed_interval_end:TS!,reason:S! |
 | representative_state_daily（DUCKDB） | sector_id:S | ranked_first_id:S,ranked_second_id:S,rank_gap:F,confirmed_id:S,candidate_id:S,candidate_since:D,candidate_streak:I,confirmed_since:D,confirmation_event:S,previous_confirmed_id:S,stale:B! |
 | stock_sector_associations_daily（PARQUET） | security_id:S,sector_id:S | eligible:B!,association_rank:I,bucket:S!,member_rank:I,rank_valid_count:I,member_percentile:F,loo_ret20_median:F,loo_breadth20:F,loo_ret5_median:F,loo_breadth5:F,reject_codes:J!,contract_id:S!,sort_tuple:J! |
-| mainline_daily（DUCKDB） | sector_id:S | class:S!,previous_class:S,transition_reason:S!,predicates:J!,valid_windows:J!,missing_fields:J!,conflict_resolution:J!,contract_id:S!,config_hash:S! |
+| mainline_daily（DUCKDB） | sector_id:S | class:S!,previous_class:S,transition_reason:S!,predicates:J!,valid_windows:J!,missing_fields:J!,conflict_resolution:J!,current_sector_amount_vs_prior20:F,sector_amount_ratio_delta_3sessions_common:F,sector_amount_quality_codes:J,sector_amount_basis:S,sector_amount_membership_snapshot_id:S,sector_amount_comparison_evidence:J,sector_amount_contract_id:S,contract_id:S!,config_hash:S! |
 | market_cycle_daily（DUCKDB） | universe_id:S | display_count:I!,quote_valid_count:I!,up_count:I,down_count:I,flat_count:I,amount_sum:F,amount_valid_count:I!,ma20_above_count:I,ma20_valid_count:I,ma60_above_count:I,ma60_valid_count:I,new_high_counts:J!,queue_counts:J!,queue_unique_count:I,sector_state_counts:J!,limit_up_count:I,limit_down_count:I,unknown_limit_count:I,field_coverage:J! |
 | limit_ladder_daily（DUCKDB） | security_id:S | limit_state:S!,reference_basis:S!,rule_id:S,limit_up_price:P,limit_down_price:P,streak:I,streak_known:B!,streak_min_known:I,previous_streak:I,ladder_level:S,promotion_state:S!,denominator_eligible:B!,exclusion_reason:S,association_ref:S |
 | limit_promotion_daily（DUCKDB） | previous_level:I | success_count:I!,eligible_count:I!,excluded_unknown:I!,excluded_suspended:I!,excluded_no_limit:I!,rate:F |
@@ -994,7 +998,7 @@ M9依赖8B完成；M13A可在8A完成后开始，队列图等待8B。8C无可靠
 
 | 任务 | 步骤 | 产物/API | 验收 |
 |---|---|---|---|
-| 10-01 合同配置 | 将第10章顺序、窗口、门槛写入mainline-v2.1-preview.yaml | config hash与predicate registry | 无隐藏权重/隐式默认门槛 |
+| 10-01 合同配置 | 将第10章顺序、窗口、门槛写入mainline-v2.3-preview.yaml | config hash与predicate registry | 无隐藏权重/隐式默认门槛 |
 | 10-02 三态分类 | 逐predicate求值、记录unknown/冲突；输出唯一class | 010、API21/22 | T11；从未强不能退潮 |
 | 10-03 状态变化 | 对比同basis/同合同前日；版本切换为MODEL_CHANGE | mainline transition字段 | 合同更新不冒充市场变化 |
 | 10-04 主线页 | 状态卡筛选、表格、分组证据弹窗；保留观察期 | 板块研究/主线 | 数量与筛选结果一致 |
@@ -1039,10 +1043,11 @@ M9依赖8B完成；M13A可在8A完成后开始，队列图等待8B。8C无可靠
 | 任务 | 步骤 | 产物/API | 验收 |
 |---|---|---|---|
 | 14-01 来源验证 | 按用户已有授权同步网络规则；逐dataset核查A级/B级能力 | sources registry及probe报告 | 不把静态URL当免费证明 |
-| 14-02 批次基础 | fetch/payload/batch分离、映射与时间、owner协调、缓存 | 014、API36/40 | 重复正文仍保留每次抓取 |
-| 14-03 热榜 | 平台原排名、比较批次、同时上榜时间门、固定分页批次 | API37及热榜页 | T16与分页不换批 |
+| 14-02 在线请求基础 | 来源适配、请求预算、内存内解码、精确证券映射、失败状态 | API36及请求层 | 不写热榜原文/行/批次；超时/429/结构漂移可解释 |
+| 14-03 热榜 | 东方财富/同花顺当前榜单直取；本地补名称与基础字段；来源分栏展示 | API37及热榜页 | 当前榜单可展示；不生成本地快照；翻页固定本次内存结果；报价/原因状态独立可见 |
+| 14-03-UI 热榜页面接入 | 市场周期页接入来源切换、刷新、分页、独立报价列和原因空态 | `/v2` 市场周期热榜面板、UI合同测试、阶段回执 | 热榜失败不阻塞本地市场页；不写快照；外部文字使用 `textContent` |
 | 14-04 原因 | 原文/摘要/来源/first_seen，多源与事后补充分开 | API38及个股证据页 | 历史不见未来，XSS文本安全 |
-| 14-05 可选报价 | 仅当独立报价能力准入；source_as_of显著 | API39 | 与本地封存报价分开 |
+| 14-05 可选报价 | 正式报价能力仍需独立准入；热榜仅允许请求级 `DISPLAY_ENRICHMENT_ONLY` 补充 | API39（保持关闭）及热榜 quote 补充 | 报价失败不影响热榜；缺少来源时间不得进入严格历史 |
 | 14-06 低优先龙虎榜 | 来源成熟再为API38增加LH_LIST evidence_type | 独立合同与样本 | 不与主线/队列综合打分 |
 
 热榜、原因、报价、龙虎榜分别签capability状态；只做API36健康页不能视为完成M14全部数据功能。
@@ -1161,6 +1166,7 @@ M9依赖8B完成；M13A可在8A完成后开始，队列图等待8B。8C无可靠
 | M9 | tests/upgrade_m9/test_representative_state.py | 候选/确认日、stale、无后验回写 |
 | M9 | tests/upgrade_m9/test_matrix_api.py | 固定行列、窗口与visible_days独立、缺日 |
 | M10 | tests/upgrade_m10/test_mainline_state.py | 完整类别表、优先冲突、三态、MODEL_CHANGE |
+| M10 金额 A | tests/upgrade_m10/test_sector_amount.py、test_mainline_state.py | H21/24日共同集合公式、质量门、确认零、固定快照、主线不回退代理 |
 | M11 | tests/upgrade_m11/test_intersection_and_rank.py | 集合/排除优先级、排名先筛选、4板块限制 |
 | M11 | tests/upgrade_m11/test_association_parity.py | 保留V1独立支撑，主备选、所有拒绝原因 |
 | M12 | tests/upgrade_m12/test_insight_api.py | 首屏DTO、缓存键、图表basis与因素证据区别 |
@@ -1271,7 +1277,7 @@ online:
 
 compute_workers是资源上限提案，M7B基准后可调；规则配置和性能配置的hash身份分开：阈值、窗口、范围改变结果，纳入computation/config identity；线程数、缓存预算等不改变经济结果的设置不制造新经济修订。仍记录运行配置用于复现性能。
 
-mainline-v2.1-preview.yaml与semantic-overrides配置单独版本化，不能修改默认yaml后原地替换旧snapshot。在线enabled=false表示能力尚未准入的默认状态，不是产品永久禁止联网。
+mainline-v2.3-preview.yaml与semantic-overrides配置单独版本化，不能修改默认yaml后原地替换旧snapshot。在线enabled=false表示能力尚未准入的默认状态，不是产品永久禁止联网。
 
 ### 25.3 不能凭文档保证的项目
 
@@ -1296,3 +1302,130 @@ mainline-v2.1-preview.yaml与semantic-overrides配置单独版本化，不能修
 开发顺序以第22章为操作入口；接口以第20章为目录；字段与迁移以第21章为准；界面以第23章为准；验收以第16与24章共同为准。尚未具备数据的能力在最终清单保留未完成/降级标识，不能删除对应项后声称全部实现。
 
 本版文档自检记录（2026-09-09）：API01–40完整且编号唯一；6段JSON样例解析通过；本地文档链接和章内锚点检查通过；第21.6章三张表的DDL样例已与当前schema一起在DuckDB内存数据库中执行通过。该检查只验证文档样例和引用，不代表全部新表迁移、接口或T01–T24运行验收已通过，正式数据库未修改。
+
+
+## 27. M10 金额 A 专项修订与实施对齐（2026-09-10）
+
+本章完整纳入裁定，实施无需拼接旧稿。状态为 IMPLEMENTED_PENDING_INDEPENDENT_ACCEPTANCE；不把测试通过解释为经济有效性证明。
+
+### 27.1. 裁定与证据
+
+问题是统计层级发生替代，同时文档缺少精确定义。不能用“公式都可解释”证明实现符合设计，也不能断言整套实施都错误。
+
+- technical.py 的 shift(1).rolling(20) 计算个股排除当日的金额比；若输入日期有缺口，滚动行数不自动等于主交易日窗口，因此仍须验证上游日历补齐，不无条件认定全部窗口实现正确。
+- sector_cycle.py 对 member_amount_vs_prior20 取中位数，window_stats 标记 MEMBER_MEDIAN_STOCK_AMOUNT_VS_PRIOR20；member_amount_sum 未参与该比值计算。
+- mainline.py 直接读取上述字段，按板块行位置取比较日；NEW/REACCELERATING/FADING 因此消费代理值。
+- 示例：三股历史日均各100，当日300、100、100，中位数为1，聚合比为500/300。两者会导致金额谓词不同。
+
+正式 A 选择“可比成员聚合金额扩张”；典型成员中位数单列诊断。成交额代表成交活跃度，不能叫净资金流入。该选择是设计决策，不是收益有效性的证明。
+
+### 27.2. 可执行公式
+
+主交易日历为 C，t 的基准 W20(t) 为 C 中严格前20个位置。H21(t)=W20(t)∪{t}；不跳过缺日向前补足。raw_amount 单位元，不使用复权金额。
+
+#### 27.2.1 成员口径
+
+OBSERVED：每个 H21 日期都有封存成员依据，候选集合为这些日期成员集合的交集。
+
+RECONSTRUCTED：固定一个已声明的成员快照 K，按 K 的成员回算 H21。不能把缺失的历史成员集合伪造为 K 当时存在。快照观察时间、回算锚、证券范围偏差必须随字段/API/页面提供。新概念可显示回算活动，但不是“当时已存在的概念”。
+
+两种模式均再取在 H21 所有日期金额状态已知且合格的完整成员，得到 U。U 在分子分母中必须完全相同。每日相加不同成员总额再滚动，不作为正式 A。
+
+S(U,u)=Σ raw_amount(i,u), i∈U
+
+D(U,t)=Σ[S(U,u), u∈W20(t)] / 20
+
+A(s,t)=S(U,t)/D(U,t)
+
+历史股票短于窗口不进入 U，但必须计入目标成员分母，不能通过缩小分母掩盖缺失。新股可展示报价及缺失原因。
+
+#### 27.2.2 金额质量门
+
+建议冻结为首版预览质量参数：min_comparable_members=5，min_comparable_coverage=0.80；它们是工程质量门，不是已证实最佳经济参数。不得根据状态命中数量调整。
+
+目标分母 N 为当前目标成员数；OBSERVED 另要求 |U|/max(H21 各日目标成员数)≥0.80，避免大量删除成员后覆盖看似满额。保存两项覆盖以及分母来源。
+
+有限正数有效；有来源确认的无成交/停牌零额有效并计入均额，不等于未知。无来源的零值、负数、非有限值、缺行、质量失败视为未知；不得补零。D≤0 则 A=NULL；分子确认为0且 D>0 时 A=0，是有效的低活跃状态，不能被 gt(0) 过滤。
+
+任一门未通过时 A=NULL，质量码给出 NO_CALENDAR、INSUFFICIENT_HISTORY、MEMBERSHIP_HISTORY_MISSING、LOW_MEMBER_COUNT、LOW_COVERAGE、INVALID_AMOUNT 或 NONPOSITIVE_BASELINE；可保存多个原因。
+
+member_amount_sum 单独表示当前成员已知金额部分总和，保留覆盖与 partial 标识；不能被界面无条件叫完整板块总额。它不必等于 A 的可比分子。
+
+#### 27.2.3 三交易日变化
+
+比较日期 c=C[t_index-3]，不能使用板块已有行的倒数第四行。
+
+用于金额下降谓词的共同集合 V 在 H21(t)∪H21(c) 的24个主交易日上固定，按上面模式和质量门构造。分别计算 A(V,t) 与 A(V,c)：
+
+sector_amount_ratio_delta_3sessions_common=A(V,t)-A(V,c)
+
+单位是比值差，不是涨跌百分比或3日均额比。保存两端值、比较日、V 哈希、分子/分母、覆盖。它可能不同于页面两个各自使用 U 的 A 值之差；页面必须明确“固定共同成员比较”。
+
+FADING 使用共同集合差值严格小于负的既有精度容忍值；持平不算下降。NEW/REACCELERATING 使用当日 A(U,t)。差值不可用时为 UNKNOWN，不退回独立成员 A 值相减。若未来需要3日均额比，另开字段和合同。
+
+### 27.3. 字段与消费约束
+
+| 字段 | 层级与用途 |
+|---|---|
+| stock_technical_daily.amount_ratio20 | 保留旧含当日个股公式 |
+| stock_technical_daily.amount_vs_prior20 | 保留排除当日个股公式 |
+| member_amount_ratio_median_vs_prior20 | 旧板块代理新明确名称，只诊断 |
+| member_amount_sum / amount_valid_count | 当日已知金额规模及样本数 |
+| sector_amount_vs_prior20 | 正式板块 A |
+| sector_amount_comparable_sum / sector_amount_prior20_mean | A 分子与分母，单位元 |
+| amount_comparable_member_count / amount_target_member_count | 可比集合与目标数量 |
+| amount_comparable_coverage / amount_window_coverage | 当前及窗口覆盖 |
+| amount_basis / amount_quality_codes / amount_contract_id | 模式、质量、合同 |
+| amount_member_set_hash / amount_window_start/end | 复算依据 |
+| sector_amount_ratio_delta_3sessions_common | 同一24日成员集合下的比值差 |
+| amount_comparison_evidence | 比较日、两端A、分子分母、V哈希、覆盖及缺失 |
+
+旧 sector_cycle_daily.amount_vs_prior20 与 mainline_daily.current_amount_vs_prior20 不原地改义；旧 slice 原样保留并标明 LEGACY_PROXY。新消费者按显式合同字段读取，不允许 coalesce(new_A,old_proxy)。字段目录必须记录生产者、公式、层级、单位、窗口、成员口径、质量门、消费者和测试 ID。
+
+金额 predicate 采用三态逻辑。金额未知不自动把全板块判弱：只有依赖它的条件为 UNKNOWN；保持既有状态优先级和 UNKNOWN_HIGHER_PRIORITY 规则。不依赖金额的状态是否可输出由完整三态树决定，不能把所有未知统一转 False。
+
+### 27.4. 阈值、历史视图与版本
+
+1.10/1.20 暂保留作预览起点，不能因公式改变而宣称阈值已验收。新旧公式需要差异报告和人工复算；不以增加/减少 NEW 数量优化阈值。
+
+新增 `SECTOR_AMOUNT_COMMON_AGG_V1` 和 `MAINLINE_STATE_V2_4_PREVIEW` 已作为运行合同，生成 `config/mainline-v2.4-preview.yaml`、依赖哈希及新 slice/snapshot；旧合同和旧代理列未改义。
+
+公式/质量门变化标 MODEL_CHANGE；成员快照、OBSERVED/RECONSTRUCTED 切换标 BASIS_CHANGE；不得当成市场退潮。回算页允许明确展示回算分类，正式 OBSERVED 消费者不得混入回算条件；Forward 不补造历史观察。
+
+历史计划器必须增加依赖：单日 A 需21个主交易日，3日差需24个。若主线输出依赖 L 日 A 序列，原始窗口至少 L+20；同时涉及差值需再覆盖3日边界，最终取完整依赖图最大值，不沿用硬编码预热天数。
+
+### 27.5. 实施顺序与对齐矩阵
+
+| 顺序 | 交付 | 验收证据 |
+|---|---|---|
+| A 定义冻结 | 本裁定、主方案、字段目录与正式新合同一致 | 每个符号都有日期/集合/质量定义 |
+| B 独立计算 | sector_amount 聚合函数及窗口计划器 | 手算与边界测试，不先嵌进分类函数 |
+| C 数据迁移 | 新增列/表、新 slice 依赖；不复用已部署迁移编号 | 临时库迁移、旧数据未改义 |
+| D 主线消费 | 三态金额门、显式合同、API/UI证据 | 禁用代理兜底，旧页面标注代理 |
+| E 差异预览 | 新旧并排，按 OBSERVED/RECONSTRUCTED 分组 | 公式差/成员差/质量差分别报告 |
+| F 独立验收 | 实际代码与输入哈希、样例和剩余阻断 | 外审通过才允许新正式消费 |
+
+中位数与聚合比、规模与广度是互补维度；文档不应为适配已写代码而把它们混成一个指标。后续所有经济字段要求“定义卡 → 数据能力 → 实现 → 证据”闭环。实现困难只能显式缺失或提出新合同，不能悄悄采用代理。
+
+### 27.6. 必测场景
+
+- 个股100×20、今日300：新3、旧300/110；保持个股合同。
+- 三股300/100/100：算术核对聚合5/3、中位1；因少于5股正式门返回 LOW_MEMBER_COUNT。正式门样例用五股500/100/100/100/100，聚合1.8、中位1。
+- 新增成员仅改变原始规模，OBSERVED 公共集合排除新增；回算模式固定 K 全窗口验证；成员变动不会在同一分子分母中混入。
+- 中间缺一个主交易日，不按第21个更早观察补齐；重复日期必须拒绝。
+- 4股完整/5股目标满足80%但仍未达5股数量门；5/6有效通过、5/7不通过。
+- 已知零分子输出0；未知不能补零；全零分母返回NULL。
+- 去掉大金额成员需同时显示可比覆盖和剔除清单，不能暗示剩余聚合代表全部成员。
+- 3日前缺日或共同集合不足，差值UNKNOWN；同一24日集合手算两端与差值。
+- 模型/输入/模式改变生成新身份；旧发布及旧代理不覆盖。
+- A未知沿三态优先树传播；禁止把 proxy 注入 NEW 或 REACCELERATING。
+- 阈值边界1.10/1.20及持平下降判定、输入顺序变化确定性、金额单位一致。
+
+测试通过仅证明定义实现一致；主线经济有效性不能由测试数量证明。
+
+### 27.7. 本次实施验收记录（2026-09-10）
+
+- C：018 迁移已应用到本地 DuckDB；正式字段追加，旧金额列未改义；临时迁移库与旧数据兼容测试通过。
+- D：M8/M9 本地重建快照 `m8-m9-local-reconstructed-preview-v2-c1283b346770b20b` 已写入 1,662 条板块日记录，其中 877 条正式 A 通过质量门；M10 v2.4 快照 `m10-mainline-preview-11e17c14c6490da6` 已写入 1,662 条主线记录，其中 877 条携带正式 A；主线 3 个交易日已按 `DOMAIN_DATE_BASIS_V1` 分别物化为 3 个独立 slice。
+- E：正式 A 与旧成员金额中位数代理并列保存；API 与页面读取显式正式字段，未使用 `coalesce(new_A, old_proxy)`；差异报告见 `reports/upgrade_m10/M10_AMOUNT_A_NEW_OLD_DIFF_PREVIEW_20260909.md`。
+- F：M7-M10 定向回归 `152 passed`；实际 API 已核对金额 A、质量代码、固定成员快照、H21 窗口、三交易日独立 slice 和 basis 元数据。全量回归为 `707 passed, 6 failed`：其中 4 个是当前 M11 数据日期/可用板块数量的历史 fixture，1 个是 R4 旧封存产物 fixture，1 个是 M2 旧发布顺序 fixture；不属于金额 A、主线 slice、RET1 质量门或 API basis 实现失败。

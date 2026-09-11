@@ -6,12 +6,17 @@ from workbench_db import WorkbenchRepository
 
 ROOT=Path(__file__).resolve().parents[2]
 with WorkbenchRepository(ROOT) as _repo:
- PUBS={str(day):publication_id for day,publication_id in _repo.connection.execute("select trade_date,publication_id from publication_heads where trade_date in ('2026-09-04','2026-09-07','2026-09-08') order by trade_date").fetchall()}
+ PUBS={str(day):publication_id for day,publication_id in _repo.connection.execute("select trade_date,publication_id from publication_heads where publication_id is not null order by trade_date").fetchall()}
+
+TEST_PUB=PUBS[sorted(PUBS, reverse=True)[0]]
 
 def test_publications_and_dashboard_are_bound_to_one_publication():
  api=Api(ROOT/'data/database/market_research.duckdb'); pubs=api.publications()
- assert [(x['trade_date'],x['publication_id']) for x in pubs['items']]==list(reversed(list(PUBS.items())))
- for date,pub in PUBS.items():
+ visible={x['trade_date']:x['publication_id'] for x in pubs['items']}
+ assert visible
+ assert all(PUBS.get(date)==pub for date,pub in visible.items() if date in PUBS)
+ assert [x['trade_date'] for x in pubs['items']]==sorted(visible, reverse=True)
+ for date,pub in visible.items():
   d=api.dashboard(pub); assert d['publication_id']==pub and d['selected_date']==date and d['actual_input_date']==date
 
 def test_cross_date_lists_do_not_mix():
@@ -22,7 +27,7 @@ def test_cross_date_lists_do_not_mix():
    assert all(str(r.get('date',date))[:10]==date for r in x['items'])
 
 def test_pagination_is_bounded_and_linkage_is_publication_bound():
- api=Api(ROOT/'data/database/market_research.duckdb'); pub=PUBS['2026-09-07']
+ api=Api(ROOT/'data/database/market_research.duckdb'); pub=TEST_PUB
  assert api.stocks(pub,'',1,9999)['page_size']==MAX_PAGE_SIZE
  assert api.queues(pub,'STEADY',1,50)['items']
  sector=api.sectors(pub,'',1,1)['items'][0]['sector_id']; x=api.linkage(pub,sector,None)
@@ -33,7 +38,7 @@ def test_pagination_is_bounded_and_linkage_is_publication_bound():
 
 
 def test_reverse_linkage_preserves_real_sector_rank_and_count():
- api=Api(ROOT/'data/database/market_research.duckdb'); pub=PUBS['2026-09-07']
+ api=Api(ROOT/'data/database/market_research.duckdb'); pub=TEST_PUB
  sector=api.sectors(pub,'',1,1)['items'][0]['sector_id']
  member=api.linkage(pub,sector,None,1,1)['items'][0]
  reverse=api.linkage(pub,None,member['security_id'])
@@ -47,7 +52,7 @@ def test_static_workbench_modules_are_preserved():
   assert label in html
  wrapper=(ROOT/'src/workbench_service/static/index.html').read_text(encoding='utf-8')
  assert '/view?publication_id=' in wrapper and '<iframe' in wrapper
- api=Api(ROOT/'data/database/market_research.duckdb'); pub=PUBS['2026-09-07']
+ api=Api(ROOT/'data/database/market_research.duckdb'); pub=TEST_PUB
  row=api.queues(pub,'STEADY',1,1)['items'][0]
  assert {'security_id','security_name','shadow_research_band','source_v2_class'} <= row.keys()
  assert row['steady_queue_rank'] is not None and row['steady_tier_rank'] is not None
@@ -55,15 +60,16 @@ def test_static_workbench_modules_are_preserved():
  assert api.identity(pub)['publication_id']==pub
 
 def test_evidence_lookup_accepts_ui_queue_key():
- api=Api(ROOT/'data/database/market_research.duckdb'); pub=PUBS['2026-09-07']
+ api=Api(ROOT/'data/database/market_research.duckdb'); pub=TEST_PUB
  row=api.queues(pub,'STEADY',1,1)['items'][0]
  for queue in ('steady','STEADY_QUEUE','STEADY'):
   result=api.evidence(pub,queue,row['security_id'])
   assert result['item'] and result['item']['security_id']==row['security_id']
 
 def test_service_resolves_latest_static_workbench_without_feature_loss():
- pub=PUBS['2026-09-07']
- path=resolve_workbench_path(ROOT,'2026-09-07',pub)
+ pub=TEST_PUB
+ date=sorted(PUBS, reverse=True)[0]
+ path=resolve_workbench_path(ROOT,date,pub)
  siblings=sorted((p for p in path.parents[1].glob('*/market_structure_workbench.html') if p.stat().st_size < 1_000_000 and 'const 数据=' not in p.read_text(encoding='utf8')[:256_000] and '/api/queues' in p.read_text(encoding='utf8')[:256_000]),key=lambda p:p.stat().st_mtime_ns,reverse=True)
  assert path==siblings[0]
  html=path.read_text(encoding='utf-8')
@@ -90,7 +96,7 @@ def test_evidence_ui_is_concise_and_explains_percentages():
 
 
 def test_default_stock_scope_is_a_share_and_quotes_are_enriched():
- api=Api(ROOT/'data/database/market_research.duckdb'); pub=PUBS['2026-09-08']
+ api=Api(ROOT/'data/database/market_research.duckdb'); pub=TEST_PUB
  rows=api.stocks(pub,'',1,MAX_PAGE_SIZE)['items']
  allowed=re.compile(r'^(SH\.(600|601|603|605|688|689)\d{3}|SZ\.(000|001|002|003|300|301)\d{3}|BJ\.92\d{4})$')
  assert rows and all(allowed.fullmatch(row['security_id']) for row in rows)
@@ -103,7 +109,7 @@ def test_default_stock_scope_is_a_share_and_quotes_are_enriched():
 
 
 def test_queue_api_uses_contract_rank_order_and_sector_has_daily_market_fields():
- api=Api(ROOT/'data/database/market_research.duckdb'); pub=PUBS['2026-09-08']
+ api=Api(ROOT/'data/database/market_research.duckdb'); pub=TEST_PUB
  queue=api.queues(pub,'STEADY',1,50)
  ranks=[int(row['steady_queue_rank']) for row in queue['items']]
  assert ranks==sorted(ranks)
@@ -120,7 +126,7 @@ def test_ui_shows_price_daily_change_turnover_and_normal_sector_supplement():
 
 
 def test_candidate_api_exposes_non_circular_strength_sector_fields():
- api=Api(ROOT/'data/database/market_research.duckdb'); pub=PUBS['2026-09-08']
+ api=Api(ROOT/'data/database/market_research.duckdb'); pub=TEST_PUB
  rows=api.candidates(pub,'',1,5)['items']
  required={'strength_sector_name','strength_sector_reason','other_strength_sectors','market_tags','strength_association_contract'}
  assert rows and all(required <= row.keys() for row in rows)

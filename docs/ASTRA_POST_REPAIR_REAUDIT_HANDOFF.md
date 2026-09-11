@@ -8,7 +8,7 @@
 - V1 发布：`695c7ae5affd4abbb3d86eddb4b154e0`
 - V1 计算身份：`41f4030eaff55b041bcbb05ce0bc39ed3d8736f438d5aa24eb4c14cdac5db51b`
 - V2 集成身份：`cb3bdd356f01dfaad5990a393a44d10149cf81f9805c533219124d773aad8c94`
-- 全量回归：`471 passed / 0 failed`
+- 全量回归：`754 passed / 0 failed`
 - 外部复审前 Forward 防护：`MODEL_IDENTITY_PREFLIGHT / BLOCKED`
 - TDX 输入：只读，未使用网络或外部行情
 

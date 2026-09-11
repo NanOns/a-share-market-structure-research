@@ -184,7 +184,10 @@ def build_sector_base(
         meta = group.iloc[0]
         stype = _sector_type(meta)
         name = str(meta.get("sector_name", sector_id))
-        role = sector_role(stype.lower(), name)
+        role_value = meta.get("sector_role")
+        role = str(role_value) if role_value is not None and not pd.isna(role_value) else sector_role(stype.lower(), name)
+        bucket_value = meta.get("semantic_bucket", meta.get("bucket"))
+        bucket = None if bucket_value is None or pd.isna(bucket_value) else str(bucket_value)
         total = len(ids)
         ret20 = _numeric(group, ("ret20", "RET20"))
         valid_member = _normal_security_mask(group) & _finite(ret20)
@@ -203,6 +206,7 @@ def build_sector_base(
             "historical_backtest_safe": False,
             "membership_snapshot_id": snapshot_id,
             "semantic_version": semantic_version or str(meta.get("semantic_version") or "UNAVAILABLE"),
+            "bucket": bucket,
             "total_member_count": total,
             "valid_member_count": valid_count,
             "invalid_member_count": total - valid_count,

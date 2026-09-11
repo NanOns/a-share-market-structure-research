@@ -46,8 +46,8 @@ def test_api03_returns_publication_bound_plan():
     assert result["publication_id"] == publication
     assert item["output_days_requested"] == 30
     assert item["required_history"] == 100
-    assert item["snapshot_id"] is None
-    assert item["snapshot_capability"] == "NOT_BUILT"
+    assert item["snapshot_id"] == api._analysis_bindings(publication)["LOCAL_RECONSTRUCTED"]["snapshot_id"]
+    assert item["snapshot_capability"] == "AVAILABLE"
     assert item["api_contract"] == "workbench-api-v2.1"
-    assert item["resolved_basis"] == "OBSERVED"
+    assert item["resolved_basis"] == "RECONSTRUCTED"
     assert item["supported_basis"] == ["OBSERVED", "RECONSTRUCTED"]

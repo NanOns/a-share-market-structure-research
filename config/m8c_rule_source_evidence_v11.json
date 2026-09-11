@@ -1,0 +1,44 @@
+{
+  "artifact_version": "M8C_RULE_SOURCE_EVIDENCE_V1_1",
+  "evidence_kind": "LOCAL_CLAUSE_ATTESTATION",
+  "note": "此文件是审计时固定的官方来源与条款映射，不是运行时网络抓取；原文 URL 仅作为可复核来源，未把网页内容伪装成行情输入。",
+  "audited_at": "2026-09-11",
+  "sources": [
+    {
+      "source_id": "SSE_2026_RULE",
+      "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/c_20260424_10816482.shtml",
+      "clauses": ["主板通常涨跌幅10%", "科创板通常涨跌幅20%", "前收价乘比例并按最小价位取整", "特殊上市阶段按规则处理"],
+      "audit_status": "VERIFIED_BASE_RULE"
+    },
+    {
+      "source_id": "SSE_MAIN_RISK_2026",
+      "url": "https://star.sse.com.cn/aboutus/mediacenter/hotandd/c/c_20260424_10816474.shtml",
+      "clauses": ["上交所主板风险警示股票自2026-07-06起按10%口径处理"],
+      "audit_status": "VERIFIED_BASE_RULE"
+    },
+    {
+      "source_id": "SZSE_2023_RULE",
+      "url": "https://docs.static.szse.cn/www/lawrules/rule/trade/W020230217564423808793.pdf",
+      "clauses": ["深交所主板通常10%", "深交所主板风险警示5%至新规则生效前", "创业板通常及风险警示20%", "最小价位0.01元并按规则取整"],
+      "audit_status": "VERIFIED_BASE_RULE"
+    },
+    {
+      "source_id": "SZSE_MAIN_RISK_2026",
+      "url": "https://www.szse.cn/lawrules/service/member/t20260630_621404.html",
+      "secondary_url": "https://disc.static.szse.cn/download/disc/disk03/finalpage/2026-04-30/4a272c2b-fe9f-4126-87bc-b4771a3a3510.PDF",
+      "clauses": ["深交所主板风险警示比例自2026-07-06调整为10%"],
+      "audit_status": "VERIFIED_BASE_RULE"
+    },
+    {
+      "source_id": "BSE_2026_RULE",
+      "url": "https://www.bse.cn/jygl_list/200028217.html",
+      "clauses": ["北交所基础涨跌幅30%", "最小价位0.01元", "部分特殊阶段条款另行实施"],
+      "audit_status": "VERIFIED_BASE_RULE_WITH_UNRESOLVED_RISK_BRANCH"
+    }
+  ],
+  "rule_policy": {
+    "verified_means": "source URL and audited clause mapping are fixed locally; unresolved branches remain unverified",
+    "unresolved_branches": ["BSE_RISK_WARNING", "listing lifecycle", "ex-rights reference price"],
+    "runtime_network_used": false
+  }
+}

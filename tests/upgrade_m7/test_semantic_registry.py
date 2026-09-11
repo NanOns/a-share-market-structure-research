@@ -1,9 +1,16 @@
 from __future__ import annotations
 
+from datetime import date, datetime, timezone
+
+import duckdb
+import pytest
+
 from workbench_service.semantic import (
     CONTRACT_ID,
     NORMAL_ATTRIBUTE,
     UNKNOWN_TAG,
+    build_semantic_version_rows,
+    insert_semantic_version_rows,
     resolve_semantics,
 )
 
@@ -52,3 +59,43 @@ def test_unknown_sector_type_is_visible_but_not_a_normal_attribute() -> None:
     assert result["bucket"] == UNKNOWN_TAG
     assert result["is_market_tag"] is True
     assert result["normal_rank_eligible"] is False
+
+
+def test_semantic_snapshot_rows_are_idempotent_and_immutable() -> None:
+    connection = duckdb.connect(":memory:")
+    connection.execute(
+        """
+        create table sector_semantic_versions (
+            version_id varchar not null,
+            sector_id varchar not null,
+            bucket varchar not null,
+            rule_id varchar not null,
+            reason varchar not null,
+            valid_from date,
+            observed_at timestamp not null,
+            override boolean not null,
+            source_id varchar not null,
+            primary key (version_id, sector_id)
+        )
+        """
+    )
+    source = [{"sector_id": "INDUSTRY:1", "sector_type": "INDUSTRY", "sector_name": "行业"}]
+    rows = build_semantic_version_rows(
+        source,
+        observed_at=datetime(2026, 9, 9, tzinfo=timezone.utc),
+        source_id="LOCAL_SEMANTIC_REGISTRY",
+        valid_from=date(2026, 9, 7),
+    )
+    assert insert_semantic_version_rows(connection, rows) == 1
+    assert insert_semantic_version_rows(connection, rows) == 0
+
+    # The observation window can advance without changing the semantic rule;
+    # the existing immutable version must be reused rather than blocking the
+    # next daily analysis build.
+    shifted = [dict(rows[0], valid_from=date(2026, 9, 10))]
+    assert insert_semantic_version_rows(connection, shifted) == 0
+
+    changed = [dict(rows[0], bucket=UNKNOWN_TAG)]
+    with pytest.raises(ValueError, match="SEMANTIC_VERSION_IMMUTABLE_CONFLICT"):
+        insert_semantic_version_rows(connection, changed)
+    connection.close()

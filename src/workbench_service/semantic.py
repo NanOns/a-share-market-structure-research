@@ -2,7 +2,8 @@
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
-from typing import Mapping
+from datetime import date, datetime
+from typing import Iterable, Mapping
 
 from sector.roles import sector_role as legacy_sector_role
 from workbench_service.strength_association import EVENT_WORDS, EXCLUDED_ROLES, PRICE_WORDS, STATUS_WORDS
@@ -144,3 +145,104 @@ def attach_semantics(
     result = dict(sector)
     result.update(resolve_semantics(sector, overrides))
     return result
+
+
+def resolve_semantic_records(
+    sectors: Iterable[Mapping[str, object]],
+    overrides: Mapping[str, Mapping[str, object]] | None = None,
+) -> list[dict]:
+    """Resolve a deterministic, de-duplicated semantic snapshot.
+
+    A sector ID must not resolve to conflicting semantic records within one
+    input snapshot.  This keeps the persisted registry authoritative for all
+    downstream historical domains instead of allowing each adapter to infer a
+    different bucket at query time.
+    """
+    resolved: dict[str, dict] = {}
+    for sector in sectors:
+        record = resolve_semantics(sector, overrides)
+        sector_id = str(record["sector_id"])
+        if not sector_id:
+            raise ValueError("SEMANTIC_SECTOR_ID_REQUIRED")
+        previous = resolved.get(sector_id)
+        if previous is not None and previous != record:
+            raise ValueError(f"SEMANTIC_SECTOR_CONFLICT:{sector_id}")
+        resolved[sector_id] = record
+    return [resolved[key] for key in sorted(resolved)]
+
+
+def build_semantic_version_rows(
+    sectors: Iterable[Mapping[str, object]],
+    *,
+    observed_at: datetime,
+    source_id: str,
+    valid_from: date | None = None,
+    overrides: Mapping[str, Mapping[str, object]] | None = None,
+) -> list[dict]:
+    """Build rows for the M7A ``sector_semantic_versions`` table."""
+    if not source_id:
+        raise ValueError("SEMANTIC_SOURCE_ID_REQUIRED")
+    rows = []
+    for record in resolve_semantic_records(sectors, overrides):
+        rows.append(
+            {
+                "version_id": record["semantic_version"],
+                "sector_id": record["sector_id"],
+                "bucket": record["bucket"],
+                "rule_id": record["rule_id"],
+                "reason": record["reason"],
+                "valid_from": valid_from,
+                "observed_at": observed_at,
+                "override": bool(record["override"]),
+                "source_id": source_id,
+            }
+        )
+    return rows
+
+
+def insert_semantic_version_rows(connection, rows: Iterable[Mapping[str, object]]) -> int:
+    """Insert semantic rows idempotently without overwriting old versions."""
+    inserted = 0
+    for row in rows:
+        key = [row["version_id"], row["sector_id"]]
+        existing = connection.execute(
+            """
+            select version_id,sector_id,bucket,rule_id,reason,valid_from,
+                   observed_at,override,source_id
+              from sector_semantic_versions
+             where version_id=? and sector_id=?
+            """,
+            key,
+        ).fetchone()
+        if existing:
+            # ``valid_from`` describes the first date in the current
+            # observation window; it is not a semantic rule change.  A daily
+            # rebuild must be able to reuse the immutable semantic version
+            # when the resolved rule, bucket, reason, override and source are
+            # unchanged.  Actual rule/coverage changes still fail closed and
+            # require a new version_id.
+            expected = (
+                row["version_id"], row["sector_id"], row["bucket"], row["rule_id"],
+                row["reason"], bool(row["override"]), row["source_id"],
+            )
+            actual = (
+                existing[0], existing[1], existing[2], existing[3], existing[4],
+                bool(existing[7]), existing[8],
+            )
+            if actual != expected:
+                raise ValueError(f"SEMANTIC_VERSION_IMMUTABLE_CONFLICT:{row['version_id']}:{row['sector_id']}")
+            continue
+        connection.execute(
+            """
+            insert into sector_semantic_versions
+                (version_id,sector_id,bucket,rule_id,reason,valid_from,observed_at,override,source_id)
+            values (?,?,?,?,?,?,?,?,?)
+            """,
+            [
+                row["version_id"], row["sector_id"], row["bucket"], row["rule_id"],
+                row["reason"], row["valid_from"], row["observed_at"],
+                bool(row["override"]), row["source_id"],
+            ],
+        )
+        inserted += 1
+    return inserted

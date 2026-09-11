@@ -1,0 +1,39 @@
+{
+  "schema_version": "m14-runtime-capabilities-v1",
+  "contract_id": "M14_RUNTIME_CAPABILITY_GATE_V1_0",
+  "mode": "LOCAL_PROJECT",
+  "capabilities": {
+    "HOT_RANKINGS": {
+      "status": "ENABLED",
+      "source_ids": ["EASTMONEY_HOT_RANK", "TONGHUASHUN_HOT_RANK"],
+      "mode": "DIRECT_EPHEMERAL_LATEST",
+      "supports_latest": true,
+      "supports_history": false,
+      "persist_payload": false,
+      "persist_rows": false,
+      "persist_batches": false
+    },
+    "EXTERNAL_EVIDENCE": {
+      "status": "UNAVAILABLE",
+      "source_ids": [],
+      "supports_latest": false
+    },
+    "QUOTES_LATEST": {
+      "status": "NOT_VERIFIED",
+      "source_ids": ["EASTMONEY_QUOTES_LATEST"],
+      "mode": "DISPLAY_ENRICHMENT_ONLY",
+      "supports_latest": false,
+      "supports_history": false,
+      "persist_payload": false,
+      "persist_rows": false,
+      "persist_batches": false,
+      "formal_api_enabled": false,
+      "hot_rank_display_enrichment": true
+    },
+    "LH_LIST": {
+      "status": "DEFERRED",
+      "source_ids": [],
+      "supports_latest": false
+    }
+  }
+}

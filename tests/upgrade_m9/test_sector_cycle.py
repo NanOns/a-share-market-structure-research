@@ -11,10 +11,10 @@ from workbench_service.app import Api
 
 def _inputs():
     technical = pd.DataFrame([
-        {"security_id": "SH.1", "trade_date": "2026-09-07", "ret1": .01, "ret5": .05, "ret20": .20, "raw_amount": 100},
-        {"security_id": "SH.2", "trade_date": "2026-09-07", "ret1": -.01, "ret5": .02, "ret20": .10, "raw_amount": 200},
-        {"security_id": "SH.1", "trade_date": "2026-09-08", "ret1": .02, "ret5": .06, "ret20": .22, "raw_amount": 110},
-        {"security_id": "SH.2", "trade_date": "2026-09-08", "ret1": .01, "ret5": .03, "ret20": .12, "raw_amount": 210},
+        {"security_id": "SH.1", "trade_date": "2026-09-07", "ret1": .01, "ret5": .05, "ret20": .20, "rs20": .20, "raw_amount": 100},
+        {"security_id": "SH.2", "trade_date": "2026-09-07", "ret1": -.01, "ret5": .02, "ret20": .10, "rs20": .10, "raw_amount": 200},
+        {"security_id": "SH.1", "trade_date": "2026-09-08", "ret1": .02, "ret5": .06, "ret20": .22, "rs20": .22, "raw_amount": 110},
+        {"security_id": "SH.2", "trade_date": "2026-09-08", "ret1": .01, "ret5": .03, "ret20": .12, "rs20": .12, "raw_amount": 210},
     ])
     memberships = pd.DataFrame([
         {"security_id": "SH.1", "trade_date": "2026-09-07", "sector_id": "INDUSTRY:A", "sector_name": "A", "sector_type": "industry"},
@@ -48,6 +48,109 @@ def test_daily_vector_is_stable_under_input_order_and_rejects_future_or_conflict
     conflict = pd.concat([memberships, memberships.iloc[[0]].assign(sector_name="changed")], ignore_index=True)
     with pytest.raises(SectorCycleError, match="MEMBERSHIP_DUPLICATE_CONFLICT"):
         build_sector_cycle_daily(technical, conflict, cutoff="2026-09-08")
+
+
+def test_common_breadth_excludes_added_members_and_uses_same_valid_denominator():
+    technical = pd.DataFrame([
+        {"security_id": "SH.1", "trade_date": "2026-09-07", "ret1": .01, "ret20": .20},
+        {"security_id": "SH.2", "trade_date": "2026-09-07", "ret1": -.01, "ret20": .10},
+        {"security_id": "SH.1", "trade_date": "2026-09-08", "ret1": .02, "ret20": .22},
+        {"security_id": "SH.3", "trade_date": "2026-09-08", "ret1": -.02, "ret20": .12},
+    ])
+    memberships = pd.DataFrame([
+        {"security_id": "SH.1", "trade_date": "2026-09-07", "sector_id": "INDUSTRY:A", "sector_name": "A", "sector_type": "industry"},
+        {"security_id": "SH.2", "trade_date": "2026-09-07", "sector_id": "INDUSTRY:A", "sector_name": "A", "sector_type": "industry"},
+        {"security_id": "SH.1", "trade_date": "2026-09-08", "sector_id": "INDUSTRY:A", "sector_name": "A", "sector_type": "industry"},
+        {"security_id": "SH.3", "trade_date": "2026-09-08", "sector_id": "INDUSTRY:A", "sector_name": "A", "sector_type": "industry"},
+    ])
+
+    result = build_sector_cycle_daily(technical, memberships, cutoff="2026-09-08")
+    current = result[result.trade_date.astype(str) == "2026-09-08"].iloc[0]
+
+    assert current.breadth_ret1 == pytest.approx(.5)
+    assert pd.isna(current.sector_rs20)
+    assert pd.isna(current.sector_rs20_pct)
+    assert current.breadth_ret1_common == pytest.approx(1.0)
+    assert current.breadth_ret1_common_valid_count == 1
+    assert current.breadth_ret1_common_change_1d == pytest.approx(0.0)
+
+
+def test_cycle_state_metrics_follow_m9_comparable_set_and_high_denominators():
+    technical = pd.DataFrame([
+        {"security_id": security_id, "trade_date": trade_date, "ret1": .01, "ret20": .20, "rs20": .20}
+        for trade_date, security_id in (
+            ("2026-09-07", "SH.1"), ("2026-09-07", "SH.2"), ("2026-09-07", "SH.3"),
+            ("2026-09-08", "SH.1"), ("2026-09-08", "SH.2"), ("2026-09-08", "SH.4"),
+        )
+    ])
+    memberships = pd.DataFrame([
+        {"sector_id": "INDUSTRY:A", "security_id": security_id, "trade_date": trade_date, "sector_name": "A", "sector_type": "industry"}
+        for trade_date, security_id in (
+            ("2026-09-07", "SH.1"), ("2026-09-07", "SH.2"), ("2026-09-07", "SH.3"),
+            ("2026-09-08", "SH.1"), ("2026-09-08", "SH.2"), ("2026-09-08", "SH.4"),
+        )
+    ])
+    member_states = pd.DataFrame([
+        {"sector_id": "INDUSTRY:A", "security_id": "SH.1", "trade_date": "2026-09-07", "member_present": True, "strong_state": True},
+        {"sector_id": "INDUSTRY:A", "security_id": "SH.2", "trade_date": "2026-09-07", "member_present": True, "strong_state": True},
+        {"sector_id": "INDUSTRY:A", "security_id": "SH.3", "trade_date": "2026-09-07", "member_present": True, "strong_state": True},
+        {"sector_id": "INDUSTRY:A", "security_id": "SH.1", "trade_date": "2026-09-08", "member_present": True, "strong_state": True},
+        {"sector_id": "INDUSTRY:A", "security_id": "SH.2", "trade_date": "2026-09-08", "member_present": True, "strong_state": False},
+        {"sector_id": "INDUSTRY:A", "security_id": "SH.3", "trade_date": "2026-09-08", "member_present": False, "strong_state": None},
+        {"sector_id": "INDUSTRY:A", "security_id": "SH.4", "trade_date": "2026-09-08", "member_present": True, "strong_state": True},
+    ])
+    high = pd.DataFrame([
+        {"security_id": security_id, "trade_date": "2026-09-08", **{f"new_high_{width}": value for width in (20, 30, 60, 100)}}
+        for security_id, value in (("SH.1", True), ("SH.2", False), ("SH.4", True))
+    ])
+
+    result = build_sector_cycle_daily(
+        technical,
+        memberships,
+        cutoff="2026-09-08",
+        member_states=member_states,
+        highs=high,
+    )
+    current = result[result.trade_date.astype(str) == "2026-09-08"].iloc[0]
+    assert current.strong_count == 2
+    assert current.high20_count == 2
+    assert current.high20_valid_count == 3
+    assert current.previous_strong_total == 3
+    assert current.comparable_previous_strong == 2
+    assert current.retained_count == 1
+    assert current.entered_count == 0
+    assert current.exited_count == 1
+    assert current.uncomparable_count == 1
+    assert current.retention_rate == pytest.approx(.5)
+    assert current.comparison_coverage == pytest.approx(2 / 3)
+    assert current.diffusion_state == "UNKNOWN"
+
+
+def test_cycle_diffusion_is_expansion_when_comparison_coverage_is_sufficient():
+    technical = pd.DataFrame([
+        {"security_id": security_id, "trade_date": trade_date, "ret1": .01, "ret20": .20, "rs20": .20}
+        for trade_date in ("2026-09-07", "2026-09-08")
+        for security_id in ("SH.1", "SH.2", "SH.3")
+    ])
+    memberships = pd.DataFrame([
+        {"sector_id": "INDUSTRY:A", "security_id": security_id, "trade_date": trade_date, "sector_name": "A", "sector_type": "industry"}
+        for trade_date in ("2026-09-07", "2026-09-08")
+        for security_id in ("SH.1", "SH.2", "SH.3")
+    ])
+    member_states = pd.DataFrame([
+        {"sector_id": "INDUSTRY:A", "security_id": "SH.1", "trade_date": "2026-09-07", "member_present": True, "strong_state": True},
+        {"sector_id": "INDUSTRY:A", "security_id": "SH.2", "trade_date": "2026-09-07", "member_present": True, "strong_state": False},
+        {"sector_id": "INDUSTRY:A", "security_id": "SH.3", "trade_date": "2026-09-07", "member_present": True, "strong_state": False},
+        {"sector_id": "INDUSTRY:A", "security_id": "SH.1", "trade_date": "2026-09-08", "member_present": True, "strong_state": True},
+        {"sector_id": "INDUSTRY:A", "security_id": "SH.2", "trade_date": "2026-09-08", "member_present": True, "strong_state": True},
+        {"sector_id": "INDUSTRY:A", "security_id": "SH.3", "trade_date": "2026-09-08", "member_present": True, "strong_state": False},
+    ])
+    result = build_sector_cycle_daily(technical, memberships, cutoff="2026-09-08", member_states=member_states)
+    current = result[result.trade_date.astype(str) == "2026-09-08"].iloc[0]
+    assert current.comparison_coverage == pytest.approx(1.0)
+    assert current.entered_count == 1
+    assert current.exited_count == 0
+    assert current.diffusion_state == "EXPANSION"
 
 
 def test_cycle_and_timeline_apis_read_only_bound_sector_cycle_snapshot(tmp_path):

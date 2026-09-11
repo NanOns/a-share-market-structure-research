@@ -13,7 +13,7 @@ import pandas as pd
 from .immutable import immutable_slice_state
 
 
-CONTRACT_VERSION = "REFERENCE_CAPABILITY_V1_0"
+CONTRACT_VERSION = "REFERENCE_CAPABILITY_V1_1"
 KNOWN_SHARE_UNITS = frozenset({"SHARES", "SHARE", "股"})
 KNOWN_SHARE_BASES = frozenset({"FLOAT_SHARES", "FREE_FLOAT", "FREE_FLOAT_SHARES", "流通股本"})
 
@@ -103,6 +103,9 @@ def normalize_reference_rows(
             "shares_unit": normalized_unit,
             "shares_basis": normalized_basis,
             "quote_capability": quote_status,
+            "reference_status": str(_value(row, "reference_status") or ("KNOWN" if quote_status == "EXACT" else quote_status)).upper(),
+            "reference_basis": str(_value(row, "reference_basis") or "LOCAL_REFERENCE_EXPLICIT"),
+            "ex_rights_reference_unknown": bool(_value(row, "ex_rights_reference_unknown") if _value(row, "ex_rights_reference_unknown") is not None else True),
             "shares_capability": shares_status,
             "turnover_capability": turnover_status,
             "status_known": quote_status == "EXACT" or shares_status == "EXACT",
@@ -143,7 +146,7 @@ def rows_for_storage(frame: pd.DataFrame, slice_id: str) -> list[tuple[Any, ...]
     rows = []
     for row in frame.itertuples():
         quote = None if row.quote_prev_close is None or pd.isna(row.quote_prev_close) else Decimal(str(row.quote_prev_close)).quantize(Decimal("0.0001"))
-        rows.append((slice_id, row.security_id, row.trade_date, quote, None, None, row.float_shares, row.shares_basis, bool(row.status_known), row.rule_id, row.source_ref, row.observed_at, CONTRACT_VERSION, json.dumps(row.quality_codes, ensure_ascii=False, sort_keys=True)))
+        rows.append((slice_id, row.security_id, row.trade_date, quote, None, None, row.float_shares, row.shares_basis, bool(row.status_known), row.rule_id, row.source_ref, row.observed_at, CONTRACT_VERSION, json.dumps(row.quality_codes, ensure_ascii=False, sort_keys=True), None, row.quote_capability, "KNOWN" if row.quote_capability == "EXACT" else "UNKNOWN", "LOCAL_REFERENCE", None, None, "UNKNOWN", "UNKNOWN", True, False, None))
     return rows
 
 
@@ -156,5 +159,5 @@ def insert_market_reference_rows(connection: Any, slice_id: str, frame: pd.DataF
         raise ReferenceCapabilityError(str(exc)) from exc
     if already_present:
         return len(rows)
-    connection.executemany("insert into market_reference_daily (slice_id,security_id,trade_date,quote_prev_close,limit_up_price,limit_down_price,float_shares,shares_basis,status_known,rule_id,source_ref,observed_at,contract_id,quality_codes) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)", rows)
+    connection.executemany("insert into market_reference_daily (slice_id,security_id,trade_date,quote_prev_close,limit_up_price,limit_down_price,float_shares,shares_basis,status_known,rule_id,source_ref,observed_at,contract_id,quality_codes,source_snapshot_id,quote_capability,reference_status,reference_basis,exchange,board,risk_status,listing_phase,ex_rights_reference_unknown,rule_verified,source_rule_sha256) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", rows)
     return len(rows)

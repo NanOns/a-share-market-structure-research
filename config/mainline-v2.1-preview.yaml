@@ -1,0 +1,37 @@
+{
+  "contract_id": "MAINLINE_STATE_V2_1_PREVIEW",
+  "history_basis": "RECONSTRUCTED",
+  "thresholds": {
+    "percentile_listed": 0.80,
+    "percentile_fading": 0.60,
+    "percentile_broadening": 0.70,
+    "current_coverage_min": 0.80,
+    "minimum_valid_observations": 20,
+    "comparison_days": 3,
+    "reaccelerating_on_list_20_min": 6,
+    "sustained_on_list_5_min": 3,
+    "sustained_consecutive_min": 2,
+    "sustained_breadth_min": 0.50,
+    "sustained_retention_min": 0.60,
+    "new_prior_on_list_5_max": 1,
+    "new_breadth_min": 0.55,
+    "new_amount_min": 1.10,
+    "reaccelerating_percentile_delta_min": 0.10,
+    "reaccelerating_breadth_delta_min": 0.10,
+    "reaccelerating_amount_min": 1.20,
+    "contraction_breadth_delta_max": -0.10,
+    "contraction_retention_max": 0.50,
+    "broadening_breadth_delta_min": 0.10,
+    "fading_percentile_delta_max": -0.15
+  },
+  "classes": [
+    "DATA_INSUFFICIENT",
+    "FADING",
+    "HIGH_LEVEL_CONTRACTION",
+    "REACCELERATING",
+    "SUSTAINED",
+    "NEW",
+    "BROADENING",
+    "OBSERVING"
+  ]
+}

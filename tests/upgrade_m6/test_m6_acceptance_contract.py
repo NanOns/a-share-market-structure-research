@@ -15,15 +15,17 @@ def test_m6_starts_only_after_m5_full_pass():
     assert m5["final_status"] == "FULL_PASS"
     assert m5["next_stage"] == "M6_INDEPENDENT_ACCEPTANCE"
     assert m6["started_after"]["status"] == "FULL_PASS"
-    assert m6["status"] in {"IN_PROGRESS", "AWAITING_EXTERNAL_AUDIT"}
+    assert m6["status"] == "INTERNAL_USER_ACCEPTED"
 
 
-def test_developer_cannot_self_issue_external_audit_pass():
+def test_user_internal_acceptance_replaces_external_audit_gate():
     m6 = load("reports/upgrade_m6/M6_START_RECEIPT.json")
     assert m6["external_audit_claimed"] is False
-    assert m6["production_entry_switch_allowed"] is False
-    contract = (ROOT / "docs/M6_INDEPENDENT_ACCEPTANCE_CONTRACT_V1.md").read_text(encoding="utf-8")
-    assert "不得自行签发 `EXTERNAL_AUDIT_PASS`" in contract
+    assert m6["external_audit_required"] is False
+    assert m6["production_entry_switch_allowed"] is True
+    contract = (ROOT / "docs/M6_INTERNAL_ACCEPTANCE_OVERRIDE_V1.md").read_text(encoding="utf-8")
+    assert "本项目不存在第三方验收方" in contract
+    assert "INTERNAL_USER_ACCEPTED" in contract
     assert "两个真实交易日" in contract
 
 
@@ -40,4 +42,3 @@ def test_m6_acceptance_dates_are_real_published_days():
         }
     assert len(m6["acceptance_dates"]) == 2
     assert set(m6["acceptance_dates"]) <= published
-

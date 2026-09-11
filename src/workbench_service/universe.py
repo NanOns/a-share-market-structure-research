@@ -7,11 +7,16 @@ from __future__ import annotations
 
 from collections import Counter
 from dataclasses import asdict, dataclass
+import json
+from functools import lru_cache
+from pathlib import Path
 import re
 from typing import Iterable, Mapping
 
 
-CONTRACT_ID = "workbench-universe-v2.1"
+CONTRACT_ID = "workbench-universe-v2.2"
+DISPLAY_SCOPE_CONTRACT_ID = "workbench-display-scope-v1"
+STATISTICAL_SCOPE_CONTRACT_ID = "workbench-statistical-scope-v1"
 SECURITY_ID_RE = re.compile(r"^(?P<market>[A-Z][A-Z0-9_]*)\.(?P<code>\d{6})$")
 A_SHARE_RE = re.compile(
     r"^(?:SH\.(?:600|601|603|605|688|689)\d{3}|"
@@ -168,3 +173,130 @@ def summarize_universe(
 
 def is_a_share_security_id(security_id: object) -> bool:
     return bool(A_SHARE_RE.fullmatch(_normal(security_id)))
+
+
+def _default_config_path() -> Path:
+    return Path(__file__).resolve().parents[2] / "config/workbench_universe.yaml"
+
+
+@lru_cache(maxsize=8)
+def _display_scope_from_file(path_text: str) -> dict:
+    """Read the stable display block without adding a YAML dependency."""
+    path = Path(path_text)
+    config = {
+        "version": DISPLAY_SCOPE_CONTRACT_ID,
+        "show_star_stocks": True,
+        "excluded_board_prefixes": (),
+        "include_star_stocks": True,
+        "include_bj_stocks": True,
+    }
+    try:
+        text = path.read_text(encoding="utf-8")
+    except OSError:
+        return config
+    show = re.search(r"(?m)^\s+show_star_stocks:\s*(true|false)\s*$", text, re.IGNORECASE)
+    if show:
+        config["show_star_stocks"] = show.group(1).lower() == "true"
+    statistics = re.search(r"(?m)^\s+include_star_stocks:\s*(true|false)\s*$", text, re.IGNORECASE)
+    if statistics:
+        config["include_star_stocks"] = statistics.group(1).lower() == "true"
+    bj_statistics = re.search(r"(?m)^\s+include_bj_stocks:\s*(true|false)\s*$", text, re.IGNORECASE)
+    if bj_statistics:
+        config["include_bj_stocks"] = bj_statistics.group(1).lower() == "true"
+    prefixes = re.search(r"(?m)^\s+excluded_board_prefixes:\s*\[(.*?)\]\s*$", text)
+    if prefixes:
+        try:
+            values = json.loads("[" + prefixes.group(1) + "]")
+            config["excluded_board_prefixes"] = tuple(
+                str(value).strip().upper() for value in values if str(value).strip()
+            )
+        except (TypeError, ValueError, json.JSONDecodeError):
+            pass
+    if config["show_star_stocks"]:
+        config["excluded_board_prefixes"] = ()
+    return config
+
+
+def workbench_display_scope(root: str | Path | None = None) -> dict:
+    path = (Path(root).resolve() / "config/workbench_universe.yaml") if root else _default_config_path()
+    value = dict(_display_scope_from_file(str(path)))
+    value.pop("include_star_stocks", None)
+    value.pop("include_bj_stocks", None)
+    value["excluded_board_prefixes"] = list(value["excluded_board_prefixes"])
+    return value
+
+
+def workbench_statistical_scope(root: str | Path | None = None) -> dict:
+    """Return the scope used for aggregate market and sector statistics.
+
+    This is intentionally independent from the stock-facing display scope:
+    a user may hide STAR stock rows while the market/sector denominators still
+    include those stocks.
+    """
+    path = (Path(root).resolve() / "config/workbench_universe.yaml") if root else _default_config_path()
+    raw = _display_scope_from_file(str(path))
+    include_star = bool(raw.get("include_star_stocks", True))
+    include_bj = bool(raw.get("include_bj_stocks", True))
+    excluded = []
+    if not include_star:
+        excluded.extend(["SH.688", "SH.689"])
+    if not include_bj:
+        excluded.extend(["BJ.4", "BJ.8", "BJ.92"])
+    return {
+        "version": STATISTICAL_SCOPE_CONTRACT_ID,
+        "include_star_stocks": include_star,
+        "include_bj_stocks": include_bj,
+        "excluded_board_prefixes": excluded,
+    }
+
+
+def is_workbench_visible_security_id(security_id: object, root: str | Path | None = None) -> bool:
+    """Return whether a stock may enter user-facing pages/statistics."""
+    normalized = _normal(security_id)
+    if not is_a_share_security_id(normalized):
+        return False
+    scope = workbench_display_scope(root)
+    return not any(normalized.startswith(prefix) for prefix in scope["excluded_board_prefixes"])
+
+
+def is_workbench_statistical_security_id(security_id: object, root: str | Path | None = None) -> bool:
+    """Return whether a stock belongs to aggregate market/sector statistics."""
+    normalized = _normal(security_id)
+    if not is_a_share_security_id(normalized):
+        return False
+    scope = workbench_statistical_scope(root)
+    return not any(normalized.startswith(prefix) for prefix in scope["excluded_board_prefixes"])
+
+
+def workbench_scope_sql(column: str, root: str | Path | None = None) -> str:
+    """SQL predicate for the configured user-facing stock scope."""
+    scope = workbench_display_scope(root)
+    clauses = [A_SHARE_SQL.format(id=column)]
+    if scope["excluded_board_prefixes"]:
+        exclusions = " or ".join(
+            f"upper({column}) like '{prefix.replace('%', '%%')}%'"
+            for prefix in scope["excluded_board_prefixes"]
+        )
+        clauses.append(f"not ({exclusions})")
+    return "(" + " and ".join(clauses) + ")"
+
+
+def workbench_statistical_scope_sql(column: str, root: str | Path | None = None) -> str:
+    """SQL predicate for aggregate statistics, independent of row display."""
+    scope = workbench_statistical_scope(root)
+    clauses = [A_SHARE_SQL.format(id=column)]
+    if scope["excluded_board_prefixes"]:
+        exclusions = " or ".join(
+            f"upper({column}) like '{prefix.replace('%', '%%')}%'"
+            for prefix in scope["excluded_board_prefixes"]
+        )
+        clauses.append(f"not ({exclusions})")
+    return "(" + " and ".join(clauses) + ")"
+
+
+# Preserve the regex quantifier while leaving the column placeholder available
+# to callers that use ``WORKBENCH_SCOPE_SQL.format(id=...)``.
+WORKBENCH_SCOPE_SQL = re.sub(r"\{(\d+)\}", r"{{\1}}", workbench_scope_sql("{id}"))
+WORKBENCH_STATISTICAL_SCOPE_SQL = re.sub(
+    r"\{(\d+)\}", r"{{\1}}", workbench_statistical_scope_sql("{id}")
+)

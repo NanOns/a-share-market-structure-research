@@ -65,6 +65,17 @@ def test_raw_close_fallback_is_marked_and_adjustment_change_is_not_calculated() 
     assert unsafe["quote_ret1_basis"] == "CORPORATE_ACTION_UNSAFE"
 
 
+def test_raw_close_fallback_requires_comparable_adjustment_metadata() -> None:
+    unknown = build_quote(
+        bar(raw_close=11.0, qfq_mul=None),
+        bar(date=date(2026, 9, 7), raw_close=10.0),
+        publication_id="pub-1",
+    )
+    assert unknown["quote_ret1"] is None
+    assert unknown["quote_state"] == "UNKNOWN_CORPORATE_ACTION"
+    assert unknown["quote_ret1_basis"] == "ADJUSTMENT_METADATA_UNAVAILABLE"
+
+
 def test_missing_previous_close_is_explicitly_unavailable() -> None:
     result = build_quote(bar(), None, publication_id="pub-1")
     assert result["raw_close"] == 10.5
@@ -86,16 +97,10 @@ def test_real_service_uses_previous_market_session_not_previous_publication() ->
     assert result["quote_ret1_basis"] == "RAW_CLOSE_PREVIOUS_TRADING_DAY"
 
 
-def test_api_quotes_bind_source_and_use_raw_close() -> None:
+def test_api_refuses_quote_when_bound_source_hash_has_drifted() -> None:
     api = Api(Path("data/database/market_research.duckdb"))
     publication_id = "452811b8e0c54c029560aae46c6d3081"
-    result = api._quotes(publication_id)["SH.600000"]
-    assert result["raw_close"] == 9.23
-    assert result["latest_price"] == 9.23
-    assert result["quote_prev_close"] == 9.43
-    assert result["quote_ret1_basis"] == "RAW_CLOSE_PREVIOUS_TRADING_DAY"
-    assert result["publication_id"] == publication_id
-    assert "data/normalized/adjusted_daily.parquet#security_id=SH.600000" in result["source_ref"]
+    assert api._quotes(publication_id) == {}
 
 
 def test_api_refuses_publication_without_a_matching_quote_manifest() -> None:

@@ -18,7 +18,13 @@ def test_industry_root_and_leaf_ranks_are_separate():
         _item("INDUSTRY:T0302", "商业连锁", 0.09),
     ]
 
-    _annotate_sector_hierarchy(items, ["2026-09-09"])
+    nodes = {
+        ("INDUSTRY", "INDUSTRY:T0202"): {"hierarchy_level_code": "ROOT", "parent_sector_id": None, "parent_sector_name": None},
+        ("INDUSTRY", "INDUSTRY:T020201"): {"hierarchy_level_code": "LEAF", "parent_sector_id": "INDUSTRY:T0202", "parent_sector_name": "农林牧渔"},
+        ("INDUSTRY", "INDUSTRY:T020202"): {"hierarchy_level_code": "LEAF", "parent_sector_id": "INDUSTRY:T0202", "parent_sector_name": "农林牧渔"},
+        ("INDUSTRY", "INDUSTRY:T0302"): {"hierarchy_level_code": "ROOT", "parent_sector_id": None, "parent_sector_name": None},
+    }
+    _annotate_sector_hierarchy(items, ["2026-09-09"], nodes)
 
     by_id = {item["sector_id"]: item for item in items}
     assert by_id["INDUSTRY:T0202"]["hierarchy_level"] == "一级大板块"
@@ -40,7 +46,7 @@ def test_non_industry_sectors_remain_flat():
         "cells": [{"trade_date": "2026-09-09", "sector_rs20": 0.2}],
     }]
 
-    _annotate_sector_hierarchy(items, ["2026-09-09"])
+    _annotate_sector_hierarchy(items, ["2026-09-09"], {("THEME", "THEME:880001"): {"hierarchy_level_code": "FLAT", "parent_sector_id": None, "parent_sector_name": None}})
 
     assert items[0]["hierarchy_level"] == "平级板块"
     assert items[0]["parent_sector_id"] is None

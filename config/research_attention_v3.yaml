@@ -1,0 +1,199 @@
+{
+  "schema_version": "research-attention-config-v3.0",
+  "format": "JSON_COMPATIBLE_YAML",
+  "algorithm_version": "RESEARCH_V3_PREVIEW_1",
+  "parameter_hash": "c156f72e40bbb77fc8a9de01aee5308a6f775a7a68dcf8762b97fd85da58eb2b",
+  "contracts": {
+    "features": "RESEARCH_FEATURES_PREVIEW_1",
+    "stock_attention": "STOCK_ATTENTION_PREVIEW_1",
+    "sector_current": "SECTOR_CURRENT_PREVIEW_1",
+    "sector_potential": "SECTOR_POTENTIAL_PREVIEW_1",
+    "lifecycle": "SECTOR_SIGNAL_LIFECYCLE_PREVIEW_1",
+    "api": "RESEARCH_V3_API_PREVIEW_1",
+    "reason_catalog": "RESEARCH_V3_REASON_CATALOG_1"
+  },
+  "windows": {
+    "comparison_sessions": 3,
+    "prior_high_sessions": 20,
+    "range_short_sessions": 5,
+    "range_long_sessions": 20,
+    "liquidity_sessions": 20,
+    "rps_windows": [5, 20],
+    "high_windows": [20, 30, 60, 100],
+    "potential_observation_sessions": [3, 5],
+    "lifecycle_max_sessions": 5
+  },
+  "thresholds": {
+    "coverage": {
+      "min_sector_members": 5,
+      "min_member_quote_coverage": 0.7,
+      "min_full_market_quote_coverage": 0.9,
+      "min_sector_cross_section_coverage": 0.7,
+      "min_amount_coverage": 0.8,
+      "min_risk_coverage": 0.7,
+      "min_common_member_coverage": 0.7,
+      "max_rank_universe_change": 0.1,
+      "min_rank_intersection_union": 0.9
+    },
+    "current": {
+      "m1_gt": 0.0,
+      "b1_gte": 0.6,
+      "rel1_gte": 0.003,
+      "p1_gte": 0.8,
+      "min_positive_count": 3,
+      "top1_positive_share_lte": 0.5,
+      "weak_m1_lt": 0.0,
+      "weak_b1_lt": 0.35,
+      "weak_b_delta3_lte": -0.2
+    },
+    "potential_common": {
+      "m1_gte": -0.01,
+      "ma20_width_gte": 0.45,
+      "extended_member_share_lte": 0.5,
+      "min_early_watch_count": 2,
+      "min_setup_or_recovery_count": 2,
+      "monitoring_max_sessions": 1,
+      "min_reset_nonhit_sessions": 2
+    },
+    "potential_branches": {
+      "BREADTH_BUILD": {
+        "dq5_3_gte": 0.1,
+        "b_delta3_gte": 0.1,
+        "ma20_delta3_gte": 0.05,
+        "early_width_gte": 0.1,
+        "amount_A_gte": 1.05
+      },
+      "BASE_BUILD": {
+        "q20_gte": 0.4,
+        "ma20_width_gte": 0.55,
+        "ma20_delta3_gte": 0.0,
+        "setup_count_min": 2,
+        "setup_count_ratio": 0.15,
+        "amount_A_min": 0.8,
+        "amount_A_max": 1.3,
+        "b_delta3_gte": 0.0
+      },
+      "RECOVERY_BUILD": {
+        "rel1_gt": 0.0,
+        "b_delta3_gte": 0.1,
+        "ma20_delta3_gte": 0.0,
+        "amount_A_gte": 1.05,
+        "recovery_or_setup_count_min": 2,
+        "prior_current_lookback_sessions": 10
+      }
+    },
+    "stock_signals": {
+      "BREAKOUT": {
+        "amount_vs_prior20_gte": 1.2,
+        "requires_liquidity": true,
+        "requires_position_fields": true,
+        "reject_extended": true
+      },
+      "SETUP": {
+        "close_to_ma20_min": 0.98,
+        "close_to_ma20_max": 1.08,
+        "ma20_delta3_gte": 0.0,
+        "dist_high20_min": -0.06,
+        "dist_high20_max": 0.0,
+        "range5_to_range20_lte": 0.6,
+        "rps5_delta3_gte": 0.05,
+        "reject_extended": true
+      },
+      "RECOVERY": {
+        "close_to_ma20_gte": 0.98,
+        "rps5_delta3_gt": 0.0,
+        "amount_vs_prior20_gte": 1.05,
+        "requires_previous_close_below_ma5": true,
+        "reject_extended": true
+      },
+      "TREND_BACKGROUND": {
+        "close_gte_ma20": true,
+        "ma20_delta5_gt": 0.0,
+        "rps20_gte": 0.7
+      },
+      "STRUCTURE_BREAK": {
+        "close_to_ma20_lt": 0.98,
+        "consecutive_valid_sessions": 2
+      },
+      "risk": {
+        "bias20_gte": 0.15,
+        "extension_z20_gte": 1.5,
+        "liquidity20_amount_gte": 20000000
+      }
+    },
+    "roles": {
+      "TODAY_LEADER": {
+        "ret1_gt": 0.0,
+        "board_percentile_gte": 0.8,
+        "preview_limit": 5
+      },
+      "CURRENT_RESEARCH": {
+        "allowed_signals": ["BREAKOUT", "RECOVERY"],
+        "preview_limit": 5
+      },
+      "EARLY_WATCH": {
+        "allowed_signals": ["SETUP", "RECOVERY"],
+        "preview_limit": 5
+      },
+      "ALL_MEMBERS": {
+        "page_size_default": 50
+      }
+    }
+  },
+  "display_limits": {
+    "home_track_cards": 6,
+    "card_preview_members": 3,
+    "focus_max": 20,
+    "focus_default": 10,
+    "individual_trigger_max": 10,
+    "page_size_default": 20,
+    "page_size_max": 50,
+    "reason_max_per_row": 3
+  },
+  "null_logic": {
+    "quality_values": ["READY", "PARTIAL", "UNAVAILABLE"],
+    "boolean_logic": "TRUE_IF_ALL_REQUIRED_TRUE; FALSE_IF_KNOWN_FALSE; OTHERWISE_UNKNOWN",
+    "missing_is_false": false,
+    "division_by_zero": "NULL",
+    "missing_window": "NULL",
+    "null_rank_order": "LAST",
+    "rank_tie_breakers": ["security_id", "sector_id"],
+    "comparison_dates": "MASTER_TRADING_CALENDAR_ONLY",
+    "price_rounding": "NONE_BEFORE_COMPARISON"
+  },
+  "capabilities": {
+    "RESEARCH_LOCAL_CLOSE": {
+      "status": "NOT_BUILT",
+      "mode": "LOCAL_CLOSE_ONLY"
+    },
+    "RESEARCH_LIVE": {
+      "status": "NOT_BUILT",
+      "mode": "VERIFIED_DATASET_REQUIRED"
+    },
+    "HOT_RANKINGS": {
+      "status": "ENABLED",
+      "mode": "DIRECT_EPHEMERAL_LATEST",
+      "persist_payload": false,
+      "persist_rows": false,
+      "persist_batches": false,
+      "v3_use": "INHERIT_LEGACY_ONLY_UNTIL_P09_REVALIDATION"
+    },
+    "QUOTES_LATEST": {
+      "status": "NOT_VERIFIED",
+      "mode": "DISPLAY_ENRICHMENT_ONLY",
+      "formal_api_enabled": false
+    },
+    "EXTERNAL_EVIDENCE": {
+      "status": "UNAVAILABLE"
+    },
+    "LH_LIST": {
+      "status": "DEFERRED"
+    }
+  },
+  "source_status_snapshot": {
+    "runtime_gate": "config/m14_runtime_capabilities_v1.json",
+    "source_registry": "config/m14_source_registry_v1.json",
+    "conflict_policy": "do_not_promote_v3_capability_from_static_or_legacy_status",
+    "online_revalidation_stage": "P09-01"
+  }
+}

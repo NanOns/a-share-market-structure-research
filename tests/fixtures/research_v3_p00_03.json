@@ -1,0 +1,49 @@
+{
+  "fixture_contract": "RESEARCH_V3_SYNTHETIC_FIXTURES_1",
+  "is_synthetic": true,
+  "not_market_data": true,
+  "cases": [
+    {
+      "fixture_id": "S_CURRENT",
+      "kind": "SECTOR",
+      "input": {"m1": 0.02, "b1": 0.75, "rel1": 0.01, "p1": 0.9, "positive_count": 15, "member_count": 20, "top1_positive_share": 0.12},
+      "expected": {"status": "READY", "current_eligible": true, "potential_eligible": false, "branch": null, "reason_codes": ["CURRENT_QUALIFIED"]}
+    },
+    {
+      "fixture_id": "S_BUILD",
+      "kind": "SECTOR",
+      "input": {"m1": 0.002, "b1": 0.54, "ma20_width": 0.6, "dq5_3": 0.12, "b_delta3": 0.12, "ma20_delta3": 0.08, "early_width": 0.2, "early_count": 4, "amount_A": 1.1, "member_count": 20, "quote_coverage": 1.0, "risk_coverage": 1.0},
+      "expected": {"status": "READY", "current_eligible": false, "potential_eligible": true, "branch": "BREADTH_BUILD", "reason_codes": ["BREADTH_IMPROVING"]}
+    },
+    {
+      "fixture_id": "S_BASE",
+      "kind": "SECTOR",
+      "input": {"m1": 0.0, "b1": 0.5, "q20": 0.5, "ma20_width": 0.6, "ma20_delta3": 0.01, "setup_count": 4, "setup_valid_count": 20, "amount_A": 1.0, "b_delta3": 0.02, "dq5_3": 0.0, "member_count": 20, "quote_coverage": 1.0, "risk_coverage": 1.0},
+      "expected": {"status": "READY", "current_eligible": false, "potential_eligible": true, "branch": "BASE_BUILD", "reason_codes": ["BASE_CONVERGING"]}
+    },
+    {
+      "fixture_id": "S_FALSE",
+      "kind": "SECTOR",
+      "input": {"m1": 0.002, "b1": 0.54, "ma20_width": 0.6, "dq5_3": 0.12, "b_delta3": -0.05, "ma20_delta3": -0.02, "early_width": 0.2, "early_count": 4, "amount_A": 1.1, "member_count": 20, "quote_coverage": 1.0, "risk_coverage": 1.0},
+      "expected": {"status": "READY", "current_eligible": false, "potential_eligible": false, "branch": null, "reason_codes": ["CURRENT_GATE_FAILED"]}
+    },
+    {
+      "fixture_id": "S_NULL",
+      "kind": "SECTOR",
+      "input": {"m1": 0.002, "b1": 0.54, "ma20_width": 0.6, "dq5_3": 0.12, "b_delta3": -0.05, "ma20_delta3": -0.02, "early_width": 0.2, "early_count": 4, "amount_A": null, "member_count": 20, "quote_coverage": 1.0, "risk_coverage": 1.0},
+      "expected": {"status": "PARTIAL", "current_eligible": null, "potential_eligible": null, "branch": null, "reason_codes": ["AMOUNT_A_MISSING"]}
+    },
+    {
+      "fixture_id": "STOCK_SETUP",
+      "kind": "STOCK",
+      "input": {"close": 10.0, "ma20": 10.0, "ma20_prior3": 9.95, "prior_high20": 10.3, "range5": 0.02, "range20": 0.1, "rps5_delta3": 0.08, "liquidity20": 50000000, "ret1": -0.001, "extended": false},
+      "expected": {"status": "READY", "setup": true, "early_watch": true, "today_leader": false, "reason_codes": ["SETUP", "EARLY_WATCH"]}
+    },
+    {
+      "fixture_id": "STOCK_HIGH",
+      "kind": "STOCK",
+      "input": {"ret1": 0.1, "board_percentile": 1.0, "bias20": 0.2, "extension_z20": 1.8, "liquidity20": 50000000, "extended": true},
+      "expected": {"status": "READY", "setup": false, "early_watch": false, "today_leader": true, "current_research": false, "reason_codes": ["TODAY_LEADER", "EXTENDED"]}
+    }
+  ]
+}

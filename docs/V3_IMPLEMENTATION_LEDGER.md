@@ -24,6 +24,8 @@
 
 | P00-02 | PASS | codex/v3-upgrade-analysis @ 5ae8de4；主库以 read_only=True 打开；采集时间 2026-09-12T00:15:38+08:00 | 新增 docs/V3_P00_02_CAPACITY_BASELINE.md；未修改数据库、data、runtime、TDX | DuckDB PRAGMA database_size、全表 COUNT、业务键/slice 键、hash 分组、目录字节/文件数、发布引用链；不以测试替代容量验收 | 75 表行数、数据库块占用、库外目录、关系边摘要、high window、内容摘要重复和当前发布引用均已固化 | storage_objects 标记 referenced=true 但当前 publication 链实际引用 0；backup catalog 与物理文件需后续对照；可回收大小均按证据标注 UNKNOWN | P00-03：冻结配置、DTO、合成夹具和 capability 状态 |
 
+| P00-03 | PASS | codex/v3-upgrade-analysis @ 3815435；V3 主实施文档工作区版本 | 新增 V3 配置、DTO/schema、reason catalog、合成夹具、合同校验器和 P00-03 测试；未改数据库和旧业务路径 | tests/upgrade_v3/test_p00_03_contracts.py：5 passed；覆盖参数哈希、枚举、未知字段、NULL规则、reason 标签和合成夹具标记 | 冻结 RESEARCH_V3_PREVIEW_1、CURRENT/POTENTIAL/股票角色阈值、分页/排序/NULL策略、API01–15 核心 DTO；7 个夹具全部 synthetic | 生产 app 尚未消费 V3 合同资产，属于本阶段刻意边界；HOT_RANKINGS 继承旧 direct-ephemeral 状态，但 V3 在线能力仍等待 P09-01 复核 | P01-01：缩短数据库锁作用域 |
+
 ### P00-01 阶段合同
 
 本阶段只做只读基线审计：
@@ -156,3 +158,12 @@ app.py 的 handler 初始化 HistoryJobService、AnalysisActivationService、One
 验收结论：P00-01、P00-02 均 PASS。P00-02 已完成只读容量与历史覆盖基线，未执行任何清理或数据库写入；下一阶段为 P00-03。在 P00-03 完成前不启动 scanner。
 
 P00-02 详细报告：[V3_P00_02_CAPACITY_BASELINE.md](V3_P00_02_CAPACITY_BASELINE.md)。
+
+P00-03 验收结论：PASS。V3 配置参数已用单一参数哈希冻结；schema 的 required、nullable、枚举和 unknown-key 规则已固化；reason 中文标签有目录校验；7 个合成夹具明确不是行情样本；现有 capability 状态已登记且未把 NOT_VERIFIED 自动打开。下一阶段进入 P01-01，仍不启动 scanner。
+
+P00-03 合同资产 SHA-256：
+
+- config/research_attention_v3.yaml：2217E478EC326219DC8F698D1F6E5C8532CB713C2479C46C48CCF48F87239D06
+- config/research_v3_schema.yaml：008EBCFD4405D3485BCDCD363C8432665483533B042C0364B9F992CCFC8FFADC
+- config/research_v3_reasons.yaml：2E9DF59A1FFEFE8A97C2F0E9C1CCE88F90636499671F8A8B7EEB3A754B1D24FE
+- tests/fixtures/research_v3_p00_03.json：9FE4EB4FAF1E113B09EC279C83FAD604413121FC83F360EB003D81CCE49A3CC8

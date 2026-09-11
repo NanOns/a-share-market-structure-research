@@ -1,0 +1,152 @@
+{
+  "schema_version": "research-v3-schema-v1.0",
+  "format": "JSON_COMPATIBLE_YAML",
+  "api_contract": "RESEARCH_V3_API_PREVIEW_1",
+  "unknown_keys": "REJECT",
+  "null_policy": "Only fields marked nullable may be null; missing required fields fail.",
+  "enums": {
+    "mode": ["CLOSE", "LIVE"],
+    "track": ["CURRENT", "POTENTIAL", "WEAK", "ALL"],
+    "role": ["TODAY_LEADER", "CURRENT_RESEARCH", "EARLY_WATCH", "ALL_MEMBERS"],
+    "list_type": ["CURRENT_FOCUS", "EARLY_FOCUS", "INDIVIDUAL"],
+    "branch": ["BREADTH_BUILD", "BASE_BUILD", "RECOVERY_BUILD"],
+    "lifecycle": ["QUALIFIED", "MONITORING", "CONFIRMED", "INVALIDATED", "CONDITION_LOST", "EXPIRED", "DATA_GAP"],
+    "status": ["READY", "EMPTY", "UNAVAILABLE", "NOT_BUILT", "PARTIAL"],
+    "quality": ["READY", "PARTIAL", "UNAVAILABLE"],
+    "reason_operator": [">", ">=", "<", "<=", "=", "IN", "NOT_IN", "IS", "IS_NOT"]
+  },
+  "objects": {
+    "Context": {
+      "required": ["context_id", "run_id", "mode", "local_date", "publication_id", "snapshot_id", "algorithm_version", "capabilities"],
+      "additional_properties": false,
+      "properties": {
+        "context_id": {"type": "string", "nullable": false},
+        "run_id": {"type": "string", "nullable": false},
+        "mode": {"type": "enum:mode", "nullable": false},
+        "local_date": {"type": "date", "nullable": false},
+        "online_date": {"type": "date", "nullable": true},
+        "publication_id": {"type": "string", "nullable": false},
+        "snapshot_id": {"type": "string", "nullable": false},
+        "algorithm_version": {"type": "string", "nullable": false},
+        "capabilities": {"type": "object", "nullable": false}
+      }
+    },
+    "Reason": {
+      "required": ["code", "label", "observed", "operator", "threshold", "unit", "as_of"],
+      "additional_properties": false,
+      "properties": {
+        "code": {"type": "string", "nullable": false},
+        "label": {"type": "string", "nullable": false},
+        "observed": {"type": "scalar", "nullable": true},
+        "operator": {"type": "enum:reason_operator", "nullable": true},
+        "threshold": {"type": "scalar", "nullable": true},
+        "unit": {"type": "string", "nullable": true},
+        "as_of": {"type": "date", "nullable": true}
+      }
+    },
+    "SectorCard": {
+      "required": ["sector_id", "name", "type", "track", "branch", "lifecycle", "signal_date", "m1", "b1", "rel1", "amount_sum", "amount_coverage", "amount_A", "quote_coverage", "member_count", "today_leader_count", "early_watch_count", "reasons", "waiting_for", "invalid_if", "preview_members", "quote_as_of", "local_as_of"],
+      "additional_properties": false,
+      "properties": {
+        "sector_id": {"type": "string", "nullable": false},
+        "name": {"type": "string", "nullable": false},
+        "type": {"type": "string", "nullable": false},
+        "track": {"type": "enum:track", "nullable": false},
+        "branch": {"type": "enum:branch", "nullable": true},
+        "lifecycle": {"type": "enum:lifecycle", "nullable": false},
+        "signal_date": {"type": "date", "nullable": false},
+        "m1": {"type": "number", "nullable": true},
+        "b1": {"type": "number", "nullable": true},
+        "rel1": {"type": "number", "nullable": true},
+        "amount_sum": {"type": "number", "nullable": true},
+        "amount_coverage": {"type": "number", "nullable": true},
+        "amount_A": {"type": "number", "nullable": true},
+        "quote_coverage": {"type": "number", "nullable": true},
+        "member_count": {"type": "integer", "nullable": false},
+        "today_leader_count": {"type": "integer", "nullable": false},
+        "early_watch_count": {"type": "integer", "nullable": false},
+        "reasons": {"type": "array:Reason", "nullable": false},
+        "waiting_for": {"type": "array:string", "nullable": false},
+        "invalid_if": {"type": "array:string", "nullable": false},
+        "preview_members": {"type": "array:MemberRow", "nullable": false},
+        "quote_as_of": {"type": "timestamp", "nullable": true},
+        "local_as_of": {"type": "date", "nullable": false}
+      }
+    },
+    "MemberRow": {
+      "required": ["security_id", "name", "price", "ret1", "amount", "quote_as_of", "quote_source", "role", "role_rank", "today_rank", "rank_denominator", "total_member_count", "rps20", "bias20", "risk_codes", "selection_reason", "waiting_for", "invalid_if", "primary_sector", "other_sector_count"],
+      "additional_properties": false,
+      "properties": {
+        "security_id": {"type": "string", "nullable": false},
+        "name": {"type": "string", "nullable": false},
+        "price": {"type": "number", "nullable": true},
+        "ret1": {"type": "number", "nullable": true},
+        "amount": {"type": "number", "nullable": true},
+        "quote_as_of": {"type": "timestamp", "nullable": true},
+        "quote_source": {"type": "string", "nullable": true},
+        "role": {"type": "enum:role", "nullable": false},
+        "role_rank": {"type": "integer", "nullable": false},
+        "today_rank": {"type": "integer", "nullable": true},
+        "rank_denominator": {"type": "integer", "nullable": true},
+        "total_member_count": {"type": "integer", "nullable": false},
+        "rps20": {"type": "number", "nullable": true},
+        "bias20": {"type": "number", "nullable": true},
+        "risk_codes": {"type": "array:string", "nullable": false},
+        "selection_reason": {"type": "array:Reason", "nullable": false},
+        "waiting_for": {"type": "array:string", "nullable": false},
+        "invalid_if": {"type": "array:string", "nullable": false},
+        "primary_sector": {"type": "string", "nullable": true},
+        "other_sector_count": {"type": "integer", "nullable": false}
+      }
+    },
+    "PageEnvelope": {
+      "required": ["status", "total_eligible", "returned_count", "total", "page", "page_size", "has_more", "items", "context"],
+      "additional_properties": false,
+      "properties": {
+        "status": {"type": "enum:status", "nullable": false},
+        "total_eligible": {"type": "integer", "nullable": false},
+        "returned_count": {"type": "integer", "nullable": false},
+        "total": {"type": "integer", "nullable": false},
+        "page": {"type": "integer", "nullable": false},
+        "page_size": {"type": "integer", "nullable": false},
+        "has_more": {"type": "boolean", "nullable": false},
+        "items": {"type": "array:SectorCard", "nullable": false},
+        "context": {"type": "object:Context", "nullable": true}
+      }
+    }
+  },
+  "requests": {
+    "research_context": {
+      "required": ["publication_id", "trade_date", "mode"],
+      "additional_properties": false,
+      "properties": {
+        "publication_id": {"type": "string", "nullable": false},
+        "trade_date": {"type": "date", "nullable": false},
+        "mode": {"type": "enum:mode", "nullable": false}
+      }
+    },
+    "research_list": {
+      "required": ["context_id", "page", "page_size"],
+      "additional_properties": false,
+      "properties": {
+        "context_id": {"type": "string", "nullable": false},
+        "track": {"type": "enum:track", "nullable": true},
+        "role": {"type": "enum:role", "nullable": true},
+        "list_type": {"type": "enum:list_type", "nullable": true},
+        "page": {"type": "integer", "nullable": false},
+        "page_size": {"type": "integer", "nullable": false},
+        "q": {"type": "string", "nullable": true}
+      }
+    },
+    "hot_rankings": {
+      "required": ["source", "list_type", "page", "page_size"],
+      "additional_properties": false,
+      "properties": {
+        "source": {"type": "string", "nullable": false},
+        "list_type": {"type": "string", "nullable": false},
+        "page": {"type": "integer", "nullable": false},
+        "page_size": {"type": "integer", "nullable": false}
+      }
+    }
+  }
+}

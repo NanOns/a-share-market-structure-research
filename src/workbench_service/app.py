@@ -211,8 +211,24 @@ class Api:
   if list_type not in (None, '', 'A_STOCK_HOT_RANK', 'HOUR_NORMAL'):
    raise ValueError('HOT_RANK_LIST_TYPE_UNSUPPORTED')
   latest=self.publications().get('latest_publication_id')
-  lookup=(lambda ids:self._security_names(latest,ids)) if latest else (lambda ids:{})
-  return build_hot_rank_direct_response(root=self._root,source=source,page=int(page),page_size=int(page_size),co_listed=co_listed,name_lookup=lookup,quote_fetcher=fetch_eastmoney_quotes)
+  # P01-01 boundary: the network phase must run without request_scope().
+  # Names are attached only after all remote source/quote calls complete, in
+  # one short local read.  The handler routes this method outside the request
+  # scope; publications() and _security_names() retain their own short locks.
+  result=build_hot_rank_direct_response(root=self._root,source=source,page=int(page),page_size=int(page_size),co_listed=co_listed,name_lookup=None,quote_fetcher=fetch_eastmoney_quotes)
+  views=result.get('source_views') or [result]
+  items=[item for view in views for item in view.get('items',[]) if isinstance(item,dict)]
+  security_ids={item.get('security_id') for item in items if item.get('security_id')}
+  if latest and security_ids:
+   names=self._security_names(latest,security_ids)
+   for item in items:
+    security_id=item.get('security_id')
+    if security_id in names:
+     item['security_name']=names[security_id]
+     item['mapping_status']='MAPPED'
+    elif not item.get('security_name'):
+     item['mapping_status']='UNMAPPED'
+  return result
  def sector_cycle(self,p,page=1,size=20,sector_type='',q='',days=10,metric='rank',hierarchy_level='',basis='AUTO',trade_date=None):
   if metric not in ('rank','sector_rs20_pct','breadth_ret1'): raise ValueError('SECTOR_CYCLE_METRIC_UNSUPPORTED')
   days=max(1,min(30,int(days)));size=max(1,min(MAX_PAGE_SIZE,int(size)));page=max(1,int(page));self._pub(p)
@@ -1600,8 +1616,15 @@ def make_handler(root,db):
  class Handler(BaseHTTPRequestHandler):
   def _send(self,status,body,ctype='application/json; charset=utf-8'):
    raw=(json.dumps(_json_safe(body),ensure_ascii=False,default=_json_default,allow_nan=False) if not isinstance(body,bytes) else body); raw=raw.encode() if isinstance(raw,str) else raw
-   self.send_response(status); self.send_header('Content-Type',ctype); self.send_header('Content-Length',str(len(raw))); self.send_header('Cache-Control','no-store'); self.end_headers(); self.wfile.write(raw)
+   try:
+    self.send_response(status); self.send_header('Content-Type',ctype); self.send_header('Content-Length',str(len(raw))); self.send_header('Cache-Control','no-store'); self.end_headers(); self.wfile.write(raw)
+   except (BrokenPipeError,ConnectionAbortedError,ConnectionResetError,TimeoutError):
+    self.close_connection=True
+    return False
+   return True
   def do_GET(self):
+   if urlparse(self.path).path=='/api/hot-rankings':
+    return self._do_GET()
    with api.request_scope():
     return self._do_GET()
   def _do_GET(self):

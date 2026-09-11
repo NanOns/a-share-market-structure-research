@@ -25,6 +25,7 @@
 | P00-02 | PASS | codex/v3-upgrade-analysis @ 5ae8de4；主库以 read_only=True 打开；采集时间 2026-09-12T00:15:38+08:00 | 新增 docs/V3_P00_02_CAPACITY_BASELINE.md；未修改数据库、data、runtime、TDX | DuckDB PRAGMA database_size、全表 COUNT、业务键/slice 键、hash 分组、目录字节/文件数、发布引用链；不以测试替代容量验收 | 75 表行数、数据库块占用、库外目录、关系边摘要、high window、内容摘要重复和当前发布引用均已固化 | storage_objects 标记 referenced=true 但当前 publication 链实际引用 0；backup catalog 与物理文件需后续对照；可回收大小均按证据标注 UNKNOWN | P00-03：冻结配置、DTO、合成夹具和 capability 状态 |
 
 | P00-03 | PASS | codex/v3-upgrade-analysis @ 3815435；V3 主实施文档工作区版本 | 新增 V3 配置、DTO/schema、reason catalog、合成夹具、合同校验器和 P00-03 测试；未改数据库和旧业务路径 | tests/upgrade_v3/test_p00_03_contracts.py：5 passed；覆盖参数哈希、枚举、未知字段、NULL规则、reason 标签和合成夹具标记 | 冻结 RESEARCH_V3_PREVIEW_1、CURRENT/POTENTIAL/股票角色阈值、分页/排序/NULL策略、API01–15 核心 DTO；7 个夹具全部 synthetic | 生产 app 尚未消费 V3 合同资产，属于本阶段刻意边界；HOT_RANKINGS 继承旧 direct-ephemeral 状态，但 V3 在线能力仍等待 P09-01 复核 | P01-01：缩短数据库锁作用域 |
+| P01-01 | PASS | codex/v3-upgrade-analysis @ 3f6f664；主实施文档工作区版本；未访问 TDX | 修改 `src/workbench_service/app.py`：热榜 GET 退出请求级锁、远程等待后批量补名称、响应写入处理客户端断开；新增 `docs/V3_P01_01_LOCK_SCOPE.md` 与阶段回归测试 | `tests/upgrade_v3/test_p01_01_lock_scope.py` 3 passed；P00-03 5 passed；M14 hot-rank 3 passed；py_compile 与 diff check 通过 | 注入最长 8 秒 direct 等待期间，同一 Api 的本地 publication 读 `<0.5s`；普通 GET 仍保留 request_scope；POST 写任务边界未扩大；无数据库/TDX/热榜持久化写入 | M15 既有资源版本断言 `m15-03` 与当前 `m15-04` 不一致，未纳入本阶段；HOT_RANKINGS V3 capability 仍等 P09-01 | P01-02：修复热榜分页与单源失败语义 |
 
 ### P00-01 阶段合同
 

@@ -17,7 +17,12 @@ class VersionedMembershipResolver(MembershipResolver):
 
     def edges_for_snapshot(self, legacy_membership_snapshot_id: str) -> tuple[RelationEdge, ...]:
         row = self.connection.execute(
-            "SELECT source_scope, revision_no FROM relation_snapshot_bindings WHERE legacy_membership_snapshot_id=?",
+            """
+            SELECT o.source_scope, b.revision_no
+            FROM relation_snapshot_bindings b
+            JOIN relation_observations o ON o.observation_id=b.observation_id
+            WHERE b.legacy_membership_snapshot_id=?
+            """,
             [legacy_membership_snapshot_id],
         ).fetchone()
         if not row:

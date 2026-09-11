@@ -241,14 +241,18 @@ class RelationRepository:
         current = self.current_revision(scope)
 
         if not source_complete:
-            return self._record_invalid_observation(observation, scope, timestamp, effective_date, hashes_json, current, hierarchy_version)
+            return self._record_invalid_observation(
+                observation, scope, timestamp, effective_date, hashes_json, current, hierarchy_version,
+            )
 
         try:
             normalized_edges = normalize_edges(edges, scope)
         except RelationInputError as exc:
             if str(exc) != "RELATION_SOURCE_EMPTY":
                 raise
-            return self._record_invalid_observation(observation, scope, timestamp, effective_date, hashes_json, current, hierarchy_version)
+            return self._record_invalid_observation(
+                observation, scope, timestamp, effective_date, hashes_json, current, hierarchy_version,
+            )
         normalized_attributes = normalize_attributes(attributes, scope)
         previous_edges = self.resolver.edges_at(scope, current) if current is not None else ()
         new_hash = edge_content_hash(scope, normalized_edges)
@@ -305,6 +309,7 @@ class RelationRepository:
             "observation_id": observation,
             "revision_no": revision_no,
             "attribute_revision": attributes_result["attribute_revision"],
+            "attribute_version_id": attributes_result["attribute_version_id"],
             "diff": diff.as_dict(),
         }
 
@@ -390,7 +395,11 @@ class RelationRepository:
             version_id = "attr-" + _hash_payload(item)[:24]
             version_ids.append(version_id)
             self.connection.execute(
-                "INSERT INTO sector_attribute_versions VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                """
+                INSERT INTO sector_attribute_versions
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                ON CONFLICT (source_scope, sector_id, attribute_version_id) DO NOTHING
+                """,
                 [scope, item["sector_id"], version_id, item["name"], item["type"], item["role"], item["semantic_bucket"], _hash_payload(item)],
             )
             self.connection.execute(

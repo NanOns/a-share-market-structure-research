@@ -126,6 +126,215 @@ class StorageGovernance:
         return plan
 
     @staticmethod
+    def _v3_json_source_bundle_ids(value: Any, known: set[str]) -> set[str]:
+        found: set[str] = set()
+        if isinstance(value, dict):
+            for key, item in value.items():
+                if key in {"source_bundle_id", "source_manifest_sha256"} and str(item) in known:
+                    found.add(str(item))
+                found.update(StorageGovernance._v3_json_source_bundle_ids(item, known))
+        elif isinstance(value, list):
+            for item in value:
+                found.update(StorageGovernance._v3_json_source_bundle_ids(item, known))
+        return found
+
+    @staticmethod
+    def _v3_bundle_identity(value: dict[str, Any]) -> bool:
+        claimed=value.get("source_bundle_id")
+        unsigned=dict(value)
+        unsigned.pop("source_bundle_id",None)
+        actual=hashlib.sha256(_payload(unsigned).encode("utf-8")).hexdigest()
+        return bool(claimed and claimed==actual and value.get("contract")=="source-bundle-v1.0" and value.get("read_only") is True)
+
+    def _v3_bundle_package_path(self, bundle: dict[str, Any]) -> Path:
+        raw=(bundle.get("package") or {}).get("staged_path")
+        if raw:
+            candidate=Path(raw)
+            candidate=candidate if candidate.is_absolute() else self.root/candidate
+        else:
+            date_key=str(bundle.get("target_trade_date","")).replace("-","")
+            candidate=self.root/"data/input_staging/packages"/date_key/"hsjday.zip"
+        if candidate.is_symlink(): raise ConfigValidationError("V3_INPUT_SYMLINK_FORBIDDEN")
+        candidate=candidate.resolve()
+        staging=(self.root/"data/input_staging").resolve()
+        if candidate!=staging and staging not in candidate.parents:
+            raise ConfigValidationError("V3_INPUT_PATH_OUTSIDE_STAGING")
+        return candidate
+
+    def preview_v3_input_storage(
+        self,
+        *,
+        as_of: date,
+        recent_bundle_count: int = 2,
+        phase1_cache_budget_bytes: int = 2 * 1024**3,
+    ) -> dict[str, Any]:
+        """Read-only V3 input/cache retention preview.
+
+        This intentionally does not call :meth:`preview_cleanup`: V3 source
+        packages, extracted inputs, metadata snapshots and phase-1 cache have
+        different protection contracts from registered analysis objects.  No
+        database table is written by this method.
+        """
+        if recent_bundle_count != 2:
+            raise ConfigValidationError("V3_RECENT_BUNDLE_POLICY_MUST_BE_TWO")
+        if not isinstance(phase1_cache_budget_bytes,int) or isinstance(phase1_cache_budget_bytes,bool) or phase1_cache_budget_bytes < 1:
+            raise ConfigValidationError("V3_CACHE_BUDGET_INVALID")
+        data_root=self.root/"data"
+        bundle_root=data_root/"source_bundles"
+        receipts=sorted(bundle_root.glob("*/source_bundle.json"))
+        bundles: dict[str,dict[str,Any]]={}
+        issues=[]
+        for receipt in receipts:
+            try:
+                value=json.loads(receipt.read_text(encoding="utf-8"))
+                bundle_id=str(value.get("source_bundle_id", ""))
+                if not self._v3_bundle_identity(value) or receipt.parent.name!=bundle_id:
+                    issues.append({"path":str(receipt),"reason":"BUNDLE_RECEIPT_IDENTITY_INVALID"})
+                    continue
+                bundles[bundle_id]=value
+            except (OSError, json.JSONDecodeError, TypeError, ValueError) as exc:
+                issues.append({"path":str(receipt),"reason":"BUNDLE_RECEIPT_UNREADABLE","detail":str(exc)})
+        known=set(bundles)
+        used=set()
+        active=set()
+        usage_evidence=[]
+        database_catalog_ids: set[str] | None = None
+        with duckdb.connect(str(self.database_path), read_only=True) as con:
+            if self._table_exists(con,"source_bundles"):
+                database_catalog_ids={str(row[0]) for row in con.execute("SELECT source_bundle_id FROM source_bundles").fetchall()}
+                for bundle_id in sorted(known-database_catalog_ids):
+                    issues.append({"bundle_id":bundle_id,"reason":"PHYSICAL_RECEIPT_NOT_IN_DATABASE_CATALOG"})
+                for bundle_id in sorted(database_catalog_ids-known):
+                    issues.append({"bundle_id":bundle_id,"reason":"DATABASE_CATALOG_RECEIPT_MISSING"})
+            if self._table_exists(con,"publications"):
+                rows=con.execute("SELECT publication_id,source_manifest_sha256,source_path,status FROM publications WHERE status='SUCCESS'").fetchall()
+                for publication_id, manifest_hash, source_path, status in rows:
+                    candidates={str(manifest_hash)} if manifest_hash else set()
+                    candidates.update(part for part in str(source_path or "").replace("\\","/").split("/") if part in known)
+                    matched=candidates&known
+                    used.update(matched)
+                    if matched: usage_evidence.append({"kind":"publication","id":str(publication_id),"bundle_ids":sorted(matched)})
+            if self._table_exists(con,"jobs"):
+                rows=con.execute("SELECT job_id,payload_json FROM jobs WHERE status IN ('QUEUED','RUNNING','INTERRUPTED')").fetchall()
+                for job_id, raw in rows:
+                    try: value=json.loads(raw or "{}")
+                    except json.JSONDecodeError: continue
+                    matched=self._v3_json_source_bundle_ids(value,known)
+                    active.update(matched); used.update(matched)
+                    if matched: usage_evidence.append({"kind":"active_job","id":str(job_id),"bundle_ids":sorted(matched)})
+        if active:
+            issues.append({"reason":"ACTIVE_TASK_BUNDLES_PROTECTED","bundle_ids":sorted(active)})
+        ordered_used=sorted(
+            (bundles[bundle_id] for bundle_id in used),
+            key=lambda value:(str(value.get("target_trade_date","")),str(value.get("source_bundle_id",""))),
+            reverse=True,
+        )
+        retained_ids={str(value["source_bundle_id"]) for value in ordered_used[:recent_bundle_count]}
+        retained_roots={str((value.get("extraction") or {}).get("root","")) for value in ordered_used[:recent_bundle_count]}
+
+        package_rows=[]
+        package_seen=set()
+        extraction_rows=[]
+        extraction_seen=set()
+        metadata_rows=[]
+        metadata_hashes: dict[str,list[dict[str,Any]]]={}
+        for bundle_id, bundle in sorted(bundles.items()):
+            package=bundle.get("package") or {}
+            try:
+                package_path=self._v3_bundle_package_path(bundle)
+                package_error=None
+            except ConfigValidationError as exc:
+                package_path=None; package_error=str(exc)
+            package_key=str(package_path or package.get("sha256") or f"invalid:{bundle_id}")
+            if package_key not in package_seen:
+                package_seen.add(package_key)
+                package_rows.append({
+                    "path":str(package_path) if package_path else None,
+                    "sha256":package.get("sha256"),
+                    "byte_count":package.get("byte_count"),
+                    "exists":bool(package_path and package_path.is_file()),
+                    "protected":True,
+                    "reason":"UNIQUE_SOURCE_PACKAGE_PROTECTED" if not package_error else package_error,
+                })
+            extraction=bundle.get("extraction") or {}
+            extraction_root=str(extraction.get("root", ""))
+            if extraction_root in extraction_seen: continue
+            extraction_seen.add(extraction_root)
+            extraction_path=(self.root/Path(extraction_root)).resolve() if extraction_root else None
+            if extraction_path and extraction_path.exists():
+                files=[path for path in extraction_path.rglob("*") if path.is_file()]
+                actual_files=len(files); actual_bytes=sum(path.stat().st_size for path in files)
+            else:
+                actual_files=0; actual_bytes=0
+            matching_ids=sorted(x for x,y in bundles.items() if str((y.get("extraction") or {}).get("root",""))==extraction_root)
+            if extraction_root in retained_roots:
+                decision="PROTECTED_RECENT_USED_BUNDLE"; protected=True
+            elif active.intersection(matching_ids):
+                decision="PROTECTED_ACTIVE_TASK_REFERENCE"; protected=True
+            elif package_error or not package_path or not package_path.is_file():
+                decision="PROTECTED_PACKAGE_NOT_RECOVERABLE"; protected=True
+            else:
+                decision="PREVIEW_RECLAIMABLE_REBUILDABLE"; protected=False
+            extraction_rows.append({
+                "root":extraction_root,
+                "bundle_ids":matching_ids,
+                "exists":bool(extraction_path and extraction_path.is_dir()),
+                "file_count":actual_files,
+                "bytes":actual_bytes,
+                "declared_entry_count":extraction.get("entry_count"),
+                "declared_expanded_bytes":extraction.get("expanded_bytes"),
+                "protected":protected,
+                "decision":decision,
+            })
+            metadata=bundle.get("metadata") or {}
+            for relative, descriptor in (metadata.get("files") or {}).items():
+                content_hash=str((descriptor or {}).get("sha256", ""))
+                metadata_hashes.setdefault(content_hash,[]).append({"bundle_id":bundle_id,"path":relative})
+            metadata_rows.append({"bundle_id":bundle_id,"root":metadata.get("root"),"file_count":len(metadata.get("files") or {}),"protected":True,"reason":"METADATA_SNAPSHOT_PROTECTED"})
+
+        cache_root=data_root/".phase1_cache"
+        cache_files=[path for path in cache_root.rglob("*") if path.is_file()] if cache_root.is_dir() else []
+        cache_bytes=sum(path.stat().st_size for path in cache_files)
+        utilization=cache_bytes/phase1_cache_budget_bytes
+        if cache_bytes>phase1_cache_budget_bytes:
+            cache_decision="BLOCKED_NO_SAFE_CANDIDATE"
+            cache_reason="OVER_BUDGET_BUT_NO_ACCESS_ORDER_OR_SAFE_REFERENCE_SET"
+            cache_candidates=[]
+        elif utilization>=0.9:
+            cache_decision="WARNING_90_PERCENT"
+            cache_reason="WITHIN_BUDGET_NO_RECLAIM"
+            cache_candidates=[]
+        else:
+            cache_decision="WITHIN_BUDGET"
+            cache_reason="NO_RECLAIM_REQUIRED"
+            cache_candidates=[]
+        return {
+            "contract_version":"v3-p04-03-input-storage-preview-v1.0",
+            "as_of":as_of.isoformat(),
+            "policy":{"recent_used_bundle_count":recent_bundle_count,"phase1_cache_budget_bytes":phase1_cache_budget_bytes,"phase1_cache_selection":"ACCESS_METADATA_ONLY; NEVER_MTIME_DELETE","deletion_executed":False},
+            "source_bundles":{"catalog_count":len(database_catalog_ids) if database_catalog_ids is not None else len(bundles),"physical_receipt_count":len(bundles),"database_catalog_count":len(database_catalog_ids) if database_catalog_ids is not None else None,"physical_receipts_not_in_database_catalog":sorted((known-database_catalog_ids) if database_catalog_ids is not None else set()),"database_catalog_receipts_missing_on_disk":sorted((database_catalog_ids-known) if database_catalog_ids is not None else set()),"used_bundle_ids":sorted(used),"active_task_bundle_ids":sorted(active),"retained_bundle_ids":sorted(retained_ids),"usage_evidence":usage_evidence,"issues":issues},
+            "packages":{"items":package_rows,"all_unique_source_protected":all(item["protected"] for item in package_rows)},
+            "extracted":{"items":extraction_rows,"preview_reclaimable":[item for item in extraction_rows if not item["protected"]]},
+            "metadata":{"snapshots":metadata_rows,"unique_content_hash_count":len([key for key in metadata_hashes if key]),"reused_content_hash_groups":{key:value for key,value in metadata_hashes.items() if key and len(value)>1}},
+            "phase1_cache":{"root":str(cache_root.resolve()),"file_count":len(cache_files),"bytes":cache_bytes,"budget_bytes":phase1_cache_budget_bytes,"utilization":utilization,"decision":cache_decision,"reason":cache_reason,"preview_reclaimable":cache_candidates},
+        }
+
+    def write_v3_input_storage_preview(self, path: str | Path, *, as_of: date, recent_bundle_count: int = 2, phase1_cache_budget_bytes: int = 2 * 1024**3) -> dict[str, Any]:
+        target=self._validate_managed_path(path)
+        value=self.preview_v3_input_storage(as_of=as_of,recent_bundle_count=recent_bundle_count,phase1_cache_budget_bytes=phase1_cache_budget_bytes)
+        target.parent.mkdir(parents=True,exist_ok=True)
+        temporary=target.with_name(target.name+"."+uuid.uuid4().hex+".tmp")
+        try:
+            temporary.write_text(_payload(value)+"\n",encoding="utf-8")
+            with temporary.open("r+b") as handle:
+                handle.flush()
+                os.fsync(handle.fileno())
+            os.replace(temporary,target)
+        finally:
+            temporary.unlink(missing_ok=True)
+        return {"status":"PASS","path":str(target),"preview":value}
+
+    @staticmethod
     def _table_exists(con, name: str) -> bool:
         return bool(con.execute("SELECT count(*) FROM information_schema.tables WHERE table_name=?",[name]).fetchone()[0])
 

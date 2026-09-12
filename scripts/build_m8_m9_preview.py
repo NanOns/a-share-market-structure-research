@@ -33,7 +33,7 @@ from workbench_analysis.member_state import (
 from workbench_analysis.representative_state import build_representative_state_daily, insert_representative_rows
 from workbench_analysis.sector_cycle import CONTRACT_VERSION as SECTOR_CYCLE_CONTRACT, build_sector_cycle_daily, insert_sector_cycle_rows
 from workbench_analysis.sector_amount import CONTRACT_VERSION as SECTOR_AMOUNT_CONTRACT, RECONSTRUCTED, build_sector_amount_daily
-from workbench_analysis.strength import insert_strength_rows
+from workbench_analysis.strength import insert_strength_result_rows
 from workbench_service.semantic import (
     CONTRACT_ID as SEMANTIC_CONTRACT_ID,
     build_semantic_version_rows,
@@ -596,7 +596,7 @@ def insert_preview(
         semantic_count = insert_semantic_version_rows(con, semantic_rows)
         writer = {
             "technical": insert_technical_result_rows,
-            "strength": insert_strength_rows,
+            "strength": insert_strength_result_rows,
             "high": insert_high_rows,
             "structure": insert_historical_structure_rows,
             "summary": insert_structure_summary_rows,

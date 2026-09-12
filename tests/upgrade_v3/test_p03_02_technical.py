@@ -19,7 +19,7 @@ def _database(tmp_path):
     connection.execute((ROOT / "src/workbench_db/schema.sql").read_text(encoding="utf-8"))
     connection.execute("INSERT INTO schema_migrations VALUES (?, current_timestamp)", [BASE_SCHEMA_VERSION])
     receipt = MigrationExecutor(connection).apply()
-    assert receipt["applied"][-1]["version"] == "027_v3_technical_result_rows"
+    assert receipt["applied"][-1]["version"] == "028_v3_strength_result_rows"
     connection.close()
     return database
 

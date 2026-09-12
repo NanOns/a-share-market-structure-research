@@ -264,3 +264,11 @@ P00-03 合同资产 SHA-256：
 本任务只关闭 `P04-03-01-B`；不代表 P04-03 整体完成。下一任务仍按最新 V3 台账处理缓存预览/解包保护和备份链的独立未关闭项，不进入 P05。
 
 历史报告 `V3_P04_03_01_STORAGE_INVENTORY.md` 与 `V3_P04_03_03_STORAGE_PREVIEW.md` 已增加状态说明：其中的 3 份未登记物理回执及 `source_files=0` 是回填前快照，不再代表当前数据库状态；原始数字和审计证据保持不变。
+
+## P04-03-02 真实保留源包恢复复验（2026-09-12）
+
+本条 supersede 原 `P04-03-02 PASS (SCOPED)` 的“仅合成 ZIP/临时目录”范围缺口。依据最新 V3 主实施文档 SHA-256 `3395AE2895F749DD5764998451363BF24024BAAA481AC7E644FE1AF941137851`，对实际保留的 2026-09-10 bundle `fc26948799b1...bb1120` 执行全量 `restore_source_bundle_extraction()`：package SHA/尺寸通过，恢复 `12,404` 个文件、`949,487,072` 字节，与 receipt 完全一致；实际 `sh/lday/sh600001.day`、`sz/lday/sz000001.day` 均存在并完成 SHA 核验。
+
+恢复目标是新建临时目录，验证后只删除本轮新建目录；未修改原始 ZIP、既有 extracted、metadata、TDX、数据库或 backup。错误的合成成员路径先被 resolver 正确 fail-closed，未创建目标目录；改用真实包内成员后通过。阶段证据见 [V3_P04_03_02_REAL_RECOVERY.md](V3_P04_03_02_REAL_RECOVERY.md)。
+
+本任务将 `P04-03-02` 提升为 **PASS（真实输入验证）**。下一任务严格进入 `P04-03-03`，只刷新最近 2 个 bundle 与 `.phase1_cache` 预算预览，不执行删除。

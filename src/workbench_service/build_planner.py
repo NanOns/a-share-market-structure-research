@@ -304,6 +304,51 @@ def _event_id(event: ChangeEvent) -> str:
     return _sha256(event.to_dict())[:16]
 
 
+def task_key(task: Mapping[str, Any]) -> str:
+    """Return the stable identity of one planned build object."""
+
+    return _canonical(
+        [
+            str(task.get("domain") or ""),
+            str(task.get("trade_date") or ""),
+            task.get("security_id"),
+            task.get("sector_id"),
+        ]
+    ).decode("utf-8")
+
+
+def verify_build_plan(plan: Mapping[str, Any]) -> dict[str, Any]:
+    """Verify the content address of a build plan before a writer can consume it."""
+
+    if not isinstance(plan, Mapping):
+        raise BuildPlanError("BUILD_PLAN_OBJECT_REQUIRED")
+    if plan.get("contract_version") != CONTRACT_VERSION:
+        raise BuildPlanError("BUILD_PLAN_CONTRACT_MISMATCH")
+    stored = str(plan.get("plan_id") or "")
+    if not stored.startswith("plan-"):
+        raise BuildPlanError("BUILD_PLAN_ID_MISSING")
+    body = dict(plan)
+    body.pop("plan_id", None)
+    expected = "plan-" + _sha256(body)
+    if stored != expected:
+        raise BuildPlanError("BUILD_PLAN_HASH_MISMATCH")
+    tasks = plan.get("tasks")
+    if not isinstance(tasks, list):
+        raise BuildPlanError("BUILD_PLAN_TASKS_REQUIRED")
+    seen: set[str] = set()
+    for item in tasks:
+        if not isinstance(item, Mapping):
+            raise BuildPlanError("BUILD_PLAN_TASK_INVALID")
+        key = task_key(item)
+        supplied_key = item.get("task_key")
+        if supplied_key is not None and str(supplied_key) != key:
+            raise BuildPlanError("BUILD_PLAN_TASK_KEY_MISMATCH")
+        if key in seen:
+            raise BuildPlanError("BUILD_PLAN_TASK_DUPLICATE")
+        seen.add(key)
+    return dict(plan)
+
+
 def build_plan(
     previous: DependencySummary | Mapping[str, Any] | None,
     current: DependencySummary | Mapping[str, Any],
@@ -504,6 +549,7 @@ def build_plan(
     serialised_tasks = []
     for task in sorted(tasks.values(), key=lambda item: (item["trade_date"], item["domain"], item["security_id"] or "", item["sector_id"] or "")):
         serialised = dict(task)
+        serialised["task_key"] = task_key(serialised)
         serialised["reason_codes"] = sorted(task["reason_codes"])
         serialised["reasons"] = [REASON_LABELS[code] for code in serialised["reason_codes"]]
         serialised["event_ids"] = sorted(task["event_ids"])
@@ -537,4 +583,6 @@ __all__ = [
     "REASON_LABELS",
     "build_plan",
     "diff_dependency_summaries",
+    "task_key",
+    "verify_build_plan",
 ]

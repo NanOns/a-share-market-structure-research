@@ -276,11 +276,102 @@ def seal_source_bundle(bundle_dir: Path, *, target_trade_date: str, package: dic
     except OSError: pass
     return body
 
-def verify_source_bundle(bundle_path: Path) -> dict:
-    path=Path(bundle_path); body=json.loads(path.read_text(encoding="utf-8")); claimed=body.pop("source_bundle_id",None)
-    actual=sha256(json.dumps(body,sort_keys=True,separators=(",",":"),ensure_ascii=False).encode()).hexdigest()
-    body["source_bundle_id"]=claimed
+def _verified_bundle_body(bundle_path: Path) -> tuple[Path, dict]:
+    path=Path(bundle_path).resolve()
+    if not path.is_file(): raise ValueError("SOURCE_BUNDLE_RECEIPT_MISSING")
+    body=json.loads(path.read_text(encoding="utf-8"))
+    claimed=body.get("source_bundle_id")
+    unsigned=dict(body); unsigned.pop("source_bundle_id",None)
+    actual=sha256(json.dumps(unsigned,sort_keys=True,separators=(",",":"),ensure_ascii=False).encode()).hexdigest()
     if claimed!=actual: raise ValueError("SOURCE_BUNDLE_IDENTITY_MISMATCH")
+    if body.get("contract")!="source-bundle-v1.0" or body.get("read_only") is not True:
+        raise ValueError("SOURCE_BUNDLE_CONTRACT_INVALID")
+    return path, body
+
+def _safe_bundle_project_path(project_root: Path, raw: str | Path) -> Path:
+    value=Path(raw)
+    candidate=value if value.is_absolute() else project_root/value
+    for item in (candidate, *candidate.parents):
+        if item.is_symlink(): raise ValueError("SOURCE_PATH_SYMLINK_FORBIDDEN")
+        if item==project_root: break
+    resolved=candidate.resolve()
+    if resolved!=project_root and project_root not in resolved.parents:
+        raise ValueError("SOURCE_PATH_OUTSIDE_PROJECT")
+    return resolved
+
+def _reject_tdx_path(path: Path) -> None:
+    tdx_root=Path("D:/new_tdx").resolve()
+    if path==tdx_root or tdx_root in path.parents:
+        raise ValueError("TDX_PATH_WRITE_FORBIDDEN")
+
+def restore_source_bundle_extraction(
+    bundle_path: Path,
+    destination: Path,
+    *,
+    policy: ExtractionPolicy=ExtractionPolicy(),
+    required_members: tuple[str, ...]=(),
+) -> dict:
+    """Restore a sealed bundle's day files from its retained package.
+
+    This is deliberately a write-once recovery operation: the bundle receipt
+    and package are read-only inputs, while ``destination`` must be a new
+    non-TDX path.  The package hash and sealed extraction counters are checked
+    before the restored directory is accepted.
+    """
+    path, body=_verified_bundle_body(bundle_path)
+    if len(path.parents)<4: raise ValueError("SOURCE_BUNDLE_PATH_INVALID")
+    project_root=path.parents[3].resolve()
+    package_record=body.get("package") or {}
+    extraction_record=body.get("extraction") or {}
+    expected_sha=package_record.get("sha256")
+    if not isinstance(expected_sha,str) or len(expected_sha)!=64:
+        raise ValueError("SOURCE_PACKAGE_HASH_MISSING")
+
+    staged_path=package_record.get("staged_path")
+    fallback_used=not staged_path
+    if staged_path:
+        package_path=_safe_bundle_project_path(project_root,staged_path)
+    else:
+        date_key=str(body.get("target_trade_date","")).replace("-","")
+        if len(date_key)!=8 or not date_key.isdigit(): raise ValueError("SOURCE_TRADE_DATE_INVALID")
+        package_path=_safe_bundle_project_path(project_root,Path("data/input_staging/packages")/date_key/"hsjday.zip")
+    _reject_tdx_path(package_path)
+    if not package_path.is_file(): raise ValueError("SOURCE_PACKAGE_MISSING")
+    actual_size=package_path.stat().st_size
+    if package_record.get("byte_count") is not None and actual_size!=int(package_record["byte_count"]):
+        raise ValueError("SOURCE_PACKAGE_SIZE_MISMATCH")
+    actual_sha=_hash(package_path)
+    if actual_sha!=expected_sha: raise ValueError("SOURCE_PACKAGE_MISMATCH")
+
+    normalized_required=[]
+    for member in required_members:
+        normalized=_safe_member(member)
+        normalized_required.append("/".join(normalized.parts))
+    if normalized_required:
+        with zipfile.ZipFile(package_path) as archive:
+            members={"/".join(_safe_member(info.filename).parts) for info in archive.infolist()}
+        missing=sorted(set(normalized_required)-members)
+        if missing: raise ValueError("SOURCE_REQUIRED_MEMBER_MISSING:"+",".join(missing))
+
+    restored=Path(destination).resolve()
+    _reject_tdx_path(restored)
+    if restored.exists(): raise ValueError("EXTRACTION_DESTINATION_EXISTS")
+    extraction=safe_extract_zip(package_path,restored,policy)
+    if extraction["package_sha256"]!=expected_sha:
+        raise ValueError("RESTORED_PACKAGE_HASH_MISMATCH")
+    for key in ("entry_count","expanded_bytes"):
+        if extraction_record.get(key) is not None and extraction[key]!=int(extraction_record[key]):
+            shutil.rmtree(restored,ignore_errors=True)
+            raise ValueError("RESTORED_EXTRACTION_"+key.upper()+"_MISMATCH")
+    return {
+        "status":"PASS", "source_bundle_id":body["source_bundle_id"],
+        "package_path":str(package_path), "package_sha256":expected_sha,
+        "fallback_used":fallback_used, "restored_root":str(restored),
+        "required_members":normalized_required, "extraction":extraction,
+    }
+
+def verify_source_bundle(bundle_path: Path) -> dict:
+    path, body=_verified_bundle_body(bundle_path); claimed=body["source_bundle_id"]
     project_root=path.parents[3].resolve()
     def safe_project_path(raw: str | Path) -> Path:
         value=Path(raw)

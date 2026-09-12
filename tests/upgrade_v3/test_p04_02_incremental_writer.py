@@ -54,6 +54,7 @@ def _plan(sessions):
         current,
         sessions=sessions,
         security_ids=["A"],
+        security_to_sectors={"A": []},
         cutoff_date=sessions[-1],
     )
 

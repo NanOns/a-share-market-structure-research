@@ -34,9 +34,9 @@ STOCK_DOMAINS = ("quote", "technical", "strength", "high", "structure", "summary
 SECTOR_DOMAINS = ("sector_base", "sector_cycle", "mainline")
 MEMBER_DOMAIN = "member_state"
 
-# These are the dependency limits already frozen in config/history_windows.yaml.
-# Callers may pass the loaded registry explicitly; keeping the same defaults
-# makes the pure planner useful in isolation and keeps the contract fail-closed.
+# These are input lookback sessions, not automatically the number of affected
+# output sessions.  A domain may need an additional output endpoint when a
+# rolling metric reads the value at the left edge of its window.
 DEFAULT_LOOKBACKS = {
     "quote": 1,
     "technical": 60,
@@ -46,6 +46,12 @@ DEFAULT_LOOKBACKS = {
     "sector_cycle": 30,
     "mainline": 30,
     "market": 60,
+}
+
+# RET60 at d+60 still reads the corrected value at d.  Keep this distinction
+# explicit so a caller cannot mistake an input lookback for an output range.
+AFFECTED_OUTPUT_OFFSETS = {
+    "strength": 1,
 }
 
 PARAMETER_DOWNSTREAM = {
@@ -429,21 +435,33 @@ def build_plan(
             item["propagation"]["mode"] = "COMBINED"
 
     def dates_from(day: str, domain: str, *, to_cutoff: bool = False) -> tuple[str, ...]:
-        return _future_dates(calendar, day, cutoff, None if to_cutoff else lookback.get(domain, 1))
+        if to_cutoff:
+            return _future_dates(calendar, day, cutoff, None)
+        input_lookback = lookback.get(domain, 1)
+        output_count = input_lookback + AFFECTED_OUTPUT_OFFSETS.get(domain, 0)
+        return _future_dates(calendar, day, cutoff, output_count)
 
-    def sectors_for(event: ChangeEvent) -> tuple[str, ...]:
+    def sectors_for(event: ChangeEvent, *, require_security_mapping: bool = False) -> tuple[str, ...]:
         found = set()
         if event.sector_id:
             found.add(event.sector_id)
         if event.security_id:
-            found.update(security_sector_map.get(event.security_id, ()))
+            dated_key = f"{event.effective_date}|{event.security_id}"
+            if dated_key in security_sector_map:
+                found.update(security_sector_map[dated_key])
+            elif event.security_id in security_sector_map:
+                found.update(security_sector_map[event.security_id])
+            elif require_security_mapping:
+                raise BuildPlanError(f"SECURITY_SECTOR_MAPPING_MISSING:{event.security_id}:{event.effective_date}")
         return tuple(sorted(found))
 
-    def members_for(day: str, sector_id: str, fallback: str | None = None) -> tuple[str, ...]:
-        values = member_map.get(f"{day}|{sector_id}") or member_map.get(sector_id) or ()
-        if values:
-            return values
-        return (fallback,) if fallback else securities
+    def members_for(day: str, sector_id: str) -> tuple[str, ...]:
+        dated_key = f"{day}|{sector_id}"
+        if dated_key in member_map:
+            return member_map[dated_key]
+        if sector_id in member_map:
+            return member_map[sector_id]
+        raise BuildPlanError(f"MEMBERSHIP_MAPPING_MISSING:{day}:{sector_id}")
 
     for event in events:
         if event.kind == "NEW_TRADING_DAY":
@@ -465,7 +483,10 @@ def build_plan(
             continue
 
         if event.kind == "PARAMETER_CHANGE":
-            domains = PARAMETER_DOWNSTREAM.get(event.parameter_domain or "", ())
+            parameter_domain = event.parameter_domain or ""
+            if parameter_domain not in PARAMETER_DOWNSTREAM:
+                raise BuildPlanError(f"PARAMETER_DOMAIN_UNKNOWN:{parameter_domain}")
+            domains = PARAMETER_DOWNSTREAM[parameter_domain]
             for domain in domains:
                 if domain in STOCK_DOMAINS:
                     for security_id in securities or (None,):
@@ -486,9 +507,11 @@ def build_plan(
             security_id = event.security_id
             if not security_id:
                 raise BuildPlanError("PRICE_REVISION_SECURITY_REQUIRED")
+            affected_sectors = sectors_for(event, require_security_mapping=True)
             quote_dates = (day,)
             for item_day in quote_dates:
                 add_task("quote", item_day, security_id=security_id, reason_code=event.reason_code, scope="SECURITY", mode="SINGLE_DAY", event=event)
+            add_task("market", day, reason_code=event.reason_code, scope="MARKET", mode="SINGLE_DAY", event=event)
             for item_day in dates_from(day, "technical"):
                 add_task("technical", item_day, security_id=security_id, reason_code=event.reason_code, scope="SECURITY", mode="ROLLING_WINDOW", end_date=item_day, event=event)
             for item_day in dates_from(day, "strength"):
@@ -499,13 +522,13 @@ def build_plan(
             for domain in ("high", "structure", "summary"):
                 for item_day in dates_from(day, domain, to_cutoff=True):
                     add_task(domain, item_day, security_id=security_id, reason_code="STATE_PROPAGATION", scope="SECURITY", mode="STATE_TO_CUTOFF", end_date=cutoff, event=event)
-            for sector_id in sectors_for(event):
-                for item_day in dates_from(day, "sector_cycle"):
+            for sector_id in affected_sectors:
+                for item_day in dates_from(day, "sector_cycle", to_cutoff=True):
                     add_task("sector_cycle", item_day, sector_id=sector_id, reason_code=event.reason_code, scope="SECTOR", mode="ROLLING_WINDOW", event=event)
                     add_task("mainline", item_day, sector_id=sector_id, reason_code=event.reason_code, scope="SECTOR", mode="ROLLING_WINDOW", event=event)
-                for item_day in dates_from(day, "technical"):
+                for item_day in dates_from(day, "sector_base", to_cutoff=True):
                     add_task("sector_base", item_day, sector_id=sector_id, reason_code=event.reason_code, scope="SECTOR", mode="ROLLING_WINDOW", event=event)
-                for item_day in dates_from(day, "high", to_cutoff=True):
+                for item_day in dates_from(day, MEMBER_DOMAIN, to_cutoff=True):
                     add_task(MEMBER_DOMAIN, item_day, security_id=security_id, sector_id=sector_id, reason_code="STATE_PROPAGATION", scope="MEMBER", mode="STATE_TO_CUTOFF", end_date=cutoff, event=event)
             continue
 
@@ -514,6 +537,8 @@ def build_plan(
             security_id = event.security_id
             if not security_id:
                 raise BuildPlanError("ADJUSTMENT_SECURITY_REQUIRED")
+            affected_sectors = sectors_for(event, require_security_mapping=True)
+            add_task("market", day, reason_code=event.reason_code, scope="MARKET", mode="SINGLE_DAY", event=event)
             for item_day in dates_from(day, "technical", to_cutoff=True):
                 add_task("technical", item_day, security_id=security_id, reason_code=event.reason_code, scope="SECURITY", mode="ADJUSTMENT_TO_CUTOFF", end_date=cutoff, event=event)
             for item_day in dates_from(day, "strength", to_cutoff=True):
@@ -522,6 +547,14 @@ def build_plan(
             for domain in ("high", "structure", "summary"):
                 for item_day in dates_from(day, domain, to_cutoff=True):
                     add_task(domain, item_day, security_id=security_id, reason_code="STATE_PROPAGATION", scope="SECURITY", mode="ADJUSTMENT_TO_CUTOFF", end_date=cutoff, event=event)
+            for sector_id in affected_sectors:
+                for item_day in dates_from(day, "sector_cycle", to_cutoff=True):
+                    add_task("sector_cycle", item_day, sector_id=sector_id, reason_code=event.reason_code, scope="SECTOR", mode="ADJUSTMENT_TO_CUTOFF", end_date=cutoff, event=event)
+                    add_task("mainline", item_day, sector_id=sector_id, reason_code=event.reason_code, scope="SECTOR", mode="ADJUSTMENT_TO_CUTOFF", end_date=cutoff, event=event)
+                for item_day in dates_from(day, "sector_base", to_cutoff=True):
+                    add_task("sector_base", item_day, sector_id=sector_id, reason_code=event.reason_code, scope="SECTOR", mode="ADJUSTMENT_TO_CUTOFF", end_date=cutoff, event=event)
+                for item_day in dates_from(day, MEMBER_DOMAIN, to_cutoff=True):
+                    add_task(MEMBER_DOMAIN, item_day, security_id=security_id, sector_id=sector_id, reason_code=event.reason_code, scope="MEMBER", mode="ADJUSTMENT_TO_CUTOFF", end_date=cutoff, event=event)
             continue
 
         if event.kind == "RELATION_CHANGE":
@@ -529,7 +562,7 @@ def build_plan(
             for sector_id in sectors_for(event):
                 for domain in SECTOR_DOMAINS:
                     add_task(domain, day, sector_id=sector_id, reason_code=event.reason_code, scope="SECTOR", mode="RELATION_CHANGE", event=event)
-                for member_id in members_for(day, sector_id, event.security_id):
+                for member_id in members_for(day, sector_id):
                     for domain in (MEMBER_DOMAIN, "structure", "summary"):
                         add_task(domain, day, security_id=member_id, sector_id=sector_id, reason_code=event.reason_code, scope="MEMBER", mode="RELATION_CHANGE", event=event)
             continue
@@ -569,6 +602,10 @@ def build_plan(
             "planned_domains": sorted({item["domain"] for item in serialised_tasks}),
         },
         "reason_catalog": dict(REASON_LABELS),
+        "window_contract": {
+            "input_lookbacks": dict(sorted(lookback.items())),
+            "affected_output_offsets": dict(sorted(AFFECTED_OUTPUT_OFFSETS.items())),
+        },
     }
     payload["plan_id"] = "plan-" + _sha256(payload)
     return payload
@@ -581,6 +618,7 @@ __all__ = [
     "ChangeEvent",
     "DependencySummary",
     "REASON_LABELS",
+    "AFFECTED_OUTPUT_OFFSETS",
     "build_plan",
     "diff_dependency_summaries",
     "task_key",

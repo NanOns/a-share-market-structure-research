@@ -1,8 +1,11 @@
 from datetime import date, timedelta
 
+import pytest
+
 from workbench_service.build_planner import (
     CONTRACT_VERSION,
     DependencySummary,
+    BuildPlanError,
     build_plan,
 )
 
@@ -89,12 +92,67 @@ def test_price_revision_replans_rps_cross_section_and_propagates_state():
     assert strength_by_date
     assert all(ids == {"A", "B", "C"} for ids in strength_by_date.values())
     assert min(strength_by_date) == changed_day
-    assert max(strength_by_date) == sessions[50 + 60 - 1]
+    assert max(strength_by_date) == sessions[50 + 60]
 
     technical = [item for item in plan["tasks"] if item["domain"] == "technical"]
     assert {item["security_id"] for item in technical} == {"A"}
     assert all(item["security_id"] != "B" for item in plan["tasks"] if item["domain"] in {"high", "structure", "summary"})
     assert any(item["reason_codes"] == ["RPS_CROSS_SECTION"] for item in strength)
+
+
+def test_price_revision_updates_market_and_requires_a_known_sector_mapping():
+    sessions = _sessions()
+    changed_day = sessions[50]
+    key = f"{changed_day}|A"
+    previous = _summary(sessions, quote={key: "price-v1"})
+    current = _summary(sessions, quote={key: "price-v2"})
+
+    plan = build_plan(previous, current, **_kwargs(sessions))
+
+    market = [item for item in plan["tasks"] if item["domain"] == "market"]
+    assert [(item["trade_date"], item["scope"]) for item in market] == [(changed_day, "MARKET")]
+
+    with pytest.raises(BuildPlanError, match="SECURITY_SECTOR_MAPPING_MISSING"):
+        build_plan(
+            previous,
+            current,
+            sessions=sessions,
+            security_ids=["A"],
+            sector_ids=["S1"],
+            cutoff_date=sessions[-1],
+        )
+
+
+def test_explicit_empty_membership_does_not_fallback_to_all_securities():
+    sessions = _sessions()
+    previous = _summary(sessions[:-1])
+    current = _summary(sessions)
+    kwargs = _kwargs(sessions)
+    kwargs["sector_members"] = {"S1": []}
+
+    plan = build_plan(previous, current, **kwargs)
+
+    assert not any(item["domain"] == "member_state" for item in plan["tasks"])
+
+
+def test_missing_membership_mapping_fails_closed():
+    sessions = _sessions()
+    previous = _summary(sessions[:-1])
+    current = _summary(sessions)
+    kwargs = _kwargs(sessions)
+    kwargs["sector_members"] = {}
+
+    with pytest.raises(BuildPlanError, match="MEMBERSHIP_MAPPING_MISSING"):
+        build_plan(previous, current, **kwargs)
+
+
+def test_unknown_parameter_domain_is_not_silently_skipped():
+    sessions = _sessions()
+    previous = _summary(sessions, parameters={"unknown_domain": "v1"})
+    current = _summary(sessions, parameters={"unknown_domain": "v2"})
+
+    with pytest.raises(BuildPlanError, match="PARAMETER_DOMAIN_UNKNOWN"):
+        build_plan(previous, current, **_kwargs(sessions))
 
 
 def test_identical_dependency_input_has_no_work_and_is_idempotent():
@@ -123,3 +181,28 @@ def test_adjustment_anchor_change_reaches_cutoff_without_rewriting_unrelated_sto
     strength_dates = {item["trade_date"] for item in plan["tasks"] if item["domain"] == "strength"}
     assert min(strength_dates) == changed_day
     assert max(strength_dates) == sessions[-1]
+
+
+def test_adjustment_anchor_change_closes_sector_member_and_market_dependencies():
+    sessions = _sessions()
+    changed_day = sessions[70]
+    key = f"A|{changed_day}"
+    previous = _summary(sessions, adjustments={key: "anchor-v1"})
+    current = _summary(sessions, adjustments={key: "anchor-v2"})
+    plan = build_plan(previous, current, **_kwargs(sessions))
+
+    assert {item["domain"] for item in plan["tasks"]} >= {
+        "market",
+        "sector_base",
+        "sector_cycle",
+        "mainline",
+        "member_state",
+    }
+    assert all(
+        item["trade_date"] >= changed_day
+        for item in plan["tasks"]
+        if item["domain"] in {"market", "sector_base", "sector_cycle", "mainline", "member_state"}
+    )
+    member_tasks = [item for item in plan["tasks"] if item["domain"] == "member_state"]
+    assert {item["security_id"] for item in member_tasks} == {"A"}
+    assert max(item["trade_date"] for item in member_tasks) == sessions[-1]

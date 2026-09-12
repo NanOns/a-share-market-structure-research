@@ -9,7 +9,7 @@ summary 已作为独立任务完成并通过；P04 及以后阶段不在本次�
 审计输入：
 
 - 分支：`codex/v3-upgrade-analysis`
-- 审计基线提交：`db80581 feat: complete v3 p03-03 structure result rows`
+- 审计基线提交：`0298dc9 feat: complete v3 p03-03 summary result rows`
 - V3 主实施文档：`docs/WORKBENCH_DUAL_TRACK_IMPLEMENTATION_SPEC_V3.md`
 - 主实施文档 SHA-256：`912FE6DD25CCAC5BB9CCD4EA6216C7DBB88433CEBC406D33C538A71CD3AA0A24`
 - V3 复核文档 SHA-256：`9817D513C4A1EAB3FA3A30B3B928207F19CA01FC450781F3401EE9CF8CBFFCF9`

@@ -47,7 +47,6 @@ from workbench_analysis.structures import (
     insert_structure_summary_result_rows,
 )
 from workbench_analysis.technical import calculate_technical_daily, insert_technical_result_rows
-from workbench_ops.backup import BackupService
 
 
 DB_PATH = ROOT / "data/database/market_research.duckdb"
@@ -558,12 +557,11 @@ def insert_preview(
     }
     input_hash = hashlib.sha256(json.dumps(input_hashes, sort_keys=True).encode()).hexdigest()
     manifest_hash = hashlib.sha256(json.dumps({key: frame_hash(value) for key, value in frames.items()}, sort_keys=True).encode()).hexdigest()
-    backup = BackupService(ROOT, DB_PATH).create_history_backup(maintenance_window=True)
     con = duckdb.connect(str(DB_PATH))
     try:
         existing = con.execute("select status from analysis_snapshots where snapshot_id=?", [snapshot_id]).fetchone()
         if existing:
-            return {"status": "ALREADY_BUILT", "snapshot_id": snapshot_id, "backup_id": backup["backup_id"]}
+            return {"status": "ALREADY_BUILT", "snapshot_id": snapshot_id, "backup_id": None, "backup_policy": "MANUAL_ONLY"}
         publication = con.execute(
             "select h.publication_id from publication_heads h join publications p using(publication_id) where p.status='SUCCESS' order by h.trade_date desc limit 1"
         ).fetchone()
@@ -698,7 +696,8 @@ def insert_preview(
             "hierarchy_node_count": hierarchy_count,
             "semantic_row_count": semantic_count,
             "counts": counts,
-            "backup_id": backup["backup_id"],
+            "backup_id": None,
+            "backup_policy": "MANUAL_ONLY",
             "publication_heads_changed": False,
             "history_basis": "RECONSTRUCTED",
         }

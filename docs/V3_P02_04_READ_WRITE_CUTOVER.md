@@ -93,10 +93,23 @@ P02-03 维护备份 `backup-20260911T233048Z-45d7b3c1bed2` 仍为 VERIFIED；本
 
 ## 独立未决项
 
-- `relation_publication_bindings` 生产行将在下一次真实新发布时产生；本阶段用临时 DuckDB 原子性
-  测试验证，不伪造生产发布。
+- 初始阶段报告中的生产新发布证据缺口已于 2026-09-12 关闭，详见下方真实生产 revision 补录。
 - `upgrade_m1.py`、`legacy_relation_import.py`、备份校验仍保留旧表读取，这是历史迁移/恢复边界，
   不属于新研究读路径；旧 API 通过 relation bridge 读取。
 - 独立的 M15 资源版本断言问题仍不纳入本阶段。
 - 工作区原有 `docs/WORKBENCH_DUAL_TRACK_IMPLEMENTATION_SPEC_V3.md` 未提交修改仍保留，
   本阶段未覆盖、回退或提交该文件。
+
+## 真实生产 revision 补录（2026-09-12）
+
+为关闭上述证据缺口，使用已验证的本地 source bundle 和已发布结果做同日独立 revision；没有使用合成成员、没有创建未来日期、没有访问或修改 TDX。
+
+- 维护备份：`backup-20260912T002526Z-822de3d9b647`，状态 `VERIFIED`，SHA-256 `822de3d9b647d1b4b5849573060dc178f0bf7439dc8616065a17f50a1d43b7db`
+- 输入：source bundle `61ce2bddcbb4d59578fae9aa507905bca14080b6f8da9470aaca9fc5d4b22409`，目标交易日 `2026-09-07`，原 publication `m4-5212a91982eb6d63b7455d8855676fa5`
+- 新 publication：`m4-p02-04-real-validation-20260912`，状态 `SUCCESS`，revision `6`
+- relation binding：`PUBLICATION`；observation `relation-publication-observation-m4-p02-04-real-validation-20260912`；relation revision `4`；attribute version `attrset-64e7532451af4fe1b741db5f`
+- 事务后计数：relation_revisions=4、relation_edge_intervals=75136、relation_observations=7、relation_publication_bindings=1、membership_entries=435472
+- 为避免验证 revision 改变默认页面，2026-09-07 `publication_head` 已恢复为原 publication；新 publication 和绑定保留为不可变审计证据
+- 服务复核：`READY`，活动任务 0；最新 publication 仍为 `m4-8a99c99719061f4f1f166d0b9184506c`；新 publication identity 返回 `relation_binding_mode=PUBLICATION`
+
+补录验收：**PASS**。P02-04 的真实 production writer 已实际创建 publication、relation observation 和 publication binding；旧 `membership_entries` 未新增，历史 active head 未被验证 revision 替换。

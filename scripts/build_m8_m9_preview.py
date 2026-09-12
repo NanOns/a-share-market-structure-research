@@ -46,7 +46,7 @@ from workbench_analysis.structures import (
     insert_historical_structure_rows,
     insert_structure_summary_rows,
 )
-from workbench_analysis.technical import calculate_technical_daily, insert_technical_rows
+from workbench_analysis.technical import calculate_technical_daily, insert_technical_result_rows
 from workbench_ops.backup import BackupService
 
 
@@ -595,7 +595,7 @@ def insert_preview(
         )
         semantic_count = insert_semantic_version_rows(con, semantic_rows)
         writer = {
-            "technical": insert_technical_rows,
+            "technical": insert_technical_result_rows,
             "strength": insert_strength_rows,
             "high": insert_high_rows,
             "structure": insert_historical_structure_rows,

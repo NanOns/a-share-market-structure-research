@@ -266,7 +266,7 @@ def build(db_path: str | Path = DB_PATH, normalized_path: str | Path = NORMALIZE
             """
             select e.trade_date,t.security_id
               from analysis_snapshot_entries e
-              join stock_technical_daily t on t.slice_id=e.slice_id and t.trade_date=e.trade_date
+              join technical_result_daily t on t.slice_id=e.slice_id and t.trade_date=e.trade_date
              where e.snapshot_id=? and e.domain='technical'
              order by e.trade_date,t.security_id
             """,

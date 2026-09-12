@@ -941,7 +941,7 @@ class Api:
    if candidate_ids:
     ids_sql=','.join('?' for _ in candidate_ids)
     if domain_slices['technical']:
-     for row in c.execute('select security_id,raw_close,adj_close,quote_ret1,raw_amount,raw_volume,ret20,amount_vs_prior20,amount_class,ma_alignment,validity,quality_codes from stock_technical_daily where slice_id=? and trade_date=? and security_id in ('+ids_sql+')',[domain_slices['technical'],trade_date,*candidate_ids]).fetchall(): technical[row[0]]=dict(zip(('security_id','raw_close','adj_close','quote_ret1','raw_amount','raw_volume','ret20','amount_vs_prior20','amount_class','ma_alignment','validity','quality_codes'),row))
+     for row in c.execute('select security_id,raw_close,adj_close,quote_ret1,raw_amount,raw_volume,ret20,amount_vs_prior20,amount_class,ma_alignment,validity,quality_codes from technical_result_daily where slice_id=? and trade_date=? and security_id in ('+ids_sql+')',[domain_slices['technical'],trade_date,*candidate_ids]).fetchall(): technical[row[0]]=dict(zip(('security_id','raw_close','adj_close','quote_ret1','raw_amount','raw_volume','ret20','amount_vs_prior20','amount_class','ma_alignment','validity','quality_codes'),row))
     if domain_slices['strength']:
      for row in c.execute('select security_id,rps20 from stock_strength_daily where slice_id=? and trade_date=? and security_id in ('+ids_sql+')',[domain_slices['strength'],trade_date,*candidate_ids]).fetchall(): strength[row[0]]={'rps20':row[1]}
     if domain_slices['summary']:
@@ -1037,8 +1037,8 @@ class Api:
   where=' and '.join(filters)
   select="t.security_id,t.trade_date,t.contract_id,t.price_basis,t.raw_close,t.adj_close,t.quote_ret1,t.raw_amount,t.raw_volume,t.ma5,t.ma10,t.ma20,t.ma60,t.ret5,t.ret10,t.ret20,t.ret60,t.rs5,t.rs10,t.rs20,t.rs60,t.amount_ma5,t.amount_ma10,t.amount_ma20,t.amount_ratio20,t.amount_vs_prior20,t.volume_vs_prior20,t.amount_class,t.ma_alignment,t.validity,t.quality_codes,t.basis_json,st.rps5,st.rps10,st.rps20,st.rps60,st.rps_valid_universe_count5,st.rps_valid_universe_count10,st.rps_valid_universe_count20,st.rps_valid_universe_count60,coalesce(ss.research_band,'DIAGNOSTIC_ONLY'),coalesce(ss.research_band_quality,'DATA_INSUFFICIENT')"
   with self._con() as c:
-   total=c.execute("select count(*) from analysis_snapshot_entries e join stock_technical_daily t on t.slice_id=e.slice_id and t.trade_date=e.trade_date"+joins+" where e.domain='technical' and "+where,params).fetchone()[0]
-   rows=c.execute("select "+select+" from analysis_snapshot_entries e join stock_technical_daily t on t.slice_id=e.slice_id and t.trade_date=e.trade_date"+joins+" where e.domain='technical' and "+where+" order by st.rps20 desc nulls last,t.ret20 desc nulls last,t.security_id limit ? offset ?",params+[size,(page-1)*size]).fetchall()
+   total=c.execute("select count(*) from analysis_snapshot_entries e join technical_result_daily t on t.slice_id=e.slice_id and t.trade_date=e.trade_date"+joins+" where e.domain='technical' and "+where,params).fetchone()[0]
+   rows=c.execute("select "+select+" from analysis_snapshot_entries e join technical_result_daily t on t.slice_id=e.slice_id and t.trade_date=e.trade_date"+joins+" where e.domain='technical' and "+where+" order by st.rps20 desc nulls last,t.ret20 desc nulls last,t.security_id limit ? offset ?",params+[size,(page-1)*size]).fetchall()
   names=('security_id','trade_date','contract_id','price_basis','raw_close','adj_close','quote_ret1','raw_amount','raw_volume','ma5','ma10','ma20','ma60','ret5','ret10','ret20','ret60','rs5','rs10','rs20','rs60','amount_ma5','amount_ma10','amount_ma20','amount_ratio20','amount_vs_prior20','volume_vs_prior20','amount_class','ma_alignment','validity','quality_codes','basis','rps5','rps10','rps20','rps60','rps_valid_universe_count5','rps_valid_universe_count10','rps_valid_universe_count20','rps_valid_universe_count60','research_band','research_band_quality')
   items=[]
   for row in rows:
@@ -1146,7 +1146,7 @@ class Api:
    technical_row=c.execute("""select t.raw_close,t.adj_close,t.quote_ret1,t.raw_amount,t.raw_volume,t.ma5,t.ma10,t.ma20,t.ma60,
                                     t.ret5,t.ret10,t.ret20,t.ret60,t.rs20,t.amount_ratio20,t.amount_vs_prior20,t.volume_vs_prior20,
                                     t.amount_class,t.ma_alignment,null as turnover_rate,null as turnover_basis,t.validity,t.quality_codes,t.contract_id
-                               from analysis_snapshot_entries e join stock_technical_daily t on t.slice_id=e.slice_id and t.trade_date=e.trade_date
+                               from analysis_snapshot_entries e join technical_result_daily t on t.slice_id=e.slice_id and t.trade_date=e.trade_date
                               where e.snapshot_id=? and e.domain='technical' and e.trade_date=? and t.security_id=?""",[selected['snapshot_id'],latest,security_id]).fetchone()
    summary_row=c.execute("""select s.queues_json,s.research_band,s.research_band_quality,s.unique_hit_count,s.queue_contract
                              from analysis_snapshot_entries e join stock_structure_summary_daily s on s.slice_id=e.slice_id and s.trade_date=e.trade_date
@@ -1212,7 +1212,7 @@ class Api:
    if not dates: raise ValueError('MARKET_CYCLE_NOT_BUILT')
    placeholders=','.join('?' for _ in dates)
    tech_rows=c.execute("""select cast(e.trade_date as varchar),t.security_id,t.quote_ret1,t.raw_amount,t.adj_close,t.ma20,t.ma60
-                           from analysis_snapshot_entries e join stock_technical_daily t on t.slice_id=e.slice_id and t.trade_date=e.trade_date
+                           from analysis_snapshot_entries e join technical_result_daily t on t.slice_id=e.slice_id and t.trade_date=e.trade_date
                           where e.snapshot_id=? and e.domain='technical' and e.trade_date in ("""+placeholders+") order by e.trade_date,t.security_id",[selected['snapshot_id'],*dates]).fetchall()
    grouped=defaultdict(list)
    for row in tech_rows:
@@ -1269,7 +1269,7 @@ class Api:
    if normalized_state!='ALL': filters.append('l.limit_state=?');args.append(normalized_state)
    if promotion!='ALL': filters.append('l.promotion_state=?');args.append(promotion)
    where=' and '.join(filters)
-   joins=' from analysis_snapshot_entries e join limit_ladder_daily l on l.slice_id=e.slice_id and l.trade_date=e.trade_date left join stock_technical_daily t on t.slice_id=e.slice_id and t.trade_date=e.trade_date and t.security_id=l.security_id'
+   joins=' from analysis_snapshot_entries e join limit_ladder_daily l on l.slice_id=e.slice_id and l.trade_date=e.trade_date left join technical_result_daily t on t.slice_id=e.slice_id and t.trade_date=e.trade_date and t.security_id=l.security_id'
    total=c.execute('select count(*)'+joins+' where '+where,args).fetchone()[0]
    level_counts={str(row[0]): int(row[1]) for row in c.execute(
     "select coalesce(l.ladder_level,'UNKNOWN'),count(*)"+joins+" where e.snapshot_id=? and e.domain='limit_ladder' and e.trade_date=? and "+WORKBENCH_STATISTICAL_SCOPE_SQL.format(id='l.security_id')+" group by 1",
@@ -1387,7 +1387,7 @@ class Api:
   if q:filters.append("(h.security_id ilike ? or json_extract_string(sd.payload_json,'$.security_name') ilike ?)");where_params.extend([f'%{q}%',f'%{q}%'])
   bands=[value for value in str(band).split(',') if value]
   if bands:filters.append('h.research_band in ('+','.join('?' for _ in bands)+')');where_params.extend(bands)
-  where=' and '.join(filters);joins=" from analysis_snapshot_entries e join historical_structure_daily h on h.slice_id=e.slice_id and h.trade_date=e.trade_date left join stock_daily sd on sd.publication_id=? and sd.security_id=h.security_id left join analysis_snapshot_entries te on te.snapshot_id=e.snapshot_id and te.domain='technical' and te.trade_date=e.trade_date left join stock_technical_daily t on t.slice_id=te.slice_id and t.trade_date=te.trade_date and t.security_id=h.security_id left join analysis_snapshot_entries se on se.snapshot_id=e.snapshot_id and se.domain='strength' and se.trade_date=e.trade_date left join stock_strength_daily st on st.slice_id=se.slice_id and st.trade_date=se.trade_date and st.security_id=h.security_id"
+  where=' and '.join(filters);joins=" from analysis_snapshot_entries e join historical_structure_daily h on h.slice_id=e.slice_id and h.trade_date=e.trade_date left join stock_daily sd on sd.publication_id=? and sd.security_id=h.security_id left join analysis_snapshot_entries te on te.snapshot_id=e.snapshot_id and te.domain='technical' and te.trade_date=e.trade_date left join technical_result_daily t on t.slice_id=te.slice_id and t.trade_date=te.trade_date and t.security_id=h.security_id left join analysis_snapshot_entries se on se.snapshot_id=e.snapshot_id and se.domain='strength' and se.trade_date=e.trade_date left join stock_strength_daily st on st.slice_id=se.slice_id and st.trade_date=se.trade_date and st.security_id=h.security_id"
   params=[p,*where_params]
   with self._con() as c:
    total=c.execute('select count(*)'+joins+' where '+where,params).fetchone()[0]

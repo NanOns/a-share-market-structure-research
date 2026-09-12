@@ -3,17 +3,30 @@
 from __future__ import annotations
 
 import json
-from typing import Any, Iterable
+from datetime import date, datetime, timezone
+from typing import Any, Iterable, Mapping
 
 import numpy as np
 import pandas as pd
 
 from .immutable import immutable_slice_state
+from workbench_service.result_objects import result_value_hash
 
 
 CONTRACT_VERSION = "TECHNICAL_HISTORY_V2_1_PREVIEW"
 PRICE_BASIS = "TDX_NATIVE_QFQ"
 WINDOWS = (5, 10, 20, 60)
+TECHNICAL_RESULT_SCHEMA_VERSION = "technical-result-rows-v1"
+TECHNICAL_RESULT_SEMANTIC_CONTRACT = "TECHNICAL_RESULT_V3"
+TECHNICAL_RESULT_PRIMARY_KEY = ("security_id", "trade_date")
+TECHNICAL_RESULT_COLUMNS = (
+    "security_id", "trade_date", "contract_id", "price_basis",
+    "raw_close", "adj_close", "quote_ret1", "raw_amount", "raw_volume",
+    "ma5", "ma10", "ma20", "ma60", "ret5", "ret10", "ret20", "ret60",
+    "rs5", "rs10", "rs20", "rs60", "amount_ma5", "amount_ma10", "amount_ma20",
+    "amount_ratio20", "amount_vs_prior20", "volume_vs_prior20", "amount_class",
+    "ma_alignment", "validity", "quality_codes", "basis_json",
+)
 
 
 def _finite(value: Any) -> bool:
@@ -146,7 +159,12 @@ def rows_for_storage(frame: pd.DataFrame, slice_id: str) -> list[tuple[Any, ...]
 
 
 def insert_technical_rows(connection: Any, slice_id: str, frame: pd.DataFrame) -> int:
-    """Insert a complete immutable slice, rejecting any existing conflict."""
+    """Insert a legacy 008 row set for pre-V3 compatibility fixtures.
+
+    Production preview builds use ``insert_technical_result_rows``.  Keeping
+    this narrow adapter allows old M8 contract tests and unbound legacy slices
+    to be read through the V3 compatibility view without writing both stores.
+    """
     rows = rows_for_storage(frame, slice_id)
     existing = connection.execute(
         "select * from stock_technical_daily where slice_id=?", [slice_id]
@@ -158,3 +176,208 @@ def insert_technical_rows(connection: Any, slice_id: str, frame: pd.DataFrame) -
         rows,
     )
     return len(rows)
+
+
+def _technical_result_records(frame: pd.DataFrame) -> list[dict[str, Any]]:
+    legacy_names = ("slice_id",) + TECHNICAL_RESULT_COLUMNS
+    records: list[dict[str, Any]] = []
+    for values in rows_for_storage(frame, "__v3_result_object__"):
+        record = dict(zip(legacy_names, values))
+        record.pop("slice_id", None)
+        record["trade_date"] = pd.Timestamp(record["trade_date"]).date()
+        records.append(record)
+    return records
+
+
+def _json_text(value: Any) -> str:
+    if isinstance(value, str):
+        return value
+    return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), default=str)
+
+
+def _technical_value_semantics(records: Iterable[Mapping[str, Any]]) -> dict[str, Any]:
+    rows = list(records)
+    return {
+        "null_policy": "EXPLICIT_NULLS_PRESERVED",
+        "json_policy": "SORTED_COMPACT_JSON",
+        "business_key": list(TECHNICAL_RESULT_PRIMARY_KEY),
+        "contract_ids": sorted({str(row["contract_id"]) for row in rows}),
+        "price_bases": sorted({str(row["price_basis"]) for row in rows}),
+        "quality_field": "quality_codes",
+        "basis_field": "basis_json",
+    }
+
+
+def _technical_hash(records: list[dict[str, Any]]) -> tuple[str, int, dict[str, Any]]:
+    semantics = _technical_value_semantics(records)
+    value_hash, _, row_count = result_value_hash(
+        domain="technical",
+        schema_version=TECHNICAL_RESULT_SCHEMA_VERSION,
+        semantic_contract=TECHNICAL_RESULT_SEMANTIC_CONTRACT,
+        columns=TECHNICAL_RESULT_COLUMNS,
+        primary_key=TECHNICAL_RESULT_PRIMARY_KEY,
+        rows=records,
+        value_semantics=semantics,
+    )
+    return value_hash, row_count, semantics
+
+
+def _technical_records_from_db(connection: Any, result_object_id: str) -> list[dict[str, Any]]:
+    columns = ",".join(TECHNICAL_RESULT_COLUMNS)
+    rows = connection.execute(
+        f"SELECT {columns} FROM technical_result_rows WHERE result_object_id=? ORDER BY security_id, trade_date",
+        [result_object_id],
+    ).fetchall()
+    return [dict(zip(TECHNICAL_RESULT_COLUMNS, row)) for row in rows]
+
+
+def _register_technical_result_rows(
+    connection: Any,
+    slice_id: str,
+    records: list[dict[str, Any]],
+    *,
+    migration_source: str,
+) -> dict[str, Any]:
+    metadata = connection.execute(
+        """
+        SELECT domain, trade_date, contract_id, input_hash, dependency_hash,
+               basis_json, row_count, logical_hash, storage_kind, storage_object_id
+        FROM analysis_slices WHERE slice_id=?
+        """,
+        [slice_id],
+    ).fetchone()
+    if not metadata:
+        raise ValueError(f"TECHNICAL_SLICE_NOT_FOUND:{slice_id}")
+    if metadata[0] != "technical":
+        raise ValueError("TECHNICAL_SLICE_DOMAIN_MISMATCH")
+    if int(metadata[6]) != len(records):
+        raise ValueError("TECHNICAL_RESULT_ROW_COUNT_MISMATCH")
+    if len({(row["security_id"], row["trade_date"]) for row in records}) != len(records):
+        raise ValueError("TECHNICAL_RESULT_PRIMARY_KEY_DUPLICATE")
+    for record in records:
+        record["quality_codes"] = _json_text(record["quality_codes"])
+        record["basis_json"] = _json_text(record["basis_json"])
+    value_hash, row_count, semantics = _technical_hash(records)
+    result_object_id = "result-obj-" + value_hash[:32]
+    now = datetime.now(timezone.utc)
+    existing_object = connection.execute(
+        "SELECT domain, schema_version, semantic_contract, value_hash, row_count, storage_kind FROM analysis_result_objects WHERE result_object_id=?",
+        [result_object_id],
+    ).fetchone()
+    expected_object = (
+        "technical", TECHNICAL_RESULT_SCHEMA_VERSION,
+        TECHNICAL_RESULT_SEMANTIC_CONTRACT, value_hash, row_count, "DUCKDB",
+    )
+    if existing_object and tuple(existing_object) != expected_object:
+        raise ValueError("TECHNICAL_RESULT_OBJECT_IDENTITY_CONFLICT")
+    connection.execute(
+        "INSERT INTO analysis_result_objects VALUES (?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(result_object_id) DO NOTHING",
+        [result_object_id, *expected_object[0:3], value_hash, row_count, "DUCKDB", now],
+    )
+    stored_rows = _technical_records_from_db(connection, result_object_id)
+    if stored_rows:
+        stored_hash, stored_count, stored_semantics = _technical_hash(stored_rows)
+        if stored_count != row_count or stored_hash != value_hash or stored_semantics != semantics:
+            raise ValueError("TECHNICAL_RESULT_VALUE_HASH_MISMATCH")
+    else:
+        columns = ["result_object_id", *TECHNICAL_RESULT_COLUMNS]
+        placeholders = ",".join("?" for _ in columns)
+        connection.executemany(
+            f"INSERT INTO technical_result_rows VALUES ({placeholders})",
+            [[result_object_id, *[record[column] for column in TECHNICAL_RESULT_COLUMNS]] for record in records],
+        )
+    storage_payload = {
+        "storage_object_id": result_object_id,
+        "result_object_id": result_object_id,
+        "kind": "TECHNICAL_RESULT_ROWS",
+        "storage_kind": "DUCKDB",
+        "table": "technical_result_rows",
+        "domain": "technical",
+        "schema_version": TECHNICAL_RESULT_SCHEMA_VERSION,
+        "semantic_contract": TECHNICAL_RESULT_SEMANTIC_CONTRACT,
+        "value_hash": value_hash,
+        "primary_key": list(TECHNICAL_RESULT_PRIMARY_KEY),
+        "columns": list(TECHNICAL_RESULT_COLUMNS),
+        "value_semantics": semantics,
+        "row_count": row_count,
+        "state": "ACTIVE",
+        "referenced": True,
+        "registered_at_utc": now.isoformat(),
+    }
+    connection.execute(
+        "INSERT INTO storage_objects(storage_object_id,payload_json) VALUES (?, ?) ON CONFLICT(storage_object_id) DO NOTHING",
+        [result_object_id, json.dumps(storage_payload, ensure_ascii=False, sort_keys=True, separators=(",", ":"))],
+    )
+    stored_payload = connection.execute(
+        "SELECT payload_json FROM storage_objects WHERE storage_object_id=?", [result_object_id]
+    ).fetchone()
+    if not stored_payload:
+        raise ValueError("TECHNICAL_RESULT_STORAGE_OBJECT_MISSING")
+    if metadata[9] not in (None, result_object_id):
+        raise ValueError("TECHNICAL_SLICE_STORAGE_OBJECT_CONFLICT")
+    connection.execute(
+        "UPDATE analysis_slices SET storage_object_id=? WHERE slice_id=? AND storage_object_id IS NULL",
+        [result_object_id, slice_id],
+    )
+    basis = metadata[5] if isinstance(metadata[5], dict) else json.loads(metadata[5])
+    evidence = {
+        "contract_version": "v3-p03-02-technical-migration-v1",
+        "migration_source": migration_source,
+        "source_table": "stock_technical_daily",
+        "source_slice_id": slice_id,
+        "source_trade_date": str(metadata[1]),
+        "source_contract_id": metadata[2],
+        "source_input_hash": metadata[3],
+        "source_dependency_hash": metadata[4],
+        "source_basis": basis,
+        "source_logical_hash": metadata[7],
+        "source_row_count": int(metadata[6]),
+        "result_object_id": result_object_id,
+        "result_value_hash": value_hash,
+        "result_schema_version": TECHNICAL_RESULT_SCHEMA_VERSION,
+        "result_semantic_contract": TECHNICAL_RESULT_SEMANTIC_CONTRACT,
+        "result_primary_key": list(TECHNICAL_RESULT_PRIMARY_KEY),
+        "result_columns": list(TECHNICAL_RESULT_COLUMNS),
+        "result_value_semantics": semantics,
+    }
+    existing_binding = connection.execute(
+        "SELECT result_object_id, identity_evidence FROM analysis_slice_result_bindings WHERE slice_id=?",
+        [slice_id],
+    ).fetchone()
+    if existing_binding:
+        if existing_binding[0] != result_object_id:
+            raise ValueError("TECHNICAL_SLICE_RESULT_BINDING_CONFLICT")
+    else:
+        connection.execute(
+            "INSERT INTO analysis_slice_result_bindings VALUES (?, ?, ?)",
+            [slice_id, result_object_id, json.dumps(evidence, ensure_ascii=False, sort_keys=True, separators=(",", ":"))],
+        )
+    return {
+        "slice_id": slice_id,
+        "result_object_id": result_object_id,
+        "value_hash": value_hash,
+        "row_count": row_count,
+        "reused": bool(stored_rows),
+    }
+
+
+def insert_technical_result_rows(connection: Any, slice_id: str, frame: pd.DataFrame) -> int:
+    """Write one technical slice to the V3 result-object row store only."""
+    records = _technical_result_records(frame)
+    _register_technical_result_rows(
+        connection, slice_id, records, migration_source="TECHNICAL_WRITER_V3"
+    )
+    return len(records)
+
+
+def migrate_technical_slice(connection: Any, slice_id: str) -> dict[str, Any]:
+    """Import one immutable legacy technical slice into the V3 row store."""
+    columns = ",".join(TECHNICAL_RESULT_COLUMNS)
+    rows = connection.execute(
+        f"SELECT {columns} FROM stock_technical_daily WHERE slice_id=? ORDER BY security_id, trade_date",
+        [slice_id],
+    ).fetchall()
+    records = [dict(zip(TECHNICAL_RESULT_COLUMNS, row)) for row in rows]
+    return _register_technical_result_rows(
+        connection, slice_id, records, migration_source="LEGACY_008_IMPORT"
+    )

@@ -130,7 +130,7 @@ def _build_daily_rows(connection: duckdb.DuckDBPyConnection, snapshot_id: str, t
             connection,
             f"""
             select security_id,ret5,ret20,rs5,rs20,validity,quality_codes
-              from stock_technical_daily
+              from technical_result_daily
              where slice_id=? and trade_date=? and security_id in ({placeholders})
             """,
             [technical_slice, trade_date, *security_ids],

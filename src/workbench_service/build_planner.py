@@ -33,6 +33,7 @@ REASON_LABELS = {
 STOCK_DOMAINS = ("quote", "technical", "strength", "high", "structure", "summary")
 SECTOR_DOMAINS = ("sector_base", "sector_cycle", "mainline")
 MEMBER_DOMAIN = "member_state"
+PLANNER_DOMAINS = set(STOCK_DOMAINS) | set(SECTOR_DOMAINS) | {MEMBER_DOMAIN, "market"}
 
 # These are input lookback sessions, not automatically the number of affected
 # output sessions.  A domain may need an additional output endpoint when a
@@ -366,6 +367,7 @@ def build_plan(
     sector_members: Mapping[str, Iterable[str]] | None = None,
     cutoff_date: date | str | None = None,
     lookbacks: Mapping[str, int] | None = None,
+    target_domains: Iterable[str] | None = None,
 ) -> dict[str, Any]:
     """Build the smallest explainable task set for changed dependencies.
 
@@ -387,6 +389,11 @@ def build_plan(
 
     securities = _normalise_ids(security_ids, "security_ids")
     sectors = set(_normalise_ids(sector_ids, "sector_ids"))
+    selected_domains = None if target_domains is None else tuple(sorted({str(value) for value in target_domains if str(value)}))
+    if selected_domains is not None:
+        unknown_domains = set(selected_domains) - PLANNER_DOMAINS
+        if unknown_domains:
+            raise BuildPlanError("TARGET_DOMAIN_UNKNOWN:" + ",".join(sorted(unknown_domains)))
     security_sector_map = {str(key): tuple(sorted({str(value) for value in values if str(value)})) for key, values in (security_to_sectors or {}).items()}
     member_map = _normalise_members(sector_members)
     for values in security_sector_map.values():
@@ -587,6 +594,8 @@ def build_plan(
         serialised["reasons"] = [REASON_LABELS[code] for code in serialised["reason_codes"]]
         serialised["event_ids"] = sorted(task["event_ids"])
         serialised_tasks.append(serialised)
+    if selected_domains is not None:
+        serialised_tasks = [item for item in serialised_tasks if item["domain"] in selected_domains]
 
     payload = {
         "contract_version": CONTRACT_VERSION,
@@ -602,6 +611,7 @@ def build_plan(
             "planned_domains": sorted({item["domain"] for item in serialised_tasks}),
         },
         "reason_catalog": dict(REASON_LABELS),
+        "target_domains": list(selected_domains) if selected_domains is not None else None,
         "window_contract": {
             "input_lookbacks": dict(sorted(lookback.items())),
             "affected_output_offsets": dict(sorted(AFFECTED_OUTPUT_OFFSETS.items())),

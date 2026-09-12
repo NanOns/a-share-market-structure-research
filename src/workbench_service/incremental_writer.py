@@ -32,6 +32,11 @@ METRICS_CONTRACT_VERSION = "v3-build-growth-metrics-v1.0"
 STORAGE_KIND = "DUCKDB"
 V3_RESULT_DOMAINS = {"technical", "strength", "high", "member_state", "structure", "summary"}
 BINDING_DOMAINS = {"LOCAL_OBSERVED", "LOCAL_RECONSTRUCTED"}
+PLANNER_DOMAINS = {
+    "quote", "technical", "strength", "high", "structure", "summary",
+    "member_state", "sector_base", "sector_cycle", "mainline", "market",
+}
+EXECUTION_MODES = {"CALCULATE", "REUSE", "UNSUPPORTED"}
 
 
 class IncrementalBuildError(RuntimeError):
@@ -127,6 +132,75 @@ def _writer_frame(frame: Any) -> Any:
 
 
 @dataclass(frozen=True)
+class DomainExecutor:
+    """Explicit execution contract for one planner domain."""
+
+    mode: str
+    calculate: Callable[[Any, Mapping[str, Any]], Any] | None = None
+    contract_id: str | None = None
+    primary_key: tuple[str, ...] = ()
+
+    def validate(self, domain: str) -> None:
+        if self.mode not in EXECUTION_MODES:
+            raise IncrementalBuildError(f"EXECUTOR_MODE_INVALID:{domain}:{self.mode}")
+        if self.mode == "CALCULATE" and self.calculate is None:
+            raise IncrementalBuildError(f"EXECUTOR_CALCULATOR_MISSING:{domain}")
+        if self.mode == "CALCULATE" and (not self.contract_id or not self.primary_key):
+            raise IncrementalBuildError(f"EXECUTOR_OUTPUT_CONTRACT_MISSING:{domain}")
+
+
+def _same_trade_date(frame: Any, trade_date: str) -> Any:
+    """Keep only the requested output date after a rolling calculation."""
+
+    if not hasattr(frame, "columns") or not hasattr(frame, "loc"):
+        raise IncrementalBuildError("CALCULATOR_DATAFRAME_REQUIRED")
+    date_column = "date" if "date" in frame.columns else "trade_date" if "trade_date" in frame.columns else None
+    if date_column is None:
+        raise IncrementalBuildError("CALCULATOR_TRADE_DATE_COLUMN_REQUIRED")
+    selected = frame.loc[frame[date_column].astype(str).eq(trade_date)].copy()
+    if selected.empty:
+        raise IncrementalBuildError(f"CALCULATOR_OUTPUT_DATE_MISSING:{trade_date}")
+    return selected
+
+
+def default_executor_matrix() -> dict[str, DomainExecutor]:
+    """Return an explicit matrix; unsupported domains fail closed."""
+
+    from workbench_analysis.technical import (
+        TECHNICAL_RESULT_SEMANTIC_CONTRACT,
+        calculate_technical_daily,
+    )
+
+    def calculate_technical(frame: Any, task: Mapping[str, Any]) -> Any:
+        return _same_trade_date(calculate_technical_daily(frame, cutoff=task["trade_date"]), str(task["trade_date"]))
+
+    matrix = {
+        domain: DomainExecutor("UNSUPPORTED") for domain in sorted(PLANNER_DOMAINS)
+    }
+    matrix["technical"] = DomainExecutor(
+        "CALCULATE",
+        calculate=calculate_technical,
+        contract_id=TECHNICAL_RESULT_SEMANTIC_CONTRACT,
+        primary_key=("security_id", "date"),
+    )
+    for domain in {"strength", "high", "member_state", "structure", "summary", "sector_base", "sector_cycle", "mainline"}:
+        matrix[domain] = DomainExecutor("REUSE")
+    return matrix
+
+
+@dataclass(frozen=True)
+class ReusedBuildObject:
+    """A planned task explicitly reusing an existing immutable slice."""
+
+    task_key: str
+    source_slice_id: str
+    covered_task_keys: tuple[str, ...] = ()
+
+    def keys(self) -> tuple[str, ...]:
+        return tuple(dict.fromkeys((self.task_key, *self.covered_task_keys)))
+
+
+@dataclass(frozen=True)
 class PreparedBuildObject:
     """One planned slice input ready for an existing domain writer."""
 
@@ -168,6 +242,17 @@ class PreparedBuildObject:
             raise IncrementalBuildError("BUILD_OBJECT_TASK_KEY_MISMATCH")
         key = canonical_key
         basis_value = dict(basis or {})
+        frame_scope: dict[str, list[str]] = {}
+        for field_name in ("security_id", "sector_id"):
+            values = sorted({str(row[field_name]) for row in rows if row.get(field_name) is not None})
+            if values:
+                frame_scope[field_name] = values
+        date_values = sorted({str(row["date"])[:10] for row in rows if row.get("date") is not None})
+        if not date_values:
+            date_values = sorted({str(row["trade_date"])[:10] for row in rows if row.get("trade_date") is not None})
+        if date_values:
+            frame_scope["dates"] = date_values
+        basis_value["frame_scope"] = frame_scope
         input_hash = _hash({"plan_id": plan_id, "task_key": key, "logical_hash": logical["sha256"], "basis": basis_value})
         dependency = str(dependency_hash or _hash([]))
         object_slice_id = slice_id or "slice-" + _hash({"plan_id": plan_id, "task_key": key, "input_hash": input_hash, "dependency_hash": dependency})[:32]
@@ -210,6 +295,8 @@ class SnapshotBinding:
             raise IncrementalBuildError("SNAPSHOT_QUERY_START_AFTER_CUTOFF")
         if not self.config_hash or not self.manifest_hash:
             raise IncrementalBuildError("SNAPSHOT_BINDING_HASH_REQUIRED")
+        if not self.expected_task_keys or len(set(self.expected_task_keys)) != len(self.expected_task_keys):
+            raise IncrementalBuildError("SNAPSHOT_TARGET_TASKS_REQUIRED")
 
 
 def default_writers() -> dict[str, Callable[[Any, str, Any], int]]:
@@ -240,9 +327,21 @@ def default_writers() -> dict[str, Callable[[Any, str, Any], int]]:
 class IncrementalBuildCoordinator:
     """Execute only planned objects and commit binding after all writers pass."""
 
-    def __init__(self, database_path: str | Path, *, writers: Mapping[str, Callable[[Any, str, Any], int]] | None = None):
+    def __init__(
+        self,
+        database_path: str | Path,
+        *,
+        writers: Mapping[str, Callable[[Any, str, Any], int]] | None = None,
+        executor_matrix: Mapping[str, DomainExecutor] | None = None,
+    ):
         self.database_path = Path(database_path).resolve()
         self.writers = dict(writers or default_writers())
+        self.executor_matrix = dict(executor_matrix or default_executor_matrix())
+        unknown = set(self.executor_matrix) - PLANNER_DOMAINS
+        if unknown:
+            raise IncrementalBuildError("EXECUTOR_DOMAIN_UNKNOWN:" + ",".join(sorted(unknown)))
+        for domain, executor in self.executor_matrix.items():
+            executor.validate(domain)
 
     def _connect(self) -> duckdb.DuckDBPyConnection:
         return duckdb.connect(str(self.database_path))
@@ -269,6 +368,67 @@ class IncrementalBuildCoordinator:
     @staticmethod
     def _object_ids(connection: Any) -> set[str]:
         return {str(row[0]) for row in connection.execute("SELECT result_object_id FROM analysis_result_objects").fetchall()}
+
+    @staticmethod
+    def _validate_frame_scope(item: PreparedBuildObject, covered_tasks: Sequence[Mapping[str, Any]]) -> None:
+        if not hasattr(item.frame, "columns"):
+            raise IncrementalBuildError(f"BUILD_OBJECT_FRAME_COLUMNS_REQUIRED:{item.task_key}")
+        columns = {str(column) for column in item.frame.columns}
+        for field_name in ("security_id", "sector_id"):
+            expected = {str(task[field_name]) for task in covered_tasks if task.get(field_name) is not None}
+            if not expected:
+                continue
+            if field_name not in columns:
+                raise IncrementalBuildError(f"BUILD_OBJECT_FRAME_{field_name.upper()}_REQUIRED:{item.task_key}")
+            actual = {str(value) for value in item.frame[field_name].dropna().tolist()}
+            if actual != expected:
+                raise IncrementalBuildError(
+                    f"BUILD_OBJECT_FRAME_{field_name.upper()}_SCOPE_MISMATCH:{item.task_key}"
+                )
+        date_column = "date" if "date" in columns else "trade_date" if "trade_date" in columns else None
+        if date_column is not None:
+            actual_dates = {str(value)[:10] for value in item.frame[date_column].dropna().tolist()}
+            if actual_dates != {item.trade_date}:
+                raise IncrementalBuildError(f"BUILD_OBJECT_FRAME_DATE_SCOPE_MISMATCH:{item.task_key}")
+
+    @staticmethod
+    def _reuse_source(connection: Any, reference: ReusedBuildObject, covered_tasks: Sequence[Mapping[str, Any]]) -> tuple[int, str, str]:
+        source = connection.execute(
+            """
+            SELECT s.domain, cast(s.trade_date as varchar), s.basis_json, s.row_count,
+                   b.result_object_id
+            FROM analysis_slices s
+            LEFT JOIN analysis_slice_result_bindings b ON b.slice_id=s.slice_id
+            WHERE s.slice_id=?
+            """,
+            [reference.source_slice_id],
+        ).fetchone()
+        if not source:
+            raise IncrementalBuildError(f"REUSE_SOURCE_SLICE_NOT_FOUND:{reference.source_slice_id}")
+        if source[4] is None:
+            raise IncrementalBuildError(f"REUSE_SOURCE_RESULT_NOT_BOUND:{reference.source_slice_id}")
+        expected_domain = str(covered_tasks[0]["domain"])
+        expected_date = _iso(covered_tasks[0]["trade_date"])
+        if str(source[0]) != expected_domain or str(source[1]) != expected_date:
+            raise IncrementalBuildError(f"REUSE_SOURCE_SCOPE_MISMATCH:{reference.task_key}")
+        if any(str(task["domain"]) != expected_domain or _iso(task["trade_date"]) != expected_date for task in covered_tasks):
+            raise IncrementalBuildError(f"REUSE_TASK_SCOPE_MISMATCH:{reference.task_key}")
+        try:
+            basis = json.loads(source[2]) if isinstance(source[2], str) else dict(source[2] or {})
+        except (TypeError, ValueError, json.JSONDecodeError) as exc:
+            raise IncrementalBuildError(f"REUSE_SOURCE_SCOPE_EVIDENCE_INVALID:{reference.source_slice_id}") from exc
+        frame_scope = basis.get("frame_scope")
+        if not isinstance(frame_scope, Mapping):
+            raise IncrementalBuildError(f"REUSE_SOURCE_SCOPE_EVIDENCE_MISSING:{reference.source_slice_id}")
+        expected_security = {str(task["security_id"]) for task in covered_tasks if task.get("security_id") is not None}
+        if expected_security and set(map(str, frame_scope.get("security_id", []))) != expected_security:
+            raise IncrementalBuildError(f"REUSE_SOURCE_SECURITY_SCOPE_MISMATCH:{reference.task_key}")
+        expected_sector = {str(task["sector_id"]) for task in covered_tasks if task.get("sector_id") is not None}
+        if expected_sector and set(map(str, frame_scope.get("sector_id", []))) != expected_sector:
+            raise IncrementalBuildError(f"REUSE_SOURCE_SECTOR_SCOPE_MISMATCH:{reference.task_key}")
+        if set(map(str, frame_scope.get("dates", []))) != {expected_date}:
+            raise IncrementalBuildError(f"REUSE_SOURCE_DATE_SCOPE_MISMATCH:{reference.task_key}")
+        return int(source[3]), str(source[4]), reference.source_slice_id
 
     @classmethod
     def _ensure_slice(cls, connection: Any, item: PreparedBuildObject) -> bool:
@@ -302,15 +462,19 @@ class IncrementalBuildCoordinator:
         return False
 
     @staticmethod
-    def _bind_snapshot(connection: Any, binding: SnapshotBinding, items: Sequence[PreparedBuildObject]) -> None:
+    def _bind_snapshot(connection: Any, binding: SnapshotBinding, entries: Sequence[tuple[tuple[str, ...], str, str, str]]) -> None:
         binding.validate()
-        expected = tuple(binding.expected_task_keys or tuple(key for item in items for key in (item.covered_task_keys or (item.task_key,))))
-        actual = tuple(key for item in items for key in (item.covered_task_keys or (item.task_key,)))
-        if set(expected) != set(actual):
+        actual = {key for covered, _domain, _trade_date, _slice_id in entries for key in covered}
+        expected = set(binding.expected_task_keys)
+        if expected != actual:
             raise IncrementalBuildError("SNAPSHOT_TASK_SCOPE_MISMATCH")
-        domain_dates = [(item.domain, item.trade_date) for item in items]
-        if len(domain_dates) != len(set(domain_dates)):
-            raise IncrementalBuildError("SNAPSHOT_DOMAIN_DATE_DUPLICATE")
+        domain_dates: dict[tuple[str, str], str] = {}
+        for covered, domain, trade_date, slice_id in entries:
+            identity = (domain, trade_date)
+            previous_slice = domain_dates.get(identity)
+            if previous_slice is not None and previous_slice != slice_id:
+                raise IncrementalBuildError("SNAPSHOT_DOMAIN_DATE_SLICE_CONFLICT")
+            domain_dates[identity] = slice_id
         if not connection.execute("SELECT 1 FROM publications WHERE publication_id=?", [binding.publication_id]).fetchone():
             raise IncrementalBuildError("PUBLICATION_NOT_FOUND")
         connection.execute(
@@ -324,16 +488,16 @@ class IncrementalBuildCoordinator:
         expected_snapshot = (_iso(binding.cutoff_date), _iso(binding.query_start), binding.universe_contract, binding.config_hash, binding.manifest_hash, "SUCCESS")
         if not stored or tuple(str(value) for value in stored) != expected_snapshot:
             raise IncrementalBuildError("SNAPSHOT_IDENTITY_CONFLICT")
-        for item in items:
+        for (domain, trade_date), slice_id in sorted(domain_dates.items()):
             connection.execute(
                 "INSERT INTO analysis_snapshot_entries VALUES (?,?,?,?) ON CONFLICT(snapshot_id,domain,trade_date) DO NOTHING",
-                [binding.snapshot_id, item.domain, date.fromisoformat(item.trade_date), item.slice_id],
+                [binding.snapshot_id, domain, date.fromisoformat(trade_date), slice_id],
             )
             stored_entry = connection.execute(
                 "SELECT slice_id FROM analysis_snapshot_entries WHERE snapshot_id=? AND domain=? AND trade_date=?",
-                [binding.snapshot_id, item.domain, date.fromisoformat(item.trade_date)],
+                [binding.snapshot_id, domain, date.fromisoformat(trade_date)],
             ).fetchone()
-            if not stored_entry or stored_entry[0] != item.slice_id:
+            if not stored_entry or stored_entry[0] != slice_id:
                 raise IncrementalBuildError("SNAPSHOT_ENTRY_IDENTITY_CONFLICT")
         connection.execute(
             "INSERT INTO publication_analysis_snapshots VALUES (?,?,?,?) ON CONFLICT(publication_id,domain) DO UPDATE SET snapshot_id=excluded.snapshot_id, bound_at=excluded.bound_at",
@@ -345,6 +509,7 @@ class IncrementalBuildCoordinator:
         plan: Mapping[str, Any],
         objects: Iterable[PreparedBuildObject],
         *,
+        reused: Iterable[ReusedBuildObject] = (),
         snapshot: SnapshotBinding | None = None,
     ) -> dict[str, Any]:
         """Execute the selected planned objects atomically.
@@ -360,9 +525,10 @@ class IncrementalBuildCoordinator:
         except BuildPlanError as exc:
             raise IncrementalBuildError(str(exc)) from exc
         object_list = list(objects)
+        reused_list = list(reused)
         status = str(verified.get("status") or "")
         if status == "NO_WORK":
-            if object_list or snapshot is not None:
+            if object_list or reused_list or snapshot is not None:
                 raise IncrementalBuildError("NO_WORK_PLAN_HAS_EXECUTION_INPUT")
             return {
                 "contract_version": CONTRACT_VERSION,
@@ -380,16 +546,19 @@ class IncrementalBuildCoordinator:
                 "identity_rows_added": 0,
                 "cache_bytes_added": 0,
                 "db_file_growth_bytes": 0,
+                "execution_matrix": {domain: executor.mode for domain, executor in sorted(self.executor_matrix.items())},
                 "snapshot_binding": None,
             }
         if status != "PLANNED":
             raise IncrementalBuildError("BUILD_PLAN_STATUS_INVALID")
         tasks = {str(item.get("task_key") or task_key(item)): item for item in verified.get("tasks", [])}
-        if not object_list:
+        if not object_list and not reused_list:
             raise IncrementalBuildError("PLANNED_OBJECTS_REQUIRED")
         seen: set[str] = set()
+        binding_entries: list[tuple[tuple[str, ...], str, str, str]] = []
         for item in object_list:
             covered = item.covered_task_keys or (item.task_key,)
+            covered_tasks: list[Mapping[str, Any]] = []
             for covered_key in covered:
                 if covered_key in seen:
                     raise IncrementalBuildError(f"BUILD_OBJECT_DUPLICATE:{covered_key}")
@@ -399,12 +568,35 @@ class IncrementalBuildCoordinator:
                     raise IncrementalBuildError(f"BUILD_OBJECT_NOT_IN_PLAN:{covered_key}")
                 if str(task.get("domain")) != item.domain or _iso(task.get("trade_date")) != item.trade_date:
                     raise IncrementalBuildError(f"BUILD_OBJECT_SCOPE_MISMATCH:{covered_key}")
+                covered_tasks.append(task)
             if item.domain not in self.writers:
                 raise IncrementalBuildError(f"WRITER_NOT_REGISTERED:{item.domain}")
             if _row_count(item.frame) != item.row_count:
                 raise IncrementalBuildError(f"BUILD_OBJECT_ROW_COUNT_MISMATCH:{item.task_key}")
+            self._validate_frame_scope(item, covered_tasks)
+            binding_entries.append((tuple(covered), item.domain, item.trade_date, item.slice_id))
+        for reference in reused_list:
+            covered = reference.keys()
+            if not covered:
+                raise IncrementalBuildError("REUSE_TASK_REQUIRED")
+            covered_tasks: list[Mapping[str, Any]] = []
+            for covered_key in covered:
+                if covered_key in seen:
+                    raise IncrementalBuildError(f"BUILD_OBJECT_DUPLICATE:{covered_key}")
+                seen.add(covered_key)
+                task = tasks.get(covered_key)
+                if task is None:
+                    raise IncrementalBuildError(f"REUSE_TASK_NOT_IN_PLAN:{covered_key}")
+                covered_tasks.append(task)
+            domain = str(covered_tasks[0]["domain"])
+            trade_date = _iso(covered_tasks[0]["trade_date"])
+            if any(str(task["domain"]) != domain or _iso(task["trade_date"]) != trade_date for task in covered_tasks):
+                raise IncrementalBuildError(f"REUSE_TASK_SCOPE_MISMATCH:{reference.task_key}")
+            binding_entries.append((tuple(covered), domain, trade_date, reference.source_slice_id))
         if snapshot is not None:
-            expected = set(snapshot.expected_task_keys or tuple(key for item in object_list for key in (item.covered_task_keys or (item.task_key,))))
+            expected = set(snapshot.expected_task_keys)
+            if expected != set(tasks):
+                raise IncrementalBuildError("SNAPSHOT_TARGET_SCOPE_MISMATCH")
             if expected != seen:
                 raise IncrementalBuildError("SNAPSHOT_TASK_SCOPE_MISMATCH")
 
@@ -447,13 +639,30 @@ class IncrementalBuildCoordinator:
                     "domain": item.domain,
                     "trade_date": item.trade_date,
                     "slice_id": item.slice_id,
+                    "execution_mode": "CALCULATE",
                     "row_count": row_count,
                     "slice_reused": bool(slice_reused),
                     "result_binding_created": before_binding is None and after_binding is not None,
                     "new_result_object_count": len(new_object_ids),
                 })
+            for reference in reused_list:
+                covered_tasks = [tasks[key] for key in reference.keys()]
+                row_count, result_object_id, source_slice_id = self._reuse_source(connection, reference, covered_tasks)
+                rows_reused += row_count
+                reused_objects += 1
+                task_metrics.append({
+                    "task_key": reference.task_key,
+                    "covered_task_keys": list(reference.keys()),
+                    "covered_task_count": len(reference.keys()),
+                    "domain": str(covered_tasks[0]["domain"]),
+                    "trade_date": _iso(covered_tasks[0]["trade_date"]),
+                    "slice_id": source_slice_id,
+                    "execution_mode": "REUSE",
+                    "row_count": row_count,
+                    "result_object_id": result_object_id,
+                })
             if snapshot is not None:
-                self._bind_snapshot(connection, snapshot, object_list)
+                self._bind_snapshot(connection, snapshot, binding_entries)
             connection.execute("COMMIT")
         except Exception:
             try:
@@ -475,7 +684,7 @@ class IncrementalBuildCoordinator:
             "plan_id": verified["plan_id"],
             "planned_task_count": len(tasks),
             "executed_task_count": len(seen),
-            "executed_object_count": len(object_list),
+            "executed_object_count": len(object_list) + len(reused_list),
             "skipped_task_count": len(tasks) - len(seen),
             "new_relation_edges": 0,
             "closed_relation_edges": 0,
@@ -489,12 +698,76 @@ class IncrementalBuildCoordinator:
             "database_bytes_before": database_before,
             "database_bytes_after": database_after,
             "task_metrics": task_metrics,
+            "execution_matrix": {domain: executor.mode for domain, executor in sorted(self.executor_matrix.items())},
             "snapshot_binding": {
                 "snapshot_id": snapshot.snapshot_id,
                 "publication_id": snapshot.publication_id,
                 "binding_domain": snapshot.binding_domain,
             } if snapshot else None,
         }
+
+    def execute_daily(
+        self,
+        plan: Mapping[str, Any],
+        *,
+        input_provider: Callable[[Mapping[str, Any]], Any],
+        reused: Iterable[ReusedBuildObject] = (),
+        snapshot: SnapshotBinding | None = None,
+    ) -> dict[str, Any]:
+        """Run the explicit domain matrix from raw daily input to binding.
+
+        A plan is executable only when every target task is either calculated
+        by a registered calculator or backed by an explicit immutable reuse
+        reference.  Unsupported domains fail before opening a write
+        transaction, so a partial daily build cannot become visible.
+        """
+
+        try:
+            verified = verify_build_plan(plan)
+        except BuildPlanError as exc:
+            raise IncrementalBuildError(str(exc)) from exc
+        if str(verified.get("status") or "") == "NO_WORK":
+            return self.execute(plan, (), reused=tuple(reused), snapshot=snapshot)
+        tasks = {str(item.get("task_key") or task_key(item)): item for item in verified.get("tasks", [])}
+        reuse_list = list(reused)
+        reuse_keys = {key for reference in reuse_list for key in reference.keys()}
+        if len(reuse_keys) != sum(len(reference.keys()) for reference in reuse_list):
+            raise IncrementalBuildError("REUSE_TASK_DUPLICATE")
+        objects: list[PreparedBuildObject] = []
+        for key, task in tasks.items():
+            executor = self.executor_matrix.get(str(task.get("domain")))
+            if executor is None:
+                raise IncrementalBuildError(f"EXECUTOR_NOT_REGISTERED:{task.get('domain')}")
+            if key in reuse_keys:
+                continue
+            if executor.mode == "UNSUPPORTED":
+                raise IncrementalBuildError(f"EXECUTOR_UNSUPPORTED:{task.get('domain')}")
+            if executor.mode == "REUSE":
+                raise IncrementalBuildError(f"REUSE_SOURCE_REQUIRED:{key}")
+            loaded = input_provider(task)
+            basis: Mapping[str, Any] = {}
+            frame = loaded
+            if isinstance(loaded, Mapping) and "frame" in loaded:
+                frame = loaded["frame"]
+                basis = dict(loaded.get("basis") or {})
+            calculated = executor.calculate(frame, task) if executor.calculate else None
+            if calculated is None:
+                raise IncrementalBuildError(f"EXECUTOR_CALCULATION_EMPTY:{task.get('domain')}")
+            objects.append(
+                PreparedBuildObject.from_frame(
+                    task,
+                    calculated,
+                    plan_id=str(verified["plan_id"]),
+                    contract_id=str(executor.contract_id),
+                    basis={
+                        **basis,
+                        "executor_mode": "CALCULATE",
+                        "executor_contract_id": executor.contract_id,
+                    },
+                    primary_key=executor.primary_key,
+                )
+            )
+        return self.execute(plan, objects, reused=reuse_list, snapshot=snapshot)
 
 
 def write_growth_report(path: str | Path, report: Mapping[str, Any]) -> Path:
@@ -515,11 +788,15 @@ def write_growth_report(path: str | Path, report: Mapping[str, Any]) -> Path:
 
 __all__ = [
     "CONTRACT_VERSION",
+    "DomainExecutor",
+    "EXECUTION_MODES",
     "METRICS_CONTRACT_VERSION",
     "IncrementalBuildCoordinator",
     "IncrementalBuildError",
+    "ReusedBuildObject",
     "PreparedBuildObject",
     "SnapshotBinding",
+    "default_executor_matrix",
     "default_writers",
     "write_growth_report",
 ]

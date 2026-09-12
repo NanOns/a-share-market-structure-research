@@ -1,8 +1,24 @@
 # V3 P04-02 阶段报告
 
+## R19-05/R19-06 追加补验（当前权威结论）
+
+当前主实施文档 SHA-256：`3395AE2895F749DD5764998451363BF24024BAAA481AC7E644FE1AF941137851`。
+
+追加补验结论：**PASS（限定在已注册能力和目标域范围内）**。本次修复关闭了 R19-05/R19-06 的对象完整性门：
+
+- `SnapshotBinding.expected_task_keys` 必须显式给出，并且必须等于整个目标 plan；仅提交部分 objects 不能绑定 publication。
+- 计算对象和复用对象都必须覆盖计划任务；复用必须声明旧 `source_slice_id`，且旧 slice 必须已有结果绑定、域和交易日一致。
+- `PreparedBuildObject` 的 `security_id`/`sector_id`/日期业务键会与 covered task 逐项交叉核验，错误声明不能把 A 任务写成 B。
+- 执行器矩阵逐域显式标记 `CALCULATE`、`REUSE` 或 `UNSUPPORTED`；未支持的 quote/market 不会静默跳过，也不会伪造结果。
+- `execute_daily` 和 `run_v3_incremental_build.py` 的 `source_parquet` 入口已覆盖“只读输入→技术指标计算→P03 writer→slice/result binding→snapshot/publication binding”完整链路；prepared frame 仍保留为显式 hand-off 入口。
+
+当前能力边界必须保留：默认矩阵只有 `technical` 走真实 `CALCULATE`；`strength`、`high`、`member_state`、`structure`、`summary`、`sector_base`、`sector_cycle`、`mainline` 明确要求 `REUSE`；`quote`、`market` 为 `UNSUPPORTED`。因此本补验不把局部技术域闭环冒充为全域每日生产已接入，C20-16 的 `P04-02-INTEGRATION` 仍是下一项任务，P04-03 不提前开始。
+
+追加证据：P04-02/P04-01 定向测试 `22 passed`；V3 与 M7 窗口回归 `68 passed`。测试只使用临时 DuckDB；未写生产数据库、结果库或 TDX 输入。用户工作区对 V3 主实施文档的未提交修改未触碰。
+
 ## 结论
 
-`P04-02`：**PASS**。
+原 `P04-02` 协调器报告的 `PASS` 作为历史证据保留；按最新主实施文档复核，完整每日生产入口仍为 `SCOPE_PARTIAL`，以上 R19-05/R19-06 追加补验单独记录，不覆盖历史记录。
 
 本阶段只实现“严格消费 P04-01 build plan 的增量 writer 协调层”和增长记录，不执行 P04-03 的解包缓存回收、备份调用链改造或任何删除动作。执行依据为当前工作区 V3 主实施文档 `docs/WORKBENCH_DUAL_TRACK_IMPLEMENTATION_SPEC_V3.md` §17.6、§17.10、§17.12、§18.7 P04-02。
 
@@ -49,4 +65,4 @@
 
 ## 下一阶段
 
-下一项严格是 `P04-03`：只处理解包缓存、源包引用与回收预览边界。本阶段不执行缓存删除、备份策略改造或物理空间回收。
+原报告中的 `P04-03` 仅对应旧范围。当前权威下一项是 `P04-02-INTEGRATION`：把 plan、失效范围、复用、计算、写入和绑定接入实际每日生产调用链并完成新日/历史修订/关系变化/同输入验收；在该项完成前不执行 `P04-03`。

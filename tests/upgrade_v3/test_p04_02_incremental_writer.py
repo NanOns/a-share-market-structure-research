@@ -13,6 +13,7 @@ from workbench_service.incremental_writer import (
     IncrementalBuildCoordinator,
     IncrementalBuildError,
     PreparedBuildObject,
+    ReusedBuildObject,
     SnapshotBinding,
 )
 
@@ -56,6 +57,21 @@ def _plan(sessions):
         security_ids=["A"],
         security_to_sectors={"A": []},
         cutoff_date=sessions[-1],
+    )
+
+
+def _technical_plan(sessions):
+    changed = sessions[5]
+    previous = DependencySummary(trading_days=tuple(sessions), quote={f"{changed}|A": "price-v1"})
+    current = DependencySummary(trading_days=tuple(sessions), quote={f"{changed}|A": "price-v2"})
+    return build_plan(
+        previous,
+        current,
+        sessions=sessions,
+        security_ids=["A"],
+        security_to_sectors={"A": []},
+        cutoff_date=sessions[6],
+        target_domains=["technical"],
     )
 
 
@@ -113,7 +129,7 @@ def test_real_technical_writer_repeated_three_times_adds_no_business_rows_on_ret
 
 def test_snapshot_binding_is_committed_only_after_all_planned_objects_succeed(tmp_path):
     sessions = _sessions()
-    plan = _plan(sessions)
+    plan = _technical_plan(sessions)
     objects = _objects(plan, sessions, count=2)
     database = _database(tmp_path)
     coordinator = IncrementalBuildCoordinator(database)
@@ -125,7 +141,7 @@ def test_snapshot_binding_is_committed_only_after_all_planned_objects_succeed(tm
         query_start=sessions[0],
         config_hash="c" * 64,
         manifest_hash="d" * 64,
-        expected_task_keys=tuple(item.task_key for item in objects),
+        expected_task_keys=tuple(item["task_key"] for item in plan["tasks"]),
     )
 
     result = coordinator.execute(plan, objects, snapshot=binding)
@@ -141,7 +157,14 @@ def test_same_domain_date_tasks_can_share_one_slice_before_snapshot_binding(tmp_
     sessions = _sessions()
     previous = DependencySummary(trading_days=tuple(sessions[:-1]))
     current = DependencySummary(trading_days=tuple(sessions))
-    plan = build_plan(previous, current, sessions=sessions, security_ids=["A", "B"], cutoff_date=sessions[-1])
+    plan = build_plan(
+        previous,
+        current,
+        sessions=sessions,
+        security_ids=["A", "B"],
+        cutoff_date=sessions[-1],
+        target_domains=["technical"],
+    )
     latest_tasks = [item for item in plan["tasks"] if item["domain"] == "technical" and item["trade_date"] == sessions[-1]]
     assert {item["security_id"] for item in latest_tasks} == {"A", "B"}
     frame = pd.DataFrame({
@@ -187,7 +210,7 @@ def test_same_domain_date_tasks_can_share_one_slice_before_snapshot_binding(tmp_
 
 def test_failed_domain_writer_rolls_back_rows_and_does_not_bind_snapshot(tmp_path):
     sessions = _sessions()
-    plan = _plan(sessions)
+    plan = _technical_plan(sessions)
     objects = _objects(plan, sessions, count=2)
     database = _database(tmp_path)
     calls = {"count": 0}
@@ -209,7 +232,7 @@ def test_failed_domain_writer_rolls_back_rows_and_does_not_bind_snapshot(tmp_pat
         query_start=sessions[0],
         config_hash="e" * 64,
         manifest_hash="f" * 64,
-        expected_task_keys=tuple(item.task_key for item in objects),
+        expected_task_keys=tuple(item["task_key"] for item in plan["tasks"]),
     )
 
     with pytest.raises(RuntimeError, match="intentional-domain-failure"):
@@ -218,6 +241,189 @@ def test_failed_domain_writer_rolls_back_rows_and_does_not_bind_snapshot(tmp_pat
         assert connection.execute("SELECT count(*) FROM analysis_slices").fetchone()[0] == 0
         assert connection.execute("SELECT count(*) FROM analysis_snapshots").fetchone()[0] == 0
         assert connection.execute("SELECT count(*) FROM publication_analysis_snapshots").fetchone()[0] == 0
+
+
+def test_partial_target_cannot_bind_publication(tmp_path):
+    sessions = _sessions()
+    plan = _plan(sessions)
+    objects = _objects(plan, sessions, count=1)
+    binding = SnapshotBinding(
+        snapshot_id="snapshot-partial-rejected",
+        publication_id="pub-incremental",
+        binding_domain="LOCAL_RECONSTRUCTED",
+        cutoff_date=sessions[-1],
+        query_start=sessions[0],
+        config_hash="a" * 64,
+        manifest_hash="b" * 64,
+        expected_task_keys=tuple(item.task_key for item in objects),
+    )
+
+    with pytest.raises(IncrementalBuildError, match="SNAPSHOT_TARGET_SCOPE_MISMATCH"):
+        IncrementalBuildCoordinator(_database(tmp_path)).execute(plan, objects, snapshot=binding)
+
+
+def test_frame_business_keys_must_match_covered_plan_tasks(tmp_path):
+    sessions = _sessions()
+    plan = _plan(sessions)
+    task = next(item for item in plan["tasks"] if item["domain"] == "technical")
+    frame = pd.DataFrame({
+        "security_id": ["B"],
+        "date": pd.to_datetime([task["trade_date"]]),
+        "raw_close": [10.0],
+        "adj_close": [10.0],
+        "raw_amount": [100.0],
+        "raw_volume": [1000.0],
+        "data_quality_flag": ["OK"],
+        "is_synthetic_fill": [False],
+    })
+    item = PreparedBuildObject.from_frame(
+        task,
+        calculate_technical_daily(frame),
+        plan_id=plan["plan_id"],
+        contract_id=TECHNICAL_CONTRACT,
+        primary_key=("security_id", "date"),
+    )
+
+    with pytest.raises(IncrementalBuildError, match="FRAME_SECURITY_ID_SCOPE_MISMATCH"):
+        IncrementalBuildCoordinator(_database(tmp_path)).execute(plan, [item])
+
+
+def test_default_executor_matrix_is_explicit_and_unsupported_domain_fails_closed(tmp_path):
+    sessions = _sessions()
+    changed = sessions[5]
+    plan = build_plan(
+        DependencySummary(trading_days=tuple(sessions), quote={f"{changed}|A": "price-v1"}),
+        DependencySummary(trading_days=tuple(sessions), quote={f"{changed}|A": "price-v2"}),
+        sessions=sessions,
+        security_ids=["A"],
+        security_to_sectors={"A": []},
+        cutoff_date=sessions[-1],
+        target_domains=["quote"],
+    )
+    coordinator = IncrementalBuildCoordinator(_database(tmp_path))
+
+    assert set(coordinator.executor_matrix) == {
+        "quote", "technical", "strength", "high", "structure", "summary",
+        "member_state", "sector_base", "sector_cycle", "mainline", "market",
+    }
+    assert coordinator.executor_matrix["technical"].mode == "CALCULATE"
+    assert coordinator.executor_matrix["quote"].mode == "UNSUPPORTED"
+    with pytest.raises(IncrementalBuildError, match="EXECUTOR_UNSUPPORTED:quote"):
+        coordinator.execute_daily(plan, input_provider=lambda _task: pd.DataFrame())
+
+
+def test_execute_daily_calculates_from_raw_input_and_binds_complete_scoped_plan(tmp_path):
+    sessions = _sessions()
+    plan = _technical_plan(sessions)
+    raw = pd.DataFrame({
+        "security_id": ["A"] * len(sessions),
+        "date": pd.to_datetime(sessions),
+        "raw_close": [10.0 + index * 0.1 for index in range(len(sessions))],
+        "adj_close": [10.0 + index * 0.1 for index in range(len(sessions))],
+        "raw_amount": [100.0 + index for index in range(len(sessions))],
+        "raw_volume": [1000.0 + index for index in range(len(sessions))],
+        "data_quality_flag": ["OK"] * len(sessions),
+        "is_synthetic_fill": [False] * len(sessions),
+    })
+    database = _database(tmp_path)
+    binding = SnapshotBinding(
+        snapshot_id="snapshot-daily-calculated",
+        publication_id="pub-incremental",
+        binding_domain="LOCAL_RECONSTRUCTED",
+        cutoff_date=sessions[6],
+        query_start=sessions[0],
+        config_hash="c" * 64,
+        manifest_hash="d" * 64,
+        expected_task_keys=tuple(item["task_key"] for item in plan["tasks"]),
+    )
+
+    def input_provider(task):
+        return raw[raw["date"].astype(str).str[:10] <= task["trade_date"]].copy()
+
+    result = IncrementalBuildCoordinator(database).execute_daily(
+        plan,
+        input_provider=input_provider,
+        snapshot=binding,
+    )
+
+    assert result["status"] == "BUILT"
+    assert result["snapshot_binding"]["snapshot_id"] == binding.snapshot_id
+    assert result["execution_matrix"]["technical"] == "CALCULATE"
+    with duckdb.connect(str(database), read_only=True) as connection:
+        assert connection.execute("SELECT count(*) FROM technical_result_rows").fetchone()[0] == len(plan["tasks"])
+        assert connection.execute("SELECT count(*) FROM analysis_snapshot_entries WHERE snapshot_id=?", [binding.snapshot_id]).fetchone()[0] == len(plan["tasks"])
+        assert connection.execute("SELECT snapshot_id FROM publication_analysis_snapshots WHERE publication_id=?", [binding.publication_id]).fetchone()[0] == binding.snapshot_id
+
+
+def test_reuse_reference_requires_existing_bound_slice_and_can_complete_snapshot(tmp_path):
+    sessions = _sessions()
+    plan = _technical_plan(sessions)
+    objects = _objects(plan, sessions, count=2)
+    database = _database(tmp_path)
+    coordinator = IncrementalBuildCoordinator(database)
+    coordinator.execute(plan, [objects[0]])
+    reference = ReusedBuildObject(task_key=objects[0].task_key, source_slice_id=objects[0].slice_id)
+    binding = SnapshotBinding(
+        snapshot_id="snapshot-with-reuse",
+        publication_id="pub-incremental",
+        binding_domain="LOCAL_RECONSTRUCTED",
+        cutoff_date=sessions[6],
+        query_start=sessions[0],
+        config_hash="e" * 64,
+        manifest_hash="f" * 64,
+        expected_task_keys=tuple(item["task_key"] for item in plan["tasks"]),
+    )
+
+    result = coordinator.execute(plan, [objects[1]], reused=[reference], snapshot=binding)
+
+    assert result["reused_result_objects"] == 1
+    assert result["reused_rows"] == 1
+    with duckdb.connect(str(database), read_only=True) as connection:
+        assert connection.execute("SELECT count(*) FROM analysis_snapshot_entries WHERE snapshot_id=?", [binding.snapshot_id]).fetchone()[0] == len(plan["tasks"])
+
+
+def test_reuse_reference_cannot_cross_security_scope_on_same_domain_date(tmp_path):
+    sessions = _sessions()
+    previous = DependencySummary(trading_days=tuple(sessions[:-1]))
+    current = DependencySummary(trading_days=tuple(sessions))
+    plan = build_plan(
+        previous,
+        current,
+        sessions=sessions,
+        security_ids=["A", "B"],
+        cutoff_date=sessions[-1],
+        target_domains=["technical"],
+    )
+    latest = [item for item in plan["tasks"] if item["trade_date"] == sessions[-1]]
+    task_a = next(item for item in latest if item["security_id"] == "A")
+    task_b = next(item for item in latest if item["security_id"] == "B")
+    frame = pd.DataFrame({
+        "security_id": ["A"],
+        "date": pd.to_datetime([sessions[-1]]),
+        "raw_close": [10.0],
+        "adj_close": [10.0],
+        "raw_amount": [100.0],
+        "raw_volume": [1000.0],
+        "data_quality_flag": ["OK"],
+        "is_synthetic_fill": [False],
+    })
+    item = PreparedBuildObject.from_frame(
+        task_a,
+        calculate_technical_daily(frame),
+        plan_id=plan["plan_id"],
+        contract_id=TECHNICAL_CONTRACT,
+        primary_key=("security_id", "date"),
+    )
+    database = _database(tmp_path)
+    coordinator = IncrementalBuildCoordinator(database)
+    coordinator.execute(plan, [item])
+
+    with pytest.raises(IncrementalBuildError, match="REUSE_SOURCE_SECURITY_SCOPE_MISMATCH"):
+        coordinator.execute(
+            plan,
+            [],
+            reused=[ReusedBuildObject(task_key=task_b["task_key"], source_slice_id=item.slice_id)],
+        )
 
 
 def test_object_outside_build_plan_is_rejected_before_database_write(tmp_path):

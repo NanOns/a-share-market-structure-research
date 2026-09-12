@@ -218,3 +218,19 @@ P00-03 合同资产 SHA-256：
 | P00-02-STORAGE-AUDIT | P00-02/P04-03 | 新增 source catalog / storage reference 只读审计及原子 JSON 产物 | 物理链与 publication 引用差异可定位；不自动变更 | PASS (AUDIT ONLY) |
 
 本轮回归：`pytest -q tests/upgrade_v3 tests/upgrade_m5 tests/upgrade_m7`，170 passed；compileall、diff check 通过。当前生产库只读审计仍保留 3 份未登记物理回执、`source_files=0` 历史存量、storage 引用旗标差异和既有 P04-03-05～07 备份链分类；这些属于需要 owner 决策的独立数据审计项，不以代码测试伪装成已物理修复。
+
+## P04-03-08 旧 M0-M15 产物清理记录（2026-09-12）
+
+本记录依据最新 V3 主实施文档 SHA-256 `3395AE2895F749DD5764998451363BF24024BAAA481AC7E644FE1AF941137851`。按用户授权，仅删除已确认不属于 V3 核心的旧 M0-M15 残留；未触碰 TDX 输入目录，未删除任何 V3 `result-obj-*`、已登记 source bundle、publication 绑定或完整备份链。
+
+| 清理项 | 数量 | 验收 |
+|---|---:|---|
+| 未登记旧 source bundle 收据目录 | 3 | 已删除；登记源包/提取物保留 |
+| `INCOMPLETE` 旧备份链 | 31 | 已删除；清理后 0 条 |
+| 孤立旧备份对象组 | 6 | 已删除；数据库/manifest/object 孤立项均为 0 |
+| 历史旧 analysis parquet | 1 | 物理文件删除；storage row 为 DELETED |
+| V3 结果对象 | 51 | 全部保留 |
+
+清理后 `backup_catalog=12` 且完整链 12/12，source bundle catalog/物理收据为 5/5，V3 fallback binding 为 0。历史 `source_files=0` 是元数据缺口，不是待删除文件，本次未做未经授权的历史回填。旧 analysis 对应的 2 条 `analysis_slices` 身份行保留为 tombstone，因为历史迁移外键仍指向已重命名表；物理对象已删除并完成删除标记。
+
+本次回归 `pytest -q tests/upgrade_v3 tests/upgrade_m5 tests/upgrade_m7` 为 170 passed，compileall 和 diff check 通过。清理子项验收通过，但 P04-03 整体仍为 scoped/audit 状态，P04 生产集成及独立审计项未全部关闭，下一阶段仍为 P04 剩余收口，不进入 P05。

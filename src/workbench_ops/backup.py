@@ -282,6 +282,69 @@ class BackupService:
         }
 
     @staticmethod
+    def classify_catalog_physical_chain(audit: dict) -> dict:
+        """Turn a chain audit into a conservative, non-destructive decision list."""
+        decisions=[]
+        for record in audit.get("records",[]):
+            if record.get("chain_status")=="PASS":
+                decisions.append({
+                    "item_type":"CATALOG_CHAIN",
+                    "item_id":record["backup_id"],
+                    "category":"MANUAL_RECOVERY_VALIDATION_CANDIDATE",
+                    "protection":"RETAIN",
+                    "next_action":"OPTIONAL_MANUAL_RECOVERY_DRILL",
+                    "deletion_allowed":False,
+                    "reason":"DATABASE_MANIFEST_OBJECT_CHAIN_COMPLETE",
+                })
+            else:
+                decisions.append({
+                    "item_type":"CATALOG_CHAIN",
+                    "item_id":record["backup_id"],
+                    "category":"PROTECTED_EVIDENCE",
+                    "protection":"RETAIN_UNTIL_DECISION",
+                    "next_action":"DO_NOT_DELETE_OR_RECREATE; IDENTIFY_DATABASE_ARTIFACT_SOURCE",
+                    "deletion_allowed":False,
+                    "reason":"CATALOG_CHAIN_INCOMPLETE",
+                    "database_status":record.get("database_status"),
+                    "manifest_status":record.get("manifest_status"),
+                    "object_status":record.get("object_status"),
+                })
+        for name in audit.get("orphan_physical_database_files",[]):
+            decisions.append({
+                "item_type":"ORPHAN_DATABASE",
+                "item_id":name,
+                "category":"USER_DECISION_REQUIRED",
+                "protection":"RETAIN_UNTIL_DECISION",
+                "next_action":"IDENTIFY_OWNER_OR_FIXED_RETENTION",
+                "deletion_allowed":False,
+                "reason":"PHYSICAL_DATABASE_NOT_IN_CATALOG",
+            })
+        manifest_names={name.removesuffix(".manifest.json") for name in audit.get("orphan_physical_manifest_files",[])}
+        object_names={name.removesuffix(".objects") for name in audit.get("orphan_physical_object_dirs",[])}
+        for backup_id in sorted(manifest_names|object_names):
+            decisions.append({
+                "item_type":"ORPHAN_MANIFEST_OBJECT",
+                "item_id":backup_id,
+                "category":"USER_DECISION_REQUIRED",
+                "protection":"RETAIN_UNTIL_DECISION",
+                "next_action":"IDENTIFY_OWNER_OR_FIXED_RETENTION",
+                "deletion_allowed":False,
+                "reason":"PHYSICAL_MANIFEST_OR_OBJECT_NOT_IN_CATALOG",
+                "manifest_present":backup_id in manifest_names,
+                "objects_present":backup_id in object_names,
+            })
+        counts={}
+        for item in decisions: counts[item["category"]]=counts.get(item["category"],0)+1
+        return {
+            "contract_version":"v3-p04-03-backup-chain-classification-v1.0",
+            "source_contract_version":audit.get("contract_version"),
+            "automatic_action":"NONE",
+            "deletion_allowed":False,
+            "counts":counts,
+            "decisions":decisions,
+        }
+
+    @staticmethod
     def _sha256_file(path: Path) -> str:
         digest=hashlib.sha256()
         with path.open("rb") as stream:

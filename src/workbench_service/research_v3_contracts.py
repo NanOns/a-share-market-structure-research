@@ -119,6 +119,59 @@ def _type_matches(value: Any, type_name: str, schema: dict[str, Any]) -> bool:
     raise ContractValidationError(f"SCHEMA_TYPE_UNKNOWN:{type_name}")
 
 
+def _validate_page_envelope_semantics(value: dict[str, Any], bundle: dict[str, Any]) -> None:
+    """Validate the V3 pagination vocabulary without breaking old readers.
+
+    ``total_eligible`` is the legacy spelling.  V3 uses ``eligible_total``;
+    accepting either lets the compatibility reader survive while requiring a
+    single, non-contradictory eligibility count at the contract boundary.
+    """
+
+    eligible = value.get("eligible_total")
+    legacy = value.get("total_eligible")
+    if "eligible_total" in value and eligible is None:
+        raise ContractValidationError("NULL_NOT_ALLOWED:PageEnvelope:eligible_total")
+    if "total_eligible" in value and legacy is None:
+        raise ContractValidationError("NULL_NOT_ALLOWED:PageEnvelope:total_eligible")
+    if eligible is None and legacy is None:
+        raise ContractValidationError("PAGE_ELIGIBLE_TOTAL_REQUIRED")
+    if eligible is not None and legacy is not None and eligible != legacy:
+        raise ContractValidationError("PAGE_ELIGIBLE_TOTAL_ALIAS_MISMATCH")
+    for field_name, minimum in (("returned_count", 0), ("total", 0), ("page", 1), ("page_size", 1)):
+        field_value = value.get(field_name)
+        if isinstance(field_value, int) and not isinstance(field_value, bool) and field_value < minimum:
+            raise ContractValidationError(f"PAGE_RANGE_INVALID:{field_name}")
+    for field_name in ("eligible_total", "total_eligible", "display_limit"):
+        field_value = value.get(field_name)
+        if field_value is not None and (not isinstance(field_value, int) or isinstance(field_value, bool) or field_value < 0):
+            raise ContractValidationError(f"PAGE_RANGE_INVALID:{field_name}")
+
+
+def _validate_page_context(value: Any, bundle: dict[str, Any]) -> None:
+    if value is None:
+        return
+    if not isinstance(value, dict):
+        raise ContractValidationError("TYPE_INVALID:PageEnvelope:context:object")
+    status = value.get("status")
+    if status == "READY":
+        for object_name in ("ResearchContextReady", "Context"):
+            try:
+                validate_object(value, object_name, bundle)
+                return
+            except ContractValidationError:
+                continue
+        raise ContractValidationError("PAGE_CONTEXT_READY_INVALID")
+    if status == "NOT_BUILT":
+        validate_object(value, "ResearchContextNotBuilt", bundle)
+        return
+    if status in {"EMPTY", "UNAVAILABLE", "PARTIAL"}:
+        # A page may carry a non-ready context with an explicit capability
+        # state; no fake run/snapshot is allowed for these states.
+        validate_object(value, "ResearchContextNotBuilt", bundle)
+        return
+    raise ContractValidationError(f"PAGE_CONTEXT_STATUS_INVALID:{status}")
+
+
 def validate_object(value: Any, object_name: str, bundle: dict[str, Any]) -> dict[str, Any]:
     schema = bundle["schema"]
     definition = schema["objects"].get(object_name)
@@ -126,6 +179,15 @@ def validate_object(value: Any, object_name: str, bundle: dict[str, Any]) -> dic
         raise ContractValidationError(f"SCHEMA_OBJECT_UNKNOWN:{object_name}")
     if not isinstance(value, dict):
         raise ContractValidationError(f"OBJECT_REQUIRED:{object_name}")
+    expected_context_status = {
+        "Context": "READY",
+        "ResearchContextReady": "READY",
+        "ResearchContextNotBuilt": "NOT_BUILT",
+    }.get(object_name)
+    if expected_context_status is not None and value.get("status") != expected_context_status:
+        raise ContractValidationError(f"CONTEXT_STATUS_INVALID:{object_name}:{value.get('status')}")
+    if object_name == "PageEnvelope":
+        _validate_page_envelope_semantics(value, bundle)
     required = set(definition.get("required", []))
     properties = definition.get("properties", {})
     missing = sorted(required - set(value))
@@ -157,6 +219,8 @@ def validate_object(value: Any, object_name: str, bundle: dict[str, Any]) -> dic
             child = type_name.split(":", 1)[1]
             if child in schema["objects"]:
                 validate_object(field_value, child, bundle)
+    if object_name == "PageEnvelope":
+        _validate_page_context(value.get("context"), bundle)
     return value
 
 
@@ -217,7 +281,10 @@ def validate_contract_bundle(bundle: dict[str, Any] | None = None) -> dict[str, 
         raise ContractValidationError("ALGORITHM_VERSION_UNEXPECTED")
     if config["capabilities"]["HOT_RANKINGS"]["persist_payload"] or config["capabilities"]["HOT_RANKINGS"]["persist_rows"] or config["capabilities"]["HOT_RANKINGS"]["persist_batches"]:
         raise ContractValidationError("HOT_RANK_PERSISTENCE_FORBIDDEN")
-    for name in ("Context", "Reason", "SectorCard", "MemberRow", "PageEnvelope"):
+    for name in (
+        "Context", "ResearchContextReady", "ResearchContextNotBuilt", "OnlineContext",
+        "Reason", "SectorCard", "MemberRow", "PageEnvelope",
+    ):
         if name not in bundle["schema"].get("objects", {}):
             raise ContractValidationError(f"SCHEMA_OBJECT_MISSING:{name}")
     validate_fixture_bundle(bundle)

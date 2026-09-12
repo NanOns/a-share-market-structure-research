@@ -382,12 +382,18 @@ class IncrementalBuildCoordinator:
         columns = {str(column) for column in item.frame.columns}
         for field_name in ("security_id", "sector_id"):
             expected = {str(task[field_name]) for task in covered_tasks if task.get(field_name) is not None}
-            if not expected:
+            plural = "security" if field_name == "security_id" else "sector"
+            declared_reused = {str(value) for value in item.basis.get(f"reused_{plural}_ids", ())}
+            if expected.intersection(declared_reused):
+                raise IncrementalBuildError(f"BUILD_OBJECT_REUSED_{field_name.upper()}_OVERLAPS_PLAN:{item.task_key}")
+            if not expected and not declared_reused:
+                if field_name in columns and set(str(value) for value in item.frame[field_name].dropna().tolist()):
+                    raise IncrementalBuildError(f"BUILD_OBJECT_FRAME_{field_name.upper()}_SCOPE_MISMATCH:{item.task_key}")
                 continue
             if field_name not in columns:
                 raise IncrementalBuildError(f"BUILD_OBJECT_FRAME_{field_name.upper()}_REQUIRED:{item.task_key}")
             actual = {str(value) for value in item.frame[field_name].dropna().tolist()}
-            if actual != expected:
+            if actual != expected | declared_reused:
                 raise IncrementalBuildError(
                     f"BUILD_OBJECT_FRAME_{field_name.upper()}_SCOPE_MISMATCH:{item.task_key}"
                 )
@@ -626,6 +632,7 @@ class IncrementalBuildCoordinator:
         database_before = _file_bytes(self.database_path)
         rows_new = 0
         rows_reused = 0
+        rows_reassembled = 0
         reused_objects = 0
         identity_rows_added = 0
         task_metrics: list[dict[str, Any]] = []
@@ -650,11 +657,17 @@ class IncrementalBuildCoordinator:
                 if before_binding is not None or slice_reused:
                     rows_reused += row_count
                 else:
-                    rows_new += row_count
                     identity_rows_added += 1
                 result_object_reused = bool(after_binding and after_binding[0] in before_objects)
                 if result_object_reused:
                     reused_objects += 1
+                reassembled_row_count = int(item.basis.get("reused_row_count", 0) or 0)
+                if reassembled_row_count < 0 or reassembled_row_count > row_count:
+                    raise IncrementalBuildError(f"BUILD_OBJECT_REUSED_ROW_COUNT_INVALID:{item.task_key}")
+                calculated_row_count = row_count - reassembled_row_count
+                if not (before_binding is not None or slice_reused):
+                    rows_new += calculated_row_count
+                rows_reassembled += reassembled_row_count
                 task_metrics.append({
                     "task_key": item.task_key,
                     "covered_task_keys": list(item.covered_task_keys or (item.task_key,)),
@@ -664,6 +677,8 @@ class IncrementalBuildCoordinator:
                     "slice_id": item.slice_id,
                     "execution_mode": "CALCULATE",
                     "row_count": row_count,
+                    "calculated_row_count": calculated_row_count,
+                    "reassembled_row_count": reassembled_row_count,
                     "slice_reused": bool(slice_reused),
                     "result_binding_created": before_binding is None and after_binding is not None,
                     "new_result_object_count": len(new_object_ids),
@@ -714,6 +729,8 @@ class IncrementalBuildCoordinator:
             "relation_rows_reused": 0,
             "new_fact_rows": rows_new,
             "reused_rows": rows_reused,
+            "reassembled_rows": rows_reassembled,
+            "calculated_rows": rows_new,
             "reused_result_objects": reused_objects,
             "identity_rows_added": identity_rows_added,
             "cache_bytes_added": db_growth,
@@ -788,7 +805,10 @@ class IncrementalBuildCoordinator:
             if isinstance(loaded, Mapping) and "frame" in loaded:
                 frame = loaded["frame"]
                 basis = dict(loaded.get("basis") or {})
-            calculated = executor.calculate(frame, task) if executor.calculate else None
+            calculation_task = dict(batch_task)
+            calculation_task["_input_basis"] = basis
+            calculation_task["_loaded"] = loaded
+            calculated = executor.calculate(frame, calculation_task) if executor.calculate else None
             if calculated is None:
                 raise IncrementalBuildError(f"EXECUTOR_CALCULATION_EMPTY:{task.get('domain')}")
             objects.append(

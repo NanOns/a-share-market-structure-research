@@ -7,6 +7,7 @@ import pandas as pd
 from workbench_db.migrations import BASE_SCHEMA_VERSION, MigrationExecutor
 from workbench_service.build_planner import DependencySummary, build_plan
 from workbench_service.v3_daily_entry import run_v3_daily_entry
+from workbench_analysis.technical import calculate_technical_daily, insert_technical_result_rows
 
 
 ROOT = Path(__file__).parents[2]
@@ -135,6 +136,27 @@ def _seed_source_entries(database, plan):
             )
 
 
+def _seed_technical_source_entries(database, source, plan):
+    """Seed complete legacy V3 technical days for historical reassembly tests."""
+
+    technical = calculate_technical_daily(pd.read_parquet(source))
+    days = sorted({str(item["trade_date"]) for item in plan["tasks"] if item["domain"] == "technical"})
+    with duckdb.connect(str(database)) as connection:
+        for day in days:
+            frame = technical[technical["date"].astype(str).eq(day)].copy()
+            frame = frame.astype(object).where(frame.notna(), None)
+            slice_id = f"legacy-technical-{day}"
+            connection.execute(
+                "INSERT INTO analysis_slices VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
+                [slice_id, "technical", day, "legacy-technical-v3", f"input-{day}", f"dependency-{day}", "{}", len(frame), f"logical-{day}", "DUCKDB", None, "2026-04-16 08:00:00"],
+            )
+            insert_technical_result_rows(connection, slice_id, frame)
+            connection.execute(
+                "INSERT INTO analysis_snapshot_entries VALUES (?,?,?,?)",
+                ["legacy-source", "technical", day, slice_id],
+            )
+
+
 def test_v3_daily_entry_calculates_reuses_binds_and_is_idempotent(tmp_path):
     sessions = _sessions()
     cutoff = sessions[-1]
@@ -200,6 +222,7 @@ def test_v3_daily_entry_accepts_historical_price_revision_plan_scope(tmp_path):
         target_domains=("technical", "strength"),
     )
     _seed_source_entries(database, plan)
+    _seed_technical_source_entries(database, source, plan)
 
     report = run_v3_daily_entry(
         tmp_path,
@@ -218,6 +241,19 @@ def test_v3_daily_entry_accepts_historical_price_revision_plan_scope(tmp_path):
     assert min(item["trade_date"] for item in technical_tasks) == changed_day
     assert report["new_fact_rows"] == len(technical_tasks)
     assert report["reused_rows"] > 0
+    assert report["reassembled_rows"] > 0
+    with duckdb.connect(str(database), read_only=True) as connection:
+        snapshot_id = report["snapshot_binding"]["snapshot_id"]
+        slice_id = connection.execute(
+            "SELECT slice_id FROM analysis_snapshot_entries WHERE snapshot_id=? AND domain='technical' AND trade_date=?",
+            [snapshot_id, changed_day],
+        ).fetchone()[0]
+        result_object_id = connection.execute(
+            "SELECT result_object_id FROM analysis_slice_result_bindings WHERE slice_id=?", [slice_id]
+        ).fetchone()[0]
+        assert {row[0] for row in connection.execute(
+            "SELECT security_id FROM technical_result_rows WHERE result_object_id=?", [result_object_id]
+        ).fetchall()} == {"A", "B"}
 
 
 def test_v3_daily_entry_accepts_relation_change_without_technical_recalculation(tmp_path):

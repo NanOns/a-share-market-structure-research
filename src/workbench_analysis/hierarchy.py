@@ -239,17 +239,22 @@ class HierarchyMembershipResolver:
 
     def __init__(self, connection: Any):
         self.connection = connection
-        self._cache: dict[tuple[int, str, str, str], dict[str, tuple[ParentMember, ...]]] = {}
+        # The relation revision number is only unique inside a source scope.
+        # Omitting the scope lets two namespaces with revision=1 reuse the
+        # first namespace's parent members, which is a silent cross-source
+        # contamination of the V3 hierarchy result.
+        self._cache: dict[tuple[str, int, str, str, str], dict[str, tuple[ParentMember, ...]]] = {}
 
     def cache_key(
         self,
+        source_scope: str,
         relation_revision: int,
         hierarchy_version: str,
         *,
         semantic_version: str = SEMANTIC_VERSION,
         display_universe_version: str = "ALL",
-    ) -> tuple[int, str, str, str]:
-        return int(relation_revision), str(hierarchy_version), str(semantic_version), str(display_universe_version)
+    ) -> tuple[str, int, str, str, str]:
+        return str(source_scope), int(relation_revision), str(hierarchy_version), str(semantic_version), str(display_universe_version)
 
     def parent_members(
         self,
@@ -263,6 +268,7 @@ class HierarchyMembershipResolver:
         display_security_ids: set[str] | None = None,
     ) -> tuple[ParentMember, ...]:
         key = self.cache_key(
+            source_scope,
             relation_revision,
             hierarchy_version,
             semantic_version=semantic_version,
@@ -280,7 +286,7 @@ class HierarchyMembershipResolver:
         source_scope: str,
         relation_revision: int,
         hierarchy_version: str,
-        key: tuple[int, str, str, str],
+        key: tuple[str, int, str, str, str],
     ) -> dict[str, tuple[ParentMember, ...]]:
         cached = self._cache.get(key)
         if cached is not None:

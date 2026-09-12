@@ -390,6 +390,127 @@ class StorageGovernance:
             if active and isinstance(payload.get("storage_object_ids"),list): refs.update(str(x) for x in payload["storage_object_ids"])
         return refs
 
+    def audit_v3_storage_references(self) -> dict[str, Any]:
+        """Compare catalog flags with the current publication reference graph.
+
+        This is intentionally read-only.  A stale ``referenced`` flag is a
+        cleanup-audit defect, not permission to clear protection or delete the
+        underlying object automatically.
+        """
+
+        with duckdb.connect(str(self.database_path), read_only=True) as con:
+            database_refs = sorted(self._database_references(con))
+            rows = con.execute("SELECT storage_object_id,payload_json FROM storage_objects").fetchall() if self._table_exists(con, "storage_objects") else []
+        items = []
+        stale_flags = []
+        missing_files = []
+        for storage_object_id, raw in rows:
+            try:
+                payload = json.loads(raw or "{}")
+            except (TypeError, json.JSONDecodeError):
+                payload = {"storage_object_id": str(storage_object_id), "payload_invalid": True}
+            object_id = str(storage_object_id)
+            path = payload.get("path")
+            exists = bool(path and Path(str(path)).is_file())
+            item = {
+                "storage_object_id": object_id,
+                "kind": payload.get("kind"),
+                "referenced_flag": bool(payload.get("referenced")),
+                "publication_graph_referenced": object_id in database_refs,
+                "path": path,
+                "exists": exists,
+            }
+            items.append(item)
+            if item["referenced_flag"] and not item["publication_graph_referenced"]:
+                stale_flags.append(object_id)
+            if path and not exists:
+                missing_files.append(object_id)
+        return {
+            "contract_version": "v3-p00-02-storage-reference-audit-v1.0",
+            "read_only": True,
+            "database_references": database_refs,
+            "items": items,
+            "issues": {
+                "stale_referenced_flags": sorted(stale_flags),
+                "catalog_payload_missing_file": sorted(missing_files),
+            },
+            "automatic_action": "NONE",
+            "deletion_executed": False,
+        }
+
+    def write_v3_storage_reference_audit(self, path: str | Path) -> dict[str, Any]:
+        target = self._validate_managed_path(path)
+        value = self.audit_v3_storage_references()
+        target.parent.mkdir(parents=True, exist_ok=True)
+        temporary = target.with_name(target.name + "." + uuid.uuid4().hex + ".tmp")
+        try:
+            temporary.write_text(_payload(value) + "\n", encoding="utf-8")
+            with temporary.open("r+b") as handle:
+                handle.flush()
+                os.fsync(handle.fileno())
+            os.replace(temporary, target)
+        finally:
+            temporary.unlink(missing_ok=True)
+        return {"status": "PASS", "path": str(target), "audit": value}
+
+    def audit_v3_source_catalog(self) -> dict[str, Any]:
+        """Read-only reconciliation of sealed receipts and catalog manifests."""
+
+        bundle_root = self.root / "data/source_bundles"
+        physical_ids = set()
+        invalid_receipts = []
+        for receipt in sorted(bundle_root.glob("*/source_bundle.json")):
+            try:
+                value = json.loads(receipt.read_text(encoding="utf-8"))
+                bundle_id = str(value.get("source_bundle_id") or "")
+                if not self._v3_bundle_identity(value) or receipt.parent.name != bundle_id:
+                    invalid_receipts.append(str(receipt))
+                    continue
+                physical_ids.add(bundle_id)
+            except (OSError, json.JSONDecodeError, TypeError, ValueError):
+                invalid_receipts.append(str(receipt))
+        with duckdb.connect(str(self.database_path), read_only=True) as con:
+            catalog_ids = {str(row[0]) for row in con.execute("SELECT source_bundle_id FROM source_bundles").fetchall()} if self._table_exists(con, "source_bundles") else set()
+            source_file_count = int(con.execute("SELECT count(*) FROM source_files").fetchone()[0]) if self._table_exists(con, "source_files") else 0
+            package_count = int(con.execute("SELECT count(*) FROM source_packages").fetchone()[0]) if self._table_exists(con, "source_packages") else 0
+            file_counts = {
+                str(row[0]): int(row[1])
+                for row in con.execute("SELECT source_package_id, count(*) FROM source_files GROUP BY source_package_id").fetchall()
+            } if self._table_exists(con, "source_files") else {}
+        return {
+            "contract_version": "v3-p04-03-source-catalog-audit-v1.0",
+            "read_only": True,
+            "physical_receipt_ids": sorted(physical_ids),
+            "database_catalog_ids": sorted(catalog_ids),
+            "physical_receipts_not_in_catalog": sorted(physical_ids - catalog_ids),
+            "catalog_entries_without_physical_receipt": sorted(catalog_ids - physical_ids),
+            "invalid_receipts": invalid_receipts,
+            "source_package_count": package_count,
+            "source_file_count": source_file_count,
+            "source_file_counts_by_package": file_counts,
+            "issues": {
+                "physical_receipt_catalog_mismatch": bool(physical_ids - catalog_ids or catalog_ids - physical_ids),
+                "source_files_catalog_empty": source_file_count == 0 and bool(catalog_ids),
+            },
+            "automatic_action": "NONE",
+            "mutation_executed": False,
+        }
+
+    def write_v3_source_catalog_audit(self, path: str | Path) -> dict[str, Any]:
+        target = self._validate_managed_path(path)
+        value = self.audit_v3_source_catalog()
+        target.parent.mkdir(parents=True, exist_ok=True)
+        temporary = target.with_name(target.name + "." + uuid.uuid4().hex + ".tmp")
+        try:
+            temporary.write_text(_payload(value) + "\n", encoding="utf-8")
+            with temporary.open("r+b") as handle:
+                handle.flush()
+                os.fsync(handle.fileno())
+            os.replace(temporary, target)
+        finally:
+            temporary.unlink(missing_ok=True)
+        return {"status": "PASS", "path": str(target), "audit": value}
+
     def quarantine(self, cleanup_job_id: str) -> dict[str, Any]:
         """Move eligible registered objects to a same-volume trash directory."""
         with duckdb.connect(str(self.database_path)) as con:

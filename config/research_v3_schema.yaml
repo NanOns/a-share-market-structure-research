@@ -17,10 +17,11 @@
   },
   "objects": {
     "Context": {
-      "required": ["context_id", "run_id", "mode", "local_date", "publication_id", "snapshot_id", "algorithm_version", "capabilities"],
+      "required": ["context_id", "status", "run_id", "mode", "local_date", "publication_id", "snapshot_id", "algorithm_version", "capabilities"],
       "additional_properties": false,
       "properties": {
         "context_id": {"type": "string", "nullable": false},
+        "status": {"type": "enum:status", "nullable": false},
         "run_id": {"type": "string", "nullable": false},
         "mode": {"type": "enum:mode", "nullable": false},
         "local_date": {"type": "date", "nullable": false},
@@ -28,6 +29,48 @@
         "publication_id": {"type": "string", "nullable": false},
         "snapshot_id": {"type": "string", "nullable": false},
         "algorithm_version": {"type": "string", "nullable": false},
+        "capabilities": {"type": "object", "nullable": false}
+      }
+    },
+    "ResearchContextReady": {
+      "required": ["context_id", "status", "run_id", "mode", "local_date", "publication_id", "snapshot_id", "algorithm_version", "capabilities"],
+      "additional_properties": false,
+      "properties": {
+        "context_id": {"type": "string", "nullable": false},
+        "status": {"type": "enum:status", "nullable": false},
+        "run_id": {"type": "string", "nullable": false},
+        "mode": {"type": "enum:mode", "nullable": false},
+        "local_date": {"type": "date", "nullable": false},
+        "online_date": {"type": "date", "nullable": true},
+        "publication_id": {"type": "string", "nullable": false},
+        "snapshot_id": {"type": "string", "nullable": false},
+        "algorithm_version": {"type": "string", "nullable": false},
+        "capabilities": {"type": "object", "nullable": false}
+      }
+    },
+    "ResearchContextNotBuilt": {
+      "required": ["context_id", "status", "mode", "local_date", "publication_id", "capabilities"],
+      "additional_properties": false,
+      "properties": {
+        "context_id": {"type": "string", "nullable": false},
+        "status": {"type": "enum:status", "nullable": false},
+        "mode": {"type": "enum:mode", "nullable": false},
+        "local_date": {"type": "date", "nullable": true},
+        "online_date": {"type": "date", "nullable": true},
+        "publication_id": {"type": "string", "nullable": false},
+        "capabilities": {"type": "object", "nullable": false}
+      }
+    },
+    "OnlineContext": {
+      "required": ["context_id", "status", "mode", "online_date", "source_id", "capabilities"],
+      "additional_properties": false,
+      "properties": {
+        "context_id": {"type": "string", "nullable": false},
+        "status": {"type": "enum:status", "nullable": false},
+        "mode": {"type": "enum:mode", "nullable": false},
+        "online_date": {"type": "date", "nullable": false},
+        "source_id": {"type": "string", "nullable": false},
+        "expires_at": {"type": "timestamp", "nullable": true},
         "capabilities": {"type": "object", "nullable": false}
       }
     },
@@ -53,7 +96,7 @@
         "type": {"type": "string", "nullable": false},
         "track": {"type": "enum:track", "nullable": false},
         "branch": {"type": "enum:branch", "nullable": true},
-        "lifecycle": {"type": "enum:lifecycle", "nullable": false},
+        "lifecycle": {"type": "enum:lifecycle", "nullable": true},
         "signal_date": {"type": "date", "nullable": false},
         "m1": {"type": "number", "nullable": true},
         "b1": {"type": "number", "nullable": true},
@@ -100,18 +143,20 @@
       }
     },
     "PageEnvelope": {
-      "required": ["status", "total_eligible", "returned_count", "total", "page", "page_size", "has_more", "items", "context"],
+      "required": ["status", "returned_count", "total", "page", "page_size", "has_more", "items", "context"],
       "additional_properties": false,
       "properties": {
         "status": {"type": "enum:status", "nullable": false},
-        "total_eligible": {"type": "integer", "nullable": false},
+        "total_eligible": {"type": "integer", "nullable": true},
         "returned_count": {"type": "integer", "nullable": false},
         "total": {"type": "integer", "nullable": false},
         "page": {"type": "integer", "nullable": false},
         "page_size": {"type": "integer", "nullable": false},
         "has_more": {"type": "boolean", "nullable": false},
+        "eligible_total": {"type": "integer", "nullable": true},
+        "display_limit": {"type": "integer", "nullable": true},
         "items": {"type": "array:SectorCard", "nullable": false},
-        "context": {"type": "object:Context", "nullable": true}
+        "context": {"type": "object", "nullable": true}
       }
     }
   },

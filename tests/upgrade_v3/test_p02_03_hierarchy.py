@@ -127,9 +127,30 @@ def test_parent_members_union_direct_and_derived_without_duplicates(tmp_path):
         assert resolver.parent_members(scope, 1, version, "THEME:X") == ()
         assert resolver.parent_members(scope, 1, version, "INDUSTRY:P", display_security_ids={"sz.shared"})[0].security_id == "SZ.SHARED"
         assert len(resolver._cache) == 1
-        assert resolver.cache_key(1, version) == (1, version, "hierarchy-parent-members-v3-v1", "ALL")
-        assert resolver.cache_key(1, version, display_universe_version="DISPLAY_V2")[-1] == "DISPLAY_V2"
+        assert resolver.cache_key(scope, 1, version) == (scope, 1, version, "hierarchy-parent-members-v3-v1", "ALL")
+        assert resolver.cache_key(scope, 1, version, display_universe_version="DISPLAY_V2")[-1] == "DISPLAY_V2"
         resolver.parent_members(scope, 1, version, "INDUSTRY:P", display_universe_version="DISPLAY_V2")
+        assert len(resolver._cache) == 2
+    finally:
+        connection.close()
+
+
+def test_parent_members_cache_is_namespaced_by_source_scope(tmp_path):
+    connection = _connection(tmp_path)
+    try:
+        version = _insert_tree(connection)
+        scope_a = "SOURCE-A:direct-members-v3-v1"
+        scope_b = "SOURCE-B:direct-members-v3-v1"
+        connection.executemany(
+            "INSERT INTO relation_edge_intervals VALUES (?, ?, ?, ?, NULL, ?)",
+            [
+                (scope_a, "INDUSTRY:P01", "SZ.A", 1, "DIRECT"),
+                (scope_b, "INDUSTRY:P01", "SZ.B", 1, "DIRECT"),
+            ],
+        )
+        resolver = HierarchyMembershipResolver(connection)
+        assert [item.security_id for item in resolver.parent_members(scope_a, 1, version, "INDUSTRY:P")] == ["SZ.A"]
+        assert [item.security_id for item in resolver.parent_members(scope_b, 1, version, "INDUSTRY:P")] == ["SZ.B"]
         assert len(resolver._cache) == 2
     finally:
         connection.close()

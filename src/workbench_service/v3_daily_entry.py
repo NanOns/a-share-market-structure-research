@@ -22,10 +22,12 @@ import pandas as pd
 
 from .build_planner import DependencySummary, build_plan, task_key, verify_build_plan
 from .incremental_writer import (
+    DomainExecutor,
     IncrementalBuildCoordinator,
     IncrementalBuildError,
     ReusedBuildObject,
     SnapshotBinding,
+    default_executor_matrix,
     write_growth_report,
 )
 
@@ -196,6 +198,80 @@ def _preserved_entries(
     return tuple((str(domain), str(trade_date), str(slice_id)) for domain, trade_date, slice_id in rows if str(domain) not in target)
 
 
+def _load_bound_technical_rows(
+    connection: duckdb.DuckDBPyConnection,
+    source_snapshot_id: str,
+) -> dict[str, tuple[str, pd.DataFrame]]:
+    """Load V3 technical rows available for full-day result reassembly.
+
+    A historical correction can plan only security A while the snapshot entry
+    is one logical day slice.  The untouched B/C rows must come from that
+    immutable source slice, never from a newly calculated partial frame.
+    """
+
+    from workbench_analysis.technical import TECHNICAL_RESULT_COLUMNS
+
+    rows = connection.execute(
+        """
+        SELECT e.trade_date, e.slice_id, b.result_object_id
+          FROM analysis_snapshot_entries e
+          JOIN analysis_slice_result_bindings b ON b.slice_id=e.slice_id
+         WHERE e.snapshot_id=? AND e.domain='technical'
+         ORDER BY e.trade_date, e.slice_id
+        """,
+        [source_snapshot_id],
+    ).fetchall()
+    result: dict[str, tuple[str, pd.DataFrame]] = {}
+    for trade_date, slice_id, result_object_id in rows:
+        raw = connection.execute(
+            f"SELECT {','.join(TECHNICAL_RESULT_COLUMNS)} FROM technical_result_rows WHERE result_object_id=? ORDER BY security_id",
+            [result_object_id],
+        ).fetchall()
+        if not raw:
+            continue
+        frame = pd.DataFrame(raw, columns=list(TECHNICAL_RESULT_COLUMNS))
+        frame = frame.rename(columns={"trade_date": "date", "contract_id": "technical_contract_id"})
+        frame["date"] = pd.to_datetime(frame["date"], errors="raise").dt.date
+        for column in ("quality_codes", "basis_json"):
+            frame[column] = frame[column].map(
+                lambda value: json.loads(value) if isinstance(value, str) else value
+            )
+        result[str(trade_date)[:10]] = (str(slice_id), frame)
+    return result
+
+
+def _daily_executor_matrix(
+    technical_source: Mapping[str, tuple[str, pd.DataFrame]],
+) -> dict[str, DomainExecutor]:
+    """Build the daily matrix with full-day technical reassembly."""
+
+    matrix = default_executor_matrix()
+    base = matrix["technical"]
+    if base.calculate is None:
+        raise IncrementalBuildError("V3_TECHNICAL_EXECUTOR_MISSING")
+
+    def calculate_technical(frame: Any, task: Mapping[str, Any]) -> Any:
+        selected = {str(value) for value in task.get("security_ids", ()) if value}
+        if not selected and task.get("security_id") is not None:
+            selected = {str(task["security_id"])}
+        calculated = base.calculate(frame, task)
+        if hasattr(calculated, "columns") and selected:
+            calculated = calculated[calculated["security_id"].astype(str).isin(selected)].copy()
+        loaded = task.get("_loaded") or {}
+        reused = loaded.get("reused_frame") if isinstance(loaded, Mapping) else None
+        if reused is not None and not reused.empty:
+            calculated = pd.concat([calculated, reused], ignore_index=True, sort=False)
+        return calculated.sort_values(["date", "security_id"], kind="mergesort").reset_index(drop=True)
+
+    matrix["technical"] = DomainExecutor(
+        "CALCULATE",
+        calculate=calculate_technical,
+        contract_id=base.contract_id,
+        primary_key=base.primary_key,
+    )
+    return matrix
+
+
 def run_v3_daily_entry(
     root: str | Path,
     database_path: str | Path,
@@ -236,6 +312,7 @@ def run_v3_daily_entry(
             active_source_snapshot,
             verified.get("target_domains") or target_domains,
         )
+        technical_source = _load_bound_technical_rows(connection, active_source_snapshot)
 
     source_column = _date_column(source)
 
@@ -247,12 +324,32 @@ def run_v3_daily_entry(
         elif task.get("security_id") is not None:
             frame = frame[frame["security_id"].astype(str).eq(str(task["security_id"]))]
         frame = frame[frame[source_column].astype(str).str[:10] <= str(task["trade_date"])]
+        source_slice_id, source_rows = technical_source.get(str(task["trade_date"]), (None, pd.DataFrame()))
+        selected_ids = {str(value) for value in task.get("security_ids", ()) if value}
+        if not selected_ids and task.get("security_id") is not None:
+            selected_ids = {str(task["security_id"])}
+        source_universe_ids = set(
+            source.loc[source[source_column].astype(str).str[:10].eq(str(task["trade_date"])), "security_id"].astype(str)
+        )
+        reused_frame = source_rows[~source_rows["security_id"].astype(str).isin(selected_ids)].copy() if not source_rows.empty else source_rows
+        reused_security_ids = sorted(set(reused_frame["security_id"].astype(str))) if not reused_frame.empty else []
+        expected_reused_ids = source_universe_ids - selected_ids
+        if expected_reused_ids and set(reused_security_ids) != expected_reused_ids:
+            raise IncrementalBuildError(
+                f"V3_FULL_DAY_SOURCE_REQUIRED:{task['trade_date']}:{','.join(sorted(expected_reused_ids - set(reused_security_ids)))}"
+            )
+        if not reused_security_ids:
+            source_slice_id = None
         return {
             "frame": frame.copy(),
+            "reused_frame": reused_frame,
             "basis": {
                 "source_parquet": str(source_file),
                 "source_sha256": _sha256_file(source_file),
                 "entrypoint": "V3_DAILY_INCREMENTAL",
+                "reused_security_ids": reused_security_ids,
+                "reused_row_count": int(len(reused_frame)),
+                "reused_source_slice_id": source_slice_id,
             },
         }
 
@@ -273,7 +370,10 @@ def run_v3_daily_entry(
         expected_task_keys=tuple(task_key(item) for item in verified.get("tasks", [])),
         preserved_entries=preserved,
     )
-    report = IncrementalBuildCoordinator(database_path).execute_daily(
+    report = IncrementalBuildCoordinator(
+        database_path,
+        executor_matrix=_daily_executor_matrix(technical_source),
+    ).execute_daily(
         verified,
         input_provider=input_provider,
         reused=reused,

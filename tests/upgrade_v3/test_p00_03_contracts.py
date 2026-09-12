@@ -113,6 +113,77 @@ def test_p00_03_dto_rejects_null_nonnullable_and_reason_label_drift():
     assert validate_reason({"code": "BREADTH_IMPROVING", "label": "上涨宽度改善", "observed": 0.12, "operator": ">=", "threshold": 0.1, "unit": "RATIO", "as_of": "2026-09-10"}, bundle)["code"] == "BREADTH_IMPROVING"
 
 
+def test_r19_01_context_discriminates_ready_not_built_and_online_without_fake_run():
+    bundle = load_contract_bundle()
+    ready = {
+        "context_id": "ready-context",
+        "status": "READY",
+        "run_id": "run-1",
+        "mode": "CLOSE",
+        "local_date": "2026-09-10",
+        "publication_id": "pub-1",
+        "snapshot_id": "snapshot-1",
+        "algorithm_version": "RESEARCH_V3_PREVIEW_1",
+        "capabilities": {"research": "READY"},
+    }
+    assert validate_object(ready, "Context", bundle)["run_id"] == "run-1"
+    not_built = {
+        "context_id": "not-built-context",
+        "status": "NOT_BUILT",
+        "mode": "CLOSE",
+        "local_date": "2026-09-10",
+        "publication_id": "pub-1",
+        "capabilities": {"research": "NOT_BUILT"},
+    }
+    assert validate_object(not_built, "ResearchContextNotBuilt", bundle)["status"] == "NOT_BUILT"
+    online = {
+        "context_id": "online-context",
+        "status": "READY",
+        "mode": "LIVE",
+        "online_date": "2026-09-10",
+        "source_id": "EXT07",
+        "expires_at": "2026-09-10T09:00:00+08:00",
+        "capabilities": {"hot_rank": "READY"},
+    }
+    assert validate_object(online, "OnlineContext", bundle)["source_id"] == "EXT07"
+    with pytest.raises(ContractValidationError, match="CONTEXT_STATUS_INVALID"):
+        validate_object({**ready, "status": "NOT_BUILT"}, "Context", bundle)
+
+
+def test_c20_13_current_sector_card_may_have_no_potential_lifecycle():
+    bundle = load_contract_bundle()
+    value = _sector_card(track="CURRENT", lifecycle=None, signal_date="2026-09-10")
+    assert validate_object(value, "SectorCard", bundle)["lifecycle"] is None
+
+
+def test_c20_12_page_envelope_can_report_eligible_total_and_display_limit():
+    bundle = load_contract_bundle()
+    value = {"status": "READY", "eligible_total": 100, "display_limit": 10, "returned_count": 10, "total": 100, "page": 1, "page_size": 10, "has_more": True, "items": [], "context": None}
+    assert validate_object(value, "PageEnvelope", bundle)["display_limit"] == 10
+
+
+def test_c20_12_accepts_legacy_total_eligible_only_and_rejects_alias_drift():
+    bundle = load_contract_bundle()
+    legacy = {"status": "EMPTY", "total_eligible": 0, "returned_count": 0, "total": 0, "page": 1, "page_size": 20, "has_more": False, "items": [], "context": None}
+    assert validate_object(legacy, "PageEnvelope", bundle)["total_eligible"] == 0
+    with pytest.raises(ContractValidationError, match="PAGE_ELIGIBLE_TOTAL_ALIAS_MISMATCH"):
+        validate_object({**legacy, "eligible_total": 1}, "PageEnvelope", bundle)
+
+
+def test_r19_01_page_context_accepts_not_built_without_fake_snapshot():
+    bundle = load_contract_bundle()
+    value = {
+        "status": "EMPTY", "eligible_total": 0, "returned_count": 0, "total": 0,
+        "page": 1, "page_size": 20, "has_more": False, "items": [],
+        "context": {
+            "context_id": "context-not-built", "status": "NOT_BUILT", "mode": "CLOSE",
+            "local_date": "2026-09-10", "publication_id": "pub-1",
+            "capabilities": {"research": "NOT_BUILT"},
+        },
+    }
+    assert validate_object(value, "PageEnvelope", bundle)["context"]["status"] == "NOT_BUILT"
+
+
 def test_c20_01_date_requires_real_calendar_day_and_accepts_leap_day():
     bundle = load_contract_bundle()
     valid = {"code": "BREADTH_IMPROVING", "label": "上涨宽度改善", "observed": 0.12, "operator": ">=", "threshold": 0.1, "unit": "RATIO", "as_of": "2024-02-29"}

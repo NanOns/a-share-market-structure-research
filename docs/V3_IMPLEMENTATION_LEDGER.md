@@ -203,3 +203,18 @@ P00-03 合同资产 SHA-256：
 | C20-01 | P00-03 仅用日期正则、timestamp 包含 `T`/空格、number 类型判断 | date 必须是真实日历日期；timestamp 必须是带时区的 ISO8601 `T` 格式；number/scalar 数值必须有限 | 采用 V3 条款；不修改配置参数哈希，不批量改写旧数据库时间列 | P00-03 补项 | `research-v3-schema-v1.0` / runtime validation v1 | `src/workbench_service/research_v3_contracts.py`；`tests/upgrade_v3/test_p00_03_contracts.py`；非法日期、无时区/非法 timestamp、NaN/Infinity 反例及合法闰日/+08:00 正例 | PASS |
 
 本补项只关闭 C20-01；P00-03 在最新主文档中涉及的其他复核项不因本次校验器修复而自动放行。下一项仍按台账执行 P04-02-INTEGRATION，未提前进入 P04-03。
+
+## P00–P04 缺陷收口追加记录（2026-09-12）
+
+本追加记录依据当前工作区最新 V3 主实施文档 SHA-256 `3395AE2895F749DD5764998451363BF24024BAAA481AC7E644FE1AF941137851`。不覆盖上方历史阶段行，不修改主实施文档，不启动 P05–P11。
+
+| issue_id | affected_task | 修复/证据 | acceptance | status |
+|---|---|---|---|---|
+| R19-01 / C20-12 | P00-03 | `research_v3_schema.yaml`、`research_v3_contracts.py` 增加 Ready/NotBuilt/Online context；PageEnvelope 支持 `eligible_total`、旧 `total_eligible` 别名和 context 状态联合校验；P00-03 反例测试 | NOT_BUILT 不伪造 run/snapshot；分页别名不漂移 | PASS |
+| P02-03-SCOPE-CACHE | P02-03 | `HierarchyMembershipResolver` cache key 加入 source_scope；不同 namespace 同 revision 隔离测试 | 不发生跨源父成员串读 | PASS |
+| P02-04-SOURCE-AMBIGUITY | P02-04 | `publication_binding()` 多 source scope 且未指定 scope 时 fail-closed；多命名空间反例测试 | 不随机选择 source scope | PASS |
+| R19-05 / C20-16-FULL-DAY | P04-02-INTEGRATION | `v3_daily_entry.py` 读取旧技术整日结果并重组；`incremental_writer.py` 校验重组键并记录 `reassembled_rows`；缺旧整日来源拒绝 | A 单股修订后新技术 slice 仍含 B；完整目标才能绑定 | PASS |
+| P04-03-SOURCE-CATALOG-FUTURE | P04-03-03 | 新增 `source_catalog.py`，M3 输入验收幂等登记 source_files；新增 source catalog 测试 | 后续新 bundle 不再形成空 source_files 记录 | PASS |
+| P00-02-STORAGE-AUDIT | P00-02/P04-03 | 新增 source catalog / storage reference 只读审计及原子 JSON 产物 | 物理链与 publication 引用差异可定位；不自动变更 | PASS (AUDIT ONLY) |
+
+本轮回归：`pytest -q tests/upgrade_v3 tests/upgrade_m5 tests/upgrade_m7`，170 passed；compileall、diff check 通过。当前生产库只读审计仍保留 3 份未登记物理回执、`source_files=0` 历史存量、storage 引用旗标差异和既有 P04-03-05～07 备份链分类；这些属于需要 owner 决策的独立数据审计项，不以代码测试伪装成已物理修复。

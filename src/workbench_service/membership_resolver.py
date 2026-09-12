@@ -52,17 +52,19 @@ class VersionedMembershipResolver(MembershipResolver):
         if source_scope is not None:
             filters += " AND source_scope=?"
             params.append(source_scope)
-        row = self.connection.execute(
+        rows = self.connection.execute(
             f"""
             SELECT publication_id, source_scope, observation_id, revision_no,
                    attribute_version_id, hierarchy_version, NULL AS legacy_snapshot_id
             FROM relation_publication_bindings
             WHERE {filters}
             ORDER BY source_scope
-            LIMIT 1
             """,
             params,
-        ).fetchone()
+        ).fetchall()
+        if len(rows) > 1 and source_scope is None:
+            raise KeyError(f"RELATION_PUBLICATION_SOURCE_SCOPE_REQUIRED:{publication_id}")
+        row = rows[0] if rows else None
         if row:
             names = (
                 "publication_id",
@@ -80,7 +82,7 @@ class VersionedMembershipResolver(MembershipResolver):
         if source_scope is not None:
             legacy_filters += " AND o.source_scope=?"
             legacy_params.append(source_scope)
-        row = self.connection.execute(
+        rows = self.connection.execute(
             f"""
             SELECT pm.publication_id, o.source_scope, b.observation_id,
                    b.revision_no, b.attribute_version_id, b.hierarchy_version,
@@ -91,10 +93,12 @@ class VersionedMembershipResolver(MembershipResolver):
             JOIN relation_observations o ON o.observation_id=b.observation_id
             WHERE {legacy_filters}
             ORDER BY o.source_scope
-            LIMIT 1
             """,
             legacy_params,
-        ).fetchone()
+        ).fetchall()
+        if len(rows) > 1 and source_scope is None:
+            raise KeyError(f"RELATION_PUBLICATION_SOURCE_SCOPE_REQUIRED:{publication_id}")
+        row = rows[0] if rows else None
         if not row:
             return None
         names = (

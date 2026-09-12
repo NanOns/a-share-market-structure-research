@@ -1,7 +1,10 @@
 from datetime import date
 
+import pytest
+
 from workbench_publish import OneClickPublisher, PublicationRequest, SimulatedCrash
 from workbench_service.legacy_relation_import import LEGACY_SOURCE_SCOPE
+from workbench_service.membership_resolver import VersionedMembershipResolver
 
 
 def _publisher(root):
@@ -78,3 +81,27 @@ def test_same_members_on_new_trade_date_adds_observation_not_edges(tmp_path):
         assert connection.execute("SELECT count(*) FROM relation_observations").fetchone()[0] == 2
         assert connection.execute("SELECT count(*) FROM relation_publication_bindings").fetchone()[0] == 2
         assert connection.execute("SELECT count(*) FROM membership_entries").fetchone()[0] == 0
+
+
+def test_publication_binding_refuses_ambiguous_source_namespace(tmp_path):
+    publisher = _publisher(tmp_path)
+    published = publisher.run(_request())
+    publication_id = published["publication_id"]
+    from workbench_db.repository import WorkbenchRepository
+
+    with WorkbenchRepository(tmp_path, publisher.database_path) as repository:
+        connection = repository.connection
+        existing = connection.execute(
+            "SELECT observation_id, revision_no, attribute_version_id, hierarchy_version FROM relation_publication_bindings WHERE publication_id=?",
+            [publication_id],
+        ).fetchone()
+        connection.execute(
+            "INSERT INTO relation_publication_bindings VALUES (?, ?, ?, ?, ?, ?)",
+            [publication_id, "SOURCE-A:direct-members-v3-v1", existing[0], existing[1], existing[2], existing[3]],
+        )
+        connection.execute(
+            "INSERT INTO relation_publication_bindings VALUES (?, ?, ?, ?, ?, ?)",
+            [publication_id, "SOURCE-B:direct-members-v3-v1", existing[0], existing[1], existing[2], existing[3]],
+        )
+        with pytest.raises(KeyError, match="RELATION_PUBLICATION_SOURCE_SCOPE_REQUIRED"):
+            VersionedMembershipResolver(connection).publication_binding(publication_id)

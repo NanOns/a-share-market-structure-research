@@ -9,6 +9,7 @@ from common.run_lock import ActiveRunLock, RunLock
 from common.paths import resolve_tdx_root
 from tdx.security_master import read_industry_assignments, current_a_stock_ids
 from workbench_db import WorkbenchRepository
+from workbench_service.source_catalog import register_source_bundle_catalog
 from workbench_input import (analyze_dynamic_metadata, capture_stable_metadata,
     download_official_package_curl, safe_extract_zip, seal_source_bundle,
     validate_extracted_day_data, verify_source_bundle, replace_with_retry)
@@ -71,7 +72,7 @@ def _main():
   bundle=seal_source_bundle(ROOT/"data/source_bundles",target_trade_date=f"{day[:4]}-{day[4:6]}-{day[6:]}",package=package_meta,extraction=extraction,metadata=metadata,calendar_sha256=sha(ROOT/"config/trading_calendar.yaml"),validation=validation)
   verify_source_bundle(ROOT/"data/source_bundles"/bundle["source_bundle_id"]/'source_bundle.json')
   with WorkbenchRepository(ROOT) as repo:
-   repo.connection.execute("INSERT INTO source_packages VALUES (?, ?) ON CONFLICT DO NOTHING",[package_meta["sha256"],json.dumps(package_meta,ensure_ascii=False)]);repo.connection.execute("INSERT INTO metadata_snapshots VALUES (?, ?) ON CONFLICT DO NOTHING",[metadata["metadata_snapshot_id"],json.dumps(metadata,ensure_ascii=False)]);repo.connection.execute("INSERT INTO source_bundles VALUES (?, ?) ON CONFLICT DO UPDATE SET payload_json=excluded.payload_json",[bundle["source_bundle_id"],json.dumps(bundle,ensure_ascii=False)])
+   register_source_bundle_catalog(repo.connection,bundle=bundle,package=package_meta,metadata=metadata)
  except Exception as exc:blockers.append(str(exc))
  if tests.returncode:blockers.append("IMPLEMENTATION_TESTS_FAILED")
  status="FULL_PASS" if not blockers else "BLOCKED";receipt={"phase":"M3_AUTOMATIC_INPUT","contract":"m3-automatic-input-v1.2","created_at_utc":datetime.now(timezone.utc).isoformat(),"official_info":info,"implementation_tests":"PASS" if not tests.returncode else "FAIL","test_output":tests.stdout.strip(),"fresh_official_download":bool(package_meta),"package_sha256":package_meta.get("sha256"),"source_bundle_sealed":bool(bundle and not blockers),"source_bundle_id":bundle.get("source_bundle_id"),"day_validation":validation,"dynamic_metadata":{"security_count":len(catalog.get("securities",{})),"sector_count":len(catalog.get("sectors",{})),"membership_count":len(catalog.get("memberships",[]))},"final_status":status,"blockers":blockers,"next_stage":"M4_ONE_CLICK_PUBLICATION" if status=="FULL_PASS" else "NONE"}

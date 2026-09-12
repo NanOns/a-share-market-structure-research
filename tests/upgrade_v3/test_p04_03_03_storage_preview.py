@@ -94,3 +94,33 @@ def test_v3_cache_preview_fails_closed_when_budget_is_exceeded(tmp_path):
     assert preview["phase1_cache"]["decision"] == "BLOCKED_NO_SAFE_CANDIDATE"
     assert preview["phase1_cache"]["preview_reclaimable"] == []
     assert item.is_file()
+
+
+def test_storage_reference_audit_reports_stale_flag_without_mutation(tmp_path):
+    ops, database = _service(tmp_path)
+    with duckdb.connect(str(database)) as connection:
+        connection.execute("CREATE TABLE storage_objects (storage_object_id VARCHAR PRIMARY KEY, payload_json JSON)")
+        connection.execute(
+            "INSERT INTO storage_objects VALUES (?, ?)",
+            ["obj-stale", json.dumps({"storage_object_id": "obj-stale", "referenced": True, "kind": "ANALYSIS_RESULT_OBJECT"})],
+        )
+    result = ops.write_v3_storage_reference_audit("reports/upgrade_v3/P00-02_STORAGE_REFERENCE_AUDIT.json")
+    assert result["audit"]["issues"]["stale_referenced_flags"] == ["obj-stale"]
+    assert result["audit"]["automatic_action"] == "NONE"
+    with duckdb.connect(str(database), read_only=True) as connection:
+        assert connection.execute("SELECT payload_json FROM storage_objects WHERE storage_object_id='obj-stale'").fetchone()[0]
+
+
+def test_source_catalog_audit_keeps_unregistered_receipts_read_only(tmp_path):
+    ops, database = _service(tmp_path)
+    bundle_id, _, _ = _bundle(tmp_path, "2026-09-10")
+    with duckdb.connect(str(database)) as connection:
+        connection.execute("CREATE TABLE source_bundles (source_bundle_id VARCHAR PRIMARY KEY, payload_json JSON)")
+        connection.execute("CREATE TABLE source_packages (source_package_id VARCHAR PRIMARY KEY, payload_json JSON)")
+        connection.execute("CREATE TABLE source_files (source_package_id VARCHAR, relative_path VARCHAR, payload_json JSON)")
+        connection.execute("INSERT INTO source_bundles VALUES ('catalog-only', '{}')")
+    result = ops.write_v3_source_catalog_audit("reports/upgrade_v3/P04-03-03_SOURCE_CATALOG_AUDIT.json")
+    audit = result["audit"]
+    assert audit["physical_receipts_not_in_catalog"] == [bundle_id]
+    assert audit["catalog_entries_without_physical_receipt"] == ["catalog-only"]
+    assert audit["automatic_action"] == "NONE"

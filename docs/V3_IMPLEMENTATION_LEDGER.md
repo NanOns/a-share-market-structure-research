@@ -272,3 +272,11 @@ P00-03 合同资产 SHA-256：
 恢复目标是新建临时目录，验证后只删除本轮新建目录；未修改原始 ZIP、既有 extracted、metadata、TDX、数据库或 backup。错误的合成成员路径先被 resolver 正确 fail-closed，未创建目标目录；改用真实包内成员后通过。阶段证据见 [V3_P04_03_02_REAL_RECOVERY.md](V3_P04_03_02_REAL_RECOVERY.md)。
 
 本任务将 `P04-03-02` 提升为 **PASS（真实输入验证）**。下一任务严格进入 `P04-03-03`，只刷新最近 2 个 bundle 与 `.phase1_cache` 预算预览，不执行删除。
+
+## P04-03-03 真实缓存与解包保留预览（2026-09-12）
+
+本轮按最新 V3 主实施文档 §17.8/§18.7 刷新真实 input storage preview。5/5 source bundle 物理回执与 catalog 对齐，`source_files=32`，活动任务引用 bundle 为 0；按交易日保留 2026-09-09、2026-09-10 两个最近已使用 bundle，2026-09-07/08 解包仅标记 `PREVIEW_RECLAIMABLE_REBUILDABLE`。`.phase1_cache` 为 18,534 文件、954,775,668 B，使用率 44.46%，预算决策 `WITHIN_BUDGET`，无缓存回收候选。
+
+执行前后 `cleanup_jobs` 均为 1，删除执行为 false；未写数据库清理计划，未删除、移动或隔离任何文件。定向测试 `tests/upgrade_v3/test_p04_03_03_storage_preview.py tests/upgrade_m5/test_storage_governance.py` 为 `7 passed`，实际证据见 [V3_P04_03_03_REAL_REFRESH.md](V3_P04_03_03_REAL_REFRESH.md)。
+
+本任务将 `P04-03-03` 提升为 **PASS（只读预览）**。下一任务严格进入 `P04-03-04`：复核 backup 调用链和现有备份证据，仍不执行备份、恢复、移动或删除。

@@ -252,3 +252,13 @@ P00-03 合同资产 SHA-256：
 本轮阶段级结论：**P00-01～P04-02 FULL_PASS**。这不提前放行 P05–P11，也不把 P08/P09 的后续 UI/在线故障注入、生产运维激活或算法效果验收计入本结论。下一阶段严格进入 P04-03。
 
 最终回归：`pytest -q tests/upgrade_v3 tests/upgrade_m5 tests/upgrade_m7` 为 `173 passed`；compileall、diff check 通过。期间发现并修复既有 M7 取消/进度并发状态写入竞态，30 次取消边界压力复验全部通过。
+
+## P04-03-01-B V3 source_files 目录回填（2026-09-12）
+
+依据最新 V3 主实施文档 SHA-256 `3395AE2895F749DD5764998451363BF24024BAAA481AC7E644FE1AF941137851`，执行 P04-03 的首个未关闭 V3 核心缺口：`source_files=0` 历史元数据目录。该缺口属于 V3 源包可复现性，不属于 M0-M15 旧产物。
+
+新增 `backfill_source_file_catalog()` 和 `scripts/backfill_v3_source_file_catalog.py`。脚本只读取已封存的 5 个 V3 source bundle receipt，校验 bundle 身份、package/metadata 目录和既有 catalog；通过原子事务新增 32 条 `source_files` 行，4 个 package 各 8 条；同 package 多 bundle 引用保留 `source_bundle_ids`。任一冲突会整批回滚，未修改源包、解包、metadata、TDX、normalized、cache 或 backup 文件。
+
+定向测试 `pytest -q tests/upgrade_v3/test_p04_03_source_catalog.py` 为 `3 passed`；实际审计显示 `source_bundles=5/5`、物理回执未登记 `0`、catalog 无物理回执 `0`、`source_files=32`、`source_files_catalog_empty=false`。阶段记录见 [V3_P04_03_01_B_SOURCE_CATALOG_RECONCILIATION.md](V3_P04_03_01_B_SOURCE_CATALOG_RECONCILIATION.md)。
+
+本任务只关闭 `P04-03-01-B`；不代表 P04-03 整体完成。下一任务仍按最新 V3 台账处理缓存预览/解包保护和备份链的独立未关闭项，不进入 P05。

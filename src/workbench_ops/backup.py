@@ -344,6 +344,167 @@ class BackupService:
             "decisions":decisions,
         }
 
+    def audit_orphan_provenance(self, chain_audit: dict) -> dict:
+        """Cross-check unregistered backup artifacts without changing ownership.
+
+        This is deliberately narrower than the chain audit: it only inspects
+        the six user-decision items, compares their content identities with
+        catalog/storage records, and emits a retention recommendation.  It
+        never registers, deletes, restores, moves, or rewrites an artifact.
+        """
+        backup_root=Path(self.config.validate(self.config.current()["config"])["resolved_backup_root"]).resolve()
+        with duckdb.connect(str(self.database_path),read_only=True) as con:
+            catalog_rows=con.execute("SELECT backup_id,payload_json FROM backup_catalog ORDER BY backup_id").fetchall()
+            storage_rows=con.execute("SELECT storage_object_id,payload_json FROM storage_objects ORDER BY storage_object_id").fetchall() if self._has_table(con,"storage_objects") else []
+        catalog_records=[]
+        catalog_by_sha={}
+        catalog_by_id={}
+        for backup_id,raw in catalog_rows:
+            value=json.loads(raw)
+            item={"backup_id":backup_id,"created_at_utc":value.get("created_at_utc"),"sha256":value.get("sha256"),"database_name":Path(str(value.get("path", ""))).name}
+            catalog_records.append(item)
+            catalog_by_id[backup_id]=item
+            if item["sha256"]: catalog_by_sha.setdefault(item["sha256"],[]).append(backup_id)
+        storage_by_id={}
+        for object_id,raw in storage_rows:
+            value=json.loads(raw)
+            storage_by_id[object_id]={
+                "storage_object_id":object_id,
+                "state":value.get("state"),
+                "referenced":value.get("referenced"),
+                "physical_sha256":value.get("physical_sha256"),
+                "relative_path":value.get("relative_path"),
+                "size_bytes":value.get("size_bytes"),
+                "row_count":value.get("row_count"),
+                "registered_at_utc":value.get("registered_at_utc"),
+                "storage_kind":value.get("storage_kind"),
+            }
+        retention={
+            "recommendation":"RETAIN_UNTIL_OWNER_CONFIRMED",
+            "fixed_retention_required":True,
+            "fixed_retention_days":None,
+            "deletion_allowed":False,
+            "automatic_action":"NONE",
+            "reason":"V3_17_8_USER_FIXED_RETENTION_ITEM_OR_UNRESOLVED_PROVENANCE",
+        }
+        items=[]
+        orphan_dbs=chain_audit.get("orphan_physical_database_files",[])
+        for name in sorted(orphan_dbs):
+            path=backup_root/name
+            exists=path.is_file()
+            digest=self._sha256_file(path) if exists else None
+            prefix=name[:-len(".duckdb")].rsplit("-",1)[-1] if name.endswith(".duckdb") else None
+            items.append({
+                "item_type":"ORPHAN_DATABASE",
+                "item_id":name,
+                "physical_path":str(path),
+                "exists":exists,
+                "size_bytes":path.stat().st_size if exists else None,
+                "sha256":digest,
+                "filename_sha256_prefix":prefix,
+                "filename_sha256_prefix_matches":bool(digest and prefix and digest.startswith(prefix)),
+                "catalog_backup_ids_by_sha256":catalog_by_sha.get(digest,[]),
+                "catalog_backup_ids_by_filename_backup_id":[],
+                "provenance_class":"UNOWNED_PHYSICAL_DATABASE",
+                "provenance_status":"SELF_HASH_CONSISTENT_BUT_NOT_CATALOGED" if digest and prefix and digest.startswith(prefix) else "NOT_CATALOGED",
+                "retention":dict(retention),
+            })
+        manifest_names={name.removesuffix(".manifest.json") for name in chain_audit.get("orphan_physical_manifest_files",[])}
+        object_names={name.removesuffix(".objects") for name in chain_audit.get("orphan_physical_object_dirs",[])}
+        for backup_id in sorted(manifest_names|object_names):
+            manifest_path=backup_root/(backup_id+".manifest.json") if backup_id in manifest_names else None
+            object_root=backup_root/(backup_id+".objects") if backup_id in object_names else None
+            manifest=None
+            manifest_status="MISSING"
+            manifest_sha256=None
+            claimed_manifest_sha256=None
+            identity_manifest_sha256=None
+            if manifest_path and manifest_path.is_file():
+                try:
+                    manifest_sha256=self._sha256_file(manifest_path)
+                    manifest=json.loads(manifest_path.read_text(encoding="utf-8"))
+                    unsigned=dict(manifest)
+                    claimed_manifest_sha256=unsigned.pop("manifest_sha256",None)
+                    identity_manifest_sha256=hashlib.sha256(_dump(unsigned).encode()).hexdigest()
+                    manifest_status="PASS" if manifest.get("backup_id")==backup_id and claimed_manifest_sha256==identity_manifest_sha256 else "IDENTITY_OR_HASH_MISMATCH"
+                except (OSError,json.JSONDecodeError,TypeError,ValueError):
+                    manifest_status="UNREADABLE"
+            database_sha256=manifest.get("database",{}).get("sha256") if manifest else None
+            object_results=[]
+            listed_paths=set()
+            if manifest:
+                for entry in manifest.get("objects",[]):
+                    relative=Path(str(entry.get("relative_path","")))
+                    if relative.is_absolute() or ".." in relative.parts:
+                        object_results.append({"storage_object_id":entry.get("storage_object_id"),"relative_path":str(relative),"status":"INVALID_RELATIVE_PATH","storage_object_match":storage_by_id.get(entry.get("storage_object_id"))})
+                        continue
+                    listed_paths.add(relative.as_posix())
+                    physical_path=object_root.joinpath(*relative.parts) if object_root else None
+                    exists=bool(physical_path and physical_path.is_file())
+                    actual=self._sha256_file(physical_path) if exists else None
+                    expected_size=entry.get("size_bytes")
+                    size_status="PASS" if exists and expected_size is not None and physical_path.stat().st_size==int(expected_size) else ("MISSING" if not exists else "SIZE_MISMATCH")
+                    hash_status="PASS" if exists and actual==entry.get("sha256") else ("MISSING" if not exists else "HASH_MISMATCH")
+                    object_results.append({
+                        "storage_object_id":entry.get("storage_object_id"),
+                        "relative_path":relative.as_posix(),
+                        "physical_path":str(physical_path) if physical_path else None,
+                        "exists":exists,
+                        "size_bytes":physical_path.stat().st_size if exists else None,
+                        "sha256":actual,
+                        "manifest_expected_size_bytes":expected_size,
+                        "manifest_expected_sha256":entry.get("sha256"),
+                        "size_status":size_status,
+                        "hash_status":hash_status,
+                        "storage_object_match":storage_by_id.get(entry.get("storage_object_id")),
+                    })
+            physical_files=[]
+            if object_root and object_root.is_dir():
+                for path in sorted(path for path in object_root.rglob("*") if path.is_file()):
+                    relative=path.relative_to(object_root).as_posix()
+                    physical_files.append({"relative_path":relative,"size_bytes":path.stat().st_size,"sha256":self._sha256_file(path),"listed_in_manifest":relative in listed_paths})
+            storage_matches=[item for item in object_results if item.get("storage_object_match")]
+            if database_sha256 and catalog_by_sha.get(database_sha256):
+                provenance_class="MANIFEST_DATABASE_HASH_MATCHES_CATALOG"
+                provenance_status="CONTENT_IDENTITY_MATCHES_CATALOG_BUT_PHYSICAL_CHAIN_UNREGISTERED"
+            elif storage_matches:
+                provenance_class="UNREGISTERED_MANIFEST_WITH_REGISTERED_OBJECT_EVIDENCE"
+                provenance_status="MANIFEST_OBJECT_HASH_MATCHES_ACTIVE_STORAGE_OBJECT"
+            else:
+                provenance_class="UNOWNED_MANIFEST_OBJECT"
+                provenance_status="NO_CATALOG_OR_STORAGE_OBJECT_MATCH"
+            items.append({
+                "item_type":"ORPHAN_MANIFEST_OBJECT",
+                "item_id":backup_id,
+                "manifest_path":str(manifest_path) if manifest_path else None,
+                "objects_root":str(object_root) if object_root else None,
+                "manifest_status":manifest_status,
+                "manifest_sha256":manifest_sha256,
+                "manifest_claimed_sha256":claimed_manifest_sha256,
+                "manifest_identity_sha256":identity_manifest_sha256,
+                "created_at_utc":manifest.get("created_at_utc") if manifest else None,
+                "database_sha256":database_sha256,
+                "database_name":Path(str(manifest.get("database",{}).get("path",""))).name if manifest else None,
+                "catalog_backup_ids_by_database_sha256":catalog_by_sha.get(database_sha256,[]),
+                "catalog_backup_id_exact_match":backup_id if backup_id in catalog_by_id else None,
+                "object_results":object_results,
+                "physical_files":physical_files,
+                "provenance_class":provenance_class,
+                "provenance_status":provenance_status,
+                "retention":dict(retention),
+            })
+        return {
+            "contract_version":"v3-p04-03-backup-orphan-provenance-v1.0",
+            "source_contract_version":chain_audit.get("contract_version"),
+            "database_path":str(self.database_path),
+            "backup_root":str(backup_root),
+            "catalog_count":len(catalog_records),
+            "storage_object_count":len(storage_by_id),
+            "item_count":len(items),
+            "retention_policy":retention,
+            "items":items,
+        }
+
     @staticmethod
     def _sha256_file(path: Path) -> str:
         digest=hashlib.sha256()

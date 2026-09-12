@@ -945,7 +945,7 @@ class Api:
     if domain_slices['strength']:
      for row in c.execute('select security_id,rps20 from strength_result_daily where slice_id=? and trade_date=? and security_id in ('+ids_sql+')',[domain_slices['strength'],trade_date,*candidate_ids]).fetchall(): strength[row[0]]={'rps20':row[1]}
     if domain_slices['summary']:
-     for row in c.execute('select security_id,queues_json,research_band,research_band_quality,unique_hit_count from stock_structure_summary_daily where slice_id=? and trade_date=? and security_id in ('+ids_sql+')',[domain_slices['summary'],trade_date,*candidate_ids]).fetchall(): summary[row[0]]=dict(zip(('security_id','queues_json','research_band','research_band_quality','unique_hit_count'),row))
+     for row in c.execute('select security_id,queues_json,research_band,research_band_quality,unique_hit_count from structure_summary_result_daily where slice_id=? and trade_date=? and security_id in ('+ids_sql+')',[domain_slices['summary'],trade_date,*candidate_ids]).fetchall(): summary[row[0]]=dict(zip(('security_id','queues_json','research_band','research_band_quality','unique_hit_count'),row))
     if domain_slices['high'] and request['filters'].get('new_high_window') is not None:
      high_window=request['filters']['new_high_window']
      for row in c.execute('select security_id,"window",new_high,prior_max_close,streak,is_left_censored,dist_prior_high,valid_n,quality_codes from high_result_daily where slice_id=? and trade_date=? and "window"=? and security_id in ('+ids_sql+')',[domain_slices['high'],trade_date,high_window,*candidate_ids]).fetchall(): high[row[0]]=dict(zip(('security_id','window','new_high','prior_max_close','streak','is_left_censored','dist_prior_high','valid_n','quality_codes'),row))
@@ -1028,7 +1028,7 @@ class Api:
   if rps_width is not None:
    with self._con() as check:
     if not check.execute("select count(*) from analysis_snapshot_entries where snapshot_id=? and domain='strength'",[selected['snapshot_id']]).fetchone()[0]:raise ValueError('RPS_NOT_BUILT')
-  joins=" left join analysis_snapshot_entries se on se.snapshot_id=e.snapshot_id and se.domain='strength' and se.trade_date=e.trade_date left join strength_result_daily st on st.slice_id=se.slice_id and st.trade_date=se.trade_date and st.security_id=t.security_id left join analysis_snapshot_entries ue on ue.snapshot_id=e.snapshot_id and ue.domain='summary' and ue.trade_date=e.trade_date left join stock_structure_summary_daily ss on ss.slice_id=ue.slice_id and ss.trade_date=ue.trade_date and ss.security_id=t.security_id"
+  joins=" left join analysis_snapshot_entries se on se.snapshot_id=e.snapshot_id and se.domain='strength' and se.trade_date=e.trade_date left join strength_result_daily st on st.slice_id=se.slice_id and st.trade_date=se.trade_date and st.security_id=t.security_id left join analysis_snapshot_entries ue on ue.snapshot_id=e.snapshot_id and ue.domain='summary' and ue.trade_date=e.trade_date left join structure_summary_result_daily ss on ss.slice_id=ue.slice_id and ss.trade_date=ue.trade_date and ss.security_id=t.security_id"
   include_unknown=quality_filter=='INCLUDE_UNKNOWN';filters=['e.snapshot_id=?',"e.trade_date=(select max(trade_date) from analysis_snapshot_entries where snapshot_id=? and domain='technical'"+date_filter+")",WORKBENCH_SCOPE_SQL.format(id='t.security_id')];params=[selected['snapshot_id'],selected['snapshot_id'],*([as_of] if as_of else [])]
   if ma_state:filters.append('(t.ma_alignment=?'+(' or t.ma_alignment is null)' if include_unknown else ')'));params.append(ma_state)
   if amount_class_filter:filters.append('(t.amount_class=?'+(' or t.amount_class is null)' if include_unknown else ')'));params.append(amount_class_filter)
@@ -1066,7 +1066,7 @@ class Api:
    filters.append('st.rps20>=?');params.append(rps_value)
   if research_band:filters.append("coalesce(ss.research_band,'DIAGNOSTIC_ONLY')=?");params.append(research_band)
   where=' and '.join(filters)
-  summary_joins=" left join analysis_snapshot_entries ue on ue.snapshot_id=he.snapshot_id and ue.domain='summary' and ue.trade_date=he.trade_date left join stock_structure_summary_daily ss on ss.slice_id=ue.slice_id and ss.trade_date=ue.trade_date and ss.security_id=h.security_id"
+  summary_joins=" left join analysis_snapshot_entries ue on ue.snapshot_id=he.snapshot_id and ue.domain='summary' and ue.trade_date=he.trade_date left join structure_summary_result_daily ss on ss.slice_id=ue.slice_id and ss.trade_date=ue.trade_date and ss.security_id=h.security_id"
   with self._con() as c:
    available=c.execute("select count(*) from analysis_snapshot_entries where snapshot_id=? and domain='high'",[selected['snapshot_id']]).fetchone()[0]
    if not available: raise ValueError('ANALYSIS_NOT_BUILT')
@@ -1149,7 +1149,7 @@ class Api:
                                from analysis_snapshot_entries e join technical_result_daily t on t.slice_id=e.slice_id and t.trade_date=e.trade_date
                               where e.snapshot_id=? and e.domain='technical' and e.trade_date=? and t.security_id=?""",[selected['snapshot_id'],latest,security_id]).fetchone()
    summary_row=c.execute("""select s.queues_json,s.research_band,s.research_band_quality,s.unique_hit_count,s.queue_contract
-                             from analysis_snapshot_entries e join stock_structure_summary_daily s on s.slice_id=e.slice_id and s.trade_date=e.trade_date
+                             from analysis_snapshot_entries e join structure_summary_result_daily s on s.slice_id=e.slice_id and s.trade_date=e.trade_date
                             where e.snapshot_id=? and e.domain='summary' and e.trade_date=? and s.security_id=?""",[selected['snapshot_id'],latest,security_id]).fetchone()
   if not technical_row and 'technical' in requested: raise ValueError('INSIGHT_NOT_FOUND')
   quote=self._quotes(p).get(security_id,{})

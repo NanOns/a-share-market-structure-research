@@ -36,6 +36,13 @@ STRUCTURE_RESULT_COLUMNS = (
     "security_id", "trade_date", "queue_name", "hit", "tier", "source_class", "research_band",
     "queue_rank", "tier_rank", "transition", "structure_basis", "contract_id", "evidence", "quality_codes",
 )
+SUMMARY_RESULT_SCHEMA_VERSION = "structure-summary-result-rows-v1"
+SUMMARY_RESULT_SEMANTIC_CONTRACT = "STRUCTURE_SUMMARY_RESULT_V3"
+SUMMARY_RESULT_PRIMARY_KEY = ("security_id", "trade_date")
+SUMMARY_RESULT_COLUMNS = (
+    "security_id", "trade_date", "queues_json", "research_band", "research_band_quality",
+    "unique_hit_count", "queue_contract",
+)
 
 
 class StructureAdapterError(ValueError):
@@ -462,7 +469,211 @@ def summary_rows_for_storage(frame: pd.DataFrame, slice_id: str) -> list[tuple[A
     return [tuple(_storage(value) for value in (slice_id, row.security_id, row.trade_date, row.queues_json, row.research_band, row.research_band_quality, int(row.unique_hit_count), row.queue_contract)) for row in frame.itertuples()]
 
 
-def insert_structure_summary_rows(connection: Any, slice_id: str, frame: pd.DataFrame) -> int:
+def _summary_result_records(frame: pd.DataFrame) -> list[dict[str, Any]]:
+    names = ("slice_id",) + SUMMARY_RESULT_COLUMNS
+    records: list[dict[str, Any]] = []
+    for values in summary_rows_for_storage(frame, "__v3_result_object__"):
+        record = dict(zip(names, values))
+        record.pop("slice_id", None)
+        record["trade_date"] = pd.Timestamp(record["trade_date"]).date()
+        records.append(record)
+    return records
+
+
+def _summary_json_text(value: Any) -> str:
+    if isinstance(value, str):
+        try:
+            value = json.loads(value)
+        except (TypeError, json.JSONDecodeError):
+            return value
+    return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), default=str)
+
+
+def _summary_value_semantics(records: Iterable[Mapping[str, Any]]) -> dict[str, Any]:
+    rows = list(records)
+    return {
+        "null_policy": "EXPLICIT_NULLS_PRESERVED",
+        "json_policy": "SORTED_COMPACT_JSON",
+        "business_key": list(SUMMARY_RESULT_PRIMARY_KEY),
+        "contract_ids": sorted({str(row["queue_contract"]) for row in rows}),
+        "research_band_semantics": "RESEARCH_PRIORITY_V2_SHADOW",
+        "research_band_quality_semantics": "UNKNOWN_STRUCTURE_HIT_IS_DATA_INSUFFICIENT",
+        "unique_hit_count_semantics": "KNOWN_HIT_COUNT_EXCLUDING_UNKNOWN_QUEUES",
+        "queues_json_semantics": "PER_SECURITY_DATE_QUEUE_HIT_TIER_SOURCE_AND_RANK",
+        "structure_dependency": "historical_structure_daily",
+    }
+
+
+def _summary_hash(records: list[dict[str, Any]]) -> tuple[str, int, dict[str, Any]]:
+    semantics = _summary_value_semantics(records)
+    value_hash, _, row_count = result_value_hash(
+        domain="summary",
+        schema_version=SUMMARY_RESULT_SCHEMA_VERSION,
+        semantic_contract=SUMMARY_RESULT_SEMANTIC_CONTRACT,
+        columns=SUMMARY_RESULT_COLUMNS,
+        primary_key=SUMMARY_RESULT_PRIMARY_KEY,
+        rows=records,
+        value_semantics=semantics,
+    )
+    return value_hash, row_count, semantics
+
+
+def _summary_records_from_db(connection: Any, result_object_id: str) -> list[dict[str, Any]]:
+    columns = ",".join(SUMMARY_RESULT_COLUMNS)
+    rows = connection.execute(
+        f"SELECT {columns} FROM structure_summary_result_rows WHERE result_object_id=? ORDER BY security_id, trade_date",
+        [result_object_id],
+    ).fetchall()
+    return [dict(zip(SUMMARY_RESULT_COLUMNS, row)) for row in rows]
+
+
+def _register_summary_result_rows(
+    connection: Any,
+    slice_id: str,
+    records: list[dict[str, Any]],
+    *,
+    migration_source: str,
+) -> dict[str, Any]:
+    metadata = connection.execute(
+        """
+        SELECT domain, trade_date, contract_id, input_hash, dependency_hash,
+               basis_json, row_count, logical_hash, storage_kind, storage_object_id
+        FROM analysis_slices WHERE slice_id=?
+        """,
+        [slice_id],
+    ).fetchone()
+    if not metadata:
+        raise ValueError(f"SUMMARY_SLICE_NOT_FOUND:{slice_id}")
+    if metadata[0] != "summary":
+        raise ValueError("SUMMARY_SLICE_DOMAIN_MISMATCH")
+    if int(metadata[6]) != len(records):
+        raise ValueError("SUMMARY_RESULT_ROW_COUNT_MISMATCH")
+    if len({(row["security_id"], row["trade_date"]) for row in records}) != len(records):
+        raise ValueError("SUMMARY_RESULT_PRIMARY_KEY_DUPLICATE")
+    for record in records:
+        record["queues_json"] = _summary_json_text(record["queues_json"])
+    value_hash, row_count, semantics = _summary_hash(records)
+    result_object_id = "result-obj-" + value_hash[:32]
+    now = datetime.now(timezone.utc)
+    existing_object = connection.execute(
+        "SELECT domain, schema_version, semantic_contract, value_hash, row_count, storage_kind FROM analysis_result_objects WHERE result_object_id=?",
+        [result_object_id],
+    ).fetchone()
+    expected_object = (
+        "summary", SUMMARY_RESULT_SCHEMA_VERSION,
+        SUMMARY_RESULT_SEMANTIC_CONTRACT, value_hash, row_count, "DUCKDB",
+    )
+    if existing_object and tuple(existing_object) != expected_object:
+        raise ValueError("SUMMARY_RESULT_OBJECT_IDENTITY_CONFLICT")
+    connection.execute(
+        "INSERT INTO analysis_result_objects VALUES (?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(result_object_id) DO NOTHING",
+        [result_object_id, *expected_object[0:3], value_hash, row_count, "DUCKDB", now],
+    )
+    stored_rows = _summary_records_from_db(connection, result_object_id)
+    if stored_rows:
+        for record in stored_rows:
+            record["queues_json"] = _summary_json_text(record["queues_json"])
+        stored_hash, stored_count, stored_semantics = _summary_hash(stored_rows)
+        if stored_count != row_count or stored_hash != value_hash or stored_semantics != semantics:
+            raise ValueError("SUMMARY_RESULT_VALUE_HASH_MISMATCH")
+    else:
+        columns = ["result_object_id", *SUMMARY_RESULT_COLUMNS]
+        placeholders = ",".join("?" for _ in columns)
+        connection.executemany(
+            f"INSERT INTO structure_summary_result_rows VALUES ({placeholders})",
+            [[result_object_id, *[record[column] for column in SUMMARY_RESULT_COLUMNS]] for record in records],
+        )
+    storage_payload = {
+        "storage_object_id": result_object_id,
+        "result_object_id": result_object_id,
+        "kind": "STRUCTURE_SUMMARY_RESULT_ROWS",
+        "storage_kind": "DUCKDB",
+        "table": "structure_summary_result_rows",
+        "domain": "summary",
+        "schema_version": SUMMARY_RESULT_SCHEMA_VERSION,
+        "semantic_contract": SUMMARY_RESULT_SEMANTIC_CONTRACT,
+        "value_hash": value_hash,
+        "primary_key": list(SUMMARY_RESULT_PRIMARY_KEY),
+        "columns": list(SUMMARY_RESULT_COLUMNS),
+        "value_semantics": semantics,
+        "row_count": row_count,
+        "state": "ACTIVE",
+        "referenced": True,
+        "registered_at_utc": now.isoformat(),
+    }
+    connection.execute(
+        "INSERT INTO storage_objects(storage_object_id,payload_json) VALUES (?, ?) ON CONFLICT(storage_object_id) DO NOTHING",
+        [result_object_id, json.dumps(storage_payload, ensure_ascii=False, sort_keys=True, separators=(",", ":"))],
+    )
+    if not connection.execute("SELECT 1 FROM storage_objects WHERE storage_object_id=?", [result_object_id]).fetchone():
+        raise ValueError("SUMMARY_RESULT_STORAGE_OBJECT_MISSING")
+    if metadata[9] not in (None, result_object_id):
+        raise ValueError("SUMMARY_SLICE_STORAGE_OBJECT_CONFLICT")
+    connection.execute(
+        "UPDATE analysis_slices SET storage_object_id=? WHERE slice_id=? AND storage_object_id IS NULL",
+        [result_object_id, slice_id],
+    )
+    basis = metadata[5] if isinstance(metadata[5], dict) else json.loads(metadata[5])
+    evidence = {
+        "contract_version": "v3-p03-03-summary-migration-v1",
+        "migration_source": migration_source,
+        "source_table": "stock_structure_summary_daily",
+        "source_slice_id": slice_id,
+        "source_trade_date": str(metadata[1]),
+        "source_contract_id": metadata[2],
+        "source_input_hash": metadata[3],
+        "source_dependency_hash": metadata[4],
+        "source_basis": basis,
+        "source_logical_hash": metadata[7],
+        "source_row_count": int(metadata[6]),
+        "result_object_id": result_object_id,
+        "result_value_hash": value_hash,
+        "result_schema_version": SUMMARY_RESULT_SCHEMA_VERSION,
+        "result_semantic_contract": SUMMARY_RESULT_SEMANTIC_CONTRACT,
+        "result_primary_key": list(SUMMARY_RESULT_PRIMARY_KEY),
+        "result_columns": list(SUMMARY_RESULT_COLUMNS),
+        "result_value_semantics": semantics,
+    }
+    existing_binding = connection.execute(
+        "SELECT result_object_id FROM analysis_slice_result_bindings WHERE slice_id=?", [slice_id]
+    ).fetchone()
+    if existing_binding:
+        if existing_binding[0] != result_object_id:
+            raise ValueError("SUMMARY_SLICE_RESULT_BINDING_CONFLICT")
+    else:
+        connection.execute(
+            "INSERT INTO analysis_slice_result_bindings VALUES (?, ?, ?)",
+            [slice_id, result_object_id, json.dumps(evidence, ensure_ascii=False, sort_keys=True, separators=(",", ":"))],
+        )
+    return {
+        "slice_id": slice_id,
+        "result_object_id": result_object_id,
+        "value_hash": value_hash,
+        "row_count": row_count,
+        "reused": bool(stored_rows),
+    }
+
+
+def insert_structure_summary_result_rows(connection: Any, slice_id: str, frame: pd.DataFrame) -> int:
+    """Write one summary slice to the V3 result-object row store only."""
+    records = _summary_result_records(frame)
+    _register_summary_result_rows(connection, slice_id, records, migration_source="SUMMARY_WRITER_V3")
+    return len(records)
+
+
+def migrate_structure_summary_slice(connection: Any, slice_id: str) -> dict[str, Any]:
+    """Import one immutable legacy summary slice into the V3 row store."""
+    columns = ",".join(SUMMARY_RESULT_COLUMNS)
+    rows = connection.execute(
+        f"SELECT {columns} FROM stock_structure_summary_daily WHERE slice_id=? ORDER BY security_id, trade_date",
+        [slice_id],
+    ).fetchall()
+    records = [dict(zip(SUMMARY_RESULT_COLUMNS, row)) for row in rows]
+    return _register_summary_result_rows(connection, slice_id, records, migration_source="LEGACY_010_IMPORT")
+
+
+def insert_legacy_structure_summary_rows(connection: Any, slice_id: str, frame: pd.DataFrame) -> int:
+    """Legacy-only adapter retained for fixtures and compatibility audits."""
     rows = summary_rows_for_storage(frame, slice_id)
     existing = connection.execute("select * from stock_structure_summary_daily where slice_id=?", [slice_id]).fetchall()
     try:
@@ -473,3 +684,8 @@ def insert_structure_summary_rows(connection: Any, slice_id: str, frame: pd.Data
         return len(rows)
     connection.executemany("insert into stock_structure_summary_daily values (?,?,?,?,?,?,?,?)", rows)
     return len(rows)
+
+
+def insert_structure_summary_rows(connection: Any, slice_id: str, frame: pd.DataFrame) -> int:
+    """Compatibility entry point; new writes always use V3 result objects."""
+    return insert_structure_summary_result_rows(connection, slice_id, frame)

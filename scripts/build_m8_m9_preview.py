@@ -44,7 +44,7 @@ from workbench_analysis.structures import (
     build_historical_structure_rows,
     build_structure_summary,
     insert_structure_result_rows,
-    insert_structure_summary_rows,
+    insert_structure_summary_result_rows,
 )
 from workbench_analysis.technical import calculate_technical_daily, insert_technical_result_rows
 from workbench_ops.backup import BackupService
@@ -599,7 +599,7 @@ def insert_preview(
             "strength": insert_strength_result_rows,
             "high": insert_high_result_rows,
             "structure": insert_structure_result_rows,
-            "summary": insert_structure_summary_rows,
+            "summary": insert_structure_summary_result_rows,
             "sector_base": insert_sector_base_rows,
             "coverage": insert_coverage_rows,
             "member_state": insert_member_state_result_rows,

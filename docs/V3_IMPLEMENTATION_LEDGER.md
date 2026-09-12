@@ -262,3 +262,5 @@ P00-03 合同资产 SHA-256：
 定向测试 `pytest -q tests/upgrade_v3/test_p04_03_source_catalog.py` 为 `3 passed`；实际审计显示 `source_bundles=5/5`、物理回执未登记 `0`、catalog 无物理回执 `0`、`source_files=32`、`source_files_catalog_empty=false`。阶段记录见 [V3_P04_03_01_B_SOURCE_CATALOG_RECONCILIATION.md](V3_P04_03_01_B_SOURCE_CATALOG_RECONCILIATION.md)。
 
 本任务只关闭 `P04-03-01-B`；不代表 P04-03 整体完成。下一任务仍按最新 V3 台账处理缓存预览/解包保护和备份链的独立未关闭项，不进入 P05。
+
+历史报告 `V3_P04_03_01_STORAGE_INVENTORY.md` 与 `V3_P04_03_03_STORAGE_PREVIEW.md` 已增加状态说明：其中的 3 份未登记物理回执及 `source_files=0` 是回填前快照，不再代表当前数据库状态；原始数字和审计证据保持不变。

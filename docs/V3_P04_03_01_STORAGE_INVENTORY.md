@@ -1,5 +1,7 @@
 # V3 P04-03-01：input_staging 引用与可再生性盘点
 
+> **状态更新（2026-09-12）**：本文保留首次只读盘点时的历史基线。随后执行的 `P04-03-08` 清理和 `P04-03-01-B` 回填已使物理源包回执与 `source_bundles` 达到 5/5 对齐，并将 `source_files` 从 0 补齐为 32。当前结果以 [V3_P04_03_01_B_SOURCE_CATALOG_RECONCILIATION.md](V3_P04_03_01_B_SOURCE_CATALOG_RECONCILIATION.md) 及其 JSON 产物为准；本文中的 `source_files=0`、未登记物理回执和对应独立遗留项属于回填前历史快照，不再表示当前状态。
+
 ## 结论
 
 依据最新 V3 主实施文档 §17.8、§18.7 P04-03，完成第一个子任务：**PASS（AUDIT ONLY）**。

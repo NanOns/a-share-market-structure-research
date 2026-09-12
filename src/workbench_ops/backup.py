@@ -176,6 +176,118 @@ class BackupService:
         result["restore_report_path"]=str(report)
         return result
 
+    def audit_catalog_physical_chain(self) -> dict:
+        """Read-only reconciliation of catalog records and backup files.
+
+        Stored absolute paths may refer to an older checkout spelling.  The
+        audit never rewrites them; it uses the recorded basename to locate the
+        current managed backup root and reports both facts separately.
+        """
+        backup_root=Path(self.config.validate(self.config.current()["config"])["resolved_backup_root"]).resolve()
+        physical_files={path.name:path for path in backup_root.iterdir() if path.is_file()} if backup_root.is_dir() else {}
+        physical_dirs={path.name:path for path in backup_root.iterdir() if path.is_dir()} if backup_root.is_dir() else {}
+        with duckdb.connect(str(self.database_path),read_only=True) as con:
+            rows=con.execute("SELECT backup_id,payload_json FROM backup_catalog ORDER BY backup_id").fetchall()
+        records=[]; catalog_db_names=set(); catalog_manifest_names=set(); catalog_object_names=set()
+        for backup_id, raw in rows:
+            value=json.loads(raw)
+            database_name=Path(str(value.get("path", ""))).name
+            manifest_name=Path(str(value.get("manifest_path", ""))).name if value.get("manifest_path") else None
+            object_name=Path(str(value.get("objects_root", ""))).name if value.get("objects_root") else None
+            if database_name: catalog_db_names.add(database_name)
+            if manifest_name: catalog_manifest_names.add(manifest_name)
+            if object_name: catalog_object_names.add(object_name)
+            database_path=physical_files.get(database_name)
+            database_status="MISSING"
+            database_sha256=None
+            if database_path:
+                database_sha256=self._sha256_file(database_path)
+                database_status="PASS" if database_sha256==value.get("sha256") else "HASH_MISMATCH"
+            manifest_status="NOT_EXPECTED"
+            manifest_hash=None
+            object_status="NOT_EXPECTED"
+            object_results=[]
+            manifest_path=physical_files.get(manifest_name) if manifest_name else None
+            if manifest_name:
+                manifest_status="MISSING"
+                if manifest_path:
+                    manifest_hash=self._sha256_file(manifest_path)
+                    try:
+                        manifest=json.loads(manifest_path.read_text(encoding="utf-8"))
+                        unsigned=dict(manifest); claimed=unsigned.pop("manifest_sha256",None)
+                        identity_hash=hashlib.sha256(_dump(unsigned).encode()).hexdigest()
+                        manifest_status="PASS" if (
+                            manifest.get("backup_id")==backup_id
+                            and claimed==identity_hash
+                            and manifest.get("database",{}).get("sha256")==value.get("sha256")
+                        ) else "IDENTITY_OR_DATABASE_MISMATCH"
+                        object_name=Path(str(manifest.get("objects_root",object_name or ""))).name
+                        if object_name: catalog_object_names.add(object_name)
+                        object_root=physical_dirs.get(object_name) if object_name else None
+                        object_status="MISSING"
+                        if object_root:
+                            object_status="PASS"
+                            for item in manifest.get("objects",[]):
+                                relative=Path(str(item.get("relative_path", "")))
+                                if relative.is_absolute() or ".." in relative.parts:
+                                    item_status="INVALID_RELATIVE_PATH"
+                                    actual_path=None
+                                else:
+                                    actual_path=object_root.joinpath(*relative.parts)
+                                    if not actual_path.is_file(): item_status="MISSING"
+                                    elif actual_path.stat().st_size!=int(item.get("size_bytes",-1)):
+                                        item_status="SIZE_MISMATCH"
+                                    elif self._sha256_file(actual_path)!=item.get("sha256"):
+                                        item_status="HASH_MISMATCH"
+                                    else: item_status="PASS"
+                                object_results.append({"storage_object_id":item.get("storage_object_id"),"path":str(actual_path) if actual_path else None,"status":item_status})
+                            if any(item["status"]!="PASS" for item in object_results): object_status="OBJECT_MISMATCH"
+                    except (OSError, json.JSONDecodeError, TypeError, ValueError, KeyError):
+                        manifest_status="UNREADABLE"
+            chain_status="PASS" if database_status=="PASS" and manifest_status in ("PASS","NOT_EXPECTED") and object_status in ("PASS","NOT_EXPECTED") else "INCOMPLETE"
+            records.append({
+                "backup_id":backup_id,
+                "created_at_utc":value.get("created_at_utc"),
+                "catalog_database_path":value.get("path"),
+                "physical_database_path":str(database_path) if database_path else None,
+                "database_status":database_status,
+                "database_sha256":database_sha256,
+                "catalog_manifest_path":value.get("manifest_path"),
+                "physical_manifest_path":str(manifest_path) if manifest_path else None,
+                "manifest_status":manifest_status,
+                "manifest_sha256":manifest_hash,
+                "object_status":object_status,
+                "objects":object_results,
+                "chain_status":chain_status,
+            })
+        orphan_db=sorted(name for name in physical_files if name.endswith(".duckdb") and name not in catalog_db_names)
+        orphan_manifests=sorted(name for name in physical_files if name.endswith(".manifest.json") and name not in catalog_manifest_names)
+        orphan_objects=sorted(name for name in physical_dirs if name.endswith(".objects") and name not in catalog_object_names)
+        return {
+            "contract_version":"v3-p04-03-backup-chain-audit-v1.0",
+            "database_path":str(self.database_path),
+            "backup_root":str(backup_root),
+            "catalog_count":len(records),
+            "physical_file_count":sum(1 for path in backup_root.rglob("*") if path.is_file()) if backup_root.is_dir() else 0,
+            "physical_file_bytes":sum(path.stat().st_size for path in backup_root.rglob("*") if path.is_file()) if backup_root.is_dir() else 0,
+            "physical_top_level_database_count":sum(1 for name in physical_files if name.endswith(".duckdb")),
+            "physical_top_level_manifest_count":sum(1 for name in physical_files if name.endswith(".manifest.json")),
+            "physical_top_level_object_dir_count":sum(1 for name in physical_dirs if name.endswith(".objects")),
+            "chain_pass_count":sum(1 for item in records if item["chain_status"]=="PASS"),
+            "chain_incomplete_count":sum(1 for item in records if item["chain_status"]!="PASS"),
+            "orphan_physical_database_files":orphan_db,
+            "orphan_physical_manifest_files":orphan_manifests,
+            "orphan_physical_object_dirs":orphan_objects,
+            "records":records,
+        }
+
+    @staticmethod
+    def _sha256_file(path: Path) -> str:
+        digest=hashlib.sha256()
+        with path.open("rb") as stream:
+            for chunk in iter(lambda:stream.read(1024*1024),b""): digest.update(chunk)
+        return digest.hexdigest()
+
     def _validate_external_object(self, raw_path: str | None) -> Path:
         if not raw_path:
             raise ConfigValidationError("BACKUP_OBJECT_PATH_MISSING")

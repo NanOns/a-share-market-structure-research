@@ -323,7 +323,7 @@ class Api:
   filters.append(WORKBENCH_SCOPE_SQL.format(id='s.security_id'))
   if state!='ALL': filters.append('s.member_change_kind=?');args.append(state)
   where=' and '.join(filters)
-  query="with recent_dates as (select distinct trade_date from analysis_snapshot_entries where snapshot_id=? and domain='member_state'"+date_filter+" order by trade_date desc limit ?) select s.sector_id,s.security_id,s.trade_date,s.member_present,s.member_rank,s.rank_valid_count,s.member_percentile,s.strong_state,s.strong_predicates,s.structure_hit,s.high_hit,s.member_change_kind,s.strength_change_kind,s.previous_rank,s.rank_delta,s.queue_refs,s.high_refs,s.history_basis,s.contract_id from recent_dates d join analysis_snapshot_entries e on e.snapshot_id=? and e.domain='member_state' and e.trade_date=d.trade_date join sector_member_state_daily s on s.slice_id=e.slice_id and s.trade_date=e.trade_date where "+where+" order by s.trade_date desc,s.member_rank nulls last,s.security_id"
+  query="with recent_dates as (select distinct trade_date from analysis_snapshot_entries where snapshot_id=? and domain='member_state'"+date_filter+" order by trade_date desc limit ?) select s.sector_id,s.security_id,s.trade_date,s.member_present,s.member_rank,s.rank_valid_count,s.member_percentile,s.strong_state,s.strong_predicates,s.structure_hit,s.high_hit,s.member_change_kind,s.strength_change_kind,s.previous_rank,s.rank_delta,s.queue_refs,s.high_refs,s.history_basis,s.contract_id from recent_dates d join analysis_snapshot_entries e on e.snapshot_id=? and e.domain='member_state' and e.trade_date=d.trade_date join member_state_result_daily s on s.slice_id=e.slice_id and s.trade_date=e.trade_date where "+where+" order by s.trade_date desc,s.member_rank nulls last,s.security_id"
   with self._con() as c: rows=c.execute(query,[selected['snapshot_id'],*([as_of] if as_of else []),days,selected['snapshot_id'],*args]).fetchall()
   names=('sector_id','security_id','trade_date','member_present','member_rank','rank_valid_count','member_percentile','strong_state','strong_predicates','structure_hit','high_hit','member_change_kind','strength_change_kind','previous_rank','rank_delta','queue_refs','high_refs','history_basis','contract_id');items=[]
   for raw in rows:
@@ -897,7 +897,7 @@ class Api:
   with self._con() as c:
    rows=c.execute('''select b.sector_id,b.sector_name,b.sector_type,b.sector_role,b.bucket,b.sector_valid,b.total_member_count,b.quote_valid_count,b.factor_valid_count,b.coverage,
           m.member_present,m.member_rank,m.rank_valid_count
-       from sector_member_state_daily m join sector_base_daily b on b.slice_id=? and b.trade_date=? and b.sector_id=m.sector_id
+       from member_state_result_daily m join sector_base_daily b on b.slice_id=? and b.trade_date=? and b.sector_id=m.sector_id
       where m.slice_id=? and m.trade_date=? and m.security_id=? and m.member_present=true
       order by b.sector_name,b.sector_id''',[base['slice_id'],as_of,member['slice_id'],as_of,security_id]).fetchall()
   items=[]
@@ -921,7 +921,7 @@ class Api:
    if trade_date not in available_dates: raise ValueError('TRADE_DATE_UNAVAILABLE')
    sector_ids=request['include_sector_ids']+request['exclude_sector_ids'];placeholders=','.join('?' for _ in sector_ids)
    rows=c.execute('''select m.security_id,m.sector_id,m.member_rank,m.rank_valid_count,b.sector_name,b.sector_type,b.sector_role,b.bucket,b.sector_valid,b.total_member_count,b.factor_valid_count,b.coverage
-       from sector_member_state_daily m join sector_base_daily b on b.slice_id=? and b.trade_date=? and b.sector_id=m.sector_id
+       from member_state_result_daily m join sector_base_daily b on b.slice_id=? and b.trade_date=? and b.sector_id=m.sector_id
       where m.slice_id=? and m.trade_date=? and m.member_present=true and m.sector_id in ('''+placeholders+''')''',[base['slice_id'],trade_date,member['slice_id'],trade_date,*sector_ids]).fetchall()
    grouped={};include_set=set(request['include_sector_ids']);exclude_set=set(request['exclude_sector_ids'])
    from workbench_service.universe import is_workbench_visible_security_id
@@ -1506,7 +1506,7 @@ class Api:
    rows=c.execute(f'''select m.sector_id,m.security_id,m.member_rank,m.rank_valid_count,m.member_percentile,
                              b.sector_name,b.sector_type,b.sector_role,b.bucket,b.total_member_count,b.coverage,
                              {association_select}
-                        from sector_member_state_daily m
+                        from member_state_result_daily m
                         join sector_base_daily b on b.sector_id=m.sector_id and b.trade_date=m.trade_date
                         {association_join}
                        where {' and '.join(conditions)}
@@ -1543,7 +1543,7 @@ class Api:
    placeholders=','.join('?' for _ in selected_dates)
    rows=c.execute('''select m.trade_date,m.sector_id,m.security_id,m.member_present,m.member_rank,m.rank_valid_count,m.member_percentile,
                             m.strong_state,m.member_change_kind,m.strength_change_kind,m.previous_rank,m.rank_delta,m.history_basis,m.contract_id
-                       from sector_member_state_daily m
+                       from member_state_result_daily m
                        join analysis_snapshot_entries e on e.snapshot_id=? and e.domain='member_state' and e.slice_id=m.slice_id and e.trade_date=m.trade_date
                        where m.sector_id=? and m.trade_date in ('''+placeholders+''')'''+(' and m.security_id=?' if security_id else '')+''' order by m.trade_date desc,m.member_rank nulls last,m.security_id''',[selected['snapshot_id'],sector_id,*selected_dates,*([security_id] if security_id else [])]).fetchall()
   names=self._security_names(p,{str(row[2]) for row in rows});columns=('trade_date','sector_id','security_id','member_present','member_rank','rank_valid_count','member_percentile','strong_state','member_change_kind','strength_change_kind','previous_rank','rank_delta','history_basis','contract_id');items=[]

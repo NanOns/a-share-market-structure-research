@@ -151,7 +151,7 @@ def build() -> dict[str, object]:
             """
             select m.*
             from analysis_snapshot_entries e
-            join sector_member_state_daily m on m.slice_id=e.slice_id and m.trade_date=e.trade_date
+            join member_state_result_daily m on m.slice_id=e.slice_id and m.trade_date=e.trade_date
             where e.snapshot_id=? and e.domain='member_state'
             order by m.trade_date, m.sector_id, m.security_id
             """,

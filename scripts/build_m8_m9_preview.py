@@ -28,7 +28,7 @@ from workbench_analysis.member_state import (
     build_membership_changes,
     build_sector_member_state_daily,
     insert_membership_change_rows,
-    insert_member_state_rows,
+    insert_member_state_result_rows,
 )
 from workbench_analysis.representative_state import build_representative_state_daily, insert_representative_rows
 from workbench_analysis.sector_cycle import CONTRACT_VERSION as SECTOR_CYCLE_CONTRACT, build_sector_cycle_daily, insert_sector_cycle_rows
@@ -602,7 +602,7 @@ def insert_preview(
             "summary": insert_structure_summary_rows,
             "sector_base": insert_sector_base_rows,
             "coverage": insert_coverage_rows,
-            "member_state": insert_member_state_rows,
+            "member_state": insert_member_state_result_rows,
             "membership_changes": insert_membership_change_rows,
             "representative": insert_representative_rows,
             "sector_cycle": insert_sector_cycle_rows,

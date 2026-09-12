@@ -117,7 +117,7 @@ def _build_daily_rows(connection: duckdb.DuckDBPyConnection, snapshot_id: str, t
         connection,
         """
         select sector_id,security_id,member_rank,rank_valid_count,member_present
-          from sector_member_state_daily
+          from member_state_result_daily
          where slice_id=? and trade_date=? and member_present=true
         """,
         [member_slice, trade_date],

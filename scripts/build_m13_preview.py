@@ -186,10 +186,10 @@ def _market_supporting_rows(connection: duckdb.DuckDBPyConnection, snapshot_id: 
             bucket = high.setdefault(row["trade_date"], {}).setdefault(str(row["window"]), {"valid_count": 0, "hit_count": 0})
             bucket["valid_count"] += int(row["new_high"] is not None)
             bucket["hit_count"] += int(row["new_high"] is True)
-    if connection.execute("select count(*) from information_schema.tables where table_name='historical_structure_daily'").fetchone()[0]:
+    if connection.execute("select count(*) from information_schema.tables where table_name='historical_structure_result_daily'").fetchone()[0]:
         for row in _rows(connection, """
             select e.trade_date,h.security_id,h.queue_name,h.hit
-              from analysis_snapshot_entries e join historical_structure_daily h on h.slice_id=e.slice_id and h.trade_date=e.trade_date
+              from analysis_snapshot_entries e join historical_structure_result_daily h on h.slice_id=e.slice_id and h.trade_date=e.trade_date
              where e.snapshot_id=? and e.domain='structure'
         """, [snapshot_id]):
             if row["trade_date"] in date_set:

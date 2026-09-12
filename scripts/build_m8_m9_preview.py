@@ -43,7 +43,7 @@ from workbench_service.semantic import (
 from workbench_analysis.structures import (
     build_historical_structure_rows,
     build_structure_summary,
-    insert_historical_structure_rows,
+    insert_structure_result_rows,
     insert_structure_summary_rows,
 )
 from workbench_analysis.technical import calculate_technical_daily, insert_technical_result_rows
@@ -598,7 +598,7 @@ def insert_preview(
             "technical": insert_technical_result_rows,
             "strength": insert_strength_result_rows,
             "high": insert_high_result_rows,
-            "structure": insert_historical_structure_rows,
+            "structure": insert_structure_result_rows,
             "summary": insert_structure_summary_rows,
             "sector_base": insert_sector_base_rows,
             "coverage": insert_coverage_rows,

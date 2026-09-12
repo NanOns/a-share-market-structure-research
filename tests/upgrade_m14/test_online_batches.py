@@ -43,7 +43,7 @@ def test_online_migration_is_transactionally_available(tmp_path):
     connection.execute("INSERT INTO schema_migrations VALUES (?, current_timestamp)", [BASE_SCHEMA_VERSION])
     try:
         result = MigrationExecutor(connection).apply()
-        assert result["applied"][-1]["version"] == "030_v3_member_state_result_rows"
+        assert result["applied"][-1]["version"] == "031_v3_structure_result_rows"
         tables = {row[0] for row in connection.execute("SHOW TABLES").fetchall()}
         assert {"online_fetch_runs", "online_payloads", "online_batches", "online_rank_entries", "online_security_map", "online_evidence", "online_quote_entries"}.issubset(tables)
     finally:

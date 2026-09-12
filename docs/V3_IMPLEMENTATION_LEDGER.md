@@ -234,3 +234,21 @@ P00-03 合同资产 SHA-256：
 清理后 `backup_catalog=12` 且完整链 12/12，source bundle catalog/物理收据为 5/5，V3 fallback binding 为 0。历史 `source_files=0` 是元数据缺口，不是待删除文件，本次未做未经授权的历史回填。旧 analysis 对应的 2 条 `analysis_slices` 身份行保留为 tombstone，因为历史迁移外键仍指向已重命名表；物理对象已删除并完成删除标记。
 
 本次回归 `pytest -q tests/upgrade_v3 tests/upgrade_m5 tests/upgrade_m7` 为 170 passed，compileall 和 diff check 通过。清理子项验收通过，但 P04-03 整体仍为 scoped/audit 状态，P04 生产集成及独立审计项未全部关闭，下一阶段仍为 P04 剩余收口，不进入 P05。
+
+## P00–P04-02 阶段验收收口（2026-09-12）
+
+依据最新 V3 主实施文档 SHA-256 `3395AE2895F749DD5764998451363BF24024BAAA481AC7E644FE1AF941137851`，本轮完成 P00-01 至 P04-02 的阶段级补验和真实输入副本验证，形成独立记录：[V3_P00_P04_02_FULL_PASS.md](V3_P00_P04_02_FULL_PASS.md)。
+
+修复 `v3_daily_entry.py` 的整文件 parquet 物化缺陷：改用 PyArrow row-group 读取，只把当前任务证券及当前日向前 60 个交易日物化为计算帧。默认 V3 daily target 收窄为已具备 result-object 绑定的 `technical/strength/high/structure/summary/member_state` 六域；旧 `sector_base/sector_cycle/mainline` 只保留兼容条目，显式缺绑定时 fail-closed。
+
+真实 normalized parquet + 生产数据库副本的 P04-02 三次验证：
+
+| run | planned | executed | new_fact_rows | reused_rows | calculated_rows | db_file_growth |
+|---:|---:|---:|---:|---:|---:|---:|
+| 1 | 105,918 | 105,918 | 6,178 | 138,678 | 6,178 | 0 |
+| 2 | 105,918 | 105,918 | 0 | 144,856 | 0 | 0 |
+| 3 | 105,918 | 105,918 | 0 | 144,856 | 0 | 0 |
+
+本轮阶段级结论：**P00-01～P04-02 FULL_PASS**。这不提前放行 P05–P11，也不把 P08/P09 的后续 UI/在线故障注入、生产运维激活或算法效果验收计入本结论。下一阶段严格进入 P04-03。
+
+最终回归：`pytest -q tests/upgrade_v3 tests/upgrade_m5 tests/upgrade_m7` 为 `173 passed`；compileall、diff check 通过。期间发现并修复既有 M7 取消/进度并发状态写入竞态，30 次取消边界压力复验全部通过。

@@ -49,6 +49,7 @@ class HistoryJobService:
         self._threads: dict[str, threading.Thread] = {}
         self._cancel: dict[str, threading.Event] = {}
         self._lock = threading.Lock()
+        self._event_lock = threading.Lock()
 
     def _connect(self):
         last_error = None
@@ -62,8 +63,43 @@ class HistoryJobService:
         raise last_error
 
     def _event(self, connection, job_id: str, attempt: int, status: str, **details: Any) -> None:
-        sequence = connection.execute("select coalesce(max(sequence),0)+1 from job_events where job_id=? and attempt=?", [job_id, attempt]).fetchone()[0]
-        connection.execute("insert into job_events values (?,?,?,?,?)", [job_id, attempt, sequence, datetime.now(timezone.utc), _json({"status": status, **details})])
+        # Event sequence numbers are scoped to (job, attempt). A worker and a
+        # concurrent cancel request can otherwise both observe the same MAX()
+        # and race into a primary-key collision. Keep the read/insert/commit
+        # together for in-process callers; ON CONFLICT plus retry also covers
+        # a second service instance touching the same database.
+        with self._event_lock:
+            for _ in range(8):
+                sequence = connection.execute(
+                    "select coalesce(max(sequence),0)+1 from job_events where job_id=? and attempt=?",
+                    [job_id, attempt],
+                ).fetchone()[0]
+                try:
+                    connection.execute(
+                        "insert into job_events values (?,?,?,?,?) on conflict(job_id,attempt,sequence) do nothing",
+                        [job_id, attempt, sequence, datetime.now(timezone.utc), _json({"status": status, **details})],
+                    )
+                    connection.commit()
+                    return
+                except duckdb.TransactionException:
+                    connection.rollback()
+                    time.sleep(0.01)
+            raise HistoryJobError("JOB_EVENT_SEQUENCE_CONFLICT")
+
+    def _write_with_retry(self, operation: Callable[[Any], None]) -> None:
+        """Retry short state transitions when a cancel races with progress."""
+
+        last_error: Exception | None = None
+        for _ in range(50):
+            try:
+                with self._connect() as connection:
+                    operation(connection)
+                return
+            except duckdb.TransactionException as exc:
+                last_error = exc
+                time.sleep(0.02)
+        if last_error is not None:
+            raise last_error
 
     def _manifest_for(self, publication_id: str) -> tuple[dict[str, Any], str, str]:
         with self._connect() as connection:
@@ -177,10 +213,11 @@ class HistoryJobService:
 
     def _run(self, job_id: str, attempt: int) -> None:
         try:
-            with self._connect() as connection:
+            def mark_running(connection):
                 connection.execute("update jobs set status='RUNNING' where job_id=?", [job_id])
                 connection.execute("update job_attempts set status='RUNNING' where job_id=? and attempt=?", [job_id, attempt])
                 self._event(connection, job_id, attempt, "RUNNING")
+            self._write_with_retry(mark_running)
             status, payload, _, _ = self._load(job_id)
             completed = set(payload.get("completed_slice_ids", []))
             units = list(payload.get("request", {}).get("slice_ids", []))
@@ -216,7 +253,7 @@ class HistoryJobService:
             return False
 
     def _progress(self, job_id: str, attempt: int, completed: set[str], total: int, stage: str) -> None:
-        with self._connect() as connection:
+        def write_progress(connection):
             row = connection.execute("select payload_json from jobs where job_id=?", [job_id]).fetchone()
             payload = json.loads(row[0])
             payload["completed_slice_ids"] = sorted(completed)
@@ -225,9 +262,10 @@ class HistoryJobService:
             connection.execute("update jobs set payload_json=? where job_id=?", [_json(payload), job_id])
             connection.execute("update job_attempts set payload_json=? where job_id=? and attempt=?", [_json({"attempt": attempt, "progress": progress}), job_id, attempt])
             self._event(connection, job_id, attempt, stage, completed_slice_ids=sorted(completed), progress=progress)
+        self._write_with_retry(write_progress)
 
     def _finish(self, job_id: str, attempt: int, status: str, *, completed: set[str], stage: str, error: dict[str, Any] | None = None) -> None:
-        with self._connect() as connection:
+        def write_finish(connection):
             row = connection.execute("select payload_json from jobs where job_id=?", [job_id]).fetchone()
             if not row:
                 return
@@ -242,6 +280,7 @@ class HistoryJobService:
                 attempt_payload["error"] = error
             connection.execute("update job_attempts set status=?,payload_json=? where job_id=? and attempt=?", [status, _json(attempt_payload), job_id, attempt])
             self._event(connection, job_id, attempt, status, completed_slice_ids=sorted(completed), error=error)
+        self._write_with_retry(write_finish)
 
     def status(self, job_id: str) -> dict[str, Any]:
         status, payload, attempt, attempt_payload = self._load(job_id)
@@ -271,10 +310,11 @@ class HistoryJobService:
             raise HistoryJobError("ATTEMPT_MISMATCH")
         if status in TERMINAL_STATUSES:
             raise HistoryJobError("JOB_NOT_CANCELLABLE")
-        with self._connect() as connection:
+        def write_cancel(connection):
             payload["cancel_requested"] = True
             connection.execute("update jobs set payload_json=? where job_id=?", [_json(payload), job_id])
             self._event(connection, job_id, attempt, "CANCEL_REQUESTED")
+        self._write_with_retry(write_cancel)
         self._cancel.setdefault(job_id, threading.Event()).set()
         return self.status(job_id)
 

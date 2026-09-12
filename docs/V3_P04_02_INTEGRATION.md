@@ -11,7 +11,7 @@
 ## 阶段合同
 
 - `src/workbench_service/v3_daily_entry.py` 是 V3 P04-02 的每日入口。
-- 新日计划默认目标为旧每日构建器已能提供的 V3 结果域：`technical`、`strength`、`high`、`structure`、`summary`、`member_state`、`sector_base`、`sector_cycle`。
+- 新日计划默认目标为已经迁移并存在 V3 result-object 绑定的六个域：`technical`、`strength`、`high`、`structure`、`summary`、`member_state`。`sector_base`、`sector_cycle`、`mainline` 当前仅作为兼容条目保留，不能在没有 V3 result-object 绑定时冒充目标完成。
 - `technical` 由 `CALCULATE` 从 normalized parquet 计算并写入 P03 result-row writer；其他目标域必须从明确绑定的 source snapshot `REUSE`，缺 slice、缺 result binding 或域/日期不一致时 fail-closed。
 - 旧快照中的 `coverage`、`membership_changes`、`representative` 等非 V3 目标条目通过 `preserved_entries` 原样保留到新快照，不能满足 V3 目标完整性门，只用于兼容旧 reader。
 - `mainline` 不在默认入口目标集合中，因为旧每日构建器当前不产生该域；显式把它放入目标时，缺少源 entry 会失败，不静默跳过。该域仍由后续明确接入任务处理。
@@ -24,6 +24,7 @@
 - `src/workbench_service/v3_daily_entry.py`：加载真实 normalized parquet、读取 membership、构建新日 plan、读取 source snapshot、组织复用、批量计算技术域、绑定新快照并原子写出 plan/report 证据。
 - `src/workbench_service/incremental_writer.py`：支持 source snapshot 证据化复用、同域同日批量任务、兼容旧条目保留和完整目标绑定。
 - `scripts/run_v3_incremental_build.py`：source parquet provider 支持同日多证券批量输入。
+- `src/workbench_service/v3_daily_entry.py`：使用 PyArrow row-group/date/security 窗口读取，不再把整份 normalized parquet 复制进 pandas；每个技术任务最多物化当前日及 60 个前置交易日。
 - `reports/v3/daily/{cutoff}.plan.json` 与 `.report.json`：入口级计划和增长/复用/绑定结果使用临时文件后 `os.replace` 原子落盘，位置在 TDX 根目录外。
 
 ## 验收证据
@@ -31,24 +32,37 @@
 集成测试 `tests/upgrade_v3/test_p04_02_integration.py` 覆盖：
 
 1. 新日：两证券同日技术计算、strength 复用、结果写入、完整 snapshot/publication binding。
-2. 同输入重跑：业务结果新增为 0，既有技术对象和旧域对象复用，兼容条目仍保留。
+2. 同输入重跑三次：业务结果新增为 0，既有技术对象和旧域对象复用，兼容条目仍保留。
+3. 两个相邻 cutoff：相邻日期分别构建，结果行按日期增加，不按历史天数重复膨胀。
 3. 历史价量修订：仅受影响证券的 technical 任务计算，strength 按全横截面任务复用/绑定，任务日期从修订日开始，不扩散到 B 的 technical。
 4. 关系变化：只执行关系下游的复用目标域，不生成 technical/strength/high 任务。
 5. 缺失/旧格式 source scope：只有显式 source snapshot entry 才允许复用旧 basis；没有绑定证据则拒绝。
 
 执行结果：
 
-- `pytest -q tests/upgrade_v3/test_p04_02_integration.py tests/upgrade_v3/test_p04_02_incremental_writer.py`：`14 passed`。
+- `pytest -q tests/upgrade_v3/test_p04_02_integration.py tests/upgrade_v3/test_p04_02_incremental_writer.py`：`17 passed`。
 - `pytest -q tests/upgrade_v3 tests/upgrade_m7/test_window_planner.py`：`74 passed`。
 - `python -m compileall -q src/workbench_service scripts tests/upgrade_v3`：通过。
 - `git diff --check`：通过。
 - 未访问或修改 `D:/new_tdx`、配置的 TDX 源目录、生产数据库和生产结果表。
 
+## 真实 normalized parquet 副本验收
+
+使用 `data/normalized/adjusted_daily.parquet`（约 876MB、19,634,335 行、6,178 个证券）和生产库只读副本执行入口；未写生产库或 TDX。
+
+| run | status | planned | executed | new_fact_rows | reused_rows | calculated_rows | db_file_growth |
+|---:|---|---:|---:|---:|---:|---:|---:|
+| 1 | BUILT | 105,918 | 105,918 | 6,178 | 138,678 | 6,178 | 0 |
+| 2 | BUILT | 105,918 | 105,918 | 0 | 144,856 | 0 | 0 |
+| 3 | BUILT | 105,918 | 105,918 | 0 | 144,856 | 0 | 0 |
+
+三次均绑定同一稳定的 `v3-daily-b9cf26ed033c8e7faa2a3e1f` 快照；第一次创建 6,178 条 technical 结果，后两次只复用，未新增业务事实。首次整链运行曾暴露整文件 pandas 复制的内存缺陷，已改为 row-group 窗口读取后重新通过。
+
 ## 未在本任务执行的事项
 
 - 未执行 P04-03 缓存回收、全库备份策略或任何删除动作。
 - 未把 `mainline` 冒充为已接入；未补做其旧构建器计算委托。
-- 未执行生产 daily job；生产激活证据仍需要独立运维窗口和回滚核验。
+- 未执行真实生产 daily job；本次使用真实 normalized parquet + 生产库副本完成全链证据，生产激活仍需独立运维窗口和回滚核验。
 
 ## 下一项
 

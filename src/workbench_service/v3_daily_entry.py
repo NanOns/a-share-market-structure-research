@@ -32,10 +32,11 @@ from .incremental_writer import (
 )
 
 
-# These are the domains the existing daily source builder can provide as
-# immutable V3 result slices.  Legacy-only domains remain copied into the new
-# snapshot for compatibility; a caller that explicitly includes an absent
-# domain still fails closed in _reuse_entries.
+# These are the domains for which the current P03 migration provides immutable
+# V3 result objects. Legacy-only domains remain copied into the new snapshot
+# for compatibility, but are not silently promoted to V3 target completeness.
+# A caller that explicitly includes an absent/unbound domain still fails closed
+# in _reuse_entries.
 V3_DAILY_TARGET_DOMAINS = (
     "technical",
     "strength",
@@ -43,8 +44,6 @@ V3_DAILY_TARGET_DOMAINS = (
     "structure",
     "summary",
     "member_state",
-    "sector_base",
-    "sector_cycle",
 )
 
 
@@ -64,6 +63,15 @@ def _date_column(frame: pd.DataFrame) -> str:
     raise IncrementalBuildError("V3_DAILY_SOURCE_DATE_COLUMN_REQUIRED")
 
 
+def _iso(value: date | str) -> str:
+    if isinstance(value, date):
+        return value.isoformat()
+    try:
+        return date.fromisoformat(str(value)).isoformat()
+    except ValueError as exc:
+        raise IncrementalBuildError(f"DATE_INVALID:{value}") from exc
+
+
 def _load_source(path: Path) -> tuple[pd.DataFrame, tuple[str, ...]]:
     if not path.is_file():
         raise IncrementalBuildError(f"V3_DAILY_SOURCE_NOT_FOUND:{path}")
@@ -77,6 +85,124 @@ def _load_source(path: Path) -> tuple[pd.DataFrame, tuple[str, ...]]:
     if "security_id" not in frame.columns:
         raise IncrementalBuildError("V3_DAILY_SOURCE_SECURITY_ID_REQUIRED")
     return frame, sessions
+
+
+class _ParquetSourceReader:
+    """Read only the rows needed by one verified V3 task.
+
+    The normalized source is a large immutable parquet input. Loading the
+    entire file into pandas before filtering can require a multi-gigabyte
+    temporary allocation. Row-group reads keep the source read-only and only
+    materialize the requested security/date window.
+    """
+
+    _TECHNICAL_COLUMNS = (
+        "security_id", "date", "raw_close", "adj_close", "raw_amount",
+        "raw_volume", "data_quality_flag", "is_synthetic_fill", "quote_prev_close",
+    )
+
+    def __init__(self, path: Path):
+        self.path = path
+        if not path.is_file():
+            raise IncrementalBuildError(f"V3_DAILY_SOURCE_NOT_FOUND:{path}")
+        try:
+            from pyarrow import parquet as pq
+        except ImportError as exc:
+            raise IncrementalBuildError("V3_DAILY_PARQUET_READER_REQUIRED") from exc
+        self.parquet = pq.ParquetFile(str(path))
+        self.columns = set(self.parquet.schema.names)
+        required = {"security_id", "date", "adj_close", "raw_close", "raw_amount", "raw_volume"}
+        missing = sorted(required.difference(self.columns))
+        if missing:
+            raise IncrementalBuildError("V3_DAILY_SOURCE_COLUMNS_MISSING:" + ",".join(missing))
+        self._security_groups: dict[str, list[int]] = {}
+        self._unknown_groups: list[int] = []
+        security_index = self.parquet.schema.names.index("security_id")
+        for group_index in range(self.parquet.num_row_groups):
+            statistics = self.parquet.metadata.row_group(group_index).column(security_index).statistics
+            if statistics is not None and statistics.min == statistics.max and statistics.min is not None:
+                self._security_groups.setdefault(str(statistics.min), []).append(group_index)
+            else:
+                self._unknown_groups.append(group_index)
+        session_values: set[str] = set()
+        for batch in self.parquet.iter_batches(columns=["date"], batch_size=1_000_000):
+            session_values.update(
+                str(value)[:10]
+                for value in batch.column(0).unique().to_pylist()
+                if value is not None
+            )
+        self.sessions = tuple(sorted(session_values))
+        if len(self.sessions) < 2:
+            raise IncrementalBuildError("V3_DAILY_SOURCE_NEEDS_PREVIOUS_SESSION")
+        self._security_cache: dict[str, tuple[str, ...]] = {}
+
+    def close(self) -> None:
+        return None
+
+    def _read_group(self, group_index: int, columns: list[str], *, tail_rows: int | None = None) -> pd.DataFrame:
+        table = self.parquet.read_row_group(group_index, columns=columns)
+        if tail_rows is not None and table.num_rows > tail_rows:
+            table = table.slice(table.num_rows - tail_rows)
+        frame = table.to_pandas()
+        if "date" in frame:
+            frame["date"] = pd.to_datetime(frame["date"], errors="raise").dt.date
+        if "security_id" in frame:
+            frame["security_id"] = frame["security_id"].astype(str)
+        return frame
+
+    def _all_group_indexes(self) -> list[int]:
+        known = {index for values in self._security_groups.values() for index in values}
+        return sorted(known | set(self._unknown_groups))
+
+    def current_security_ids(self, cutoff: str) -> tuple[str, ...]:
+        cached = self._security_cache.get(str(cutoff))
+        if cached is not None:
+            return cached
+        result_ids: set[str] = set()
+        for group_index in self._all_group_indexes():
+            frame = self._read_group(group_index, ["security_id", "date"])
+            matched = frame[frame["date"].astype(str).eq(str(cutoff))]
+            result_ids.update(str(value) for value in matched["security_id"].dropna().tolist())
+        result = tuple(sorted(result_ids))
+        if not result:
+            raise IncrementalBuildError("V3_DAILY_CURRENT_UNIVERSE_EMPTY")
+        self._security_cache[str(cutoff)] = result
+        return result
+
+    def frame_for_task(self, task: Mapping[str, Any]) -> pd.DataFrame:
+        cutoff = _iso(task["trade_date"])
+        if cutoff not in self.sessions:
+            raise IncrementalBuildError(f"V3_DAILY_TASK_DATE_NOT_IN_SOURCE:{cutoff}")
+        end_index = self.sessions.index(cutoff)
+        # Technical RET60 needs the current session plus 60 preceding source
+        # sessions. This is an input lookback, not an output range.
+        start = self.sessions[max(0, end_index - 60)]
+        security_ids = tuple(sorted({str(value) for value in task.get("security_ids", ()) if value}))
+        if not security_ids and task.get("security_id") is not None:
+            security_ids = (str(task["security_id"]),)
+        if not security_ids:
+            raise IncrementalBuildError(f"V3_DAILY_TASK_SECURITY_SCOPE_REQUIRED:{task_key(task)}")
+        selected = set(security_ids)
+        selected_columns = [name for name in self._TECHNICAL_COLUMNS if name in self.columns]
+        if len(selected) > 1000:
+            group_indexes = self._all_group_indexes()
+        else:
+            group_indexes = sorted({index for security_id in selected for index in self._security_groups.get(security_id, ())})
+            group_indexes.extend(index for index in self._unknown_groups if index not in group_indexes)
+        parts: list[pd.DataFrame] = []
+        start_date = date.fromisoformat(start)
+        cutoff_date = date.fromisoformat(cutoff)
+        tail_rows = 61 if len(selected) > 1000 and cutoff == self.sessions[-1] else None
+        for group_index in group_indexes:
+            frame = self._read_group(group_index, selected_columns, tail_rows=tail_rows)
+            if len(selected) <= 1000:
+                frame = frame[frame["security_id"].isin(selected)]
+            frame = frame[(frame["date"] >= start_date) & (frame["date"] <= cutoff_date)]
+            if not frame.empty:
+                parts.append(frame)
+        if not parts:
+            raise IncrementalBuildError(f"V3_DAILY_SOURCE_SCOPE_EMPTY:{cutoff}")
+        return pd.concat(parts, ignore_index=True).sort_values(["security_id", "date"], kind="mergesort").reset_index(drop=True)
 
 
 def _load_membership(path: Path | None, cutoff: str) -> tuple[dict[str, tuple[str, ...]], dict[str, tuple[str, ...]], tuple[str, ...]]:
@@ -288,19 +414,38 @@ def run_v3_daily_entry(
     root_path = Path(root).resolve()
     source_file = Path(source_path).resolve()
     membership_file = Path(membership_path).resolve() if membership_path else None
-    source, sessions = _load_source(source_file)
-    verified = verify_build_plan(plan) if plan is not None else build_new_day_plan(
-        source,
-        sessions,
-        membership_path=membership_file,
-        target_domains=target_domains,
-    )
+    source_reader = _ParquetSourceReader(source_file)
+    sessions = source_reader.sessions
+    try:
+        if plan is not None:
+            verified = verify_build_plan(plan)
+        else:
+            cutoff = sessions[-1]
+            # Planning only needs the current universe and calendar. Do not
+            # materialize historical prices at this boundary.
+            current_ids = source_reader.current_security_ids(cutoff)
+            plan_source = pd.DataFrame({
+                "security_id": current_ids,
+                "date": [cutoff] * len(current_ids),
+            })
+            verified = build_new_day_plan(
+                plan_source,
+                sessions,
+                membership_path=membership_file,
+                target_domains=target_domains,
+            )
+    except Exception:
+        source_reader.close()
+        raise
     if str(verified.get("status")) == "NO_WORK":
-        report = IncrementalBuildCoordinator(database_path).execute_daily(
-            verified,
-            input_provider=lambda _task: source,
-        )
-        return {"entrypoint": "V3_DAILY_INCREMENTAL", **report}
+        try:
+            report = IncrementalBuildCoordinator(database_path).execute_daily(
+                verified,
+                input_provider=lambda _task: None,
+            )
+            return {"entrypoint": "V3_DAILY_INCREMENTAL", **report}
+        finally:
+            source_reader.close()
 
     with duckdb.connect(str(Path(database_path).resolve())) as connection:
         active_source_snapshot = source_snapshot_id or _bound_snapshot(connection, publication_id)
@@ -314,23 +459,13 @@ def run_v3_daily_entry(
         )
         technical_source = _load_bound_technical_rows(connection, active_source_snapshot)
 
-    source_column = _date_column(source)
-
     def input_provider(task: Mapping[str, Any]) -> Mapping[str, Any]:
-        frame = source
-        security_ids = task.get("security_ids")
-        if security_ids and "security_id" in frame.columns:
-            frame = frame[frame["security_id"].astype(str).isin({str(value) for value in security_ids})]
-        elif task.get("security_id") is not None:
-            frame = frame[frame["security_id"].astype(str).eq(str(task["security_id"]))]
-        frame = frame[frame[source_column].astype(str).str[:10] <= str(task["trade_date"])]
+        frame = source_reader.frame_for_task(task)
         source_slice_id, source_rows = technical_source.get(str(task["trade_date"]), (None, pd.DataFrame()))
         selected_ids = {str(value) for value in task.get("security_ids", ()) if value}
         if not selected_ids and task.get("security_id") is not None:
             selected_ids = {str(task["security_id"])}
-        source_universe_ids = set(
-            source.loc[source[source_column].astype(str).str[:10].eq(str(task["trade_date"])), "security_id"].astype(str)
-        )
+        source_universe_ids = set(source_reader.current_security_ids(str(task["trade_date"])))
         reused_frame = source_rows[~source_rows["security_id"].astype(str).isin(selected_ids)].copy() if not source_rows.empty else source_rows
         reused_security_ids = sorted(set(reused_frame["security_id"].astype(str))) if not reused_frame.empty else []
         expected_reused_ids = source_universe_ids - selected_ids
@@ -347,6 +482,7 @@ def run_v3_daily_entry(
                 "source_parquet": str(source_file),
                 "source_sha256": _sha256_file(source_file),
                 "entrypoint": "V3_DAILY_INCREMENTAL",
+                "source_reader": "PYARROW_PARQUET_ROW_GROUP",
                 "reused_security_ids": reused_security_ids,
                 "reused_row_count": int(len(reused_frame)),
                 "reused_source_slice_id": source_slice_id,
@@ -370,15 +506,18 @@ def run_v3_daily_entry(
         expected_task_keys=tuple(task_key(item) for item in verified.get("tasks", [])),
         preserved_entries=preserved,
     )
-    report = IncrementalBuildCoordinator(
-        database_path,
-        executor_matrix=_daily_executor_matrix(technical_source),
-    ).execute_daily(
-        verified,
-        input_provider=input_provider,
-        reused=reused,
-        snapshot=binding,
-    )
+    try:
+        report = IncrementalBuildCoordinator(
+            database_path,
+            executor_matrix=_daily_executor_matrix(technical_source),
+        ).execute_daily(
+            verified,
+            input_provider=input_provider,
+            reused=reused,
+            snapshot=binding,
+        )
+    finally:
+        source_reader.close()
     report = {
         "entrypoint": "V3_DAILY_INCREMENTAL",
         "source_snapshot_id": active_source_snapshot,

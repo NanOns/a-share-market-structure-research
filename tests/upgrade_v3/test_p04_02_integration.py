@@ -6,7 +6,7 @@ import pandas as pd
 
 from workbench_db.migrations import BASE_SCHEMA_VERSION, MigrationExecutor
 from workbench_service.build_planner import DependencySummary, build_plan
-from workbench_service.v3_daily_entry import run_v3_daily_entry
+from workbench_service.v3_daily_entry import V3_DAILY_TARGET_DOMAINS, _ParquetSourceReader, run_v3_daily_entry
 from workbench_analysis.technical import calculate_technical_daily, insert_technical_result_rows
 
 
@@ -104,6 +104,25 @@ def _database(tmp_path, cutoff):
     return database
 
 
+def test_daily_source_reader_materializes_only_the_task_lookback(tmp_path):
+    sessions = _sessions()
+    source = _source(tmp_path, sessions)
+    reader = _ParquetSourceReader(source)
+    try:
+        frame = reader.frame_for_task({"domain": "technical", "trade_date": sessions[-1], "security_ids": ["A"]})
+        assert set(frame["security_id"]) == {"A"}
+        assert set(frame["date"].astype(str)) == set(sessions[-61:])
+        assert reader.current_security_ids(sessions[-1]) == ("A", "B")
+    finally:
+        reader.close()
+
+
+def test_default_daily_targets_are_only_bound_v3_result_domains():
+    assert V3_DAILY_TARGET_DOMAINS == (
+        "technical", "strength", "high", "structure", "summary", "member_state"
+    )
+
+
 def _seed_source_entries(database, plan):
     """Add legacy source-snapshot entries for every reused plan scope."""
 
@@ -199,8 +218,54 @@ def test_v3_daily_entry_calculates_reuses_binds_and_is_idempotent(tmp_path):
     assert second["status"] == "BUILT"
     assert second["new_fact_rows"] == 0
     assert second["reused_rows"] == 4
+
+    third = run_v3_daily_entry(
+        tmp_path,
+        database,
+        publication_id="pub-v3-entry",
+        source_path=source,
+        target_domains=("technical", "strength"),
+    )
+
+    assert third["status"] == "BUILT"
+    assert third["new_fact_rows"] == 0
+    assert third["reused_rows"] == 4
     with duckdb.connect(str(database), read_only=True) as connection:
         assert connection.execute("SELECT count(*) FROM technical_result_rows").fetchone()[0] == 2
+
+
+def test_v3_daily_entry_builds_two_adjacent_cutoffs_without_multiplying_rows(tmp_path):
+    sessions = _sessions()
+    full_source = _source(tmp_path, sessions)
+    first_cutoff = sessions[-2]
+    first_source = tmp_path / "adjusted_daily_first.parquet"
+    full_frame = pd.read_parquet(full_source)
+    full_frame[full_frame["date"].astype(str).str[:10] <= first_cutoff].to_parquet(first_source, index=False)
+    database = _database(tmp_path, sessions[-1])
+
+    first = run_v3_daily_entry(
+        tmp_path,
+        database,
+        publication_id="pub-v3-entry",
+        source_path=first_source,
+        target_domains=("technical",),
+    )
+    second = run_v3_daily_entry(
+        tmp_path,
+        database,
+        publication_id="pub-v3-entry",
+        source_path=full_source,
+        target_domains=("technical",),
+    )
+
+    assert first["status"] == "BUILT"
+    assert second["status"] == "BUILT"
+    assert first["new_fact_rows"] == 2
+    assert second["new_fact_rows"] == 2
+    assert first["snapshot_binding"]["snapshot_id"] != second["snapshot_binding"]["snapshot_id"]
+    with duckdb.connect(str(database), read_only=True) as connection:
+        assert connection.execute("SELECT count(*) FROM technical_result_rows").fetchone()[0] == 4
+        assert connection.execute("SELECT count(*) FROM analysis_snapshots WHERE snapshot_id like 'v3-daily-%'").fetchone()[0] == 2
 
 
 def test_v3_daily_entry_accepts_historical_price_revision_plan_scope(tmp_path):

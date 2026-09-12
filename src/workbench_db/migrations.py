@@ -59,6 +59,7 @@ class MigrationExecutor:
         "026_v3_result_objects": ("025_v3_relations",),
         "027_v3_technical_result_rows": ("026_v3_result_objects",),
         "028_v3_strength_result_rows": ("027_v3_technical_result_rows",),
+        "029_v3_high_result_rows": ("028_v3_strength_result_rows",),
     }
     CHECK_TABLE_SQL = """
         CREATE TABLE IF NOT EXISTS schema_migration_checks (

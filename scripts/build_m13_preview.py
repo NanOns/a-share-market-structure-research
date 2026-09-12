@@ -175,10 +175,10 @@ def _market_supporting_rows(connection: duckdb.DuckDBPyConnection, snapshot_id: 
     queues: dict[Any, list[dict[str, Any]]] = {}
     sectors: dict[Any, list[dict[str, Any]]] = {}
     date_set = set(dates)
-    if connection.execute("select count(*) from information_schema.tables where table_name='stock_high_daily'").fetchone()[0]:
+    if connection.execute("select count(*) from information_schema.views where table_name='high_result_daily'").fetchone()[0]:
         for row in _rows(connection, """
             select e.trade_date,h.window,h.new_high
-              from analysis_snapshot_entries e join stock_high_daily h on h.slice_id=e.slice_id and h.trade_date=e.trade_date
+              from analysis_snapshot_entries e join high_result_daily h on h.slice_id=e.slice_id and h.trade_date=e.trade_date
              where e.snapshot_id=? and e.domain='high'
         """, [snapshot_id]):
             if row["trade_date"] not in date_set:

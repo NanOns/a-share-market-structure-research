@@ -19,7 +19,7 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from workbench_analysis.highs import calculate_high_daily, insert_high_rows
+from workbench_analysis.highs import calculate_high_daily, insert_high_result_rows
 from workbench_analysis.coverage import build_historical_coverage, insert_coverage_rows
 from workbench_analysis.history_adapter import build_sector_base, insert_sector_base_rows
 from workbench_analysis.hierarchy import CONTRACT_VERSION as HIERARCHY_CONTRACT, ensure_hierarchy
@@ -597,7 +597,7 @@ def insert_preview(
         writer = {
             "technical": insert_technical_result_rows,
             "strength": insert_strength_result_rows,
-            "high": insert_high_rows,
+            "high": insert_high_result_rows,
             "structure": insert_historical_structure_rows,
             "summary": insert_structure_summary_rows,
             "sector_base": insert_sector_base_rows,

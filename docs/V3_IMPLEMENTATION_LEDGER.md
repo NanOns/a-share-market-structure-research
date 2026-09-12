@@ -280,3 +280,19 @@ P00-03 合同资产 SHA-256：
 执行前后 `cleanup_jobs` 均为 1，删除执行为 false；未写数据库清理计划，未删除、移动或隔离任何文件。定向测试 `tests/upgrade_v3/test_p04_03_03_storage_preview.py tests/upgrade_m5/test_storage_governance.py` 为 `7 passed`，实际证据见 [V3_P04_03_03_REAL_REFRESH.md](V3_P04_03_03_REAL_REFRESH.md)。
 
 本任务将 `P04-03-03` 提升为 **PASS（只读预览）**。下一任务严格进入 `P04-03-04`：复核 backup 调用链和现有备份证据，仍不执行备份、恢复、移动或删除。
+
+## P04-03-04～08 备份链与旧产物最终收口（2026-09-12）
+
+按用户要求一次性完成 P04-03 剩余审计/收口任务，但每个 task 保留独立合同和结果：
+
+| task_id | status | 实际证据 | 验收结论 | next_task |
+|---|---|---|---|---|
+| P04-03-04 | PASS | daily builder 无 `BackupService`/`create_history_backup`；人工 recovery/migration 仍有显式维护窗口；定向 2 passed | 不新增每日强制全库备份/恢复演练 | P04-03-05 |
+| P04-03-05 | PASS | `backup_catalog=12`；12/12 完整；0 不完整；0 孤立数据库/manifest/object；实际 hash/尺寸审计通过 | catalog 与物理链当前一致 | P04-03-06 |
+| P04-03-06 | PASS | `MANUAL_RECOVERY_VALIDATION_CANDIDATE=12`；`PROTECTED_EVIDENCE=0`；`USER_DECISION_REQUIRED=0`；自动动作 NONE | 分类完成，未授予删除或自动恢复权限 | P04-03-07 |
+| P04-03-07 | PASS | 孤立来源核对 `items=0`；删除权限 false | 无孤立对象待 owner 决策 | P04-03-08 |
+| P04-03-08 | PASS | 旧 M0-M15 残留清理复核：source bundle 5/5、backup chain 12/12、孤立 0；V3 source_files=32 | 仅旧产物清理通过，V3 核心产物保留 | P05-01 |
+
+本轮全回归 `pytest -q tests/upgrade_v3 tests/upgrade_m5 tests/upgrade_m7` 为 **175 passed**；compileall 与 diff check 通过。未新建备份、未恢复、未移动、未删除；P04-03 阶段结论为 **FULL_PASS**，下一阶段进入 P05，不把生产 daily 运维激活或算法效果验收提前计入。
+
+详细证据见 [V3_P04_03_BACKUP_CLOSURE.md](V3_P04_03_BACKUP_CLOSURE.md)。

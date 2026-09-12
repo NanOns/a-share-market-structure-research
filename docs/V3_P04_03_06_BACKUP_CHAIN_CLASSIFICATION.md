@@ -1,5 +1,7 @@
 # V3 P04-03-06：backup 链分类决策清单
 
+> **当前状态（2026-09-12）**：本文保留清理前的分类快照。当前重新审计后 `MANUAL_RECOVERY_VALIDATION_CANDIDATE=12`、`PROTECTED_EVIDENCE=0`、`USER_DECISION_REQUIRED=0`；最终状态见 [V3_P04_03_BACKUP_CLOSURE.md](V3_P04_03_BACKUP_CLOSURE.md)。
+
 ## 结论
 
 依据最新 V3 主实施文档 §17.8、§18.7 P04-03，完成第六个子任务：**PASS（AUDIT ONLY）**。

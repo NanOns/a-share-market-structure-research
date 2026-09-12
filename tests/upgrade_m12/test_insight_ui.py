@@ -64,7 +64,8 @@ def test_evidence_tab_uses_grouped_api15_details_and_safe_text_rendering():
     assert "api.evidence" in source
     assert "format: 'groups'" in source
     assert "证据摘要（5项）" in source
-    assert "evidenceDetails" in source
+    assert "evidenceSection" in source
+    assert "evidenceDetails" not in source
     assert "details.replaceChildren" in source
     assert "textContent" in source
     assert "evidence:function(params,options)" in api_source
@@ -74,6 +75,6 @@ def test_evidence_tab_uses_grouped_api15_details_and_safe_text_rendering():
 def test_online_evidence_is_a_collapsed_non_blocking_m14_placeholder():
     source = APP.read_text(encoding="utf-8")
     assert "function externalEvidencePlaceholder" in source
-    assert "在线增强 · 当前不可用（默认折叠）" in source
+    assert "在线增强 · 当前不可用" in source
     assert "不阻塞本地个股透视首屏" in source
     assert "API38（M14）" in source

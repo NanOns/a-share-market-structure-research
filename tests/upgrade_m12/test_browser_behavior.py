@@ -106,13 +106,13 @@ def test_browser_deeplink_escape_focus_and_route_cleanup(browser_page):
     assert "tab=" not in page.url
 
 
-def test_browser_evidence_details_are_collapsed_and_history_uses_days(browser_page):
+def test_browser_evidence_sections_are_static_and_history_uses_days(browser_page):
     page = browser_page
     page.goto(_route(page._m12_base + "/v2", "evidence"), wait_until="networkidle")
     page.get_by_text("证据摘要（5项）", exact=True).wait_for()
-    details = page.locator("details.evidence-details")
-    assert details.count() >= 5
-    assert all(not details.nth(index).get_attribute("open") for index in range(details.count()))
+    sections = page.locator("section.evidence-section")
+    assert sections.count() >= 5
+    assert page.locator("details.evidence-details").count() == 0
     page.goto(_route(page._m12_base + "/v2", "history"), wait_until="networkidle")
     page.get_by_text("历史图表（同一日期锚）", exact=True).wait_for()
     page.get_by_text("结构历史（最近20个交易日）", exact=True).wait_for()

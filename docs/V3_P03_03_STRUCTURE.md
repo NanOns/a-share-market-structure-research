@@ -38,3 +38,7 @@
 ## 下一阶段
 
 按 V3 文档下一任务为 `P03-03-summary`：只迁移 `stock_structure_summary_daily`，并单独完成导入、逐行对照、切读、停旧写和验收；本阶段未预先实现或执行该任务。
+
+## 审计补录
+
+详见 [V3 P0–P3 源码与产物内部审计](V3_P0_P3_INTERNAL_AUDIT.md)。审计关闭了 P01-03/V3 §12 静态 modal 合同与 M12 旧 `<details>` 断言之间的验收漂移；本补录不改变 structure 生产数据、迁移回执或 summary 边界。

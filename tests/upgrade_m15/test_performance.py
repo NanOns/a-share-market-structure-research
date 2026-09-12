@@ -37,10 +37,10 @@ def test_view_requests_cancel_and_reject_stale_results():
     assert "cancelHiddenViewRequests(page, sectorSubpage);" in text
 
 
-def test_assets_are_versioned_for_m15_03():
+def test_assets_are_versioned_for_m15_04():
     text = read("index.html")
     for asset in ("styles.css", "api.js", "format.js", "table.js", "modal.js", "router.js", "app.js"):
-        assert f"{asset}?v=m15-03" in text
+        assert f"{asset}?v=m15-04" in text
 
 
 def test_layout_keeps_only_intentional_internal_vertical_scrollers():

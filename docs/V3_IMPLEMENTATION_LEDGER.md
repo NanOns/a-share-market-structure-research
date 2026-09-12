@@ -187,3 +187,11 @@ P00-03 合同资产 SHA-256：
 - config/research_v3_schema.yaml：008EBCFD4405D3485BCDCD363C8432665483533B042C0364B9F992CCFC8FFADC
 - config/research_v3_reasons.yaml：2E9DF59A1FFEFE8A97C2F0E9C1CCE88F90636499671F8A8B7EEB3A754B1D24FE
 - tests/fixtures/research_v3_p00_03.json：9FE4EB4FAF1E113B09EC279C83FAD604413121FC83F360EB003D81CCE49A3CC8
+
+## C20-01 追加复验记录（2026-09-12）
+
+| issue_id | old_clause | v3_clause | decision | affected_task | new_contract_id | evidence | status |
+|---|---|---|---|---|---|---|---|
+| C20-01 | P00-03 仅用日期正则、timestamp 包含 `T`/空格、number 类型判断 | date 必须是真实日历日期；timestamp 必须是带时区的 ISO8601 `T` 格式；number/scalar 数值必须有限 | 采用 V3 条款；不修改配置参数哈希，不批量改写旧数据库时间列 | P00-03 补项 | `research-v3-schema-v1.0` / runtime validation v1 | `src/workbench_service/research_v3_contracts.py`；`tests/upgrade_v3/test_p00_03_contracts.py`；非法日期、无时区/非法 timestamp、NaN/Infinity 反例及合法闰日/+08:00 正例 | PASS |
+
+本补项只关闭 C20-01；P00-03 在最新主文档中涉及的其他复核项不因本次校验器修复而自动放行。下一项仍按台账执行 P04-02-INTEGRATION，未提前进入 P04-03。

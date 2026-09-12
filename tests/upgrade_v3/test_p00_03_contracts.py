@@ -11,6 +11,36 @@ from workbench_service.research_v3_contracts import (
 )
 
 
+def _sector_card(**overrides):
+    value = {
+        "sector_id": "sector-1",
+        "name": "测试板块",
+        "type": "CONCEPT",
+        "track": "CURRENT",
+        "branch": None,
+        "lifecycle": "CONFIRMED",
+        "signal_date": "2026-09-10",
+        "m1": None,
+        "b1": None,
+        "rel1": None,
+        "amount_sum": None,
+        "amount_coverage": None,
+        "amount_A": None,
+        "quote_coverage": None,
+        "member_count": 0,
+        "today_leader_count": 0,
+        "early_watch_count": 0,
+        "reasons": [],
+        "waiting_for": [],
+        "invalid_if": [],
+        "preview_members": [],
+        "quote_as_of": None,
+        "local_as_of": "2026-09-10",
+    }
+    value.update(overrides)
+    return value
+
+
 def test_p00_03_contract_bundle_is_frozen_and_single_sourced():
     bundle = load_contract_bundle()
     config = bundle["config"]
@@ -81,3 +111,31 @@ def test_p00_03_dto_rejects_null_nonnullable_and_reason_label_drift():
     with pytest.raises(ContractValidationError, match="REASON_LABEL_MISMATCH"):
         validate_reason({"code": "BREADTH_IMPROVING", "label": "错误标签", "observed": 0.12, "operator": ">=", "threshold": 0.1, "unit": "RATIO", "as_of": "2026-09-10"}, bundle)
     assert validate_reason({"code": "BREADTH_IMPROVING", "label": "上涨宽度改善", "observed": 0.12, "operator": ">=", "threshold": 0.1, "unit": "RATIO", "as_of": "2026-09-10"}, bundle)["code"] == "BREADTH_IMPROVING"
+
+
+def test_c20_01_date_requires_real_calendar_day_and_accepts_leap_day():
+    bundle = load_contract_bundle()
+    valid = {"code": "BREADTH_IMPROVING", "label": "上涨宽度改善", "observed": 0.12, "operator": ">=", "threshold": 0.1, "unit": "RATIO", "as_of": "2024-02-29"}
+    assert validate_object(valid, "Reason", bundle)["as_of"] == "2024-02-29"
+    for invalid in ("2026-02-29", "2026-99-99", "2026-2-9"):
+        with pytest.raises(ContractValidationError, match="TYPE_INVALID"):
+            validate_object({**valid, "as_of": invalid}, "Reason", bundle)
+
+
+def test_c20_01_timestamp_requires_iso8601_timezone():
+    bundle = load_contract_bundle()
+    assert validate_object(_sector_card(quote_as_of="2026-09-10T12:30:00+08:00"), "SectorCard", bundle)["quote_as_of"] == "2026-09-10T12:30:00+08:00"
+    for invalid in ("NOT A TIMESTAMP", "2026-09-10 12:30:00+08:00", "2026-09-10T12:30:00", "2026-99-99T12:30:00+08:00"):
+        with pytest.raises(ContractValidationError, match="TYPE_INVALID"):
+            validate_object(_sector_card(quote_as_of=invalid), "SectorCard", bundle)
+
+
+def test_c20_01_numbers_and_scalar_numbers_must_be_finite():
+    bundle = load_contract_bundle()
+    for invalid in (float("nan"), float("inf"), float("-inf")):
+        with pytest.raises(ContractValidationError, match="TYPE_INVALID"):
+            validate_object(_sector_card(m1=invalid), "SectorCard", bundle)
+        with pytest.raises(ContractValidationError, match="TYPE_INVALID"):
+            validate_object({"code": "BREADTH_IMPROVING", "label": "上涨宽度改善", "observed": invalid, "operator": ">=", "threshold": 0.1, "unit": "RATIO", "as_of": "2026-09-10"}, "Reason", bundle)
+    assert validate_object(_sector_card(m1=1.25), "SectorCard", bundle)["m1"] == 1.25
+    assert validate_object(_sector_card(m1=10**400), "SectorCard", bundle)["m1"] == 10**400

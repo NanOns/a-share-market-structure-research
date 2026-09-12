@@ -10,7 +10,9 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import math
 import re
+from datetime import date, datetime
 from pathlib import Path
 from typing import Any
 
@@ -59,15 +61,46 @@ def parameter_hash(config: dict[str, Any]) -> str:
     return canonical_hash(payload)
 
 
+def _valid_date(value: Any) -> bool:
+    if not isinstance(value, str) or not _DATE_RE.fullmatch(value):
+        return False
+    try:
+        date.fromisoformat(value)
+    except ValueError:
+        return False
+    return True
+
+
+def _valid_timestamp(value: Any) -> bool:
+    if not isinstance(value, str) or len(value) < 11 or value[10] != "T":
+        return False
+    try:
+        parsed = datetime.fromisoformat(value)
+    except ValueError:
+        return False
+    return parsed.tzinfo is not None and parsed.utcoffset() is not None
+
+
+def _finite_number(value: Any) -> bool:
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        return False
+    if isinstance(value, int):
+        return True
+    try:
+        return math.isfinite(value)
+    except (OverflowError, TypeError, ValueError):
+        return False
+
+
 def _type_matches(value: Any, type_name: str, schema: dict[str, Any]) -> bool:
     if type_name == "string":
         return isinstance(value, str)
     if type_name == "date":
-        return isinstance(value, str) and bool(_DATE_RE.fullmatch(value))
+        return _valid_date(value)
     if type_name == "timestamp":
-        return isinstance(value, str) and "T" in value or isinstance(value, str) and " " in value
+        return _valid_timestamp(value)
     if type_name == "number":
-        return isinstance(value, (int, float)) and not isinstance(value, bool)
+        return _finite_number(value)
     if type_name == "integer":
         return isinstance(value, int) and not isinstance(value, bool)
     if type_name == "boolean":
@@ -75,7 +108,7 @@ def _type_matches(value: Any, type_name: str, schema: dict[str, Any]) -> bool:
     if type_name == "object":
         return isinstance(value, dict)
     if type_name == "scalar":
-        return value is None or isinstance(value, (str, int, float, bool))
+        return value is None or isinstance(value, (str, bool)) or _finite_number(value)
     if type_name.startswith("enum:"):
         enum_name = type_name.split(":", 1)[1]
         return value in schema["enums"].get(enum_name, [])

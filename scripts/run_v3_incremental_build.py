@@ -88,8 +88,11 @@ def main() -> int:
 
         def input_provider(task):
             frame = source
+            security_ids = task.get("security_ids")
             security_id = task.get("security_id")
-            if security_id is not None and "security_id" in frame.columns:
+            if security_ids is not None and "security_id" in frame.columns:
+                frame = frame[frame["security_id"].astype(str).isin({str(value) for value in security_ids})]
+            elif security_id is not None and "security_id" in frame.columns:
                 frame = frame[frame["security_id"].astype(str).eq(str(security_id))]
             if "date" in frame.columns:
                 frame = frame[pd.to_datetime(frame["date"]).dt.date.astype(str) <= str(task["trade_date"])]

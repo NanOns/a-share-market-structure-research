@@ -195,6 +195,7 @@ class ReusedBuildObject:
     task_key: str
     source_slice_id: str
     covered_task_keys: tuple[str, ...] = ()
+    source_snapshot_id: str | None = None
 
     def keys(self) -> tuple[str, ...]:
         return tuple(dict.fromkeys((self.task_key, *self.covered_task_keys)))
@@ -285,6 +286,11 @@ class SnapshotBinding:
     manifest_hash: str
     universe_contract: str = "CN_A_LISTED_V2"
     expected_task_keys: tuple[str, ...] = ()
+    # Compatibility entries copied from the explicitly selected source
+    # snapshot.  They are outside the V3 target plan, so they never satisfy
+    # the target completeness gate; they only keep legacy readers available
+    # while V3 domains are activated.
+    preserved_entries: tuple[tuple[str, str, str], ...] = ()
 
     def validate(self) -> None:
         if not self.snapshot_id or not self.publication_id:
@@ -419,7 +425,18 @@ class IncrementalBuildCoordinator:
             raise IncrementalBuildError(f"REUSE_SOURCE_SCOPE_EVIDENCE_INVALID:{reference.source_slice_id}") from exc
         frame_scope = basis.get("frame_scope")
         if not isinstance(frame_scope, Mapping):
-            raise IncrementalBuildError(f"REUSE_SOURCE_SCOPE_EVIDENCE_MISSING:{reference.source_slice_id}")
+            if not reference.source_snapshot_id:
+                raise IncrementalBuildError(f"REUSE_SOURCE_SCOPE_EVIDENCE_MISSING:{reference.source_slice_id}")
+            bound = connection.execute(
+                """
+                SELECT 1 FROM analysis_snapshot_entries
+                 WHERE snapshot_id=? AND domain=? AND trade_date=? AND slice_id=?
+                """,
+                [reference.source_snapshot_id, expected_domain, date.fromisoformat(expected_date), reference.source_slice_id],
+            ).fetchone()
+            if not bound:
+                raise IncrementalBuildError(f"REUSE_SOURCE_SNAPSHOT_BINDING_MISSING:{reference.source_slice_id}")
+            return int(source[3]), str(source[4]), reference.source_slice_id
         expected_security = {str(task["security_id"]) for task in covered_tasks if task.get("security_id") is not None}
         if expected_security and set(map(str, frame_scope.get("security_id", []))) != expected_security:
             raise IncrementalBuildError(f"REUSE_SOURCE_SECURITY_SCOPE_MISMATCH:{reference.task_key}")
@@ -475,6 +492,12 @@ class IncrementalBuildCoordinator:
             if previous_slice is not None and previous_slice != slice_id:
                 raise IncrementalBuildError("SNAPSHOT_DOMAIN_DATE_SLICE_CONFLICT")
             domain_dates[identity] = slice_id
+        for domain, trade_date, slice_id in binding.preserved_entries:
+            identity = (str(domain), _iso(trade_date))
+            previous_slice = domain_dates.get(identity)
+            if previous_slice is not None and previous_slice != str(slice_id):
+                raise IncrementalBuildError("SNAPSHOT_PRESERVED_ENTRY_CONFLICT")
+            domain_dates[identity] = str(slice_id)
         if not connection.execute("SELECT 1 FROM publications WHERE publication_id=?", [binding.publication_id]).fetchone():
             raise IncrementalBuildError("PUBLICATION_NOT_FOUND")
         connection.execute(
@@ -734,6 +757,7 @@ class IncrementalBuildCoordinator:
         if len(reuse_keys) != sum(len(reference.keys()) for reference in reuse_list):
             raise IncrementalBuildError("REUSE_TASK_DUPLICATE")
         objects: list[PreparedBuildObject] = []
+        calculate_groups: dict[tuple[str, str], list[tuple[str, Mapping[str, Any]]]] = {}
         for key, task in tasks.items():
             executor = self.executor_matrix.get(str(task.get("domain")))
             if executor is None:
@@ -744,7 +768,21 @@ class IncrementalBuildCoordinator:
                 raise IncrementalBuildError(f"EXECUTOR_UNSUPPORTED:{task.get('domain')}")
             if executor.mode == "REUSE":
                 raise IncrementalBuildError(f"REUSE_SOURCE_REQUIRED:{key}")
-            loaded = input_provider(task)
+            calculate_groups.setdefault((str(task.get("domain")), _iso(task["trade_date"])), []).append((key, task))
+        for (_domain, _trade_date), group in sorted(calculate_groups.items()):
+            key, task = group[0]
+            executor = self.executor_matrix[str(task.get("domain"))]
+            batch_task_keys = [item_key for item_key, _item in group]
+            batch_task = dict(task)
+            batch_task["batch_task_keys"] = batch_task_keys
+            batch_security_ids = sorted({str(item.get("security_id")) for _item_key, item in group if item.get("security_id") is not None})
+            if batch_security_ids:
+                batch_task["security_ids"] = batch_security_ids
+            # Always pass the representative batch task.  The provider is the
+            # entrypoint's source-of-truth boundary and must see the complete
+            # security set when several same-domain tasks are calculated in
+            # one write object.
+            loaded = input_provider(batch_task)
             basis: Mapping[str, Any] = {}
             frame = loaded
             if isinstance(loaded, Mapping) and "frame" in loaded:
@@ -765,6 +803,7 @@ class IncrementalBuildCoordinator:
                         "executor_contract_id": executor.contract_id,
                     },
                     primary_key=executor.primary_key,
+                    covered_task_keys=batch_task_keys[1:],
                 )
             )
         return self.execute(plan, objects, reused=reuse_list, snapshot=snapshot)

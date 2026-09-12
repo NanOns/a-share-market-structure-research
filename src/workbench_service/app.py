@@ -1624,7 +1624,19 @@ def make_handler(root,db):
   preview=subprocess.run([sys.executable,str(Path(root)/'scripts/build_m8_m9_preview.py')],cwd=root,capture_output=True,text=True,timeout=3600)
   if preview.returncode:
    task.update(status='FAILED',progress={'status':'ANALYSIS_BINDING_FAILED','error':preview.stderr[-1000:] or preview.stdout[-1000:]});return
-  task.update(phase='READY',status='SUCCESS',progress={'status':'READY','publication_id':published.get('publication_id')})
+  task.update(phase='V3_ANALYSIS_BINDING',progress={'status':'V3_ANALYSIS_BINDING'})
+  try:
+   from workbench_service.v3_daily_entry import run_v3_daily_entry
+   v3_report=run_v3_daily_entry(
+    root,
+    db,
+    publication_id=str(published.get('publication_id') or ''),
+    source_path=Path(root)/'data/normalized/adjusted_daily.parquet',
+    membership_path=Path(root)/'data/sectors/sector_membership_daily.parquet',
+   )
+  except Exception as exc:
+   task.update(status='FAILED',progress={'status':'V3_ANALYSIS_BINDING_FAILED','error':str(exc)});return
+  task.update(v3_report=v3_report,phase='READY',status='SUCCESS',progress={'status':'READY','publication_id':published.get('publication_id'),'v3_snapshot_id':v3_report.get('snapshot_binding',{}).get('snapshot_id') if isinstance(v3_report.get('snapshot_binding'),dict) else None})
  def legacy_workbench(publication_id):
   trade_date,_=api._pub(publication_id)
   return resolve_workbench_path(root,trade_date,publication_id).read_bytes()

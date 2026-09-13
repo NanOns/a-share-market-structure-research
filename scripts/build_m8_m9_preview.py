@@ -7,9 +7,12 @@ analysis snapshot to the current publication without replacing its head.
 
 from __future__ import annotations
 
+import argparse
 import hashlib
 import json
+import os
 import sys
+import tempfile
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
@@ -520,6 +523,8 @@ def insert_preview(
     membership: pd.DataFrame,
     hierarchy_hashes: dict[str, str],
     membership_snapshot_id: str,
+    *,
+    preserve_prior_entries: bool = False,
 ) -> dict[str, object]:
     cutoff = max(dates)
     snapshot_seed = json.dumps(
@@ -561,6 +566,32 @@ def insert_preview(
     try:
         existing = con.execute("select status from analysis_snapshots where snapshot_id=?", [snapshot_id]).fetchone()
         if existing:
+            if preserve_prior_entries:
+                publication = con.execute(
+                    "select h.publication_id from publication_heads h join publications p using(publication_id) where p.status='SUCCESS' order by h.trade_date desc limit 1"
+                ).fetchone()
+                if not publication:
+                    raise RuntimeError("CURRENT_PUBLICATION_HEAD_MISSING")
+                publication_id = publication[0]
+                now = datetime.now(timezone.utc)
+                con.execute("begin transaction")
+                con.execute(
+                    "delete from publication_analysis_snapshots where publication_id=? and domain=?",
+                    [publication_id, "LOCAL_RECONSTRUCTED"],
+                )
+                con.execute(
+                    "insert into publication_analysis_snapshots values (?,?,?,?)",
+                    [publication_id, "LOCAL_RECONSTRUCTED", snapshot_id, now],
+                )
+                con.execute("commit")
+                return {
+                    "status": "ALREADY_BUILT",
+                    "snapshot_id": snapshot_id,
+                    "publication_id": publication_id,
+                    "binding_reused": True,
+                    "backup_id": None,
+                    "backup_policy": "MANUAL_ONLY",
+                }
             return {"status": "ALREADY_BUILT", "snapshot_id": snapshot_id, "backup_id": None, "backup_policy": "MANUAL_ONLY"}
         publication = con.execute(
             "select h.publication_id from publication_heads h join publications p using(publication_id) where p.status='SUCCESS' order by h.trade_date desc limit 1"
@@ -568,6 +599,11 @@ def insert_preview(
         if not publication:
             raise RuntimeError("CURRENT_PUBLICATION_HEAD_MISSING")
         publication_id = publication[0]
+        prior_binding = con.execute(
+            "select snapshot_id from publication_analysis_snapshots where publication_id=? and domain='LOCAL_RECONSTRUCTED'",
+            [publication_id],
+        ).fetchone()
+        prior_snapshot_id = str(prior_binding[0]) if prior_binding else None
         now = datetime.now(timezone.utc)
         con.execute("begin transaction")
         con.execute(
@@ -648,6 +684,26 @@ def insert_preview(
                 )
                 con.execute("insert into analysis_snapshot_entries values (?,?,?,?)", [snapshot_id, domain, trade_date, slice_id])
 
+        preserved_entry_count = 0
+        if preserve_prior_entries and prior_snapshot_id and prior_snapshot_id != snapshot_id:
+            replaced = {
+                (domain, trade_date)
+                for domain, domain_dates in date_sets.items()
+                for trade_date in domain_dates
+            }
+            prior_entries = con.execute(
+                "select domain,trade_date,slice_id from analysis_snapshot_entries where snapshot_id=? order by domain,trade_date,slice_id",
+                [prior_snapshot_id],
+            ).fetchall()
+            for domain, trade_date, slice_id in prior_entries:
+                if (str(domain), trade_date) in replaced:
+                    continue
+                con.execute(
+                    "insert into analysis_snapshot_entries values (?,?,?,?)",
+                    [snapshot_id, domain, trade_date, slice_id],
+                )
+                preserved_entry_count += 1
+
         dependencies: dict[str, tuple[str, ...]] = {
             "strength": ("technical",),
             "sector_base": ("technical",),
@@ -660,7 +716,7 @@ def insert_preview(
         }
         for domain, input_domains in dependencies.items():
             records = []
-            for trade_date in sorted(date_sets[domain]):
+            for trade_date in sorted(date_sets.get(domain, set())):
                 output_slice_id = slice_ids[domain][trade_date]
                 for input_domain in input_domains:
                     if trade_date in date_sets[input_domain]:
@@ -696,6 +752,8 @@ def insert_preview(
             "hierarchy_node_count": hierarchy_count,
             "semantic_row_count": semantic_count,
             "counts": counts,
+            "preserved_entry_count": preserved_entry_count,
+            "source_snapshot_id": prior_snapshot_id,
             "backup_id": None,
             "backup_policy": "MANUAL_ONLY",
             "publication_heads_changed": False,
@@ -711,11 +769,70 @@ def insert_preview(
         con.close()
 
 
+def _atomic_json(path: Path, payload: dict[str, object]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    descriptor, temporary_name = tempfile.mkstemp(prefix=f".{path.name}.", suffix=".tmp", dir=path.parent)
+    os.close(descriptor)
+    temporary = Path(temporary_name)
+    try:
+        temporary.write_text(json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True, default=str) + "\n", encoding="utf-8")
+        os.replace(temporary, path)
+    finally:
+        temporary.unlink(missing_ok=True)
+
+
 def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--incremental-current",
+        action="store_true",
+        help="calculate/write only the current trade date and preserve prior snapshot entries",
+    )
+    args = parser.parse_args()
     raw, membership, dates, query_start, hashes, hierarchy_hashes = load_inputs()
+    if args.incremental_current:
+        cutoff = max(dates)
+        dates = [cutoff]
+        membership = membership[membership["trade_date"].eq(cutoff)].copy()
+        if membership.empty:
+            raise RuntimeError(f"CURRENT_MEMBERSHIP_EMPTY:{cutoff}")
     membership_snapshot_id = "reconstructed-membership-" + hashes["membership"][:24]
     frames = build_frames(raw, membership, dates, membership_snapshot_id=membership_snapshot_id)
-    result = insert_preview(frames, dates, query_start, hashes, membership, hierarchy_hashes, membership_snapshot_id)
+    result = insert_preview(
+        frames,
+        dates,
+        query_start,
+        hashes,
+        membership,
+        hierarchy_hashes,
+        membership_snapshot_id,
+        preserve_prior_entries=args.incremental_current,
+    )
+    if args.incremental_current:
+        cutoff_text = str(max(dates))
+        plan = {
+            "contract_version": "v3-daily-compatibility-plan-v1.0",
+            "mode": "INCREMENTAL_CURRENT",
+            "cutoff_date": cutoff_text,
+            "source_snapshot_id": result.get("source_snapshot_id"),
+            "tasks": [
+                {"domain": domain, "trade_date": str(trade_date), "row_count": int(len(daily_frame))}
+                for domain, frame in sorted(frames.items())
+                for trade_date, daily_frame in split_daily_frames(frame).items()
+            ],
+            "full_window_rebuild": False,
+        }
+        artifact_root = ROOT / "reports/v3/daily"
+        plan_path = artifact_root / f"{cutoff_text}.plan.json"
+        report_path = artifact_root / f"{cutoff_text}.report.json"
+        _atomic_json(plan_path, plan)
+        result.update(
+            entrypoint="V3_DAILY_INCREMENTAL_COMPATIBILITY",
+            plan_artifact=str(plan_path),
+            report_artifact=str(report_path),
+            full_window_rebuild=False,
+        )
+        _atomic_json(report_path, result)
     print(json.dumps(result, ensure_ascii=False, indent=2, default=str))
 
 

@@ -2,7 +2,7 @@
 
 PASS at 20260910. The scanner consumed only 541 Phase 2 sector rows and one market vector row. Phase 2 SHA-256, generation and cutoff were validated before evaluation and immediately before publication.
 
-Published 499 valid sectors. CURRENT_STRENGTH=69, STABILIZATION=6, REACCELERATION=6. Tags: BREADTH_EXPANSION=23, HIGH_CONCENTRATION=204, LOW_COVERAGE=0. Overlap=0. Counts do not affect PASS and no threshold was relaxed.
+Published 502 valid sectors. CURRENT_STRENGTH=74, STABILIZATION=7, REACCELERATION=5. Tags: BREADTH_EXPANSION=29, HIGH_CONCENTRATION=210, LOW_COVERAGE=0. Overlap=0. Counts do not affect PASS and no threshold was relaxed.
 
 All hits use fixed hard gates and Boolean conditions. RS5/RS60 percentiles were derived within INDUSTRY/THEME/STYLE separately; Phase 2 RS20 percentile was independently reproduced. Invalid sectors and six excluded themes remain in the audit but are absent from the main 503-row scanner publication. NULL is never zero. No score, optimizer, market-state label, stock candidate, external data or index OHLC was introduced.
 

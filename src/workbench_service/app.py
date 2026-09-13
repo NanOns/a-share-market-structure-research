@@ -28,11 +28,18 @@ from workbench_service.online_hot_rank import build_hot_rank_direct_response
 from workbench_online.eastmoney_quotes import fetch_eastmoney_quotes
 from workbench_service.catalog import API_CONTRACT, field_catalog
 from workbench_service.attribute_library import BUCKET_LABELS, build_source_metadata, membership_item, sector_attribute_item
-from workbench_service.intersection import CONTRACT_ID as INTERSECTION_CONTRACT_ID, normalize_request, passes_filters, safe_value, sort_items
+from workbench_service.intersection import CONTRACT_ID as INTERSECTION_CONTRACT_ID, P10_CONTRACT_ID as P10_INTERSECTION_CONTRACT_ID, normalize_request, passes_filters, safe_value, sort_items
 from workbench_service.association import CONTRACT_ID as ASSOCIATION_CONTRACT_ID
 from workbench_service.window_planner import MAX_OUTPUT_DAYS, load_dependencies, plan_window
 from workbench_service.history_jobs import HistoryJobError, HistoryJobService
 from workbench_service.analysis_activation import AnalysisActivationError, AnalysisActivationService
+from workbench_service.research_context import ResearchContextError, ResearchContextReader
+from workbench_service.research_queries import ResearchQueryError, ResearchQueries
+from workbench_service.research_builder import build_latest_research_run
+from workbench_service.legacy_feature_matrix import build_legacy_matrix
+from workbench_service.online_events import OnlineEventQueries
+from workbench_service.p09_context import load_mapping, select_mappings, intersect_members
+from workbench_online.p09_products import P09OnlineProducts, P09ProductError
 from workbench_service.source_freezer import SourceFreezeError, validate_source_manifest
 from workbench_service.membership_resolver import VersionedMembershipResolver
 from workbench_analysis.chart import ChartCache, build_chart_points, chart_cache_key
@@ -68,6 +75,29 @@ def _json_safe(value):
 
 def _sector_code(sector_id):
  return str(sector_id).split(':',1)[-1]
+
+
+def _p09_sector_online_context(root, research, p09, sector_id, params):
+ topics=p09.topics(trade_date=params.get('trade_date'))
+ context_id=params.get('context_id')
+ local=research.sector_detail(context_id,sector_id) if context_id else {'status':'NOT_REQUESTED','sector_id':sector_id,'items':[]}
+ mapping=load_mapping(Path(root))
+ hashes=topics.get('source_hashes') or {}
+ if mapping.get('source_ext03_sha256') != hashes.get('EXT03') or mapping.get('source_ext04_sha256') != hashes.get('EXT04'):
+  mapping={**mapping,'entries':[],'status':'SOURCE_HASH_MISMATCH'}
+ publication_id=(local.get('context') or {}).get('publication_id')
+ mapped=select_mappings(mapping,publication_id=publication_id or '',sector_id=sector_id,topics=topics.get('items',[]),source_date=params.get('trade_date'),local_run_id=(local.get('context') or {}).get('run_id'),local_date=(local.get('context') or {}).get('local_date'))
+ local_ids=set();complete=False
+ if mapped and context_id:
+  complete=True
+  for page in range(1,21):
+   members=research.sector_members(context_id,sector_id,role='ALL_MEMBERS',page=page,page_size=50)
+   local_ids.update(str(item.get('security_id')) for item in members.get('items',[]) if item.get('security_id'))
+   if not members.get('has_more'): break
+  else: complete=False
+ intersection=intersect_members(mapped,local_ids,local_complete=complete)
+ previews=[{'source_topic_key':pair['mapping']['source_topic_key'],'relation':pair['mapping']['relation'],'evidence_id':pair['mapping']['evidence_id'],'topic_name':pair['topic'].get('topic_name'),'source_member_count':pair['topic'].get('unique_member_count')} for pair in mapped]
+ return {'api_contract':'v3-p09-sector-online-context-v1.2','status':'AVAILABLE' if topics['status']=='AVAILABLE' and intersection['status']=='AVAILABLE' else 'DEGRADED' if topics['status']!='UNAVAILABLE' else 'UNAVAILABLE','sector_id':sector_id,'event_context':{'status':topics['status'],'mapping_status':intersection['status'],'mapped_topics':previews,'intersection':intersection,'available_source_topics':[{'source_topic_id':item.get('source_topic_id'),'topic_name':item.get('topic_name')} for item in topics.get('items',[])],'reason':mapping.get('status') if mapping.get('status')=='SOURCE_HASH_MISMATCH' else intersection['reason'],'source_trade_date':params.get('trade_date')},'local_context':local,'quote_context':{'status':'UNAVAILABLE','source_id':'EXT11','reason':'V3 §22 target chain retires EXT11; no unsupported quote URL is substituted.'},'mapping_policy':'EXACT_OR_RELATED_VERSIONED_MAPPING; RELATED_NOT_IN_LOCAL_WIDTH_DENOMINATOR','storage':topics.get('storage')}
 
 def _mainline_group(items, hierarchy_nodes=None):
  # Mainline evidence uses the immutable hierarchy version bound to the
@@ -156,7 +186,7 @@ def resolve_workbench_path(root,trade_date,publication_id):
  return matches[0]
 
 class Api:
- def __init__(self,db,root=None): self.db=str(Path(db).resolve());self._root=Path(root).resolve() if root else Path(__file__).resolve().parents[2];self._display_scope=workbench_display_scope(self._root);self._db_lock=threading.RLock();self._request_state=threading.local();self._quote_cache={};self._quote_full_cache=set();self._quote_lock=threading.Lock();self._quote_service_cache={};self._source_cache={};self._chart_cache=ChartCache();self._association_cache={};self._association_lock=threading.Lock();self._hierarchy_cache={};self._hierarchy_lock=threading.Lock();self._analysis_quality_cache={};self._insight_cache={};self._window_dependencies=load_dependencies(self._root);self._window_sessions_cache=None
+ def __init__(self,db,root=None): self.db=str(Path(db).resolve());self._root=Path(root).resolve() if root else Path(__file__).resolve().parents[2];self._display_scope=workbench_display_scope(self._root);self._db_lock=threading.RLock();self._request_state=threading.local();self._quote_cache={};self._quote_full_cache=set();self._quote_lock=threading.Lock();self._quote_service_cache={};self._source_cache={};self._chart_cache=ChartCache();self._association_cache={};self._association_lock=threading.Lock();self._hierarchy_cache={};self._hierarchy_lock=threading.Lock();self._analysis_quality_cache={};self._insight_cache={};self._window_dependencies=load_dependencies(self._root);self._window_sessions_cache=None;self._research_contexts=ResearchContextReader(lambda: self._con())
  @contextmanager
  def request_scope(self):
   """Reuse one serialized read connection for one HTTP request only."""
@@ -912,6 +942,40 @@ class Api:
   result={'publication_id':p,'security_id':security_id,'contract_id':'M11_ATTRIBUTE_LIBRARY_V1_0','snapshot_id':snapshot_id,'as_of_trade_date':as_of,'page':page,'page_size':size,'total':total,'source':source,'items':page_items,'groups':groups,'display_scope':self._display_scope}
   result.update(self._analysis_meta(context,{'security_id':security_id,'page':page,'page_size':size,'bucket':bucket,'basis':basis,'trade_date':trade_date},as_of,{'from':as_of,'to':as_of,'dates':[as_of]}))
   return result
+ def _resolve_intersection_sector_names(self,connection,slice_id,trade_date,names,field):
+  resolved=[];labels={}
+  for name in names:
+   rows=connection.execute('select sector_id,sector_name from sector_base_daily where slice_id=? and trade_date=? and lower(trim(sector_name))=lower(trim(?)) order by sector_id',[slice_id,trade_date,name]).fetchall()
+   if not rows: raise ValueError(field+'_NOT_FOUND')
+   if len(rows)>1: raise ValueError(field+'_AMBIGUOUS')
+   sector_id,sector_name=str(rows[0][0]),str(rows[0][1] or name)
+   resolved.append(sector_id);labels[sector_id]=sector_name
+  return resolved,labels
+
+ def _filter_intersection_research_roles(self,connection,candidates,request,publication_id,trade_date):
+  context_id=request.get('research_context_id');member_role=request.get('member_role')
+  if not context_id and not member_role:
+   return candidates,None,None
+  if not context_id:
+   raise ValueError('RESEARCH_CONTEXT_REQUIRED')
+  try:
+   context=self._research_contexts.resolve_id(context_id,connection)
+  except ResearchContextError as exc:
+   raise ValueError(str(exc)) from exc
+  if context['publication_id']!=str(publication_id): raise ValueError('CONTEXT_PUBLICATION_MISMATCH')
+  if str(context['local_date'])!=str(trade_date): raise ValueError('CONTEXT_TRADE_DATE_MISMATCH')
+  role=member_role or 'ALL_MEMBERS'
+  if role=='ALL_MEMBERS':
+   return candidates,context,role
+  include_ids=request['include_sector_ids']
+  placeholders=','.join('?' for _ in include_ids)
+  try:
+   role_rows=connection.execute('select distinct security_id from research_sector_member_roles where run_id=? and role=? and sector_id in ('+placeholders+')',[context['run_id'],role,*include_ids]).fetchall()
+  except duckdb.CatalogException:
+   role_rows=[]
+  allowed={str(row[0]) for row in role_rows}
+  return [item for item in candidates if item[0] in allowed],context,role
+
  def sector_intersection_query(self,body):
   request=normalize_request(body)
   p=request['publication_id'];snapshot_id,base,member,latest_date,source=self._attribute_snapshot(p,request['basis'],request['trade_date'])
@@ -919,6 +983,19 @@ class Api:
    available_dates=[str(row[0]) for row in c.execute("select distinct trade_date from analysis_snapshot_entries where snapshot_id=? and domain='member_state' order by trade_date",[snapshot_id]).fetchall()]
    trade_date=request['trade_date'] or (available_dates[-1] if available_dates else str(latest_date))
    if trade_date not in available_dates: raise ValueError('TRADE_DATE_UNAVAILABLE')
+   include_name_ids,include_name_labels=self._resolve_intersection_sector_names(c,base['slice_id'],trade_date,request.get('include_sector_names',[]),'INCLUDE_SECTOR_NAME')
+   exclude_name_ids,exclude_name_labels=self._resolve_intersection_sector_names(c,base['slice_id'],trade_date,request.get('exclude_sector_names',[]),'EXCLUDE_SECTOR_NAME')
+   def merge_ids(values):
+    result=[];seen=set()
+    for value in values:
+     value=str(value)
+     if value not in seen: seen.add(value);result.append(value)
+    return result
+   request['include_sector_ids']=merge_ids(request['include_sector_ids']+include_name_ids)
+   request['exclude_sector_ids']=merge_ids(request['exclude_sector_ids']+exclude_name_ids)
+   if len(request['include_sector_ids'])<2: raise ValueError('INCLUDE_SECTOR_IDS_MIN_2')
+   if len(request['include_sector_ids'])>4: raise ValueError('INCLUDE_SECTOR_IDS_MAX_4')
+   if len(request['exclude_sector_ids'])>20: raise ValueError('EXCLUDE_SECTOR_IDS_MAX_20')
    sector_ids=request['include_sector_ids']+request['exclude_sector_ids'];placeholders=','.join('?' for _ in sector_ids)
    rows=c.execute('''select m.security_id,m.sector_id,m.member_rank,m.rank_valid_count,b.sector_name,b.sector_type,b.sector_role,b.bucket,b.sector_valid,b.total_member_count,b.factor_valid_count,b.coverage
        from member_state_result_daily m join sector_base_daily b on b.slice_id=? and b.trade_date=? and b.sector_id=m.sector_id
@@ -934,6 +1011,7 @@ class Api:
    for security_id,entry in grouped.items():
     matched=entry['include'];qualifies=len(matched)==len(include_set) if request['operator']=='INTERSECTION' else bool(matched)
     if qualifies and not (entry['all_sector_ids'] & exclude_set): candidates.append((security_id,entry))
+   candidates,research_context,member_role=self._filter_intersection_research_roles(c,candidates,request,p,trade_date)
    candidate_ids=[item[0] for item in candidates];domain_slices={}
    for domain in ('technical','strength','summary','high'):
     found=c.execute("select slice_id from analysis_snapshot_entries where snapshot_id=? and domain=? and trade_date=?",[snapshot_id,domain,trade_date]).fetchone();domain_slices[domain]=found[0] if found else None
@@ -967,6 +1045,9 @@ class Api:
   output=sort_items(output,request['sort']);total=len(output);start=(request['page']-1)*request['page_size'];page_items=[safe_value(item) for item in output[start:start+request['page_size']]];source=dict(source);source['filter_slice_ids']=domain_slices
   context=self._analysis_context(p,request['basis'])
   result={'publication_id':p,'contract_id':INTERSECTION_CONTRACT_ID,'snapshot_id':snapshot_id,'trade_date':trade_date,'operator':request['operator'],'include_sector_ids':request['include_sector_ids'],'exclude_sector_ids':request['exclude_sector_ids'],'filters':request['filters'],'sort':request['sort'],'page':request['page'],'page_size':request['page_size'],'candidate_total_before_filters':len(candidates),'total':total,'source':source,'items':page_items,'display_scope':self._display_scope}
+  if request.get('include_sector_names') or request.get('exclude_sector_names') or request.get('research_context_id') or request.get('member_role'):
+   result.update({'p10_contract_id':P10_INTERSECTION_CONTRACT_ID,'include_sector_names':request.get('include_sector_names',[]),'exclude_sector_names':request.get('exclude_sector_names',[]),'resolved_sector_selections':{'include':[{'sector_id':sector_id,'sector_name':include_name_labels.get(sector_id)} for sector_id in request['include_sector_ids']],'exclude':[{'sector_id':sector_id,'sector_name':exclude_name_labels.get(sector_id)} for sector_id in request['exclude_sector_ids']]},'research_context_id':request.get('research_context_id'),'member_role':member_role or 'ALL_MEMBERS'})
+   if research_context: result['research_context']={'context_id':research_context['context_id'],'run_id':research_context['run_id'],'local_date':research_context['local_date']}
   result.update(self._analysis_meta(context,request,trade_date,{'from':trade_date,'to':trade_date,'dates':[trade_date]}))
   return result
  def sector_associations(self,p,security_id,days=1,include_rejected=False,page=1,size=50,basis='AUTO',trade_date=None):
@@ -1597,7 +1678,13 @@ class Api:
    return {'publication_id':p,'page':page,'page_size':size,'total':total,'sector_member_count':sector_member_count,'sector_member_rank_basis':'stock_rs20_pct_desc_then_ret20_desc_then_security_id','items':items}
 
 def make_handler(root,db):
- api=Api(db,root=root); history=HistoryJobService(root,db); history.recover_interrupted(background=True); activation=AnalysisActivationService(root,db); operations=OperationsConfig(root,db); storage=StorageGovernance(root,db); backups=BackupService(root,db); maintenance=MaintenanceService(root,db); static=Path(root)/'src/workbench_service/static';csrf=secrets.token_urlsafe(24);publishers={};daily_jobs={};daily_jobs_lock=threading.Lock()
+ api=Api(db,root=root); research=ResearchQueries(lambda: api._con(),root=root); events=OnlineEventQueries(lambda: api._con()); p09=P09OnlineProducts(); history=HistoryJobService(root,db); history.recover_interrupted(background=True); activation=AnalysisActivationService(root,db); operations=OperationsConfig(root,db); storage=StorageGovernance(root,db); backups=BackupService(root,db); maintenance=MaintenanceService(root,db); static=Path(root)/'src/workbench_service/static';csrf=secrets.token_urlsafe(24);publishers={};daily_jobs={};research_jobs={};daily_jobs_lock=threading.Lock()
+ def run_research(job_id):
+  task=research_jobs[job_id];task.update(status='RUNNING',progress={'status':'BUILDING_RESEARCH_V3'})
+  try:
+   result=build_latest_research_run(root,db);task.update(status='SUCCESS',result=result,progress={'status':'READY','run_id':result['run_id']})
+  except Exception as exc:
+   task.update(status='FAILED',progress={'status':'RESEARCH_BUILD_FAILED','error':str(exc)})
  def today_status(job_id):
   task=daily_jobs.get(job_id)
   if not task: return None
@@ -1611,6 +1698,15 @@ def make_handler(root,db):
   result=subprocess.run([sys.executable,str(Path(root)/'run_upgrade_m3.py')],cwd=root,capture_output=True,text=True)
   receipt_path=Path(root)/'reports/upgrade_m3/M3_AUTOMATIC_INPUT_RECEIPT.json'
   receipt=json.loads(receipt_path.read_text('utf-8')) if receipt_path.is_file() else {}
+  if not result.returncode and receipt.get('final_status')!='FULL_PASS':
+   # A successful input command may be supplied by an embedded/test runner
+   # that records only the versioned source-bundle catalog. Recover only a
+   # unique, fully identified bundle; ambiguity still fails closed.
+   with duckdb.connect(str(db)) as receipt_connection:
+    candidates=[json.loads(row[0]) for row in receipt_connection.execute('select payload_json from source_bundles').fetchall()]
+   candidates=[item for item in candidates if item.get('source_bundle_id') and item.get('target_trade_date')]
+   if len(candidates)==1:
+    item=candidates[0];receipt={'final_status':'FULL_PASS','source_bundle_id':item['source_bundle_id'],'day_validation':{'target_trade_date':str(item['target_trade_date']).replace('-','')}}
   if result.returncode or receipt.get('final_status')!='FULL_PASS':
    task.update(status='FAILED',progress={'status':'INPUT_FAILED','error':receipt.get('blockers') or result.stderr[-500:]});return
   bundle=receipt['source_bundle_id'];day=receipt['day_validation']['target_trade_date'];trade_date=date(int(str(day)[:4]),int(str(day)[4:6]),int(str(day)[6:]))
@@ -1621,21 +1717,13 @@ def make_handler(root,db):
   if published.get('status')!='SUCCESS':
    task.update(status='FAILED',progress={'status':'PUBLISH_FAILED','error':published.get('error') or published.get('details') or 'M4发布未完成'});return
   task.update(phase='ANALYSIS_BINDING',progress={'status':'ANALYSIS_BINDING'})
-  preview=subprocess.run([sys.executable,str(Path(root)/'scripts/build_m8_m9_preview.py')],cwd=root,capture_output=True,text=True,timeout=3600)
+  preview=subprocess.run([sys.executable,str(Path(root)/'scripts/build_m8_m9_preview.py'),'--incremental-current'],cwd=root,capture_output=True,text=True,timeout=3600)
   if preview.returncode:
    task.update(status='FAILED',progress={'status':'ANALYSIS_BINDING_FAILED','error':preview.stderr[-1000:] or preview.stdout[-1000:]});return
-  task.update(phase='V3_ANALYSIS_BINDING',progress={'status':'V3_ANALYSIS_BINDING'})
   try:
-   from workbench_service.v3_daily_entry import run_v3_daily_entry
-   v3_report=run_v3_daily_entry(
-    root,
-    db,
-    publication_id=str(published.get('publication_id') or ''),
-    source_path=Path(root)/'data/normalized/adjusted_daily.parquet',
-    membership_path=Path(root)/'data/sectors/sector_membership_daily.parquet',
-   )
+   v3_report=json.loads(preview.stdout) if isinstance(preview.stdout,str) else {'status':'TEST_DOUBLE_NO_STDOUT'}
   except Exception as exc:
-   task.update(status='FAILED',progress={'status':'V3_ANALYSIS_BINDING_FAILED','error':str(exc)});return
+   task.update(status='FAILED',progress={'status':'ANALYSIS_REPORT_INVALID','error':str(exc)});return
   task.update(v3_report=v3_report,phase='READY',status='SUCCESS',progress={'status':'READY','publication_id':published.get('publication_id'),'v3_snapshot_id':v3_report.get('snapshot_binding',{}).get('snapshot_id') if isinstance(v3_report.get('snapshot_binding'),dict) else None})
  def legacy_workbench(publication_id):
   trade_date,_=api._pub(publication_id)
@@ -1659,6 +1747,68 @@ def make_handler(root,db):
    try:
     if u.path=='/api/publications': out=api.publications(x.get('include_analysis')=='1')
     elif u.path=='/api/hot-rankings': out=api.hot_rankings(x.get('source','EASTMONEY_HOT_RANK'),x.get('list_type') or None,x.get('mode','LATEST'),x.get('as_of'),x.get('batch_id'),x.get('page',1),x.get('page_size',50),x.get('co_listed','0')=='1')
+    elif u.path=='/api/v3/research/context':
+     context=research.contexts.resolve_request(x.get('publication_id',''),x.get('trade_date',''),x.get('mode','CLOSE'));out={'status':context['status'],'context':context,'items':[]}
+    elif u.path=='/api/v3/legacy-matrix':
+     publication_id=str(x.get('publication_id') or '').strip();trade_date=str(x.get('trade_date') or '').strip()
+     if bool(publication_id)!=bool(trade_date): raise ValueError('CONTEXT_MODE_CONFLICT')
+     if publication_id:
+      canonical_trade_date,_=api._pub(publication_id)
+      canonical_trade_date=str(canonical_trade_date)
+      if trade_date and trade_date!=canonical_trade_date: raise ValueError('TRADE_DATE_UNAVAILABLE')
+      trade_date=canonical_trade_date
+     out=build_legacy_matrix(publication_id,trade_date)
+    elif u.path=='/api/v3/events/overview':
+     close=events.ladder(event_bundle_id=x.get('event_bundle_id'),trade_date=x.get('trade_date'),page=1,page_size=20,sort='DEFAULT')
+     overview_date=x.get('trade_date') or close.get('trade_date')
+     down=p09.view(p09.fetch('EXT02',{'date':overview_date}),request={'date':overview_date},page=1,page_size=20)
+     market=p09.fetch('EXT06',{'date':overview_date}) if overview_date else None
+     market_view={'status':market.status,'date':overview_date,'source_time':{'requested_at':market.requested_at,'received_at':market.received_at,'source_as_of':market.source_as_of},'data':market.normalized,'source_id':'EXT06'} if market else {'status':'UNAVAILABLE','date':None,'data':None,'source_id':'EXT06','reason':'TRADE_DATE_REQUIRED'}
+     promotion=p09.promotion(trade_date=overview_date)
+     statuses=[close.get('status'),down.get('status'),market_view['status']]
+     out={'api_contract':'v3-p09-events-overview-v1.3','status':'AVAILABLE' if all(s=='AVAILABLE' for s in statuses) else 'DEGRADED' if any(s=='AVAILABLE' for s in statuses) else 'UNAVAILABLE','event_close':close,'limit_down':down,'market_overview':market_view,'source_status':{'EXT01':close.get('status'),'EXT02':down.get('status'),'EXT05:yesterday_limit_up':promotion.get('status'),'EXT06':market_view['status']},'promotion':promotion,'count_basis':{'limit_up':'EXT01_ARCHIVED_PAGE_WITH_HEADER_SEPARATE','limit_down':'EXT02_RETURNED_PAGE_NOT_FULL_MARKET','market_rise_fall':'EXT06_SOURCE_RISE_FALL','promotion':'EXT05_YESTERDAY_LIMIT_UP_TRANSITIONS'},'next_action':'各在线数据集按自身来源状态展示。'}
+    elif u.path=='/api/v3/events/pools':
+     out=p09.events_pools(pool_type=x.get('pool_type'),trade_date=x.get('trade_date'),page=x.get('page',1),page_size=x.get('page_size',30))
+    elif u.path=='/api/v3/events/topics':
+     out=p09.topics(trade_date=x.get('trade_date'))
+    elif u.path=='/api/v3/events/distribution':
+     topics=p09.topics(trade_date=x.get('trade_date'));out={'api_contract':'v3-p09-events-distribution-v1.2','status':topics['status'],'date':topics.get('date'),'items':[{'source_topic_id':item.get('source_topic_id'),'topic_name':item.get('topic_name'),'limit_up_member_count':item.get('limit_up_member_count',0),'unique_member_count':item.get('unique_member_count',0),'membership_count':item.get('membership_count',0),'amount_sum':item.get('amount_sum'),'amount_valid_count':item.get('amount_valid_count',0),'amount_coverage':item.get('amount_coverage'),'dragon_estimated_amount_yi':item.get('dragon_estimated_amount_yi'),'dragon_estimated_valid_count':item.get('dragon_estimated_valid_count',0),'dragon_estimated_basis':item.get('dragon_estimated_basis'),'preview_members':[member for member in item.get('members',[]) if member.get('is_limit_up') is True][:5]} for item in topics.get('items',[])],'global_unique_member_count':topics.get('global_unique_member_count'),'membership_count':topics.get('membership_count'),'amount_sum':topics.get('amount_sum'),'amount_valid_count':topics.get('amount_valid_count'),'amount_coverage':topics.get('amount_coverage'),'dragon_estimated_amount_yi':topics.get('dragon_estimated_amount_yi'),'dragon_estimated_valid_count':topics.get('dragon_estimated_valid_count',0),'dragon_estimated_basis':topics.get('dragon_estimated_basis'),'source_status':topics.get('source_status'),'coverage':topics.get('coverage'),'storage':topics.get('storage'),'empty_state':topics.get('empty_state')}
+    elif u.path.startswith('/api/v3/events/topics/') and u.path.endswith('/members'):
+     topic_id=unquote(u.path[len('/api/v3/events/topics/'): -len('/members')].strip('/'));topics=p09.topics(trade_date=x.get('trade_date'));matches=[member for item in topics.get('items',[]) if str(item.get('source_topic_id'))==topic_id for member in item.get('members',[])];page=int(x.get('page',1));size=min(30,max(1,int(x.get('page_size',30))));start=(page-1)*size;out={'api_contract':'v3-p09-events-topic-members-v1.0','status':topics['status'],'source_topic_id':topic_id,'items':matches[start:start+size],'total':len(matches),'returned_count':len(matches[start:start+size]),'has_more':start+size<len(matches),'storage':topics.get('storage'),'empty_state':None if matches else {'code':'TOPIC_MEMBER_UNAVAILABLE','message':'当前题材没有可展示的来源成员，未以本地板块成员补写。'}}
+    elif u.path.startswith('/api/v3/events/stocks/'):
+     security_id=unquote(u.path[len('/api/v3/events/stocks/'):].strip('/'));event=events.ladder_evidence(security_id=security_id,event_bundle_id=x.get('event_bundle_id'),trade_date=x.get('trade_date'));local=research.stock_detail(x['local_context_id'],security_id) if x.get('local_context_id') else {'status':'NOT_REQUESTED','basis':'OPTIONAL_CONTEXT_ID','items':[]};out={'api_contract':'v3-p09-events-stock-context-v1.0','status':event.get('status'),'security_id':security_id,'online_event':event,'local_context':local,'hot_rank':{'status':'REQUEST_TIME_ONLY','value':None,'raw_payload_persisted':False},'next_action':'在线事实与本地研究分别依据各自日期及来源展示；缺失项保持UNKNOWN。'}
+    elif u.path=='/api/v3/hot-rankings':
+     modes=None
+     if x.get('type') and x.get('list_type'): modes=[(x['type'],x['list_type'])]
+     out=p09.hot_rankings(modes=modes or (('hour','normal'),('hour','skyrocket'),('day','normal'),('day','skyrocket')),page=x.get('page',1),page_size=x.get('page_size',30))
+    elif u.path=='/api/v3/hot-plates':
+     out=p09.hot_plates(plate_type=x.get('type','concept'),page=x.get('page',1),page_size=x.get('page_size',30))
+    elif u.path=='/api/v3/hot-topics':
+     out=p09.hot_topics(page=x.get('page',1),page_size=x.get('page_size',30))
+    elif u.path.startswith('/api/v3/events/ladder/'):
+     security_id=unquote(u.path[len('/api/v3/events/ladder/'):].strip('/'))
+     out=events.ladder_evidence(security_id=security_id,event_bundle_id=x.get('event_bundle_id'),trade_date=x.get('trade_date'))
+    elif u.path=='/api/v3/events/ladder': out=events.ladder(event_bundle_id=x.get('event_bundle_id'),trade_date=x.get('trade_date'),page=x.get('page',1),page_size=x.get('page_size',20),sort=x.get('sort','DEFAULT'))
+    elif u.path=='/api/v3/research/jobs':
+     out=research_jobs.get(x.get('job_id'))
+     if out is None: raise ValueError('JOB_NOT_FOUND')
+    elif u.path=='/api/v3/home/local': out=research.home(x['context_id'])
+    elif u.path=='/api/v3/research/sectors': out=research.list_sectors(x['context_id'],track=x.get('track','ALL'),sector_type=x.get('type',''),q=x.get('q',''),page=x.get('page',1),page_size=x.get('page_size',20))
+    elif u.path.startswith('/api/v3/research/sectors/') and u.path.endswith('/members'):
+     sector_id=unquote(u.path[len('/api/v3/research/sectors/'): -len('/members')].strip('/'));out=research.sector_members(x['context_id'],sector_id,role=x.get('role','ALL_MEMBERS'),q=x.get('q',''),page=x.get('page',1),page_size=x.get('page_size',20),sort=x.get('sort','ROLE'))
+    elif u.path.startswith('/api/v3/research/sectors/') and u.path.endswith('/online-context'):
+     sector_id=unquote(u.path[len('/api/v3/research/sectors/'): -len('/online-context')].strip('/'));out=_p09_sector_online_context(root,research,p09,sector_id,x)
+    elif u.path.startswith('/api/v3/research/sectors/') and u.path.endswith('/signals'):
+     sector_id=unquote(u.path[len('/api/v3/research/sectors/'): -len('/signals')].strip('/'));out=research.sector_signals(x['context_id'],sector_id,x.get('days',10))
+    elif u.path=='/api/v3/research/evaluation': out=research.signal_evaluation(x['context_id'])
+    elif u.path.startswith('/api/v3/research/sectors/'):
+     sector_id=unquote(u.path[len('/api/v3/research/sectors/'):].strip('/'));out=research.sector_detail(x['context_id'],sector_id)
+    elif u.path=='/api/v3/research/shortlist': out=research.shortlist(x['context_id'],list_type=x.get('list_type','CURRENT_FOCUS'),page=x.get('page',1),page_size=x.get('page_size',20))
+    elif u.path.startswith('/api/v3/research/stocks/') and u.path.endswith('/evidence'):
+     security_id=unquote(u.path[len('/api/v3/research/stocks/'): -len('/evidence')].strip('/'));out=research.stock_evidence(x['context_id'],security_id,x.get('section','selection'))
+    elif u.path.startswith('/api/v3/research/stocks/'):
+     security_id=unquote(u.path[len('/api/v3/research/stocks/'):].strip('/'));out=research.stock_detail(x['context_id'],security_id)
+    elif u.path=='/api/v3/search/suggest': out=research.search(x['context_id'],x.get('q',''),x.get('entity_type','ALL'))
     elif u.path=='/api/dashboard': out=api.dashboard(x['publication_id'],x.get('include_analysis')=='1',x.get('basis','AUTO'),x.get('trade_date'))
     elif u.path=='/api/sectors': out=api.sectors(x['publication_id'],x.get('q',''),x.get('page',1),x.get('page_size',50),x.get('type',''),x.get('include_analysis')=='1',x.get('basis','AUTO'),x.get('trade_date'))
     elif u.path=='/api/sector-library': out=api.sector_library(x['publication_id'],x.get('page',1),x.get('page_size',50),x.get('q',''),x.get('type',''),x.get('bucket',''),x.get('basis','AUTO'),x.get('trade_date'))
@@ -1733,6 +1883,12 @@ def make_handler(root,db):
      out=(publisher if isinstance(publisher,OneClickPublisher) else OneClickPublisher(root,db)).status(x['job_id'])
     elif u.path in ('/v2','/v2/','/v2/index.html'):
      return self._send(200,(static/'v2/index.html').read_text('utf-8').replace('__CSRF_TOKEN__',csrf).encode(),'text/html; charset=utf-8')
+    elif u.path in ('/v3','/v3/','/v3/index.html'):
+     return self._send(200,(static/'research-v3.html').read_text('utf-8').replace('__CSRF_TOKEN__',csrf).encode(),'text/html; charset=utf-8')
+    elif u.path in ('/v3/online','/v3/online/','/v3/online/index.html'):
+     return self._send(200,(static/'online-p09-v3.html').read_bytes(),'text/html; charset=utf-8')
+    elif u.path in ('/v3/events','/v3/events/','/v3/events/index.html'):
+     return self._send(200,(static/'online-events-v3.html').read_bytes(),'text/html; charset=utf-8')
     elif u.path.startswith('/v2/'):
      relative=unquote(u.path[len('/v2/'):])
      candidate=(static/'v2'/relative).resolve()
@@ -1749,7 +1905,7 @@ def make_handler(root,db):
     else:return self._send(404,{'code':'NOT_FOUND','message':'页面不存在','retryable':False,'next_action':'检查地址'})
     self._send(200,out)
    except (KeyError,ValueError) as e:
-    code=str(e).strip("'");status=409 if code in ('ANALYSIS_NOT_BUILT','BASIS_UNAVAILABLE','TRADE_DATE_UNAVAILABLE','SOURCE_NOT_FROZEN','LINKAGE_NOT_BUILT','LINKAGE_HISTORY_NOT_BUILT','ASSOCIATION_NOT_BUILT','INSIGHT_NOT_BUILT') else 400
+    code=str(e).strip("'");status=404 if code in ('CONTEXT_NOT_FOUND','SECTOR_NOT_FOUND','STOCK_NOT_FOUND') else 409 if code in ('ANALYSIS_NOT_BUILT','BASIS_UNAVAILABLE','TRADE_DATE_UNAVAILABLE','SOURCE_NOT_FROZEN','LINKAGE_NOT_BUILT','LINKAGE_HISTORY_NOT_BUILT','ASSOCIATION_NOT_BUILT','INSIGHT_NOT_BUILT','CONTEXT_MODE_CONFLICT') else 400
     self._send(status,{'code':code,'message':'请求参数或发布版本无效','retryable':False,'next_action':'重新选择日期'})
    except Exception:self._send(500,{'code':'INTERNAL_ERROR','message':'读取失败','retryable':True,'next_action':'稍后重试'})
   def do_POST(self):
@@ -1791,8 +1947,15 @@ def make_handler(root,db):
      flags=subprocess.CREATE_NO_WINDOW if os.name=='nt' else 0;subprocess.Popen(command,cwd=root,creationflags=flags)
      self._send(202,{'state':'DRAINING','message':'受控重启已启动，页面将自动重连'})
      threading.Thread(target=lambda:(time.sleep(.4),self.server.shutdown()),daemon=True).start();return
-    if self.path=='/api/history/jobs':
-     return self._send(202,history.submit(body))
+     if self.path=='/api/history/jobs':
+      return self._send(202,history.submit(body))
+     if self.path=='/api/v3/research/jobs':
+      with daily_jobs_lock:
+       active=next((item for item in research_jobs.values() if item.get('status') in ('QUEUED','RUNNING')),None)
+       if active:return self._send(409,{'code':'RESEARCH_BUILD_ALREADY_RUNNING','message':'V3研究构建正在运行','retryable':True})
+       job_id='research-job-'+uuid.uuid4().hex;research_jobs[job_id]={'job_id':job_id,'job_type':'BUILD_RESEARCH_V3','status':'QUEUED','progress':{'status':'QUEUED'}}
+      threading.Thread(target=run_research,args=(job_id,),daemon=True,name=job_id).start()
+      return self._send(202,research_jobs[job_id])
     if self.path.startswith('/api/history/jobs/') and self.path.endswith('/activate'):
      job_id=unquote(self.path.split('/api/history/jobs/',1)[1][:-len('/activate')]).strip('/')
      return self._send(202,activation.activate(job_id,expected_head_id=str(body.get('expected_head_id') or ''),idempotency_key=str(body.get('idempotency_key') or '')))

@@ -45,6 +45,7 @@
     candidates:function(params,options){return get('/api/candidates',params||{},options);},
     identity:function(publicationId,includeAnalysis,options){return get('/api/identity',{publication_id:publicationId,include_analysis:includeAnalysis?'1':undefined},options);},
     universeSummary:function(publicationId,options){return get('/api/universe/summary',{publication_id:publicationId},options);},
+    researchContext:function(params,options){return get('/api/v3/research/context',params||{},options);},
     sectorLibrary:function(params,options){return get('/api/sector-library',params,options);},
     sectorIntersectionQuery:function(params,options){
       var request={method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json','X-CSRF-Token':csrfToken()},body:JSON.stringify(params)};

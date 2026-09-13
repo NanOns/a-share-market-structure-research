@@ -1,8 +1,8 @@
 {
-  "schema_version": "research-attention-config-v3.0",
+  "schema_version": "research-attention-config-v3.1",
   "format": "JSON_COMPATIBLE_YAML",
   "algorithm_version": "RESEARCH_V3_PREVIEW_1",
-  "parameter_hash": "c156f72e40bbb77fc8a9de01aee5308a6f775a7a68dcf8762b97fd85da58eb2b",
+  "parameter_hash": "61d191402bafbc4f2c9bd13bf88361650bed574daa5d455bf15219ad5aa7173f",
   "contracts": {
     "features": "RESEARCH_FEATURES_PREVIEW_1",
     "stock_attention": "STOCK_ATTENTION_PREVIEW_1",
@@ -90,6 +90,8 @@
         "reject_extended": true
       },
       "SETUP": {
+        "requires_liquidity": true,
+        "requires_position_fields": true,
         "close_to_ma20_min": 0.98,
         "close_to_ma20_max": 1.08,
         "ma20_delta3_gte": 0.0,
@@ -100,6 +102,8 @@
         "reject_extended": true
       },
       "RECOVERY": {
+        "requires_liquidity": true,
+        "requires_position_fields": true,
         "close_to_ma20_gte": 0.98,
         "rps5_delta3_gt": 0.0,
         "amount_vs_prior20_gte": 1.05,

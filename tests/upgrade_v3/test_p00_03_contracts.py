@@ -48,6 +48,9 @@ def test_p00_03_contract_bundle_is_frozen_and_single_sourced():
     assert validate_contract_bundle(bundle) is bundle
     assert config["parameter_hash"] == parameter_hash(config)
     assert config["contracts"]["features"] == "RESEARCH_FEATURES_PREVIEW_1"
+    assert config["schema_version"] == "research-attention-config-v3.1"
+    assert config["thresholds"]["stock_signals"]["SETUP"]["requires_liquidity"] is True
+    assert config["thresholds"]["stock_signals"]["RECOVERY"]["requires_liquidity"] is True
     assert config["thresholds"]["coverage"]["min_amount_coverage"] == 0.8
     assert config["thresholds"]["current"]["b1_gte"] == 0.6
     assert config["thresholds"]["potential_branches"]["BREADTH_BUILD"]["amount_A_gte"] == 1.05

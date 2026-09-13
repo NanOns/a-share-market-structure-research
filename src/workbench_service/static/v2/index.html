@@ -68,19 +68,19 @@
                 <div id="overview-market-cards" class="overview-market-cards"></div>
             </section>
             <section class="panel">
-                <div class="panel-heading"><div><h2>强势板块</h2><p>行业与概念分开排名；仅展示当前快照前 10 个，点击可进入对应板块周期。</p></div></div>
+                <div class="panel-heading"><div><h2>历史强势板块参考</h2><p>兼容旧版行业与概念排名；当前快照前 10 个仅作历史参考，不作为 V3 CURRENT/POTENTIAL 首页优先资格，点击可进入对应板块周期。</p></div></div>
                 <div id="overview-sector-groups" class="overview-sector-groups"></div>
             </section>
             <section class="panel">
-                <div class="panel-heading"><div><h2>主线状态</h2><p>按版本化主线分类统计；缺少 M10 快照时保留明确不可用状态。</p></div></div>
+                <div class="panel-heading"><div><h2>中期主线背景</h2><p>按版本化主线分类统计；这是历史背景，不作为 V3 CURRENT/POTENTIAL 必需资格。</p></div></div>
                 <div id="overview-mainline-counts" class="overview-mainline-counts"></div>
             </section>
             <section class="panel">
-                <div class="panel-heading"><div><h2>代表个股</h2><p>同一股票跨板块只展示一次，并保留全部关联板块来源。</p></div></div>
+                <div class="panel-heading"><div><h2>历史代表个股</h2><p>同一股票跨板块只展示一次，并保留全部关联板块来源；不冒充当日领涨成员。</p></div></div>
                 <div id="overview-representatives" class="table-wrap"></div>
             </section>
             <section class="panel">
-                <div class="panel-heading"><div><h2>优先研究</h2><p>API31 保留 V1 研究顺序；点击股票打开统一个股透视。</p></div></div>
+                <div class="panel-heading"><div><h2>全部结构候选</h2><p>兼容旧 API31 结构候选排序；V3 当前/提前双清单请使用 V3 研究预览。</p></div></div>
                 <div class="filter-row overview-priority-filters">
                     <label>股票/代码<input id="overview-priority-q" type="search" placeholder="输入名称或代码"></label>
                     <label>研究级别<select id="overview-priority-grade"><option value="">全部级别</option><option value="A+">A+</option><option value="A">A</option><option value="B">B</option><option value="C">C</option></select></label>
@@ -216,7 +216,7 @@
     <section id="mainlines-page" class="mainlines-page" hidden>
         <div class="secondary-nav" aria-label="板块二级页面">
             <button class="secondary-nav-item" data-sector-subpage="sectors" type="button">板块周期</button>
-            <button class="secondary-nav-item active" data-sector-subpage="mainlines" type="button">主线周期</button>
+            <button class="secondary-nav-item active" data-sector-subpage="mainlines" type="button">中期主线背景</button>
         </div>
         <section class="panel filters-panel">
             <div class="filter-row">
@@ -241,7 +241,7 @@
             <div id="mainline-basis" class="basis-note">主线分类读取当前发布绑定的 M10 分析快照；3日进入短期观察，5日允许快速状态，10日允许稳定状态，20日用于完整证据。</div>
         </section>
         <section class="panel">
-            <div class="field-guide"><h2>主线周期说明</h2>
+            <div class="field-guide"><h2>中期主线背景说明</h2>
                 <p>主线分类使用板块强度、上涨宽度、成交额扩张和强势成员变化的版本化硬条件；未知字段不会被当作不通过，也不使用隐藏综合分。3日先进入短期观察池，5日才判断快速状态，10日才判断稳定状态；20日只补充完整证据。行业按层级分表，概念平级展示，不混合排名。</p>
                 <div class="guide-grid">
                     <div><b>观察池</b><span>历史达到3日但尚未达到快速或稳定状态门槛，只作为当前轮动候选观察。</span></div>
@@ -252,7 +252,7 @@
                 </div>
             </div>
             <div class="panel-heading">
-                <div><h2>主线状态</h2><p id="mainline-description">每个区块独立展示和排序；点击证据查看条件的业务解释、结果和缺失原因。</p></div>
+                <div><h2>中期主线背景</h2><p id="mainline-description">每个区块独立展示和排序；点击证据查看条件的业务解释、结果和缺失原因。</p></div>
             </div>
             <div id="mainline-status-cards" class="mainline-status-cards" aria-label="主线状态数量"></div>
             <div class="mainline-group-grid">
@@ -283,15 +283,22 @@
                     <label>搜索板块<input id="linkage-attribute-query" type="search" placeholder="名称或板块ID"></label>
                 </div>
                 <div id="linkage-linkage-controls" class="filter-row" hidden>
-                    <label>板块ID<input id="linkage-sector-id" type="search" placeholder="例如 THEME:880652"></label>
+                    <label>板块（名称或ID）<input id="linkage-sector-id" type="search" placeholder="输入名称，或由主/备板块链接带入"></label>
                     <label>股票代码<input id="linkage-security-id" type="search" placeholder="例如 SZ.002793"></label>
                     <label>名称/代码筛选<input id="linkage-stock-query" type="search" placeholder="只过滤展示，不重排"></label>
                     <label>交易日<input id="linkage-trade-date" type="date"></label>
                 </div>
                 <div id="linkage-intersection-controls" class="filter-row" hidden>
-                    <label>纳入板块（名称或ID，逗号分隔）<input id="linkage-include-sectors" type="search" placeholder="例如：人工智能，新能源汽车"></label>
+                    <div class="linkage-sector-picker">
+                        <label>搜索并添加纳入板块（名称）<input id="linkage-sector-search" type="search" placeholder="至少输入 2 个字，如：人工智能" autocomplete="off"></label>
+                        <button id="linkage-sector-add" class="evidence-button filter-button" type="button">添加所选</button>
+                        <div id="linkage-sector-suggestions" class="linkage-sector-suggestions" role="listbox" aria-label="板块名称候选"></div>
+                    </div>
+                    <div id="linkage-selected-sectors" class="linkage-selected-sectors" aria-live="polite">尚未选择板块</div>
+                    <label>纳入板块（名称或ID，逗号分隔）<input id="linkage-include-sectors" type="search" placeholder="上方选择后自动填充；仍兼容旧请求"></label>
                     <label>集合方式<select id="linkage-operator"><option value="INTERSECTION">交集</option><option value="UNION">并集</option></select></label>
                     <label>排除板块（可选，名称或ID）<input id="linkage-exclude-sectors" type="search" placeholder="例如：ST板块，THEME:880652"></label>
+                    <label>研究角色<select id="linkage-member-role"><option value="ALL_MEMBERS">全部成员</option><option value="TODAY_LEADER">当日领涨</option><option value="CURRENT_RESEARCH">当前研究</option><option value="EARLY_WATCH">提前观察</option></select></label>
                 </div>
                 <div class="filter-row linkage-actions">
                     <label>历史天数<select id="linkage-days"><option value="1">1日</option><option value="2">2日</option><option value="10" selected>10日</option><option value="30">30日</option></select></label>
@@ -311,7 +318,7 @@
         <section class="panel filters-panel">
             <div class="secondary-nav" aria-label="板块二级页面">
                 <button class="secondary-nav-item active" data-sector-subpage="sectors" type="button">板块周期</button>
-                <button class="secondary-nav-item" data-sector-subpage="mainlines" type="button">主线周期</button>
+                <button class="secondary-nav-item" data-sector-subpage="mainlines" type="button">中期主线背景</button>
             </div>
             <div class="filter-row">
                 <label>板块分类<select id="sector-type">

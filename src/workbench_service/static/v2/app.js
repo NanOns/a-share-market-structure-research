@@ -26,7 +26,7 @@
     var hotRankState = {page: 1, pageSize: 20, source: 'ALL'};
     var overviewState = {page: 1, pageSize: 50, q: '', grade: '', pattern: '', requestId: 0};
     var mainlineState = {className: '', days: 30, historyPolicy: null};
-    var linkageState = {mode: 'attributes', page: 1, days: 10, attributeType: '', attributeBucket: '', attributeQuery: '', sectorId: '', securityId: '', stockQuery: '', tradeDate: '', includeSectors: '', operator: 'INTERSECTION', excludeSectors: '', selectionCollapsed: false};
+    var linkageState = {mode: initialRoute.mode || 'attributes', page: 1, days: 10, attributeType: '', attributeBucket: '', attributeQuery: '', sectorId: initialRoute.sector_id || '', securityId: '', stockQuery: '', tradeDate: initialRoute.trade_date || '', includeSectors: '', operator: 'INTERSECTION', excludeSectors: '', researchContextId: initialRoute.context_id || '', memberRole: initialRoute.member_role || 'ALL_MEMBERS', selectedIncludeSectors: [], selectionCollapsed: false};
     var insightRequestId = 0, insightAbortController = null, insightRouteActive = false, openingInsight = false,
         modalRequestId = 0, modalAbortController = null;
     var viewRequests = {};
@@ -1953,7 +1953,7 @@
     function loadMainlines() {
         if (!current) return;
         var token = beginViewRequest('mainlines');
-        setNotice('正在读取主线周期…');
+        setNotice('正在读取中期主线背景…');
         var groups = [{key: 'INDUSTRY_ROOT', target: 'mainline-industry-root-table', limit: 10}, {key: 'INDUSTRY_LEAF', target: 'mainline-industry-leaf-table', limit: 20}, {key: 'THEME', target: 'mainline-theme-table', limit: 20}];
         Promise.all(groups.map(function (group) {
             return api.mainlines({publication_id: current.publication_id, page: 1, page_size: group.limit, class: mainlineState.className, days: mainlineState.days, group: group.key}, {signal: token.signal}).then(function (result) { return {group: group, result: result}; });
@@ -1973,7 +1973,7 @@
             allTotal = Object.keys(classCounts).reduce(function (sum, key) { return sum + Number(classCounts[key] || 0); }, 0);
             renderMainlineStatusCards(classCounts);
             document.getElementById('mainline-basis').textContent = '主线快照共 ' + allTotal + ' 个板块 · 当前筛选后 ' + total + ' 个 · 展示 ' + shown + ' 条 · 截止 ' + display(cutoff) + ' · 证据回看 ' + mainlineState.days + ' 日 · ' + display(snapshot) + ' · 内部/未知类型已排除';
-            setNotice('已加载 ' + total + ' 个主线状态；一级行业、细分行业和概念分别展示。');
+            setNotice('已加载 ' + total + ' 个中期主线背景；一级行业、细分行业和概念分别展示。');
         }).catch(function (error) {
             if (!viewRequestActive('mainlines', token) || error.name === 'AbortError') return;
             var errorCode = error.code || error.message;
@@ -1988,6 +1988,84 @@
 
     function parseSectorIds(value) {
         return String(value || '').split(/[,，\s]+/).map(function (item) { return item.trim(); }).filter(Boolean);
+    }
+
+    function renderSelectedSectorChips() {
+        var target = document.getElementById('linkage-selected-sectors');
+        var input = document.getElementById('linkage-include-sectors');
+        if (!target || !input) return;
+        var items = linkageState.selectedIncludeSectors || [];
+        input.value = items.map(function (item) { return item.sector_id; }).join(', ');
+        if (!items.length) { target.textContent = '尚未选择板块'; return; }
+        items.forEach(function (item, index) {
+            var chip = document.createElement('span'), label = document.createTextNode(String(item.sector_name || item.sector_id)), remove = document.createElement('button');
+            chip.className = 'selected-sector';
+            remove.type = 'button';
+            remove.dataset.removeSector = String(index);
+            remove.setAttribute('aria-label', '移除 ' + String(item.sector_name || item.sector_id));
+            remove.textContent = '×';
+            chip.appendChild(label); chip.appendChild(remove); target.appendChild(chip);
+        });
+        target.querySelectorAll('[data-remove-sector]').forEach(function (button) {
+            button.addEventListener('click', function () {
+                linkageState.selectedIncludeSectors.splice(Number(button.dataset.removeSector), 1);
+                renderSelectedSectorChips();
+                if (linkageState.mode === 'intersection') { linkageState.page = 1; loadLinkage(); }
+            });
+        });
+    }
+
+    var linkageSectorSuggestions = [], linkageSectorSearchController = null;
+    function renderSectorSuggestions(items) {
+        linkageSectorSuggestions = items || [];
+        var target = document.getElementById('linkage-sector-suggestions');
+        if (!target) return;
+        target.replaceChildren();
+        linkageSectorSuggestions.forEach(function (item, index) {
+            var button = document.createElement('button');
+            button.type = 'button'; button.dataset.sectorSuggestion = String(index);
+            button.textContent = String(item.sector_name || item.sector_id) + ' · ' + String(item.sector_id || '');
+            target.appendChild(button);
+        });
+        target.querySelectorAll('[data-sector-suggestion]').forEach(function (button) {
+            button.addEventListener('click', function () { addSelectedSector(linkageSectorSuggestions[Number(button.dataset.sectorSuggestion)]); });
+        });
+    }
+    function searchLinkageSectors() {
+        var input = document.getElementById('linkage-sector-search'), q = input && input.value.trim();
+        if (linkageSectorSearchController) linkageSectorSearchController.abort();
+        if (!q || q.length < 2 || !current) { renderSectorSuggestions([]); return; }
+        linkageSectorSearchController = typeof AbortController === 'function' ? new AbortController() : null;
+        api.sectorLibrary({publication_id: current.publication_id, page: 1, page_size: 10, q: q, basis: 'RECONSTRUCTED'}, {signal: linkageSectorSearchController && linkageSectorSearchController.signal}).then(function (result) {
+            renderSectorSuggestions(result.items || []);
+        }).catch(function (error) { if (error.name !== 'AbortError') renderSectorSuggestions([]); });
+    }
+    function addSelectedSector(item) {
+        if (!item || !item.sector_id) return;
+        if ((linkageState.selectedIncludeSectors || []).some(function (candidate) { return candidate.sector_id === item.sector_id; })) return;
+        if ((linkageState.selectedIncludeSectors || []).length >= 4) { setNotice('纳入板块最多选择 4 个。', true); return; }
+        linkageState.selectedIncludeSectors.push({sector_id: String(item.sector_id), sector_name: String(item.sector_name || item.sector_id)});
+        renderSelectedSectorChips();
+        document.getElementById('linkage-sector-search').value = '';
+        renderSectorSuggestions([]);
+        if (linkageState.mode === 'intersection') { linkageState.page = 1; loadLinkage(); }
+    }
+    function addSearchedSector() {
+        var input = document.getElementById('linkage-sector-search'), q = input && input.value.trim(), normalized = q && q.toLowerCase();
+        var exact = linkageSectorSuggestions.filter(function (item) { return String(item.sector_name || '').toLowerCase() === normalized || String(item.sector_id || '').toLowerCase() === normalized; });
+        if (exact.length === 1) { addSelectedSector(exact[0]); return; }
+        setNotice('请先从板块名称候选中选择唯一板块。', true);
+    }
+
+    function ensureLinkageResearchContext(role, signal) {
+        if (role === 'ALL_MEMBERS') return Promise.resolve('');
+        if (linkageState.researchContextId) return Promise.resolve(linkageState.researchContextId);
+        return api.researchContext({publication_id: current.publication_id, trade_date: current.trade_date, mode: 'CLOSE'}, {signal: signal}).then(function (result) {
+            if (!result || result.status !== 'READY' || !result.context || !result.context.context_id) throw new Error('当前发布版本没有 READY 的研究上下文，暂不能按研究角色筛选。');
+            linkageState.researchContextId = result.context.context_id;
+            router.write({page: 'linkage', publication_id: current.publication_id, trade_date: current.trade_date, basis: 'RECONSTRUCTED', context_id: linkageState.researchContextId, member_role: role, sector_id: linkageState.sectorId}, 'replace');
+            return linkageState.researchContextId;
+        });
     }
 
     function resolveSectorTokens(tokens, signal) {
@@ -2008,6 +2086,8 @@
     function setLinkageMode(mode) {
         linkageState.mode = mode;
         linkageState.page = 1;
+        renderSelectedSectorChips();
+        if (current) router.write({page: 'linkage', publication_id: current.publication_id, trade_date: current.trade_date, basis: 'RECONSTRUCTED', mode: mode, context_id: linkageState.researchContextId, member_role: linkageState.memberRole, sector_id: linkageState.sectorId}, 'replace');
         document.querySelectorAll('.linkage-tab').forEach(function (button) {
             button.classList.toggle('active', button.dataset.linkageMode === mode);
             button.setAttribute('aria-selected', button.dataset.linkageMode === mode ? 'true' : 'false');
@@ -2040,7 +2120,7 @@
         document.getElementById('linkage-next').disabled = (result.page || 1) >= pages;
         var basis = display(result.history_basis || result.resolved_basis || 'RECONSTRUCTED');
         var resultLabel = mode === 'attributes' ? 'M11 属性库结果' : mode === 'linkage' ? 'M11 关联结果' : 'M11 交叉筛选结果';
-        document.getElementById('linkage-basis').textContent = resultLabel + ' ' + (result.total || 0) + ' 条 · 快照 ' + display(result.snapshot_id) + ' · 截止 ' + display(result.trade_date) + ' · 历史基础 ' + basis;
+        document.getElementById('linkage-basis').textContent = resultLabel + ' ' + (result.total || 0) + ' 条 · 快照 ' + display(result.snapshot_id) + ' · 截止 ' + display(result.trade_date) + ' · 历史基础 ' + basis + (mode === 'intersection' ? ' · 角色 ' + display(result.member_role || linkageState.memberRole || 'ALL_MEMBERS') : '');
     }
 
     function renderLinkageEmpty(message) {
@@ -2068,12 +2148,18 @@
             linkageState.includeSectors = document.getElementById('linkage-include-sectors').value;
             linkageState.operator = document.getElementById('linkage-operator').value;
             linkageState.excludeSectors = document.getElementById('linkage-exclude-sectors').value;
-            var includeTokens = parseSectorIds(linkageState.includeSectors), excludeTokens = parseSectorIds(linkageState.excludeSectors);
+            linkageState.memberRole = document.getElementById('linkage-member-role').value;
+            var selectedIds = (linkageState.selectedIncludeSectors || []).map(function (item) { return item.sector_id; });
+            var selectedText = selectedIds.join(', ');
+            var includeTokens = selectedIds.length && linkageState.includeSectors === selectedText ? selectedIds : parseSectorIds(linkageState.includeSectors), excludeTokens = parseSectorIds(linkageState.excludeSectors);
             if (includeTokens.length < 2) { setNotice('交叉筛选至少需要两个纳入板块。', true); renderLinkageEmpty('请输入至少两个板块名称或ID后刷新。'); return; }
-            request = Promise.all([resolveSectorTokens(includeTokens, token.signal), resolveSectorTokens(excludeTokens, token.signal)]).then(function (resolved) {
+            request = Promise.all([resolveSectorTokens(includeTokens, token.signal), resolveSectorTokens(excludeTokens, token.signal), ensureLinkageResearchContext(linkageState.memberRole, token.signal)]).then(function (resolved) {
                 var include = resolved[0], exclude = resolved[1];
                 document.getElementById('linkage-basis').textContent = '已将板块名称解析为板块ID，正在读取交叉结果…';
-                return api.sectorIntersectionQuery({publication_id: current.publication_id, basis: 'RECONSTRUCTED', include_sector_ids: include, exclude_sector_ids: exclude, operator: linkageState.operator, filters: {}, sort: 'rps20.desc', page: linkageState.page, page_size: 50}, {signal: token.signal});
+                var body = {publication_id: current.publication_id, basis: 'RECONSTRUCTED', include_sector_ids: include, exclude_sector_ids: exclude, operator: linkageState.operator, filters: {}, sort: 'rps20.desc', page: linkageState.page, page_size: 50, member_role: linkageState.memberRole};
+                if (resolved[2]) body.research_context_id = resolved[2];
+                router.write({page: 'linkage', publication_id: current.publication_id, trade_date: current.trade_date, basis: 'RECONSTRUCTED', context_id: linkageState.researchContextId, member_role: linkageState.memberRole, sector_id: linkageState.sectorId}, 'replace');
+                return api.sectorIntersectionQuery(body, {signal: token.signal});
             });
         } else {
             linkageState.sectorId = document.getElementById('linkage-sector-id').value.trim();
@@ -2081,7 +2167,8 @@
             linkageState.stockQuery = document.getElementById('linkage-stock-query').value.trim();
             linkageState.tradeDate = document.getElementById('linkage-trade-date').value;
             if (!linkageState.sectorId && !linkageState.securityId) { setNotice('请输入板块ID或股票代码后刷新。', true); renderLinkageEmpty('请输入板块ID或股票代码后查询。'); return; }
-            request = api.linkage({publication_id: current.publication_id, sector_id: linkageState.sectorId, security_id: linkageState.securityId, q: linkageState.stockQuery, trade_date: linkageState.tradeDate, basis: 'RECONSTRUCTED', page: linkageState.page, page_size: 50}, {signal: token.signal});
+            var sectorRequest = linkageState.sectorId ? resolveSectorTokens([linkageState.sectorId], token.signal).then(function (ids) { return ids[0]; }) : Promise.resolve('');
+            request = sectorRequest.then(function (resolvedSectorId) { return api.linkage({publication_id: current.publication_id, sector_id: resolvedSectorId, security_id: linkageState.securityId, q: linkageState.stockQuery, trade_date: linkageState.tradeDate, basis: 'RECONSTRUCTED', page: linkageState.page, page_size: 50}, {signal: token.signal}); });
         }
         request.then(function (result) { if (!viewRequestActive('linkage', token)) return; renderLinkageResult(result, mode); setNotice('联动结果已加载。'); }).catch(function (error) { if (!viewRequestActive('linkage', token) || error.name === 'AbortError') return; renderLinkageEmpty('联动数据暂不可用：' + error.message); document.getElementById('linkage-basis').textContent = '请检查板块名称是否唯一，或当前发布版本是否已绑定 M11 分析快照。'; setNotice('联动读取失败：' + error.message, true); });
     }
@@ -2158,7 +2245,7 @@
         }
         if (page === 'sectors') {
             if (sectorSubpage === 'mainlines') {
-                document.getElementById('page-title').textContent = '主线周期';
+                document.getElementById('page-title').textContent = '中期主线背景';
                 document.getElementById('page-description').textContent = '主线分类、状态变化与可复核证据；分类来自版本化硬条件，不使用隐藏综合分。';
                 loadMainlines();
             } else {
@@ -2171,7 +2258,7 @@
         if (page === 'linkage') {
             document.getElementById('page-title').textContent = '联动选股';
             document.getElementById('page-description').textContent = '属性库、关联联动与交叉筛选；结果绑定当前发布版本和分析快照。';
-            loadLinkage();
+            setLinkageMode(linkageState.mode);
             return;
         }
         if (page === 'data-info') {
@@ -2183,6 +2270,10 @@
 
     function load(publication) {
         current = publication;
+        linkageState.tradeDate = initialRoute.trade_date || '';
+        if (initialRoute.sector_id) document.getElementById('linkage-sector-id').value = initialRoute.sector_id;
+        if (initialRoute.member_role) document.getElementById('linkage-member-role').value = initialRoute.member_role;
+        renderSelectedSectorChips();
         setNotice('正在读取当前发布版本摘要…');
         context.textContent = '交易日 ' + format.text(publication.trade_date) + ' · 当前发布版本';
         setText('publication-value', publication.trade_date);
@@ -2301,20 +2392,26 @@
         document.getElementById('mainline-refresh').addEventListener('click', loadMainlines);
         document.querySelectorAll('.linkage-tab').forEach(function (button) { button.addEventListener('click', function () { setLinkageMode(button.dataset.linkageMode); }); });
         document.getElementById('linkage-refresh').addEventListener('click', loadLinkage);
+        document.getElementById('linkage-sector-add').addEventListener('click', addSearchedSector);
+        document.getElementById('linkage-sector-search').addEventListener('input', function () { window.clearTimeout(linkageState.searchTimer); linkageState.searchTimer = window.setTimeout(searchLinkageSectors, 180); });
+        document.getElementById('linkage-sector-search').addEventListener('keydown', function (event) { if (event.key === 'Enter') { event.preventDefault(); addSearchedSector(); } });
         document.getElementById('linkage-toggle-selection').addEventListener('click', function () {
             linkageState.selectionCollapsed = !linkageState.selectionCollapsed;
             document.getElementById('linkage-selection-panel').hidden = linkageState.selectionCollapsed;
             this.setAttribute('aria-expanded', linkageState.selectionCollapsed ? 'false' : 'true');
             this.textContent = linkageState.selectionCollapsed ? '展开选择栏' : '折叠选择栏';
         });
-        ['linkage-attribute-type', 'linkage-attribute-bucket', 'linkage-attribute-query', 'linkage-sector-id', 'linkage-security-id', 'linkage-stock-query', 'linkage-trade-date', 'linkage-include-sectors', 'linkage-operator', 'linkage-exclude-sectors', 'linkage-days'].forEach(function (id) {
-            document.getElementById(id).addEventListener('change', function () { if (id !== 'linkage-attribute-query' && id !== 'linkage-stock-query') loadLinkage(); });
+        ['linkage-attribute-type', 'linkage-attribute-bucket', 'linkage-attribute-query', 'linkage-sector-id', 'linkage-security-id', 'linkage-stock-query', 'linkage-trade-date', 'linkage-include-sectors', 'linkage-operator', 'linkage-exclude-sectors', 'linkage-member-role', 'linkage-days'].forEach(function (id) {
+            document.getElementById(id).addEventListener('change', function () { if (id === 'linkage-include-sectors') { linkageState.selectedIncludeSectors = []; renderSelectedSectorChips(); } if (id !== 'linkage-attribute-query' && id !== 'linkage-stock-query') loadLinkage(); });
         });
         ['linkage-attribute-query', 'linkage-stock-query', 'linkage-sector-id', 'linkage-security-id', 'linkage-include-sectors', 'linkage-exclude-sectors'].forEach(function (id) {
             document.getElementById(id).addEventListener('keydown', function (event) { if (event.key === 'Enter') { linkageState.page = 1; loadLinkage(); } });
         });
         document.getElementById('linkage-prev').addEventListener('click', function () { if (linkageState.page > 1) { linkageState.page--; loadLinkage(); } });
         document.getElementById('linkage-next').addEventListener('click', function () { linkageState.page++; loadLinkage(); });
+        document.getElementById('linkage-member-role').value = linkageState.memberRole;
+        document.getElementById('linkage-sector-id').value = linkageState.sectorId;
+        renderSelectedSectorChips();
         showSectorTableGroups(true);
     }
 

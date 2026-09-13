@@ -295,4 +295,404 @@ P00-03 合同资产 SHA-256：
 
 本轮全回归 `pytest -q tests/upgrade_v3 tests/upgrade_m5 tests/upgrade_m7` 为 **175 passed**；compileall 与 diff check 通过。未新建备份、未恢复、未移动、未删除；P04-03 阶段结论为 **FULL_PASS**，下一阶段进入 P05，不把生产 daily 运维激活或算法效果验收提前计入。
 
+## P00–P04 源码与产物独立复审（2026-09-12）
+
+本次按最新 V3 主实施文档 SHA-256 `3395AE2895F749DD5764998451363BF24024BAAA481AC7E644FE1AF941137851` 重新核对源码、当前生产库只读状态和已留存产物。旧 M0–M15 仅在 V3 明确保留兼容语义或作为 V3 基线时采信。
+
+当前放行结论：**BLOCKED**。P00–P03 与 P04-01、P04-03 的现有范围通过；P04-02 不通过。`app.py::run_today` 仍先无条件执行旧 `build_m8_m9_preview.py`，该脚本仍按 domain/date 全量拆分、计算和写入，之后才调用 V3 增量入口。因此 build plan 没有真正控制正式 daily 的前置计算/写入，违反 V3 §18.7 与 C20-16；后置 result-object 复用不能证明已停止旧全量增长。
+
+证据完整性同时未闭合：`V3_P04_02_INTEGRATION.md` 的原结论为 `PASS（SCOPED）` 且明确未执行生产 daily；当前仓库没有 `reports/v3/daily` 目录，三次真实副本运行的 plan/report 原始产物不可复核。历史台账行保留，不回写伪装为当时结论；本追加记录覆盖当前放行状态。
+
+本轮回归 `pytest -q tests/upgrade_v3 tests/upgrade_m5 tests/upgrade_m7` 为 `175 passed in 50.54s`；compileall、diff check 通过。生产库只读核对 result objects 51、source bundles 5、source files 32、backup catalog 12。未访问或修改 TDX，未运行生产 daily，未写生产数据库。
+
+详细报告：[V3_P00_P04_SOURCE_ARTIFACT_REAUDIT_20260912.md](V3_P00_P04_SOURCE_ARTIFACT_REAUDIT_20260912.md)。下一任务为 `P04-02-REMEDIATION`；关闭前不得进入 P05 或启动新的 scanner。
+
+## P04-02-REMEDIATION（2026-09-12）
+
+| task_id | status | stage_contract | changed_files | evidence | acceptance | next_task |
+|---|---|---|---|---|---|---|
+| P04-02-REMEDIATION | FULL_PASS（代码与非生产验证） | 最新 V3 §18.7、§20 C20-16；旧 M8/M9 仅作为兼容计算实现，不得先全窗构建 | `app.py`、`scripts/build_m8_m9_preview.py`、`tests/upgrade_v3/test_p04_02_remediation.py` | `run_today` 只启动一次 `--incremental-current`；当前日输入/输出；旧日期 entry 复用；同 snapshot 新 publication 原子重绑；运行时原子生成 daily plan/report；全回归 178 passed | A-P04-02-01/02 关闭；P00–P04 工程门恢复 FULL_PASS；首次生产 daily 仍按运维窗口留存实际产物 | P05-01 |
+
+本修复未运行生产 daily、未写生产数据库、未访问或修改 TDX。真实项目输入的只读 current-day 计算核对成功；首次生产激活证据不冒充本轮已执行。
+
+## P05-01 统一基础特征输入（2026-09-12）
+
+| task_id | status | input_revision | changed_files | test_evidence | product_or_data_evidence | open_issue | next_task |
+|---|---|---|---|---|---|---|---|
+| P05-01 | FULL_PASS | V3 §4/§6.1/§18.8、C20-02/04/09；主规格 SHA `3395AE2895F749DD5764998451363BF24024BAAA481AC7E644FE1AF941137851` | 新增 `research_features.py` 和 P05-01 测试；配置升级为 `research-attention-config-v3.1`，SETUP/RECOVERY 显式要求 liquidity/position | P05-01 手算、NULL、停牌、除权、零波动、缺日、未来输入、turnover basis、high100 共 5 项测试；全回归 183 passed；compileall/diff check PASS | 真实 normalized 最近110主交易日只读核验：679,580 输入行、6,178 输出；READY 5,213、PARTIAL 965；未写生产库 | 未实现五类信号；板块聚合不在本阶段 | P05-02 |
+
+阶段报告：`docs/V3_P05_01_RESEARCH_FEATURES.md`。本阶段未访问或修改 TDX，未启动 scanner，未写生产数据库。
+
+## P05-02 五类独立股票信号（2026-09-12）
+
+| task_id | status | input_revision | changed_files | test_evidence | product_or_data_evidence | open_issue | next_task |
+|---|---|---|---|---|---|---|---|
+| P05-02 | FULL_PASS | V3 §6.1/§18.8、C20-02；P05-01 PASS；配置 `research-attention-config-v3.1` | 新增 `stock_attention.py`、P05-02 测试；P05-01 增加 previous close/MA 与 prior high 字段 | 信号边界、三值逻辑、流动性、微跌 SETUP、过热、两日破坏、趋势非重点测试；全回归 189 passed；compileall/diff check PASS | 真实 6,178 股票：BREAKOUT 188、SETUP 643、RECOVERY 33、TREND 1,458、STRUCTURE_BREAK 1,514；正/反/缺失均存在 | 仅工程分布，不构成算法效果验收；未生成 P05-03 正式解释分布产物 | P05-03 |
+
+阶段报告：`docs/V3_P05_02_STOCK_ATTENTION.md`。未访问或修改 TDX，未写生产数据库，未调用板块或 shortlist 服务。
+
+## P05-03 信号固定解释与初始分布（2026-09-12）
+
+| task_id | status | stage_contract | evidence | acceptance | next_task |
+|---|---|---|---|---|---|
+| P05-03 | FULL_PASS | V3 §6.1/§18.8、C20-02；`v3-p05-03-signal-distribution-v1.0`；参数哈希 `61d191…a7173f` | 定向三值/原因/样例测试；全回归 190 passed；最近 110 个主交易日 normalized 只读输入 679,580 行/6,178 证券；五类信号各有 true/false/unknown 计数、首要拒绝/缺失条件、每类三条带 checks 的样例；报告 JSON 原子写入 | 公式与阈值未变；参数重算哈希一致；liquidity/risk 缺失未被静默放行；无命中数量门槛、无效果结论 | P06-01 |
+
+阶段报告：`docs/V3_P05_03_SIGNAL_DISTRIBUTION.md`，机器可复核产物：`reports/upgrade_v3/P05-03_SIGNAL_DISTRIBUTION.json`。未访问或修改 TDX，未写生产数据库，未启动 scanner。
+
+## P06-01 聚合板块特征并计算 CURRENT（2026-09-12）
+
+| task_id | status | stage_contract | evidence | acceptance | next_task |
+|---|---|---|---|---|---|
+| P06-01 | FULL_PASS | V3 §3.2/§4/§5.1/§18.9；`SECTOR_CURRENT_PREVIEW_1` | 同类型 `m1/b1/rel1/p1` 独立聚合；正式金额 A 仅在 `SECTOR_AMOUNT_COMMON_AGG_V1` 合同匹配时展示；定向 3 passed；真实绑定 publication 2026-09-10 读取成员 75,028 条、报价 6,178 条并原子生成分布报告 | 长期强今天弱不进入；单股集中不豁免；市场覆盖不足时 554 个板块均 UNKNOWN、未发布 CURRENT；无旧 rank/mainline 回接 | P06-02 |
+
+阶段报告：`docs/V3_P06_01_SECTOR_CURRENT.md`，机器可复核产物：`reports/upgrade_v3/P06-01_CURRENT_DISTRIBUTION.json`。未访问或修改 TDX，未写生产数据库，未启动 scanner。
+
+## P06-02 实现 POTENTIAL 三分支（2026-09-12）
+
+| task_id | status | stage_contract | evidence | acceptance | next_task |
+|---|---|---|---|---|---|
+| P06-02 | FULL_PASS | V3 §5.2/§18.9、C20-15；`SECTOR_POTENTIAL_PREVIEW_1` | `aggregate_early_width` 与三分支纯函数；定向 5 passed；真实只读绑定成员 75,028 条、P05 信号 6,178 条，早期宽度 548/554 板块可计算；报告原子写入 | CURRENT/POTENTIAL 互斥；不读旧 candidate/最终清单；缺风险或共同历史不静默通过；真实分布 true 0、false 554、unknown 0，未调阈值 | P06-03 |
+
+阶段报告：`docs/V3_P06_02_POTENTIAL.md`，机器可复核产物：`reports/upgrade_v3/P06-02_POTENTIAL_DISTRIBUTION.json`。未访问或修改 TDX，未写生产数据库，未启动 scanner。
+
+## P06-03 推进潜在 episode 生命周期（2026-09-12）
+
+| task_id | status | stage_contract | evidence | acceptance | next_task |
+|---|---|---|---|---|---|
+| P06-03 | FULL_PASS | V3 §5.3/§18.9；`SECTOR_SIGNAL_LIFECYCLE_PREVIEW_1` | `progress_potential_episode` 纯函数；10 主交易日合成序列；定向 4 passed | 5 日到期不滚动、1 日暂停、2 日重置、CURRENT 优先确认、硬失效优先、DATA_GAP 不转失败且未来不回写 | P07-01 |
+
+阶段报告：`docs/V3_P06_03_EPISODE.md`。未访问或修改 TDX，未写生产数据库，未启动 scanner。
+
+## P07-01 计算每个板块的四类成员（2026-09-12）
+
+| task_id | status | stage_contract | evidence | acceptance | next_task |
+|---|---|---|---|---|---|
+| P07-01 | FULL_PASS | V3 §6.2/§18.10、C20-07；`SECTOR_MEMBER_ROLES_PREVIEW_1` | 角色纯函数；定向 3 passed；真实只读 75,028 成员、6,178 股票信号、554 板块；ALL 75,028、TODAY_LEADER 2,316/522 板块、研究角色 0 | 完整分母先算；TODAY_LEADER 不读 RET20；EXTENDED 事实榜保留但不进研究角色；不从旧龙头补 EARLY；缺失有解释、前三类每板块 cap=5 | P07-02 |
+
+阶段报告：`docs/V3_P07_01_MEMBER_ROLES.md`，机器可复核产物：`reports/upgrade_v3/P07-01_MEMBER_ROLES_DISTRIBUTION.json`。未访问或修改 TDX，未写生产数据库，未启动 scanner。
+
+## P07-02 计算主备选关联与两条短名单（2026-09-12）
+
+| task_id | status | stage_contract | evidence | acceptance | next_task |
+|---|---|---|---|---|---|
+| P07-02 | FULL_PASS | V3 §6.3/§7/§18.10；`RESEARCH_ASSOCIATION_PREVIEW_1`、`RESEARCH_SHORTLIST_PREVIEW_1` | 关联/短名单纯函数；定向 3 passed；真实 P07-01 绑定输入候选角色 0，安全零候选报告 | LOO 分轨且不删除弱关系；1 主最多 2 备选；CURRENT/EARLY 独立 20 上限与每板块 3 上限；双命中不占提前名额；无旧 association/candidate 读取 | P07-03 |
+
+阶段报告：`docs/V3_P07_02_ASSOCIATION.md`，机器可复核产物：`reports/upgrade_v3/P07-02_ASSOCIATION_DISTRIBUTION.json`。未访问或修改 TDX，未写生产数据库，未启动 scanner。
+
 详细证据见 [V3_P04_03_BACKUP_CLOSURE.md](V3_P04_03_BACKUP_CLOSURE.md)。
+
+## P07-03 研究 run 事务封存与任务合同（2026-09-12）
+
+| task_id | status | stage_contract | changed_files | evidence | acceptance | next_task |
+|---|---|---|---|---|---|---|
+| P07-03 | FULL_PASS（事务封存与任务合同） | V3 §8/§10.4/§18.10；`RESEARCH_RUN_PREVIEW_1`；`BUILD_RESEARCH_V3`；迁移基线保留至 032 | 新增 `research_runs.py`、`research_runs_schema.sql`、P07-03 定向测试和阶段报告；schema 由 Store 显式幂等安装，不改旧迁移序列 | 定向 P07-03+M7 `7 passed`；同 input_key 复用；BUILDING/FAILED 不可见；子表写入与 COMPLETE 同一事务；中途失败回滚；全回归 `209 passed in 76.13s`；compileall/diff check PASS | 事务封存、输入幂等、失败隔离和任务输入合同通过；未写生产库、未访问或修改 TDX、未激活生产研究 worker | P08-01 |
+
+阶段报告：[V3_P07_03_RESEARCH_RUN.md](V3_P07_03_RESEARCH_RUN.md)。本阶段不把未执行的生产 job、完整 builder 或正式 GET 研究 API 冒充为已完成证据；P08 读取端仍必须只消费 `COMPLETE` run。
+
+## P08-01 本地研究 API 与上下文（2026-09-12）
+
+| task_id | status | stage_contract | changed_files | evidence | acceptance | next_task |
+|---|---|---|---|---|---|---|
+| P08-01 | FULL_PASS（只读 API 与上下文合同） | V3 §10/§18.11；`RESEARCH_V3_API_PREVIEW_1`；只消费 COMPLETE run | 新增 `research_context.py`、`research_queries.py`、P08-01 测试与阶段报告；`app.py` 接入 `/api/v3` 本地 context/home/sectors/members/shortlist/stocks/evidence/signals/search 路由 | 定向 `4 passed`；NOT_BUILT HTTP smoke 不创建 run 表/不触发构建；合成 COMPLETE run 验证列表、成员、短名单、总数/分页和错误边界；全回归 `213 passed in 57.93s`；compileall/diff check PASS | GET 不启动构建；未完成 run 不可见；total 非页长；未知 context/非法参数 fail-closed；未访问或修改 TDX、未写生产数据库 | P08-02 |
+
+阶段报告：[V3_P08_01_RESEARCH_API.md](V3_P08_01_RESEARCH_API.md)。生产环境尚无真实 COMPLETE run，NOT_BUILT/EMPTY 为当前真实安全状态；本阶段不提前宣称首页 UI 或真实效果验收。
+
+## P08-02 首页双栏与板块详情成员（2026-09-12）
+
+| task_id | status | stage_contract | changed_files | evidence | acceptance | next_task |
+|---|---|---|---|---|---|---|
+| P08-02 | FULL_PASS（双轨本地研究预览） | V3 §10/§18.11；`/v3` 独立本地预览；只读 P08-01 API | 新增 `static/research-v3.html`、`/v3` 路由和 P08-02 UI 测试；旧 `/`、`/v2`、旧 API 保留 | 定向 `2 passed`；CURRENT/POTENTIAL 各最多 6 卡、每卡最多 3 成员；卡片点击默认角色；成员分页/空态；AbortController+序列号防迟到覆盖；HTTP smoke 200；Node JS syntax PASS；全回归 `215 passed in 59.24s` | 双轨首页路径、板块右侧成员详情、窄屏布局、EMPTY/NOT_BUILT/UNAVAILABLE 和请求取消边界通过；未写生产库、未访问或修改 TDX | P08-03 |
+
+阶段报告：[V3_P08_02_RESEARCH_UI.md](V3_P08_02_RESEARCH_UI.md)。当前真实环境无 COMPLETE research run，页面保持安全空态；本阶段未提前执行 P08-03。
+
+## P08-03 全局双清单、个股详情与旧入口兼容（2026-09-12）
+
+| task_id | status | stage_contract | changed_files | evidence | acceptance | next_task |
+|---|---|---|---|---|---|---|
+| P08-03 | FULL_PASS（清单、个股证据与兼容入口） | V3 §10/§18.11；`CURRENT_FOCUS`/`EARLY_FOCUS`；证据分节按需读取；旧 candidate 入口保留 | 扩展 `research_queries.py` 个股绑定详情；扩展 `research-v3.html` 全局双清单、个股 modal、证据分节；旧 v2 标题改为“全部结构候选”；新增 P08-03 测试 | 定向 `6 passed`；清单各 20/页、个股角色/清单绑定、selection/risk/sectors/technical 分节；旧 `/api/candidates` 保留；Node syntax PASS；全回归 `217 passed in 78.21s`；compileall/diff check PASS | 清单、个股详情、等待/失效信息、证据按需加载和旧入口兼容通过；未写生产库、未访问或修改 TDX | P09-01 |
+
+阶段报告：[V3_P08_03_RESEARCH_DETAIL.md](V3_P08_03_RESEARCH_DETAIL.md)。P08 已完成；真实环境无 COMPLETE research run，NOT_BUILT/EMPTY 是当前安全结果，下一阶段只做 P09-01 公开来源能力核验。
+
+## P05–P08 审计修复最终收口（2026-09-12）
+
+| audit_item | status | stage_contract | evidence | acceptance | next_task |
+|---|---|---|---|---|---|
+| P05-P08-REMEDIATION | FULL_PASS | 最新 V3 §4–10、§18.8–11、§20；`RESEARCH_FEATURES_PREVIEW_1`→`RESEARCH_RUN_PREVIEW_1`→`RESEARCH_V3_API_PREVIEW_1` | 修正 dq5_3=q5[t]-q5[t-3]；完整 W 共同成员分支；完整 builder 与 `BUILD_RESEARCH_V3` job；正式库 COMPLETE run `research-5369ba9e65074cf599bbea230e24ff7b`；真实 `/v3` READY 页面；全库 998 passed | P05–P08 合同、源码、真实产物、API/UI 及回归门全部通过；零命中保持可解释空态，未调阈值凑数 | P09-01 |
+
+本条 supersede P06-01/P06-02/P07-03/P08-02/P08-03 旧报告中已披露的范围缺口，但保留旧记录作为历史审计轨迹。详细证据：[V3_P05_P08_REMEDIATION_FULL_PASS_20260912.md](V3_P05_P08_REMEDIATION_FULL_PASS_20260912.md)。
+
+## P09-01-A 公开来源静态登记（2026-09-13）
+
+| task_id | status | stage_contract | changed_files | evidence | acceptance | next_task |
+|---|---|---|---|---|---|---|
+| P09-01-A | FULL_PASS（静态登记范围） | 最新 V3 §19.3–§19.4、§20.6；`V3_ONLINE_SOURCE_REGISTRY_1`；最新主文档 SHA `3395AE28…137851` | 新增 `config/online_source_registry_v3.json`、`scripts/verify_p09_01_source_registry.py`、P09-01-A 定向测试、阶段报告和机器回执 | EXT01–EXT11 端点/字段线索登记；七池语义登记；请求边界与热榜零持久化策略校验；网络请求 0 次；未访问或修改 TDX、未写生产数据库 | 静态合同、已知 host、七池、字段待确认项和 fail-closed 状态全部通过；不把 STATIC 证据冒充当前可用能力 | P09-01-B |
+
+阶段报告：[V3_P09_01_SOURCE_REGISTRY.md](V3_P09_01_SOURCE_REGISTRY.md)，机器回执：`reports/upgrade_v3/P09-01-A_SOURCE_REGISTRY.json`。P09-01-B 当前复测作为独立开放项，不由本小任务提前关闭。
+
+## P09-01-B-EXT11 东方财富报价当前复测（2026-09-13）
+
+| task_id | status | stage_contract | changed_files | evidence | acceptance | next_task |
+|---|---|---|---|---|---|---|
+| P09-01-B-EXT11 | BLOCKED（当前复测源端断开） | V3 §19.3–§19.4、§20.6；`V3_ONLINE_SOURCE_REGISTRY_1`；EXT11 当前复测合同 | 新增 `scripts/probe_p09_01_b_ext11.py`、定向测试和阶段报告；复用既有 `eastmoney_quotes.py`，未修改适配器 | 有界请求 1 次；`RemoteDisconnected`；未形成当前响应；原始载荷/规范化行未持久化；未访问或修改 TDX、未写生产数据库 | EXT11 当前能力保持 `NOT_VERIFIED`；观察性展示和严格 `TIMESTAMPED_RANK` 均不放行；源端失败不转为空数据 | P09-01-B-EXT11-RETRY |
+
+阶段报告：[V3_P09_01_B_EXT11_CURRENT_PROBE.md](V3_P09_01_B_EXT11_CURRENT_PROBE.md)，机器回执：`reports/upgrade_v3/P09-01-B-EXT11_CURRENT_PROBE.json`。EXT01–EXT10 当前复测仍未关闭；EXT11 需人工重试后才可继续逐源复测。
+
+## P09-01-B-EXT11-RETRY 重试结果（2026-09-13）
+
+| task_id | status | stage_contract | evidence | acceptance | next_task |
+|---|---|---|---|---|---|
+| P09-01-B-EXT11-RETRY | BLOCKED | 同一 `V3_ONLINE_SOURCE_REGISTRY_1`、V3 §19.3–§19.4/§20.6；单源 8 秒、零重试、2,000,000 bytes 上限 | 再次执行 `scripts/probe_p09_01_b_ext11.py`；源端仍 `RemoteDisconnected`，未取得 HTTP/JSON；回执原始载荷/规范化行均未落盘 | `CURRENT_PROBE` 仍未形成；EXT11 保持 `NOT_VERIFIED`，不放行观察性展示或 `TIMESTAMPED_RANK` | P09-01-B-EXT11-RETRY |
+
+本次重试仍未进入 EXT01；下一次必须人工启动，不能通过重复失败自动推进阶段。
+
+## P09 来源裁决：EXT11 目标版退役、前置解除（2026-09-13）
+
+| task_id | source_id | contract_version | request_template | probe_time | coverage | normalized_fields | capability | page/API入口 | acceptance/failure | next_task |
+|---|---|---|---|---|---|---|---|---|---|---|
+| P09-SOURCE-DECISION-EXT11 | EXT11 | 历史 `V3_ONLINE_SOURCE_REGISTRY_1`；目标版裁决 `§22.1/§22.2` | 不再调用 `push2.eastmoney.com`；保留旧 URL 仅作历史解释 | 2026-09-13 | 不适用于龙字诀主链 | 不进入 EXT01–09 数据层 | `RETIRED_FROM_TARGET_CHAIN`；旧 BLOCKED 事实保留 | 不接入新 API/UI | EXT11 仅影响旧热榜报价附加/盘中报价候选，不是情绪、涨停、题材、简图或热榜名次输入；不再重试，不以其失败阻断 P09 | P09-01-B-LZ-EXT01 |
+
+该裁决不改写旧 EXT11 BLOCKED 记录，只解除其对新龙字诀主链的前置依赖。
+
+## P09-01-B-LZ-EXT01 同花顺涨停池当前复测（2026-09-13）
+
+| task_id | source_id | contract_version | request_template | probe_time | coverage | normalized_fields | capability | page/API入口 | acceptance/failure | next_task |
+|---|---|---|---|---|---|---|---|---|---|---|
+| P09-01-B-LZ-EXT01 | EXT01 | `v3-lz-ext01-limit-up-v1.0` | `https://data.10jqka.com.cn/dataapi/limit_up/limit_up_pool?page={page}&limit={limit}&field={fields}&filter=HS,GEM2STAR&order_field=330323&order_type=0&date={YYYYMMDD}` | `2026-09-12T17:28:09.676051+00:00` | HTTP 200；`$.data.info` 当前页 40 行；`page=1/limit=50`，完整分页不宣称 | `code/name/latest/change_rate/amount/order_amount/currency_value/turnover_rate/open_num/reason_type/first_limit_up_time/last_limit_up_time`，另有 6 个附加字段；倍率/单位待重复样本 | `DEGRADED`；当前证据足以进入 EXT01 数据层准备，UI 仍禁用 | 本任务不接 API/UI；目标入口为后续 `/api/v3/limit-up/ladder` | `CURRENT_PROBE` 通过；金额单位、时间转换和完整分页仍未固定；raw/规范化行不落盘 | P09-02-EXT01-DATA-LAYER |
+
+阶段报告：[V3_P09_01_B_LZ_EXT01_CURRENT_PROBE.md](V3_P09_01_B_LZ_EXT01_CURRENT_PROBE.md)，机器回执：`reports/upgrade_v3/P09-01-B-LZ-EXT01_CURRENT_PROBE.json`。本条不改写旧 EXT11 BLOCKED 记录。
+
+## P09-02-A-EXT01 事件头与成员 DTO（2026-09-13）
+
+| task_id | status | stage_contract | changed_files | evidence | acceptance | next_task |
+|---|---|---|---|---|---|---|
+| P09-02-A-EXT01 | FULL_PASS（DTO/适配器范围） | 最新 V3 §8.3、§19.4、§22.3；`v3-online-event-dto-v1.0`；主文档 SHA `52536035F82D4754EDA13241181F2AA8563B9D37E280E2AE39BFBD3A5A6C9D5B` | 新增 `src/workbench_online/event_models.py`、定向测试、离线验证脚本、阶段报告；扩展在线包导出 | 合成合法响应验证 `EventHeader` 与 `EventPoolRow` 分离、EXT01 行路径、命名空间、0 时间转 NULL、未确认倍率留 NULL、封板率/炸板率分离；网络 0 次，raw/规范化行/生产表 0，未改 TDX/本地 run | DTO/适配器合同通过；源能力仍 `DEGRADED`，未放行分页完整性、字段倍率、生产存储或 API/UI | P09-02-B-EXT01-BATCH-READ |
+
+阶段报告：[V3_P09_02_A_EXT01_EVENT_DTO.md](V3_P09_02_A_EXT01_EVENT_DTO.md)，机器回执：`reports/upgrade_v3/P09-02-A-EXT01_EVENT_DTO.json`。本条只关闭 DTO/适配器小范围，不提前关闭 P09-02 数据层。
+
+## P09-02-B-EXT01 有界批次读取（2026-09-13）
+
+| task_id | status | stage_contract | changed_files | evidence | acceptance | next_task |
+|---|---|---|---|---|---|---|
+| P09-02-B-EXT01 | FULL_PASS（批次读取合同范围） | 最新 V3 §8.3、§19.4–§19.5、§22.3；`v3-lz-ext01-batch-read-v1.0`；主文档 SHA `52536035F82D4754EDA13241181F2AA8563B9D37E280E2AE39BFBD3A5A6C9D5B` | 新增 `src/workbench_online/event_batch.py`、定向测试、离线验证脚本、阶段报告；扩展在线包导出 | 合成多页响应验证 page size≤20、最多4页、同批去重、冲突质量码、完整分页、后页失败降级、首页失败 `UNAVAILABLE`；实际网络 0 次；仅内存 DTO/哈希证据，raw/body/数据库/本地 run/TDX 均未写 | 批次读取合同通过；源能力仍 `DEGRADED`，不放行生产存储、API/UI或全市场覆盖声明 | P09-02-C-EXT01-CLOSE-BATCH-STORE |
+
+阶段报告：[V3_P09_02_B_EXT01_BATCH_READ.md](V3_P09_02_B_EXT01_BATCH_READ.md)，机器回执：`reports/upgrade_v3/P09-02-B-EXT01_BATCH_READ.json`。本条只关闭有界内存读取，不提前关闭 P09-02 生产数据层。
+
+## P09-02-C-EXT01 收盘事件批次存储结构（2026-09-13）
+
+| task_id | source_id | contract_version | request_template | probe_time | coverage | normalized_fields | capability | 页面/API入口 | 验收/失败 | next_task |
+|---|---|---|---|---|---|---|---|---|---|---|
+| P09-02-C-EXT01 | EXT01 | `v3-online-event-storage-v1.0`；迁移 `033_v3_online_events` | 不发网络请求；复用已验证 EXT01 batch_id 作为结构绑定 | 2026-09-13 | 临时内存 DuckDB；仅验证结构，不宣称线上覆盖 | `online_event_header` 独立保存 counts/rates/scope；`online_pool_entries` 含 price/amount/seal_amount/ret1/turnover/float_market_cap/open_count/last_break_time/source_reason/source_fields/quality_codes | `DEGRADED`；结构可供收盘事件归档，生产应用未放行 | 本任务无页面/API；后续事件 API 另行验收 | `FULL_PASS`：迁移和字段验收通过；真实生产库未应用，raw/热榜/本地 run/TDX均未写 | P09-02-D-EXT01-CLOSE-BATCH-WRITER |
+
+阶段报告：[V3_P09_02_C_EXT01_CLOSE_BATCH_STORE.md](V3_P09_02_C_EXT01_CLOSE_BATCH_STORE.md)，机器回执：`reports/upgrade_v3/P09-02-C-EXT01_CLOSE_BATCH_STORE.json`。本条只关闭收盘事件结构，不提前关闭批次写入或 P09-03 产品切片。
+
+## P09-02-D-EXT01 收盘批次事务写入（2026-09-13）
+
+| task_id | source_id | contract_version | request_template | probe_time | coverage | normalized_fields | capability | 页面/API入口 | 验收/失败 | next_task |
+|---|---|---|---|---|---|---|---|---|---|---|
+| P09-02-D-EXT01 | EXT01 | `v3-online-event-storage-v1.0`；迁移 `033_v3_online_events` | 不发网络请求；接收已通过 `v3-lz-ext01-batch-read-v1.0` 的完整内存批次 | 2026-09-13 | 临时内存 DuckDB；完整分页批次 1 页、1 行；不宣称线上全市场覆盖 | `online_fetch_runs/online_batches` 元数据；`online_event_bundles`；独立 `online_event_header`；`online_pool_entries` 及来源字段/质量码；未知金额/倍率仍 NULL | `DEGRADED`；收盘批次可归档，UI/API 未放行 | 本任务无页面/API；后续 `P09-03-EXT01-LADDER-SLICE` | `FULL_PASS`：事务提交、重复幂等、部分批次拒绝、异常回滚均通过；raw/热榜/生产库/本地 run/TDX 未写 | P09-03-EXT01-LADDER-SLICE |
+
+阶段报告：[V3_P09_02_D_EXT01_CLOSE_BATCH_WRITER.md](V3_P09_02_D_EXT01_CLOSE_BATCH_WRITER.md)，机器回执：`reports/upgrade_v3/P09-02-D-EXT01_CLOSE_BATCH_WRITER.json`。本条只关闭收盘批次写入，不提前关闭 P09-03 产品切片。
+
+## P09-03-EXT01 在线涨停简图产品切片（2026-09-13）
+
+| task_id | source_id | contract_version | request_template | probe_time | coverage | normalized_fields | capability | 页面/API入口 | 验收/失败 | next_task |
+|---|---|---|---|---|---|---|---|---|---|---|
+| P09-03-EXT01 | EXT01 | `v3-events-ladder-api-v1.0`；适配 `v3-online-event-dto-v1.0` | 只读已归档 batch；API 查询不发上游网络请求 | 2026-09-13 | 临时内存 DuckDB 合成完整批次；API 先 total 后分页；线上无批次时显式 `UNAVAILABLE` | header counts/rates/scope 独立；成员保留 security_id/source_code、price、amount、seal_amount、ret1、turnover、float_market_cap、open_count、首末封、source_reason、quality_codes；连续板与 M 天 N 板分列 | `DEGRADED`；产品切片代码/API/页面可预览，EXT01 未确认字段仍空态 | `GET /api/v3/events/ladder`；`/v3/events` | `FULL_PASS`：默认/首封排序、分页、9天5板不算5连板、空态和 HTTP 页面入口通过；网络/生产库/raw/本地 run/TDX 未写 | P09-03-EXT01-LADDER-EVIDENCE |
+
+阶段报告：[V3_P09_03_EXT01_LADDER_SLICE.md](V3_P09_03_EXT01_LADDER_SLICE.md)，机器回执：`reports/upgrade_v3/P09-03-EXT01-LADDER-SLICE.json`。本条只关闭 EXT01 涨停简图切片，不提前关闭其它在线页面。
+
+## P09-03-EXT01-LADDER-EVIDENCE 单股事件证据下钻（2026-09-13）
+
+| task_id | source_id | contract_version | request_template | probe_time | coverage | normalized_fields | capability | 页面/API入口 | 验收/失败 | next_task |
+|---|---|---|---|---|---|---|---|---|---|---|
+| P09-03-EXT01-LADDER-EVIDENCE | EXT01 | `v3-events-ladder-evidence-v1.0` | 只读已归档 `event_bundle_id`；`GET /api/v3/events/ladder/{security_id}`；不发上游网络请求 | 2026-09-13 | 临时 DuckDB 合成已归档批次；按规范 security_id/source_code 单股查询；无批次/无成员显式空态 | 来源字段映射、字段状态、`observed_at`、`source_as_of`、`source_time.basis`、bundle/batch/pool 身份、质量码；未确认倍率保留 NULL/UNCONFIRMED | `DEGRADED`；单股证据 API 和列表证据弹窗可预览；不宣称逐股成交时间 | `GET /api/v3/events/ladder/{security_id}`；`/v3/events` 行级“证据”弹窗 | `FULL_PASS`：来源时间、字段映射、单股下钻、source_code 别名、缺失成员 `UNAVAILABLE`、raw 禁止和页面入口通过；网络/生产库/本地 run/TDX 未写 | P09-03-EXT01-EVIDENCE-UI-REGRESSION |
+
+阶段报告：[V3_P09_03_EXT01_LADDER_EVIDENCE.md](V3_P09_03_EXT01_LADDER_EVIDENCE.md)，机器回执：`reports/upgrade_v3/P09-03-EXT01-LADDER-EVIDENCE.json`。本条只关闭来源证据与单股下钻合同，不提前关闭其它在线页面或 EXT02–09。
+
+## P09-03-EXT01-EVIDENCE-UI-REGRESSION 来源证据弹窗回归（2026-09-13）
+
+| task_id | source_id | contract_version | request_template | probe_time | coverage | normalized_fields | capability | 页面/API入口 | 验收/失败 | next_task |
+|---|---|---|---|---|---|---|---|---|---|---|
+| P09-03-EXT01-EVIDENCE-UI-REGRESSION | EXT01 | `v3-events-evidence-ui-regression-v1.0` | 临时 DuckDB 页面回归；证据详情沿用 `GET /api/v3/events/ladder/{security_id}`；无上游请求 | 2026-09-13 | 合成有批次/无批次页面；列表 20 条页上限和 API 分页状态；真实浏览器交互检查 | `observed_at/source_as_of/source_time`、字段证据映射、UNCONFIRMED、空态、modal identity/focus | `DEGRADED`；证据弹窗预览可用；源能力和生产放行不变 | `/v3/events`；行级“查看”；`GET /api/v3/events/ladder/{security_id}` | `FULL_PASS`：来源时间/字段证据可见，内容点击不关闭，Esc/X关闭并回焦，空批次显式 `UNAVAILABLE`，分页状态保留；网络/生产库/raw/本地 run/TDX 未写 | P09-03-EXT01-CLOSE-OUT |
+
+阶段报告：[V3_P09_03_EXT01_EVIDENCE_UI_REGRESSION.md](V3_P09_03_EXT01_EVIDENCE_UI_REGRESSION.md)，机器回执：`reports/upgrade_v3/P09-03-EXT01-EVIDENCE-UI-REGRESSION.json`。本条只关闭 EXT01 证据弹窗回归，不提前关闭其它在线页面或整体 P09。
+
+## P09-03-EXT01-CLOSE-OUT 简图/证据链阶段收口（2026-09-13）
+
+| task_id | source_id | contract_version | request_template | probe_time | coverage | normalized_fields | capability | 页面/API入口 | 验收/失败 | next_task |
+|---|---|---|---|---|---|---|---|---|---|---|
+| P09-03-EXT01-CLOSE-OUT | EXT01 | `v3-p09-ext01-slice-close-out-v1.0`；汇总 `v3-events-ladder-v1.0` / `v3-events-ladder-evidence-v1.0` / `v3-events-evidence-ui-regression-v1.0` | 只读汇总已有阶段回执；不发上游请求 | 2026-09-13 | EXT01 `LIMIT_POOL_UP` 收盘批次；单页当前证据和临时合成覆盖；不宣称全市场 | 事件 DTO、批次身份、header counts/rates/scope、梯队高度、来源字段证据、观察时间/源截止时间、空态/质量码 | `DEGRADED_PASS`；工程链 `FULL_PASS`，产品仅预览，`release_ready=false` | `/v3/events`；`GET /api/v3/events/ladder`；`GET /api/v3/events/ladder/{security_id}` | `DEGRADED_PASS`：EXT01 简图/证据链独立闭环；单页、字段倍率、source_as_of缺失和其它 EXT02–09/页面/盘中报价缺口明确保留；网络/生产库/raw/本地 run/TDX 未写 | P09-01-B-LZ-EXT02-CURRENT-PROBE |
+
+阶段报告：[V3_P09_03_EXT01_CLOSE_OUT.md](V3_P09_03_EXT01_CLOSE_OUT.md)，机器回执：`reports/upgrade_v3/P09-03-EXT01-CLOSE-OUT.json`。本条关闭 EXT01 切片边界记录，不关闭整体 P09、未完成在线源或生产放行。
+
+## P09 剩余在线产品一次性推进（2026-09-13）
+
+| task_id | status | stage_contract | changed_files | evidence | acceptance | next_task |
+|---|---|---|---|---|---|---|
+| P09-REMAINING-PRODUCTS | FULL_PASS（工程链）；DEGRADED_PASS（真实源能力） | 最新 V3 §18.12、§19.3–§19.5、§20.8、§22.2；`v3-p09-online-products-v1.0`；主文档 SHA `52536035F82D4754EDA13241181F2AA8563B9D37E280E2AE39BFBD3A5A6C9D5B` | `src/workbench_online/p09_products.py`；`src/workbench_service/app.py`；`src/workbench_service/static/online-p09-v3.html`；P09 测试/探测/验证脚本 | `P09-01-B-REMAINING-CURRENT-PROBE.json`；`P09-REMAINING-PRODUCTS.json`；定向 9 passed；既有 P09/M14/M7 回归 47 passed；`git diff --check`；EXT02/03/04/05/07/08/09 当前可解析，EXT06 明确 UNAVAILABLE | EXT02–09 均有版本化适配器、独立状态、限时并发、API/页面入口和零 raw/row/batch 持久化；按 §22.2 不将 EXT06 失败伪称整体 FULL_PASS，本地链路不受阻断 | P09-INDEPENDENT-AUDIT |
+
+阶段报告：[V3_P09_REMAINING_PRODUCTS.md](V3_P09_REMAINING_PRODUCTS.md)，机器回执：`reports/upgrade_v3/P09-REMAINING-PRODUCTS.json`。EXT11 按 V3 §22 退役，不作为剩余任务前置。
+
+## P09 独立审计与直接修复（2026-09-13）
+
+| audit_item | status | scope | findings_and_repairs | evidence | acceptance | next_stage |
+|---|---|---|---|---|---|---|
+| P09-INDEPENDENT-AUDIT | FULL_PASS | 反查 V3 哈希、EXT02–09 路由/页面、预算、零持久化、EXT11 退役边界、探测/阶段回执和 TDX 只读 | 首轮发现在线总览页缺少自链接和分布显式入口；已直接补齐 `/v3/online` 自链接及“查看分布数据”入口，无其他高危发现 | `reports/upgrade_v3/P09-INDEPENDENT-AUDIT-20260913.json`；`docs/V3_P09_INDEPENDENT_AUDIT_20260913.md`；审计后路由/产品测试 9 passed；验证脚本与审计脚本均 FULL_PASS | 独立审计 0 findings；P09 工程链保持 FULL_PASS，真实源状态仍按数据集为 DEGRADED_PASS；未修改 TDX、生产库或本地 run | P09-CLOSE-OUT |
+
+## P09 总收口（2026-09-13）
+
+| task_id | status | stage_contract | evidence | acceptance | next_stage |
+|---|---|---|---|---|---|
+| P09-CLOSE-OUT | DEGRADED_PASS（工程链 FULL_PASS） | `v3-p09-close-out-v1.0`；V3 §18.12、§19.5、§20.8、§22.2；主文档 SHA `52536035F82D4754EDA13241181F2AA8563B9D37E280E2AE39BFBD3A5A6C9D5B` | `reports/upgrade_v3/P09-CLOSE-OUT-20260913.json`；`docs/V3_P09_CLOSE_OUT_20260913.md`；51 项 P09/M14/M7 定向回归通过；独立审计 0 findings；`git diff --check` | P09 工程实现和审计达到 FULL_PASS；EXT02/03/04/05/07/08/09 当前可解析，EXT06 明确 UNAVAILABLE、EXT01 保持 DEGRADED，故按 §22.2 真实源总体 DEGRADED_PASS；未改 TDX、生产库和本地 run | P10-01 |
+
+## P09 当前复审问题单（2026-09-13，保留以上历史结论）
+
+| audit_item | scope | evidence | acceptance | next_stage |
+|---|---|---|---|---|
+| P09-AUD-01/02 | 逐数据集能力门；题材全量有界响应先聚合后分页 | `config/p09_runtime_capabilities_v1.json`；`src/workbench_online/p09_products.py`；P09 反例测试 | 已修复，禁用门零网络请求；47 行题材成员计数正确 | P09-REAUDIT-CURRENT |
+| P09-AUD-03 | EXT03/04 题材到本地板块关系及成员交集 | `config/p09_topic_sector_mapping_v1.json`；`src/workbench_service/p09_context.py`；`tests/upgrade_v3/test_p09_context_mapping.py` | 工程路径已实现，当前无经审阅映射，真实交集保持 UNAVAILABLE；独立问题未关闭 | P09-MAPPING-EVIDENCE |
+| P09-AUD-04 | 七池、四榜、题材成员、分布、板块与话题页面 | `src/workbench_service/static/online-p09-v3.html`；P09 路由测试；JS 语法检查 | 已补来源行、选择、分页与详情；页面当前能力仍按源覆盖降级 | P09-UI-REGRESSION |
+| P09-AUD-05 | 来源截止时间、交易日及完整分页 | `reports/upgrade_v3/P09-SOURCE-METADATA-PROBE-20260913.json`；`src/workbench_online/p09_products.py` | EXT03 `manual_updated_at`、EXT02 日期已证实；EXT02/EXT09 后页探测为空。其它源截止时间和全市场分页仍 UNKNOWN；独立问题未关闭 | P09-SOURCE-COVERAGE |
+| P09-AUD-06 | 复审合同与历史回执隔离 | `scripts/audit_p09_v3.py`；`reports/upgrade_v3/P09-REAUDIT-CURRENT-20260913.json` | 当前复审按证据门为 DEGRADED_PASS，不覆盖历史 0 findings 回执 | P09-MAPPING-COVERAGE-UI-REPAIR |
+
+## P09 G09 当前受限通过（2026-09-13）
+
+| task_id | contract | evidence | acceptance | next_stage |
+|---|---|---|---|---|
+| P09-G09-CURRENT-CLOSE-OUT | `v3-p09-g09-current-close-out-v1.0`；V3 §19.5、§20.8、§22.3 | `reports/upgrade_v3/P09-TOPIC-SECTOR-MAPPING-20260913.json`、`P09-REAUDIT-CURRENT-20260913.json`、`P09-G09-CURRENT-CLOSE-OUT-20260913.json`；`docs/V3_P09_G09_CURRENT_CLOSE_OUT_20260913.md`；155 P09/M14/M7 tests passed | `DEGRADED_PASS`，工程审计 0 findings；两条日期/run/哈希绑定 RELATED 关系验证通过，来源时间/完整分页/晋级分母/金额仍显式 UNKNOWN；旧回执不改写，`release_ready=false` | P10-01；P09 受限源切片继续跟踪 |
+
+### 2026-09-13 P09 龙字诀反查修复与 G09 总收口
+
+- 合同：V3 §18.12、§19.3–19.5、§20.8、§22.2–22.3、C20-10/C20-11；主文档 SHA-256 `52536035f82d4754eda13241181f2aa8563b9d37e280e2ae39bfbd3a5a6c9d5b`。
+- 实现：按龙字诀字节码恢复 EXT01 数字字段码/200 行完整分页、高度语义，修复 EXT06 日期参数，接入题材金额估算和 EXT05 昨日涨停晋级转移；EXT02–09 当前有界复测全部 AVAILABLE。
+- 验收：P09 复审 `FULL_PASS`/0 findings，G09 `FULL_PASS`/`release_ready=true`；V3+M14+M7 共 302 项通过，JS/Python/diff 检查通过。
+- 产物：`docs/V3_P09_FULL_PASS_CLOSE_OUT_20260913.md`、`reports/upgrade_v3/P09-REAUDIT-CURRENT-20260913.json`、`reports/upgrade_v3/P09-G09-CURRENT-CLOSE-OUT-20260913.json`、`reports/upgrade_v3/P09-01-B-REMAINING-REPROBE-20260913.json`。
+- 下一阶段：P10-01；严格同步逐股盘中报价和新增本地映射作为独立增强暂缓。
+
+## P10-01 旧功能去留矩阵（2026-09-13）
+
+| task_id | status | stage_contract | changed_files | evidence | acceptance | next_stage |
+|---|---|---|---|---|---|---|
+| P10-01 | FULL_PASS | `v3-p10-legacy-feature-matrix-v1.0`；V3 §2、§18.13、§20.3–§20.8；主文档 SHA `52536035F82D4754EDA13241181F2AA8563B9D37E280E2AE39BFBD3A5A6C9D5B` | `src/workbench_service/legacy_feature_matrix.py`；`src/workbench_service/app.py`；`src/workbench_service/static/research-v3.html`；`src/workbench_service/static/v2/index.html`；`src/workbench_service/static/v2/app.js`；`tests/upgrade_v3/test_p10_01_legacy_matrix.py` | `reports/upgrade_v3/P10-01-LEGACY-MATRIX.json`；定向 `4 passed`；矩阵 API smoke 200/19 行；只读测试库未创建 `research_runs`；Node syntax/compileall/diff check PASS | §2 19 行均有明确处置、V3 新入口、旧兼容/API 查询或显式排除/后置证据；旧入口未删除；主线/代表/结构候选语义已显式改标；未写 TDX、生产库或本地研究 run；不宣称效果验证 | P10-02 |
+
+## P10-02 集合筛选和跨页关联（2026-09-13）
+
+| task_id | status | stage_contract | changed_files | evidence | acceptance | next_stage |
+|---|---|---|---|---|---|---|
+| P10-02 | FULL_PASS | `V3_P10_SECTOR_SET_LINKAGE_V1_0`；旧 API14 `M11_SECTOR_INTERSECTION_V1_0`；V3 §12、§18.13、§20.3–§20.8；主文档 SHA 运行时读取并写入机器回执 | `src/workbench_service/intersection.py`；`src/workbench_service/app.py`；`src/workbench_service/static/v2/index.html`；`src/workbench_service/static/v2/app.js`；`src/workbench_service/static/v2/router.js`；`src/workbench_service/static/v2/api.js`；`src/workbench_service/static/research-v3.html`；`tests/upgrade_v3/test_p10_02_sector_set_linkage.py` | `reports/upgrade_v3/P10-02-SECTOR-SET-LINKAGE.json`；定向 `4 passed`；P10-02 验证脚本 `FULL_PASS`；M11/API 与 P08 定向 `11 passed`；Node syntax PASS；生产 DB size/mtime 不变 | 名称选择 2–4 板块、API14 集合→角色→分页、旧请求形状兼容、主/备板块 context 回返和证据关闭后选择保持均有实现/证据；没有 READY context 时不伪造角色；未写 TDX、生产数据库或 research run；不宣称前瞻效果 | P10-03 |
+
+## P10-03 前瞻结果与简单基线（2026-09-13）
+
+| task_id | status | stage_contract | changed_files | evidence | acceptance | next_stage |
+|---|---|---|---|---|---|---|
+| P10-03 | FULL_PASS | `V3_P10_SIGNAL_EVALUATION_V1_0`；`EVAL_VERSION=V3_P10_SIGNAL_EVALUATION_V1_0`；V3 §8.2、§14.1–§14.2、§18.13、§20.3–§20.8；主文档 SHA 由机器回执运行时读取 | `src/workbench_service/research_signal_evaluation.py`；`src/workbench_service/research_builder.py`；`src/workbench_service/research_queries.py`；`src/workbench_service/app.py`；`src/workbench_db/research_runs_schema.sql`；`src/workbench_db/migrations/034_v3_signal_outcomes.sql`；`src/workbench_db/migrations.py`；`src/workbench_service/static/research-v3.html`；`tests/upgrade_v3/test_p10_03_signal_evaluation.py`；`scripts/verify_p10_03_signal_evaluation.py` | `reports/upgrade_v3/P10-03-SIGNAL-EVALUATION.json`；阶段脚本 `FULL_PASS`；定向 `9 passed`；V3 `217 passed`；M15/M14/M7 `122 passed`；Node/compileall/diff check PASS；生产 DB size/mtime 不变 | PENDING、OBSERVED、DATA_GAP、3/5 日 CURRENT 确认、固定成员复权收益、三组同日等量基线、未来字段不改信号 hash、重复 episode 不重复计样本、outcome 幂等且不更新信号行均有证据；真实库 1 个 COMPLETE run、0 个封存 episode，效果门槛未达到，页面保持“规则观察·效果验证中”，不声称效果通过 | P11-01 |
+
+## P11-01 Overall acceptance and growth audit (2026-09-13)
+
+| task_id | status | stage_contract | changed_files | evidence | acceptance | next_stage |
+|---|---|---|---|---|---|---|
+| P11-01 | DEGRADED_PASS | `V3_P11_FINAL_ACCEPTANCE_V1_0`; V3 §15、§17.12、§18.14 P11-01、§20.3–§20.8; spec SHA `52536035F82D4754EDA13241181F2AA8563B9D37E280E2AE39BFBD3A5A6C9D5B` | `scripts/verify_p11_01_final_acceptance.py`; `docs/V3_P11_01_FINAL_ACCEPTANCE_20260913.md`; `reports/upgrade_v3/P11-01-FINAL-ACCEPTANCE.json`; `docs/V3_IMPLEMENTATION_LEDGER.md` | 23 section-15 counterexamples registered and executed; `tests/upgrade_v3 + tests/upgrade_m7 + tests/upgrade_m14 + tests/upgrade_m15`: `339 passed`; five local API categories each 30 warm samples; home JSON 583 bytes; latest back-to-back track switch 270.246ms; slow-source fail-closed probe; production DB read-only and size/mtime unchanged | Functionality `FULL_PASS`; data correctness `FULL_PASS`; performance `FULL_PASS`; storage `DEGRADED_PASS`; same-input memory repeat added 0 business facts, 0 identity/log rows, and 0 duplicate physical content; P00-to-current growth is inventoried, not attributed or recovered; PIT `PARTIAL`, source `FULL_PASS` with deferred enhancements, effect `EFFECT_OBSERVATION_PENDING`; main entry not switched | P11-02 |
+
+## P11-02 停旧写证明与精确回收预览（2026-09-13）
+
+| task_id | status | stage_contract | changed_files | evidence | acceptance | next_stage |
+|---|---|---|---|---|---|---|
+| P11-02 | DEGRADED_PASS | `V3_P11_OLD_WRITE_RECOVERY_PREVIEW_V1_0`；V3 §17.8、§17.9、§18.14 P11-02；spec SHA `52536035F82D4754EDA13241181F2AA8563B9D37E280E2AE39BFBD3A5A6C9D5B` | `scripts/verify_p11_02_old_write_and_recovery_preview.py`; `tests/upgrade_v3/test_p11_02_old_write_recovery_preview.py`; `docs/V3_P11_02_OLD_WRITE_RECOVERY_PREVIEW_20260913.md`; `reports/upgrade_v3/P11-02-OLD-WRITE-RECOVERY-PREVIEW.json`; `docs/V3_IMPLEMENTATION_LEDGER.md` | 六个首轮迁移域旧 writer 非定义调用点 0；逐 slice 等价全部通过；最新发布旧读 API、relation resolver、14/14 迁移域 binding 可读；backup 12/12 完整、孤立 0；extraction/cache/runtime 精确对象预览；生产 DB read-only size/mtime 不变 | 功能/旧读/六域数据等价/停旧写 `FULL_PASS`；存储 `DEGRADED_PASS`：17 个 stale referenced flags、1 个 deleted tombstone path 和 2 个辅助旧写点作为独立开放审计；当前回收 0 B，无删除/移动/备份/恢复 | P11-03 |
+
+阶段报告：[V3_P11_02_OLD_WRITE_RECOVERY_PREVIEW_20260913.md](V3_P11_02_OLD_WRITE_RECOVERY_PREVIEW_20260913.md)，机器回执：`reports/upgrade_v3/P11-02-OLD-WRITE-RECOVERY-PREVIEW.json`。独立问题 `P11-02-AUD-STORAGE-01` 与 `P11-02-AUD-AUXILIARY-WRITES-01` 保持开放；P11-03 执行前必须取得明确回收范围授权，否则仅登记 `WAITING_DECISION`。
+
+## P11-03 精确回收范围等待决策登记（2026-09-13）
+
+| task_id | status | stage_contract | changed_files | evidence | acceptance | next_stage |
+|---|---|---|---|---|---|---|
+| P11-03 | DEGRADED_PASS（`WAITING_DECISION`） | `V3_P11_RECOVERY_WAITING_DECISION_V1_0`；V3 §18.14 P11-03；spec SHA `52536035F82D4754EDA13241181F2AA8563B9D37E280E2AE39BFBD3A5A6C9D5B` | `scripts/verify_p11_03_recovery_waiting_decision.py`；`tests/upgrade_v3/test_p11_03_recovery_waiting_decision.py`；`docs/V3_P11_03_RECOVERY_WAITING_DECISION_20260913.md`；`reports/upgrade_v3/P11-03-RECOVERY-WAITING-DECISION.json`；`docs/V3_IMPLEMENTATION_LEDGER.md` | 逐对象登记 4 关系旧副本表、6 首轮迁移旧结果表、7 辅助结果表、4 解包目录、4 metadata、4 source package、1 cache、16 backup 对象、77 runtime 文件；生产 DB read-only size/mtime 不变；TDX/cleanup/backup/restore 未访问 | 决策登记 `FULL_PASS`；物理回收 `NOT_AUTHORIZED`，实际回收 `0 B`；两个 P11-02 独立审计保持 OPEN；未删除、移动、VACUUM 或切换新主入口 | P11-04（等待存储审计、停增长门和明确范围授权） |
+
+阶段报告：[V3_P11_03_RECOVERY_WAITING_DECISION_20260913.md](V3_P11_03_RECOVERY_WAITING_DECISION_20260913.md)，机器回执：`reports/upgrade_v3/P11-03-RECOVERY-WAITING-DECISION.json`。本条只完成精确对象登记，不将预览估算写成已回收空间；P11-04 不得在前置门未满足时切换新主入口。
+
+## P11-03 已授权回收执行（2026-09-13）
+
+| task_id | status | stage_contract | changed_files | evidence | acceptance | next_stage |
+|---|---|---|---|---|---|---|
+| P11-03-RECOVERY-EXECUTION | FULL_PASS（后置复核） | `V3_P11_AUTHORIZED_RECOVERY_EXECUTION_V1_0`；V3 §17.9、§18.14 P11-03；用户明确授权固定路径范围 | `scripts/execute_p11_03_authorized_recovery.py`；`scripts/verify_p11_03_recovery_execution.py`；`docs/V3_P11_03_RECOVERY_EXECUTION_20260913.md`；`reports/upgrade_v3/P11-03-RECOVERY-EXECUTION-20260913.json`；`docs/V3_IMPLEMENTATION_LEDGER.md` | 2 个可重建解包目录、`data/backups` 下 16 个对象、1 个 runtime restore-drill 备份，共 19 个精确对象；按对象字节 `25,295,015,262 B`；后置目标全不存在、source package 保留、生产 DB size/mtime 不变 | 授权范围已执行；数据库表、TDX、source、metadata、cache、其余 runtime 未动；未执行 VACUUM/新备份；首轮回执误报已由独立只读后置复核纠正 | P11-04（等待存储止增长门、独立审计及新备份策略） |
+
+阶段报告：[V3_P11_03_RECOVERY_EXECUTION_20260913.md](V3_P11_03_RECOVERY_EXECUTION_20260913.md)，机器回执：`reports/upgrade_v3/P11-03-RECOVERY-EXECUTION-20260913.json`。本条记录实际删除对象；P11-02 两项独立审计不因回收自动关闭。
+
+## P11-03 旧表保留决策（2026-09-13）
+
+| task_id | status | stage_contract | changed_files | evidence | acceptance | next_stage |
+|---|---|---|---|---|---|---|
+| P11-03-OLD-TABLE-RETENTION | FULL_PASS | `V3_P11_OLD_TABLE_RETENTION_DECISION_V1_0`；V3 §17.9、§18.14 P11-03；用户明确要求 V3 和旧页面迁移完成前保留旧表 | `scripts/record_p11_03_old_table_retention_decision.py`；`docs/V3_P11_03_OLD_TABLE_RETENTION_DECISION_20260913.md`；`reports/upgrade_v3/P11-03-OLD-TABLE-RETENTION-DECISION-20260913.json`；`docs/V3_IMPLEMENTATION_LEDGER.md` | 17 张旧/关系/辅助表逐表登记保留；生产 DB size/mtime 不变；未删除表、未 VACUUM、未访问或修改 TDX | `RETAIN_ALL_LEGACY_TABLES`；仅在 V3 开发完成、旧页面功能迁移完成、逐表引用/兼容回归和新授权完成后重新判断 | V3_COMPLETION_AND_UI_MIGRATION_GATE |
+
+阶段报告：[V3_P11_03_OLD_TABLE_RETENTION_DECISION_20260913.md](V3_P11_03_OLD_TABLE_RETENTION_DECISION_20260913.md)，机器回执：`reports/upgrade_v3/P11-03-OLD-TABLE-RETENTION-DECISION-20260913.json`。本条冻结旧表清理，后续必须逐表重新裁决。
+
+## P11-02-AUD-AUXILIARY-WRITES-01 辅助旧写入边界关闭（2026-09-13）
+
+| audit_item | status | stage_contract | changed_files | evidence | acceptance | next_stage |
+|---|---|---|---|---|---|---|
+| P11-02-AUD-AUXILIARY-WRITES-01 | FULL_PASS（有界保留） | `V3_P11_AUXILIARY_LEGACY_WRITER_BOUNDARY_V1_0`；V3 §17.8、§18.14 P11-02；旧表按用户决定保留 | `scripts/audit_p11_auxiliary_legacy_writer_boundary.py`；`tests/upgrade_v3/test_p11_auxiliary_writer_boundary.py`；`docs/V3_P11_02_AUXILIARY_WRITER_BOUNDARY_20260913.md`；`reports/upgrade_v3/P11-02-AUD-AUXILIARY-WRITES-BOUNDARY-20260913.json`；`docs/V3_IMPLEMENTATION_LEDGER.md` | 两个辅助 writer 各 1 个明确调用点；membership changes 有 slice immutable guard；association 为手工 snapshot 事务 builder；当前 daily 入口不调用手工 association builder；生产 DB read-only | `RESOLVED_WITH_BOUNDED_LEGACY_WRITER_BOUNDARY`；未迁移/未删除旧表；writer 不执行目标表 update/delete/drop/truncate；旧表清理仍等待 V3 和旧页面迁移完成 | P11-04（仍等待 P11-02-AUD-STORAGE-01 与 P11-01 存储门） |
+
+阶段报告：[V3_P11_02_AUXILIARY_WRITER_BOUNDARY_20260913.md](V3_P11_02_AUXILIARY_WRITER_BOUNDARY_20260913.md)，机器回执：`reports/upgrade_v3/P11-02-AUD-AUXILIARY-WRITES-BOUNDARY-20260913.json`。本条只关闭辅助 writer 边界审计，不关闭旧表保留决策或 storage reference audit。
+
+## P11-02-AUD-STORAGE-01 存储引用图独立审计关闭（2026-09-13）
+
+| audit_item | status | stage_contract | changed_files | evidence | acceptance | next_stage |
+|---|---|---|---|---|---|---|
+| P11-02-AUD-STORAGE-01 | FULL_PASS（只读对账，无自动动作） | `V3_P11_STORAGE_REFERENCE_GRAPH_AUDIT_V1_0`；V3 §17.8、§17.9、§18.14 P11-02；主文档 SHA 由机器回执记录 | `scripts/audit_p11_storage_reference_graph.py`；`tests/upgrade_v3/test_p11_storage_reference_graph.py`；`docs/V3_P11_02_STORAGE_REFERENCE_GRAPH_AUDIT_20260913.md`；`reports/upgrade_v3/P11-02-AUD-STORAGE-REFERENCE-GRAPH-20260913.json`；`docs/V3_IMPLEMENTATION_LEDGER.md` | 52/52 catalog rows 完成逐对象分类；34 个当前 publication 引用、17 个 stale flag 全部有历史 analysis slice provenance；active job/lease 与 online payload 引用均为 0；deleted tombstone 缺失物理文件证据闭合；生产 DB read-only size/mtime 不变 | `RESOLVED_AS_CURRENT_OR_HISTORICAL_REFERENCE_NO_AUTO_ACTION`；不清标、不删 `storage_objects`、不删物理文件；P11-01 存储止增长门仍独立存在 | P11-01 存储止增长门；满足后 P11-04 |
+
+阶段报告：[V3_P11_02_STORAGE_REFERENCE_GRAPH_AUDIT_20260913.md](V3_P11_02_STORAGE_REFERENCE_GRAPH_AUDIT_20260913.md)，机器回执：`reports/upgrade_v3/P11-02-AUD-STORAGE-REFERENCE-GRAPH-20260913.json`。本条关闭的是逐对象引用解释审计，不授权清除保护标志或删除旧表。
+
+## P11-01 存储止增长门（2026-09-13）
+
+| task_id | status | stage_contract | changed_files | evidence | acceptance | next_stage |
+|---|---|---|---|---|---|---|
+| P11-01-STORAGE-STOP-GROWTH-GATE | FULL_PASS | `V3_P11_STORAGE_STOP_GROWTH_GATE_V1_0`；V3 §17.8、§17.9、§18.14 P11-01/P11-04；主文档 SHA 由机器回执记录 | `scripts/verify_p11_01_storage_stop_growth.py`；`tests/upgrade_v3/test_p11_storage_stop_growth.py`；`docs/V3_P11_01_STORAGE_STOP_GROWTH_GATE_20260913.md`；`reports/upgrade_v3/P11-01-STORAGE-STOP-GROWTH-GATE-20260913.json`；`docs/V3_IMPLEMENTATION_LEDGER.md` | 同输入幂等、六域停旧写、辅助 writer 有界、52/52 storage 引用对账、P11-03 回收/旧表保留回执和当前入口均交叉核对通过；生产 DB size/mtime 不变 | 存储止增长门 `FULL_PASS`；无物理回收、无旧表删除；当前 `/v2` 未切换，P11-04 入口变更仍为独立动作 | P11-04 |
+
+阶段报告：[V3_P11_01_STORAGE_STOP_GROWTH_GATE_20260913.md](V3_P11_01_STORAGE_STOP_GROWTH_GATE_20260913.md)，机器回执：`reports/upgrade_v3/P11-01-STORAGE-STOP-GROWTH-GATE-20260913.json`。本条只关闭止增长门，不改变 P11-01 初始联合验收状态，也不自动执行 P11-04 入口切换。
+
+## P11-04 主入口交接预检（2026-09-13）
+
+| task_id | status | stage_contract | changed_files | evidence | acceptance | next_stage |
+|---|---|---|---|---|---|---|
+| P11-04-PREFLIGHT | FULL_PASS | `V3_P11_HANDOFF_PREFLIGHT_V1_0`；V3 §18.14 P11-04、§20.3–§20.8；主文档 SHA 由机器回执记录 | `scripts/verify_p11_04_handoff_preflight.py`；`tests/upgrade_v3/test_p11_04_handoff_preflight.py`；`docs/V3_P11_04_HANDOFF_PREFLIGHT_20260913.md`；`reports/upgrade_v3/P11-04-HANDOFF-PREFLIGHT-20260913.json`；`docs/V3_IMPLEMENTATION_LEDGER.md` | P11-01 存储门、P10-01/P10-02、P10-03 诚实状态、P09 在线卡片、V3/在线/旧回退路由及启动脚本全部核对；入口 JSON 前后字节不变 | `READY_FOR_EXPLICIT_P11_04_SWITCH`；当前默认仍 `/v2`，目标 `/v3`；未修改 runtime entry、启动脚本、生产库或 TDX | P11-04 独立入口切换与 post-switch smoke（需明确确认） |
+
+阶段报告：[V3_P11_04_HANDOFF_PREFLIGHT_20260913.md](V3_P11_04_HANDOFF_PREFLIGHT_20260913.md)，机器回执：`reports/upgrade_v3/P11-04-HANDOFF-PREFLIGHT-20260913.json`。预检不等于入口已切换；需独立确认后才执行默认入口变更。
+
+## P11-04 V3 主入口交接（2026-09-13）
+
+| task_id | status | stage_contract | changed_files | evidence | acceptance | next_stage |
+|---|---|---|---|---|---|---|
+| P11-04 | FULL_PASS | `V3_P11_ENTRY_HANDOFF_V1_0`；V3 §18.14 P11-04、§20.3–§20.8；主文档 SHA 由机器回执记录 | `OPEN_UNIFIED_WORKBENCH.cmd`；`runtime/workbench_entry.json`；`docs/DAILY_OPERATION_GUIDE.md`；`scripts/verify_p11_04_entry_handoff.py`；`tests/upgrade_v3/test_p11_04_entry_handoff.py`；`docs/V3_P11_04_ENTRY_HANDOFF_20260913.md`；`reports/upgrade_v3/P11-04-ENTRY-HANDOFF-20260913.json`；`docs/V3_IMPLEMENTATION_LEDGER.md` | 默认入口从 `/v2` 切至 `/v3`；V3、在线页、旧 `/view` 回退、context READY、home 及生产发布日 GET smoke 通过；生产 DB size/mtime 不变 | `switch_executed=true`；V3 本地双轨+已验证在线页成为默认入口；旧回退保留；未写生产 DB、未访问/修改 TDX、未删旧表 | V3 日常运行与 P10-03 效果观察；旧表迁移完成后逐表再裁决 |
+
+阶段报告：[V3_P11_04_ENTRY_HANDOFF_20260913.md](V3_P11_04_ENTRY_HANDOFF_20260913.md)，机器回执：`reports/upgrade_v3/P11-04-ENTRY-HANDOFF-20260913.json`。P11-04 关闭本版工程入口交接，不改变 P10-03 效果观察和旧表保留门槛。
+
+## P11 交接后日常预检（2026-09-13）
+
+| task_id | status | stage_contract | changed_files | evidence | acceptance | next_stage |
+|---|---|---|---|---|---|---|
+| P11-POST-HANDOFF-DAILY-PREFLIGHT | FULL_PASS | `V3_P11_POST_HANDOFF_DAILY_PREFLIGHT_V1_0`；V3 §18.14 P11-04、§20.3–§20.8；主文档 SHA 由机器回执记录 | `scripts/record_p11_post_handoff_daily_preflight.py`；`tests/upgrade_v3/test_p11_post_handoff_daily_preflight.py`；`docs/V3_P11_POST_HANDOFF_DAILY_PREFLIGHT_20260913.md`；`reports/upgrade_v3/P11-POST-HANDOFF-DAILY-PREFLIGHT-20260913.json`；`docs/V3_IMPLEMENTATION_LEDGER.md` | P11-04 默认入口 `/v3`、`/view` 回退、dry-run 输入、截止日、本地文件计数、锁释放和生产 DB size/mtime 均核对通过 | `DRY_RUN_READY`；只证明本地输入可用于日常运行，不等于真实生产发布；未写生产 DB/TDX、未提交 job、未发在线请求 | `V3_DAILY_OPERATION_AND_P10_03_EFFECT_OBSERVATION` |
+
+阶段报告：[V3_P11_POST_HANDOFF_DAILY_PREFLIGHT_20260913.md](V3_P11_POST_HANDOFF_DAILY_PREFLIGHT_20260913.md)，机器回执：`reports/upgrade_v3/P11-POST-HANDOFF-DAILY-PREFLIGHT-20260913.json`。本条不把 dry-run 记为发布成功；P10-03 效果观察和旧表保留门槛不变。
+
+## P11 首次真实日常运行（2026-09-13）
+
+| task_id | status | stage_contract | changed_files | evidence | acceptance | next_stage |
+|---|---|---|---|---|---|---|
+| P11-DAILY-OPERATION | FULL_PASS | `V3_P11_DAILY_OPERATION_V1_0`；V3 §18.14 P11-04、§20.3–§20.8；主文档 SHA 由机器回执记录 | `scripts/verify_p11_daily_operation.py`；`tests/upgrade_v3/test_p11_daily_operation.py`；`docs/V3_P11_DAILY_OPERATION_20260913.md`；`reports/upgrade_v3/P11-DAILY-OPERATION-20260913.json`；`docs/V3_IMPLEMENTATION_LEDGER.md` | 真实 `latest` 运行 `NEW_DAILY_FORWARD_CAPTURE`；V1 release `fd6a4cbce2fb43e7b722b30f70b3989f` 成功；2026-09-10 observation/release 绑定；940 条新增 outcome；TDX 只读；描述性评估 3 个封存日且明确 `DATA_INSUFFICIENT` | 真实日常发布链 9/9 完成；不把 forward 描述性评估当作 P10-03 效果通过；未做概率声明、未使用合成日期、未删旧表 | `V3_DAILY_OPERATION_AND_P10_03_EFFECT_OBSERVATION` |
+
+阶段报告：[V3_P11_DAILY_OPERATION_20260913.md](V3_P11_DAILY_OPERATION_20260913.md)，机器回执：`reports/upgrade_v3/P11-DAILY-OPERATION-20260913.json`。本条关闭首次真实日常运行记录，不关闭 P10-03 效果门或旧表保留门。
+
+## P11 V3 日增量激活（2026-09-13）
+
+| task_id | status | stage_contract | changed_files | evidence | acceptance | next_stage |
+|---|---|---|---|---|---|---|
+| P11-V3-DAILY-ACTIVATION | FULL_PASS（独立后置复核） | `V3_P11_DAILY_ACTIVATION_POSTCONDITION_V1_0`；V3 §18.7 P04-02、§18.14 P11-04、§20.3–§20.8；主文档 SHA 由阶段环境读取 | `scripts/run_p11_v3_daily_activation.py`；`scripts/verify_p11_v3_daily_activation_postcondition.py`；`tests/upgrade_v3/test_p11_v3_daily_activation.py`；`docs/V3_P11_V3_DAILY_ACTIVATION_20260913.md`；`reports/upgrade_v3/P11-V3-DAILY-ACTIVATION-20260913.json`；`docs/V3_IMPLEMENTATION_LEDGER.md` | 外层回执初报由排序/字段回填断言造成；独立只读复核确认 writer `BUILT`；104579 个逻辑 task 合并为 6 个执行对象；technical 5932 行计算；其它五域显式复用；当前 publication 已绑定 `v3-daily-be2675d7622085d213ab9984`；DB growth 0 | V3 日增量入口真实闭环，后置复核 FULL_PASS；不重复执行 writer、不创造新交易日、不宣称 P10-03 效果通过、不删旧表 | `V3_DAILY_OPERATION_AND_P10_03_EFFECT_OBSERVATION` |
+
+阶段报告：[V3_P11_V3_DAILY_ACTIVATION_20260913.md](V3_P11_V3_DAILY_ACTIVATION_20260913.md)，机器回执：`reports/upgrade_v3/P11-V3-DAILY-ACTIVATION-20260913.json`。本条关闭 V3 日增量激活，不改变效果观察和旧表保留门槛。
+
+## P11 V3 snapshot 历史引用兼容修复（2026-09-13）
+
+| audit_item | status | stage_contract | scope/evidence | acceptance | next_stage |
+|---|---|---|---|---|---|
+| P11-V3-SNAPSHOT-COMPATIBILITY-REPAIR | FULL_PASS | `V3_P11_SNAPSHOT_COMPATIBILITY_REPAIR_V1_0`；V3 §18.7、§18.14、§20.3–§20.8 | 新激活 snapshot 初始 32 条 target-domain 引用、source snapshot 40 条；发现 technical/strength/high/member_state 旧日期共 8 条缺口；只读校验冲突 0，补入既有 immutable slice 引用 8 条，当前绑定恢复 40 条 | 旧日期 V3 查询引用完整；不重算业务行、不删旧 snapshot、不删旧表、不访问/修改 TDX；外层初报问题与修复独立留痕 | `V3_DAILY_OPERATION_AND_P10_03_EFFECT_OBSERVATION` |
+
+阶段报告：`docs/V3_P11_V3_DAILY_ACTIVATION_20260913.md`，机器回执：`reports/upgrade_v3/P11-V3-SNAPSHOT-COMPATIBILITY-REPAIR-20260913.json`。本条为跨切换兼容审计项，不改变 P10-03 效果门和旧表保留决定。

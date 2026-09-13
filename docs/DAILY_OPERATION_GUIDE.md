@@ -6,7 +6,7 @@ After TongdaXin has finished downloading its local daily data, double-click:
 
 `RUN_DAILY_SCANNER.cmd`
 
-After the run finishes, double-click `OPEN_UNIFIED_WORKBENCH.cmd` to open the current Chinese V2 service workbench. `OPEN_RESEARCH_WORKBENCH.cmd` remains the legacy/static V1 report viewer and is not the V2 service entrypoint.
+After the run finishes, double-click `OPEN_UNIFIED_WORKBENCH.cmd` to open the current V3 local dual-track service workbench. `OPEN_RESEARCH_WORKBENCH.cmd` remains the legacy/static V1 report viewer and `/view` fallback entrypoint.
 
 The launcher invokes the sole live entrypoint:
 

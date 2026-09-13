@@ -7,6 +7,7 @@ from typing import Any, Mapping
 
 
 CONTRACT_ID = "M11_SECTOR_INTERSECTION_V1_0"
+P10_CONTRACT_ID = "V3_P10_SECTOR_SET_LINKAGE_V1_0"
 OPERATORS = {"INTERSECTION", "UNION"}
 ALLOWED_FILTERS = {"queues_any", "bands", "new_high_window", "ma_alignment", "amount_vs_prior20_min", "rps20_min"}
 ALLOWED_QUEUES = {"STEADY_QUEUE", "PULLBACK_QUEUE", "BREAKOUT_QUEUE", "LEADER_QUEUE", "EARLY_QUEUE"}
@@ -14,6 +15,7 @@ ALLOWED_BANDS = {"CORE_RESEARCH", "SUPPORTED_RESEARCH", "DIAGNOSTIC_ONLY"}
 ALLOWED_HIGH_WINDOWS = {20, 30, 60, 100}
 ALLOWED_MA = {"BULL", "BULLISH", "BEAR", "BEARISH", "MIXED", "NORMAL"}
 ALLOWED_SORTS = {"rps20.desc", "ret20.desc", "amount_vs_prior20.desc", "member_rank.asc", "security_id.asc"}
+ALLOWED_MEMBER_ROLES = {"TODAY_LEADER", "CURRENT_RESEARCH", "EARLY_WATCH", "ALL_MEMBERS"}
 
 
 def unique_ids(value: object, field: str) -> list[str]:
@@ -33,21 +35,45 @@ def unique_ids(value: object, field: str) -> list[str]:
     return result
 
 
+def unique_names(value: object, field: str) -> list[str]:
+    if value is None:
+        return []
+    if not isinstance(value, list):
+        raise ValueError(f"{field}_MUST_BE_ARRAY")
+    result = []
+    seen = set()
+    for raw in value:
+        item = str(raw or "").strip()
+        if not item:
+            raise ValueError(f"{field}_CONTAINS_EMPTY_NAME")
+        key = item.casefold()
+        if key not in seen:
+            seen.add(key)
+            result.append(item)
+    return result
+
+
 def normalize_request(body: Mapping[str, object]) -> dict[str, Any]:
     publication_id = str(body.get("publication_id") or "").strip()
     if not publication_id:
         raise ValueError("PUBLICATION_ID_REQUIRED")
     include = unique_ids(body.get("include_sector_ids"), "INCLUDE_SECTOR_IDS")
-    if len(include) < 2:
+    include_names = unique_names(body.get("include_sector_names"), "INCLUDE_SECTOR_NAMES")
+    if not include and not include_names:
         raise ValueError("INCLUDE_SECTOR_IDS_MIN_2")
-    if len(include) > 4:
+    if len(include) + len(include_names) > 4:
         raise ValueError("INCLUDE_SECTOR_IDS_MAX_4")
     operator = str(body.get("operator") or "INTERSECTION").strip().upper()
     if operator not in OPERATORS:
         raise ValueError("COLLECTION_OPERATOR_UNSUPPORTED")
     exclude = unique_ids(body.get("exclude_sector_ids", []), "EXCLUDE_SECTOR_IDS")
-    if len(exclude) > 20:
+    exclude_names = unique_names(body.get("exclude_sector_names", []), "EXCLUDE_SECTOR_NAMES")
+    if len(exclude) + len(exclude_names) > 20:
         raise ValueError("EXCLUDE_SECTOR_IDS_MAX_20")
+    research_context_id = str(body.get("research_context_id") or "").strip() or None
+    member_role = str(body.get("member_role") or "").strip().upper() or None
+    if member_role and member_role not in ALLOWED_MEMBER_ROLES:
+        raise ValueError("MEMBER_ROLE_UNSUPPORTED")
     basis = str(body.get("basis") or "AUTO").strip().upper()
     if basis not in {"AUTO", "OBSERVED", "RECONSTRUCTED"}:
         raise ValueError("BASIS_UNSUPPORTED")
@@ -101,7 +127,7 @@ def normalize_request(body: Mapping[str, object]) -> dict[str, Any]:
         page_size = max(1, min(100, int(body.get("page_size", 50))))
     except (TypeError, ValueError):
         raise ValueError("COLLECTION_PAGINATION_INVALID")
-    return {
+    result = {
         "publication_id": publication_id,
         "include_sector_ids": include,
         "exclude_sector_ids": exclude,
@@ -113,6 +139,15 @@ def normalize_request(body: Mapping[str, object]) -> dict[str, Any]:
         "page": page,
         "page_size": page_size,
     }
+    if include_names:
+        result["include_sector_names"] = include_names
+    if exclude_names:
+        result["exclude_sector_names"] = exclude_names
+    if research_context_id:
+        result["research_context_id"] = research_context_id
+    if member_role:
+        result["member_role"] = member_role
+    return result
 
 
 def finite(value: object) -> float | None:

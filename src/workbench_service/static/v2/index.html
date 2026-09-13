@@ -46,6 +46,23 @@
         [data-workbench-mode="v3"] .v3-quick-links button { display: flex; flex-direction: column; gap: 5px; align-items: flex-start; min-height: 72px; padding: 12px; border: 1px solid #cfe1f2; border-radius: 9px; background: #fff; color: #19324d; text-align: left; cursor: pointer; }
         [data-workbench-mode="v3"] .v3-quick-links button:hover { border-color: #1769aa; background: #f7fbff; }
         [data-workbench-mode="v3"] .v3-quick-links span { color: #60758b; font-size: 12px; line-height: 1.4; }
+        [data-workbench-mode="v3"] .v3-actions { display: grid; grid-template-columns: 1.35fr 1fr 1fr; gap: 10px; margin-top: 14px; }
+        [data-workbench-mode="v3"] .v3-action-card { display: flex; flex-direction: column; align-items: flex-start; min-height: 138px; padding: 14px; border: 1px solid #cfe1f2; border-radius: 10px; background: #fff; color: #19324d; text-align: left; }
+        [data-workbench-mode="v3"] .v3-action-card h3 { margin: 0 0 6px; font-size: 15px; }
+        [data-workbench-mode="v3"] .v3-action-card p { margin: 0 0 10px; color: #60758b; font-size: 12px; line-height: 1.55; }
+        [data-workbench-mode="v3"] .v3-action-label { margin-bottom: 4px; color: #1769aa; font-size: 11px; font-weight: 700; letter-spacing: .04em; }
+        [data-workbench-mode="v3"] .v3-action-primary { border-top: 4px solid #287bc1; background: linear-gradient(180deg, #f0f8ff, #fff 50%); }
+        [data-workbench-mode="v3"] .v3-build-button { margin-top: auto; padding: 8px 12px; border: 0; border-radius: 7px; background: #1769aa; color: #fff; font-size: 12px; cursor: pointer; }
+        [data-workbench-mode="v3"] .v3-build-button:hover { background: #125786; }
+        [data-workbench-mode="v3"] .v3-build-button:disabled { background: #9aabb9; cursor: wait; }
+        [data-workbench-mode="v3"] .v3-build-status { margin-top: 8px; color: #60758b; font-size: 11px; line-height: 1.4; }
+        [data-workbench-mode="v3"] .v3-build-status.ok { color: #1b6e43; }
+        [data-workbench-mode="v3"] .v3-build-status.warn { color: #9a6000; }
+        [data-workbench-mode="v3"] .v3-build-status.error { color: #a33a3a; }
+        [data-workbench-mode="v3"] .v3-action-link { justify-content: center; text-decoration: none; cursor: pointer; }
+        [data-workbench-mode="v3"] .v3-action-link:hover { border-color: #1769aa; background: #f7fbff; }
+        [data-workbench-mode="v3"] .v3-action-link b { margin-bottom: 6px; font-size: 15px; }
+        [data-workbench-mode="v3"] .v3-action-link span { color: #60758b; font-size: 12px; line-height: 1.55; }
         [data-workbench-mode="v3"] .v3-legacy-overview { margin-top: 14px; background: #f8fafc; border: 1px solid #dbe4ee; border-radius: 10px; }
         [data-workbench-mode="v3"] .v3-legacy-overview > summary { padding: 11px 14px; color: #52677c; cursor: pointer; font-size: 13px; }
         [data-workbench-mode="v3"] .v3-legacy-overview > summary::marker { color: #1769aa; }
@@ -64,8 +81,8 @@
         [data-workbench-mode="v3"] #v3-online-ladder table { width: 100%; border-collapse: collapse; font-size: 12px; }
         [data-workbench-mode="v3"] #v3-online-ladder th, [data-workbench-mode="v3"] #v3-online-ladder td { padding: 8px; border-bottom: 1px solid #edf1f5; text-align: left; }
         [data-workbench-mode="v3"] #v3-online-ladder th { color: #52677c; background: #f8fafc; }
-        @media (max-width: 900px) { [data-workbench-mode="v3"] .v3-online-grid, [data-workbench-mode="v3"] .v3-quick-links { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-        @media (max-width: 640px) { [data-workbench-mode="v3"] .v3-home-heading, [data-workbench-mode="v3"] .v3-track-grid, [data-workbench-mode="v3"] .v3-focus-grid, [data-workbench-mode="v3"] .v3-online-grid { grid-template-columns: 1fr; display: grid; } [data-workbench-mode="v3"] .v3-home-state { white-space: normal; } [data-workbench-mode="v3"] .v3-card-grid, [data-workbench-mode="v3"] .v3-quick-links { grid-template-columns: 1fr; } }
+        @media (max-width: 900px) { [data-workbench-mode="v3"] .v3-online-grid, [data-workbench-mode="v3"] .v3-quick-links, [data-workbench-mode="v3"] .v3-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+        @media (max-width: 640px) { [data-workbench-mode="v3"] .v3-home-heading, [data-workbench-mode="v3"] .v3-track-grid, [data-workbench-mode="v3"] .v3-focus-grid, [data-workbench-mode="v3"] .v3-online-grid, [data-workbench-mode="v3"] .v3-actions { grid-template-columns: 1fr; display: grid; } [data-workbench-mode="v3"] .v3-home-state { white-space: normal; } [data-workbench-mode="v3"] .v3-card-grid, [data-workbench-mode="v3"] .v3-quick-links { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body data-workbench-mode="__WORKBENCH_MODE__" data-workbench-base="__WORKBENCH_BASE__">
@@ -117,6 +134,21 @@
                 <button type="button" data-v3-page="linkage"><b>联动筛选</b><span>属性库、主备板块和交叉集合</span></button>
                 <button type="button" data-v3-page="market"><b>市场与事件</b><span>市场周期、在线事件、热度和梯队</span></button>
             </div>
+            <section class="v3-actions" aria-label="数据与运维入口">
+                <article class="v3-action-card v3-action-primary">
+                    <div class="v3-action-label">数据生成</div>
+                    <h3>生成当前 V3 研究数据</h3>
+                    <p>按当前发布版本和交易日提交受控 BUILD_RESEARCH_V3 任务；不会因打开首页自动执行。</p>
+                    <button id="v3-build-research" class="v3-build-button" type="button">生成当前 V3 研究数据</button>
+                    <div id="v3-build-status" class="v3-build-status" role="status" aria-live="polite">尚未提交生成任务。</div>
+                </article>
+                <button class="v3-action-card v3-action-link" type="button" data-v3-page="data-info">
+                    <b>进入数据能力</b><span>查看当前发布版本、来源合同、快照和能力状态。</span>
+                </button>
+                <a class="v3-action-card v3-action-link" href="/operations">
+                    <b>进入运维中心</b><span>配置、存储、备份、迁移和受控重启等运维操作。</span>
+                </a>
+            </section>
         </section>
         <details id="v3-legacy-overview" class="v3-legacy-overview">
             <summary>历史分析与兼容明细（按需展开）</summary>

@@ -9,6 +9,8 @@
     var requestSerial = 0;
     var context = null;
     var onlineSerial = 0;
+    var buildSerial = 0;
+    var buildTimer = null;
 
     function esc(value) {
         return String(value === null || value === undefined ? '' : value).replace(/[&<>"']/g, function (char) {
@@ -22,6 +24,25 @@
 
     function get(path) {
         return fetch(path, {cache: 'no-store'}).then(function (response) {
+            return response.json().catch(function () { return {}; }).then(function (body) {
+                if (!response.ok) throw new Error(body.message || body.code || String(response.status));
+                return body;
+            });
+        });
+    }
+
+    function post(path, payload) {
+        var csrf = document.querySelector('meta[name="csrf-token"]');
+        return fetch(path, {
+            method: 'POST',
+            cache: 'no-store',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': csrf ? csrf.content : ''
+            },
+            body: JSON.stringify(payload || {})
+        }).then(function (response) {
             return response.json().catch(function () { return {}; }).then(function (body) {
                 if (!response.ok) throw new Error(body.message || body.code || String(response.status));
                 return body;
@@ -127,6 +148,95 @@
             });
     }
 
+    function selectedResearchInput() {
+        if (!select || !select.value) throw new Error('当前没有可用的发布版本');
+        var option = select.options[select.selectedIndex];
+        var params = new URLSearchParams(window.location.search);
+        var tradeDate = params.get('trade_date') || option.dataset.tradeDate || String(option.textContent || '').split(' · ')[0];
+        if (!tradeDate) throw new Error('当前发布版本没有交易日');
+        return {
+            job_type: 'BUILD_RESEARCH_V3',
+            publication_id: select.value,
+            trade_date: tradeDate,
+            algorithm_version: 'RESEARCH_V3_PREVIEW_1'
+        };
+    }
+
+    function setBuildStatus(text, tone) {
+        var target = document.getElementById('v3-build-status');
+        if (!target) return;
+        target.className = 'v3-build-status' + (tone ? ' ' + tone : '');
+        target.textContent = text;
+    }
+
+    function buildStatusText(job) {
+        var status = String(job && job.status || '').toUpperCase();
+        var progress = job && job.progress && job.progress.status;
+        if (status === 'QUEUED') return '已提交，等待执行 · ' + job.job_id;
+        if (status === 'RUNNING') return '正在生成：' + (progress || 'BUILDING_RESEARCH_V3') + ' · ' + job.job_id;
+        if (status === 'SUCCESS') return '生成完成 · ' + (job.result && job.result.run_id || job.job_id);
+        if (status === 'FAILED' || status === 'ERROR') return '生成失败：' + (progress && progress.error || '请查看服务日志') + ' · ' + job.job_id;
+        return '任务状态：' + (status || 'UNKNOWN') + ' · ' + (job.job_id || '无任务编号');
+    }
+
+    function pollResearchBuild(jobId, serial, attempt) {
+        get('/api/v3/research/jobs?job_id=' + encodeURIComponent(jobId)).then(function (job) {
+            if (serial !== buildSerial) return;
+            var status = String(job.status || '').toUpperCase();
+            if (status === 'SUCCESS') {
+                setBuildStatus(buildStatusText(job), 'ok');
+                var button = document.getElementById('v3-build-research');
+                if (button) button.disabled = false;
+                window.setTimeout(loadHome, 300);
+                return;
+            }
+            if (status === 'FAILED' || status === 'ERROR') {
+                setBuildStatus(buildStatusText(job), 'error');
+                var failedButton = document.getElementById('v3-build-research');
+                if (failedButton) failedButton.disabled = false;
+                return;
+            }
+            if (attempt >= 60) {
+                setBuildStatus('任务仍在执行，已停止自动轮询 · ' + jobId, 'warn');
+                var timeoutButton = document.getElementById('v3-build-research');
+                if (timeoutButton) timeoutButton.disabled = false;
+                return;
+            }
+            setBuildStatus(buildStatusText(job), '');
+            buildTimer = window.setTimeout(function () { pollResearchBuild(jobId, serial, attempt + 1); }, 1000);
+        }).catch(function (error) {
+            if (serial !== buildSerial) return;
+            setBuildStatus('任务状态读取失败：' + error.message, 'error');
+            var errorButton = document.getElementById('v3-build-research');
+            if (errorButton) errorButton.disabled = false;
+        });
+    }
+
+    function submitResearchBuild() {
+        var button = document.getElementById('v3-build-research');
+        if (!button || button.disabled) return;
+        if (buildTimer) window.clearTimeout(buildTimer);
+        var serial = ++buildSerial;
+        button.disabled = true;
+        setBuildStatus('正在提交生成任务…', '');
+        var payload;
+        try { payload = selectedResearchInput(); } catch (error) {
+            button.disabled = false;
+            setBuildStatus(error.message, 'error');
+            return;
+        }
+        post('/api/v3/research/jobs', payload).then(function (job) {
+            if (serial !== buildSerial) return;
+            if (!job.job_id) throw new Error('服务未返回任务编号');
+            setBuildStatus(buildStatusText(job), '');
+            pollResearchBuild(job.job_id, serial, 0);
+        }).catch(function (error) {
+            if (serial !== buildSerial) return;
+            button.disabled = false;
+            setBuildStatus('生成任务提交失败：' + error.message, 'error');
+        });
+    }
+
     function onlineStatus(targetId, status, message) {
         document.getElementById(targetId).innerHTML = '<div class="v3-online-status ' + (status === 'AVAILABLE' ? 'ok' : 'warn') + '">' + show(status) + '</div><p>' + show(message) + '</p>';
     }
@@ -198,6 +308,7 @@
     });
     if (document.getElementById('v3-online-refresh')) document.getElementById('v3-online-refresh').addEventListener('click', loadOnline);
     if (document.getElementById('v3-online-ladder-refresh')) document.getElementById('v3-online-ladder-refresh').addEventListener('click', function () { onlineSerial += 1; loadOnlineLadder(onlineSerial); });
+    if (document.getElementById('v3-build-research')) document.getElementById('v3-build-research').addEventListener('click', submitResearchBuild);
     document.querySelectorAll('.nav-item').forEach(function (button) {
         button.addEventListener('click', function () { window.setTimeout(syncPage, 0); });
     });

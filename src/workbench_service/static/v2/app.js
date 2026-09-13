@@ -1,7 +1,8 @@
 (function () {
     /* Contract probes retain these compact call signatures: identity(publication.publication_id,true) JSON.stringify(identity,null,2) */
     'use strict';
-    var api = window.WorkbenchV2Api, format = window.WorkbenchV2Format, table = window.WorkbenchV2Table,
+    var workbenchMode = document.body.dataset.workbenchMode || 'v2',
+        api = window.WorkbenchV2Api, format = window.WorkbenchV2Format, table = window.WorkbenchV2Table,
         modal = window.WorkbenchV2Modal, router = window.WorkbenchV2Router, initialRoute = router.read();
     var select = document.getElementById('publication-select'), notice = document.getElementById('notice'),
         context = document.getElementById('page-context'), tableTarget = document.getElementById('context-table'),
@@ -2226,19 +2227,19 @@
         linkagePage.hidden = page !== 'linkage';
         dataInfoPage.hidden = page !== 'data-info';
         if (page === 'overview') {
-            document.getElementById('page-title').textContent = '研究总览';
-            document.getElementById('page-description').textContent = '版本、输入身份与统一股票范围；总体统计保留科创板和北交所，个股展示按权限范围处理。';
-            loadOverviewAnalysis();
+            document.getElementById('page-title').textContent = workbenchMode === 'v3' ? '研究首页' : '研究总览';
+            document.getElementById('page-description').textContent = workbenchMode === 'v3' ? 'CURRENT / POTENTIAL 双轨研究首页；历史分析与兼容明细按需展开。' : '版本、输入身份与统一股票范围；总体统计保留科创板和北交所，个股展示按权限范围处理。';
+            if (workbenchMode !== 'v3') loadOverviewAnalysis();
             return;
         }
         if (page === 'market') {
-            document.getElementById('page-title').textContent = '市场周期';
-            document.getElementById('page-description').textContent = '市场广度、成交额与均线覆盖；统计包含科创板和北交所，个股下钻按展示范围隐藏两者。';
+            document.getElementById('page-title').textContent = workbenchMode === 'v3' ? '市场与事件' : '市场周期';
+            document.getElementById('page-description').textContent = workbenchMode === 'v3' ? '本地市场周期与在线事件/热度分区展示；两个来源互不冒充。' : '市场广度、成交额与均线覆盖；统计包含科创板和北交所，个股下钻按展示范围隐藏两者。';
             loadMarket();
             return;
         }
         if (page === 'stocks') {
-            document.getElementById('page-title').textContent = '个股技术';
+            document.getElementById('page-title').textContent = workbenchMode === 'v3' ? '个股研究' : '个股技术';
             document.getElementById('page-description').textContent = '新高、RPS、均线与量额状态；个股展示包含科创板和北交所，字段含义和使用方法见页面上方。';
             loadTechnical();
             return;
@@ -2249,20 +2250,20 @@
                 document.getElementById('page-description').textContent = '主线分类、状态变化与可复核证据；分类来自版本化硬条件，不使用隐藏综合分。';
                 loadMainlines();
             } else {
-                document.getElementById('page-title').textContent = '板块周期';
+                document.getElementById('page-title').textContent = workbenchMode === 'v3' ? '板块研究' : '板块周期';
                 document.getElementById('page-description').textContent = '板块强弱周期与成员变化；板块统计包含科创板和北交所，个股成员展示按权限范围处理。';
                 loadSectors();
             }
             return;
         }
         if (page === 'linkage') {
-            document.getElementById('page-title').textContent = '联动选股';
+            document.getElementById('page-title').textContent = workbenchMode === 'v3' ? '联动筛选' : '联动选股';
             document.getElementById('page-description').textContent = '属性库、关联联动与交叉筛选；结果绑定当前发布版本和分析快照。';
             setLinkageMode(linkageState.mode);
             return;
         }
         if (page === 'data-info') {
-            document.getElementById('page-title').textContent = '数据能力';
+            document.getElementById('page-title').textContent = workbenchMode === 'v3' ? '数据 / 运维' : '数据能力';
             document.getElementById('page-description').textContent = '当前发布版本的来源、合同、覆盖和降级状态。';
             renderDataInfo();
         }

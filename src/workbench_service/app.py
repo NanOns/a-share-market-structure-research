@@ -1882,9 +1882,13 @@ def make_handler(root,db):
      publisher=publishers.get(x['job_id'])
      out=(publisher if isinstance(publisher,OneClickPublisher) else OneClickPublisher(root,db)).status(x['job_id'])
     elif u.path in ('/v2','/v2/','/v2/index.html'):
-     return self._send(200,(static/'v2/index.html').read_text('utf-8').replace('__CSRF_TOKEN__',csrf).encode(),'text/html; charset=utf-8')
+     page=(static/'v2/index.html').read_text('utf-8')
+     page=page.replace('__CSRF_TOKEN__',csrf).replace('__WORKBENCH_VERSION__','v2 兼容').replace('__WORKBENCH_MODE__','v2').replace('__WORKBENCH_BASE__','/v2')
+     return self._send(200,page.encode(),'text/html; charset=utf-8')
     elif u.path in ('/v3','/v3/','/v3/index.html'):
-     return self._send(200,(static/'research-v3.html').read_text('utf-8').replace('__CSRF_TOKEN__',csrf).encode(),'text/html; charset=utf-8')
+     page=(static/'v2/index.html').read_text('utf-8')
+     page=page.replace('__CSRF_TOKEN__',csrf).replace('__WORKBENCH_VERSION__','V3').replace('__WORKBENCH_MODE__','v3').replace('__WORKBENCH_BASE__','/v3')
+     return self._send(200,page.encode(),'text/html; charset=utf-8')
     elif u.path in ('/v3/online','/v3/online/','/v3/online/index.html'):
      return self._send(200,(static/'online-p09-v3.html').read_bytes(),'text/html; charset=utf-8')
     elif u.path in ('/v3/events','/v3/events/','/v3/events/index.html'):

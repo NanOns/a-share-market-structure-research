@@ -4,38 +4,122 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="__CSRF_TOKEN__">
-    <title>统一研究工作台 · v2 预览</title>
+    <title>统一研究工作台 · __WORKBENCH_VERSION__</title>
     <link rel="stylesheet" href="/v2/styles.css?v=m15-04">
     <link rel="stylesheet" href="/v2/p01-03.css?v=v3-p01-03">
+    <style>
+        [data-workbench-mode="v3"] .preview-badge { background: #e7f3ff; color: #1769aa; }
+        [data-workbench-mode="v3"] .v3-home { display: block; }
+        [data-workbench-mode="v3"] .v3-home-heading { display: flex; justify-content: space-between; gap: 18px; align-items: flex-start; padding: 18px 20px; background: linear-gradient(135deg, #eef7ff, #fff); border: 1px solid #cfe1f2; border-radius: 12px; }
+        [data-workbench-mode="v3"] .v3-home-heading h2 { margin: 0 0 6px; font-size: 24px; color: #142b4b; }
+        [data-workbench-mode="v3"] .v3-home-heading p { margin: 0; color: #60758b; line-height: 1.6; }
+        [data-workbench-mode="v3"] .v3-home-state { color: #1769aa; font-size: 12px; white-space: nowrap; padding-top: 7px; }
+        [data-workbench-mode="v3"] .v3-track-grid, [data-workbench-mode="v3"] .v3-focus-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 14px; }
+        [data-workbench-mode="v3"] .v3-track, [data-workbench-mode="v3"] .v3-focus-card { background: #fff; border: 1px solid #dbe4ee; border-radius: 12px; padding: 14px; min-width: 0; }
+        [data-workbench-mode="v3"] .v3-current { border-top: 4px solid #287bc1; background: linear-gradient(180deg, #f0f8ff, #fff 35%); }
+        [data-workbench-mode="v3"] .v3-potential { border-top: 4px solid #d18b18; background: linear-gradient(180deg, #fff8e8, #fff 35%); }
+        [data-workbench-mode="v3"] .v3-track-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+        [data-workbench-mode="v3"] .v3-track-head h3 { margin: 0; font-size: 16px; color: #19324d; }
+        [data-workbench-mode="v3"] .v3-track-head span { color: #60758b; font-size: 12px; }
+        [data-workbench-mode="v3"] .v3-card-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; margin-top: 11px; }
+        [data-workbench-mode="v3"] .v3-sector-card { display: block; width: 100%; min-height: 154px; padding: 11px; border: 1px solid #dbe4ee; border-radius: 9px; background: rgba(255,255,255,.82); color: #19324d; text-align: left; cursor: pointer; }
+        [data-workbench-mode="v3"] .v3-sector-card:hover { border-color: #1769aa; box-shadow: 0 0 0 2px #1769aa22; }
+        [data-workbench-mode="v3"] .v3-sector-title { display: flex; justify-content: space-between; gap: 8px; }
+        [data-workbench-mode="v3"] .v3-sector-title b { overflow-wrap: anywhere; }
+        [data-workbench-mode="v3"] .v3-sector-title small, [data-workbench-mode="v3"] .v3-sector-card p, [data-workbench-mode="v3"] .v3-preview-row, [data-workbench-mode="v3"] .v3-focus-row small { color: #60758b; font-size: 12px; }
+        [data-workbench-mode="v3"] .v3-sector-card p { margin: 8px 0 5px; }
+        [data-workbench-mode="v3"] .v3-metrics { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 8px; color: #36536e; font-size: 12px; }
+        [data-workbench-mode="v3"] .v3-reasons { display: flex; flex-wrap: wrap; gap: 5px; }
+        [data-workbench-mode="v3"] .v3-reasons span { padding: 3px 6px; background: #edf3f8; border-radius: 999px; color: #52677c; font-size: 11px; }
+        [data-workbench-mode="v3"] .v3-preview { border-top: 1px solid #dbe4ee; margin-top: 8px; padding-top: 6px; }
+        [data-workbench-mode="v3"] .v3-preview-row { display: flex; justify-content: space-between; gap: 6px; padding: 2px 0; }
+        [data-workbench-mode="v3"] .v3-preview-row span:first-child { overflow-wrap: anywhere; }
+        [data-workbench-mode="v3"] .v3-focus-card { background: #fff; }
+        [data-workbench-mode="v3"] .v3-focus-list { display: grid; gap: 5px; margin-top: 9px; }
+        [data-workbench-mode="v3"] .v3-focus-row { display: grid; grid-template-columns: minmax(100px, 1fr) 42px minmax(100px, 1.2fr); gap: 8px; align-items: center; padding: 8px; border: 1px solid #edf1f5; border-radius: 7px; background: #fbfcfe; color: #19324d; text-align: left; cursor: pointer; }
+        [data-workbench-mode="v3"] .v3-focus-row:hover { border-color: #1769aa; }
+        [data-workbench-mode="v3"] .v3-focus-row b, [data-workbench-mode="v3"] .v3-focus-row small { display: block; overflow-wrap: anywhere; }
+        [data-workbench-mode="v3"] .v3-focus-row em { color: #60758b; font-size: 12px; font-style: normal; }
+        [data-workbench-mode="v3"] .v3-focus-row > span:last-child { color: #52677c; font-size: 12px; overflow-wrap: anywhere; }
+        [data-workbench-mode="v3"] .v3-empty { padding: 27px 12px; border: 1px dashed #cdd9e4; border-radius: 8px; color: #60758b; text-align: center; font-size: 12px; }
+        [data-workbench-mode="v3"] .v3-quick-links { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 14px; }
+        [data-workbench-mode="v3"] .v3-quick-links button { display: flex; flex-direction: column; gap: 5px; align-items: flex-start; min-height: 72px; padding: 12px; border: 1px solid #cfe1f2; border-radius: 9px; background: #fff; color: #19324d; text-align: left; cursor: pointer; }
+        [data-workbench-mode="v3"] .v3-quick-links button:hover { border-color: #1769aa; background: #f7fbff; }
+        [data-workbench-mode="v3"] .v3-quick-links span { color: #60758b; font-size: 12px; line-height: 1.4; }
+        [data-workbench-mode="v3"] .v3-legacy-overview { margin-top: 14px; background: #f8fafc; border: 1px solid #dbe4ee; border-radius: 10px; }
+        [data-workbench-mode="v3"] .v3-legacy-overview > summary { padding: 11px 14px; color: #52677c; cursor: pointer; font-size: 13px; }
+        [data-workbench-mode="v3"] .v3-legacy-overview > summary::marker { color: #1769aa; }
+        [data-workbench-mode="v3"] .v3-legacy-overview > .cards, [data-workbench-mode="v3"] .v3-legacy-overview > .panel, [data-workbench-mode="v3"] .v3-legacy-overview > .overview-analysis { margin-left: 14px; margin-right: 14px; }
+        [data-workbench-mode="v3"] .v3-online-panel { margin-bottom: 14px; }
+        [data-workbench-mode="v3"] .v3-online-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+        [data-workbench-mode="v3"] .v3-online-card { min-width: 0; padding: 12px; border: 1px solid #dbe4ee; border-radius: 9px; background: #fbfcfe; }
+        [data-workbench-mode="v3"] .v3-online-card h3 { margin: 0 0 7px; font-size: 14px; }
+        [data-workbench-mode="v3"] .v3-online-body { color: #52677c; font-size: 12px; line-height: 1.55; min-height: 90px; }
+        [data-workbench-mode="v3"] .v3-online-body p { margin: 6px 0; }
+        [data-workbench-mode="v3"] .v3-online-body ul { margin: 6px 0; padding-left: 18px; }
+        [data-workbench-mode="v3"] .v3-online-status { font-weight: 600; }
+        [data-workbench-mode="v3"] .v3-online-status.ok { color: #1b6e43; }
+        [data-workbench-mode="v3"] .v3-online-status.warn { color: #9a6000; }
+        [data-workbench-mode="v3"] .v3-online-ladder { margin-top: 12px; }
+        [data-workbench-mode="v3"] #v3-online-ladder table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        [data-workbench-mode="v3"] #v3-online-ladder th, [data-workbench-mode="v3"] #v3-online-ladder td { padding: 8px; border-bottom: 1px solid #edf1f5; text-align: left; }
+        [data-workbench-mode="v3"] #v3-online-ladder th { color: #52677c; background: #f8fafc; }
+        @media (max-width: 900px) { [data-workbench-mode="v3"] .v3-online-grid, [data-workbench-mode="v3"] .v3-quick-links { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+        @media (max-width: 640px) { [data-workbench-mode="v3"] .v3-home-heading, [data-workbench-mode="v3"] .v3-track-grid, [data-workbench-mode="v3"] .v3-focus-grid, [data-workbench-mode="v3"] .v3-online-grid { grid-template-columns: 1fr; display: grid; } [data-workbench-mode="v3"] .v3-home-state { white-space: normal; } [data-workbench-mode="v3"] .v3-card-grid, [data-workbench-mode="v3"] .v3-quick-links { grid-template-columns: 1fr; } }
+    </style>
 </head>
-<body>
+<body data-workbench-mode="__WORKBENCH_MODE__" data-workbench-base="__WORKBENCH_BASE__">
 <header class="topbar">
     <div class="brand"><span class="brand-mark">M7</span>
-        <div><strong>统一研究工作台</strong><small>Workbench v2 Preview</small></div>
+        <div><strong>统一研究工作台</strong><small>Workbench __WORKBENCH_VERSION__ · 单一入口</small></div>
     </div>
     <label class="publication-picker">发布版本
         <select id="publication-select" aria-label="选择发布版本"></select>
     </label>
     <div class="context" id="page-context">正在读取版本上下文…</div>
-    <a class="ops-link" href="/operations">运维中心</a>
 </header>
 <nav class="nav" aria-label="工作台页面">
-    <button class="nav-item active" data-page="overview" type="button">总览</button>
-    <button class="nav-item" data-page="sectors" type="button">板块</button>
-    <button class="nav-item" data-page="stocks" type="button">个股技术</button>
-    <button class="nav-item" data-page="linkage" type="button">联动</button>
-    <button class="nav-item" data-page="market" type="button">市场周期</button>
-    <button class="nav-item" data-page="data-info" type="button">数据能力</button>
+    <button class="nav-item active" data-page="overview" type="button">研究首页</button>
+    <button class="nav-item" data-page="sectors" type="button">板块研究</button>
+    <button class="nav-item" data-page="stocks" type="button">个股研究</button>
+    <button class="nav-item" data-page="linkage" type="button">联动筛选</button>
+    <button class="nav-item" data-page="market" type="button">市场与事件</button>
+    <button class="nav-item" data-page="data-info" type="button">数据 / 运维</button>
 </nav>
 <main class="content">
     <section class="page-heading">
         <div><p class="eyebrow">M7A · 7A-05</p>
             <h1 id="page-title">研究总览</h1>
             <p id="page-description">公共 UI 层预览：版本、输入身份与统一股票范围。</p></div>
-        <span class="preview-badge">预览路由 /v2</span>
+        <span class="preview-badge">V3 单一入口</span>
     </section>
     <div id="notice" class="notice" role="status" aria-live="polite">正在加载…</div>
     <div id="overview-page">
+        <section id="v3-home" class="v3-home" hidden aria-labelledby="v3-home-heading">
+            <div class="v3-home-heading">
+                <div><p class="eyebrow">V3 · DUAL_TRACK_RESEARCH</p>
+                    <h2 id="v3-home-heading">今日研究</h2>
+                    <p>首页只保留 CURRENT / POTENTIAL 两条研究轨道；板块、个股、联动、市场事件和数据能力都在本工作台内切换。</p>
+                </div>
+                <div class="v3-home-state" id="v3-home-state">正在读取 V3 研究上下文…</div>
+            </div>
+            <div class="v3-track-grid" aria-label="V3 双轨研究">
+                <section class="v3-track v3-current"><div class="v3-track-head"><h3>当前强势 CURRENT</h3><span id="v3-current-count">—</span></div><div id="v3-current-cards" class="v3-card-grid"></div></section>
+                <section class="v3-track v3-potential"><div class="v3-track-head"><h3>提前观察 POTENTIAL</h3><span id="v3-potential-count">—</span></div><div id="v3-potential-cards" class="v3-card-grid"></div></section>
+            </div>
+            <section class="v3-focus-grid" aria-label="V3 双轨个股清单">
+                <div class="v3-focus-card"><div class="v3-track-head"><h3>CURRENT_FOCUS</h3><span id="v3-current-focus-count">—</span></div><div id="v3-current-focus" class="v3-focus-list"></div></div>
+                <div class="v3-focus-card"><div class="v3-track-head"><h3>EARLY_FOCUS</h3><span id="v3-early-focus-count">—</span></div><div id="v3-early-focus" class="v3-focus-list"></div></div>
+            </section>
+            <div class="v3-quick-links" aria-label="统一功能入口">
+                <button type="button" data-v3-page="sectors"><b>板块研究</b><span>双轨资格、周期矩阵、主线背景和成员</span></button>
+                <button type="button" data-v3-page="stocks"><b>个股研究</b><span>新高、RPS、均线、量额与证据抽屉</span></button>
+                <button type="button" data-v3-page="linkage"><b>联动筛选</b><span>属性库、主备板块和交叉集合</span></button>
+                <button type="button" data-v3-page="market"><b>市场与事件</b><span>市场周期、在线事件、热度和梯队</span></button>
+            </div>
+        </section>
+        <details id="v3-legacy-overview" class="v3-legacy-overview">
+            <summary>历史分析与兼容明细（按需展开）</summary>
         <section class="cards" aria-label="版本摘要">
             <article class="card">
                 <div class="card-label">发布版本</div>
@@ -91,8 +175,18 @@
                 <div class="pager"><button id="overview-priority-prev" type="button" disabled>上一页</button><span id="overview-priority-page-label">第 1 页</span><button id="overview-priority-next" type="button" disabled>下一页</button></div>
             </section>
         </section>
+        </details>
     </div>
     <section id="market-page" class="market-page" hidden>
+        <section id="v3-online-panel" class="panel v3-online-panel" hidden>
+            <div class="panel-heading"><div><h2>在线事件与热度</h2><p>在线事实独立于本地收盘研究，按请求读取；来源失败只影响对应卡片，不用本地数据补写。</p></div><button id="v3-online-refresh" class="evidence-button filter-button" type="button">刷新在线卡片</button></div>
+            <div class="v3-online-grid">
+                <article class="v3-online-card"><h3>事件速览</h3><div id="v3-online-overview" class="v3-online-body">尚未读取。</div></article>
+                <article class="v3-online-card"><h3>最强题材 / 涨停分布</h3><div id="v3-online-topics" class="v3-online-body">尚未读取。</div></article>
+                <article class="v3-online-card"><h3>热门板块 / 热门话题</h3><div id="v3-online-hot" class="v3-online-body">尚未读取。</div></article>
+            </div>
+            <div class="v3-online-ladder"><div class="panel-heading"><div><h3>在线涨停事实</h3><p>来源事件批次；不与本地梯队估算混合。</p></div><button id="v3-online-ladder-refresh" class="evidence-button filter-button" type="button">读取在线涨停</button></div><div id="v3-online-ladder" class="table-wrap">按需读取。</div></div>
+        </section>
         <section class="panel filters-panel">
             <div class="filter-row">
                 <label>历史窗口<select id="market-days"><option value="30">30日</option><option value="60" selected>60日</option><option value="90">90日</option><option value="120">120日</option><option value="250">250日</option></select></label>
@@ -393,5 +487,6 @@
 <script src="/v2/modal.js?v=m15-04"></script>
 <script src="/v2/router.js?v=m15-04"></script>
 <script src="/v2/app.js?v=m15-04"></script>
+<script src="/v2/v3-unified.js?v=v3-unified-2"></script>
 </body>
 </html>

@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="__CSRF_TOKEN__">
-    <title>统一研究工作台 · __WORKBENCH_VERSION__</title>
-    <link rel="stylesheet" href="/v2/styles.css?v=m15-04">
+    <title>统一研究工作台</title>
+    <link rel="stylesheet" href="/v2/styles.css?v=default-route-ui-1">
     <link rel="stylesheet" href="/v2/p01-03.css?v=v3-p01-03">
     <style>
         [data-workbench-mode="v3"] .preview-badge { background: #e7f3ff; color: #1769aa; }
@@ -14,6 +14,56 @@
         [data-workbench-mode="v3"] .v3-home-heading h2 { margin: 0 0 6px; font-size: 24px; color: #142b4b; }
         [data-workbench-mode="v3"] .v3-home-heading p { margin: 0; color: #60758b; line-height: 1.6; }
         [data-workbench-mode="v3"] .v3-home-state { color: #1769aa; font-size: 12px; white-space: nowrap; padding-top: 7px; }
+        [data-workbench-mode="v3"] #v3-legacy-overview { display: none; }
+        [data-workbench-mode="v3"] .v3-local-overview { margin-top: 14px; padding: 16px; border: 1px solid #cfe1f2; border-top: 4px solid #287bc1; border-radius: 12px; background: #fff; }
+        [data-workbench-mode="v3"] .v3-local-market { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 8px; margin-top: 12px; }
+        [data-workbench-mode="v3"] .v3-local-market>div { padding: 10px; border-radius: 8px; background: #f2f7fb; }
+        [data-workbench-mode="v3"] .v3-local-market small, [data-workbench-mode="v3"] .v3-local-market b { display: block; }
+        [data-workbench-mode="v3"] .v3-local-market p { margin: 0; color: #8a5b17; }
+        [data-workbench-mode="v3"] .v3-local-sectors { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px; margin-top: 14px; }
+        [data-workbench-mode="v3"] .v3-local-sectors section { min-width: 0; }
+        [data-workbench-mode="v3"] .v3-local-sectors h4 { margin: 0 0 8px; }
+        [data-workbench-mode="v3"] .v3-local-sectors h4 small { font-weight: 400; color: #60758b; }
+        [data-workbench-mode="v3"] .v3-local-sector-list { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 7px; }
+        [data-workbench-mode="v3"] .v3-local-sector-list button, [data-workbench-mode="v3"] .v3-detail-members button { min-width: 0; padding: 9px; border: 1px solid #dbe4ee; border-radius: 8px; background: #fbfdff; text-align: left; cursor: pointer; color: #19324d; }
+        [data-workbench-mode="v3"] .v3-local-sector-list button:hover, [data-workbench-mode="v3"] .v3-detail-members button:hover { border-color: #1769aa; }
+        [data-workbench-mode="v3"] .v3-local-sector-list b, [data-workbench-mode="v3"] .v3-local-sector-list span, [data-workbench-mode="v3"] .v3-detail-members b, [data-workbench-mode="v3"] .v3-detail-members span { display: block; }
+        [data-workbench-mode="v3"] .v3-local-sector-list span, [data-workbench-mode="v3"] .v3-detail-members span { margin-top: 4px; color: #60758b; font-size: 11px; line-height: 1.4; }
+        [data-workbench-mode="v3"] .v3-detail-facts { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; margin: 12px 0; }
+        [data-workbench-mode="v3"] .v3-detail-facts>div { padding: 10px; border: 1px solid #e2eaf2; border-radius: 8px; }
+        [data-workbench-mode="v3"] .v3-detail-facts b, [data-workbench-mode="v3"] .v3-detail-facts span { display: block; }
+        [data-workbench-mode="v3"] .v3-detail-facts b, [data-workbench-mode="v3"] .v3-detail-meta { color: #60758b; font-size: 12px; }
+        [data-workbench-mode="v3"] .v3-detail-members { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 6px; max-height: 420px; overflow: auto; }
+        [data-workbench-mode="v3"] .v3-priority-stocks { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 8px; margin-top: 12px; }
+        [data-workbench-mode="v3"] .v3-priority-stocks button { padding: 10px; border: 1px solid #dbe4ee; border-radius: 8px; background: #fbfdff; text-align: left; color: #19324d; cursor: pointer; }
+        [data-workbench-mode="v3"] .v3-priority-stocks button:hover { border-color: #1769aa; }
+        [data-workbench-mode="v3"] .v3-priority-stocks b, [data-workbench-mode="v3"] .v3-priority-stocks span { display: block; }
+        [data-workbench-mode="v3"] .v3-priority-stocks small, [data-workbench-mode="v3"] .v3-priority-stocks span { color: #60758b; font-size: 12px; }
+        [data-workbench-mode="v3"] .v3-priority-pager { display: flex; justify-content: center; align-items: center; gap: 12px; margin-top: 12px; }
+        [data-workbench-mode="v3"] .v3-member-table-wrap { overflow: auto; max-height: 58vh; border: 1px solid #dce5ed; border-radius: 10px; }
+        [data-workbench-mode="v3"] .v3-member-table { width: 100%; min-width: 850px; border-collapse: collapse; font-size: 13px; }
+        [data-workbench-mode="v3"] .v3-member-table th { position: sticky; top: 0; z-index: 1; background: #f4f7fa; color: #52677a; text-align: right; padding: 9px 10px; border-bottom: 1px solid #dce5ed; white-space: nowrap; }
+        [data-workbench-mode="v3"] .v3-member-table th:nth-child(2), [data-workbench-mode="v3"] .v3-member-table td:nth-child(2) { text-align: left; }
+        [data-workbench-mode="v3"] .v3-member-table td { text-align: right; padding: 9px 10px; border-bottom: 1px solid #edf1f4; white-space: nowrap; }
+        [data-workbench-mode="v3"] .v3-member-table tbody tr { cursor: pointer; }
+        [data-workbench-mode="v3"] .v3-member-table tbody tr:hover { background: #f3f8fc; }
+        [data-workbench-mode="v3"] .v3-member-table td small { display: block; color: #7a8b99; }
+        [data-workbench-mode="v3"] .v3-member-table .positive { color: #c0392b; font-weight: 700; }
+        [data-workbench-mode="v3"] .v3-member-table .negative { color: #16815c; font-weight: 700; }
+        [data-workbench-mode="v3"] .v3-member-tag { display: inline-block; padding: 2px 7px; border-radius: 999px; background: #e8eef3; color: #52677a; }
+        [data-workbench-mode="v3"] .v3-member-tag.today_leader { background: #fde8e5; color: #ae3328; }
+        [data-workbench-mode="v3"] .v3-member-tag.mid_pack { background: #fff3d6; color: #8a6400; }
+        [data-workbench-mode="v3"] .v3-member-tag.low_return { background: #e5f2ec; color: #176847; }
+        [data-workbench-mode="v3"] .v3-priority-table-wrap { overflow: auto; border: 1px solid #dce5ed; border-radius: 10px; }
+        [data-workbench-mode="v3"] .v3-priority-table { width: 100%; min-width: 1050px; border-collapse: collapse; font-size: 13px; }
+        [data-workbench-mode="v3"] .v3-priority-table th { background: #f4f7fa; color: #52677a; text-align: right; padding: 9px 10px; border-bottom: 1px solid #dce5ed; white-space: nowrap; }
+        [data-workbench-mode="v3"] .v3-priority-table th:nth-child(2), [data-workbench-mode="v3"] .v3-priority-table td:nth-child(2), [data-workbench-mode="v3"] .v3-priority-table th:last-child, [data-workbench-mode="v3"] .v3-priority-table td:last-child { text-align: left; }
+        [data-workbench-mode="v3"] .v3-priority-table td { text-align: right; padding: 9px 10px; border-bottom: 1px solid #edf1f4; white-space: nowrap; }
+        [data-workbench-mode="v3"] .v3-priority-table tbody tr { cursor: pointer; }
+        [data-workbench-mode="v3"] .v3-priority-table tbody tr:hover { background: #f3f8fc; }
+        [data-workbench-mode="v3"] .v3-priority-table td small { display: block; color: #7a8b99; }
+        [data-workbench-mode="v3"] .v3-priority-table .positive { color: #c0392b; font-weight: 700; }
+        [data-workbench-mode="v3"] .v3-priority-table .negative { color: #16815c; font-weight: 700; }
         [data-workbench-mode="v3"] .v3-track-grid, [data-workbench-mode="v3"] .v3-focus-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 14px; }
         [data-workbench-mode="v3"] .v3-track, [data-workbench-mode="v3"] .v3-focus-card { background: #fff; border: 1px solid #dbe4ee; border-radius: 12px; padding: 14px; min-width: 0; }
         [data-workbench-mode="v3"] .v3-current { border-top: 4px solid #287bc1; background: linear-gradient(180deg, #f0f8ff, #fff 35%); }
@@ -42,7 +92,7 @@
         [data-workbench-mode="v3"] .v3-focus-row em { color: #60758b; font-size: 12px; font-style: normal; }
         [data-workbench-mode="v3"] .v3-focus-row > span:last-child { color: #52677c; font-size: 12px; overflow-wrap: anywhere; }
         [data-workbench-mode="v3"] .v3-empty { padding: 27px 12px; border: 1px dashed #cdd9e4; border-radius: 8px; color: #60758b; text-align: center; font-size: 12px; }
-        [data-workbench-mode="v3"] .v3-quick-links { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 14px; }
+        [data-workbench-mode="v3"] .v3-quick-links { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 14px; }
         [data-workbench-mode="v3"] .v3-quick-links button { display: flex; flex-direction: column; gap: 5px; align-items: flex-start; min-height: 72px; padding: 12px; border: 1px solid #cfe1f2; border-radius: 9px; background: #fff; color: #19324d; text-align: left; cursor: pointer; }
         [data-workbench-mode="v3"] .v3-quick-links button:hover { border-color: #1769aa; background: #f7fbff; }
         [data-workbench-mode="v3"] .v3-quick-links span { color: #60758b; font-size: 12px; line-height: 1.4; }
@@ -78,18 +128,17 @@
         [data-workbench-mode="v3"] .v3-online-status.ok { color: #1b6e43; }
         [data-workbench-mode="v3"] .v3-online-status.warn { color: #9a6000; }
         [data-workbench-mode="v3"] .v3-online-ladder { margin-top: 12px; }
+        [data-workbench-mode="v3"] .hot-rank-panel, [data-workbench-mode="v3"] .local-limit-panel { display: none; }
         [data-workbench-mode="v3"] #v3-online-ladder table { width: 100%; border-collapse: collapse; font-size: 12px; }
         [data-workbench-mode="v3"] #v3-online-ladder th, [data-workbench-mode="v3"] #v3-online-ladder td { padding: 8px; border-bottom: 1px solid #edf1f5; text-align: left; }
         [data-workbench-mode="v3"] #v3-online-ladder th { color: #52677c; background: #f8fafc; }
-        @media (max-width: 900px) { [data-workbench-mode="v3"] .v3-online-grid, [data-workbench-mode="v3"] .v3-quick-links, [data-workbench-mode="v3"] .v3-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-        @media (max-width: 640px) { [data-workbench-mode="v3"] .v3-home-heading, [data-workbench-mode="v3"] .v3-track-grid, [data-workbench-mode="v3"] .v3-focus-grid, [data-workbench-mode="v3"] .v3-online-grid, [data-workbench-mode="v3"] .v3-actions { grid-template-columns: 1fr; display: grid; } [data-workbench-mode="v3"] .v3-home-state { white-space: normal; } [data-workbench-mode="v3"] .v3-card-grid, [data-workbench-mode="v3"] .v3-quick-links { grid-template-columns: 1fr; } }
+        @media (max-width: 900px) { [data-workbench-mode="v3"] .v3-online-grid, [data-workbench-mode="v3"] .v3-quick-links, [data-workbench-mode="v3"] .v3-actions, [data-workbench-mode="v3"] .v3-priority-stocks { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+        @media (max-width: 640px) { [data-workbench-mode="v3"] .v3-home-heading, [data-workbench-mode="v3"] .v3-track-grid, [data-workbench-mode="v3"] .v3-focus-grid, [data-workbench-mode="v3"] .v3-online-grid, [data-workbench-mode="v3"] .v3-actions, [data-workbench-mode="v3"] .v3-local-sectors { grid-template-columns: 1fr; display: grid; } [data-workbench-mode="v3"] .v3-home-state { white-space: normal; } [data-workbench-mode="v3"] .v3-card-grid, [data-workbench-mode="v3"] .v3-quick-links, [data-workbench-mode="v3"] .v3-local-market, [data-workbench-mode="v3"] .v3-local-sector-list, [data-workbench-mode="v3"] .v3-detail-members { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body data-workbench-mode="__WORKBENCH_MODE__" data-workbench-base="__WORKBENCH_BASE__">
 <header class="topbar">
-    <div class="brand"><span class="brand-mark">M7</span>
-        <div><strong>统一研究工作台</strong><small>Workbench __WORKBENCH_VERSION__ · 单一入口</small></div>
-    </div>
+    <div class="brand"><div><strong>统一研究工作台</strong></div></div>
     <label class="publication-picker">发布版本
         <select id="publication-select" aria-label="选择发布版本"></select>
     </label>
@@ -105,41 +154,46 @@
 </nav>
 <main class="content">
     <section class="page-heading">
-        <div><p class="eyebrow">M7A · 7A-05</p>
-            <h1 id="page-title">研究总览</h1>
+        <div><h1 id="page-title">研究总览</h1>
             <p id="page-description">公共 UI 层预览：版本、输入身份与统一股票范围。</p></div>
-        <span class="preview-badge">V3 单一入口</span>
     </section>
     <div id="notice" class="notice" role="status" aria-live="polite">正在加载…</div>
     <div id="overview-page">
         <section id="v3-home" class="v3-home" hidden aria-labelledby="v3-home-heading">
             <div class="v3-home-heading">
-                <div><p class="eyebrow">V3 · DUAL_TRACK_RESEARCH</p>
-                    <h2 id="v3-home-heading">今日研究</h2>
-                    <p>首页只保留 CURRENT / POTENTIAL 两条研究轨道；板块、个股、联动、市场事件和数据能力都在本工作台内切换。</p>
+                <div><h2 id="v3-home-heading">今日研究</h2>
+                    <p>本地今日总览与“当前强势 / 提前观察”双轨并列展示；点击板块或个股可就地查看详情。</p>
                 </div>
-                <div class="v3-home-state" id="v3-home-state">正在读取 V3 研究上下文…</div>
+                <div class="v3-home-state" id="v3-home-state">正在读取研究上下文…</div>
             </div>
+            <section class="v3-local-overview" aria-label="本地今日总览">
+                <div class="v3-track-head"><div><h3>今日总览 · 本地收盘数据</h3><small>领先板块按本地相对强度排名，不等同于“当前强势”资格</small></div><span id="v3-local-dates">正在读取…</span></div>
+                <div id="v3-local-market" class="v3-local-market"></div>
+                <div id="v3-local-sectors" class="v3-local-sectors"></div>
+            </section>
             <div class="v3-track-grid" aria-label="V3 双轨研究">
-                <section class="v3-track v3-current"><div class="v3-track-head"><h3>当前强势 CURRENT</h3><span id="v3-current-count">—</span></div><div id="v3-current-cards" class="v3-card-grid"></div></section>
-                <section class="v3-track v3-potential"><div class="v3-track-head"><h3>提前观察 POTENTIAL</h3><span id="v3-potential-count">—</span></div><div id="v3-potential-cards" class="v3-card-grid"></div></section>
+                <section class="v3-track v3-current"><div class="v3-track-head"><div><h3>当前强势</h3><small>当日强度、宽度和成员结构均达到当前研究条件</small></div><span id="v3-current-count">—</span></div><div id="v3-current-cards" class="v3-card-grid"></div></section>
+                <section class="v3-track v3-potential"><div class="v3-track-head"><div><h3>早期启动 / 结构突破观察</h3><small>寻找宽度扩散、底部蓄势、回暖，以及个股 SETUP / BREAKOUT / RECOVERY；尚未进入当前强势</small></div><span id="v3-potential-count">—</span></div><div id="v3-potential-cards" class="v3-card-grid"></div></section>
             </div>
             <section class="v3-focus-grid" aria-label="V3 双轨个股清单">
-                <div class="v3-focus-card"><div class="v3-track-head"><h3>CURRENT_FOCUS</h3><span id="v3-current-focus-count">—</span></div><div id="v3-current-focus" class="v3-focus-list"></div></div>
-                <div class="v3-focus-card"><div class="v3-track-head"><h3>EARLY_FOCUS</h3><span id="v3-early-focus-count">—</span></div><div id="v3-early-focus" class="v3-focus-list"></div></div>
+                <div class="v3-focus-card"><div class="v3-track-head"><div><h3>当前关注个股</h3><small>来自“当前强势”板块的结构合格成员</small></div><span id="v3-current-focus-count">—</span></div><div id="v3-current-focus" class="v3-focus-list"></div></div>
+                <div class="v3-focus-card"><div class="v3-track-head"><div><h3>提前观察个股</h3><small>仅来自“提前观察”板块；板块为空时这里也为空</small></div><span id="v3-early-focus-count">—</span></div><div id="v3-early-focus" class="v3-focus-list"></div></div>
+            </section>
+            <section class="v3-local-overview" aria-label="本地综合优先研究个股">
+                <div class="v3-track-head"><div><h3>优先研究个股 · 本地综合精选</h3><small>综合板块、个股结构、强度、趋势、量额和本地信号；仅保留行业/概念背景，最多 100 只</small></div><span id="v3-priority-count">正在读取…</span></div>
+                <div id="v3-priority-stocks"></div>
             </section>
             <div class="v3-quick-links" aria-label="统一功能入口">
                 <button type="button" data-v3-page="sectors"><b>板块研究</b><span>双轨资格、周期矩阵、主线背景和成员</span></button>
                 <button type="button" data-v3-page="stocks"><b>个股研究</b><span>新高、RPS、均线、量额与证据抽屉</span></button>
-                <button type="button" data-v3-page="linkage"><b>联动筛选</b><span>属性库、主备板块和交叉集合</span></button>
-                <button type="button" data-v3-page="market"><b>市场与事件</b><span>市场周期、在线事件、热度和梯队</span></button>
+                <button type="button" data-v3-page="market"><b>市场与事件</b><span>市场周期、在线涨停、题材与热度</span></button>
             </div>
             <section class="v3-actions" aria-label="数据与运维入口">
                 <article class="v3-action-card v3-action-primary">
                     <div class="v3-action-label">数据生成</div>
-                    <h3>生成当前 V3 研究数据</h3>
-                    <p>按当前发布版本和交易日提交受控 BUILD_RESEARCH_V3 任务；不会因打开首页自动执行。</p>
-                    <button id="v3-build-research" class="v3-build-button" type="button">生成当前 V3 研究数据</button>
+                    <h3>一键生成全部本地数据</h3>
+                    <p>按目标交易日依次生成日包、发布、技术与板块分析、主线和研究数据；不会因打开首页自动执行。</p>
+                    <button id="v3-build-research" class="v3-build-button" type="button">一键生成本地数据</button>
                     <div id="v3-build-status" class="v3-build-status" role="status" aria-live="polite">尚未提交生成任务。</div>
                 </article>
                 <button class="v3-action-card v3-action-link" type="button" data-v3-page="data-info">
@@ -151,7 +205,7 @@
             </section>
         </section>
         <details id="v3-legacy-overview" class="v3-legacy-overview">
-            <summary>历史分析与兼容明细（按需展开）</summary>
+            <summary>旧版兼容明细（不参与 V3 首页结论，按需展开）</summary>
         <section class="cards" aria-label="版本摘要">
             <article class="card">
                 <div class="card-label">发布版本</div>
@@ -211,13 +265,15 @@
     </div>
     <section id="market-page" class="market-page" hidden>
         <section id="v3-online-panel" class="panel v3-online-panel" hidden>
-            <div class="panel-heading"><div><h2>在线事件与热度</h2><p>在线事实独立于本地收盘研究，按请求读取；来源失败只影响对应卡片，不用本地数据补写。</p></div><button id="v3-online-refresh" class="evidence-button filter-button" type="button">刷新在线卡片</button></div>
+            <div class="panel-heading"><div><h2>在线事件与热度工作台</h2><p>在线交易日独立于本地发布日；由公开来源确认最近交易日。个股热度四榜始终实时读取最新榜单。</p></div><div><label>在线交易日 <input id="v3-online-trade-date" type="date"></label><button id="v3-online-refresh" class="evidence-button filter-button" type="button">刷新全部在线数据</button></div></div>
             <div class="v3-online-grid">
-                <article class="v3-online-card"><h3>事件速览</h3><div id="v3-online-overview" class="v3-online-body">尚未读取。</div></article>
-                <article class="v3-online-card"><h3>最强题材 / 涨停分布</h3><div id="v3-online-topics" class="v3-online-body">尚未读取。</div></article>
-                <article class="v3-online-card"><h3>热门板块 / 热门话题</h3><div id="v3-online-hot" class="v3-online-body">尚未读取。</div></article>
+                <article class="v3-online-card v3-online-overview-card"><h3>市场事件速览</h3><div id="v3-online-overview" class="v3-online-body">尚未读取。</div></article>
+                <article class="v3-online-card v3-online-topics-card"><h3>最强题材与涨停分布</h3><p class="v3-card-help">展示全部题材；点击题材打开在线成员表格。</p><div id="v3-online-topics" class="v3-online-body">尚未读取。</div></article>
+                <article class="v3-online-card v3-online-hot-card"><h3>热门概念、行业与话题</h3><div id="v3-online-hot" class="v3-online-body">尚未读取。</div></article>
+                <article class="v3-online-card v3-online-full-row"><h3>七池明细 · 其他池</h3><div class="v3-inline-controls"><select id="v3-online-pool-type"><option value="super_stock" selected>强势股</option><option value="limit_up_broken">炸板</option><option value="yesterday_limit_up">昨日涨停</option><option value="limit_down">跌停</option><option value="new_stock">新股</option><option value="nearly_new">次新股</option></select></div><div id="v3-online-pool" class="v3-online-body">正在读取强势股池…</div></article>
+                <article class="v3-online-card v3-online-full-row"><h3>个股热度四榜</h3><p class="v3-card-help">四个平台榜单并列展示，不用本地因子改写平台名次；请求时读取且不保存。</p><div id="v3-online-rank" class="v3-rank-grid">正在读取四榜…</div></article>
             </div>
-            <div class="v3-online-ladder"><div class="panel-heading"><div><h3>在线涨停事实</h3><p>来源事件批次；不与本地梯队估算混合。</p></div><button id="v3-online-ladder-refresh" class="evidence-button filter-button" type="button">读取在线涨停</button></div><div id="v3-online-ladder" class="table-wrap">按需读取。</div></div>
+            <div class="v3-online-ladder"><div class="panel-heading"><div><h3>在线涨停明细</h3><p>直接读取公开在线涨停池；不生成、不展示、也不回退本地涨停计算。</p></div><button id="v3-online-ladder-refresh" class="evidence-button filter-button" type="button">刷新涨停明细</button></div><div id="v3-online-ladder" class="table-wrap">正在等待读取。</div></div>
         </section>
         <section class="panel filters-panel">
             <div class="filter-row">
@@ -226,7 +282,7 @@
             </div>
             <div id="market-basis" class="basis-note">市场广度、成交额与均线覆盖按股票去重；缺少能力显示为暂无。</div>
         </section>
-        <section class="panel">
+        <section class="panel market-history-panel">
             <div class="field-guide"><h2>市场周期说明</h2><p>上涨、下跌、平盘只在报价有效分母内统计，三者恒等于有效报价数；成交额按统计范围内股票去重求和，默认包含科创板和北交所。点击下钻到个股页面时，才按个股展示权限隐藏两者。未具备涨跌停参考数据时保持 NULL，不用 0 代替未知。</p></div>
             <div class="panel-heading"><div><h2>市场历史聚合</h2><p>点击日期查看固定快照下的单日明细。</p></div></div>
             <div id="market-charts" class="market-chart-grid" aria-live="polite">
@@ -246,7 +302,7 @@
             <div id="hot-rank-table" class="table-wrap" aria-live="polite"></div>
             <div class="pager"><button id="hot-rank-prev" type="button" disabled>上一页</button><span id="hot-rank-page-label">第 1 页</span><button id="hot-rank-next" type="button" disabled>下一页</button></div>
         </section>
-        <section class="panel">
+        <section class="panel local-limit-panel">
             <div class="field-guide"><h2>收盘梯队与晋级</h2><p>梯队只展示本地 M8C 已确认的涨停状态；晋级分母按昨日确认涨停、今日可判断且有涨跌幅限制计算。未知、停牌和无涨跌幅限制分别排除，不把尚未构建渲染为 0。</p></div>
             <div class="filter-row">
                 <label>梯队层级<select id="limit-ladder-level"><option value="ALL">全部层级</option><option value="4PLUS">4板及以上</option><option value="3">3板</option><option value="2">2板</option><option value="1">1板</option></select></label>
@@ -267,7 +323,7 @@
             <div class="filter-row">
                 <label>视图<select id="technical-mode">
                     <option value="highs">创新高 · RPS</option>
-                    <option value="technical">技术状态</option>
+                    <option value="technical">全市场技术诊断（兼容功能）</option>
                 </select></label>
                 <label>新高窗口<select id="technical-window">
                     <option value="20">20日</option>
@@ -297,10 +353,11 @@
                     <option value="SIGNIFICANT">大幅放量</option>
                 </select></label>
                 <label>研究级别<select id="technical-research-band">
-                    <option value="">不限</option>
+                    <option value="RESEARCHABLE" selected>研究范围（核心＋支持）</option>
                     <option value="CORE_RESEARCH">核心研究</option>
                     <option value="SUPPORTED_RESEARCH">支持观察</option>
                     <option value="DIAGNOSTIC_ONLY">诊断参考</option>
+                    <option value="">全部数据（含诊断参考）</option>
                 </select></label>
                 <button id="technical-refresh" class="evidence-button filter-button" type="button">刷新</button>
             </div>
@@ -368,7 +425,7 @@
         </section>
         <section class="panel">
             <div class="field-guide"><h2>中期主线背景说明</h2>
-                <p>主线分类使用板块强度、上涨宽度、成交额扩张和强势成员变化的版本化硬条件；未知字段不会被当作不通过，也不使用隐藏综合分。3日先进入短期观察池，5日才判断快速状态，10日才判断稳定状态；20日只补充完整证据。行业按层级分表，概念平级展示，不混合排名。</p>
+                <p>这里使用板块强度、上涨宽度、成交额扩张和强势成员变化的版本化硬条件，未知字段不会被当作通过，也不使用隐藏综合分。3日先进入短期观察池，5日才判断快速状态，10日才判断稳定状态；20日只补充完整证据。当前只构建了 9 月 11 日单日数据，因此只能显示“数据不足”，不能生成持续、加速等多日结论。</p>
                 <div class="guide-grid">
                     <div><b>观察池</b><span>历史达到3日但尚未达到快速或稳定状态门槛，只作为当前轮动候选观察。</span></div>
                     <div><b>持续</b><span>至少10日历史，多次进入强势区间，连续性、宽度和成员留存同时满足条件。</span></div>
@@ -518,7 +575,7 @@
 <script src="/v2/table.js?v=m15-04"></script>
 <script src="/v2/modal.js?v=m15-04"></script>
 <script src="/v2/router.js?v=m15-04"></script>
-<script src="/v2/app.js?v=m15-04"></script>
-<script src="/v2/v3-unified.js?v=v3-unified-2"></script>
+<script src="/v2/app.js?v=v3-market-online-1"></script>
+<script src="/v2/v3-unified.js?v=default-route-ui-2"></script>
 </body>
 </html>

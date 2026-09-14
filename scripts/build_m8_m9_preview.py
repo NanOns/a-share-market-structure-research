@@ -233,7 +233,12 @@ def load_inputs() -> tuple[pd.DataFrame, pd.DataFrame, list[date], date, dict[st
         raise RuntimeError(f"PREVIEW_DATES_EMPTY:{dates}")
     cutoff = max(dates)
     global SHADOW_ROOT
-    SHADOW_ROOT = ROOT / "reports/shadow/v2_runs" / cutoff.strftime("%Y%m%d")
+    pointer_path = ROOT / "reports/current" / (cutoff.strftime("%Y%m%d") + ".json")
+    pointer = json.loads(pointer_path.read_text(encoding="utf-8"))
+    run_id = str(pointer.get("run_id") or "")
+    if not run_id or "/" in run_id or "\\" in run_id:
+        raise RuntimeError("CURRENT_RELEASE_RUN_ID_INVALID")
+    SHADOW_ROOT = ROOT / "reports/shadow/v2_runs" / cutoff.strftime("%Y%m%d") / run_id
     if not SHADOW_ROOT.is_dir():
         raise RuntimeError(f"SHADOW_ROOT_MISSING:{SHADOW_ROOT}")
     lower = cutoff - timedelta(days=300)
@@ -459,7 +464,7 @@ def build_frames(
     changes = build_membership_changes(member_states)
     representatives = build_representative_state_daily(member_states, cutoff=cutoff)
     sector_cycle = build_sector_cycle_daily(
-        technical[["security_id", "trade_date", "quote_ret1", "ret5", "ret20", "rs5", "rs20", "raw_amount", "amount_vs_prior20", "ma20"]],
+        technical[["security_id", "trade_date", "adj_close", "quote_ret1", "ret5", "ret20", "rs5", "rs20", "raw_amount", "amount_vs_prior20", "ma20"]],
         membership[["sector_id", "sector_name", "sector_type", "sector_role", "trade_date", "security_id"]],
         cutoff=cutoff,
         member_states=member_states,
@@ -527,6 +532,19 @@ def insert_preview(
     preserve_prior_entries: bool = False,
 ) -> dict[str, object]:
     cutoff = max(dates)
+    prior_snapshot_id = None
+    if preserve_prior_entries:
+        with duckdb.connect(str(DB_PATH), read_only=True) as prior_con:
+            prior = prior_con.execute(
+                """select pas.snapshot_id
+                     from publication_analysis_snapshots pas
+                     join publications p using(publication_id)
+                     join analysis_snapshots s on s.snapshot_id=pas.snapshot_id
+                    where pas.domain='LOCAL_RECONSTRUCTED' and p.status='SUCCESS' and s.cutoff_date<?
+                    order by s.cutoff_date desc,p.trade_date desc,p.revision desc limit 1""",
+                [cutoff],
+            ).fetchone()
+            prior_snapshot_id = str(prior[0]) if prior else None
     snapshot_seed = json.dumps(
         {
             "prefix": PREVIEW_PREFIX,
@@ -541,6 +559,7 @@ def insert_preview(
             "cutoff": str(cutoff),
             "dates": [str(item) for item in dates],
             "inputs": input_hashes,
+            **({"prior_snapshot_id": prior_snapshot_id} if preserve_prior_entries else {}),
         },
         ensure_ascii=False,
         sort_keys=True,
@@ -599,11 +618,6 @@ def insert_preview(
         if not publication:
             raise RuntimeError("CURRENT_PUBLICATION_HEAD_MISSING")
         publication_id = publication[0]
-        prior_binding = con.execute(
-            "select snapshot_id from publication_analysis_snapshots where publication_id=? and domain='LOCAL_RECONSTRUCTED'",
-            [publication_id],
-        ).fetchone()
-        prior_snapshot_id = str(prior_binding[0]) if prior_binding else None
         now = datetime.now(timezone.utc)
         con.execute("begin transaction")
         con.execute(
@@ -696,6 +710,8 @@ def insert_preview(
                 [prior_snapshot_id],
             ).fetchall()
             for domain, trade_date, slice_id in prior_entries:
+                if trade_date >= cutoff:
+                    raise RuntimeError("PRIOR_SNAPSHOT_FUTURE_ENTRY")
                 if (str(domain), trade_date) in replaced:
                     continue
                 con.execute(

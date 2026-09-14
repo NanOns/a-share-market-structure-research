@@ -81,6 +81,16 @@ def _calendar_snapshot(root, cutoff, tdx=None):
     frame=pd.read_csv(cal)
     existing=set(frame.calendar_date.astype(int));latest=max(existing)
     additions=_local_index_sessions(tdx,latest,int(cutoff))
+    # A calendar generated before the official day package can contain the
+    # target civil date as closed. The sealed package's primary-index dates
+    # may confirm it without inventing a future session.
+    target=int(cutoff)
+    closed_target=frame.calendar_date.eq(target) & ~frame.is_market_open.astype(bool)
+    if closed_target.any() and target in _local_index_sessions(tdx,target-1,target):
+        frame.loc[closed_target,'is_market_open']=True
+        frame.loc[closed_target,'source_basis']='LOCAL_PRIMARY_INDEX_DATE_CONFIRMATION'
+        frame.loc[closed_target,'index_confirmation_count']=2
+        frame.loc[closed_target,'confirming_indices']='SH.000001,SZ.399001'
     if int(cutoff) not in existing and int(cutoff) not in additions:additions.append(int(cutoff))
     rows=[{'calendar_date':value,'is_market_open':True,'source_basis':'LOCAL_AUDITED_TRADING_DAY_EVIDENCE','confirmation_count':0,'index_confirmation_count':0,'confirming_indices':'','a_stock_confirmation_count':0,'eligible_a_stock_count':0,'a_stock_confirmation_ratio':0.0} for value in sorted(set(additions)-existing)]
     if rows:frame=pd.concat([frame,pd.DataFrame(rows)],ignore_index=True)

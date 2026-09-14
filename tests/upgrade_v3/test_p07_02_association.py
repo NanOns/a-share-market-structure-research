@@ -45,4 +45,13 @@ def test_early_loo_requires_two_other_early_members_and_preserves_waiting_reason
     states = pd.DataFrame([{"sector_id": "P", "potential_eligible": True, "potential_rank": 1, "b_delta3": .06}])
     associations, shortlist = select_associations_and_shortlists(members, roles, states, CONFIG)
     assert bool(associations.iloc[0].loo_support) is True
-    assert shortlist.iloc[0].waiting_for == "板块当前强势确认"
+    assert shortlist.iloc[0].waiting_for == ["SECTOR_CURRENT_CONFIRMATION"]
+
+
+def test_current_focus_uses_configured_cap_instead_of_hiding_after_three_members():
+    members = pd.DataFrame([_member("A", f"S{n}", .01 + n / 1000) for n in range(8)])
+    roles = pd.DataFrame([_role("A", f"S{n}", "CURRENT_RESEARCH", n + 1) for n in range(6)])
+    states = pd.DataFrame([{"sector_id": "A", "current": True, "current_rank": 1}])
+    _, shortlist = select_associations_and_shortlists(members, roles, states, CONFIG)
+    current = shortlist[shortlist.list_type.eq("CURRENT_FOCUS")]
+    assert list(current.security_id) == [f"S{n}" for n in range(6)]

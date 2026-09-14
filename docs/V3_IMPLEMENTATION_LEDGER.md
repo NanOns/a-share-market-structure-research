@@ -1,5 +1,12 @@
 # V3 实施台账
 
+## V3 全栈复核整改（2026-09-13）
+
+| task_id | status | stage_contract | evidence | acceptance | next_stage |
+|---|---|---|---|---|---|
+| V3-SINGLE-DAY-RESET-20260913 | FULL_PASS | `V3_SINGLE_DAY_CLEAN_REBUILD_V1_0`；V3 §0、§2.1、§3、§18；用户单日清库裁决 | `docs/V3_SINGLE_DAY_RESET_20260913.md`；publication `m4-5fd06398dde1d174114e253af4330825`；snapshot `m8-m9-local-reconstructed-preview-v2-fa7ae877fdb0ce0e`；run `research-5fbbc614e78a42e384f329048792353c` | 旧生成数据与重复静态结果永久删除；仅 2026-09-11 publication/run；553 层级节点、72,537 关系、531 READY、CURRENT 3、CURRENT_FOCUS 9；页面空库完整构建及成员下钻通过 | 后续交易日使用同一页面完整构建入口 |
+| V3-RA-REMEDIATION-20260913 | DEGRADED_PASS | `V3_FULL_STACK_REMEDIATION_V1_0`；用户裁决 `V3-UC-20260913-01`；V3 §2、§5–§12、§18.13–14、§20–§22 | `docs/V3_FULL_STACK_REAUDIT_20260913.md`；`docs/V3_REAUDIT_REMEDIATION_20260913.md`；真实 run `research-5674cf88ba024738bf3dc066c2e57155` | V3 移除本地收盘梯队/晋级并只用在线入口；完整在线页显式可达；对象下钻修复；CURRENT 12、CURRENT_FOCUS 20、554/554 READY；POTENTIAL 当前日为 0，在线与效果仍诚实降级 | 多交易日 POTENTIAL/P10-03 观察；在线逐数据集复测 |
+
 ## 当前基线
 
 | 字段 | 值 |
@@ -696,3 +703,35 @@ P00-03 合同资产 SHA-256：
 | P11-V3-SNAPSHOT-COMPATIBILITY-REPAIR | FULL_PASS | `V3_P11_SNAPSHOT_COMPATIBILITY_REPAIR_V1_0`；V3 §18.7、§18.14、§20.3–§20.8 | 新激活 snapshot 初始 32 条 target-domain 引用、source snapshot 40 条；发现 technical/strength/high/member_state 旧日期共 8 条缺口；只读校验冲突 0，补入既有 immutable slice 引用 8 条，当前绑定恢复 40 条 | 旧日期 V3 查询引用完整；不重算业务行、不删旧 snapshot、不删旧表、不访问/修改 TDX；外层初报问题与修复独立留痕 | `V3_DAILY_OPERATION_AND_P10_03_EFFECT_OBSERVATION` |
 
 阶段报告：`docs/V3_P11_V3_DAILY_ACTIVATION_20260913.md`，机器回执：`reports/upgrade_v3/P11-V3-SNAPSHOT-COMPATIBILITY-REPAIR-20260913.json`。本条为跨切换兼容审计项，不改变 P10-03 效果门和旧表保留决定。
+
+## V3 最终研究清单与板块阶段展示（2026-09-14）
+
+| audit_item | status | stage_contract | scope/evidence | acceptance | next_stage |
+|---|---|---|---|---|---|
+| V3-FINAL-CANDIDATES-AND-PHASE-VISIBILITY | DEGRADED_PASS | `FINAL_LOCAL_RESEARCH_CANDIDATES_V1`；`sector_daily`既有版本化结构阶段合同 | 最终清单只纳入A+/A且主板块为INDUSTRY/THEME，按本地综合分排序并硬限100；页面改为25行分页列表，增加价格、涨幅、成交额、RPS20、综合分、结构和板块；板块卡片显示企稳/再加速/主升强势 | 2026-09-11原结构候选1071只，合格且最终入选69只，STYLE主板块0只；玻璃当前强势卡同步显示`STABILIZATION/企稳`；单日重建后的多日主线553条保持`DATA_INSUFFICIENT` | 连续真实交易日积累后验收退潮、持续、扩散等多日生命周期 |
+
+首页后续复核曾增加“板块生命周期 · 前瞻与风险”区域；产品复核确认其直接复用`/api/mainlines`，与“板块研究/中期主线背景”重复，现已删除首页副本。“提前观察”入口保留并明确为早期启动/结构突破观察，因为它来自V3潜在转强合同，并列出板块扩散/蓄势/回暖与个股SETUP/BREAKOUT/RECOVERY证据。
+
+阶段报告：[V3_FINAL_CANDIDATE_AND_PHASE_REVIEW_20260914.md](V3_FINAL_CANDIDATE_AND_PHASE_REVIEW_20260914.md)。本条不以单日数据伪造多日主线阶段。
+
+## V3 本地服务托盘与控制入口（2026-09-14）
+
+| audit_item | status | stage_contract | scope/evidence | acceptance | next_stage |
+|---|---|---|---|---|---|
+| V3-LOCAL-SERVICE-TRAY-CONTROL | FULL_PASS | `WORKBENCH_LOCAL_SERVICE_CONTROL_V1` | 新增Windows通知区托盘、单实例、3秒状态刷新、启动/停止/受控重启/打开页面/退出；运维中心顶部增加服务控制；状态接口返回PID；停止接口复用CSRF和维护门 | PowerShell语法、Python编译、7项定向测试与diff check通过；未访问或修改TDX，未改生产数据 | 日常由`OPEN_UNIFIED_WORKBENCH.cmd`统一启动托盘与服务 |
+
+阶段报告：[V3_LOCAL_SERVICE_TRAY_AND_CONTROL_20260914.md](V3_LOCAL_SERVICE_TRAY_AND_CONTROL_20260914.md)。
+
+## V3 在线最近交易日与实时热榜修复（2026-09-14）
+
+| audit_item | status | stage_contract | scope/evidence | acceptance | next_stage |
+|---|---|---|---|---|---|
+| V3-ONLINE-LATEST-TRADE-DATE-AND-REALTIME-RANK | DEGRADED_PASS | `V3_ONLINE_LATEST_TRADE_DATE_V1` | 日期型在线模块由 EXT03/EXT02 确认最近交易日，与本地发布日解耦；个股热度四榜保持无日期参数的请求时实时模式；删除页面“龙字诀/龙字决”可见命名 | 2026-09-14 两来源确认当天；V3 页面显示在线14日、本地11日；四榜AVAILABLE；服务重启后PID 58216；定向测试通过 | 独立补齐 EXT01 当日在线涨停来源能力 |
+
+阶段报告：[V3_ONLINE_LATEST_TRADE_DATE_20260914.md](V3_ONLINE_LATEST_TRADE_DATE_20260914.md)。EXT01 当日归档不可用时保持空态，因此本阶段为 `DEGRADED_PASS`，没有用旧交易日冒充。
+
+## V3 当前强势类型与成员展示修复（2026-09-14）
+
+| audit_item | status | stage_contract | scope/evidence | acceptance | next_stage |
+|---|---|---|---|---|---|
+| V3-CURRENT-TYPE-MEMBER-DISPLAY | DEGRADED_PASS | `SECTOR_CURRENT_PREVIEW_2_TYPE_SCOPED`；`RESEARCH_SHORTLIST_PREVIEW_2_CONFIGURED_CAP`；`RESEARCH_V3_PREVIEW_6_CURRENT_FOCUS_COMPLETE` | CURRENT 增加 INDUSTRY/THEME 硬门；成员接口绑定 technical/strength 快照并按 ret1、amount、security_id 排序；页面表格显示价格、涨幅、成交额、20日涨幅、研究角色及三档表现标签；清单每板块上限从硬编码3改为合同配置；相关测试通过 | 2026-09-11 新 run `research-465514ce8678405a8e1e36a328cf05cc` COMPLETE；CURRENT 从玻璃/昨日较强/昨成交20 修正为仅玻璃；玻璃6只 CURRENT_RESEARCH 全部进入当前关注；V1/V3 候选均来自 `/api/candidates`，总池1071、分页展示 | 连续真实交易日继续验收 CURRENT/POTENTIAL 稳定性 |

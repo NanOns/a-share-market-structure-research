@@ -21,9 +21,14 @@ class _Response:
         self.status = "AVAILABLE"
         self.error_code = None
         self.normalized = []
+        self.source_trade_date = "2026-09-14"
+        self.source_as_of = "2026-09-14T07:30:00+00:00"
 
 
 class _FakeP09:
+    def batch(self, requests):
+        return tuple(_Response(source_id) for source_id, _params in requests)
+
     def fetch(self, source_id, params=None):
         return _Response(source_id)
 
@@ -58,6 +63,7 @@ def test_p09_api_routes_and_page_are_reachable_without_source_network(tmp_path, 
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
     paths = [
+        "/api/v3/online/latest-trade-date",
         "/api/v3/events/overview",
         "/api/v3/events/pools?pool_type=limit_up",
         "/api/v3/events/topics",
@@ -77,12 +83,17 @@ def test_p09_api_routes_and_page_are_reachable_without_source_network(tmp_path, 
             assert "status" in payload
             if path == "/api/v3/events/overview":
                 assert payload["promotion"]["rate"] == 0.25
+            if path == "/api/v3/online/latest-trade-date":
+                assert payload["trade_date"] == "2026-09-14"
+                assert payload["independent_from_local_publication"] is True
             if path == "/api/v3/events/distribution":
                 assert "amount_coverage" in payload
         page = urllib.request.urlopen(f"http://127.0.0.1:{server.server_port}/v3/online").read().decode("utf-8")
         assert "V3 在线事件与热度" in page
         assert "/api/v3/events/distribution" in page
         assert "REQUEST_TIME_ONLY" in page or "raw/row/batch" in page
+        assert "龙字诀" not in page
+        assert "龙字决" not in page
     finally:
         server.shutdown()
         server.server_close()

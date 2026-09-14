@@ -33,6 +33,15 @@ def test_current_is_same_type_relative_member_quote_fact_not_long_term_rank():
     assert "M1_POSITIVE" in by_id.loc["E", "reason_codes"]
 
 
+def test_current_excludes_style_sectors_even_when_their_numbers_pass():
+    members, market = _input()
+    members["sector_type"] = "STYLE"
+    output = build_sector_current(members, market, CONFIG).set_index("sector_id")
+    assert bool(output.loc["A", "current"]) is False
+    assert output.loc["A", "checks"]["CURRENT"]["ALLOWED_SECTOR_TYPE"] is False
+    assert "ALLOWED_SECTOR_TYPE" in output.loc["A", "reason_codes"]
+
+
 def test_concentration_and_downward_breadth_are_not_waived_by_amount_or_rank():
     members, market = _input()
     members.loc[(members.sector_id == "A") & (members.security_id == "A0"), "ret1"] = .50

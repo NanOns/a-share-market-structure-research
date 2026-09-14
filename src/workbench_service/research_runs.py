@@ -4,10 +4,12 @@ from __future__ import annotations
 from datetime import date, datetime, timezone
 import hashlib
 import json
+import math
 import uuid
 from typing import Any, Iterable
 
 import duckdb
+import pandas as pd
 
 from pathlib import Path
 
@@ -22,7 +24,24 @@ class ResearchRunError(ValueError):
 
 
 def _canonical(value: Any) -> str:
-    return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), default=str)
+    return json.dumps(_clean(value), ensure_ascii=False, sort_keys=True, separators=(",", ":"), default=str, allow_nan=False)
+
+
+def _clean(value: Any) -> Any:
+    if isinstance(value, dict):
+        return {key: _clean(item) for key, item in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [_clean(item) for item in value]
+    if value is pd.NA or value is pd.NaT:
+        return None
+    if isinstance(value, (float, int)) and not isinstance(value, bool) and not math.isfinite(float(value)):
+        return None
+    try:
+        if pd.isna(value):
+            return None
+    except (TypeError, ValueError):
+        pass
+    return value
 
 
 def research_input_key(*, publication_id: str, trade_date: Any, snapshot_id: str, membership_snapshot_id: str, algorithm_version: str, parameter_hash: str, dependency_bindings: dict[str, Any]) -> str:
@@ -69,6 +88,14 @@ class ResearchRunStore:
         )
         existing = self.connection.execute("SELECT run_id,status FROM research_runs WHERE input_key=?", [key]).fetchone()
         if existing:
+            if existing[1] == "FAILED":
+                # A failed attempt has no committed result rows. Reuse its
+                # stable input identity after an implementation repair.
+                self.connection.execute(
+                    "UPDATE research_runs SET status='BUILDING',error_code=NULL WHERE run_id=? AND status='FAILED'",
+                    [existing[0]],
+                )
+                return {"run_id": existing[0], "status": "BUILDING", "reused": True, "input_key": key}
             return {"run_id": existing[0], "status": existing[1], "reused": True, "input_key": key}
         run_id = "research-" + uuid.uuid4().hex
         self.connection.execute(
@@ -91,15 +118,17 @@ class ResearchRunStore:
         try:
             self.connection.execute("BEGIN TRANSACTION")
             for row in stock_states:
-                self.connection.execute("""INSERT INTO research_stock_states VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""", [run_id, row["security_id"], row.get("setup"), row.get("breakout"), row.get("recovery"), row.get("trend_background"), row.get("structure_break"), row.get("quality", "UNKNOWN"), row.get("bias20"), row.get("sigma20"), row.get("extension_z20"), row.get("dist_high20"), row.get("range5"), row.get("range20"), row.get("rps5_delta3"), row.get("liquidity20_amount"), _canonical(row.get("risk_codes", [])), _canonical(row.get("reason_codes", [])), _canonical(row.get("evidence", {}))])
+                self.connection.execute("""INSERT INTO research_stock_states VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""", _clean([run_id, row["security_id"], row.get("setup"), row.get("breakout"), row.get("recovery"), row.get("trend_background"), row.get("structure_break"), row.get("quality", "UNKNOWN"), row.get("bias20"), row.get("sigma20"), row.get("extension_z20"), row.get("dist_high20"), row.get("range5"), row.get("range20"), row.get("rps5_delta3"), row.get("liquidity20_amount"), _canonical(row.get("risk_codes", [])), _canonical(row.get("reason_codes", [])), _canonical(row.get("evidence", {}))]))
             for row in sector_states:
-                self.connection.execute("""INSERT INTO research_sector_states VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""", [run_id, row["sector_id"], row.get("current_eligible"), row.get("potential_eligible"), row.get("potential_branch"), _canonical(row.get("potential_branches", {})), row.get("current_rank"), row.get("potential_rank"), row.get("m1"), row.get("b1"), row.get("rel1"), row.get("p1"), row.get("q5"), row.get("q20"), row.get("dq5_3"), row.get("b_delta3"), row.get("ma20_width"), row.get("ma20_delta3"), row.get("early_width"), row.get("amount_a"), row.get("top1_positive_share"), row.get("member_count"), row.get("quote_valid_count"), row.get("feature_valid_count"), row.get("early_count"), row.get("positive_count"), row.get("quote_coverage"), row.get("feature_coverage"), row.get("risk_coverage"), row.get("quality", "UNKNOWN"), _canonical(row.get("reason_codes", [])), _canonical(row.get("evidence", {})), row.get("input_members_hash"), row.get("rank_universe_hash")])
+                self.connection.execute("""INSERT INTO research_sector_states VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""", _clean([run_id, row["sector_id"], row.get("current_eligible"), row.get("potential_eligible"), row.get("potential_branch"), _canonical(row.get("potential_branches", {})), row.get("current_rank"), row.get("potential_rank"), row.get("m1"), row.get("b1"), row.get("rel1"), row.get("p1"), row.get("q5"), row.get("q20"), row.get("dq5_3"), row.get("b_delta3"), row.get("ma20_width"), row.get("ma20_delta3"), row.get("early_width"), row.get("amount_a"), row.get("top1_positive_share"), row.get("member_count"), row.get("quote_valid_count"), row.get("feature_valid_count"), row.get("early_count"), row.get("positive_count"), row.get("quote_coverage"), row.get("feature_coverage"), row.get("risk_coverage"), row.get("quality", "UNKNOWN"), _canonical(row.get("reason_codes", [])), _canonical(row.get("evidence", {})), row.get("input_members_hash"), row.get("rank_universe_hash")]))
             for row in signal_states:
                 self.connection.execute("""INSERT INTO research_sector_signal_state VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)""", [run_id, row["sector_id"], row.get("episode_id"), row.get("first_seen_date"), row.get("last_qualified_date"), row.get("end_date"), row.get("age_sessions"), row.get("miss_sessions"), row.get("reset_sessions"), row.get("lifecycle"), row.get("end_reason"), row.get("prior_run_id"), bool(row.get("history_complete", False))])
             for row in member_roles:
                 self.connection.execute("""INSERT INTO research_sector_member_roles VALUES (?,?,?,?,?,?,?,?)""", [run_id, row["sector_id"], row["security_id"], row["role"], row["role_rank"], row.get("today_rank"), _canonical(row.get("role_reason_codes", [])), _canonical(row.get("evidence", {}))])
             for row in shortlists:
-                self.connection.execute("""INSERT INTO research_shortlist VALUES (?,?,?,?,?,?,?,?,?,?,?)""", [run_id, row["list_type"], row["security_id"], row["rank"], row.get("primary_sector_id"), _canonical(row.get("alternative_sector_ids", [])), _canonical(row.get("selection_reason", [])), _canonical(row.get("waiting_for", [])), _canonical(row.get("invalid_if", [])), row.get("previous_state"), row.get("change_reason")])
+                self.connection.execute("""INSERT INTO research_shortlist
+                    (run_id,list_type,security_id,rank,primary_sector_id,alternative_sector_ids,selection_reason,waiting_for,invalid_if,previous_state,change_reason,signal_date)
+                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?)""", [run_id, row["list_type"], row["security_id"], row["rank"], row.get("primary_sector_id"), _canonical(row.get("alternative_sector_ids", [])), _canonical(row.get("selection_reason", [])), _canonical(row.get("waiting_for", [])), _canonical(row.get("invalid_if", [])), row.get("previous_state"), row.get("change_reason"), row.get("signal_date")])
             self.connection.execute("UPDATE research_runs SET status='COMPLETE',completed_at=? WHERE run_id=?", [datetime.now(timezone.utc), run_id])
             self.connection.execute("COMMIT")
         except Exception:

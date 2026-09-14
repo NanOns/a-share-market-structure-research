@@ -55,6 +55,20 @@ def test_api31_keeps_priority_pagination_and_contract():
     assert values == sorted(values)
 
 
+def test_v3_final_candidates_are_bounded_and_exclude_style_sectors():
+    api, publication = _api_and_latest()
+    result = api.candidates(publication["publication_id"], "", 1, 50,
+                            include_analysis=True, basis="RECONSTRUCTED", final_only=True)
+
+    assert result["contract_id"] == "FINAL_LOCAL_RESEARCH_CANDIDATES_V1"
+    assert result["total"] <= 100
+    assert result["source_candidate_total"] >= result["eligible_pool_total"] >= result["total"]
+    assert all(row.get("research_priority") in {"A+", "A"} for row in result["items"])
+    assert all(row.get("primary_leader_sector_type") in {"INDUSTRY", "THEME"}
+               for row in result["items"])
+    assert all(row.get("final_research_rank") <= 100 for row in result["items"])
+
+
 def test_api30_rejects_future_overview_date():
     api, publication = _api_and_latest()
     try:

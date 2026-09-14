@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 import time
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 import pytest
 
@@ -166,9 +166,34 @@ def test_source_date_contract_conversions_are_explicit():
     assert "date=20260911" in _url("EXT06", {"date": "2026-09-11"})
 
 
+def test_ext05_current_beijing_day_uses_live_endpoint_but_history_stays_scoped():
+    today = datetime.now(timezone(timedelta(hours=8))).date()
+    live = _url("EXT05", {"pool_name": "limit_up", "date": today.isoformat()})
+    historical = _url("EXT05", {"pool_name": "limit_up", "date": (today - timedelta(days=3)).isoformat()})
+    assert "pool_name=limit_up" in live and "date=" not in live
+    assert "date=" in historical
+
+
 def test_seven_pool_enum_is_versioned_and_complete():
     assert len(EVENT_POOLS) == 7
     assert EVENT_POOLS == ("super_stock", "limit_up", "limit_up_broken", "yesterday_limit_up", "limit_down", "new_stock", "nearly_new")
+
+
+def test_limit_up_time_sort_precedes_pagination_and_missing_time_has_stable_fallback():
+    fake = FakeFetcher({"pool/detail": {"data": [
+        {"symbol": "LATE", "first_limit_up": 1789360000, "limit_up_days": 1},
+        {"symbol": "MISSING_LOW", "first_limit_up": 0, "limit_up_days": 1, "change_percent": 0.10},
+        {"symbol": "EARLY", "first_limit_up": 1789350000, "limit_up_days": 1},
+        {"symbol": "MISSING_HIGH", "first_limit_up": 0, "limit_up_days": 3, "change_percent": 0.09},
+    ]}})
+    service = P09OnlineProducts(fetcher=fake, capabilities={"EXT05": "CURRENT_PROBE"})
+    first = service.events_pools(pool_type="limit_up", page=1, page_size=2, sort="LIMIT_TIME")["pools"]["limit_up"]
+    second = service.events_pools(pool_type="limit_up", page=2, page_size=2, sort="LIMIT_TIME")["pools"]["limit_up"]
+    assert [row["source_code"] for row in first["items"]] == ["EARLY", "LATE"]
+    assert [row["source_code"] for row in second["items"]] == ["MISSING_HIGH", "MISSING_LOW"]
+    assert first["sort"]["mode"] == "LIMIT_TIME"
+    with pytest.raises(P09ProductError, match="POOL_SORT_INVALID"):
+        service.events_pools(pool_type="super_stock", sort="LIMIT_TIME")
 
 
 def test_disabled_capability_never_calls_network():
@@ -191,12 +216,14 @@ def test_runtime_capability_contract_matches_reprobe_and_opens_ext06():
 def test_ext06_longzijue_overview_groups_are_exposed_without_guessing_turnover_unit():
     fake = FakeFetcher({"market_state/v1/overview": {"status_code": 0, "data": {
         "turnover": {"now": "2万亿", "pre": "1.6万亿"},
+        "north_flow": {"now": "0.0亿", "pre": None},
         "rise_fall": {"rise": 643, "fall": 4870, "deuce": 37, "limit_up": 40, "limit_down": 21},
     }}})
     result = P09OnlineProducts(fetcher=fake, capabilities={"EXT06": "CURRENT_PROBE"}).fetch("EXT06", {"date": "2026-09-11"})
     assert result.status == "AVAILABLE"
     assert result.normalized["rise_fall"]["fall"] == 4870
     assert result.normalized["turnover_display"]["now"] == "2万亿"
+    assert result.normalized["north_flow_display"] == {"now": "0.0亿"}
 
 
 def test_dragon_yesterday_pool_promotion_uses_source_transition_fields_and_keeps_unknown_out():

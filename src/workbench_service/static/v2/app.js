@@ -41,7 +41,7 @@
     }
     function viewRequestActive(key, token) { return viewRequests[key] === token; }
     function cancelHiddenViewRequests(page, subpage) {
-        var active = page === 'overview' ? ['overview'] : page === 'market' ? ['market', 'limit', 'hot'] : page === 'stocks' ? ['technical'] : page === 'linkage' ? ['linkage'] : page === 'sectors' ? [subpage === 'mainlines' ? 'mainlines' : 'sectors'] : [];
+        var active = page === 'overview' ? ['overview'] : page === 'market' ? (workbenchMode === 'v3' ? ['market'] : ['market', 'limit', 'hot']) : page === 'stocks' ? ['technical'] : page === 'linkage' ? ['linkage'] : page === 'sectors' ? [subpage === 'mainlines' ? 'mainlines' : 'sectors'] : [];
         Object.keys(viewRequests).forEach(function (key) {
             if (active.indexOf(key) < 0 && viewRequests[key] && viewRequests[key].controller) viewRequests[key].controller.abort();
         });
@@ -910,8 +910,9 @@
             {title: '涨跌停 / 新高 / 队列', series: [{label: '涨停', color: '#d34b4b', value: function (point) { return point.limit_up_count; }}, {label: '跌停', color: '#2f8f68', value: function (point) { return point.limit_down_count; }}, {label: '新高20日', color: '#2d8bd8', value: function (point) { return marketNewHighValue(point, 20); }}, {label: '新高60日', color: '#4d9f72', value: function (point) { return marketNewHighValue(point, 60); }}, {label: '队列去重', color: '#b06a3c', value: function (point) { return point.queue_unique_count; }}]}
         ];
         configs.forEach(function (config, index) {
-            var card = document.getElementById(['market-breadth-chart', 'market-amount-chart', 'market-structure-chart'][index]).parentElement;
             var chart = document.getElementById(['market-breadth-chart', 'market-amount-chart', 'market-structure-chart'][index]);
+            if (!chart) return; // V3 removes the locally calculated limit-up chart.
+            var card = chart.parentElement;
             chart.replaceChildren(); chart.appendChild(renderMarketChartSvg(points, config.series, config.title));
             card.querySelector('.market-chart-note').textContent = index === 0 ? '上涨 / 下跌 / 平盘；三者之和等于有效报价分母。' : index === 1 ? '成交额柱形；MA20 / MA60 为上方数 ÷ 有效样本。' : '新高和队列按各自能力与有效分母绘制，NULL 保持缺口。';
         });
@@ -2178,13 +2179,15 @@
         if (!current) return;
         var token = beginViewRequest('market');
         var days = Number(document.getElementById('market-days').value || 60);
-        loadLimitViews();
-        loadHotRank();
+        if (workbenchMode !== 'v3') {
+            loadLimitViews();
+            loadHotRank();
+        }
         setNotice('正在读取市场历史聚合…');
         api.marketCycle({publication_id: current.publication_id, days: days, basis: 'RECONSTRUCTED', metrics: 'breadth,amount,ma,new_high,queues'}, {signal: token.signal}).then(function (result) {
             if (!viewRequestActive('market', token)) return;
             var points = result.points || [];
-            renderMarketCharts(points);
+            if (workbenchMode !== 'v3') renderMarketCharts(points);
             table.render(document.getElementById('market-table'), [{label: '交易日', key: 'trade_date'}, {label: '有效报价', key: 'quote_valid_count'}, {label: '涨 / 跌 / 平', value: function (row) { return [row.up_count, row.down_count, row.flat_count].join(' / '); }}, {label: '成交额', value: function (row) { return amountOrDash(row.amount_sum); }}, {label: 'MA20上方', value: function (row) { return row.ma20_above_count === null || row.ma20_valid_count === 0 ? '暂无' : row.ma20_above_count + ' / ' + row.ma20_valid_count; }}, {label: 'MA60上方', value: function (row) { return row.ma60_above_count === null || row.ma60_valid_count === 0 ? '暂无' : row.ma60_above_count + ' / ' + row.ma60_valid_count; }}, {label: '新高', value: function (row) { return Object.keys(row.new_high_counts || {}).map(function (key) { return key + '日 ' + row.new_high_counts[key].hit_count; }).join('、') || '暂无'; }}, {label: '明细', action: {label: '查看', onClick: openMarketDetail}}], points);
             document.getElementById('market-basis').textContent = '共 ' + points.length + ' 个交易日 · 快照 ' + display(result.snapshot_id) + ' · 历史基础 ' + display(result.history_basis) + ' · ' + statisticalScopeDescription(result.statistical_scope) + ' · 个股下钻' + displayScopeDescription(result.display_scope).replace('展示范围', '按展示范围') + ' · 涨跌停状态尚未构建时不填 0。';
             setNotice('市场历史聚合已加载。');
@@ -2228,7 +2231,7 @@
         dataInfoPage.hidden = page !== 'data-info';
         if (page === 'overview') {
             document.getElementById('page-title').textContent = workbenchMode === 'v3' ? '研究首页' : '研究总览';
-            document.getElementById('page-description').textContent = workbenchMode === 'v3' ? 'CURRENT / POTENTIAL 双轨研究首页；历史分析与兼容明细按需展开。' : '版本、输入身份与统一股票范围；总体统计保留科创板和北交所，个股展示按权限范围处理。';
+            document.getElementById('page-description').textContent = workbenchMode === 'v3' ? '本地今日总览、当前强势与提前观察；板块和个股就地查看详情。' : '版本、输入身份与统一股票范围；总体统计保留科创板和北交所，个股展示按权限范围处理。';
             if (workbenchMode !== 'v3') loadOverviewAnalysis();
             return;
         }

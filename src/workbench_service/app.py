@@ -1091,7 +1091,7 @@ class Api:
   if basis not in ('AUTO','OBSERVED','RECONSTRUCTED'): raise ValueError('BASIS_UNSUPPORTED')
   if quality_filter not in ('','INCLUDE_UNKNOWN'): raise ValueError('QUALITY_FILTER_UNSUPPORTED')
   research_band=str(research_band or '').strip().upper()
-  if research_band not in ('','CORE_RESEARCH','SUPPORTED_RESEARCH','DIAGNOSTIC_ONLY'): raise ValueError('RESEARCH_BAND_UNSUPPORTED')
+  if research_band not in ('','RESEARCHABLE','CORE_RESEARCH','SUPPORTED_RESEARCH','DIAGNOSTIC_ONLY'): raise ValueError('RESEARCH_BAND_UNSUPPORTED')
   context=self._analysis_context(p,basis);selected=context['selected'];as_of=self._analysis_as_of(context,trade_date,('technical',));date_filter=" and trade_date<=?" if as_of else ''
   size=max(1,min(MAX_PAGE_SIZE,int(size)));page=max(1,int(page))
   if turnover_min not in ('',None): raise ValueError('TURNOVER_NOT_BUILT')
@@ -1114,7 +1114,15 @@ class Api:
   if ma_state:filters.append('(t.ma_alignment=?'+(' or t.ma_alignment is null)' if include_unknown else ')'));params.append(ma_state)
   if amount_class_filter:filters.append('(t.amount_class=?'+(' or t.amount_class is null)' if include_unknown else ')'));params.append(amount_class_filter)
   if rps_value is not None:filters.append(f'(st.rps{rps_width}>=?'+(f' or st.rps{rps_width} is null)' if include_unknown else ')'));params.append(rps_value)
-  if research_band:filters.append("coalesce(ss.research_band,'DIAGNOSTIC_ONLY')=?");params.append(research_band)
+  if research_band=='RESEARCHABLE':
+   filters.append("ss.research_band in ('CORE_RESEARCH','SUPPORTED_RESEARCH')")
+  elif research_band=='DIAGNOSTIC_ONLY':
+   # v2 contract: diagnostic is a small, explainable technical watch set,
+   # not every stock which failed to hit a structure queue.
+   filters.append("coalesce(ss.research_band,'DIAGNOSTIC_ONLY')='DIAGNOSTIC_ONLY'")
+   filters.append("t.validity='VALID' and (st.rps20>=0.90 or (t.ma_alignment='BULLISH' and t.ret20>=0.15 and coalesce(t.amount_vs_prior20,0)>=1.20))")
+  elif research_band:
+   filters.append("ss.research_band=?");params.append(research_band)
   where=' and '.join(filters)
   select="t.security_id,t.trade_date,t.contract_id,t.price_basis,t.raw_close,t.adj_close,t.quote_ret1,t.raw_amount,t.raw_volume,t.ma5,t.ma10,t.ma20,t.ma60,t.ret5,t.ret10,t.ret20,t.ret60,t.rs5,t.rs10,t.rs20,t.rs60,t.amount_ma5,t.amount_ma10,t.amount_ma20,t.amount_ratio20,t.amount_vs_prior20,t.volume_vs_prior20,t.amount_class,t.ma_alignment,t.validity,t.quality_codes,t.basis_json,st.rps5,st.rps10,st.rps20,st.rps60,st.rps_valid_universe_count5,st.rps_valid_universe_count10,st.rps_valid_universe_count20,st.rps_valid_universe_count60,coalesce(ss.research_band,'DIAGNOSTIC_ONLY'),coalesce(ss.research_band_quality,'DATA_INSUFFICIENT')"
   with self._con() as c:
@@ -1124,7 +1132,7 @@ class Api:
   items=[]
   for row in rows:
    item=dict(zip(names,row));item['trade_date']=str(item['trade_date']);item['quality_codes']=json.loads(item['quality_codes']) if item['quality_codes'] else [];item['basis']=json.loads(item['basis']) if item['basis'] else {};items.append(item)
-  result={'publication_id':p,'page':page,'page_size':size,'total':total,'basis':basis,'rps_window':rps_width,'as_of_trade_date':str(max(item['trade_date'] for item in items)) if items else None,'snapshot_id':selected['snapshot_id'],'snapshot_capability':'AVAILABLE','items':items}
+  result={'publication_id':p,'page':page,'page_size':size,'total':total,'basis':basis,'rps_window':rps_width,'as_of_trade_date':str(max(item['trade_date'] for item in items)) if items else None,'snapshot_id':selected['snapshot_id'],'snapshot_capability':'AVAILABLE','diagnostic_scope_contract':'TECHNICAL_DIAGNOSTIC_SCOPE_V2','diagnostic_scope':'数据有效，且 RPS20≥0.90；或多头排列、20日收益不低于15%且额比前20不低于1.20','items':items}
   result.update(self._analysis_meta(context,{'page':page,'page_size':size,'basis':basis,'ma_state':ma_state,'rps_window':rps_window,'rps_min':rps_min,'amount_class':amount_class_filter,'quality_filter':quality_filter,'research_band':research_band,'trade_date':trade_date},as_of or result['as_of_trade_date'],{'from':result['as_of_trade_date'],'to':result['as_of_trade_date'],'dates':[result['as_of_trade_date']] if result['as_of_trade_date'] else []}))
   security_names=self._security_names(p,{item['security_id'] for item in items if item.get('security_id')})
   for item in items:item['security_name']=security_names.get(item.get('security_id'))
@@ -1132,7 +1140,7 @@ class Api:
  def new_highs(self,p,page=1,size=50,basis='AUTO',window=20,streak_min='',include_ties=False,rps_min='',research_band='',trade_date=None):
   if basis not in ('AUTO','OBSERVED','RECONSTRUCTED'): raise ValueError('BASIS_UNSUPPORTED')
   research_band=str(research_band or '').strip().upper()
-  if research_band not in ('','CORE_RESEARCH','SUPPORTED_RESEARCH','DIAGNOSTIC_ONLY'): raise ValueError('RESEARCH_BAND_UNSUPPORTED')
+  if research_band not in ('','RESEARCHABLE','CORE_RESEARCH','SUPPORTED_RESEARCH','DIAGNOSTIC_ONLY'): raise ValueError('RESEARCH_BAND_UNSUPPORTED')
   try: window=int(window)
   except (TypeError,ValueError): raise ValueError('WINDOW_UNSUPPORTED')
   if window not in (20,30,60,100): raise ValueError('WINDOW_UNSUPPORTED')
@@ -1145,7 +1153,10 @@ class Api:
    with self._con() as check:
     if not check.execute("select count(*) from analysis_snapshot_entries where snapshot_id=? and domain='strength'",[selected['snapshot_id']]).fetchone()[0]: raise ValueError('RPS_NOT_BUILT')
    filters.append('st.rps20>=?');params.append(rps_value)
-  if research_band:filters.append("coalesce(ss.research_band,'DIAGNOSTIC_ONLY')=?");params.append(research_band)
+  if research_band=='RESEARCHABLE':
+   filters.append("ss.research_band in ('CORE_RESEARCH','SUPPORTED_RESEARCH')")
+  elif research_band:
+   filters.append("coalesce(ss.research_band,'DIAGNOSTIC_ONLY')=?");params.append(research_band)
   where=' and '.join(filters)
   summary_joins=" left join analysis_snapshot_entries ue on ue.snapshot_id=he.snapshot_id and ue.domain='summary' and ue.trade_date=he.trade_date left join structure_summary_result_daily ss on ss.slice_id=ue.slice_id and ss.trade_date=ue.trade_date and ss.security_id=h.security_id"
   with self._con() as c:
@@ -1419,16 +1430,31 @@ class Api:
   if basis is not None:
    context=self._analysis_context(p,basis);as_of=self._analysis_as_of(context,trade_date,('summary','technical'));result.update(self._analysis_meta(context,{'basis':basis,'trade_date':trade_date},as_of or trade_date or publication_trade_date,None))
   return result
- def candidates(self,p,q,page,size,grade='',pattern='',include_analysis=False,basis='AUTO'):
+ def candidates(self,p,q,page,size,grade='',pattern='',include_analysis=False,basis='AUTO',final_only=False):
   extra='and (security_name ilike ? or security_id ilike ?)'; args=(f'%{q}%',f'%{q}%')
   if grade: extra+=' and research_priority=?'; args += (grade,)
   if pattern: extra+=' and primary_pattern=?'; args += (pattern,)
   extra='and '+WORKBENCH_SCOPE_SQL.format(id='security_id')+' '+extra
-  result=self._rows('candidate_daily',p,extra,args,"case research_priority when 'A+' then 0 when 'A' then 1 when 'B' then 2 when 'C' then 3 else 9 end, cast(json_extract_string(payload_json,'$.priority_score') as double) desc, security_id",page,size)
+  order="case research_priority when 'A+' then 0 when 'A' then 1 when 'B' then 2 when 'C' then 3 else 9 end, cast(json_extract_string(payload_json,'$.priority_score') as double) desc, security_id"
+  if final_only:
+   size=max(1,min(MAX_PAGE_SIZE,int(size)));page=max(1,int(page));self._pub(p)
+   source_query=f" from candidate_daily where publication_id=? {extra}";source_params=[p,*args]
+   final_extra=extra+" and research_priority in ('A+','A') and upper(json_extract_string(payload_json,'$.primary_leader_sector_type')) in ('INDUSTRY','THEME')"
+   query=f" from candidate_daily where publication_id=? {final_extra}";params=[p,*args]
+   with self._con() as c:
+    source_total=int(c.execute('select count(*)'+source_query,source_params).fetchone()[0]);pool_total=int(c.execute('select count(*)'+query,params).fetchone()[0]);total=min(100,pool_total);offset=(page-1)*size;limit=max(0,min(size,total-offset))
+    vals=c.execute('select payload_json'+query+' order by '+order+' limit ? offset ?',params+[limit,offset]).fetchall() if limit else []
+   result={'publication_id':p,'page':page,'page_size':size,'total':total,'source_candidate_total':source_total,'eligible_pool_total':pool_total,'items':[json.loads(value[0]) for value in vals],'display_scope':self._display_scope,'statistical_scope':workbench_statistical_scope(self._root),'contract_id':'FINAL_LOCAL_RESEARCH_CANDIDATES_V1','selection_basis':'A_PLUS_OR_A_AND_PRIMARY_INDUSTRY_OR_THEME_THEN_PRIORITY_SCORE_DESC','max_results':100}
+   for index,item in enumerate(result['items'],start=offset+1):
+    item['final_research_rank']=index
+    item['final_selection_reasons']=['RESEARCH_PRIORITY_A_PLUS_OR_A','PRIMARY_SECTOR_INDUSTRY_OR_THEME','LOCAL_COMPOSITE_PRIORITY_ORDER']
+  else:
+   result=self._rows('candidate_daily',p,extra,args,order,page,size)
   result=self._add_quotes(p,self._add_strength_associations(p,result))
   if include_analysis:
    context=self._analysis_context(p,basis);result.update(self._analysis_meta(context,{'q':q,'page':page,'page_size':size,'grade':grade,'pattern':pattern,'basis':basis},result['items'][0].get('trade_date') if result['items'] else None,None))
-   result['contract_id']=PRIORITY_RESEARCH_CONTRACT_ID
+   if final_only: result['base_candidate_contract_id']=PRIORITY_RESEARCH_CONTRACT_ID
+   else: result['contract_id']=PRIORITY_RESEARCH_CONTRACT_ID
    result['stock_row_contract']='StockRow_V1_0'
   return result
  def queues(self,p,name,page,size,q='',band='',include_analysis=False,basis='AUTO',trade_date=None):
@@ -1689,7 +1715,7 @@ def make_handler(root,db):
   task=daily_jobs.get(job_id)
   if not task: return None
   publisher=task.get('publisher')
-  if publisher and task.get('phase')!='ANALYSIS_BINDING':
+  if publisher and task.get('phase') not in ('ANALYSIS_BINDING','READY','FAILED'):
    child=publisher.status(task['publication_job_id'])
    task.update(status=child['status'],progress=child.get('progress',{}),updated_at_utc=child.get('updated_at_utc'))
   return {'job_id':job_id,'status':task['status'],'details':{'trade_date':task.get('trade_date'),'source_bundle_id':task.get('source_bundle_id')},'progress':task.get('progress',{}),'updated_at_utc':task.get('updated_at_utc')}
@@ -1710,6 +1736,9 @@ def make_handler(root,db):
   if result.returncode or receipt.get('final_status')!='FULL_PASS':
    task.update(status='FAILED',progress={'status':'INPUT_FAILED','error':receipt.get('blockers') or result.stderr[-500:]});return
   bundle=receipt['source_bundle_id'];day=receipt['day_validation']['target_trade_date'];trade_date=date(int(str(day)[:4]),int(str(day)[4:6]),int(str(day)[6:]))
+  expected_date=str(body.get('expected_trade_date') or '').strip()
+  if expected_date and trade_date.isoformat()!=expected_date:
+   task.update(status='FAILED',progress={'status':'INPUT_DATE_MISMATCH','error':f'预期 {expected_date}，官方数据为 {trade_date.isoformat()}；未发布'});return
   task.update(source_bundle_id=bundle,trade_date=trade_date.isoformat(),progress={'status':'PUBLISHING'})
   publisher,publication_job_id=submit_one_click(Path(root),bundle,trade_date,body.get('economic_model_id','current-economic-model'),body.get('computation_contract_id','current-computation-contract'),db)
   task.update(publisher=publisher,publication_job_id=publication_job_id,status='RUNNING',progress={'status':'PUBLISHING'})
@@ -1724,7 +1753,46 @@ def make_handler(root,db):
    v3_report=json.loads(preview.stdout) if isinstance(preview.stdout,str) else {'status':'TEST_DOUBLE_NO_STDOUT'}
   except Exception as exc:
    task.update(status='FAILED',progress={'status':'ANALYSIS_REPORT_INVALID','error':str(exc)});return
-  task.update(v3_report=v3_report,phase='READY',status='SUCCESS',progress={'status':'READY','publication_id':published.get('publication_id'),'v3_snapshot_id':v3_report.get('snapshot_binding',{}).get('snapshot_id') if isinstance(v3_report.get('snapshot_binding'),dict) else None})
+  task.update(progress={'status':'BUILDING_MAINLINE_BACKGROUND'})
+  mainline=subprocess.run([sys.executable,str(Path(root)/'scripts/build_m10_mainline_preview.py')],cwd=root,capture_output=True,text=True,timeout=3600)
+  if mainline.returncode:
+   task.update(status='FAILED',progress={'status':'MAINLINE_BUILD_FAILED','error':mainline.stderr[-1000:] or mainline.stdout[-1000:]});return
+  try:
+   task['mainline_result']=json.loads(mainline.stdout) if isinstance(mainline.stdout,str) else {'status':'TEST_DOUBLE_NO_STDOUT'}
+  except Exception as exc:
+   task.update(status='FAILED',progress={'status':'MAINLINE_REPORT_INVALID','error':str(exc)});return
+  if body.get('build_research_v3'):
+   task.update(progress={'status':'BUILDING_RESEARCH_V3'})
+   try:
+    research_result=build_latest_research_run(root,db)
+   except Exception as exc:
+    task.update(status='FAILED',progress={'status':'RESEARCH_BUILD_FAILED','error':str(exc)});return
+   task['research_result']=research_result
+  snapshot_binding=v3_report.get('snapshot_binding',{}) if isinstance(v3_report,dict) else {}
+  hierarchy=v3_report.get('hierarchy',{}) if isinstance(v3_report,dict) else {}
+  mainline_result=task.get('mainline_result') or {}
+  research_result=task.get('research_result') or {}
+  task.update(
+   v3_report=v3_report,
+   phase='READY',
+   status='SUCCESS',
+   progress={
+    'status':'READY',
+    'trade_date':trade_date.isoformat(),
+    'publication_id':published.get('publication_id'),
+    'v3_snapshot_id':snapshot_binding.get('snapshot_id') if isinstance(snapshot_binding,dict) else None,
+    'preserved_entry_count':v3_report.get('preserved_entry_count') if isinstance(v3_report,dict) else None,
+    'hierarchy_version':hierarchy.get('hierarchy_version') if isinstance(hierarchy,dict) else None,
+    'hierarchy_node_count':hierarchy.get('hierarchy_node_count') if isinstance(hierarchy,dict) else None,
+    'mainline_snapshot_id':mainline_result.get('snapshot_id'),
+    'research_run_id':research_result.get('run_id'),
+   },
+  )
+ def run_today_guarded(job_id,body):
+  try:
+   run_today(job_id,body)
+  except Exception as exc:
+   daily_jobs[job_id].update(status='FAILED',phase='FAILED',progress={'status':'PIPELINE_FAILED','error':f'{type(exc).__name__}: {exc}'})
  def legacy_workbench(publication_id):
   trade_date,_=api._pub(publication_id)
   return resolve_workbench_path(root,trade_date,publication_id).read_bytes()
@@ -1738,7 +1806,7 @@ def make_handler(root,db):
     return False
    return True
   def do_GET(self):
-   if urlparse(self.path).path=='/api/hot-rankings':
+   if urlparse(self.path).path in ('/api/hot-rankings','/api/jobs'):
     return self._do_GET()
    with api.request_scope():
     return self._do_GET()
@@ -1768,7 +1836,7 @@ def make_handler(root,db):
      statuses=[close.get('status'),down.get('status'),market_view['status']]
      out={'api_contract':'v3-p09-events-overview-v1.3','status':'AVAILABLE' if all(s=='AVAILABLE' for s in statuses) else 'DEGRADED' if any(s=='AVAILABLE' for s in statuses) else 'UNAVAILABLE','event_close':close,'limit_down':down,'market_overview':market_view,'source_status':{'EXT01':close.get('status'),'EXT02':down.get('status'),'EXT05:yesterday_limit_up':promotion.get('status'),'EXT06':market_view['status']},'promotion':promotion,'count_basis':{'limit_up':'EXT01_ARCHIVED_PAGE_WITH_HEADER_SEPARATE','limit_down':'EXT02_RETURNED_PAGE_NOT_FULL_MARKET','market_rise_fall':'EXT06_SOURCE_RISE_FALL','promotion':'EXT05_YESTERDAY_LIMIT_UP_TRANSITIONS'},'next_action':'各在线数据集按自身来源状态展示。'}
     elif u.path=='/api/v3/events/pools':
-     out=p09.events_pools(pool_type=x.get('pool_type'),trade_date=x.get('trade_date'),page=x.get('page',1),page_size=x.get('page_size',30))
+     out=p09.events_pools(pool_type=x.get('pool_type'),trade_date=x.get('trade_date'),page=x.get('page',1),page_size=x.get('page_size',30),sort=x.get('sort','SOURCE_ORDER'))
     elif u.path=='/api/v3/events/topics':
      out=p09.topics(trade_date=x.get('trade_date'))
     elif u.path=='/api/v3/events/distribution':
@@ -1785,6 +1853,10 @@ def make_handler(root,db):
      out=p09.hot_plates(plate_type=x.get('type','concept'),page=x.get('page',1),page_size=x.get('page_size',30))
     elif u.path=='/api/v3/hot-topics':
      out=p09.hot_topics(page=x.get('page',1),page_size=x.get('page_size',30))
+    elif u.path=='/api/v3/online/latest-trade-date':
+     probes=p09.batch((('EXT03',{}),('EXT02',{})))
+     valid=sorted({item.source_trade_date for item in probes if item.status=='AVAILABLE' and item.source_trade_date})
+     out={'api_contract':'V3_ONLINE_LATEST_TRADE_DATE_V1','status':'AVAILABLE' if valid else 'UNAVAILABLE','trade_date':valid[-1] if valid else None,'confirmation_sources':[{'source_id':item.source_id,'status':item.status,'source_trade_date':item.source_trade_date,'source_as_of':item.source_as_of} for item in probes],'basis':'LATEST_CONFIRMED_PUBLIC_SOURCE_TRADE_DATE','independent_from_local_publication':True}
     elif u.path.startswith('/api/v3/events/ladder/'):
      security_id=unquote(u.path[len('/api/v3/events/ladder/'):].strip('/'))
      out=events.ladder_evidence(security_id=security_id,event_bundle_id=x.get('event_bundle_id'),trade_date=x.get('trade_date'))
@@ -1839,7 +1911,7 @@ def make_handler(root,db):
      security_id=unquote(u.path[len('/api/stocks/'): -len('/technical-history')].strip('/'));out=api.technical_history(x['publication_id'],security_id,x.get('days',20),x.get('price_basis','ADJUSTED'),x.get('fields',''),x.get('basis','AUTO'),x.get('trade_date'))
     elif u.path.startswith('/api/stocks/') and u.path.endswith('/structure-history'):
      security_id=unquote(u.path[len('/api/stocks/'): -len('/structure-history')].strip('/'));out=api.structure_history(x['publication_id'],security_id,x.get('days',20),x.get('queue',''),x.get('basis','AUTO'),x.get('trade_date'))
-    elif u.path=='/api/candidates': out=api.candidates(x['publication_id'],x.get('q',''),x.get('page',1),x.get('page_size',50),x.get('grade',''),x.get('pattern',''),x.get('include_analysis')=='1',x.get('basis','AUTO'))
+    elif u.path=='/api/candidates': out=api.candidates(x['publication_id'],x.get('q',''),x.get('page',1),x.get('page_size',50),x.get('grade',''),x.get('pattern',''),x.get('include_analysis')=='1',x.get('basis','AUTO'),x.get('final')=='1')
     elif u.path=='/api/queues': out=api.queues(x['publication_id'],x.get('queue','STEADY'),x.get('page',1),x.get('page_size',50),x.get('q',''),x.get('band',''),x.get('include_analysis')=='1',x.get('basis','AUTO'),x.get('trade_date'))
     elif u.path=='/api/evidence': out=api.evidence(x['publication_id'],x['queue'],x['security_id'],x.get('format',''),x.get('basis','AUTO'),x.get('trade_date'))
     elif u.path=='/api/identity': out=api.identity(x['publication_id'],x.get('include_analysis')=='1')
@@ -1858,7 +1930,8 @@ def make_handler(root,db):
     elif u.path=='/api/operations/config': out=operations.current()
     elif u.path=='/api/operations/config/history':
      with duckdb.connect(str(db)) as c: out={'items':[json.loads(x[0]) for x in c.execute('select payload_json from config_versions').fetchall()]}
-    elif u.path=='/api/operations/status': out=maintenance.status()
+    elif u.path=='/api/operations/status':
+     out=maintenance.status();out.update({'service_pid':os.getpid(),'service_url':'http://'+self.headers.get('Host','127.0.0.1:28765'),'service_control_contract':'WORKBENCH_LOCAL_SERVICE_CONTROL_V1'})
     elif u.path=='/api/operations/restart-status':
      status_path=Path(root)/'runtime/controlled_restart_status.json';out=json.loads(status_path.read_text('utf-8')) if status_path.is_file() else {'state':'尚未执行'}
     elif u.path=='/api/operations/storage':
@@ -1883,11 +1956,11 @@ def make_handler(root,db):
      out=(publisher if isinstance(publisher,OneClickPublisher) else OneClickPublisher(root,db)).status(x['job_id'])
     elif u.path in ('/v2','/v2/','/v2/index.html'):
      page=(static/'v2/index.html').read_text('utf-8')
-     page=page.replace('__CSRF_TOKEN__',csrf).replace('__WORKBENCH_VERSION__','v2 兼容').replace('__WORKBENCH_MODE__','v2').replace('__WORKBENCH_BASE__','/v2')
+     page=page.replace('__CSRF_TOKEN__',csrf).replace('__WORKBENCH_VERSION__','v2 兼容').replace('__WORKBENCH_MODE__','v2').replace('__WORKBENCH_BASE__','/v2').replace('__WORKBENCH_LABEL__','M7')
      return self._send(200,page.encode(),'text/html; charset=utf-8')
-    elif u.path in ('/v3','/v3/','/v3/index.html'):
+    elif u.path in ('/','/index.html','/v3','/v3/','/v3/index.html'):
      page=(static/'v2/index.html').read_text('utf-8')
-     page=page.replace('__CSRF_TOKEN__',csrf).replace('__WORKBENCH_VERSION__','V3').replace('__WORKBENCH_MODE__','v3').replace('__WORKBENCH_BASE__','/v3')
+     page=page.replace('__CSRF_TOKEN__',csrf).replace('__WORKBENCH_VERSION__','CURRENT').replace('__WORKBENCH_MODE__','v3').replace('__WORKBENCH_BASE__','/').replace('__WORKBENCH_LABEL__','')
      return self._send(200,page.encode(),'text/html; charset=utf-8')
     elif u.path in ('/v3/online','/v3/online/','/v3/online/index.html'):
      return self._send(200,(static/'online-p09-v3.html').read_bytes(),'text/html; charset=utf-8')
@@ -1901,10 +1974,10 @@ def make_handler(root,db):
       return self._send(404,{'code':'NOT_FOUND','message':'v2资源不存在','retryable':False,'next_action':'检查地址'})
      content_type=mimetypes.guess_type(candidate.name)[0] or 'application/octet-stream'
      return self._send(200,candidate.read_bytes(),content_type+'; charset=utf-8' if content_type.startswith(('text/','application/javascript')) else content_type)
+    elif u.path in ('/v1','/v1/','/v1/index.html'): return self._send(200,(static/'index.html').read_text('utf-8').replace('__CSRF_TOKEN__',csrf).encode(),'text/html; charset=utf-8')
     elif u.path=='/view': return self._send(200,legacy_workbench(x['publication_id']),'text/html; charset=utf-8')
     elif u.path=='/operations': return self._send(200,(static/'operations.html').read_text('utf-8').replace('__CSRF_TOKEN__',csrf).replace('</body>','<script src="/operations-i18n.js"></script></body>').encode(),'text/html; charset=utf-8')
     elif u.path=='/operations-i18n.js': return self._send(200,(static/'operations-i18n.js').read_bytes(),'application/javascript; charset=utf-8')
-    elif u.path in ('/','/index.html'): return self._send(200,(static/'index.html').read_text('utf-8').replace('__CSRF_TOKEN__',csrf).encode(),'text/html; charset=utf-8')
     elif u.path=='/fixes.js': return self._send(200,(static/'fixes.js').read_bytes(),'application/javascript; charset=utf-8')
     else:return self._send(404,{'code':'NOT_FOUND','message':'页面不存在','retryable':False,'next_action':'检查地址'})
     self._send(200,out)
@@ -1951,15 +2024,19 @@ def make_handler(root,db):
      flags=subprocess.CREATE_NO_WINDOW if os.name=='nt' else 0;subprocess.Popen(command,cwd=root,creationflags=flags)
      self._send(202,{'state':'DRAINING','message':'受控重启已启动，页面将自动重连'})
      threading.Thread(target=lambda:(time.sleep(.4),self.server.shutdown()),daemon=True).start();return
-     if self.path=='/api/history/jobs':
-      return self._send(202,history.submit(body))
-     if self.path=='/api/v3/research/jobs':
-      with daily_jobs_lock:
-       active=next((item for item in research_jobs.values() if item.get('status') in ('QUEUED','RUNNING')),None)
-       if active:return self._send(409,{'code':'RESEARCH_BUILD_ALREADY_RUNNING','message':'V3研究构建正在运行','retryable':True})
-       job_id='research-job-'+uuid.uuid4().hex;research_jobs[job_id]={'job_id':job_id,'job_type':'BUILD_RESEARCH_V3','status':'QUEUED','progress':{'status':'QUEUED'}}
-      threading.Thread(target=run_research,args=(job_id,),daemon=True,name=job_id).start()
-      return self._send(202,research_jobs[job_id])
+    if self.path=='/api/operations/stop':
+     maintenance._guard(body.get('confirmation'));maintenance.lock.release()
+     self._send(202,{'state':'STOPPING','message':'服务正在停止','service_pid':os.getpid()})
+     threading.Thread(target=lambda:(time.sleep(.4),self.server.shutdown()),daemon=True).start();return
+    if self.path=='/api/history/jobs':
+     return self._send(202,history.submit(body))
+    if self.path=='/api/v3/research/jobs':
+     with daily_jobs_lock:
+      active=next((item for item in research_jobs.values() if item.get('status') in ('QUEUED','RUNNING')),None)
+      if active:return self._send(409,{'code':'RESEARCH_BUILD_ALREADY_RUNNING','message':'V3研究构建正在运行','retryable':True})
+      job_id='research-job-'+uuid.uuid4().hex;research_jobs[job_id]={'job_id':job_id,'job_type':'BUILD_RESEARCH_V3','status':'QUEUED','progress':{'status':'QUEUED'}}
+     threading.Thread(target=run_research,args=(job_id,),daemon=True,name=job_id).start()
+     return self._send(202,research_jobs[job_id])
     if self.path.startswith('/api/history/jobs/') and self.path.endswith('/activate'):
      job_id=unquote(self.path.split('/api/history/jobs/',1)[1][:-len('/activate')]).strip('/')
      return self._send(202,activation.activate(job_id,expected_head_id=str(body.get('expected_head_id') or ''),idempotency_key=str(body.get('idempotency_key') or '')))
@@ -1971,7 +2048,7 @@ def make_handler(root,db):
      active=next((task for task in daily_jobs.values() if task.get('status') in ('QUEUED','RUNNING')),None)
      if active:return self._send(409,{'code':'DAILY_INPUT_ALREADY_RUNNING','message':'已有当日数据生成任务正在运行，请稍后查看任务状态','retryable':True})
      job_id='daily-'+uuid.uuid4().hex;daily_jobs[job_id]={'status':'QUEUED','progress':{'status':'INPUT_QUEUED'}}
-    thread=threading.Thread(target=run_today,args=(job_id,body),daemon=True,name=job_id);thread.start()
+    thread=threading.Thread(target=run_today_guarded,args=(job_id,body),daemon=True,name=job_id);thread.start()
     self._send(202,{'job_id':job_id,'status':'QUEUED','message':'已提交当日输入更新与发布任务'})
    except HistoryJobError as e:
      code=str(e);status=404 if code=='JOB_NOT_FOUND' else 409 if code in ('ATTEMPT_MISMATCH','JOB_NOT_CANCELLABLE','JOB_NOT_INTERRUPTED') else 400

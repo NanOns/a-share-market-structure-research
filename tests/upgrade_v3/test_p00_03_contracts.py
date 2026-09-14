@@ -48,7 +48,7 @@ def test_p00_03_contract_bundle_is_frozen_and_single_sourced():
     assert validate_contract_bundle(bundle) is bundle
     assert config["parameter_hash"] == parameter_hash(config)
     assert config["contracts"]["features"] == "RESEARCH_FEATURES_PREVIEW_1"
-    assert config["schema_version"] == "research-attention-config-v3.1"
+    assert config["schema_version"] == "research-attention-config-v3.3"
     assert config["thresholds"]["stock_signals"]["SETUP"]["requires_liquidity"] is True
     assert config["thresholds"]["stock_signals"]["RECOVERY"]["requires_liquidity"] is True
     assert config["thresholds"]["coverage"]["min_amount_coverage"] == 0.8
@@ -126,7 +126,7 @@ def test_r19_01_context_discriminates_ready_not_built_and_online_without_fake_ru
         "local_date": "2026-09-10",
         "publication_id": "pub-1",
         "snapshot_id": "snapshot-1",
-        "algorithm_version": "RESEARCH_V3_PREVIEW_1",
+        "algorithm_version": "RESEARCH_V3_PREVIEW_6_CURRENT_FOCUS_COMPLETE",
         "capabilities": {"research": "READY"},
     }
     assert validate_object(ready, "Context", bundle)["run_id"] == "run-1"

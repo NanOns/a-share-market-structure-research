@@ -1,12 +1,12 @@
 {
-  "schema_version": "research-attention-config-v3.1",
+  "schema_version": "research-attention-config-v3.3",
   "format": "JSON_COMPATIBLE_YAML",
-  "algorithm_version": "RESEARCH_V3_PREVIEW_1",
-  "parameter_hash": "61d191402bafbc4f2c9bd13bf88361650bed574daa5d455bf15219ad5aa7173f",
+  "algorithm_version": "RESEARCH_V3_PREVIEW_6_CURRENT_FOCUS_COMPLETE",
+  "parameter_hash": "e2633e6e78022eef3ee88cf7c5922173f55c04157fae5f8793d92d26b352d004",
   "contracts": {
     "features": "RESEARCH_FEATURES_PREVIEW_1",
     "stock_attention": "STOCK_ATTENTION_PREVIEW_1",
-    "sector_current": "SECTOR_CURRENT_PREVIEW_1",
+    "sector_current": "SECTOR_CURRENT_PREVIEW_2_TYPE_SCOPED",
     "sector_potential": "SECTOR_POTENTIAL_PREVIEW_1",
     "lifecycle": "SECTOR_SIGNAL_LIFECYCLE_PREVIEW_1",
     "api": "RESEARCH_V3_API_PREVIEW_1",
@@ -18,9 +18,20 @@
     "range_short_sessions": 5,
     "range_long_sessions": 20,
     "liquidity_sessions": 20,
-    "rps_windows": [5, 20],
-    "high_windows": [20, 30, 60, 100],
-    "potential_observation_sessions": [3, 5],
+    "rps_windows": [
+      5,
+      20
+    ],
+    "high_windows": [
+      20,
+      30,
+      60,
+      100
+    ],
+    "potential_observation_sessions": [
+      3,
+      5
+    ],
     "lifecycle_max_sessions": 5
   },
   "thresholds": {
@@ -36,6 +47,10 @@
       "min_rank_intersection_union": 0.9
     },
     "current": {
+      "allowed_sector_types": [
+        "INDUSTRY",
+        "THEME"
+      ],
       "m1_gt": 0.0,
       "b1_gte": 0.6,
       "rel1_gte": 0.003,
@@ -132,11 +147,17 @@
         "preview_limit": 5
       },
       "CURRENT_RESEARCH": {
-        "allowed_signals": ["BREAKOUT", "RECOVERY"],
+        "allowed_signals": [
+          "BREAKOUT",
+          "RECOVERY"
+        ],
         "preview_limit": 5
       },
       "EARLY_WATCH": {
-        "allowed_signals": ["SETUP", "RECOVERY"],
+        "allowed_signals": [
+          "SETUP",
+          "RECOVERY"
+        ],
         "preview_limit": 5
       },
       "ALL_MEMBERS": {
@@ -148,6 +169,7 @@
     "home_track_cards": 6,
     "card_preview_members": 3,
     "focus_max": 20,
+    "focus_per_sector_max": 10,
     "focus_default": 10,
     "individual_trigger_max": 10,
     "page_size_default": 20,
@@ -155,13 +177,20 @@
     "reason_max_per_row": 3
   },
   "null_logic": {
-    "quality_values": ["READY", "PARTIAL", "UNAVAILABLE"],
+    "quality_values": [
+      "READY",
+      "PARTIAL",
+      "UNAVAILABLE"
+    ],
     "boolean_logic": "TRUE_IF_ALL_REQUIRED_TRUE; FALSE_IF_KNOWN_FALSE; OTHERWISE_UNKNOWN",
     "missing_is_false": false,
     "division_by_zero": "NULL",
     "missing_window": "NULL",
     "null_rank_order": "LAST",
-    "rank_tie_breakers": ["security_id", "sector_id"],
+    "rank_tie_breakers": [
+      "security_id",
+      "sector_id"
+    ],
     "comparison_dates": "MASTER_TRADING_CALENDAR_ONLY",
     "price_rounding": "NONE_BEFORE_COMPARISON"
   },

@@ -59,9 +59,11 @@ CREATE TABLE IF NOT EXISTS research_shortlist (
     run_id VARCHAR NOT NULL, list_type VARCHAR NOT NULL, security_id VARCHAR NOT NULL, rank INTEGER NOT NULL,
     primary_sector_id VARCHAR, alternative_sector_ids JSON NOT NULL, selection_reason JSON NOT NULL,
     waiting_for JSON NOT NULL, invalid_if JSON NOT NULL, previous_state VARCHAR, change_reason VARCHAR,
+    signal_date DATE,
     PRIMARY KEY (run_id, list_type, security_id), UNIQUE (run_id, list_type, rank),
     CHECK (list_type IN ('CURRENT_FOCUS','EARLY_FOCUS','INDIVIDUAL'))
 );
+ALTER TABLE research_shortlist ADD COLUMN IF NOT EXISTS signal_date DATE;
 CREATE INDEX IF NOT EXISTS research_sector_states_current_idx ON research_sector_states(run_id, current_rank);
 CREATE INDEX IF NOT EXISTS research_sector_states_potential_idx ON research_sector_states(run_id, potential_rank);
 CREATE INDEX IF NOT EXISTS research_roles_lookup_idx ON research_sector_member_roles(run_id, sector_id, role, role_rank);

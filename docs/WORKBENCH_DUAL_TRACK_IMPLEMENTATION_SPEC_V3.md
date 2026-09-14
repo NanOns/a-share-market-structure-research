@@ -65,13 +65,22 @@ V2最大缺口：只细化了“当前”，没有独立POTENTIAL资格/状态/�
 | 五类结构 | 保留算法、改描述 | queues/evidence、structures | “核心观察”在该页改“结构核心”；原等级不映射为今日优先 |
 | 新高/RPS/MA/量额 | 保留 | technical、highs、strength | 常用筛选放个股研究工具；被动新高不自动FOCUS也不自动剔除 |
 | 个股证据 | 保留内容、改组织 | evidence、stock_insight、modal | 始终弹窗，不展开表格；分入选/风险/板块/技术/在线，X遮罩Esc关闭 |
-| 本地涨停/连板/晋级 | 保留为本地估算 | limit_ladder、limit_promotion | 在线页默认公开事件；本地估算切换可查，不能无提示补在线缺失 |
+| 本地涨停/连板/晋级 | V3 移除，V2 历史兼容 | V3 无本地梯队/晋级入口 | 用户裁决 §2.1：仅在线事件，断源明确不可用，不回退本地估算 |
 | 最强题材/涨停分布/简图/速览 | 新增/改造在线主视图 | 新事件adapter，已有online基础 | §11逐项定义，来源事件榜与本地研究双轨不混榜 |
 | 人气热榜 | 保留并扩榜 | online_hot_rank、THS/EM adapter | 单平台单榜按需；实时无历史，不参与持久化研究选择 |
 | 板块精选 | 重定义 | 原排名/在线题材 | 不是第3套榜：即CURRENT/POTENTIAL双轨，可叠在线证据徽标 |
 | 数据状态/操作维护 | 保留、不扩建 | data-info/operations | 普通入口靠后；不安排灾备演练、不因维护页未升级阻塞研究页 |
 | 每日导出/登录会员/投资日历/外部软件跳转 | 本版不做 | 原采纳取舍 | 不生成任务或依赖 |
 | 龙虎榜/新闻原因 | 后置可选 | lh_list/external_evidence能力 | 首版不阻塞；已有源题材说明按源展示，不生成伪造原因 |
+
+### 2.1 用户裁决 V3-UC-20260913-01：V3 移除本地收盘梯队与晋级
+
+用户于 2026-09-13 明确要求 V3 不再展示或调用本地计算的收盘梯队、连板和晋级，统一使用在线涨停事件数据。本裁决优先于上表“保留为本地估算”的旧约定：
+
+- V3 `/v3` 页面移除“收盘梯队与晋级”模块，不再调用本地 `limit_ladder`、`limit_promotion` API。
+- V3 市场页以在线涨停事实、来源题材、事件池和在线历史晋级（仅在同源完整事件数据满足合同时）作为唯一涨停入口。
+- 旧 `/v2`、旧 API 和历史数据暂时保留兼容，不得在 V3 页面回填或冒充在线事实。
+- 在线来源不可用时显示 `UNAVAILABLE`，不得回退到本地估算。
 
 本版不DROP任何既有表，不删除旧API；新首页不再调用candidate_daily作优先清单，也不再调用旧20日代表榜作当日成员榜。旧接口兼容保留，只有新增接口使用新枚举。
 
@@ -144,11 +153,15 @@ A股展示沿用配置沪深北A股，保留ST但标风险；确认退市/B股/�
 
 ### 5.1 当前强势 CURRENT
 
-合同`SECTOR_CURRENT_PREVIEW_1`，事实判断而非次日预测。
+合同`SECTOR_CURRENT_PREVIEW_2_TYPE_SCOPED`，事实判断而非次日预测。CURRENT 的发布范围只包含 `INDUSTRY` 与 `THEME`；`STYLE`、地域及其他工具型集合可以用于背景观察，但不得进入“当前强势”或由其派生的当前关注清单。
 
 基础：NORMAL_ATTRIBUTE、n>=5、quote_coverage>=.70、m1/b1/rel1/p1有效。资格同时满足：m1>0、b1>=.60、rel1>=.003、p1>=.80。必须至少3只上涨，top1_positive_share<=.50；极小样本或单股拉动只进入全部板块并提示，不能凑卡片。
 
-CURRENT不要求连续2天，也不要求RPS20高；`confirmed_days`只是附加标签。q20>=.80标“中期仍强”，不改变当日资格。排序固定为(p1↓,b1↓,rel1↓,amount_A↓,sector_id↑)。行业/概念/风格/地域分别计算p1；综合展示按各类分位排序并标类型，禁止混原始名次。
+CURRENT不要求连续2天，也不要求RPS20高；`confirmed_days`只是附加标签。q20>=.80标“中期仍强”，不改变当日资格。排序固定为(p1↓,b1↓,rel1↓,amount_A↓,sector_id↑)。行业与概念分别计算p1；综合展示按各类分位排序并标类型，禁止混原始名次。
+
+CURRENT 与今日总览的板块成员详情使用当前发布绑定的 technical/strength 结果，按 `ret1↓, raw_amount↓, security_id↑` 排序。有效报价成员的前20%（向上取整）标“今日领涨”，后20%标“低涨幅”，其余标“中位军”；标签只描述板块内当日位置，不替代 `CURRENT_RESEARCH` 等研究角色。页面至少展示最新价、当日涨幅、成交额、20日涨幅和研究角色，行情缺失行排在末尾并显式标记。
+
+CURRENT_FOCUS 只接收 CURRENT 板块中满足 BREAKOUT 或 RECOVERY 且结构、位置、过热门均通过的 `CURRENT_RESEARCH` 成员。清单总上限和单板块上限必须读取 `display_limits.focus_max` 与 `display_limits.focus_per_sector_max`，禁止在代码中另设更小的隐藏截断；达到显示上限时接口必须返回完整 eligible total。
 
 confirmed_days从已绑定的逐交易日CURRENT=true向前连续计数，遇缺日停止并标censored；首次值1只表示本日成立，不声称前面一定未强。CURRENT全市场资格需要同日全A报价参考有效覆盖>=.90，板块类型横截面正常可评板块覆盖>=.70；未达只显示板块表现，不发布强势全榜。p1/q5/q20的当日分母与被排除数量必须记录。
 
@@ -1491,3 +1504,11 @@ EXT10东财热榜及EXT11东财报价不进入以上目标链；静态注册记�
 5. **G09判定分层**：每个切片独立`AVAILABLE/DEGRADED/UNAVAILABLE`与证据；已验核心链可发布预览，未验链保持明确空态/本地估算显式切换。G09整体可以`DEGRADED_PASS`并列出缺页，不能把未实现模块写成FULL_PASS，也不能一项非核心源失败就整个P09永久BLOCKED。P10本地旧功能归位可在已有来源状态登记后继续，P09待补在线切片仍跟踪。
 
 实施者每完成一个小任务在既有内部台账追加`task_id、source_id、contract_version、request_template、probe_time、coverage、normalized_fields、capability、页面/API入口、验收/失败、next_task`；旧P09-01-B-EXT11 BLOCKED不删除，新增一条“EXT11目标版退役、前置解除”裁决。下一任务**明确为`P09-01-B-LZ-EXT01`**，不是`P09-01-B-EXT11-RETRY`、`F01`或全套FY01–17。
+
+## 23. V3 最终研究清单与板块阶段可见性（2026-09-14）
+
+`FINAL_LOCAL_RESEARCH_CANDIDATES_V1`把原结构候选池收敛为可人工研究的最终清单。入选必须同时满足：研究等级为A+或A、主关联板块类型为INDUSTRY或THEME；随后沿用既有本地综合`priority_score`降序排列，分数已组合板块上下文、个股结构/形态、RPS、趋势、位置、成交额和质量信号。接口返回原结构候选数、合格池数、最终名次和逐项入选原因，最终只取前100。STYLE板块不能作为最终清单的主关联板块。
+
+V3首页以列表展示最终清单，列出名次、代码名称、研究等级、最新价、当日涨幅、成交额、RPS20、综合分、个股结构和主关联板块；每页25只。板块卡片同时展示`sector_daily.primary_pattern`形成的本地结构阶段：`CURRENT_STRENGTH`为主升强势、`STABILIZATION`为企稳、`REACCELERATION`为再加速。该结构阶段与“领先行业”的20日相对强度榜、当日“当前强势”筛选是三个独立且并列展示的合同。
+
+多日主线生命周期仍只使用真实逐日累积数据。删除动态历史并只重建单日后，`mainline_daily`应诚实返回`DATA_INSUFFICIENT`，不得用静态关系或未来数据补造退潮、持续、扩散等多日状态；后续每日一键生成会自然积累所需历史。

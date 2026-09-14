@@ -27,6 +27,9 @@ def raw(days, closes=None):
         "raw_close": closes, "raw_amount": 30_000_000.0,
         "has_actual_bar": True, "tradable": True, "data_observed": True,
         "is_synthetic_fill": False, "price_basis": "TDX_NATIVE_QFQ",
+        "project_price_basis": "FORWARD_ADJUSTED",
+        "adjustment_status": "VERIFIED_REPRODUCIBLE_TDX_NATIVE",
+        "adjustment_version": "tdx-affine-qfq-v0.2",
     })
 
 
@@ -83,6 +86,15 @@ def test_turnover_and_price_basis_fail_closed():
     source.loc[source.index[-1], "price_basis"] = "RAW"
     row = build_stock_research_features(source, strength(days), days, context(days)).iloc[0]
     assert pd.isna(row.close) and "PRICE_BASIS_MISMATCH" in row.quality_codes
+
+
+def test_missing_or_unverified_adjustment_identity_fails_closed():
+    days = sessions()
+    for field, value in (("adjustment_status", "UNVERIFIED"), ("project_price_basis", None), ("price_basis", None), ("adjustment_version", None), ("adjustment_version", "other-version")):
+        source = raw(days)
+        source.loc[source.index[-1], field] = value
+        row = build_stock_research_features(source, strength(days), days, context(days)).iloc[0]
+        assert pd.isna(row.close)
 
 
 def test_context_duplicate_and_cutoff_guards():

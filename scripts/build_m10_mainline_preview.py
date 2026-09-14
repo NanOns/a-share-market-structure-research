@@ -107,8 +107,8 @@ def build() -> dict[str, object]:
         base_snapshot_id = previous_snapshot_id
         previous_mainline, bound_basis, previous_cutoff = _mainline_artifact(con, previous_snapshot_id)
         existing_mainline = con.execute(
-            "select e.slice_id from analysis_snapshot_entries e where e.snapshot_id=? and e.domain='mainline' limit 1",
-            [base_snapshot_id],
+            "select e.slice_id from analysis_snapshot_entries e where e.snapshot_id=? and e.domain='mainline' and e.trade_date=(select cutoff_date from analysis_snapshots where snapshot_id=?) limit 1",
+            [base_snapshot_id, base_snapshot_id],
         ).fetchone()
         if existing_mainline:
             base_snapshot_id = str(bound_basis.get("base_snapshot_id") or base_snapshot_id)
@@ -238,7 +238,17 @@ def build() -> dict[str, object]:
         now = datetime.now(timezone.utc)
         input_hash = _digest({"base_input_hash": base_input_hash, "sector_cycle_slices": cycle_slice_ids, "member_state_slices": member_slice_ids})
         manifest_hash = _digest({"base_manifest_hash": base_manifest_hash, "mainline_frame_hash": _frame_digest(frame)})
-        daily_frames = split_mainline_daily_frames(frame)
+        inherited_mainline_dates = {
+            row[0] for row in con.execute(
+                "select trade_date from analysis_snapshot_entries where snapshot_id=? and domain='mainline'",
+                [base_snapshot_id],
+            ).fetchall()
+        }
+        daily_frames = {
+            trade_date: daily_frame
+            for trade_date, daily_frame in split_mainline_daily_frames(frame).items()
+            if trade_date not in inherited_mainline_dates
+        }
         input_basis_rows = con.execute(
             """
             select e.trade_date, e.domain, e.slice_id, s.basis_json,

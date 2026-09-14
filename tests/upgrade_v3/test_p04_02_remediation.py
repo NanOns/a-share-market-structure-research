@@ -51,6 +51,11 @@ def test_incremental_preview_preserves_prior_dates_without_rewriting_them(tmp_pa
         )
         connection.execute("INSERT INTO publication_heads VALUES (?,?)", [date(2026, 9, 10), "pub"])
         connection.execute(
+            "INSERT INTO publications VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
+            ["pub-prior", "2026-09-09", 1, "SUCCESS", 1, "test", None, "b" * 64, None, None, "fixture", "2026-09-09 08:00:00"],
+        )
+        connection.execute("INSERT INTO publication_heads VALUES (?,?)", [date(2026, 9, 9), "pub-prior"])
+        connection.execute(
             "INSERT INTO analysis_snapshots VALUES (?,?,?,?,?,?,?,?)",
             ["prior", "2026-09-09", "2026-09-08", "CN_A_LISTED_V2", "ba" * 64, "b" * 64, "SUCCESS", "2026-09-10 08:00:00"],
         )
@@ -60,6 +65,7 @@ def test_incremental_preview_preserves_prior_dates_without_rewriting_them(tmp_pa
         )
         connection.execute("INSERT INTO analysis_snapshot_entries VALUES (?,?,?,?)", ["prior", "technical", "2026-09-09", "prior-technical"])
         connection.execute("INSERT INTO publication_analysis_snapshots VALUES (?,?,?,?)", ["pub", "LOCAL_RECONSTRUCTED", "prior", "2026-09-10 08:00:00"])
+        connection.execute("INSERT INTO publication_analysis_snapshots VALUES (?,?,?,?)", ["pub-prior", "LOCAL_RECONSTRUCTED", "prior", "2026-09-09 08:00:00"])
         connection.execute(
             "INSERT INTO tdx_sector_hierarchy_versions VALUES (?,?,?,?,?,?,?)",
             ["hierarchy", "test", "fixture", "{}", "hash", "2026-09-10 08:00:00", "2026-09-10 08:00:00"],

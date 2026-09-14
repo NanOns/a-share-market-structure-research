@@ -8,7 +8,7 @@ import pandas as pd
 
 
 CONTRACT_ID = "RESEARCH_ASSOCIATION_PREVIEW_1"
-SHORTLIST_CONTRACT_ID = "RESEARCH_SHORTLIST_PREVIEW_1"
+SHORTLIST_CONTRACT_ID = "RESEARCH_SHORTLIST_PREVIEW_2_CONFIGURED_CAP"
 
 
 class ResearchAssociationError(ValueError):
@@ -64,6 +64,8 @@ def select_associations_and_shortlists(
     roles: pd.DataFrame,
     sector_states: pd.DataFrame,
     config: dict[str, Any],
+    *, signal_date: str | None = None,
+    previous_shortlists: pd.DataFrame | None = None,
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
     """Select 1 primary/2 alternatives and independent CURRENT/EARLY lists."""
     member_required = {"sector_id", "security_id", "ret1", "setup", "recovery"}
@@ -118,23 +120,27 @@ def select_associations_and_shortlists(
         used_sector: dict[str, int] = {}
         used_security: set[str] = set()
         result = []
+        total_cap = int(config.get("display_limits", {}).get("focus_max", 20))
+        per_sector_cap = int(config.get("display_limits", {}).get("focus_per_sector_max", total_cap))
         for value in values:
-            if value["security_id"] in used_security or used_sector.get(value["sector_id"], 0) >= 3:
+            if value["security_id"] in used_security or used_sector.get(value["sector_id"], 0) >= per_sector_cap:
                 continue
             used_sector[value["sector_id"]] = used_sector.get(value["sector_id"], 0) + 1
             used_security.add(value["security_id"])
-            setup = False
-            recovery = False
-            source_rows = role_rows[(role_rows.security_id == value["security_id"]) & (role_rows.sector_id == value["sector_id"])]
-            if len(source_rows):
-                setup = bool(source_rows.iloc[0]["role"] == "EARLY_WATCH")
             member_group = member_groups.get(value["sector_id"], members.iloc[0:0])
             member_hit = member_group[member_group["security_id"].astype(str).eq(value["security_id"])]
-            if len(member_hit):
-                recovery = _truth(member_hit.iloc[0].get("recovery")) is True
-            waiting = "板块当前强势确认" if track == "EARLY" and recovery else "BREAKOUT或RECOVERY"
-            result.append({"list_type": "CURRENT_FOCUS" if track == "CURRENT" else "EARLY_FOCUS", "security_id": value["security_id"], "primary_sector_id": value["sector_id"], "alternative_sector_ids": [row["sector_id"] for row in candidates_by_track[track] if row["security_id"] == value["security_id"] and row["sector_id"] != value["sector_id"]][:2], "selection_reason": value["reason_codes"][:3], "waiting_for": waiting, "invalid_if": ["STRUCTURE_BREAK", "EXTENDED", "SECTOR_TRACK_LOST"], "previous_state": None, "change_reason": "NEW_SELECTION", "contract_id": SHORTLIST_CONTRACT_ID})
-            if len(result) >= 20:
+            signal = member_hit.iloc[0] if len(member_hit) else {}
+            recovery = _truth(signal.get("recovery")) is True
+            breakout = _truth(signal.get("breakout")) is True
+            setup = _truth(signal.get("setup")) is True
+            waiting = [] if track == "CURRENT" else ["SECTOR_CURRENT_CONFIRMATION"]
+            if track == "EARLY" and setup and not recovery and not breakout:
+                waiting.append("BREAKOUT_OR_RECOVERY")
+            list_type = "CURRENT_FOCUS" if track == "CURRENT" else "EARLY_FOCUS"
+            prior = previous_shortlists
+            prior_hit = prior[(prior.list_type.eq(list_type)) & (prior.security_id.eq(value["security_id"]))] if prior is not None and not prior.empty else pd.DataFrame()
+            result.append({"list_type": list_type, "security_id": value["security_id"], "primary_sector_id": value["sector_id"], "alternative_sector_ids": [row["sector_id"] for row in candidates_by_track[track] if row["security_id"] == value["security_id"] and row["sector_id"] != value["sector_id"]][:2], "selection_reason": value["reason_codes"][:3], "waiting_for": waiting, "invalid_if": ["STRUCTURE_BREAK", "EXTENDED", "SECTOR_TRACK_LOST"], "previous_state": "SELECTED" if len(prior_hit) else None, "change_reason": "RETAINED" if len(prior_hit) else "NEW_SELECTION", "signal_date": signal_date, "contract_id": SHORTLIST_CONTRACT_ID})
+            if len(result) >= total_cap:
                 break
         for rank, value in enumerate(result, start=1):
             value["rank"] = rank

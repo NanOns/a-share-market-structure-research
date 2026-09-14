@@ -120,6 +120,27 @@ class ResearchQueries:
         return (str(row[0] or sector_id), str(row[1] or "LOCAL")) if row else (sector_id, "LOCAL")
 
     @staticmethod
+    def _sector_phase(connection: duckdb.DuckDBPyConnection, publication_id: str, sector_id: str) -> dict[str, Any]:
+        try:
+            row = connection.execute(
+                "SELECT primary_pattern,payload_json FROM sector_daily WHERE publication_id=? AND sector_id=?",
+                [publication_id, sector_id],
+            ).fetchone()
+        except duckdb.CatalogException:
+            row = None
+        payload = _json(row[1], {}) if row else {}
+        if not isinstance(payload, dict):
+            payload = {}
+        pattern = str(row[0] or payload.get("primary_pattern") or "NONE") if row else "NONE"
+        return {
+            "structure_phase": pattern,
+            "structure_phase_contract": "SECTOR_SCANNER_RULESET_V1_2_EVIDENCE_BINDING",
+            "structure_phase_reasons": [value for value in str(payload.get("reason_codes") or "").split("|") if value][:8],
+            "stabilization": str(payload.get("stabilization") or "").upper() == "TRUE",
+            "reacceleration": str(payload.get("reacceleration") or "").upper() == "TRUE",
+        }
+
+    @staticmethod
     def _stock_name(connection: duckdb.DuckDBPyConnection, publication_id: str, security_id: str) -> str:
         try:
             row = connection.execute("SELECT security_name FROM stock_daily WHERE publication_id=? AND security_id=?", [publication_id, security_id]).fetchone()
@@ -139,6 +160,7 @@ class ResearchQueries:
             "price": evidence_obj.get("price"),
             "ret1": evidence_obj.get("ret1"),
             "amount": evidence_obj.get("amount"),
+            "ret20": evidence_obj.get("ret20"),
             "quote_as_of": evidence_obj.get("quote_as_of"),
             "quote_source": evidence_obj.get("quote_source"),
             "role": str(role),
@@ -147,6 +169,10 @@ class ResearchQueries:
             "rank_denominator": int(total_members) if total_members is not None else None,
             "total_member_count": int(total_members),
             "rps20": evidence_obj.get("rps20"),
+            "performance_rank": evidence_obj.get("performance_rank"),
+            "performance_percentile": evidence_obj.get("performance_percentile"),
+            "performance_tag": evidence_obj.get("performance_tag"),
+            "performance_sort_basis": evidence_obj.get("performance_sort_basis"),
             "bias20": evidence_obj.get("bias20"),
             "risk_codes": _codes(evidence_obj.get("risk_codes", [])),
             "selection_reason": _reasons(reason_codes, context["local_date"], root=self.root),
@@ -163,6 +189,7 @@ class ResearchQueries:
          quality, reason_codes, evidence, input_hash, rank_hash) = row
         sector_id = str(sector_id)
         name, sector_type = self._sector_metadata(connection, context["publication_id"], sector_id)
+        phase = self._sector_phase(connection, context["publication_id"], sector_id)
         if track == "CURRENT":
             lifecycle, active = None, bool(current)
         elif track == "POTENTIAL":
@@ -194,7 +221,10 @@ class ResearchQueries:
             "sector_id": sector_id,
             "name": name,
             "type": sector_type,
+            **phase,
             "track": track,
+            "current_rank": int(current_rank) if current_rank is not None else None,
+            "potential_rank": int(potential_rank) if potential_rank is not None else None,
             "branch": str(branch) if branch else None,
             "lifecycle": lifecycle,
             "signal_date": context["local_date"],
@@ -332,18 +362,81 @@ class ResearchQueries:
                             member_rows = current.execute("SELECT security_id,payload_json FROM membership_entries WHERE membership_snapshot_id=? AND sector_id=? ORDER BY security_id", [membership_snapshot[0], str(sector_id)]).fetchall()
                         except duckdb.CatalogException:
                             member_rows = []
+                    if not member_rows:
+                        member_rows = current.execute(
+                            """select e.security_id,'{}' payload_json
+                                 from relation_publication_bindings b
+                                 join relation_edge_intervals e on e.source_scope=b.source_scope
+                                where b.publication_id=? and e.sector_id=? and e.from_revision<=b.revision_no
+                                  and (e.to_revision is null or b.revision_no<e.to_revision)
+                                order by e.security_id""",
+                            [context["publication_id"], str(sector_id)],
+                        ).fetchall()
                     if q:
                         member_rows = [item for item in member_rows if str(q).lower() in str(item[0]).lower()]
-                    def sort_value(item: tuple[Any, Any]) -> tuple[Any, str]:
-                        data = _json(item[1], {})
+                    member_ids = [str(item[0]) for item in member_rows]
+                    market_by_security: dict[str, dict[str, Any]] = {}
+                    research_role_by_security: dict[str, tuple[str, int | None]] = {}
+                    if member_ids:
+                        placeholders = ",".join("?" for _ in member_ids)
+                        technical_rows = current.execute(
+                            f"""select t.security_id,t.raw_close,t.quote_ret1,t.raw_amount,t.ret20,s.rps20
+                                  from analysis_snapshot_entries te
+                                  join analysis_slice_result_bindings tb on tb.slice_id=te.slice_id
+                                  join technical_result_rows t on t.result_object_id=tb.result_object_id and t.trade_date=te.trade_date
+                                  left join analysis_snapshot_entries se on se.snapshot_id=te.snapshot_id and se.domain='strength' and se.trade_date=te.trade_date
+                                  left join analysis_slice_result_bindings sb on sb.slice_id=se.slice_id
+                                  left join strength_result_rows s on s.result_object_id=sb.result_object_id and s.trade_date=se.trade_date and s.security_id=t.security_id
+                                 where te.snapshot_id=? and te.domain='technical' and te.trade_date=?
+                                   and t.security_id in ({placeholders})""",
+                            [context["snapshot_id"], context["local_date"], *member_ids],
+                        ).fetchall()
+                        market_by_security = {
+                            str(item[0]): {"price": item[1], "ret1": item[2], "amount": item[3], "ret20": item[4], "rps20": item[5]}
+                            for item in technical_rows
+                        }
+                        research_role_by_security = {
+                            str(item[0]): (str(item[1]), int(item[2]) if item[2] is not None else None)
+                            for item in current.execute(
+                                f"""select security_id,role,role_rank from research_sector_member_roles
+                                      where run_id=? and sector_id=? and security_id in ({placeholders})
+                                      qualify row_number() over(partition by security_id order by
+                                        case role when 'TODAY_LEADER' then 1 when 'CURRENT_RESEARCH' then 2 when 'EARLY_WATCH' then 3 else 4 end,
+                                        role_rank)=1""",
+                                [context["run_id"], str(sector_id), *member_ids],
+                            ).fetchall()
+                        }
+                    valid_order = sorted(
+                        (security_id for security_id in member_ids if isinstance(market_by_security.get(security_id, {}).get("ret1"), (int, float))),
+                        key=lambda security_id: (-float(market_by_security[security_id]["ret1"]), -float(market_by_security[security_id].get("amount") or 0), security_id),
+                    )
+                    performance = {}
+                    valid_count = len(valid_order)
+                    edge_count = max(1, (valid_count + 4) // 5) if valid_count else 0
+                    for index, security_id in enumerate(valid_order, 1):
+                        share = index / valid_count if valid_count else None
+                        tag = "TODAY_LEADER" if index <= edge_count else "LOW_RETURN" if index > valid_count - edge_count else "MID_PACK"
+                        performance[security_id] = {"performance_rank": index, "performance_percentile": None if share is None else 1 - (index - 1) / valid_count, "performance_tag": tag}
+                    enriched_rows = []
+                    for security_id, payload_json in member_rows:
+                        security_id = str(security_id)
+                        data = _json(payload_json, {})
                         if not isinstance(data, dict):
                             data = {}
-                        key = {"RET1": "ret1", "RET20": "ret20", "AMOUNT": "amount"}.get(sort)
+                        data.update(market_by_security.get(security_id, {}))
+                        data.update(performance.get(security_id, {"performance_rank": None, "performance_percentile": None, "performance_tag": "QUOTE_UNAVAILABLE"}))
+                        research_role, research_rank = research_role_by_security.get(security_id, ("ALL_MEMBERS", None))
+                        data["performance_sort_basis"] = "RET1_DESC_AMOUNT_DESC_SECURITY_ID"
+                        enriched_rows.append((security_id, data, research_role, research_rank))
+                    member_rows = enriched_rows
+                    def sort_value(item: tuple[Any, Any]) -> tuple[Any, str]:
+                        data = item[1] if isinstance(item[1], dict) else {}
+                        key = {"ROLE": "ret1", "RET1": "ret1", "RET20": "ret20", "AMOUNT": "amount"}.get(sort)
                         value = data.get(key) if key else None
                         return (-(float(value)) if isinstance(value, (int, float)) else float("inf"), str(item[0]))
                     member_rows.sort(key=sort_value)
                     total = len(member_rows)
-                    rows = [(context["run_id"], str(sector_id), str(item[0]), "ALL_MEMBERS", index + 1, None, "[]", item[1] or "{}") for index, item in enumerate(member_rows[(page - 1) * page_size:page * page_size])]
+                    rows = [(context["run_id"], str(sector_id), str(item[0]), item[2], item[3] or index + 1, item[1].get("performance_rank"), "[]", item[1]) for index, item in enumerate(member_rows[(page - 1) * page_size:page * page_size])]
                 else:
                     total = int(current.execute(f"SELECT count(*) FROM research_sector_member_roles WHERE {clause}", args).fetchone()[0])
                     order = "role_rank,security_id" if sort == "ROLE" else "security_id"
@@ -367,13 +460,13 @@ class ResearchQueries:
             try:
                 total = int(current.execute("SELECT count(*) FROM research_shortlist WHERE run_id=? AND list_type=?", [context["run_id"], list_type]).fetchone()[0])
                 rows = current.execute(
-                    """SELECT list_type,security_id,rank,primary_sector_id,alternative_sector_ids,selection_reason,waiting_for,invalid_if,previous_state,change_reason
+                    """SELECT list_type,security_id,rank,primary_sector_id,alternative_sector_ids,selection_reason,waiting_for,invalid_if,previous_state,change_reason,signal_date
                        FROM research_shortlist WHERE run_id=? AND list_type=? ORDER BY rank,security_id LIMIT ? OFFSET ?""",
                     [context["run_id"], list_type, page_size, (page - 1) * page_size],
                 ).fetchall()
             except duckdb.CatalogException:
                 total, rows = 0, []
-            items = [{"list_type": str(row[0]), "security_id": str(row[1]), "name": self._stock_name(current, context["publication_id"], str(row[1])), "rank": int(row[2]), "primary_sector_id": row[3], "alternative_sector_ids": _json(row[4], []), "selection_reason": _reasons(row[5], context["local_date"], root=self.root), "waiting_for": _json(row[6], []), "invalid_if": _json(row[7], []), "previous_state": row[8], "change_reason": row[9]} for row in rows]
+            items = [{"list_type": str(row[0]), "security_id": str(row[1]), "name": self._stock_name(current, context["publication_id"], str(row[1])), "rank": int(row[2]), "primary_sector_id": row[3], "alternative_sector_ids": _json(row[4], []), "selection_reason": _reasons(row[5], context["local_date"], root=self.root), "waiting_for": _json(row[6], []), "invalid_if": _json(row[7], []), "previous_state": row[8], "change_reason": row[9], "signal_date": str(row[10]) if row[10] else None} for row in rows]
             return self._envelope(context=context, items=items, total=total, page=page, page_size=page_size)
 
     def home(self, context_id: str, connection: duckdb.DuckDBPyConnection | None = None) -> dict[str, Any]:

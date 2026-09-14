@@ -35,7 +35,7 @@ def test_p10_01_matrix_preserves_legacy_routes_and_v3_semantic_relabels():
     assert items["LEGACY-06"]["new_entry"]["label"] == "中期主线背景"
     assert items["LEGACY-07"]["new_entry"]["label"] == "原结构强成员 / 历史代表"
     assert items["LEGACY-10"]["new_entry"]["label"] == "全部结构候选 / 结构证据"
-    assert items["LEGACY-13"]["status"] == "LOCAL_ESTIMATE_EXPLICIT_SWITCH"
+    assert items["LEGACY-13"]["status"] == "V2_HISTORY_ONLY_REMOVED_FROM_V3"
     assert items["LEGACY-18"]["status"] == "EXPLICITLY_EXCLUDED"
     assert items["LEGACY-19"]["status"] == "EXPLICITLY_DEFERRED"
     assert "publication_id=pub-p10" in items["LEGACY-05"]["evidence"]["path"]
@@ -71,5 +71,5 @@ def test_p10_01_api_query_is_read_only_and_returns_all_rows(tmp_path):
 
 def test_p10_01_page_exposes_matrix_and_context_preserving_legacy_entry():
     page = (ROOT / "src/workbench_service/static/research-v3.html").read_text(encoding="utf-8")
-    for marker in ("legacy-matrix", "/api/v3/legacy-matrix", "中期主线背景", "历史代表", "全部结构候选", "LOCAL_ESTIMATE_EXPLICIT_SWITCH"):
+    for marker in ("legacy-matrix", "/api/v3/legacy-matrix", "中期主线背景", "历史代表", "全部结构候选", "V2_HISTORY_ONLY_REMOVED_FROM_V3"):
         assert marker in page

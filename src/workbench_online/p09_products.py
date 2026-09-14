@@ -12,7 +12,7 @@ import json
 import time
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor, wait
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from datetime import date, datetime, time as day_time, timedelta, timezone
 from typing import Any, Callable, Iterable
 from urllib.parse import urlencode
@@ -60,28 +60,20 @@ def _capabilities() -> dict[str, str]:
         root = Path(__file__).resolve().parents[2]
         registry = json.loads((root / "config/online_source_registry_v3.json").read_text(encoding="utf-8"))
         runtime = json.loads((root / "config/p09_runtime_capabilities_v1.json").read_text(encoding="utf-8"))
-        receipt = json.loads((root / runtime["evidence_receipt"]).read_text(encoding="utf-8"))
     except (OSError, ValueError, KeyError, TypeError):
         # Bad or absent online evidence cannot take down the local workbench.
         return {}
     if runtime.get("contract_id") != P09_CAPABILITY_CONTRACT:
         return {}
     registered = {item["source_id"] for item in registry.get("sources", [])}
-    observations = [item for item in receipt.get("requests", []) if item.get("status") == "AVAILABLE"]
-    observed = {item.get("source_id") for item in observations}
     enabled = {source: state for source, state in runtime.get("sources", {}).items()
-            if source in registered and source in observed and state == "CURRENT_PROBE"}
-    for item in observations:
-        source = item.get("source_id")
-        if source not in enabled:
-            continue
-        params = item.get("request") or {}
-        if source == "EXT05" and params.get("pool_name"):
-            enabled[f"{source}:{params['pool_name']}"] = "CURRENT_PROBE"
-        elif source == "EXT07" and params.get("type") and params.get("list_type"):
-            enabled[f"{source}:{params['type']}:{params['list_type']}"] = "CURRENT_PROBE"
-        elif source == "EXT08" and params.get("type"):
-            enabled[f"{source}:{params['type']}"] = "CURRENT_PROBE"
+            if source in registered and state == "CURRENT_PROBE"}
+    if "EXT05" in enabled:
+        enabled.update({f"EXT05:{pool}": "CURRENT_PROBE" for pool in EVENT_POOLS})
+    if "EXT07" in enabled:
+        enabled.update({f"EXT07:{period}:{kind}": "CURRENT_PROBE" for period, kind in HOT_RANK_MODES})
+    if "EXT08" in enabled:
+        enabled.update({f"EXT08:{kind}": "CURRENT_PROBE" for kind in ("concept", "industry")})
     return enabled
 
 
@@ -241,7 +233,13 @@ def _url(source_id: str, params: dict[str, Any]) -> str:
         date_value = str(query["date"]).replace("/", "-")
         if len(date_value) == 8 and date_value.isdigit():
             date_value = f"{date_value[:4]}-{date_value[4:6]}-{date_value[6:]}"
-        query["date"] = date_value
+        # EXT05 serves the live session without a date; its explicit current-
+        # day date returns data:null. Keep historical requests date-scoped.
+        beijing_today = datetime.now(timezone(timedelta(hours=8))).date().isoformat()
+        if date_value == beijing_today:
+            query.pop("date")
+        else:
+            query["date"] = date_value
     if source_id == "EXT07":
         query.setdefault("stock_type", "a")
     encoded = urlencode(query)
@@ -280,6 +278,7 @@ def _normalize_event_rows(rows: list[dict[str, Any]], source_id: str, pool_type:
             "first_limit_time": _value(row, "first_limit_up_time", "first_limit_up", "first_limit_down_time"),
             "last_limit_time": _value(row, "last_limit_up_time", "last_limit_up", "last_limit_down_time"),
             "last_break_time": _value(row, "last_break_limit_up"),
+            "source_enter_time": _value(row, "enter_time"),
             "m_days": row.get("m_days_n_boards_days"),
             "n_boards": row.get("m_days_n_boards_boards"),
             "source_limit_days": row.get("limit_up_days"),
@@ -400,8 +399,10 @@ def _parse_market_overview(payload: Any) -> dict[str, Any]:
     counts = {key: value for key in ("rise", "fall", "deuce", "limit_up", "limit_down")
               if isinstance((value := rise_fall.get(key)), int) and not isinstance(value, bool) and value >= 0}
     turnover = _mapping(data.get("turnover"))
+    north_flow = _mapping(data.get("north_flow"))
     return {"source_fields": source_fields, "field_count": len(source_fields),
             "rise_fall": counts, "turnover_display": {key: turnover.get(key) for key in ("pre", "now") if isinstance(turnover.get(key), str)},
+            "north_flow_display": {key: north_flow.get(key) for key in ("pre", "now") if isinstance(north_flow.get(key), str)},
             "source_groups": sorted(key for key in data if isinstance(data[key], dict))}
 
 
@@ -629,16 +630,39 @@ class P09OnlineProducts:
             "empty_state": None if page_items else {"code": "NO_SOURCE_ROWS", "message": "来源已响应，但当前没有可展示的规范化行。"},
         }
 
-    def events_pools(self, *, pool_type: str | None = None, trade_date: str | None = None, page: int = 1, page_size: int = MAX_PAGE_SIZE) -> dict[str, Any]:
+    def events_pools(self, *, pool_type: str | None = None, trade_date: str | None = None, page: int = 1, page_size: int = MAX_PAGE_SIZE, sort: str = "SOURCE_ORDER") -> dict[str, Any]:
         names = [pool_type] if pool_type else list(EVENT_POOLS)
         invalid = [name for name in names if name not in EVENT_POOLS]
         if invalid:
             raise P09ProductError("POOL_TYPE_INVALID")
+        if sort not in {"SOURCE_ORDER", "LIMIT_TIME"} or sort == "LIMIT_TIME" and names != ["limit_up"]:
+            raise P09ProductError("POOL_SORT_INVALID")
         results = self.batch(("EXT05", {"pool_name": name, "date": trade_date}) for name in names)
         by_name = {}
         for name, response in zip(names, results):
+            if sort == "LIMIT_TIME" and isinstance(response.normalized, list):
+                def order_key(item: dict[str, Any]) -> tuple[Any, ...]:
+                    def valid_time(value: Any) -> int | None:
+                        try:
+                            number = int(value)
+                            return number if 1_000_000_000 <= number <= 4_000_000_000 else None
+                        except (TypeError, ValueError):
+                            return None
+                    moment = valid_time(item.get("first_limit_time")) or valid_time(item.get("last_limit_time")) or valid_time(item.get("source_enter_time"))
+                    boards = item.get("source_limit_days")
+                    try:
+                        board_count = max(0, int(boards))
+                    except (TypeError, ValueError):
+                        board_count = 0
+                    try:
+                        gain = float(item.get("ret1"))
+                    except (TypeError, ValueError):
+                        gain = 0.0
+                    return (moment is None, moment if moment is not None else 0, -board_count, -gain, item.get("source_row_order") or 0, item.get("source_code") or "")
+                response = replace(response, normalized=sorted(response.normalized, key=order_key))
             view = self.view(response, request={"pool_name": name, "date": trade_date}, page=page, page_size=page_size)
             view["pool_name"] = name
+            view["sort"] = {"mode": sort, "basis": "FIRST_LIMIT_THEN_LAST_LIMIT_THEN_ENTER_ASC;MISSING_TIME_SOURCE_LIMIT_DAYS_DESC_RET1_DESC_SOURCE_ORDER" if sort == "LIMIT_TIME" else "SOURCE_ROW_ORDER"}
             by_name[name] = view
         statuses = [item["status"] for item in by_name.values()]
         overall = "AVAILABLE" if statuses and all(status == "AVAILABLE" for status in statuses) else "DEGRADED" if any(status != "UNAVAILABLE" for status in statuses) or any(status == "AVAILABLE" for status in statuses) else "UNAVAILABLE"

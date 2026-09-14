@@ -277,7 +277,7 @@ def validate_contract_bundle(bundle: dict[str, Any] | None = None) -> dict[str, 
     config = bundle["config"]
     if config.get("parameter_hash") != parameter_hash(config):
         raise ContractValidationError("PARAMETER_HASH_MISMATCH")
-    if config.get("algorithm_version") != "RESEARCH_V3_PREVIEW_1":
+    if config.get("algorithm_version") != "RESEARCH_V3_PREVIEW_6_CURRENT_FOCUS_COMPLETE":
         raise ContractValidationError("ALGORITHM_VERSION_UNEXPECTED")
     if config["capabilities"]["HOT_RANKINGS"]["persist_payload"] or config["capabilities"]["HOT_RANKINGS"]["persist_rows"] or config["capabilities"]["HOT_RANKINGS"]["persist_batches"]:
         raise ContractValidationError("HOT_RANK_PERSISTENCE_FORBIDDEN")

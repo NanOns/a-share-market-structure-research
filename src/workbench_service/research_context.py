@@ -68,7 +68,8 @@ class ResearchContextReader:
             return connection.execute(
                 """SELECT run_id,input_key,trade_date,publication_id,snapshot_id,
                           algorithm_version,status
-                   FROM research_runs WHERE status='COMPLETE'"""
+                   FROM research_runs WHERE status='COMPLETE'
+                   ORDER BY completed_at DESC,created_at DESC,run_id DESC"""
             ).fetchall()
         except duckdb.CatalogException:
             return []

@@ -17,7 +17,7 @@ import pandas as pd
 from .immutable import immutable_slice_state
 
 
-CONTRACT_VERSION = "SECTOR_CYCLE_V1_3_M9_STATE_METRICS"
+CONTRACT_VERSION = "SECTOR_CYCLE_V1_5_QFQ_WIDTH_RS_ONLY"
 HISTORY_BASIS = "RECONSTRUCTED"
 DIFFUSION_COVERAGE_MIN = 0.70
 HIGH_WINDOWS = (20, 30, 60, 100)
@@ -351,6 +351,7 @@ def build_sector_cycle_daily(
     merged["member_amount"] = column("raw_amount", "amount", "turnover_amount")
     merged["member_amount_vs_prior20"] = column("amount_vs_prior20", "amount_vs_prior_20")
     merged["member_ma20"] = column("ma20")
+    merged["member_adj_close"] = column("adj_close")
 
     rows: list[dict[str, Any]] = []
     sector_dates = {
@@ -372,14 +373,15 @@ def build_sector_cycle_daily(
         ret20_valid = group.member_ret20.map(_finite)
         amount_valid = group.member_amount.map(_finite) & group.member_amount.gt(0)
         amount_ratio_valid = group.member_amount_vs_prior20.map(_finite) & group.member_amount_vs_prior20.gt(0)
-        ma_valid = group.member_ma20.map(_finite) & group.member_ret1.map(_finite)
+        ma_valid = group.member_ma20.map(_finite) & group.member_adj_close.map(_finite)
         dates = sector_dates[sector_id]
         date_index = dates.index(trade_date)
         previous_group = sector_groups.get((sector_id, dates[date_index - 1])) if date_index else None
         previous_3d_group = sector_groups.get((sector_id, dates[date_index - 3])) if date_index >= 3 else None
         common_width, common_valid_count, common_change_1d, common_change_1d_valid_count = _common_breadth(group, previous_group)
         _, _, common_change_3d, common_change_3d_valid_count = _common_breadth(group, previous_3d_group)
-        rs5 = group.member_rs5.where(group.member_rs5.map(_finite), group.member_ret5)
+        # Relative strength cannot be substituted with absolute return.
+        rs5 = group.member_rs5
         # RS20 is an independent factor.  A missing RS20 observation must stay
         # unknown; RET20 is not a valid substitute for the sector RS20 vector.
         rs20 = group.member_rs20
@@ -410,7 +412,7 @@ def build_sector_cycle_daily(
             "breadth_ret1_common_change_1d_valid_count": common_change_1d_valid_count,
             "breadth_ret1_common_change_3d": common_change_3d,
             "breadth_ret1_common_change_3d_valid_count": common_change_3d_valid_count,
-            "breadth_ma20": float((group.loc[ma_valid, "member_ret1"] > group.loc[ma_valid, "member_ma20"]).mean()) if ma_valid.any() else None,
+            "breadth_ma20": float((group.loc[ma_valid, "member_adj_close"] > group.loc[ma_valid, "member_ma20"]).mean()) if ma_valid.any() else None,
             "sector_rs5": vector_rs5, "sector_rs20": vector_rs20,
             # Historical PIT membership is not available before the preview
             # dates, so a sector-level prior-20 amount ratio is explicitly the

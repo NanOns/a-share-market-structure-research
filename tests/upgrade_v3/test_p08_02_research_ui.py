@@ -31,7 +31,7 @@ def test_v3_route_serves_page_without_touching_research_storage(tmp_path):
         response = urllib.request.urlopen(f"http://127.0.0.1:{server.server_port}/v3")
         html = response.read().decode("utf-8")
         assert response.status == 200
-        assert "统一研究工作台 · V3" in html
+        assert "<title>统一研究工作台</title>" in html
         assert 'data-workbench-mode="v3"' in html
         with app.duckdb.connect(str(db)) as connection:
             assert connection.execute("select count(*) from information_schema.tables where table_name='research_runs'").fetchone()[0] == 0

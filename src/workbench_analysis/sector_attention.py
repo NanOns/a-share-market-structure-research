@@ -15,7 +15,7 @@ from workbench_analysis.sector_amount import CONTRACT_VERSION as AMOUNT_CONTRACT
 from workbench_service.semantic import NORMAL_ATTRIBUTE, resolve_semantics
 
 
-CONTRACT_ID = "SECTOR_CURRENT_PREVIEW_1"
+CONTRACT_ID = "SECTOR_CURRENT_PREVIEW_2_TYPE_SCOPED"
 POTENTIAL_CONTRACT_ID = "SECTOR_POTENTIAL_PREVIEW_1"
 MEMBER_ROLE_CONTRACT_ID = "SECTOR_MEMBER_ROLES_PREVIEW_1"
 
@@ -102,6 +102,9 @@ def build_sector_current(
     thresholds = config["thresholds"]
     coverage_cfg = thresholds["coverage"]
     current_cfg = thresholds["current"]
+    allowed_sector_types = {
+        str(value).upper() for value in current_cfg.get("allowed_sector_types", ["INDUSTRY", "THEME"])
+    }
     market_ret = pd.to_numeric(market["ret1"], errors="coerce")
     market_valid = market_ret.map(_finite)
     market_coverage = float(market_valid.mean()) if len(market) else None
@@ -178,6 +181,7 @@ def build_sector_current(
     weak_values: list[bool | None] = []
     for row in result.itertuples(index=False):
         checks = {
+            "ALLOWED_SECTOR_TYPE": row.sector_type in allowed_sector_types,
             "NORMAL_ATTRIBUTE": bool(row.normal_rank_eligible),
             "MIN_MEMBERS": row.total_member_count >= int(coverage_cfg["min_sector_members"]),
             "QUOTE_COVERAGE": None if not _finite(row.quote_coverage) else row.quote_coverage >= float(coverage_cfg["min_member_quote_coverage"]),
@@ -331,7 +335,7 @@ def progress_potential_episode(sequence: pd.DataFrame, config: dict[str, Any]) -
     first_seen = None
     last_qualified = None
     age = 0
-    monitor_used = False
+    monitor_used = 0
     episode_no = 0
     prior_episode = False
     nonhit = 0
@@ -359,7 +363,7 @@ def progress_potential_episode(sequence: pd.DataFrame, config: dict[str, Any]) -
                 first_seen = date_value
                 last_qualified = date_value
                 age = 1
-                monitor_used = False
+                monitor_used = 0
                 state = "CONFIRMED" if current is True else "QUALIFIED"
             elif eligible is None:
                 state = "DATA_GAP"
@@ -380,15 +384,15 @@ def progress_potential_episode(sequence: pd.DataFrame, config: dict[str, Any]) -
                 if age >= int(config["windows"]["lifecycle_max_sessions"]):
                     state, end_reason, active = "EXPIRED", "MAX_AGE_5", False
                     nonhit = 0
-                elif not monitor_used:
-                    state, monitor_used = "MONITORING", True
+                elif monitor_used < int(common["monitoring_max_sessions"]):
+                    state, monitor_used = "MONITORING", monitor_used + 1
                 else:
                     state, end_reason, active = "CONDITION_LOST", "SECOND_NONHIT", False
                     nonhit = 0
             else:
                 state = "QUALIFIED"
                 last_qualified = date_value
-                monitor_used = False
+                monitor_used = 0
         output.append({
             "trade_date": date_value, "state": state, "episode_no": episode_no if (active or state not in {"NO_EPISODE", "DATA_GAP"}) else None,
             "first_seen_date": first_seen, "last_qualified_date": last_qualified,
@@ -474,8 +478,8 @@ def build_sector_member_roles(
             else:
                 candidates["_abs_bias"] = pd.to_numeric(candidates["bias20"], errors="coerce").abs()
                 candidates = candidates.sort_values(["setup", "rps5_delta3", "_abs_bias", "amount_vs_prior20", "security_id"], ascending=[False, False, False, False, True], na_position="last", kind="mergesort")
-            preview_limit = int(limits[role]["preview_limit"])
-            for rank, (_, row) in enumerate(candidates.head(preview_limit).iterrows(), start=1):
+            # Qualification is complete here; preview limits belong to the API.
+            for rank, (_, row) in enumerate(candidates.iterrows(), start=1):
                 reason = ["ROLE_ELIGIBLE", role]
                 if _truth(row.get("extended")) is True:
                     reason.append("EXTENDED_FACT_ONLY")

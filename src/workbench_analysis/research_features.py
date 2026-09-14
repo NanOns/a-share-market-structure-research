@@ -85,6 +85,7 @@ def build_stock_research_features(
     relative_strength: pd.DataFrame,
     master_sessions: Iterable[date | str],
     context: ResearchFeatureContext,
+    *, liquidity20_amount_gte: float = 20_000_000.0,
 ) -> pd.DataFrame:
     """Return one cutoff feature row per stock from raw run-bound inputs."""
 
@@ -127,9 +128,16 @@ def build_stock_research_features(
             actual &= ~stock.is_synthetic_fill.eq(True)
         close = close.where(actual)
         amount = amount.where(actual)
-        bases = stock.price_basis.astype("string") if "price_basis" in stock else pd.Series(PRICE_BASIS, index=stock.index)
-        basis_values = bases.iloc[-101:].dropna().unique().tolist()
-        basis_valid = bool(basis_values) and basis_values == [PRICE_BASIS]
+        bases = stock.price_basis.astype("string") if "price_basis" in stock else pd.Series(pd.NA, index=stock.index)
+        statuses = stock.adjustment_status.astype("string") if "adjustment_status" in stock else pd.Series(pd.NA, index=stock.index)
+        projects = stock.project_price_basis.astype("string") if "project_price_basis" in stock else pd.Series(pd.NA, index=stock.index)
+        versions = stock.adjustment_version.astype("string") if "adjustment_version" in stock else pd.Series(pd.NA, index=stock.index)
+        observed_window = actual.iloc[-101:]
+        basis_valid = bool(observed_window.any()) and bool(bases.iloc[-101:][observed_window].eq(PRICE_BASIS).fillna(False).all())
+        basis_valid &= bool(statuses.iloc[-101:][observed_window].eq("VERIFIED_REPRODUCIBLE_TDX_NATIVE").fillna(False).all())
+        basis_valid &= bool(projects.iloc[-101:][observed_window].eq("FORWARD_ADJUSTED").fillna(False).all())
+        version_values = versions.iloc[-101:][observed_window]
+        basis_valid &= bool(version_values.notna().all() and len(version_values.unique()) == 1)
         if not basis_valid:
             close[:] = np.nan
 
@@ -206,7 +214,7 @@ def build_stock_research_features(
             "amount": float(amount.iloc[-1]) if np.isfinite(amount.iloc[-1]) else None,
             "amount_prior20_median": float(prior_amount_median) if np.isfinite(prior_amount_median) else None,
             "amount_vs_prior20": _ratio(amount.iloc[-1], prior_amount_mean),
-            "liquidity20": None if not np.isfinite(prior_amount_median) else bool(prior_amount_median >= 20_000_000.0),
+            "liquidity20": None if not np.isfinite(prior_amount_median) else bool(prior_amount_median >= liquidity20_amount_gte),
             "rps5": float(rps5.iloc[-1]) if np.isfinite(rps5.iloc[-1]) else None,
             "rps20": float(rps20.iloc[-1]) if np.isfinite(rps20.iloc[-1]) else None,
             "rps5_delta3": rps_delta,

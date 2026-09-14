@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import math
 from datetime import date, datetime, timezone
 from typing import Any, Iterable, Mapping
 
@@ -185,6 +186,11 @@ def _technical_result_records(frame: pd.DataFrame) -> list[dict[str, Any]]:
         record = dict(zip(legacy_names, values))
         record.pop("slice_id", None)
         record["trade_date"] = pd.Timestamp(record["trade_date"]).date()
+        # Nullable categorical columns may arrive as pandas NaN even though
+        # numeric factor columns are already normalised by rows_for_storage.
+        for column, value in record.items():
+            if isinstance(value, float) and not math.isfinite(value):
+                record[column] = None
         records.append(record)
     return records
 

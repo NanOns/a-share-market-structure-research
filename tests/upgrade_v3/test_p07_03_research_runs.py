@@ -79,3 +79,6 @@ def test_builder_declares_the_complete_stage_order_and_job_entrypoint():
     app_source = (Path(__file__).parents[2] / "src/workbench_service/app.py").read_text(encoding="utf-8")
     assert "'/api/v3/research/jobs'" in app_source
     assert "build_latest_research_run(root,db)" in app_source
+    assert "lag(raw_close) over(partition by security_id order by date) as quote_prev_close" in source
+    assert "e.snapshot_id=? and e.domain='technical' and e.trade_date=?" in source
+    assert 'rename(columns={"date": "trade_date", "quote_ret1": "ret1"})' in source

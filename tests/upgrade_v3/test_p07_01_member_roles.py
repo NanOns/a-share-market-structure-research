@@ -42,10 +42,10 @@ def test_early_watch_is_independent_and_does_not_fill_from_current_or_old_leader
     assert len(output[output.role.eq("CURRENT_RESEARCH")]) == 0
 
 
-def test_role_preview_cap_and_missing_quote_are_explainable():
+def test_role_qualification_is_complete_and_missing_quote_is_explainable():
     rows = [_member("C", f"C{index}", .02 - index / 1000, breakout=True) for index in range(8)]
     rows[-1]["ret1"] = None
     output = build_sector_member_roles(pd.DataFrame(rows), pd.DataFrame([{"sector_id": "C", "current": True, "potential_eligible": False}]), CONFIG)
-    assert len(output[output.role.eq("CURRENT_RESEARCH")]) == 5
+    assert len(output[output.role.eq("CURRENT_RESEARCH")]) == 8
     missing = output[(output.role.eq("ALL_MEMBERS")) & (output.security_id.eq("C7"))].iloc[0]
     assert "QUOTE_UNKNOWN" in missing.role_reason_codes

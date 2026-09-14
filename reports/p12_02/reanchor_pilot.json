@@ -1,0 +1,52 @@
+{
+  "stage_contract": "P12-02_REANCHOR_PILOT_V1",
+  "captured_at_utc": "2026-09-14T16:15:52.096244+00:00",
+  "consulted_spec_sha256": "8c80537cfdb6ea30be72945712942dc5c95d1d57ba1d364db333100c01d0ea1a",
+  "input_identity": {
+    "adjusted_daily_sha256": "88bb40ca3ecabab5eb16db6c1bda616d94e41d07522ee87df9a493670ac9223c",
+    "current_gbbq_sha256": "fef3d1ba5f1107d29fff9892b99fea6305d700b888debb100f1e35fa046deaf3"
+  },
+  "cases": [
+    {
+      "security_id": "SZ.000001",
+      "reference_date": "2026-06-11",
+      "target_cutoff": "2026-06-30",
+      "raw_reference_high": 11.39,
+      "frozen_reference_high_at_reference_anchor": 11.39,
+      "reference_high_reanchored_to_target": 11.03,
+      "current_parquet_reference_high": 11.03,
+      "anchor_difference": -0.36,
+      "target_adj_close": 10.05,
+      "parquet_target_adj_close": 10.05,
+      "window_sessions": 22,
+      "window_actual_bars": 22,
+      "window_adjusted_ohlc_mismatch_count": 0,
+      "window_factor_phh20": 11.25,
+      "window_factor_amr20": 0.8817106556910099,
+      "historical_signal_status": "NOT_REEVALUATED_IN_THIS_PRICE_ONLY_PILOT",
+      "source_availability": "CURRENT_GBBQ_SOURCE_ONLY_RECONSTRUCTED"
+    },
+    {
+      "security_id": "SZ.000009",
+      "reference_date": "2026-08-26",
+      "target_cutoff": "2026-09-14",
+      "raw_reference_high": 7.38,
+      "frozen_reference_high_at_reference_anchor": 7.38,
+      "reference_high_reanchored_to_target": 7.35,
+      "current_parquet_reference_high": 7.35,
+      "anchor_difference": -0.03,
+      "target_adj_close": 6.94,
+      "parquet_target_adj_close": 6.94,
+      "window_sessions": 22,
+      "window_actual_bars": 22,
+      "window_adjusted_ohlc_mismatch_count": 0,
+      "window_factor_phh20": 7.93,
+      "window_factor_amr20": 0.4697226422146438,
+      "historical_signal_status": "NOT_REEVALUATED_IN_THIS_PRICE_ONLY_PILOT",
+      "source_availability": "CURRENT_GBBQ_SOURCE_ONLY_RECONSTRUCTED"
+    }
+  ],
+  "acceptance_result": "DEGRADED_PASS",
+  "acceptance_scope": "Real source reference-price reanchor at two XRXD boundaries; historical source availability not proven",
+  "next_stage": "P12-02_FACTOR_V3_3_CONTINUE"
+}

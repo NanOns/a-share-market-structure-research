@@ -1,0 +1,101 @@
+{
+  "stage_contract": "P12-02_RPS_POPULATION_PILOT_V1",
+  "captured_at_utc": "2026-09-14T16:27:28.407901+00:00",
+  "consulted_spec_sha256": "8c80537cfdb6ea30be72945712942dc5c95d1d57ba1d364db333100c01d0ea1a",
+  "input_identity": {
+    "adjusted_daily_sha256": "88bb40ca3ecabab5eb16db6c1bda616d94e41d07522ee87df9a493670ac9223c",
+    "basis": "LATEST_CUTOFF_QFQ_AND_CURRENT_CUTOFF_UNIVERSE",
+    "required_history_basis": "PIT_ASOF_FOR_FORMAL_DELTA"
+  },
+  "pairs": [
+    {
+      "today": "2026-03-31",
+      "prior_t_minus_3": "2026-03-26",
+      "today_valid_n": 5436,
+      "prior_valid_n": 5443,
+      "intersection": 5430,
+      "union": 5449,
+      "size_change": 0.0012860554841080288,
+      "jaccard": 0.9965131216737017,
+      "population_comparable": true,
+      "formal_comparable": false,
+      "samples": {
+        "SZ.000001": {
+          "today_rps5": 0.6580206033848418,
+          "prior_rps5": 0.8508175638434686,
+          "diagnostic_delta": -0.19279696045862682,
+          "formal_delta": null
+        },
+        "SZ.000009": {
+          "today_rps5": 0.5472774098601914,
+          "prior_rps5": 0.806356788535734,
+          "diagnostic_delta": -0.25907937867554265,
+          "formal_delta": null
+        }
+      }
+    },
+    {
+      "today": "2026-06-30",
+      "prior_t_minus_3": "2026-06-25",
+      "today_valid_n": 5432,
+      "prior_valid_n": 5432,
+      "intersection": 5419,
+      "union": 5445,
+      "size_change": 0.0,
+      "jaccard": 0.9952249770431588,
+      "population_comparable": true,
+      "formal_comparable": false,
+      "samples": {
+        "SZ.000001": {
+          "today_rps5": 0.5029455081001473,
+          "prior_rps5": 0.5717967599410898,
+          "diagnostic_delta": -0.06885125184094254,
+          "formal_delta": null
+        },
+        "SZ.000009": {
+          "today_rps5": 0.3628497790868925,
+          "prior_rps5": 0.34959499263622973,
+          "diagnostic_delta": 0.013254786450662748,
+          "formal_delta": null
+        }
+      }
+    },
+    {
+      "today": "2026-09-14",
+      "prior_t_minus_3": "2026-09-09",
+      "today_valid_n": 5455,
+      "prior_valid_n": 5453,
+      "intersection": 5453,
+      "union": 5455,
+      "size_change": 0.00036663611365719525,
+      "jaccard": 0.9996333638863428,
+      "population_comparable": true,
+      "formal_comparable": false,
+      "samples": {
+        "SZ.000001": {
+          "today_rps5": 0.8450045829514207,
+          "prior_rps5": 0.3324775353016688,
+          "diagnostic_delta": 0.5125270476497519,
+          "formal_delta": null
+        },
+        "SZ.000009": {
+          "today_rps5": 0.6527956003666361,
+          "prior_rps5": 0.3851091142490372,
+          "diagnostic_delta": 0.2676864861175989,
+          "formal_delta": null
+        }
+      }
+    }
+  ],
+  "official_latest_strength_check": {
+    "slice_id": "m8-m9-local-reconstructed-preview-v2-3ce7d6cd7992bd6a-strength-20260914",
+    "diagnostic_valid_rows": 5455,
+    "official_valid_rows": 5455,
+    "population_mismatch": 0,
+    "value_mismatch": 0,
+    "tolerance": 1e-12
+  },
+  "acceptance_result": "DEGRADED_PASS",
+  "acceptance_scope": "Population arithmetic and exact calendar t-3 diagnostic only; formal RPS delta unavailable",
+  "next_stage": "P12-02_FACTOR_V3_3_CONTINUE"
+}

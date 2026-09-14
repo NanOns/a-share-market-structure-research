@@ -91,6 +91,21 @@ def main() -> None:
                                 "history_basis": "RECONSTRUCTED_CURRENT_SOURCE",
                                 **facts})
         frame = pd.DataFrame(factor_rows).sort_values("security_id").reset_index(drop=True)
+        frame["market_group"] = frame["security_id"].str[:2]
+        valid_sigma = frame["sigma20_prior"].dropna()
+        sigma_edges = [float(valid_sigma.quantile(q)) for q in (0.25, 0.5, 0.75)]
+        def sigma_group(value):
+            if pd.isna(value):
+                return "UNKNOWN"
+            return "Q1" if value <= sigma_edges[0] else "Q2" if value <= sigma_edges[1] else "Q3" if value <= sigma_edges[2] else "Q4"
+        frame["sigma_group"] = frame["sigma20_prior"].map(sigma_group)
+        risk_distribution = []
+        for (market, group), subset in frame.groupby(["market_group", "sigma_group"], sort=True):
+            risk_distribution.append({"market": market, "sigma_group": group,
+                                      "stocks": len(subset),
+                                      "severe_drop_true": int(subset["severe_drop"].eq(True).sum()),
+                                      "severe_drop_false": int(subset["severe_drop"].eq(False).sum()),
+                                      "severe_drop_unknown": int(subset["severe_drop"].isna().sum())})
         measurements = []
         for _ in range(2):
             fd, name = tempfile.mkstemp(prefix="p12_02_factor_", suffix=".parquet", dir=OUT.parent)
@@ -102,6 +117,8 @@ def main() -> None:
                 os.unlink(name)
         results.append({"date": target, "stocks": len(frame),
                         "ready": int((frame["quality"] == "READY").sum()),
+                        "sigma20_prior_quartile_edges": sigma_edges,
+                        "risk_distribution_by_market_and_prior_sigma": risk_distribution,
                         "latest_adj_ohlc_mismatch": mismatches if target == DATES[-1] else None,
                         "measurements": measurements,
                         "repeat_identical": measurements[0] == measurements[1]})

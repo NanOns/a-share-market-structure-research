@@ -1,0 +1,65 @@
+{
+  "stage_contract": "P12-02_FACTOR_V3_3_ACCEPTANCE_V1",
+  "captured_at_utc": "2026-09-14T23:58:39.364716+00:00",
+  "consulted_versions": {
+    "upgrade_spec": "v2.1",
+    "upgrade_spec_sha256": "8c80537cfdb6ea30be72945712942dc5c95d1d57ba1d364db333100c01d0ea1a",
+    "phase0_source": "docs/P12_01_BASELINE_V2_ACCEPTANCE_20260914.md"
+  },
+  "input_identity": {
+    "source_sha256": {
+      "src/workbench_analysis/today_research_factors_v3_3.py": "1f466ff5db7251d4e99221046602b9550fa60012e50acc7bac74efd41b35dbb5",
+      "src/workbench_analysis/pullback_episode_v1.py": "f66e1e935743fed0ff0b1ea62ad385409474b482fc4a7b90ae9d371d34316408",
+      "src/workbench_analysis/stock_attention.py": "9bccf4fa7c7fdcba5a9d0c7b8bf81f045e9698f9193c1811f1022ae4f76b30b8",
+      "config/research_attention_v3.yaml": "3b94b19fc5494885ccfc31079e12872ee54a0de5dab69f5a59ab8eea781d14d5"
+    },
+    "source_recoverable_from_head": {
+      "src/workbench_analysis/today_research_factors_v3_3.py": true,
+      "src/workbench_analysis/pullback_episode_v1.py": true,
+      "src/workbench_analysis/stock_attention.py": true,
+      "config/research_attention_v3.yaml": true
+    },
+    "adjusted_daily_sha256": "88bb40ca3ecabab5eb16db6c1bda616d94e41d07522ee87df9a493670ac9223c",
+    "current_gbbq_sha256": "fef3d1ba5f1107d29fff9892b99fea6305d700b888debb100f1e35fa046deaf3"
+  },
+  "subreceipts": {
+    "historical_input_pilot": "DEGRADED_PASS",
+    "reanchor_pilot": "DEGRADED_PASS",
+    "rps_population_pilot": "DEGRADED_PASS",
+    "remaining_history_validation": "DEGRADED_PASS",
+    "three_day_factor_replay": "DEGRADED_PASS",
+    "dependency_lock_probe": "DEGRADED_PASS"
+  },
+  "checks": {
+    "phase0_terminal_full_pass": true,
+    "all_subreceipts_degraded_pass": true,
+    "candidate_sources_recoverable_from_head": true,
+    "pilot_lock_canonical_and_tamper_rejected": true,
+    "three_day_full_stock_replay_and_group_counts": true,
+    "latest_ready_count_agrees_with_input_pilot": true,
+    "no_historic_pit_claim": true
+  },
+  "legacy_predicate_contract": {
+    "implementation": "STOCK_ATTENTION_PREVIEW_1",
+    "source": "src/workbench_analysis/stock_attention.py:classify_stock_attention",
+    "declared_but_not_consumed_in_legacy_classifier": [
+      "BREAKOUT.requires_position_fields",
+      "SETUP.requires_position_fields",
+      "RECOVERY.requires_position_fields",
+      "RECOVERY.requires_previous_close_below_ma5",
+      "TREND_BACKGROUND.close_gte_ma20",
+      "TREND_BACKGROUND.ma20_delta5_gt",
+      "STRUCTURE_BREAK.consecutive_valid_sessions"
+    ],
+    "disposition": "Do not assert these config flags are active; P12-03 must bind actual predicates or register revised contract"
+  },
+  "capability_limits": [
+    "CURRENT_GBBQ_ONLY_RECONSTRUCTED_HISTORIC_PRICES",
+    "HISTORIC_UNIVERSE_PIT_UNAVAILABLE",
+    "HISTORIC_FROZEN_SEED_NOT_AVAILABLE",
+    "PRODUCTION_RUN_BUNDLE_LOCK_DEFERRED_TO_P12_06"
+  ],
+  "acceptance_result": "DEGRADED_PASS",
+  "acceptance_scope": "P12-02 factor, risk, pullback-state and RPS comparability contracts; historic PIT and production publication excluded",
+  "next_stage": "P12-03_SCANNER_V3_3"
+}

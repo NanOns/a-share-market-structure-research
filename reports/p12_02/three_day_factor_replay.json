@@ -1,6 +1,6 @@
 {
   "stage_contract": "P12-02_THREE_DAY_FACTOR_REPLAY_V1",
-  "captured_at_utc": "2026-09-14T23:32:29.917615+00:00",
+  "captured_at_utc": "2026-09-14T23:55:03.779026+00:00",
   "consulted_spec_sha256": "8c80537cfdb6ea30be72945712942dc5c95d1d57ba1d364db333100c01d0ea1a",
   "input_identity": {
     "adjusted_daily_sha256": "88bb40ca3ecabab5eb16db6c1bda616d94e41d07522ee87df9a493670ac9223c",
@@ -12,15 +12,142 @@
       "date": "2026-03-31",
       "stocks": 6182,
       "ready": 5444,
+      "sigma20_prior_quartile_edges": [
+        0.023628104564776906,
+        0.02917450941756628,
+        0.036048975986378115
+      ],
+      "risk_distribution_by_market_and_prior_sigma": [
+        {
+          "market": "BJ",
+          "sigma_group": "Q1",
+          "stocks": 110,
+          "severe_drop_true": 2,
+          "severe_drop_false": 108,
+          "severe_drop_unknown": 0
+        },
+        {
+          "market": "BJ",
+          "sigma_group": "Q2",
+          "stocks": 75,
+          "severe_drop_true": 0,
+          "severe_drop_false": 75,
+          "severe_drop_unknown": 0
+        },
+        {
+          "market": "BJ",
+          "sigma_group": "Q3",
+          "stocks": 61,
+          "severe_drop_true": 1,
+          "severe_drop_false": 60,
+          "severe_drop_unknown": 0
+        },
+        {
+          "market": "BJ",
+          "sigma_group": "Q4",
+          "stocks": 51,
+          "severe_drop_true": 1,
+          "severe_drop_false": 50,
+          "severe_drop_unknown": 0
+        },
+        {
+          "market": "BJ",
+          "sigma_group": "UNKNOWN",
+          "stocks": 317,
+          "severe_drop_true": 1,
+          "severe_drop_false": 0,
+          "severe_drop_unknown": 316
+        },
+        {
+          "market": "SH",
+          "sigma_group": "Q1",
+          "stocks": 670,
+          "severe_drop_true": 27,
+          "severe_drop_false": 643,
+          "severe_drop_unknown": 0
+        },
+        {
+          "market": "SH",
+          "sigma_group": "Q2",
+          "stocks": 509,
+          "severe_drop_true": 12,
+          "severe_drop_false": 496,
+          "severe_drop_unknown": 1
+        },
+        {
+          "market": "SH",
+          "sigma_group": "Q3",
+          "stocks": 533,
+          "severe_drop_true": 7,
+          "severe_drop_false": 526,
+          "severe_drop_unknown": 0
+        },
+        {
+          "market": "SH",
+          "sigma_group": "Q4",
+          "stocks": 576,
+          "severe_drop_true": 24,
+          "severe_drop_false": 552,
+          "severe_drop_unknown": 0
+        },
+        {
+          "market": "SH",
+          "sigma_group": "UNKNOWN",
+          "stocks": 183,
+          "severe_drop_true": 1,
+          "severe_drop_false": 0,
+          "severe_drop_unknown": 182
+        },
+        {
+          "market": "SZ",
+          "sigma_group": "Q1",
+          "stocks": 582,
+          "severe_drop_true": 23,
+          "severe_drop_false": 559,
+          "severe_drop_unknown": 0
+        },
+        {
+          "market": "SZ",
+          "sigma_group": "Q2",
+          "stocks": 778,
+          "severe_drop_true": 17,
+          "severe_drop_false": 760,
+          "severe_drop_unknown": 1
+        },
+        {
+          "market": "SZ",
+          "sigma_group": "Q3",
+          "stocks": 767,
+          "severe_drop_true": 15,
+          "severe_drop_false": 751,
+          "severe_drop_unknown": 1
+        },
+        {
+          "market": "SZ",
+          "sigma_group": "Q4",
+          "stocks": 735,
+          "severe_drop_true": 11,
+          "severe_drop_false": 724,
+          "severe_drop_unknown": 0
+        },
+        {
+          "market": "SZ",
+          "sigma_group": "UNKNOWN",
+          "stocks": 235,
+          "severe_drop_true": 1,
+          "severe_drop_false": 0,
+          "severe_drop_unknown": 234
+        }
+      ],
       "latest_adj_ohlc_mismatch": null,
       "measurements": [
         {
-          "sha256": "1b629bcb305d326526f2c321f97337c2bb3e83a98bed18a695acbb4934db3d30",
-          "bytes": 1727597
+          "sha256": "5d8da2fc0e74d14c8a28ba37be33fa0cb76b565545dc47fe1567c0368b727d16",
+          "bytes": 1730831
         },
         {
-          "sha256": "1b629bcb305d326526f2c321f97337c2bb3e83a98bed18a695acbb4934db3d30",
-          "bytes": 1727597
+          "sha256": "5d8da2fc0e74d14c8a28ba37be33fa0cb76b565545dc47fe1567c0368b727d16",
+          "bytes": 1730831
         }
       ],
       "repeat_identical": true
@@ -29,15 +156,142 @@
       "date": "2026-06-30",
       "stocks": 6182,
       "ready": 5446,
+      "sigma20_prior_quartile_edges": [
+        0.022137176379357918,
+        0.02996006408337627,
+        0.04066631463092037
+      ],
+      "risk_distribution_by_market_and_prior_sigma": [
+        {
+          "market": "BJ",
+          "sigma_group": "Q1",
+          "stocks": 23,
+          "severe_drop_true": 0,
+          "severe_drop_false": 23,
+          "severe_drop_unknown": 0
+        },
+        {
+          "market": "BJ",
+          "sigma_group": "Q2",
+          "stocks": 98,
+          "severe_drop_true": 1,
+          "severe_drop_false": 97,
+          "severe_drop_unknown": 0
+        },
+        {
+          "market": "BJ",
+          "sigma_group": "Q3",
+          "stocks": 100,
+          "severe_drop_true": 1,
+          "severe_drop_false": 99,
+          "severe_drop_unknown": 0
+        },
+        {
+          "market": "BJ",
+          "sigma_group": "Q4",
+          "stocks": 96,
+          "severe_drop_true": 0,
+          "severe_drop_false": 96,
+          "severe_drop_unknown": 0
+        },
+        {
+          "market": "BJ",
+          "sigma_group": "UNKNOWN",
+          "stocks": 297,
+          "severe_drop_true": 1,
+          "severe_drop_false": 0,
+          "severe_drop_unknown": 296
+        },
+        {
+          "market": "SH",
+          "sigma_group": "Q1",
+          "stocks": 659,
+          "severe_drop_true": 7,
+          "severe_drop_false": 652,
+          "severe_drop_unknown": 0
+        },
+        {
+          "market": "SH",
+          "sigma_group": "Q2",
+          "stocks": 537,
+          "severe_drop_true": 12,
+          "severe_drop_false": 523,
+          "severe_drop_unknown": 2
+        },
+        {
+          "market": "SH",
+          "sigma_group": "Q3",
+          "stocks": 540,
+          "severe_drop_true": 3,
+          "severe_drop_false": 536,
+          "severe_drop_unknown": 1
+        },
+        {
+          "market": "SH",
+          "sigma_group": "Q4",
+          "stocks": 551,
+          "severe_drop_true": 5,
+          "severe_drop_false": 546,
+          "severe_drop_unknown": 0
+        },
+        {
+          "market": "SH",
+          "sigma_group": "UNKNOWN",
+          "stocks": 184,
+          "severe_drop_true": 1,
+          "severe_drop_false": 0,
+          "severe_drop_unknown": 183
+        },
+        {
+          "market": "SZ",
+          "sigma_group": "Q1",
+          "stocks": 681,
+          "severe_drop_true": 5,
+          "severe_drop_false": 676,
+          "severe_drop_unknown": 0
+        },
+        {
+          "market": "SZ",
+          "sigma_group": "Q2",
+          "stocks": 727,
+          "severe_drop_true": 3,
+          "severe_drop_false": 724,
+          "severe_drop_unknown": 0
+        },
+        {
+          "market": "SZ",
+          "sigma_group": "Q3",
+          "stocks": 722,
+          "severe_drop_true": 2,
+          "severe_drop_false": 720,
+          "severe_drop_unknown": 0
+        },
+        {
+          "market": "SZ",
+          "sigma_group": "Q4",
+          "stocks": 715,
+          "severe_drop_true": 9,
+          "severe_drop_false": 706,
+          "severe_drop_unknown": 0
+        },
+        {
+          "market": "SZ",
+          "sigma_group": "UNKNOWN",
+          "stocks": 252,
+          "severe_drop_true": 0,
+          "severe_drop_false": 0,
+          "severe_drop_unknown": 252
+        }
+      ],
       "latest_adj_ohlc_mismatch": null,
       "measurements": [
         {
-          "sha256": "b99192d7f41af885ff7d85502ae804571863bf951cf4a038a699a95b2b86eeea",
-          "bytes": 1741588
+          "sha256": "3234e5d1b4b5f24e68ea8d8922aedfe1409854813deb39d220112e15fa8e93df",
+          "bytes": 1744816
         },
         {
-          "sha256": "b99192d7f41af885ff7d85502ae804571863bf951cf4a038a699a95b2b86eeea",
-          "bytes": 1741588
+          "sha256": "3234e5d1b4b5f24e68ea8d8922aedfe1409854813deb39d220112e15fa8e93df",
+          "bytes": 1744816
         }
       ],
       "repeat_identical": true
@@ -46,15 +300,142 @@
       "date": "2026-09-14",
       "stocks": 6182,
       "ready": 5511,
+      "sigma20_prior_quartile_edges": [
+        0.018028225618734982,
+        0.024435123949558164,
+        0.03406520925729695
+      ],
+      "risk_distribution_by_market_and_prior_sigma": [
+        {
+          "market": "BJ",
+          "sigma_group": "Q1",
+          "stocks": 28,
+          "severe_drop_true": 0,
+          "severe_drop_false": 28,
+          "severe_drop_unknown": 0
+        },
+        {
+          "market": "BJ",
+          "sigma_group": "Q2",
+          "stocks": 98,
+          "severe_drop_true": 2,
+          "severe_drop_false": 96,
+          "severe_drop_unknown": 0
+        },
+        {
+          "market": "BJ",
+          "sigma_group": "Q3",
+          "stocks": 117,
+          "severe_drop_true": 2,
+          "severe_drop_false": 115,
+          "severe_drop_unknown": 0
+        },
+        {
+          "market": "BJ",
+          "sigma_group": "Q4",
+          "stocks": 94,
+          "severe_drop_true": 3,
+          "severe_drop_false": 91,
+          "severe_drop_unknown": 0
+        },
+        {
+          "market": "BJ",
+          "sigma_group": "UNKNOWN",
+          "stocks": 277,
+          "severe_drop_true": 1,
+          "severe_drop_false": 0,
+          "severe_drop_unknown": 276
+        },
+        {
+          "market": "SH",
+          "sigma_group": "Q1",
+          "stocks": 701,
+          "severe_drop_true": 2,
+          "severe_drop_false": 699,
+          "severe_drop_unknown": 0
+        },
+        {
+          "market": "SH",
+          "sigma_group": "Q2",
+          "stocks": 513,
+          "severe_drop_true": 2,
+          "severe_drop_false": 510,
+          "severe_drop_unknown": 1
+        },
+        {
+          "market": "SH",
+          "sigma_group": "Q3",
+          "stocks": 520,
+          "severe_drop_true": 6,
+          "severe_drop_false": 512,
+          "severe_drop_unknown": 2
+        },
+        {
+          "market": "SH",
+          "sigma_group": "Q4",
+          "stocks": 566,
+          "severe_drop_true": 9,
+          "severe_drop_false": 557,
+          "severe_drop_unknown": 0
+        },
+        {
+          "market": "SH",
+          "sigma_group": "UNKNOWN",
+          "stocks": 171,
+          "severe_drop_true": 0,
+          "severe_drop_false": 0,
+          "severe_drop_unknown": 171
+        },
+        {
+          "market": "SZ",
+          "sigma_group": "Q1",
+          "stocks": 650,
+          "severe_drop_true": 0,
+          "severe_drop_false": 650,
+          "severe_drop_unknown": 0
+        },
+        {
+          "market": "SZ",
+          "sigma_group": "Q2",
+          "stocks": 767,
+          "severe_drop_true": 4,
+          "severe_drop_false": 763,
+          "severe_drop_unknown": 0
+        },
+        {
+          "market": "SZ",
+          "sigma_group": "Q3",
+          "stocks": 741,
+          "severe_drop_true": 14,
+          "severe_drop_false": 727,
+          "severe_drop_unknown": 0
+        },
+        {
+          "market": "SZ",
+          "sigma_group": "Q4",
+          "stocks": 719,
+          "severe_drop_true": 11,
+          "severe_drop_false": 708,
+          "severe_drop_unknown": 0
+        },
+        {
+          "market": "SZ",
+          "sigma_group": "UNKNOWN",
+          "stocks": 220,
+          "severe_drop_true": 0,
+          "severe_drop_false": 0,
+          "severe_drop_unknown": 220
+        }
+      ],
       "latest_adj_ohlc_mismatch": 0,
       "measurements": [
         {
-          "sha256": "2f9ed2489cbe53c8246e34b18ed9e8674e5276c9a37632edfd541acff74c20ba",
-          "bytes": 1744689
+          "sha256": "baad50092ad0dbb4071cb02d617a9f1d2d1ace8dc6aa4952da0336a12ea6cecd",
+          "bytes": 1747908
         },
         {
-          "sha256": "2f9ed2489cbe53c8246e34b18ed9e8674e5276c9a37632edfd541acff74c20ba",
-          "bytes": 1744689
+          "sha256": "baad50092ad0dbb4071cb02d617a9f1d2d1ace8dc6aa4952da0336a12ea6cecd",
+          "bytes": 1747908
         }
       ],
       "repeat_identical": true

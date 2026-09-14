@@ -735,3 +735,9 @@ P00-03 合同资产 SHA-256：
 | audit_item | status | stage_contract | scope/evidence | acceptance | next_stage |
 |---|---|---|---|---|---|
 | V3-CURRENT-TYPE-MEMBER-DISPLAY | DEGRADED_PASS | `SECTOR_CURRENT_PREVIEW_2_TYPE_SCOPED`；`RESEARCH_SHORTLIST_PREVIEW_2_CONFIGURED_CAP`；`RESEARCH_V3_PREVIEW_6_CURRENT_FOCUS_COMPLETE` | CURRENT 增加 INDUSTRY/THEME 硬门；成员接口绑定 technical/strength 快照并按 ret1、amount、security_id 排序；页面表格显示价格、涨幅、成交额、20日涨幅、研究角色及三档表现标签；清单每板块上限从硬编码3改为合同配置；相关测试通过 | 2026-09-11 新 run `research-465514ce8678405a8e1e36a328cf05cc` COMPLETE；CURRENT 从玻璃/昨日较强/昨成交20 修正为仅玻璃；玻璃6只 CURRENT_RESEARCH 全部进入当前关注；V1/V3 候选均来自 `/api/candidates`，总池1071、分页展示 | 连续真实交易日继续验收 CURRENT/POTENTIAL 稳定性 |
+
+## P12-02 因子与历史输入阶段验收（2026-09-15）
+
+| task_id | status | stage_contract | evidence | acceptance | next_stage |
+|---|---|---|---|---|---|
+| P12-02 | DEGRADED_PASS | `P12-02_FACTOR_V3_3_ACCEPTANCE_V1`；V3 v2.1 §5、§7、§9.2、§19；候选实现 `TODAY_RESEARCH_FACTOR_V3_3_CANDIDATE_01`、`PULLBACK_EPISODE_V1_CANDIDATE_01` | `docs/P12_02_FACTOR_V3_3_ACCEPTANCE_20260915.md`；`reports/p12_02/p12_02_stage_gate.json`；三日期各6,182股因子重放、风险分组、31项相关回归、真实换锚、RPS可比门、源码可恢复与依赖锁探针 | 候选因子/事件公式及边界通过；旧P05配置未消费项已列明；历史GBBQ/universe只可重构诊断，正式历史RPS及生产bundle未通过；170日未物化 | P12-03_SCANNER_V3_3 |

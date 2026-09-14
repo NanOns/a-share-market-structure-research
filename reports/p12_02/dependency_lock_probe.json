@@ -1,17 +1,17 @@
 {
   "stage_contract": "P12-02_DEPENDENCY_LOCK_PROBE_V1",
-  "captured_at_utc": "2026-09-14T16:27:29.810631+00:00",
+  "captured_at_utc": "2026-09-14T23:31:00.459686+00:00",
   "pilot_lock_sha256": "54859cf971e33d28b5494be0b84cc68a4327ee42798cd2649a96c5d6e8478e8b",
   "canonical_matches": true,
   "source_checks": {
     "src/workbench_analysis/today_research_factors_v3_3.py": {
       "matches_worktree": true,
-      "recoverable_from_head": false,
+      "recoverable_from_head": true,
       "recorded_sha256": "1f466ff5db7251d4e99221046602b9550fa60012e50acc7bac74efd41b35dbb5"
     },
     "src/workbench_analysis/pullback_episode_v1.py": {
       "matches_worktree": true,
-      "recoverable_from_head": false,
+      "recoverable_from_head": true,
       "recorded_sha256": "f66e1e935743fed0ff0b1ea62ad385409474b482fc4a7b90ae9d371d34316408"
     },
     "src/adjustment/tdx_adjustment.py": {
@@ -30,7 +30,7 @@
     "gbbq_matches": true
   },
   "tamper_rejected": true,
-  "source_recoverable_from_head": false,
+  "source_recoverable_from_head": true,
   "production_run_bound": false,
   "historical_source_availability_proven": false,
   "acceptance_result": "DEGRADED_PASS",

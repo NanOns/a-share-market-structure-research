@@ -1,0 +1,67 @@
+{
+  "stage_contract": "P12-02_THREE_DAY_FACTOR_REPLAY_V1",
+  "captured_at_utc": "2026-09-14T23:32:29.917615+00:00",
+  "consulted_spec_sha256": "8c80537cfdb6ea30be72945712942dc5c95d1d57ba1d364db333100c01d0ea1a",
+  "input_identity": {
+    "adjusted_daily_sha256": "88bb40ca3ecabab5eb16db6c1bda616d94e41d07522ee87df9a493670ac9223c",
+    "current_gbbq_sha256": "fef3d1ba5f1107d29fff9892b99fea6305d700b888debb100f1e35fa046deaf3"
+  },
+  "history_basis": "RECONSTRUCTED_CURRENT_SOURCE",
+  "dates": [
+    {
+      "date": "2026-03-31",
+      "stocks": 6182,
+      "ready": 5444,
+      "latest_adj_ohlc_mismatch": null,
+      "measurements": [
+        {
+          "sha256": "1b629bcb305d326526f2c321f97337c2bb3e83a98bed18a695acbb4934db3d30",
+          "bytes": 1727597
+        },
+        {
+          "sha256": "1b629bcb305d326526f2c321f97337c2bb3e83a98bed18a695acbb4934db3d30",
+          "bytes": 1727597
+        }
+      ],
+      "repeat_identical": true
+    },
+    {
+      "date": "2026-06-30",
+      "stocks": 6182,
+      "ready": 5446,
+      "latest_adj_ohlc_mismatch": null,
+      "measurements": [
+        {
+          "sha256": "b99192d7f41af885ff7d85502ae804571863bf951cf4a038a699a95b2b86eeea",
+          "bytes": 1741588
+        },
+        {
+          "sha256": "b99192d7f41af885ff7d85502ae804571863bf951cf4a038a699a95b2b86eeea",
+          "bytes": 1741588
+        }
+      ],
+      "repeat_identical": true
+    },
+    {
+      "date": "2026-09-14",
+      "stocks": 6182,
+      "ready": 5511,
+      "latest_adj_ohlc_mismatch": 0,
+      "measurements": [
+        {
+          "sha256": "2f9ed2489cbe53c8246e34b18ed9e8674e5276c9a37632edfd541acff74c20ba",
+          "bytes": 1744689
+        },
+        {
+          "sha256": "2f9ed2489cbe53c8246e34b18ed9e8674e5276c9a37632edfd541acff74c20ba",
+          "bytes": 1744689
+        }
+      ],
+      "repeat_identical": true
+    }
+  ],
+  "temporary_shards_removed": true,
+  "acceptance_result": "DEGRADED_PASS",
+  "acceptance_scope": "Three-date full-stock factor replay and temporary shard repeatability; historic PIT and publication excluded",
+  "next_stage": "P12-02_FACTOR_V3_3_CONTINUE"
+}

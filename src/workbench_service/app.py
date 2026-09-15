@@ -36,6 +36,7 @@ from workbench_service.analysis_activation import AnalysisActivationError, Analy
 from workbench_service.research_context import ResearchContextError, ResearchContextReader
 from workbench_service.research_queries import ResearchQueryError, ResearchQueries
 from workbench_service.research_builder import build_latest_research_run
+from workbench_service.today_research_bundle import TodayResearchBundleReader
 from workbench_service.legacy_feature_matrix import build_legacy_matrix
 from workbench_service.online_events import OnlineEventQueries
 from workbench_service.p09_context import load_mapping, select_mappings, intersect_members
@@ -1704,7 +1705,7 @@ class Api:
    return {'publication_id':p,'page':page,'page_size':size,'total':total,'sector_member_count':sector_member_count,'sector_member_rank_basis':'stock_rs20_pct_desc_then_ret20_desc_then_security_id','items':items}
 
 def make_handler(root,db):
- api=Api(db,root=root); research=ResearchQueries(lambda: api._con(),root=root); events=OnlineEventQueries(lambda: api._con()); p09=P09OnlineProducts(); history=HistoryJobService(root,db); history.recover_interrupted(background=True); activation=AnalysisActivationService(root,db); operations=OperationsConfig(root,db); storage=StorageGovernance(root,db); backups=BackupService(root,db); maintenance=MaintenanceService(root,db); static=Path(root)/'src/workbench_service/static';csrf=secrets.token_urlsafe(24);publishers={};daily_jobs={};research_jobs={};daily_jobs_lock=threading.Lock()
+ api=Api(db,root=root); research=ResearchQueries(lambda: api._con(),root=root); today_research=TodayResearchBundleReader(root); events=OnlineEventQueries(lambda: api._con()); p09=P09OnlineProducts(); history=HistoryJobService(root,db); history.recover_interrupted(background=True); activation=AnalysisActivationService(root,db); operations=OperationsConfig(root,db); storage=StorageGovernance(root,db); backups=BackupService(root,db); maintenance=MaintenanceService(root,db); static=Path(root)/'src/workbench_service/static';csrf=secrets.token_urlsafe(24);publishers={};daily_jobs={};research_jobs={};daily_jobs_lock=threading.Lock()
  def run_research(job_id):
   task=research_jobs[job_id];task.update(status='RUNNING',progress={'status':'BUILDING_RESEARCH_V3'})
   try:
@@ -1817,6 +1818,10 @@ def make_handler(root,db):
     elif u.path=='/api/hot-rankings': out=api.hot_rankings(x.get('source','EASTMONEY_HOT_RANK'),x.get('list_type') or None,x.get('mode','LATEST'),x.get('as_of'),x.get('batch_id'),x.get('page',1),x.get('page_size',50),x.get('co_listed','0')=='1')
     elif u.path=='/api/v3/research/context':
      context=research.contexts.resolve_request(x.get('publication_id',''),x.get('trade_date',''),x.get('mode','CLOSE'));out={'status':context['status'],'context':context,'items':[]}
+    elif u.path=='/api/v3/research/today':
+     out=today_research.list(page=x.get('page',1),page_size=x.get('page_size',20),category=x.get('category',''),selection_mode=x.get('selection_mode',''),q=x.get('q',''))
+    elif u.path.startswith('/api/v3/research/today/'):
+     security_id=unquote(u.path[len('/api/v3/research/today/'):].strip('/'));out=today_research.detail(security_id)
     elif u.path=='/api/v3/legacy-matrix':
      publication_id=str(x.get('publication_id') or '').strip();trade_date=str(x.get('trade_date') or '').strip()
      if bool(publication_id)!=bool(trade_date): raise ValueError('CONTEXT_MODE_CONFLICT')
@@ -1962,6 +1967,8 @@ def make_handler(root,db):
      page=(static/'v2/index.html').read_text('utf-8')
      page=page.replace('__CSRF_TOKEN__',csrf).replace('__WORKBENCH_VERSION__','CURRENT').replace('__WORKBENCH_MODE__','v3').replace('__WORKBENCH_BASE__','/').replace('__WORKBENCH_LABEL__','')
      return self._send(200,page.encode(),'text/html; charset=utf-8')
+    elif u.path in ('/v3/research-preview','/v3/research-preview/'):
+     return self._send(200,(static/'research-v3.html').read_bytes(),'text/html; charset=utf-8')
     elif u.path in ('/v3/online','/v3/online/','/v3/online/index.html'):
      return self._send(200,(static/'online-p09-v3.html').read_bytes(),'text/html; charset=utf-8')
     elif u.path in ('/v3/events','/v3/events/','/v3/events/index.html'):

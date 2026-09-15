@@ -1,0 +1,37 @@
+{
+  "stage": "P12-07_UI_V3_3",
+  "acceptance": "DEGRADED_PASS",
+  "checks": {
+    "active_bundle_ready": true,
+    "api_contract": true,
+    "effect_pending": true,
+    "full_pagination": true,
+    "detail_same_digest": true,
+    "homepage_uses_bundle": true,
+    "homepage_has_no_legacy_fallback": true
+  },
+  "api": {
+    "trade_date": "2026-09-14",
+    "total": 113,
+    "page_size": 25,
+    "output_digest": "e2eaadca2a8614af661e79e8a203e0cfd49c40f2e4475233f4dd67d3b08d4eae",
+    "effect_status": "EFFECT_OBSERVATION_PENDING"
+  },
+  "browser_evidence": {
+    "desktop": "PASS: unified /v3 showed 113 rows, 25/page and pending status",
+    "narrow_390x844": "PASS: filters, cards and detail rendered without horizontal layout loss",
+    "detail": "PASS: run id and digest matched list bundle"
+  },
+  "regression": {
+    "targeted": "8 passed",
+    "upgrade_v3_full": "268 passed, 17 failed",
+    "pre_existing_evidence_gaps": 16,
+    "external_stale_service_failure": 1
+  },
+  "limitations": [
+    "P09/P11 historical receipt files required by 16 tests are absent from the current checkout.",
+    "Live-browser regression at port 28765 exercised an already-running stale service, not this stage server.",
+    "Effect acceptance remains EFFECT_OBSERVATION_PENDING."
+  ],
+  "next_stage": "P12-08"
+}

@@ -55,7 +55,7 @@ def test_v3_is_the_single_unified_workbench_entry(tmp_path):
         script = (ROOT / "src/workbench_service/static/v2/v3-unified.js").read_text(encoding="utf-8")
         assert "post('/api/jobs'" in script
         assert "get('/api/jobs?job_id='" in script
-        assert "&final=1" in script
+        assert "get('/api/v3/research/today?page='" in script
         assert "v3-priority-table" in script
         assert "structure_phase" in script
         assert "板块生命周期 · 前瞻与风险" not in page

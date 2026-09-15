@@ -39,6 +39,16 @@ def test_episode_identity_continues_until_exit_or_category_change():
  assert third["rows"][0]["episode_id"]!=second["rows"][0]["episode_id"]
  assert third["rows"][0]["episode_started_on"]=="2026-09-16"
 
+def test_report_preserves_available_dimensions_and_marks_missing_ones():
+ source=rows();source[0]["liq20_amount"]=20_000_000;source[1]["liq20_amount"]=40_000_000
+ obs=build_observation(active(),source,{"SH.1":{"industry_relations_count":1,"theme_relations_count":2},"SZ.2":{"industry_relations_count":1,"theme_relations_count":6}})
+ dimensions=report([obs])["reporting_dimensions"]
+ assert dimensions["liquidity"]["median"]==20_000_000
+ assert dimensions["liquidity"]["status"]=="AVAILABLE"
+ assert dimensions["volatility"]["status"]=="UNAVAILABLE"
+ assert dimensions["market_strength"]["missing"]==2
+ assert dimensions["overlap_degree_counts"]=={"1":2}
+
 def test_digest_changes_when_signal_fact_changes():
  first=build_observation(active(),rows());changed=copy.deepcopy(rows());changed[0]["selection_mode"]="SUPPORTED"
  assert build_observation(active(),changed)["observation_digest"]!=first["observation_digest"]

@@ -56,7 +56,7 @@ def rank(rows:Sequence[Mapping[str,Any]])->list[dict]:
   matched=[x for x in PRIMARY_ORDER if x in row.get('matched_categories',())];primary=matched[0] if matched else None; score=score_category(primary,row);mode=row.get('selection_mode','INDEPENDENT');out.append({**row,'primary_category':primary,'category_score':score,'rank_status':'SCORED' if score is not None else 'QUALIFIED_UNRANKED','selection_mode':mode})
  for primary in PRIMARY_ORDER:
   for mode in ('SUPPORTED','INDEPENDENT','OBSERVATION'):
-   group=[x for x in out if x['primary_category']==primary and x['selection_mode']==mode and x['category_score'] is not None];group.sort(key=lambda x:(-x['category_score'],x.get('signal_age') if x.get('signal_age') is not None else math.inf,-(_n(x.get('liq20_amount')) or 0),str(x['security_id']))); 
+   group=[x for x in out if x['primary_category']==primary and x['selection_mode']==mode and x['category_score'] is not None];group.sort(key=lambda x:(-x['category_score'],x.get('signal_age') if x.get('signal_age') is not None else math.inf,-(_n(x.get('liq20_amount')) or 0),str(x['security_id'])));
    for i,x in enumerate(group,1):x['category_rank']=i
  for x in out:x.setdefault('category_rank',None)
  return out

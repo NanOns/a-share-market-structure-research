@@ -107,6 +107,22 @@ def main() -> None:
             & (frame["clv"] >= .60) & (frame["amr20_mean_prior"] >= 1.20)
             & frame["intraday_reject_high20"].eq(False)
         ]
+        diagnostic_launch_without_extended_gate = frame[
+            frame["quality"].eq("READY") & frame["liq20"].eq(True)
+            & frame["severe_drop"].eq(False) & frame["first_day_damage"].eq(False)
+            & (frame["break_margin_close20"] > 0) & (frame["ret1_adj"] > 0)
+            & (frame["clv"] >= .60) & (frame["amr20_mean_prior"] >= 1.20)
+            & frame["intraday_reject_high20"].eq(False)
+        ]
+        sample_n = len(diagnostic_launch)
+        eligible_pool = frame[frame["quality"].eq("READY") & frame["liq20"].eq(True)].copy()
+        rps_only = eligible_pool.sort_values(["ret20_adj", "security_id"], ascending=[False, True]).head(sample_n)
+        old_breakout = eligible_pool[
+            (eligible_pool["break_margin_close20"] > 0)
+            & (eligible_pool["amr20_mean_prior"] >= 1.20)
+            & ~((eligible_pool["bias20"] >= .15) & (eligible_pool["extension_z20"] >= 1.5))
+        ].sort_values(["ret20_adj", "break_margin_close20", "r2_20", "security_id"],
+                      ascending=[False, False, False, True]).head(sample_n)
         risk_distribution = []
         for (market, group), subset in frame.groupby(["market_group", "sigma_group"], sort=True):
             risk_distribution.append({"market": market, "sigma_group": group,
@@ -128,6 +144,17 @@ def main() -> None:
                         "sigma20_prior_quartile_edges": sigma_edges,
                         "risk_distribution_by_market_and_prior_sigma": risk_distribution,
                         "diagnostic_launch_security_ids": diagnostic_launch["security_id"].tolist(),
+                        "equal_count_baselines": {
+                            "sample_count": sample_n,
+                            "old_priority_reconstructed": old_breakout["security_id"].tolist(),
+                            "rps20_only": rps_only["security_id"].tolist(),
+                            "stock_trigger_no_sector": diagnostic_launch["security_id"].tolist(),
+                            "complete_launch": diagnostic_launch["security_id"].tolist(),
+                            "complete_equals_stock_trigger_reason": "LAUNCH_SUPPORT_IS_GROUPING_NOT_COMMON_HARD_GATE",
+                        },
+                        "ablation_counts": {"complete_launch": sample_n,
+                                            "without_extended_position_gate": len(diagnostic_launch_without_extended_gate),
+                                            "freshness_mode": "AGE_LEFT_CENSORED_0_20"},
                         "latest_adj_ohlc_mismatch": mismatches if target == DATES[-1] else None,
                         "measurements": measurements,
                         "repeat_identical": measurements[0] == measurements[1]})

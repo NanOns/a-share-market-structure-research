@@ -4,4 +4,4 @@
 
 首轮只重放满足完整股票事实的诊断启动候选：三日分别70、295、107只。3月与6月的1/3/5/10会话共1,460条结果全部OBSERVED；9月14日之后没有本地交易日，428条全部NOT_DUE。评价使用`HORIZON_END_TDX_AFFINE_QFQ_V1`，每个期限以各自到期日e为截止与复权锚，未来结果不反馈信号。相同输入连续重跑的逻辑结果SHA-256均为`45064096ffecda5614ea381d17f106fdb13225d8b33d5471d40faf8a17e0deeb`。机器证据见[诊断回放](../reports/p12_05/replay_evaluation.json)。
 
-当前状态为`DEGRADED_PASS_PARTIAL`，**P12-05尚未验收**。旧priority、仅RPS、股票触发不含板块、完整方案四组同日等量基线尚未全部构建，LOO/位置门/新鲜度消融也未完成；因此不进入P12-06，不发布效果判断。下一任务为`P12-05_BASELINES_AND_ABLATION`。
+后续四组同日等量基线和LOO/位置门/新鲜度消融已经补齐，本进度记录由[正式P12-05验收](P12_05_REPLAY_V3_3_ACCEPTANCE_20260915.md)收口；阶段结果为限定范围`DEGRADED_PASS`，效果仍为`EFFECT_OBSERVATION_PENDING`。

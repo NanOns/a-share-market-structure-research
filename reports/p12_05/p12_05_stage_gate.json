@@ -1,0 +1,26 @@
+{
+  "stage_contract": "P12-05_REPLAY_V3_3_ACCEPTANCE_V1",
+  "captured_at_utc": "2026-09-15T01:04:07.858078+00:00",
+  "consulted_spec_sha256": "8c80537cfdb6ea30be72945712942dc5c95d1d57ba1d364db333100c01d0ea1a",
+  "input_identity": {
+    "adjusted_daily_sha256": "88bb40ca3ecabab5eb16db6c1bda616d94e41d07522ee87df9a493670ac9223c",
+    "gbbq_current_sha256": "fef3d1ba5f1107d29fff9892b99fea6305d700b888debb100f1e35fa046deaf3",
+    "candidate_source_sha256": "5f92f4f7c0de857593660e42cbd95668a95b2defe6de5aa6cbe1b98adc0ab0df"
+  },
+  "logical_result_sha256": "c716c7f54543d1d5926e7d0b78622083bad26d608cdd819c7a8a1136b856823e",
+  "checks": {
+    "p12_04_accepted": true,
+    "ordered_preregistered_partitions": true,
+    "four_equal_count_baselines": true,
+    "horizon_end_anchor_contract": true,
+    "data_gap_retained": true,
+    "locked_observation_not_due": true,
+    "ablations_recorded": true,
+    "reconstructed_mode_explicit": true,
+    "effect_claim_withheld": true
+  },
+  "acceptance_result": "DEGRADED_PASS",
+  "acceptance_scope": "Implementation and reconstructed diagnostic replay with equal-count baselines and ablations; PIT and effect validity excluded",
+  "effect_status": "EFFECT_OBSERVATION_PENDING",
+  "next_stage": "P12-06_BUNDLE_V3_3"
+}

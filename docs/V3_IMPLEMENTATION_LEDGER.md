@@ -759,3 +759,9 @@ P00-03 合同资产 SHA-256：
 | task_id | status | stage_contract | evidence | acceptance | next_stage |
 |---|---|---|---|---|---|
 | P12-05-REPLAY-PILOT | DEGRADED_PASS_PARTIAL | `P12-05_REPLAY_V3_3_DIAGNOSTIC_V1`；`HORIZON_END_TDX_AFFINE_QFQ_V1` | `docs/P12_05_REPLAY_PROGRESS_20260915.md`；`reports/p12_05/replay_evaluation.json`；3日472个诊断信号、1,888个期限行、逻辑重跑哈希一致 | 3月/6月共1,460条OBSERVED；9月428条NOT_DUE；当前成员重构身份明确；四组等量基线与消融未完成，P12-05未验收 | P12-05_BASELINES_AND_ABLATION |
+
+## P12-05 回放阶段验收（2026-09-15）
+
+| task_id | status | stage_contract | evidence | acceptance | next_stage |
+|---|---|---|---|---|---|
+| P12-05 | DEGRADED_PASS | `P12-05_REPLAY_V3_3_ACCEPTANCE_V1`；`HORIZON_END_TDX_AFFINE_QFQ_V1` | `docs/P12_05_REPLAY_V3_3_ACCEPTANCE_20260915.md`；`reports/p12_05/replay_evaluation.json`、`p12_05_stage_gate.json` | 三日期四组等量基线；3,736期限行；e锚、DATA_GAP/NOT_DUE、LOO/位置/Freshness消融通过；当前成员重构；效果保持PENDING | P12-06_BUNDLE_V3_3 |

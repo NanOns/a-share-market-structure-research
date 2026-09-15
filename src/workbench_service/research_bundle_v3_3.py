@@ -16,7 +16,7 @@ def atomic_write(path:Path,data:bytes)->None:
   os.replace(tmp,path)
  finally:
   if os.path.exists(tmp):os.unlink(tmp)
-def build_bundle(root:Path,identity:dict,results:list[dict],contracts:dict)->dict:
+def build_bundle(root:Path,identity:dict,results:list[dict],contracts:dict,*,bundle_contract:str=CONTRACT_ID)->dict:
  required=('publication_id','snapshot_id','membership_snapshot_id','research_run_id','parameter_hash','dependency_lock_hash','trade_date')
  if any(not str(identity.get(k) or '').strip() for k in required):raise ResearchBundleError('BUNDLE_IDENTITY_INCOMPLETE')
  logical={'identity':identity,'results':results,'contracts':contracts};digest=sha_bytes(canonical(logical));target=root/digest
@@ -27,7 +27,7 @@ def build_bundle(root:Path,identity:dict,results:list[dict],contracts:dict)->dic
  root.mkdir(parents=True,exist_ok=True);stage=Path(tempfile.mkdtemp(prefix='.'+digest+'.',dir=root))
  try:
   atomic_write(stage/'results.json',canonical(results));atomic_write(stage/'contracts.json',canonical(contracts))
-  manifest={'contract_id':CONTRACT_ID,'identity':identity,'output_digest':digest,
+  manifest={'contract_id':bundle_contract,'identity':identity,'output_digest':digest,
             'files':{'results.json':sha_file(stage/'results.json'),'contracts.json':sha_file(stage/'contracts.json')}}
   atomic_write(stage/'bundle.json',canonical(manifest));validate_bundle(stage)
   try:os.replace(stage,target)
@@ -50,7 +50,7 @@ def validate_bundle(path:Path)->dict:
 def activate_bundle(path:Path,pointer:Path,*,failure_hook:Callable[[str],None]|None=None)->dict:
  manifest=validate_bundle(path)
  if failure_hook:failure_hook('FAIL_BEFORE_POINTER_SWAP')
- payload={'contract_id':CONTRACT_ID,'bundle_path':str(path.resolve()),'output_digest':manifest['output_digest'],'identity':manifest['identity']}
+ payload={'contract_id':manifest['contract_id'],'bundle_path':str(path.resolve()),'output_digest':manifest['output_digest'],'identity':manifest['identity']}
  atomic_write(pointer,canonical(payload));return payload
 def read_active(pointer:Path)->dict|None:
  if not pointer.exists():return None

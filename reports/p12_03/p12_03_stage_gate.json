@@ -1,0 +1,78 @@
+{
+  "stage_contract": "P12-03_SCANNER_V3_3_ACCEPTANCE_V1",
+  "captured_at_utc": "2026-09-15T00:13:04.903741+00:00",
+  "consulted_spec_sha256": "8c80537cfdb6ea30be72945712942dc5c95d1d57ba1d364db333100c01d0ea1a",
+  "scanner_contract": "TODAY_RESEARCH_SCANNER_V3_3_CANDIDATE_01",
+  "parameter_contract": {
+    "launch": {
+      "clv_gte": 0.6,
+      "amr20_mean_prior_gte": 1.2
+    },
+    "recovery_turn": {
+      "clv_gte": 0.55,
+      "amr20_mean_prior_gte": 1.05,
+      "close_to_ma20_gte": 0.98,
+      "rps5_delta3_gt": 0.0,
+      "prior5_below_ma20_count_gte": 2
+    },
+    "trend_continue": {
+      "clv_gte": 0.55,
+      "rps20_gte": 0.7,
+      "amr20_mean_prior_min": 0.8,
+      "amr20_mean_prior_max": 2.5
+    },
+    "support": {
+      "trend_continue_requires_current_loo": true
+    }
+  },
+  "input_identity": {
+    "run_id": "research-59677a66206c4314b0b2b4b9e88046d0",
+    "parquet_sha256": "88bb40ca3ecabab5eb16db6c1bda616d94e41d07522ee87df9a493670ac9223c"
+  },
+  "scanner_source_sha256": "0cf65de4f926f43cce5fcac60f16e2e047b4c5f0f4cc497e1f832f6e3bdc3379",
+  "checks": {
+    "phase0_and_p12_02_accepted": true,
+    "full_funnel_reconciles": true,
+    "launch_has_real_true_population": true,
+    "setup_watch_has_real_true_population": true,
+    "stock_only_continue_preserved": true,
+    "unsupported_continue_not_promoted": true,
+    "missing_pit_not_promoted": true
+  },
+  "funnel": {
+    "launch": {
+      "False": 6076,
+      "True": 104,
+      "None": 2
+    },
+    "pullback": {
+      "False": 3560,
+      "None": 2622
+    },
+    "recovery_turn": {
+      "False": 6022,
+      "None": 160
+    },
+    "trend_continue_stock_only": {
+      "False": 6041,
+      "True": 140,
+      "None": 1
+    },
+    "trend_continue": {
+      "False": 6041,
+      "None": 141
+    },
+    "setup_watch": {
+      "False": 5779,
+      "True": 403
+    }
+  },
+  "capability_limits": [
+    "PULLBACK_HISTORIC_FROZEN_SEED_UNAVAILABLE",
+    "RPS5_DELTA3_FORMAL_PIT_UNAVAILABLE",
+    "CURRENT_LOO_SUPPORT_P12_04"
+  ],
+  "acceptance_result": "DEGRADED_PASS",
+  "acceptance_scope": "Four independent eligibility scenarios, STOCK_ONLY continuation shadow, SETUP_WATCH and explainable tri-state funnel; P12-04 LOO and historic PIT excluded",
+  "next_stage": "P12-04_RANK_AND_LOO_V3_3"
+}

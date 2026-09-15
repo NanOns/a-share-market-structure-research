@@ -741,3 +741,9 @@ P00-03 合同资产 SHA-256：
 | task_id | status | stage_contract | evidence | acceptance | next_stage |
 |---|---|---|---|---|---|
 | P12-02 | DEGRADED_PASS | `P12-02_FACTOR_V3_3_ACCEPTANCE_V1`；V3 v2.1 §5、§7、§9.2、§19；候选实现 `TODAY_RESEARCH_FACTOR_V3_3_CANDIDATE_01`、`PULLBACK_EPISODE_V1_CANDIDATE_01` | `docs/P12_02_FACTOR_V3_3_ACCEPTANCE_20260915.md`；`reports/p12_02/p12_02_stage_gate.json`；三日期各6,182股因子重放、风险分组、31项相关回归、真实换锚、RPS可比门、源码可恢复与依赖锁探针 | 候选因子/事件公式及边界通过；旧P05配置未消费项已列明；历史GBBQ/universe只可重构诊断，正式历史RPS及生产bundle未通过；170日未物化 | P12-03_SCANNER_V3_3 |
+
+## P12-03 扫描器阶段验收（2026-09-15）
+
+| task_id | status | stage_contract | evidence | acceptance | next_stage |
+|---|---|---|---|---|---|
+| P12-03 | DEGRADED_PASS | `P12-03_SCANNER_V3_3_ACCEPTANCE_V1`；候选实现`TODAY_RESEARCH_SCANNER_V3_3_CANDIDATE_01`；V3 v2.1 §8、§9、§19 | `docs/P12_03_SCANNER_V3_3_ACCEPTANCE_20260915.md`；`reports/p12_03/current_funnel.json`；`reports/p12_03/p12_03_stage_gate.json`；33项P12-02/03相关回归 | 四类三值资格、逐谓词解释、延续STOCK_ONLY及SETUP_WATCH通过；6,182股漏斗回合；历史种子、正式RPS变化和P12-04 LOO缺口未补TRUE；未发布、未物化 | P12-04_RANK_AND_LOO_V3_3 |

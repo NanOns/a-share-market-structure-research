@@ -765,3 +765,9 @@ P00-03 合同资产 SHA-256：
 | task_id | status | stage_contract | evidence | acceptance | next_stage |
 |---|---|---|---|---|---|
 | P12-05 | DEGRADED_PASS | `P12-05_REPLAY_V3_3_ACCEPTANCE_V1`；`HORIZON_END_TDX_AFFINE_QFQ_V1` | `docs/P12_05_REPLAY_V3_3_ACCEPTANCE_20260915.md`；`reports/p12_05/replay_evaluation.json`、`p12_05_stage_gate.json` | 三日期四组等量基线；3,736期限行；e锚、DATA_GAP/NOT_DUE、LOO/位置/Freshness消融通过；当前成员重构；效果保持PENDING | P12-06_BUNDLE_V3_3 |
+
+## P12-06 完整候选包阶段验收（2026-09-15）
+
+| task_id | status | stage_contract | evidence | acceptance | next_stage |
+|---|---|---|---|---|---|
+| P12-06 | DEGRADED_PASS | `P12-06_BUNDLE_V3_3_ACCEPTANCE_V1`；`TODAY_RESEARCH_BUNDLE_V3_3_CANDIDATE_01` | `docs/P12_06_BUNDLE_V3_3_ACCEPTANCE_20260915.md`；`reports/p12_06/candidate_bundle_receipt.json`、`p12_06_stage_gate.json`；4项bundle反例 | 113行不可变包、完整身份、摘要验证、同输入复用、失败前旧指针保留、生产DB不变；独立指针未切UI；P12逻辑run未冒充旧DB run | P12-07_UI_V3_3 |

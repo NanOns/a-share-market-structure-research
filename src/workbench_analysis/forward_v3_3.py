@@ -1,0 +1,57 @@
+"""Immutable daily observations and descriptive forward reports for P12-08."""
+from __future__ import annotations
+import hashlib,json,os,tempfile
+from collections import Counter,defaultdict
+from pathlib import Path
+from typing import Any
+
+CONTRACT_ID="TODAY_RESEARCH_FORWARD_V3_3_CANDIDATE_02"
+MIN_SIGNAL_DAYS=20
+MIN_EPISODES=50
+
+def canonical(value:Any)->bytes:return (json.dumps(value,ensure_ascii=False,sort_keys=True,separators=(",",":"),allow_nan=False)+"\n").encode()
+def digest(value:Any)->str:return hashlib.sha256(canonical(value)).hexdigest()
+def atomic_write(path:Path,value:Any)->None:
+ path.parent.mkdir(parents=True,exist_ok=True);fd,tmp=tempfile.mkstemp(prefix="."+path.name+".",suffix=".tmp",dir=path.parent)
+ try:
+  with os.fdopen(fd,"wb") as stream:stream.write(canonical(value));stream.flush();os.fsync(stream.fileno())
+  os.replace(tmp,path)
+ finally:
+  if os.path.exists(tmp):os.unlink(tmp)
+
+def relation_band(count:int|None)->str:
+ if count is None:return "UNKNOWN"
+ return "1-2" if count<=2 else "3-5" if count<=5 else "6+"
+
+def build_observation(active:dict,results:list[dict],relations:dict[str,dict]|None=None)->dict:
+ relations=relations or {};rows=[]
+ for item in results:
+  sid=str(item["security_id"]);rel=relations.get(sid,{})
+  rows.append({"security_id":sid,"episode_id":item.get("episode_id"),"primary_category":item.get("primary_category"),"matched_categories":item.get("matched_categories",[]),"selection_mode":item.get("selection_mode"),"rank_status":item.get("rank_status"),"category_rank":item.get("category_rank"),"category_score":item.get("category_score"),"sector_relations_tested":rel.get("sector_relations_tested"),"relationship_band":relation_band(rel.get("sector_relations_tested")),"industry_support":rel.get("industry_support"),"theme_support":rel.get("theme_support")})
+ logical={"contract_id":CONTRACT_ID,"trade_date":active["identity"]["trade_date"],"bundle_digest":active["output_digest"],"research_run_id":active["identity"]["research_run_id"],"rows":rows}
+ return {**logical,"observation_digest":digest(logical)}
+
+def transitions(previous:dict|None,current:dict)->dict:
+ before={x["security_id"]:x for x in (previous or {}).get("rows",[])};after={x["security_id"]:x for x in current["rows"]};keys=sorted(set(before)|set(after));counts=Counter();items=[]
+ for sid in keys:
+  old,new=before.get(sid),after.get(sid)
+  kind="ENTERED" if old is None else "EXITED" if new is None else "CATEGORY_CHANGED" if old.get("primary_category")!=new.get("primary_category") else "MODE_CHANGED" if old.get("selection_mode")!=new.get("selection_mode") else "CONTINUED"
+  counts[kind]+=1;items.append({"security_id":sid,"transition":kind,"from_category":old and old.get("primary_category"),"to_category":new and new.get("primary_category"),"from_mode":old and old.get("selection_mode"),"to_mode":new and new.get("selection_mode")})
+ return {"from_date":previous and previous.get("trade_date"),"to_date":current["trade_date"],"counts":dict(counts),"items":items}
+
+def report(observations:list[dict])->dict:
+ observations=sorted(observations,key=lambda x:x["trade_date"]);scenario=Counter();relation=defaultdict(Counter);episodes=set();candidate_rows=0
+ for obs in observations:
+  for row in obs["rows"]:
+   candidate_rows+=1;scenario[row.get("primary_category") or "UNKNOWN"]+=1;relation[row.get("relationship_band") or "UNKNOWN"][row.get("selection_mode") or "UNKNOWN"]+=1
+   if row.get("episode_id"):episodes.add(row["episode_id"])
+ trans=[transitions(observations[i-1] if i else None,obs) for i,obs in enumerate(observations)]
+ gate={"minimum_signal_days":MIN_SIGNAL_DAYS,"minimum_independent_episodes":MIN_EPISODES,"signal_days":len(observations),"sealed_independent_episodes":len(episodes),"candidate_episode_upper_bound":candidate_rows,"episode_identity_status":"AVAILABLE" if candidate_rows and len(episodes)==candidate_rows else "INCOMPLETE"}
+ return {"contract_id":CONTRACT_ID,"status":"EFFECT_OBSERVATION_READY" if gate["signal_days"]>=MIN_SIGNAL_DAYS and gate["sealed_independent_episodes"]>=MIN_EPISODES else "EFFECT_OBSERVATION_PENDING","gate":gate,"scenario_counts":dict(scenario),"relationship_band_by_mode":{k:dict(v) for k,v in relation.items()},"transitions":trans,"observation_digests":[x["observation_digest"] for x in observations]}
+
+def seal(root:Path,observation:dict)->dict:
+ target=Path(root)/observation["trade_date"]/(observation["observation_digest"]+".json")
+ if target.exists():
+  if json.loads(target.read_text(encoding="utf-8"))!=observation:raise ValueError("FORWARD_OBSERVATION_DIGEST_CONFLICT")
+  return {"path":str(target),"reused":True}
+ atomic_write(target,observation);return {"path":str(target),"reused":False}

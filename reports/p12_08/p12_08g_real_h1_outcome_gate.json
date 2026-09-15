@@ -1,0 +1,33 @@
+{
+  "stage": "P12-08G_REAL_H1_OUTCOME",
+  "stage_contract": "TODAY_RESEARCH_FORWARD_OUTCOME_MATERIALIZED_V3_3_CANDIDATE_01",
+  "evaluation_source_contract": "P12_FORWARD_EVALUATION_SOURCE_V1",
+  "acceptance_result": "DEGRADED_PASS",
+  "input_identity": {
+    "signal_date": "2026-09-14",
+    "evaluation_date": "2026-09-15",
+    "horizon": 1,
+    "evaluation_source_digest": "790185116903851cc70607e64138ab77e23fa25ab7904edd8775f1f2c58efe6a",
+    "plan_digest": "1153565572d30673562a28533da652f985e269ec134b3ad6906701c9565d092c",
+    "result_digest": "95d27575947ae7bf8f97338217b9427304e5406e660c46fadea0165f2dc6f2e6"
+  },
+  "evidence": {
+    "due_rows": 113,
+    "observed": 112,
+    "data_gap": 1,
+    "not_due": 539,
+    "unique_materialized_identities": 112,
+    "data_gap_items": [
+      {"security_id": "SH.603400", "reason": "HORIZON_WINDOW_INCOMPLETE", "evaluation_actual_bar": false}
+    ],
+    "descriptive_medians": {
+      "fret": -0.015846222706916546,
+      "mfe": 0.022196716470003874,
+      "mae": -0.03137868656627113
+    },
+    "tdx_modified": false,
+    "production_database_written": false
+  },
+  "effect_status": "EFFECT_OBSERVATION_PENDING",
+  "next_stage": "NEXT_REAL_CLOSE_OBSERVATION"
+}

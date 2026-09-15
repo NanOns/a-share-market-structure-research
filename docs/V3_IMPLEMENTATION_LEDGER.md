@@ -790,3 +790,9 @@ P00-03 合同资产 SHA-256：
 | task_id | status | stage_contract | evidence | acceptance | next_stage |
 |---|---|---|---|---|---|
 | P12-08F | DEGRADED_PASS（第二真实日封存，效果待验） | `TODAY_RESEARCH_FORWARD_V3_3_CANDIDATE_04`；`TODAY_RESEARCH_BUNDLE_V3_3_CANDIDATE_02` | `docs/P12_08F_SECOND_REAL_OBSERVATION_ACCEPTANCE_20260915.md`；`reports/p12_08/p12_08f_second_real_observation_gate.json`；15日bundle `32c895e...`、观测`ddd2da4a...` | 15日58只；2/20真实信号日；163个唯一episode；同日多修订规范选择；迁移50进入/105退出/7持续/1模式变化；P12回归59 passed | 独立冻结15日评价源并物化14日h=1；验收后等待第三个真实收盘日 |
+
+## P12-08G 首个真实 h=1 后验结果（2026-09-15）
+
+| task_id | status | stage_contract | evidence | acceptance | next_stage |
+|---|---|---|---|---|---|
+| P12-08G | DEGRADED_PASS（真实到期结果已物化，效果待验） | `TODAY_RESEARCH_FORWARD_OUTCOME_MATERIALIZED_V3_3_CANDIDATE_01`；`P12_FORWARD_EVALUATION_SOURCE_V1`；`HORIZON_END_TDX_AFFINE_QFQ_V1` | `docs/P12_08G_REAL_H1_OUTCOME_ACCEPTANCE_20260915.md`；`reports/p12_08/p12_08g_real_h1_outcome_gate.json`；评价源`79018511...`；结果`95d27575...` | 14日h=1共113条：112 OBSERVED、1 DATA_GAP；缺口为SH.603400在15日无实际行情；不填0；539条保持NOT_DUE；未作效果或概率声明 | 下一真实收盘先封存第三观察日，并按冻结评价合同处理新到期项 |

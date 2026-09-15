@@ -4,7 +4,7 @@ from pathlib import Path
 import duckdb
 ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT/"src"))
 from workbench_analysis.forward_outcome_v3_3 import CONTRACT_ID,plan_outcomes,seal_plan
-from workbench_analysis.forward_v3_3 import CONTRACT_ID as OBSERVATION_CONTRACT,atomic_write
+from workbench_analysis.forward_v3_3 import CONTRACT_ID as OBSERVATION_CONTRACT,atomic_write,canonical_observations
 
 def main():
  observations=[]
@@ -12,6 +12,7 @@ def main():
   value=json.loads(path.read_text(encoding="utf-8"))
   if value.get("contract_id")==OBSERVATION_CONTRACT:observations.append(value)
  if not observations:raise SystemExit("NO_FORWARD_OBSERVATIONS")
+ observations=canonical_observations(observations)
  parquet=ROOT/"data/normalized/adjusted_daily.parquet"
  with duckdb.connect(database=":memory:") as connection:sessions=[row[0] for row in connection.execute("select distinct date from read_parquet(?) order by date",[str(parquet)]).fetchall()]
  as_of=max(sessions);plan=plan_outcomes(observations,sessions,as_of);plan_path=ROOT/"reports/p12_08/outcome_plan.json";seal_plan(plan_path,plan)

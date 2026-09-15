@@ -1,0 +1,29 @@
+{
+  "stage_contract": "P12-04_RANK_AND_LOO_V3_3_ACCEPTANCE_V1",
+  "captured_at_utc": "2026-09-15T00:33:37.062889+00:00",
+  "contract_id": "TODAY_RESEARCH_RANK_AND_LOO_V3_3_CANDIDATE_01",
+  "source_sha256": "3e6b6aa7ab98b591de69cee3ee8a0003a11f51d90b3060bdee2081367a8d9a01",
+  "input_identity": {
+    "run_id": "research-59677a66206c4314b0b2b4b9e88046d0",
+    "publication_id": "m4-f787bac7863fa3409d45f75a8b7b5c30",
+    "source_scope": "TDX-MEMBERSHIP:direct-members-v3-v1",
+    "relation_revision": 1,
+    "attribute_version_id": "attrset-dbd78aac2269a55464dd05bd",
+    "technical_slice": "m8-m9-local-reconstructed-preview-v2-3ce7d6cd7992bd6a-technical-20260914"
+  },
+  "checks": {
+    "p12_03_accepted": true,
+    "real_relation_edges_present": true,
+    "six_real_stock_cases": true,
+    "relationship_bands_reconcile": true,
+    "stock_only_shadow_preserved": true,
+    "qualified_unique_uncapped": true,
+    "unscored_qualified_retained": true,
+    "scored_population_present": true,
+    "simple_shadow_same_sample": true,
+    "historic_change_loo_not_fabricated": true
+  },
+  "acceptance_result": "DEGRADED_PASS",
+  "acceptance_scope": "Current LOO, relationship audit, support modes, fixed primary category, bounded scores, unscored retention and simple shadow; historic change LOO unavailable",
+  "next_stage": "P12-05_REPLAY_V3_3"
+}

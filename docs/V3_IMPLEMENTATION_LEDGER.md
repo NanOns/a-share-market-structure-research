@@ -747,3 +747,9 @@ P00-03 合同资产 SHA-256：
 | task_id | status | stage_contract | evidence | acceptance | next_stage |
 |---|---|---|---|---|---|
 | P12-03 | DEGRADED_PASS | `P12-03_SCANNER_V3_3_ACCEPTANCE_V1`；候选实现`TODAY_RESEARCH_SCANNER_V3_3_CANDIDATE_01`；V3 v2.1 §8、§9、§19 | `docs/P12_03_SCANNER_V3_3_ACCEPTANCE_20260915.md`；`reports/p12_03/current_funnel.json`；`reports/p12_03/p12_03_stage_gate.json`；33项P12-02/03相关回归 | 四类三值资格、逐谓词解释、延续STOCK_ONLY及SETUP_WATCH通过；6,182股漏斗回合；历史种子、正式RPS变化和P12-04 LOO缺口未补TRUE；未发布、未物化 | P12-04_RANK_AND_LOO_V3_3 |
+
+## P12-04 排名与LOO阶段验收（2026-09-15）
+
+| task_id | status | stage_contract | evidence | acceptance | next_stage |
+|---|---|---|---|---|---|
+| P12-04 | DEGRADED_PASS | `P12-04_RANK_AND_LOO_V3_3_ACCEPTANCE_V1`；`TODAY_RESEARCH_RANK_AND_LOO_V3_3_CANDIDATE_01`；V3 v2.1 §10–§12、§19 | `docs/P12_04_RANK_AND_LOO_V3_3_ACCEPTANCE_20260915.md`；`reports/p12_04/current_loo_probe.json`、`current_rank_probe.json`、`p12_04_stage_gate.json`；7项定向反例 | 52,028关系边、5,578股今日LOO；113只唯一合格、9已评分、104未评分保留；延续140 STOCK_ONLY/9正式；简单排序同样本；历史变化LOO保持UNKNOWN | P12-05_REPLAY_V3_3 |

@@ -1,0 +1,14 @@
+{
+  "stage": "P12-10_V3_3_INDEPENDENT_AUDIT_AND_REMEDIATION",
+  "contract_id": "P12-10_V3_3_INDEPENDENT_AUDIT_AND_REMEDIATION_V1",
+  "acceptance": "DEGRADED_PASS",
+  "fixed_findings": {"P1": 4, "P2": 3},
+  "targeted_regression": {"passed": 67, "failed": 0},
+  "full_upgrade_v3_regression": {"passed": 292, "failed": 16, "failure_scope": "ABSENT_UNVERSIONED_HISTORICAL_P09_P11_RECEIPTS"},
+  "active_bundle": {"contract_id": "TODAY_RESEARCH_BUNDLE_V3_3_CANDIDATE_02", "publication_id": "m4-d2223af86662ab21ee84b83d435f0785", "trade_date": "2026-09-15", "output_digest": "a81dc08d2ecd1af3edea9a517bf4df13940153eaaf401b7c997500d9b4a8553e", "rows": 58, "names_present": 58, "scanner_evidence_present": 58},
+  "forward_gate": {"signal_days": 2, "minimum_signal_days": 20, "sealed_independent_episodes": 163, "minimum_independent_episodes": 50, "status": "EFFECT_OBSERVATION_PENDING"},
+  "outcomes": {"OBSERVED": 112, "SUSPENDED": 1, "DELISTED": 0, "DATA_GAP": 0, "NOT_DUE": 539},
+  "pointer_read_only_verification": true,
+  "tdx_modified": false,
+  "next_stage": "WAIT_FOR_USER_ACCEPTANCE_THEN_CONTINUE_REAL_FORWARD_OBSERVATION"
+}

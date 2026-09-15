@@ -31,6 +31,6 @@ def test_v3_home_modals_show_local_details():
             page.get_by_text("第 2 页", exact=False).first.wait_for(timeout=10000)
             assert page.locator("#v3-priority-stocks [data-priority-stock]").count() == 25
             page.locator("#v3-priority-stocks [data-priority-stock]").first.click()
-            page.get_by_text("收盘价", exact=True).wait_for(timeout=10000)
+            page.get_by_text("场景判定证据", exact=True).wait_for(timeout=10000)
         finally:
             browser.close()

@@ -11,6 +11,8 @@ OUT=ROOT/'reports/p12_04/current_loo_probe.json';DB=ROOT/'data/database/market_r
 def main():
  with duckdb.connect(str(DB),read_only=True) as c:
   run,pub,target=c.execute("select run_id,publication_id,trade_date from research_runs where status='COMPLETE' order by trade_date desc,completed_at desc limit 1").fetchone();scope,rev,attrs=c.execute('select source_scope,revision_no,attribute_version_id from relation_publication_bindings where publication_id=?',[pub]).fetchone()
+  expected_pub=os.environ.get('P12_EXPECTED_PUBLICATION_ID');expected_day=os.environ.get('P12_EXPECTED_TRADE_DATE')
+  if (expected_pub and pub!=expected_pub) or (expected_day and target.isoformat()!=expected_day):raise RuntimeError('P12_INPUT_IDENTITY_MISMATCH')
   snapshot=c.execute("select snapshot_id from publication_analysis_snapshots where publication_id=? and domain='LOCAL_RECONSTRUCTED'",[pub]).fetchone()[0]
   tslice=c.execute("select slice_id from analysis_snapshot_entries where snapshot_id=? and domain='technical' and trade_date=?",[snapshot,target]).fetchone()[0]
   edges=c.execute("""select distinct e.sector_id,e.security_id,a.type from relation_edge_intervals e join sector_attribute_revision_bindings ab on ab.source_scope=e.source_scope and ab.sector_id=e.sector_id and ab.from_attribute_revision<=? and (ab.to_attribute_revision is null or ab.to_attribute_revision>?) join sector_attribute_versions a on a.source_scope=ab.source_scope and a.sector_id=ab.sector_id and a.attribute_version_id=ab.attribute_version_id where e.source_scope=? and e.from_revision<=? and (e.to_revision is null or e.to_revision>?) and a.type in ('INDUSTRY','THEME')""",[rev,rev,scope,rev,rev]).fetchall()

@@ -15,6 +15,8 @@ def sha(path):
 def main():
  with duckdb.connect(str(DB),read_only=True) as c:
   run,pub,TARGET=c.execute("select run_id,publication_id,cast(trade_date as varchar) from research_runs where status='COMPLETE' order by trade_date desc,completed_at desc limit 1").fetchone()
+  expected_pub=os.environ.get('P12_EXPECTED_PUBLICATION_ID');expected_day=os.environ.get('P12_EXPECTED_TRADE_DATE')
+  if (expected_pub and pub!=expected_pub) or (expected_day and TARGET!=expected_day):raise RuntimeError('P12_INPUT_IDENTITY_MISMATCH')
   dates=[x[0].isoformat() for x in c.execute("select distinct date from read_parquet(?) where date<=? order by date",[str(PARQUET),TARGET]).fetchall()]; window=dates[-27:]; idx={d:i for i,d in enumerate(dates)}
   rows=c.execute("select security_id,date,adj_open,adj_high,adj_low,adj_close,raw_open,raw_close,raw_amount,raw_volume,has_actual_bar,is_synthetic_fill,universe_status from read_parquet(?) where date between ? and ? order by security_id,date",[str(PARQUET),window[0],TARGET]).fetchall()
   old=c.execute("select security_id,setup,breakout,recovery,trend_background,structure_break,risk_codes from research_stock_states where run_id=?",[run]).fetchall()
@@ -50,7 +52,7 @@ def main():
   if matched or out['setup_watch']['eligible'] is True:
    eligible_rows.append({'security_id':sid,'security_name':names.get(sid),'matched_stock_only_categories':matched,'setup_watch':out['setup_watch']['eligible'],'clv':f['clv'],'liq20_amount':f['liq20_amount'],'break_margin_close20':f['break_margin_close20'],'amr20_mean_prior':f['amr20_mean_prior'],'rps5_delta3':None,'slope20':f['slope20'],'r2_20':f['r2_20'],'rps20':rps.get(sid),'bias20':f['bias20'],'freshness':.20,'risk_codes':risks,'factor_evidence':f,'scanner_evidence':out})
  result={'stage_contract':'P12-03_CURRENT_FUNNEL_V1','captured_at_utc':datetime.now(timezone.utc).isoformat(),'target_date':TARGET,'input_identity':{'run_id':run,'publication_id':pub,'snapshot_id':snapshot,'strength_slice':strength_slice,'parquet_sha256':sha(PARQUET)},'stocks':len(by),'scenario_counts':{k:dict(v) for k,v in counts.items()},'eligible_or_watch_rows':eligible_rows,'top_known_failures':failed.most_common(),'top_unknowns':unknown.most_common(),'limitations':['PULLBACK_HISTORIC_FROZEN_SEED_UNAVAILABLE','RPS5_DELTA3_FORMAL_PIT_UNAVAILABLE','CURRENT_LOO_SUPPORT_P12_04'], 'acceptance_result':'DEGRADED_PASS','next_stage':'P12-03_SCANNER_V3_3_CONTINUE'}
- if len(by)!=6182 or any(sum(v.values())!=6182 for v in counts.values()):result.update(acceptance_result='BLOCKED',next_stage='P12-03_REPAIR')
+ if not by or any(sum(v.values())!=len(by) for v in counts.values()):result.update(acceptance_result='BLOCKED',next_stage='P12-03_REPAIR')
  OUT.parent.mkdir(parents=True,exist_ok=True);fd,tmp=tempfile.mkstemp(dir=OUT.parent)
  try:
   with os.fdopen(fd,'w',encoding='utf-8') as s:json.dump(result,s,ensure_ascii=False,indent=2);s.write('\n');s.flush();os.fsync(s.fileno())

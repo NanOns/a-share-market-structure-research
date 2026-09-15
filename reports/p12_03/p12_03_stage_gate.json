@@ -1,6 +1,6 @@
 {
   "stage_contract": "P12-03_SCANNER_V3_3_ACCEPTANCE_V1",
-  "captured_at_utc": "2026-09-15T00:13:04.903741+00:00",
+  "captured_at_utc": "2026-09-15T11:44:26.866017+00:00",
   "consulted_spec_sha256": "8c80537cfdb6ea30be72945712942dc5c95d1d57ba1d364db333100c01d0ea1a",
   "scanner_contract": "TODAY_RESEARCH_SCANNER_V3_3_CANDIDATE_01",
   "parameter_contract": {
@@ -26,8 +26,11 @@
     }
   },
   "input_identity": {
-    "run_id": "research-59677a66206c4314b0b2b4b9e88046d0",
-    "parquet_sha256": "88bb40ca3ecabab5eb16db6c1bda616d94e41d07522ee87df9a493670ac9223c"
+    "run_id": "research-026c65debf4f4c1ea2fc59dc2fe2061d",
+    "publication_id": "m4-d2223af86662ab21ee84b83d435f0785",
+    "snapshot_id": "m10-mainline-preview-1e7e6c870ee93532",
+    "strength_slice": "m8-m9-local-reconstructed-preview-v2-b5a55518cc70b5a4-strength-20260915",
+    "parquet_sha256": "631d9b766512149179cce8aa4c2c7e916eb0b9f67dc751be0089de76c4e0ab91"
   },
   "scanner_source_sha256": "0cf65de4f926f43cce5fcac60f16e2e047b4c5f0f4cc497e1f832f6e3bdc3379",
   "checks": {
@@ -41,30 +44,28 @@
   },
   "funnel": {
     "launch": {
-      "False": 6076,
-      "True": 104,
-      "None": 2
+      "False": 6129,
+      "True": 53
     },
     "pullback": {
-      "False": 3560,
-      "None": 2622
+      "False": 4122,
+      "None": 2060
     },
     "recovery_turn": {
-      "False": 6022,
-      "None": 160
+      "False": 6095,
+      "None": 87
     },
     "trend_continue_stock_only": {
-      "False": 6041,
-      "True": 140,
-      "None": 1
+      "False": 6113,
+      "True": 69
     },
     "trend_continue": {
-      "False": 6041,
-      "None": 141
+      "False": 6113,
+      "None": 69
     },
     "setup_watch": {
-      "False": 5779,
-      "True": 403
+      "False": 5960,
+      "True": 222
     }
   },
   "capability_limits": [

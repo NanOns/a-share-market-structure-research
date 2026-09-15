@@ -86,6 +86,7 @@ def test_v3_is_the_single_unified_workbench_entry(tmp_path):
         assert '<iframe id="workbench"' in old_v1
         assert 'data-workbench-mode="v2"' in old_v2
         assert "MIXED: '混合排列'" in script
+        assert "场景判定证据" in script and "PULLBACK_EPISODE_CONFIRMED" in script
         assert "maximumFractionDigits: 2" in script
         assert "\\d{3,}" in script
     finally:

@@ -25,6 +25,11 @@ def freeze_evaluation_source(plan:dict)->dict:
   path=tdx/"T0002/hq_cache"/filename
   if path.is_file():current_ids.update(read_tnf(path,market)[0])
  bars=[{"security_id":sid,"trade_date":day,"raw_high":float(hi) if hi is not None else None,"raw_low":float(lo) if lo is not None else None,"raw_close":float(close) if close is not None else None,"has_actual_bar":bool(actual),"no_quote_status":None if actual else ("SUSPENDED" if sid in current_ids else "DELISTED")} for sid,day,hi,lo,close,actual in rows]
+ present={(row["security_id"],row["trade_date"]) for row in bars}
+ for item in due:
+  key=(item["security_id"],item["end_date"])
+  if key not in present:
+   bars.append({"security_id":key[0],"trade_date":key[1],"raw_high":None,"raw_low":None,"raw_close":None,"has_actual_bar":False,"no_quote_status":"SUSPENDED" if key[0] in current_ids else "DELISTED"})
  events=[];wanted=set(securities);gbbq=resolve_tdx_root(ROOT)/"T0002/hq_cache/gbbq"
  for record in read_gbbq(gbbq):
   if record.category==1 and record.security_id in wanted and int(start.replace('-',''))<record.event_date<=int(end.replace('-','')):events.append(xrxd_from_gbbq(record).as_dict())

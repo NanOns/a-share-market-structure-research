@@ -74,6 +74,28 @@
         if (value === null || value === undefined || !Number.isFinite(number)) return '暂无';
         return number >= 100000000 ? (number / 100000000).toFixed(2) + ' 亿' : (number / 10000).toFixed(0) + ' 万';
     }
+    var checkLabels = {
+        ACTUAL_BAR: '当日有真实行情', WINDOW_VALID: '计算窗口完整', INPUT_IDENTITY_COMPATIBLE: '输入身份一致', NORMAL_UNIVERSE: '属于正常研究范围',
+        LIQ20: '20日流动性达标', NOT_EXTENDED: '未处于过度延伸', NOT_STRUCTURE_BREAK: '未发生结构破坏', NOT_SEVERE_DROP: '未发生严重下跌',
+        NOT_FIRST_DAY_DAMAGE: '未出现首日破位', POSITIVE_RET1: '当日收涨', CLV_GTE_060: '收盘位置不低于60%', CLV_GTE_055: '收盘位置不低于55%',
+        BREAKOUT_V3: 'V3突破信号成立', CLOSE_ABOVE_PHC20: '收盘突破此前20日收盘平台', NO_INTRADAY_REJECT_HIGH20: '未出现越高回落',
+        AMR20_GTE_120: '成交额达到20日均值1.2倍', AMR20_GTE_105: '成交额达到20日均值1.05倍', AMR20_IN_080_250: '成交额处于合理区间',
+        R5_OR_R20: 'MA5或MA20修复条件成立', CLOSE_GTE_098_MA20: '收盘不低于MA20的98%', RPS5_DELTA3_POSITIVE: '短期相对强度改善', CURRENT_WITH_LOO_BREADTH_SUPPORT: '当前板块及剔除本股后宽度支持',
+        CLOSE_ABOVE_PRIOR_HIGH: '收盘高于前一交易日最高价', CLOSE_GTE_MA5: '收盘不低于MA5', MA5_GTE_MA20: 'MA5不低于MA20',
+        RPS20_GTE_070: '20日相对强度不低于70%', SLOPE20_POSITIVE: '20日趋势斜率为正', TREND_BACKGROUND: '趋势背景成立',
+        PULLBACK_EPISODE_CONFIRMED: '强势回踩事件序列已确认', SETUP_V3: 'V3蓄势条件成立', NO_KNOWN_CONFIRMED_SCENARIO: '尚无其他已确认场景'
+    };
+    function checkName(value) { return checkLabels[value] || show(value); }
+    function renderScannerEvidence(evidence) {
+        var scenarios = [['launch', '启动确认'], ['pullback', '强势回踩'], ['recovery_turn', '修复转强'], ['trend_continue', '趋势延续']];
+        return scenarios.map(function (pair) {
+            var item = evidence && evidence[pair[0]] || {}, checks = item.checks || {};
+            var passed = Object.keys(checks).filter(function (key) { return checks[key] === true; }).map(checkName);
+            var failed = (item.known_failed_checks || []).map(checkName), pending = (item.unknown_checks || []).map(checkName);
+            return '<section class="v3-evidence-scenario"><h4>' + pair[1] + ' · ' + (item.eligible === true ? '符合' : item.eligible === false ? '不符合' : '待补数据') + '</h4>' +
+                '<p><b>已满足：</b>' + (passed.join('、') || '无') + '</p><p><b>未满足：</b>' + (failed.join('、') || '无') + '</p><p><b>待确认：</b>' + (pending.join('、') || '无') + '</p></section>';
+        }).join('');
+    }
     function sectorMemberRow(member) {
         return '<tr data-detail-stock="' + esc(member.security_id) + '"><td>' + show(member.performance_rank) + '</td><td><b>' + show(member.name) + '</b><small>' + show(member.security_id) + '</small></td><td><span class="v3-member-tag ' + esc(String(member.performance_tag || '').toLowerCase()) + '">' + zh(member.performance_tag) + '</span></td><td>' + price(member.price) + '</td><td class="' + (Number(member.ret1) > 0 ? 'positive' : Number(member.ret1) < 0 ? 'negative' : '') + '">' + pct(member.ret1) + '</td><td>' + amount(member.amount) + '</td><td>' + pct(member.ret20) + '</td><td>' + zh(member.role) + '</td></tr>';
     }
@@ -240,7 +262,7 @@
             if (!body.isConnected) return;
             if (result.status !== 'READY') { body.innerHTML = empty(result.empty_state && result.empty_state.message || '详情不可用。'); return; }
             var item = result.item || {}, identity = result.context || {};
-            body.innerHTML = '<h3>' + show(item.security_name || item.security_id) + ' <small>' + show(item.security_id) + '</small></h3><p class="v3-detail-meta">交易日 ' + show(identity.trade_date) + ' · ' + zh(result.effect_status) + '</p><div class="v3-detail-facts"><div><b>主类别</b><span>' + zh(item.primary_category) + '</span></div><div><b>命中类别</b><span>' + (item.matched_categories || []).map(zh).join('、') + '</span></div><div><b>选择模式</b><span>' + zh(item.selection_mode) + '</span></div><div><b>板块支持</b><span>' + zh(item.sector_support_status) + '</span></div><div><b>20日相对强度</b><span>' + pct(item.rps20) + '</span></div><div><b>距20日均线</b><span>' + pct(item.bias20) + '</span></div><div><b>趋势拟合度</b><span>' + pct(item.r2_20) + '</span></div><div><b>平均成交额</b><span>' + amount(item.liq20_amount) + '</span></div><div><b>评分状态</b><span>' + zh(item.rank_status) + (item.category_rank == null ? '' : ' · 第 ' + show(item.category_rank)) + '</span></div><div><b>风险标记</b><span>' + ((item.risk_codes || []).map(zh).join('、') || '无') + '</span></div></div><h3>入选证据</h3><div class="v3-detail-facts"><div><b>收盘位置</b><span>' + pct(item.clv) + '</span></div><div><b>突破幅度</b><span>' + pct(item.break_margin_close20) + '</span></div><div><b>20日斜率</b><span>' + pct(item.slope20) + '</span></div><div><b>新鲜度</b><span>' + pct(item.freshness) + '</span></div></div><p class="v3-detail-meta">研究运行 ' + show(identity.research_run_id) + '<br>研究包摘要 ' + show(identity.output_digest) + '</p>';
+            body.innerHTML = '<h3>' + show(item.security_name || item.security_id) + ' <small>' + show(item.security_id) + '</small></h3><p class="v3-detail-meta">交易日 ' + show(identity.trade_date) + ' · ' + zh(result.effect_status) + '</p><div class="v3-detail-facts"><div><b>主类别</b><span>' + zh(item.primary_category) + '</span></div><div><b>命中类别</b><span>' + (item.matched_categories || []).map(zh).join('、') + '</span></div><div><b>选择模式</b><span>' + zh(item.selection_mode) + '</span></div><div><b>板块支持</b><span>' + zh(item.sector_support_status) + '</span></div><div><b>20日相对强度</b><span>' + pct(item.rps20) + '</span></div><div><b>距20日均线</b><span>' + pct(item.bias20) + '</span></div><div><b>趋势拟合度</b><span>' + pct(item.r2_20) + '</span></div><div><b>平均成交额</b><span>' + amount(item.liq20_amount) + '</span></div><div><b>评分状态</b><span>' + zh(item.rank_status) + (item.category_rank == null ? '' : ' · 第 ' + show(item.category_rank)) + '</span></div><div><b>风险标记</b><span>' + ((item.risk_codes || []).map(zh).join('、') || '无') + '</span></div></div><h3>核心指标证据</h3><div class="v3-detail-facts"><div><b>收盘位置</b><span>' + pct(item.clv) + '</span></div><div><b>突破幅度</b><span>' + pct(item.break_margin_close20) + '</span></div><div><b>20日斜率</b><span>' + pct(item.slope20) + '</span></div><div><b>新鲜度</b><span>' + pct(item.freshness) + '</span></div></div><h3>场景判定证据</h3>' + renderScannerEvidence(item.scanner_evidence) + '<p class="v3-detail-meta">研究运行 ' + show(identity.research_run_id) + '<br>研究包摘要 ' + show(identity.output_digest) + '</p>';
         }).catch(function (error) { if (body.isConnected) body.innerHTML = empty('详情校验或读取失败：' + error.message); });
     }
 

@@ -40,21 +40,28 @@ def manifest(root):
 def validate_package_trade_date(extracted,current_ids):
  """Resolve the economic trade date from the package, not its upload timestamp."""
  return validate_extracted_day_data(extracted,None,current_ids)
+def versioned_staging_paths(staging,upload_day,package_sha256,metadata_snapshot_id=None):
+ package=Path(staging)/"packages"/upload_day/package_sha256/"hsjday.zip"
+ extraction=Path(staging)/"extracted"/upload_day/package_sha256
+ metadata=Path(staging)/"metadata"/upload_day/metadata_snapshot_id if metadata_snapshot_id else None
+ return package,extraction,metadata
 def stage_inputs(day):
- """Probe the official ZIP and live TDX metadata every run; reuse staging only after identity equality."""
+ """Keep every same-day official package and metadata revision under its content identity."""
  staging=ROOT/"data/input_staging"; scratch=ROOT/"runtime/m3"/uuid.uuid4().hex;scratch.mkdir(parents=True,exist_ok=False)
  try:
   downloaded=scratch/"hsjday.zip";package=download_official_package_curl(OFFICIAL_URL,downloaded)
-  target=staging/"packages"/day/"hsjday.zip";target.parent.mkdir(parents=True,exist_ok=True)
+  target,extraction,_=versioned_staging_paths(staging,day,package["sha256"]);target.parent.mkdir(parents=True,exist_ok=True)
   if target.exists():
    if sha(target)!=package["sha256"]:raise ValueError("STAGED_PACKAGE_IDENTITY_CONFLICT")
   else:replace_with_retry(downloaded,target)
-  extraction=staging/"extracted"/day
   if extraction.is_symlink():raise ValueError("STAGED_EXTRACTION_SYMLINK")
-  if extraction.exists():shutil.rmtree(extraction)
-  extraction_result=safe_extract_zip(target,extraction)
+  if extraction.exists():
+   validation_probe=validate_extracted_day_data(extraction,None,None)
+   if validation_probe.get("status")!="PASS":raise ValueError("STAGED_EXTRACTION_INVALID")
+   extraction_result={"entry_count":len(list(extraction.rglob("*"))),"expanded_bytes":sum(p.stat().st_size for p in extraction.rglob("*") if p.is_file()),"package_sha256":package["sha256"]}
+  else:extraction_result=safe_extract_zip(target,extraction)
   captured=scratch/"metadata";meta=capture_stable_metadata(resolve_tdx_root(ROOT),captured,stable_seconds=3)
-  metadata=staging/"metadata"/day
+  _,_,metadata=versioned_staging_paths(staging,day,package["sha256"],meta["metadata_snapshot_id"])
   if metadata.exists():
    if manifest(metadata)!=meta["files"]:raise ValueError("STAGED_METADATA_IDENTITY_CONFLICT")
    shutil.rmtree(captured)

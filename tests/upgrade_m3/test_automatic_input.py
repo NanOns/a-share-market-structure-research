@@ -8,7 +8,7 @@ from workbench_input.pipeline import (
     capture_stable_metadata, download_official_package, replace_with_retry, safe_extract_zip,
     seal_source_bundle, bundle_package_relative_path,
 )
-from run_upgrade_m3 import validate_package_trade_date
+from run_upgrade_m3 import validate_package_trade_date, versioned_staging_paths
 
 class Response:
     def __init__(self,data,declared=None,fail=False):
@@ -135,3 +135,9 @@ def test_bundle_verification_prefers_recorded_staging_path_over_trade_date_fallb
     body={"target_trade_date":"2026-09-14","package":{"staged_path":"data/input_staging/packages/20260915/hsjday.zip"}}
     assert bundle_package_relative_path(body)==Path("data/input_staging/packages/20260915/hsjday.zip")
     assert bundle_package_relative_path({"target_trade_date":"2026-09-14","package":{}})==Path("data/input_staging/packages/20260914/hsjday.zip")
+
+def test_same_upload_day_uses_content_versioned_staging_paths(tmp_path):
+    first=versioned_staging_paths(tmp_path,"20260915","sha-old","meta-old")
+    second=versioned_staging_paths(tmp_path,"20260915","sha-new","meta-new")
+    assert first[0]!=second[0] and first[1]!=second[1] and first[2]!=second[2]
+    assert second[0].as_posix().endswith("packages/20260915/sha-new/hsjday.zip")

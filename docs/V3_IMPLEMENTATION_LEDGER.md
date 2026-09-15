@@ -783,4 +783,4 @@ P00-03 合同资产 SHA-256：
 
 | task_id | status | stage_contract | evidence | acceptance | next_stage |
 |---|---|---|---|---|---|
-| P12-DAILY-ONE-CLICK-INPUT-REPAIR | FULL_PASS | `P12_DAILY_ONE_CLICK_INPUT_REPAIR_V1`；P12-06完整发布要求；一键生成保留决定 | `docs/P12_DAILY_ONE_CLICK_INPUT_REPAIR_20260915.md`；`reports/p12_daily/p12_daily_one_click_input_repair.json`；真实任务`daily-f3b9a357fcc04d8683cd8eceaef2839c` | 上传日与包内经济交易日分离；staging路径恢复；同包多元数据快照不可变版本化；真实链发布、M8/M9、M10和研究运行全部READY；定向32 passed | 恢复日常一键生成；新真实收盘后再封存P12第二个信号日 |
+| P12-DAILY-ONE-CLICK-INPUT-REPAIR | FULL_PASS | `P12_DAILY_ONE_CLICK_INPUT_REPAIR_V1`；P12-06完整发布要求；一键生成保留决定 | `docs/P12_DAILY_ONE_CLICK_INPUT_REPAIR_20260915.md`；`reports/p12_daily/p12_daily_one_click_input_repair.json`；真实15日任务`daily-e2f8d22c7b9940f6b1be6cd1088b0b35` | 同一上传日按package SHA与metadata snapshot分版本；staging路径恢复；15日真实链发布、M8/M9、M10和研究运行全部READY；定向33 passed | 恢复日常一键生成；新真实收盘后再封存P12后续信号日 |

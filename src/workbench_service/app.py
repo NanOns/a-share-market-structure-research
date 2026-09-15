@@ -1705,7 +1705,7 @@ class Api:
    return {'publication_id':p,'page':page,'page_size':size,'total':total,'sector_member_count':sector_member_count,'sector_member_rank_basis':'stock_rs20_pct_desc_then_ret20_desc_then_security_id','items':items}
 
 def make_handler(root,db):
- api=Api(db,root=root); research=ResearchQueries(lambda: api._con(),root=root); today_research=TodayResearchBundleReader(root); events=OnlineEventQueries(lambda: api._con()); p09=P09OnlineProducts(); history=HistoryJobService(root,db); history.recover_interrupted(background=True); activation=AnalysisActivationService(root,db); operations=OperationsConfig(root,db); storage=StorageGovernance(root,db); backups=BackupService(root,db); maintenance=MaintenanceService(root,db); static=Path(root)/'src/workbench_service/static';csrf=secrets.token_urlsafe(24);publishers={};daily_jobs={};research_jobs={};daily_jobs_lock=threading.Lock()
+ api=Api(db,root=root); research=ResearchQueries(lambda: api._con(),root=root); today_research=TodayResearchBundleReader(root,database_path=db); events=OnlineEventQueries(lambda: api._con()); p09=P09OnlineProducts(); history=HistoryJobService(root,db); history.recover_interrupted(background=True); activation=AnalysisActivationService(root,db); operations=OperationsConfig(root,db); storage=StorageGovernance(root,db); backups=BackupService(root,db); maintenance=MaintenanceService(root,db); static=Path(root)/'src/workbench_service/static';csrf=secrets.token_urlsafe(24);publishers={};daily_jobs={};research_jobs={};daily_jobs_lock=threading.Lock()
  def run_research(job_id):
   task=research_jobs[job_id];task.update(status='RUNNING',progress={'status':'BUILDING_RESEARCH_V3'})
   try:
@@ -1769,10 +1769,19 @@ def make_handler(root,db):
    except Exception as exc:
     task.update(status='FAILED',progress={'status':'RESEARCH_BUILD_FAILED','error':str(exc)});return
    task['research_result']=research_result
+   task.update(progress={'status':'BUILDING_RESEARCH_V3_3'})
+   p12=subprocess.run([sys.executable,str(Path(root)/'scripts/run_p12_daily_pipeline.py'),'--publication-id',str(published.get('publication_id')),'--trade-date',trade_date.isoformat()],cwd=root,capture_output=True,text=True,timeout=3600)
+   if p12.returncode:
+    task.update(status='FAILED',progress={'status':'RESEARCH_V3_3_BUILD_FAILED','error':p12.stderr[-2000:] or p12.stdout[-2000:]});return
+   try:
+    task['research_v3_3_result']=json.loads(p12.stdout.strip().splitlines()[-1])
+   except Exception as exc:
+    task.update(status='FAILED',progress={'status':'RESEARCH_V3_3_REPORT_INVALID','error':str(exc)});return
   snapshot_binding=v3_report.get('snapshot_binding',{}) if isinstance(v3_report,dict) else {}
   hierarchy=v3_report.get('hierarchy',{}) if isinstance(v3_report,dict) else {}
   mainline_result=task.get('mainline_result') or {}
   research_result=task.get('research_result') or {}
+  research_v3_3_result=task.get('research_v3_3_result') or {}
   task.update(
    v3_report=v3_report,
    phase='READY',
@@ -1787,6 +1796,7 @@ def make_handler(root,db):
     'hierarchy_node_count':hierarchy.get('hierarchy_node_count') if isinstance(hierarchy,dict) else None,
     'mainline_snapshot_id':mainline_result.get('snapshot_id'),
     'research_run_id':research_result.get('run_id'),
+    'research_v3_3_bundle_digest':research_v3_3_result.get('bundle_digest'),
    },
   )
  def run_today_guarded(job_id,body):
@@ -1821,7 +1831,7 @@ def make_handler(root,db):
     elif u.path=='/api/v3/research/today':
      out=today_research.list(page=x.get('page',1),page_size=x.get('page_size',20),category=x.get('category',''),selection_mode=x.get('selection_mode',''),q=x.get('q',''))
     elif u.path.startswith('/api/v3/research/today/'):
-     security_id=unquote(u.path[len('/api/v3/research/today/'):].strip('/'));out=today_research.detail(security_id)
+     security_id=unquote(u.path[len('/api/v3/research/today/'):].strip('/'));out=today_research.detail(security_id,x.get('bundle_digest',''))
     elif u.path=='/api/v3/legacy-matrix':
      publication_id=str(x.get('publication_id') or '').strip();trade_date=str(x.get('trade_date') or '').strip()
      if bool(publication_id)!=bool(trade_date): raise ValueError('CONTEXT_MODE_CONFLICT')

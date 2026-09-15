@@ -18,6 +18,8 @@ def materialize(plan:dict,bars:Iterable[dict]=(),events_by_security:dict[str,lis
   if item["status"]=="NOT_DUE":output.append(logical);continue
   sid=item["security_id"];signal=item["signal_date"];end=item.get("end_date");stock=grouped.get(sid,{})
   ordered=sorted(day for day in stock if day<=end and stock[day].get("has_actual_bar",True))
+  if end in stock and not stock[end].get("has_actual_bar",True) and stock[end].get("no_quote_status") in ("SUSPENDED","DELISTED"):
+   status=stock[end]["no_quote_status"];output.append({**logical,"status":status,"reason":status+"_NO_QUOTE"});continue
   if signal not in stock or end not in stock or signal not in ordered:
    output.append({**logical,"status":"DATA_GAP","reason":"SIGNAL_OR_END_BAR_MISSING"});continue
   start=ordered.index(signal);window=ordered[start+1:]
@@ -36,6 +38,6 @@ def materialize(plan:dict,bars:Iterable[dict]=(),events_by_security:dict[str,lis
   metrics={"status":"OBSERVED","anchor":end,"fret":end_close/base-1,"mfe":max(highs)/base-1,"mae":min(lows)/base-1}
   identity={k:logical.get(k) for k in ("signal_run_id","security_id","episode_id","horizon","end_date","evaluation_contract","evaluation_source_hash","adjustment_version","evaluation_revision")}
   output.append({**logical,**metrics,"materialized_identity":digest(identity)})
- summary={status:sum(row["status"]==status for row in output) for status in ("NOT_DUE","OBSERVED","DATA_GAP")}
+ summary={status:sum(row["status"]==status for row in output) for status in ("NOT_DUE","OBSERVED","SUSPENDED","DELISTED","DATA_GAP")}
  body={"contract_id":CONTRACT_ID,"evaluation_basis":EVALUATION_BASIS,"plan_digest":plan["plan_digest"],"evaluation_source_hash":evaluation_source_hash,"adjustment_version":adjustment_version,"summary":summary,"rows":output}
  return {**body,"result_digest":digest(body)}

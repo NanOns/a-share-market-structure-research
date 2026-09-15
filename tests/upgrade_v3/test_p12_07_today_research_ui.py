@@ -39,6 +39,13 @@ def test_missing_and_tampered_bundle_fail_closed_without_results(tmp_path):
  failed=service.list()
  assert failed["status"]=="UNAVAILABLE" and failed["items"]==[] and "HASH_MISMATCH" in failed["code"]
 
+def test_detail_is_bound_to_the_list_bundle_digest(tmp_path):
+ service=reader(tmp_path);listing=service.list()
+ assert service.detail("SZ.000002",listing["context"]["output_digest"])["status"]=="READY"
+ changed=service.detail("SZ.000002","wrong-digest")
+ assert changed["status"]=="UNAVAILABLE"
+ assert changed["empty_state"]["code"]=="BUNDLE_CONTEXT_CHANGED"
+
 def test_http_routes_and_static_page_use_new_bundle_without_legacy_candidate_fallback(tmp_path):
  from workbench_db import WorkbenchRepository
  database=tmp_path/"api.duckdb"

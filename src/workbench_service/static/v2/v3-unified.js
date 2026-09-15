@@ -14,6 +14,7 @@
     var online = document.getElementById('v3-online-panel');
     var requestSerial = 0;
     var context = null;
+    var todayBundleDigest = '';
     var onlineSerial = 0;
     var onlineDateResolved = false;
     var buildSerial = 0;
@@ -52,7 +53,11 @@
         TRACK_ROLE_ELIGIBLE: '符合当前轨道结构条件',
         BULLISH: '多头排列', BULL: '多头排列',
         BEARISH: '空头排列', BEAR: '空头排列',
-        MIXED: '混合排列', NORMAL: '普通排列'
+        MIXED: '混合排列', NORMAL: '普通排列',
+        LAUNCH_CONFIRM: '启动确认', TREND_CONTINUE: '趋势延续', RECOVERY_TURN: '修复转强', STRONG_PULLBACK: '强势回踩',
+        SUPPORTED: '板块支持', INDEPENDENT: '个股独立', CONFIRMED: '已确认', NOT_CONFIRMED: '未确认',
+        QUALIFIED_UNRANKED: '合格（未评分）', SCORED: '已评分',
+        EFFECT_OBSERVATION_PENDING: '效果观察中', SUSPENDED: '停牌', DELISTED: '退市'
     };
     function zh(value) { return labels[String(value || '').toUpperCase()] || show(value); }
     function pct(value) {
@@ -210,9 +215,10 @@
         get('/api/v3/research/today?page=' + page + '&page_size=25').then(function (result) {
             var items = result.items || [];
             var bundleContext = result.context || {};
-            count.textContent = result.status === 'READY' || result.status === 'EMPTY' ? show(bundleContext.trade_date) + ' · ' + show(result.effect_status) + ' · 共 ' + show(result.total) + ' 股' : show(result.status) + ' · 未展示候选';
-            target.innerHTML = items.length ? '<div class="v3-priority-table-wrap"><table class="v3-priority-table"><thead><tr><th>类别排名</th><th>证券</th><th>主类别</th><th>选择模式</th><th>板块支持</th><th>RPS20</th><th>bias20</th><th>趋势拟合</th><th>流动性</th><th>排序状态</th></tr></thead><tbody>' + items.map(function (item) {
-                return '<tr data-priority-stock="' + esc(item.security_id) + '"><td>' + show(item.category_rank) + '</td><td><b>' + show(item.security_id) + '</b><small>' + show((item.matched_categories || []).join('、')) + '</small></td><td>' + zh(item.primary_category) + '</td><td>' + zh(item.selection_mode) + '</td><td>' + zh(item.sector_support_status) + '</td><td>' + pct(item.rps20) + '</td><td>' + pct(item.bias20) + '</td><td>' + pct(item.r2_20) + '</td><td>' + amount(item.liq20_amount) + '</td><td>' + zh(item.rank_status) + '</td></tr>';
+            todayBundleDigest = bundleContext.output_digest || '';
+            count.textContent = result.status === 'READY' || result.status === 'EMPTY' ? show(bundleContext.trade_date) + ' · ' + zh(result.effect_status) + ' · 共 ' + show(result.total) + ' 股' : zh(result.status) + ' · 未展示候选';
+            target.innerHTML = items.length ? '<div class="v3-priority-table-wrap"><table class="v3-priority-table"><thead><tr><th>候选序号</th><th>股票</th><th>主类别</th><th>选择模式</th><th>板块支持</th><th>RPS20</th><th>bias20</th><th>趋势拟合</th><th>流动性</th><th>排序状态</th></tr></thead><tbody>' + items.map(function (item) {
+                return '<tr data-priority-stock="' + esc(item.security_id) + '"><td>' + show(item.display_rank) + '</td><td><b>' + show(item.security_name || item.security_id) + '</b><small>' + show(item.security_id) + ' · ' + (item.matched_categories || []).map(zh).join('、') + '</small></td><td>' + zh(item.primary_category) + '</td><td>' + zh(item.selection_mode) + '</td><td>' + zh(item.sector_support_status) + '</td><td>' + pct(item.rps20) + '</td><td>' + pct(item.bias20) + '</td><td>' + pct(item.r2_20) + '</td><td>' + amount(item.liq20_amount) + '</td><td>' + zh(item.rank_status) + '</td></tr>';
             }).join('') + '</tbody></table></div>' : empty(result.empty_state && result.empty_state.message || '当前完整研究包没有候选。');
             target.querySelectorAll('[data-priority-stock]').forEach(function (row) { row.addEventListener('click', function () { openTodayBundleStock(row.dataset.priorityStock); }); });
             if (Number(result.total) > 25) {
@@ -230,11 +236,11 @@
 
     function openTodayBundleStock(securityId) {
         var body = modal(securityId, '<p>正在读取同一 V3.3 研究包详情…</p>');
-        get('/api/v3/research/today/' + encodeURIComponent(securityId)).then(function (result) {
+        get('/api/v3/research/today/' + encodeURIComponent(securityId) + '?bundle_digest=' + encodeURIComponent(todayBundleDigest)).then(function (result) {
             if (!body.isConnected) return;
             if (result.status !== 'READY') { body.innerHTML = empty(result.empty_state && result.empty_state.message || '详情不可用。'); return; }
             var item = result.item || {}, identity = result.context || {};
-            body.innerHTML = '<p class="v3-detail-meta">交易日 ' + show(identity.trade_date) + ' · ' + show(result.effect_status) + '</p><div class="v3-detail-facts"><div><b>主类别</b><span>' + zh(item.primary_category) + '</span></div><div><b>命中类别</b><span>' + show((item.matched_categories || []).join('、')) + '</span></div><div><b>选择模式</b><span>' + zh(item.selection_mode) + '</span></div><div><b>板块支持</b><span>' + zh(item.sector_support_status) + '</span></div><div><b>RPS20</b><span>' + pct(item.rps20) + '</span></div><div><b>bias20</b><span>' + pct(item.bias20) + '</span></div><div><b>趋势拟合</b><span>' + pct(item.r2_20) + '</span></div><div><b>类别排序</b><span>' + show(item.category_rank) + ' · ' + show(item.category_score) + '</span></div></div><p class="v3-detail-meta">research_run_id ' + show(identity.research_run_id) + '<br>output_digest ' + show(identity.output_digest) + '</p>';
+            body.innerHTML = '<h3>' + show(item.security_name || item.security_id) + ' <small>' + show(item.security_id) + '</small></h3><p class="v3-detail-meta">交易日 ' + show(identity.trade_date) + ' · ' + zh(result.effect_status) + '</p><div class="v3-detail-facts"><div><b>主类别</b><span>' + zh(item.primary_category) + '</span></div><div><b>命中类别</b><span>' + (item.matched_categories || []).map(zh).join('、') + '</span></div><div><b>选择模式</b><span>' + zh(item.selection_mode) + '</span></div><div><b>板块支持</b><span>' + zh(item.sector_support_status) + '</span></div><div><b>20日相对强度</b><span>' + pct(item.rps20) + '</span></div><div><b>距20日均线</b><span>' + pct(item.bias20) + '</span></div><div><b>趋势拟合度</b><span>' + pct(item.r2_20) + '</span></div><div><b>平均成交额</b><span>' + amount(item.liq20_amount) + '</span></div><div><b>评分状态</b><span>' + zh(item.rank_status) + (item.category_rank == null ? '' : ' · 第 ' + show(item.category_rank)) + '</span></div><div><b>风险标记</b><span>' + ((item.risk_codes || []).map(zh).join('、') || '无') + '</span></div></div><h3>入选证据</h3><div class="v3-detail-facts"><div><b>收盘位置</b><span>' + pct(item.clv) + '</span></div><div><b>突破幅度</b><span>' + pct(item.break_margin_close20) + '</span></div><div><b>20日斜率</b><span>' + pct(item.slope20) + '</span></div><div><b>新鲜度</b><span>' + pct(item.freshness) + '</span></div></div><p class="v3-detail-meta">研究运行 ' + show(identity.research_run_id) + '<br>研究包摘要 ' + show(identity.output_digest) + '</p>';
         }).catch(function (error) { if (body.isConnected) body.innerHTML = empty('详情校验或读取失败：' + error.message); });
     }
 

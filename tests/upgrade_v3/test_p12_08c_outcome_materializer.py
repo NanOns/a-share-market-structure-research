@@ -12,7 +12,15 @@ def due_plan():return plan_outcomes([observation()],["2026-09-14","2026-09-15","
 
 def test_not_due_rows_never_gain_return_fields():
  plan=plan_outcomes([observation()],["2026-09-14"],"2026-09-14");result=materialize(plan)
- assert result["summary"]=={"NOT_DUE":4,"OBSERVED":0,"DATA_GAP":0}
+ assert result["summary"]=={"NOT_DUE":4,"OBSERVED":0,"SUSPENDED":0,"DELISTED":0,"DATA_GAP":0}
+
+def test_missing_quote_is_classified_as_suspended():
+ plan=plan_outcomes([observation()],['2026-09-14','2026-09-15'],'2026-09-15')
+ due=next(row for row in plan['rows'] if row['status']=='DUE_UNMATERIALIZED')
+ bars=[{'security_id':due['security_id'],'trade_date':'2026-09-14','raw_high':10,'raw_low':9,'raw_close':9.5,'has_actual_bar':True},{'security_id':due['security_id'],'trade_date':'2026-09-15','raw_high':None,'raw_low':None,'raw_close':None,'has_actual_bar':False,'no_quote_status':'SUSPENDED'}]
+ result=materialize({'plan_digest':plan['plan_digest'],'rows':[due]},bars)
+ assert result['rows'][0]['status']=='SUSPENDED'
+ assert result['rows'][0]['reason']=='SUSPENDED_NO_QUOTE'
  assert all("fret" not in row for row in result["rows"])
 
 def test_horizon_end_affine_anchor_handles_bonus_event():

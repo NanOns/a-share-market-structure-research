@@ -5,7 +5,7 @@ from collections import Counter,defaultdict
 from pathlib import Path
 from typing import Any
 
-CONTRACT_ID="TODAY_RESEARCH_FORWARD_V3_3_CANDIDATE_02"
+CONTRACT_ID="TODAY_RESEARCH_FORWARD_V3_3_CANDIDATE_03"
 MIN_SIGNAL_DAYS=20
 MIN_EPISODES=50
 
@@ -23,12 +23,20 @@ def relation_band(count:int|None)->str:
  if count is None:return "UNKNOWN"
  return "1-2" if count<=2 else "3-5" if count<=5 else "6+"
 
-def build_observation(active:dict,results:list[dict],relations:dict[str,dict]|None=None)->dict:
- relations=relations or {};rows=[]
+def _episode_id(security_id:str,category:str|None,started_on:str)->str:
+ value={"contract_id":CONTRACT_ID,"security_id":security_id,"primary_category":category,"started_on":started_on}
+ return "episode-"+digest(value)[:24]
+
+def build_observation(active:dict,results:list[dict],relations:dict[str,dict]|None=None,previous:dict|None=None)->dict:
+ relations=relations or {};rows=[];trade_date=active["identity"]["trade_date"]
+ prior={row["security_id"]:row for row in (previous or {}).get("rows",[])}
  for item in results:
-  sid=str(item["security_id"]);rel=relations.get(sid,{})
-  rows.append({"security_id":sid,"episode_id":item.get("episode_id"),"primary_category":item.get("primary_category"),"matched_categories":item.get("matched_categories",[]),"selection_mode":item.get("selection_mode"),"rank_status":item.get("rank_status"),"category_rank":item.get("category_rank"),"category_score":item.get("category_score"),"sector_relations_tested":rel.get("sector_relations_tested"),"relationship_band":relation_band(rel.get("sector_relations_tested")),"industry_support":rel.get("industry_support"),"theme_support":rel.get("theme_support")})
- logical={"contract_id":CONTRACT_ID,"trade_date":active["identity"]["trade_date"],"bundle_digest":active["output_digest"],"research_run_id":active["identity"]["research_run_id"],"rows":rows}
+  sid=str(item["security_id"]);category=item.get("primary_category");rel=relations.get(sid,{});old=prior.get(sid)
+  continues=bool(old and old.get("primary_category")==category and old.get("episode_id"))
+  started_on=old.get("episode_started_on") if continues else trade_date
+  episode_id=old.get("episode_id") if continues else _episode_id(sid,category,started_on)
+  rows.append({"security_id":sid,"episode_id":episode_id,"episode_started_on":started_on,"primary_category":category,"matched_categories":item.get("matched_categories",[]),"selection_mode":item.get("selection_mode"),"rank_status":item.get("rank_status"),"category_rank":item.get("category_rank"),"category_score":item.get("category_score"),"sector_relations_tested":rel.get("sector_relations_tested"),"relationship_band":relation_band(rel.get("sector_relations_tested")),"industry_support":rel.get("industry_support"),"theme_support":rel.get("theme_support")})
+ logical={"contract_id":CONTRACT_ID,"trade_date":trade_date,"bundle_digest":active["output_digest"],"research_run_id":active["identity"]["research_run_id"],"rows":rows}
  return {**logical,"observation_digest":digest(logical)}
 
 def transitions(previous:dict|None,current:dict)->dict:

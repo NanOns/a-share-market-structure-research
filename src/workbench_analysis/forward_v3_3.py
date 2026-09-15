@@ -48,14 +48,26 @@ def transitions(previous:dict|None,current:dict)->dict:
   counts[kind]+=1;items.append({"security_id":sid,"transition":kind,"from_category":old and old.get("primary_category"),"to_category":new and new.get("primary_category"),"from_mode":old and old.get("selection_mode"),"to_mode":new and new.get("selection_mode")})
  return {"from_date":previous and previous.get("trade_date"),"to_date":current["trade_date"],"counts":dict(counts),"items":items}
 
+def canonical_observations(observations:list[dict])->list[dict]:
+ """Choose one immutable revision per signal date, preferring fuller report dimensions."""
+ selected={}
+ def quality(obs):
+  rows=obs.get("rows",[])
+  complete=sum(row.get(field) is not None for row in rows for field in ("market_strength","volatility"))
+  return complete,obs.get("observation_digest","")
+ for obs in observations:
+  day=obs["trade_date"]
+  if day not in selected or quality(obs)>quality(selected[day]):selected[day]=obs
+ return [selected[day] for day in sorted(selected)]
+
 def report(observations:list[dict])->dict:
- observations=sorted(observations,key=lambda x:x["trade_date"]);scenario=Counter();relation=defaultdict(Counter);episodes=set();candidate_rows=0;all_rows=[]
+ observations=canonical_observations(observations);scenario=Counter();relation=defaultdict(Counter);episodes=set();candidate_rows=0;identified_rows=0;all_rows=[]
  for obs in observations:
   for row in obs["rows"]:
    candidate_rows+=1;all_rows.append(row);scenario[row.get("primary_category") or "UNKNOWN"]+=1;relation[row.get("relationship_band") or "UNKNOWN"][row.get("selection_mode") or "UNKNOWN"]+=1
-   if row.get("episode_id"):episodes.add(row["episode_id"])
+   if row.get("episode_id"):episodes.add(row["episode_id"]);identified_rows+=1
  trans=[transitions(observations[i-1] if i else None,obs) for i,obs in enumerate(observations)]
- gate={"minimum_signal_days":MIN_SIGNAL_DAYS,"minimum_independent_episodes":MIN_EPISODES,"signal_days":len(observations),"sealed_independent_episodes":len(episodes),"candidate_episode_upper_bound":candidate_rows,"episode_identity_status":"AVAILABLE" if candidate_rows and len(episodes)==candidate_rows else "INCOMPLETE"}
+ gate={"minimum_signal_days":MIN_SIGNAL_DAYS,"minimum_independent_episodes":MIN_EPISODES,"signal_days":len(observations),"sealed_independent_episodes":len(episodes),"candidate_episode_upper_bound":candidate_rows,"episode_identity_status":"AVAILABLE" if candidate_rows and identified_rows==candidate_rows else "INCOMPLETE"}
  def stats(field):
   values=sorted(float(row[field]) for row in all_rows if row.get(field) is not None)
   if not values:return {"available":0,"missing":len(all_rows),"status":"UNAVAILABLE"}

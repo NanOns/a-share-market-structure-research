@@ -1,0 +1,38 @@
+{
+  "stage": "P12-08F_SECOND_REAL_OBSERVATION",
+  "stage_contract": "TODAY_RESEARCH_FORWARD_V3_3_CANDIDATE_04",
+  "acceptance_result": "DEGRADED_PASS",
+  "input_identity": {
+    "trade_date": "2026-09-15",
+    "publication_id": "m4-29c93e09369982707899ab863c869ea1",
+    "research_run_id": "research-1f70afc1e97d4439bd841c43f4509715",
+    "snapshot_id": "m10-mainline-preview-1e7e6c870ee93532",
+    "bundle_digest": "32c895eae1f40ffd510b901c688d4815575288e3e7b6dd0e8b7eb2efda3955d2",
+    "observation_digest": "ddd2da4a585a081935a2dfeb2f2592c01547ab6958726ccd92c51ca800ddf833"
+  },
+  "evidence": {
+    "day_rows": 58,
+    "market_strength_available": 58,
+    "volatility_available": 58,
+    "scenario_counts": {"LAUNCH_CONFIRM": 53, "TREND_CONTINUE": 5},
+    "selection_modes": {"INDEPENDENT": 44, "SUPPORTED": 14},
+    "transitions": {"ENTERED": 50, "EXITED": 105, "CONTINUED": 7, "MODE_CHANGED": 1},
+    "forward_gate": {
+      "signal_days": 2,
+      "minimum_signal_days": 20,
+      "sealed_independent_episodes": 163,
+      "minimum_independent_episodes": 50,
+      "episode_identity_status": "AVAILABLE"
+    },
+    "tests": "59 passed",
+    "compileall": "PASS",
+    "diff_check": "PASS",
+    "tdx_modified": false
+  },
+  "limitations": [
+    "EFFECT_OBSERVATION_PENDING",
+    "HISTORICAL_REPLAY_EXCLUDED",
+    "DUE_H1_REQUIRES_FROZEN_EVALUATION_SOURCE"
+  ],
+  "next_stage": "P12-08C_MATERIALIZE_20260914_H1_WITH_FROZEN_20260915_SOURCE"
+}

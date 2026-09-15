@@ -784,3 +784,9 @@ P00-03 合同资产 SHA-256：
 | task_id | status | stage_contract | evidence | acceptance | next_stage |
 |---|---|---|---|---|---|
 | P12-DAILY-ONE-CLICK-INPUT-REPAIR | FULL_PASS | `P12_DAILY_ONE_CLICK_INPUT_REPAIR_V1`；P12-06完整发布要求；一键生成保留决定 | `docs/P12_DAILY_ONE_CLICK_INPUT_REPAIR_20260915.md`；`reports/p12_daily/p12_daily_one_click_input_repair.json`；真实15日任务`daily-e2f8d22c7b9940f6b1be6cd1088b0b35` | 同一上传日按package SHA与metadata snapshot分版本；staging路径恢复；15日真实链发布、M8/M9、M10和研究运行全部READY；定向33 passed | 恢复日常一键生成；新真实收盘后再封存P12后续信号日 |
+
+## P12-08F 第二个真实前向观察日（2026-09-15）
+
+| task_id | status | stage_contract | evidence | acceptance | next_stage |
+|---|---|---|---|---|---|
+| P12-08F | DEGRADED_PASS（第二真实日封存，效果待验） | `TODAY_RESEARCH_FORWARD_V3_3_CANDIDATE_04`；`TODAY_RESEARCH_BUNDLE_V3_3_CANDIDATE_02` | `docs/P12_08F_SECOND_REAL_OBSERVATION_ACCEPTANCE_20260915.md`；`reports/p12_08/p12_08f_second_real_observation_gate.json`；15日bundle `32c895e...`、观测`ddd2da4a...` | 15日58只；2/20真实信号日；163个唯一episode；同日多修订规范选择；迁移50进入/105退出/7持续/1模式变化；P12回归59 passed | 独立冻结15日评价源并物化14日h=1；验收后等待第三个真实收盘日 |

@@ -1,4 +1,4 @@
-"""Read-only 2026-09-14 full-stock P12-03 predicate funnel."""
+"""Read-only latest-complete-publication full-stock P12-03 predicate funnel."""
 from __future__ import annotations
 import hashlib,json,os,sys,tempfile
 from collections import Counter,defaultdict
@@ -9,16 +9,17 @@ ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT/'src'))
 from workbench_analysis.today_research_factors_v3_3 import calculate_today_facts
 from workbench_analysis.today_research_scanner_v3_3 import scan_today_research
 DB=ROOT/'data/database/market_research.duckdb';PARQUET=ROOT/'data/normalized/adjusted_daily.parquet'
-OUT=ROOT/'reports/p12_03/current_funnel.json';TARGET='2026-09-14'
+OUT=ROOT/'reports/p12_03/current_funnel.json'
 def sha(path):
  h=hashlib.sha256();h.update(path.read_bytes());return h.hexdigest()
 def main():
- baseline=json.loads((ROOT/'reports/p12_01/baseline_v2.json').read_text(encoding='utf-8'));run=baseline['input_identity']['run_id']
  with duckdb.connect(str(DB),read_only=True) as c:
-  dates=[x[0].isoformat() for x in c.execute("select distinct date from read_parquet(?) where date<='2026-09-14' order by date",[str(PARQUET)]).fetchall()]; window=dates[-27:]; idx={d:i for i,d in enumerate(dates)}
+  run,pub,TARGET=c.execute("select run_id,publication_id,cast(trade_date as varchar) from research_runs where status='COMPLETE' order by trade_date desc,completed_at desc limit 1").fetchone()
+  dates=[x[0].isoformat() for x in c.execute("select distinct date from read_parquet(?) where date<=? order by date",[str(PARQUET),TARGET]).fetchall()]; window=dates[-27:]; idx={d:i for i,d in enumerate(dates)}
   rows=c.execute("select security_id,date,adj_open,adj_high,adj_low,adj_close,raw_open,raw_close,raw_amount,raw_volume,has_actual_bar,is_synthetic_fill,universe_status from read_parquet(?) where date between ? and ? order by security_id,date",[str(PARQUET),window[0],TARGET]).fetchall()
   old=c.execute("select security_id,setup,breakout,recovery,trend_background,structure_break,risk_codes from research_stock_states where run_id=?",[run]).fetchall()
-  strength_slice=next(x[2] for x in baseline['input_identity']['dependency_bindings']['analysis_slices'] if x[0]=='strength' and x[1]==TARGET)
+  snapshot=c.execute("select snapshot_id from publication_analysis_snapshots where publication_id=? and domain='LOCAL_RECONSTRUCTED'",[pub]).fetchone()[0]
+  strength_slice=c.execute("select slice_id from analysis_snapshot_entries where snapshot_id=? and domain='strength' and trade_date=?",[snapshot,TARGET]).fetchone()[0]
   rps=dict(c.execute("select security_id,rps20 from strength_result_daily where slice_id=?",[strength_slice]).fetchall())
  by=defaultdict(dict)
  for x in rows:by[x[0]][x[1].isoformat()]=x
@@ -47,7 +48,7 @@ def main():
   if out['trend_continue_stock_only']['eligible'] is True:matched.append('TREND_CONTINUE')
   if matched or out['setup_watch']['eligible'] is True:
    eligible_rows.append({'security_id':sid,'matched_stock_only_categories':matched,'setup_watch':out['setup_watch']['eligible'],'clv':f['clv'],'liq20_amount':f['liq20_amount'],'break_margin_close20':f['break_margin_close20'],'amr20_mean_prior':f['amr20_mean_prior'],'rps5_delta3':None,'slope20':f['slope20'],'r2_20':f['r2_20'],'rps20':rps.get(sid),'bias20':f['bias20'],'freshness':.20})
- result={'stage_contract':'P12-03_CURRENT_FUNNEL_V1','captured_at_utc':datetime.now(timezone.utc).isoformat(),'target_date':TARGET,'input_identity':{'run_id':run,'parquet_sha256':sha(PARQUET)},'stocks':len(by),'scenario_counts':{k:dict(v) for k,v in counts.items()},'eligible_or_watch_rows':eligible_rows,'top_known_failures':failed.most_common(),'top_unknowns':unknown.most_common(),'limitations':['PULLBACK_HISTORIC_FROZEN_SEED_UNAVAILABLE','RPS5_DELTA3_FORMAL_PIT_UNAVAILABLE','CURRENT_LOO_SUPPORT_P12_04'], 'acceptance_result':'DEGRADED_PASS','next_stage':'P12-03_SCANNER_V3_3_CONTINUE'}
+ result={'stage_contract':'P12-03_CURRENT_FUNNEL_V1','captured_at_utc':datetime.now(timezone.utc).isoformat(),'target_date':TARGET,'input_identity':{'run_id':run,'publication_id':pub,'snapshot_id':snapshot,'strength_slice':strength_slice,'parquet_sha256':sha(PARQUET)},'stocks':len(by),'scenario_counts':{k:dict(v) for k,v in counts.items()},'eligible_or_watch_rows':eligible_rows,'top_known_failures':failed.most_common(),'top_unknowns':unknown.most_common(),'limitations':['PULLBACK_HISTORIC_FROZEN_SEED_UNAVAILABLE','RPS5_DELTA3_FORMAL_PIT_UNAVAILABLE','CURRENT_LOO_SUPPORT_P12_04'], 'acceptance_result':'DEGRADED_PASS','next_stage':'P12-03_SCANNER_V3_3_CONTINUE'}
  if len(by)!=6182 or any(sum(v.values())!=6182 for v in counts.values()):result.update(acceptance_result='BLOCKED',next_stage='P12-03_REPAIR')
  OUT.parent.mkdir(parents=True,exist_ok=True);fd,tmp=tempfile.mkstemp(dir=OUT.parent)
  try:

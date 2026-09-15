@@ -39,6 +39,17 @@ def test_episode_identity_continues_until_exit_or_category_change():
  assert third["rows"][0]["episode_id"]!=second["rows"][0]["episode_id"]
  assert third["rows"][0]["episode_started_on"]=="2026-09-16"
 
+def test_report_counts_distinct_dates_and_accepts_continuing_episode_identity():
+ first=build_observation(active(),rows())
+ incomplete=build_observation(active(digest="base"),rows())
+ enriched_rows=rows();enriched_rows[0]["market_strength"]=1;enriched_rows[0]["volatility"]=.2
+ enriched=build_observation(active(digest="enriched"),enriched_rows)
+ second=build_observation(active("2026-09-15","next"),rows(),previous=enriched)
+ result=report([first,incomplete,enriched,second])
+ assert result["gate"]["signal_days"]==2
+ assert result["gate"]["episode_identity_status"]=="AVAILABLE"
+ assert result["observation_digests"][0]==enriched["observation_digest"]
+
 def test_report_preserves_available_dimensions_and_marks_missing_ones():
  source=rows();source[0]["liq20_amount"]=20_000_000;source[1]["liq20_amount"]=40_000_000
  obs=build_observation(active(),source,{"SH.1":{"industry_relations_count":1,"theme_relations_count":2},"SZ.2":{"industry_relations_count":1,"theme_relations_count":6}})

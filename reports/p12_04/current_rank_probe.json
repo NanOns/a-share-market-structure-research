@@ -1,47 +1,48 @@
 {
   "stage_contract": "P12-04_CURRENT_RANK_PROBE_V1",
-  "captured_at_utc": "2026-09-15T01:10:32.585218+00:00",
+  "captured_at_utc": "2026-09-15T09:22:23.932385+00:00",
   "input_identity": {
-    "run_id": "research-59677a66206c4314b0b2b4b9e88046d0",
-    "publication_id": "m4-f787bac7863fa3409d45f75a8b7b5c30",
+    "run_id": "research-1f70afc1e97d4439bd841c43f4509715",
+    "publication_id": "m4-29c93e09369982707899ab863c869ea1",
+    "trade_date": "2026-09-15",
+    "snapshot_id": "m10-mainline-preview-1e7e6c870ee93532",
     "source_scope": "TDX-MEMBERSHIP:direct-members-v3-v1",
-    "relation_revision": 1,
-    "attribute_version_id": "attrset-dbd78aac2269a55464dd05bd",
-    "technical_slice": "m8-m9-local-reconstructed-preview-v2-3ce7d6cd7992bd6a-technical-20260914"
+    "relation_revision": 2,
+    "attribute_version_id": "attrset-20e2dbebd155c5e1ca264b8a",
+    "technical_slice": "m8-m9-local-reconstructed-preview-v2-b5a55518cc70b5a4-technical-20260915"
   },
-  "qualified_unique_stocks": 113,
+  "qualified_unique_stocks": 58,
   "primary_category_counts": {
-    "LAUNCH_CONFIRM": 104,
-    "TREND_CONTINUE": 9
+    "LAUNCH_CONFIRM": 53,
+    "TREND_CONTINUE": 5
   },
   "selection_mode_counts": {
-    "INDEPENDENT": 96,
-    "SUPPORTED": 17
+    "INDEPENDENT": 44,
+    "SUPPORTED": 14
   },
-  "scored": 9,
-  "qualified_unranked": 104,
-  "setup_watch_observations": 403,
-  "stock_only_trend_true": 140,
-  "formal_trend_after_loo": 9,
+  "scored": 5,
+  "qualified_unranked": 53,
+  "setup_watch_observations": 222,
+  "stock_only_trend_true": 69,
+  "formal_trend_after_loo": 5,
   "complex_and_simple_same_sample": true,
   "qualification_cap_applied": false,
   "ranked_rows": [
     {
-      "security_id": "BJ.920394",
+      "security_id": "BJ.920028",
       "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM",
-        "TREND_CONTINUE"
+        "LAUNCH_CONFIRM"
       ],
       "setup_watch": false,
-      "clv": 0.9660377358490579,
-      "liq20_amount": 57118290.0,
-      "break_margin_close20": 0.020382165605095537,
-      "amr20_mean_prior": 1.5096565420727552,
+      "clv": 0.7702702702702704,
+      "liq20_amount": 20016162.0,
+      "break_margin_close20": 0.002599090318388564,
+      "amr20_mean_prior": 1.5140371273503168,
       "rps5_delta3": null,
-      "slope20": 0.0036525838616883774,
-      "r2_20": 0.3604980878066456,
-      "rps20": 0.8566568591393895,
-      "bias20": 0.06833237007068882,
+      "slope20": 0.004883719360748869,
+      "r2_20": 0.5472866265443452,
+      "rps20": 0.9431671877873827,
+      "bias20": 0.0646886320510609,
       "freshness": 0.2,
       "matched_categories": [
         "LAUNCH_CONFIRM"
@@ -55,49 +56,20 @@
       "category_rank": null
     },
     {
-      "security_id": "BJ.920725",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM",
-        "TREND_CONTINUE"
-      ],
-      "setup_watch": false,
-      "clv": 0.7520844913841026,
-      "liq20_amount": 524304688.0,
-      "break_margin_close20": 0.04438614900314808,
-      "amr20_mean_prior": 1.5113535400297262,
-      "rps5_delta3": null,
-      "slope20": 0.012815693756513116,
-      "r2_20": 0.5267775377152801,
-      "rps20": 0.976094152261861,
-      "bias20": 0.2406434443343366,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM",
-        "TREND_CONTINUE"
-      ],
-      "selection_mode": "SUPPORTED",
-      "sector_support_status": "CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SH.600088",
+      "security_id": "BJ.920179",
       "matched_stock_only_categories": [
         "LAUNCH_CONFIRM"
       ],
       "setup_watch": false,
-      "clv": 1.0,
-      "liq20_amount": 78220468.0,
-      "break_margin_close20": 0.10000000000000009,
-      "amr20_mean_prior": 5.590992112441385,
+      "clv": 0.933333333333334,
+      "liq20_amount": 159930784.0,
+      "break_margin_close20": 0.02358974358974364,
+      "amr20_mean_prior": 1.6049024219768986,
       "rps5_delta3": null,
-      "slope20": 0.009832959000436728,
-      "r2_20": 0.734652323543826,
-      "rps20": 0.9856564913571166,
-      "bias20": 0.21436810018124897,
+      "slope20": 0.004807944808921583,
+      "r2_20": 0.4340782718439685,
+      "rps20": 0.8201213904726872,
+      "bias20": 0.11601901034386364,
       "freshness": 0.2,
       "matched_categories": [
         "LAUNCH_CONFIRM"
@@ -111,20 +83,21 @@
       "category_rank": null
     },
     {
-      "security_id": "SH.600163",
+      "security_id": "SH.600023",
       "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM"
+        "LAUNCH_CONFIRM",
+        "TREND_CONTINUE"
       ],
       "setup_watch": false,
-      "clv": 0.733333333333333,
-      "liq20_amount": 77150540.0,
-      "break_margin_close20": 0.032490974729241895,
-      "amr20_mean_prior": 4.053611386015015,
+      "clv": 0.6000000000000018,
+      "liq20_amount": 164755432.0,
+      "break_margin_close20": 0.007936507936507908,
+      "amr20_mean_prior": 1.4746401233475939,
       "rps5_delta3": null,
-      "slope20": 0.006459484134540152,
-      "r2_20": 0.8123656009170761,
-      "rps20": 0.9380286870172858,
-      "bias20": 0.106489989360673,
+      "slope20": 0.0017722893265814988,
+      "r2_20": 0.58562658736633,
+      "rps20": 0.863159830789038,
+      "bias20": 0.030844155844155896,
       "freshness": 0.2,
       "matched_categories": [
         "LAUNCH_CONFIRM"
@@ -138,20 +111,20 @@
       "category_rank": null
     },
     {
-      "security_id": "SH.600172",
+      "security_id": "SH.600110",
       "matched_stock_only_categories": [
         "TREND_CONTINUE"
       ],
       "setup_watch": false,
       "clv": 1.0,
-      "liq20_amount": 3202304384.0,
-      "break_margin_close20": -0.023626698168930815,
-      "amr20_mean_prior": 1.4697296087138914,
+      "liq20_amount": 1711569664.0,
+      "break_margin_close20": 0.008312551953449931,
+      "amr20_mean_prior": 1.157162590162375,
       "rps5_delta3": null,
-      "slope20": 0.010337648913278714,
-      "r2_20": 0.6531637022141802,
-      "rps20": 0.9751746965796249,
-      "bias20": 0.11253196930946285,
+      "slope20": 0.004452315860652896,
+      "r2_20": 0.22019495157418256,
+      "rps20": 0.9672613573661946,
+      "bias20": 0.08173184108440723,
       "freshness": 0.2,
       "matched_categories": [
         "TREND_CONTINUE"
@@ -160,65 +133,9 @@
       "sector_support_status": "CONFIRMED",
       "signal_age": null,
       "primary_category": "TREND_CONTINUE",
-      "category_score": 66.50177291063117,
+      "category_score": 62.16777881713428,
       "rank_status": "SCORED",
-      "category_rank": 3
-    },
-    {
-      "security_id": "SH.600177",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM",
-        "TREND_CONTINUE"
-      ],
-      "setup_watch": false,
-      "clv": 0.6666666666666634,
-      "liq20_amount": 205479816.0,
-      "break_margin_close20": 0.011990407673860837,
-      "amr20_mean_prior": 1.2067711794703124,
-      "rps5_delta3": null,
-      "slope20": 0.0037506360512409675,
-      "r2_20": 0.7820554733582621,
-      "rps20": 0.8767929385803604,
-      "bias20": 0.042554505589525116,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SH.600180",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM",
-        "TREND_CONTINUE"
-      ],
-      "setup_watch": false,
-      "clv": 1.0,
-      "liq20_amount": 23500821.0,
-      "break_margin_close20": 0.09883720930232553,
-      "amr20_mean_prior": 2.4126576608644648,
-      "rps5_delta3": null,
-      "slope20": 0.004465669532269026,
-      "r2_20": 0.16229319609988202,
-      "rps20": 0.965428466347922,
-      "bias20": 0.21699935608499676,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
+      "category_rank": 2
     },
     {
       "security_id": "SH.600184",
@@ -226,15 +143,15 @@
         "LAUNCH_CONFIRM"
       ],
       "setup_watch": false,
-      "clv": 0.7222222222222211,
+      "clv": 0.7890295358649787,
       "liq20_amount": 258092728.0,
-      "break_margin_close20": 0.03003003003003002,
-      "amr20_mean_prior": 5.22438884540384,
+      "break_margin_close20": 0.07531584062196317,
+      "amr20_mean_prior": 4.499266572347579,
       "rps5_delta3": null,
-      "slope20": 0.004678709144021257,
-      "r2_20": 0.39189036407483646,
-      "rps20": 0.9073188672305995,
-      "bias20": 0.13139087410665184,
+      "slope20": 0.007893994015584082,
+      "r2_20": 0.561193469006465,
+      "rps20": 0.9768254552142726,
+      "bias20": 0.20504233711780873,
       "freshness": 0.2,
       "matched_categories": [
         "LAUNCH_CONFIRM"
@@ -248,48 +165,21 @@
       "category_rank": null
     },
     {
-      "security_id": "SH.600237",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "setup_watch": false,
-      "clv": 0.7719298245614035,
-      "liq20_amount": 175721064.0,
-      "break_margin_close20": 0.06724511930585675,
-      "amr20_mean_prior": 5.137079513753874,
-      "rps5_delta3": null,
-      "slope20": 0.002563479306649763,
-      "r2_20": 0.10803464522045392,
-      "rps20": 0.9104450165502023,
-      "bias20": 0.15846479868142227,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "SUPPORTED",
-      "sector_support_status": "CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SH.600356",
+      "security_id": "SH.600228",
       "matched_stock_only_categories": [
         "LAUNCH_CONFIRM",
         "TREND_CONTINUE"
       ],
       "setup_watch": false,
-      "clv": 0.7894736842105261,
-      "liq20_amount": 39740158.0,
-      "break_margin_close20": 0.03081827842720508,
-      "amr20_mean_prior": 2.434458966557189,
+      "clv": 0.7777777777777772,
+      "liq20_amount": 254759752.0,
+      "break_margin_close20": 0.06214149139579339,
+      "amr20_mean_prior": 1.8685833766514035,
       "rps5_delta3": null,
-      "slope20": 0.0036294299760477144,
-      "r2_20": 0.6069429411436256,
-      "rps20": 0.90860610518573,
-      "bias20": 0.07550726244594741,
+      "slope20": 0.014796388873778673,
+      "r2_20": 0.7901503906746702,
+      "rps20": 0.9884127276071363,
+      "bias20": 0.19861905275650016,
       "freshness": 0.2,
       "matched_categories": [
         "LAUNCH_CONFIRM"
@@ -303,185 +193,20 @@
       "category_rank": null
     },
     {
-      "security_id": "SH.600377",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM",
-        "TREND_CONTINUE"
-      ],
-      "setup_watch": false,
-      "clv": 0.8399999999999963,
-      "liq20_amount": 122635212.0,
-      "break_margin_close20": 0.013481363996827866,
-      "amr20_mean_prior": 1.3900626718546536,
-      "rps5_delta3": null,
-      "slope20": 0.003145325458220457,
-      "r2_20": 0.7914961670132193,
-      "rps20": 0.8769768297168077,
-      "bias20": 0.03452462864775163,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SH.600461",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM",
-        "TREND_CONTINUE"
-      ],
-      "setup_watch": false,
-      "clv": 0.9473684210526325,
-      "liq20_amount": 83869284.0,
-      "break_margin_close20": 0.01106194690265494,
-      "amr20_mean_prior": 1.5904169549734062,
-      "rps5_delta3": null,
-      "slope20": 0.0007149679951061332,
-      "r2_20": 0.3031326952431005,
-      "rps20": 0.788341301949246,
-      "bias20": 0.02214269738313579,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SH.600609",
+      "security_id": "SH.600579",
       "matched_stock_only_categories": [
         "LAUNCH_CONFIRM"
       ],
       "setup_watch": false,
-      "clv": 0.6857142857142862,
-      "liq20_amount": 52475856.0,
-      "break_margin_close20": 0.023255813953488413,
-      "amr20_mean_prior": 6.859246775866663,
+      "clv": 0.733333333333333,
+      "liq20_amount": 26791939.0,
+      "break_margin_close20": 0.005509641873278293,
+      "amr20_mean_prior": 3.6802678628109304,
       "rps5_delta3": null,
-      "slope20": 0.003455643118149535,
-      "r2_20": 0.5832028746351359,
-      "rps20": 0.8955498344979772,
-      "bias20": 0.05610561056105601,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SH.600697",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "setup_watch": false,
-      "clv": 1.0,
-      "liq20_amount": 37148366.0,
-      "break_margin_close20": 0.03489361702127658,
-      "amr20_mean_prior": 3.0245772143006997,
-      "rps5_delta3": null,
-      "slope20": 0.005096394696502516,
-      "r2_20": 0.7089549428719502,
-      "rps20": 0.9463037881574108,
-      "bias20": 0.08828925582852287,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SH.600719",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM",
-        "TREND_CONTINUE"
-      ],
-      "setup_watch": false,
-      "clv": 0.8823529411764705,
-      "liq20_amount": 76200992.0,
-      "break_margin_close20": 0.01679586563307489,
-      "amr20_mean_prior": 2.3369728736039046,
-      "rps5_delta3": null,
-      "slope20": 0.00619502343597649,
-      "r2_20": 0.8307813772903216,
-      "rps20": 0.8648400147112909,
-      "bias20": 0.07815603808480032,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SH.600742",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "setup_watch": false,
-      "clv": 0.6129032258064527,
-      "liq20_amount": 29075225.0,
-      "break_margin_close20": 0.002525252525252597,
-      "amr20_mean_prior": 4.479259996333625,
-      "rps5_delta3": null,
-      "slope20": 0.0020117221788234635,
-      "r2_20": 0.4374027277462701,
-      "rps20": 0.8076498712762045,
-      "bias20": 0.02803133294490845,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SH.600802",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "setup_watch": false,
-      "clv": 1.0,
-      "liq20_amount": 29498261.0,
-      "break_margin_close20": 0.04456327985739761,
-      "amr20_mean_prior": 2.8110781400616824,
-      "rps5_delta3": null,
-      "slope20": 0.01179775093934534,
-      "r2_20": 0.8506953743473049,
-      "rps20": 0.9873115115851416,
-      "bias20": 0.1863548942200628,
+      "slope20": 0.002217222954134463,
+      "r2_20": 0.53796159605474,
+      "rps20": 0.8072466433695052,
+      "bias20": 0.03693181818181812,
       "freshness": 0.2,
       "matched_categories": [
         "LAUNCH_CONFIRM"
@@ -497,73 +222,19 @@
     {
       "security_id": "SH.600818",
       "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "setup_watch": false,
-      "clv": 0.7291666666666653,
-      "liq20_amount": 27650953.0,
-      "break_margin_close20": 0.04449938195302838,
-      "amr20_mean_prior": 2.51233214550212,
-      "rps5_delta3": null,
-      "slope20": 0.007002481452503833,
-      "r2_20": 0.765353620085636,
-      "rps20": 0.9626700993012137,
-      "bias20": 0.12381965686926444,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SH.601199",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "setup_watch": false,
-      "clv": 0.8918918918918918,
-      "liq20_amount": 63634112.0,
-      "break_margin_close20": 0.04945904173106652,
-      "amr20_mean_prior": 4.989250990104761,
-      "rps5_delta3": null,
-      "slope20": -0.0025696936451233237,
-      "r2_20": 0.1220706021607425,
-      "rps20": 0.8707245310776021,
-      "bias20": 0.09968418495424736,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SH.601328",
-      "matched_stock_only_categories": [
         "LAUNCH_CONFIRM",
         "TREND_CONTINUE"
       ],
       "setup_watch": false,
-      "clv": 0.9375000000000013,
-      "liq20_amount": 1110057216.0,
-      "break_margin_close20": 0.018716577540106805,
-      "amr20_mean_prior": 1.4279983115412034,
+      "clv": 0.7750000000000006,
+      "liq20_amount": 27933092.0,
+      "break_margin_close20": 0.02366863905325456,
+      "amr20_mean_prior": 1.5206537689329442,
       "rps5_delta3": null,
-      "slope20": 0.0031778219376755487,
-      "r2_20": 0.7388846187882689,
-      "rps20": 0.9253401986024273,
-      "bias20": 0.0489366095395416,
+      "slope20": 0.008153471087553515,
+      "r2_20": 0.7673551450845006,
+      "rps20": 0.9821592790141622,
+      "bias20": 0.13875724065297534,
       "freshness": 0.2,
       "matched_categories": [
         "LAUNCH_CONFIRM"
@@ -577,20 +248,74 @@
       "category_rank": null
     },
     {
-      "security_id": "SH.603020",
+      "security_id": "SH.600880",
+      "matched_stock_only_categories": [
+        "LAUNCH_CONFIRM"
+      ],
+      "setup_watch": false,
+      "clv": 0.6666666666666647,
+      "liq20_amount": 70289376.0,
+      "break_margin_close20": 0.0041407867494822614,
+      "amr20_mean_prior": 2.809036727770111,
+      "rps5_delta3": null,
+      "slope20": 0.014241640146545928,
+      "r2_20": 0.8811400391810027,
+      "rps20": 0.985653853227883,
+      "bias20": 0.15558732427924693,
+      "freshness": 0.2,
+      "matched_categories": [
+        "LAUNCH_CONFIRM"
+      ],
+      "selection_mode": "INDEPENDENT",
+      "sector_support_status": "NOT_CONFIRMED",
+      "signal_age": null,
+      "primary_category": "LAUNCH_CONFIRM",
+      "category_score": null,
+      "rank_status": "QUALIFIED_UNRANKED",
+      "category_rank": null
+    },
+    {
+      "security_id": "SH.600982",
+      "matched_stock_only_categories": [
+        "LAUNCH_CONFIRM"
+      ],
+      "setup_watch": false,
+      "clv": 0.6799999999999997,
+      "liq20_amount": 76251156.0,
+      "break_margin_close20": 0.0019120458891013214,
+      "amr20_mean_prior": 2.611169304485094,
+      "rps5_delta3": null,
+      "slope20": 0.0042948124779691715,
+      "r2_20": 0.7461330460294084,
+      "rps20": 0.9045429464778371,
+      "bias20": 0.06417546709991884,
+      "freshness": 0.2,
+      "matched_categories": [
+        "LAUNCH_CONFIRM"
+      ],
+      "selection_mode": "SUPPORTED",
+      "sector_support_status": "CONFIRMED",
+      "signal_age": null,
+      "primary_category": "LAUNCH_CONFIRM",
+      "category_score": null,
+      "rank_status": "QUALIFIED_UNRANKED",
+      "category_rank": null
+    },
+    {
+      "security_id": "SH.601218",
       "matched_stock_only_categories": [
         "LAUNCH_CONFIRM"
       ],
       "setup_watch": false,
       "clv": 1.0,
-      "liq20_amount": 59488466.0,
-      "break_margin_close20": 0.04295051353874868,
-      "amr20_mean_prior": 2.682937310906256,
+      "liq20_amount": 77327276.0,
+      "break_margin_close20": 0.07916666666666661,
+      "amr20_mean_prior": 3.610790074492443,
       "rps5_delta3": null,
-      "slope20": 0.0036195449429737843,
-      "r2_20": 0.49097052055680457,
-      "rps20": 0.8828613460831188,
-      "bias20": 0.08832269693574313,
+      "slope20": 0.005332232717769391,
+      "r2_20": 0.606809697657547,
+      "rps20": 0.9610079087732205,
+      "bias20": 0.13858665787449165,
       "freshness": 0.2,
       "matched_categories": [
         "LAUNCH_CONFIRM"
@@ -604,104 +329,20 @@
       "category_rank": null
     },
     {
-      "security_id": "SH.603139",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM",
-        "TREND_CONTINUE"
-      ],
-      "setup_watch": false,
-      "clv": 0.7220077220077228,
-      "liq20_amount": 75020368.0,
-      "break_margin_close20": 0.03935599284436497,
-      "amr20_mean_prior": 2.1947675439016683,
-      "rps5_delta3": null,
-      "slope20": 0.006944232671381853,
-      "r2_20": 0.6386018150984665,
-      "rps20": 0.9155939683707245,
-      "bias20": 0.11109593344898694,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SH.603257",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM",
-        "TREND_CONTINUE"
-      ],
-      "setup_watch": false,
-      "clv": 0.7955182072829124,
-      "liq20_amount": 100833852.0,
-      "break_margin_close20": 0.023467173087357684,
-      "amr20_mean_prior": 1.5374376757185095,
-      "rps5_delta3": null,
-      "slope20": 0.009213823106683745,
-      "r2_20": 0.8212685789800731,
-      "rps20": 0.9659801397572637,
-      "bias20": 0.11482143648694576,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SH.603261",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM",
-        "TREND_CONTINUE"
-      ],
-      "setup_watch": false,
-      "clv": 0.994160583941606,
-      "liq20_amount": 134174648.0,
-      "break_margin_close20": 0.053294738634428684,
-      "amr20_mean_prior": 2.0221039450504885,
-      "rps5_delta3": null,
-      "slope20": 0.008933054003561518,
-      "r2_20": 0.6680182192562327,
-      "rps20": 0.9494299374770137,
-      "bias20": 0.12021585795387657,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SH.603285",
+      "security_id": "SH.603051",
       "matched_stock_only_categories": [
         "LAUNCH_CONFIRM"
       ],
       "setup_watch": false,
-      "clv": 1.0,
-      "liq20_amount": 208010776.0,
-      "break_margin_close20": 0.031142781736605896,
-      "amr20_mean_prior": 1.8114974904991323,
+      "clv": 0.7196261682243018,
+      "liq20_amount": 77569496.0,
+      "break_margin_close20": 0.0163160154572779,
+      "amr20_mean_prior": 2.1754079172435223,
       "rps5_delta3": null,
-      "slope20": -0.0029285539952131944,
-      "r2_20": 0.08213407922831206,
-      "rps20": 0.8481059212945936,
-      "bias20": 0.14214718994372566,
+      "slope20": 0.005954391718214359,
+      "r2_20": 0.7047339625076485,
+      "rps20": 0.9378333639874931,
+      "bias20": 0.10036725396308888,
       "freshness": 0.2,
       "matched_categories": [
         "LAUNCH_CONFIRM"
@@ -715,157 +356,21 @@
       "category_rank": null
     },
     {
-      "security_id": "SH.603291",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "setup_watch": false,
-      "clv": 0.8750000000000006,
-      "liq20_amount": 37435728.0,
-      "break_margin_close20": 0.04772004241781569,
-      "amr20_mean_prior": 3.8004444471675636,
-      "rps5_delta3": null,
-      "slope20": 0.0015139286845312488,
-      "r2_20": 0.12474867072334461,
-      "rps20": 0.9128356013240162,
-      "bias20": 0.08327394331451132,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SH.603322",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM",
-        "TREND_CONTINUE"
-      ],
-      "setup_watch": false,
-      "clv": 0.9566929133858243,
-      "liq20_amount": 138984876.0,
-      "break_margin_close20": 0.04574951330304988,
-      "amr20_mean_prior": 2.086058449275942,
-      "rps5_delta3": null,
-      "slope20": 0.010039820920585927,
-      "r2_20": 0.5612758445297987,
-      "rps20": 0.9619345347554248,
-      "bias20": 0.1853186716192856,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SH.603328",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "setup_watch": false,
-      "clv": 0.9006622516556289,
-      "liq20_amount": 197982440.0,
-      "break_margin_close20": 0.05716523101018023,
-      "amr20_mean_prior": 4.504097164664478,
-      "rps5_delta3": null,
-      "slope20": 0.005739267412708491,
-      "r2_20": 0.2797384261393031,
-      "rps20": 0.9724163295329166,
-      "bias20": 0.19627824545857342,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SH.603386",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "setup_watch": false,
-      "clv": 0.8971428571428574,
-      "liq20_amount": 89786572.0,
-      "break_margin_close20": 0.04799513973268521,
-      "amr20_mean_prior": 6.686162195267792,
-      "rps5_delta3": null,
-      "slope20": 0.007903562776590062,
-      "r2_20": 0.5679533378422974,
-      "rps20": 0.9759102611254138,
-      "bias20": 0.19849927047870497,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SH.603390",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "setup_watch": false,
-      "clv": 0.7666666666666685,
-      "liq20_amount": 55758774.0,
-      "break_margin_close20": 0.008849557522123908,
-      "amr20_mean_prior": 2.7149247946869304,
-      "rps5_delta3": null,
-      "slope20": 0.006546755208230941,
-      "r2_20": 0.6556708348860757,
-      "rps20": 0.9030893710923134,
-      "bias20": 0.09273903666427041,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SH.603400",
+      "security_id": "SH.603115",
       "matched_stock_only_categories": [
         "LAUNCH_CONFIRM",
         "TREND_CONTINUE"
       ],
       "setup_watch": false,
       "clv": 1.0,
-      "liq20_amount": 206082624.0,
-      "break_margin_close20": 0.019962686567164267,
-      "amr20_mean_prior": 1.478071499118519,
+      "liq20_amount": 820309920.0,
+      "break_margin_close20": 0.052691218130311634,
+      "amr20_mean_prior": 1.271075599954759,
       "rps5_delta3": null,
-      "slope20": 0.007150806502846448,
-      "r2_20": 0.3929484097880934,
-      "rps20": 0.9849209268113277,
-      "bias20": 0.11616986525112294,
+      "slope20": 0.008605238604600446,
+      "r2_20": 0.6674327519400256,
+      "rps20": 0.9258782416773956,
+      "bias20": 0.16170742229752966,
       "freshness": 0.2,
       "matched_categories": [
         "LAUNCH_CONFIRM"
@@ -879,26 +384,56 @@
       "category_rank": null
     },
     {
-      "security_id": "SH.603439",
+      "security_id": "SH.603236",
       "matched_stock_only_categories": [
+        "LAUNCH_CONFIRM",
+        "TREND_CONTINUE"
+      ],
+      "setup_watch": false,
+      "clv": 0.9696969696969675,
+      "liq20_amount": 803437984.0,
+      "break_margin_close20": 0.05110062893081757,
+      "amr20_mean_prior": 2.1856837872631867,
+      "rps5_delta3": null,
+      "slope20": 0.006123560340183274,
+      "r2_20": 0.44902032873616415,
+      "rps20": 0.9187051682913371,
+      "bias20": 0.11115728236027422,
+      "freshness": 0.2,
+      "matched_categories": [
         "LAUNCH_CONFIRM"
+      ],
+      "selection_mode": "INDEPENDENT",
+      "sector_support_status": "NOT_CONFIRMED",
+      "signal_age": null,
+      "primary_category": "LAUNCH_CONFIRM",
+      "category_score": null,
+      "rank_status": "QUALIFIED_UNRANKED",
+      "category_rank": null
+    },
+    {
+      "security_id": "SH.603353",
+      "matched_stock_only_categories": [
+        "LAUNCH_CONFIRM",
+        "TREND_CONTINUE"
       ],
       "setup_watch": false,
       "clv": 1.0,
-      "liq20_amount": 140064360.0,
-      "break_margin_close20": 0.03606311044327559,
-      "amr20_mean_prior": 2.681341427774711,
+      "liq20_amount": 149574112.0,
+      "break_margin_close20": 0.0557961783439489,
+      "amr20_mean_prior": 1.7585673398655954,
       "rps5_delta3": null,
-      "slope20": -0.0007003470957010568,
-      "r2_20": 0.011499836076942715,
-      "rps20": 0.8028687017285767,
-      "bias20": 0.11524464213505858,
+      "slope20": 0.01624803276598183,
+      "r2_20": 0.8973289300102002,
+      "rps20": 0.9878609527312856,
+      "bias20": 0.20370639323786555,
       "freshness": 0.2,
       "matched_categories": [
-        "LAUNCH_CONFIRM"
+        "LAUNCH_CONFIRM",
+        "TREND_CONTINUE"
       ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
+      "selection_mode": "SUPPORTED",
+      "sector_support_status": "CONFIRMED",
       "signal_age": null,
       "primary_category": "LAUNCH_CONFIRM",
       "category_score": null,
@@ -906,47 +441,20 @@
       "category_rank": null
     },
     {
-      "security_id": "SH.603489",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "setup_watch": false,
-      "clv": 0.9224137931034484,
-      "liq20_amount": 57261668.0,
-      "break_margin_close20": 0.004540691582256562,
-      "amr20_mean_prior": 1.9267811114680027,
-      "rps5_delta3": null,
-      "slope20": 0.00024429806206681794,
-      "r2_20": 0.005720911126061989,
-      "rps20": 0.7568959176167709,
-      "bias20": 0.03261942803798723,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SH.603618",
+      "security_id": "SH.603375",
       "matched_stock_only_categories": [
         "TREND_CONTINUE"
       ],
       "setup_watch": false,
-      "clv": 0.7594339622641507,
-      "liq20_amount": 3650678400.0,
-      "break_margin_close20": -0.002645502645502673,
-      "amr20_mean_prior": 1.162014608611929,
+      "clv": 0.5642857142857143,
+      "liq20_amount": 75307384.0,
+      "break_margin_close20": -0.0391109211369951,
+      "amr20_mean_prior": 1.1118106062732425,
       "rps5_delta3": null,
-      "slope20": 0.023781967131803916,
-      "r2_20": 0.8800231252885654,
-      "rps20": 0.9922765722692166,
-      "bias20": 0.1951353064929826,
+      "slope20": 0.01223584176369989,
+      "r2_20": 0.7416383625015204,
+      "rps20": 0.9604561338973698,
+      "bias20": 0.08359543520962132,
       "freshness": 0.2,
       "matched_categories": [
         "TREND_CONTINUE"
@@ -955,26 +463,25 @@
       "sector_support_status": "CONFIRMED",
       "signal_age": null,
       "primary_category": "TREND_CONTINUE",
-      "category_score": 71.37517809641407,
+      "category_score": 54.721742005390205,
       "rank_status": "SCORED",
-      "category_rank": 1
+      "category_rank": 3
     },
     {
-      "security_id": "SH.603657",
+      "security_id": "SH.603686",
       "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM",
-        "TREND_CONTINUE"
+        "LAUNCH_CONFIRM"
       ],
       "setup_watch": false,
-      "clv": 1.0,
-      "liq20_amount": 98738152.0,
-      "break_margin_close20": 0.07463197535090726,
-      "amr20_mean_prior": 1.276501446295093,
+      "clv": 0.6815642458100556,
+      "liq20_amount": 150885312.0,
+      "break_margin_close20": 0.018895348837209225,
+      "amr20_mean_prior": 4.815755534173426,
       "rps5_delta3": null,
-      "slope20": 0.005214940125262288,
-      "r2_20": 0.1829504203667618,
-      "rps20": 0.8837808017653549,
-      "bias20": 0.19423995130209826,
+      "slope20": 0.004198581894143791,
+      "r2_20": 0.6020296765027906,
+      "rps20": 0.8878057752437005,
+      "bias20": 0.06462145948819198,
       "freshness": 0.2,
       "matched_categories": [
         "LAUNCH_CONFIRM"
@@ -988,47 +495,20 @@
       "category_rank": null
     },
     {
-      "security_id": "SH.603920",
+      "security_id": "SH.603693",
       "matched_stock_only_categories": [
         "LAUNCH_CONFIRM"
       ],
       "setup_watch": false,
-      "clv": 0.937349397590362,
-      "liq20_amount": 866063488.0,
-      "break_margin_close20": 0.04752714113389622,
-      "amr20_mean_prior": 2.534492237333598,
+      "clv": 0.951612903225806,
+      "liq20_amount": 53515948.0,
+      "break_margin_close20": 0.034375000000000044,
+      "amr20_mean_prior": 5.2146234750210665,
       "rps5_delta3": null,
-      "slope20": 0.003515073364774446,
-      "r2_20": 0.21219085398240645,
-      "rps20": 0.9054799558661273,
-      "bias20": 0.12170296313518825,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SH.603936",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "setup_watch": false,
-      "clv": 0.8533834586466164,
-      "liq20_amount": 988950240.0,
-      "break_margin_close20": 0.06752873563218387,
-      "amr20_mean_prior": 2.907711436708877,
-      "rps5_delta3": null,
-      "slope20": 0.004825720737722601,
-      "r2_20": 0.1435420522145402,
-      "rps20": 0.9882309672673777,
-      "bias20": 0.23411676771032308,
+      "slope20": 0.005526027549480125,
+      "r2_20": 0.46146418276656176,
+      "rps20": 0.9654221077800258,
+      "bias20": 0.14880694143167017,
       "freshness": 0.2,
       "matched_categories": [
         "LAUNCH_CONFIRM"
@@ -1047,21 +527,21 @@
         "LAUNCH_CONFIRM"
       ],
       "setup_watch": false,
-      "clv": 0.6814814814814815,
+      "clv": 0.8564013840830453,
       "liq20_amount": 660067840.0,
-      "break_margin_close20": 0.008071025020177425,
-      "amr20_mean_prior": 2.7483230467413997,
+      "break_margin_close20": 0.06425140112089678,
+      "amr20_mean_prior": 2.572765185333256,
       "rps5_delta3": null,
-      "slope20": 0.00379384657991768,
-      "r2_20": 0.1214788710394007,
-      "rps20": 0.9014343508642884,
-      "bias20": 0.13340668564752334,
+      "slope20": 0.0073761179107183425,
+      "r2_20": 0.32676704000145684,
+      "rps20": 0.9668935074489609,
+      "bias20": 0.19717199918942674,
       "freshness": 0.2,
       "matched_categories": [
         "LAUNCH_CONFIRM"
       ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
+      "selection_mode": "SUPPORTED",
+      "sector_support_status": "CONFIRMED",
       "signal_age": null,
       "primary_category": "LAUNCH_CONFIRM",
       "category_score": null,
@@ -1069,21 +549,21 @@
       "category_rank": null
     },
     {
-      "security_id": "SH.603989",
+      "security_id": "SH.605162",
       "matched_stock_only_categories": [
         "LAUNCH_CONFIRM",
         "TREND_CONTINUE"
       ],
       "setup_watch": false,
-      "clv": 0.8553191489361701,
-      "liq20_amount": 990998624.0,
-      "break_margin_close20": 0.00962379702537186,
-      "amr20_mean_prior": 1.4255071391869787,
+      "clv": 1.0,
+      "liq20_amount": 372666384.0,
+      "break_margin_close20": 0.02849510240427433,
+      "amr20_mean_prior": 1.7338441393367023,
       "rps5_delta3": null,
-      "slope20": 0.010962375667079603,
-      "r2_20": 0.6465522121042935,
-      "rps20": 0.888010297903641,
-      "bias20": 0.1375248484450211,
+      "slope20": 0.011248987495824562,
+      "r2_20": 0.7467712569676368,
+      "rps20": 0.9773772300901232,
+      "bias20": 0.13731475555117933,
       "freshness": 0.2,
       "matched_categories": [
         "LAUNCH_CONFIRM"
@@ -1097,21 +577,75 @@
       "category_rank": null
     },
     {
-      "security_id": "SH.605167",
+      "security_id": "SH.605507",
+      "matched_stock_only_categories": [
+        "LAUNCH_CONFIRM"
+      ],
+      "setup_watch": false,
+      "clv": 1.0,
+      "liq20_amount": 72144344.0,
+      "break_margin_close20": 0.09987593052109167,
+      "amr20_mean_prior": 6.835316228866852,
+      "rps5_delta3": null,
+      "slope20": 0.002661521519682056,
+      "r2_20": 0.21592586986550677,
+      "rps20": 0.9565937097664153,
+      "bias20": 0.13196705611951742,
+      "freshness": 0.2,
+      "matched_categories": [
+        "LAUNCH_CONFIRM"
+      ],
+      "selection_mode": "INDEPENDENT",
+      "sector_support_status": "NOT_CONFIRMED",
+      "signal_age": null,
+      "primary_category": "LAUNCH_CONFIRM",
+      "category_score": null,
+      "rank_status": "QUALIFIED_UNRANKED",
+      "category_rank": null
+    },
+    {
+      "security_id": "SH.688004",
+      "matched_stock_only_categories": [
+        "LAUNCH_CONFIRM"
+      ],
+      "setup_watch": false,
+      "clv": 1.0,
+      "liq20_amount": 41380364.0,
+      "break_margin_close20": 0.17008547008547015,
+      "amr20_mean_prior": 7.495791080385068,
+      "rps5_delta3": null,
+      "slope20": 0.001353266599648449,
+      "r2_20": 0.013490669171765002,
+      "rps20": 0.976089755379805,
+      "bias20": 0.24905909992928987,
+      "freshness": 0.2,
+      "matched_categories": [
+        "LAUNCH_CONFIRM"
+      ],
+      "selection_mode": "INDEPENDENT",
+      "sector_support_status": "NOT_CONFIRMED",
+      "signal_age": null,
+      "primary_category": "LAUNCH_CONFIRM",
+      "category_score": null,
+      "rank_status": "QUALIFIED_UNRANKED",
+      "category_rank": null
+    },
+    {
+      "security_id": "SH.688090",
       "matched_stock_only_categories": [
         "LAUNCH_CONFIRM",
         "TREND_CONTINUE"
       ],
       "setup_watch": false,
-      "clv": 0.6641791044776124,
-      "liq20_amount": 131311096.0,
-      "break_margin_close20": 0.04418886198547223,
-      "amr20_mean_prior": 1.5468651332454717,
+      "clv": 0.8096085409252658,
+      "liq20_amount": 617556032.0,
+      "break_margin_close20": 0.035380507343124146,
+      "amr20_mean_prior": 1.3049874493264713,
       "rps5_delta3": null,
-      "slope20": 0.008277574191061872,
-      "r2_20": 0.6800740218825447,
-      "rps20": 0.968738506803972,
-      "bias20": 0.11766230400414668,
+      "slope20": 0.0015286850188663747,
+      "r2_20": 0.0484234810304488,
+      "rps20": 0.883943351112746,
+      "bias20": 0.0966943609687112,
       "freshness": 0.2,
       "matched_categories": [
         "LAUNCH_CONFIRM"
@@ -1125,20 +659,20 @@
       "category_rank": null
     },
     {
-      "security_id": "SH.605177",
+      "security_id": "SH.688150",
       "matched_stock_only_categories": [
         "LAUNCH_CONFIRM"
       ],
       "setup_watch": false,
-      "clv": 0.9299065420560754,
-      "liq20_amount": 150169976.0,
-      "break_margin_close20": 0.011736139214892694,
-      "amr20_mean_prior": 1.3441319809241974,
+      "clv": 0.6043689320388341,
+      "liq20_amount": 272002960.0,
+      "break_margin_close20": 0.003238491788110087,
+      "amr20_mean_prior": 2.0873608733960483,
       "rps5_delta3": null,
-      "slope20": 0.010954650936814445,
-      "r2_20": 0.683576784117305,
-      "rps20": 0.9917248988598749,
-      "bias20": 0.1538017768547364,
+      "slope20": 0.002486263121774799,
+      "r2_20": 0.13946689127797973,
+      "rps20": 0.7491263564465698,
+      "bias20": 0.1098032191202436,
       "freshness": 0.2,
       "matched_categories": [
         "LAUNCH_CONFIRM"
@@ -1152,48 +686,20 @@
       "category_rank": null
     },
     {
-      "security_id": "SH.605198",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM",
-        "TREND_CONTINUE"
-      ],
-      "setup_watch": false,
-      "clv": 0.9782608695652157,
-      "liq20_amount": 242393936.0,
-      "break_margin_close20": 0.05072923272035501,
-      "amr20_mean_prior": 1.7046262287529124,
-      "rps5_delta3": null,
-      "slope20": 0.01181585152191031,
-      "r2_20": 0.6448403396378893,
-      "rps20": 0.9762780433983081,
-      "bias20": 0.2156739029955319,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SH.605580",
+      "security_id": "SH.688209",
       "matched_stock_only_categories": [
         "TREND_CONTINUE"
       ],
       "setup_watch": false,
       "clv": 1.0,
-      "liq20_amount": 85634652.0,
-      "break_margin_close20": -0.05788423153692612,
-      "amr20_mean_prior": 1.4993367060107141,
+      "liq20_amount": 781713248.0,
+      "break_margin_close20": 0.03130434782608682,
+      "amr20_mean_prior": 1.1622252690059012,
       "rps5_delta3": null,
-      "slope20": 0.01827467562906002,
-      "r2_20": 0.6671859370213704,
-      "rps20": 0.9840014711290915,
-      "bias20": 0.18384750438926534,
+      "slope20": 0.0295232114173076,
+      "r2_20": 0.8619692047742293,
+      "rps20": 0.9983446753724481,
+      "bias20": 0.2262622781320005,
       "freshness": 0.2,
       "matched_categories": [
         "TREND_CONTINUE"
@@ -1202,25 +708,80 @@
       "sector_support_status": "CONFIRMED",
       "signal_age": null,
       "primary_category": "TREND_CONTINUE",
-      "category_score": 69.09394097136312,
+      "category_score": 81.41885029239847,
       "rank_status": "SCORED",
-      "category_rank": 2
+      "category_rank": 1
     },
     {
-      "security_id": "SH.688170",
+      "security_id": "SH.688216",
+      "matched_stock_only_categories": [
+        "LAUNCH_CONFIRM"
+      ],
+      "setup_watch": false,
+      "clv": 0.7025171624713964,
+      "liq20_amount": 105527700.0,
+      "break_margin_close20": 0.10053380782918153,
+      "amr20_mean_prior": 5.280952260138327,
+      "rps5_delta3": null,
+      "slope20": 0.005812484564714866,
+      "r2_20": 0.43575016853063964,
+      "rps20": 0.9545705352216296,
+      "bias20": 0.18896578239138795,
+      "freshness": 0.2,
+      "matched_categories": [
+        "LAUNCH_CONFIRM"
+      ],
+      "selection_mode": "SUPPORTED",
+      "sector_support_status": "CONFIRMED",
+      "signal_age": null,
+      "primary_category": "LAUNCH_CONFIRM",
+      "category_score": null,
+      "rank_status": "QUALIFIED_UNRANKED",
+      "category_rank": null
+    },
+    {
+      "security_id": "SH.688625",
+      "matched_stock_only_categories": [
+        "LAUNCH_CONFIRM",
+        "TREND_CONTINUE"
+      ],
+      "setup_watch": false,
+      "clv": 0.8818181818181834,
+      "liq20_amount": 278990464.0,
+      "break_margin_close20": 0.06761904761904769,
+      "amr20_mean_prior": 2.414747832832703,
+      "rps5_delta3": null,
+      "slope20": 0.005020817129896574,
+      "r2_20": 0.2413179691818349,
+      "rps20": 0.9012322972227331,
+      "bias20": 0.19016863376568227,
+      "freshness": 0.2,
+      "matched_categories": [
+        "LAUNCH_CONFIRM"
+      ],
+      "selection_mode": "INDEPENDENT",
+      "sector_support_status": "NOT_CONFIRMED",
+      "signal_age": null,
+      "primary_category": "LAUNCH_CONFIRM",
+      "category_score": null,
+      "rank_status": "QUALIFIED_UNRANKED",
+      "category_rank": null
+    },
+    {
+      "security_id": "SH.688785",
       "matched_stock_only_categories": [
         "TREND_CONTINUE"
       ],
       "setup_watch": false,
-      "clv": 0.8618988902589391,
-      "liq20_amount": 251800512.0,
-      "break_margin_close20": 0.048068283917340526,
-      "amr20_mean_prior": 2.107061021319877,
+      "clv": 0.7645362806343116,
+      "liq20_amount": 151047616.0,
+      "break_margin_close20": 0.023759378702119305,
+      "amr20_mean_prior": 1.128155451469561,
       "rps5_delta3": null,
-      "slope20": 0.014601033962471288,
-      "r2_20": 0.6496129605408714,
-      "rps20": 0.9795880838543582,
-      "bias20": 0.2165297875114065,
+      "slope20": 0.007025824618364656,
+      "r2_20": 0.6529398749153119,
+      "rps20": 0.8855986757402979,
+      "bias20": 0.10552603103361902,
       "freshness": 0.2,
       "matched_categories": [
         "TREND_CONTINUE"
@@ -1229,245 +790,54 @@
       "sector_support_status": "CONFIRMED",
       "signal_age": null,
       "primary_category": "TREND_CONTINUE",
-      "category_score": 55.50957102767951,
+      "category_score": 54.4946932255445,
       "rank_status": "SCORED",
-      "category_rank": 5
+      "category_rank": 4
     },
     {
-      "security_id": "SH.688244",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "setup_watch": false,
-      "clv": 1.0,
-      "liq20_amount": 28249282.0,
-      "break_margin_close20": 0.05996131528046433,
-      "amr20_mean_prior": 3.991372217886882,
-      "rps5_delta3": null,
-      "slope20": -0.0010040141333064645,
-      "r2_20": 0.026915106941664102,
-      "rps20": 0.8580360426627437,
-      "bias20": 0.09541577825159919,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SH.688333",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM",
-        "TREND_CONTINUE"
-      ],
-      "setup_watch": false,
-      "clv": 0.8208020050125314,
-      "liq20_amount": 1359734720.0,
-      "break_margin_close20": 0.003666751939967572,
-      "amr20_mean_prior": 1.5362550025093136,
-      "rps5_delta3": null,
-      "slope20": 0.0050099195220617305,
-      "r2_20": 0.3000351141857551,
-      "rps20": 0.733173961015079,
-      "bias20": 0.07498401680518785,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SH.688381",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM",
-        "TREND_CONTINUE"
-      ],
-      "setup_watch": false,
-      "clv": 0.8835098335854761,
-      "liq20_amount": 372443504.0,
-      "break_margin_close20": 0.05200945626477527,
-      "amr20_mean_prior": 2.1875285843289674,
-      "rps5_delta3": null,
-      "slope20": 0.007347112637784634,
-      "r2_20": 0.5602968847878498,
-      "rps20": 0.9181684442809857,
-      "bias20": 0.1324596004580736,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SH.688383",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "setup_watch": false,
-      "clv": 0.9076977904490378,
-      "liq20_amount": 270822464.0,
-      "break_margin_close20": 0.02860230547550424,
-      "amr20_mean_prior": 2.598179516073219,
-      "rps5_delta3": null,
-      "slope20": 0.0028881060009057664,
-      "r2_20": 0.13637486275335053,
-      "rps20": 0.9321441706509747,
-      "bias20": 0.11510313747237033,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SH.688563",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "setup_watch": false,
-      "clv": 0.9166666666666653,
-      "liq20_amount": 64132642.0,
-      "break_margin_close20": 0.03123877917414708,
-      "amr20_mean_prior": 3.1252494227587277,
-      "rps5_delta3": null,
-      "slope20": 0.006944916862837619,
-      "r2_20": 0.6939668884312482,
-      "rps20": 0.9277307833762413,
-      "bias20": 0.11194997773777038,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SH.688622",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "setup_watch": false,
-      "clv": 0.9185714285714285,
-      "liq20_amount": 39148246.0,
-      "break_margin_close20": 0.07894736842105265,
-      "amr20_mean_prior": 2.4087293092212745,
-      "rps5_delta3": null,
-      "slope20": 0.0008978701297069469,
-      "r2_20": 0.005911187112075389,
-      "rps20": 0.8898492092681133,
-      "bias20": 0.17422434367541761,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SH.688670",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM",
-        "TREND_CONTINUE"
-      ],
-      "setup_watch": false,
-      "clv": 0.7913669064748209,
-      "liq20_amount": 28683886.0,
-      "break_margin_close20": 0.021227768215720033,
-      "amr20_mean_prior": 1.4372574418314525,
-      "rps5_delta3": null,
-      "slope20": 0.003989934256505257,
-      "r2_20": 0.30898469587523547,
-      "rps20": 0.9148584038249357,
-      "bias20": 0.08394482842614881,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SZ.000550",
-      "matched_stock_only_categories": [
-        "TREND_CONTINUE"
-      ],
-      "setup_watch": false,
-      "clv": 0.5555555555555587,
-      "liq20_amount": 63924262.0,
-      "break_margin_close20": 0.01075877689694238,
-      "amr20_mean_prior": 1.1935416089867283,
-      "rps5_delta3": null,
-      "slope20": 0.00636347171067118,
-      "r2_20": 0.7955527681108793,
-      "rps20": 0.9205590290547996,
-      "bias20": 0.06950269622528471,
-      "freshness": 0.2,
-      "matched_categories": [
-        "TREND_CONTINUE"
-      ],
-      "selection_mode": "SUPPORTED",
-      "sector_support_status": "CONFIRMED",
-      "signal_age": null,
-      "primary_category": "TREND_CONTINUE",
-      "category_score": 48.65742728287673,
-      "rank_status": "SCORED",
-      "category_rank": 6
-    },
-    {
-      "security_id": "SZ.000572",
+      "security_id": "SZ.001216",
       "matched_stock_only_categories": [
         "LAUNCH_CONFIRM",
         "TREND_CONTINUE"
       ],
       "setup_watch": false,
       "clv": 1.0,
-      "liq20_amount": 145000536.0,
-      "break_margin_close20": 0.05867970660146704,
-      "amr20_mean_prior": 1.519944882986714,
+      "liq20_amount": 29334028.0,
+      "break_margin_close20": 0.08520475561426677,
+      "amr20_mean_prior": 2.362870250893273,
       "rps5_delta3": null,
-      "slope20": 0.004389280374566047,
-      "r2_20": 0.6075239310438931,
-      "rps20": 0.9297535858771607,
-      "bias20": 0.10206159328073294,
+      "slope20": 0.0030616826127265228,
+      "r2_20": 0.39061184127795656,
+      "rps20": 0.9396726135736619,
+      "bias20": 0.10788941335131486,
+      "freshness": 0.2,
+      "matched_categories": [
+        "LAUNCH_CONFIRM"
+      ],
+      "selection_mode": "INDEPENDENT",
+      "sector_support_status": "NOT_CONFIRMED",
+      "signal_age": null,
+      "primary_category": "LAUNCH_CONFIRM",
+      "category_score": null,
+      "rank_status": "QUALIFIED_UNRANKED",
+      "category_rank": null
+    },
+    {
+      "security_id": "SZ.001223",
+      "matched_stock_only_categories": [
+        "LAUNCH_CONFIRM",
+        "TREND_CONTINUE"
+      ],
+      "setup_watch": false,
+      "clv": 1.0,
+      "liq20_amount": 72666592.0,
+      "break_margin_close20": 0.0962910128388017,
+      "amr20_mean_prior": 2.2722276016037632,
+      "rps5_delta3": null,
+      "slope20": 0.0027291873819331545,
+      "r2_20": 0.171900102818206,
+      "rps20": 0.9382012139047269,
+      "bias20": 0.13746530989824235,
       "freshness": 0.2,
       "matched_categories": [
         "LAUNCH_CONFIRM",
@@ -1482,296 +852,48 @@
       "category_rank": null
     },
     {
-      "security_id": "SZ.000812",
+      "security_id": "SZ.001228",
+      "matched_stock_only_categories": [
+        "LAUNCH_CONFIRM"
+      ],
+      "setup_watch": false,
+      "clv": 0.9183673469387773,
+      "liq20_amount": 54333082.0,
+      "break_margin_close20": 0.014474512271869022,
+      "amr20_mean_prior": 1.5266459087534423,
+      "rps5_delta3": null,
+      "slope20": 0.007158379741806197,
+      "r2_20": 0.7279374303278505,
+      "rps20": 0.9702041567040648,
+      "bias20": 0.09362279511533256,
+      "freshness": 0.2,
+      "matched_categories": [
+        "LAUNCH_CONFIRM"
+      ],
+      "selection_mode": "INDEPENDENT",
+      "sector_support_status": "NOT_CONFIRMED",
+      "signal_age": null,
+      "primary_category": "LAUNCH_CONFIRM",
+      "category_score": null,
+      "rank_status": "QUALIFIED_UNRANKED",
+      "category_rank": null
+    },
+    {
+      "security_id": "SZ.001965",
       "matched_stock_only_categories": [
         "LAUNCH_CONFIRM",
         "TREND_CONTINUE"
       ],
       "setup_watch": false,
-      "clv": 1.0,
-      "liq20_amount": 50467098.0,
-      "break_margin_close20": 0.04810126582278462,
-      "amr20_mean_prior": 2.4892241010438094,
+      "clv": 0.7000000000000012,
+      "liq20_amount": 150850816.0,
+      "break_margin_close20": 0.011122345803842304,
+      "amr20_mean_prior": 1.2717582744933729,
       "rps5_delta3": null,
-      "slope20": 0.006229595834902436,
-      "r2_20": 0.7789090928147124,
-      "rps20": 0.9554983449797719,
-      "bias20": 0.10724792725327625,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SZ.000839",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "setup_watch": false,
-      "clv": 1.0,
-      "liq20_amount": 175226192.0,
-      "break_margin_close20": 0.07241379310344831,
-      "amr20_mean_prior": 2.815235345158323,
-      "rps5_delta3": null,
-      "slope20": 0.004462414196430916,
-      "r2_20": 0.5614276602131352,
-      "rps20": 0.9269952188304523,
-      "bias20": 0.11389684813753576,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SZ.000868",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM",
-        "TREND_CONTINUE"
-      ],
-      "setup_watch": false,
-      "clv": 1.0,
-      "liq20_amount": 32738915.0,
-      "break_margin_close20": 0.05962059620596216,
-      "amr20_mean_prior": 1.5896131555986692,
-      "rps5_delta3": null,
-      "slope20": 0.0035547197180997763,
-      "r2_20": 0.5471410579506069,
-      "rps20": 0.8718278778962854,
-      "bias20": 0.0921787709497206,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM",
-        "TREND_CONTINUE"
-      ],
-      "selection_mode": "SUPPORTED",
-      "sector_support_status": "CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SZ.000980",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "setup_watch": false,
-      "clv": 1.0,
-      "liq20_amount": 181563064.0,
-      "break_margin_close20": 0.09905660377358494,
-      "amr20_mean_prior": 3.587202250022835,
-      "rps5_delta3": null,
-      "slope20": 0.013177032345450148,
-      "r2_20": 0.5909733565992283,
-      "rps20": 0.9926443545421111,
-      "bias20": 0.32161089052751013,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SZ.001326",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM",
-        "TREND_CONTINUE"
-      ],
-      "setup_watch": false,
-      "clv": 0.8789473684210526,
-      "liq20_amount": 144745032.0,
-      "break_margin_close20": 0.06244112501682153,
-      "amr20_mean_prior": 1.3062859601379897,
-      "rps5_delta3": null,
-      "slope20": 0.011777874445568057,
-      "r2_20": 0.8015305379178527,
-      "rps20": 0.9865759470393527,
-      "bias20": 0.14342404449143342,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SZ.001368",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM",
-        "TREND_CONTINUE"
-      ],
-      "setup_watch": false,
-      "clv": 0.8734693877551025,
-      "liq20_amount": 47640488.0,
-      "break_margin_close20": 0.061060329067641694,
-      "amr20_mean_prior": 2.0122582233804023,
-      "rps5_delta3": null,
-      "slope20": 0.009576911925068684,
-      "r2_20": 0.6345849971264019,
-      "rps20": 0.9871276204486944,
-      "bias20": 0.1864753260558485,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SZ.002046",
-      "matched_stock_only_categories": [
-        "TREND_CONTINUE"
-      ],
-      "setup_watch": false,
-      "clv": 0.7179487179487183,
-      "liq20_amount": 619630624.0,
-      "break_margin_close20": 0.009421265141319024,
-      "amr20_mean_prior": 1.720839308398874,
-      "rps5_delta3": null,
-      "slope20": 0.009931147089053502,
-      "r2_20": 0.6898963960385154,
-      "rps20": 0.9681868333946304,
-      "bias20": 0.14253070551271074,
-      "freshness": 0.2,
-      "matched_categories": [
-        "TREND_CONTINUE"
-      ],
-      "selection_mode": "SUPPORTED",
-      "sector_support_status": "CONFIRMED",
-      "signal_age": null,
-      "primary_category": "TREND_CONTINUE",
-      "category_score": 47.979273516285446,
-      "rank_status": "SCORED",
-      "category_rank": 7
-    },
-    {
-      "security_id": "SZ.002055",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM",
-        "TREND_CONTINUE"
-      ],
-      "setup_watch": false,
-      "clv": 0.714285714285714,
-      "liq20_amount": 69223396.0,
-      "break_margin_close20": 0.040000000000000036,
-      "amr20_mean_prior": 2.0894720165048923,
-      "rps5_delta3": null,
-      "slope20": 0.006287985966957943,
-      "r2_20": 0.787002488935863,
-      "rps20": 0.9667157043030526,
-      "bias20": 0.0932319883561088,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SZ.002099",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "setup_watch": false,
-      "clv": 0.7777777777777787,
-      "liq20_amount": 92128140.0,
-      "break_margin_close20": 0.0017730496453902678,
-      "amr20_mean_prior": 2.1540028178514334,
-      "rps5_delta3": null,
-      "slope20": 0.002057887704920803,
-      "r2_20": 0.15576182801956817,
-      "rps20": 0.773446119897021,
-      "bias20": 0.052631578947368585,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SZ.002106",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "setup_watch": false,
-      "clv": 0.9636363636363643,
-      "liq20_amount": 157545072.0,
-      "break_margin_close20": 0.0385650224215246,
-      "amr20_mean_prior": 2.5073203118068763,
-      "rps5_delta3": null,
-      "slope20": 0.004812267950015853,
-      "r2_20": 0.6287022610568103,
-      "rps20": 0.8944464876792939,
-      "bias20": 0.08793686583990978,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SZ.002134",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "setup_watch": false,
-      "clv": 0.7461773700305815,
-      "liq20_amount": 206313968.0,
-      "break_margin_close20": 0.04482029598308679,
-      "amr20_mean_prior": 3.779353918946132,
-      "rps5_delta3": null,
-      "slope20": 0.005187975046718466,
-      "r2_20": 0.42175423073453533,
-      "rps20": 0.906951084957705,
-      "bias20": 0.1124617323969026,
+      "slope20": 0.0032007624526454517,
+      "r2_20": 0.5041386410645025,
+      "rps20": 0.92679786647048,
+      "bias20": 0.03450059483784207,
       "freshness": 0.2,
       "matched_categories": [
         "LAUNCH_CONFIRM"
@@ -1791,14 +913,14 @@
       ],
       "setup_watch": false,
       "clv": 1.0,
-      "liq20_amount": 50450730.0,
-      "break_margin_close20": 0.03243243243243232,
-      "amr20_mean_prior": 2.312137467609799,
+      "liq20_amount": 51874990.0,
+      "break_margin_close20": 0.10013089005235609,
+      "amr20_mean_prior": 2.9101016322636952,
       "rps5_delta3": null,
-      "slope20": 0.002231251237101426,
-      "r2_20": 0.2433533635013384,
-      "rps20": 0.8444280985656492,
-      "bias20": 0.06506813508521225,
+      "slope20": 0.004651588485349005,
+      "r2_20": 0.3824826324211248,
+      "rps20": 0.9716755563729998,
+      "bias20": 0.16227615294198983,
       "freshness": 0.2,
       "matched_categories": [
         "LAUNCH_CONFIRM"
@@ -1812,192 +934,163 @@
       "category_rank": null
     },
     {
-      "security_id": "SZ.002263",
+      "security_id": "SZ.002362",
       "matched_stock_only_categories": [
-        "TREND_CONTINUE"
+        "LAUNCH_CONFIRM"
       ],
       "setup_watch": false,
-      "clv": 0.6,
-      "liq20_amount": 116384976.0,
-      "break_margin_close20": 0.0030864197530864335,
-      "amr20_mean_prior": 1.5663003565911053,
+      "clv": 1.0,
+      "liq20_amount": 46446164.0,
+      "break_margin_close20": 0.04042806183115344,
+      "amr20_mean_prior": 3.306789484477116,
       "rps5_delta3": null,
-      "slope20": 0.00492562152042558,
-      "r2_20": 0.6907211942094322,
-      "rps20": 0.8499448326590658,
-      "bias20": 0.039168665067945696,
+      "slope20": 0.0016948621650202825,
+      "r2_20": 0.09737343341829419,
+      "rps20": 0.9231193672981424,
+      "bias20": 0.09054651959867877,
       "freshness": 0.2,
       "matched_categories": [
-        "TREND_CONTINUE"
+        "LAUNCH_CONFIRM"
+      ],
+      "selection_mode": "INDEPENDENT",
+      "sector_support_status": "NOT_CONFIRMED",
+      "signal_age": null,
+      "primary_category": "LAUNCH_CONFIRM",
+      "category_score": null,
+      "rank_status": "QUALIFIED_UNRANKED",
+      "category_rank": null
+    },
+    {
+      "security_id": "SZ.002522",
+      "matched_stock_only_categories": [
+        "LAUNCH_CONFIRM"
+      ],
+      "setup_watch": false,
+      "clv": 1.0,
+      "liq20_amount": 135841124.0,
+      "break_margin_close20": 0.07792207792207795,
+      "amr20_mean_prior": 4.493414119183345,
+      "rps5_delta3": null,
+      "slope20": 0.0024693066372968035,
+      "r2_20": 0.18757320751981688,
+      "rps20": 0.9689166819937466,
+      "bias20": 0.1060346468684561,
+      "freshness": 0.2,
+      "matched_categories": [
+        "LAUNCH_CONFIRM"
+      ],
+      "selection_mode": "INDEPENDENT",
+      "sector_support_status": "NOT_CONFIRMED",
+      "signal_age": null,
+      "primary_category": "LAUNCH_CONFIRM",
+      "category_score": null,
+      "rank_status": "QUALIFIED_UNRANKED",
+      "category_rank": null
+    },
+    {
+      "security_id": "SZ.002531",
+      "matched_stock_only_categories": [
+        "LAUNCH_CONFIRM"
+      ],
+      "setup_watch": false,
+      "clv": 1.0,
+      "liq20_amount": 168360928.0,
+      "break_margin_close20": 0.0817174515235457,
+      "amr20_mean_prior": 4.175806181629204,
+      "rps5_delta3": null,
+      "slope20": 0.009032526188133508,
+      "r2_20": 0.5966629019980914,
+      "rps20": 0.9839985286003311,
+      "bias20": 0.2188841201716738,
+      "freshness": 0.2,
+      "matched_categories": [
+        "LAUNCH_CONFIRM"
+      ],
+      "selection_mode": "INDEPENDENT",
+      "sector_support_status": "NOT_CONFIRMED",
+      "signal_age": null,
+      "primary_category": "LAUNCH_CONFIRM",
+      "category_score": null,
+      "rank_status": "QUALIFIED_UNRANKED",
+      "category_rank": null
+    },
+    {
+      "security_id": "SZ.002584",
+      "matched_stock_only_categories": [
+        "LAUNCH_CONFIRM"
+      ],
+      "setup_watch": false,
+      "clv": 1.0,
+      "liq20_amount": 158537200.0,
+      "break_margin_close20": 0.0345649582836709,
+      "amr20_mean_prior": 3.4570644761597302,
+      "rps5_delta3": null,
+      "slope20": -8.441218453021705e-05,
+      "r2_20": 0.0003683602928161722,
+      "rps20": 0.8787934522714732,
+      "bias20": 0.06483469300128797,
+      "freshness": 0.2,
+      "matched_categories": [
+        "LAUNCH_CONFIRM"
+      ],
+      "selection_mode": "INDEPENDENT",
+      "sector_support_status": "NOT_CONFIRMED",
+      "signal_age": null,
+      "primary_category": "LAUNCH_CONFIRM",
+      "category_score": null,
+      "rank_status": "QUALIFIED_UNRANKED",
+      "category_rank": null
+    },
+    {
+      "security_id": "SZ.002585",
+      "matched_stock_only_categories": [
+        "LAUNCH_CONFIRM"
+      ],
+      "setup_watch": false,
+      "clv": 1.0,
+      "liq20_amount": 478209408.0,
+      "break_margin_close20": 0.10036496350364965,
+      "amr20_mean_prior": 4.245207752831037,
+      "rps5_delta3": null,
+      "slope20": 0.0013357828556440233,
+      "r2_20": 0.01212876439529842,
+      "rps20": 0.9641346330697076,
+      "bias20": 0.2379388215972078,
+      "freshness": 0.2,
+      "matched_categories": [
+        "LAUNCH_CONFIRM"
       ],
       "selection_mode": "SUPPORTED",
       "sector_support_status": "CONFIRMED",
       "signal_age": null,
-      "primary_category": "TREND_CONTINUE",
-      "category_score": 41.817292327525,
-      "rank_status": "SCORED",
-      "category_rank": 9
-    },
-    {
-      "security_id": "SZ.002386",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM",
-        "TREND_CONTINUE"
-      ],
-      "setup_watch": false,
-      "clv": 0.9375000000000013,
-      "liq20_amount": 84193912.0,
-      "break_margin_close20": 0.0016583747927030323,
-      "amr20_mean_prior": 1.375678417038154,
-      "rps5_delta3": null,
-      "slope20": 0.0018174350911695258,
-      "r2_20": 0.3960097195595258,
-      "rps20": 0.8070981978668628,
-      "bias20": 0.021650879566982528,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
       "primary_category": "LAUNCH_CONFIRM",
       "category_score": null,
       "rank_status": "QUALIFIED_UNRANKED",
       "category_rank": null
     },
     {
-      "security_id": "SZ.002518",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM",
-        "TREND_CONTINUE"
-      ],
-      "setup_watch": false,
-      "clv": 0.8310810810810811,
-      "liq20_amount": 541365920.0,
-      "break_margin_close20": 0.0046033035472516914,
-      "amr20_mean_prior": 2.168594978201451,
-      "rps5_delta3": null,
-      "slope20": 0.003475768700568048,
-      "r2_20": 0.32847737968196056,
-      "rps20": 0.7552408973887459,
-      "bias20": 0.0509319585292618,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SZ.002560",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "setup_watch": false,
-      "clv": 1.0,
-      "liq20_amount": 121713800.0,
-      "break_margin_close20": 0.10029069767441867,
-      "amr20_mean_prior": 4.149103075712338,
-      "rps5_delta3": null,
-      "slope20": 0.005223031784462442,
-      "r2_20": 0.3347570102707067,
-      "rps20": 0.9615667524825303,
-      "bias20": 0.20254169976171577,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SZ.002579",
+      "security_id": "SZ.002846",
       "matched_stock_only_categories": [
         "LAUNCH_CONFIRM",
         "TREND_CONTINUE"
       ],
       "setup_watch": false,
       "clv": 1.0,
-      "liq20_amount": 1047271840.0,
-      "break_margin_close20": 0.10011709601873542,
-      "amr20_mean_prior": 2.1208479841290284,
+      "liq20_amount": 52596674.0,
+      "break_margin_close20": 0.024756852343059244,
+      "amr20_mean_prior": 2.484147451710652,
       "rps5_delta3": null,
-      "slope20": 0.010217465270602523,
-      "r2_20": 0.4272867494221998,
-      "rps20": 0.977749172489886,
-      "bias20": 0.24457691670806425,
+      "slope20": 0.002976199974287694,
+      "r2_20": 0.2863796437768047,
+      "rps20": 0.9247746919256943,
+      "bias20": 0.07568796695902358,
       "freshness": 0.2,
       "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SZ.002669",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "setup_watch": false,
-      "clv": 1.0,
-      "liq20_amount": 113271088.0,
-      "break_margin_close20": 0.0520275439938791,
-      "amr20_mean_prior": 2.93263807954048,
-      "rps5_delta3": null,
-      "slope20": 0.0029073425312352128,
-      "r2_20": 0.17853317514360345,
-      "rps20": 0.8438764251563075,
-      "bias20": 0.13033827941962262,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SZ.002856",
-      "matched_stock_only_categories": [
         "LAUNCH_CONFIRM",
         "TREND_CONTINUE"
       ],
-      "setup_watch": false,
-      "clv": 0.8106508875739662,
-      "liq20_amount": 103112740.0,
-      "break_margin_close20": 0.012223974763406975,
-      "amr20_mean_prior": 1.3281112088015044,
-      "rps5_delta3": null,
-      "slope20": 0.03259159982060163,
-      "r2_20": 0.9483697003751326,
-      "rps20": 0.9988966531813167,
-      "bias20": 0.38062711773248004,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
+      "selection_mode": "SUPPORTED",
+      "sector_support_status": "CONFIRMED",
       "signal_age": null,
       "primary_category": "LAUNCH_CONFIRM",
       "category_score": null,
@@ -2007,19 +1100,18 @@
     {
       "security_id": "SZ.002897",
       "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM",
-        "TREND_CONTINUE"
+        "LAUNCH_CONFIRM"
       ],
       "setup_watch": false,
-      "clv": 1.0,
-      "liq20_amount": 531232576.0,
-      "break_margin_close20": 0.09999999999999987,
-      "amr20_mean_prior": 2.405006642907708,
+      "clv": 0.7629757785467121,
+      "liq20_amount": 549952832.0,
+      "break_margin_close20": 0.05042723070458033,
+      "amr20_mean_prior": 3.1433778444010363,
       "rps5_delta3": null,
-      "slope20": 0.007737756305061072,
-      "r2_20": 0.5261793480561494,
-      "rps20": 0.9602795145273998,
-      "bias20": 0.1913920712932753,
+      "slope20": 0.011490550891889374,
+      "r2_20": 0.708613186307633,
+      "rps20": 0.9816075041383115,
+      "bias20": 0.2378570662176771,
       "freshness": 0.2,
       "matched_categories": [
         "LAUNCH_CONFIRM"
@@ -2033,76 +1125,21 @@
       "category_rank": null
     },
     {
-      "security_id": "SZ.002913",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM",
-        "TREND_CONTINUE"
-      ],
-      "setup_watch": false,
-      "clv": 0.9194528875379959,
-      "liq20_amount": 352433808.0,
-      "break_margin_close20": 0.055869775141399014,
-      "amr20_mean_prior": 2.380485387682402,
-      "rps5_delta3": null,
-      "slope20": 0.012501666970152576,
-      "r2_20": 0.7187695845396616,
-      "rps20": 0.9891504229496139,
-      "bias20": 0.21469890416828696,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SZ.002925",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "setup_watch": false,
-      "clv": 0.9272727272727271,
-      "liq20_amount": 298993120.0,
-      "break_margin_close20": 0.018257261410788317,
-      "amr20_mean_prior": 1.938499947488719,
-      "rps5_delta3": null,
-      "slope20": 0.0023212467451358136,
-      "r2_20": 0.2747736848057438,
-      "rps20": 0.7394262596542847,
-      "bias20": 0.06132687483781685,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SZ.002976",
+      "security_id": "SZ.300049",
       "matched_stock_only_categories": [
         "LAUNCH_CONFIRM",
         "TREND_CONTINUE"
       ],
       "setup_watch": false,
-      "clv": 1.0,
-      "liq20_amount": 131965088.0,
-      "break_margin_close20": 0.009419152276294973,
-      "amr20_mean_prior": 2.425896745631274,
+      "clv": 0.8265306122448981,
+      "liq20_amount": 341161520.0,
+      "break_margin_close20": 0.05760317810637816,
+      "amr20_mean_prior": 1.7728281760201963,
       "rps5_delta3": null,
-      "slope20": 0.004244222232782828,
-      "r2_20": 0.360416370551781,
-      "rps20": 0.8821257815373299,
-      "bias20": 0.0612312262749628,
+      "slope20": 0.005270080904072398,
+      "r2_20": 0.3765023008969989,
+      "rps20": 0.9306602906014346,
+      "bias20": 0.1236824518413433,
       "freshness": 0.2,
       "matched_categories": [
         "LAUNCH_CONFIRM"
@@ -2116,20 +1153,20 @@
       "category_rank": null
     },
     {
-      "security_id": "SZ.002997",
+      "security_id": "SZ.300185",
       "matched_stock_only_categories": [
         "LAUNCH_CONFIRM"
       ],
       "setup_watch": false,
-      "clv": 0.9428571428571416,
-      "liq20_amount": 80830640.0,
-      "break_margin_close20": 0.0010204081632654294,
-      "amr20_mean_prior": 1.450769657278761,
+      "clv": 0.7999999999999992,
+      "liq20_amount": 142053096.0,
+      "break_margin_close20": 0.0071428571428571175,
+      "amr20_mean_prior": 2.130145200273058,
       "rps5_delta3": null,
-      "slope20": 0.003649980118447319,
-      "r2_20": 0.6779849946866556,
-      "rps20": 0.8464509010665686,
-      "bias20": 0.03659610439928129,
+      "slope20": 0.0025795391579065347,
+      "r2_20": 0.7590197798785268,
+      "rps20": 0.8592974066580835,
+      "bias20": 0.034103410341034035,
       "freshness": 0.2,
       "matched_categories": [
         "LAUNCH_CONFIRM"
@@ -2143,267 +1180,21 @@
       "category_rank": null
     },
     {
-      "security_id": "SZ.003033",
+      "security_id": "SZ.300221",
       "matched_stock_only_categories": [
         "LAUNCH_CONFIRM",
         "TREND_CONTINUE"
       ],
       "setup_watch": false,
-      "clv": 0.7900552486187854,
-      "liq20_amount": 111368624.0,
-      "break_margin_close20": 0.03003161222339301,
-      "amr20_mean_prior": 1.991077972189137,
+      "clv": 0.8913043478260874,
+      "liq20_amount": 233073120.0,
+      "break_margin_close20": 0.018750000000000044,
+      "amr20_mean_prior": 2.343492707005636,
       "rps5_delta3": null,
-      "slope20": 0.006430566640129317,
-      "r2_20": 0.4754045894887057,
-      "rps20": 0.9216623758734829,
-      "bias20": 0.13197987913002573,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SZ.300027",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "setup_watch": false,
-      "clv": 0.9047619047619045,
-      "liq20_amount": 47807246.0,
-      "break_margin_close20": 0.09042553191489366,
-      "amr20_mean_prior": 4.793869791352772,
-      "rps5_delta3": null,
-      "slope20": 0.0028828366891167534,
-      "r2_20": 0.28657544397045676,
-      "rps20": 0.9562339095255609,
-      "bias20": 0.12452002194185408,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SZ.300037",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM",
-        "TREND_CONTINUE"
-      ],
-      "setup_watch": false,
-      "clv": 0.9609374999999986,
-      "liq20_amount": 938669152.0,
-      "break_margin_close20": 0.020830420802460337,
-      "amr20_mean_prior": 1.2936314036088985,
-      "rps5_delta3": null,
-      "slope20": 0.005335998669708078,
-      "r2_20": 0.37688696879229977,
-      "rps20": 0.8348657594703935,
-      "bias20": 0.11277897576177809,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SZ.300068",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "setup_watch": false,
-      "clv": 0.9302325581395342,
-      "liq20_amount": 124815556.0,
-      "break_margin_close20": 0.08351648351648344,
-      "amr20_mean_prior": 2.7909663235925484,
-      "rps5_delta3": null,
-      "slope20": 0.006716700857457248,
-      "r2_20": 0.5429318054799352,
-      "rps20": 0.9520044133872747,
-      "bias20": 0.1883813426539711,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SZ.300151",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "setup_watch": false,
-      "clv": 0.9269102990033227,
-      "liq20_amount": 208353184.0,
-      "break_margin_close20": 0.07674552798615131,
-      "amr20_mean_prior": 3.1508109008287684,
-      "rps5_delta3": null,
-      "slope20": 0.0018624105440465328,
-      "r2_20": 0.07507540943770363,
-      "rps20": 0.8865391688120633,
-      "bias20": 0.14110992203027073,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SZ.300179",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM",
-        "TREND_CONTINUE"
-      ],
-      "setup_watch": false,
-      "clv": 0.8006589785831959,
-      "liq20_amount": 1804855360.0,
-      "break_margin_close20": 0.025059101654846483,
-      "amr20_mean_prior": 1.5735715713158829,
-      "rps5_delta3": null,
-      "slope20": 0.008084629109462182,
-      "r2_20": 0.5204807555749229,
-      "rps20": 0.9049282824567856,
-      "bias20": 0.15488080969503248,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM",
-        "TREND_CONTINUE"
-      ],
-      "selection_mode": "SUPPORTED",
-      "sector_support_status": "CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SZ.300196",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "setup_watch": false,
-      "clv": 0.9859154929577459,
-      "liq20_amount": 191498384.0,
-      "break_margin_close20": 0.0633245382585752,
-      "amr20_mean_prior": 3.8574425445181846,
-      "rps5_delta3": null,
-      "slope20": 0.001776868932677879,
-      "r2_20": 0.03593716367960098,
-      "rps20": 0.8642883413019492,
-      "bias20": 0.17383199347547462,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SZ.300245",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "setup_watch": false,
-      "clv": 1.0,
-      "liq20_amount": 31643648.0,
-      "break_margin_close20": 0.060702875399361034,
-      "amr20_mean_prior": 4.221120190191484,
-      "rps5_delta3": null,
-      "slope20": 0.007072790292158204,
-      "r2_20": 0.695808433980579,
-      "rps20": 0.964509010665686,
-      "bias20": 0.11775103105799167,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SZ.300290",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "setup_watch": false,
-      "clv": 0.8181818181818191,
-      "liq20_amount": 147950688.0,
-      "break_margin_close20": 0.03199052132701441,
-      "amr20_mean_prior": 3.8840343901447003,
-      "rps5_delta3": null,
-      "slope20": 0.010439180415765937,
-      "r2_20": 0.24908223380146632,
-      "rps20": 0.9970577418168445,
-      "bias20": 0.3862804392805985,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SZ.300292",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "setup_watch": false,
-      "clv": 0.8888888888888911,
-      "liq20_amount": 169301184.0,
-      "break_margin_close20": 0.015250544662309462,
-      "amr20_mean_prior": 2.5798387648146126,
-      "rps5_delta3": null,
-      "slope20": 0.00423352620852876,
-      "r2_20": 0.6084579646182434,
-      "rps20": 0.843508642883413,
-      "bias20": 0.07870370370370372,
+      "slope20": 0.0017087622052507554,
+      "r2_20": 0.11164309680223516,
+      "rps20": 0.8865183005333824,
+      "bias20": 0.06474089127594707,
       "freshness": 0.2,
       "matched_categories": [
         "LAUNCH_CONFIRM"
@@ -2423,15 +1214,15 @@
         "TREND_CONTINUE"
       ],
       "setup_watch": false,
-      "clv": 0.7039106145251389,
+      "clv": 0.9677419354838706,
       "liq20_amount": 2273019008.0,
-      "break_margin_close20": 0.014245014245014342,
-      "amr20_mean_prior": 1.3212558191514678,
+      "break_margin_close20": 0.04868913857677892,
+      "amr20_mean_prior": 1.40440474979222,
       "rps5_delta3": null,
-      "slope20": 0.0074199140219615945,
-      "r2_20": 0.43471729058645414,
-      "rps20": 0.9374770136079441,
-      "bias20": 0.10693649107351066,
+      "slope20": 0.009779157938452692,
+      "r2_20": 0.6001153974233273,
+      "rps20": 0.9678131322420452,
+      "bias20": 0.15217447213435165,
       "freshness": 0.2,
       "matched_categories": [
         "LAUNCH_CONFIRM",
@@ -2446,20 +1237,101 @@
       "category_rank": null
     },
     {
-      "security_id": "SZ.300347",
+      "security_id": "SZ.300410",
       "matched_stock_only_categories": [
         "LAUNCH_CONFIRM"
       ],
       "setup_watch": false,
-      "clv": 0.9374999999999996,
-      "liq20_amount": 789586592.0,
-      "break_margin_close20": 0.015850144092218965,
-      "amr20_mean_prior": 1.2103168935100275,
+      "clv": 0.8888888888888911,
+      "liq20_amount": 111215036.0,
+      "break_margin_close20": 0.01261467889908241,
+      "amr20_mean_prior": 2.3264552573752533,
       "rps5_delta3": null,
-      "slope20": 0.0007478632767133365,
-      "r2_20": 0.011817192156206913,
-      "rps20": 0.7534019860242737,
-      "bias20": 0.08069785489140324,
+      "slope20": 0.005110985324105897,
+      "r2_20": 0.6469417266545006,
+      "rps20": 0.9212801177119735,
+      "bias20": 0.09059470141419124,
+      "freshness": 0.2,
+      "matched_categories": [
+        "LAUNCH_CONFIRM"
+      ],
+      "selection_mode": "INDEPENDENT",
+      "sector_support_status": "NOT_CONFIRMED",
+      "signal_age": null,
+      "primary_category": "LAUNCH_CONFIRM",
+      "category_score": null,
+      "rank_status": "QUALIFIED_UNRANKED",
+      "category_rank": null
+    },
+    {
+      "security_id": "SZ.300537",
+      "matched_stock_only_categories": [
+        "LAUNCH_CONFIRM"
+      ],
+      "setup_watch": false,
+      "clv": 0.8433734939759027,
+      "liq20_amount": 112278964.0,
+      "break_margin_close20": 0.02685851318944832,
+      "amr20_mean_prior": 3.2733236910095385,
+      "rps5_delta3": null,
+      "slope20": 0.00173501397773276,
+      "r2_20": 0.17625160674806395,
+      "rps20": 0.8274783888173625,
+      "bias20": 0.07447555957041052,
+      "freshness": 0.2,
+      "matched_categories": [
+        "LAUNCH_CONFIRM"
+      ],
+      "selection_mode": "INDEPENDENT",
+      "sector_support_status": "NOT_CONFIRMED",
+      "signal_age": null,
+      "primary_category": "LAUNCH_CONFIRM",
+      "category_score": null,
+      "rank_status": "QUALIFIED_UNRANKED",
+      "category_rank": null
+    },
+    {
+      "security_id": "SZ.300569",
+      "matched_stock_only_categories": [
+        "LAUNCH_CONFIRM"
+      ],
+      "setup_watch": false,
+      "clv": 0.9399999999999995,
+      "liq20_amount": 41466890.0,
+      "break_margin_close20": 0.05030181086519114,
+      "amr20_mean_prior": 6.80117844360551,
+      "rps5_delta3": null,
+      "slope20": 0.0032743334963048916,
+      "r2_20": 0.4401801425579659,
+      "rps20": 0.9291888909324996,
+      "bias20": 0.09941027801179425,
+      "freshness": 0.2,
+      "matched_categories": [
+        "LAUNCH_CONFIRM"
+      ],
+      "selection_mode": "INDEPENDENT",
+      "sector_support_status": "NOT_CONFIRMED",
+      "signal_age": null,
+      "primary_category": "LAUNCH_CONFIRM",
+      "category_score": null,
+      "rank_status": "QUALIFIED_UNRANKED",
+      "category_rank": null
+    },
+    {
+      "security_id": "SZ.300708",
+      "matched_stock_only_categories": [
+        "LAUNCH_CONFIRM"
+      ],
+      "setup_watch": false,
+      "clv": 0.8888888888888882,
+      "liq20_amount": 124683408.0,
+      "break_margin_close20": 0.00932400932400923,
+      "amr20_mean_prior": 2.854961602935302,
+      "rps5_delta3": null,
+      "slope20": 0.005379668317800154,
+      "r2_20": 0.6436687957369904,
+      "rps20": 0.9096928453191098,
+      "bias20": 0.06257668711656428,
       "freshness": 0.2,
       "matched_categories": [
         "LAUNCH_CONFIRM"
@@ -2473,48 +1345,21 @@
       "category_rank": null
     },
     {
-      "security_id": "SZ.300369",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "setup_watch": false,
-      "clv": 0.7051282051282051,
-      "liq20_amount": 402192064.0,
-      "break_margin_close20": 0.06922126081582203,
-      "amr20_mean_prior": 2.8626561820987853,
-      "rps5_delta3": null,
-      "slope20": 0.009812549662809415,
-      "r2_20": 0.6658633672662702,
-      "rps20": 0.9227657226921663,
-      "bias20": 0.1564171122994653,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SZ.300400",
+      "security_id": "SZ.300752",
       "matched_stock_only_categories": [
         "LAUNCH_CONFIRM",
         "TREND_CONTINUE"
       ],
       "setup_watch": false,
-      "clv": 0.8429118773946359,
-      "liq20_amount": 369943680.0,
-      "break_margin_close20": 0.03533370723499729,
-      "amr20_mean_prior": 1.8416798538626509,
+      "clv": 0.6893939393939393,
+      "liq20_amount": 84245416.0,
+      "break_margin_close20": 0.04450041981528119,
+      "amr20_mean_prior": 2.2686049184279518,
       "rps5_delta3": null,
-      "slope20": 0.013255684329021637,
-      "r2_20": 0.762790058357675,
-      "rps20": 0.9738874586244943,
-      "bias20": 0.16998352135885408,
+      "slope20": 0.004388306592612804,
+      "r2_20": 0.5456716092746887,
+      "rps20": 0.877689902519772,
+      "bias20": 0.09642164639520523,
       "freshness": 0.2,
       "matched_categories": [
         "LAUNCH_CONFIRM"
@@ -2528,130 +1373,21 @@
       "category_rank": null
     },
     {
-      "security_id": "SZ.300430",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "setup_watch": false,
-      "clv": 1.0,
-      "liq20_amount": 30380664.0,
-      "break_margin_close20": 0.17226890756302526,
-      "amr20_mean_prior": 5.906231300814221,
-      "rps5_delta3": null,
-      "slope20": 0.007025117935494379,
-      "r2_20": 0.4838398182638757,
-      "rps20": 0.9692901802133137,
-      "bias20": 0.2194055944055946,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SZ.300477",
+      "security_id": "SZ.300806",
       "matched_stock_only_categories": [
         "LAUNCH_CONFIRM",
         "TREND_CONTINUE"
       ],
       "setup_watch": false,
-      "clv": 0.8125000000000009,
-      "liq20_amount": 45174688.0,
-      "break_margin_close20": 0.028673835125448077,
-      "amr20_mean_prior": 2.2472826245039594,
+      "clv": 0.868827160493827,
+      "liq20_amount": 1432671104.0,
+      "break_margin_close20": 0.06293965198074791,
+      "amr20_mean_prior": 1.749715268378748,
       "rps5_delta3": null,
-      "slope20": 0.005188233967064007,
-      "r2_20": 0.6134098381122701,
-      "rps20": 0.8898492092681133,
-      "bias20": 0.09961685823754807,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SZ.300497",
-      "matched_stock_only_categories": [
-        "TREND_CONTINUE"
-      ],
-      "setup_watch": false,
-      "clv": 0.8358208955223894,
-      "liq20_amount": 492090352.0,
-      "break_margin_close20": 0.011988011988012026,
-      "amr20_mean_prior": 1.1213729896445377,
-      "rps5_delta3": null,
-      "slope20": 0.008587886290660896,
-      "r2_20": 0.6045478600161616,
-      "rps20": 0.8742184626700993,
-      "bias20": 0.1197391328377595,
-      "freshness": 0.2,
-      "matched_categories": [
-        "TREND_CONTINUE"
-      ],
-      "selection_mode": "SUPPORTED",
-      "sector_support_status": "CONFIRMED",
-      "signal_age": null,
-      "primary_category": "TREND_CONTINUE",
-      "category_score": 57.52026450653638,
-      "rank_status": "SCORED",
-      "category_rank": 4
-    },
-    {
-      "security_id": "SZ.300592",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM",
-        "TREND_CONTINUE"
-      ],
-      "setup_watch": false,
-      "clv": 0.9811320754716997,
-      "liq20_amount": 193491944.0,
-      "break_margin_close20": 0.051568314726209596,
-      "amr20_mean_prior": 1.8803136421641755,
-      "rps5_delta3": null,
-      "slope20": 0.01359615544153654,
-      "r2_20": 0.7785700217012566,
-      "rps20": 0.9709452004413387,
-      "bias20": 0.19361554476058296,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SZ.300667",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "setup_watch": false,
-      "clv": 0.8235294117647075,
-      "liq20_amount": 67541264.0,
-      "break_margin_close20": 0.001997336884154599,
-      "amr20_mean_prior": 2.242740468595222,
-      "rps5_delta3": null,
-      "slope20": 0.0006732997345362405,
-      "r2_20": 0.05024213198327765,
-      "rps20": 0.7397940419271791,
-      "bias20": 0.028426950936176087,
+      "slope20": 0.003999541059114092,
+      "r2_20": 0.18319626568562475,
+      "rps20": 0.8949788486297591,
+      "bias20": 0.1557971014492754,
       "freshness": 0.2,
       "matched_categories": [
         "LAUNCH_CONFIRM"
@@ -2671,15 +1407,15 @@
         "TREND_CONTINUE"
       ],
       "setup_watch": false,
-      "clv": 0.7581699346405224,
+      "clv": 0.7534246575342471,
       "liq20_amount": 92784732.0,
-      "break_margin_close20": 0.0033802816901407073,
-      "amr20_mean_prior": 2.0866313065081314,
+      "break_margin_close20": 0.02470522178551393,
+      "amr20_mean_prior": 2.082653339070257,
       "rps5_delta3": null,
-      "slope20": 0.009068199881948439,
-      "r2_20": 0.6094438974739864,
-      "rps20": 0.9279146745126885,
-      "bias20": 0.11197827240658054,
+      "slope20": 0.011355313617280333,
+      "r2_20": 0.8076382181781253,
+      "rps20": 0.9492367114217399,
+      "bias20": 0.132836747361887,
       "freshness": 0.2,
       "matched_categories": [
         "LAUNCH_CONFIRM"
@@ -2693,21 +1429,20 @@
       "category_rank": null
     },
     {
-      "security_id": "SZ.300835",
+      "security_id": "SZ.300850",
       "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM",
-        "TREND_CONTINUE"
+        "LAUNCH_CONFIRM"
       ],
       "setup_watch": false,
-      "clv": 0.9954248366013076,
-      "liq20_amount": 503334672.0,
-      "break_margin_close20": 0.008564946114577365,
-      "amr20_mean_prior": 1.424892530595205,
+      "clv": 0.7423728813559319,
+      "liq20_amount": 258579736.0,
+      "break_margin_close20": 0.061001410437235615,
+      "amr20_mean_prior": 2.5900963254266793,
       "rps5_delta3": null,
-      "slope20": 0.005561323784823902,
-      "r2_20": 0.41260220052276597,
-      "rps20": 0.8679661640308937,
-      "bias20": 0.08973573249656797,
+      "slope20": 0.007972187032457384,
+      "r2_20": 0.6925796886892129,
+      "rps20": 0.9630310833180062,
+      "bias20": 0.13147949686953586,
       "freshness": 0.2,
       "matched_categories": [
         "LAUNCH_CONFIRM"
@@ -2721,21 +1456,20 @@
       "category_rank": null
     },
     {
-      "security_id": "SZ.300903",
+      "security_id": "SZ.300904",
       "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM",
-        "TREND_CONTINUE"
+        "LAUNCH_CONFIRM"
       ],
       "setup_watch": false,
-      "clv": 1.0,
-      "liq20_amount": 2077737024.0,
-      "break_margin_close20": 0.16226658081133283,
-      "amr20_mean_prior": 1.6015425939987251,
+      "clv": 0.6633380884450785,
+      "liq20_amount": 25101048.0,
+      "break_margin_close20": 0.009389671361502261,
+      "amr20_mean_prior": 5.684463530774984,
       "rps5_delta3": null,
-      "slope20": 0.010636420891911405,
-      "r2_20": 0.5227353718640817,
-      "rps20": 0.9884148584038249,
-      "bias20": 0.2500865710921809,
+      "slope20": 0.00030200784191381484,
+      "r2_20": 0.0037547655985555872,
+      "rps20": 0.8153393415486482,
+      "bias20": 0.048000877396083386,
       "freshness": 0.2,
       "matched_categories": [
         "LAUNCH_CONFIRM"
@@ -2749,20 +1483,20 @@
       "category_rank": null
     },
     {
-      "security_id": "SZ.300913",
+      "security_id": "SZ.300905",
       "matched_stock_only_categories": [
         "LAUNCH_CONFIRM"
       ],
       "setup_watch": false,
-      "clv": 0.8609406952965236,
-      "liq20_amount": 266223056.0,
-      "break_margin_close20": 0.07385834109972045,
-      "amr20_mean_prior": 3.995014932369687,
+      "clv": 0.782246879334258,
+      "liq20_amount": 133076924.0,
+      "break_margin_close20": 0.03443877551020402,
+      "amr20_mean_prior": 6.210070283272923,
       "rps5_delta3": null,
-      "slope20": 0.008811087075157284,
-      "r2_20": 0.458031760853841,
-      "rps20": 0.9814269952188305,
-      "bias20": 0.24498588619818773,
+      "slope20": -0.0004831025855010211,
+      "r2_20": 0.005160135261198295,
+      "rps20": 0.8469744344307523,
+      "bias20": 0.12635760117774497,
       "freshness": 0.2,
       "matched_categories": [
         "LAUNCH_CONFIRM"
@@ -2776,160 +1510,20 @@
       "category_rank": null
     },
     {
-      "security_id": "SZ.300951",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM",
-        "TREND_CONTINUE"
-      ],
-      "setup_watch": false,
-      "clv": 0.7916053019145803,
-      "liq20_amount": 423320336.0,
-      "break_margin_close20": 0.03454095409540958,
-      "amr20_mean_prior": 1.459321260934606,
-      "rps5_delta3": null,
-      "slope20": 0.013764281492366387,
-      "r2_20": 0.8225504789822652,
-      "rps20": 0.9792203015814638,
-      "bias20": 0.19095418809175357,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SZ.300991",
+      "security_id": "SZ.301061",
       "matched_stock_only_categories": [
         "LAUNCH_CONFIRM"
       ],
       "setup_watch": false,
-      "clv": 0.9316239316239315,
-      "liq20_amount": 68487652.0,
-      "break_margin_close20": 0.0242444370640984,
-      "amr20_mean_prior": 3.4593763272221185,
+      "clv": 0.8275862068965525,
+      "liq20_amount": 92819316.0,
+      "break_margin_close20": 0.06150222454854748,
+      "amr20_mean_prior": 3.325124226636405,
       "rps5_delta3": null,
-      "slope20": 0.001478190548284038,
-      "r2_20": 0.04479956519440387,
-      "rps20": 0.8184994483265906,
-      "bias20": 0.09631894207354996,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SZ.301021",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM",
-        "TREND_CONTINUE"
-      ],
-      "setup_watch": false,
-      "clv": 0.9452229299363057,
-      "liq20_amount": 730746848.0,
-      "break_margin_close20": 0.05364780642796041,
-      "amr20_mean_prior": 2.0026430724597604,
-      "rps5_delta3": null,
-      "slope20": 0.0003803765933657635,
-      "r2_20": 0.0019570012229981337,
-      "rps20": 0.9512688488414859,
-      "bias20": 0.13011678659903247,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM",
-        "TREND_CONTINUE"
-      ],
-      "selection_mode": "SUPPORTED",
-      "sector_support_status": "CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SZ.301041",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM",
-        "TREND_CONTINUE"
-      ],
-      "setup_watch": false,
-      "clv": 0.9102564102564099,
-      "liq20_amount": 122673044.0,
-      "break_margin_close20": 0.020446096654274992,
-      "amr20_mean_prior": 2.26824813662948,
-      "rps5_delta3": null,
-      "slope20": 0.014147072145889703,
-      "r2_20": 0.9154175511224072,
-      "rps20": 0.9775652813534388,
-      "bias20": 0.15368450546371526,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SZ.301183",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM",
-        "TREND_CONTINUE"
-      ],
-      "setup_watch": false,
-      "clv": 0.6786802030456859,
-      "liq20_amount": 1013958976.0,
-      "break_margin_close20": 0.041985505486052066,
-      "amr20_mean_prior": 1.360248473768669,
-      "rps5_delta3": null,
-      "slope20": 0.004457683397852503,
-      "r2_20": 0.2436124975885342,
-      "rps20": 0.9714968738506804,
-      "bias20": 0.11658014790261606,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SZ.301220",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "setup_watch": false,
-      "clv": 0.9974554707379131,
-      "liq20_amount": 34209677.0,
-      "break_margin_close20": 0.05804028678729933,
-      "amr20_mean_prior": 4.137348577301389,
-      "rps5_delta3": null,
-      "slope20": -0.0008151223435145971,
-      "r2_20": 0.014828276448510924,
-      "rps20": 0.9201912467819051,
-      "bias20": 0.11705866450392,
+      "slope20": 0.005004205917574603,
+      "r2_20": 0.3777434216543216,
+      "rps20": 0.9735148059591686,
+      "bias20": 0.13043478260869557,
       "freshness": 0.2,
       "matched_categories": [
         "LAUNCH_CONFIRM"
@@ -2949,15 +1543,15 @@
         "TREND_CONTINUE"
       ],
       "setup_watch": false,
-      "clv": 0.8703339882121801,
+      "clv": 0.7835497835497838,
       "liq20_amount": 414251360.0,
-      "break_margin_close20": 0.09891213389121334,
-      "amr20_mean_prior": 2.1132364536596144,
+      "break_margin_close20": 0.03792263173926291,
+      "amr20_mean_prior": 1.8276796562705988,
       "rps5_delta3": null,
-      "slope20": 0.014518468677966275,
-      "r2_20": 0.8244188575193798,
-      "rps20": 0.9941154836336888,
-      "bias20": 0.2367328103368711,
+      "slope20": 0.016819368455591323,
+      "r2_20": 0.8483287595575154,
+      "rps20": 0.9961375758690454,
+      "bias20": 0.2604264920749413,
       "freshness": 0.2,
       "matched_categories": [
         "LAUNCH_CONFIRM"
@@ -2971,76 +1565,20 @@
       "category_rank": null
     },
     {
-      "security_id": "SZ.301297",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM",
-        "TREND_CONTINUE"
-      ],
-      "setup_watch": false,
-      "clv": 0.8513119533527702,
-      "liq20_amount": 739968896.0,
-      "break_margin_close20": 0.06583990980834287,
-      "amr20_mean_prior": 2.2402559854046964,
-      "rps5_delta3": null,
-      "slope20": 0.012666696778956167,
-      "r2_20": 0.7346908154578982,
-      "rps20": 0.986024273630011,
-      "bias20": 0.20953916225275715,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SZ.301366",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM",
-        "TREND_CONTINUE"
-      ],
-      "setup_watch": false,
-      "clv": 0.9891107078039924,
-      "liq20_amount": 510975568.0,
-      "break_margin_close20": 0.04592346089850241,
-      "amr20_mean_prior": 1.5721944543913768,
-      "rps5_delta3": null,
-      "slope20": 0.004082462760803443,
-      "r2_20": 0.375940892540659,
-      "rps20": 0.9170650974623024,
-      "bias20": 0.10576542504067898,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SZ.301511",
+      "security_id": "SZ.301389",
       "matched_stock_only_categories": [
         "TREND_CONTINUE"
       ],
       "setup_watch": false,
-      "clv": 0.7200374531835209,
-      "liq20_amount": 3280454272.0,
-      "break_margin_close20": 0.003220463746779423,
-      "amr20_mean_prior": 1.0923100685148577,
+      "clv": 0.6497524752475243,
+      "liq20_amount": 646774240.0,
+      "break_margin_close20": -0.0032263268269075995,
+      "amr20_mean_prior": 1.4126652189634459,
       "rps5_delta3": null,
-      "slope20": 0.011648293505771618,
-      "r2_20": 0.4863564382816177,
-      "rps20": 0.892975358587716,
-      "bias20": 0.1649562193147882,
+      "slope20": 0.003976911304941063,
+      "r2_20": 0.1908169074404713,
+      "rps20": 0.7204340629023358,
+      "bias20": 0.09340576696778524,
       "freshness": 0.2,
       "matched_categories": [
         "TREND_CONTINUE"
@@ -3049,81 +1587,25 @@
       "sector_support_status": "CONFIRMED",
       "signal_age": null,
       "primary_category": "TREND_CONTINUE",
-      "category_score": 44.399049950471195,
+      "category_score": 31.330190023271875,
       "rank_status": "SCORED",
-      "category_rank": 8
+      "category_rank": 5
     },
     {
-      "security_id": "SZ.301528",
+      "security_id": "SZ.301456",
       "matched_stock_only_categories": [
         "LAUNCH_CONFIRM"
       ],
       "setup_watch": false,
-      "clv": 0.97045101088647,
-      "liq20_amount": 68241780.0,
-      "break_margin_close20": 0.19378577269010622,
-      "amr20_mean_prior": 5.278638075220804,
+      "clv": 0.9241379310344832,
+      "liq20_amount": 25133993.0,
+      "break_margin_close20": 0.03640167364016733,
+      "amr20_mean_prior": 4.350846392553928,
       "rps5_delta3": null,
-      "slope20": 0.008225705844736605,
-      "r2_20": 0.5409694972299817,
-      "rps20": 0.9897020963589555,
-      "bias20": 0.26163338316497153,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SZ.301589",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM",
-        "TREND_CONTINUE"
-      ],
-      "setup_watch": false,
-      "clv": 0.9051254089422022,
-      "liq20_amount": 82067956.0,
-      "break_margin_close20": 0.010030917210580359,
-      "amr20_mean_prior": 1.7470012305290767,
-      "rps5_delta3": null,
-      "slope20": 0.0017951893975521242,
-      "r2_20": 0.28172824215530856,
-      "rps20": 0.7020963589554984,
-      "bias20": 0.034731533586015884,
-      "freshness": 0.2,
-      "matched_categories": [
-        "LAUNCH_CONFIRM"
-      ],
-      "selection_mode": "INDEPENDENT",
-      "sector_support_status": "NOT_CONFIRMED",
-      "signal_age": null,
-      "primary_category": "LAUNCH_CONFIRM",
-      "category_score": null,
-      "rank_status": "QUALIFIED_UNRANKED",
-      "category_rank": null
-    },
-    {
-      "security_id": "SZ.301628",
-      "matched_stock_only_categories": [
-        "LAUNCH_CONFIRM",
-        "TREND_CONTINUE"
-      ],
-      "setup_watch": false,
-      "clv": 0.8865248226950359,
-      "liq20_amount": 352534960.0,
-      "break_margin_close20": 0.024002493765586053,
-      "amr20_mean_prior": 1.9105399200891067,
-      "rps5_delta3": null,
-      "slope20": 0.021392281360930833,
-      "r2_20": 0.8592280930092201,
-      "rps20": 0.9957705038617138,
-      "bias20": 0.26237516752410195,
+      "slope20": 0.0018310874700419619,
+      "r2_20": 0.2711854920015293,
+      "rps20": 0.8898289497884863,
+      "bias20": 0.0597018118034609,
       "freshness": 0.2,
       "matched_categories": [
         "LAUNCH_CONFIRM"
@@ -3138,26 +1620,26 @@
     }
   ],
   "simple_shadow_first20": [
-    "SZ.300903",
-    "SZ.002579",
-    "SZ.002897",
-    "SH.603285",
-    "SH.603400",
-    "SZ.000980",
-    "SZ.000839",
-    "SH.603439",
-    "SZ.002976",
-    "SZ.002560",
-    "SZ.002669",
-    "SH.603657",
-    "SH.600088",
-    "SH.603020",
-    "SZ.000812",
+    "SH.603115",
+    "SH.605162",
+    "SZ.002531",
+    "SZ.002584",
+    "SZ.002522",
+    "SH.601218",
+    "SH.605507",
     "SZ.002232",
-    "SH.600697",
-    "SZ.300245",
-    "SZ.300430",
-    "SH.600802"
+    "SZ.002362",
+    "SH.688004",
+    "SZ.001216",
+    "SH.603236",
+    "SH.603693",
+    "SZ.300569",
+    "BJ.920179",
+    "SZ.301456",
+    "SZ.001228",
+    "SZ.300221",
+    "SZ.300410",
+    "SH.688625"
   ],
   "acceptance_result": "DEGRADED_PASS",
   "next_stage": "P12-04_RANK_AND_LOO_V3_3_CONTINUE"

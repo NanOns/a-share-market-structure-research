@@ -10,7 +10,8 @@ from workbench_service.research_bundle_v3_3 import activate_bundle,build_bundle,
 BUNDLE_CONTRACT="TODAY_RESEARCH_BUNDLE_V3_3_CANDIDATE_02";POINTER=ROOT/"data/current/ACTIVE_RESEARCH_BUNDLE_V3_3.json"
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 def main():
- rank=json.loads((ROOT/"reports/p12_04/current_rank_probe.json").read_text(encoding="utf-8"));previous=read_active(POINTER);day=previous["identity"]["trade_date"]
+ rank=json.loads((ROOT/"reports/p12_04/current_rank_probe.json").read_text(encoding="utf-8"));previous=read_active(POINTER);day=rank["input_identity"]["trade_date"]
+ if previous["identity"]["trade_date"]!=day:raise ValueError("ACTIVE_BASE_BUNDLE_DATE_MISMATCH")
  market_path=ROOT/"data/market/market_regime_daily.parquet";factor_path=ROOT/"data/factors/factors_daily.parquet"
  with duckdb.connect(database=":memory:") as connection:
   market=connection.execute("select date,market_ret20_median from read_parquet(?) where date=?",[str(market_path),day]).fetchdf().to_dict("records")

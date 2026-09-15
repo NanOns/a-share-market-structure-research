@@ -304,6 +304,14 @@ def _reject_tdx_path(path: Path) -> None:
     if path==tdx_root or tdx_root in path.parents:
         raise ValueError("TDX_PATH_WRITE_FORBIDDEN")
 
+def bundle_package_relative_path(body: dict) -> Path:
+    staged_path=(body.get("package") or {}).get("staged_path")
+    if staged_path:
+        return Path(staged_path)
+    date_key=str(body.get("target_trade_date","")).replace("-","")
+    if len(date_key)!=8 or not date_key.isdigit(): raise ValueError("SOURCE_TRADE_DATE_INVALID")
+    return Path("data/input_staging/packages")/date_key/"hsjday.zip"
+
 def restore_source_bundle_extraction(
     bundle_path: Path,
     destination: Path,
@@ -329,12 +337,7 @@ def restore_source_bundle_extraction(
 
     staged_path=package_record.get("staged_path")
     fallback_used=not staged_path
-    if staged_path:
-        package_path=_safe_bundle_project_path(project_root,staged_path)
-    else:
-        date_key=str(body.get("target_trade_date","")).replace("-","")
-        if len(date_key)!=8 or not date_key.isdigit(): raise ValueError("SOURCE_TRADE_DATE_INVALID")
-        package_path=_safe_bundle_project_path(project_root,Path("data/input_staging/packages")/date_key/"hsjday.zip")
+    package_path=_safe_bundle_project_path(project_root,bundle_package_relative_path(body))
     _reject_tdx_path(package_path)
     if not package_path.is_file(): raise ValueError("SOURCE_PACKAGE_MISSING")
     actual_size=package_path.stat().st_size
@@ -383,7 +386,7 @@ def verify_source_bundle(bundle_path: Path) -> dict:
         if candidate!=project_root and project_root not in candidate.parents:
             raise ValueError("SOURCE_PATH_OUTSIDE_PROJECT")
         return candidate
-    package_path=safe_project_path(Path("data/input_staging/packages")/str(body["target_trade_date"]).replace("-","")/"hsjday.zip")
+    package_path=safe_project_path(bundle_package_relative_path(body))
     if not package_path.is_file() or _hash(package_path)!=body["package"]["sha256"]: raise ValueError("SOURCE_PACKAGE_MISMATCH")
     metadata_root=safe_project_path(body["metadata"]["root"])
     copied=_manifest(metadata_root)

@@ -115,22 +115,30 @@ def register_source_bundle_catalog(
     )
     file_count = 0
     for relative_path, descriptor in sorted(files.items(), key=lambda item: str(item[0])):
+        catalog_path = str(relative_path)
         if not isinstance(descriptor, Mapping):
             raise ValueError(f"SOURCE_FILE_DESCRIPTOR_INVALID:{relative_path}")
         existing_row = connection.execute(
             "SELECT payload_json FROM source_files WHERE source_package_id=? AND relative_path=?",
-            [package_id, str(relative_path)],
+            [package_id, catalog_path],
         ).fetchone()
         existing = json.loads(existing_row[0]) if existing_row else None
+        if existing and any(existing.get(key) != descriptor.get(key) for key in ("size", "sha256")):
+            catalog_path = f"{metadata_id}/{relative_path}"
+            versioned_row = connection.execute(
+                "SELECT payload_json FROM source_files WHERE source_package_id=? AND relative_path=?",
+                [package_id, catalog_path],
+            ).fetchone()
+            existing = json.loads(versioned_row[0]) if versioned_row else None
         payload = _source_file_payload(
-            {**dict(descriptor), "relative_path": str(relative_path)},
+            {**dict(descriptor), "relative_path": str(relative_path), "catalog_relative_path": catalog_path},
             bundle_id=bundle_id,
             metadata_snapshot_id=metadata_id,
             existing=existing,
         )
         connection.execute(
             "INSERT INTO source_files VALUES (?, ?, ?) ON CONFLICT(source_package_id, relative_path) DO UPDATE SET payload_json=excluded.payload_json",
-            [package_id, str(relative_path), _json(payload)],
+            [package_id, catalog_path, _json(payload)],
         )
         file_count += 1
     connection.execute(

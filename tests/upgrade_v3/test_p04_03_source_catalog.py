@@ -39,6 +39,22 @@ def test_sealed_bundle_catalog_records_metadata_files_idempotently(tmp_path):
     connection.close()
 
 
+def test_same_package_retains_changed_metadata_snapshot_as_versioned_file(tmp_path):
+    connection = duckdb.connect(str(tmp_path / "catalog.duckdb"))
+    connection.execute((ROOT / "src/workbench_db/schema.sql").read_text(encoding="utf-8"))
+    package = {"sha256": "a" * 64, "byte_count": 12}
+    first = {"metadata_snapshot_id": "meta-1", "files": {"T0002/hq_cache/tdxhy.cfg": {"size": 7, "sha256": "b" * 64}}}
+    second = {"metadata_snapshot_id": "meta-2", "files": {"T0002/hq_cache/tdxhy.cfg": {"size": 8, "sha256": "c" * 64}}}
+    register_source_bundle_catalog(connection, bundle={"source_bundle_id": "bundle-1"}, package=package, metadata=first)
+    register_source_bundle_catalog(connection, bundle={"source_bundle_id": "bundle-2"}, package=package, metadata=second)
+    assert connection.execute("select count(*) from source_files").fetchone()[0] == 2
+    paths = {row[0] for row in connection.execute("select relative_path from source_files").fetchall()}
+    assert paths == {"T0002/hq_cache/tdxhy.cfg", "meta-2/T0002/hq_cache/tdxhy.cfg"}
+    register_source_bundle_catalog(connection, bundle={"source_bundle_id": "bundle-2"}, package=package, metadata=second)
+    assert connection.execute("select count(*) from source_files").fetchone()[0] == 2
+    connection.close()
+
+
 def test_backfill_source_file_catalog_is_atomic_and_retains_shared_bundle_refs(tmp_path):
     database = tmp_path / "catalog.duckdb"
     connection = duckdb.connect(str(database))

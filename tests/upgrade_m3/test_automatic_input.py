@@ -6,8 +6,9 @@ import pytest
 from workbench_input.pipeline import (
     DownloadPolicy, ExtractionPolicy, analyze_dynamic_metadata,
     capture_stable_metadata, download_official_package, replace_with_retry, safe_extract_zip,
-    seal_source_bundle,
+    seal_source_bundle, bundle_package_relative_path,
 )
+from run_upgrade_m3 import validate_package_trade_date
 
 class Response:
     def __init__(self,data,declared=None,fail=False):
@@ -119,3 +120,18 @@ def test_valid_package_extract_metadata_and_seal_read_only_bundle(tmp_path):
     bundle=seal_source_bundle(tmp_path/"bundles",target_trade_date="2026-09-07",package=meta,extraction=extraction,metadata=snapshot,calendar_sha256="calendar")
     assert bundle["read_only"] and (tmp_path/"bundles"/bundle["source_bundle_id"]/"source_bundle.json").is_file()
     assert seal_source_bundle(tmp_path/"bundles",target_trade_date="2026-09-07",package=meta,extraction=extraction,metadata=snapshot,calendar_sha256="calendar")==bundle
+
+def test_package_trade_date_is_inferred_instead_of_using_upload_day(monkeypatch,tmp_path):
+    captured={}
+    def fake_validate(root,target_trade_date,current_ids):
+        captured.update(root=root,target=target_trade_date,ids=current_ids)
+        return {"status":"PASS","target_trade_date":20260914}
+    monkeypatch.setattr("run_upgrade_m3.validate_extracted_day_data",fake_validate)
+    result=validate_package_trade_date(tmp_path,{"SH.600001"})
+    assert captured["target"] is None
+    assert result["target_trade_date"]==20260914
+
+def test_bundle_verification_prefers_recorded_staging_path_over_trade_date_fallback():
+    body={"target_trade_date":"2026-09-14","package":{"staged_path":"data/input_staging/packages/20260915/hsjday.zip"}}
+    assert bundle_package_relative_path(body)==Path("data/input_staging/packages/20260915/hsjday.zip")
+    assert bundle_package_relative_path({"target_trade_date":"2026-09-14","package":{}})==Path("data/input_staging/packages/20260914/hsjday.zip")

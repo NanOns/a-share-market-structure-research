@@ -37,6 +37,9 @@ def manifest(root):
  for p in sorted(Path(root).rglob("*")):
   if p.is_file():values[str(p.relative_to(root)).replace("\\","/")]={"size":p.stat().st_size,"sha256":sha(p)}
  return values
+def validate_package_trade_date(extracted,current_ids):
+ """Resolve the economic trade date from the package, not its upload timestamp."""
+ return validate_extracted_day_data(extracted,None,current_ids)
 def stage_inputs(day):
  """Probe the official ZIP and live TDX metadata every run; reuse staging only after identity equality."""
  staging=ROOT/"data/input_staging"; scratch=ROOT/"runtime/m3"/uuid.uuid4().hex;scratch.mkdir(parents=True,exist_ok=False)
@@ -64,12 +67,13 @@ def _main():
  try:
   if info.get("status")!="PASS":raise ValueError("OFFICIAL_DATE_UNVERIFIED")
   day=info_day(info);package_meta,extracted,metadata_root,extraction_result=stage_inputs(day)
-  current_ids=current_a_stock_ids(read_industry_assignments(metadata_root/"T0002/hq_cache/tdxhy.cfg"));validation=validate_extracted_day_data(extracted,int(day),current_ids)
+  current_ids=current_a_stock_ids(read_industry_assignments(metadata_root/"T0002/hq_cache/tdxhy.cfg"));validation=validate_package_trade_date(extracted,current_ids)
   if validation["status"]!="PASS":raise ValueError("DAY_VALIDATION_FAILED")
+  economic_day=str(validation["target_trade_date"])
   metadata_manifest=manifest(metadata_root);catalog=analyze_dynamic_metadata(metadata_root,available_security_ids={x.stem[:2].upper()+"."+x.stem[2:] for x in extracted.rglob("*.day")})
   extraction={**extraction_result,"root":str(extracted.relative_to(ROOT)).replace("\\","/")}
   metadata={"metadata_snapshot_id":hashlib.sha256(json.dumps(metadata_manifest,sort_keys=True,separators=(",",":")).encode()).hexdigest(),"files":metadata_manifest,"stability":"PASS","structural_integrity":"PASS","freshness":"UNKNOWN","root":str(metadata_root.relative_to(ROOT)).replace("\\","/")}
-  bundle=seal_source_bundle(ROOT/"data/source_bundles",target_trade_date=f"{day[:4]}-{day[4:6]}-{day[6:]}",package=package_meta,extraction=extraction,metadata=metadata,calendar_sha256=sha(ROOT/"config/trading_calendar.yaml"),validation=validation)
+  bundle=seal_source_bundle(ROOT/"data/source_bundles",target_trade_date=f"{economic_day[:4]}-{economic_day[4:6]}-{economic_day[6:]}",package=package_meta,extraction=extraction,metadata=metadata,calendar_sha256=sha(ROOT/"config/trading_calendar.yaml"),validation=validation)
   verify_source_bundle(ROOT/"data/source_bundles"/bundle["source_bundle_id"]/'source_bundle.json')
   with WorkbenchRepository(ROOT) as repo:
    register_source_bundle_catalog(repo.connection,bundle=bundle,package=package_meta,metadata=metadata)

@@ -72,7 +72,18 @@ def test_background_submit_returns_job_and_finishes(tmp_path):
     pub=publisher(tmp_path)
     job_id=pub.submit(request())
     assert job_id.startswith("job-")
-    assert pub.wait(job_id)["status"]=="SUCCESS"
+    status=pub.wait(job_id)
+    assert status["status"]=="SUCCESS"
+    assert status["publication_id"]==request().publication_id
+
+def test_recovered_publication_clears_transient_progress(tmp_path):
+    pub=publisher(tmp_path)
+    pub.run(request())
+    result=pub.run(request())
+    assert result["recovered"] is True
+    status=pub.status(result["job_id"])
+    assert status["status"]=="SUCCESS"
+    assert status["progress"]["publication_id"]==request().publication_id
 
 def test_restart_recovers_persisted_request_and_creates_new_attempt(tmp_path):
     pub=publisher(tmp_path)

@@ -1,0 +1,30 @@
+{
+  "stage": "P12-DAILY-ONE-CLICK-INPUT-REPAIR",
+  "stage_contract": "P12_DAILY_ONE_CLICK_INPUT_REPAIR_V1",
+  "acceptance_result": "FULL_PASS",
+  "consulted_documents": [
+    "docs/V3_TODAY_RESEARCH_PRIORITY_DETAILED_UPGRADE_PLAN_20260914.md",
+    "docs/V3_IMPLEMENTATION_LEDGER.md",
+    "AGENTS.md"
+  ],
+  "input_identity": {
+    "package_upload_date": "2026-09-15",
+    "economic_trade_date": "2026-09-14",
+    "source_bundle_id": "08226c00d641389080fca0533ad4ce4945ec7a61f3d6aee0d85820f38302f91f"
+  },
+  "evidence": {
+    "daily_job_id": "daily-f3b9a357fcc04d8683cd8eceaef2839c",
+    "daily_job_status": "SUCCESS",
+    "publication_id": "m4-70f5b499f805d0897826a165c049098b",
+    "publication_revision": 2,
+    "market_counts": {"sh": 4857, "sz": 4484, "bj": 345},
+    "normal_a_invalid": 0,
+    "mainline_snapshot_id": "m10-mainline-preview-dcf87de4d69dd1cf",
+    "research_run_id": "research-d87f87a66c354543942584c41a3ba7bc",
+    "tests": "32 passed",
+    "compileall": "PASS",
+    "diff_check": "PASS",
+    "tdx_write": false
+  },
+  "next_stage": "DAILY_OPERATION; build the next P12 forward observation only after a new real close"
+}

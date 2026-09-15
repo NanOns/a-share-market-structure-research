@@ -214,7 +214,8 @@ class OneClickPublisher:
             if not row:
                 raise KeyError("JOB_NOT_FOUND")
             event=con.execute("SELECT payload_json,event_time_utc FROM job_events WHERE job_id=? ORDER BY attempt DESC,sequence DESC LIMIT 1",[job_id]).fetchone()
-            return {"job_id": job_id, "status": row[0], "details": json.loads(row[1]),
+            details=json.loads(row[1])
+            return {"job_id": job_id, "status": row[0], "publication_id":details.get("publication_id"), "details": details,
                     "progress":json.loads(event[0]) if event else {"status":row[0]},
                     "updated_at_utc":event[1].isoformat() if event else None}
         finally:
@@ -247,6 +248,7 @@ class OneClickPublisher:
             if existing and existing[0] == "SUCCESS":
                 with repo.transaction() as tx:
                     tx.execute("UPDATE jobs SET status='SUCCESS' WHERE job_id=?", [job_id])
+                self._progress[job_id]={"status":"SUCCESS","publication_id":request.publication_id,"updated_at_utc":datetime.now(timezone.utc).isoformat()}
                 return {"job_id": job_id, "publication_id": request.publication_id, "status": "SUCCESS", "recovered": True}
             attempt = int(con.execute("SELECT coalesce(max(attempt),0)+1 FROM job_attempts WHERE job_id=?", [job_id]).fetchone()[0])
             con.execute("INSERT INTO jobs VALUES (?, ?, 'RUNNING', ?) ON CONFLICT(job_key) DO UPDATE SET status='RUNNING',payload_json=excluded.payload_json", [job_id, request.job_key, _json({"contract": CONTRACT_VERSION, "publication_id": request.publication_id,"request":request.persisted()})])

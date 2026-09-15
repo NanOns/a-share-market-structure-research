@@ -753,3 +753,9 @@ P00-03 合同资产 SHA-256：
 | task_id | status | stage_contract | evidence | acceptance | next_stage |
 |---|---|---|---|---|---|
 | P12-04 | DEGRADED_PASS | `P12-04_RANK_AND_LOO_V3_3_ACCEPTANCE_V1`；`TODAY_RESEARCH_RANK_AND_LOO_V3_3_CANDIDATE_01`；V3 v2.1 §10–§12、§19 | `docs/P12_04_RANK_AND_LOO_V3_3_ACCEPTANCE_20260915.md`；`reports/p12_04/current_loo_probe.json`、`current_rank_probe.json`、`p12_04_stage_gate.json`；7项定向反例 | 52,028关系边、5,578股今日LOO；113只唯一合格、9已评分、104未评分保留；延续140 STOCK_ONLY/9正式；简单排序同样本；历史变化LOO保持UNKNOWN | P12-05_REPLAY_V3_3 |
+
+## P12-05 诊断回放进行中（2026-09-15）
+
+| task_id | status | stage_contract | evidence | acceptance | next_stage |
+|---|---|---|---|---|---|
+| P12-05-REPLAY-PILOT | DEGRADED_PASS_PARTIAL | `P12-05_REPLAY_V3_3_DIAGNOSTIC_V1`；`HORIZON_END_TDX_AFFINE_QFQ_V1` | `docs/P12_05_REPLAY_PROGRESS_20260915.md`；`reports/p12_05/replay_evaluation.json`；3日472个诊断信号、1,888个期限行、逻辑重跑哈希一致 | 3月/6月共1,460条OBSERVED；9月428条NOT_DUE；当前成员重构身份明确；四组等量基线与消融未完成，P12-05未验收 | P12-05_BASELINES_AND_ABLATION |

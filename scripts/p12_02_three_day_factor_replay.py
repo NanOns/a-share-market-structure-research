@@ -99,6 +99,14 @@ def main() -> None:
                 return "UNKNOWN"
             return "Q1" if value <= sigma_edges[0] else "Q2" if value <= sigma_edges[1] else "Q3" if value <= sigma_edges[2] else "Q4"
         frame["sigma_group"] = frame["sigma20_prior"].map(sigma_group)
+        diagnostic_launch = frame[
+            frame["quality"].eq("READY") & frame["liq20"].eq(True)
+            & frame["severe_drop"].eq(False) & frame["first_day_damage"].eq(False)
+            & ~((frame["bias20"] >= .15) & (frame["extension_z20"] >= 1.5))
+            & (frame["break_margin_close20"] > 0) & (frame["ret1_adj"] > 0)
+            & (frame["clv"] >= .60) & (frame["amr20_mean_prior"] >= 1.20)
+            & frame["intraday_reject_high20"].eq(False)
+        ]
         risk_distribution = []
         for (market, group), subset in frame.groupby(["market_group", "sigma_group"], sort=True):
             risk_distribution.append({"market": market, "sigma_group": group,
@@ -119,6 +127,7 @@ def main() -> None:
                         "ready": int((frame["quality"] == "READY").sum()),
                         "sigma20_prior_quartile_edges": sigma_edges,
                         "risk_distribution_by_market_and_prior_sigma": risk_distribution,
+                        "diagnostic_launch_security_ids": diagnostic_launch["security_id"].tolist(),
                         "latest_adj_ohlc_mismatch": mismatches if target == DATES[-1] else None,
                         "measurements": measurements,
                         "repeat_identical": measurements[0] == measurements[1]})

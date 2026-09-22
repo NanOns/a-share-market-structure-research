@@ -15,11 +15,11 @@ from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable, Mapping, Sequence
 
-import duckdb
 import pyarrow as pa
 import pyarrow.parquet as pq
 
 from workbench_db.digest import logical_digest
+from workbench_db.result_object_repository import DuckDBResultObjectRepository, ResultObjectRepository
 
 
 STORAGE_KIND = "PARQUET"
@@ -88,10 +88,10 @@ def result_value_hash(
 class ResultObjectCoordinator:
     """Create immutable result objects and preserve independent slice bindings."""
 
-    def __init__(self, root: str | Path, database_path: str | Path | None = None):
+    def __init__(self, root: str | Path, database_path: str | Path | None = None, *, repository: ResultObjectRepository | None = None):
         self.root = Path(root).resolve()
-        self.database_path = Path(database_path).resolve() if database_path else self.root / "data/database/market_research.duckdb"
         self.object_root = self.root / "data/analysis_objects"
+        self.repository = repository or DuckDBResultObjectRepository(self.root, database_path)
 
     def _object_path(self, result_object_id: str) -> Path:
         return self.object_root / f"{result_object_id}.parquet"
@@ -203,73 +203,40 @@ class ResultObjectCoordinator:
             "value_semantics": semantics,
         }
         created_at = datetime.now(timezone.utc)
-        with duckdb.connect(str(self.database_path)) as connection:
-            existing = connection.execute("SELECT domain, contract_id, input_hash, dependency_hash, basis_json, row_count, logical_hash, storage_kind, storage_object_id FROM analysis_slices WHERE slice_id=?", [slice_id]).fetchone()
-            if existing:
-                if existing[0] != domain or existing[2] != input_hash or existing[3] != dependency_hash or json.loads(existing[4]) != dict(basis) or int(existing[5]) != row_count or existing[6] != logical_hash or existing[7] != STORAGE_KIND or existing[8] != result_object_id:
-                    raise ResultObjectError("SLICE_IDENTITY_CONFLICT")
-                self._verify(object_path, value_hash, domain=domain, schema_version=schema_version, semantic_contract=semantic_contract, primary_key=keys, value_semantics=semantics)
-                return {"slice_id": slice_id, "result_object_id": result_object_id, "value_hash": value_hash, "row_count": row_count, "reused": True}
-            connection.execute("BEGIN TRANSACTION")
-            try:
-                connection.execute(
-                    "INSERT INTO analysis_result_objects VALUES (?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(result_object_id) DO NOTHING",
-                    [result_object_id, domain, schema_version, semantic_contract, value_hash, row_count, STORAGE_KIND, created_at],
-                )
-                stored_object = connection.execute(
-                    "SELECT domain, schema_version, semantic_contract, value_hash, row_count, storage_kind FROM analysis_result_objects WHERE result_object_id=?",
-                    [result_object_id],
-                ).fetchone()
-                if not stored_object or tuple(stored_object) != (domain, schema_version, semantic_contract, value_hash, row_count, STORAGE_KIND):
-                    raise ResultObjectError("RESULT_OBJECT_IDENTITY_CONFLICT")
-                storage_payload = {
-                    "storage_object_id": result_object_id,
-                    "result_object_id": result_object_id,
-                    "path": str(object_path),
-                    "relative_path": object_path.relative_to(self.root).as_posix(),
-                    "kind": "ANALYSIS_RESULT_OBJECT",
-                    "storage_kind": STORAGE_KIND,
-                    "domain": domain,
-                    "schema_version": schema_version,
-                    "semantic_contract": semantic_contract,
-                    "value_hash": value_hash,
-                    "logical_hash": logical_hash,
-                    "columns": columns,
-                    "primary_key": list(keys),
-                    "value_semantics": semantics,
-                    "row_count": row_count,
-                    "state": "ACTIVE",
-                    "referenced": True,
-                    "registered_at_utc": created_at.isoformat(),
-                }
-                connection.execute("INSERT INTO storage_objects(storage_object_id,payload_json) VALUES (?, ?) ON CONFLICT(storage_object_id) DO NOTHING", [result_object_id, _json(storage_payload)])
-                stored = connection.execute("SELECT payload_json FROM storage_objects WHERE storage_object_id=?", [result_object_id]).fetchone()
-                if not stored or json.loads(stored[0]).get("value_hash") != value_hash:
-                    raise ResultObjectError("RESULT_OBJECT_IDENTITY_CONFLICT")
-                for dependency in dependency_rows:
-                    if not connection.execute("SELECT 1 FROM analysis_slices WHERE slice_id=?", [dependency["input_slice_id"]]).fetchone():
-                        raise ResultObjectError(f"RESULT_DEPENDENCY_NOT_FOUND:{dependency['input_slice_id']}")
-                connection.execute(
-                    "INSERT INTO analysis_slices VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                    [slice_id, domain, date.fromisoformat(trade_date), contract_id, input_hash, dependency_hash, _json(dict(basis)), row_count, logical_hash, STORAGE_KIND, result_object_id, created_at],
-                )
-                for dependency in dependency_rows:
-                    connection.execute("INSERT INTO analysis_slice_dependencies VALUES (?, ?, ?, ?)", [slice_id, dependency["input_domain"], date.fromisoformat(dependency["input_date"]), dependency["input_slice_id"]])
-                daily_basis = basis.get("daily_basis")
-                if isinstance(daily_basis, Mapping):
-                    required = ("universe_basis", "price_basis", "capabilities_json")
-                    if any(key not in daily_basis for key in required):
-                        raise ResultObjectError("RESULT_DAILY_BASIS_FIELD_MISSING")
-                    connection.execute("INSERT INTO analysis_daily_basis VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [slice_id, daily_basis["universe_basis"], daily_basis.get("membership_snapshot_id"), daily_basis["price_basis"], daily_basis.get("adjustment_as_of"), daily_basis.get("source_observed_at"), daily_basis.get("coverage"), _json(daily_basis["capabilities_json"])])
-                connection.execute("INSERT INTO analysis_slice_result_bindings VALUES (?, ?, ?)", [slice_id, result_object_id, _json(identity_evidence)])
-                connection.execute("COMMIT")
-            except Exception:
-                connection.execute("ROLLBACK")
-                raise
-        return {"slice_id": slice_id, "result_object_id": result_object_id, "value_hash": value_hash, "row_count": row_count, "reused": False}
+        try:
+            reused = self.repository.persist(
+                slice_id=slice_id,
+                result_object_id=result_object_id,
+                domain=domain,
+                schema_version=schema_version,
+                semantic_contract=semantic_contract,
+                value_hash=value_hash,
+                logical_hash=logical_hash,
+                row_count=row_count,
+                storage_kind=STORAGE_KIND,
+                created_at=created_at,
+                object_path=str(object_path),
+                relative_path=object_path.relative_to(self.root).as_posix(),
+                columns=columns,
+                primary_key=keys,
+                value_semantics=semantics,
+                basis=basis,
+                identity_evidence=identity_evidence,
+                dependencies=dependency_rows,
+                trade_date=trade_date,
+                contract_id=contract_id,
+                input_hash=input_hash,
+                dependency_hash=dependency_hash,
+                daily_basis=basis.get("daily_basis"),
+            )
+        except ValueError as exc:
+            raise ResultObjectError(str(exc)) from exc
+        if reused:
+            self._verify(object_path, value_hash, domain=domain, schema_version=schema_version, semantic_contract=semantic_contract, primary_key=keys, value_semantics=semantics)
+        return {"slice_id": slice_id, "result_object_id": result_object_id, "value_hash": value_hash, "row_count": row_count, "reused": reused}
 
 
-def read_result_rows(connection: duckdb.DuckDBPyConnection, root: str | Path, slice_id: str) -> list[dict[str, Any]]:
+def read_result_rows(connection: Any, root: str | Path, slice_id: str) -> list[dict[str, Any]]:
     """Read a bound result and verify its value hash, schema, and row count."""
     row = connection.execute(
         """

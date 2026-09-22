@@ -347,3 +347,8 @@ DuckDB 计算/分析完成后自动调用 `sync_latest_publication_to_postgres.p
 `research_shortlist`、`research_sector_signal_state` 和 `research_candidates_v3_3`
 均按最新 publication/run 在同一事务内幂等写入 PG；本次同步报告仍为
 `FULL_PASS`，页面今日研究接口保持 `READY`。
+
+独立 `/api/v3/research/jobs` 构建任务也已加入同一门禁：DuckDB 研究计算完成
+后必须以交易日调用 PG 同步器，只有同步报告为 `FULL_PASS` 才会把任务标记为
+成功；同步失败返回 `POSTGRES_SYNC_FAILED`，不产生“页面成功但 PG 缺数据”的
+半完成状态。

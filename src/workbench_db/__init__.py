@@ -10,6 +10,7 @@ from .postgres_research_repository import PostgresResearchRepository
 from .result_object_repository import DuckDBResultObjectRepository, PostgresResultObjectRepository, ResultObjectRepository
 from .slice_repository import DuckDBSliceRepository, PostgresSliceRepository, SliceRepository
 from .operations_metadata import DuckDBOperationsMetadataReader, OperationsMetadataReader
+from .operations_metadata import PostgresOperationsMetadataReader
 from .publication_repository import (
     DuckDBPublicationRepositoryFactory,
     DuckDBPublicationStatusReader,
@@ -56,6 +57,7 @@ __all__ = [
     "PostgresSliceRepository",
     "OperationsMetadataReader",
     "DuckDBOperationsMetadataReader",
+    "PostgresOperationsMetadataReader",
     "PublicationRepositoryFactory",
     "DuckDBPublicationRepositoryFactory",
     "PublicationStatusReader",

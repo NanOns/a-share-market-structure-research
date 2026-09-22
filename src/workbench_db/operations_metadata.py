@@ -5,6 +5,8 @@ from pathlib import Path
 from typing import Protocol
 
 import duckdb
+from psycopg import sql
+from .postgres_repository import PostgresRepository
 
 
 class OperationsMetadataReader(Protocol):
@@ -25,4 +27,25 @@ class DuckDBOperationsMetadataReader:
             }
 
 
-__all__ = ["DuckDBOperationsMetadataReader", "OperationsMetadataReader"]
+class PostgresOperationsMetadataReader:
+    """Read service-health counters from the PostgreSQL workbench schema."""
+
+    def __init__(self, repository: PostgresRepository):
+        self.repository = repository
+
+    def metadata_counts(self) -> dict[str, int]:
+        if self.repository.connection is None:
+            raise RuntimeError("POSTGRES_REPOSITORY_NOT_OPEN")
+        schema = sql.Identifier(self.repository.schema)
+        with self.repository.connection.cursor() as cur:
+            counts: dict[str, int] = {}
+            cur.execute(sql.SQL("select count(*) from {}.jobs where status in ('QUEUED','RUNNING','INTERRUPTED')").format(schema))
+            counts["active_jobs"] = int(cur.fetchone()[0])
+            cur.execute(sql.SQL("select count(*) from {}.storage_objects").format(schema))
+            counts["storage_objects"] = int(cur.fetchone()[0])
+            cur.execute(sql.SQL("select count(*) from {}.backup_catalog").format(schema))
+            counts["backup_catalog"] = int(cur.fetchone()[0])
+        return counts
+
+
+__all__ = ["DuckDBOperationsMetadataReader", "PostgresOperationsMetadataReader", "OperationsMetadataReader"]

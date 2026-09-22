@@ -336,3 +336,8 @@ DuckDB 计算/分析完成后自动调用 `sync_latest_publication_to_postgres.p
 同步未通过则任务失败关闭，不会显示成功。该阶段仍不是全量写入口切换：
 12 个应用消费者的维护窗口 inventory 尚未全部完成，preflight 当前唯一硬阻塞
 为 `application_consumers_not_migrated`。
+
+本轮又将正式服务中的历史任务状态、分析激活连接、配置版本、存储对象/租约/
+清理计划元数据、备份 catalog 以及运维状态计数接入已演练通过的 PostgreSQL
+适配器；物理 DuckDB 备份文件和离线计算仍保持原有维护窗口/隔离边界。服务
+重启后上述运维接口与 PG API 读路径共同冒烟通过，未触发生成流程。

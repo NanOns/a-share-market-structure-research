@@ -8,7 +8,11 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, unquote, urlparse
 import duckdb
-from workbench_db import ApiConnectionProvider, DuckDBApiConnectionProvider, PostgresDuckDBApiConnectionProvider
+from workbench_db import (
+ ApiConnectionProvider, DuckDBApiConnectionProvider, PostgresDuckDBApiConnectionProvider,
+ PostgresHistoryJobRepository, PostgresAnalysisActivationRepository, PostgresWriteRepository,
+ PostgresConfigVersionStore, PostgresBackupCatalogRepository, PostgresOperationsMetadataReader,
+)
 from workbench_db.postgres_repository import PostgresRepository
 from workbench_publish.orchestrator import submit_one_click, ControlledProduction
 from workbench_publish import OneClickPublisher
@@ -1710,7 +1714,20 @@ def make_handler(root,db):
  api_provider = PostgresDuckDBApiConnectionProvider() if pg_api else DuckDBApiConnectionProvider(db)
  api=Api(db,root=root,connection_provider=api_provider)
  pg_repository = PostgresRepository() if pg_api else None
- research=ResearchQueries(lambda: api._con(),root=root); today_research=TodayResearchBundleReader(root,database_path=None if pg_api else db,repository=pg_repository); turnover_enrichment=TurnoverEnrichmentService(root,today_research); events=OnlineEventQueries(lambda: api._con()); p09=P09OnlineProducts(); history=HistoryJobService(root,db); history.recover_interrupted(background=True); activation=AnalysisActivationService(root,db); operations=OperationsConfig(root,db); storage=StorageGovernance(root,db); backups=BackupService(root,db); maintenance=MaintenanceService(root,db); static=Path(root)/'src/workbench_service/static';csrf=secrets.token_urlsafe(24);publishers={};daily_jobs={};research_jobs={};daily_jobs_lock=threading.Lock()
+ if pg_repository:
+  pg_repository.open()
+ pg_history_repository = None
+ if pg_api:
+  pg_history_repository = PostgresRepository()
+  pg_history_repository.open()
+ pg_ops_repository = None
+ if pg_api:
+  pg_ops_repository = PostgresRepository()
+  pg_ops_repository.open()
+ pg_ops_write = PostgresWriteRepository(pg_ops_repository) if pg_ops_repository else None
+ pg_config_store = PostgresConfigVersionStore(pg_ops_repository) if pg_ops_repository else None
+ pg_backup_catalog = PostgresBackupCatalogRepository(pg_ops_repository) if pg_ops_repository else None
+ research=ResearchQueries(lambda: api._con(),root=root); today_research=TodayResearchBundleReader(root,database_path=None if pg_api else db,repository=pg_repository); turnover_enrichment=TurnoverEnrichmentService(root,today_research); events=OnlineEventQueries(lambda: api._con()); p09=P09OnlineProducts(); history=HistoryJobService(root,db,repository=PostgresHistoryJobRepository(pg_history_repository) if pg_history_repository else None); history.recover_interrupted(background=True); activation=AnalysisActivationService(root,db,repository=PostgresAnalysisActivationRepository() if pg_api else None); operations=OperationsConfig(root,db,version_store=pg_config_store) if pg_config_store else OperationsConfig(root,db); storage=StorageGovernance(root,db,storage_repository=pg_ops_write) if pg_ops_write else StorageGovernance(root,db); backups=BackupService(root,db,catalog=pg_backup_catalog) if pg_backup_catalog else BackupService(root,db); maintenance=MaintenanceService(root,db,metadata_reader=PostgresOperationsMetadataReader(pg_ops_repository) if pg_ops_repository else None); static=Path(root)/'src/workbench_service/static';csrf=secrets.token_urlsafe(24);publishers={};daily_jobs={};research_jobs={};daily_jobs_lock=threading.Lock()
  last_operations_status=maintenance.status()
  database_subprocess_active=threading.Event()
  def run_database_subprocess(command,**kwargs):

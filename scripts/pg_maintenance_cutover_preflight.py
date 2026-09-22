@@ -32,6 +32,7 @@ REQUIRED_REPORTS = {
     "online_time_contract": "pg_online_time_contract_rehearsal_report.json",
     "result_object_repository": "pg_result_object_repository_rehearsal_report.json",
     "slice_repository": "pg_slice_repository_rehearsal_report.json",
+    "history_job_repository": "pg_history_job_repository_rehearsal_report.json",
 }
 
 
@@ -59,7 +60,7 @@ def main() -> int:
     checks: dict[str, object] = {}
     checks["reports"] = {name: {"status": report.get("status") or report.get("acceptance"), "acceptance": report.get("acceptance")} for name, filename in REQUIRED_REPORTS.items() for report in [load_report(REPORT_ROOT / filename)]}
     for name, report in checks["reports"].items():  # type: ignore[union-attr]
-        if report["status"] not in {"PASS", "DEGRADED_PASS", "DEGRADED_PASS_EMPTY_SOURCE", "DEGRADED_PASS_PRECUTOVER_INVENTORY", "DEGRADED_PASS_PRECUTOVER_ADAPTER_AND_ROLLBACK", "DEGRADED_PASS_READ_BOUNDARY_SHADOW", "DEGRADED_PASS_TRANSACTIONAL_IDEMPOTENCY_ROLLBACK", "DEGRADED_PASS_RESEARCH_IDENTITY_IDEMPOTENCY_ROLLBACK", "DEGRADED_PASS_MANAGED_ROOT_ARTIFACT_ROLLBACK", "DEGRADED_PASS_ISOLATED_ADAPTER_INJECTION_503", "DEGRADED_PASS_CONFIG_STORE", "DEGRADED_PASS_STORAGE_WRITE_INTEGRATION", "DEGRADED_PASS_ONLINE_TIME_CONTRACT", "DEGRADED_PASS_RESULT_OBJECT_REPOSITORY", "DEGRADED_PASS_SLICE_REPOSITORY"}:
+        if report["status"] not in {"PASS", "DEGRADED_PASS", "DEGRADED_PASS_EMPTY_SOURCE", "DEGRADED_PASS_PRECUTOVER_INVENTORY", "DEGRADED_PASS_PRECUTOVER_ADAPTER_AND_ROLLBACK", "DEGRADED_PASS_READ_BOUNDARY_SHADOW", "DEGRADED_PASS_TRANSACTIONAL_IDEMPOTENCY_ROLLBACK", "DEGRADED_PASS_RESEARCH_IDENTITY_IDEMPOTENCY_ROLLBACK", "DEGRADED_PASS_MANAGED_ROOT_ARTIFACT_ROLLBACK", "DEGRADED_PASS_ISOLATED_ADAPTER_INJECTION_503", "DEGRADED_PASS_CONFIG_STORE", "DEGRADED_PASS_STORAGE_WRITE_INTEGRATION", "DEGRADED_PASS_ONLINE_TIME_CONTRACT", "DEGRADED_PASS_RESULT_OBJECT_REPOSITORY", "DEGRADED_PASS_SLICE_REPOSITORY", "DEGRADED_PASS_HISTORY_JOB_REPOSITORY"}:
             blockers.append(f"report:{name}:{report['status']}")
 
     dsn = os.environ.get("WORKBENCH_PG_DSN") or "host=127.0.0.1 port=5432 dbname=market_research user=postgres"

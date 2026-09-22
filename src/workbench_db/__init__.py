@@ -18,6 +18,7 @@ from .publication_repository import (
 )
 from .analysis_activation_repository import AnalysisActivationRepository, DuckDBAnalysisActivationRepository
 from .history_job_repository import HistoryJobRepository, DuckDBHistoryJobRepository
+from .postgres_history_job_repository import PostgresHistoryJobRepository
 from .incremental_writer_repository import IncrementalWriterRepository, DuckDBIncrementalWriterRepository
 from .research_builder_repository import ResearchBuilderRepository, DuckDBResearchBuilderRepository
 from .backup_repository import BackupRepository, DuckDBBackupRepository
@@ -58,6 +59,7 @@ __all__ = [
     "DuckDBAnalysisActivationRepository",
     "HistoryJobRepository",
     "DuckDBHistoryJobRepository",
+    "PostgresHistoryJobRepository",
     "IncrementalWriterRepository",
     "DuckDBIncrementalWriterRepository",
     "ResearchBuilderRepository",

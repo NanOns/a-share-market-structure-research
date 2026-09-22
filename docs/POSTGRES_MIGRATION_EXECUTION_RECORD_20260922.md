@@ -240,9 +240,9 @@ PGM-09 重新扫描并清理了消费者目录中的陈旧记录：当前静态�
 
 随后处理历史分析激活入口：`AnalysisActivationService` 不再直接调用 `duckdb.connect`，新增 `AnalysisActivationRepository` 连接边界，当前仅由 DuckDB 兼容实现提供连接；准备快照、激活 publication、复制结果组、绑定 snapshot 和更新 head 的多表事务仍完整保留在服务内，直到 PostgreSQL 事务实现与回滚/幂等 rehearsal 完成前，该入口继续标记为 `NOT_MIGRATED`。M7B activation 测试 `3 passed`，未触发线上激活。
 
-继续处理历史分析任务入口：`HistoryJobService` 的连接、短锁重试和任务状态/事件读写已收敛到 `HistoryJobRepository`，服务仍保留取消、进度、恢复和事件顺序语义；当前仅有 DuckDB 兼容实现，PG 队列与事件事务尚未接入，因此 `history_jobs.py` 仍为 `NOT_MIGRATED`。M7B history job 与 activation 回归测试合计 `6 passed`，未提交线上任务或生成数据。
+继续处理历史分析任务入口：`HistoryJobService` 的连接、短锁重试和任务状态/事件读写已收敛到 backend-neutral 的 `HistoryJobRepository/HistoryJobStore`，服务仍保留取消、进度、恢复和事件顺序语义；当前线上默认仍是 DuckDB，PG 仅可显式注入，尚未接入服务默认路径，因此 `history_jobs.py` 仍为 `NOT_MIGRATED`。M7B history job 与 activation 回归测试合计 `6 passed`，未提交线上任务或生成数据。
 
-本轮补齐了历史任务 PostgreSQL 状态边界：新增 `PostgresHistoryJobRepository`，对 `jobs`、`job_attempts`、`job_events` 提供参数化 upsert、状态/进度更新、按 attempt 的事件序号、活动 HISTORY_ANALYSIS 过滤和事务删除；事件插入使用 `ON CONFLICT DO NOTHING` 重试，避免并发取消/进度写入造成重复序号。`scripts/pg_history_job_repository_rehearsal.py` 在真实 PG 上验证 job/attempt round-trip、事件序号 `1,2`、活动任务过滤、强制事务回滚和清理，结果为 `DEGRADED_PASS_HISTORY_JOB_REPOSITORY`，报告位于 `runtime/postgres_migration/20260922/pg_history_job_repository_rehearsal_report.json`。该 adapter 仍未接入 `HistoryJobService`，因此入口继续标记为 `NOT_MIGRATED`；下一门是把 DuckDB 专用查询改成显式 repository 方法并完成端到端取消、恢复、失败重试演练。
+本轮补齐了历史任务 PostgreSQL 状态边界：新增 `PostgresHistoryJobRepository`，对 `jobs`、`job_attempts`、`job_events` 提供参数化 upsert、状态/进度更新、按 attempt 的事件序号、活动 HISTORY_ANALYSIS 过滤和事务删除；事件插入使用 `ON CONFLICT DO NOTHING` 重试，避免并发取消/进度写入造成重复序号。`HistoryJobService` 已改为只依赖显式 store 合同，DuckDB 和 PostgreSQL 可通过同一事务接口注入。`scripts/pg_history_job_repository_rehearsal.py` 在真实 PG 上验证 job/attempt round-trip、事件序号 `1,2`、活动任务过滤、强制事务回滚和清理，结果为 `DEGRADED_PASS_HISTORY_JOB_REPOSITORY`，报告位于 `runtime/postgres_migration/20260922/pg_history_job_repository_rehearsal_report.json`。该 adapter 尚未注入线上 `app.py`，也未完成真实 PG 取消/恢复端到端演练，因此入口继续标记为 `NOT_MIGRATED`；下一门是显式注入服务并完成端到端取消、恢复、失败重试演练。
 
 随后处理增量研究写入入口：`IncrementalBuildCoordinator` 的数据库连接已改为注入 `IncrementalWriterRepository`，保留现有计划校验、域写入器、快照绑定和事务语义；目前只有 DuckDB 兼容实现，所有域 writer 的 PostgreSQL SQL/事务尚未完成，因此该入口仍为 `NOT_MIGRATED`。现有 P04-02 测试仍被仓库中旧的 `034_v3_signal_outcomes` 版本断言阻塞（实际最新迁移为 `035_v3_3_research_registry`），该失败与本次连接边界改动无关，未擅自修改测试基线。
 

@@ -70,6 +70,15 @@ class PostgresHistoryJobRepository:
             return None
         return {"job_id": str(row[0]), "job_key": row[1], "status": str(row[2]), "payload": _payload(row[3])}
 
+    def publication_source_identity(self, publication_id: str) -> tuple[str, str | None]:
+        query = sql.SQL("select cast(trade_date as text),source_identity_sha256 from {} where publication_id=%s and status='SUCCESS'").format(self._table("publications"))
+        with self._connection().cursor() as cur:
+            cur.execute(query, (publication_id,))
+            row = cur.fetchone()
+        if not row:
+            raise KeyError("PUBLICATION_NOT_FOUND")
+        return str(row[0]), str(row[1]) if row[1] is not None else None
+
     def job_by_key(self, job_key: str) -> dict[str, Any] | None:
         query = sql.SQL("select job_id,job_key,status,payload_json from {} where job_key=%s").format(self._table("jobs"))
         with self._connection().cursor() as cur:
@@ -109,6 +118,12 @@ class PostgresHistoryJobRepository:
         if not row:
             return None
         return {"attempt": int(row[0]), "status": str(row[1]), "payload": _payload(row[2])}
+
+    def next_attempt(self, job_id: str) -> int:
+        query = sql.SQL("select coalesce(max(attempt),0)+1 from {} where job_id=%s").format(self._table("job_attempts"))
+        with self._connection().cursor() as cur:
+            cur.execute(query, (job_id,))
+            return int(cur.fetchone()[0])
 
     def update_attempt(self, job_id: str, attempt: int, *, status: str | None = None, payload: Mapping[str, Any] | None = None) -> None:
         assignments: list[sql.Composed] = []
@@ -151,6 +166,15 @@ class PostgresHistoryJobRepository:
             cur.execute(query, (job_id,))
             rows = cur.fetchall()
         return [{"attempt": int(row[0]), "sequence": int(row[1]), "event_time_utc": row[2], "payload": _payload(row[3])} for row in rows]
+
+    def latest_event(self, job_id: str) -> dict[str, Any] | None:
+        query = sql.SQL("select attempt,sequence,event_time_utc,payload_json from {} where job_id=%s order by attempt desc,sequence desc limit 1").format(self._table("job_events"))
+        with self._connection().cursor() as cur:
+            cur.execute(query, (job_id,))
+            row = cur.fetchone()
+        if not row:
+            return None
+        return {"attempt": int(row[0]), "sequence": int(row[1]), "event_time_utc": row[2], "payload": _payload(row[3])}
 
     def active_history_jobs(self, job_kind: str = "HISTORY_ANALYSIS") -> list[str]:
         query = sql.SQL(

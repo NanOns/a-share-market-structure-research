@@ -29,6 +29,7 @@ REQUIRED_REPORTS = {
     "adapter_injection": "pg_cutover_adapter_injection_harness_report.json",
     "config_store": "pg_config_store_rehearsal_report.json",
     "storage_write": "pg_storage_write_integration_rehearsal_report.json",
+    "online_time_contract": "pg_online_time_contract_rehearsal_report.json",
 }
 
 
@@ -56,7 +57,7 @@ def main() -> int:
     checks: dict[str, object] = {}
     checks["reports"] = {name: {"status": report.get("status") or report.get("acceptance"), "acceptance": report.get("acceptance")} for name, filename in REQUIRED_REPORTS.items() for report in [load_report(REPORT_ROOT / filename)]}
     for name, report in checks["reports"].items():  # type: ignore[union-attr]
-        if report["status"] not in {"PASS", "DEGRADED_PASS", "DEGRADED_PASS_EMPTY_SOURCE", "DEGRADED_PASS_PRECUTOVER_INVENTORY", "DEGRADED_PASS_PRECUTOVER_ADAPTER_AND_ROLLBACK", "DEGRADED_PASS_READ_BOUNDARY_SHADOW", "DEGRADED_PASS_TRANSACTIONAL_IDEMPOTENCY_ROLLBACK", "DEGRADED_PASS_RESEARCH_IDENTITY_IDEMPOTENCY_ROLLBACK", "DEGRADED_PASS_MANAGED_ROOT_ARTIFACT_ROLLBACK", "DEGRADED_PASS_ISOLATED_ADAPTER_INJECTION_503", "DEGRADED_PASS_CONFIG_STORE", "DEGRADED_PASS_STORAGE_WRITE_INTEGRATION"}:
+        if report["status"] not in {"PASS", "DEGRADED_PASS", "DEGRADED_PASS_EMPTY_SOURCE", "DEGRADED_PASS_PRECUTOVER_INVENTORY", "DEGRADED_PASS_PRECUTOVER_ADAPTER_AND_ROLLBACK", "DEGRADED_PASS_READ_BOUNDARY_SHADOW", "DEGRADED_PASS_TRANSACTIONAL_IDEMPOTENCY_ROLLBACK", "DEGRADED_PASS_RESEARCH_IDENTITY_IDEMPOTENCY_ROLLBACK", "DEGRADED_PASS_MANAGED_ROOT_ARTIFACT_ROLLBACK", "DEGRADED_PASS_ISOLATED_ADAPTER_INJECTION_503", "DEGRADED_PASS_CONFIG_STORE", "DEGRADED_PASS_STORAGE_WRITE_INTEGRATION", "DEGRADED_PASS_ONLINE_TIME_CONTRACT"}:
             blockers.append(f"report:{name}:{report['status']}")
 
     dsn = os.environ.get("WORKBENCH_PG_DSN") or "host=127.0.0.1 port=5432 dbname=market_research user=postgres"
@@ -102,7 +103,7 @@ def main() -> int:
         "data_generation_triggered": False,
         "status": "FULL_PASS" if not blockers else "BLOCKED",
         "acceptance": "READY_FOR_AUTHORIZED_MAINTENANCE_WINDOW" if not blockers else "BLOCKED_PRECUTOVER_HARD_GATES",
-        "next_stage": "authorized_maintenance_window_cutover" if not blockers else "complete_application_adapter_migration_and_timestamp_contracts",
+        "next_stage": "authorized_maintenance_window_cutover" if not blockers else ("complete_application_adapter_migration" if checks.get("timestamp_pending_review") == 0 else "complete_application_adapter_migration_and_timestamp_contracts"),
     }
     REPORT.parent.mkdir(parents=True, exist_ok=True)
     temporary = REPORT.with_suffix(REPORT.suffix + ".tmp")

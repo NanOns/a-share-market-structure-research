@@ -50,15 +50,18 @@ UTC_FIELDS: dict[tuple[str, str], tuple[str, str, str]] = {
     ("security_metadata_versions", "observed_at"): ("UTC_INSTANT", "M8c metadata writer uses UTC-aware source observation", "AT TIME ZONE UTC"),
     ("tdx_sector_hierarchy_versions", "created_at"): ("UTC_INSTANT", "hierarchy registration timestamps are UTC-aware", "AT TIME ZONE UTC"),
     ("tdx_sector_hierarchy_versions", "observed_at"): ("UTC_INSTANT", "hierarchy source observation is UTC-aware", "AT TIME ZONE UTC"),
+    ("online_evidence", "event_time"): ("UTC_INSTANT", "M14 external-evidence writer accepts only ISO-8601 values with an explicit offset; missing optional event time remains NULL", "AT TIME ZONE UTC"),
+    ("online_evidence", "published_at"): ("UTC_INSTANT", "M14 external-evidence writer accepts only ISO-8601 values with an explicit offset; missing optional publication time remains NULL", "AT TIME ZONE UTC"),
+    ("online_evidence", "first_seen_at"): ("UTC_INSTANT", "M14 external-evidence writer requires an ISO-8601 value with an explicit offset", "AT TIME ZONE UTC"),
+    ("online_quote_entries", "quote_time"): ("UTC_INSTANT", "M14 quote writer requires provider quote_time with an explicit offset; missing quote_time is rejected", "AT TIME ZONE UTC"),
 }
 
-PENDING_REASON: dict[tuple[str, str], str] = {
-    ("online_quote_entries", "quote_time"): "source quote time is provider-defined and may be absent; no UTC contract proven",
-    ("online_evidence", "event_time"): "external evidence has a parser contract but no production persistence writer",
-    ("online_evidence", "published_at"): "external evidence has a parser contract but no production persistence writer",
-    ("online_evidence", "first_seen_at"): "external evidence has a parser contract but no production persistence writer",
+EMPTY_ONLY_PROMOTIONS = {
+    ("online_evidence", "event_time"),
+    ("online_evidence", "published_at"),
+    ("online_evidence", "first_seen_at"),
+    ("online_quote_entries", "quote_time"),
 }
-
 
 def qi(value: str) -> sql.Identifier:
     return sql.Identifier(value)
@@ -88,20 +91,18 @@ def main() -> int:
             table, column = key
             if key not in existing:
                 continue
+            with pg.cursor() as cur:
+                cur.execute(sql.SQL("select count(*) from workbench.{} where {} is not null").format(qi(table), qi(column)))
+                non_null = int(cur.fetchone()[0])
             if existing[key] != "timestamp with time zone":
+                if non_null and key in EMPTY_ONLY_PROMOTIONS:
+                    raise RuntimeError(f"TIMESTAMP_PROMOTION_REQUIRES_SOURCE_AUDIT:{table}.{column}:{non_null}")
                 with pg.cursor() as cur:
                     cur.execute(sql.SQL("alter table workbench.{} alter column {} type timestamptz using {} at time zone 'UTC'").format(qi(table), qi(column), qi(column)))
             with pg.cursor() as cur:
-                cur.execute("""update workbench_meta.timestamp_semantics_catalog set writer_semantics=%s, semantic_timezone='UTC', target_type='timestamptz', transform_rule=%s, status='APPLIED', evidence=%s, review_basis='writer-backed contract review', contract_version='PG_TIMESTAMP_SEMANTICS_V2', reviewed_at=%s where table_name=%s and column_name=%s""", (semantics, f"source TIMESTAMP interpreted as UTC wall value; promote with {transform}", evidence, now, table, column))
+                cur.execute("""update workbench_meta.timestamp_semantics_catalog set writer_semantics=%s, semantic_timezone='UTC', target_type='timestamptz', transform_rule=%s, status='APPLIED', evidence=%s, review_basis='writer-backed contract review with offset-required M14 adapter', contract_version='PG_TIMESTAMP_SEMANTICS_V3', reviewed_at=%s where table_name=%s and column_name=%s""", (semantics, f"source TIMESTAMP interpreted as UTC wall value; promote with {transform}", evidence, now, table, column))
             pg.commit()
             applied += 1
-        for key, reason in PENDING_REASON.items():
-            if key not in existing:
-                continue
-            with pg.cursor() as cur:
-                cur.execute("""update workbench_meta.timestamp_semantics_catalog set writer_semantics='UNCONFIRMED_SOURCE_TIME', semantic_timezone=null, target_type='timestamp without time zone', transform_rule='retain wall-clock type; require source contract before promotion', status='PENDING_REVIEW', evidence=%s, review_basis='explicit unresolved source-time contract', contract_version='PG_TIMESTAMP_SEMANTICS_V2', reviewed_at=%s where table_name=%s and column_name=%s""", (reason, now, key[0], key[1]))
-            pg.commit()
-            pending += 1
     print(f"TIMESTAMP_REVIEW_COMPLETE applied={applied} pending_explicit={pending}")
     return 0
 

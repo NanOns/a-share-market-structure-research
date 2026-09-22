@@ -208,6 +208,8 @@ PGM-09 重新扫描并清理了消费者目录中的陈旧记录：当前静态�
 
 随后为存储对象登记、租约和清理计划元数据增加了可注入的 `StorageMetadataRepository` 边界，`StorageGovernance.register/acquire_lease/release_lease/preview_cleanup()` 可在隔离调用中使用 PostgreSQL；`scripts/pg_storage_write_integration_rehearsal.py` 验证重复登记、跨事务读取、租约释放、PG 清理预览、清理计划 round-trip，并验证文件隔离在该混合模式下 fail-closed，结果为 `DEGRADED_PASS_STORAGE_WRITE_INTEGRATION`。文件隔离和永久删除仍未切换，线上服务仍使用 DuckDB。
 
+4 个未决时间字段已补齐版本化来源合同：`PostgresOnlineRepository` 只接受带显式 offset 的 ISO-8601 时间，缺失 `quote_time` 或无时区输入直接拒绝；目标 PostgreSQL 表当时均为 0 行，因此按 `PG_TIMESTAMP_SEMANTICS_V3` 安全升级为 `timestamptz`。`scripts/pg_online_time_contract_rehearsal.py` 验证证据/报价写入、无时区拒绝、报价时间缺失拒绝和事务回滚，结果为 `DEGRADED_PASS_ONLINE_TIME_CONTRACT`。这只关闭时间语义合同，不启用任何在线数据源。
+
 第二个只读切片完成 publication head 投影：`PostgresRepository.publication_heads()` 与现有 `/api/publications` 的 `include_analysis=0/1` 两种响应均对账通过，各 7 条、latest head 一致；嵌套 `analysis_capabilities` 的 domain/date/slice/basis 质量计算已按相同规则移植并逐项匹配。
 
 同一研究域的板块元数据和全量股票名称投影也已完成 shadow：板块 `498/498`、股票 `5464/5464`，均与冻结 DuckDB 一致；今日研究包列表/详情再次对账通过。报告分别位于 `runtime/postgres_migration/20260922/research_metadata_pg_shadow_report.json` 和 `today_research_pg_shadow_report.json`。

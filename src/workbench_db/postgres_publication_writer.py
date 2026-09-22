@@ -96,5 +96,33 @@ class PostgresPublicationWriter:
         with self._connection().cursor() as cur:
             cur.execute(query, (publication_id,))
 
+    def insert_artifact(self, *, publication_id: str, artifact_name: str, source_path: str, file_sha256: str, logical_digest_version: str, logical_sha256: str, row_count: int, columns: Sequence[str], primary_key: Sequence[str]) -> None:
+        query = sql.SQL("insert into {}(publication_id,artifact_name,source_path,file_sha256,logical_digest_version,logical_sha256,row_count,columns_json,primary_key_json) values (%s,%s,%s,%s,%s,%s,%s,%s::jsonb,%s::jsonb) on conflict(publication_id,artifact_name) do nothing").format(self._table("publication_artifacts"))
+        with self._connection().cursor() as cur:
+            cur.execute(query, (publication_id, artifact_name, source_path, file_sha256, logical_digest_version, logical_sha256, row_count, _json(list(columns)), _json(list(primary_key))))
+
+    def insert_observation(self, *, observation_id: str, publication_id: str | None, payload: Mapping[str, Any]) -> None:
+        query = sql.SQL("insert into {}(observation_id,publication_id,payload_json) values (%s,%s,%s::jsonb) on conflict(observation_id) do nothing").format(self._table("observations"))
+        with self._connection().cursor() as cur:
+            cur.execute(query, (observation_id, publication_id, _json(payload)))
+
+    def insert_outcome(self, *, observation_id: str, horizon: int, target_revision: int, payload: Mapping[str, Any]) -> None:
+        query_observation = sql.SQL("select 1 from {} where observation_id=%s").format(self._table("observations"))
+        query_existing = sql.SQL("select payload_json from {} where observation_id=%s and horizon=%s and target_revision=%s").format(self._table("outcomes"))
+        query_insert = sql.SQL("insert into {}(observation_id,horizon,target_revision,payload_json) values (%s,%s,%s,%s::jsonb)").format(self._table("outcomes"))
+        encoded = _json(payload)
+        with self._connection().cursor() as cur:
+            cur.execute(query_observation, (observation_id,))
+            if not cur.fetchone():
+                raise ValueError("OUTCOME_OBSERVATION_MISSING")
+            cur.execute(query_existing, (observation_id, horizon, target_revision))
+            existing = cur.fetchone()
+            if existing:
+                value = existing[0] if isinstance(existing[0], dict) else json.loads(existing[0] or "{}")
+                if _json(value) != encoded:
+                    raise ValueError("OUTCOME_IDENTITY_CONFLICT")
+                return
+            cur.execute(query_insert, (observation_id, horizon, target_revision, encoded))
+
 
 __all__ = ["PostgresPublicationWriter"]

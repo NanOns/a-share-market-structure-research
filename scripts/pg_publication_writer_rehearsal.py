@@ -38,6 +38,11 @@ def main() -> int:
                 revision = writer.next_revision(trade_date)
                 writer.insert_publication(publication_id=publication_id, trade_date=trade_date, revision=revision, status="IMPORTING", source_revision_id=None, production_version="probe", source_manifest_sha256="a" * 64, source_identity_sha256="b" * 64, computation_identity_sha256="c" * 64, render_identity_sha256="d" * 64, source_path="runtime/probe", imported_at_utc=datetime.now(timezone.utc))
                 writer.bulk_insert("stock_daily", ("publication_id", "security_id", "trade_date", "security_name", "primary_pattern", "payload_json"), [{"publication_id": publication_id, "security_id": f"probe-{token}", "trade_date": trade_date, "security_name": "probe", "primary_pattern": "TEST", "payload_json": {"probe": True}}])
+                writer.insert_artifact(publication_id=publication_id, artifact_name="probe.csv", source_path="runtime/probe.csv", file_sha256="e" * 64, logical_digest_version="probe-v1", logical_sha256="f" * 64, row_count=1, columns=("security_id",), primary_key=("security_id",))
+                observation_id = f"obs-pg-writer-{token}"
+                writer.insert_observation(observation_id=observation_id, publication_id=publication_id, payload={"probe": True})
+                writer.insert_outcome(observation_id=observation_id, horizon=5, target_revision=revision, payload={"return": 0.1})
+                writer.insert_outcome(observation_id=observation_id, horizon=5, target_revision=revision, payload={"return": 0.1})
                 writer.mark_publication_success(publication_id)
                 writer.set_head(trade_date, publication_id)
             loaded = writer.publication(publication_id)
@@ -45,6 +50,10 @@ def main() -> int:
             with base.connection.cursor() as cur:  # type: ignore[union-attr]
                 cur.execute("select count(*) from workbench.stock_daily where publication_id=%s", (publication_id,))
                 checks["bulk_row_count"] = int(cur.fetchone()[0]) == 1
+                cur.execute("select count(*) from workbench.publication_artifacts where publication_id=%s", (publication_id,))
+                checks["artifact_row_count"] = int(cur.fetchone()[0]) == 1
+                cur.execute("select count(*) from workbench.outcomes where observation_id=%s", (observation_id,))
+                checks["outcome_row_count"] = int(cur.fetchone()[0]) == 1
                 cur.execute("select publication_id from workbench.publication_heads where trade_date=%s", (trade_date,))
                 checks["head_binding"] = cur.fetchone()[0] == publication_id
             try:
@@ -58,12 +67,15 @@ def main() -> int:
                 with connection.cursor() as cur:
                     cur.execute("delete from workbench.publication_heads where trade_date=%s", (trade_date,))
                     cur.execute("delete from workbench.stock_daily where publication_id=%s", (publication_id,))
+                    cur.execute("delete from workbench.outcomes where observation_id=%s", (observation_id,))
+                    cur.execute("delete from workbench.observations where observation_id=%s", (observation_id,))
+                    cur.execute("delete from workbench.publication_artifacts where publication_id=%s", (publication_id,))
                     cur.execute("delete from workbench.publications where publication_id=%s", (publication_id,))
             checks["cleanup"] = writer.publication(publication_id) is None
     except Exception as exc:  # pragma: no cover - reports external database state
         checks["error"] = f"{type(exc).__name__}:{exc}"
         failures.append("postgres_publication_writer")
-    for key in ("publication_roundtrip", "bulk_row_count", "head_binding", "rollback_clean", "cleanup"):
+    for key in ("publication_roundtrip", "bulk_row_count", "artifact_row_count", "outcome_row_count", "head_binding", "rollback_clean", "cleanup"):
         if checks.get(key) is not True:
             failures.append(key)
     report = {"contract_version": "PG_PUBLICATION_WRITER_V1", "generated_at_utc": datetime.now(timezone.utc).isoformat(), "checks": checks, "failures": sorted(set(failures)), "online_switch_performed": False, "data_generation_triggered": False, "acceptance": "DEGRADED_PASS_PUBLICATION_WRITER" if not failures else "BLOCKED", "next_stage": "integrate_postgres_publication_writer_with_relation_binding_and_publisher_recovery" if not failures else "repair_postgres_publication_writer"}

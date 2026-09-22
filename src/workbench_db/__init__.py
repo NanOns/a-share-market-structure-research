@@ -6,6 +6,7 @@ from .read_repository import DuckDBReadRepository, PublicationReadRepository
 from .postgres_write_repository import PostgresWriteRepository
 from .postgres_research_repository import PostgresResearchRepository
 from .postgres_artifact_catalog import ArtifactCatalogError, PostgresArtifactCatalog
+from .backend_provider import AdapterHttpGateway, BackendRepositoryProvider, RepositoryUnavailable
 from .migrations import MigrationError, MigrationExecutor
 
 __all__ = [
@@ -20,4 +21,7 @@ __all__ = [
     "PostgresResearchRepository",
     "ArtifactCatalogError",
     "PostgresArtifactCatalog",
+    "AdapterHttpGateway",
+    "BackendRepositoryProvider",
+    "RepositoryUnavailable",
 ]

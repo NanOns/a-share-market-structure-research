@@ -222,7 +222,9 @@ acceptance: DEGRADED_PASS_PRECUTOVER_INVENTORY
 
 已完成 `OperationsRepository + ArtifactCatalog` 的首个合同切片：`PostgresArtifactCatalog` 将运行时地址收敛为 `managed_root_id + relative_path + sha256 + size_bytes`，拒绝绝对路径、`..` 穿越、盘符路径和受保护根；登记使用参数化 upsert，仍由外部事务决定提交。`scripts/pg_operations_artifact_contract_rehearsal.py` 在临时受管文件上验证登记、摘要 round-trip、强制回滚和 3 类非法路径拒绝，结果为 `DEGRADED_PASS_MANAGED_ROOT_ARTIFACT_ROLLBACK`。报告位于 `runtime/postgres_migration/20260922/pg_operations_artifact_contract_rehearsal_report.json`。该 catalog 尚未替换线上 source freezer、publisher 或 storage service。
 
-下一步固定为 `PGM-09 / cutover adapter injection`：将只读/写入边界以显式配置注入到隔离 HTTP 与任务 harness，完成关键接口双读、受控写入、连接失败 503 和配置回退验收；通过前仍不修改线上主路径，不开始 Focus Tracker 业务表和算法实现。
+已完成隔离 adapter injection harness：`BackendRepositoryProvider` 只按显式 backend 打开 DuckDB 快照或 PostgreSQL，`AdapterHttpGateway` 在 PG 连接失败时返回 `503/POSTGRES_UNAVAILABLE`，不回退 DuckDB。`scripts/pg_cutover_adapter_injection_harness.py` 对 publication heads、研究元数据和今日研究包完成 DuckDB/PG 同请求对账（股票 `5464`、板块 `498`、今日研究总数一致），并验证故障时 `fallback_used=false`，结果为 `DEGRADED_PASS_ISOLATED_ADAPTER_INJECTION_503`。报告位于 `runtime/postgres_migration/20260922/pg_cutover_adapter_injection_harness_report.json`。该 provider 尚未注入现有 `app.py` 或日常任务。
+
+下一步固定为 `PGM-09 / maintenance-window cutover preflight`：只做切换前只读门禁（19 个消费者适配状态、时间列、artifact/path、head/bundle 身份、备份恢复和回退证据汇总），不执行线上切换；所有门通过并经维护窗口授权后，才允许接入正式配置。
 
 ## 15. 阶段记录
 
@@ -230,8 +232,8 @@ acceptance: DEGRADED_PASS_PRECUTOVER_INVENTORY
 |---|---|
 | stage | `PGM-00/01/02/03/04/05-shadow/06-shadow/07-drill/08-rehearsal/09-inventory` |
 | stage_contract | `POSTGRES_MIGRATION_EXECUTION_RECORD_V1` |
-| evidence | 目标连接、冻结快照 SHA-256、103 表复制、逐表行数对账、服务恢复、API shadow、PG 备份恢复、PGM-08 隔离切换演练、19 个应用直连点切换盘点、今日研究包读路径 shadow、publication head shadow、研究元数据 shadow、研究状态/成员角色原始行 shadow、关系边 fallback shadow、适配器注入与配置回退隔离演练、统一只读 repository 合同 shadow、operations 写入边界幂等/事务回滚演练、research run 写入合同幂等/事务回滚演练、ArtifactCatalog managed-root/路径回退演练、空 membership_entries 降级证据 |
+| evidence | 目标连接、冻结快照 SHA-256、103 表复制、逐表行数对账、服务恢复、API shadow、PG 备份恢复、PGM-08 隔离切换演练、19 个应用直连点切换盘点、今日研究包读路径 shadow、publication head shadow、研究元数据 shadow、研究状态/成员角色原始行 shadow、关系边 fallback shadow、适配器注入与配置回退隔离演练、统一只读 repository 合同 shadow、operations 写入边界幂等/事务回滚演练、research run 写入合同幂等/事务回滚演练、ArtifactCatalog managed-root/路径回退演练、隔离 adapter injection 双读与 PG 503 fail-closed 演练、空 membership_entries 降级证据 |
 | acceptance_result | `DEGRADED_PASS / SHADOW_BACKUP_RESTORE_CUTOVER_REHEARSAL_AND_APPLICATION_INVENTORY_COMPLETE` |
-| next_stage | `PGM-09 / cutover adapter injection` |
-| code_changes | 新增 legacy 迁移器、PG schema builder、Artifact/consumer catalog builder、统一只读 repository 合同及 DuckDB/PG 实现、PG 写入边界（jobs/storage_objects）、PG research run/state/member-role 写入边界、PG ArtifactCatalog managed-root 边界、今日研究包、publication head、研究元数据、研究状态、成员角色与关系边只读适配器、数据层/API shadow-read、适配器注入与配置回退隔离演练、operations/research/ArtifactCatalog 合同幂等/事务回滚演练、时间语义审计器、切换演练器、应用直连点盘点器；未修改在线主路径 |
+| next_stage | `PGM-09 / maintenance-window cutover preflight` |
+| code_changes | 新增 legacy 迁移器、PG schema builder、Artifact/consumer catalog builder、统一只读 repository 合同及 DuckDB/PG 实现、显式 backend provider 与 503 fail-closed gateway、PG 写入边界（jobs/storage_objects）、PG research run/state/member-role 写入边界、PG ArtifactCatalog managed-root 边界、今日研究包、publication head、研究元数据、研究状态、成员角色与关系边只读适配器、数据层/API shadow-read、适配器注入与配置回退隔离演练、operations/research/ArtifactCatalog 合同幂等/事务回滚演练、隔离 adapter injection 双读/503 演练、时间语义审计器、切换演练器、应用直连点盘点器；未修改在线主路径 |
 | source_changes | 未修改 DuckDB 和 TDX 输入 |

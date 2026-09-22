@@ -14,11 +14,13 @@ from typing import Any, Iterator, Sequence
 import psycopg
 from psycopg import sql
 
+from .read_repository import PublicationReadRepository
+
 
 DEFAULT_DSN = "host=127.0.0.1 port=5432 dbname=market_research user=postgres"
 
 
-class PostgresRepository:
+class PostgresRepository(PublicationReadRepository):
     def __init__(self, dsn: str | None = None, *, schema: str = "workbench", statement_timeout_ms: int = 30_000):
         self.dsn = dsn or os.environ.get("WORKBENCH_PG_DSN") or DEFAULT_DSN
         self.schema = schema

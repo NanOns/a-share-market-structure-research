@@ -20,6 +20,7 @@ from typing import Any, Iterable, Mapping
 import duckdb
 import pandas as pd
 
+from workbench_db import DuckDBIncrementalWriterRepository, IncrementalWriterRepository
 from .build_planner import DependencySummary, build_plan, task_key, verify_build_plan
 from .incremental_writer import (
     DomainExecutor,
@@ -408,10 +409,14 @@ def run_v3_daily_entry(
     plan: Mapping[str, Any] | None = None,
     source_snapshot_id: str | None = None,
     target_domains: Iterable[str] = V3_DAILY_TARGET_DOMAINS,
+    repository: IncrementalWriterRepository | None = None,
 ) -> dict[str, Any]:
     """Run the V3 daily path from source input through final binding."""
+    # MIGRATION_CONTRACT: daily entry remains MIGRATE_TO_PG until its read
+    # projections and incremental writer share a rehearsed PG transaction.
 
     root_path = Path(root).resolve()
+    repository = repository or DuckDBIncrementalWriterRepository(database_path)
     source_file = Path(source_path).resolve()
     membership_file = Path(membership_path).resolve() if membership_path else None
     source_reader = _ParquetSourceReader(source_file)
@@ -439,7 +444,7 @@ def run_v3_daily_entry(
         raise
     if str(verified.get("status")) == "NO_WORK":
         try:
-            report = IncrementalBuildCoordinator(database_path).execute_daily(
+            report = IncrementalBuildCoordinator(database_path, repository=repository).execute_daily(
                 verified,
                 input_provider=lambda _task: None,
             )
@@ -447,7 +452,7 @@ def run_v3_daily_entry(
         finally:
             source_reader.close()
 
-    with duckdb.connect(str(Path(database_path).resolve())) as connection:
+    with repository.connect() as connection:
         active_source_snapshot = source_snapshot_id or _bound_snapshot(connection, publication_id)
         if not active_source_snapshot:
             raise IncrementalBuildError("V3_REUSE_SOURCE_SNAPSHOT_REQUIRED")
@@ -510,6 +515,7 @@ def run_v3_daily_entry(
         report = IncrementalBuildCoordinator(
             database_path,
             executor_matrix=_daily_executor_matrix(technical_source),
+            repository=repository,
         ).execute_daily(
             verified,
             input_provider=input_provider,

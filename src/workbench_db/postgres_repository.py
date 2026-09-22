@@ -251,3 +251,17 @@ class PostgresRepository:
         with self.connection.cursor() as cur:
             cur.execute(query, (snapshot_id,))
             return cur.fetchall()
+
+    def relation_edges_for_publication(self, publication_id: str) -> list[tuple[Any, ...]]:
+        """Resolve the immutable relation edges bound to a publication."""
+        if self.connection is None:
+            raise RuntimeError("POSTGRES_REPOSITORY_NOT_OPEN")
+        query = sql.SQL(
+            "select b.publication_id,b.source_scope,b.revision_no,e.sector_id,e.security_id,e.source_kind,e.from_revision,e.to_revision "
+            "from {schema}.relation_publication_bindings b join {schema}.relation_edge_intervals e on e.source_scope=b.source_scope "
+            "and e.from_revision<=b.revision_no and (e.to_revision is null or b.revision_no<e.to_revision) "
+            "where b.publication_id=%s order by b.source_scope,e.sector_id,e.security_id,e.source_kind"
+        ).format(schema=sql.Identifier(self.schema))
+        with self.connection.cursor() as cur:
+            cur.execute(query, (publication_id,))
+            return cur.fetchall()

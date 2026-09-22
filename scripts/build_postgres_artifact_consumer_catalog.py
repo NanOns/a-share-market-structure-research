@@ -88,7 +88,12 @@ def consumer_hits() -> list[tuple[str, str, str]]:
             if matched:
                 status = "UNCLASSIFIED"
                 rel = path.relative_to(ROOT).as_posix()
-                if rel == "config/workbench.yaml" or rel.startswith("src/workbench_service/") or rel.startswith("src/workbench_ops/") or rel.startswith("src/workbench_publish/") or rel in {"src/workbench_db/repository.py", "src/workbench_db/backend_provider.py"}:
+                if rel == "src/workbench_service/turnover_enrichment_service.py":
+                    # The only DuckDB session here is an in-memory read_parquet
+                    # used to calculate a request-time local fingerprint.  It
+                    # does not open market_research.duckdb or persist rows.
+                    status = "OFFLINE_DUCKDB_ALLOWED"
+                elif rel == "config/workbench.yaml" or rel.startswith("src/workbench_service/") or rel.startswith("src/workbench_ops/") or rel.startswith("src/workbench_publish/") or rel in {"src/workbench_db/repository.py", "src/workbench_db/backend_provider.py"}:
                     status = "MIGRATE_TO_PG"
                 elif rel.startswith("scripts/audit_") or rel.startswith("scripts/verify_"):
                     status = "RETAIN_UNTIL_AUDIT_CLOSE"

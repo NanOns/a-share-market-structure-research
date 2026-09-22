@@ -267,3 +267,27 @@ class PostgresRepository(PublicationReadRepository):
         with self.connection.cursor() as cur:
             cur.execute(query, (publication_id,))
             return cur.fetchall()
+
+    def publication_source_identity(self, publication_id: str) -> tuple[str, int | None, str | None]:
+        """Return the source identity needed to freeze a publication."""
+        if self.connection is None:
+            raise RuntimeError("POSTGRES_REPOSITORY_NOT_OPEN")
+        query = sql.SQL(
+            "select cast(trade_date as text),source_revision_id,source_identity_sha256 "
+            "from {schema}.publications where publication_id=%s and status='SUCCESS'"
+        ).format(schema=sql.Identifier(self.schema))
+        with self.connection.cursor() as cur:
+            cur.execute(query, (publication_id,))
+            row = cur.fetchone()
+        if not row:
+            raise KeyError("PUBLICATION_NOT_FOUND")
+        return str(row[0]), (int(row[1]) if row[1] is not None else None), (str(row[2]) if row[2] is not None else None)
+
+    def source_bundles(self) -> list[tuple[str, Any]]:
+        """Return source-bundle receipts from the relational catalog."""
+        if self.connection is None:
+            raise RuntimeError("POSTGRES_REPOSITORY_NOT_OPEN")
+        query = sql.SQL("select source_bundle_id,payload_json from {schema}.source_bundles").format(schema=sql.Identifier(self.schema))
+        with self.connection.cursor() as cur:
+            cur.execute(query)
+            return list(cur.fetchall())

@@ -10,9 +10,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
 
-import duckdb
-
 from common.input_snapshot import validate_input_snapshot_manifest
+from workbench_db.read_repository import PublicationReadRepository
 
 
 CONTRACT_VERSION = "history-source-manifest-v1.0"
@@ -198,16 +197,22 @@ class SourceFreezer:
         "bjs.tnf": "security_metadata",
     }
 
-    def __init__(self, root: str | Path, database_path: str | Path | None = None):
+    def __init__(
+        self,
+        root: str | Path,
+        *,
+        repository: PublicationReadRepository,
+    ):
         self.root = Path(root).resolve()
-        self.database_path = Path(database_path).resolve() if database_path else self.root / "data/database/market_research.duckdb"
+        self.repository = repository
 
     def _publication(self, publication_id: str) -> tuple[str, int, str]:
-        with duckdb.connect(str(self.database_path)) as connection:
-            row = connection.execute("select cast(trade_date as varchar),source_revision_id,source_identity_sha256 from publications where publication_id=? and status='SUCCESS'", [publication_id]).fetchone()
-            if not row:
-                raise SourceFreezeError("PUBLICATION_NOT_FOUND")
-        cutoff, revision, identity = row
+        try:
+            cutoff, revision, identity = self.repository.publication_source_identity(publication_id)
+        except (KeyError, RuntimeError, ValueError, TypeError) as exc:
+            if str(exc) == "PUBLICATION_NOT_FOUND" or isinstance(exc, KeyError):
+                raise SourceFreezeError("PUBLICATION_NOT_FOUND") from exc
+            raise
         if revision is None or not identity or len(str(identity)) != 64:
             raise SourceFreezeError("PUBLICATION_SOURCE_REVISION_MISSING")
         return cutoff, int(revision), identity
@@ -235,11 +240,10 @@ class SourceFreezer:
 
     def _matching_bundle(self, cutoff: str, snapshot: dict[str, Any]) -> tuple[str, dict[str, Any]]:
         expected = snapshot.get("source_identity", {}).get("components", {})
-        with duckdb.connect(str(self.database_path)) as connection:
-            rows = connection.execute("select source_bundle_id,payload_json from source_bundles").fetchall()
+        rows = self.repository.source_bundles()
         matches = []
         for bundle_id, raw in rows:
-            value = json.loads(raw)
+            value = raw if isinstance(raw, dict) else json.loads(raw)
             files = value.get("metadata", {}).get("files", {})
             if value.get("target_trade_date") != cutoff:
                 continue

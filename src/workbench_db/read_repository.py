@@ -19,6 +19,10 @@ class PublicationReadRepository(Protocol):
 
     def relation_edges_for_publication(self, publication_id: str) -> list[tuple[Any, ...]]: ...
 
+    def publication_source_identity(self, publication_id: str) -> tuple[str, int | None, str | None]: ...
+
+    def source_bundles(self) -> list[tuple[str, Any]]: ...
+
 
 class DuckDBReadRepository:
     """Read-only implementation used for shadow comparisons and rollback."""
@@ -99,6 +103,21 @@ class DuckDBReadRepository:
                     where b.publication_id=? order by b.source_scope,e.sector_id,e.security_id,e.source_kind""",
                 [publication_id],
             ).fetchall()
+
+    def publication_source_identity(self, publication_id: str) -> tuple[str, int | None, str | None]:
+        with self._cursor() as con:
+            row = con.execute(
+                "select cast(trade_date as varchar),source_revision_id,source_identity_sha256 "
+                "from publications where publication_id=? and status='SUCCESS'",
+                [publication_id],
+            ).fetchone()
+        if not row:
+            raise KeyError("PUBLICATION_NOT_FOUND")
+        return str(row[0]), (int(row[1]) if row[1] is not None else None), (str(row[2]) if row[2] is not None else None)
+
+    def source_bundles(self) -> list[tuple[str, Any]]:
+        with self._cursor() as con:
+            return list(con.execute("select source_bundle_id,payload_json from source_bundles").fetchall())
 
 
 __all__ = ["DuckDBReadRepository", "PublicationReadRepository"]

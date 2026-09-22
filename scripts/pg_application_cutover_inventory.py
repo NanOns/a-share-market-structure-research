@@ -37,6 +37,10 @@ def adapter_contract(path: str) -> tuple[str, str]:
     if path in {"src/workbench_service/incremental_writer.py", "src/workbench_service/research_builder.py", "src/workbench_service/v3_daily_entry.py", "src/workbench_service/result_objects.py", "src/workbench_service/slice_coordinator.py", "src/workbench_service/analysis_activation.py"}:
         return "RESEARCH_REPOSITORY", "result/run/slice writes require PG transaction and idempotency boundary"
     if path in {"src/workbench_service/source_freezer.py", "src/workbench_service/today_research_bundle.py", "src/workbench_service/turnover_enrichment_service.py"}:
+        if path == "src/workbench_service/source_freezer.py":
+            return "ARTIFACT_CATALOG + PUBLICATION_READ_REPOSITORY", "publication/source-bundle reads use an injectable DuckDB/PG repository; default remains DuckDB until service cutover"
+        if path == "src/workbench_service/turnover_enrichment_service.py":
+            return "OFFLINE_PARQUET_FINGERPRINT", "classified OFFLINE_DUCKDB_ALLOWED: in-memory read_parquet only, no market database open and no database writes"
         return "ARTIFACT_CATALOG + RESEARCH_REPOSITORY", "managed artifacts remain files; database references go through catalog/repository"
     if path == "src/workbench_service/history_jobs.py":
         return "OPERATIONS_REPOSITORY + RESEARCH_REPOSITORY", "job state and research data require separate PG transactions"
@@ -108,7 +112,7 @@ def main() -> int:
         "status_counts": {status: sum(row["status"] == status for row in rows) for status in sorted({row["status"] for row in rows})},
         "consumers": rows,
         "acceptance": "DEGRADED_PASS_PRECUTOVER_INVENTORY" if rows and not unmapped else "BLOCKED",
-        "next_stage": "complete application adapter migration and timestamp contracts" if not unmapped else "map unmapped direct consumers before adapter work",
+        "next_stage": "complete application adapter migration" if not unmapped else "map unmapped direct consumers before adapter work",
     }
     atomic_write(REPORT, report)
     print(json.dumps(report, ensure_ascii=False, indent=2))

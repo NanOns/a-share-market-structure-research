@@ -242,6 +242,8 @@ PGM-09 重新扫描并清理了消费者目录中的陈旧记录：当前静态�
 
 随后建立 `PostgresPublicationWriter`：提供 publication identity、按交易日计算 revision、显式允许的日表批量写入、publication head 绑定和成功状态更新，所有操作在同一 PostgreSQL transaction 中提交；`scripts/pg_publication_writer_rehearsal.py` 验证 publication round-trip、stock 日表批量行、head 绑定、强制回滚和清理，结果为 `DEGRADED_PASS_PUBLICATION_WRITER`，报告位于 `runtime/postgres_migration/20260922/pg_publication_writer_rehearsal_report.json`。relation binding、artifact 写入、outcome identity 和 `OneClickPublisher` 主流程尚未注入该 writer，publisher 入口仍为 `NOT_MIGRATED`。
 
+publisher 的关系依赖也已建立 PG 边界：`PostgresRelationRepository` 支持 relation revision、edge interval、sector attribute version、UNCHANGED 重复观察和事务回滚；`scripts/pg_relation_repository_rehearsal.py` 验证首次 revision、同内容重复观察不递增、变更产生新 revision、回滚无残留和清理，结果为 `DEGRADED_PASS_RELATION_REPOSITORY`，报告位于 `runtime/postgres_migration/20260922/pg_relation_repository_rehearsal_report.json`。该仓储尚未注入 `OneClickPublisher` 的 relation binding，publisher 主流程仍保持 `NOT_MIGRATED`。
+
 本轮先固化 backend 配置合同：`config/workbench.yaml` 保持当前 `duckdb` 为 active backend，同时登记 `postgresql_target`（`WORKBENCH_PG_DSN`、`workbench` schema、维护窗口要求、PG 不可用时 fail-closed、`cutover_state=NOT_STARTED`）。这只是可审计的目标配置，不会被当前服务自动读取或触发切换；正式切换仍需完成全部应用入口和维护窗口回退演练。
 
 随后处理历史分析激活入口：`AnalysisActivationService` 不再直接调用 `duckdb.connect`，新增 `AnalysisActivationRepository` 连接边界，当前仅由 DuckDB 兼容实现提供连接；准备快照、激活 publication、复制结果组、绑定 snapshot 和更新 head 的多表事务仍完整保留在服务内，直到 PostgreSQL 事务实现与回滚/幂等 rehearsal 完成前，该入口继续标记为 `NOT_MIGRATED`。M7B activation 测试 `3 passed`，未触发线上激活。

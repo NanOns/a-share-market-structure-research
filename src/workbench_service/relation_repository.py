@@ -16,6 +16,9 @@ from datetime import date, datetime, timezone
 from typing import Any, Iterable, Mapping, Sequence
 
 import duckdb
+from psycopg import sql
+
+from workbench_db.postgres_repository import PostgresRepository
 
 
 PARSER_CONTRACT = "relation-parser-v3-v1"
@@ -418,3 +421,110 @@ class RelationRepository:
                 [scope, item["sector_id"], revision_no, version_id],
             )
         return {"attribute_revision": revision_no, "attribute_version_id": "attrset-" + content_hash[:24]}
+
+
+class PostgresRelationRepository:
+    """PostgreSQL equivalent of the relation revision/observation writer."""
+
+    def __init__(self, repository: PostgresRepository):
+        self.repository = repository
+
+    def _connection(self):
+        if self.repository.connection is None:
+            raise RuntimeError("POSTGRES_REPOSITORY_NOT_OPEN")
+        return self.repository.connection
+
+    def _table(self, name: str) -> sql.Identifier:
+        return sql.Identifier(self.repository.schema, name)
+
+    def current_revision(self, source_scope: str) -> int | None:
+        with self._connection().cursor() as cur:
+            cur.execute(sql.SQL("select max(revision_no) from {} where source_scope=%s").format(self._table("relation_revisions")), (source_scope,))
+            value = cur.fetchone()[0]
+        return int(value) if value is not None else None
+
+    def _edges_at(self, source_scope: str, revision_no: int | None) -> tuple[RelationEdge, ...]:
+        if revision_no is None:
+            return ()
+        query = sql.SQL("select source_scope,sector_id,security_id,source_kind from {} where source_scope=%s and from_revision<=%s and (to_revision is null or %s<to_revision) order by sector_id,security_id,source_kind").format(self._table("relation_edge_intervals"))
+        with self._connection().cursor() as cur:
+            cur.execute(query, (source_scope, revision_no, revision_no))
+            return tuple(RelationEdge(*row) for row in cur.fetchall())
+
+    def record_observation(self, *, source_scope: str, edges: Iterable[Mapping[str, Any]], attributes: Iterable[Mapping[str, Any]] = (), observed_at: datetime | str | None = None, source_effective_date: date | str | None = None, source_file_hashes: Mapping[str, Any] | Sequence[str] = (), hierarchy_version: str | None = None, source_complete: bool = True, observation_id: str | None = None, manage_transaction: bool = True) -> dict[str, Any]:
+        scope = validate_source_scope(source_scope)
+        observation = observation_id or f"relation-observation-{uuid.uuid4().hex}"
+        timestamp = _timestamp(observed_at)
+        effective_date = _date(source_effective_date)
+        hashes_json = json.dumps(source_file_hashes, ensure_ascii=False, sort_keys=True, separators=(",", ":"), default=str)
+        current = self.current_revision(scope)
+        if not source_complete:
+            return self._invalid(observation, scope, timestamp, effective_date, hashes_json, current, hierarchy_version, manage_transaction)
+        try:
+            normalized_edges = normalize_edges(edges, scope)
+        except RelationInputError as exc:
+            if str(exc) != "RELATION_SOURCE_EMPTY":
+                raise
+            return self._invalid(observation, scope, timestamp, effective_date, hashes_json, current, hierarchy_version, manage_transaction)
+        normalized_attributes = normalize_attributes(attributes, scope)
+        previous_edges = self._edges_at(scope, current)
+        new_hash = edge_content_hash(scope, normalized_edges)
+        old_hash = None
+        if current is not None:
+            with self._connection().cursor() as cur:
+                cur.execute(sql.SQL("select edge_content_hash from {} where source_scope=%s and revision_no=%s").format(self._table("relation_revisions")), (scope, current))
+                old_hash = cur.fetchone()[0]
+        def work() -> dict[str, Any]:
+            attr_result = self._prepare_attributes(scope, normalized_attributes)
+            if current is not None and old_hash == new_hash:
+                revision_no = current; status = "UNCHANGED"; diff = diff_relation_edges(previous_edges, normalized_edges)
+            else:
+                revision_no = (current or 0) + 1; diff = diff_relation_edges(previous_edges, normalized_edges)
+                with self._connection().cursor() as cur:
+                    cur.execute(sql.SQL("insert into {}(source_scope,revision_no,revision_id,previous_revision_no,edge_content_hash,parser_contract,created_at) values (%s,%s,%s,%s,%s,%s,%s)").format(self._table("relation_revisions")), (scope, revision_no, f"{scope}:r{revision_no}", current, new_hash, PARSER_CONTRACT, timestamp))
+                    for edge in diff.removed:
+                        cur.execute(sql.SQL("update {} set to_revision=%s where source_scope=%s and sector_id=%s and security_id=%s and source_kind=%s and to_revision is null").format(self._table("relation_edge_intervals")), (revision_no, edge.source_scope, edge.sector_id, edge.security_id, edge.source_kind))
+                    for edge in diff.added:
+                        cur.execute(sql.SQL("insert into {}(source_scope,sector_id,security_id,from_revision,to_revision,source_kind) values (%s,%s,%s,%s,%s,%s)").format(self._table("relation_edge_intervals")), (edge.source_scope, edge.sector_id, edge.security_id, revision_no, None, edge.source_kind))
+                status = "UPDATED"
+            with self._connection().cursor() as cur:
+                cur.execute(sql.SQL("insert into {}(observation_id,source_scope,observed_at,source_effective_date,source_file_hashes,revision_no,attribute_version_id,hierarchy_version,quality) values (%s,%s,%s,%s,%s::jsonb,%s,%s,%s,%s)").format(self._table("relation_observations")), (observation, scope, timestamp, effective_date, hashes_json, revision_no, attr_result["attribute_version_id"], hierarchy_version, VALID_QUALITY))
+            return {"status": status, "updated": status == "UPDATED", "observation_id": observation, "revision_no": revision_no, "attribute_revision": attr_result["attribute_revision"], "attribute_version_id": attr_result["attribute_version_id"], "diff": diff.as_dict()}
+        if manage_transaction:
+            with self.repository.transaction():
+                return work()
+        return work()
+
+    def _invalid(self, observation: str, scope: str, timestamp: datetime, effective_date: date | None, hashes_json: str, current: int | None, hierarchy_version: str | None, manage_transaction: bool) -> dict[str, Any]:
+        def work() -> None:
+            with self._connection().cursor() as cur:
+                cur.execute(sql.SQL("insert into {}(observation_id,source_scope,observed_at,source_effective_date,source_file_hashes,revision_no,attribute_version_id,hierarchy_version,quality) values (%s,%s,%s,%s,%s::jsonb,%s,%s,%s,%s)").format(self._table("relation_observations")), (observation, scope, timestamp, effective_date, hashes_json, current or 0, None, hierarchy_version, INVALID_QUALITY))
+        if manage_transaction:
+            with self.repository.transaction():
+                work()
+        else:
+            work()
+        return {"status": INVALID_QUALITY, "updated": False, "observation_id": observation, "revision_no": current}
+
+    def _prepare_attributes(self, scope: str, attributes: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+        with self._connection().cursor() as cur:
+            if not attributes:
+                cur.execute(sql.SQL("select max(attribute_revision) from {} where source_scope=%s").format(self._table("sector_attribute_revisions")), (scope,))
+                value = cur.fetchone()[0]
+                return {"attribute_revision": int(value) if value is not None else None, "attribute_version_id": None}
+            content_hash = attribute_content_hash(scope, attributes)
+            cur.execute(sql.SQL("select attribute_revision from {} where source_scope=%s and attribute_set_hash=%s").format(self._table("sector_attribute_revisions")), (scope, content_hash))
+            current = cur.fetchone()
+            if current:
+                revision_no = int(current[0]); return {"attribute_revision": revision_no, "attribute_version_id": "attrset-" + content_hash[:24]}
+            cur.execute(sql.SQL("select max(attribute_revision) from {} where source_scope=%s").format(self._table("sector_attribute_revisions")), (scope,))
+            previous = cur.fetchone()[0]
+            revision_no = int(previous or 0) + 1
+            cur.execute(sql.SQL("insert into {}(source_scope,attribute_revision,attribute_set_hash) values (%s,%s,%s)").format(self._table("sector_attribute_revisions")), (scope, revision_no, content_hash))
+            if previous is not None:
+                cur.execute(sql.SQL("update {} set to_attribute_revision=%s where source_scope=%s and to_attribute_revision is null").format(self._table("sector_attribute_revision_bindings")), (revision_no, scope))
+            for item in attributes:
+                version_id = "attr-" + _hash_payload(item)[:24]
+                cur.execute(sql.SQL("insert into {}(source_scope,sector_id,attribute_version_id,name,type,role,semantic_bucket,content_hash) values (%s,%s,%s,%s,%s,%s,%s,%s) on conflict(source_scope,sector_id,attribute_version_id) do nothing").format(self._table("sector_attribute_versions")), (scope, item["sector_id"], version_id, item["name"], item["type"], item["role"], item["semantic_bucket"], _hash_payload(item)))
+                cur.execute(sql.SQL("insert into {}(source_scope,sector_id,from_attribute_revision,to_attribute_revision,attribute_version_id) values (%s,%s,%s,%s,%s)").format(self._table("sector_attribute_revision_bindings")), (scope, item["sector_id"], revision_no, None, version_id))
+            return {"attribute_revision": revision_no, "attribute_version_id": "attrset-" + content_hash[:24]}

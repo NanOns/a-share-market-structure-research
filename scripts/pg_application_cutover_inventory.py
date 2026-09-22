@@ -23,8 +23,16 @@ def adapter_contract(path: str) -> tuple[str, str]:
     if path == "config/workbench.yaml":
         return "CONFIG_INJECTION", "replace engine/path with validated backend config only during maintenance window"
     if path.startswith("src/workbench_ops/"):
+        if path == "src/workbench_ops/config.py":
+            return "OPERATIONS_REPOSITORY", "ConfigVersionStore has DuckDB/PG implementations; default service remains DuckDB until authorized backend switch"
+        if path == "src/workbench_ops/storage.py":
+            return "OPERATIONS_REPOSITORY", "StorageMetadataRepository covers PG registration/leases/preview; file quarantine/delete remains fail-closed"
+        if path == "src/workbench_ops/maintenance.py":
+            return "OPERATIONS_REPOSITORY", "MaintenanceService.status supports PG metadata reader; backup/migration operations remain DuckDB-bound"
         return "OPERATIONS_REPOSITORY", "config/storage/backup/maintenance must use parameterized PG operations APIs"
     if path in {"src/workbench_service/app.py", "src/workbench_publish/service.py"}:
+        if path == "src/workbench_service/app.py":
+            return "WORKBENCH_REPOSITORY + OPERATIONS_REPOSITORY", "config-history route uses repository boundary; public API/daily jobs still require full PG read/write injection"
         return "WORKBENCH_REPOSITORY + OPERATIONS_REPOSITORY", "HTTP and publisher layers must not expose DuckDB connections"
     if path in {"src/workbench_service/incremental_writer.py", "src/workbench_service/research_builder.py", "src/workbench_service/v3_daily_entry.py", "src/workbench_service/result_objects.py", "src/workbench_service/slice_coordinator.py", "src/workbench_service/analysis_activation.py"}:
         return "RESEARCH_REPOSITORY", "result/run/slice writes require PG transaction and idempotency boundary"

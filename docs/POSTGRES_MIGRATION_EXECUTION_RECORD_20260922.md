@@ -210,6 +210,8 @@ PGM-09 重新扫描并清理了消费者目录中的陈旧记录：当前静态�
 
 4 个未决时间字段已补齐版本化来源合同：`PostgresOnlineRepository` 只接受带显式 offset 的 ISO-8601 时间，缺失 `quote_time` 或无时区输入直接拒绝；目标 PostgreSQL 表当时均为 0 行，因此按 `PG_TIMESTAMP_SEMANTICS_V3` 安全升级为 `timestamptz`。`scripts/pg_online_time_contract_rehearsal.py` 验证证据/报价写入、无时区拒绝、报价时间缺失拒绝和事务回滚，结果为 `DEGRADED_PASS_ONLINE_TIME_CONTRACT`。这只关闭时间语义合同，不启用任何在线数据源。
 
+当前 18 个应用入口已逐项重新盘点但仍保持 `NOT_MIGRATED`，没有把“已有 adapter slice”冒充“线上已切换”：`config.py`、`storage.py`、`maintenance.py` 和 `app.py` 已有局部 PG 边界；`backup.py`、`migration.py`、publisher、研究 run/slice/result 写入器和主 API 仍存在 DuckDB 事务直连。`scripts/pg_application_cutover_inventory.py` 的 evidence 字段现在逐入口记录这些局部进展和剩余阻塞。
+
 第二个只读切片完成 publication head 投影：`PostgresRepository.publication_heads()` 与现有 `/api/publications` 的 `include_analysis=0/1` 两种响应均对账通过，各 7 条、latest head 一致；嵌套 `analysis_capabilities` 的 domain/date/slice/basis 质量计算已按相同规则移植并逐项匹配。
 
 同一研究域的板块元数据和全量股票名称投影也已完成 shadow：板块 `498/498`、股票 `5464/5464`，均与冻结 DuckDB 一致；今日研究包列表/详情再次对账通过。报告分别位于 `runtime/postgres_migration/20260922/research_metadata_pg_shadow_report.json` 和 `today_research_pg_shadow_report.json`。

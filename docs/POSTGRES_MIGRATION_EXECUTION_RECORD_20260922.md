@@ -442,6 +442,6 @@ DuckDB 离线计算；这样可避免后续旧同步器覆盖已经写入 PG 的
 应用清单已重新生成：12 个入口中 `MIGRATED=9`、`OFFLINE_DUCKDB_ALLOWED=3`、
 `NOT_MIGRATED=0`。剩余 3 个仅为物理 DuckDB 备份、离线数据库迁移和底层兼容
 repository，不是在线研究/增量入口。维护窗口 preflight 与最终回执均重新验证
-通过：服务 PID `7600`、`READY`、backend `postgresql`、`active_job_count=0`、
+通过：服务当前回执 PID、`READY`、backend `postgresql`、`active_job_count=0`、
 数据表 `103/103`、时间语义 `42/42`、Artifact `141/141`，且本轮
 `data_generation_triggered=false`。

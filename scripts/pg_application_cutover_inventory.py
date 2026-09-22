@@ -43,7 +43,7 @@ def adapter_contract(path: str) -> tuple[str, str]:
             return "OFFLINE_PARQUET_FINGERPRINT", "classified OFFLINE_DUCKDB_ALLOWED: in-memory read_parquet only, no market database open and no database writes"
         return "ARTIFACT_CATALOG + RESEARCH_REPOSITORY", "managed artifacts remain files; database references go through catalog/repository"
     if path == "src/workbench_service/history_jobs.py":
-        return "OPERATIONS_REPOSITORY + RESEARCH_REPOSITORY", "job state and research data require separate PG transactions"
+        return "OPERATIONS_REPOSITORY + RESEARCH_REPOSITORY", "HistoryJobService accepts an injected DuckDB/PG job repository; PG submit/idempotency/cancel/event projection rehearsal passed, default app remains DuckDB until cutover"
     if path == "src/workbench_db/repository.py":
         return "WORKBENCH_REPOSITORY + RELATION_REPOSITORY", "DuckDB repository implementation must be replaced behind stable boundary"
     return "UNMAPPED_ADAPTER", "no safe adapter mapping; keep cutover blocked"

@@ -356,3 +356,7 @@ DuckDB 计算/分析完成后自动调用 `sync_latest_publication_to_postgres.p
 `run_v3_daily_entry` 也采用同一策略：增量快照写入完成后，在 PostgreSQL 后端
 模式下按 cutoff date 调用同步器；`NO_WORK` 和正常构建两条分支都必须拿到
 `FULL_PASS`，否则抛出 `POSTGRES_SYNC_FAILED`。
+
+应用入口清单已重新生成，evidence 字段现在明确记录生产服务中的 PG 默认读/元数据
+写与 DuckDB 隔离计算镜像；12 行状态仍保留为 `NOT_MIGRATED`，因为这些入口尚未
+完成“所有写事务直接落 PG”的最终合同，不能用双写镜像冒充全量迁移。

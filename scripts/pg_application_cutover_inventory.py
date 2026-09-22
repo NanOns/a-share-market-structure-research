@@ -26,20 +26,20 @@ def adapter_contract(path: str) -> tuple[str, str]:
         if path == "src/workbench_ops/config.py":
             return "OPERATIONS_REPOSITORY", "ConfigVersionStore has DuckDB/PG implementations; default service remains DuckDB until authorized backend switch"
         if path == "src/workbench_ops/storage.py":
-            return "OPERATIONS_REPOSITORY", "StorageGovernance accepts PostgresWriteRepository for registration, leases and cleanup plans; PG rehearsal passed, file quarantine/delete remains fail-closed"
+            return "OPERATIONS_REPOSITORY", "production service injects PostgresWriteRepository for registration, leases and cleanup plans; file quarantine/delete remains fail-closed"
         if path == "src/workbench_ops/backup.py":
-            return "OPERATIONS_REPOSITORY", "BackupService accepts an injected PostgreSQL BackupCatalogRepository; catalog round-trip and restore-drill rehearsal passed, physical DuckDB backup remains maintenance-window only"
+            return "OPERATIONS_REPOSITORY", "production service injects PostgreSQL BackupCatalogRepository; physical DuckDB backup remains explicitly maintenance-window-only"
         if path == "src/workbench_ops/maintenance.py":
             return "OPERATIONS_REPOSITORY", "MaintenanceService.status supports PG metadata reader; backup/migration operations remain DuckDB-bound"
         return "OPERATIONS_REPOSITORY", "config/storage/backup/maintenance must use parameterized PG operations APIs"
     if path in {"src/workbench_service/app.py", "src/workbench_publish/service.py"}:
         if path == "src/workbench_service/app.py":
-            return "WORKBENCH_REPOSITORY + OPERATIONS_REPOSITORY", "config-history route uses repository boundary; public API/daily jobs still require full PG read/write injection"
-        return "WORKBENCH_REPOSITORY + OPERATIONS_REPOSITORY", "publisher has explicit PostgreSQL factory/status/writer/relation path and end-to-end rehearsal; default HTTP/task backend remains DuckDB until maintenance-window cutover"
+            return "WORKBENCH_REPOSITORY + OPERATIONS_REPOSITORY", "production HTTP reads and operations metadata use PG; DuckDB remains isolated compute source with transactional publication/research mirror"
+        return "WORKBENCH_REPOSITORY + OPERATIONS_REPOSITORY", "publisher outputs are mirrored to PG transactionally after DuckDB compute; direct PG writer remains an isolated rehearsal boundary"
     if path in {"src/workbench_service/incremental_writer.py", "src/workbench_service/research_builder.py", "src/workbench_service/v3_daily_entry.py", "src/workbench_service/result_objects.py", "src/workbench_service/slice_coordinator.py", "src/workbench_service/analysis_activation.py"}:
         if path == "src/workbench_service/analysis_activation.py":
-            return "RESEARCH_REPOSITORY", "PostgresAnalysisActivationRepository translates the multi-table activation transaction; prepare/activate/idempotent replay/head restore rehearsal passed, default app remains DuckDB"
-        return "RESEARCH_REPOSITORY", "result/run/slice writes require PG transaction and idempotency boundary"
+            return "RESEARCH_REPOSITORY", "production service injects PostgresAnalysisActivationRepository; prepare/activate/idempotent replay/head restore remain transaction-bound"
+        return "RESEARCH_REPOSITORY", "research build and V3 daily outputs are mirrored to PG after DuckDB compute; direct PG result/slice writer remains a separate contract"
     if path in {"src/workbench_service/source_freezer.py", "src/workbench_service/today_research_bundle.py", "src/workbench_service/turnover_enrichment_service.py"}:
         if path == "src/workbench_service/source_freezer.py":
             return "ARTIFACT_CATALOG + PUBLICATION_READ_REPOSITORY", "publication/source-bundle reads use an injectable DuckDB/PG repository; default remains DuckDB until service cutover"
@@ -47,7 +47,7 @@ def adapter_contract(path: str) -> tuple[str, str]:
             return "OFFLINE_PARQUET_FINGERPRINT", "classified OFFLINE_DUCKDB_ALLOWED: in-memory read_parquet only, no market database open and no database writes"
         return "ARTIFACT_CATALOG + RESEARCH_REPOSITORY", "managed artifacts remain files; database references go through catalog/repository"
     if path == "src/workbench_service/history_jobs.py":
-        return "OPERATIONS_REPOSITORY + RESEARCH_REPOSITORY", "HistoryJobService accepts an injected DuckDB/PG job repository; PG submit/idempotency/cancel/event projection rehearsal passed, default app remains DuckDB until cutover"
+        return "OPERATIONS_REPOSITORY + RESEARCH_REPOSITORY", "production service injects PostgresHistoryJobRepository; PG submit/idempotency/cancel/event projection is the default job-state path"
     if path == "src/workbench_db/repository.py":
         return "WORKBENCH_REPOSITORY + RELATION_REPOSITORY", "DuckDB repository implementation must be replaced behind stable boundary"
     return "UNMAPPED_ADAPTER", "no safe adapter mapping; keep cutover blocked"

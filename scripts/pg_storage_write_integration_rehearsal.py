@@ -31,16 +31,35 @@ def main() -> int:
         with PostgresRepository() as repository:
             writer = PostgresWriteRepository(repository)
             storage = StorageGovernance(ROOT, storage_repository=writer)
-            object_id = storage.register(root / f"object-{marker}", kind="rehearsal", successful_date="2099-01-01")
+            with repository.transaction():
+                object_id = storage.register(root / f"object-{marker}", kind="rehearsal", successful_date="2099-01-01")
             first = writer.storage_object(object_id)
-            storage.register(root / f"object-{marker}", kind="rehearsal", successful_date="2099-01-01", referenced=True)
+            with repository.transaction():
+                storage.register(root / f"object-{marker}", kind="rehearsal", successful_date="2099-01-01", referenced=True)
             second = writer.storage_object(object_id)
             checks["object_id"] = object_id
             checks["roundtrip"] = bool(first and second and first["payload"].get("referenced") is False and second["payload"].get("referenced") is True)
             checks["visible_count"] = len([item for item in writer.storage_objects() if item["storage_object_id"] == object_id])
-            with repository.connection.cursor() as cursor:  # type: ignore[union-attr]
-                cursor.execute("delete from workbench.storage_objects where storage_object_id=%s", (object_id,))
-            repository.connection.commit()  # type: ignore[union-attr]
+            lease_id = "lease-" + marker
+            with repository.transaction():
+                storage.acquire_lease(lease_id=lease_id, object_ids=[object_id], owner="pg-rehearsal", ttl_seconds=300)
+            active_lease = writer.lease(lease_id)
+            checks["lease_roundtrip"] = bool(active_lease and active_lease["payload"].get("state") == "ACTIVE")
+            with repository.transaction():
+                storage.release_lease(lease_id=lease_id, owner="pg-rehearsal")
+            released_lease = writer.lease(lease_id)
+            checks["lease_release"] = bool(released_lease and released_lease["payload"].get("state") == "RELEASED")
+            cleanup_id = "cleanup-" + marker
+            cleanup_payload = {"cleanup_job_id": cleanup_id, "state": "PLANNED", "eligible_object_ids": [object_id]}
+            with repository.transaction():
+                writer.upsert_cleanup_job(cleanup_job_id=cleanup_id, payload=cleanup_payload)
+            cleanup_job = writer.cleanup_job(cleanup_id)
+            checks["cleanup_plan_roundtrip"] = bool(cleanup_job and cleanup_job["payload"].get("state") == "PLANNED")
+            with repository.transaction():
+                with repository.connection.cursor() as cursor:  # type: ignore[union-attr]
+                    cursor.execute("delete from workbench.storage_objects where storage_object_id=%s", (object_id,))
+                    cursor.execute("delete from workbench.leases where lease_id=%s", (lease_id,))
+                    cursor.execute("delete from workbench.cleanup_jobs where cleanup_job_id=%s", (cleanup_id,))
             checks["cleanup"] = writer.storage_object(object_id) is None
     except Exception as exc:  # pragma: no cover - report external service state
         checks["error"] = f"{type(exc).__name__}:{exc}"
@@ -49,6 +68,10 @@ def main() -> int:
         failures.append("roundtrip")
     if checks.get("cleanup") is not True:
         failures.append("cleanup")
+    if checks.get("lease_roundtrip") is not True or checks.get("lease_release") is not True:
+        failures.append("lease_boundary")
+    if checks.get("cleanup_plan_roundtrip") is not True:
+        failures.append("cleanup_plan_boundary")
     report = {
         "contract_version": "PG_STORAGE_WRITE_INTEGRATION_REHEARSAL_V1",
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),

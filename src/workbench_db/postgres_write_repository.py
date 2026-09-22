@@ -80,5 +80,45 @@ class PostgresWriteRepository:
             for row in rows
         ]
 
+    def upsert_lease(self, *, lease_id: str, payload: Mapping[str, Any]) -> None:
+        query = sql.SQL(
+            "insert into {schema}.leases(lease_id,payload_json) values (%s,%s::jsonb) "
+            "on conflict(lease_id) do update set payload_json=excluded.payload_json"
+        ).format(schema=sql.Identifier(self.repository.schema))
+        with self._connection().cursor() as cur:
+            cur.execute(query, (lease_id, _payload(payload)))
+
+    def lease(self, lease_id: str) -> dict[str, Any] | None:
+        query = sql.SQL("select lease_id,payload_json from {schema}.leases where lease_id=%s").format(
+            schema=sql.Identifier(self.repository.schema)
+        )
+        with self._connection().cursor() as cur:
+            cur.execute(query, (lease_id,))
+            row = cur.fetchone()
+        if not row:
+            return None
+        payload = row[1] if isinstance(row[1], dict) else json.loads(row[1] or "{}")
+        return {"lease_id": str(row[0]), "payload": payload}
+
+    def upsert_cleanup_job(self, *, cleanup_job_id: str, payload: Mapping[str, Any]) -> None:
+        query = sql.SQL(
+            "insert into {schema}.cleanup_jobs(cleanup_job_id,payload_json) values (%s,%s::jsonb) "
+            "on conflict(cleanup_job_id) do nothing"
+        ).format(schema=sql.Identifier(self.repository.schema))
+        with self._connection().cursor() as cur:
+            cur.execute(query, (cleanup_job_id, _payload(payload)))
+
+    def cleanup_job(self, cleanup_job_id: str) -> dict[str, Any] | None:
+        query = sql.SQL("select cleanup_job_id,payload_json from {schema}.cleanup_jobs where cleanup_job_id=%s").format(
+            schema=sql.Identifier(self.repository.schema)
+        )
+        with self._connection().cursor() as cur:
+            cur.execute(query, (cleanup_job_id,))
+            row = cur.fetchone()
+        if not row:
+            return None
+        payload = row[1] if isinstance(row[1], dict) else json.loads(row[1] or "{}")
+        return {"cleanup_job_id": str(row[0]), "payload": payload}
+
 
 __all__ = ["PostgresWriteRepository"]

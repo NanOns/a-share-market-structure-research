@@ -17,6 +17,10 @@ from .config import ConfigValidationError, OperationsConfig
 class StorageMetadataRepository(Protocol):
     def upsert_storage_object(self, *, storage_object_id: str, payload: dict[str, Any]) -> None: ...
 
+    def upsert_lease(self, *, lease_id: str, payload: dict[str, Any]) -> None: ...
+
+    def lease(self, lease_id: str) -> dict[str, Any] | None: ...
+
 
 def _payload(value: Any) -> str:
     return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), default=str)
@@ -74,23 +78,40 @@ class StorageGovernance:
             raise ConfigValidationError("LEASE_TTL_INVALID")
         now=datetime.now(timezone.utc)
         expires=(now+timedelta(seconds=ttl_seconds)).isoformat()
-        with duckdb.connect(str(self.database_path)) as con:
-            rows=con.execute("SELECT storage_object_id,payload_json FROM storage_objects WHERE storage_object_id IN (SELECT * FROM UNNEST(?))",[object_ids]).fetchall()
-            found={row[0] for row in rows}
-            missing=sorted(set(object_ids)-found)
+        payload={"lease_id":lease_id,"owner":owner,"storage_object_ids":sorted(set(object_ids)),"acquired_at_utc":now.isoformat(),"expires_at_utc":expires,"state":"ACTIVE"}
+        if self.storage_repository is not None:
+            # The injected boundary validates object existence through the
+            # repository when it is supplied; the compatibility path retains
+            # the legacy DuckDB query and error semantics.
+            known = {item["storage_object_id"] for item in getattr(self.storage_repository, "storage_objects")()}
+            missing=sorted(set(object_ids)-known)
             if missing: raise ConfigValidationError("LEASE_OBJECT_NOT_FOUND:"+",".join(missing))
-            payload={"lease_id":lease_id,"owner":owner,"storage_object_ids":sorted(set(object_ids)),"acquired_at_utc":now.isoformat(),"expires_at_utc":expires,"state":"ACTIVE"}
-            con.execute("INSERT INTO leases VALUES (?, ?) ON CONFLICT(lease_id) DO UPDATE SET payload_json=excluded.payload_json",[lease_id,_payload(payload)])
+            self.storage_repository.upsert_lease(lease_id=lease_id, payload=payload)
+        else:
+            with duckdb.connect(str(self.database_path)) as con:
+                rows=con.execute("SELECT storage_object_id,payload_json FROM storage_objects WHERE storage_object_id IN (SELECT * FROM UNNEST(?))",[object_ids]).fetchall()
+                found={row[0] for row in rows}
+                missing=sorted(set(object_ids)-found)
+                if missing: raise ConfigValidationError("LEASE_OBJECT_NOT_FOUND:"+",".join(missing))
+                con.execute("INSERT INTO leases VALUES (?, ?) ON CONFLICT(lease_id) DO UPDATE SET payload_json=excluded.payload_json",[lease_id,_payload(payload)])
         return payload
 
     def release_lease(self, *, lease_id: str, owner: str) -> dict[str, Any]:
-        with duckdb.connect(str(self.database_path)) as con:
-            row=con.execute("SELECT payload_json FROM leases WHERE lease_id=?",[lease_id]).fetchone()
-            if not row: raise ConfigValidationError("LEASE_NOT_FOUND")
-            payload=json.loads(row[0])
+        if self.storage_repository is not None:
+            stored = self.storage_repository.lease(lease_id)
+            if not stored: raise ConfigValidationError("LEASE_NOT_FOUND")
+            payload=stored["payload"]
             if payload.get("owner") != owner: raise ConfigValidationError("LEASE_OWNER_MISMATCH")
             payload.update(state="RELEASED",released_at_utc=datetime.now(timezone.utc).isoformat())
-            con.execute("UPDATE leases SET payload_json=? WHERE lease_id=?",[_payload(payload),lease_id])
+            self.storage_repository.upsert_lease(lease_id=lease_id, payload=payload)
+        else:
+            with duckdb.connect(str(self.database_path)) as con:
+                row=con.execute("SELECT payload_json FROM leases WHERE lease_id=?",[lease_id]).fetchone()
+                if not row: raise ConfigValidationError("LEASE_NOT_FOUND")
+                payload=json.loads(row[0])
+                if payload.get("owner") != owner: raise ConfigValidationError("LEASE_OWNER_MISMATCH")
+                payload.update(state="RELEASED",released_at_utc=datetime.now(timezone.utc).isoformat())
+                con.execute("UPDATE leases SET payload_json=? WHERE lease_id=?",[_payload(payload),lease_id])
         return payload
 
     def preview_cleanup(self, *, as_of: date) -> dict[str, Any]:

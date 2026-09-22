@@ -300,3 +300,23 @@ publisher 的关系依赖也已建立 PG 边界：`PostgresRelationRepository` �
 | next_stage | `PGM-09 / complete application adapter migration` |
 | code_changes | 新增 legacy 迁移器、PG schema builder、Artifact/consumer catalog builder、统一只读 repository 合同及 DuckDB/PG 实现、显式 backend provider 与 503 fail-closed gateway、PG 写入边界（jobs/storage_objects）、PG history job/attempt/event 写入边界、PG publication status/writer/relation 写入边界、PG research run/state/member-role 写入边界、PG research/config/storage metadata adapters、PG ArtifactCatalog managed-root 边界、ConfigVersionStore DuckDB/PG 实现、StorageMetadataRepository 注入边界、ResultObjectRepository/SliceRepository/OperationsMetadataReader/ConfigVersionStore DuckDB/PG 实现、PublicationRepositoryFactory/PublicationStatusReader publisher 边界、PostgresPublicationBackendFactory 与 OneClickPublisher PG run/submit/status 主流程、HistoryJobService PG repository injection 与端到端 rehearsal、PostgresAnalysisActivationRepository 与 AnalysisActivationService PG prepare/activate 主流程、BackupService PostgreSQL catalog injection 与 restore-drill rehearsal、StorageGovernance + PostgresWriteRepository register/lease/cleanup-plan rehearsal、PostgresPublicationWriter/RelationRepository 合同演练、backend target config contract、今日研究包、publication head、研究元数据、研究状态、成员角色与关系只读适配器、SourceFreezer publication/source-bundle repository 读取边界、TurnoverEnrichmentService 内存 Parquet 分类、数据层/API shadow-read、适配器注入与配置回退隔离演练、operations/research/ArtifactCatalog/ConfigVersion/StorageMetadata/ResultObject/SliceRepository/HistoryJobRepository/PublicationWriter/RelationRepository/Publisher/HistoryJobService/AnalysisActivation/BackupService/StorageGovernance PG 主流程合同幂等/事务回滚演练、隔离 adapter injection 双读/503 演练、维护状态读边界、维护窗口 preflight 汇总器、时间语义审计器、切换演练器、应用直连点盘点器；未修改在线主路径 |
 | source_changes | 未修改 DuckDB 和 TDX 输入 |
+
+## 16. PGM-09 / latest publication PG synchronization
+
+在今日生成任务已结束且服务 `READY / active_job_count=0` 后，执行
+`scripts/sync_latest_publication_to_postgres.py`。脚本以 DuckDB 只读连接读取
+2026-09-22 的 publication head、LOCAL_RECONSTRUCTED 分析快照、关系观测/属性
+版本，并在单个 PostgreSQL 事务内写入 `workbench`；失败自动回滚，脚本不会
+触发生成、不会修改服务配置、不会执行线上切换。
+
+同步报告：`runtime/postgres_migration/20260922/pg_latest_publication_sync_report.json`。
+结果为 `FULL_PASS`：publication `m4-49ce0772991047e326a03aa2d25d19b4`、
+analysis snapshot `m10-mainline-preview-dbf4683513501a8b`、88 个切片、5464
+股票、498 板块、948 candidate/board/ranking、27320 structure rows 及关系
+revision/attribute binding 均已提交并完成 head、分析绑定、entry count 硬校验。
+
+同步后的只读验证：PG `publication_heads` 最新日期为 2026-09-22，现有 HTTP
+服务仍返回 2026-09-22 且 `READY`；服务后端仍是 DuckDB，故页面没有被冒险切换到
+尚未完成的 PG 主 API。维护窗口 preflight 仍为 `BLOCKED_PRECUTOVER_HARD_GATES`，
+阻塞项仍明确是 12 个应用消费者 `NOT_MIGRATED` 和服务后端仍为 DuckDB，而非
+今日数据缺失。下一阶段仍为完成主 API/写入入口的真实注入与回退验证。

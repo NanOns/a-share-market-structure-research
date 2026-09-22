@@ -19,6 +19,7 @@ from .publication_repository import (
 from .analysis_activation_repository import AnalysisActivationRepository, DuckDBAnalysisActivationRepository
 from .history_job_repository import HistoryJobRepository, DuckDBHistoryJobRepository
 from .incremental_writer_repository import IncrementalWriterRepository, DuckDBIncrementalWriterRepository
+from .research_builder_repository import ResearchBuilderRepository, DuckDBResearchBuilderRepository
 from .postgres_artifact_catalog import ArtifactCatalogError, PostgresArtifactCatalog
 from .backend_provider import AdapterHttpGateway, BackendRepositoryProvider, RepositoryUnavailable
 from .migrations import MigrationError, MigrationExecutor
@@ -56,6 +57,8 @@ __all__ = [
     "DuckDBHistoryJobRepository",
     "IncrementalWriterRepository",
     "DuckDBIncrementalWriterRepository",
+    "ResearchBuilderRepository",
+    "DuckDBResearchBuilderRepository",
     "ArtifactCatalogError",
     "PostgresArtifactCatalog",
     "AdapterHttpGateway",

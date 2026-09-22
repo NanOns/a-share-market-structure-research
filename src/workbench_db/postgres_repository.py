@@ -92,3 +92,28 @@ class PostgresRepository:
         with self.connection.cursor() as cur:
             cur.execute(query, (publication_id,))
             return {str(security_id): str(name) for security_id, name in cur.fetchall()}
+
+    def publication_heads(self, *, include_analysis: bool = False) -> dict[str, Any]:
+        """Return the public publication head projection used by the API."""
+        if self.connection is None:
+            raise RuntimeError("POSTGRES_REPOSITORY_NOT_OPEN")
+        query = sql.SQL(
+            "select cast(h.trade_date as text),h.publication_id,p.revision,p.production_version "
+            "from {schema}.publication_heads h join {schema}.publications p using(publication_id) "
+            "where p.status='SUCCESS' and (p.production_version not like 'm4-%%' or exists "
+            "(select 1 from {schema}.publication_analysis_snapshots a where a.publication_id=p.publication_id and a.domain='LOCAL_RECONSTRUCTED')) "
+            "order by h.trade_date desc"
+        ).format(schema=sql.Identifier(self.schema))
+        with self.connection.cursor() as cur:
+            cur.execute(query)
+            rows = cur.fetchall()
+        items: list[dict[str, Any]] = []
+        for trade_date, publication_id, revision, production_version in rows:
+            item: dict[str, Any] = {"trade_date": str(trade_date), "publication_id": str(publication_id)}
+            if include_analysis:
+                item.update({"revision": revision, "production_version": production_version})
+            items.append(item)
+        result: dict[str, Any] = {"items": items, "latest_publication_id": items[0]["publication_id"] if items else None}
+        if include_analysis:
+            result["api_contract"] = "WORKBENCH_PUBLICATIONS_API_V1"
+        return result

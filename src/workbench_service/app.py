@@ -8,7 +8,8 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, unquote, urlparse
 import duckdb
-from workbench_db import ApiConnectionProvider, DuckDBApiConnectionProvider
+from workbench_db import ApiConnectionProvider, DuckDBApiConnectionProvider, PostgresDuckDBApiConnectionProvider
+from workbench_db.postgres_repository import PostgresRepository
 from workbench_publish.orchestrator import submit_one_click, ControlledProduction
 from workbench_publish import OneClickPublisher
 from workbench_ops import OperationsConfig, ConfigConflict, ConfigValidationError
@@ -1705,7 +1706,11 @@ class Api:
    return {'publication_id':p,'page':page,'page_size':size,'total':total,'sector_member_count':sector_member_count,'sector_member_rank_basis':'stock_rs20_pct_desc_then_ret20_desc_then_security_id','items':items}
 
 def make_handler(root,db):
- api=Api(db,root=root); research=ResearchQueries(lambda: api._con(),root=root); today_research=TodayResearchBundleReader(root,database_path=db); turnover_enrichment=TurnoverEnrichmentService(root,today_research); events=OnlineEventQueries(lambda: api._con()); p09=P09OnlineProducts(); history=HistoryJobService(root,db); history.recover_interrupted(background=True); activation=AnalysisActivationService(root,db); operations=OperationsConfig(root,db); storage=StorageGovernance(root,db); backups=BackupService(root,db); maintenance=MaintenanceService(root,db); static=Path(root)/'src/workbench_service/static';csrf=secrets.token_urlsafe(24);publishers={};daily_jobs={};research_jobs={};daily_jobs_lock=threading.Lock()
+ pg_api = str(os.environ.get('WORKBENCH_API_BACKEND','')).lower() == 'postgresql'
+ api_provider = PostgresDuckDBApiConnectionProvider() if pg_api else DuckDBApiConnectionProvider(db)
+ api=Api(db,root=root,connection_provider=api_provider)
+ pg_repository = PostgresRepository() if pg_api else None
+ research=ResearchQueries(lambda: api._con(),root=root); today_research=TodayResearchBundleReader(root,database_path=None if pg_api else db,repository=pg_repository); turnover_enrichment=TurnoverEnrichmentService(root,today_research); events=OnlineEventQueries(lambda: api._con()); p09=P09OnlineProducts(); history=HistoryJobService(root,db); history.recover_interrupted(background=True); activation=AnalysisActivationService(root,db); operations=OperationsConfig(root,db); storage=StorageGovernance(root,db); backups=BackupService(root,db); maintenance=MaintenanceService(root,db); static=Path(root)/'src/workbench_service/static';csrf=secrets.token_urlsafe(24);publishers={};daily_jobs={};research_jobs={};daily_jobs_lock=threading.Lock()
  last_operations_status=maintenance.status()
  database_subprocess_active=threading.Event()
  def run_database_subprocess(command,**kwargs):
@@ -1796,6 +1801,22 @@ def make_handler(root,db):
   mainline_result=task.get('mainline_result') or {}
   research_result=task.get('research_result') or {}
   research_v3_3_result=task.get('research_v3_3_result') or {}
+  # When the API is running on PostgreSQL, generation remains an isolated
+  # DuckDB compute step and must publish its completed head into PG before the
+  # job can become visible to the page.  The synchronizer is transactional and
+  # fail-closed; no successful UI state is reported for a missing PG copy.
+  if str(os.environ.get('WORKBENCH_API_BACKEND','')).lower() == 'postgresql':
+   task.update(progress={'status':'SYNCING_POSTGRES_PUBLICATION'})
+   pg_sync=run_database_subprocess([sys.executable,str(Path(root)/'scripts/sync_latest_publication_to_postgres.py'),'--trade-date',trade_date.isoformat()],cwd=root,capture_output=True,text=True,timeout=3600)
+   if pg_sync.returncode:
+    task.update(status='FAILED',progress={'status':'POSTGRES_SYNC_FAILED','error':pg_sync.stderr[-2000:] or pg_sync.stdout[-2000:]});return
+   try:
+    sync_payload=json.loads(pg_sync.stdout) if isinstance(pg_sync.stdout,str) else {}
+   except Exception:
+    sync_payload={}
+   if sync_payload.get('status')!='FULL_PASS':
+    task.update(status='FAILED',progress={'status':'POSTGRES_SYNC_FAILED','error':sync_payload.get('error') or 'PG 同步未通过硬校验'});return
+   task['postgres_sync']=sync_payload
   task.update(
    v3_report=v3_report,
    phase='READY',
@@ -1982,6 +2003,8 @@ def make_handler(root,db):
      out=operations.history()
     elif u.path=='/api/operations/status':
      out=maintenance.status();out.update({'service_pid':os.getpid(),'service_url':'http://'+self.headers.get('Host','127.0.0.1:28765'),'service_control_contract':'WORKBENCH_LOCAL_SERVICE_CONTROL_V1'})
+     if str(os.environ.get('WORKBENCH_API_BACKEND','')).lower()=='postgresql':
+      out.update({'backend':'postgresql','database_path':'postgresql://workbench@127.0.0.1:5432/market_research'})
     elif u.path=='/api/operations/restart-status':
      status_path=Path(root)/'runtime/controlled_restart_status.json';out=json.loads(status_path.read_text('utf-8')) if status_path.is_file() else {'state':'尚未执行'}
     elif u.path=='/api/operations/storage':

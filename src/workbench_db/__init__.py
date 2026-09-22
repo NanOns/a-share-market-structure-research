@@ -28,7 +28,7 @@ from .research_builder_repository import ResearchBuilderRepository, DuckDBResear
 from .backup_repository import BackupRepository, DuckDBBackupRepository
 from .backup_catalog_repository import BackupCatalogRepository, DuckDBBackupCatalogRepository, PostgresBackupCatalogRepository
 from .storage_connection import StorageConnectionRepository, DuckDBStorageConnectionRepository
-from .api_connection import ApiConnectionProvider, DuckDBApiConnectionProvider
+from .api_connection import ApiConnectionProvider, DuckDBApiConnectionProvider, PostgresDuckDBApiConnectionProvider
 from .postgres_artifact_catalog import ArtifactCatalogError, PostgresArtifactCatalog
 from .backend_provider import AdapterHttpGateway, BackendRepositoryProvider, RepositoryUnavailable
 from .migrations import MigrationError, MigrationExecutor
@@ -85,6 +85,7 @@ __all__ = [
     "DuckDBStorageConnectionRepository",
     "ApiConnectionProvider",
     "DuckDBApiConnectionProvider",
+    "PostgresDuckDBApiConnectionProvider",
     "ArtifactCatalogError",
     "PostgresArtifactCatalog",
     "AdapterHttpGateway",

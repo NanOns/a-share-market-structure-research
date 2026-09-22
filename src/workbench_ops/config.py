@@ -9,7 +9,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-import duckdb
+import duckdb  # compatibility export for existing failure-injection tests
+from workbench_db.config_store import ConfigVersionStore, DuckDBConfigVersionStore
 
 
 class ConfigValidationError(ValueError):
@@ -51,9 +52,10 @@ def _is_root(path: Path) -> bool:
 class OperationsConfig:
     """Versioned M5 config with explicit validation before it can take effect."""
 
-    def __init__(self, root: str | Path, database_path: str | Path | None = None):
+    def __init__(self, root: str | Path, database_path: str | Path | None = None, *, version_store: ConfigVersionStore | None = None):
         self.root = Path(root).resolve()
         self.database_path = Path(database_path).resolve() if database_path else self.root / "data/database/market_research.duckdb"
+        self.version_store = version_store or DuckDBConfigVersionStore(self.database_path)
         self.local_path = self.root / "runtime/operations_config.json"
         self._apply_lock = threading.Lock()
 
@@ -111,8 +113,7 @@ class OperationsConfig:
             try:
                 temp.write_text(_canonical(payload), encoding="utf-8")
                 os.replace(temp, self.local_path)
-                with duckdb.connect(str(self.database_path)) as con:
-                    con.execute("INSERT INTO config_versions VALUES (?, ?) ON CONFLICT DO NOTHING", [revision, _canonical(payload)])
+                self.version_store.put(revision, _canonical(payload))
             except Exception:
                 if previous_bytes is None:
                     self.local_path.unlink(missing_ok=True)
@@ -126,6 +127,9 @@ class OperationsConfig:
             if previous_bytes is not None:
                 previous.write_bytes(previous_bytes)
             return {"revision": revision, "config": config, "validation": report}
+
+    def history(self) -> dict[str, Any]:
+        return {"items": self.version_store.list()}
 
     def _tdx_root(self) -> str:
         # The configured immutable source is intentionally read without writing it.

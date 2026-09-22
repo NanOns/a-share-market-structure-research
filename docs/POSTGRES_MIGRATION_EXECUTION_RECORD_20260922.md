@@ -204,6 +204,8 @@ acceptance: DEGRADED_PASS_PRECUTOVER_INVENTORY
 
 PGM-09 重新扫描并清理了消费者目录中的陈旧记录：当前静态目录为 105 个消费者，其中 `MIGRATE_TO_PG=18`、`OFFLINE_DUCKDB_ALLOWED=65`、`RETAIN_UNTIL_AUDIT_CLOSE=22`、`UNCLASSIFIED=0`。`TodayResearchBundleReader` 已移除 `duckdb.connect` 直连，`database_path` 兼容入口现在构造 `DuckDBReadRepository`，名称投影按每次只读会话读取；因此当前待迁移直连点从 19 个减少为 18 个，结果保持既有 DuckDB 页面语义不变。该变化只关闭连接边界，不代表 PostgreSQL 已成为线上主库。
 
+本轮继续关闭运维配置历史的连接边界：新增 `ConfigVersionStore` 合同、DuckDB 兼容实现和 PostgreSQL 实现，`OperationsConfig` 的版本持久化与历史查询不再在业务模块内直接调用 `duckdb.connect`；`scripts/pg_config_store_rehearsal.py` 完成 PG 写入、读取、清理闭环，结果为 `DEGRADED_PASS_CONFIG_STORE`。默认线上配置仍保持 DuckDB 兼容实现，未改变服务后端，也未触发配置切换。
+
 第二个只读切片完成 publication head 投影：`PostgresRepository.publication_heads()` 与现有 `/api/publications` 的 `include_analysis=0/1` 两种响应均对账通过，各 7 条、latest head 一致；嵌套 `analysis_capabilities` 的 domain/date/slice/basis 质量计算已按相同规则移植并逐项匹配。
 
 同一研究域的板块元数据和全量股票名称投影也已完成 shadow：板块 `498/498`、股票 `5464/5464`，均与冻结 DuckDB 一致；今日研究包列表/详情再次对账通过。报告分别位于 `runtime/postgres_migration/20260922/research_metadata_pg_shadow_report.json` 和 `today_research_pg_shadow_report.json`。
@@ -236,8 +238,8 @@ PGM-09 重新扫描并清理了消费者目录中的陈旧记录：当前静态�
 |---|---|
 | stage | `PGM-00/01/02/03/04/05-shadow/06-shadow/07-drill/08-rehearsal/09-inventory` |
 | stage_contract | `POSTGRES_MIGRATION_EXECUTION_RECORD_V1` |
-| evidence | 目标连接、冻结快照 SHA-256、103 表复制、逐表行数对账、服务恢复、API shadow、PG 备份恢复、PGM-08 隔离切换演练、当前 18 个应用直连点切换盘点、今日研究包读路径 shadow、publication head shadow、研究元数据 shadow、研究状态/成员角色原始行 shadow、关系边 fallback shadow、适配器注入与配置回退隔离演练、统一只读 repository 合同 shadow、operations 写入边界幂等/事务回滚演练、research run 写入合同幂等/事务回滚演练、ArtifactCatalog managed-root/路径回退演练、隔离 adapter injection 双读与 PG 503 fail-closed 演练、维护窗口 preflight 硬门汇总、空 membership_entries 降级证据 |
+| evidence | 目标连接、冻结快照 SHA-256、103 表复制、逐表行数对账、服务恢复、API shadow、PG 备份恢复、PGM-08 隔离切换演练、当前 18 个应用直连点切换盘点、今日研究包读路径 shadow、publication head shadow、研究元数据 shadow、研究状态/成员角色原始行 shadow、关系边 fallback shadow、适配器注入与配置回退隔离演练、统一只读 repository 合同 shadow、operations 写入边界幂等/事务回滚演练、research run 写入合同幂等/事务回滚演练、ArtifactCatalog managed-root/路径回退演练、隔离 adapter injection 双读与 PG 503 fail-closed 演练、ConfigVersionStore PG 写入/读取/清理演练、维护窗口 preflight 硬门汇总、空 membership_entries 降级证据 |
 | acceptance_result | `DEGRADED_PASS / SHADOW_BACKUP_RESTORE_CUTOVER_REHEARSAL_AND_APPLICATION_INVENTORY_COMPLETE` |
 | next_stage | `PGM-09 / complete application adapter migration and timestamp contracts` |
-| code_changes | 新增 legacy 迁移器、PG schema builder、Artifact/consumer catalog builder、统一只读 repository 合同及 DuckDB/PG 实现、显式 backend provider 与 503 fail-closed gateway、PG 写入边界（jobs/storage_objects）、PG research run/state/member-role 写入边界、PG ArtifactCatalog managed-root 边界、今日研究包、publication head、研究元数据、研究状态、成员角色与关系边只读适配器、数据层/API shadow-read、适配器注入与配置回退隔离演练、operations/research/ArtifactCatalog 合同幂等/事务回滚演练、隔离 adapter injection 双读/503 演练、维护窗口 preflight 汇总器、时间语义审计器、切换演练器、应用直连点盘点器；未修改在线主路径 |
+| code_changes | 新增 legacy 迁移器、PG schema builder、Artifact/consumer catalog builder、统一只读 repository 合同及 DuckDB/PG 实现、显式 backend provider 与 503 fail-closed gateway、PG 写入边界（jobs/storage_objects）、PG research run/state/member-role 写入边界、PG ArtifactCatalog managed-root 边界、ConfigVersionStore DuckDB/PG 实现、今日研究包、publication head、研究元数据、研究状态、成员角色与关系边只读适配器、数据层/API shadow-read、适配器注入与配置回退隔离演练、operations/research/ArtifactCatalog 合同幂等/事务回滚演练、ConfigVersionStore 写入/读取/清理演练、隔离 adapter injection 双读/503 演练、维护窗口 preflight 汇总器、时间语义审计器、切换演练器、应用直连点盘点器；未修改在线主路径 |
 | source_changes | 未修改 DuckDB 和 TDX 输入 |

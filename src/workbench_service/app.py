@@ -1980,7 +1980,7 @@ def make_handler(root,db):
     elif u.path=='/api/input/latest': out=api.latest_bundle()
     elif u.path=='/api/operations/config': out=operations.current()
     elif u.path=='/api/operations/config/history':
-     with duckdb.connect(str(db)) as c: out={'items':[json.loads(x[0]) for x in c.execute('select payload_json from config_versions').fetchall()]}
+     out=operations.history()
     elif u.path=='/api/operations/status':
      out=maintenance.status();out.update({'service_pid':os.getpid(),'service_url':'http://'+self.headers.get('Host','127.0.0.1:28765'),'service_control_contract':'WORKBENCH_LOCAL_SERVICE_CONTROL_V1'})
     elif u.path=='/api/operations/restart-status':

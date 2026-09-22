@@ -647,7 +647,7 @@ class Api:
   if not source_path.is_file():return {}
   source_path=source_path.resolve()
   try:
-   with duckdb.connect() as parquet_con:
+   with DuckDBApiConnectionProvider(source_path).memory() as parquet_con:
     normalized_latest=parquet_con.execute('select max(date) from read_parquet(?)',[str(source_path)]).fetchone()[0]
   except Exception:return {}
   if normalized_latest!=current:return {}
@@ -1189,7 +1189,7 @@ class Api:
    if reconstructed and fallback.is_file(): source_info=(fallback,{'preview':True});self._source_cache[p]=source_info
   if not source_info: raise ValueError('SOURCE_NOT_FROZEN')
   source_path,_=source_info;cutoff=date.fromisoformat(cutoff_text)
-  with duckdb.connect() as source:
+  with DuckDBApiConnectionProvider(source_path).memory() as source:
    frame=source.execute('select date,raw_open,raw_high,raw_low,raw_close,adj_open,adj_high,adj_low,adj_close,raw_volume,raw_amount from read_parquet(?) where security_id=? and date<=? order by date',[str(source_path),security_id,cutoff]).df()
    expected=[row[0] for row in source.execute('select distinct date from read_parquet(?) where is_master_session and date<=? order by date',[str(source_path),cutoff]).fetchall()]
   rps={}
@@ -1562,7 +1562,7 @@ class Api:
  def _window_sessions(self):
   if self._window_sessions_cache is None:
    path=self._root/'data/normalized/adjusted_daily.parquet'
-   with duckdb.connect() as c:
+   with self._connection_provider.memory() as c:
     sessions=c.execute('select distinct date from read_parquet(?) where is_master_session order by date',[str(path)]).fetchall()
     observed=c.execute('select distinct date from read_parquet(?) where is_master_session and data_observed order by date',[str(path)]).fetchall()
    self._window_sessions_cache=([row[0] for row in sessions],[row[0] for row in observed])
@@ -1741,7 +1741,7 @@ def make_handler(root,db):
    # A successful input command may be supplied by an embedded/test runner
    # that records only the versioned source-bundle catalog. Recover only a
    # unique, fully identified bundle; ambiguity still fails closed.
-   with duckdb.connect(str(db)) as receipt_connection:
+   with api._connection_provider.connect() as receipt_connection:
     candidates=[json.loads(row[0]) for row in receipt_connection.execute('select payload_json from source_bundles').fetchall()]
    candidates=[item for item in candidates if item.get('source_bundle_id') and item.get('target_trade_date')]
    if len(candidates)==1:

@@ -12,6 +12,9 @@ class ApiConnectionProvider(Protocol):
     @contextmanager
     def connect(self, *, read_only: bool = False) -> Iterator[Any]: ...
 
+    @contextmanager
+    def memory(self) -> Iterator[Any]: ...
+
 
 class DuckDBApiConnectionProvider:
     def __init__(self, database_path: str | Path):
@@ -20,6 +23,11 @@ class DuckDBApiConnectionProvider:
     @contextmanager
     def connect(self, *, read_only: bool = False) -> Iterator[duckdb.DuckDBPyConnection]:
         with duckdb.connect(str(self.database_path), read_only=read_only) as connection:
+            yield connection
+
+    @contextmanager
+    def memory(self) -> Iterator[duckdb.DuckDBPyConnection]:
+        with duckdb.connect() as connection:
             yield connection
 
 

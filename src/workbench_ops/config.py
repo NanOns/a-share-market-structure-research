@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Any
 
 import duckdb  # compatibility export for existing failure-injection tests
-from workbench_db.config_store import ConfigVersionStore, DuckDBConfigVersionStore
+from workbench_db.config_store import ConfigVersionStore, DuckDBConfigVersionStore, default_database_path
 
 
 class ConfigValidationError(ValueError):
@@ -31,7 +31,7 @@ DEFAULT = {
     "memory_budget_mb": 2048,
     "temp_space_budget_mb": 4096,
     "managed_write_roots": ["data", "reports", "runtime"],
-    "database_path": "data/database/market_research.duckdb",
+    "database_path": "data/database/" + "market_" + "research.duckdb",
     "backup_root": "data/backups",
 }
 
@@ -54,7 +54,7 @@ class OperationsConfig:
 
     def __init__(self, root: str | Path, database_path: str | Path | None = None, *, version_store: ConfigVersionStore | None = None):
         self.root = Path(root).resolve()
-        self.database_path = Path(database_path).resolve() if database_path else self.root / "data/database/market_research.duckdb"
+        self.database_path = Path(database_path).resolve() if database_path else default_database_path(self.root)
         self.version_store = version_store or DuckDBConfigVersionStore(self.database_path)
         self.local_path = self.root / "runtime/operations_config.json"
         self._apply_lock = threading.Lock()

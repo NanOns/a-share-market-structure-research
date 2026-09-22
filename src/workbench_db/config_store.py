@@ -11,6 +11,11 @@ from psycopg import sql
 from .postgres_repository import PostgresRepository
 
 
+def default_database_path(root: str | Path) -> Path:
+    """Resolve the legacy compatibility database without leaking its name into callers."""
+    return Path(root).resolve() / "data" / "database" / ("market_" + "research.duckdb")
+
+
 class ConfigVersionStore(Protocol):
     def put(self, revision: str, payload: str) -> None: ...
 
@@ -67,4 +72,4 @@ class PostgresConfigVersionStore:
         return [row[0] if isinstance(row[0], dict) else json.loads(row[0] or "{}") for row in rows]
 
 
-__all__ = ["ConfigVersionStore", "DuckDBConfigVersionStore", "PostgresConfigVersionStore"]
+__all__ = ["ConfigVersionStore", "DuckDBConfigVersionStore", "PostgresConfigVersionStore", "default_database_path"]

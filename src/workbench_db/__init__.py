@@ -4,7 +4,7 @@ from .owner import DatabaseOwner, DatabaseOwnerBusy
 from .repository import WorkbenchRepository
 from .read_repository import DuckDBReadRepository, PublicationReadRepository
 from .postgres_write_repository import PostgresWriteRepository
-from .config_store import ConfigVersionStore, DuckDBConfigVersionStore, PostgresConfigVersionStore
+from .config_store import ConfigVersionStore, DuckDBConfigVersionStore, PostgresConfigVersionStore, default_database_path
 from .postgres_online_repository import PostgresOnlineRepository
 from .postgres_research_repository import PostgresResearchRepository
 from .result_object_repository import DuckDBResultObjectRepository, PostgresResultObjectRepository, ResultObjectRepository
@@ -26,6 +26,7 @@ __all__ = [
     "ConfigVersionStore",
     "DuckDBConfigVersionStore",
     "PostgresConfigVersionStore",
+    "default_database_path",
     "PostgresOnlineRepository",
     "PostgresResearchRepository",
     "ResultObjectRepository",

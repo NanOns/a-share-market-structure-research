@@ -14,6 +14,8 @@ from .publication_repository import (
     DuckDBPublicationRepositoryFactory,
     DuckDBPublicationStatusReader,
     PostgresPublicationStatusReader,
+    PostgresPublicationBackend,
+    PostgresPublicationBackendFactory,
     PublicationRepositoryFactory,
     PublicationStatusReader,
 )
@@ -59,6 +61,8 @@ __all__ = [
     "PublicationStatusReader",
     "DuckDBPublicationStatusReader",
     "PostgresPublicationStatusReader",
+    "PostgresPublicationBackend",
+    "PostgresPublicationBackendFactory",
     "AnalysisActivationRepository",
     "DuckDBAnalysisActivationRepository",
     "HistoryJobRepository",

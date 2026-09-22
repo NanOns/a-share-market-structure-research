@@ -11,6 +11,7 @@ import json
 import time
 from contextlib import contextmanager
 from pathlib import Path
+from dataclasses import dataclass
 from typing import Any, Iterator, Protocol
 
 import duckdb
@@ -19,11 +20,37 @@ from psycopg import sql
 from .config_store import default_database_path
 from .repository import WorkbenchRepository
 from .postgres_repository import PostgresRepository
+from .postgres_publication_writer import PostgresPublicationWriter
+from .postgres_history_job_repository import PostgresHistoryJobRepository
+from workbench_service.relation_repository import PostgresRelationRepository
 
 
 class PublicationRepositoryFactory(Protocol):
     @contextmanager
     def open(self, *, timeout_seconds: float = 15.0) -> Iterator[WorkbenchRepository]: ...
+
+
+@dataclass
+class PostgresPublicationBackend:
+    repository: PostgresRepository
+    writer: PostgresPublicationWriter
+    jobs: PostgresHistoryJobRepository
+    relations: PostgresRelationRepository
+
+
+class PostgresPublicationBackendFactory:
+    """Explicit PostgreSQL backend for the publisher cutover rehearsal."""
+
+    def __init__(self, dsn: str | None = None, *, schema: str = "workbench"):
+        self.dsn = dsn
+        self.schema = schema
+        self.database_path = None
+
+    @contextmanager
+    def open(self, *, timeout_seconds: float = 15.0) -> Iterator[PostgresPublicationBackend]:
+        del timeout_seconds
+        with PostgresRepository(self.dsn, schema=self.schema) as repository:
+            yield PostgresPublicationBackend(repository, PostgresPublicationWriter(repository), PostgresHistoryJobRepository(repository), PostgresRelationRepository(repository))
 
 
 class DuckDBPublicationRepositoryFactory:
@@ -122,6 +149,8 @@ class PostgresPublicationStatusReader:
 
 __all__ = [
     "PublicationRepositoryFactory",
+    "PostgresPublicationBackend",
+    "PostgresPublicationBackendFactory",
     "DuckDBPublicationRepositoryFactory",
     "PublicationStatusReader",
     "DuckDBPublicationStatusReader",

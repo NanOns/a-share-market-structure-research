@@ -33,7 +33,7 @@ def adapter_contract(path: str) -> tuple[str, str]:
     if path in {"src/workbench_service/app.py", "src/workbench_publish/service.py"}:
         if path == "src/workbench_service/app.py":
             return "WORKBENCH_REPOSITORY + OPERATIONS_REPOSITORY", "config-history route uses repository boundary; public API/daily jobs still require full PG read/write injection"
-        return "WORKBENCH_REPOSITORY + OPERATIONS_REPOSITORY", "HTTP and publisher layers must not expose DuckDB connections"
+        return "WORKBENCH_REPOSITORY + OPERATIONS_REPOSITORY", "publisher has explicit PostgreSQL factory/status/writer/relation path and end-to-end rehearsal; default HTTP/task backend remains DuckDB until maintenance-window cutover"
     if path in {"src/workbench_service/incremental_writer.py", "src/workbench_service/research_builder.py", "src/workbench_service/v3_daily_entry.py", "src/workbench_service/result_objects.py", "src/workbench_service/slice_coordinator.py", "src/workbench_service/analysis_activation.py"}:
         return "RESEARCH_REPOSITORY", "result/run/slice writes require PG transaction and idempotency boundary"
     if path in {"src/workbench_service/source_freezer.py", "src/workbench_service/today_research_bundle.py", "src/workbench_service/turnover_enrichment_service.py"}:

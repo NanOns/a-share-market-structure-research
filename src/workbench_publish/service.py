@@ -14,6 +14,8 @@ from typing import Any, Callable
 from workbench_db import (
     DuckDBPublicationRepositoryFactory,
     DuckDBPublicationStatusReader,
+    PostgresPublicationBackendFactory,
+    PostgresPublicationStatusReader,
     PublicationRepositoryFactory,
     PublicationStatusReader,
 )
@@ -87,12 +89,14 @@ class OneClickPublisher:
         repository_factory: PublicationRepositoryFactory | None = None,
         status_reader: PublicationStatusReader | None = None,
         relation_writer_factory: Callable[[Any], Any] | None = None,
+        postgres_backend_factory: PostgresPublicationBackendFactory | None = None,
     ):
         self.root = Path(root).resolve()
         self._repository_factory = repository_factory or DuckDBPublicationRepositoryFactory(self.root, database_path)
         self.database_path = Path(database_path).resolve() if database_path else self._repository_factory.database_path
         self._status_reader = status_reader or DuckDBPublicationStatusReader(self.root, self.database_path)
         self._relation_writer_factory = relation_writer_factory or (lambda connection: RelationRepository(connection))
+        self._postgres_backend_factory = postgres_backend_factory
         self._threads: dict[str, threading.Thread] = {}
         self._progress: dict[str, dict[str, Any]] = {}
         self.bundle_verifier=bundle_verifier
@@ -102,6 +106,13 @@ class OneClickPublisher:
         """Open the configured repository through the backend boundary."""
         with self._repository_factory.open(timeout_seconds=timeout_seconds) as repository:
             yield repository
+
+    @contextmanager
+    def _open_postgres_backend(self):
+        if self._postgres_backend_factory is None:
+            raise RuntimeError("POSTGRES_PUBLICATION_BACKEND_NOT_CONFIGURED")
+        with self._postgres_backend_factory.open() as backend:
+            yield backend
 
     def _event(self, con, job_id: str, attempt: int, status: str, **details: Any) -> None:
         seq = con.execute("SELECT coalesce(max(sequence),0)+1 FROM job_events WHERE job_id=? AND attempt=?", [job_id, attempt]).fetchone()[0]
@@ -209,6 +220,21 @@ class OneClickPublisher:
         active=self._threads.get(job_id)
         if active and active.is_alive():
             return job_id
+        if self._postgres_backend_factory is not None:
+            with self._open_postgres_backend() as backend:
+                with backend.repository.transaction():
+                    existing = backend.jobs.job_by_key(request.job_key)
+                    if existing and existing["status"] in ("SUCCESS", "QUEUED", "RUNNING"):
+                        return str(existing["job_id"])
+                    payload = {"contract": CONTRACT_VERSION, "job_kind": "PUBLICATION", "publication_id": request.publication_id, "request": request.persisted()}
+                    backend.jobs.upsert_job(job_id=job_id, job_key=request.job_key, status="QUEUED", payload=payload)
+                    backend.jobs.upsert_attempt(job_id=job_id, attempt=1, status="QUEUED", payload={"attempt": 1, "stage": "QUEUED"})
+                    backend.jobs.append_event(job_id=job_id, attempt=1, status="QUEUED", details={"publication_id": request.publication_id})
+            self._progress[job_id]={"status":"QUEUED"}
+            thread = threading.Thread(target=self.run, args=(request, compute), daemon=True, name=job_id)
+            self._threads[job_id] = thread
+            thread.start()
+            return job_id
         with self._open_repository() as repo:
             con = repo.connection
             assert con is not None
@@ -235,10 +261,38 @@ class OneClickPublisher:
         if cached and cached.get("status") in ("SUCCESS", "FAILED"):
             return {"job_id": job_id, "status": cached["status"], "publication_id": cached.get("publication_id"),
                     "details": {}, "progress": cached, "updated_at_utc": cached.get("updated_at_utc")}
+        if self._postgres_backend_factory is not None:
+            with self._open_postgres_backend() as backend:
+                return PostgresPublicationStatusReader(backend.repository).read(job_id)
         # Status is a read path and must stay backend-neutral for the PG cutover.
         return self._status_reader.read(job_id)
 
     def recover_interrupted(self, compute: Callable[[PublicationRequest], PublicationRequest] | None=None, *, background: bool=False) -> list[dict[str, Any]]:
+        if self._postgres_backend_factory is not None:
+            with self._open_postgres_backend() as backend:
+                with backend.repository.transaction():
+                    job_ids = backend.jobs.active_history_jobs("PUBLICATION")
+                    rows = [backend.jobs.job(job_id) for job_id in job_ids]
+                    for item in rows:
+                        if not item:
+                            continue
+                        backend.jobs.update_job(item["job_id"], status="INTERRUPTED")
+                        latest = backend.jobs.latest_attempt(item["job_id"])
+                        if latest and latest["status"] == "RUNNING":
+                            backend.jobs.update_attempt(item["job_id"], latest["attempt"], status="INTERRUPTED")
+            results=[]
+            for item in rows:
+                if not item:
+                    continue
+                request=PublicationRequest.restore(item["payload"]["request"])
+                job_id=item["job_id"]
+                if background:
+                    thread=threading.Thread(target=self.run,args=(request,compute),daemon=True,name=job_id)
+                    self._threads[job_id]=thread; thread.start()
+                    results.append({"job_id":job_id,"status":"QUEUED","recovered":True})
+                else:
+                    results.append(self.run(request,compute))
+            return results
         with self._open_repository() as repo:
             rows=repo.connection.execute("SELECT job_id,payload_json FROM jobs WHERE status IN ('QUEUED','RUNNING','INTERRUPTED') ORDER BY job_id").fetchall()
             repo.connection.execute("UPDATE jobs SET status='INTERRUPTED' WHERE status='RUNNING'")
@@ -254,8 +308,102 @@ class OneClickPublisher:
                 results.append(self.run(request,compute))
         return results
 
+    def _run_postgres(self, request: PublicationRequest, compute: Callable[[PublicationRequest], PublicationRequest] | None = None, *, crash_at: str | None = None) -> dict[str, Any]:
+        """Run the publication commit through the explicit PG writer contract."""
+        job_id = "job-" + request.job_key[:32]
+        self._progress[job_id] = {"status": "COMPUTING", "updated_at_utc": datetime.now(timezone.utc).isoformat()}
+        with self._open_postgres_backend() as backend:
+            with backend.repository.transaction():
+                attempt = backend.jobs.next_attempt(job_id)
+                payload = {"contract": CONTRACT_VERSION, "job_kind": "PUBLICATION", "publication_id": request.publication_id, "request": request.persisted()}
+                backend.jobs.upsert_job(job_id=job_id, job_key=request.job_key, status="RUNNING", payload=payload)
+                backend.jobs.upsert_attempt(job_id=job_id, attempt=attempt, status="RUNNING", payload={"started_at_utc": datetime.now(timezone.utc).isoformat()})
+                backend.jobs.append_event(job_id=job_id, attempt=attempt, status="COMPUTING")
+            try:
+                bundle_path = self.root / "data/source_bundles" / request.source_bundle_id / "source_bundle.json"
+                verified = self.bundle_verifier(bundle_path)
+                if verified["source_bundle_id"] != request.source_bundle_id:
+                    raise ValueError("SOURCE_BUNDLE_IDENTITY_MISMATCH")
+                prepared = compute(request) if compute else request
+                self._validate(request, prepared)
+                publication_id = prepared.publication_id
+                self._progress[job_id] = {"status": "COMMITTING", "publication_id": publication_id, "updated_at_utc": datetime.now(timezone.utc).isoformat()}
+                if crash_at == "before_commit":
+                    raise SimulatedCrash("CRASH_BEFORE_COMMIT")
+                with backend.repository.transaction():
+                    existing = backend.writer.publication(publication_id)
+                    if existing and existing["status"] == "SUCCESS":
+                        backend.jobs.update_job(job_id, status="SUCCESS", payload={**payload, "publication_id": publication_id})
+                        backend.jobs.update_attempt(job_id, attempt, status="SUCCESS", payload={"attempt": attempt, "recovered": True})
+                        backend.jobs.append_event(job_id=job_id, attempt=attempt, status="COMMITTED", details={"publication_id": publication_id})
+                        return {"job_id": job_id, "publication_id": publication_id, "status": "SUCCESS", "recovered": True}
+                    revision = backend.writer.next_revision(request.trade_date)
+                    backend.writer.insert_publication(publication_id=publication_id, trade_date=request.trade_date, revision=revision, status="SUCCESS", source_revision_id=None, production_version=CONTRACT_VERSION, source_manifest_sha256=verified.get("manifest_sha256"), source_identity_sha256=(verified.get("source_identity") or {}).get("sha256"), computation_identity_sha256=None, render_identity_sha256=None, source_path=str(bundle_path.parent), imported_at_utc=datetime.now(timezone.utc))
+                    self._pg_bulk_rows(backend.writer, prepared, publication_id, request.trade_date)
+                    if prepared.memberships:
+                        recorded = backend.relations.record_observation(source_scope=LEGACY_SOURCE_SCOPE, edges=[{"sector_id": row.get("sector_id"), "security_id": row.get("security_id"), "source_kind": "DIRECT"} for row in prepared.memberships], attributes=[{"sector_id": row.get("sector_id"), "name": row.get("sector_name") or row.get("sector_id"), "type": row.get("sector_type") or "LOCAL", "role": row.get("sector_role"), "semantic_bucket": row.get("semantic_bucket")} for row in prepared.memberships], observed_at=datetime.now(timezone.utc), source_effective_date=request.trade_date, source_file_hashes={"source_bundle_id": request.source_bundle_id, "membership_rows": len(prepared.memberships)}, observation_id=f"relation-publication-observation-{publication_id}", manage_transaction=False)
+                        with backend.repository.connection.cursor() as cur:  # type: ignore[union-attr]
+                            cur.execute("insert into workbench.relation_publication_bindings(publication_id,source_scope,observation_id,revision_no,attribute_version_id,hierarchy_version) values (%s,%s,%s,%s,%s,%s) on conflict(publication_id,source_scope) do nothing", (publication_id, LEGACY_SOURCE_SCOPE, recorded["observation_id"], recorded["revision_no"], recorded.get("attribute_version_id"), None))
+                    for row in prepared.observations:
+                        observation_id = row.get("observation_id") or _hash({"publication_id": publication_id, **row})
+                        backend.writer.insert_observation(observation_id=observation_id, publication_id=publication_id, payload=row)
+                    for row in prepared.outcomes:
+                        backend.writer.insert_outcome(observation_id=row["observation_id"], horizon=int(row["horizon"]), target_revision=int(row["target_revision"]), payload=row)
+                    backend.writer.set_head(request.trade_date, publication_id)
+                    success_payload = {"contract": CONTRACT_VERSION, "job_kind": "PUBLICATION", "publication_id": publication_id, "request": prepared.persisted(include_results=False)}
+                    backend.jobs.update_job(job_id, status="SUCCESS", payload=success_payload)
+                    backend.jobs.update_attempt(job_id, attempt, status="SUCCESS", payload={"attempt": attempt})
+                    backend.jobs.append_event(job_id=job_id, attempt=attempt, status="COMMITTED", details={"publication_id": publication_id})
+                if crash_at == "after_commit":
+                    raise SimulatedCrash("CRASH_AFTER_COMMIT")
+                self._progress[job_id] = {"status": "SUCCESS", "publication_id": publication_id, "updated_at_utc": datetime.now(timezone.utc).isoformat()}
+                return {"job_id": job_id, "publication_id": publication_id, "status": "SUCCESS", "recovered": False}
+            except SimulatedCrash:
+                if crash_at == "before_commit":
+                    with backend.repository.transaction():
+                        backend.jobs.update_job(job_id, status="INTERRUPTED")
+                        latest = backend.jobs.latest_attempt(job_id)
+                        if latest:
+                            backend.jobs.update_attempt(job_id, int(latest["attempt"]), status="INTERRUPTED")
+                raise
+            except Exception as exc:
+                self._progress[job_id] = {"status": "FAILED", "error": str(exc), "updated_at_utc": datetime.now(timezone.utc).isoformat()}
+                with backend.repository.transaction():
+                    backend.jobs.update_job(job_id, status="FAILED")
+                    backend.jobs.update_attempt(job_id, attempt, status="FAILED", payload={"error": type(exc).__name__, "message": str(exc)})
+                    backend.jobs.append_event(job_id=job_id, attempt=attempt, status="FAILED", details={"error": f"{type(exc).__name__}: {exc}"})
+                raise
+
+    @staticmethod
+    def _pg_bulk_rows(writer: Any, request: PublicationRequest, publication_id: str, trade_date: date) -> None:
+        mappings = {
+            "stocks": ("stock_daily", ("publication_id", "security_id", "trade_date", "security_name", "primary_pattern", "payload_json")),
+            "sectors": ("sector_daily", ("publication_id", "sector_id", "trade_date", "sector_name", "sector_type", "primary_pattern", "display_rank", "payload_json")),
+            "candidates": ("candidate_daily", ("publication_id", "security_id", "trade_date", "security_name", "primary_pattern", "research_priority", "payload_json")),
+            "structures": ("structure_details", ("publication_id", "queue_name", "security_id", "trade_date", "payload_json")),
+            "queue_memberships": ("queue_memberships", ("publication_id", "queue_name", "security_id", "queue_tier", "source_v2_class", "payload_json")),
+            "unified_board": ("unified_board", ("publication_id", "security_id", "trade_date", "payload_json")),
+            "queue_rankings": ("queue_rankings", ("publication_id", "security_id", "payload_json")),
+        }
+        for name, (table, columns) in mappings.items():
+            rows = []
+            for source in getattr(request, name):
+                row = {"publication_id": publication_id, "payload_json": source}
+                if "security_id" in columns: row["security_id"] = source.get("security_id")
+                if "sector_id" in columns: row["sector_id"] = source.get("sector_id")
+                if "queue_name" in columns: row["queue_name"] = source.get("queue_name")
+                if "queue_tier" in columns: row["queue_tier"] = source.get("queue_tier")
+                if "source_v2_class" in columns: row["source_v2_class"] = source.get("source_v2_class")
+                if "trade_date" in columns: row["trade_date"] = trade_date
+                for key in ("security_name", "primary_pattern", "sector_name", "sector_type", "display_rank", "research_priority"):
+                    if key in columns: row[key] = source.get(key)
+                rows.append(row)
+            writer.bulk_insert(table, columns, rows)
+
     def run(self, request: PublicationRequest, compute: Callable[[PublicationRequest], PublicationRequest] | None = None,
             crash_at: str | None = None) -> dict[str, Any]:
+        if self._postgres_backend_factory is not None:
+            return self._run_postgres(request, compute, crash_at=crash_at)
         job_id = "job-" + request.job_key[:32]
         self._progress[job_id]={"status":"COMPUTING","updated_at_utc":datetime.now(timezone.utc).isoformat()}
         # Recover a commit whose acknowledgement was lost.

@@ -73,3 +73,22 @@ class PostgresRepository:
 
     def table_counts(self, tables: Sequence[str]) -> dict[str, int]:
         return {table: self.count(table) for table in tables}
+
+    def research_security_names(self, publication_id: str) -> dict[str, str]:
+        """Read the registered V3.3 security-name projection for one publication.
+
+        Bundle JSON remains an immutable managed artifact; PostgreSQL only
+        supplies the relational name projection used to decorate the read
+        model.  The join prevents a name from another bundle being reused.
+        """
+        if self.connection is None:
+            raise RuntimeError("POSTGRES_REPOSITORY_NOT_OPEN")
+        query = sql.SQL(
+            "select c.security_id,c.security_name "
+            "from {schema}.research_runs_v3_3 r "
+            "join {schema}.research_candidates_v3_3 c on c.bundle_digest=r.bundle_digest "
+            "where r.publication_id=%s and r.status='COMPLETE' and c.security_name is not null"
+        ).format(schema=sql.Identifier(self.schema))
+        with self.connection.cursor() as cur:
+            cur.execute(query, (publication_id,))
+            return {str(security_id): str(name) for security_id, name in cur.fetchall()}

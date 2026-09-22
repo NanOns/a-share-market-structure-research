@@ -212,7 +212,9 @@ acceptance: DEGRADED_PASS_PRECUTOVER_INVENTORY
 
 关系边回退链路已完成独立 shadow：针对 publication `m4-9540768dfa3c23169cac2e2b2da25711`，按 `relation_publication_bindings` 的 source scope 与 revision 区间连接 `relation_edge_intervals`，DuckDB 与 PostgreSQL 均返回 72,457 行，排序后的语义摘要 SHA-256 均为 `2f0410b61282bbc168c8f084b6ebe1db03d857cca0327920d7dafd1736f58338`，`rows_match=true`，结果为 `PASS`。报告位于 `runtime/postgres_migration/20260922/relation_edges_pg_shadow_report.json`。这证明线上成员列表的实际关系边数据层 fallback 已可由 PG 重建，但尚未把该 repository 注入 `ResearchQueries` 或 HTTP 服务，不能据此宣称应用切换完成。
 
-下一步固定为 `PGM-09 / repository adapter implementation and config rollback rehearsal`：按盘点表逐域实现 `WorkbenchRepository`、`ResearchRepository`、`OperationsRepository` 和 `ArtifactCatalog` 边界，先在隔离配置下回归页面关键接口、受控写入和配置回退；通过后才允许维护窗口正式切换。未完成应用适配器和回退演练前，不开始 Focus Tracker 业务表和算法实现。
+已完成适配器集成与配置回退隔离演练：`scripts/pg_adapter_integration_rehearsal.py` 显式注入 `PostgresRepository` 到 `TodayResearchBundleReader`，今日研究列表/详情均为 `READY`（467 条），publication heads 7 条且均包含分析能力投影；最新研究 run 的 sector state 532 行、member role 15,546 行均可由 PG 适配器读取。配置回退只在临时沙盒中原子替换，回退后 SHA-256 恢复为 `d2e0612b6c387f294eb5724bb1b0dc03e14f28664896d449e452b2595eb2d21b`，跟踪配置未被触碰。结果为 `DEGRADED_PASS_PRECUTOVER_ADAPTER_AND_ROLLBACK`，报告位于 `runtime/postgres_migration/20260922/pg_adapter_integration_rehearsal_report.json`；该演练仍未注入线上 HTTP 服务。
+
+下一步固定为 `PGM-09 / repository adapter boundary implementation`：按盘点表逐域实现 `WorkbenchRepository`、`ResearchRepository`、`OperationsRepository` 和 `ArtifactCatalog` 边界，并在隔离配置下回归页面关键接口、受控写入和配置回退；通过后才允许维护窗口正式切换。未完成应用适配器和回退演练前，不开始 Focus Tracker 业务表和算法实现。
 
 ## 15. 阶段记录
 
@@ -220,8 +222,8 @@ acceptance: DEGRADED_PASS_PRECUTOVER_INVENTORY
 |---|---|
 | stage | `PGM-00/01/02/03/04/05-shadow/06-shadow/07-drill/08-rehearsal/09-inventory` |
 | stage_contract | `POSTGRES_MIGRATION_EXECUTION_RECORD_V1` |
-| evidence | 目标连接、冻结快照 SHA-256、103 表复制、逐表行数对账、服务恢复、API shadow、PG 备份恢复、PGM-08 隔离切换演练、19 个应用直连点切换盘点、今日研究包读路径 shadow、publication head shadow、研究元数据 shadow、研究状态/成员角色原始行 shadow、关系边 fallback shadow、空 membership_entries 降级证据 |
+| evidence | 目标连接、冻结快照 SHA-256、103 表复制、逐表行数对账、服务恢复、API shadow、PG 备份恢复、PGM-08 隔离切换演练、19 个应用直连点切换盘点、今日研究包读路径 shadow、publication head shadow、研究元数据 shadow、研究状态/成员角色原始行 shadow、关系边 fallback shadow、适配器注入与配置回退隔离演练、空 membership_entries 降级证据 |
 | acceptance_result | `DEGRADED_PASS / SHADOW_BACKUP_RESTORE_CUTOVER_REHEARSAL_AND_APPLICATION_INVENTORY_COMPLETE` |
-| next_stage | `PGM-09 / repository adapter implementation and config rollback rehearsal` |
-| code_changes | 新增 legacy 迁移器、PG schema builder、Artifact/consumer catalog builder、PG repository、今日研究包、publication head、研究元数据、研究状态、成员角色与关系边只读适配器、数据层/API shadow-read、时间语义审计器、切换演练器、应用直连点盘点器；未修改在线主路径 |
+| next_stage | `PGM-09 / repository adapter boundary implementation` |
+| code_changes | 新增 legacy 迁移器、PG schema builder、Artifact/consumer catalog builder、PG repository、今日研究包、publication head、研究元数据、研究状态、成员角色与关系边只读适配器、数据层/API shadow-read、适配器注入与配置回退隔离演练、时间语义审计器、切换演练器、应用直连点盘点器；未修改在线主路径 |
 | source_changes | 未修改 DuckDB 和 TDX 输入 |

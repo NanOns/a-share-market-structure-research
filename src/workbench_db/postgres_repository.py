@@ -95,6 +95,45 @@ class PostgresRepository(PublicationReadRepository):
             cur.execute(query, (publication_id,))
             return {str(security_id): str(name) for security_id, name in cur.fetchall()}
 
+    def research_v3_3_bundle(self, publication_id: str, trade_date: str) -> tuple[dict[str, Any], list[dict[str, Any]]] | None:
+        """Read one completed historical V3.3 bundle from the PG registry."""
+        if self.connection is None:
+            raise RuntimeError("POSTGRES_REPOSITORY_NOT_OPEN")
+        schema = sql.Identifier(self.schema)
+        run_query = sql.SQL(
+            """select bundle_digest,research_run_id,cast(trade_date as text),publication_id,
+                      snapshot_id,membership_snapshot_id,bundle_contract_id,parameter_hash,
+                      dependency_lock_hash,history_basis,result_count,bundle_path,status
+                 from {}.research_runs_v3_3
+                where publication_id=%s and cast(trade_date as text)=%s and status='COMPLETE'
+                order by registered_at desc limit 1"""
+        ).format(schema)
+        with self.connection.cursor() as cur:
+            cur.execute(run_query, (publication_id, str(trade_date)))
+            run = cur.fetchone()
+            if not run:
+                return None
+            candidates_query = sql.SQL(
+                "select result_payload from {}.research_candidates_v3_3 where bundle_digest=%s order by security_id"
+            ).format(schema)
+            cur.execute(candidates_query, (run[0],))
+            rows = cur.fetchall()
+        if int(run[10]) != len(rows):
+            return None
+        results: list[dict[str, Any]] = []
+        for (payload,) in rows:
+            value = json.loads(str(payload)) if not isinstance(payload, (dict, list)) else payload
+            if not isinstance(value, dict):
+                return None
+            results.append(value)
+        identity = {
+            "research_run_id": str(run[1]), "trade_date": str(run[2]), "publication_id": str(run[3]),
+            "snapshot_id": str(run[4]), "membership_snapshot_id": str(run[5]),
+            "parameter_hash": str(run[7]), "dependency_lock_hash": str(run[8]), "history_basis": str(run[9]),
+        }
+        active = {"contract_id": str(run[6]), "bundle_path": str(run[11]), "output_digest": str(run[0]), "identity": identity}
+        return active, results
+
     def publication_heads(self, *, include_analysis: bool = False) -> dict[str, Any]:
         """Return the public publication head projection used by the API."""
         if self.connection is None:

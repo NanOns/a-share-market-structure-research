@@ -1964,11 +1964,11 @@ def make_handler(root,db):
     elif u.path=='/api/v3/research/context':
      context=research.contexts.resolve_request(x.get('publication_id',''),x.get('trade_date',''),x.get('mode','CLOSE'));out={'status':context['status'],'context':context,'items':[]}
     elif u.path=='/api/v3/research/today':
-     out=today_research.list(page=x.get('page',1),page_size=x.get('page_size',20),category=x.get('category',''),selection_mode=x.get('selection_mode',''),q=x.get('q',''))
+     out=today_research.list(page=x.get('page',1),page_size=x.get('page_size',20),category=x.get('category',''),selection_mode=x.get('selection_mode',''),q=x.get('q',''),publication_id=x.get('publication_id',''),trade_date=x.get('trade_date',''))
     elif u.path=='/api/v3/research/today-turnover':
      out=turnover_enrichment.load_materialized(expected_digest=x.get('bundle_digest',''))
     elif u.path.startswith('/api/v3/research/today/'):
-     security_id=unquote(u.path[len('/api/v3/research/today/'):].strip('/'));out=today_research.detail(security_id,x.get('bundle_digest',''))
+     security_id=unquote(u.path[len('/api/v3/research/today/'):].strip('/'));out=today_research.detail(security_id,x.get('bundle_digest',''),x.get('publication_id',''),x.get('trade_date',''))
     elif u.path=='/api/v3/legacy-matrix':
      publication_id=str(x.get('publication_id') or '').strip();trade_date=str(x.get('trade_date') or '').strip()
      if bool(publication_id)!=bool(trade_date): raise ValueError('CONTEXT_MODE_CONFLICT')

@@ -244,7 +244,7 @@
         var count = document.getElementById('v3-priority-count');
         if (!target) return;
         target.textContent = '正在校验并读取 V3.3 活动研究包…';
-        get('/api/v3/research/today?page=' + page + '&page_size=25').then(function (result) {
+        get('/api/v3/research/today?publication_id=' + encodeURIComponent(select && select.value || '') + '&trade_date=' + encodeURIComponent(localTradeDate()) + '&page=' + page + '&page_size=25').then(function (result) {
             var items = result.items || [];
             var bundleContext = result.context || {};
             todayBundleDigest = bundleContext.output_digest || '';
@@ -294,7 +294,7 @@
 
     function openTodayBundleStock(securityId) {
         var body = modal(securityId, '<p>正在读取同一 V3.3 研究包详情…</p>');
-        get('/api/v3/research/today/' + encodeURIComponent(securityId) + '?bundle_digest=' + encodeURIComponent(todayBundleDigest)).then(function (result) {
+        get('/api/v3/research/today/' + encodeURIComponent(securityId) + '?bundle_digest=' + encodeURIComponent(todayBundleDigest) + '&publication_id=' + encodeURIComponent(select && select.value || '') + '&trade_date=' + encodeURIComponent(localTradeDate())).then(function (result) {
             if (!body.isConnected) return;
             if (result.status !== 'READY') { body.innerHTML = empty(result.empty_state && result.empty_state.message || '详情不可用。'); return; }
             var item = result.item || {}, identity = result.context || {}, turnover = turnoverById[item.security_id];

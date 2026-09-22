@@ -15,6 +15,8 @@ class PublicationReadRepository(Protocol):
 
     def research_security_names(self, publication_id: str) -> dict[str, str]: ...
 
+    def research_v3_3_bundle(self, publication_id: str, trade_date: str) -> tuple[dict[str, Any], list[dict[str, Any]]] | None: ...
+
     def sector_metadata(self, publication_id: str) -> list[dict[str, str]]: ...
 
     def relation_edges_for_publication(self, publication_id: str) -> list[tuple[Any, ...]]: ...
@@ -85,6 +87,39 @@ class DuckDBReadRepository:
                 [publication_id],
             ).fetchall()
         return {str(security_id): str(name) for security_id, name in rows}
+
+    def research_v3_3_bundle(self, publication_id: str, trade_date: str) -> tuple[dict[str, Any], list[dict[str, Any]]] | None:
+        with self._cursor() as con:
+            run = con.execute(
+                """select bundle_digest,research_run_id,cast(trade_date as varchar),publication_id,
+                          snapshot_id,membership_snapshot_id,bundle_contract_id,parameter_hash,
+                          dependency_lock_hash,history_basis,result_count,bundle_path,status
+                     from research_runs_v3_3
+                    where publication_id=? and cast(trade_date as varchar)=? and status='COMPLETE'
+                    order by registered_at desc limit 1""",
+                [publication_id, str(trade_date)],
+            ).fetchone()
+            if not run:
+                return None
+            rows = con.execute(
+                "select result_payload from research_candidates_v3_3 where bundle_digest=? order by security_id",
+                [run[0]],
+            ).fetchall()
+        if int(run[10]) != len(rows):
+            return None
+        results: list[dict[str, Any]] = []
+        for (payload,) in rows:
+            value = json.loads(str(payload)) if not isinstance(payload, (dict, list)) else payload
+            if not isinstance(value, dict):
+                return None
+            results.append(value)
+        identity = {
+            "research_run_id": str(run[1]), "trade_date": str(run[2]), "publication_id": str(run[3]),
+            "snapshot_id": str(run[4]), "membership_snapshot_id": str(run[5]),
+            "parameter_hash": str(run[7]), "dependency_lock_hash": str(run[8]), "history_basis": str(run[9]),
+        }
+        active = {"contract_id": str(run[6]), "bundle_path": str(run[11]), "output_digest": str(run[0]), "identity": identity}
+        return active, results
 
     def sector_metadata(self, publication_id: str) -> list[dict[str, str]]:
         with self._cursor() as con:

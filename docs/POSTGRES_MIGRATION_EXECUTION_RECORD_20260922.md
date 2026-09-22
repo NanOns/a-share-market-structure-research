@@ -216,7 +216,9 @@ acceptance: DEGRADED_PASS_PRECUTOVER_INVENTORY
 
 已建立 backend-neutral 的 `PublicationReadRepository` 合同和 `DuckDBReadRepository` 只读实现，并让 `PostgresRepository` 满足同一合同。`scripts/workbench_read_contract_shadow.py` 对冻结快照和 PG 的四项公共投影完成对账：publication heads `7/7`、股票名称 `5464/5464`、板块元数据 `498/498`、关系边 `72457/72457`，所有摘要一致，结果为 `DEGRADED_PASS_READ_BOUNDARY_SHADOW`。报告位于 `runtime/postgres_migration/20260922/workbench_read_contract_shadow_report.json`。该合同仅覆盖只读投影，未把写入职责伪装成已迁移。
 
-下一步固定为 `PGM-09 / repository write boundary design`：按盘点表继续拆分 `ResearchRepository`、`OperationsRepository` 和 `ArtifactCatalog` 的事务/幂等/路径合同，先在临时表和回滚事务中验证写入，再考虑受控配置注入；通过前仍不修改线上主路径，不开始 Focus Tracker 业务表和算法实现。
+已完成首个写入边界探针：`PostgresWriteRepository` 为 `jobs` 和 `storage_objects` 提供参数化、幂等 upsert 与读取接口，`scripts/pg_write_boundary_rehearsal.py` 在真实 PG 事务中连续 upsert 后强制回滚；回滚前状态为 `RUNNING`/`ROLLBACK_PROBE`，回滚后两条业务记录均不存在，结果为 `DEGRADED_PASS_TRANSACTIONAL_IDEMPOTENCY_ROLLBACK`。报告位于 `runtime/postgres_migration/20260922/pg_write_boundary_rehearsal_report.json`。该写入边界尚未被任何线上任务调用。
+
+下一步固定为 `PGM-09 / research write contract`：按盘点表为 `ResearchRepository` 冻结 run/slice/state 的身份键、JSON canonicalization、幂等与失败回滚合同，再在临时事务中验证；通过前仍不修改线上主路径，不开始 Focus Tracker 业务表和算法实现。
 
 ## 15. 阶段记录
 
@@ -224,8 +226,8 @@ acceptance: DEGRADED_PASS_PRECUTOVER_INVENTORY
 |---|---|
 | stage | `PGM-00/01/02/03/04/05-shadow/06-shadow/07-drill/08-rehearsal/09-inventory` |
 | stage_contract | `POSTGRES_MIGRATION_EXECUTION_RECORD_V1` |
-| evidence | 目标连接、冻结快照 SHA-256、103 表复制、逐表行数对账、服务恢复、API shadow、PG 备份恢复、PGM-08 隔离切换演练、19 个应用直连点切换盘点、今日研究包读路径 shadow、publication head shadow、研究元数据 shadow、研究状态/成员角色原始行 shadow、关系边 fallback shadow、适配器注入与配置回退隔离演练、统一只读 repository 合同 shadow、空 membership_entries 降级证据 |
+| evidence | 目标连接、冻结快照 SHA-256、103 表复制、逐表行数对账、服务恢复、API shadow、PG 备份恢复、PGM-08 隔离切换演练、19 个应用直连点切换盘点、今日研究包读路径 shadow、publication head shadow、研究元数据 shadow、研究状态/成员角色原始行 shadow、关系边 fallback shadow、适配器注入与配置回退隔离演练、统一只读 repository 合同 shadow、写入边界幂等/事务回滚演练、空 membership_entries 降级证据 |
 | acceptance_result | `DEGRADED_PASS / SHADOW_BACKUP_RESTORE_CUTOVER_REHEARSAL_AND_APPLICATION_INVENTORY_COMPLETE` |
-| next_stage | `PGM-09 / repository write boundary design` |
-| code_changes | 新增 legacy 迁移器、PG schema builder、Artifact/consumer catalog builder、统一只读 repository 合同及 DuckDB/PG 实现、今日研究包、publication head、研究元数据、研究状态、成员角色与关系边只读适配器、数据层/API shadow-read、适配器注入与配置回退隔离演练、时间语义审计器、切换演练器、应用直连点盘点器；未修改在线主路径 |
+| next_stage | `PGM-09 / research write contract` |
+| code_changes | 新增 legacy 迁移器、PG schema builder、Artifact/consumer catalog builder、统一只读 repository 合同及 DuckDB/PG 实现、PG 写入边界（jobs/storage_objects）、今日研究包、publication head、研究元数据、研究状态、成员角色与关系边只读适配器、数据层/API shadow-read、适配器注入与配置回退隔离演练、写入边界幂等/事务回滚演练、时间语义审计器、切换演练器、应用直连点盘点器；未修改在线主路径 |
 | source_changes | 未修改 DuckDB 和 TDX 输入 |

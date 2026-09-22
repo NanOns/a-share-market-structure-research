@@ -208,6 +208,8 @@ acceptance: DEGRADED_PASS_PRECUTOVER_INVENTORY
 
 研究状态原始行投影也已完成：最新 `research_run_id=research-05f59f1294d348f3bf3c9fd6f57fcb81` 的 `research_sector_states` 共 532 行，DuckDB/PG 行数及 JSON 语义摘要一致。该结果只证明数据层投影，不等同于 `ResearchQueries` 已注入线上服务。
 
+板块成员角色原始行也已对账：同一 run 的 `research_sector_member_roles` 共 15,546 行，DuckDB/PG JSON 语义一致。当前关系快照在 `membership_entries` 中为 0 行，报告明确标记 `DEGRADED_PASS_EMPTY_SOURCE`；线上成员列表会回退读取 `relation_edge_intervals`，因此该关系边投影必须单独完成，不能把空表一致误报为成员迁移完成。
+
 下一步固定为 `PGM-09 / repository adapter implementation and config rollback rehearsal`：按盘点表逐域实现 `WorkbenchRepository`、`ResearchRepository`、`OperationsRepository` 和 `ArtifactCatalog` 边界，先在隔离配置下回归页面关键接口、受控写入和配置回退；通过后才允许维护窗口正式切换。未完成应用适配器和回退演练前，不开始 Focus Tracker 业务表和算法实现。
 
 ## 15. 阶段记录
@@ -216,8 +218,8 @@ acceptance: DEGRADED_PASS_PRECUTOVER_INVENTORY
 |---|---|
 | stage | `PGM-00/01/02/03/04/05-shadow/06-shadow/07-drill/08-rehearsal/09-inventory` |
 | stage_contract | `POSTGRES_MIGRATION_EXECUTION_RECORD_V1` |
-| evidence | 目标连接、冻结快照 SHA-256、103 表复制、逐表行数对账、服务恢复、API shadow、PG 备份恢复、PGM-08 隔离切换演练、19 个应用直连点切换盘点、今日研究包读路径 shadow、publication head shadow、研究元数据 shadow、研究状态原始行 shadow |
+| evidence | 目标连接、冻结快照 SHA-256、103 表复制、逐表行数对账、服务恢复、API shadow、PG 备份恢复、PGM-08 隔离切换演练、19 个应用直连点切换盘点、今日研究包读路径 shadow、publication head shadow、研究元数据 shadow、研究状态/成员角色原始行 shadow、空 membership_entries 降级证据 |
 | acceptance_result | `DEGRADED_PASS / SHADOW_BACKUP_RESTORE_CUTOVER_REHEARSAL_AND_APPLICATION_INVENTORY_COMPLETE` |
 | next_stage | `PGM-09 / repository adapter implementation and config rollback rehearsal` |
-| code_changes | 新增 legacy 迁移器、PG schema builder、Artifact/consumer catalog builder、PG repository、今日研究包、publication head、研究元数据与研究状态只读适配器、数据层/API shadow-read、时间语义审计器、切换演练器、应用直连点盘点器；未修改在线主路径 |
+| code_changes | 新增 legacy 迁移器、PG schema builder、Artifact/consumer catalog builder、PG repository、今日研究包、publication head、研究元数据、研究状态与成员角色只读适配器、数据层/API shadow-read、时间语义审计器、切换演练器、应用直连点盘点器；未修改在线主路径 |
 | source_changes | 未修改 DuckDB 和 TDX 输入 |

@@ -233,3 +233,21 @@ class PostgresRepository:
         with self.connection.cursor() as cur:
             cur.execute(sql_text, params)
             return cur.fetchall()
+
+    def research_sector_member_role_rows(self, run_id: str) -> list[tuple[Any, ...]]:
+        """Read all role rows used by sector detail/member projections."""
+        if self.connection is None:
+            raise RuntimeError("POSTGRES_REPOSITORY_NOT_OPEN")
+        query = sql.SQL("select run_id,sector_id,security_id,role,role_rank,today_rank,role_reason_codes,evidence from {}.research_sector_member_roles where run_id=%s order by sector_id,role_rank,security_id,role").format(sql.Identifier(self.schema))
+        with self.connection.cursor() as cur:
+            cur.execute(query, (run_id,))
+            return cur.fetchall()
+
+    def membership_entry_rows(self, snapshot_id: str) -> list[tuple[Any, ...]]:
+        """Read immutable membership entries for one snapshot."""
+        if self.connection is None:
+            raise RuntimeError("POSTGRES_REPOSITORY_NOT_OPEN")
+        query = sql.SQL("select membership_snapshot_id,sector_id,security_id,payload_json from {}.membership_entries where membership_snapshot_id=%s order by sector_id,security_id").format(sql.Identifier(self.schema))
+        with self.connection.cursor() as cur:
+            cur.execute(query, (snapshot_id,))
+            return cur.fetchall()

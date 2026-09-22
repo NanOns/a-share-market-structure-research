@@ -1743,7 +1743,18 @@ def make_handler(root,db):
  def run_research(job_id):
   task=research_jobs[job_id];task.update(status='RUNNING',progress={'status':'BUILDING_RESEARCH_V3'})
   try:
-   result=build_latest_research_run(root,db);task.update(status='SUCCESS',result=result,progress={'status':'READY','run_id':result['run_id']})
+   result=build_latest_research_run(root,db)
+   if str(os.environ.get('WORKBENCH_API_BACKEND','')).lower()=='postgresql':
+    task.update(progress={'status':'SYNCING_POSTGRES_RESEARCH'})
+    sync=run_database_subprocess([sys.executable,str(Path(root)/'scripts/sync_latest_publication_to_postgres.py'),'--trade-date',str(result.get('trade_date'))],cwd=root,capture_output=True,text=True,timeout=3600)
+    if sync.returncode:
+     task.update(status='FAILED',progress={'status':'POSTGRES_SYNC_FAILED','error':sync.stderr[-2000:] or sync.stdout[-2000:]});return
+    try: sync_payload=json.loads(sync.stdout)
+    except Exception: sync_payload={}
+    if sync_payload.get('status')!='FULL_PASS':
+     task.update(status='FAILED',progress={'status':'POSTGRES_SYNC_FAILED','error':sync_payload.get('error') or 'PG 研究注册表同步未通过硬校验'});return
+    result={**result,'postgres_sync':sync_payload}
+   task.update(status='SUCCESS',result=result,progress={'status':'READY','run_id':result['run_id']})
   except Exception as exc:
    task.update(status='FAILED',progress={'status':'RESEARCH_BUILD_FAILED','error':str(exc)})
  def today_status(job_id):

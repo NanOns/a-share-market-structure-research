@@ -1,8 +1,8 @@
 """Record the application-side PostgreSQL cutover boundary.
 
-This is deliberately a preflight, not a switch.  It turns the static
-consumer scan into an auditable migration table so no DuckDB direct-connect
-point can be mistaken for an already migrated application component.
+The inventory distinguishes online PostgreSQL consumers from explicitly
+controlled offline DuckDB compute/maintenance steps.  It never treats an
+unclassified direct connection as migrated.
 """
 from __future__ import annotations
 

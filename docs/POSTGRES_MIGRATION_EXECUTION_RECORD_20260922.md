@@ -398,5 +398,13 @@ FULL_PASS PostgreSQL 镜像/目录事务后才允许对外可见，不能直接�
 `pg_cutover_rehearsal.py` 事务探针和配置回滚验证通过。随后执行维护窗口只读预检，
 报告 `runtime/postgres_migration/20260922/pg_maintenance_cutover_preflight.json`
 结果为 `FULL_PASS / READY_FOR_AUTHORIZED_MAINTENANCE_WINDOW`，数据表
-`103/103`、Artifact `141/141`、时间语义 `42/42`、服务 `READY` 且 backend 为
-PostgreSQL。未触发生成流程。
+ `103/103`、Artifact `141/141`、时间语义 `42/42`、服务 `READY` 且 backend 为
+ PostgreSQL。未触发生成流程。
+
+随后执行 `scripts/pg_application_cutover_finalize.py` 生成最终回执
+`runtime/postgres_migration/20260922/pg_application_cutover_completion.json`。
+该回执同时确认 active config、PG consumer metadata、103 张表、42 个时间语义、
+服务 `READY`/`active_job_count=0`/PostgreSQL backend，结果为
+`FULL_PASS / POSTGRES_APPLICATION_CUTOVER_COMPLETE`，并明确
+`online_switch_performed=true`、`data_generation_triggered=false`。最终 preflight
+已纳入该回执并再次通过 `FULL_PASS`。

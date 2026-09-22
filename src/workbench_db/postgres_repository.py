@@ -1,0 +1,75 @@
+"""PostgreSQL repository boundary used during shadow reads and cutover.
+
+The existing DuckDB repository remains the legacy/offline path until the
+cutover gate passes.  This adapter intentionally exposes parameterized reads
+and transaction boundaries without leaking PostgreSQL SQL into HTTP handlers.
+"""
+from __future__ import annotations
+
+import os
+from contextlib import contextmanager
+from typing import Any, Iterator, Sequence
+
+import psycopg
+from psycopg import sql
+
+
+DEFAULT_DSN = "host=127.0.0.1 port=5432 dbname=market_research user=postgres"
+
+
+class PostgresRepository:
+    def __init__(self, dsn: str | None = None, *, schema: str = "workbench", statement_timeout_ms: int = 30_000):
+        self.dsn = dsn or os.environ.get("WORKBENCH_PG_DSN") or DEFAULT_DSN
+        self.schema = schema
+        self.statement_timeout_ms = statement_timeout_ms
+        self.connection: psycopg.Connection[Any] | None = None
+
+    def open(self) -> "PostgresRepository":
+        self.connection = psycopg.connect(self.dsn)
+        with self.connection.cursor() as cur:
+            # SET does not accept a bind placeholder in PostgreSQL.  Use
+            # set_config so the timeout remains parameterized and cannot be
+            # changed by a DSN/identifier injection.
+            cur.execute("select set_config('statement_timeout', %s, false)", (f"{self.statement_timeout_ms}ms",))
+            cur.execute("set timezone = 'UTC'")
+        self.connection.commit()
+        return self
+
+    def close(self) -> None:
+        if self.connection is not None:
+            self.connection.close()
+        self.connection = None
+
+    def __enter__(self) -> "PostgresRepository":
+        return self.open()
+
+    def __exit__(self, *_: object) -> None:
+        self.close()
+
+    @contextmanager
+    def transaction(self) -> Iterator[psycopg.Connection[Any]]:
+        if self.connection is None:
+            raise RuntimeError("POSTGRES_REPOSITORY_NOT_OPEN")
+        try:
+            yield self.connection
+            self.connection.commit()
+        except Exception:
+            self.connection.rollback()
+            raise
+
+    def count(self, table: str) -> int:
+        if self.connection is None:
+            raise RuntimeError("POSTGRES_REPOSITORY_NOT_OPEN")
+        with self.connection.cursor() as cur:
+            cur.execute(sql.SQL("select count(*) from {}.{}").format(sql.Identifier(self.schema), sql.Identifier(table)))
+            return int(cur.fetchone()[0])
+
+    def fetch(self, query: str, params: Sequence[Any] = ()) -> list[tuple[Any, ...]]:
+        if self.connection is None:
+            raise RuntimeError("POSTGRES_REPOSITORY_NOT_OPEN")
+        with self.connection.cursor() as cur:
+            cur.execute(query, params)
+            return list(cur.fetchall())
+
+    def table_counts(self, tables: Sequence[str]) -> dict[str, int]:
+        return {table: self.count(table) for table in tables}

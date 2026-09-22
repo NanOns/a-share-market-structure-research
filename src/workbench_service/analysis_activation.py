@@ -10,8 +10,8 @@ from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any
 
-import duckdb
-
+from workbench_db import AnalysisActivationRepository, DuckDBAnalysisActivationRepository
+from workbench_db.config_store import default_database_path
 from .history_jobs import CONTRACT_VERSION as JOB_CONTRACT_VERSION, HistoryJobError
 from .source_freezer import SourceFreezeError, verify_source_manifest
 
@@ -40,12 +40,25 @@ def _manifest_hash(value: dict[str, Any]) -> str:
 class AnalysisActivationService:
     """Turn completed slice references into a new, explicitly bound revision."""
 
-    def __init__(self, root: str | Path, database_path: str | Path | None = None):
+    # MIGRATION_CONTRACT: activation remains MIGRATE_TO_PG until the full
+    # multi-table transaction is implemented and rehearsed on PostgreSQL.
+    def __init__(
+        self,
+        root: str | Path,
+        database_path: str | Path | None = None,
+        *,
+        repository: AnalysisActivationRepository | None = None,
+    ):
         self.root = Path(root).resolve()
-        self.database_path = Path(database_path).resolve() if database_path else self.root / "data/database/market_research.duckdb"
+        self._repository = repository or DuckDBAnalysisActivationRepository(self.root, database_path)
+        self.database_path = (
+            Path(database_path).resolve()
+            if database_path is not None
+            else Path(getattr(self._repository, "database_path", default_database_path(self.root))).resolve()
+        )
 
     def _connect(self):
-        return duckdb.connect(str(self.database_path))
+        return self._repository.connect()
 
     def _job(self, job_id: str) -> tuple[str, dict[str, Any], int]:
         with self._connect() as connection:

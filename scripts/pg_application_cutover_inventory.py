@@ -39,7 +39,11 @@ def adapter_contract(path: str) -> tuple[str, str]:
     if path in {"src/workbench_service/incremental_writer.py", "src/workbench_service/research_builder.py", "src/workbench_service/v3_daily_entry.py", "src/workbench_service/result_objects.py", "src/workbench_service/slice_coordinator.py", "src/workbench_service/analysis_activation.py"}:
         if path == "src/workbench_service/analysis_activation.py":
             return "RESEARCH_REPOSITORY", "production service injects PostgresAnalysisActivationRepository; prepare/activate/idempotent replay/head restore are PostgreSQL transactions"
-        return "RESEARCH_REPOSITORY", "research build and V3 daily outputs run in a controlled offline DuckDB compute workspace and are admitted only after a FULL_PASS PostgreSQL mirror"
+        if path == "src/workbench_service/research_builder.py":
+            return "RESEARCH_REPOSITORY", "PostgreSQL mode uses isolated in-memory DuckDB parquet reads plus direct PostgreSQL ResearchRunStore state/result transaction"
+        if path in {"src/workbench_service/incremental_writer.py", "src/workbench_service/v3_daily_entry.py"}:
+            return "RESEARCH_REPOSITORY", "PostgreSQL mode uses PostgresIncrementalWriterRepository; source parquet remains read-only and the shared DuckDB file is not opened"
+        return "RESEARCH_REPOSITORY", "research result/slice repositories remain behind explicit backend contracts"
     if path in {"src/workbench_service/source_freezer.py", "src/workbench_service/today_research_bundle.py", "src/workbench_service/turnover_enrichment_service.py"}:
         if path == "src/workbench_service/source_freezer.py":
             return "ARTIFACT_CATALOG + PUBLICATION_READ_REPOSITORY", "publication/source-bundle reads use PostgreSQL in the active service; files remain managed artifacts"
@@ -57,7 +61,9 @@ def cutover_status(path: str) -> tuple[str, str]:
     """Classify the active runtime boundary, not the existence of a rollback adapter."""
     if path in {"config/workbench.yaml", "src/workbench_ops/storage.py", "src/workbench_publish/service.py", "src/workbench_service/analysis_activation.py", "src/workbench_service/app.py", "src/workbench_service/history_jobs.py"}:
         return "MIGRATED", "PostgreSQL is the active production boundary; DuckDB is not used for the corresponding online read/job/metadata transaction"
-    if path in {"src/workbench_db/repository.py", "src/workbench_ops/backup.py", "src/workbench_ops/migration.py", "src/workbench_service/incremental_writer.py", "src/workbench_service/research_builder.py", "src/workbench_service/v3_daily_entry.py"}:
+    if path in {"src/workbench_service/incremental_writer.py", "src/workbench_service/research_builder.py", "src/workbench_service/v3_daily_entry.py"}:
+        return "MIGRATED", "PostgreSQL is the active write boundary; only isolated parquet/analytical reads remain outside PG and no shared DuckDB file is opened"
+    if path in {"src/workbench_db/repository.py", "src/workbench_ops/backup.py", "src/workbench_ops/migration.py"}:
         return "OFFLINE_DUCKDB_ALLOWED", "controlled offline compute/maintenance only; production admission requires a FULL_PASS PostgreSQL mirror or catalog transaction"
     return "NOT_MIGRATED", "no verified runtime classification"
 

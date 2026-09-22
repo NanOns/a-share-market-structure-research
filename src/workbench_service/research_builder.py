@@ -4,12 +4,13 @@ from __future__ import annotations
 from pathlib import Path
 import hashlib
 import json
+import os
 from typing import Any
 
 import numpy as np
 import pandas as pd
 
-from workbench_db import DuckDBResearchBuilderRepository, ResearchBuilderRepository
+from workbench_db import DuckDBResearchBuilderRepository, PostgresResearchBuilderRepository, ResearchBuilderRepository
 from workbench_analysis.research_features import ResearchFeatureContext, build_stock_research_features
 from workbench_analysis.sector_attention import (
     aggregate_early_width, build_sector_current, build_sector_member_roles,
@@ -177,11 +178,17 @@ def build_latest_research_run(
     repository: ResearchBuilderRepository | None = None,
 ) -> dict[str, Any]:
     """Build the latest publication through every P05-P07 stage and seal it."""
-    # MIGRATION_CONTRACT: research builder remains MIGRATE_TO_PG until the
-    # full read_parquet plus ResearchRunStore workflow has a PG implementation.
+    # MIGRATION_CONTRACT: analytical parquet reads use an isolated in-memory
+    # DuckDB connection; ResearchRunStore state and result writes use PG when
+    # the service backend is postgresql.  The shared DuckDB file is never
+    # opened on this path.
     root = Path(root)
     database_path = Path(database_path)
-    repository = repository or DuckDBResearchBuilderRepository(database_path)
+    if repository is None:
+        if str(os.environ.get("WORKBENCH_API_BACKEND", "")).lower() == "postgresql":
+            repository = PostgresResearchBuilderRepository()
+        else:
+            repository = DuckDBResearchBuilderRepository(database_path)
     config = json.loads((root / "config/research_attention_v3.yaml").read_text(encoding="utf-8"))
     if config.get("parameter_hash") != parameter_hash(config):
         raise ResearchBuildError("PARAMETER_HASH_MISMATCH")

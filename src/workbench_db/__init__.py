@@ -25,7 +25,7 @@ from .history_job_repository import HistoryJobRepository, HistoryJobStore, DuckD
 from .postgres_history_job_repository import PostgresHistoryJobRepository
 from .postgres_publication_writer import PostgresPublicationWriter
 from .incremental_writer_repository import IncrementalWriterRepository, DuckDBIncrementalWriterRepository, PostgresIncrementalWriterRepository
-from .research_builder_repository import ResearchBuilderRepository, DuckDBResearchBuilderRepository
+from .research_builder_repository import ResearchBuilderRepository, DuckDBResearchBuilderRepository, PostgresResearchBuilderRepository
 from .backup_repository import BackupRepository, DuckDBBackupRepository
 from .backup_catalog_repository import BackupCatalogRepository, DuckDBBackupCatalogRepository, PostgresBackupCatalogRepository
 from .storage_connection import StorageConnectionRepository, DuckDBStorageConnectionRepository
@@ -59,6 +59,7 @@ __all__ = [
     "DuckDBOperationsMetadataReader",
     "PostgresOperationsMetadataReader",
     "PostgresIncrementalWriterRepository",
+    "PostgresResearchBuilderRepository",
     "PublicationRepositoryFactory",
     "DuckDBPublicationRepositoryFactory",
     "PublicationStatusReader",

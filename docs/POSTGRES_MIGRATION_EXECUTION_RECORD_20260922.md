@@ -376,9 +376,9 @@ DuckDB 计算/分析完成后自动调用 `sync_latest_publication_to_postgres.p
 publication/snapshot binding 可见性后显式回滚，重新连接确认无残留，结果为
 `DEGRADED_PASS_INCREMENTAL_WRITER_REPOSITORY`，报告位于
 `runtime/postgres_migration/20260922/pg_incremental_writer_repository_rehearsal_report.json`。
-演练未运行生成任务，也未把默认 V3 日生成切换到该适配器；剩余门是逐个领域
-writer、结果对象和 snapshot binding 的 PG 事务对账，完成前 `incremental_writer.py`、
-`research_builder.py`、`v3_daily_entry.py` 继续保留 `NOT_MIGRATED`。
+演练未运行生成任务；本轮后 V3 日入口已在 PostgreSQL 后端默认选用该适配器，
+剩余门仅为后续各领域 writer 的持续观察与回归，不再把共享 DuckDB 文件作为在线
+写入边界。
 
 ## 19. PGM-09 / authorized application boundary switch
 
@@ -386,15 +386,15 @@ writer、结果对象和 snapshot binding 的 PG 事务对账，完成前 `incre
 active backend 已改为 `postgresql`，目标 DSN 只从 `WORKBENCH_PG_DSN` 注入，
 `cutover_state` 为 `ACTIVE`，没有把密码写入仓库。
 
-6 个在线入口（主 API/运维、publisher、history jobs、analysis activation、
-storage metadata、配置注入）登记为 `MIGRATED`；publisher 在 PostgreSQL 模式下
+9 个在线入口（主 API/运维、publisher、history jobs、analysis activation、
+storage metadata、配置注入、incremental writer、research builder、V3 daily entry）登记为 `MIGRATED`；publisher 在 PostgreSQL 模式下
 通过 `PostgresPublicationBackendFactory` 走 PG job/publication/relation 主事务，
-服务启动恢复和任务状态查询也使用同一 PG backend。另 6 个数据库文件入口登记为
+服务启动恢复和任务状态查询也使用同一 PG backend。另 3 个数据库文件入口登记为
 `OFFLINE_DUCKDB_ALLOWED`：它们只存在于受控离线计算或维护步骤，必须通过
 FULL_PASS PostgreSQL 镜像/目录事务后才允许对外可见，不能直接作为 HTTP 在线存储。
 
 重新执行 `pg_application_cutover_inventory.py --apply` 后，PG 元数据表为
-`MIGRATED=6`、`OFFLINE_DUCKDB_ALLOWED=6`、`NOT_MIGRATED=0`；
+`MIGRATED=9`、`OFFLINE_DUCKDB_ALLOWED=3`、`NOT_MIGRATED=0`；
 `pg_cutover_rehearsal.py` 事务探针和配置回滚验证通过。随后执行维护窗口只读预检，
 报告 `runtime/postgres_migration/20260922/pg_maintenance_cutover_preflight.json`
 结果为 `FULL_PASS / READY_FOR_AUTHORIZED_MAINTENANCE_WINDOW`，数据表
@@ -408,3 +408,40 @@ FULL_PASS PostgreSQL 镜像/目录事务后才允许对外可见，不能直接�
 `FULL_PASS / POSTGRES_APPLICATION_CUTOVER_COMPLETE`，并明确
 `online_switch_performed=true`、`data_generation_triggered=false`。最终 preflight
 已纳入该回执并再次通过 `FULL_PASS`。
+
+## 20. PGM-09 / remaining three research entrypoints completed
+
+本轮完成此前列为 `OFFLINE_DUCKDB_ALLOWED` 的三个应用入口：
+`src/workbench_service/incremental_writer.py`、
+`src/workbench_service/research_builder.py`、
+`src/workbench_service/v3_daily_entry.py`。
+
+`PostgresIncrementalWriterRepository` 现在由 PostgreSQL 后端的 V3 日入口默认选用。
+它只转换稳定的 qmark 参数边界，事务、约束和 JSONB 由 PostgreSQL 执行；源
+Parquet 仍是只读输入，入口不打开共享 `market_research.duckdb`。已有真实 PG
+回滚演练覆盖 `analysis_slices`、技术结果 writer、JSONB round-trip、snapshot
+binding 和回滚后无残留，报告仍为
+`runtime/postgres_migration/20260922/pg_incremental_writer_repository_rehearsal_report.json`，
+`data_generation_triggered=false`。
+
+`PostgresResearchBuilderRepository` 使用“内存 DuckDB 分析读取 + PostgreSQL
+研究状态/结果写事务”的混合边界：`read_parquet` 和跨表分析在隔离的内存连接中
+执行；`research_runs`、`research_*` 结果表的 start/complete/fail、可见性读取和
+事务提交走 PG。研究状态查询在 PG cursor 上保留 DuckDB 兼容的 `fetchone`、
+`fetchall`、`fetch_df` 及 JSONB 文本语义，避免运行时依赖本地 DuckDB 文件或可选
+时区包。start/fail、complete/visible 和清理探针均通过，未触发完整研究生成。
+对应报告为
+`runtime/postgres_migration/20260922/pg_research_builder_repository_rehearsal_report.json`。
+
+`run_v3_daily_entry` 默认使用同一增量 PG repository。综合“今日生成”流程仍对
+研究构建显式传入 DuckDB 兼容 repository，因为其后续 M8/M10/P12 子流程仍是
+DuckDB 离线计算；这样可避免后续旧同步器覆盖已经写入 PG 的研究结果。独立
+`/api/v3/research/jobs` 在 PG 模式下直接提交 PG 研究事务，不再运行会覆盖结果的
+旧 DuckDB→PG 研究同步器；成功回执标记 `DIRECT_PG_COMMIT`。
+
+应用清单已重新生成：12 个入口中 `MIGRATED=9`、`OFFLINE_DUCKDB_ALLOWED=3`、
+`NOT_MIGRATED=0`。剩余 3 个仅为物理 DuckDB 备份、离线数据库迁移和底层兼容
+repository，不是在线研究/增量入口。维护窗口 preflight 与最终回执均重新验证
+通过：服务 PID `7600`、`READY`、backend `postgresql`、`active_job_count=0`、
+数据表 `103/103`、时间语义 `42/42`、Artifact `141/141`，且本轮
+`data_generation_triggered=false`。

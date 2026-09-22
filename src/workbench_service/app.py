@@ -10,6 +10,7 @@ from urllib.parse import parse_qs, unquote, urlparse
 import duckdb
 from workbench_db import (
  ApiConnectionProvider, DuckDBApiConnectionProvider, PostgresDuckDBApiConnectionProvider,
+ DuckDBResearchBuilderRepository,
  PostgresHistoryJobRepository, PostgresAnalysisActivationRepository, PostgresWriteRepository,
  PostgresConfigVersionStore, PostgresBackupCatalogRepository, PostgresOperationsMetadataReader,
  PostgresPublicationBackendFactory,
@@ -1749,15 +1750,10 @@ def make_handler(root,db):
   try:
    result=build_latest_research_run(root,db)
    if str(os.environ.get('WORKBENCH_API_BACKEND','')).lower()=='postgresql':
-    task.update(progress={'status':'SYNCING_POSTGRES_RESEARCH'})
-    sync=run_database_subprocess([sys.executable,str(Path(root)/'scripts/sync_latest_publication_to_postgres.py'),'--trade-date',str(result.get('trade_date'))],cwd=root,capture_output=True,text=True,timeout=3600)
-    if sync.returncode:
-     task.update(status='FAILED',progress={'status':'POSTGRES_SYNC_FAILED','error':sync.stderr[-2000:] or sync.stdout[-2000:]});return
-    try: sync_payload=json.loads(sync.stdout)
-    except Exception: sync_payload={}
-    if sync_payload.get('status')!='FULL_PASS':
-     task.update(status='FAILED',progress={'status':'POSTGRES_SYNC_FAILED','error':sync_payload.get('error') or 'PG 研究注册表同步未通过硬校验'});return
-    result={**result,'postgres_sync':sync_payload}
+    # The builder has committed its ResearchRunStore transaction directly to
+    # PostgreSQL.  Do not run the legacy DuckDB-to-PG synchronizer here: it
+    # could overwrite the just-committed run with an older local-file copy.
+    result={**result,'postgres_sync':{'status':'DIRECT_PG_COMMIT','data_generation_triggered':False}}
    task.update(status='SUCCESS',result=result,progress={'status':'READY','run_id':result['run_id']})
   except Exception as exc:
    task.update(status='FAILED',progress={'status':'RESEARCH_BUILD_FAILED','error':str(exc)})
@@ -1816,7 +1812,11 @@ def make_handler(root,db):
   if body.get('build_research_v3'):
    task.update(progress={'status':'BUILDING_RESEARCH_V3'})
    try:
-    research_result=build_latest_research_run(root,db)
+    # The all-in-one daily pipeline still executes preview/mainline/P12
+    # subprocesses against the legacy DuckDB file.  Keep its research build
+    # explicitly on that same isolated transaction until those downstream
+    # stages are migrated, avoiding a later sync step overwriting PG rows.
+    research_result=build_latest_research_run(root,db,repository=DuckDBResearchBuilderRepository(db))
    except Exception as exc:
     task.update(status='FAILED',progress={'status':'RESEARCH_BUILD_FAILED','error':str(exc)});return
    task['research_result']=research_result

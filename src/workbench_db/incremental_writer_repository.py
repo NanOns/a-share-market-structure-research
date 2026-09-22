@@ -108,9 +108,8 @@ class _PostgresCursor:
 class PostgresIncrementalWriterRepository:
     """PostgreSQL adapter for the incremental writer's transaction boundary.
 
-    The adapter is opt-in until the complete domain-writer compatibility gate
-    is passed.  It never falls back to a DuckDB file when PostgreSQL is
-    unavailable.
+    The adapter is selected by the PostgreSQL application backend.  It never
+    falls back to a DuckDB file when PostgreSQL is unavailable.
     """
 
     def __init__(self, dsn: str | None = None, *, schema: str = "workbench"):

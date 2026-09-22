@@ -23,7 +23,7 @@ from typing import Any, Iterable, Mapping
 import duckdb
 import pandas as pd
 
-from workbench_db import DuckDBIncrementalWriterRepository, IncrementalWriterRepository
+from workbench_db import DuckDBIncrementalWriterRepository, IncrementalWriterRepository, PostgresIncrementalWriterRepository
 from .build_planner import DependencySummary, build_plan, task_key, verify_build_plan
 from .incremental_writer import (
     DomainExecutor,
@@ -434,11 +434,16 @@ def run_v3_daily_entry(
     repository: IncrementalWriterRepository | None = None,
 ) -> dict[str, Any]:
     """Run the V3 daily path from source input through final binding."""
-    # MIGRATION_CONTRACT: daily entry remains MIGRATE_TO_PG until its read
-    # projections and incremental writer share a rehearsed PG transaction.
+    # MIGRATION_CONTRACT: PostgreSQL mode uses the transactional incremental
+    # writer repository.  Analytical source reads remain parquet-only and do
+    # not open the shared DuckDB file in this entrypoint.
 
     root_path = Path(root).resolve()
-    repository = repository or DuckDBIncrementalWriterRepository(database_path)
+    if repository is None:
+        if str(os.environ.get("WORKBENCH_API_BACKEND", "")).lower() == "postgresql":
+            repository = PostgresIncrementalWriterRepository()
+        else:
+            repository = DuckDBIncrementalWriterRepository(database_path)
     source_file = Path(source_path).resolve()
     membership_file = Path(membership_path).resolve() if membership_path else None
     source_reader = _ParquetSourceReader(source_file)

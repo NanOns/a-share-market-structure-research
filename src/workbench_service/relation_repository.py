@@ -18,7 +18,10 @@ from typing import Any, Iterable, Mapping, Sequence
 import duckdb
 from psycopg import sql
 
-from workbench_db.postgres_repository import PostgresRepository
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from workbench_db.postgres_repository import PostgresRepository
 
 
 PARSER_CONTRACT = "relation-parser-v3-v1"
@@ -426,16 +429,21 @@ class RelationRepository:
 class PostgresRelationRepository:
     """PostgreSQL equivalent of the relation revision/observation writer."""
 
-    def __init__(self, repository: PostgresRepository):
+    def __init__(self, repository: Any):
         self.repository = repository
 
     def _connection(self):
-        if self.repository.connection is None:
+        connection = getattr(self.repository, "connection", self.repository)
+        if connection is None:
             raise RuntimeError("POSTGRES_REPOSITORY_NOT_OPEN")
-        return self.repository.connection
+        return connection
+
+    @property
+    def _schema(self) -> str:
+        return str(getattr(self.repository, "schema", "workbench"))
 
     def _table(self, name: str) -> sql.Identifier:
-        return sql.Identifier(self.repository.schema, name)
+        return sql.Identifier(self._schema, name)
 
     def current_revision(self, source_scope: str) -> int | None:
         with self._connection().cursor() as cur:

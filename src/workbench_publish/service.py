@@ -86,11 +86,13 @@ class OneClickPublisher:
         *,
         repository_factory: PublicationRepositoryFactory | None = None,
         status_reader: PublicationStatusReader | None = None,
+        relation_writer_factory: Callable[[Any], Any] | None = None,
     ):
         self.root = Path(root).resolve()
         self._repository_factory = repository_factory or DuckDBPublicationRepositoryFactory(self.root, database_path)
         self.database_path = Path(database_path).resolve() if database_path else self._repository_factory.database_path
         self._status_reader = status_reader or DuckDBPublicationStatusReader(self.root, self.database_path)
+        self._relation_writer_factory = relation_writer_factory or (lambda connection: RelationRepository(connection))
         self._threads: dict[str, threading.Thread] = {}
         self._progress: dict[str, dict[str, Any]] = {}
         self.bundle_verifier=bundle_verifier
@@ -112,6 +114,7 @@ class OneClickPublisher:
         trade_date: date,
         source_bundle_id: str,
         memberships: tuple[dict[str, Any], ...],
+        relation_writer: Any | None = None,
     ) -> dict[str, Any] | None:
         if not memberships:
             return None
@@ -154,7 +157,7 @@ class OneClickPublisher:
         if not edges:
             raise ValueError("PUBLICATION_RELATION_SOURCE_EMPTY")
         observation_id = f"relation-publication-observation-{publication_id}"
-        recorded = RelationRepository(con).record_observation(
+        recorded = (relation_writer or RelationRepository(con)).record_observation(
             source_scope=LEGACY_SOURCE_SCOPE,
             edges=edges,
             attributes=tuple(attributes.values()),
@@ -286,7 +289,7 @@ class OneClickPublisher:
                     already=con.execute("SELECT status FROM publications WHERE publication_id=?",[publication_id]).fetchone()
                     if already and already[0]=="SUCCESS":
                         if prepared.memberships:
-                            self._write_relation_binding(con,publication_id,request.trade_date,request.source_bundle_id,prepared.memberships)
+                            self._write_relation_binding(con,publication_id,request.trade_date,request.source_bundle_id,prepared.memberships,self._relation_writer_factory(con))
                         con.execute("UPDATE job_attempts SET status='SUCCESS' WHERE job_id=? AND attempt=?", [job_id, attempt])
                         con.execute("UPDATE jobs SET status='SUCCESS',payload_json=? WHERE job_id=?",[_json({"contract":CONTRACT_VERSION,"publication_id":publication_id,"request":prepared.persisted(include_results=False)}),job_id])
                         self._event(con, job_id, attempt, "COMMITTED", publication_id=publication_id)
@@ -303,7 +306,7 @@ class OneClickPublisher:
                     self._bulk(con,"_m4_board","unified_board",["publication_id","security_id","trade_date","payload_json"],[{"publication_id":publication_id,"security_id":r["security_id"],"trade_date":request.trade_date,"payload_json":_json(r)} for r in prepared.unified_board])
                     self._bulk(con,"_m4_rankings","queue_rankings",["publication_id","security_id","payload_json"],[{"publication_id":publication_id,"security_id":r["security_id"],"payload_json":_json(r)} for r in prepared.queue_rankings])
                     if prepared.memberships:
-                        self._write_relation_binding(con,publication_id,request.trade_date,request.source_bundle_id,prepared.memberships)
+                        self._write_relation_binding(con,publication_id,request.trade_date,request.source_bundle_id,prepared.memberships,self._relation_writer_factory(con))
                     self._bulk(con,"_m4_observations","observations",["observation_id","publication_id","payload_json"],[{"observation_id":r.get("observation_id") or _hash({"publication_id":publication_id,**r}),"publication_id":publication_id,"payload_json":_json(r)} for r in prepared.observations])
                     for row in prepared.outcomes:
                         bound=con.execute("SELECT 1 FROM observations WHERE observation_id=?",[row["observation_id"]]).fetchone()

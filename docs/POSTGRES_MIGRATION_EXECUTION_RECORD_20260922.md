@@ -315,8 +315,24 @@ analysis snapshot `m10-mainline-preview-dbf4683513501a8b`、88 个切片、5464
 股票、498 板块、948 candidate/board/ranking、27320 structure rows 及关系
 revision/attribute binding 均已提交并完成 head、分析绑定、entry count 硬校验。
 
-同步后的只读验证：PG `publication_heads` 最新日期为 2026-09-22，现有 HTTP
-服务仍返回 2026-09-22 且 `READY`；服务后端仍是 DuckDB，故页面没有被冒险切换到
-尚未完成的 PG 主 API。维护窗口 preflight 仍为 `BLOCKED_PRECUTOVER_HARD_GATES`，
-阻塞项仍明确是 12 个应用消费者 `NOT_MIGRATED` 和服务后端仍为 DuckDB，而非
-今日数据缺失。下一阶段仍为完成主 API/写入入口的真实注入与回退验证。
+同步后的只读验证：PG `publication_heads` 最新日期为 2026-09-22，数据同步本身
+通过；当时服务尚未切换主 API，后续切换记录见第 17 节。维护窗口 preflight
+仍以应用入口是否完成真实注入为硬门，不能把单次数据追平当作全量切换完成。
+## 17. PGM-09 / PostgreSQL API read-path cutover
+
+新增 `PostgresDuckDBApiConnectionProvider`：HTTP API 仍使用已有参数化
+DuckDB SQL 合同，但每个请求创建隔离内存连接，通过 DuckDB
+`postgres_scanner` 将 `workbench` 表映射为同名只读视图，实际数据读取来自
+PostgreSQL；连接失败不会回退到本地数据库文件。`WORKBENCH_API_BACKEND=postgresql`
+时，主 API、今日研究包名称投影和分析能力计算均走 PG。
+
+在独立端口完成真实冒烟：`/api/publications`、`include_analysis=1`、首页、
+板块、股票、队列和 `/api/v3/research/today` 均返回 2026-09-22 数据；随后
+正式 28765 服务已重启并启用同一 PG 读路径，`/api/operations/status` 返回
+`backend=postgresql`、`READY`，页面核心接口全部 200。
+
+生成链路保留 DuckDB 计算隔离；当 API 后端为 PostgreSQL 时，日生成任务在
+DuckDB 计算/分析完成后自动调用 `sync_latest_publication_to_postgres.py`，PG
+同步未通过则任务失败关闭，不会显示成功。该阶段仍不是全量写入口切换：
+12 个应用消费者的维护窗口 inventory 尚未全部完成，preflight 当前唯一硬阻塞
+为 `application_consumers_not_migrated`。

@@ -19,6 +19,7 @@ from typing import Any, Callable, Mapping
 
 import duckdb
 
+from workbench_db import DuckDBHistoryJobRepository, HistoryJobRepository
 from .source_freezer import SourceFreezeError, verify_source_manifest
 
 
@@ -42,9 +43,19 @@ def _hash(value: Any) -> str:
 class HistoryJobService:
     """A small persisted state machine with cooperative cancellation."""
 
-    def __init__(self, root: str | Path, database_path: str | Path | None = None, *, worker: Callable[[str, Mapping[str, Any]], Any] | None = None):
+    # MIGRATION_CONTRACT: history job state remains MIGRATE_TO_PG until its
+    # queue, event, cancellation and recovery transactions pass PG rehearsal.
+    def __init__(
+        self,
+        root: str | Path,
+        database_path: str | Path | None = None,
+        *,
+        worker: Callable[[str, Mapping[str, Any]], Any] | None = None,
+        repository: HistoryJobRepository | None = None,
+    ):
         self.root = Path(root).resolve()
-        self.database_path = Path(database_path).resolve() if database_path else self.root / "data/database/market_research.duckdb"
+        self._repository = repository or DuckDBHistoryJobRepository(self.root, database_path)
+        self.database_path = Path(database_path).resolve() if database_path else self._repository.database_path
         self.worker = worker
         self._threads: dict[str, threading.Thread] = {}
         self._cancel: dict[str, threading.Event] = {}
@@ -52,15 +63,7 @@ class HistoryJobService:
         self._event_lock = threading.Lock()
 
     def _connect(self):
-        last_error = None
-        for _ in range(50):
-            try:
-                return duckdb.connect(str(self.database_path))
-            except duckdb.IOException as exc:
-                last_error = exc
-                time.sleep(0.02)
-        assert last_error is not None
-        raise last_error
+        return self._repository.connect()
 
     def _event(self, connection, job_id: str, attempt: int, status: str, **details: Any) -> None:
         # Event sequence numbers are scoped to (job, attempt). A worker and a

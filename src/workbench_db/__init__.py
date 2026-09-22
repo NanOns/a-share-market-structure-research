@@ -17,6 +17,7 @@ from .publication_repository import (
     PublicationStatusReader,
 )
 from .analysis_activation_repository import AnalysisActivationRepository, DuckDBAnalysisActivationRepository
+from .history_job_repository import HistoryJobRepository, DuckDBHistoryJobRepository
 from .postgres_artifact_catalog import ArtifactCatalogError, PostgresArtifactCatalog
 from .backend_provider import AdapterHttpGateway, BackendRepositoryProvider, RepositoryUnavailable
 from .migrations import MigrationError, MigrationExecutor
@@ -50,6 +51,8 @@ __all__ = [
     "DuckDBPublicationStatusReader",
     "AnalysisActivationRepository",
     "DuckDBAnalysisActivationRepository",
+    "HistoryJobRepository",
+    "DuckDBHistoryJobRepository",
     "ArtifactCatalogError",
     "PostgresArtifactCatalog",
     "AdapterHttpGateway",

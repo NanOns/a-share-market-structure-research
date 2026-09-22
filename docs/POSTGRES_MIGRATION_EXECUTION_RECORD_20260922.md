@@ -204,6 +204,8 @@ acceptance: DEGRADED_PASS_PRECUTOVER_INVENTORY
 
 第二个只读切片完成 publication head 投影：`PostgresRepository.publication_heads()` 与现有 `/api/publications?include_analysis=0` 对账 7 条、latest head 一致。`include_analysis=1` 的嵌套 `analysis_capabilities` 暂列为后续独立域，不能用基础 head 一致冒充全部 API 已迁移。
 
+同一研究域的板块元数据和全量股票名称投影也已完成 shadow：板块 `498/498`、股票 `5464/5464`，均与冻结 DuckDB 一致；今日研究包列表/详情再次对账通过。报告分别位于 `runtime/postgres_migration/20260922/research_metadata_pg_shadow_report.json` 和 `today_research_pg_shadow_report.json`。
+
 下一步固定为 `PGM-09 / repository adapter implementation and config rollback rehearsal`：按盘点表逐域实现 `WorkbenchRepository`、`ResearchRepository`、`OperationsRepository` 和 `ArtifactCatalog` 边界，先在隔离配置下回归页面关键接口、受控写入和配置回退；通过后才允许维护窗口正式切换。未完成应用适配器和回退演练前，不开始 Focus Tracker 业务表和算法实现。
 
 ## 15. 阶段记录
@@ -212,8 +214,8 @@ acceptance: DEGRADED_PASS_PRECUTOVER_INVENTORY
 |---|---|
 | stage | `PGM-00/01/02/03/04/05-shadow/06-shadow/07-drill/08-rehearsal/09-inventory` |
 | stage_contract | `POSTGRES_MIGRATION_EXECUTION_RECORD_V1` |
-| evidence | 目标连接、冻结快照 SHA-256、103 表复制、逐表行数对账、服务恢复、API shadow、PG 备份恢复、PGM-08 隔离切换演练、19 个应用直连点切换盘点、今日研究包读路径 shadow、publication head shadow |
+| evidence | 目标连接、冻结快照 SHA-256、103 表复制、逐表行数对账、服务恢复、API shadow、PG 备份恢复、PGM-08 隔离切换演练、19 个应用直连点切换盘点、今日研究包读路径 shadow、publication head shadow、研究元数据 shadow |
 | acceptance_result | `DEGRADED_PASS / SHADOW_BACKUP_RESTORE_CUTOVER_REHEARSAL_AND_APPLICATION_INVENTORY_COMPLETE` |
 | next_stage | `PGM-09 / repository adapter implementation and config rollback rehearsal` |
-| code_changes | 新增 legacy 迁移器、PG schema builder、Artifact/consumer catalog builder、PG repository、今日研究包与 publication head 只读适配器、数据层/API shadow-read、时间语义审计器、切换演练器、应用直连点盘点器；未修改在线主路径 |
+| code_changes | 新增 legacy 迁移器、PG schema builder、Artifact/consumer catalog builder、PG repository、今日研究包、publication head 与研究元数据只读适配器、数据层/API shadow-read、时间语义审计器、切换演练器、应用直连点盘点器；未修改在线主路径 |
 | source_changes | 未修改 DuckDB 和 TDX 输入 |

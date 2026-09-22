@@ -79,15 +79,14 @@ class PostgresRepository:
 
         Bundle JSON remains an immutable managed artifact; PostgreSQL only
         supplies the relational name projection used to decorate the read
-        model.  The join prevents a name from another bundle being reused.
+        model.  The publication key prevents a name from another snapshot
+        being reused.
         """
         if self.connection is None:
             raise RuntimeError("POSTGRES_REPOSITORY_NOT_OPEN")
         query = sql.SQL(
-            "select c.security_id,c.security_name "
-            "from {schema}.research_runs_v3_3 r "
-            "join {schema}.research_candidates_v3_3 c on c.bundle_digest=r.bundle_digest "
-            "where r.publication_id=%s and r.status='COMPLETE' and c.security_name is not null"
+            "select security_id,security_name from {schema}.stock_daily "
+            "where publication_id=%s and security_name is not null"
         ).format(schema=sql.Identifier(self.schema))
         with self.connection.cursor() as cur:
             cur.execute(query, (publication_id,))
@@ -117,3 +116,12 @@ class PostgresRepository:
         if include_analysis:
             result["api_contract"] = "WORKBENCH_PUBLICATIONS_API_V1"
         return result
+
+    def sector_metadata(self, publication_id: str) -> list[dict[str, str]]:
+        """Return the stable sector identity projection for one publication."""
+        if self.connection is None:
+            raise RuntimeError("POSTGRES_REPOSITORY_NOT_OPEN")
+        query = sql.SQL("select sector_id,sector_name,sector_type from {}.sector_daily where publication_id=%s order by sector_id").format(sql.Identifier(self.schema))
+        with self.connection.cursor() as cur:
+            cur.execute(query, (publication_id,))
+            return [{"sector_id": str(sector_id), "sector_name": str(sector_name or sector_id), "sector_type": str(sector_type or "LOCAL")} for sector_id, sector_name, sector_type in cur.fetchall()]

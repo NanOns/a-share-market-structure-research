@@ -252,6 +252,8 @@ PGM-09 重新扫描并清理了消费者目录中的陈旧记录：当前静态�
 
 运维备份入口随后完成连接边界收口：`BackupService` 的主库、只读审计、备份文件验证和内存 Parquet 校验统一通过 `BackupRepository`，备份复制、哈希校验、恢复演练及“必须维护窗口”门禁保持不变；当前只有 DuckDB 兼容实现，backup catalog 的 PostgreSQL 写入/恢复登记尚未接入，因此 `backup.py` 仍为 `NOT_MIGRATED`。M5/M7B 备份恢复与 P04-03 链路测试 `7 passed`。
 
+本轮把 `backup_catalog` 元数据进一步抽成 `BackupCatalogRepository`：`BackupService` 的创建、恢复登记、链路审计和孤儿溯源不再直接执行该表 SQL；新增 `DuckDBBackupCatalogRepository` 与 `PostgresBackupCatalogRepository`，物理 DuckDB 备份文件、受管对象复制和恢复校验仍留在原有维护窗口流程。`scripts/pg_backup_catalog_repository_rehearsal.py` 在真实 PG 上验证目录 round-trip、冲突重放保持首写、列表读取、强制事务回滚和清理，结果为 `DEGRADED_PASS_BACKUP_CATALOG_REPOSITORY`，报告位于 `runtime/postgres_migration/20260922/pg_backup_catalog_repository_rehearsal_report.json`。该目录适配器尚未接入线上 BackupService 默认实例，也未改变备份文件后端，因此 `backup.py` 继续保持 `NOT_MIGRATED`。
+
 数据库迁移准备入口随后完成路径/依赖边界收口：`DatabaseMigration` 使用统一数据库路径解析，并允许注入备份实现；目标路径、TDX 禁止写入、维护窗口、原子替换和旧库保留规则未改变。该入口仍只是 DuckDB 离线副本准备，不代表 PostgreSQL 激活，M5 migration 测试 `3 passed`，仍保持 `NOT_MIGRATED`。
 
 存储治理入口随后完成连接边界收口：`StorageGovernance` 的 DuckDB 兼容回退路径统一通过 `StorageConnectionRepository`，已有 `StorageMetadataRepository` 注入路径、受管目录校验、租约、预览、隔离和删除前硬门均保持不变；PG 元数据路径仍需接入真实服务并完成清理生命周期 rehearsal，因此 `storage.py` 继续为 `NOT_MIGRATED`。存储治理与预览测试 `7 passed`。

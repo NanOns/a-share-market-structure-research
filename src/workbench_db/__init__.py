@@ -22,6 +22,7 @@ from .postgres_history_job_repository import PostgresHistoryJobRepository
 from .incremental_writer_repository import IncrementalWriterRepository, DuckDBIncrementalWriterRepository
 from .research_builder_repository import ResearchBuilderRepository, DuckDBResearchBuilderRepository
 from .backup_repository import BackupRepository, DuckDBBackupRepository
+from .backup_catalog_repository import BackupCatalogRepository, DuckDBBackupCatalogRepository, PostgresBackupCatalogRepository
 from .storage_connection import StorageConnectionRepository, DuckDBStorageConnectionRepository
 from .api_connection import ApiConnectionProvider, DuckDBApiConnectionProvider
 from .postgres_artifact_catalog import ArtifactCatalogError, PostgresArtifactCatalog
@@ -68,6 +69,9 @@ __all__ = [
     "DuckDBResearchBuilderRepository",
     "BackupRepository",
     "DuckDBBackupRepository",
+    "BackupCatalogRepository",
+    "DuckDBBackupCatalogRepository",
+    "PostgresBackupCatalogRepository",
     "StorageConnectionRepository",
     "DuckDBStorageConnectionRepository",
     "ApiConnectionProvider",

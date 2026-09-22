@@ -8,7 +8,7 @@ import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 
-from workbench_db import BackupRepository, DuckDBBackupRepository
+from workbench_db import BackupCatalogRepository, BackupRepository, DuckDBBackupCatalogRepository, DuckDBBackupRepository
 
 from .config import ConfigValidationError, OperationsConfig
 
@@ -24,10 +24,11 @@ class BackupService:
     """
     # MIGRATION_CONTRACT: backup remains MIGRATE_TO_PG until catalog writes,
     # verification and restore metadata use a rehearsed PG operations API.
-    def __init__(self, root, database_path=None, *, repository: BackupRepository | None = None):
+    def __init__(self, root, database_path=None, *, repository: BackupRepository | None = None, catalog: BackupCatalogRepository | None = None):
         self.root=Path(root).resolve()
         self._repository = repository or DuckDBBackupRepository(database_path or self.root/"data/database/market_research.duckdb")
         self.database_path=Path(database_path).resolve() if database_path else self._repository.database_path
+        self._catalog = catalog or DuckDBBackupCatalogRepository(self.database_path)
         self.config=OperationsConfig(self.root,self.database_path)
 
     def _connect(self, path=None, *, read_only=False):
@@ -58,8 +59,7 @@ class BackupService:
         finally:
             temporary.unlink(missing_ok=True)
         record={"backup_id":backup_id,"path":str(final),"sha256":digest,"created_at_utc":datetime.now(timezone.utc).isoformat(),"source_database":str(self.database_path),"verification":verification,"state":"VERIFIED"}
-        with self._connect() as con:
-            con.execute("INSERT INTO backup_catalog VALUES (?, ?) ON CONFLICT DO NOTHING",[backup_id,_dump(record)])
+        self._catalog.upsert(backup_id, record)
         return record
 
     def create_history_backup(self, *, maintenance_window: bool) -> dict:
@@ -126,15 +126,13 @@ class BackupService:
             temp_manifest.unlink(missing_ok=True)
             if temp_object_root.exists(): shutil.rmtree(temp_object_root)
         record={"backup_id":backup_id,"path":str(final),"sha256":database_sha,"manifest_path":str(manifest_path),"objects_root":str(object_root),"object_count":len(objects),"created_at_utc":datetime.now(timezone.utc).isoformat(),"source_database":str(self.database_path),"verification":verification,"state":"VERIFIED"}
-        with self._connect() as con:
-            con.execute("INSERT INTO backup_catalog VALUES (?, ?) ON CONFLICT DO NOTHING",[backup_id,_dump(record)])
+        self._catalog.upsert(backup_id, record)
         return record
 
     def restore_drill(self, backup_id: str, *, drill_root: str | Path) -> dict:
-        with self._connect() as con:
-            row=con.execute("SELECT payload_json FROM backup_catalog WHERE backup_id=?",[backup_id]).fetchone()
-        if not row: raise ConfigValidationError("BACKUP_NOT_REGISTERED")
-        record=json.loads(row[0]); source=Path(record["path"]).resolve(); raw_root=Path(drill_root)
+        record=self._catalog.get(backup_id)
+        if not record: raise ConfigValidationError("BACKUP_NOT_REGISTERED")
+        source=Path(record["path"]).resolve(); raw_root=Path(drill_root)
         for item in (raw_root, *raw_root.parents):
             if item.is_symlink(): raise ConfigValidationError("RESTORE_DRILL_SYMLINK_FORBIDDEN")
         target_root=raw_root.resolve(); tdx_root=Path(self.config._tdx_root()).expanduser().resolve()
@@ -195,11 +193,9 @@ class BackupService:
         backup_root=Path(self.config.validate(self.config.current()["config"])["resolved_backup_root"]).resolve()
         physical_files={path.name:path for path in backup_root.iterdir() if path.is_file()} if backup_root.is_dir() else {}
         physical_dirs={path.name:path for path in backup_root.iterdir() if path.is_dir()} if backup_root.is_dir() else {}
-        with self._connect(read_only=True) as con:
-            rows=con.execute("SELECT backup_id,payload_json FROM backup_catalog ORDER BY backup_id").fetchall()
+        rows=self._catalog.rows()
         records=[]; catalog_db_names=set(); catalog_manifest_names=set(); catalog_object_names=set()
-        for backup_id, raw in rows:
-            value=json.loads(raw)
+        for backup_id, value in rows:
             database_name=Path(str(value.get("path", ""))).name
             manifest_name=Path(str(value.get("manifest_path", ""))).name if value.get("manifest_path") else None
             object_name=Path(str(value.get("objects_root", ""))).name if value.get("objects_root") else None
@@ -362,14 +358,13 @@ class BackupService:
         never registers, deletes, restores, moves, or rewrites an artifact.
         """
         backup_root=Path(self.config.validate(self.config.current()["config"])["resolved_backup_root"]).resolve()
+        catalog_rows=self._catalog.rows()
         with self._connect(read_only=True) as con:
-            catalog_rows=con.execute("SELECT backup_id,payload_json FROM backup_catalog ORDER BY backup_id").fetchall()
             storage_rows=con.execute("SELECT storage_object_id,payload_json FROM storage_objects ORDER BY storage_object_id").fetchall() if self._has_table(con,"storage_objects") else []
         catalog_records=[]
         catalog_by_sha={}
         catalog_by_id={}
-        for backup_id,raw in catalog_rows:
-            value=json.loads(raw)
+        for backup_id,value in catalog_rows:
             item={"backup_id":backup_id,"created_at_utc":value.get("created_at_utc"),"sha256":value.get("sha256"),"database_name":Path(str(value.get("path", ""))).name}
             catalog_records.append(item)
             catalog_by_id[backup_id]=item

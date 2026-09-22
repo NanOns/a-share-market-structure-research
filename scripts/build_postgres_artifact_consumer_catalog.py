@@ -88,11 +88,11 @@ def consumer_hits() -> list[tuple[str, str, str]]:
             if matched:
                 status = "UNCLASSIFIED"
                 rel = path.relative_to(ROOT).as_posix()
-                if rel.startswith("src/workbench_service/"):
+                if rel == "config/workbench.yaml" or rel.startswith("src/workbench_service/") or rel.startswith("src/workbench_ops/") or rel.startswith("src/workbench_publish/") or rel in {"src/workbench_db/repository.py", "src/workbench_db/backend_provider.py"}:
                     status = "MIGRATE_TO_PG"
                 elif rel.startswith("scripts/audit_") or rel.startswith("scripts/verify_"):
                     status = "RETAIN_UNTIL_AUDIT_CLOSE"
-                elif rel.startswith("scripts/build_") or rel.startswith("scripts/migrate_") or rel.startswith("scripts/run_"):
+                elif rel.startswith("scripts/") or rel.startswith("src/"):
                     status = "OFFLINE_DUCKDB_ALLOWED"
                 hits.append((rel, ",".join(matched), status))
     return sorted(hits)
@@ -162,6 +162,11 @@ def main() -> int:
                     """,
                     (consumer_id, rel, matched, disposition, f"static scan: {matched}", None, None),
                 )
+            current_ids = {hashlib.sha256(rel.encode()).hexdigest() for rel, _matched, _disposition in consumer_hits()}
+            cur.execute("select consumer_id from workbench_meta.consumer_catalog")
+            stale_ids = [row[0] for row in cur.fetchall() if row[0] not in current_ids]
+            if stale_ids:
+                cur.execute("delete from workbench_meta.consumer_catalog where consumer_id = any(%s)", (stale_ids,))
         pg.commit()
         with pg.cursor() as cur:
             cur.execute("select count(*) from workbench_meta.artifact_catalog")

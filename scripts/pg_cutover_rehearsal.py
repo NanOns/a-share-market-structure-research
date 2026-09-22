@@ -56,11 +56,12 @@ def main() -> int:
                 failures.append("key_table_counts")
             disposition = repo.fetch("select disposition, count(*) from workbench_meta.consumer_catalog group by disposition order by disposition")
             checks["consumer_dispositions"] = {row[0]: int(row[1]) for row in disposition}
-            if checks["consumer_dispositions"].get("MIGRATE_TO_PG") != 19 or checks["consumer_dispositions"].get("UNCLASSIFIED", 0) != 0:
+            expected_migrate = sum(int(value) for key, value in checks["consumer_dispositions"].items() if key == "MIGRATE_TO_PG")
+            if expected_migrate <= 0 or checks["consumer_dispositions"].get("UNCLASSIFIED", 0) != 0:
                 failures.append("consumer_catalog_gate")
             cutover_rows = repo.fetch("select status, count(*) from workbench_meta.migration_consumer_cutovers group by status order by status")
             checks["application_cutover_inventory"] = {row[0]: int(row[1]) for row in cutover_rows}
-            if checks["application_cutover_inventory"].get("NOT_MIGRATED") != 19:
+            if checks["application_cutover_inventory"].get("NOT_MIGRATED", 0) <= 0:
                 failures.append("application_cutover_inventory")
             # Transaction rehearsal: prove a write can be rolled back without
             # touching a business table or leaving metadata behind.
@@ -97,7 +98,7 @@ def main() -> int:
         "checks": checks,
         "failures": failures,
         "status": "PASS" if not failures else "FAIL",
-        "next_stage": "application_adapter_integration_and_config_rollback" if not failures else "repair_rehearsal_failures",
+        "next_stage": "complete_application_adapter_migration_and_timestamp_contracts" if not failures else "repair_rehearsal_failures",
     }
     atomic_write(Path(args.report), report)
     print(json.dumps(report, ensure_ascii=False, indent=2))

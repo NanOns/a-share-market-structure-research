@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 from typing import Any
-import duckdb
+from workbench_db.read_repository import DuckDBReadRepository
 from .research_bundle_v3_3 import ResearchBundleError, read_active
 
 API_CONTRACT = "TODAY_RESEARCH_V3_3_API_01"
@@ -11,7 +11,7 @@ EFFECT_STATUS = "EFFECT_OBSERVATION_PENDING"
 
 class TodayResearchBundleReader:
  def __init__(self, root: Path, pointer: Path | None = None, database_path: Path | None = None, repository: Any | None = None):
-  self.root=Path(root).resolve();self.pointer=Path(pointer) if pointer else self.root/"data/current/ACTIVE_RESEARCH_BUNDLE_V3_3.json";self.database_path=Path(database_path) if database_path else None;self.repository=repository
+  self.root=Path(root).resolve();self.pointer=Path(pointer) if pointer else self.root/"data/current/ACTIVE_RESEARCH_BUNDLE_V3_3.json";self.database_path=Path(database_path) if database_path else None;self.repository=repository or (DuckDBReadRepository(self.database_path) if self.database_path else None)
  def _load(self)->tuple[dict[str,Any],list[dict[str,Any]]]:
   active=read_active(self.pointer)
   if active is None:raise ResearchBundleError("ACTIVE_BUNDLE_NOT_BUILT")
@@ -23,12 +23,6 @@ class TodayResearchBundleReader:
   if self.repository is not None:
    try:
     names=dict(self.repository.research_security_names(str(active["identity"]["publication_id"])))
-   except Exception:
-    names={}
-  elif self.database_path and self.database_path.is_file():
-   try:
-    with duckdb.connect(str(self.database_path),read_only=True) as connection:
-     names=dict(connection.execute("select security_id,security_name from stock_daily where publication_id=?",[active["identity"]["publication_id"]]).fetchall())
    except Exception:
     names={}
   return [{**row,"security_name":row.get("security_name") or names.get(row.get("security_id")),"display_rank":index} for index,row in enumerate(rows,1)]

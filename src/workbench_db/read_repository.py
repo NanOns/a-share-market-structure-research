@@ -44,9 +44,15 @@ class DuckDBReadRepository:
 
     @contextmanager
     def _cursor(self) -> Iterator[duckdb.DuckDBPyConnection]:
-        if self.connection is None:
-            raise RuntimeError("DUCKDB_READ_REPOSITORY_NOT_OPEN")
-        yield self.connection
+        if self.connection is not None:
+            yield self.connection
+            return
+        # Lazy per-call sessions keep the compatibility reader from holding
+        # a process-wide DuckDB handle while writers or the cutover provider
+        # are active.  The explicit context-manager path remains available for
+        # batched shadow reads.
+        with duckdb.connect(str(self.database_path), read_only=True) as transient:
+            yield transient
 
     def publication_heads(self, *, include_analysis: bool = False) -> dict[str, Any]:
         with self._cursor() as con:

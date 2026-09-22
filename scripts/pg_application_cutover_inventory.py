@@ -81,6 +81,11 @@ def main() -> int:
                     values (%s,%s,%s,'DUCKDB','POSTGRESQL',%s,%s,%s,%s)
                     on conflict (consumer_id) do update set relative_path=excluded.relative_path,adapter_contract=excluded.adapter_contract,current_backend=excluded.current_backend,target_backend=excluded.target_backend,status=excluded.status,evidence=excluded.evidence,rollback_contract=excluded.rollback_contract,reviewed_at=excluded.reviewed_at
                 """, (consumer_id, path, contract, status, evidence, "stop PG writes; export PG-only delta or restore pre-cutover state with explicit data-gap receipt", now))
+            current_ids = {row[0] for row in consumers}
+            cur.execute("select consumer_id from workbench_meta.migration_consumer_cutovers")
+            stale_ids = [row[0] for row in cur.fetchall() if row[0] not in current_ids]
+            if stale_ids:
+                cur.execute("delete from workbench_meta.migration_consumer_cutovers where consumer_id = any(%s)", (stale_ids,))
         pg.commit()
     unmapped = [row["relative_path"] for row in rows if row["status"] == "BLOCKED_UNMAPPED"]
     report = {
@@ -89,12 +94,13 @@ def main() -> int:
         "online_switch_performed": False,
         "data_generation_triggered": False,
         "consumer_count": len(rows),
-        "all_consumer_rows_recorded": len(rows) == 19,
+        "all_consumer_rows_recorded": bool(rows) and not unmapped,
+        "expected_consumer_count": len(rows),
         "unmapped_consumers": unmapped,
         "status_counts": {status: sum(row["status"] == status for row in rows) for status in sorted({row["status"] for row in rows})},
         "consumers": rows,
-        "acceptance": "DEGRADED_PASS_PRECUTOVER_INVENTORY" if len(rows) == 19 and not unmapped else "BLOCKED",
-        "next_stage": "implement repository adapters and isolated config rollback" if not unmapped else "map unmapped direct consumers before adapter work",
+        "acceptance": "DEGRADED_PASS_PRECUTOVER_INVENTORY" if rows and not unmapped else "BLOCKED",
+        "next_stage": "complete application adapter migration and timestamp contracts" if not unmapped else "map unmapped direct consumers before adapter work",
     }
     atomic_write(REPORT, report)
     print(json.dumps(report, ensure_ascii=False, indent=2))

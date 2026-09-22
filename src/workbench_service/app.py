@@ -1985,11 +1985,11 @@ def make_handler(root,db):
     elif u.path=='/api/operations/restart-status':
      status_path=Path(root)/'runtime/controlled_restart_status.json';out=json.loads(status_path.read_text('utf-8')) if status_path.is_file() else {'state':'尚未执行'}
     elif u.path=='/api/operations/storage':
-     with duckdb.connect(str(db)) as c: out={'items':[json.loads(x[0]) for x in c.execute('select payload_json from storage_objects').fetchall()]}
+     out={'items':storage.payload_rows('storage_objects')}
     elif u.path=='/api/operations/backups':
-     with duckdb.connect(str(db)) as c: out={'items':[json.loads(x[0]) for x in c.execute('select payload_json from backup_catalog').fetchall()]}
+     out={'items':storage.payload_rows('backup_catalog')}
     elif u.path=='/api/operations/cleanup-plans':
-     with duckdb.connect(str(db)) as c: out={'items':[json.loads(x[0]) for x in c.execute('select payload_json from cleanup_jobs').fetchall()]}
+     out={'items':storage.payload_rows('cleanup_jobs')}
     elif u.path=='/api/jobs' and x.get('active')=='1':
      active=[]
      for job_id in list(daily_jobs):

@@ -256,6 +256,8 @@ PGM-09 重新扫描并清理了消费者目录中的陈旧记录：当前静态�
 
 主 API 入口开始收口：`Api.request_scope()` 与 `_con()` 统一通过可注入的 `ApiConnectionProvider` 获取连接，保留请求级复用和串行化锁语义；其他 legacy 路由、子进程回执读取和 DuckDB 专用查询尚未迁移，因此 `app.py` 仍为 `NOT_MIGRATED`。研究 API/UI 回归测试 `6 passed`，未注入线上 PostgreSQL。
 
+主 API 的运维目录读取继续收口：`/api/operations/storage`、`/backups`、`/cleanup-plans` 改由 `StorageGovernance.payload_rows()` 读取，优先使用可注入的 `StorageMetadataRepository`（包括 PostgreSQL 实现），兼容路径仍是只读 DuckDB；操作路由其余直连和子进程回执读取尚未关闭，`app.py` 仍保持 `NOT_MIGRATED`。存储、运维 UI 和研究 API 回归测试合计 `11 passed`。
+
 已完成隔离 adapter injection harness：`BackendRepositoryProvider` 只按显式 backend 打开 DuckDB 快照或 PostgreSQL，`AdapterHttpGateway` 在 PG 连接失败时返回 `503/POSTGRES_UNAVAILABLE`，不回退 DuckDB。`scripts/pg_cutover_adapter_injection_harness.py` 对 publication heads、研究元数据和今日研究包完成 DuckDB/PG 同请求对账（股票 `5464`、板块 `498`、今日研究总数一致），并验证故障时 `fallback_used=false`，结果为 `DEGRADED_PASS_ISOLATED_ADAPTER_INJECTION_503`。报告位于 `runtime/postgres_migration/20260922/pg_cutover_adapter_injection_harness_report.json`。该 provider 尚未注入现有 `app.py` 或日常任务。
 
 已执行 `scripts/pg_maintenance_cutover_preflight.py` 只读门禁汇总：数据表 catalog `103/103 DATA_COPIED`，ArtifactCatalog `141/141 AVAILABLE`，所有 shadow、备份恢复、写入回滚和 adapter injection 证据均有效；时间语义已为 `42 APPLIED / 0 PENDING_REVIEW`，但硬门仍为 `BLOCKED_PRECUTOVER_HARD_GATES`，阻塞项是应用直连消费者 `12 NOT_MIGRATED`，以及当前服务明确仍指向 DuckDB。报告位于 `runtime/postgres_migration/20260922/pg_maintenance_cutover_preflight.json`。该结果不是失败数据迁移，而是禁止提前切换的真实前置结论。

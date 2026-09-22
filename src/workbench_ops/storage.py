@@ -36,6 +36,8 @@ class StorageMetadataRepository(Protocol):
 
     def upsert_cleanup_job(self, *, cleanup_job_id: str, payload: dict[str, Any]) -> None: ...
 
+    def payload_rows(self, table: str) -> list[dict[str, Any]]: ...
+
 
 def _payload(value: Any) -> str:
     return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), default=str)
@@ -59,6 +61,20 @@ class StorageGovernance:
     def _roots(self) -> list[Path]:
         report = self.config.validate(self.config.current()["config"])
         return [Path(x) for x in report["resolved_managed_write_roots"]]
+
+    def payload_rows(self, table: str) -> list[dict[str, Any]]:
+        """Read an operations payload catalog through the configured backend."""
+        allowed = {"storage_objects", "backup_catalog", "cleanup_jobs"}
+        if table not in allowed:
+            raise ConfigValidationError("OPERATIONS_TABLE_NOT_ALLOWED")
+        if self.storage_repository is not None:
+            reader = getattr(self.storage_repository, "payload_rows", None)
+            if reader is None:
+                raise ConfigValidationError("STORAGE_METADATA_READ_NOT_READY")
+            return list(reader(table))
+        with self._connect(read_only=True) as con:
+            rows = con.execute(f"SELECT payload_json FROM {table} ORDER BY 1").fetchall()
+        return [raw if isinstance(raw, dict) else json.loads(raw or "{}") for (raw,) in rows]
 
     def _protected_paths(self) -> set[Path]:
         return {self.database_path, Path(str(self.database_path) + ".wal"), self.database_path.with_suffix(self.database_path.suffix + ".owner.lock")}

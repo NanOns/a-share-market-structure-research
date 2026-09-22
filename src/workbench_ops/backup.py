@@ -8,7 +8,7 @@ import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 
-import duckdb
+from workbench_db import BackupRepository, DuckDBBackupRepository
 
 from .config import ConfigValidationError, OperationsConfig
 
@@ -22,10 +22,19 @@ class BackupService:
     The caller must drain the service first.  This deliberately refuses the
     convenient-but-unsafe hot file copy pattern.
     """
-    def __init__(self, root, database_path=None):
+    # MIGRATION_CONTRACT: backup remains MIGRATE_TO_PG until catalog writes,
+    # verification and restore metadata use a rehearsed PG operations API.
+    def __init__(self, root, database_path=None, *, repository: BackupRepository | None = None):
         self.root=Path(root).resolve()
-        self.database_path=Path(database_path).resolve() if database_path else self.root/"data/database/market_research.duckdb"
+        self._repository = repository or DuckDBBackupRepository(database_path or self.root/"data/database/market_research.duckdb")
+        self.database_path=Path(database_path).resolve() if database_path else self._repository.database_path
         self.config=OperationsConfig(self.root,self.database_path)
+
+    def _connect(self, path=None, *, read_only=False):
+        return self._repository.connect(path, read_only=read_only)
+
+    def _memory(self):
+        return self._repository.memory()
 
     def create_offline_backup(self, *, maintenance_window: bool) -> dict:
         if not maintenance_window:
@@ -36,7 +45,7 @@ class BackupService:
         backup_root.mkdir(parents=True,exist_ok=True)
         # A full connection is opened only after the operator has drained all
         # service connections. CHECKPOINT produces a self-contained file.
-        with duckdb.connect(str(self.database_path)) as con:
+        with self._connect() as con:
             con.execute("CHECKPOINT")
             verification=self._verify(con)
         digest=hashlib.sha256(self.database_path.read_bytes()).hexdigest()
@@ -49,7 +58,7 @@ class BackupService:
         finally:
             temporary.unlink(missing_ok=True)
         record={"backup_id":backup_id,"path":str(final),"sha256":digest,"created_at_utc":datetime.now(timezone.utc).isoformat(),"source_database":str(self.database_path),"verification":verification,"state":"VERIFIED"}
-        with duckdb.connect(str(self.database_path)) as con:
+        with self._connect() as con:
             con.execute("INSERT INTO backup_catalog VALUES (?, ?) ON CONFLICT DO NOTHING",[backup_id,_dump(record)])
         return record
 
@@ -66,7 +75,7 @@ class BackupService:
             raise ConfigValidationError("BACKUP_DATABASE_MISSING")
         backup_root=Path(self.config.validate(self.config.current()["config"])["resolved_backup_root"])
         backup_root.mkdir(parents=True,exist_ok=True)
-        with duckdb.connect(str(self.database_path)) as con:
+        with self._connect() as con:
             con.execute("CHECKPOINT")
             verification=self._verify(con)
             object_rows=con.execute("SELECT storage_object_id,payload_json FROM storage_objects").fetchall() if self._has_table(con,"storage_objects") else []
@@ -117,12 +126,12 @@ class BackupService:
             temp_manifest.unlink(missing_ok=True)
             if temp_object_root.exists(): shutil.rmtree(temp_object_root)
         record={"backup_id":backup_id,"path":str(final),"sha256":database_sha,"manifest_path":str(manifest_path),"objects_root":str(object_root),"object_count":len(objects),"created_at_utc":datetime.now(timezone.utc).isoformat(),"source_database":str(self.database_path),"verification":verification,"state":"VERIFIED"}
-        with duckdb.connect(str(self.database_path)) as con:
+        with self._connect() as con:
             con.execute("INSERT INTO backup_catalog VALUES (?, ?) ON CONFLICT DO NOTHING",[backup_id,_dump(record)])
         return record
 
     def restore_drill(self, backup_id: str, *, drill_root: str | Path) -> dict:
-        with duckdb.connect(str(self.database_path)) as con:
+        with self._connect() as con:
             row=con.execute("SELECT payload_json FROM backup_catalog WHERE backup_id=?",[backup_id]).fetchone()
         if not row: raise ConfigValidationError("BACKUP_NOT_REGISTERED")
         record=json.loads(row[0]); source=Path(record["path"]).resolve(); raw_root=Path(drill_root)
@@ -161,7 +170,7 @@ class BackupService:
                 if actual != item["sha256"]: raise ConfigValidationError("RESTORE_OBJECT_HASH_MISMATCH:"+item["storage_object_id"])
                 if item.get("storage_kind") == "PARQUET":
                     try:
-                        with duckdb.connect() as check:
+                        with self._memory() as check:
                             rows=int(check.execute("select count(*) from read_parquet(?)",[str(destination)]).fetchone()[0])
                     except Exception as exc:
                         raise ConfigValidationError("RESTORE_PARQUET_QUERY_FAILED:"+item["storage_object_id"]) from exc
@@ -186,7 +195,7 @@ class BackupService:
         backup_root=Path(self.config.validate(self.config.current()["config"])["resolved_backup_root"]).resolve()
         physical_files={path.name:path for path in backup_root.iterdir() if path.is_file()} if backup_root.is_dir() else {}
         physical_dirs={path.name:path for path in backup_root.iterdir() if path.is_dir()} if backup_root.is_dir() else {}
-        with duckdb.connect(str(self.database_path),read_only=True) as con:
+        with self._connect(read_only=True) as con:
             rows=con.execute("SELECT backup_id,payload_json FROM backup_catalog ORDER BY backup_id").fetchall()
         records=[]; catalog_db_names=set(); catalog_manifest_names=set(); catalog_object_names=set()
         for backup_id, raw in rows:
@@ -353,7 +362,7 @@ class BackupService:
         never registers, deletes, restores, moves, or rewrites an artifact.
         """
         backup_root=Path(self.config.validate(self.config.current()["config"])["resolved_backup_root"]).resolve()
-        with duckdb.connect(str(self.database_path),read_only=True) as con:
+        with self._connect(read_only=True) as con:
             catalog_rows=con.execute("SELECT backup_id,payload_json FROM backup_catalog ORDER BY backup_id").fetchall()
             storage_rows=con.execute("SELECT storage_object_id,payload_json FROM storage_objects ORDER BY storage_object_id").fetchall() if self._has_table(con,"storage_objects") else []
         catalog_records=[]
@@ -551,6 +560,6 @@ class BackupService:
         return {"publication_heads":head_count,"queue_memberships":queue_count,"membership_entries":member_count,"outcomes":forward_count}
 
     def _verify_file(self,path, expected):
-        with duckdb.connect(str(path),read_only=True) as con:
+        with self._connect(path, read_only=True) as con:
             actual=self._verify(con)
         if actual != expected: raise ConfigValidationError("BACKUP_VERIFICATION_MISMATCH")

@@ -85,6 +85,11 @@ def consumer_hits() -> list[tuple[str, str, str]]:
             except UnicodeDecodeError:
                 continue
             matched = [pattern for pattern in patterns if pattern in text]
+            # A migrated application boundary may intentionally hide the
+            # physical backend details.  Keep its explicit cutover contract
+            # in the catalog until the PostgreSQL rehearsal closes it.
+            if "MIGRATION_CONTRACT:" in text and "MIGRATION_CONTRACT" not in matched:
+                matched.append("MIGRATION_CONTRACT")
             if matched:
                 status = "UNCLASSIFIED"
                 rel = path.relative_to(ROOT).as_posix()

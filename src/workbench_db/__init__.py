@@ -10,6 +10,12 @@ from .postgres_research_repository import PostgresResearchRepository
 from .result_object_repository import DuckDBResultObjectRepository, PostgresResultObjectRepository, ResultObjectRepository
 from .slice_repository import DuckDBSliceRepository, PostgresSliceRepository, SliceRepository
 from .operations_metadata import DuckDBOperationsMetadataReader, OperationsMetadataReader
+from .publication_repository import (
+    DuckDBPublicationRepositoryFactory,
+    DuckDBPublicationStatusReader,
+    PublicationRepositoryFactory,
+    PublicationStatusReader,
+)
 from .postgres_artifact_catalog import ArtifactCatalogError, PostgresArtifactCatalog
 from .backend_provider import AdapterHttpGateway, BackendRepositoryProvider, RepositoryUnavailable
 from .migrations import MigrationError, MigrationExecutor
@@ -37,6 +43,10 @@ __all__ = [
     "PostgresSliceRepository",
     "OperationsMetadataReader",
     "DuckDBOperationsMetadataReader",
+    "PublicationRepositoryFactory",
+    "DuckDBPublicationRepositoryFactory",
+    "PublicationStatusReader",
+    "DuckDBPublicationStatusReader",
     "ArtifactCatalogError",
     "PostgresArtifactCatalog",
     "AdapterHttpGateway",

@@ -4,8 +4,6 @@ from __future__ import annotations
 import hashlib
 import json
 import threading
-import time
-import duckdb
 import pyarrow as pa
 from contextlib import contextmanager
 from dataclasses import dataclass, field
@@ -13,7 +11,12 @@ from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any, Callable
 
-from workbench_db.repository import WorkbenchRepository
+from workbench_db import (
+    DuckDBPublicationRepositoryFactory,
+    DuckDBPublicationStatusReader,
+    PublicationRepositoryFactory,
+    PublicationStatusReader,
+)
 from workbench_input import verify_source_bundle
 from workbench_service.legacy_relation_import import LEGACY_SOURCE_SCOPE
 from workbench_service.relation_repository import RelationRepository
@@ -73,35 +76,30 @@ class PublicationRequest:
 
 
 class OneClickPublisher:
-    def __init__(self, root: str | Path, database_path: str | Path | None = None, bundle_verifier: Callable[[Path],dict[str,Any]]=verify_source_bundle):
+    # MIGRATION_CONTRACT: publisher remains MIGRATE_TO_PG until a PostgreSQL
+    # repository factory and status reader pass the publication rehearsal.
+    def __init__(
+        self,
+        root: str | Path,
+        database_path: str | Path | None = None,
+        bundle_verifier: Callable[[Path],dict[str,Any]]=verify_source_bundle,
+        *,
+        repository_factory: PublicationRepositoryFactory | None = None,
+        status_reader: PublicationStatusReader | None = None,
+    ):
         self.root = Path(root).resolve()
-        self.database_path = Path(database_path).resolve() if database_path else self.root / "data/database/market_research.duckdb"
+        self._repository_factory = repository_factory or DuckDBPublicationRepositoryFactory(self.root, database_path)
+        self.database_path = Path(database_path).resolve() if database_path else self._repository_factory.database_path
+        self._status_reader = status_reader or DuckDBPublicationStatusReader(self.root, self.database_path)
         self._threads: dict[str, threading.Thread] = {}
         self._progress: dict[str, dict[str, Any]] = {}
         self.bundle_verifier=bundle_verifier
 
     @contextmanager
     def _open_repository(self, *, timeout_seconds: float = 15.0):
-        """Open the single-writer repository with a bounded Windows lock retry."""
-        deadline = time.monotonic() + timeout_seconds
-        while True:
-            repository = WorkbenchRepository(self.root, self.database_path)
-            try:
-                repository.open()
-                try:
-                    yield repository
-                finally:
-                    repository.close()
-                return
-            except duckdb.IOException as exc:
-                message = str(exc).lower()
-                lock_error = any(marker in message for marker in (
-                    "another process", "used by another process", "cannot open file",
-                    "being used", "process cannot access", "另一个程序", "进程正在使用",
-                ))
-                if not lock_error or time.monotonic() >= deadline:
-                    raise
-                time.sleep(0.2)
+        """Open the configured repository through the backend boundary."""
+        with self._repository_factory.open(timeout_seconds=timeout_seconds) as repository:
+            yield repository
 
     def _event(self, con, job_id: str, attempt: int, status: str, **details: Any) -> None:
         seq = con.execute("SELECT coalesce(max(sequence),0)+1 FROM job_events WHERE job_id=? AND attempt=?", [job_id, attempt]).fetchone()[0]
@@ -234,23 +232,11 @@ class OneClickPublisher:
         if cached and cached.get("status") in ("SUCCESS", "FAILED"):
             return {"job_id": job_id, "status": cached["status"], "publication_id": cached.get("publication_id"),
                     "details": {}, "progress": cached, "updated_at_utc": cached.get("updated_at_utc")}
-        # Status is a read path and must stay available while the publisher
-        # owns the repository's single-writer lock for its final transaction.
-        con=duckdb.connect(str(self.database_path))
-        try:
-            row = con.execute("SELECT status,payload_json FROM jobs WHERE job_id=?", [job_id]).fetchone()
-            if not row:
-                raise KeyError("JOB_NOT_FOUND")
-            event=con.execute("SELECT payload_json,event_time_utc FROM job_events WHERE job_id=? ORDER BY attempt DESC,sequence DESC LIMIT 1",[job_id]).fetchone()
-            details=json.loads(row[1])
-            return {"job_id": job_id, "status": row[0], "publication_id":details.get("publication_id"), "details": details,
-                    "progress":json.loads(event[0]) if event else {"status":row[0]},
-                    "updated_at_utc":event[1].isoformat() if event else None}
-        finally:
-            con.close()
+        # Status is a read path and must stay backend-neutral for the PG cutover.
+        return self._status_reader.read(job_id)
 
     def recover_interrupted(self, compute: Callable[[PublicationRequest], PublicationRequest] | None=None, *, background: bool=False) -> list[dict[str, Any]]:
-        with WorkbenchRepository(self.root,self.database_path) as repo:
+        with self._open_repository() as repo:
             rows=repo.connection.execute("SELECT job_id,payload_json FROM jobs WHERE status IN ('QUEUED','RUNNING','INTERRUPTED') ORDER BY job_id").fetchall()
             repo.connection.execute("UPDATE jobs SET status='INTERRUPTED' WHERE status='RUNNING'")
             repo.connection.execute("UPDATE job_attempts SET status='INTERRUPTED' WHERE status='RUNNING'")

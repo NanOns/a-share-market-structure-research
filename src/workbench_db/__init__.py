@@ -22,6 +22,7 @@ from .incremental_writer_repository import IncrementalWriterRepository, DuckDBIn
 from .research_builder_repository import ResearchBuilderRepository, DuckDBResearchBuilderRepository
 from .backup_repository import BackupRepository, DuckDBBackupRepository
 from .storage_connection import StorageConnectionRepository, DuckDBStorageConnectionRepository
+from .api_connection import ApiConnectionProvider, DuckDBApiConnectionProvider
 from .postgres_artifact_catalog import ArtifactCatalogError, PostgresArtifactCatalog
 from .backend_provider import AdapterHttpGateway, BackendRepositoryProvider, RepositoryUnavailable
 from .migrations import MigrationError, MigrationExecutor
@@ -65,6 +66,8 @@ __all__ = [
     "DuckDBBackupRepository",
     "StorageConnectionRepository",
     "DuckDBStorageConnectionRepository",
+    "ApiConnectionProvider",
+    "DuckDBApiConnectionProvider",
     "ArtifactCatalogError",
     "PostgresArtifactCatalog",
     "AdapterHttpGateway",

@@ -8,6 +8,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, unquote, urlparse
 import duckdb
+from workbench_db import ApiConnectionProvider, DuckDBApiConnectionProvider
 from workbench_publish.orchestrator import submit_one_click, ControlledProduction
 from workbench_publish import OneClickPublisher
 from workbench_ops import OperationsConfig, ConfigConflict, ConfigValidationError
@@ -188,18 +189,19 @@ def resolve_workbench_path(root,trade_date,publication_id):
  return matches[0]
 
 class Api:
- def __init__(self,db,root=None): self.db=str(Path(db).resolve());self._root=Path(root).resolve() if root else Path(__file__).resolve().parents[2];self._display_scope=workbench_display_scope(self._root);self._db_lock=threading.RLock();self._request_state=threading.local();self._quote_cache={};self._quote_full_cache=set();self._quote_lock=threading.Lock();self._quote_service_cache={};self._source_cache={};self._chart_cache=ChartCache();self._association_cache={};self._association_lock=threading.Lock();self._hierarchy_cache={};self._hierarchy_lock=threading.Lock();self._analysis_quality_cache={};self._insight_cache={};self._window_dependencies=load_dependencies(self._root);self._window_sessions_cache=None;self._research_contexts=ResearchContextReader(lambda: self._con())
+ # MIGRATION_CONTRACT: API still has legacy DuckDB route/query consumers; the
+ # provider boundary is only the first slice until all routes use PG adapters.
+ def __init__(self,db,root=None,*,connection_provider: ApiConnectionProvider | None = None): self.db=str(Path(db).resolve());self._root=Path(root).resolve() if root else Path(__file__).resolve().parents[2];self._connection_provider=connection_provider or DuckDBApiConnectionProvider(self.db);self._display_scope=workbench_display_scope(self._root);self._db_lock=threading.RLock();self._request_state=threading.local();self._quote_cache={};self._quote_full_cache=set();self._quote_lock=threading.Lock();self._quote_service_cache={};self._source_cache={};self._chart_cache=ChartCache();self._association_cache={};self._association_lock=threading.Lock();self._hierarchy_cache={};self._hierarchy_lock=threading.Lock();self._analysis_quality_cache={};self._insight_cache={};self._window_dependencies=load_dependencies(self._root);self._window_sessions_cache=None;self._research_contexts=ResearchContextReader(lambda: self._con())
  @contextmanager
  def request_scope(self):
   """Reuse one serialized read connection for one HTTP request only."""
   with self._db_lock:
-   connection=duckdb.connect(self.db)
-   self._request_state.connection=connection
-   try:
-    yield
-   finally:
-    self._request_state.connection=None
-    connection.close()
+   with self._connection_provider.connect() as connection:
+    self._request_state.connection=connection
+    try:
+     yield
+    finally:
+     self._request_state.connection=None
  @contextmanager
  def _con(self):
   # DuckDB permits a normal connection to coexist with the publisher, but on
@@ -212,11 +214,8 @@ class Api:
    yield connection
    return
   with self._db_lock:
-   connection=duckdb.connect(self.db)
-   try:
+   with self._connection_provider.connect() as connection:
     yield connection
-   finally:
-    connection.close()
  def _publication_relation(self, connection, publication_id):
   return VersionedMembershipResolver(connection).publication_binding(publication_id)
  def _publication_edges(self, connection, publication_id):

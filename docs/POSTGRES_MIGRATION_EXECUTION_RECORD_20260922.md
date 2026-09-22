@@ -360,3 +360,22 @@ DuckDB 计算/分析完成后自动调用 `sync_latest_publication_to_postgres.p
 应用入口清单已重新生成，evidence 字段现在明确记录生产服务中的 PG 默认读/元数据
 写与 DuckDB 隔离计算镜像；12 行状态仍保留为 `NOT_MIGRATED`，因为这些入口尚未
 完成“所有写事务直接落 PG”的最终合同，不能用双写镜像冒充全量迁移。
+
+## 18. PGM-09 / incremental writer PostgreSQL transaction adapter
+
+本轮为 `IncrementalBuildCoordinator` 增加了显式的
+`PostgresIncrementalWriterRepository`。它固定使用 `workbench` schema、UTC 和
+30 秒 statement timeout，在 PostgreSQL 连接不可用时直接失败，不回退到
+`market_research.duckdb`。为兼容现有领域 writer 的稳定边界，适配器只转换其
+约定的 qmark (`?`) 参数占位符，事务、约束和 JSONB 类型均交由 PostgreSQL
+处理；这不是把 DuckDB SQL 隐式复制到另一进程。
+
+真实 PostgreSQL 回滚演练由
+`scripts/pg_incremental_writer_repository_rehearsal.py` 完成：在
+`analysis_slices` 插入唯一探针、验证日期/JSONB 可见性、技术结果 writer 重放和
+publication/snapshot binding 可见性后显式回滚，重新连接确认无残留，结果为
+`DEGRADED_PASS_INCREMENTAL_WRITER_REPOSITORY`，报告位于
+`runtime/postgres_migration/20260922/pg_incremental_writer_repository_rehearsal_report.json`。
+演练未运行生成任务，也未把默认 V3 日生成切换到该适配器；剩余门是逐个领域
+writer、结果对象和 snapshot binding 的 PG 事务对账，完成前 `incremental_writer.py`、
+`research_builder.py`、`v3_daily_entry.py` 继续保留 `NOT_MIGRATED`。

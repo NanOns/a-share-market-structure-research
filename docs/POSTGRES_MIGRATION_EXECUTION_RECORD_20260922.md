@@ -352,3 +352,7 @@ DuckDB 计算/分析完成后自动调用 `sync_latest_publication_to_postgres.p
 后必须以交易日调用 PG 同步器，只有同步报告为 `FULL_PASS` 才会把任务标记为
 成功；同步失败返回 `POSTGRES_SYNC_FAILED`，不产生“页面成功但 PG 缺数据”的
 半完成状态。
+
+`run_v3_daily_entry` 也采用同一策略：增量快照写入完成后，在 PostgreSQL 后端
+模式下按 cutoff date 调用同步器；`NO_WORK` 和正常构建两条分支都必须拿到
+`FULL_PASS`，否则抛出 `POSTGRES_SYNC_FAILED`。

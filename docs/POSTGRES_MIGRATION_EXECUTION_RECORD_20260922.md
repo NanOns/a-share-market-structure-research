@@ -185,18 +185,31 @@ status: PASS
 
 演练只使用临时表和回滚事务，没有写入业务表，没有修改运行配置，没有触发生成任务；当前服务仍使用 DuckDB。
 
-## 14. 下一阶段
+## 14. PGM-09 应用切换前置盘点
 
-下一步固定为 `PGM-09 / application adapter integration and config rollback rehearsal`：先在隔离配置下把 19 个入口切到 `workbench` schema，执行页面关键接口回归、写入事务演练和应用配置回退演练；通过后才允许维护窗口正式切换。未完成应用适配器和回退演练前，不开始 Focus Tracker 业务表和算法实现。
+已执行 `scripts/pg_application_cutover_inventory.py`，报告：`runtime/postgres_migration/20260922/application_cutover_inventory.json`。
+
+```text
+MIGRATE_TO_PG consumers: 19/19 recorded
+unmapped direct consumers: 0
+current backend: DUCKDB (all 19)
+target backend: POSTGRESQL
+application switch: NOT_STARTED
+acceptance: DEGRADED_PASS_PRECUTOVER_INVENTORY
+```
+
+盘点同时建立 `workbench_meta.migration_consumer_cutovers`，逐入口登记目标适配器、当前后端、回退合同和证据。19 个入口全部仍是 `NOT_MIGRATED`，所以不能把配置文件单独改成 PostgreSQL，也不能在当前阶段重启服务宣称完成切换。现有设计文档中的正式最终切换门仍未开始。
+
+下一步固定为 `PGM-09 / repository adapter implementation and config rollback rehearsal`：按盘点表逐域实现 `WorkbenchRepository`、`ResearchRepository`、`OperationsRepository` 和 `ArtifactCatalog` 边界，先在隔离配置下回归页面关键接口、受控写入和配置回退；通过后才允许维护窗口正式切换。未完成应用适配器和回退演练前，不开始 Focus Tracker 业务表和算法实现。
 
 ## 15. 阶段记录
 
 | 字段 | 值 |
 |---|---|
-| stage | `PGM-00/01/02/03/04/05-shadow/06-shadow/07-drill/08-rehearsal` |
+| stage | `PGM-00/01/02/03/04/05-shadow/06-shadow/07-drill/08-rehearsal/09-inventory` |
 | stage_contract | `POSTGRES_MIGRATION_EXECUTION_RECORD_V1` |
-| evidence | 目标连接、冻结快照 SHA-256、103 表复制、逐表行数对账、服务恢复、API shadow、PG 备份恢复、PGM-08 隔离切换演练报告 |
-| acceptance_result | `DEGRADED_PASS / SHADOW_BACKUP_RESTORE_AND_CUTOVER_REHEARSAL_COMPLETE` |
-| next_stage | `PGM-09 / application adapter integration and config rollback rehearsal` |
-| code_changes | 新增 legacy 迁移器、PG schema builder、Artifact/consumer catalog builder、PG repository、数据层/API shadow-read、时间语义审计器、切换演练器；未修改在线主路径 |
+| evidence | 目标连接、冻结快照 SHA-256、103 表复制、逐表行数对账、服务恢复、API shadow、PG 备份恢复、PGM-08 隔离切换演练、19 个应用直连点切换盘点 |
+| acceptance_result | `DEGRADED_PASS / SHADOW_BACKUP_RESTORE_CUTOVER_REHEARSAL_AND_APPLICATION_INVENTORY_COMPLETE` |
+| next_stage | `PGM-09 / repository adapter implementation and config rollback rehearsal` |
+| code_changes | 新增 legacy 迁移器、PG schema builder、Artifact/consumer catalog builder、PG repository、数据层/API shadow-read、时间语义审计器、切换演练器、应用直连点盘点器；未修改在线主路径 |
 | source_changes | 未修改 DuckDB 和 TDX 输入 |

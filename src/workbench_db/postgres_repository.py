@@ -217,3 +217,19 @@ class PostgresRepository:
         with self.connection.cursor() as cur:
             cur.execute(query, (publication_id,))
             return [{"sector_id": str(sector_id), "sector_name": str(sector_name or sector_id), "sector_type": str(sector_type or "LOCAL")} for sector_id, sector_name, sector_type in cur.fetchall()]
+
+    def research_sector_state_rows(self, run_id: str, *, track: str = "ALL", query_text: str = "") -> list[tuple[Any, ...]]:
+        """Read raw sector-state rows with the same filter/order as the API."""
+        if self.connection is None:
+            raise RuntimeError("POSTGRES_REPOSITORY_NOT_OPEN")
+        clauses = ["run_id=%s"]; params: list[Any] = [run_id]
+        if track == "CURRENT": clauses.append("current_eligible IS TRUE")
+        elif track == "POTENTIAL": clauses.append("potential_eligible IS TRUE")
+        elif track == "WEAK": clauses.append("coalesce(current_eligible,FALSE) IS FALSE AND coalesce(potential_eligible,FALSE) IS FALSE")
+        if query_text:
+            clauses.append("sector_id ILIKE %s"); params.append(f"%{query_text}%")
+        columns = "run_id,sector_id,current_eligible,potential_eligible,potential_branch,potential_branches,current_rank,potential_rank,m1,b1,rel1,p1,q5,q20,dq5_3,b_delta3,ma20_width,ma20_delta3,early_width,amount_a,top1_positive_share,member_count,quote_valid_count,feature_valid_count,early_count,positive_count,quote_coverage,feature_coverage,risk_coverage,quality,reason_codes,evidence,input_members_hash,rank_universe_hash"
+        sql_text = sql.SQL("select {} from {}.research_sector_states where {} order by coalesce(current_rank,potential_rank,999999),sector_id").format(sql.SQL(columns), sql.Identifier(self.schema), sql.SQL(" and ".join(clauses)))
+        with self.connection.cursor() as cur:
+            cur.execute(sql_text, params)
+            return cur.fetchall()

@@ -13,6 +13,7 @@ from .operations_metadata import DuckDBOperationsMetadataReader, OperationsMetad
 from .publication_repository import (
     DuckDBPublicationRepositoryFactory,
     DuckDBPublicationStatusReader,
+    PostgresPublicationStatusReader,
     PublicationRepositoryFactory,
     PublicationStatusReader,
 )
@@ -56,6 +57,7 @@ __all__ = [
     "DuckDBPublicationRepositoryFactory",
     "PublicationStatusReader",
     "DuckDBPublicationStatusReader",
+    "PostgresPublicationStatusReader",
     "AnalysisActivationRepository",
     "DuckDBAnalysisActivationRepository",
     "HistoryJobRepository",

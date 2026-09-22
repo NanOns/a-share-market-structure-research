@@ -342,8 +342,9 @@ class IncrementalBuildCoordinator:
         executor_matrix: Mapping[str, DomainExecutor] | None = None,
         repository: IncrementalWriterRepository | None = None,
     ):
-        # MIGRATION_CONTRACT: incremental writer remains MIGRATE_TO_PG until
-        # all domain writers and snapshot binding share a PG transaction.
+        # MIGRATION_CONTRACT: repository injection keeps the coordinator
+        # backend-neutral; PostgreSQL mode supplies one transaction across all
+        # selected domain writers and the snapshot binding.
         self._repository = repository or DuckDBIncrementalWriterRepository(database_path)
         self.database_path = Path(getattr(self._repository, "database_path", database_path)).resolve()
         self.writers = dict(writers or default_writers())

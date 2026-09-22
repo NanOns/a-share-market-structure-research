@@ -65,5 +65,20 @@ class PostgresWriteRepository:
         payload = row[1] if isinstance(row[1], dict) else json.loads(row[1] or "{}")
         return {"storage_object_id": str(row[0]), "payload": payload}
 
+    def storage_objects(self) -> list[dict[str, Any]]:
+        query = sql.SQL("select storage_object_id,payload_json from {schema}.storage_objects order by storage_object_id").format(
+            schema=sql.Identifier(self.repository.schema)
+        )
+        with self._connection().cursor() as cur:
+            cur.execute(query)
+            rows = cur.fetchall()
+        return [
+            {
+                "storage_object_id": str(row[0]),
+                "payload": row[1] if isinstance(row[1], dict) else json.loads(row[1] or "{}"),
+            }
+            for row in rows
+        ]
+
 
 __all__ = ["PostgresWriteRepository"]

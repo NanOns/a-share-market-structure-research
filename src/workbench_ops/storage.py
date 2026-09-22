@@ -7,11 +7,15 @@ import shutil
 import uuid
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Protocol
 
 import duckdb
 
 from .config import ConfigValidationError, OperationsConfig
+
+
+class StorageMetadataRepository(Protocol):
+    def upsert_storage_object(self, *, storage_object_id: str, payload: dict[str, Any]) -> None: ...
 
 
 def _payload(value: Any) -> str:
@@ -21,10 +25,11 @@ def _payload(value: Any) -> str:
 class StorageGovernance:
     """Catalog-backed cleanup planning.  Planning never unlinks a path."""
 
-    def __init__(self, root: str | Path, database_path: str | Path | None = None):
+    def __init__(self, root: str | Path, database_path: str | Path | None = None, *, storage_repository: StorageMetadataRepository | None = None):
         self.root = Path(root).resolve()
         self.database_path = Path(database_path).resolve() if database_path else self.root / "data/database/market_research.duckdb"
         self.config = OperationsConfig(self.root, self.database_path)
+        self.storage_repository = storage_repository
 
     def _roots(self) -> list[Path]:
         report = self.config.validate(self.config.current()["config"])
@@ -54,8 +59,11 @@ class StorageGovernance:
         candidate = self._validate_managed_path(path)
         object_id = "obj-" + hashlib.sha256(str(candidate).encode()).hexdigest()[:24]
         value = {"storage_object_id": object_id, "path": str(candidate), "kind": kind, "successful_date": successful_date, "referenced": bool(referenced), "lease_until_utc": lease_until_utc, "state": "ACTIVE", "registered_at_utc": datetime.now(timezone.utc).isoformat()}
-        with duckdb.connect(str(self.database_path)) as con:
-            con.execute("INSERT INTO storage_objects VALUES (?, ?) ON CONFLICT(storage_object_id) DO UPDATE SET payload_json=excluded.payload_json", [object_id, _payload(value)])
+        if self.storage_repository is not None:
+            self.storage_repository.upsert_storage_object(storage_object_id=object_id, payload=value)
+        else:
+            with duckdb.connect(str(self.database_path)) as con:
+                con.execute("INSERT INTO storage_objects VALUES (?, ?) ON CONFLICT(storage_object_id) DO UPDATE SET payload_json=excluded.payload_json", [object_id, _payload(value)])
         return object_id
 
     def acquire_lease(self, *, lease_id: str, object_ids: list[str], owner: str, ttl_seconds: int = 300) -> dict[str, Any]:

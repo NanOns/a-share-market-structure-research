@@ -19,7 +19,7 @@ from .publication_repository import (
     PublicationRepositoryFactory,
     PublicationStatusReader,
 )
-from .analysis_activation_repository import AnalysisActivationRepository, DuckDBAnalysisActivationRepository
+from .analysis_activation_repository import AnalysisActivationRepository, DuckDBAnalysisActivationRepository, PostgresAnalysisActivationRepository
 from .history_job_repository import HistoryJobRepository, HistoryJobStore, DuckDBHistoryJobRepository, DuckDBHistoryJobStore
 from .postgres_history_job_repository import PostgresHistoryJobRepository
 from .postgres_publication_writer import PostgresPublicationWriter
@@ -65,6 +65,7 @@ __all__ = [
     "PostgresPublicationBackendFactory",
     "AnalysisActivationRepository",
     "DuckDBAnalysisActivationRepository",
+    "PostgresAnalysisActivationRepository",
     "HistoryJobRepository",
     "HistoryJobStore",
     "DuckDBHistoryJobRepository",

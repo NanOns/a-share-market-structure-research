@@ -51,10 +51,11 @@ class AnalysisActivationService:
     ):
         self.root = Path(root).resolve()
         self._repository = repository or DuckDBAnalysisActivationRepository(self.root, database_path)
+        repository_path = getattr(self._repository, "database_path", None)
         self.database_path = (
             Path(database_path).resolve()
             if database_path is not None
-            else Path(getattr(self._repository, "database_path", default_database_path(self.root))).resolve()
+            else (Path(repository_path).resolve() if repository_path else None)
         )
 
     def _connect(self):
@@ -66,7 +67,7 @@ class AnalysisActivationService:
             attempt = connection.execute("select coalesce(max(attempt),0) from job_attempts where job_id=?", [job_id]).fetchone()[0] if row else 0
         if not row:
             raise AnalysisActivationError("JOB_NOT_FOUND")
-        payload = json.loads(row[1])
+        payload = row[1] if isinstance(row[1], dict) else json.loads(row[1])
         if payload.get("job_kind") != "HISTORY_ANALYSIS":
             raise AnalysisActivationError("JOB_KIND_UNSUPPORTED")
         return row[0], payload, int(attempt)

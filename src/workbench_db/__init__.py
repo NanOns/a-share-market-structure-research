@@ -5,6 +5,7 @@ from .repository import WorkbenchRepository
 from .read_repository import DuckDBReadRepository, PublicationReadRepository
 from .postgres_write_repository import PostgresWriteRepository
 from .postgres_research_repository import PostgresResearchRepository
+from .postgres_artifact_catalog import ArtifactCatalogError, PostgresArtifactCatalog
 from .migrations import MigrationError, MigrationExecutor
 
 __all__ = [
@@ -17,4 +18,6 @@ __all__ = [
     "PublicationReadRepository",
     "PostgresWriteRepository",
     "PostgresResearchRepository",
+    "ArtifactCatalogError",
+    "PostgresArtifactCatalog",
 ]

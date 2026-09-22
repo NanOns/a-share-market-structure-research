@@ -206,7 +206,7 @@ PGM-09 重新扫描并清理了消费者目录中的陈旧记录：当前静态�
 
 本轮继续关闭运维配置历史的连接边界：新增 `ConfigVersionStore` 合同、DuckDB 兼容实现和 PostgreSQL 实现，`OperationsConfig` 的版本持久化与历史查询不再在业务模块内直接调用 `duckdb.connect`；`scripts/pg_config_store_rehearsal.py` 完成 PG 写入、读取、清理闭环，结果为 `DEGRADED_PASS_CONFIG_STORE`。默认线上配置仍保持 DuckDB 兼容实现，未改变服务后端，也未触发配置切换。
 
-随后为存储对象登记、租约和清理计划元数据增加了可注入的 `StorageMetadataRepository` 边界，`StorageGovernance.register/acquire_lease/release_lease/preview_cleanup()` 可在隔离调用中使用 PostgreSQL；`scripts/pg_storage_write_integration_rehearsal.py` 验证重复登记、跨事务读取、租约释放、PG 清理预览、清理计划 round-trip，并验证文件隔离在该混合模式下 fail-closed，结果为 `DEGRADED_PASS_STORAGE_WRITE_INTEGRATION`。文件隔离和永久删除仍未切换，线上服务仍使用 DuckDB。
+随后为存储对象登记、租约、清理计划和运维状态元数据增加了可注入的 `StorageMetadataRepository` 边界，`StorageGovernance.register/acquire_lease/release_lease/preview_cleanup()` 与 `MaintenanceService.status()` 可在隔离调用中使用 PostgreSQL；`scripts/pg_storage_write_integration_rehearsal.py` 验证重复登记、跨事务读取、租约释放、PG 清理预览、清理计划 round-trip、运维状态读取，并验证文件隔离在该混合模式下 fail-closed，结果为 `DEGRADED_PASS_STORAGE_WRITE_INTEGRATION`。文件隔离和永久删除仍未切换，线上服务仍使用 DuckDB。
 
 4 个未决时间字段已补齐版本化来源合同：`PostgresOnlineRepository` 只接受带显式 offset 的 ISO-8601 时间，缺失 `quote_time` 或无时区输入直接拒绝；目标 PostgreSQL 表当时均为 0 行，因此按 `PG_TIMESTAMP_SEMANTICS_V3` 安全升级为 `timestamptz`。`scripts/pg_online_time_contract_rehearsal.py` 验证证据/报价写入、无时区拒绝、报价时间缺失拒绝和事务回滚，结果为 `DEGRADED_PASS_ONLINE_TIME_CONTRACT`。这只关闭时间语义合同，不启用任何在线数据源。
 

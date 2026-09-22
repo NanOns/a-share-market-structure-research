@@ -4,6 +4,7 @@ import json
 import threading
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Protocol
 
 import duckdb
 
@@ -12,10 +13,14 @@ from .config import ConfigValidationError, OperationsConfig
 from .migration import DatabaseMigration
 
 
+class OperationsMetadataReader(Protocol):
+    def metadata_counts(self) -> dict[str, int]: ...
+
+
 class MaintenanceService:
     """Serialized M5 operations for the local workbench service."""
 
-    def __init__(self, root, database_path=None):
+    def __init__(self, root, database_path=None, *, metadata_reader: OperationsMetadataReader | None = None):
         self.root=Path(root).resolve()
         self.database_path=Path(database_path).resolve() if database_path else self.root/"data/database/market_research.duckdb"
         self.config=OperationsConfig(self.root,self.database_path)
@@ -23,12 +28,19 @@ class MaintenanceService:
         self.migration=DatabaseMigration(self.root,self.database_path)
         self.lock=threading.Lock()
         self.receipt_path=self.root/"runtime/maintenance_last_receipt.json"
+        self.metadata_reader=metadata_reader
 
     def status(self):
-        with duckdb.connect(str(self.database_path)) as con:
-            active=con.execute("SELECT count(*) FROM jobs WHERE status IN ('QUEUED','RUNNING','INTERRUPTED')").fetchone()[0]
-            objects=con.execute("SELECT count(*) FROM storage_objects").fetchone()[0]
-            backups=con.execute("SELECT count(*) FROM backup_catalog").fetchone()[0]
+        if self.metadata_reader is not None:
+            counts=self.metadata_reader.metadata_counts()
+            active=counts.get("active_jobs", counts.get("jobs", 0))
+            objects=counts.get("storage_objects", 0)
+            backups=counts.get("backup_catalog", 0)
+        else:
+            with duckdb.connect(str(self.database_path)) as con:
+                active=con.execute("SELECT count(*) FROM jobs WHERE status IN ('QUEUED','RUNNING','INTERRUPTED')").fetchone()[0]
+                objects=con.execute("SELECT count(*) FROM storage_objects").fetchone()[0]
+                backups=con.execute("SELECT count(*) FROM backup_catalog").fetchone()[0]
         last=json.loads(self.receipt_path.read_text('utf-8')) if self.receipt_path.is_file() else None
         return {'service_state':'READY' if not active else 'BUSY','active_job_count':active,'database_path':str(self.database_path),'config_revision':self.config.current()['revision'],'storage_object_count':objects,'backup_count':backups,'last_operation':last}
 

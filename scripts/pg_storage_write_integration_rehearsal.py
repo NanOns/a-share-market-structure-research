@@ -14,6 +14,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from workbench_db.postgres_repository import PostgresRepository  # noqa: E402
 from workbench_db.postgres_write_repository import PostgresWriteRepository  # noqa: E402
+from workbench_ops.maintenance import MaintenanceService  # noqa: E402
 from workbench_ops.storage import ConfigValidationError, StorageGovernance  # noqa: E402
 
 
@@ -63,6 +64,9 @@ def main() -> int:
                 writer.upsert_cleanup_job(cleanup_job_id=cleanup_id, payload=cleanup_payload)
             cleanup_job = writer.cleanup_job(cleanup_id)
             checks["cleanup_plan_roundtrip"] = bool(cleanup_job and cleanup_job["payload"].get("state") == "PLANNED")
+            maintenance = MaintenanceService(ROOT, metadata_reader=writer)
+            maintenance_status = maintenance.status()
+            checks["maintenance_pg_status"] = maintenance_status["database_path"].endswith("market_research.duckdb") and maintenance_status["storage_object_count"] >= 1
             with repository.transaction():
                 with repository.connection.cursor() as cursor:  # type: ignore[union-attr]
                     cursor.execute("delete from workbench.storage_objects where storage_object_id=%s", (object_id,))
@@ -85,6 +89,8 @@ def main() -> int:
         failures.append("cleanup_preview_pg")
     if checks.get("cleanup_fail_closed") is not True:
         failures.append("cleanup_fail_closed")
+    if checks.get("maintenance_pg_status") is not True:
+        failures.append("maintenance_pg_status")
     report = {
         "contract_version": "PG_STORAGE_WRITE_INTEGRATION_REHEARSAL_V1",
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),

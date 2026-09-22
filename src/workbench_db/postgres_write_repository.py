@@ -193,5 +193,31 @@ class PostgresWriteRepository:
                 refs.update(str(value) for value in payload["storage_object_ids"])
         return refs
 
+    def payload_rows(self, table: str) -> list[dict[str, Any]]:
+        allowed = {"config_versions", "storage_objects", "backup_catalog", "cleanup_jobs"}
+        if table not in allowed:
+            raise ValueError("OPERATIONS_TABLE_NOT_ALLOWED")
+        query = sql.SQL("select payload_json from {schema}.{table} order by 1").format(
+            schema=sql.Identifier(self.repository.schema), table=sql.Identifier(table)
+        )
+        with self._connection().cursor() as cur:
+            cur.execute(query)
+            rows = cur.fetchall()
+        return [row[0] if isinstance(row[0], dict) else json.loads(row[0] or "{}") for row in rows]
+
+    def metadata_counts(self) -> dict[str, int]:
+        result: dict[str, int] = {}
+        for table in ("storage_objects", "backup_catalog"):
+            query = sql.SQL("select count(*) from {schema}.{table}").format(
+                schema=sql.Identifier(self.repository.schema), table=sql.Identifier(table)
+            )
+            with self._connection().cursor() as cur:
+                cur.execute(query)
+                result[table] = int(cur.fetchone()[0])
+        with self._connection().cursor() as cur:
+            cur.execute(sql.SQL("select count(*) from {}.jobs where status in ('QUEUED','RUNNING','INTERRUPTED')").format(sql.Identifier(self.repository.schema)))
+            result["active_jobs"] = int(cur.fetchone()[0])
+        return result
+
 
 __all__ = ["PostgresWriteRepository"]

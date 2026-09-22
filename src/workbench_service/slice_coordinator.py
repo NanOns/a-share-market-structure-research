@@ -16,12 +16,12 @@ from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable, Iterator, Mapping, Sequence
 
-import duckdb
 import pyarrow as pa
 import pyarrow.dataset as ds
 import pyarrow.parquet as pq
 
 from workbench_db.digest import logical_digest
+from workbench_db.slice_repository import DuckDBSliceRepository, SliceRepository
 from .source_freezer import sha256_file
 
 
@@ -101,10 +101,10 @@ def iter_security_batches(
 class SliceCoordinator:
     """Prepare, validate, and seal content-addressed analysis slices."""
 
-    def __init__(self, root: str | Path, database_path: str | Path | None = None):
+    def __init__(self, root: str | Path, database_path: str | Path | None = None, *, repository: SliceRepository | None = None):
         self.root = Path(root).resolve()
-        self.database_path = Path(database_path).resolve() if database_path else self.root / "data/database/market_research.duckdb"
         self.object_root = self.root / "data/analysis_objects"
+        self.repository = repository or DuckDBSliceRepository(self.root, database_path)
 
     def _object_path(self, object_id: str) -> Path:
         return self.object_root / f"{object_id}.parquet"
@@ -163,15 +163,8 @@ class SliceCoordinator:
             raise SliceCoordinationError("ANALYSIS_OBJECT_LOGICAL_HASH_MISMATCH")
         return sha256_file(path), digest["row_count"]
 
-    def _existing(self, connection: duckdb.DuckDBPyConnection, slice_id: str) -> tuple[Any, ...] | None:
-        return connection.execute(
-            "select slice_id,domain,cast(trade_date as varchar),contract_id,input_hash,dependency_hash,basis_json,row_count,logical_hash,storage_kind,storage_object_id from analysis_slices where slice_id=?",
-            [slice_id],
-        ).fetchone()
-
     def _check_existing(
         self,
-        connection: duckdb.DuckDBPyConnection,
         existing: tuple[Any, ...],
         *,
         domain: str,
@@ -185,7 +178,8 @@ class SliceCoordinator:
     ) -> dict[str, Any]:
         expected = (domain, str(trade_date), contract_id, input_hash, dependency_hash, row_count, logical_hash, STORAGE_KIND)
         actual = (existing[1], existing[2], existing[3], existing[4], existing[5], int(existing[7]), existing[8], existing[9])
-        if actual != expected or json.loads(existing[6]) != dict(basis):
+        stored_basis = existing[6] if isinstance(existing[6], dict) else json.loads(existing[6])
+        if actual != expected or stored_basis != dict(basis):
             raise SliceCoordinationError("SLICE_IDENTITY_CONFLICT")
         object_id = str(existing[10]) if existing[10] else ""
         if not object_id:
@@ -215,14 +209,12 @@ class SliceCoordinator:
         object_id = "analysis-obj-" + logical["sha256"]
         object_path = self._object_path(object_id)
 
-        with duckdb.connect(str(self.database_path)) as connection:
-            existing = self._existing(connection, slice_id)
-            if existing:
-                return self._check_existing(connection, existing, domain=domain, trade_date=trade_date, contract_id=contract_id, input_hash=input_hash, dependency_hash=dependency_hash, basis=basis_value, logical_hash=logical["sha256"], row_count=logical["row_count"])
-            for dependency in dependency_rows:
-                found = connection.execute("select 1 from analysis_slices where slice_id=?", [dependency["input_slice_id"]]).fetchone()
-                if not found:
-                    raise SliceCoordinationError(f"SLICE_DEPENDENCY_NOT_FOUND:{dependency['input_slice_id']}")
+        existing = self.repository.existing(slice_id)
+        if existing:
+            return self._check_existing(existing, domain=domain, trade_date=trade_date, contract_id=contract_id, input_hash=input_hash, dependency_hash=dependency_hash, basis=basis_value, logical_hash=logical["sha256"], row_count=logical["row_count"])
+        for dependency in dependency_rows:
+            if not self.repository.dependency_exists(dependency["input_slice_id"]):
+                raise SliceCoordinationError(f"SLICE_DEPENDENCY_NOT_FOUND:{dependency['input_slice_id']}")
 
         _, row_count = self._write_object(object_path, columns, normalised_rows, logical["sha256"])
         physical_hash = sha256_file(object_path)
@@ -243,37 +235,22 @@ class SliceCoordinator:
             "registered_at_utc": created_at.isoformat(),
         }
         try:
-            with duckdb.connect(str(self.database_path)) as connection:
-                connection.execute("BEGIN TRANSACTION")
-                try:
-                    for dependency in dependency_rows:
-                        if not connection.execute("select 1 from analysis_slices where slice_id=?", [dependency["input_slice_id"]]).fetchone():
-                            raise SliceCoordinationError(f"SLICE_DEPENDENCY_NOT_FOUND:{dependency['input_slice_id']}")
-                    connection.execute("insert into storage_objects(storage_object_id,payload_json) values (?,?) on conflict(storage_object_id) do nothing", [object_id, _json(object_payload)])
-                    stored = connection.execute("select payload_json from storage_objects where storage_object_id=?", [object_id]).fetchone()
-                    if not stored or json.loads(stored[0]).get("logical_hash") != logical["sha256"]:
-                        raise SliceCoordinationError("ANALYSIS_OBJECT_IDENTITY_CONFLICT")
-                    connection.execute(
-                        "insert into analysis_slices values (?,?,?,?,?,?,?,?,?,?,?,?)",
-                        [slice_id, domain, date.fromisoformat(trade_date), contract_id, input_hash, dependency_hash, _json(basis_value), row_count, logical["sha256"], STORAGE_KIND, object_id, created_at],
-                    )
-                    for dependency in dependency_rows:
-                        connection.execute("insert into analysis_slice_dependencies values (?,?,?,?)", [slice_id, dependency["input_domain"], date.fromisoformat(dependency["input_date"]), dependency["input_slice_id"]])
-                    daily_basis = basis_value.get("daily_basis")
-                    if isinstance(daily_basis, Mapping):
-                        required = ("universe_basis", "price_basis", "capabilities_json")
-                        if any(key not in daily_basis for key in required):
-                            raise SliceCoordinationError("SLICE_DAILY_BASIS_FIELD_MISSING")
-                        connection.execute(
-                            "insert into analysis_daily_basis values (?,?,?,?,?,?,?,?)",
-                            [slice_id, daily_basis["universe_basis"], daily_basis.get("membership_snapshot_id"), daily_basis["price_basis"], daily_basis.get("adjustment_as_of"), daily_basis.get("source_observed_at"), daily_basis.get("coverage"), _json(daily_basis["capabilities_json"])],
-                        )
-                    connection.execute("COMMIT")
-                except Exception:
-                    connection.execute("ROLLBACK")
-                    raise
-        except Exception:
-            # A newly prepared but unsealed object is not an advertised slice.
-            # Keep an existing content-addressed object available for a retry.
-            raise
+            self.repository.seal(
+                slice_id=slice_id,
+                domain=domain,
+                trade_date=trade_date,
+                contract_id=contract_id,
+                input_hash=input_hash,
+                dependency_hash=dependency_hash,
+                basis=basis_value,
+                row_count=row_count,
+                logical_hash=logical["sha256"],
+                storage_kind=STORAGE_KIND,
+                storage_object_id=object_id,
+                created_at=created_at,
+                object_payload=object_payload,
+                dependencies=dependency_rows,
+            )
+        except ValueError as exc:
+            raise SliceCoordinationError(str(exc)) from exc
         return {"slice_id": slice_id, "storage_object_id": object_id, "logical_hash": logical["sha256"], "row_count": row_count, "reused": False}

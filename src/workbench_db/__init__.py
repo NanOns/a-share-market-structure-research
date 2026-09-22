@@ -8,6 +8,7 @@ from .config_store import ConfigVersionStore, DuckDBConfigVersionStore, Postgres
 from .postgres_online_repository import PostgresOnlineRepository
 from .postgres_research_repository import PostgresResearchRepository
 from .result_object_repository import DuckDBResultObjectRepository, PostgresResultObjectRepository, ResultObjectRepository
+from .slice_repository import DuckDBSliceRepository, PostgresSliceRepository, SliceRepository
 from .postgres_artifact_catalog import ArtifactCatalogError, PostgresArtifactCatalog
 from .backend_provider import AdapterHttpGateway, BackendRepositoryProvider, RepositoryUnavailable
 from .migrations import MigrationError, MigrationExecutor
@@ -29,6 +30,9 @@ __all__ = [
     "ResultObjectRepository",
     "DuckDBResultObjectRepository",
     "PostgresResultObjectRepository",
+    "SliceRepository",
+    "DuckDBSliceRepository",
+    "PostgresSliceRepository",
     "ArtifactCatalogError",
     "PostgresArtifactCatalog",
     "AdapterHttpGateway",

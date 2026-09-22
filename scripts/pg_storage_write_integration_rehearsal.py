@@ -6,6 +6,7 @@ import json
 import sys
 import uuid
 from datetime import datetime, timezone
+from datetime import date
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -13,7 +14,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from workbench_db.postgres_repository import PostgresRepository  # noqa: E402
 from workbench_db.postgres_write_repository import PostgresWriteRepository  # noqa: E402
-from workbench_ops.storage import StorageGovernance  # noqa: E402
+from workbench_ops.storage import ConfigValidationError, StorageGovernance  # noqa: E402
 
 
 DEFAULT_REPORT = ROOT / "runtime/postgres_migration/20260922/pg_storage_write_integration_rehearsal_report.json"
@@ -49,6 +50,13 @@ def main() -> int:
                 storage.release_lease(lease_id=lease_id, owner="pg-rehearsal")
             released_lease = writer.lease(lease_id)
             checks["lease_release"] = bool(released_lease and released_lease["payload"].get("state") == "RELEASED")
+            plan = storage.preview_cleanup(as_of=date(2099, 1, 10))
+            persisted_plan = writer.cleanup_job(plan["cleanup_job_id"])
+            checks["cleanup_preview_pg"] = bool(plan["cleanup_job_id"] and persisted_plan and persisted_plan["payload"].get("state") == "PLANNED")
+            try:
+                storage.quarantine(plan["cleanup_job_id"])
+            except ConfigValidationError as exc:
+                checks["cleanup_fail_closed"] = str(exc) == "STORAGE_CLEANUP_BACKEND_NOT_READY"
             cleanup_id = "cleanup-" + marker
             cleanup_payload = {"cleanup_job_id": cleanup_id, "state": "PLANNED", "eligible_object_ids": [object_id]}
             with repository.transaction():
@@ -60,6 +68,7 @@ def main() -> int:
                     cursor.execute("delete from workbench.storage_objects where storage_object_id=%s", (object_id,))
                     cursor.execute("delete from workbench.leases where lease_id=%s", (lease_id,))
                     cursor.execute("delete from workbench.cleanup_jobs where cleanup_job_id=%s", (cleanup_id,))
+                    cursor.execute("delete from workbench.cleanup_jobs where cleanup_job_id=%s", (plan["cleanup_job_id"],))
             checks["cleanup"] = writer.storage_object(object_id) is None
     except Exception as exc:  # pragma: no cover - report external service state
         checks["error"] = f"{type(exc).__name__}:{exc}"
@@ -72,6 +81,10 @@ def main() -> int:
         failures.append("lease_boundary")
     if checks.get("cleanup_plan_roundtrip") is not True:
         failures.append("cleanup_plan_boundary")
+    if checks.get("cleanup_preview_pg") is not True:
+        failures.append("cleanup_preview_pg")
+    if checks.get("cleanup_fail_closed") is not True:
+        failures.append("cleanup_fail_closed")
     report = {
         "contract_version": "PG_STORAGE_WRITE_INTEGRATION_REHEARSAL_V1",
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),

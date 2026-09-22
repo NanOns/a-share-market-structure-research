@@ -26,7 +26,7 @@ def adapter_contract(path: str) -> tuple[str, str]:
         if path == "src/workbench_ops/config.py":
             return "OPERATIONS_REPOSITORY", "ConfigVersionStore has DuckDB/PG implementations; default service remains DuckDB until authorized backend switch"
         if path == "src/workbench_ops/storage.py":
-            return "OPERATIONS_REPOSITORY", "StorageMetadataRepository covers PG registration/leases/preview; file quarantine/delete remains fail-closed"
+            return "OPERATIONS_REPOSITORY", "StorageGovernance accepts PostgresWriteRepository for registration, leases and cleanup plans; PG rehearsal passed, file quarantine/delete remains fail-closed"
         if path == "src/workbench_ops/backup.py":
             return "OPERATIONS_REPOSITORY", "BackupService accepts an injected PostgreSQL BackupCatalogRepository; catalog round-trip and restore-drill rehearsal passed, physical DuckDB backup remains maintenance-window only"
         if path == "src/workbench_ops/maintenance.py":

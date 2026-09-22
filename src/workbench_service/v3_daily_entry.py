@@ -13,6 +13,9 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
+import subprocess
+import sys
 from datetime import date
 from pathlib import Path
 from typing import Any, Iterable, Mapping
@@ -46,6 +49,25 @@ V3_DAILY_TARGET_DOMAINS = (
     "summary",
     "member_state",
 )
+
+
+def _sync_postgres_if_enabled(root: Path, trade_date: str) -> dict[str, Any] | None:
+    """Fail closed if the standalone V3 entry leaves PostgreSQL stale."""
+    if str(os.environ.get("WORKBENCH_API_BACKEND", "")).lower() != "postgresql":
+        return None
+    result = subprocess.run(
+        [sys.executable, str(root / "scripts/sync_latest_publication_to_postgres.py"), "--trade-date", str(trade_date)],
+        cwd=root, capture_output=True, text=True, timeout=3600,
+    )
+    if result.returncode:
+        raise IncrementalBuildError("POSTGRES_SYNC_FAILED:" + (result.stderr[-1000:] or result.stdout[-1000:]))
+    try:
+        payload = json.loads(result.stdout)
+    except Exception as exc:
+        raise IncrementalBuildError("POSTGRES_SYNC_REPORT_INVALID") from exc
+    if payload.get("status") != "FULL_PASS":
+        raise IncrementalBuildError("POSTGRES_SYNC_FAILED:" + str(payload.get("error") or "sync did not pass"))
+    return payload
 
 
 def _sha256_file(path: Path) -> str:
@@ -448,7 +470,8 @@ def run_v3_daily_entry(
                 verified,
                 input_provider=lambda _task: None,
             )
-            return {"entrypoint": "V3_DAILY_INCREMENTAL", **report}
+            sync = _sync_postgres_if_enabled(root_path, str(verified["input"]["cutoff_date"]))
+            return {"entrypoint": "V3_DAILY_INCREMENTAL", **report, **({"postgres_sync": sync} if sync else {})}
         finally:
             source_reader.close()
 
@@ -532,6 +555,9 @@ def run_v3_daily_entry(
         "preserved_legacy_entry_count": len(preserved),
         **report,
     }
+    sync = _sync_postgres_if_enabled(root_path, cutoff)
+    if sync:
+        report["postgres_sync"] = sync
     artifact_root = root_path / "reports" / "v3" / "daily"
     plan_path = write_growth_report(artifact_root / f"{cutoff}.plan.json", verified)
     report["plan_artifact"] = str(plan_path)

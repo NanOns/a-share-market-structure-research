@@ -22,6 +22,7 @@ from typing import Any, Callable, Iterable, Mapping, Sequence
 
 import duckdb
 
+from workbench_db import DuckDBIncrementalWriterRepository, IncrementalWriterRepository
 from workbench_db.digest import logical_digest
 
 from .build_planner import BuildPlanError, task_key, verify_build_plan
@@ -339,8 +340,12 @@ class IncrementalBuildCoordinator:
         *,
         writers: Mapping[str, Callable[[Any, str, Any], int]] | None = None,
         executor_matrix: Mapping[str, DomainExecutor] | None = None,
+        repository: IncrementalWriterRepository | None = None,
     ):
-        self.database_path = Path(database_path).resolve()
+        # MIGRATION_CONTRACT: incremental writer remains MIGRATE_TO_PG until
+        # all domain writers and snapshot binding share a PG transaction.
+        self._repository = repository or DuckDBIncrementalWriterRepository(database_path)
+        self.database_path = Path(getattr(self._repository, "database_path", database_path)).resolve()
         self.writers = dict(writers or default_writers())
         self.executor_matrix = dict(executor_matrix or default_executor_matrix())
         unknown = set(self.executor_matrix) - PLANNER_DOMAINS
@@ -350,7 +355,7 @@ class IncrementalBuildCoordinator:
             executor.validate(domain)
 
     def _connect(self) -> duckdb.DuckDBPyConnection:
-        return duckdb.connect(str(self.database_path))
+        return self._repository.connect()
 
     @staticmethod
     def _existing_slice(connection: Any, slice_id: str) -> tuple[Any, ...] | None:

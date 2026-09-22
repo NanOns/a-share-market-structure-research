@@ -4,15 +4,18 @@ import os
 import shutil
 from pathlib import Path
 
+from workbench_db import default_database_path
 from .backup import BackupService
 from .config import ConfigValidationError, OperationsConfig
 
 
 class DatabaseMigration:
     """Prepare a verified database copy; activation is a separate config step."""
-    def __init__(self, root, database_path=None):
-        self.root=Path(root).resolve();self.database_path=Path(database_path).resolve() if database_path else self.root/"data/database/market_research.duckdb"
-        self.config=OperationsConfig(self.root,self.database_path);self.backup=BackupService(self.root,self.database_path)
+    # MIGRATION_CONTRACT: database migration remains an offline preparation
+    # step until PG cutover, config activation and rollback are authorized.
+    def __init__(self, root, database_path=None, *, backup: BackupService | None = None):
+        self.root=Path(root).resolve();self.database_path=Path(database_path).resolve() if database_path else default_database_path(self.root)
+        self.config=OperationsConfig(self.root,self.database_path);self.backup=backup or BackupService(self.root,self.database_path)
 
     def prepare(self, target_path, *, maintenance_window: bool) -> dict:
         if not maintenance_window: raise ConfigValidationError("MIGRATION_REQUIRES_DRAINED_MAINTENANCE_WINDOW")

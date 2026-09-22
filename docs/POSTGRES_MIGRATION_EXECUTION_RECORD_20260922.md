@@ -250,6 +250,8 @@ PGM-09 重新扫描并清理了消费者目录中的陈旧记录：当前静态�
 
 运维备份入口随后完成连接边界收口：`BackupService` 的主库、只读审计、备份文件验证和内存 Parquet 校验统一通过 `BackupRepository`，备份复制、哈希校验、恢复演练及“必须维护窗口”门禁保持不变；当前只有 DuckDB 兼容实现，backup catalog 的 PostgreSQL 写入/恢复登记尚未接入，因此 `backup.py` 仍为 `NOT_MIGRATED`。M5/M7B 备份恢复与 P04-03 链路测试 `7 passed`。
 
+数据库迁移准备入口随后完成路径/依赖边界收口：`DatabaseMigration` 使用统一数据库路径解析，并允许注入备份实现；目标路径、TDX 禁止写入、维护窗口、原子替换和旧库保留规则未改变。该入口仍只是 DuckDB 离线副本准备，不代表 PostgreSQL 激活，M5 migration 测试 `3 passed`，仍保持 `NOT_MIGRATED`。
+
 已完成隔离 adapter injection harness：`BackendRepositoryProvider` 只按显式 backend 打开 DuckDB 快照或 PostgreSQL，`AdapterHttpGateway` 在 PG 连接失败时返回 `503/POSTGRES_UNAVAILABLE`，不回退 DuckDB。`scripts/pg_cutover_adapter_injection_harness.py` 对 publication heads、研究元数据和今日研究包完成 DuckDB/PG 同请求对账（股票 `5464`、板块 `498`、今日研究总数一致），并验证故障时 `fallback_used=false`，结果为 `DEGRADED_PASS_ISOLATED_ADAPTER_INJECTION_503`。报告位于 `runtime/postgres_migration/20260922/pg_cutover_adapter_injection_harness_report.json`。该 provider 尚未注入现有 `app.py` 或日常任务。
 
 已执行 `scripts/pg_maintenance_cutover_preflight.py` 只读门禁汇总：数据表 catalog `103/103 DATA_COPIED`，ArtifactCatalog `141/141 AVAILABLE`，所有 shadow、备份恢复、写入回滚和 adapter injection 证据均有效；时间语义已为 `42 APPLIED / 0 PENDING_REVIEW`，但硬门仍为 `BLOCKED_PRECUTOVER_HARD_GATES`，阻塞项是应用直连消费者 `12 NOT_MIGRATED`，以及当前服务明确仍指向 DuckDB。报告位于 `runtime/postgres_migration/20260922/pg_maintenance_cutover_preflight.json`。该结果不是失败数据迁移，而是禁止提前切换的真实前置结论。

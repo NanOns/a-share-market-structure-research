@@ -10,6 +10,7 @@ from dataclasses import dataclass, field
 from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any, Callable
+from psycopg import sql
 
 from workbench_db import (
     DuckDBPublicationRepositoryFactory,
@@ -343,7 +344,8 @@ class OneClickPublisher:
                     if prepared.memberships:
                         recorded = backend.relations.record_observation(source_scope=LEGACY_SOURCE_SCOPE, edges=[{"sector_id": row.get("sector_id"), "security_id": row.get("security_id"), "source_kind": "DIRECT"} for row in prepared.memberships], attributes=[{"sector_id": row.get("sector_id"), "name": row.get("sector_name") or row.get("sector_id"), "type": row.get("sector_type") or "LOCAL", "role": row.get("sector_role"), "semantic_bucket": row.get("semantic_bucket")} for row in prepared.memberships], observed_at=datetime.now(timezone.utc), source_effective_date=request.trade_date, source_file_hashes={"source_bundle_id": request.source_bundle_id, "membership_rows": len(prepared.memberships)}, observation_id=f"relation-publication-observation-{publication_id}", manage_transaction=False)
                         with backend.repository.connection.cursor() as cur:  # type: ignore[union-attr]
-                            cur.execute("insert into workbench.relation_publication_bindings(publication_id,source_scope,observation_id,revision_no,attribute_version_id,hierarchy_version) values (%s,%s,%s,%s,%s,%s) on conflict(publication_id,source_scope) do nothing", (publication_id, LEGACY_SOURCE_SCOPE, recorded["observation_id"], recorded["revision_no"], recorded.get("attribute_version_id"), None))
+                            binding_table = sql.Identifier(backend.repository.schema, "relation_publication_bindings")
+                            cur.execute(sql.SQL("insert into {}(publication_id,source_scope,observation_id,revision_no,attribute_version_id,hierarchy_version) values (%s,%s,%s,%s,%s,%s) on conflict(publication_id,source_scope) do nothing").format(binding_table), (publication_id, LEGACY_SOURCE_SCOPE, recorded["observation_id"], recorded["revision_no"], recorded.get("attribute_version_id"), None))
                     for row in prepared.observations:
                         observation_id = row.get("observation_id") or _hash({"publication_id": publication_id, **row})
                         backend.writer.insert_observation(observation_id=observation_id, publication_id=publication_id, payload=row)

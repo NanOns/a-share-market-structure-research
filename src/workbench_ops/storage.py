@@ -10,7 +10,7 @@ from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Protocol
 
-import duckdb
+from workbench_db import DuckDBStorageConnectionRepository, StorageConnectionRepository
 
 from .config import ConfigValidationError, OperationsConfig
 
@@ -44,11 +44,17 @@ def _payload(value: Any) -> str:
 class StorageGovernance:
     """Catalog-backed cleanup planning.  Planning never unlinks a path."""
 
-    def __init__(self, root: str | Path, database_path: str | Path | None = None, *, storage_repository: StorageMetadataRepository | None = None):
+    # MIGRATION_CONTRACT: storage remains MIGRATE_TO_PG until all fallback
+    # metadata operations and cleanup lifecycle are covered by PG rehearsal.
+    def __init__(self, root: str | Path, database_path: str | Path | None = None, *, storage_repository: StorageMetadataRepository | None = None, connection_repository: StorageConnectionRepository | None = None):
         self.root = Path(root).resolve()
-        self.database_path = Path(database_path).resolve() if database_path else self.root / "data/database/market_research.duckdb"
+        self._connection_repository = connection_repository or DuckDBStorageConnectionRepository(self.root, database_path)
+        self.database_path = Path(database_path).resolve() if database_path else self._connection_repository.database_path
         self.config = OperationsConfig(self.root, self.database_path)
         self.storage_repository = storage_repository
+
+    def _connect(self, *, read_only: bool = False):
+        return self._connection_repository.connect(read_only=read_only)
 
     def _roots(self) -> list[Path]:
         report = self.config.validate(self.config.current()["config"])
@@ -81,7 +87,7 @@ class StorageGovernance:
         if self.storage_repository is not None:
             self.storage_repository.upsert_storage_object(storage_object_id=object_id, payload=value)
         else:
-            with duckdb.connect(str(self.database_path)) as con:
+            with self._connect() as con:
                 con.execute("INSERT INTO storage_objects VALUES (?, ?) ON CONFLICT(storage_object_id) DO UPDATE SET payload_json=excluded.payload_json", [object_id, _payload(value)])
         return object_id
 
@@ -103,7 +109,7 @@ class StorageGovernance:
             if missing: raise ConfigValidationError("LEASE_OBJECT_NOT_FOUND:"+",".join(missing))
             self.storage_repository.upsert_lease(lease_id=lease_id, payload=payload)
         else:
-            with duckdb.connect(str(self.database_path)) as con:
+            with self._connect() as con:
                 rows=con.execute("SELECT storage_object_id,payload_json FROM storage_objects WHERE storage_object_id IN (SELECT * FROM UNNEST(?))",[object_ids]).fetchall()
                 found={row[0] for row in rows}
                 missing=sorted(set(object_ids)-found)
@@ -120,7 +126,7 @@ class StorageGovernance:
             payload.update(state="RELEASED",released_at_utc=datetime.now(timezone.utc).isoformat())
             self.storage_repository.upsert_lease(lease_id=lease_id, payload=payload)
         else:
-            with duckdb.connect(str(self.database_path)) as con:
+            with self._connect() as con:
                 row=con.execute("SELECT payload_json FROM leases WHERE lease_id=?",[lease_id]).fetchone()
                 if not row: raise ConfigValidationError("LEASE_NOT_FOUND")
                 payload=json.loads(row[0])
@@ -138,7 +144,7 @@ class StorageGovernance:
             lease_refs=self.storage_repository.active_lease_references()
             object_dates=self.storage_repository.analysis_object_dates()
         else:
-            with duckdb.connect(str(self.database_path)) as con:
+            with self._connect() as con:
                 rows = con.execute("SELECT payload_json FROM storage_objects").fetchall()
                 referenced=self._database_references(con)
                 active_jobs=self._active_job_references(con)
@@ -176,7 +182,7 @@ class StorageGovernance:
             with self.storage_repository.transaction():
                 self.storage_repository.upsert_cleanup_job(cleanup_job_id=plan_id, payload=plan)
         else:
-            with duckdb.connect(str(self.database_path)) as con:
+            with self._connect() as con:
                 con.execute("INSERT INTO cleanup_jobs VALUES (?, ?) ON CONFLICT(cleanup_job_id) DO NOTHING", [plan_id,_payload(plan)])
         return plan
 
@@ -254,7 +260,7 @@ class StorageGovernance:
         active=set()
         usage_evidence=[]
         database_catalog_ids: set[str] | None = None
-        with duckdb.connect(str(self.database_path), read_only=True) as con:
+        with self._connect(read_only=True) as con:
             if self._table_exists(con,"source_bundles"):
                 database_catalog_ids={str(row[0]) for row in con.execute("SELECT source_bundle_id FROM source_bundles").fetchall()}
                 for bundle_id in sorted(known-database_catalog_ids):
@@ -453,7 +459,7 @@ class StorageGovernance:
         underlying object automatically.
         """
 
-        with duckdb.connect(str(self.database_path), read_only=True) as con:
+        with self._connect(read_only=True) as con:
             database_refs = sorted(self._database_references(con))
             rows = con.execute("SELECT storage_object_id,payload_json FROM storage_objects").fetchall() if self._table_exists(con, "storage_objects") else []
         items = []
@@ -524,7 +530,7 @@ class StorageGovernance:
                 physical_ids.add(bundle_id)
             except (OSError, json.JSONDecodeError, TypeError, ValueError):
                 invalid_receipts.append(str(receipt))
-        with duckdb.connect(str(self.database_path), read_only=True) as con:
+        with self._connect(read_only=True) as con:
             catalog_ids = {str(row[0]) for row in con.execute("SELECT source_bundle_id FROM source_bundles").fetchall()} if self._table_exists(con, "source_bundles") else set()
             source_file_count = int(con.execute("SELECT count(*) FROM source_files").fetchone()[0]) if self._table_exists(con, "source_files") else 0
             package_count = int(con.execute("SELECT count(*) FROM source_packages").fetchone()[0]) if self._table_exists(con, "source_packages") else 0
@@ -570,13 +576,13 @@ class StorageGovernance:
         """Move eligible registered objects to a same-volume trash directory."""
         if self.storage_repository is not None:
             raise ConfigValidationError("STORAGE_CLEANUP_BACKEND_NOT_READY")
-        with duckdb.connect(str(self.database_path)) as con:
+        with self._connect() as con:
             row=con.execute("SELECT payload_json FROM cleanup_jobs WHERE cleanup_job_id=?",[cleanup_job_id]).fetchone()
         if not row: raise ConfigValidationError("CLEANUP_PLAN_NOT_FOUND")
         plan=json.loads(row[0])
         if plan.get("state") != "PLANNED": raise ConfigValidationError("CLEANUP_PLAN_NOT_PLANNED")
         planned=set(plan.get("eligible_object_ids",[])); moved=[]; moves=[]
-        with duckdb.connect(str(self.database_path)) as con:
+        with self._connect() as con:
             catalog={object_id:json.loads(payload) for object_id,payload in con.execute("SELECT storage_object_id,payload_json FROM storage_objects").fetchall()}
             referenced=self._database_references(con);active_jobs=self._active_job_references(con);lease_refs=self._active_lease_references(con)
             for object_id in sorted(planned):
@@ -617,7 +623,7 @@ class StorageGovernance:
     def restore_quarantine(self, cleanup_job_id: str) -> dict[str, Any]:
         if self.storage_repository is not None:
             raise ConfigValidationError("STORAGE_CLEANUP_BACKEND_NOT_READY")
-        with duckdb.connect(str(self.database_path)) as con:
+        with self._connect() as con:
             rows=con.execute("SELECT storage_object_id,payload_json FROM storage_objects").fetchall();restored=[];moves=[]
             for object_id,raw in rows:
                 item=json.loads(raw)
@@ -643,7 +649,7 @@ class StorageGovernance:
     def delete_quarantine(self, cleanup_job_id: str) -> dict[str, Any]:
         if self.storage_repository is not None:
             raise ConfigValidationError("STORAGE_CLEANUP_BACKEND_NOT_READY")
-        with duckdb.connect(str(self.database_path)) as con:
+        with self._connect() as con:
             rows=con.execute("SELECT storage_object_id,payload_json FROM storage_objects").fetchall();deleted=[];pending=[]
             for object_id,raw in rows:
                 item=json.loads(raw);path=Path(item.get("path",""))

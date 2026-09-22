@@ -202,7 +202,7 @@ acceptance: DEGRADED_PASS_PRECUTOVER_INVENTORY
 
 已完成第一个只读适配器切片：`TodayResearchBundleReader` 支持显式注入 PostgreSQL repository，bundle 文件仍从受管文件读取，股票名称投影从 `workbench.research_runs_v3_3/research_candidates_v3_3` 读取。`scripts/today_research_pg_shadow.py` 对列表和详情请求完成 DuckDB/PG 语义对账：`list_match=true`、`detail_match=true`、两侧总数均为 467。该适配器尚未注入现有 HTTP 服务，因此应用切换状态仍为 `NOT_STARTED`。
 
-PGM-09 重新扫描并清理了消费者目录中的陈旧记录：当前静态目录为 111 个消费者，其中 `MIGRATE_TO_PG=12`、`OFFLINE_DUCKDB_ALLOWED=77`、`RETAIN_UNTIL_AUDIT_CLOSE=22`、`UNCLASSIFIED=0`。`TodayResearchBundleReader` 已移除 `duckdb.connect` 直连，`SourceFreezer`、结果对象协调器、切片协调器、维护状态读取和配置历史读取也分别通过 `PublicationReadRepository`、`ResultObjectRepository`、`SliceRepository`、`OperationsMetadataReader`、`ConfigVersionStore` 边界收口；离线默认使用 DuckDB 适配器，切换阶段可注入 PostgreSQL。另将 `TurnoverEnrichmentService` 的内存 `read_parquet` 会话明确标记为 `OFFLINE_DUCKDB_ALLOWED`，因为它不打开 `market_research.duckdb`、不写库且只生成请求时指纹。上述变化减少的是静态误报和直连面，不代表 PostgreSQL 已成为线上主库。
+PGM-09 重新扫描并清理了消费者目录中的陈旧记录：当前静态目录为 112 个消费者，其中 `MIGRATE_TO_PG=12`、`OFFLINE_DUCKDB_ALLOWED=78`、`RETAIN_UNTIL_AUDIT_CLOSE=22`、`UNCLASSIFIED=0`。`TodayResearchBundleReader` 已移除 `duckdb.connect` 直连，`SourceFreezer`、结果对象协调器、切片协调器、维护状态读取和配置历史读取也分别通过 `PublicationReadRepository`、`ResultObjectRepository`、`SliceRepository`、`OperationsMetadataReader`、`ConfigVersionStore` 边界收口；离线默认使用 DuckDB 适配器，切换阶段可注入 PostgreSQL。另将 `TurnoverEnrichmentService` 的内存 `read_parquet` 会话明确标记为 `OFFLINE_DUCKDB_ALLOWED`，因为它不打开 `market_research.duckdb`、不写库且只生成请求时指纹。上述变化减少的是静态误报和直连面，不代表 PostgreSQL 已成为线上主库。
 
 结果对象适配器在真实 PG 上完成独立演练：首次写入、同一 identity 重放复用、缺失 daily-basis 字段触发事务回滚、回滚后无残留，并在清理后恢复业务表状态；报告为 `DEGRADED_PASS_RESULT_OBJECT_REPOSITORY`，位于 `runtime/postgres_migration/20260922/pg_result_object_repository_rehearsal_report.json`。该演练未写入线上研究数据，也未接入主生成任务。
 
@@ -251,6 +251,8 @@ PGM-09 重新扫描并清理了消费者目录中的陈旧记录：当前静态�
 运维备份入口随后完成连接边界收口：`BackupService` 的主库、只读审计、备份文件验证和内存 Parquet 校验统一通过 `BackupRepository`，备份复制、哈希校验、恢复演练及“必须维护窗口”门禁保持不变；当前只有 DuckDB 兼容实现，backup catalog 的 PostgreSQL 写入/恢复登记尚未接入，因此 `backup.py` 仍为 `NOT_MIGRATED`。M5/M7B 备份恢复与 P04-03 链路测试 `7 passed`。
 
 数据库迁移准备入口随后完成路径/依赖边界收口：`DatabaseMigration` 使用统一数据库路径解析，并允许注入备份实现；目标路径、TDX 禁止写入、维护窗口、原子替换和旧库保留规则未改变。该入口仍只是 DuckDB 离线副本准备，不代表 PostgreSQL 激活，M5 migration 测试 `3 passed`，仍保持 `NOT_MIGRATED`。
+
+存储治理入口随后完成连接边界收口：`StorageGovernance` 的 DuckDB 兼容回退路径统一通过 `StorageConnectionRepository`，已有 `StorageMetadataRepository` 注入路径、受管目录校验、租约、预览、隔离和删除前硬门均保持不变；PG 元数据路径仍需接入真实服务并完成清理生命周期 rehearsal，因此 `storage.py` 继续为 `NOT_MIGRATED`。存储治理与预览测试 `7 passed`。
 
 已完成隔离 adapter injection harness：`BackendRepositoryProvider` 只按显式 backend 打开 DuckDB 快照或 PostgreSQL，`AdapterHttpGateway` 在 PG 连接失败时返回 `503/POSTGRES_UNAVAILABLE`，不回退 DuckDB。`scripts/pg_cutover_adapter_injection_harness.py` 对 publication heads、研究元数据和今日研究包完成 DuckDB/PG 同请求对账（股票 `5464`、板块 `498`、今日研究总数一致），并验证故障时 `fallback_used=false`，结果为 `DEGRADED_PASS_ISOLATED_ADAPTER_INJECTION_503`。报告位于 `runtime/postgres_migration/20260922/pg_cutover_adapter_injection_harness_report.json`。该 provider 尚未注入现有 `app.py` 或日常任务。
 

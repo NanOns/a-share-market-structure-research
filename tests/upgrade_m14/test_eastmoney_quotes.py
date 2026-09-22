@@ -5,7 +5,9 @@ from workbench_online.eastmoney_quotes import fetch_eastmoney_quotes
 
 
 def test_eastmoney_quote_batch_normalizes_units_and_observed_time():
-    def fake_fetcher(url, policy):
+    def fake_fetcher(url, policy, referer=None):
+        assert referer == "https://quote.eastmoney.com/"
+        assert "ut=fa5fd1943c7b386f172d6893dbbd1d0c" in url
         assert "secids=1.600000%2C0.000001" in url or "secids=1.600000,0.000001" in url
         body = json.dumps(
             {"data": {"diff": [{"f2": 12.34, "f3": 123, "f6": 456789, "f12": "600000", "f13": 1, "f14": "浦发银行", "f47": 7890, "f168": 321, "f170": 123}]}}
@@ -17,6 +19,8 @@ def test_eastmoney_quote_batch_normalizes_units_and_observed_time():
     assert rows[0]["price"] == 12.34
     assert rows[0]["ret1"] == 1.23
     assert rows[0]["amount_unit"] == "CNY"
+    assert rows[0]["volume"] == 789000
+    assert rows[0]["source_volume_unit"] == "LOTS_100_SHARES"
     assert rows[0]["quote_state"] == "UNKNOWN"
     assert rows[0]["time_semantics"] == "OBSERVED_AT_ONLY"
 
@@ -38,7 +42,7 @@ def test_eastmoney_quote_rejects_unmapped_or_oversized_requests():
 
 
 def test_eastmoney_quote_rejects_non_numeric_source_fields():
-    def fake_fetcher(url, policy):
+    def fake_fetcher(url, policy, referer=None):
         body = json.dumps({"data": {"diff": [{"f2": "bad", "f3": 1, "f6": 2, "f12": "600000", "f13": 1}]}}).encode("utf-8")
         return FetchResult("2026-09-11T07:10:00+00:00", "2026-09-11T07:10:01+00:00", 200, "application/json", body, url)
 

@@ -11,6 +11,7 @@ from .base import FetchResult, OnlineFetchPolicy, bounded_get
 
 EASTMONEY_QUOTE_SOURCE_ID = "EASTMONEY_QUOTES_LATEST"
 EASTMONEY_QUOTE_URL = "https://push2.eastmoney.com/api/qt/ulist.np/get"
+EASTMONEY_PUBLIC_UT = "fa5fd1943c7b386f172d6893dbbd1d0c"
 MAX_SECURITY_IDS = 50
 
 
@@ -50,10 +51,11 @@ def fetch_eastmoney_quotes(
     params = {
         "fltt": "2",
         "invt": "2",
+        "ut": EASTMONEY_PUBLIC_UT,
         "fields": "f2,f3,f6,f12,f13,f14,f47,f168,f170",
         "secids": ",".join(secids),
     }
-    result = fetcher(EASTMONEY_QUOTE_URL + "?" + urlencode(params), policy)
+    result = fetcher(EASTMONEY_QUOTE_URL + "?" + urlencode(params), policy, referer="https://quote.eastmoney.com/")
     if result.status_code != 200:
         raise ValueError(f"QUOTE_HTTP_STATUS:{result.status_code}")
     try:
@@ -76,7 +78,10 @@ def fetch_eastmoney_quotes(
         price = _optional_float(item.get("f2"), field="price")
         ret1_percent = _optional_float(item.get("f3"), field="ret1")
         amount = _optional_float(item.get("f6"), field="amount")
-        volume = _optional_float(item.get("f47"), field="volume")
+        # Eastmoney f47 is reported in lots for A shares.  The rest of the
+        # workbench uses shares, so conversion belongs at the source boundary.
+        volume_lots = _optional_float(item.get("f47"), field="volume")
+        volume = volume_lots * 100 if volume_lots is not None else None
         turnover_rate_percent = _optional_float(item.get("f168"), field="turnover_rate")
         rows.append(
             {
@@ -95,6 +100,7 @@ def fetch_eastmoney_quotes(
                 "price_unit": "CNY_PER_SHARE",
                 "amount_unit": "CNY",
                 "volume_unit": "SHARES",
+                "source_volume_unit": "LOTS_100_SHARES",
                 "source_name": item.get("f14"),
             }
         )

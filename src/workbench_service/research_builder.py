@@ -39,6 +39,40 @@ def _sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _market_universe_metadata_path(root: Path, source_bundle_id: str | None, trade_date: Any) -> Path:
+    """Resolve tdxhy.cfg from the immutable source-bundle contract.
+
+    M3 versions metadata by snapshot id, so the old date-only staging path is
+    no longer authoritative.  Keep the legacy location as a compatibility
+    fallback for publications created before versioned source bundles.
+    """
+    if source_bundle_id:
+        bundle_path = root / "data/source_bundles" / str(source_bundle_id) / "source_bundle.json"
+        if bundle_path.is_file():
+            bundle = json.loads(bundle_path.read_text(encoding="utf-8"))
+            if str(bundle.get("source_bundle_id") or "") != str(source_bundle_id):
+                raise ResearchBuildError("SOURCE_BUNDLE_IDENTITY_MISMATCH")
+            metadata = bundle.get("metadata") or {}
+            metadata_root = metadata.get("root")
+            if metadata_root:
+                candidate = (root / str(metadata_root)).resolve()
+                project_root = root.resolve()
+                try:
+                    candidate.relative_to(project_root)
+                except ValueError as exc:
+                    raise ResearchBuildError("MARKET_UNIVERSE_SOURCE_OUTSIDE_PROJECT") from exc
+                candidate = candidate / "T0002/hq_cache/tdxhy.cfg"
+                expected = ((metadata.get("files") or {}).get("T0002/hq_cache/tdxhy.cfg") or {}).get("sha256")
+                if candidate.is_file() and (not expected or _sha256_file(candidate) == str(expected)):
+                    return candidate
+                if candidate.is_file():
+                    raise ResearchBuildError("MARKET_UNIVERSE_SOURCE_HASH_MISMATCH")
+    legacy = root / "data/input_staging/metadata" / pd.Timestamp(trade_date).strftime("%Y%m%d") / "T0002/hq_cache/tdxhy.cfg"
+    if legacy.is_file():
+        return legacy
+    raise ResearchBuildError("MARKET_UNIVERSE_SOURCE_MISSING")
+
+
 def _rank_eligible(frame: pd.DataFrame, eligible: str, columns: list[str]) -> pd.Series:
     """Rank only qualified sectors; unknown and failed rows remain unranked."""
     ranked = pd.Series(pd.NA, index=frame.index, dtype="Int64")
@@ -150,7 +184,8 @@ def build_latest_research_run(root: str | Path, database_path: str | Path) -> di
             """select p.publication_id,p.trade_date,
                       coalesce(pm.membership_snapshot_id,'relation-' || rb.observation_id),
                       coalesce(pas.snapshot_id,'UNBOUND') snapshot_id,
-                      rb.source_scope,rb.revision_no,rb.attribute_version_id
+                      rb.source_scope,rb.revision_no,rb.attribute_version_id,
+                      rb.observation_id source_bundle_id,p.source_path
                  from publications p
                  left join publication_memberships pm using(publication_id)
                  left join relation_publication_bindings rb using(publication_id)
@@ -160,10 +195,12 @@ def build_latest_research_run(root: str | Path, database_path: str | Path) -> di
         ).fetchone()
         if not publication:
             raise ResearchBuildError("RESEARCH_PUBLICATION_MISSING")
-        publication_id, trade_date, membership_snapshot_id, snapshot_id, source_scope, relation_revision, attribute_version_id = publication
-        metadata_path = root / "data/input_staging/metadata" / pd.Timestamp(trade_date).strftime("%Y%m%d") / "T0002/hq_cache/tdxhy.cfg"
-        if not metadata_path.is_file():
-            raise ResearchBuildError("MARKET_UNIVERSE_SOURCE_MISSING")
+        publication_id, trade_date, membership_snapshot_id, snapshot_id, source_scope, relation_revision, attribute_version_id, source_bundle_id, source_path = publication
+        # Legacy membership publications do not have a relation binding, but
+        # M4 still records their immutable bundle directory in source_path.
+        if not source_bundle_id or not (root / "data/source_bundles" / str(source_bundle_id) / "source_bundle.json").is_file():
+            source_bundle_id = Path(str(source_path)).name
+        metadata_path = _market_universe_metadata_path(root, source_bundle_id, trade_date)
         universe_ids = sorted(current_a_stock_ids(read_industry_assignments(metadata_path)))
         universe_ids = [value for value in universe_ids if is_workbench_statistical_security_id(value, root)]
         if not universe_ids:

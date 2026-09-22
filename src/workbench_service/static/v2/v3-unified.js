@@ -15,6 +15,9 @@
     var requestSerial = 0;
     var context = null;
     var todayBundleDigest = '';
+    var turnoverById = {};
+    var priorityPage = 1;
+    var turnoverLoadedDigest = '';
     var onlineSerial = 0;
     var onlineDateResolved = false;
     var buildSerial = 0;
@@ -57,7 +60,13 @@
         LAUNCH_CONFIRM: '启动确认', TREND_CONTINUE: '趋势延续', RECOVERY_TURN: '修复转强', STRONG_PULLBACK: '强势回踩',
         SUPPORTED: '板块支持', INDEPENDENT: '个股独立', CONFIRMED: '已确认', NOT_CONFIRMED: '未确认',
         QUALIFIED_UNRANKED: '合格（未评分）', SCORED: '已评分',
-        EFFECT_OBSERVATION_PENDING: '效果观察中', SUSPENDED: '停牌', DELISTED: '退市'
+        EFFECT_OBSERVATION_PENDING: '效果观察中', SUSPENDED: '停牌', DELISTED: '退市',
+        FACT_AVAILABLE: '事实可展示', COMPARABLE: '可同组比较', CONTEXT_READY: '上下文就绪',
+        PRICE_CONTEXT_UNKNOWN: '价格上下文不足', TURNOVER_UNKNOWN: '换手证据不足',
+        HIGH_PARTICIPATION_ACCEPTED: '高参与且价格接受', NORMAL_PARTICIPATION_ACCEPTED: '正常参与且价格接受',
+        LOW_CHURN_EFFICIENT_ADVANCE: '低周转下价格保持', HIGH_CHURN_MARGINAL_ACCEPTANCE: '高周转但价格接受有限',
+        NORMAL_NEUTRAL: '参与正常、无额外结论', LOW_PARTICIPATION_WEAK_CONFIRMATION: '低参与、确认有限',
+        BYPASSED: '已中性旁路', DECLARED_ONLY: '来源声明、尚未核实', VERIFIED: '已核实', UNKNOWN: '未知'
     };
     function zh(value) { return labels[String(value || '').toUpperCase()] || show(value); }
     function pct(value) {
@@ -230,6 +239,7 @@
 
     function loadPriorityResearch(page) {
         page = page || 1;
+        priorityPage = page;
         var target = document.getElementById('v3-priority-stocks');
         var count = document.getElementById('v3-priority-count');
         if (!target) return;
@@ -239,10 +249,12 @@
             var bundleContext = result.context || {};
             todayBundleDigest = bundleContext.output_digest || '';
             count.textContent = result.status === 'READY' || result.status === 'EMPTY' ? show(bundleContext.trade_date) + ' · ' + zh(result.effect_status) + ' · 共 ' + show(result.total) + ' 股' : zh(result.status) + ' · 未展示候选';
-            target.innerHTML = items.length ? '<div class="v3-priority-table-wrap"><table class="v3-priority-table"><thead><tr><th>候选序号</th><th>股票</th><th>主类别</th><th>选择模式</th><th>板块支持</th><th>RPS20</th><th>bias20</th><th>趋势拟合</th><th>流动性</th><th>排序状态</th></tr></thead><tbody>' + items.map(function (item) {
-                return '<tr data-priority-stock="' + esc(item.security_id) + '"><td>' + show(item.display_rank) + '</td><td><b>' + show(item.security_name || item.security_id) + '</b><small>' + show(item.security_id) + ' · ' + (item.matched_categories || []).map(zh).join('、') + '</small></td><td>' + zh(item.primary_category) + '</td><td>' + zh(item.selection_mode) + '</td><td>' + zh(item.sector_support_status) + '</td><td>' + pct(item.rps20) + '</td><td>' + pct(item.bias20) + '</td><td>' + pct(item.r2_20) + '</td><td>' + amount(item.liq20_amount) + '</td><td>' + zh(item.rank_status) + '</td></tr>';
+            target.innerHTML = items.length ? '<div class="v3-priority-table-wrap"><table class="v3-priority-table"><thead><tr><th>候选序号</th><th>股票</th><th>主类别</th><th>选择模式</th><th>板块支持</th><th>RPS20</th><th>bias20</th><th>趋势拟合</th><th>流动性</th><th>换手率</th><th>换手判断</th><th>排序状态</th></tr></thead><tbody>' + items.map(function (item) {
+                var turnover = turnoverById[item.security_id];
+                return '<tr data-priority-stock="' + esc(item.security_id) + '"><td>' + show(item.display_rank) + '</td><td><b>' + show(item.security_name || item.security_id) + '</b><small>' + show(item.security_id) + ' · ' + (item.matched_categories || []).map(zh).join('、') + '</small></td><td>' + zh(item.primary_category) + '</td><td>' + zh(item.selection_mode) + '</td><td>' + zh(item.sector_support_status) + '</td><td>' + pct(item.rps20) + '</td><td>' + pct(item.bias20) + '</td><td>' + pct(item.r2_20) + '</td><td>' + amount(item.liq20_amount) + '</td><td data-turnover-stock="' + esc(item.security_id) + '">' + (turnover && turnover.binding_status === 'BOUND' ? pct(turnover.turnover_rate) : turnover ? zh(turnover.binding_status) : '未加载') + '</td><td data-turnover-rank="' + esc(item.security_id) + '">' + (turnover && turnover.turnover_priority_tier ? show(turnover.turnover_priority_tier) + ' · ' + zh(turnover.turnover_context) : '—') + '</td><td>' + zh(item.rank_status) + '</td></tr>';
             }).join('') + '</tbody></table></div>' : empty(result.empty_state && result.empty_state.message || '当前完整研究包没有候选。');
             target.querySelectorAll('[data-priority-stock]').forEach(function (row) { row.addEventListener('click', function () { openTodayBundleStock(row.dataset.priorityStock); }); });
+            if (todayBundleDigest && turnoverLoadedDigest !== todayBundleDigest) loadTurnoverEnrichment();
             if (Number(result.total) > 25) {
                 var pager = document.createElement('div');
                 pager.className = 'v3-priority-pager';
@@ -256,13 +268,39 @@
         }).catch(function (error) { count.textContent = '不可用'; target.innerHTML = empty('V3.3 研究包读取失败，未回退旧候选：' + error.message); });
     }
 
+    function loadTurnoverEnrichment() {
+        var button = document.getElementById('v3-load-turnover');
+        var status = document.getElementById('v3-turnover-status');
+        if (!todayBundleDigest) { status.textContent = '请先等待V3.3研究包加载完成。'; return; }
+        button.disabled = true;
+        status.textContent = '正在读取本次V3.3生成时已物化的换手率增强结果…';
+        get('/api/v3/research/today-turnover?bundle_digest=' + encodeURIComponent(todayBundleDigest)).then(function (result) {
+            turnoverById = {};
+            (result.items || []).forEach(function (item) { turnoverById[item.security_id] = item; });
+            (result.enhanced_items || []).forEach(function (item) { turnoverById[item.security_id] = Object.assign({}, turnoverById[item.security_id] || {}, item); });
+            turnoverLoadedDigest = todayBundleDigest;
+            document.querySelectorAll('[data-turnover-stock]').forEach(function (cell) {
+                var item = turnoverById[cell.dataset.turnoverStock];
+                cell.textContent = item && item.binding_status === 'BOUND' ? (Number(item.turnover_rate) * 100).toFixed(2) + '%' : item ? zh(item.binding_status) : '不在本批';
+            });
+            document.querySelectorAll('[data-turnover-rank]').forEach(function (cell) {
+                var item = turnoverById[cell.dataset.turnoverRank];
+                cell.textContent = item && item.turnover_priority_tier ? item.turnover_priority_tier + ' · ' + zh(item.turnover_context) : '—';
+            });
+            var bound = result.counts && result.counts.BOUND || 0;
+            status.textContent = '本次生成的换手率事实：' + zh(result.status) + ' · 语义层 ' + zh(result.layer_status) + ' · 已绑定 ' + bound + ' / ' + show(result.request && result.request.candidate_count || 0) + ' · 仅通过身份与覆盖门的同组证据可形成Tier/锁位增强顺序；页面未发起外部请求';
+        }).catch(function (error) { status.textContent = '本次生成未取得换手率增强：' + error.message; turnoverLoadedDigest = todayBundleDigest; }).finally(function () { button.disabled = false; });
+    }
+
     function openTodayBundleStock(securityId) {
         var body = modal(securityId, '<p>正在读取同一 V3.3 研究包详情…</p>');
         get('/api/v3/research/today/' + encodeURIComponent(securityId) + '?bundle_digest=' + encodeURIComponent(todayBundleDigest)).then(function (result) {
             if (!body.isConnected) return;
             if (result.status !== 'READY') { body.innerHTML = empty(result.empty_state && result.empty_state.message || '详情不可用。'); return; }
-            var item = result.item || {}, identity = result.context || {};
-            body.innerHTML = '<h3>' + show(item.security_name || item.security_id) + ' <small>' + show(item.security_id) + '</small></h3><p class="v3-detail-meta">交易日 ' + show(identity.trade_date) + ' · ' + zh(result.effect_status) + '</p><div class="v3-detail-facts"><div><b>主类别</b><span>' + zh(item.primary_category) + '</span></div><div><b>命中类别</b><span>' + (item.matched_categories || []).map(zh).join('、') + '</span></div><div><b>选择模式</b><span>' + zh(item.selection_mode) + '</span></div><div><b>板块支持</b><span>' + zh(item.sector_support_status) + '</span></div><div><b>20日相对强度</b><span>' + pct(item.rps20) + '</span></div><div><b>距20日均线</b><span>' + pct(item.bias20) + '</span></div><div><b>趋势拟合度</b><span>' + pct(item.r2_20) + '</span></div><div><b>平均成交额</b><span>' + amount(item.liq20_amount) + '</span></div><div><b>评分状态</b><span>' + zh(item.rank_status) + (item.category_rank == null ? '' : ' · 第 ' + show(item.category_rank)) + '</span></div><div><b>风险标记</b><span>' + ((item.risk_codes || []).map(zh).join('、') || '无') + '</span></div></div><h3>核心指标证据</h3><div class="v3-detail-facts"><div><b>收盘位置</b><span>' + pct(item.clv) + '</span></div><div><b>突破幅度</b><span>' + pct(item.break_margin_close20) + '</span></div><div><b>20日斜率</b><span>' + pct(item.slope20) + '</span></div><div><b>新鲜度</b><span>' + pct(item.freshness) + '</span></div></div><h3>场景判定证据</h3>' + renderScannerEvidence(item.scanner_evidence) + '<p class="v3-detail-meta">研究运行 ' + show(identity.research_run_id) + '<br>研究包摘要 ' + show(identity.output_digest) + '</p>';
+            var item = result.item || {}, identity = result.context || {}, turnover = turnoverById[item.security_id];
+            var turnoverText = turnover && turnover.binding_status === 'BOUND' ? pct(turnover.turnover_rate) : turnover ? zh(turnover.binding_status) : '尚未加载';
+            var turnoverEvidence = turnover ? '口径 ' + zh(turnover.turnover_basis) + '（' + zh(turnover.basis_verification) + '） · 语义能力 ' + zh(turnover.semantic_status) + ' · 同组百分位 ' + pct(turnover.turnover_activity_percentile) + ' · ' + zh(turnover.turnover_priority_tier) + ' / ' + zh(turnover.turnover_context) + ' · 限制 ' + ((turnover.turnover_reason_codes || []).map(zh).join('、') || '无') : '本次V3.3生成未取得可绑定的换手率。';
+            body.innerHTML = '<h3>' + show(item.security_name || item.security_id) + ' <small>' + show(item.security_id) + '</small></h3><p class="v3-detail-meta">交易日 ' + show(identity.trade_date) + ' · ' + zh(result.effect_status) + '</p><div class="v3-detail-facts"><div><b>主类别</b><span>' + zh(item.primary_category) + '</span></div><div><b>命中类别</b><span>' + (item.matched_categories || []).map(zh).join('、') + '</span></div><div><b>选择模式</b><span>' + zh(item.selection_mode) + '</span></div><div><b>板块支持</b><span>' + zh(item.sector_support_status) + '</span></div><div><b>20日相对强度</b><span>' + pct(item.rps20) + '</span></div><div><b>距20日均线</b><span>' + pct(item.bias20) + '</span></div><div><b>趋势拟合度</b><span>' + pct(item.r2_20) + '</span></div><div><b>平均成交额</b><span>' + amount(item.liq20_amount) + '</span></div><div><b>换手率</b><span>' + turnoverText + '</span></div><div><b>评分状态</b><span>' + zh(item.rank_status) + (item.category_rank == null ? '' : ' · 第 ' + show(item.category_rank)) + '</span></div><div><b>风险标记</b><span>' + ((item.risk_codes || []).map(zh).join('、') || '无') + '</span></div></div><p class="v3-detail-meta">换手率证据：' + turnoverEvidence + '</p><h3>核心指标证据</h3><div class="v3-detail-facts"><div><b>收盘位置</b><span>' + pct(item.clv) + '</span></div><div><b>突破幅度</b><span>' + pct(item.break_margin_close20) + '</span></div><div><b>20日斜率</b><span>' + pct(item.slope20) + '</span></div><div><b>新鲜度</b><span>' + pct(item.freshness) + '</span></div></div><h3>场景判定证据</h3>' + renderScannerEvidence(item.scanner_evidence) + '<p class="v3-detail-meta">研究运行 ' + show(identity.research_run_id) + '<br>研究包摘要 ' + show(identity.output_digest) + '</p>';
         }).catch(function (error) { if (body.isConnected) body.innerHTML = empty('详情校验或读取失败：' + error.message); });
     }
 
@@ -369,9 +407,10 @@
             });
     }
 
-    function selectedResearchInput() {
+    function selectedResearchInput(expectedTradeDate) {
         return {
-            build_research_v3: true
+            build_research_v3: true,
+            expected_trade_date: expectedTradeDate || ''
         };
     }
 
@@ -388,7 +427,7 @@
         if (status === 'QUEUED') return '已提交，等待执行 · ' + job.job_id;
         if (status === 'RUNNING') return '正在生成：' + (progress || 'BUILDING_RESEARCH_V3') + ' · ' + job.job_id;
         if (status === 'SUCCESS') return '生成完成 · ' + (job.progress && job.progress.publication_id || job.job_id);
-        if (status === 'FAILED' || status === 'ERROR') return '生成失败：' + (progress && progress.error || '请查看服务日志') + ' · ' + job.job_id;
+        if (status === 'FAILED' || status === 'ERROR') return '生成失败：' + (job.progress && job.progress.error || '请查看服务日志') + ' · ' + job.job_id;
         return '任务状态：' + (status || 'UNKNOWN') + ' · ' + (job.job_id || '无任务编号');
     }
 
@@ -433,13 +472,10 @@
         var serial = ++buildSerial;
         button.disabled = true;
         setBuildStatus('正在提交生成任务…', '');
-        var payload;
-        try { payload = selectedResearchInput(); } catch (error) {
-            button.disabled = false;
-            setBuildStatus(error.message, 'error');
-            return;
-        }
-        post('/api/jobs', payload).then(function (job) {
+        resolveOnlineTradeDate().then(function (expectedTradeDate) {
+            if (!expectedTradeDate) throw new Error('最近交易日未获得在线来源确认');
+            return post('/api/jobs', selectedResearchInput(expectedTradeDate));
+        }).then(function (job) {
             if (serial !== buildSerial) return;
             if (!job.job_id) throw new Error('服务未返回任务编号');
             setBuildStatus(buildStatusText(job), '');
@@ -615,6 +651,7 @@
     if (document.getElementById('v3-online-ladder-refresh')) document.getElementById('v3-online-ladder-refresh').addEventListener('click', function () { onlineSerial += 1; loadOnlineLadder(onlineSerial); });
     if (document.getElementById('v3-online-pool-type')) document.getElementById('v3-online-pool-type').addEventListener('change', function () { loadPool(1); });
     if (document.getElementById('v3-build-research')) document.getElementById('v3-build-research').addEventListener('click', submitResearchBuild);
+    if (document.getElementById('v3-load-turnover')) document.getElementById('v3-load-turnover').addEventListener('click', loadTurnoverEnrichment);
     var technicalMode = document.getElementById('technical-mode');
     var technicalBand = document.getElementById('technical-research-band');
     if (technicalMode) technicalMode.value = 'technical';

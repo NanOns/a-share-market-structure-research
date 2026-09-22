@@ -4,8 +4,10 @@ from __future__ import annotations
 import hashlib
 import json
 import threading
+import time
 import duckdb
 import pyarrow as pa
+from contextlib import contextmanager
 from dataclasses import dataclass, field
 from datetime import date, datetime, timezone
 from pathlib import Path
@@ -77,6 +79,29 @@ class OneClickPublisher:
         self._threads: dict[str, threading.Thread] = {}
         self._progress: dict[str, dict[str, Any]] = {}
         self.bundle_verifier=bundle_verifier
+
+    @contextmanager
+    def _open_repository(self, *, timeout_seconds: float = 15.0):
+        """Open the single-writer repository with a bounded Windows lock retry."""
+        deadline = time.monotonic() + timeout_seconds
+        while True:
+            repository = WorkbenchRepository(self.root, self.database_path)
+            try:
+                repository.open()
+                try:
+                    yield repository
+                finally:
+                    repository.close()
+                return
+            except duckdb.IOException as exc:
+                message = str(exc).lower()
+                lock_error = any(marker in message for marker in (
+                    "another process", "used by another process", "cannot open file",
+                    "being used", "process cannot access", "另一个程序", "进程正在使用",
+                ))
+                if not lock_error or time.monotonic() >= deadline:
+                    raise
+                time.sleep(0.2)
 
     def _event(self, con, job_id: str, attempt: int, status: str, **details: Any) -> None:
         seq = con.execute("SELECT coalesce(max(sequence),0)+1 FROM job_events WHERE job_id=? AND attempt=?", [job_id, attempt]).fetchone()[0]
@@ -183,7 +208,7 @@ class OneClickPublisher:
         active=self._threads.get(job_id)
         if active and active.is_alive():
             return job_id
-        with WorkbenchRepository(self.root, self.database_path) as repo:
+        with self._open_repository() as repo:
             con = repo.connection
             assert con is not None
             row = con.execute("SELECT job_id,status FROM jobs WHERE job_key=?", [request.job_key]).fetchone()
@@ -206,6 +231,9 @@ class OneClickPublisher:
         cached=self._progress.get(job_id)
         if cached and cached.get("status") in ("QUEUED","COMPUTING","COMMITTING"):
             return {"job_id":job_id,"status":"RUNNING" if cached["status"]!="QUEUED" else "QUEUED","details":{},"progress":cached,"updated_at_utc":cached.get("updated_at_utc")}
+        if cached and cached.get("status") in ("SUCCESS", "FAILED"):
+            return {"job_id": job_id, "status": cached["status"], "publication_id": cached.get("publication_id"),
+                    "details": {}, "progress": cached, "updated_at_utc": cached.get("updated_at_utc")}
         # Status is a read path and must stay available while the publisher
         # owns the repository's single-writer lock for its final transaction.
         con=duckdb.connect(str(self.database_path))
@@ -242,7 +270,7 @@ class OneClickPublisher:
         job_id = "job-" + request.job_key[:32]
         self._progress[job_id]={"status":"COMPUTING","updated_at_utc":datetime.now(timezone.utc).isoformat()}
         # Recover a commit whose acknowledgement was lost.
-        with WorkbenchRepository(self.root, self.database_path) as repo:
+        with self._open_repository() as repo:
             con = repo.connection
             existing = con.execute("SELECT status FROM publications WHERE publication_id=?", [request.publication_id]).fetchone()
             if existing and existing[0] == "SUCCESS":
@@ -262,12 +290,12 @@ class OneClickPublisher:
             self._validate(request, prepared)
             publication_id=prepared.publication_id
             self._progress[job_id]={"status":"COMMITTING","publication_id":publication_id,"updated_at_utc":datetime.now(timezone.utc).isoformat()}
-            with WorkbenchRepository(self.root, self.database_path) as repo:
+            with self._open_repository() as repo:
                 attempt=int(repo.connection.execute("SELECT max(attempt) FROM job_attempts WHERE job_id=?",[job_id]).fetchone()[0])
                 self._event(repo.connection,job_id,attempt,"COMMITTING",publication_id=publication_id)
             if crash_at == "before_commit":
                 raise SimulatedCrash("CRASH_BEFORE_COMMIT")
-            with WorkbenchRepository(self.root, self.database_path) as repo:
+            with self._open_repository() as repo:
                 with repo.transaction() as con:
                     already=con.execute("SELECT status FROM publications WHERE publication_id=?",[publication_id]).fetchone()
                     if already and already[0]=="SUCCESS":
@@ -311,15 +339,16 @@ class OneClickPublisher:
             return {"job_id": job_id, "publication_id": publication_id, "status": "SUCCESS", "recovered": False}
         except SimulatedCrash:
             if crash_at == "before_commit":
-                with WorkbenchRepository(self.root, self.database_path) as repo:
+                with self._open_repository() as repo:
                     repo.connection.execute("UPDATE job_attempts SET status='INTERRUPTED' WHERE job_id=? AND attempt=?", [job_id, attempt])
                     repo.connection.execute("UPDATE jobs SET status='INTERRUPTED' WHERE job_id=?", [job_id])
             raise
         except Exception as exc:
             self._progress[job_id]={"status":"FAILED","error":str(exc),"updated_at_utc":datetime.now(timezone.utc).isoformat()}
-            with WorkbenchRepository(self.root, self.database_path) as repo:
+            with self._open_repository() as repo:
                 repo.connection.execute("UPDATE job_attempts SET status='FAILED', payload_json=? WHERE job_id=? AND attempt=?", [_json({"error": type(exc).__name__, "message": str(exc)}), job_id, attempt])
                 repo.connection.execute("UPDATE jobs SET status='FAILED' WHERE job_id=?", [job_id])
+                self._event(repo.connection, job_id, attempt, "FAILED", error=f"{type(exc).__name__}: {exc}")
             raise
 
     @staticmethod

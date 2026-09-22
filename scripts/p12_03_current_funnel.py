@@ -1,6 +1,6 @@
 """Read-only latest-complete-publication full-stock P12-03 predicate funnel."""
 from __future__ import annotations
-import hashlib,json,os,sys,tempfile
+import hashlib,json,os,sys,tempfile,math
 from collections import Counter,defaultdict
 from datetime import datetime,timezone
 from pathlib import Path
@@ -8,6 +8,7 @@ import duckdb
 ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT/'src'))
 from workbench_analysis.today_research_factors_v3_3 import calculate_today_facts
 from workbench_analysis.today_research_scanner_v3_3 import scan_today_research
+from workbench_analysis.history_170_v3_3 import load_stock_facts
 DB=ROOT/'data/database/market_research.duckdb';PARQUET=ROOT/'data/normalized/adjusted_daily.parquet'
 OUT=ROOT/'reports/p12_03/current_funnel.json'
 def sha(path):
@@ -24,6 +25,7 @@ def main():
   strength_slice=c.execute("select slice_id from analysis_snapshot_entries where snapshot_id=? and domain='strength' and trade_date=?",[snapshot,TARGET]).fetchone()[0]
   rps=dict(c.execute("select security_id,rps20 from strength_result_daily where slice_id=?",[strength_slice]).fetchall())
   names=dict(c.execute("select security_id,security_name from stock_daily where publication_id=?",[pub]).fetchall())
+ history_facts,history_identity=load_stock_facts(ROOT,TARGET)
  by=defaultdict(dict)
  for x in rows:by[x[0]][x[1].isoformat()]=x
  old={x[0]:x[1:] for x in old};counts={k:Counter() for k in ('launch','pullback','recovery_turn','trend_continue_stock_only','trend_continue','setup_watch')}; failed=Counter();unknown=Counter();eligible_rows=[]
@@ -32,7 +34,12 @@ def main():
   for d in window[-22:]:
    x=bars.get(d);base={'date':d,'session_index':idx[d],'anchor_cutoff':TARGET,'price_basis':'TDX_NATIVE_AFFINE_QFQ'}
    inputs.append({**base,'has_actual_bar':False} if x is None or not x[10] else {**base,'has_actual_bar':True,'is_synthetic_fill':bool(x[11]),'open':x[2],'high':x[3],'low':x[4],'close':x[5],'raw_open':x[6],'raw_close':x[7],'amount':x[8],'volume':x[9]})
-  f=calculate_today_facts(inputs); o=old.get(sid,(None,)*6); current=bars[TARGET]; c=f['ma20']*(1+f['bias20']) if f['ma20'] is not None and f['bias20'] is not None else None
+  f=calculate_today_facts(inputs); historical=history_facts.get(sid)
+  if historical:
+   for key in tuple(f):
+    if key in historical:
+     value=historical[key];f[key]=None if isinstance(value,float) and math.isnan(value) else value
+  o=old.get(sid,(None,)*6); current=bars[TARGET]; c=f['ma20']*(1+f['bias20']) if f['ma20'] is not None and f['bias20'] is not None else None
   prior=bars.get(window[-2]); prior5=[]
   for d in window[-6:-1]:
    seq=[bars.get(k) for k in window[:window.index(d)+1]]
@@ -51,7 +58,7 @@ def main():
   if out['trend_continue_stock_only']['eligible'] is True:matched.append('TREND_CONTINUE')
   if matched or out['setup_watch']['eligible'] is True:
    eligible_rows.append({'security_id':sid,'security_name':names.get(sid),'matched_stock_only_categories':matched,'setup_watch':out['setup_watch']['eligible'],'clv':f['clv'],'liq20_amount':f['liq20_amount'],'break_margin_close20':f['break_margin_close20'],'amr20_mean_prior':f['amr20_mean_prior'],'rps5_delta3':None,'slope20':f['slope20'],'r2_20':f['r2_20'],'rps20':rps.get(sid),'bias20':f['bias20'],'freshness':.20,'risk_codes':risks,'factor_evidence':f,'scanner_evidence':out})
- result={'stage_contract':'P12-03_CURRENT_FUNNEL_V1','captured_at_utc':datetime.now(timezone.utc).isoformat(),'target_date':TARGET,'input_identity':{'run_id':run,'publication_id':pub,'snapshot_id':snapshot,'strength_slice':strength_slice,'parquet_sha256':sha(PARQUET)},'stocks':len(by),'scenario_counts':{k:dict(v) for k,v in counts.items()},'eligible_or_watch_rows':eligible_rows,'top_known_failures':failed.most_common(),'top_unknowns':unknown.most_common(),'limitations':['PULLBACK_HISTORIC_FROZEN_SEED_UNAVAILABLE','RPS5_DELTA3_FORMAL_PIT_UNAVAILABLE','CURRENT_LOO_SUPPORT_P12_04'], 'acceptance_result':'DEGRADED_PASS','next_stage':'P12-03_SCANNER_V3_3_CONTINUE'}
+ result={'stage_contract':'P12-03_CURRENT_FUNNEL_V1','captured_at_utc':datetime.now(timezone.utc).isoformat(),'target_date':TARGET,'input_identity':{'run_id':run,'publication_id':pub,'snapshot_id':snapshot,'strength_slice':strength_slice,'parquet_sha256':sha(PARQUET),'history_170':history_identity},'stocks':len(by),'scenario_counts':{k:dict(v) for k,v in counts.items()},'eligible_or_watch_rows':eligible_rows,'top_known_failures':failed.most_common(),'top_unknowns':unknown.most_common(),'limitations':['PULLBACK_HISTORIC_FROZEN_SEED_UNAVAILABLE','RPS5_DELTA3_FORMAL_PIT_UNAVAILABLE','CURRENT_LOO_SUPPORT_P12_04'], 'acceptance_result':'DEGRADED_PASS','next_stage':'P12-03_SCANNER_V3_3_CONTINUE'}
  if not by or any(sum(v.values())!=len(by) for v in counts.values()):result.update(acceptance_result='BLOCKED',next_stage='P12-03_REPAIR')
  OUT.parent.mkdir(parents=True,exist_ok=True);fd,tmp=tempfile.mkstemp(dir=OUT.parent)
  try:

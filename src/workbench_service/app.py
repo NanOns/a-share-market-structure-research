@@ -37,6 +37,7 @@ from workbench_service.research_context import ResearchContextError, ResearchCon
 from workbench_service.research_queries import ResearchQueryError, ResearchQueries
 from workbench_service.research_builder import build_latest_research_run
 from workbench_service.today_research_bundle import TodayResearchBundleReader
+from workbench_service.turnover_enrichment_service import TurnoverEnrichmentService
 from workbench_service.legacy_feature_matrix import build_legacy_matrix
 from workbench_service.online_events import OnlineEventQueries
 from workbench_service.p09_context import load_mapping, select_mappings, intersect_members
@@ -1705,7 +1706,19 @@ class Api:
    return {'publication_id':p,'page':page,'page_size':size,'total':total,'sector_member_count':sector_member_count,'sector_member_rank_basis':'stock_rs20_pct_desc_then_ret20_desc_then_security_id','items':items}
 
 def make_handler(root,db):
- api=Api(db,root=root); research=ResearchQueries(lambda: api._con(),root=root); today_research=TodayResearchBundleReader(root,database_path=db); events=OnlineEventQueries(lambda: api._con()); p09=P09OnlineProducts(); history=HistoryJobService(root,db); history.recover_interrupted(background=True); activation=AnalysisActivationService(root,db); operations=OperationsConfig(root,db); storage=StorageGovernance(root,db); backups=BackupService(root,db); maintenance=MaintenanceService(root,db); static=Path(root)/'src/workbench_service/static';csrf=secrets.token_urlsafe(24);publishers={};daily_jobs={};research_jobs={};daily_jobs_lock=threading.Lock()
+ api=Api(db,root=root); research=ResearchQueries(lambda: api._con(),root=root); today_research=TodayResearchBundleReader(root,database_path=db); turnover_enrichment=TurnoverEnrichmentService(root,today_research); events=OnlineEventQueries(lambda: api._con()); p09=P09OnlineProducts(); history=HistoryJobService(root,db); history.recover_interrupted(background=True); activation=AnalysisActivationService(root,db); operations=OperationsConfig(root,db); storage=StorageGovernance(root,db); backups=BackupService(root,db); maintenance=MaintenanceService(root,db); static=Path(root)/'src/workbench_service/static';csrf=secrets.token_urlsafe(24);publishers={};daily_jobs={};research_jobs={};daily_jobs_lock=threading.Lock()
+ last_operations_status=maintenance.status()
+ database_subprocess_active=threading.Event()
+ def run_database_subprocess(command,**kwargs):
+  # DuckDB supports either one read/write process or multiple read-only
+  # processes.  These builders read and write the production database in a
+  # child process, so stop HTTP handlers from opening it until they exit.
+  database_subprocess_active.set()
+  try:
+   with api._db_lock:
+    return subprocess.run(command,**kwargs)
+  finally:
+   database_subprocess_active.clear()
  def run_research(job_id):
   task=research_jobs[job_id];task.update(status='RUNNING',progress={'status':'BUILDING_RESEARCH_V3'})
   try:
@@ -1716,7 +1729,7 @@ def make_handler(root,db):
   task=daily_jobs.get(job_id)
   if not task: return None
   publisher=task.get('publisher')
-  if publisher and task.get('phase') not in ('ANALYSIS_BINDING','READY','FAILED'):
+  if publisher and task.get('status') not in ('SUCCESS','FAILED') and task.get('phase') not in ('ANALYSIS_BINDING','READY','FAILED'):
    child=publisher.status(task['publication_job_id'])
    task.update(status=child['status'],progress=child.get('progress',{}),updated_at_utc=child.get('updated_at_utc'))
   return {'job_id':job_id,'status':task['status'],'details':{'trade_date':task.get('trade_date'),'source_bundle_id':task.get('source_bundle_id')},'progress':task.get('progress',{}),'updated_at_utc':task.get('updated_at_utc')}
@@ -1738,6 +1751,8 @@ def make_handler(root,db):
    task.update(status='FAILED',progress={'status':'INPUT_FAILED','error':receipt.get('blockers') or result.stderr[-500:]});return
   bundle=receipt['source_bundle_id'];day=receipt['day_validation']['target_trade_date'];trade_date=date(int(str(day)[:4]),int(str(day)[4:6]),int(str(day)[6:]))
   expected_date=str(body.get('expected_trade_date') or '').strip()
+  if body.get('build_research_v3') and not expected_date:
+   task.update(status='FAILED',progress={'status':'INPUT_DATE_EXPECTED_REQUIRED','error':'页面未提供在线确认的目标交易日，已拒绝发布；请刷新页面后重试'});return
   if expected_date and trade_date.isoformat()!=expected_date:
    task.update(status='FAILED',progress={'status':'INPUT_DATE_MISMATCH','error':f'预期 {expected_date}，官方数据为 {trade_date.isoformat()}；未发布'});return
   task.update(source_bundle_id=bundle,trade_date=trade_date.isoformat(),progress={'status':'PUBLISHING'})
@@ -1747,7 +1762,7 @@ def make_handler(root,db):
   if published.get('status')!='SUCCESS':
    task.update(status='FAILED',progress={'status':'PUBLISH_FAILED','error':published.get('error') or published.get('details') or 'M4发布未完成'});return
   task.update(phase='ANALYSIS_BINDING',progress={'status':'ANALYSIS_BINDING'})
-  preview=subprocess.run([sys.executable,str(Path(root)/'scripts/build_m8_m9_preview.py'),'--incremental-current'],cwd=root,capture_output=True,text=True,timeout=3600)
+  preview=run_database_subprocess([sys.executable,str(Path(root)/'scripts/build_m8_m9_preview.py'),'--incremental-current'],cwd=root,capture_output=True,text=True,timeout=3600)
   if preview.returncode:
    task.update(status='FAILED',progress={'status':'ANALYSIS_BINDING_FAILED','error':preview.stderr[-1000:] or preview.stdout[-1000:]});return
   try:
@@ -1755,7 +1770,7 @@ def make_handler(root,db):
   except Exception as exc:
    task.update(status='FAILED',progress={'status':'ANALYSIS_REPORT_INVALID','error':str(exc)});return
   task.update(progress={'status':'BUILDING_MAINLINE_BACKGROUND'})
-  mainline=subprocess.run([sys.executable,str(Path(root)/'scripts/build_m10_mainline_preview.py')],cwd=root,capture_output=True,text=True,timeout=3600)
+  mainline=run_database_subprocess([sys.executable,str(Path(root)/'scripts/build_m10_mainline_preview.py')],cwd=root,capture_output=True,text=True,timeout=3600)
   if mainline.returncode:
    task.update(status='FAILED',progress={'status':'MAINLINE_BUILD_FAILED','error':mainline.stderr[-1000:] or mainline.stdout[-1000:]});return
   try:
@@ -1770,7 +1785,7 @@ def make_handler(root,db):
     task.update(status='FAILED',progress={'status':'RESEARCH_BUILD_FAILED','error':str(exc)});return
    task['research_result']=research_result
    task.update(progress={'status':'BUILDING_RESEARCH_V3_3'})
-   p12=subprocess.run([sys.executable,str(Path(root)/'scripts/run_p12_daily_pipeline.py'),'--publication-id',str(published.get('publication_id')),'--trade-date',trade_date.isoformat()],cwd=root,capture_output=True,text=True,timeout=3600)
+   p12=run_database_subprocess([sys.executable,str(Path(root)/'scripts/run_p12_daily_pipeline.py'),'--publication-id',str(published.get('publication_id')),'--trade-date',trade_date.isoformat()],cwd=root,capture_output=True,text=True,timeout=3600)
    if p12.returncode:
     task.update(status='FAILED',progress={'status':'RESEARCH_V3_3_BUILD_FAILED','error':p12.stderr[-2000:] or p12.stdout[-2000:]});return
    try:
@@ -1817,7 +1832,26 @@ def make_handler(root,db):
     return False
    return True
   def do_GET(self):
-   if urlparse(self.path).path in ('/api/hot-rankings','/api/jobs'):
+   path=urlparse(self.path).path
+   allowed_while_database_exclusive=(
+    path in ('/api/jobs','/api/operations/status','/api/operations/restart-status','/','/index.html','/v3','/v3/','/v3/index.html','/v2','/v2/','/v2/index.html')
+    or path.startswith('/v2/')
+   )
+   if database_subprocess_active.is_set():
+    query={k:v[0] for k,v in parse_qs(urlparse(self.path).query).items()}
+    if path=='/api/operations/status':
+     active_count=sum(1 for item in daily_jobs.values() if item.get('status') in ('QUEUED','RUNNING'))
+     out={**last_operations_status,'service_state':'BUSY','active_job_count':active_count,'service_pid':os.getpid(),'service_url':'http://'+self.headers.get('Host','127.0.0.1:28765'),'service_control_contract':'WORKBENCH_LOCAL_SERVICE_CONTROL_V1','database_access':'SUSPENDED_FOR_BUILD'}
+     return self._send(200,out)
+    if path=='/api/jobs':
+     job_id=query.get('job_id')
+     if job_id in daily_jobs:return self._send(200,today_status(job_id))
+     if query.get('active')=='1':
+      return self._send(200,{'items':[today_status(key) for key,item in daily_jobs.items() if item.get('status') in ('QUEUED','RUNNING')]})
+     return self._send(503,{'code':'DATABASE_BUILD_IN_PROGRESS','message':'当日分析正在独占更新，请稍后重试','retryable':True})
+    if not allowed_while_database_exclusive:
+     return self._send(503,{'code':'DATABASE_BUILD_IN_PROGRESS','message':'当日分析正在独占更新，请稍后重试','retryable':True})
+   if allowed_while_database_exclusive:
     return self._do_GET()
    with api.request_scope():
     return self._do_GET()
@@ -1830,6 +1864,8 @@ def make_handler(root,db):
      context=research.contexts.resolve_request(x.get('publication_id',''),x.get('trade_date',''),x.get('mode','CLOSE'));out={'status':context['status'],'context':context,'items':[]}
     elif u.path=='/api/v3/research/today':
      out=today_research.list(page=x.get('page',1),page_size=x.get('page_size',20),category=x.get('category',''),selection_mode=x.get('selection_mode',''),q=x.get('q',''))
+    elif u.path=='/api/v3/research/today-turnover':
+     out=turnover_enrichment.load_materialized(expected_digest=x.get('bundle_digest',''))
     elif u.path.startswith('/api/v3/research/today/'):
      security_id=unquote(u.path[len('/api/v3/research/today/'):].strip('/'));out=today_research.detail(security_id,x.get('bundle_digest',''))
     elif u.path=='/api/v3/legacy-matrix':

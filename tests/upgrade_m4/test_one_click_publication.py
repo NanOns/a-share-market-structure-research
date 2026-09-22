@@ -129,6 +129,14 @@ def test_repeated_submit_does_not_start_a_second_running_job(tmp_path):
     job=pub.submit(request())
     assert pub.submit(request())==job
 
+def test_failed_status_keeps_the_in_memory_error(tmp_path):
+    pub=publisher(tmp_path)
+    job_id="job-"+request().job_key[:32]
+    pub._progress[job_id]={"status":"FAILED","error":"database temporarily locked","updated_at_utc":"2026-09-17T08:00:00+00:00"}
+    status=pub.status(job_id)
+    assert status["status"]=="FAILED"
+    assert status["progress"]["error"]=="database temporarily locked"
+
 def test_new_publication_observation_ids_are_distinct_from_historical_outcome_binding(tmp_path):
     from workbench_publish.orchestrator import _observation_row_id
     row={"security_id":"SH.600001"}

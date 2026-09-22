@@ -1,0 +1,22 @@
+{
+  "contract_id": "P12_14_TENCENT_TURNOVER_FALLBACK_V1",
+  "source_id": "TENCENT_QUOTES_LATEST",
+  "endpoint": "https://qt.gtimg.cn/q=",
+  "activation": "CURRENT_DIRECT_SOURCE_UNTIL_SEPARATE_SOURCE_UPGRADE",
+  "candidate_scope": "SAME_ACTIVE_V3_3_SUPPORTED_CANDIDATE_BATCH",
+  "max_batch_size": 50,
+  "timeout_seconds": 8,
+  "retries": 0,
+  "raw_payload_persisted": false,
+  "field_contract": {
+    "price_index": 3,
+    "source_timestamp_index": 30,
+    "amount_from_index": 35,
+    "volume_lots_index": 36,
+    "turnover_percent_index": 38,
+    "volume_normalized_unit": "SHARES",
+    "turnover_normalized_unit": "FRACTION"
+  },
+  "required_binding": "LOCAL_CLOSE_AMOUNT_VOLUME_FINGERPRINT",
+  "failure_policy": "FAIL_CLOSED_WITHOUT_BLOCKING_LOCAL_PIPELINE"
+}

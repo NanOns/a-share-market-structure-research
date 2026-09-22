@@ -60,7 +60,8 @@ def test_v3_is_the_single_unified_workbench_entry(tmp_path):
         assert "structure_phase" in script
         assert "板块生命周期 · 前瞻与风险" not in page
         assert "loadLifecycle" not in script
-        assert "expected_trade_date" not in script
+        assert "expected_trade_date" in script
+        assert "resolveOnlineTradeDate().then" in script
         assert "window.location.reload()" in script
         assert "X-CSRF-Token" in script
         assert "data-v3-sector-id" in script

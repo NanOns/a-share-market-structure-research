@@ -29,14 +29,11 @@ def fetch_api(include_analysis: bool) -> dict:
 def main() -> int:
     checks = []
     with PostgresRepository() as repo:
-        # The base publication projection is isolated here.  The optional
-        # analysis_capabilities object is a separate domain and remains a
-        # later adapter slice until its nested coverage contract is ported.
-        for include_analysis in (False,):
+        for include_analysis in (False, True):
             api = fetch_api(include_analysis)
             pg = repo.publication_heads(include_analysis=include_analysis)
             checks.append({"include_analysis": include_analysis, "match": canonical(api) == canonical(pg), "api_count": len(api.get("items", [])), "pg_count": len(pg.get("items", [])), "latest_api": api.get("latest_publication_id"), "latest_pg": pg.get("latest_publication_id")})
-    report = {"contract_version": "PUBLICATIONS_PG_SHADOW_V1", "generated_at_utc": datetime.now(timezone.utc).isoformat(), "checks": checks, "deferred": ["include_analysis=true analysis_capabilities nested domain"], "status": "PASS" if all(item["match"] for item in checks) else "FAIL", "online_switch_performed": False, "data_generation_triggered": False}
+    report = {"contract_version": "PUBLICATIONS_PG_SHADOW_V1", "generated_at_utc": datetime.now(timezone.utc).isoformat(), "checks": checks, "deferred": [], "status": "PASS" if all(item["match"] for item in checks) else "FAIL", "online_switch_performed": False, "data_generation_triggered": False}
     REPORT.parent.mkdir(parents=True, exist_ok=True)
     tmp = REPORT.with_suffix(REPORT.suffix + ".tmp")
     tmp.write_text(json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True), encoding="utf-8")

@@ -7,6 +7,7 @@ and transaction boundaries without leaking PostgreSQL SQL into HTTP handlers.
 from __future__ import annotations
 
 import os
+import json
 from contextlib import contextmanager
 from typing import Any, Iterator, Sequence
 
@@ -110,12 +111,103 @@ class PostgresRepository:
         for trade_date, publication_id, revision, production_version in rows:
             item: dict[str, Any] = {"trade_date": str(trade_date), "publication_id": str(publication_id)}
             if include_analysis:
-                item.update({"revision": revision, "production_version": production_version})
+                item.update({"revision": revision, "production_version": production_version, "analysis_capabilities": self.analysis_capabilities(str(publication_id))})
             items.append(item)
         result: dict[str, Any] = {"items": items, "latest_publication_id": items[0]["publication_id"] if items else None}
         if include_analysis:
-            result["api_contract"] = "WORKBENCH_PUBLICATIONS_API_V1"
+            result["api_contract"] = "workbench-api-v2.1"
         return result
+
+    @staticmethod
+    def _json_value(value: Any, default: Any) -> Any:
+        if isinstance(value, (dict, list)):
+            return value
+        if value in (None, ""):
+            return default
+        try:
+            parsed = json.loads(str(value))
+        except (TypeError, ValueError, json.JSONDecodeError):
+            return default
+        return parsed
+
+    @staticmethod
+    def _timestamp_text(value: Any) -> str | None:
+        if value is None:
+            return None
+        text = str(value).replace("+00:00", "")
+        if "." in text:
+            text = text.rstrip("0").rstrip(".")
+        return text
+
+    def _analysis_bindings(self, publication_id: str) -> dict[str, dict[str, Any]]:
+        query = sql.SQL(
+            "select b.domain,b.snapshot_id,cast(s.cutoff_date as text),cast(s.query_start as text),s.manifest_hash,"
+            "s.universe_contract,s.config_hash,s.created_at "
+            "from {schema}.publication_analysis_snapshots b join {schema}.analysis_snapshots s using(snapshot_id) "
+            "left join {schema}.analysis_snapshot_audit_status a on a.snapshot_id=s.snapshot_id "
+            "where b.publication_id=%s and s.status='SUCCESS' and coalesce(a.audit_status,'ACTIVE') not in ('BLOCKED','PENDING_REVIEW') "
+            "order by case b.domain when 'LOCAL_OBSERVED' then 0 else 1 end"
+        ).format(schema=sql.Identifier(self.schema))
+        with self.connection.cursor() as cur:  # type: ignore[union-attr]
+            cur.execute(query, (publication_id,))
+            rows = cur.fetchall()
+        return {str(row[0]): {"domain": str(row[0]), "snapshot_id": str(row[1]), "analysis_snapshot_id": str(row[1]), "cutoff_date": str(row[2]), "query_start": str(row[3]), "manifest_hash": row[4], "universe_contract": row[5], "config_hash": row[6], "created_at": self._timestamp_text(row[7])} for row in rows}
+
+    def _analysis_quality(self, snapshot_id: str) -> dict[str, Any]:
+        query = sql.SQL(
+            "select e.domain,cast(e.trade_date as text),s.slice_id,cast(s.trade_date as text),s.contract_id,s.input_hash,s.dependency_hash,"
+            "s.logical_hash,s.row_count,s.basis_json,b.universe_basis,b.membership_snapshot_id,b.price_basis,"
+            "cast(b.adjustment_as_of as text),b.source_observed_at,b.coverage,b.capabilities_json "
+            "from {schema}.analysis_snapshot_entries e join {schema}.analysis_slices s on s.slice_id=e.slice_id "
+            "left join {schema}.analysis_daily_basis b on b.slice_id=e.slice_id "
+            "where e.snapshot_id=%s order by e.domain,e.trade_date,s.slice_id"
+        ).format(schema=sql.Identifier(self.schema))
+        with self.connection.cursor() as cur:  # type: ignore[union-attr]
+            cur.execute(query, (snapshot_id,))
+            rows = cur.fetchall()
+        all_dates = sorted({str(row[1]) for row in rows})
+        coverage: dict[str, dict[str, Any]] = {}
+        for row in rows:
+            (domain, trade_date, slice_id, slice_trade_date, contract_id, input_hash, dependency_hash,
+             logical_hash, row_count, basis_json, universe_basis, membership_snapshot_id, price_basis,
+             adjustment_as_of, source_observed_at, covered, capabilities_json) = row
+            domain = str(domain); trade_date = str(trade_date); slice_trade_date = str(slice_trade_date)
+            item = coverage.setdefault(domain, {"available_from": trade_date, "available_to": trade_date, "date_count": 0, "slice_count": 0, "row_count": 0, "contract_ids": set(), "slice_ids": [], "input_hashes": set(), "dependency_hashes": set(), "logical_hashes": set(), "missing_dates": [], "coverage_values": [], "basis_metadata_complete": True, "basis": None, "latest_slice": None, "slice_trade_date_mismatches": []})
+            item["available_from"] = min(item["available_from"], trade_date); item["available_to"] = max(item["available_to"], trade_date); item["date_count"] += 1; item["row_count"] += int(row_count or 0); item["contract_ids"].add(contract_id); item["input_hashes"].add(input_hash); item["dependency_hashes"].add(dependency_hash); item["logical_hashes"].add(logical_hash)
+            if slice_id not in item["slice_ids"]: item["slice_ids"].append(slice_id)
+            if slice_trade_date != trade_date: item["slice_trade_date_mismatches"].append({"entry_trade_date": trade_date, "slice_trade_date": slice_trade_date, "slice_id": slice_id})
+            if covered is not None: item["coverage_values"].append(float(covered))
+            else: item["basis_metadata_complete"] = False
+            if item["latest_slice"] is None or trade_date >= item["latest_slice"]["trade_date"]:
+                item["latest_slice"] = {"slice_id": str(slice_id), "trade_date": trade_date, "slice_trade_date": slice_trade_date, "contract_id": contract_id, "input_hash": input_hash, "dependency_hash": dependency_hash, "logical_hash": logical_hash, "row_count": int(row_count or 0), "basis_json": self._json_value(basis_json, {}), "universe_basis": universe_basis, "membership_snapshot_id": membership_snapshot_id, "price_basis": price_basis, "adjustment_as_of": str(adjustment_as_of) if adjustment_as_of is not None else None, "source_observed_at": self._timestamp_text(source_observed_at), "coverage": float(covered) if covered is not None else None, "capabilities": self._json_value(capabilities_json, {})}
+        for domain, item in coverage.items():
+            item["missing_dates"] = [day for day in all_dates if item["available_from"] <= day <= item["available_to"] and day not in {str(row[1]) for row in rows if str(row[0]) == domain}]
+            item["coverage"] = round(sum(item["coverage_values"]) / len(item["coverage_values"]), 8) if item["coverage_values"] else None
+            item["contract_ids"] = sorted(item["contract_ids"]); item["input_hashes"] = sorted(item["input_hashes"]); item["dependency_hashes"] = sorted(item["dependency_hashes"]); item["logical_hashes"] = sorted(item["logical_hashes"]); item["slice_ids"] = sorted(set(item["slice_ids"]))[-10:]; item["slice_count"] = len(set(item["slice_ids"])); item.pop("coverage_values", None)
+            latest = item["latest_slice"]
+            latest_capabilities = latest.get("capabilities", {}) if latest else {}
+            membership_metadata_ok = domain not in ("mainline", "sector_cycle", "member_state") or bool(latest and latest.get("membership_snapshot_id"))
+            semantic_metadata_ok = domain != "mainline" or bool(latest and (latest.get("basis_json", {}).get("semantic_version") or latest_capabilities.get("semantic_version")))
+            item["basis_metadata_complete"] = bool(item["basis_metadata_complete"] and latest and latest.get("coverage") is not None and membership_metadata_ok and semantic_metadata_ok and not item["slice_trade_date_mismatches"])
+        codes: list[str] = []
+        if any(item["missing_dates"] for item in coverage.values()): codes.append("SNAPSHOT_DOMAIN_DATE_GAPS")
+        if any(item.get("slice_trade_date_mismatches") for item in coverage.values()): codes.append("SNAPSHOT_SLICE_TRADE_DATE_MISMATCH")
+        if any(not item["basis_metadata_complete"] for item in coverage.values()): codes.append("BASIS_METADATA_INCOMPLETE")
+        return {"status": "AVAILABLE" if coverage and not codes else ("PARTIAL" if coverage else "UNAVAILABLE"), "codes": codes, "field_coverage": coverage}
+
+    def analysis_capabilities(self, publication_id: str) -> dict[str, Any]:
+        if self.connection is None:
+            raise RuntimeError("POSTGRES_REPOSITORY_NOT_OPEN")
+        with self.connection.cursor() as cur:
+            counts = {}
+            for table in ("stock_daily", "sector_daily", "queue_memberships"):
+                cur.execute(sql.SQL("select count(*) from {}.{} where publication_id=%s").format(sql.Identifier(self.schema), sql.Identifier(table)), (publication_id,))
+                counts[table] = int(cur.fetchone()[0])
+        bindings = self._analysis_bindings(publication_id)
+        preferred = bindings.get("LOCAL_OBSERVED") or bindings.get("LOCAL_RECONSTRUCTED")
+        quality = self._analysis_quality(preferred["snapshot_id"]) if preferred else {"field_coverage": {}, "status": "PARTIAL", "codes": ["HISTORY_ANALYSIS_NOT_BUILT"]}
+        domain_capabilities = {domain: ("AVAILABLE" if value.get("date_count", 0) > 0 else "UNAVAILABLE") for domain, value in quality.get("field_coverage", {}).items()}
+        return {"overview": "AVAILABLE" if counts["stock_daily"] else "UNAVAILABLE", "universe": "AVAILABLE" if counts["stock_daily"] else "UNAVAILABLE", "sector": "AVAILABLE" if counts["sector_daily"] else "UNAVAILABLE", "structure": "AVAILABLE" if counts["queue_memberships"] else "UNAVAILABLE", "history_analysis": "AVAILABLE" if bindings else "NOT_BUILT", "analysis_domains": domain_capabilities, "field_coverage": quality.get("field_coverage", {})}
 
     def sector_metadata(self, publication_id: str) -> list[dict[str, str]]:
         """Return the stable sector identity projection for one publication."""

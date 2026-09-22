@@ -9,7 +9,7 @@ ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT/'src'))
 from workbench_analysis.today_research_factors_v3_3 import calculate_today_facts
 from workbench_analysis.today_research_scanner_v3_3 import scan_today_research
 from workbench_analysis.history_170_v3_3 import load_stock_facts
-DB=ROOT/'data/database/market_research.duckdb';PARQUET=ROOT/'data/normalized/adjusted_daily.parquet'
+DB=Path(os.environ.get('WORKBENCH_COMPUTE_DUCKDB',str(ROOT/'data/database/market_research.duckdb'))).resolve();PARQUET=ROOT/'data/normalized/adjusted_daily.parquet'
 OUT=ROOT/'reports/p12_03/current_funnel.json'
 def sha(path):
  h=hashlib.sha256();h.update(path.read_bytes());return h.hexdigest()

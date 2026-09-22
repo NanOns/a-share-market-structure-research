@@ -7,7 +7,7 @@ from pathlib import Path
 import duckdb
 ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT/'src'))
 from workbench_analysis.today_research_rank_loo_v3_3 import current_loo,support_audit
-OUT=ROOT/'reports/p12_04/current_loo_probe.json';DB=ROOT/'data/database/market_research.duckdb'
+OUT=ROOT/'reports/p12_04/current_loo_probe.json';DB=Path(os.environ.get('WORKBENCH_COMPUTE_DUCKDB',str(ROOT/'data/database/market_research.duckdb'))).resolve()
 def main():
  with duckdb.connect(str(DB),read_only=True) as c:
   run,pub,target=c.execute("select run_id,publication_id,trade_date from research_runs where status='COMPLETE' order by trade_date desc,completed_at desc limit 1").fetchone();scope,rev,attrs=c.execute('select source_scope,revision_no,attribute_version_id from relation_publication_bindings where publication_id=?',[pub]).fetchone()

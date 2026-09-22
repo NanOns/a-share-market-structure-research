@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 from pathlib import Path
 import sys
 
@@ -65,7 +66,7 @@ def main() -> None:
     contracts.update({"bundle": BUNDLE_CONTRACT, "full_loo": report["algorithm_contract"], "source_hashes_p12_12": source_hashes})
     built = build_bundle(ROOT / "data/research_bundles_v3_3", identity, ranked, contracts, bundle_contract=BUNDLE_CONTRACT)
     activated = activate_bundle(Path(built["path"]), POINTER)
-    with duckdb.connect(str(ROOT / "data/database/market_research.duckdb")) as connection:
+    with duckdb.connect(str(Path(os.environ.get("WORKBENCH_COMPUTE_DUCKDB", str(ROOT / "data/database/market_research.duckdb"))).resolve())) as connection:
         registered = register_active_bundle(connection, POINTER)
     receipt = {
         "stage": "P12-12_FULL_LOO_BUNDLE", "acceptance": "FULL_PASS",

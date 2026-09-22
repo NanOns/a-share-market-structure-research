@@ -44,6 +44,7 @@ from workbench_service.analysis_activation import AnalysisActivationError, Analy
 from workbench_service.research_context import ResearchContextError, ResearchContextReader
 from workbench_service.research_queries import ResearchQueryError, ResearchQueries
 from workbench_service.research_builder import build_latest_research_run
+from workbench_service.compute_workspace import prepare_compute_workspace
 from workbench_service.today_research_bundle import TodayResearchBundleReader
 from workbench_service.turnover_enrichment_service import TurnoverEnrichmentService
 from workbench_service.legacy_feature_matrix import build_legacy_matrix
@@ -1793,8 +1794,18 @@ def make_handler(root,db):
   published=publisher.wait(publication_job_id,timeout=3600)
   if published.get('status')!='SUCCESS':
    task.update(status='FAILED',progress={'status':'PUBLISH_FAILED','error':published.get('error') or published.get('details') or 'M4发布未完成'});return
+  try:
+   if pg_api:
+    compute_db,compute_refresh=prepare_compute_workspace(root,db)
+    compute_env={**os.environ,'WORKBENCH_COMPUTE_DUCKDB':str(compute_db)}
+    task['compute_workspace']={'database':str(compute_db),'refresh':compute_refresh}
+   else:
+    compute_db=db
+    compute_env=dict(os.environ)
+  except Exception as exc:
+   task.update(status='FAILED',progress={'status':'COMPUTE_WORKSPACE_FAILED','error':str(exc)});return
   task.update(phase='ANALYSIS_BINDING',progress={'status':'ANALYSIS_BINDING'})
-  preview=run_database_subprocess([sys.executable,str(Path(root)/'scripts/build_m8_m9_preview.py'),'--incremental-current'],cwd=root,capture_output=True,text=True,timeout=3600)
+  preview=run_database_subprocess([sys.executable,str(Path(root)/'scripts/build_m8_m9_preview.py'),'--incremental-current'],cwd=root,capture_output=True,text=True,timeout=3600,env=compute_env)
   if preview.returncode:
    task.update(status='FAILED',progress={'status':'ANALYSIS_BINDING_FAILED','error':preview.stderr[-1000:] or preview.stdout[-1000:]});return
   try:
@@ -1802,7 +1813,7 @@ def make_handler(root,db):
   except Exception as exc:
    task.update(status='FAILED',progress={'status':'ANALYSIS_REPORT_INVALID','error':str(exc)});return
   task.update(progress={'status':'BUILDING_MAINLINE_BACKGROUND'})
-  mainline=run_database_subprocess([sys.executable,str(Path(root)/'scripts/build_m10_mainline_preview.py')],cwd=root,capture_output=True,text=True,timeout=3600)
+  mainline=run_database_subprocess([sys.executable,str(Path(root)/'scripts/build_m10_mainline_preview.py')],cwd=root,capture_output=True,text=True,timeout=3600,env=compute_env)
   if mainline.returncode:
    task.update(status='FAILED',progress={'status':'MAINLINE_BUILD_FAILED','error':mainline.stderr[-1000:] or mainline.stdout[-1000:]});return
   try:
@@ -1816,12 +1827,12 @@ def make_handler(root,db):
     # subprocesses against the legacy DuckDB file.  Keep its research build
     # explicitly on that same isolated transaction until those downstream
     # stages are migrated, avoiding a later sync step overwriting PG rows.
-    research_result=build_latest_research_run(root,db,repository=DuckDBResearchBuilderRepository(db))
+    research_result=build_latest_research_run(root,compute_db,repository=DuckDBResearchBuilderRepository(compute_db))
    except Exception as exc:
     task.update(status='FAILED',progress={'status':'RESEARCH_BUILD_FAILED','error':str(exc)});return
    task['research_result']=research_result
    task.update(progress={'status':'BUILDING_RESEARCH_V3_3'})
-   p12=run_database_subprocess([sys.executable,str(Path(root)/'scripts/run_p12_daily_pipeline.py'),'--publication-id',str(published.get('publication_id')),'--trade-date',trade_date.isoformat()],cwd=root,capture_output=True,text=True,timeout=3600)
+   p12=run_database_subprocess([sys.executable,str(Path(root)/'scripts/run_p12_daily_pipeline.py'),'--publication-id',str(published.get('publication_id')),'--trade-date',trade_date.isoformat()],cwd=root,capture_output=True,text=True,timeout=3600,env=compute_env)
    if p12.returncode:
     task.update(status='FAILED',progress={'status':'RESEARCH_V3_3_BUILD_FAILED','error':p12.stderr[-2000:] or p12.stdout[-2000:]});return
    try:
@@ -1839,7 +1850,7 @@ def make_handler(root,db):
   # fail-closed; no successful UI state is reported for a missing PG copy.
   if str(os.environ.get('WORKBENCH_API_BACKEND','')).lower() == 'postgresql':
    task.update(progress={'status':'SYNCING_POSTGRES_PUBLICATION'})
-   pg_sync=run_database_subprocess([sys.executable,str(Path(root)/'scripts/sync_latest_publication_to_postgres.py'),'--trade-date',trade_date.isoformat()],cwd=root,capture_output=True,text=True,timeout=3600)
+   pg_sync=run_database_subprocess([sys.executable,str(Path(root)/'scripts/sync_latest_publication_to_postgres.py'),'--database',str(compute_db),'--trade-date',trade_date.isoformat()],cwd=root,capture_output=True,text=True,timeout=3600,env=compute_env)
    if pg_sync.returncode:
     task.update(status='FAILED',progress={'status':'POSTGRES_SYNC_FAILED','error':pg_sync.stderr[-2000:] or pg_sync.stdout[-2000:]});return
    try:

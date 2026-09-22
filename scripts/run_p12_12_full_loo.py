@@ -3,6 +3,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 import hashlib
 import json
+import os
 from pathlib import Path
 import sys
 
@@ -22,7 +23,7 @@ from workbench_service.research_builder import _market_universe_metadata_path
 from workbench_service.universe import is_workbench_statistical_security_id
 
 
-DB = ROOT / "data/database/market_research.duckdb"
+DB = Path(os.environ.get("WORKBENCH_COMPUTE_DUCKDB", str(ROOT / "data/database/market_research.duckdb"))).resolve()
 POINTER = ROOT / "data/current/ACTIVE_RESEARCH_BUNDLE_V3_3.json"
 OUT = ROOT / "reports/p12_12/p12_12_full_loo.json"
 

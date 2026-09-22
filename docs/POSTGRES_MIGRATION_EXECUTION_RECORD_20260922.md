@@ -424,6 +424,26 @@ binding 和回滚后无残留，报告仍为
 `runtime/postgres_migration/20260922/pg_incremental_writer_repository_rehearsal_report.json`，
 `data_generation_triggered=false`。
 
+## 21. Daily analytical compute isolation and PostgreSQL sink
+
+每日生成流程现已加入 `DAILY_COMPUTE_WORKSPACE_V1` 边界。PG 模式下，任务在发布
+成功后准备受管的 `runtime/compute/daily_pipeline.duckdb`，首次由旧库初始化，之后
+作为独立计算缓存复用；任务开始前仅从 PostgreSQL 刷新最新 publication head、当前
+分析绑定和必要关系绑定。M8/M9、M10、P12 及最终同步器通过
+`WORKBENCH_COMPUTE_DUCKDB` 使用该路径，不能再把共享
+`data/database/market_research.duckdb` 作为每日计算目标。
+
+`submit_one_click` 在 PG 模式下不再为 forward baseline 打开共享 DuckDB 文件；
+共享库因此不会被页面任务以“顺便读取/种 baseline”的方式重新占用。最终
+`sync_latest_publication_to_postgres.py` 仍是事务性 PostgreSQL sink，但输入改为
+隔离计算库，避免同步时再次打开共享生产库。该阶段保留 DuckDB 作为分析引擎，
+并没有把 M8/M9、M10、P12 的分析 SQL 强行改写成 PostgreSQL。
+
+`scripts/compute_workspace_rehearsal.py` 已验证：计算路径与共享库不同、PG 最新
+publication 可物化、目标路径不含 `market_research.duckdb`，且
+`data_generation_triggered=false`。真正的每日生成仍需用户手动触发一次观察；本轮
+没有主动运行生成流程。
+
 `PostgresResearchBuilderRepository` 使用“内存 DuckDB 分析读取 + PostgreSQL
 研究状态/结果写事务”的混合边界：`read_parquet` 和跨表分析在隔离的内存连接中
 执行；`research_runs`、`research_*` 结果表的 start/complete/fail、可见性读取和

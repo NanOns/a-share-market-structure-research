@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -22,7 +23,7 @@ sys.path.insert(0, str(ROOT / "src"))
 from workbench_analysis.mainline import build_mainline_state_daily, config_hash, insert_mainline_rows, mainline_history_policy
 
 
-DB_PATH = ROOT / "data/database/market_research.duckdb"
+DB_PATH = Path(os.environ.get("WORKBENCH_COMPUTE_DUCKDB", str(ROOT / "data/database/market_research.duckdb"))).resolve()
 CONFIG_PATH = ROOT / "config/mainline-v2.4-preview.yaml"
 CONTRACT_ID = "MAINLINE_STATE_V2_4_PREVIEW"
 AMOUNT_CONTRACT_ID = "SECTOR_AMOUNT_COMMON_AGG_V1"

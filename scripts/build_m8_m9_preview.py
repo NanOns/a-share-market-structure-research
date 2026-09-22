@@ -52,7 +52,7 @@ from workbench_analysis.structures import (
 from workbench_analysis.technical import calculate_technical_daily, insert_technical_result_rows
 
 
-DB_PATH = ROOT / "data/database/market_research.duckdb"
+DB_PATH = Path(os.environ.get("WORKBENCH_COMPUTE_DUCKDB", str(ROOT / "data/database/market_research.duckdb"))).resolve()
 NORMALIZED_PATH = ROOT / "data/normalized/adjusted_daily.parquet"
 MEMBERSHIP_PATH = ROOT / "data/sectors/sector_membership_daily.parquet"
 SHADOW_ROOT = ROOT / "reports/shadow/v2_runs/20260908"

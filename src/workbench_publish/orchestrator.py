@@ -82,7 +82,11 @@ class ControlledProduction:
   return load_computed_results(self.root,request,release)
 
 def submit_one_click(root:Path,bundle_id:str,trade_date,economic_model_id:str,computation_contract_id:str,database_path=None):
- seed_forward_baseline(Path(root),database_path,trade_date)
+ # PostgreSQL mode already owns the publication/observation state.  Opening
+ # the shared DuckDB file here only to seed an offline forward baseline would
+ # reintroduce the lock race that the application cutover removed.
+ if str(os.environ.get("WORKBENCH_API_BACKEND", "")).lower() != "postgresql":
+  seed_forward_baseline(Path(root),database_path,trade_date)
  pg_factory = PostgresPublicationBackendFactory() if str(os.environ.get("WORKBENCH_API_BACKEND", "")).lower() == "postgresql" else None
  publisher=OneClickPublisher(root,database_path,postgres_backend_factory=pg_factory);request=PublicationRequest(trade_date,bundle_id,economic_model_id,computation_contract_id)
  return publisher,publisher.submit(request,ControlledProduction(Path(root)))

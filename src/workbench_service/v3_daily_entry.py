@@ -475,7 +475,9 @@ def run_v3_daily_entry(
                 verified,
                 input_provider=lambda _task: None,
             )
-            sync = _sync_postgres_if_enabled(root_path, str(verified["input"]["cutoff_date"]))
+            sync = None if isinstance(repository, PostgresIncrementalWriterRepository) else _sync_postgres_if_enabled(root_path, str(verified["input"]["cutoff_date"]))
+            if isinstance(repository, PostgresIncrementalWriterRepository):
+                sync = {"status": "DIRECT_PG_COMMIT", "data_generation_triggered": False}
             return {"entrypoint": "V3_DAILY_INCREMENTAL", **report, **({"postgres_sync": sync} if sync else {})}
         finally:
             source_reader.close()
@@ -560,7 +562,9 @@ def run_v3_daily_entry(
         "preserved_legacy_entry_count": len(preserved),
         **report,
     }
-    sync = _sync_postgres_if_enabled(root_path, cutoff)
+    sync = None if isinstance(repository, PostgresIncrementalWriterRepository) else _sync_postgres_if_enabled(root_path, cutoff)
+    if isinstance(repository, PostgresIncrementalWriterRepository):
+        sync = {"status": "DIRECT_PG_COMMIT", "data_generation_triggered": False}
     if sync:
         report["postgres_sync"] = sync
     artifact_root = root_path / "reports" / "v3" / "daily"

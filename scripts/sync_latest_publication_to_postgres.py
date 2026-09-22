@@ -224,6 +224,27 @@ def main() -> int:
         if "analysis_snapshot_entries" in src_tables and "analysis_snapshot_entries" in dst_tables:
             copy_rows(duck, pg, "analysis_snapshot_entries", "snapshot_id=?", [snapshot_id], report["tables"])
         copy_rows(duck, pg, "publication_analysis_snapshots", "publication_id=? and domain='LOCAL_RECONSTRUCTED'", [publication_id], report["tables"])
+        # Research registries are keyed by the publication/run generated for
+        # this day.  Copy the parent run first, then its state/shortlist rows;
+        # this keeps the PG research read model current without copying older
+        # runs or mutable working data.
+        research_run = duck.execute("select run_id from research_runs where publication_id=? order by created_at desc limit 1", [publication_id]).fetchone() if "research_runs" in src_tables else None
+        if research_run and "research_runs" in dst_tables:
+            run_id = str(research_run[0])
+            copy_rows(duck, pg, "research_runs", "run_id=?", [run_id], report["tables"])
+            for table in sorted(src_tables & dst_tables):
+                if table in report["tables"] or table in {"research_runs", "research_runs_v3_3"}:
+                    continue
+                cols = {c for c, _ in source_columns(duck, table)}
+                if "run_id" in cols:
+                    copy_rows(duck, pg, table, "run_id=?", [run_id], report["tables"])
+                elif "signal_run_id" in cols:
+                    copy_rows(duck, pg, table, "signal_run_id=?", [run_id], report["tables"])
+        if "research_runs_v3_3" in src_tables and "research_runs_v3_3" in dst_tables:
+            copy_rows(duck, pg, "research_runs_v3_3", "publication_id=?", [publication_id], report["tables"])
+            bundle = duck.execute("select bundle_digest from research_runs_v3_3 where publication_id=? order by registered_at desc limit 1", [publication_id]).fetchone()
+            if bundle and "research_candidates_v3_3" in src_tables and "research_candidates_v3_3" in dst_tables:
+                copy_rows(duck, pg, "research_candidates_v3_3", "bundle_digest=?", [str(bundle[0])], report["tables"])
         copy_rows(duck, pg, "publication_heads", "trade_date=?", [trade_date], report["tables"], upsert_head=True)
 
         # Hard verification runs before commit; rollback on any mismatch.

@@ -341,3 +341,9 @@ DuckDB 计算/分析完成后自动调用 `sync_latest_publication_to_postgres.p
 清理计划元数据、备份 catalog 以及运维状态计数接入已演练通过的 PostgreSQL
 适配器；物理 DuckDB 备份文件和离线计算仍保持原有维护窗口/隔离边界。服务
 重启后上述运维接口与 PG API 读路径共同冒烟通过，未触发生成流程。
+
+同步器同时补齐了今日研究注册表：`research_runs`、`research_runs_v3_3`、
+`research_sector_states`、`research_sector_member_roles`、`research_stock_states`、
+`research_shortlist`、`research_sector_signal_state` 和 `research_candidates_v3_3`
+均按最新 publication/run 在同一事务内幂等写入 PG；本次同步报告仍为
+`FULL_PASS`，页面今日研究接口保持 `READY`。

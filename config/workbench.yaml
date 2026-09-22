@@ -1,15 +1,15 @@
 workbench:
   config_version: "workbench-config-v1.0"
   database:
-    engine: "duckdb"
-    path: "data/database/market_research.duckdb"
+    engine: "postgresql"
+    path: ""
     schema_version: "workbench-schema-v1.0"
-    single_owner_required: true
+    single_owner_required: false
     postgresql_target:
       engine: "postgresql"
       dsn_env: "WORKBENCH_PG_DSN"
       schema: "workbench"
-      cutover_state: "NOT_STARTED"
+      cutover_state: "ACTIVE"
       require_maintenance_window: true
       fail_closed_on_unavailable: true
   migration:

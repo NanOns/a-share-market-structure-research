@@ -31,10 +31,15 @@ def sandbox_config_rollback() -> dict[str, object]:
     """Prove an atomic PG overlay can be rolled back without touching config."""
     source = ROOT / "config/workbench.yaml"
     original = source.read_bytes()
-    overlay = original.replace(
-        b'engine: "duckdb"', b'engine: "postgresql"\n    dsn_env: "WORKBENCH_PG_DSN"\n    schema: "workbench"'
-    ).replace(b"single_owner_required: true", b"single_owner_required: false")
-    if b'engine: "postgresql"' not in overlay or b"dsn_env" not in overlay:
+    if b'engine: "duckdb"' in original:
+        overlay = original.replace(
+            b'engine: "duckdb"', b'engine: "postgresql"\n    dsn_env: "WORKBENCH_PG_DSN"\n    schema: "workbench"'
+        ).replace(b"single_owner_required: true", b"single_owner_required: false")
+    else:
+        # The tracked config is already on PostgreSQL after the authorized
+        # switch.  Mutate only a sandbox marker to prove atomic rollback.
+        overlay = original.replace(b'cutover_state: "ACTIVE"', b'cutover_state: "ROLLBACK_PROBE"')
+    if b'engine: "postgresql"' not in overlay:
         raise RuntimeError("PG_CONFIG_OVERLAY_CONTRACT_FAILED")
     with tempfile.TemporaryDirectory(prefix="pg-config-rollback-") as directory:
         sandbox = Path(directory)

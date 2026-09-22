@@ -12,6 +12,7 @@ from workbench_db import (
  ApiConnectionProvider, DuckDBApiConnectionProvider, PostgresDuckDBApiConnectionProvider,
  PostgresHistoryJobRepository, PostgresAnalysisActivationRepository, PostgresWriteRepository,
  PostgresConfigVersionStore, PostgresBackupCatalogRepository, PostgresOperationsMetadataReader,
+ PostgresPublicationBackendFactory,
 )
 from workbench_db.postgres_repository import PostgresRepository
 from workbench_publish.orchestrator import submit_one_click, ControlledProduction
@@ -1727,6 +1728,9 @@ def make_handler(root,db):
  pg_ops_write = PostgresWriteRepository(pg_ops_repository) if pg_ops_repository else None
  pg_config_store = PostgresConfigVersionStore(pg_ops_repository) if pg_ops_repository else None
  pg_backup_catalog = PostgresBackupCatalogRepository(pg_ops_repository) if pg_ops_repository else None
+ pg_publisher_factory = PostgresPublicationBackendFactory() if pg_api else None
+ def new_publisher():
+  return OneClickPublisher(root,db,postgres_backend_factory=pg_publisher_factory)
  research=ResearchQueries(lambda: api._con(),root=root); today_research=TodayResearchBundleReader(root,database_path=None if pg_api else db,repository=pg_repository); turnover_enrichment=TurnoverEnrichmentService(root,today_research); events=OnlineEventQueries(lambda: api._con()); p09=P09OnlineProducts(); history=HistoryJobService(root,db,repository=PostgresHistoryJobRepository(pg_history_repository) if pg_history_repository else None); history.recover_interrupted(background=True); activation=AnalysisActivationService(root,db,repository=PostgresAnalysisActivationRepository() if pg_api else None); operations=OperationsConfig(root,db,version_store=pg_config_store) if pg_config_store else OperationsConfig(root,db); storage=StorageGovernance(root,db,storage_repository=pg_ops_write) if pg_ops_write else StorageGovernance(root,db); backups=BackupService(root,db,catalog=pg_backup_catalog) if pg_backup_catalog else BackupService(root,db); maintenance=MaintenanceService(root,db,metadata_reader=PostgresOperationsMetadataReader(pg_ops_repository) if pg_ops_repository else None); static=Path(root)/'src/workbench_service/static';csrf=secrets.token_urlsafe(24);publishers={};daily_jobs={};research_jobs={};daily_jobs_lock=threading.Lock()
  last_operations_status=maintenance.status()
  database_subprocess_active=threading.Event()
@@ -2054,7 +2058,7 @@ def make_handler(root,db):
     elif u.path=='/api/jobs' and x['job_id'] in daily_jobs: out=today_status(x['job_id'])
     elif u.path=='/api/jobs':
      publisher=publishers.get(x['job_id'])
-     out=(publisher if isinstance(publisher,OneClickPublisher) else OneClickPublisher(root,db)).status(x['job_id'])
+     out=(publisher if isinstance(publisher,OneClickPublisher) else new_publisher()).status(x['job_id'])
     elif u.path in ('/v2','/v2/','/v2/index.html'):
      page=(static/'v2/index.html').read_text('utf-8')
      page=page.replace('__CSRF_TOKEN__',csrf).replace('__WORKBENCH_VERSION__','v2 兼容').replace('__WORKBENCH_MODE__','v2').replace('__WORKBENCH_BASE__','/v2').replace('__WORKBENCH_LABEL__','M7')
@@ -2177,7 +2181,8 @@ def _recover_startup(root,db,timeout_seconds=60):
  deadline=time.monotonic()+max(0,int(timeout_seconds))
  while True:
   try:
-   return OneClickPublisher(root,db).recover_interrupted(ControlledProduction(Path(root)),background=True)
+   factory = PostgresPublicationBackendFactory() if str(os.environ.get('WORKBENCH_API_BACKEND','')).lower() == 'postgresql' else None
+   return OneClickPublisher(root,db,postgres_backend_factory=factory).recover_interrupted(ControlledProduction(Path(root)),background=True)
   except Exception as exc:
    if not _database_lock_error(exc) or time.monotonic()>=deadline: raise
    time.sleep(1)

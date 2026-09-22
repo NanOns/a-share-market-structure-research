@@ -61,8 +61,10 @@ def main() -> int:
                 failures.append("consumer_catalog_gate")
             cutover_rows = repo.fetch("select status, count(*) from workbench_meta.migration_consumer_cutovers group by status order by status")
             checks["application_cutover_inventory"] = {row[0]: int(row[1]) for row in cutover_rows}
-            if checks["application_cutover_inventory"].get("NOT_MIGRATED", 0) <= 0:
-                failures.append("application_cutover_inventory")
+            # A precutover rehearsal may observe either the historical
+            # NOT_MIGRATED inventory or the completed MIGRATED/
+            # OFFLINE_DUCKDB_ALLOWED classification.  The hard preflight
+            # separately rejects any remaining NOT_MIGRATED rows.
             # Transaction rehearsal: prove a write can be rolled back without
             # touching a business table or leaving metadata behind.
             with repo.transaction() as connection:

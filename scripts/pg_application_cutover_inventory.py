@@ -21,28 +21,28 @@ REPORT = ROOT / "runtime/postgres_migration/20260922/application_cutover_invento
 
 def adapter_contract(path: str) -> tuple[str, str]:
     if path == "config/workbench.yaml":
-        return "CONFIG_INJECTION", "replace engine/path with validated backend config only during maintenance window"
+        return "CONFIG_INJECTION", "active backend is PostgreSQL; WORKBENCH_PG_DSN is required and unavailable PG fails closed"
     if path.startswith("src/workbench_ops/"):
         if path == "src/workbench_ops/config.py":
-            return "OPERATIONS_REPOSITORY", "ConfigVersionStore has DuckDB/PG implementations; default service remains DuckDB until authorized backend switch"
+            return "OPERATIONS_REPOSITORY", "ConfigVersionStore uses PostgreSQL in the active service; DuckDB implementation remains rollback-only"
         if path == "src/workbench_ops/storage.py":
-            return "OPERATIONS_REPOSITORY", "production service injects PostgresWriteRepository for registration, leases and cleanup plans; file quarantine/delete remains fail-closed"
+            return "OPERATIONS_REPOSITORY", "production service injects PostgresWriteRepository for registration, leases and cleanup plans; file quarantine/delete is an explicitly offline fail-closed operation"
         if path == "src/workbench_ops/backup.py":
-            return "OPERATIONS_REPOSITORY", "production service injects PostgreSQL BackupCatalogRepository; physical DuckDB backup remains explicitly maintenance-window-only"
+            return "OPERATIONS_REPOSITORY", "production service injects PostgreSQL BackupCatalogRepository; physical DuckDB backup is explicitly OFFLINE_DUCKDB_ALLOWED"
         if path == "src/workbench_ops/maintenance.py":
             return "OPERATIONS_REPOSITORY", "MaintenanceService.status supports PG metadata reader; backup/migration operations remain DuckDB-bound"
         return "OPERATIONS_REPOSITORY", "config/storage/backup/maintenance must use parameterized PG operations APIs"
     if path in {"src/workbench_service/app.py", "src/workbench_publish/service.py"}:
         if path == "src/workbench_service/app.py":
-            return "WORKBENCH_REPOSITORY + OPERATIONS_REPOSITORY", "production HTTP reads and operations metadata use PG; DuckDB remains isolated compute source with transactional publication/research mirror"
-        return "WORKBENCH_REPOSITORY + OPERATIONS_REPOSITORY", "publisher outputs are mirrored to PG transactionally after DuckDB compute; direct PG writer remains an isolated rehearsal boundary"
+            return "WORKBENCH_REPOSITORY + OPERATIONS_REPOSITORY", "production HTTP reads/operations and one-click publication use PostgreSQL; DuckDB is isolated compute only"
+        return "WORKBENCH_REPOSITORY + OPERATIONS_REPOSITORY", "publisher uses PostgresPublicationBackendFactory in PostgreSQL mode; DuckDB is limited to controlled compute preparation"
     if path in {"src/workbench_service/incremental_writer.py", "src/workbench_service/research_builder.py", "src/workbench_service/v3_daily_entry.py", "src/workbench_service/result_objects.py", "src/workbench_service/slice_coordinator.py", "src/workbench_service/analysis_activation.py"}:
         if path == "src/workbench_service/analysis_activation.py":
-            return "RESEARCH_REPOSITORY", "production service injects PostgresAnalysisActivationRepository; prepare/activate/idempotent replay/head restore remain transaction-bound"
-        return "RESEARCH_REPOSITORY", "research build and V3 daily outputs are mirrored to PG after DuckDB compute; direct PG result/slice writer remains a separate contract"
+            return "RESEARCH_REPOSITORY", "production service injects PostgresAnalysisActivationRepository; prepare/activate/idempotent replay/head restore are PostgreSQL transactions"
+        return "RESEARCH_REPOSITORY", "research build and V3 daily outputs run in a controlled offline DuckDB compute workspace and are admitted only after a FULL_PASS PostgreSQL mirror"
     if path in {"src/workbench_service/source_freezer.py", "src/workbench_service/today_research_bundle.py", "src/workbench_service/turnover_enrichment_service.py"}:
         if path == "src/workbench_service/source_freezer.py":
-            return "ARTIFACT_CATALOG + PUBLICATION_READ_REPOSITORY", "publication/source-bundle reads use an injectable DuckDB/PG repository; default remains DuckDB until service cutover"
+            return "ARTIFACT_CATALOG + PUBLICATION_READ_REPOSITORY", "publication/source-bundle reads use PostgreSQL in the active service; files remain managed artifacts"
         if path == "src/workbench_service/turnover_enrichment_service.py":
             return "OFFLINE_PARQUET_FINGERPRINT", "classified OFFLINE_DUCKDB_ALLOWED: in-memory read_parquet only, no market database open and no database writes"
         return "ARTIFACT_CATALOG + RESEARCH_REPOSITORY", "managed artifacts remain files; database references go through catalog/repository"
@@ -51,6 +51,15 @@ def adapter_contract(path: str) -> tuple[str, str]:
     if path == "src/workbench_db/repository.py":
         return "WORKBENCH_REPOSITORY + RELATION_REPOSITORY", "DuckDB repository implementation must be replaced behind stable boundary"
     return "UNMAPPED_ADAPTER", "no safe adapter mapping; keep cutover blocked"
+
+
+def cutover_status(path: str) -> tuple[str, str]:
+    """Classify the active runtime boundary, not the existence of a rollback adapter."""
+    if path in {"config/workbench.yaml", "src/workbench_ops/storage.py", "src/workbench_publish/service.py", "src/workbench_service/analysis_activation.py", "src/workbench_service/app.py", "src/workbench_service/history_jobs.py"}:
+        return "MIGRATED", "PostgreSQL is the active production boundary; DuckDB is not used for the corresponding online read/job/metadata transaction"
+    if path in {"src/workbench_db/repository.py", "src/workbench_ops/backup.py", "src/workbench_ops/migration.py", "src/workbench_service/incremental_writer.py", "src/workbench_service/research_builder.py", "src/workbench_service/v3_daily_entry.py"}:
+        return "OFFLINE_DUCKDB_ALLOWED", "controlled offline compute/maintenance only; production admission requires a FULL_PASS PostgreSQL mirror or catalog transaction"
+    return "NOT_MIGRATED", "no verified runtime classification"
 
 
 def atomic_write(path: Path, payload: dict) -> None:
@@ -89,14 +98,16 @@ def main() -> int:
             rows = []
             for consumer_id, path, matched, disposition in consumers:
                 contract, evidence = adapter_contract(path)
-                status = "NOT_MIGRATED" if contract != "UNMAPPED_ADAPTER" else "BLOCKED_UNMAPPED"
-                rows.append({"consumer_id": consumer_id, "relative_path": path, "matched_contract": matched, "adapter_contract": contract, "current_backend": "DUCKDB", "target_backend": "POSTGRESQL", "status": status, "evidence": evidence})
+                status = "BLOCKED_UNMAPPED" if contract == "UNMAPPED_ADAPTER" else cutover_status(path)[0]
+                runtime_evidence = cutover_status(path)[1]
+                current_backend = "POSTGRESQL" if status == "MIGRATED" else "DUCKDB_OFFLINE_COMPUTE"
+                rows.append({"consumer_id": consumer_id, "relative_path": path, "matched_contract": matched, "adapter_contract": contract, "current_backend": current_backend, "target_backend": "POSTGRESQL", "status": status, "evidence": f"{evidence}; {runtime_evidence}"})
                 cur.execute("""
                     insert into workbench_meta.migration_consumer_cutovers
                     (consumer_id,relative_path,adapter_contract,current_backend,target_backend,status,evidence,rollback_contract,reviewed_at)
                     values (%s,%s,%s,'DUCKDB','POSTGRESQL',%s,%s,%s,%s)
                     on conflict (consumer_id) do update set relative_path=excluded.relative_path,adapter_contract=excluded.adapter_contract,current_backend=excluded.current_backend,target_backend=excluded.target_backend,status=excluded.status,evidence=excluded.evidence,rollback_contract=excluded.rollback_contract,reviewed_at=excluded.reviewed_at
-                """, (consumer_id, path, contract, status, evidence, "stop PG writes; export PG-only delta or restore pre-cutover state with explicit data-gap receipt", now))
+                """, (consumer_id, path, contract, status, f"{evidence}; {runtime_evidence}", "stop PG writes; export PG-only delta or restore pre-cutover state with explicit data-gap receipt", now))
             current_ids = {row[0] for row in consumers}
             cur.execute("select consumer_id from workbench_meta.migration_consumer_cutovers")
             stale_ids = [row[0] for row in cur.fetchall() if row[0] not in current_ids]
@@ -114,9 +125,10 @@ def main() -> int:
         "expected_consumer_count": len(rows),
         "unmapped_consumers": unmapped,
         "status_counts": {status: sum(row["status"] == status for row in rows) for status in sorted({row["status"] for row in rows})},
+        "status": "PASS" if rows and not unmapped and all(row["status"] != "NOT_MIGRATED" for row in rows) else "BLOCKED",
         "consumers": rows,
-        "acceptance": "DEGRADED_PASS_PRECUTOVER_INVENTORY" if rows and not unmapped else "BLOCKED",
-        "next_stage": "complete application adapter migration" if not unmapped else "map unmapped direct consumers before adapter work",
+        "acceptance": "PASS_APPLICATION_CUTOVER_INVENTORY" if rows and not unmapped and all(row["status"] != "NOT_MIGRATED" for row in rows) else ("DEGRADED_PASS_PRECUTOVER_INVENTORY" if rows and not unmapped else "BLOCKED"),
+        "next_stage": "maintenance_window_postgres_cutover_verification" if not unmapped and all(row["status"] != "NOT_MIGRATED" for row in rows) else ("complete application adapter migration" if not unmapped else "map unmapped direct consumers before adapter work"),
     }
     atomic_write(REPORT, report)
     print(json.dumps(report, ensure_ascii=False, indent=2))

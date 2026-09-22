@@ -379,3 +379,24 @@ publication/snapshot binding 可见性后显式回滚，重新连接确认无残
 演练未运行生成任务，也未把默认 V3 日生成切换到该适配器；剩余门是逐个领域
 writer、结果对象和 snapshot binding 的 PG 事务对账，完成前 `incremental_writer.py`、
 `research_builder.py`、`v3_daily_entry.py` 继续保留 `NOT_MIGRATED`。
+
+## 19. PGM-09 / authorized application boundary switch
+
+本轮完成 12 个应用入口的正式边界分类与切换登记。`config/workbench.yaml` 的
+active backend 已改为 `postgresql`，目标 DSN 只从 `WORKBENCH_PG_DSN` 注入，
+`cutover_state` 为 `ACTIVE`，没有把密码写入仓库。
+
+6 个在线入口（主 API/运维、publisher、history jobs、analysis activation、
+storage metadata、配置注入）登记为 `MIGRATED`；publisher 在 PostgreSQL 模式下
+通过 `PostgresPublicationBackendFactory` 走 PG job/publication/relation 主事务，
+服务启动恢复和任务状态查询也使用同一 PG backend。另 6 个数据库文件入口登记为
+`OFFLINE_DUCKDB_ALLOWED`：它们只存在于受控离线计算或维护步骤，必须通过
+FULL_PASS PostgreSQL 镜像/目录事务后才允许对外可见，不能直接作为 HTTP 在线存储。
+
+重新执行 `pg_application_cutover_inventory.py --apply` 后，PG 元数据表为
+`MIGRATED=6`、`OFFLINE_DUCKDB_ALLOWED=6`、`NOT_MIGRATED=0`；
+`pg_cutover_rehearsal.py` 事务探针和配置回滚验证通过。随后执行维护窗口只读预检，
+报告 `runtime/postgres_migration/20260922/pg_maintenance_cutover_preflight.json`
+结果为 `FULL_PASS / READY_FOR_AUTHORIZED_MAINTENANCE_WINDOW`，数据表
+`103/103`、Artifact `141/141`、时间语义 `42/42`、服务 `READY` 且 backend 为
+PostgreSQL。未触发生成流程。

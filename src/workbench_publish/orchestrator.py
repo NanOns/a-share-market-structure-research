@@ -7,7 +7,7 @@ import pyarrow.parquet as pq
 import pandas as pd
 from production.workbench import render_workbench
 from .service import PublicationRequest, OneClickPublisher
-from workbench_db import WorkbenchRepository
+from workbench_db import WorkbenchRepository, PostgresPublicationBackendFactory
 
 def _csv(path:Path):
  with path.open("r",encoding="utf-8-sig",newline="") as f:return list(csv.DictReader(f))
@@ -83,5 +83,6 @@ class ControlledProduction:
 
 def submit_one_click(root:Path,bundle_id:str,trade_date,economic_model_id:str,computation_contract_id:str,database_path=None):
  seed_forward_baseline(Path(root),database_path,trade_date)
- publisher=OneClickPublisher(root,database_path);request=PublicationRequest(trade_date,bundle_id,economic_model_id,computation_contract_id)
+ pg_factory = PostgresPublicationBackendFactory() if str(os.environ.get("WORKBENCH_API_BACKEND", "")).lower() == "postgresql" else None
+ publisher=OneClickPublisher(root,database_path,postgres_backend_factory=pg_factory);request=PublicationRequest(trade_date,bundle_id,economic_model_id,computation_contract_id)
  return publisher,publisher.submit(request,ControlledProduction(Path(root)))

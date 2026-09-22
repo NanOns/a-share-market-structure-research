@@ -779,6 +779,12 @@ class Api:
                         order by e.trade_date desc limit 1""",[selected['snapshot_id'],domain,requested]).fetchone()
    cycle=latest_entry('sector_cycle'); mainline=latest_entry('mainline'); representative=latest_entry('representative')
    market_cycle=latest_entry('market_cycle')
+   # A restored publication may have the technical snapshot and its binding
+   # but not yet have a market_cycle entry/materialization.  Pass the bound
+   # technical date through so the overview can use its explicit read-only
+   # aggregation fallback below.
+   if not market_cycle:
+    market_cycle=latest_entry('technical')
    market_summary=self._overview_market_summary(market_payload,market_cycle,c,requested)
    sectors=self._overview_strong_sectors(c,selected['snapshot_id'],cycle)
    mainline_counts=self._overview_mainline_counts(c,selected['snapshot_id'],mainline)
@@ -798,6 +804,38 @@ class Api:
     cycle_payload={'breadth_ret5_pos':None,'breadth_ret20_pos':(up/quote_valid if quote_valid else None),'breadth_above_ma20':(ma20_above/ma20_valid if ma20_valid else None),'amount_ratio_5_20_median':None,'market_ret20_median':None,'valid_universe_count':quote_valid,'up_count':up,'down_count':down,'flat_count':flat,'amount_sum':amount,'amount_valid_count':amount_valid,'ma20_above_count':ma20_above,'ma20_valid_count':ma20_valid,'ma60_above_count':ma60_above,'ma60_valid_count':ma60_valid,'queue_unique_count':queue_unique,'capabilities':_json_value(capabilities,{})}
     payload={**cycle_payload,**payload} if payload else cycle_payload
     source='market_cycle' if not had_market_payload else source
+   else:
+    # During the PostgreSQL cutover, the immutable market_cycle_daily
+    # materialization can lag while its bound technical snapshot is already
+    # available.  Rebuild only the overview fields from that exact slice; do
+    # not read the shared DuckDB file or infer values from another date.
+    rows=connection.execute("""select t.security_id,t.quote_ret1,t.raw_amount,t.adj_close,t.ma20,t.ma60
+       from analysis_snapshot_entries e
+       join technical_result_daily t on t.slice_id=e.slice_id and t.trade_date=e.trade_date
+      where e.snapshot_id=(select snapshot_id from analysis_snapshot_entries where slice_id=? and trade_date=? limit 1)
+        and e.domain='technical' and e.trade_date=?""",[market_cycle[0],market_cycle[1],market_cycle[1]]).fetchall()
+    point=aggregate_market_point(market_cycle[1],[
+     {'security_id':raw[0],'quote_ret1':raw[1],'raw_amount':raw[2],'adj_close':raw[3],'ma20':raw[4],'ma60':raw[5]}
+     for raw in rows if is_workbench_statistical_security_id(raw[0],self._root)
+    ])
+    quote_valid=int(point.get('quote_valid_count') or 0)
+    up=int(point.get('up_count') or 0)
+    cycle_payload={
+     'breadth_ret5_pos':None,
+     'breadth_ret20_pos':(up/quote_valid if quote_valid else None),
+     'breadth_above_ma20':(point.get('ma20_above_count')/point.get('ma20_valid_count') if point.get('ma20_valid_count') else None),
+     'amount_ratio_5_20_median':None,
+     'market_ret20_median':None,
+     'valid_universe_count':quote_valid,
+     'up_count':point.get('up_count'),'down_count':point.get('down_count'),'flat_count':point.get('flat_count'),
+     'amount_sum':point.get('amount_sum'),'amount_valid_count':point.get('amount_valid_count'),
+     'ma20_above_count':point.get('ma20_above_count'),'ma20_valid_count':point.get('ma20_valid_count'),
+     'ma60_above_count':point.get('ma60_above_count'),'ma60_valid_count':point.get('ma60_valid_count'),
+     'queue_unique_count':None,
+     'capabilities':{'source':'BOUND_TECHNICAL_SNAPSHOT','market_cycle_daily':'NOT_MATERIALIZED','trade_date':market_cycle[1]},
+    }
+    payload={**cycle_payload,**payload} if payload else cycle_payload
+    source='market_cycle_derived'
   cards=[
    {'id':'breadth_ret5_pos','label':'5日上涨宽度','value':payload.get('breadth_ret5_pos'),'unit':'percent','target':'market'},
    {'id':'breadth_ret20_pos','label':'20日上涨宽度','value':payload.get('breadth_ret20_pos'),'unit':'percent','target':'market'},
@@ -806,9 +844,9 @@ class Api:
    {'id':'market_ret20_median','label':'20日市场中位收益','value':payload.get('market_ret20_median'),'unit':'percent','target':'market'},
    {'id':'valid_universe_count','label':'有效统计股票','value':payload.get('valid_universe_count') or payload.get('normal_universe_count'),'unit':'count','target':'technical'},
   ]
-  result={'status':'AVAILABLE' if payload else 'UNAVAILABLE','trade_date':trade_date,'cards':cards,'quality_flag':payload.get('quality_flag'),'source':source}
+  result={'status':'AVAILABLE' if payload else 'UNAVAILABLE','trade_date':trade_date,'cards':cards,'quality_flag':payload.get('quality_flag') or ('PARTIAL_MATERIALIZATION_FALLBACK' if source=='market_cycle_derived' else None),'source':source}
   if market_cycle:
-   result['market_cycle']={'trade_date':market_cycle[1],'slice_id':market_cycle[0],'contract_id':market_cycle[2]}
+   result['market_cycle']={'trade_date':market_cycle[1],'slice_id':market_cycle[0],'contract_id':MARKET_CYCLE_CONTRACT_ID if source=='market_cycle_derived' else market_cycle[2],'materialization':'TECHNICAL_SNAPSHOT_DERIVED' if source=='market_cycle_derived' else 'MARKET_CYCLE_DAILY'}
   return result
  def _overview_strong_sectors(self,connection,snapshot_id,entry):
   groups={key:{'label':'行业' if key=='INDUSTRY' else '概念','status':'UNAVAILABLE','total':0,'items':[]} for key in ('INDUSTRY','THEME')}

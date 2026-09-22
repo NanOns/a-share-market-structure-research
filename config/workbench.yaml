@@ -5,6 +5,13 @@ workbench:
     path: "data/database/market_research.duckdb"
     schema_version: "workbench-schema-v1.0"
     single_owner_required: true
+    postgresql_target:
+      engine: "postgresql"
+      dsn_env: "WORKBENCH_PG_DSN"
+      schema: "workbench"
+      cutover_state: "NOT_STARTED"
+      require_maintenance_window: true
+      fail_closed_on_unavailable: true
   migration:
     logical_digest_contract: "m1-logical-digest-v1.1"
     historical_head_dates:

@@ -240,6 +240,8 @@ PGM-09 重新扫描并清理了消费者目录中的陈旧记录：当前静态�
 
 本轮补齐 publisher 状态读取的 PG 实现：新增 `PostgresPublicationStatusReader`，按 `jobs` 与最新 `job_events` 投影出与 DuckDB reader 相同的 `status/publication_id/progress/updated_at_utc` 合同；`scripts/pg_publication_status_reader_rehearsal.py` 在真实 PG 上验证状态与事件 round-trip、清理后 `JOB_NOT_FOUND`，结果为 `DEGRADED_PASS_PUBLICATION_STATUS_READER`，报告位于 `runtime/postgres_migration/20260922/pg_publication_status_reader_rehearsal_report.json`。发布主写事务、bulk 导入和 relation binding 尚未有 PostgreSQL 实现，线上 publisher 仍未切换。
 
+本轮先固化 backend 配置合同：`config/workbench.yaml` 保持当前 `duckdb` 为 active backend，同时登记 `postgresql_target`（`WORKBENCH_PG_DSN`、`workbench` schema、维护窗口要求、PG 不可用时 fail-closed、`cutover_state=NOT_STARTED`）。这只是可审计的目标配置，不会被当前服务自动读取或触发切换；正式切换仍需完成全部应用入口和维护窗口回退演练。
+
 随后处理历史分析激活入口：`AnalysisActivationService` 不再直接调用 `duckdb.connect`，新增 `AnalysisActivationRepository` 连接边界，当前仅由 DuckDB 兼容实现提供连接；准备快照、激活 publication、复制结果组、绑定 snapshot 和更新 head 的多表事务仍完整保留在服务内，直到 PostgreSQL 事务实现与回滚/幂等 rehearsal 完成前，该入口继续标记为 `NOT_MIGRATED`。M7B activation 测试 `3 passed`，未触发线上激活。
 
 继续处理历史分析任务入口：`HistoryJobService` 的连接、短锁重试和任务状态/事件读写已收敛到 backend-neutral 的 `HistoryJobRepository/HistoryJobStore`，服务仍保留取消、进度、恢复和事件顺序语义；当前线上默认仍是 DuckDB，PG 仅可显式注入，尚未接入服务默认路径，因此 `history_jobs.py` 仍为 `NOT_MIGRATED`。M7B history job 与 activation 回归测试合计 `6 passed`，未提交线上任务或生成数据。

@@ -2420,7 +2420,8 @@
     }
 
     bindControls();
-    api.publications(true).then(function (result) {
+    function loadPublicationCatalog() {
+      api.publications(true).then(function (result) {
         var items = result.items || [];
         select.replaceChildren.apply(select, publicationRows(items));
         if (!items.length) {
@@ -2443,10 +2444,17 @@
         });
         load(current);
         window.setTimeout(restoreInsightRoute, 0);
-    }).catch(function (error) {
+      }).catch(function (error) {
+        if (error && error.code === 'DATABASE_BUILD_IN_PROGRESS') {
+            setNotice('当日数据正在生成，发布列表读取已暂停；任务结束后自动恢复。', false);
+            window.setTimeout(loadPublicationCatalog, 5000);
+            return;
+        }
         setNotice('版本列表读取失败：' + error.message, true);
-    });
-    document.querySelectorAll('.nav-item').forEach(function (button) {
+      });
+    }
+    loadPublicationCatalog();
+    document.querySelectorAll('.nav-item[data-page]').forEach(function (button) {
         button.addEventListener('click', function () {
             showPage(button.dataset.page);
         });

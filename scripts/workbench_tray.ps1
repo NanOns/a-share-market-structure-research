@@ -8,11 +8,19 @@ $projectRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $pythonExe = 'E:\python\python.exe'
 if (-not (Test-Path -LiteralPath $pythonExe)) { $pythonExe = 'python' }
 $baseUrl = 'http://127.0.0.1:28765'
+$configuredPostgres = (Get-Content -LiteralPath (Join-Path $projectRoot 'config/workbench.yaml') -Raw) -match '(?m)^\s{4}engine:\s*["'']?postgresql'
+$localPgConfig = Join-Path $projectRoot 'config/.env'
 $confirmation = '我确认进入维护窗口'
 $created = $false
 $mutex = New-Object System.Threading.Mutex($true, 'Local\DaAWorkbenchTray', [ref]$created)
 if (-not $created) {
-    if ($OpenWorkbench) { Start-Process ($baseUrl + '/') }
+    if ($OpenWorkbench) {
+        try { $existing = Invoke-RestMethod -Uri ($baseUrl + '/api/operations/status') -TimeoutSec 2 } catch { $existing = $null }
+        if ($configuredPostgres -and ($null -eq $existing -or $existing.backend -ne 'postgresql')) {
+            throw 'PostgreSQL 工作台未就绪；已阻止打开旧版数据。'
+        }
+        Start-Process ($baseUrl + '/')
+    }
     exit 0
 }
 
@@ -23,13 +31,24 @@ function Get-ServiceStatus {
 
 function Start-WorkbenchService {
     $status = Get-ServiceStatus
-    if ($null -ne $status) { return $status }
+    if ($null -ne $status) {
+        if ($configuredPostgres -and $status.backend -ne 'postgresql') {
+            throw '当前服务连接旧 DuckDB，与 PostgreSQL 配置不符；已阻止打开旧数据。请配置 WORKBENCH_PG_DSN 后重启服务。'
+        }
+        return $status
+    }
+    if ($configuredPostgres -and -not $env:WORKBENCH_PG_DSN -and -not (Test-Path -LiteralPath $localPgConfig)) {
+        throw '缺少 WORKBENCH_PG_DSN，无法启动 PostgreSQL 工作台；不会回退到旧 DuckDB。'
+    }
     Start-Process -FilePath $pythonExe -ArgumentList @('run_workbench_service.py','--host','127.0.0.1','--port','28765') -WorkingDirectory $projectRoot -WindowStyle Hidden | Out-Null
     $deadline = (Get-Date).AddSeconds(30)
     do {
         Start-Sleep -Milliseconds 500
         $status = Get-ServiceStatus
-        if ($null -ne $status) { return $status }
+        if ($null -ne $status) {
+            if ($configuredPostgres -and $status.backend -ne 'postgresql') { throw '工作台启动后仍连接旧 DuckDB，已阻止打开。' }
+            return $status
+        }
     } while ((Get-Date) -lt $deadline)
     throw '服务启动超时'
 }
@@ -118,9 +137,12 @@ $timer = New-Object System.Windows.Forms.Timer
 $timer.Interval = 3000
 $timer.Add_Tick({ Refresh-TrayStatus })
 $timer.Start()
-try { Start-WorkbenchService | Out-Null } catch {}
+try { Start-WorkbenchService | Out-Null } catch { $notify.ShowBalloonTip(4000,'工作台启动失败',$_.Exception.Message,[System.Windows.Forms.ToolTipIcon]::Error) }
 Refresh-TrayStatus
-if ($OpenWorkbench) { Start-Process ($baseUrl + '/') }
+if ($OpenWorkbench) {
+    $status = Get-ServiceStatus
+    if ($null -ne $status -and ((-not $configuredPostgres) -or $status.backend -eq 'postgresql')) { Start-Process ($baseUrl + '/') }
+}
 [System.Windows.Forms.Application]::Run()
 $timer.Dispose()
 $mutex.ReleaseMutex()

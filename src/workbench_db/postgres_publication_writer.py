@@ -71,20 +71,27 @@ class PostgresPublicationWriter:
             raise ValueError("PUBLICATION_TABLE_OR_COLUMN_NOT_ALLOWED")
         if not rows:
             return
-        value_parts: list[sql.Composed] = []
-        params: list[Any] = []
-        for row in rows:
-            placeholders: list[sql.Composed] = []
-            for column in columns:
-                value = row.get(column)
-                if column == "payload_json":
-                    placeholders.append(sql.SQL("%s::jsonb")); params.append(_json(value if isinstance(value, Mapping) else json.loads(value or "{}")))
-                else:
-                    placeholders.append(sql.SQL("%s")); params.append(value)
-            value_parts.append(sql.SQL("(") + sql.SQL(",").join(placeholders) + sql.SQL(")"))
-        query = sql.SQL("insert into {}({}) values {}").format(self._table(table), sql.SQL(",").join(sql.Identifier(column) for column in columns), sql.SQL(",").join(value_parts))
-        with self._connection().cursor() as cur:
-            cur.execute(query, params)
+        # PostgreSQL limits one extended query to 65,535 bind parameters.
+        # Keep each batch under that limit while retaining the caller's
+        # surrounding transaction, so a later batch failure still rolls back
+        # the complete publication.
+        max_rows = max(1, 65535 // len(columns))
+        for offset in range(0, len(rows), max_rows):
+            batch = rows[offset:offset + max_rows]
+            value_parts: list[sql.Composed] = []
+            params: list[Any] = []
+            for row in batch:
+                placeholders: list[sql.Composed] = []
+                for column in columns:
+                    value = row.get(column)
+                    if column == "payload_json":
+                        placeholders.append(sql.SQL("%s::jsonb")); params.append(_json(value if isinstance(value, Mapping) else json.loads(value or "{}")))
+                    else:
+                        placeholders.append(sql.SQL("%s")); params.append(value)
+                value_parts.append(sql.SQL("(") + sql.SQL(",").join(placeholders) + sql.SQL(")"))
+            query = sql.SQL("insert into {}({}) values {}").format(self._table(table), sql.SQL(",").join(sql.Identifier(column) for column in columns), sql.SQL(",").join(value_parts))
+            with self._connection().cursor() as cur:
+                cur.execute(query, params)
 
     def set_head(self, trade_date: date | str, publication_id: str) -> None:
         query = sql.SQL("insert into {}(trade_date,publication_id) values (%s,%s) on conflict(trade_date) do update set publication_id=excluded.publication_id").format(self._table("publication_heads"))

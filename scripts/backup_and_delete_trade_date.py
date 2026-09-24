@@ -96,8 +96,49 @@ def resolve_ids(pg: psycopg.Connection[Any], trade_date: date) -> dict[str, Any]
     return {"publications": publications, "snapshots": snapshots, "slices": slices, "objects": objects, "runs": runs, "bundles": bundles, "observations": observations}
 
 
+def shared_snapshots(pg: psycopg.Connection[Any], trade_date: date, ids: dict[str, Any]) -> list[str]:
+    """Return snapshots also bound to publications outside the delete scope.
+
+    Deleting one trade date must not erase immutable snapshot entries that are
+    shared by another publication date.
+    """
+    if not ids["snapshots"]:
+        return []
+    with pg.cursor() as cur:
+        cur.execute(
+            """select distinct a.snapshot_id
+                 from workbench.publication_analysis_snapshots a
+                 join workbench.publications p using (publication_id)
+                where a.snapshot_id = any(%s) and p.trade_date <> %s
+                order by a.snapshot_id""",
+            (ids["snapshots"], trade_date),
+        )
+        return [str(row[0]) for row in cur.fetchall()]
+
+
+def shared_analysis_objects(pg: psycopg.Connection[Any], ids: dict[str, Any]) -> dict[str, list[str]]:
+    shared: dict[str, list[str]] = {"slices": [], "objects": []}
+    with pg.cursor() as cur:
+        if ids["slices"]:
+            cur.execute(
+                """select distinct e.slice_id from workbench.analysis_snapshot_entries e
+                    where e.slice_id = any(%s) and not (e.snapshot_id = any(%s)) order by e.slice_id""",
+                (ids["slices"], ids["snapshots"]),
+            )
+            shared["slices"] = [str(row[0]) for row in cur.fetchall()]
+        if ids["objects"] and ids["slices"]:
+            cur.execute(
+                """select distinct b.result_object_id from workbench.analysis_slice_result_bindings b
+                    where b.result_object_id = any(%s) and not (b.slice_id = any(%s)) order by b.result_object_id""",
+                (ids["objects"], ids["slices"]),
+            )
+            shared["objects"] = [str(row[0]) for row in cur.fetchall()]
+    return shared
+
+
 def condition(columns: list[str], trade_date: date, ids: dict[str, Any], placeholder: str = "%s") -> tuple[str, list[Any]]:
     clauses: list[str] = []; params: list[Any] = []
+    identity_scoped = False
     mapping = {
         "publication_id": (ids["publications"], "publication_id"), "snapshot_id": (ids["snapshots"], "snapshot_id"),
         "slice_id": (ids["slices"], "slice_id"), "result_object_id": (ids["objects"], "result_object_id"),
@@ -106,8 +147,8 @@ def condition(columns: list[str], trade_date: date, ids: dict[str, Any], placeho
     }
     for column, (values, _name) in mapping.items():
         if column in columns and values:
-            clauses.append(f'{qd(column)} = any({placeholder})'); params.append(values)
-    if "trade_date" in columns:
+            clauses.append(f'{qd(column)} = any({placeholder})'); params.append(values); identity_scoped = True
+    if "trade_date" in columns and not identity_scoped:
         clauses.append(f'{qd("trade_date")} = {placeholder}'); params.append(trade_date)
     return (" OR ".join(clauses) or "false"), params
 
@@ -142,11 +183,12 @@ def delete_pg(pg: psycopg.Connection[Any], trade_date: date, ids: dict[str, Any]
 
 def duck_condition(columns: list[str], trade_date: date, ids: dict[str, Any]) -> tuple[str, list[Any]]:
     clauses: list[str] = []; params: list[Any] = []
+    identity_scoped = False
     for column, key in (("publication_id", "publications"), ("snapshot_id", "snapshots"), ("slice_id", "slices"), ("result_object_id", "objects"), ("run_id", "runs"), ("signal_run_id", "runs"), ("bundle_digest", "bundles"), ("observation_id", "observations")):
         values = ids[key]
         if column in columns and values:
-            clauses.append(f'"{column}" in ({",".join("?" for _ in values)})'); params.extend(values)
-    if "trade_date" in columns:
+            clauses.append(f'"{column}" in ({",".join("?" for _ in values)})'); params.extend(values); identity_scoped = True
+    if "trade_date" in columns and not identity_scoped:
         clauses.append('"trade_date"=?'); params.append(trade_date)
     return (" or ".join(clauses) or "false"), params
 
@@ -184,6 +226,14 @@ def main() -> int:
     backup.mkdir(parents=True, exist_ok=False)
     dsn = os.environ.get("WORKBENCH_PG_DSN")
     if not dsn: raise SystemExit("WORKBENCH_PG_DSN_REQUIRED")
+    with psycopg.connect(dsn) as preflight_pg:
+        preflight_ids = resolve_ids(preflight_pg, trade_date)
+        shared = shared_snapshots(preflight_pg, trade_date, preflight_ids)
+        if shared:
+            raise SystemExit(f"DELETE_BLOCKED_SHARED_ANALYSIS_SNAPSHOTS:{len(shared)}; snapshot history is referenced by other publications")
+        shared_objects = shared_analysis_objects(preflight_pg, preflight_ids)
+        if shared_objects["slices"] or shared_objects["objects"]:
+            raise SystemExit(f"DELETE_BLOCKED_SHARED_ANALYSIS_OBJECTS:slices={len(shared_objects['slices'])},objects={len(shared_objects['objects'])}")
     source_duck = ROOT / "data/database/market_research.duckdb"
     compute_duck = ROOT / "runtime/compute/daily_pipeline.duckdb"
     if source_duck.is_file(): shutil.copy2(source_duck, backup / source_duck.name)
@@ -194,7 +244,12 @@ def main() -> int:
     result: dict[str, Any] = {"trade_date": args.trade_date, "backup": str(backup), "data_generation_triggered": False}
     with psycopg.connect(dsn) as pg:
         columns = table_columns_pg(pg); ids = resolve_ids(pg, trade_date); result["ids"] = ids
+        if shared_snapshots(pg, trade_date, ids) or any(shared_analysis_objects(pg, ids).values()):
+            raise SystemExit("DELETE_BLOCKED_SHARED_ANALYSIS_IDENTITIES")
         result["pg_backup_counts"] = backup_pg(pg, backup, trade_date, ids, columns)
+        with pg.cursor() as cur:
+            cur.execute("delete from workbench.research_bundle_heads where trade_date=%s and publication_id = any(%s)", (trade_date, ids["publications"]))
+            cur.execute("delete from workbench.analysis_snapshot_heads where trade_date=%s and publication_id = any(%s)", (trade_date, ids["publications"]))
         order = pg_fk_order(pg); result["pg_deleted_counts"] = delete_pg(pg, trade_date, ids, columns, order)
         pg.commit()
     if compute_duck.is_file():

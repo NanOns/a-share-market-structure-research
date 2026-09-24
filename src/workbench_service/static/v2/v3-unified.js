@@ -22,6 +22,7 @@
     var onlineDateResolved = false;
     var buildSerial = 0;
     var buildTimer = null;
+    var dataRetryTimers = {};
     var linkageNav = document.querySelector('.nav-item[data-page="linkage"]');
     if (linkageNav) linkageNav.style.display = 'none';
 
@@ -112,7 +113,7 @@
     function get(path) {
         return fetch(path, {cache: 'no-store'}).then(function (response) {
             return response.json().catch(function () { return {}; }).then(function (body) {
-                if (!response.ok) throw new Error(body.message || body.code || String(response.status));
+                if (!response.ok) { var error = new Error(body.message || body.code || String(response.status)); error.code = body.code || ''; throw error; }
                 return body;
             });
         });
@@ -139,6 +140,15 @@
 
     function empty(text) {
         return '<div class="v3-empty">' + esc(text) + '</div>';
+    }
+
+    function isDatabaseBuildBusy(error) { return !!error && error.code === 'DATABASE_BUILD_IN_PROGRESS'; }
+    function retryWhenDatabaseReady(key, callback) {
+        if (dataRetryTimers[key]) return;
+        dataRetryTimers[key] = window.setTimeout(function () {
+            dataRetryTimers[key] = null;
+            callback();
+        }, 5000);
     }
 
     function modal(title, html) {
@@ -233,6 +243,11 @@
             renderLocalOverview(result);
             return get('/api/market/cycle?publication_id=' + encodeURIComponent(select.value) + '&basis=RECONSTRUCTED&days=1&trade_date=' + encodeURIComponent(tradeDate)).then(renderLocalMarketCycle).catch(function () {});
         }).catch(function (error) {
+            if (isDatabaseBuildBusy(error)) {
+                document.getElementById('v3-local-market').innerHTML = empty('当日数据正在生成，读取已暂停；数据库恢复后自动重试。');
+                retryWhenDatabaseReady('local-overview', loadLocalOverview);
+                return;
+            }
             document.getElementById('v3-local-market').innerHTML = empty('本地今日总览暂不可用：' + error.message);
         });
     }
@@ -265,7 +280,15 @@
                 pager.querySelector('[data-priority-prev]').addEventListener('click', function () { loadPriorityResearch(page - 1); });
                 pager.querySelector('[data-priority-next]').addEventListener('click', function () { loadPriorityResearch(page + 1); });
             }
-        }).catch(function (error) { count.textContent = '不可用'; target.innerHTML = empty('V3.3 研究包读取失败，未回退旧候选：' + error.message); });
+        }).catch(function (error) {
+            if (isDatabaseBuildBusy(error)) {
+                count.textContent = '当日数据生成中';
+                target.innerHTML = empty('数据库正在被当日生成任务独占，候选读取已暂停；任务结束后自动重试。');
+                retryWhenDatabaseReady('priority-research', function () { loadPriorityResearch(page); });
+                return;
+            }
+            count.textContent = '不可用'; target.innerHTML = empty('V3.3 研究包读取失败，未回退旧候选：' + error.message);
+        });
     }
 
     function loadTurnoverEnrichment() {
@@ -402,6 +425,12 @@
             })
             .catch(function (error) {
                 if (serial !== requestSerial) return;
+                if (isDatabaseBuildBusy(error)) {
+                    state.textContent = '当日数据正在生成，研究上下文暂停读取；完成后自动恢复';
+                    document.getElementById('notice').textContent = '当日生成任务正在独占更新数据库，页面读取已暂停；不影响后台任务，稍后自动重试。';
+                    retryWhenDatabaseReady('home-context', loadHome);
+                    return;
+                }
                 state.textContent = '研究上下文读取失败';
                 document.getElementById('notice').textContent = '研究首页暂不可用：' + error.message;
             });
@@ -637,7 +666,7 @@
             syncPage();
             return;
         }
-        if (attempt < 80) window.setTimeout(function () { waitForPublications(attempt + 1); }, 100);
+        if (attempt < 3600) window.setTimeout(function () { waitForPublications(attempt + 1); }, 1000);
     }
 
     document.querySelectorAll('[data-v3-page]').forEach(function (button) {
@@ -663,4 +692,14 @@
     loadPriorityResearch(1);
     syncPage();
     waitForPublications(0);
+    get('/api/jobs?active=1').then(function (result) {
+        var jobs = result.items || [];
+        var job = jobs.find(function (item) { return item && item.job_id && ['QUEUED', 'RUNNING'].indexOf(String(item.status || '').toUpperCase()) >= 0; });
+        if (!job) return;
+        var button = document.getElementById('v3-build-research');
+        if (button) button.disabled = true;
+        var serial = ++buildSerial;
+        setBuildStatus('检测到后台生成任务，正在恢复状态… · ' + job.job_id, 'warn');
+        pollResearchBuild(job.job_id, serial, 0);
+    }).catch(function () {});
 }());

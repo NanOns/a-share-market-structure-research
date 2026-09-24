@@ -8,6 +8,7 @@ rolled back, so a partial publication cannot become visible through PG.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 from datetime import date, datetime, timezone
@@ -73,6 +74,53 @@ def target_tables(pg: psycopg.Connection[Any]) -> set[str]:
         return {str(r[0]) for r in cur.fetchall()}
 
 
+def validate_table_contract(src_tables: set[str], dst_tables: set[str], require_research_bundle: bool) -> None:
+    # Runtime heads are PostgreSQL projections and are created by this sync
+    # transaction; the compute workspace intentionally contains no copies.
+    for table in ("publications", "publication_heads"):
+        if table not in src_tables:
+            raise RuntimeError(f"required source table missing: {table}")
+    for table in ("publications", "publication_heads", "research_bundle_heads", "analysis_snapshot_heads"):
+        if table not in dst_tables:
+            raise RuntimeError(f"required PostgreSQL table missing: {table}")
+    if require_research_bundle:
+        for table in ("research_runs_v3_3", "research_candidates_v3_3"):
+            if table not in src_tables or table not in dst_tables:
+                raise RuntimeError(f"required V3.3 bundle table missing: {table}")
+
+
+def register_bundle_artifacts(pg: psycopg.Connection[Any], bundle_dir: Path, expected_digest: str) -> int:
+    bundle_dir = bundle_dir.resolve()
+    if ROOT not in bundle_dir.parents or not bundle_dir.is_dir():
+        raise RuntimeError("V3_3_BUNDLE_PATH_OUTSIDE_MANAGED_ROOT")
+    manifest_path = bundle_dir / "bundle.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    if str(manifest.get("output_digest")) != expected_digest:
+        raise RuntimeError("V3_3_BUNDLE_DIGEST_MISMATCH")
+    count = 0
+    for path in sorted(bundle_dir / name for name in ("bundle.json", "contracts.json", "results.json")):
+        if not path.is_file():
+            raise RuntimeError(f"V3_3_BUNDLE_FILE_MISSING:{path.name}")
+        rel = path.relative_to(ROOT).as_posix()
+        h = hashlib.sha256(path.read_bytes()).hexdigest()
+        artifact_id = hashlib.sha256(f"workspace|{rel}|{h}".encode("utf-8")).hexdigest()
+        pg.execute(
+            "update workbench_meta.artifact_catalog set availability='STALE_REFERENCE' "
+            "where managed_root_id='PROJECT_ROOT' and relative_path=%s and availability='AVAILABLE' and sha256<>%s",
+            (rel, h),
+        )
+        pg.execute(
+            """insert into workbench_meta.artifact_catalog
+               (artifact_id,category,managed_root_id,relative_path,sha256,size_bytes,artifact_contract,availability,migration_class,migration_source_path,discovered_at)
+               values (%s,'V3_3_BUNDLE','PROJECT_ROOT',%s,%s,%s,'V3_3_IMMUTABLE_BUNDLE_FILE_V1','AVAILABLE','RETAIN_EXTERNAL',%s,now())
+               on conflict(artifact_id) do update set sha256=excluded.sha256,size_bytes=excluded.size_bytes,
+                 availability='AVAILABLE',migration_source_path=excluded.migration_source_path,discovered_at=excluded.discovered_at""",
+            (artifact_id, rel, h, path.stat().st_size, str(path)),
+        )
+        count += 1
+    return count
+
+
 def fetch_rows(duck: duckdb.DuckDBPyConnection, table: str, columns: list[str], predicate: str, params: list[Any]) -> list[tuple[Any, ...]]:
     projection = ",".join(dq(c) for c in columns)
     return duck.execute(f"select {projection} from main.{dq(table)}" + (f" where {predicate}" if predicate else ""), params).fetchall()
@@ -123,6 +171,8 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--database", type=Path, default=DEFAULT_DUCKDB)
     p.add_argument("--dsn", default=None)
     p.add_argument("--trade-date", default=None, help="defaults to latest DuckDB publication head")
+    p.add_argument("--require-research-bundle", action="store_true", help="require and verify the V3.3 bundle for this publication")
+    p.add_argument("--dry-run", action="store_true", help="execute the full PostgreSQL transaction and validations, then roll it back")
     p.add_argument("--report", type=Path, default=ROOT / "runtime/postgres_migration/20260922/pg_latest_publication_sync_report.json")
     return p.parse_args()
 
@@ -165,13 +215,32 @@ def main() -> int:
         objects = {str(r[0]) for r in duck.execute("select result_object_id from analysis_slice_result_bindings where slice_id in (select slice_id from analysis_snapshot_entries where snapshot_id=?)", [snapshot_id]).fetchall()}
         report["analysis_slice_count"] = len(selected)
         report["analysis_result_object_count"] = len(objects)
-        pg = psycopg.connect(args.dsn or os.environ.get("PG_DSN") or DEFAULT_DSN)
+        # The service's PostgreSQL contract is injected as WORKBENCH_PG_DSN;
+        # keep PG_DSN as a legacy override but never silently drop the
+        # configured password when this script runs as a daily subprocess.
+        pg = psycopg.connect(args.dsn or os.environ.get("PG_DSN") or os.environ.get("WORKBENCH_PG_DSN") or DEFAULT_DSN)
         pg.autocommit = False
         src_tables = source_tables(duck)
         dst_tables = target_tables(pg)
-        for required in ("publications", "publication_heads"):
-            if required not in src_tables or required not in dst_tables:
-                raise RuntimeError(f"required table missing: {required}")
+        validate_table_contract(src_tables, dst_tables, args.require_research_bundle)
+
+        bundle_row = None
+        if args.require_research_bundle:
+            bundle_row = duck.execute(
+                """select bundle_digest,research_run_id,snapshot_id,bundle_path,result_count
+                     from research_runs_v3_3 where publication_id=? and trade_date=? and status='COMPLETE'
+                    order by registered_at desc limit 1""",
+                [publication_id, trade_date],
+            ).fetchone()
+            if not bundle_row:
+                raise RuntimeError("required V3.3 bundle head missing for publication")
+            bundle_count = int(duck.execute(
+                "select count(*) from research_candidates_v3_3 where bundle_digest=?", [str(bundle_row[0])]
+            ).fetchone()[0])
+            if bundle_count != int(bundle_row[4]):
+                raise RuntimeError(f"V3.3 candidate count mismatch: expected {bundle_row[4]}, got {bundle_count}")
+            if not Path(str(bundle_row[3])).is_dir():
+                raise RuntimeError("required V3.3 bundle artifact directory missing")
 
         # Parent publication and its immutable publication rows.
         if bundle_id and "source_bundles" in src_tables and "source_bundles" in dst_tables:
@@ -200,6 +269,21 @@ def main() -> int:
             copy_rows(duck, pg, "analysis_slices", "slice_id in (select slice_id from analysis_snapshot_entries where snapshot_id=?)", [snapshot_id], report["tables"])
         if "analysis_daily_basis" in src_tables and "analysis_daily_basis" in dst_tables:
             copy_rows(duck, pg, "analysis_daily_basis", "slice_id in (select slice_id from analysis_snapshot_entries where snapshot_id=?)", [snapshot_id], report["tables"])
+        # Snapshot hierarchy rows reference the immutable hierarchy version
+        # (and its nodes).  Copy those parents before the snapshot binding so
+        # PostgreSQL enforces the same FK graph as the compute workspace.
+        if "tdx_sector_hierarchy_versions" in src_tables and "tdx_sector_hierarchy_versions" in dst_tables:
+            copy_rows(
+                duck, pg, "tdx_sector_hierarchy_versions",
+                "hierarchy_version in (select hierarchy_version from analysis_snapshot_hierarchy where snapshot_id=?)",
+                [snapshot_id], report["tables"],
+            )
+        if "tdx_sector_hierarchy_nodes" in src_tables and "tdx_sector_hierarchy_nodes" in dst_tables:
+            copy_rows(
+                duck, pg, "tdx_sector_hierarchy_nodes",
+                "hierarchy_version in (select hierarchy_version from analysis_snapshot_hierarchy where snapshot_id=?)",
+                [snapshot_id], report["tables"],
+            )
         for table in ("analysis_snapshot_hierarchy", "analysis_snapshot_audit_status"):
             if table in src_tables and table in dst_tables:
                 copy_rows(duck, pg, table, "snapshot_id=?", [snapshot_id], report["tables"])
@@ -224,6 +308,15 @@ def main() -> int:
         if "analysis_snapshot_entries" in src_tables and "analysis_snapshot_entries" in dst_tables:
             copy_rows(duck, pg, "analysis_snapshot_entries", "snapshot_id=?", [snapshot_id], report["tables"])
         copy_rows(duck, pg, "publication_analysis_snapshots", "publication_id=? and domain='LOCAL_RECONSTRUCTED'", [publication_id], report["tables"])
+        with pg.cursor() as cur:
+            cur.execute(
+                """insert into workbench.analysis_snapshot_heads
+                   (trade_date,domain,publication_id,snapshot_id,activated_at)
+                   values (%s,'LOCAL_RECONSTRUCTED',%s,%s,now())
+                   on conflict(trade_date,domain) do update set publication_id=excluded.publication_id,
+                     snapshot_id=excluded.snapshot_id,activated_at=excluded.activated_at""",
+                (trade_date, publication_id, snapshot_id),
+            )
         # Research registries are keyed by the publication/run generated for
         # this day.  Copy the parent run first, then its state/shortlist rows;
         # this keeps the PG research read model current without copying older
@@ -242,9 +335,31 @@ def main() -> int:
                     copy_rows(duck, pg, table, "signal_run_id=?", [run_id], report["tables"])
         if "research_runs_v3_3" in src_tables and "research_runs_v3_3" in dst_tables:
             copy_rows(duck, pg, "research_runs_v3_3", "publication_id=?", [publication_id], report["tables"])
-            bundle = duck.execute("select bundle_digest from research_runs_v3_3 where publication_id=? order by registered_at desc limit 1", [publication_id]).fetchone()
+            bundle = duck.execute("select bundle_digest,research_run_id,snapshot_id,bundle_path from research_runs_v3_3 where publication_id=? order by registered_at desc limit 1", [publication_id]).fetchone()
             if bundle and "research_candidates_v3_3" in src_tables and "research_candidates_v3_3" in dst_tables:
                 copy_rows(duck, pg, "research_candidates_v3_3", "bundle_digest=?", [str(bundle[0])], report["tables"])
+                report["bundle_artifact_files"] = register_bundle_artifacts(pg, Path(str(bundle[3])), str(bundle[0]))
+                with pg.cursor() as cur:
+                    cur.execute(
+                        """insert into workbench.research_bundle_heads
+                           (trade_date,publication_id,bundle_digest,research_run_id,snapshot_id,activated_at)
+                           values (%s,%s,%s,%s,%s,now())
+                           on conflict(trade_date) do update set publication_id=excluded.publication_id,
+                             bundle_digest=excluded.bundle_digest,research_run_id=excluded.research_run_id,
+                             snapshot_id=excluded.snapshot_id,activated_at=excluded.activated_at""",
+                        (trade_date, publication_id, str(bundle[0]), str(bundle[1]), str(bundle[2])),
+                    )
+        if args.require_research_bundle and bundle_row:
+            with pg.cursor() as cur:
+                cur.execute(
+                    "select publication_id,bundle_digest from workbench.research_bundle_heads where trade_date=%s",
+                    (trade_date,),
+                )
+                if cur.fetchone() != (publication_id, str(bundle_row[0])):
+                    raise RuntimeError("PG V3.3 bundle head does not point to the required daily bundle")
+                cur.execute("select count(*) from workbench.research_candidates_v3_3 where bundle_digest=%s", (str(bundle_row[0]),))
+                if int(cur.fetchone()[0]) != int(bundle_row[4]):
+                    raise RuntimeError("PG V3.3 candidate count mismatch after copy")
         copy_rows(duck, pg, "publication_heads", "trade_date=?", [trade_date], report["tables"], upsert_head=True)
 
         # Hard verification runs before commit; rollback on any mismatch.
@@ -255,12 +370,20 @@ def main() -> int:
             cur.execute("select snapshot_id from workbench.publication_analysis_snapshots where publication_id=%s and domain='LOCAL_RECONSTRUCTED'", (publication_id,))
             if cur.fetchone() != (snapshot_id,):
                 raise RuntimeError("PG publication analysis binding missing")
+            cur.execute("select publication_id,snapshot_id from workbench.analysis_snapshot_heads where trade_date=%s and domain='LOCAL_RECONSTRUCTED'", (trade_date,))
+            if cur.fetchone() != (publication_id, snapshot_id):
+                raise RuntimeError("PG analysis snapshot head does not point to the daily snapshot")
             cur.execute("select count(*) from workbench.analysis_snapshot_entries where snapshot_id=%s", (snapshot_id,))
             if int(cur.fetchone()[0]) != int(duck.execute("select count(*) from analysis_snapshot_entries where snapshot_id=?", [snapshot_id]).fetchone()[0]):
                 raise RuntimeError("analysis snapshot entry count mismatch")
-        pg.commit()
-        report["status"] = "FULL_PASS"
-        report["committed_at"] = datetime.now(timezone.utc).isoformat()
+        if args.dry_run:
+            pg.rollback()
+            report["status"] = "DRY_RUN_PASS"
+            report["rolled_back_at"] = datetime.now(timezone.utc).isoformat()
+        else:
+            pg.commit()
+            report["status"] = "FULL_PASS"
+            report["committed_at"] = datetime.now(timezone.utc).isoformat()
         return 0
     except Exception as exc:
         report["error"] = f"{type(exc).__name__}: {exc}"

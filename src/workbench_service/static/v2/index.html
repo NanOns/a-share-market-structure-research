@@ -40,6 +40,8 @@
         [data-workbench-mode="v3"] .v3-priority-stocks b, [data-workbench-mode="v3"] .v3-priority-stocks span { display: block; }
         [data-workbench-mode="v3"] .v3-priority-stocks small, [data-workbench-mode="v3"] .v3-priority-stocks span { color: #60758b; font-size: 12px; }
         [data-workbench-mode="v3"] .v3-priority-pager { display: flex; justify-content: center; align-items: center; gap: 12px; margin-top: 12px; }
+        [data-workbench-mode="v3"] .focus-tracker-inline { margin: 14px 20px; border: 1px solid #dbe4ee; border-radius: 10px; overflow: hidden; background: #fff; }
+        [data-workbench-mode="v3"] .focus-tracker-inline iframe { display: block; width: 100%; height: max(760px, calc(100vh - 170px)); border: 0; background: #f3f6fa; }
         [data-workbench-mode="v3"] .v3-member-table-wrap { overflow: auto; max-height: 58vh; border: 1px solid #dce5ed; border-radius: 10px; }
         [data-workbench-mode="v3"] .v3-member-table { width: 100%; min-width: 850px; border-collapse: collapse; font-size: 13px; }
         [data-workbench-mode="v3"] .v3-member-table th { position: sticky; top: 0; z-index: 1; background: #f4f7fa; color: #52677a; text-align: right; padding: 9px 10px; border-bottom: 1px solid #dce5ed; white-space: nowrap; }
@@ -150,9 +152,11 @@
     <button class="nav-item" data-page="stocks" type="button">个股研究</button>
     <button class="nav-item" data-page="linkage" type="button">联动筛选</button>
     <button class="nav-item" data-page="market" type="button">市场与事件</button>
+    <button class="nav-item" id="focus-tracker-nav" type="button">关注跟踪</button>
     <button class="nav-item" data-page="data-info" type="button">数据 / 运维</button>
 </nav>
-<main class="content">
+<section id="focus-tracker-inline" class="focus-tracker-inline" hidden><iframe title="关注跟踪观察池" src="/v3/focus-tracker"></iframe></section>
+<main id="workbench-main" class="content">
     <section class="page-heading">
         <div><h1 id="page-title">研究总览</h1>
             <p id="page-description">公共 UI 层预览：版本、输入身份与统一股票范围。</p></div>
@@ -578,5 +582,21 @@
 <script src="/v2/router.js?v=m15-04"></script>
 <script src="/v2/app.js?v=v3-market-online-1"></script>
 <script src="/v2/v3-unified.js?v=p12-21-expected-trade-date-1"></script>
+<script>
+(function(){
+    var button=document.getElementById('focus-tracker-nav');
+    var focus=document.getElementById('focus-tracker-inline');
+    var main=document.getElementById('workbench-main');
+    if(!button||!focus||!main)return;
+    button.addEventListener('click',function(){
+        var open=focus.hidden;
+        focus.hidden=!open;
+        main.hidden=open;
+        document.querySelectorAll('.nav-item').forEach(function(item){item.classList.toggle('active',item===button&&open)});
+        if(open)window.scrollTo({top:0,behavior:'smooth'});
+    });
+    document.querySelectorAll('.nav-item[data-page]').forEach(function(item){item.addEventListener('click',function(){focus.hidden=true;main.hidden=false;button.classList.remove('active')})});
+}());
+</script>
 </body>
 </html>

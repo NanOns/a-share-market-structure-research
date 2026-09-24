@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import threading
 import pyarrow as pa
 from contextlib import contextmanager
@@ -398,7 +399,22 @@ class OneClickPublisher:
                 if "source_v2_class" in columns: row["source_v2_class"] = source.get("source_v2_class")
                 if "trade_date" in columns: row["trade_date"] = trade_date
                 for key in ("security_name", "primary_pattern", "sector_name", "sector_type", "display_rank", "research_priority"):
-                    if key in columns: row[key] = source.get(key)
+                    if key in columns:
+                        value = source.get(key)
+                        if key == "display_rank":
+                            # CSV-backed releases use an empty string for a
+                            # missing rank. PostgreSQL's double precision
+                            # column must receive NULL, not ``''``.
+                            if value in (None, ""):
+                                value = None
+                            else:
+                                try:
+                                    value = float(value)
+                                except (TypeError, ValueError) as exc:
+                                    raise ValueError("INVALID_DISPLAY_RANK") from exc
+                                if not math.isfinite(value):
+                                    raise ValueError("INVALID_DISPLAY_RANK")
+                        row[key] = value
                 rows.append(row)
             writer.bulk_insert(table, columns, rows)
 

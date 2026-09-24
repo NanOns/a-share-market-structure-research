@@ -16,6 +16,7 @@ from workbench_db import (
  PostgresPublicationBackendFactory,
 )
 from workbench_db.postgres_repository import PostgresRepository
+from focus_tracker.read_api import FocusTrackerReadAPI
 from workbench_publish.orchestrator import submit_one_click, ControlledProduction
 from workbench_publish import OneClickPublisher
 from workbench_ops import OperationsConfig, ConfigConflict, ConfigValidationError
@@ -1754,6 +1755,7 @@ def make_handler(root,db):
  pg_api = str(os.environ.get('WORKBENCH_API_BACKEND','')).lower() == 'postgresql'
  api_provider = PostgresDuckDBApiConnectionProvider() if pg_api else DuckDBApiConnectionProvider(db)
  api=Api(db,root=root,connection_provider=api_provider)
+ focus_tracker_api=FocusTrackerReadAPI(env_file=Path(root)/'config/.env')
  pg_repository = PostgresRepository() if pg_api else None
  if pg_repository:
   pg_repository.open()
@@ -1804,6 +1806,18 @@ def make_handler(root,db):
    child=publisher.status(task['publication_job_id'])
    task.update(status=child['status'],progress=child.get('progress',{}),updated_at_utc=child.get('updated_at_utc'))
   return {'job_id':job_id,'status':task['status'],'details':{'trade_date':task.get('trade_date'),'source_bundle_id':task.get('source_bundle_id')},'progress':task.get('progress',{}),'updated_at_utc':task.get('updated_at_utc')}
+ def active_job_items():
+  active=[]
+  for job_id,item in daily_jobs.items():
+   if item.get('status') in ('QUEUED','RUNNING'):
+    status=today_status(job_id)
+    if status:active.append(status)
+  for job_id,publisher in publishers.items():
+   if not isinstance(publisher,OneClickPublisher):continue
+   status=publisher.status(job_id)
+   if status.get('status') in ('QUEUED','RUNNING'):active.append(status)
+  active.extend(item for item in research_jobs.values() if item.get('status') in ('QUEUED','RUNNING'))
+  return active
  def run_today(job_id,body):
   task=daily_jobs[job_id];task.update(status='RUNNING',progress={'status':'INPUT_DOWNLOADING'})
   result=subprocess.run([sys.executable,str(Path(root)/'run_upgrade_m3.py')],cwd=root,capture_output=True,text=True)
@@ -1888,7 +1902,9 @@ def make_handler(root,db):
   # fail-closed; no successful UI state is reported for a missing PG copy.
   if str(os.environ.get('WORKBENCH_API_BACKEND','')).lower() == 'postgresql':
    task.update(progress={'status':'SYNCING_POSTGRES_PUBLICATION'})
-   pg_sync=run_database_subprocess([sys.executable,str(Path(root)/'scripts/sync_latest_publication_to_postgres.py'),'--database',str(compute_db),'--trade-date',trade_date.isoformat()],cwd=root,capture_output=True,text=True,timeout=3600,env=compute_env)
+   sync_command=[sys.executable,str(Path(root)/'scripts/sync_latest_publication_to_postgres.py'),'--database',str(compute_db),'--trade-date',trade_date.isoformat()]
+   if body.get('build_research_v3'):sync_command.append('--require-research-bundle')
+   pg_sync=run_database_subprocess(sync_command,cwd=root,capture_output=True,text=True,timeout=3600,env=compute_env)
    if pg_sync.returncode:
     task.update(status='FAILED',progress={'status':'POSTGRES_SYNC_FAILED','error':pg_sync.stderr[-2000:] or pg_sync.stdout[-2000:]});return
    try:
@@ -1936,22 +1952,31 @@ def make_handler(root,db):
    path=urlparse(self.path).path
    allowed_while_database_exclusive=(
     path in ('/api/jobs','/api/operations/status','/api/operations/restart-status','/','/index.html','/v3','/v3/','/v3/index.html','/v2','/v2/','/v2/index.html')
+    or path in ('/v3/focus-tracker','/v3/focus-tracker/')
+    or path.startswith('/api/v3/focus-tracker/')
     or path.startswith('/v2/')
    )
    if database_subprocess_active.is_set():
     query={k:v[0] for k,v in parse_qs(urlparse(self.path).query).items()}
     if path=='/api/operations/status':
-     active_count=sum(1 for item in daily_jobs.values() if item.get('status') in ('QUEUED','RUNNING'))
+     active_count=len(active_job_items())
      out={**last_operations_status,'service_state':'BUSY','active_job_count':active_count,'service_pid':os.getpid(),'service_url':'http://'+self.headers.get('Host','127.0.0.1:28765'),'service_control_contract':'WORKBENCH_LOCAL_SERVICE_CONTROL_V1','database_access':'SUSPENDED_FOR_BUILD'}
      return self._send(200,out)
     if path=='/api/jobs':
      job_id=query.get('job_id')
      if job_id in daily_jobs:return self._send(200,today_status(job_id))
+     publisher=publishers.get(job_id)
+     if isinstance(publisher,OneClickPublisher):return self._send(200,publisher.status(job_id))
+     if job_id in research_jobs:return self._send(200,research_jobs[job_id])
      if query.get('active')=='1':
-      return self._send(200,{'items':[today_status(key) for key,item in daily_jobs.items() if item.get('status') in ('QUEUED','RUNNING')]})
+      return self._send(200,{'items':active_job_items()})
      return self._send(503,{'code':'DATABASE_BUILD_IN_PROGRESS','message':'当日分析正在独占更新，请稍后重试','retryable':True})
     if not allowed_while_database_exclusive:
      return self._send(503,{'code':'DATABASE_BUILD_IN_PROGRESS','message':'当日分析正在独占更新，请稍后重试','retryable':True})
+   if path.startswith('/api/v3/focus-tracker/'):
+    query={k:v[0] for k,v in parse_qs(urlparse(self.path).query).items()}
+    status,body=focus_tracker_api.handle(path,query)
+    return self._send(status,body)
    if allowed_while_database_exclusive:
     return self._do_GET()
    with api.request_scope():
@@ -2095,15 +2120,8 @@ def make_handler(root,db):
     elif u.path=='/api/operations/cleanup-plans':
      out={'items':storage.payload_rows('cleanup_jobs')}
     elif u.path=='/api/jobs' and x.get('active')=='1':
-     active=[]
-     for job_id in list(daily_jobs):
-      status=today_status(job_id)
-      if status and status['status'] in ('QUEUED','RUNNING'):active.append(status)
-     for job_id,publisher in publishers.items():
-      if not isinstance(publisher,OneClickPublisher):continue
-      status=publisher.status(job_id)
-      if status['status'] in ('QUEUED','RUNNING'):active.append(status)
-     out={'items':active}
+     out={'items':active_job_items()}
+    elif u.path=='/api/jobs' and x.get('job_id') in research_jobs: out=research_jobs[x['job_id']]
     elif u.path=='/api/jobs' and x['job_id'] in daily_jobs: out=today_status(x['job_id'])
     elif u.path=='/api/jobs':
      publisher=publishers.get(x['job_id'])
@@ -2122,6 +2140,8 @@ def make_handler(root,db):
      return self._send(200,(static/'online-p09-v3.html').read_bytes(),'text/html; charset=utf-8')
     elif u.path in ('/v3/events','/v3/events/','/v3/events/index.html'):
      return self._send(200,(static/'online-events-v3.html').read_bytes(),'text/html; charset=utf-8')
+    elif u.path in ('/v3/focus-tracker','/v3/focus-tracker/'):
+      return self._send(200,(static/'focus-tracker.html').read_bytes(),'text/html; charset=utf-8')
     elif u.path.startswith('/v2/'):
      relative=unquote(u.path[len('/v2/'):])
      candidate=(static/'v2'/relative).resolve()

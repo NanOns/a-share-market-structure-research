@@ -1,6 +1,6 @@
 # Phase 2 Report
 
-PASS, cutoff 20260921. Phase1 generation and both canonical SHA256 values verified before consumption and again before publication. No index OHLC, external data, raw .day scan or adjustment recalculation.
+PASS, cutoff 20260923. Phase1 generation and both canonical SHA256 values verified before consumption and again before publication. No index OHLC, external data, raw .day scan or adjustment recalculation.
 
 Market vector: one latest row from 5464 NORMAL_UNIVERSE members. Sector factors: 541 current sectors, 498 valid. INDUSTRY/THEME/STYLE rankings are separate; excluded theme roles never ranked. coverage=valid/total unique source members, not tradable/total. Each aggregate carries finite-value counts and ratios to total source membership. NULL not imputed.
 

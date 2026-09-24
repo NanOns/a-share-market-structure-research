@@ -16,10 +16,14 @@ class TodayResearchBundleReader:
   active=read_active(self.pointer)
   requested_publication=str(publication_id or "").strip()
   requested_date=str(trade_date or "").strip()
+  if not requested_publication and not requested_date and self.repository is not None and hasattr(self.repository, "active_research_v3_3_bundle"):
+   current=self.repository.active_research_v3_3_bundle()
+   if current is None:raise ResearchBundleError("ACTIVE_BUNDLE_NOT_BUILT")
+   return current
   if requested_publication or requested_date:
    if not requested_publication or not requested_date:
     raise ResearchBundleError("CONTEXT_MODE_CONFLICT")
-   if active and str((active.get("identity") or {}).get("publication_id") or "") == requested_publication and str((active.get("identity") or {}).get("trade_date") or "") == requested_date:
+   if active and str((active.get("identity") or {}).get("publication_id") or "") == requested_publication and str((active.get("identity") or {}).get("trade_date") or "") == requested_date and not (self.repository is not None and hasattr(self.repository, "research_v3_3_bundle")):
     selected=active
     rows_path=Path(active["bundle_path"])/"results.json"
    elif self.repository is not None and hasattr(self.repository, "research_v3_3_bundle"):

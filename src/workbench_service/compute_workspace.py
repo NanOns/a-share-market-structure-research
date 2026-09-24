@@ -108,16 +108,35 @@ def refresh_from_postgres(database: str | Path, dsn: str | None = None) -> dict[
                 cursor.execute("select observation_id,revision_no,attribute_version_id from workbench.relation_publication_bindings where publication_id=%s and source_scope=%s", (publication_id, RELATION_SCOPE))
                 pg_relation = cursor.fetchone()
             local_relation = connection.execute("select observation_id,revision_no,attribute_version_id from relation_publication_bindings where publication_id=? and source_scope=?", [publication_id, RELATION_SCOPE]).fetchone() if "relation_publication_bindings" in tables else None
-            refresh("relation_publication_bindings", "publication_id=%s", (publication_id,), "publication_id=?", [publication_id])
             # Relation edges are immutable by revision.  Avoid re-copying the
             # full edge set on every daily run when the publication points to
             # the same observation; copy them only when the binding changed.
-            if pg_relation and tuple(str(value) if value is not None else None for value in pg_relation) != tuple(str(value) if value is not None else None for value in (local_relation or ())):
+            relation_changed = pg_relation and tuple(str(value) if value is not None else None for value in pg_relation) != tuple(str(value) if value is not None else None for value in (local_relation or ()))
+            relation_incomplete = False
+            if pg_relation:
                 observation_id, revision_no, attribute_version_id = pg_relation
+                local_observation = connection.execute("select 1 from relation_observations where observation_id=? limit 1", [observation_id]).fetchone() if "relation_observations" in tables else None
+                local_revision = connection.execute("select 1 from relation_revisions where source_scope=? and revision_no=? limit 1", [RELATION_SCOPE, revision_no]).fetchone() if "relation_revisions" in tables else None
+                local_attributes = connection.execute("select 1 from sector_attribute_revisions where source_scope=? and ('attrset-' || substr(attribute_set_hash,1,24))=? limit 1", [RELATION_SCOPE, attribute_version_id]).fetchone() if "sector_attribute_revisions" in tables else None
+                local_edges = connection.execute("select 1 from relation_edge_intervals where source_scope=? and from_revision=? limit 1", [RELATION_SCOPE, revision_no]).fetchone() if "relation_edge_intervals" in tables else None
+                relation_incomplete = not all((local_observation, local_revision, local_attributes, local_edges))
+            if pg_relation and (relation_changed or relation_incomplete):
                 refresh("relation_revisions", "source_scope=%s and revision_no=%s", (RELATION_SCOPE, revision_no), "source_scope=? and revision_no=?", [RELATION_SCOPE, revision_no])
                 refresh("relation_observations", "observation_id=%s", (observation_id,), "observation_id=?", [observation_id])
                 refresh("relation_edge_intervals", "source_scope=%s and from_revision=%s", (RELATION_SCOPE, revision_no), "source_scope=? and from_revision=?", [RELATION_SCOPE, revision_no])
-                refresh("sector_attribute_versions", "source_scope=%s and attribute_version_id=%s", (RELATION_SCOPE, attribute_version_id), "source_scope=? and attribute_version_id=?", [RELATION_SCOPE, attribute_version_id])
+                # ``relation_publication_bindings.attribute_version_id`` is an
+                # attribute-set identity (``attrset-*``), not an individual
+                # ``sector_attribute_versions.attribute_version_id`` row
+                # (``attr-*``).  Refresh the complete immutable attribute
+                # contract for the scope so the revision bindings can resolve
+                # the current set during research construction.
+                refresh("sector_attribute_revisions", "source_scope=%s", (RELATION_SCOPE,), "source_scope=?", [RELATION_SCOPE])
+                refresh("sector_attribute_versions", "source_scope=%s", (RELATION_SCOPE,), "source_scope=?", [RELATION_SCOPE])
+                refresh("sector_attribute_revision_bindings", "source_scope=%s", (RELATION_SCOPE,), "source_scope=?", [RELATION_SCOPE])
+            # The publication binding has a foreign key to relation_observations.
+            # Refresh its referenced rows first; otherwise DuckDB rejects a
+            # new/current publication during the isolated-workspace refresh.
+            refresh("relation_publication_bindings", "publication_id=%s", (publication_id,), "publication_id=?", [publication_id])
             if snapshot_id:
                 refresh("analysis_snapshots", "snapshot_id=%s", (snapshot_id,), "snapshot_id=?", [snapshot_id])
                 refresh("analysis_snapshot_hierarchy", "snapshot_id=%s", (snapshot_id,), "snapshot_id=?", [snapshot_id])

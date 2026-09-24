@@ -96,18 +96,18 @@ class PostgresRepository(PublicationReadRepository):
             return {str(security_id): str(name) for security_id, name in cur.fetchall()}
 
     def research_v3_3_bundle(self, publication_id: str, trade_date: str) -> tuple[dict[str, Any], list[dict[str, Any]]] | None:
-        """Read one completed historical V3.3 bundle from the PG registry."""
+        """Read the immutable bundle selected by the PostgreSQL date head."""
         if self.connection is None:
             raise RuntimeError("POSTGRES_REPOSITORY_NOT_OPEN")
         schema = sql.Identifier(self.schema)
         run_query = sql.SQL(
-            """select bundle_digest,research_run_id,cast(trade_date as text),publication_id,
-                      snapshot_id,membership_snapshot_id,bundle_contract_id,parameter_hash,
-                      dependency_lock_hash,history_basis,result_count,bundle_path,status
-                 from {}.research_runs_v3_3
-                where publication_id=%s and cast(trade_date as text)=%s and status='COMPLETE'
-                order by registered_at desc limit 1"""
-        ).format(schema)
+            """select r.bundle_digest,r.research_run_id,cast(r.trade_date as text),r.publication_id,
+                      r.snapshot_id,r.membership_snapshot_id,r.bundle_contract_id,r.parameter_hash,
+                      r.dependency_lock_hash,r.history_basis,r.result_count,r.bundle_path,r.status
+                 from {schema}.research_bundle_heads h
+                 join {schema}.research_runs_v3_3 r using(bundle_digest)
+                where h.publication_id=%s and cast(h.trade_date as text)=%s and r.status='COMPLETE'"""
+        ).format(schema=schema)
         with self.connection.cursor() as cur:
             cur.execute(run_query, (publication_id, str(trade_date)))
             run = cur.fetchone()
@@ -133,6 +133,21 @@ class PostgresRepository(PublicationReadRepository):
         }
         active = {"contract_id": str(run[6]), "bundle_path": str(run[11]), "output_digest": str(run[0]), "identity": identity}
         return active, results
+
+    def active_research_v3_3_bundle(self) -> tuple[dict[str, Any], list[dict[str, Any]]] | None:
+        """Read the bundle head for the latest publication head in PostgreSQL."""
+        if self.connection is None:
+            raise RuntimeError("POSTGRES_REPOSITORY_NOT_OPEN")
+        schema = sql.Identifier(self.schema)
+        query = sql.SQL(
+            "with latest as (select publication_id,trade_date from {schema}.publication_heads order by trade_date desc limit 1) "
+            "select latest.publication_id,cast(latest.trade_date as text) from latest "
+            "join {schema}.research_bundle_heads b using(trade_date,publication_id)"
+        ).format(schema=schema)
+        with self.connection.cursor() as cur:
+            cur.execute(query)
+            row = cur.fetchone()
+        return self.research_v3_3_bundle(str(row[0]), str(row[1])) if row else None
 
     def publication_heads(self, *, include_analysis: bool = False) -> dict[str, Any]:
         """Return the public publication head projection used by the API."""

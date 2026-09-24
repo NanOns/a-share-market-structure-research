@@ -10,7 +10,8 @@ from .materialize import VerifiedNormalizedSlice
 from .session_gap_semantics import CONTRACT_ID as GAP_CONTRACT, classify_session_state
 
 
-CONTRACT_ID = "FOCUS_PREDICATE_FACTS_BY_DATE_V2"
+CONTRACT_ID = "FOCUS_PREDICATE_FACTS_BY_DATE_V3"
+RPS20_DELTA3_PROVIDER_CONTRACT = "RECOVERY_TURN_INVALIDATION_PROVIDER_INCOMPLETE"
 CENT = Decimal("0.01")
 
 
@@ -134,6 +135,8 @@ def build_predicate_facts_by_date(*, normalized: VerifiedNormalizedSlice,
             raise ValueError("predicate field provider missing: " + ",".join(sorted(unknown)))
         facts[day] = daily
     fact_digest = digest({"contract_id": CONTRACT_ID, "session_gap_contract_id": GAP_CONTRACT,
+                          "provider_contracts": ({"rps20_delta3": RPS20_DELTA3_PROVIDER_CONTRACT}
+                                                 if "rps20_delta3" in required_fields else {}),
                           "artifact_sha256": normalized.artifact_sha256,
                           "security_id": security_id, "trade_date": trade_date,
                           "required_fields": sorted(required_fields),

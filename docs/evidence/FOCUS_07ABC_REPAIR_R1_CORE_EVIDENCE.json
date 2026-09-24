@@ -1,0 +1,117 @@
+{
+  "accepted_head": {
+    "focus_run_id": "focus-run-2a6378107492da723111cc78394a1248",
+    "lineage_state": "VALID",
+    "observations": 397,
+    "predecessor_focus_run_id": "focus-run-f8ba1c4915d1c330506d9bc8954b0a2d",
+    "projection_rows": 397,
+    "revision": 1,
+    "rows": 117,
+    "status": "ACTIVATED",
+    "tracking_keys": 397
+  },
+  "auto_apply": {
+    "enabled": false,
+    "evidence": "REMAINS_DISABLED_PENDING_MULTI_DAY_AND_DUE_OUTCOME_ACCEPTANCE"
+  },
+  "contract_id": "FOCUS_07ABC_REPAIR_R1_EVIDENCE_V1",
+  "db_readback": {
+    "distinct_daily_episodes": 397,
+    "projection_digest_verified_by_writer": true,
+    "sep23_head_preserved": true,
+    "sep24_head_points_to_applied_run": true
+  },
+  "focus_run_id": "focus-run-2a6378107492da723111cc78394a1248",
+  "manifest_sha256": "262aa39416b9402704627091c0110e9979295cb0bc0c3b3b81c7af5bc3258e2d",
+  "normalized_artifact_sha256": "c6fc7b5455355390b0740b46e4bf24a2c5f458084cd6155478eae6c0be75c05a",
+  "observation_quality_counts": {
+    "DATA_UNAVAILABLE": 323,
+    "READY": 74
+  },
+  "outcome_diagnostics": {
+    "due_anchor_horizons": 310,
+    "evaluation_basis": "REAL_FORWARD",
+    "focus_run_id": "focus-run-2a6378107492da723111cc78394a1248",
+    "mode": "PREVIEW",
+    "normalized_artifact_sha256": "c6fc7b5455355390b0740b46e4bf24a2c5f458084cd6155478eae6c0be75c05a",
+    "path_quality_counts": {
+      "CLOSE_NAV_ONLY": 17,
+      "READY": 293
+    },
+    "reason_code_counts": {
+      "TARGET_INPUT_UNSEALED": 310
+    },
+    "retry_task": null,
+    "status": "PREVIEW_READY",
+    "status_counts": {
+      "PENDING": 310
+    },
+    "target_data_state_counts": {
+      "BAR": 310
+    },
+    "target_dates": [
+      "2026-09-24"
+    ],
+    "target_input_seal_counts": {
+      "accepted": 310,
+      "identity_kinds": {
+        "PUBLICATION_ID_ONLY": 310
+      },
+      "sealed": 0
+    },
+    "trade_date": "2026-09-24",
+    "writes": 0
+  },
+  "predecessor_focus_run_id": "focus-run-f8ba1c4915d1c330506d9bc8954b0a2d",
+  "rollback": {
+    "all_14_focus_table_counts_unchanged": true,
+    "focus_run_id": "focus-run-2a6378107492da723111cc78394a1248",
+    "head_and_run_identities_unchanged": true,
+    "observations": 397,
+    "predecessor_focus_run_id": "focus-run-f8ba1c4915d1c330506d9bc8954b0a2d",
+    "source_rows": 117,
+    "status": "ROLLBACK_READY",
+    "tracking_keys": 397
+  },
+  "source_bundle_verification": {
+    "identity_contract": "TDX_OFFICIAL_PACKAGE_SHA256_V1",
+    "manifest_sha256": "fc71a9443414ac85212f503bd1f9fd4b2ca61ef2a496d5eee8279cad93cd0aba",
+    "package_sha256": "b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f",
+    "source_bundle_id": "6122afa9db83170f7b442d5ecc5c7c9287b9dd6b04c4d53729d55f71f7dd99d2",
+    "status": "PASS",
+    "target_trade_date": "2026-09-24",
+    "validation": {
+      "file_count": 12438,
+      "major_indices_present": true,
+      "normal_a_share_invalid_count": 0,
+      "record_count": 29768339,
+      "target_counts": {
+        "bj": 349,
+        "sh": 4863,
+        "sz": 4476
+      }
+    }
+  },
+  "source_publication_id": "m4-4c7e20b9b986cc6e193df851b764adce",
+  "technical_identity": {
+    "accepted_result_rows_modified": 0,
+    "canonical_hash": "838e2e71418def33722d967c244b7f66f730892c2bc48644346d156860c3f5b5",
+    "contract_id": "FOCUS_TECHNICAL_IDENTITY_REGISTRATION_V1",
+    "fact_digest": "0638158a83d0850a89fcd393acb3179b13c6d5ff6499e8e97099186373470176",
+    "migration_receipt_status": "FULL_PASS",
+    "publication_id": "m4-4c7e20b9b986cc6e193df851b764adce",
+    "readback": {
+      "fact_digest": "0638158a83d0850a89fcd393acb3179b13c6d5ff6499e8e97099186373470176",
+      "migration_receipt_count": 1,
+      "same_day_facts": 6188,
+      "status": "PASS"
+    },
+    "row_count": 6188
+  },
+  "trade_date": "2026-09-24",
+  "transition_counts": {
+    "EXITED": 280,
+    "NEW": 87,
+    "PERSISTENT": 30
+  }
+}

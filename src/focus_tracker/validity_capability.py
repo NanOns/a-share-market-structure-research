@@ -27,7 +27,7 @@ def _unknown_reasons(evidence: Any) -> set[str]:
 
 def validity_capability(*, source_family: str, invalidation: Tri,
                         invalidation_evidence: Mapping[str, Any] | None = None,
-                        unavailable_reason: str | None = None) -> dict[str, Any]:
+                        unavailable_reason: str | list[str] | tuple[str, ...] | None = None) -> dict[str, Any]:
     """Return source rule capability separately from the three-valued result."""
     if not isinstance(invalidation, Tri):
         raise ValueError("validity capability requires three-valued invalidation")
@@ -37,15 +37,17 @@ def validity_capability(*, source_family: str, invalidation: Tri,
         state, reasons, rule = "NOT_APPLICABLE", ["NO_FORMAL_SOURCE_RULE"], None
     elif source_family == "V3_3_TODAY_CANDIDATE":
         rule = INVALIDATION_CONTRACT
+        unavailable_reasons = ([unavailable_reason] if isinstance(unavailable_reason, str)
+                               else list(unavailable_reason or ()))
         if invalidation == Tri.UNKNOWN:
             state = "UNAVAILABLE"
             reasons = sorted(_unknown_reasons(invalidation_evidence))
-            if unavailable_reason:
-                reasons = sorted(set(reasons) | {unavailable_reason})
+            if unavailable_reasons:
+                reasons = sorted(set(reasons) | set(unavailable_reasons))
             if not reasons:
                 reasons = ["PREDICATE_EVIDENCE_UNAVAILABLE"]
         else:
-            if unavailable_reason:
+            if unavailable_reasons:
                 raise ValueError("known invalidation conflicts with unavailable reason")
             if (not isinstance(invalidation_evidence, Mapping) or
                     invalidation_evidence.get("contract_id") != INVALIDATION_CONTRACT or

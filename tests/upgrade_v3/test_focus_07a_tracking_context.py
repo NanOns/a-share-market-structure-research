@@ -82,3 +82,27 @@ def test_reentry_source_row_does_not_replace_old_episode_origin():
     assert contexts[(KEY, "episode-old")].first_trade_date == FIRST
     assert contexts[(KEY, "episode-new")].today_source_row == current
     assert contexts[(KEY, "episode-new")].first_trade_date == TODAY
+
+
+def test_source_model_boundary_keeps_old_episode_and_uses_current_source_context():
+    current_key = FocusKey("V3_3_TODAY_CANDIDATE", "STOCK", "SH.600000", "V3_3_V2")
+    current = SourceRow(
+        current_key, TODAY, "CANDIDATE", "item-new",
+        source_item_digest("item-new", "contract-2", {"primary_category": "LAUNCH_CONFIRM"}),
+        "contract-2", 1, None, {"primary_category": "LAUNCH_CONFIRM"})
+    frozen = row()
+    decision = Decision(current_key, "CANDIDATE", "SOURCE_MODEL_BOUNDARY",
+                        "episode-1", None, (), "SELECTION_CONTRACT_BOUNDARY")
+    plan = PlannedDay(TODAY, (decision,), (current_key,), (), (), "digest")
+    sources = AcceptedSources(TODAY, "publication", None, None, {},
+                              (current,), "source-digest")
+
+    contexts = resolve_tracking_contexts(
+        plan=plan, sources=sources, first_source_rows={"episode-1": frozen})
+
+    context = contexts[(current_key, "episode-1")]
+    assert context.key == current_key
+    assert context.today_source_row == current
+    assert context.first_trade_date == FIRST
+    assert context.source_contract_id == "contract-2"
+    assert context.frozen_source_item_digest == frozen.source_item_digest

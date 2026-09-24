@@ -396,4 +396,15 @@ def verify_source_bundle(bundle_path: Path) -> dict:
     extraction_root=safe_project_path(body["extraction"]["root"])
     validation=validate_extracted_day_data(extraction_root,int(str(body["target_trade_date"]).replace("-","")),ids)
     if validation["status"]!="PASS": raise ValueError("EXTRACTED_DAY_VALIDATION_FAILED")
-    return {"status":"PASS","source_bundle_id":claimed,"package_sha256":body["package"]["sha256"],"validation":validation}
+    package_sha256=body["package"]["sha256"]
+    # Keep the two identities distinct: the manifest digest binds the sealed
+    # receipt bytes, while source_identity binds the downloaded official input
+    # package whose hash was just re-verified above.
+    return {
+        "status":"PASS",
+        "source_bundle_id":claimed,
+        "manifest_sha256":_hash(path),
+        "package_sha256":package_sha256,
+        "source_identity":{"contract":"TDX_OFFICIAL_PACKAGE_SHA256_V1","sha256":package_sha256},
+        "validation":validation,
+    }

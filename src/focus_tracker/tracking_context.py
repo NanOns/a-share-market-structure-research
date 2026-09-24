@@ -49,7 +49,11 @@ def resolve_tracking_contexts(*, plan: PlannedDay,
         if current is None and frozen is None:
             raise ValueError("historical tracking source context unavailable")
         if frozen is not None and frozen.key != key:
-            raise ValueError("historical source identity differs from episode")
+            same_entity = (frozen.key.source_family == key.source_family and
+                           frozen.key.entity_type == key.entity_type and
+                           frozen.key.entity_id == key.entity_id)
+            if not same_entity or decision.phase != "SOURCE_MODEL_BOUNDARY":
+                raise ValueError("historical source identity differs from episode")
         row = current or frozen
         assert row is not None
         if current is not None and current.trade_date != plan.trade_date:

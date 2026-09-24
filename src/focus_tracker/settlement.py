@@ -140,6 +140,7 @@ class TargetInputSeal:
     sealed: bool
     source_identity_digest: str
     seal_digest: str
+    source_identity_kind: str = "UNKNOWN"
 
     def validate(self) -> None:
         if not _SHA.fullmatch(self.source_identity_digest) or not _SHA.fullmatch(self.seal_digest):
@@ -202,7 +203,8 @@ def read_target_input_seals(repository, *, target_dates: set[date],
                               "artifact_discovered_at": artifact[3] if artifact else None,
                               "sealed": sealed})
         result[target_date] = TargetInputSeal(target_date, accepted, sealed,
-                                               source_identity_digest, seal_digest)
+                                               source_identity_digest, seal_digest,
+                                               identity_kind)
     return result
 
 
@@ -381,6 +383,8 @@ def materialize_due_outcomes(repository, *, calendar: Sequence[date],
         evidence = {"target_trade_date": anchor.target_date.isoformat(),
                     "normalized_artifact_sha256": normalized.artifact_sha256,
                     "target_source_identity_digest": source_digest,
+                    "target_source_identity_kind": (seal.source_identity_kind
+                                                     if seal else "NO_ACCEPTED_TARGET_HEAD"),
                     "target_seal_digest": seal_digest,
                     "path_input_digest": path.input_digest,
                     "path_quality_status": path.quality_status,

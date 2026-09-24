@@ -136,6 +136,42 @@ def test_bundle_verification_prefers_recorded_staging_path_over_trade_date_fallb
     assert bundle_package_relative_path(body)==Path("data/input_staging/packages/20260915/hsjday.zip")
     assert bundle_package_relative_path({"target_trade_date":"2026-09-14","package":{}})==Path("data/input_staging/packages/20260914/hsjday.zip")
 
+def test_bundle_verifier_returns_sealed_manifest_and_package_identities(tmp_path, monkeypatch):
+    import hashlib
+    import workbench_input.pipeline as pipeline
+
+    root = tmp_path / "project"
+    bundle_id = "bundle-verified"
+    receipt = root / "data/source_bundles" / bundle_id / "source_bundle.json"
+    receipt.parent.mkdir(parents=True)
+    receipt.write_text("sealed receipt", encoding="utf-8")
+    package = root / "data/input_staging/packages/20260924/hsjday.zip"
+    package.parent.mkdir(parents=True)
+    package.write_bytes(b"official package bytes")
+    metadata_root = root / "data/metadata"
+    metadata_root.mkdir(parents=True)
+    extraction_root = root / "data/extracted"
+    extraction_root.mkdir(parents=True)
+    package_sha = hashlib.sha256(package.read_bytes()).hexdigest()
+    body = {
+        "source_bundle_id": bundle_id,
+        "target_trade_date": "2026-09-24",
+        "package": {"sha256": package_sha},
+        "metadata": {"root": "data/metadata", "files": {}},
+        "extraction": {"root": "data/extracted"},
+    }
+    monkeypatch.setattr(pipeline, "_verified_bundle_body", lambda _path: (receipt, body))
+    monkeypatch.setattr(pipeline, "_validate_metadata_structure", lambda _path: {})
+    monkeypatch.setattr(pipeline, "current_a_stock_ids", lambda _value: set())
+    monkeypatch.setattr(pipeline, "read_industry_assignments", lambda _path: {})
+    monkeypatch.setattr(pipeline, "validate_extracted_day_data", lambda *_args: {"status": "PASS"})
+
+    verified = pipeline.verify_source_bundle(receipt)
+
+    assert verified["manifest_sha256"] == hashlib.sha256(receipt.read_bytes()).hexdigest()
+    assert verified["source_identity"] == {
+        "contract": "TDX_OFFICIAL_PACKAGE_SHA256_V1", "sha256": package_sha}
+
 def test_same_upload_day_uses_content_versioned_staging_paths(tmp_path):
     first=versioned_staging_paths(tmp_path,"20260915","sha-old","meta-old")
     second=versioned_staging_paths(tmp_path,"20260915","sha-new","meta-new")

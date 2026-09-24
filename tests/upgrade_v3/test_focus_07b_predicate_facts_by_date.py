@@ -4,6 +4,7 @@ import pytest
 
 from src.focus_tracker.materialize import VerifiedNormalizedSlice
 from src.focus_tracker.predicate_facts_by_date import (
+    CONTRACT_ID, RPS20_DELTA3_PROVIDER_CONTRACT,
     build_predicate_facts_by_date, reanchor_frozen_price)
 from src.focus_tracker.predicates import Tri, compile_v3_3_invalidation, evaluate
 
@@ -57,12 +58,15 @@ def test_gap_session_state_is_explicit_and_distinguishes_source_coverage():
     assert facts[days[-1]]["session_state"] == "SOURCE_UNAVAILABLE"
 
 
-def test_rps_history_is_unavailable_and_identity_mismatch_fails():
+def test_rps_history_is_unavailable_explicitly_in_v3_identity_and_identity_mismatch_fails():
     source, days = normalized()
-    facts, _ = build_predicate_facts_by_date(
+    facts, checksum = build_predicate_facts_by_date(
         normalized=source, security_id="SH.1", trade_date=days[-1],
         sessions=days[-2:], required_fields=frozenset({"rps20_delta3"}))
     assert all(item["rps20_delta3"] is None for item in facts.values())
+    assert CONTRACT_ID == "FOCUS_PREDICATE_FACTS_BY_DATE_V3"
+    assert RPS20_DELTA3_PROVIDER_CONTRACT == "RECOVERY_TURN_INVALIDATION_PROVIDER_INCOMPLETE"
+    assert len(checksum) == 64
     mismatched, days = normalized(mixed=True)
     with pytest.raises(ValueError, match="identity mismatch"):
         build_predicate_facts_by_date(

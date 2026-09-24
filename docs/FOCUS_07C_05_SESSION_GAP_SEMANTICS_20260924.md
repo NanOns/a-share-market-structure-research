@@ -15,7 +15,7 @@
 ## 实施与证据
 
 - 新模块 `src/focus_tracker/session_gap_semantics.py` 统一状态分类和 CONSECUTIVE / ROLLING / PATH 窗口门。价格路径与连续 AST 共用同一状态分类；CONSECUTIVE 证据区分 `SUSPENDED`、`DATA_GAP`、`SOURCE_UNAVAILABLE`。
-- 连续谓词的 lookback 增加 `session_state`。依赖版本升至 `FOCUS_PREDICATE_REQUIREMENTS_V2`、`FOCUS_PREDICATE_FACTS_BY_DATE_V2`、`FOCUS_INVALIDATION_AST_V2`、`FOCUS_SOURCE_PATH_CAPABILITIES_V3`；旧版本历史记录不回写。
+- 连续谓词的 lookback 增加 `session_state`。初始依赖版本为 `FOCUS_PREDICATE_REQUIREMENTS_V2`、`FOCUS_PREDICATE_FACTS_BY_DATE_V2`、`FOCUS_INVALIDATION_AST_V2`、`FOCUS_SOURCE_PATH_CAPABILITIES_V3`；Repair R1 新增按日事实中的 RPS20 provider-gap 身份并将该合同升至 `FOCUS_PREDICATE_FACTS_BY_DATE_V3`，tracked V3.3 invalidation 同步升至 `FOCUS_V33_TRACKED_INVALIDATION_V3`。旧版本历史记录不回写。
 - `FOCUS_PATH_STATE_V2` 使用显式股票/板块优先级序列解析，不依赖 JSONB object 键顺序。
 - 定向测试覆盖分类、审计字段矛盾、停牌连续门、rolling 主日历门、价格路径仅桥接内部确认停牌，以及三类 gap 对连续谓词均返回 UNKNOWN 并保留原因。组合验证共 59 项通过。
 - 2026-09-24 accepted publication 对新版 assembler 的只读全批重建：117 来源行、397 tracking key、397 observation，closure 397/397；V2 为 READY 74、PARTIAL 243、UNAVAILABLE 80。manifest `3ef5b6f4810968b6f9d68b88d0cdfd2c5ed17febf1830fe8f36ee6f6f68f5920` 与持久化 V1 manifest 不同，来源身份相同；只读操作，未改动 accepted run/head。

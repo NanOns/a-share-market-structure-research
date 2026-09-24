@@ -135,13 +135,18 @@ def publish_next_day(*, trade_date: date, expected_manifest_digest: str,
                              trade_date, run_id, decision.parent_episode_id))
                         insert_episode_facts(cur, episode_id=episode, row=rows[key])
                     else:
-                        cur.execute("""select first_trade_date from workbench.focus_episodes
+                        cur.execute("""select first_trade_date,selection_contract_family
+                                       from workbench.focus_episodes
                                        where episode_id=%s and source_family=%s
-                                       and entity_type=%s and entity_id=%s
-                                       and selection_contract_family=%s""",
+                                       and entity_type=%s and entity_id=%s""",
                                     (episode, key.source_family, key.entity_type,
-                                     key.entity_id, key.selection_contract_family))
-                        if cur.fetchone() != (context.first_trade_date,):
+                                     key.entity_id))
+                        stored_episode = cur.fetchone()
+                        if (stored_episode is None or
+                                stored_episode[0] != context.first_trade_date or
+                                (len(stored_episode) > 1 and
+                                 stored_episode[1] != key.selection_contract_family and
+                                 decision.phase != "SOURCE_MODEL_BOUNDARY")):
                             raise ValueError("continuation episode does not match stored identity")
                         if key.source_family == "V3_3_TODAY_CANDIDATE":
                             verify_episode_facts(cur, episode_id=episode,
@@ -158,6 +163,12 @@ def publish_next_day(*, trade_date: date, expected_manifest_digest: str,
                              episode, trade_date, context.source_contract_id,
                              STATE_CONTRACT, payload["parameter_set_id"], reason, run_id))
                     old = previous.previous.get(key)
+                    if old is None:
+                        old = next((value for prior_key, value in previous.previous.items()
+                                    if (prior_key.source_family, prior_key.entity_type,
+                                        prior_key.entity_id) ==
+                                    (key.source_family, key.entity_type,
+                                     key.entity_id)), None)
                     prior_membership = old.membership if old else "NONE"
                     if decision.reason != "PENDING_EPISODE_FOLLOW_UP":
                         cur.execute("""insert into workbench.focus_episode_transitions

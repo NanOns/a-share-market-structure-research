@@ -12,4 +12,4 @@
 
 `FOCUS_SESSION_GAP_SEMANTICS_V1` 将主日历会话划为 `ACTUAL_BAR`、`SUSPENDED`、`DATA_GAP`、`SOURCE_UNAVAILABLE`。CONSECUTIVE 和 ROLLING 使用固定主日历窗口，三类非实际 bar 均使涉及的判断为 UNKNOWN，并保留原因。PATH 仅允许在首尾实际行情之间桥接证据一致的确认停牌；DATA_GAP 与 SOURCE_UNAVAILABLE 不可桥接。当前 AST 尚无 ROLLING 运算符，这一规则先作为未来合同冻结。
 
-实现位置：`src/focus_tracker/path_state_v2.py`、`src/focus_tracker/session_gap_semantics.py`、`src/focus_tracker/observation.py`、`src/focus_tracker/core_input_closure.py`。源能力、谓词需求、按日事实和 AST 分别使用 `FOCUS_SOURCE_PATH_CAPABILITIES_V3`、`FOCUS_PREDICATE_REQUIREMENTS_V2`、`FOCUS_PREDICATE_FACTS_BY_DATE_V2`、`FOCUS_INVALIDATION_AST_V2`。
+实现位置：`src/focus_tracker/path_state_v2.py`、`src/focus_tracker/session_gap_semantics.py`、`src/focus_tracker/observation.py`、`src/focus_tracker/core_input_closure.py`。源能力、谓词需求、按日事实和 AST 分别使用 `FOCUS_SOURCE_PATH_CAPABILITIES_V3`、`FOCUS_PREDICATE_REQUIREMENTS_V2`、当前按日事实合同 `FOCUS_PREDICATE_FACTS_BY_DATE_V3`、`FOCUS_INVALIDATION_AST_V2`。tracked V3.3 invalidation orchestration 使用 `FOCUS_V33_TRACKED_INVALIDATION_V3`。

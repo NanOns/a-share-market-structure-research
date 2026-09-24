@@ -18,10 +18,8 @@ from src.focus_tracker.materialize import (read_full_master_calendar,
 from src.focus_tracker.member_strength import read_accepted_member_strength
 from src.focus_tracker.observation import assemble_observation
 from src.focus_tracker.path_fact_index import index_stock_path_facts
-from src.focus_tracker.predicates import Tri, compile_v3_3_invalidation, evaluate
+from src.focus_tracker.predicates import Tri, compile_v3_3_invalidation
 from src.focus_tracker.predicate_requirements import plan_predicate_requirements
-from src.focus_tracker.predicate_facts_by_date import (build_predicate_facts_by_date,
-                                                       reanchor_frozen_price)
 from src.focus_tracker.previous_reader import read_predecessor
 from src.focus_tracker.source_reader import read_accepted_sources
 from src.focus_tracker.tracking_context import (read_first_source_rows,
@@ -33,6 +31,7 @@ from src.focus_tracker.frozen_invalidation_facts import (derive_frozen_facts,
 from src.focus_tracker.sector_basket import baskets_from_accepted_publication
 from src.focus_tracker.sector_path import frozen_sector_path
 from src.focus_tracker.source_capabilities import require_runtime_fact_providers
+from src.focus_tracker.v33_invalidation import evaluate_tracked_v33_invalidation
 from src.focus_tracker.settlement import (due_outcome_episodes,
                                           due_outcome_keys,
                                           pending_followup_episodes,
@@ -172,45 +171,37 @@ def build_focus_daily_batch(*, evaluation_basis="HISTORICAL_RECONSTRUCTED",
                 "technical_fact_reason": technical_error,
                 "exited": decision.membership == "NONE",
             }
-            if key.source_family == "V3_3_TODAY_CANDIDATE":
-                predicate_facts["structure_break"] = None
-                if context.today_source_row is None:
-                    predicate_facts["invalidation_unavailable_reason"] = "SOURCE_ROW_ABSENT"
             invalidation = Tri.UNKNOWN
-            if key.source_family == "V3_3_TODAY_CANDIDATE" and context.today_source_row is not None:
+            if key.source_family == "V3_3_TODAY_CANDIDATE":
                 frozen, ast, requirements = invalidation_plans[identity]
                 first_row = first_rows.get(context.episode_id, context.today_source_row)
-                bridge = bridge_scanner_facts(
-                    evidence=context.source_facts["scanner_evidence"],
-                    security_id=key.entity_id, trade_date=trade_date)
-                predicate_facts["structure_break"] = bridge["structure_break_v3"]
+                if context.today_source_row is None:
+                    predicate_facts["invalidation_unavailable_reason"] = (
+                        "CURRENT_SCANNER_SOURCE_ROW_ABSENT")
                 sessions = calendar[max(0, today_position - requirements.required_sessions + 1):
                                     today_position + 1]
                 sessions = tuple(day for day in sessions
                                  if day >= context.first_trade_date)
-                daily_facts, fact_digest = build_predicate_facts_by_date(
-                    normalized=normalized, security_id=key.entity_id,
-                    trade_date=trade_date, sessions=sessions,
-                    required_fields=requirements.required_fields,
-                    structure_break_v3=bridge["structure_break_v3"])
-                frozen_for_evaluation = dict(frozen)
-                source_factor = first_row.source_facts.get("factor_evidence")
-                compatible_basis = (isinstance(source_factor, dict) and
-                                    source_factor.get("price_basis") ==
-                                    "TDX_NATIVE_AFFINE_QFQ")
-                for frozen_key in ("frozen_phh20", "frozen_pullback_invalid_low",
-                                   "frozen_trend_key_low"):
-                    frozen_for_evaluation[frozen_key] = (
-                        reanchor_frozen_price(
-                            normalized=normalized, security_id=key.entity_id,
-                            signal_day=context.first_trade_date,
-                            trade_date=trade_date, value=frozen.get(frozen_key))
-                        if compatible_basis else None)
-                invalidation, invalidation_evidence = evaluate(
-                    ast, trade_date=trade_date, sessions=sessions,
-                    facts_by_date=daily_facts,
-                    frozen_signal=frozen_for_evaluation, frozen_episode={})
-                predicate_facts["invalidation_fact_digest"] = fact_digest
+                invalidation, invalidation_evidence, invalidation_meta = (
+                    evaluate_tracked_v33_invalidation(
+                        ast=ast, frozen=frozen, first_row=first_row,
+                        today_source_row=context.today_source_row,
+                        scanner_evidence=(context.source_facts.get("scanner_evidence")
+                                          if context.today_source_row is not None else None),
+                        security_id=key.entity_id, trade_date=trade_date,
+                        first_trade_date=context.first_trade_date,
+                        sessions=sessions,
+                        required_fields=requirements.required_fields,
+                        normalized=normalized))
+                predicate_facts["invalidation_fact_digest"] = invalidation_meta["fact_digest"]
+                predicate_facts["invalidation_provider_contract_id"] = invalidation_meta["contract_id"]
+                predicate_facts["invalidation_provider_gaps"] = invalidation_meta["provider_gaps"]
+                if invalidation == Tri.UNKNOWN and invalidation_meta["provider_gaps"]:
+                    existing_reason = predicate_facts.get("invalidation_unavailable_reason")
+                    predicate_facts["invalidation_unavailable_reason"] = sorted({
+                        *([existing_reason] if existing_reason else []),
+                        *invalidation_meta["provider_gaps"]})
+                predicate_facts["structure_break"] = invalidation_meta["structure_break_v3"]
                 predicate_facts["invalidation_requirements"] = {
                     "contract_id": requirements.contract_id,
                     "sessions": requirements.required_sessions,

@@ -8,7 +8,10 @@ from __future__ import annotations
 import argparse
 from collections import Counter
 from datetime import date
+import json
+import os
 from pathlib import Path
+import tempfile
 
 from psycopg import sql
 
@@ -29,6 +32,29 @@ from src.workbench_db.postgres_repository import PostgresRepository
 ROOT = Path(__file__).resolve().parents[1]
 NORMALIZED_PATH = ROOT / "data/normalized/adjusted_daily.parquet"
 NORMALIZED_RELATIVE_PATH = "data/normalized/adjusted_daily.parquet"
+
+
+def _atomic_write_report(path: Path, report: dict[str, object]) -> Path:
+    target = path.resolve()
+    if not target.is_relative_to(ROOT) or target == ROOT:
+        raise ValueError("outcome report must be written inside the project")
+    target.parent.mkdir(parents=True, exist_ok=True)
+    temporary = None
+    try:
+        with tempfile.NamedTemporaryFile(
+                "w", encoding="utf-8", newline="\n", dir=target.parent,
+                prefix="." + target.name + ".", suffix=".tmp", delete=False) as handle:
+            temporary = Path(handle.name)
+            json.dump(report, handle, ensure_ascii=False, sort_keys=True,
+                      indent=2, default=str)
+            handle.write("\n")
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temporary, target)
+        return target
+    finally:
+        if temporary is not None and temporary.exists():
+            temporary.unlink()
 
 
 def run(*, trade_date: date | None = None, apply: bool = False) -> dict[str, object]:
@@ -126,6 +152,34 @@ def run(*, trade_date: date | None = None, apply: bool = False) -> dict[str, obj
             normalized=normalized, target_seals=seals,
             baskets_by_episode=baskets, target_audits=audits)
         counts = dict(sorted(Counter(item.status for item in preview).items()))
+        reason_counts = dict(sorted(Counter(
+            code for item in preview for code in item.reason_codes).items()))
+        detail = []
+        for anchor, outcome in zip(due, preview, strict=True):
+            seal = seals.get(anchor.target_date)
+            evidence = outcome.evidence
+            detail.append({
+                "episode_id": anchor.episode_id,
+                "anchor_id": anchor.anchor_id,
+                "anchor_type": anchor.anchor_type,
+                "entity_type": anchor.entity_type,
+                "entity_id": anchor.entity_id,
+                "horizon": anchor.horizon,
+                "anchor_date": anchor.anchor_date.isoformat(),
+                "target_date": anchor.target_date.isoformat(),
+                "status": outcome.status,
+                "reason_code": outcome.reason_codes[0],
+                "target_input_accepted": bool(seal and seal.accepted),
+                "target_input_sealed": bool(seal and seal.sealed),
+                "target_source_identity_kind": (seal.source_identity_kind if seal else
+                                                 "NO_ACCEPTED_TARGET_HEAD"),
+                "path_quality_status": evidence.get("path_quality_status"),
+                "target_data_state": evidence.get("target_data_state"),
+                "path_complete": bool(evidence.get("path_complete")),
+                "path_gap_count": int(evidence.get("path_gap_count", 0)),
+                "path_suspended_sessions": int(evidence.get("path_suspended_sessions", 0)),
+                "path_unverified_gap_count": int(evidence.get("path_unverified_gap_count", 0)),
+            })
         summary: dict[str, object] = {
             "mode": "APPLY" if apply else "PREVIEW",
             "status": "READY" if apply else "PREVIEW_READY",
@@ -133,7 +187,19 @@ def run(*, trade_date: date | None = None, apply: bool = False) -> dict[str, obj
             "evaluation_basis": basis,
             "normalized_artifact_sha256": artifact_sha,
             "due_anchor_horizons": len(due), "status_counts": counts,
+            "reason_code_counts": reason_counts,
+            "target_input_seal_counts": {
+                "accepted": sum(bool(row["target_input_accepted"]) for row in detail),
+                "sealed": sum(bool(row["target_input_sealed"]) for row in detail),
+                "identity_kinds": dict(sorted(Counter(
+                    row["target_source_identity_kind"] for row in detail).items())),
+            },
+            "path_quality_counts": dict(sorted(Counter(
+                str(row["path_quality_status"]) for row in detail).items())),
+            "target_data_state_counts": dict(sorted(Counter(
+                str(row["target_data_state"]) for row in detail).items())),
             "target_dates": sorted(str(day) for day in target_dates),
+            "details": detail,
             "retry_task": retry_task,
             "writes": None if apply else 0}
         if apply:
@@ -156,8 +222,13 @@ def main() -> int:
                         help="accepted Focus head date; defaults to an eligible retry task, then latest valid head")
     parser.add_argument("--apply", action="store_true",
                         help="persist the prepared batch; default mode is read-only preview")
+    parser.add_argument("--report", type=Path,
+                        help="atomically write the complete JSON report inside the project")
     args = parser.parse_args()
-    print(run(trade_date=args.trade_date, apply=args.apply))
+    report = run(trade_date=args.trade_date, apply=args.apply)
+    if args.report is not None:
+        report["report_path"] = str(_atomic_write_report(args.report, report))
+    print(json.dumps(report, ensure_ascii=False, sort_keys=True, default=str))
     return 0
 
 

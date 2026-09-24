@@ -1,0 +1,90 @@
+{
+  "auto_apply_enabled": false,
+  "baseline_commit": "507382cbebb4f6bc68b33a7d060672d6d5d65d76",
+  "baseline_commit_exact_sha_tests": {
+    "commit": "507382cbebb4f6bc68b33a7d060672d6d5d65d76",
+    "focus_07a": {
+      "passed": 31
+    },
+    "focus_07b": {
+      "passed": 28
+    },
+    "focus_07c": {
+      "passed": 18
+    },
+    "focus_regression": {
+      "deselected": 355,
+      "passed": 144
+    }
+  },
+  "contract_id": "FOCUS_07ABC_REPAIR_R1_TEST_RECEIPT_V1",
+  "evidence_commit_will_follow": true,
+  "known_unaccepted_gates": [
+    "SAME_DAY_REVISION_WRITER",
+    "ORDERED_REPLAY_WRITER",
+    "PIT_SAFE_RECOVERY_TURN_RPS20_PROVIDER",
+    "HISTORICAL_PUBLICATION_SOURCE_IDENTITY_MIGRATION",
+    "REAL_MULTI_DAY_FORWARD",
+    "LIVE_V2_PUBLICATION_READBACK"
+  ],
+  "repair_exact_sha_tests": {
+    "commit": "22d08ff92ecaa484d7ae75ef3e530c7a6b4ed4ce",
+    "compileall": "PASS",
+    "focus_07a": {
+      "command": "python -m pytest tests/upgrade_v3 -q -k focus_07a",
+      "deselected": 469,
+      "passed": 32
+    },
+    "focus_07b": {
+      "command": "python -m pytest tests/upgrade_v3 -q -k focus_07b",
+      "deselected": 472,
+      "passed": 29
+    },
+    "focus_07c": {
+      "command": "python -m pytest tests/upgrade_v3 -q -k focus_07c",
+      "deselected": 483,
+      "passed": 18
+    },
+    "focus_regression": {
+      "command": "python -m pytest tests/upgrade_v3 -q -k focus",
+      "deselected": 355,
+      "passed": 146
+    },
+    "git_diff_check": "PASS",
+    "m3_automatic_input": {
+      "command": "python -m pytest tests/upgrade_m3/test_automatic_input.py -q",
+      "passed": 16
+    }
+  },
+  "repair_tests": {
+    "focus_07a": {
+      "deselected": 469,
+      "passed": 32
+    },
+    "focus_07b": {
+      "deselected": 472,
+      "passed": 29
+    },
+    "focus_07c": {
+      "deselected": 483,
+      "passed": 18
+    },
+    "focus_regression": {
+      "deselected": 355,
+      "passed": 146
+    },
+    "m3_automatic_input": {
+      "passed": 16
+    }
+  },
+  "static_checks": {
+    "compileall": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "tested_commit_sha": "22d08ff92ecaa484d7ae75ef3e530c7a6b4ed4ce",
+  "tested_worktree": {
+    "base_commit": "507382cbebb4f6bc68b33a7d060672d6d5d65d76",
+    "content_sha256": "351163d65b2554217f4742728da739410ae0de17933468d368dd139b1864e23b",
+    "description": "working tree content digest includes tracked diff and untracked files at test time"
+  }
+}

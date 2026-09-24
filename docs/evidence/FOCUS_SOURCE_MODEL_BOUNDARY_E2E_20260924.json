@@ -1,0 +1,57 @@
+{
+  "checks": {
+    "activated_revision_head": true,
+    "both_same_day_observation_revisions_preserved": true,
+    "both_source_contract_segments_read_back": true,
+    "boundary_does_not_repeat_on_next_session": true,
+    "current_projection_tracks_same_episode": true,
+    "episode_selection_contract_preserved": true,
+    "ordered_replay_rebuilt_oldest_first": true,
+    "out_of_order_replay_is_blocked": true,
+    "replay_heads_advanced_in_order": true,
+    "same_day_revision_activated": true,
+    "source_model_boundary_observed": true,
+    "superseded_revision_anchors_hidden_from_due_settlement": true
+  },
+  "completed_at_utc": "2026-09-24T13:33:34.630473+00:00",
+  "contract_id": "FOCUS_SOURCE_MODEL_BOUNDARY_WRITER_READBACK_E2E_V1",
+  "database_is_disposable": true,
+  "episode_id": "focus-e2e-boundary-episode",
+  "focus_run_id": "focus-run-2fc52179e7df0da0b1cb551bf72ee16b",
+  "ordered_replay": {
+    "completed_at_utc": "2026-09-24T13:33:34.596596+00:00",
+    "contract_id": "FOCUS_ORDERED_REPLAY_WRITER_V1",
+    "receipt_path": "reports/focus/replay/ordered-replay-20260924T133334Z.json",
+    "remaining_replay_dates": [],
+    "results": [
+      {
+        "core_status": "ACTIVATED",
+        "planned_revision": 2,
+        "trade_date": "2026-09-25"
+      },
+      {
+        "core_status": "ACTIVATED",
+        "planned_revision": 2,
+        "trade_date": "2026-09-28"
+      }
+    ],
+    "revisions": [
+      2,
+      2
+    ],
+    "status": "PASS",
+    "trade_dates": [
+      "2026-09-25",
+      "2026-09-28"
+    ],
+    "write_count": 2
+  },
+  "revision": 3,
+  "source_contracts": [
+    "SOURCE_CONTRACT_V1",
+    "SOURCE_CONTRACT_V2"
+  ],
+  "status": "PASS",
+  "superseded_focus_run_id": "focus-run-371d3f0e1579c7b73ffdf83749b41829",
+  "trade_date": "2026-09-24"
+}

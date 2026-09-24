@@ -3,9 +3,9 @@
 | 字段 | 记录 |
 |---|---|
 | audit_item | `FOCUS_SAME_DAY_REVISION_ORDERED_REPLAY_GAP` |
-| scope | `07A` same-day source revision writer、接受 head 切换、anchor/outcome 可见性及 downstream ordered replay。 |
-| evidence | `daily_head_plan.py` 能识别 `REVISION_REQUIRED`；`run_focus_daily.py` 仍以 `FOCUS_DAILY_REVISION_REQUIRED_WRITER_PENDING` fail closed。现有 continuation writer 只接受 NEXT_DAY/revision 1。schema 的 anchor 主键全局唯一，outcome head 仅按 `(anchor_id,horizon)` 选择，没有按 Focus run revision 屏蔽被替代 revision 的 anchor/outcome。`replay.py` 只查询 backlog 并阻止普通前向发布，没有按交易日重建执行器。 |
-| acceptance_result | `OPEN / WRITER_AND_REVISION_VISIBILITY_NOT_IMPLEMENTED`。禁止用只去掉 revision=1 限制的改动放行；这会使旧 revision 的 anchors/outcomes 继续参与 accepted 结果。Auto Apply 保持 OFF，07D 保持阻断。 |
-| next_stage | 先版本化 accepted anchor/outcome revision head 或等价的 lineage 可见性模型；定义首日修订对冻结 episode facts 的处理；再构建同日原子 writer 与 D1→D2→D3 顺序 replay transaction，并用临时 PostgreSQL schema 验证旧 revision 不可见、旧行不可变、head/projection/outcome lineage 正确。 |
+| scope | `07A` same-day source revision writer、accepted head 切换、anchor/outcome 可见性及 downstream ordered replay。 |
+| evidence | `3a2f7a8d92e9313b7b2ad4b5120f9a57d82f5601` 实现同日 revision 原子写入、每 revision 独立 run/observation/anchor、按日期 head 过滤结算，以及从最早 replay date 顺序重建。临时 PostgreSQL E2E `docs/evidence/FOCUS_SOURCE_MODEL_BOUNDARY_E2E_20260924.json` 验证同日 r1→r2→r3、旧 anchor 隐藏、D2 修订后 D3/D4 失效、拒绝跳过 D3、依次重放 D3/D4 并清空 backlog。Focus 回归 153 passed。 |
+| acceptance_result | `CLOSED / REVISION_AND_ORDERED_REPLAY_E2E_PASS`。关闭代码、事务和合成数据库验收缺口；真实连续交易日 Forward gate 仍独立待验。 |
+| next_stage | 07A 按自然交易日收集真实 Forward 证据；Auto Apply 继续关闭，07D 继续等待 07A/07B 的真实阶段门。 |
 
-该项与真实多日 Forward gate 分开追踪；代码测试通过不能替代其事务和数据可见性验收。
+旧 run、观察、anchor 和 outcome 保持追加式历史；修订 head 决定当前有效版本。此审计项不替代真实多日 Forward 验收。

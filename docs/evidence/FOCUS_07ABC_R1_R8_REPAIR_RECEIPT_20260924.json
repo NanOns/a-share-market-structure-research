@@ -1,0 +1,75 @@
+{
+  "contract_id": "FOCUS_07ABC_INDEPENDENT_REPAIR_R1_R8_V1",
+  "accepted_upgrade": [
+    "FOCUS_CONTINUOUS_TRACKER_CLOSURE_PLAN_V1_1_20260924.md",
+    "docs/DAILY_FOCUS_TRACKER_FINAL_DESIGN_V2_1_20260923.md",
+    "docs/FOCUS_07D_ENTRY_GATE_20260924.md"
+  ],
+  "source_audit": "FOCUS_07A_07B_07C_INDEPENDENT_ACCEPTANCE_20260924.md",
+  "code_commit": "3a2f7a8d92e9313b7b2ad4b5120f9a57d82f5601",
+  "branch": "codex/algorithm-v3-incremental-upgrade",
+  "push": "PASS",
+  "repairs": {
+    "R1_exact_sha_regression_and_receipts": "PASS",
+    "R2_same_day_revision_writer": "PASS",
+    "R3_ordered_replay_writer": "PASS",
+    "R4_post_exit_v33_invalidation_continuation": "PASS",
+    "R5_pit_rps20_provider": "PASS",
+    "R6_due_t_plus_1_identity_and_settlement": "PASS",
+    "R7_source_model_boundary_writer_readback": "PASS",
+    "R8_compact_repository_evidence": "PASS"
+  },
+  "tests": {
+    "focus_regression": {"command": "pytest -q tests/upgrade_v3 -k focus", "passed": 153, "deselected": 355},
+    "focus_07a": {"command": "pytest -q tests/upgrade_v3 -k focus_07a", "passed": 32, "deselected": 476},
+    "focus_07b": {"command": "pytest -q tests/upgrade_v3 -k focus_07b", "passed": 34, "deselected": 474},
+    "focus_07c": {"command": "pytest -q tests/upgrade_v3 -k focus_07c", "passed": 18, "deselected": 490},
+    "m3_automatic_input": {"command": "pytest -q tests/upgrade_m3/test_automatic_input.py", "passed": 16},
+    "compileall": "PASS",
+    "git_diff_check": "PASS",
+    "temporary_postgres_e2e": {
+      "contract_id": "FOCUS_SOURCE_MODEL_BOUNDARY_WRITER_READBACK_E2E_V1",
+      "status": "PASS",
+      "checks_passed": 12,
+      "ordered_replay_dates": ["2026-09-25", "2026-09-28"],
+      "receipt": "docs/evidence/FOCUS_SOURCE_MODEL_BOUNDARY_E2E_20260924.json"
+    }
+  },
+  "production_readbacks": {
+    "source_identity_migration": {
+      "contract_id": "FOCUS_PUBLICATION_SOURCE_IDENTITY_MIGRATION_V1",
+      "receipt_digest": "1145b47f1021b83d103e9d25b7d73eaca44f2452576fd7cd5b0d40d85752478b",
+      "publication_date": "2026-09-24",
+      "package_sha256": "b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f",
+      "sealed_receipt_sha256": "fc71a9443414ac85212f503bd1f9fd4b2ca61ef2a496d5eee8279cad93cd0aba",
+      "original_publication_row_mutated": false
+    },
+    "t_plus_1_settlement": {
+      "trade_date": "2026-09-24",
+      "due": 310,
+      "accepted_and_sealed": 310,
+      "source_identity_kind": "SOURCE_SHA256_MIGRATED",
+      "status_observed": 310,
+      "pending": 0,
+      "reason_code": "COMPLETE_ACTUAL_PATH",
+      "path_quality": {"READY": 293, "CLOSE_NAV_ONLY": 17},
+      "batch_id": "focus-settlement-13c0831a94409941aad4c07bd6175bba",
+      "input_digest": "13c0831a94409941aad4c07bd6175bbaef6a4b172653c6919ff6c78b46464372",
+      "summary_receipt": "docs/evidence/FOCUS_20260924_OUTCOME_SETTLEMENT_SUMMARY.json",
+      "row_level_receipt_local": "reports/focus/settlement/FOCUS_20260924_OUTCOME_SETTLEMENT_APPLIED.json"
+    },
+    "versioned_migrations": {
+      "frozen_invalidation_facts": {"episodes": 351, "fact_rows": 1404, "mode": "APPLIED"},
+      "source_model_segments_v2": {"segments": 397, "selection_contracts_bound": 397, "mode": "APPLIED"}
+    }
+  },
+  "stage_acceptance": {
+    "repair_items_R1_R8": "CLOSED",
+    "07A": "CODE_AND_TRANSACTION_CLOSURE_PASS / REAL_MULTI_DAY_FORWARD_PENDING",
+    "07B": "IMPLEMENTATION_AND_FAIL_CLOSED_PROVIDER_PASS / REAL_FORWARD_AND_PROVIDER_COVERAGE_PENDING",
+    "07C": "CONTRACT_AND_CODE_PASS / LIVE_V2_PUBLICATION_READBACK_PENDING",
+    "auto_apply_enabled": false,
+    "07D": "BLOCKED_PENDING_07A_07B_REAL_FORWARD_GATES"
+  },
+  "completed_at_utc": "2026-09-24T13:33:34.630473+00:00"
+}

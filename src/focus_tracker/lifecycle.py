@@ -33,6 +33,18 @@ class Previous:
 
 
 @dataclass(frozen=True)
+class EpisodeTrackingRef:
+    """Exact episode that still requires a daily follow-up observation."""
+    key: FocusKey
+    episode_id: str
+    first_trade_date: date
+
+    def __post_init__(self) -> None:
+        if not self.episode_id:
+            raise ValueError("follow-up episode identity missing")
+
+
+@dataclass(frozen=True)
 class Decision:
     key: FocusKey
     membership: str

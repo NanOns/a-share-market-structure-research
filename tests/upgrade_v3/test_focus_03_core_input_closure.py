@@ -71,6 +71,16 @@ def test_missing_or_duplicate_observation_blocks_core_batch():
                                     observations=observations * 2)
 
 
+def test_pending_followup_not_covered_by_plan_blocks_publication():
+    manifest, sources, plan, stocks, observations = _batch()
+    other = FocusKey("V3_SHORTLIST_STOCK", "STOCK", "SH.600002", "V3_SHORTLIST")
+    bad_plan = replace(plan, pending_followup_keys=(other,))
+    with pytest.raises(ValueError, match="pending follow-up entity missing"):
+        validate_core_input_closure(manifest=manifest, sources=sources,
+                                    plan=bad_plan, stock_facts=stocks,
+                                    observations=observations)
+
+
 def test_changed_source_or_stock_digest_blocks_core_batch():
     manifest, sources, plan, stocks, observations = _batch()
     bad_source = replace(sources.rows[0], source_item_digest="0" * 64)

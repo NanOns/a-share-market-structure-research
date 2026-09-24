@@ -17,6 +17,7 @@ from typing import Any
 
 import duckdb
 import psycopg
+import pyarrow.parquet as pq
 from psycopg import sql
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -119,6 +120,55 @@ def register_bundle_artifacts(pg: psycopg.Connection[Any], bundle_dir: Path, exp
         )
         count += 1
     return count
+
+
+def register_normalized_artifact(pg: psycopg.Connection[Any], trade_date: date) -> dict[str, Any]:
+    """Bind the current normalized file to PG only when its cutoff is this publication day."""
+    path = (ROOT / "data/normalized/adjusted_daily.parquet").resolve(strict=True)
+    if ROOT not in path.parents or not path.is_file():
+        raise RuntimeError("NORMALIZED_ARTIFACT_PATH_INVALID")
+    metadata = pq.read_metadata(path).metadata or {}
+    cutoff = metadata.get(b"cutoff_date", b"").decode("ascii", errors="replace")
+    expected_cutoff = trade_date.strftime("%Y%m%d")
+    if cutoff != expected_cutoff:
+        return {"status": "SKIPPED_CUTOFF_MISMATCH", "cutoff_date": cutoff,
+                "trade_date": str(trade_date)}
+    hasher = hashlib.sha256()
+    with path.open("rb") as handle:
+        for block in iter(lambda: handle.read(4 * 1024 * 1024), b""):
+            hasher.update(block)
+    sha256 = hasher.hexdigest()
+    relative_path = "data/normalized/adjusted_daily.parquet"
+    artifact_id = hashlib.sha256(
+        f"workspace|{relative_path}|{sha256}".encode("utf-8")).hexdigest()
+    with pg.cursor() as cur:
+        cur.execute(
+            "update workbench_meta.artifact_catalog set availability='STALE_REFERENCE' "
+            "where managed_root_id='PROJECT_ROOT' and relative_path=%s "
+            "and availability='AVAILABLE' and sha256<>%s",
+            (relative_path, sha256),
+        )
+        cur.execute(
+            """insert into workbench_meta.artifact_catalog
+               (artifact_id,category,managed_root_id,relative_path,sha256,size_bytes,
+                artifact_contract,availability,migration_class,migration_source_path,discovered_at)
+               values (%s,'NORMALIZED_PARQUET','PROJECT_ROOT',%s,%s,%s,
+                       'ADJUSTED_DAILY_CONTRACT_V1','AVAILABLE','RETAIN_EXTERNAL',%s,now())
+               on conflict(artifact_id) do update set sha256=excluded.sha256,
+                 size_bytes=excluded.size_bytes,availability='AVAILABLE',
+                 migration_source_path=excluded.migration_source_path,
+                 discovered_at=excluded.discovered_at""",
+            (artifact_id, relative_path, sha256, path.stat().st_size, str(path)),
+        )
+        cur.execute(
+            "select sha256,availability from workbench_meta.artifact_catalog where artifact_id=%s",
+            (artifact_id,),
+        )
+        if cur.fetchone() != (sha256, "AVAILABLE"):
+            raise RuntimeError("NORMALIZED_ARTIFACT_CATALOG_READBACK_FAILED")
+    return {"status": "REGISTERED", "artifact_id": artifact_id,
+            "relative_path": relative_path, "sha256": sha256,
+            "size_bytes": path.stat().st_size, "cutoff_date": cutoff}
 
 
 def fetch_rows(duck: duckdb.DuckDBPyConnection, table: str, columns: list[str], predicate: str, params: list[Any]) -> list[tuple[Any, ...]]:
@@ -361,6 +411,7 @@ def main() -> int:
                 if int(cur.fetchone()[0]) != int(bundle_row[4]):
                     raise RuntimeError("PG V3.3 candidate count mismatch after copy")
         copy_rows(duck, pg, "publication_heads", "trade_date=?", [trade_date], report["tables"], upsert_head=True)
+        report["normalized_artifact"] = register_normalized_artifact(pg, trade_date)
 
         # Hard verification runs before commit; rollback on any mismatch.
         with pg.cursor() as cur:

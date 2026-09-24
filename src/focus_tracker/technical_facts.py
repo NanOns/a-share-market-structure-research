@@ -12,6 +12,8 @@ from workbench_analysis.technical import (TECHNICAL_RESULT_COLUMNS,
                                           _technical_hash)
 
 from .contracts import digest
+from .technical_identity import (CONTRACT_ID as CANONICAL_IDENTITY_CONTRACT,
+                                 canonical_technical_identity)
 
 
 CONTRACT_ID = "FOCUS_ACCEPTED_TECHNICAL_FACTS_V1"
@@ -102,8 +104,30 @@ def read_accepted_technical(repository, *, publication_id: str,
         row["quality_codes"] = _json_text(row["quality_codes"])
         row["basis_json"] = _json_text(row["basis_json"])
     actual_hash, actual_count, _ = _technical_hash(records)
-    if actual_count != int(expected_count) or actual_hash != str(value_hash):
-        raise ValueError("accepted technical value hash mismatch")
+    if actual_count != int(expected_count):
+        raise ValueError("accepted technical row count mismatch")
+    accepted_hash = str(value_hash)
+    identity_contract = None
+    if actual_hash != accepted_hash:
+        canonical_hash, logical_hash, canonical_count = canonical_technical_identity(records)
+        with repository.connection.cursor() as cur:
+            cur.execute("select to_regclass(%s)",
+                        (f"{repository.schema}.focus_technical_identity_migrations",))
+            if cur.fetchone()[0] is None:
+                raise ValueError("accepted technical canonical migration unavailable")
+            cur.execute(sql.SQL(
+                "select legacy_hash,canonical_hash,canonical_logical_hash,row_count,"
+                "migration_contract_id from {}.focus_technical_identity_migrations "
+                "where source_object_id=%s").format(schema), (object_id,))
+            migration = cur.fetchone()
+        if (migration is None or str(migration[0]) != accepted_hash or
+                str(migration[1]) != canonical_hash or
+                str(migration[2]) != logical_hash or
+                int(migration[3]) != canonical_count or
+                migration[4] != CANONICAL_IDENTITY_CONTRACT):
+            raise ValueError("accepted technical canonical identity mismatch")
+        accepted_hash = canonical_hash
+        identity_contract = CANONICAL_IDENTITY_CONTRACT
     current_rows = [row for row in records if row["trade_date"] == trade_date]
     facts: dict[str, TechnicalFact] = {}
     for row in current_rows:
@@ -114,26 +138,28 @@ def read_accepted_technical(repository, *, publication_id: str,
         quality = "READY" if row["validity"] == "VALID" and not quality_codes else "PARTIAL"
         evidence = {"contract_id": CONTRACT_ID, "snapshot_id": str(snapshot_id),
                     "slice_id": str(slice_id), "result_object_id": str(object_id),
-                    "value_hash": str(value_hash), "trade_date": trade_date,
+                    "value_hash": accepted_hash, "trade_date": trade_date,
                     "security_id": str(row["security_id"]),
                     "technical_contract_id": str(row["contract_id"]),
                     "price_basis": str(row["price_basis"]),
                     "adjusted_close": row["adj_close"], "ma5": row["ma5"],
                     "ma20": row["ma20"], "ret5": row["ret5"],
                     "validity": row["validity"], "quality_codes": quality_codes}
+        if identity_contract:
+            evidence["identity_contract_id"] = identity_contract
         fact = TechnicalFact(str(row["security_id"]), trade_date,
                              str(row["contract_id"]), str(row["price_basis"]),
                              row["adj_close"], row["ma5"], row["ma20"], row["ret5"],
-                             quality, str(object_id), str(value_hash), digest(evidence))
+                             quality, str(object_id), accepted_hash, digest(evidence))
         if fact.security_id in facts:
             raise ValueError("duplicate accepted technical daily fact")
         facts[fact.security_id] = fact
     return AcceptedTechnical(str(snapshot_id), str(slice_id), str(object_id),
-                             str(value_hash), int(expected_count), facts,
+                             accepted_hash, int(expected_count), facts,
                              digest({"contract_id": CONTRACT_ID,
                                      "snapshot_id": str(snapshot_id),
                                      "result_object_id": str(object_id),
-                                     "value_hash": str(value_hash),
+                                     "value_hash": accepted_hash,
                                      "trade_date": trade_date,
                                      "facts": [(sid, fact.fact_digest)
                                                for sid, fact in sorted(facts.items())]}))

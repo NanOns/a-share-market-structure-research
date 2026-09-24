@@ -22,14 +22,13 @@ class ResolvedBaskets:
 def resolve_baskets(*, repository, plan: PlannedDay,
                     contemporary: Mapping[str, SectorBasket]) -> ResolvedBaskets:
     """An old episode keeps its first accepted basket across later revisions."""
-    decisions = {(item.key.source_family, item.key.entity_type, item.key.entity_id): item
-                 for item in plan.decisions}
+    decisions = plan.episode_tracking or plan.decisions
     frozen: dict[str, SectorBasket] = {}
     current: dict[str, SectorBasket] = {}
-    for key in plan.tracking_keys:
+    for decision in decisions:
+        key = decision.key
         if key.entity_type != "SECTOR":
             continue
-        decision = decisions[(key.source_family, key.entity_type, key.entity_id)]
         if decision.episode_id is None:
             raise ValueError("tracked sector has no episode")
         if decision.phase in NEW_EPISODE_PHASES:

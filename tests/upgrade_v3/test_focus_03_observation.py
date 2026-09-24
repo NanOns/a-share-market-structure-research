@@ -35,6 +35,7 @@ def test_six_dimensions_keep_missing_factor_as_unknown():
                 "CANDIDATE", "NEW", "UNKNOWN", "ACTIVE_FOCUS",
                 "DATA_UNAVAILABLE", ())
     assert result.evidence["path_predicates"]["STRUCTURE_DAMAGED"] == "UNKNOWN"
+    assert result.evidence["validity_capability"]["status"] == "UNAVAILABLE"
 
 
 def test_nonapplicable_structure_branch_is_explicit():
@@ -43,13 +44,18 @@ def test_nonapplicable_structure_branch_is_explicit():
                                   predicate_facts={}, invalidation=Tri.UNKNOWN)
     assert result.evidence["path_predicates"]["STRUCTURE_DAMAGED"] == "NOT_APPLICABLE"
     assert result.validity_state == "UNKNOWN"
+    assert result.evidence["validity_capability"]["status"] == "NOT_APPLICABLE"
 
 
 def test_price_fact_cannot_be_overridden_by_predicate_inputs():
     result = assemble_observation(decision=_decision(), source_contract_id=V33,
                                   stock_fact=_fact("DATA_UNAVAILABLE"),
                                   predicate_facts={"has_actual_bar": True,
-                                                   "close": "99", "mfe": "1"},
+                                                   "close": "99", "mfe": "1",
+                                                   "invalidation_evidence": {
+                                                       "contract_id": "FOCUS_INVALIDATION_AST_V2",
+                                                       "result": "FALSE",
+                                                       "ast_digest": "a" * 64}},
                                   invalidation=Tri.FALSE)
     assert result.current_path_state == "DATA_UNAVAILABLE"
     assert result.evidence["predicate_facts"]["close"] is None
@@ -71,3 +77,10 @@ def test_unknown_high_priority_keeps_known_lower_priority_evidence():
     assert result.current_path_state == "DATA_UNAVAILABLE"
     assert result.evidence["path_predicates"]["STRUCTURE_DAMAGED"] == "UNKNOWN"
     assert result.evidence["path_predicates"]["EXITED_FOLLOW_UP"] == "TRUE"
+    path_v2 = result.evidence["path_state_v2"]
+    assert path_v2["contract_id"] == "FOCUS_PATH_STATE_V2"
+    assert path_v2["resolved_primary_state"] is None
+    assert path_v2["best_confirmed_state"] == "EXITED_FOLLOW_UP"
+    assert path_v2["higher_priority_unresolved"] == ["STRUCTURE_DAMAGED"]
+    assert path_v2["confirmed_secondary_states"] == ["EXITED_FOLLOW_UP"]
+    assert path_v2["path_resolution"] == "PARTIAL"

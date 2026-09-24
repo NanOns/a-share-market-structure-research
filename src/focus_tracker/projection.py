@@ -9,7 +9,7 @@ from psycopg import sql
 from .contracts import SOURCE_AUTHORITY_CONTRACT, digest
 
 
-CONTRACT_ID = "FOCUS_CURRENT_PROJECTION_REBUILD_V1"
+CONTRACT_ID = "FOCUS_CURRENT_PROJECTION_REBUILD_V2"
 COMPLETED = frozenset({"FOLLOW_UP_COMPLETED"})
 
 
@@ -63,7 +63,9 @@ def projection_rows_for_run(repository, focus_run_id: str) -> tuple[ProjectionRo
             "join {}.focus_episodes e using(episode_id) "
             "where o.focus_run_id=%s and o.trade_date=%s "
             "and o.evaluation_mode='AS_RECORDED' "
-            "order by e.source_family,e.entity_type,e.entity_id").format(schema, schema),
+            "order by e.source_family,e.entity_type,e.entity_id,"
+            "(o.source_membership_state not in ('NONE','UNKNOWN')) desc,"
+            "e.first_trade_date desc,e.episode_id desc").format(schema, schema),
             (focus_run_id, trade_date))
         observations = cur.fetchall()
     seen: set[tuple[str, str, str]] = set()
@@ -71,8 +73,11 @@ def projection_rows_for_run(repository, focus_run_id: str) -> tuple[ProjectionRo
     for (family, entity_type, entity_id, episode, membership, phase, validity,
          followup, path, revision, state_contract, fact_digest) in observations:
         identity = (str(family), str(entity_type), str(entity_id))
+        # A reentry day can contain both the old POST_EXIT episode and its new
+        # ACTIVE episode. The mutable entity projection follows the active one;
+        # the immutable observations for both episodes remain in history.
         if identity in seen:
-            raise ValueError("duplicate projection source observation")
+            continue
         seen.add(identity)
         active_episode = str(episode) if str(membership) not in {"NONE", "UNKNOWN"} else None
         evidence = {"contract_id": CONTRACT_ID, "run_id": focus_run_id,

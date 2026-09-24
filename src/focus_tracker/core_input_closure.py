@@ -5,15 +5,15 @@ from dataclasses import dataclass
 from typing import Sequence
 
 from .contracts import FocusKey, digest, source_item_digest
-from .daily_plan import PlannedDay
-from .input_manifest import DailyInputManifest
+from .daily_plan import PlannedDay, require_tracking_coverage
+from .input_manifest import CONTRACT_ID as MANIFEST_CONTRACT, DailyInputManifest
 from .materialize import StockFact
 from .observation import Observation
 from .source_reader import AcceptedSources
 from .states import CONTRACT_ID as PATH_CONTRACT
 
 
-CONTRACT_ID = "FOCUS_CORE_INPUT_CLOSURE_V1"
+CONTRACT_ID = "FOCUS_CORE_INPUT_CLOSURE_V2"
 
 
 @dataclass(frozen=True)
@@ -48,7 +48,7 @@ def validate_core_input_closure(*, manifest: DailyInputManifest,
             or payload.get("tracking_plan_digest") != plan.plan_digest
             or digest(payload) != manifest.sha256):
         raise ValueError("core manifest authority/digest mismatch")
-    if payload.get("contract_id") != "FOCUS_DAILY_INPUT_MANIFEST_V1":
+    if payload.get("contract_id") != MANIFEST_CONTRACT:
         raise ValueError("unknown core manifest contract")
     source_keys = [row.key for row in sources.rows]
     if len(set(source_keys)) != len(source_keys):
@@ -69,18 +69,27 @@ def validate_core_input_closure(*, manifest: DailyInputManifest,
         for family, items in sorted(family_rows.items())}
     if payload.get("source_family_rows") != expected_families:
         raise ValueError("core source family count/digest mismatch")
-    if not set(source_keys) <= set(plan.tracking_keys):
-        raise ValueError("source row missing from tracking union")
-    decision_by_key = {item.key: item for item in plan.decisions}
-    if len(decision_by_key) != len(plan.decisions) or not set(plan.tracking_keys) <= set(decision_by_key):
-        raise ValueError("core lifecycle decision set mismatch")
-    by_key: dict[FocusKey, Observation] = {}
+    require_tracking_coverage(
+        tracking_keys=plan.tracking_keys, source_keys=set(source_keys),
+        pending_followup=set(plan.pending_followup_keys),
+        due_outcomes=set(plan.due_outcome_keys))
+    decisions = plan.episode_tracking or plan.decisions
+    decision_by_episode = {(item.key, item.episode_id): item for item in decisions}
+    expected_episodes = set(decision_by_episode)
+    if len(expected_episodes) != len(decisions):
+        raise ValueError("duplicate core episode tracking identity")
+    by_episode: dict[tuple[FocusKey, str], Observation] = {}
     for item in observations:
-        if item.key in by_key:
-            raise ValueError("duplicate core observation key")
-        by_key[item.key] = item.observation
-    if set(by_key) != set(plan.tracking_keys):
-        raise ValueError("core observation set differs from tracking union")
+        identity = (item.key, item.observation.episode_id)
+        if identity in by_episode:
+            raise ValueError("duplicate core observation episode identity")
+        by_episode[identity] = item.observation
+    if set(by_episode) != expected_episodes:
+        raise ValueError("core observation set differs from episode tracking union")
+    require_tracking_coverage(
+        tracking_keys=tuple({key for key, _ in by_episode}), source_keys=set(source_keys),
+        pending_followup=set(plan.pending_followup_keys),
+        due_outcomes=set(plan.due_outcome_keys))
     expected_paths = {(request.security_id, request.start_trade_date)
                       for request in plan.stock_path_requests}
     facts_by_path = {(fact.security_id, fact.start_trade_date): fact
@@ -101,23 +110,34 @@ def validate_core_input_closure(*, manifest: DailyInputManifest,
         stock_digests.setdefault(fact.security_id, set()).add(fact.input_digest)
     basket_digests = dict(payload.get("entry_baskets", []))
     strength_digests = dict(payload.get("member_strength", []))
-    if (set(basket_digests) != set(plan.sector_ids) or
-            set(strength_digests) != set(plan.sector_ids)):
+    sector_episode_ids = {item.episode_id for item in decisions
+                          if item.key.entity_type == "SECTOR" and item.episode_id}
+    if (set(basket_digests) != sector_episode_ids or
+            set(strength_digests) != sector_episode_ids):
         raise ValueError("core sector fact set differs from tracking plan")
-    for key, observation in by_key.items():
-        decision = decision_by_key[key]
+    for (key, episode), observation in by_episode.items():
+        decision = decision_by_episode[(key, episode)]
         evidence_key = observation.evidence.get("key")
         if (decision.episode_id is None or
                 observation.episode_id != decision.episode_id or
                 observation.source_membership_state != decision.membership or
                 observation.membership_phase != decision.phase or
                 observation.evidence.get("path_contract_id") != PATH_CONTRACT or
-                observation.evidence.get("contract_id") != "FOCUS_OBSERVATION_ASSEMBLY_V1" or
+                observation.evidence.get("contract_id") != "FOCUS_OBSERVATION_ASSEMBLY_V2" or
+                observation.evidence.get("path_state_v2", {}).get("contract_id") !=
+                "FOCUS_PATH_STATE_V2" or
                 evidence_key != {"family": key.source_family,
                                  "entity_type": key.entity_type,
                                  "entity_id": key.entity_id} or
                 digest(observation.evidence) != observation.fact_digest):
             raise ValueError("core observation identity/digest mismatch")
+        path_v2 = observation.evidence["path_state_v2"]
+        if (path_v2.get("predicate_evidence") != observation.evidence.get("path_predicates") or
+                path_v2.get("path_resolution") not in
+                {"READY", "PARTIAL", "AMBIGUOUS", "UNAVAILABLE"} or
+                (path_v2.get("path_resolution") != "READY" and
+                 path_v2.get("resolved_primary_state") is not None)):
+            raise ValueError("core path-state-v2 evidence mismatch")
         price_digest = observation.evidence.get("price_input_digest")
         if key.entity_type == "STOCK":
             if price_digest not in stock_digests.get(key.entity_id, set()):
@@ -126,17 +146,17 @@ def validate_core_input_closure(*, manifest: DailyInputManifest,
             predicate_facts = observation.evidence.get("predicate_facts")
             if (price_digest is not None or
                     not isinstance(predicate_facts, dict) or
-                    predicate_facts.get("basket_digest") != basket_digests.get(key.entity_id) or
-                    predicate_facts.get("strength_fact_digest") != strength_digests.get(key.entity_id)):
+                    predicate_facts.get("basket_digest") != basket_digests.get(episode) or
+                    predicate_facts.get("strength_fact_digest") != strength_digests.get(episode)):
                 raise ValueError("core sector observation fact identity mismatch")
     closure_payload = {"contract_id": CONTRACT_ID,
                        "manifest_sha256": manifest.sha256,
                        "source_identity_digest": sources.source_identity_digest,
                        "plan_digest": plan.plan_digest,
                        "observations": [(key.source_family, key.entity_type,
-                                         key.entity_id, by_key[key].episode_id,
-                                         by_key[key].fact_digest)
-                                        for key in sorted(by_key)]}
+                                         key.entity_id, episode,
+                                         by_episode[(key, episode)].fact_digest)
+                                        for key, episode in sorted(by_episode)]}
     return CoreInputClosure(sources.trade_date.isoformat(), len(sources.rows),
                             len(observations), len(stock_facts),
                             digest(closure_payload))

@@ -9,6 +9,7 @@ from .daily_plan import PlannedDay
 from .input_manifest import DailyInputManifest, require_release_ready
 from .replay import require_replay_clear
 from .source_reader import AcceptedSources
+from .source_capabilities import applicable_path_predicates
 
 
 CONTRACT_ID = "FOCUS_CORE_PUBLICATION_GATE_V1"
@@ -52,5 +53,7 @@ def require_core_publication_ready(*, manifest: DailyInputManifest,
         raise ValueError("Focus activation requires the versioned dependency lock")
     if not sources.publication_id or not sources.source_identity_digest:
         raise ValueError("accepted publication authority identity unavailable")
+    for row in sources.rows:
+        applicable_path_predicates(row.key.source_family, row.source_contract_id)
     if repository is not None:
         require_replay_clear(repository, before_trade_date=expected_trade_date)

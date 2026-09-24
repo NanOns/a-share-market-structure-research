@@ -1,4 +1,4 @@
-"""FOCUS_INVALIDATION_AST_V1 three-valued predicate evaluator."""
+"""FOCUS_INVALIDATION_AST_V2 three-valued predicate evaluator."""
 from __future__ import annotations
 
 import math
@@ -8,9 +8,11 @@ from enum import Enum
 from typing import Any, Mapping, Sequence
 
 from .contracts import digest
+from .session_gap_semantics import (CONTRACT_ID as SESSION_GAP_CONTRACT,
+                                    SessionState, state_from_predicate_facts)
 
 
-CONTRACT_ID = "FOCUS_INVALIDATION_AST_V1"
+CONTRACT_ID = "FOCUS_INVALIDATION_AST_V2"
 
 
 def compile_v3_3_invalidation(category: str, signal_facts: Mapping[str, Any]) -> dict[str, Any]:
@@ -137,15 +139,18 @@ def evaluate(ast: Mapping[str, Any], *, trade_date: date,
                                      "reason": "INSUFFICIENT_CALENDAR_SESSIONS"}
             children = []
             for day in window:
-                if facts_by_date.get(day, {}).get("has_actual_bar") is not True:
+                session_state = state_from_predicate_facts(facts_by_date.get(day, {}))
+                if session_state != SessionState.ACTUAL_BAR:
                     children.append({"date": day.isoformat(), "result": Tri.UNKNOWN.value,
-                                     "reason": "NO_ACTUAL_BAR"})
+                                     "reason": session_state.value})
                 else:
                     _, evidence = visit(node["predicate"], day)
                     children.append(evidence)
             # A missing actual bar makes the complete consecutive predicate U,
             # even if another day would make ordinary AND false.
-            if any(child.get("reason") == "NO_ACTUAL_BAR" for child in children):
+            missing_states = {state.value for state in SessionState
+                              if state != SessionState.ACTUAL_BAR}
+            if any(child.get("reason") in missing_states for child in children):
                 result = Tri.UNKNOWN
             else:
                 result = tri_and([Tri(child["result"]) for child in children])
@@ -183,5 +188,6 @@ def evaluate(ast: Mapping[str, Any], *, trade_date: date,
 
     result, evidence = visit(ast, trade_date)
     evidence["contract_id"] = CONTRACT_ID
+    evidence["session_gap_contract_id"] = SESSION_GAP_CONTRACT
     evidence["ast_digest"] = digest(dict(ast))
     return result, evidence

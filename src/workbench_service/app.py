@@ -46,6 +46,7 @@ from workbench_service.research_context import ResearchContextError, ResearchCon
 from workbench_service.research_queries import ResearchQueryError, ResearchQueries
 from workbench_service.research_builder import build_latest_research_run
 from workbench_service.compute_workspace import prepare_compute_workspace
+from workbench_service.focus_daily_stage import run_after_pg_sync
 from workbench_service.today_research_bundle import TodayResearchBundleReader
 from workbench_service.turnover_enrichment_service import TurnoverEnrichmentService
 from workbench_service.legacy_feature_matrix import build_legacy_matrix
@@ -1805,7 +1806,7 @@ def make_handler(root,db):
   if publisher and task.get('status') not in ('SUCCESS','FAILED') and task.get('phase') not in ('ANALYSIS_BINDING','READY','FAILED'):
    child=publisher.status(task['publication_job_id'])
    task.update(status=child['status'],progress=child.get('progress',{}),updated_at_utc=child.get('updated_at_utc'))
-  return {'job_id':job_id,'status':task['status'],'details':{'trade_date':task.get('trade_date'),'source_bundle_id':task.get('source_bundle_id')},'progress':task.get('progress',{}),'updated_at_utc':task.get('updated_at_utc')}
+  return {'job_id':job_id,'status':task['status'],'details':{'trade_date':task.get('trade_date'),'source_bundle_id':task.get('source_bundle_id'),'focus_stage':task.get('focus_stage')},'progress':task.get('progress',{}),'updated_at_utc':task.get('updated_at_utc')}
  def active_job_items():
   active=[]
   for job_id,item in daily_jobs.items():
@@ -1914,6 +1915,17 @@ def make_handler(root,db):
    if sync_payload.get('status')!='FULL_PASS':
     task.update(status='FAILED',progress={'status':'POSTGRES_SYNC_FAILED','error':sync_payload.get('error') or 'PG 同步未通过硬校验'});return
    task['postgres_sync']=sync_payload
+   if body.get('build_research_v3'):
+    task.update(progress={'status':'BUILDING_FOCUS_TRACKER'})
+    try:
+     focus_stage=run_after_pg_sync(
+      root=Path(root),trade_date=trade_date.isoformat(),
+      publication_id=str(published.get('publication_id')),
+      sync_report=sync_payload)
+    except Exception as exc:
+     focus_stage={'contract_id':'FOCUS_P12_POST_SYNC_STAGE_V1','status':'FAILED',
+                  'reason':type(exc).__name__,'core_status':'UNKNOWN'}
+    task['focus_stage']=focus_stage
   task.update(
    v3_report=v3_report,
    phase='READY',
@@ -1929,6 +1941,7 @@ def make_handler(root,db):
     'mainline_snapshot_id':mainline_result.get('snapshot_id'),
     'research_run_id':research_result.get('run_id'),
     'research_v3_3_bundle_digest':research_v3_3_result.get('bundle_digest'),
+    'focus_stage':task.get('focus_stage'),
    },
   )
  def run_today_guarded(job_id,body):

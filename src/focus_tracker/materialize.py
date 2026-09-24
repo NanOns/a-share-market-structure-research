@@ -13,13 +13,16 @@ import pyarrow.compute as pc
 import pyarrow.dataset as ds
 
 from .contracts import canonical_bytes, digest
-from .price_path import path_metrics, reanchor_from_frozen_coefficients
+from .price_path import (ACTUAL_TRADED_CONTRACT_ID, path_metrics,
+                         reanchor_actual_traded_path)
+from .session_gap_semantics import CONTRACT_ID as SESSION_GAP_CONTRACT
 
 
-CONTRACT_ID = "FOCUS_OBSERVATION_INPUT_V1"
+CONTRACT_ID = "FOCUS_OBSERVATION_INPUT_V2"
 COLUMNS = ["security_id", "date", "raw_open", "raw_high", "raw_low", "raw_close",
            "raw_volume", "raw_amount", "qfq_mul", "qfq_add", "adjustment_status",
-           "adjustment_version", "has_actual_bar", "is_master_session", "missing_state"]
+           "adjustment_version", "has_actual_bar", "is_master_session", "missing_state",
+           "trade_status_known", "is_synthetic_fill"]
 
 
 @dataclass(frozen=True)
@@ -37,6 +40,11 @@ class StockFact:
     mdd_close: str | None
     adjustment_version: str | None
     input_digest: str
+    gap_count: int = 0
+    suspended_sessions: int = 0
+    unverified_gap_count: int = 0
+    suspended_dates: tuple[date, ...] = ()
+    unverified_gap_dates: tuple[date, ...] = ()
 
 
 @dataclass(frozen=True, order=True)
@@ -170,21 +178,35 @@ def stock_paths_from_slice(*, normalized: VerifiedNormalizedSlice, trade_date: d
         row_input = {"contract": CONTRACT_ID, "security_id": sid,
                      "trade_date": trade_date, "start_trade_date": start,
                      "calendar": sessions, "normalized_sha256": actual_sha,
+                     "session_gap_contract_id": SESSION_GAP_CONTRACT,
                      "rows": [by_security[sid].get(day) for day in sessions]}
+        traded = reanchor_actual_traded_path(sessions=sessions, rows=by_security[sid])
+        row_input["path_contract_id"] = ACTUAL_TRADED_CONTRACT_ID
+        row_input["actual_sessions"] = traded.actual_sessions
+        row_input["suspended_sessions"] = traded.suspended_sessions
+        row_input["unverified_gap_sessions"] = traded.unverified_gap_sessions
         row_digest = digest(row_input)
-        path = reanchor_from_frozen_coefficients(sessions=sessions, rows=by_security[sid])
+        path = traded.bars
         if path is None:
             facts.append(StockFact(sid, trade_date, start, "DATA_UNAVAILABLE",
                                    missing_state, None, None, None, None, None, None,
                                    str(today.get("adjustment_version")) if today else None,
-                                   row_digest))
+                                   row_digest, traded.gap_count,
+                                   len(traded.suspended_sessions),
+                                   len(traded.unverified_gap_sessions),
+                                   traded.suspended_sessions,
+                                   traded.unverified_gap_sessions))
             continue
         metrics = path_metrics(path)
         facts.append(StockFact(sid, trade_date, start, "READY", "BAR",
                                str(path[-1].close), str(metrics["return_close"]),
                                str(metrics["mfe"]), str(metrics["mae"]),
                                str(metrics["drawdown_current"]), str(metrics["mdd_close"]),
-                               str(today.get("adjustment_version")), row_digest))
+                               str(today.get("adjustment_version")), row_digest,
+                               traded.gap_count, len(traded.suspended_sessions),
+                               len(traded.unverified_gap_sessions),
+                               traded.suspended_sessions,
+                               traded.unverified_gap_sessions))
     return tuple(facts)
 
 

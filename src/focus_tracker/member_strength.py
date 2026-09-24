@@ -77,9 +77,11 @@ def read_accepted_member_strength(repository, *, trade_date: date,
             "from {}.member_state_result_rows "
             "where result_object_id=%s and trade_date=%s and sector_id=any(%s) "
             "order by sector_id,security_id").format(schema),
-            (result_id, trade_date, sorted(baskets)))
+            (result_id, trade_date, sorted({basket.sector_id
+                                            for basket in baskets.values()})))
         source_rows = cur.fetchall()
-    grouped: dict[str, dict[str, bool | None]] = {sector: {} for sector in baskets}
+    grouped: dict[str, dict[str, bool | None]] = {
+        sector: {} for sector in {basket.sector_id for basket in baskets.values()}}
     for sector, security, present, strong, row_contract in source_rows:
         sector, security = str(sector), str(security)
         if row_contract != SOURCE_MEMBER_CONTRACT:
@@ -89,10 +91,17 @@ def read_accepted_member_strength(repository, *, trade_date: date,
         if present:
             grouped[sector][security] = strong
     result = {}
-    for sector, basket in baskets.items():
-        members = grouped[sector]
-        if set(members) != set(basket.security_ids):
-            raise ValueError(f"member-state/basket identity mismatch: {sector}")
+    for basket_key, basket in baskets.items():
+        sector = basket.sector_id
+        provider_members = grouped[sector]
+        expected_members = set(basket.security_ids)
+        # The accepted M9 slice can include current entrants that are outside
+        # this episode's immutable entry basket. They must not affect its
+        # width. A frozen member absent from the current slice remains unknown;
+        # the existing coverage threshold decides whether width is usable.
+        provider_extras = sorted(set(provider_members) - expected_members)
+        missing_members = sorted(expected_members - set(provider_members))
+        members = {sid: provider_members.get(sid) for sid in sorted(expected_members)}
         evaluable = sum(value is not None for value in members.values())
         strong_ids = tuple(sorted(sid for sid, value in members.items() if value is True))
         evaluable_ids = tuple(sorted(sid for sid, value in members.items()
@@ -107,8 +116,10 @@ def read_accepted_member_strength(repository, *, trade_date: date,
                     "result_value_hash": str(value_hash), "result_semantic_contract": str(semantic),
                     "member_contract": SOURCE_MEMBER_CONTRACT,
                     "sector_id": sector, "basket_digest": basket.basket_digest,
+                    "missing_frozen_member_ids": missing_members,
+                    "provider_extra_member_ids": provider_extras,
                     "member_states": [(sid, members[sid]) for sid in sorted(members)]}
-        result[sector] = SectorStrength(
+        result[basket_key] = SectorStrength(
             sector, str(snapshot_id), str(result_id), str(value_hash),
             SOURCE_MEMBER_CONTRACT, len(basket.security_ids), evaluable, len(strong_ids),
             width, strong_ids, evaluable_ids, quality, digest(evidence))

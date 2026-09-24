@@ -122,7 +122,8 @@ class _ProbeCursor:
         return getattr(self._cursor, name)
 
 
-def _seed(connection, *, add_head: bool = True, replay_required: bool = False) -> None:
+def _seed(connection, *, add_head: bool = True, replay_required: bool = False,
+          exited_followup_state: str = "POST_EXIT") -> None:
     with connection.cursor() as cur:
         cur.execute(
             "insert into pg_temp.focus_runs values (%s,%s,1,%s,%s,%s,%s,%s,%s,%s,'ACTIVATED','PENDING',now())",
@@ -156,11 +157,11 @@ def _seed(connection, *, add_head: bool = True, replay_required: bool = False) -
             "insert into pg_temp.focus_episode_observations values "
             "(%s,%s,%s,1,%s,%s,'CURRENT','CURRENT','VALID','ACTIVE_FOCUS','TREND_ACCELERATING',"
             "'[]'::jsonb,'COMPLETE',0,'IND:801010','IND:801010',null,12.5,0.04,-0.01,'" + "b" * 64 + "',%s,'" + "c" * 64 + "',%s),"
-            "(%s,%s,%s,1,%s,%s,'NONE','EXITED','VALID','ACTIVE_FOCUS','EXITED_FOLLOW_UP',"
+            "(%s,%s,%s,1,%s,%s,'NONE','EXITED','VALID',%s,'EXITED_FOLLOW_UP',"
             "'[]'::jsonb,'COMPLETE',0,null,'IND:801010',null,11.0,0.02,-0.03,'" + "b" * 64 + "',%s,'" + "d" * 64 + "',%s)",
-            (CURRENT_EPISODE, RUN_ID, TRADE_DATE, common[2], common[3], common[5],
-             Jsonb({"state": "current"}), EXITED_EPISODE, RUN_ID, TRADE_DATE,
-             common[2], common[3], common[5], Jsonb({"state": "exited"})))
+            (CURRENT_EPISODE, RUN_ID, TRADE_DATE, common[2], common[3], "READY",
+             Jsonb({"state": "current", "validity_capability": {"status": "APPLICABLE"}}), EXITED_EPISODE, RUN_ID, TRADE_DATE,
+             common[2], common[3], exited_followup_state, "COMPLETE", Jsonb({"state": "exited"})))
         cur.execute(
             "insert into pg_temp.focus_episode_transitions values "
             "(%s,%s,1,%s,%s,%s,'FIRST_FOCUS','NONE','CURRENT','[]'::jsonb),"
@@ -243,8 +244,9 @@ def run_probe() -> dict[str, object]:
         api = FocusTrackerReadAPI(dsn=_dsn(), schema="pg_temp", repository_factory=
                                   lambda **kwargs: borrowed_repository)
 
-        def request(path: str, params: dict[str, str] | None = None):
-            _seed(connection)
+        def request(path: str, params: dict[str, str] | None = None,
+                    *, exited_followup_state: str = "POST_EXIT"):
+            _seed(connection, exited_followup_state=exited_followup_state)
             status, body = api.handle(path, params or {})
             assert status == 200, (status, body)
             return body
@@ -253,11 +255,29 @@ def run_probe() -> dict[str, object]:
         assert summary["focus_run_id"] == RUN_ID and summary["total_items"] == 1
         items = request("/api/v3/focus-tracker/items")
         assert items["total"] == 2
+        first_item_page = request("/api/v3/focus-tracker/items", {"page": "1", "page_size": "1"})
+        assert first_item_page["returned_count"] == 1 and first_item_page["has_more"] is True
+        facets = request("/api/v3/focus-tracker/facets")
+        assert facets["facets_contract"] == "FOCUS_ITEMS_FACETS_V1"
+        assert set(facets["paths"]) == {"TREND_ACCELERATING", "EXITED_FOLLOW_UP"}
+        assert set(facets["memberships"]) == {"CURRENT", "NONE"}
+        assert facets["source_qualities"] == ["COMPLETE"]
+        assert set(facets["observation_qualities"]) == {"COMPLETE", "READY"}
+        assert "IND:801010" in facets["sector_ids"]
         assert next(item for item in items["items"] if not item["is_followup"])["security_name"] == "测试个股"
         assert {item["is_followup"] for item in items["items"]} == {False, True}
         assert len({item["episode_id"] for item in items["items"]}) == 2
         current_item = next(item for item in items["items"] if not item["is_followup"])
         exited_item = next(item for item in items["items"] if item["is_followup"])
+        assert current_item["source_quality"] == "COMPLETE"
+        assert current_item["observation_quality"] == "READY"
+        assert current_item["validity_capability"] == "APPLICABLE"
+        assert exited_item["source_quality"] == "COMPLETE"
+        assert exited_item["observation_quality"] == "COMPLETE"
+        source_filtered = request("/api/v3/focus-tracker/items", {"source_quality": "COMPLETE"})
+        observation_filtered = request("/api/v3/focus-tracker/items", {"observation_quality": "COMPLETE"})
+        assert source_filtered["total"] == 2
+        assert observation_filtered["total"] == 1 and observation_filtered["items"][0]["is_followup"]
         assert current_item["first_trade_date"] == TRADE_DATE.isoformat()
         assert current_item["observed_session_count"] == 1
         assert current_item["return_since_first"] == 0.04
@@ -266,6 +286,12 @@ def run_probe() -> dict[str, object]:
         assert current_item["source_facts"]["waiting_for"] == ["MA5 reclaim"]
         assert current_item["source_facts"]["invalid_if"] == "close < signal low"
         assert exited_item["first_trade_date"] == date(2026, 9, 18).isoformat()
+        assert exited_item["followup_state"] == "POST_EXIT"
+        pending = request("/api/v3/focus-tracker/items", exited_followup_state="PENDING_SETTLEMENT")
+        assert pending["total"] == 2
+        assert next(item for item in pending["items"] if item["is_followup"])["followup_state"] == "PENDING_SETTLEMENT"
+        completed = request("/api/v3/focus-tracker/items", exited_followup_state="FOLLOW_UP_COMPLETED")
+        assert completed["total"] == 1
         exited = request("/api/v3/focus-tracker/items", {"membership": "NONE"})
         assert exited["total"] == 1 and exited["items"][0]["is_followup"] is True
         sector = request("/api/v3/focus-tracker/items", {"sector_id": "IND:801010"})
@@ -286,6 +312,7 @@ def run_probe() -> dict[str, object]:
         assert member_page_2["items"][0]["security_name"] == "第二只个股"
         episode = request("/api/v3/focus-tracker/episodes/" + CURRENT_EPISODE)
         assert episode["episode"]["episode_id"] == CURRENT_EPISODE
+        assert episode["observations"][0]["validity_capability"] == "APPLICABLE"
         assert len(episode["outcomes"]) == 1
         assert episode["outcomes"][0]["status"] == "OBSERVED"
         assert episode["outcomes"][0]["target_trade_date"] == TRADE_DATE.isoformat()
@@ -380,6 +407,11 @@ def run_probe() -> dict[str, object]:
         assert capped_query_count == entity_query_count == 6, capped_query_count
         transitions = request("/api/v3/focus-tracker/transitions")
         assert transitions["total"] == 2
+        transition_page_1 = request("/api/v3/focus-tracker/transitions", {"page": "1", "page_size": "1"})
+        transition_page_2 = request("/api/v3/focus-tracker/transitions", {"page": "2", "page_size": "1"})
+        assert transition_page_1["page_size"] == 1 and transition_page_1["has_more"] is True
+        assert transition_page_2["page"] == 2 and transition_page_2["has_more"] is False
+        assert transition_page_1["items"][0]["episode_id"] != transition_page_2["items"][0]["episode_id"]
         runs = request("/api/v3/focus-tracker/runs")
         assert runs["total"] == 1 and runs["items"][0]["focus_run_id"] == RUN_ID
         stats = request("/api/v3/focus-tracker/statistics")

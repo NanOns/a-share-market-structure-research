@@ -10,7 +10,7 @@ from .contracts import FocusKey, SOURCE_AUTHORITY_CONTRACT
 from .lifecycle import Previous
 
 
-CONTRACT_ID = "FOCUS_PREDECESSOR_HEAD_READER_V1"
+CONTRACT_ID = "FOCUS_PREDECESSOR_HEAD_READER_V2"
 
 
 @dataclass(frozen=True)
@@ -46,7 +46,9 @@ def read_predecessor(repository, trade_date: date) -> PredecessorSnapshot:
             "from {}.focus_episode_observations o "
             "join {}.focus_episodes e using(episode_id) "
             "where o.focus_run_id=%s and o.evaluation_mode='AS_RECORDED' "
-            "order by e.source_family,e.entity_type,e.entity_id").format(schema, schema),
+            "order by e.source_family,e.entity_type,e.entity_id,"
+            "(o.source_membership_state not in ('NONE','UNKNOWN')) desc,"
+            "e.first_trade_date desc,e.episode_id desc").format(schema, schema),
             (run_id,))
         observations = cur.fetchall()
         cur.execute(sql.SQL(
@@ -66,8 +68,12 @@ def read_predecessor(repository, trade_date: date) -> PredecessorSnapshot:
     seen: set[tuple[str, str, str]] = set()
     for family, entity_type, entity_id, selection, episode, first, membership, validity, support in observations:
         identity = (str(family), str(entity_type), str(entity_id))
+        # A reentry can leave older follow-up episodes beside the current
+        # episode in the same accepted run. Lifecycle predecessor is the
+        # active/latest episode; older episodes are loaded by the follow-up
+        # episode query as independent tracking work.
         if identity in seen:
-            raise ValueError("duplicate predecessor entity observation")
+            continue
         seen.add(identity)
         key = FocusKey(*identity, str(selection))
         result[key] = Previous(key, str(membership), str(episode), first,

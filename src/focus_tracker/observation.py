@@ -9,10 +9,13 @@ from .lifecycle import Decision
 from .materialize import StockFact
 from .predicates import Tri
 from .source_capabilities import applicable_path_predicates, capability_evidence
+from .session_gap_semantics import CONTRACT_ID as SESSION_GAP_CONTRACT
+from .path_state_v2 import CONTRACT_ID as PATH_CONTRACT_V2, resolve_v2
 from .states import CONTRACT_ID as PATH_CONTRACT, classify_sector, classify_stock
+from .validity_capability import validity_capability
 
 
-CONTRACT_ID = "FOCUS_OBSERVATION_ASSEMBLY_V1"
+CONTRACT_ID = "FOCUS_OBSERVATION_ASSEMBLY_V2"
 
 
 @dataclass(frozen=True)
@@ -88,9 +91,26 @@ def assemble_observation(*, decision: Decision, source_contract_id: str,
         path = classify_sector(facts, invalidation=invalidation,
                                applicable=applicable)
         price_identity = None
+    path_v2 = resolve_v2(path)
     followup = _followup(decision, pending_settlement=pending_settlement,
                          settlement_complete=settlement_complete)
+    capability = validity_capability(
+        source_family=decision.key.source_family, invalidation=invalidation,
+        invalidation_evidence=predicate_facts.get("invalidation_evidence"),
+        unavailable_reason=predicate_facts.get("invalidation_unavailable_reason"))
+    if ((capability["status"] == "APPLICABLE") !=
+            (path.validity_state in {"VALID", "INVALIDATED"})):
+        raise ValueError("validity capability/result contradiction")
     evidence = {"contract_id": CONTRACT_ID, "path_contract_id": PATH_CONTRACT,
+                "path_state_v2": {
+                    "contract_id": PATH_CONTRACT_V2,
+                    "resolved_primary_state": path_v2.resolved_primary_state,
+                    "best_confirmed_state": path_v2.best_confirmed_state,
+                    "higher_priority_unresolved": list(path_v2.higher_priority_unresolved),
+                    "path_resolution": path_v2.path_resolution,
+                    "confirmed_secondary_states": list(path_v2.confirmed_secondary_states),
+                    "predicate_evidence": path_v2.predicate_evidence,
+                },
                 "source_capability": capability_evidence(decision.key.source_family,
                                                           source_contract_id),
                 "key": {"family": decision.key.source_family,
@@ -98,8 +118,18 @@ def assemble_observation(*, decision: Decision, source_contract_id: str,
                         "entity_id": decision.key.entity_id},
                 "decision_reason": decision.reason,
                 "price_input_digest": price_identity,
+                "price_path_gaps": ({"session_gap_contract_id": SESSION_GAP_CONTRACT,
+                                     "gap_count": stock_fact.gap_count,
+                                     "suspended_sessions": stock_fact.suspended_sessions,
+                                     "unverified_gap_count": stock_fact.unverified_gap_count,
+                                     "suspended_dates": [day.isoformat()
+                                                         for day in stock_fact.suspended_dates],
+                                     "unverified_gap_dates": [day.isoformat()
+                                                              for day in stock_fact.unverified_gap_dates]}
+                                    if stock_fact is not None else None),
                 "predicate_facts": facts,
                 "invalidation": invalidation.value,
+                "validity_capability": capability,
                 "path_predicates": path.evidence,
                 "secondary_tags": path.secondary_tags,
                 "settlement": {"pending": pending_settlement,

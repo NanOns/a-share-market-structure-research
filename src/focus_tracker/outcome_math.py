@@ -8,12 +8,15 @@ from typing import Mapping, Sequence
 
 from .contracts import digest
 from .materialize import VerifiedNormalizedSlice
-from .price_path import due_date, path_metrics, reanchor_from_frozen_coefficients
+from .price_path import (ACTUAL_TRADED_CONTRACT_ID, due_date, path_metrics,
+                         reanchor_actual_traded_path,
+                         reanchor_from_frozen_coefficients)
 from .sector_basket import SectorBasket
 from .sector_path import frozen_sector_path
+from .session_gap_semantics import CONTRACT_ID as SESSION_GAP_CONTRACT
 
 
-CONTRACT_ID = "FOCUS_OUTCOME_TARGET_PLAN_V1"
+CONTRACT_ID = "FOCUS_OUTCOME_TARGET_PLAN_V2"
 HORIZONS = (1, 3, 5, 10, 20)
 
 
@@ -30,6 +33,11 @@ class OutcomePathMetrics:
     coverage: Decimal | None
     input_digest: str
     quality_status: str
+    gap_count: int = 0
+    suspended_sessions: int = 0
+    unverified_gap_count: int = 0
+    suspended_dates: tuple[date, ...] = ()
+    unverified_gap_dates: tuple[date, ...] = ()
 
 
 def _sessions(calendar: Sequence[date], anchor_date: date,
@@ -58,30 +66,45 @@ def stock_outcome_path(*, normalized: VerifiedNormalizedSlice,
     target_row = rows.get(target)
     anchor_actual = bool(anchor_row and anchor_row.get("has_actual_bar") is True)
     target_state = str(target_row.get("missing_state")) if target_row else "MISSING_DATA"
-    path = reanchor_from_frozen_coefficients(sessions=sessions, rows=rows)
+    traded = reanchor_actual_traded_path(sessions=sessions, rows=rows)
+    path = traded.bars
+    coverage = Decimal(len(traded.actual_sessions)) / Decimal(len(sessions))
     if path is None:
-        observed = sum(bool(rows.get(day) and rows[day].get("has_actual_bar") is True)
-                       for day in sessions)
-        coverage = Decimal(observed) / Decimal(len(sessions))
         evidence = {"contract_id": CONTRACT_ID, "kind": "STOCK",
+                    "path_contract_id": ACTUAL_TRADED_CONTRACT_ID,
+                    "session_gap_contract_id": SESSION_GAP_CONTRACT,
                     "artifact_sha256": normalized.artifact_sha256,
                     "security_id": security_id, "sessions": sessions,
                     "anchor_actual_bar": anchor_actual,
-                    "target_data_state": target_state}
+                    "target_data_state": target_state,
+                    "suspended_sessions": traded.suspended_sessions,
+                    "unverified_gap_sessions": traded.unverified_gap_sessions}
         return OutcomePathMetrics(target, False, anchor_actual, target_state,
                                   None, None, None, None, coverage, digest(evidence),
-                                  "PATH_INCOMPLETE")
+                                  "PATH_INCOMPLETE", traded.gap_count,
+                                  len(traded.suspended_sessions),
+                                  len(traded.unverified_gap_sessions),
+                                  traded.suspended_sessions,
+                                  traded.unverified_gap_sessions)
     metrics = path_metrics(path)
     evidence = {"contract_id": CONTRACT_ID, "kind": "STOCK",
+                "path_contract_id": ACTUAL_TRADED_CONTRACT_ID,
+                "session_gap_contract_id": SESSION_GAP_CONTRACT,
                 "artifact_sha256": normalized.artifact_sha256,
                 "adjustment_version": (anchor_row or {}).get("adjustment_version"),
                 "security_id": security_id, "sessions": sessions,
+                "actual_sessions": traded.actual_sessions,
+                "suspended_sessions": traded.suspended_sessions,
                 "anchor_close": path[0].close, "target_close": path[-1].close,
                 "metrics": metrics}
     return OutcomePathMetrics(target, True, anchor_actual, target_state,
                               metrics["return_close"], metrics["mfe"],
                               metrics["mae"], metrics["mdd_close"],
-                              Decimal(1), digest(evidence), "READY")
+                              coverage, digest(evidence), "READY",
+                              traded.gap_count, len(traded.suspended_sessions),
+                              len(traded.unverified_gap_sessions),
+                              traded.suspended_sessions,
+                              traded.unverified_gap_sessions)
 
 
 def sector_outcome_path(*, normalized: VerifiedNormalizedSlice,

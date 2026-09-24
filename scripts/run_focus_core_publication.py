@@ -14,8 +14,8 @@ from datetime import date
 from pathlib import Path
 
 from scripts.apply_focus_pg_schema_v1 import _dsn
-from scripts.probe_focus_observations import build_observation_batch
-from scripts.probe_focus_full_core_transaction import main as publish_initial_day
+from src.focus_tracker.daily_builder import build_focus_daily_batch
+from scripts.run_focus_initial_core_transaction import main as publish_initial_day
 from src.focus_tracker.contracts import canonical_bytes
 from src.focus_tracker.input_manifest import write_manifest
 from src.focus_tracker.release_gate import require_core_publication_ready
@@ -42,7 +42,7 @@ def prepare(*, trade_date: date) -> dict[str, object]:
             raise RuntimeError("NO_ACCEPTED_PUBLICATION_FOR_EXPECTED_TRADE_DATE")
         connection.rollback()
 
-    manifest, sources, plan, stock_facts, observations, baskets, closure = build_observation_batch(
+    manifest, sources, plan, stock_facts, observations, baskets, closure = build_focus_daily_batch(
         evaluation_basis="REAL_FORWARD", expected_trade_date=trade_date)
     if sources.trade_date != trade_date or manifest.trade_date != trade_date:
         raise ValueError("FOCUS_EXPECTED_TRADE_DATE_MISMATCH")

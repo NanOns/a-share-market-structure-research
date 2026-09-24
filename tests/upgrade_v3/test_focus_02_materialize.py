@@ -24,6 +24,7 @@ def _source(tmp_path, *, missing=False):
                      "qfq_mul": 1.0, "qfq_add": 0.0,
                      "adjustment_status": "VERIFIED", "adjustment_version": "local-v1",
                      "has_actual_bar": not (missing and day == days[0]),
+                     "trade_status_known": False, "is_synthetic_fill": False,
                      "is_master_session": True,
                      "missing_state": "BAR" if not (missing and day == days[0]) else "FILE_MISSING"})
     path = tmp_path / "normalized.parquet"

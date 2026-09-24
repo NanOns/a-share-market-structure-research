@@ -58,6 +58,7 @@ class FocusTrackerReadAPI:
     def handle(self, path: str, params: dict[str, str]) -> tuple[int, dict[str, Any]]:
         try:
             fixed_routes = {"/api/v3/focus-tracker/summary", "/api/v3/focus-tracker/items",
+                            "/api/v3/focus-tracker/facets",
                             "/api/v3/focus-tracker/transitions", "/api/v3/focus-tracker/runs",
                             "/api/v3/focus-tracker/statistics",
                             "/api/v3/focus-tracker/sectors/catalog"}
@@ -192,6 +193,8 @@ class FocusTrackerReadAPI:
             return self._summary(cur, run)
         if path == "/api/v3/focus-tracker/items":
             return self._items(cur, params, run)
+        if path == "/api/v3/focus-tracker/facets":
+            return self._facets(cur, run)
         if path == "/api/v3/focus-tracker/transitions":
             return self._transitions(cur, params, run)
         if path == "/api/v3/focus-tracker/runs":
@@ -316,7 +319,9 @@ class FocusTrackerReadAPI:
                 "with ordinality x(value,ord)) "
                 "select m.security_id,coalesce(stock.source_facts->>'security_name',first_item.source_facts->>'security_name',"
                 "sd.security_name) as security_name,stock.source_membership_state,obs.episode_id,"
-                "obs.membership_phase,obs.validity_state,obs.current_path_state,obs.followup_state,"
+                "obs.membership_phase,obs.validity_state,"
+                "obs.facts->'validity_capability'->>'status' as validity_capability,"
+                "obs.current_path_state,obs.followup_state,"
                 "obs.continuity_quality,obs.close_price,obs.return_since_first,obs.quality_status "
                 "from members m left join lateral (select d.* from {}.focus_daily_items d "
                 "where d.focus_run_id=%s and d.entity_type='STOCK' and d.entity_id=m.security_id "
@@ -370,6 +375,94 @@ class FocusTrackerReadAPI:
             raise ValueError("INVALID_PAGINATION")
         return page, page_size
 
+    def _facets(self, cur, run: dict[str, Any]) -> dict[str, Any]:
+        cte = self._items_cte(sql.Identifier(self.schema))
+        cur.execute(cte + sql.SQL(
+            "select array_remove(array_agg(distinct i.source_family),null),"
+            "array_remove(array_agg(distinct i.source_membership_state),null),"
+            "array_remove(array_agg(distinct i.validity_state),null),"
+            "array_remove(array_agg(distinct i.current_path_state),null),"
+            "array_remove(array_agg(distinct i.source_quality),null),"
+            "array_remove(array_agg(distinct i.quality_status),null),"
+            "array_remove(array_agg(distinct coalesce(i.source_facts->>'scenario',"
+            "i.source_facts->>'scenario_id',i.source_facts->>'primary_category',"
+            "i.source_facts->>'source_focus_class')),null),"
+            "array_remove(array_agg(distinct i.source_facts->>'sector_support_status'),null) "
+            "from items i"),
+            (run["focus_run_id"], run["focus_run_id"]))
+        (families, memberships, validities, paths, source_qualities,
+         observation_qualities, scenarios,
+         support_statuses) = cur.fetchone()
+        schema = sql.Identifier(self.schema)
+        cur.execute(cte + sql.SQL(
+            ", sector_ids as (select l.sector_id from {}.focus_stock_sector_links l "
+            "where l.focus_run_id=%s union select i.source_facts->>'primary_sector_id' "
+            "from items i where nullif(i.source_facts->>'primary_sector_id','') is not null "
+            "union select jsonb_array_elements_text(coalesce(i.source_facts->'alternative_sector_ids',"
+            "'[]'::jsonb)) from items i) "
+            "select sector_id from sector_ids order by sector_id").format(schema),
+            (run["focus_run_id"], run["focus_run_id"], run["focus_run_id"]))
+        sectors = [row[0] for row in cur.fetchall()]
+        return {**self._meta(run), "status": "AVAILABLE",
+                "facets_contract": "FOCUS_ITEMS_FACETS_V1",
+                "source_families": sorted(families or []),
+                "memberships": sorted(memberships or []),
+                "validities": sorted(validities or []),
+                "paths": sorted(paths or []),
+                "source_qualities": sorted(source_qualities or []),
+                "observation_qualities": sorted(observation_qualities or []),
+                "scenarios": sorted(scenarios or []),
+                "sector_support_statuses": sorted(support_statuses or []),
+                "sector_ids": sectors}
+
+    def _items_cte(self, schema):
+        return sql.SQL(
+            "with current_items as ("
+            "select d.source_family,d.entity_type,d.entity_id,d.selection_contract_family,"
+            "d.source_item_key,d.source_item_digest,d.source_contract_id,d.source_membership_state,"
+            "d.source_focus_class,d.source_rank,d.source_quality,d.source_facts,ep.episode_id,"
+            "false as is_followup,o.membership_phase,o.validity_state,"
+            "o.facts->'validity_capability'->>'status' as validity_capability,o.followup_state,"
+            "o.current_path_state,o.facts->'path_state_v2' as path_state_v2,"
+            "o.lifetime_path_tags,o.continuity_quality,o.comparison_gap_sessions,"
+            "o.entry_primary_sector_id,o.current_primary_sector_id,o.close_price,o.return_since_first,"
+            "o.drawdown_from_peak,o.quality_status,d.focus_run_id,ep.first_trade_date,"
+            "o.first_supported_anchor_id "
+            "from {}.focus_daily_items d "
+            "left join lateral (select e.episode_id,e.first_trade_date from {}.focus_episodes e "
+            "join {}.focus_episode_observations oo on oo.episode_id=e.episode_id "
+            "and oo.focus_run_id=d.focus_run_id and oo.evaluation_mode='AS_RECORDED' "
+            "where e.source_family=d.source_family and e.entity_type=d.entity_type "
+            "and e.entity_id=d.entity_id order by e.first_trade_date desc,e.episode_id limit 1) ep on true "
+            "left join {}.focus_episode_observations o on o.episode_id=ep.episode_id "
+            "and o.focus_run_id=d.focus_run_id and o.evaluation_mode='AS_RECORDED' "
+            "where d.focus_run_id=%s), followups as ("
+            "select e.source_family,e.entity_type,e.entity_id,e.selection_contract_family,"
+            "null::text as source_item_key,null::char(64) as source_item_digest,null::text as source_contract_id,"
+            "o.source_membership_state,null::text as source_focus_class,null::integer as source_rank,"
+            "src.source_quality,coalesce(src.source_facts,o.facts) as source_facts,"
+            "e.episode_id,true as is_followup,"
+            "o.membership_phase,o.validity_state,"
+            "o.facts->'validity_capability'->>'status' as validity_capability,"
+            "o.followup_state,o.current_path_state,o.facts->'path_state_v2' as path_state_v2,"
+            "o.lifetime_path_tags,"
+            "o.continuity_quality,o.comparison_gap_sessions,o.entry_primary_sector_id,"
+            "o.current_primary_sector_id,o.close_price,o.return_since_first,o.drawdown_from_peak,"
+            "o.quality_status,o.focus_run_id,e.first_trade_date,o.first_supported_anchor_id "
+            "from {}.focus_episode_observations o "
+            "join {}.focus_episodes e on e.episode_id=o.episode_id "
+            "left join lateral (select d.source_facts,d.source_quality from {}.focus_daily_items d "
+            "where d.focus_run_id=e.first_focus_run_id and d.source_family=e.source_family "
+            "and d.entity_type=e.entity_type and d.entity_id=e.entity_id "
+            "and d.selection_contract_family=e.selection_contract_family "
+            "order by d.source_item_key limit 1) src on true "
+            "where o.focus_run_id=%s and o.evaluation_mode='AS_RECORDED' "
+            "and o.source_membership_state='NONE' and o.followup_state<>'FOLLOW_UP_COMPLETED' "
+            "and not exists(select 1 from current_items c "
+            "where c.episode_id=e.episode_id)), items as ("
+            "select * from current_items union all select * from followups) ").format(
+                schema, schema, schema, schema, schema, schema, schema)
+
     def _items(self, cur, params: dict[str, str], run: dict[str, Any]) -> dict[str, Any]:
         schema = sql.Identifier(self.schema)
         page, size = self._page(params)
@@ -378,7 +471,8 @@ class FocusTrackerReadAPI:
         allowed = {"source_family": "i.source_family",
                    "membership": "i.source_membership_state",
                    "validity": "i.validity_state", "path": "i.current_path_state",
-                   "quality": "i.source_quality", "entity_type": "i.entity_type"}
+                   "quality": "i.source_quality", "source_quality": "i.source_quality",
+                   "observation_quality": "i.quality_status", "entity_type": "i.entity_type"}
         for key, column in allowed.items():
             if params.get(key):
                 conditions.append(sql.SQL("{}=%s").format(sql.SQL(column)))
@@ -403,45 +497,7 @@ class FocusTrackerReadAPI:
                     "@> jsonb_build_array(%s::text))").format(schema))
                 values.extend((sector_filter, sector_filter, sector_filter))
         where = sql.SQL(" and ").join(conditions)
-        cte = sql.SQL(
-            "with current_items as ("
-            "select d.source_family,d.entity_type,d.entity_id,d.selection_contract_family,"
-            "d.source_item_key,d.source_item_digest,d.source_contract_id,d.source_membership_state,"
-            "d.source_focus_class,d.source_rank,d.source_quality,d.source_facts,ep.episode_id,"
-            "false as is_followup,o.membership_phase,o.validity_state,o.followup_state,"
-            "o.current_path_state,o.lifetime_path_tags,o.continuity_quality,o.comparison_gap_sessions,"
-            "o.entry_primary_sector_id,o.current_primary_sector_id,o.close_price,o.return_since_first,"
-            "o.drawdown_from_peak,o.quality_status,d.focus_run_id,ep.first_trade_date,"
-            "o.first_supported_anchor_id "
-            "from {}.focus_daily_items d "
-            "left join lateral (select e.episode_id,e.first_trade_date from {}.focus_episodes e "
-            "join {}.focus_episode_observations oo on oo.episode_id=e.episode_id "
-            "and oo.focus_run_id=d.focus_run_id and oo.evaluation_mode='AS_RECORDED' "
-            "where e.source_family=d.source_family and e.entity_type=d.entity_type "
-            "and e.entity_id=d.entity_id order by e.first_trade_date desc,e.episode_id limit 1) ep on true "
-            "left join {}.focus_episode_observations o on o.episode_id=ep.episode_id "
-            "and o.focus_run_id=d.focus_run_id and o.evaluation_mode='AS_RECORDED' "
-            "where d.focus_run_id=%s), followups as ("
-            "select e.source_family,e.entity_type,e.entity_id,e.selection_contract_family,"
-            "null::text as source_item_key,null::char(64) as source_item_digest,null::text as source_contract_id,"
-            "o.source_membership_state,null::text as source_focus_class,null::integer as source_rank,"
-            "o.quality_status as source_quality,coalesce(src.source_facts,o.facts) as source_facts,"
-            "e.episode_id,true as is_followup,"
-            "o.membership_phase,o.validity_state,o.followup_state,o.current_path_state,o.lifetime_path_tags,"
-            "o.continuity_quality,o.comparison_gap_sessions,o.entry_primary_sector_id,"
-            "o.current_primary_sector_id,o.close_price,o.return_since_first,o.drawdown_from_peak,"
-            "o.quality_status,o.focus_run_id,e.first_trade_date,o.first_supported_anchor_id "
-            "from {}.focus_episode_observations o "
-            "join {}.focus_episodes e on e.episode_id=o.episode_id "
-            "left join lateral (select d.source_facts from {}.focus_daily_items d "
-            "where d.focus_run_id=e.first_focus_run_id and d.source_family=e.source_family "
-            "and d.entity_type=e.entity_type and d.entity_id=e.entity_id "
-            "order by d.source_item_key limit 1) src on true "
-            "where o.focus_run_id=%s and o.evaluation_mode='AS_RECORDED' "
-            "and o.followup_state='ACTIVE_FOCUS' and not exists(select 1 from current_items c "
-            "where c.episode_id=e.episode_id)), items as ("
-            "select * from current_items union all select * from followups) ").format(
-                schema, schema, schema, schema, schema, schema, schema)
+        cte = self._items_cte(schema)
         cte_values = [run["focus_run_id"], run["focus_run_id"]]
         cur.execute(cte + sql.SQL("select count(*)::int from items i where ") + where,
                     cte_values + values)
@@ -452,10 +508,12 @@ class FocusTrackerReadAPI:
             "i.source_focus_class,i.source_rank,i.source_quality,i.source_facts,"
             "coalesce(i.source_facts->>'security_name',(select sd.security_name from {}.stock_daily sd "
             "where sd.publication_id=%s and sd.security_id=i.entity_id limit 1)) as security_name,i.episode_id,"
-            "i.is_followup,i.membership_phase,i.validity_state,i.followup_state,i.current_path_state,"
+            "i.is_followup,i.membership_phase,i.validity_state,i.validity_capability,"
+            "i.followup_state,i.current_path_state,i.path_state_v2,"
             "i.lifetime_path_tags,i.continuity_quality,i.comparison_gap_sessions,"
             "i.entry_primary_sector_id,i.current_primary_sector_id,i.close_price,"
-            "i.return_since_first,i.drawdown_from_peak,i.quality_status,i.first_trade_date,"
+            "i.return_since_first,i.drawdown_from_peak,i.quality_status,"
+            "i.quality_status as observation_quality,i.first_trade_date,"
             "case when i.episode_id is null then null else (select count(distinct so.trade_date)::int "
             "from {}.focus_episode_observations so where so.episode_id=i.episode_id "
             "and so.trade_date<=%s and so.evaluation_mode='AS_RECORDED') end as observed_session_count,"
@@ -507,7 +565,9 @@ class FocusTrackerReadAPI:
         anchors = _rows(cur)
         cur.execute(sql.SQL(
             "select o.trade_date,o.source_revision,o.evaluation_mode,o.state_contract_id,"
-            "o.source_membership_state,o.membership_phase,o.validity_state,o.followup_state,"
+            "o.source_membership_state,o.membership_phase,o.validity_state,"
+            "o.facts->'validity_capability'->>'status' as validity_capability,"
+            "o.followup_state,"
             "o.current_path_state,o.lifetime_path_tags,o.continuity_quality,o.comparison_gap_sessions,"
             "o.entry_primary_sector_id,o.current_primary_sector_id,o.close_price,o.return_since_first,"
             "o.drawdown_from_peak,o.adjustment_source_hash,o.quality_status,o.fact_digest,o.facts "
@@ -593,7 +653,9 @@ class FocusTrackerReadAPI:
              run["focus_run_id"], run["trade_date"]))
         observations = grouped(sql.SQL(
             "select o.episode_id,o.trade_date,o.source_revision,o.evaluation_mode,o.state_contract_id,"
-            "o.source_membership_state,o.membership_phase,o.validity_state,o.followup_state,o.current_path_state,"
+            "o.source_membership_state,o.membership_phase,o.validity_state,"
+            "o.facts->'validity_capability'->>'status' as validity_capability,"
+            "o.followup_state,o.current_path_state,"
             "o.lifetime_path_tags,o.continuity_quality,o.comparison_gap_sessions,o.entry_primary_sector_id,"
             "o.current_primary_sector_id,o.first_supported_anchor_id,o.close_price,o.return_since_first,"
             "o.drawdown_from_peak,o.adjustment_source_hash,o.quality_status,o.fact_digest,o.facts "

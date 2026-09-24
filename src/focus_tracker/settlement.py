@@ -11,6 +11,7 @@ from psycopg import sql
 from psycopg.types.json import Jsonb
 
 from .contracts import FocusKey, SOURCE_AUTHORITY_CONTRACT, digest
+from .lifecycle import EpisodeTrackingRef
 from .outcomes import (CONTRACT_ID as OUTCOME_CONTRACT, TERMINAL,
                        classify_outcome, followup_complete)
 from .outcome_math import (OutcomePathMetrics, sector_outcome_path,
@@ -383,6 +384,12 @@ def materialize_due_outcomes(repository, *, calendar: Sequence[date],
                     "target_seal_digest": seal_digest,
                     "path_input_digest": path.input_digest,
                     "path_quality_status": path.quality_status,
+                    "path_gap_count": path.gap_count,
+                    "path_suspended_sessions": path.suspended_sessions,
+                    "path_unverified_gap_count": path.unverified_gap_count,
+                    "path_suspended_dates": [day.isoformat() for day in path.suspended_dates],
+                    "path_unverified_gap_dates": [day.isoformat()
+                                                  for day in path.unverified_gap_dates],
                     "coverage": path.coverage,
                     "basket_digest": (baskets_by_episode[anchor.episode_id].basket_digest
                                       if anchor.entity_type == "SECTOR" else None),
@@ -811,23 +818,24 @@ def _anchor_date(repository, anchor_id: str) -> date:
     return row[0]
 
 
-def pending_followup_keys(repository, *, as_of_trade_date: date) -> set[FocusKey]:
-    """Return exited episodes not yet completed or explicitly reopened."""
+def pending_followup_episodes(repository, *, as_of_trade_date: date) -> tuple[EpisodeTrackingRef, ...]:
+    """Return exact exited episodes not yet completed or explicitly reopened."""
     if repository.connection is None:
         raise RuntimeError("POSTGRES_REPOSITORY_NOT_OPEN")
     schema = sql.Identifier(repository.schema)
     with repository.connection.cursor() as cur:
         cur.execute(sql.SQL(
-            "select e.source_family,e.entity_type,e.entity_id,e.selection_contract_family "
+            "select e.source_family,e.entity_type,e.entity_id,e.selection_contract_family,"
+            "e.episode_id,e.first_trade_date "
             "from {}.focus_episodes e join lateral ("
             " select o.source_membership_state from {}.focus_episode_observations o "
             " join {}.focus_trade_date_heads h on h.accepted_focus_run_id=o.focus_run_id "
             " and h.trade_date=o.trade_date where o.episode_id=e.episode_id "
             " and o.evaluation_mode='AS_RECORDED' and h.lineage_state='VALID' "
-            " and h.trade_date<=%s order by h.trade_date desc,o.source_revision desc limit 1"
+            " and h.trade_date<%s order by h.trade_date desc,o.source_revision desc limit 1"
             ") last_obs on true left join lateral ("
             " select event_type from {}.focus_episode_followup_events f "
-            " where f.episode_id=e.episode_id and f.event_trade_date<=%s "
+            " where f.episode_id=e.episode_id and f.event_trade_date<%s "
             " order by f.event_trade_date desc,f.created_at_utc desc,f.event_id desc limit 1"
             ") last_event on true where last_obs.source_membership_state='NONE' "
             " and coalesce(last_event.event_type,'')<>'FOLLOW_UP_COMPLETED' "
@@ -835,17 +843,54 @@ def pending_followup_keys(repository, *, as_of_trade_date: date) -> set[FocusKey
                     .format(schema, schema, schema, schema),
                     (as_of_trade_date, as_of_trade_date))
         rows = cur.fetchall()
-    return {FocusKey(str(family), str(entity_type), str(entity_id), str(selection))
-            for family, entity_type, entity_id, selection in rows}
+    refs = tuple(EpisodeTrackingRef(
+        FocusKey(str(family), str(entity_type), str(entity_id), str(selection)),
+        str(episode), first_trade_date)
+        for family, entity_type, entity_id, selection, episode, first_trade_date in rows)
+    identities = [(ref.key, ref.episode_id) for ref in refs]
+    if len(set(identities)) != len(identities):
+        raise ValueError("duplicate pending follow-up episode")
+    return refs
+
+
+def pending_followup_keys(repository, *, as_of_trade_date: date) -> set[FocusKey]:
+    """Return entity coverage for open exited episodes."""
+    return {ref.key for ref in pending_followup_episodes(
+        repository, as_of_trade_date=as_of_trade_date)}
+
+
+def due_outcome_episodes(repository, *, calendar: Sequence[date],
+                         as_of_trade_date: date) -> tuple[EpisodeTrackingRef, ...]:
+    """Return exact episodes whose fixed target dates need settlement/retry."""
+    anchors = due_anchor_plan(repository, calendar=calendar,
+                              as_of_date=as_of_trade_date)
+    if not anchors:
+        return ()
+    if repository.connection is None:
+        raise RuntimeError("POSTGRES_REPOSITORY_NOT_OPEN")
+    episodes = sorted({item.episode_id for item in anchors})
+    schema = sql.Identifier(repository.schema)
+    with repository.connection.cursor() as cur:
+        cur.execute(sql.SQL(
+            "select episode_id,source_family,entity_type,entity_id,"
+            "selection_contract_family,first_trade_date from {}.focus_episodes "
+            "where episode_id=any(%s) order by episode_id").format(schema),
+            (episodes,))
+        rows = cur.fetchall()
+    refs = tuple(EpisodeTrackingRef(
+        FocusKey(str(family), str(entity_type), str(entity_id), str(selection)),
+        str(episode), first_trade_date)
+        for episode, family, entity_type, entity_id, selection, first_trade_date in rows)
+    if {ref.episode_id for ref in refs} != set(episodes):
+        raise ValueError("due outcome episode identity incomplete")
+    return refs
 
 
 def due_outcome_keys(repository, *, calendar: Sequence[date],
                      as_of_trade_date: date) -> set[FocusKey]:
-    """Return entity keys whose fixed target dates need settlement or retry."""
-    return {FocusKey(item.source_family, item.entity_type, item.entity_id,
-                     item.selection_contract_family)
-            for item in due_anchor_plan(repository, calendar=calendar,
-                                        as_of_date=as_of_trade_date)}
+    """Return entity coverage for due outcome episodes."""
+    return {ref.key for ref in due_outcome_episodes(
+        repository, calendar=calendar, as_of_trade_date=as_of_trade_date)}
 
 
 def pending_settlement_tasks(repository, *, limit: int = 100) -> tuple[dict[str, Any], ...]:

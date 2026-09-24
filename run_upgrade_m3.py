@@ -49,7 +49,11 @@ def stage_inputs(day):
  """Keep every same-day official package and metadata revision under its content identity."""
  staging=ROOT/"data/input_staging"; scratch=ROOT/"runtime/m3"/uuid.uuid4().hex;scratch.mkdir(parents=True,exist_ok=False)
  try:
-  downloaded=scratch/"hsjday.zip";package=download_official_package_curl(OFFICIAL_URL,downloaded)
+  # The official info endpoint can advance before the bare ZIP URL's CDN cache
+  # does. A unique query on the same approved HTTPS host/path bypasses that
+  # stale object while the downloader still enforces host and path identity.
+  download_url=OFFICIAL_URL+"?cache_bust="+uuid.uuid4().hex
+  downloaded=scratch/"hsjday.zip";package=download_official_package_curl(download_url,downloaded)
   target,extraction,_=versioned_staging_paths(staging,day,package["sha256"]);target.parent.mkdir(parents=True,exist_ok=True)
   if target.exists():
    if sha(target)!=package["sha256"]:raise ValueError("STAGED_PACKAGE_IDENTITY_CONFLICT")

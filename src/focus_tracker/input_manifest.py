@@ -20,7 +20,7 @@ from .source_reader import AcceptedSources
 from .technical_facts import read_accepted_technical
 
 
-CONTRACT_ID = "FOCUS_DAILY_INPUT_MANIFEST_V1"
+CONTRACT_ID = "FOCUS_DAILY_INPUT_MANIFEST_V2"
 
 
 @dataclass(frozen=True)
@@ -168,10 +168,14 @@ def build_manifest(*, sources: AcceptedSources, plan: PlannedDay,
     if sources.bundle_digest and not all((bindings.v3_3_snapshot_id,
                                           bindings.v3_3_research_run_id)):
         raise ValueError("V3.3 bundle binding absent")
-    if set(baskets) != set(plan.sector_ids) or set(strengths) != set(plan.sector_ids):
+    sector_episodes = {item.episode_id: item for item in
+                       (plan.episode_tracking or plan.decisions)
+                       if item.key.entity_type == "SECTOR" and item.episode_id}
+    if set(baskets) != set(sector_episodes) or set(strengths) != set(sector_episodes):
         raise ValueError("sector fact set differs from tracking plan")
-    if any(baskets[sector].sector_id != sector or strengths[sector].sector_id != sector
-           for sector in plan.sector_ids):
+    if any(baskets[episode].sector_id != decision.key.entity_id or
+           strengths[episode].sector_id != decision.key.entity_id
+           for episode, decision in sector_episodes.items()):
         raise ValueError("sector fact identity mismatch")
     expected_paths = {(request.security_id, request.start_trade_date)
                       for request in plan.stock_path_requests}
@@ -216,10 +220,10 @@ def build_manifest(*, sources: AcceptedSources, plan: PlannedDay,
                         for fact in sorted(stock_facts,
                                            key=lambda item: (item.security_id,
                                                              item.start_trade_date))],
-        "entry_baskets": [(sector, baskets[sector].basket_digest)
-                          for sector in sorted(baskets)],
-        "member_strength": [(sector, strengths[sector].fact_digest)
-                            for sector in sorted(strengths)],
+        "entry_baskets": [(episode, baskets[episode].basket_digest)
+                          for episode in sorted(baskets)],
+        "member_strength": [(episode, strengths[episode].fact_digest)
+                            for episode in sorted(strengths)],
         "state_contract_id": state_contract_id,
         "parameter_set_id": parameter_set_id,
         "implementation_digest": implementation_digest,

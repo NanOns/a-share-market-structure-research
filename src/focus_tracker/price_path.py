@@ -6,8 +6,12 @@ from datetime import date
 from decimal import Decimal, ROUND_HALF_UP
 from typing import Mapping, Sequence
 
+from .session_gap_semantics import (SessionState, assess_gap_sequence,
+                                   classify_session_state)
+
 
 CONTRACT_ID = "FOCUS_PATH_PRICE_BASIS_V1"
+ACTUAL_TRADED_CONTRACT_ID = "FOCUS_ACTUAL_TRADED_PATH_V1"
 CENT = Decimal("0.01")
 
 
@@ -26,6 +30,45 @@ class AdjustmentEvent:
     effective_date: date
     m: Decimal
     c: Decimal
+
+
+@dataclass(frozen=True)
+class ActualTradedPath:
+    bars: tuple[Bar, ...] | None
+    gap_count: int
+    suspended_sessions: tuple[date, ...]
+    unverified_gap_sessions: tuple[date, ...]
+    actual_sessions: tuple[date, ...]
+
+
+def reanchor_actual_traded_path(*, sessions: Sequence[date],
+                                rows: Mapping[date, Mapping[str, object]]) -> ActualTradedPath:
+    """Bridge proven suspensions only; keep every unverified gap fail-closed.
+
+    The master session list remains available to consecutive-day predicates.
+    This projection is solely for return and high/low path measurements.
+    """
+    if not sessions or list(sessions) != sorted(set(sessions)):
+        raise ValueError("invalid actual-traded session path")
+    states = {day: classify_session_state(rows.get(day)) for day in sessions}
+    assessment = assess_gap_sequence(operation="PATH",
+                                     states=[states[day] for day in sessions])
+    traded, suspended, uncertain = [], [], []
+    for day in sessions:
+        state = states[day]
+        if state == SessionState.ACTUAL_BAR:
+            traded.append(day)
+        elif state == SessionState.SUSPENDED:
+            suspended.append(day)
+        else:
+            uncertain.append(day)
+    complete = assessment.usable and not uncertain
+    bars = (tuple(reanchor_from_frozen_coefficients(sessions=traded, rows=rows) or ())
+            if complete else None)
+    if complete and not bars:
+        raise ValueError("actual-traded path disappeared despite complete bars")
+    return ActualTradedPath(bars, len(suspended) + len(uncertain),
+                            tuple(suspended), tuple(uncertain), tuple(traded))
 
 
 def _money(value: Decimal) -> Decimal:

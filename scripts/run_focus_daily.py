@@ -73,10 +73,10 @@ def run(*, trade_date: date, apply: bool = False) -> dict[str, object]:
     head_plan = _head_plan(trade_date)
     if head_plan.status == "INITIAL_DAY":
         preflight = prepare(trade_date=trade_date)
-    elif head_plan.status == "NEXT_DAY":
+    elif head_plan.status in {"NEXT_DAY", "REVISION_REQUIRED"}:
         preflight = _prepare_next_day(trade_date)
     else:
-        raise RuntimeError("FOCUS_DAILY_" + head_plan.status + "_WRITER_PENDING")
+        raise RuntimeError("FOCUS_DAILY_" + head_plan.status + "_UNSUPPORTED")
     result: dict[str, object] = {
         "contract_id": CONTRACT_ID,
         "trade_date": trade_date.isoformat(),

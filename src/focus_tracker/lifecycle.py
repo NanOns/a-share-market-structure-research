@@ -62,16 +62,18 @@ def tracking_union(today: set[FocusKey], pending_followup: set[FocusKey],
 
 
 def segment_id(episode: str, segment_type: str, start_trade_date: date,
-               source_model_contract_id: str, state_contract_id: str) -> str:
+               source_model_contract_id: str, state_contract_id: str,
+               source_revision: int = 1) -> str:
     if segment_type not in {"SOURCE_MODEL", "INTERPRETATION"}:
         raise ValueError("unknown focus segment type")
-    if not episode or not source_model_contract_id or not state_contract_id:
+    if not episode or not source_model_contract_id or not state_contract_id or source_revision < 1:
         raise ValueError("incomplete focus segment identity")
     return "segment-" + digest({"contract": "FOCUS_MODEL_SEGMENT_V1",
                                 "episode_id": episode, "segment_type": segment_type,
                                 "start_trade_date": start_trade_date,
                                 "source_model_contract_id": source_model_contract_id,
-                                "state_contract_id": state_contract_id})[:32]
+                                "state_contract_id": state_contract_id,
+                                "source_revision": source_revision})[:32]
 
 
 def source_attribute_transition(previous_scenario: str | None,

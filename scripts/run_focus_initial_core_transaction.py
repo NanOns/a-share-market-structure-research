@@ -179,13 +179,15 @@ def main(*, inject_after_observations: int | None = None,
                     insert_episode_facts(cur, episode_id=episode, row=row)
                     cur.execute("""insert into workbench.focus_episode_segments
                         (segment_id,episode_id,segment_type,start_trade_date,
-                         source_model_contract_id,state_contract_id,parameter_set_id,
+                         source_model_contract_id,selection_contract_family,
+                         state_contract_id,parameter_set_id,
                          boundary_reason,focus_run_id)
-                        values (%s,%s,'SOURCE_MODEL',%s,%s,%s,%s,'FIRST_FOCUS',%s)""",
+                        values (%s,%s,'SOURCE_MODEL',%s,%s,%s,%s,%s,'FIRST_FOCUS',%s)""",
                         (segment_id(episode, "SOURCE_MODEL", sources.trade_date,
-                                    row.source_contract_id, STATE_CONTRACT),
+                                    row.source_contract_id, STATE_CONTRACT, 1),
                          episode, sources.trade_date, row.source_contract_id,
-                         STATE_CONTRACT, payload["parameter_set_id"], run_id))
+                         key.selection_contract_family, STATE_CONTRACT,
+                         payload["parameter_set_id"], run_id))
                     cur.execute("""insert into workbench.focus_episode_transitions
                         (episode_id,focus_run_id,source_revision,transition_trade_date,
                          effective_trade_date,confirmation_trade_date,transition_type,

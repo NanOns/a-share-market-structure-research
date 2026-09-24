@@ -12,7 +12,7 @@ from .predicates import Tri, evaluate
 from .v33_scanner_facts import bridge_scanner_facts
 
 
-CONTRACT_ID = "FOCUS_V33_TRACKED_INVALIDATION_V3"
+CONTRACT_ID = "FOCUS_V33_TRACKED_INVALIDATION_V4"
 
 
 def evaluate_tracked_v33_invalidation(*, ast: Mapping[str, Any], frozen: Mapping[str, Any],
@@ -21,7 +21,9 @@ def evaluate_tracked_v33_invalidation(*, ast: Mapping[str, Any], frozen: Mapping
                                       security_id: str, trade_date: date,
                                       first_trade_date: date, sessions: Sequence[date],
                                       required_fields: frozenset[str],
-                                      normalized: VerifiedNormalizedSlice
+                                      normalized: VerifiedNormalizedSlice,
+                                      rps20_delta3_by_date: Mapping[date, Mapping[str, str | None]] | None = None,
+                                      rps_provider_digest: str | None = None,
                                       ) -> tuple[Tri, dict[str, Any], dict[str, Any]]:
     """Keep evaluating a tracked episode after it leaves today's source rows.
 
@@ -40,7 +42,9 @@ def evaluate_tracked_v33_invalidation(*, ast: Mapping[str, Any], frozen: Mapping
     fact_rows, fact_digest = build_predicate_facts_by_date(
         normalized=normalized, security_id=security_id, trade_date=trade_date,
         sessions=sessions, required_fields=required_fields,
-        structure_break_v3=structure_break)
+        structure_break_v3=structure_break,
+        rps20_delta3_by_date=rps20_delta3_by_date,
+        rps_provider_digest=rps_provider_digest)
     frozen_for_evaluation = dict(frozen)
     source_factor = first_row.source_facts.get("factor_evidence")
     compatible_basis = (isinstance(source_factor, dict) and
@@ -61,7 +65,12 @@ def evaluate_tracked_v33_invalidation(*, ast: Mapping[str, Any], frozen: Mapping
                 "structure_break_v3": structure_break,
                 "scanner_source_status": ("AVAILABLE" if today_source_row is not None
                                           else "SOURCE_ROW_ABSENT"),
-                "provider_gaps": ([RPS20_DELTA3_PROVIDER_CONTRACT]
-                                  if "rps20_delta3" in required_fields else []),
+                "provider_gaps": (["PIT_RPS20_DELTA3_UNAVAILABLE"]
+                                  if ("rps20_delta3" in required_fields and
+                                      not (rps20_delta3_by_date or {}).get(trade_date, {}).get(security_id))
+                                  else []),
+                "rps_provider_contract_id": (RPS20_DELTA3_PROVIDER_CONTRACT
+                                             if "rps20_delta3" in required_fields else None),
+                "rps_provider_digest": rps_provider_digest,
                 "required_fields": sorted(required_fields)}
     return result, evidence, metadata

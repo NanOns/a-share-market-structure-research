@@ -52,7 +52,7 @@ def resolve_tracking_contexts(*, plan: PlannedDay,
             same_entity = (frozen.key.source_family == key.source_family and
                            frozen.key.entity_type == key.entity_type and
                            frozen.key.entity_id == key.entity_id)
-            if not same_entity or decision.phase != "SOURCE_MODEL_BOUNDARY":
+            if not same_entity:
                 raise ValueError("historical source identity differs from episode")
         row = current or frozen
         assert row is not None

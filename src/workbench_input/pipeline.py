@@ -373,7 +373,13 @@ def restore_source_bundle_extraction(
         "required_members":normalized_required, "extraction":extraction,
     }
 
-def verify_source_bundle(bundle_path: Path) -> dict:
+def verify_source_bundle_membership_identity(bundle_path: Path) -> dict:
+    """Verify bundle/package/metadata identity for PIT universe consumers.
+
+    This intentionally avoids revalidating every extracted daily bar. The
+    caller consumes only the sealed metadata snapshot and verifies the full
+    source package bytes and metadata manifest before using its membership.
+    """
     path, body=_verified_bundle_body(bundle_path); claimed=body["source_bundle_id"]
     project_root=path.parents[3].resolve()
     def safe_project_path(raw: str | Path) -> Path:
@@ -392,18 +398,41 @@ def verify_source_bundle(bundle_path: Path) -> dict:
     copied=_manifest(metadata_root)
     if copied!=body["metadata"]["files"]: raise ValueError("METADATA_SNAPSHOT_MISMATCH")
     _validate_metadata_structure(metadata_root)
+    return {"status":"PASS","source_bundle_id":claimed,
+            "manifest_sha256":_hash(path),
+            "package_sha256":body["package"]["sha256"],
+            "target_trade_date":body["target_trade_date"],
+            "metadata_root":str(metadata_root),
+            "metadata_snapshot_id":body["metadata"].get("metadata_snapshot_id")}
+
+
+def verify_source_bundle(bundle_path: Path) -> dict:
+    identity=verify_source_bundle_membership_identity(bundle_path)
+    path, body=_verified_bundle_body(bundle_path)
+    metadata_root=Path(identity["metadata_root"])
+    project_root=path.parents[3].resolve()
+    def safe_project_path(raw: str | Path) -> Path:
+        value=Path(raw)
+        raw_candidate=value if value.is_absolute() else project_root/value
+        for item in (raw_candidate, *raw_candidate.parents):
+            if item.is_symlink(): raise ValueError("SOURCE_PATH_SYMLINK_FORBIDDEN")
+            if item == project_root: break
+        candidate=raw_candidate.resolve()
+        if candidate!=project_root and project_root not in candidate.parents:
+            raise ValueError("SOURCE_PATH_OUTSIDE_PROJECT")
+        return candidate
     ids=current_a_stock_ids(read_industry_assignments(metadata_root/"T0002/hq_cache/tdxhy.cfg"))
     extraction_root=safe_project_path(body["extraction"]["root"])
     validation=validate_extracted_day_data(extraction_root,int(str(body["target_trade_date"]).replace("-","")),ids)
     if validation["status"]!="PASS": raise ValueError("EXTRACTED_DAY_VALIDATION_FAILED")
-    package_sha256=body["package"]["sha256"]
+    package_sha256=identity["package_sha256"]
     # Keep the two identities distinct: the manifest digest binds the sealed
     # receipt bytes, while source_identity binds the downloaded official input
     # package whose hash was just re-verified above.
     return {
         "status":"PASS",
-        "source_bundle_id":claimed,
-        "manifest_sha256":_hash(path),
+        "source_bundle_id":identity["source_bundle_id"],
+        "manifest_sha256":identity["manifest_sha256"],
         "package_sha256":package_sha256,
         "source_identity":{"contract":"TDX_OFFICIAL_PACKAGE_SHA256_V1","sha256":package_sha256},
         "validation":validation,

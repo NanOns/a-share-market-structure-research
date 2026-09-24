@@ -40,29 +40,42 @@ def read_predecessor(repository, trade_date: date) -> PredecessorSnapshot:
             raise ValueError("predecessor Focus head requires replay")
         cur.execute(sql.SQL(
             "select e.source_family,e.entity_type,e.entity_id,"
-            "e.selection_contract_family,e.episode_id,e.first_trade_date,"
+            "coalesce(model.selection_contract_family,e.selection_contract_family),"
+            "e.episode_id,e.first_trade_date,"
             "o.source_membership_state,o.validity_state,"
             "o.first_supported_anchor_id "
             "from {}.focus_episode_observations o "
             "join {}.focus_episodes e using(episode_id) "
+            "left join lateral (select s.selection_contract_family "
+            "from {}.focus_episode_segments s join {}.focus_trade_date_heads sh "
+            "on sh.accepted_focus_run_id=s.focus_run_id and sh.lineage_state='VALID' "
+            "where s.episode_id=e.episode_id and s.segment_type='SOURCE_MODEL' "
+            "and s.start_trade_date<=o.trade_date order by s.start_trade_date desc limit 1) model on true "
             "where o.focus_run_id=%s and o.evaluation_mode='AS_RECORDED' "
             "order by e.source_family,e.entity_type,e.entity_id,"
             "(o.source_membership_state not in ('NONE','UNKNOWN')) desc,"
-            "e.first_trade_date desc,e.episode_id desc").format(schema, schema),
+            "e.first_trade_date desc,e.episode_id desc").format(schema, schema, schema, schema),
             (run_id,))
         observations = cur.fetchall()
         cur.execute(sql.SQL(
             "select distinct on(source_family,entity_type,entity_id) "
-            "e.source_family,e.entity_type,e.entity_id,e.selection_contract_family,"
+            "e.source_family,e.entity_type,e.entity_id,"
+            "coalesce(model.selection_contract_family,e.selection_contract_family),"
             "e.episode_id,e.first_trade_date "
             "from {}.focus_episodes e "
             "join {}.focus_episode_observations o on o.episode_id=e.episode_id "
             "join {}.focus_trade_date_heads h on h.accepted_focus_run_id=o.focus_run_id "
+            "left join lateral (select s.selection_contract_family "
+            "from {}.focus_episode_segments s join {}.focus_trade_date_heads sh "
+            "on sh.accepted_focus_run_id=s.focus_run_id and sh.lineage_state='VALID' "
+            "where s.episode_id=e.episode_id and s.segment_type='SOURCE_MODEL' "
+            "and s.start_trade_date<=h.trade_date order by s.start_trade_date desc limit 1) model on true "
             "where h.trade_date<=%s and h.source_authority_contract_id=%s "
             "and h.lineage_state='VALID' and o.evaluation_mode='AS_RECORDED' "
             "order by e.source_family,e.entity_type,e.entity_id,"
             "e.first_trade_date desc,e.episode_id desc"
-        ).format(schema, schema, schema), (previous_day, SOURCE_AUTHORITY_CONTRACT))
+        ).format(schema, schema, schema, schema, schema),
+            (previous_day, SOURCE_AUTHORITY_CONTRACT))
         all_last_episodes = cur.fetchall()
     result: dict[FocusKey, Previous] = {}
     seen: set[tuple[str, str, str]] = set()

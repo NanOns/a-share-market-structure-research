@@ -18,6 +18,9 @@ from src.focus_tracker.materialize import (read_full_master_calendar,
 from src.focus_tracker.member_strength import read_accepted_member_strength
 from src.focus_tracker.observation import assemble_observation
 from src.focus_tracker.path_fact_index import index_stock_path_facts
+from src.focus_tracker.pit_rps import (HISTORY_LOOKBACK_SESSIONS,
+                                       calculate_pit_rps20_deltas,
+                                       read_accepted_pit_universes)
 from src.focus_tracker.predicates import Tri, compile_v3_3_invalidation
 from src.focus_tracker.predicate_requirements import plan_predicate_requirements
 from src.focus_tracker.previous_reader import read_predecessor
@@ -41,6 +44,7 @@ from src.workbench_db.postgres_repository import PostgresRepository
 
 def build_focus_daily_batch(*, evaluation_basis="HISTORICAL_RECONSTRUCTED",
                            expected_trade_date: date | None = None):
+    root = Path(__file__).resolve().parents[2]
     with PostgresRepository(dsn=_dsn()) as repo:
         with repo.connection.cursor() as cur:
             cur.execute("set transaction read only")
@@ -100,6 +104,38 @@ def build_focus_daily_batch(*, evaluation_basis="HISTORICAL_RECONSTRUCTED",
             decision.phase not in {"NEW", "REENTERED", "MODEL_BASELINE"}}
         first_rows = read_first_source_rows(repo, episode_ids=historical_episodes)
         historical_frozen = read_episode_fact_values(repo, first_rows=first_rows)
+        contexts = resolve_tracking_contexts(plan=plan, sources=sources,
+                                             first_source_rows=first_rows)
+        invalidation_plans = {}
+        rps_evaluation_sessions = set()
+        for decision in tracked_decisions:
+            key = decision.key
+            if key.source_family != "V3_3_TODAY_CANDIDATE":
+                continue
+            identity = (key, decision.episode_id)
+            context = contexts[identity]
+            first_row = first_rows.get(context.episode_id, context.today_source_row)
+            if first_row is None:
+                raise ValueError("V3.3 episode first source unavailable")
+            frozen = historical_frozen.get(context.episode_id)
+            if frozen is None:
+                frozen = {fact.key: fact.value for fact in derive_frozen_facts(first_row)}
+            ast = compile_v3_3_invalidation(
+                str(first_row.source_facts["primary_category"]), frozen)
+            requirements = plan_predicate_requirements(ast)
+            invalidation_plans[identity] = (frozen, ast, requirements)
+            if "rps20_delta3" in requirements.required_fields:
+                sessions = calendar[max(0, today_position - requirements.required_sessions + 1):
+                                    today_position + 1]
+                rps_evaluation_sessions.update(day for day in sessions
+                                              if day >= context.first_trade_date)
+        rps_snapshot_dates = set()
+        for day in rps_evaluation_sessions:
+            position = calendar.index(day)
+            if position >= 3:
+                rps_snapshot_dates.update((day, calendar[position - 3]))
+        pit_universes = read_accepted_pit_universes(
+            repo, trade_dates=rps_snapshot_dates, project_root=root)
         technical_error = None
         try:
             technical = read_accepted_technical(
@@ -109,25 +145,6 @@ def build_focus_daily_batch(*, evaluation_basis="HISTORICAL_RECONSTRUCTED",
             technical = None
             technical_error = str(exc)
         repo.connection.rollback()
-    contexts = resolve_tracking_contexts(plan=plan, sources=sources,
-                                         first_source_rows=first_rows)
-    invalidation_plans = {}
-    tracked_decisions = plan.episode_tracking or plan.decisions
-    for decision in tracked_decisions:
-        key = decision.key
-        if key.source_family != "V3_3_TODAY_CANDIDATE":
-            continue
-        identity = (key, decision.episode_id)
-        context = contexts[identity]
-        first_row = first_rows.get(context.episode_id, context.today_source_row)
-        if first_row is None:
-            raise ValueError("V3.3 episode first source unavailable")
-        frozen = historical_frozen.get(context.episode_id)
-        if frozen is None:
-            frozen = {fact.key: fact.value for fact in derive_frozen_facts(first_row)}
-        ast = compile_v3_3_invalidation(
-            str(first_row.source_facts["primary_category"]), frozen)
-        invalidation_plans[identity] = (frozen, ast, plan_predicate_requirements(ast))
     member_ids = {security for basket in baskets for security in basket.security_ids}
     stock_ids = {request.security_id for request in plan.stock_path_requests}
     minimum_date = required_history_start(
@@ -141,6 +158,32 @@ def build_focus_daily_batch(*, evaluation_basis="HISTORICAL_RECONSTRUCTED",
         expected_sha256=str(artifact[0]),
         minimum_date=minimum_date, trade_date=trade_date,
         security_ids=stock_ids | member_ids)
+    rps_deltas_by_date = {}
+    rps_provider_evidence = None
+    if rps_evaluation_sessions:
+        pit_security_ids = set().union(*(item.security_ids for item in pit_universes.values()))
+        if pit_security_ids:
+            level_positions = [calendar.index(day) for day in rps_snapshot_dates
+                               if day in calendar]
+            history_position = (max(0, min(level_positions) -
+                                    (HISTORY_LOOKBACK_SESSIONS - 1))
+                                if level_positions else 0)
+            pit_normalized = read_verified_slice(
+                normalized_path=Path("data/normalized/adjusted_daily.parquet"),
+                expected_sha256=str(artifact[0]),
+                minimum_date=calendar[history_position], trade_date=trade_date,
+                security_ids=pit_security_ids)
+            rps_deltas_by_date, rps_provider_evidence = calculate_pit_rps20_deltas(
+                normalized=pit_normalized, universes=pit_universes,
+                evaluation_sessions=tuple(sorted(rps_evaluation_sessions)))
+        else:
+            rps_provider_evidence = {
+                "contract_id": "FOCUS_PIT_RPS20_HISTORY_V1",
+                "provider_digest": None,
+                "delta_quality": {day.isoformat(): {
+                    "status": "UNAVAILABLE",
+                    "reason": "PIT_UNIVERSE_SNAPSHOTS_UNAVAILABLE"}
+                    for day in sorted(rps_evaluation_sessions)}}
     facts = stock_paths_from_slice(normalized=normalized, trade_date=trade_date,
                                    requests=plan.stock_path_requests)
     by_stock = index_stock_path_facts(requests=plan.stock_path_requests, facts=facts)
@@ -192,10 +235,14 @@ def build_focus_daily_batch(*, evaluation_basis="HISTORICAL_RECONSTRUCTED",
                         first_trade_date=context.first_trade_date,
                         sessions=sessions,
                         required_fields=requirements.required_fields,
-                        normalized=normalized))
+                        normalized=normalized,
+                        rps20_delta3_by_date=rps_deltas_by_date,
+                        rps_provider_digest=(rps_provider_evidence or {}).get("provider_digest")))
                 predicate_facts["invalidation_fact_digest"] = invalidation_meta["fact_digest"]
                 predicate_facts["invalidation_provider_contract_id"] = invalidation_meta["contract_id"]
                 predicate_facts["invalidation_provider_gaps"] = invalidation_meta["provider_gaps"]
+                if "rps20_delta3" in requirements.required_fields:
+                    predicate_facts["rps20_provider_evidence"] = rps_provider_evidence
                 if invalidation == Tri.UNKNOWN and invalidation_meta["provider_gaps"]:
                     existing_reason = predicate_facts.get("invalidation_unavailable_reason")
                     predicate_facts["invalidation_unavailable_reason"] = sorted({

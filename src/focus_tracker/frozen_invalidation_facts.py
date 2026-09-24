@@ -6,7 +6,7 @@ from datetime import date
 from decimal import Decimal, InvalidOperation
 import struct
 
-from .contracts import digest
+from .contracts import SOURCE_AUTHORITY_CONTRACT, digest
 
 
 CONTRACT_ID = "FOCUS_V33_FROZEN_INVALIDATION_FACTS_V1"
@@ -73,14 +73,26 @@ def derive_frozen_facts(row) -> tuple[FrozenFact, ...]:
         for key, value in values.items())
 
 
-def insert_episode_facts(cur, *, episode_id: str, row) -> None:
+def insert_episode_facts(cur, *, episode_id: str, row,
+                         source_revision: int = 1,
+                         insert_legacy: bool = True) -> None:
+    if source_revision < 1:
+        raise ValueError("invalid frozen fact source revision")
     for fact in derive_frozen_facts(row):
-        cur.execute("""insert into workbench.focus_episode_frozen_facts
-            (episode_id,fact_key,fact_value,fact_type,source_fact_digest,
-             frozen_at_trade_date,contract_id,reason)
-            values (%s,%s,%s,%s,%s,%s,%s,%s)""",
-            (episode_id, fact.key, fact.value, fact.fact_type,
-             fact.source_fact_digest, fact.frozen_at_trade_date,
+        if insert_legacy:
+            cur.execute("""insert into workbench.focus_episode_frozen_facts
+                (episode_id,fact_key,fact_value,fact_type,source_fact_digest,
+                 frozen_at_trade_date,contract_id,reason)
+                values (%s,%s,%s,%s,%s,%s,%s,%s)""",
+                (episode_id, fact.key, fact.value, fact.fact_type,
+                 fact.source_fact_digest, fact.frozen_at_trade_date,
+                 CONTRACT_ID, fact.reason))
+        cur.execute("""insert into workbench.focus_episode_frozen_fact_revisions
+            (episode_id,source_trade_date,source_revision,fact_key,fact_value,
+             fact_type,source_fact_digest,frozen_at_trade_date,contract_id,reason)
+            values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)""",
+            (episode_id, row.trade_date, source_revision, fact.key, fact.value,
+             fact.fact_type, fact.source_fact_digest, fact.frozen_at_trade_date,
              CONTRACT_ID, fact.reason))
 
 
@@ -88,10 +100,24 @@ def verify_episode_facts(cur, *, episode_id: str, first_row) -> None:
     expected = {fact.key: fact for fact in derive_frozen_facts(first_row)}
     if not expected:
         return
+    cur.execute("""select accepted_revision from workbench.focus_trade_date_heads
+        where trade_date=%s and source_authority_contract_id=%s and lineage_state='VALID'""",
+        (first_row.trade_date, SOURCE_AUTHORITY_CONTRACT))
+    accepted = cur.fetchone()
+    if accepted is None:
+        raise ValueError("FOCUS_EPISODE_FROZEN_FACT_HEAD_UNAVAILABLE")
+    revision = int(accepted[0])
     cur.execute("""select fact_key,fact_value,fact_type,source_fact_digest,
         frozen_at_trade_date,contract_id,reason
-        from workbench.focus_episode_frozen_facts where episode_id=%s""", (episode_id,))
+        from workbench.focus_episode_frozen_fact_revisions
+        where episode_id=%s and source_trade_date=%s and source_revision=%s""",
+        (episode_id, first_row.trade_date, revision))
     actual = {r[0]: r[1:] for r in cur.fetchall()}
+    if not actual and revision == 1:
+        cur.execute("""select fact_key,fact_value,fact_type,source_fact_digest,
+            frozen_at_trade_date,contract_id,reason
+            from workbench.focus_episode_frozen_facts where episode_id=%s""", (episode_id,))
+        actual = {r[0]: r[1:] for r in cur.fetchall()}
     wanted = {key: (fact.value, fact.fact_type, fact.source_fact_digest,
                     fact.frozen_at_trade_date, CONTRACT_ID, fact.reason)
               for key, fact in expected.items()}

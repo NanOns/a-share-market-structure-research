@@ -18,6 +18,7 @@ from .outcome_math import (OutcomePathMetrics, sector_outcome_path,
                            stock_outcome_path)
 from .materialize import VerifiedNormalizedSlice
 from .price_path import due_date
+from .publication_identity import accepted_source_identity
 from .sector_basket import SectorBasket
 
 
@@ -171,22 +172,24 @@ def read_target_input_seals(repository, *, target_dates: set[date],
     result = {}
     for target_date in sorted(target_dates):
         with repository.connection.cursor() as cur:
-            cur.execute(sql.SQL("select h.publication_id,p.status,p.source_identity_sha256 "
+            cur.execute(sql.SQL("select h.publication_id,p.status,p.source_identity_sha256,"
+                                "m.source_identity_sha256 "
                                 "from {}.publication_heads h join {}.publications p using(publication_id) "
-                                "where h.trade_date=%s").format(schema, schema), (target_date,))
+                                "left join {}.publication_source_identity_migrations m using(publication_id) "
+                                "where h.trade_date=%s").format(schema, schema, schema), (target_date,))
             publications = cur.fetchall()
         if len(publications) > 1:
             raise ValueError("ambiguous target publication head")
         if not publications:
             continue
-        publication_id, status, source_sha = publications[0]
+        publication_id, status, source_sha, migrated_sha = publications[0]
         if status != "SUCCESS":
             continue
-        source_exact = bool(source_sha and _SHA.fullmatch(str(source_sha).strip()))
-        identity_kind = "SOURCE_SHA256" if source_exact else "PUBLICATION_ID_ONLY"
+        source_identity, identity_kind = accepted_source_identity(source_sha, migrated_sha)
+        source_exact = source_identity is not None
         if evaluation_basis == "REAL_FORWARD" and not source_exact:
             source_exact = False
-        source_identity_digest = (str(source_sha).strip() if source_exact else
+        source_identity_digest = (source_identity if source_exact else
                                   digest({"identity_kind": identity_kind,
                                           "publication_id": str(publication_id)}))
         accepted = True
@@ -225,9 +228,11 @@ def record_target_data_audit(repository, *, entity_type: str, entity_id: str,
         raise RuntimeError("POSTGRES_REPOSITORY_NOT_OPEN")
     schema = sql.Identifier(repository.schema)
     with repository.connection.cursor() as cur:
-        cur.execute(sql.SQL("select h.publication_id,p.status,p.source_identity_sha256 "
+        cur.execute(sql.SQL("select h.publication_id,p.status,p.source_identity_sha256,"
+                            "m.source_identity_sha256 "
                             "from {}.publication_heads h join {}.publications p using(publication_id) "
-                            "where h.trade_date=%s").format(schema, schema), (target_trade_date,))
+                            "left join {}.publication_source_identity_migrations m using(publication_id) "
+                            "where h.trade_date=%s").format(schema, schema, schema), (target_trade_date,))
         publications = cur.fetchall()
         cur.execute("select 1 from workbench_meta.artifact_catalog where relative_path=%s "
                     "and sha256=%s and availability='AVAILABLE' limit 1",
@@ -235,9 +240,9 @@ def record_target_data_audit(repository, *, entity_type: str, entity_id: str,
         artifact_exists = cur.fetchone() is not None
     if len(publications) != 1 or publications[0][1] != "SUCCESS" or not artifact_exists:
         raise ValueError("target audit requires accepted publication and available artifact")
-    publication_id, _, raw_source_sha = publications[0]
-    exact_sha = bool(raw_source_sha and _SHA.fullmatch(str(raw_source_sha).strip()))
-    expected_source_identity = (str(raw_source_sha).strip() if exact_sha else
+    publication_id, _, raw_source_sha, migrated_sha = publications[0]
+    expected_source_identity, _ = accepted_source_identity(raw_source_sha, migrated_sha)
+    expected_source_identity = (expected_source_identity if expected_source_identity else
                                 digest({"identity_kind": "PUBLICATION_ID_ONLY",
                                         "publication_id": str(publication_id)}))
     if target_source_identity_digest != expected_source_identity:
@@ -459,7 +464,8 @@ def build_outcome_record(*, due: DueAnchor, calendar: Sequence[date],
                     "gap_audit_digest": gap_audit_digest})
     payload = _json_safe(payload)
     metrics = path_metrics if decision.status == "OBSERVED" else None
-    metric_values = ({key: value.quantize(_METRIC_QUANTUM, rounding=ROUND_HALF_UP)
+    metric_values = ({key: (value.quantize(_METRIC_QUANTUM, rounding=ROUND_HALF_UP)
+                            if value is not None else None)
                       for key, value in metrics.items()} if metrics else {})
     canonical_input_digest = digest({"contract_id": CONTRACT_ID,
                                      "base_input_digest": input_digest,
@@ -496,9 +502,12 @@ def due_anchor_plan(repository, *, calendar: Sequence[date], as_of_date: date,
             "r.evaluation_basis "
             "from {}.focus_episode_anchors a join {}.focus_episodes e using(episode_id) "
             "join {}.focus_runs r on r.focus_run_id=a.focus_run_id "
+            "join {}.focus_trade_date_heads accepted on accepted.trade_date=a.trade_date "
+            "and accepted.accepted_focus_run_id=a.focus_run_id "
+            "and accepted.lineage_state='VALID' "
             "where a.anchor_type = any(%s) and a.trade_date<=%s "
             "order by a.trade_date,a.episode_id,a.anchor_id").format(
-                schema, schema, schema),
+                schema, schema, schema, schema),
             (sorted(REQUIRED_ANCHORS), as_of_date))
         anchors = cur.fetchall()
         cur.execute(sql.SQL("select h.anchor_id,h.horizon,h.accepted_target_revision,o.status,"
@@ -515,17 +524,18 @@ def due_anchor_plan(repository, *, calendar: Sequence[date], as_of_date: date,
     if target_dates:
         with repository.connection.cursor() as cur:
             cur.execute(sql.SQL("select h.trade_date,p.publication_id,p.status,"
-                                "p.source_identity_sha256 from {}.publication_heads h "
+                                "p.source_identity_sha256,m.source_identity_sha256 from {}.publication_heads h "
                                 "join {}.publications p using(publication_id) "
-                                "where h.trade_date=any(%s)").format(schema, schema),
+                                "left join {}.publication_source_identity_migrations m using(publication_id) "
+                                "where h.trade_date=any(%s)").format(schema, schema, schema),
                         (list(target_dates),))
-            for target_date, publication_id, status, source_sha in cur.fetchall():
+            for target_date, publication_id, status, source_sha, migrated_sha in cur.fetchall():
                 if status != "SUCCESS":
                     continue
-                exact_sha = bool(source_sha and _SHA.fullmatch(str(source_sha).strip()))
+                exact_sha, identity_kind = accepted_source_identity(source_sha, migrated_sha)
                 source_by_date[target_date] = (
-                    str(source_sha).strip() if exact_sha else
-                    digest({"identity_kind": "PUBLICATION_ID_ONLY",
+                    exact_sha if exact_sha else
+                    digest({"identity_kind": identity_kind,
                             "publication_id": str(publication_id)}))
     with repository.connection.cursor() as cur:
         cur.execute("select sha256 from workbench_meta.artifact_catalog "

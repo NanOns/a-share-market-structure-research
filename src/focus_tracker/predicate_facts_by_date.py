@@ -10,8 +10,8 @@ from .materialize import VerifiedNormalizedSlice
 from .session_gap_semantics import CONTRACT_ID as GAP_CONTRACT, classify_session_state
 
 
-CONTRACT_ID = "FOCUS_PREDICATE_FACTS_BY_DATE_V3"
-RPS20_DELTA3_PROVIDER_CONTRACT = "RECOVERY_TURN_INVALIDATION_PROVIDER_INCOMPLETE"
+CONTRACT_ID = "FOCUS_PREDICATE_FACTS_BY_DATE_V4"
+RPS20_DELTA3_PROVIDER_CONTRACT = "FOCUS_PIT_RPS20_HISTORY_V1"
 CENT = Decimal("0.01")
 
 
@@ -68,11 +68,13 @@ def build_predicate_facts_by_date(*, normalized: VerifiedNormalizedSlice,
                                   sessions: Sequence[date],
                                   required_fields: frozenset[str],
                                   structure_break_v3: bool | None = None,
+                                  rps20_delta3_by_date: Mapping[date, Mapping[str, str | None]] | None = None,
+                                  rps_provider_digest: str | None = None,
                                   ) -> tuple[dict[date, dict[str, Any]], str]:
     """Materialize only the requested calendar span and fields.
 
-    Missing bars remain explicit. RPS history has no accepted per-day provider in
-    this contract and is left unavailable; no source-day value is backfilled.
+    Missing bars and unavailable PIT RPS history remain explicit; no source-day
+    value is backfilled.
     """
     if (not sessions or sessions[-1] != trade_date or
             normalized.calendar[-1] != trade_date or
@@ -129,7 +131,7 @@ def build_predicate_facts_by_date(*, normalized: VerifiedNormalizedSlice,
         if "structure_break_v3" in required_fields:
             daily["structure_break_v3"] = structure_break_v3 if day == trade_date else None
         if "rps20_delta3" in required_fields:
-            daily["rps20_delta3"] = None
+            daily["rps20_delta3"] = ((rps20_delta3_by_date or {}).get(day, {}).get(security_id))
         unknown = required_fields - set(daily)
         if unknown:
             raise ValueError("predicate field provider missing: " + ",".join(sorted(unknown)))
@@ -137,6 +139,8 @@ def build_predicate_facts_by_date(*, normalized: VerifiedNormalizedSlice,
     fact_digest = digest({"contract_id": CONTRACT_ID, "session_gap_contract_id": GAP_CONTRACT,
                           "provider_contracts": ({"rps20_delta3": RPS20_DELTA3_PROVIDER_CONTRACT}
                                                  if "rps20_delta3" in required_fields else {}),
+                          "rps_provider_digest": (rps_provider_digest
+                                                  if "rps20_delta3" in required_fields else None),
                           "artifact_sha256": normalized.artifact_sha256,
                           "security_id": security_id, "trade_date": trade_date,
                           "required_fields": sorted(required_fields),

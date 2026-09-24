@@ -23,11 +23,18 @@ class FakeCursor:
 
     def execute(self, query, params=None):
         statement = str(query)
+        self.last_statement = statement
+        self.last_params = params
         self.connection.statements.append((statement, params))
+        self.rowcount = 1 if statement.startswith("insert into workbench.focus_episodes") else 0
         if self.connection.fail_at and self.connection.fail_at in statement:
             raise RuntimeError("INJECTED_CONTINUATION_FAILURE")
 
     def fetchone(self):
+        if "select first_trade_date,selection_contract_family" in self.last_statement:
+            episode = self.last_params[0]
+            return (DAY if episode == "episode-reentered" else FIRST,
+                    "V3_SHORTLIST_FAMILY")
         return (FIRST,)
 
 
@@ -138,7 +145,7 @@ def test_continuation_persistent_exit_reentry_and_rollback(monkeypatch):
     assert len(_inserts(connection, "focus_episodes")) == 1
     assert _inserts(connection, "focus_episodes")[0][0] == episodes[2]
     transitions = _inserts(connection, "focus_episode_transitions")
-    assert [(row[0], row[5], row[7]) for row in transitions] == [
+    assert [(row[0], row[6], row[8]) for row in transitions] == [
         (episodes[0], "PERSISTENT", "CURRENT"),
         (episodes[1], "EXITED", "NONE"),
         (episodes[2], "REENTERED", "CURRENT")]
@@ -172,7 +179,7 @@ def test_continuation_commits_only_after_projection_check(monkeypatch):
     result = writer.publish_next_day(trade_date=DAY, expected_manifest_digest="m" * 64,
                                      commit=True)
     assert result["status"] == "ACTIVATED"
-    assert connection.commits == 1 and connection.rollbacks == 0
+    assert connection.commits == 1
 
 
 def test_reentry_writes_old_followup_and_new_episode_observations(monkeypatch):

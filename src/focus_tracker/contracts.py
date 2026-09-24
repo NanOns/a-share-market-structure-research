@@ -105,6 +105,15 @@ def anchor_id(episode: str, anchor_type: str, trade_date: date,
                                 "trade_date": trade_date, "ordinal": ordinal})[:32]
 
 
+def revisioned_anchor_id(base_anchor_id: str, source_revision: int) -> str:
+    """Give a same-day revision its own immutable anchor identity."""
+    if not base_anchor_id or source_revision < 1:
+        raise ValueError("invalid revisioned Focus anchor identity")
+    return "anchor-rev-" + digest({"contract": "FOCUS_REVISIONED_ANCHOR_V1",
+                                   "base_anchor_id": base_anchor_id,
+                                   "source_revision": source_revision})[:32]
+
+
 def source_item_digest(source_item_key: str, source_contract_id: str,
                        source_row: dict[str, Any]) -> str:
     if not source_item_key or not source_contract_id:

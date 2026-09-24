@@ -14,6 +14,7 @@ from psycopg import sql
 from .contracts import SOURCE_AUTHORITY_CONTRACT, canonical_bytes, digest
 from .daily_plan import PlannedDay
 from .materialize import StockFact
+from .publication_identity import accepted_source_identity
 from .member_strength import SectorStrength
 from .sector_basket import SectorBasket
 from .source_reader import AcceptedSources
@@ -51,8 +52,10 @@ def read_authority_bindings(repository, *, sources: AcceptedSources,
     schema = sql.Identifier(repository.schema)
     with repository.connection.cursor() as cur:
         cur.execute(sql.SQL(
-            "select source_identity_sha256,source_revision_id from {}.publications "
-            "where publication_id=%s and trade_date=%s and status='SUCCESS'").format(schema),
+            "select p.source_identity_sha256,p.source_revision_id,m.source_identity_sha256 "
+            "from {}.publications p left join {}.publication_source_identity_migrations m "
+            "using(publication_id) "
+            "where p.publication_id=%s and p.trade_date=%s and p.status='SUCCESS'").format(schema, schema),
             (sources.publication_id, sources.trade_date))
         publication = cur.fetchone()
         if not publication:
@@ -109,8 +112,8 @@ def read_authority_bindings(repository, *, sources: AcceptedSources,
         # technical-result integrity issue is unresolved. No factor rows pass.
         technical_reason = str(exc)
     return AuthorityBindings(
-        str(publication[0]) if publication[0] else sources.publication_id,
-        "SOURCE_SHA256" if publication[0] else "PUBLICATION_ID_ONLY",
+        accepted_source_identity(publication[0], publication[2])[0] or sources.publication_id,
+        accepted_source_identity(publication[0], publication[2])[1],
         int(publication[1]) if publication[1] is not None else None,
         str(v3[0]) if v3 else None,
         str(v3[1]) if v3 else None, str(v3[2]) if v3 else None,

@@ -9,7 +9,8 @@ from psycopg.types.json import Jsonb
 from scripts.apply_focus_pg_schema_v1 import _dsn
 from scripts.run_focus_initial_core_transaction import _source_quality
 from src.focus_tracker.basket_store import insert_entry_basket
-from src.focus_tracker.contracts import SOURCE_AUTHORITY_CONTRACT, canonical_bytes, digest
+from src.focus_tracker.contracts import (SOURCE_AUTHORITY_CONTRACT, canonical_bytes,
+                                          digest, revisioned_anchor_id)
 from src.focus_tracker.core_activation import activate_core_head
 from src.focus_tracker.core_run_identity import inspect_run_slot
 from src.focus_tracker.daily_builder import build_focus_daily_batch
@@ -42,15 +43,22 @@ def publish_next_day(*, trade_date: date, expected_manifest_digest: str,
     planned_episodes = {(item.key, item.episode_id) for item in plan_decisions}
     if observed_episodes != planned_episodes:
         raise ValueError("FOCUS_CONTINUATION_EPISODE_OBSERVATION_SET_INCOMPLETE")
+    with PostgresRepository(dsn=_dsn()) as repo:
+        head = read_daily_head_plan(repo, trade_date=trade_date)
+        repo.connection.rollback()
+    if head.status not in {"NEXT_DAY", "REVISION_REQUIRED"}:
+        raise RuntimeError("FOCUS_CONTINUATION_REQUIRES_NEXT_DAY_OR_REVISION_HEAD")
+    revision = head.revision
     run_id = "focus-run-" + digest({"manifest": manifest.sha256,
-                                    "closure": closure.input_digest})[:32]
+                                    "closure": closure.input_digest,
+                                    "revision": revision})[:32]
     rows = {row.key: row for row in sources.rows}
     decisions = {(item.key, item.episode_id): item for item in plan_decisions}
     by_stock = index_stock_path_facts(requests=plan.stock_path_requests,
                                       facts=stock_facts)
     by_sector = {(basket.sector_id, basket.basket_digest): basket for basket in baskets}
     payload = manifest.payload
-    identity = dict(trade_date=trade_date, revision=1, run_id=run_id,
+    identity = dict(trade_date=trade_date, revision=revision, run_id=run_id,
                     source_identity_digest=sources.source_identity_digest,
                     observation_input_digest=closure.input_digest,
                     state_contract_id=payload["state_contract_id"],
@@ -65,8 +73,9 @@ def publish_next_day(*, trade_date: date, expected_manifest_digest: str,
                 cur.execute("select pg_advisory_xact_lock(hashtext(%s))",
                             ("FOCUS_DAILY_CORE_" + trade_date.isoformat(),))
             head = read_daily_head_plan(repo, trade_date=trade_date)
-            if head.status != "NEXT_DAY" or head.revision != 1:
-                raise RuntimeError("FOCUS_CONTINUATION_REQUIRES_NEW_NEXT_DAY_HEAD")
+            if (head.status not in {"NEXT_DAY", "REVISION_REQUIRED"} or
+                    head.revision != revision):
+                raise RuntimeError("FOCUS_CONTINUATION_HEAD_CHANGED_BEFORE_APPLY")
             previous = read_predecessor(repo, trade_date)
             if previous.focus_run_id != head.predecessor_focus_run_id:
                 raise RuntimeError("FOCUS_PREDECESSOR_CHANGED_BEFORE_APPLY")
@@ -95,9 +104,9 @@ def publish_next_day(*, trade_date: date, expected_manifest_digest: str,
                      source_identity_digest,calendar_digest,observation_input_digest,
                      state_contract_id,parameter_set_id,price_basis,dependency_lock_hash,
                      evaluation_basis,core_publication_status)
-                    values (%s,%s,1,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
+                    values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
                             'REAL_FORWARD','BUILDING')""",
-                    (run_id, trade_date, sources.publication_id,
+                    (run_id, trade_date, revision, sources.publication_id,
                      SOURCE_AUTHORITY_CONTRACT, Jsonb(sorted(sources.capabilities)),
                      Jsonb(sources.capabilities), sources.source_identity_digest,
                      payload["calendar_digest"], closure.input_digest,
@@ -129,11 +138,28 @@ def publish_next_day(*, trade_date: date, expected_manifest_digest: str,
                             (episode_id,source_family,entity_type,entity_id,
                              selection_contract_family,first_trade_date,
                              first_focus_run_id,parent_episode_id)
-                            values (%s,%s,%s,%s,%s,%s,%s,%s)""",
+                            values (%s,%s,%s,%s,%s,%s,%s,%s)
+                            on conflict (episode_id) do nothing""",
                             (episode, key.source_family, key.entity_type,
                              key.entity_id, key.selection_contract_family,
                              trade_date, run_id, decision.parent_episode_id))
-                        insert_episode_facts(cur, episode_id=episode, row=rows[key])
+                        episode_inserted = cur.rowcount == 1
+                        cur.execute("select first_trade_date,selection_contract_family "
+                                    "from workbench.focus_episodes where episode_id=%s", (episode,))
+                        stored_episode = cur.fetchone()
+                        if stored_episode is None or stored_episode[0] != trade_date:
+                            raise ValueError("revision episode identity collision")
+                        if len(stored_episode) > 1 and stored_episode[1] != key.selection_contract_family:
+                            raise ValueError("revision episode selection contract mismatch")
+                        # A same-day revision keeps the logical episode and segment,
+                        # while its run-scoped observation and anchors remain immutable.
+                        if (episode_inserted or
+                                context.first_trade_date == trade_date):
+                            insert_episode_facts(
+                                cur, episode_id=episode, row=rows[key],
+                                source_revision=revision,
+                                insert_legacy=episode_inserted)
+                        is_new = episode_inserted
                     else:
                         cur.execute("""select first_trade_date,selection_contract_family
                                        from workbench.focus_episodes
@@ -142,10 +168,24 @@ def publish_next_day(*, trade_date: date, expected_manifest_digest: str,
                                     (episode, key.source_family, key.entity_type,
                                      key.entity_id))
                         stored_episode = cur.fetchone()
+                        active_selection = None
+                        if stored_episode is not None:
+                            cur.execute("""select s.selection_contract_family
+                                from workbench.focus_episode_segments s
+                                join workbench.focus_trade_date_heads h
+                                  on h.accepted_focus_run_id=s.focus_run_id
+                                 and h.lineage_state='VALID'
+                                where s.episode_id=%s and s.segment_type='SOURCE_MODEL'
+                                  and s.start_trade_date<=%s
+                                order by s.start_trade_date desc limit 1""",
+                                (episode, trade_date))
+                            active_segment = cur.fetchone()
+                            active_selection = active_segment[0] if active_segment else None
                         if (stored_episode is None or
                                 stored_episode[0] != context.first_trade_date or
                                 (len(stored_episode) > 1 and
                                  stored_episode[1] != key.selection_contract_family and
+                                 active_selection != key.selection_contract_family and
                                  decision.phase != "SOURCE_MODEL_BOUNDARY")):
                             raise ValueError("continuation episode does not match stored identity")
                         if key.source_family == "V3_3_TODAY_CANDIDATE":
@@ -155,13 +195,16 @@ def publish_next_day(*, trade_date: date, expected_manifest_digest: str,
                         reason = "FIRST_FOCUS" if is_new else "SELECTION_CONTRACT_BOUNDARY"
                         cur.execute("""insert into workbench.focus_episode_segments
                             (segment_id,episode_id,segment_type,start_trade_date,
-                             source_model_contract_id,state_contract_id,parameter_set_id,
+                             source_model_contract_id,selection_contract_family,
+                             state_contract_id,parameter_set_id,
                              boundary_reason,focus_run_id)
-                            values (%s,%s,'SOURCE_MODEL',%s,%s,%s,%s,%s,%s)""",
+                            values (%s,%s,'SOURCE_MODEL',%s,%s,%s,%s,%s,%s,%s)
+                            on conflict do nothing""",
                             (segment_id(episode, "SOURCE_MODEL", trade_date,
-                                        context.source_contract_id, STATE_CONTRACT),
+                                        context.source_contract_id, STATE_CONTRACT, revision),
                              episode, trade_date, context.source_contract_id,
-                             STATE_CONTRACT, payload["parameter_set_id"], reason, run_id))
+                             key.selection_contract_family, STATE_CONTRACT,
+                             payload["parameter_set_id"], reason, run_id))
                     old = previous.previous.get(key)
                     if old is None:
                         old = next((value for prior_key, value in previous.previous.items()
@@ -175,8 +218,8 @@ def publish_next_day(*, trade_date: date, expected_manifest_digest: str,
                         (episode_id,focus_run_id,source_revision,transition_trade_date,
                          effective_trade_date,confirmation_trade_date,transition_type,
                          from_membership,to_membership,reason_codes)
-                        values (%s,%s,1,%s,%s,%s,%s,%s,%s,%s)""",
-                            (episode, run_id, trade_date, trade_date, trade_date,
+                        values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)""",
+                            (episode, run_id, revision, trade_date, trade_date, trade_date,
                              decision.phase, prior_membership, decision.membership,
                              Jsonb([decision.reason])))
                     stock_fact = (by_stock[(key.entity_id, context.first_trade_date)]
@@ -187,12 +230,14 @@ def publish_next_day(*, trade_date: date, expected_manifest_digest: str,
                     source_digest = (stock_fact.input_digest if stock_fact else
                                      sector_basket.basket_digest)
                     for anchor_type, anchor in decision.anchors:
+                        if revision > 1:
+                            anchor = revisioned_anchor_id(anchor, revision)
                         cur.execute("""insert into workbench.focus_episode_anchors
                             (anchor_id,episode_id,anchor_type,trade_date,focus_run_id,
                              source_revision,reference_price,price_basis,quality_status,
                              source_fact_digest)
-                            values (%s,%s,%s,%s,%s,1,%s,%s,%s,%s)""",
-                            (anchor, episode, anchor_type, trade_date, run_id,
+                            values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)""",
+                            (anchor, episode, anchor_type, trade_date, run_id, revision,
                              stock_fact.close_price if stock_fact else None,
                              "TDX_NATIVE_AFFINE_QFQ" if stock_fact else "FROZEN_BASKET_NAV",
                              stock_fact.quality_status if stock_fact else "NO_BASE_PRICE",
@@ -204,9 +249,9 @@ def publish_next_day(*, trade_date: date, expected_manifest_digest: str,
                          current_path_state,lifetime_path_tags,continuity_quality,
                          close_price,return_since_first,drawdown_from_peak,
                          adjustment_source_hash,quality_status,fact_digest,facts)
-                        values (%s,%s,%s,1,'AS_RECORDED',%s,%s,%s,%s,%s,%s,%s,
+                        values (%s,%s,%s,%s,'AS_RECORDED',%s,%s,%s,%s,%s,%s,%s,
                                 'CONTINUOUS',%s,%s,%s,%s,%s,%s,%s)""",
-                        (episode, run_id, trade_date, STATE_CONTRACT,
+                        (episode, run_id, trade_date, revision, STATE_CONTRACT,
                          observation.source_membership_state,
                          observation.membership_phase, observation.validity_state,
                          observation.followup_state, observation.current_path_state,
@@ -218,14 +263,14 @@ def publish_next_day(*, trade_date: date, expected_manifest_digest: str,
                          observation.quality_status, observation.fact_digest,
                          Jsonb(observation.evidence)))
                     evaluation_id = "focus-eval-" + digest({
-                        "episode": episode, "day": trade_date, "revision": 1,
+                        "episode": episode, "day": trade_date, "revision": revision,
                         "state": STATE_CONTRACT})[:32]
                     cur.execute("""insert into workbench.focus_state_evaluations
                         (state_evaluation_id,episode_id,trade_date,source_revision,
                          state_contract_id,parameter_set_id,evaluation_mode,
                          validity_state,current_path_state,quality_status,evidence_digest)
-                        values (%s,%s,%s,1,%s,%s,'AS_RECORDED',%s,%s,%s,%s)""",
-                        (evaluation_id, episode, trade_date, STATE_CONTRACT,
+                        values (%s,%s,%s,%s,%s,%s,'AS_RECORDED',%s,%s,%s,%s)""",
+                        (evaluation_id, episode, trade_date, revision, STATE_CONTRACT,
                          payload["parameter_set_id"], observation.validity_state,
                          observation.current_path_state, observation.quality_status,
                          observation.fact_digest))
@@ -245,7 +290,7 @@ def publish_next_day(*, trade_date: date, expected_manifest_digest: str,
                 cur.execute("update workbench.focus_runs set core_publication_status='READY' "
                             "where focus_run_id=%s", (run_id,))
             activate_core_head(repo, focus_run_id=run_id,
-                               trade_date=trade_date, revision=1)
+                               trade_date=trade_date, revision=revision)
             rebuild_current_projection(repo, focus_run_id=run_id)
             if not verify_current_projection(repo, focus_run_id=run_id):
                 raise RuntimeError("continuation projection verification failed")
@@ -257,7 +302,8 @@ def publish_next_day(*, trade_date: date, expected_manifest_digest: str,
                       "observation_count": len(observations),
                       "tracking_keys": len(plan.tracking_keys),
                       "tracking_episodes": len(planned_episodes),
-                      "predecessor_focus_run_id": head.predecessor_focus_run_id}
+                      "predecessor_focus_run_id": head.predecessor_focus_run_id,
+                      "revision": revision, "head_plan_status": head.status}
             if commit:
                 con.commit()
                 committed = True

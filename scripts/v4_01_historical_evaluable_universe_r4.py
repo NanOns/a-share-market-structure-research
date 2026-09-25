@@ -151,7 +151,7 @@ def main() -> int:
                     })
                     digest_items.append(f"{code}\0{eligibility}\0{trade_status}\n")
                 day_digest = hashlib.sha256("".join(digest_items).encode("ascii")).hexdigest()
-                rows_digest.update(f"{day.isoformat()}\0{day_digest}\0{len(observed)}\n".encode("ascii"))
+                rows_digest.update(f"{session.isoformat()}\0{day_digest}\0{len(observed)}\n".encode("ascii"))
                 for membership_row in membership_rows:
                     membership_row["trade_date"] = membership_row["trade_date"].isoformat()
                     writer.write(json.dumps(membership_row, ensure_ascii=False, sort_keys=True,

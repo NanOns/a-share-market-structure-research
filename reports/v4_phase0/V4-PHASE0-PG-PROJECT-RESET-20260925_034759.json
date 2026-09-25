@@ -1,0 +1,27 @@
+{
+  "receipt_id": "V4-PHASE0-PG-PROJECT-RESET-20260925_034759",
+  "status": "PROJECT_DATABASE_CLEARED_AND_RECREATED",
+  "scope": "market_research only",
+  "database_after": {
+    "name": "market_research",
+    "owner": "postgres",
+    "encoding": "UTF8",
+    "lc_collate": "Chinese (Simplified)_China.936",
+    "lc_ctype": "Chinese (Simplified)_China.936",
+    "bytes": 8045071
+  },
+  "cluster_databases_after": [
+    "market_research",
+    "postgres",
+    "template0",
+    "template1"
+  ],
+  "project_schemas_after": [
+    "public"
+  ],
+  "project_relation_count_after": 0,
+  "backup_receipt": "E:\\codex work\\大A交易\\reports\\v4_phase0\\V4-PHASE0-PG-PHYSICAL-BACKUP-20260925_114550.json",
+  "pre_reset_receipt": "E:\\codex work\\大A交易\\reports\\v4_phase0\\V4-PHASE0-PG-PROJECT-RESET-20260925_034759_PRE.json",
+  "completed_at_utc": "2026-09-25T03:48:00.730389+00:00",
+  "acceptance": "Target recreated with original metadata; built-in postgres/template databases unchanged; empty baseline verified."
+}

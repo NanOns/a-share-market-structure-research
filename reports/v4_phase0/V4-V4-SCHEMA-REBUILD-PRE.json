@@ -1,0 +1,27 @@
+{
+  "action": "FRESH_V4_SCHEMA_REBUILD_AFTER_PRE_RELEASE_CHECKSUM_MISMATCH",
+  "scope": [
+    "v4",
+    "v4_meta"
+  ],
+  "rows_before_drop": {
+    "source_packages": 0,
+    "source_revisions": 0,
+    "security_lifecycle_facts": 0,
+    "universe_snapshots": 0,
+    "universe_members": 0,
+    "model_namespaces": 0,
+    "state_heads": 0,
+    "publications": 0,
+    "publication_heads": 0,
+    "publication_consumed_sources": 0,
+    "publication_revision_events": 0,
+    "namespace_migrations": 0,
+    "event_observations": 0
+  },
+  "business_rows_before_drop": {},
+  "precondition": "No V4 business rows; no accepted V4 publication or head existed.",
+  "database": "market_research",
+  "at_utc": "2026-09-25T04:10:33.726625+00:00",
+  "status": "EMPTY_V4_SCHEMAS_DROPPED_FOR_HASH_CHECKED_REBUILD"
+}

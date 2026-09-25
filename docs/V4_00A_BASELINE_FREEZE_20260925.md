@@ -29,3 +29,6 @@
 **接受结果：`DEGRADED_PASS / BASELINE_IDENTITIES_FROZEN_RECOVERY_EVIDENCE_OPEN`。** 代码基线、旧 release、当前 publication/Focus heads、Phase 0 历史封存及开放审计已记录；当前 PG 可恢复性和全库逻辑摘要仍缺证据，不能宣称完整基线冻结。该降级只说明 V4-00A 的基线证据范围，不授权 scanner 或 V4 数据/状态发布。
 
 **下一阶段：`V4-00B / SECURITY_LIFECYCLE_UNIVERSE_PIT`。** 执行前重新核对当时最新适用 REV2/修订及审计回执，冻结日期有效身份、knowledge-time、历史覆盖与不支持范围；V4-00H 前不启动 scanner。`V4-00A-PG-RECOVERY-01` 与 `PGM-IA-02` 并行独立跟踪。
+# Repair addendum (2026-09-25): `FULL_PASS / CLEAN_DATABASE_BASELINE_REBUILT`
+
+The project PostgreSQL database was physically backed up at the user's explicit request, then only `market_research` was dropped and recreated with its original owner, encoding, and locale. Its former 244 project tables contained 5,308,402 rows, read from a disposable clone of the verified backup; none were restored. Hash-checked V4 migrations rebuilt the empty `v4`/`v4_meta` schema. See `docs/audits/V4_00A_DATABASE_RESET_AUDIT_20260925.md` and `reports/v4_phase0/V4_DATABASE_RESET_RECEIPT.json`. Historical database rows are not a V4 migration input.

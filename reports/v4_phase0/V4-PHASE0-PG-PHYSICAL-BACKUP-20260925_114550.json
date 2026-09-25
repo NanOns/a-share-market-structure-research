@@ -1,0 +1,16 @@
+{
+  "receipt_id": "V4-PHASE0-PG-PHYSICAL-BACKUP-20260925_114550",
+  "status": "PHYSICAL_BACKUP_VERIFIED",
+  "scope_database": "market_research",
+  "scope_cluster": "PostgreSQL cluster at 127.0.0.1:5432",
+  "system_identifier": "7688198230782699460",
+  "backup_path": "E:\\codex work\\大A交易\\runtime\\v4_phase0\\backups\\postgres_physical_20260925_114550",
+  "format": "plain physical base backup with streamed WAL",
+  "manifest_sha256": "2cbe45327884a096b9ef7824f6df0ec7b27ba98c8b14f981161587a788712727",
+  "file_count": 2442,
+  "bytes": 4756841158,
+  "started_at_utc": "2026-09-25T03:45:50.831409+00:00",
+  "verified_at_utc": "2026-09-25T03:46:55.361506+00:00",
+  "tool_version": "pg_basebackup (PostgreSQL) 18.6",
+  "verification": "pg_verifybackup --exit-on-error passed; pg_controldata system identifier matched"
+}

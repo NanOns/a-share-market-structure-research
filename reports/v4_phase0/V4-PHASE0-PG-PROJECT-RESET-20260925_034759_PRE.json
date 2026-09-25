@@ -1,0 +1,82 @@
+{
+  "receipt_id": "V4-PHASE0-PG-PROJECT-RESET-20260925_034759",
+  "stage": "Phase 0 repair / project database reset",
+  "contract": "After a verified physical backup, clear and recreate only PostgreSQL database market_research with its original owner, encoding, and locale. Preserve system databases and all TDX/source directories.",
+  "authorization": "Explicit user instruction to physically back up the current database and delete all its contents, followed by Phase 0 repair task.",
+  "backup_receipt": "E:\\codex work\\大A交易\\reports\\v4_phase0\\V4-PHASE0-PG-PHYSICAL-BACKUP-20260925_114550.json",
+  "backup_status": "PHYSICAL_BACKUP_VERIFIED",
+  "backup_manifest_sha256": "2cbe45327884a096b9ef7824f6df0ec7b27ba98c8b14f981161587a788712727",
+  "target_database": "market_research",
+  "target_host": "127.0.0.1",
+  "target_port": "5432",
+  "started_at_utc": "2026-09-25T03:47:59.769390+00:00",
+  "database_before": {
+    "name": "market_research",
+    "owner": "postgres",
+    "encoding": "UTF8",
+    "lc_collate": "Chinese (Simplified)_China.936",
+    "lc_ctype": "Chinese (Simplified)_China.936",
+    "allow_connections": true,
+    "is_template": false,
+    "bytes": 4714739391
+  },
+  "cluster_databases_before": [
+    {
+      "name": "market_research",
+      "owner": "postgres",
+      "is_template": false
+    },
+    {
+      "name": "postgres",
+      "owner": "postgres",
+      "is_template": false
+    },
+    {
+      "name": "template0",
+      "owner": "postgres",
+      "is_template": true
+    },
+    {
+      "name": "template1",
+      "owner": "postgres",
+      "is_template": true
+    }
+  ],
+  "project_relations_before": [
+    {
+      "schema": "legacy",
+      "relkind": "i",
+      "count": 2
+    },
+    {
+      "schema": "legacy",
+      "relkind": "r",
+      "count": 105
+    },
+    {
+      "schema": "workbench",
+      "relkind": "i",
+      "count": 167
+    },
+    {
+      "schema": "workbench",
+      "relkind": "r",
+      "count": 131
+    },
+    {
+      "schema": "workbench_meta",
+      "relkind": "i",
+      "count": 7
+    },
+    {
+      "schema": "workbench_meta",
+      "relkind": "r",
+      "count": 8
+    }
+  ],
+  "custom_schemas_before": [
+    "legacy",
+    "workbench",
+    "workbench_meta"
+  ]
+}

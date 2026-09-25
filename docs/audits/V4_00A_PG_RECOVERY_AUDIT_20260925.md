@@ -17,3 +17,13 @@
 4. 由独立验收更新状态。DuckDB副本恢复或PG backup catalog CRUD不能替代该证据。
 
 本阶段没有合适PG备份/恢复工具与当前实例专用备份artifact，因此未执行不安全的自制导出或生产库操作；保持 `OPEN`。
+
+## 2026-09-25 状态修订
+
+旧数据恢复门已被 Phase 0 修复任务及用户架构决策废止，状态为：
+
+```text
+RETIRED_BY_USER_ARCHITECTURE_DECISION
+```
+
+用户随后明确要求先做物理备份再清空当前项目库。已验证并保留物理备份，然后只清空重建 `market_research`。旧库数据不参与 V4 迁移，旧恢复演练不再是 Phase 0/V4-01 前置。清空验收见 `V4-00A_DATABASE_RESET_AUDIT_20260925.md`；这不是对未满足风险门的豁免。

@@ -118,7 +118,7 @@ def main() -> int:
     _atomic_json(ROOT / args.receipt, receipt)
     print(json.dumps({"status": receipt["status"], "case_count": len(cases), "query_date_count": len(unique_dates),
                       "request_count_delta": receipt["request_count_delta"],
-                      "case_statuses": {x["status"] for x in cases}, "failures": failures}, ensure_ascii=False))
+                      "case_statuses": sorted({x["status"] for x in cases}), "failures": failures}, ensure_ascii=False))
     return 0 if receipt["status"] == "BOUNDARY_PROBE_PASS_ACCEPTANCE_PENDING" else 2
 
 

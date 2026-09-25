@@ -200,8 +200,12 @@ class RequestBudget:
         self.path = ledger_path
         self.hard_limit = hard_limit
         self.soft_limit = soft_limit
-        self.day = datetime.now(ZoneInfo("Asia/Shanghai")).date().isoformat()
+        self.day = self._today_shanghai()
         self._mutex = threading.Lock()
+
+    @staticmethod
+    def _today_shanghai() -> str:
+        return datetime.now(ZoneInfo("Asia/Shanghai")).date().isoformat()
 
     def _load(self) -> dict[str, Any]:
         if not self.path.exists():
@@ -218,6 +222,9 @@ class RequestBudget:
         if not operation or any(char in operation for char in "\r\n\t"):
             raise BaoStockError("REQUEST_OPERATION_INVALID")
         with self._mutex:
+            # Sessions can span Shanghai midnight. Attribute each request to
+            # the actual Shanghai date on which the provider call is issued.
+            self.day = self._today_shanghai()
             payload = self._load()
             today = payload["by_shanghai_date"].setdefault(self.day, {"count": 0, "operations": {}})
             if not bypass_soft_stop and int(today.get("count", 0)) >= self.soft_limit:

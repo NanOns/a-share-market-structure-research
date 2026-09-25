@@ -110,6 +110,17 @@ def test_budget_counts_retries_and_stops_before_daily_hard_limit(tmp_path: Path)
     assert "secret" not in json.dumps(saved).lower()
 
 
+def test_budget_rolls_over_using_the_current_shanghai_date(tmp_path: Path, monkeypatch):
+    ledger = bao.RequestBudget(tmp_path / "ledger.json", hard_limit=4, soft_limit=3)
+    days = iter(("2026-09-25", "2026-09-26"))
+    monkeypatch.setattr(ledger, "_today_shanghai", lambda: next(days))
+    assert ledger.consume("query") == 1
+    assert ledger.consume("query") == 1
+    saved = json.loads((tmp_path / "ledger.json").read_text(encoding="utf-8"))
+    assert saved["by_shanghai_date"]["2026-09-25"]["count"] == 1
+    assert saved["by_shanghai_date"]["2026-09-26"]["count"] == 1
+
+
 def test_bad_or_unreadable_ledger_fails_closed(tmp_path: Path):
     path = tmp_path / "ledger.json"
     path.write_text("not json", encoding="utf-8")

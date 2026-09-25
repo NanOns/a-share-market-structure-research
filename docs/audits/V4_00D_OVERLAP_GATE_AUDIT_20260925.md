@@ -18,3 +18,15 @@
 4. 正反例证明超过阈值时 fail-closed 为 `BOOTSTRAP_BLOCKED`；容差、重试和结果记录不得改动任何 TDX 输入文件。
 
 在关闭前保持 `OPEN`；不得自行推断 0.67% 可接受，也不得通过简单重试掩盖差异。
+
+## 2026-09-25 修复验收
+
+状态更新为 `CLOSED_FOR_A_STOCK_CORE / INDEX_DIAGNOSTIC_ONLY`。可重跑脚本 `scripts/v4_00d_overlap_acceptance.py` 用同一官方包和本地只读快照完成最近60个实际交易日、按证券类型分层的比较，报告为 `reports/v4_00d/v4_00d_asset_stratified_20260925.json`。
+
+- A_STOCK：265,993 可比行；263,554 原始六字段精确一致；2,439 行被严格分类为同源官方终端刷新后的成交量修订；无法解释差异 0；身份键冲突 0；畸形记录 0。所有 A 股成交量修订均要求官方 ZIP 对应证券文件日期晚于本地文件时间、官方日线尾日也晚于本地尾日，且 OHLC 和 amount 完全一致。它是版本差异分类，不是按差异比例或数量放宽。
+- A_STOCK source package：`ACCEPTED_SOURCE_PACKAGE`。package-only 66,419 行属于新包覆盖超出本地旧快照或需后续生命周期证据的覆盖差异；local-only 0。缺行不被推成停牌或退市。
+- INDEX 有 73 行未解释字段差异，留在独立诊断范围；指数能力不属于本次 A_STOCK Core gate。
+- ETF/LOF、可转债、逆回购、OTHER 各自输出类型级计数与接受状态；任何非 A 股差异不回流阻塞 A 股 Core。
+- source package SHA-256 `b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f`；TDX 本地 snapshot SHA-256 `a0e219048f025a9b8fa5998a8a2108535e9cee4b9f8a25573adf1019e97831ff`；独立复跑前后身份一致。
+
+接受标准是分字段及来源版本语义的确定规则，不是总 mismatch 百分比阈值。TDX 格式不提供法律实体标识，因此 identity contract 限定为交易所+六位证券代码，不声称核验发行人法定身份。V4-01 的历史 PIT/lifecycle 事实仍按 V4-01 逐步补建。

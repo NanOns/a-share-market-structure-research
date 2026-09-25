@@ -29,3 +29,6 @@
 - 新开独立审计 `V4-00D-OVERLAP-GATE-01`，状态 `OPEN`：范围为重叠阈值、标准化算法、差异指标与 row-only 语义。接受条件见 [独立审计回执](audits/V4_00D_OVERLAP_GATE_AUDIT_20260925.md)。它不由 V4-00D 的阶段回执或后续算法阶段自动关闭。
 - **阶段接受结果：`DEGRADED_PASS / SOURCE_CONTRACT_INVENTORY_COMPLETE_OVERLAP_ACCEPTANCE_OPEN`。** 下载/解析/目标日期证据已盘点，合同与请求预算已冻结；真实 60 日比较存在差异且规范缺少判定阈值，source package 尚未被 V4 接受。`DEGRADED_PASS` 只覆盖合同/证据回执，不是数据源放行。
 - **下一阶段：`V4-00E / HISTORICAL_ADJUSTMENT_COORDINATES`。** 可继续定义调整/坐标合同；V4-01 历史 bootstrap、Canonical Daily 和 scanner 仍受 source acceptance 与 V4-00H Phase 0 最终回执约束。
+# Repair addendum (2026-09-25): `FULL_PASS / A_STOCK_CORE_SOURCE_ACCEPTED_OTHER_ASSET_SCOPE_DECLARED`
+
+This addendum supersedes the earlier `NOT_ACCEPTED` conclusion for the A_STOCK Core scope. The reproducible runner is `scripts/v4_00d_overlap_acceptance.py`; its report is `reports/v4_00d/v4_00d_asset_stratified_20260925.json`. It compares the same 60 sessions using raw `.day` integers and float32 amount, separates A_STOCK, INDEX, ETF_LOF, BOND_CONVERTIBLE, REPO, and OTHER, and reports identity, malformed rows, file coverage and mismatch reasons independently. A_STOCK is `ACCEPTED_SOURCE_PACKAGE`; index residual mismatch is diagnostic-only and does not gate A-stock bootstrap. A second identical run preserved local snapshot SHA-256 `a0e219048f025a9b8fa5998a8a2108535e9cee4b9f8a25573adf1019e97831ff`.

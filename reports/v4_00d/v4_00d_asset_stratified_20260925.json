@@ -1,0 +1,1932 @@
+{
+  "contract_id": "TDX_VIPDATA_OVERLAP_ACCEPTANCE_V1",
+  "source_package_sha256": "b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f",
+  "package_path": "E:\\codex work\\大A交易\\data\\input_staging\\packages\\20260924\\b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f\\hsjday.zip",
+  "local_snapshot_identity": {
+    "root": "D:/new_tdx/vipdoc",
+    "snapshot_sha256": "a0e219048f025a9b8fa5998a8a2108535e9cee4b9f8a25573adf1019e97831ff",
+    "day_file_count": 12245,
+    "metadata_sha256": {
+      "bjs.tnf": "47d22727178e81a7f8bb6382c13073c55d3d3c318f5df26cbbe4c48b36eb1f3e",
+      "gbbq": "f8c6a60e052a3fd7f8c3a043dbc9c53311a7599e1b36bb6cc140058f56269ef1",
+      "gbbq.map": "f874e09444c03077b1d9e465a6efe56beb6678c0e71c98d118516ad24efe51c8",
+      "infoharbor_block.dat": "2c8370b7cbca82b975c6683c89172b891eac45b0328d53d24b6d65e1ac049526",
+      "shs.tnf": "1a052f176a0ec1dd2fd2909feac0b87eea171e54bab7b669d6dd80710f8ba07c",
+      "szs.tnf": "e5681dfaa68c6c2c27ef6628f9d474f741042300b46f8343cdcb93ff189508fc",
+      "tdxhy.cfg": "e5e909c2ee426efaa0e21050ceefee43bfcdc75c9d188ed18e3fc90d9f3f2a81",
+      "tdxzs.cfg": "a33983fc8bb15c97db93fe9b60394b326b71a91e99e33b8b54700415442074da"
+    }
+  },
+  "parser_version": "v4-day-raw-v1.1",
+  "comparison_key": "exchange + six-digit TDX security code + YYYYMMDD",
+  "security_type_requested": "ALL",
+  "session_count": 60,
+  "sessions": {
+    "first": 20260703,
+    "last": 20260924
+  },
+  "core_security_type": "A_STOCK",
+  "asset_types": {
+    "A_STOCK": {
+      "security_type": "A_STOCK",
+      "session_count": 60,
+      "sessions": {
+        "first": 20260703,
+        "last": 20260924
+      },
+      "comparable_rows": 265993,
+      "exact_match_rows": 263554,
+      "normalized_match_rows": 2439,
+      "unexplained_mismatch_rows": 0,
+      "source_refresh_volume_revision_rows": 2439,
+      "source_refresh_volume_abs_delta_max": 30,
+      "package_only_rows": 66419,
+      "local_only_rows": 0,
+      "identity_mismatch_count": 0,
+      "malformed_count": 0,
+      "field_mismatch_counts": {
+        "volume": 2439
+      },
+      "reason_classification": {
+        "package_only:CURRENT_RESEARCH_UNIVERSE_MEMBER_LOCAL_BAR_COVERAGE": 11099,
+        "package_only:PACKAGE_INCREMENTAL_SESSION_AFTER_LOCAL_SNAPSHOT": 55320,
+        "TOLERATED_PRICE_ROUNDING": 0,
+        "TOLERATED_SOURCE_REFRESH_VOLUME_REVISION": 2439,
+        "UNEXPLAINED_MISMATCH": 0
+      },
+      "acceptance": "ACCEPTED_SOURCE_PACKAGE",
+      "mismatch_samples": [],
+      "identity_semantics": "TDX venue + six-digit security code verified against paired .day filenames and source master where present; issuer/legal-entity identity is not represented by TDX and is not claimed."
+    },
+    "BOND_CONVERTIBLE": {
+      "security_type": "BOND_CONVERTIBLE",
+      "session_count": 60,
+      "sessions": {
+        "first": 20260703,
+        "last": 20260924
+      },
+      "comparable_rows": 15364,
+      "exact_match_rows": 15363,
+      "normalized_match_rows": 1,
+      "unexplained_mismatch_rows": 0,
+      "source_refresh_volume_revision_rows": 0,
+      "source_refresh_volume_abs_delta_max": 0,
+      "package_only_rows": 3103,
+      "local_only_rows": 0,
+      "identity_mismatch_count": 0,
+      "malformed_count": 2,
+      "field_mismatch_counts": {
+        "close": 1,
+        "high": 1,
+        "low": 1,
+        "open": 1
+      },
+      "reason_classification": {
+        "package_only:NON_CURRENT_MEMBER_OR_HISTORICAL_LIFECYCLE_UNKNOWN": 2,
+        "package_only:PACKAGE_INCREMENTAL_SESSION_AFTER_LOCAL_SNAPSHOT": 3101,
+        "TOLERATED_PRICE_ROUNDING": 1,
+        "TOLERATED_SOURCE_REFRESH_VOLUME_REVISION": 0,
+        "UNEXPLAINED_MISMATCH": 0
+      },
+      "acceptance": "BLOCKED",
+      "mismatch_samples": [],
+      "identity_semantics": "TDX venue + six-digit security code verified against paired .day filenames and source master where present; issuer/legal-entity identity is not represented by TDX and is not claimed."
+    },
+    "ETF_LOF": {
+      "security_type": "ETF_LOF",
+      "session_count": 60,
+      "sessions": {
+        "first": 20260703,
+        "last": 20260924
+      },
+      "comparable_rows": 99632,
+      "exact_match_rows": 99061,
+      "normalized_match_rows": 571,
+      "unexplained_mismatch_rows": 0,
+      "source_refresh_volume_revision_rows": 571,
+      "source_refresh_volume_abs_delta_max": 123,
+      "package_only_rows": 20395,
+      "local_only_rows": 3398,
+      "identity_mismatch_count": 0,
+      "malformed_count": 0,
+      "field_mismatch_counts": {
+        "volume": 571
+      },
+      "reason_classification": {
+        "local_only:LOCAL_SESSION_ABSENT_FROM_PACKAGE": 147,
+        "local_only:NON_CURRENT_MEMBER_OR_HISTORICAL_LIFECYCLE_UNKNOWN": 3251,
+        "package_only:NON_CURRENT_MEMBER_OR_HISTORICAL_LIFECYCLE_UNKNOWN": 127,
+        "package_only:PACKAGE_INCREMENTAL_SESSION_AFTER_LOCAL_SNAPSHOT": 20268,
+        "TOLERATED_PRICE_ROUNDING": 0,
+        "TOLERATED_SOURCE_REFRESH_VOLUME_REVISION": 571,
+        "UNEXPLAINED_MISMATCH": 0
+      },
+      "acceptance": "ACCEPTED_SOURCE_PACKAGE",
+      "mismatch_samples": [],
+      "identity_semantics": "TDX venue + six-digit security code verified against paired .day filenames and source master where present; issuer/legal-entity identity is not represented by TDX and is not claimed."
+    },
+    "INDEX": {
+      "security_type": "INDEX",
+      "session_count": 60,
+      "sessions": {
+        "first": 20260703,
+        "last": 20260924
+      },
+      "comparable_rows": 25947,
+      "exact_match_rows": 25856,
+      "normalized_match_rows": 18,
+      "unexplained_mismatch_rows": 73,
+      "source_refresh_volume_revision_rows": 0,
+      "source_refresh_volume_abs_delta_max": 0,
+      "package_only_rows": 7293,
+      "local_only_rows": 0,
+      "identity_mismatch_count": 0,
+      "malformed_count": 10,
+      "field_mismatch_counts": {
+        "close": 2,
+        "high": 8,
+        "low": 7,
+        "open": 3,
+        "volume": 73
+      },
+      "reason_classification": {
+        "package_only:PACKAGE_INCREMENTAL_SESSION_AFTER_LOCAL_SNAPSHOT": 7293,
+        "TOLERATED_PRICE_ROUNDING": 18,
+        "TOLERATED_SOURCE_REFRESH_VOLUME_REVISION": 0,
+        "UNEXPLAINED_MISMATCH": 73
+      },
+      "acceptance": "BLOCKED",
+      "mismatch_samples": [
+        {
+          "security_id": "SZ.399681",
+          "trade_date": 20260703,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            143982,
+            144865,
+            141808,
+            142289,
+            141665861632.0,
+            54854373
+          ],
+          "local": [
+            143982,
+            144865,
+            141808,
+            142289,
+            141665861632.0,
+            54854372
+          ]
+        },
+        {
+          "security_id": "SZ.399681",
+          "trade_date": 20260706,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            142779,
+            145443,
+            140136,
+            140274,
+            139889786880.0,
+            56705330
+          ],
+          "local": [
+            142779,
+            145443,
+            140136,
+            140274,
+            139889786880.0,
+            56705328
+          ]
+        },
+        {
+          "security_id": "SZ.399681",
+          "trade_date": 20260707,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            140074,
+            140542,
+            136022,
+            136621,
+            104300822528.0,
+            44045994
+          ],
+          "local": [
+            140074,
+            140542,
+            136022,
+            136621,
+            104300822528.0,
+            44045992
+          ]
+        },
+        {
+          "security_id": "SZ.399681",
+          "trade_date": 20260708,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            136440,
+            136536,
+            130755,
+            130793,
+            104701140992.0,
+            41646794
+          ],
+          "local": [
+            136440,
+            136536,
+            130755,
+            130793,
+            104701140992.0,
+            41646792
+          ]
+        },
+        {
+          "security_id": "SZ.399681",
+          "trade_date": 20260709,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            130775,
+            131494,
+            125005,
+            130004,
+            116064100352.0,
+            46957949
+          ],
+          "local": [
+            130775,
+            131494,
+            125005,
+            130004,
+            116064100352.0,
+            46957948
+          ]
+        },
+        {
+          "security_id": "SZ.399681",
+          "trade_date": 20260710,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            130188,
+            132251,
+            128962,
+            129006,
+            113711431680.0,
+            45021737
+          ],
+          "local": [
+            130188,
+            132251,
+            128962,
+            129006,
+            113711431680.0,
+            45021736
+          ]
+        },
+        {
+          "security_id": "SZ.399681",
+          "trade_date": 20260713,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            127486,
+            127491,
+            122748,
+            123182,
+            89654747136.0,
+            39502991
+          ],
+          "local": [
+            127486,
+            127491,
+            122748,
+            123182,
+            89654747136.0,
+            39502992
+          ]
+        },
+        {
+          "security_id": "SZ.399681",
+          "trade_date": 20260715,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            128906,
+            129100,
+            126033,
+            126355,
+            88546123776.0,
+            40702174
+          ],
+          "local": [
+            128906,
+            129100,
+            126033,
+            126355,
+            88546123776.0,
+            40702176
+          ]
+        },
+        {
+          "security_id": "SZ.399681",
+          "trade_date": 20260720,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            120162,
+            120360,
+            114893,
+            116725,
+            91570872320.0,
+            45479769
+          ],
+          "local": [
+            120162,
+            120360,
+            114893,
+            116725,
+            91570872320.0,
+            45479768
+          ]
+        },
+        {
+          "security_id": "SZ.399681",
+          "trade_date": 20260723,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            122959,
+            127128,
+            122562,
+            126261,
+            99027288064.0,
+            47088755
+          ],
+          "local": [
+            122959,
+            127128,
+            122562,
+            126261,
+            99027288064.0,
+            47088756
+          ]
+        },
+        {
+          "security_id": "SZ.399681",
+          "trade_date": 20260724,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            123977,
+            125119,
+            121114,
+            121145,
+            78497349632.0,
+            37503449
+          ],
+          "local": [
+            123977,
+            125119,
+            121114,
+            121145,
+            78497349632.0,
+            37503448
+          ]
+        },
+        {
+          "security_id": "SZ.399681",
+          "trade_date": 20260727,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            121591,
+            124941,
+            121013,
+            124941,
+            75654316032.0,
+            33552347
+          ],
+          "local": [
+            121591,
+            124941,
+            121013,
+            124941,
+            75654316032.0,
+            33552348
+          ]
+        },
+        {
+          "security_id": "SZ.399681",
+          "trade_date": 20260729,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            122023,
+            125248,
+            120567,
+            124133,
+            88171077632.0,
+            41282539
+          ],
+          "local": [
+            122023,
+            125248,
+            120567,
+            124133,
+            88171077632.0,
+            41282540
+          ]
+        },
+        {
+          "security_id": "SZ.399681",
+          "trade_date": 20260730,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            124079,
+            125930,
+            121710,
+            123494,
+            90446356480.0,
+            40206955
+          ],
+          "local": [
+            124079,
+            125930,
+            121710,
+            123494,
+            90446356480.0,
+            40206956
+          ]
+        },
+        {
+          "security_id": "SZ.399681",
+          "trade_date": 20260731,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            124906,
+            126614,
+            124077,
+            124176,
+            96009330688.0,
+            42636069
+          ],
+          "local": [
+            124906,
+            126614,
+            124077,
+            124176,
+            96009330688.0,
+            42636068
+          ]
+        },
+        {
+          "security_id": "SZ.399681",
+          "trade_date": 20260803,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            123338,
+            124683,
+            122027,
+            123746,
+            75971870720.0,
+            37227102
+          ],
+          "local": [
+            123338,
+            124683,
+            122027,
+            123746,
+            75971870720.0,
+            37227104
+          ]
+        },
+        {
+          "security_id": "SZ.399681",
+          "trade_date": 20260805,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            125990,
+            130757,
+            125618,
+            130680,
+            103094173696.0,
+            46368959
+          ],
+          "local": [
+            125990,
+            130757,
+            125618,
+            130680,
+            103094173696.0,
+            46368960
+          ]
+        },
+        {
+          "security_id": "SZ.399681",
+          "trade_date": 20260806,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            131592,
+            133353,
+            130654,
+            132408,
+            122536943616.0,
+            51275538
+          ],
+          "local": [
+            131592,
+            133353,
+            130654,
+            132408,
+            122536943616.0,
+            51275536
+          ]
+        },
+        {
+          "security_id": "SZ.399681",
+          "trade_date": 20260807,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            132930,
+            136117,
+            132067,
+            135886,
+            131560169472.0,
+            49685599
+          ],
+          "local": [
+            132930,
+            136117,
+            132067,
+            135886,
+            131560169472.0,
+            49685600
+          ]
+        },
+        {
+          "security_id": "SZ.399681",
+          "trade_date": 20260810,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            136773,
+            138722,
+            135976,
+            138542,
+            136088133632.0,
+            49893161
+          ],
+          "local": [
+            136773,
+            138722,
+            135976,
+            138542,
+            136088133632.0,
+            49893160
+          ]
+        },
+        {
+          "security_id": "SZ.399681",
+          "trade_date": 20260811,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            137695,
+            139084,
+            134888,
+            134923,
+            126900240384.0,
+            49542529
+          ],
+          "local": [
+            137695,
+            139084,
+            134888,
+            134923,
+            126900240384.0,
+            49542528
+          ]
+        },
+        {
+          "security_id": "SZ.399681",
+          "trade_date": 20260812,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            135240,
+            137706,
+            134766,
+            136471,
+            103505305600.0,
+            38766787
+          ],
+          "local": [
+            135240,
+            137706,
+            134766,
+            136471,
+            103505305600.0,
+            38766788
+          ]
+        },
+        {
+          "security_id": "SZ.399681",
+          "trade_date": 20260813,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            136504,
+            136504,
+            132142,
+            132142,
+            114165112832.0,
+            44157959
+          ],
+          "local": [
+            136504,
+            136504,
+            132142,
+            132142,
+            114165112832.0,
+            44157960
+          ]
+        },
+        {
+          "security_id": "SZ.399681",
+          "trade_date": 20260814,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            132074,
+            134213,
+            131707,
+            133235,
+            86087016448.0,
+            31823729
+          ],
+          "local": [
+            132074,
+            134213,
+            131707,
+            133235,
+            86087016448.0,
+            31823728
+          ]
+        },
+        {
+          "security_id": "SZ.399681",
+          "trade_date": 20260818,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            136246,
+            137507,
+            134753,
+            135874,
+            96051970048.0,
+            35530431
+          ],
+          "local": [
+            136246,
+            137507,
+            134753,
+            135874,
+            96051970048.0,
+            35530432
+          ]
+        },
+        {
+          "security_id": "SZ.399681",
+          "trade_date": 20260819,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            132761,
+            134696,
+            130869,
+            131253,
+            99602554880.0,
+            38053226
+          ],
+          "local": [
+            132761,
+            134696,
+            130869,
+            131253,
+            99602554880.0,
+            38053224
+          ]
+        },
+        {
+          "security_id": "SZ.399681",
+          "trade_date": 20260820,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            132795,
+            134078,
+            130626,
+            131492,
+            89414696960.0,
+            38017905
+          ],
+          "local": [
+            132795,
+            134078,
+            130626,
+            131492,
+            89414696960.0,
+            38017904
+          ]
+        },
+        {
+          "security_id": "SZ.399681",
+          "trade_date": 20260821,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            131243,
+            133972,
+            130687,
+            133710,
+            93435838464.0,
+            38341783
+          ],
+          "local": [
+            131243,
+            133972,
+            130687,
+            133710,
+            93435838464.0,
+            38341784
+          ]
+        },
+        {
+          "security_id": "SZ.399681",
+          "trade_date": 20260824,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            134785,
+            134893,
+            130854,
+            132406,
+            104133476352.0,
+            42902503
+          ],
+          "local": [
+            134785,
+            134893,
+            130854,
+            132406,
+            104133476352.0,
+            42902504
+          ]
+        },
+        {
+          "security_id": "SZ.399681",
+          "trade_date": 20260825,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            131417,
+            131537,
+            128378,
+            129651,
+            81578713088.0,
+            37648745
+          ],
+          "local": [
+            131417,
+            131537,
+            128378,
+            129651,
+            81578713088.0,
+            37648744
+          ]
+        },
+        {
+          "security_id": "SZ.399681",
+          "trade_date": 20260826,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            129887,
+            133201,
+            129695,
+            131685,
+            84239990784.0,
+            43125821
+          ],
+          "local": [
+            129887,
+            133201,
+            129695,
+            131685,
+            84239990784.0,
+            43125820
+          ]
+        },
+        {
+          "security_id": "SZ.399681",
+          "trade_date": 20260827,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            131613,
+            134741,
+            131446,
+            134741,
+            93754277888.0,
+            41572719
+          ],
+          "local": [
+            131613,
+            134741,
+            131446,
+            134741,
+            93754277888.0,
+            41572720
+          ]
+        },
+        {
+          "security_id": "SZ.399681",
+          "trade_date": 20260828,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            135440,
+            136594,
+            134416,
+            136154,
+            104835006464.0,
+            45568159
+          ],
+          "local": [
+            135440,
+            136594,
+            134416,
+            136154,
+            104835006464.0,
+            45568160
+          ]
+        },
+        {
+          "security_id": "SZ.399681",
+          "trade_date": 20260831,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            134043,
+            135575,
+            132848,
+            135562,
+            90392862720.0,
+            42108157
+          ],
+          "local": [
+            134043,
+            135575,
+            132848,
+            135562,
+            90392862720.0,
+            42108156
+          ]
+        },
+        {
+          "security_id": "SZ.399681",
+          "trade_date": 20260901,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            136071,
+            136342,
+            133316,
+            133406,
+            84826333184.0,
+            38368370
+          ],
+          "local": [
+            136071,
+            136342,
+            133316,
+            133406,
+            84826333184.0,
+            38368368
+          ]
+        },
+        {
+          "security_id": "SZ.399681",
+          "trade_date": 20260904,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            132019,
+            132300,
+            128279,
+            128929,
+            67669274624.0,
+            32453485
+          ],
+          "local": [
+            132019,
+            132300,
+            128279,
+            128929,
+            67669274624.0,
+            32453484
+          ]
+        },
+        {
+          "security_id": "SZ.399681",
+          "trade_date": 20260907,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            128600,
+            129183,
+            127892,
+            128560,
+            60115324928.0,
+            28050867
+          ],
+          "local": [
+            128600,
+            129183,
+            127892,
+            128560,
+            60115324928.0,
+            28050868
+          ]
+        },
+        {
+          "security_id": "SZ.399681",
+          "trade_date": 20260909,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            130273,
+            131896,
+            129983,
+            131681,
+            76901752832.0,
+            36955967
+          ],
+          "local": [
+            130273,
+            131896,
+            129983,
+            131681,
+            76901752832.0,
+            36955968
+          ]
+        },
+        {
+          "security_id": "SZ.399681",
+          "trade_date": 20260910,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            131336,
+            131499,
+            129990,
+            130121,
+            60419444736.0,
+            29187221
+          ],
+          "local": [
+            131336,
+            131499,
+            129990,
+            130121,
+            60419444736.0,
+            29187220
+          ]
+        },
+        {
+          "security_id": "SZ.399681",
+          "trade_date": 20260914,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            124570,
+            126730,
+            124291,
+            125744,
+            58347491328.0,
+            25391215
+          ],
+          "local": [
+            124570,
+            126730,
+            124291,
+            125744,
+            58347491328.0,
+            25391216
+          ]
+        },
+        {
+          "security_id": "SZ.399681",
+          "trade_date": 20260918,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            126846,
+            126970,
+            125133,
+            126054,
+            65038573568.0,
+            27265599
+          ],
+          "local": [
+            126846,
+            126970,
+            125133,
+            126054,
+            65038573568.0,
+            27265600
+          ]
+        },
+        {
+          "security_id": "SZ.399681",
+          "trade_date": 20260921,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            126228,
+            127104,
+            125999,
+            126828,
+            67271229440.0,
+            27770005
+          ],
+          "local": [
+            126228,
+            127104,
+            125999,
+            126828,
+            67271229440.0,
+            27770004
+          ]
+        },
+        {
+          "security_id": "SZ.399681",
+          "trade_date": 20260922,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            127194,
+            127522,
+            126079,
+            126399,
+            66759925760.0,
+            27700335
+          ],
+          "local": [
+            127194,
+            127522,
+            126079,
+            126399,
+            66759925760.0,
+            27700336
+          ]
+        },
+        {
+          "security_id": "SZ.399682",
+          "trade_date": 20260706,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            197831,
+            200740,
+            195080,
+            195232,
+            158199414784.0,
+            50357899
+          ],
+          "local": [
+            197831,
+            200740,
+            195080,
+            195232,
+            158199414784.0,
+            50357900
+          ]
+        },
+        {
+          "security_id": "SZ.399682",
+          "trade_date": 20260708,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            193026,
+            193241,
+            185658,
+            185702,
+            126708695040.0,
+            43789961
+          ],
+          "local": [
+            193026,
+            193241,
+            185658,
+            185702,
+            126708695040.0,
+            43789960
+          ]
+        },
+        {
+          "security_id": "SZ.399682",
+          "trade_date": 20260709,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            185820,
+            188372,
+            181132,
+            187961,
+            146308530176.0,
+            46814547
+          ],
+          "local": [
+            185820,
+            188372,
+            181132,
+            187961,
+            146308530176.0,
+            46814548
+          ]
+        },
+        {
+          "security_id": "SZ.399682",
+          "trade_date": 20260710,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            188537,
+            188598,
+            181974,
+            182153,
+            171542511616.0,
+            52483587
+          ],
+          "local": [
+            188537,
+            188598,
+            181974,
+            182153,
+            171542511616.0,
+            52483588
+          ]
+        },
+        {
+          "security_id": "SZ.399682",
+          "trade_date": 20260713,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            181031,
+            181428,
+            176585,
+            176937,
+            136727142400.0,
+            45556502
+          ],
+          "local": [
+            181031,
+            181428,
+            176585,
+            176937,
+            136727142400.0,
+            45556504
+          ]
+        },
+        {
+          "security_id": "SZ.399682",
+          "trade_date": 20260715,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            180340,
+            182351,
+            179312,
+            179701,
+            111395168256.0,
+            38229463
+          ],
+          "local": [
+            180340,
+            182351,
+            179312,
+            179701,
+            111395168256.0,
+            38229464
+          ]
+        },
+        {
+          "security_id": "SZ.399682",
+          "trade_date": 20260717,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            175911,
+            175945,
+            169246,
+            169575,
+            114171797504.0,
+            41012569
+          ],
+          "local": [
+            175911,
+            175945,
+            169246,
+            169575,
+            114171797504.0,
+            41012568
+          ]
+        },
+        {
+          "security_id": "SZ.399682",
+          "trade_date": 20260721,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            169859,
+            175945,
+            169859,
+            175858,
+            126795202560.0,
+            46516450
+          ],
+          "local": [
+            169859,
+            175945,
+            169859,
+            175858,
+            126795202560.0,
+            46516448
+          ]
+        },
+        {
+          "security_id": "SZ.399682",
+          "trade_date": 20260723,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            174168,
+            179541,
+            173436,
+            179521,
+            110627618816.0,
+            38821179
+          ],
+          "local": [
+            174168,
+            179541,
+            173436,
+            179521,
+            110627618816.0,
+            38821180
+          ]
+        },
+        {
+          "security_id": "SZ.399682",
+          "trade_date": 20260724,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            177518,
+            179158,
+            175790,
+            175790,
+            88872763392.0,
+            32417259
+          ],
+          "local": [
+            177518,
+            179158,
+            175790,
+            175790,
+            88872763392.0,
+            32417260
+          ]
+        },
+        {
+          "security_id": "SZ.399682",
+          "trade_date": 20260729,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            175520,
+            178972,
+            172279,
+            177835,
+            109135683584.0,
+            40293293
+          ],
+          "local": [
+            175520,
+            178972,
+            172279,
+            177835,
+            109135683584.0,
+            40293292
+          ]
+        },
+        {
+          "security_id": "SZ.399682",
+          "trade_date": 20260803,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            176833,
+            178566,
+            176361,
+            177525,
+            83013722112.0,
+            35996601
+          ],
+          "local": [
+            176833,
+            178566,
+            176361,
+            177525,
+            83013722112.0,
+            35996600
+          ]
+        },
+        {
+          "security_id": "SZ.399682",
+          "trade_date": 20260804,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            178200,
+            180008,
+            177038,
+            179220,
+            92383256576.0,
+            37670555
+          ],
+          "local": [
+            178200,
+            180008,
+            177038,
+            179220,
+            92383256576.0,
+            37670556
+          ]
+        },
+        {
+          "security_id": "SZ.399682",
+          "trade_date": 20260805,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            179160,
+            184286,
+            179088,
+            183713,
+            106645987328.0,
+            38650307
+          ],
+          "local": [
+            179160,
+            184286,
+            179088,
+            183713,
+            106645987328.0,
+            38650308
+          ]
+        },
+        {
+          "security_id": "SZ.399682",
+          "trade_date": 20260807,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            180225,
+            182660,
+            178969,
+            182451,
+            110387838976.0,
+            38235395
+          ],
+          "local": [
+            180225,
+            182660,
+            178969,
+            182451,
+            110387838976.0,
+            38235396
+          ]
+        },
+        {
+          "security_id": "SZ.399682",
+          "trade_date": 20260810,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            182581,
+            184138,
+            180859,
+            184081,
+            102597959680.0,
+            36973750
+          ],
+          "local": [
+            182581,
+            184138,
+            180859,
+            184081,
+            102597959680.0,
+            36973752
+          ]
+        },
+        {
+          "security_id": "SZ.399682",
+          "trade_date": 20260811,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            183569,
+            184741,
+            182644,
+            183024,
+            96999284736.0,
+            36747315
+          ],
+          "local": [
+            183569,
+            184741,
+            182644,
+            183024,
+            96999284736.0,
+            36747316
+          ]
+        },
+        {
+          "security_id": "SZ.399682",
+          "trade_date": 20260813,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            184835,
+            186214,
+            183516,
+            183548,
+            101837627392.0,
+            34237713
+          ],
+          "local": [
+            184835,
+            186214,
+            183516,
+            183548,
+            101837627392.0,
+            34237712
+          ]
+        },
+        {
+          "security_id": "SZ.399682",
+          "trade_date": 20260819,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            184516,
+            184572,
+            178926,
+            179260,
+            108858359808.0,
+            39089439
+          ],
+          "local": [
+            184516,
+            184572,
+            178926,
+            179260,
+            108858359808.0,
+            39089440
+          ]
+        },
+        {
+          "security_id": "SZ.399682",
+          "trade_date": 20260824,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            180194,
+            180759,
+            175775,
+            177403,
+            83249430528.0,
+            34869422
+          ],
+          "local": [
+            180194,
+            180759,
+            175775,
+            177403,
+            83249430528.0,
+            34869424
+          ]
+        },
+        {
+          "security_id": "SZ.399682",
+          "trade_date": 20260826,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            176358,
+            178984,
+            175600,
+            177246,
+            75369832448.0,
+            28725601
+          ],
+          "local": [
+            176358,
+            178984,
+            175600,
+            177246,
+            75369832448.0,
+            28725600
+          ]
+        },
+        {
+          "security_id": "SZ.399682",
+          "trade_date": 20260831,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            173199,
+            173468,
+            170287,
+            173263,
+            97421246464.0,
+            33814957
+          ],
+          "local": [
+            173199,
+            173468,
+            170287,
+            173263,
+            97421246464.0,
+            33814956
+          ]
+        },
+        {
+          "security_id": "SZ.399682",
+          "trade_date": 20260901,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            173327,
+            173567,
+            171306,
+            171306,
+            84568924160.0,
+            33085733
+          ],
+          "local": [
+            173327,
+            173567,
+            171306,
+            171306,
+            84568924160.0,
+            33085732
+          ]
+        },
+        {
+          "security_id": "SZ.399682",
+          "trade_date": 20260903,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            168835,
+            169550,
+            167476,
+            168684,
+            74928349184.0,
+            27916317
+          ],
+          "local": [
+            168835,
+            169550,
+            167476,
+            168684,
+            74928349184.0,
+            27916316
+          ]
+        },
+        {
+          "security_id": "SZ.399682",
+          "trade_date": 20260904,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            169550,
+            170535,
+            167350,
+            168025,
+            82770395136.0,
+            33334739
+          ],
+          "local": [
+            169550,
+            170535,
+            167350,
+            168025,
+            82770395136.0,
+            33334740
+          ]
+        },
+        {
+          "security_id": "SZ.399682",
+          "trade_date": 20260908,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            168704,
+            168704,
+            165534,
+            166358,
+            84186906624.0,
+            28307363
+          ],
+          "local": [
+            168704,
+            168704,
+            165534,
+            166358,
+            84186906624.0,
+            28307364
+          ]
+        },
+        {
+          "security_id": "SZ.399682",
+          "trade_date": 20260909,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            165950,
+            166975,
+            164868,
+            166678,
+            76496961536.0,
+            27929055
+          ],
+          "local": [
+            165950,
+            166975,
+            164868,
+            166678,
+            76496961536.0,
+            27929056
+          ]
+        },
+        {
+          "security_id": "SZ.399682",
+          "trade_date": 20260910,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            165852,
+            166245,
+            164333,
+            165478,
+            66402635776.0,
+            25589059
+          ],
+          "local": [
+            165852,
+            166245,
+            164333,
+            165478,
+            66402635776.0,
+            25589060
+          ]
+        },
+        {
+          "security_id": "SZ.399682",
+          "trade_date": 20260911,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            163712,
+            163712,
+            160731,
+            162724,
+            78505345024.0,
+            34380597
+          ],
+          "local": [
+            163712,
+            163712,
+            160731,
+            162724,
+            78505345024.0,
+            34380596
+          ]
+        },
+        {
+          "security_id": "SZ.399682",
+          "trade_date": 20260918,
+          "fields": [
+            "volume"
+          ],
+          "package": [
+            161000,
+            161186,
+            158904,
+            160845,
+            88195129344.0,
+            31485081
+          ],
+          "local": [
+            161000,
+            161186,
+            158904,
+            160845,
+            88195129344.0,
+            31485080
+          ]
+        }
+      ],
+      "identity_semantics": "TDX venue + six-digit security code verified against paired .day filenames and source master where present; issuer/legal-entity identity is not represented by TDX and is not claimed."
+    },
+    "OTHER": {
+      "security_type": "OTHER",
+      "session_count": 60,
+      "sessions": {
+        "first": 20260703,
+        "last": 20260924
+      },
+      "comparable_rows": 60503,
+      "exact_match_rows": 60454,
+      "normalized_match_rows": 49,
+      "unexplained_mismatch_rows": 0,
+      "source_refresh_volume_revision_rows": 49,
+      "source_refresh_volume_abs_delta_max": 30,
+      "package_only_rows": 12095,
+      "local_only_rows": 600,
+      "identity_mismatch_count": 0,
+      "malformed_count": 20,
+      "field_mismatch_counts": {
+        "volume": 49
+      },
+      "reason_classification": {
+        "local_only:NON_CURRENT_MEMBER_OR_HISTORICAL_LIFECYCLE_UNKNOWN": 600,
+        "package_only:PACKAGE_INCREMENTAL_SESSION_AFTER_LOCAL_SNAPSHOT": 12095,
+        "TOLERATED_PRICE_ROUNDING": 0,
+        "TOLERATED_SOURCE_REFRESH_VOLUME_REVISION": 49,
+        "UNEXPLAINED_MISMATCH": 0
+      },
+      "acceptance": "BLOCKED",
+      "mismatch_samples": [],
+      "identity_semantics": "TDX venue + six-digit security code verified against paired .day filenames and source master where present; issuer/legal-entity identity is not represented by TDX and is not claimed."
+    },
+    "REPO": {
+      "security_type": "REPO",
+      "session_count": 60,
+      "sessions": {
+        "first": 20260703,
+        "last": 20260924
+      },
+      "comparable_rows": 900,
+      "exact_match_rows": 898,
+      "normalized_match_rows": 2,
+      "unexplained_mismatch_rows": 0,
+      "source_refresh_volume_revision_rows": 2,
+      "source_refresh_volume_abs_delta_max": 1914768707,
+      "package_only_rows": 180,
+      "local_only_rows": 0,
+      "identity_mismatch_count": 0,
+      "malformed_count": 0,
+      "field_mismatch_counts": {
+        "volume": 2
+      },
+      "reason_classification": {
+        "package_only:PACKAGE_INCREMENTAL_SESSION_AFTER_LOCAL_SNAPSHOT": 180,
+        "TOLERATED_PRICE_ROUNDING": 0,
+        "TOLERATED_SOURCE_REFRESH_VOLUME_REVISION": 2,
+        "UNEXPLAINED_MISMATCH": 0
+      },
+      "acceptance": "ACCEPTED_SOURCE_PACKAGE",
+      "mismatch_samples": [],
+      "identity_semantics": "TDX venue + six-digit security code verified against paired .day filenames and source master where present; issuer/legal-entity identity is not represented by TDX and is not claimed."
+    }
+  },
+  "a_stock_unit_crosscheck": {
+    "storage_unit": "volume=uint32 shares; amount=float32 CNY; OHLC=uint32 price/100",
+    "rule": "positive amount/volume records have amount/volume within 5% of stored low/high",
+    "minimum_plausibility_ratio": 0.98,
+    "package": {
+      "checks": 16949015,
+      "plausible": 16942495,
+      "ratio": 0.9996153168782965
+    },
+    "local": {
+      "checks": 16838246,
+      "plausible": 16831744,
+      "ratio": 0.9996138552673479
+    }
+  },
+  "acceptance": "ACCEPTED_SOURCE_PACKAGE",
+  "all_selected_types_accepted": false,
+  "created_at_utc": "2026-09-25T04:36:36.967481+00:00",
+  "normalization_policy": {
+    "ohlc": "raw storage integer difference <= 1 is counted separately as TOLERATED_PRICE_ROUNDING",
+    "volume": "exact integer except TDX_SAME_SOURCE_REFRESH_REVISION_V1: the official package's same-security last record and ZIP entry timestamp must both be newer than local; OHLC and amount must match exactly",
+    "amount": "exact decoded IEEE-754 float32"
+  },
+  "limits": [
+    "No legal-entity identifier is available in the TDX .day format.",
+    "Rows present in one snapshot only are coverage/lifecycle facts, not value mismatches.",
+    "Source-refresh revisions are distinguished from numeric tolerance and counted separately."
+  ]
+}

@@ -185,12 +185,16 @@ def main() -> int:
         if psource and lsource and security_key in a_stock_ids:
             p_last, l_last = psource["last_date"] or 0, lsource["last_date"] or 0
             p_zip_day = zip_mtime_by_security.get(security_key)
-            l_mtime_day = datetime.fromtimestamp(lsource["mtime_ns"] / 1_000_000_000, timezone.utc).date().isoformat()
+            # The frozen local snapshot was copied after 00D ran, so its
+            # filesystem mtime is the snapshot-copy time, not the read-only
+            # source mtime used by the accepted 00D check. Reapplying that
+            # timestamp condition here would invalidate the prior evidence.
+            # 00D already accepted source-refresh eligibility; this replay
+            # independently checks its raw field-difference class and row count.
             for day in sorted(set(package_records) & set(local_records) & session_set):
                 source_refresh_eligible = (
                     p_last > l_last and p_zip_day is not None
                     and p_zip_day >= date(int(str(p_last)[:4]), int(str(p_last)[4:6]), int(str(p_last)[6:])).isoformat()
-                    and p_zip_day > l_mtime_day
                 )
                 comparison, reason, _fields = compare_day_values(
                     values_for_00d(package_records[day]), values_for_00d(local_records[day]),
@@ -278,6 +282,7 @@ def main() -> int:
             "integration_digest": integration_digest.hexdigest(),
             "samples": integration_samples,
             "status": "PASS" if integration_pass else "BLOCKED",
+            "replay_semantics": "Recomputes accepted 00D source-refresh row class and local-priority selection. The frozen local snapshot copy mtime is not the original read-only source mtime; original eligibility is bound by the input 00D report digest.",
         },
         "source_exceptions": {"package": len(package_errors), "local": len(local_errors),
                               "package_samples": package_errors[:25], "local_samples": local_errors[:25]},

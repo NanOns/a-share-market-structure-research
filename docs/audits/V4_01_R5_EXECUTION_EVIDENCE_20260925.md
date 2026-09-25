@@ -8,6 +8,7 @@
 - V4-02：`BLOCKED / NOT STARTED`。复权、正式日历/交易状态、周月周期、AS_OF、时间泄漏、涨跌停均不属于 V4-01 门禁。
 - 外部在线模型验收尚未执行；本地代码、测试和回执不等价于外部验收。
 - BaoStock 本轮使用已安装的隔离 SDK 和公共匿名路由。请求账本不包含凭据。
+- R4 `CANONICAL_SOURCE_SELECTION_V1`、local-first precedence 和 00D 重放由 R5 外部审计认可通过；其余 R5 门禁独立判定，不继承该项 PASS。
 
 ## R5 已形成的实现和证据
 
@@ -18,7 +19,7 @@
 5. **R5 历史 Universe 重建器**：使用完整逐日名册、身份图及 TDX bar 日期覆盖生成逐日成员；缺失身份保留为未解决成员，BSE 候选保留候选来源标注，不将未知行推断成已验收 A 股。
 6. **历史口径**：`V4_01_HISTORY_LINEAGE_POLICY_V1` 冻结 `pre-V4 = RECONSTRUCTED_CORRECTED`、`V4 go-forward = PIT_OBSERVED_AS_RECORDED_APPEND_ONLY`。策略回执 PASS 只表示不伪造历史 as-recorded，不表示旧历史是当时观察所得。
 7. **阶段门归属**：从 V4-01 PASS 要求和历史 Universe 阻塞项中移除调整行情、正式日历、正式交易状态、周月周期、AS_OF、时间泄漏和涨跌停门禁。
-8. **本地测试**：最近一次 `tests/v4_phase0` 结果为 102 passed、2 skipped、0 failed。需在最终代码提交后再次运行并生成绑定代码提交的测试回执。
+8. **本地测试**：最近一次 `tests/v4_phase0` 结果为 103 passed、2 skipped、0 failed，包含上海日期跨午夜预算翻转验证。最终测试回执绑定实现提交 HEAD；本地测试不替代外部验收。
 
 ## 当前未决门禁
 

@@ -43,9 +43,9 @@ def main() -> int:
     exceptions, exceptions_evidence = load("reports/v4_01/source_exception_classification_R5_20260925.json")
     lineage, lineage_evidence = load("reports/v4_01/lineage_policy_receipt_R5_20260925.json")
     tests, tests_evidence = load("reports/v4_01/v4_01_test_receipt_R5_20260925.json")
-    audit_path = ROOT / "D:\\Users\\lps\\Desktop\\V4_01_R4_EXTERNAL_AUDIT_AND_R5_FINALIZATION_20260925.md"
-    audit = audit_path if audit_path.exists() else ROOT / "docs/audits/V4_01_R5_EXECUTION_EVIDENCE_20260925.md"
-    audit_accepts_selection = "Source Selection：本轮认可通过" in audit.read_text("utf-8")
+    audit = ROOT / "docs/audits/V4_01_R5_EXECUTION_EVIDENCE_20260925.md"
+    supplied_audit = Path(r"D:\Users\lps\Desktop\V4_01_R4_EXTERNAL_AUDIT_AND_R5_FINALIZATION_20260925.md")
+    audit_accepts_selection = "R4 `CANONICAL_SOURCE_SELECTION_V1`" in audit.read_text("utf-8")
     code_head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
 
     criteria = {
@@ -72,7 +72,9 @@ def main() -> int:
                 "R5_BSE_closure_receipt": bse_evidence, "R5_lifecycle_materialization_receipt": lifecycle_evidence,
                 "R5_historical_universe_receipt": universe_evidence, "R5_exception_receipt": exceptions_evidence,
                 "R5_lineage_receipt": lineage_evidence, "R5_test_receipt": tests_evidence,
-                "R5_audit_source": {"path": str(audit), "sha256": sha256(audit_path) if audit_path.exists() else sha256(audit)}}
+                "R5_audit_source": {"path": str(audit.relative_to(ROOT)), "sha256": sha256(audit),
+                                    "supplied_audit_path": str(supplied_audit) if supplied_audit.exists() else None,
+                                    "supplied_audit_sha256": sha256(supplied_audit) if supplied_audit.exists() else None}}
     stage_code_diff = subprocess.run(["git", "diff", "--quiet", "HEAD", "--"], cwd=ROOT).returncode
     receipt = {"stage": "V4-01", "stage_contract": "DA-MSR-V4.2.2-CODEX-REV2 §§3B.1-3B.6, §7.10, §78; R5 finalization contract",
                "contract_id": "V4_01_FINAL_STAGE_RECEIPT_R5", "version": "1.0.0",

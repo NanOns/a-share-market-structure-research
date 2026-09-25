@@ -207,8 +207,9 @@ def main() -> int:
             total_rows += len(membership_rows)
             total_evaluable += day_evaluable
             days.append({"trade_date": day, "lifecycle_interval_candidate_count": len(active),
+                         "membership_row_count": len(candidate_codes),
                          "source_bar_evaluable_count": day_evaluable,
-                         "listed_bar_missing_unknown_count": len(active) - day_evaluable - day_boundary_unknown,
+                         "listed_bar_missing_unknown_count": len(candidate_codes) - day_evaluable - day_boundary_unknown,
                          "lifecycle_boundary_unknown_count": day_boundary_unknown,
                          "universe_digest": day_digest})
             if index % 100 == 0:

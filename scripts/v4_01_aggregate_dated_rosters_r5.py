@@ -108,6 +108,7 @@ def main() -> int:
     before_total = sum(int(item.get("count", 0)) for item in ledger["by_shanghai_date"].values())
     aggregate_delta = 0
     worker_ledgers = []
+    rollover_adjustments = []
     for _, receipt, _ in shards:
         ledger_name = receipt.get("request_budget", {}).get("ledger_path")
         if not ledger_name:
@@ -120,6 +121,8 @@ def main() -> int:
         aggregate_delta += worker_total
         worker_ledgers.append({"path": ledger_name, "sha256": sha256(worker_ledger_path),
                                "request_count": worker_total})
+        rollover_adjustments.extend({"ledger": ledger_name, **item}
+                                    for item in worker.get("rollover_adjustments", []))
         for day, day_doc in worker.get("by_shanghai_date", {}).items():
             target = ledger["by_shanghai_date"].setdefault(day, {"count": 0, "operations": {}})
             target["count"] = int(target.get("count", 0)) + int(day_doc.get("count", 0))
@@ -155,7 +158,8 @@ def main() -> int:
                    "request_budget": {"ledger_path": args.central_ledger, "before_total_count": before_total,
                                       "after_total_count": after_total, "request_count_delta": aggregate_delta,
                                       "configured_soft_cap": 40_000, "configured_hard_cap": 45_000,
-                                      "provider_limit": 50_000, "shard_ledgers": worker_ledgers},
+                                      "provider_limit": 50_000, "shard_ledgers": worker_ledgers,
+                                      "rollover_adjustments": rollover_adjustments},
                    "worker_receipts": [{"path": path, "sha256": sha256(ROOT / path)} for path, _, _ in shards],
                    "retry_attempts": attempts,
                    "query_failure_count_total": sum(int(row.get("query_failure_count", 0)) for row in attempts)

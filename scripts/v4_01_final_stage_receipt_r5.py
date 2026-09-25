@@ -75,7 +75,7 @@ def main() -> int:
                 "R5_audit_source": {"path": str(audit.relative_to(ROOT)), "sha256": sha256(audit),
                                     "supplied_audit_path": str(supplied_audit) if supplied_audit.exists() else None,
                                     "supplied_audit_sha256": sha256(supplied_audit) if supplied_audit.exists() else None}}
-    stage_code_diff = subprocess.run(["git", "diff", "--quiet", "HEAD", "--"], cwd=ROOT).returncode
+    stage_code_diff = subprocess.run(["git", "diff", "--quiet", "HEAD", "--", "src", "scripts", "config", "tests"], cwd=ROOT).returncode
     receipt = {"stage": "V4-01", "stage_contract": "DA-MSR-V4.2.2-CODEX-REV2 §§3B.1-3B.6, §7.10, §78; R5 finalization contract",
                "contract_id": "V4_01_FINAL_STAGE_RECEIPT_R5", "version": "1.0.0",
                "observed_at_utc": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),

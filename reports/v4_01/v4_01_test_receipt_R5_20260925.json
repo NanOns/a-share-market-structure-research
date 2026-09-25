@@ -1,0 +1,31 @@
+{
+  "branch": "codex/v4-system-reform",
+  "command": "python -m pytest tests/v4_phase0 -q",
+  "compiled_scripts": [
+    "scripts/v4_01_dated_roster_r5.py",
+    "scripts/v4_01_aggregate_dated_rosters_r5.py",
+    "scripts/v4_01_historical_universe_r5.py",
+    "scripts/v4_01_reseal_roster_shard_r5.py",
+    "scripts/v4_01_source_exception_classification_r5.py",
+    "scripts/v4_01_final_stage_receipt_r5.py"
+  ],
+  "contract_id": "V4_01_R5_TEST_RECEIPT_V1",
+  "limitations": [
+    "Local tests do not replace online external acceptance.",
+    "Passing tests do not override open R5 data acceptance blockers."
+  ],
+  "next_stage": "V4_01_R5_DATA_EVIDENCE_AND_FINAL_STAGE_GATE",
+  "observed_at_utc": "2026-09-25T16:58:25+00:00",
+  "result": {
+    "duration_seconds": 2.77,
+    "failed": 0,
+    "passed": 103,
+    "skipped": 2
+  },
+  "scope": "V4 Phase0 contracts and schema, including R5 stable identity, lifecycle history, Shanghai-date request-budget rollover, and lineage policy.",
+  "stage": "V4-01-R5-CONTRACT-TESTS",
+  "stage_completion_authorized": false,
+  "status": "PASS",
+  "test_files_sha256": "2c6a01ee31900bc902b3d7f16450e2648001bf8086d420a2ac61611b6baa3b30",
+  "tested_head": "5a338ab44bb9b952d80ecc6104edb4b57f838adf"
+}

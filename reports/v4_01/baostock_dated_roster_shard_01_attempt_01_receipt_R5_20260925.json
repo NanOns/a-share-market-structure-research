@@ -1,0 +1,103 @@
+{
+  "contract_id": "BAOSTOCK_DATED_ROSTER_SNAPSHOT_V1",
+  "daily_counts": [
+    {
+      "codes_sha256": "8a85710083cfe266b689b6f4cebde99a390177869a19c66a052baf7ffd2af037",
+      "page_count": 1,
+      "row_count": 5648,
+      "trade_date": "2024-02-07"
+    },
+    {
+      "codes_sha256": "68be487684880b6f7c867fea70a3f7deb872de3203c8b9a5782e787579e53812",
+      "page_count": 1,
+      "row_count": 5649,
+      "trade_date": "2024-02-08"
+    },
+    {
+      "codes_sha256": "68be487684880b6f7c867fea70a3f7deb872de3203c8b9a5782e787579e53812",
+      "page_count": 1,
+      "row_count": 5649,
+      "trade_date": "2024-02-19"
+    },
+    {
+      "codes_sha256": "68be487684880b6f7c867fea70a3f7deb872de3203c8b9a5782e787579e53812",
+      "page_count": 1,
+      "row_count": 5649,
+      "trade_date": "2024-02-20"
+    },
+    {
+      "codes_sha256": "68be487684880b6f7c867fea70a3f7deb872de3203c8b9a5782e787579e53812",
+      "page_count": 1,
+      "row_count": 5649,
+      "trade_date": "2024-02-21"
+    },
+    {
+      "codes_sha256": "68be487684880b6f7c867fea70a3f7deb872de3203c8b9a5782e787579e53812",
+      "page_count": 1,
+      "row_count": 5649,
+      "trade_date": "2024-02-22"
+    },
+    {
+      "codes_sha256": "68be487684880b6f7c867fea70a3f7deb872de3203c8b9a5782e787579e53812",
+      "page_count": 1,
+      "row_count": 5649,
+      "trade_date": "2024-02-23"
+    },
+    {
+      "codes_sha256": "68be487684880b6f7c867fea70a3f7deb872de3203c8b9a5782e787579e53812",
+      "page_count": 1,
+      "row_count": 5649,
+      "trade_date": "2024-02-26"
+    }
+  ],
+  "elapsed_seconds": 134.17,
+  "execution_identity": {
+    "input_commit": "fd3941f2bd6099ee934de88a7dfce23b1796ea03",
+    "script_sha256": "bee4548d3108b09a11a29229b537eb90d3d15586d1161b70c16be2085542bd4d"
+  },
+  "failures": {
+    "code": "BAOSTOCK_QUERY_FAILED_AFTER_PAGINATION",
+    "provider_code": "10001001",
+    "provider_message": "用户未登录",
+    "trade_date": "2024-02-27"
+  },
+  "input": {
+    "candidate_receipt": "reports/v4_01/historical_evaluable_universe_receipt_R4_20260925.json",
+    "candidate_receipt_sha256": "8336f328e4d58b74cabe48be6c28d14e72e335f734cf11ccaade82e3505842a1",
+    "first_session": "2024-02-07",
+    "full_session_count": 786,
+    "last_session": "2024-10-14",
+    "session_basis": "FROZEN_TDX_INDEX_BAR_DATE_PROXY",
+    "session_count": 160,
+    "slice_end_index_exclusive": 309,
+    "slice_start_index": 149
+  },
+  "next_stage": "V4_01_STABLE_IDENTITY_AND_BSE_LIFECYCLE_R5",
+  "observed_at_utc": "2026-09-25T15:49:12+00:00",
+  "output": null,
+  "partial_checkpoint": {
+    "byte_count": 106568,
+    "completed_sessions": 8,
+    "path": "data/v4/artifact_store/v4_01/baostock_dated_rosters_R5_shard_01.jsonl.gz.partial",
+    "sha256": "3f20f1cb997cb0b9ccb2f2f6378d1d6cc5006ce06df98270a8c546487c513487"
+  },
+  "query_failure_count": 1,
+  "request_budget": {
+    "after_total_count": 11,
+    "before_total_count": 0,
+    "configured_hard_cap": 9000,
+    "configured_soft_cap": 8500,
+    "ledger_path": "reports/v4_baostock/roster_worker_01_ledger.json",
+    "provider_limit": 50000,
+    "request_count_delta": 11
+  },
+  "source": {
+    "auth_mode": "PUBLIC_ANONYMOUS",
+    "method": "query_all_stock(day)",
+    "provider": "BaoStock",
+    "source_document": "https://www.baostock.com/mainContent?file=pythonAPI.md"
+  },
+  "stage": "V4-01-BAOSTOCK-DATED-ROSTERS-R5",
+  "stage_completion_authorized": false,
+  "status": "BLOCKED"
+}

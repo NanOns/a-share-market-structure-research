@@ -1,0 +1,32 @@
+{
+  "by_shanghai_date": {
+    "2026-09-25": {
+      "count": 41,
+      "operations": {
+        "login": 3,
+        "logout": 2,
+        "query_all_stock": 36
+      }
+    },
+    "2026-09-26": {
+      "count": 146,
+      "operations": {
+        "login": 5,
+        "logout": 5,
+        "query_all_stock": 129,
+        "rollover_conservative_unclassified": 7
+      }
+    }
+  },
+  "last_updated_at_utc": "2026-09-25T16:50:53+00:00",
+  "ledger_version": 1,
+  "rollover_adjustments": [
+    {
+      "allocation": "All ledger increments since the last pre-midnight snapshot are also charged to the next date; some pre-midnight requests may be double-counted, so the ledger is a conservative upper bound.",
+      "conservatively_allocated_count": 7,
+      "from_shanghai_date": "2026-09-25",
+      "pre_midnight_observed_count": 34,
+      "to_shanghai_date": "2026-09-26"
+    }
+  ]
+}

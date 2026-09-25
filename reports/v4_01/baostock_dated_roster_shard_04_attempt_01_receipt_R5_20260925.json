@@ -1,0 +1,127 @@
+{
+  "contract_id": "BAOSTOCK_DATED_ROSTER_SNAPSHOT_V1",
+  "daily_counts": [
+    {
+      "codes_sha256": "d7335a0802f3ef7e233a7dfae9a385024c165fe2dd2a7eedeee99f61f4818fd2",
+      "page_count": 1,
+      "row_count": 7112,
+      "trade_date": "2026-02-03"
+    },
+    {
+      "codes_sha256": "d7335a0802f3ef7e233a7dfae9a385024c165fe2dd2a7eedeee99f61f4818fd2",
+      "page_count": 1,
+      "row_count": 7112,
+      "trade_date": "2026-02-04"
+    },
+    {
+      "codes_sha256": "214540dbb950bc3083e11274e75a4ed6a36c7411dbf3f63c68fab149a014ac11",
+      "page_count": 1,
+      "row_count": 7113,
+      "trade_date": "2026-02-05"
+    },
+    {
+      "codes_sha256": "f9e189def548bc815bdae6d3b972f2407b709e51127840cd74a2a77f8be3a534",
+      "page_count": 1,
+      "row_count": 7118,
+      "trade_date": "2026-02-06"
+    },
+    {
+      "codes_sha256": "06c8ee05f0cb1aed530a0be80ee91ad266c225aad9fbcc3075750dcfcdcf3ce3",
+      "page_count": 1,
+      "row_count": 7121,
+      "trade_date": "2026-02-09"
+    },
+    {
+      "codes_sha256": "37a7ad17db66e45d9bba95e9274ad7ad6292e99f90e7f76308f04d32caf6885b",
+      "page_count": 1,
+      "row_count": 7124,
+      "trade_date": "2026-02-10"
+    },
+    {
+      "codes_sha256": "67b77b1aaa49dbfbe8cb57fce593aca7d8eaa7bf99a921fc90dec989e15f35e6",
+      "page_count": 1,
+      "row_count": 7127,
+      "trade_date": "2026-02-11"
+    },
+    {
+      "codes_sha256": "5b680b19008d33cd04e917ecd413cd0f708d942c4da9a644870fb2aa563c80c8",
+      "page_count": 1,
+      "row_count": 7133,
+      "trade_date": "2026-02-12"
+    },
+    {
+      "codes_sha256": "ca3e97d1d86d1cb7984c207b3bba22479c1925e05ed142e4334b2622c27153ab",
+      "page_count": 1,
+      "row_count": 7132,
+      "trade_date": "2026-02-13"
+    },
+    {
+      "codes_sha256": "ec732ce1edb87a03a5d14cd6e53480f86e02e119ad75806fd33e4902d02096d0",
+      "page_count": 1,
+      "row_count": 6000,
+      "trade_date": "2026-02-24"
+    },
+    {
+      "codes_sha256": "f3c3782063e7bb73e6c7b0a5d76e13d4a4cce40214b9633c91bcc9691481ff54",
+      "page_count": 1,
+      "row_count": 7133,
+      "trade_date": "2026-02-25"
+    },
+    {
+      "codes_sha256": "e4843100e77e695d44b773aa24f7c2bdf35fa1013a1c0ebaa5d6ed6a11bc296c",
+      "page_count": 1,
+      "row_count": 7135,
+      "trade_date": "2026-02-26"
+    }
+  ],
+  "elapsed_seconds": 385.692,
+  "execution_identity": {
+    "input_commit": "b6ee3cb2620297cf6445d0ae256dfef23a7ae89f",
+    "script_sha256": "14e7c3fabdf18b7a9e77b97e02443a1a25b00258d3c468800cd50d583acc1295"
+  },
+  "failures": {
+    "code": "BAOSTOCK_QUERY_FAILED_AFTER_PAGINATION",
+    "provider_code": "10001001",
+    "provider_message": "用户未登录",
+    "trade_date": "2026-02-27"
+  },
+  "input": {
+    "candidate_receipt": "reports/v4_01/historical_evaluable_universe_receipt_R4_20260925.json",
+    "candidate_receipt_sha256": "8336f328e4d58b74cabe48be6c28d14e72e335f734cf11ccaade82e3505842a1",
+    "first_session": "2026-02-03",
+    "full_session_count": 786,
+    "last_session": "2026-09-24",
+    "session_basis": "FROZEN_TDX_INDEX_BAR_DATE_PROXY",
+    "session_count": 157,
+    "slice_end_index_exclusive": 786,
+    "slice_start_index": 629
+  },
+  "next_stage": "V4_01_STABLE_IDENTITY_AND_BSE_LIFECYCLE_R5",
+  "observed_at_utc": "2026-09-25T15:53:24+00:00",
+  "output": null,
+  "partial_checkpoint": {
+    "byte_count": 197088,
+    "completed_sessions": 12,
+    "path": "data/v4/artifact_store/v4_01/baostock_dated_rosters_R5_shard_04.jsonl.gz.partial",
+    "sha256": "b587e7b3a1747154f23f520ff760eaa69a411394a74b04d08003c451274c9ff9"
+  },
+  "query_failure_count": 2,
+  "request_budget": {
+    "after_total_count": 18,
+    "before_total_count": 0,
+    "configured_hard_cap": 9000,
+    "configured_soft_cap": 8500,
+    "ledger_path": "reports/v4_baostock/roster_worker_04_ledger.json",
+    "provider_limit": 50000,
+    "request_count_delta": 18
+  },
+  "source": {
+    "auth_mode": "PUBLIC_ANONYMOUS",
+    "method": "query_all_stock(day)",
+    "provider": "BaoStock",
+    "source_document": "https://www.baostock.com/mainContent?file=pythonAPI.md"
+  },
+  "stage": "V4-01-BAOSTOCK-DATED-ROSTERS-R5",
+  "stage_completion_authorized": false,
+  "status": "BLOCKED"
+}

@@ -1,11 +1,11 @@
 {
   "by_shanghai_date": {
     "2026-09-25": {
-      "count": 651,
+      "count": 840,
       "operations": {
-        "login": 36,
-        "logout": 30,
-        "query_all_stock": 282,
+        "login": 49,
+        "logout": 41,
+        "query_all_stock": 447,
         "query_all_stock_page": 6,
         "query_daily_history_k_AStock": 1,
         "query_history_k_data_plus_adjustflag_3": 268,
@@ -13,8 +13,35 @@
         "query_stock_basic": 22,
         "query_trade_dates": 2
       }
+    },
+    "2026-09-26": {
+      "count": 588,
+      "operations": {
+        "login": 22,
+        "logout": 20,
+        "query_all_stock": 508,
+        "rollover_conservative_unclassified": 38
+      }
     }
   },
-  "last_updated_at_utc": "2026-09-25T15:43:52+00:00",
-  "ledger_version": 1
+  "last_updated_at_utc": "2026-09-25T16:54:41+00:00",
+  "ledger_version": 1,
+  "roster_shard_aggregation": {
+    "reports/v4_baostock/roster_worker_01_ledger.json": {
+      "request_count": 199,
+      "sha256": "54c52365bc5de8241d21e5d2b0b073fec58291879df47634b4ece4e1ede3949a"
+    },
+    "reports/v4_baostock/roster_worker_02_ledger.json": {
+      "request_count": 189,
+      "sha256": "082179677c45079eed794f519d783e70e6e944cffd6d631c105bb7cc0812da5d"
+    },
+    "reports/v4_baostock/roster_worker_03_ledger.json": {
+      "request_count": 202,
+      "sha256": "d55e001ea58f72dd92b58fd5fbdd1e8ff9a05bd57e4529cbfa9ee4671e83e8ff"
+    },
+    "reports/v4_baostock/roster_worker_04_ledger.json": {
+      "request_count": 187,
+      "sha256": "590d2f4fd533ec8fe6fadb0e4334bdffc71a30ad6c50fa085ef3bf6914c5ff54"
+    }
+  }
 }

@@ -1,0 +1,43 @@
+{
+  "acceptance": "Immutable raw archive hash/ZIP integrity, 12438 profiled .day files / 29768339 records, current A-stock source validation, and prior 60-session A_STOCK overlap acceptance verified. 18 files contain non-core or unidentified validation errors (1 unclassifiable filename); those raw entries are retained and scoped. Historical PIT membership/lifecycle was not inferred from bars; no canonical adjusted history, scanner, or production capability was produced.",
+  "blocked_scopes": [],
+  "consulted_upgrade": {
+    "contract_reaudit_open_items": [
+      "V422-B01",
+      "V422-B03",
+      "V422-B04",
+      "V422-B07",
+      "V422-B08",
+      "V422-B10"
+    ],
+    "external_phase0_authority": "DA-MSR-V4-PHASE0-FINAL-EXTERNAL-ACCEPTANCE-R4",
+    "external_phase0_entry_permission": "AUTHORIZED",
+    "phase0_status": "DEGRADED_PASS",
+    "technical_contract": "DA-MSR-V4.2.2-CODEX-REV2",
+    "technical_contract_sha256": "744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd"
+  },
+  "database_write_count": 0,
+  "degraded_scopes": [
+    "HISTORICAL_PIT_LIFECYCLE_UNAVAILABLE",
+    "SOURCE_PAGE_UPDATE_DATE_EMPTY",
+    "TRANSFER_TIMESTAMPS_UNAVAILABLE_FOR_REUSED_PACKAGE",
+    "ADJUSTED_CANONICAL_SCOPE_DEFERRED_TO_V4_02_CONTRACT",
+    "NONCORE_OR_UNIDENTIFIED_BAR_VALIDATION_ERRORS"
+  ],
+  "evidence": {
+    "overlap_acceptance": "ACCEPTED_SOURCE_PACKAGE",
+    "overlap_report": "reports/v4_00d/v4_00d_asset_stratified_postcheck_20260925.json",
+    "raw_archive": "data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f/hsjday.zip",
+    "raw_archive_sha256": "b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f",
+    "security_inventory": "reports/v4_01/v4_01_security_inventory_20260925.csv",
+    "security_inventory_rows": 12438,
+    "source_manifest": "reports/v4_01/v4_01_source_manifest_20260925.json",
+    "source_manifest_sha256": "2c63b304969add21b6c62583f6b922e242cda9c92aeff2d35d7ab6bc15c0a457"
+  },
+  "network_download_count": 0,
+  "next_stage": "V4-02 Canonical Daily / PIT Periods (with PIT lifecycle and adjustment scopes remaining explicitly limited)",
+  "stage": "V4-01",
+  "stage_contract": "V4.2.2 REV2 §§3B.1-3B.6, §78; V4_TDX_HISTORY_BOOTSTRAP_V1",
+  "status": "DEGRADED_PASS",
+  "tdx_root_write_count": 0
+}

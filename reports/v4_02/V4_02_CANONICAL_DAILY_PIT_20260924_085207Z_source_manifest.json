@@ -1,0 +1,58 @@
+{
+  "asof_trade_date": 20260924,
+  "calendar_evidence": {
+    "BJ": {
+      "basis": "LOCAL_INDEX_BAR_DATES_DIAGNOSTIC_NOT_EXCHANGE_OFFICIAL_CALENDAR",
+      "calendar_session_count": 1071,
+      "first_session": 20220429,
+      "last_session": 20260924,
+      "source_relative_path": "bj/lday/bj899050.day"
+    },
+    "SH": {
+      "basis": "LOCAL_INDEX_BAR_DATES_DIAGNOSTIC_NOT_EXCHANGE_OFFICIAL_CALENDAR",
+      "calendar_session_count": 8733,
+      "first_session": 19901219,
+      "last_session": 20260924,
+      "source_relative_path": "sh/lday/sh000001.day"
+    },
+    "SZ": {
+      "basis": "LOCAL_INDEX_BAR_DATES_DIAGNOSTIC_NOT_EXCHANGE_OFFICIAL_CALENDAR",
+      "calendar_session_count": 8688,
+      "first_session": 19910403,
+      "last_session": 20260924,
+      "source_relative_path": "sz/lday/sz399001.day"
+    }
+  },
+  "contract_id": "V4_CANONICAL_DAILY_PIT_PERIODS_V1",
+  "contract_sha256": "18692558e0c41ceb7b32c6fbf127197ef87c40156fe75a71f68fc1e723113f8d",
+  "extracted_root": "data/input_staging/extracted/20260924/b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f",
+  "inventory_sha256": "aee9d70743b7a829503afcc72fe688f9853644fef016b4381c8aa5377d8e5b6d",
+  "lineage": "DIAGNOSTIC_NON_PIT; package bars lack per-record system-consumed publication history",
+  "observed_at_utc": "2026-09-25T08:52:07+00:00",
+  "outputs": {
+    "canonical_daily_raw": {
+      "byte_count": 931358623,
+      "path": "data/v4/canonical/V4_02_CANONICAL_DAILY_PIT_20260924_085207Z/canonical_daily_raw.parquet",
+      "row_count": 29768339,
+      "sha256": "ad200d54446aa92365e6791393524da1a8a2565767a3853686933ea37bf08976"
+    },
+    "monthly_raw_diagnostic": {
+      "byte_count": 122741616,
+      "path": "data/v4/canonical/V4_02_CANONICAL_DAILY_PIT_20260924_085207Z/monthly_raw_diagnostic.parquet",
+      "row_count": 1498972,
+      "sha256": "291f0570ef409be24321cd52528fbc7e939daaf023f1e86c7e8c8516cb46efd3"
+    },
+    "weekly_raw_diagnostic": {
+      "byte_count": 283242324,
+      "path": "data/v4/canonical/V4_02_CANONICAL_DAILY_PIT_20260924_085207Z/weekly_raw_diagnostic.parquet",
+      "row_count": 6297060,
+      "sha256": "64873fdf21f7dbe7e931ed80e32df80cda643e110bfcbbfb2fed82ce050e487c"
+    }
+  },
+  "receipt_sha256": "e22648d24b0c9496f16bfcee1ac0675c9717f04df1bda5a9c8ff5263d169d21e",
+  "run_id": "V4_02_CANONICAL_DAILY_PIT_20260924_085207Z",
+  "source_bundle_id": "6122afa9db83170f7b442d5ecc5c7c9287b9dd6b04c4d53729d55f71f7dd99d2",
+  "source_manifest_v4_01_sha256": "2c63b304969add21b6c62583f6b922e242cda9c92aeff2d35d7ab6bc15c0a457",
+  "source_package_sha256": "b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f",
+  "stage01_receipt_sha256": "11aeca4abcd55b607a83135627059e75deba6f866d81994e59d6ed5cb6a66d40"
+}

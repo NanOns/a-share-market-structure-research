@@ -348,6 +348,26 @@
   "r3_test_receipt": "reports/v4_phase0/V4_PHASE0_R3_TEST_RECEIPT.json",
   "r3_stage_receipts": "reports/v4_phase0/V4_PHASE0_STAGE_RECEIPTS_R3.json",
   "r3_acceptance_doc": "docs/V4_PHASE0_FINAL_ACCEPTANCE_R3_1_20260925.md",
-  "external_audit_confirmation_required_before_v4_01": true,
-  "next_stage": "Final external Phase 0 audit; do not start V4-01 until the external audit explicitly confirms V4_01_ENTRY_PERMISSION=AUTHORIZED."
+  "external_audit_confirmation_required_before_v4_01": false,
+  "next_stage": "V4-01 TDX History Bootstrap",
+  "external_acceptance_r4": {
+    "authority": "DA-MSR-V4-PHASE0-FINAL-EXTERNAL-ACCEPTANCE-R4",
+    "authority_document": "D:/Users/lps/Desktop/V4_PHASE0_FINAL_EXTERNAL_ACCEPTANCE_AND_RECEIPT_ONLY_SEAL_R4_20260925.md",
+    "authority_sha256": "44ab5a15b933d2c01ee9211500136ed19368f9b383ead7bf08dcaa26ca73f7ed",
+    "technical_contract": "DA-MSR-V4.2.2-CODEX-REV2",
+    "technical_contract_sha256": "744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd",
+    "phase0_status": "DEGRADED_PASS",
+    "v4_01_entry_permission": "AUTHORIZED",
+    "raw_bootstrap_permission": "AUTHORIZED",
+    "scanner_permission": "NOT_APPLICABLE_UNTIL_V4_05",
+    "reseal_scope": "RECEIPT_ONLY_METADATA; no code, migration, tests, database, TDX, source evidence, or overlap evidence changed",
+    "verified_fields": [
+      "technical_contract_sha256",
+      "canonical_stage_receipts",
+      "phase0_test_count"
+    ],
+    "phase0_test_receipt": "reports/v4_phase0/V4_PHASE0_R3_TEST_RECEIPT.json",
+    "phase0_test_receipt_result": "63 passed, 0 failed, 0 skipped; original runtime evidence retained; not rerun per R4"
+  },
+  "external_audit_confirmation": "DA-MSR-V4-PHASE0-FINAL-EXTERNAL-ACCEPTANCE-R4 / V4_01_ENTRY_PERMISSION=AUTHORIZED"
 }

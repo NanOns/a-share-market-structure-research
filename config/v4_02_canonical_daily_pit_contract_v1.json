@@ -1,0 +1,81 @@
+{
+  "contract_id": "V4_CANONICAL_DAILY_PIT_PERIODS_V1",
+  "version": "1.0.0",
+  "stage": "V4-02",
+  "consulted_upgrade": {
+    "document": "D:/Users/lps/Desktop/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_20260925_codex修改版.md",
+    "sha256": "744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd",
+    "sections": ["3B.6", "3C.1", "3C.2", "3C.3", "3C.4", "5.2", "5.3", "6A", "10N", "78"]
+  },
+  "inputs": {
+    "source_package_sha256": "b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f",
+    "source_bundle_id": "6122afa9db83170f7b442d5ecc5c7c9287b9dd6b04c4d53729d55f71f7dd99d2",
+    "raw_archive": "data/v4/raw_archive/{source_package_sha256}/hsjday.zip",
+    "extracted_readonly_snapshot": "data/input_staging/extracted/20260924/{source_package_sha256}",
+    "source_cutoff": "2026-09-24",
+    "asof_parameter": "YYYYMMDD, must not exceed source_cutoff"
+  },
+  "canonical_daily": {
+    "view": "RAW",
+    "preserve_every_recognized_day_record": true,
+    "filter_by_current_universe": false,
+    "identity_from_filename_only": true,
+    "price_encoding": "TDX integer price units; scale 100 is recorded, no adjusted coordinate",
+    "amount_volume_units": "source_native_unverified",
+    "missing_bar_semantics": "DATA_MISSING_UNKNOWN_NOT_SUSPENSION_OR_DELISTING",
+    "knowledge_lineage": "DIAGNOSTIC_NON_PIT",
+    "invalid_records": "retain_with_record_quality_flags; exclude from period OHLC aggregation"
+  },
+  "periods": {
+    "contract_id": "PERIOD_ASOF_V1",
+    "weekly": {
+      "open": "first actual daily open",
+      "high": "maximum actual daily high",
+      "low": "minimum actual daily low",
+      "close": "last actual daily close",
+      "amount_volume": "sum source-native values"
+    },
+    "monthly": "same aggregation rules as weekly",
+    "views": ["DIAGNOSTIC_CLOSED_PERIOD", "DIAGNOSTIC_AS_OF_PARTIAL"],
+    "calendar_sources": {
+      "SH": "sh/lday/sh000001.day",
+      "SZ": "sz/lday/sz399001.day",
+      "BJ": "bj/lday/bj899050.day"
+    },
+    "calendar_frozen_to_source_snapshot": true,
+    "calendar_capability": "index-bar-derived proxy from this local package, not an official exchange calendar; use only for diagnostic period boundaries",
+    "suspension_count": "unknown_null_without_dated_suspension_facts",
+    "coverage_status": "never COMPLETE unless listing lifecycle and every session's bar/suspension are evidenced; this stage cannot establish that condition",
+    "formal_closed_only_available": false,
+    "knowledge_lineage": "DIAGNOSTIC_NON_PIT",
+    "adjustment": "RAW_ONLY"
+  },
+  "capabilities": {
+    "raw_daily_available": true,
+    "raw_weekly_monthly_diagnostic_available": true,
+    "adjusted_daily_periods": "UNAVAILABLE",
+    "historical_pit_observed": "UNAVAILABLE",
+    "as_recorded_source_consumption": "UNAVAILABLE",
+    "historical_suspension_status": "UNKNOWN",
+    "historical_limit_status": "UNKNOWN",
+    "historical_security_lifecycle_and_membership": "UNAVAILABLE"
+  },
+  "price_limit_rules": {
+    "contract_id": "PRICE_LIMIT_RULE_V1",
+    "apply_historical_rules": false,
+    "limit_status_default": "UNKNOWN",
+    "reason": "dated official rules, security identity/status/listing phase, and ex-right reference prices are not fully evidenced"
+  },
+  "outputs": {
+    "canonical_daily": "data/v4/canonical/{run_id}/canonical_daily_raw.parquet",
+    "weekly_periods": "data/v4/canonical/{run_id}/weekly_raw_diagnostic.parquet",
+    "monthly_periods": "data/v4/canonical/{run_id}/monthly_raw_diagnostic.parquet",
+    "stage_receipt": "reports/v4_02/{run_id}_stage_receipt.json",
+    "source_manifest": "reports/v4_02/{run_id}_source_manifest.json"
+  },
+  "acceptance": {
+    "pass_requires": ["contract_and_inputs_hash_bound", "archive_and_stage01_identity_verified", "all_12438_profiled_day_files_read", "all_29768339_records_retained_in_raw_canonical", "period_aggregates_calendar_keyed_and_labeled_diagnostic", "atomic_outputs_outside_tdx_root"],
+    "degraded_scopes": ["HISTORICAL_PIT_LIFECYCLE_UNAVAILABLE", "AS_RECORDED_CONSUMED_SOURCE_HISTORY_UNAVAILABLE", "ADJUSTED_HISTORY_UNAVAILABLE", "SUSPENSION_AND_GAP_CAUSE_UNKNOWN", "PRICE_LIMIT_STATUS_UNKNOWN", "BJ_AND_ALL_PERIOD_COVERAGE_DIAGNOSTIC_ONLY", "PERIOD_ASOF_TEMPORAL_LEAKAGE_ACCEPTANCE_OPEN", "V422_B01_B03_B04_B07_B08_B10_AND_AUD_AMOUNT_A_06_OPEN"],
+    "prohibited": ["write_to_tdx_root", "scanner", "factor", "trading", "probability_claim", "current_universe_backfill_as_historical_pit", "adjustment_synthesis", "historical_price_limit_inference"]
+  }
+}

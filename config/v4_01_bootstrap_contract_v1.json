@@ -1,0 +1,44 @@
+{
+  "contract_id": "V4_TDX_HISTORY_BOOTSTRAP_V1",
+  "version": "1.0.0",
+  "stage": "V4-01",
+  "inputs": {
+    "source_package_sha256": "b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f",
+    "source_bundle_id": "6122afa9db83170f7b442d5ecc5c7c9287b9dd6b04c4d53729d55f71f7dd99d2",
+    "source_cutoff": "2026-09-24",
+    "tdx_root": "D:/new_tdx"
+  },
+  "outputs": {
+    "raw_archive": "data/v4/raw_archive/{package_sha256}/hsjday.zip",
+    "security_inventory": "reports/v4_01/v4_01_security_inventory_20260925.csv",
+    "source_manifest": "reports/v4_01/v4_01_source_manifest_20260925.json",
+    "stage_receipt": "reports/v4_01/v4_01_stage_receipt_20260925.json"
+  },
+  "raw_ingest": {
+    "include_all_recognized_day_files": true,
+    "filter_by_current_universe": false,
+    "day_record_bytes": 32,
+    "minimum_formal_research_window_years": 2,
+    "minimum_warmup_market_sessions": 300
+  },
+  "overlap": {
+    "minimum_sessions": 60,
+    "accepted_source_report": "reports/v4_00d/v4_00d_asset_stratified_postcheck_20260925.json",
+    "rerun_00d": false
+  },
+  "membership": {
+    "default_basis": "DIAGNOSTIC_NON_PIT",
+    "missing_bar_semantics": "UNKNOWN_NOT_SUSPENSION_OR_DELISTING",
+    "no_unversioned_historical_exclusion": true
+  },
+  "adjustment": {
+    "raw_canonical_ready_requires_valid_raw_records": true,
+    "adjusted_canonical_ready": false,
+    "unsupported_event_categories": "FAIL_CLOSED"
+  },
+  "acceptance": {
+    "pass_requires": ["archive_hash_verified", "zip_integrity_verified", "all_day_files_retained_and_individually_profiled", "current_a_stock_validation_pass", "accepted_a_stock_overlap_evidence"],
+    "degraded_scopes": ["HISTORICAL_PIT_LIFECYCLE_UNAVAILABLE", "SOURCE_PAGE_UPDATE_DATE_EMPTY", "TRANSFER_TIMESTAMPS_UNAVAILABLE_FOR_REUSED_PACKAGE", "NONCORE_OR_UNIDENTIFIED_BAR_VALIDATION_ERRORS", "ADJUSTED_CANONICAL_SCOPE_DEFERRED_TO_V4_02_CONTRACT"],
+    "prohibited": ["write_to_tdx_root", "scanner", "factor", "adjusted_history_synthesis", "production_cutover"]
+  }
+}

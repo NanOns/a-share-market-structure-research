@@ -1,0 +1,119 @@
+{
+  "acceptance": "All profiled V4-01 daily records were retained in the hash-bound RAW canonical artifact; calendar-keyed RAW weekly/monthly outputs were generated as diagnostic-only. PIT, adjusted, suspension, price-limit and period temporal-leakage capabilities remain unavailable or unaccepted.",
+  "asof_trade_date": 20260924,
+  "calendar_evidence": {
+    "BJ": {
+      "basis": "LOCAL_INDEX_BAR_DATES_DIAGNOSTIC_NOT_EXCHANGE_OFFICIAL_CALENDAR",
+      "calendar_session_count": 1071,
+      "first_session": 20220429,
+      "last_session": 20260924,
+      "source_relative_path": "bj/lday/bj899050.day"
+    },
+    "SH": {
+      "basis": "LOCAL_INDEX_BAR_DATES_DIAGNOSTIC_NOT_EXCHANGE_OFFICIAL_CALENDAR",
+      "calendar_session_count": 8733,
+      "first_session": 19901219,
+      "last_session": 20260924,
+      "source_relative_path": "sh/lday/sh000001.day"
+    },
+    "SZ": {
+      "basis": "LOCAL_INDEX_BAR_DATES_DIAGNOSTIC_NOT_EXCHANGE_OFFICIAL_CALENDAR",
+      "calendar_session_count": 8688,
+      "first_session": 19910403,
+      "last_session": 20260924,
+      "source_relative_path": "sz/lday/sz399001.day"
+    }
+  },
+  "capabilities": {
+    "adjusted_daily_periods": "UNAVAILABLE",
+    "as_recorded_source_consumption": "UNAVAILABLE",
+    "historical_limit_status": "UNKNOWN",
+    "historical_pit_observed": "UNAVAILABLE",
+    "historical_security_lifecycle_and_membership": "UNAVAILABLE",
+    "historical_suspension_status": "UNKNOWN",
+    "raw_daily_available": true,
+    "raw_weekly_monthly_diagnostic_available": true
+  },
+  "consulted_upgrade": {
+    "document": "D:/Users/lps/Desktop/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_20260925_codex修改版.md",
+    "sections": [
+      "3B.6",
+      "3C.1",
+      "3C.2",
+      "3C.3",
+      "3C.4",
+      "5.2",
+      "5.3",
+      "6A",
+      "10N",
+      "78"
+    ],
+    "sha256": "744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd"
+  },
+  "database_write_count": 0,
+  "degraded_scopes": [
+    "HISTORICAL_PIT_LIFECYCLE_UNAVAILABLE",
+    "AS_RECORDED_CONSUMED_SOURCE_HISTORY_UNAVAILABLE",
+    "ADJUSTED_HISTORY_UNAVAILABLE",
+    "SUSPENSION_AND_GAP_CAUSE_UNKNOWN",
+    "PRICE_LIMIT_STATUS_UNKNOWN",
+    "BJ_AND_ALL_PERIOD_COVERAGE_DIAGNOSTIC_ONLY",
+    "PERIOD_ASOF_TEMPORAL_LEAKAGE_ACCEPTANCE_OPEN",
+    "V422_B01_B03_B04_B07_B08_B10_AND_AUD_AMOUNT_A_06_OPEN"
+  ],
+  "entry_gate": {
+    "phase0": "DEGRADED_PASS",
+    "raw_archive_sha256": "b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f",
+    "v4_01": "DEGRADED_PASS"
+  },
+  "independent_audits_remain_open": [
+    "V422-B01",
+    "V422-B03",
+    "V422-B04",
+    "V422-B07",
+    "V422-B08",
+    "V422-B10",
+    "AUD-AMOUNT-A-06"
+  ],
+  "inventory": {
+    "expected_file_count": 12438,
+    "expected_record_count": 29768339,
+    "records_flagged_beyond_normal_source_record": 425,
+    "source_file_count": 12438,
+    "source_record_count": 29768339
+  },
+  "limit_status": "UNKNOWN",
+  "next_stage": "V4-03 / Pure-Core Factors; proceed only for contract-ready RAW capabilities, with PIT/adjustment/limit scopes still fail-closed",
+  "observed_at_utc": "2026-09-25T08:52:07+00:00",
+  "outputs": {
+    "canonical_daily_raw": {
+      "byte_count": 931358623,
+      "path": "data/v4/canonical/V4_02_CANONICAL_DAILY_PIT_20260924_085207Z/canonical_daily_raw.parquet",
+      "row_count": 29768339,
+      "sha256": "ad200d54446aa92365e6791393524da1a8a2565767a3853686933ea37bf08976"
+    },
+    "monthly_raw_diagnostic": {
+      "byte_count": 122741616,
+      "path": "data/v4/canonical/V4_02_CANONICAL_DAILY_PIT_20260924_085207Z/monthly_raw_diagnostic.parquet",
+      "row_count": 1498972,
+      "sha256": "291f0570ef409be24321cd52528fbc7e939daaf023f1e86c7e8c8516cb46efd3"
+    },
+    "weekly_raw_diagnostic": {
+      "byte_count": 283242324,
+      "path": "data/v4/canonical/V4_02_CANONICAL_DAILY_PIT_20260924_085207Z/weekly_raw_diagnostic.parquet",
+      "row_count": 6297060,
+      "sha256": "64873fdf21f7dbe7e931ed80e32df80cda643e110bfcbbfb2fed82ce050e487c"
+    }
+  },
+  "period_rows": {
+    "monthly": 1498972,
+    "weekly": 6297060
+  },
+  "run_id": "V4_02_CANONICAL_DAILY_PIT_20260924_085207Z",
+  "scanner_or_factor_run_count": 0,
+  "source_cutoff": "2026-09-24",
+  "stage": "V4-02",
+  "stage_contract": "V4.2.2 REV2 §§3B.6, 3C.1-3C.4, 5.2-5.3, 6A, 10N, 78; V4_CANONICAL_DAILY_PIT_PERIODS_V1",
+  "status": "DEGRADED_PASS",
+  "tdx_root_write_count": 0
+}

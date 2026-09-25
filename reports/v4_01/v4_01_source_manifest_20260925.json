@@ -1,0 +1,191 @@
+{
+  "contract_id": "V4_TDX_HISTORY_BOOTSTRAP_V1",
+  "inventory": {
+    "all_day_files_retained_and_profiled": true,
+    "all_recognized_day_files_retained": true,
+    "current_universe_filter_applied": false,
+    "day_file_count": 12438,
+    "day_record_count": 29768339,
+    "first_observed_date": 19901219,
+    "invalid_current_a_stock_file_count": 0,
+    "invalid_day_file_count": 18,
+    "invalid_day_file_samples": [
+      {
+        "errors": [
+          "INVALID_OHLC:16"
+        ],
+        "relative_path": "sh/lday/sh000001.day"
+      },
+      {
+        "errors": [
+          "INVALID_OHLC:6"
+        ],
+        "relative_path": "sh/lday/sh000002.day"
+      },
+      {
+        "errors": [
+          "INVALID_OHLC:18"
+        ],
+        "relative_path": "sh/lday/sh000003.day"
+      },
+      {
+        "errors": [
+          "NON_INCREASING_DATE:1"
+        ],
+        "relative_path": "sh/lday/sh000833.day"
+      },
+      {
+        "errors": [
+          "INVALID_OHLC:1"
+        ],
+        "relative_path": "sh/lday/sh111006.day"
+      },
+      {
+        "errors": [
+          "INVALID_OHLC:147"
+        ],
+        "relative_path": "sh/lday/sh880006.day"
+      },
+      {
+        "errors": [
+          "INVALID_OHLC:127"
+        ],
+        "relative_path": "sh/lday/sh880016.day"
+      },
+      {
+        "errors": [
+          "INVALID_OHLC:57"
+        ],
+        "relative_path": "sh/lday/sh880036.day"
+      },
+      {
+        "errors": [
+          "INVALID_OHLC:18"
+        ],
+        "relative_path": "sh/lday/sh999997.day"
+      },
+      {
+        "errors": [
+          "INVALID_OHLC:6"
+        ],
+        "relative_path": "sh/lday/sh999998.day"
+      },
+      {
+        "errors": [
+          "INVALID_OHLC:14"
+        ],
+        "relative_path": "sh/lday/sh999999.day"
+      },
+      {
+        "errors": [
+          "EMPTY_FILE"
+        ],
+        "relative_path": "sz/lday/sz131804.day"
+      },
+      {
+        "errors": [
+          "EMPTY_FILE"
+        ],
+        "relative_path": "sz/lday/sz131807.day"
+      },
+      {
+        "errors": [
+          "INVALID_OHLC:2"
+        ],
+        "relative_path": "sz/lday/sz200012.day"
+      },
+      {
+        "errors": [
+          "INVALID_OHLC:1"
+        ],
+        "relative_path": "sz/lday/sz200013.day"
+      },
+      {
+        "errors": [
+          "INVALID_OHLC:2"
+        ],
+        "relative_path": "sz/lday/sz200015.day"
+      },
+      {
+        "errors": [
+          "INVALID_OHLC:1"
+        ],
+        "relative_path": "sz/lday/sz200053.day"
+      },
+      {
+        "errors": [
+          "INVALID_OHLC:9"
+        ],
+        "relative_path": "sz/lday/sz399001.day"
+      }
+    ],
+    "invalid_security_filename_count": 1,
+    "last_observed_date": 20260924,
+    "membership_basis": "DIAGNOSTIC_NON_PIT",
+    "pit_lifecycle_asserted": false,
+    "research_window": {
+      "end": 20260924,
+      "market_session_count": 486,
+      "start": 20240925
+    },
+    "security_inventory_path": "reports/v4_01/v4_01_security_inventory_20260925.csv",
+    "security_inventory_rows": 12438,
+    "warmup_window": {
+      "available_market_sessions_before_research_window": 8247,
+      "last_300_sessions_start": 20230704,
+      "market_calendar_coverage_pass": true,
+      "required_market_sessions": 300
+    }
+  },
+  "observed_at_utc": "2026-09-25T08:28:12+00:00",
+  "overlap": {
+    "acceptance": "ACCEPTED_SOURCE_PACKAGE",
+    "comparable_rows": 265993,
+    "exact_match_rows": 263554,
+    "first_session": 20260703,
+    "identity_mismatch_count": 0,
+    "last_session": 20260924,
+    "normalized_match_rows": 2439,
+    "rerun": false,
+    "sessions": 60,
+    "source_package_sha256": "b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f",
+    "source_report": "reports/v4_00d/v4_00d_asset_stratified_postcheck_20260925.json",
+    "source_report_sha256": "3b5ac84cbbaae9b6cacd21aa77938d0d96276495521fedead2c76b6858c4884e",
+    "unexplained_mismatch_rows": 0
+  },
+  "run_id": "V4_01_TDX_HISTORY_BOOTSTRAP_20260925",
+  "source": {
+    "byte_count": 550821395,
+    "download_finished_at": null,
+    "download_started_at": null,
+    "download_url": "https://data.tdx.com.cn/vipdoc/hsjday.zip?cache_bust=5349e64987e14b318b12fbd268335dfa",
+    "extracted_content_digest": "93c7abe3ef9c935e0949999da16f966455596e123241a57edfd70816c29eb612",
+    "extracted_content_digest_algorithm": "SHA256(sorted relative_path NUL byte_count NUL file_sha256 LF)",
+    "failure_reason": null,
+    "filename": "hsjday.zip",
+    "frozen_source_cutoff": "2026-09-24",
+    "package_id": "b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f",
+    "package_last_modified": "Thu, 24 Sep 2026 07:57:21 GMT",
+    "package_sha256": "b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f",
+    "page_declared_update_date": null,
+    "page_evidence": "Official page says a same-day package should only be downloaded after update date changes to the target day; field was blank at observation. No new download was started.",
+    "page_observed_at_utc": "2026-09-25T08:27:38+00:00",
+    "parser_version": "v4-day-raw-v1.1",
+    "raw_archive_path": "data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f/hsjday.zip",
+    "source_bundle_id": "6122afa9db83170f7b442d5ecc5c7c9287b9dd6b04c4d53729d55f71f7dd99d2",
+    "source_page_snapshot_path": "docs/evidence/V4_01_OFFICIAL_SOURCE_PAGE_OBSERVATION_20260925.json",
+    "source_page_snapshot_sha256": "a30ff5260232c714115e6959beb345975df64102a930b269434e4fcd97ab536f",
+    "source_page_url": "https://www.tdx.com.cn/article/vipdata.html",
+    "status": "ACCEPTED_A_STOCK_SOURCE_PACKAGE_WITH_SCOPED_DEGRADATIONS",
+    "target_trade_date": "2026-09-24",
+    "transfer_timestamp_status": "UNAVAILABLE_FOR_REUSED_SEALED_PACKAGE",
+    "zip_crc_status": "PASS",
+    "zip_entry_count": 12438
+  },
+  "stage": "V4-01",
+  "tdx_read_only_boundary": {
+    "configured_root": "D:\\new_tdx",
+    "read_only": true,
+    "writes_under_tdx_root": 0
+  }
+}

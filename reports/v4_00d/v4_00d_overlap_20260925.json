@@ -1,0 +1,1245 @@
+{
+  "stage": "V4-00D_TDX_VIPDATA_SOURCE_CONTRACT",
+  "generated_at_utc": "2026-09-25T00:23:18.349107+00:00",
+  "contract_source": {
+    "document": "A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_20260925_codex修改版.md",
+    "sha256": "744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd",
+    "sections": [
+      "§3B.4",
+      "§3E",
+      "§3F",
+      "§78"
+    ]
+  },
+  "package": {
+    "source_bundle_id": "6122afa9db83170f7b442d5ecc5c7c9287b9dd6b04c4d53729d55f71f7dd99d2",
+    "target_trade_date": "2026-09-24",
+    "package_sha256": "b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f",
+    "bytes": 550821395,
+    "parser_version": "m3-tdx-input-v1.0"
+  },
+  "local_input_root": "D:/new_tdx/vipdoc (read-only)",
+  "window": {
+    "session_count": 60,
+    "first_session": 20260703,
+    "last_session": 20260924,
+    "session_source": "official package SH sh000001 and SZ sz399001 index chains"
+  },
+  "method": {
+    "record_layout": "TDX .day 32-byte records <5I f 2I",
+    "canonical_fields": [
+      "open",
+      "high",
+      "low",
+      "close",
+      "amount",
+      "volume"
+    ],
+    "key": "market + filename + trade_date",
+    "exact_policy": "exact decoded equality for six fields; amount exact IEEE-754 decoded value",
+    "normalized_tolerance_policy": "NOT_DEFINED_BY_CONTRACT; no tolerance applied",
+    "identity_mismatch_count": 0,
+    "note": "All same market/filename pairs compared over the selected 60 actual sessions.",
+    "identity_mismatch_count_meaning": "0 mismatches on the configured market+filename+trade_date key among comparable pairs; semantic issuer identity is not independently verified here",
+    "normalized_tolerance_match_rows": "NOT_COMPUTED: contract provides no normalization/tolerance rule"
+  },
+  "counts": {
+    "comparable_rows": 468339,
+    "exact_match_rows": 465186,
+    "mismatch_rows": 3153,
+    "package_only_rows": 109485,
+    "local_only_rows": 3998,
+    "normalized_tolerance_match_rows": null,
+    "identity_mismatch_count": 0
+  },
+  "paired_files": 12156,
+  "package_files": 12438,
+  "local_files": 12245,
+  "package_only_files": 282,
+  "local_only_files": 89,
+  "field_mismatch_rows": {
+    "high": 9,
+    "close": 3,
+    "low": 8,
+    "volume": 3134,
+    "open": 4
+  },
+  "by_market": {
+    "sh": {
+      "comparable_rows": 241195,
+      "exact_match_rows": 239684,
+      "mismatch_rows": 1511,
+      "package_only_rows": 49110,
+      "local_only_rows": 3698
+    },
+    "sz": {
+      "comparable_rows": 221464,
+      "exact_match_rows": 219828,
+      "mismatch_rows": 1636,
+      "package_only_rows": 45837,
+      "local_only_rows": 300
+    },
+    "bj": {
+      "comparable_rows": 5680,
+      "exact_match_rows": 5674,
+      "package_only_rows": 14538,
+      "mismatch_rows": 6
+    }
+  },
+  "by_date": {
+    "20260703": {
+      "comparable_rows": 9321,
+      "exact_match_rows": 9306,
+      "local_only_rows": 70,
+      "mismatch_rows": 15,
+      "package_only_rows": 246
+    },
+    "20260706": {
+      "comparable_rows": 9318,
+      "exact_match_rows": 9302,
+      "local_only_rows": 70,
+      "mismatch_rows": 16,
+      "package_only_rows": 246
+    },
+    "20260707": {
+      "comparable_rows": 9324,
+      "exact_match_rows": 9307,
+      "local_only_rows": 70,
+      "mismatch_rows": 17,
+      "package_only_rows": 246
+    },
+    "20260708": {
+      "comparable_rows": 9327,
+      "exact_match_rows": 9312,
+      "local_only_rows": 70,
+      "mismatch_rows": 15,
+      "package_only_rows": 246
+    },
+    "20260709": {
+      "comparable_rows": 9328,
+      "exact_match_rows": 9311,
+      "local_only_rows": 72,
+      "mismatch_rows": 17,
+      "package_only_rows": 247
+    },
+    "20260710": {
+      "comparable_rows": 9338,
+      "exact_match_rows": 9321,
+      "local_only_rows": 73,
+      "mismatch_rows": 17,
+      "package_only_rows": 247
+    },
+    "20260713": {
+      "comparable_rows": 9344,
+      "exact_match_rows": 9329,
+      "local_only_rows": 73,
+      "mismatch_rows": 15,
+      "package_only_rows": 247
+    },
+    "20260714": {
+      "comparable_rows": 9340,
+      "exact_match_rows": 9328,
+      "local_only_rows": 73,
+      "mismatch_rows": 12,
+      "package_only_rows": 247
+    },
+    "20260715": {
+      "comparable_rows": 9341,
+      "exact_match_rows": 9324,
+      "local_only_rows": 73,
+      "mismatch_rows": 17,
+      "package_only_rows": 247
+    },
+    "20260716": {
+      "comparable_rows": 9345,
+      "exact_match_rows": 9333,
+      "local_only_rows": 74,
+      "mismatch_rows": 12,
+      "package_only_rows": 246
+    },
+    "20260717": {
+      "comparable_rows": 9351,
+      "exact_match_rows": 9332,
+      "local_only_rows": 74,
+      "mismatch_rows": 19,
+      "package_only_rows": 246
+    },
+    "20260720": {
+      "comparable_rows": 9353,
+      "exact_match_rows": 9336,
+      "local_only_rows": 74,
+      "mismatch_rows": 17,
+      "package_only_rows": 246
+    },
+    "20260721": {
+      "comparable_rows": 9349,
+      "exact_match_rows": 9331,
+      "local_only_rows": 74,
+      "mismatch_rows": 18,
+      "package_only_rows": 246
+    },
+    "20260722": {
+      "comparable_rows": 9356,
+      "exact_match_rows": 9341,
+      "local_only_rows": 74,
+      "mismatch_rows": 15,
+      "package_only_rows": 246
+    },
+    "20260723": {
+      "comparable_rows": 9345,
+      "exact_match_rows": 9334,
+      "local_only_rows": 74,
+      "mismatch_rows": 11,
+      "package_only_rows": 246
+    },
+    "20260724": {
+      "comparable_rows": 9350,
+      "exact_match_rows": 9333,
+      "local_only_rows": 74,
+      "mismatch_rows": 17,
+      "package_only_rows": 246
+    },
+    "20260727": {
+      "comparable_rows": 9336,
+      "exact_match_rows": 9323,
+      "local_only_rows": 74,
+      "mismatch_rows": 13,
+      "package_only_rows": 246
+    },
+    "20260728": {
+      "comparable_rows": 9338,
+      "exact_match_rows": 9327,
+      "local_only_rows": 74,
+      "mismatch_rows": 11,
+      "package_only_rows": 246
+    },
+    "20260729": {
+      "comparable_rows": 9342,
+      "exact_match_rows": 9324,
+      "local_only_rows": 74,
+      "mismatch_rows": 18,
+      "package_only_rows": 246
+    },
+    "20260730": {
+      "comparable_rows": 9353,
+      "exact_match_rows": 9339,
+      "local_only_rows": 74,
+      "mismatch_rows": 14,
+      "package_only_rows": 246
+    },
+    "20260731": {
+      "comparable_rows": 9361,
+      "exact_match_rows": 9343,
+      "local_only_rows": 74,
+      "mismatch_rows": 18,
+      "package_only_rows": 246
+    },
+    "20260803": {
+      "comparable_rows": 9350,
+      "exact_match_rows": 9331,
+      "local_only_rows": 74,
+      "mismatch_rows": 19,
+      "package_only_rows": 246
+    },
+    "20260804": {
+      "comparable_rows": 9362,
+      "exact_match_rows": 9346,
+      "local_only_rows": 74,
+      "mismatch_rows": 16,
+      "package_only_rows": 246
+    },
+    "20260805": {
+      "comparable_rows": 9366,
+      "exact_match_rows": 9349,
+      "local_only_rows": 74,
+      "mismatch_rows": 17,
+      "package_only_rows": 246
+    },
+    "20260806": {
+      "comparable_rows": 9362,
+      "exact_match_rows": 9347,
+      "local_only_rows": 74,
+      "mismatch_rows": 15,
+      "package_only_rows": 246
+    },
+    "20260807": {
+      "comparable_rows": 9372,
+      "exact_match_rows": 9356,
+      "local_only_rows": 74,
+      "mismatch_rows": 16,
+      "package_only_rows": 246
+    },
+    "20260810": {
+      "comparable_rows": 9381,
+      "exact_match_rows": 9362,
+      "local_only_rows": 74,
+      "mismatch_rows": 19,
+      "package_only_rows": 246
+    },
+    "20260811": {
+      "comparable_rows": 9382,
+      "exact_match_rows": 9366,
+      "local_only_rows": 74,
+      "mismatch_rows": 16,
+      "package_only_rows": 246
+    },
+    "20260812": {
+      "comparable_rows": 9381,
+      "exact_match_rows": 9367,
+      "local_only_rows": 74,
+      "mismatch_rows": 14,
+      "package_only_rows": 246
+    },
+    "20260813": {
+      "comparable_rows": 9397,
+      "exact_match_rows": 9382,
+      "local_only_rows": 74,
+      "mismatch_rows": 15,
+      "package_only_rows": 246
+    },
+    "20260814": {
+      "comparable_rows": 9382,
+      "exact_match_rows": 9367,
+      "local_only_rows": 74,
+      "mismatch_rows": 15,
+      "package_only_rows": 246
+    },
+    "20260817": {
+      "comparable_rows": 9387,
+      "exact_match_rows": 9373,
+      "local_only_rows": 74,
+      "mismatch_rows": 14,
+      "package_only_rows": 246
+    },
+    "20260818": {
+      "comparable_rows": 9391,
+      "exact_match_rows": 9380,
+      "local_only_rows": 74,
+      "mismatch_rows": 11,
+      "package_only_rows": 246
+    },
+    "20260819": {
+      "comparable_rows": 9405,
+      "exact_match_rows": 9387,
+      "local_only_rows": 74,
+      "mismatch_rows": 18,
+      "package_only_rows": 246
+    },
+    "20260820": {
+      "comparable_rows": 9394,
+      "exact_match_rows": 9379,
+      "local_only_rows": 74,
+      "mismatch_rows": 15,
+      "package_only_rows": 246
+    },
+    "20260821": {
+      "comparable_rows": 9401,
+      "exact_match_rows": 9388,
+      "local_only_rows": 75,
+      "mismatch_rows": 13,
+      "package_only_rows": 246
+    },
+    "20260824": {
+      "comparable_rows": 9407,
+      "exact_match_rows": 9393,
+      "local_only_rows": 75,
+      "mismatch_rows": 14,
+      "package_only_rows": 246
+    },
+    "20260825": {
+      "comparable_rows": 9411,
+      "exact_match_rows": 9396,
+      "local_only_rows": 75,
+      "mismatch_rows": 15,
+      "package_only_rows": 246
+    },
+    "20260826": {
+      "comparable_rows": 9408,
+      "exact_match_rows": 9394,
+      "local_only_rows": 75,
+      "mismatch_rows": 14,
+      "package_only_rows": 246
+    },
+    "20260827": {
+      "comparable_rows": 9416,
+      "exact_match_rows": 9404,
+      "local_only_rows": 75,
+      "mismatch_rows": 12,
+      "package_only_rows": 246
+    },
+    "20260828": {
+      "comparable_rows": 9413,
+      "exact_match_rows": 9400,
+      "local_only_rows": 88,
+      "mismatch_rows": 13,
+      "package_only_rows": 246
+    },
+    "20260831": {
+      "comparable_rows": 9412,
+      "exact_match_rows": 9397,
+      "local_only_rows": 75,
+      "mismatch_rows": 15,
+      "package_only_rows": 246
+    },
+    "20260901": {
+      "comparable_rows": 9404,
+      "exact_match_rows": 9387,
+      "local_only_rows": 75,
+      "mismatch_rows": 17,
+      "package_only_rows": 246
+    },
+    "20260902": {
+      "comparable_rows": 9409,
+      "exact_match_rows": 9399,
+      "local_only_rows": 88,
+      "mismatch_rows": 10,
+      "package_only_rows": 246
+    },
+    "20260903": {
+      "comparable_rows": 9418,
+      "exact_match_rows": 9405,
+      "local_only_rows": 75,
+      "mismatch_rows": 13,
+      "package_only_rows": 246
+    },
+    "20260904": {
+      "comparable_rows": 9657,
+      "exact_match_rows": 9643,
+      "local_only_rows": 164,
+      "mismatch_rows": 14
+    },
+    "20260907": {
+      "comparable_rows": 9218,
+      "exact_match_rows": 8010,
+      "package_only_rows": 445,
+      "mismatch_rows": 1208,
+      "local_only_rows": 165
+    },
+    "20260908": {
+      "comparable_rows": 9209,
+      "exact_match_rows": 9200,
+      "package_only_rows": 445,
+      "local_only_rows": 76,
+      "mismatch_rows": 9
+    },
+    "20260909": {
+      "comparable_rows": 9242,
+      "exact_match_rows": 9231,
+      "package_only_rows": 445,
+      "local_only_rows": 76,
+      "mismatch_rows": 11
+    },
+    "20260910": {
+      "comparable_rows": 9204,
+      "mismatch_rows": 1179,
+      "exact_match_rows": 8025,
+      "package_only_rows": 445,
+      "local_only_rows": 173
+    },
+    "20260911": {
+      "package_only_rows": 9633,
+      "comparable_rows": 41,
+      "exact_match_rows": 30,
+      "mismatch_rows": 11
+    },
+    "20260914": {
+      "package_only_rows": 9648,
+      "comparable_rows": 38,
+      "exact_match_rows": 30,
+      "mismatch_rows": 8
+    },
+    "20260915": {
+      "package_only_rows": 9648,
+      "comparable_rows": 38,
+      "exact_match_rows": 33,
+      "mismatch_rows": 5
+    },
+    "20260916": {
+      "package_only_rows": 9643,
+      "comparable_rows": 37,
+      "exact_match_rows": 30,
+      "mismatch_rows": 7
+    },
+    "20260917": {
+      "package_only_rows": 9647,
+      "comparable_rows": 36,
+      "exact_match_rows": 30,
+      "mismatch_rows": 6
+    },
+    "20260918": {
+      "package_only_rows": 9657,
+      "comparable_rows": 36,
+      "exact_match_rows": 23,
+      "mismatch_rows": 13
+    },
+    "20260921": {
+      "package_only_rows": 9685,
+      "comparable_rows": 4,
+      "exact_match_rows": 3,
+      "mismatch_rows": 1
+    },
+    "20260922": {
+      "package_only_rows": 9695,
+      "comparable_rows": 4,
+      "exact_match_rows": 3,
+      "mismatch_rows": 1
+    },
+    "20260923": {
+      "package_only_rows": 9686,
+      "comparable_rows": 4,
+      "exact_match_rows": 4
+    },
+    "20260924": {
+      "package_only_rows": 9688
+    }
+  },
+  "by_market_field": {
+    "sh": {
+      "high": 1,
+      "close": 1,
+      "low": 3,
+      "volume": 1506
+    },
+    "sz": {
+      "volume": 1622,
+      "open": 4,
+      "high": 8,
+      "low": 5,
+      "close": 2
+    },
+    "bj": {
+      "volume": 6
+    }
+  },
+  "malformed_files_count": 0,
+  "malformed_file_samples": [],
+  "mismatch_samples": [
+    {
+      "market": "sh",
+      "filename": "sh000001",
+      "trade_date": 20260910,
+      "fields": [
+        "high"
+      ],
+      "package": [
+        393909,
+        394925,
+        392735,
+        393440,
+        779672682496.0,
+        484675114
+      ],
+      "local": [
+        393909,
+        394926,
+        392735,
+        393440,
+        779672682496.0,
+        484675114
+      ]
+    },
+    {
+      "market": "sh",
+      "filename": "sh000015",
+      "trade_date": 20260907,
+      "fields": [
+        "close"
+      ],
+      "package": [
+        334752,
+        335177,
+        328460,
+        330264,
+        40179601408.0,
+        41800445
+      ],
+      "local": [
+        334752,
+        335177,
+        328460,
+        330265,
+        40179601408.0,
+        41800445
+      ]
+    },
+    {
+      "market": "sh",
+      "filename": "sh000017",
+      "trade_date": 20260907,
+      "fields": [
+        "low"
+      ],
+      "package": [
+        333197,
+        333696,
+        330997,
+        332369,
+        850963857408.0,
+        465064826
+      ],
+      "local": [
+        333197,
+        333696,
+        330998,
+        332369,
+        850963857408.0,
+        465064826
+      ]
+    },
+    {
+      "market": "sh",
+      "filename": "sh000689",
+      "trade_date": 20260910,
+      "fields": [
+        "low"
+      ],
+      "package": [
+        139891,
+        141940,
+        139155,
+        140110,
+        19350749184.0,
+        3074925
+      ],
+      "local": [
+        139891,
+        141940,
+        139156,
+        140110,
+        19350749184.0,
+        3074925
+      ]
+    },
+    {
+      "market": "sh",
+      "filename": "sh000888",
+      "trade_date": 20260910,
+      "fields": [
+        "low"
+      ],
+      "package": [
+        458616,
+        459799,
+        457248,
+        458070,
+        779672682496.0,
+        484675114
+      ],
+      "local": [
+        458616,
+        459799,
+        457249,
+        458070,
+        779672682496.0,
+        484675114
+      ]
+    },
+    {
+      "market": "sh",
+      "filename": "sh204001",
+      "trade_date": 20260907,
+      "fields": [
+        "volume"
+      ],
+      "package": [
+        13950,
+        14200,
+        12200,
+        13800,
+        2127520727040.0,
+        212752078
+      ],
+      "local": [
+        13950,
+        14200,
+        12200,
+        13800,
+        2127520727040.0,
+        2127520785
+      ]
+    },
+    {
+      "market": "sh",
+      "filename": "sh204001",
+      "trade_date": 20260910,
+      "fields": [
+        "volume"
+      ],
+      "package": [
+        13800,
+        14000,
+        13400,
+        13700,
+        2100474019840.0,
+        210047404
+      ],
+      "local": [
+        13800,
+        14000,
+        13400,
+        13700,
+        2100474019840.0,
+        2100474044
+      ]
+    },
+    {
+      "market": "sh",
+      "filename": "sh501018",
+      "trade_date": 20260907,
+      "fields": [
+        "volume"
+      ],
+      "package": [
+        1911,
+        1936,
+        1902,
+        1922,
+        313093120.0,
+        163208284
+      ],
+      "local": [
+        1911,
+        1936,
+        1902,
+        1922,
+        313093120.0,
+        163208288
+      ]
+    },
+    {
+      "market": "sh",
+      "filename": "sh501018",
+      "trade_date": 20260910,
+      "fields": [
+        "volume"
+      ],
+      "package": [
+        2025,
+        2028,
+        1979,
+        1995,
+        400853696.0,
+        200586868
+      ],
+      "local": [
+        2025,
+        2028,
+        1979,
+        1995,
+        400853696.0,
+        200586864
+      ]
+    },
+    {
+      "market": "sh",
+      "filename": "sh501025",
+      "trade_date": 20260907,
+      "fields": [
+        "volume"
+      ],
+      "package": [
+        1964,
+        1970,
+        1918,
+        1922,
+        63757776.0,
+        32944011
+      ],
+      "local": [
+        1964,
+        1970,
+        1918,
+        1922,
+        63757776.0,
+        32944012
+      ]
+    },
+    {
+      "market": "sh",
+      "filename": "sh510050",
+      "trade_date": 20260907,
+      "fields": [
+        "volume"
+      ],
+      "package": [
+        3042,
+        3050,
+        3010,
+        3018,
+        1678551168.0,
+        554186509
+      ],
+      "local": [
+        3042,
+        3050,
+        3010,
+        3018,
+        1678551168.0,
+        554186496
+      ]
+    },
+    {
+      "market": "sh",
+      "filename": "sh510050",
+      "trade_date": 20260910,
+      "fields": [
+        "volume"
+      ],
+      "package": [
+        3015,
+        3026,
+        3001,
+        3016,
+        1049918016.0,
+        348471947
+      ],
+      "local": [
+        3015,
+        3026,
+        3001,
+        3016,
+        1049918016.0,
+        348471936
+      ]
+    },
+    {
+      "market": "sh",
+      "filename": "sh510100",
+      "trade_date": 20260907,
+      "fields": [
+        "volume"
+      ],
+      "package": [
+        3002,
+        3004,
+        2964,
+        2978,
+        272603744.0,
+        91432135
+      ],
+      "local": [
+        3002,
+        3004,
+        2964,
+        2978,
+        272603744.0,
+        91432136
+      ]
+    },
+    {
+      "market": "sh",
+      "filename": "sh510100",
+      "trade_date": 20260910,
+      "fields": [
+        "volume"
+      ],
+      "package": [
+        2965,
+        2980,
+        2956,
+        2973,
+        174479760.0,
+        58750671
+      ],
+      "local": [
+        2965,
+        2980,
+        2956,
+        2973,
+        174479760.0,
+        58750672
+      ]
+    },
+    {
+      "market": "sh",
+      "filename": "sh510210",
+      "trade_date": 20260907,
+      "fields": [
+        "volume"
+      ],
+      "package": [
+        1008,
+        1009,
+        1001,
+        1005,
+        576137920.0,
+        573373000
+      ],
+      "local": [
+        1008,
+        1009,
+        1001,
+        1005,
+        576137920.0,
+        573372992
+      ]
+    },
+    {
+      "market": "sh",
+      "filename": "sh510210",
+      "trade_date": 20260910,
+      "fields": [
+        "volume"
+      ],
+      "package": [
+        1008,
+        1011,
+        1005,
+        1008,
+        355828896.0,
+        353203710
+      ],
+      "local": [
+        1008,
+        1011,
+        1005,
+        1008,
+        355828896.0,
+        353203712
+      ]
+    },
+    {
+      "market": "sh",
+      "filename": "sh510230",
+      "trade_date": 20260907,
+      "fields": [
+        "volume"
+      ],
+      "package": [
+        1368,
+        1378,
+        1338,
+        1341,
+        123844128.0,
+        91768500
+      ],
+      "local": [
+        1368,
+        1378,
+        1338,
+        1341,
+        123844128.0,
+        91768496
+      ]
+    },
+    {
+      "market": "sh",
+      "filename": "sh510300",
+      "trade_date": 20260907,
+      "fields": [
+        "volume"
+      ],
+      "package": [
+        4635,
+        4649,
+        4612,
+        4634,
+        4602371584.0,
+        993078300
+      ],
+      "local": [
+        4635,
+        4649,
+        4612,
+        4634,
+        4602371584.0,
+        993078272
+      ]
+    },
+    {
+      "market": "sh",
+      "filename": "sh510300",
+      "trade_date": 20260910,
+      "fields": [
+        "volume"
+      ],
+      "package": [
+        4617,
+        4640,
+        4599,
+        4617,
+        2026289536.0,
+        438854072
+      ],
+      "local": [
+        4617,
+        4640,
+        4599,
+        4617,
+        2026289536.0,
+        438854080
+      ]
+    },
+    {
+      "market": "sh",
+      "filename": "sh510310",
+      "trade_date": 20260907,
+      "fields": [
+        "volume"
+      ],
+      "package": [
+        4499,
+        4516,
+        4480,
+        4505,
+        823906560.0,
+        183092292
+      ],
+      "local": [
+        4499,
+        4516,
+        4480,
+        4505,
+        823906560.0,
+        183092288
+      ]
+    },
+    {
+      "market": "sh",
+      "filename": "sh510310",
+      "trade_date": 20260910,
+      "fields": [
+        "volume"
+      ],
+      "package": [
+        4486,
+        4506,
+        4467,
+        4486,
+        421529792.0,
+        93981815
+      ],
+      "local": [
+        4486,
+        4506,
+        4467,
+        4486,
+        421529792.0,
+        93981816
+      ]
+    },
+    {
+      "market": "sh",
+      "filename": "sh510330",
+      "trade_date": 20260907,
+      "fields": [
+        "volume"
+      ],
+      "package": [
+        4828,
+        4848,
+        4809,
+        4837,
+        570930688.0,
+        118177900
+      ],
+      "local": [
+        4828,
+        4848,
+        4809,
+        4837,
+        570930688.0,
+        118177904
+      ]
+    },
+    {
+      "market": "sh",
+      "filename": "sh510500",
+      "trade_date": 20260907,
+      "fields": [
+        "volume"
+      ],
+      "package": [
+        7704,
+        7822,
+        7700,
+        7771,
+        5158718976.0,
+        664690675
+      ],
+      "local": [
+        7704,
+        7822,
+        7700,
+        7771,
+        5158718976.0,
+        664690688
+      ]
+    },
+    {
+      "market": "sh",
+      "filename": "sh510500",
+      "trade_date": 20260910,
+      "fields": [
+        "volume"
+      ],
+      "package": [
+        7741,
+        7794,
+        7711,
+        7742,
+        2036141952.0,
+        262861684
+      ],
+      "local": [
+        7741,
+        7794,
+        7711,
+        7742,
+        2036141952.0,
+        262861680
+      ]
+    },
+    {
+      "market": "sh",
+      "filename": "sh510580",
+      "trade_date": 20260907,
+      "fields": [
+        "volume"
+      ],
+      "package": [
+        4060,
+        4113,
+        4050,
+        4086,
+        246800112.0,
+        60538641
+      ],
+      "local": [
+        4060,
+        4113,
+        4050,
+        4086,
+        246800112.0,
+        60538640
+      ]
+    },
+    {
+      "market": "sh",
+      "filename": "sh510580",
+      "trade_date": 20260910,
+      "fields": [
+        "volume"
+      ],
+      "package": [
+        4069,
+        4098,
+        4055,
+        4072,
+        147942624.0,
+        36292134
+      ],
+      "local": [
+        4069,
+        4098,
+        4055,
+        4072,
+        147942624.0,
+        36292136
+      ]
+    },
+    {
+      "market": "sh",
+      "filename": "sh510720",
+      "trade_date": 20260910,
+      "fields": [
+        "volume"
+      ],
+      "package": [
+        1093,
+        1095,
+        1082,
+        1085,
+        109097552.0,
+        100383500
+      ],
+      "local": [
+        1093,
+        1095,
+        1082,
+        1085,
+        109097552.0,
+        100383504
+      ]
+    },
+    {
+      "market": "sh",
+      "filename": "sh510760",
+      "trade_date": 20260907,
+      "fields": [
+        "volume"
+      ],
+      "package": [
+        1346,
+        1348,
+        1337,
+        1342,
+        229692032.0,
+        171101435
+      ],
+      "local": [
+        1346,
+        1348,
+        1337,
+        1342,
+        229692032.0,
+        171101440
+      ]
+    },
+    {
+      "market": "sh",
+      "filename": "sh510810",
+      "trade_date": 20260910,
+      "fields": [
+        "volume"
+      ],
+      "package": [
+        851,
+        853,
+        844,
+        850,
+        116186208.0,
+        136951700
+      ],
+      "local": [
+        851,
+        853,
+        844,
+        850,
+        116186208.0,
+        136951696
+      ]
+    },
+    {
+      "market": "sh",
+      "filename": "sh510880",
+      "trade_date": 20260907,
+      "fields": [
+        "volume"
+      ],
+      "package": [
+        3442,
+        3442,
+        3370,
+        3390,
+        617294528.0,
+        181956365
+      ],
+      "local": [
+        3442,
+        3442,
+        3370,
+        3390,
+        617294528.0,
+        181956368
+      ]
+    }
+  ],
+  "acceptance": {
+    "download_integrity": "PASS_PER_M3_RECEIPT",
+    "parser_integrity": "PASS_PER_M3_RECEIPT",
+    "market_date_identity": "PASS_FOR_PACKAGE_TARGET_DATE_PER_M3_RECEIPT",
+    "overlap_validation": "NOT_ACCEPTED",
+    "reason": "Observed row mismatches exist; REV2 requires a contract threshold and normalized-tolerance result, but applicable sections do not define numeric mismatch threshold or normalization tolerance. Fail closed; no source acceptance."
+  }
+}

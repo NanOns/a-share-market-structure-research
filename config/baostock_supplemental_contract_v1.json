@@ -1,0 +1,118 @@
+{
+  "contract_id": "BAOSTOCK_SUPPLEMENTAL_SOURCE_V1",
+  "contract_version": "1.0.0",
+  "status": "FROZEN_SPEC_LIVE_CAPABILITY_UNVERIFIED",
+  "stage_id": "V4-00F",
+  "authority": {
+    "tdx_authoritative_fields": ["security_identity", "ohlc", "volume", "amount", "qfq", "local_trading_status"],
+    "baostock_supplemental_only_fields": ["turn", "tradestatus_cross_check", "isST_cross_check"],
+    "price_fingerprint_only": ["close", "volume", "amount"],
+    "forbidden": ["overwrite_tdx_facts", "core_eligibility_input", "core_sort_input", "focus_activation_input", "external_adjustment_service", "future_data", "automated_trading", "probability_claim"]
+  },
+  "datasets": {
+    "BAOSTOCK_TURNOVER_DAILY_V1": {
+      "enabled": false,
+      "capability": "UNAVAILABLE",
+      "source_fields": ["code", "date", "turn", "tradestatus", "isST", "close", "volume", "amount"],
+      "source_frequency": "daily",
+      "turn_unit": "UNVERIFIED",
+      "normalized_unit": "FRACTION",
+      "normalization_allowed_only_after": "source_field_map_and_unit_are_independently_verified",
+      "never_guess_percent_scaling": true,
+      "denominator_basis": "SOURCE_DEFINED_OR_UNKNOWN",
+      "semantic_use_requires": "VERIFIED_FLOAT_SHARE_OR_FREE_FLOAT_SHARE_BASIS",
+      "strict_binding_requires": ["exact_security_identity_mapping", "exact_trade_date", "tradestatus_cross_check", "unit_normalized_close_volume_amount_fingerprint", "versioned_source_specific_tolerance"],
+      "soft_binding_use": "diagnostic_only",
+      "factor_contract_id": "TURNOVER_CONTEXT_V1"
+    },
+    "BAOSTOCK_DAILY_FINGERPRINT_V1": {
+      "enabled": false,
+      "capability": "UNAVAILABLE",
+      "fields": ["close", "volume", "amount"],
+      "authority": "binding_fingerprint_only"
+    },
+    "BAOSTOCK_SECURITY_STATUS_CROSSCHECK_V1": {
+      "enabled": false,
+      "capability": "UNAVAILABLE",
+      "fields": ["tradestatus", "isST"],
+      "authority": "cross_check_only"
+    }
+  },
+  "binding": {
+    "statuses": ["BOUND_STRICT", "BOUND_SOFT", "UNAVAILABLE", "STALE", "MISSING", "UNBOUND", "SOURCE_NOT_READY"],
+    "strict_fingerprint_tolerance_contract": {
+      "status": "UNFROZEN",
+      "version": null,
+      "must_be_dataset_and_source_specific": true,
+      "must_be_independently_accepted_before_strict_binding": true,
+      "reused_eastmoney_or_tencent_tolerances_as_baostock_proof": false
+    },
+    "unknown_or_unverified_unit_fails_closed": true,
+    "unknown_trade_date_or_identity_fails_closed": true,
+    "bound_soft_is_diagnostic_only": true
+  },
+  "turnover_history": {
+    "factor_contract_id": "TURNOVER_CONTEXT_V1",
+    "windows": [5, 20, 60],
+    "minimum_prior_strict_bound_actual_samples": 60,
+    "preferred_prior_samples": 250,
+    "maximum_lookback_market_sessions": 250,
+    "include_target_date_after_history_baseline": true,
+    "confirmed_suspensions_may_be_skipped": true,
+    "unknown_missing_sessions_may_be_skipped": false,
+    "insufficient_history_effect": "degrade_turnover_metric_only",
+    "turnover_output_range": {"min": 0.0, "max": 1.0, "unit": "fraction"},
+    "semantic_basis_required": "VERIFIED_FLOAT_SHARE_OR_FREE_FLOAT_SHARE",
+    "core_eligibility_or_ranking_effect": "NONE"
+  },
+  "provenance": {
+    "required_per_row": ["source_contract_id", "source_contract_version", "field_map_version", "query_identity", "security_identity", "target_trade_date", "provider_date_or_timestamp", "observed_at_utc", "received_at_utc", "raw_source_value_and_unit", "normalized_value_if_verified", "source_revision_id", "source_digest", "binding_status", "failure_reason"],
+    "source_revision_policy": "append_only_separate_supplemental_revision",
+    "may_change_core_snapshot_identity": false,
+    "raw_hot_rank_payload_persistence": false
+  },
+  "request_budget": {
+    "network_enabled": false,
+    "activation_gate": "V4_00F_AUDIT_CLOSED_AND_WORKER_ENFORCES_ALL_BOUNDS",
+    "max_concurrent_requests": 1,
+    "serial_execution_only": true,
+    "candidate_per_request_timeout_seconds": 30,
+    "candidate_job_timeout_seconds": 21600,
+    "candidate_transient_retries": 1,
+    "retry_counts_against_budget": true,
+    "candidate_daily_vendor_cap_assumption": 50000,
+    "candidate_daily_soft_stop": 40000,
+    "candidate_daily_hard_stop": 45000,
+    "candidate_reserved_headroom": 5000,
+    "quota_and_timing_values_status": "ENGINEERING_CANDIDATES_UNVERIFIED_NOT_ACTIVE",
+    "requests_per_instrument_range": 1,
+    "deterministic_order_and_checkpointing": true,
+    "unbounded_probe_or_retry": false,
+    "request_time_online_enrichment": false,
+    "core_flow_waits_for_supplement": false
+  },
+  "failure_policy": {
+    "fail_closed_for_supplemental_capability": true,
+    "does_not_block_or_invalidate_accepted_core_publication": true,
+    "no_fallback_to_baostock_adjusted_prices": true,
+    "no_automatic_core_or_local_snapshot_mutation": true
+  },
+  "acceptance_gates": [
+    "official_or_authoritative_source_field_and_unit_evidence",
+    "fixed_package_version_and_hash",
+    "source_specific_versioned_fingerprint_tolerances_with_independent_expected_samples",
+    "bounded_serial_worker_and_budget_enforcement_evidence",
+    "valid_receipts_for_security_identity_date_status_and_fingerprint",
+    "turnover_denominator_basis_evidence_before_semantic_use"
+  ],
+  "input_evidence": {
+    "upgrade_contract_sha256": "744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd",
+    "upgrade_contract_audit_sha256": "8ae62a108262ddb63c42457c0920e0418b8df1013c26263edb3b3e34de8b4747",
+    "bao_stock_plan_sha256": "fe54ebf493adbca0c18c8f270cd5bb8ddfdc4cc91ea39a52b6261f49e4a84175",
+    "turnover_algorithm_design_sha256": "f456779afa05f83ed116c77ec10dee1d859006e7093abb3da861926dad9eb8d6",
+    "existing_receipt_sha256": "31292a354933f805be7eb58628df9a992cf7be89748a9a9cef1f8514229afb45",
+    "turnover_params_sha256": "13de3997bd24bb3458ade777a7c9f0348c12c7fe300313feafb13623474f3f46",
+    "non_baostock_source_contract_sha256": "7afe0cfe0e2ca4d2f646d6e14c484994bb5ba30f53390283a3730ab4cecc3439",
+    "existing_receipt_reuse_status": "NOT_REUSABLE_AS_BAOSTOCK_EVIDENCE_TENCENT_SOURCE_ZERO_COMPARABLE_ROWS"
+  }
+}

@@ -3,6 +3,7 @@ from __future__ import annotations
 """Build a bounded historical reconstructed universe from dated BaoStock rosters."""
 
 import argparse
+import bisect
 import gzip
 import hashlib
 import json
@@ -27,6 +28,7 @@ BUNDLE_ID = "6122afa9db83170f7b442d5ecc5c7c9287b9dd6b04c4d53729d55f71f7dd99d2"
 EXTRACTED_ROOT = ROOT / "data/input_staging/extracted/20260924" / PACKAGE_SHA
 FACTS_PATH = ROOT / "reports/v4_01/baostock_lifecycle_facts_R4_20260925.json"
 LIFECYCLE_PROBE_PATH = ROOT / "reports/v4_01/baostock_lifecycle_probe_R4_20260925.json"
+BOUNDARY_PROBE_PATH = ROOT / "reports/v4_01/baostock_lifecycle_boundary_probe_R4_20260925.json"
 SELECTION_PATH = ROOT / "reports/v4_01/canonical_source_selection_R4_20260925.json"
 LOCAL_ROOT = ROOT / "data/v4/local_tdx_snapshots/1644752b002fdeb4f3d3a2968b9c77729f27efcdae8923ad14d814abe5c78c70"
 UNIVERSE_CONTRACT = "V4_RESEARCH_UNIVERSE_V1"
@@ -100,6 +102,7 @@ def main() -> int:
     source_keys = {str(item["source_security_key"]).lower() for item in selection_doc["segments"]}
     bj_source_keys = {key for key in source_keys if key.startswith("bj.")}
     lifecycle_probe = json.loads(LIFECYCLE_PROBE_PATH.read_text(encoding="utf-8"))
+    boundary_probe = json.loads(BOUNDARY_PROBE_PATH.read_text(encoding="utf-8"))
 
     sessions = sessions_from_index_chains(EXTRACTED_ROOT, max(args.warmup_sessions + 600, 800))
     session_dates = [date(int(str(value)[:4]), int(str(value)[4:6]), int(str(value)[6:])) for value in sessions]
@@ -111,6 +114,22 @@ def main() -> int:
     if not selected_sessions or selected_sessions[-1] > date(2026, 9, 24):
         raise ValueError("UNIVERSE_SESSION_RANGE_OUTSIDE_SOURCE_CUTOFF")
     session_ints = {int(item.strftime("%Y%m%d")) for item in selected_sessions}
+    boundary_unknown_by_day: dict[date, set[str]] = {}
+    for code, fact in facts.items():
+        out_date = as_date(fact.get("listed_to_provider_reported"))
+        if out_date is None or out_date < selected_sessions[0] or out_date > selected_sessions[-1]:
+            continue
+        insertion = bisect.bisect_left(selected_sessions, out_date)
+        adjacent = []
+        if insertion < len(selected_sessions) and selected_sessions[insertion] == out_date:
+            adjacent = [out_date]
+        else:
+            if insertion > 0:
+                adjacent.append(selected_sessions[insertion - 1])
+            if insertion < len(selected_sessions):
+                adjacent.append(selected_sessions[insertion])
+        for boundary_session in adjacent:
+            boundary_unknown_by_day.setdefault(boundary_session, set()).add(code)
     bar_dates, bar_source_errors = source_bar_dates(session_ints, source_keys)
 
     # Independently replay the three archived dated rosters against the
@@ -148,15 +167,21 @@ def main() -> int:
                 and listed_from <= session
                 and ((listed_to := as_date(fact.get("listed_to_provider_reported"))) is None or listed_to >= session)
             }
+            boundary_codes = boundary_unknown_by_day.get(session, set())
+            candidate_codes = active | boundary_codes
             bar_codes = bar_dates.get(int(session.strftime("%Y%m%d")), set())
             membership_rows = []
             digest_items = []
             day_evaluable = 0
-            for code in sorted(active):
+            day_boundary_unknown = 0
+            for code in sorted(candidate_codes):
                 source_match = code in source_keys
                 has_bar = code in bar_codes and source_match
-                eligibility = "EVALUABLE_BAR_AVAILABLE" if has_bar else "LISTED_BAR_MISSING_UNKNOWN"
-                day_evaluable += int(has_bar)
+                boundary_unknown = code in boundary_codes
+                eligibility = ("LIFECYCLE_BOUNDARY_UNKNOWN" if boundary_unknown else
+                               "EVALUABLE_BAR_AVAILABLE" if has_bar else "LISTED_BAR_MISSING_UNKNOWN")
+                day_boundary_unknown += int(boundary_unknown)
+                day_evaluable += int(has_bar and not boundary_unknown)
                 canonical_id = code.upper() if source_match else None
                 quality = "DATED_LISTING_FACT_AND_VALID_TDX_BAR" if has_bar else (
                     "DIRECT_CODE_MATCH_BAR_COVERAGE_UNKNOWN" if source_match else "SOURCE_IDENTITY_OR_HISTORY_UNRESOLVED")
@@ -167,22 +192,24 @@ def main() -> int:
                     "universe_contract_id": UNIVERSE_CONTRACT,
                     "lifecycle_revision_id": lifecycle_revision,
                     "eligibility_status": eligibility,
-                    "eligibility_reason": "BAOSTOCK_TYPE1_LISTING_INTERVAL_AND_VALID_SELECTED_SOURCE_BAR",
+                    "eligibility_reason": ("IPO_OUTDATE_BOUNDARY_NOT_UNIFORMLY_VALIDATED" if boundary_unknown else
+                                           "BAOSTOCK_TYPE1_LISTING_INTERVAL_AND_VALID_SELECTED_SOURCE_BAR"),
                     "provider_trade_status": None,
                     "membership_basis": "RECONSTRUCTED_CORRECTED",
                     "quality": quality,
                 })
                 digest_items.append(f"{code}\0{eligibility}\n")
             day_digest = hashlib.sha256("".join(digest_items).encode("ascii")).hexdigest()
-            rows_digest.update(f"{day}\0{day_digest}\0{len(active)}\n".encode("ascii"))
+            rows_digest.update(f"{day}\0{day_digest}\0{len(candidate_codes)}\n".encode("ascii"))
             for membership_row in membership_rows:
                 writer.write(json.dumps(membership_row, ensure_ascii=False, sort_keys=True,
                                         separators=(",", ":")) + "\n")
             total_rows += len(membership_rows)
             total_evaluable += day_evaluable
-            days.append({"trade_date": day, "lifecycle_member_count": len(active),
+            days.append({"trade_date": day, "lifecycle_interval_candidate_count": len(active),
                          "source_bar_evaluable_count": day_evaluable,
-                         "listed_bar_missing_unknown_count": len(active) - day_evaluable,
+                         "listed_bar_missing_unknown_count": len(active) - day_evaluable - day_boundary_unknown,
+                         "lifecycle_boundary_unknown_count": day_boundary_unknown,
                          "universe_digest": day_digest})
             if index % 100 == 0:
                 print(json.dumps({"progress_sessions": index, "total_sessions": len(selected_sessions),
@@ -208,6 +235,7 @@ def main() -> int:
         "status": "RECONSTRUCTED_UNIVERSE_BUILT_ACCEPTANCE_PENDING" if output_published and not bj_source_keys and all(x["status"] == "PASS" for x in roster_validations) else "BLOCKED",
         "stage_completion_authorized": False,
         "lineage": "RECONSTRUCTED_CORRECTED from BaoStock listing intervals and verified TDX bar presence; not AS_RECORDED",
+        "outDate_boundary_policy": "Because stratified BaoStock roster checks disagree on whether the reported outDate itself is the last roster date, exact boundary sessions are retained as LIFECYCLE_BOUNDARY_UNKNOWN and excluded from evaluable_count. Non-session outDate values mark adjacent source sessions unknown.",
         "formal_window": {"requested_start": formal_start.isoformat(), "actual_first_session": session_dates[formal_index].isoformat(),
                           "last_session": selected_sessions[-1].isoformat(), "warmup_sessions": args.warmup_sessions,
                           "warmup_first_session": selected_sessions[0].isoformat(), "session_basis": "FROZEN_TDX_INDEX_BAR_DATE_PROXY"},
@@ -215,13 +243,17 @@ def main() -> int:
                              "revision_id": lifecycle_revision, "a_stock_type": "BaoStock provider type=1",
                              "roster_crosschecks": roster_validations,
                              "boundary_validation_sessions": len(roster_validations),
-                             "boundary_mismatch_count": sum(x["missing_count"] + x["unexpected_count"] for x in roster_validations)},
+                             "boundary_mismatch_count": sum(x["missing_count"] + x["unexpected_count"] for x in roster_validations),
+                             "ipo_outdate_boundary_probe_path": BOUNDARY_PROBE_PATH.relative_to(ROOT).as_posix(),
+                             "ipo_outdate_boundary_probe_sha256": sha256_file(BOUNDARY_PROBE_PATH),
+                             "ipo_outdate_boundary_mismatch_count": sum(x.get("status") != "PASS" for x in boundary_probe.get("cases", []))},
         "source_selection": {"path": SELECTION_PATH.relative_to(ROOT).as_posix(), "sha256": sha256_file(SELECTION_PATH),
                               "selection_digest": selection_doc["selection_digest"],
                               "mapped_source_key_count": len(source_keys), "unresolved_bj_source_key_count": len(bj_source_keys),
                               "retained_source_exception_count": len(selection_doc.get("source_exceptions", []))},
         "daily_reconstructed_universe": {"session_count": len(days), "membership_row_count": total_rows,
                                           "source_bar_evaluable_rows": total_evaluable,
+                                          "lifecycle_boundary_unknown_rows": sum(x["lifecycle_boundary_unknown_count"] for x in days),
                                           "daily_digest_root": rows_digest.hexdigest(), "days": days,
                                           "daily_trade_status": "UNKNOWN_NOT_INFERRED",
                                           "bar_source_validation_errors": bar_source_errors[:100]},
@@ -236,6 +268,7 @@ def main() -> int:
         "blockers": (["NO_BSE_LIFECYCLE_CATALOG_OR_DATED_ROSTER"] if bj_source_keys else [])
                     + (["SOURCE_FILE_VALIDATION_ERRORS"] if bar_source_errors else [])
                     + (["THREE_DATED_ROSTER_CROSSCHECKS_FAILED"] if any(x["status"] != "PASS" for x in roster_validations) else [])
+                    + (["OUTDATE_BOUNDARY_SEMANTICS_NOT_UNIFORM"] if any(x.get("status") != "PASS" for x in boundary_probe.get("cases", [])) else [])
                     + ["DAILY_TRADE_STATUS_NOT_OBSERVED"]
                     + ["ONLINE_MODEL_INDEPENDENT_ACCEPTANCE", "FORMAL_CALENDAR_ACCEPTANCE", "ADJUSTED_HISTORY_AND_PRICE_LIMIT_ACCEPTANCE"],
         "next_stage": "V4_01_FORMAL_IDENTITY_LIFECYCLE_AND_ADJUSTMENT_ACCEPTANCE",

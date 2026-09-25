@@ -35,3 +35,6 @@
 - V422-B01/B03 及其他未关闭的合同冲突保持各自 scope；`AUD-HIST-01`、`AUD-AMOUNT-A-06`、`V4-00A-PG-RECOVERY-01` 继续独立跟踪，不由此阶段吸收或关闭。
 - **接受结果：`DEGRADED_PASS / V4_CONTRACT_FROZEN_EXISTING_PG_GAPS_OPEN`。** V4 publication/revision/namespace 目标与修订语义已冻结；旧 publication/Focus 的事务、head 和回放能力已盘点；production 表缺精确消费清单、事件修订账本、完整摘要和 V4 namespace schema，故不能宣称实现验收、PIT 或 V4 publication readiness。
 - **下一阶段：`V4-00D / TDX_VIPDATA_SOURCE_CONTRACT`。** 执行前重读当时最新 REV2 与审计回执，冻结官方数据包下载边界、有界请求、隔离 staging、manifest、校验/archive、重叠核验；所有输出留在项目路径，TDX root 永远只读。V4-00H 前不启动 scanner。
+# Repair addendum (2026-09-25): `FULL_PASS / V4_EMPTY_DATABASE_PUBLICATION_NAMESPACE_SCHEMA_READY`
+
+The fresh `v4` PostgreSQL schema now contains versioned publications, accepted heads, consumed-source manifests, revision events, explicit model namespaces and namespace migration manifests, namespace-bound state heads, and append-only event-observation revisions. Hash-checked migrations are `V4_PHASE0_FOUNDATION_V1` and `V4_PHASE0_NAMESPACE_INTEGRITY_V1`. Database tests prove same-day append-only revisions, accepted-head target checks, prior-state namespace isolation, source-revision fork rejection, and no rewriting a previous publication after a correction. The clean database contains no synthetic or accepted publication rows.

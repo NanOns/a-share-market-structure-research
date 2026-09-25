@@ -37,3 +37,6 @@ REV2 锁定如下合同语义，供 V4-00C 及后续数据阶段实现：
 - V422-B07（AS_RECORDED 实际消费版本）仍为 `OPEN`，需由 V4-00C 的精确消费 manifest、冻结前驱和实际接收时间实现/验证。V4-00B 只冻结语义，不宣称历史实际观察链已经存在。
 - **接受结果：`DEGRADED_PASS / CURRENT_UNIVERSE_ONLY_PIT_UNAVAILABLE`。** 日期有效合同语义、旧 Universe 实际行为、知识时间与能力边界已记录；正式 PIT 历史身份/Universe 不可用。此结果不是 PIT replay、历史 scanner 或新 Research Universe 发布许可。
 - **下一阶段：`V4-00C / PUBLICATION_REVISION_NAMESPACE`。** 执行前重读当时最新 REV2/复审，冻结 publication 前驱、consumed-source manifest、修订/tombstone、原子接受及 namespace 隔离合同；V4-00H Phase 0 总门完成前仍不启动 scanner。
+# Repair addendum (2026-09-25): `DEGRADED_PASS / CONTRACT_COMPLETE_WITH_DECLARED_HISTORICAL_LIMITATIONS`
+
+Machine contracts were added at `config/v4_research_universe_v1.json`, `config/v4_security_lifecycle_fact_v1.json`, and `config/v4_pit_membership_fact_v1.json`; the fresh PostgreSQL schema stores effective interval, system-available time, source revision, supersedes, source identity, and quality. Current membership replay remains diagnostic. Missing bars remain unknown and never imply suspension/delisting. Historical PIT lifecycle/membership is explicitly unavailable pending V4-01 bootstrap and append-only observations; this is nonblocking for V4-01 RAW A-stock bootstrap.

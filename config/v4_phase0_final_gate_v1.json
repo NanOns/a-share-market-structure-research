@@ -1,0 +1,9 @@
+{
+  "contract_id": "V4_PHASE0_FINAL_ACCEPTANCE_V1",
+  "version": "1.0.0",
+  "required_stages": ["V4-00A", "V4-00B", "V4-00C", "V4-00D", "V4-00E", "V4-00F", "V4-00G", "V4-00H"],
+  "accepted_stage_statuses": ["FULL_PASS", "DEGRADED_PASS"],
+  "phase0_exit_does_not_require": ["V4-01", "V4-02", "SCANNER_IMPLEMENTATION", "BAOSTOCK_LIVE_CAPABILITY", "HISTORICAL_PIT_MEMBERSHIP"],
+  "scanner_permission_at_phase0_exit": "NOT_APPLICABLE_UNTIL_V4_05",
+  "v4_01_permission_requires": ["all_phase0_stages_accepted", "no_core_blockers", "accepted_a_stock_tdx_source"]
+}

@@ -1,0 +1,10 @@
+{
+  "contract_id": "V4_PERFORMANCE_MEASUREMENT_CONTRACT_V1",
+  "version": "1.0.0",
+  "status": "FROZEN_MEASUREMENT_CONTRACT_NO_V4_PIPELINE_RUN_IN_PHASE0",
+  "fields": ["wall_time", "peak_ram", "cpu_utilization", "stage_time", "rows_in", "rows_out", "postgres_write_time", "api_p50", "api_p95", "payload_size", "db_growth", "cache_state", "hardware_identity", "dataset_identity"],
+  "collection_stages": ["V4-01", "V4-02", "V4-03", "V4-05"],
+  "first_full_performance_acceptance": "V4-05_REPLAY_GATE_A",
+  "phase0_null_measurements_are_blockers": false,
+  "prohibitions": ["No performance claim from legacy pipeline timings", "No partition/materialized-view/cache decision without measured V4 workload"]
+}

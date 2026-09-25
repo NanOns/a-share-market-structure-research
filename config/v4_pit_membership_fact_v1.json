@@ -1,0 +1,9 @@
+{
+  "contract_id": "PIT_MEMBERSHIP_FACT_V1",
+  "version": "1.0.0",
+  "status": "CONTRACT_FROZEN_IMPLEMENTED_IN_V4_SCHEMA",
+  "required_fields": ["security_id", "membership_id", "effective_from", "effective_to", "observed_at", "ingested_at", "system_available_at", "source_revision_id", "supersedes_revision_id", "source_identity", "quality"],
+  "selection_rule": "At a publication cutoff, select the unique non-tombstoned revision chain tip whose system_available_at is no later than cutoff and whose effective interval covers target date; forks fail closed.",
+  "current_membership_replay": "DIAGNOSTIC_ONLY",
+  "late_correction": "NEW_RECONSTRUCTED_CORRECTED_LINEAGE_ONLY"
+}

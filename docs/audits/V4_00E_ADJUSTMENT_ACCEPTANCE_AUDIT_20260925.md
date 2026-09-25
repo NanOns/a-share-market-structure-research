@@ -21,3 +21,6 @@
 7. 阶段回执/能力快照、数据 digest 与 failure reason 可复核，且确认 `D:/new_tdx` 无任何变化。满足后由独立审计重新判定，不因本合同文件存在而自动关闭。
 
 持续保持 `OPEN`，不将当前 V0.3 或历史 PIT 缺失解释为 V4 READY。
+# 2026-09-25 Status Update
+
+Status: `TRANSFERRED_TO_V4_01_V4_02_EMPIRICAL_ACCEPTANCE`; no longer a Phase 0 blocker. V4-00E accepted the contract-level affine and coordinate engine vectors, while unknown action categories (including category 15) remain fail-closed at per-security adjusted quality. RAW bootstrap is independent and authorized. Full historical empirical action coverage belongs to V4-01/V4-02.

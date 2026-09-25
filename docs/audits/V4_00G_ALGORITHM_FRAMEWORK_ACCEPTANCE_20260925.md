@@ -27,3 +27,8 @@
 7. V4-00H输出最终Phase 0 status、scope、证据与下一阶段；该回执前禁止scanner。
 
 保持 `OPEN`，直至对应模块/能力证据由独立验收接受。框架schema冻结不代表生产准备就绪。
+# Status update 2026-09-25: `CLOSED_FOR_FRAMEWORK_SCOPE`
+
+The versioned framework is now executable under `src/v4/contracts/`. Validators cover the frozen AST node set, parameter identity/status and formal-consumer permission, math literals, output producer metadata, independent required/nullable semantics, the three-valued truth table, window contract identities, and zero-denominator UNKNOWN behavior. Business-specific ASTs remain assigned to their later owner stages.
+
+Evidence: `tests/v4_phase0/` passed all 25 cases, including negative cases for unknown/retired/candidate parameters, unsupported AST/window, producer omissions, literal threshold bypass, UNKNOWN propagation, and unexplained source-field differences. This closes only the framework acceptance item; it does not accept any V4 factor or scanner module.

@@ -1,0 +1,9 @@
+{
+  "contract_id": "SECURITY_LIFECYCLE_FACT_V1",
+  "version": "1.0.0",
+  "status": "CONTRACT_FROZEN_IMPLEMENTED_IN_V4_SCHEMA",
+  "required_fields": ["security_id", "security_type", "board", "listed_from", "listed_to", "st_state", "trade_status", "effective_from", "effective_to", "observed_at", "ingested_at", "system_available_at", "source_revision_id", "supersedes_revision_id", "source_identity", "quality"],
+  "system_available_at_rule": "max(observed_at, ingested_at)",
+  "missing_bar": "DATA_MISSING_UNKNOWN",
+  "not_in_current_universe": "NOT_PROOF_OF_DELISTING"
+}

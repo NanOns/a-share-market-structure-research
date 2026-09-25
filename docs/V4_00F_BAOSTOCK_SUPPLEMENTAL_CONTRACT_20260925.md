@@ -29,3 +29,6 @@ Added artifacts:
 ## Next stage
 
 `V4-00G / ALGORITHM_CONTRACT_FRAMEWORK`. V4-01/bootstrap remains gated by V4-00D and V4-00H. Scanner work must wait for the final Phase 0 receipt in V4-00H; any blocked capability remains scoped to its dependency.
+# Repair addendum (2026-09-25): `DEGRADED_PASS / CONTRACT_COMPLETE_LIVE_CAPABILITY_OPTIONAL`
+
+BaoStock remains `UNAVAILABLE`; no network/API was called. Its supplemental contract is complete for this phase and does not gate the accepted A_STOCK TDX Core package, RAW history bootstrap, Core eligibility, ranking, state, or Focus. Any future live capability requires bounded-request enforcement and its own source-specific receipts.

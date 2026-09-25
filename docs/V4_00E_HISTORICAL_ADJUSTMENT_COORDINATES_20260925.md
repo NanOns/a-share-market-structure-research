@@ -27,3 +27,6 @@
 **阶段接受结果：`DEGRADED_PASS / V1_SPEC_FROZEN_EMPIRICAL_ACCEPTANCE_OPEN`。** 合同和证据盘点完整，既有算法与数值回执可复用作基线；对本阶段要求的全部真实样本、类别覆盖和 PIT 可见性验收未完成，故 V4 调整价格不标 READY。
 
 **下一阶段：`V4-00F / BAOSTOCK_SUPPLEMENTAL_CONTRACT`。** 可继续定义补充源的字段/单位/绑定/请求合同；BaoStock adjusted OHLC 仍不得作为 Core 价格。V4-01 bootstrap 和 scanner 继续受 V4-00D、V4-00H 门禁约束。
+# Repair addendum (2026-09-25): `DEGRADED_PASS / ADJUSTMENT_CONTRACT_AND_FAIL_CLOSED_ENGINE_ACCEPTED`
+
+The V4 affine-coordinate contract now has independent cash dividend, stock dividend/split, rights, combined-action, no-action, future-event cutoff, suspension/resumption window, recent-listing, unknown-category, Anchor-rebase, and common Forward evaluation-coordinate vectors under `tests/v4_phase0/test_adjustment_contract_vectors.py`. Unsupported category/action metadata returns `UNAVAILABLE_UNKNOWN_EVENT_CATEGORY`; RAW bootstrap remains authorized. Full adjusted history and historical empirical action coverage transfer to V4-01/V4-02; no adjusted history was synthesized in Phase 0.

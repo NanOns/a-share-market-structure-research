@@ -33,3 +33,6 @@
 **接受结果：`DEGRADED_PASS / FRAMEWORK_AND_WINDOW_SEMANTICS_FROZEN_ACCEPTANCE_GATES_OPEN`。** 后续模块可以据此起草合同；没有 V4 因子、画像或 Seed 因此获得实现验收。受影响能力保持 `SHADOW_ONLY`。
 
 **下一阶段：`V4-00H / CAPABILITY_PERFORMANCE_ROLLBACK`。** 依据缺失、停牌、退市、真实缺口和公司行为证据冻结能力门/切换政策、完成恢复演练并签发 Phase 0 最终状态。该回执前不得开始 scanner。
+# Repair addendum (2026-09-25): `FULL_PASS / FRAMEWORK_IMPLEMENTED_AND_MACHINE_VALIDATED`
+
+Implemented validators under `src/v4/contracts/` for AST node/type/arity, parameter registry identity and status, unassigned/candidate/retired consumer denial, numeric literal registry bypass, producer and output metadata, independent required/nullable semantics, UNKNOWN propagation, window contract identity, and zero denominators. The tests exercise positive and negative examples. This framework acceptance does not implement any later-stage factor/scanner AST.

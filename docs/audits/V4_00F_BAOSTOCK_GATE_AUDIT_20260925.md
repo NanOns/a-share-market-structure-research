@@ -31,3 +31,6 @@
 6. Independently accept this audit. Until then all BaoStock datasets remain `UNAVAILABLE`, and no `BOUND_STRICT` result is permitted.
 
 Keep `OPEN` until every closure condition has evidence. This audit does not block accepted TDX Core publications or scanner work whose other gates have independently passed.
+# 2026-09-25 Phase 0 disposition
+
+Disposition: `NON_BLOCKING_SUPPLEMENTAL / OPEN_OPTIONAL`. BaoStock is unavailable and no live request was made. The source contract is complete for the current phase; there is no V4 Core dependency on BaoStock. Any later activation requires source terms, unit/fingerprint acceptance, bounded request enforcement, and representative receipts.

@@ -63,7 +63,7 @@ def main() -> int:
     source_keys = {str(item["source_security_key"]).lower() for item in selection_doc["segments"]}
     bj_source_keys = {key for key in source_keys if key.startswith("bj.")}
 
-    sessions = sessions_from_index_chains(EXTRACTED_ROOT, 10_000)
+    sessions = sessions_from_index_chains(EXTRACTED_ROOT, max(args.warmup_sessions + 600, 800))
     session_dates = [date(int(str(value)[:4]), int(str(value)[4:6]), int(str(value)[6:])) for value in sessions]
     formal_index = next((index for index, item in enumerate(session_dates) if item >= formal_start), None)
     if formal_index is None:

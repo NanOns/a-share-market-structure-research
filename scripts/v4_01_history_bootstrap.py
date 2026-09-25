@@ -12,6 +12,7 @@ import json
 import os
 import shutil
 import sys
+import subprocess
 import tempfile
 import zipfile
 from datetime import datetime, timezone
@@ -23,6 +24,7 @@ sys.path.insert(0, str(ROOT / "src"))
 from tdx.day_reader import validate_day_file
 from tdx.security_master import classify_security, current_a_stock_ids, read_industry_assignments
 from market_calendar.trading_calendar import read_day_dates
+from workbench_analysis.tdx_local_snapshot import verify_local_snapshot
 
 PACKAGE_SHA = "b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f"
 SOURCE_BUNDLE_ID = "6122afa9db83170f7b442d5ecc5c7c9287b9dd6b04c4d53729d55f71f7dd99d2"
@@ -114,6 +116,18 @@ def main() -> int:
     contract = json.loads((ROOT / "config/v4_01_bootstrap_contract_v1.json").read_text(encoding="utf-8"))
     if contract.get("contract_id") != "V4_TDX_HISTORY_BOOTSTRAP_V1":
         raise ValueError("V4_01_CONTRACT_ID_MISMATCH")
+    local_snapshot_id = contract["inputs"].get("local_tdx_snapshot_id")
+    if not local_snapshot_id or len(local_snapshot_id) != 64:
+        raise ValueError("LOCAL_TDX_SNAPSHOT_ID_MISSING_OR_INVALID")
+    local_snapshot_evidence = verify_local_snapshot(
+        ROOT / "data/v4/local_tdx_snapshots", local_snapshot_id
+    )
+    local_snapshot_manifest_sha = sha256_file(Path(local_snapshot_evidence["manifest_path"]))
+    execution_identity = {
+        "input_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
+        "script_sha256": sha256_file(Path(__file__).resolve()),
+        "contract_sha256": sha256_file(ROOT / "config/v4_01_bootstrap_contract_v1.json"),
+    }
     bundle_path = ROOT / "data/source_bundles" / SOURCE_BUNDLE_ID / "source_bundle.json"
     bundle = json.loads(bundle_path.read_text(encoding="utf-8"))
     if bundle.get("source_bundle_id") != SOURCE_BUNDLE_ID or bundle.get("package", {}).get("sha256") != PACKAGE_SHA:
@@ -187,6 +201,8 @@ def main() -> int:
         inventory.append({
             "security_id": security_id,
             "relative_path": rel,
+            "byte_count": stat.st_size,
+            "sha256": file_sha,
             "security_type_asof_hint": classify_security(market, stem[2:], current_asof_a_ids) if valid_security_code else "UNKNOWN_INVALID_FILENAME",
             "security_identity_status": "VALID_TDX_FILENAME" if valid_security_code else "INVALID_TDX_FILENAME_RETAINED_BUT_NOT_CLASSIFIABLE",
             "first_observed_bar_date": first_date,
@@ -221,7 +237,7 @@ def main() -> int:
     if int(a_stock.get("session_count", 0)) < 60:
         raise ValueError("OVERLAP_SESSION_COVERAGE_BELOW_CONTRACT")
 
-    page_snapshot_path = ROOT / "docs/evidence/V4_01_OFFICIAL_SOURCE_PAGE_OBSERVATION_20260925.json"
+    page_snapshot_path = ROOT / "docs/evidence/V4_01_OFFICIAL_SOURCE_PAGE_OBSERVATION_R2_20260925.json"
     page_snapshot = {
         "source_page_url": PAGE_URL,
         "observed_at_utc": PAGE_OBSERVED_AT,
@@ -238,16 +254,23 @@ def main() -> int:
     page_snapshot_sha = sha256_file(page_snapshot_path)
 
     columns = list(inventory[0]) if inventory else []
-    inventory_path = ROOT / "reports/v4_01/v4_01_security_inventory_20260925.csv"
+    inventory_path = ROOT / "reports/v4_01/v4_01_security_inventory_R2_20260925.csv"
     atomic_csv(inventory_path, inventory, columns)
 
     manifest = {
         "contract_id": "V4_TDX_HISTORY_BOOTSTRAP_V1",
         "stage": "V4-01",
-        "run_id": "V4_01_TDX_HISTORY_BOOTSTRAP_20260925",
+        "execution_identity": execution_identity,
+        "run_id": "V4_01_TDX_HISTORY_BOOTSTRAP_R2_20260925",
         "observed_at_utc": run_at,
         "source": {
             "source_bundle_id": SOURCE_BUNDLE_ID,
+            "local_tdx_snapshot": {
+                **local_snapshot_evidence,
+                "manifest_sha256": local_snapshot_manifest_sha,
+                "source_root": TDX_ROOT.as_posix(),
+                "source_root_read_only": True,
+            },
             "package_id": PACKAGE_SHA,
             "source_page_url": PAGE_URL,
             "page_observed_at_utc": PAGE_OBSERVED_AT,
@@ -314,19 +337,20 @@ def main() -> int:
             "writes_under_tdx_root": 0,
         },
     }
-    manifest_path = ROOT / "reports/v4_01/v4_01_source_manifest_20260925.json"
+    manifest_path = ROOT / "reports/v4_01/v4_01_source_manifest_R2_20260925.json"
     atomic_json(manifest_path, manifest)
     manifest_sha = sha256_file(manifest_path)
     archive_sha = sha256_file(archive_output)
-    status = "DEGRADED_PASS"
-    degraded_scopes = [
-        "HISTORICAL_PIT_LIFECYCLE_UNAVAILABLE",
-        "SOURCE_PAGE_UPDATE_DATE_EMPTY",
-        "TRANSFER_TIMESTAMPS_UNAVAILABLE_FOR_REUSED_PACKAGE",
-        "ADJUSTED_CANONICAL_SCOPE_DEFERRED_TO_V4_02_CONTRACT",
+    status = "BLOCKED"
+    blocked_scopes = [
+        "R2_SOURCE_PRIORITY_AND_CANONICAL_SELECTION_NOT_IMPLEMENTED",
+        "R2_SOURCE_SYMBOL_TO_CANONICAL_IDENTITY_MAP_NOT_ACCEPTED",
+        "R2_HISTORICAL_LIFECYCLE_AND_EVALUABLE_UNIVERSE_NOT_BUILT",
+        "R2_ADJUSTED_CANONICAL_EMPIRICAL_ACCEPTANCE_OPEN",
+        "R2_AS_RECORDED_SOURCE_HISTORY_NOT_AVAILABLE",
     ]
     if malformed or invalid_identity_files:
-        degraded_scopes.append("NONCORE_OR_UNIDENTIFIED_BAR_VALIDATION_ERRORS")
+        blocked_scopes.append("NONCORE_OR_UNIDENTIFIED_BAR_VALIDATION_ERRORS")
     receipt = {
         "stage": "V4-01",
         "stage_contract": "V4.2.2 REV2 §§3B.1-3B.6, §78; V4_TDX_HISTORY_BOOTSTRAP_V1",
@@ -339,6 +363,8 @@ def main() -> int:
             "phase0_status": "DEGRADED_PASS",
         },
         "evidence": {
+            "local_tdx_snapshot": local_snapshot_evidence,
+            "local_tdx_snapshot_manifest_sha256": local_snapshot_manifest_sha,
             "source_manifest": manifest_path.relative_to(ROOT).as_posix(),
             "source_manifest_sha256": manifest_sha,
             "raw_archive": archive_output.relative_to(ROOT).as_posix(),
@@ -349,15 +375,16 @@ def main() -> int:
             "overlap_acceptance": "ACCEPTED_SOURCE_PACKAGE",
         },
         "status": status,
-        "degraded_scopes": degraded_scopes,
-        "blocked_scopes": [],
-        "acceptance": f"Immutable raw archive hash/ZIP integrity, {day_file_count} profiled .day files / {day_record_count} records, current A-stock source validation, and prior 60-session A_STOCK overlap acceptance verified. {len(malformed)} files contain non-core or unidentified validation errors ({invalid_identity_files} unclassifiable filename); those raw entries are retained and scoped. Historical PIT membership/lifecycle was not inferred from bars; no canonical adjusted history, scanner, or production capability was produced.",
-        "next_stage": "V4-02 Canonical Daily / PIT Periods (with PIT lifecycle and adjustment scopes remaining explicitly limited)",
+        "degraded_scopes": [],
+        "blocked_scopes": blocked_scopes,
+        "stage_completion_authorized": False,
+        "acceptance": f"Package hash/ZIP integrity, {day_file_count} profiled .day files / {day_record_count} records, current A-stock source validation, and prior 60-session A_STOCK overlap evidence were rechecked. These source checks do not satisfy R2 source selection, canonical identity, lifecycle/PIT universe, AS_RECORDED, or adjusted-history acceptance; stage completion is BLOCKED. {len(malformed)} files contain non-core or unidentified validation errors ({invalid_identity_files} unclassifiable filename); all raw entries remain retained.",
+        "next_stage": "V4-01_REPAIR_SOURCE_SELECTION_IDENTITY_LIFECYCLE_PIT_AND_ADJUSTMENT",
         "tdx_root_write_count": 0,
         "database_write_count": 0,
         "network_download_count": 0,
     }
-    receipt_path = ROOT / "reports/v4_01/v4_01_stage_receipt_20260925.json"
+    receipt_path = ROOT / "reports/v4_01/v4_01_stage_receipt_R2_20260925.json"
     atomic_json(receipt_path, receipt)
     print(json.dumps({
         "stage": "V4-01",
@@ -372,7 +399,7 @@ def main() -> int:
         "receipt": receipt_path.relative_to(ROOT).as_posix(),
         "next_stage": receipt["next_stage"],
     }, ensure_ascii=False, indent=2))
-    return 0
+    return 0 if status == "FULL_PASS" else 2
 
 
 if __name__ == "__main__":

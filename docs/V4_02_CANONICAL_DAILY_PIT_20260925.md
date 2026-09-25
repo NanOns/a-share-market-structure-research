@@ -1,5 +1,7 @@
 # V4-02 Canonical Daily / PIT Periods — Stage Receipt
 
+> **R2 disposition:** This is the preserved historical receipt, not the current accepted V4-02 result. Its run is now `SUPERSEDED_CANDIDATE` under `V4_01_02_COMPLETE_REPAIR_STATUS_R2_20260925.md`. The old outputs pass hash/row-count checks, but predate per-file ZIP/extraction binding and source/canonical identity separation; the R2 stage remains blocked.
+
 ## Contract and stage entry
 
 | Field | Record |

@@ -15,6 +15,8 @@ import math
 import os
 import re
 import struct
+import sys
+import subprocess
 import tempfile
 from collections import defaultdict
 from datetime import date, datetime, timezone
@@ -25,6 +27,9 @@ import pyarrow as pa
 import pyarrow.parquet as pq
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src"))
+from workbench_analysis.tdx_snapshot import verify_zip_snapshot  # noqa: E402
+
 PACKAGE_SHA = "b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f"
 SOURCE_BUNDLE_ID = "6122afa9db83170f7b442d5ecc5c7c9287b9dd6b04c4d53729d55f71f7dd99d2"
 DAY_DTYPE = np.dtype(
@@ -143,7 +148,8 @@ def daily_table(records: np.ndarray, identity: str | None, market: str, code: st
     quality = np.where(~valid_date, "INVALID_DATE", np.where(~valid_ohlc, "INVALID_OHLC", np.where(~valid_amount, "INVALID_AMOUNT", np.where(zeros, "NO_ACTUAL_OHLC", "SOURCE_RECORD_RETAINED"))))
     return pa.table(
         {
-            "security_id": pa.array([identity] * count, type=pa.string()),
+            "canonical_security_id": pa.array([None] * count, type=pa.string()),
+            "source_security_key": pa.array([identity] * count, type=pa.string()),
             "market": pa.array([market] * count, type=pa.string()),
             "code": pa.array([code] * count, type=pa.string()),
             "trade_date_raw": pa.array(dates, type=pa.uint32()),
@@ -213,7 +219,8 @@ def aggregate_periods(records: np.ndarray, period_map: dict[int, dict], period_d
         period_view = "DIAGNOSTIC_CLOSED_PERIOD" if closed else "DIAGNOSTIC_AS_OF_PARTIAL"
         first_date = item["first_date"]
         output.append({
-            "security_id": security_id,
+            "canonical_security_id": None,
+            "source_security_key": security_id,
             "market": market,
             "code": code,
             "period_type": "WEEKLY" if kind == "WEEK" else "MONTHLY",
@@ -244,7 +251,7 @@ def aggregate_periods(records: np.ndarray, period_map: dict[int, dict], period_d
 
 
 PERIOD_SCHEMA = pa.schema([
-    ("security_id", pa.string()), ("market", pa.string()), ("code", pa.string()),
+    ("canonical_security_id", pa.string()), ("source_security_key", pa.string()), ("market", pa.string()), ("code", pa.string()),
     ("period_type", pa.string()), ("period_key", pa.string()), ("period_view", pa.string()),
     ("period_last_session", pa.uint32()), ("asof_trade_date", pa.uint32()), ("max_source_trade_date", pa.uint32()),
     ("open_price_raw", pa.uint32()), ("high_price_raw", pa.uint32()), ("low_price_raw", pa.uint32()), ("close_price_raw", pa.uint32()),
@@ -269,6 +276,11 @@ def main() -> int:
     contract = json.loads(contract_path.read_text(encoding="utf-8"))
     if contract.get("contract_id") != "V4_CANONICAL_DAILY_PIT_PERIODS_V1":
         raise ValueError("V4_02_CONTRACT_ID_MISMATCH")
+    execution_identity = {
+        "input_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
+        "script_sha256": sha256_file(Path(__file__).resolve()),
+        "contract_sha256": sha256_file(contract_path),
+    }
     if asof > int(contract["inputs"]["source_cutoff"].replace("-", "")):
         raise ValueError("ASOF_AFTER_SOURCE_CUTOFF")
     bundle_path = ROOT / "data/source_bundles" / SOURCE_BUNDLE_ID / "source_bundle.json"
@@ -278,20 +290,55 @@ def main() -> int:
     archive = ROOT / "data/v4/raw_archive" / PACKAGE_SHA / "hsjday.zip"
     if not archive.is_file() or sha256_file(archive) != PACKAGE_SHA:
         raise ValueError("RAW_ARCHIVE_HASH_MISMATCH")
-    stage01_path = ROOT / "reports/v4_01/v4_01_stage_receipt_20260925.json"
+    stage01_path = ROOT / "reports/v4_01/v4_01_stage_receipt_R2_20260925.json"
     stage01 = json.loads(stage01_path.read_text(encoding="utf-8"))
-    if stage01.get("status") != "DEGRADED_PASS" or stage01.get("evidence", {}).get("raw_archive_sha256") != PACKAGE_SHA:
-        raise ValueError("V4_01_ENTRY_GATE_NOT_SATISFIED")
-    source_manifest_path = ROOT / "reports/v4_01/v4_01_source_manifest_20260925.json"
+    if stage01.get("status") != "FULL_PASS" or stage01.get("evidence", {}).get("raw_archive_sha256") != PACKAGE_SHA:
+        blocked_receipt_path = ROOT / contract["outputs"]["blocked_entry_receipt"]
+        blocked_receipt = {
+            "stage": "V4-02",
+            "run_id": run_id,
+            "stage_contract": "V4.2.2 REV2 §§3B.6/3C.1-3C.4/5.2-5.3/6A/10N/78; V4_CANONICAL_DAILY_PIT_PERIODS_V1",
+            "consulted_upgrade": contract["consulted_upgrade"],
+            "execution_identity": execution_identity,
+            "input_evidence": {
+                "v4_01_receipt": stage01_path.relative_to(ROOT).as_posix(),
+                "v4_01_receipt_sha256": sha256_file(stage01_path),
+                "v4_01_status": stage01.get("status"),
+                "required_v4_01_status": "FULL_PASS",
+                "source_package_sha256": PACKAGE_SHA,
+            },
+            "status": "BLOCKED",
+            "blocked_scopes": ["V4_01_ENTRY_GATE_NOT_SATISFIED"],
+            "stage_completion_authorized": False,
+            "outputs_emitted": False,
+            "acceptance": "V4-02 was stopped at its contracted entry gate because the hash-bound V4-01 receipt is not FULL_PASS. No canonical, period, or scanner/factor output was produced.",
+            "next_stage": "RESOLVE_V4_01_BLOCKERS_THEN_RERUN_V4_02",
+            "tdx_root_write_count": 0,
+        }
+        atomic_json(blocked_receipt_path, blocked_receipt)
+        print(json.dumps({"stage": "V4-02", "status": "BLOCKED", "receipt": blocked_receipt_path.relative_to(ROOT).as_posix()}, ensure_ascii=False))
+        return 2
+    source_manifest_path = ROOT / "reports/v4_01/v4_01_source_manifest_R2_20260925.json"
     source_manifest = json.loads(source_manifest_path.read_text(encoding="utf-8"))
-    inventory_path = ROOT / "reports/v4_01/v4_01_security_inventory_20260925.csv"
+    inventory_path = ROOT / "reports/v4_01/v4_01_security_inventory_R2_20260925.csv"
+    if stage01.get("evidence", {}).get("source_manifest_sha256") != sha256_file(source_manifest_path):
+        raise ValueError("V4_01_SOURCE_MANIFEST_RECEIPT_HASH_MISMATCH")
     extracted_root = ROOT / bundle["extraction"]["root"]
+    if source_manifest.get("source", {}).get("extracted_content_digest_algorithm") != "SHA256(sorted relative_path NUL byte_count NUL file_sha256 LF)":
+        raise ValueError("V4_01_SNAPSHOT_DIGEST_CONTRACT_MISSING")
+    inventory = load_inventory(inventory_path)
+    snapshot_verification = verify_zip_snapshot(
+        archive,
+        extracted_root,
+        inventory,
+        int(bundle["extraction"]["entry_count"]),
+        str(source_manifest["source"]["extracted_content_digest"]),
+    )
     files = sorted((p for p in extracted_root.rglob("*.day") if p.relative_to(extracted_root).parts[0].lower() in {"sh", "sz", "bj"}), key=lambda p: p.as_posix().casefold())
     expected_files = int(source_manifest["inventory"]["day_file_count"])
     expected_records = int(source_manifest["inventory"]["day_record_count"])
     if len(files) != expected_files:
         raise ValueError(f"DAY_FILE_COUNT_CHANGED:{len(files)}:{expected_files}")
-    inventory = load_inventory(inventory_path)
     if len(inventory) != expected_files:
         raise ValueError("V4_01_INVENTORY_COUNT_MISMATCH")
 
@@ -373,37 +420,43 @@ def main() -> int:
     receipt = {
         "run_id": run_id,
         "stage": "V4-02",
+        "execution_identity": execution_identity,
         "stage_contract": "V4.2.2 REV2 §§3B.6, 3C.1-3C.4, 5.2-5.3, 6A, 10N, 78; V4_CANONICAL_DAILY_PIT_PERIODS_V1",
         "consulted_upgrade": {"document": contract["consulted_upgrade"]["document"], "sha256": contract["consulted_upgrade"]["sha256"], "sections": contract["consulted_upgrade"]["sections"]},
         "entry_gate": {"phase0": "DEGRADED_PASS", "v4_01": "DEGRADED_PASS", "raw_archive_sha256": PACKAGE_SHA},
         "source_cutoff": "2026-09-24",
         "asof_trade_date": asof,
         "observed_at_utc": run_at,
-        "status": "DEGRADED_PASS",
-        "acceptance": "All profiled V4-01 daily records were retained in the hash-bound RAW canonical artifact; calendar-keyed RAW weekly/monthly outputs were generated as diagnostic-only. PIT, adjusted, suspension, price-limit and period temporal-leakage capabilities remain unavailable or unaccepted.",
+        "status": "BLOCKED",
+        "stage_completion_authorized": False,
+        "acceptance": "RAW canonical and diagnostic periods were emitted from the verified ZIP-bound snapshot, but the R2 stage gate remains BLOCKED until source priority, canonical identity, dated lifecycle/PIT universe, formal calendar, CLOSED_ONLY/AS_OF temporal proofs, adjustment acceptance and price-limit rules are independently accepted.",
         "inventory": {"source_file_count": file_count, "expected_file_count": expected_files, "source_record_count": row_count, "expected_record_count": expected_records, "records_flagged_beyond_normal_source_record": invalid_record_count},
         "period_rows": {"weekly": week_count, "monthly": month_count},
         "calendar_evidence": calendar_evidence,
         "capabilities": contract["capabilities"],
         "limit_status": "UNKNOWN",
         "outputs": outputs,
-        "degraded_scopes": contract["acceptance"]["degraded_scopes"],
+        "extracted_snapshot_verification": snapshot_verification,
+        "degraded_scopes": [],
+        "blocked_scopes": ["R2_CANONICAL_SOURCE_SELECTION_OPEN", "R2_IDENTITY_AND_HISTORICAL_PIT_OPEN", "R2_FORMAL_PERIOD_AND_TEMPORAL_LEAKAGE_ACCEPTANCE_OPEN", "R2_ADJUSTMENT_AND_PRICE_LIMIT_ACCEPTANCE_OPEN"],
         "independent_audits_remain_open": ["V422-B01", "V422-B03", "V422-B04", "V422-B07", "V422-B08", "V422-B10", "AUD-AMOUNT-A-06"],
         "database_write_count": 0,
         "tdx_root_write_count": 0,
         "scanner_or_factor_run_count": 0,
-        "next_stage": "V4-03 / Pure-Core Factors; proceed only for contract-ready RAW capabilities, with PIT/adjustment/limit scopes still fail-closed",
+        "next_stage": "V4-02_REPAIR_CANONICAL_IDENTITY_PIT_ADJUSTMENT_FORMAL_PERIODS_PRICE_LIMITS",
     }
     receipt_path = ROOT / "reports/v4_02" / f"{run_id}_stage_receipt.json"
     manifest_path = ROOT / "reports/v4_02" / f"{run_id}_source_manifest.json"
     atomic_json(receipt_path, receipt)
     manifest = {
         "run_id": run_id,
+        "execution_identity": execution_identity,
         "contract_id": contract["contract_id"],
         "contract_sha256": sha256_file(contract_path),
         "source_package_sha256": PACKAGE_SHA,
         "source_bundle_id": SOURCE_BUNDLE_ID,
         "source_manifest_v4_01_sha256": sha256_file(source_manifest_path),
+        "extracted_snapshot_verification": snapshot_verification,
         "stage01_receipt_sha256": sha256_file(stage01_path),
         "inventory_sha256": sha256_file(inventory_path),
         "extracted_root": str(extracted_root.relative_to(ROOT)).replace("\\", "/"),

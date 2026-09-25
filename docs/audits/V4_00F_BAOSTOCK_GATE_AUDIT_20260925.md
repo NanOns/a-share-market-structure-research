@@ -31,6 +31,15 @@
 6. Independently accept this audit. Until then all BaoStock datasets remain `UNAVAILABLE`, and no `BOUND_STRICT` result is permitted.
 
 Keep `OPEN` until every closure condition has evidence. This audit does not block accepted TDX Core publications or scanner work whose other gates have independently passed.
+
+## R2 live integration addendum (2026-09-25)
+
+- Installed and pinned runtime `baostock==0.9.4`; downloaded wheel SHA-256 `0bf71c6069ab5890ff3596632f9c3f8f1fbc6bfcac582c2f9d6a5c11ab2cfa8f`. SDK source and its bundled API-key demo show that `set_API_key()` routes a `bs-` key to `vip-api.baostock.com`.
+- Four bounded process-only API_KEY login/logout cycles succeeded. Three daily-history requests and one `query_stock_basic` request returned provider error code `10001015`. The daily data endpoint is therefore not currently usable from this runtime, even though authentication succeeds. No payload rows or credentials were persisted. The daily ledger records 12 requests total, below the configured soft stop.
+- The current smoke receipt is `reports/v4_baostock/live_smoke_receipt.json`; the request ledger is `reports/v4_baostock/request_ledger.json`. Their SHA-256 values are included in the R2 repair status evidence at commit time.
+- Official Python API documentation establishes `turn` in percent points, volume in shares, amount in CNY, `tradestatus`/`isST` enum meanings, suspended daily-bar semantics, and the ex-right reference-close distinction. `turn` denominator is circulating shares; do not label it free-float turnover. These source facts do not establish source-specific fingerprint tolerance or make any row `BOUND_STRICT`.
+
+**Disposition remains `OPEN`.** BaoStock datasets remain `UNAVAILABLE`; do not close this audit until provider query error `10001015` is resolved and representative date/board/status responses, independently accepted tolerances, and the remaining bounded-worker acceptance evidence pass.
 # 2026-09-25 Phase 0 disposition
 
 Disposition: `NON_BLOCKING_SUPPLEMENTAL / OPEN_OPTIONAL`. BaoStock is unavailable and no live request was made. The source contract is complete for the current phase; there is no V4 Core dependency on BaoStock. Any later activation requires source terms, unit/fingerprint acceptance, bounded request enforcement, and representative receipts.

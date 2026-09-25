@@ -19,7 +19,11 @@
     "view": "RAW",
     "preserve_every_recognized_day_record": true,
     "filter_by_current_universe": false,
-    "identity_from_filename_only": true,
+    "identity_from_filename_only": false,
+    "source_security_key_from_filename": true,
+    "canonical_security_id_without_accepted_mapping": null,
+    "source_selection_manifest_required": true,
+    "source_priority": ["ACCEPTED_LOCAL_TDX_SNAPSHOT", "VERIFIED_PACKAGE_GAP_FILL"],
     "price_encoding": "TDX integer price units; scale 100 is recorded, no adjusted coordinate",
     "amount_volume_units": "source_native_unverified",
     "missing_bar_semantics": "DATA_MISSING_UNKNOWN_NOT_SUSPENSION_OR_DELISTING",
@@ -71,11 +75,13 @@
     "weekly_periods": "data/v4/canonical/{run_id}/weekly_raw_diagnostic.parquet",
     "monthly_periods": "data/v4/canonical/{run_id}/monthly_raw_diagnostic.parquet",
     "stage_receipt": "reports/v4_02/{run_id}_stage_receipt.json",
-    "source_manifest": "reports/v4_02/{run_id}_source_manifest.json"
+    "source_manifest": "reports/v4_02/{run_id}_source_manifest.json",
+    "blocked_entry_receipt": "reports/v4_02/v4_02_stage_receipt_R2_20260925.json"
   },
   "acceptance": {
-    "pass_requires": ["contract_and_inputs_hash_bound", "archive_and_stage01_identity_verified", "all_12438_profiled_day_files_read", "all_29768339_records_retained_in_raw_canonical", "period_aggregates_calendar_keyed_and_labeled_diagnostic", "atomic_outputs_outside_tdx_root"],
-    "degraded_scopes": ["HISTORICAL_PIT_LIFECYCLE_UNAVAILABLE", "AS_RECORDED_CONSUMED_SOURCE_HISTORY_UNAVAILABLE", "ADJUSTED_HISTORY_UNAVAILABLE", "SUSPENSION_AND_GAP_CAUSE_UNKNOWN", "PRICE_LIMIT_STATUS_UNKNOWN", "BJ_AND_ALL_PERIOD_COVERAGE_DIAGNOSTIC_ONLY", "PERIOD_ASOF_TEMPORAL_LEAKAGE_ACCEPTANCE_OPEN", "V422_B01_B03_B04_B07_B08_B10_AND_AUD_AMOUNT_A_06_OPEN"],
+    "pass_requires": ["contract_and_inputs_hash_bound", "zip_archive_and_extracted_snapshot_match_each_file", "v4_01_full_pass", "canonical_source_priority_manifest_accepted", "canonical_identity_mapping_accepted", "historical_evaluable_universe_generated_by_date", "formal_versioned_calendar_accepted", "weekly_monthly_closed_only_and_as_of_pass", "section_3c_4_temporal_leakage_suite_pass", "adjusted_canonical_real_action_acceptance_pass", "historical_price_limit_rule_v1_samples_pass", "atomic_full_run_and_independent_postcheck_pass"],
+    "degraded_scopes": [],
+    "blocked_until": ["historical_identity_lifecycle_and_pit_evidence", "formal_calendar_and_period_acceptance", "adjusted_real_action_acceptance", "effective_dated_price_limit_authority"],
     "prohibited": ["write_to_tdx_root", "scanner", "factor", "trading", "probability_claim", "current_universe_backfill_as_historical_pit", "adjustment_synthesis", "historical_price_limit_inference"]
   }
 }

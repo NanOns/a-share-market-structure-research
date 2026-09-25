@@ -1,5 +1,7 @@
 # V4-01 TDX History Bootstrap — Stage Receipt
 
+> **R2 disposition:** This is the preserved historical receipt, not the current accepted V4-01 result. It is superseded as completion evidence by `V4_01_02_COMPLETE_REPAIR_STATUS_R2_20260925.md`; the R2 rerun is `BLOCKED` until identity, lifecycle/PIT, source-priority and adjustment gates pass. Do not use the historical `DEGRADED_PASS` to authorize downstream completion.
+
 ## Contract and authorization
 
 | Field | Record |

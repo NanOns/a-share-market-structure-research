@@ -1,7 +1,38 @@
 {
   "contract_id": "BAOSTOCK_SUPPLEMENTAL_SOURCE_V1",
   "contract_version": "1.0.0",
-  "status": "FROZEN_SPEC_LIVE_CAPABILITY_UNVERIFIED",
+  "status": "IMPLEMENTED_LIVE_QUERY_BLOCKED",
+  "runtime": {
+    "package": "baostock",
+    "version": "0.9.4",
+    "wheel_filename": "baostock-0.9.4-py3-none-any.whl",
+    "wheel_sha256": "0bf71c6069ab5890ff3596632f9c3f8f1fbc6bfcac582c2f9d6a5c11ab2cfa8f",
+    "python_version_observed": "3.13.14",
+    "endpoint": "vip-api.baostock.com",
+    "transport": "SDK TCP socket",
+    "authentication": "set_API_key(API_KEY) then login(user_id, password); API key routing selects vip-api.baostock.com",
+    "api_reference": "https://www.baostock.com/mainContent?file=pythonAPI.md",
+    "api_reference_observed_at": "2026-09-25",
+    "package_auth_verified_by": "installed SDK source and official API-key demo; live API_KEY login succeeds, provider data queries currently return error 10001015"
+  },
+  "field_map": {
+    "version": "BAOSTOCK_FIELD_MAP_V1",
+    "source_authority": "official BaoStock Python API reference",
+    "fields": {
+      "date": {"type": "date", "nullable": false, "unit": "ISO_DATE", "normalization": "exact date match required"},
+      "code": {"type": "string", "nullable": false, "unit": "BaoStock dotted market code", "normalization": "versioned exact identity map required"},
+      "close": {"type": "decimal", "nullable": false, "unit": "CNY/share", "normalization": "numeric; fingerprint only"},
+      "volume": {"type": "integer", "nullable": false, "unit": "shares", "normalization": "integer; fingerprint only"},
+      "amount": {"type": "decimal", "nullable": false, "unit": "CNY", "normalization": "numeric; fingerprint only"},
+      "turn": {"type": "decimal", "nullable": true, "unit": "percent points", "normalization": "source value / 100 to fraction after field-map verification", "denominator": "circulating shares; not free-float shares"},
+      "tradestatus": {"type": "enum", "nullable": false, "unit": "1=trading, 0=suspended", "normalization": "cross-check only; local dated facts remain authority"},
+      "isST": {"type": "enum", "nullable": false, "unit": "1=ST, 0=not ST", "normalization": "cross-check only; local dated facts remain authority"}
+    },
+    "suspension_bar_semantics": "suspended daily record may carry previous traded close as OHLC and zero volume/amount; never classify by price alone",
+    "ex_right_preclose_semantics": "exchange reference close may differ from previous raw close",
+    "adjustflag": "3",
+    "raw_hot_rank_payload_persistence": false
+  },
   "stage_id": "V4-00F",
   "authority": {
     "tdx_authoritative_fields": ["security_identity", "ohlc", "volume", "amount", "qfq", "local_trading_status"],
@@ -15,12 +46,12 @@
       "capability": "UNAVAILABLE",
       "source_fields": ["code", "date", "turn", "tradestatus", "isST", "close", "volume", "amount"],
       "source_frequency": "daily",
-      "turn_unit": "UNVERIFIED",
+      "turn_unit": "PERCENT_POINTS",
       "normalized_unit": "FRACTION",
       "normalization_allowed_only_after": "source_field_map_and_unit_are_independently_verified",
       "never_guess_percent_scaling": true,
-      "denominator_basis": "SOURCE_DEFINED_OR_UNKNOWN",
-      "semantic_use_requires": "VERIFIED_FLOAT_SHARE_OR_FREE_FLOAT_SHARE_BASIS",
+      "denominator_basis": "CIRCULATING_SHARES_AS_DEFINED_BY_PROVIDER",
+      "semantic_use_requires": "ACCEPTED_CIRCULATING_SHARE_SEMANTICS; DO_NOT_LABEL_FREE_FLOAT",
       "strict_binding_requires": ["exact_security_identity_mapping", "exact_trade_date", "tradestatus_cross_check", "unit_normalized_close_volume_amount_fingerprint", "versioned_source_specific_tolerance"],
       "soft_binding_use": "diagnostic_only",
       "factor_contract_id": "TURNOVER_CONTEXT_V1"
@@ -72,19 +103,22 @@
     "raw_hot_rank_payload_persistence": false
   },
   "request_budget": {
-    "network_enabled": false,
+    "production_network_enabled": false,
+    "bounded_smoke_test_enabled": true,
     "activation_gate": "V4_00F_AUDIT_CLOSED_AND_WORKER_ENFORCES_ALL_BOUNDS",
     "max_concurrent_requests": 1,
     "serial_execution_only": true,
-    "candidate_per_request_timeout_seconds": 30,
-    "candidate_job_timeout_seconds": 21600,
-    "candidate_transient_retries": 1,
+    "per_request_timeout_seconds": 30,
+    "job_timeout_seconds": 21600,
+    "transient_retries_max": 1,
     "retry_counts_against_budget": true,
-    "candidate_daily_vendor_cap_assumption": 50000,
-    "candidate_daily_soft_stop": 40000,
-    "candidate_daily_hard_stop": 45000,
-    "candidate_reserved_headroom": 5000,
-    "quota_and_timing_values_status": "ENGINEERING_CANDIDATES_UNVERIFIED_NOT_ACTIVE",
+    "operator_asserted_daily_vendor_cap": 50000,
+    "daily_soft_stop": 40000,
+    "daily_hard_stop": 45000,
+    "reserved_headroom": 5000,
+    "quota_authority": "USER_PROVIDED_OPERATING_LIMIT; code enforces the stricter 40,000 request soft stop and 45,000 absolute hard stop",
+    "request_accounting_scope": "login, query, each retry, logout",
+    "quota_and_timing_values_status": "ENFORCED_IN_CLIENT; live operational measurement pending",
     "requests_per_instrument_range": 1,
     "deterministic_order_and_checkpointing": true,
     "unbounded_probe_or_retry": false,
@@ -113,6 +147,9 @@
     "existing_receipt_sha256": "31292a354933f805be7eb58628df9a992cf7be89748a9a9cef1f8514229afb45",
     "turnover_params_sha256": "13de3997bd24bb3458ade777a7c9f0348c12c7fe300313feafb13623474f3f46",
     "non_baostock_source_contract_sha256": "7afe0cfe0e2ca4d2f646d6e14c484994bb5ba30f53390283a3730ab4cecc3439",
-    "existing_receipt_reuse_status": "NOT_REUSABLE_AS_BAOSTOCK_EVIDENCE_TENCENT_SOURCE_ZERO_COMPARABLE_ROWS"
+    "existing_receipt_reuse_status": "NOT_REUSABLE_AS_BAOSTOCK_EVIDENCE_TENCENT_SOURCE_ZERO_COMPARABLE_ROWS",
+    "live_smoke_status": "BLOCKED_PROVIDER_QUERY_ERROR_10001015; four successful login/logout cycles; 3 daily-history queries and 1 stock-basic query all returned the same provider code",
+    "live_smoke_receipt": "reports/v4_baostock/live_smoke_receipt.json",
+    "live_request_ledger": "reports/v4_baostock/request_ledger.json"
   }
 }

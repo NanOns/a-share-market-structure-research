@@ -1,13 +1,13 @@
 {
-  "contract_id": "V4_PHASE0_FINAL_ACCEPTANCE_R2",
-  "supersedes_contract_id": "V4_PHASE0_FINAL_ACCEPTANCE_V1",
-  "superseded_status": "WITHDRAWN_BY_R2_FINAL_REAUDIT",
-  "repair_task_doc": "D:/Users/lps/Desktop/V4_PHASE0_FINAL_REAUDIT_AND_REPAIR_R2_20260925.md",
-  "repair_task_sha256": "f51e71ec8a3c02a5551bf07f66366856cf146182a76729b549871a680dcd0fe0",
+  "contract_id": "V4_PHASE0_FINAL_ACCEPTANCE_R3_1",
+  "supersedes_contract_id": "V4_PHASE0_FINAL_ACCEPTANCE_R2",
+  "superseded_status": "REPLACED_BY_R3_1_TARGETED_REPAIR",
+  "repair_task_doc": "D:/Users/lps/Desktop/V4_PHASE0_R2_EXTERNAL_AUDIT_AND_FINAL_REPAIR_R3_1_20260925.md",
+  "repair_task_sha256": "426b120f40759a908b32f608902ad5c0c90ce92268463b040057f5226247da06",
   "technical_contract": "DA-MSR-V4.2.2-CODEX-REV2",
   "technical_contract_sha256": "744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd",
-  "input_commit": "e3b0a1e3029470a12cb2b9f4dd733ca24a4617a9",
-  "output_commit": "41addef2f79a9a37fbac148045e7eb302f3ba2e0",
+  "input_commit": "310696d57165a52354a33a7b8d65a8a769063e50",
+  "output_commit": "6569357a0fb64baddd2add3205a2a54ddf9e4f7c",
   "phase0_status": "DEGRADED_PASS",
   "v4_01_entry_permission": "AUTHORIZED",
   "raw_bootstrap_permission": "AUTHORIZED",
@@ -20,15 +20,15 @@
       "status": "FULL_PASS",
       "degraded_scopes": [],
       "blocked_scopes": [],
-      "allowed_capabilities": [
-        "RAW_BOOTSTRAP"
-      ],
+      "allowed_capabilities": [],
+      "capability_claims_effective": [],
       "blocks_v4_01": false,
       "reason_codes": [],
       "evidence": [
         "reports/v4_phase0/V4_DATABASE_RESET_RECEIPT.json",
         "reports/v4_phase0/V4_PHASE0_PERFORMANCE_BASELINE_R2.json",
-        "reports/v4_phase0/V4_PHASE0_R2_TEST_RECEIPT.json"
+        "reports/v4_phase0/V4_PHASE0_R2_TEST_RECEIPT.json",
+        "reports/v4_phase0/V4_PHASE0_R3_TEST_RECEIPT.json"
       ]
     },
     "V4-00B": {
@@ -38,6 +38,9 @@
       ],
       "blocked_scopes": [],
       "allowed_capabilities": [
+        "LIFECYCLE_SCHEMA"
+      ],
+      "capability_claims_effective": [
         "LIFECYCLE_SCHEMA"
       ],
       "blocks_v4_01": false,
@@ -58,13 +61,19 @@
       "allowed_capabilities": [
         "PUBLICATION_IDENTITY"
       ],
+      "capability_claims_effective": [
+        "PUBLICATION_IDENTITY"
+      ],
       "blocks_v4_01": false,
       "reason_codes": [],
       "evidence": [
         "src/workbench_db/migrations/v4_postgres/003_phase0_contract_alignment.sql",
         "src/workbench_db/migrations/v4_postgres/004_publication_head_revision_identity.sql",
         "src/workbench_db/migrations/v4_postgres/005_market_session_publication_chain.sql",
-        "tests/v4_phase0/test_postgres_schema.py"
+        "tests/v4_phase0/test_postgres_schema.py",
+        "src/workbench_db/migrations/v4_postgres/008_prior_session_state_freeze_integrity.sql",
+        "src/workbench_db/migrations/v4_postgres/009_publication_head_guard_sql_alias_fix.sql",
+        "reports/v4_phase0/V4_PHASE0_R3_TEST_RECEIPT.json"
       ]
     },
     "V4-00D": {
@@ -72,6 +81,9 @@
       "degraded_scopes": [],
       "blocked_scopes": [],
       "allowed_capabilities": [
+        "A_STOCK_TDX_SOURCE"
+      ],
+      "capability_claims_effective": [
         "A_STOCK_TDX_SOURCE"
       ],
       "blocks_v4_01": false,
@@ -90,6 +102,9 @@
       "allowed_capabilities": [
         "RAW_BOOTSTRAP"
       ],
+      "capability_claims_effective": [
+        "RAW_BOOTSTRAP"
+      ],
       "blocks_v4_01": false,
       "reason_codes": [
         "ADJUSTED_EMPIRICAL_COVERAGE_TRANSFERRED"
@@ -105,9 +120,8 @@
         "BAOSTOCK_SUPPLEMENTAL_OPTIONAL_UNAVAILABLE"
       ],
       "blocked_scopes": [],
-      "allowed_capabilities": [
-        "RAW_BOOTSTRAP"
-      ],
+      "allowed_capabilities": [],
+      "capability_claims_effective": [],
       "blocks_v4_01": false,
       "reason_codes": [
         "SUPPLEMENTAL_SOURCE_OPTIONAL"
@@ -118,20 +132,24 @@
       ]
     },
     "V4-00G": {
-      "status": "FULL_PASS",
-      "degraded_scopes": [],
-      "blocked_scopes": [],
-      "allowed_capabilities": [
-        "RAW_BOOTSTRAP"
+      "status": "DEGRADED_PASS",
+      "degraded_scopes": [
+        "NON_NUMERIC_PARAMETER_POLICY_VALUES_DEFERRED"
       ],
+      "blocked_scopes": [],
+      "allowed_capabilities": [],
+      "capability_claims_effective": [],
       "blocks_v4_01": false,
-      "reason_codes": [],
+      "reason_codes": [
+        "NON_NUMERIC_POLICY_VALUES_REQUIRE_SEPARATE_VERSIONED_CONTRACT"
+      ],
       "evidence": [
         "src/v4/contracts/algorithm_contract.py",
         "config/v4_algorithm_contract_framework_v1.json",
         "config/v4_parameter_registry_v1.json",
         "tests/v4_phase0/test_algorithm_contracts.py",
-        "reports/v4_phase0/V4_PHASE0_R2_TEST_RECEIPT.json"
+        "reports/v4_phase0/V4_PHASE0_R2_TEST_RECEIPT.json",
+        "reports/v4_phase0/V4_PHASE0_R3_TEST_RECEIPT.json"
       ]
     },
     "V4-00H": {
@@ -145,9 +163,8 @@
       "blocked_scopes": [
         "MARKED_RELATIVE_BENCHMARK_CONSUMER"
       ],
-      "allowed_capabilities": [
-        "RAW_BOOTSTRAP"
-      ],
+      "allowed_capabilities": [],
+      "capability_claims_effective": [],
       "blocks_v4_01": false,
       "reason_codes": [
         "MARKED_RELATIVE_DISABLED_PENDING_REPRESENTATIVE_SAMPLE",
@@ -158,7 +175,8 @@
         "config/v4_capability_cutover_policy_v1.json",
         "config/v4_performance_measurement_contract_v1.json",
         "reports/v4_phase0/V4_PHASE0_PERFORMANCE_BASELINE_R2.json",
-        "tests/v4_phase0/test_phase0_final_gate.py"
+        "tests/v4_phase0/test_phase0_final_gate.py",
+        "reports/v4_phase0/V4_PHASE0_R3_TEST_RECEIPT.json"
       ]
     }
   },
@@ -178,7 +196,17 @@
     "blocked_scopes": [
       "MARKED_RELATIVE_BENCHMARK_CONSUMER"
     ],
-    "blocked_required_scopes": []
+    "blocked_required_scopes": [],
+    "raw_bootstrap_derivation": {
+      "status": "SATISFIED",
+      "owner_stage": "V4-00E",
+      "requires_all_phase0_stages_accepted": true,
+      "required_owner_scopes_accepted": [
+        "A_STOCK_TDX_SOURCE",
+        "LIFECYCLE_SCHEMA",
+        "PUBLICATION_IDENTITY"
+      ]
+    }
   },
   "core_blockers": [],
   "nonblocking_limitations": [
@@ -187,7 +215,8 @@
     "BaoStock supplemental capability remains optional and unavailable.",
     "INDEX overlap retains 73 unexplained diagnostic rows outside the accepted A_STOCK core scope.",
     "Marked-relative benchmark coverage/quote-age values and quality-consumer matrix remain unset; only MARKED_RELATIVE_BENCHMARK_CONSUMER is blocked.",
-    "Daily V4 pipeline, factor, sector, Radar, Focus, and V4 API/UI performance are NOT_IMPLEMENTED. Legacy API/UI was not listening; 00D runtime was not remeasured because R2 forbids rerunning it."
+    "Daily V4 pipeline, factor, sector, Radar, Focus, and V4 API/UI performance are NOT_IMPLEMENTED. Legacy API/UI was not listening; 00D runtime was not remeasured because R2 forbids rerunning it.",
+    "00G parameter values remain finite-number-or-null; non-numeric quality enum/matrix policy values stay unassigned and fail closed until moved to a separately versioned policy contract."
   ],
   "future_stage_transfers": [
     {
@@ -219,10 +248,25 @@
   "performance_baseline_receipt": "reports/v4_phase0/V4_PHASE0_PERFORMANCE_BASELINE_R2.json",
   "schema": {
     "tables": 15,
-    "foreign_key_count": 24,
+    "foreign_key_count": 25,
     "unvalidated_foreign_key_count": 0,
     "v4_runtime_rows_remaining": 0,
     "migrations": [
+      {
+        "version": "V4_FACT_SOURCE_GUARD_TABLE_SPECIFIC_FIELDS_R2",
+        "checksum_sha256": "d6ccd5dae3900fa07134a18e2f4f41ed2fbc3dde2fa4d5be79958d82d616a949",
+        "status": "APPLIED"
+      },
+      {
+        "version": "V4_MARKET_SESSION_PUBLICATION_CHAIN_R2",
+        "checksum_sha256": "54d32de8e20afc773638b38aa555c47a5c5e8cb9b0bba82bb60fbd820a2d3b66",
+        "status": "APPLIED"
+      },
+      {
+        "version": "V4_PHASE0_CONTRACT_ALIGNMENT_R2",
+        "checksum_sha256": "e1e2886c04c45121530e1fcf506297921c9cca2eecec3ee06be77e2520887d77",
+        "status": "APPLIED"
+      },
       {
         "version": "V4_PHASE0_FOUNDATION_V1",
         "checksum_sha256": "391bf52595fc9da86bbce175b667a5b15c18684c4fbfb8e54cdcf65872dff260",
@@ -234,8 +278,13 @@
         "status": "APPLIED"
       },
       {
-        "version": "V4_PHASE0_CONTRACT_ALIGNMENT_R2",
-        "checksum_sha256": "e1e2886c04c45121530e1fcf506297921c9cca2eecec3ee06be77e2520887d77",
+        "version": "V4_PRIOR_SESSION_STATE_FREEZE_INTEGRITY_R3",
+        "checksum_sha256": "3d541d9540d64463068907d20062403d7ee41373c42afa5c34c7e0d7117b338b",
+        "status": "APPLIED"
+      },
+      {
+        "version": "V4_PUBLICATION_HEAD_GUARD_SQL_ALIAS_FIX_R3",
+        "checksum_sha256": "ae4a7043367a490483618944b8efaf473062f82371e500ab60e5a79a4d55d2e8",
         "status": "APPLIED"
       },
       {
@@ -244,21 +293,12 @@
         "status": "APPLIED"
       },
       {
-        "version": "V4_MARKET_SESSION_PUBLICATION_CHAIN_R2",
-        "checksum_sha256": "54d32de8e20afc773638b38aa555c47a5c5e8cb9b0bba82bb60fbd820a2d3b66",
-        "status": "APPLIED"
-      },
-      {
-        "version": "V4_FACT_SOURCE_GUARD_TABLE_SPECIFIC_FIELDS_R2",
-        "checksum_sha256": "d6ccd5dae3900fa07134a18e2f4f41ed2fbc3dde2fa4d5be79958d82d616a949",
-        "status": "APPLIED"
-      },
-      {
         "version": "V4_STATE_AND_NAMESPACE_PUBLICATION_IDENTITY_R2",
         "checksum_sha256": "f7df9d66c6edb13e948cbd92888af140ad335cb2984b9b0078e5498eee1cb4a0",
         "status": "APPLIED"
       }
-    ]
+    ],
+    "migration_count": 9
   },
   "legacy_database_row_count_before_reset": 5308402,
   "legacy_database_rows_remaining": 0,
@@ -275,11 +315,13 @@
     "status": "PHYSICAL_BACKUP_VERIFIED",
     "role": "INFORMATIONAL_NON_AUTHORITATIVE",
     "phase0_acceptance_prerequisite": false,
-    "request_truth": "USER_EXPLICITLY_REQUESTED_BACKUP_IN_PRIOR_CONVERSATION",
+    "request_truth": "USER_EXPLICITLY_REQUESTED_PRE_DELETE_SAFETY_MEASURE",
     "receipt": "reports/v4_phase0/V4-PHASE0-PG-PHYSICAL-BACKUP-20260925_114550.json",
-    "manifest_sha256": "2cbe45327884a096b9ef7824f6df0ec7b27ba98c8b14f981161587a788712727"
+    "manifest_sha256": "2cbe45327884a096b9ef7824f6df0ec7b27ba98c8b14f981161587a788712727",
+    "is_v4_migration_input": false,
+    "is_deletion_safety_measure": true
   },
-  "audit_truth_note": "R2 §9 calls the physical backup unrequested. The conversation record shows the user explicitly requested a physical backup before reset, so existing audit facts are retained. The backup is not a Phase 0 acceptance requirement.",
+  "audit_truth_note": "R3.1 confirms the physical backup was explicitly requested and verified before deletion. It is retained as an informational deletion safety measure, not a V4 migration input or Phase 0 entry requirement.",
   "closed_or_repaired_items": [
     "P0-1 publication physical identity/lineage and prior market session constraints",
     "P0-2 lifecycle and PIT machine contract/schema consistency",
@@ -287,15 +329,24 @@
     "P0-4 FULL/DEGRADED/BLOCKED scope-level gate",
     "P0-5 marked-relative benchmark consumer fail-closed scope",
     "P0-6 REV2 §74 baseline and explicit NOT_IMPLEMENTED/NOT_AVAILABLE metrics",
-    "P0-7 backup informational-only acceptance role and audit truth review"
+    "P0-7 backup informational-only acceptance role and audit truth review",
+    "R3 P0-A prior accepted publication head, state-head ID, and logical digest freeze; same-day predecessor tuple invariant; gap/head mutation guards",
+    "R3 P0-B required scope owner binding, derived RAW_BOOTSTRAP permission, and hard BLOCKED-stage gate semantics",
+    "R3 P1-A non-numeric policy value limitation explicitly versioned, validated, unassigned, fail-closed, and scoped as 00G DEGRADED_PASS",
+    "R3.1 physical backup audit fact retained as explicitly requested pre-delete safety measure and excluded from V4 migration inputs"
   ],
   "remaining_phase0_blockers": [],
   "test_result": "PASS",
-  "test_count": 42,
-  "test_elapsed_seconds": 1.06,
-  "accepted_head_before_receipt_seal": "41addef2f79a9a37fbac148045e7eb302f3ba2e0",
-  "verified_at_utc": "2026-09-25T06:03:45+00:00",
+  "test_count": 63,
+  "test_elapsed_seconds": 1.88,
+  "accepted_head_before_receipt_seal": "6569357a0fb64baddd2add3205a2a54ddf9e4f7c",
+  "verified_at_utc": "2026-09-25T06:52:01+00:00",
   "technical_contract_document": "D:/Users/lps/Desktop/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_20260925_codex修改版.md",
   "base_final_executable_contract": "DA-MSR-V4.2.2-FINAL-EXECUTABLE-CONTRACT",
-  "base_final_executable_contract_sha256": "ac86f92f9cfaa3547a0ba99959e749da02f0fa7f9c0a1568ad95627db0200b97"
+  "base_final_executable_contract_sha256": "ac86f92f9cfaa3547a0ba99959e749da02f0fa7f9c0a1568ad95627db0200b97",
+  "r3_test_receipt": "reports/v4_phase0/V4_PHASE0_R3_TEST_RECEIPT.json",
+  "r3_stage_receipts": "reports/v4_phase0/V4_PHASE0_STAGE_RECEIPTS_R3.json",
+  "r3_acceptance_doc": "docs/V4_PHASE0_FINAL_ACCEPTANCE_R3_1_20260925.md",
+  "external_audit_confirmation_required_before_v4_01": true,
+  "next_stage": "Final external Phase 0 audit; do not start V4-01 until the external audit explicitly confirms V4_01_ENTRY_PERMISSION=AUTHORIZED."
 }

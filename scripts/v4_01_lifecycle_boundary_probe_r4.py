@@ -39,7 +39,7 @@ def main() -> int:
     cases = []
     for year in (2024, 2025, 2026):
         delisted = [item for item in stock_facts if item.get("source_security_key", "").startswith(("SH.", "SZ."))
-                    and item.get("listed_to_provider_reported", "").startswith(f"{year}-")
+                    and str(item.get("listed_to_provider_reported") or "").startswith(f"{year}-")
                     and date.fromisoformat(item["listed_to_provider_reported"]) in session_index]
         ipo = [item for item in stock_facts if item.get("source_security_key", "").startswith(("SH.", "SZ."))
                and item.get("listed_from", "").startswith(f"{year}-")

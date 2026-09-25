@@ -1,0 +1,42 @@
+{
+  "acceptance": "V4-02 was stopped at its contracted entry gate because the hash-bound V4-01 receipt is not FULL_PASS. No canonical, period, or scanner/factor output was produced.",
+  "blocked_scopes": [
+    "V4_01_ENTRY_GATE_NOT_SATISFIED"
+  ],
+  "consulted_upgrade": {
+    "document": "D:/Users/lps/Desktop/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_20260925_codex修改版.md",
+    "sections": [
+      "3B.6",
+      "3C.1",
+      "3C.2",
+      "3C.3",
+      "3C.4",
+      "5.2",
+      "5.3",
+      "6A",
+      "10N",
+      "78"
+    ],
+    "sha256": "744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd"
+  },
+  "execution_identity": {
+    "contract_sha256": "74a6e295b8d301c0523af6c5832a90fa5d8b402003824920c3133c68c3693ca1",
+    "input_commit": "fab5f024e1187f07ffae279b6875e5cf025df5b1",
+    "script_sha256": "6d249bb6afe6c4ee34778764af9f81fce2be8feb991ba45f7ceef6c9954a8bc9"
+  },
+  "input_evidence": {
+    "required_v4_01_status": "FULL_PASS",
+    "source_package_sha256": "b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f",
+    "v4_01_receipt": "reports/v4_01/v4_01_stage_receipt_R2_20260925.json",
+    "v4_01_receipt_sha256": "bd51596691adbecd42f580905c83318ece751b32abbc7b44225fac1dddda9fc4",
+    "v4_01_status": "BLOCKED"
+  },
+  "next_stage": "RESOLVE_V4_01_BLOCKERS_THEN_RERUN_V4_02",
+  "outputs_emitted": false,
+  "run_id": "V4_02_CANONICAL_DAILY_PIT_20260924_102536Z",
+  "stage": "V4-02",
+  "stage_completion_authorized": false,
+  "stage_contract": "V4.2.2 REV2 §§3B.6/3C.1-3C.4/5.2-5.3/6A/10N/78; V4_CANONICAL_DAILY_PIT_PERIODS_V1",
+  "status": "BLOCKED",
+  "tdx_root_write_count": 0
+}

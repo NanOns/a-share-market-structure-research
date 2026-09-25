@@ -1,0 +1,44 @@
+{
+  "all_data_probes_provider_error_code": "10001015",
+  "auth_mode": "API_KEY",
+  "capability": "UNAVAILABLE_PENDING_INDEPENDENT_ACCEPTANCE",
+  "contract_id": "BAOSTOCK_SUPPLEMENTAL_SOURCE_V1",
+  "credential_present": true,
+  "credential_storage": "process_environment_only",
+  "credential_values_emitted": false,
+  "data_query_status": "BLOCKED_PROVIDER_ERROR",
+  "endpoint": "vip-api.baostock.com",
+  "failure_reason": "BAOSTOCK_BASIC_QUERY_FAILED_CODE_10001015",
+  "field_map_version": "BAOSTOCK_FIELD_MAP_V1",
+  "login_status": "PASS",
+  "observed_at_utc": "2026-09-25T10:10:26+00:00",
+  "probe": "basic",
+  "query": {
+    "adjustflag": "3",
+    "code": "sh.600000",
+    "end_date": "2026-09-07",
+    "frequency": "d",
+    "start_date": "2026-09-01"
+  },
+  "raw_payload_persisted": false,
+  "request_counts_for_shanghai_day": {
+    "count": 12,
+    "operations": {
+      "login": 4,
+      "logout": 4,
+      "query_history_k_data_plus_adjustflag_3": 3,
+      "query_stock_basic": 1
+    }
+  },
+  "runtime": {
+    "adjustflag": "3",
+    "api_key_mode": "set_API_key_then_login; bs-* routes to vip-api.baostock.com",
+    "fields": "date,code,close,volume,amount,turn,tradestatus,isST",
+    "installed_python_sources_sha256": "ac95f0f006514f7bacfe52b05667c958c89893d14ba5fc40dd9173d9536722f9",
+    "package": "baostock",
+    "version": "0.9.4"
+  },
+  "stage": "V4-01/02-BAOSTOCK-LIVE-SMOKE",
+  "status": "BLOCKED",
+  "transport": "Baostock SDK TCP socket"
+}

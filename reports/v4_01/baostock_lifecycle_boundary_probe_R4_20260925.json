@@ -1,0 +1,281 @@
+{
+  "boundary_semantics": {
+    "ipoDate": "membership starts on the reported IPO date when it is an exchange session",
+    "outDate": "membership includes the reported outDate session; absent starting the next session"
+  },
+  "cases": [
+    {
+      "boundary_date": "2024-07-24",
+      "code": "sz.000971",
+      "expected_presence": [
+        true,
+        true,
+        false
+      ],
+      "kind": "DELIST",
+      "observed_presence": [
+        true,
+        true,
+        false
+      ],
+      "probe_dates": [
+        "2024-07-23",
+        "2024-07-24",
+        "2024-07-25"
+      ],
+      "status": "PASS"
+    },
+    {
+      "boundary_date": "2024-07-26",
+      "code": "sz.301606",
+      "expected_presence": [
+        false,
+        true,
+        true
+      ],
+      "kind": "IPO",
+      "observed_presence": [
+        false,
+        true,
+        true
+      ],
+      "probe_dates": [
+        "2024-07-25",
+        "2024-07-26",
+        "2024-07-29"
+      ],
+      "status": "PASS"
+    },
+    {
+      "boundary_date": "2025-07-03",
+      "code": "sh.600804",
+      "expected_presence": [
+        true,
+        true,
+        false
+      ],
+      "kind": "DELIST",
+      "observed_presence": [
+        true,
+        false,
+        false
+      ],
+      "probe_dates": [
+        "2025-07-02",
+        "2025-07-03",
+        "2025-07-04"
+      ],
+      "status": "BLOCKED"
+    },
+    {
+      "boundary_date": "2025-07-01",
+      "code": "sz.001388",
+      "expected_presence": [
+        false,
+        true,
+        true
+      ],
+      "kind": "IPO",
+      "observed_presence": [
+        false,
+        true,
+        true
+      ],
+      "probe_dates": [
+        "2025-06-30",
+        "2025-07-01",
+        "2025-07-02"
+      ],
+      "status": "PASS"
+    },
+    {
+      "boundary_date": "2026-06-26",
+      "code": "sh.600599",
+      "expected_presence": [
+        true,
+        true,
+        false
+      ],
+      "kind": "DELIST",
+      "observed_presence": [
+        true,
+        false,
+        false
+      ],
+      "probe_dates": [
+        "2026-06-25",
+        "2026-06-26",
+        "2026-06-29"
+      ],
+      "status": "BLOCKED"
+    },
+    {
+      "boundary_date": "2026-05-22",
+      "code": "sh.603435",
+      "expected_presence": [
+        false,
+        true,
+        true
+      ],
+      "kind": "IPO",
+      "observed_presence": [
+        false,
+        true,
+        true
+      ],
+      "probe_dates": [
+        "2026-05-21",
+        "2026-05-22",
+        "2026-05-25"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "configured_request_limit": 18,
+  "contract_id": "V4_01_BAOSTOCK_LIFECYCLE_BOUNDARY_PROBE_V1",
+  "elapsed_seconds": 191.411,
+  "execution_identity": {
+    "input_commit": "a7ab2b3f3e1ca6a07db037176bdd70fc482fcc9c",
+    "script_sha256": "11056526295bfa04b52785dc532ccf3e701603d6d6d01cedb1cb7d1d5e982af7"
+  },
+  "facts_revision_id": "sha256:ff551283b88e314147f1e22070fc0a12082fedcbb3812aa2066232e09d9dabe4",
+  "failures": {},
+  "limitation": "Boundary probes are stratified samples. They do not constitute AS_RECORDED lineage, daily trade-status history, issuer-level identity, or a substitute for independent acceptance.",
+  "observed_at_utc": "2026-09-25T14:01:33+00:00",
+  "request_count_delta": 18,
+  "rosters": {
+    "2024-07-23": {
+      "candidate_membership": {
+        "sz.000971": true
+      },
+      "provider_row_count": 5649,
+      "type1_candidate_row_count": 5109,
+      "type1_code_set_sha256": "1257e76dee185d58946337abfe5396799394809a4960e419926278e2bac1cfda"
+    },
+    "2024-07-24": {
+      "candidate_membership": {
+        "sz.000971": true
+      },
+      "provider_row_count": 5649,
+      "type1_candidate_row_count": 5109,
+      "type1_code_set_sha256": "1257e76dee185d58946337abfe5396799394809a4960e419926278e2bac1cfda"
+    },
+    "2024-07-25": {
+      "candidate_membership": {
+        "sz.000971": false,
+        "sz.301606": false
+      },
+      "provider_row_count": 5648,
+      "type1_candidate_row_count": 5108,
+      "type1_code_set_sha256": "f9d9b3b833129638069e69d81e5514eafd99273e4fe4d411505563feaaffd9de"
+    },
+    "2024-07-26": {
+      "candidate_membership": {
+        "sz.301606": true
+      },
+      "provider_row_count": 5648,
+      "type1_candidate_row_count": 5108,
+      "type1_code_set_sha256": "0250fcdcc4b70545e071a9549341e280769ac573a1b645b83322be6dbe2808f9"
+    },
+    "2024-07-29": {
+      "candidate_membership": {
+        "sz.301606": true
+      },
+      "provider_row_count": 5648,
+      "type1_candidate_row_count": 5108,
+      "type1_code_set_sha256": "0250fcdcc4b70545e071a9549341e280769ac573a1b645b83322be6dbe2808f9"
+    },
+    "2025-06-30": {
+      "candidate_membership": {
+        "sz.001388": false
+      },
+      "provider_row_count": 5651,
+      "type1_candidate_row_count": 5152,
+      "type1_code_set_sha256": "dfd190481bdb835aa8bb10b97761ad8ea0116182f16ec355c3dd3d4d77785eb1"
+    },
+    "2025-07-01": {
+      "candidate_membership": {
+        "sz.001388": true
+      },
+      "provider_row_count": 5652,
+      "type1_candidate_row_count": 5153,
+      "type1_code_set_sha256": "2bf654e8c5c538da2ce4b609dfac675df08331fcb1b52a312a617d10738b6abf"
+    },
+    "2025-07-02": {
+      "candidate_membership": {
+        "sh.600804": true,
+        "sz.001388": true
+      },
+      "provider_row_count": 5652,
+      "type1_candidate_row_count": 5153,
+      "type1_code_set_sha256": "2bf654e8c5c538da2ce4b609dfac675df08331fcb1b52a312a617d10738b6abf"
+    },
+    "2025-07-03": {
+      "candidate_membership": {
+        "sh.600804": false
+      },
+      "provider_row_count": 5650,
+      "type1_candidate_row_count": 5151,
+      "type1_code_set_sha256": "e4b5ec5ffd4d458788157c24cde16047d94ee825fed6870f50ab0830e60f92cc"
+    },
+    "2025-07-04": {
+      "candidate_membership": {
+        "sh.600804": false
+      },
+      "provider_row_count": 5648,
+      "type1_candidate_row_count": 5150,
+      "type1_code_set_sha256": "db3eae9ed7253dd84feba9d187d28a2bfe45d053f1004975039cf49bb1e7cb5d"
+    },
+    "2026-05-21": {
+      "candidate_membership": {
+        "sh.603435": false
+      },
+      "provider_row_count": 7237,
+      "type1_candidate_row_count": 5205,
+      "type1_code_set_sha256": "26184b9aa9e86f6715a076fadb0abef2ae54371dfc23687e92c89a4f07b9e61b"
+    },
+    "2026-05-22": {
+      "candidate_membership": {
+        "sh.603435": true
+      },
+      "provider_row_count": 7241,
+      "type1_candidate_row_count": 5207,
+      "type1_code_set_sha256": "35b54dd6cb2da37ff2c54d8c0cac4afe0ee720296003646d1af410bc67d8c172"
+    },
+    "2026-05-25": {
+      "candidate_membership": {
+        "sh.603435": true
+      },
+      "provider_row_count": 7243,
+      "type1_candidate_row_count": 5207,
+      "type1_code_set_sha256": "35b54dd6cb2da37ff2c54d8c0cac4afe0ee720296003646d1af410bc67d8c172"
+    },
+    "2026-06-25": {
+      "candidate_membership": {
+        "sh.600599": true
+      },
+      "provider_row_count": 7283,
+      "type1_candidate_row_count": 5208,
+      "type1_code_set_sha256": "c86fb135fd65ad12dd451494737f8a2803f503d61dd0f9c426147d04ad5f8533"
+    },
+    "2026-06-26": {
+      "candidate_membership": {
+        "sh.600599": false
+      },
+      "provider_row_count": 7288,
+      "type1_candidate_row_count": 5207,
+      "type1_code_set_sha256": "347af3bc8262962933d2601708feb8243cf0d18c232507b4b4882313a8c3e325"
+    },
+    "2026-06-29": {
+      "candidate_membership": {
+        "sh.600599": false
+      },
+      "provider_row_count": 7286,
+      "type1_candidate_row_count": 5205,
+      "type1_code_set_sha256": "190331afeb2477a7a459695a6c5613881178cb4dd66c619f7f1a928080e2b28b"
+    }
+  },
+  "stage": "V4-01-BAOSTOCK-LIFECYCLE-BOUNDARY-PROBE-R4",
+  "stage_completion_authorized": false,
+  "status": "BLOCKED"
+}

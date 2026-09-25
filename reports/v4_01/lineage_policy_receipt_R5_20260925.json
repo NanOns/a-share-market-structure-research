@@ -1,0 +1,33 @@
+{
+  "contract_id": "V4_01_HISTORY_LINEAGE_POLICY_V1",
+  "execution_identity": {
+    "input_commit": "fd3941f2bd6099ee934de88a7dfce23b1796ea03",
+    "script_sha256": "7f29c7645a5179fedaeae8e2826f4d10217c642b9c489e1c6f1aad3262a979de"
+  },
+  "input": {
+    "path": "config/v4_01_history_lineage_policy_v1.json",
+    "sha256": "e3b5a7dd5705fd0da14532b2e708ca0ecca54dcc497bb4c2018242fdd4cf14fe"
+  },
+  "meaning": "PASS means the lineage boundary is explicit and enforced; it does not certify reconstructed history as AS_RECORDED.",
+  "next_stage": "V4_01_FINAL_RECEIPT_R5",
+  "observed_at_utc": "2026-09-25T15:35:12+00:00",
+  "stage": "V4-01-LINEAGE-POLICY-R5",
+  "stage_completion_authorized": false,
+  "status": "PASS",
+  "verified_rules": {
+    "pre_v4_history": {
+      "as_recorded_claim_allowed": false,
+      "lineage": "RECONSTRUCTED_CORRECTED",
+      "rule": "When contemporaneous V4 observations do not exist, historical reconstruction may be corrected using later accepted sources; never represent it as what the system knew at the time."
+    },
+    "prohibited": [
+      "fabricate_pre_v4_as_recorded",
+      "overwrite_prior_source_revision",
+      "infer_provider_availability_from_later_observation"
+    ],
+    "v4_go_forward": {
+      "lineage": "PIT_OBSERVED_AS_RECORDED_APPEND_ONLY",
+      "rule": "Record provider availability, observation, ingestion, and system availability timestamps with source revision identity; corrections append a superseding revision and never overwrite prior observations."
+    }
+  }
+}

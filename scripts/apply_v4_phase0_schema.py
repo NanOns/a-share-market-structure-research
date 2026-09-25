@@ -20,6 +20,7 @@ VERSIONS={
     "007_state_and_namespace_publication_identity.sql":"V4_STATE_AND_NAMESPACE_PUBLICATION_IDENTITY_R2",
     "008_prior_session_state_freeze_integrity.sql":"V4_PRIOR_SESSION_STATE_FREEZE_INTEGRITY_R3",
     "009_publication_head_guard_sql_alias_fix.sql":"V4_PUBLICATION_HEAD_GUARD_SQL_ALIAS_FIX_R3",
+    "010_security_lifecycle_history_r5.sql":"V4_SECURITY_LIFECYCLE_HISTORY_R5_V1",
 }
 
 def dsn():
@@ -54,7 +55,10 @@ def apply():
                 cur.execute(text)
                 cur.execute("insert into v4_meta.schema_migrations(version,checksum_sha256,applied_at,contract_id) values (%s,%s,now(),%s) on conflict(version) do nothing",(version,checksum,version))
                 applied.append({"version":version,"checksum_sha256":checksum,"status":"APPLIED"})
-    return {"status":"APPLIED" if any(x['status']=='APPLIED' for x in applied) else "ALREADY_CURRENT","migrations":applied,"v4_table_count":15,"migration_ledger_table_count":1}
+    with psycopg.connect(dsn()) as pg:
+        table_count = pg.execute("select count(*) from information_schema.tables where table_schema='v4'").fetchone()[0]
+        ledger_count = pg.execute("select count(*) from information_schema.tables where table_schema='v4_meta'").fetchone()[0]
+    return {"status":"APPLIED" if any(x['status']=='APPLIED' for x in applied) else "ALREADY_CURRENT","migrations":applied,"v4_table_count":table_count,"migration_ledger_table_count":ledger_count}
 
 if __name__=="__main__":
     ap=argparse.ArgumentParser(); ap.add_argument("--apply",action="store_true"); args=ap.parse_args()

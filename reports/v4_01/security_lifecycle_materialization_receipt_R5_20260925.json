@@ -1,0 +1,39 @@
+{
+  "contract_id": "SECURITY_LIFECYCLE_HISTORY_V1",
+  "execution_identity": {
+    "input_commit": "fd3941f2bd6099ee934de88a7dfce23b1796ea03"
+  },
+  "input": {
+    "identity_map_path": "data/v4/artifact_store/v4_01/security_entity_map_R5_20260925.json",
+    "identity_map_sha256": "e05f2ea79a91b0b84b48043a2ae7fbf7b0aefc7b954de61857e8f3db854627de",
+    "identity_map_status": "CANDIDATE_ACCEPTANCE_PENDING"
+  },
+  "lineage": "RECONSTRUCTED_CORRECTED candidate facts; pre-V4 history is never labeled AS_RECORDED",
+  "materialization": {
+    "already_materialized_rows_skipped": 0,
+    "append_only": true,
+    "database_lifecycle_fact_rows": 6053,
+    "inserted_revision_rows": 6053,
+    "source_revision_binding_violation_count": 0,
+    "timestamp_rule_violation_count": 0,
+    "unique_lifecycle_fact_keys": 6053,
+    "unique_security_ids": 5805
+  },
+  "next_stage": "V4_01_FINAL_HISTORICAL_UNIVERSE_R5",
+  "observed_at_utc": "2026-09-25T15:16:01+00:00",
+  "source_revision_sample_ids": [
+    "LIFE-R5-f8376dd8dc31b700fd004f23fca64658428f3949467c6097",
+    "LIFE-R5-154e37d544d11c42c54c505b1483ddccb7d1693afa042586",
+    "LIFE-R5-7b6eb9c0273d587fbfb723e34cf76656d5e8610ec45bc875",
+    "LIFE-R5-f26798adcbc552b2390d56884ef34d7497f99cc3d03821b6",
+    "LIFE-R5-930b78753b994016ead2b3beb8805099504a50bca758c519",
+    "LIFE-R5-cfee027c928e223289739b1e5be3329a9a75845d594a3cbe",
+    "LIFE-R5-9a90b3533708f448f9383e60c74c313815778e130b719b8e",
+    "LIFE-R5-03e050f15f8afaf93889484e4501c507ed15b92a10ecf64f",
+    "LIFE-R5-d6938528b5b5c2ffe7dc5f78bb2ebb9f4257bd752bc52724",
+    "LIFE-R5-9a13fd971c20ddba97536a0b86f9a88454c92cd2911ed391"
+  ],
+  "stage": "V4-01-FORMAL-LIFECYCLE-FACTS-R5",
+  "stage_completion_authorized": false,
+  "status": "BLOCKED"
+}

@@ -88,7 +88,7 @@ def test_fresh_v4_schema_has_revisionable_pit_and_publication_relations():
         tables = {r[0] for r in pg.execute("select table_name from information_schema.tables where table_schema='v4'").fetchall()}
         assert {"source_packages", "source_revisions", "security_lifecycle_facts", "security_membership_facts", "market_calendar_sessions", "universe_snapshots", "universe_members", "model_namespaces", "publications", "publication_heads", "publication_consumed_sources", "publication_revision_events", "namespace_migrations", "event_observations", "state_heads"} <= tables
         versions = pg.execute("select version from v4_meta.schema_migrations order by version").fetchall()
-        assert {"V4_PHASE0_FOUNDATION_V1", "V4_PHASE0_NAMESPACE_INTEGRITY_V1", "V4_PHASE0_CONTRACT_ALIGNMENT_R2", "V4_PUBLICATION_HEAD_REVISION_IDENTITY_R2", "V4_MARKET_SESSION_PUBLICATION_CHAIN_R2", "V4_FACT_SOURCE_GUARD_TABLE_SPECIFIC_FIELDS_R2", "V4_STATE_AND_NAMESPACE_PUBLICATION_IDENTITY_R2", "V4_PRIOR_SESSION_STATE_FREEZE_INTEGRITY_R3"} <= {x[0] for x in versions}
+        assert {"V4_PHASE0_FOUNDATION_V1", "V4_PHASE0_NAMESPACE_INTEGRITY_V1", "V4_PHASE0_CONTRACT_ALIGNMENT_R2", "V4_PUBLICATION_HEAD_REVISION_IDENTITY_R2", "V4_MARKET_SESSION_PUBLICATION_CHAIN_R2", "V4_FACT_SOURCE_GUARD_TABLE_SPECIFIC_FIELDS_R2", "V4_STATE_AND_NAMESPACE_PUBLICATION_IDENTITY_R2", "V4_PRIOR_SESSION_STATE_FREEZE_INTEGRITY_R3", "V4_SECURITY_LIFECYCLE_HISTORY_R5_V1"} <= {x[0] for x in versions}
         indexes = {r[0] for r in pg.execute("select indexname from pg_indexes where schemaname='v4'").fetchall()}
         assert {"uq_source_revision_single_successor", "ix_source_revisions_cutoff", "ix_publication_consumed_source_revision", "uq_publication_same_day_parent_single_successor", "ix_membership_effective"} <= indexes
         columns = {r[0] for r in pg.execute("select column_name from information_schema.columns where table_schema='v4' and table_name='publications'").fetchall()}
@@ -102,12 +102,15 @@ def test_fresh_v4_schema_has_revisionable_pit_and_publication_relations():
         assert {"state_head_id", "state_logical_digest"} <= head_columns
 
 
-def test_reset_leaves_no_legacy_heads_or_v4_runtime_rows():
+def test_reset_leaves_no_legacy_heads_or_runtime_publications():
     with connect() as pg:
         assert pg.execute("select count(*) from information_schema.schemata where schema_name in ('legacy','workbench','workbench_meta')").fetchone()[0] == 0
-        tables = pg.execute("select tablename from pg_tables where schemaname='v4'").fetchall()
-        assert all(pg.execute(f'select count(*) from v4."{name}"').fetchone()[0] == 0 for (name,) in tables)
-        assert pg.execute("select count(*) from v4.publication_heads").fetchone()[0] == 0
+        runtime_tables = (
+            "universe_snapshots", "universe_members", "publications", "publication_heads",
+            "publication_consumed_sources", "publication_revision_events", "state_heads",
+            "event_observations",
+        )
+        assert all(pg.execute(f'select count(*) from v4."{name}"').fetchone()[0] == 0 for name in runtime_tables)
 
 
 def test_each_revision_has_unique_publication_id_and_same_day_parent_identity():
@@ -315,6 +318,70 @@ def test_lifecycle_machine_contract_matches_schema():
         columns = {r[0] for r in pg.execute("select column_name from information_schema.columns where table_schema='v4' and table_name='security_lifecycle_facts'").fetchall()}
     assert set(contract["required_fields"]) <= columns
     assert contract["status"] == "CONTRACT_FROZEN_IMPLEMENTED_IN_V4_SCHEMA"
+
+
+def test_r5_security_lifecycle_history_contract_matches_formal_schema():
+    contract = json.loads((ROOT / "config/v4_security_lifecycle_history_v1.json").read_text("utf-8"))
+    with connect() as pg:
+        columns = {r[0] for r in pg.execute(
+            "select column_name from information_schema.columns where table_schema='v4' and table_name='security_lifecycle_history'"
+        ).fetchall()}
+        migration = pg.execute(
+            "select checksum_sha256 from v4_meta.schema_migrations where version='V4_SECURITY_LIFECYCLE_HISTORY_R5_V1'"
+        ).fetchone()
+        triggers = {r[0] for r in pg.execute(
+            "select tgname from pg_trigger where tgrelid='v4.security_lifecycle_history'::regclass and not tgisinternal"
+        ).fetchall()}
+    assert set(contract["required_fields"]) <= columns
+    assert migration is not None
+    assert {"v4_security_lifecycle_history_revision_guard", "v4_security_lifecycle_history_append_only"} <= triggers
+
+
+def test_lifecycle_history_late_correction_is_append_only_and_cutoff_selectable():
+    suffix = uuid.uuid4().hex
+    fact_key = f"LIFECYCLE-{suffix}"
+    security_id = f"SEC-{suffix[:32].upper()}"
+    first_id, later_id = f"LIFE-R1-{suffix}", f"LIFE-R2-{suffix}"
+    effective_from = date(2020, 1, 1)
+    with connect() as pg, rollback_only(pg):
+        now = pg.execute("select now()::timestamptz").fetchone()[0]
+        later = pg.execute("select now() + interval '10 days'").fetchone()[0]
+        for source_id, rev, observed, parent, digest in (
+            (first_id, 1, now, None, "1" * 64),
+            (later_id, 2, later, first_id, "2" * 64),
+        ):
+            pg.execute(
+                """insert into v4.source_revisions(source_revision_id,logical_fact_id,revision_no,payload,digest,
+                     provider_available_at,observed_at,ingested_at,system_available_at,supersedes_revision_id,
+                     effective_from,effective_to)
+                   values (%s,%s,%s,'{}',%s,null,%s,%s,%s,%s,%s,null)""",
+                (source_id, fact_key, rev, digest, observed, observed, observed, parent, effective_from),
+            )
+            pg.execute(
+                """insert into v4.security_lifecycle_history(lifecycle_fact_key,security_id,symbol,security_type,
+                     board,list_date,delist_date,effective_from,effective_to,status,quality,source_contract_id,
+                     provider_available_at,observed_at,ingested_at,system_available_at,source_revision_id,
+                     supersedes_revision_id,source_identity)
+                   values (%s,%s,'SH.600000','A_STOCK','MAIN',%s,%s,%s,null,'LISTED',%s,'TEST_LIFECYCLE_V1',
+                     null,%s,%s,%s,%s,%s,'test-source')""",
+                (fact_key, security_id, effective_from, None if rev == 1 else date(2025, 1, 1),
+                 effective_from, f"REV{rev}", observed, observed, observed, source_id, parent),
+            )
+        as_recorded = pg.execute(
+            "select source_revision_id from v4.security_lifecycle_history where lifecycle_fact_key=%s and system_available_at<=%s order by system_available_at desc limit 1",
+            (fact_key, now),
+        ).fetchone()[0]
+        corrected = pg.execute(
+            "select source_revision_id from v4.security_lifecycle_history where lifecycle_fact_key=%s and system_available_at<=%s order by system_available_at desc limit 1",
+            (fact_key, later),
+        ).fetchone()[0]
+        assert as_recorded == first_id
+        assert corrected == later_id
+        assert pg.execute("select count(*) from v4.security_lifecycle_history where lifecycle_fact_key=%s", (fact_key,)).fetchone()[0] == 2
+        pg.execute("savepoint lifecycle_append_only_guard")
+        with pytest.raises(psycopg.Error, match="V4_APPEND_ONLY_TABLE"):
+            pg.execute("delete from v4.security_lifecycle_history where lifecycle_fact_key=%s", (fact_key,))
+        pg.execute("rollback to savepoint lifecycle_append_only_guard")
 
 
 def test_membership_machine_contract_matches_schema():

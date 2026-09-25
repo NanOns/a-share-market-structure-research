@@ -38,8 +38,8 @@
     "unsupported_event_categories": "FAIL_CLOSED"
   },
   "acceptance": {
-    "pass_requires": ["archive_hash_verified", "zip_to_extracted_snapshot_file_hashes_verified", "all_day_files_retained_and_individually_profiled", "current_a_stock_validation_pass", "accepted_a_stock_overlap_evidence", "canonical_source_priority_and_selection_manifest_accepted", "source_security_key_to_canonical_identity_map_accepted", "historical_lifecycle_and_evaluable_universe_built_by_date", "adjusted_canonical_empirical_acceptance_pass", "as_recorded_source_history_policy_satisfied"],
-    "blocked_until": ["historical_identity_and_lifecycle_facts_verified", "historical_evaluable_universe_receipts_pass", "adjusted_real_action_sample_acceptance_pass"],
+    "pass_requires": ["archive_hash_verified", "zip_to_extracted_snapshot_file_hashes_verified", "all_day_files_retained_and_individually_profiled", "current_a_stock_validation_pass", "accepted_a_stock_overlap_evidence", "canonical_source_priority_and_selection_manifest_accepted", "stable_security_entity_identity_accepted", "exact_dated_historical_rosters_accepted", "official_bse_lifecycle_and_aliases_accepted", "formal_revisionable_security_lifecycle_history_materialized", "historical_lifecycle_and_evaluable_universe_built_by_date", "source_exceptions_classified_with_zero_unexplained_core_a_stock", "as_recorded_source_history_policy_satisfied", "final_stage_and_test_receipts_bound_to_head"],
+    "blocked_until": ["historical_identity_and_lifecycle_facts_verified", "exact_dated_historical_roster_receipt_pass", "bse_identity_resolution_complete", "formal_lifecycle_history_materialization_verified", "historical_evaluable_universe_receipts_pass", "source_exception_classification_pass", "as_recorded_history_policy_sealed"],
     "degraded_scopes": [],
     "prohibited": ["write_to_tdx_root", "scanner", "factor", "adjusted_history_synthesis", "production_cutover"]
   }

@@ -22,6 +22,7 @@ sys.path.insert(0, str(ROOT / "src"))
 from v4.contracts.source_overlap import sessions_from_index_chains  # noqa: E402
 from tdx.day_reader import DAY_STRUCT, validate_day_file  # noqa: E402
 from workbench_analysis.baostock_supplemental import _atomic_json  # noqa: E402
+from workbench_analysis.security_entity_identity import bao_source_entity  # noqa: E402
 
 PACKAGE_SHA = "b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f"
 BUNDLE_ID = "6122afa9db83170f7b442d5ecc5c7c9287b9dd6b04c4d53729d55f71f7dd99d2"
@@ -182,7 +183,8 @@ def main() -> int:
                                "EVALUABLE_BAR_AVAILABLE" if has_bar else "LISTED_BAR_MISSING_UNKNOWN")
                 day_boundary_unknown += int(boundary_unknown)
                 day_evaluable += int(has_bar and not boundary_unknown)
-                canonical_id = code.upper() if source_match else None
+                identity = bao_source_entity(code.split(".", 1)[0], code, facts.get(code, {}).get("listed_from"))
+                canonical_id = identity["security_id"] if source_match else None
                 quality = "DATED_LISTING_FACT_AND_VALID_TDX_BAR" if has_bar else (
                     "DIRECT_CODE_MATCH_BAR_COVERAGE_UNKNOWN" if source_match else "SOURCE_IDENTITY_OR_HISTORY_UNRESOLVED")
                 membership_rows.append({
@@ -197,6 +199,7 @@ def main() -> int:
                     "provider_trade_status": None,
                     "membership_basis": "RECONSTRUCTED_CORRECTED",
                     "quality": quality,
+                    "identity_quality": identity["identity_quality"] if source_match else "UNMAPPED_LISTING_KEY_ONLY",
                 })
                 digest_items.append(f"{code}\0{eligibility}\n")
             day_digest = hashlib.sha256("".join(digest_items).encode("ascii")).hexdigest()
@@ -270,9 +273,9 @@ def main() -> int:
                     + (["SOURCE_FILE_VALIDATION_ERRORS"] if bar_source_errors else [])
                     + (["THREE_DATED_ROSTER_CROSSCHECKS_FAILED"] if any(x["status"] != "PASS" for x in roster_validations) else [])
                     + (["OUTDATE_BOUNDARY_SEMANTICS_NOT_UNIFORM"] if any(x.get("status") != "PASS" for x in boundary_probe.get("cases", [])) else [])
-                    + ["DAILY_TRADE_STATUS_NOT_OBSERVED"]
-                    + ["ONLINE_MODEL_INDEPENDENT_ACCEPTANCE", "FORMAL_CALENDAR_ACCEPTANCE", "ADJUSTED_HISTORY_AND_PRICE_LIMIT_ACCEPTANCE"],
-        "next_stage": "V4_01_FORMAL_IDENTITY_LIFECYCLE_AND_ADJUSTMENT_ACCEPTANCE",
+                    + ["STABLE_SECURITY_ENTITY_MAP_NOT_ACCEPTED", "EXACT_DATED_HISTORICAL_ROSTERS_NOT_ACCEPTED",
+                       "BSE_LIFECYCLE_AND_ALIAS_CLOSURE_PENDING", "SOURCE_EXCEPTION_CLASSIFICATION_OPEN"],
+        "next_stage": "V4_01_R5_EXACT_DATED_ROSTERS_AND_BSE_IDENTITY_CLOSURE",
     }
     receipt_path = ROOT / args.receipt
     _atomic_json(receipt_path, receipt)

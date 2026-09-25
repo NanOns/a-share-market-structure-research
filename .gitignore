@@ -23,6 +23,15 @@ reports/
 logs/
 runtime/
 
+# Large versioned R4/R5 evidence remains in the ignored local artifact store.
+# Commit only hashes, counts, bounded samples, validation reports, and receipts.
+data/v4/historical_universe/v4_01_reconstructed_a_stock_universe_R4_20260925.jsonl.gz
+data/v4/artifact_store/v4_01/
+reports/v4_01/canonical_source_selection_R4_20260925.json
+reports/v4_01/baostock_lifecycle_facts_R4_20260925.json
+reports/v4_01/baostock_lifecycle_probe_R4_20260925.json
+reports/v4_01/v4_01_security_inventory_*.csv
+
 # External source/reference checkouts
 references/
 

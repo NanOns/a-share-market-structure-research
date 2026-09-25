@@ -258,7 +258,7 @@ def main() -> int:
     expected_refresh_matched = integration.get("source_refresh_volume_revision_rows", 0) == expected_refresh
     integration_pass = expected_refresh_matched and integration.get("local_priority_rows", 0) == expected_refresh
     blocked = ["CANONICAL_IDENTITY_MAPPING_PENDING", "HISTORICAL_LIFECYCLE_AND_EVALUABLE_UNIVERSE_PENDING",
-               "ADJUSTED_CANONICAL_EMPIRICAL_ACCEPTANCE_PENDING", "AS_RECORDED_HISTORY_POLICY_PENDING"]
+               "AS_RECORDED_HISTORY_POLICY_PENDING"]
     if package_errors or local_errors:
         blocked.append("INVALID_OR_UNIDENTIFIED_SOURCE_FILES_RETAINED_AND_EXCLUDED_FROM_SELECTION")
     receipt = {

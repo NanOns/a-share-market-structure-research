@@ -357,11 +357,12 @@ def main() -> int:
     archive_sha = sha256_file(archive_output)
     status = "BLOCKED"
     blocked_scopes = [
-        "R2_SOURCE_PRIORITY_AND_CANONICAL_SELECTION_NOT_IMPLEMENTED",
-        "R2_SOURCE_SYMBOL_TO_CANONICAL_IDENTITY_MAP_NOT_ACCEPTED",
-        "R2_HISTORICAL_LIFECYCLE_AND_EVALUABLE_UNIVERSE_NOT_BUILT",
-        "R2_ADJUSTED_CANONICAL_EMPIRICAL_ACCEPTANCE_OPEN",
-        "R2_AS_RECORDED_SOURCE_HISTORY_NOT_AVAILABLE",
+        "R5_STABLE_SECURITY_ENTITY_IDENTITY_NOT_ACCEPTED",
+        "R5_EXACT_DATED_HISTORICAL_ROSTER_NOT_ACCEPTED",
+        "R5_BSE_OFFICIAL_LIFECYCLE_CLOSURE_PENDING",
+        "R5_FORMAL_LIFECYCLE_FACTS_AND_FINAL_UNIVERSE_NOT_ACCEPTED",
+        "R5_SOURCE_EXCEPTION_CLASSIFICATION_OPEN",
+        "R5_AS_RECORDED_RECONSTRUCTED_LINEAGE_POLICY_SEAL_PENDING",
     ]
     if malformed or invalid_identity_files:
         blocked_scopes.append("NONCORE_OR_UNIDENTIFIED_BAR_VALIDATION_ERRORS")
@@ -393,8 +394,8 @@ def main() -> int:
         "degraded_scopes": [],
         "blocked_scopes": blocked_scopes,
         "stage_completion_authorized": False,
-        "acceptance": f"Package hash/ZIP integrity, {day_file_count} profiled .day files / {day_record_count} records, current A-stock source validation, and prior 60-session A_STOCK overlap evidence were rechecked. These source checks do not satisfy R2 source selection, canonical identity, lifecycle/PIT universe, AS_RECORDED, or adjusted-history acceptance; stage completion is BLOCKED. {len(malformed)} files contain non-core or unidentified validation errors ({invalid_identity_files} unclassifiable filename); all raw entries remain retained.",
-        "next_stage": "V4-01_REPAIR_SOURCE_SELECTION_IDENTITY_LIFECYCLE_PIT_AND_ADJUSTMENT",
+        "acceptance": f"Package hash/ZIP integrity, {day_file_count} profiled .day files / {day_record_count} records, current A-stock source validation, and prior 60-session A_STOCK overlap evidence were rechecked. Source selection has since been accepted as a separate R4 substage. R5 stable identity, exact dated rosters, official BSE closure, formal lifecycle/final universe, source exceptions, and lineage policy remain gated; adjusted history, calendar, period, trading status, temporal leakage and price limit belong to V4-02 and are not V4-01 blockers. Stage completion remains BLOCKED. {len(malformed)} raw files with non-core or unidentified validation errors remain preserved ({invalid_identity_files} unclassifiable filename).",
+        "next_stage": "V4-01_R5_STABLE_IDENTITY_EXACT_ROSTERS_BSE_AND_FINAL_UNIVERSE",
         "tdx_root_write_count": 0,
         "database_write_count": 0,
         "network_download_count": 0,

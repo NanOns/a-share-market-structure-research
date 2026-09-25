@@ -1,0 +1,41 @@
+{
+  "acceptance_limitations": [
+    "BSE official page bytes were blocked by HTTP 403; extracted official-page search rendering is a candidate, not a verifiable primary-file digest.",
+    "100 unmatched BJ.920xxx stock-like keys require official listing-date evidence.",
+    "17 unmatched BJ.810/821/899 keys remain non-equity candidates pending independent instrument-type closure."
+  ],
+  "contract_id": "SECURITY_ENTITY_IDENTITY_V1",
+  "execution_identity": {
+    "input_commit": "fd3941f2bd6099ee934de88a7dfce23b1796ea03",
+    "script_sha256": "d50f0c4f7617154dcf81658f1eef83cbf408ad864e311f6c519ff12aec392366"
+  },
+  "identity_rule": "source_security_key is an alias, never security_id; stable entity identity includes exchange, lifecycle anchor and listing date",
+  "inputs": {
+    "bse_records_sha256": "ff32532b1b45840b1b6b8b608f0aeb4a061ff9c6537bbfc30dfdaab40d37dc4e",
+    "bse_source_sha256": "6866c8771de79e3c3832a270e72c62d03f03a5d74687fc8447484b2e1ae662fa",
+    "lifecycle_facts_sha256": "ecdd48aa781e9160b139f6ffc6ddd85f48308b0a9ba1a7f8e5ae1f860df68c61",
+    "source_selection_sha256": "67771e4d5a11d392dd0cc2d0c3c9e881a9e6e7f93ba14af4783bf1bcbd0d78da"
+  },
+  "observed_at_utc": "2026-09-25T15:09:46+00:00",
+  "output": {
+    "path": "data/v4/artifact_store/v4_01/security_entity_map_R5_20260925.json",
+    "record_count": 6053,
+    "sha256": "e05f2ea79a91b0b84b48043a2ae7fbf7b0aefc7b954de61857e8f3db854627de"
+  },
+  "status": "BLOCKED",
+  "summary": {
+    "bj_alias_source_key_resolved_count": 496,
+    "bj_source_key_count": 613,
+    "bj_unresolved_count": 101,
+    "bse_alias_pairs_same_identity": 248,
+    "bse_alias_pairs_touched": 248,
+    "core_a_stock_unexplained_count": 2997,
+    "duplicate_symbol_reuse_conflicts": [],
+    "non_core_candidate_count": 3357,
+    "source_key_count": 12508,
+    "stable_identity_rows": 6053,
+    "unique_security_ids": 5805,
+    "unresolved_count": 3098
+  },
+  "version": "1.0.0"
+}

@@ -4,7 +4,7 @@
   "upgrade_contract": "V4.2.2 REV2",
   "upgrade_contract_sha256": "744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd",
   "input_commit": "a4b3412b33e3335fa48a9f497a12e9865606ecc2",
-  "output_commit": "8506cf9265275750f1bcb0950fa8fd2935f0d52a",
+  "output_commit": "c4c13ad303674e2085c4d31e12c9e07e5f33fdd7",
   "phase0_status": "FULL_PASS",
   "v4_01_entry_permission": "AUTHORIZED",
   "scanner_permission": "NOT_APPLICABLE_UNTIL_V4_05",
@@ -82,6 +82,7 @@
   "a_stock_identity_mismatches": 0,
   "test_result": "PASS",
   "test_count": 25,
-  "final_head_at_acceptance_payload_commit": "8506cf9265275750f1bcb0950fa8fd2935f0d52a",
-  "verified_at_local": "2026-09-25"
+  "final_head_at_acceptance_payload_commit": "c4c13ad303674e2085c4d31e12c9e07e5f33fdd7",
+  "verified_at_local": "2026-09-25",
+  "receipt_seal_note": "This receipt records the exact HEAD containing the accepted implementation and acceptance documentation before the receipt-only seal commit; a commit cannot contain its own hash."
 }

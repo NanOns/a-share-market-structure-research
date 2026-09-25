@@ -112,7 +112,9 @@ def main() -> int:
                 raise BaoStockError("B6_INSUFFICIENT_LOCAL_PROVIDER_OVERLAP")
 
             counts = {"security_queries": 0, "date_pairs": 0, "exact_close": 0,
-                      "exact_volume": 0, "exact_amount": 0, "all_three_exact": 0}
+                      "exact_volume": 0, "exact_amount": 0, "all_three_exact": 0,
+                      "volume_observed_pairs": 0, "amount_observed_pairs": 0,
+                      "volume_missing_pairs": 0, "amount_missing_pairs": 0}
             close_abs, volume_abs, amount_abs, amount_rel = [], [], [], []
             per_security = []
             compare_hashes = []
@@ -134,15 +136,27 @@ def main() -> int:
                 for day in common:
                     lrow, srow = local[day], source[day]
                     dc = abs(float(lrow["close"]) - srow.close_price_cny)
-                    dv = abs(float(lrow["volume"]) - srow.volume_shares)
-                    da = abs(float(lrow["amount"]) - srow.amount_cny)
                     counts["date_pairs"] += 1
-                    close_abs.append(dc); volume_abs.append(dv); amount_abs.append(da)
-                    if lrow["amount"] or srow.amount_cny:
-                        amount_rel.append(da / max(abs(float(lrow["amount"])), abs(srow.amount_cny), 1.0))
+                    close_abs.append(dc)
                     counts["exact_close"] += dc == 0
-                    counts["exact_volume"] += dv == 0
-                    counts["exact_amount"] += da == 0
+                    dv = None
+                    da = None
+                    if srow.volume_shares is None:
+                        counts["volume_missing_pairs"] += 1
+                    else:
+                        dv = abs(float(lrow["volume"]) - srow.volume_shares)
+                        counts["volume_observed_pairs"] += 1
+                        volume_abs.append(dv)
+                        counts["exact_volume"] += dv == 0
+                    if srow.amount_cny is None:
+                        counts["amount_missing_pairs"] += 1
+                    else:
+                        da = abs(float(lrow["amount"]) - srow.amount_cny)
+                        counts["amount_observed_pairs"] += 1
+                        amount_abs.append(da)
+                        if lrow["amount"] or srow.amount_cny:
+                            amount_rel.append(da / max(abs(float(lrow["amount"])), abs(srow.amount_cny), 1.0))
+                        counts["exact_amount"] += da == 0
                     exact = dc == 0 and dv == 0 and da == 0
                     exact_all += exact
                     counts["all_three_exact"] += exact
@@ -172,7 +186,14 @@ def main() -> int:
         "successful_security_queries": counts.get("security_queries", 0),
         "date_pairs": counts.get("date_pairs", 0),
         "minimum_dates_per_successful_security": min((x["sampled_overlap_dates"] for x in per_security), default=0),
-        "exact_match_counts": {key: counts.get(key, 0) for key in ("exact_close", "exact_volume", "exact_amount", "all_three_exact")},
+        "exact_match_counts": {
+            "close": {"exact": counts.get("exact_close", 0), "observed": counts.get("date_pairs", 0)},
+            "volume": {"exact": counts.get("exact_volume", 0), "observed": counts.get("volume_observed_pairs", 0),
+                       "missing": counts.get("volume_missing_pairs", 0)},
+            "amount": {"exact": counts.get("exact_amount", 0), "observed": counts.get("amount_observed_pairs", 0),
+                       "missing": counts.get("amount_missing_pairs", 0)},
+            "all_three_exact": counts.get("all_three_exact", 0),
+        },
         "max_abs_delta": {"close": max(close_abs, default=None), "volume": max(volume_abs, default=None),
                           "amount": max(amount_abs, default=None), "amount_relative": max(amount_rel, default=None)},
         "difference_digest": hashlib.sha256("\n".join(compare_hashes).encode("ascii")).hexdigest(),

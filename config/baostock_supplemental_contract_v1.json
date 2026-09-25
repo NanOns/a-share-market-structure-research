@@ -1,6 +1,6 @@
 {
   "contract_id": "BAOSTOCK_SUPPLEMENTAL_SOURCE_V1",
-  "contract_version": "1.0.0",
+  "contract_version": "1.1.0",
   "status": "PUBLIC_ROUTE_B1_OPERATIONAL_FIELD_BINDING_PENDING",
   "runtime": {
     "package": "baostock",
@@ -25,19 +25,19 @@
     "package_auth_verified_by": "official PyPI Quick Start plus live anonymous public B0/B1 probes; VIP is an independent optional mode"
   },
   "field_map": {
-    "version": "BAOSTOCK_FIELD_MAP_V1",
+    "version": "BAOSTOCK_FIELD_MAP_V1.1",
     "source_authority": "official BaoStock Python API reference",
     "fields": {
       "date": {"type": "date", "nullable": false, "unit": "ISO_DATE", "normalization": "exact date match required"},
       "code": {"type": "string", "nullable": false, "unit": "BaoStock dotted market code", "normalization": "versioned exact identity map required"},
       "close": {"type": "decimal", "nullable": false, "unit": "CNY/share", "normalization": "numeric; fingerprint only"},
-      "volume": {"type": "integer", "nullable": false, "unit": "shares", "normalization": "integer; fingerprint only"},
-      "amount": {"type": "decimal", "nullable": false, "unit": "CNY", "normalization": "numeric; fingerprint only"},
+      "volume": {"type": "integer", "nullable": true, "unit": "shares", "normalization": "integer when present; blank is retained as null only when tradestatus=0; fingerprint only"},
+      "amount": {"type": "decimal", "nullable": true, "unit": "CNY", "normalization": "numeric when present; blank is retained as null only when tradestatus=0; fingerprint only"},
       "turn": {"type": "decimal", "nullable": true, "unit": "percent points", "normalization": "source value / 100 to fraction after field-map verification", "denominator": "circulating shares; not free-float shares"},
       "tradestatus": {"type": "enum", "nullable": false, "unit": "1=trading, 0=suspended", "normalization": "cross-check only; local dated facts remain authority"},
       "isST": {"type": "enum", "nullable": false, "unit": "1=ST, 0=not ST", "normalization": "cross-check only; local dated facts remain authority"}
     },
-    "suspension_bar_semantics": "suspended daily record may carry previous traded close as OHLC and zero volume/amount; never classify by price alone",
+    "suspension_bar_semantics": "observed suspended rows may have blank volume/amount; normalize blank as null only when tradestatus=0, never coerce to zero; a local bar remains required for binding; never classify by price alone",
     "ex_right_preclose_semantics": "exchange reference close may differ from previous raw close",
     "adjustflag": "3",
     "raw_hot_rank_payload_persistence": false
@@ -60,7 +60,7 @@
       "normalization_allowed_only_after": "source_field_map_and_unit_are_independently_verified",
       "never_guess_percent_scaling": true,
       "denominator_basis": "CIRCULATING_SHARES_AS_DEFINED_BY_PROVIDER",
-      "semantic_use_requires": "ACCEPTED_CIRCULATING_SHARE_SEMANTICS; DO_NOT_LABEL_FREE_FLOAT",
+      "semantic_use_requires": "INDEPENDENTLY_ACCEPTED_PROVIDER_DEFINED_CIRCULATING_SHARES; DO_NOT_LABEL_FREE_FLOAT",
       "strict_binding_requires": ["exact_security_identity_mapping", "exact_trade_date", "tradestatus_cross_check", "unit_normalized_close_volume_amount_fingerprint", "versioned_source_specific_tolerance"],
       "soft_binding_use": "diagnostic_only",
       "factor_contract_id": "TURNOVER_CONTEXT_V1"
@@ -102,7 +102,7 @@
     "unknown_missing_sessions_may_be_skipped": false,
     "insufficient_history_effect": "degrade_turnover_metric_only",
     "turnover_output_range": {"min": 0.0, "max": 1.0, "unit": "fraction"},
-    "semantic_basis_required": "VERIFIED_FLOAT_SHARE_OR_FREE_FLOAT_SHARE",
+    "semantic_basis_required": "ACCEPTED_PROVIDER_DEFINED_CIRCULATING_SHARES",
     "core_eligibility_or_ranking_effect": "NONE"
   },
   "provenance": {

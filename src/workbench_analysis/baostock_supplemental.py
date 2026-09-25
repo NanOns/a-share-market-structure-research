@@ -24,8 +24,8 @@ from zoneinfo import ZoneInfo
 
 
 CONTRACT_ID = "BAOSTOCK_SUPPLEMENTAL_SOURCE_V1"
-CONTRACT_VERSION = "1.0.0"
-FIELD_MAP_VERSION = "BAOSTOCK_FIELD_MAP_V1"
+CONTRACT_VERSION = "1.1.0"
+FIELD_MAP_VERSION = "BAOSTOCK_FIELD_MAP_V1.1"
 PUBLIC_PACKAGE_VERSION = "0.9.3"
 VIP_PACKAGE_VERSION = "0.9.4"
 SUPPORTED_PACKAGE_VERSIONS = {PUBLIC_PACKAGE_VERSION, VIP_PACKAGE_VERSION}
@@ -58,8 +58,8 @@ class NormalizedRow:
     source_code: str
     trade_date: str
     close_price_cny: float
-    volume_shares: int
-    amount_cny: float
+    volume_shares: int | None
+    amount_cny: float | None
     turn_fraction: float | None
     tradestatus: str
     is_st: str
@@ -86,13 +86,19 @@ def normalize_row(query_code: str, row: dict[str, Any]) -> NormalizedRow:
     try:
         source_code = str(row["code"]).strip()
         trade_date = str(row["date"]).strip()
-        close = float(row["close"])
-        volume_number = float(row["volume"])
-        volume = int(volume_number)
-        amount = float(row["amount"])
-        turn = normalize_turn(row.get("turn"))
         tradestatus = str(row["tradestatus"]).strip()
         is_st = str(row["isST"]).strip()
+        close = float(row["close"])
+        volume_raw = str(row.get("volume", "")).strip()
+        amount_raw = str(row.get("amount", "")).strip()
+        # BaoStock returns blank volume/amount on some suspended daily rows.
+        # Preserve that absence; never silently coerce it to zero.
+        if tradestatus != "0" and (not volume_raw or not amount_raw):
+            raise BaoStockError("INVALID_BAOSTOCK_ROW")
+        volume_number = float(volume_raw) if volume_raw else None
+        volume = int(volume_number) if volume_number is not None else None
+        amount = float(amount_raw) if amount_raw else None
+        turn = normalize_turn(row.get("turn"))
     except (KeyError, TypeError, ValueError, OverflowError) as exc:
         raise BaoStockError("INVALID_BAOSTOCK_ROW") from exc
     try:
@@ -101,7 +107,10 @@ def normalize_row(query_code: str, row: dict[str, Any]) -> NormalizedRow:
         raise BaoStockError("INVALID_BAOSTOCK_ROW") from exc
     if not source_code or not math.isfinite(close) or close < 0:
         raise BaoStockError("INVALID_BAOSTOCK_ROW")
-    if not math.isfinite(volume_number) or volume_number != volume or volume < 0 or not math.isfinite(amount) or amount < 0:
+    if ((volume_number is not None and (not math.isfinite(volume_number) or volume_number != volume or volume < 0))
+            or (amount is not None and (not math.isfinite(amount) or amount < 0))):
+        raise BaoStockError("INVALID_BAOSTOCK_ROW")
+    if tradestatus != "0" and (volume is None or amount is None):
         raise BaoStockError("INVALID_BAOSTOCK_ROW")
     if tradestatus not in {"0", "1"} or is_st not in {"0", "1"}:
         raise BaoStockError("INVALID_BAOSTOCK_STATUS")
@@ -126,6 +135,8 @@ def strict_fingerprint(
     """Strictly bind only exact identity/date plus accepted source-specific limits."""
     if (local.get("security_id") != source.query_code or source.source_code != source.query_code
             or local.get("trade_date") != int(source.trade_date.replace("-", ""))):
+        return False
+    if source.volume_shares is None or source.amount_cny is None:
         return False
     pairs = {
         "close": (float(local["close"]), source.close_price_cny),

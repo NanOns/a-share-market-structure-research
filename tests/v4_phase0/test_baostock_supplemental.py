@@ -36,6 +36,24 @@ def test_turn_is_percent_points_and_fraction_conversion_is_explicit():
         bao.normalize_row("sh.600000", source_row(volume="1.5"))
 
 
+def test_suspended_blank_volume_and_amount_remain_unknown_not_zero():
+    row = bao.normalize_row("sh.600000", source_row(volume="", amount="", tradestatus="0"))
+    assert row.volume_shares is None
+    assert row.amount_cny is None
+    local = {"security_id": "sh.600000", "trade_date": 20260901,
+             "close": row.close_price_cny, "volume": 0, "amount": 0,
+             "tradestatus": "0", "isST": "0"}
+    contract = {"acceptance": "INDEPENDENTLY_ACCEPTED", "contract_id": "T", "version": "1",
+                "evidence_digest": "e", "accepted_by": "a", "accepted_at_utc": "t",
+                "tolerances": {"close": 0, "volume": 0, "amount": 0}}
+    assert bao.evaluate_binding(local, row, contract) == "UNBOUND"
+
+
+def test_blank_volume_and_amount_for_trading_row_fail_closed():
+    with pytest.raises(bao.BaoStockError, match="INVALID_BAOSTOCK_ROW"):
+        bao.normalize_row("sh.600000", source_row(volume="", amount="", tradestatus="1"))
+
+
 def test_normalized_receipt_digest_is_deterministic_and_contains_no_credentials():
     first = bao.normalize_row("sh.600000", source_row())
     second = bao.normalize_row("sh.600000", source_row())

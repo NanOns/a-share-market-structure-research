@@ -25,6 +25,8 @@ from tdx.day_reader import validate_day_file
 from tdx.security_master import classify_security, current_a_stock_ids, read_industry_assignments
 from market_calendar.trading_calendar import read_day_dates
 from workbench_analysis.tdx_local_snapshot import verify_local_snapshot
+from workbench_analysis.tdx_snapshot import verify_zip_snapshot
+from workbench_analysis.source_bundle_identity import verify_source_bundle_identity
 
 PACKAGE_SHA = "b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f"
 SOURCE_BUNDLE_ID = "6122afa9db83170f7b442d5ecc5c7c9287b9dd6b04c4d53729d55f71f7dd99d2"
@@ -127,10 +129,12 @@ def main() -> int:
         "input_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
         "script_sha256": sha256_file(Path(__file__).resolve()),
         "contract_sha256": sha256_file(ROOT / "config/v4_01_bootstrap_contract_v1.json"),
+        "zip_verifier_sha256": sha256_file(ROOT / "src/workbench_analysis/tdx_snapshot.py"),
     }
     bundle_path = ROOT / "data/source_bundles" / SOURCE_BUNDLE_ID / "source_bundle.json"
     bundle = json.loads(bundle_path.read_text(encoding="utf-8"))
-    if bundle.get("source_bundle_id") != SOURCE_BUNDLE_ID or bundle.get("package", {}).get("sha256") != PACKAGE_SHA:
+    bundle_identity = verify_source_bundle_identity(bundle, SOURCE_BUNDLE_ID)
+    if bundle.get("package", {}).get("sha256") != PACKAGE_SHA:
         raise ValueError("SOURCE_BUNDLE_IDENTITY_MISMATCH")
     package_path = ROOT / bundle["package"]["staged_path"]
     if not package_path.is_file() or package_path.stat().st_size != bundle["package"]["byte_count"]:
@@ -221,6 +225,14 @@ def main() -> int:
     if bundle.get("validation", {}).get("status") != "PASS" or bundle["validation"].get("normal_a_share_invalid_count") != 0:
         raise ValueError("CURRENT_A_STOCK_VALIDATION_NOT_ACCEPTED")
 
+    inventory_by_path = {
+        item["relative_path"]: {"byte_count": str(item["byte_count"]), "sha256": item["sha256"]}
+        for item in inventory
+    }
+    zip_extraction_verification = verify_zip_snapshot(
+        archive_output, extracted_root, inventory_by_path, expected_entries, content_digest.hexdigest()
+    )
+
     index_dates = read_day_dates(extracted_root / "sh/lday/sh000001.day")
     formal_start = 20240925
     formal_end = int(bundle["validation"]["target_trade_date"])
@@ -254,14 +266,15 @@ def main() -> int:
     page_snapshot_sha = sha256_file(page_snapshot_path)
 
     columns = list(inventory[0]) if inventory else []
-    inventory_path = ROOT / "reports/v4_01/v4_01_security_inventory_R2_20260925.csv"
+    inventory_path = ROOT / "reports/v4_01/v4_01_security_inventory_R4_20260925.csv"
     atomic_csv(inventory_path, inventory, columns)
 
     manifest = {
         "contract_id": "V4_TDX_HISTORY_BOOTSTRAP_V1",
         "stage": "V4-01",
         "execution_identity": execution_identity,
-        "run_id": "V4_01_TDX_HISTORY_BOOTSTRAP_R2_20260925",
+        "source_bundle_identity": bundle_identity,
+        "run_id": "V4_01_TDX_HISTORY_BOOTSTRAP_R4_20260925",
         "observed_at_utc": run_at,
         "source": {
             "source_bundle_id": SOURCE_BUNDLE_ID,
@@ -293,6 +306,7 @@ def main() -> int:
             "zip_crc_status": "PASS",
             "extracted_content_digest": content_digest.hexdigest(),
             "extracted_content_digest_algorithm": "SHA256(sorted relative_path NUL byte_count NUL file_sha256 LF)",
+            "zip_extraction_verification": zip_extraction_verification,
             "parser_version": "v4-day-raw-v1.1",
             "status": "ACCEPTED_A_STOCK_SOURCE_PACKAGE_WITH_SCOPED_DEGRADATIONS",
             "failure_reason": None,
@@ -337,7 +351,7 @@ def main() -> int:
             "writes_under_tdx_root": 0,
         },
     }
-    manifest_path = ROOT / "reports/v4_01/v4_01_source_manifest_R2_20260925.json"
+    manifest_path = ROOT / "reports/v4_01/v4_01_source_manifest_R4_20260925.json"
     atomic_json(manifest_path, manifest)
     manifest_sha = sha256_file(manifest_path)
     archive_sha = sha256_file(archive_output)
@@ -369,6 +383,7 @@ def main() -> int:
             "source_manifest_sha256": manifest_sha,
             "raw_archive": archive_output.relative_to(ROOT).as_posix(),
             "raw_archive_sha256": archive_sha,
+            "zip_extraction_verification": zip_extraction_verification,
             "security_inventory": inventory_path.relative_to(ROOT).as_posix(),
             "security_inventory_rows": len(inventory),
             "overlap_report": overlap_path.relative_to(ROOT).as_posix(),
@@ -384,7 +399,7 @@ def main() -> int:
         "database_write_count": 0,
         "network_download_count": 0,
     }
-    receipt_path = ROOT / "reports/v4_01/v4_01_stage_receipt_R2_20260925.json"
+    receipt_path = ROOT / "reports/v4_01/v4_01_stage_receipt_R4_20260925.json"
     atomic_json(receipt_path, receipt)
     print(json.dumps({
         "stage": "V4-01",

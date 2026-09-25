@@ -107,6 +107,7 @@ def main() -> int:
     ledger = json.loads(ledger_path.read_text("utf-8")) if ledger_path.exists() else {"ledger_version": 1, "by_shanghai_date": {}}
     before_total = sum(int(item.get("count", 0)) for item in ledger["by_shanghai_date"].values())
     aggregate_delta = 0
+    aggregated_ledgers = ledger.setdefault("roster_shard_aggregation", {})
     worker_ledgers = []
     rollover_adjustments = []
     for _, receipt, _ in shards:
@@ -118,17 +119,23 @@ def main() -> int:
         worker_ledger_path = ROOT / ledger_name
         worker = json.loads(worker_ledger_path.read_text("utf-8"))
         worker_total = sum(int(item.get("count", 0)) for item in worker.get("by_shanghai_date", {}).values())
-        aggregate_delta += worker_total
-        worker_ledgers.append({"path": ledger_name, "sha256": sha256(worker_ledger_path),
+        worker_sha = sha256(worker_ledger_path)
+        worker_ledgers.append({"path": ledger_name, "sha256": worker_sha,
                                "request_count": worker_total})
         rollover_adjustments.extend({"ledger": ledger_name, **item}
                                     for item in worker.get("rollover_adjustments", []))
+        if ledger_name in aggregated_ledgers:
+            if aggregated_ledgers[ledger_name].get("sha256") != worker_sha:
+                raise SystemExit(f"ROSTER_LEDGER_CHANGED_AFTER_AGGREGATION:{ledger_name}")
+            continue
+        aggregate_delta += worker_total
         for day, day_doc in worker.get("by_shanghai_date", {}).items():
             target = ledger["by_shanghai_date"].setdefault(day, {"count": 0, "operations": {}})
             target["count"] = int(target.get("count", 0)) + int(day_doc.get("count", 0))
             for operation, amount in day_doc.get("operations", {}).items():
                 target.setdefault("operations", {})[operation] = int(target["operations"].get(operation, 0)) + int(amount)
-    after_total = before_total + aggregate_delta
+        aggregated_ledgers[ledger_name] = {"sha256": worker_sha, "request_count": worker_total}
+    after_total = sum(int(item.get("count", 0)) for item in ledger["by_shanghai_date"].values())
     today = datetime.now(ZoneInfo("Asia/Shanghai")).date().isoformat()
     today_total = int(ledger["by_shanghai_date"].get(today, {}).get("count", 0))
     if after_total > 45_000 or today_total > 40_000:
@@ -161,7 +168,7 @@ def main() -> int:
                                       "configured_soft_cap": 40_000, "configured_hard_cap": 45_000,
                                       "provider_limit": 50_000, "shard_ledgers": worker_ledgers,
                                       "rollover_adjustments": rollover_adjustments},
-                   "worker_receipts": [{"path": path, "sha256": sha256(ROOT / path)} for path, _, _ in shards],
+                   "worker_receipts": [{"path": str(path), "sha256": sha256(ROOT / path)} for path, _, _ in shards],
                    "retry_attempts": attempts,
                    "query_failure_count_total": sum(int(row.get("query_failure_count", 0)) for row in attempts)
                                                 + sum(int(receipt.get("query_failure_count", 0)) for _, receipt, _ in shards),

@@ -38,3 +38,7 @@
 # Repair addendum (2026-09-25): `FULL_PASS / V4_EMPTY_DATABASE_PUBLICATION_NAMESPACE_SCHEMA_READY`
 
 The fresh `v4` PostgreSQL schema now contains versioned publications, accepted heads, consumed-source manifests, revision events, explicit model namespaces and namespace migration manifests, namespace-bound state heads, and append-only event-observation revisions. Hash-checked migrations are `V4_PHASE0_FOUNDATION_V1` and `V4_PHASE0_NAMESPACE_INTEGRITY_V1`. Database tests prove same-day append-only revisions, accepted-head target checks, prior-state namespace isolation, source-revision fork rejection, and no rewriting a previous publication after a correction. The clean database contains no synthetic or accepted publication rows.
+
+## R2 targeted repair addendum — 2026-09-25
+
+R2 `f51e71ec8a3c02a5551bf07f66366856cf146182a76729b549871a680dcd0fe0` withdraws the former `(publication_id, revision)` identity model. Forward migrations now use a globally unique opaque `publication_id` for each physical revision, explicit `publication_lineage_id`/`revision_no`, unique namespace/date/core revision, a same-day parent FK with increasing sequence and single-successor index, and explicit market-calendar session predecessor/digest or gap. Publication heads and dependents reference the unique publication identity. 12 PostgreSQL schema tests pass; stage `FULL_PASS`.

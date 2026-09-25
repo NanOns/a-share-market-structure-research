@@ -40,3 +40,7 @@ REV2 锁定如下合同语义，供 V4-00C 及后续数据阶段实现：
 # Repair addendum (2026-09-25): `DEGRADED_PASS / CONTRACT_COMPLETE_WITH_DECLARED_HISTORICAL_LIMITATIONS`
 
 Machine contracts were added at `config/v4_research_universe_v1.json`, `config/v4_security_lifecycle_fact_v1.json`, and `config/v4_pit_membership_fact_v1.json`; the fresh PostgreSQL schema stores effective interval, system-available time, source revision, supersedes, source identity, and quality. Current membership replay remains diagnostic. Missing bars remain unknown and never imply suspension/delisting. Historical PIT lifecycle/membership is explicitly unavailable pending V4-01 bootstrap and append-only observations; this is nonblocking for V4-01 RAW A-stock bootstrap.
+
+## R2 targeted repair addendum — 2026-09-25
+
+R2 `f51e71ec8a3c02a5551bf07f66366856cf146182a76729b549871a680dcd0fe0` supersedes the earlier schema-status claim. Migrations `V4_PHASE0_CONTRACT_ALIGNMENT_R2` and `V4_FACT_SOURCE_GUARD_TABLE_SPECIFIC_FIELDS_R2` add lifecycle provider availability/supersedes fields and revisionable `v4.security_membership_facts`; DB triggers compare fact timestamps and correction lineage to `source_revisions`. Machine-contract/schema tests pass. Stage status is `DEGRADED_PASS`: historical PIT facts are not imported and transfer to V4-01; no schema-contract conflict remains.

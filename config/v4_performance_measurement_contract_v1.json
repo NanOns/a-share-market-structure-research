@@ -1,10 +1,125 @@
 {
   "contract_id": "V4_PERFORMANCE_MEASUREMENT_CONTRACT_V1",
-  "version": "1.0.0",
-  "status": "FROZEN_MEASUREMENT_CONTRACT_NO_V4_PIPELINE_RUN_IN_PHASE0",
-  "fields": ["wall_time", "peak_ram", "cpu_utilization", "stage_time", "rows_in", "rows_out", "postgres_write_time", "api_p50", "api_p95", "payload_size", "db_growth", "cache_state", "hardware_identity", "dataset_identity"],
-  "collection_stages": ["V4-01", "V4-02", "V4-03", "V4-05"],
+  "version": "1.1.0",
+  "stage_id": "V4-00H",
+  "status": "REV2_SECTION_74_BASELINE_SCOPE_RECORDED",
+  "governing_contract": "DA-MSR-V4.2.2-CODEX-REV2 §74",
+  "measurement_stage": "V4-00 Phase 0 baseline",
+  "fields": [
+    "daily_pipeline_wall_time",
+    "peak_ram",
+    "cpu_utilization",
+    "factor_compute_time",
+    "sector_stage_time",
+    "radar_build_time",
+    "focus_time",
+    "postgres_write_time",
+    "api_p50",
+    "api_p95",
+    "homepage_payload",
+    "db_size_growth",
+    "stage_time",
+    "rows_in",
+    "rows_out",
+    "cache_state",
+    "hardware_identity",
+    "dataset_identity"
+  ],
+  "unavailable_metric_policy": "Record NOT_IMPLEMENTED when the V4 component does not exist; record NOT_MEASURED when R2 explicitly prohibits rerunning a prior workload. Never substitute legacy values or invented thresholds.",
+  "measurement_matrix": [
+    {
+      "metric": "daily_pipeline_wall_time",
+      "status": "NOT_IMPLEMENTED",
+      "owner_stage": "V4-01 after RAW bootstrap"
+    },
+    {
+      "metric": "fresh_schema_rebuild",
+      "status": "MEASURED_IN_ISOLATED_TEMPORARY_DATABASE",
+      "owner_stage": "V4-00"
+    },
+    {
+      "metric": "contract_test_wall_time",
+      "status": "MEASURED_BY_PYTEST_RECEIPT",
+      "owner_stage": "V4-00"
+    },
+    {
+      "metric": "api_ui_legacy_reference",
+      "status": "NOT_AVAILABLE_LOCAL_API_OFFLINE",
+      "owner_stage": "V4-00H diagnostic reference only"
+    },
+    {
+      "metric": "peak_ram",
+      "status": "MEASURED_FOR_PHASE0_COMMANDS",
+      "owner_stage": "V4-00"
+    },
+    {
+      "metric": "cpu_utilization",
+      "status": "MEASURED_FOR_PHASE0_COMMANDS",
+      "owner_stage": "V4-00"
+    },
+    {
+      "metric": "factor_compute_time",
+      "status": "NOT_IMPLEMENTED",
+      "owner_stage": "V4-03 or capability implementation"
+    },
+    {
+      "metric": "sector_stage_time",
+      "status": "NOT_IMPLEMENTED",
+      "owner_stage": "V4-08"
+    },
+    {
+      "metric": "radar_build_time",
+      "status": "NOT_IMPLEMENTED",
+      "owner_stage": "V4-05"
+    },
+    {
+      "metric": "focus_time",
+      "status": "NOT_IMPLEMENTED",
+      "owner_stage": "V4-05"
+    },
+    {
+      "metric": "postgres_write_time",
+      "status": "MEASURED_IN_ROLLBACK_PROBE",
+      "owner_stage": "V4-00"
+    },
+    {
+      "metric": "api_p50",
+      "status": "NOT_AVAILABLE_LOCAL_API_OFFLINE",
+      "owner_stage": "V4-00H diagnostic reference only"
+    },
+    {
+      "metric": "api_p95",
+      "status": "NOT_AVAILABLE_LOCAL_API_OFFLINE",
+      "owner_stage": "V4-00H diagnostic reference only"
+    },
+    {
+      "metric": "homepage_payload",
+      "status": "NOT_AVAILABLE_LOCAL_API_OFFLINE",
+      "owner_stage": "V4-00H diagnostic reference only"
+    },
+    {
+      "metric": "db_size_growth",
+      "status": "MEASURED_BEFORE_AFTER_ROLLBACK_PROBE",
+      "owner_stage": "V4-00"
+    },
+    {
+      "metric": "00D_overlap_runtime",
+      "status": "NOT_MEASURED_R2_PROHIBITS_RERUN",
+      "owner_stage": "V4-00D"
+    }
+  ],
+  "collection_stages": [
+    "V4-00",
+    "V4-01",
+    "V4-02",
+    "V4-03",
+    "V4-05"
+  ],
   "first_full_performance_acceptance": "V4-05_REPLAY_GATE_A",
   "phase0_null_measurements_are_blockers": false,
-  "prohibitions": ["No performance claim from legacy pipeline timings", "No partition/materialized-view/cache decision without measured V4 workload"]
+  "prohibitions": [
+    "No performance claim from legacy pipeline timings",
+    "No partition/materialized-view/cache decision without measured V4 workload",
+    "Do not rerun 00D overlap as part of R2"
+  ]
 }

@@ -14,3 +14,7 @@
 | TDX boundary | No writes below `D:/new_tdx` or any configured TDX input root. The local read-only snapshot digest matched before/after the overlap run. |
 
 The physical backup is retained outside TDX and outside Git. It is not a V4 data migration input. No old publication, Focus, runtime, or history row was restored into the clean V4 database.
+
+## R2 audit-truth clarification — 2026-09-25
+
+The original conversation explicitly requested “当前库物理备份然后进行全部删除”; therefore the existing record that the user requested the physical backup is accurate and is retained. The backup remains informational and is not a Phase 0 acceptance prerequisite. The R2 card’s contrary factual premise is not adopted.

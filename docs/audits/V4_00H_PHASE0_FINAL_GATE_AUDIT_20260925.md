@@ -37,3 +37,7 @@ Until closure, keep the previous accepted V3 production/Focus heads unchanged an
 - `PRODUCTION_CUTOVER_PERMISSION = NOT_APPLICABLE_UNTIL_LATER_GATES`
 
 未把 V4-01/V4-02、历史 PIT、BaoStock live、Scanner 或真实性能采集反向设为 Phase 0 前置。A_STOCK TDX source package 已通过分层重叠验收；指数差异留作独立 diagnostic。00G框架测试、空库schema重建与 namespace/revision负例通过。阶段唯一回执：`reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT.json`。
+
+## R2 re-audit disposition — 2026-09-25
+
+The prior Phase 0 `FULL_PASS` and this audit's earlier full authorization are superseded by R2 `f51e71ec8a3c02a5551bf07f66366856cf146182a76729b549871a680dcd0fe0`. Scope-level aggregation now returns `DEGRADED_PASS`, explicitly authorizes `RAW_BOOTSTRAP`, and blocks only `MARKED_RELATIVE_BENCHMARK_CONSUMER` pending representative-sample gates. V4-01 entry is authorized only for listed required scopes and remains subject to the external audit requested by R2. Scanner permission remains `NOT_APPLICABLE_UNTIL_V4_05`.

@@ -1,143 +1,180 @@
 {
- "contract_id": "CAPABILITY_CUTOVER_AND_ROLLBACK_V1",
- "version": "1.0.0",
- "stage_id": "V4-00H",
- "status": "POLICY_FROZEN_ACCEPTANCE_GATES_OPEN",
- "input_commit": "3ef5bf63455447dd605534dc4c1717eb238a86f5",
- "capabilities": [
-  "STOCK_CORE",
-  "STOCK_SECTOR_DEPENDENT",
-  "SECTOR_STAGE",
-  "ROTATION",
-  "SECTOR_RISK_CHANGE"
- ],
- "production_permission": "SHADOW_STABLE_PASS[capability] AND FORWARD_GATE[capability] AND MIGRATION_REPLAY_PASS[capability] AND all_required_dependency_permissions",
- "shadow_stable_gate": {
-  "same_model_contract_id": true,
-  "accepted_consecutive_market_sessions": 20,
-  "missed_or_unevaluable_session_counts": 0,
-  "forbidden_events": [
-   "TEMPORAL_LEAKAGE",
-   "DUPLICATE_EPISODE_CORRUPTION",
-   "CORE_IDENTITY_VIOLATION",
-   "P0_STATE_VIOLATION"
+  "contract_id": "CAPABILITY_CUTOVER_AND_ROLLBACK_V1",
+  "version": "1.0.0",
+  "stage_id": "V4-00H",
+  "status": "POLICY_FROZEN_ACCEPTANCE_GATES_OPEN",
+  "input_commit": "e3b0a1e3029470a12cb2b9f4dd733ca24a4617a9",
+  "capabilities": [
+    "STOCK_CORE",
+    "STOCK_SECTOR_DEPENDENT",
+    "SECTOR_STAGE",
+    "ROTATION",
+    "SECTOR_RISK_CHANGE"
   ],
-  "rollback_drill_required": true,
-  "parameter_or_model_change": "reset affected capability window; shared dependency change resets all consumers"
- },
- "stock_forward_gate": {
-  "unique_signal_dates_min": 5,
-  "unique_observed_t5_logic_events_min": 30,
-  "accepted_event_types": [
-   "FIRST_PREWATCH",
-   "REENTRY_PREWATCH",
-   "NEW_CONFIRMED"
-  ],
-  "exclude_revision_duplicates": true,
-  "exclude_invalidation_as_positive_sample": true,
-  "same_model_contract_id": true,
-  "settlement_p0_count_max": 0,
-  "quality": "OBSERVED only; estimated outcomes do not satisfy gate",
-  "status": "REV2_POLICY_FROZEN_NOT_EVIDENCED"
- },
- "sector_and_rotation_forward_gates": {
-  "status": "THRESHOLDS_UNSET_SHADOW_ONLY",
-  "sector_event_types": [
-   "SECTOR_FIRST_PREWATCH",
-   "SECTOR_NEW_WARM",
-   "SECTOR_NEW_CONFIRMED"
-  ],
-  "rotation_event_types": [
-   "ROTATION_PULSE",
-   "ROTATION_ACCEPTED",
-   "ROTATION_FAILED"
-  ],
-  "counting": "per type; unique episodes and dates; failure included but cannot satisfy positive accepted-event count; pulse cannot substitute accepted; same episode event types not summed as unique episodes",
-  "required_parameters": [
-   "V4_SECTOR_MIN_UNIQUE_SIGNAL_DATES",
-   "V4_SECTOR_MIN_UNIQUE_EPISODES",
-   "V4_SECTOR_MIN_MATURED_EVENTS_BY_TYPE",
-   "V4_ROTATION_MIN_ACCEPTED_EPISODES",
-   "V4_REQUIRED_FORWARD_QUALITY"
-  ]
- },
- "benchmark_missing_and_consumer_policy": {
-  "contract_id": "FORWARD_MARKET_BENCHMARK_MISSING_POLICY_V1",
-  "frozen_t0_weights": true,
-  "delete_or_renormalize_members": false,
-  "unknown_or_missing": "no carry/no zero/no drop; retain reason and original weights",
-  "state_precedence": [
-   "IDENTITY_UNKNOWN",
-   "ADJUSTMENT_UNKNOWN",
-   "DELISTED",
-   "CONFIRMED_SUSPENSION",
-   "DATA_MISSING",
-   "ACTUAL_ENDPOINT"
-  ],
-  "OBSERVED": "all included weights have verified actual endpoint or contract-qualified terminal value on common evaluation basis; observed relative consumer only",
-  "MARKED_ESTIMATE": "separate output only when verified suspension carry price is same-basis and V4_BENCHMARK_MINIMUM_ENDPOINT_WEIGHT_COVERAGE and V4_BENCHMARK_MAXIMUM_SUSPENSION_QUOTE_AGE have accepted values and pass; never relabel OBSERVED",
-  "PARTIAL_UNVALUED": "complete relative return unavailable; observed contribution diagnostic; absolute outcome and independent capabilities continue",
-  "coverage_gate_value": null,
-  "suspension_quote_age_gate_value": null,
-  "quality_consumer_matrix_status": "UNSET_PENDING_REPRESENTATIVE_SAMPLE_ACCEPTANCE",
-  "marked_relative_permission": false
- },
- "capability_isolation": {
-  "stock_core_independent_of_sector": true,
-  "sector_dependent_stock_requires_sector_permission": true,
-  "sector_stage_requires_own_gate": true,
-  "rotation_requires_own_gate": true,
-  "sector_risk_change_requires_own_integrity_and_path_gate": true,
-  "global_pass_substitute": false,
-  "unaccepted_shared_source_is_not_a_production_dependency": true
- },
- "rollback": {
-  "preserve_previous_accepted_publication_and_focus_heads": true,
-  "candidate_head_activation": "only after capability-specific receipt passes; atomic compare-and-swap against frozen predecessor",
-  "failure_action": "keep prior accepted head; mark failed capability/date/entity/field and reason; no partial acceptance",
-  "scope": "Phase 0 schema/config/code rollback; data rollback begins before V4 shadow/production.",
-  "restore_drill": {
-   "required_for_phase0": false,
-   "current_postgres_restore_accepted": false,
-   "status": "NOT_APPLICABLE_AFTER_USER_ARCHITECTURE_DECISION",
-   "reason": "Old PostgreSQL business rows are not V4 migration assets; no data restore is needed for Phase 0. Physical backup was retained at the explicit user request."
+  "production_permission": "SHADOW_STABLE_PASS[capability] AND FORWARD_GATE[capability] AND MIGRATION_REPLAY_PASS[capability] AND all_required_dependency_permissions",
+  "shadow_stable_gate": {
+    "same_model_contract_id": true,
+    "accepted_consecutive_market_sessions": 20,
+    "missed_or_unevaluable_session_counts": 0,
+    "forbidden_events": [
+      "TEMPORAL_LEAKAGE",
+      "DUPLICATE_EPISODE_CORRUPTION",
+      "CORE_IDENTITY_VIOLATION",
+      "P0_STATE_VIOLATION"
+    ],
+    "rollback_drill_required": true,
+    "parameter_or_model_change": "reset affected capability window; shared dependency change resets all consumers"
   },
-  "schema_rebuild_drill": {
-   "status": "PASS",
-   "fresh_database_migrations": [
-    "V4_PHASE0_FOUNDATION_V1",
-    "V4_PHASE0_NAMESPACE_INTEGRITY_V1"
-   ],
-   "failed_migration_atomicity": "PostgreSQL transactional DDL; schema-only rollback and fresh reapply verified before V4 rows existed."
+  "stock_forward_gate": {
+    "unique_signal_dates_min": 5,
+    "unique_observed_t5_logic_events_min": 30,
+    "accepted_event_types": [
+      "FIRST_PREWATCH",
+      "REENTRY_PREWATCH",
+      "NEW_CONFIRMED"
+    ],
+    "exclude_revision_duplicates": true,
+    "exclude_invalidation_as_positive_sample": true,
+    "same_model_contract_id": true,
+    "settlement_p0_count_max": 0,
+    "quality": "OBSERVED only; estimated outcomes do not satisfy gate",
+    "status": "REV2_POLICY_FROZEN_NOT_EVIDENCED"
+  },
+  "sector_and_rotation_forward_gates": {
+    "status": "THRESHOLDS_UNSET_SHADOW_ONLY",
+    "sector_event_types": [
+      "SECTOR_FIRST_PREWATCH",
+      "SECTOR_NEW_WARM",
+      "SECTOR_NEW_CONFIRMED"
+    ],
+    "rotation_event_types": [
+      "ROTATION_PULSE",
+      "ROTATION_ACCEPTED",
+      "ROTATION_FAILED"
+    ],
+    "counting": "per type; unique episodes and dates; failure included but cannot satisfy positive accepted-event count; pulse cannot substitute accepted; same episode event types not summed as unique episodes",
+    "required_parameters": [
+      "V4_SECTOR_MIN_UNIQUE_SIGNAL_DATES",
+      "V4_SECTOR_MIN_UNIQUE_EPISODES",
+      "V4_SECTOR_MIN_MATURED_EVENTS_BY_TYPE",
+      "V4_ROTATION_MIN_ACCEPTED_EPISODES",
+      "V4_REQUIRED_FORWARD_QUALITY"
+    ]
+  },
+  "benchmark_missing_and_consumer_policy": {
+    "contract_id": "FORWARD_MARKET_BENCHMARK_MISSING_POLICY_V1",
+    "frozen_t0_weights": true,
+    "delete_or_renormalize_members": false,
+    "unknown_or_missing": "no carry/no zero/no drop; retain reason and original weights",
+    "state_precedence": [
+      "IDENTITY_UNKNOWN",
+      "ADJUSTMENT_UNKNOWN",
+      "DELISTED",
+      "CONFIRMED_SUSPENSION",
+      "DATA_MISSING",
+      "ACTUAL_ENDPOINT"
+    ],
+    "OBSERVED": "all included weights have verified actual endpoint or contract-qualified terminal value on common evaluation basis; observed relative consumer only",
+    "MARKED_ESTIMATE": "separate output only when verified suspension carry price is same-basis and V4_BENCHMARK_MINIMUM_ENDPOINT_WEIGHT_COVERAGE and V4_BENCHMARK_MAXIMUM_SUSPENSION_QUOTE_AGE have accepted values and pass; never relabel OBSERVED",
+    "PARTIAL_UNVALUED": "complete relative return unavailable; observed contribution diagnostic; absolute outcome and independent capabilities continue",
+    "coverage_gate_value": null,
+    "suspension_quote_age_gate_value": null,
+    "quality_consumer_matrix_status": "UNSET_PENDING_REPRESENTATIVE_SAMPLE_ACCEPTANCE",
+    "marked_relative_permission": false
+  },
+  "capability_isolation": {
+    "stock_core_independent_of_sector": true,
+    "sector_dependent_stock_requires_sector_permission": true,
+    "sector_stage_requires_own_gate": true,
+    "rotation_requires_own_gate": true,
+    "sector_risk_change_requires_own_integrity_and_path_gate": true,
+    "global_pass_substitute": false,
+    "unaccepted_shared_source_is_not_a_production_dependency": true
+  },
+  "rollback": {
+    "preserve_previous_accepted_publication_and_focus_heads": true,
+    "candidate_head_activation": "only after capability-specific receipt passes; atomic compare-and-swap against frozen predecessor",
+    "failure_action": "keep prior accepted head; mark failed capability/date/entity/field and reason; no partial acceptance",
+    "scope": "Phase 0 schema/config/code rollback; data rollback begins before V4 shadow/production.",
+    "restore_drill": {
+      "required_for_phase0": false,
+      "current_postgres_restore_accepted": false,
+      "status": "NOT_APPLICABLE_AFTER_USER_ARCHITECTURE_DECISION",
+      "reason": "Legacy PostgreSQL business rows are not a V4 migration input. The physical backup was made at the user’s explicit request and is informational; it is not a Phase 0 acceptance prerequisite."
+    },
+    "schema_rebuild_drill": {
+      "status": "PASS_FORWARD_MIGRATION_PREVIEW_PENDING_APPLY",
+      "fresh_database_migrations": [
+        "V4_PHASE0_FOUNDATION_V1",
+        "V4_PHASE0_NAMESPACE_INTEGRITY_V1",
+        "V4_PHASE0_CONTRACT_ALIGNMENT_R2"
+      ],
+      "failed_migration_atomicity": "PostgreSQL transactional DDL; schema-only rollback and fresh reapply verified before V4 rows existed."
+    }
+  },
+  "failure_receipt_required_fields": [
+    "stage_id",
+    "contract_id",
+    "capability_scope",
+    "affected_dates",
+    "affected_entities",
+    "affected_fields",
+    "status",
+    "reason_codes",
+    "evidence_digests",
+    "previous_accepted_head",
+    "rollback_action",
+    "recovery_owner",
+    "next_action"
+  ],
+  "phase0": {
+    "status": "DEGRADED_PASS",
+    "v4_01_entry_permission": "AUTHORIZED",
+    "raw_bootstrap_permission": "AUTHORIZED",
+    "adjusted_bootstrap_permission": "SCOPE_DEPENDENT",
+    "supplemental_permission": "OPTIONAL",
+    "scanner_permission": "NOT_APPLICABLE_UNTIL_V4_05",
+    "production_cutover_permission": "NOT_APPLICABLE_UNTIL_LATER_GATES",
+    "blocking_scopes": [
+      "MARKED_RELATIVE_BENCHMARK_CONSUMER"
+    ],
+    "nonblocking_degraded_scopes": [
+      "HISTORICAL_PIT_DATA_NOT_YET_BOOTSTRAPPED",
+      "V4_MODULE_PERFORMANCE_NOT_IMPLEMENTED"
+    ],
+    "required_v4_01_scopes": [
+      "RAW_BOOTSTRAP",
+      "A_STOCK_TDX_SOURCE",
+      "LIFECYCLE_SCHEMA",
+      "PUBLICATION_IDENTITY"
+    ],
+    "accepted_v4_01_scopes": [
+      "RAW_BOOTSTRAP",
+      "A_STOCK_TDX_SOURCE",
+      "LIFECYCLE_SCHEMA",
+      "PUBLICATION_IDENTITY"
+    ],
+    "scope_gate": {
+      "required_scopes": [
+        "RAW_BOOTSTRAP",
+        "A_STOCK_TDX_SOURCE",
+        "LIFECYCLE_SCHEMA",
+        "PUBLICATION_IDENTITY"
+      ],
+      "accepted_scopes": [
+        "RAW_BOOTSTRAP",
+        "A_STOCK_TDX_SOURCE",
+        "LIFECYCLE_SCHEMA",
+        "PUBLICATION_IDENTITY"
+      ],
+      "blocked_scopes": [
+        "MARKED_RELATIVE_BENCHMARK_CONSUMER"
+      ],
+      "permission_rule": "V4-01 is authorized only when every required scope is explicitly accepted and no required scope is blocked."
+    }
+  },
+  "non_decisions": {
+    "do_not_choose_partitioning_materialized_views_or_caching_before_complete_performance_baseline": true,
+    "do_not_infer_unmeasured_benchmark_coverage_or_quote_age_threshold": true
   }
- },
- "failure_receipt_required_fields": [
-  "stage_id",
-  "contract_id",
-  "capability_scope",
-  "affected_dates",
-  "affected_entities",
-  "affected_fields",
-  "status",
-  "reason_codes",
-  "evidence_digests",
-  "previous_accepted_head",
-  "rollback_action",
-  "recovery_owner",
-  "next_action"
- ],
- "phase0": {
-  "status": "FULL_PASS",
-  "v4_01_entry_permission": "AUTHORIZED",
-  "raw_bootstrap_permission": "AUTHORIZED",
-  "adjusted_bootstrap_permission": "SCOPE_DEPENDENT",
-  "supplemental_permission": "OPTIONAL",
-  "scanner_permission": "NOT_APPLICABLE_UNTIL_V4_05",
-  "production_cutover_permission": "NOT_APPLICABLE_UNTIL_LATER_GATES",
-  "blocking_scopes": []
- },
- "non_decisions": {
-  "do_not_choose_partitioning_materialized_views_or_caching_before_complete_performance_baseline": true,
-  "do_not_infer_unmeasured_benchmark_coverage_or_quote_age_threshold": true
- }
 }

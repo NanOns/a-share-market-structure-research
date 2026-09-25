@@ -1,0 +1,12 @@
+{
+  "receipt_id": "V4_PHASE0_R2_TEST_RECEIPT_20260925",
+  "command": "py -3 -m pytest -q tests\\v4_phase0",
+  "scope": "R2 publication identity/PIT schema, algorithm framework validator, scope-level final gate, source and adjustment regression",
+  "result": "PASS",
+  "passed": 42,
+  "failed": 0,
+  "skipped": 0,
+  "pytest_elapsed_seconds": 1.06,
+  "input_commit": "e3b0a1e3029470a12cb2b9f4dd733ca24a4617a9",
+  "evidence": "42 passed in 1.06s after all seven migrations were applied; DB tests use transaction rollback; no scanner/pipeline/download/00D overlap rerun."
+}

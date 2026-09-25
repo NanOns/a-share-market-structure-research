@@ -1,0 +1,148 @@
+{
+  "contract_id": "V4_PHASE0_PERFORMANCE_BASELINE_R2",
+  "governing_contract": "DA-MSR-V4.2.2-CODEX-REV2 §74",
+  "measurement_boundary": "No daily pipeline/scanner run, no external request, no source overlap rerun; DB write probe rolled back.",
+  "verified_at_utc": "2026-09-25T06:03:10.761049+00:00",
+  "hardware": {
+    "logical_cpu_count": 20,
+    "physical_memory_bytes": 34138685440,
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "dataset_identity": {
+    "database": "market_research",
+    "database_size_before_probe_bytes": 10016447,
+    "database_size_after_probe_bytes": 10024639,
+    "v4_runtime_row_count": 0
+  },
+  "schema_migration_ledger_check": {
+    "status": "ALREADY_CURRENT",
+    "elapsed_seconds": 0.03662110003642738,
+    "process_cpu_seconds": 0.015625,
+    "migrations": [
+      {
+        "version": "V4_PHASE0_FOUNDATION_V1",
+        "checksum_sha256": "391bf52595fc9da86bbce175b667a5b15c18684c4fbfb8e54cdcf65872dff260",
+        "status": "ALREADY_APPLIED"
+      },
+      {
+        "version": "V4_PHASE0_NAMESPACE_INTEGRITY_V1",
+        "checksum_sha256": "d8dcc13609ea73923dd68ad21d9c91eed69128047203a481764edeb72ea45dac",
+        "status": "ALREADY_APPLIED"
+      },
+      {
+        "version": "V4_PHASE0_CONTRACT_ALIGNMENT_R2",
+        "checksum_sha256": "e1e2886c04c45121530e1fcf506297921c9cca2eecec3ee06be77e2520887d77",
+        "status": "ALREADY_APPLIED"
+      },
+      {
+        "version": "V4_PUBLICATION_HEAD_REVISION_IDENTITY_R2",
+        "checksum_sha256": "905af9323f613d3ae917000859f2306ce3d2a2ec6be43431233c5f4ce0e8a1b3",
+        "status": "ALREADY_APPLIED"
+      },
+      {
+        "version": "V4_MARKET_SESSION_PUBLICATION_CHAIN_R2",
+        "checksum_sha256": "54d32de8e20afc773638b38aa555c47a5c5e8cb9b0bba82bb60fbd820a2d3b66",
+        "status": "ALREADY_APPLIED"
+      },
+      {
+        "version": "V4_FACT_SOURCE_GUARD_TABLE_SPECIFIC_FIELDS_R2",
+        "checksum_sha256": "d6ccd5dae3900fa07134a18e2f4f41ed2fbc3dde2fa4d5be79958d82d616a949",
+        "status": "ALREADY_APPLIED"
+      },
+      {
+        "version": "V4_STATE_AND_NAMESPACE_PUBLICATION_IDENTITY_R2",
+        "checksum_sha256": "f7df9d66c6edb13e948cbd92888af140ad335cb2984b9b0078e5498eee1cb4a0",
+        "status": "ALREADY_APPLIED"
+      }
+    ],
+    "note": "this measures version/hash verification and transaction setup, not a fresh-database rebuild"
+  },
+  "fresh_schema_rebuild": {
+    "status": "FRESH_SCHEMA_REBUILD_MEASURED",
+    "temporary_database": "v4_phase0_perf_8d07290232c8",
+    "temporary_database_removed_after_measurement": true,
+    "cluster_system_identifier": "7688198230782699460",
+    "non_template_database_set_before": [
+      "market_research",
+      "postgres"
+    ],
+    "applied_migrations": [
+      {
+        "version": "V4_PHASE0_FOUNDATION_V1",
+        "checksum_sha256": "391bf52595fc9da86bbce175b667a5b15c18684c4fbfb8e54cdcf65872dff260"
+      },
+      {
+        "version": "V4_PHASE0_NAMESPACE_INTEGRITY_V1",
+        "checksum_sha256": "d8dcc13609ea73923dd68ad21d9c91eed69128047203a481764edeb72ea45dac"
+      },
+      {
+        "version": "V4_PHASE0_CONTRACT_ALIGNMENT_R2",
+        "checksum_sha256": "e1e2886c04c45121530e1fcf506297921c9cca2eecec3ee06be77e2520887d77"
+      },
+      {
+        "version": "V4_PUBLICATION_HEAD_REVISION_IDENTITY_R2",
+        "checksum_sha256": "905af9323f613d3ae917000859f2306ce3d2a2ec6be43431233c5f4ce0e8a1b3"
+      },
+      {
+        "version": "V4_MARKET_SESSION_PUBLICATION_CHAIN_R2",
+        "checksum_sha256": "54d32de8e20afc773638b38aa555c47a5c5e8cb9b0bba82bb60fbd820a2d3b66"
+      },
+      {
+        "version": "V4_FACT_SOURCE_GUARD_TABLE_SPECIFIC_FIELDS_R2",
+        "checksum_sha256": "d6ccd5dae3900fa07134a18e2f4f41ed2fbc3dde2fa4d5be79958d82d616a949"
+      },
+      {
+        "version": "V4_STATE_AND_NAMESPACE_PUBLICATION_IDENTITY_R2",
+        "checksum_sha256": "f7df9d66c6edb13e948cbd92888af140ad335cb2984b9b0078e5498eee1cb4a0"
+      }
+    ],
+    "schema_rebuild_wall_seconds": 1.023933699936606,
+    "schema_rebuild_process_cpu_seconds": 0.015625,
+    "database_size_after_schema_build_bytes": 9033407,
+    "v4_table_count": 15,
+    "foreign_key_count": 24,
+    "unvalidated_foreign_key_count": 0,
+    "all_v4_tables_empty_after_build": true,
+    "non_template_database_set_after": [
+      "market_research",
+      "postgres"
+    ]
+  },
+  "postgres_write_read_probe": {
+    "scope": "synthetic 1000-row temporary-table transaction; rolled back",
+    "rows_written": 1000,
+    "payload_bytes_read": 14000,
+    "postgres_write_seconds": 0.02293209999334067,
+    "postgres_read_seconds": 0.0003375000087544322,
+    "postgres_write_read_seconds": 0.023269600002095103,
+    "probe_wall_seconds_including_db_size_checks": 0.4253221000544727,
+    "process_cpu_seconds": 0.03125,
+    "process_cpu_percent_one_core": 7.347372731395263,
+    "process_rss_before_bytes": 41865216,
+    "process_rss_after_bytes": 42450944,
+    "process_peak_working_set_bytes": 42450944,
+    "database_size_before_bytes": 10016447,
+    "database_size_after_bytes": 10024639,
+    "database_size_growth_bytes": 8192
+  },
+  "legacy_api_ui_reference": {
+    "status": "NOT_AVAILABLE",
+    "reason": "READ_ONLY_LOCAL_WORKBENCH_API_NOT_LISTENING",
+    "base_url": "http://127.0.0.1:8765"
+  },
+  "phase0_test_suite_metrics": {
+    "status": "RECORDED_SEPARATELY_FROM_TEST_RECEIPT",
+    "process_rss_bytes_after_probe": 42450944,
+    "process_peak_working_set_bytes": 42450944
+  },
+  "not_implemented_or_not_measured": {
+    "daily_pipeline_wall_time": "NOT_IMPLEMENTED_FOR_V4",
+    "factor_compute_time": "NOT_IMPLEMENTED_FOR_V4",
+    "sector_stage_time": "NOT_IMPLEMENTED_FOR_V4",
+    "radar_build_time": "NOT_IMPLEMENTED_FOR_V4",
+    "focus_time": "NOT_IMPLEMENTED_FOR_V4",
+    "v4_full_api_and_homepage": "NOT_IMPLEMENTED_FOR_V4",
+    "00D_overlap_runtime": "NOT_MEASURED_R2_PROHIBITS_RERUN"
+  },
+  "claims": "Measurements are diagnostic samples only; no SLA, benchmark coverage threshold, quote-age threshold, or storage-layout decision is inferred."
+}

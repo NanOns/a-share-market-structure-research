@@ -35,3 +35,7 @@
 Historical PIT membership and two-year RAW history begin in V4-01. Adjusted Canonical empirical coverage is owned by V4-01/02, BaoStock remains optional, 73 INDEX overlap mismatches remain a separate non-core diagnostic, and actual V4 performance measurement remains with its future capability stages. The legacy PG recovery audit is retired under the clean-empty V4 baseline decision. No scanner or production cutover permission is granted by this receipt.
 
 Canonical machine-readable receipt: [`reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT.json`](../reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT.json). Stage evidence: [`reports/v4_phase0/V4_PHASE0_STAGE_RECEIPTS.json`](../reports/v4_phase0/V4_PHASE0_STAGE_RECEIPTS.json).
+
+## Superseded by the R2 final re-audit
+
+The prior `FULL_PASS` determination is withdrawn under R2 `f51e71ec8a3c02a5551bf07f66366856cf146182a76729b549871a680dcd0fe0`. The current canonical acceptance is [V4_PHASE0_FINAL_ACCEPTANCE_R2_20260925.md](V4_PHASE0_FINAL_ACCEPTANCE_R2_20260925.md); it records `DEGRADED_PASS`, a scope-limited RAW Bootstrap authorization, and the marked-relative benchmark block.

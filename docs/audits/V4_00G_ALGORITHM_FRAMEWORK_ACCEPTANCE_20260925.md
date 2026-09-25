@@ -32,3 +32,7 @@
 The versioned framework is now executable under `src/v4/contracts/`. Validators cover the frozen AST node set, parameter identity/status and formal-consumer permission, math literals, output producer metadata, independent required/nullable semantics, the three-valued truth table, window contract identities, and zero-denominator UNKNOWN behavior. Business-specific ASTs remain assigned to their later owner stages.
 
 Evidence: `tests/v4_phase0/` passed all 25 cases, including negative cases for unknown/retired/candidate parameters, unsupported AST/window, producer omissions, literal threshold bypass, UNKNOWN propagation, and unexplained source-field differences. This closes only the framework acceptance item; it does not accept any V4 factor or scanner module.
+
+## R2 re-audit disposition — 2026-09-25
+
+The earlier 00G result is superseded. The registry/framework schemas now cross-validate and the AST, enum, output, contract-section and malformed-vector gates are executable. `py -3 -m pytest -q tests\v4_phase0` passes 42/42. 00G is `FULL_PASS` under R2.

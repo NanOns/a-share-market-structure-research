@@ -13,6 +13,11 @@ MIGRATIONS=ROOT/"src/workbench_db/migrations/v4_postgres"
 VERSIONS={
     "001_v4_phase0_foundation.sql":"V4_PHASE0_FOUNDATION_V1",
     "002_namespace_integrity.sql":"V4_PHASE0_NAMESPACE_INTEGRITY_V1",
+    "003_phase0_contract_alignment.sql":"V4_PHASE0_CONTRACT_ALIGNMENT_R2",
+    "004_publication_head_revision_identity.sql":"V4_PUBLICATION_HEAD_REVISION_IDENTITY_R2",
+    "005_market_session_publication_chain.sql":"V4_MARKET_SESSION_PUBLICATION_CHAIN_R2",
+    "006_fact_source_guard_table_specific_fields.sql":"V4_FACT_SOURCE_GUARD_TABLE_SPECIFIC_FIELDS_R2",
+    "007_state_and_namespace_publication_identity.sql":"V4_STATE_AND_NAMESPACE_PUBLICATION_IDENTITY_R2",
 }
 
 def dsn():
@@ -47,7 +52,7 @@ def apply():
                 cur.execute(text)
                 cur.execute("insert into v4_meta.schema_migrations(version,checksum_sha256,applied_at,contract_id) values (%s,%s,now(),%s) on conflict(version) do nothing",(version,checksum,version))
                 applied.append({"version":version,"checksum_sha256":checksum,"status":"APPLIED"})
-    return {"status":"APPLIED" if any(x['status']=='APPLIED' for x in applied) else "ALREADY_CURRENT","migrations":applied,"v4_table_count":13,"migration_ledger_table_count":1}
+    return {"status":"APPLIED" if any(x['status']=='APPLIED' for x in applied) else "ALREADY_CURRENT","migrations":applied,"v4_table_count":15,"migration_ledger_table_count":1}
 
 if __name__=="__main__":
     ap=argparse.ArgumentParser(); ap.add_argument("--apply",action="store_true"); args=ap.parse_args()

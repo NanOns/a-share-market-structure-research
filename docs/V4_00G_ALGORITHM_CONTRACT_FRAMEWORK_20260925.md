@@ -36,3 +36,7 @@
 # Repair addendum (2026-09-25): `FULL_PASS / FRAMEWORK_IMPLEMENTED_AND_MACHINE_VALIDATED`
 
 Implemented validators under `src/v4/contracts/` for AST node/type/arity, parameter registry identity and status, unassigned/candidate/retired consumer denial, numeric literal registry bypass, producer and output metadata, independent required/nullable semantics, UNKNOWN propagation, window contract identity, and zero denominators. The tests exercise positive and negative examples. This framework acceptance does not implement any later-stage factor/scanner AST.
+
+## R2 targeted repair addendum — 2026-09-25
+
+R2 `f51e71ec8a3c02a5551bf07f66366856cf146182a76729b549871a680dcd0fe0` aligns the framework JSON, registry, and executable validator: parameter required metadata and the five declared statuses match; output fields use `requiredness` plus independent `nullable`; AST operators/arity and enum ID/version/value are checked; contract sections, references, digests, windows, outputs, and malformed vectors fail closed. Framework plus registry validation and negative tests pass. Stage `FULL_PASS`.

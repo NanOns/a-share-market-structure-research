@@ -37,3 +37,7 @@ Forward 基准保持冻结 T0 权重，未知/缺失不 carry、不填 0、不�
 # Repair addendum (2026-09-25): `FULL_PASS / PHASE0_FINAL_GATE_REPAIRED`
 
 `config/v4_phase0_final_gate_v1.json` removes V4-01/V4-02 implementation and scanner implementation from Phase 0 prerequisites. The final gate separately grants V4-01 entry and RAW bootstrap, keeps adjusted bootstrap scope-dependent, BaoStock optional, scanner `NOT_APPLICABLE_UNTIL_V4_05`, and production cutover deferred. The performance field contract is frozen in `config/v4_performance_measurement_contract_v1.json`; actual V4 runtime numbers are assigned to V4-01/02/03/05 and first full performance acceptance to V4-05. Empty-schema drop/rebuild and PostgreSQL fresh migration passed; data rollback remains a future shadow/production gate.
+
+## R2 final re-audit addendum — 2026-09-25
+
+R2 `f51e71ec8a3c02a5551bf07f66366856cf146182a76729b549871a680dcd0fe0` supersedes the earlier Phase 0 `FULL_PASS`. Scope aggregation now distinguishes `FULL_PASS`, `DEGRADED_PASS`, and `BLOCKED`; only explicitly accepted V4-01 required scopes authorize RAW entry. `MARKED_RELATIVE_BENCHMARK_CONSUMER` is blocked while coverage/quote-age thresholds and consumer matrix remain unset. Phase 0 is `DEGRADED_PASS`; RAW Bootstrap remains authorized; Scanner remains `NOT_APPLICABLE_UNTIL_V4_05`. REV2 §74 measurements and all unavailable/not-implemented metrics are recorded in `reports/v4_phase0/V4_PHASE0_PERFORMANCE_BASELINE_R2.json`.

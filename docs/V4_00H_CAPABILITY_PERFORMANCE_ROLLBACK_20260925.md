@@ -34,3 +34,6 @@ Forward 基准保持冻结 T0 权重，未知/缺失不 carry、不填 0、不�
 受阻 scope：TDX 完整包 overlap/身份门未接受（V4-00D）；当前 PostgreSQL 可恢复性未证明（V4-00A recovery audit）；Canonical Daily/adjustment/algorithm readiness 尚未完成（V4-00B/00E/00G）。V3 accepted publication 和 Focus head 保持原样，不因 V4 Phase 0 阻断被修改。旧 `FULL_PASS_TDX_NATIVE` 属旧生产链，不替代本回执。
 
 下一步：先闭合 `V4-00A-PG-RECOVERY-01` 与 `V4-00D-OVERLAP-GATE-01`，再按 §78 进入 V4-01；Phase 0 为 BLOCKED 期间不开展 V4 scanner。每次开新阶段仍需重读届时最新升级合同。
+# Repair addendum (2026-09-25): `FULL_PASS / PHASE0_FINAL_GATE_REPAIRED`
+
+`config/v4_phase0_final_gate_v1.json` removes V4-01/V4-02 implementation and scanner implementation from Phase 0 prerequisites. The final gate separately grants V4-01 entry and RAW bootstrap, keeps adjusted bootstrap scope-dependent, BaoStock optional, scanner `NOT_APPLICABLE_UNTIL_V4_05`, and production cutover deferred. The performance field contract is frozen in `config/v4_performance_measurement_contract_v1.json`; actual V4 runtime numbers are assigned to V4-01/02/03/05 and first full performance acceptance to V4-05. Empty-schema drop/rebuild and PostgreSQL fresh migration passed; data rollback remains a future shadow/production gate.

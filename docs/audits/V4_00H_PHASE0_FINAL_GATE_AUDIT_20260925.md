@@ -25,3 +25,15 @@
 6. Issue per-capability cutover/recovery evidence. Re-evaluate Phase 0; do not infer scanner permission from a historical V0.3 `FULL_PASS_TDX_NATIVE` seal.
 
 Until closure, keep the previous accepted V3 production/Focus heads unchanged and run no V4 scanner. A later DEGRADED_PASS may authorize only explicitly accepted, unblocked capabilities; it cannot widen this currently blocked scope by implication.
+
+## 2026-09-25 修复结论
+
+本轮按 Phase 0 Closure Repair Task R1 更新本审计门：
+
+- `V4_PHASE0_FINAL = FULL_PASS`
+- `V4_01_ENTRY_PERMISSION = AUTHORIZED`
+- `RAW_BOOTSTRAP_PERMISSION = AUTHORIZED`
+- `SCANNER_PERMISSION = NOT_APPLICABLE_UNTIL_V4_05`
+- `PRODUCTION_CUTOVER_PERMISSION = NOT_APPLICABLE_UNTIL_LATER_GATES`
+
+未把 V4-01/V4-02、历史 PIT、BaoStock live、Scanner 或真实性能采集反向设为 Phase 0 前置。A_STOCK TDX source package 已通过分层重叠验收；指数差异留作独立 diagnostic。00G框架测试、空库schema重建与 namespace/revision负例通过。阶段唯一回执：`reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT.json`。

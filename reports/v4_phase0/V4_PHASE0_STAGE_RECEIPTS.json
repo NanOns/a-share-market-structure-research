@@ -1,0 +1,137 @@
+{
+  "contract_id": "V4_PHASE0_STAGE_RECEIPTS_V1",
+  "governing_task_doc": "D:/Users/lps/Desktop/V4_PHASE0_CLOSURE_REPAIR_TASK_R1_20260925.md",
+  "governing_task_doc_sha256": "e1ec6350b56c4db201efa7968ebfe701bb17110875ec65c6e05f162ed3be4494",
+  "upgrade_contract": "V4.2.2 REV2",
+  "upgrade_contract_sha256": "744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd",
+  "input_commit": "a4b3412b33e3335fa48a9f497a12e9865606ecc2",
+  "implementation_commit": "8506cf9265275750f1bcb0950fa8fd2935f0d52a",
+  "stages": [
+    {
+      "stage": "V4-00A",
+      "status": "FULL_PASS",
+      "stage_contract": "Freeze V4 baseline; retire obsolete recovery gate; reset only market_research to clean rebuildable V4 baseline.",
+      "evidence": [
+        "reports/v4_phase0/V4_DATABASE_RESET_RECEIPT.json",
+        "reports/v4_phase0/V4-PHASE0-PG-PHYSICAL-BACKUP-20260925_114550.json",
+        "docs/audits/V4_00A_DATABASE_RESET_AUDIT_20260925.md"
+      ],
+      "acceptance": "Old runtime rows removed after verified physical backup; fresh migrations and required schema verified; TDX snapshot unchanged.",
+      "next_stage": "V4-00B",
+      "governing_task_doc_sha256": "e1ec6350b56c4db201efa7968ebfe701bb17110875ec65c6e05f162ed3be4494",
+      "upgrade_contract_sha256": "744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd",
+      "input_commit": "a4b3412b33e3335fa48a9f497a12e9865606ecc2",
+      "evidence_recorded_at": "2026-09-25"
+    },
+    {
+      "stage": "V4-00B",
+      "status": "DEGRADED_PASS",
+      "stage_contract": "Freeze lifecycle and point-in-time membership semantics and declare historical PIT limitation.",
+      "evidence": [
+        "docs/V4_00B_LIFECYCLE_UNIVERSE_PIT_20260925.md"
+      ],
+      "acceptance": "Contract frozen; historical PIT membership is unavailable from legacy data and explicitly nonblocking for RAW bootstrap.",
+      "next_stage": "V4-00C",
+      "governing_task_doc_sha256": "e1ec6350b56c4db201efa7968ebfe701bb17110875ec65c6e05f162ed3be4494",
+      "upgrade_contract_sha256": "744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd",
+      "input_commit": "a4b3412b33e3335fa48a9f497a12e9865606ecc2",
+      "evidence_recorded_at": "2026-09-25"
+    },
+    {
+      "stage": "V4-00C",
+      "status": "FULL_PASS",
+      "stage_contract": "Freeze publication, source revision, namespace isolation, and append-only integrity contracts.",
+      "evidence": [
+        "reports/v4_phase0/V4_DATABASE_RESET_RECEIPT.json",
+        "docs/V4_00C_PUBLICATION_REVISION_NAMESPACE_20260925.md",
+        "tests/v4_phase0/test_postgres_schema.py"
+      ],
+      "acceptance": "13 required V4 tables present; all 14 foreign keys validated; revision/namespace protections and rollback behavior verified.",
+      "next_stage": "V4-00D",
+      "governing_task_doc_sha256": "e1ec6350b56c4db201efa7968ebfe701bb17110875ec65c6e05f162ed3be4494",
+      "upgrade_contract_sha256": "744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd",
+      "input_commit": "a4b3412b33e3335fa48a9f497a12e9865606ecc2",
+      "evidence_recorded_at": "2026-09-25"
+    },
+    {
+      "stage": "V4-00D",
+      "status": "FULL_PASS",
+      "stage_contract": "Accept the package/local overlap for A_STOCK core with explicit identity and refresh-revision semantics.",
+      "evidence": [
+        "reports/v4_00d/v4_00d_asset_stratified_20260925.json",
+        "reports/v4_00d/v4_00d_asset_stratified_postcheck_20260925.json",
+        "docs/audits/V4_00D_OVERLAP_GATE_AUDIT_20260925.md"
+      ],
+      "acceptance": "A_STOCK ACCEPTED_SOURCE_PACKAGE; 265993 comparable, 0 unexplained, 0 identity mismatch, 0 malformed; non-A differences diagnostic and outside core.",
+      "next_stage": "V4-00E",
+      "governing_task_doc_sha256": "e1ec6350b56c4db201efa7968ebfe701bb17110875ec65c6e05f162ed3be4494",
+      "upgrade_contract_sha256": "744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd",
+      "input_commit": "a4b3412b33e3335fa48a9f497a12e9865606ecc2",
+      "evidence_recorded_at": "2026-09-25"
+    },
+    {
+      "stage": "V4-00E",
+      "status": "DEGRADED_PASS",
+      "stage_contract": "Freeze adjustment coordinate contract and fail-closed handling for unsupported corporate action categories.",
+      "evidence": [
+        "docs/V4_00E_HISTORICAL_ADJUSTMENT_COORDINATES_20260925.md",
+        "docs/audits/V4_00E_ADJUSTMENT_ACCEPTANCE_AUDIT_20260925.md",
+        "tests/v4_phase0/test_adjustment_contract_vectors.py"
+      ],
+      "acceptance": "RAW path remains available; unsupported/unknown adjusted event categories fail closed and adjusted coverage implementation transfers to V4-01/02.",
+      "next_stage": "V4-00F",
+      "governing_task_doc_sha256": "e1ec6350b56c4db201efa7968ebfe701bb17110875ec65c6e05f162ed3be4494",
+      "upgrade_contract_sha256": "744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd",
+      "input_commit": "a4b3412b33e3335fa48a9f497a12e9865606ecc2",
+      "evidence_recorded_at": "2026-09-25"
+    },
+    {
+      "stage": "V4-00F",
+      "status": "DEGRADED_PASS",
+      "stage_contract": "Freeze supplemental BaoStock source boundary, capability gates, and optional fail-closed degradation.",
+      "evidence": [
+        "docs/V4_00F_BAOSTOCK_SUPPLEMENTAL_CONTRACT_20260925.md",
+        "docs/audits/V4_00F_BAOSTOCK_GATE_AUDIT_20260925.md"
+      ],
+      "acceptance": "BaoStock supplemental capability unavailable but optional; local main flow unaffected.",
+      "next_stage": "V4-00G",
+      "governing_task_doc_sha256": "e1ec6350b56c4db201efa7968ebfe701bb17110875ec65c6e05f162ed3be4494",
+      "upgrade_contract_sha256": "744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd",
+      "input_commit": "a4b3412b33e3335fa48a9f497a12e9865606ecc2",
+      "evidence_recorded_at": "2026-09-25"
+    },
+    {
+      "stage": "V4-00G",
+      "status": "FULL_PASS",
+      "stage_contract": "Freeze versioned algorithm AST, parameter, window, output, adjustment, and explainability contracts.",
+      "evidence": [
+        "config/v4_algorithm_contract_framework_v1.json",
+        "docs/V4_00G_ALGORITHM_CONTRACT_FRAMEWORK_20260925.md",
+        "reports/v4_phase0/V4_ALGORITHM_FRAMEWORK_TEST_RECEIPT.json"
+      ],
+      "acceptance": "Machine validators and required vectors pass; full Phase 0 test suite 25/25.",
+      "next_stage": "V4-00H",
+      "governing_task_doc_sha256": "e1ec6350b56c4db201efa7968ebfe701bb17110875ec65c6e05f162ed3be4494",
+      "upgrade_contract_sha256": "744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd",
+      "input_commit": "a4b3412b33e3335fa48a9f497a12e9865606ecc2",
+      "evidence_recorded_at": "2026-09-25"
+    },
+    {
+      "stage": "V4-00H",
+      "status": "FULL_PASS",
+      "stage_contract": "Freeze capability-specific permission and rollback policy, performance measurement contract, and final Phase 0 gate.",
+      "evidence": [
+        "config/v4_capability_cutover_policy_v1.json",
+        "config/v4_performance_measurement_contract_v1.json",
+        "config/v4_phase0_final_gate_v1.json",
+        "docs/audits/V4_00H_PHASE0_FINAL_GATE_AUDIT_20260925.md"
+      ],
+      "acceptance": "Phase 0 blockers closed/retired; V4-01 authorized; scanner remains NOT_APPLICABLE_UNTIL_V4_05; production cutover remains deferred.",
+      "next_stage": "V4-01 TDX History Bootstrap",
+      "governing_task_doc_sha256": "e1ec6350b56c4db201efa7968ebfe701bb17110875ec65c6e05f162ed3be4494",
+      "upgrade_contract_sha256": "744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd",
+      "input_commit": "a4b3412b33e3335fa48a9f497a12e9865606ecc2",
+      "evidence_recorded_at": "2026-09-25"
+    }
+  ]
+}

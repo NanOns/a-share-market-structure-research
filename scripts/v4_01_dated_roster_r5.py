@@ -117,7 +117,9 @@ def main() -> int:
                             break
                         except BaoStockError as exc:
                             query_failures += 1
-                            if attempt >= 2 or (exc.provider_code and not exc.provider_code.startswith("10002")):
+                            transient_provider_error = bool(exc.provider_code and (
+                                exc.provider_code.startswith("10002") or exc.provider_code == "10001001"))
+                            if attempt >= 2 or (exc.provider_code and not transient_provider_error):
                                 failed_trade_date = trade_date
                                 raise
                             client.__exit__(type(exc), exc, exc.__traceback__)

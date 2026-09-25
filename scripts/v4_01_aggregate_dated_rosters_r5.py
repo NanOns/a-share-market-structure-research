@@ -31,6 +31,7 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--candidate-receipt", default="reports/v4_01/historical_evaluable_universe_receipt_R4_20260925.json")
     parser.add_argument("--shard-receipts", nargs="+", required=True)
+    parser.add_argument("--attempt-receipts", nargs="*", default=[])
     parser.add_argument("--central-ledger", default="reports/v4_baostock/request_ledger.json")
     parser.add_argument("--output", default="data/v4/artifact_store/v4_01/baostock_dated_rosters_R5_20260925.jsonl.gz")
     parser.add_argument("--receipt", default="reports/v4_01/baostock_dated_roster_receipt_R5_20260925.json")
@@ -131,6 +132,14 @@ def main() -> int:
         raise SystemExit("AGGREGATED_REQUEST_BUDGET_EXCEEDED")
     ledger["last_updated_at_utc"] = datetime.now(timezone.utc).replace(microsecond=0).isoformat()
     _atomic_json(ledger_path, ledger)
+    attempts = []
+    for name in args.attempt_receipts:
+        path = ROOT / name
+        attempt = json.loads(path.read_text("utf-8"))
+        attempts.append({"path": name, "sha256": sha256(path), "status": attempt.get("status"),
+                         "completed_sessions_before_retry": attempt.get("partial_checkpoint", {}).get("completed_sessions", 0),
+                         "query_failure_count": attempt.get("query_failure_count", 0),
+                         "failure": attempt.get("failures", {})})
     receipt_doc = {"stage": "V4-01-BAOSTOCK-DATED-ROSTERS-R5", "contract_id": "BAOSTOCK_DATED_ROSTER_SNAPSHOT_V1",
                    "observed_at_utc": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
                    "status": "BUILT", "stage_completion_authorized": False,
@@ -148,6 +157,9 @@ def main() -> int:
                                       "configured_soft_cap": 40_000, "configured_hard_cap": 45_000,
                                       "provider_limit": 50_000, "shard_ledgers": worker_ledgers},
                    "worker_receipts": [{"path": path, "sha256": sha256(ROOT / path)} for path, _, _ in shards],
+                   "retry_attempts": attempts,
+                   "query_failure_count_total": sum(int(row.get("query_failure_count", 0)) for row in attempts)
+                                                + sum(int(receipt.get("query_failure_count", 0)) for _, receipt, _ in shards),
                    "execution_identity": {"input_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
                                           "script_sha256": sha256(Path(__file__))},
                    "next_stage": "V4_01_STABLE_IDENTITY_AND_BSE_LIFECYCLE_R5"}

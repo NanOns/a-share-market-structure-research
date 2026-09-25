@@ -1,0 +1,64 @@
+{
+  "api_key_setter_called": false,
+  "auth_mode": "PUBLIC_ANONYMOUS",
+  "contract_id": "BAOSTOCK_PUBLIC_RUNTIME_ROUTE_V1",
+  "elapsed_seconds": 15.219,
+  "endpoint": {
+    "auth_mode": "PUBLIC_ANONYMOUS",
+    "configured_host": "public-api.baostock.com",
+    "configured_port": 10030,
+    "connected_peer_ip": "114.94.20.42",
+    "connected_peer_port": 10030
+  },
+  "execution_identity": {
+    "input_commit": "6429e420b1069d37214ff9d493bc92edf95428c2",
+    "script_sha256": "9dbb417f2e3dff497f07da1f647cbe1ef7193e6f52974426e1a64ee0f003a0aa",
+    "wheel_sha256": "acbd19403285bc4e254cee8297cf0e2646ae2276e5af7e549deed3988ab02293"
+  },
+  "failure": null,
+  "history": {
+    "error_code": "0",
+    "error_msg": "success",
+    "fields": [
+      "date",
+      "code",
+      "close",
+      "volume",
+      "amount",
+      "turn",
+      "tradestatus",
+      "isST"
+    ],
+    "first_date": "2026-09-01",
+    "last_date": "2026-09-07",
+    "row_count": 5
+  },
+  "login": {
+    "error_code": "0",
+    "error_msg": "success"
+  },
+  "logout": {
+    "error_code": "0",
+    "error_msg": "success"
+  },
+  "observed_at_utc": "2026-09-25T11:34:54+00:00",
+  "raw_payload_persisted": false,
+  "request_counts_for_shanghai_day": {
+    "count": 19,
+    "operations": {
+      "login": 7,
+      "logout": 6,
+      "query_history_k_data_plus_adjustflag_3": 5,
+      "query_stock_basic": 1
+    }
+  },
+  "rows_digest": "917d94e1641ab710aec265d1c833d246fad57b2a6249a118b5508e51aa59884a",
+  "runtime": {
+    "package": "baostock",
+    "python": "3.13.14",
+    "version": "0.9.3"
+  },
+  "stage": "V4-01/02-BAOSTOCK-PUBLIC-ROUTE-B0-0.9.3-REGRESSION",
+  "status": "PUBLIC_ROUTE_B0_093_PASS",
+  "user_credentials_passed": false
+}

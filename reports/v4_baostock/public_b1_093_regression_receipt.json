@@ -1,0 +1,97 @@
+{
+  "api_key_setter_called": false,
+  "auth_mode": "PUBLIC_ANONYMOUS",
+  "contract_id": "BAOSTOCK_PUBLIC_RUNTIME_ROUTE_V1",
+  "elapsed_seconds": 32.623,
+  "endpoint": {
+    "auth_mode": "PUBLIC_ANONYMOUS",
+    "configured_host": "public-api.baostock.com",
+    "configured_port": 10030,
+    "connected_peer_ip": "114.94.20.42",
+    "connected_peer_port": 10030
+  },
+  "execution_identity": {
+    "b0_receipt_sha256": "f4b4270b60e4d527127bdb61378da2a43342b1a5a8d8b48c79beee3dfb3dcaf2",
+    "input_commit": "6429e420b1069d37214ff9d493bc92edf95428c2",
+    "script_sha256": "0ea08cf5dc391e3f7f038d41350e16be85da684dba7835d6c09d6efcbf5c6f1c",
+    "wheel_sha256": "acbd19403285bc4e254cee8297cf0e2646ae2276e5af7e549deed3988ab02293"
+  },
+  "failures": {},
+  "login": {
+    "error_code": "0",
+    "error_msg": "success"
+  },
+  "logout": {
+    "error_code": "0",
+    "error_msg": "success"
+  },
+  "observed_at_utc": "2026-09-25T11:35:44+00:00",
+  "queries": {
+    "all_stock": {
+      "error_code": "0",
+      "error_msg": "success",
+      "fields": [
+        "code",
+        "tradeStatus",
+        "code_name"
+      ],
+      "page_count": 4,
+      "row_count": 7380
+    },
+    "stock_basic": {
+      "error_code": "0",
+      "error_msg": "success",
+      "fields": [
+        "code",
+        "code_name",
+        "ipoDate",
+        "outDate",
+        "type",
+        "status"
+      ],
+      "page_count": 1,
+      "row_count": 1
+    },
+    "trade_dates": {
+      "error_code": "0",
+      "error_msg": "success",
+      "fields": [
+        "calendar_date",
+        "is_trading_day"
+      ],
+      "page_count": 1,
+      "row_count": 7
+    }
+  },
+  "raw_payload_persisted": false,
+  "request_counts_for_shanghai_day": {
+    "count": 27,
+    "operations": {
+      "login": 8,
+      "logout": 7,
+      "query_all_stock": 1,
+      "query_all_stock_page": 3,
+      "query_history_k_data_plus_adjustflag_3": 5,
+      "query_stock_basic": 2,
+      "query_trade_dates": 1
+    }
+  },
+  "row_counts": {
+    "all_stock": 7380,
+    "stock_basic": 1,
+    "trade_dates": 7
+  },
+  "row_digests": {
+    "all_stock": "d9a96348ce158baed2f36e611424c1efc8fd45f7ed45ad3e69c32712c1a3317b",
+    "stock_basic": "2c24a672c9d6ed531329339792c581d0933dfd3548186ecb950e55bf1e27e9b0",
+    "trade_dates": "4e1e63d53f79021382fad5a8f93cc42f01c27e919fbea71bc167f06a00b78bea"
+  },
+  "runtime": {
+    "package": "baostock",
+    "python": "3.13.14",
+    "version": "0.9.3"
+  },
+  "stage": "V4-01/02-BAOSTOCK-PUBLIC-ROUTE-B1-0.9.3-REGRESSION",
+  "status": "PUBLIC_CAPABILITY_B1_093_PASS",
+  "user_credentials_passed": false
+}

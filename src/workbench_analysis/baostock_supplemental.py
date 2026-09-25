@@ -26,7 +26,14 @@ from zoneinfo import ZoneInfo
 CONTRACT_ID = "BAOSTOCK_SUPPLEMENTAL_SOURCE_V1"
 CONTRACT_VERSION = "1.0.0"
 FIELD_MAP_VERSION = "BAOSTOCK_FIELD_MAP_V1"
-PACKAGE_VERSION = "0.9.4"
+PUBLIC_PACKAGE_VERSION = "0.9.3"
+VIP_PACKAGE_VERSION = "0.9.4"
+SUPPORTED_PACKAGE_VERSIONS = {PUBLIC_PACKAGE_VERSION, VIP_PACKAGE_VERSION}
+# Backward-compatible alias for tests and callers that historically referred to
+# the public/runtime package version.
+PACKAGE_VERSION = PUBLIC_PACKAGE_VERSION
+AUTH_MODES = {"PUBLIC_ANONYMOUS", "PUBLIC_ACCOUNT", "VIP_API_KEY"}
+DEFAULT_AUTH_MODE = "PUBLIC_ANONYMOUS"
 FIELDS = "date,code,close,volume,amount,turn,tradestatus,isST"
 ADJUSTFLAG = "3"
 DAILY_HARD_LIMIT = 45_000
@@ -38,6 +45,11 @@ _SESSION_LOCK = threading.Lock()
 
 class BaoStockError(RuntimeError):
     """Sanitized source/contract failure; never contains credentials."""
+
+    def __init__(self, message: str, *, provider_code: str | None = None, provider_message: str | None = None):
+        super().__init__(message)
+        self.provider_code = provider_code
+        self.provider_message = provider_message
 
 
 @dataclass(frozen=True)
@@ -212,21 +224,67 @@ class RequestBudget:
 class BaoStockClient:
     """One serialized SDK session with bounded calls and secret-free metadata."""
 
-    def __init__(self, budget: RequestBudget, sdk: Any | None = None, timeout: int = REQUEST_TIMEOUT_SECONDS):
+    def __init__(self, budget: RequestBudget, sdk: Any | None = None, timeout: int = REQUEST_TIMEOUT_SECONDS,
+                 auth_mode: str | None = None):
         self.budget = budget
         self.sdk = sdk
         self.timeout = timeout
+        self.auth_mode = (auth_mode or os.environ.get("BAOSTOCK_AUTH_MODE") or DEFAULT_AUTH_MODE).upper()
         self.logged_in = False
         self._lock_held = False
         self._process_lock: Path | None = None
+        self.login_result: dict[str, str] = {"error_code": "NOT_ATTEMPTED", "error_msg": ""}
+        self.logout_result: dict[str, str] = {"error_code": "NOT_ATTEMPTED", "error_msg": ""}
+        self.runtime_endpoint: dict[str, Any] = {}
+        self.last_query_result: dict[str, Any] = {"error_code": "NOT_ATTEMPTED", "error_msg": "", "fields": []}
 
     @staticmethod
-    def credentials_present() -> bool:
-        return all(os.environ.get(name) for name in ("BAOSTOCK_USERNAME", "BAOSTOCK_PASSWORD", "BAOSTOCK_API_KEY"))
+    def credentials_present(auth_mode: str = DEFAULT_AUTH_MODE) -> bool:
+        mode = auth_mode.upper()
+        if mode == "PUBLIC_ANONYMOUS":
+            return True
+        if mode == "PUBLIC_ACCOUNT":
+            return bool(os.environ.get("BAOSTOCK_USERNAME") and os.environ.get("BAOSTOCK_PASSWORD"))
+        if mode == "VIP_API_KEY":
+            return all(os.environ.get(name) for name in ("BAOSTOCK_USERNAME", "BAOSTOCK_PASSWORD", "BAOSTOCK_API_KEY"))
+        return False
+
+    @staticmethod
+    def _safe_message(value: Any) -> str:
+        message = str(value or "")[:500]
+        for name in ("BAOSTOCK_USERNAME", "BAOSTOCK_PASSWORD", "BAOSTOCK_API_KEY"):
+            secret = os.environ.get(name)
+            if secret:
+                message = message.replace(secret, "[REDACTED]")
+        return message
+
+    def _capture_endpoint(self) -> None:
+        try:
+            import baostock.common.contants as constants
+            import baostock.common.context as context
+
+            host = (constants.BAOSTOCK_VIP_SERVER_IP if self.auth_mode == "VIP_API_KEY"
+                    else constants.BAOSTOCK_SERVER_IP)
+            port = int(constants.BAOSTOCK_SERVER_PORT)
+            sock = getattr(context, "default_socket", None)
+            peer = sock.getpeername() if sock is not None else None
+            self.runtime_endpoint = {
+                "configured_host": host,
+                "configured_port": port,
+                "connected_peer_ip": peer[0] if peer else None,
+                "connected_peer_port": peer[1] if peer else None,
+            }
+            if sock is not None:
+                sock.settimeout(self.timeout)
+        except Exception:
+            self.runtime_endpoint = {"configured_host": None, "configured_port": None,
+                                     "connected_peer_ip": None, "connected_peer_port": None}
 
     def __enter__(self) -> "BaoStockClient":
-        if not self.credentials_present():
-            raise BaoStockError("BAOSTOCK_CREDENTIAL_ENV_MISSING")
+        if self.auth_mode not in AUTH_MODES:
+            raise BaoStockError("BAOSTOCK_AUTH_MODE_INVALID")
+        if not self.credentials_present(self.auth_mode):
+            raise BaoStockError("BAOSTOCK_CREDENTIAL_ENV_MISSING_FOR_AUTH_MODE")
         if not _SESSION_LOCK.acquire(blocking=False):
             raise BaoStockError("ANOTHER_BAOSTOCK_SESSION_ACTIVE")
         self._lock_held = True
@@ -242,22 +300,36 @@ class BaoStockClient:
                 import baostock as self_sdk  # type: ignore[no-redef]
                 self.sdk = self_sdk
             version = importlib.metadata.version("baostock")
-            if version != PACKAGE_VERSION:
-                raise BaoStockError("BAOSTOCK_PACKAGE_VERSION_UNPINNED")
+            expected_version = VIP_PACKAGE_VERSION if self.auth_mode == "VIP_API_KEY" else PUBLIC_PACKAGE_VERSION
+            if version != expected_version:
+                raise BaoStockError("BAOSTOCK_PACKAGE_VERSION_UNPINNED_FOR_AUTH_MODE")
             prior_timeout = socket.getdefaulttimeout()
             socket.setdefaulttimeout(self.timeout)
             try:
                 self.budget.consume("login")
                 with contextlib.redirect_stdout(_NullWriter()), contextlib.redirect_stderr(_NullWriter()):
-                    self.sdk.set_API_key(os.environ["BAOSTOCK_API_KEY"])
-                    result = self.sdk.login(os.environ["BAOSTOCK_USERNAME"], os.environ["BAOSTOCK_PASSWORD"])
-                sock = self.sdk.login.__globals__["conx"].default_socket
-                if sock is not None:
-                    sock.settimeout(self.timeout)
+                    if self.auth_mode == "PUBLIC_ANONYMOUS":
+                        # SDK state is process-global. Clear a key left by an earlier
+                        # in-process VIP client so this mode cannot silently route VIP.
+                        import baostock.common.context as context
+                        if hasattr(context, "apiKey"):
+                            delattr(context, "apiKey")
+                        result = self.sdk.login()
+                    elif self.auth_mode == "PUBLIC_ACCOUNT":
+                        result = self.sdk.login(os.environ["BAOSTOCK_USERNAME"], os.environ["BAOSTOCK_PASSWORD"])
+                    else:
+                        self.sdk.set_API_key(os.environ["BAOSTOCK_API_KEY"])
+                        result = self.sdk.login(os.environ["BAOSTOCK_USERNAME"], os.environ["BAOSTOCK_PASSWORD"])
             finally:
                 socket.setdefaulttimeout(prior_timeout)
+            self.login_result = {
+                "error_code": str(getattr(result, "error_code", "UNKNOWN")),
+                "error_msg": self._safe_message(getattr(result, "error_msg", "")),
+            }
+            self._capture_endpoint()
             if getattr(result, "error_code", None) != "0":
-                raise BaoStockError("BAOSTOCK_LOGIN_FAILED")
+                raise BaoStockError("BAOSTOCK_LOGIN_FAILED", provider_code=self.login_result["error_code"],
+                                    provider_message=self.login_result["error_msg"])
             self.logged_in = True
             return self
         except Exception:
@@ -289,12 +361,25 @@ class BaoStockClient:
                         frequency="d",
                         adjustflag=ADJUSTFLAG,
                     )
+                    self.last_query_result = {
+                        "error_code": str(getattr(result, "error_code", "UNKNOWN")),
+                        "error_msg": self._safe_message(getattr(result, "error_msg", "")),
+                        "fields": list(getattr(result, "fields", [])),
+                    }
                     if getattr(result, "error_code", None) != "0":
                         provider_code = str(getattr(result, "error_code", "UNKNOWN"))
                         safe_code = "".join(char for char in provider_code if char.isalnum() or char in "-_")[:24] or "UNKNOWN"
-                        raise BaoStockError("BAOSTOCK_QUERY_FAILED_CODE_" + safe_code)
+                        raise BaoStockError("BAOSTOCK_QUERY_FAILED_CODE_" + safe_code,
+                                            provider_code=safe_code,
+                                            provider_message=self._safe_message(getattr(result, "error_msg", "")))
                     rows = []
-                    while result.next():
+                    while True:
+                        if (getattr(result, "cur_row_num", 0) >= len(getattr(result, "data", []))
+                                and len(getattr(result, "data", [])) == getattr(result, "per_page_count", -1)
+                                and result.cur_row_num > 0):
+                            self.budget.consume("query_history_k_data_plus_adjustflag_3_page")
+                        if not result.next():
+                            break
                         values = result.get_row_data()
                         rows.append(dict(zip(result.fields, values, strict=True)))
                 return [normalize_row(code, row) for row in rows]
@@ -303,31 +388,80 @@ class BaoStockClient:
                     raise BaoStockError("BAOSTOCK_QUERY_TRANSPORT_FAILED") from None
         raise BaoStockError("BAOSTOCK_QUERY_FAILED")
 
-    def probe_stock_basic(self, code: str) -> list[dict[str, str]]:
-        """Single-security metadata probe used only to isolate API capability."""
+    def query_rows(self, operation: str, method_name: str, *args: Any, max_rows: int = 10_000,
+                   max_pages: int = 10, **kwargs: Any) -> tuple[list[dict[str, str]], dict[str, Any]]:
+        """Bounded metadata query with explicit accounting for SDK pagination."""
         if not self.logged_in or self.sdk is None:
             raise BaoStockError("BAOSTOCK_SESSION_NOT_READY")
-        self.budget.consume("query_stock_basic")
+        if max_rows < 1 or max_pages < 1:
+            raise BaoStockError("QUERY_RESPONSE_BOUND_INVALID")
+        self.budget.consume(operation)
         try:
             with contextlib.redirect_stdout(_NullWriter()), contextlib.redirect_stderr(_NullWriter()):
-                result = self.sdk.query_stock_basic(code=code)
+                result = getattr(self.sdk, method_name)(*args, **kwargs)
+                pages = 1
+                rows = []
+                self.last_query_result = {
+                    "error_code": str(getattr(result, "error_code", "UNKNOWN")),
+                    "error_msg": self._safe_message(getattr(result, "error_msg", "")),
+                    "fields": list(getattr(result, "fields", [])),
+                }
                 if getattr(result, "error_code", None) != "0":
                     provider_code = str(getattr(result, "error_code", "UNKNOWN"))
                     safe_code = "".join(char for char in provider_code if char.isalnum() or char in "-_")[:24] or "UNKNOWN"
-                    raise BaoStockError("BAOSTOCK_BASIC_QUERY_FAILED_CODE_" + safe_code)
-                rows = []
-                while result.next():
+                    raise BaoStockError(f"BAOSTOCK_{operation.upper()}_FAILED_CODE_{safe_code}",
+                                        provider_code=safe_code,
+                                        provider_message=self.last_query_result["error_msg"])
+                while True:
+                    if (getattr(result, "cur_row_num", 0) >= len(getattr(result, "data", []))
+                            and len(getattr(result, "data", [])) == getattr(result, "per_page_count", -1)
+                            and result.cur_row_num > 0):
+                        if pages >= max_pages:
+                            raise BaoStockError("QUERY_PAGE_BOUND_EXCEEDED")
+                        self.budget.consume(operation + "_page")
+                        pages += 1
+                    if not result.next():
+                        break
                     rows.append(dict(zip(result.fields, result.get_row_data(), strict=True)))
-            return rows
+                    if len(rows) > max_rows:
+                        raise BaoStockError("QUERY_ROW_BOUND_EXCEEDED")
+                metadata = {
+                    "error_code": str(getattr(result, "error_code", "UNKNOWN")),
+                    "error_msg": self._safe_message(getattr(result, "error_msg", "")),
+                    "fields": list(getattr(result, "fields", [])),
+                    "page_count": pages,
+                }
+                if metadata["error_code"] != "0":
+                    raise BaoStockError("BAOSTOCK_QUERY_FAILED_AFTER_PAGINATION",
+                                        provider_code=metadata["error_code"],
+                                        provider_message=metadata["error_msg"])
+                self.last_query_result = metadata
+                return rows, metadata
         except (TimeoutError, socket.timeout, ConnectionError, OSError):
-            raise BaoStockError("BAOSTOCK_BASIC_QUERY_TRANSPORT_FAILED") from None
+            raise BaoStockError("BAOSTOCK_QUERY_TRANSPORT_FAILED") from None
+
+    def probe_stock_basic(self, code: str) -> list[dict[str, str]]:
+        """Single-security metadata probe used only to isolate API capability."""
+        rows, _ = self.query_rows("query_stock_basic", "query_stock_basic", code=code, max_rows=5)
+        return rows
+
+    def probe_trade_dates(self, start_date: str, end_date: str) -> tuple[list[dict[str, str]], dict[str, Any]]:
+        return self.query_rows("query_trade_dates", "query_trade_dates", start_date=start_date,
+                               end_date=end_date, max_rows=40, max_pages=1)
+
+    def probe_all_stock(self, day: str) -> tuple[list[dict[str, str]], dict[str, Any]]:
+        return self.query_rows("query_all_stock", "query_all_stock", day=day, max_rows=10_000, max_pages=10)
 
     def __exit__(self, exc_type, exc, tb) -> None:
         try:
             if self.logged_in and self.sdk is not None:
                 self.budget.consume("logout", bypass_soft_stop=True)
                 with contextlib.redirect_stdout(_NullWriter()), contextlib.redirect_stderr(_NullWriter()):
-                    self.sdk.logout()
+                    result = self.sdk.logout()
+                self.logout_result = {
+                    "error_code": str(getattr(result, "error_code", "UNKNOWN")),
+                    "error_msg": self._safe_message(getattr(result, "error_msg", "")),
+                }
         finally:
             self.logged_in = False
             self._release()
@@ -344,7 +478,7 @@ class _NullWriter:
 def package_metadata() -> dict[str, str]:
     """Return pinned runtime metadata without any credential-derived values."""
     dist = importlib.metadata.distribution("baostock")
-    if dist.version != PACKAGE_VERSION:
+    if dist.version not in SUPPORTED_PACKAGE_VERSIONS:
         raise BaoStockError("BAOSTOCK_PACKAGE_VERSION_UNPINNED")
     package_files = sorted(str(path).replace("\\", "/") for path in (dist.files or ()) if str(path).endswith(".py"))
     digest = hashlib.sha256()
@@ -357,7 +491,10 @@ def package_metadata() -> dict[str, str]:
         "package": "baostock",
         "version": dist.version,
         "installed_python_sources_sha256": digest.hexdigest(),
-        "api_key_mode": "set_API_key_then_login; bs-* routes to vip-api.baostock.com",
+        "supported_auth_modes": ",".join(sorted(AUTH_MODES)),
+        "default_auth_mode": DEFAULT_AUTH_MODE,
+        "expected_version_for_default_auth_mode": PUBLIC_PACKAGE_VERSION,
+        "expected_version_for_vip_auth_mode": VIP_PACKAGE_VERSION,
         "adjustflag": ADJUSTFLAG,
         "fields": FIELDS,
     }

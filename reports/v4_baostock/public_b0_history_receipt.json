@@ -1,0 +1,62 @@
+{
+  "api_key_setter_called": false,
+  "auth_mode": "PUBLIC_ANONYMOUS",
+  "b0_evidence": null,
+  "capability": "UNVERIFIED_OR_BLOCKED",
+  "contract_id": "BAOSTOCK_PUBLIC_RUNTIME_ROUTE_V1",
+  "elapsed_seconds": 30.371,
+  "endpoint": {
+    "auth_mode": "PUBLIC_ANONYMOUS",
+    "configured_host": "public-api.baostock.com",
+    "configured_port": 10030,
+    "connected_peer_ip": "114.94.20.42",
+    "connected_peer_port": 10030
+  },
+  "execution_identity": {
+    "adapter_sha256": "99711e83a0c134425b70865f45b0bda27793bffb6c7bd7d3ff9096bcfe69fb3c",
+    "contract_sha256": "c930f2ef8217ecbf1ad53ca461eebf98e60492f971966c81b3bbed056f7b7ceb",
+    "input_commit": "6429e420b1069d37214ff9d493bc92edf95428c2",
+    "script_sha256": "ed634289958571b083a21deaf54d4a521c4bae5608472d8162029d12df383989"
+  },
+  "failure": {
+    "client_error": "BAOSTOCK_LOGIN_FAILED",
+    "provider_error_code": "10002007",
+    "provider_error_msg": "网络接收错误。"
+  },
+  "login": {
+    "error_code": "10002007",
+    "error_msg": "网络接收错误。"
+  },
+  "logout": {
+    "error_code": "NOT_ATTEMPTED",
+    "error_msg": ""
+  },
+  "observed_at_utc": "2026-09-25T11:25:27+00:00",
+  "queries": {},
+  "raw_payload_persisted": false,
+  "request_count_delta": 1,
+  "request_counts_for_shanghai_day": {
+    "count": 13,
+    "operations": {
+      "login": 5,
+      "logout": 4,
+      "query_history_k_data_plus_adjustflag_3": 3,
+      "query_stock_basic": 1
+    }
+  },
+  "returned_date_ranges": {},
+  "row_counts": {},
+  "row_digests": {},
+  "runtime": {
+    "adjustflag": "3",
+    "default_auth_mode": "PUBLIC_ANONYMOUS",
+    "fields": "date,code,close,volume,amount,turn,tradestatus,isST",
+    "installed_python_sources_sha256": "ac95f0f006514f7bacfe52b05667c958c89893d14ba5fc40dd9173d9536722f9",
+    "package": "baostock",
+    "supported_auth_modes": "PUBLIC_ACCOUNT,PUBLIC_ANONYMOUS,VIP_API_KEY",
+    "version": "0.9.4"
+  },
+  "stage": "V4-01/02-BAOSTOCK-PUBLIC-ROUTE-B0",
+  "status": "PUBLIC_ROUTE_B0_BLOCKED",
+  "user_credentials_passed": false
+}

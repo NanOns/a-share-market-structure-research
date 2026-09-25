@@ -1,19 +1,28 @@
 {
   "contract_id": "BAOSTOCK_SUPPLEMENTAL_SOURCE_V1",
   "contract_version": "1.0.0",
-  "status": "IMPLEMENTED_LIVE_QUERY_BLOCKED",
+  "status": "PUBLIC_ROUTE_B1_OPERATIONAL_FIELD_BINDING_PENDING",
   "runtime": {
     "package": "baostock",
-    "version": "0.9.4",
-    "wheel_filename": "baostock-0.9.4-py3-none-any.whl",
-    "wheel_sha256": "0bf71c6069ab5890ff3596632f9c3f8f1fbc6bfcac582c2f9d6a5c11ab2cfa8f",
+    "version": "0.9.3",
+    "wheel_filename": "baostock-0.9.3-py3-none-any.whl",
+    "wheel_sha256": "acbd19403285bc4e254cee8297cf0e2646ae2276e5af7e549deed3988ab02293",
     "python_version_observed": "3.13.14",
-    "endpoint": "vip-api.baostock.com",
+    "default_auth_mode": "PUBLIC_ANONYMOUS",
+    "endpoint": "public-api.baostock.com:10030",
+    "endpoint_detection": "SDK server constant plus connected socket getpeername; receipt records both",
+    "auth_modes": {
+      "PUBLIC_ANONYMOUS": {"required": true, "login": "bs.login()", "expected_sdk_version": "0.9.3"},
+      "PUBLIC_ACCOUNT": {"required": false, "login": "bs.login(username, password)", "expected_sdk_version": "0.9.3"},
+      "VIP_API_KEY": {"required": false, "login": "set_API_key then login", "expected_sdk_version": "0.9.4", "isolated_requirements": "requirements-v4-baostock-vip.txt"}
+    },
     "transport": "SDK TCP socket",
-    "authentication": "set_API_key(API_KEY) then login(user_id, password); API key routing selects vip-api.baostock.com",
+    "authentication": "Default PUBLIC_ANONYMOUS calls bs.login() without credentials or API-key setter; VIP_API_KEY is isolated and optional",
     "api_reference": "https://www.baostock.com/mainContent?file=pythonAPI.md",
     "api_reference_observed_at": "2026-09-25",
-    "package_auth_verified_by": "installed SDK source and official API-key demo; live API_KEY login succeeds, provider data queries currently return error 10001015"
+    "public_route_status": "0.9.3 B0/B1 PASS in clean Python 3.13 venv; 0.9.4 official Quick Start B0 login timed out after TCP connection, error 10002007",
+    "vip_route_status": "0.9.4 API_KEY login succeeded in prior smoke; history/basic queries returned 10001015",
+    "package_auth_verified_by": "official PyPI Quick Start plus live anonymous public B0/B1 probes; VIP is an independent optional mode"
   },
   "field_map": {
     "version": "BAOSTOCK_FIELD_MAP_V1",
@@ -43,7 +52,7 @@
   "datasets": {
     "BAOSTOCK_TURNOVER_DAILY_V1": {
       "enabled": false,
-      "capability": "UNAVAILABLE",
+      "capability": "PUBLIC_ROUTE_OPERATIONAL_BINDING_PENDING",
       "source_fields": ["code", "date", "turn", "tradestatus", "isST", "close", "volume", "amount"],
       "source_frequency": "daily",
       "turn_unit": "PERCENT_POINTS",
@@ -58,13 +67,13 @@
     },
     "BAOSTOCK_DAILY_FINGERPRINT_V1": {
       "enabled": false,
-      "capability": "UNAVAILABLE",
+      "capability": "PUBLIC_ROUTE_OPERATIONAL_BINDING_PENDING",
       "fields": ["close", "volume", "amount"],
       "authority": "binding_fingerprint_only"
     },
     "BAOSTOCK_SECURITY_STATUS_CROSSCHECK_V1": {
       "enabled": false,
-      "capability": "UNAVAILABLE",
+      "capability": "PUBLIC_ROUTE_OPERATIONAL_BINDING_PENDING",
       "fields": ["tradestatus", "isST"],
       "authority": "cross_check_only"
     }
@@ -118,7 +127,7 @@
     "reserved_headroom": 5000,
     "quota_authority": "USER_PROVIDED_OPERATING_LIMIT; code enforces the stricter 40,000 request soft stop and 45,000 absolute hard stop",
     "request_accounting_scope": "login, query, each retry, logout",
-    "quota_and_timing_values_status": "ENFORCED_IN_CLIENT; live operational measurement pending",
+    "quota_and_timing_values_status": "ENFORCED_IN_CLIENT; clean-venv B0 used 3 requests in 8.465 seconds; B1 used 8 requests in 15.409 seconds; cumulative bounded R3 B0-B6 diagnostics used 229 requests",
     "requests_per_instrument_range": 1,
     "deterministic_order_and_checkpointing": true,
     "unbounded_probe_or_retry": false,
@@ -148,8 +157,22 @@
     "turnover_params_sha256": "13de3997bd24bb3458ade777a7c9f0348c12c7fe300313feafb13623474f3f46",
     "non_baostock_source_contract_sha256": "7afe0cfe0e2ca4d2f646d6e14c484994bb5ba30f53390283a3730ab4cecc3439",
     "existing_receipt_reuse_status": "NOT_REUSABLE_AS_BAOSTOCK_EVIDENCE_TENCENT_SOURCE_ZERO_COMPARABLE_ROWS",
-    "live_smoke_status": "BLOCKED_PROVIDER_QUERY_ERROR_10001015; four successful login/logout cycles; 3 daily-history queries and 1 stock-basic query all returned the same provider code",
+    "live_smoke_status": "HISTORICAL_VIP_API_KEY_QUERY_ERROR_10001015; PUBLIC_ANONYMOUS B0/B1 PASS on isolated 0.9.3",
     "live_smoke_receipt": "reports/v4_baostock/live_smoke_receipt.json",
-    "live_request_ledger": "reports/v4_baostock/request_ledger.json"
+    "live_request_ledger": "reports/v4_baostock/request_ledger.json",
+    "public_b0_094_receipt": "reports/v4_baostock/public_b0_history_receipt.json",
+    "public_b0_093_receipt": "reports/v4_baostock/public_b0_093_clean_venv_receipt.json",
+    "public_b1_093_receipt": "reports/v4_baostock/public_b1_093_clean_venv_receipt.json",
+    "public_b3_receipt": "reports/v4_baostock/public_b3_field_smoke_receipt.json",
+    "public_b4_receipt": "reports/v4_baostock/public_b4_runtime_measurement.json",
+    "public_b5_receipt": "reports/v4_baostock/public_b5_supplement_bootstrap_receipt.json",
+    "public_b5_supplement_artifact": "reports/v4_baostock/supplements/20260925T115724Z_67ab885d_sh_600000_2025-09-01_2025-09-30.json",
+    "public_b6_receipt": "reports/v4_baostock/public_b6_fingerprint_sample_receipt.json",
+    "r3_sdk_diff": {
+      "public_0_9_4_status": "B0 login timed out after TCP connect; 10002007; no history query sent",
+      "public_0_9_3_status": "B0 and B1 passed in isolated Python 3.13 venv",
+      "diagnostic_conclusion": "PUBLIC_ROUTE_VERIFIED_ON_0_9_3; 0_9_4_PUBLIC_LOGIN_REGRESSION_SUSPECTED_NOT_PROVEN_CAUSAL",
+      "0_9_4_pypi_wheel_sha256": "0bf71c6069ab5890ff3596632f9c3f8f1fbc6bfcac582c2f9d6a5c11ab2cfaf8"
+    }
   }
 }

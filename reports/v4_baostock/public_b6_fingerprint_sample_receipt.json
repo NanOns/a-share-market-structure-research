@@ -1,0 +1,520 @@
+{
+  "acceptance_gaps": [
+    "independent fingerprint tolerance acceptance",
+    "status-field lifecycle/PIT binding",
+    "no-action/suspension/resumption coverage"
+  ],
+  "auth_mode": "PUBLIC_ANONYMOUS",
+  "b1_receipt_sha256": "ad7c809d75c125a4e449444229b4fcae7d63c9a9addb9357042f3e77b840baca",
+  "b5_receipt_sha256": "31cf7810f567a802f70d91cb223c122a6fa8c2053b7410f3c4b065337f1129de",
+  "contract_id": "BAOSTOCK_FINGERPRINT_TOLERANCE_V1_DIAGNOSTIC",
+  "elapsed_seconds": 97.86,
+  "execution_identity": {
+    "adapter_sha256": "4a7c9e5d214928ee2175b495d0a55f8cdb7ce218c179b1548a96f4cc44ab6cb7",
+    "input_commit": "6429e420b1069d37214ff9d493bc92edf95428c2",
+    "script_sha256": "e213ca035256ec489910b92557142d4af787fe256fd9a9cea801caf06f2b7c44"
+  },
+  "failures": {},
+  "next_stage": "INDEPENDENT_TOLERANCE_ACCEPTANCE_AND_V4_01_SOURCE_SELECTION",
+  "observed": {
+    "BOUND_STRICT": "NOT_ENABLED_INDEPENDENT_ACCEPTANCE_REQUIRED",
+    "candidate_tolerance_acceptance": "NOT_ISSUED_DIAGNOSTIC_ONLY",
+    "date_pairs": 750,
+    "difference_digest": "7534e542091ee1a5d4983b3d049ed476d1d34b3f44d90b2bb688a1c7894eb487",
+    "exact_match_counts": {
+      "all_three_exact": 9,
+      "exact_amount": 9,
+      "exact_close": 750,
+      "exact_volume": 731
+    },
+    "max_abs_delta": {
+      "amount": 229.28999996185303,
+      "amount_relative": 5.8099270737953695e-08,
+      "close": 0.0,
+      "volume": 8.0
+    },
+    "minimum_dates_per_successful_security": 15,
+    "security_count_requested": 50,
+    "successful_security_queries": 50
+  },
+  "observed_at_utc": "2026-09-25T12:02:18+00:00",
+  "per_security": [
+    {
+      "all_three_exact_count": 0,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sh.600000",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 0,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sz.000001",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 0,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sh.600004",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 0,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sz.000002",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 0,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sh.600006",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 0,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sz.000006",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 0,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sh.600007",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 1,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sz.000007",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 0,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sh.600008",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 0,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sz.000008",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 0,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sh.600009",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 0,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sz.000009",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 0,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sh.600010",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 0,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sz.000010",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 0,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sh.600011",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 1,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sz.000011",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 1,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sh.600012",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 0,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sz.000012",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 0,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sh.600015",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 0,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sz.000014",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 0,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sh.600016",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 0,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sz.000017",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 0,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sh.600017",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 0,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sz.000019",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 0,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sh.600018",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 2,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sz.000020",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 0,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sh.600019",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 0,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sz.000021",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 2,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sh.600020",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 0,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sz.000025",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 0,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sh.600021",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 0,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sz.000026",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 0,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sh.600022",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 0,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sz.000027",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 0,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sh.600023",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 1,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sz.000028",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 0,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sh.600025",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 0,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sz.000029",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 0,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sh.600026",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 0,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sz.000030",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 0,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sh.600027",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 0,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sz.000031",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 0,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sh.600028",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 0,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sz.000032",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 0,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sh.600029",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 0,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sz.000034",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 0,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sh.600030",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 0,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sz.000035",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 0,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sh.600031",
+      "status": "PASS"
+    },
+    {
+      "all_three_exact_count": 1,
+      "local_rows_in_range": 248,
+      "provider_rows": 248,
+      "sampled_overlap_dates": 15,
+      "security_code": "sz.000036",
+      "status": "PASS"
+    }
+  ],
+  "pre_observed_exclusions": [
+    {
+      "reason": "INVALID_BAOSTOCK_ROW_IN_PRIOR_B6_RUN",
+      "security_code": "sz.000016"
+    }
+  ],
+  "query_range": {
+    "adjustflag": "3",
+    "end": "2025-09-30",
+    "frequency": "d",
+    "start": "2024-09-25"
+  },
+  "raw_provider_payload_persisted": false,
+  "request_count_delta": 53,
+  "runtime": {
+    "configured_host": "public-api.baostock.com",
+    "configured_port": 10030,
+    "connected_peer_ip": "114.94.20.42",
+    "connected_peer_port": 10030,
+    "package": "baostock",
+    "version": "0.9.3"
+  },
+  "selected_securities": [
+    "sh.600000",
+    "sz.000001",
+    "sh.600004",
+    "sz.000002",
+    "sh.600006",
+    "sz.000006",
+    "sh.600007",
+    "sz.000007",
+    "sh.600008",
+    "sz.000008",
+    "sh.600009",
+    "sz.000009",
+    "sh.600010",
+    "sz.000010",
+    "sh.600011",
+    "sz.000011",
+    "sh.600012",
+    "sz.000012",
+    "sh.600015",
+    "sz.000014",
+    "sh.600016",
+    "sz.000017",
+    "sh.600017",
+    "sz.000019",
+    "sh.600018",
+    "sz.000020",
+    "sh.600019",
+    "sz.000021",
+    "sh.600020",
+    "sz.000025",
+    "sh.600021",
+    "sz.000026",
+    "sh.600022",
+    "sz.000027",
+    "sh.600023",
+    "sz.000028",
+    "sh.600025",
+    "sz.000029",
+    "sh.600026",
+    "sz.000030",
+    "sh.600027",
+    "sz.000031",
+    "sh.600028",
+    "sz.000032",
+    "sh.600029",
+    "sz.000034",
+    "sh.600030",
+    "sz.000035",
+    "sh.600031",
+    "sz.000036"
+  ],
+  "snapshot_id": "1644752b002fdeb4f3d3a2968b9c77729f27efcdae8923ad14d814abe5c78c70",
+  "stage": "V4-01/02-BAOSTOCK-PUBLIC-B6-FINGERPRINT-SAMPLE",
+  "status": "B6_DIAGNOSTIC_SAMPLE_PASS_ACCEPTANCE_PENDING"
+}

@@ -2,12 +2,12 @@ from __future__ import annotations
 
 """Perform one bounded, secret-free BaoStock connectivity/field smoke run.
 
-Secrets must be supplied in BAOSTOCK_USERNAME, BAOSTOCK_PASSWORD and
-BAOSTOCK_API_KEY. The output records metadata/counts/digests only; no raw rows.
+The default public anonymous mode needs no secrets. Account/VIP modes read only
+their required values from process environment. The output stores metadata and
+digests only, never raw rows.
 """
 
 import argparse
-import hashlib
 import hashlib
 import json
 import re
@@ -34,6 +34,7 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--code", default="sh.600000")
     parser.add_argument("--probe", choices=("daily", "basic"), default="daily")
+    parser.add_argument("--auth-mode", choices=("PUBLIC_ANONYMOUS", "PUBLIC_ACCOUNT", "VIP_API_KEY"), default="PUBLIC_ANONYMOUS")
     parser.add_argument("--start", default="2026-09-01")
     parser.add_argument("--end", default="2026-09-07")
     parser.add_argument("--ledger", default="reports/v4_baostock/request_ledger.json")
@@ -48,13 +49,14 @@ def main() -> int:
         "adapter_sha256": hashlib.sha256((ROOT / "src/workbench_analysis/baostock_supplemental.py").read_bytes()).hexdigest(),
         "contract_sha256": hashlib.sha256((ROOT / "config/baostock_supplemental_contract_v1.json").read_bytes()).hexdigest(),
     }
+    client = BaoStockClient(RequestBudget(ledger_path), auth_mode=args.auth_mode)
     try:
         if ledger_path.exists():
             before_payload = json.loads(ledger_path.read_text(encoding="utf-8"))
             calls_before = sum(int(item.get("count", 0)) for item in before_payload.get("by_shanghai_date", {}).values())
         else:
             calls_before = 0
-        with BaoStockClient(RequestBudget(ledger_path)) as client:
+        with client:
             if args.probe == "basic":
                 basic_rows = client.probe_stock_basic(args.code)
                 rows = []
@@ -73,10 +75,13 @@ def main() -> int:
             "observed_at_utc": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
             "runtime": package_metadata(),
             "execution_identity": execution_identity,
-            "endpoint": "vip-api.baostock.com",
+            "endpoint": client.runtime_endpoint,
             "transport": "Baostock SDK TCP socket",
-            "auth_mode": "API_KEY",
-            "credential_present": True,
+            "auth_mode": args.auth_mode,
+            "login": client.login_result,
+            "logout": client.logout_result,
+            "credential_present": (BaoStockClient.credentials_present(args.auth_mode)
+                                   if args.auth_mode != "PUBLIC_ANONYMOUS" else False),
             "credential_storage": "process_environment_only",
             "query": {"probe": args.probe, "code": args.code, "start_date": args.start, "end_date": args.end, "frequency": "d", "adjustflag": "3"},
             "fields": (["code", "code_name", "ipoDate", "outDate", "type", "status"] if args.probe == "basic" else ["date", "code", "close", "volume", "amount", "turn", "tradestatus", "isST"]),
@@ -87,7 +92,9 @@ def main() -> int:
             "request_count_delta": calls_after - calls_before,
             "elapsed_seconds": round(time.monotonic() - started, 3),
             "status": "SMOKE_PASS" if (rows or basic_rows) else "BLOCKED_EMPTY_RESULT",
-            "capability": "UNAVAILABLE_PENDING_INDEPENDENT_ACCEPTANCE",
+            "capability": ("PUBLIC_ROUTE_OPERATIONAL_BINDING_PENDING"
+                           if args.auth_mode == "PUBLIC_ANONYMOUS" and rows
+                           else "UNAVAILABLE_PENDING_INDEPENDENT_ACCEPTANCE"),
         }
         receipt = ROOT / args.receipt
         receipt.parent.mkdir(parents=True, exist_ok=True)
@@ -113,9 +120,9 @@ def main() -> int:
             "execution_identity": execution_identity,
             "credential_present": BaoStockClient.credentials_present(),
             "credential_storage": "process_environment_only",
-            "endpoint": "vip-api.baostock.com",
+            "endpoint": client.runtime_endpoint,
             "transport": "Baostock SDK TCP socket",
-            "auth_mode": "API_KEY",
+            "auth_mode": args.auth_mode,
             "probe": args.probe,
             "query": {"code": args.code, "start_date": args.start, "end_date": args.end, "frequency": "d", "adjustflag": "3"},
             "request_counts_for_shanghai_day": today_bucket,

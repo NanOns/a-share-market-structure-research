@@ -1,0 +1,90 @@
+{
+  "auth_mode": "PUBLIC_ANONYMOUS",
+  "b1_receipt_sha256": "ad7c809d75c125a4e449444229b4fcae7d63c9a9addb9357042f3e77b840baca",
+  "contract_id": "BAOSTOCK_PUBLIC_RUNTIME_CONTRACT_V1",
+  "execution_identity": {
+    "adapter_sha256": "4a7c9e5d214928ee2175b495d0a55f8cdb7ce218c179b1548a96f4cc44ab6cb7",
+    "input_commit": "6429e420b1069d37214ff9d493bc92edf95428c2",
+    "script_sha256": "54ba78403f611101e4f4a80193830e45f5f1ef3149d830e712233c443b98c634"
+  },
+  "failure": null,
+  "login": {
+    "error_code": "0",
+    "error_msg": "success"
+  },
+  "logout": {
+    "error_code": "0",
+    "error_msg": "success"
+  },
+  "measurements": {
+    "full_market_single_day": {
+      "date": "2026-09-07",
+      "elapsed_seconds": 8.931,
+      "fields": [
+        "date",
+        "code",
+        "open",
+        "high",
+        "low",
+        "close",
+        "preclose",
+        "volume",
+        "amount",
+        "adjustflag",
+        "turn",
+        "tradestatus",
+        "pctChg",
+        "peTTM",
+        "pbMRQ",
+        "psTTM",
+        "pcfNcfTTM",
+        "isST"
+      ],
+      "page_count": 1,
+      "request_count": 1,
+      "row_count": 5216,
+      "rows_digest": "30c5f1eb362fcc17da22c68a38cb82049dc8576fa06e09c3000447b8b8d40faf",
+      "rows_per_second": 584.03
+    },
+    "one_security_two_year": {
+      "elapsed_seconds": 1.424,
+      "end_date": "2026-09-24",
+      "first_date": "2024-09-25",
+      "last_date": "2026-09-24",
+      "request_count": 1,
+      "row_count": 486,
+      "rows_digest": "2eb52d907911979a72d585d9b42111707455e5cc6c71ec1253a3c27d951131a1",
+      "rows_per_second": 341.25,
+      "security_code": "sh.600000",
+      "start_date": "2024-09-25"
+    }
+  },
+  "observed_at_utc": "2026-09-25T11:50:39+00:00",
+  "raw_payload_persisted": false,
+  "request_count_delta": 4,
+  "request_counts_for_shanghai_day": {
+    "count": 76,
+    "operations": {
+      "login": 13,
+      "logout": 12,
+      "query_all_stock": 2,
+      "query_all_stock_page": 6,
+      "query_daily_history_k_AStock": 1,
+      "query_history_k_data_plus_adjustflag_3": 35,
+      "query_stock_basic": 5,
+      "query_trade_dates": 2
+    }
+  },
+  "runtime": {
+    "configured_host": "public-api.baostock.com",
+    "configured_port": 10030,
+    "connected_peer_ip": "114.94.20.42",
+    "connected_peer_port": 10030,
+    "package": "baostock",
+    "python": "3.13.14",
+    "version": "0.9.3"
+  },
+  "session_elapsed_seconds": 13.865,
+  "stage": "V4-01/02-BAOSTOCK-PUBLIC-B4-RUNTIME-MEASURE",
+  "status": "B4_RUNTIME_MEASURED_FIELD_ACCEPTANCE_PENDING"
+}

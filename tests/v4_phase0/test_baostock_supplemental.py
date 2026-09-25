@@ -99,11 +99,11 @@ def test_bad_or_unreadable_ledger_fails_closed(tmp_path: Path):
         bao.RequestBudget(path).consume("query")
 
 
-def test_client_refuses_to_start_without_all_environment_secrets(monkeypatch, tmp_path: Path):
+def test_vip_client_refuses_to_start_without_vip_environment_secrets(monkeypatch, tmp_path: Path):
     for name in ("BAOSTOCK_USERNAME", "BAOSTOCK_PASSWORD", "BAOSTOCK_API_KEY"):
         monkeypatch.delenv(name, raising=False)
     with pytest.raises(bao.BaoStockError, match="BAOSTOCK_CREDENTIAL_ENV_MISSING"):
-        with bao.BaoStockClient(bao.RequestBudget(tmp_path / "ledger.json")):
+        with bao.BaoStockClient(bao.RequestBudget(tmp_path / "ledger.json"), auth_mode="VIP_API_KEY"):
             pytest.fail("session must not start")
 
 
@@ -111,7 +111,7 @@ def test_client_fake_sdk_routes_api_key_and_keeps_session_serial(monkeypatch, tm
     monkeypatch.setenv("BAOSTOCK_USERNAME", "user-placeholder")
     monkeypatch.setenv("BAOSTOCK_PASSWORD", "password-placeholder")
     monkeypatch.setenv("BAOSTOCK_API_KEY", "bs-placeholder")
-    monkeypatch.setattr(bao.importlib.metadata, "version", lambda _: bao.PACKAGE_VERSION)
+    monkeypatch.setattr(bao.importlib.metadata, "version", lambda _: bao.VIP_PACKAGE_VERSION)
 
     class Result:
         error_code = "0"
@@ -152,7 +152,7 @@ def test_client_fake_sdk_routes_api_key_and_keeps_session_serial(monkeypatch, tm
             SDK.logout_calls += 1
 
     ledger = tmp_path / "ledger.json"
-    client = bao.BaoStockClient(bao.RequestBudget(ledger), sdk=SDK)
+    client = bao.BaoStockClient(bao.RequestBudget(ledger), sdk=SDK, auth_mode="VIP_API_KEY")
     with client:
         rows = client.query_daily("sh.600000", "2026-09-01", "2026-09-01")
         with pytest.raises(bao.BaoStockError, match="ANOTHER_BAOSTOCK_SESSION_ACTIVE"):
@@ -168,10 +168,79 @@ def test_client_fake_sdk_routes_api_key_and_keeps_session_serial(monkeypatch, tm
     assert not (tmp_path / "ledger.json.session.lock").exists()
 
 
+def test_public_anonymous_mode_uses_no_credentials_or_api_key(monkeypatch, tmp_path: Path):
+    for name in ("BAOSTOCK_USERNAME", "BAOSTOCK_PASSWORD", "BAOSTOCK_API_KEY", "BAOSTOCK_AUTH_MODE"):
+        monkeypatch.delenv(name, raising=False)
+    monkeypatch.setattr(bao.importlib.metadata, "version", lambda _: bao.PACKAGE_VERSION)
+
+    class Result:
+        error_code = "0"
+        fields = ["calendar_date", "is_trading_day"]
+        data = [["2026-09-01", "1"]]
+        cur_row_num = 0
+        per_page_count = 2000
+
+        def next(self):
+            return self.cur_row_num < len(self.data)
+
+        def get_row_data(self):
+            row = self.data[self.cur_row_num]
+            self.cur_row_num += 1
+            return row
+
+    class SDK:
+        key_setter_called = False
+        login_args = None
+        logout_calls = 0
+
+        @staticmethod
+        def set_API_key(_key):
+            SDK.key_setter_called = True
+
+        @staticmethod
+        def login(*args):
+            SDK.login_args = args
+            return SimpleNamespace(error_code="0", error_msg="success")
+
+        @staticmethod
+        def query_trade_dates(**_kwargs):
+            return Result()
+
+        @staticmethod
+        def logout():
+            SDK.logout_calls += 1
+            return SimpleNamespace(error_code="0", error_msg="success")
+
+    client = bao.BaoStockClient(bao.RequestBudget(tmp_path / "public-ledger.json"), sdk=SDK,
+                                auth_mode="PUBLIC_ANONYMOUS")
+    with client:
+        rows, metadata = client.probe_trade_dates("2026-09-01", "2026-09-02")
+    assert len(rows) == 1
+    assert metadata["error_code"] == "0"
+    assert SDK.login_args == ()
+    assert SDK.key_setter_called is False
+    assert client.login_result["error_code"] == "0"
+    assert client.logout_result["error_code"] == "0"
+    assert bao.BaoStockClient.credentials_present("PUBLIC_ANONYMOUS")
+    assert not bao.BaoStockClient.credentials_present("VIP_API_KEY")
+
+
+def test_public_runtime_fails_closed_on_unverified_sdk_version(monkeypatch, tmp_path: Path):
+    monkeypatch.setattr(bao.importlib.metadata, "version", lambda _: bao.VIP_PACKAGE_VERSION)
+    with pytest.raises(bao.BaoStockError, match="BAOSTOCK_PACKAGE_VERSION_UNPINNED_FOR_AUTH_MODE"):
+        with bao.BaoStockClient(bao.RequestBudget(tmp_path / "ledger.json"), sdk=object(),
+                                auth_mode="PUBLIC_ANONYMOUS"):
+            pytest.fail("unverified public SDK version must be rejected")
+    assert not (tmp_path / "ledger.json").exists()
+    assert not (tmp_path / "ledger.json.session.lock").exists()
+
+
 def test_package_metadata_is_pinned_and_secret_free():
     metadata = bao.package_metadata()
-    assert metadata["version"] == "0.9.4"
-    assert metadata["api_key_mode"].startswith("set_API_key")
+    assert metadata["version"] in bao.SUPPORTED_PACKAGE_VERSIONS
+    assert metadata["default_auth_mode"] == "PUBLIC_ANONYMOUS"
+    assert metadata["expected_version_for_default_auth_mode"] == "0.9.3"
+    assert "VIP_API_KEY" in metadata["supported_auth_modes"]
     assert "password" not in json.dumps(metadata).lower()
 
 

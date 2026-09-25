@@ -158,3 +158,23 @@ def test_framework_schema_conflicts_are_rejected():
     doc["rule_ast"]["compare_operators"].append("FAKE")
     with pytest.raises(ContractValidationError, match="FRAMEWORK_COMPARE_OPERATOR_SET_MISMATCH"):
         validate_framework_document(doc, registry())
+
+
+def test_non_numeric_policy_values_are_deferred_to_separate_versioned_contract():
+    doc = framework()
+    policy = doc["parameter_instance_contract"]["non_numeric_value_policy"]
+    assert policy["status"] == "DEFERRED_TO_VERSIONED_POLICY_CONTRACT"
+    assert policy["phase0_stage_status"] == "DEGRADED_PASS"
+    validate_framework_document(doc, registry())
+    data = registry()
+    entry = next(x for x in data["entries"] if x["unit"] == "quality_to_consumer_matrix")
+    entry["value"] = {"OBSERVED": ["RELATIVE_OBSERVED"]}
+    with pytest.raises(ContractValidationError, match="FINITE_NUMBER_REQUIRED"):
+        validate_parameter_registry(data, doc)
+
+
+def test_framework_cannot_claim_non_numeric_parameter_typing_is_complete():
+    doc = framework()
+    doc["parameter_instance_contract"]["non_numeric_value_policy"]["status"] = "SUPPORTED"
+    with pytest.raises(ContractValidationError, match="FRAMEWORK_NON_NUMERIC_POLICY_CONTRACT_MISMATCH"):
+        validate_framework_document(doc, registry())

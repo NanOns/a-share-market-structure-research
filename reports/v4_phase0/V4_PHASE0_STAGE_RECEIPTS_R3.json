@@ -1,0 +1,284 @@
+{
+  "contract_id": "V4_PHASE0_STAGE_RECEIPTS_R3_1",
+  "repair_task_sha256": "f51e71ec8a3c02a5551bf07f66366856cf146182a76729b549871a680dcd0fe0",
+  "technical_contract": "DA-MSR-V4.2.2-CODEX-REV2",
+  "technical_contract_sha256": "744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd",
+  "input_commit": "310696d57165a52354a33a7b8d65a8a769063e50",
+  "execution_head_before_repair": "310696d57165a52354a33a7b8d65a8a769063e50",
+  "stages": [
+    {
+      "stage": "V4-00A",
+      "status": "FULL_PASS",
+      "stage_contract": "R2 §2, §9; REV2 Phase 0 clean V4 baseline. Legacy project database has already been reset; no second reset.",
+      "allowed_capabilities": [],
+      "degraded_scopes": [],
+      "blocked_scopes": [],
+      "blocks_v4_01": false,
+      "reason_codes": [],
+      "evidence": [
+        "reports/v4_phase0/V4_DATABASE_RESET_RECEIPT.json",
+        "reports/v4_phase0/V4_PHASE0_PERFORMANCE_BASELINE_R2.json",
+        "reports/v4_phase0/V4_PHASE0_R2_TEST_RECEIPT.json"
+      ],
+      "acceptance": "Clean V4 baseline remains: 15 tables, 25 validated foreign keys, zero unvalidated keys, zero runtime rows. The verified physical backup was explicitly requested before old database deletion and is informational, not a migration input or entry requirement.",
+      "next_stage": "V4-00B"
+    },
+    {
+      "stage": "V4-00B",
+      "status": "DEGRADED_PASS",
+      "stage_contract": "R2 §4; REV2 §5.3 and §9408 lifecycle/universe/PIT contracts.",
+      "allowed_capabilities": [
+        "LIFECYCLE_SCHEMA"
+      ],
+      "degraded_scopes": [
+        "HISTORICAL_PIT_MEMBERSHIP_DATA_NOT_YET_BOOTSTRAPPED"
+      ],
+      "blocked_scopes": [],
+      "blocks_v4_01": false,
+      "reason_codes": [
+        "HISTORICAL_PIT_DATA_TRANSFERRED_TO_V4_01"
+      ],
+      "evidence": [
+        "config/v4_security_lifecycle_fact_v1.json",
+        "config/v4_pit_membership_fact_v1.json",
+        "src/workbench_db/migrations/v4_postgres/003_phase0_contract_alignment.sql",
+        "tests/v4_phase0/test_postgres_schema.py"
+      ],
+      "acceptance": "Lifecycle/PIT machine contracts match implemented fact columns and source-revision chains; historic facts are not claimed as imported.",
+      "next_stage": "V4-00C"
+    },
+    {
+      "stage": "V4-00C",
+      "status": "FULL_PASS",
+      "stage_contract": "R2 §3; REV2 publication opaque identity, revision lineage, namespace/core revision, and prior valid session.",
+      "allowed_capabilities": [
+        "PUBLICATION_IDENTITY"
+      ],
+      "degraded_scopes": [],
+      "blocked_scopes": [],
+      "blocks_v4_01": false,
+      "reason_codes": [],
+      "evidence": [
+        "src/workbench_db/migrations/v4_postgres/003_phase0_contract_alignment.sql",
+        "src/workbench_db/migrations/v4_postgres/004_publication_head_revision_identity.sql",
+        "src/workbench_db/migrations/v4_postgres/005_market_session_publication_chain.sql",
+        "tests/v4_phase0/test_postgres_schema.py",
+        "src/workbench_db/migrations/v4_postgres/008_prior_session_state_freeze_integrity.sql",
+        "src/workbench_db/migrations/v4_postgres/009_publication_head_guard_sql_alias_fix.sql"
+      ],
+      "acceptance": "Prior-session identity equals the immediately previous accepted publication head and its state-head/logical digest. Same-day revisions preserve the prior tuple; false gaps and mutation of a frozen prior head are rejected.",
+      "next_stage": "V4-00D"
+    },
+    {
+      "stage": "V4-00D",
+      "status": "FULL_PASS",
+      "stage_contract": "R2 §2.2; retain the accepted A_STOCK overlap result. No package redownload or overlap rerun.",
+      "allowed_capabilities": [
+        "A_STOCK_TDX_SOURCE"
+      ],
+      "degraded_scopes": [],
+      "blocked_scopes": [],
+      "blocks_v4_01": false,
+      "reason_codes": [],
+      "evidence": [
+        "reports/v4_00d/v4_00d_asset_stratified_20260925.json",
+        "reports/v4_00d/v4_00d_asset_stratified_postcheck_20260925.json"
+      ],
+      "acceptance": "A_STOCK remains ACCEPTED_SOURCE_PACKAGE: 265,993 comparable rows, zero unexplained mismatch, zero identity mismatch. Runtime not measured because R2 forbids rerun.",
+      "next_stage": "V4-00E"
+    },
+    {
+      "stage": "V4-00E",
+      "status": "DEGRADED_PASS",
+      "stage_contract": "R2 §10 and existing adjustment contract: adjusted unknown categories fail closed.",
+      "allowed_capabilities": [
+        "RAW_BOOTSTRAP"
+      ],
+      "degraded_scopes": [
+        "UNSUPPORTED_ADJUSTED_EVENT_CATEGORIES"
+      ],
+      "blocked_scopes": [],
+      "blocks_v4_01": false,
+      "reason_codes": [
+        "ADJUSTED_EMPIRICAL_COVERAGE_TRANSFERRED"
+      ],
+      "evidence": [
+        "docs/V4_00E_HISTORICAL_ADJUSTMENT_COORDINATES_20260925.md",
+        "tests/v4_phase0/test_adjustment_contract_vectors.py"
+      ],
+      "acceptance": "RAW eligibility remains independent; unsupported adjusted categories do not produce fabricated values.",
+      "next_stage": "V4-00F"
+    },
+    {
+      "stage": "V4-00F",
+      "status": "DEGRADED_PASS",
+      "stage_contract": "R2 §11: supplemental source is optional and fail-closed.",
+      "allowed_capabilities": [],
+      "degraded_scopes": [
+        "BAOSTOCK_SUPPLEMENTAL_OPTIONAL_UNAVAILABLE"
+      ],
+      "blocked_scopes": [],
+      "blocks_v4_01": false,
+      "reason_codes": [
+        "SUPPLEMENTAL_SOURCE_OPTIONAL"
+      ],
+      "evidence": [
+        "docs/V4_00F_BAOSTOCK_SUPPLEMENTAL_CONTRACT_20260925.md",
+        "docs/audits/V4_00F_BAOSTOCK_GATE_AUDIT_20260925.md"
+      ],
+      "acceptance": "No BaoStock processing was run; capability stays optional and does not block local RAW flow.",
+      "next_stage": "V4-00G"
+    },
+    {
+      "stage": "V4-00G",
+      "status": "DEGRADED_PASS",
+      "stage_contract": "R2 §5 and §12; REV2 §72–73 and versioned AST/parameter/output/window contracts.",
+      "allowed_capabilities": [],
+      "degraded_scopes": [
+        "NON_NUMERIC_PARAMETER_POLICY_VALUES_DEFERRED"
+      ],
+      "blocked_scopes": [],
+      "blocks_v4_01": false,
+      "reason_codes": [
+        "NON_NUMERIC_POLICY_VALUES_REQUIRE_SEPARATE_VERSIONED_CONTRACT"
+      ],
+      "evidence": [
+        "src/v4/contracts/algorithm_contract.py",
+        "config/v4_algorithm_contract_framework_v1.json",
+        "config/v4_parameter_registry_v1.json",
+        "tests/v4_phase0/test_algorithm_contracts.py",
+        "reports/v4_phase0/V4_PHASE0_R2_TEST_RECEIPT.json"
+      ],
+      "acceptance": "Numeric registry values are validated. Non-numeric quality enum/matrix values remain unassigned and require a separate versioned policy contract; this limitation is fail-closed and makes 00G DEGRADED_PASS without blocking RAW Bootstrap.",
+      "next_stage": "V4-00H"
+    },
+    {
+      "stage": "V4-00H",
+      "status": "DEGRADED_PASS",
+      "stage_contract": "R2 §§6–8; REV2 §74; scope-level phase gate and capability-specific consumer permissions.",
+      "allowed_capabilities": [],
+      "degraded_scopes": [
+        "BENCHMARK_THRESHOLDS_UNSET",
+        "V4_MODULE_PERFORMANCE_NOT_IMPLEMENTED",
+        "LEGACY_API_UI_NOT_LISTENING",
+        "00D_RUNTIME_NOT_MEASURED_BY_R2_BOUNDARY"
+      ],
+      "blocked_scopes": [
+        "MARKED_RELATIVE_BENCHMARK_CONSUMER"
+      ],
+      "blocks_v4_01": false,
+      "reason_codes": [
+        "MARKED_RELATIVE_DISABLED_PENDING_REPRESENTATIVE_SAMPLE",
+        "V4_COMPONENTS_NOT_IMPLEMENTED_OR_UNAVAILABLE"
+      ],
+      "evidence": [
+        "config/v4_phase0_final_gate_v1.json",
+        "config/v4_capability_cutover_policy_v1.json",
+        "config/v4_performance_measurement_contract_v1.json",
+        "reports/v4_phase0/V4_PHASE0_PERFORMANCE_BASELINE_R2.json",
+        "tests/v4_phase0/test_phase0_final_gate.py"
+      ],
+      "acceptance": "Required scopes are owner-bound, RAW Bootstrap is derived from accepted Phase 0 evidence and the 00E RAW capability, and any BLOCKED stage blocks Phase 0. Marked-relative remains scoped blocked.",
+      "next_stage": "V4-01 TDX History Bootstrap (only after external audit confirms entry permission)"
+    }
+  ],
+  "entry_gate": {
+    "required_scopes": [
+      "RAW_BOOTSTRAP",
+      "A_STOCK_TDX_SOURCE",
+      "LIFECYCLE_SCHEMA",
+      "PUBLICATION_IDENTITY"
+    ],
+    "accepted_scopes": [
+      "A_STOCK_TDX_SOURCE",
+      "LIFECYCLE_SCHEMA",
+      "PUBLICATION_IDENTITY",
+      "RAW_BOOTSTRAP"
+    ],
+    "blocked_scopes": [
+      "MARKED_RELATIVE_BENCHMARK_CONSUMER"
+    ],
+    "blocked_required_scopes": [],
+    "raw_bootstrap_derivation": {
+      "status": "SATISFIED",
+      "owner_stage": "V4-00E",
+      "requires_all_phase0_stages_accepted": true,
+      "required_owner_scopes_accepted": [
+        "A_STOCK_TDX_SOURCE",
+        "LIFECYCLE_SCHEMA",
+        "PUBLICATION_IDENTITY"
+      ]
+    }
+  },
+  "core_blockers": [],
+  "next_stage": "Final external Phase 0 audit; do not start V4-01 until the external audit explicitly confirms V4_01_ENTRY_PERMISSION=AUTHORIZED.",
+  "technical_contract_document": "D:/Users/lps/Desktop/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_20260925_codex修改版.md",
+  "base_final_executable_contract": "DA-MSR-V4.2.2-FINAL-EXECUTABLE-CONTRACT",
+  "base_final_executable_contract_sha256": "ac86f92f9cfaa3547a0ba99959e749da02f0fa7f9c0a1568ad95627db0200b97",
+  "repair_card_sha256": "426b120f40759a908b32f608902ad5c0c90ce92268463b040057f5226247da06",
+  "schema_migrations": [
+    {
+      "version": "V4_FACT_SOURCE_GUARD_TABLE_SPECIFIC_FIELDS_R2",
+      "checksum_sha256": "d6ccd5dae3900fa07134a18e2f4f41ed2fbc3dde2fa4d5be79958d82d616a949",
+      "status": "APPLIED"
+    },
+    {
+      "version": "V4_MARKET_SESSION_PUBLICATION_CHAIN_R2",
+      "checksum_sha256": "54d32de8e20afc773638b38aa555c47a5c5e8cb9b0bba82bb60fbd820a2d3b66",
+      "status": "APPLIED"
+    },
+    {
+      "version": "V4_PHASE0_CONTRACT_ALIGNMENT_R2",
+      "checksum_sha256": "e1e2886c04c45121530e1fcf506297921c9cca2eecec3ee06be77e2520887d77",
+      "status": "APPLIED"
+    },
+    {
+      "version": "V4_PHASE0_FOUNDATION_V1",
+      "checksum_sha256": "391bf52595fc9da86bbce175b667a5b15c18684c4fbfb8e54cdcf65872dff260",
+      "status": "APPLIED"
+    },
+    {
+      "version": "V4_PHASE0_NAMESPACE_INTEGRITY_V1",
+      "checksum_sha256": "d8dcc13609ea73923dd68ad21d9c91eed69128047203a481764edeb72ea45dac",
+      "status": "APPLIED"
+    },
+    {
+      "version": "V4_PRIOR_SESSION_STATE_FREEZE_INTEGRITY_R3",
+      "checksum_sha256": "3d541d9540d64463068907d20062403d7ee41373c42afa5c34c7e0d7117b338b",
+      "status": "APPLIED"
+    },
+    {
+      "version": "V4_PUBLICATION_HEAD_GUARD_SQL_ALIAS_FIX_R3",
+      "checksum_sha256": "ae4a7043367a490483618944b8efaf473062f82371e500ab60e5a79a4d55d2e8",
+      "status": "APPLIED"
+    },
+    {
+      "version": "V4_PUBLICATION_HEAD_REVISION_IDENTITY_R2",
+      "checksum_sha256": "905af9323f613d3ae917000859f2306ce3d2a2ec6be43431233c5f4ce0e8a1b3",
+      "status": "APPLIED"
+    },
+    {
+      "version": "V4_STATE_AND_NAMESPACE_PUBLICATION_IDENTITY_R2",
+      "checksum_sha256": "f7df9d66c6edb13e948cbd92888af140ad335cb2984b9b0078e5498eee1cb4a0",
+      "status": "APPLIED"
+    }
+  ],
+  "phase0_status": "DEGRADED_PASS",
+  "physical_backup_audit_fact": "USER_EXPLICITLY_REQUESTED_PRE_DELETE_SAFETY_MEASURE; informational only; not a V4 migration input.",
+  "full_test_receipt": {
+    "receipt_id": "V4_PHASE0_R3_TEST_RECEIPT_20260925",
+    "repair_card_sha256": "426b120f40759a908b32f608902ad5c0c90ce92268463b040057f5226247da06",
+    "governing_technical_contract": "DA-MSR-V4.2.2-CODEX-REV2",
+    "technical_contract_sha256": "744b75906d932d6b11e01a1cd90f6a8de219642620dd30fd",
+    "input_commit": "310696d57165a52354a33a7b8d65a8a769063e50",
+    "command": "py -3 -m pytest -q tests\\v4_phase0",
+    "scope": "R3 prior accepted publication/state-head/logical-digest freeze; previous-session gap validation; same-day prior tuple invariance; publication-head freeze; owner-bound required scopes; derived RAW Bootstrap; BLOCKED-stage hard gate; non-numeric parameter policy boundary.",
+    "result": "PASS",
+    "passed": 63,
+    "failed": 0,
+    "skipped": 0,
+    "pytest_elapsed_seconds": 1.88,
+    "database_effects": "All PostgreSQL behavior tests use rollback-only transactions. Migration 008 and 009 were applied to the existing empty Phase 0 schema; no reset or runtime data writes.",
+    "prohibited_work": "No 00D rerun, no TDX download/write, no V4-01, scanner, factor, Radar, Focus, or BaoStock work."
+  }
+}

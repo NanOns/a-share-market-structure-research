@@ -1,6 +1,6 @@
 {
   "contract_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "stage_id": "V4-00G",
   "status": "FRAMEWORK_FROZEN_MODULE_CONTRACTS_PENDING",
   "input_commit": "3ef5bf63455447dd605534dc4c1717eb238a86f5",
@@ -103,6 +103,7 @@
   },
   "parameter_instance_contract": {
     "registry_contract_id": "PARAMETER_REGISTRY_V1",
+    "value_domain": "FINITE_NUMBER_OR_NULL",
     "required_fields": [
       "parameter_id",
       "contract_scope",
@@ -126,6 +127,17 @@
       "RETIRED"
     ],
     "unassigned_value": "no formal consumer permission",
+    "non_numeric_value_policy": {
+      "contract_ref": "V4_PARAMETER_NON_NUMERIC_POLICY_R3",
+      "status": "DEFERRED_TO_VERSIONED_POLICY_CONTRACT",
+      "units": [
+        "quality_enum_by_capability",
+        "quality_to_consumer_matrix"
+      ],
+      "versioning": "MUST_USE_A_SEPARATELY_VERSIONED_POLICY_CONTRACT_BEFORE_ASSIGNING_NON_NUMERIC_VALUES",
+      "formal_permission": "DENIED_WHILE_UNASSIGNED",
+      "phase0_stage_status": "DEGRADED_PASS"
+    },
     "change_policy": "new parameter_set_id and model_contract_id; preserve previous outcomes",
     "digest_inputs": [
       "contract_id",

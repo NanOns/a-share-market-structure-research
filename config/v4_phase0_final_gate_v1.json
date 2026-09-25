@@ -1,6 +1,6 @@
 {
-  "contract_id": "V4_PHASE0_FINAL_ACCEPTANCE_V1",
-  "version": "1.0.0",
+  "contract_id": "V4_PHASE0_FINAL_ACCEPTANCE_R3",
+  "version": "3.0.0",
   "required_stages": [
     "V4-00A",
     "V4-00B",
@@ -26,9 +26,27 @@
   "v4_01_permission_requires": [
     "all_phase0_stages_accepted",
     "no_core_blockers",
-    "accepted_a_stock_tdx_source"
+    "owner_bound_required_scopes_accepted",
+    "raw_bootstrap_derived_from_accepted_phase0_evidence"
   ],
-  "status": "R2_SCOPE_LEVEL_AGGREGATION_FROZEN",
+  "status": "R3_OWNER_BOUND_DERIVED_RAW_GATE_FROZEN",
+  "required_scope_owners": {
+    "A_STOCK_TDX_SOURCE": "V4-00D",
+    "LIFECYCLE_SCHEMA": "V4-00B",
+    "PUBLICATION_IDENTITY": "V4-00C"
+  },
+  "raw_bootstrap_derivation": {
+    "owner_capability_stage": "V4-00E",
+    "requires_accepted_status_for_all_required_stages": true,
+    "requires_no_core_or_stage_blockers": true,
+    "requires_scopes": [
+      "A_STOCK_TDX_SOURCE",
+      "LIFECYCLE_SCHEMA",
+      "PUBLICATION_IDENTITY"
+    ],
+    "single_stage_self_declaration_satisfies_permission": false
+  },
+  "blocked_stage_policy": "Any BLOCKED stage blocks Phase 0; a non-entry capability limitation must be represented by DEGRADED_PASS with a scoped blocked_scopes entry.",
   "aggregation_rules": {
     "all_full_no_degraded_or_blocked_scopes": "FULL_PASS",
     "any_degraded_scope_without_v4_01_required_block": "DEGRADED_PASS; authorize V4-01 only when each required scope is accepted",
@@ -59,6 +77,8 @@
   ],
   "physical_backup_is_acceptance_requirement": false,
   "physical_backup_role": "INFORMATIONAL_NON_AUTHORITATIVE",
+  "physical_backup_request_truth": "USER_EXPLICITLY_REQUESTED_PRE_DELETE_SAFETY_MEASURE",
+  "physical_backup_is_v4_migration_input": false,
   "r2_repair_task_sha256": "f51e71ec8a3c02a5551bf07f66366856cf146182a76729b549871a680dcd0fe0",
   "technical_contract_sha256": "744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd",
   "base_final_executable_contract_sha256": "ac86f92f9cfaa3547a0ba99959e749da02f0fa7f9c0a1568ad95627db0200b97"

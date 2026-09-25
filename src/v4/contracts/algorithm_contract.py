@@ -28,6 +28,7 @@ WINDOW_IDENTITIES = {
 }
 MATH_CONSTANTS = {"PI", "E"}
 PARAMETER_STATUSES = {"ENGINEERING_CANDIDATE", "SHADOW_FROZEN", "PROVISIONAL", "SUPPORTED", "RETIRED"}
+NON_NUMERIC_PARAMETER_UNITS = {"quality_enum_by_capability", "quality_to_consumer_matrix"}
 PARAMETER_REQUIRED_FIELDS = {
     "parameter_id", "contract_scope", "value", "unit", "minimum", "maximum",
     "inclusive_boundaries", "status", "reason", "introduced_version", "approved_at",
@@ -99,6 +100,10 @@ def validate_parameter_registry(registry: Mapping[str, Any], framework: Mapping[
         raise ContractValidationError("PARAMETER_REGISTRY_CONTRACT_ID_MISMATCH")
     _string(registry.get("registry_version"), "registry_version")
     _string(registry.get("parameter_set_id"), "parameter_set_id")
+    if registry.get("value_domain") != "FINITE_NUMBER_OR_NULL":
+        raise ContractValidationError("PARAMETER_REGISTRY_VALUE_DOMAIN_MISMATCH")
+    if registry.get("non_numeric_value_policy_ref") != "V4_PARAMETER_NON_NUMERIC_POLICY_R3":
+        raise ContractValidationError("PARAMETER_REGISTRY_NON_NUMERIC_POLICY_REF_MISMATCH")
     entries = registry.get("entries")
     if not isinstance(entries, list):
         raise ContractValidationError("PARAMETER_ENTRIES_REQUIRED")
@@ -127,6 +132,8 @@ def validate_parameter_registry(registry: Mapping[str, Any], framework: Mapping[
         if status not in expected_statuses:
             raise ContractValidationError(f"UNKNOWN_PARAMETER_STATUS:{pid}:{status}")
         value = _finite_number(entry.get("value"), f"{pid}.value", nullable=True)
+        if entry.get("unit") in NON_NUMERIC_PARAMETER_UNITS and value is not None:
+            raise ContractValidationError(f"NON_NUMERIC_POLICY_VALUE_REQUIRES_VERSIONED_POLICY_CONTRACT:{pid}")
         minimum = _finite_number(entry.get("minimum"), f"{pid}.minimum", nullable=True)
         maximum = _finite_number(entry.get("maximum"), f"{pid}.maximum", nullable=True)
         if minimum is not None and maximum is not None and minimum > maximum:
@@ -183,6 +190,18 @@ def validate_framework_document(framework: Mapping[str, Any], registry: Mapping[
         raise ContractValidationError("FRAMEWORK_PARAMETER_FIELDS_MISMATCH")
     if set(parameter_contract.get("statuses", [])) != PARAMETER_STATUSES:
         raise ContractValidationError("FRAMEWORK_PARAMETER_STATUSES_MISMATCH")
+    if parameter_contract.get("value_domain") != "FINITE_NUMBER_OR_NULL":
+        raise ContractValidationError("FRAMEWORK_PARAMETER_VALUE_DOMAIN_MISMATCH")
+    non_numeric_policy = _object(parameter_contract.get("non_numeric_value_policy"), "non_numeric_value_policy")
+    if non_numeric_policy != {
+        "contract_ref": "V4_PARAMETER_NON_NUMERIC_POLICY_R3",
+        "status": "DEFERRED_TO_VERSIONED_POLICY_CONTRACT",
+        "units": sorted(NON_NUMERIC_PARAMETER_UNITS),
+        "versioning": "MUST_USE_A_SEPARATELY_VERSIONED_POLICY_CONTRACT_BEFORE_ASSIGNING_NON_NUMERIC_VALUES",
+        "formal_permission": "DENIED_WHILE_UNASSIGNED",
+        "phase0_stage_status": "DEGRADED_PASS",
+    }:
+        raise ContractValidationError("FRAMEWORK_NON_NUMERIC_POLICY_CONTRACT_MISMATCH")
 
     section_schema = _object(framework.get("contract_section_schema"), "contract_section_schema")
     if section_schema != SECTION_SCHEMAS:

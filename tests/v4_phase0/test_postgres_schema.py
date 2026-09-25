@@ -41,18 +41,30 @@ def add_calendar_session(pg, calendar_id, trade_date, session_no=None):
     )
 
 
-def add_publication(pg, *, publication_id, namespace_id, trade_date, lineage_id, calendar_id=None, revision_no=1, core_revision=1, parent_id=None, prior_id=None, prior_digest=None, gap="INITIAL"):
+def add_publication(pg, *, publication_id, namespace_id, trade_date, lineage_id, calendar_id=None, revision_no=1, core_revision=1, parent_id=None, prior_id=None, prior_state_head=None, prior_logical_digest=None, gap="INITIAL_BOUNDARY", status="ACCEPTED"):
     calendar_id = calendar_id or f"CAL-{namespace_id}"
     add_calendar_session(pg, calendar_id, trade_date)
     pg.execute(
         """insert into v4.publications(
              publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
              core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
-             prior_session_publication_id,prior_session_revision_digest,prior_session_gap_reason,accepted_at)
-           values (%s,%s,%s,%s,%s,'ACCEPTED',%s,%s,%s,%s,%s,%s,%s,%s,now())""",
-        (publication_id, lineage_id, trade_date, calendar_id, revision_no, namespace_id, core_revision,
-         "a" * 64, (publication_id.encode().hex() * 64)[:64], parent_id, prior_id, prior_digest,
-         None if prior_id else gap),
+             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+           values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,case when %s='ACCEPTED' then now() else null end)""",
+        (publication_id, lineage_id, trade_date, calendar_id, revision_no, status, namespace_id, core_revision,
+         "a" * 64, (publication_id.encode().hex() * 64)[:64], parent_id, prior_id, prior_logical_digest,
+         prior_state_head, None if prior_id else gap, status),
+    )
+
+
+def add_publication_state_head(pg, *, publication_id, namespace_id, trade_date, state_head_id, logical_digest):
+    pg.execute(
+        "insert into v4.state_heads(namespace_id,state_head_id,publication_id,logical_digest) values (%s,%s,%s,%s)",
+        (namespace_id, state_head_id, publication_id, logical_digest),
+    )
+    pg.execute(
+        """insert into v4.publication_heads(trade_date,model_namespace_id,publication_id,state_head_id,state_logical_digest)
+           values (%s,%s,%s,%s,%s)""",
+        (trade_date, namespace_id, publication_id, state_head_id, logical_digest),
     )
 
 
@@ -76,16 +88,18 @@ def test_fresh_v4_schema_has_revisionable_pit_and_publication_relations():
         tables = {r[0] for r in pg.execute("select table_name from information_schema.tables where table_schema='v4'").fetchall()}
         assert {"source_packages", "source_revisions", "security_lifecycle_facts", "security_membership_facts", "market_calendar_sessions", "universe_snapshots", "universe_members", "model_namespaces", "publications", "publication_heads", "publication_consumed_sources", "publication_revision_events", "namespace_migrations", "event_observations", "state_heads"} <= tables
         versions = pg.execute("select version from v4_meta.schema_migrations order by version").fetchall()
-        assert {"V4_PHASE0_FOUNDATION_V1", "V4_PHASE0_NAMESPACE_INTEGRITY_V1", "V4_PHASE0_CONTRACT_ALIGNMENT_R2", "V4_PUBLICATION_HEAD_REVISION_IDENTITY_R2", "V4_MARKET_SESSION_PUBLICATION_CHAIN_R2", "V4_FACT_SOURCE_GUARD_TABLE_SPECIFIC_FIELDS_R2", "V4_STATE_AND_NAMESPACE_PUBLICATION_IDENTITY_R2"} <= {x[0] for x in versions}
+        assert {"V4_PHASE0_FOUNDATION_V1", "V4_PHASE0_NAMESPACE_INTEGRITY_V1", "V4_PHASE0_CONTRACT_ALIGNMENT_R2", "V4_PUBLICATION_HEAD_REVISION_IDENTITY_R2", "V4_MARKET_SESSION_PUBLICATION_CHAIN_R2", "V4_FACT_SOURCE_GUARD_TABLE_SPECIFIC_FIELDS_R2", "V4_STATE_AND_NAMESPACE_PUBLICATION_IDENTITY_R2", "V4_PRIOR_SESSION_STATE_FREEZE_INTEGRITY_R3"} <= {x[0] for x in versions}
         indexes = {r[0] for r in pg.execute("select indexname from pg_indexes where schemaname='v4'").fetchall()}
         assert {"uq_source_revision_single_successor", "ix_source_revisions_cutoff", "ix_publication_consumed_source_revision", "uq_publication_same_day_parent_single_successor", "ix_membership_effective"} <= indexes
         columns = {r[0] for r in pg.execute("select column_name from information_schema.columns where table_schema='v4' and table_name='publications'").fetchall()}
-        assert {"publication_id", "publication_lineage_id", "revision_no", "core_revision", "same_day_revision_parent_id", "prior_session_publication_id", "prior_session_revision_digest", "prior_session_gap_reason", "market_calendar_id"} <= columns
+        assert {"publication_id", "publication_lineage_id", "revision_no", "core_revision", "same_day_revision_parent_id", "prior_session_publication_id", "prior_session_state_logical_digest", "prior_session_state_head", "prior_session_gap_reason", "market_calendar_id"} <= columns
         assert "revision" not in columns
         state_head_columns = {r[0] for r in pg.execute("select column_name from information_schema.columns where table_schema='v4' and table_name='state_heads'").fetchall()}
         assert "publication_revision" not in state_head_columns
         constraints = {r[0] for r in pg.execute("select conname from pg_constraint where connamespace='v4'::regnamespace").fetchall()}
         assert {"fk_state_head_publication_identity", "fk_namespace_migration_frozen_source_head"} <= constraints
+        head_columns = {r[0] for r in pg.execute("select column_name from information_schema.columns where table_schema='v4' and table_name='publication_heads'").fetchall()}
+        assert {"state_head_id", "state_logical_digest"} <= head_columns
 
 
 def test_reset_leaves_no_legacy_heads_or_v4_runtime_rows():
@@ -145,13 +159,154 @@ def test_prior_session_publication_namespace_and_digest_are_validated():
         add_namespace(pg, ns_a, "SHARED-MODEL")
         add_namespace(pg, ns_b, "SHARED-MODEL")
         prior = f"PRIOR-{suffix}"
+        logical_digest = "c" * 64
         add_publication(pg, publication_id=prior, namespace_id=ns_a, trade_date=date(2026, 9, 23), lineage_id=f"LP-{suffix}")
-        digest = (prior.encode().hex() * 64)[:64]
-        assert_rejected(pg, lambda: add_publication(pg, publication_id=f"CROSS-NS-{suffix}", namespace_id=ns_b, calendar_id=f"CAL-{ns_a}", trade_date=date(2026, 9, 24), lineage_id=f"LC-{suffix}", prior_id=prior, prior_digest=digest), match="V4_PRIOR_SESSION_PUBLICATION_INVALID")
-        assert_rejected(pg, lambda: add_publication(pg, publication_id=f"BAD-DIGEST-{suffix}", namespace_id=ns_a, trade_date=date(2026, 9, 24), lineage_id=f"LD-{suffix}", prior_id=prior, prior_digest="f" * 64), match="V4_PRIOR_SESSION_PUBLICATION_INVALID")
+        add_publication_state_head(pg, publication_id=prior, namespace_id=ns_a, trade_date=date(2026, 9, 23), state_head_id=f"HEAD-{suffix}", logical_digest=logical_digest)
+        assert_rejected(pg, lambda: add_publication(pg, publication_id=f"CROSS-NS-{suffix}", namespace_id=ns_b, calendar_id=f"CAL-{ns_a}", trade_date=date(2026, 9, 24), lineage_id=f"LC-{suffix}", prior_id=prior, prior_state_head=f"HEAD-{suffix}", prior_logical_digest=logical_digest), match="V4_PRIOR_SESSION_ACCEPTED_STATE_INVALID")
+        assert_rejected(pg, lambda: add_publication(pg, publication_id=f"BAD-DIGEST-{suffix}", namespace_id=ns_a, trade_date=date(2026, 9, 24), lineage_id=f"LD-{suffix}", prior_id=prior, prior_state_head=f"HEAD-{suffix}", prior_logical_digest="f" * 64), match="V4_PRIOR_SESSION_ACCEPTED_STATE_INVALID")
         current = f"CURRENT-{suffix}"
-        add_publication(pg, publication_id=current, namespace_id=ns_a, trade_date=date(2026, 9, 24), lineage_id=f"LE-{suffix}", prior_id=prior, prior_digest=digest)
-        pg.execute("insert into v4.publication_heads(trade_date,model_namespace_id,publication_id) values (%s,%s,%s)", (date(2026, 9, 24), ns_a, current))
+        add_publication(pg, publication_id=current, namespace_id=ns_a, trade_date=date(2026, 9, 24), lineage_id=f"LE-{suffix}", prior_id=prior, prior_state_head=f"HEAD-{suffix}", prior_logical_digest=logical_digest)
+
+
+def _prior_accepted_state(pg, suffix, *, namespace_id=None):
+    ns = namespace_id or f"NS-{suffix}"
+    add_namespace(pg, ns)
+    prior_date = date(2026, 9, 23)
+    prior_id = f"PRIOR-{suffix}"
+    state_id = f"STATE-{suffix}"
+    digest = f"d{suffix[1:]}"[:64].ljust(64, "d")
+    add_publication(pg, publication_id=prior_id, namespace_id=ns, trade_date=prior_date, lineage_id=f"PL-{suffix}")
+    add_publication_state_head(pg, publication_id=prior_id, namespace_id=ns, trade_date=prior_date, state_head_id=state_id, logical_digest=digest)
+    return ns, prior_id, state_id, digest
+
+
+def test_prior_publication_must_be_accepted_and_equal_previous_session_head():
+    suffix = uuid.uuid4().hex
+    with connect() as pg, rollback_only(pg):
+        ns, prior_id, state_id, digest = _prior_accepted_state(pg, suffix)
+        add_publication(pg, publication_id=f"OTHER-{suffix}", namespace_id=ns, trade_date=date(2026, 9, 23), lineage_id=f"OTHER-L-{suffix}", core_revision=2)
+        assert_rejected(pg, lambda: add_publication(pg, publication_id=f"WRONG-HEAD-{suffix}", namespace_id=ns, trade_date=date(2026, 9, 24), lineage_id=f"CURRENT-{suffix}", prior_id=f"OTHER-{suffix}", prior_state_head=state_id, prior_logical_digest=digest), match="V4_PRIOR_SESSION_ACCEPTED_STATE_INVALID")
+
+        candidate = f"CANDIDATE-{suffix}"
+        add_publication(pg, publication_id=candidate, namespace_id=ns, trade_date=date(2026, 9, 23), lineage_id=f"CANDIDATE-L-{suffix}", core_revision=3, status="CANDIDATE")
+        assert_rejected(pg, lambda: add_publication(pg, publication_id=f"UNACCEPTED-{suffix}", namespace_id=ns, trade_date=date(2026, 9, 24), lineage_id=f"UNACCEPTED-L-{suffix}", prior_id=candidate, prior_state_head=state_id, prior_logical_digest=digest), match="V4_PRIOR_SESSION_ACCEPTED_STATE_INVALID")
+
+
+def test_prior_state_head_must_belong_to_prior_publication():
+    suffix = uuid.uuid4().hex
+    with connect() as pg, rollback_only(pg):
+        ns, _, _, digest = _prior_accepted_state(pg, suffix)
+        other = f"OTHER-{suffix}"
+        add_publication(pg, publication_id=other, namespace_id=ns, trade_date=date(2026, 9, 23), lineage_id=f"OTHER-L-{suffix}", core_revision=2)
+        pg.execute("insert into v4.state_heads(namespace_id,state_head_id,publication_id,logical_digest) values (%s,%s,%s,%s)", (ns, f"OTHER-STATE-{suffix}", other, digest))
+        assert_rejected(pg, lambda: add_publication(pg, publication_id=f"WRONG-STATE-{suffix}", namespace_id=ns, trade_date=date(2026, 9, 24), lineage_id=f"CURRENT-{suffix}", prior_id=f"PRIOR-{suffix}", prior_state_head=f"OTHER-STATE-{suffix}", prior_logical_digest=digest), match="V4_PRIOR_SESSION_ACCEPTED_STATE_INVALID")
+
+
+def test_prior_publication_must_be_accepted():
+    suffix = uuid.uuid4().hex
+    with connect() as pg, rollback_only(pg):
+        ns, _, state_id, digest = _prior_accepted_state(pg, suffix)
+        candidate = f"CANDIDATE-{suffix}"
+        add_publication(pg, publication_id=candidate, namespace_id=ns, trade_date=date(2026, 9, 23), lineage_id=f"CANDIDATE-L-{suffix}", core_revision=2, status="CANDIDATE")
+        assert_rejected(pg, lambda: add_publication(pg, publication_id=f"CURRENT-{suffix}", namespace_id=ns, trade_date=date(2026, 9, 24), lineage_id=f"CURRENT-L-{suffix}", prior_id=candidate, prior_state_head=state_id, prior_logical_digest=digest), match="V4_PRIOR_SESSION_ACCEPTED_STATE_INVALID")
+
+
+def test_prior_publication_must_equal_previous_session_publication_head():
+    suffix = uuid.uuid4().hex
+    with connect() as pg, rollback_only(pg):
+        ns, _, state_id, digest = _prior_accepted_state(pg, suffix)
+        other = f"OTHER-{suffix}"
+        add_publication(pg, publication_id=other, namespace_id=ns, trade_date=date(2026, 9, 23), lineage_id=f"OTHER-L-{suffix}", core_revision=2)
+        assert_rejected(pg, lambda: add_publication(pg, publication_id=f"CURRENT-{suffix}", namespace_id=ns, trade_date=date(2026, 9, 24), lineage_id=f"CURRENT-L-{suffix}", prior_id=other, prior_state_head=state_id, prior_logical_digest=digest), match="V4_PRIOR_SESSION_ACCEPTED_STATE_INVALID")
+
+
+def test_prior_session_logical_digest_must_match_state_head():
+    suffix = uuid.uuid4().hex
+    with connect() as pg, rollback_only(pg):
+        ns, prior_id, state_id, _ = _prior_accepted_state(pg, suffix)
+        assert_rejected(pg, lambda: add_publication(pg, publication_id=f"CURRENT-{suffix}", namespace_id=ns, trade_date=date(2026, 9, 24), lineage_id=f"CURRENT-L-{suffix}", prior_id=prior_id, prior_state_head=state_id, prior_logical_digest="f" * 64), match="V4_PRIOR_SESSION_ACCEPTED_STATE_INVALID")
+
+
+def test_same_day_revision_cannot_change_prior_publication_id():
+    _assert_same_day_change_rejected("prior_id")
+
+
+def test_same_day_revision_cannot_change_prior_state_head():
+    _assert_same_day_change_rejected("prior_state_head")
+
+
+def test_same_day_revision_cannot_change_prior_logical_digest():
+    _assert_same_day_change_rejected("prior_logical_digest")
+
+
+def test_same_day_revision_cannot_switch_prior_publication_to_gap():
+    _assert_same_day_change_rejected("gap")
+
+
+def _assert_same_day_change_rejected(changed_field):
+    suffix = uuid.uuid4().hex
+    with connect() as pg, rollback_only(pg):
+        ns, prior_id, state_id, digest = _prior_accepted_state(pg, suffix)
+        parent = f"CURRENT-{suffix}"
+        add_publication(pg, publication_id=parent, namespace_id=ns, trade_date=date(2026, 9, 24), lineage_id=f"LINE-{suffix}", prior_id=prior_id, prior_state_head=state_id, prior_logical_digest=digest)
+        changed = {"prior_id": {"prior_id": f"OTHER-{suffix}"},
+                   "prior_state_head": {"prior_state_head": f"OTHER-STATE-{suffix}"},
+                   "prior_logical_digest": {"prior_logical_digest": "f" * 64},
+                   "gap": {"prior_id": None, "prior_state_head": None, "prior_logical_digest": None, "gap": "NO_ACCEPTED_HEAD"}}[changed_field]
+        assert_rejected(pg, lambda: add_publication(pg, publication_id=f"CHILD-{suffix}", namespace_id=ns, trade_date=date(2026, 9, 24), lineage_id=f"LINE-{suffix}", revision_no=2, core_revision=2, parent_id=parent, **changed), match="V4_SAME_DAY_PARENT_INVALID")
+
+
+def test_same_day_revision_cannot_change_frozen_prior_identity():
+    suffix = uuid.uuid4().hex
+    with connect() as pg, rollback_only(pg):
+        ns, prior_id, state_id, digest = _prior_accepted_state(pg, suffix)
+        parent = f"CURRENT-{suffix}"
+        add_publication(pg, publication_id=parent, namespace_id=ns, trade_date=date(2026, 9, 24), lineage_id=f"LINE-{suffix}", prior_id=prior_id, prior_state_head=state_id, prior_logical_digest=digest)
+        assert_rejected(pg, lambda: add_publication(pg, publication_id=f"CHILD-PUB-{suffix}", namespace_id=ns, trade_date=date(2026, 9, 24), lineage_id=f"LINE-{suffix}", revision_no=2, core_revision=2, parent_id=parent, prior_id=f"OTHER-{suffix}", prior_state_head=state_id, prior_logical_digest=digest), match="V4_SAME_DAY_PARENT_INVALID")
+        assert_rejected(pg, lambda: add_publication(pg, publication_id=f"CHILD-STATE-{suffix}", namespace_id=ns, trade_date=date(2026, 9, 24), lineage_id=f"LINE-{suffix}", revision_no=2, core_revision=3, parent_id=parent, prior_id=prior_id, prior_state_head=f"OTHER-STATE-{suffix}", prior_logical_digest=digest), match="V4_SAME_DAY_PARENT_INVALID")
+        assert_rejected(pg, lambda: add_publication(pg, publication_id=f"CHILD-DIGEST-{suffix}", namespace_id=ns, trade_date=date(2026, 9, 24), lineage_id=f"LINE-{suffix}", revision_no=2, core_revision=4, parent_id=parent, prior_id=prior_id, prior_state_head=state_id, prior_logical_digest="f" * 64), match="V4_SAME_DAY_PARENT_INVALID")
+        assert_rejected(pg, lambda: add_publication(pg, publication_id=f"CHILD-GAP-{suffix}", namespace_id=ns, trade_date=date(2026, 9, 24), lineage_id=f"LINE-{suffix}", revision_no=2, core_revision=5, parent_id=parent, gap="NO_PRIOR_HEAD"), match="V4_SAME_DAY_PARENT_INVALID")
+
+
+def test_gap_rejected_when_previous_session_accepted_head_exists_and_head_is_frozen():
+    suffix = uuid.uuid4().hex
+    with connect() as pg, rollback_only(pg):
+        ns, prior_id, _, _ = _prior_accepted_state(pg, suffix)
+        assert_rejected(pg, lambda: add_publication(pg, publication_id=f"FALSE-GAP-{suffix}", namespace_id=ns, trade_date=date(2026, 9, 24), lineage_id=f"GAP-{suffix}", gap="PREVIOUS_NOT_PUBLISHED"), match="V4_PRIOR_SESSION_GAP_INVALID")
+        add_publication(pg, publication_id=f"CURRENT-{suffix}", namespace_id=ns, trade_date=date(2026, 9, 24), lineage_id=f"CURRENT-L-{suffix}", prior_id=prior_id, prior_state_head=f"STATE-{suffix}", prior_logical_digest=_prior_state_digest(pg, ns, prior_id))
+        replacement = f"REPLACEMENT-{suffix}"
+        replacement_state = f"REPLACEMENT-STATE-{suffix}"
+        replacement_digest = "e" * 64
+        add_publication(pg, publication_id=replacement, namespace_id=ns, trade_date=date(2026, 9, 23), lineage_id=f"REPLACEMENT-L-{suffix}", core_revision=2)
+        pg.execute("insert into v4.state_heads(namespace_id,state_head_id,publication_id,logical_digest) values (%s,%s,%s,%s)", (ns, replacement_state, replacement, replacement_digest))
+        assert_rejected(pg, lambda: pg.execute("update v4.publication_heads set publication_id=%s,state_head_id=%s,state_logical_digest=%s where trade_date=%s and model_namespace_id=%s", (replacement, replacement_state, replacement_digest, date(2026, 9, 23), ns)), match="V4_PUBLICATION_HEAD_FROZEN_BY_NEXT_SESSION")
+        assert_rejected(pg, lambda: pg.execute("delete from v4.publication_heads where trade_date=%s and model_namespace_id=%s", (date(2026, 9, 23), ns)), match="V4_PUBLICATION_HEAD_FROZEN_BY_NEXT_SESSION")
+
+
+def test_gap_is_allowed_when_previous_session_has_no_accepted_head():
+    suffix = uuid.uuid4().hex
+    ns = f"NS-{suffix}"
+    with connect() as pg, rollback_only(pg):
+        add_namespace(pg, ns)
+        calendar_id = f"CAL-{ns}"
+        add_calendar_session(pg, calendar_id, date(2026, 9, 23))
+        add_publication(pg, publication_id=f"CURRENT-{suffix}", namespace_id=ns, trade_date=date(2026, 9, 24), lineage_id=f"LINE-{suffix}", gap="PREVIOUS_SESSION_HAS_NO_ACCEPTED_HEAD")
+
+
+def test_new_earlier_calendar_session_cannot_invalidate_initial_boundary():
+    suffix = uuid.uuid4().hex
+    ns = f"NS-{suffix}"
+    with connect() as pg, rollback_only(pg):
+        add_namespace(pg, ns)
+        current_date = date(2026, 9, 24)
+        calendar_id = f"CAL-{ns}"
+        add_calendar_session(pg, calendar_id, current_date)
+        add_publication(pg, publication_id=f"CURRENT-{suffix}", namespace_id=ns, trade_date=current_date, lineage_id=f"LINE-{suffix}", gap="INITIAL_BOUNDARY")
+        assert_rejected(pg, lambda: add_calendar_session(pg, calendar_id, date(2026, 9, 23)), match="V4_MARKET_CALENDAR_INSERT_INVALIDATES_INITIAL_BOUNDARY")
+
+
+def _prior_state_digest(pg, namespace_id, publication_id):
+    return pg.execute("select logical_digest from v4.state_heads where namespace_id=%s and publication_id=%s", (namespace_id, publication_id)).fetchone()[0].strip()
 
 
 def test_lifecycle_machine_contract_matches_schema():

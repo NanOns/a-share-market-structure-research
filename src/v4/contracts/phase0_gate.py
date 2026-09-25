@@ -7,6 +7,12 @@ STAGES = ("V4-00A", "V4-00B", "V4-00C", "V4-00D", "V4-00E", "V4-00F", "V4-00G", 
 ACCEPTED = {"FULL_PASS", "DEGRADED_PASS"}
 STATUSES = ACCEPTED | {"BLOCKED"}
 V4_01_REQUIRED_SCOPES = ("RAW_BOOTSTRAP", "A_STOCK_TDX_SOURCE", "LIFECYCLE_SCHEMA", "PUBLICATION_IDENTITY")
+REQUIRED_SCOPE_OWNERS = {
+    "A_STOCK_TDX_SOURCE": "V4-00D",
+    "LIFECYCLE_SCHEMA": "V4-00B",
+    "PUBLICATION_IDENTITY": "V4-00C",
+}
+RAW_BOOTSTRAP_OWNER = "V4-00E"
 
 
 def evaluate_phase0(
@@ -28,6 +34,7 @@ def evaluate_phase0(
     any_degraded = False
     stage_blockers: list[str] = []
     accepted_scopes: set[str] = set()
+    raw_bootstrap_claimed = False
     blocked_scopes: set[str] = set()
     all_blocked_scopes: set[str] = set()
     for stage in STAGES:
@@ -40,14 +47,29 @@ def evaluate_phase0(
             stage_blockers.append(f"STAGE_STATUS_INVALID:{stage}:{status}")
             blocked_scopes.update(required_scopes)
         if status == "BLOCKED":
+            stage_blockers.append(f"STAGE_BLOCKED:{stage}")
+        capabilities = record.get("allowed_capabilities", [])
+        if not isinstance(capabilities, list) or any(not isinstance(scope, str) or not scope for scope in capabilities):
+            stage_blockers.append(f"STAGE_CAPABILITY_LIST_INVALID:{stage}")
+            capabilities = []
+        if status == "FULL_PASS" and record.get("blocked_scopes"):
+            stage_blockers.append(f"BLOCKED_SCOPE_REQUIRES_DEGRADED_STAGE:{stage}")
+
+        for scope in capabilities:
+            if scope == "RAW_BOOTSTRAP":
+                if stage == RAW_BOOTSTRAP_OWNER and status in ACCEPTED:
+                    raw_bootstrap_claimed = True
+                continue
+            required_owner = REQUIRED_SCOPE_OWNERS.get(scope)
+            if required_owner is not None and required_owner != stage:
+                stage_blockers.append(f"REQUIRED_SCOPE_OWNER_MISMATCH:{scope}:{stage}:EXPECTED:{required_owner}")
+                continue
+            if status in ACCEPTED and (required_owner == stage or required_owner is None):
+                accepted_scopes.add(scope)
+
+        if status == "BLOCKED":
             scopes = set(record.get("blocked_scopes", []))
             all_blocked_scopes.update(scopes)
-            declared_v4_01_block = record.get("blocks_v4_01", status == "BLOCKED" or bool(scopes & set(required_scopes)))
-            if declared_v4_01_block:
-                blocked_scopes.update(scopes & set(required_scopes) if scopes else set(required_scopes))
-                all_blocked_scopes.update(scopes or set(required_scopes))
-            else:
-                any_degraded = True
         elif status == "DEGRADED_PASS":
             any_degraded = True
             scopes = set(record.get("blocked_scopes", []))
@@ -55,14 +77,17 @@ def evaluate_phase0(
             blocks_entry = bool(record.get("blocks_v4_01", False)) or bool(scopes & set(required_scopes))
             if blocks_entry:
                 blocked_scopes.update(scopes & set(required_scopes) if scopes else set(required_scopes))
-            accepted_scopes.update(record.get("allowed_capabilities", []))
-        elif status == "FULL_PASS":
-            accepted_scopes.update(record.get("allowed_capabilities", []))
         normalized[stage] = {
             "status": status,
             "degraded_scopes": list(record.get("degraded_scopes", [])),
             "blocked_scopes": list(record.get("blocked_scopes", [])),
-            "allowed_capabilities": list(record.get("allowed_capabilities", [])),
+            "allowed_capabilities": list(capabilities),
+            "capability_claims_effective": [
+                scope for scope in capabilities
+                if scope == "RAW_BOOTSTRAP" and stage == RAW_BOOTSTRAP_OWNER
+                or REQUIRED_SCOPE_OWNERS.get(scope) == stage
+                or scope not in REQUIRED_SCOPE_OWNERS and scope != "RAW_BOOTSTRAP"
+            ],
             "blocks_v4_01": bool(record.get("blocks_v4_01", status == "BLOCKED")),
             "reason_codes": list(record.get("reason_codes", [])),
             "evidence": list(record.get("evidence", [])),
@@ -86,6 +111,19 @@ def evaluate_phase0(
         blocked_scopes.update(required_scopes)
         all_blocked_scopes.update(required_scopes)
     accepted_scopes.difference_update(blocked_scopes)
+
+    unknown_required_owners = set(required_scopes) - set(REQUIRED_SCOPE_OWNERS) - {"RAW_BOOTSTRAP"}
+    if unknown_required_owners:
+        blockers.extend(f"REQUIRED_SCOPE_OWNER_UNDEFINED:{scope}" for scope in sorted(unknown_required_owners))
+    raw_requirements_accepted = (
+        raw_bootstrap_claimed
+        and all(normalized.get(stage, {}).get("status") in ACCEPTED for stage in STAGES)
+        and not blockers
+        and not blocked_scopes
+        and set(required_scopes) - {"RAW_BOOTSTRAP"} <= accepted_scopes
+    )
+    if raw_requirements_accepted:
+        accepted_scopes.add("RAW_BOOTSTRAP")
 
     entry_ready = not blockers and not blocked_scopes and set(required_scopes).issubset(accepted_scopes)
     if not entry_ready:
@@ -112,6 +150,12 @@ def evaluate_phase0(
             "accepted_scopes": sorted(accepted_scopes),
             "blocked_scopes": sorted(all_blocked_scopes),
             "blocked_required_scopes": sorted(blocked_scopes),
+            "raw_bootstrap_derivation": {
+                "status": "SATISFIED" if raw_requirements_accepted else "NOT_SATISFIED",
+                "owner_stage": RAW_BOOTSTRAP_OWNER,
+                "requires_all_phase0_stages_accepted": True,
+                "required_owner_scopes_accepted": sorted(set(required_scopes) - {"RAW_BOOTSTRAP"}),
+            },
         },
         "core_blockers": sorted(set(blockers)),
         "nonblocking_limitations": list(nonblocking_limitations or []),

@@ -117,19 +117,22 @@ def main() -> int:
     after = json.loads(ledger_path.read_text(encoding="utf-8")) if ledger_path.exists() else {"by_shanghai_date": {}}
     after_count = sum(int(value.get("count", 0)) for value in after.get("by_shanghai_date", {}).values())
     unexplained_core = sum(row["acceptance_status"] == "BLOCKED" or row["is_core_a_stock"] for row in classified)
+    candidate_count = sum(row["acceptance_status"] == "CLASSIFIED_NONCORE_CANDIDATE" for row in classified)
     doc = {"stage": "V4-01-SOURCE-EXCEPTION-CLASSIFICATION-R5",
            "contract_id": "V4_01_SOURCE_EXCEPTION_CLASSIFICATION_V1",
            "version": "1.0.0", "observed_at_utc": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
-           "status": "PASS" if len(classified) == 38 and unexplained_core == 0 else "BLOCKED",
+           "status": "PASS" if len(classified) == 38 and unexplained_core == 0 and candidate_count == 0 else "BLOCKED",
            "stage_completion_authorized": False,
            "inputs": {"source_selection_path": args.source_selection, "source_selection_sha256": sha256_file(selection_path),
                       "lifecycle_facts_path": args.lifecycle_facts, "lifecycle_facts_sha256": sha256_file(facts_path)},
            "summary": {"exception_row_count": len(classified),
                        "unique_source_exception_keys": len({row["source_security_key"] for row in classified}),
                        "provider_type_verified_count": sum(row["acceptance_status"] == "CLASSIFIED_NONCORE" for row in classified),
-                       "code_family_candidate_count": sum(row["acceptance_status"] == "CLASSIFIED_NONCORE_CANDIDATE" for row in classified),
+                       "code_family_candidate_count": candidate_count,
                        "core_a_stock_unexplained_exception_count": unexplained_core,
                        "source_exception_rows_retained": len(classified)},
+           "blockers": (["SOURCE_EXCEPTION_ROWS_UNEXPLAINED_OR_CORE_A_STOCK"] if unexplained_core else [])
+                       + (["SOURCE_EXCEPTION_CODE_FAMILY_CANDIDATES_NOT_INDEPENDENTLY_VERIFIED"] if candidate_count else []),
            "request_budget": {"before_total_count": before_count, "after_total_count": after_count,
                               "request_count_delta": after_count - before_count, "soft_cap": 40_000, "hard_cap": 45_000,
                               "provider_limit": 50_000},

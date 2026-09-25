@@ -3,6 +3,7 @@ from __future__ import annotations
 """Build a bounded historical reconstructed universe from dated BaoStock rosters."""
 
 import argparse
+import gzip
 import hashlib
 import json
 import os
@@ -13,9 +14,6 @@ import time
 from collections import Counter
 from datetime import date, datetime, timezone
 from pathlib import Path
-
-import pyarrow as pa
-import pyarrow.parquet as pq
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
@@ -29,20 +27,6 @@ EXTRACTED_ROOT = ROOT / "data/input_staging/extracted/20260924" / PACKAGE_SHA
 FACTS_PATH = ROOT / "reports/v4_01/baostock_lifecycle_facts_R4_20260925.json"
 SELECTION_PATH = ROOT / "reports/v4_01/canonical_source_selection_R4_20260925.json"
 UNIVERSE_CONTRACT = "V4_RESEARCH_UNIVERSE_V1"
-
-SCHEMA = pa.schema([
-    ("trade_date", pa.date32()),
-    ("canonical_security_id", pa.string()),
-    ("source_security_key", pa.string()),
-    ("universe_contract_id", pa.string()),
-    ("lifecycle_revision_id", pa.string()),
-    ("eligibility_status", pa.string()),
-    ("eligibility_reason", pa.string()),
-    ("provider_trade_status", pa.string()),
-    ("membership_basis", pa.string()),
-    ("quality", pa.string()),
-])
-
 
 def sha256_file(path: Path) -> str:
     digest = hashlib.sha256()
@@ -66,7 +50,7 @@ def main() -> int:
     parser.add_argument("--formal-start", default="2024-09-25")
     parser.add_argument("--warmup-sessions", type=int, default=300)
     parser.add_argument("--ledger", default="reports/v4_baostock/request_ledger.json")
-    parser.add_argument("--output", default="data/v4/historical_universe/v4_01_reconstructed_a_stock_universe_R4_20260925.parquet")
+    parser.add_argument("--output", default="data/v4/historical_universe/v4_01_reconstructed_a_stock_universe_R4_20260925.jsonl.gz")
     parser.add_argument("--receipt", default="reports/v4_01/historical_evaluable_universe_receipt_R4_20260925.json")
     args = parser.parse_args()
 
@@ -94,7 +78,7 @@ def main() -> int:
     fd, temp_name = tempfile.mkstemp(prefix=output_path.name + ".", suffix=".tmp", dir=output_path.parent)
     os.close(fd)
     temp_path = Path(temp_name)
-    writer = pq.ParquetWriter(temp_path, SCHEMA, compression="zstd", version="2.6")
+    writer = gzip.open(temp_path, "wt", encoding="utf-8", newline="\n", compresslevel=6)
     ledger_path = ROOT / args.ledger
     before = json.loads(ledger_path.read_text(encoding="utf-8")) if ledger_path.exists() else {"by_shanghai_date": {}}
     before_count = sum(int(item.get("count", 0)) for item in before.get("by_shanghai_date", {}).values())
@@ -168,10 +152,11 @@ def main() -> int:
                     digest_items.append(f"{code}\0{eligibility}\0{trade_status}\n")
                 day_digest = hashlib.sha256("".join(digest_items).encode("ascii")).hexdigest()
                 rows_digest.update(f"{day.isoformat()}\0{day_digest}\0{len(observed)}\n".encode("ascii"))
-                table = pa.Table.from_pylist(membership_rows, schema=SCHEMA)
-                if table.num_rows:
-                    writer.write_table(table, row_group_size=100_000)
-                total_rows += table.num_rows
+                for membership_row in membership_rows:
+                    membership_row["trade_date"] = membership_row["trade_date"].isoformat()
+                    writer.write(json.dumps(membership_row, ensure_ascii=False, sort_keys=True,
+                                            separators=(",", ":")) + "\n")
+                total_rows += len(membership_rows)
                 total_tradable += day_tradable
                 total_suspended += day_suspended
                 days.append({"trade_date": day, "provider_roster_rows": len(rows),
@@ -220,6 +205,7 @@ def main() -> int:
                                           "daily_digest_root": rows_digest.hexdigest(), "days": days,
                                           "lifecycle_roster_mismatches": mismatches[:100]},
         "output": {"path": args.output.replace("\\", "/") if output_published else None,
+                   "format": "GZIP_JSONL; one reconstructed membership fact per line",
                    "sha256": sha256_file(output_path) if output_published else None,
                    "byte_count": output_path.stat().st_size if output_published else 0},
         "request_budget": {"requests_before": before_count, "requests_after": after_count,

@@ -8,7 +8,7 @@
 - **Core blockers:** none.
 - **Remaining scoped limitations:** historic PIT/RAW import transfers to V4-01; adjusted empirical coverage is fail-closed; BaoStock remains optional; marked-relative consumer remains blocked; non-numeric policy parameter values are deferred to a separate versioned policy contract, so 00G is `DEGRADED_PASS`.
 - **R3.1 audit card SHA-256:** `426b120f40759a908b32f608902ad5c0c90ce92268463b040057f5226247da06`.
-- **Governing technical contract:** `DA-MSR-V4.2.2-CODEX-REV2`, SHA-256 `744b75906d932d6b11e01a1cd90f6a8de219642620dd30fd`.
+- **Governing technical contract:** `DA-MSR-V4.2.2-CODEX-REV2`, SHA-256 `744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd`.
 
 ## P0-A — Prior accepted state is frozen
 

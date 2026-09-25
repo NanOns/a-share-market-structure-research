@@ -2,7 +2,7 @@
 
 - Governing repair card: `DA-MSR-V4-PHASE0-EXTERNAL-AUDIT-R3.1`.
 - Repair card: `D:/Users/lps/Desktop/V4_PHASE0_R2_EXTERNAL_AUDIT_AND_FINAL_REPAIR_R3_1_20260925.md`.
-- Governing technical contract: `DA-MSR-V4.2.2-CODEX-REV2`, SHA-256 `744b75906d932d6b11e01a1cd90f6a8de219642620dd30fd`.
+- Governing technical contract: `DA-MSR-V4.2.2-CODEX-REV2`, SHA-256 `744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd`.
 - Starting HEAD: `310696d57165a52354a33a7b8d65a8a769063e50`.
 - Execution boundary: additive migration 008, Phase 0 scope gate, explicit 00G non-numeric-value limitation, tests, and R3 acceptance receipts only. No database reset, TDX writes/downloads, 00D rerun, V4-01, scanner, factor, Radar, Focus, or BaoStock work.
 
@@ -29,7 +29,7 @@
 - **Contract:** R3 §§19–20 and §26. Keep parameter values finite-number-or-null. The two unassigned matrix/enum-by-capability policies remain fail-closed and must move to a separate versioned policy contract before values are assigned; 00G is DEGRADED_PASS while this limitation remains.
 - **Change:** declare and validate this boundary in the framework, retain all affected candidate values as null, and add a nonblocking limitation to the final gate.
 - **Evidence:** framework/registry consistency tests and a negative non-numeric assignment vector.
-- **Acceptance:** all 62 Phase 0 tests pass. Framework and registry explicitly restrict values to finite number or null; quality enum/matrix values remain null and fail-closed until a separate versioned policy contract exists. 00G is recorded `DEGRADED_PASS`.
+- **Acceptance:** all 63 Phase 0 tests pass. Framework and registry explicitly restrict values to finite number or null; quality enum/matrix values remain null and fail-closed until a separate versioned policy contract exists. 00G is recorded `DEGRADED_PASS`.
 - **Next:** external Phase 0 audit; do not start V4-01 before the audit authorizes entry.
 
 ### P0-7 — Physical backup audit fact

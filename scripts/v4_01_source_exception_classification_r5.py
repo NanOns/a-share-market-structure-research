@@ -65,22 +65,34 @@ def main() -> int:
     before_count = sum(int(value.get("count", 0)) for value in before.get("by_shanghai_date", {}).values())
     failures = {}
     if unresolved_types:
-        client = BaoStockClient(RequestBudget(ledger_path), auth_mode="PUBLIC_ANONYMOUS", timeout=30)
+        active_client = BaoStockClient(RequestBudget(ledger_path), auth_mode="PUBLIC_ANONYMOUS", timeout=30)
         try:
-            with client:
-                for key in sorted(unresolved_types):
+            active_client.__enter__()
+            for key in sorted(unresolved_types):
+                rows = None
+                for attempt in range(2):
                     try:
-                        rows, meta = client.query_rows("query_stock_basic", "query_stock_basic",
-                                                       code=key.lower(), max_rows=5, max_pages=1)
+                        rows, meta = active_client.query_rows("query_stock_basic", "query_stock_basic",
+                                                              code=key.lower(), max_rows=5, max_pages=1)
                         unresolved_types[key] = {"error_code": meta["error_code"], "row_count": len(rows),
                                                  "security_type_provider": rows[0].get("type") if rows else None,
                                                  "source_code_digest": hashlib.sha256("\n".join(r.get("code", "") for r in rows).encode()).hexdigest()}
+                        break
                     except BaoStockError as exc:
+                        if attempt == 0 and exc.provider_code == "10001001":
+                            active_client.__exit__(type(exc), exc, exc.__traceback__)
+                            active_client = BaoStockClient(RequestBudget(ledger_path), auth_mode="PUBLIC_ANONYMOUS", timeout=30)
+                            active_client.__enter__()
+                            continue
                         unresolved_types[key] = {"error_code": getattr(exc, "provider_code", None), "row_count": None,
                                                  "security_type_provider": None}
                         failures[key] = str(exc)[:120]
+                        break
         except BaoStockError as exc:
             failures["SESSION"] = str(exc)[:120]
+        finally:
+            if active_client.logged_in:
+                active_client.__exit__(None, None, None)
 
     classified = []
     for item in exceptions:

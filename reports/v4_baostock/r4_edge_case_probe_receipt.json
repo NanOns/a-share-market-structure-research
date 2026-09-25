@@ -1,0 +1,438 @@
+{
+  "acceptance_gaps": [
+    "independent evidence review",
+    "representative board/status acceptance",
+    "turnover denominator semantics"
+  ],
+  "bse_capability": "NOT_SUPPORTED_FOR_OFFICIAL_OLD_NEW_CODE_PROBES",
+  "bse_direct_probes": [
+    {
+      "basic": {
+        "error_code": "0",
+        "fields": [
+          "code",
+          "code_name",
+          "ipoDate",
+          "outDate",
+          "type",
+          "status"
+        ],
+        "returned_code_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "row_count": 0
+      },
+      "code": "bj.920799",
+      "history_failure": "BAOSTOCK_QUERY_FAILED_CODE_10004011",
+      "provider_error_code": "10004011"
+    },
+    {
+      "basic": {
+        "error_code": "0",
+        "fields": [
+          "code",
+          "code_name",
+          "ipoDate",
+          "outDate",
+          "type",
+          "status"
+        ],
+        "returned_code_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "row_count": 0
+      },
+      "code": "bj.830799",
+      "history_failure": "BAOSTOCK_QUERY_FAILED_CODE_10004011",
+      "provider_error_code": "10004011"
+    }
+  ],
+  "catalog": {
+    "known_bse_old_new_code_pair": [
+      "830799",
+      "920799"
+    ],
+    "query_all_stock": {
+      "error_code": "0",
+      "page_count": 1,
+      "prefix_counts": {
+        "bj.": 0,
+        "other": 0,
+        "sh.": 3465,
+        "sz.": 3915
+      },
+      "row_count": 7380
+    },
+    "query_stock_basic": {
+      "error_code": "0",
+      "page_count": 1,
+      "prefix_counts": {
+        "bj.": 0,
+        "other": 0,
+        "sh.": 4183,
+        "sz.": 4798
+      },
+      "row_count": 8981
+    },
+    "reference": "https://www.bse.cn/service/code_mapping.html",
+    "reference_observed_at": "2026-09-25"
+  },
+  "contract_id": "BAOSTOCK_PUBLIC_SOURCE_EDGE_CASES_V1",
+  "elapsed_seconds": 30.09,
+  "execution_identity": {
+    "adapter_sha256": "b867ed7c1e80bdb101043e73869c87d78c2f078465fd248bcda4afb33d1a1f39",
+    "input_commit": "bf0f0f07fe0f727bb415eacf3aa58494f1c4e074",
+    "script_sha256": "aa0f73be5caa13f097b6bef2f317a460305ef5cca22800c0ba2870e57625c051"
+  },
+  "failures": {},
+  "historical_resumption_transition_observed": true,
+  "historical_status_probes": [
+    {
+      "code": "sz.300104",
+      "query_range": {
+        "end": "2020-12-31",
+        "start": "2017-01-01"
+      },
+      "resume_transitions_sample": [
+        {
+          "from_date": "2017-01-13",
+          "to_date": "2017-01-16"
+        },
+        {
+          "from_date": "2017-01-19",
+          "to_date": "2017-01-20"
+        },
+        {
+          "from_date": "2018-01-23",
+          "to_date": "2018-01-24"
+        },
+        {
+          "from_date": "2018-03-15",
+          "to_date": "2018-03-16"
+        },
+        {
+          "from_date": "2018-03-27",
+          "to_date": "2018-03-28"
+        }
+      ],
+      "row_count": 863,
+      "rows_digest": "a318262d13aa51ccdd1a29682507cb16b68aa353dece467ba99dab2ae22fa224",
+      "status": "PASS",
+      "suspended_date_count": 481,
+      "suspended_dates_sample": [
+        "2017-01-03",
+        "2017-01-04",
+        "2017-01-05",
+        "2017-01-06",
+        "2017-01-09"
+      ],
+      "tradestatus_counts": {
+        "0": 481,
+        "1": 382
+      }
+    },
+    {
+      "code": "sh.600401",
+      "query_range": {
+        "end": "2021-12-31",
+        "start": "2017-01-01"
+      },
+      "resume_transitions_sample": [
+        {
+          "from_date": "2017-05-02",
+          "to_date": "2017-05-03"
+        },
+        {
+          "from_date": "2017-08-25",
+          "to_date": "2017-08-28"
+        },
+        {
+          "from_date": "2019-05-24",
+          "to_date": "2019-05-27"
+        }
+      ],
+      "row_count": 615,
+      "rows_digest": "bf4e031e9e1eb8137eb71a6cd198c59f30e05495ea3a2f90711bf295d8ac26c7",
+      "status": "PASS",
+      "suspended_date_count": 327,
+      "suspended_dates_sample": [
+        "2017-05-02",
+        "2017-08-14",
+        "2017-08-15",
+        "2017-08-16",
+        "2017-08-17"
+      ],
+      "tradestatus_counts": {
+        "0": 327,
+        "1": 288
+      }
+    },
+    {
+      "code": "sh.600145",
+      "query_range": {
+        "end": "2019-12-31",
+        "start": "2017-01-01"
+      },
+      "resume_transitions_sample": [],
+      "row_count": 731,
+      "rows_digest": "dcd78f202aadaffb8f1fd9b7ad82a66c79583e89abac539280b2208d0a6c03d3",
+      "status": "PASS",
+      "suspended_date_count": 731,
+      "suspended_dates_sample": [
+        "2017-01-03",
+        "2017-01-04",
+        "2017-01-05",
+        "2017-01-06",
+        "2017-01-09"
+      ],
+      "tradestatus_counts": {
+        "0": 731,
+        "1": 0
+      }
+    },
+    {
+      "code": "sh.600806",
+      "query_range": {
+        "end": "2022-12-31",
+        "start": "2018-01-01"
+      },
+      "resume_transitions_sample": [
+        {
+          "from_date": "2018-05-29",
+          "to_date": "2018-05-30"
+        }
+      ],
+      "row_count": 129,
+      "rows_digest": "54a74df27979726097a928b72e6ad53163a94d7f5b17bf9e4b289aa73d24e4f0",
+      "status": "PASS",
+      "suspended_date_count": 99,
+      "suspended_dates_sample": [
+        "2018-01-02",
+        "2018-01-03",
+        "2018-01-04",
+        "2018-01-05",
+        "2018-01-08"
+      ],
+      "tradestatus_counts": {
+        "0": 99,
+        "1": 30
+      }
+    },
+    {
+      "code": "sh.600240",
+      "query_range": {
+        "end": "2022-12-31",
+        "start": "2018-01-01"
+      },
+      "resume_transitions_sample": [
+        {
+          "from_date": "2019-04-29",
+          "to_date": "2019-04-30"
+        },
+        {
+          "from_date": "2019-12-11",
+          "to_date": "2019-12-12"
+        }
+      ],
+      "row_count": 506,
+      "rows_digest": "dd36be74fa38db6a41a4b40c0e7ac230f4fe5ad68acab2c0891416be02f8ce84",
+      "status": "PASS",
+      "suspended_date_count": 25,
+      "suspended_dates_sample": [
+        "2019-04-29",
+        "2019-11-13",
+        "2019-11-14",
+        "2019-11-15",
+        "2019-11-18"
+      ],
+      "tradestatus_counts": {
+        "0": 25,
+        "1": 481
+      }
+    },
+    {
+      "code": "sh.600087",
+      "query_range": {
+        "end": "2020-12-31",
+        "start": "2017-01-01"
+      },
+      "resume_transitions_sample": [],
+      "row_count": 0,
+      "rows_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "status": "PASS",
+      "suspended_date_count": 0,
+      "suspended_dates_sample": [],
+      "tradestatus_counts": {
+        "0": 0,
+        "1": 0
+      }
+    },
+    {
+      "code": "sh.600275",
+      "query_range": {
+        "end": "2020-12-31",
+        "start": "2017-01-01"
+      },
+      "resume_transitions_sample": [
+        {
+          "from_date": "2017-04-28",
+          "to_date": "2017-05-02"
+        },
+        {
+          "from_date": "2018-05-08",
+          "to_date": "2018-05-09"
+        }
+      ],
+      "row_count": 974,
+      "rows_digest": "2bea5d7b44b89030f872c63b143f8fa2ff71491d29dbeb28a65da59d16ac315f",
+      "status": "PASS",
+      "suspended_date_count": 2,
+      "suspended_dates_sample": [
+        "2017-04-28",
+        "2018-05-08"
+      ],
+      "tradestatus_counts": {
+        "0": 2,
+        "1": 972
+      }
+    },
+    {
+      "code": "sz.000979",
+      "query_range": {
+        "end": "2020-12-31",
+        "start": "2017-01-01"
+      },
+      "resume_transitions_sample": [
+        {
+          "from_date": "2017-05-24",
+          "to_date": "2017-05-25"
+        },
+        {
+          "from_date": "2018-02-13",
+          "to_date": "2018-02-14"
+        },
+        {
+          "from_date": "2018-09-12",
+          "to_date": "2018-09-13"
+        },
+        {
+          "from_date": "2018-11-15",
+          "to_date": "2018-11-16"
+        }
+      ],
+      "row_count": 487,
+      "rows_digest": "c9f02de1f13dacf5eec25c8d844e1286a3fb64ed52fcec93597acfbc971acaab",
+      "status": "PASS",
+      "suspended_date_count": 205,
+      "suspended_dates_sample": [
+        "2017-02-10",
+        "2017-02-13",
+        "2017-02-14",
+        "2017-02-15",
+        "2017-02-16"
+      ],
+      "tradestatus_counts": {
+        "0": 205,
+        "1": 282
+      }
+    }
+  ],
+  "historical_suspension_observed": true,
+  "observed_at_utc": "2026-09-25T13:15:42+00:00",
+  "prior_b6_anomaly": {
+    "code": "sz.000016",
+    "error_code": "0",
+    "error_msg": "success",
+    "fields": [
+      "date",
+      "code",
+      "close",
+      "volume",
+      "amount",
+      "turn",
+      "tradestatus",
+      "isST"
+    ],
+    "invalid_reason_counts": {},
+    "invalid_row_count": 0,
+    "invalid_row_samples": [],
+    "normalized_row_count": 248,
+    "query_range": {
+      "end": "2025-09-30",
+      "start": "2024-09-25"
+    },
+    "status": "SUSPENDED_BLANKS_PRESERVED_NULL",
+    "suspended_blank_field_row_count": 10,
+    "suspended_blank_field_samples": [
+      {
+        "amount_blank": true,
+        "date": "2024-12-30",
+        "local_tdx_same_date": false,
+        "volume_blank": true
+      },
+      {
+        "amount_blank": true,
+        "date": "2024-12-31",
+        "local_tdx_same_date": false,
+        "volume_blank": true
+      },
+      {
+        "amount_blank": true,
+        "date": "2025-01-02",
+        "local_tdx_same_date": false,
+        "volume_blank": true
+      },
+      {
+        "amount_blank": true,
+        "date": "2025-01-03",
+        "local_tdx_same_date": false,
+        "volume_blank": true
+      },
+      {
+        "amount_blank": true,
+        "date": "2025-01-06",
+        "local_tdx_same_date": false,
+        "volume_blank": true
+      },
+      {
+        "amount_blank": true,
+        "date": "2025-01-07",
+        "local_tdx_same_date": false,
+        "volume_blank": true
+      },
+      {
+        "amount_blank": true,
+        "date": "2025-01-08",
+        "local_tdx_same_date": false,
+        "volume_blank": true
+      },
+      {
+        "amount_blank": true,
+        "date": "2025-01-09",
+        "local_tdx_same_date": false,
+        "volume_blank": true
+      },
+      {
+        "amount_blank": true,
+        "date": "2025-01-10",
+        "local_tdx_same_date": false,
+        "volume_blank": true
+      },
+      {
+        "amount_blank": true,
+        "date": "2025-01-13",
+        "local_tdx_same_date": false,
+        "volume_blank": true
+      }
+    ]
+  },
+  "raw_provider_payload_persisted": false,
+  "request_count_delta": 17,
+  "runtime": {
+    "auth_mode": "PUBLIC_ANONYMOUS",
+    "configured_host": "public-api.baostock.com",
+    "configured_port": 10030,
+    "connected_peer_ip": "114.94.20.42",
+    "connected_peer_port": 10030,
+    "package": "baostock",
+    "version": "0.9.3"
+  },
+  "stage": "V4-01/02-BAOSTOCK-R4-EDGE-CASE-PROBE",
+  "status": "R4_EDGE_CASES_OBSERVED"
+}

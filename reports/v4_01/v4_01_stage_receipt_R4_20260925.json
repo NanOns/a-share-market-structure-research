@@ -1,0 +1,61 @@
+{
+  "acceptance": "Package hash/ZIP integrity, 12438 profiled .day files / 29768339 records, current A-stock source validation, and prior 60-session A_STOCK overlap evidence were rechecked. These source checks do not satisfy R2 source selection, canonical identity, lifecycle/PIT universe, AS_RECORDED, or adjusted-history acceptance; stage completion is BLOCKED. 18 files contain non-core or unidentified validation errors (1 unclassifiable filename); all raw entries remain retained.",
+  "blocked_scopes": [
+    "R2_SOURCE_PRIORITY_AND_CANONICAL_SELECTION_NOT_IMPLEMENTED",
+    "R2_SOURCE_SYMBOL_TO_CANONICAL_IDENTITY_MAP_NOT_ACCEPTED",
+    "R2_HISTORICAL_LIFECYCLE_AND_EVALUABLE_UNIVERSE_NOT_BUILT",
+    "R2_ADJUSTED_CANONICAL_EMPIRICAL_ACCEPTANCE_OPEN",
+    "R2_AS_RECORDED_SOURCE_HISTORY_NOT_AVAILABLE",
+    "NONCORE_OR_UNIDENTIFIED_BAR_VALIDATION_ERRORS"
+  ],
+  "consulted_upgrade": {
+    "contract_reaudit_open_items": [
+      "V422-B01",
+      "V422-B03",
+      "V422-B04",
+      "V422-B07",
+      "V422-B08",
+      "V422-B10"
+    ],
+    "external_phase0_authority": "DA-MSR-V4-PHASE0-FINAL-EXTERNAL-ACCEPTANCE-R4",
+    "external_phase0_entry_permission": "AUTHORIZED",
+    "phase0_status": "DEGRADED_PASS",
+    "technical_contract": "DA-MSR-V4.2.2-CODEX-REV2",
+    "technical_contract_sha256": "744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd"
+  },
+  "database_write_count": 0,
+  "degraded_scopes": [],
+  "evidence": {
+    "local_tdx_snapshot": {
+      "byte_count": 941724256,
+      "content_digest": "1644752b002fdeb4f3d3a2968b9c77729f27efcdae8923ad14d814abe5c78c70",
+      "file_count": 12245,
+      "manifest_path": "E:\\codex work\\大A交易\\data\\v4\\local_tdx_snapshots\\1644752b002fdeb4f3d3a2968b9c77729f27efcdae8923ad14d814abe5c78c70\\snapshot_manifest.json",
+      "snapshot_id": "1644752b002fdeb4f3d3a2968b9c77729f27efcdae8923ad14d814abe5c78c70",
+      "status": "PASS"
+    },
+    "local_tdx_snapshot_manifest_sha256": "1355a66295e083201617112b3d2b148a64660ca24796f251ff11e614d000bbbd",
+    "overlap_acceptance": "ACCEPTED_SOURCE_PACKAGE",
+    "overlap_report": "reports/v4_00d/v4_00d_asset_stratified_postcheck_20260925.json",
+    "raw_archive": "data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f/hsjday.zip",
+    "raw_archive_sha256": "b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f",
+    "security_inventory": "reports/v4_01/v4_01_security_inventory_R4_20260925.csv",
+    "security_inventory_rows": 12438,
+    "source_manifest": "reports/v4_01/v4_01_source_manifest_R4_20260925.json",
+    "source_manifest_sha256": "0f044fbec2c17de2561f6baa01653ff9296d48eb2445244fb7ad77e96e7bf914",
+    "zip_extraction_verification": {
+      "archive_sha256": "b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f",
+      "content_digest": "93c7abe3ef9c935e0949999da16f966455596e123241a57edfd70816c29eb612",
+      "expanded_bytes": 952586848,
+      "member_count": 12438,
+      "status": "PASS"
+    }
+  },
+  "network_download_count": 0,
+  "next_stage": "V4-01_REPAIR_SOURCE_SELECTION_IDENTITY_LIFECYCLE_PIT_AND_ADJUSTMENT",
+  "stage": "V4-01",
+  "stage_completion_authorized": false,
+  "stage_contract": "V4.2.2 REV2 §§3B.1-3B.6, §78; V4_TDX_HISTORY_BOOTSTRAP_V1",
+  "status": "BLOCKED",
+  "tdx_root_write_count": 0
+}

@@ -1,0 +1,585 @@
+{
+  "00d_integration": {
+    "expected_source_refresh_volume_rows": 2439,
+    "integration_digest": "22e9e43d0d76494bb083499db8d1c0101f4234ddfcc35289f2b11b2f5dfe3896",
+    "max_volume_abs_delta": 30,
+    "recomputed_source_refresh_volume_rows": 2439,
+    "replay_semantics": "Recomputes accepted 00D source-refresh row class and local-priority selection. The frozen local snapshot copy mtime is not the original read-only source mtime; original eligibility is bound by the input 00D report digest.",
+    "rows_selected_from_local": 2439,
+    "samples": [
+      {
+        "selected_source_family": "TDX_LOCAL_CURRENT_CHAIN",
+        "selection_reason": "LOCAL_PRIORITY_ON_OVERLAP",
+        "source_security_key": "BJ.920021",
+        "trade_date": 20260907,
+        "volume_abs_delta": 1
+      },
+      {
+        "selected_source_family": "TDX_LOCAL_CURRENT_CHAIN",
+        "selection_reason": "LOCAL_PRIORITY_ON_OVERLAP",
+        "source_security_key": "BJ.920087",
+        "trade_date": 20260907,
+        "volume_abs_delta": 1
+      },
+      {
+        "selected_source_family": "TDX_LOCAL_CURRENT_CHAIN",
+        "selection_reason": "LOCAL_PRIORITY_ON_OVERLAP",
+        "source_security_key": "BJ.920087",
+        "trade_date": 20260910,
+        "volume_abs_delta": 1
+      },
+      {
+        "selected_source_family": "TDX_LOCAL_CURRENT_CHAIN",
+        "selection_reason": "LOCAL_PRIORITY_ON_OVERLAP",
+        "source_security_key": "BJ.920371",
+        "trade_date": 20260910,
+        "volume_abs_delta": 1
+      },
+      {
+        "selected_source_family": "TDX_LOCAL_CURRENT_CHAIN",
+        "selection_reason": "LOCAL_PRIORITY_ON_OVERLAP",
+        "source_security_key": "BJ.920571",
+        "trade_date": 20260907,
+        "volume_abs_delta": 1
+      },
+      {
+        "selected_source_family": "TDX_LOCAL_CURRENT_CHAIN",
+        "selection_reason": "LOCAL_PRIORITY_ON_OVERLAP",
+        "source_security_key": "BJ.920571",
+        "trade_date": 20260910,
+        "volume_abs_delta": 2
+      },
+      {
+        "selected_source_family": "TDX_LOCAL_CURRENT_CHAIN",
+        "selection_reason": "LOCAL_PRIORITY_ON_OVERLAP",
+        "source_security_key": "SH.600000",
+        "trade_date": 20260907,
+        "volume_abs_delta": 4
+      },
+      {
+        "selected_source_family": "TDX_LOCAL_CURRENT_CHAIN",
+        "selection_reason": "LOCAL_PRIORITY_ON_OVERLAP",
+        "source_security_key": "SH.600000",
+        "trade_date": 20260910,
+        "volume_abs_delta": 2
+      },
+      {
+        "selected_source_family": "TDX_LOCAL_CURRENT_CHAIN",
+        "selection_reason": "LOCAL_PRIORITY_ON_OVERLAP",
+        "source_security_key": "SH.600008",
+        "trade_date": 20260907,
+        "volume_abs_delta": 1
+      },
+      {
+        "selected_source_family": "TDX_LOCAL_CURRENT_CHAIN",
+        "selection_reason": "LOCAL_PRIORITY_ON_OVERLAP",
+        "source_security_key": "SH.600008",
+        "trade_date": 20260910,
+        "volume_abs_delta": 4
+      },
+      {
+        "selected_source_family": "TDX_LOCAL_CURRENT_CHAIN",
+        "selection_reason": "LOCAL_PRIORITY_ON_OVERLAP",
+        "source_security_key": "SH.600010",
+        "trade_date": 20260907,
+        "volume_abs_delta": 8
+      },
+      {
+        "selected_source_family": "TDX_LOCAL_CURRENT_CHAIN",
+        "selection_reason": "LOCAL_PRIORITY_ON_OVERLAP",
+        "source_security_key": "SH.600010",
+        "trade_date": 20260910,
+        "volume_abs_delta": 6
+      },
+      {
+        "selected_source_family": "TDX_LOCAL_CURRENT_CHAIN",
+        "selection_reason": "LOCAL_PRIORITY_ON_OVERLAP",
+        "source_security_key": "SH.600015",
+        "trade_date": 20260910,
+        "volume_abs_delta": 2
+      },
+      {
+        "selected_source_family": "TDX_LOCAL_CURRENT_CHAIN",
+        "selection_reason": "LOCAL_PRIORITY_ON_OVERLAP",
+        "source_security_key": "SH.600018",
+        "trade_date": 20260907,
+        "volume_abs_delta": 1
+      },
+      {
+        "selected_source_family": "TDX_LOCAL_CURRENT_CHAIN",
+        "selection_reason": "LOCAL_PRIORITY_ON_OVERLAP",
+        "source_security_key": "SH.600018",
+        "trade_date": 20260910,
+        "volume_abs_delta": 1
+      },
+      {
+        "selected_source_family": "TDX_LOCAL_CURRENT_CHAIN",
+        "selection_reason": "LOCAL_PRIORITY_ON_OVERLAP",
+        "source_security_key": "SH.600019",
+        "trade_date": 20260907,
+        "volume_abs_delta": 1
+      },
+      {
+        "selected_source_family": "TDX_LOCAL_CURRENT_CHAIN",
+        "selection_reason": "LOCAL_PRIORITY_ON_OVERLAP",
+        "source_security_key": "SH.600019",
+        "trade_date": 20260910,
+        "volume_abs_delta": 4
+      },
+      {
+        "selected_source_family": "TDX_LOCAL_CURRENT_CHAIN",
+        "selection_reason": "LOCAL_PRIORITY_ON_OVERLAP",
+        "source_security_key": "SH.600021",
+        "trade_date": 20260907,
+        "volume_abs_delta": 1
+      },
+      {
+        "selected_source_family": "TDX_LOCAL_CURRENT_CHAIN",
+        "selection_reason": "LOCAL_PRIORITY_ON_OVERLAP",
+        "source_security_key": "SH.600022",
+        "trade_date": 20260907,
+        "volume_abs_delta": 1
+      },
+      {
+        "selected_source_family": "TDX_LOCAL_CURRENT_CHAIN",
+        "selection_reason": "LOCAL_PRIORITY_ON_OVERLAP",
+        "source_security_key": "SH.600022",
+        "trade_date": 20260910,
+        "volume_abs_delta": 2
+      }
+    ],
+    "source_overlap_report": "reports/v4_00d/v4_00d_asset_stratified_postcheck_20260925.json",
+    "status": "PASS"
+  },
+  "acceptance": "Source selection precedence is mechanically applied and bound to package/local hashes. This receipt does not accept canonical identity, lifecycle/PIT universe, adjusted history, or V4-01 completion.",
+  "blocked_scopes": [
+    "CANONICAL_IDENTITY_MAPPING_PENDING",
+    "HISTORICAL_LIFECYCLE_AND_EVALUABLE_UNIVERSE_PENDING",
+    "ADJUSTED_CANONICAL_EMPIRICAL_ACCEPTANCE_PENDING",
+    "AS_RECORDED_HISTORY_POLICY_PENDING",
+    "INVALID_OR_UNIDENTIFIED_SOURCE_FILES_RETAINED_AND_EXCLUDED_FROM_SELECTION"
+  ],
+  "execution_identity": {
+    "bootstrap_contract_sha256": "218f379c069aa31102526c607ecf59a89d978732cde6589db35dbf844e62da93",
+    "input_commit": "bf0f0f07fe0f727bb415eacf3aa58494f1c4e074",
+    "local_snapshot_manifest_sha256": "1355a66295e083201617112b3d2b148a64660ca24796f251ff11e614d000bbbd",
+    "overlap_report_sha256": "3b5ac84cbbaae9b6cacd21aa77938d0d96276495521fedead2c76b6858c4884e",
+    "script_sha256": "0e6517661f8dbe60ea8a3af6bfa4c190ff1bde86529006e89a9f4a438a1d3a26",
+    "selection_module_sha256": "122ccb6d309f1637c390eaeeea98d4711f4a8f12588d5a6fd2c7539e91450d83",
+    "source_bundle_verifier_sha256": "20d6d88cc0e6bb0eaa8bca133f65893f2965f45b39ac075c4c1f31e51e319fd1",
+    "stage_manifest_sha256": "0f044fbec2c17de2561f6baa01653ff9296d48eb2445244fb7ad77e96e7bf914",
+    "zip_verifier_sha256": "94c98eab3fd5a2e2ab6c3bd06672b312803f084835a3129efcc7ca68b2b43547"
+  },
+  "next_stage": "V4_01_CANONICAL_IDENTITY_LIFECYCLE_AND_RECONSTRUCTED_UNIVERSE",
+  "observed_at_utc": "2026-09-25T13:14:14+00:00",
+  "selection_digest": "79cbd9882b1847f8e5dad01615b75b23d63cecbe2cac966824ee53e0c6e79ff3",
+  "source_bundle_identity": {
+    "source_bundle_id": "6122afa9db83170f7b442d5ecc5c7c9287b9dd6b04c4d53729d55f71f7dd99d2",
+    "status": "PASS"
+  },
+  "source_exceptions": {
+    "local": 19,
+    "local_samples": [
+      {
+        "errors": [
+          "INVALID_OHLC:16"
+        ],
+        "reason": "SOURCE_DAY_FILE_VALIDATION_FAILED",
+        "relative_path": "sh/lday/sh000001.day",
+        "sha256": "c84badac313f5f7a2f0790a8bdce2ee3aaa01605b331312b71a18607adc0b48c",
+        "source_family": "TDX_LOCAL_CURRENT_CHAIN",
+        "source_security_key": "SH.000001"
+      },
+      {
+        "errors": [
+          "INVALID_OHLC:6"
+        ],
+        "reason": "SOURCE_DAY_FILE_VALIDATION_FAILED",
+        "relative_path": "sh/lday/sh000002.day",
+        "sha256": "beaa21dbe1a5e27aecab95587279c05253d74695c26844c22609be940d9f90b5",
+        "source_family": "TDX_LOCAL_CURRENT_CHAIN",
+        "source_security_key": "SH.000002"
+      },
+      {
+        "errors": [
+          "INVALID_OHLC:18"
+        ],
+        "reason": "SOURCE_DAY_FILE_VALIDATION_FAILED",
+        "relative_path": "sh/lday/sh000003.day",
+        "sha256": "36d74d8b0daa1a79c1733897338421bbca13042169e028623288f74d266d6d5c",
+        "source_family": "TDX_LOCAL_CURRENT_CHAIN",
+        "source_security_key": "SH.000003"
+      },
+      {
+        "errors": [
+          "NON_INCREASING_DATE:1"
+        ],
+        "reason": "SOURCE_DAY_FILE_VALIDATION_FAILED",
+        "relative_path": "sh/lday/sh000833.day",
+        "sha256": "e2eb95153474e442e4a2c1b90c7f7a2c512fb54329fea3ebab7902917baabbb1",
+        "source_family": "TDX_LOCAL_CURRENT_CHAIN",
+        "source_security_key": "SH.000833"
+      },
+      {
+        "errors": [
+          "INVALID_OHLC:1"
+        ],
+        "reason": "SOURCE_DAY_FILE_VALIDATION_FAILED",
+        "relative_path": "sh/lday/sh111006.day",
+        "sha256": "fe9408b1d9e3db16951a22ca131447b697d7503a110c4a9e4c75a0888bf7409c",
+        "source_family": "TDX_LOCAL_CURRENT_CHAIN",
+        "source_security_key": "SH.111006"
+      },
+      {
+        "errors": [
+          "INVALID_OHLC:147"
+        ],
+        "reason": "SOURCE_DAY_FILE_VALIDATION_FAILED",
+        "relative_path": "sh/lday/sh880006.day",
+        "sha256": "2ec5f424e7cfd90bd399d828acb4491578ab05783223682a82607009693ddab0",
+        "source_family": "TDX_LOCAL_CURRENT_CHAIN",
+        "source_security_key": "SH.880006"
+      },
+      {
+        "errors": [
+          "INVALID_OHLC:127"
+        ],
+        "reason": "SOURCE_DAY_FILE_VALIDATION_FAILED",
+        "relative_path": "sh/lday/sh880016.day",
+        "sha256": "9f07d7cda62e0295ad879a7119fb03acc9df4fc934a73fb38a749027243d02b5",
+        "source_family": "TDX_LOCAL_CURRENT_CHAIN",
+        "source_security_key": "SH.880016"
+      },
+      {
+        "errors": [
+          "INVALID_OHLC:57"
+        ],
+        "reason": "SOURCE_DAY_FILE_VALIDATION_FAILED",
+        "relative_path": "sh/lday/sh880036.day",
+        "sha256": "cf675621e365b786562fe6b108ae36618259427aaf2922f48d8ca53e5213dcbb",
+        "source_family": "TDX_LOCAL_CURRENT_CHAIN",
+        "source_security_key": "SH.880036"
+      },
+      {
+        "errors": [
+          "INVALID_OHLC:18"
+        ],
+        "reason": "SOURCE_DAY_FILE_VALIDATION_FAILED",
+        "relative_path": "sh/lday/sh999997.day",
+        "sha256": "36d74d8b0daa1a79c1733897338421bbca13042169e028623288f74d266d6d5c",
+        "source_family": "TDX_LOCAL_CURRENT_CHAIN",
+        "source_security_key": "SH.999997"
+      },
+      {
+        "errors": [
+          "INVALID_OHLC:6"
+        ],
+        "reason": "SOURCE_DAY_FILE_VALIDATION_FAILED",
+        "relative_path": "sh/lday/sh999998.day",
+        "sha256": "beaa21dbe1a5e27aecab95587279c05253d74695c26844c22609be940d9f90b5",
+        "source_family": "TDX_LOCAL_CURRENT_CHAIN",
+        "source_security_key": "SH.999998"
+      },
+      {
+        "errors": [
+          "INVALID_OHLC:14"
+        ],
+        "reason": "SOURCE_DAY_FILE_VALIDATION_FAILED",
+        "relative_path": "sh/lday/sh999999.day",
+        "sha256": "288636f0004b7c53132e63561548fb123e166840cb31c9d4fd54693a70c78bda",
+        "source_family": "TDX_LOCAL_CURRENT_CHAIN",
+        "source_security_key": "SH.999999"
+      },
+      {
+        "errors": [
+          "EMPTY_FILE"
+        ],
+        "reason": "SOURCE_DAY_FILE_VALIDATION_FAILED",
+        "relative_path": "sz/lday/sz131804.day",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "source_family": "TDX_LOCAL_CURRENT_CHAIN",
+        "source_security_key": "SZ.131804"
+      },
+      {
+        "errors": [
+          "EMPTY_FILE"
+        ],
+        "reason": "SOURCE_DAY_FILE_VALIDATION_FAILED",
+        "relative_path": "sz/lday/sz131807.day",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "source_family": "TDX_LOCAL_CURRENT_CHAIN",
+        "source_security_key": "SZ.131807"
+      },
+      {
+        "errors": [
+          "INVALID_OHLC:2"
+        ],
+        "reason": "SOURCE_DAY_FILE_VALIDATION_FAILED",
+        "relative_path": "sz/lday/sz200012.day",
+        "sha256": "dfe4d792bb7857e9180fb9e9f1ddab9884a60ddd27c5c699e9e548d4e5f779c0",
+        "source_family": "TDX_LOCAL_CURRENT_CHAIN",
+        "source_security_key": "SZ.200012"
+      },
+      {
+        "errors": [
+          "INVALID_OHLC:1"
+        ],
+        "reason": "SOURCE_DAY_FILE_VALIDATION_FAILED",
+        "relative_path": "sz/lday/sz200013.day",
+        "sha256": "b128bf04aea6d1763cea86b1a5bf747e8c265b0b0e92f9491fe6803c459b0cf7",
+        "source_family": "TDX_LOCAL_CURRENT_CHAIN",
+        "source_security_key": "SZ.200013"
+      },
+      {
+        "errors": [
+          "INVALID_OHLC:2"
+        ],
+        "reason": "SOURCE_DAY_FILE_VALIDATION_FAILED",
+        "relative_path": "sz/lday/sz200015.day",
+        "sha256": "3414352e00053ab471280157aa4e927a38230c1180d2c8484fbf39ff981780be",
+        "source_family": "TDX_LOCAL_CURRENT_CHAIN",
+        "source_security_key": "SZ.200015"
+      },
+      {
+        "errors": [
+          "INVALID_OHLC:1"
+        ],
+        "reason": "SOURCE_DAY_FILE_VALIDATION_FAILED",
+        "relative_path": "sz/lday/sz200053.day",
+        "sha256": "6d0a5f2976a8c449d903508c7c249d48452bd468f39d85b220ecef5d9c0ffb3a",
+        "source_family": "TDX_LOCAL_CURRENT_CHAIN",
+        "source_security_key": "SZ.200053"
+      },
+      {
+        "reason": "INVALID_SOURCE_SECURITY_KEY",
+        "relative_path": "sz/lday/sz200b07.day",
+        "sha256": "c6158985199bf1009ce3b4e8c049e3c8818bcb173e020e9dce9e7abf554c163a",
+        "source_family": "TDX_LOCAL_CURRENT_CHAIN"
+      },
+      {
+        "errors": [
+          "INVALID_OHLC:9"
+        ],
+        "reason": "SOURCE_DAY_FILE_VALIDATION_FAILED",
+        "relative_path": "sz/lday/sz399001.day",
+        "sha256": "1bf80bb90340723b56c4b68ff50b5526aa75deb93dfa6a788df36174191b1b70",
+        "source_family": "TDX_LOCAL_CURRENT_CHAIN",
+        "source_security_key": "SZ.399001"
+      }
+    ],
+    "package": 19,
+    "package_samples": [
+      {
+        "errors": [
+          "INVALID_OHLC:16"
+        ],
+        "reason": "SOURCE_DAY_FILE_VALIDATION_FAILED",
+        "relative_path": "sh/lday/sh000001.day",
+        "sha256": "005c77b2a6dbdc5818f4b0c58284a71667e407109c45b7cdc311b86b19461408",
+        "source_family": "TDX_COMPLETE_PACKAGE",
+        "source_security_key": "SH.000001"
+      },
+      {
+        "errors": [
+          "INVALID_OHLC:6"
+        ],
+        "reason": "SOURCE_DAY_FILE_VALIDATION_FAILED",
+        "relative_path": "sh/lday/sh000002.day",
+        "sha256": "b9da5ab46a0a876a1ddc0cbca8edb2817882c957bd78b52a76e49980a4a0b756",
+        "source_family": "TDX_COMPLETE_PACKAGE",
+        "source_security_key": "SH.000002"
+      },
+      {
+        "errors": [
+          "INVALID_OHLC:18"
+        ],
+        "reason": "SOURCE_DAY_FILE_VALIDATION_FAILED",
+        "relative_path": "sh/lday/sh000003.day",
+        "sha256": "9a7596f78a61e9286a4911bb6e505f820a6a1e2826ee62e4b4e78682f742cc67",
+        "source_family": "TDX_COMPLETE_PACKAGE",
+        "source_security_key": "SH.000003"
+      },
+      {
+        "errors": [
+          "NON_INCREASING_DATE:1"
+        ],
+        "reason": "SOURCE_DAY_FILE_VALIDATION_FAILED",
+        "relative_path": "sh/lday/sh000833.day",
+        "sha256": "e2eb95153474e442e4a2c1b90c7f7a2c512fb54329fea3ebab7902917baabbb1",
+        "source_family": "TDX_COMPLETE_PACKAGE",
+        "source_security_key": "SH.000833"
+      },
+      {
+        "errors": [
+          "INVALID_OHLC:1"
+        ],
+        "reason": "SOURCE_DAY_FILE_VALIDATION_FAILED",
+        "relative_path": "sh/lday/sh111006.day",
+        "sha256": "fe9408b1d9e3db16951a22ca131447b697d7503a110c4a9e4c75a0888bf7409c",
+        "source_family": "TDX_COMPLETE_PACKAGE",
+        "source_security_key": "SH.111006"
+      },
+      {
+        "errors": [
+          "INVALID_OHLC:147"
+        ],
+        "reason": "SOURCE_DAY_FILE_VALIDATION_FAILED",
+        "relative_path": "sh/lday/sh880006.day",
+        "sha256": "078289f8b0b548252487dd5ac2c781e5f7c330c3e78ca9557e9c8760930803a6",
+        "source_family": "TDX_COMPLETE_PACKAGE",
+        "source_security_key": "SH.880006"
+      },
+      {
+        "errors": [
+          "INVALID_OHLC:127"
+        ],
+        "reason": "SOURCE_DAY_FILE_VALIDATION_FAILED",
+        "relative_path": "sh/lday/sh880016.day",
+        "sha256": "f8ef338f099e16d22cf6236d16d89b4cfb6b77bbd5e09fd3bb7bb7c6c1bb6e1e",
+        "source_family": "TDX_COMPLETE_PACKAGE",
+        "source_security_key": "SH.880016"
+      },
+      {
+        "errors": [
+          "INVALID_OHLC:57"
+        ],
+        "reason": "SOURCE_DAY_FILE_VALIDATION_FAILED",
+        "relative_path": "sh/lday/sh880036.day",
+        "sha256": "c950b03187571d4dc35efb566c9370912e2cfb5db4a536c0354869e8a08fdb65",
+        "source_family": "TDX_COMPLETE_PACKAGE",
+        "source_security_key": "SH.880036"
+      },
+      {
+        "errors": [
+          "INVALID_OHLC:18"
+        ],
+        "reason": "SOURCE_DAY_FILE_VALIDATION_FAILED",
+        "relative_path": "sh/lday/sh999997.day",
+        "sha256": "9a7596f78a61e9286a4911bb6e505f820a6a1e2826ee62e4b4e78682f742cc67",
+        "source_family": "TDX_COMPLETE_PACKAGE",
+        "source_security_key": "SH.999997"
+      },
+      {
+        "errors": [
+          "INVALID_OHLC:6"
+        ],
+        "reason": "SOURCE_DAY_FILE_VALIDATION_FAILED",
+        "relative_path": "sh/lday/sh999998.day",
+        "sha256": "b9da5ab46a0a876a1ddc0cbca8edb2817882c957bd78b52a76e49980a4a0b756",
+        "source_family": "TDX_COMPLETE_PACKAGE",
+        "source_security_key": "SH.999998"
+      },
+      {
+        "errors": [
+          "INVALID_OHLC:14"
+        ],
+        "reason": "SOURCE_DAY_FILE_VALIDATION_FAILED",
+        "relative_path": "sh/lday/sh999999.day",
+        "sha256": "6db994a66ba30fc35717cc971aee5f7bddd971dc96842b907febbc6aedccfacc",
+        "source_family": "TDX_COMPLETE_PACKAGE",
+        "source_security_key": "SH.999999"
+      },
+      {
+        "errors": [
+          "EMPTY_FILE"
+        ],
+        "reason": "SOURCE_DAY_FILE_VALIDATION_FAILED",
+        "relative_path": "sz/lday/sz131804.day",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "source_family": "TDX_COMPLETE_PACKAGE",
+        "source_security_key": "SZ.131804"
+      },
+      {
+        "errors": [
+          "EMPTY_FILE"
+        ],
+        "reason": "SOURCE_DAY_FILE_VALIDATION_FAILED",
+        "relative_path": "sz/lday/sz131807.day",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "source_family": "TDX_COMPLETE_PACKAGE",
+        "source_security_key": "SZ.131807"
+      },
+      {
+        "errors": [
+          "INVALID_OHLC:2"
+        ],
+        "reason": "SOURCE_DAY_FILE_VALIDATION_FAILED",
+        "relative_path": "sz/lday/sz200012.day",
+        "sha256": "2d95e99c4512fea586d2b8b65e051364824db074ab3c4d100e1f789455e9f48e",
+        "source_family": "TDX_COMPLETE_PACKAGE",
+        "source_security_key": "SZ.200012"
+      },
+      {
+        "errors": [
+          "INVALID_OHLC:1"
+        ],
+        "reason": "SOURCE_DAY_FILE_VALIDATION_FAILED",
+        "relative_path": "sz/lday/sz200013.day",
+        "sha256": "b128bf04aea6d1763cea86b1a5bf747e8c265b0b0e92f9491fe6803c459b0cf7",
+        "source_family": "TDX_COMPLETE_PACKAGE",
+        "source_security_key": "SZ.200013"
+      },
+      {
+        "errors": [
+          "INVALID_OHLC:2"
+        ],
+        "reason": "SOURCE_DAY_FILE_VALIDATION_FAILED",
+        "relative_path": "sz/lday/sz200015.day",
+        "sha256": "3414352e00053ab471280157aa4e927a38230c1180d2c8484fbf39ff981780be",
+        "source_family": "TDX_COMPLETE_PACKAGE",
+        "source_security_key": "SZ.200015"
+      },
+      {
+        "errors": [
+          "INVALID_OHLC:1"
+        ],
+        "reason": "SOURCE_DAY_FILE_VALIDATION_FAILED",
+        "relative_path": "sz/lday/sz200053.day",
+        "sha256": "6d0a5f2976a8c449d903508c7c249d48452bd468f39d85b220ecef5d9c0ffb3a",
+        "source_family": "TDX_COMPLETE_PACKAGE",
+        "source_security_key": "SZ.200053"
+      },
+      {
+        "reason": "INVALID_SOURCE_SECURITY_KEY",
+        "relative_path": "sz/lday/sz200b07.day",
+        "sha256": "c6158985199bf1009ce3b4e8c049e3c8818bcb173e020e9dce9e7abf554c163a",
+        "source_family": "TDX_COMPLETE_PACKAGE"
+      },
+      {
+        "errors": [
+          "INVALID_OHLC:9"
+        ],
+        "reason": "SOURCE_DAY_FILE_VALIDATION_FAILED",
+        "relative_path": "sz/lday/sz399001.day",
+        "sha256": "c18a1f420b101345d6fd92a7607b10d61204a4a0ab351712ac774328a4166ad6",
+        "source_family": "TDX_COMPLETE_PACKAGE",
+        "source_security_key": "SZ.399001"
+      }
+    ]
+  },
+  "source_selection_manifest": "reports/v4_01/canonical_source_selection_R4_20260925.json",
+  "source_selection_manifest_sha256": "67771e4d5a11d392dd0cc2d0c3c9e881a9e6e7f93ba14af4783bf1bcbd0d78da",
+  "stage": "V4-01-SOURCE-SELECTION-R4",
+  "stage_completion_authorized": false,
+  "stage_contract": "V4.2.2 REV2 §§3B.1-3B.6; CANONICAL_SOURCE_SELECTION_V1",
+  "status": "SOURCE_SELECTION_BUILT_ACCEPTANCE_PENDING",
+  "totals": {
+    "local_rows": 29341345,
+    "local_source_files": 12226,
+    "market_field_conflicts": 8330,
+    "overlap_rows": 29331575,
+    "package_rows": 349117,
+    "package_source_files": 12419,
+    "reserved_only_differences": 26681,
+    "security_keys": 12508,
+    "security_keys_with_both_sources": 12137,
+    "selected_rows": 29690462
+  },
+  "zip_extraction_verification": {
+    "archive_sha256": "b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f",
+    "content_digest": "93c7abe3ef9c935e0949999da16f966455596e123241a57edfd70816c29eb612",
+    "expanded_bytes": 952586848,
+    "member_count": 12438,
+    "status": "PASS"
+  }
+}

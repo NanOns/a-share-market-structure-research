@@ -42,6 +42,10 @@ def sha256_file(path: Path) -> str:
 def as_date(value: str | None) -> date | None:
     if not value:
         return None
+    try:
+        return date.fromisoformat(value)
+    except ValueError:
+        return None
 
 
 def source_key_for_path(path: Path, root: Path) -> tuple[str, str] | None:
@@ -77,10 +81,6 @@ def source_bar_dates(session_set: set[int], source_keys: set[str]) -> tuple[dict
                 if day in session_set:
                     by_date.setdefault(day, set()).add(code)
     return by_date, errors
-    try:
-        return date.fromisoformat(value)
-    except ValueError:
-        return None
 
 
 def main() -> int:

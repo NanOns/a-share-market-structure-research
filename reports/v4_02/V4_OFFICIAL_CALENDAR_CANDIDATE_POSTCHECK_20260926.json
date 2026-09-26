@@ -1,0 +1,52 @@
+{
+  "acceptance": "NOT_ACCEPTED",
+  "contract_id": "V4_OFFICIAL_EXCHANGE_CALENDAR_CANDIDATE_DIAGNOSTIC_POSTCHECK_V1",
+  "coverage": {
+    "end_date": "2026-12-31",
+    "start_date": "2024-01-01"
+  },
+  "expected_values_sha256": "1564fd99715ddf98d48867f0309bf5dfe8d80bb655496dd21e8a7161e409c7dd",
+  "index_crosscheck_basis": "Accepted V4-01 R4 TDX complete-package primary-index series; diagnostic crosscheck only, not standalone exchange-calendar acceptance.",
+  "index_package_sha256": "b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f",
+  "markets": [
+    {
+      "calendar_sha256": "6188c28ae84890b1f2f7c6b44833528bfe5b00b819b25b9fbbedff3022c3b54a",
+      "candidate_invariants_pass": true,
+      "candidate_sessions_missing_from_index": [],
+      "candidate_sessions_through_20260924": 663,
+      "closure_calendar_day_count": 90,
+      "index_date_match": true,
+      "index_dates_not_in_candidate": [],
+      "index_dates_through_20260924": 663,
+      "index_file": "sh/lday/sh000001.day",
+      "index_file_sha256": "005c77b2a6dbdc5818f4b0c58284a71667e407109c45b7cdc311b86b19461408",
+      "market": "SSE",
+      "session_count_full_coverage": 727,
+      "weekday_closure_count": 57
+    },
+    {
+      "calendar_sha256": "dd595e27ea554a52f26c667e0003708c54ef454163cf9fa4218037e0ef84eb4f",
+      "candidate_invariants_pass": true,
+      "candidate_sessions_missing_from_index": [],
+      "candidate_sessions_through_20260924": 663,
+      "closure_calendar_day_count": 90,
+      "index_date_match": true,
+      "index_dates_not_in_candidate": [],
+      "index_dates_through_20260924": 663,
+      "index_file": "sz/lday/sz399001.day",
+      "index_file_sha256": "c18a1f420b101345d6fd92a7607b10d61204a4a0ab351712ac774328a4166ad6",
+      "market": "SZSE",
+      "session_count_full_coverage": 727,
+      "weekday_closure_count": 57
+    }
+  ],
+  "remaining": [
+    "independent manual review of every closure range",
+    "review all applicable one-off exchange amendments through cutoff",
+    "as-of and future-notice exclusion checks",
+    "independent postcheck and formal dataset acceptance"
+  ],
+  "source_capture_id": "capture_20260926T064500Z",
+  "status": "CANDIDATE_DIAGNOSTIC_CROSSCHECK_PASS_ACCEPTANCE_PENDING",
+  "v4_01_source_manifest_sha256": "0f044fbec2c17de2561f6baa01653ff9296d48eb2445244fb7ad77e96e7bf914"
+}

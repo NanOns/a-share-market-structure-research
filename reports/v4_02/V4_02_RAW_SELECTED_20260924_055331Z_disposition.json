@@ -1,0 +1,13 @@
+{
+  "contract_id": "V4_02_RAW_CANDIDATE_DISPOSITION_V1",
+  "local_artifacts_retained": true,
+  "next_stage": "Use replacement candidate with BSE omitted from required output and separately counted.",
+  "reason": "The candidate included Beijing Exchange source rows in the shared daily output. Although they had no required-board identity, this did not meet the explicit optional-scope isolation rule for required outputs.",
+  "replacement_run_id": "V4_02_RAW_SELECTED_20260924_060812Z",
+  "status": "SUPERSEDED_CANDIDATE",
+  "superseded_candidate_postcheck_sha256": "3c828937104e31491b84107b311ced5f66c2e0ef9a88d0d53aa921e015e00bc1",
+  "superseded_candidate_postcheck_status": "CANDIDATE_POSTCHECK_PASS",
+  "superseded_candidate_receipt_sha256": "521add280fc71801a13bb2e0d750e18f1cc122f2f2bb8d7727c51fe92a0d0384",
+  "superseded_candidate_stage_status": "BLOCKED",
+  "superseded_run_id": "V4_02_RAW_SELECTED_20260924_055331Z"
+}

@@ -1,7 +1,17 @@
 {
-  "contract_id": "V4_CANONICAL_DAILY_PIT_PERIODS_V1",
-  "version": "1.0.0",
+  "contract_id": "V4_CANONICAL_DAILY_PIT_PERIODS_V2",
+  "version": "2.0.0",
   "stage": "V4-02",
+  "stage_acceptance_mapping": {
+    "contract_id": "V4_02_STAGE_ACCEPTANCE_MAPPING_V1",
+    "path": "config/v4_02_stage_acceptance_mapping_v1.json",
+    "external_v4_01_acceptance": {
+      "path": "docs/evidence/V4_01_R6_2_FINAL_EXTERNAL_ACCEPTANCE_20260926.md",
+      "sha256": "6c8d1c69fc7e473964995b4d00abd5150d9474e5065fca22d7ec112a0b4d3a5c",
+      "required_status": "PASS_WITH_BSE_SCOPE_DEGRADED",
+      "v4_02_entry": "AUTHORIZED"
+    }
+  },
   "consulted_upgrade": {
     "document": "D:/Users/lps/Desktop/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_20260925_codex修改版.md",
     "sha256": "744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd",
@@ -13,7 +23,12 @@
     "raw_archive": "data/v4/raw_archive/{source_package_sha256}/hsjday.zip",
     "extracted_readonly_snapshot": "data/input_staging/extracted/20260924/{source_package_sha256}",
     "source_cutoff": "2026-09-24",
-    "asof_parameter": "YYYYMMDD, must not exceed source_cutoff"
+    "asof_parameter": "YYYYMMDD, must not exceed source_cutoff",
+    "v4_01_final_receipt": "reports/v4_01/v4_01_final_stage_receipt_R6_2_20260926.json",
+    "v4_01_source_manifest": "reports/v4_01/v4_01_source_manifest_R4_20260925.json",
+    "v4_01_source_inventory": "reports/v4_01/v4_01_security_inventory_R4_20260925.csv",
+    "canonical_source_selection": "reports/v4_01/canonical_source_selection_R4_20260925.json",
+    "v4_01_required_universe_receipt": "reports/v4_01/historical_evaluable_universe_receipt_R6_2_20260926.json"
   },
   "canonical_daily": {
     "view": "RAW",
@@ -55,14 +70,20 @@
     "adjustment": "RAW_ONLY"
   },
   "capabilities": {
-    "raw_daily_available": true,
-    "raw_weekly_monthly_diagnostic_available": true,
+    "raw_daily_available": "SOURCE_SELECTED_CANDIDATE_POSTCHECK_PASS_FORMAL_ACCEPTANCE_OPEN",
+    "raw_weekly_monthly_diagnostic_available": "SUPERSEDED_CANDIDATE_ONLY",
     "adjusted_daily_periods": "UNAVAILABLE",
     "historical_pit_observed": "UNAVAILABLE",
     "as_recorded_source_consumption": "UNAVAILABLE",
     "historical_suspension_status": "UNKNOWN",
     "historical_limit_status": "UNKNOWN",
-    "historical_security_lifecycle_and_membership": "UNAVAILABLE"
+    "historical_security_lifecycle_and_membership": "AVAILABLE_FOR_REQUIRED_SCOPE_FROM_V4_01_R6_2",
+    "formal_market_calendar": "UNAVAILABLE_PENDING_DATED_OFFICIAL_SOURCE_CONTRACT",
+    "dated_trading_status_suspension_resumption": "UNAVAILABLE_PENDING_DATED_FACTS",
+    "formal_closed_only_as_of": "UNAVAILABLE_PENDING_CALENDAR_AND_COVERAGE_ACCEPTANCE",
+    "section_3c_4_temporal_leakage": "UNVERIFIED_PENDING_MULTI_BOUNDARY_SUITE",
+    "atomic_publication": "IMPLEMENTED_ACCEPTANCE_PENDING",
+    "independent_postcheck": "IMPLEMENTED_ACCEPTANCE_PENDING"
   },
   "price_limit_rules": {
     "contract_id": "PRICE_LIMIT_RULE_V1",
@@ -76,12 +97,18 @@
     "monthly_periods": "data/v4/canonical/{run_id}/monthly_raw_diagnostic.parquet",
     "stage_receipt": "reports/v4_02/{run_id}_stage_receipt.json",
     "source_manifest": "reports/v4_02/{run_id}_source_manifest.json",
-    "blocked_entry_receipt": "reports/v4_02/v4_02_stage_receipt_R2_20260925.json"
+    "entry_gate_receipt": "reports/v4_02/V4_02_ENTRY_GATE_20260926.json",
+    "blocked_entry_receipt": "reports/v4_02/{run_id}_blocked_entry_receipt.json"
   },
   "acceptance": {
-    "pass_requires": ["contract_and_inputs_hash_bound", "zip_archive_and_extracted_snapshot_match_each_file", "v4_01_full_pass", "canonical_source_priority_manifest_accepted", "canonical_identity_mapping_accepted", "historical_evaluable_universe_generated_by_date", "formal_versioned_calendar_accepted", "weekly_monthly_closed_only_and_as_of_pass", "section_3c_4_temporal_leakage_suite_pass", "adjusted_canonical_real_action_acceptance_pass", "historical_price_limit_rule_v1_samples_pass", "atomic_full_run_and_independent_postcheck_pass"],
-    "degraded_scopes": [],
-    "blocked_until": ["historical_identity_lifecycle_and_pit_evidence", "formal_calendar_and_period_acceptance", "adjusted_real_action_acceptance", "effective_dated_price_limit_authority"],
+    "required_boards": ["SH_MAIN", "SZ_MAIN", "CHINEXT", "STAR"],
+    "optional_degraded_boards": ["BSE"],
+    "pass_requires": ["contract_and_inputs_hash_bound", "zip_archive_and_extracted_snapshot_match_each_file", "v4_01_required_scope_pass_and_external_acceptance", "canonical_source_priority_manifest_accepted_and_consumed", "canonical_identity_mapping_accepted_for_required_boards", "historical_evaluable_universe_generated_by_date", "adjusted_canonical_real_action_acceptance_pass", "formal_versioned_calendar_accepted", "dated_trading_status_suspension_resumption_accepted", "formal_weekly_monthly_closed_only_and_as_of_pass", "section_3c_4_temporal_leakage_suite_pass", "historical_price_limit_rule_v1_samples_pass", "atomic_full_run_and_independent_postcheck_pass"],
+    "allowed_final_statuses": ["FULL_PASS", "PASS_WITH_BSE_SCOPE_DEGRADED", "BLOCKED"],
+    "bse_degradation_requires": "BSE excluded from required outputs and digests; explicit degraded evidence retained",
+    "generic_degraded_pass_allowed": false,
+    "degraded_scopes": ["BSE_OPTIONAL_ONLY"],
+    "blocked_until": ["adjusted_real_action_acceptance", "formal_versioned_calendar_and_dated_trading_status", "formal_period_closed_only_as_of_and_3c4_temporal_proofs", "effective_dated_price_limit_authority_and_samples"],
     "prohibited": ["write_to_tdx_root", "scanner", "factor", "trading", "probability_claim", "current_universe_backfill_as_historical_pit", "adjustment_synthesis", "historical_price_limit_inference"]
   }
 }

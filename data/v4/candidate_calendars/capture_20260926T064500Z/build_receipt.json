@@ -1,0 +1,27 @@
+{
+  "contract_id": "V4_OFFICIAL_EXCHANGE_SESSION_CALENDAR_CANDIDATE_BUILD_RECEIPT_V1",
+  "expected_values_sha256": "1564fd99715ddf98d48867f0309bf5dfe8d80bb655496dd21e8a7161e409c7dd",
+  "input_contract_sha256": "b13211cf2b56cfedbf30f0cdab15566ed0322a347784eaa61e67b861fafdfbad",
+  "markets": [
+    {
+      "calendar_path": "calendar_sse_2024_2026.json",
+      "calendar_sha256": "6188c28ae84890b1f2f7c6b44833528bfe5b00b819b25b9fbbedff3022c3b54a",
+      "closed_date_count": 90,
+      "market": "SSE",
+      "session_count": 727
+    },
+    {
+      "calendar_path": "calendar_szse_2024_2026.json",
+      "calendar_sha256": "dd595e27ea554a52f26c667e0003708c54ef454163cf9fa4218037e0ef84eb4f",
+      "closed_date_count": 90,
+      "market": "SZSE",
+      "session_count": 727
+    }
+  ],
+  "next_stage": "INDEPENDENT_MANUAL_DATE_REVIEW_AND_OFFICIAL_INDEX_SESSION_CROSSCHECK",
+  "not_pit_observed": true,
+  "session_method": "Monday-Friday less official-notice closure dates; no stock-bar presence inference",
+  "source_capture_id": "capture_20260926T064500Z",
+  "source_capture_manifest_sha256": "cae5540e0cdf67f8234993a20f8cb3c4f4d482e083f336c96d647b0e5ae973b6",
+  "status": "CANDIDATE_BUILT_PARSE_AND_INDEPENDENT_ACCEPTANCE_PENDING"
+}

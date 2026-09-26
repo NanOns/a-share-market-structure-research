@@ -1,0 +1,119 @@
+{
+  "bounded_source_samples": [
+    {
+      "alternative_checked": false,
+      "selected_source_family": "TDX_COMPLETE_PACKAGE",
+      "source_file_sha256": "55cb374c0fb285abb6779e022c1e6214aeb7f02653a5b99eba346996b140e8c3",
+      "source_record_ordinal": 0,
+      "source_security_key": "BJ.430017",
+      "trade_date": 20230531
+    },
+    {
+      "alternative_checked": false,
+      "selected_source_family": "TDX_COMPLETE_PACKAGE",
+      "source_file_sha256": "55cb374c0fb285abb6779e022c1e6214aeb7f02653a5b99eba346996b140e8c3",
+      "source_record_ordinal": 1,
+      "source_security_key": "BJ.430017",
+      "trade_date": 20230601
+    },
+    {
+      "alternative_checked": false,
+      "selected_source_family": "TDX_COMPLETE_PACKAGE",
+      "source_file_sha256": "55cb374c0fb285abb6779e022c1e6214aeb7f02653a5b99eba346996b140e8c3",
+      "source_record_ordinal": 2,
+      "source_security_key": "BJ.430017",
+      "trade_date": 20230602
+    },
+    {
+      "alternative_checked": false,
+      "selected_source_family": "TDX_COMPLETE_PACKAGE",
+      "source_file_sha256": "55cb374c0fb285abb6779e022c1e6214aeb7f02653a5b99eba346996b140e8c3",
+      "source_record_ordinal": 17,
+      "source_security_key": "BJ.430017",
+      "trade_date": 20230627
+    },
+    {
+      "alternative_checked": false,
+      "selected_source_family": "TDX_COMPLETE_PACKAGE",
+      "source_file_sha256": "55cb374c0fb285abb6779e022c1e6214aeb7f02653a5b99eba346996b140e8c3",
+      "source_record_ordinal": 101,
+      "source_security_key": "BJ.430017",
+      "trade_date": 20231031
+    },
+    {
+      "alternative_checked": false,
+      "selected_source_family": "TDX_COMPLETE_PACKAGE",
+      "source_file_sha256": "4a1e2c3330ca6e4d2049d88d35d6dc52f5dea390a0e3ef1c5b1d5f1c6582e318",
+      "source_record_ordinal": 431,
+      "source_security_key": "BJ.430047",
+      "trade_date": 20220831
+    },
+    {
+      "alternative_checked": false,
+      "selected_source_family": "TDX_COMPLETE_PACKAGE",
+      "source_file_sha256": "03228615aaabda7f65d45f4b09c381c55dc1b3fc110ec135a2c13b452b07fe8e",
+      "source_record_ordinal": 170,
+      "source_security_key": "BJ.430510",
+      "trade_date": 20210907
+    },
+    {
+      "alternative_checked": false,
+      "selected_source_family": "TDX_COMPLETE_PACKAGE",
+      "source_file_sha256": "b86865871945e09264d44ee135e6dec617c6529213993ff142e32f639da85e56",
+      "source_record_ordinal": 111,
+      "source_security_key": "BJ.832175",
+      "trade_date": 20231212
+    },
+    {
+      "alternative_checked": false,
+      "selected_source_family": "TDX_COMPLETE_PACKAGE",
+      "source_file_sha256": "4a767c65509db940222c8c3d5e59fa78e952be1a2eefa9a2687c1c53b276ac09",
+      "source_record_ordinal": 301,
+      "source_security_key": "BJ.835237",
+      "trade_date": 20240226
+    }
+  ],
+  "checks": {
+    "asof_future_row_exclusion": true,
+    "bounded_source_record_samples_match": true,
+    "identity_and_quality_markers_consistent": true,
+    "parquet_schema_hash_size_and_rows": true,
+    "raw_non_pit_and_unknown_limit_fail_closed": true,
+    "receipt_manifest_run_identity": true,
+    "source_selection_manifest_digest_bound": true,
+    "source_selection_row_count_matches": true
+  },
+  "contract_id": "V4_02_RAW_CANDIDATE_INDEPENDENT_POSTCHECK_V1",
+  "independent_postcheck_status": "CANDIDATE_POSTCHECK_PASS",
+  "input_receipt_sha256": "521add280fc71801a13bb2e0d750e18f1cc122f2f2bb8d7727c51fe92a0d0384",
+  "input_source_manifest_sha256": "8c24c0a006fda541af71d444c223ec00f3ecb56e9f510e2f260fad87be7de0e2",
+  "note": "Postcheck accepts only the source-selected RAW candidate artifact integrity. It does not accept V4-02 capabilities or change the stage BLOCKED status.",
+  "observed_at_utc": "2026-09-26T06:06:04+00:00",
+  "run_id": "V4_02_RAW_SELECTED_20260924_055331Z",
+  "stage": "V4-02",
+  "stage_acceptance_status": "BLOCKED",
+  "stage_completion_authorized": false,
+  "summary": {
+    "board_scope_counts": {
+      "CHINEXT": 2930044,
+      "SH_MAIN": 7034441,
+      "STAR": 734776,
+      "SZ_MAIN": 6528799
+    },
+    "diagnostic_non_pit_rows": 29690462,
+    "identity_null_rows": 25663460,
+    "identity_roster_observed_rows": 4027002,
+    "max_trade_date": 20260924,
+    "raw_rows": 29690462,
+    "record_quality_counts": {
+      "SOURCE_FILE_VALIDATED_RECORD": 29690462
+    },
+    "row_count": 29690462,
+    "source_family_counts": {
+      "TDX_COMPLETE_PACKAGE": 349117,
+      "TDX_LOCAL_CURRENT_CHAIN": 29341345
+    },
+    "unknown_limit_rows": 29690462
+  },
+  "version": "1.0.0"
+}

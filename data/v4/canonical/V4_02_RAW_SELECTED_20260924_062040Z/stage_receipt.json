@@ -1,0 +1,114 @@
+{
+  "acceptance": "Source-selected RAW daily candidate emitted. V4-02 remains BLOCKED until every required adjusted, calendar, trading-status, period, temporal-leakage and price-limit capability passes independent acceptance.",
+  "blocked_scopes": [
+    "ADJUSTED_CANONICAL_DAILY",
+    "FORMAL_MARKET_CALENDAR_AND_DATED_TRADING_STATUS",
+    "FORMAL_WEEKLY_MONTHLY_CLOSED_ONLY_AS_OF",
+    "SECTION_3C_4_TEMPORAL_LEAKAGE",
+    "PRICE_LIMIT_RULE_V1",
+    "ATOMIC_FULL_STAGE_PUBLICATION_AND_INDEPENDENT_POSTCHECK"
+  ],
+  "capabilities": {
+    "adjusted_daily": "UNAVAILABLE",
+    "dated_trading_status_suspension_resumption": "UNAVAILABLE",
+    "formal_market_calendar": "UNAVAILABLE",
+    "formal_weekly_monthly_closed_only_as_of": "UNAVAILABLE",
+    "historical_pit_observed": "UNAVAILABLE",
+    "price_limit_rule_v1": "UNAVAILABLE",
+    "raw_source_selected_daily": "CANDIDATE_EMITTED",
+    "section_3c_4_temporal_leakage": "UNVERIFIED"
+  },
+  "consulted_upgrade": {
+    "document": "D:/Users/lps/Desktop/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_20260925_codex修改版.md",
+    "sections": [
+      "3B.6",
+      "3C.1",
+      "3C.2",
+      "3C.3",
+      "3C.4",
+      "5.2",
+      "5.3",
+      "6A",
+      "10N",
+      "78"
+    ],
+    "sha256": "744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd"
+  },
+  "contract_id": "V4_02_RAW_CANONICAL_CANDIDATE_RECEIPT_V2",
+  "degraded_scopes": [
+    "BSE_OPTIONAL_ONLY"
+  ],
+  "entry_gate_status": "ENTRY_AUTHORIZED",
+  "execution_identity": {
+    "contract_sha256": "7e9177fdcdd7d8e4ea31255e0b2a543d5d30f8f15f2312a064bb852ced0779b5",
+    "input_commit": "3fc9b373ee79b54d7bedaf78dbfb9277d514e24f",
+    "script_sha256": "128325a48c818378d78116f9785f50bedba348f401ce164802a81e0e7ab88cf6"
+  },
+  "identity_mapped_rows_by_board": {
+    "CHINEXT": 1069958,
+    "SH_MAIN": 1328616,
+    "STAR": 457918,
+    "SZ_MAIN": 1170510
+  },
+  "next_stage": "V4_02_FORMAL_PERIOD_AND_STATUS_CAPABILITIES",
+  "observed_at_utc": "2026-09-26T06:27:35+00:00",
+  "outputs": {
+    "canonical_daily_raw_selected": {
+      "byte_count": 1988198932,
+      "path": "canonical_daily_raw_selected.parquet",
+      "row_count": 29220910,
+      "schema": [
+        "canonical_security_id",
+        "source_security_key",
+        "board_scope",
+        "trade_date",
+        "open_price_raw",
+        "high_price_raw",
+        "low_price_raw",
+        "close_price_raw",
+        "price_scale",
+        "amount_source_native",
+        "volume_source_native",
+        "reserved_raw",
+        "source_relative_path",
+        "source_file_sha256",
+        "source_record_ordinal",
+        "selected_source_family",
+        "selected_source_revision",
+        "selection_reason",
+        "alternative_source_family",
+        "alternative_source_revision",
+        "alternative_record_sha256",
+        "identity_quality",
+        "identity_source_revision_id",
+        "membership_basis",
+        "knowledge_lineage",
+        "adjustment_view",
+        "limit_status",
+        "record_quality"
+      ],
+      "sha256": "cdbc3e2b49bf16f59a6661d4641a3d9a3b498c5a9843974e934a7ab695f02313"
+    }
+  },
+  "row_counts": {
+    "identity_mapped_rows_within_r6_2_roster_intervals": 4027002,
+    "optional_bse_degraded_rows_excluded": 469552,
+    "raw_daily_rows_at_asof": 29220910,
+    "record_quality_flagged_rows": 0,
+    "source_selection_full_history_rows": 29690462
+  },
+  "run_id": "V4_02_RAW_SELECTED_20260924_062040Z",
+  "scanner_or_factor_run_count": 0,
+  "source_manifest": {
+    "path": "source_manifest.json",
+    "sha256": "d337fe2c0cd4cb02f05262337b14f47c32a8fd72c2f35594ac00b5f2caf5de6b"
+  },
+  "source_selection_status": "PASS_REPLAYED",
+  "stage": "V4-02",
+  "stage_completion_authorized": false,
+  "stage_contract": "DA-MSR-V4.2.2-CODEX-REV2 §§3B.6/3C.1-3C.4/5.2-5.3/6A/10N/78; V4_CANONICAL_DAILY_PIT_PERIODS_V2",
+  "status": "BLOCKED",
+  "tdx_root_read_count": 0,
+  "tdx_root_write_count": 0,
+  "version": "2.0.0"
+}

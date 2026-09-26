@@ -1,0 +1,74 @@
+{
+  "blocked_scopes": [],
+  "checks": {
+    "external_acceptance_authorizes_v4_02": true,
+    "external_acceptance_hash": true,
+    "governing_contract_sha256": true,
+    "historical_universe_required_scope_pass": true,
+    "machine_contract_points_to_current_mapping": true,
+    "no_generic_degraded_pass": true,
+    "phase0_degraded_pass_and_same_contract": true,
+    "source_selection_manifest_hash_bound": true,
+    "v4_01_bse_degradation_explicit": true,
+    "v4_01_required_boards_pass": true,
+    "v4_01_required_scope_pass": true
+  },
+  "consulted_upgrade": {
+    "document": "D:/Users/lps/Desktop/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_20260925_codex修改版.md",
+    "sections": [
+      "3B.6",
+      "3C.1",
+      "3C.2",
+      "3C.3",
+      "3C.4",
+      "5.2",
+      "5.3",
+      "6A",
+      "10N",
+      "78"
+    ],
+    "sha256": "744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd"
+  },
+  "contract_id": "V4_02_ENTRY_GATE_RECEIPT_V1",
+  "degraded_scopes": [
+    "BSE_OPTIONAL_ONLY"
+  ],
+  "entry_status": "ENTRY_AUTHORIZED",
+  "evidence": {
+    "canonical_source_selection_manifest_sha256": "67771e4d5a11d392dd0cc2d0c3c9e881a9e6e7f93ba14af4783bf1bcbd0d78da",
+    "contract_sha256": "7e9177fdcdd7d8e4ea31255e0b2a543d5d30f8f15f2312a064bb852ced0779b5",
+    "external_acceptance_sha256": "6c8d1c69fc7e473964995b4d00abd5150d9474e5065fca22d7ec112a0b4d3a5c",
+    "mapping_sha256": "101d08e855539b8dfe2b9fadce28f3a4777131a0e1533a7b675dfb9dc7f74f2b",
+    "phase0_receipt_sha256": "2e8b582b0fea8f36a7a4ef9e73cde2136ad327bcb6cc174ae5578467381ee597",
+    "v4_01_final_receipt_sha256": "68d29240d8754d5b58da88b0099732f827378526f3d30b0a2a3c28dc38a7ca6a",
+    "v4_01_historical_universe_receipt_sha256": "0a51bd6e612466b12e7328479f04051343d05e61586c097a86e96aaead979555",
+    "v4_01_source_selection_receipt_sha256": "40c398f5f6fec6c41ecf1839b15706eb48e8f59cbfb3340f92a567c2cbd8d8e6"
+  },
+  "execution_identity": {
+    "input_commit": "3fc9b373ee79b54d7bedaf78dbfb9277d514e24f",
+    "script_sha256": "f812b3e7b0d6b0440602c13cdb5300922d3873f8bf2d084d8296173c2f37860b"
+  },
+  "next_stage": "V4_02_FORMAL_CALENDAR_STATUS_ADJUSTMENT_AND_PERIODS",
+  "observed_at_utc": "2026-09-26T06:20:00+00:00",
+  "open_acceptance_capabilities": [
+    "formal_acceptance_of_source_selected_raw_daily_candidate",
+    "full_v4_02_atomic_publication_and_independent_postcheck",
+    "adjusted_daily_and_periods",
+    "formal_market_calendar",
+    "dated_trading_status_suspension_resumption",
+    "formal_weekly_monthly_and_closed_only_as_of",
+    "section_3c_4_temporal_leakage",
+    "price_limit_rule_v1",
+    "independent_postcheck_for_current_outputs"
+  ],
+  "outputs_emitted": false,
+  "scanner_or_factor_run_count": 0,
+  "stage": "V4-02",
+  "stage_completion_authorized": false,
+  "stage_contract": "DA-MSR-V4.2.2-CODEX-REV2 §§3B.6/3C.1-3C.4/5.2-5.3/6A/10N/78; V4_CANONICAL_DAILY_PIT_PERIODS_V2; V4_02_STAGE_ACCEPTANCE_MAPPING_V1",
+  "tdx_root_read_count": 0,
+  "tdx_root_write_count": 0,
+  "v4_02_acceptance_status": "NOT_ACCEPTED",
+  "v4_02_implementation_status": "OPEN",
+  "version": "1.0.0"
+}

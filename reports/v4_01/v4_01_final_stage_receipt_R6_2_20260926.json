@@ -1,0 +1,146 @@
+{
+  "blockers": [],
+  "contract_id": "V4_01_FINAL_REQUIRED_SCOPE_RECEIPT_R6_2",
+  "criteria": {
+    "bse_explicitly_isolated_as_optional_degraded": "PASS",
+    "canonical_source_selection_and_00d": "PASS",
+    "lineage_policy": "PASS",
+    "raw_archive_and_local_snapshot": "PASS",
+    "required_scope_all_day_lifecycle_coverage": "PASS",
+    "required_scope_append_only_normalized_membership_materialization": "PASS",
+    "required_scope_exact_dated_rosters": "PASS",
+    "required_scope_historical_universe": "PASS",
+    "required_scope_lifecycle_boundary_resolution": "PASS",
+    "required_scope_lifecycle_facts_by_board": "PASS",
+    "required_scope_normalized_interval_roster_match": "PASS",
+    "required_scope_source_exception_closure": "PASS",
+    "required_scope_stable_identity_by_board": "PASS",
+    "tests_pass_and_bound_to_code_head": "PASS"
+  },
+  "evidence": {
+    "R4_source_selection": {
+      "path": "reports/v4_01/v4_01_source_selection_receipt_R4_20260925.json",
+      "sha256": "40c398f5f6fec6c41ecf1839b15706eb48e8f59cbfb3340f92a567c2cbd8d8e6"
+    },
+    "R4_stage": {
+      "path": "reports/v4_01/v4_01_stage_receipt_R4_20260925.json",
+      "sha256": "530adba48aef1aee05018d23099cc8554fb10afa49d5cc0167ecb8940d9cd938"
+    },
+    "R5_audit_confirmation": {
+      "path": "docs\\audits\\V4_01_R5_EXECUTION_EVIDENCE_20260925.md",
+      "sha256": "7d913a2a854c2db8b1823d624d402dc59e8d1bd6ee3e69ed3232cfe92c058ef4"
+    },
+    "R5_lineage_policy": {
+      "path": "reports/v4_01/lineage_policy_receipt_R5_20260925.json",
+      "sha256": "d25fa78f188d738c1cc9f8525907e2b8fee2171949840f634913e90b4424131b"
+    },
+    "R6_1_tests": {
+      "path": "reports/v4_01/v4_01_test_receipt_R6_2_20260926.json",
+      "sha256": "48b555709bba9522b377034e621a599248cdc0b53853584fcd9c56d434d7cd78"
+    },
+    "R6_2_append_only_lifecycle_materialization": {
+      "path": "reports/v4_01/security_lifecycle_materialization_receipt_R6_2_20260926.json",
+      "sha256": "2516bdeb6d9d9ea0b30075a18bfcfd84ec5f9d2a00d35da0cc68a97970919a1f"
+    },
+    "R6_2_historical_universe_contract": {
+      "path": "config/v4_required_historical_universe_r6_2_v1.json",
+      "sha256": "41c346a0e1f38c1c8bc85dff769646fa1d18ef2aaf5194451d2c5463063e3ad8"
+    },
+    "R6_2_lifecycle_boundary_resolution": {
+      "path": "reports/v4_01/V4_01_LIFECYCLE_BOUNDARY_RESOLUTION_R6_2.json",
+      "sha256": "78392beb1842f0582e24c8901245136c9b533ac8181b5b2a40b9ccbff30ab8ee"
+    },
+    "R6_2_membership_interval_contract": {
+      "path": "config/v4_security_membership_interval_v1.json",
+      "sha256": "0d7450eded073658f92a6b39079c2754b95199de542030bde498c79907b02a05"
+    },
+    "R6_2_provider_lifecycle_fact_contract": {
+      "path": "config/v4_provider_lifecycle_fact_v1.json",
+      "sha256": "9ce430297aadf8dd570297b38e57e8aba69752bd7fda4e2820e11741f1a684a0"
+    },
+    "R6_execution_record": {
+      "path": "docs\\audits\\V4_01_R6_REQUIRED_SCOPE_EXECUTION_20260926.md",
+      "sha256": "20e900b7d0df87abce91462fc321417ec8cd75c3ba4e6efd0def844f150fe158"
+    },
+    "R6_required_universe": {
+      "path": "reports/v4_01/historical_evaluable_universe_receipt_R6_2_20260926.json",
+      "sha256": "172e16b8e0a8870e0dbf8edf56f9e60ef9318e86c81a4296d5d5c6332d77c9d2"
+    },
+    "R6_roster_completeness": {
+      "path": "reports/v4_01/baostock_dated_roster_completeness_receipt_R6_20260926.json",
+      "sha256": "edf82ed86cb5b010cf4f81e078210825895368bea2dd38e0fdfeb29619ab17ed"
+    },
+    "R6_scope_gates": {
+      "path": "reports/v4_01/required_scope_gates_receipt_R6_20260926.json",
+      "sha256": "69c082733a7e9ceeb524265d488b13b8ecfb7885e4c76d2654023e74cc654502"
+    }
+  },
+  "execution_identity": {
+    "validated_code_head": "c980675735cfae05e3beb69b240078ef615abe7e",
+    "working_tree_clean_for_code": true
+  },
+  "explicit_bse_scope_degradation_allowed": true,
+  "external_online_model_acceptance": "PENDING_SEPARATE_REVIEW",
+  "generic_degraded_pass_allowed": false,
+  "next_stage": "V4_01_EXTERNAL_ONLINE_MODEL_ACCEPTANCE",
+  "observed_at_utc": "2026-09-26T04:43:36+00:00",
+  "required_scope_status": "PASS",
+  "scope": {
+    "board_statistics": {
+      "CHINEXT": {
+        "bar_invalid": 0,
+        "bar_missing": 1938,
+        "identity_unresolved": 0,
+        "membership_rows": 1071896,
+        "required": true,
+        "securities": 1430,
+        "status": "PASS"
+      },
+      "SH_MAIN": {
+        "bar_invalid": 0,
+        "bar_missing": 3008,
+        "identity_unresolved": 0,
+        "membership_rows": 1331624,
+        "required": true,
+        "securities": 1746,
+        "status": "PASS"
+      },
+      "STAR": {
+        "bar_invalid": 0,
+        "bar_missing": 664,
+        "identity_unresolved": 0,
+        "membership_rows": 458582,
+        "required": true,
+        "securities": 621,
+        "status": "PASS"
+      },
+      "SZ_MAIN": {
+        "bar_invalid": 0,
+        "bar_missing": 3509,
+        "identity_unresolved": 0,
+        "membership_rows": 1174019,
+        "required": true,
+        "securities": 1554,
+        "status": "PASS"
+      }
+    },
+    "bse_optional_row_count": 191423,
+    "optional_bse": "DEGRADED_BSE",
+    "pending_classification_row_count": 4380,
+    "required_boards": [
+      "SH_MAIN",
+      "SZ_MAIN",
+      "CHINEXT",
+      "STAR"
+    ],
+    "required_scope_membership_rows": 4036121,
+    "required_scope_universe_digest": "473e859366dd4b74f16e1a92b24f30b6dddb6308a9d0029834d70bf7733a39b4"
+  },
+  "stage": "V4-01",
+  "stage_completion_authorized": true,
+  "stage_contract": "DA-MSR-V4.2.2-CODEX-REV2 §78; REQUIRED_EQUITY_SCOPE_V1; SECURITY_MEMBERSHIP_INTERVAL_V1; DATED_ROSTER_MEMBERSHIP_BOUNDARY_V1; R6.2 lifecycle boundary normalization",
+  "status": "PASS_WITH_BSE_SCOPE_DEGRADED",
+  "v4_02_status": "BLOCKED_PENDING_EXTERNAL_ACCEPTANCE",
+  "v4_03_status": "BLOCKED",
+  "version": "1.2.0"
+}

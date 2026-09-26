@@ -103,6 +103,8 @@ def main() -> int:
     session_index = {day: index for index, day in enumerate(sessions)}
     facts = {str(row.get("source_security_key", "")).lower(): row for row in facts_doc.get("facts", [])}
     required = [row for row in identity_doc.get("records", []) if required_board(row)]
+    identity_by_key = {str(row.get("source_security_key", "")).lower(): row
+                       for row in identity_doc.get("records", [])}
     keys = [str(row.get("source_security_key") or "").lower() for row in required]
     if len(keys) != len(set(keys)) or any(not key for key in keys):
         raise SystemExit("R6_2_REQUIRED_IDENTITY_KEY_NOT_UNIQUE")
@@ -113,8 +115,10 @@ def main() -> int:
     outdate_counts = Counter()
     present_count = absent_count = outside_count = pre_window_excluded_count = 0
     missing_fact_keys: list[str] = []
-    mapped_codes = set(keys)
-    required_roster_unmapped = Counter()
+    unmapped_provider_type1_roster_keys = sorted(
+        key for key in roster_days_by_key
+        if facts.get(key, {}).get("security_type_provider") == "1" and key not in identity_by_key
+    )
     roster_present_by_key = {key: set(days) for key, days in roster_days_by_key.items()}
     required_intervals_by_day: dict[str, set[str]] = {day: set() for day in sessions}
 
@@ -246,8 +250,8 @@ def main() -> int:
             "unresolved_boundary_by_board": {board: unresolved_by_board[board] for board in REQUIRED_BOARD_KEYS},
             "missing_provider_fact_count": len(missing_fact_keys),
             "missing_provider_fact_keys": missing_fact_keys,
-            "roster_unmapped_required_identity_count": sum(required_roster_unmapped.values()),
-            "roster_unmapped_required_identity_by_board": {board: 0 for board in REQUIRED_BOARD_KEYS},
+            "roster_unmapped_provider_type1_identity_count": len(unmapped_provider_type1_roster_keys),
+            "roster_unmapped_provider_type1_identity_keys": unmapped_provider_type1_roster_keys,
             "outdate_counts_by_board": {board: outdate_counts[board] for board in REQUIRED_BOARD_KEYS},
         },
         "normalized_intervals": {"path": args.intervals, "sha256": sha(interval_path),

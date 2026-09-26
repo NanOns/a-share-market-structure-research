@@ -261,7 +261,7 @@ def main() -> int:
                 lifecycle_revision_ids.append(src_id)
 
     with psycopg.connect(dsn()) as pg:
-        provider_fact_count = pg.execute("select count(*) from v4.provider_lifecycle_fact_history").fetchone()[0]
+        provider_fact_history_count = pg.execute("select count(*) from v4.provider_lifecycle_fact_history").fetchone()[0]
         current_provider_rows = pg.execute(
             """select h.source_security_key,h.provider_ipo_date,h.provider_out_date,h.provider_status,h.raw_provider_payload
                from (select distinct on (h.provider_fact_key) h.*
@@ -271,6 +271,7 @@ def main() -> int:
         ).fetchall()
         expected_provider = {str(row["source_security_key"]).upper(): row for row in raw_facts.get("facts", [])}
         current_provider = {str(row[0]).upper(): row for row in current_provider_rows}
+        provider_fact_count = len(current_provider)
         if set(expected_provider) != set(current_provider):
             provider_raw_value_mismatch_count += len(set(expected_provider) ^ set(current_provider))
         for key in set(expected_provider) & set(current_provider):
@@ -361,6 +362,7 @@ def main() -> int:
         "provider_facts": {"newly_appended_revision_rows": inserted_provider_facts,
                            "already_present_revision_rows": provider_fact_skipped,
                            "database_revision_rows": provider_fact_count,
+                           "database_history_revision_rows": provider_fact_history_count,
                            "raw_provider_value_mismatch_count": provider_raw_value_mismatch_count,
                            "source_revision_binding_violation_count": provider_source_binding_invalid,
                            "append_only_trigger_present": provider_append_only_trigger_count == 1,

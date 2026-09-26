@@ -72,6 +72,7 @@ def main() -> int:
             and roster.get("summary", {}).get("accepted_suspicious_day_count") == roster.get("summary", {}).get("suspicious_day_count") else "BLOCKED",
         "required_scope_lifecycle_boundary_resolution": "PASS" if boundary.get("status") == "PASS"
             and boundary.get("resolution", {}).get("unresolved_boundary_count") == 0
+            and boundary.get("resolution", {}).get("roster_unmapped_provider_type1_identity_count") == 0
             and boundary.get("resolution", {}).get("provider_outdate_in_window_count")
                 == boundary.get("resolution", {}).get("resolved_by_same_day_presence", 0)
                    + boundary.get("resolution", {}).get("resolved_by_prior_membership", 0) else "BLOCKED",

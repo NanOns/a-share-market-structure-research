@@ -1,0 +1,145 @@
+{
+  "base_artifact_sha256": "2ba3a1d9476bb4ca5038cfb0134fc43f4204f149da09c19823e075460fb9f62c",
+  "base_receipt_sha256": "fc8e4ca1aa2b58c6a1a08f94d563d018e0a44b26a20ca4a8e06e97516dadb8c0",
+  "contract_id": "V4_02_DATED_ISST_BOUNDED_RECOVERY_V1",
+  "contract_sha256": "84eaef94554d2fb86b0abcd6e0f5be37f8e26e143f28a06dbd1c6a2af7f232b1",
+  "expected_membership_rows": 52182,
+  "max_retry_per_failed_date": 1,
+  "observed_at_utc": "2026-09-26T14:11:04+00:00",
+  "recovered_dates": [
+    "2026-08-26",
+    "2026-09-01",
+    "2026-09-07",
+    "2026-09-08",
+    "2026-09-11",
+    "2026-09-14",
+    "2026-09-17",
+    "2026-09-18",
+    "2026-09-23",
+    "2026-09-24"
+  ],
+  "recovered_membership_rows": 52182,
+  "recovery_fact_artifact": {
+    "normalized_sha256": "3b94f1fd01e14c34b4c567de58168eccd5c83d84d96aac27690e7aaeb289f87e",
+    "path": "data/v4/artifact_store/v4_02/.isst_recovery_facts_R1.jsonl.gz",
+    "row_count": 52182,
+    "sha256": "85a444346e6e9a007648904ec6f819bafa00b87f84dcd76e2872d859bca3c26f"
+  },
+  "request_ledger_sha256": "d8089b1202b17c0425025e359d22be091403d6170c55295116b46f35c5a0386b",
+  "retry_receipt_count": 10,
+  "retry_receipts": [
+    {
+      "finished_at_utc": "2026-09-26T14:08:08+00:00",
+      "normalized_full_market_status_rows": 5212,
+      "normalized_full_market_status_sha256": "9dd5b6c302190584fa378fa67d184a5037c56fa44f9f904735acfd76ef25c0df",
+      "page_count": 1,
+      "provider_row_count": 5212,
+      "required_membership_rows": 5212,
+      "started_at_utc": "2026-09-26T14:07:55+00:00",
+      "status": "PASS",
+      "trade_date": "2026-08-26"
+    },
+    {
+      "finished_at_utc": "2026-09-26T14:08:26+00:00",
+      "normalized_full_market_status_rows": 5214,
+      "normalized_full_market_status_sha256": "36f778580114754654a0289fba26b0b79f44d2d1ee5417b8d7131c1fba814284",
+      "page_count": 1,
+      "provider_row_count": 5214,
+      "required_membership_rows": 5214,
+      "started_at_utc": "2026-09-26T14:08:08+00:00",
+      "status": "PASS",
+      "trade_date": "2026-09-01"
+    },
+    {
+      "finished_at_utc": "2026-09-26T14:08:42+00:00",
+      "normalized_full_market_status_rows": 5216,
+      "normalized_full_market_status_sha256": "1a5bab35e24c3a6fe92fd3dc624b66e64479c054e8b4fb9cb63655be2cb282b4",
+      "page_count": 1,
+      "provider_row_count": 5216,
+      "required_membership_rows": 5216,
+      "started_at_utc": "2026-09-26T14:08:26+00:00",
+      "status": "PASS",
+      "trade_date": "2026-09-07"
+    },
+    {
+      "finished_at_utc": "2026-09-26T14:08:58+00:00",
+      "normalized_full_market_status_rows": 5216,
+      "normalized_full_market_status_sha256": "9821e30f7df6845d641fe9c055044ea72fa29e3c07d61ea25a5596d04e091ad1",
+      "page_count": 1,
+      "provider_row_count": 5216,
+      "required_membership_rows": 5216,
+      "started_at_utc": "2026-09-26T14:08:42+00:00",
+      "status": "PASS",
+      "trade_date": "2026-09-08"
+    },
+    {
+      "finished_at_utc": "2026-09-26T14:09:14+00:00",
+      "normalized_full_market_status_rows": 5219,
+      "normalized_full_market_status_sha256": "dadcdee0fc5eeb3ad7ade5d4298a72a8c4f0ce05de4590d48378af450fa8ae24",
+      "page_count": 1,
+      "provider_row_count": 5219,
+      "required_membership_rows": 5219,
+      "started_at_utc": "2026-09-26T14:08:58+00:00",
+      "status": "PASS",
+      "trade_date": "2026-09-11"
+    },
+    {
+      "finished_at_utc": "2026-09-26T14:09:32+00:00",
+      "normalized_full_market_status_rows": 5219,
+      "normalized_full_market_status_sha256": "d895067e60df516c07e7b52f922a2bdf1f01bc7f6169bd8bdf18ddfbed8073b9",
+      "page_count": 1,
+      "provider_row_count": 5219,
+      "required_membership_rows": 5219,
+      "started_at_utc": "2026-09-26T14:09:14+00:00",
+      "status": "PASS",
+      "trade_date": "2026-09-14"
+    },
+    {
+      "finished_at_utc": "2026-09-26T14:09:47+00:00",
+      "normalized_full_market_status_rows": 5221,
+      "normalized_full_market_status_sha256": "1f37b01c65d7ee30a1091dceb316d8f280da8480397e6469e4a340827b50d471",
+      "page_count": 1,
+      "provider_row_count": 5221,
+      "required_membership_rows": 5221,
+      "started_at_utc": "2026-09-26T14:09:32+00:00",
+      "status": "PASS",
+      "trade_date": "2026-09-17"
+    },
+    {
+      "finished_at_utc": "2026-09-26T14:10:00+00:00",
+      "normalized_full_market_status_rows": 5221,
+      "normalized_full_market_status_sha256": "96b481385689711a253f44b8cc00eb2b50b77ab034975824b9b42ee3930ae91d",
+      "page_count": 1,
+      "provider_row_count": 5221,
+      "required_membership_rows": 5221,
+      "started_at_utc": "2026-09-26T14:09:47+00:00",
+      "status": "PASS",
+      "trade_date": "2026-09-18"
+    },
+    {
+      "finished_at_utc": "2026-09-26T14:10:11+00:00",
+      "normalized_full_market_status_rows": 5222,
+      "normalized_full_market_status_sha256": "7e4c0d50b3486795726c99230b0af545b76529446d9486b0b8623020cff2b843",
+      "page_count": 1,
+      "provider_row_count": 5222,
+      "required_membership_rows": 5222,
+      "started_at_utc": "2026-09-26T14:10:00+00:00",
+      "status": "PASS",
+      "trade_date": "2026-09-23"
+    },
+    {
+      "finished_at_utc": "2026-09-26T14:10:23+00:00",
+      "normalized_full_market_status_rows": 5222,
+      "normalized_full_market_status_sha256": "b8e0ad884f17b7d6641de1dc16861c81c0018c378e269942051d35a6caf20c1c",
+      "page_count": 1,
+      "provider_row_count": 5222,
+      "required_membership_rows": 5222,
+      "started_at_utc": "2026-09-26T14:10:11+00:00",
+      "status": "PASS",
+      "trade_date": "2026-09-24"
+    }
+  ],
+  "script_sha256": "62975b29eb31733c0fb05ee8a974418c1ea6e5e8a9cf738be3c6911ca89d40e5",
+  "status": "RECOVERY_COMPLETE",
+  "still_failed_dates": []
+}

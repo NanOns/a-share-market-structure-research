@@ -15,20 +15,39 @@
       }
     },
     "2026-09-26": {
-      "count": 3878,
+      "count": 4737,
       "operations": {
-        "login": 83,
-        "logout": 81,
+        "login": 89,
+        "logout": 86,
         "query_adjustment_long_suspension_acceptance": 2,
         "query_all_stock": 653,
-        "query_daily_history_k_AStock": 73,
+        "query_daily_history_k_AStock": 911,
+        "query_daily_history_k_AStock_recovery": 10,
         "query_dated_status_gap_only": 2946,
         "query_long_suspension_xrxd_status": 2,
         "rollover_conservative_unclassified": 38
       }
     }
   },
-  "last_updated_at_utc": "2026-09-26T12:08:45+00:00",
+  "full_market_isst_worker_aggregation": {
+    "worker_0": {
+      "request_count": 199,
+      "sha256": "5f11a44eb99307a626edef2c07258951f0ab037c9c67bbedc231d08e5212f728"
+    },
+    "worker_1": {
+      "request_count": 199,
+      "sha256": "02284c2c9cae15f06ad9b8ce614313523bb8a537d65c1f5283a327fbb70e020d"
+    },
+    "worker_2": {
+      "request_count": 198,
+      "sha256": "84f467959a402d1a76970e1a5cdf39e6052e9509d5f539a624cf5031c6e4f7e7"
+    },
+    "worker_3": {
+      "request_count": 198,
+      "sha256": "3f7fa9f9f66d9a02bf5d80cbc904ba7f46cb06f9d79d9a1bb2f482e2b26fe6a1"
+    }
+  },
+  "last_updated_at_utc": "2026-09-26T14:10:23+00:00",
   "ledger_version": 1,
   "roster_shard_aggregation": {
     "reports/v4_baostock/roster_worker_01_ledger.json": {

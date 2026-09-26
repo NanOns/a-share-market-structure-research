@@ -1,0 +1,54 @@
+{
+  "contract_id": "V4_02_FINAL_CLOSURE_PACK_V1",
+  "version": "1.0.0",
+  "stage": "V4-02 / FINAL CLOSURE PACK",
+  "governing_task": {
+    "path": "D:/Users/lps/Desktop/V4_02_PACK_A_EXTERNAL_AUDIT_AND_FINAL_ACCELERATED_CLOSURE_R2_20260926.md",
+    "sha256": "34599b4440f384491b4d894dabac359122d7f013e1015fcf5a5e593be1da271e"
+  },
+  "governing_upgrade": {
+    "id": "DA-MSR-V4.2.2-CODEX-REV2",
+    "path": "D:/Users/lps/Desktop/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_20260925_codex修改版.md",
+    "sha256": "744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd",
+    "sections": ["3B.6", "3C.1", "3C.2", "3C.3", "3C.4", "4.6", "5.2", "5.3", "6A", "10N", "78"]
+  },
+  "scope": {
+    "start_date": "2023-07-04",
+    "source_cutoff": "2026-09-24",
+    "required_boards": ["SH_MAIN", "SZ_MAIN", "CHINEXT", "STAR"],
+    "optional_degraded_boards": ["BSE"],
+    "phase0": "CLOSED",
+    "v4_01": "PASS_WITH_BSE_SCOPE_DEGRADED_EXTERNALLY_ACCEPTED",
+    "v4_03": "DO_NOT_START"
+  },
+  "revised_pack_a_disposition": {
+    "tdx_actual_bar_precedence_over_baostock": "ACCEPTED_WITH_PROVIDER_DISAGREEMENT_RETAINED",
+    "full_dated_isst": "FINAL_PRICE_LIMIT_PACK_INPUT_NOT_PACK_A_BLOCKER",
+    "section_3c4_temporal_minimum": "THE_EIGHT_REV2_REQUIRED_CASES_ACCEPT; FULL_UNIVERSE_REPLAY_NOT_REQUIRED",
+    "unknown_or_unsupported_gbbq_categories": "PER_SECURITY_FAIL_CLOSED_ACCEPTED",
+    "historical_pit_adjustment": "NOT_AVAILABLE_PRE_PROJECT; HISTORICAL_OUTPUT_REMAINS_DIAGNOSTIC_NON_PIT",
+    "go_forward_pit": "ELIGIBLE_ONLY_AFTER_HASH_BOUND_IMMUTABLE_GBBQ_SNAPSHOT_SYSTEM_AVAILABLE_AT"
+  },
+  "final_pack": {
+    "components": ["PACK_A_FINAL_SEAL", "FULL_DATED_ISST", "PRICE_LIMIT_RULE_V1", "WHOLE_STAGE_ATOMIC_PUBLICATION", "INDEPENDENT_FINAL_POSTCHECK", "V4_02_FINAL_RECEIPT"],
+    "never_rebuild_raw": true,
+    "never_write_tdx_root": true,
+    "pack_a_pass_requires": ["raw", "calendar", "trading_status", "adjusted_reconstruction_with_local_fail_closed", "periods", "closed_only_as_of", "eight_temporal_cases", "historical_pit_not_claimed", "go_forward_snapshot_freeze_enabled"],
+    "publication": {
+      "manifest_binds": ["raw", "adjusted_daily", "calendar", "trading_status", "weekly", "monthly", "price_limit", "pack_a_receipt"],
+      "atomic_head": "data/v4/V4_02_ACCEPTED_HEAD.json",
+      "failed_candidate_does_not_change_existing_head": true
+    },
+    "final_statuses": ["FULL_PASS", "PASS_WITH_BSE_SCOPE_DEGRADED", "BLOCKED"],
+    "v4_03_after_final_pass": "PENDING_EXTERNAL_ACCEPTANCE"
+  },
+  "acceptance": {
+    "historical_adjustment_lineage_must_not_claim_pit_without_snapshot": true,
+    "is_st_unknown_must_remain_unknown": true,
+    "price_limit_unknown_on_unproved_reference_or_listing_phase": true,
+    "ex_right_day_must_not_use_previous_raw_close_without_transform": true,
+    "scanner_factor_or_trading_runs": 0,
+    "cross_cutting_audits_remain_separate": true
+  },
+  "next_stage": "COMPLETE_PRICE_LIMIT_AND_WHOLE_STAGE_ACCEPTANCE; DO_NOT_START_V4_03"
+}

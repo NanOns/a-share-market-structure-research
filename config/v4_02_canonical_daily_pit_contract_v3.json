@@ -78,7 +78,7 @@
     "calendar_capability": "FORMAL_MARKET_CALENDAR_PASS; V2 coverage 2023-07-04 through source cutoff 2026-09-24, accepted by V4_02_FORMAL_MARKET_CALENDAR_ACCEPTANCE_V2",
     "suspension_count": "from versioned dated provider facts on gap rows; missing bar alone is never suspension",
     "coverage_status": "never COMPLETE unless listing lifecycle and every session's bar/suspension are evidenced; this stage cannot establish that condition",
-    "formal_closed_only_available": "CANDIDATE_PASS_PENDING_PACK_A_ACCEPTANCE",
+    "formal_closed_only_available": "PASS; INDEPENDENT_POSTCHECK_PASS; FULL_PACK_ACCEPTED_WITH_BSE_SCOPE_DEGRADED",
     "knowledge_lineage": "DIAGNOSTIC_NON_PIT",
     "adjustment": "RAW_AND_QFQ_CANDIDATE; QFQ_BLOCKED_BY_ADJUSTMENT_WHEN_PER_SECURITY_NOT_READY"
   },
@@ -88,21 +88,23 @@
     "adjusted_daily_periods": "CURRENT_SNAPSHOT_QFQ_CANDIDATE_PER_SECURITY_FAIL_CLOSED_NOT_PIT",
     "historical_pit_observed": "UNAVAILABLE",
     "as_recorded_source_consumption": "UNAVAILABLE",
-    "historical_suspension_status": "DATED_STATUS_GAP_FACTS_AVAILABLE_R6_2_WITH_FOUR_PROVIDER_CONFLICTS_OPEN",
-    "historical_limit_status": "UNKNOWN",
+    "historical_suspension_status": "DATED_TRADING_STATUS_PASS_GAP_ONLY; PROVIDER_CONFLICTS_RETAINED_IN_SEPARATE_AUDIT",
+    "historical_limit_status": "PRICE_LIMIT_RULE_V1_CANDIDATE_PASS_WITH_FAIL_CLOSED_UNKNOWN; ROWS=4036121; UNKNOWN=1419; HISTORICAL_DIAGNOSTIC_NON_PIT",
     "historical_security_lifecycle_and_membership": "AVAILABLE_FOR_REQUIRED_SCOPE_FROM_V4_01_R6_2",
     "formal_market_calendar": "FORMAL_MARKET_CALENDAR_PASS_V2_20230704_20260924",
-    "dated_trading_status_suspension_resumption": "DATED_TRADING_STATUS_PASS_GAP_ONLY_BAO_FACTS_982_SECURITIES; PROVIDER_TRADESTATUS_CONFLICT_AUDIT_OPEN",
-    "formal_closed_only_as_of": "RAW_QFQ_PERIOD_CANDIDATE_PASS_INDEPENDENT_POSTCHECK_PASS",
-    "section_3c_4_temporal_leakage": "BOUNDED_8_CASE_CROSS_BOARD_PASS_FULL_SCOPE_AND_LATE_REVISION_PROOF_OPEN",
-    "atomic_publication": "IMPLEMENTED_ACCEPTANCE_PENDING",
-    "independent_postcheck": "IMPLEMENTED_ACCEPTANCE_PENDING"
+    "dated_trading_status_suspension_resumption": "DATED_TRADING_STATUS_PASS_GAP_ONLY_BAO_FACTS_982_SECURITIES; FOUR_PROVIDER_CONFLICTS_RETAINED_AS_QUALITY_AUDIT",
+    "formal_closed_only_as_of": "FORMAL_RAW_QFQ_PERIODS_PASS_INDEPENDENT_POSTCHECK_PASS",
+    "section_3c_4_temporal_leakage": "BOUNDED_8_CASE_CROSS_BOARD_PASS_REV2_MINIMUM",
+    "atomic_publication": "PASS_WITH_BSE_SCOPE_DEGRADED; ACCEPTED_HEAD_ATOMICALLY_PROMOTED",
+    "independent_postcheck": "PASS; FULL_MANIFEST_HASH_SCHEMA_ROW_COUNT_AND_MEMBERSHIP_RECONCILIATION",
+    "full_dated_isst": "DATED_ST_STATUS_PASS; MEMBERSHIP_ROWS=4036121; UNKNOWN=0; BOUNDED_RETRY_EVIDENCE_HASH_BOUND"
   },
   "price_limit_rules": {
     "contract_id": "PRICE_LIMIT_RULE_V1",
-    "apply_historical_rules": false,
+    "apply_historical_rules": true,
     "limit_status_default": "UNKNOWN",
-    "reason": "dated official rules, security identity/status/listing phase, and ex-right reference prices are not fully evidenced"
+    "knowledge_lineage": "DIAGNOSTIC_NON_PIT; HISTORICAL_AS_RECORDED_VISIBILITY_NOT_CLAIMED",
+    "reason": "Effective-dated official rule registry applied to local TDX prices; unproved reference, lifecycle, or corporate-action inputs remain per-security UNKNOWN."
   },
   "outputs": {
     "canonical_daily": "data/v4/canonical/{run_id}/canonical_daily_raw.parquet",
@@ -111,7 +113,9 @@
     "stage_receipt": "reports/v4_02/{run_id}_stage_receipt.json",
     "source_manifest": "reports/v4_02/{run_id}_source_manifest.json",
     "entry_gate_receipt": "reports/v4_02/V4_02_ENTRY_GATE_20260926.json",
-    "blocked_entry_receipt": "reports/v4_02/{run_id}_blocked_entry_receipt.json"
+    "blocked_entry_receipt": "reports/v4_02/{run_id}_blocked_entry_receipt.json",
+    "final_stage_receipt": "reports/v4_02/V4_02_FINAL_RECEIPT_R1.json",
+    "accepted_head": "data/v4/V4_02_ACCEPTED_HEAD.json"
   },
   "acceptance": {
     "required_boards": [
@@ -166,5 +170,17 @@
     ],
     "formal_calendar_receipt": "reports/v4_02/V4_02_FORMAL_MARKET_CALENDAR_ACCEPTANCE_V2.json",
     "calendar_source_cutoff": "2026-09-24"
+  },
+  "final_closure": {
+    "receipt": "reports/v4_02/V4_02_FINAL_RECEIPT_R1.json",
+    "receipt_sha256": "67325c4ec3077a01a3ff22245c03610f6ddc2036c0fc1248e173b702b879819d",
+    "status": "PASS_WITH_BSE_SCOPE_DEGRADED",
+    "next_stage": "V4_03_ENTRY_PENDING_EXTERNAL_ACCEPTANCE",
+    "separate_audit": {
+      "receipt": "reports/v4_02/V4_02_PRICE_LIMIT_RANGE_EXCEPTION_AUDIT_R1.json",
+      "sha256": "d567fb601733468aad2310954244a64d46a28ee98e7b9d3e48de070c666d3f9c",
+      "status": "OPEN",
+      "unknown_rows": 23
+    }
   }
 }

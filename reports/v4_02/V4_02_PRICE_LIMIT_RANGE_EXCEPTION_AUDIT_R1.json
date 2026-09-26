@@ -1,0 +1,148 @@
+{
+  "contract_id": "V4_02_PRICE_LIMIT_RANGE_EXCEPTION_AUDIT_V1",
+  "version": "1.0.0",
+  "status": "OPEN",
+  "stage": "V4-02 / CROSS-CUTTING AUDIT / SEPARATE FROM FINAL STAGE GATE",
+  "scope": {
+    "exception": "CLOSE_OUTSIDE_LIMIT_RANGE",
+    "row_count": 23,
+    "required_boards": [
+      "CHINEXT",
+      "STAR",
+      "SZ_MAIN"
+    ],
+    "by_board": {
+      "SZ_MAIN": 20,
+      "CHINEXT": 2,
+      "STAR": 1
+    },
+    "top_security_counts": {
+      "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B": 15,
+      "SEC-A551ACC8344EBD503896DAEF26CDEFC3": 1,
+      "SEC-521E82B13C504D75F6C83CD8F6EC12AB": 1,
+      "SEC-5230431466D57C5958B77EED9F9504C0": 1,
+      "SEC-27C6BBEDA6B15CB15F15CCCBF0922DBF": 1,
+      "SEC-07FF31893A0D85A80F3164128E8B11DF": 1,
+      "SEC-78310452EEBA29E38F21CB145240A01F": 1,
+      "SEC-21CEA99CE88C716A64B97F51EAC014EA": 1,
+      "SEC-A173B2AB82DD14C1F3697CBB2EE24B53": 1
+    }
+  },
+  "evidence": {
+    "price_limit_artifact": {
+      "path": "data/v4/artifact_store/v4_02/V4_02_PRICE_LIMIT_R6_2_20260926.jsonl.gz",
+      "sha256": "0ca2ff328fee676c400b853aedce03db0c06068e8254eaae6633c32994596201"
+    },
+    "price_limit_receipt": {
+      "path": "reports/v4_02/V4_02_PRICE_LIMIT_ACCEPTANCE_R1_20260926.json",
+      "sha256": "4901bae7a431621efeff3fad109f55e8edd82a4aea14842068c99361665f0e8f"
+    },
+    "rule_contract": {
+      "path": "config/v4_02_price_limit_rules_v1.json",
+      "sha256": "a3f61ec68baad722b2045e2a547e2a54f8012c652a871ee06f7966cac4895108"
+    },
+    "dated_isst_receipt": {
+      "path": "reports/v4_02/V4_02_DATED_ST_STATUS_V1_R6_2_20260926.json",
+      "sha256": "a5f84c388a7482df83f0998c39dbe737587cc4c4c89a5fb524459e311baea97f"
+    }
+  },
+  "bounded_examples": [
+    {
+      "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+      "source_security_key": "SZ.302132",
+      "trade_date": "2023-07-27",
+      "board_scope": "SZ_MAIN",
+      "risk_status": "NORMAL",
+      "reference_price": "48.26",
+      "reference_basis": "PREVIOUS_TDX_ACTUAL_CLOSE",
+      "rule_id": "SZSE_MAIN_NORMAL_20230704_V1",
+      "reason": "CLOSE_OUTSIDE_LIMIT_RANGE"
+    },
+    {
+      "security_id": "SEC-A551ACC8344EBD503896DAEF26CDEFC3",
+      "source_security_key": "SZ.002970",
+      "trade_date": "2024-05-30",
+      "board_scope": "SZ_MAIN",
+      "risk_status": "NORMAL",
+      "reference_price": "35.85",
+      "reference_basis": "TDX_XRXD_REFERENCE_TRANSFORM_DIAGNOSTIC_NON_PIT",
+      "rule_id": "SZSE_MAIN_NORMAL_20230704_V1",
+      "reason": "CLOSE_OUTSIDE_LIMIT_RANGE"
+    },
+    {
+      "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+      "source_security_key": "SZ.302132",
+      "trade_date": "2024-09-30",
+      "board_scope": "SZ_MAIN",
+      "risk_status": "NORMAL",
+      "reference_price": "46.15",
+      "reference_basis": "PREVIOUS_TDX_ACTUAL_CLOSE",
+      "rule_id": "SZSE_MAIN_NORMAL_20230704_V1",
+      "reason": "CLOSE_OUTSIDE_LIMIT_RANGE"
+    },
+    {
+      "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+      "source_security_key": "SZ.302132",
+      "trade_date": "2024-10-08",
+      "board_scope": "SZ_MAIN",
+      "risk_status": "NORMAL",
+      "reference_price": "52.98",
+      "reference_basis": "PREVIOUS_TDX_ACTUAL_CLOSE",
+      "rule_id": "SZSE_MAIN_NORMAL_20230704_V1",
+      "reason": "CLOSE_OUTSIDE_LIMIT_RANGE"
+    },
+    {
+      "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+      "source_security_key": "SZ.302132",
+      "trade_date": "2024-10-10",
+      "board_scope": "SZ_MAIN",
+      "risk_status": "NORMAL",
+      "reference_price": "60.76",
+      "reference_basis": "PREVIOUS_TDX_ACTUAL_CLOSE",
+      "rule_id": "SZSE_MAIN_NORMAL_20230704_V1",
+      "reason": "CLOSE_OUTSIDE_LIMIT_RANGE"
+    },
+    {
+      "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+      "source_security_key": "SZ.302132",
+      "trade_date": "2024-10-11",
+      "board_scope": "SZ_MAIN",
+      "risk_status": "NORMAL",
+      "reference_price": "70.00",
+      "reference_basis": "PREVIOUS_TDX_ACTUAL_CLOSE",
+      "rule_id": "SZSE_MAIN_NORMAL_20230704_V1",
+      "reason": "CLOSE_OUTSIDE_LIMIT_RANGE"
+    },
+    {
+      "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+      "source_security_key": "SZ.302132",
+      "trade_date": "2024-10-14",
+      "board_scope": "SZ_MAIN",
+      "risk_status": "NORMAL",
+      "reference_price": "58.06",
+      "reference_basis": "PREVIOUS_TDX_ACTUAL_CLOSE",
+      "rule_id": "SZSE_MAIN_NORMAL_20230704_V1",
+      "reason": "CLOSE_OUTSIDE_LIMIT_RANGE"
+    },
+    {
+      "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+      "source_security_key": "SZ.302132",
+      "trade_date": "2024-11-05",
+      "board_scope": "SZ_MAIN",
+      "risk_status": "NORMAL",
+      "reference_price": "83.15",
+      "reference_basis": "PREVIOUS_TDX_ACTUAL_CLOSE",
+      "rule_id": "SZSE_MAIN_NORMAL_20230704_V1",
+      "reason": "CLOSE_OUTSIDE_LIMIT_RANGE"
+    }
+  ],
+  "current_disposition": "All exception rows remain limit_status=UNKNOWN with reason CLOSE_OUTSIDE_LIMIT_RANGE; no unsupported price-limit label is emitted.",
+  "stage_gate_disposition": "R2 accepts per-security fail-closed unknowns; this audit remains open independently and does not widen final accepted capabilities.",
+  "acceptance_criteria": [
+    "Reconcile each affected stable identity and board assignment to dated official lifecycle/segment evidence.",
+    "Reconcile effective listing/no-limit phase and corporate actions to source-date evidence.",
+    "Independently recompute every affected reference and limit boundary from accepted TDX prices and the effective official rule.",
+    "Keep unresolved rows UNKNOWN; close only when the full exception set has an independently evidenced disposition."
+  ],
+  "next_stage": "INDEPENDENTLY_RESOLVE_EXCEPTION_SET; KEEP_FAIL_CLOSED_UNTIL_ACCEPTED"
+}

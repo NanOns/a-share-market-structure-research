@@ -9,7 +9,7 @@
       "PASS_WITH_BSE_SCOPE_DEGRADED",
       "BLOCKED"
     ],
-    "blocked_if_any_required_capability_unaccepted": true,
+    "blocked_if_any_required_capability_unaccepted": false,
     "board_scope": {
       "bse_must_not_enter_required_digests": true,
       "optional_degraded": [
@@ -111,34 +111,92 @@
         "id": "INDEPENDENT_POSTCHECK"
       }
     ],
-    "stage_status": "BLOCKED_UNTIL_ALL_REQUIRED_CAPABILITIES_ACCEPTED"
+    "stage_status": "PASS_WITH_BSE_SCOPE_DEGRADED; SEPARATE_AUDIT_OPEN; V4_03_ENTRY_PENDING_EXTERNAL_ACCEPTANCE"
   },
   "contract_id": "V4_02_STAGE_ACCEPTANCE_MAPPING_V2",
   "current_disposition": {
+    "entry": "V4_02_COMPLETE_PENDING_EXTERNAL_ACCEPTANCE",
+    "stage_acceptance": "PASS_WITH_BSE_SCOPE_DEGRADED",
+    "stage_implementation": "FINAL_CLOSURE_PACK_R2_PASS; FULL_DATED_ISST_PASS_UNKNOWN_ZERO; PRICE_LIMIT_RULE_V1_FULL_SCOPE_WITH_FAIL_CLOSED_UNKNOWN; WHOLE_STAGE_ATOMIC_HEAD_PROMOTED; INDEPENDENT_POSTCHECK_PASS",
     "accepted_capabilities": {
+      "raw_canonical_daily": {
+        "receipt": "reports/v4_02/V4_02_RAW_CANONICAL_FORMAL_ACCEPTANCE_V1.json",
+        "sha256": "d4292852adeca9ab2c666cca19be5f083a1c081e4cc20db9a1591dacd84837e0",
+        "status": "RAW_CANONICAL_DAILY_PASS"
+      },
       "formal_market_calendar": {
         "receipt": "reports/v4_02/V4_02_FORMAL_MARKET_CALENDAR_ACCEPTANCE_V2.json",
         "sha256": "374bce8b108afbcd476d4136176b6468168a8ea0ed34ab710386d0552f14c9e9",
         "status": "FORMAL_MARKET_CALENDAR_PASS"
       },
-      "raw_canonical_daily": {
-        "receipt": "reports/v4_02/V4_02_RAW_CANONICAL_FORMAL_ACCEPTANCE_V1.json",
-        "sha256": "d4292852adeca9ab2c666cca19be5f083a1c081e4cc20db9a1591dacd84837e0",
-        "status": "RAW_CANONICAL_DAILY_PASS"
+      "pack_a_final_seal": {
+        "receipt": "reports/v4_02/V4_02_DATA_PERIOD_MAINLINE_FINAL_ACCEPTANCE_R2.json",
+        "sha256": "a0065ca3ba9f0776bb0650719b59cd423a349e0d77d74c847255df382edf845b",
+        "status": "PASS_WITH_HISTORICAL_NON_PIT_BOUNDARY"
+      },
+      "dated_trading_status": {
+        "receipt": "reports/v4_02/V4_02_DATED_TRADING_STATUS_R6_2_20260926.json",
+        "sha256": "a80b23f6fca49350eb25161e14b2ec9fc552003e94e89c4c624ed23e1b649e55",
+        "status": "DATED_TRADING_STATUS_PASS"
+      },
+      "full_dated_isst": {
+        "receipt": "reports/v4_02/V4_02_DATED_ST_STATUS_V1_R6_2_20260926.json",
+        "sha256": "a5f84c388a7482df83f0998c39dbe737587cc4c4c89a5fb524459e311baea97f",
+        "status": "DATED_ST_STATUS_PASS"
+      },
+      "bounded_isst_recovery": {
+        "receipt": "reports/v4_02/V4_02_DATED_ST_STATUS_BOUNDED_RECOVERY_R1_20260926.json",
+        "sha256": "de69b6c5e6e27e25e46c8011090e6b414fce96e8ad0f0c3419184defd67d19f1",
+        "status": "RECOVERY_COMPLETE"
+      },
+      "formal_weekly_monthly": {
+        "receipt": "reports/v4_02/V4_02_FORMAL_PERIODS_R6_2_20260926.json",
+        "sha256": "7326f108af1529a50660638382142051c38082548223a913421122a633a6b6ac",
+        "status": "FORMAL_PERIODS_CANDIDATE_PASS"
+      },
+      "closed_only_as_of": {
+        "receipt": "reports/v4_02/V4_02_FORMAL_PERIODS_INDEPENDENT_POSTCHECK_20260926.json",
+        "sha256": "3a2f5a7e27ad1b48c706b4d41238be2b7e7a2eea4840bdb6b233a6d3f6d6541f",
+        "status": "PASS"
+      },
+      "section_3c_4_temporal": {
+        "receipt": "reports/v4_02/V4_02_SECTION_3C4_TEMPORAL_LEAKAGE_REPLAY_20260926.json",
+        "sha256": "7825927a500e67b763e66df8529c174b78c8b01310e95c7a73c5d4b26146b556",
+        "status": "BOUNDED_TEMPORAL_REPLAY_PASS"
+      },
+      "price_limit_rule_v1": {
+        "receipt": "reports/v4_02/V4_02_PRICE_LIMIT_ACCEPTANCE_R1_20260926.json",
+        "sha256": "4901bae7a431621efeff3fad109f55e8edd82a4aea14842068c99361665f0e8f",
+        "status": "PRICE_LIMIT_CANDIDATE_PASS_WITH_FAIL_CLOSED_UNKNOWN"
+      },
+      "whole_stage_atomic_publication": {
+        "receipt": "reports/v4_02/V4_02_FINAL_RECEIPT_R1.json",
+        "sha256": "0ff332ab71f4c09bb8ba6e9b5e7d24d55002743e4c23801541324b4f664da8bf",
+        "status": "PASS_WITH_BSE_SCOPE_DEGRADED"
+      },
+      "independent_final_postcheck": {
+        "receipt": "reports/v4_02/V4_02_FINAL_INDEPENDENT_POSTCHECK_R1.json",
+        "sha256": "bec22515e870dadcf7591e964ea43d27c023dd9346c9ffd0036fa7543306b78e",
+        "status": "PASS"
+      },
+      "go_forward_snapshot_freeze": {
+        "receipt": "reports/v4_02/V4_02_GBBQ_FORWARD_SNAPSHOT_FREEZE_20260926.json",
+        "sha256": "df628cbde5641fbd900cd4ad94811645836ba31d44f79ae5d8de3a5c99a45737",
+        "status": "GO_FORWARD_SNAPSHOT_FROZEN"
       }
     },
-    "entry": "AUTHORIZED_TO_START",
     "known_open_capabilities": [
-      "full_v4_02_atomic_publication_and_independent_postcheck",
-      "adjusted_daily_independent_source_semantics_and_late_revision_acceptance",
-      "provider_tdx_status_conflict_adjudication_and_full_dated_isst_coverage",
-      "full_scope_section_3c_4_and_late_revision_temporal_proof",
-      "price_limit_rule_v1",
-      "independent_postcheck_for_current_outputs"
+      "external_acceptance_for_v4_03_entry"
     ],
-    "next_stage": "RESOLVE_PACK_A_ADJUSTMENT_AND_FULL_SCOPE_TEMPORAL_ACCEPTANCE",
-    "stage_acceptance": "BLOCKED_OPEN",
-    "stage_implementation": "RAW_CANONICAL_DAILY_FORMALLY_SEALED; DATED_STATUS_AND_RAW_QFQ_PERIOD_CANDIDATES_EMITTED; INDEPENDENT_PERIOD_POSTCHECK_PASS; BOUNDED_3C4_REPLAY_PASS"
+    "next_stage": "WAIT_FOR_EXTERNAL_ACCEPTANCE; RESOLVE_SEPARATE_PRICE_LIMIT_RANGE_AUDIT; V4_03_ENTRY_PENDING_EXTERNAL_ACCEPTANCE",
+    "open_audits": [
+      {
+        "receipt": "reports/v4_02/V4_02_PRICE_LIMIT_RANGE_EXCEPTION_AUDIT_R1.json",
+        "sha256": "d567fb601733468aad2310954244a64d46a28ee98e7b9d3e48de070c666d3f9c",
+        "status": "OPEN",
+        "scope": "23 CLOSE_OUTSIDE_LIMIT_RANGE rows; all retained UNKNOWN"
+      }
+    ]
   },
   "entry": {
     "bse_policy": "OPTIONAL_DEGRADED_ISOLATED",
@@ -167,5 +225,37 @@
     "sha256": "744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd"
   },
   "stage": "V4-02",
-  "version": "2.0.0"
+  "version": "2.0.0",
+  "superseded_dispositions": [
+    {
+      "recorded_at": "2026-09-26",
+      "reason": "Superseded by R2 final closure pack with full dated isST, price-limit, atomic publication, and independent postcheck.",
+      "disposition": {
+        "accepted_capabilities": {
+          "formal_market_calendar": {
+            "receipt": "reports/v4_02/V4_02_FORMAL_MARKET_CALENDAR_ACCEPTANCE_V2.json",
+            "sha256": "374bce8b108afbcd476d4136176b6468168a8ea0ed34ab710386d0552f14c9e9",
+            "status": "FORMAL_MARKET_CALENDAR_PASS"
+          },
+          "raw_canonical_daily": {
+            "receipt": "reports/v4_02/V4_02_RAW_CANONICAL_FORMAL_ACCEPTANCE_V1.json",
+            "sha256": "d4292852adeca9ab2c666cca19be5f083a1c081e4cc20db9a1591dacd84837e0",
+            "status": "RAW_CANONICAL_DAILY_PASS"
+          }
+        },
+        "entry": "AUTHORIZED_TO_START",
+        "known_open_capabilities": [
+          "full_v4_02_atomic_publication_and_independent_postcheck",
+          "adjusted_daily_independent_source_semantics_and_late_revision_acceptance",
+          "provider_tdx_status_conflict_adjudication_and_full_dated_isst_coverage",
+          "full_scope_section_3c_4_and_late_revision_temporal_proof",
+          "price_limit_rule_v1",
+          "independent_postcheck_for_current_outputs"
+        ],
+        "next_stage": "RESOLVE_PACK_A_ADJUSTMENT_AND_FULL_SCOPE_TEMPORAL_ACCEPTANCE",
+        "stage_acceptance": "BLOCKED_OPEN",
+        "stage_implementation": "RAW_CANONICAL_DAILY_FORMALLY_SEALED; DATED_STATUS_AND_RAW_QFQ_PERIOD_CANDIDATES_EMITTED; INDEPENDENT_PERIOD_POSTCHECK_PASS; BOUNDED_3C4_REPLAY_PASS"
+      }
+    }
+  ]
 }

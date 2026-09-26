@@ -1,0 +1,110 @@
+{
+  "atomic_publication": {
+    "head_path": "data/v4/V4_02_ACCEPTED_HEAD.json",
+    "previous_head_sha256": "658cef5455345af58156c64409bb6359eecf163507835873236d75bb8e38e42c",
+    "promoted": true
+  },
+  "blockers": [],
+  "checks": {
+    "all_unknown_price_statuses_fail_closed": true,
+    "four_required_boards_only": true,
+    "go_forward_snapshot_enabled": true,
+    "historical_pit_adjusted_not_claimed": true,
+    "independent_final_postcheck_pass": true,
+    "pack_a_final_seal_pass": true,
+    "required_price_limit_samples_pass": true,
+    "whole_stage_manifest_prepared": true
+  },
+  "component_hashes": {
+    "ADJUSTED_CANONICAL_DAILY": "60fc1fba137e2072cc1d370cac8fee86334b98f9d3e403042821e9d1e1026141",
+    "DATED_ISST": "40c64982b5b98f2cb36f13a4b65fa84ecdbc6de319f4d084f81d9d287528ce79",
+    "DATED_ISST_ACCEPTANCE_RECEIPT": "a5f84c388a7482df83f0998c39dbe737587cc4c4c89a5fb524459e311baea97f",
+    "FORMAL_CALENDAR_SSE": "09285bb116db5e7ab644e4942c331ceb9bc715b47f0369b9f228ef9d17df2d53",
+    "FORMAL_CALENDAR_SZSE": "9c56dcf2077a19d303f504fcf22f962d9d71ed626030b61ad2aa77a201897900",
+    "FORMAL_MONTHLY": "167d3795d1a993297e39b7ef3d55c9bfd3baf7721b409b8b4e3305030b279df4",
+    "FORMAL_WEEKLY": "9f49c9d1d37bc2c4ed31c0aaae847671d429652715f2cef54a4b431cbb1f59e8",
+    "PACK_A_FINAL_RECEIPT": "a0065ca3ba9f0776bb0650719b59cd423a349e0d77d74c847255df382edf845b",
+    "PRICE_LIMIT": "0ca2ff328fee676c400b853aedce03db0c06068e8254eaae6633c32994596201",
+    "PRICE_LIMIT_ACCEPTANCE_RECEIPT": "4901bae7a431621efeff3fad109f55e8edd82a4aea14842068c99361665f0e8f",
+    "RAW_CANONICAL_DAILY": "cdbc3e2b49bf16f59a6661d4641a3d9a3b498c5a9843974e934a7ab695f02313",
+    "TRADING_STATUS": "bb75f6cb9187616a272ff493b3fedfeaf9d0b2ac6c2a4aef4d3d74c550921119"
+  },
+  "contract": {
+    "id": "V4_02_FINAL_CLOSURE_PACK_V1",
+    "path": "config/v4_02_final_closure_contract_v1.json",
+    "sha256": "edd5a7d6e5f45b08beba20a2229e064b02cc03dcfaf50ff16e9e83c9cb7b9292"
+  },
+  "contract_id": "V4_02_FINAL_ACCEPTANCE_RECEIPT_R1",
+  "execution_identity": {
+    "seal_script_sha256": "cd0426896055f9595f6a61919e5e81c2dcd736084efd8a81bf440c9ecdaa8f16"
+  },
+  "go_forward_adjusted_permission": "ENABLED_FROM_FIRST_PUBLICATION_AFTER_FROZEN_SNAPSHOT_SYSTEM_AVAILABLE_AT",
+  "historical_adjusted_lineage": "DIAGNOSTIC_NON_PIT; HISTORICAL_PIT_NOT_CLAIMED",
+  "independent_postcheck": {
+    "path": "reports/v4_02/V4_02_FINAL_INDEPENDENT_POSTCHECK_R1.json",
+    "sha256": "bec22515e870dadcf7591e964ea43d27c023dd9346c9ffd0036fa7543306b78e",
+    "status": "PASS"
+  },
+  "next_stage": "WAIT_FOR_EXTERNAL_ACCEPTANCE; DO_NOT_START_V4_03",
+  "observed_at_utc": "2026-09-26T14:22:08+00:00",
+  "pack_a_final_receipt": {
+    "path": "reports/v4_02/V4_02_DATA_PERIOD_MAINLINE_FINAL_ACCEPTANCE_R2.json",
+    "sha256": "a0065ca3ba9f0776bb0650719b59cd423a349e0d77d74c847255df382edf845b",
+    "status": "PASS_WITH_HISTORICAL_NON_PIT_BOUNDARY"
+  },
+  "scanner_factor_trading_runs": 0,
+  "scope": {
+    "optional_degraded": [
+      "BSE"
+    ],
+    "required_boards": [
+      "SH_MAIN",
+      "SZ_MAIN",
+      "CHINEXT",
+      "STAR"
+    ],
+    "source_cutoff": "2026-09-24",
+    "start_date": "2023-07-04"
+  },
+  "separate_audits": [
+    {
+      "path": "reports/v4_02/V4_02_PRICE_LIMIT_RANGE_EXCEPTION_AUDIT_R1.json",
+      "scope": {
+        "by_board": {
+          "CHINEXT": 2,
+          "STAR": 1,
+          "SZ_MAIN": 20
+        },
+        "exception": "CLOSE_OUTSIDE_LIMIT_RANGE",
+        "required_boards": [
+          "CHINEXT",
+          "STAR",
+          "SZ_MAIN"
+        ],
+        "row_count": 23,
+        "top_security_counts": {
+          "SEC-07FF31893A0D85A80F3164128E8B11DF": 1,
+          "SEC-21CEA99CE88C716A64B97F51EAC014EA": 1,
+          "SEC-27C6BBEDA6B15CB15F15CCCBF0922DBF": 1,
+          "SEC-521E82B13C504D75F6C83CD8F6EC12AB": 1,
+          "SEC-5230431466D57C5958B77EED9F9504C0": 1,
+          "SEC-78310452EEBA29E38F21CB145240A01F": 1,
+          "SEC-A173B2AB82DD14C1F3697CBB2EE24B53": 1,
+          "SEC-A551ACC8344EBD503896DAEF26CDEFC3": 1,
+          "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B": 15
+        }
+      },
+      "sha256": "d567fb601733468aad2310954244a64d46a28ee98e7b9d3e48de070c666d3f9c",
+      "stage_gate_disposition": "R2 accepts per-security fail-closed unknowns; this audit remains open independently and does not widen final accepted capabilities.",
+      "status": "OPEN"
+    }
+  ],
+  "stage": "V4-02 FINAL CLOSURE PACK",
+  "staging_manifest": {
+    "path": "reports/v4_02/V4_02_FINAL_STAGING_MANIFEST_R1.json",
+    "sha256": "69c4ea6c72fffefc430a5898a43cb8d63de9721b73a3e2b993f8ef7084b15e1b"
+  },
+  "status": "PASS_WITH_BSE_SCOPE_DEGRADED",
+  "v4_03_entry": "PENDING_EXTERNAL_ACCEPTANCE",
+  "version": "1.0.0"
+}

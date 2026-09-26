@@ -1,0 +1,251 @@
+{
+  "checks": {
+    "all_component_byte_counts_match": true,
+    "all_component_hashes_match": true,
+    "all_unknown_values_have_explicit_reason": true,
+    "calendar_period_temporal_receipts_pass": true,
+    "dated_status_isst_price_limit_membership_reconciles": true,
+    "parquet_row_counts_and_schemas_pass": true,
+    "required_rule_sample_values_independently_recomputed": true,
+    "required_rule_samples_present": true
+  },
+  "component_hashes": {
+    "ADJUSTED_CANONICAL_DAILY": "60fc1fba137e2072cc1d370cac8fee86334b98f9d3e403042821e9d1e1026141",
+    "DATED_ISST": "40c64982b5b98f2cb36f13a4b65fa84ecdbc6de319f4d084f81d9d287528ce79",
+    "DATED_ISST_ACCEPTANCE_RECEIPT": "a5f84c388a7482df83f0998c39dbe737587cc4c4c89a5fb524459e311baea97f",
+    "FORMAL_CALENDAR_SSE": "09285bb116db5e7ab644e4942c331ceb9bc715b47f0369b9f228ef9d17df2d53",
+    "FORMAL_CALENDAR_SZSE": "9c56dcf2077a19d303f504fcf22f962d9d71ed626030b61ad2aa77a201897900",
+    "FORMAL_MONTHLY": "167d3795d1a993297e39b7ef3d55c9bfd3baf7721b409b8b4e3305030b279df4",
+    "FORMAL_WEEKLY": "9f49c9d1d37bc2c4ed31c0aaae847671d429652715f2cef54a4b431cbb1f59e8",
+    "PACK_A_FINAL_RECEIPT": "a0065ca3ba9f0776bb0650719b59cd423a349e0d77d74c847255df382edf845b",
+    "PRICE_LIMIT": "0ca2ff328fee676c400b853aedce03db0c06068e8254eaae6633c32994596201",
+    "PRICE_LIMIT_ACCEPTANCE_RECEIPT": "4901bae7a431621efeff3fad109f55e8edd82a4aea14842068c99361665f0e8f",
+    "RAW_CANONICAL_DAILY": "cdbc3e2b49bf16f59a6661d4641a3d9a3b498c5a9843974e934a7ab695f02313",
+    "TRADING_STATUS": "bb75f6cb9187616a272ff493b3fedfeaf9d0b2ac6c2a4aef4d3d74c550921119"
+  },
+  "contract_id": "V4_02_FINAL_INDEPENDENT_POSTCHECK_V1",
+  "evidence_receipts": {
+    "bounded_isst_recovery": {
+      "path": "reports/v4_02/V4_02_DATED_ST_STATUS_BOUNDED_RECOVERY_R1_20260926.json",
+      "sha256": "de69b6c5e6e27e25e46c8011090e6b414fce96e8ad0f0c3419184defd67d19f1"
+    },
+    "calendar": {
+      "path": "reports/v4_02/V4_02_FORMAL_MARKET_CALENDAR_ACCEPTANCE_V2.json",
+      "sha256": "374bce8b108afbcd476d4136176b6468168a8ea0ed34ab710386d0552f14c9e9"
+    },
+    "dated_isst": {
+      "path": "reports/v4_02/V4_02_DATED_ST_STATUS_V1_R6_2_20260926.json",
+      "sha256": "a5f84c388a7482df83f0998c39dbe737587cc4c4c89a5fb524459e311baea97f"
+    },
+    "period": {
+      "path": "reports/v4_02/V4_02_FORMAL_PERIODS_R6_2_20260926.json",
+      "sha256": "7326f108af1529a50660638382142051c38082548223a913421122a633a6b6ac"
+    },
+    "period_postcheck": {
+      "path": "reports/v4_02/V4_02_FORMAL_PERIODS_INDEPENDENT_POSTCHECK_20260926.json",
+      "sha256": "3a2f5a7e27ad1b48c706b4d41238be2b7e7a2eea4840bdb6b233a6d3f6d6541f"
+    },
+    "price_limit": {
+      "path": "reports/v4_02/V4_02_PRICE_LIMIT_ACCEPTANCE_R1_20260926.json",
+      "sha256": "4901bae7a431621efeff3fad109f55e8edd82a4aea14842068c99361665f0e8f"
+    },
+    "temporal": {
+      "path": "reports/v4_02/V4_02_SECTION_3C4_TEMPORAL_LEAKAGE_REPLAY_20260926.json",
+      "sha256": "7825927a500e67b763e66df8529c174b78c8b01310e95c7a73c5d4b26146b556"
+    }
+  },
+  "execution_identity": {
+    "postcheck_script_sha256": "b60ad21c8c4a2775c419799323272de4a3a332b51374cc0fdd43cd6d5a9d58c1"
+  },
+  "findings": [],
+  "input_manifest": {
+    "path": "reports/v4_02/V4_02_FINAL_STAGING_MANIFEST_R1.json",
+    "sha256": "69c4ea6c72fffefc430a5898a43cb8d63de9721b73a3e2b993f8ef7084b15e1b"
+  },
+  "lineage": {
+    "future_rows_consumed_for_t0": false,
+    "historical_adjusted": "DIAGNOSTIC_NON_PIT",
+    "historical_provider_isst": "DIAGNOSTIC_NON_PIT_RECONSTRUCTED_FROM_CURRENT_PROVIDER_HISTORY"
+  },
+  "membership_reconciliation": {
+    "board_CHINEXT": 1071896,
+    "board_SH_MAIN": 1331624,
+    "board_STAR": 458582,
+    "board_SZ_MAIN": 1174019,
+    "membership_rows": 4036121,
+    "price_limit_LIMIT_DOWN": 24021,
+    "price_limit_LIMIT_UP": 59151,
+    "price_limit_NOT_LIMIT": 3940763,
+    "price_limit_NO_LIMIT": 1648,
+    "price_limit_SUSPENDED": 9119,
+    "price_limit_UNKNOWN": 1419,
+    "price_limit_unknown_rows": 1419
+  },
+  "missing_price_limit_samples": [],
+  "parquet_checks": {
+    "ADJUSTED_CANONICAL_DAILY": {
+      "boards": [
+        "CHINEXT",
+        "SH_MAIN",
+        "STAR",
+        "SZ_MAIN"
+      ],
+      "row_count": 4027002,
+      "schema": [
+        "canonical_security_id",
+        "source_security_key",
+        "board_scope",
+        "trade_date",
+        "raw_open",
+        "raw_high",
+        "raw_low",
+        "raw_close",
+        "qfq_open",
+        "qfq_high",
+        "qfq_low",
+        "qfq_close",
+        "qfq_mul",
+        "qfq_add",
+        "volume",
+        "amount",
+        "price_basis",
+        "adjusted_quality",
+        "adjustment_reason",
+        "adjustment_source_revision",
+        "adjustment_contract_id",
+        "trading_status",
+        "membership_basis",
+        "knowledge_lineage"
+      ]
+    },
+    "FORMAL_MONTHLY": {
+      "boards": [
+        "CHINEXT",
+        "SH_MAIN",
+        "STAR",
+        "SZ_MAIN"
+      ],
+      "row_count": 400958,
+      "schema": [
+        "canonical_security_id",
+        "source_security_key",
+        "board_scope",
+        "period_type",
+        "period_start_date",
+        "period_end_date",
+        "period_last_session",
+        "asof_trade_date",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "amount",
+        "price_basis",
+        "period_view",
+        "period_status",
+        "calendar_count",
+        "actual_count",
+        "suspended_count",
+        "data_gap_count",
+        "unknown_count",
+        "invalid_actual_count",
+        "max_source_trade_date",
+        "source_daily_digest",
+        "adjusted_quality",
+        "adjustment_contract_id",
+        "membership_basis",
+        "knowledge_lineage"
+      ]
+    },
+    "FORMAL_WEEKLY": {
+      "boards": [
+        "CHINEXT",
+        "SH_MAIN",
+        "STAR",
+        "SZ_MAIN"
+      ],
+      "row_count": 1705132,
+      "schema": [
+        "canonical_security_id",
+        "source_security_key",
+        "board_scope",
+        "period_type",
+        "period_start_date",
+        "period_end_date",
+        "period_last_session",
+        "asof_trade_date",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "amount",
+        "price_basis",
+        "period_view",
+        "period_status",
+        "calendar_count",
+        "actual_count",
+        "suspended_count",
+        "data_gap_count",
+        "unknown_count",
+        "invalid_actual_count",
+        "max_source_trade_date",
+        "source_daily_digest",
+        "adjusted_quality",
+        "adjustment_contract_id",
+        "membership_basis",
+        "knowledge_lineage"
+      ]
+    },
+    "RAW_CANONICAL_DAILY": {
+      "row_count": 29220910,
+      "schema": [
+        "canonical_security_id",
+        "source_security_key",
+        "board_scope",
+        "trade_date",
+        "open_price_raw",
+        "high_price_raw",
+        "low_price_raw",
+        "close_price_raw",
+        "price_scale",
+        "amount_source_native",
+        "volume_source_native",
+        "reserved_raw",
+        "source_relative_path",
+        "source_file_sha256",
+        "source_record_ordinal",
+        "selected_source_family",
+        "selected_source_revision",
+        "selection_reason",
+        "alternative_source_family",
+        "alternative_source_revision",
+        "alternative_record_sha256",
+        "identity_quality",
+        "identity_source_revision_id",
+        "membership_basis",
+        "knowledge_lineage",
+        "adjustment_view",
+        "limit_status",
+        "record_quality"
+      ]
+    }
+  },
+  "required_price_limit_samples": [
+    "CHINEXT_NORMAL_SAMPLE",
+    "EX_RIGHT",
+    "IPO_NO_LIMIT",
+    "RULE_BOUNDARY_20260703_SH_MAIN",
+    "RULE_BOUNDARY_20260703_SZ_MAIN",
+    "RULE_BOUNDARY_20260706_SH_MAIN",
+    "RULE_BOUNDARY_20260706_SZ_MAIN",
+    "SH_MAIN_NORMAL_SAMPLE",
+    "SH_MAIN_RISK_WARNING_SAMPLE",
+    "STAR_NORMAL_SAMPLE",
+    "SZ_MAIN_NORMAL_SAMPLE",
+    "SZ_MAIN_RISK_WARNING_SAMPLE"
+  ],
+  "source_cutoff": "2026-09-24",
+  "status": "PASS"
+}

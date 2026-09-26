@@ -1,5 +1,8 @@
 from workbench_analysis.v4_01_required_scope import (
     REQUIRED_BOARD_KEYS,
+    all_day_required_roster_coverage,
+    all_day_required_roster_coverage_passes,
+    active_on,
     classify_bse_scope,
     classify_unknown_roster_code,
     required_scope_digest,
@@ -98,6 +101,15 @@ def test_required_universe_uses_accepted_a_stock_identity():
     assert required_identity_missing_from_roster(identities, "2026-09-24", {"sz.300001"}) == set()
 
 
+def test_lifecycle_effective_to_is_inclusive_in_r6_scope():
+    identity = {"source_security_key": "SH.600705", "security_type": "A_STOCK", "exchange": "SH",
+                "board": "MAIN", "security_id": "SEC-1", "list_date": "1996-05-16",
+                "symbol_effective_from": "1996-05-16", "symbol_effective_to": "2025-05-27"}
+    assert active_on(identity, "2025-05-26")
+    assert active_on(identity, "2025-05-27")
+    assert required_identity_missing_from_roster([identity], "2025-05-27", set()) == {"sh.600705"}
+
+
 def test_bse_rows_isolated_from_required_universe_digest():
     from workbench_analysis.v4_01_required_scope import split_roster_scope
     core = {"source_security_key": "sh.600000", "security_type": "A_STOCK", "exchange": "SH",
@@ -139,3 +151,54 @@ def test_lifecycle_expected_set_rejects_missing_required_code():
                    "board": "MAIN", "security_id": "SEC-1", "list_date": "1999-11-10",
                    "symbol_effective_from": "1999-11-10", "symbol_effective_to": None}]
     assert required_identity_missing_from_roster(identities, "2026-09-24", set()) == {"sh.600000"}
+
+
+def _coverage_fixture():
+    from datetime import date, timedelta
+    identities = [
+        {"source_security_key": "sh.600001", "security_type": "A_STOCK", "exchange": "SH", "board": "MAIN",
+         "list_date": "2023-01-01", "symbol_effective_from": "2023-01-01"},
+        {"source_security_key": "sz.000001", "security_type": "A_STOCK", "exchange": "SZ", "board": "MAIN",
+         "list_date": "2023-01-01", "symbol_effective_from": "2023-01-01"},
+        {"source_security_key": "sz.300001", "security_type": "A_STOCK", "exchange": "SZ", "board": "CHINEXT",
+         "list_date": "2023-01-01", "symbol_effective_from": "2023-01-01"},
+        {"source_security_key": "sh.688001", "security_type": "A_STOCK", "exchange": "SH", "board": "STAR",
+         "list_date": "2023-01-01", "symbol_effective_from": "2023-01-01"},
+    ]
+    start = date(2025, 1, 1)
+    days = [(start + timedelta(days=i)).isoformat() for i in range(786)]
+    rosters = {day: {row["source_security_key"] for row in identities} for day in days}
+    return identities, days, rosters
+
+
+def test_all_day_required_lifecycle_coverage_zero():
+    identities, days, rosters = _coverage_fixture()
+    result = all_day_required_roster_coverage(identities, days, rosters)
+    assert result["session_count"] == 786
+    assert result["days_with_missing_required_identity"] == 0
+    assert result["total_missing_required_identity_rows"] == 0
+    assert all(result["missing_by_board"][board] == 0 for board in REQUIRED_BOARD_KEYS)
+
+
+def test_non_trigger_partial_roster_is_detected_by_all_day_coverage():
+    identities, days, rosters = _coverage_fixture()
+    day = days[0]
+    rosters[day] = {f"zz.{i:06d}" for i in range(6750)}
+    assert roster_suspicion_flags(row_count=6750, prior_row_count=7200,
+                                  required_lifecycle_count=7200) == []
+    result = all_day_required_roster_coverage(identities, days, rosters)
+    assert result["days_with_missing_required_identity"] == 1
+    assert result["total_missing_required_identity_rows"] == 4
+    assert result["daily"][0]["missing_codes_by_board"]["SZ_MAIN"] == ["sz.000001"]
+
+
+def test_final_gate_requires_all_day_required_roster_coverage():
+    identities, days, rosters = _coverage_fixture()
+    clean = all_day_required_roster_coverage(identities, days, rosters)
+    clean.update({"status": "PASS", "session_count": 786})
+    assert all_day_required_roster_coverage_passes(clean, 786)
+    clean["total_missing_required_identity_rows"] = 1
+    assert not all_day_required_roster_coverage_passes(clean, 786)
+    clean["total_missing_required_identity_rows"] = 0
+    clean["status"] = "BLOCKED"
+    assert not all_day_required_roster_coverage_passes(clean, 786)

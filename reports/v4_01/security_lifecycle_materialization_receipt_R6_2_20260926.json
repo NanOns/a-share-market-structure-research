@@ -2,24 +2,24 @@
   "append_only": true,
   "contract_id": "SECURITY_MEMBERSHIP_INTERVAL_V1",
   "evidence": {
-    "boundary_receipt_sha256": "78392beb1842f0582e24c8901245136c9b533ac8181b5b2a40b9ccbff30ab8ee",
-    "normalized_interval_artifact_sha256": "aade967c1abe7622b0cd7d9d8e9d606603faa1110c6eeeb2d228ab0da9b24c83",
+    "boundary_receipt_sha256": "97b4ab2201816b4e314c102039c59f76a645fab177c0ad67d92148fec477eb44",
+    "normalized_interval_artifact_sha256": "740872590c7fa20b8275e203edfae4da933309b41c4bdc4da43d2931d8b59643",
     "provider_fact_contract_sha256": "9ce430297aadf8dd570297b38e57e8aba69752bd7fda4e2820e11741f1a684a0",
     "provider_lifecycle_facts_sha256": "ecdd48aa781e9160b139f6ffc6ddd85f48308b0a9ba1a7f8e5ae1f860df68c61",
     "r6_1_coverage_sha256": "6303a76c5e35b5acc8810e6c6c1ded0f9959b946627b29903cffa57c7d95a066",
-    "resolver_script_sha256": "56239900fa76ab317ae204f628bbd2e898ed2bdd8759002d72b49a74b6c0f1eb",
+    "resolver_script_sha256": "2dd8f9649fe1958088d434093badec2b7f6e90fb2c9af0ad87b7249ae0f73586",
     "roster_sha256": "06ae1394a0de31f0abba98eab5203036fcab8e848a6db289edbb5a19aef581ac"
   },
   "execution_identity": {
-    "code_head": "c980675735cfae05e3beb69b240078ef615abe7e"
+    "code_head": "05d0510b237865ac5439099a6619d57329395137"
   },
   "input": {
     "boundary_receipt_path": "reports/v4_01/V4_01_LIFECYCLE_BOUNDARY_RESOLUTION_R6_2.json",
-    "boundary_receipt_sha256": "78392beb1842f0582e24c8901245136c9b533ac8181b5b2a40b9ccbff30ab8ee",
+    "boundary_receipt_sha256": "97b4ab2201816b4e314c102039c59f76a645fab177c0ad67d92148fec477eb44",
     "identity_map_path": "data/v4/artifact_store/v4_01/security_entity_map_R5_20260925.json",
     "identity_map_sha256": "e05f2ea79a91b0b84b48043a2ae7fbf7b0aefc7b954de61857e8f3db854627de",
     "intervals_path": "data/v4/artifact_store/v4_01/security_membership_intervals_R6_2_20260926.jsonl.gz",
-    "intervals_sha256": "aade967c1abe7622b0cd7d9d8e9d606603faa1110c6eeeb2d228ab0da9b24c83",
+    "intervals_sha256": "740872590c7fa20b8275e203edfae4da933309b41c4bdc4da43d2931d8b59643",
     "provider_fact_contract_path": "config/v4_provider_lifecycle_fact_v1.json",
     "provider_fact_contract_sha256": "9ce430297aadf8dd570297b38e57e8aba69752bd7fda4e2820e11741f1a684a0",
     "provider_facts_path": "reports/v4_01/baostock_lifecycle_facts_R4_20260925.json",
@@ -31,15 +31,15 @@
     "current_fact_count": 5351,
     "current_interval_artifact_path": "data/v4/artifact_store/v4_01/security_membership_intervals_current_R6_2_20260926.jsonl.gz",
     "current_interval_artifact_row_count": 5351,
-    "current_interval_artifact_sha256": "3c075a8119b50c8b9c8970a9096674732559876a262663b477ec33f11ed25881",
-    "database_revision_rows": 10702,
+    "current_interval_artifact_sha256": "5546328f9cc291c7c26fd5c40ec4b54a343a60fb0b67fc1189917c0000522fa6",
+    "database_revision_rows": 16053,
     "distinct_fact_keys": 5351,
     "newly_appended_revision_rows": 0,
     "source_revision_binding_violation_count": 0,
     "source_revision_sample_ids": []
   },
   "lifecycle_revisions": {
-    "database_normalized_history_revision_rows": 258,
+    "database_normalized_history_revision_rows": 387,
     "database_normalized_revision_rows": 129,
     "expected_in_window_outdate_resolution_count": 129,
     "newly_appended_revision_rows": 0,
@@ -47,10 +47,11 @@
     "supersession_binding_violation_count": 0
   },
   "next_stage": "V4_01_REMEDIATE_R6_2_MATERIALIZATION",
-  "observed_at_utc": "2026-09-26T04:42:20+00:00",
+  "observed_at_utc": "2026-09-26T04:49:57+00:00",
   "provider_facts": {
     "already_present_revision_rows": 8981,
     "append_only_trigger_present": true,
+    "database_history_revision_rows": 17962,
     "database_revision_rows": 8981,
     "newly_appended_revision_rows": 0,
     "raw_provider_value_mismatch_count": 0,

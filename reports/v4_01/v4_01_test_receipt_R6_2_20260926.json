@@ -1,14 +1,14 @@
 {
   "contract_id": "V4_01_TEST_RECEIPT_R6_2_V1",
   "execution_identity": {
-    "tested_head": "c980675735cfae05e3beb69b240078ef615abe7e"
+    "tested_head": "05d0510b237865ac5439099a6619d57329395137"
   },
   "implementation_sha256": {
     "scripts/apply_v4_phase0_schema.py": "3ac6a7a596368004840cb76ea7e4487d06c7979d02d44a813200d174698f1cdd",
-    "scripts/v4_01_final_stage_receipt_r6_2.py": "de8a077d1801430bb5ac8d0106faa9353d1a96d8b1d0a93a3c1d1c1449d4b671",
+    "scripts/v4_01_final_stage_receipt_r6_2.py": "8fac7f9422cbd5edb0fd03e16521887202bcfa14be79186c051819a2041616d9",
     "scripts/v4_01_historical_universe_r6_2.py": "9d2c7aa3acf00285dd81017af71020904a939faddd9b3883c6001d15f581c611",
-    "scripts/v4_01_lifecycle_boundary_resolution_r6_2.py": "56239900fa76ab317ae204f628bbd2e898ed2bdd8759002d72b49a74b6c0f1eb",
-    "scripts/v4_01_materialize_lifecycle_boundaries_r6_2.py": "228cd438a4c7871a819a4182d102a987923683b98b4ad2ffd89d49d06aec7039",
+    "scripts/v4_01_lifecycle_boundary_resolution_r6_2.py": "2dd8f9649fe1958088d434093badec2b7f6e90fb2c9af0ad87b7249ae0f73586",
+    "scripts/v4_01_materialize_lifecycle_boundaries_r6_2.py": "0b970f5ca4c9d8fc220bc352a78ee0e7c07c5bbea395678b4f5028159d8ad397",
     "scripts/v4_01_test_receipt_r6_2.py": "f416455dcbe7fdd4f63a78bda8dd66183009f84ef7ef266c51ded6326e37cffe",
     "src/workbench_analysis/v4_01_required_scope.py": "3af366ef2bc1322c04a0f5cf84465d6dce84326771a1544b67fbc9af56d64eec",
     "src/workbench_db/migrations/v4_postgres/011_security_membership_interval_r6_2.sql": "a562a409a012c32ce7ce879b6377704079e47289de2db0a24c589070e06957e1",
@@ -16,7 +16,7 @@
     "tests/v4_phase0/test_postgres_schema.py": "44a765530c08f45201b1d684e2f8bea39ef4305e500c80b60827c271cfac27df",
     "tests/v4_phase0/test_v4_01_required_scope_r6.py": "f5383b7ebf00a09048ab817e3b8368054206e6f79a06e3e8deee303e88f91bdd"
   },
-  "observed_at_utc": "2026-09-26T04:42:17+00:00",
+  "observed_at_utc": "2026-09-26T04:49:55+00:00",
   "py_compile_exit_code": 0,
   "py_compile_files": [
     "scripts/v4_01_lifecycle_boundary_resolution_r6_2.py",
@@ -31,12 +31,12 @@
   "status": "PASS",
   "test_command": "python -m pytest tests/v4_phase0 -q",
   "test_exit_code": 0,
-  "test_output_tail": "........................................................................ [ 53%]\n.....................s..........s.............................           [100%]\n132 passed, 2 skipped in 2.71s\n",
+  "test_output_tail": "........................................................................ [ 53%]\n.....................s..........s.............................           [100%]\n132 passed, 2 skipped in 2.34s\n",
   "test_scope": "tests/v4_phase0",
   "test_summary": {
     "failed": 0,
     "passed": 132,
     "skipped": 2
   },
-  "tested_head": "c980675735cfae05e3beb69b240078ef615abe7e"
+  "tested_head": "05d0510b237865ac5439099a6619d57329395137"
 }

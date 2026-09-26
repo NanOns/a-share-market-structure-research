@@ -11008,17 +11008,17 @@
     }
   ],
   "execution_identity": {
-    "code_head": "c980675735cfae05e3beb69b240078ef615abe7e"
+    "code_head": "05d0510b237865ac5439099a6619d57329395137"
   },
   "input": {
     "boundary_receipt_path": "reports/v4_01/V4_01_LIFECYCLE_BOUNDARY_RESOLUTION_R6_2.json",
-    "boundary_receipt_sha256": "78392beb1842f0582e24c8901245136c9b533ac8181b5b2a40b9ccbff30ab8ee",
+    "boundary_receipt_sha256": "97b4ab2201816b4e314c102039c59f76a645fab177c0ad67d92148fec477eb44",
     "identity_map_path": "data/v4/artifact_store/v4_01/security_entity_map_R5_20260925.json",
     "identity_map_sha256": "e05f2ea79a91b0b84b48043a2ae7fbf7b0aefc7b954de61857e8f3db854627de",
     "materialization_receipt_path": "reports/v4_01/security_lifecycle_materialization_receipt_R6_2_20260926.json",
-    "materialization_receipt_sha256": "2516bdeb6d9d9ea0b30075a18bfcfd84ec5f9d2a00d35da0cc68a97970919a1f",
+    "materialization_receipt_sha256": "1d06975610d3375eee6f9e3e5bdbffec6c4a7642cc298e86e01bc0a7bb83c0ca",
     "normalized_interval_artifact_path": "data/v4/artifact_store/v4_01/security_membership_intervals_current_R6_2_20260926.jsonl.gz",
-    "normalized_interval_artifact_sha256": "3c075a8119b50c8b9c8970a9096674732559876a262663b477ec33f11ed25881",
+    "normalized_interval_artifact_sha256": "5546328f9cc291c7c26fd5c40ec4b54a343a60fb0b67fc1189917c0000522fa6",
     "roster_completeness_receipt": "reports/v4_01/baostock_dated_roster_completeness_receipt_R6_20260926.json",
     "roster_completeness_receipt_sha256": "edf82ed86cb5b010cf4f81e078210825895368bea2dd38e0fdfeb29619ab17ed",
     "roster_path": "data/v4/artifact_store/v4_01/baostock_dated_rosters_R6_20260926.jsonl.gz",
@@ -11031,7 +11031,7 @@
     "universe_contract_sha256": "41c346a0e1f38c1c8bc85dff769646fa1d18ef2aaf5194451d2c5463063e3ad8"
   },
   "next_stage": "V4_01_FINAL_R6_2_RECEIPT_AND_EXTERNAL_ACCEPTANCE",
-  "observed_at_utc": "2026-09-26T04:43:28+00:00",
+  "observed_at_utc": "2026-09-26T04:51:08+00:00",
   "optional_bse_scope": {
     "candidate_and_roster_membership_rows": 191423,
     "output": {
@@ -11039,7 +11039,7 @@
       "path": "data/v4/artifact_store/v4_01/v4_01_historical_universe_bse_optional_R6_2_20260926.jsonl.gz",
       "row_count": 191423,
       "separate_from_required_digest": true,
-      "sha256": "ed00491262c8d9e74949b5b7e3ce51aef45fc386b66d4ee2744ab97229d47944"
+      "sha256": "031803a7f85ca9549a12b058ec88f290b44effc83de1217c27d5eac88fff011a"
     },
     "required": false,
     "status": "DEGRADED_BSE",
@@ -11053,7 +11053,7 @@
       "byte_count": 17511,
       "path": "data/v4/artifact_store/v4_01/v4_01_roster_pending_classification_R6_2_20260926.jsonl.gz",
       "row_count": 4380,
-      "sha256": "984f48706de391256dcf5abc1f70e13445c079a9fc97b93b209d96d57b9ae117"
+      "sha256": "c384a550c0245a6b2609e9c2d888b62c2d5ffb1b8be4bce776c145b7d581c584"
     },
     "row_count": 4380,
     "status": "PRESERVED_OUT_OF_REQUIRED_SCOPE"
@@ -11101,11 +11101,11 @@
     "identity_unresolved": 0,
     "membership_rows": 4036121,
     "output": {
-      "byte_count": 239217186,
+      "byte_count": 239170844,
       "path": "data/v4/artifact_store/v4_01/v4_01_historical_universe_required_R6_2_20260926.jsonl.gz",
       "row_count": 4036121,
       "scope_isolated": true,
-      "sha256": "c570238f458abca5d3512febe8525c7c3419c2a58c3cab1772c5f4488c79de6c"
+      "sha256": "cff2a72de19ae395e7ac7f77f72f561396c16ada8aa61bb5e9091291f2809a35"
     }
   },
   "stage": "V4-01-HISTORICAL-UNIVERSE-R6_2",

@@ -1,0 +1,239 @@
+{
+  "acceptance_basis": {
+    "source_document_path": "D:/Users/lps/Desktop/V4_01_R6_2_FINAL_EXTERNAL_ACCEPTANCE_20260926.md",
+    "source_document_sha256": "6c8d1c69fc7e473964995b4d00abd5150d9474e5065fca22d7ec112a0b4d3a5c",
+    "v4_01": "PASS_WITH_BSE_SCOPE_DEGRADED",
+    "v4_02_entry": "AUTHORIZED_TO_START",
+    "v4_03": "BLOCKED"
+  },
+  "contract_id": "V4_02_ARTIFACT_GOVERNANCE_HOUSEKEEPING_RECEIPT_V1",
+  "git_artifact_governance": {
+    "all_local_copies_preserved": true,
+    "all_untracked_from_index": true,
+    "artifacts": [
+      {
+        "bounded_sample": [
+          {
+            "codes_sha256": "5378f8181a513684899c74effe7d84a3304d5c78affc8bde039b754f9682e14b",
+            "contract_id": "BAOSTOCK_DATED_ROSTER_SNAPSHOT_R6_V1",
+            "row_count": 5565,
+            "source_codes_count": 5565,
+            "source_codes_sample": [
+              "sh.000001",
+              "sh.000002",
+              "sh.000003"
+            ],
+            "trade_date": "2023-07-04"
+          },
+          {
+            "codes_sha256": "a7b0be854525ecd3618b3e607d1bb4910c8a933eb730a25cf4050421e351d931",
+            "contract_id": "BAOSTOCK_DATED_ROSTER_SNAPSHOT_R6_V1",
+            "row_count": 5566,
+            "source_codes_count": 5566,
+            "source_codes_sample": [
+              "sh.000001",
+              "sh.000002",
+              "sh.000003"
+            ],
+            "trade_date": "2023-07-05"
+          }
+        ],
+        "bounded_sample_limit": 2,
+        "byte_count": 11124765,
+        "format": "gzip_jsonl",
+        "local_artifact_path": "E:/codex work/大A交易/data/v4/artifact_store/v4_01/baostock_dated_rosters_R6_20260926.jsonl.gz",
+        "local_copy_preserved": true,
+        "path": "data/v4/artifact_store/v4_01/baostock_dated_rosters_R6_20260926.jsonl.gz",
+        "removed_from_git_tracking": true,
+        "row_count": 786,
+        "sha256": "06ae1394a0de31f0abba98eab5203036fcab8e848a6db289edbb5a19aef581ac"
+      },
+      {
+        "bounded_sample": [
+          {
+            "identity_quality": "BSE_OFFICIAL_ALIAS_CAPTURE_CANDIDATE",
+            "security_id": "SEC-B91C6E948C5A22BE586D4F9D0C5C0DBA",
+            "source_security_key": "BJ.430017"
+          },
+          {
+            "identity_quality": "BSE_OFFICIAL_ALIAS_CAPTURE_CANDIDATE",
+            "security_id": "SEC-CBCBD84465A37F97512EE5DB480BAC07",
+            "source_security_key": "BJ.430047"
+          }
+        ],
+        "bounded_sample_limit": 2,
+        "byte_count": 5669001,
+        "format": "json",
+        "local_artifact_path": "E:/codex work/大A交易/data/v4/artifact_store/v4_01/security_entity_map_R5_20260925.json",
+        "local_copy_preserved": true,
+        "path": "data/v4/artifact_store/v4_01/security_entity_map_R5_20260925.json",
+        "removed_from_git_tracking": true,
+        "row_count": 6053,
+        "sha256": "e05f2ea79a91b0b84b48043a2ae7fbf7b0aefc7b954de61857e8f3db854627de"
+      },
+      {
+        "bounded_sample": [
+          {
+            "boundary_quality": "ROSTER_OBSERVED_WINDOW_SEGMENT",
+            "first_observed_roster_date": "2023-07-04",
+            "last_observed_roster_date": "2026-09-24",
+            "normalized_effective_from": "2023-07-04",
+            "normalized_effective_to": "2026-09-24",
+            "provider_ipo_date": "1999-11-10",
+            "provider_out_date": null,
+            "security_id": "SEC-62C40F6EEABB12A3B3F00D4FB0B61ED0",
+            "source_security_key": "SH.600000"
+          },
+          {
+            "boundary_quality": "ROSTER_OBSERVED_WINDOW_SEGMENT",
+            "first_observed_roster_date": "2023-07-04",
+            "last_observed_roster_date": "2026-09-24",
+            "normalized_effective_from": "2023-07-04",
+            "normalized_effective_to": "2026-09-24",
+            "provider_ipo_date": "2003-04-28",
+            "provider_out_date": null,
+            "security_id": "SEC-4043BDB9C07B6F9E04E53BBA4D954D2C",
+            "source_security_key": "SH.600004"
+          }
+        ],
+        "bounded_sample_limit": 2,
+        "byte_count": 182512,
+        "format": "gzip_jsonl",
+        "local_artifact_path": "E:/codex work/大A交易/data/v4/artifact_store/v4_01/security_membership_intervals_R6_2_20260926.jsonl.gz",
+        "local_copy_preserved": true,
+        "path": "data/v4/artifact_store/v4_01/security_membership_intervals_R6_2_20260926.jsonl.gz",
+        "removed_from_git_tracking": true,
+        "row_count": 5351,
+        "sha256": "740872590c7fa20b8275e203edfae4da933309b41c4bdc4da43d2931d8b59643"
+      },
+      {
+        "bounded_sample": [
+          {
+            "boundary_quality": "ROSTER_OBSERVED_WINDOW_SEGMENT",
+            "first_observed_roster_date": "2023-07-04",
+            "last_observed_roster_date": "2026-09-24",
+            "normalized_effective_from": "2023-07-04",
+            "normalized_effective_to": "2026-09-24",
+            "provider_ipo_date": "1999-11-10",
+            "provider_out_date": null,
+            "security_id": "SEC-62C40F6EEABB12A3B3F00D4FB0B61ED0",
+            "source_security_key": "SH.600000"
+          },
+          {
+            "boundary_quality": "ROSTER_OBSERVED_WINDOW_SEGMENT",
+            "first_observed_roster_date": "2023-07-04",
+            "last_observed_roster_date": "2026-09-24",
+            "normalized_effective_from": "2023-07-04",
+            "normalized_effective_to": "2026-09-24",
+            "provider_ipo_date": "2003-04-28",
+            "provider_out_date": null,
+            "security_id": "SEC-4043BDB9C07B6F9E04E53BBA4D954D2C",
+            "source_security_key": "SH.600004"
+          }
+        ],
+        "bounded_sample_limit": 2,
+        "byte_count": 597905,
+        "format": "gzip_jsonl",
+        "local_artifact_path": "E:/codex work/大A交易/data/v4/artifact_store/v4_01/security_membership_intervals_current_R6_2_20260926.jsonl.gz",
+        "local_copy_preserved": true,
+        "path": "data/v4/artifact_store/v4_01/security_membership_intervals_current_R6_2_20260926.jsonl.gz",
+        "removed_from_git_tracking": true,
+        "row_count": 5351,
+        "sha256": "5546328f9cc291c7c26fd5c40ec4b54a343a60fb0b67fc1189917c0000522fa6"
+      },
+      {
+        "bounded_sample": [
+          {
+            "identity_quality": "BSE_OFFICIAL_ALIAS_CAPTURE_CANDIDATE",
+            "scope": "BSE_OPTIONAL_DEGRADED",
+            "security_id": "SEC-B91C6E948C5A22BE586D4F9D0C5C0DBA",
+            "source_security_key": "BJ.430017",
+            "status": "DEGRADED_BSE",
+            "trade_date": "2023-07-04"
+          },
+          {
+            "identity_quality": "BSE_OFFICIAL_ALIAS_CAPTURE_CANDIDATE",
+            "scope": "BSE_OPTIONAL_DEGRADED",
+            "security_id": "SEC-CBCBD84465A37F97512EE5DB480BAC07",
+            "source_security_key": "BJ.430047",
+            "status": "DEGRADED_BSE",
+            "trade_date": "2023-07-04"
+          }
+        ],
+        "bounded_sample_limit": 2,
+        "byte_count": 4837993,
+        "format": "gzip_jsonl",
+        "local_artifact_path": "E:/codex work/大A交易/data/v4/artifact_store/v4_01/v4_01_historical_universe_bse_optional_R6_2_20260926.jsonl.gz",
+        "local_copy_preserved": true,
+        "path": "data/v4/artifact_store/v4_01/v4_01_historical_universe_bse_optional_R6_2_20260926.jsonl.gz",
+        "removed_from_git_tracking": true,
+        "row_count": 191423,
+        "sha256": "031803a7f85ca9549a12b058ec88f290b44effc83de1217c27d5eac88fff011a"
+      },
+      {
+        "bounded_sample": [
+          {
+            "classification_status": "PENDING_CLASSIFICATION",
+            "scope": "OUT_OF_REQUIRED_SCOPE_PENDING_CLASSIFICATION",
+            "security_id": null,
+            "source_security_key": "SH.000001",
+            "trade_date": "2023-07-04"
+          },
+          {
+            "classification_status": "PENDING_CLASSIFICATION",
+            "scope": "OUT_OF_REQUIRED_SCOPE_PENDING_CLASSIFICATION",
+            "security_id": null,
+            "source_security_key": "SH.000002",
+            "trade_date": "2023-07-04"
+          }
+        ],
+        "bounded_sample_limit": 2,
+        "byte_count": 17511,
+        "format": "gzip_jsonl",
+        "local_artifact_path": "E:/codex work/大A交易/data/v4/artifact_store/v4_01/v4_01_roster_pending_classification_R6_2_20260926.jsonl.gz",
+        "local_copy_preserved": true,
+        "path": "data/v4/artifact_store/v4_01/v4_01_roster_pending_classification_R6_2_20260926.jsonl.gz",
+        "removed_from_git_tracking": true,
+        "row_count": 4380,
+        "sha256": "c384a550c0245a6b2609e9c2d888b62c2d5ffb1b8be4bce776c145b7d581c584"
+      },
+      {
+        "bounded_sample": [
+          {
+            "identity_quality": "UNMAPPED_LISTING_KEY_ONLY",
+            "listed_from": "1991-07-15",
+            "listed_to_provider_reported": null,
+            "source_security_key": "SH.000001"
+          },
+          {
+            "identity_quality": "UNMAPPED_LISTING_KEY_ONLY",
+            "listed_from": "1992-02-21",
+            "listed_to_provider_reported": null,
+            "source_security_key": "SH.000002"
+          }
+        ],
+        "bounded_sample_limit": 2,
+        "byte_count": 3171835,
+        "format": "json",
+        "local_artifact_path": "E:/codex work/大A交易/reports/v4_01/baostock_lifecycle_facts_R4_20260925.json",
+        "local_copy_preserved": true,
+        "path": "reports/v4_01/baostock_lifecycle_facts_R4_20260925.json",
+        "removed_from_git_tracking": true,
+        "row_count": 8981,
+        "sha256": "ecdd48aa781e9160b139f6ffc6ddd85f48308b0a9ba1a7f8e5ae1f860df68c61"
+      }
+    ],
+    "tracked_generated_artifact_count": 7
+  },
+  "housekeeping_acceptance": "PASS",
+  "next_stage": "V4_02_CANONICAL_DAILY_PIT_CONTRACT_RECONCILIATION_AND_REQUIRED_SCOPE_IMPLEMENTATION",
+  "prior_stage_final_receipt": {
+    "path": "reports/v4_01/v4_01_final_stage_receipt_R6_2_20260926.json",
+    "sha256": "68d29240d8754d5b58da88b0099732f827378526f3d30b0a2a3c28dc38a7ca6a",
+    "status": "PASS_WITH_BSE_SCOPE_DEGRADED",
+    "test_evidence_label_corrected": "R6_2_tests"
+  },
+  "stage": "V4-02",
+  "v4_02_implementation_status": "NOT_STARTED_BY_THIS_HOUSEKEEPING_COMMIT",
+  "version": "1.0.0"
+}

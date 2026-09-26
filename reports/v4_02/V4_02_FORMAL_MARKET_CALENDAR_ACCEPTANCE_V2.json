@@ -1,0 +1,63 @@
+{
+  "contract_id": "V4_02_FORMAL_MARKET_CALENDAR_ACCEPTANCE_RECEIPT_V2",
+  "status": "FORMAL_MARKET_CALENDAR_PASS",
+  "calendar_contract": "config/v4_official_exchange_calendar_v2.json",
+  "calendar_contract_sha256": "4111d4f5d71a240e37b27839fbe1f1f09aa667407d6dfb496755d338871bf44b",
+  "expected_values": "config/v4_official_exchange_calendar_expected_closures_v2.json",
+  "expected_values_sha256": "b0a1889d4836faf1d194965366d2aef7652a39c6976d69449d73378335b9bfd7",
+  "independent_postcheck": "reports/v4_02/V4_OFFICIAL_CALENDAR_V2_INDEPENDENT_POSTCHECK_20260926.json",
+  "independent_postcheck_sha256": "96ad60f21a1121f182775e7eaaad082220d531e31bc736061c337d1da0aec70d",
+  "coverage": {
+    "end_date": "2026-09-24",
+    "source_cutoff": "2026-09-24",
+    "start_date": "2023-07-04"
+  },
+  "markets": [
+    {
+      "board_ids": [
+        "SH_MAIN",
+        "STAR"
+      ],
+      "calendar_sessions_missing_from_index": [],
+      "calendar_sha256": "09285bb116db5e7ab644e4942c331ceb9bc715b47f0369b9f228ef9d17df2d53",
+      "index_crosscheck": "PASS",
+      "index_file": "sh/lday/sh000001.day",
+      "index_file_sha256": "005c77b2a6dbdc5818f4b0c58284a71667e407109c45b7cdc311b86b19461408",
+      "index_session_count": 786,
+      "index_sessions_missing_from_calendar": [],
+      "market": "SSE",
+      "official_closure_date_count": 90,
+      "session_count": 786,
+      "structural_postcheck": "PASS",
+      "weekday_closure_count": 57
+    },
+    {
+      "board_ids": [
+        "SZ_MAIN",
+        "CHINEXT"
+      ],
+      "calendar_sessions_missing_from_index": [],
+      "calendar_sha256": "9c56dcf2077a19d303f504fcf22f962d9d71ed626030b61ad2aa77a201897900",
+      "index_crosscheck": "PASS",
+      "index_file": "sz/lday/sz399001.day",
+      "index_file_sha256": "c18a1f420b101345d6fd92a7607b10d61204a4a0ab351712ac774328a4166ad6",
+      "index_session_count": 786,
+      "index_sessions_missing_from_calendar": [],
+      "market": "SZSE",
+      "official_closure_date_count": 90,
+      "session_count": 786,
+      "structural_postcheck": "PASS",
+      "weekday_closure_count": 57
+    }
+  ],
+  "board_scope": [
+    "SH_MAIN",
+    "SZ_MAIN",
+    "CHINEXT",
+    "STAR"
+  ],
+  "lineage": "RECONSTRUCTED_FROM_HASH_BOUND_OFFICIAL_NOTICES; NOT_PIT_OBSERVED",
+  "acceptance_basis": "Official annual closure schedules, weekday partition, accepted V4-01 primary-index session crosscheck with zero unexplained mismatches, and separate independent postcheck.",
+  "overall_v4_02": "BLOCKED_OPEN_OTHER_REQUIRED_CAPABILITIES",
+  "next_stage": "ADJUSTED_CANONICAL_DAILY_REAL_ACTION_ACCEPTANCE"
+}

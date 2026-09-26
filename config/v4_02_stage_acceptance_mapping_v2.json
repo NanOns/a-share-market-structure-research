@@ -1,0 +1,167 @@
+{
+  "contract_id": "V4_02_STAGE_ACCEPTANCE_MAPPING_V2",
+  "version": "2.0.0",
+  "stage": "V4-02",
+  "governing_contract": {
+    "id": "DA-MSR-V4.2.2-CODEX-REV2",
+    "path": "D:/Users/lps/Desktop/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_20260925_codex修改版.md",
+    "sha256": "744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd",
+    "sections": [
+      "3B.6",
+      "3C.1",
+      "3C.2",
+      "3C.3",
+      "3C.4",
+      "5.2",
+      "5.3",
+      "6A",
+      "10N",
+      "78"
+    ]
+  },
+  "entry": {
+    "phase0": "CLOSED",
+    "v4_01_required_scope": "PASS",
+    "v4_01_final_status": "PASS_WITH_BSE_SCOPE_DEGRADED",
+    "v4_01_external_acceptance": "EXTERNALLY_ACCEPTED",
+    "v4_02_authorization": "AUTHORIZED_TO_START",
+    "bse_policy": "OPTIONAL_DEGRADED_ISOLATED",
+    "generic_degraded_pass_allowed": false
+  },
+  "acceptance": {
+    "required_scope": [
+      {
+        "id": "RAW_CANONICAL_DAILY",
+        "evidence": [
+          "source_package_and_extraction_file_hashes",
+          "accepted_source_selection_manifest",
+          "dated_identity_resolution",
+          "raw_row_and_quality_receipt"
+        ]
+      },
+      {
+        "id": "ADJUSTED_CANONICAL_DAILY",
+        "evidence": [
+          "TDX_HISTORICAL_ADJUSTMENT_CONTRACT_V1",
+          "real_corporate_action_samples",
+          "independent_expected_values",
+          "basis_and_revision_identity"
+        ]
+      },
+      {
+        "id": "FORMAL_MARKET_CALENDAR",
+        "evidence": [
+          "versioned_official_calendar_by_market",
+          "dated_source_receipt",
+          "required_board_session_completeness"
+        ]
+      },
+      {
+        "id": "TRADING_STATUS_SUSPENSION_RESUMPTION",
+        "evidence": [
+          "versioned_dated_status_facts",
+          "required_board_coverage",
+          "missing_is_not_inferred_as_suspension"
+        ]
+      },
+      {
+        "id": "FORMAL_WEEKLY_MONTHLY",
+        "evidence": [
+          "accepted_calendar",
+          "accepted_daily_basis",
+          "field_level_aggregation_vectors",
+          "coverage_and_suspension_facts"
+        ]
+      },
+      {
+        "id": "CLOSED_ONLY_AS_OF",
+        "evidence": [
+          "period_end_session_binding",
+          "actual_and_expected_session_counts",
+          "partial_period_view",
+          "missing_session_reason"
+        ]
+      },
+      {
+        "id": "SECTION_3C_4_TEMPORAL_LEAKAGE",
+        "evidence": [
+          "multi_boundary_truncation_cases",
+          "future_row_perturbation_invariance",
+          "independent_readback"
+        ]
+      },
+      {
+        "id": "PRICE_LIMIT_RULE_V1",
+        "evidence": [
+          "dated_official_rule_contract",
+          "identity_status_listing_phase",
+          "ex_right_reference_price",
+          "independent_samples"
+        ]
+      },
+      {
+        "id": "ATOMIC_PUBLICATION",
+        "evidence": [
+          "whole_run_staging",
+          "atomic_publish_or_no_publish",
+          "failure_recovery_receipt"
+        ]
+      },
+      {
+        "id": "INDEPENDENT_POSTCHECK",
+        "evidence": [
+          "independent_code_path",
+          "input_and_output_hashes",
+          "row_schema_and_count_readback",
+          "gate_disposition"
+        ]
+      }
+    ],
+    "board_scope": {
+      "required": [
+        "SH_MAIN",
+        "SZ_MAIN",
+        "CHINEXT",
+        "STAR"
+      ],
+      "optional_degraded": [
+        "BSE"
+      ],
+      "bse_must_not_enter_required_digests": true
+    },
+    "allowed_final_statuses": [
+      "FULL_PASS",
+      "PASS_WITH_BSE_SCOPE_DEGRADED",
+      "BLOCKED"
+    ],
+    "full_pass_requires_all_required_capabilities": true,
+    "blocked_if_any_required_capability_unaccepted": true,
+    "accepted_scope_to_date": [
+      "FORMAL_MARKET_CALENDAR_PASS"
+    ],
+    "stage_status": "BLOCKED_UNTIL_ALL_REQUIRED_CAPABILITIES_ACCEPTED"
+  },
+  "current_disposition": {
+    "entry": "AUTHORIZED_TO_START",
+    "stage_implementation": "RAW_SELECTED_CANDIDATE_EMITTED_AND_INDEPENDENTLY_POSTCHECKED; FORMAL_MARKET_CALENDAR_PASS",
+    "stage_acceptance": "BLOCKED_OPEN",
+    "known_open_capabilities": [
+      "formal_acceptance_of_source_selected_raw_daily_candidate",
+      "full_v4_02_atomic_publication_and_independent_postcheck",
+      "adjusted_daily_and_periods",
+      "dated_trading_status_suspension_resumption",
+      "formal_weekly_monthly_and_closed_only_as_of",
+      "section_3c_4_temporal_leakage",
+      "price_limit_rule_v1",
+      "independent_postcheck_for_current_outputs"
+    ],
+    "next_stage": "ADJUSTED_CANONICAL_DAILY_REAL_ACTION_ACCEPTANCE",
+    "accepted_capabilities": {
+      "formal_market_calendar": {
+        "status": "FORMAL_MARKET_CALENDAR_PASS",
+        "receipt": "reports/v4_02/V4_02_FORMAL_MARKET_CALENDAR_ACCEPTANCE_V2.json",
+        "sha256": "374bce8b108afbcd476d4136176b6468168a8ea0ed34ab710386d0552f14c9e9"
+      }
+    }
+  }
+}

@@ -1,0 +1,313 @@
+{
+  "contract_id": "V4_OFFICIAL_EXCHANGE_CALENDAR_EXPECTED_CLOSURES_V2",
+  "version": "2.0.0",
+  "status": "MANUALLY_TRANSCRIBED_EXPECTED_VALUES_CROSSCHECK_PENDING",
+  "governing_calendar_contract": "V4_OFFICIAL_EXCHANGE_CALENDAR_V2",
+  "source_capture_ids": [
+    "capture_20260926T064500Z",
+    "capture_20260926T094807Z"
+  ],
+  "source_capture_manifests": [
+    {
+      "capture_id": "capture_20260926T064500Z",
+      "path": "data/v4/source_evidence/official_calendar_v1/capture_20260926T064500Z/source_capture_manifest.json",
+      "sha256": "cae5540e0cdf67f8234993a20f8cb3c4f4d482e083f336c96d647b0e5ae973b6"
+    },
+    {
+      "capture_id": "capture_20260926T094807Z",
+      "path": "data/v4/source_evidence/official_calendar_v2_2023_h2/capture_20260926T094807Z/capture_manifest.json",
+      "sha256": "905ec0cca1728fe1108f2487d94b432053107ca3e8dcb48b3983c3df3cf55d12"
+    }
+  ],
+  "transcription_method": "Manual transcription from captured official annual closure notices; builder verifies each evidence phrase exists after whitespace normalization and binds the immutable capture manifests.",
+  "coverage": {
+    "start_date": "2023-07-04",
+    "end_date": "2026-09-24",
+    "weekdays": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "weekday_encoding": "Monday=0",
+    "source_cutoff": "2026-09-24"
+  },
+  "markets": {
+    "SSE": {
+      "board_ids": [
+        "SH_MAIN",
+        "STAR"
+      ],
+      "years": {
+        "2023": {
+          "source_id": "closures_sse_2023",
+          "ranges": [
+            {
+              "start": "2023-09-29",
+              "end": "2023-10-06",
+              "evidence_phrase": "9月29日（星期五）至10月6日（星期五）休市"
+            }
+          ]
+        },
+        "2024": {
+          "source_id": "closures_sse_2024",
+          "ranges": [
+            {
+              "start": "2023-12-30",
+              "end": "2024-01-01",
+              "evidence_phrase": "2023年12月30日（星期六）至2024年1月1日（星期一）休市"
+            },
+            {
+              "start": "2024-02-09",
+              "end": "2024-02-17",
+              "evidence_phrase": "2月9日（星期五）至2月17日（星期六）休市"
+            },
+            {
+              "start": "2024-04-04",
+              "end": "2024-04-06",
+              "evidence_phrase": "4月4日（星期四）至4月6日（星期六）休市"
+            },
+            {
+              "start": "2024-05-01",
+              "end": "2024-05-05",
+              "evidence_phrase": "5月1日（星期三）至5月5日（星期日）休市"
+            },
+            {
+              "start": "2024-06-10",
+              "end": "2024-06-10",
+              "evidence_phrase": "6月10日（星期一）休市"
+            },
+            {
+              "start": "2024-09-15",
+              "end": "2024-09-17",
+              "evidence_phrase": "9月15日（星期日）至9月17日（星期二）休市"
+            },
+            {
+              "start": "2024-10-01",
+              "end": "2024-10-07",
+              "evidence_phrase": "10月1日（星期二）至10月7日（星期一）休市"
+            }
+          ]
+        },
+        "2025": {
+          "source_id": "closures_sse_2025",
+          "ranges": [
+            {
+              "start": "2025-01-01",
+              "end": "2025-01-01",
+              "evidence_phrase": "1月1日（星期三）休市"
+            },
+            {
+              "start": "2025-01-28",
+              "end": "2025-02-04",
+              "evidence_phrase": "1月28日（星期二）至2月4日（星期二）休市"
+            },
+            {
+              "start": "2025-04-04",
+              "end": "2025-04-06",
+              "evidence_phrase": "4月4日（星期五）至4月6日（星期日）休市"
+            },
+            {
+              "start": "2025-05-01",
+              "end": "2025-05-05",
+              "evidence_phrase": "5月1日（星期四）至5月5日（星期一）休市"
+            },
+            {
+              "start": "2025-05-31",
+              "end": "2025-06-02",
+              "evidence_phrase": "5月31日（星期六）至6月2日（星期一）休市"
+            },
+            {
+              "start": "2025-10-01",
+              "end": "2025-10-08",
+              "evidence_phrase": "10月1日（星期三）至10月8日（星期三）休市"
+            }
+          ]
+        },
+        "2026": {
+          "source_id": "closures_sse_2026",
+          "ranges": [
+            {
+              "start": "2026-01-01",
+              "end": "2026-01-03",
+              "evidence_phrase": "1月1日（星期四）至1月3日（星期六）休市"
+            },
+            {
+              "start": "2026-02-15",
+              "end": "2026-02-23",
+              "evidence_phrase": "2月15日（星期日）至2月23日（星期一）休市"
+            },
+            {
+              "start": "2026-04-04",
+              "end": "2026-04-06",
+              "evidence_phrase": "4月4日（星期六）至4月6日（星期一）休市"
+            },
+            {
+              "start": "2026-05-01",
+              "end": "2026-05-05",
+              "evidence_phrase": "5月1日（星期五）至5月5日（星期二）休市"
+            },
+            {
+              "start": "2026-06-19",
+              "end": "2026-06-21",
+              "evidence_phrase": "6月19日（星期五）至6月21日（星期日）休市"
+            },
+            {
+              "start": "2026-09-25",
+              "end": "2026-09-27",
+              "evidence_phrase": "9月25日（星期五）至9月27日（星期日）休市"
+            },
+            {
+              "start": "2026-10-01",
+              "end": "2026-10-07",
+              "evidence_phrase": "10月1日（星期四）至10月7日（星期三）休市"
+            }
+          ]
+        }
+      }
+    },
+    "SZSE": {
+      "board_ids": [
+        "SZ_MAIN",
+        "CHINEXT"
+      ],
+      "years": {
+        "2023": {
+          "source_id": "closures_szse_2023",
+          "ranges": [
+            {
+              "start": "2023-09-29",
+              "end": "2023-10-06",
+              "evidence_phrase": "9月29日（星期五）至10月6日（星期五）休市"
+            }
+          ]
+        },
+        "2024": {
+          "source_id": "closures_szse_2024",
+          "ranges": [
+            {
+              "start": "2023-12-30",
+              "end": "2024-01-01",
+              "evidence_phrase": "2023年12月30日（星期六）至2024年1月1日（星期一）休市"
+            },
+            {
+              "start": "2024-02-09",
+              "end": "2024-02-17",
+              "evidence_phrase": "2月9日（星期五）至2月17日（星期六）休市"
+            },
+            {
+              "start": "2024-04-04",
+              "end": "2024-04-06",
+              "evidence_phrase": "4月4日（星期四）至4月6日（星期六）休市"
+            },
+            {
+              "start": "2024-05-01",
+              "end": "2024-05-05",
+              "evidence_phrase": "5月1日（星期三）至5月5日（星期日）休市"
+            },
+            {
+              "start": "2024-06-10",
+              "end": "2024-06-10",
+              "evidence_phrase": "6月10日（星期一）休市"
+            },
+            {
+              "start": "2024-09-15",
+              "end": "2024-09-17",
+              "evidence_phrase": "9月15日（星期日）至9月17日（星期二）休市"
+            },
+            {
+              "start": "2024-10-01",
+              "end": "2024-10-07",
+              "evidence_phrase": "10月1日（星期二）至10月7日（星期一）休市"
+            }
+          ]
+        },
+        "2025": {
+          "source_id": "closures_szse_2025",
+          "ranges": [
+            {
+              "start": "2025-01-01",
+              "end": "2025-01-01",
+              "evidence_phrase": "1月1日（星期三）休市"
+            },
+            {
+              "start": "2025-01-28",
+              "end": "2025-02-04",
+              "evidence_phrase": "1月28日（星期二）至2月4日（星期二）休市"
+            },
+            {
+              "start": "2025-04-04",
+              "end": "2025-04-06",
+              "evidence_phrase": "4月4日（星期五）至4月6日（星期日）休市"
+            },
+            {
+              "start": "2025-05-01",
+              "end": "2025-05-05",
+              "evidence_phrase": "5月1日（星期四）至5月5日（星期一）休市"
+            },
+            {
+              "start": "2025-05-31",
+              "end": "2025-06-02",
+              "evidence_phrase": "5月31日（星期六）至6月2日（星期一）休市"
+            },
+            {
+              "start": "2025-10-01",
+              "end": "2025-10-08",
+              "evidence_phrase": "10月1日（星期三）至10月8日（星期三）休市"
+            }
+          ]
+        },
+        "2026": {
+          "source_id": "closures_szse_2026",
+          "ranges": [
+            {
+              "start": "2026-01-01",
+              "end": "2026-01-03",
+              "evidence_phrase": "1月1日（星期四）至1月3日（星期六）休市"
+            },
+            {
+              "start": "2026-02-15",
+              "end": "2026-02-23",
+              "evidence_phrase": "2月15日（星期日）至2月23日（星期一）休市"
+            },
+            {
+              "start": "2026-04-04",
+              "end": "2026-04-06",
+              "evidence_phrase": "4月4日（星期六）至4月6日（星期一）休市"
+            },
+            {
+              "start": "2026-05-01",
+              "end": "2026-05-05",
+              "evidence_phrase": "5月1日（星期五）至5月5日（星期二）休市"
+            },
+            {
+              "start": "2026-06-19",
+              "end": "2026-06-21",
+              "evidence_phrase": "6月19日（星期五）至6月21日（星期日）休市"
+            },
+            {
+              "start": "2026-09-25",
+              "end": "2026-09-27",
+              "evidence_phrase": "9月25日（星期五）至9月27日（星期日）休市"
+            },
+            {
+              "start": "2026-10-01",
+              "end": "2026-10-07",
+              "evidence_phrase": "10月1日（星期四）至10月7日（星期三）休市"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "acceptance": {
+    "status": "NOT_ACCEPTED",
+    "requires": [
+      "manual_review_of_closure_ranges",
+      "accepted_primary_index_session_crosscheck_zero_unexplained_mismatch",
+      "independent_structural_and_hash_postcheck"
+    ],
+    "status_after_index_match": "FORMAL_MARKET_CALENDAR_PASS"
+  }
+}

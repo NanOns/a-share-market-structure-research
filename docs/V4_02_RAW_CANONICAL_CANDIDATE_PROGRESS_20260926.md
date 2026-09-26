@@ -65,3 +65,23 @@ Diagnostic postcheck `reports/v4_02/V4_OFFICIAL_CALENDAR_CANDIDATE_POSTCHECK_202
 A supplemental, versioned source contract `V4_OFFICIAL_CALENDAR_AMENDMENTS_2026_V1` captured eight 2026 single-holiday SSE/SZSE notices published by 2026-09-26. All eight pages are hash-bound and their listed weekday closure ranges agree with the annual schedules. The official SZSE notice listing also shows a 2026 Dragon Boat closure notice, but its canonical notice-page URL remains unresolved and that page is not captured. This prevents claiming that all later applicable notices have been reviewed.
 
 Calendar result remains `CANDIDATE_DIAGNOSTIC_CROSSCHECK_PASS_ACCEPTANCE_PENDING`; V4-02 remains blocked. Remaining calendar work: resolve and capture the SZSE Dragon Boat notice, inventory applicable one-off notices for the full 2024–2026 period, review as-of/future-notice boundaries, and obtain independent postcheck and formal acceptance.
+
+
+## External audit execution update (2026-09-26)
+
+The latest applicable V4.2.2 REV2 executable contract was consulted before the calendar close-out (SHA-256 `744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd`, §§3B.6, 3C.1–3C.4, 5.2–5.3, 6A, 10N, 78). The user-provided audit instruction file `V4_02_EXTERNAL_AUDIT_CALENDAR_SCOPE_AND_STAGE_STATUS_20260926.md` was read and bound by SHA-256 `3422d177d133dd9e454cd85f9aacaf9fd2a81fdfec52ff26646f963360ce9779`.
+
+### Formal market calendar close-out
+
+- The former V1 candidate remains historical evidence. New V2 contracts narrow coverage to the accepted warmup start `2023-07-04` through source cutoff `2026-09-24`; future dates beyond cutoff are absent.
+- Two official 2023 annual closure notices were captured under the frozen two-request source contract. Their capture manifest SHA-256 is `905ec0cca1728fe1108f2487d94b432053107ca3e8dcb48b3983c3df3cf55d12`. The prior 2024–2026 rule and annual-notice capture manifest remains bound at `cae5540e0cdf67f8234993a20f8cb3c4f4d482e083f336c96d647b0e5ae973b6`.
+- The V2 candidate is in `data/v4/candidate_calendars/V4_02_MARKET_CALENDAR_20230704_20260924_V2/`. It has separate SSE/SZSE calendars, 786 sessions per exchange, and 57 weekday closure dates per exchange. Expected closure phrases are checked against hash-bound official source pages by the builder.
+- Independent postcheck `reports/v4_02/V4_OFFICIAL_CALENDAR_V2_INDEPENDENT_POSTCHECK_20260926.json` reports `FORMAL_MARKET_CALENDAR_PASS`. Both primary index series from the accepted V4-01 package match exactly: SSE 786/786 and SZSE 786/786; missing dates 0; unexpected dates 0. Weekday partitions pass, all required boards are mapped, the calendar ends at cutoff, and lineage remains reconstructed rather than `PIT_OBSERVED`.
+- Formal acceptance receipt: `reports/v4_02/V4_02_FORMAL_MARKET_CALENDAR_ACCEPTANCE_V2.json`, SHA-256 `374bce8b108afbcd476d4136176b6468168a8ea0ed34ab710386d0552f14c9e9`. No one-off amendment search was expanded because the documented trigger (unexplained mismatch) was absent. Calendar work is closed at this accepted scope.
+
+### Updated stage state and next stage
+
+- Versioned machine contract `V4_CANONICAL_DAILY_PIT_PERIODS_V3` and mapping `V4_02_STAGE_ACCEPTANCE_MAPPING_V2` record the accepted calendar while retaining `V4-02 BLOCKED_OPEN`; V1/V2 historical contracts were not overwritten.
+- V4-02 remains blocked by RAW formal acceptance, adjustment, dated trading status/suspension/resumption, formal periods and CLOSED_ONLY/AS_OF, §3C.4 proofs, price-limit authority/samples, and whole-stage atomic publication/postcheck. V4-03 remains blocked.
+- Next stage is `ADJUSTED_CANONICAL_DAILY_REAL_ACTION_ACCEPTANCE`. The independent audit `docs/audits/V4_00E_ADJUSTMENT_ACCEPTANCE_AUDIT_20260925.md` remains OPEN. Its gates include V4-00D accepted source-package overlap, event-type expected-price samples plus no-action control, long suspension/resumption and recent-listing cases, category-15 impact classification, multi-cutoff determinism and future/revision leakage checks, and per-security fail-closed output. Existing current-GBBQ reconstruction and Phase 1 QFQ artifacts are diagnostic inputs only and do not satisfy these gates.
+- Board scope remains `SH_MAIN`, `SZ_MAIN`, `CHINEXT`, `STAR`; BSE remains optional and isolated. No scanner/factor work starts before V4-02 acceptance.

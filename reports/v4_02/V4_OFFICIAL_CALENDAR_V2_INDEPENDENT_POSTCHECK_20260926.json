@@ -1,0 +1,56 @@
+{
+  "audit_scope_disposition": "No one-off amendment expansion triggered because unexplained index mismatch count is zero.",
+  "calendar_contract_sha256": "4111d4f5d71a240e37b27839fbe1f1f09aa667407d6dfb496755d338871bf44b",
+  "contract_id": "V4_OFFICIAL_EXCHANGE_CALENDAR_INDEPENDENT_POSTCHECK_V2",
+  "coverage": {
+    "end_date": "2026-09-24",
+    "source_cutoff": "2026-09-24",
+    "start_date": "2023-07-04"
+  },
+  "expected_values_sha256": "b0a1889d4836faf1d194965366d2aef7652a39c6976d69449d73378335b9bfd7",
+  "index_crosscheck_basis": "Accepted V4-01 R4 complete-package primary index session series; crosscheck only, not source inference.",
+  "markets": [
+    {
+      "board_ids": [
+        "SH_MAIN",
+        "STAR"
+      ],
+      "calendar_sessions_missing_from_index": [],
+      "calendar_sha256": "09285bb116db5e7ab644e4942c331ceb9bc715b47f0369b9f228ef9d17df2d53",
+      "index_crosscheck": "PASS",
+      "index_file": "sh/lday/sh000001.day",
+      "index_file_sha256": "005c77b2a6dbdc5818f4b0c58284a71667e407109c45b7cdc311b86b19461408",
+      "index_session_count": 786,
+      "index_sessions_missing_from_calendar": [],
+      "market": "SSE",
+      "official_closure_date_count": 90,
+      "session_count": 786,
+      "structural_postcheck": "PASS",
+      "weekday_closure_count": 57
+    },
+    {
+      "board_ids": [
+        "SZ_MAIN",
+        "CHINEXT"
+      ],
+      "calendar_sessions_missing_from_index": [],
+      "calendar_sha256": "9c56dcf2077a19d303f504fcf22f962d9d71ed626030b61ad2aa77a201897900",
+      "index_crosscheck": "PASS",
+      "index_file": "sz/lday/sz399001.day",
+      "index_file_sha256": "c18a1f420b101345d6fd92a7607b10d61204a4a0ab351712ac774328a4166ad6",
+      "index_session_count": 786,
+      "index_sessions_missing_from_calendar": [],
+      "market": "SZSE",
+      "official_closure_date_count": 90,
+      "session_count": 786,
+      "structural_postcheck": "PASS",
+      "weekday_closure_count": 57
+    }
+  ],
+  "next_stage": "ADJUSTED_CANONICAL_DAILY_REAL_ACTION_ACCEPTANCE",
+  "overall_v4_02_stage": "BLOCKED_OPEN_OTHER_REQUIRED_CAPABILITIES",
+  "pit_observed": false,
+  "status": "FORMAL_MARKET_CALENDAR_PASS",
+  "v4_01_source_manifest_sha256": "0f044fbec2c17de2561f6baa01653ff9296d48eb2445244fb7ad77e96e7bf914",
+  "v4_02_input_package_sha256": "b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f"
+}

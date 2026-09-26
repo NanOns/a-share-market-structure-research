@@ -1,0 +1,22 @@
+{
+  "command": "python -m pytest tests/v4_phase0 -q",
+  "contract_id": "V4_01_TEST_RECEIPT_R6_1",
+  "required_regressions": [
+    "test_all_day_required_lifecycle_coverage_zero",
+    "test_non_trigger_partial_roster_is_detected_by_all_day_coverage",
+    "test_final_gate_requires_all_day_required_roster_coverage",
+    "test_lifecycle_effective_to_is_inclusive_in_r6_scope"
+  ],
+  "stage": "V4-01-R6.1-REGRESSION",
+  "status": "PASS",
+  "summary": {
+    "exit_code": 0,
+    "failed": 0,
+    "passed": 126,
+    "skipped": 2
+  },
+  "test_files_sha256": "1d12ceaa8213178ef315ccb8c8ebccf1df1d7d229b8baaf5864356722bc60e3c",
+  "test_scope": "tests/v4_phase0",
+  "tested_head": "c4547e23d8132344e099e617401ec26fe80d1824",
+  "version": "1.0.0"
+}

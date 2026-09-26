@@ -1,5 +1,18 @@
 # V4-01 R6 Required Scope 执行记录 — 2026-09-26
 
+## R6.1 外部审计续办记录（2026-09-26，取代 R6 final authorization）
+
+- 输入审计：`V4_01_R6_EXTERNAL_AUDIT_AND_R6_1_FINAL_SEAL_20260926.md`。
+- R6 原 Final Receipt 的 `stage_completion_authorized=true` 暂停生效；在 R6.1 all-day lifecycle coverage 通过之前，V4-01 维持 `BLOCKED`，V4-02 不获授权。
+- 本地逐日覆盖（保留既有 R6 inclusive `symbol_effective_to` 语义）检查 786 日，发现 31 日缺失 39 条：`SH_MAIN=19`、`SZ_MAIN=11`、`CHINEXT=8`、`STAR=1`。最大单日缺失 2。
+- 按审计要求只复查这些 31 日：每个日期执行两次独立新会话 `query_all_stock(day)`，并查同日全市场日线。31/31 两次名单稳定、摘要与已封存 R6 roster 完全一致，重复数 0、API 错误 0；因此没有发现新截断，不能把原始名单改写或从其他来源伪造补入证券。
+- 生命周期结束日存在实证冲突：39 条缺失身份均在其 `symbol_effective_to` 当日缺席；另有 90 条身份在各自同日出现在已封存 R6 roster。90 条记录主要在 2023-07 至 2025-04，39 条缺失主要在 2025-05 至 2026-07。该反证不允许将所有 `outDate` 一律改为右开边界；结束日语义仍待根据有独立证据的业务规则裁定。R6.1 不据 roster absence 单独推断退市，不改生命周期表、不改 R6 源 roster。
+- R6.1 覆盖回执为 `BLOCKED`，31 日仍有 39 条 lifecycle-active missing；下一步为 `RECONCILE_OUTDATE_BOUNDARY_SEMANTICS`。Final Receipt 必须保持 `stage_completion_authorized=false`。在线模型外部验收仍由用户指定的在线模型处理。
+- 新增必需回归：全日零缺口、非触发 partial roster 检测、Final Gate 依赖 all-day coverage，以及 R6 结束日边界保留现有 inclusive 语义。`tests/v4_phase0` 最新结果 `126 passed, 2 skipped, 0 failed`，仅代表本地代码/规则测试，不构成范围验收。
+- R6.1 实现 HEAD：`c4547e23d8132344e099e617401ec26fe80d1824`。对 BaoStock 的重查仅在 31 个实际缺口日期进行，账本保留调用记录。
+- 边界复核补充：曾试算统一右开结束日，但随后发现 90 个 Required 身份确实在各自 `symbol_effective_to` 当日出现在 R6 roster；因此撤回统一边界变更，未将试算 universe 或回执纳入正式证据。当前结束日口径仍保持原 R6 inclusive 规则，39 条缺口仍为 blocker。
+- 相关回执：`V4_01_ALL_DAY_REQUIRED_ROSTER_COVERAGE_R6_1.json`（`BLOCKED`）、`V4_01_MISSING_DAY_REQUERY_R6_1.json`（31 日复核 `PASS`）、`v4_01_test_receipt_R6_1_20260926.json`（126 passed/2 skipped）、`v4_01_final_stage_receipt_R6_1_20260926.json`（`BLOCKED`，`stage_completion_authorized=false`）。
+
 ## 阶段合同与当前状态
 
 - 执行合同：REV2 §78 与用户本轮指定的 `V4_01_R5_EXTERNAL_AUDIT_AND_R6_REQUIRED_SCOPE_CLOSURE_20260926.md`。

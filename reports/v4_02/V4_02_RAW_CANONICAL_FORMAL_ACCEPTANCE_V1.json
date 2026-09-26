@@ -1,0 +1,62 @@
+{
+  "acceptance_boundary": "This formal seal accepts the existing RAW artifact and its source-selection/readback evidence only. It does not accept adjusted data, trading status, periods, leakage, price limits, whole-stage publication, or V4-02 completion.",
+  "adjusted_quality": "NOT_ACCEPTED_BY_RAW_SEAL",
+  "artifact": {
+    "byte_count": 1988198932,
+    "path": "data/v4/canonical/V4_02_RAW_SELECTED_20260924_062040Z/canonical_daily_raw_selected.parquet",
+    "row_count": 29220910,
+    "schema_sha256": "693356d93801496c77fc2a4d27f6e28aa6544a40fb0951f88e5fd867151471a3",
+    "sha256": "cdbc3e2b49bf16f59a6661d4641a3d9a3b498c5a9843974e934a7ab695f02313"
+  },
+  "bse": {
+    "emitted_rows": 0,
+    "excluded_rows": 469552,
+    "scope": "OPTIONAL_DEGRADED_ISOLATED"
+  },
+  "capability": "RAW_CANONICAL_DAILY_PASS",
+  "checks": {
+    "artifact_sha256_matches": true,
+    "artifact_size_matches": true,
+    "bse_isolated": true,
+    "parquet_row_count_matches": true,
+    "postcheck_passed": true,
+    "quality_markers_preserved": true,
+    "required_board_consumer_scope_present": true,
+    "schema_has_required_consumer_keys": true,
+    "source_cutoff_bound": true,
+    "source_selection_digest_bound": true,
+    "source_selection_status_pass": true
+  },
+  "contract_id": "V4_02_RAW_CANONICAL_FORMAL_ACCEPTANCE_V1",
+  "evidence": {
+    "independent_candidate_postcheck": "CANDIDATE_POSTCHECK_PASS",
+    "independent_candidate_postcheck_sha256": "39936ba3c380c415e97fe81587c37d113713a356493793ed5fec96dbd4233f16",
+    "source_manifest_sha256": "d337fe2c0cd4cb02f05262337b14f47c32a8fd72c2f35594ac00b5f2caf5de6b",
+    "stage_receipt_sha256": "b6b014081fd248af457c08147dc35721ff1e6e3aa5ad399b3c2fdb7b630144c6"
+  },
+  "execution_identity": {
+    "contract_sha256": "0d89d5733243d8a6a7d978983e584639affc078279afdb1a66285c0db3c7ab3c",
+    "git_commit": "1e8d3c6d2c087369525ef6f24273d3f01d7f5a98",
+    "observed_at_utc": "2026-09-26T11:08:48+00:00",
+    "script_sha256": "f2a09142ea1842dda6a31e2261cbe2e905b84399c8b59286ec39c60544d3c36d"
+  },
+  "lineage": "SOURCE_SELECTED_RAW; DIAGNOSTIC_NON_PIT; membership identity only within accepted R6.2 roster intervals.",
+  "next_stage": "PACK_A_ADJUSTMENT_AND_TRADING_STATUS",
+  "required_board_counts": {
+    "CHINEXT": 2930044,
+    "SH_MAIN": 7034441,
+    "STAR": 734776,
+    "SZ_MAIN": 6528799
+  },
+  "run_id": "V4_02_RAW_SELECTED_20260924_062040Z",
+  "source_cutoff": "2026-09-24",
+  "source_selection": {
+    "digest": "79cbd9882b1847f8e5dad01615b75b23d63cecbe2cac966824ee53e0c6e79ff3",
+    "manifest_sha256": "d337fe2c0cd4cb02f05262337b14f47c32a8fd72c2f35594ac00b5f2caf5de6b",
+    "segments_replayed": 22853,
+    "selected_rows": 29690462
+  },
+  "stage_completion_authorized": false,
+  "stage_status": "BLOCKED_OPEN_OTHER_REQUIRED_CAPABILITIES",
+  "status": "RAW_CANONICAL_DAILY_PASS"
+}

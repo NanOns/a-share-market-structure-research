@@ -1,0 +1,69 @@
+{
+  "acceptance_gaps": [
+    "V4-00E independent adjusted-source/semantics acceptance remains open.",
+    "Long-suspension corporate-action and recent-listing acceptance evidence is pending.",
+    "§3C.4 full temporal replay is pending; this output alone does not close Pack A."
+  ],
+  "asof_trade_date": 20260924,
+  "atomicity": "each component staged, fsynced, then atomically promoted; no whole-stage accepted head published",
+  "capability": "RAW_QFQ_WEEKLY_MONTHLY_CLOSED_ONLY_AS_OF_EMITTED",
+  "contract_id": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+  "execution_identity": {
+    "contract_sha256": "f332c4013c96bd2ea02b169009d3fdb25b2a65e558ba0b0f2aa94c9911f41727",
+    "raw_sha256": "cdbc3e2b49bf16f59a6661d4641a3d9a3b498c5a9843974e934a7ab695f02313",
+    "script_sha256": "afa3a28729ebd27c050fb65e3a1f453599fdb2f111dff63478e2dab57c28b26e"
+  },
+  "inputs": {
+    "calendar_receipt_sha256": "374bce8b108afbcd476d4136176b6468168a8ea0ed34ab710386d0552f14c9e9",
+    "classification_report_sha256": "f1ecb4bd94018e8edce389964af59aec77e976bdb5950d316cd92165901af075",
+    "contract_sha256": "f332c4013c96bd2ea02b169009d3fdb25b2a65e558ba0b0f2aa94c9911f41727",
+    "gbbq_map_sha256": "f874e09444c03077b1d9e465a6efe56beb6678c0e71c98d118516ad24efe51c8",
+    "gbbq_sha256": "f8c6a60e052a3fd7f8c3a043dbc9c53311a7599e1b36bb6cc140058f56269ef1",
+    "raw_sha256": "cdbc3e2b49bf16f59a6661d4641a3d9a3b498c5a9843974e934a7ab695f02313",
+    "security_dispositions_sha256": "d598059838e17877363d5980aaed266febcf3753806f4667a9f792e67f40bb19",
+    "status_sha256": "bb75f6cb9187616a272ff493b3fedfeaf9d0b2ac6c2a4aef4d3d74c550921119",
+    "universe_sha256": "cff2a72de19ae395e7ac7f77f72f561396c16ada8aa61bb5e9091291f2809a35"
+  },
+  "next_stage": "V4_02_TEMPORAL_LEAKAGE_REPLAY_AFTER_ADJUSTMENT_REAL_ACCEPTANCE",
+  "observed_at_utc": "2026-09-26T12:15:28+00:00",
+  "outputs": {
+    "V4_02_ADJUSTED_CANONICAL_DAILY_R6_2_20260926.parquet": {
+      "bytes": 167005227,
+      "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R6_2_20260926.parquet",
+      "row_count": 4027002,
+      "sha256": "60fc1fba137e2072cc1d370cac8fee86334b98f9d3e403042821e9d1e1026141"
+    },
+    "V4_02_FORMAL_MONTHLY_RAW_QFQ_R6_2_20260926.parquet": {
+      "bytes": 62575702,
+      "path": "data/v4/artifact_store/v4_02/V4_02_FORMAL_MONTHLY_RAW_QFQ_R6_2_20260926.parquet",
+      "row_count": 400958,
+      "sha256": "167d3795d1a993297e39b7ef3d55c9bfd3baf7721b409b8b4e3305030b279df4"
+    },
+    "V4_02_FORMAL_WEEKLY_RAW_QFQ_R6_2_20260926.parquet": {
+      "bytes": 140563944,
+      "path": "data/v4/artifact_store/v4_02/V4_02_FORMAL_WEEKLY_RAW_QFQ_R6_2_20260926.parquet",
+      "row_count": 1705132,
+      "sha256": "9f49c9d1d37bc2c4ed31c0aaae847671d429652715f2cef54a4b431cbb1f59e8"
+    }
+  },
+  "period_rows": {
+    "MONTHLY": 400958,
+    "WEEKLY": 1705132
+  },
+  "scanner_or_factor_run_count": 0,
+  "scope": {
+    "actual_adjusted_bars_emitted": 4027002,
+    "actual_required_bars": 4027002,
+    "invalid_actual_rows": 0,
+    "membership_sessions": 4036121,
+    "per_security_categories_localized": {
+      "ELIGIBLE_CATEGORY_SCOPE_PENDING_REAL_ACCEPTANCE": 5175,
+      "UNAVAILABLE_PRICE_AFFECTING_UNSUPPORTED": 79,
+      "UNAVAILABLE_UNKNOWN_PRICE_IMPACT": 97
+    }
+  },
+  "source_cutoff": "2026-09-24",
+  "stage_status": "BLOCKED_OPEN_ADJUSTMENT_REAL_ACCEPTANCE_AND_TEMPORAL_REPLAY",
+  "status": "FORMAL_PERIODS_CANDIDATE_PASS",
+  "tdx_root_write_count": 0
+}

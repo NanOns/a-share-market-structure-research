@@ -1,0 +1,35 @@
+{
+  "contract_id": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+  "version": "1.0.0",
+  "stage": "V4-02 / PACK-A-FORMAL-WEEKLY-MONTHLY",
+  "asof_trade_date": "2026-09-24",
+  "required_scope": ["SH_MAIN", "SZ_MAIN", "CHINEXT", "STAR"],
+  "calendar_acceptance_receipt": "reports/v4_02/V4_02_FORMAL_MARKET_CALENDAR_ACCEPTANCE_V2.json",
+  "universe": "data/v4/artifact_store/v4_01/v4_01_historical_universe_required_R6_2_20260926.jsonl.gz",
+  "status_facts": "data/v4/artifact_store/v4_02/V4_02_DATED_TRADING_STATUS_R6_2_20260926.jsonl.gz",
+  "raw_daily": "data/v4/canonical/V4_02_RAW_SELECTED_20260924_062040Z/canonical_daily_raw_selected.parquet",
+  "adjusted_price_basis": "TDX_NATIVE_AFFINE_QFQ; category 1 only; no BaoStock adjusted prices",
+  "period_rules": {
+    "open": "first valid actual daily open by trade date",
+    "high": "maximum valid actual daily high",
+    "low": "minimum valid actual daily low",
+    "close": "last valid actual daily close by trade date",
+    "volume_amount": "sum valid actual daily source-native values",
+    "no_actual_bars": "null OHLC; never synthesize zero prices",
+    "closed_only": "period_last_session <= T0 and active-membership sessions fully accounted without DATA_GAP, UNKNOWN, or invalid actual bars",
+    "as_of_partial": "aggregate actual bars through T0 only when period continues beyond T0",
+    "qfq_unready": "null QFQ OHLC; BLOCKED_BY_ADJUSTMENT; never fall back to RAW"
+  },
+  "outputs": {
+    "daily": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R6_2_20260926.parquet",
+    "weekly": "data/v4/artifact_store/v4_02/V4_02_FORMAL_WEEKLY_RAW_QFQ_R6_2_20260926.parquet",
+    "monthly": "data/v4/artifact_store/v4_02/V4_02_FORMAL_MONTHLY_RAW_QFQ_R6_2_20260926.parquet"
+  },
+  "acceptance": {
+    "binds_raw_hash_and_status_hash": true,
+    "all_actual_required_scope_bars_emitted_exactly_once": true,
+    "qfq_has_per_security_fail_closed_quality": true,
+    "both_raw_and_qfq_period_views_emitted": true,
+    "independent_adjustment_audit_and_temporal_replay_required_for_pack_a_pass": true
+  }
+}

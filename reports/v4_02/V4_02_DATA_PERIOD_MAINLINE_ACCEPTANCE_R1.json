@@ -1,0 +1,221 @@
+{
+  "acceptance": {
+    "formal_adjustment_semantics_and_historical_revision_lineage": false,
+    "full_scope_temporal_proof": false,
+    "pack_a_pass_requires_all_components": true,
+    "pack_b_started": false,
+    "stage_completion_authorized": false,
+    "v4_03_started": false
+  },
+  "artifact_manifest": {
+    "daily_qfq_candidate": {
+      "bytes": 167005227,
+      "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R6_2_20260926.parquet",
+      "row_count": 4027002,
+      "sha256": "60fc1fba137e2072cc1d370cac8fee86334b98f9d3e403042821e9d1e1026141"
+    },
+    "dated_status": {
+      "normalized_uncompressed_sha256": "28d3193a71da45e2c56ed875ec93ea9840c1d1f0095e756999bb68ea32fedfad",
+      "path": "data/v4/artifact_store/v4_02/V4_02_DATED_TRADING_STATUS_R6_2_20260926.jsonl.gz",
+      "row_count": 4036121,
+      "sha256": "bb75f6cb9187616a272ff493b3fedfeaf9d0b2ac6c2a4aef4d3d74c550921119"
+    },
+    "monthly_raw_qfq": {
+      "bytes": 62575702,
+      "path": "data/v4/artifact_store/v4_02/V4_02_FORMAL_MONTHLY_RAW_QFQ_R6_2_20260926.parquet",
+      "row_count": 400958,
+      "sha256": "167d3795d1a993297e39b7ef3d55c9bfd3baf7721b409b8b4e3305030b279df4"
+    },
+    "weekly_raw_qfq": {
+      "bytes": 140563944,
+      "path": "data/v4/artifact_store/v4_02/V4_02_FORMAL_WEEKLY_RAW_QFQ_R6_2_20260926.parquet",
+      "row_count": 1705132,
+      "sha256": "9f49c9d1d37bc2c4ed31c0aaae847671d429652715f2cef54a4b431cbb1f59e8"
+    }
+  },
+  "blockers": [
+    {
+      "evidence": "Current GBBQ snapshot supports diagnostic reconstruction; it does not provide historical system-available timestamps or revision history.",
+      "id": "ADJUSTMENT_SOURCE_VISIBILITY_AND_LATE_REVISION_LINEAGE",
+      "status": "OPEN"
+    },
+    {
+      "evidence": "Category 4, 12, and 15 remain UNKNOWN_PRICE_IMPACT; categories 6, 11, 13, and 14 remain unsupported. Local vendor semantics are not independent primary-source adjudication.",
+      "id": "GBBQ_CATEGORY_SEMANTIC_AUTHORITY",
+      "status": "OPEN"
+    },
+    {
+      "evidence": "Eight deletion/perturbation/determinism cases pass over one eligible security in each required board; full R6.2 universe replay remains pending.",
+      "id": "FULL_SCOPE_SECTION_3C4_REPLAY",
+      "status": "OPEN"
+    },
+    {
+      "evidence": "88,011 dated provider status/ST facts cover 982 gap-bearing securities and their bounded query windows; dated isST is not populated for every actual-bar membership row.",
+      "id": "DATED_ISST_COVERAGE_FOR_PRICE_LIMIT_PACK",
+      "status": "OPEN"
+    },
+    {
+      "evidence": "Four 2024-06-13 rows have validated local TDX bars while BaoStock tradestatus is 0; local actual-bar precedence is retained and the separate audit remains open.",
+      "id": "BAOSTOCK_TDX_STATUS_CONFLICTS",
+      "status": "OPEN_SEPARATE_AUDIT"
+    }
+  ],
+  "checks": {
+    "adjustment_categories_classified_and_localized": true,
+    "dated_gap_status_has_zero_unknown": true,
+    "formal_calendar_pass": true,
+    "formal_period_artifacts_emitted": true,
+    "independent_period_postcheck_pass": true,
+    "raw_formal_seal_pass": true,
+    "real_suspension_and_recent_listing_samples_pass": true,
+    "required_temporal_boundary_cases_pass_bounded_sample": true
+  },
+  "components": {
+    "ADJUSTED_CANONICAL_DAILY": {
+      "category15": "UNKNOWN_PRICE_IMPACT_FAIL_CLOSED",
+      "classification_receipt_sha256": "f1ecb4bd94018e8edce389964af59aec77e976bdb5950d316cd92165901af075",
+      "daily_artifact": {
+        "bytes": 167005227,
+        "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R6_2_20260926.parquet",
+        "row_count": 4027002,
+        "sha256": "60fc1fba137e2072cc1d370cac8fee86334b98f9d3e403042821e9d1e1026141"
+      },
+      "quality_counts": {
+        "READY": 3888984,
+        "UNAVAILABLE_PRICE_AFFECTING_UNSUPPORTED": 62048,
+        "UNAVAILABLE_UNKNOWN_PRICE_IMPACT": 75970
+      },
+      "real_sample_receipt_sha256": "8a3e924fe730cdcc61420b0b3487874a5471966dbc7483dc22a6da6038462429",
+      "result": "CANDIDATE_WITH_PER_SECURITY_FAIL_CLOSED; FORMAL_ACCEPTANCE_OPEN"
+    },
+    "CLOSED_ONLY_AS_OF": {
+      "postcheck_receipt_sha256": "3a2f5a7e27ad1b48c706b4d41238be2b7e7a2eea4840bdb6b233a6d3f6d6541f",
+      "result": "PASS_WITH_BOUNDARY_PARTIALS_AND_PER_SECURITY_QFQ_BLOCKS"
+    },
+    "FORMAL_MARKET_CALENDAR": {
+      "receipt_sha256": "374bce8b108afbcd476d4136176b6468168a8ea0ed34ab710386d0552f14c9e9",
+      "result": "FORMAL_MARKET_CALENDAR_PASS"
+    },
+    "FORMAL_WEEKLY_MONTHLY": {
+      "outputs": {
+        "V4_02_ADJUSTED_CANONICAL_DAILY_R6_2_20260926.parquet": {
+          "bytes": 167005227,
+          "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R6_2_20260926.parquet",
+          "row_count": 4027002,
+          "sha256": "60fc1fba137e2072cc1d370cac8fee86334b98f9d3e403042821e9d1e1026141"
+        },
+        "V4_02_FORMAL_MONTHLY_RAW_QFQ_R6_2_20260926.parquet": {
+          "bytes": 62575702,
+          "path": "data/v4/artifact_store/v4_02/V4_02_FORMAL_MONTHLY_RAW_QFQ_R6_2_20260926.parquet",
+          "row_count": 400958,
+          "sha256": "167d3795d1a993297e39b7ef3d55c9bfd3baf7721b409b8b4e3305030b279df4"
+        },
+        "V4_02_FORMAL_WEEKLY_RAW_QFQ_R6_2_20260926.parquet": {
+          "bytes": 140563944,
+          "path": "data/v4/artifact_store/v4_02/V4_02_FORMAL_WEEKLY_RAW_QFQ_R6_2_20260926.parquet",
+          "row_count": 1705132,
+          "sha256": "9f49c9d1d37bc2c4ed31c0aaae847671d429652715f2cef54a4b431cbb1f59e8"
+        }
+      },
+      "period_rows": {
+        "MONTHLY": 400958,
+        "WEEKLY": 1705132
+      },
+      "receipt_sha256": "7326f108af1529a50660638382142051c38082548223a913421122a633a6b6ac",
+      "result": "FORMAL_PERIODS_CANDIDATE_PASS"
+    },
+    "RAW_CANONICAL_DAILY": {
+      "artifact": {
+        "byte_count": 1988198932,
+        "path": "data/v4/canonical/V4_02_RAW_SELECTED_20260924_062040Z/canonical_daily_raw_selected.parquet",
+        "row_count": 29220910,
+        "schema_sha256": "693356d93801496c77fc2a4d27f6e28aa6544a40fb0951f88e5fd867151471a3",
+        "sha256": "cdbc3e2b49bf16f59a6661d4641a3d9a3b498c5a9843974e934a7ab695f02313"
+      },
+      "formal_seal_receipt": "reports/v4_02/V4_02_RAW_CANONICAL_FORMAL_ACCEPTANCE_V1.json",
+      "receipt_sha256": "d4292852adeca9ab2c666cca19be5f083a1c081e4cc20db9a1591dacd84837e0",
+      "result": "RAW_CANONICAL_DAILY_PASS"
+    },
+    "SECTION_3C_4_TEMPORAL_LEAKAGE": {
+      "case_count": 8,
+      "receipt_sha256": "7825927a500e67b763e66df8529c174b78c8b01310e95c7a73c5d4b26146b556",
+      "result": "BOUNDED_TEMPORAL_REPLAY_PASS",
+      "scope": "FOUR_SECURITY_CROSS_BOARD_REPLAY; FULL_REQUIRED_UNIVERSE_REPLAY_PENDING"
+    },
+    "TRADING_STATUS_SUSPENSION_RESUMPTION": {
+      "artifact": {
+        "normalized_uncompressed_sha256": "28d3193a71da45e2c56ed875ec93ea9840c1d1f0095e756999bb68ea32fedfad",
+        "path": "data/v4/artifact_store/v4_02/V4_02_DATED_TRADING_STATUS_R6_2_20260926.jsonl.gz",
+        "row_count": 4036121,
+        "sha256": "bb75f6cb9187616a272ff493b3fedfeaf9d0b2ac6c2a4aef4d3d74c550921119"
+      },
+      "classification_counts": {
+        "ACTUAL_TRADED": 4027002,
+        "SUSPENDED": 9119
+      },
+      "dated_is_st_coverage": {
+        "provider_tradestatus_conflicts_on_local_actual_bar": 4,
+        "rows_with_fact": 88011,
+        "security_count_with_any_fact": 982
+      },
+      "receipt_sha256": "a80b23f6fca49350eb25161e14b2ec9fc552003e94e89c4c624ed23e1b649e55",
+      "result": "DATED_TRADING_STATUS_PASS",
+      "separate_conflict_audit": "docs/audits/V4_02_BAOSTOCK_TDX_STATUS_CONFLICT_AUDIT_20260926.md"
+    }
+  },
+  "consulted_contracts": {
+    "canonical_contract": {
+      "path": "config/v4_02_canonical_daily_pit_contract_v3.json",
+      "sha256": "91a8004e02cf72dc4e32bb688247ae6d567656c090df960776e2826f5772a9f3"
+    },
+    "master_task_document": {
+      "path": "D:\\Users\\lps\\Desktop\\V4_02_ACCELERATED_CLOSURE_MASTER_TASK_R1_20260926.md",
+      "sha256": "580e61815d97f4ce894a9557e9f249e86f7a4558796956c73c717a19390c4373"
+    },
+    "stage_mapping": {
+      "path": "config/v4_02_stage_acceptance_mapping_v2.json",
+      "sha256": "ab2e172144bdb3bd273e0cf4b58d2543166c09e778dd3bd23b712c2e54b8d0ea"
+    },
+    "upgrade_document": {
+      "path": "D:\\Users\\lps\\Desktop\\A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_20260925_codex修改版.md",
+      "sections": [
+        "3B.6",
+        "3C.1",
+        "3C.2",
+        "3C.3",
+        "3C.4",
+        "5.2",
+        "5.3",
+        "6A",
+        "10N",
+        "78"
+      ],
+      "sha256": "744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd"
+    }
+  },
+  "contract_id": "V4_02_DATA_PERIOD_MAINLINE_ACCEPTANCE_R1",
+  "execution_identity": {
+    "base_git_head": "1e8d3c6d2c087369525ef6f24273d3f01d7f5a98",
+    "scanner_or_factor_run_count": 0,
+    "script_sha256": "7233b54128f28300a126eb6384a4d85ea77dec56e0757862f5d9bbb9fc42acfc",
+    "tdx_root_write_count": 0
+  },
+  "next_stage": "RESOLVE_PACK_A_OPEN_AUDITS_AND_FULL_SCOPE_TEMPORAL_REPLAY; ONLY_AFTER_PACK_A_PASS_START_PACK_B",
+  "observed_at_utc": "2026-09-26T12:19:57+00:00",
+  "pack_a_status": "BLOCKED",
+  "scope": {
+    "optional_degraded_scope": {
+      "BSE": "EXCLUDED_OPTIONAL_DEGRADED"
+    },
+    "required_boards": [
+      "SH_MAIN",
+      "SZ_MAIN",
+      "CHINEXT",
+      "STAR"
+    ]
+  },
+  "source_cutoff": "2026-09-24",
+  "stage": "V4-02 / TASK PACK A",
+  "status": "BLOCKED",
+  "version": "1.0.0"
+}

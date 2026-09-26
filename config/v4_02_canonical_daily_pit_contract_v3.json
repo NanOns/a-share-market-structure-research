@@ -66,8 +66,9 @@
     },
     "monthly": "same aggregation rules as weekly",
     "views": [
-      "DIAGNOSTIC_CLOSED_PERIOD",
-      "DIAGNOSTIC_AS_OF_PARTIAL"
+      "CLOSED_ONLY",
+      "AS_OF_PARTIAL",
+      "BLOCKED"
     ],
     "calendar_sources": {
       "SSE": "data/v4/candidate_calendars/V4_02_MARKET_CALENDAR_20230704_20260924_V2/calendar_sse_20230704_20260924.json",
@@ -75,25 +76,25 @@
     },
     "calendar_frozen_to_source_snapshot": true,
     "calendar_capability": "FORMAL_MARKET_CALENDAR_PASS; V2 coverage 2023-07-04 through source cutoff 2026-09-24, accepted by V4_02_FORMAL_MARKET_CALENDAR_ACCEPTANCE_V2",
-    "suspension_count": "unknown_null_without_dated_suspension_facts",
+    "suspension_count": "from versioned dated provider facts on gap rows; missing bar alone is never suspension",
     "coverage_status": "never COMPLETE unless listing lifecycle and every session's bar/suspension are evidenced; this stage cannot establish that condition",
-    "formal_closed_only_available": false,
+    "formal_closed_only_available": "CANDIDATE_PASS_PENDING_PACK_A_ACCEPTANCE",
     "knowledge_lineage": "DIAGNOSTIC_NON_PIT",
-    "adjustment": "RAW_ONLY"
+    "adjustment": "RAW_AND_QFQ_CANDIDATE; QFQ_BLOCKED_BY_ADJUSTMENT_WHEN_PER_SECURITY_NOT_READY"
   },
   "capabilities": {
-    "raw_daily_available": "SOURCE_SELECTED_CANDIDATE_POSTCHECK_PASS_FORMAL_ACCEPTANCE_OPEN",
-    "raw_weekly_monthly_diagnostic_available": "SUPERSEDED_CANDIDATE_ONLY",
-    "adjusted_daily_periods": "UNAVAILABLE",
+    "raw_daily_available": "RAW_CANONICAL_DAILY_PASS_FORMAL_SEAL_V1",
+    "raw_weekly_monthly_diagnostic_available": "FORMAL_RAW_QFQ_PERIODS_CANDIDATE_PASS_INDEPENDENT_POSTCHECK_PASS",
+    "adjusted_daily_periods": "CURRENT_SNAPSHOT_QFQ_CANDIDATE_PER_SECURITY_FAIL_CLOSED_NOT_PIT",
     "historical_pit_observed": "UNAVAILABLE",
     "as_recorded_source_consumption": "UNAVAILABLE",
-    "historical_suspension_status": "UNKNOWN",
+    "historical_suspension_status": "DATED_STATUS_GAP_FACTS_AVAILABLE_R6_2_WITH_FOUR_PROVIDER_CONFLICTS_OPEN",
     "historical_limit_status": "UNKNOWN",
     "historical_security_lifecycle_and_membership": "AVAILABLE_FOR_REQUIRED_SCOPE_FROM_V4_01_R6_2",
     "formal_market_calendar": "FORMAL_MARKET_CALENDAR_PASS_V2_20230704_20260924",
-    "dated_trading_status_suspension_resumption": "UNAVAILABLE_PENDING_DATED_FACTS",
-    "formal_closed_only_as_of": "UNAVAILABLE_PENDING_CALENDAR_AND_COVERAGE_ACCEPTANCE",
-    "section_3c_4_temporal_leakage": "UNVERIFIED_PENDING_MULTI_BOUNDARY_SUITE",
+    "dated_trading_status_suspension_resumption": "DATED_TRADING_STATUS_PASS_GAP_ONLY_BAO_FACTS_982_SECURITIES; PROVIDER_TRADESTATUS_CONFLICT_AUDIT_OPEN",
+    "formal_closed_only_as_of": "RAW_QFQ_PERIOD_CANDIDATE_PASS_INDEPENDENT_POSTCHECK_PASS",
+    "section_3c_4_temporal_leakage": "BOUNDED_8_CASE_CROSS_BOARD_PASS_FULL_SCOPE_AND_LATE_REVISION_PROOF_OPEN",
     "atomic_publication": "IMPLEMENTED_ACCEPTANCE_PENDING",
     "independent_postcheck": "IMPLEMENTED_ACCEPTANCE_PENDING"
   },

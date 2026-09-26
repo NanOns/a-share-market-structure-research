@@ -1,0 +1,327 @@
+--- REV1
++++ REV2
+@@ -1,6 +1,6 @@
+ # 大A市场结构研究系统 V4.2.2 codex修改版
+ 
+-> 文档编号：DA-MSR-V4.2.2-CODEX-REV1  
++> 文档编号：DA-MSR-V4.2.2-CODEX-REV2  
+ > 日期：2026-09-25  
+ > 状态：DOCUMENT_REVISED / READY_FOR_BASELINE_AND_CONTRACT_WORK / IMPLEMENTATION_NOT_VERIFIED  
+ > 原件：A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_20260925.md；本文件由原件副本逐章修改，原件不变。  
+@@ -72,7 +72,7 @@
+ 
+ # 0A. V4.2 本轮新增的最高级约束
+ 
+-V4.2 相比 本版 不是“小版本补丁”，而是把系统从：
++当前 REV2 合同延续 V4.2.2 的升级目标，把系统从：
+ 
+ ```text
+ 候选筛选器 + Focus
+@@ -1936,7 +1936,7 @@
+ 
+ # 6A. 双时间 PIT 与实际消费版本
+ 
+-可修订事实保存 effective_from/to、provider_available_at（可未知）、observed_at、ingested_at、source_revision_id、supersedes_revision_id、source_identity。available_at 旧别名只指 system_available_at=max(observed_at,ingested_at)，不能填供应商公开时间。
++统一元结构 REVISIONABLE_FACT_META_V1 包含 effective_from、effective_to、provider_available_at（可未知）、observed_at、ingested_at、system_available_at、source_revision_id、supersedes_revision_id、source_identity。security_lifecycle_history、sector_membership_observations、security identity revisions、ST/board/security_type historical identity 明确 EMBEDS REVISIONABLE_FACT_META_V1；schema展开全部字段，不允许仅注释继承。available_at 旧别名只指 system_available_at=max(observed_at,ingested_at)，不能填供应商公开时间。
+ 
+ AS_RECORDED 读取 publication_consumed_sources 冻结的 key/revision/digest，不扫描最新事实。构建要求 effective_from<=T0<effective_to（空结束为无穷）、system_available_at<=cutoff；同 key 选 cutoff 内更正链唯一末端。分叉、内容冲突或无确定顺序为 SOURCE_REVISION_CONFLICT，不随意取最大时间。
+ 
+@@ -2204,7 +2204,18 @@
+ status
+ quality
+ source_contract_id
+-```
++provider_available_at
++observed_at
++ingested_at
++system_available_at
++source_revision_id
++supersedes_revision_id
++source_identity
++```
++
++EMBEDS REVISIONABLE_FACT_META_V1（§6A）；主键为稳定fact_key加source_revision_id，fact_key必须区分实体、事实属性及有效区间，修订不得覆盖旧行。system_available_at=max(observed_at,ingested_at)，source_identity与publication_consumed_sources逐revision关联。
++
++验收：T+10录入effective_from=T-30的lifecycle correction，AS_RECORDED(T)及其historical_evaluable_universe digest不变；RECONSTRUCTED_CORRECTED(T)可在独立lineage变化，保存不同Universe digest和更正来源。
+ 
+ ---
+ 
+@@ -2733,8 +2744,8 @@
+ 
+ t 是冻结市场日历索引。O/H/L/C 在观察日同一已验证仿射坐标，a/v 是原始金额/量。全精度计算和比较，仅显示舍入。零分母为UNKNOWN，不用epsilon造巨大有效数。
+ 
+-- MA_N=最近N市场会话收盘均值；本版要求连续实际bar，确认停牌也不填0/不跳日凑数，缺失为INSUFFICIENT_CONTIGUOUS_HISTORY。
+-- retN=C[t]/C[t-N]-1；volN=std(log(C[j]/C[j-1]),ddof=0)，j=t-N+1..t，未年化，均需N+1实际bar。
++- MA_N及MA/ATR/HHV/LLV/技术结构类窗口的口径为WINDOW_SEMANTICS_OPEN_DECISION，按下述三窗口合同在V4-00G裁决；不得继续把严格连续actual bar当已冻结规则。
++- retN=C[t]/C[t-N]-1，起止固定市场会话，不跳日替换；停牌/区间完整性按待冻结CROSS_SECTION_SESSION_WINDOW_V1。volN=std(log(C[j]/C[j-1]),ddof=0)，未年化；N个相邻收益需要N+1个价格点，但j的索引及停牌处理须随field→window裁决冻结，不能提前把全部指标定为连续市场actual bar。
+ - TR[j]=max(H[j]-L[j],abs(H[j]-C[j-1]),abs(L[j]-C[j-1]))；ATR_N=SMA(TR,N)。ATR<=0时归一化UNKNOWN，本版不自动换volatility fallback。
+ - prior_highN=max(H[t-N:t-1])；HHV_N=max(H[t-N+1:t])；低点同理。pos60=(C-LLV60)/(HHV60-LLV60)，零振幅UNKNOWN。
+ - slope20=(MA20[t]-MA20[t-5])/ATR20；slope60=(MA60[t]-MA60[t-10])/ATR20。
+@@ -2746,7 +2757,13 @@
+ - CLV=(C-L)/(H-L)；H=L时UNKNOWN，不凭一字板虚构收盘强度。
+ - core_price_damage=(C<prior_low20-0.5*ATR20 AND ret1<0)，只读价格，不读Anchor/Final State。
+ 
+-严格连续窗口是保守工程基线，不代表停牌的经济收益为0。Forward另有路径规则。300市场日warm-up只是规划目标，各字段实际首个可用日独立报告。
++WINDOW_SEMANTICS_OPEN_DECISION：V4-00G冻结TECHNICAL_BAR_WINDOW_V1、CROSS_SECTION_SESSION_WINDOW_V1、FORWARD_SESSION_WINDOW_V1及field→window映射。
++
++技术窗口比较Option A（最近N市场会话且实际bar完整）与Option B（最近N根已验证交易bar，仅跳过确认停牌）；Option B记录每字段start/end、calendar_span、actual_count、suspended_count，未知数据缺口不能假装停牌跳过。ATR的previous close、slope偏移、量额/波动窗口、prior high与周/月技术指标都必须逐字段声明索引与窗口类型，不能把t会话索引和k实际bar索引混用。上述技术公式中的切片在裁决前仅表示候选逻辑。
++
++CROSS_SECTION_SESSION_WINDOW_V1用于RPS、retN、relative市场比较，按市场会话保持相同起止日期；endpoint停牌、区间停牌与vol连续收益各自质量处理在V4-00G显式冻结，不静默沿用技术跳日语义。FORWARD_SESSION_WINDOW_V1用于市场日T+N到期，保留§46A/47既定停牌和结算规则；不因技术窗口裁决改变horizon。
++
++必测单日停牌、连续5日停牌、复牌、涨停低/无成交、非停牌数据缺失、新股不足窗口；对比Profile completeness、Trend continuity、RPS comparability、PREWATCH eligibility后记录选择、参数digest及反例。窗口未冻结仅允许对照诊断，不得验收依赖该窗口的正式因子/画像/Seed；基线盘点可继续。300市场日warm-up仍只是规划目标，各字段首个可用日独立报告。
+ 
+ 本文章节规则实例化为RULE_AST_FROZEN，经schema及独立正反向向量验收才TEST_VECTOR_PASS。旧V3/V3.3通过§34精确extraction manifest冻结，不能仅说沿用思想。
+ 
+@@ -2829,7 +2846,7 @@
+ 明确不属于 Core V1：
+ 
+ ```text
+-sector_relative_market_state
++relative_sector_state
+ algorithmic_support_sector
+ rotation_context
+ 
+@@ -3522,20 +3539,29 @@
+ 
+ 保存rotation_episode_id、pulse_date、冻结成员篮子和pulse前基准；sector_price_retention_core由该篮子等权路径计算（§49A），而不是每日中位收益拼成价格。pulse收益分母<=0时retention_ratio为NOT_APPLICABLE，不能用epsilon强行作除法。
+ 
+-候选规则：pulse=(dq5>=10 AND breadth_delta1>=0.05)；retained=(冻结篮子累计收益>0 AND strong_member_retention_1>=0.5)；failed=(pulse后1..5市场会话内篮子累计收益<=0 AND breadth_delta1<=−0.05)。扩散=(entered_count>exited_count AND breadth_delta1>0 AND top1_concentration<=0.5)，成员变更不计入entered/exited。
++候选规则：pulse=(dq5>=10 AND breadth_delta1>=0.05)。EARLY_RETENTION与MATURE_RETENTION独立：
++
++- Pulse日冻结base_seed_set=A[pulse]合格成员、breadth_positive_set（当日ret1>0的篮子成员）及篮子identity。base_seed_retention=冻结seed集合中今日仍满足A资格的数量/冻结seed数；breadth_retention=冻结positive集合中今日同基准收盘>=Pulse日收盘的数量/冻结positive数。分母为0返回NOT_APPLICABLE，非空集合存在未知资格/价格则对应比率UNKNOWN，不删除未知成员或重算分母；中途退板仍跟踪冻结集合。
++- early_retained=(frozen_basket_cumulative_return>0) AND (base_seed_retention>=early_seed_retention_min OR breadth_retention>=early_breadth_retention_min) AND breadth_delta1>=early_breadth_delta_min AND top1_concentration<=early_top1_concentration_max。NOT_APPLICABLE的OR路径作为不可用分支，另一分支TRUE可成立；两分支均不可用则UNKNOWN。真正UNKNOWN按§10A0三值逻辑。strong_prev为0不影响early分支。
++- mature_retained=early_retained AND strong_member_retention_1>=mature_strong_retention_min；strong_prev=0时mature_retained为NOT_APPLICABLE，不阻断IN/ACCEPTED，不能据此进入EXPANDING/REACCELERATING。strong retention仅作为成熟WARM/CONFIRMED的解释，不修改其Legacy资格。
++- 上述阈值在§72注册ENGINEERING_CANDIDATE，V4-00G定义参数、对应V4-08阶段冻结后才正式消费；不沿用未裁决的0.5作为early门。单龙头集中且无breadth扩散时不能通过early的联合门。
++
++failed=(pulse后1..5市场会话内篮子累计收益<=0 AND breadth_delta1<=−0.05)。扩散=(entered_count>exited_count AND breadth_delta1>0 AND top1_concentration<=0.5)，成员变更不计入entered/exited。
+ 
+ 有序状态：
+-1. 必要输入未知→UNKNOWN，暂停该episode计数不伪造退出。
++1. 当前候选分支的必要输入未知→UNKNOWN，暂停该episode计数不伪造退出；mature专用输入不全局传播到early分支，NOT_APPLICABLE成熟分支跳过，已知强留存不达标禁止成熟升级。
+ 2. 已有episode且failed→ROTATION_FAILED。
+ 3. t-1已WARM/CONFIRMED且dq5<0、breadth_delta1<0连续2可评估市场会话→ROTATION_OUT。
+-4. t-1已成熟、昨日dq5<=0、今日pulse且retained→ROTATION_REACCELERATING。
+-5. 已有至少2个后续会话且retained、昨日已ACCEPTED/EXPANDING且扩散→ROTATION_EXPANDING。
+-6. pulse后至少2会话且retained且breadth_delta1>=−0.05→ROTATION_ACCEPTED。
+-7. pulse后至少1会话且retained→ROTATION_IN。
++4. t-1已成熟、昨日dq5<=0、今日pulse且mature_retained→ROTATION_REACCELERATING。
++5. 已有至少2个后续会话且mature_retained、昨日已ACCEPTED/EXPANDING且扩散→ROTATION_EXPANDING。
++6. pulse后至少2会话且early_retained且breadth_delta1>=−0.05→ROTATION_ACCEPTED。
++7. pulse后至少1会话且early_retained→ROTATION_IN。
+ 8. 无活动episode且pulse→ROTATION_PULSE并冻结episode。
+ 9. 未终止活动episode在创建后5会话内无新规则→保持前态；超过5会话未accepted→ROTATION_FAILED；无活动episode→NONE。
+ 
+ 接受后episode不再使用“5日未接受”到期；OUT/FAILED为终止事件，次日可新pulse，旧历史保留。发生同日冲突按上述优先级。Rotation只进入D的解释/排序，不回写B0资格。
++
++必测R1：strong_prev=0但pulse后篮子正收益、Seed与breadth维持，允许IN/ACCEPTED；R2：老强势strong retention下降且breadth恶化，不允许EXPANDING/REACCELERATING；R3：单龙头高集中且无扩散，不允许ACCEPTED/EXPANDING。各例保存参数实例、分支真值及独立预期。
+ 
+ ## 21A.4A 输入时点
+ 
+@@ -4613,13 +4639,37 @@
+ 
+ Control A=冻结同日Legacy模型全部符合对象；无真实Legacy当日输出不能事后冒充observed control。Control B=同Hard Safety下delta3 Top-N，N为同日该股票signal类型事件数；稳定id打破展示同分，资格同分保留原值。Control C见§49B。三个对照分别报告，不合成最佳对照。
+ 
+-# 49A. Benchmark Contract
+-
+-contract_id=MARKET_BENCHMARK_V1。Core历史市场参考retN：在起点t-N已符合Universe、按各因子窗口可评估股票的等权endpoint return均值，保存起点Universe/可观察集合/coverage；缺失超过20% UNKNOWN，不能只凭现在存活证券补池。市场趋势路径为连续这些ret1链乘，标daily-rebalanced research index，非交易所指数，不与单一股票收益混名。
+-
+-Forward市场基准：T0冻结可评估Research Universe，等权固定份额，每股收益按同基准换算，B_j=sum(w_i*(P_i,j/P_i,0))。不因后来变强/退市重选或再归一化剩余成员。完整endpoints才正式OBSERVED；成员终点缺失则benchmark UNKNOWN并披露范围，不能使股票absolute_return失效。
+-Sector基准同式，T0按§20确定sector，冻结成员和等权份额；对stock relative_sector排除目标股票，n<2不提供；SECTOR signal直接使用自身冻结篮子。identity含member/weight/source/adjustment digest。
+-relative_market_return=stock_R−market_B_return；relative_sector_return同理。sector endpoint/path以同一固定篮子计算；日线无法知道成员盘中极值是否同步，故SECTOR的MFE/MAE采用close-only并独立命名MFE_CLOSE/MAE_CLOSE，不能把成员high求和冒充板块intraday高点。板块和股票outcome分开统计。
++# 49A. 市场参考与Forward基准分离
++
++## 49A.1 MARKET_RELATIVE_REFERENCE_V1
++
++Core历史市场参考retN：在起点t-N已符合Universe、按CROSS_SECTION_SESSION_WINDOW_V1可评估股票的等权endpoint return均值，保存起点Universe/可观察集合/coverage；沿用缺失超过20% UNKNOWN的工程候选门，不能只凭现在存活证券补池。市场趋势路径为连续ret1链乘，标daily-rebalanced research index。它只服务rel_market、市场趋势、Market Regime及Core历史比较；RPS自身仍是§10A0横截面retN排名，不以市场参考收益参与排名公式。
++
++identity包含contract_id、parameter_set_id、historical Universe、会话窗口及实际消费source digest。不得用Forward的T0固定篮子替换本字段，也不把N日endpoint均值误称为日再平衡路径的N日累计收益。
++
++## 49A.2 FORWARD_MARKET_BENCHMARK_V1
++
++仅服务Forward relative_market_return、T+N基准路径和control outcome comparison。T0冻结可评估Research Universe、等权初始资金权重w_i（sum=1）与固定持有份额；B_j=sum(w_i*P_i,j/P_i,0)，价格均按同一evaluation basis转换，R_B=B_N-1。不因后来强弱、停牌、退市删成员或再归一化剩余权重。
++
++identity包含独立contract_id、T0成员/初始权重、adjustment identity、benchmark_constituent_policy及参数digest；禁止与MARKET_RELATIVE_REFERENCE_V1共用identity。Core消费者不得读取未来evaluation source。
++
++benchmark_constituent_policy=FORWARD_CONSTITUENT_POLICY_V1：每成员/会话互斥记录ACTUAL_ENDPOINT、CONFIRMED_SUSPENSION、DATA_MISSING、DELISTED、IDENTITY_UNKNOWN或ADJUSTMENT_UNKNOWN及证据；多问题保留reason集合，主状态按IDENTITY_UNKNOWN→ADJUSTMENT_UNKNOWN→DELISTED→CONFIRMED_SUSPENSION→DATA_MISSING→ACTUAL_ENDPOINT优先，避免重复计权。退市有可核验终值另存terminal-value状态，不擅自归零。
++
++字段必须包含benchmark_endpoint_coverage（实际或已核验终值的原始权重和）、benchmark_missing_weight（其补集）、benchmark_suspended_weight、benchmark_delisted_weight、benchmark_unknown_weight、benchmark_quality、benchmark_valuation_coverage、benchmark_marked_weight。主状态权重互斥；missing_weight包含全部无实际终值成员，不能再与其子项相加。unknown_weight为DATA_MISSING/IDENTITY_UNKNOWN/ADJUSTMENT_UNKNOWN权重和。
++
++确认停牌可用最近已验证实际收盘在当前evaluation basis下的等价价格作MARKED_SUSPENSION估值，保持原权重、记录quote_age和价格日期；这不是实际可成交终值，不填ret=0。公司行为换基不可验证时不能carry。DATA_MISSING/身份或复权未知/无终值退市不自动carry、不填0、不删除。
++
++全篮子实际终值齐全时benchmark_quality=OBSERVED；只有已核验的停牌估值补齐且满足事前覆盖门时为MARKED_ESTIMATE，单独输出relative_market_return_marked，禁止混入OBSERVED主统计。剩余不可估值时保留observed_contribution=sum_known(w_i*P_i,j/P_i,0)、各缺失权重和PARTIAL_UNVALUED；该贡献不是完整收益，完整relative_market_return不可用，但不阻断absolute_return、controls绝对路径及已具备证据的其他capability。各日path质量独立，endpoint通过不代表MDD全路径通过。
++
++minimum_endpoint_weight_coverage、maximum_suspension_quote_age及质量到消费者权限矩阵在V4-00G注册ENGINEERING_CANDIDATE，V4-00H以停牌、退市、真实缺口、公司行为样本验收后冻结；REV2不擅定95%/98%/99%。门未冻结只阻断对应估值基准消费者，不阻断独立Core/absolute结算。覆盖达标不能使不可估值价格凭空有效，也不能把MARKED_ESTIMATE改为OBSERVED。
++
++必测5000成员中4999有终值、1确认停牌：若停牌价格可换基且冻结覆盖/quote-age门通过，应有MARKED_ESTIMATE及marked相对结果，不能因单个无实际终值无条件使全能力失效；若换基失败则只限制受影响结果并披露原因。另测终值退市、未知身份、实际缺口、不可换基及所有成员齐全，证明原权重未变。
++
++## 49A.3 板块及Rotation篮子
++
++FORWARD_SECTOR_BENCHMARK_V1沿用§49A.2明确的固定权重、估值和质量规则，但使用独立sector/member identity；T0按§20确定sector并冻结篮子。股票relative_sector排除目标，n<2不提供；SECTOR信号使用自身篮子。relative_market_return=stock_R−market_R_B，relative_sector_return同理；估值版本单独后缀_marked。股票和板块outcome分开统计。
++
++日线不能知道成员盘中极值是否同步，板块仅提供MFE_CLOSE/MAE_CLOSE，不把成员high求和冒充盘中高点。Rotation的pulse篮子采用ROTATION_PULSE_BASKET_V1，复用固定篮子的数学及身份校验，仅消费当日cutoff可见数据，绝不调用未来Forward结果；其篮子为Pulse日前已知成员，按Pulse前一会话同基准价格建立初始等权资金权重。缺失、估值结果作为质量输入，正式retention仅用其冻结允许质量。
+ 
+ # 49B. Matched Controls 与分析
+ 
+@@ -4790,12 +4840,21 @@
+ V4-00C冻结每日scheduled cutoff和观察发布deadline（Asia/Shanghai且存UTC时间），daily_observation_slot=(model_contract_id,state_lineage_id,trade_date)。只有该slot的第一次合规accepted可创建真实enrollment；deadline之后补跑或更换参数属于reconstruction，不允许择优标PIT_OBSERVED。延期/源不可得则记录MISSED_OBSERVATION_SLOT，不悄悄重置日期。已有实时结果的同日修订仍存observations，但不能新增第二套原始样本。
+ source/provider_available、system_available、computed_at、accepted_at、observation_deadline分别记录；“同一trade_date”不等于“当时已知”。切换门使用完整slot日志、P0日志和model identity，禁止只挑通过的20天。
+ 
+-# 52A. 切换政策 CUTOVER_V1
+-
+-只要求工程稳定加最低真实观察，不要求已证明长期优势：
+-SHADOW_STABLE_PASS=同一model_contract_id连续20个市场会话按期accepted，0时序泄漏/duplicate episode corruption/Core identity/P0 state violation，rollback drill通过。漏日/不可评估核心会话不计连续；P0或模型/参数变更重置窗口。
+-PROVISIONAL_FORWARD_GATE=至少5个不同signal_date、30个不同股票正向入选事件（FIRST/REENTRY_PREWATCH/NEW_CONFIRMED）的T5 OBSERVED结果，同一模型，settlement无P0、controls/benchmark覆盖回执已披露。不能用INVALIDATION或同日revision凑30；样本不足延长观察，不降低资格。
+-Focus/UI切换=上述两门 AND MIGRATION_REPLAY_PASS；切换后证据标PROVISIONAL。无明确优势不等于严重退化，不自动阻断。严重退化定义为合同/数据正确性失败、未解释的系统性状态异常或超出事前冻结运行预算，不以后验收益挑阈值。
++# 52A. 切换政策 CUTOVER_V2
++
++切换按capability授予生产权限，不要求先证明长期优势。SHADOW_STABLE_PASS[capability]=同一model_contract_id连续20个市场会话按期accepted，0时序泄漏/duplicate episode corruption/Core identity/P0 state violation，rollback drill通过。漏日/不可评估会话不计连续；P0或该能力模型/参数变更重置其窗口，共享依赖变更影响所有消费者。
++
++STOCK_PROVISIONAL_FORWARD_GATE：至少5个不同signal_date、30个不同股票正向入选逻辑事件（FIRST_PREWATCH/REENTRY_PREWATCH/NEW_CONFIRMED）的T5 OBSERVED，同模型、settlement无P0；同一逻辑事件的revision不重复计，INVALIDATION不凑数。controls/benchmark覆盖和质量分层回执必须披露，估值结果不能充当OBSERVED样本。
++
++SECTOR_PROVISIONAL_FORWARD_GATE按子能力分别冻结：SECTOR_STAGE记录SECTOR_FIRST_PREWATCH、SECTOR_NEW_WARM、SECTOR_NEW_CONFIRMED；ROTATION记录ROTATION_PULSE、ROTATION_ACCEPTED、ROTATION_FAILED。逐事件类型保存unique_episode_count、unique_signal_dates、matured_events、T5价格路径质量及状态结果；同episode不同事件可以分别展示，不可相加冒充不同episode样本。FAILED必须完整纳入失败观察但不能补足正向接受样本门，PULSE不能代替ACCEPTED覆盖。
++
++sector_min_unique_signal_dates、sector_min_unique_episodes、sector_min_matured_events_by_type、rotation_min_accepted_episodes及required_forward_quality在§72登记ENGINEERING_CANDIDATE，V4-00G定义、V4-00H冻结接受政策；REV2不临时拍定最低数值。没有冻结门或样本不足则该scope=SHADOW_ONLY。SECTOR_RISK_CHANGE单独验证事件完整性/风险提示正确性及相关sector路径样本，不能借股票30例自动取得生产资格。
++
++production_permission[capability]=SHADOW_STABLE_PASS[capability] AND 对应FORWARD_GATE[capability] AND MIGRATION_REPLAY_PASS[capability] AND required_dependency_permissions。capability至少区分STOCK_CORE、STOCK_SECTOR_DEPENDENT、SECTOR_STAGE、ROTATION、SECTOR_RISK_CHANGE；共享源可读但未经接受的算法输出不能作为已生产能力的硬依赖。STOCK_CORE通过而Sector不足时，独立Stock路径可production，Sector/Rotation保持Shadow；依赖未通过Sector的Stock路径仍Shadow，不放宽原资格。
++
++Cutover Receipt必含capability、status、shadow_sessions、unique_signal_dates、matured_events（按类型）、forward_quality、migration_gate、production_permission、dependency_scope、parameter_digest。UI按模块标production/shadow，Focus仅接受其source capability已许可的accepted publication，混合页面共享context身份但不混淆权限；禁止用GLOBAL V4 PASS整体切换。
++
++必测stock gate PASS、sector insufficient：Stock独立路径permission=TRUE，Sector/Rotation=FALSE/SHADOW_ONLY，Sector依赖Stock路径不获得权限。反向情形也按依赖图判断。切换后证据标PROVISIONAL；无明确优势不等于严重退化，不自动阻断。严重退化仍按合同/数据失败、系统性状态异常或事前运行预算定义，不用后验收益挑阈值。
+ 
+ # 52B. Gate Capability Matrix
+ 
+@@ -5138,7 +5197,7 @@
+ 
+ ## 59.2 停牌
+ 
+-确认停牌不填ret=0/turnover=0，不当数据缺失；Core连续市场会话窗口遇停牌按CORE_FACTOR_V1返回不足，不跳过日期；Turnover自身历史按TURNOVER_CONTEXT_V1允许跳过确认停牌；Forward按FORWARD_PRICE_PATH_V1固定市场horizon。三者明确分开，不能共享一个无语义的rolling工具。
++确认停牌不填ret=0/turnover=0，不当数据缺失；Core技术窗口为WINDOW_SEMANTICS_OPEN_DECISION，按§10A0在V4-00G比较并冻结技术bar/横截面session口径；Turnover自身历史按TURNOVER_CONTEXT_V1允许跳过确认停牌；Forward按FORWARD_PRICE_PATH_V1固定市场horizon。三者明确分开，不能共享一个无语义的rolling工具。
+ 
+ ---
+ 
+@@ -6130,7 +6189,7 @@
+ 
+ # 72. 参数注册表
+ 
+-contract_id=PARAMETER_REGISTRY_V1，初始parameter_set_id=V422_CODEX_ENGINEERING_01。本文新增规则中的数值均为候选默认值，包含窗口、阈值、计数、coverage、分桶边界、显示cap及排序scale；实现时提取到对应algorithm contract的命名参数，不散落代码。符号阈值没有赋值的模块不得静默选值。
++contract_id=PARAMETER_REGISTRY_V1，初始parameter_set_id=V422_CODEX_ENGINEERING_02（REV1实例保留，不覆盖）。本文新增规则中的数值均为候选默认值，包含窗口、阈值、计数、coverage、分桶边界、显示cap及排序scale；实现时提取到对应algorithm contract的命名参数，不散落代码。符号阈值没有赋值的模块不得静默选值。
+ 
+ 每个参数保存id、contract_scope、value、unit、min/max与边界是否含等号、status、reason、introduced_version、approved_at、supersedes。通用epsilon用于浮点比较仅1e-12（单位随比较字段），金额/价格制度舍入单独按源/制度contract，不用此epsilon识别涨跌停。
+ 
+@@ -6139,6 +6198,8 @@
+ 状态ENGINEERING_CANDIDATE→SHADOW_FROZEN→PROVISIONAL→SUPPORTED或RETIRED。值变更必须新parameter_set_id和model_contract_id，重新冻结cohort；旧值与旧outcome不改。候选默认值不因本文件存在而成为最佳或有效算法。现有Legacy阈值从基线源码提取保留，不用新增默认值覆盖Legacy。
+ 
+ Legacy contract提取、source units/历史制度表与性能预算属于测量型参数，须有真实回执再冻结；不是让实施者发明事实。未就绪只限制其模块，基础盘点和纯Core合同工作可继续。
++
++REV2待冻结注册项：minimum_endpoint_weight_coverage、maximum_suspension_quote_age、benchmark quality→consumer permissions；early_seed_retention_min、early_breadth_retention_min、early_breadth_delta_min、early_top1_concentration_max、mature_strong_retention_min；三类窗口field映射；sector_min_unique_signal_dates、sector_min_unique_episodes、sector_min_matured_events_by_type、rotation_min_accepted_episodes、required_forward_quality。均有contract_scope、单位、状态和owner stage；未赋值不能取得正式消费者权限，按§49A/52A降级。窗口裁决结果亦进入parameter/model digest。
+ 
+ # 73. 禁止实现硬编码与参数偷换
+ 
+@@ -6303,14 +6364,14 @@
+ | V4-00D | TDX VIPDATA Source Contract | 有界下载、隔离staging、manifest、校验、archive与overlap |
+ | V4-00E | Historical Adjustment / Coordinates | 仿射调整、公司行为、历史可见性、Anchor与outcome比较坐标 |
+ | V4-00F | BaoStock Supplemental Contract | 字段单位/strict binding/有界请求；可复用有效回执，不阻断Core |
+-| V4-00G | Algorithm Contract Framework | AST/schema/参数实例、字段producer注册、纯函数Legacy提取规范 |
+-| V4-00H | Capability / Performance / Rollback | 能力scope、预算、失败回执、恢复演练；Phase 0最终回执 |
++| V4-00G | Algorithm Contract Framework | AST/schema/参数实例、字段producer注册、Legacy提取规范；冻结三类窗口语义，注册基准缺失策略、retention和分能力切换参数 |
++| V4-00H | Capability / Performance / Rollback | 能力scope、预算、失败回执、恢复演练；验收基准缺失策略及覆盖门、冻结分能力切换政策；Phase 0最终回执 |
+ | V4-01 | TDX History Bootstrap | Raw archive、历史Universe和重叠核验；历史不足可scope降级 |
+ | V4-02 | Canonical Daily / PIT Periods | Raw/Adjusted、closed/asof周期、Price Limit规则表和覆盖 |
+ | V4-03 | Pure-Core Factors | CORE_FACTOR_V1、市场/sector native primitives、benchmark基础价格路径 |
+-| V4-04 | Full-Market Core Profile | §10B–10I全部Core字段，不依赖高级Anchor/Sector Context/BaoStock |
++| V4-04 | Full-Market Core Profile | §10B–10G + §10I 的Pure-Core字段；明确排除§10H Turnover，不依赖BaoStock/Sector Context/Advanced Structure |
+ | V4-05 | Replay Gate A | DATA_FACTOR_REPLAY_PASS及能力scope，失败只阻断affected后继 |
+-| V4-06 | Supplemental Enrichment | Turnover历史/绑定/补充组件；与Core后继无硬依赖 |
++| V4-06 | Supplemental Enrichment | §10H TURNOVER_CONTEXT_V1、stock_profile_enrichments、supplemental_participation_context；与Core后继无硬依赖 |
+ | V4-07 | Stock Base Seed | BASE_SEED_V1与原始资格 |
+ | V4-08 | Sector / Rotation Core | 共同成员、B0/B1/B2、纯Core legacy sector资格adapter |
+ | V4-09 | Stock PREWATCH | STOCK_PREWATCH_V1原始资格与priority primitives |
+@@ -6322,10 +6383,10 @@
+ | V4-15 | Radar / Cohorts / Settlement | 字段全量登记、事件样本、控制分配、市场/板块benchmark、due planner、价格结算、结果修订、Why Now及readback |
+ | V4-16 | Realtime Shadow Dual-Run | PIT_OBSERVED+SHADOW，真实冻结日账本并每日运行settlement，旧系统继续production |
+ | V4-17 | Shadow UI | 同context token，展示完整已实现组件，不写production Focus |
+-| V4-17G | Shadow Stable / Provisional Forward Gate | §52A两门，样本不足延长观察；禁止以historical replay凑天数 |
++| V4-17G | Shadow Stable / Provisional Forward Gate | §52A按capability的稳定门/Forward门，样本不足仅该scope延长观察；禁止historical replay凑天数 |
+ | V4-18 | Migration Replay Gate | MIGRATION_REPLAY_PASS：前態继承、旧episode/未结算工作、namespace和rollback |
+-| V4-19 | Focus Source Cutover | 仅§52A三门通过后，accepted V4 source进入生产Focus |
+-| V4-20 | Default UI Cutover | 默认V4，Legacy下沉diagnostic，明确PROVISIONAL |
++| V4-19 | Focus Source Cutover | 仅§52A对应capability三门及依赖通过后，该accepted V4 source进入生产Focus |
++| V4-20 | Default UI Cutover | 仅已获production_permission的模块默认V4；其余保持Legacy生产/明确Shadow，按scope标PROVISIONAL |
+ | V4-21 | Continued Forward Observation | 继续累计Shadow/Production各自分层证据；不在此首次开发结算器 |
+ | V4-22 | Independent Audit | 数据/算法/发布/迁移/UI/Forward/rollback独立验收；开放项不自动关闭 |
+ 
+@@ -6638,7 +6699,7 @@
+ | trend_state; weekly_trend_state; monthly_trend_state | TDX adjusted/closed periods | TREND_STATE_V1 | V4-04 | required缺失UNKNOWN |
+ | position_state; near_high20_state; near_high60_state; drawdown20_state; drawdown60_state; pos60/250; bias20_atr; dist_high20_atr | Core price/ATR | POSITION_STATE_V1 | V4-04 | 分母0/历史不足UNKNOWN；pos250独立 |
+ | ma_structure_state | Core MA | MA_STRUCTURE_V1 | V4-04 | UNKNOWN |
+-| relative_market_state; RPS5/20; delta1/3; rel_market_1/3/5 | historical Universe/market | RELATIVE_STATE_V1 + CORE_FACTOR_V1 | V4-03 / V4-04 | non-PIT只diagnostic |
++| relative_market_state; RPS5/20; delta1/3; rel_market_1/3/5 | historical Universe/market | RELATIVE_STATE_V1 + CORE_FACTOR_V1 + MARKET_RELATIVE_REFERENCE_V1 | V4-03 / V4-04 | non-PIT只diagnostic |
+ | compression_state | range/ATR/vol/liquidity | COMPRESSION_STATE_V1 | V4-04 | UNKNOWN |
+ | amount_state; volume_state; core_participation_result | TDX amount/volume/OHLC | AMOUNT_VOLUME_STATE_V1 | V4-04 | UNKNOWN |
+ | core_extension_risk; core_price_damage | Pure-Core price/amount | EXTENSION_RISK_V1 + CORE_FACTOR_V1 | V4-03 / V4-04 | UNKNOWN |
+@@ -6647,7 +6708,7 @@
+ | base_seed_state; matched_seed_paths; seed_participation_annotation | Core | BASE_SEED_V1 | V4-07 | Kleene三值 |
+ | sector_emergence; sector_rs5/20; rank_velocity; dq5; breadth_delta; ma20_width; seed_width; retention; entered/exited; top1/top3_concentration; sector_participation_proxy | PIT common member/Core Seed | SECTOR_FACTORS_V1 / SEED_WIDTH_V1 / SECTOR_AXES_V1 | V4-08 | 覆盖低UNKNOWN，0分母NA |
+ | amount_a_value; amount_a_quality; amount_a_contract_id | 独立Amount A审计 | AUD-AMOUNT-A-06 | V4-08 | OPEN只diagnostic，禁止正式consumer |
+-| rotation_core_state; sector_price_retention_core; rotation_episode_id; rotation_structure_enrichment | B0/历史/固定篮子；structure仅D3 | ROTATION_CORE_V1 | V4-08 / V4-13 | UNKNOWN保留last_known |
++| rotation_core_state; sector_price_retention_core; rotation_episode_id; early_retained; mature_retained; base_seed_retention; breadth_retention; rotation_structure_enrichment | B0/历史/固定篮子；structure仅D3 | ROTATION_CORE_V1 | V4-08 / V4-13 | UNKNOWN保留last_known |
+ | primary_industry; supporting_concepts; algorithmic_support_sector; relative_sector_state; sector_context_state; sector_context_quality | PIT membership/完整LOO | LOO_CONTEXT_V1 | V4-13 | 无合格NA，数据不足UNKNOWN |
+ | stock_prewatch; raw_qualification; final_eligibility | A/C/D2 | STOCK_PREWATCH_V1 / RESEARCH_STATE_V1 | V4-09 / V4-10 | UNKNOWN不计eligible |
+ | maturity_stage; health_state; validity_state; tracking_state; scenario; state_freshness; expiry; reentry | raw资格/D0/D1/冻结前態 | RESEARCH_STATE_V1 | V4-10 | STALE/UNKNOWN不制造退出 |
+@@ -6657,13 +6718,22 @@
+ | market_regime_axes; stress_level; stress_change; regime_ui | Core market/制度coverage | MARKET_REGIME_V1 | V4-03 / V4-04 | UNKNOWN及last_known |
+ | waiting_for; invalid_if; why_now; conflict_panel; hypothesis_set | frozen AST/事件/证据模板 | NEAR_MISS_V1 / STATE_EVENT_V1 / HYPOTHESIS_V1 | V4-15 | UNRESOLVED/INCOMPLETE，不强造文本 |
+ | eligibility_rank; priority_bucket; priority_rank; display_rank; overlap_cluster_id; also_in_sectors | 完整eligible + event filter | PRIORITY_V1 / DISPLAY_V1 | V4-15 | unknown排序末尾，cap不改资格 |
+-| daily_eligibility_ledger; statistical_signal_event; enrollment_id; controls; forward_outcome; benchmark; MFE; MAE; MDD | frozen T0/未来事实隔离结算 | COHORT_V1 / CONTROL_ASSIGNMENT_V1 / FORWARD_PRICE_PATH_V1 / MARKET_BENCHMARK_V1 | V4-15 | 按到期/缺失/停牌/退市分开 |
++| daily_eligibility_ledger; statistical_signal_event; enrollment_id; controls; forward_outcome; benchmark; MFE; MAE; MDD | frozen T0/未来事实隔离结算 | COHORT_V1 / CONTROL_ASSIGNMENT_V1 / FORWARD_PRICE_PATH_V1 / FORWARD_MARKET_BENCHMARK_V1 / FORWARD_SECTOR_BENCHMARK_V1 | V4-15 | 按到期/缺失/停牌/退市分开 |
+ | focus_activation; Focus timeline/path/outcome | accepted Core/原Focus契约 | 现有Focus版本清单 + migration manifest | V4-19 | Shadow不写production |
+ | profile component statuses; quality; source_asof; context token; diagnostic counters | 冻结manifest/组件能力 | PUBLICATION_V1 / QUALITY_V1 | V4-00C / V4-04 / V4-15 | unknown和NOT_IMPLEMENTED分开 |
+ 
+ 只读投影允许同义UI标签，但API枚举/字段不得另起一套；旧relative_market_state→relative_market_state、core_extension_risk→core_extension_risk、rotation_core_state→rotation_core_state为显式schema迁移映射，旧publication原样保留。
+ 
+ ---
++
++REV2字段登记补充（与以上族表同等约束）：
++
++| 字段族 | 合同 | producer阶段 | 接受边界 |
++|---|---|---|---|
++| technical_window_identity; field_window_mapping; calendar_span; actual_count; suspended_count | TECHNICAL_BAR_WINDOW_V1 / CROSS_SECTION_SESSION_WINDOW_V1 / FORWARD_SESSION_WINDOW_V1 | V4-00G定义；V4-03及V4-15分别消费 | OPEN决策不得冒充冻结 |
++| benchmark_constituent_policy; benchmark_endpoint_coverage; benchmark_missing_weight; benchmark_suspended_weight; benchmark_delisted_weight; benchmark_unknown_weight; benchmark_quality; benchmark_valuation_coverage; benchmark_marked_weight; relative_market_return_marked | FORWARD_MARKET_BENCHMARK_V1 / FORWARD_CONSTITUENT_POLICY_V1 | V4-15 | 实际/估值/无法估值分层，不改原权重 |
++| effective_from/to; provider_available_at; observed_at; ingested_at; system_available_at; source_revision_id; supersedes_revision_id; source_identity | REVISIONABLE_FACT_META_V1 | V4-02 | §6A指定各身份/关系表显式嵌入 |
++| cutover_receipt; production_permission; dependency_scope | CUTOVER_V2 | V4-17G / V4-18 / V4-19 / V4-20 | 分能力证据与依赖均通过才授权 |
+ 
+ # 88. 外部数据接入故障矩阵
+ 
+@@ -6723,6 +6793,8 @@
+ ---
+ 
+ # 历史附录 D：V4.1 → V4.2 迁移说明
++
++以下历史附录仅留存版本背景；其中“必须/应该/下一阶段”等不是REV2当前实施指令。当前权威为REV2正文与§78。
+ 
+ 新增：
+ 
+@@ -6917,18 +6989,22 @@
+ 
+ # 附录 G：codex修改版变更追踪
+ 
++当前生效版本为REV2，C01–C06及P2定点变更见同目录《codex修改版_REV2修改说明》。既有《修改说明》保留为REV1历史记录，其中输出SHA256仅对应REV1；不得将历史说明当作当前验收。
++
+ 本版在原件副本直接替换冲突章节，保留产品目标与未冲突说明；详细逐章变更、审计项映射、原件/输出SHA256和自检结果见同目录《codex修改版_修改说明》。DOCUMENT_REVISED不代表IMPLEMENTATION_PASS，也不关闭Amount A/Focus真实Forward等独立审计。
+ 
+ ---
+ 
+ # 本次修订签署状态
+ 
+-DOCUMENT = DA-MSR-V4.2.2-CODEX-REV1
++DOCUMENT = DA-MSR-V4.2.2-CODEX-REV2
+ STATUS = DOCUMENT_REVISED / READY_FOR_BASELINE_AND_CONTRACT_WORK
+ IMPLEMENTATION / REAL_DATA / FORWARD = NOT_VERIFIED_BY_THIS_DOCUMENT_EDIT
+ TDX = READ_ONLY_INPUT
+ BAOSTOCK = SUPPLEMENTAL_ONLY
+ STAGES = SECTION_78_ONLY
++WINDOW_DECISION = OPEN_TO_V4_00G
++CUTOVER = CAPABILITY_SCOPED
+ SETTLEMENT = V4-15_BEFORE_SHADOW
+ INHERITED_AUDITS = OPEN_UNTIL_INDEPENDENT_EVIDENCE
+ 

@@ -1,0 +1,5623 @@
+--- A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_20260925.md
++++ A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_20260925_codex修改版.md
+@@ -1,20 +1,21 @@
+-# 大A市场结构研究系统 V4.2.2 全市场研究系统最终可执行合同
+-
+-> **文档编号**：DA-MSR-V4.2.2-FINAL-EXECUTABLE-CONTRACT  
+-> **版本**：V4.2.2 Final Executable Contract  
+-> **日期**：2026-09-24  
+-> **文档状态**：`FINAL_EXECUTABLE_CONTRACT / READY_FOR_V4_00A_IMPLEMENTATION / NOT_IMPLEMENTED`  
+-> **代码审计基线分支**：`codex/algorithm-v3-incremental-upgrade`  
+-> **代码审计基线 HEAD**：`3ef5bf63455447dd605534dc4c1717eb238a86f5`  
+-> **Focus Tracker 最新修复基线**：包含 `3a2f7a8d92e9313b7b2ad4b5120f9a57d82f5601` 及随后 `3ef5bf6...` 文档/验收闭环  
+-> **适用仓库**：`NanOns/a-share-market-structure-research`  
+-> **前版**：`DA-MSR-V4.2.1-FINAL-CONTRACT-BASELINE / V4.2.1 Final Contract Baseline`  
+-> **本版性质**：在 V4.2.1 合同基础上，吸收 2026-09-25 Codex 再审计中除 BaoStock 接口可用性/额度实测外的全部有效问题，关闭 Rotation 时点反馈、Core Profile 实际依赖、Anchor 跨复权坐标、双时间 PIT、Supplemental→Core 间接污染、算法 Rule AST、同日修订前驱、Forward 观察单位、Shadow Forward 身份、Gate 降级矩阵、跨域继承审计和重复 Seed Path 等合同缺口，并清理重复章节与旧版本残留。本文件取代 V4.2.1，作为唯一可直接拆任务实施的总合同。
+-> **最高任务**：把系统从“谁已经最强”的排行榜，升级成“谁正在发生值得研究的变化、变化处于什么阶段、为什么值得关注、什么会确认、什么会失效、后续实际发生了什么”的可验证研究系统。
+-
+----
+-
+-# 0. V4.2 为什么必须在 V4.1 之上继续升级
++# 大A市场结构研究系统 V4.2.2 codex修改版
++
++> 文档编号：DA-MSR-V4.2.2-CODEX-REV1  
++> 日期：2026-09-25  
++> 状态：DOCUMENT_REVISED / READY_FOR_BASELINE_AND_CONTRACT_WORK / IMPLEMENTATION_NOT_VERIFIED  
++> 原件：A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_20260925.md；本文件由原件副本逐章修改，原件不变。  
++> 代码基线：codex/algorithm-v3-incremental-upgrade @ 3ef5bf63455447dd605534dc4c1717eb238a86f5。  
++> 最高任务：全市场每日状态理解、变化发现、可解释研究、持续跟踪和前瞻验证。
++
++本版统一当前规范，保留原产品目标及无冲突章节，不把文档修改等同代码验收、真实数据验证或长期统计支持。§78 是唯一阶段表；§87A 是字段登记；§72 是参数治理。历史附录只解释沿革，不发出实施指令。遇到未预期冲突，登记 CONTRACT_CONFLICT 并只暂停受影响能力。
++
++允许先做基线盘点、源能力验证和算法合同设计；对应模块实现前须具有其 Rule AST、参数实例、独立测试向量及数据合同。新增阈值均是 ENGINEERING_CANDIDATE，不是市场规律。
++
++所有 TDX 根目录只读；下载、staging、归档、备份和临时文件均在项目管理目录，原子写入。原项目 Phase 0 必须有 FULL_PASS / DEGRADED_PASS / BLOCKED 回执，BLOCKED 范围不得进入 scanner。各阶段记录合同、证据、接受结果和下一阶段。M14 仅按已批准 dataset source contracts、能力门、有界请求运行，hot-rank direct mode 禁止持久化原始/行/批次/历史快照。跨域审计独立跟踪。
++
++---
++
++# 0. 升级背景与产品问题
+ 
+ V4.0 的战略方向是正确的：
+ 
+@@ -69,10 +70,9 @@
+ ---
+ 
+ 
+-
+ # 0A. V4.2 本轮新增的最高级约束
+ 
+-V4.2 相比 V4.1 不是“小版本补丁”，而是把系统从：
++V4.2 相比 本版 不是“小版本补丁”，而是把系统从：
+ 
+ ```text
+ 候选筛选器 + Focus
+@@ -144,119 +144,21 @@
+ **禁止把任何需要 TQ/量化平台权限的能力写进 V4.2 的 Required Dependency。**
+ 
+ 
+-
+-# 0C. V4.2 → V4.2.1 合同修复结论
+-
+-V4.2 已经回答“系统最终要做什么”，但还没有完全回答“按什么依赖顺序、用什么历史身份、如何保证不前视、哪个外部源可以改变正式状态”。
+-
+-V4.2.1 将下列问题提升为正式 P0：
+-
+-1. `Shadow Dual-Run` 必须先于 `Focus Source Cutover`。
+-2. `Daily Stock Profile` 必须拆成 Core / Participation / Context / Structure 四层交付，不能要求 V4-04 一次完成后续模块才有的数据。
+-3. Replay 拆成 **Data/Factor Gate、Algorithm/State Gate、Migration Gate** 三道门。
+-4. 官网 TDX 完整日线包完整，不等于历史 QFQ 已被证明可重建；必须单独冻结 `TDX_HISTORICAL_ADJUSTMENT_CONTRACT_V1`。
+-5. 历史 RPS、市场宽度、横截面 percentile 必须使用当时可评估的 `Historical Security Universe`，禁止用今天仍上市股票回算过去。
+-6. 周K/月K历史回放必须使用 `CLOSED_BEFORE_T0` 或 `AS_OF_T0_PARTIAL`，禁止周一读取周五最终周K、月中读取月末最终月K。
+-7. BaoStock 第一版是 **supplemental enrichment**，不得在主 Publication accepted 之后反向改变当天正式 eligibility / maturity / Focus transition。
+-8. 每个 Publication 必须冻结 Data Cutoff / Source As-Of，避免同一天不同运行时间得到不可解释的正式结果。
+-9. TDX `vipdata.html` 是正式免费历史源入口，必须实现独立 `TDX_VIPDATA_ADAPTER_V1`，不能把“手工下载 ZIP”写成隐含人工前提。
+-10. 历史重建结果必须区分 `RECONSTRUCTED_ASOF` 与真正投产后 `PIT_OBSERVED_FORWARD`。
+-11. 涨跌停/停牌/ST 状态必须有明确制度算法，不允许只凭 `ret >= 9.9%` 猜测。
+-12. 所有用户可见字段必须在 `Field → Algorithm Contract Registry` 中找到数据源、输入、算法、UNKNOWN 规则和实现阶段。
+-
+-因此 V4.2.1 的状态是：
+-
+-```text
+-PRODUCT TARGET
+-= FROZEN
+-
+-DATA AUTHORITY
+-= FROZEN
+-
+-IMPLEMENTATION DEPENDENCY
+-= FROZEN
+-
+-ALGORITHM CONTRACT SHAPE
+-= FROZEN
+-
+-NUMERIC THRESHOLDS
+-= PARAMETERIZED / NOT CLAIMED AS MARKET LAW
+-
+-IMPLEMENTATION
+-= NOT STARTED
+-```
+-
+----
+-
+-# 0D. V4.2.1 不可违反的实现顺序原则
+-
+-```text
+-Source Identity
+-→ Historical Universe / Membership / Adjustment Contracts
+-→ Canonical Daily
+-→ PIT-safe Weekly/Monthly
+-→ Canonical Factors
+-→ Full-Market Core Profile
+-→ Data/Factor Replay Gate
+-→ Seed / Sector / Rotation / PREWATCH / State / Confirmation / Structure
+-→ Algorithm/State Replay Gate
+-→ Validation Cohort + Canonical Radar
+-→ Shadow Dual-Run
+-→ Shadow Stable Gate
+-→ Migration Replay Gate
+-→ Focus Source Cutover
+-→ Default UI Cutover
+-→ Forward Observation
+-```
+-
+-禁止：
+-
+-```text
+-新模型未经 Shadow Stable
+-→ 先写正式 Focus source
+-
+-历史完整包能读取
+-→ 默认认为 QFQ 正确
+-
+-今天 Universe
+-→ 回算两年前横截面
+-
+-最终周K/月K
+-→ 用于周内/月内历史 T0
+-
+-BaoStock 晚到
+-→ 改写已经 accepted 的正式 eligibility/state
+-
+-历史 reconstructed
+-→ 冒充真实 Forward
+-```
+-
+----
+-
+-
+-# 0E. 2026-09-25 Codex 再审计处置回执
+-
+-本版按 `V4_2_1_CONTRACT_REAUDIT_20260925` 逐项处置。
+-
+-BaoStock 的“接口是否可用、额度是否足够、能否返回字段”不再作为待定缺口：用户已经确认当前接口调用正常。V4.2.2 仍保留 **Core 与 Supplemental 的权限边界**，因为这是发布一致性问题，不是接口可用性问题。
+-
+-| Audit ID | V4.2.2 处置 | 合同结果 |
+-|---|---|---|
+-| V421-A01 | **CLOSED BY CONTRACT** | Rotation B[t] 只读 A[t] + frozen history；任何 PREWATCH retention 必须是 t-1，禁止 C[t]→B[t] |
+-| V421-A02 | **CLOSED BY CONTRACT** | Core Profile V1 移除依赖 Anchor/Retention 的 Breakout/Pullback/Recovery；sector relative 后移 |
+-| V421-A03 | **CLOSED BY CONTRACT** | 新增 Anchor Price Coordinate Contract；冻结原坐标，观察日只生成换基视图 |
+-| V421-A04 | **CLOSED BY CONTRACT** | PIT 升级为 effective-time + observed/available-time 双时间合同 |
+-| V421-A05 | **CLOSED BY CONTRACT** | turnover 从 Core risk/impulse/rotation 彻底移除；定义 pure-core 与 supplemental variants |
+-| V421-A06 | **CLOSED AT CONTRACT SHAPE** | 新增 Algorithm Freeze Gate、Rule AST、三值逻辑、窗口和冲突优先级；数值阈值仍参数化 |
+-| V421-A07 | **CLOSED BY CONTRACT** | prior-session predecessor 与 same-day revision parent 分离；production/shadow/model namespace 冻结 |
+-| V421-A08 | **CLOSED BY CONTRACT** | daily eligibility ledger 与 event/episode statistical unit 分离；Forward horizon、MFE/MAE/MDD/control 规则冻结 |
+-| V421-A09 | **CLOSED BY POLICY** | evidence_origin 与 execution_mode 正交；实时 Shadow 可形成 observed Forward；Cutover 采用 Engineering + Provisional Forward Gate |
+-| V421-A10 | **CLOSED BY MATRIX** | 新增 FULL/DEGRADED/BLOCKED capability matrix；BaoStock supplemental 不阻断 Core Gate |
+-| V421-A11 | **INHERITED OPEN REGISTER** | `AUD-AMOUNT-A-06` 与 Focus `REAL_FORWARD_PENDING` 不被 V4 单阶段 PASS 冒充关闭 |
+-| V421-A12 | **CLOSED** | S3 取消独立资格路径，降为 S1 的 Participation Annotation |
+-| 编辑冲突 | **CLOSED** | 重复章节、旧当前版称谓、旧任务号统一清理 |
+-
+-“CLOSED BY CONTRACT”只表示文档语义已冻结，不表示代码实现、真实数据或 Forward 已经通过。
++# 0C. 本版合同状态
++
++产品目标保留；数据/算法按本文统一。实现、外部源覆盖、历史公司行为与真实 Forward 仍需阶段证据。所有页面字段必须进入 §87A 字段族及逐字段机器注册表。
++
++# 0D. 依赖顺序
++
++Source/Identity → Facts/Factors → Core Profile → Replay A → Seed → Sector/Rotation → PREWATCH 原始资格 → Confirmation/Structure detector facts → Final State → Events/Radar/Cohorts/Settlement → Replay B、实时 Shadow → 工程稳定与最低 Forward → Migration Replay → Focus/UI 切换。
++
++开发阶段与每日拓扑不同：§78 约束交付，§13A/77B 约束运行。Settlement 在 Shadow 前交付；历史 replay 不计真实观察天数。
++
++# 0E. 审计处置
++
++上一轮 A01–A12、本轮 B01–B10 和全文新增修订见配套修改说明。状态为 DOCUMENT_REVISED，不自动 CLOSED；代码、真实数据、独立审计、Forward 分别验收。
++
++BaoStock 可复用已有有效调用回执，但能调用不等于全市场覆盖、无限额度或全部历史字段可信。缺能力证据只限制该补充 dataset，不阻断 TDX 主链。
+ 
+ ---
+ 
+@@ -339,7 +241,7 @@
+ 3. 很容易把项目带向横截面因子中性化；
+ 4. 用户当前目标是主观研究辅助，而不是建立市场中性 Alpha 模型。
+ 
+-V4.1 采用：
++本版 采用：
+ 
+ ```text
+ raw relative return
+@@ -363,7 +265,7 @@
+ 
+ 波动率标准化非常有用，纳入正式因子。
+ 
+-行业/市值全面中性化不纳入 V4.1 P0，原因：
++行业/市值全面中性化不纳入 本版 P0，原因：
+ 
+ - 系统本来就要研究行业/概念变化；
+ - 过度中性化会把真实板块效应主动剥离；
+@@ -386,7 +288,7 @@
+ 
+ 稀释，会人为改变每个板块内部真实成员含义。
+ 
+-V4.1 采用：
++本版 采用：
+ 
+ - 每个板块内部：一只成员就是一只成员；
+ - 跨板块 Radar：做重叠诊断、相似板块聚类和展示去重；
+@@ -422,7 +324,7 @@
+ 
+ ### F. “BaoStock BOUND_SOFT 也可以进入正式换手因子”
+ 
+-V4.1 只部分接受。
++本版 只部分接受。
+ 
+ 定义：
+ 
+@@ -600,7 +502,7 @@
+ 
+ > publication 与 trade_date 的一致性合同需要更明确。
+ 
+-V4.1 因此采用：
++本版 因此采用：
+ 
+ ```text
+ publications:
+@@ -639,7 +541,7 @@
+ - 不会自动提升审计质量；
+ - 与现有 publication/revision 体系不兼容。
+ 
+-V4.1 保留：
++本版 保留：
+ 
+ ```text
+ opaque publication_id
+@@ -661,7 +563,7 @@
+ 
+ > 为了不空白而制造候选。
+ 
+-V4.1 的目标是：
++本版 的目标是：
+ 
+ > 弱市允许发现相对变化，但没有合格 PREWATCH 时仍然允许 0。
+ 
+@@ -690,9 +592,9 @@
+ 换手第一版用于：
+ 
+ ```text
+-PARTICIPATION context
+-priority
+-risk flag
++PARTICIPATION supplemental context
++diagnostic-only priority view
++diagnostic risk note
+ hypothesis discriminator
+ ```
+ 
+@@ -750,7 +652,7 @@
+ 
+ # 2. V4.2 最终目标
+ 
+-V4.1 不是做一个更复杂的选股器。
++本版 不是做一个更复杂的选股器。
+ 
+ 最终系统应该回答：
+ 
+@@ -781,65 +683,23 @@
+ # 3. V4.2 唯一主链
+ 
+ ```text
+-┌──────────────────────────────┐
+-│ L0 Source / Identity         │
+-│ TDX / BaoStock / Metadata    │
+-└──────────────┬───────────────┘
+-               ↓
+-┌──────────────────────────────┐
+-│ L1 Canonical Facts           │
+-│ Market / Stock / Sector      │
+-│ Membership / Trading Status  │
+-│ Turnover                     │
+-└──────────────┬───────────────┘
+-               ↓
+-┌──────────────────────────────┐
+-│ L2 Factors                   │
+-│ Position / Structure         │
+-│ Relative Change / Trend      │
+-│ Participation / Risk         │
+-│ Breadth / Diffusion          │
+-└──────────────┬───────────────┘
+-               ↓
+-┌──────────────────────────────┐
+-│ L3 Deterministic State DAG   │
+-│ A Stock Base Seed            │
+-│ B Sector Emergence           │
+-│ C Stock PREWATCH             │
+-│ D Confirmation               │
+-└──────────────┬───────────────┘
+-               ↓
+-┌──────────────────────────────┐
+-│ L4 Canonical Research Radar  │
+-│ Eligibility / Priority       │
+-│ Why Now / Waiting / Invalid  │
+-└──────────────┬───────────────┘
+-               ↓
+-        ┌──────┴─────────┐
+-        ↓                ↓
+-┌───────────────┐ ┌──────────────────┐
+-│ L5 Focus      │ │ L5 Validation    │
+-│ Product Track │ │ Complete Cohort  │
+-└───────┬───────┘ └────────┬─────────┘
+-        ↓                  ↓
+-┌─────────────────────────────────────┐
+-│ L6 Forward / Statistics / UI        │
+-└─────────────────────────────────────┘
+-```
+-
+-最重要的新原则：
+-
+-> **Focus 和 Validation Cohort 从 L4 分叉。**
+-
+-Focus 是用户产品跟踪。
+-
+-Validation Cohort 是算法完整样本跟踪。
+-
+-二者绝不能再混为一体。
+-
+----
+-
+-
++Local Source / Identity / Calendar / Adjustment
++    -> F0 Core Facts / Atomic Factors
++    -> A Stock Seed -> B Sector / LOO / Rotation -> C Stock PREWATCH
++    -> D0 Confirmation -> D1 Structure -> D2 State -> D3 Events
++    -> E Accepted Publication / Radar
++        -> Focus (用户跟踪)
++        -> Complete Validation Cohort -> Due Planner / Forward / Statistics
++
++BaoStock / approved optional sources -> independent Enrichment Revision
++Accepted Core + selected Enrichment -> context-bound UI / diagnostics
++```
++
++每条实际输入边和并行分支按§13A。上图为分层摘要，不允许从Supplemental、Focus、Forward或UI反馈修改Core资格。Focus和Validation Cohort从Accepted Radar分叉，用户筛选不限制完整验证样本。行业成员仅对消费它的能力必需，缺失不全局阻断stock Core。
++
++---
++
++---
+ 
+ # 3A. V4.2 数据源权威矩阵
+ 
+@@ -855,8 +715,8 @@
+ | 前复权价格 | 现有仓库已验收的本地 TDX QFQ 链 | 其他源仅诊断 | 不引入 TQ API 依赖 |
+ | 周K/月K | Canonical TDX 日线重采样 | 不读取 BaoStock 周/月价格 | 禁止多价格源周期混用 |
+ | Turnover | BaoStock `turn`（BOUND_STRICT） | TDX金额/量用于绑定 | 缺失不阻断价格主链 |
+-| Trade Status | BaoStock + 本地 TDX可观察状态 | 二者冲突则降级 | 不把缺失当停牌 |
+-| ST | BaoStock `isST` + 本地证券元数据 | 冲突进入质量告警 | 不静默改变 Universe |
++| Trade Status | accepted local security master + TDX/calendar facts | BaoStock 独立 cross-check | 缺失不是停牌，冲突只标补充告警 |
++| ST | accepted local security master 日期有效身份 | BaoStock 仅 cross-check | 未知则对应规则 UNKNOWN |
+ | 股票代码/证券类型 | 本地 TDX 元数据 | BaoStock basic | 证券 identity 必须统一 |
+ | 行业/概念/风格 | 本地 TDX 板块元数据 | 手工类型映射配置 | 风格板块不进入主 Radar |
+ | Sector PIT Membership | 从 V4 启动日起每日冻结 TDX 成分快照 | 历史无法还原时标 CURRENT_MEMBERSHIP_REPLAY | 不伪造两年前 PIT 成员 |
+@@ -1076,7 +936,7 @@
+ 
+ ## 3B.6 历史复权与公司行为合同
+ 
+-V4.2.1 **禁止把“日线完整包可读取”直接等同于“历史 QFQ 可重建”。**
++本版 **禁止把“日线完整包可读取”直接等同于“历史 QFQ 可重建”。**
+ 
+ 正式拆成两个事实层：
+ 
+@@ -1133,6 +993,12 @@
+ → same QFQ series digest
+ ```
+ 
++### 调整数学与历史截断
++
++已验证同一artifact的affine系数A[j],B[j]满足Q[j]=A[j]*raw[j]+B[j]。以观察日t为坐标时P[j|t]=(A[j]*raw[j]+B[j]-B[t])/A[t]，A[t]>0；多artifact系数不可混算。差值/ATR只乘正尺度，不加beta；价格水平变换才加beta，收益必须在统一坐标重新算而非直接“转换百分比”。Anchor先确定其原始基准，再用对应线性坐标映射，不把系数用于不匹配的raw基准。
++公司行为仅使用effective<=t且在所选消费manifest内可见的事件；即使full-series系数能消去未来行动，也必须单独证明重锚等价、来源可见性及没有后来更正泄漏。现金分红的加法项使简单“价格比总会消因子”不成立。
++独立预期值来自可核验本地源样本/数学向量，不仅比较digest。真实事件源缺证据仍按下面scope降级，不能用在线adjustment补作Core。
++
+ ### 复权失败降级
+ 
+ 如果某段历史：
+@@ -1176,7 +1042,7 @@
+ → 自动换 BaoStock QFQ 补正式主价格
+ ```
+ 
+-BaoStock adjusted OHLC 永远不是 V4.2.1 正式价格 fallback。
++BaoStock adjusted OHLC 永远不是 本版 正式价格 fallback。
+ 
+ ---
+ 
+@@ -1227,90 +1093,12 @@
+ 
+ ---
+ 
+-## 3C.3 未完成周期与 AS-OF 合同
+-
+-当前周/月：
+-
+-```text
+-bar_status = IN_PROGRESS
+-```
+-
+-周期结束：
+-
+-```text
+-bar_status = CLOSED
+-```
+-
+-但历史 replay 还必须解决更严格的问题：
+-
+-> 不能在周一的 T0 使用周五最终周K；不能在月中 T0 使用月底最终月K。
+-
+-正式提供两种历史视图：
+-
+-### `CLOSED_BEFORE_T0`
+-
+-只使用在 T0 之前已经完整结束的周/月 bar。
+-
+-```text
+-weekly_closed_before_t0
+-monthly_closed_before_t0
+-```
+-
+-适合：
+-
+-```text
+-严格慢周期趋势
+-长期背景
+-不希望进行中周期改变含义的算法
+-```
+-
+-### `AS_OF_T0_PARTIAL`
+-
+-由 T0 及之前的 Daily 临时聚合：
+-
+-```text
+-weekly_asof_t0
+-monthly_asof_t0
+-```
+-
+-例如星期一：
+-
+-```text
+-weekly_asof_t0
+-= 本周只有星期一数据
+-```
+-
+-月中：
+-
+-```text
+-monthly_asof_t0
+-= 当月首个交易日至 T0
+-```
+-
+-所有周/月因子必须声明：
+-
+-```text
+-period_view =
+-CLOSED_ONLY
+-或
+-AS_OF_PARTIAL
+-```
+-
+-不得混用。
+-
+-页面可以展示进行中周/月，但必须明确：
+-
+-```text
+-当前周进行中
+-当前月进行中
+-```
+-
+-历史 PIT Replay 必须记录：
+-
+-```text
+-bar_asof_trade_date
+-max_source_trade_date <= T0
+-```
++## 3C.3 周/月 AS-OF
++
++contract_id=PERIOD_ASOF_V1。使用冻结exchange calendar确定周期最后市场交易日，不用自然周五/月末猜测。CLOSED_ONLY只纳入period_last_session<=T0且当期所需日线/确认停牌证据完整、source在cutoff可见的周期；T0恰为周期最后交易日且数据已接受时可纳入，不能无端滞后一周期。
++AS_OF_PARTIAL由period首会话至T0实际bar聚合，保存max_source_trade_date、period_view、asof_trade_date和IN_PROGRESS/CLOSED。所有必需日线价格先换到同一观察坐标再聚合，amount/volume保持原始单位，不调整成交量后混加。
++整周期停牌没有actual OHLC则UNKNOWN/NO_ACTUAL_BAR，不制造零K线；部分停牌可按actual bar聚合但保存calendar_count/actual_count/suspended_count，未知缺口则该bar PARTIAL且不进正式closed trend。
++同一因子必须声明固定period_view，不能按结果好坏挑选。趋势V1只用CLOSED_ONLY，图表可以并列partial。历史删掉T0之后日线/公司行为与知识时间晚到行，T0输出应不变。
+ 
+ ---
+ 
+@@ -1432,10 +1220,10 @@
+ 正式目标：
+ 
+ ```text
+-至少 250 个有效 session turnover history
+-```
+-
+-如果两年历史一次拉取成本可接受，则直接保存两年 supplement；否则先完成 250 session，再后台补齐更早范围。
++优选 250 个此前有效 session turnover history；最低运行窗口按 §9.4
++```
++
++如果两年历史一次拉取成本可接受，则直接保存两年 supplement；否则先完成 §9.4 的最低60个此前有效样本，再后台扩展；不阻断Core。
+ 
+ ---
+ 
+@@ -1531,7 +1319,6 @@
+ `BOUND_SOFT` 只做诊断。
+ 
+ 
+-
+ # 3E. TDX VIPDATA 免费数据适配器合同
+ 
+ 正式适配器：
+@@ -1546,7 +1333,7 @@
+ https://www.tdx.com.cn/article/vipdata.html
+ ```
+ 
+-V4.2.1 不依赖：
++本版 不依赖：
+ 
+ ```text
+ 通达信量化平台
+@@ -1670,11 +1457,22 @@
+ 
+ ---
+ 
++# 3F. Source 接受与交易制度边界
++
++source package、local snapshot、parser版本共同确定输入身份；相同zip hash但parser版本变化必须新parse artifact，不能因hash相同直接跳过重算。source manifest要绑定目标trade_date和冻结来源cutoff，较新包可用于重建历史但不能伪称过去实际观察。
++TDX官网页面只证明提供日线包，不证明历史退市全集/公司行为全集。历史身份不能从文件第一/最后bar推断上市/退市日；板块/PIT成员未知按scope降级。TDX本地在用户更新时可能变化，读取前后size/mtime/hash核验，不稳定重试有界次数或SOURCE_MUTATING，正式分析只读项目快照。
++ZIP处理拒绝绝对路径、..逃逸、符号链接/reparse point逃逸、异常压缩比/总解压大小；临时和最终路径必须都在项目目录，fsync/close后原子promote。URL只能来自获准public source contract及允许重定向host，不把官网“覆盖vipdoc”的客户端说明当本项目写权限。
++有界请求的timeout/最大bytes/重试/并发/每日预算在V4-00D/F能力回执中冻结；已有实测可复用，缺失预算拒绝该网络作业，不运行无界探测。上游429按Retry-After/退避，不无限重试。
++
++PRICE_LIMIT_RULE_V1必须基于目标日期官方制度版本表及本地可验证身份，保存board/security_type/ST/listing_phase、规则生效区间、参考价来源、tick、rounding、无涨跌幅限制例外。previous_close字段区分上次成交收盘与交易所当日涨跌幅参考价，除权等日期不能直接把昨日raw close代入。无权威参考价/规则则limit_status UNKNOWN；不是用BaoStock补作Core authority。制度表的当前或历史事实不能由本方案臆造，V4-02提交官方来源与独立样本后才启用对应规则，其他Pure-Core能力依赖scope运行。
++
++---
++
+ # 4. Source / Publication / Revision 合同
+ 
+ ## 4.1 Publication 继续沿用现有成熟语义
+ 
+-V4.1 不重造一套 publication 世界。
++本版 不重造一套 publication 世界。
+ 
+ 正式 publication 继续保留：
+ 
+@@ -1795,7 +1593,7 @@
+ 
+ ```text
+ mandatory TDX price/factor facts
+-mandatory universe/membership facts
++mandatory universe facts；membership只对sector/context能力必需，stock Core不以membership缺失全局阻断
+ 已明确属于核心资格的 deterministic factors
+ ```
+ 
+@@ -1862,114 +1660,21 @@
+ 
+ ## 4.6 Historical Reconstruction Identity
+ 
+-任何两年历史回算输出必须标：
+-
+-```text
+-evidence_origin
+-```
+-
+-枚举：
+-
+-```text
+-PIT_OBSERVED_FORWARD
+-RECONSTRUCTED_ASOF
+-RECONSTRUCTED_CURRENT_MEMBERSHIP
+-RECONSTRUCTED_PRICE_ONLY
+-DIAGNOSTIC_NON_PIT
+-```
+-
+-规则：
+-
+-```text
+-PIT_OBSERVED_FORWARD
+-= 投产后当日真实冻结并保留的输出
+-
+-RECONSTRUCTED_ASOF
+-= 后来用当前版本算法按 T0 截断历史数据重新计算
+-
+-RECONSTRUCTED_CURRENT_MEMBERSHIP
+-= 历史板块成员只能用当前 snapshot 近似
+-
+-RECONSTRUCTED_PRICE_ONLY
+-= 只有价格历史满足 PIT，Context 不满足
+-
+-DIAGNOSTIC_NON_PIT
+-= 存在已知不能证明的时序条件
+-```
+-
+-正式 Forward Validation Cohort：
+-
+-```text
+-只接受 PIT_OBSERVED_FORWARD
+-```
+-
+-历史 reconstructed 可用于：
+-
+-```text
+-工程 replay
+-案例研究
+-状态机测试
+-参数初检
+-```
+-
+-不得与真实 Forward 合并报告。
+-
+----
+-
++唯一枚举：evidence_origin=PIT_OBSERVED / RECONSTRUCTED_ASOF / RECONSTRUCTED_CORRECTED / DIAGNOSTIC_NON_PIT；execution_mode=PRODUCTION / SHADOW / REPLAY。
++
++PIT_OBSERVED 是运行时真实冻结的源消费集合与结果，生产和 Shadow 均可；事后按 T0 有效/知识时间重建为 RECONSTRUCTED_ASOF；用后来更正为 RECONSTRUCTED_CORRECTED；任何必要时序条件无法证明为 DIAGNOSTIC_NON_PIT。
++
++分别保存 universe_basis、membership_basis、price_basis、quality；不要把 CURRENT_MEMBERSHIP/PRICE_ONLY 混进 origin。每个输出按实际依赖的最弱证据降级。正式观察 cohort 只接受 PIT_OBSERVED，按 Shadow/Production 分层；历史重建只能作工程 replay、案例、参数初检，不合并真实 Forward。
++
++---
+ 
+ ## 4.7 Prior-Session State 与 Same-Day Revision Parent
+ 
+-必须区分：
+-
+-```text
+-prior_session_state_head
+-= 上一交易日最终 accepted Core Publication
+-
+-same_day_revision_parent
+-= 同一 trade_date 的上一 revision
+-```
+-
+-`prior_session_state_head` 用于：
+-
+-```text
+-NEW / PERSISTENT / UPGRADED / DOWNGRADED
+-state transition
+-Why Now
+-episode transition
+-```
+-
+-`same_day_revision_parent` 只用于：
+-
+-```text
+-revision diff
+-source correction audit
+-readback comparison
+-```
+-
+-禁止用 r1 作为 r2 的“上一交易日状态”。
+-
+-例如：
+-
+-```text
+-T-1: no confirmed
+-T r1: confirmed
+-T r2: corrected, still confirmed
+-T r3: corrected, still confirmed
+-```
+-
+-r1/r2/r3 相对 T-1 都是：
+-
+-```text
+-NEW_CONFIRMED
+-```
+-
+-不能因为 revision 顺序变成：
+-
+-```text
+-r1 NEW
+-r2 PERSISTENT
+-r3 PERSISTENT
+-```
++t 首次创建计算 lineage 时，冻结同模型上一市场交易日 accepted publication id、revision、logical digest 为 prior_session_state_head。t 的所有同日 revision 使用相同前驱；same_day_revision_parent 只用于修订差异。
++
++T-1 未确认、T r1/r2/r3 均确认，则三者都是 NEW_CONFIRMED。若 r2 撤销资格，追加事件 observation RETRACTED；当前投影按 r2，原实时 enrollment 保留并标 SOURCE_CORRECTION，不伪造市场失效。
++
++T-1 后来更正不改变已冻结 T；要传播则新建 CORRECTED_RECONSTRUCTION lineage 有序重算。上一市场日未发布时记录 gap，不能跨多日称“昨日”；纯事实可发布，状态暂停升级/退出，补齐有序状态或显式初始化边界后恢复。
+ 
+ ---
+ 
+@@ -1995,6 +1700,8 @@
+ 
+ Shadow 必须读取 Shadow 自己的 prior-session state，不能把 Legacy 前态当 V4 前态。
+ 
++model_contract_id 绑定代码/AST/参数/源语义摘要；参数变更必须新模型身份。state_lineage_id 与执行 namespace 分开：同模型 Shadow→Production 经 migration manifest 显式继承最后 Shadow 前态与 episode mapping，不制造 FIRST/REENTRY。不同模型产生 MODEL_BOUNDARY 和新 cohort。旧 episode follow-up、pending outcome 独立保留结算。
++
+ ---
+ 
+ ## 4.9 UI Context Token
+@@ -2031,7 +1738,7 @@
+ 
+ 由版本化合同定义。
+ 
+-V4.2.1 不在设计文档里擅自重新决定：
++本版 不在设计文档里擅自重新决定：
+ 
+ - ST 是否排除；
+ - 北交所是否排除；
+@@ -2054,30 +1761,11 @@
+ 
+ ## 5.2 Canonical Trading Status
+ 
+-新增标准状态：
+-
+-```text
+-ACTIVE
+-UP_LIMIT
+-DOWN_LIMIT
+-ONE_WAY_UP_LIMIT
+-ONE_WAY_DOWN_LIMIT
+-SUSPENDED
+-RESUMED
+-DELISTING
+-DATA_GAP
+-UNKNOWN
+-```
+-
+-原则：
+-
+-- 停牌不是 0 收益；
+-- 停牌不是 0 换手；
+-- 数据缺失不是停牌；
+-- 涨跌停 return 是真实可观察价格结果，但不得解释成“真实需求只有 10%”。
+-
+----
+-
++trading_status=ACTUAL_TRADED / SUSPENDED / DATA_GAP / UNKNOWN。RESUMED 是事件，DELISTING 是 lifecycle 字段；涨跌停独立为 limit_status。确认停牌需日期有效证据；无 bar 不等于停牌，换手/金额不填零。
++
++收益窗口、状态计数和 Forward horizon 分别按 §10A0/31/46A，不能用一个“有效会话”代替不同时间尺度。
++
++---
+ 
+ ## 5.3 Historical Security Lifecycle / Survivorship Contract
+ 
+@@ -2246,87 +1934,15 @@
+ ---
+ 
+ 
+-# 6A. 双时间 PIT：Effective Time 与 Knowledge Time
+-
+-只检查：
+-
+-```text
+-effective_date <= T0
+-```
+-
+-不足以证明 T0 当时可见。
+-
+-所有可修订历史事实至少保存：
+-
+-```text
+-effective_from
+-effective_to
+-
+-observed_at
+-available_at
+-ingested_at
+-
+-source_revision_id
+-supersedes_revision_id
+-source_identity
+-```
+-
+-### `AS_RECORDED`
+-
+-用于回答：
+-
+-> 当时系统实际知道什么？
+-
+-必须满足：
+-
+-```text
+-effective_from <= T0
+-AND (effective_to IS NULL OR effective_to > T0)
+-AND available_at <= publication_cutoff_at
+-```
+-
+-用于：
+-
+-```text
+-PIT Replay
+-Forward Validation
+-真实状态机
+-Focus
+-```
+-
+-### `CORRECTED_RECONSTRUCTION`
+-
+-用于回答：
+-
+-> 事后使用后来修正的数据，重新理解 T0 会怎样？
+-
+-可以使用后来才到达、但 effective date 属于过去的 revision。
+-
+-必须标：
+-
+-```text
+-evidence_origin = RECONSTRUCTED_CORRECTED
+-```
+-
+-不能覆盖 `AS_RECORDED`。
+-
+-### 晚到修订验收
+-
+-构造：
+-
+-```text
+-revision arrives at T+10
+-effective_from = T-5
+-```
+-
+-要求：
+-
+-```text
+-AS_RECORDED(T) unchanged
+-CORRECTED_RECONSTRUCTION(T) may change
+-```
+-
+-历史已经冻结的真实 Forward 永不追溯漂移。
++# 6A. 双时间 PIT 与实际消费版本
++
++可修订事实保存 effective_from/to、provider_available_at（可未知）、observed_at、ingested_at、source_revision_id、supersedes_revision_id、source_identity。available_at 旧别名只指 system_available_at=max(observed_at,ingested_at)，不能填供应商公开时间。
++
++AS_RECORDED 读取 publication_consumed_sources 冻结的 key/revision/digest，不扫描最新事实。构建要求 effective_from<=T0<effective_to（空结束为无穷）、system_available_at<=cutoff；同 key 选 cutoff 内更正链唯一末端。分叉、内容冲突或无确定顺序为 SOURCE_REVISION_CONFLICT，不随意取最大时间。
++
++原始行、tombstone、版本关系 append-only；消费 manifest 与 accepted head 原子提交。供应商早已公开但系统迟到的数据不属于过去 AS_RECORDED。知识时间重建与实际观察分开。
++
++验收：T+10 才到的 effective=T-5 行、多版本、删除、乱序、分叉。旧 publication 与原 Forward enrollment digest 不变，当前修订显式变化。
+ 
+ ---
+ 
+@@ -2404,9 +2020,6 @@
+ 
+ trading_status
+ 
+-turnover_rate
+-turnover_quality
+-
+ fact_digest
+ quality_status
+ quality_codes
+@@ -2453,12 +2066,10 @@
+ exited_count
+ retention
+ 
+-amount_a
+-amount_delta3
+-
+-base_seed_count
+-base_seed_width_raw
+-base_seed_width_adjusted
++amount_a_value / amount_a_quality（独立审计diagnostic）
++sector_participation_proxy / proxy_delta3
++
++base_seed aggregates 存 PASS B sector_seed_aggregates，不属于预计算 native facts
+ 
+ extended_share
+ 
+@@ -2473,97 +2084,13 @@
+ ---
+ 
+ 
+-
+ ## 7.4 `stock_daily_profile`
+ 
+-它是全市场“解释后的状态投影”，不重复存全部原始因子。
+-
+-主键：
+-
+-```text
+-(publication_id, security_id)
+-```
+-
+-必须保存组件完成度，而不是单个总 READY：
+-
+-```text
+-core_profile_status
+-participation_profile_status
+-context_profile_status
+-structure_profile_status
+-
+-profile_quality
+-profile_quality_codes
+-profile_digest
+-```
+-
+-### Core Profile（V4-04 必须）
+-
+-```text
+-trend_state
+-weekly_trend_state
+-monthly_trend_state
+-position_state
+-ma_structure_state
+-relative_state
+-compression_state
+-amount_state
+-volume_state
+-extension_risk
+-basic_breakout_state
+-basic_pullback_state
+-basic_recovery_state
+-trading_status
+-```
+-
+-### Participation Enrichment（V4-05/06）
+-
+-```text
+-turnover_state
+-turnover_ratio20
+-turnover_pct60
+-participation_result_state
+-```
+-
+-允许：
+-
+-```text
+-PENDING / UNKNOWN
+-```
+-
+-不阻断 Core Profile。
+-
+-### Context Enrichment（Sector/Rotation 完成后）
+-
+-```text
+-primary_industry
+-supporting_concepts
+-algorithmic_support_sector
+-sector_context_state
+-rotation_context_state
+-sector_context_quality
+-```
+-
+-### Structure Enrichment（Support Engine 完成后）
+-
+-```text
+-latest_structure_event_id
+-active_anchor_id
+-support_state
+-acceptance_state
+-```
+-
+-### Why Now
+-
+-不是 V4-04 Core 字段。
+-
+-正式由：
+-
+-```text
+-State Event / Canonical Radar
+-```
+-
+-产生，再投影到个股页面。
++主键(publication_id,security_id)，trade_date 复合 FK。Core 字段仅为 §10A.3 Core Profile V1；不含 basic_breakout/pullback/recovery 或 sector relative。
++
++Participation 在 V4-06，Context/Structure 在 V4-13，Why Now 在 V4-15。组件状态独立为 NOT_IMPLEMENTED/PENDING_SOURCE/READY/PARTIAL/UNKNOWN_DATA/DEGRADED/NOT_APPLICABLE。全产品目标不要求 V4-04 完成后续能力。
++
++Core digest 只绑定 Core；combined view digest 绑定完整 context token。异步 turnover 仅存 stock_profile_enrichments，不能改变 stock_fact_daily。
+ 
+ ---
+ 
+@@ -2627,20 +2154,21 @@
+ 
+ ---
+ 
+-## 7.8 `sector_rotation_state_daily`
++## 7.8 `sector_rotation_core_state_daily`
+ 
+ ```text
+ publication_id
+ sector_id
+-rotation_state
++rotation_core_state
+ relative_acceleration
+ breadth_state
+ retention_state
+ acceptance_state
+ participation_state
+ risk_state
+-why_now_digest
+-```
++```
++
++Why Now 单独存 D 阶段 state_events/Radar，不进入 B 的摘要。
+ 
+ ---
+ 
+@@ -2658,7 +2186,6 @@
+ parser_version
+ import_status
+ ```
+-
+ 
+ 
+ ## 7.10 `security_lifecycle_history`
+@@ -2701,6 +2228,8 @@
+ 
+ 不得通过此表直接改写 Core maturity / eligibility。
+ 
++Core、sector aggregates、structure observations、state transitions、Radar/enrollment 均绑定 publication_id 与模型。Anchor 原值不可变，validity 存 observation。enrichment_revision 为每个 publication 全局 manifest revision，包含各证券/provider 的具体 revision；唯一键(publication_id,enrichment_revision,security_id,provider)。周期 bar 唯一键(publication_id,security_id,period_start_date,period_view,price_basis)，保存 adjustment identity，不覆盖旧周期版本。
++
+ ---
+ 
+ ## 7.12 `publication_source_cutoffs`
+@@ -2717,6 +2246,15 @@
+ ```
+ 
+ 用于证明每个结果当时读到了什么。
++
++---
++
++## 7.13 公共字段和实体完整性
++
++PUBLICATION_V1：每个revision有不同opaque publication_id；UNIQUE(namespace,trade_date,core_revision)，trade_date复合FK防串日；parent/predecessor引用都按id冻结。currency=CNY、price/amount/volume单位分别存source contract，OHLC有限且positive，low<=open/close<=high，volume/amount非负；违例不静默修正。
++QUALITY_V1：value、quality、reason、source_digest分开，不把UNKNOWN字符串存入数值列。事实族保留raw字段；派生字段保存contract/parameter/input digest。只有最终visibility由accepted head决定，事务失败的staging不被读API/统计消费。
++security_id不是单纯symbol：带exchange与lifecycle identity，改名不改实体，代码复用另建实体；日期有效identity不足则UNKNOWN。Core actual_bar=(trading_status=ACTUAL_TRADED且OHLC/身份/日期通过)。
++sector_seed_aggregates等B产物单独schema，不放进F0 native表假装已有；structure_health按关联事件优先级BROKEN→DAMAGED、HELD_CONFIRMED→STABLE、RECLAIMED→IMPROVING、其余有效→STABLE、缺数据→UNKNOWN，未交付组件NOT_IMPLEMENTED。
+ 
+ ---
+ 
+@@ -2771,7 +2309,7 @@
+ = required
+ 
+ turnover
+-= optional
++= supplemental-only，非 Core qualification input
+ ```
+ 
+ 如果 BaoStock 缺失：
+@@ -2863,25 +2401,9 @@
+ 
+ ## 9.4 历史回填
+ 
+-第一阶段目标：
+-
+-```text
+-最近 60 个有效交易会话
+-```
+-
+-原因：
+-
+-- turnover percentile60 需要 60 个有效 session；
+-- 20日因子仅需 20；
+-- 60 日足够第一版结构上下文。
+-
+-回填任务：
+-
+-```text
+-checkpointable
+-idempotent
+-budget-aware
+-```
++最低覆盖：目标日前60个实际成交且 strict-bound 样本，加目标日；优选此前250样本。基准排除当日，确认停牌才能跳过，未知网络缺失不能跳过。最大回看250市场会话，不足窗口只降级该指标。
++
++任务 checkpointable/idempotent/budget-aware；每请求 timeout、并发、重试预算、熔断写入 source contract。已有回执可复用，不做无界测速，不阻断 Core。
+ 
+ ---
+ 
+@@ -2924,26 +2446,11 @@
+ 
+ ## 9.6 Turnover Factor
+ 
+-有效窗口分别要求：
+-
+-```text
+-turnover_ma5      >= 5 valid sessions
+-turnover_median20 >= 20
+-turnover_ratio20  >= 20
+-turnover_pct20    >= 20
+-turnover_pct60    >= 60
+-```
+-
+-停牌：
+-
+-```text
+-exclude from valid-session window
+-```
+-
+-不是填 0。
+-
+----
+-
++contract_id=TURNOVER_CONTEXT_V1。priorN 为 t 前最近 N 个确认实际成交且严格绑定样本；未知缺失不能跳过，N=5/20/60，最大回看250市场日。ma5=prior5均值，median20=prior20中位数，ratio20=turn[t]/median20（分母<=0为UNAVAILABLE）；pctN=100*(count(prior<turn[t])+0.5*count(prior=turn[t]))/N。delta3=turn[t]-turn[t-3]，市场日期端点缺失为UNKNOWN。
++
++全部为 supplemental，不进入 Core eligibility、正式排序或 Focus activation。单位由 source contract 冻结。
++
++---
+ 
+ ## 9.7 Turnover 第一版权限边界
+ 
+@@ -3155,7 +2662,7 @@
+ 如果 ATR 数据质量不足：
+ 
+ ```text
+-fallback = realized_volatility normalized distance
++fallback = NONE；ATR不足时该归一化字段UNKNOWN（CORE_FACTOR_V1）
+ ```
+ 
+ 但必须带：
+@@ -3216,235 +2723,32 @@
+ ---
+ 
+ 
+-# 10A0. Algorithm Freeze Gate：状态名不等于算法合同
+-
+-任何模块只有枚举、示例或自然语言，都不得视为“算法已冻结”。
+-
+-每个算法合同必须包含：
+-
+-```text
+-algorithm_contract_id
+-version
+-
+-input_fields[]
+-input_time_semantics[]
+-required_quality[]
+-
+-rule_ast
+-three_valued_logic
+-
+-window_definition
+-include_current_session
+-comparison_basis
+-rounding_policy
+-epsilon_policy
+-
+-mutual_exclusion_policy
+-multi_label_policy
+-conflict_priority
+-
+-state_transition_priority
+-unknown_behavior
+-
+-output_fields[]
+-output_identity_digest
+-test_vectors[]
+-```
+-
+-数值阈值可以进入 Parameter Registry；
+-但 Rule topology、AND/OR 括号、输入时点、窗口、互斥顺序、三值逻辑、状态冲突优先级必须在实现前冻结。
+-
+-## 三值逻辑
+-
+-```text
+-TRUE  AND UNKNOWN = UNKNOWN
+-FALSE AND UNKNOWN = FALSE
+-
+-TRUE  OR UNKNOWN  = TRUE
+-FALSE OR UNKNOWN  = UNKNOWN
+-
+-NOT UNKNOWN = UNKNOWN
+-```
+-
+-Hard Gate 为 UNKNOWN：
+-
+-```text
+-QUALIFICATION = UNKNOWN
+-```
+-
+-不能自动 FALSE，也不能自动 PASS。
+-
+-## Trend State 互斥优先级
+-
+-基础谓词：
+-
+-```text
+-P_ABOVE20
+-P_ABOVE60
+-S20_UP
+-S20_DOWN
+-S60_UP
+-S60_DOWN
+-HH_PROGRESS
+-LL_PROGRESS
+-STRUCTURE_DAMAGED
+-```
+-
+-状态优先级：
+-
+-```text
+-1 UNKNOWN
+-2 DOWNTREND_STRONG
+-3 UPTREND_STRONG
+-4 DOWNTREND
+-5 UPTREND
+-6 SIDEWAYS_WEAK
+-7 SIDEWAYS_STRONG
+-8 SIDEWAYS
+-```
+-
+-示意拓扑：
+-
+-```text
+-DOWNTREND_STRONG =
+-  (NOT P_ABOVE20)
+-  AND S20_DOWN
+-  AND S60_DOWN
+-  AND LL_PROGRESS
+-
+-UPTREND_STRONG =
+-  P_ABOVE20
+-  AND S20_UP
+-  AND (P_ABOVE60 OR S60_UP)
+-  AND HH_PROGRESS
+-  AND (NOT STRUCTURE_DAMAGED)
+-
+-DOWNTREND =
+-  (NOT P_ABOVE20)
+-  AND S20_DOWN
+-  AND (LL_PROGRESS OR (NOT P_ABOVE60))
+-
+-UPTREND =
+-  P_ABOVE20
+-  AND S20_UP
+-  AND (NOT STRUCTURE_DAMAGED)
+-```
+-
+-其余状态按剩余可评估空间和 relative state 映射。
+-
+-## Position State
+-
+-输入：
+-
+-```text
+-bias20_atr
+-dist_high20_atr
+-position60
+-position250_if_available
+-```
+-
+-互斥状态：
+-
+-```text
+-EXTENDED
+-HIGH
+-MID_HIGH
+-MID
+-MID_LOW
+-LOW
+-UNKNOWN
+-```
+-
+-`EXTENDED` 优先于普通 HIGH。
+-
+-## Relative State
+-
+-Core 只用：
+-
+-```text
+-relative_market
+-RPS acceleration
+-```
+-
+-输出：
+-
+-```text
+-ACTIVE_EMERGENCE
+-PASSIVE_RESILIENCE
+-IMPROVING
+-STABLE
+-WEAKENING
+-WEAK
+-UNKNOWN
+-```
+-
+-Sector relative 只属于 Context Enrichment。
+-
+-## Compression State
+-
+-输入：
+-
+-```text
+-range_ratio_5_20
+-atr_ratio_5_20
+-realized_vol_ratio_5_20
+-amount_quietness
+-```
+-
+-输出：
+-
+-```text
+-COMPRESSED_STRONG
+-COMPRESSED
+-NORMAL
+-EXPANDING
+-EXPANDING_STRONG
+-UNKNOWN
+-```
+-
+-冲突时扩张类优先于压缩类，防止同日既“强收缩”又“强扩张”。
+-
+-## Stress Level 与 Stress Change 分离
+-
+-```text
+-stress_level =
+-LOW / ELEVATED / HIGH / UNKNOWN
+-
+-stress_change =
+-RISING / STABLE / DECLINING / UNKNOWN
+-```
+-
+-禁止使用未定义的：
+-
+-```text
+-stress_level = DECLINING
+-```
+-
+-## 同日多状态冲突优先级
+-
+-```text
+-1 HARD_INVALIDATION
+-2 MODEL_BOUNDARY
+-3 EXIT/CLOSE
+-4 CONFIRMATION_UPGRADE
+-5 MATURITY_UPGRADE
+-6 HEALTH_DOWNGRADE
+-7 HEALTH_UPGRADE
+-8 PERSISTENT
+-```
+-
+-每个轴内部必须单值。
+-
+-## Algorithm Freeze 状态
+-
+-```text
+-DRAFT
+-RULE_AST_FROZEN
+-TEST_VECTOR_PASS
+-SHADOW_READY
+-```
+-
+-未达到 `RULE_AST_FROZEN` 不得进入正式实现验收。
++# 10A0. 原子因子、三值逻辑与冻结门
++
++每个算法 contract id + §72 parameter_set_id 必须可序列化为 input/producer/time/quality、AST、窗口、舍入、互斥、输出身份和测试向量。V4-00G 建框架，对应阶段先生成机器合同再实现；不要求未来模块完成才准基线盘点。
++
++Kleene 三值逻辑：FALSE AND UNKNOWN=FALSE；TRUE AND UNKNOWN=UNKNOWN；TRUE OR UNKNOWN=TRUE；FALSE OR UNKNOWN=UNKNOWN；NOT UNKNOWN=UNKNOWN。Hard Safety 先归约：已知FALSE拒绝，否则含UNKNOWN则UNKNOWN；禁止 None!=True 通过。分类按 first-true；高优先级未知分支可能改变结果则UNKNOWN，optional diagnostics不污染资格。
++
++## CORE_FACTOR_V1
++
++t 是冻结市场日历索引。O/H/L/C 在观察日同一已验证仿射坐标，a/v 是原始金额/量。全精度计算和比较，仅显示舍入。零分母为UNKNOWN，不用epsilon造巨大有效数。
++
++- MA_N=最近N市场会话收盘均值；本版要求连续实际bar，确认停牌也不填0/不跳日凑数，缺失为INSUFFICIENT_CONTIGUOUS_HISTORY。
++- retN=C[t]/C[t-N]-1；volN=std(log(C[j]/C[j-1]),ddof=0)，j=t-N+1..t，未年化，均需N+1实际bar。
++- TR[j]=max(H[j]-L[j],abs(H[j]-C[j-1]),abs(L[j]-C[j-1]))；ATR_N=SMA(TR,N)。ATR<=0时归一化UNKNOWN，本版不自动换volatility fallback。
++- prior_highN=max(H[t-N:t-1])；HHV_N=max(H[t-N+1:t])；低点同理。pos60=(C-LLV60)/(HHV60-LLV60)，零振幅UNKNOWN。
++- slope20=(MA20[t]-MA20[t-5])/ATR20；slope60=(MA60[t]-MA60[t-10])/ATR20。
++- HH_PROGRESS=max(H[t-4:t])>max(H[t-9:t-5])；LL_PROGRESS=min(L[t-4:t])<min(L[t-9:t-5])。
++- RPS_N=100*(less+0.5*(equal-1))/(n-1)，N=5/20；对同日historical evaluable Universe retN排名，n<2 UNKNOWN，同值同分。delta使用百分点。
++- rel_market_N=retN-market_reference_return_N（§49A）；delta3=rps5[t]-rps5[t-3]。
++- range_ratio=(HHV5-LLV5)/(HHV20-LLV20)；atr_ratio=ATR5/ATR20；vol_ratio=vol5/vol20。
++- amount_ratioN=a[t]/mean(a[t-N:t-1])；volume_ratioN同理，N=5/20。percentile60按prior60 midrank，排除当日。
++- CLV=(C-L)/(H-L)；H=L时UNKNOWN，不凭一字板虚构收盘强度。
++- core_price_damage=(C<prior_low20-0.5*ATR20 AND ret1<0)，只读价格，不读Anchor/Final State。
++
++严格连续窗口是保守工程基线，不代表停牌的经济收益为0。Forward另有路径规则。300市场日warm-up只是规划目标，各字段实际首个可用日独立报告。
++
++本文章节规则实例化为RULE_AST_FROZEN，经schema及独立正反向向量验收才TEST_VECTOR_PASS。旧V3/V3.3通过§34精确extraction manifest冻结，不能仅说沿用思想。
+ 
+ ---
+ 
+@@ -3525,7 +2829,7 @@
+ 明确不属于 Core V1：
+ 
+ ```text
+-sector_relative_state
++sector_relative_market_state
+ algorithmic_support_sector
+ rotation_context
+ 
+@@ -3628,529 +2932,73 @@
+ 
+ # 10B. Trend State 算法
+ 
+-## 10B.1 不用单一 `close > MA20`
+-
+-输入：
+-
+-```text
+-close
+-MA5/10/20/60
+-MA20 slope
+-MA60 slope
+-5/20/60 日高低点结构
+-RPS20
+-ATR / realized volatility
+-```
+-
+-核心派生：
+-
+-```text
+-ma20_slope5
+-= ma20[t] / ma20[t-5] - 1
+-
+-ma60_slope10
+-= ma60[t] / ma60[t-10] - 1
+-
+-price_above_ma20
+-price_above_ma60
+-
+-hh20_progress
+-ll20_progress
+-```
+-
+-阈值全部来自 parameter registry。
+-
+----
+-
+-## 10B.2 Trend State
+-
+-```text
+-UPTREND_STRONG
+-UPTREND
+-SIDEWAYS_STRONG
+-SIDEWAYS
+-SIDEWAYS_WEAK
+-DOWNTREND
+-DOWNTREND_STRONG
+-UNKNOWN
+-```
+-
+-示例 Rule Path：
+-
+-### UPTREND_STRONG
+-
+-```text
+-close > ma20
+-AND ma20_slope5 > slope_up_threshold
+-AND ma20 >= ma60 or ma60 improving
+-AND recent structure not damaged
+-```
+-
+-### DOWNTREND
+-
+-```text
+-close < ma20
+-AND ma20_slope5 < slope_down_threshold
+-AND lower-high/lower-low evidence
+-```
+-
+-### SIDEWAYS
+-
+-```text
+-abs(ma20_slope_vol_adj) small
+-AND price oscillates around ma20
+-AND no directional high/low progression
+-```
+-
+-UNKNOWN 不能自动归为 SIDEWAYS。
+-
+----
+-
+-## 10B.3 周/月趋势
+-
+-由派生 Weekly / Monthly bars 计算：
+-
+-```text
+-weekly MA5 / MA10 / MA20
+-monthly MA3 / MA6 / MA12
+-```
+-
+-第一版页面只需要：
+-
+-```text
+-WEEKLY_UP / WEEKLY_FLAT / WEEKLY_DOWN
+-MONTHLY_UP / MONTHLY_FLAT / MONTHLY_DOWN
+-```
+-
+-若当前周/月是 `IN_PROGRESS`，展示：
+-
+-```text
+-当前周/当前月进行中
+-```
+-
+-不能与 CLOSED bar 等价。
+-
+----
+-
+-# 10C. Position State 算法
+-
+-输入：
+-
+-```text
+-bias20
+-bias60
+-pos60
+-pos120
+-pos250
+-距20/60日高
+-ATR-normalized bias/dist
+-```
+-
+-核心：
+-
+-```text
+-POS60 = (close - LLV60) / max(HHV60 - LLV60, epsilon)
+-BIAS20_ATR = (close - MA20) / ATR20
+-DIST_HIGH20_ATR = (HHV20_prior - close) / ATR20
+-```
+-
+-输出：
+-
+-```text
+-LOW_ZONE
+-MID_LOW
+-MID_ZONE
+-MID_HIGH
+-HIGH_ZONE
+-EXTENDED
+-UNKNOWN
+-```
+-
+-原则：
+-
+-- 绝对百分比用于 UI；
+-- ATR/波动标准化用于跨股票算法比较；
+-- HIGH_ZONE 不等于风险高；
+-- EXTENDED 需要同时参考位置、ATR 距离和近期推进。
+-
+----
++contract_id=TREND_STATE_V1。required：MA20/60、slope20/60、HH/LL_PROGRESS、core_price_damage、C、ATR20。UP20=slope20>0.1，DOWN20=slope20<−0.1；UP60/DOWN60同理。依次first-true：
++
++| 状态 | Rule AST |
++|---|---|
++| DOWNTREND_STRONG | C<MA20 AND DOWN20 AND DOWN60 AND LL_PROGRESS |
++| UPTREND_STRONG | C>MA20 AND UP20 AND (C>MA60 OR UP60) AND HH_PROGRESS AND NOT core_price_damage |
++| DOWNTREND | C<MA20 AND DOWN20 |
++| UPTREND | C>MA20 AND UP20 AND NOT core_price_damage |
++| SIDEWAYS_WEAK | C<MA20 |
++| SIDEWAYS_STRONG | C>MA20 |
++| SIDEWAYS | 其余可评估情况 |
++
++周趋势仅用CLOSED_ONLY：WEEKLY_UP=Cw>MA5w AND MA5w>MA5w[-1]，DOWN反向，其余FLAT。月线用MA3m同规则。未知为UNKNOWN；进行中bar仅在图表另标，不影响正式趋势。
++
++# 10C. Position State
++
++contract_id=POSITION_STATE_V1。bias20_atr=(C-MA20)/ATR20，dist_high20_atr=(prior_high20-C)/ATR20。依次EXTENDED（bias>=3）、HIGH_ZONE（pos60>=0.8）、MID_HIGH（>=0.6）、MID_ZONE（>=0.4）、MID_LOW（>=0.2）、LOW_ZONE。required未知则UNKNOWN；pos250仅诊断。
++near_highN_state(N=20/60)：d=(prior_highN-C)/ATR20；d<0 ABOVE_PRIOR_HIGH，0<=d<=0.5 NEAR，其余BELOW。drawdownN=C/HHV_N-1；>=−0.05 SHALLOW，>=−0.15 MODERATE，其余DEEP。这些是描述，不是接受突破或统一风险。
+ 
+ # 10D. MA Structure State
+ 
+-输出：
+-
+-```text
+-BULL_ALIGNED
+-BULL_TRANSITION
+-MIXED
+-BEAR_TRANSITION
+-BEAR_ALIGNED
+-UNKNOWN
+-```
+-
+-例如：
+-
+-```text
+-BULL_ALIGNED:
+-MA5 > MA10 > MA20
+-AND MA20 slope > 0
+-```
+-
+-不要求所有趋势判断都由 MA 排列决定；它只是一个 Profile 维度。
+-
+----
+-
+-# 10E. Relative State 算法
+-
+-输入：
+-
+-```text
+-RPS5
+-RPS20
+-rps5_delta1/3
+-rps20_delta3
+-rel_market_1/3/5
+-rel_sector_1/3/5 (LOO)
+-```
+-
+-输出：
+-
+-```text
+-LEADING_ACCELERATING
+-LEADING_STABLE
+-IMPROVING
+-NEUTRAL
+-WEAKENING
+-LAGGING
+-PASSIVE_RESILIENCE
+-UNKNOWN
+-```
+-
+-`PASSIVE_RESILIENCE` 必须满足：
+-
+-```text
+-relative_market positive
+-BUT acceleration/structure/participation insufficient
+-```
+-
+-不能被当成 Active Emergence。
+-
+----
+-
+-# 10F. Compression / Expansion 算法
+-
+-输入：
+-
+-```text
+-range5/range20
+-ATR5/ATR20
+-realized_vol5/20
+-body_range_distribution
+-amount_ratio20
+-```
+-
+-输出：
+-
+-```text
+-COMPRESSING_STRONG
+-COMPRESSING
+-NORMAL
+-EXPANDING
+-EXPANDING_EXTREME
+-UNKNOWN
+-```
+-
+-其中：
+-
+-```text
+-rangeN = (HHV_N - LLV_N) / reference_price
+-```
+-
+-不能仅因“振幅低”就把低流动性死股认定为优质压缩；需要 minimum liquidity 与 actual bars。
+-
+----
+-
+-# 10G. 成交额/成交量状态算法
+-
+-## 10G.1 单纯放量不是方向结论
+-
+-计算：
+-
+-```text
+-amount_ratio5
+-amount_ratio20
+-volume_ratio5
+-volume_ratio20
+-amount_percentile60
+-```
+-
+-状态：
+-
+-```text
+-VERY_DRY
+-CONTRACTED
+-NORMAL
+-EXPANDED
+-VERY_EXPANDED
+-UNKNOWN
+-```
+-
+----
+-
+-## 10G.2 Participation Result
+-
+-必须把参与度与价格结果联动：
+-
+-```text
+-HIGH_PARTICIPATION_EFFECTIVE_ADVANCE
+-HIGH_PARTICIPATION_LOW_EFFICIENCY
+-HIGH_PARTICIPATION_REVERSAL
+-LOW_PARTICIPATION_ADVANCE
+-LOW_PARTICIPATION_DECLINE
+-NORMAL_PARTICIPATION
+-UNKNOWN
+-```
+-
+-观察输入：
+-
+-```text
+-ret1
+-intraday_range
+-CLV
+-breakout/reclaim
+-relative_market
+-amount_state
+-turnover_state
+-```
+-
+-例如：
+-
+-```text
+-高成交 + close靠近日高 + 有效突破
+-→ HIGH_PARTICIPATION_EFFECTIVE_ADVANCE
+-
+-高成交 + 大振幅 + 收盘回落 + 净推进很小
+-→ HIGH_PARTICIPATION_LOW_EFFICIENCY
+-```
+-
+-系统不能把二者都写成“放量看多”。
+-
+----
+-
+-# 10H. Turnover State 算法
+-
+-仅当 BaoStock：
+-
+-```text
+-BOUND_STRICT
+-```
+-
+-才计算。
+-
+-派生：
+-
+-```text
+-turnover_ma5
+-turnover_median20
+-turnover_ratio20
+-turnover_percentile20
+-turnover_percentile60
+-turnover_delta3
+-```
+-
+-有效 session 要求：
+-
+-```text
+-MA5 >= 5
+-MEDIAN20/PCT20 >= 20
+-PCT60 >= 60
+-```
+-
+-停牌 session 不填 0。
+-
+-输出：
+-
+-```text
+-LOW
+-NORMAL
+-ELEVATED
+-HIGH
+-EXTREME
+-PENDING
+-UNAVAILABLE
+-```
+-
+-换手异常永远是“相对自身历史”的概念，不按全市场固定百分比粗暴比较。
+-
+----
+-
+-# 10I. Extension Risk
+-
+-输入：
+-
+-```text
+-BIAS20_ATR
+-DIST_MA20
+-recent cumulative return
+-RPS level + RPS acceleration
+-high-zone duration
+-turnover/amount expansion
+-price efficiency
+-```
+-
+-输出：
+-
+-```text
+-LOW
+-MEDIUM
+-HIGH
+-EXTREME
+-UNKNOWN
+-```
+-
+-典型高风险组合：
+-
+-```text
+-位置已明显延伸
+-+ 短期RPS高位减速
+-+ 高参与度
+-+ 推进效率下降
+-```
+-
+-不能因为单独 RPS20 高就判过热。
+-
+----
+-
+-# 10J. Basic Breakout State
+-
+-全市场 Profile 第一阶段就可以做基础突破状态。
+-
+-Anchor 候选：
+-
+-```text
+-prior_high20
+-prior_high60
+-recent_range_upper
+-```
+-
+-注意：
+-
+-```text
+-prior_high20
+-```
+-
+-必须排除当日，避免用今日高点定义今日突破。
+-
+-状态：
+-
+-```text
+-NO_BREAKOUT
+-APPROACHING
+-TESTING
+-BREAKOUT_TENTATIVE
+-BREAKOUT_ACCEPTED
+-FAILED_BREAKOUT
+-UNKNOWN
+-```
+-
+-`BREAKOUT_TENTATIVE` 至少看：
+-
+-```text
+-close above anchor
+-break margin ATR-normalized
+-CLV
+-```
+-
+-`BREAKOUT_ACCEPTED` 需要后续 retention/hold 事件，不能同日直接永久确认。
+-
+----
+-
+-# 10K. Basic Pullback State
+-
+-## 10K.1 没有前置上涨/Anchor，就不能叫“回踩”
+-
+-必须先存在：
+-
+-```text
+-active trend
+-OR active breakout/impulse anchor
+-```
+-
+-否则下降过程最多标：
+-
+-```text
+-DECLINE / RETRACEMENT_UNKNOWN
+-```
+-
+-不能写“回踩 MA20”。
+-
+-状态：
+-
+-```text
+-NOT_PULLBACK
+-PULLBACK_IN_PROGRESS
+-PULLBACK_TO_MA
+-PULLBACK_TO_BREAKOUT
+-PULLBACK_TO_IMPULSE
+-PULLBACK_RECLAIMED
+-PULLBACK_HELD
+-PULLBACK_FAILED
+-UNKNOWN
+-```
+-
+----
+-
+-# 10L. Recovery State
+-
+-用于区分：
+-
+-```text
+-普通反弹
+-```
+-
+-和：
+-
+-```text
+-结构恢复。
+-```
+-
+-状态：
+-
+-```text
+-NONE
+-BOUNCE_ONLY
+-MA20_RECLAIM
+-ANCHOR_RECLAIM
+-RELATIVE_RECOVERY
+-RECOVERY_CONFIRMED
+-RECOVERY_FAILED
+-UNKNOWN
+-```
+-
+-恢复需要未来事实确认，不能因为一天上涨就自动 `RECOVERY_CONFIRMED`。
+-
+----
+-
+-# 10M. Daily Profile 页面解释合同
+-
+-任何搜索股票第一屏必须可回答：
+-
+-```text
+-现在是什么趋势？
+-处于什么位置？
+-是否正在压缩/扩张？
+-成交是否异常？
+-换手是否异常？
+-是不是回踩？回踩什么？
+-是否存在突破/恢复结构？
+-相对市场/板块正在改善还是变弱？
+-有什么风险？
+-今天相比昨天有什么变化？
+-```
+-
+-Profile 不是“买卖建议”。
+-
+-
++contract_id=MA_STRUCTURE_V1。依次BULL_ALIGNED（MA5>MA10>MA20 AND slope20>0）、BEAR_ALIGNED（反向）、BULL_TRANSITION（MA5>MA20 AND slope20>=0）、BEAR_TRANSITION（反向）、MIXED。required未知为UNKNOWN。
++
++# 10E. Relative Market State
++
++contract_id=RELATIVE_STATE_V1。required：rps5/20、delta3、rel_market_1/5、compression_state、ma_structure_state；不读trend_state或sector。
++active=(delta3>=10 AND (compression_state in {COMPRESSING,COMPRESSING_STRONG} OR ma_structure_state in {BULL_TRANSITION,BULL_ALIGNED}))。
++依次ACTIVE_EMERGENCE（active）；PASSIVE_RESILIENCE（rel_market_1>0 AND NOT active AND delta3<=0）；LEADING_ACCELERATING（rps20>=80 AND delta3>0）；LEADING_STABLE（rps20>=80 AND delta3>=−3）；IMPROVING（delta3>3）；WEAKENING（delta3<−3）；LAGGING（rps20<20）；NEUTRAL。required未知为UNKNOWN。
++relative_sector_state在V4-13使用同拓扑，以LOO rel_sector替换market relative，不进入Core/Seed。
++
++# 10F. Compression State
++
++contract_id=COMPRESSION_STATE_V1。required：range_ratio/atr_ratio/vol_ratio/amount_ratio20/minimum_liquidity。
++依次EXPANDING_EXTREME（atr_ratio>=1.5 OR vol_ratio>=1.5）；EXPANDING（任一>=1.1）；COMPRESSING_STRONG（range_ratio<=0.35 AND atr_ratio<=0.7 AND vol_ratio<=0.7 AND amount_ratio20<=0.8 AND minimum_liquidity）；COMPRESSING（range_ratio<=0.6 AND atr_ratio<=0.9 AND vol_ratio<=0.9 AND minimum_liquidity）；NORMAL。未知则UNKNOWN，扩张优先。
++
++# 10G. 成交额/量及价格结果
++
++contract_id=AMOUNT_VOLUME_STATE_V1。amount_state/volume_state各自ratio20：<0.5 VERY_DRY、<0.8 CONTRACTED、<1.2 NORMAL、<2 EXPANDED、其余VERY_EXPANDED，缺失UNKNOWN。
++core_participation_result依次：HIGH_PARTICIPATION_REVERSAL（amount_ratio20>=1.2 AND ret1<0）；HIGH_PARTICIPATION_EFFECTIVE_ADVANCE（ratio>=1.2 AND ret1>0 AND CLV>=0.7）；HIGH_PARTICIPATION_LOW_EFFICIENCY（ratio>=1.2）；LOW_PARTICIPATION_ADVANCE（ratio<0.8 AND ret1>0）；LOW_PARTICIPATION_DECLINE（ratio<0.8 AND ret1<0）；NORMAL_PARTICIPATION。依赖CLV的更高分支未知时不得直接落入低效分类。
++supplemental_participation_context只把turnover_state与Core结果并列，不改Core。
++
++# 10H. Turnover State
++
++contract_id=TURNOVER_CONTEXT_V1。pct60：<20 LOW、<70 NORMAL、<90 ELEVATED、<97 HIGH、其余EXTREME。尚未绑定PENDING，不支持/绑定失败UNAVAILABLE，窗口不足组件UNKNOWN_DATA。只作补充，非收益概率。
++
++# 10I. Core Extension Risk
++
++contract_id=EXTENSION_RISK_V1。依次EXTREME（bias20_atr>=4）；HIGH（bias>=3 OR (ret5>=3*ATR20/C AND amount_ratio20>=2 AND ret1<=0)）；MEDIUM（bias>=2）；LOW。只检查分支required输入，未知依三值逻辑；severe_extension=(risk=EXTREME)。turnover只进supplemental_extension_note。
++
++# 10J. Basic Breakout State（V4-12）
++
++contract_id=STRUCTURE_EVENT_V1。无活动breakout事件：C>prior_high20+0.1*ATR20 AND CLV>=0.7产生BREAKOUT_TENTATIVE和PRIOR_HIGH Anchor；否则near_high20=NEAR为APPROACHING，其余NO_BREAKOUT。
++已有事件：BROKEN/INVALIDATED→FAILED_BREAKOUT；HELD_CONFIRMED或创建后至少2连续可评估日C>=anchor_upper→BREAKOUT_ACCEPTED；当日触碰→TESTING；其余保留BREAKOUT_TENTATIVE。未知不制造状态；创建日不能接受。
++
++# 10K. Basic Pullback State（V4-12）
++
++contract_id=STRUCTURE_EVENT_V1。无此前有效上涨/突破/impulse事件为NOT_PULLBACK。已有Anchor依次：BROKEN/INVALIDATED→PULLBACK_FAILED；HELD_CONFIRMED→PULLBACK_HELD；RECLAIMED/HELD_TENTATIVE→PULLBACK_RECLAIMED；触碰按类型PULLBACK_TO_MA/BREAKOUT/IMPULSE；未触碰且从事件后峰值回落→PULLBACK_IN_PROGRESS；其余NOT_PULLBACK。只用t-1冻结事件，未知为UNKNOWN。
++
++# 10L. Recovery State（V4-12）
++
++contract_id=STRUCTURE_EVENT_V1。依次RECOVERY_FAILED（已有恢复事件失效）；RECOVERY_CONFIRMED（事件后至少2连续可评估日守住冻结恢复线）；ANCHOR_RECLAIM（旧Anchor当日EOD reclaim）；MA20_RECLAIM（C[t-1]<=MA20[t-1] AND C[t]>MA20[t]）；RELATIVE_RECOVERY（delta3从<=0转>3 AND rel_market_1>0）；BOUNCE_ONLY（ret1>0）；NONE。创建恢复事件保存原线，不同日追认，未知按三值逻辑。
++
++# 10M. 页面解释
++
++Core先回答趋势、位置、压缩、量额、相对市场与风险；高级组件交付后回答突破/回踩/支撑/恢复。NOT_IMPLEMENTED/UNKNOWN/NOT_APPLICABLE不得写成资格FALSE。全产品目标保留，V4-04不承担后置验收。
++
++---
+ 
+ # 10N. A股 Price Limit / Trading Constraint Rule Engine
+ 
+@@ -4263,80 +3111,10 @@
+ 
+ ---
+ 
+-# 11. Passive Resilience vs Active Emergence
+-
+-## 11.1 Passive Resilience
+-
+-典型：
+-
+-```text
+-market -3%
+-stock -0.5%
+-
+-但：
+-rps acceleration weak
+-structure unchanged
+-participation unchanged
+-```
+-
+-状态：
+-
+-```text
+-PASSIVE_RESILIENCE
+-```
+-
+-这可以显示，但不能单独产生 PREWATCH。
+-
+----
+-
+-## 11.2 Active Emergence
+-
+-至少要求：
+-
+-```text
+-relative resilience
+-+
+-relative change acceleration
+-+
+-structure or trend transition
+-```
+-
+-例如：
+-
+-```text
+-market -2.5%
+-stock -0.4%
+-
+-rps5_delta3 +18pct
+-range contraction
+-bias low
+-```
+-
+-才进入：
+-
+-```text
+-ACTIVE_EMERGENCE
+-```
+-
+----
+-
+-## 11.3 Volatility Adjusted Resilience
+-
+-正式增加：
+-
+-```text
+-rel_market_vol_adj
+-=
+-rel_market_1 / max(vol20, epsilon)
+-```
+-
+-但：
+-
+-```text
+-beta60 residual
+-```
+-
+-第一版不作为硬资格。
++# 11. Passive Resilience 与 Active Emergence
++
++ACTIVE_EMERGENCE、PASSIVE_RESILIENCE唯一算法为§10E；本节解释其含义，不另设第二套资格规则。相对市场上涨不等于个股上涨；低Beta防御和主动改善不能仅凭单日跌得少区分。系统同时列ret1/relative_market/delta3/结构事实，不能用模板推断资金意图。
++rel_market_vol_adj=rel_market_1/vol20，vol20<=0/未知为UNKNOWN，作为诊断而非单独硬资格。Beta residual与全面中性化不进入V1。价格衍生证据相关性必须披露，不重复算独立支持。
+ 
+ ---
+ 
+@@ -4390,8 +3168,8 @@
+ 
+ ```text
+ amount ratio
+-turnover ratio
+-turnover percentile
++turnover ratio（supplemental-only）
++turnover percentile（supplemental-only）
+ ```
+ 
+ ### CONTEXT
+@@ -4431,125 +3209,29 @@
+ 
+ # 13. 防反馈计算 DAG
+ 
+-这是 V4.1 最重要的硬合同之一。
+-
+-```text
+-PASS A
+-STOCK BASE SEED
+-     ↓
+-冻结 A
+-     ↓
+-PASS B
+-SECTOR EMERGENCE
+-     ↓
+-冻结 B
+-     ↓
+-PASS C
+-STOCK PREWATCH PRIORITY
+-     ↓
+-冻结 C
+-     ↓
+-PASS D
+-CONFIRMATION / RADAR
+-```
+-
+-同一交易日禁止：
+-
+-```text
+-C → B
+-```
+-
+-反向反馈。
+-
+----
+-
+-
+-# 13A. V4.2.2 计算拓扑与时点合同
+-
+-正式当日拓扑：
+-
+-```text
+-FACTS[t]
+-  ↓
+-PASS A: STOCK_BASE_SEED[t]
+-  ↓
+-PASS B: SECTOR_EMERGENCE[t] + ROTATION_CORE[t]
+-  ↓
+-PASS C: STOCK_PREWATCH[t]
+-  ↓
+-PASS D: CONFIRMATION / STATE / RADAR[t]
+-```
+-
+-Formal forbidden edges：
+-
+-```text
+-STOCK_PREWATCH[t]    ─X→ SECTOR_EMERGENCE[t]
+-STOCK_PREWATCH[t]    ─X→ ROTATION_CORE[t]
+-CONFIRMATION[t]      ─X→ PASS A/B/C[t]
+-SUPPLEMENTAL[t]      ─X→ CORE PASS A/B/C/D[t]
+-UI DISPLAY_RANK[t]   ─X→ ELIGIBILITY[t]
+-FOCUS_STATE[t]       ─X→ SOURCE QUALIFICATION[t]
+-```
+-
+-PASS B 当日允许：
+-
+-```text
+-BASE_SEED[t]
+-BASE_SEED[t-1..lookback]
+-PREWATCH[t-1]      # 仅用于前日候选留存观察
+-CONFIRMED[t-1]     # 可作历史上下文
+-```
+-
+-禁止读取：
+-
+-```text
+-PREWATCH[t]
+-CONFIRMATION[t]
+-RADAR_PRIORITY[t]
+-```
+-
+-`ROTATION_ACCEPTED[t]` 如需 PREWATCH 留存，只能计算：
+-
+-```text
+-昨日 PREWATCH[t-1] 成员
+-在 t 日的 Core Profile / price result 保留情况
+-```
+-
+-这不是今天 PREWATCH[t] membership。
+-
+-所有跨模块字段都必须登记：
+-
+-```text
+-field
+-producer_module
+-producer_phase
+-trade_date_semantics
+-publication_namespace
+-current_or_prior
+-required_or_optional
+-quality_contract
+-```
+-
+-### 扰动测试
+-
+-固定：
+-
+-```text
+-Facts[t]
+-BaseSeed[t]
+-FrozenHistory[t-1]
+-```
+-
+-只改变 `StockPREWATCH[t]`。
+-
+-必须：
+-
+-```text
+-SectorEmergence[t] digest unchanged
+-RotationCore[t] digest unchanged
+-```
+-
+-否则 `DAG_FEEDBACK_VIOLATION`。
++正式计算分层如下；“当日 detector事实”与“最终状态/事件”不同。依赖边以字段及时间为单位，而不是仅按模块文件名。
++
++# 13A. 当日拓扑 DAG_V1
++
++| 层 | 产物 | 允许输入 |
++|---|---|---|
++| F0 | Native facts、Core factors/Profile | frozen source、日历、Universe |
++| A | Base Seed | F0纯价格/量额，不读Anchor/sector/final state |
++| B0 | Sector aggregates/emergence原始谓词 | Native sector facts、A[t]、冻结历史 |
++| B1 | Rotation | B0、A历史、PREWATCH[t-1]成员当日Core结果；不读当日最终成熟度 |
++| B2 | Sector raw qualification | B0规则，Rotation只供D排序解释；不反写B0 |
++| C | Stock PREWATCH raw qualification | A、Core quality、core_price_damage |
++| D0 | Confirmation detector事实 | F0、B2/LOO事实及已冻结legacy纯函数，不读最终状态 |
++| D1 | Structure detector/旧Anchor失效事实 | F0、t-1冻结Anchor/event；不读D2 |
++| D2 | Final state reducer | C/B2/D0/D1、冻结前态、合规迁移manifest |
++| D3 | Event diff、Radar、Cohort enrollment | D2及冻结前态；Context LOO使用独立排除目标结果 |
++| E | publication accept、Focus outbox、settlement | 已验证staging与accepted来源 |
++
++同日禁止D→A/B/C、C→B、Focus/UI/Supplemental→资格。D1新建Anchor只能作为今日新事件，最早次日参加路径测试，不能同日自证支撑。
++
++原始C资格是算法证据；D2可因该研究episode旧Anchor硬失效禁止最终PREWATCH/Confirmation，不能把D2结果回灌今日B的Seed宽度。保存raw_qualification与final_eligibility解释差异。
++
++每条边登记producer、contract/version、字段、t或t-1、namespace、required/optional。验收扰动C[t]不得改变B；扰动Supplemental不得改变A–D；同日确认与旧Anchor硬失效冲突时，D2正确失效，无隐式重跑。
+ 
+ ---
+ 
+@@ -4578,83 +3260,17 @@
+ 
+ ## 14.2 Hard Safety
+ 
+-必须：
+-
+-```text
+-research_universe = TRUE
+-actual_bar = TRUE
+-price_identity = READY
+-minimum_liquidity = TRUE
+-structure_damage != TRUE
+-severe_extension != TRUE
+-severe_damage != TRUE
+-```
+-
+-UNKNOWN：
+-
+-```text
+-不自动变 FALSE
+-```
+-
+-如果 required hard field UNKNOWN：
+-
+-```text
+-BASE_SEED = UNKNOWN
+-```
+-
+----
++contract_id=BASE_SEED_V1。safety=research_universe AND actual_bar AND price_identity_READY AND minimum_liquidity AND NOT core_price_damage AND NOT severe_extension。三值归约后FALSE拒绝，UNKNOWN待评估，TRUE才检查路径。minimum_liquidity=prior20 mean amount>=20,000,000 CNY；金额单位先通过source contract。本版为工程候选，不冒充已验证最佳阈值。
+ 
+ ## 14.3 Seed Rule Paths
+ 
+-V4.2.2 正式只有两个独立资格路径。
+-
+-### PATH S1：结构先行
+-
+-```text
+-POSITION_OK
+-AND STRUCTURE_IMPROVING
+-AND RELATIVE_CHANGE_IMPROVING
+-```
+-
+-### PATH S2：强变化先行
+-
+-```text
+-POSITION_OK
+-AND RELATIVE_CHANGE_STRONG
+-AND TREND_TRANSITION_EARLY
+-```
+-
+-### Participation Annotation（原 S3）
+-
+-原 S3 是 S1 的严格子集，因此不再作为独立资格路径。
+-
+-改为：
+-
+-```text
+-seed_participation_annotation =
+-SUPPORTED
+-NEUTRAL
+-CONFLICTING
+-UNKNOWN
+-```
+-
+-它可以用于：
+-
+-```text
+-解释
+-Conflict Panel
+-同 Bucket 内辅助优先级
+-```
+-
+-但不得：
+-
+-```text
+-增加 matched_seed_path_count
+-增加独立 evidence count
+-重复计价 S1
+-```
+-
+-turnover 缺失时，S1/S2 仍可成立。
++POSITION_OK=(bias20_atr<3)；STRUCTURE_IMPROVING=(compression_state in {COMPRESSING,COMPRESSING_STRONG})；RELATIVE_CHANGE_IMPROVING=(delta3>=3)；RELATIVE_CHANGE_STRONG=(delta3>=10)；TREND_TRANSITION_EARLY=(ma_structure_state=BULL_TRANSITION OR (C[t-1]<=MA20[t-1] AND C[t]>MA20[t]))。
++
++S1=POSITION_OK AND STRUCTURE_IMPROVING AND RELATIVE_CHANGE_IMPROVING。
++S2=POSITION_OK AND RELATIVE_CHANGE_STRONG AND TREND_TRANSITION_EARLY。
++base_seed_state=safety AND (S1 OR S2)。这些谓词只读Core，严格三值逻辑，不读高级Anchor。
++
++seed_participation_annotation按core_participation_result：有效推进SUPPORTED，反转/低效CONFLICTING，其余NEUTRAL，未知UNKNOWN。不计新路径、不影响资格；turnover只另作补充说明，不进入正式排序。
+ 
+ ---
+ 
+@@ -4672,241 +3288,36 @@
+ 
+ ---
+ 
+-# 15. PASS B：Sector Emergence
+-
+-PASS B 只能读取：
+-
+-```text
+-sector native facts
+-PASS A frozen base seeds
+-```
+-
+-不得读取：
+-
+-```text
+-PASS C final stock PREWATCH
+-```
+-
+----
+-
+-## 15.1 Sector Native Factors
+-
+-### Relative
+-
+-```text
+-sector_rs5_pct
+-sector_rs20_pct
+-dq5
+-rank_velocity3
+-```
+-
+-### Breadth
+-
+-```text
+-breadth_delta1
+-breadth_delta3
+-ma20_delta1
+-ma20_delta3
+-```
+-
+-### Participation
+-
+-```text
+-amount_a
+-amount_delta3
+-```
+-
+-### Diffusion
+-
+-```text
+-retention
+-entered
+-exited
+-top concentration
+-```
+-
+-### Risk
+-
+-```text
+-extended share
+-high-level deceleration
+-```
+-
+----
+-
+-# 16. 小板块置信处理
+-
+-Raw：
+-
+-```text
+-base_seed_width_raw
+-=
+-seed_count / evaluable_member_count
+-```
+-
+-不能直接用于排序。
+-
+-同时计算：
+-
+-```text
+-base_seed_width_adjusted
+-```
+-
+-第一版使用：
+-
+-```text
+-Wilson lower bound
+-```
+-
+-或其他版本化二项置信下界。
+-
+-具体置信参数：
+-
+-```text
+-seed_confidence_z
+-```
+-
+-进入 parameter contract。
+-
+-必须同时保存：
+-
+-```text
+-seed_count
+-evaluable_member_count
+-raw_width
+-adjusted_width
+-```
+-
+-UI 不隐藏样本量。
++# 15. Sector Native 与聚合合同
++
++contract_id=SECTOR_FACTORS_V1。对日期t的真实成员M_t构建可评估集合E_t，quote_coverage=|E_t|/|M_t|；未知成员来源为UNKNOWN。Core sector最低成员5、coverage>=0.8，低于门限不产生正式sector资格。
++
++sector_rsN=成员retN中位数，sector_rsN_pct按同日source/type/member/coverage合格的全体板块（非算法已入选集合）midrank（§10A0公式），rank_velocityK=percentile[t]-percentile[t-K]，dq5=rs5_pct[t]-rs5_pct[t-3]。排名跨日Universe变化要保存两个snapshot；同分同分位，展示tie-break用sector_id。
++
++breadth_ret1=count(ret1>0)/count(ret1 known)；ma20_width=count(C>MA20)/count(MA20 known)。deltaK只在M_t∩M_(t-K)且两端该指标均可评估的共同成员上分别重算再相减；保存common_count与coverage。成员新增/删除单独记录membership_entered/exited，不算市场强弱进出。
++
++strong成员=RPS20>=80且可评估；retention=|strong_prev∩strong_now|/|strong_prev|，分母0为NOT_APPLICABLE。未知当前结果标unknown_retention_count，不当退出；Core需要全部该分母成员可观察，否则该retention UNKNOWN。Seed留存同理；PREWATCH仅用t-1成员在t日Core谓词是否仍满足，不读取C[t]最终集合。
++
++sector_participation_proxy=median(成员amount_ratio20)，与Amount A明确不同；top1/top3_concentration为金额份额，分母是同日可评估成员金额总和，零分母UNKNOWN。正式Core本版不用未关闭的Amount A，也不用turnover。
++
++# 16. 小板块调整
++
++contract_id=SEED_WIDTH_V1。n=BaseSeed可评估成员数，k=TRUE数；n=0 UNKNOWN。raw=k/n；adjusted=(p+z²/(2n)-z*sqrt(p*(1-p)/n+z²/(4n²)))/(1+z²/n)，z=1.96。
++
++Wilson式只作为样本量惩罚的排序启发式，不声称成员独立、统计置信覆盖或上涨概率；板块成员相关，不能据此作概率结论。保存k/n/unknown_count/raw/adjusted，coverage门先于排序。
+ 
+ ---
+ 
+ # 17. Sector PREWATCH / WARM / CONFIRMED
+ 
+-## 17.1 PREWATCH
+-
+-表示：
+-
+-> 板块尚未达到现有 POTENTIAL/CURRENT，但变化证据已经值得提前研究。
+-
+-不要求：
+-
+-```text
+-m1 > 0
+-```
+-
+-允许弱市相对抗跌。
+-
+----
+-
+-## 17.2 WARM
+-
+-现有：
+-
+-```text
+-V3 POTENTIAL
+-```
+-
+-整体迁移为：
+-
+-```text
+-WARM
+-```
+-
+-现有三分支：
+-
+-```text
+-BREADTH_BUILD
+-BASE_BUILD
+-RECOVERY_BUILD
+-```
+-
+-继续保留为 WARM scenario evidence。
+-
+----
+-
+-## 17.3 CONFIRMED
+-
+-现有：
+-
+-```text
+-CURRENT
+-```
+-
+-迁移为：
+-
+-```text
+-CONFIRMED
+-```
+-
+-资格继续严格。
+-
+-不为了补数量放松。
+-
+----
+-
+-# 18. Sector 三轴输出
+-
+-每个板块必须分别输出：
+-
+-```text
+-EMERGENCE
+-CONFIRMATION
+-EXHAUSTION
+-```
+-
+-而不是单总分。
+-
+----
+-
+-## 18.1 Emergence Axis
+-
+-输入：
+-
+-```text
+-rank velocity
+-dq5
+-breadth delta
+-ma20 delta
+-adjusted seed width
+-relative resilience
+-```
+-
+-输出：
+-
+-```text
+-HIGH / MEDIUM / LOW / UNKNOWN
+-```
+-
+----
+-
+-## 18.2 Confirmation Axis
+-
+-输入：
+-
+-```text
+-CURRENT
+-WARM
+-common breadth
+-M10
+-confirmation coverage
+-```
+-
+----
+-
+-## 18.3 Exhaustion Axis
+-
+-输入：
+-
+-```text
+-high q20
+-negative dq5
+-rank deceleration
+-breadth contraction
+-retention decline
+-extended share
+-high participation with poor price result
+-```
++contract_id=SECTOR_QUALIFICATION_V1。sector_safety=membership_READY AND member_count>=5 AND quote_coverage>=0.8。
++prewatch_raw=sector_safety AND dq5>=3 AND (breadth_delta3>0 OR ma20_delta3>0) AND adjusted_seed_width>=0.05。不要求市场上涨；UNKNOWN不当FALSE。此原始谓词不排除更高阶段，最终D2按最高已确认资格选成熟度。
++warm_raw、confirmed_raw来自§34已提取验收的纯Core legacy合同；未就绪时该能力NOT_IMPLEMENTED，不从POTENTIAL/CURRENT标签猜测规则。若legacy资格依赖未关闭Amount A，则该路径不能作为正式资格，保留diagnostic；其他独立路径不受影响。
++
++# 18. Sector 三轴
++
++contract_id=SECTOR_AXES_V1。emergence：HIGH（dq5>=10 AND breadth_delta3>=0.05 AND adjusted_seed_width>=0.1）；MEDIUM（dq5>=3 AND (breadth_delta3>0 OR ma20_delta3>0)）；LOW（其余可评估）。confirmation_axis保存confirmed_raw/warm_raw/coverage，不读D2。
++exhaustion：HIGH（rs20_pct>=80 AND dq5<=−5 AND breadth_delta3<=−0.05）；MEDIUM（rs20_pct>=80 AND dq5<0）；LOW。extension share作为并列事实，不重复计价。required未知则对应轴UNKNOWN，不用其他轴掩盖。
+ 
+ ---
+ 
+@@ -4965,28 +3376,10 @@
+ 
+ ## 20.3 ALGORITHMIC_SUPPORT_SECTOR
+ 
+-只用于研究 Context。
+-
+-选择规则必须确定性：
+-
+-```text
+-1. 仅从真实 membership 中选
+-2. 对 target stock 做 LOO
+-3. 过滤 quality not ready
+-4. 按 sector maturity
+-5. emergence bucket
+-6. stable deterministic tie-break
+-```
+-
+-多个板块：
+-
+-```text
+-Context Domain
+-最多只算 1 份。
+-```
+-
+----
+-
++contract_id=LOO_CONTEXT_V1。在真实membership内，对目标股排除后重算sector native、seed aggregates、B0/B2原始资格以及其所需的历史比较。不得只减计数而保留原rank/median/状态。历史状态若用于context也从排除目标的独立lineage重算；无法重算时不使用该项。
++按LOO confirmed_raw、warm_raw、emergence(HIGH>MEDIUM>LOW)、adjusted_seed_width降序，再sector_id升序选择。过滤quality非READY。保存全部候选及选择理由；没有合格者NULL/NOT_APPLICABLE，数据不足UNKNOWN。Context最多一份，不能提升stock hard eligibility。
++
++---
+ 
+ ## 20.4 Historical Sector Context Quality
+ 
+@@ -5026,7 +3419,7 @@
+ 
+ # 21. Full LOO 泛化
+ 
+-现有 `full_loo_v3_3.py` 的思想保留，但 V4.1 要从：
++现有 `full_loo_v3_3.py` 的思想保留，但 本版 要从：
+ 
+ ```text
+ CURRENT support
+@@ -5055,7 +3448,6 @@
+ ```
+ 
+ ---
+-
+ 
+ 
+ # 21A. Rotation State Engine
+@@ -5124,244 +3516,30 @@
+ 
+ ---
+ 
+-## 21A.4 Rotation Inputs
+-
+-### Relative Acceleration
+-
+-```text
+-sector_rs5_pct
+-sector_rs20_pct
+-rps_short_long_divergence
+-rank_velocity1/3/5
+-relative_market_1/3/5
+-```
+-
+-### Breadth / Diffusion
+-
+-```text
+-breadth_ret1
+-breadth_delta1/3
+-ma20_width
+-ma20_delta1/3
+-base_seed_width_adjusted
+-entered / exited
+-```
+-
+-### Retention
+-
+-```text
+-strong_member_retention_1/3
+-seed_retention_1/3
+-breadth_retention
+-```
+-
+-### Price Acceptance
+-
+-```text
+-impulse_retention_1/3
+-relative_return_retention
+-rank_retention
+-```
+-
+-### Participation
+-
+-```text
+-amount_a
+-amount_delta1/3
+-member_turnover_context if available
+-```
+-
+-### Exhaustion / Risk
+-
+-```text
+-extended_share
+-high_q20 + negative dq5
+-breadth contraction
+-retention decline
+-high participation + low price efficiency
+-```
+-
+----
+-
+-
+-## 21A.4A Rotation Core 输入时点
+-
+-`rotation_core_state[t]` 只允许：
+-
+-```text
+-sector_native_factors[t]
+-base_seed_membership[t]
+-base_seed_history[t-1..]
+-prewatch_membership[t-1]     # optional, retention reference
+-confirmed_membership[t-1]    # optional prior-state context
+-```
+-
+-禁止：
+-
+-```text
+-stock_prewatch[t]
+-stock_confirmation[t]
+-supplemental_turnover[t]
+-V4-13 support_acceptance[t]
+-```
+-
+-如果需要“价格接受”，第一版 Rotation Core 使用：
+-
+-```text
+-sector_price_retention_core
+-```
+-
+-它由：
+-
+-```text
+-sector price
+-member Core Profile
+-prior frozen member set
+-```
+-
+-计算。
+-
+-V4-13 完成后可以增加：
+-
+-```text
+-rotation_structure_enrichment
+-```
+-
+-但不能回写当日 `rotation_core_state[t]`。
+-
+----
+-
+-## 21A.5 ROTATION_PULSE
+-
+-典型：
+-
+-```text
+-当日 relative acceleration 突变
+-AND breadth 明显扩张
+-OR rank_velocity 极高
+-```
+-
+-但只有单日证据。
+-
+-它表示：
+-
+-> 今天出现轮动脉冲。
+-
+-不能表示：
+-
+-> 已经形成持续主线。
+-
+----
+-
+-## 21A.6 ROTATION_IN
+-
+-需要：
+-
+-```text
+-pulse 后相对强度没有立即完全回吐
+-+ 至少一项 breadth/seed/participation 继续改善
+-```
+-
+----
+-
+-## 21A.7 ROTATION_ACCEPTED
+-
+-核心是“昨天的结果有没有被市场接受”。
+-
+-至少检查：
+-
+-```text
+-板块相对市场保留
+-昨日强成员留存
+-breadth没有大幅坍塌
+-BaseSeed[t] 未大量退出；若观察 PREWATCH，则只使用 PREWATCH[t-1] 成员的当日 Core 结果留存
+-```
+-
+-可以保存：
+-
+-```text
+-rotation_retention_score_components
+-```
+-
+-但页面显示每个 component，不只显示单一总分。
+-
+----
+-
+-## 21A.8 ROTATION_EXPANDING
+-
+-在 `ROTATION_ACCEPTED` 基础上：
+-
+-```text
+-entered > exited
+-breadth进一步扩散
+-中后排成员参与提高
+-top1/top3 concentration 没有恶化到单股驱动
+-```
+-
+----
+-
+-## 21A.9 ROTATION_REACCELERATING
+-
+-已有 WARM/CONFIRMED 板块经过整理后：
+-
+-```text
+-relative acceleration重新转正
+-breadth重新扩张
+-retention保持
+-exhaustion risk 未恶化
+-```
+-
+-标：
+-
+-```text
+-ROTATION_REACCELERATING
+-```
+-
+----
+-
+-## 21A.10 ROTATION_OUT / FAILED
+-
+-### FAILED
+-
+-```text
+-pulse 后 1–N session 快速回吐
+-breadth崩塌
+-成员留存显著下降
+-relative rank快速回落
+-```
+-
+-### OUT
+-
+-已有成熟板块：
+-
+-```text
+-relative deceleration
+-+ breadth contraction
+-+ retention decline
+-```
+-
+-持续出现。
+-
+----
+-
+-## 21A.11 Rotation 与 PREWATCH 的关系
+-
+-Rotation 是一个独立 Evidence/State Engine。
+-
+-不能：
+-
+-```text
+-ROTATION_PULSE = Sector PREWATCH
+-```
+-
+-只能：
+-
+-```text
+-Rotation evidence
+-→ Sector Emergence / Priority
+-```
+-
+-防止一天题材脉冲直接挤入正式提前观察。
++## 21A.4 Rotation Core Rules
++
++contract_id=ROTATION_CORE_V1。使用§15/16/18的纯Core事实与冻结历史。历史PREWATCH仅作t-1成员参考；当日PREWATCH、Final Confirmation、Support/turnover均禁止输入。
++
++保存rotation_episode_id、pulse_date、冻结成员篮子和pulse前基准；sector_price_retention_core由该篮子等权路径计算（§49A），而不是每日中位收益拼成价格。pulse收益分母<=0时retention_ratio为NOT_APPLICABLE，不能用epsilon强行作除法。
++
++候选规则：pulse=(dq5>=10 AND breadth_delta1>=0.05)；retained=(冻结篮子累计收益>0 AND strong_member_retention_1>=0.5)；failed=(pulse后1..5市场会话内篮子累计收益<=0 AND breadth_delta1<=−0.05)。扩散=(entered_count>exited_count AND breadth_delta1>0 AND top1_concentration<=0.5)，成员变更不计入entered/exited。
++
++有序状态：
++1. 必要输入未知→UNKNOWN，暂停该episode计数不伪造退出。
++2. 已有episode且failed→ROTATION_FAILED。
++3. t-1已WARM/CONFIRMED且dq5<0、breadth_delta1<0连续2可评估市场会话→ROTATION_OUT。
++4. t-1已成熟、昨日dq5<=0、今日pulse且retained→ROTATION_REACCELERATING。
++5. 已有至少2个后续会话且retained、昨日已ACCEPTED/EXPANDING且扩散→ROTATION_EXPANDING。
++6. pulse后至少2会话且retained且breadth_delta1>=−0.05→ROTATION_ACCEPTED。
++7. pulse后至少1会话且retained→ROTATION_IN。
++8. 无活动episode且pulse→ROTATION_PULSE并冻结episode。
++9. 未终止活动episode在创建后5会话内无新规则→保持前态；超过5会话未accepted→ROTATION_FAILED；无活动episode→NONE。
++
++接受后episode不再使用“5日未接受”到期；OUT/FAILED为终止事件，次日可新pulse，旧历史保留。发生同日冲突按上述优先级。Rotation只进入D的解释/排序，不回写B0资格。
++
++## 21A.4A 输入时点
++
++B1读取B0[t]、A[t]、frozen history[t-1]；使用t-1成熟度而不是本日最终状态。高级Structure在V4-12完成后可于D3增加rotation_structure_enrichment，不改B1。扰动测试证明当日C/D/Supplemental改变不影响B。
+ 
+ ---
+ 
+@@ -5396,29 +3574,7 @@
+ 
+ ## 22.1 PREWATCH Eligibility
+ 
+-第一版明确：
+-
+-> Sector Context 不作为硬准入。
+-
+-Stock PREWATCH eligibility 主要来自：
+-
+-```text
+-PASS A Base Seed
+-+
+-mandatory quality
+-+
+-not invalidated
+-```
+-
+-Sector Context 只影响：
+-
+-```text
+-priority
+-explanation
+-waiting_for
+-```
+-
+-这样彻底解决旧 EARLY_WATCH 的循环问题。
++contract_id=STOCK_PREWATCH_V1。raw_qualification=base_seed_state AND mandatory_core_quality_READY。C只输出原始资格，不读D2 validity。D2在§31结合已冻结研究episode的当日硬失效，产生final_eligibility。Sector Context只在D3影响解释和独立context排序键，不能成为硬门。
+ 
+ ---
+ 
+@@ -5487,74 +3643,17 @@
+ 
+ # 24. Priority Bucket
+ 
+-示例结构：
+-
+-```text
+-A:
+-  emergence HIGH
+-  structure HIGH
+-  risk LOW
+-
+-B:
+-  emergence HIGH
+-  structure MEDIUM+
+-  risk <= MEDIUM
+-
+-C:
+-  emergence MEDIUM
+-  structure HIGH
+-  risk LOW
+-
+-D:
+-  eligible
+-  but important waiting conditions remain
+-```
+-
+-具体分档阈值：
+-
+-```text
+-全部进入 parameter registry
+-```
+-
+----
+-
+-# 25. Staleness / Zombie PREWATCH
+-
+-一个对象不能因为曾经 PREWATCH 就长期霸榜。
+-
+-保存：
+-
+-```text
+-prewatch_age_sessions
+-last_positive_change_date
+-days_since_emergence_improvement
+-waiting_condition_progress
+-```
+-
+-如果连续多个可评估 session：
+-
+-```text
+-没有升级
+-没有新的改善
+-```
+-
+-则：
+-
+-```text
+-priority decay
+-```
+-
+-最终：
+-
+-```text
+-EXPIRED
+-```
+-
+-但是：
+-
+-```text
+-T0 历史永不删除。
+-```
++contract_id=PRIORITY_V1。stock emergence=HIGH(delta3>=10)、MEDIUM(delta3>=3)、LOW；structure=HIGH(COMPRESSING_STRONG)、MEDIUM(COMPRESSING或BULL_TRANSITION)、LOW。risk使用core_extension_risk。
++顺序A：emergence HIGH AND structure HIGH AND risk LOW；B：emergence HIGH AND structure>=MEDIUM AND risk<=MEDIUM；C：emergence MEDIUM AND structure HIGH AND risk LOW；D：其余eligible。排序键缺失放该桶末尾并显示UNKNOWN，不改变资格。
++确认股票的桶：A=confirmed_raw且risk LOW且structure HIGH；B=confirmed_raw且risk<=MEDIUM；C=confirmed_raw且risk HIGH；D=其他可展示已确认对象。risk EXTREME/hard damage 是否final eligible由§31决定，不允许用桶覆盖硬门。
++
++---
++
++排序枚举显式序：risk LOW<MEDIUM<HIGH<EXTREME；emergence/structure LOW<MEDIUM<HIGH；bucket A<B<C<D。排序方向按§60，不按字符串字典序。UNKNOWN单列末位，不等于最低风险。
++
++# 25. Staleness
++
++保存prewatch_age_sessions、last_positive_change_date、days_since_emergence_improvement、waiting_condition_progress，市场日龄与可评估会话龄分开。PRIORITY_V1排序在同等emergence/structure等键后把staleness较低者前置，不另行暗改资格或桶。到期只按§32，原始T0结果永不删除。
+ 
+ ---
+ 
+@@ -5587,102 +3686,16 @@
+ 
+ ---
+ 
+-# 27. Market Regime：从一个枚举改成四轴
+-
+-第一版底层只判断：
+-
+-```text
+-TREND_AXIS
+-BREADTH_AXIS
+-PARTICIPATION_AXIS
+-STRESS_AXIS
+-```
+-
+----
+-
+-## 27.1 Trend Axis
+-
+-```text
+-STRONG
+-NEUTRAL
+-WEAK
+-UNKNOWN
+-```
+-
+----
+-
+-## 27.2 Breadth Axis
+-
+-```text
+-IMPROVING
+-STABLE
+-DETERIORATING
+-UNKNOWN
+-```
+-
+----
+-
+-## 27.3 Participation Axis
+-
+-```text
+-EXPANDING
+-NORMAL
+-THIN
+-UNKNOWN
+-```
+-
+----
+-
+-## 27.4 Stress Axis
+-
+-```text
+-LOW
+-ELEVATED
+-HIGH
+-UNKNOWN
+-```
+-
+----
++# 27. Market Regime 四轴
++
++contract_id=MARKET_REGIME_V1。趋势使用§49A市场参考日路径，trend_axis=STRONG(指数C>MA20且MA20比5日前上升)、WEAK(反向)、NEUTRAL；不足UNKNOWN。
++breadth_axis按全市场共同成员breadth_delta3：>0.05 IMPROVING、<−0.05 DETERIORATING、其余STABLE。participation_axis按全市场成员amount_ratio20中位数：>=1.2 EXPANDING、<0.8 THIN、其余NORMAL。
++stress_level以有效limit规则覆盖>=0.8为前提，down_limit_count/evaluable_count>=0.05 HIGH、>=0.01 ELEVATED、否则LOW；不可用UNKNOWN。stress_change按同成员比率日差：>0 RISING、<0 DECLINING、=0 STABLE，未知UNKNOWN。
+ 
+ # 28. Regime UI Mapping
+ 
+-UI 可以映射：
+-
+-```text
+-RISK_ON
+-NEUTRAL
+-RISK_OFF
+-CAPITULATION
+-RECOVERY_ATTEMPT
+-```
+-
+-例如：
+-
+-```text
+-TREND = WEAK
+-BREADTH = IMPROVING
+-PARTICIPATION = NORMAL
+-STRESS = DECLINING
+-→ RECOVERY_ATTEMPT
+-```
+-
+-映射合同必须有：
+-
+-```text
+-entry
+-exit
+-hysteresis
+-```
+-
+-避免：
+-
+-```text
+-今天 RISK_OFF
+-明天 NEUTRAL
+-后天 RISK_OFF
+-```
+-
+-无意义抖动。
++first-true：必需轴UNKNOWN→UNKNOWN；trend WEAK且stress HIGH→CAPITULATION；trend WEAK且breadth IMPROVING且stress_change DECLINING→RECOVERY_ATTEMPT；trend STRONG且breadth非DETERIORATING且stress LOW→RISK_ON；trend WEAK或stress HIGH→RISK_OFF；其余NEUTRAL。
++映射候选连续2个可评估市场会话才切标签，CAPITULATION立即；数据缺失显示UNKNOWN及last_known，不把旧标签说成当日判断。该映射只解释，不切换资格参数。
+ 
+ ---
+ 
+@@ -5704,7 +3717,7 @@
+ 
+ V4.0 把太多不同概念塞进一条生命周期。
+ 
+-V4.1 改为五轴。
++本版 改为五轴。
+ 
+ ---
+ 
+@@ -5788,139 +3801,27 @@
+ 
+ ---
+ 
+-# 31. 状态转移规则
+-
+-## 31.1 升级
+-
+-高阶段证据已确认：
+-
+-```text
+-立即升级
+-```
+-
+-无需人为等待最低天数。
+-
+-例如：
+-
+-```text
+-PREWATCH
+-今天直接 LAUNCH_CONFIRM
+-→ CONFIRMED
+-```
+-
+-合法。
+-
+-系统只是不可以事后声称：
+-
+-> 提前了几天。
+-
+-真实 lead = 0。
+-
+----
+-
+-## 31.2 降级
+-
+-普通证据弱化：
+-
+-```text
+-不因单日轻微波动立即降级
+-```
+-
+-采用：
+-
+-```text
+-exit hysteresis
+-```
+-
+-工程候选：
+-
+-```text
+-连续 2 个可评估 session 不再满足
+-```
+-
+-才降级。
+-
+-具体值进入参数合同。
+-
+----
+-
+-## 31.3 Hard Damage
+-
+-```text
+-STRUCTURE_DAMAGE
+-INVALIDATION_AST TRUE
+-```
+-
+-立即：
+-
+-```text
+-health = DAMAGED
+-validity = INVALIDATED
+-```
+-
+-不等两天。
+-
+----
+-
+-## 31.4 Data Gap
+-
+-缺失 required data：
+-
+-```text
+-stage 不升级
+-不把 UNKNOWN 当 FALSE
+-不制造 EXIT
+-quality 进入 UNKNOWN/PARTIAL
+-```
+-
+----
++# 31. Final State Reducer
++
++contract_id=RESEARCH_STATE_V1。每轴单值，D0/D1 detector先完成，D2才执行。保留raw资格、最终资格、transition reasons及known/unknown predicates。
++
++1. 模型边界先选择合法前态/lineage，边界事件独立记录，不和健康竞争。
++2. 旧研究episode冻结invalidation_AST或core_price_damage为TRUE：health=DAMAGED、validity=INVALIDATED、final_eligibility=FALSE、maturity=NONE、tracking=FOLLOWUP；同日其他确认不能覆盖。
++3. 无硬失效，必需事实UNKNOWN：保留last_known maturity并标state_freshness=STALE，validity=UNKNOWN、health=UNKNOWN、final_eligibility=UNKNOWN；不新增enrollment/退出，不将旧值算今日eligible。
++4. 都可评估：validity=VALID；按CONFIRMED>WARM>PREWATCH>SEED>NONE选raw最高阶段。确认用D0，WARM用已冻结legacy，PREWATCH用C；股票V1不额外发明WARM检测器，无对应股票WARM合同则该分支NOT_APPLICABLE，板块仍有WARM。
++5. 升级当日生效；下降候选需连续2个可评估市场会话（中间缺失/停牌打断连续计数，不当FALSE），期间保留阶段但final_eligibility按今天是否仍满足至少一条合法资格。第二日降到候选阶段；NONE则退出到FOLLOWUP。
++6. health按DAMAGED已优先处理；否则risk=EXTREME→EXHAUSTED；delta3<−3→WEAKENING；delta3>3→IMPROVING；其余STABLE（sector使用dq5）。没有必要历史为UNKNOWN。
++7. 无episode且NONE→tracking=CLOSED；有活动资格→ACTIVE；退出→FOLLOWUP；所有冻结outcome/follow-up到期工作完成后CLOSED。
++
++hard invalidation只作用其关联研究episode的冻结invalid_if，不把任意旧Anchor broken当整股永久失效。invalidation_AST来自创建时证据合同，不能随之后挑Anchor改变。一个坏Anchor和另一个有效Anchor分别展示，不能自动清除反证。
+ 
+ # 32. Expiry
+ 
+-SEED / PREWATCH 长时间无进展需要过期。
+-
+-保存：
+-
+-```text
+-expiry_rule_id
+-evaluable_session_count
+-```
+-
+-到期：
+-
+-```text
+-maturity = NONE
+-tracking = FOLLOWUP
+-```
+-
+-历史 episode 仍保留。
+-
+----
++SEED/PREWATCH连续10个可评估会话未有阶段升级且delta3/dq5未提高>=3个百分点则EXPIRED，maturity=NONE、tracking=FOLLOWUP。改善计时以最后一次达到门槛的冻结值为参照，不能每日重置掩盖停滞。UNKNOWN/停牌不增expiry计数；额外显示market_age避免僵尸隐藏。支持/确认episode不适用此expiry。
+ 
+ # 33. Reentry
+ 
+-来源正式退出后再次满足：
+-
+-```text
+-new episode
+-parent_episode_id = old episode
+-```
+-
+-如果只是：
+-
+-```text
+-PREWATCH ↔ WARM
+-```
+-
+-不新建 episode。
+-
+-模型版本切换：
+-
+-```text
+-SOURCE_MODEL_BOUNDARY
+-```
+-
+-也不伪装成 REENTERED。
++正式退出后次一市场会话及以后重新满足资格才new episode，parent_episode_id指旧episode。退出当天不新建，stage间升级/下降不新建；MODEL_BOUNDARY不是REENTERED。旧episode继续独立follow-up和outcome，实体投影显示活动episode优先。唯一键包含episode_id，不以实体合并旧工作。
+ 
+ ---
+ 
+@@ -5959,11 +3860,9 @@
+ TREND_CONTINUE
+ ```
+ 
+-作为：
+-
+-```text
+-Confirmation Engine
+-```
++作为 Confirmation detector facts，输入时点依 §13A，最终事件在D2之后生成。
++
++LEGACY_ADAPTER_V1：V4-00A提取基线每条保留函数的路径/符号/源码hash、调用图、参数、输入单位/时间、输出与UNKNOWN语义，按首次消费者阶段（sector V4-08、stock confirmation V4-11）生成精确AST与黄金向量。当前源码不是未来变量；一经提取绑定model_contract_id。若发现内部读取Final State、Focus或在线补充，拆成纯函数或保持diagnostic，不能直接入正式D0。未提取模块只阻断其场景，不阻断F0/Core。
+ 
+ ---
+ 
+@@ -5980,7 +3879,6 @@
+ 但不能直接把几百个 SETUP_WATCH 全量展示。
+ 
+ ---
+-
+ 
+ 
+ # 34A. V3.3 Confirmation Event Compression
+@@ -6032,7 +3930,7 @@
+ 
+ ## 34A.3 Security-Level Dedup
+ 
+-一个 `security_id` 当日只能有一个 canonical result row。
++每个 (publication_id,security_id) 只能有一个 canonical result row；同日不同revision分别保留。
+ 
+ 字段：
+ 
+@@ -6042,7 +3940,7 @@
+ scenario_evidence[]
+ ```
+ 
+-如果多场景同时命中，第一版 primary scenario 沿用当前 V3.3 已存在的确定性场景优先级；所有次场景保留，不重复显示股票。
++如果多场景同时命中，第一版 primary scenario 使用 §34 extraction manifest 冻结的V3.3场景优先级；所有次场景保留，不重复显示股票。
+ 
+ ---
+ 
+@@ -6065,56 +3963,15 @@
+ 
+ ## 34A.5 Event Classification
+ 
+-与前一 accepted publication 比较：
+-
+-```text
+-NEW_CONFIRMED
+-SCENARIO_UPGRADED
+-RECONFIRMED
+-PERSISTENT_CONFIRMED
+-CONFIRMATION_WEAKENED
+-CONFIRMATION_INVALIDATED
+-```
+-
+-### NEW_CONFIRMED
+-
+-```text
+-previous maturity < CONFIRMED
+-current maturity = CONFIRMED
+-```
+-
+-### SCENARIO_UPGRADED
+-
+-例如：
+-
+-```text
+-RECOVERY_TURN → LAUNCH_CONFIRM
+-```
+-
+-### RECONFIRMED
+-
+-此前：
+-
+-```text
+-CONFIRMED → WEAKENING / invalidated or exited
+-```
+-
+-之后重新出现新的正式确认条件。
+-
+-### PERSISTENT_CONFIRMED
+-
+-```text
+-CONFIRMED → CONFIRMED
+-且无重要新场景/风险变化
+-```
+-
+-不占首页主区域。
++contract_id=STATE_EVENT_V1。仅对D2和冻结prior_session_state_head做diff；first-true：有效前态缺失→FIRST_OBSERVED；关联旧episode本日硬失效→CONFIRMATION_INVALIDATED；本日确认且该episode或其明确关联的parent_episode曾确认、上一可见状态已弱化/退出→RECONFIRMED；本日确认且前态未确认→NEW_CONFIRMED；持续确认且primary_scenario按冻结优先表更高→SCENARIO_UPGRADED；旧确认而health/资格变弱→CONFIRMATION_WEAKENED；均确认且无变化→PERSISTENT_CONFIRMED；其余NONE。
++
++scenario变化非升级时单独SCENARIO_CHANGED，不伪称更强。成熟度与health不得互相比较枚举。多事件分别保留，primary_event按上述序，仅用于展示，不能删除其他轴的反证。每(publication_id,entity_type,entity_id,event_type)唯一。
+ 
+ ---
+ 
+ ## 34A.6 首页展示规则
+ 
+-“今日确认候选”改名：
++“今日新确认 / 确认变化”改名：
+ 
+ > **今日新确认 / 确认变化**
+ 
+@@ -6207,20 +4064,9 @@
+ 
+ ## 34A.10 Priority
+ 
+-新确认对象也不一定全部同优先级。
+-
+-至少分：
+-
+-```text
+-A  确认强 + 结构合理 + 风险低
+-B  确认成立 + 结构一般
+-C  确认成立但位置/延伸风险较高
+-D  形式确认但冲突证据明显
+-```
+-
+-不是用一个神秘总分隐藏原因。
+-
+-
++确认对象复用唯一PRIORITY_V1的确认分桶和稳定排序。不得在此重新维护另一套优先级或参数。
++
++---
+ 
+ ## 34A.2A Confirmation Event 的状态前驱
+ 
+@@ -6316,45 +4162,10 @@
+ 
+ ---
+ 
+-# 37. Near-Miss：改成 AST Rule Path Distance
+-
+-不把所有 shortfall 粗暴相加。
+-
+-例如：
+-
+-```text
+-PATH 1
+-POSITION
+-AND STRUCTURE
+-AND RELATIVE_CHANGE
+-
+-PATH 2
+-POSITION
+-AND RELATIVE_CHANGE
+-AND TREND_TRANSITION
+-```
+-
+-分别计算：
+-
+-```text
+-distance_path_1
+-distance_path_2
+-```
+-
+-最终：
+-
+-```text
+-near_miss_distance
+-=
+-min(evaluable_path_distance)
+-```
+-
+-UNKNOWN：
+-
+-```text
+-不计距离
+-单独标 UNRESOLVED
+-```
++# 37. Near-Miss：AST 失败谓词
++
++contract_id=NEAR_MISS_V1。先按正常Hard Safety求值，硬失败对象只展示风险解释，不排入“差一点可入选”。对S1/S2完全可评估路径，distance=(FALSE叶谓词个数, 按固定predicate_id顺序的单位归一化shortfall向量)，词典序比较，不把不同单位相加。
++连续谓词shortfall=max(0,threshold−value)/scale（方向相反则反向），scale由参数合同冻结且>0；离散FALSE为1，TRUE为0。取路径最小词典序距离；所有路径含UNKNOWN则distance=NULL、UNRESOLVED，不把未知当0。页面列具体未满足/未知谓词，不能将Near-Miss当收益分数。
+ 
+ ---
+ 
+@@ -6478,7 +4289,6 @@
+ ---
+ 
+ 
+-
+ # 41A. Structure Event Engine
+ 
+ 
+@@ -6597,283 +4407,50 @@
+ 
+ ---
+ 
+-## 41A.2 Anchor Type
+-
+-第一版支持：
+-
+-```text
+-BREAKOUT_LEVEL
+-RANGE_UPPER
+-PRIOR_HIGH
+-BULLISH_IMPULSE_BODY
+-BULLISH_IMPULSE_LOW
+-MA20_DYNAMIC
+-MA60_DYNAMIC
+-PIVOT_LOW
+-GAP_ZONE
+-```
+-
+-注意：
+-
+-```text
+-动态均线 Anchor
+-```
+-
+-与固定价格 Anchor 必须区分。
+-
+----
++## 41A.2 Anchor Type 与选择
++
++contract_id=STRUCTURE_EVENT_V1。V1支持PRIOR_HIGH/BREAKOUT_LEVEL、RANGE_UPPER、BULLISH_IMPULSE_BODY/LOW、MA20_DYNAMIC/MA60_DYNAMIC、PIVOT_LOW、GAP_ZONE；每类须有明确来源事件，不能看图事后随意画线。
++PRIOR_HIGH=此前20日最高价；RANGE_UPPER仅当此前20日range/ATR<=4且slope20绝对值<=0.1，取此前20日高；impulse按§41B；dynamic MA来源于此前注册的上涨事件，其公式冻结，每观察日生成新值不改旧值。
++PIVOT_LOW采用左右各2日低点确认，最早在pivot_date+2实际可评估会话才能注册，available_date为确认日不能倒填；GAP_ZONE需L[t]>H[t-1]，区间[H[t-1],L[t]]，注册日不能参与回测支撑。
+ 
+ ## 41A.3 Anchor 冻结
+ 
+-固定 Anchor 一旦建立：
+-
+-```text
+-anchor_date
+-anchor_price / zone
+-anchor_type
+-source_event_id
+-```
+-
+-不能因为后续价格上涨后再向上移动，以免结果倒推。
+-
+----
+-
+-# 41B. Bullish Impulse / “中阳”算法
+-
+-## 41B.1 不用固定涨幅定义中阳
+-
+-不同股票波动不同。
+-
+-使用：
+-
+-```text
+-body = close - open
+-body_atr = body / ATR20
+-range_atr = (high - low) / ATR20
+-CLV = (close - low) / max(high - low, epsilon)
+-```
+-
+-结合：
+-
+-```text
+-amount_state
+-turnover_state if available
+-relative_market
+-```
+-
+-判定：
+-
+-```text
+-BULLISH_IMPULSE_CANDIDATE
+-```
+-
+-具体阈值进入 parameter registry。
+-
+----
+-
+-## 41B.2 中阳 Anchor Zone
+-
+-保存：
+-
+-```text
+-impulse_open
+-impulse_body_mid
+-impulse_close
+-impulse_low
+-impulse_high
+-```
+-
+-后续回踩可以描述：
+-
+-```text
+-HELD_UPPER_BODY
+-HELD_MID_BODY
+-HELD_OPEN_ZONE
+-TESTED_LOW
+-BROKEN_LOW
+-```
+-
+-但这些只是结果层描述，不自动映射为买点。
+-
+----
+-
+-# 41C. Support / Acceptance Engine
+-
+-## 41C.1 状态机
+-
+-```text
+-IDLE
+-APPROACHING
+-TESTING
+-BREACHED_SHALLOW
+-RECLAIMED
+-HELD_TENTATIVE
+-RETESTING
+-HELD_CONFIRMED
+-BROKEN
+-INVALIDATED
+-UNKNOWN
+-```
+-
+----
+-
+-## 41C.2 TESTING
+-
+-当价格进入 Anchor zone：
+-
+-```text
+-distance_to_anchor_atr <= test_distance_threshold
+-```
+-
+-只能写：
+-
+-> 正在测试支撑。
+-
+-不能写：
+-
+-> 支撑有效。
+-
+----
+-
+-## 41C.3 Breach Depth
+-
+-```text
+-breach_depth_atr
+-= max(0, anchor_lower - intraday_low) / ATR20
+-```
+-
+-固定百分比跌破不是统一尺度。
+-
+-浅穿后收回：
+-
+-```text
+-BREACHED_SHALLOW → RECLAIMED
+-```
+-
+----
+-
+-## 41C.4 Reclaim
+-
+-至少记录：
+-
+-```text
+-close vs anchor
+-CLV
+-reclaim_time if intraday unavailable则 only EOD
+-relative_market result
+-```
+-
+-如果只有日线：
+-
+-```text
+-只做 EOD_RECLAIM
+-```
+-
+-不虚构分钟内恢复速度。
+-
+----
+-
+-## 41C.5 Held Tentative
+-
+-首次测试后：
+-
+-```text
+-没有明显结构破坏
+-+ close重新位于Anchor有效区
+-+ 相对结果没有明显恶化
+-```
+-
+-可标：
+-
+-```text
+-HELD_TENTATIVE
+-```
+-
+-不是最终确认。
+-
+----
+-
+-## 41C.6 Retest / Confirm
+-
+-后续再测试：
+-
+-```text
+-再次接近 Anchor
+-但未产生有效 break
+-并再次恢复/保留
+-```
+-
+-才升级：
+-
+-```text
+-HELD_CONFIRMED
+-```
+-
+-具体需要几次测试不是永恒定律，参数化并在 Forward 中验证。
+-
+----
+-
+-## 41C.7 Broken
+-
+-```text
+-有效跌破 Anchor zone
+-+ 后续未及时 reclaim
+-```
+-
+-进入：
+-
+-```text
+-BROKEN / INVALIDATED
+-```
+-
+-禁止用“洗盘”故事保护失效结构。
+-
+----
+-
+-# 41D. Acceptance / Retention Algorithm Family
+-
+-目标是区分：
+-
+-```text
+-涨了
+-```
+-
+-和：
+-
+-```text
+-涨了以后被市场接受。
+-```
+-
+-股票层：
+-
+-```text
+-impulse_retention_1
+-impulse_retention_3
+-breakout_retention
+-support_reclaim_state
+-retest_hold_state
+-relative_strength_retention
+-```
+-
+-板块层：
+-
+-```text
+-member_retention
+-breadth_retention
+-rank_retention
+-relative_strength_retention
+-seed/prewatch retention
+-```
+-
+-例如：
+-
+-```text
+-impulse_retention_1
+-= (close_t+1 - impulse_anchor_base)
+-  / max(impulse_close - impulse_anchor_base, epsilon)
+-```
+-
+-但任何 ratio 只作为 OF/ER 辅助，不能单独判定支撑。
++固定Anchor原坐标及事件不回写；每日换基视图按§41A0。动态MA不得伪称固定支撑价。每个Anchor分别跟踪；active_anchor按是否未失效、与C距离/ATR升序、anchor_date降序、anchor_id升序选择供页面展示；研究episode invalid_if使用创建时绑定的Anchor，不能随active_anchor切换。
++平台/前高基于历史复权坐标建立时，使用逆仿射变换存anchor_basis_trade_date raw坐标，并保存原变换摘要；不是把历史最高raw直接用于当前坐标。
++
++---
++
++# 41B. Bullish Impulse
++
++contract_id=STRUCTURE_EVENT_V1。body=C-O，body_atr=body/ATR20[t-1]，range_atr=(H-L)/ATR20[t-1]；昨日ATR换到当前价格坐标后计算，避免今日大振幅抬高自身阈值。CLV按§10A0。
++core_bullish_impulse=(body_atr>=1 AND range_atr>=1 AND CLV>=0.7 AND amount_ratio20>=1.2 AND rel_market_1>0)。数据不足UNKNOWN，一字板CLV未知不能靠该分支确认。turnover只能生成独立补充说明。
++记录open/body_mid/close/low/high；BODY区间[O,(O+C)/2]，LOW区间[L,L]，最早次日开始测试。价格区间只是研究Anchor，不映射买点。所有新增阈值写入§72候选参数实例。
++
++---
++
++# 41C. Support / Acceptance 状态机
++
++contract_id=SUPPORT_STATE_V1。只评估t-1已存在Anchor；新Anchor今日IDLE。缺失actual bar/换基/ATR为UNKNOWN观察，保留旧状态与stale标记，不虚构退出。
++
++定义zone=[lo,hi]（观察日同基准）、atr=ATR20[t-1]换基值>0；touch=(L<=hi+0.25*atr AND H>=lo−0.25*atr)；close_breach=C<lo−0.5*atr；deep_breach=C<lo−1.5*atr；eod_reclaim=touch AND C>=hi AND CLV>=0.5。只用日线，不推断日内先后/速度。
++
++状态与计数按序：
++1. 已终止INVALIDATED/BROKEN不复活，恢复须新事件。
++2. deep_breach或close_breach连续2可评估市场日→BROKEN，关联invalidation AST可当日使研究episode INVALIDATED；不等待未来回收来回写今天。
++3. close_breach首次→BREACHED_SHALLOW（描述待确认，名称不保证盘中浅穿）。
++4. eod_reclaim且之前已完成首次测试、至少隔1个完全离开测试带的实际会话后再次touch→HELD_CONFIRMED，test_count+1。
++5. eod_reclaim且此前TESTING/BREACHED_SHALLOW→RECLAIMED；首次touch并eod_reclaim→RECLAIMED（仅EOD事实，test_count=1）。
++6. 之前RECLAIMED且后续至少1实际会话C>=hi、无close_breach→HELD_TENTATIVE。
++7. 之前HELD_TENTATIVE/HELD_CONFIRMED再次touch但未reclaim→RETESTING。
++8. touch→TESTING；否则距离区间<=1*atr→APPROACHING；其余保持有效前态或IDLE。
++
++每个分支保存触发事实；缺失会话打断连续close_breach计数，不当作恢复。冻结的硬invalid_if可严于该支撑状态，需显式记录两者含义。输出INVALIDATED是终止行政状态，BROKEN是价格路径状态，不能任意互换。
++
++# 41D. Acceptance / Retention
++
++contract_id=RETENTION_V1。impulse_retention_k=(C[t0+k]-base)/(C[t0]-base)，k=1/3，全部换到同一观察基准；分母<=0或未知则NOT_APPLICABLE/UNKNOWN，禁止epsilon伪造。仅在目标市场日到来且证据可用时新增observation，不能更新t0事实。数值可>1或<0，展示原值不伪装概率。
++acceptance_state=UNKNOWN(必需数据缺失)、BROKEN(已硬失效)、PENDING(事件后尚无2个可评估会话)、ACCEPTED(后2个连续会话C>=anchor_upper)、NOT_ACCEPTED(其余可评估)。support retest与breakout acceptance不同，不能用一次上涨等价支撑确认。
++板块retention按§15固定集合，Rotation价格路径按§21A，不能调用当日stock最终状态回灌B。
+ 
+ ---
+ 
+@@ -6906,38 +4483,21 @@
+ 
+ ---
+ 
+-# 41F. Daily Profile 与高级 Event Engine 分阶段
+-
+-V4.2 不要求第一版一次做完所有高级 Anchor。
+-
+-### Phase 1 必须
+-
+-```text
+-Trend
+-Position
+-MA Structure
+-Relative
+-Compression
+-Amount
+-Turnover
+-Extension
+-Basic Breakout
+-Basic Pullback
+-Basic Recovery
+-```
+-
+-### Phase 2 增强
+-
+-```text
+-Platform Anchor
+-Bullish Impulse Anchor
+-Support Test/Reclaim/Retest
+-Acceptance / Retention
+-Multi-anchor priority
+-```
+-
+-但数据库和 API 在 Phase 1 就要预留 event identity，避免第二阶段推倒重来。
+-
++# 41F. Profile 分阶段
++
++Core字段在V4-04，Turnover在V4-06，Structure/Anchor/Support在V4-12，Context/Structure投影在V4-13，Why Now在V4-15。API在Core阶段允许组件NOT_IMPLEMENTED；完整产品验收才要求已承诺的后置组件就绪。字段登记只用§87A，禁止另列“第一阶段必须全部高级状态”。
++
++---
++
++# 41G. 解释、展示和独立证据
++
++HYPOTHESIS_V1：模板必须绑定可验证predicate_id、支持/反对/UNKNOWN证据及下一判别/过期AST。证据不足不强造第二个解释，标HYPOTHESIS_SET_INCOMPLETE。价格衍生的多个Domain不是统计独立观测；不能按Domain数或解释数量累加“把握”。Supplemental解释包含自身revision，不混入Core why_now。
++
++DISPLAY_V1：先从完整qualified ledger生成全部事件，事件改变检测以冻结前態为准。首页只展示非PERSISTENT有实质事件的对象；市场卡与数据等待说明不受“仅变化对象”限制。先按风险失效、确认/升级、新PREWATCH、其他变化排序，再各自PRIORITY_V1 tuple、stable entity_id。跨行业/概念合并板块池，最多15；独立股票最多30，允许0，正常5–10/10–20只是预期负荷而非下限。
++股票全首页去重，已在板块卡展示者独立列表不重复计入负荷；板块卡最多5个变化成员，详情完整分页。风险退出即使final_eligibility=FALSE仍进入RISK_CHANGE事件流，不能被eligible-only排序删除。eligible_count、changed_count、displayed_count分别显示。
++sector_overlap_jaccard=|M_a∩M_b|/|M_a∪M_b|，空并集NA；J>=0.8建立边，按稳定id连通分量生成展示cluster_id，明确传递聚类不保证所有两两J>=0.8。聚类仅去重展示，不合并计算资格；各板块统计仍独立。
++
++---
+ 
+ # 42. Focus Tracker：不重写成熟底座
+ 
+@@ -6957,7 +4517,7 @@
+ - Path State V2；
+ - fail closed。
+ 
+-V4.1 只改变：
++本版 只改变：
+ 
+ > 上游 canonical source。
+ 
+@@ -6972,13 +4532,11 @@
+ V4_SECTOR_RESEARCH
+ ```
+ 
+-同一个股票：
+-
+-```text
+-PREWATCH
+-→ WARM
+-→ CONFIRMED
+-→ WEAKENING
++同一个股票（未正式退出、无模型边界时）：
++
++```text
++maturity: PREWATCH → CONFIRMED（有独立股票WARM合同后才有WARM）
++health: STABLE → WEAKENING
+ ```
+ 
+ 仍是：
+@@ -7013,356 +4571,60 @@
+ 
+ # 45. 独立 Validation Cohort
+ 
+-新增：
+-
+-```text
+-research_signal_cohorts
+-research_signal_cohort_items
+-research_forward_outcomes
+-research_control_assignments
+-```
+-
+-自动纳入：
+-
+-```text
+-ALL eligible PREWATCH
+-ALL WARM
+-ALL CONFIRMED
+-
+-以及：
+-Near-Miss control sample
+-```
+-
+-与：
+-
+-```text
+-UI display
+-Focus activation
+-manual pin
+-```
+-
+-完全独立。
+-
+----
++contract_id=COHORT_V1。对STOCK/SECTOR全部final eligible PREWATCH/WARM/CONFIRMED写daily ledger，与展示/Focus/pin无关。股票无WARM检测器时NOT_APPLICABLE，不能造样本；SEED仅诊断。Near-Miss按§49选作对照。
++
++# 45A. 日账本、统计事件和修订
++
++daily ledger唯一键(model_contract_id,state_lineage_id,publication_id,entity_type,entity_id,signal_type)。统计逻辑事件键(model_contract_id,state_lineage_id,entity_type,entity_id,episode_id,event_type,event_trade_date)，只对FIRST_PREWATCH、REENTRY_PREWATCH、UPGRADE_TO_WARM、NEW_CONFIRMED、REACCELERATION_EVENT、INVALIDATION产生事件；Persistent不新建。
++事件observation唯一键(logical_event_id,publication_id)，含ASSERTED/RETRACTED/CORRECTED。enrollment_id第一次实时ASSERTED冻结T0、reference、source、parameters、benchmark、controls和publication。后续修订只追加并标source_correction，不能重抽原对照、删原样本或重置T0；重算样本独立CORRECTED cohort。原始观察和当前修订投影分别展示。
++报告分列daily rows、logical events、episodes、unique entities、unique dates，股票和板块分开，重叠episode/日期相关性不得当独立样本。
+ 
+ # 46. Forward Outcomes
+ 
+-每个 signal 保存：
+-
+-```text
+-T+1
+-T+3
+-T+5
+-T+10
+-T+20
+-```
+-
+-结果：
+-
+-```text
+-absolute_return
+-relative_market_return
+-relative_sector_return
+-
+-MFE
+-MAE
+-MDD
+-
+-time_to_warm
+-time_to_confirm
+-time_to_invalid
+-```
+-
+----
+-
+-# 47. Right Censoring
+-
+-如果今天只有 T+1：
+-
+-```text
+-T+5
+-T+10
+-T+20
+-```
+-
+-必须：
+-
+-```text
+-RIGHT_CENSORED / PENDING
+-```
+-
+-不能算：
+-
+-```text
+-NO_CONVERSION
+-```
+-
+----
++V4-15必须交付enrollment、日历due planner、价格path、benchmarks、control settlement、outcome revisions与readback。V4-16开始每日结算；V4-21只是继续累计。任何Focus/UI筛选不限制结算。
++唯一键(enrollment_id,horizon,outcome_contract_id,evaluation_source_digest)。同源重复执行幂等；更正源追加evaluation revision，first_observed和latest_corrected分开，不写回信号。
++
++# 46A. Horizon 与公式
++
++contract_id=FORWARD_PRICE_PATH_V1。N=1/3/5/10/20，按冻结市场日历推进。T0为盘后信号收盘，不是可成交策略回报。evaluation_basis_date=T+N；将T0和后续OHLC全部用同一已验证local affine adjustment source换到该日坐标。冻结signal的原始reference不变，另存comparison_reference、换基系数/digest/asof。不能拿不同daily QFQ快照直接相除。
++
++P_j为同基准收盘，j=0..N；未来高低点只取1..N：
++
++```text
++R_N = P_N/P_0 - 1
++MFE_N = max(0, max_{1<=j<=N}(High_j/P_0-1))
++MAE_N = min(0, min_{1<=j<=N}(Low_j/P_0-1))
++D_j = P_j/max(P_0,...,P_j)-1
++PATH_MDD_CLOSE_N = min(D_0,...,D_N)
++```
++
++MFE>=0、MAE/MDD<=0；不把T0日内高低点算作未来。缺失实际会话不合成bar；确认停牌可从极值路径省略但披露actual_count，未确认缺口使路径指标MATURED_DATA_MISSING。终点停牌R_N不可用，不挪到复牌日。另存tradable-session诊断，不替代N日结果。
++反例验收：[100,110,120] MDD=0；[100,80,90] MDD=−0.2；[100,120,90] MDD=−0.25；N=1、平盘、除权、缺口都必须有独立预期。
++
++# 47. 到期与截尾
++
++未到期存PENDING；报告截止日未完成的time-to-event观察标RIGHT_CENSORED。已到期按OBSERVED/SUSPENDED_AT_HORIZON/MATURED_DATA_MISSING/DELISTED_BEFORE_HORIZON分开，禁止全当右截尾或失败。退市无可验证终值不填−100%或0；披露不可观察比例，不从完整案例结果推出全样本效果。confirmed suspension的中间缺口与未知缺口分列。
+ 
+ # 48. Competing Outcomes
+ 
+-PREWATCH 后：
+-
+-```text
+-CONFIRMED
+-INVALIDATED
+-EXPIRED
+-RIGHT_CENSORED
+-```
+-
+-需要用：
+-
+-```text
+-time-to-event
+-```
+-
+-思路统计。
+-
+-不是只算：
+-
+-```text
+-conversion %
+-```
+-
+----
+-
+-# 49. Control Cohorts
+-
+-目标不是证明“自动交易 Alpha”。
+-
+-目标是判断：
+-
+-> PREWATCH 是否相对于简单规则真的提供增量研究价值。
+-
+-第一版对照：
+-
+-### Control A：旧系统
+-
+-```text
+-V3 EARLY / POTENTIAL 对应对象
+-```
+-
+-### Control B：Simple Momentum
+-
+-```text
+-RPS5_delta3 Top-N
+-```
+-
+-但使用同样：
+-
+-```text
+-Hard Safety
+-```
+-
+-### Control C：Matched Non-PREWATCH
+-
+-同 trade_date：
+-
+-```text
+-同板块/相邻行业
+-相似 liquidity
+-相似 volatility
+-相似 RPS20 background
+-```
+-
+-若可靠市值数据未来就绪，可再加市值匹配。
+-
+----
+-
+-
+-# 45A. Forward Observation Unit / Settlement Contract
+-
+-## Daily Eligibility Ledger
+-
+-唯一键：
+-
+-```text
+-(model_contract_id,
+- trade_date,
+- publication_id,
+- security_id,
+- signal_type)
+-```
+-
+-连续 20 天 PREWATCH 可以有 20 条 daily ledger，但不等于 20 个独立信号。
+-
+-## Statistical Signal Event
+-
+-默认唯一键：
+-
+-```text
+-(model_contract_id,
+- security_id,
+- episode_id,
+- event_type,
+- event_trade_date)
+-```
+-
+-统计事件：
+-
+-```text
+-FIRST_PREWATCH
+-REENTRY_PREWATCH
+-UPGRADE_TO_WARM
+-NEW_CONFIRMED
+-REACCELERATION_EVENT
+-INVALIDATION
+-```
+-
+-Persistent 不新建独立统计事件。
+-
+-报告必须分开：
+-
+-```text
+-daily eligibility count
+-unique signal event count
+-unique episode count
+-unique security count
+-unique signal date count
+-```
+-
+----
+-
+-# 46A. Forward Horizon 与结算公式
+-
+-Horizon：
+-
+-```text
+-T+1/T+3/T+5/T+10/T+20
+-```
+-
+-按**市场交易日历**推进。
+-
+-可以另存：
+-
+-```text
+-tradable_session_horizon
+-```
+-
+-但不能替代正式 market-session horizon。
+-
+-T0 reference：
+-
+-```text
+-T0 adjusted close
+-```
+-
+-收益：
+-
+-```text
+-R_N = Close_adj(T+N) / Close_adj(T0) - 1
+-```
+-
+-状态必须区分：
+-
+-```text
+-PENDING
+-RIGHT_CENSORED
+-SUSPENDED_AT_HORIZON
+-MATURED_DATA_MISSING
+-DELISTED_BEFORE_HORIZON
+-OBSERVED
+-```
+-
+-MFE：
+-
+-```text
+-MFE_N =
+-max(High_adj / Close_adj_T0 - 1)
+-```
+-
+-MAE：
+-
+-```text
+-MAE_N =
+-min(Low_adj / Close_adj_T0 - 1)
+-```
+-
+-Path close MDD：
+-
+-```text
+-PATH_MDD_CLOSE_N =
+-min_{i<j<=N}(Close_j / Close_i - 1)
+-```
+-
+-如以后增加 intraday drawdown，必须单独命名，不能与 close MDD 混用。
+-
+----
+-
+-# 49A. Relative Benchmark Contract
+-
+-Market benchmark 必须绑定：
+-
+-```text
+-MARKET_BENCHMARK_V1
+-```
+-
+-并唯一化：
+-
+-```text
+-market_reference_return_N
+-```
+-
+-正式：
+-
+-```text
+-relative_market_return_N
+-=
+-stock_return_N - market_reference_return_N
+-```
+-
+-Sector benchmark 在 T0 冻结：
+-
+-```text
+-sector_benchmark_id
+-sector_member_basket_digest
+-membership_basis
+-```
+-
+-后续不得重新挑“后来最强的板块”。
+-
+-历史 sector membership 非 PIT：
+-
+-```text
+-relative_sector_return = UNAVAILABLE_FOR_FORMAL_FORWARD
+-```
+-
+----
+-
+-# 49B. Control Assignment
+-
+-Control 在 T0 冻结：
+-
+-```text
+-control_id
+-matching_features_t0
+-assignment_digest
+-```
+-
+-如果 Control 后来自己进入 PREWATCH：
+-
+-```text
+-control_crossed_signal_at = date
+-```
+-
+-原 assignment 不删除。
+-
+-报告同时给：
+-
+-```text
+-ITT_CONTROL
+-CLEAN_CONTROL
+-```
+-
+-并按：
+-
+-```text
+-security
+-trade_date
+-sector/cluster
+-```
+-
+-处理重复相关性，禁止把连续日快照当互相独立样本。
++对每个PREWATCH episode记录首个CONFIRMED/INVALIDATED/EXPIRED的market-date时间；同日按state reducer的硬失效优先级。RIGHT_CENSORED是观察状态，不是竞争事件。转化后仍继续N日外部价格路径；不能因失败/确认而停止结算选择样本。完整报告分事件类型、日期和source quality，不只报conversion%。
++
++# 49. Controls
++
++Control A=冻结同日Legacy模型全部符合对象；无真实Legacy当日输出不能事后冒充observed control。Control B=同Hard Safety下delta3 Top-N，N为同日该股票signal类型事件数；稳定id打破展示同分，资格同分保留原值。Control C见§49B。三个对照分别报告，不合成最佳对照。
++
++# 49A. Benchmark Contract
++
++contract_id=MARKET_BENCHMARK_V1。Core历史市场参考retN：在起点t-N已符合Universe、按各因子窗口可评估股票的等权endpoint return均值，保存起点Universe/可观察集合/coverage；缺失超过20% UNKNOWN，不能只凭现在存活证券补池。市场趋势路径为连续这些ret1链乘，标daily-rebalanced research index，非交易所指数，不与单一股票收益混名。
++
++Forward市场基准：T0冻结可评估Research Universe，等权固定份额，每股收益按同基准换算，B_j=sum(w_i*(P_i,j/P_i,0))。不因后来变强/退市重选或再归一化剩余成员。完整endpoints才正式OBSERVED；成员终点缺失则benchmark UNKNOWN并披露范围，不能使股票absolute_return失效。
++Sector基准同式，T0按§20确定sector，冻结成员和等权份额；对stock relative_sector排除目标股票，n<2不提供；SECTOR signal直接使用自身冻结篮子。identity含member/weight/source/adjustment digest。
++relative_market_return=stock_R−market_B_return；relative_sector_return同理。sector endpoint/path以同一固定篮子计算；日线无法知道成员盘中极值是否同步，故SECTOR的MFE/MAE采用close-only并独立命名MFE_CLOSE/MAE_CLOSE，不能把成员high求和冒充板块intraday高点。板块和股票outcome分开统计。
++
++# 49B. Matched Controls 与分析
++
++contract_id=CONTROL_ASSIGNMENT_V1。T0符合相同Hard Safety、非当日PREWATCH final eligible且非本事件实体为池；优先同primary industry（必须T0可知），缺行业允许全市场并标MATCH_SCOPE_MARKET。距离为prior20 mean amount的log值、vol20、RPS20各自同日百分位差绝对值之和，固定顺序tie-break security_id。每signal最多3个最近对照，允许不同signal复用；不足保存实际数量，不用未来补选。冻结features/assignment digest。
++后来对照入选只追加crossed_signal_at，ITT主分析保留。CLEAN_CONTROL只作为明确标识的事后敏感性子集，禁止用于主要增量结论或切换门；不得因“剔除了未来入选者”宣称因果优势。按security、signal_date、sector重叠分层披露；无预注册相关性处理时只提供描述统计，不给概率/显著性保证。
+ 
+ ---
+ 
+@@ -7519,160 +4781,38 @@
+ ---
+ 
+ 
+-# 51A. Evidence Origin 与 Execution Mode 正交
+-
+-`evidence_origin`：
+-
+-```text
+-PIT_OBSERVED
+-RECONSTRUCTED_ASOF
+-RECONSTRUCTED_CORRECTED
+-DIAGNOSTIC_NON_PIT
+-```
+-
+-`execution_mode`：
+-
+-```text
+-PRODUCTION
+-SHADOW
+-REPLAY
+-```
+-
+-因此：
+-
+-```text
+-PIT_OBSERVED + SHADOW
+-```
+-
+-是合法组合。
+-
+-它表示：
+-
+-> 当天真实时点冻结、但尚未成为正式生产 source 的 Shadow 输出。
+-
+-可以进入 Shadow Forward Cohort。
+-
+-历史事后补算：
+-
+-```text
+-RECONSTRUCTED_ASOF + REPLAY
+-```
+-
+-永远不能冒充真实 Forward。
+-
+----
+-
+-# 52A. Cutover Policy V1
+-
+-V4.2.2 选择：
+-
+-> 正式切换要求工程稳定 + 最低真实 Shadow Forward 观察，但不要求在切换前已经证明长期统计优势。
+-
+-### SHADOW_STABLE_PASS
+-
+-首版工程门：
+-
+-```text
+->= 20 consecutive accepted market sessions
+-0 temporal leakage
+-0 duplicate episode corruption
+-0 Core publication identity violation
+-0 P0 state-machine violation
+-rollback drill PASS
+-```
+-
+-任一 P0：
+-
+-```text
+-stable_window_reset = TRUE
+-```
+-
+-### PROVISIONAL_FORWARD_GATE
+-
+-首版最低观察充分性：
+-
+-```text
+-shadow_min_accepted_sessions = 20
+-min_unique_signal_dates_with_T5 = 5
+-min_unique_stock_signal_events_with_T5 = 30
+-```
+-
+-并要求：
+-
+-```text
+-真实 PIT_OBSERVED + SHADOW
+-T+5 matured outcomes 已存在
+-无 settlement/data-contract P0
+-```
+-
+-这不是“算法已证明有效”。
+-
+-Focus/UI Cutover 必须：
+-
+-```text
+-SHADOW_STABLE_PASS
+-AND PROVISIONAL_FORWARD_GATE
+-AND MIGRATION_REPLAY_PASS
+-```
+-
+-切换后：
+-
+-```text
+-ALGORITHM_EVIDENCE_LEVEL = PROVISIONAL
+-```
+-
+-直到未来达到：
+-
+-```text
+-FORWARD_SUPPORTED
+-```
+-
+-如果 Shadow 出现明确严重退化：
+-
+-```text
+-NO_CUTOVER
+-```
+-
+-修改合同后必须新 model_contract_id、新 cohort。
+-
+----
+-
+-
+-# 52B. Gate Capability Matrix：FULL / DEGRADED / BLOCKED
+-
+-| 条件 | Core Current Research | Historical Adjusted Profile | Historical Sector Replay | Turnover Enrichment | Formal Forward |
+-|---|---|---|---|---|---|
+-| Current TDX + adjustment READY | FULL | 取决历史 | 取决 membership | 可用 | 可 |
+-| Historical QFQ 不完整 | FULL（若当前链独立通过） | BLOCKED affected range | DEGRADED | 可 | 当前 Forward 可 |
+-| Historical Universe 仅 current replay | FULL | DEGRADED cross-section | DEGRADED | 可 | 当前 Forward 可 |
+-| Historical Sector Membership 非 PIT | FULL | FULL price-only | DIAGNOSTIC | 可 | 投产后 PIT 可 |
+-| 某日 turnover 未补齐 | FULL | FULL | FULL | PENDING/DEGRADED | Core Forward 可 |
+-| Weekly/Monthly AS-OF 未通过 | affected fields BLOCKED | BLOCKED | 相关字段 BLOCKED | 不相关 | affected signals BLOCKED |
+-| Temporal Leakage violation | BLOCKED affected publication | BLOCKED | BLOCKED | 不相关 | BLOCKED |
+-| Adjustment identity mismatch | raw-only possible | adjusted BLOCKED | adjusted-dependent blocked | 可 | affected signals blocked |
+-| `AUD-AMOUNT-A-06` OPEN | Stock Core 不受影响 | 不受影响 | M10/Amount-A dependent ability PROVISIONAL | 不受影响 | 对应证据不得升级 |
+-
+-BaoStock 接口当前视为可用；它的 Supplemental 阶段不作为 Core Gate 阻断条件。
+-
+-历史换手覆盖统一：
+-
+-```text
+-minimum_operational_turnover_history = 60 valid sessions
+-preferred_backfill_target = 250 valid sessions
+-```
+-
+-60 日满足第一版 5/20/60 日上下文；
+-250 日用于更稳定长期分位和扩展，不阻断 Core。
+-
+-所有 DEGRADED 必须带：
+-
+-```text
+-affected_dates
+-affected_securities
+-affected_fields
+-reason_codes
+-capability_scope
+-```
++# 51A. Evidence 与执行方式
++
++统一使用§4.6枚举：PIT_OBSERVED+SHADOW可进入真实Shadow cohort；RECONSTRUCTED_ASOF+REPLAY不可冒充观察。
++
++## 51A.1 观察起点与防事后重跑选样
++
++V4-00C冻结每日scheduled cutoff和观察发布deadline（Asia/Shanghai且存UTC时间），daily_observation_slot=(model_contract_id,state_lineage_id,trade_date)。只有该slot的第一次合规accepted可创建真实enrollment；deadline之后补跑或更换参数属于reconstruction，不允许择优标PIT_OBSERVED。延期/源不可得则记录MISSED_OBSERVATION_SLOT，不悄悄重置日期。已有实时结果的同日修订仍存observations，但不能新增第二套原始样本。
++source/provider_available、system_available、computed_at、accepted_at、observation_deadline分别记录；“同一trade_date”不等于“当时已知”。切换门使用完整slot日志、P0日志和model identity，禁止只挑通过的20天。
++
++# 52A. 切换政策 CUTOVER_V1
++
++只要求工程稳定加最低真实观察，不要求已证明长期优势：
++SHADOW_STABLE_PASS=同一model_contract_id连续20个市场会话按期accepted，0时序泄漏/duplicate episode corruption/Core identity/P0 state violation，rollback drill通过。漏日/不可评估核心会话不计连续；P0或模型/参数变更重置窗口。
++PROVISIONAL_FORWARD_GATE=至少5个不同signal_date、30个不同股票正向入选事件（FIRST/REENTRY_PREWATCH/NEW_CONFIRMED）的T5 OBSERVED结果，同一模型，settlement无P0、controls/benchmark覆盖回执已披露。不能用INVALIDATION或同日revision凑30；样本不足延长观察，不降低资格。
++Focus/UI切换=上述两门 AND MIGRATION_REPLAY_PASS；切换后证据标PROVISIONAL。无明确优势不等于严重退化，不自动阻断。严重退化定义为合同/数据正确性失败、未解释的系统性状态异常或超出事前冻结运行预算，不以后验收益挑阈值。
++
++# 52B. Gate Capability Matrix
++
++每道Gate回执=(status FULL_PASS/DEGRADED_PASS/BLOCKED, capability_scope, affected_dates/entities/fields, reasons, evidence)。兼容DATA_FACTOR_REPLAY_PASS等别名只表示FULL或明确scope内DEGRADED成功，不能丢scope。
++
++| 条件 | 允许能力 | 禁止能力 |
++|---|---|---|
++| 当前TDX/adjustment通过，历史不全 | 当前Core、完整窗口内算法、当日起Forward | 缺证据历史adjusted输出 |
++| 历史Universe只有current replay | 诊断历史、独立通过的当前链 | 正式历史横截面效果 |
++| 历史membership非PIT | 历史price-only、当日起真实成员 | 正式历史sector效果 |
++| turnover失败/不足 | 全部Pure-Core | 对应turnover结果 |
++| AS-OF周期失败 | 无周期依赖的独立能力 | affected周期/信号 |
++| adjustment identity mismatch | verified raw事实 | affected adjusted指标/Forward |
++| Amount A审计OPEN | stock Core、采用命名明确proxy的独立sector路径 | 依赖未验收Amount A的正式路径 |
++| actual temporal leakage | 保留旧accepted | affected新publication |
++
++多个问题取能力集合交集而不是后行覆盖前行。DEGRADED不是允许UNKNOWN硬门通过。BaoStock可选任务失败或等待，调度器可继续Core；历史补齐不作为当前独立能力的全局门。核心必需字段未知即该信号UNKNOWN；不能用capability矩阵静默降低规则。
+ 
+ ---
+ 
+@@ -7914,7 +5054,7 @@
+ 
+ ```text
+ hysteresis
+-min dwell
++exit hysteresis连续计数（无强制升级等待）
+ unknown
+ hard invalidation
+ ```
+@@ -7998,18 +5138,7 @@
+ 
+ ## 59.2 停牌
+ 
+-停牌日：
+-
+-```text
+-不参与有效 rolling session
+-```
+-
+-不能填：
+-
+-```text
+-ret=0
+-turnover=0
+-```
++确认停牌不填ret=0/turnover=0，不当数据缺失；Core连续市场会话窗口遇停牌按CORE_FACTOR_V1返回不足，不跳过日期；Turnover自身历史按TURNOVER_CONTEXT_V1允许跳过确认停牌；Forward按FORWARD_PRICE_PATH_V1固定市场horizon。三者明确分开，不能共享一个无语义的rolling工具。
+ 
+ ---
+ 
+@@ -8029,61 +5158,9 @@
+ 
+ # 60. Research Radar 排名
+ 
+-## 60.1 不使用一个总榜
+-
+-分：
+-
+-```text
+-STOCK_PREWATCH
+-STOCK_CONFIRMED
+-SECTOR_PREWATCH
+-SECTOR_WARM
+-SECTOR_CONFIRMED
+-RISK_CHANGE
+-```
+-
+----
+-
+-## 60.2 Stock PREWATCH
+-
+-先：
+-
+-```text
+-priority_bucket
+-```
+-
+-桶内排序：
+-
+-```text
+-emergence strength
+-structure quality
+-change velocity
+-risk lower
+-staleness lower
+-liquidity
+-stable id
+-```
+-
+----
+-
+-## 60.3 Sector PREWATCH
+-
+-先：
+-
+-```text
+-emergence bucket
+-```
+-
+-桶内：
+-
+-```text
+-rank_velocity
+-breadth_delta
+-ma20_delta
+-adjusted_seed_width
+-relative resilience
+-exhaustion lower
+-```
++contract_id=PRIORITY_V1。完整eligible集合按STOCK_PREWATCH/STOCK_CONFIRMED/SECTOR_PREWATCH/SECTOR_WARM/SECTOR_CONFIRMED分别rank；RISK_CHANGE与NEAR_MISS独立，不要求当前eligible。
++Stock键：bucket(A到D)、emergence(HIGH到LOW)、structure(HIGH到LOW)、delta3降序、risk(LOW到EXTREME)、days_since_improvement升序、prior20_amount降序、stable_id升序。Sector键：emergence、rank_velocity3降序、breadth_delta3降序、ma20_delta3降序、adjusted_seed_width降序、exhaustion升序、stable_id升序。每个键missing排该层末位且显示UNKNOWN，不改变已成立资格。
++eligibility_rank即完整资格集合内此序，priority_rank同义alias不另算分；display_rank按DISPLAY_V1事件过滤/cap计算。turnover、未关闭Amount A、未来outcome与manual pin均不进这些正式键。
+ 
+ ---
+ 
+@@ -8114,7 +5191,7 @@
+ 
+ # 62. 用户负荷
+ 
+-V4.1 不追求固定“每天必须多少只”。
++本版 不追求固定“每天必须多少只”。
+ 
+ 目标是：
+ 
+@@ -8141,7 +5218,6 @@
+ 全部相加。
+ 
+ ---
+-
+ 
+ 
+ # 62A. V4.2.2 页面一级导航最终合同
+@@ -8349,7 +5425,7 @@
+ 任何股票代码 / 名称搜索
+ ```
+ 
+-即使不在任何候选池，也必须有 Daily Profile。
++Research Universe中即使不在候选池也必须有Daily Profile；搜索池外证券仍显示身份/排除理由和可用Raw事实，不伪称全套研究算法已评估。
+ 
+ 第一屏：
+ 
+@@ -8395,7 +5471,7 @@
+ 
+ # 62E. 搜索任意股票时“未入选”的解释
+ 
+-如果股票没有进入 PREWATCH：
++如果股票未进入 PREWATCH，先区分NOT_ELIGIBLE、UNKNOWN、NOT_IMPLEMENTED和NOT_IN_RESEARCH_UNIVERSE；下面只说明已完成评估且为FALSE的示例：
+ 
+ 页面不能写：
+ 
+@@ -8535,7 +5611,7 @@
+ ```text
+ 新进入 PREWATCH
+ WARM → CONFIRMED
+-CONFIRMED → WEAKENING
++maturity=CONFIRMED，health→WEAKENING
+ VALID → INVALIDATED
+ ```
+ 
+@@ -8757,7 +5833,7 @@
+ ```text
+ 今天 vs 昨天
+ 股票 vs 市场
+-股票 vs 主板块
++股票 vs T0冻结研究板块（收益基准）/ 当前LOO支持板块（当日解释），两者分开
+ ```
+ 
+ 板块支持：
+@@ -8792,7 +5868,7 @@
+ → V4 Stock PREWATCH
+ 
+ V3.3今日算法候选
+-→ 今日确认候选
++→ 今日新确认 / 确认变化
+ 
+ 板块周期矩阵
+ → Diagnostics
+@@ -8835,7 +5911,6 @@
+ 
+ /api/v4/diagnostics/...
+ ```
+-
+ 
+ 
+ ```text
+@@ -8852,12 +5927,14 @@
+ /api/v4/data-sources/baostock
+ ```
+ 
+-所有响应：
++所有V4研究响应携带§4.9完整context token和以下来源信息：
+ 
+ ```text
+ publication_id
+ trade_date
+-revision
++core_revision
++model_namespace
++optional_enrichment_revision
+ data_as_of
+ turnover_as_of
+ 
+@@ -8923,7 +6000,7 @@
+ position_state.py
+ compression_state.py
+ participation_state.py
+-rotation_state.py
++rotation_core_state.py
+ structure_events.py
+ support_acceptance.py
+ confirmation_event_compression.py
+@@ -8937,47 +6014,14 @@
+ 
+ # 70A. Inherited Audit Register
+ 
+-V4 迁移不能用“新阶段 PASS”自动洗掉旧系统未关闭的独立审计项。
+-
+-| Audit Item | 当前合同状态 | 影响范围 | V4.2.2 处理 |
+-|---|---|---|---|
+-| `AUD-AMOUNT-A-06` | OPEN / EVIDENCE_REQUIRED | M10 / amount_a / sector participation | 继承；未关闭前相关字段不得升级成正式强证据 |
+-| Focus `REAL_FORWARD_PENDING` | OPEN / FORWARD_REQUIRED | Focus 真实多日/停复牌等验证 | 继续独立跟踪；不阻断 V4 基础数据开发，但不得宣称 Focus 已全面真实前瞻闭环 |
+-| Historical Membership 限制 | KNOWN | 投产前 Sector replay | CURRENT_MEMBERSHIP_REPLAY / DIAGNOSTIC |
+-| Historical Universe reconstructability | V4-00B 待验 | 历史横截面 | Capability Matrix 控制 |
+-
+-## Amount A 正式升级前必须冻结
+-
+-```text
+-aggregation_member_basis
+-evaluable_member_filter
+-common_member_basis_for_delta
+-amount_unit
+-daily_sector_amount_formula
+-20-session denominator
+-zero/missing denominator handling
+-coverage_threshold
+-top1_concentration
+-top3_concentration
+-membership_revision_identity
+-```
+-
+-至少明确：
+-
+-```text
+-amount_a_t =
+-sector_amount_t / reference_amount_20
+-```
+-
+-但在 `AUD-AMOUNT-A-06` 关闭前：
+-
+-```text
+-amount_a = PROVISIONAL_EVIDENCE
+-```
+-
+-不能因为 V4-08/V4-11 测试 PASS 就自动关闭该跨域审计。
+-
+-Focus 的代码级修复和真实 Forward 样本属于不同证据层，不能混为一个 PASS。
++| 项目 | 状态 | 权限与关闭条件 |
++|---|---|---|
++| AUD-AMOUNT-A-06 | OPEN/EVIDENCE_REQUIRED | amount_a_value/quality/contract_id分开；OPEN时只diagnostic，不进正式资格/排序/Focus。独立单位/共同成员/20日分母/覆盖/集中度实算及跨域引用验收后新合同启用 |
++| Focus真实Forward缺口 | OPEN/FORWARD_REQUIRED | 保留原专项的精确范围和证据；旧新episode并存等真实样本继续跟踪，文档/合成通过不自动关闭 |
++| 历史Universe/membership | CAPABILITY_SCOPED | current replay只diagnostic；按source证据升级 |
++| 本轮全文修订 | DOCUMENT_REVISED | 代码和真实样本按模块独立验收，不能以文档自检关闭生产审计 |
++
++sector_participation_proxy=median(member amount_ratio20)可依SECTOR_FACTORS_V1使用，必须另名，不称Amount A。若legacy M10路径需要Amount A而未通过，则该路径diagnostic，不暗换代理以维持正式资格。其他独立Core路径仍可运行。
+ 
+ ---
+ 
+@@ -8989,7 +6033,7 @@
+ 
+ > 历史 lifecycle 接线必须真正读取 accepted previous history。
+ 
+-V4-00/V4-03 必须证明：
++V4-00A盘点，V4-14集成时必须证明：
+ 
+ ```text
+ 跨 separate daily builds
+@@ -9086,63 +6130,19 @@
+ 
+ # 72. 参数注册表
+ 
+-新增：
+-
+-```text
+-algorithm_parameter_sets
+-parameter_change_log
+-```
+-
+-每个参数：
+-
+-```text
+-parameter_id
+-contract_scope
+-value
+-unit
+-introduced_version
+-status
+-reason
+-approved_at
+-supersedes
+-```
+-
+----
+-
+-## 72.1 参数状态
+-
+-```text
+-ENGINEERING_CANDIDATE
+-SHADOW_FROZEN
+-PROVISIONAL
+-SUPPORTED
+-RETIRED
+-```
+-
+----
+-
+-# 73. 禁止硬编码
+-
+-任何影响资格的：
+-
+-```text
+-0.98
+-0.06
+-3 sessions
+-5 sessions
+-```
+-
+-必须来自：
+-
+-```text
+-parameter_set
+-```
+-
+-源码只能有：
+-
+-```text
+-safe technical constants
+-```
++contract_id=PARAMETER_REGISTRY_V1，初始parameter_set_id=V422_CODEX_ENGINEERING_01。本文新增规则中的数值均为候选默认值，包含窗口、阈值、计数、coverage、分桶边界、显示cap及排序scale；实现时提取到对应algorithm contract的命名参数，不散落代码。符号阈值没有赋值的模块不得静默选值。
++
++每个参数保存id、contract_scope、value、unit、min/max与边界是否含等号、status、reason、introduced_version、approved_at、supersedes。通用epsilon用于浮点比较仅1e-12（单位随比较字段），金额/价格制度舍入单独按源/制度contract，不用此epsilon识别涨跌停。
++
++初始关键参数：MA窗口5/10/20/60；slope deadband 0.1 ATR；minimum_liquidity 20,000,000 CNY prior20均额；RPS改善3/强改善10百分点；sector最少5成员/coverage0.8；Wilson z1.96；exit连续2会话；seed expiry10可评估会话；support浅收盘破0.5ATR/硬破1.5ATR/触碰带0.25ATR；Shadow20连续市场日/5个信号日/30个股票事件T5。
++
++状态ENGINEERING_CANDIDATE→SHADOW_FROZEN→PROVISIONAL→SUPPORTED或RETIRED。值变更必须新parameter_set_id和model_contract_id，重新冻结cohort；旧值与旧outcome不改。候选默认值不因本文件存在而成为最佳或有效算法。现有Legacy阈值从基线源码提取保留，不用新增默认值覆盖Legacy。
++
++Legacy contract提取、source units/历史制度表与性能预算属于测量型参数，须有真实回执再冻结；不是让实施者发明事实。未就绪只限制其模块，基础盘点和纯Core合同工作可继续。
++
++# 73. 禁止实现硬编码与参数偷换
++
++代码从参数实例读取；正文数值是可审阅候选参数说明。构建验收生成参数使用清单，每个AST literal必须有parameter_id或明确数学常数/枚举说明。所有尺度scale>0，整型窗口/计数必须正整数，coverage在[0,1]，排序边界有序。无该实例或digest不匹配拒绝affected计算，不回退到某个全局默认。
+ 
+ ---
+ 
+@@ -9216,7 +6216,7 @@
+ 
+ # 77. 双写迁移
+ 
+-V4.1 不允许 Big Bang Cutover。
++本版 不允许 Big Bang Cutover。
+ 
+ 阶段：
+ 
+@@ -9235,131 +6235,23 @@
+ ---
+ 
+ 
+-
+-# 77A. V4.2.1 历史初始化完整运行流程
+-
+-```text
+-STEP 0
+-Freeze contracts:
+-Universe / Security Lifecycle / Membership / Adjustment / Publication / Source Cutoff
+-
+-STEP 1
+-TDX_VIPDATA_ADAPTER_V1
+-discover page + declared update date
+-
+-STEP 2
+-download immutable ZIP
+-SHA256 + CRC + manifest
+-
+-STEP 3
+-safe extract to staging
+-
+-STEP 4
+-parse ALL identifiable historical securities
+-do not current-universe filter raw history
+-
+-STEP 5
+-build Historical Security Lifecycle / Evaluable Universe
+-
+-STEP 6
+-overlap validate with accepted local TDX current chain
+-
+-STEP 7
+-promote RAW Canonical Daily
+-
+-STEP 8
+-run TDX_HISTORICAL_ADJUSTMENT_CONTRACT_V1
+-
+-STEP 9
+-build QFQ Canonical Daily only where adjustment evidence READY
+-
+-STEP 10
+-derive PIT-safe Weekly / Monthly:
+-CLOSED_BEFORE_T0 + AS_OF_T0_PARTIAL
+-
+-STEP 11
+-materialize Canonical Factors
+-
+-STEP 12
+-backfill Full-Market Core Daily Stock Profile
+-
+-STEP 13
+-Replay Gate A — Data / Factor
+-
+-STEP 14
+-BaoStock supplemental backfill
+-turn / tradestatus / isST
+-
+-STEP 15
+-strict bind + stock_profile_enrichments
+-
+-STEP 16
+-build Seed / Sector / Rotation / PREWATCH / Confirmation / Structure shadow
+-
+-STEP 17
+-Replay Gate B — Algorithm / State
+-
+-STEP 18
+-Validation Cohort + Canonical Radar shadow
+-```
+-
+-任何 BaoStock 步骤失败：
+-
+-```text
+-不得回滚已通过的 TDX price/profile 主链
+-不得改写已经 accepted 的 Core Publication
+-```
+-
+----
+-
+-# 77B. 每日增量流水线
+-
+-正式每日顺序：
+-
+-```text
+-1. 取得本地 TDX 当日日线 / 或正式允许的 vipdata 增量来源
+-2. freeze source cutoff
+-3. source identity + completeness + calendar check
+-4. append Canonical Daily
+-5. update PIT-safe Weekly/Monthly AS-OF
+-6. compute market/stock/sector mandatory factors
+-7. compute Full-Market Core Daily Stock Profile
+-
+-8. PASS A Stock Base Seed
+-9. PASS B Sector Emergence + Rotation
+-10. PASS C Stock PREWATCH
+-11. Multi-Axis State
+-12. Confirmation Event Engine
+-13. Structure / Support / Acceptance
+-14. Canonical Radar / State Events / Why Now
+-15. enroll Validation Cohort
+-
+-16. accept CORE_PUBLICATION
+-
+-17. BaoStock optional enrichment
+-18. strict bind
+-19. write Supplemental Enrichment Revision
+-20. UI may refresh supplemental fields
+-
+-21. Focus:
+-    - Shadow 阶段：旧正式 source 继续写；V4 只 shadow projection
+-    - Cutover 后：只消费 accepted Core Publication 的 V4 source
+-```
+-
+-第一版严格禁止：
+-
+-```text
+-17–19 BaoStock 晚到
+-→ 回头改变 8–16 的正式 eligibility / maturity / Focus transition
+-```
+-
+-如果将来要让 turnover 参与正式资格：
+-
+-```text
+-必须先改变 source contract
+-把 BaoStock 移到 CORE_PUBLICATION accepted 之前
+-并建立新的 Forward cohort
+-```
++# 77A. 历史初始化
++
++按§78先完成源/身份/调整合同；TDX package仅解压到项目staging，解析全部可识别历史证券，构建历史Universe，重叠核验，形成不可变Raw/Adjusted Daily及PIT周期，再计算Core、Replay A。
++下载完整包不证明已退市全集/公司行为齐全；缺失按能力scope标注，不伪造PIT。若本地无可对照重叠范围，显式BOOTSTRAP_NO_OVERLAP，先进行独立格式/身份/样本核验而非假称overlap pass，待基线源验收后再提升。
++历史按日期顺序运行§77B的纯计算路径，mode=REPLAY、origin=RECONSTRUCTED_*，不登记observed enrollment。BaoStock独立可选，失败不回滚Core。历史DAG无前態时FIRST_OBSERVED及warmup，不把首次可用日期伪称市场首次事件。
++
++# 77B. 每日增量、接受与副作用
++
++1. 冻结calendar、Universe/membership/source revisions、model/parameters、cutoff、prior_session_state_head；有每namespace/date单写锁。
++2. 校验source freshness/completeness，生成不可见staging F0、Core Profile。
++3. A Seed；B0/B1/B2 Sector/Rotation；C stock raw qualification，全部绑定该staging publication。
++4. D0 confirmation detector；D1旧Anchor path/失效及新Anchor事件；D2 final state；D3 event diff/LOO context/Radar/eligibility ledger。
++5. 运行质量、无反馈、身份、row coverage和一致性校验。事务内写结果、consumed source manifest、enrollment、outbox，并CAS更新accepted head。失败整批不可见；不能先写可见cohort再发布失败。
++6. accepted后独立worker消费Focus outbox和settlement due items；每项publication/episode/enrollment幂等。可重试/补偿，不与Core transaction或BaoStock串行等待。
++7. BaoStock独立抓取/绑定/enrichment manifest revision，仅刷新补充UI。Source correction产生Core新revision需重新走1–5，不能由enrichment触发隐式改写。
++
++结算器只能用accepted且对应日期可见的来源，结果追加revision；交易日终点未可得保持due backlog并显示具体原因。原始price、Anchor、episode观察和accepted历史不回写。失败回滚不是删除所有V4数据，而是切换读取namespace/配置并保留审计线。
+ 
+ ---
+ 
+@@ -9399,185 +6291,51 @@
+ 才可作为正式板块验证证据。
+ 
+ 
+-# 78. V4.2.2 最终实施顺序
+-
+-## V4-00A Baseline Freeze
+-
+-冻结代码、DB、accepted publication、Focus head、legacy outputs。
+-
+-## V4-00B Historical Security Lifecycle / Universe / PIT Membership
+-
+-冻结 effective time 与 observed/available time。
+-
+-## V4-00C Publication / Revision / Data Cutoff / Namespace
+-
+-冻结：
+-
+-```text
+-prior_session_state_head
+-same_day_revision_parent
+-model/execution namespace
+-Core vs Supplemental authority
+-UI context token
+-```
+-
+-## V4-00D TDX VIPDATA Source Contract
+-
+-官网数据下载适配器、manifest、完整性和 overlap acceptance。
+-
+-## V4-00E Historical Adjustment / Anchor Coordinate Contract
+-
+-冻结 QFQ、公司行为、Anchor price basis / observation-day transform。
+-
+-## V4-00F BaoStock Supplemental Contract
+-
+-接口当前视为可用；只冻结字段映射、strict binding、source identity 和 supplemental authority。
+-
+-## V4-00G Algorithm Contract Framework
+-
+-建立 Rule AST、三值逻辑、窗口、冲突优先级和 Algorithm Freeze Gate。
+-
+-## V4-00H Data Quality / Capability Matrix / Performance / Rollback
+-
+-建立 FULL/DEGRADED/BLOCKED 能力矩阵。
+-
+----
+-
+-## V4-01 TDX History Bootstrap
+-
+-Raw archive、Historical Universe、两年研究窗口 + warm-up。
+-
+-## V4-02 Canonical Daily + PIT-safe Weekly/Monthly
+-
+-Raw/Adjusted price、AS-OF weekly/monthly、Price Limit facts。
+-
+-## V4-03 Canonical Factors
+-
+-只完成 Pure-Core 因子。
+-
+-## V4-04 Full-Market Core Daily Stock Profile
+-
+-此阶段不依赖 Sector Context、Turnover、Anchor、Support、Why Now。
+-
+-## V4-05 Replay Gate A — Data / Factor
+-
+-必须 `DATA_FACTOR_REPLAY_PASS`。
+-
+-## V4-06 BaoStock Supplemental + Participation Enrichment
+-
+-不阻断 Core Gate。
+-
+----
+-
+-## V4-07 Stock Base Seed
+-
+-PASS A。
+-
+-## V4-08 Sector Emergence + Rotation Core
+-
+-PASS B；严格使用 A[t] + frozen history。
+-
+-## V4-09 Stock PREWATCH
+-
+-PASS C。
+-
+-## V4-10 Multi-Axis Research State
+-
+-maturity / health / validity / tracking / scenario。
+-
+-## V4-11 Confirmation Migration + Event Compression
+-
+-V3/V3.3/M10/Shadow evidence 迁移；Persistent 压缩。
+-
+-## V4-12 Structure / Anchor / Support / Acceptance
+-
+-包含 Anchor Coordinate Contract。
+-
+-## V4-13 Profile Context / Structure Enrichment
+-
+-把 Sector/Rotation/Support 投影回可搜索个股画像。
+-
+-## V4-14 Replay Gate B — Algorithm / State
+-
+-必须 `ALGORITHM_STATE_REPLAY_PASS`。
+-
+----
+-
+-## V4-15 Validation Cohort + Canonical Radar
+-
+-建立 daily ledger、event/episode samples、controls、Why Now。
+-
+-## V4-16 Shadow Dual-Run
+-
+-V4 实时冻结：
+-
+-```text
+-execution_mode = SHADOW
+-evidence_origin = PIT_OBSERVED
+-```
+-
+-## V4-17 Shadow UI
+-
+-可查看 V4 Shadow，不改变 production Focus source。
+-
+-## V4-17G Shadow Stable + Provisional Forward Gate
+-
+-必须：
+-
+-```text
+-SHADOW_STABLE_PASS
+-PROVISIONAL_FORWARD_GATE
+-```
+-
+-## V4-18 Replay Gate C — Migration
+-
+-必须 `MIGRATION_REPLAY_PASS`。
+-
+-## V4-19 Focus Source Cutover
+-
+-仅此时允许 V4 成为正式 Focus source。
+-
+-## V4-20 Default UI Cutover
+-
+-默认 UI 切 V4；旧系统下沉 Diagnostics/Legacy。
+-
+-## V4-21 Forward Observation
+-
+-继续累计 Production Forward，证据等级明确。
+-
+-## V4-22 Independent Audit
+-
+-数据、算法、状态、发布、迁移、页面、Forward、回滚独立验收。
+-
+----
+-
+-# 79. Phase × Priority
+-
+-P0 不代表“一次全做”。
+-
+-P0 的含义：
+-
+-> 不做就不能安全进入后续依赖。
+-
+-例如：
+-
+-```text
+-V4-00B PIT
+-P0
+-
+-V4-08 Stock Base Seed
+-P0
+-```
+-
+-但 V4-04 仍必须等：
+-
+-```text
+-V4-01
+-V4-02
+-V4-03
+-```
+-
+-完成。
++# 78. 唯一实施阶段表
++
++阶段按下面顺序交付，V4-06可选分支不是V4-07前置。算法实现前先完成该模块AST/参数/向量；纯基础盘点不受全局算法冻结阻断。V4-10可实现reducer接口和独立向量，但完整运行必须等V4-11/12，再于V4-14验收，不能把接口测试当完整DAG通过。
++
++| 阶段 | 唯一名称 | 交付与准入 |
++|---|---|---|
++| V4-00A | Baseline Freeze | 当前HEAD、DB备份/恢复回执、accepted/Focus head、旧输出及继承审计；只读盘点不依赖未来AST |
++| V4-00B | Security Lifecycle / Universe / PIT | 日期有效身份、知识时间、历史覆盖与不支持范围 |
++| V4-00C | Publication / Revision / Namespace | 冻结前驱、消费manifest、修订事件与原子接受、namespace迁移 |
++| V4-00D | TDX VIPDATA Source Contract | 有界下载、隔离staging、manifest、校验、archive与overlap |
++| V4-00E | Historical Adjustment / Coordinates | 仿射调整、公司行为、历史可见性、Anchor与outcome比较坐标 |
++| V4-00F | BaoStock Supplemental Contract | 字段单位/strict binding/有界请求；可复用有效回执，不阻断Core |
++| V4-00G | Algorithm Contract Framework | AST/schema/参数实例、字段producer注册、纯函数Legacy提取规范 |
++| V4-00H | Capability / Performance / Rollback | 能力scope、预算、失败回执、恢复演练；Phase 0最终回执 |
++| V4-01 | TDX History Bootstrap | Raw archive、历史Universe和重叠核验；历史不足可scope降级 |
++| V4-02 | Canonical Daily / PIT Periods | Raw/Adjusted、closed/asof周期、Price Limit规则表和覆盖 |
++| V4-03 | Pure-Core Factors | CORE_FACTOR_V1、市场/sector native primitives、benchmark基础价格路径 |
++| V4-04 | Full-Market Core Profile | §10B–10I全部Core字段，不依赖高级Anchor/Sector Context/BaoStock |
++| V4-05 | Replay Gate A | DATA_FACTOR_REPLAY_PASS及能力scope，失败只阻断affected后继 |
++| V4-06 | Supplemental Enrichment | Turnover历史/绑定/补充组件；与Core后继无硬依赖 |
++| V4-07 | Stock Base Seed | BASE_SEED_V1与原始资格 |
++| V4-08 | Sector / Rotation Core | 共同成员、B0/B1/B2、纯Core legacy sector资格adapter |
++| V4-09 | Stock PREWATCH | STOCK_PREWATCH_V1原始资格与priority primitives |
++| V4-10 | State Reducer | RESEARCH_STATE_V1接口与独立向量；最终集成须等D0/D1交付 |
++| V4-11 | Confirmation / Events | Legacy精确AST提取/黄金样例、D0 facts与D2后event diff，隔离Amount A路径 |
++| V4-12 | Structure / Anchor / Support | D1算法、换基、breakout/pullback/recovery、支持/接受 |
++| V4-13 | Profile Advanced Projection | Context/LOO/Structure投影与完整DAG集成 |
++| V4-14 | Replay Gate B | ALGORITHM_STATE_REPLAY_PASS：完整D0/D1/D2时序与修订 |
++| V4-15 | Radar / Cohorts / Settlement | 字段全量登记、事件样本、控制分配、市场/板块benchmark、due planner、价格结算、结果修订、Why Now及readback |
++| V4-16 | Realtime Shadow Dual-Run | PIT_OBSERVED+SHADOW，真实冻结日账本并每日运行settlement，旧系统继续production |
++| V4-17 | Shadow UI | 同context token，展示完整已实现组件，不写production Focus |
++| V4-17G | Shadow Stable / Provisional Forward Gate | §52A两门，样本不足延长观察；禁止以historical replay凑天数 |
++| V4-18 | Migration Replay Gate | MIGRATION_REPLAY_PASS：前態继承、旧episode/未结算工作、namespace和rollback |
++| V4-19 | Focus Source Cutover | 仅§52A三门通过后，accepted V4 source进入生产Focus |
++| V4-20 | Default UI Cutover | 默认V4，Legacy下沉diagnostic，明确PROVISIONAL |
++| V4-21 | Continued Forward Observation | 继续累计Shadow/Production各自分层证据；不在此首次开发结算器 |
++| V4-22 | Independent Audit | 数据/算法/发布/迁移/UI/Forward/rollback独立验收；开放项不自动关闭 |
++
++每张卡记录input commit、适用合同、source/capability、allowed/forbidden files、schema migration、fields/producer/time、UNKNOWN行为、旧行为保护、独立test vectors、集成/E2E/replay、rollback、evidence receipt、acceptance scope及next stage。卡模板允许CONTRACT_DESIGN任务，不允许假称DRAFT算法已验收。
++
++---
++
++# 79. Phase 与 Priority
++
++P0表示受影响正式能力不可越过，不表示全项目一次实现。以§78的稳定阶段ID引用，不再保留另一套阶段名称；V4-05 Replay A在Core之后，V4-14在完整算法集成之后，V4-18在真实Shadow门之后。所有DEGRADED必须携带scope，BLOCKED scope不可进入其scanner/consumer。
+ 
+ ---
+ 
+@@ -9698,25 +6456,8 @@
+ 
+ ## 81.4 Contract Completeness DoD
+ 
+-正式任务拆分前必须：
+-
+-```text
+-all user-visible fields mapped in Field→Algorithm Registry
+-all formal states have Rule AST contract id
+-all cross-module inputs have producer/time semantics
+-all historical facts have effective/available time where applicable
+-all Core fields independent of Supplemental timing
+-all Forward statistical units have unique key
+-all inherited audits explicitly OPEN/CLOSED with evidence
+-```
+-
+-缺任何一项：
+-
+-```text
+-CONTRACT_INCOMPLETE
+-```
+-
+-Codex 不得自行补语义。
++允许先拆基线与合同设计卡；对应实现卡开工前必须有该模块字段注册、AST/参数实例、producer/time semantics、source能力/UNKNOWN及独立向量。没有则该模块CONTRACT_INCOMPLETE，不能由实现者悄悄补语义。
++整体上线前所有承诺组件与用户可见字段须覆盖§87A机器注册表，且通过完整DAG、发布一致性、source degradation、真实Shadow/Forward与迁移门。文档检查不替代代码测试、实测性能或统计证据。
+ 
+ ---
+ 
+@@ -9736,35 +6477,8 @@
+ 
+ # 83. 风险与失败回滚
+ 
+-如果 V4 Shadow：
+-
+-- 候选过载；
+-- PREWATCH 噪声高；
+-- state flapping；
+-- source instability；
+-- outcome 无增量；
+-
+-则：
+-
+-```text
+-旧系统继续正式
+-V4 不切 UI 默认
+-Focus 不切 source
+-```
+-
+-修改：
+-
+-```text
+-factor/state/parameter contract
+-```
+-
+-后建立新 cohort。
+-
+-禁止：
+-
+-```text
+-回写旧 cohort
+-```
++§52A是唯一切换政策。“样本不足/尚未证明增量”不能当作已失败或改候选阈值的理由。Shadow P0、无法解释的系统异常、超事前冻结运行预算则NO_CUTOVER并登记独立审计；修订算法/参数要新模型和cohort。
++切换后保留legacy可恢复运行能力；失败时切读/写source namespace，保留V4不可变历史、outbox和未完成outcome。停止不合法新副作用，已接受的事件不删除；恢复旧系统时按预演manifest处理切换期间空档，不能只恢复一个数据库备份而丢失用户pin/后续观察。
+ 
+ ---
+ 
+@@ -9839,7 +6553,7 @@
+ 
+ > 从“排名结果”转向“变化发现”。
+ 
+-V4.1 把它补全成：
++本版 把它补全成：
+ 
+ > **变化发现 + 无反馈计算 + PIT + 多轴状态 + 完整样本验证。**
+ 
+@@ -9887,7 +6601,7 @@
+ | 全市场位置 | TDX daily + ATR | Position State | position_state | 个股搜索 |
+ | 放量/缩量 | amount/volume history | self-relative ratios | amount_state | 个股搜索 |
+ | 换手异常 | BaoStock turn | ratio/percentile valid sessions | turnover_state | 个股搜索 |
+-| 相对强弱 | RPS + market/sector relative | Relative State + passive/active distinction | relative_state | 个股搜索 |
++| 相对强弱 | RPS + market/sector relative | Relative State + passive/active distinction | relative_market_state | 个股搜索 |
+ | 压缩/扩张 | range/ATR/vol | Compression | compression_state | 个股搜索 |
+ | 基础突破 | prior anchors | Basic Breakout | breakout_state | 个股搜索 |
+ | 回踩 | prior trend/anchor | Pullback state machine | pullback_state | 个股搜索 |
+@@ -9917,73 +6631,37 @@
+ 
+ # 87A. Field → Algorithm Contract Registry
+ 
+-本节是 V4.2.1 的硬合同：
+-
+-> 任一用户可见字段或资格字段如果不能在这里找到数据源、算法和 UNKNOWN 规则，不允许 Codex 自行猜测实现。
+-
+-| Field / State | Authority / Input | Algorithm / Contract | UNKNOWN / Degrade | Phase |
++以下字段族是规范登记；实现前展开为逐字段schema，包含data type、unit、producer、required/optional、time、output digest和显示标签。不得由页面发明未注册资格字段。算法contract+参数实例唯一；表中多个contract代表派生链，不代表任选。
++
++| 字段/字段族 | 权威输入 | Algorithm Contract | 阶段 | 缺失/降级 |
+ |---|---|---|---|---|
+-| `trend_state` | TDX adjusted Daily | 10B Trend Rule Paths | adjusted unavailable → UNKNOWN | V4-04 |
+-| `weekly_trend_state` | PIT weekly bars | 10B + 3C AS-OF | insufficient closed/as-of bars → UNKNOWN | V4-04 |
+-| `monthly_trend_state` | PIT monthly bars | 10B + 3C AS-OF | insufficient history → UNKNOWN | V4-04 |
+-| `position_state` | QFQ + ATR | 10C | ATR/QFQ unavailable → partial/UNKNOWN | V4-04 |
+-| `ma_structure_state` | QFQ MA | 10D | adjustment unavailable → UNKNOWN | V4-04 |
+-| `relative_market_state` | stock + market + historical universe | 10E/11 | cross-section basis non-PIT → diagnostic | V4-04 |
+-| `compression_state` | range/ATR/vol | 10F | insufficient history → UNKNOWN | V4-04 |
+-| `amount_state` | TDX amount | 10G | history insufficient → UNKNOWN | V4-04 |
+-| `volume_state` | TDX volume | 10G | history insufficient → UNKNOWN | V4-04 |
+-| `turnover_state` | BaoStock strict-bound `turn` | 10H/9 | no strict bind → UNAVAILABLE | V4-05/06 |
+-| `participation_result_state` | amount + optional turnover + price result | 10G/9.7 | turnover absent → amount-only context | V4-06 |
+-| `extension_risk` | Position + ATR + recent impulse | 10I | key inputs unknown → UNKNOWN | V4-04 |
+-| `basic_breakout_state` | advanced structure facts | 10J/41 | component absent→NOT_IMPLEMENTED; QFQ unavailable→UNKNOWN | V4-12/13 |
+-| `basic_pullback_state` | prior valid impulse/anchor + current path | 10K/41 | component absent→NOT_IMPLEMENTED; no prior structure→NOT_APPLICABLE | V4-12/13 |
+-| `basic_recovery_state` | reclaim/MA/structure | 10L/41 | component absent→NOT_IMPLEMENTED; required history missing→UNKNOWN | V4-12/13 |
+-| `limit_status` | board/ST/list age/prev close/OHLC | 10N | rule/identity insufficient → UNKNOWN | V4-02 |
+-| `market_regime_axes` | market factors | 27 | missing breadth/stress → affected axis UNKNOWN | V4-03/11 |
+-| `base_seed_state` | Core Profile + factors | 14 | hard-required field unknown → UNKNOWN | V4-08 |
+-| `sector_emergence` | sector native + frozen Seed | 15–18 | coverage/membership low → UNKNOWN/PARTIAL | V4-09 |
+-| `rotation_state` | sector relative/breadth/retention/acceptance | 21A | insufficient prior event → NONE/UNKNOWN by contract | V4-09 |
+-| `algorithmic_support_sector` | PIT membership + LOO context | 20/21 | no PIT membership→diagnostic/UNKNOWN | V4-13 enrichment |
+-| `stock_prewatch` | frozen Base Seed + risk/quality | 22–24 | required core unknown → not qualified/UNKNOWN, not FALSE | V4-10 |
+-| `maturity_stage` | Seed/PREWATCH/WARM/Confirmed | 30–33 | data gap → no synthetic downgrade | V4-11 |
+-| `health_state` | trend/result/risk changes | 30–33 | insufficient fresh evidence → UNKNOWN/hold by state contract | V4-11 |
+-| `validity_state` | invalidation AST | 30–33 | discriminator unavailable → UNKNOWN | V4-11 |
+-| `tracking_state` | episode lifecycle | 30–33 | no episode → CLOSED/NONE by contract | V4-11 |
+-| `scenario` | V3.3/structure rules | 30/34 | no scene → NONE | V4-12 |
+-| `confirmation_event_type` | today vs prior accepted state | 34A | prior accepted missing → FIRST_OBSERVED / diagnostic | V4-12 |
+-| `active_anchor_id` | frozen structure anchor | 41A/B | no valid anchor → NULL | V4-13 |
+-| `support_state` | anchor path | 41C | no active anchor → NOT_APPLICABLE | V4-13 |
+-| `acceptance_state` | impact→result→recovery→retention→retest | 41D | not enough elapsed evidence → PENDING | V4-13 |
+-| `structure_health` | trend + active anchor + invalidation | 30/41 | incomplete→UNKNOWN; component absent→NOT_IMPLEMENTED | V4-12/13 |
+-| `why_now` | accepted prior vs today event delta | 39 + State Events | no previous accepted state → FIRST_OBSERVATION | V4-15 |
+-| `waiting_for` | failed rule predicates / next discriminator | Rule AST | unknown predicate listed separately | V4-10/15 |
+-| `invalid_if` | frozen invalidation AST | state/structure contracts | cannot evaluate → UNKNOWN | V4-11/13 |
+-| `conflict_panel` | support/opposing/unknown evidence | 40 | no forced story | V4-15 |
+-| `hypothesis_set` | fact-backed templates | 41 | insufficient competing explanation → `HYPOTHESIS_SET_INCOMPLETE` | V4-15 |
+-| `eligibility_rank` | complete eligible set | 36/60 | only eligible entities ranked | V4-15 |
+-| `display_rank` | event/radar priority + caps | 36/60–62 | does not modify eligibility | V4-15 |
+-| `focus_activation` | accepted core radar + focus rules | 42–44 | shadow phase cannot activate production Focus | V4-19 |
+-| `forward_outcome` | frozen T0 event + future market facts | 45A–49B | immature→PENDING; suspended/delisted/data-missing separate | V4-21 |
+-| `daily_eligibility_ledger` | every eligible day | 45A | complete capture required | V4-15 |
+-| `statistical_signal_event` | entry/reentry/upgrade event | 45A | Persistent does not create independent event | V4-15 |
+-| `anchor_view_asof_t` | immutable Anchor + adjustment transform | 41A0 | identity mismatch→UNKNOWN | V4-12 |
+-
+-任何新增 UI 字段必须先：
+-
+-```text
+-update this registry
+-→ define source
+-→ define algorithm
+-→ define UNKNOWN
+-→ define phase
+-→ add tests
+-```
+-
+-否则：
+-
+-```text
+-DESIGN_INCOMPLETE
+-```
++| trend_state; weekly_trend_state; monthly_trend_state | TDX adjusted/closed periods | TREND_STATE_V1 | V4-04 | required缺失UNKNOWN |
++| position_state; near_high20_state; near_high60_state; drawdown20_state; drawdown60_state; pos60/250; bias20_atr; dist_high20_atr | Core price/ATR | POSITION_STATE_V1 | V4-04 | 分母0/历史不足UNKNOWN；pos250独立 |
++| ma_structure_state | Core MA | MA_STRUCTURE_V1 | V4-04 | UNKNOWN |
++| relative_market_state; RPS5/20; delta1/3; rel_market_1/3/5 | historical Universe/market | RELATIVE_STATE_V1 + CORE_FACTOR_V1 | V4-03 / V4-04 | non-PIT只diagnostic |
++| compression_state | range/ATR/vol/liquidity | COMPRESSION_STATE_V1 | V4-04 | UNKNOWN |
++| amount_state; volume_state; core_participation_result | TDX amount/volume/OHLC | AMOUNT_VOLUME_STATE_V1 | V4-04 | UNKNOWN |
++| core_extension_risk; core_price_damage | Pure-Core price/amount | EXTENSION_RISK_V1 + CORE_FACTOR_V1 | V4-03 / V4-04 | UNKNOWN |
++| trading_status; limit_status; resumed_event; lifecycle_status | local identity/calendar/制度表 | TRADING_STATUS_V1 / PRICE_LIMIT_RULE_V1 | V4-02 | UNKNOWN；补充不得覆盖 |
++| turnover_state; turnover_ratio20; turnover_pct20/60; turnover_ma5; turnover_delta3; supplemental_participation_context; supplemental_extension_note | BaoStock strict binding | TURNOVER_CONTEXT_V1 | V4-06 | PENDING/UNAVAILABLE/UNKNOWN_DATA |
++| base_seed_state; matched_seed_paths; seed_participation_annotation | Core | BASE_SEED_V1 | V4-07 | Kleene三值 |
++| sector_emergence; sector_rs5/20; rank_velocity; dq5; breadth_delta; ma20_width; seed_width; retention; entered/exited; top1/top3_concentration; sector_participation_proxy | PIT common member/Core Seed | SECTOR_FACTORS_V1 / SEED_WIDTH_V1 / SECTOR_AXES_V1 | V4-08 | 覆盖低UNKNOWN，0分母NA |
++| amount_a_value; amount_a_quality; amount_a_contract_id | 独立Amount A审计 | AUD-AMOUNT-A-06 | V4-08 | OPEN只diagnostic，禁止正式consumer |
++| rotation_core_state; sector_price_retention_core; rotation_episode_id; rotation_structure_enrichment | B0/历史/固定篮子；structure仅D3 | ROTATION_CORE_V1 | V4-08 / V4-13 | UNKNOWN保留last_known |
++| primary_industry; supporting_concepts; algorithmic_support_sector; relative_sector_state; sector_context_state; sector_context_quality | PIT membership/完整LOO | LOO_CONTEXT_V1 | V4-13 | 无合格NA，数据不足UNKNOWN |
++| stock_prewatch; raw_qualification; final_eligibility | A/C/D2 | STOCK_PREWATCH_V1 / RESEARCH_STATE_V1 | V4-09 / V4-10 | UNKNOWN不计eligible |
++| maturity_stage; health_state; validity_state; tracking_state; scenario; state_freshness; expiry; reentry | raw资格/D0/D1/冻结前態 | RESEARCH_STATE_V1 | V4-10 | STALE/UNKNOWN不制造退出 |
++| confirmation_event_type; primary_scenario; matched_scenarios; source_model_boundary | Legacy manifest/D2 diff | LEGACY_ADAPTER_V1 / STATE_EVENT_V1 | V4-11 | FIRST_OBSERVED或NA |
++| active_anchor_id; anchor_view_asof_t; basic_breakout_state; basic_pullback_state; basic_recovery_state; structure_health; structure_events | frozen Anchor/price detector | STRUCTURE_EVENT_V1 | V4-12 | NOT_IMPLEMENTED/NA/UNKNOWN分开 |
++| support_state; acceptance_state; impulse_retention_1/3; retest_count | D1路径 | SUPPORT_STATE_V1 / RETENTION_V1 | V4-12 | PENDING/UNKNOWN/NA分开 |
++| market_regime_axes; stress_level; stress_change; regime_ui | Core market/制度coverage | MARKET_REGIME_V1 | V4-03 / V4-04 | UNKNOWN及last_known |
++| waiting_for; invalid_if; why_now; conflict_panel; hypothesis_set | frozen AST/事件/证据模板 | NEAR_MISS_V1 / STATE_EVENT_V1 / HYPOTHESIS_V1 | V4-15 | UNRESOLVED/INCOMPLETE，不强造文本 |
++| eligibility_rank; priority_bucket; priority_rank; display_rank; overlap_cluster_id; also_in_sectors | 完整eligible + event filter | PRIORITY_V1 / DISPLAY_V1 | V4-15 | unknown排序末尾，cap不改资格 |
++| daily_eligibility_ledger; statistical_signal_event; enrollment_id; controls; forward_outcome; benchmark; MFE; MAE; MDD | frozen T0/未来事实隔离结算 | COHORT_V1 / CONTROL_ASSIGNMENT_V1 / FORWARD_PRICE_PATH_V1 / MARKET_BENCHMARK_V1 | V4-15 | 按到期/缺失/停牌/退市分开 |
++| focus_activation; Focus timeline/path/outcome | accepted Core/原Focus契约 | 现有Focus版本清单 + migration manifest | V4-19 | Shadow不写production |
++| profile component statuses; quality; source_asof; context token; diagnostic counters | 冻结manifest/组件能力 | PUBLICATION_V1 / QUALITY_V1 | V4-00C / V4-04 / V4-15 | unknown和NOT_IMPLEMENTED分开 |
++
++只读投影允许同义UI标签，但API枚举/字段不得另起一套；旧relative_market_state→relative_market_state、core_extension_risk→core_extension_risk、rotation_core_state→rotation_core_state为显式schema迁移映射，旧publication原样保留。
+ 
+ ---
+ 
+@@ -9992,18 +6670,18 @@
+ | 故障 | 主流程处理 | UI | 是否阻断 |
+ |---|---|---|---|
+ | TDX完整包无法下载 | 保留旧 accepted source；不做新 bootstrap | 数据源异常 | 初始化/补历史阻断 |
+-| 当日 TDX 未更新 | 不发布新 accepted trading day | 显示等待数据 | **阻断当日主发布** |
++| 当日 TDX 必需覆盖未通过 | 不发布该scope的新 accepted trading day | 显示等待数据 | **阻断当日主发布** |
+ | TDX local/package mismatch | `SOURCE_MISMATCH` | 诊断可见 | **阻断冲突范围** |
+ | 本地 QFQ 生成失败 | raw可保留，adj factors UNKNOWN | 复权指标不可用 | 阻断需要QFQ的正式算法 |
+ | BaoStock login失败 | TDX 主链继续 | 换手暂不可用 | 不阻断价格主链 |
+ | BaoStock部分股票失败 | 个股 turnover PENDING/UNAVAILABLE | 明示 | 不阻断其他字段 |
+-| BaoStock fingerprint冲突 | UNBOUND | 数据质量告警 | turnover factor 阻断 |
++| BaoStock fingerprint冲突 | UNAVAILABLE / BINDING_MISMATCH | 数据质量告警 | turnover factor 阻断 |
+ | Sector membership未知 | context quality降级 | 明示 | 不允许伪造PIT |
+ 
+ ---
+ 
+ 
+-V4.2.1 额外规定：
++本版 额外规定：
+ 
+ ```text
+ TDX core source failure
+@@ -10040,7 +6718,7 @@
+ → 对重点对象再做结构事件、F/R/H、确认/失效和持续跟踪
+ ```
+ 
+-这也是 V4.2 相对于 V4.1 最重要的升级。
++这也是 V4.2 相对于 本版 最重要的升级。
+ 
+ ---
+ 
+@@ -10064,7 +6742,7 @@
+ 14. 行业与概念合并 Radar，风格板块排除；
+ 15. 页面功能与算法强制 Traceability Matrix。
+ 
+-V4.1 中与这些规则冲突的描述，以 V4.2 为准。
++本历史附录不构成当前规范；当前合同仅按本修改版正文。
+ 
+ 
+ # 附录 A：审计意见最终处置摘要
+@@ -10118,70 +6796,11 @@
+ 
+ ---
+ 
+-# 附录 B：后续任务卡顺序（V4.2.1 FINAL）
+-
+-```text
+-V4-00A Baseline Freeze
+-V4-00B Security Lifecycle / Universe / PIT Membership
+-V4-00C Publication / Revision / Cutoff / Historical Identity
+-V4-00D TDX VIPDATA Source Contract
+-V4-00E Historical Adjustment Contract
+-V4-00F BaoStock Supplemental Contract
+-V4-00G Parameter Registry + Data Quality
+-V4-00H Performance / Rollback
+-
+-V4-01 TDX History Bootstrap
+-V4-02 Canonical Daily + PIT Weekly/Monthly
+-V4-03 Canonical Factors
+-V4-04 Full-Market Core Daily Stock Profile
+-V4-05 BaoStock Supplemental History
+-V4-06 Profile Enrichment
+-V4-07 Replay Gate A — Data / Factor
+-
+-V4-08 Stock Base Seed
+-V4-09 Sector Emergence + Rotation
+-V4-10 Stock PREWATCH
+-V4-11 Multi-Axis State Machine
+-V4-12 Confirmation Migration + Compression
+-V4-13 Structure / Support / Acceptance
+-V4-14 Replay Gate B — Algorithm / State
+-
+-V4-15 Validation Cohort + Canonical Radar
+-V4-16 Shadow Dual-Run
+-V4-17 Shadow UI
+-V4-17G Shadow Stable Gate
+-V4-18 Replay Gate C — Migration
+-V4-19 Focus Source Cutover
+-V4-20 Default UI Cutover
+-V4-21 Forward Observation
+-V4-22 Independent Audit
+-```
+-
+-每一张任务卡必须写：
+-
+-```text
+-input commit
+-applicable contracts
+-allowed files
+-forbidden files
+-schema migration
+-source dependencies
+-algorithm inputs / outputs
+-field-registry entries
+-PIT assumptions
+-UNKNOWN / degradation behavior
+-old behavior to preserve
+-unit tests
+-integration tests
+-E2E
+-replay
+-rollback
+-evidence receipt
+-acceptance status
+-```
+-
+----
+-
++# 附录 B：任务卡索引
++
++阶段与依赖只引用§78，不再复制第二套阶段表。任务卡必须带stage_id、contract ids/digests、input commit、source/capability scope、allowed/forbidden files、migration、required tests、独立证据、rollback、acceptance result和next_stage。
++
++---
+ 
+ # 历史附录 C：V4.0 → V4.1 迁移说明
+ 
+@@ -10295,105 +6914,22 @@
+ 
+ ---
+ 
++
++# 附录 G：codex修改版变更追踪
++
++本版在原件副本直接替换冲突章节，保留产品目标与未冲突说明；详细逐章变更、审计项映射、原件/输出SHA256和自检结果见同目录《codex修改版_修改说明》。DOCUMENT_REVISED不代表IMPLEMENTATION_PASS，也不关闭Amount A/Focus真实Forward等独立审计。
++
++---
++
++# 本次修订签署状态
++
++DOCUMENT = DA-MSR-V4.2.2-CODEX-REV1
++STATUS = DOCUMENT_REVISED / READY_FOR_BASELINE_AND_CONTRACT_WORK
++IMPLEMENTATION / REAL_DATA / FORWARD = NOT_VERIFIED_BY_THIS_DOCUMENT_EDIT
++TDX = READ_ONLY_INPUT
++BAOSTOCK = SUPPLEMENTAL_ONLY
++STAGES = SECTION_78_ONLY
++SETTLEMENT = V4-15_BEFORE_SHADOW
++INHERITED_AUDITS = OPEN_UNTIL_INDEPENDENT_EVIDENCE
++
+ **文档结束**
+-
+-
+-
+-# 附录 G：V4.2.1 → V4.2.2 合同修订
+-
+-本版不改变：
+-
+-```text
+-两年 TDX 历史主链
+-全市场 Daily Stock Profile
+-PREWATCH
+-Rotation
+-Support / Acceptance
+-Confirmation Event Compression
+-页面变化优先
+-Focus / Validation 分离
+-```
+-
+-本版关闭：
+-
+-```text
+-A01 Rotation current-day feedback
+-A02 Core Profile hidden dependencies
+-A03 Anchor vs rolling QFQ
+-A04 PIT late revision visibility
+-A05 Supplemental indirect Core leak
+-A06 incomplete algorithm topology
+-A07 same-day revision predecessor
+-A08 Forward statistical unit ambiguity
+-A09 Shadow Forward / cutover inconsistency
+-A10 degraded capability ambiguity
+-A11 inherited audit loss
+-A12 S3 duplicate path
+-```
+-
+-BaoStock 接口可用性不再作为 open audit item。
+-
+----
+-
+-# 最终合同签署状态
+-
+-```text
+-DOCUMENT
+-= DA-MSR-V4.2.2-FINAL-EXECUTABLE-CONTRACT
+-
+-STATUS
+-= READY_FOR_V4_00A_IMPLEMENTATION
+-
+-SUPERSEDES
+-= V4.2.1 FINAL CONTRACT BASELINE
+-
+-PRIMARY PRICE SOURCE
+-= TDX PERSONAL VIPDATA + ACCEPTED LOCAL TDX FILES
+-
+-TDX QUANT PLATFORM
+-= NOT A DEPENDENCY
+-
+-BAOSTOCK
+-= SUPPLEMENTAL SOURCE
+-= INTERFACE CURRENTLY CONFIRMED USABLE
+-= NOT A V1 CORE ELIGIBILITY AUTHORITY
+-
+-HISTORICAL RESEARCH WINDOW
+-= ~2 YEARS + REQUIRED WARM-UP
+-
+-FULL-MARKET CORE PROFILE
+-= REQUIRED
+-
+-ADVANCED PROFILE
+-= LAYERED ENRICHMENT
+-
+-ROTATION DAG
+-= CURRENT-DAY C[t]→B[t] FEEDBACK FORBIDDEN
+-
+-ANCHOR PRICE COORDINATE
+-= IMMUTABLE RAW ANCHOR + AS-OF TRANSFORMED VIEW
+-
+-PIT
+-= EFFECTIVE TIME + KNOWLEDGE TIME
+-
+-SAME-DAY REVISION
+-= PRIOR-SESSION PREDECESSOR FIXED
+-
+-SHADOW BEFORE FOCUS CUTOVER
+-= REQUIRED
+-
+-PROVISIONAL SHADOW FORWARD BEFORE CUTOVER
+-= REQUIRED
+-
+-THREE REPLAY GATES
+-= REQUIRED
+-
+-FORWARD FORMAL EVIDENCE
+-= PIT_OBSERVED ONLY
+-
+-INHERITED AUDITS
+-= EXPLICIT REGISTER / NO AUTOMATIC CLOSURE
+-```
+-
+-**文档结束**
+-

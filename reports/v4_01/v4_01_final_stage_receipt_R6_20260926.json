@@ -1,5 +1,7 @@
 {
-  "blockers": [],
+  "blockers": [
+    "R6_1_ALL_DAY_REQUIRED_ROSTER_COVERAGE_NOT_SEALED"
+  ],
   "contract_id": "V4_01_FINAL_REQUIRED_SCOPE_RECEIPT_R6",
   "criteria": {
     "bse_explicitly_isolated_as_optional_degraded": "PASS",
@@ -58,9 +60,10 @@
   "explicit_bse_scope_degradation_allowed": true,
   "external_online_model_acceptance": "PENDING_SEPARATE_REVIEW",
   "generic_degraded_pass_allowed": false,
-  "next_stage": "V4_01_EXTERNAL_ONLINE_MODEL_ACCEPTANCE",
+  "next_stage": "V4_01_RECONCILE_OUTDATE_BOUNDARY_SEMANTICS",
   "observed_at_utc": "2026-09-26T01:00:08+00:00",
-  "required_scope_status": "PASS",
+  "original_r6_status_before_r6_1": "PASS_WITH_BSE_SCOPE_DEGRADED",
+  "required_scope_status": "BLOCKED",
   "scope": {
     "board_statistics": {
       "CHINEXT": {
@@ -113,9 +116,10 @@
     "required_scope_universe_digest": "473e859366dd4b74f16e1a92b24f30b6dddb6308a9d0029834d70bf7733a39b4"
   },
   "stage": "V4-01",
-  "stage_completion_authorized": true,
+  "stage_completion_authorized": false,
   "stage_contract": "DA-MSR-V4.2.2-CODEX-REV2 §78; REQUIRED_EQUITY_SCOPE_V1; R6 external audit closure",
-  "status": "PASS_WITH_BSE_SCOPE_DEGRADED",
+  "status": "SUPERSEDED_BLOCKED_PENDING_R6_1",
+  "superseded_by_receipt": "reports/v4_01/v4_01_final_stage_receipt_R6_1_20260926.json",
   "v4_02_status": "BLOCKED_PENDING_EXTERNAL_ACCEPTANCE",
   "v4_03_status": "BLOCKED",
   "version": "1.0.0"

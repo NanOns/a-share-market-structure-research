@@ -1,0 +1,30 @@
+{
+  "stage": "V4-01-R6-CONTRACT-TESTS",
+  "contract_id": "V4_01_R6_TEST_RECEIPT_V1",
+  "version": "1.0.0",
+  "observed_at_utc": "2026-09-26T01:00:08+00:00",
+  "status": "PASS",
+  "stage_completion_authorized": false,
+  "branch": "codex/v4-system-reform",
+  "tested_head": "c8c2ed1e0060767e604186c80a344041056ba4b7",
+  "command": "python -m pytest tests/v4_phase0 -q",
+  "result": {
+    "passed": 122,
+    "skipped": 2,
+    "failed": 0,
+    "duration_seconds": 2.32
+  },
+  "compiled_scripts": [
+    "scripts/v4_01_roster_completeness_r6.py",
+    "scripts/v4_01_scope_gates_r6.py",
+    "scripts/v4_01_historical_universe_r6.py",
+    "scripts/v4_01_final_stage_receipt_r6.py",
+    "src/workbench_analysis/v4_01_required_scope.py"
+  ],
+  "test_files_sha256": "e9f10293f2dd98cf399d3c4546d481a0833f2a3d6781fa9c2e6b8c8bc98407d6",
+  "limitations": [
+    "Local tests do not replace online external acceptance.",
+    "BSE is explicitly optional and isolated; this receipt does not authorize V4-02."
+  ],
+  "next_stage": "V4_01_EXTERNAL_ONLINE_MODEL_ACCEPTANCE"
+}

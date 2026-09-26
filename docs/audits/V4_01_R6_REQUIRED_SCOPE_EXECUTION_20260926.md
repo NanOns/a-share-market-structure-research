@@ -38,6 +38,8 @@
 - **Required Historical Universe：PASS。** 786 日、4,036,121 条主线成员记录；沪主板 1,331,624、深主板 1,174,019、创业板 1,071,896、科创板 458,582。每个板块身份未决均为 0，bar 文件校验错误 0。9,119 条 bar 缺失单独记录，不推断停牌或交易状态，不阻塞 V4-01 membership。
 - **BSE：`DEGRADED_BSE`，与 Required digest 隔离。** 保留 191,423 条候选/名册成员记录、101 个未解决来源身份、16 个待核实非股票候选；不阻塞四个 Required Board。
 - R6 新增合同、实现与回归测试已执行：`tests/v4_phase0` 为 122 passed、2 skipped、0 failed；R6 脚本 `py_compile` 通过。测试仅是证据之一，不代替外部在线模型验收。
+- R6 代码已在 `c8c2ed1` 封存；提交后再次完整运行测试仍为 122 passed、2 skipped、0 failed。外部 API 采集回执保留采集时 HEAD，并另绑定已提交的 R6 合同与实现 SHA；提交后的纯本地逐板/Universe 证据均在 `c8c2ed1` 上重建。API 复核使用的阈值与冻结合同相同，没有为封存而重复消耗 BaoStock 请求。
+- R6 小型回执包含异常日逐项双会话摘要、独立行情集合摘要、缺失集合数量、source/data SHA 和 request ledger SHA；全量名册、Required/BSE Universe 与待分类集合 gzip 保存在本机忽略的 artifact store，不提交到 Git。
 
 ### 当前验收结果与下一阶段
 

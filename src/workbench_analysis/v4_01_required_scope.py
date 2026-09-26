@@ -27,10 +27,45 @@ def required_board(identity: dict[str, Any]) -> str | None:
 
 
 def active_on(identity: dict[str, Any], day: str) -> bool:
-    """Use the accepted R6 inclusive symbol lifecycle date interval."""
-    start = identity.get("symbol_effective_from") or identity.get("list_date")
-    end = identity.get("symbol_effective_to")
+    """Use normalized membership boundaries when supplied; provider dates are raw facts."""
+    start = (identity.get("normalized_effective_from") or identity.get("symbol_effective_from")
+             or identity.get("list_date"))
+    if ("normalized_effective_to" not in identity
+            and any(identity.get(field) for field in ("provider_out_date", "symbol_effective_to", "delist_date"))):
+        # Fail closed: a raw provider/reconstructed end date is not a normalized membership boundary.
+        return False
+    end = identity.get("normalized_effective_to")
     return bool(start and str(start) <= day and (not end or day <= str(end)))
+
+
+def resolve_membership_end(
+    *, out_date: str | None, roster_days: Iterable[str], window_start: str, window_end: str,
+) -> dict[str, Any]:
+    """Resolve an in-window provider outDate against the complete dated roster sequence."""
+    observed = sorted(day for day in set(roster_days) if window_start <= day <= window_end)
+    if not observed:
+        return {"normalized_effective_to": None, "to_boundary_basis": "NO_ROSTER_MEMBERSHIP_IN_WINDOW",
+                "boundary_quality": "UNRESOLVED_NO_ROSTER_EVIDENCE", "unresolved": True}
+    if not out_date or out_date < window_start or out_date > window_end:
+        return {"normalized_effective_to": None, "to_boundary_basis": "OUTDATE_OUTSIDE_ROSTER_WINDOW_OR_OPEN",
+                "boundary_quality": "WINDOW_MEMBERSHIP_CONFIRMED_PROVIDER_END_UNVERIFIED", "unresolved": False}
+    if out_date in observed:
+        return {"normalized_effective_to": out_date,
+                "to_boundary_basis": "DATED_ROSTER_PRESENT_ON_PROVIDER_OUTDATE",
+                "boundary_quality": "RESOLVED_BY_SAME_DAY_ROSTER_PRESENCE", "unresolved": False}
+    prior = [day for day in observed if day < out_date]
+    if not prior:
+        return {"normalized_effective_to": None, "to_boundary_basis": "NO_PRIOR_ROSTER_MEMBERSHIP_BEFORE_OUTDATE",
+                "boundary_quality": "UNRESOLVED_NO_PRIOR_MEMBERSHIP", "unresolved": True}
+    last_prior = prior[-1]
+    reappeared = [day for day in observed if day > last_prior]
+    if reappeared:
+        return {"normalized_effective_to": None, "to_boundary_basis": "POST_BOUNDARY_ROSTER_REAPPEARANCE",
+                "boundary_quality": "UNRESOLVED_POST_OUTDATE_REAPPEARANCE", "unresolved": True,
+                "reappearance_days": reappeared}
+    return {"normalized_effective_to": last_prior,
+            "to_boundary_basis": "LAST_DATED_ROSTER_MEMBERSHIP_BEFORE_PROVIDER_OUTDATE",
+            "boundary_quality": "RESOLVED_BY_PRIOR_ROSTER_MEMBERSHIP_NO_REAPPEARANCE", "unresolved": False}
 
 
 def roster_suspicion_flags(

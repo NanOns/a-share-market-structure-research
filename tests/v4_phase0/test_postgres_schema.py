@@ -88,7 +88,7 @@ def test_fresh_v4_schema_has_revisionable_pit_and_publication_relations():
         tables = {r[0] for r in pg.execute("select table_name from information_schema.tables where table_schema='v4'").fetchall()}
         assert {"source_packages", "source_revisions", "security_lifecycle_facts", "security_membership_facts", "market_calendar_sessions", "universe_snapshots", "universe_members", "model_namespaces", "publications", "publication_heads", "publication_consumed_sources", "publication_revision_events", "namespace_migrations", "event_observations", "state_heads"} <= tables
         versions = pg.execute("select version from v4_meta.schema_migrations order by version").fetchall()
-        assert {"V4_PHASE0_FOUNDATION_V1", "V4_PHASE0_NAMESPACE_INTEGRITY_V1", "V4_PHASE0_CONTRACT_ALIGNMENT_R2", "V4_PUBLICATION_HEAD_REVISION_IDENTITY_R2", "V4_MARKET_SESSION_PUBLICATION_CHAIN_R2", "V4_FACT_SOURCE_GUARD_TABLE_SPECIFIC_FIELDS_R2", "V4_STATE_AND_NAMESPACE_PUBLICATION_IDENTITY_R2", "V4_PRIOR_SESSION_STATE_FREEZE_INTEGRITY_R3", "V4_SECURITY_LIFECYCLE_HISTORY_R5_V1"} <= {x[0] for x in versions}
+        assert {"V4_PHASE0_FOUNDATION_V1", "V4_PHASE0_NAMESPACE_INTEGRITY_V1", "V4_PHASE0_CONTRACT_ALIGNMENT_R2", "V4_PUBLICATION_HEAD_REVISION_IDENTITY_R2", "V4_MARKET_SESSION_PUBLICATION_CHAIN_R2", "V4_FACT_SOURCE_GUARD_TABLE_SPECIFIC_FIELDS_R2", "V4_STATE_AND_NAMESPACE_PUBLICATION_IDENTITY_R2", "V4_PRIOR_SESSION_STATE_FREEZE_INTEGRITY_R3", "V4_SECURITY_LIFECYCLE_HISTORY_R5_V1", "V4_SECURITY_MEMBERSHIP_INTERVAL_R6_2_V1", "V4_PROVIDER_LIFECYCLE_FACT_R6_2_V1"} <= {x[0] for x in versions}
         indexes = {r[0] for r in pg.execute("select indexname from pg_indexes where schemaname='v4'").fetchall()}
         assert {"uq_source_revision_single_successor", "ix_source_revisions_cutoff", "ix_publication_consumed_source_revision", "uq_publication_same_day_parent_single_successor", "ix_membership_effective"} <= indexes
         columns = {r[0] for r in pg.execute("select column_name from information_schema.columns where table_schema='v4' and table_name='publications'").fetchall()}
@@ -335,6 +335,32 @@ def test_r5_security_lifecycle_history_contract_matches_formal_schema():
     assert set(contract["required_fields"]) <= columns
     assert migration is not None
     assert {"v4_security_lifecycle_history_revision_guard", "v4_security_lifecycle_history_append_only"} <= triggers
+
+
+def test_r6_2_provider_facts_and_normalized_intervals_are_separate_append_only_contracts():
+    provider_contract = json.loads((ROOT / "config/v4_provider_lifecycle_fact_v1.json").read_text("utf-8"))
+    interval_contract = json.loads((ROOT / "config/v4_security_membership_interval_v1.json").read_text("utf-8"))
+    with connect() as pg:
+        provider_columns = {r[0] for r in pg.execute(
+            "select column_name from information_schema.columns where table_schema='v4' and table_name='provider_lifecycle_fact_history'"
+        ).fetchall()}
+        interval_columns = {r[0] for r in pg.execute(
+            "select column_name from information_schema.columns where table_schema='v4' and table_name='security_membership_interval_history'"
+        ).fetchall()}
+        provider_triggers = {r[0] for r in pg.execute(
+            "select tgname from pg_trigger where tgrelid='v4.provider_lifecycle_fact_history'::regclass and not tgisinternal"
+        ).fetchall()}
+        interval_triggers = {r[0] for r in pg.execute(
+            "select tgname from pg_trigger where tgrelid='v4.security_membership_interval_history'::regclass and not tgisinternal"
+        ).fetchall()}
+    assert provider_contract["contract_id"] == "PROVIDER_LIFECYCLE_FACT_V1"
+    assert set(provider_contract["required_fields"]) <= provider_columns
+    assert {"provider_out_date", "raw_provider_payload", "source_revision_id"} <= provider_columns
+    assert {"v4_provider_lifecycle_fact_revision_guard", "v4_provider_lifecycle_fact_append_only"} <= provider_triggers
+    assert interval_contract["contract_id"] == "SECURITY_MEMBERSHIP_INTERVAL_V1"
+    assert set(interval_contract["required_fields"]) <= interval_columns
+    assert {"normalized_effective_to", "to_boundary_basis", "source_revision_id"} <= interval_columns
+    assert {"v4_security_membership_interval_revision_guard", "v4_security_membership_interval_append_only"} <= interval_triggers
 
 
 def test_lifecycle_history_late_correction_is_append_only_and_cutoff_selectable():

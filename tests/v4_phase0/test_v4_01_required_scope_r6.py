@@ -9,6 +9,7 @@ from workbench_analysis.v4_01_required_scope import (
     required_board,
     required_identity_missing_from_roster,
     required_scope_counts,
+    resolve_membership_end,
     roster_suspicion_flags,
     split_roster_scope,
     suspicious_day_accepted,
@@ -101,13 +102,59 @@ def test_required_universe_uses_accepted_a_stock_identity():
     assert required_identity_missing_from_roster(identities, "2026-09-24", {"sz.300001"}) == set()
 
 
-def test_lifecycle_effective_to_is_inclusive_in_r6_scope():
+def test_normalized_membership_effective_to_is_inclusive():
     identity = {"source_security_key": "SH.600705", "security_type": "A_STOCK", "exchange": "SH",
                 "board": "MAIN", "security_id": "SEC-1", "list_date": "1996-05-16",
-                "symbol_effective_from": "1996-05-16", "symbol_effective_to": "2025-05-27"}
+                "normalized_effective_from": "1996-05-16", "normalized_effective_to": "2025-05-27",
+                "provider_out_date": "2025-05-27"}
     assert active_on(identity, "2025-05-26")
     assert active_on(identity, "2025-05-27")
     assert required_identity_missing_from_roster([identity], "2025-05-27", set()) == {"sh.600705"}
+
+
+def test_provider_outdate_not_assumed_inclusive():
+    identity = {"source_security_key": "SZ.300630", "security_type": "A_STOCK", "exchange": "SZ",
+                "board": "CHINEXT", "security_id": "SEC-2", "provider_out_date": "2025-05-22",
+                "normalized_effective_from": "2009-10-30", "normalized_effective_to": "2025-05-21"}
+    assert active_on(identity, "2025-05-21")
+    assert not active_on(identity, "2025-05-22")
+    raw_only_identity = {"source_security_key": "SZ.300630", "security_type": "A_STOCK",
+                         "exchange": "SZ", "board": "CHINEXT", "list_date": "2009-10-30",
+                         "provider_out_date": "2025-05-22"}
+    assert not active_on(raw_only_identity, "2025-05-21")
+    assert not active_on(raw_only_identity, "2025-05-22")
+
+
+def test_outdate_present_in_roster_resolves_inclusive():
+    result = resolve_membership_end(out_date="2025-04-02", roster_days=["2025-04-01", "2025-04-02"],
+                                    window_start="2025-01-01", window_end="2025-12-31")
+    assert result["normalized_effective_to"] == "2025-04-02"
+    assert result["to_boundary_basis"] == "DATED_ROSTER_PRESENT_ON_PROVIDER_OUTDATE"
+    assert not result["unresolved"]
+
+
+def test_outdate_absent_in_roster_resolves_to_prior_membership_day():
+    result = resolve_membership_end(out_date="2025-04-03", roster_days=["2025-04-01", "2025-04-02"],
+                                    window_start="2025-01-01", window_end="2025-12-31")
+    assert result["normalized_effective_to"] == "2025-04-02"
+    assert result["to_boundary_basis"] == "LAST_DATED_ROSTER_MEMBERSHIP_BEFORE_PROVIDER_OUTDATE"
+    assert not result["unresolved"]
+
+
+def test_mixed_outdate_semantics_supported_per_security():
+    present = resolve_membership_end(out_date="2025-04-03", roster_days=["2025-04-01", "2025-04-02", "2025-04-03"],
+                                     window_start="2025-01-01", window_end="2025-12-31")
+    absent = resolve_membership_end(out_date="2025-04-03", roster_days=["2025-04-01", "2025-04-02"],
+                                    window_start="2025-01-01", window_end="2025-12-31")
+    assert present["normalized_effective_to"] != absent["normalized_effective_to"]
+    assert present["to_boundary_basis"] != absent["to_boundary_basis"]
+
+
+def test_outdate_absence_with_later_roster_reappearance_is_unresolved():
+    result = resolve_membership_end(out_date="2025-04-03", roster_days=["2025-04-01", "2025-04-04"],
+                                    window_start="2025-01-01", window_end="2025-12-31")
+    assert result["unresolved"]
+    assert result["boundary_quality"] == "UNRESOLVED_POST_OUTDATE_REAPPEARANCE"
 
 
 def test_bse_rows_isolated_from_required_universe_digest():

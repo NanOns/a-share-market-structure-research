@@ -21,6 +21,8 @@ VERSIONS={
     "008_prior_session_state_freeze_integrity.sql":"V4_PRIOR_SESSION_STATE_FREEZE_INTEGRITY_R3",
     "009_publication_head_guard_sql_alias_fix.sql":"V4_PUBLICATION_HEAD_GUARD_SQL_ALIAS_FIX_R3",
     "010_security_lifecycle_history_r5.sql":"V4_SECURITY_LIFECYCLE_HISTORY_R5_V1",
+    "011_security_membership_interval_r6_2.sql":"V4_SECURITY_MEMBERSHIP_INTERVAL_R6_2_V1",
+    "012_provider_lifecycle_fact_r6_2.sql":"V4_PROVIDER_LIFECYCLE_FACT_R6_2_V1",
 }
 
 def dsn():

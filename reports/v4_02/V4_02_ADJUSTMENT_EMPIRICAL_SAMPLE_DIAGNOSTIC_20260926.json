@@ -1,0 +1,253 @@
+{
+  "adjusted_capability": "UNAVAILABLE_PENDING_V4_00E_INDEPENDENT_ACCEPTANCE",
+  "adjustment_engine_version": "tdx-affine-qfq-v0.2",
+  "all_required_sample_classes_present_and_math_matches": true,
+  "category15": {
+    "record_count_through_cutoff": 91,
+    "status": "UNRESOLVED_PRICE_IMPACT_FAIL_CLOSED",
+    "unique_securities": 91
+  },
+  "category_counts": {
+    "1": 63616,
+    "10": 274,
+    "11": 409,
+    "12": 8,
+    "13": 9,
+    "14": 15,
+    "15": 91,
+    "2": 4142,
+    "3": 4434,
+    "4": 2,
+    "5": 112038,
+    "6": 67,
+    "7": 18,
+    "8": 657,
+    "9": 7572
+  },
+  "contract_id": "V4_02_ADJUSTMENT_EMPIRICAL_SAMPLE_DIAGNOSTIC_V1",
+  "decoded_record_count": 193352,
+  "decoder_version": "tdx-local-gbbq-v0.2",
+  "gbbq_map_sha256": "f874e09444c03077b1d9e465a6efe56beb6678c0e71c98d118516ad24efe51c8",
+  "gbbq_sha256": "f8c6a60e052a3fd7f8c3a043dbc9c53311a7599e1b36bb6cc140058f56269ef1",
+  "interpretation": "Current snapshot reconstruction is diagnostic and not PIT. Match verifies the sealed engine against a separate Decimal implementation over category-1 events; it does not establish upstream action completeness, source visibility at historical cutoffs, or price-impact semantics for unsupported categories.",
+  "metadata_snapshot": "data/input_staging/metadata/20260924/4835127dd77534be17d8aeba65d91ebf0ec5bbf6b5348bc1aff4612272acafdc/T0002/hq_cache",
+  "next_stage": "CATEGORY_IMPACT_ADJUDICATION_AND_SUSPENSION_RECENT_LISTING_SAMPLES",
+  "overall_v4_02": "BLOCKED_OPEN_OTHER_REQUIRED_CAPABILITIES",
+  "package_sha256": "b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f",
+  "sample_contract_sha256": "b319f1445a4933e7e4e166128e78b1289bcbaed36248dcbe51172c945dc0687b",
+  "samples": [
+    {
+      "adjusted_quality_disposition": "UNAVAILABLE_OTHER_CATEGORY_UNRESOLVED",
+      "bar_date_before_event": 20260923,
+      "category1_event_count_through_cutoff": 4,
+      "event_date": 20260924,
+      "expected_values_match_engine": true,
+      "first_actual_bar_on_or_after_event": 20260924,
+      "independent_expected_qfq_ohlc": {
+        "close": "31.20",
+        "high": "31.42",
+        "low": "30.94",
+        "open": "31.19"
+      },
+      "independent_factor": {
+        "A": "1",
+        "B": "-0.08"
+      },
+      "other_event_categories_through_cutoff": [
+        5,
+        9
+      ],
+      "raw_ohlc": {
+        "close": 31.28,
+        "high": 31.5,
+        "low": 31.02,
+        "open": 31.27
+      },
+      "sample_class": "CASH_DIVIDEND_ONLY",
+      "sealed_engine_qfq_ohlc": {
+        "close": "31.20",
+        "high": "31.42",
+        "low": "30.94",
+        "open": "31.19"
+      },
+      "security_id": "SZ.301618",
+      "selected_event": {
+        "c1": 0.800000011920929,
+        "c2": 0.0,
+        "c3": 0.0,
+        "c4": 0.0,
+        "source_record_index": 116066
+      },
+      "unresolved_other_category_present": true
+    },
+    {
+      "adjusted_quality_disposition": "UNAVAILABLE_OTHER_CATEGORY_UNRESOLVED",
+      "bar_date_before_event": 20260922,
+      "category1_event_count_through_cutoff": 5,
+      "event_date": 20260923,
+      "expected_values_match_engine": true,
+      "first_actual_bar_on_or_after_event": 20260923,
+      "independent_expected_qfq_ohlc": {
+        "close": "36.37",
+        "high": "36.50",
+        "low": "35.36",
+        "open": "35.76"
+      },
+      "independent_factor": {
+        "A": "0.7142857142857142857142857142857142857143",
+        "B": "0.00"
+      },
+      "other_event_categories_through_cutoff": [
+        5,
+        9
+      ],
+      "raw_ohlc": {
+        "close": 50.92,
+        "high": 51.1,
+        "low": 49.5,
+        "open": 50.07
+      },
+      "sample_class": "SHARE_BONUS_OR_TRANSFER_ONLY",
+      "sealed_engine_qfq_ohlc": {
+        "close": "36.37",
+        "high": "36.50",
+        "low": "35.36",
+        "open": "35.76"
+      },
+      "security_id": "SZ.001225",
+      "selected_event": {
+        "c1": 0.0,
+        "c2": 0.0,
+        "c3": 4.0,
+        "c4": 0.0,
+        "source_record_index": 22406
+      },
+      "unresolved_other_category_present": true
+    },
+    {
+      "adjusted_quality_disposition": "UNAVAILABLE_OTHER_CATEGORY_UNRESOLVED",
+      "bar_date_before_event": 20260812,
+      "category1_event_count_through_cutoff": 11,
+      "event_date": 20260821,
+      "expected_values_match_engine": true,
+      "first_actual_bar_on_or_after_event": 20260821,
+      "independent_expected_qfq_ohlc": {
+        "close": "4.70",
+        "high": "4.72",
+        "low": "4.66",
+        "open": "4.70"
+      },
+      "independent_factor": {
+        "A": "0.7142857142857142857142857142857142857143",
+        "B": "0.96"
+      },
+      "other_event_categories_through_cutoff": [
+        3,
+        5,
+        9
+      ],
+      "raw_ohlc": {
+        "close": 5.23,
+        "high": 5.27,
+        "low": 5.18,
+        "open": 5.24
+      },
+      "sample_class": "RIGHTS_ISSUE_ONLY",
+      "sealed_engine_qfq_ohlc": {
+        "close": "4.70",
+        "high": "4.72",
+        "low": "4.66",
+        "open": "4.70"
+      },
+      "security_id": "SZ.300176",
+      "selected_event": {
+        "c1": 0.0,
+        "c2": 3.359999895095825,
+        "c3": 0.0,
+        "c4": 4.0,
+        "source_record_index": 80987
+      },
+      "unresolved_other_category_present": true
+    },
+    {
+      "adjusted_quality_disposition": "UNAVAILABLE_OTHER_CATEGORY_UNRESOLVED",
+      "bar_date_before_event": 20260922,
+      "category1_event_count_through_cutoff": 10,
+      "event_date": 20260923,
+      "expected_values_match_engine": true,
+      "first_actual_bar_on_or_after_event": 20260923,
+      "independent_expected_qfq_ohlc": {
+        "close": "14.09",
+        "high": "14.29",
+        "low": "14.03",
+        "open": "14.20"
+      },
+      "independent_factor": {
+        "A": "0.6756756756756756756756756756756756756757",
+        "B": "-0.2027027027027027027027027027027027027027"
+      },
+      "other_event_categories_through_cutoff": [
+        5,
+        9
+      ],
+      "raw_ohlc": {
+        "close": 21.15,
+        "high": 21.45,
+        "low": 21.06,
+        "open": 21.31
+      },
+      "sample_class": "COMBINED_ACTION",
+      "sealed_engine_qfq_ohlc": {
+        "close": "14.09",
+        "high": "14.29",
+        "low": "14.03",
+        "open": "14.20"
+      },
+      "security_id": "SZ.002961",
+      "selected_event": {
+        "c1": 3.0,
+        "c2": 0.0,
+        "c3": 4.800000190734863,
+        "c4": 0.0,
+        "source_record_index": 66736
+      },
+      "unresolved_other_category_present": true
+    },
+    {
+      "adjusted_quality_disposition": "DIAGNOSTIC_CONTROL_ONLY",
+      "bar_date": 20091215,
+      "expected_values_match_engine": true,
+      "independent_expected_qfq_ohlc": {
+        "close": "5.29",
+        "high": "5.31",
+        "low": "5.21",
+        "open": "5.29"
+      },
+      "raw_ohlc": {
+        "close": "5.29",
+        "high": "5.31",
+        "low": "5.21",
+        "open": "5.29"
+      },
+      "sample_class": "NO_ACTION_CONTROL",
+      "sealed_engine_qfq_ohlc": {
+        "close": "5.29",
+        "high": "5.31",
+        "low": "5.21",
+        "open": "5.29"
+      },
+      "security_id": "SH.600001",
+      "unresolved_other_category_present": false
+    }
+  ],
+  "source_cutoff": "2026-09-24",
+  "status": "DIAGNOSTIC_SAMPLE_EVIDENCE_ONLY",
+  "v4_00d_a_stock_acceptance_report_sha256": "3b5ac84cbbaae9b6cacd21aa77938d0d96276495521fedead2c76b6858c4884e",
+  "v4_00d_a_stock_scope": {
+    "acceptance": "ACCEPTED_SOURCE_PACKAGE",
+    "identity_mismatch_count": 0,
+    "matched_sessions": 60,
+    "unexplained_mismatch_rows": 0
+  },
+  "v4_01_source_manifest_sha256": "0f044fbec2c17de2561f6baa01653ff9296d48eb2445244fb7ad77e96e7bf914"
+}

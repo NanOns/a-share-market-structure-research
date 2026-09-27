@@ -1,0 +1,27 @@
+{
+  "contract_id": "SPECIAL_PRICE_PHASE_V1",
+  "version": "1.0.0",
+  "stage": "V4-02",
+  "phases": [
+    "REGULAR",
+    "IPO_FIRST_5_TRADING_DAYS",
+    "DELISTING_FIRST_DAY",
+    "DELISTING_PERIOD",
+    "RELISTING_FIRST_DAY",
+    "SPECIAL_REFERENCE_RESET",
+    "UNKNOWN_SPECIAL_PHASE"
+  ],
+  "delisting_period": {
+    "trading_sessions_including_first_day": 15,
+    "first_day_limit": "NO_LIMIT",
+    "subsequent_days": {"SH_MAIN": "0.10", "SZ_MAIN": "0.10", "CHINEXT": "0.20", "STAR": "0.20"},
+    "risk_status_override": "NORMAL"
+  },
+  "no_limit_phases": ["IPO_FIRST_5_TRADING_DAYS", "DELISTING_FIRST_DAY", "RELISTING_FIRST_DAY"],
+  "special_reference_reset": {
+    "required": ["source_ref", "source_capture_sha256", "effective_date", "observed_at", "official_reference_price_or_formula"],
+    "missing_reference_policy": "UNKNOWN:SPECIAL_REFERENCE_PRICE_UNAVAILABLE"
+  },
+  "unknown_phase_policy": "UNKNOWN_FAIL_CLOSED",
+  "prohibitions": ["NO_MANUAL_PER_SECURITY_RULE_HACKS", "NO_TDX_WRITES", "NO_EXTERNAL_ADJUSTMENT_SERVICE", "NO_FUTURE_DATA"]
+}

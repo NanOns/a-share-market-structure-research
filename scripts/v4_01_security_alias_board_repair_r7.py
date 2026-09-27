@@ -14,7 +14,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 import sys
 sys.path.insert(0, str(ROOT / "src"))
-from workbench_analysis.dated_security_alias import historical_exchange_symbol
+from workbench_analysis.dated_security_alias import DatedSecurityAliasResolver
 
 TARGET_CURRENT_ID = "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B"
 TARGET_PREDECESSOR_ID = "SEC-B2F87F189D1D143B67730E3640E617CA"
@@ -94,6 +94,15 @@ def main() -> int:
             "evidence_source": "SZSE_2025_028_IMPLEMENTATION_ANNOUNCEMENT",
         })
         repaired_records.append(repaired)
+    alias_evidence_ref = "https://disc.static.szse.cn/disc/disk03/finalpage/2025-02-15/cedb693a-f5ee-4463-9682-ea33d406b569.PDF"
+    alias_facts = [{
+        "security_id": row["security_id"], "source_security_key": row["source_security_key"],
+        "effective_from": row["symbol_effective_from"], "effective_to": row.get("symbol_effective_to"),
+        "exchange": row["exchange"], "board": row["board"], "alias_role": row["alias_role"],
+        "source_revision": source_revision, "evidence_ref": alias_evidence_ref,
+        "evidence_hash": sha(evidence_path),
+    } for row in repaired_records if row.get("security_id") == TARGET_CURRENT_ID]
+    alias_resolver = DatedSecurityAliasResolver(alias_facts)
     identity_r7 = dict(identity)
     identity_r7.update({"contract_id": "V4_01_SECURITY_ENTITY_MAP_R7", "version": "7.0.0",
                         "records": repaired_records, "supersedes": "security_entity_map_R5_20260925.json"})
@@ -157,7 +166,10 @@ def main() -> int:
                 if len(isst_values) > 1:
                     raise RuntimeError(f"R7_DUPLICATE_TARGET_ISST_CONFLICT:{group[0][0].get('trade_date')}:{sorted(map(str, isst_values))}")
                 date_value = str(chosen[0]["trade_date"]).replace("-", "")
-                alias = historical_exchange_symbol(date_value)
+                alias = alias_resolver.resolve_alias(TARGET_CURRENT_ID, date_value)
+                board_scope = alias_resolver.resolve_board(TARGET_CURRENT_ID, date_value)
+                if alias is None or board_scope is None:
+                    raise RuntimeError("R7_DATED_ALIAS_RESOLUTION_MISSING")
                 ur, sr, ir = by_key.get(alias, chosen)
                 ur["source_bar_present"] = bar_present
                 if bar_present:
@@ -171,7 +183,7 @@ def main() -> int:
                     row["historical_exchange_symbol"] = alias
                     row["provider_roster_code"] = "SZ.302132"
                     row["code_change_source_revision"] = source_revision
-                ur["board_scope"] = "CHINEXT"
+                ur["board_scope"] = board_scope
                 ur["membership_basis"] = "R7_OFFICIAL_DATED_ALIAS_AND_BOARD_REPAIR"
                 ir["binding_quality"] = "STABLE_ID_WITH_DATED_HISTORICAL_ALIAS_R7"
                 for stream, row in zip(streams, (ur, sr, ir), strict=True):
@@ -222,7 +234,7 @@ def main() -> int:
                    "aliases": [{"historical_alias": "SZ.300114", "effective_from": "2010-08-27", "effective_to": "2025-02-16"},
                                {"historical_alias": "SZ.302132", "effective_from": "2025-02-17", "effective_to": None}],
                    "exchange": "SZ", "board": "CHINEXT", "board_effective_from": "2010-08-27", "board_effective_to": None},
-        "evidence": {"source_ref": "https://disc.static.szse.cn/disc/disk03/finalpage/2025-02-15/cedb693a-f5ee-4463-9682-ea33d406b569.PDF",
+        "evidence": {"source_ref": alias_evidence_ref,
                      "source_capture_path": "data/v4/source_evidence/v4_02_r3/szse_2025_028_code_change_302132.pdf",
                      "source_capture_sha256": sha(evidence_path),
                      "source_revision": "公告2025-028; 代码变更启用日2025-02-17"},

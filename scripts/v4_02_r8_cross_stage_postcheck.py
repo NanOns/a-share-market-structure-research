@@ -216,11 +216,11 @@ def main() -> int:
     weekly_ids = {str(row[0]) for row in con.execute("SELECT DISTINCT canonical_security_id FROM read_parquet(?)", [str(ROOT / V402_WEEKLY)]).fetchall()}
     monthly_ids = {str(row[0]) for row in con.execute("SELECT DISTINCT canonical_security_id FROM read_parquet(?)", [str(ROOT / V402_MONTHLY)]).fetchall()}
     weekly_duplicate_keys = int(con.execute(
-        "SELECT count(*) - count(DISTINCT (canonical_security_id, period_end_date)) FROM read_parquet(?)",
+        "SELECT count(*) - count(DISTINCT (canonical_security_id, period_type, period_view, period_end_date, price_basis)) FROM read_parquet(?)",
         [str(ROOT / V402_WEEKLY)],
     ).fetchone()[0])
     monthly_duplicate_keys = int(con.execute(
-        "SELECT count(*) - count(DISTINCT (canonical_security_id, period_end_date)) FROM read_parquet(?)",
+        "SELECT count(*) - count(DISTINCT (canonical_security_id, period_type, period_view, period_end_date, price_basis)) FROM read_parquet(?)",
         [str(ROOT / V402_MONTHLY)],
     ).fetchone()[0])
     weekly_rows = pq.ParquetFile(ROOT / V402_WEEKLY).metadata.num_rows
@@ -294,9 +294,9 @@ def main() -> int:
                 "extra_identity_count": adjusted_extra_ids,
             },
             "weekly": {"rows": weekly_rows, "identity_count": len(weekly_ids), "extra_identity_count": weekly_extra_ids,
-                       "duplicate_identity_period_rows": weekly_duplicate_keys},
+                       "duplicate_identity_period_view_price_basis_rows": weekly_duplicate_keys},
             "monthly": {"rows": monthly_rows, "identity_count": len(monthly_ids), "extra_identity_count": monthly_extra_ids,
-                        "duplicate_identity_period_rows": monthly_duplicate_keys},
+                        "duplicate_identity_period_view_price_basis_rows": monthly_duplicate_keys},
         },
         "manifest_binding": {
             "alias_fact_matches_r8": manifest_alias_matches,

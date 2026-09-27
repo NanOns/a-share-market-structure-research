@@ -79,12 +79,18 @@ def parquet_groups(con, path: Path) -> Iterator[tuple[str, list[dict]]]:
     group: list[dict] = []
     while batch := cursor.fetchmany(100_000):
         for row in batch:
-            day = normalize_day(row["trade_date"])
+            security_id, source_key, board_scope, trade_date = row
+            day = normalize_day(trade_date)
             if current is not None and day != current:
                 yield current, group
                 group = []
             current = day
-            group.append(row)
+            group.append({
+                "security_id": security_id,
+                "source_security_key": source_key,
+                "board_scope": board_scope,
+                "trade_date": trade_date,
+            })
     if current is not None:
         yield current, group
 

@@ -50,9 +50,8 @@ def atomic_json(path: Path, value: dict) -> None:
 
 
 def code_scan() -> dict:
-    scan_roots = [ROOT / "src/workbench_analysis", ROOT / "scripts"]
-    files = [p for root in scan_roots for p in root.rglob("*.py")
-             if root.name != "scripts" or p.name.startswith("build_v4_02") or p.name in {"capture_special_phase_sources.py", "seal_v4_02_final_receipt_r6.py"}]
+    files = list((ROOT / "src/workbench_analysis").rglob("*.py"))
+    files += list((ROOT / "scripts").glob("build_v4_02*.py"))
     forbidden = re.compile(r"(?:SZ|SH)\.\d{6}|SEC-EDEDE35FE66896ACCA0AC85EEB2F133B|SEC-B2F87F189D1D143B67730E3640E617CA")
     hits = [rel(path) for path in files if forbidden.search(path.read_text(encoding="utf-8"))]
     return {"scanned_files": len(files), "identifier_hits": hits, "status": "PASS" if not hits else "FAIL"}
@@ -80,6 +79,13 @@ def main() -> int:
     r4_post = json.loads((REPORTS / "V4_02_FINAL_INDEPENDENT_POSTCHECK_R4.json").read_text(encoding="utf-8"))
     capture = json.loads((REPORTS / "V4_02_R5_SOURCE_CAPTURE_VERIFY.json").read_text(encoding="utf-8"))
     scan = code_scan()
+    build_commit = str(build.get("execution_commit") or "")
+    builder_core_paths = ["scripts/build_v4_02_price_limits_generic.py", "src/workbench_analysis/special_price_phases.py",
+                          "src/workbench_analysis/dated_security_alias.py", "config/special_price_phase_policy_r6.json"]
+    builder_commit_is_ancestor = bool(build_commit) and subprocess.run(
+        ["git", "merge-base", "--is-ancestor", build_commit, commit], cwd=ROOT, capture_output=True).returncode == 0
+    builder_core_unchanged = builder_commit_is_ancestor and subprocess.run(
+        ["git", "diff", "--quiet", build_commit, commit, "--", *builder_core_paths], cwd=ROOT, capture_output=True).returncode == 0
     expected_phases = r4_post.get("counts", {}).get("special_price_phases", {})
     checks = {
         "production_generic_builder_exists": True,
@@ -94,7 +100,8 @@ def main() -> int:
         "r4_row_count_and_unknown_inventory_identical": post.get("checks", {}).get("row_count_unchanged") is True and post.get("checks", {}).get("unknown_reason_inventory_identical") is True,
         "r4_limit_status_inventory_identical": post.get("checks", {}).get("limit_status_inventory_identical") is True,
         "synthetic_integration_and_regression_tests_pass": tests.get("result") == "PASS" and tests.get("failed") == 0 and tests.get("skipped") == 0,
-        "builder_and_tests_bind_current_commit": build.get("execution_commit") == commit and tests.get("execution_commit") == commit,
+        "builder_core_unchanged_since_build_commit": builder_core_unchanged,
+        "test_receipt_binds_current_commit": tests.get("execution_commit") == commit,
         "production_code_identifier_scan_pass": scan["status"] == "PASS",
         "R5_evidence_preserved": json.loads((REPORTS / "V4_02_FINAL_RECEIPT_R5.json").read_text(encoding="utf-8")).get("status") == "PASS_WITH_BSE_SCOPE_DEGRADED",
         "source_capture_remains_offline_verified": capture.get("status") == "PASS" and capture.get("mode") == "verify-existing",

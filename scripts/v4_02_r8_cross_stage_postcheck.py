@@ -110,11 +110,16 @@ def main() -> int:
         and r8_final.get("canonical_historical_universe_artifact", {}).get("sha256") == universe_hash
     )
 
-    accepted_price_path = ROOT / final_receipt["evidence"]["production_build"]["path"]
+    price_build_path = ROOT / final_receipt["evidence"]["production_build"]["path"]
+    price_build = json.loads(price_build_path.read_text(encoding="utf-8"))
+    accepted_price_path = ROOT / price_build["artifact"]["path"]
     expected_components = manifest.get("components", {})
     manifest_alias_matches = expected_components.get("R6_ALIAS_FACTS", {}).get("sha256") == alias_hash
     manifest_daily_matches = expected_components.get("DAILY_R7", {}).get("sha256") == sha256(ROOT / V402_ADJUSTED)
-    manifest_price_matches = expected_components.get("R6_PRICE", {}).get("sha256") == sha256(accepted_price_path)
+    manifest_price_matches = (
+        expected_components.get("R6_PRICE", {}).get("sha256") == sha256(accepted_price_path)
+        and price_build.get("artifact", {}).get("sha256") == sha256(accepted_price_path)
+    )
     head_matches = (
         accepted_head.get("final_receipt_sha256") == sha256(ROOT / V402_FINAL_RECEIPT)
         and accepted_head.get("external_acceptance") == "EXTERNALLY_ACCEPTED"
@@ -292,7 +297,8 @@ def main() -> int:
             "adjusted_daily_r7_matches_manifest": manifest_daily_matches,
             "price_limit_matches_manifest": manifest_price_matches,
             "r8_universe_bound_by_cross_stage_full_key_comparison": True,
-            "price_limit_artifact": final_receipt["evidence"]["production_build"]["path"],
+            "price_limit_build_receipt": final_receipt["evidence"]["production_build"]["path"],
+            "price_limit_artifact": price_build["artifact"]["path"],
         },
         "stage_contract": "DA-MSR-V4.2.2-CODEX-REV2; V4_02_R8_CROSS_STAGE_POSTCHECK_V1",
         "contract_evidence": {"path": CONTRACT.as_posix(), "sha256": sha256(ROOT / CONTRACT)},

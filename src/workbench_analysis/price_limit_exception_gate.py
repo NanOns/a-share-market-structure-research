@@ -16,6 +16,8 @@ def is_range_exception_audit_closed(audit: dict) -> bool:
     if audit.get("status") != "CLOSED":
         return False
     rows = audit.get("dispositions")
+    if not isinstance(rows, list):
+        rows = list(audit.get("r1_dispositions", [])) + list(audit.get("r3_findings", []))
     expected = audit.get("scope", {}).get("row_count")
     if not isinstance(rows, list) or not rows or expected != len(rows):
         return False

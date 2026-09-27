@@ -55,10 +55,13 @@ def main() -> int:
                               "r3_source_security_key": newer.get("source_security_key") if newer else None,
                               "r3_board_scope": newer.get("board_scope") if newer else None,
                               "disposition": disposition, "status": state})
+    prior_open_keys = {key(row) for row in original_exceptions
+                       if current.get(key(row), {}).get("reason") == "CLOSE_OUTSIDE_LIMIT_RANGE"}
     new_findings = [{"security_id": row["security_id"], "source_security_key": row["source_security_key"],
                      "trade_date": row["trade_date"], "board_scope": row["board_scope"],
                      "risk_status": row.get("risk_status"), "reference_price": row.get("reference_price"),
                      "rule_id": row.get("rule_id"), "reason": row.get("reason"),
+                     "present_in_r1_open_set": key(row) in prior_open_keys,
                      "disposition": None, "status": "OPEN_EVIDENCE_REQUIRED",
                      "evidence_availability_review": "NO_ROW_SPECIFIC_OFFICIAL_CAPTURE_BOUND_IN_R3_PACK"}
                     for row in current_exceptions]
@@ -70,7 +73,9 @@ def main() -> int:
         "status": "OPEN" if prior_open or new_findings else "CLOSED",
         "stage": "V4-02 / CROSS-CUTTING AUDIT / SEPARATE FROM FINAL STAGE GATE",
         "scope": {"r1_exception_rows": len(original_exceptions), "r1_resolved": resolved,
-                  "r1_still_open": prior_open, "r3_new_exception_rows": len(new_findings),
+                  "r1_still_open": prior_open, "r3_current_exception_rows": len(new_findings),
+                  "r3_additional_exception_rows": len(new_findings) - len(prior_open_keys),
+                  "row_count": len(prior_findings) + len(new_findings),
                   "r3_disposition_complete": False, "exception": "CLOSE_OUTSIDE_LIMIT_RANGE"},
         "evidence": {"r1_price_artifact": {"path": str(R1_PRICE.relative_to(ROOT)).replace("\\", "/"), "sha256": sha(R1_PRICE)},
                      "r3_price_artifact": {"path": str(R3_PRICE.relative_to(ROOT)).replace("\\", "/"), "sha256": sha(R3_PRICE)},
@@ -83,7 +88,8 @@ def main() -> int:
     }
     OUT.write_text(json.dumps(doc, ensure_ascii=False, sort_keys=True, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"status": doc["status"], "r1_total": len(original_exceptions), "r1_resolved": resolved,
-                      "r1_open": prior_open, "r3_new": len(new_findings), "path": str(OUT.relative_to(ROOT))}, ensure_ascii=False))
+                      "r1_open": prior_open, "r3_current": len(new_findings),
+                      "r3_additional": len(new_findings) - len(prior_open_keys), "path": str(OUT.relative_to(ROOT))}, ensure_ascii=False))
     return 0 if doc["status"] == "CLOSED" else 2
 
 

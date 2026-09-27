@@ -1,0 +1,23 @@
+{
+  "contract_id": "V4_00_01_02_JOINT_FINAL_GATE_V1",
+  "version": "1.0.0",
+  "technical_baseline": "DA-MSR-V4.2.2-CODEX-REV2",
+  "required_scope": ["SH_MAIN", "SZ_MAIN", "CHINEXT", "STAR"],
+  "optional_scope": {
+    "BSE": "DEGRADED_BSE",
+    "blocks_required_scope": false
+  },
+  "joint_pass_requires": [
+    "Phase 0 stages 00A-00H are FULL_PASS under Stage-Obligation semantics",
+    "V4-01 R8 Required Scope is PASS and its canonical receipt is current",
+    "V4-01 generic alias completeness has zero unresolved Required-Scope candidates",
+    "V4-01 all-day identity and universe postchecks pass",
+    "V4-02 remains PASS_WITH_BSE_SCOPE_DEGRADED and EXTERNALLY_ACCEPTED",
+    "V4-02 cross-stage identity, alias, universe and row-key checks pass",
+    "affected test suites pass with failed=0"
+  ],
+  "joint_status_on_pass": "FULL_PASS",
+  "v4_03_entry_on_pass": "READY_FOR_EXTERNAL_ACCEPTANCE",
+  "external_acceptance_policy": "Codex prepares the review package; only an external reviewer may assert EXTERNALLY_ACCEPTED.",
+  "v4_03_implementation_policy": "BLOCKED_UNTIL_JOINT_FINAL_EXTERNAL_ACCEPTANCE"
+}

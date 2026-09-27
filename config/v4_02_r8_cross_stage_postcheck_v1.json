@@ -1,0 +1,28 @@
+{
+  "contract_id": "V4_02_R8_CROSS_STAGE_POSTCHECK_V1",
+  "version": "1.0.0",
+  "stage": "V4-02-R8-CROSS-STAGE-IDENTITY-UNIVERSE-POSTCHECK",
+  "required_scope": ["SH_MAIN", "SZ_MAIN", "CHINEXT", "STAR"],
+  "optional_scope": {
+    "BSE": "DEGRADED_BSE",
+    "blocks_required_scope": false
+  },
+  "inputs": [
+    "V4-01-R8 identity map",
+    "V4-01-R8 dated alias facts",
+    "V4-01-R8 canonical historical universe",
+    "accepted V4-02 R6 head and external acceptance",
+    "accepted manifest and existing V4-02 daily/status/weekly/monthly/price-limit artifacts"
+  ],
+  "checks": [
+    "alias and adjusted daily hashes match accepted manifest",
+    "trading-status key set equals R8 universe keys",
+    "dated isST key set equals R8 universe keys",
+    "price-limit key set equals R8 universe keys",
+    "adjusted daily keys and dated boards are compatible with R8 universe keys",
+    "weekly and monthly identities are subsets of R8 universe identities",
+    "weekly and monthly identity-period keys are unique"
+  ],
+  "rebuild_policy": "NO_REBUILD; a new counterexample is scoped and handled separately",
+  "pass_policy": "All required-scope key, identity, board and manifest comparisons pass while the accepted V4-02 external head remains current."
+}

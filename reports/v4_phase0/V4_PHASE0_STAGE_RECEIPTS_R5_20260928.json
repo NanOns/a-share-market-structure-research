@@ -1,0 +1,248 @@
+{
+  "contract_id": "V4_PHASE0_STAGE_RECEIPTS_R5_STAGE_OBLIGATION",
+  "core_blockers": [],
+  "execution_commit": "e2393a00ae3b2ae30b154714a7805f53c478bdce",
+  "future_owner_stage_capabilities": [
+    {
+      "capability": "TURNOVER_CONTEXT_V1",
+      "does_not_degrade_v4_00f": true,
+      "enabled": false,
+      "owner": "V4-06",
+      "status": "PENDING_OWNER_STAGE",
+      "strict_tolerance_accepted": false
+    },
+    {
+      "capability": "MARKED_RELATIVE_BENCHMARK_CONSUMER",
+      "coverage_threshold": "UNSET",
+      "does_not_degrade_v4_00h": true,
+      "owner": "V4-15/Forward",
+      "quote_age_threshold": "UNSET",
+      "status": "DISABLED_FAIL_CLOSED"
+    },
+    {
+      "capability": "factor_performance",
+      "does_not_degrade_v4_00h": true,
+      "owner": "V4-03/V4-05",
+      "status": "PENDING_OWNER_STAGE"
+    },
+    {
+      "capability": "owner_stage_algorithm_parameters",
+      "does_not_degrade_v4_00g": true,
+      "owner": "applicable downstream owner stages",
+      "status": "PENDING_OWNER_STAGE"
+    },
+    {
+      "capability": "sector_rotation_forward_thresholds",
+      "does_not_degrade_v4_00h": true,
+      "owner": "V4-08/V4-17G",
+      "status": "PENDING_REPRESENTATIVE_EVIDENCE"
+    },
+    {
+      "capability": "radar_focus_performance",
+      "does_not_degrade_v4_00h": true,
+      "owner": "V4-15/Forward",
+      "status": "PENDING_OWNER_STAGE"
+    },
+    {
+      "capability": "future_production_cutover",
+      "does_not_degrade_v4_00h": true,
+      "owner": "later owner stages",
+      "status": "PENDING_OWNER_STAGE"
+    }
+  ],
+  "next_stage": "V4_00_01_02_JOINT_FINAL_RECEIPT",
+  "observed_at_utc": "2026-09-27T16:55:31+00:00",
+  "phase0_status": "FULL_PASS",
+  "stage_obligation_semantics": "Phase 0 passes when its own contracts, schema, policy, fail-closed behavior, ownership, gates and rollback governance are complete. Future owner-stage capabilities may remain disabled or pending.",
+  "stages": [
+    {
+      "acceptance": "Clean V4 baseline remains: 15 tables, 25 validated foreign keys, zero unvalidated keys, zero runtime rows. The verified physical backup was explicitly requested before old database deletion and is informational, not a migration input or entry requirement.",
+      "allowed_capabilities": [],
+      "blocked_scopes": [],
+      "blocks_v4_01": false,
+      "degraded_scopes": [],
+      "evidence": [
+        "reports/v4_phase0/V4_DATABASE_RESET_RECEIPT.json",
+        "reports/v4_phase0/V4_PHASE0_PERFORMANCE_BASELINE_R2.json",
+        "reports/v4_phase0/V4_PHASE0_R2_TEST_RECEIPT.json"
+      ],
+      "next_stage": "V4-00B",
+      "reason_codes": [],
+      "stage": "V4-00A",
+      "stage_contract": "R2 §2, §9; REV2 Phase 0 clean V4 baseline. Legacy project database has already been reset; no second reset.",
+      "status": "FULL_PASS"
+    },
+    {
+      "acceptance": "R8 canonical identity, dated aliases, lifecycle and historical universe pass all-day Required Scope postchecks. Pre-project PIT history remains NOT_AVAILABLE/NOT_CLAIMED.",
+      "allowed_capabilities": [
+        "LIFECYCLE_SCHEMA"
+      ],
+      "blocked_scopes": [],
+      "blocks_v4_01": false,
+      "degraded_scopes": [],
+      "evidence": [
+        "config/v4_security_lifecycle_fact_v1.json",
+        "config/v4_pit_membership_fact_v1.json",
+        "src/workbench_db/migrations/v4_postgres/003_phase0_contract_alignment.sql",
+        "tests/v4_phase0/test_postgres_schema.py",
+        "reports/v4_01/v4_01_final_stage_receipt_R8_20260928.json",
+        "reports/v4_01/V4_01_HISTORICAL_CODE_CHANGE_ALIAS_COMPLETENESS_R8.json",
+        "reports/v4_01/V4_01_R8_IDENTITY_UNIVERSE_POSTCHECK_20260928.json"
+      ],
+      "next_stage": "V4-00C",
+      "reason_codes": [],
+      "stage": "V4-00B",
+      "stage_contract": "R2 §4; REV2 §5.3 and §9408 lifecycle/universe/PIT contracts.",
+      "stage_obligation_semantics": "Future owner-stage capability status does not degrade this Phase 0 stage.",
+      "status": "FULL_PASS"
+    },
+    {
+      "acceptance": "Prior-session identity equals the immediately previous accepted publication head and its state-head/logical digest. Same-day revisions preserve the prior tuple; false gaps and mutation of a frozen prior head are rejected.",
+      "allowed_capabilities": [
+        "PUBLICATION_IDENTITY"
+      ],
+      "blocked_scopes": [],
+      "blocks_v4_01": false,
+      "degraded_scopes": [],
+      "evidence": [
+        "src/workbench_db/migrations/v4_postgres/003_phase0_contract_alignment.sql",
+        "src/workbench_db/migrations/v4_postgres/004_publication_head_revision_identity.sql",
+        "src/workbench_db/migrations/v4_postgres/005_market_session_publication_chain.sql",
+        "tests/v4_phase0/test_postgres_schema.py",
+        "src/workbench_db/migrations/v4_postgres/008_prior_session_state_freeze_integrity.sql",
+        "src/workbench_db/migrations/v4_postgres/009_publication_head_guard_sql_alias_fix.sql"
+      ],
+      "next_stage": "V4-00D",
+      "reason_codes": [],
+      "stage": "V4-00C",
+      "stage_contract": "R2 §3; REV2 publication opaque identity, revision lineage, namespace/core revision, and prior valid session.",
+      "status": "FULL_PASS"
+    },
+    {
+      "acceptance": "A_STOCK remains ACCEPTED_SOURCE_PACKAGE: 265,993 comparable rows, zero unexplained mismatch, zero identity mismatch. Runtime not measured because R2 forbids rerun.",
+      "allowed_capabilities": [
+        "A_STOCK_TDX_SOURCE"
+      ],
+      "blocked_scopes": [],
+      "blocks_v4_01": false,
+      "degraded_scopes": [],
+      "evidence": [
+        "reports/v4_00d/v4_00d_asset_stratified_20260925.json",
+        "reports/v4_00d/v4_00d_asset_stratified_postcheck_20260925.json"
+      ],
+      "next_stage": "V4-00E",
+      "reason_codes": [],
+      "stage": "V4-00D",
+      "stage_contract": "R2 §2.2; retain the accepted A_STOCK overlap result. No package redownload or overlap rerun.",
+      "status": "FULL_PASS"
+    },
+    {
+      "acceptance": "Accepted V4-02 R6 Adjusted Canonical, empirical samples and per-security fail-closed behavior are externally accepted; no silent RAW fallback. Pre-project PIT events remain NOT_AVAILABLE/NOT_CLAIMED.",
+      "allowed_capabilities": [
+        "RAW_BOOTSTRAP"
+      ],
+      "blocked_scopes": [],
+      "blocks_v4_01": false,
+      "degraded_scopes": [],
+      "evidence": [
+        "docs/V4_00E_HISTORICAL_ADJUSTMENT_COORDINATES_20260925.md",
+        "tests/v4_phase0/test_adjustment_contract_vectors.py",
+        "reports/v4_02/V4_02_FINAL_RECEIPT_R6.json",
+        "reports/v4_02/V4_02_FINAL_EXTERNAL_ACCEPTANCE_R6.json",
+        "reports/v4_01/v4_01_final_stage_receipt_R8_20260928.json"
+      ],
+      "next_stage": "V4-00F",
+      "reason_codes": [],
+      "stage": "V4-00E",
+      "stage_contract": "R2 §10 and existing adjustment contract: adjusted unknown categories fail closed.",
+      "stage_obligation_semantics": "Future owner-stage capability status does not degrade this Phase 0 stage.",
+      "status": "FULL_PASS"
+    },
+    {
+      "acceptance": "Public 0.9.3 route, field/unit normalization, bounded serialized requests, failure isolation, provenance and status/isST use are contracted and exercised. TURNOVER_CONTEXT_V1 BOUND_STRICT remains disabled and owned by V4-06; no turnover dataset is declared enabled or accepted here.",
+      "allowed_capabilities": [
+        "BAOSTOCK_PUBLIC_0_9_3_RUNTIME_ROUTE",
+        "FIELD_UNIT_CONTRACT",
+        "BOUNDED_REQUEST_CONTRACT",
+        "FAILURE_ISOLATION",
+        "PROVENANCE",
+        "STATUS_ISST_SOURCE_FACTS"
+      ],
+      "blocked_scopes": [],
+      "blocks_v4_01": false,
+      "degraded_scopes": [],
+      "evidence": [
+        "docs/V4_00F_BAOSTOCK_SUPPLEMENTAL_CONTRACT_20260925.md",
+        "docs/audits/V4_00F_BAOSTOCK_GATE_AUDIT_20260925.md",
+        "src/workbench_analysis/baostock_supplemental.py",
+        "requirements-v4-baostock.txt",
+        "reports/v4_01/baostock_dated_roster_completeness_receipt_R6_20260926.json",
+        "tests/v4_phase0/test_baostock_supplemental.py"
+      ],
+      "next_stage": "V4-00G",
+      "reason_codes": [],
+      "stage": "V4-00F",
+      "stage_contract": "R2 §11: supplemental source is optional and fail-closed.",
+      "stage_obligation_semantics": "Future owner-stage capability status does not degrade this Phase 0 stage.",
+      "status": "FULL_PASS"
+    },
+    {
+      "acceptance": "Versioned AST/schema/parameter/output/window validation, UNKNOWN propagation and negative vectors are in place. Future owner-stage parameters remain explicitly pending under Stage-Obligation semantics.",
+      "allowed_capabilities": [],
+      "blocked_scopes": [],
+      "blocks_v4_01": false,
+      "degraded_scopes": [],
+      "evidence": [
+        "src/v4/contracts/algorithm_contract.py",
+        "config/v4_algorithm_contract_framework_v1.json",
+        "config/v4_parameter_registry_v1.json",
+        "tests/v4_phase0/test_algorithm_contracts.py",
+        "reports/v4_phase0/V4_PHASE0_R2_TEST_RECEIPT.json",
+        "reports/v4_01/v4_01_final_stage_receipt_R8_20260928.json"
+      ],
+      "next_stage": "V4-00H",
+      "reason_codes": [],
+      "stage": "V4-00G",
+      "stage_contract": "R2 §5 and §12; REV2 §72–73 and versioned AST/parameter/output/window contracts.",
+      "stage_obligation_semantics": "Future owner-stage capability status does not degrade this Phase 0 stage.",
+      "status": "FULL_PASS"
+    },
+    {
+      "acceptance": "Scope gates, failure receipts, cutover permissions, rollback semantics and performance ownership are frozen. Marked-relative benchmark remains DISABLED_FAIL_CLOSED; future thresholds and performance remain owned by later stages.",
+      "allowed_capabilities": [
+        "CAPABILITY_SCOPES",
+        "FAILURE_RECEIPTS",
+        "CUTOVER_PERMISSIONS",
+        "ROLLBACK_SEMANTICS",
+        "PERFORMANCE_OWNERSHIP"
+      ],
+      "blocked_scopes": [],
+      "blocks_v4_01": false,
+      "degraded_scopes": [],
+      "evidence": [
+        "config/v4_phase0_final_gate_v1.json",
+        "config/v4_capability_cutover_policy_v1.json",
+        "config/v4_performance_measurement_contract_v1.json",
+        "reports/v4_phase0/V4_PHASE0_PERFORMANCE_BASELINE_R2.json",
+        "tests/v4_phase0/test_phase0_final_gate.py"
+      ],
+      "next_stage": "V4-01 TDX History Bootstrap (R4 external acceptance authorized entry)",
+      "reason_codes": [],
+      "stage": "V4-00H",
+      "stage_contract": "R2 §§6–8; REV2 §74; scope-level phase gate and capability-specific consumer permissions.",
+      "stage_obligation_semantics": "Future owner-stage capability status does not degrade this Phase 0 stage.",
+      "status": "FULL_PASS"
+    }
+  ],
+  "supersedes": {
+    "path": "reports/v4_phase0/V4_PHASE0_STAGE_RECEIPTS_R3.json",
+    "sha256": "85776c0721f94419c3d06fc0a4641396213b991eb8f70381ff370fdde9451fa8"
+  },
+  "task_card": {
+    "path": "docs/evidence/V4_PRE03_JOINT_FINAL_SEAL_TASK_R1_20260927.md",
+    "sha256": "dbc8c2acb08d6b85be4da595dea10d46037a0ac1828e6bd24dc174c55edcd737"
+  },
+  "technical_contract": "DA-MSR-V4.2.2-CODEX-REV2",
+  "technical_contract_sha256": "744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd",
+  "version": "1.0.0"
+}

@@ -1,0 +1,336 @@
+{
+  "R8_alias_completeness_receipt": {
+    "path": "reports/v4_01/V4_01_HISTORICAL_CODE_CHANGE_ALIAS_COMPLETENESS_R8.json",
+    "sha256": "9d1644fda0d50d32eba5d9b48655643d7915b5d4b654c3db588709706b5bbc64"
+  },
+  "R8_final_receipt": {
+    "path": "reports/v4_01/v4_01_final_stage_receipt_R8_20260928.json",
+    "sha256": "3d1f78893540a3273ee9621bf837f496745ee24fca3b2d732c7d533dd1cd4b0c"
+  },
+  "R8_identity_universe_postcheck": {
+    "path": "reports/v4_01/V4_01_R8_IDENTITY_UNIVERSE_POSTCHECK_20260928.json",
+    "sha256": "b477b50a6badb3c68e4b78c430586a4b9818ed5bf7b000d61a7cd20f91274716"
+  },
+  "V4_02_external_acceptance": {
+    "path": "reports/v4_02/V4_02_FINAL_EXTERNAL_ACCEPTANCE_R6.json",
+    "sha256": "42286da4305b792f5ecdc0fcc9a9d722e8ab3c23f6b618bf1ba15bd445ca6970"
+  },
+  "a_stock_comparable_rows": 265993,
+  "a_stock_identity_mismatches": 0,
+  "a_stock_source_acceptance": "ACCEPTED_SOURCE_PACKAGE",
+  "a_stock_unexplained_mismatches": 0,
+  "accepted_head_before_receipt_seal": "e2393a00ae3b2ae30b154714a7805f53c478bdce",
+  "adjusted_bootstrap_permission": "SCOPE_DEPENDENT",
+  "audit_truth_note": "R3.1 confirms the physical backup was explicitly requested and verified before deletion. It is retained as an informational deletion safety measure, not a V4 migration input or Phase 0 entry requirement.",
+  "base_final_executable_contract": "DA-MSR-V4.2.2-FINAL-EXECUTABLE-CONTRACT",
+  "base_final_executable_contract_sha256": "ac86f92f9cfaa3547a0ba99959e749da02f0fa7f9c0a1568ad95627db0200b97",
+  "closed_or_repaired_items": [
+    "P0-1 publication physical identity/lineage and prior market session constraints",
+    "P0-2 lifecycle and PIT machine contract/schema consistency",
+    "P0-3 executable framework/parameter/AST/output validators",
+    "P0-4 FULL/DEGRADED/BLOCKED scope-level gate",
+    "P0-5 marked-relative benchmark consumer fail-closed scope",
+    "P0-6 REV2 §74 baseline and explicit NOT_IMPLEMENTED/NOT_AVAILABLE metrics",
+    "P0-7 backup informational-only acceptance role and audit truth review",
+    "R3 P0-A prior accepted publication head, state-head ID, and logical digest freeze; same-day predecessor tuple invariant; gap/head mutation guards",
+    "R3 P0-B required scope owner binding, derived RAW_BOOTSTRAP permission, and hard BLOCKED-stage gate semantics",
+    "R3 P1-A non-numeric policy value limitation explicitly versioned, validated, unassigned, fail-closed, and scoped as 00G DEGRADED_PASS",
+    "R3.1 physical backup audit fact retained as explicitly requested pre-delete safety measure and excluded from V4 migration inputs"
+  ],
+  "contract_conflicts": [],
+  "contract_id": "V4_PHASE0_FINAL_ACCEPTANCE_R5_STAGE_OBLIGATION",
+  "core_blockers": [],
+  "database_reset_receipt": "reports/v4_phase0/V4_DATABASE_RESET_RECEIPT.json",
+  "entry_gate": {
+    "accepted_scopes": [
+      "A_STOCK_TDX_SOURCE",
+      "LIFECYCLE_SCHEMA",
+      "PUBLICATION_IDENTITY",
+      "RAW_BOOTSTRAP"
+    ],
+    "blocked_required_scopes": [],
+    "blocked_scopes": [
+      "MARKED_RELATIVE_BENCHMARK_CONSUMER"
+    ],
+    "raw_bootstrap_derivation": {
+      "owner_stage": "V4-00E",
+      "required_owner_scopes_accepted": [
+        "A_STOCK_TDX_SOURCE",
+        "LIFECYCLE_SCHEMA",
+        "PUBLICATION_IDENTITY"
+      ],
+      "requires_all_phase0_stages_accepted": true,
+      "status": "SATISFIED"
+    },
+    "required_scopes": [
+      "RAW_BOOTSTRAP",
+      "A_STOCK_TDX_SOURCE",
+      "LIFECYCLE_SCHEMA",
+      "PUBLICATION_IDENTITY"
+    ]
+  },
+  "external_acceptance": "PENDING_JOINT_EXTERNAL_REVIEW",
+  "external_acceptance_r4": {
+    "authority": "DA-MSR-V4-PHASE0-FINAL-EXTERNAL-ACCEPTANCE-R4",
+    "authority_document": "D:/Users/lps/Desktop/V4_PHASE0_FINAL_EXTERNAL_ACCEPTANCE_AND_RECEIPT_ONLY_SEAL_R4_20260925.md",
+    "authority_sha256": "44ab5a15b933d2c01ee9211500136ed19368f9b383ead7bf08dcaa26ca73f7ed",
+    "phase0_status": "DEGRADED_PASS",
+    "phase0_test_receipt": "reports/v4_phase0/V4_PHASE0_R3_TEST_RECEIPT.json",
+    "phase0_test_receipt_result": "63 passed, 0 failed, 0 skipped; original runtime evidence retained; not rerun per R4",
+    "raw_bootstrap_permission": "AUTHORIZED",
+    "reseal_scope": "RECEIPT_ONLY_METADATA; no code, migration, tests, database, TDX, source evidence, or overlap evidence changed",
+    "scanner_permission": "NOT_APPLICABLE_UNTIL_V4_05",
+    "technical_contract": "DA-MSR-V4.2.2-CODEX-REV2",
+    "technical_contract_sha256": "744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd",
+    "v4_01_entry_permission": "AUTHORIZED",
+    "verified_fields": [
+      "technical_contract_sha256",
+      "canonical_stage_receipts",
+      "phase0_test_count"
+    ]
+  },
+  "external_audit_confirmation": "DA-MSR-V4-PHASE0-FINAL-EXTERNAL-ACCEPTANCE-R4 / V4_01_ENTRY_PERMISSION=AUTHORIZED",
+  "external_audit_confirmation_required_before_v4_01": false,
+  "failed_test_count": 0,
+  "future_owner_stage_capabilities": [
+    {
+      "capability": "TURNOVER_CONTEXT_V1",
+      "does_not_degrade_v4_00f": true,
+      "enabled": false,
+      "owner": "V4-06",
+      "status": "PENDING_OWNER_STAGE",
+      "strict_tolerance_accepted": false
+    },
+    {
+      "capability": "MARKED_RELATIVE_BENCHMARK_CONSUMER",
+      "coverage_threshold": "UNSET",
+      "does_not_degrade_v4_00h": true,
+      "owner": "V4-15/Forward",
+      "quote_age_threshold": "UNSET",
+      "status": "DISABLED_FAIL_CLOSED"
+    },
+    {
+      "capability": "factor_performance",
+      "does_not_degrade_v4_00h": true,
+      "owner": "V4-03/V4-05",
+      "status": "PENDING_OWNER_STAGE"
+    },
+    {
+      "capability": "owner_stage_algorithm_parameters",
+      "does_not_degrade_v4_00g": true,
+      "owner": "applicable downstream owner stages",
+      "status": "PENDING_OWNER_STAGE"
+    },
+    {
+      "capability": "sector_rotation_forward_thresholds",
+      "does_not_degrade_v4_00h": true,
+      "owner": "V4-08/V4-17G",
+      "status": "PENDING_REPRESENTATIVE_EVIDENCE"
+    },
+    {
+      "capability": "radar_focus_performance",
+      "does_not_degrade_v4_00h": true,
+      "owner": "V4-15/Forward",
+      "status": "PENDING_OWNER_STAGE"
+    },
+    {
+      "capability": "future_production_cutover",
+      "does_not_degrade_v4_00h": true,
+      "owner": "later owner stages",
+      "status": "PENDING_OWNER_STAGE"
+    }
+  ],
+  "future_stage_transfers": [
+    {
+      "item": "Two-year RAW history, historical universe/PIT membership and lifecycle coverage",
+      "owner_stage": "V4-01"
+    },
+    {
+      "item": "Adjusted Canonical empirical coverage and remaining corporate-action categories",
+      "owner_stage": "V4-01/V4-02"
+    },
+    {
+      "item": "Optional BaoStock supplemental capability",
+      "owner_stage": "V4-01 or later only if explicitly enabled"
+    },
+    {
+      "item": "INDEX overlap residual diagnostic (73 rows)",
+      "owner_stage": "Independent non-core source audit"
+    },
+    {
+      "item": "V4 component performance; marked-relative sample gates",
+      "owner_stage": "Measure each component when implemented; accept marked-relative only after representative samples"
+    }
+  ],
+  "input_commit": "1a70c8c733096936da4fa250a3f4def501ccfd1d",
+  "joint_test_receipt": {
+    "path": "reports/v4_joint/V4_00_01_02_JOINT_TEST_RECEIPT_R1_20260928.json",
+    "sha256": "8e55192a3fd638cb0ad4a081d4a3534c5dcddf3face603ba9135c508ce9e0449"
+  },
+  "legacy_database_row_count_before_reset": 5308402,
+  "legacy_database_rows_remaining": 0,
+  "next_stage": "V4_00_01_02_JOINT_FINAL_EXTERNAL_REVIEW; DO_NOT_START_V4_03",
+  "nonblocking_limitations": [
+    "TURNOVER_CONTEXT_V1 BOUND_STRICT producer remains owned by V4-06; dataset stays disabled and is not claimed as passed.",
+    "Marked-relative benchmarks and future performance/forward thresholds remain fail-closed under their owner stages.",
+    "Pre-project historical PIT is NOT_AVAILABLE and NOT_CLAIMED."
+  ],
+  "old_focus_heads_remaining": 0,
+  "old_publication_heads_remaining": 0,
+  "output_commit": "e2393a00ae3b2ae30b154714a7805f53c478bdce",
+  "performance_baseline_receipt": "reports/v4_phase0/V4_PHASE0_PERFORMANCE_BASELINE_R2.json",
+  "phase0_status": "FULL_PASS",
+  "physical_backup_status": {
+    "is_deletion_safety_measure": true,
+    "is_v4_migration_input": false,
+    "manifest_sha256": "2cbe45327884a096b9ef7824f6df0ec7b27ba98c8b14f981161587a788712727",
+    "phase0_acceptance_prerequisite": false,
+    "receipt": "reports/v4_phase0/V4-PHASE0-PG-PHYSICAL-BACKUP-20260925_114550.json",
+    "request_truth": "USER_EXPLICITLY_REQUESTED_PRE_DELETE_SAFETY_MEASURE",
+    "role": "INFORMATIONAL_NON_AUTHORITATIVE",
+    "status": "PHYSICAL_BACKUP_VERIFIED"
+  },
+  "production_cutover_permission": "NOT_APPLICABLE_UNTIL_LATER_GATES",
+  "r2_test_receipt": "reports/v4_phase0/V4_PHASE0_R2_TEST_RECEIPT.json",
+  "r3_acceptance_doc": "docs/V4_PHASE0_FINAL_ACCEPTANCE_R3_1_20260925.md",
+  "r3_stage_receipts": "reports/v4_phase0/V4_PHASE0_STAGE_RECEIPTS_R3.json",
+  "r3_test_receipt": "reports/v4_phase0/V4_PHASE0_R3_TEST_RECEIPT.json",
+  "raw_bootstrap_permission": "AUTHORIZED",
+  "remaining_phase0_blockers": [],
+  "repair_task_doc": "D:/Users/lps/Desktop/V4_PHASE0_R2_EXTERNAL_AUDIT_AND_FINAL_REPAIR_R3_1_20260925.md",
+  "repair_task_sha256": "426b120f40759a908b32f608902ad5c0c90ce92268463b040057f5226247da06",
+  "scanner_permission": "NOT_APPLICABLE_UNTIL_V4_05",
+  "schema": {
+    "foreign_key_count": 25,
+    "migration_count": 9,
+    "migrations": [
+      {
+        "checksum_sha256": "d6ccd5dae3900fa07134a18e2f4f41ed2fbc3dde2fa4d5be79958d82d616a949",
+        "status": "APPLIED",
+        "version": "V4_FACT_SOURCE_GUARD_TABLE_SPECIFIC_FIELDS_R2"
+      },
+      {
+        "checksum_sha256": "54d32de8e20afc773638b38aa555c47a5c5e8cb9b0bba82bb60fbd820a2d3b66",
+        "status": "APPLIED",
+        "version": "V4_MARKET_SESSION_PUBLICATION_CHAIN_R2"
+      },
+      {
+        "checksum_sha256": "e1e2886c04c45121530e1fcf506297921c9cca2eecec3ee06be77e2520887d77",
+        "status": "APPLIED",
+        "version": "V4_PHASE0_CONTRACT_ALIGNMENT_R2"
+      },
+      {
+        "checksum_sha256": "391bf52595fc9da86bbce175b667a5b15c18684c4fbfb8e54cdcf65872dff260",
+        "status": "APPLIED",
+        "version": "V4_PHASE0_FOUNDATION_V1"
+      },
+      {
+        "checksum_sha256": "d8dcc13609ea73923dd68ad21d9c91eed69128047203a481764edeb72ea45dac",
+        "status": "APPLIED",
+        "version": "V4_PHASE0_NAMESPACE_INTEGRITY_V1"
+      },
+      {
+        "checksum_sha256": "3d541d9540d64463068907d20062403d7ee41373c42afa5c34c7e0d7117b338b",
+        "status": "APPLIED",
+        "version": "V4_PRIOR_SESSION_STATE_FREEZE_INTEGRITY_R3"
+      },
+      {
+        "checksum_sha256": "ae4a7043367a490483618944b8efaf473062f82371e500ab60e5a79a4d55d2e8",
+        "status": "APPLIED",
+        "version": "V4_PUBLICATION_HEAD_GUARD_SQL_ALIAS_FIX_R3"
+      },
+      {
+        "checksum_sha256": "905af9323f613d3ae917000859f2306ce3d2a2ec6be43431233c5f4ce0e8a1b3",
+        "status": "APPLIED",
+        "version": "V4_PUBLICATION_HEAD_REVISION_IDENTITY_R2"
+      },
+      {
+        "checksum_sha256": "f7df9d66c6edb13e948cbd92888af140ad335cb2984b9b0078e5498eee1cb4a0",
+        "status": "APPLIED",
+        "version": "V4_STATE_AND_NAMESPACE_PUBLICATION_IDENTITY_R2"
+      }
+    ],
+    "tables": 15,
+    "unvalidated_foreign_key_count": 0,
+    "v4_runtime_rows_remaining": 0
+  },
+  "skipped_test_count": 2,
+  "stage_obligation_semantics": "FULL_PASS is scoped to V4-00 obligations and does not claim that every future system capability is implemented in Phase 0.",
+  "stage_receipts": "reports/v4_phase0/V4_PHASE0_STAGE_RECEIPTS_R5_20260928.json",
+  "stages": {
+    "V4-00A": {
+      "blocked_scopes": [],
+      "degraded_scopes": [],
+      "reason_codes": [],
+      "status": "FULL_PASS"
+    },
+    "V4-00B": {
+      "blocked_scopes": [],
+      "degraded_scopes": [],
+      "reason_codes": [],
+      "status": "FULL_PASS"
+    },
+    "V4-00C": {
+      "blocked_scopes": [],
+      "degraded_scopes": [],
+      "reason_codes": [],
+      "status": "FULL_PASS"
+    },
+    "V4-00D": {
+      "blocked_scopes": [],
+      "degraded_scopes": [],
+      "reason_codes": [],
+      "status": "FULL_PASS"
+    },
+    "V4-00E": {
+      "blocked_scopes": [],
+      "degraded_scopes": [],
+      "reason_codes": [],
+      "status": "FULL_PASS"
+    },
+    "V4-00F": {
+      "blocked_scopes": [],
+      "degraded_scopes": [],
+      "reason_codes": [],
+      "status": "FULL_PASS"
+    },
+    "V4-00G": {
+      "blocked_scopes": [],
+      "degraded_scopes": [],
+      "reason_codes": [],
+      "status": "FULL_PASS"
+    },
+    "V4-00H": {
+      "blocked_scopes": [],
+      "degraded_scopes": [],
+      "reason_codes": [],
+      "status": "FULL_PASS"
+    }
+  },
+  "superseded_stage_receipts": "reports/v4_phase0/V4_PHASE0_STAGE_RECEIPTS_R2.json",
+  "superseded_status": "DEGRADED_PASS",
+  "supersedes": {
+    "path": "reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT.json",
+    "sha256": "2e8b582b0fea8f36a7a4ef9e73cde2136ad327bcb6cc174ae5578467381ee597"
+  },
+  "supersedes_contract_id": "V4_PHASE0_FINAL_ACCEPTANCE_R3_1",
+  "supplemental_permission": "OPTIONAL",
+  "task_card": {
+    "path": "docs/evidence/V4_PRE03_JOINT_FINAL_SEAL_TASK_R1_20260927.md",
+    "sha256": "dbc8c2acb08d6b85be4da595dea10d46037a0ac1828e6bd24dc174c55edcd737"
+  },
+  "tdx_root_unchanged": true,
+  "tdx_snapshot_sha256_after": "a0e219048f025a9b8fa5998a8a2108535e9cee4b9f8a25573adf1019e97831ff",
+  "tdx_snapshot_sha256_before": "a0e219048f025a9b8fa5998a8a2108535e9cee4b9f8a25573adf1019e97831ff",
+  "tdx_source_acceptance_receipt": "reports/v4_00d/v4_00d_asset_stratified_20260925.json",
+  "technical_contract": "DA-MSR-V4.2.2-CODEX-REV2",
+  "technical_contract_document": "D:/Users/lps/Desktop/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_20260925_codex修改版.md",
+  "technical_contract_sha256": "744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd",
+  "test_count": 190,
+  "test_elapsed_seconds": 1.88,
+  "test_result": "PASS",
+  "v4_01_entry_permission": "R8_STAGE_COMPLETE; EXTERNAL_REVIEW_REQUIRED",
+  "v4_03_entry_permission": "BLOCKED_UNTIL_JOINT_EXTERNAL_ACCEPTANCE",
+  "verified_at_utc": "2026-09-27T16:55:31+00:00",
+  "version": "1.0.0"
+}

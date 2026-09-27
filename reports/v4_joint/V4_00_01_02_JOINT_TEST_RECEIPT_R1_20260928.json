@@ -1,0 +1,142 @@
+{
+  "affected_source_digests": {
+    "config/v4_01_historical_code_change_alias_completeness_v1.json": "968021b907d8e89e2ec070c352d3c597773e2f52f97068970ea499b51c044668",
+    "config/v4_02_r8_cross_stage_postcheck_v1.json": "dfe677368e7442720a0e60587a7ff60c2f2ad21744ea0d10a49e090030e3e7fd",
+    "config/v4_joint_final_gate_r1.json": "a7a653e99f1f044939a716f55b51dea68cd86fc8ce05b0967ce4b7105144bb56",
+    "scripts/v4_01_historical_code_change_alias_completeness_r8.py": "0856220eacb9c1e140ecd953fc53c5d081d629867f3c2fb3f592ee99a4bb2440",
+    "scripts/v4_01_r8_identity_universe_postcheck.py": "134b3715d8f0e1c01507418e228c6a7b5099566d4cc65a310020ff8989437c82",
+    "scripts/v4_02_r8_cross_stage_postcheck.py": "d48690ed2937e36ea9d53dc71eca84baf1e45da6fa37bc9a75cd116d65fbdb33",
+    "scripts/v4_joint_evidence_change_receipt_r1.py": "d893d250c504a13565a1694e5b8ec24aced3a92bd860f9b4ffd6f4e1a4820b10",
+    "scripts/v4_joint_run_test_gate_r1.py": "802c33d4707145fb5e8ab34966176e23589e399166df76ffb0ee30477c018e1e",
+    "scripts/v4_joint_seal_receipts_r1.py": "3dbcfb8997250446adf9ddd5ad4523bc5c21d0a75289d3774745cc583737109d",
+    "src/v4/contracts/algorithm_contract.py": "7f53227b707a93e117ab09eb4591eb0f3ce6c4318799462629862169214d16af",
+    "src/workbench_analysis/baostock_supplemental.py": "3f3770638a65a44153e6195a235473f6ce21bbcac6ab63813155d49c47881831",
+    "src/workbench_analysis/dated_security_alias.py": "5f713026d59d63b0818de74e0c59731da350b67c64f909fc704e1a47bf19c6b3",
+    "src/workbench_analysis/special_price_phases.py": "7e64ca1acd9d1d7c9138915cf3f82ffedb40ea6b3b99349c0857458a09f0db93",
+    "src/workbench_analysis/v4_01_alias_completeness.py": "cf7c5cdf62e87521b448ea1b539ecc20bb4982826bd6914d17d37cd457c07074",
+    "src/workbench_analysis/v4_01_required_scope.py": "3af366ef2bc1322c04a0f5cf84465d6dce84326771a1544b67fbc9af56d64eec",
+    "src/workbench_analysis/v4_joint_receipt.py": "5eb3bf498165a609518ea8c3a6fab9e2925c6c5bfa0d0d138d0f670c563f97c3"
+  },
+  "command": "python -m pytest -q -rs tests/v4_phase0 tests/v4_01 tests/v4_02 tests/v4_joint",
+  "command_argv": [
+    "E:\\python\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "-rs",
+    "tests/v4_phase0",
+    "tests/v4_01",
+    "tests/v4_02",
+    "tests/v4_joint"
+  ],
+  "contract_id": "V4_00_01_02_JOINT_TEST_RECEIPT_R1",
+  "execution_commit": "e2393a00ae3b2ae30b154714a7805f53c478bdce",
+  "input_commit": "1a70c8c733096936da4fa250a3f4def501ccfd1d",
+  "input_files": {
+    "rev2_sha256": "744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd",
+    "task_card_sha256": "dbc8c2acb08d6b85be4da595dea10d46037a0ac1828e6bd24dc174c55edcd737"
+  },
+  "observed_at_utc": "2026-09-27T16:52:10+00:00",
+  "output_tail": "........................................................................ [ 37%]\n.....................s..........s....................................... [ 75%]\n................................................                         [100%]\n=========================== short test summary info ===========================\nSKIPPED [1] tests\\v4_phase0\\test_tdx_local_snapshot.py:54: symlink creation unavailable\nSKIPPED [1] tests\\v4_phase0\\test_tdx_snapshot.py:101: symlink creation is unavailable on this runner\n190 passed, 2 skipped in 2.61s\n",
+  "status": "PASS",
+  "test_exit_code": 0,
+  "test_files": [
+    {
+      "path": "tests/v4_phase0/test_adjustment_contract_vectors.py",
+      "sha256": "12c78fa5702b28f1693a1d0d04208844e07ed922b15332643d2992665580f424"
+    },
+    {
+      "path": "tests/v4_phase0/test_algorithm_contracts.py",
+      "sha256": "daa2ee95612ddddd9d7baeb394312b2ca03702b263627ebf2a485ba80d74bd62"
+    },
+    {
+      "path": "tests/v4_phase0/test_baostock_supplemental.py",
+      "sha256": "f45c2eddf453abb077d7295cb30c07ed6e5902645d6304f56755f9b7b701e897"
+    },
+    {
+      "path": "tests/v4_phase0/test_canonical_source_selection.py",
+      "sha256": "67174102b0ec8374848e0c9adb400a224dd4b0256ccfffd9e848b46d99bf5cab"
+    },
+    {
+      "path": "tests/v4_phase0/test_phase0_final_gate.py",
+      "sha256": "9b1458bc31cf7b4a7fb6707254e7b9bd2391187f2ce3a45af57dba3e5fd53a51"
+    },
+    {
+      "path": "tests/v4_phase0/test_postgres_schema.py",
+      "sha256": "44a765530c08f45201b1d684e2f8bea39ef4305e500c80b60827c271cfac27df"
+    },
+    {
+      "path": "tests/v4_phase0/test_security_entity_identity.py",
+      "sha256": "af7cdc24fe47cb651164a5bf842ccc5806d4b9eeb558cc3efb7e944c42c4fbe9"
+    },
+    {
+      "path": "tests/v4_phase0/test_source_bundle_identity.py",
+      "sha256": "5cd8e2907afb4486371545b18acd5c1896f9e8430f4b052f214bb9427d379f48"
+    },
+    {
+      "path": "tests/v4_phase0/test_source_overlap_classifier.py",
+      "sha256": "c91b5aaded492520813f417399f05fa7fb1f3dadebb935c72cfb79c2f042b739"
+    },
+    {
+      "path": "tests/v4_phase0/test_tdx_local_snapshot.py",
+      "sha256": "8ea8ae1ba8103382aebf513def49b03263bbc9821b986e6419743c0bad2c6f63"
+    },
+    {
+      "path": "tests/v4_phase0/test_tdx_snapshot.py",
+      "sha256": "b72206f8b57a2fd81208da7daaaa08e9cd331c468036c42efd2ed697cfa6fc00"
+    },
+    {
+      "path": "tests/v4_phase0/test_v4_01_lineage_policy.py",
+      "sha256": "42ffbe68354ad96d58a3977dc5d1a22e54ca1021eb1e4de2ff0ddec845bc730a"
+    },
+    {
+      "path": "tests/v4_phase0/test_v4_01_required_scope_r6.py",
+      "sha256": "f5383b7ebf00a09048ab817e3b8368054206e6f79a06e3e8deee303e88f91bdd"
+    },
+    {
+      "path": "tests/v4_01/test_r8_generic_alias_completeness.py",
+      "sha256": "ad73a7fcd7a83b867f267462404aa3302ddb0c54a87b4ac471501be39f22648e"
+    },
+    {
+      "path": "tests/v4_02/test_final_closure_pack.py",
+      "sha256": "1106f53cb3407d7b2f04023b0e6fb102bdf3398fff59e9af20fb72fb412b05df"
+    },
+    {
+      "path": "tests/v4_02/test_final_r3_repairs.py",
+      "sha256": "bf220bc5554864c1d88f8163094d5166b97270a873b3fb0b925025a9ce6ae2c1"
+    },
+    {
+      "path": "tests/v4_02/test_final_r4_special_price_phase.py",
+      "sha256": "4287652b4729f412239e4918f04e7197ac81a41820c51697c8a778da8566230e"
+    },
+    {
+      "path": "tests/v4_02/test_r5_generic_runtime.py",
+      "sha256": "c51e786961f2e5ef87ca869c34edfaadad42810a2aa648bee8aa173298bf5285"
+    },
+    {
+      "path": "tests/v4_02/test_r6_generic_production_builder.py",
+      "sha256": "19a19674fdd256b41bbf7bdaabf08ffc924f83553511e328fb755b1569a1a994"
+    },
+    {
+      "path": "tests/v4_joint/test_joint_final_receipt_gate.py",
+      "sha256": "ec7f4bc98606a2e4afa1b60e0622bfb0115ba717c4897f7f62010562ac22692d"
+    }
+  ],
+  "test_scope": [
+    "tests/v4_phase0",
+    "tests/v4_01",
+    "tests/v4_02",
+    "tests/v4_joint"
+  ],
+  "test_summary": {
+    "duration_seconds": 2.93,
+    "failed": 0,
+    "passed": 190,
+    "pytest_version": "pytest 9.1.1",
+    "python_version": "3.13.14",
+    "skipped": 2,
+    "summary_line": "190 passed, 2 skipped in 2.61s"
+  },
+  "test_tree_digest": "aca9fb002eea5e19fa712eaf7bfcde10bae2b9c7d8499196afaa1525f6ddac0e",
+  "version": "1.0.0"
+}

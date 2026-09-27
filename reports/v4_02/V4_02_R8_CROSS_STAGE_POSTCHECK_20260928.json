@@ -1,0 +1,93 @@
+{
+  "blockers": [],
+  "contract_evidence": {
+    "path": "config/v4_02_r8_cross_stage_postcheck_v1.json",
+    "sha256": "dfe677368e7442720a0e60587a7ff60c2f2ad21744ea0d10a49e090030e3e7fd"
+  },
+  "contract_id": "V4_02_R8_CROSS_STAGE_POSTCHECK_V1",
+  "criteria": {
+    "accepted_manifest_binds_final_price_limit": "PASS",
+    "accepted_manifest_binds_r8_alias_and_r7_daily": "PASS",
+    "accepted_v4_02_status_and_external_head_current": "PASS",
+    "adjusted_daily_keys_and_board_match_r8_universe": "PASS",
+    "cross_stage_contract_versioned": "PASS",
+    "dated_isst_key_set_matches_r8_universe": "PASS",
+    "generic_alias_completeness_pass": "PASS",
+    "monthly_identity_set_compatible": "PASS",
+    "price_limit_key_set_matches_r8_universe": "PASS",
+    "r8_artifact_hashes_match_canonical_receipt": "PASS",
+    "r8_final_receipt_and_postcheck_pass": "PASS",
+    "trading_status_key_set_matches_r8_universe": "PASS",
+    "weekly_identity_set_compatible": "PASS"
+  },
+  "decision": "No V4-02 rebuild; this receipt compares existing accepted production artifacts with canonical V4-01 R8 keys.",
+  "downstream_keys": {
+    "adjusted_daily": {
+      "duplicate_identity_date_rows": 0,
+      "extra_identity_count": 0,
+      "identity_count": 5337,
+      "key_or_board_mismatch_rows": 0,
+      "rows": 4026611
+    },
+    "dated_isst": {
+      "date_group_mismatches": 0,
+      "duplicate_key_rows": 0,
+      "key_set_mismatch_rows": 0
+    },
+    "monthly": {
+      "duplicate_identity_period_view_price_basis_rows": 0,
+      "extra_identity_count": 0,
+      "identity_count": 5337,
+      "rows": 400918
+    },
+    "price_limit": {
+      "date_group_mismatches": 0,
+      "duplicate_key_rows": 0,
+      "key_set_mismatch_rows": 0
+    },
+    "trading_status": {
+      "date_group_mismatches": 0,
+      "duplicate_key_rows": 0,
+      "key_set_mismatch_rows": 0
+    },
+    "weekly": {
+      "duplicate_identity_period_view_price_basis_rows": 0,
+      "extra_identity_count": 0,
+      "identity_count": 5337,
+      "rows": 1704964
+    }
+  },
+  "execution_identity": {
+    "execution_head": "e2393a00ae3b2ae30b154714a7805f53c478bdce",
+    "input_commit": "1a70c8c733096936da4fa250a3f4def501ccfd1d"
+  },
+  "manifest_binding": {
+    "adjusted_daily_r7_matches_manifest": true,
+    "alias_fact_matches_r8": true,
+    "price_limit_artifact": "data/v4/artifact_store/v4_02/V4_02_PRICE_LIMIT_R6_20260927.jsonl.gz",
+    "price_limit_build_receipt": "reports/v4_02/V4_02_PRICE_LIMIT_BUILD_R6.json",
+    "price_limit_matches_manifest": true,
+    "r8_universe_bound_by_cross_stage_full_key_comparison": true
+  },
+  "next_stage": "00_01_02_JOINT_FINAL_RECEIPT",
+  "observed_at_utc": "2026-09-27T16:56:43+00:00",
+  "r8_binding": {
+    "canonical_alias_fact_sha256": "115a5b611c64f30cadd8695a9a464d8243cb3afe16d642ea786ff4b7bd107c4a",
+    "canonical_historical_universe_sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b",
+    "canonical_identity_sha256": "e33294fb8d1d71732fdc3df903258b5617345811ecbdb649af8056ccd91427e0",
+    "required_scope_membership_rows": 4035729,
+    "session_count": 786
+  },
+  "stage": "V4-02-R8-CROSS-STAGE-IDENTITY-UNIVERSE-POSTCHECK",
+  "stage_contract": "DA-MSR-V4.2.2-CODEX-REV2; V4_02_R8_CROSS_STAGE_POSTCHECK_V1",
+  "status": "PASS",
+  "v4_02_accepted_state": {
+    "accepted_head_sha256": "da318a1f82a03f13930af7858ca1640fadbdaedbee85e27d47f9c869c2d6b595",
+    "external_acceptance": "EXTERNALLY_ACCEPTED",
+    "external_receipt_sha256": "42286da4305b792f5ecdc0fcc9a9d722e8ab3c23f6b618bf1ba15bd445ca6970",
+    "final_receipt_sha256": "e2dbfa55539cc89376c90627ed822e0c2b6f81938277919bd717e93dd93c411b",
+    "manifest_sha256": "a83f90a0d1acc08e32db5dab049f3bf16a9284e5bf6785cd8f3a2b52aed31678",
+    "status": "PASS_WITH_BSE_SCOPE_DEGRADED"
+  },
+  "version": "1.0.0"
+}

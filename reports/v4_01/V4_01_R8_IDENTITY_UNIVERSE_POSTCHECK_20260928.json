@@ -1,0 +1,99 @@
+{
+  "blockers": [],
+  "contract_id": "V4_01_R8_IDENTITY_UNIVERSE_POSTCHECK_V1",
+  "criteria": {
+    "all_day_required_identity_coverage": "PASS",
+    "confirmed_code_change_alias_gaps": "PASS",
+    "dated_board_facts_follow_alias_intervals": "PASS",
+    "duplicate_stable_security_id_trade_date": "PASS",
+    "generic_alias_completeness_gate": "PASS",
+    "historical_universe_row_accounting": "PASS",
+    "normalized_membership_matches_recanonicalized_r6_2": "PASS",
+    "required_scope_identity_unresolved": "PASS",
+    "required_scope_source_exception_closure": "PASS",
+    "same_entity_alias_interval_conflicts": "PASS",
+    "source_alias_interval_conflicts": "PASS",
+    "source_bar_structural_validity": "PASS",
+    "source_symbol_resolves_only_in_effective_interval": "PASS"
+  },
+  "execution_identity": {
+    "baseline_required_scope_gate_sha256": "69c082733a7e9ceeb524265d488b13b8ecfb7885e4c76d2654023e74cc654502",
+    "baseline_scope_receipt_sha256": "0a51bd6e612466b12e7328479f04051343d05e61586c097a86e96aaead979555",
+    "duckdb_version": "1.5.5",
+    "execution_head": "e2393a00ae3b2ae30b154714a7805f53c478bdce",
+    "input_commit": "1a70c8c733096936da4fa250a3f4def501ccfd1d"
+  },
+  "inputs": {
+    "data\\v4\\artifact_store\\v4_01\\security_entity_map_R7_20260927.json": {
+      "bytes": 5528197,
+      "sha256": "e33294fb8d1d71732fdc3df903258b5617345811ecbdb649af8056ccd91427e0"
+    },
+    "data\\v4\\artifact_store\\v4_01\\v4_01_historical_universe_required_R6_2_20260926.jsonl.gz": {
+      "bytes": 239170844,
+      "sha256": "cff2a72de19ae395e7ac7f77f72f561396c16ada8aa61bb5e9091291f2809a35"
+    },
+    "data\\v4\\artifact_store\\v4_01\\v4_01_historical_universe_required_R7_20260927.jsonl.gz": {
+      "bytes": 239298684,
+      "sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b"
+    },
+    "data\\v4\\artifact_store\\v4_02\\V4_02_ADJUSTED_CANONICAL_DAILY_R6_2_20260926.parquet": {
+      "bytes": 167005227,
+      "sha256": "60fc1fba137e2072cc1d370cac8fee86334b98f9d3e403042821e9d1e1026141"
+    },
+    "data\\v4\\bootstrap\\dated_security_alias_r7.jsonl": {
+      "bytes": 1534,
+      "sha256": "115a5b611c64f30cadd8695a9a464d8243cb3afe16d642ea786ff4b7bd107c4a"
+    },
+    "reports\\v4_01\\V4_01_HISTORICAL_CODE_CHANGE_ALIAS_COMPLETENESS_R8.json": {
+      "sha256": "9d1644fda0d50d32eba5d9b48655643d7915b5d4b654c3db588709706b5bbc64"
+    },
+    "reports\\v4_02\\V4_01_CODE_CHANGE_ALIAS_AUDIT_R7.json": {
+      "sha256": "1e7e3091faf893c1f1eb9440449b0f3e4515150c26014c67b0d80da1bef6dd06"
+    }
+  },
+  "next_stage": "V4_01_R8_FINAL_RECEIPT",
+  "observed_at_utc": "2026-09-27T16:55:24+00:00",
+  "scope": {
+    "all_day_coverage": {
+      "days_with_missing_required_identity": 0,
+      "missing_by_board": {
+        "CHINEXT": 0,
+        "SH_MAIN": 0,
+        "STAR": 0,
+        "SZ_MAIN": 0
+      },
+      "total_missing_required_identity_rows": 0
+    },
+    "baseline_rows": 4036121,
+    "board_membership_rows": {
+      "CHINEXT": 1072290,
+      "SH_MAIN": 1331624,
+      "STAR": 458582,
+      "SZ_MAIN": 1173233
+    },
+    "confirmed_code_change_alias_gaps": 0,
+    "duplicate_rows_removed": 392,
+    "duplicate_stable_id_trade_date_rows": 0,
+    "expected_rows_after_alias_dedup": 4035729,
+    "identity_unresolved": 0,
+    "normalized_membership_mismatch_rows": 0,
+    "optional_bse": "DEGRADED_BSE; excluded from Required Scope gate",
+    "required_boards": [
+      "SH_MAIN",
+      "SZ_MAIN",
+      "CHINEXT",
+      "STAR"
+    ],
+    "required_scope_membership_rows": 4035729,
+    "same_entity_alias_interval_conflicts": 0,
+    "session_count": 786,
+    "source_alias_interval_conflicts": 0,
+    "source_bar_structural_invalid_rows": 0,
+    "source_exception_unresolved": 0,
+    "wrong_dated_board_rows": 0,
+    "wrong_source_symbol_or_interval_rows": 0
+  },
+  "stage": "V4-01-R8-IDENTITY-UNIVERSE-POSTCHECK",
+  "status": "PASS",
+  "version": "1.0.0"
+}

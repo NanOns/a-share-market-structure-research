@@ -1,0 +1,54 @@
+{
+  "checks": {
+    "300114_alias_ends_20250216": true,
+    "302132_alias_starts_20250217": true,
+    "302132_board_chinext": true,
+    "302132_target_sessions_use_dated_alias_and_chinext": true,
+    "adjusted_daily_unique_and_target_dated": true,
+    "all_manifest_component_hashes_match": true,
+    "all_unknown_price_rows_have_reason": true,
+    "code_change_alias_audit_unresolved_zero": true,
+    "daily_membership_component_rows_reconcile": true,
+    "monthly_old_id_removed_and_board_fixed": true,
+    "no_duplicate_stable_id_trade_date": true,
+    "official_rule_source_capture_hashes_match": true,
+    "ordinary_suspension_adjacent_bar_reason_removed": true,
+    "r1_head_revoked_and_v4_03_blocked": true,
+    "r3_test_receipt_pass": true,
+    "range_exception_audit_closed": false,
+    "universe_status_isst_price_row_keys_match": true,
+    "weekly_old_id_removed_and_board_fixed": true
+  },
+  "contract_id": "V4_02_FINAL_INDEPENDENT_POSTCHECK_R3",
+  "execution_identity": {
+    "script_sha256": "b474cda12a4c3ab6c741a56c38c3dc626f60683cb1d416877a602b0ec94357f4"
+  },
+  "findings": [
+    "ENGINEERING_RANGE_EXCEPTIONS_OPEN:53_current; 8_R1_open"
+  ],
+  "manifest": {
+    "path": "reports/v4_02/V4_02_FINAL_STAGING_MANIFEST_R3.json",
+    "sha256": "c5469836dc7dc0ab4ce41df594877f8894c61ec1d11cdbd2c93c6436fcaac609"
+  },
+  "next_stage": "RESOLVE_RANGE_EXCEPTION_AUDIT; DO_NOT_PROMOTE_ACCEPTED_HEAD_OR_START_V4_03",
+  "observed_at_utc": "2026-09-27T00:36:45+00:00",
+  "row_reconciliation": {
+    "adjusted_daily_rows": 4026611,
+    "adjusted_daily_unique_identity_dates": 4026611,
+    "membership_rows": 4035729,
+    "old_previous_actual_reason_count": 0,
+    "price_unknown_reasons": {
+      "CLOSE_OUTSIDE_LIMIT_RANGE": 53,
+      "CORPORATE_ACTION_REFERENCE_UNSUPPORTED": 38,
+      "REFERENCE_CHAIN_BLOCKED_BY_UNSUPPORTED_ACTION": 1,
+      "REFERENCE_STATE_UNAVAILABLE": 7
+    },
+    "target_identity_sessions": 786,
+    "target_post_code_sessions": 395,
+    "target_pre_code_sessions": 391,
+    "target_wrong_alias_or_board_rows": 0
+  },
+  "status": "BLOCKED",
+  "tdx_root_write_count": 0,
+  "version": "3.0.0"
+}

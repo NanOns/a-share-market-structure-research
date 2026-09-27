@@ -1,0 +1,26 @@
+{
+  "contract_id": "V4_02_FINAL_RECEIPT_R1_REVOKE_R3",
+  "version": "1.0.0",
+  "status": "SUPERSEDED_BLOCKED_PENDING_R3",
+  "stage": "V4-02 FINAL CLOSURE PACK",
+  "observed_at_utc": "2026-09-26T23:53:17+00:00",
+  "reason": "External R3 audit identified required-scope price-limit reference-state and dated alias/board defects; R1 is not externally accepted.",
+  "previous_head": {
+    "path": "data/v4/V4_02_ACCEPTED_HEAD.json",
+    "sha256": "91d51fe75befe9de656cc8981c19ccf523880d42e0bb0eb953fd6fa837023d28",
+    "status": "PASS_WITH_BSE_SCOPE_DEGRADED"
+  },
+  "superseded_receipt": {
+    "path": "reports/v4_02/V4_02_FINAL_RECEIPT_R1.json",
+    "sha256": "67325c4ec3077a01a3ff22245c03610f6ddc2036c0fc1248e173b702b879819d"
+  },
+  "required_repairs": [
+    "dated code-change alias and board audit",
+    "previous official close state propagation",
+    "23 range-exception dispositions",
+    "official rule source capture normalization",
+    "R3 tests and independent postcheck"
+  ],
+  "v4_03_entry": "BLOCKED",
+  "next_stage": "COMPLETE_R3_REPAIR_AND_RESEAL_BEFORE_ANY_V4_03_WORK"
+}

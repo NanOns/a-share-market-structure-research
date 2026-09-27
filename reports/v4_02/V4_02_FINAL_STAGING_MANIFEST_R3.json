@@ -1,0 +1,204 @@
+{
+  "acceptance": {
+    "code_change_required_identities_unresolved": 0,
+    "ordinary_suspension_previous_actual_close_reason_count": 0,
+    "price_limit_unknown": 99,
+    "price_limit_unknown_reasons": {
+      "CLOSE_OUTSIDE_LIMIT_RANGE": 53,
+      "CORPORATE_ACTION_REFERENCE_UNSUPPORTED": 38,
+      "REFERENCE_CHAIN_BLOCKED_BY_UNSUPPORTED_ACTION": 1,
+      "REFERENCE_STATE_UNAVAILABLE": 7
+    },
+    "r1_range_exceptions_open": 8,
+    "r1_range_exceptions_resolved": 15,
+    "r3_additional_range_exceptions": 45,
+    "r3_current_range_exceptions": 53,
+    "test_result": "PASS"
+  },
+  "blockers": [
+    "PRICE_LIMIT_RANGE_EXCEPTION_AUDIT_OPEN"
+  ],
+  "bse_in_required_outputs": false,
+  "components": {
+    "ADJUSTED_CANONICAL_DAILY": {
+      "bytes": 167005227,
+      "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R6_2_20260926.parquet",
+      "row_count": 4027002,
+      "sha256": "60fc1fba137e2072cc1d370cac8fee86334b98f9d3e403042821e9d1e1026141"
+    },
+    "ADJUSTED_DAILY_R7": {
+      "bytes": 112302935,
+      "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet",
+      "row_count": 4026611,
+      "sha256": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90"
+    },
+    "CODE_CHANGE_ALIAS_AUDIT_R7": {
+      "bytes": 2620,
+      "path": "reports/v4_02/V4_01_CODE_CHANGE_ALIAS_AUDIT_R7.json",
+      "row_count": null,
+      "sha256": "62459a45bd1a81ae0804527b91fdfc61fcf8f80bbbf11e060725b9feb159ed9c"
+    },
+    "DATED_ISST": {
+      "bytes": 98865938,
+      "path": "data/v4/artifact_store/v4_02/V4_02_DATED_ST_STATUS_V1_R6_2_20260926_RECOVERED_R1.jsonl.gz",
+      "row_count": 4036121,
+      "sha256": "40c64982b5b98f2cb36f13a4b65fa84ecdbc6de319f4d084f81d9d287528ce79"
+    },
+    "DATED_ISST_ACCEPTANCE_RECEIPT": {
+      "bytes": 335513,
+      "path": "reports/v4_02/V4_02_DATED_ST_STATUS_V1_R6_2_20260926.json",
+      "row_count": null,
+      "sha256": "a5f84c388a7482df83f0998c39dbe737587cc4c4c89a5fb524459e311baea97f"
+    },
+    "DATED_ISST_R7": {
+      "bytes": 99012112,
+      "path": "data/v4/artifact_store/v4_02/V4_02_DATED_ST_STATUS_R7_20260927.jsonl.gz",
+      "row_count": 4035729,
+      "sha256": "ffac24e09d02a53ffb48dbc24449d95f5ab20d8934c6401588a73c8673dbb8f4"
+    },
+    "DATED_TRADING_STATUS_R7": {
+      "bytes": 100075252,
+      "path": "data/v4/artifact_store/v4_02/V4_02_DATED_TRADING_STATUS_R7_20260927.jsonl.gz",
+      "row_count": 4035729,
+      "sha256": "ad65d2e1b3ca835a310cfa2a35f7bfd417a42020e27f2e77d4a79597aa018de9"
+    },
+    "FORMAL_CALENDAR_SSE": {
+      "bytes": 17888,
+      "path": "data/v4/candidate_calendars/V4_02_MARKET_CALENDAR_20230704_20260924_V2/calendar_sse_20230704_20260924.json",
+      "row_count": 786,
+      "sha256": "09285bb116db5e7ab644e4942c331ceb9bc715b47f0369b9f228ef9d17df2d53"
+    },
+    "FORMAL_CALENDAR_SZSE": {
+      "bytes": 17896,
+      "path": "data/v4/candidate_calendars/V4_02_MARKET_CALENDAR_20230704_20260924_V2/calendar_szse_20230704_20260924.json",
+      "row_count": 786,
+      "sha256": "9c56dcf2077a19d303f504fcf22f962d9d71ed626030b61ad2aa77a201897900"
+    },
+    "FORMAL_MONTHLY": {
+      "bytes": 62575702,
+      "path": "data/v4/artifact_store/v4_02/V4_02_FORMAL_MONTHLY_RAW_QFQ_R6_2_20260926.parquet",
+      "row_count": 400958,
+      "sha256": "167d3795d1a993297e39b7ef3d55c9bfd3baf7721b409b8b4e3305030b279df4"
+    },
+    "FORMAL_MONTHLY_R7": {
+      "bytes": 19627759,
+      "path": "data/v4/artifact_store/v4_02/V4_02_FORMAL_MONTHLY_RAW_QFQ_R7_20260927.parquet",
+      "row_count": 400918,
+      "sha256": "790ae9dd13bc363c431b2a7d02e3c6db868bc5d0b3d85a8c9a2acbd5dfd90ff3"
+    },
+    "FORMAL_WEEKLY": {
+      "bytes": 140563944,
+      "path": "data/v4/artifact_store/v4_02/V4_02_FORMAL_WEEKLY_RAW_QFQ_R6_2_20260926.parquet",
+      "row_count": 1705132,
+      "sha256": "9f49c9d1d37bc2c4ed31c0aaae847671d429652715f2cef54a4b431cbb1f59e8"
+    },
+    "FORMAL_WEEKLY_R7": {
+      "bytes": 81005147,
+      "path": "data/v4/artifact_store/v4_02/V4_02_FORMAL_WEEKLY_RAW_QFQ_R7_20260927.parquet",
+      "row_count": 1704964,
+      "sha256": "8eda09c0ca55b986cbebe0aa32454a22835492a6286c1237473c729ea2af0294"
+    },
+    "HISTORICAL_UNIVERSE_R7": {
+      "bytes": 239298684,
+      "path": "data/v4/artifact_store/v4_01/v4_01_historical_universe_required_R7_20260927.jsonl.gz",
+      "row_count": 4035729,
+      "sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b"
+    },
+    "PACK_A_FINAL_RECEIPT": {
+      "bytes": 3617,
+      "path": "reports/v4_02/V4_02_DATA_PERIOD_MAINLINE_FINAL_ACCEPTANCE_R2.json",
+      "row_count": null,
+      "sha256": "a0065ca3ba9f0776bb0650719b59cd423a349e0d77d74c847255df382edf845b"
+    },
+    "PRICE_LIMIT": {
+      "bytes": 156861084,
+      "path": "data/v4/artifact_store/v4_02/V4_02_PRICE_LIMIT_R6_2_20260926.jsonl.gz",
+      "row_count": 4036121,
+      "sha256": "0ca2ff328fee676c400b853aedce03db0c06068e8254eaae6633c32994596201"
+    },
+    "PRICE_LIMIT_ACCEPTANCE_R3": {
+      "bytes": 20433,
+      "path": "reports/v4_02/V4_02_PRICE_LIMIT_ACCEPTANCE_R3_20260927.json",
+      "row_count": null,
+      "sha256": "6577a51b3c1a115420a8bb5fca736d4fb7c44325a90545ca42431686ecd1e648"
+    },
+    "PRICE_LIMIT_ACCEPTANCE_RECEIPT": {
+      "bytes": 20210,
+      "path": "reports/v4_02/V4_02_PRICE_LIMIT_ACCEPTANCE_R1_20260926.json",
+      "row_count": null,
+      "sha256": "4901bae7a431621efeff3fad109f55e8edd82a4aea14842068c99361665f0e8f"
+    },
+    "PRICE_LIMIT_R3": {
+      "bytes": 156595293,
+      "path": "data/v4/artifact_store/v4_02/V4_02_PRICE_LIMIT_R7_20260927.jsonl.gz",
+      "row_count": 4035729,
+      "sha256": "128324b29143e3f5733e02120d1eff3902a7e6f84c4d20f5e4846e3d9b141ee9"
+    },
+    "PRICE_LIMIT_RANGE_EXCEPTION_AUDIT_R3": {
+      "bytes": 40566,
+      "path": "reports/v4_02/V4_02_PRICE_LIMIT_RANGE_EXCEPTION_AUDIT_R3.json",
+      "row_count": null,
+      "sha256": "ec2d60a574381310f865e6b87ff2e2fb36b6a19bea14ebbc4b51ee264f1b5bd8"
+    },
+    "R1_REVOCATION_RECEIPT": {
+      "bytes": 1085,
+      "path": "reports/v4_02/V4_02_FINAL_RECEIPT_R1_REVOKE_R3.json",
+      "row_count": null,
+      "sha256": "1a549cfc160a91267862af4cafd435044615306a8e88971c2b686b9c196c4253"
+    },
+    "R3_RULE_CONTRACT": {
+      "bytes": 15757,
+      "path": "config/v4_02_price_limit_rules_r3.json",
+      "row_count": null,
+      "sha256": "68679333821c50cc8cbed5ff4cd001447cc6571d79b0d074a60b6bb81bdb01e0"
+    },
+    "R3_TEST_RECEIPT": {
+      "bytes": 726,
+      "path": "reports/v4_02/V4_02_FINAL_R3_TEST_RECEIPT.json",
+      "row_count": null,
+      "sha256": "167411aef1fdb1087f26563f580e40b00a9036fd12d40b97f189501d155fa5df"
+    },
+    "RAW_CANONICAL_DAILY": {
+      "bytes": 1988198932,
+      "path": "data/v4/canonical/V4_02_RAW_SELECTED_20260924_062040Z/canonical_daily_raw_selected.parquet",
+      "row_count": 29220910,
+      "sha256": "cdbc3e2b49bf16f59a6661d4641a3d9a3b498c5a9843974e934a7ab695f02313"
+    },
+    "SECURITY_ENTITY_MAP_R7": {
+      "bytes": 5528197,
+      "path": "data/v4/artifact_store/v4_01/security_entity_map_R7_20260927.json",
+      "row_count": null,
+      "sha256": "e33294fb8d1d71732fdc3df903258b5617345811ecbdb649af8056ccd91427e0"
+    },
+    "TRADING_STATUS": {
+      "bytes": 98147204,
+      "path": "data/v4/artifact_store/v4_02/V4_02_DATED_TRADING_STATUS_R6_2_20260926.jsonl.gz",
+      "row_count": 4036121,
+      "sha256": "bb75f6cb9187616a272ff493b3fedfeaf9d0b2ac6c2a4aef4d3d74c550921119"
+    }
+  },
+  "contract_id": "V4_02_WHOLE_STAGE_STAGING_MANIFEST_R3",
+  "created_at_utc": "2026-09-27T00:35:54+00:00",
+  "evidence": {
+    "governing_r3_audit": "V4_02_FINAL_EXTERNAL_AUDIT_AND_R3_TARGETED_REPAIR_20260926.md",
+    "official_code_change_capture_sha256": "dd68049c48df826848f361fd9e7b23dd20b6805144a2e5bc36e54db638611488",
+    "r3_rule_contract_sha256": "68679333821c50cc8cbed5ff4cd001447cc6571d79b0d074a60b6bb81bdb01e0"
+  },
+  "next_stage": "DISPOSITION_EACH_RANGE_EXCEPTION; DO_NOT_START_V4_03",
+  "optional_degraded_boards": [
+    "BSE"
+  ],
+  "required_boards": [
+    "SH_MAIN",
+    "SZ_MAIN",
+    "CHINEXT",
+    "STAR"
+  ],
+  "scanner_factor_trading_runs": 0,
+  "source_cutoff": "2026-09-24",
+  "stage": "V4-02",
+  "stage_contract": "R3 targeted alias/board repair and previous official close state propagation",
+  "status": "BLOCKED",
+  "supersedes": "V4_02_FINAL_STAGING_MANIFEST_R1",
+  "version": "3.0.0"
+}

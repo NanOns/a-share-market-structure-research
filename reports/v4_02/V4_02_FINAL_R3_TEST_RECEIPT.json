@@ -1,0 +1,23 @@
+{
+  "command": "pytest -q tests/v4_02",
+  "contract_id": "V4_02_FINAL_R3_TEST_RECEIPT",
+  "execution_commit": "ad70325d8681176aff49b26e79454a4a771c6075",
+  "failed": 0,
+  "next_stage": "INDEPENDENT_R3_POSTCHECK; FINAL_STAGE_BLOCKED_WHILE_RANGE_AUDIT_OPEN",
+  "observed_at_utc": "2026-09-27T00:35:50+00:00",
+  "passed": 22,
+  "result": "PASS",
+  "skipped": 0,
+  "test_count": 22,
+  "test_files": [
+    {
+      "path": "tests/v4_02/test_final_closure_pack.py",
+      "sha256": "1106f53cb3407d7b2f04023b0e6fb102bdf3398fff59e9af20fb72fb412b05df"
+    },
+    {
+      "path": "tests/v4_02/test_final_r3_repairs.py",
+      "sha256": "f6dfcfa4442a53ef5169f4893ed2431e7306d3493a5d671063f2265e21a26282"
+    }
+  ],
+  "version": "1.0.0"
+}

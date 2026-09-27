@@ -1,0 +1,113 @@
+{
+  "atomic_publication": {
+    "accepted_head_path": "data/v4/V4_02_ACCEPTED_HEAD.json",
+    "current_head_status": "SUPERSEDED_BLOCKED_PENDING_R3",
+    "head_promoted": false
+  },
+  "blockers": [
+    "all_range_exceptions_independently_dispositioned",
+    "independent_final_postcheck_pass"
+  ],
+  "checks": {
+    "302132_board_and_alias_intervals_repaired": true,
+    "all_range_exceptions_independently_dispositioned": false,
+    "independent_final_postcheck_pass": false,
+    "official_rule_source_evidence_normalized": true,
+    "ordinary_suspension_no_longer_breaks_reference_chain": true,
+    "r1_final_head_revoked": true,
+    "r1_history_preserved": true,
+    "r3_regression_suite_pass": true,
+    "required_scope_code_change_alias_audit_zero_unresolved": true
+  },
+  "component_hashes": {
+    "ADJUSTED_CANONICAL_DAILY": "60fc1fba137e2072cc1d370cac8fee86334b98f9d3e403042821e9d1e1026141",
+    "ADJUSTED_DAILY_R7": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90",
+    "CODE_CHANGE_ALIAS_AUDIT_R7": "62459a45bd1a81ae0804527b91fdfc61fcf8f80bbbf11e060725b9feb159ed9c",
+    "DATED_ISST": "40c64982b5b98f2cb36f13a4b65fa84ecdbc6de319f4d084f81d9d287528ce79",
+    "DATED_ISST_ACCEPTANCE_RECEIPT": "a5f84c388a7482df83f0998c39dbe737587cc4c4c89a5fb524459e311baea97f",
+    "DATED_ISST_R7": "ffac24e09d02a53ffb48dbc24449d95f5ab20d8934c6401588a73c8673dbb8f4",
+    "DATED_TRADING_STATUS_R7": "ad65d2e1b3ca835a310cfa2a35f7bfd417a42020e27f2e77d4a79597aa018de9",
+    "FORMAL_CALENDAR_SSE": "09285bb116db5e7ab644e4942c331ceb9bc715b47f0369b9f228ef9d17df2d53",
+    "FORMAL_CALENDAR_SZSE": "9c56dcf2077a19d303f504fcf22f962d9d71ed626030b61ad2aa77a201897900",
+    "FORMAL_MONTHLY": "167d3795d1a993297e39b7ef3d55c9bfd3baf7721b409b8b4e3305030b279df4",
+    "FORMAL_MONTHLY_R7": "790ae9dd13bc363c431b2a7d02e3c6db868bc5d0b3d85a8c9a2acbd5dfd90ff3",
+    "FORMAL_WEEKLY": "9f49c9d1d37bc2c4ed31c0aaae847671d429652715f2cef54a4b431cbb1f59e8",
+    "FORMAL_WEEKLY_R7": "8eda09c0ca55b986cbebe0aa32454a22835492a6286c1237473c729ea2af0294",
+    "HISTORICAL_UNIVERSE_R7": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b",
+    "PACK_A_FINAL_RECEIPT": "a0065ca3ba9f0776bb0650719b59cd423a349e0d77d74c847255df382edf845b",
+    "PRICE_LIMIT": "0ca2ff328fee676c400b853aedce03db0c06068e8254eaae6633c32994596201",
+    "PRICE_LIMIT_ACCEPTANCE_R3": "6577a51b3c1a115420a8bb5fca736d4fb7c44325a90545ca42431686ecd1e648",
+    "PRICE_LIMIT_ACCEPTANCE_RECEIPT": "4901bae7a431621efeff3fad109f55e8edd82a4aea14842068c99361665f0e8f",
+    "PRICE_LIMIT_R3": "128324b29143e3f5733e02120d1eff3902a7e6f84c4d20f5e4846e3d9b141ee9",
+    "PRICE_LIMIT_RANGE_EXCEPTION_AUDIT_R3": "ec2d60a574381310f865e6b87ff2e2fb36b6a19bea14ebbc4b51ee264f1b5bd8",
+    "R1_REVOCATION_RECEIPT": "1a549cfc160a91267862af4cafd435044615306a8e88971c2b686b9c196c4253",
+    "R3_RULE_CONTRACT": "68679333821c50cc8cbed5ff4cd001447cc6571d79b0d074a60b6bb81bdb01e0",
+    "R3_TEST_RECEIPT": "167411aef1fdb1087f26563f580e40b00a9036fd12d40b97f189501d155fa5df",
+    "RAW_CANONICAL_DAILY": "cdbc3e2b49bf16f59a6661d4641a3d9a3b498c5a9843974e934a7ab695f02313",
+    "SECURITY_ENTITY_MAP_R7": "e33294fb8d1d71732fdc3df903258b5617345811ecbdb649af8056ccd91427e0",
+    "TRADING_STATUS": "bb75f6cb9187616a272ff493b3fedfeaf9d0b2ac6c2a4aef4d3d74c550921119"
+  },
+  "contract_id": "V4_02_FINAL_ACCEPTANCE_RECEIPT_R3",
+  "evidence": {
+    "code_change_alias_audit": {
+      "path": "reports/v4_02/V4_01_CODE_CHANGE_ALIAS_AUDIT_R7.json",
+      "sha256": "62459a45bd1a81ae0804527b91fdfc61fcf8f80bbbf11e060725b9feb159ed9c",
+      "status": "PASS_WITH_BOUNDED_ALIAS_REPAIR"
+    },
+    "independent_postcheck": {
+      "path": "reports/v4_02/V4_02_FINAL_INDEPENDENT_POSTCHECK_R3.json",
+      "sha256": "3b27f05cd19a5eaf1765fae09f0b6f773f50453189cadbf14e85fb69b6119457",
+      "status": "BLOCKED"
+    },
+    "manifest": {
+      "path": "reports/v4_02/V4_02_FINAL_STAGING_MANIFEST_R3.json",
+      "sha256": "c5469836dc7dc0ab4ce41df594877f8894c61ec1d11cdbd2c93c6436fcaac609",
+      "status": "BLOCKED"
+    },
+    "price_limit_range_exception_audit": {
+      "path": "reports/v4_02/V4_02_PRICE_LIMIT_RANGE_EXCEPTION_AUDIT_R3.json",
+      "scope": {
+        "exception": "CLOSE_OUTSIDE_LIMIT_RANGE",
+        "r1_exception_rows": 23,
+        "r1_resolved": 15,
+        "r1_still_open": 8,
+        "r3_additional_exception_rows": 45,
+        "r3_current_exception_rows": 53,
+        "r3_disposition_complete": false,
+        "row_count": 76
+      },
+      "sha256": "ec2d60a574381310f865e6b87ff2e2fb36b6a19bea14ebbc4b51ee264f1b5bd8",
+      "status": "OPEN"
+    },
+    "tests": {
+      "failed": 0,
+      "passed": 22,
+      "path": "reports/v4_02/V4_02_FINAL_R3_TEST_RECEIPT.json",
+      "result": "PASS",
+      "sha256": "167411aef1fdb1087f26563f580e40b00a9036fd12d40b97f189501d155fa5df",
+      "skipped": 0
+    }
+  },
+  "historical_adjusted_lineage": "DIAGNOSTIC_NON_PIT; HISTORICAL_PIT_NOT_CLAIMED",
+  "next_stage": "COMPLETE_OFFICIAL_ROW_SPECIFIC_DISPOSITIONS_FOR_ALL_OPEN_RANGE_EXCEPTIONS; DO_NOT_START_V4_03",
+  "observed_at_utc": "2026-09-27T00:36:49+00:00",
+  "scanner_factor_trading_runs": 0,
+  "scope": {
+    "optional_degraded": [
+      "BSE"
+    ],
+    "required_boards": [
+      "SH_MAIN",
+      "SZ_MAIN",
+      "CHINEXT",
+      "STAR"
+    ],
+    "source_cutoff": "2026-09-24",
+    "start_date": "2023-07-04"
+  },
+  "stage": "V4-02 FINAL CLOSURE PACK / R3 TARGETED REPAIR",
+  "status": "BLOCKED",
+  "supersedes": "V4_02_FINAL_RECEIPT_R1; R1 HISTORY RETAINED AND REVOKED",
+  "v4_03_entry": "BLOCKED",
+  "version": "3.0.0"
+}

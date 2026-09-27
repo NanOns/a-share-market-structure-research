@@ -1,0 +1,45 @@
+{
+  "checks": {
+    "22_resolved_and_31_fail_closed_retained": true,
+    "normalized_digest_matches_r4": true,
+    "phase_inventory_matches_r4": true,
+    "row_count_unchanged": true,
+    "row_payloads_identical": true,
+    "unknown_reason_inventory_matches_r4": true
+  },
+  "contract_id": "V4_02_FINAL_INDEPENDENT_POSTCHECK_R5",
+  "counts": {
+    "fail_closed_dispositions": 31,
+    "price_rows": 4035729,
+    "resolved_special_events": 22,
+    "special_price_phases": {
+      "DELISTING_FIRST_DAY": 22,
+      "DELISTING_PERIOD": 308,
+      "IPO_FIRST_5_TRADING_DAYS": 1648,
+      "REGULAR": 4033720,
+      "UNKNOWN_SPECIAL_PHASE": 31
+    },
+    "unknown_reasons": {
+      "CORPORATE_ACTION_REFERENCE_UNSUPPORTED": 38,
+      "REFERENCE_CHAIN_BLOCKED_BY_UNSUPPORTED_ACTION": 1,
+      "REFERENCE_STATE_UNAVAILABLE": 7,
+      "SPECIAL_PHASE_EVIDENCE_UNAVAILABLE": 21,
+      "SPECIAL_REFERENCE_PRICE_UNAVAILABLE": 10
+    }
+  },
+  "digests": {
+    "r4_normalized": "e6fe7222be2c8fcf2b51ab01378555605dd49cf1d3771b2f6410a6f7769cc038",
+    "r5_normalized": "e6fe7222be2c8fcf2b51ab01378555605dd49cf1d3771b2f6410a6f7769cc038"
+  },
+  "inputs": {
+    "r4_price_sha256": "dc27382bbe88644b85c09ec07331abd428e3c4091c94c2fffca8967d88590cce",
+    "r5_price_sha256": "84f9f35de141bb3bcc0e182d9c0697b7123018d86ffc8403fe3215a654b9bda7",
+    "r5_replay_receipt_sha256": "755c1501ada3f1172192afe3b01ba823a08818708b35eae6c90e5d20ebd547df"
+  },
+  "next_stage": "SEAL_R5_INTERNAL_RECEIPT; KEEP_V4-03_BLOCKED_PENDING_EXTERNAL_ACCEPTANCE",
+  "observed_at_utc": "2026-09-27T13:51:18+00:00",
+  "r4_r5_first_mismatch": null,
+  "status": "PASS",
+  "tdx_root_write_count": 0,
+  "version": "5.0.0"
+}

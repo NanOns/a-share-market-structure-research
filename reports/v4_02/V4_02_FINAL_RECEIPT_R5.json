@@ -1,0 +1,69 @@
+{
+  "blockers": [],
+  "checks": {
+    "alias_fact_contract_valid": true,
+    "all_phase_values_have_policy": true,
+    "generic_runtime_external_acceptance_not_claimed": true,
+    "genericity_scan_pass": true,
+    "independent_r5_postcheck_pass": true,
+    "phase_events_migrated": true,
+    "r4_history_preserved": true,
+    "r4_preserved_as_data_correctness_accepted": true,
+    "replay_equivalent": true,
+    "source_capture_manifest_verified_offline": true,
+    "source_requests_match_events": true,
+    "special_phase_counts_preserved": true,
+    "synthetic_and_r4_tests_pass": true,
+    "unknown_inventory_preserved": true,
+    "v4_03_remains_blocked": true
+  },
+  "contract_id": "V4_02_FINAL_ACCEPTANCE_RECEIPT_R5",
+  "evidence": {
+    "independent_postcheck": {
+      "path": "reports/v4_02/V4_02_FINAL_INDEPENDENT_POSTCHECK_R5.json",
+      "sha256": "8b83482b804d38f7c925b86d60738fa353f2e8f6e7f490fb646aeeb5676cdebb",
+      "status": "PASS"
+    },
+    "manifest": {
+      "path": "reports/v4_02/V4_02_FINAL_STAGING_MANIFEST_R5.json",
+      "sha256": "67f14699822ddf2141371a546ab2d9ae32d8fb183a414b27062c5521eb4dda8a"
+    },
+    "preserved_r4_receipt": {
+      "historical_status": "DATA_CORRECTNESS_ACCEPTED; GENERIC_RUNTIME_NOT_EXTERNALLY_ACCEPTED",
+      "path": "reports/v4_02/V4_02_FINAL_RECEIPT_R4.json",
+      "sha256": "d24bee3210c919d3e5faab479db59231a4de583a6a9a41511cad349fe38b0f06"
+    },
+    "r5_replay": {
+      "path": "reports/v4_02/V4_02_PRICE_LIMIT_REPLAY_R5.json",
+      "sha256": "755c1501ada3f1172192afe3b01ba823a08818708b35eae6c90e5d20ebd547df",
+      "status": "PASS"
+    },
+    "r5_tests": {
+      "passed": 23,
+      "path": "reports/v4_02/V4_02_FINAL_R5_TEST_RECEIPT.json",
+      "result": "PASS",
+      "sha256": "5de18f08b39b81ef91de0bb3dbbf734ebaa919f7c826237e49d64aa876f69b5d"
+    }
+  },
+  "external_acceptance": "PENDING_R5_GENERALIZATION_REVIEW",
+  "next_stage": "WAIT_FOR_EXTERNAL_R5_ACCEPTANCE; DO_NOT_START_V4-03",
+  "observed_at_utc": "2026-09-27T13:51:18+00:00",
+  "scanner_factor_trading_runs": 0,
+  "scope": {
+    "optional_degraded": [
+      "BSE"
+    ],
+    "required_boards": [
+      "SH_MAIN",
+      "SZ_MAIN",
+      "CHINEXT",
+      "STAR"
+    ],
+    "source_cutoff": "2026-09-24"
+  },
+  "stage": "V4-02 FINAL GENERIC RUNTIME CLOSURE / R5",
+  "status": "PASS_WITH_BSE_SCOPE_DEGRADED",
+  "tdx_root_write_count": 0,
+  "v4_03_entry": "BLOCKED_PENDING_EXTERNAL_ACCEPTANCE",
+  "version": "5.0.0"
+}

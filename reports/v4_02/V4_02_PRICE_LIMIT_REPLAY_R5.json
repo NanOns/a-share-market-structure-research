@@ -1,0 +1,53 @@
+{
+  "all_phase_counts": {
+    "DELISTING_FIRST_DAY": 22,
+    "DELISTING_PERIOD": 308,
+    "IPO_FIRST_5_TRADING_DAYS": 1648,
+    "REGULAR": 4033720,
+    "UNKNOWN_SPECIAL_PHASE": 31
+  },
+  "all_phase_counts_match_r4": true,
+  "contract_id": "V4_02_PRICE_LIMIT_REPLAY_R5",
+  "equivalence": {
+    "outcome_equivalent": true,
+    "r4_price_unknown_count": 77,
+    "r5_price_unknown_count": 77
+  },
+  "event_derived_phase_counts": {
+    "DELISTING_FIRST_DAY": 22,
+    "DELISTING_PERIOD": 308
+  },
+  "inputs": {
+    "events_sha256": "bb357ad505a6ace734b6b47f4581efa34c582d8bbf82111d933af037ae9ad522",
+    "phase_policy_sha256": "aa2d00ec6774b45c1da4d252b9dc53e678fc60ae3f7d9e89187afab3125389a1",
+    "r4_acceptance_sha256": "4f62489c6b0fdf346c6ef946f9102639aa7f13475a01bd3c47887abf75d1f358",
+    "r4_audit_sha256": "975f3ce59260e6a35d4c407026823b8d99c9cc65eacbc36be201f0bfbcf64292",
+    "r4_price_sha256": "dc27382bbe88644b85c09ec07331abd428e3c4091c94c2fffca8967d88590cce"
+  },
+  "next_stage": "R5_INDEPENDENT_POSTCHECK_AND_FINAL_RECEIPT; V4-03_REMAINS_BLOCKED_PENDING_EXTERNAL_ACCEPTANCE",
+  "observed_at_utc": "2026-09-27T13:50:04+00:00",
+  "output": {
+    "bytes": 157119091,
+    "normalized_output_sha256": "e6fe7222be2c8fcf2b51ab01378555605dd49cf1d3771b2f6410a6f7769cc038",
+    "path": "data/v4/artifact_store/v4_02/V4_02_PRICE_LIMIT_R5_20260927.jsonl.gz",
+    "sha256": "84f9f35de141bb3bcc0e182d9c0697b7123018d86ffc8403fe3215a654b9bda7"
+  },
+  "r4_fail_closed_dispositions": 31,
+  "r4_row_count": 4035729,
+  "resolved_special_events": 22,
+  "row_count": 4035729,
+  "row_payloads_preserved": true,
+  "stage_contract": "SPECIAL_PRICE_PHASE_EVENT_V1 + SPECIAL_PRICE_PHASE_POLICY_V1; R4 data frozen",
+  "status": "PASS",
+  "unknown_reason_count_matches_r4": true,
+  "unknown_reason_inventory": {
+    "CORPORATE_ACTION_REFERENCE_UNSUPPORTED": 38,
+    "REFERENCE_CHAIN_BLOCKED_BY_UNSUPPORTED_ACTION": 1,
+    "REFERENCE_STATE_UNAVAILABLE": 7,
+    "SPECIAL_PHASE_EVIDENCE_UNAVAILABLE": 21,
+    "SPECIAL_REFERENCE_PRICE_UNAVAILABLE": 10
+  },
+  "unknown_reason_inventory_matches_r4": true,
+  "unknown_rows": 77,
+  "version": "1.0.0"
+}

@@ -1,0 +1,155 @@
+{
+  "components": {
+    "ALIAS_CONTRACT": {
+      "bytes": 578,
+      "path": "config/dated_security_alias_v1.json",
+      "sha256": "39bcea9e0c2d04c1b768c80e5f26a062784a98ef4bc65aec3093be38210b07c3"
+    },
+    "ALIAS_FACTS": {
+      "bytes": 1534,
+      "path": "data/v4/bootstrap/dated_security_alias_r7.jsonl",
+      "row_count": 22,
+      "sha256": "115a5b611c64f30cadd8695a9a464d8243cb3afe16d642ea786ff4b7bd107c4a"
+    },
+    "GENERICITY_CODE_SCAN": {
+      "forbidden_identifier_hits": [],
+      "scanned_files": 59,
+      "status": "PASS"
+    },
+    "PHASE_EVENTS": {
+      "bytes": 20336,
+      "path": "data/v4/bootstrap/special_price_phase_events_r4.jsonl",
+      "row_count": 22,
+      "sha256": "bb357ad505a6ace734b6b47f4581efa34c582d8bbf82111d933af037ae9ad522"
+    },
+    "PHASE_EVENT_CONTRACT": {
+      "bytes": 876,
+      "path": "config/special_price_phase_event_v1.json",
+      "sha256": "0e6e4cf11fef1e5739a8163afc6e37412be15fe8022fb6c14355aeaea7aa2d60"
+    },
+    "PHASE_POLICY": {
+      "bytes": 3723,
+      "path": "config/special_price_phase_policy_v1.json",
+      "sha256": "aa2d00ec6774b45c1da4d252b9dc53e678fc60ae3f7d9e89187afab3125389a1"
+    },
+    "R4_ACCEPTANCE": {
+      "bytes": 11659,
+      "path": "reports/v4_02/V4_02_PRICE_LIMIT_ACCEPTANCE_R4_20260927.json",
+      "sha256": "4f62489c6b0fdf346c6ef946f9102639aa7f13475a01bd3c47887abf75d1f358"
+    },
+    "R4_AUDIT": {
+      "bytes": 151621,
+      "path": "reports/v4_02/V4_02_PRICE_LIMIT_RANGE_EXCEPTION_AUDIT_R4.json",
+      "sha256": "975f3ce59260e6a35d4c407026823b8d99c9cc65eacbc36be201f0bfbcf64292"
+    },
+    "R4_FINAL_RECEIPT": {
+      "bytes": 6779,
+      "path": "reports/v4_02/V4_02_FINAL_RECEIPT_R4.json",
+      "sha256": "d24bee3210c919d3e5faab479db59231a4de583a6a9a41511cad349fe38b0f06"
+    },
+    "R4_POSTCHECK": {
+      "bytes": 1727,
+      "path": "reports/v4_02/V4_02_FINAL_INDEPENDENT_POSTCHECK_R4.json",
+      "sha256": "55148db8363a6e85d64707a2558f42497884f26fa1b618fefc4c798acf4ce26e"
+    },
+    "R4_PRICE": {
+      "bytes": 157119091,
+      "path": "data/v4/artifact_store/v4_02/V4_02_PRICE_LIMIT_R4_20260927.jsonl.gz",
+      "sha256": "dc27382bbe88644b85c09ec07331abd428e3c4091c94c2fffca8967d88590cce"
+    },
+    "R5_PRICE": {
+      "bytes": 157119091,
+      "path": "data/v4/artifact_store/v4_02/V4_02_PRICE_LIMIT_R5_20260927.jsonl.gz",
+      "sha256": "84f9f35de141bb3bcc0e182d9c0697b7123018d86ffc8403fe3215a654b9bda7"
+    },
+    "REPLAY_RECEIPT": {
+      "bytes": 2124,
+      "path": "reports/v4_02/V4_02_PRICE_LIMIT_REPLAY_R5.json",
+      "sha256": "755c1501ada3f1172192afe3b01ba823a08818708b35eae6c90e5d20ebd547df"
+    },
+    "SOURCE_CAPTURE_POLICY": {
+      "bytes": 466,
+      "path": "config/special_phase_source_capture_v1.json",
+      "sha256": "ece00cec70abf88c841754ef148853d37a38e25bdb11c16eaa0bf303936e811f"
+    },
+    "SOURCE_CAPTURE_RECEIPT": {
+      "bytes": 9617,
+      "path": "reports/v4_02/V4_02_R5_SOURCE_CAPTURE_VERIFY.json",
+      "sha256": "c254efd8ccd23f5b7e00dfd3f50285ed7cfea49d500fdae2881cf4df3767e269"
+    },
+    "SOURCE_REQUESTS": {
+      "bytes": 11624,
+      "path": "data/v4/bootstrap/special_phase_source_requests_r4.jsonl",
+      "row_count": 22,
+      "sha256": "d445ff09e1820ecca8eb8f486f3c4ddf86a7e723cd2ef694c73e47596a5b3378"
+    },
+    "TEST_RECEIPT": {
+      "bytes": 1111,
+      "path": "reports/v4_02/V4_02_FINAL_R5_TEST_RECEIPT.json",
+      "sha256": "5de18f08b39b81ef91de0bb3dbbf734ebaa919f7c826237e49d64aa876f69b5d"
+    }
+  },
+  "contract_id": "V4_02_WHOLE_STAGE_STAGING_MANIFEST_R5",
+  "created_at_utc": "2026-09-27T13:50:13+00:00",
+  "evidence": {
+    "checks": {
+      "alias_fact_contract_valid": true,
+      "all_phase_values_have_policy": true,
+      "genericity_scan_pass": true,
+      "phase_events_migrated": true,
+      "r4_history_preserved": true,
+      "replay_equivalent": true,
+      "source_capture_manifest_verified_offline": true,
+      "source_requests_match_events": true,
+      "special_phase_counts_preserved": true,
+      "synthetic_and_r4_tests_pass": true,
+      "unknown_inventory_preserved": true
+    },
+    "genericity_scan": {
+      "forbidden_identifier_hits": [],
+      "scanned_files": 59,
+      "status": "PASS"
+    },
+    "new_notice_searches": 0,
+    "new_source_recaptures": 0,
+    "r4_external_status": "BLOCKED_PENDING_R5_GENERALIZATION",
+    "r4_status": "DATA_CORRECTNESS_ACCEPTED; GENERIC_RUNTIME_NOT_EXTERNALLY_ACCEPTED",
+    "source_capture_mode": "VERIFY_EXISTING_OFFLINE_ONLY"
+  },
+  "governing_upgrade_contract": {
+    "contract_id": "DA-MSR-V4.2.2-CODEX-REV2",
+    "path": "D:/Users/lps/Desktop/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_20260925_codex修改版.md",
+    "sha256": "744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd"
+  },
+  "historical_R4_head": {
+    "path": "data/v4/V4_02_ACCEPTED_HEAD.json",
+    "receipt_path": "reports/v4_02/V4_02_FINAL_RECEIPT_R4.json",
+    "sha256": "8d909b1305602f61231fe4b741191e1b0c9c0e826c0b374f96aa88248aa70a09",
+    "status": "PASS_WITH_BSE_SCOPE_DEGRADED"
+  },
+  "implementation_commit": "a714af820612633e03e44c3244058c7020f87610",
+  "next_stage": "INDEPENDENT_R5_POSTCHECK_AND_INTERNAL_FINAL_RECEIPT; V4-03_BLOCKED_PENDING_EXTERNAL_ACCEPTANCE",
+  "optional_degraded_boards": [
+    "BSE"
+  ],
+  "r5_task_document": {
+    "path": "D:/Users/lps/Desktop/V4_02_R4_GENERALIZATION_AUDIT_AND_R5_GENERIC_RUNTIME_CLOSURE_20260927.md",
+    "sha256": "9737dd947428db8435f2acbfc8b404c5d6980fb2e894afd3fbf458442a4b04fe"
+  },
+  "required_boards": [
+    "SH_MAIN",
+    "SZ_MAIN",
+    "CHINEXT",
+    "STAR"
+  ],
+  "scanner_factor_trading_runs": 0,
+  "scope": {
+    "bse": "OPTIONAL_DEGRADED_EXCLUDED",
+    "source_cutoff": "2026-09-24"
+  },
+  "stage": "V4-02",
+  "stage_contract": "SPECIAL_PRICE_PHASE_EVENT_V1 + SPECIAL_PRICE_PHASE_POLICY_V1 + DATED_SECURITY_ALIAS_V1; accepted R4 data frozen",
+  "status": "STAGING_CANDIDATE_READY",
+  "tdx_root_write_count": 0,
+  "version": "5.0.0"
+}

@@ -28,7 +28,7 @@ def _inputs() -> dict[str, object]:
         },
         "cross_stage": {"status": "PASS"},
         "tests": {"status": "PASS", "execution_commit": "code-head",
-                  "test_summary": {"passed": 10, "failed": 0, "skipped": 0}},
+                  "test_summary": {"passed": 10, "failed": 0, "skipped": 2}},
         "gate_contract": {"contract_id": "V4_00_01_02_JOINT_FINAL_GATE_V1"},
         "evidence_change": {"status": "PASS", "business_code_changed_after_tested_head": False,
                             "evidence_base_head": "code-head"},

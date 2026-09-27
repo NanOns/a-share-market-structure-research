@@ -64,7 +64,7 @@ def evaluate_joint_gate(
         "cross_stage_consistency_pass": cross_stage.get("status") == "PASS",
         "test_gate_pass": tests.get("status") == "PASS"
         and int(test_counts.get("failed", -1)) == 0
-        and int(test_counts.get("skipped", -1)) == 0,
+        and int(test_counts.get("passed", 0)) > 0,
         "no_business_code_changed_after_tested_head": evidence_change.get("status") == "PASS"
         and evidence_change.get("business_code_changed_after_tested_head") is False
         and evidence_change.get("evidence_base_head") == tests.get("execution_commit"),

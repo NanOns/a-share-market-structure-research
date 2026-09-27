@@ -59,7 +59,7 @@ def tree_digest() -> tuple[str, list[dict[str, str]]]:
 
 
 def main() -> int:
-    command = [sys.executable, "-m", "pytest", "-q", *TEST_DIRS]
+    command = [sys.executable, "-m", "pytest", "-q", "-rs", *TEST_DIRS]
     started = time.perf_counter()
     result = subprocess.run(command, cwd=ROOT, text=True, capture_output=True)
     duration = time.perf_counter() - started
@@ -84,7 +84,8 @@ def main() -> int:
         "version": "1.0.0",
         "observed_at_utc": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
         "status": status,
-        "command": "python -m pytest -q tests/v4_phase0 tests/v4_01 tests/v4_02 tests/v4_joint",
+        "command": "python -m pytest -q -rs tests/v4_phase0 tests/v4_01 tests/v4_02 tests/v4_joint",
+        "command_argv": command,
         "input_commit": "1a70c8c733096936da4fa250a3f4def501ccfd1d",
         "execution_commit": head,
         "test_scope": list(TEST_DIRS),

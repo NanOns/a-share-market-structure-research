@@ -1,0 +1,88 @@
+{
+  "contract_id": "V4_02_R6_FINAL_EXTERNAL_ACCEPTANCE_V1",
+  "stage": "V4-02 FINAL EXTERNAL ACCEPTANCE",
+  "version": "1.0.0",
+  "observed_at_utc": "2026-09-27T14:43:27.1556416Z",
+  "source_document": {
+    "file": "V4_02_R6_FINAL_EXTERNAL_ACCEPTANCE_20260927.md",
+    "repository_copy": "docs/evidence/V4_02_R6_FINAL_EXTERNAL_ACCEPTANCE_20260927.md",
+    "sha256": "78613be449aeb0e54511069e24bcd03787489b390805fa441f0942ae0bc16c9b"
+  },
+  "reviewed_repository": {
+    "repository": "NanOns/a-share-market-structure-research",
+    "branch": "codex/v4-system-reform",
+    "head": "ef9c6a1c422642062715a19d78d65113c772f1bf",
+    "r6_production_wiring_commit": "aa3d68dcd027ce258e9cc5bb648ec99cf6d917a1",
+    "r6_test_gate_commit": "14a8c4e7964db4834dbeb10ceb811552783d0cbd",
+    "r6_seal_commit": "ef9c6a1c422642062715a19d78d65113c772f1bf"
+  },
+  "stage_contract": {
+    "technical_baseline": "DA-MSR-V4.2.2-CODEX-REV2",
+    "required_scope": [
+      "SH_MAIN",
+      "SZ_MAIN",
+      "CHINEXT",
+      "STAR"
+    ],
+    "optional_degraded_scope": [
+      "BSE"
+    ],
+    "required_scope_result": "PASS",
+    "optional_scope_result": "DEGRADED; EXCLUDED FROM REQUIRED SCOPE; ACCEPTED BY USER SCOPE POLICY"
+  },
+  "acceptance_result": {
+    "v4_02": "PASS_WITH_BSE_SCOPE_DEGRADED",
+    "external_acceptance": "EXTERNALLY_ACCEPTED",
+    "stage_closed": true,
+    "v4_03_entry": "AUTHORIZED",
+    "v4_02_reopen_policy": "ONLY_ON_NEW_REVIEWABLE_COUNTEREVIDENCE"
+  },
+  "evidence": {
+    "accepted_head_before_external_acceptance": {
+      "path": "reports/v4_02/V4_02_ACCEPTED_HEAD_SNAPSHOT_PRE_EXTERNAL_R6.json",
+      "sha256": "b0961259c3aa0b7c7965c326076543a2cc0891cc35d785dff205a9298121424b",
+      "source_sha256": "87d1b6aa24bdf05e693035ec6c34feefc397ac9d703e38dfe1c7502b07b6ebef"
+    },
+    "internal_final_receipt": {
+      "path": "reports/v4_02/V4_02_FINAL_RECEIPT_R6.json",
+      "sha256": "e2dbfa55539cc89376c90627ed822e0c2b6f81938277919bd717e93dd93c411b",
+      "status": "PASS_WITH_BSE_SCOPE_DEGRADED",
+      "blockers": []
+    },
+    "manifest": {
+      "path": "reports/v4_02/V4_02_FINAL_STAGING_MANIFEST_R6.json",
+      "sha256": "a83f90a0d1acc08e32db5dab049f3bf16a9284e5bf6785cd8f3a2b52aed31678"
+    },
+    "independent_postcheck": {
+      "path": "reports/v4_02/V4_02_FINAL_INDEPENDENT_POSTCHECK_R6.json",
+      "sha256": "4fcd51ff16f90844c358c0094b5badac315a70a75ab027f8fb3f1c54806b1f5c",
+      "status": "PASS",
+      "business_difference_rows": 0,
+      "r4_business_payload_sha256": "6fce7a228c7c4a2148d176ae8be8c90d64788c81707ed1ac60413c8f7264650b",
+      "r6_business_payload_sha256": "6fce7a228c7c4a2148d176ae8be8c90d64788c81707ed1ac60413c8f7264650b",
+      "apply_phase_event_calls": {
+        "DELISTING_FIRST_DAY": 22,
+        "DELISTING_PERIOD": 308,
+        "IPO_FIRST_5_TRADING_DAYS": 1648,
+        "UNKNOWN_SPECIAL_PHASE": 31
+      }
+    },
+    "production_build": {
+      "path": "reports/v4_02/V4_02_PRICE_LIMIT_BUILD_R6.json",
+      "sha256": "68262fad01134019e84c4dac14810428566607ee978962b8f5fe9ec7456e5729",
+      "row_count": 4035729,
+      "business_payload_sha256": "6fce7a228c7c4a2148d176ae8be8c90d64788c81707ed1ac60413c8f7264650b"
+    },
+    "test_receipt": {
+      "path": "reports/v4_02/V4_02_FINAL_R6_TEST_RECEIPT.json",
+      "sha256": "51f91c89b4cadaae470be0ca7f888db59770061328254cffe61b4725564b8667",
+      "result": "PASS",
+      "passed": 31,
+      "failed": 0,
+      "skipped": 0
+    },
+    "tdx_root_write_count": 0
+  },
+  "decision": "External acceptance follows the supplied final audit document. The R6 internal final receipt is retained unchanged as historical evidence.",
+  "next_stage": "V4-03 Pure-Core Factors; before execution read REV2 CORE_FACTOR_V1, Field-to-Algorithm Contract Registry, and Technical/Cross-section window contract; no V4-02 R7/R8 absent new reviewable counterevidence."
+}

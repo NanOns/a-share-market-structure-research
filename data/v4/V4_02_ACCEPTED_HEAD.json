@@ -1,5 +1,5 @@
 {
-  "accepted_at_utc": "2026-09-27T14:28:03+00:00",
+  "accepted_at_utc": "2026-09-27T22:28:03+08:00",
   "contract_id": "V4_02_ACCEPTED_HEAD_V1",
   "final_receipt_path": "reports/v4_02/V4_02_FINAL_RECEIPT_R6.json",
   "final_receipt_sha256": "e2dbfa55539cc89376c90627ed822e0c2b6f81938277919bd717e93dd93c411b",
@@ -9,7 +9,9 @@
     "r4_data_correctness_accepted": true,
     "r5_generic_contracts_accepted": true,
     "r5_head_snapshot_path": "reports/v4_02/V4_02_R5_ACCEPTED_HEAD_SNAPSHOT_R6.json",
-    "r6_generic_production_recalculation_complete": true
+    "r6_generic_production_recalculation_complete": true,
+    "r6_externally_accepted": true,
+    "external_acceptance_receipt_path": "reports/v4_02/V4_02_FINAL_EXTERNAL_ACCEPTANCE_R6.json"
   },
   "manifest_path": "reports/v4_02/V4_02_FINAL_STAGING_MANIFEST_R6.json",
   "manifest_sha256": "a83f90a0d1acc08e32db5dab049f3bf16a9284e5bf6785cd8f3a2b52aed31678",
@@ -18,5 +20,10 @@
   "status": "PASS_WITH_BSE_SCOPE_DEGRADED",
   "supersedes_final_receipt_path": "reports/v4_02/V4_02_FINAL_RECEIPT_R5.json",
   "supersedes_final_receipt_sha256": "2551c197d6b909135ae95a7f19e3da90b8156525f1ed1920892f69c2bd0c7b24",
-  "v4_03_entry": "BLOCKED_PENDING_EXTERNAL_ACCEPTANCE"
+  "v4_03_entry": "AUTHORIZED",
+  "external_acceptance": "EXTERNALLY_ACCEPTED",
+  "external_acceptance_receipt_path": "reports/v4_02/V4_02_FINAL_EXTERNAL_ACCEPTANCE_R6.json",
+  "external_acceptance_receipt_sha256": "42286da4305b792f5ecdc0fcc9a9d722e8ab3c23f6b618bf1ba15bd445ca6970",
+  "external_acceptance_document_sha256": "78613be449aeb0e54511069e24bcd03787489b390805fa441f0942ae0bc16c9b",
+  "external_accepted_at_utc": "2026-09-27T14:43:27.1556416Z"
 }

@@ -1,0 +1,100 @@
+{
+  "contract_id": "V4_03_TASK_DEFINITION_RECEIPT_V1",
+  "version": "1.0.0",
+  "observed_at_utc": "2026-09-27T14:53:35.2950287Z",
+  "stage": "V4-03 PURE-CORE FACTORS",
+  "status": "TASK_DEFINITION_PASS",
+  "entry": "AUTHORIZED",
+  "implementation_status": "NOT_STARTED",
+  "stage_contract": {
+    "baseline": "DA-MSR-V4.2.2-CODEX-REV2",
+    "required_boards": [
+      "SH_MAIN",
+      "SZ_MAIN",
+      "CHINEXT",
+      "STAR"
+    ],
+    "optional_degraded_boards": [
+      "BSE"
+    ],
+    "scope_freeze_required_before_implementation": true,
+    "implementation_scope": [
+      "CORE_FACTOR_V1 pure primitives",
+      "Core historical market reference",
+      "explicitly scoped market/sector native primitives"
+    ],
+    "excluded": [
+      "V4-04 full stock profile",
+      "V4-06 turnover",
+      "V4-08 sector/rotation qualification and ranking",
+      "V4-15 forward settlement and fixed-T0 benchmarks",
+      "scanner/formal trading consumers"
+    ]
+  },
+  "sources": {
+    "external_acceptance_receipt": {
+      "path": "reports/v4_02/V4_02_FINAL_EXTERNAL_ACCEPTANCE_R6.json",
+      "sha256": "42286da4305b792f5ecdc0fcc9a9d722e8ab3c23f6b618bf1ba15bd445ca6970"
+    },
+    "accepted_head": {
+      "path": "data/v4/V4_02_ACCEPTED_HEAD.json",
+      "sha256": "da318a1f82a03f13930af7858ca1640fadbdaedbee85e27d47f9c869c2d6b595",
+      "v4_03_entry": "AUTHORIZED"
+    },
+    "rev2": {
+      "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV2_20260925.md",
+      "sha256": "744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd",
+      "source_location": "D:/Users/lps/Desktop/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_20260925_codex修改版.md"
+    },
+    "field_algorithm_registry": "REV2 §87A",
+    "core_factor_contract": "REV2 §10A0 CORE_FACTOR_V1",
+    "window_framework": {
+      "path": "config/v4_algorithm_contract_framework_v1.json",
+      "contract_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
+      "version": "1.1.0",
+      "sha256": "a03fda92aaf608edfb5dd86b533fae576c3d121bc413a61768985e6e53cb4455",
+      "windows": [
+        "TECHNICAL_BAR_WINDOW_V1",
+        "CROSS_SECTION_SESSION_WINDOW_V1",
+        "FORWARD_SESSION_WINDOW_V1"
+      ]
+    },
+    "v4_00g_receipt": {
+      "path": "docs/V4_00G_ALGORITHM_CONTRACT_FRAMEWORK_20260925.md",
+      "sha256": "a3a6dc5642cd399406736d902f301a53559cc2760af28a5afb3eaf4e97c79cb1",
+      "recorded_framework_hash": "53f42ab97a0af5f00a819f5285475728f9eb055e249f0524ef601974a5c7974a",
+      "current_framework_version": "1.1.0"
+    },
+    "parameter_registry": {
+      "path": "config/v4_parameter_registry_v1.json",
+      "sha256": "b02d267d95456f557ddf5acf450eb01ff95ba661231e3f88fe84f355e85f0ef7"
+    },
+    "contract_audit": {
+      "path": "docs/audits/V4_2_2_CONTRACT_REAUDIT_20260925.md",
+      "sha256": "8ae62a108262ddb63c42457c0920e0418b8df1013c26263edb3b3e34de8b4747",
+      "status": "OPEN; tracked independently from V4-02 and V4-03 stage gates",
+      "related_items": [
+        "V422-B01",
+        "V422-B04",
+        "V422-B08",
+        "V422-B10"
+      ]
+    }
+  },
+  "scope_freeze_items": [
+    "Reconcile V4-03 sector-native primitives against §87A V4-08 sector field assignments before implementation.",
+    "Keep historical Core market reference under §49A.1 distinct from the future fixed-T0 benchmark under §49A.2/V4-15."
+  ],
+  "task_document": {
+    "path": "docs/audits/V4_03_PURE_CORE_FACTORS_IMPLEMENTATION_TASK_20260927.md",
+    "sha256": "634697692350c7e0b5dc3b132fe18db9e1645fb785ca6fc56256a24c204ec693"
+  },
+  "execution_boundary": {
+    "code_implementation_started": false,
+    "tests_run": false,
+    "scanner_runs": 0,
+    "factor_trading_runs": 0,
+    "tdx_root_write_count": 0
+  },
+  "next_stage": "V4-03_SCOPE_FREEZE_AND_ALGORITHM_CONTRACTS"
+}

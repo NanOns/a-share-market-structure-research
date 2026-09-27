@@ -9,8 +9,11 @@ import os
 import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src"))
+from workbench_analysis.price_limit_exception_gate import is_range_exception_audit_closed  # noqa: E402
 
 
 def sha(path: Path) -> str:
@@ -62,6 +65,7 @@ def main() -> int:
         "four_required_boards_only": manifest.get("required_boards") == ["SH_MAIN", "SZ_MAIN", "CHINEXT", "STAR"] and manifest.get("bse_in_required_outputs") is False,
         "all_unknown_price_statuses_fail_closed": postcheck.get("checks", {}).get("all_unknown_values_have_explicit_reason") is True,
         "required_price_limit_samples_pass": postcheck.get("checks", {}).get("required_rule_samples_present") is True,
+        "range_exception_audit_closed": bool(range_audit) and is_range_exception_audit_closed(range_audit),
         "historical_pit_adjusted_not_claimed": pack_a.get("acceptance", {}).get("historical_pit_adjusted") == "NOT_AVAILABLE_PRE_PROJECT; NOT_CLAIMED",
         "go_forward_snapshot_enabled": pack_a.get("acceptance", {}).get("go_forward_pit_capture", "").startswith("ENABLED_FROM_FIRST_PUBLICATION"),
     }

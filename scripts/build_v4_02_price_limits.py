@@ -22,6 +22,7 @@ from adjustment.tdx_adjustment import xrxd_from_gbbq  # noqa: E402
 from tdx.gbbq_reader import read_gbbq  # noqa: E402
 from workbench_analysis.limit_rules import LimitStateService  # noqa: E402
 from workbench_analysis.v4_02_closure import ex_right_reference_price  # noqa: E402
+from workbench_analysis.price_reference_state import PreviousCloseState  # noqa: E402
 
 
 DEFAULT_GBBQ = ROOT / "data/input_staging/metadata/20260924/4835127dd77534be17d8aeba65d91ebf0ec5bbf6b5348bc1aff4612272acafdc/T0002/hq_cache/gbbq"
@@ -109,8 +110,6 @@ def main() -> int:
     if not sessions or sessions != szse_sessions or len(sessions) != 786:
         raise SystemExit("PRICE_LIMIT_CALENDAR_SESSION_BINDING_FAILED")
     session_index = {day: i for i, day in enumerate(sessions)}
-    previous_session = {day: sessions[i - 1] if i else None for i, day in enumerate(sessions)}
-    previous_session[sessions[0]] = "20230703"  # accepted RAW warm-up session immediately before the formal window
 
     rule_doc = json.loads(rule_path.read_text(encoding="utf-8"))
     rules = rule_doc["rules"]
@@ -181,12 +180,12 @@ def main() -> int:
     warmup = conn.execute(
         f"select source_security_key, close_price_raw, price_scale from read_parquet('{raw_sql_path}') where trade_date=20230703 and record_quality='SOURCE_FILE_VALIDATED_RECORD'"
     ).fetchall()
-    previous_actual: dict[str, tuple[str, Decimal]] = {}
+    previous_close_state: dict[str, PreviousCloseState] = {}
     for source_key, close_raw, scale in warmup:
         key = str(source_key).lower()
         security_id = source_key_to_id.get(key)
         if security_id and key not in source_key_ambiguous:
-            previous_actual[security_id] = ("20230703", Decimal(int(close_raw)) / Decimal(int(scale)))
+            previous_close_state[security_id] = PreviousCloseState.known(Decimal(int(close_raw)) / Decimal(int(scale)))
 
     counts: Counter[str] = Counter()
     by_board: Counter[str] = Counter()
@@ -224,10 +223,18 @@ def main() -> int:
                       "limit_up_price": None, "limit_down_price": None, "limit_status": "UNKNOWN",
                       "reason": None, "knowledge_lineage": "DIAGNOSTIC_NON_PIT"}
             row = actual.get(security_id)
+            state = previous_close_state.setdefault(security_id, PreviousCloseState(None))
+            events = events_by_key.get((security_id, day), [])
+            reference = state.apply_actions(
+                [(event.disposition, event.event) for event in events],
+                lambda value, actions: ex_right_reference_price(value, actions, "0.01"),
+            )
             if status == "SUSPENDED":
                 result.update(limit_status="SUSPENDED", reference_basis="SUSPENSION_FACT", reason="SUSPENDED")
+                state.carry_no_trade()
             elif status != "ACTUAL_TRADED":
                 result["reason"] = "TRADING_STATUS_" + status
+                state.invalidate("REFERENCE_STATE_UNAVAILABLE")
             elif row is None or str(row["trade_date"]) != day:
                 result["reason"] = "ACTUAL_BAR_BINDING_MISSING"
             elif is_st not in {"0", "1"}:
@@ -243,53 +250,48 @@ def main() -> int:
                         result.update(limit_status="NO_LIMIT", reference_basis="LISTING_PHASE", reason="IPO_FIRST_5_TRADING_DAYS")
                         samples.setdefault("IPO_NO_LIMIT", dict(result))
                         if row:
-                            previous_actual[security_id] = (day, row["raw_close"])
+                            state.observe_actual_close(row["raw_close"])
                         _write(target, output_digest, result)
                         row_count += 1
                         counts[result["limit_status"]] += 1
                         by_board[board] += 1
                         continue
 
-                events = events_by_key.get((security_id, day), [])
                 if day in delist_dates_by_id.get(security_id, set()):
                     result.update(reference_basis="UNKNOWN", reason="DELISTING_PHASE_UNRESOLVED")
                 elif security_id in ambiguous_listing_date:
                     result.update(reference_basis="UNKNOWN", reason="LISTING_DATE_AMBIGUOUS")
                 elif any(event.disposition in {"UNKNOWN_PRICE_IMPACT", "PRICE_AFFECTING_UNSUPPORTED"} for event in events):
                     result.update(reference_basis="UNKNOWN", reason="CORPORATE_ACTION_REFERENCE_UNSUPPORTED")
+                elif reference is None:
+                    result.update(reference_basis="UNKNOWN", reason=state.unknown_reason())
                 else:
-                    prior = previous_actual.get(security_id)
-                    expected_prior = previous_session.get(day)
-                    if not prior or prior[0] != expected_prior:
-                        result.update(reference_basis="UNKNOWN", reason="PREVIOUS_SESSION_ACTUAL_CLOSE_UNAVAILABLE")
-                    else:
-                        ref = prior[1]
-                        cat1_events = [event.event for event in events if event.event is not None]
-                        try:
-                            if cat1_events:
-                                ref = ex_right_reference_price(ref, cat1_events, "0.01")
-                                basis = "TDX_XRXD_REFERENCE_TRANSFORM_DIAGNOSTIC_NON_PIT"
-                            else:
-                                basis = "PREVIOUS_TDX_ACTUAL_CLOSE"
-                            exchange, rule_board = board_rule_key(board)
-                            limit = service.evaluate({
-                                "security_id": security_id, "trade_date": day, "exchange": exchange,
-                                "board": rule_board, "risk_status": risk_status, "suspended": False,
-                                "reference_status": "KNOWN", "quote_prev_close": str(ref),
-                                "close": str(row["raw_close"]), "listing_phase": "REGULAR",
-                                "ex_rights_reference_unknown": False,
-                            })
-                            result.update(reference_price=str(ref), reference_basis=basis,
-                                          rule_id=limit.get("rule_id"),
-                                          limit_up_price=str(limit["limit_up_price"]) if limit.get("limit_up_price") is not None else None,
-                                          limit_down_price=str(limit["limit_down_price"]) if limit.get("limit_down_price") is not None else None,
-                                          limit_status=limit.get("limit_state", "UNKNOWN"), reason=limit.get("reason"))
-                            if cat1_events:
-                                samples.setdefault("EX_RIGHT", {**result, "previous_close": str(prior[1]),
-                                                               "action_count": len(cat1_events),
-                                                               "action_formula": "(previous_close-cash_dividend_per_share+rights_price*rights_ratio)/(1+bonus_transfer_ratio+rights_ratio)"})
-                        except Exception as exc:
-                            result.update(reference_basis="UNKNOWN", reason="REFERENCE_PRICE_CALCULATION_FAILED:" + type(exc).__name__)
+                    ref = reference
+                    cat1_events = [event.event for event in events if event.event is not None]
+                    try:
+                        if cat1_events:
+                            basis = "TDX_XRXD_REFERENCE_TRANSFORM_DIAGNOSTIC_NON_PIT"
+                        else:
+                            basis = "PREVIOUS_OFFICIAL_CLOSE_STATE"
+                        exchange, rule_board = board_rule_key(board)
+                        limit = service.evaluate({
+                            "security_id": security_id, "trade_date": day, "exchange": exchange,
+                            "board": rule_board, "risk_status": risk_status, "suspended": False,
+                            "reference_status": "KNOWN", "quote_prev_close": str(ref),
+                            "close": str(row["raw_close"]), "listing_phase": "REGULAR",
+                            "ex_rights_reference_unknown": False,
+                        })
+                        result.update(reference_price=str(ref), reference_basis=basis,
+                                      rule_id=limit.get("rule_id"),
+                                      limit_up_price=str(limit["limit_up_price"]) if limit.get("limit_up_price") is not None else None,
+                                      limit_down_price=str(limit["limit_down_price"]) if limit.get("limit_down_price") is not None else None,
+                                      limit_status=limit.get("limit_state", "UNKNOWN"), reason=limit.get("reason"))
+                        if cat1_events:
+                            samples.setdefault("EX_RIGHT", {**result, "previous_close": str(ref),
+                                                           "action_count": len(cat1_events),
+                                                           "action_formula": "(previous_close-cash_dividend_per_share+rights_price*rights_ratio)/(1+bonus_transfer_ratio+rights_ratio)"})
+                    except Exception as exc:
+                        result.update(reference_basis="UNKNOWN", reason="REFERENCE_STATE_UNAVAILABLE:" + type(exc).__name__)
 
                     # 2026-07-06 is the risk-warning ratio rule boundary.
                     if day in boundary_days and risk_status == "RISK_WARNING":
@@ -309,8 +311,8 @@ def main() -> int:
                 samples.setdefault(board + "_" + result["risk_status"] + "_SAMPLE", dict(result))
             if result["limit_status"] == "UNKNOWN" and result.get("reason"):
                 by_reason[str(result["reason"])] += 1
-            if row:
-                previous_actual[security_id] = (day, row["raw_close"])
+            if status == "ACTUAL_TRADED" and row is not None and str(row["trade_date"]) == day:
+                state.observe_actual_close(row["raw_close"])
 
     def _write(target, digest, item):
         encoded = json.dumps(item, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
@@ -372,7 +374,7 @@ def main() -> int:
                          "gbbq": sha256(gbbq_path), "gbbq_map": sha256(gbbq_map_path)},
         "rule_registry_contract": rule_doc["contract_id"],
         "authority": "OFFICIAL_DATED_RULES; LOCAL_TDX_PRICES; BAOSTOCK_DATED_ISST_SUPPLEMENT",
-        "reference_policy": "Previous local TDX actual close for adjacent sessions; category-1 XRXD transform for supported ex-right dates; all other unresolved cases UNKNOWN.",
+        "reference_policy": "Previous official close state carries over suspension/no-trade sessions; supported category-1 XRXD events transform and round the reference; unsupported or unproven chains remain UNKNOWN until a trustworthy actual close resets the coordinate.",
         "knowledge_lineage": "DIAGNOSTIC_NON_PIT_FOR_HISTORICAL_PROVIDER_AND_GBBQ_FACTS",
         "limitations": [
             "Identity lifecycle input has effective list and delist dates but no separately dated relisting events; no relisting-phase claim is made.",

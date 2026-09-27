@@ -1,0 +1,128 @@
+{
+  "atomic_publication": {
+    "accepted_head_path": "data/v4/V4_02_ACCEPTED_HEAD.json",
+    "head_promoted": true,
+    "prior_head_status": "SUPERSEDED_BLOCKED_PENDING_R3",
+    "published_head_status": "PASS_WITH_BSE_SCOPE_DEGRADED"
+  },
+  "blockers": [],
+  "checks": {
+    "all_76_dispositions_closed": true,
+    "all_manifest_components_hash_bound": true,
+    "bse_degraded_out_of_required_scope": true,
+    "current_accepted_head_is_r3_superseded": true,
+    "independent_r4_postcheck_pass": true,
+    "r3_previous_close_freeze_pass": true,
+    "r4_and_frozen_r3_tests_pass": true,
+    "r4_manifest_ready": true,
+    "r7_alias_board_audit_pass": true
+  },
+  "component_hashes": {
+    "ADJUSTED_CANONICAL_DAILY": "60fc1fba137e2072cc1d370cac8fee86334b98f9d3e403042821e9d1e1026141",
+    "ADJUSTED_DAILY_R7": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90",
+    "CODE_CHANGE_ALIAS_AUDIT_R7": "1e7e3091faf893c1f1eb9440449b0f3e4515150c26014c67b0d80da1bef6dd06",
+    "DATED_ISST": "40c64982b5b98f2cb36f13a4b65fa84ecdbc6de319f4d084f81d9d287528ce79",
+    "DATED_ISST_ACCEPTANCE_RECEIPT": "a5f84c388a7482df83f0998c39dbe737587cc4c4c89a5fb524459e311baea97f",
+    "DATED_ISST_R7": "ffac24e09d02a53ffb48dbc24449d95f5ab20d8934c6401588a73c8673dbb8f4",
+    "DATED_TRADING_STATUS_R7": "ad65d2e1b3ca835a310cfa2a35f7bfd417a42020e27f2e77d4a79597aa018de9",
+    "FORMAL_CALENDAR_SSE": "09285bb116db5e7ab644e4942c331ceb9bc715b47f0369b9f228ef9d17df2d53",
+    "FORMAL_CALENDAR_SZSE": "9c56dcf2077a19d303f504fcf22f962d9d71ed626030b61ad2aa77a201897900",
+    "FORMAL_MONTHLY": "167d3795d1a993297e39b7ef3d55c9bfd3baf7721b409b8b4e3305030b279df4",
+    "FORMAL_MONTHLY_R7": "790ae9dd13bc363c431b2a7d02e3c6db868bc5d0b3d85a8c9a2acbd5dfd90ff3",
+    "FORMAL_WEEKLY": "9f49c9d1d37bc2c4ed31c0aaae847671d429652715f2cef54a4b431cbb1f59e8",
+    "FORMAL_WEEKLY_R7": "8eda09c0ca55b986cbebe0aa32454a22835492a6286c1237473c729ea2af0294",
+    "HISTORICAL_UNIVERSE_R7": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b",
+    "PACK_A_FINAL_RECEIPT": "a0065ca3ba9f0776bb0650719b59cd423a349e0d77d74c847255df382edf845b",
+    "PRICE_LIMIT": "0ca2ff328fee676c400b853aedce03db0c06068e8254eaae6633c32994596201",
+    "PRICE_LIMIT_ACCEPTANCE_R3": "6577a51b3c1a115420a8bb5fca736d4fb7c44325a90545ca42431686ecd1e648",
+    "PRICE_LIMIT_ACCEPTANCE_R4": "4f62489c6b0fdf346c6ef946f9102639aa7f13475a01bd3c47887abf75d1f358",
+    "PRICE_LIMIT_ACCEPTANCE_RECEIPT": "4901bae7a431621efeff3fad109f55e8edd82a4aea14842068c99361665f0e8f",
+    "PRICE_LIMIT_R3": "128324b29143e3f5733e02120d1eff3902a7e6f84c4d20f5e4846e3d9b141ee9",
+    "PRICE_LIMIT_R4": "dc27382bbe88644b85c09ec07331abd428e3c4091c94c2fffca8967d88590cce",
+    "PRICE_LIMIT_RANGE_EXCEPTION_AUDIT_R3": "ec2d60a574381310f865e6b87ff2e2fb36b6a19bea14ebbc4b51ee264f1b5bd8",
+    "R1_REVOCATION_RECEIPT": "1a549cfc160a91267862af4cafd435044615306a8e88971c2b686b9c196c4253",
+    "R3_INDEPENDENT_POSTCHECK_FREEZE": "55743686946ef8e0c75ef770064e2314393fe329842e565f52d8fc93bdcbad74",
+    "R3_RULE_CONTRACT": "68679333821c50cc8cbed5ff4cd001447cc6571d79b0d074a60b6bb81bdb01e0",
+    "R3_TEST_RECEIPT": "b1cbb116f0151cdf5b4e03f64582fdd82135ebf22e0ba74c4f411c0d23dc135b",
+    "R4_CAPTURE_SCRIPT": "18b1588e82b522a76eb546bb3dd3ca6f0ced62bba802623bbf2f48527a6c824e",
+    "R4_OFFICIAL_SOURCE_CAPTURE_INDEX": "a3f36b30c4f4f004074f1753c9e9feef3d62cb1794d322cea00c4b19fa8f325e",
+    "R4_PRICE_OVERLAY_SCRIPT": "4cf49651df12d6b2da71dd24f7ba1c5af28ef746a3c79c98f3ac9daf2e6cdaf1",
+    "R4_RANGE_EXCEPTION_AUDIT": "975f3ce59260e6a35d4c407026823b8d99c9cc65eacbc36be201f0bfbcf64292",
+    "R4_TEST_RECEIPT": "b3fa4e5e148824da7fd21a5b4a13b623100a629d31f6949932d5b25c04d12961",
+    "RAW_CANONICAL_DAILY": "cdbc3e2b49bf16f59a6661d4641a3d9a3b498c5a9843974e934a7ab695f02313",
+    "SECURITY_ENTITY_MAP_R7": "e33294fb8d1d71732fdc3df903258b5617345811ecbdb649af8056ccd91427e0",
+    "SPECIAL_PRICE_PHASE_CONTRACT_V1": "c58847908836d3151475aff8a1156b10c0bc12bb03131ca59ed017ce34f9b51d",
+    "SPECIAL_PRICE_PHASE_EVENTS_R4": "ed37539becf905a33750a3ea4d60639300a40db5344f879e09beb94559b9828f",
+    "TRADING_STATUS": "bb75f6cb9187616a272ff493b3fedfeaf9d0b2ac6c2a4aef4d3d74c550921119"
+  },
+  "contract_id": "V4_02_FINAL_ACCEPTANCE_RECEIPT_R4",
+  "evidence": {
+    "code_change_alias_audit": {
+      "path": "reports/v4_02/V4_01_CODE_CHANGE_ALIAS_AUDIT_R7.json",
+      "sha256": "1e7e3091faf893c1f1eb9440449b0f3e4515150c26014c67b0d80da1bef6dd06",
+      "status": "PASS_WITH_BOUNDED_ALIAS_REPAIR"
+    },
+    "frozen_r3_previous_close_postcheck": {
+      "path": "reports/v4_02/V4_02_FINAL_INDEPENDENT_POSTCHECK_R3.json",
+      "sha256": "55743686946ef8e0c75ef770064e2314393fe329842e565f52d8fc93bdcbad74",
+      "status": "BLOCKED"
+    },
+    "independent_postcheck": {
+      "path": "reports/v4_02/V4_02_FINAL_INDEPENDENT_POSTCHECK_R4.json",
+      "sha256": "55148db8363a6e85d64707a2558f42497884f26fa1b618fefc4c798acf4ce26e",
+      "status": "PASS"
+    },
+    "manifest": {
+      "path": "reports/v4_02/V4_02_FINAL_STAGING_MANIFEST_R4.json",
+      "sha256": "b57f0b745d24776c45753c18c3c0f90809e596eef40eb257b2af8d030251d130",
+      "status": "STAGING_CANDIDATE_READY"
+    },
+    "range_exception_audit": {
+      "path": "reports/v4_02/V4_02_PRICE_LIMIT_RANGE_EXCEPTION_AUDIT_R4.json",
+      "scope": {
+        "fail_closed_missing_evidence": 0,
+        "r1_exception_rows": 23,
+        "r1_resolved": 15,
+        "r1_still_open": 8,
+        "r3_current_exception_rows": 53,
+        "r3_fail_closed_dispositioned": 31,
+        "r3_resolved_special_phase": 22,
+        "row_count": 76,
+        "undispositioned_engineering_exceptions": 0
+      },
+      "sha256": "975f3ce59260e6a35d4c407026823b8d99c9cc65eacbc36be201f0bfbcf64292",
+      "status": "CLOSED"
+    },
+    "tests": {
+      "execution_commit": "33fcc3b3caa3793d082ae5ef44de69f99e52ffb1",
+      "failed": 0,
+      "passed": 21,
+      "path": "reports/v4_02/V4_02_FINAL_R4_TEST_RECEIPT.json",
+      "result": "PASS",
+      "sha256": "b3fa4e5e148824da7fd21a5b4a13b623100a629d31f6949932d5b25c04d12961",
+      "skipped": 0
+    }
+  },
+  "historical_adjusted_lineage": "DIAGNOSTIC_NON_PIT; HISTORICAL_PIT_NOT_CLAIMED",
+  "next_stage": "WAIT_FOR_EXTERNAL_ACCEPTANCE; DO_NOT_START_V4-03",
+  "observed_at_utc": "2026-09-27T01:46:44+00:00",
+  "scanner_factor_trading_runs": 0,
+  "scope": {
+    "optional_degraded": [
+      "BSE"
+    ],
+    "required_boards": [
+      "SH_MAIN",
+      "SZ_MAIN",
+      "CHINEXT",
+      "STAR"
+    ],
+    "source_cutoff": "2026-09-24",
+    "start_date": "2023-07-04"
+  },
+  "stage": "V4-02 FINAL SPECIAL PRICE PHASE CLOSURE / R4",
+  "status": "PASS_WITH_BSE_SCOPE_DEGRADED",
+  "supersedes": "V4_02_FINAL_RECEIPT_R3; R1 HISTORY RETAINED AND REVOKED",
+  "v4_03_entry": "PENDING_EXTERNAL_ACCEPTANCE",
+  "version": "4.0.0"
+}

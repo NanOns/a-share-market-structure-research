@@ -1,0 +1,22 @@
+{
+  "command": "python -m pytest -q tests/v4_02/test_final_r3_repairs.py tests/v4_02/test_final_r4_special_price_phase.py",
+  "contract_id": "V4_02_FINAL_R4_TEST_RECEIPT",
+  "execution_commit": "33fcc3b3caa3793d082ae5ef44de69f99e52ffb1",
+  "failed": 0,
+  "observed_at_utc": "2026-09-27T01:46:11+00:00",
+  "output": ".....................                                                    [100%]\n21 passed in 0.03s\n",
+  "passed": 21,
+  "r3_22_test_freeze_receipt": {
+    "passed": 22,
+    "path": "reports/v4_02/V4_02_FINAL_R3_TEST_RECEIPT.json",
+    "result": "PASS",
+    "sha256": "b1cbb116f0151cdf5b4e03f64582fdd82135ebf22e0ba74c4f411c0d23dc135b"
+  },
+  "result": "PASS",
+  "skipped": 0,
+  "tested_files": {
+    "tests/v4_02/test_final_r3_repairs.py": "f6dfcfa4442a53ef5169f4893ed2431e7306d3493a5d671063f2265e21a26282",
+    "tests/v4_02/test_final_r4_special_price_phase.py": "867d7d8652fd640d97f552f1e09aec8fd2c6c906829f18d853caa64d1f9d1188"
+  },
+  "version": "4.0.0"
+}

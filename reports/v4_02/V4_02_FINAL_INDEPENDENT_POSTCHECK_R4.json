@@ -1,0 +1,49 @@
+{
+  "checks": {
+    "all_component_hashes_match": true,
+    "all_range_exceptions_dispositioned": true,
+    "all_unknown_price_rows_have_stable_reason": true,
+    "bse_isolated": true,
+    "delisting_period_rule_selection": true,
+    "dispositions_reconcile_to_price_rows": true,
+    "frozen_r3_previous_close_chain_pass": true,
+    "official_delisting_events_bound_to_no_limit_rows": true,
+    "r3_freeze_and_r4_tests_pass": true,
+    "r4_price_rows_and_digest": true,
+    "r7_alias_and_board": true,
+    "unsupported_action_unknowns_preserved": true
+  },
+  "contract_id": "V4_02_FINAL_INDEPENDENT_POSTCHECK_R4",
+  "counts": {
+    "blank_unknown_reason_rows": 0,
+    "bse_rows": 0,
+    "current_range_exceptions": 53,
+    "delisting_event_starts": 22,
+    "price_rows": 4035729,
+    "range_exception_dispositions": 76,
+    "special_price_phases": {
+      "DELISTING_FIRST_DAY": 22,
+      "DELISTING_PERIOD": 308,
+      "IPO_FIRST_5_TRADING_DAYS": 1648,
+      "REGULAR": 4033720,
+      "UNKNOWN_SPECIAL_PHASE": 31
+    },
+    "unknown_reasons": {
+      "CORPORATE_ACTION_REFERENCE_UNSUPPORTED": 38,
+      "REFERENCE_CHAIN_BLOCKED_BY_UNSUPPORTED_ACTION": 1,
+      "REFERENCE_STATE_UNAVAILABLE": 7,
+      "SPECIAL_PHASE_EVIDENCE_UNAVAILABLE": 21,
+      "SPECIAL_REFERENCE_PRICE_UNAVAILABLE": 10
+    }
+  },
+  "findings": [],
+  "manifest": {
+    "path": "reports/v4_02/V4_02_FINAL_STAGING_MANIFEST_R4.json",
+    "sha256": "b57f0b745d24776c45753c18c3c0f90809e596eef40eb257b2af8d030251d130"
+  },
+  "next_stage": "SEAL_FINAL_R4_RECEIPT_AND_PROMOTE_ACCEPTED_HEAD",
+  "observed_at_utc": "2026-09-27T01:46:39+00:00",
+  "status": "PASS",
+  "tdx_root_write_count": 0,
+  "version": "4.0.0"
+}

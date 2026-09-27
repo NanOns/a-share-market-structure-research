@@ -1,0 +1,337 @@
+{
+  "artifact": {
+    "bytes": 157119091,
+    "normalized_output_sha256": "e6fe7222be2c8fcf2b51ab01378555605dd49cf1d3771b2f6410a6f7769cc038",
+    "path": "data/v4/artifact_store/v4_02/V4_02_PRICE_LIMIT_R4_20260927.jsonl.gz",
+    "sha256": "dc27382bbe88644b85c09ec07331abd428e3c4091c94c2fffca8967d88590cce"
+  },
+  "contract_id": "V4_02_PRICE_LIMIT_ACCEPTANCE_R4",
+  "inputs": {
+    "daily_r7": {
+      "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet",
+      "sha256": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90"
+    },
+    "events": {
+      "path": "reports/v4_02/V4_02_SPECIAL_PRICE_PHASE_EVENTS_R4.jsonl",
+      "sha256": "ed37539becf905a33750a3ea4d60639300a40db5344f879e09beb94559b9828f"
+    },
+    "phase_contract": {
+      "path": "config/v4_02_special_price_phase_v1.json",
+      "sha256": "c58847908836d3151475aff8a1156b10c0bc12bb03131ca59ed017ce34f9b51d"
+    },
+    "r3_price": {
+      "path": "data/v4/artifact_store/v4_02/V4_02_PRICE_LIMIT_R7_20260927.jsonl.gz",
+      "sha256": "128324b29143e3f5733e02120d1eff3902a7e6f84c4d20f5e4846e3d9b141ee9"
+    }
+  },
+  "limit_status_counts": {
+    "LIMIT_DOWN": 24377,
+    "LIMIT_UP": 59550,
+    "NOT_LIMIT": 3940937,
+    "NO_LIMIT": 1670,
+    "SUSPENDED": 9118,
+    "UNKNOWN": 77
+  },
+  "observed_at_utc": "2026-09-27T01:45:32+00:00",
+  "r3_range_exception_rows": 31,
+  "range_exception_candidates": [
+    {
+      "board_scope": "SH_MAIN",
+      "reference_price": "11.98",
+      "risk_status": "RISK_WARNING",
+      "security_id": "SEC-9D6E5766228A7656E008836369775C05",
+      "source_security_key": "SH.600306",
+      "trade_date": "2023-12-26",
+      "unknown_reason": "SPECIAL_PHASE_EVIDENCE_UNAVAILABLE"
+    },
+    {
+      "board_scope": "SZ_MAIN",
+      "reference_price": "2.01",
+      "risk_status": "RISK_WARNING",
+      "security_id": "SEC-4C351E0322C0C1B4D1140153D22E9E49",
+      "source_security_key": "SZ.002021",
+      "trade_date": "2023-12-29",
+      "unknown_reason": "SPECIAL_REFERENCE_PRICE_UNAVAILABLE"
+    },
+    {
+      "board_scope": "SH_MAIN",
+      "reference_price": "1.00",
+      "risk_status": "NORMAL",
+      "security_id": "SEC-D2A6FFE7040074531F8C01395B989168",
+      "source_security_key": "SH.603603",
+      "trade_date": "2024-03-27",
+      "unknown_reason": "SPECIAL_PHASE_EVIDENCE_UNAVAILABLE"
+    },
+    {
+      "board_scope": "SZ_MAIN",
+      "reference_price": "35.85",
+      "risk_status": "NORMAL",
+      "security_id": "SEC-A551ACC8344EBD503896DAEF26CDEFC3",
+      "source_security_key": "SZ.002970",
+      "trade_date": "2024-05-30",
+      "unknown_reason": "SPECIAL_REFERENCE_PRICE_UNAVAILABLE"
+    },
+    {
+      "board_scope": "SH_MAIN",
+      "reference_price": "7.13",
+      "risk_status": "NORMAL",
+      "security_id": "SEC-3AD696DD556CF135DA7AF82E748B37BF",
+      "source_security_key": "SH.600647",
+      "trade_date": "2024-06-05",
+      "unknown_reason": "SPECIAL_PHASE_EVIDENCE_UNAVAILABLE"
+    },
+    {
+      "board_scope": "SH_MAIN",
+      "reference_price": "9.84",
+      "risk_status": "NORMAL",
+      "security_id": "SEC-EBD426D928907EA6C4C2D25223F25368",
+      "source_security_key": "SH.600766",
+      "trade_date": "2024-06-05",
+      "unknown_reason": "SPECIAL_PHASE_EVIDENCE_UNAVAILABLE"
+    },
+    {
+      "board_scope": "SH_MAIN",
+      "reference_price": "1.98",
+      "risk_status": "NORMAL",
+      "security_id": "SEC-CB22BA16F08FEB4508DAC6EAF2283AFD",
+      "source_security_key": "SH.603133",
+      "trade_date": "2024-06-05",
+      "unknown_reason": "SPECIAL_PHASE_EVIDENCE_UNAVAILABLE"
+    },
+    {
+      "board_scope": "SZ_MAIN",
+      "reference_price": "22.06",
+      "risk_status": "NORMAL",
+      "security_id": "SEC-521E82B13C504D75F6C83CD8F6EC12AB",
+      "source_security_key": "SZ.001228",
+      "trade_date": "2024-11-28",
+      "unknown_reason": "SPECIAL_REFERENCE_PRICE_UNAVAILABLE"
+    },
+    {
+      "board_scope": "CHINEXT",
+      "reference_price": "22.03",
+      "risk_status": "NORMAL",
+      "security_id": "SEC-5230431466D57C5958B77EED9F9504C0",
+      "source_security_key": "SZ.300577",
+      "trade_date": "2024-11-28",
+      "unknown_reason": "SPECIAL_REFERENCE_PRICE_UNAVAILABLE"
+    },
+    {
+      "board_scope": "SZ_MAIN",
+      "reference_price": "6.76",
+      "risk_status": "RISK_WARNING",
+      "security_id": "SEC-527C59638ECE45EB4517456A6D11A59B",
+      "source_security_key": "SZ.000525",
+      "trade_date": "2024-12-13",
+      "unknown_reason": "SPECIAL_PHASE_EVIDENCE_UNAVAILABLE"
+    },
+    {
+      "board_scope": "SH_MAIN",
+      "reference_price": "13.32",
+      "risk_status": "RISK_WARNING",
+      "security_id": "SEC-FE1F7456E62558221490EB5F307E89D4",
+      "source_security_key": "SH.603007",
+      "trade_date": "2024-12-26",
+      "unknown_reason": "SPECIAL_REFERENCE_PRICE_UNAVAILABLE"
+    },
+    {
+      "board_scope": "CHINEXT",
+      "reference_price": "2.49",
+      "risk_status": "NORMAL",
+      "security_id": "SEC-801FC9249C28BD8D0410C9F8A9814111",
+      "source_security_key": "SZ.300630",
+      "trade_date": "2025-04-28",
+      "unknown_reason": "SPECIAL_PHASE_EVIDENCE_UNAVAILABLE"
+    },
+    {
+      "board_scope": "SH_MAIN",
+      "reference_price": "3.84",
+      "risk_status": "NORMAL",
+      "security_id": "SEC-C1E271EEAEC579B2B586A38762D04A73",
+      "source_security_key": "SH.603003",
+      "trade_date": "2025-06-10",
+      "unknown_reason": "SPECIAL_PHASE_EVIDENCE_UNAVAILABLE"
+    },
+    {
+      "board_scope": "SZ_MAIN",
+      "reference_price": "1.46",
+      "risk_status": "NORMAL",
+      "security_id": "SEC-BF185D924391E478E606954160F505AF",
+      "source_security_key": "SZ.000584",
+      "trade_date": "2025-06-20",
+      "unknown_reason": "SPECIAL_PHASE_EVIDENCE_UNAVAILABLE"
+    },
+    {
+      "board_scope": "SH_MAIN",
+      "reference_price": "1.24",
+      "risk_status": "NORMAL",
+      "security_id": "SEC-60A384059FEB329BA173A89F52C9C07D",
+      "source_security_key": "SH.600200",
+      "trade_date": "2025-12-09",
+      "unknown_reason": "SPECIAL_PHASE_EVIDENCE_UNAVAILABLE"
+    },
+    {
+      "board_scope": "CHINEXT",
+      "reference_price": "1.87",
+      "risk_status": "NORMAL",
+      "security_id": "SEC-87D5640CFC29DACC5F7F31065C55FE1D",
+      "source_security_key": "SZ.300344",
+      "trade_date": "2026-03-31",
+      "unknown_reason": "SPECIAL_PHASE_EVIDENCE_UNAVAILABLE"
+    },
+    {
+      "board_scope": "SZ_MAIN",
+      "reference_price": "95.73",
+      "risk_status": "NORMAL",
+      "security_id": "SEC-27C6BBEDA6B15CB15F15CCCBF0922DBF",
+      "source_security_key": "SZ.002975",
+      "trade_date": "2026-05-11",
+      "unknown_reason": "SPECIAL_REFERENCE_PRICE_UNAVAILABLE"
+    },
+    {
+      "board_scope": "SZ_MAIN",
+      "reference_price": "11.71",
+      "risk_status": "NORMAL",
+      "security_id": "SEC-07FF31893A0D85A80F3164128E8B11DF",
+      "source_security_key": "SZ.002560",
+      "trade_date": "2026-05-13",
+      "unknown_reason": "SPECIAL_REFERENCE_PRICE_UNAVAILABLE"
+    },
+    {
+      "board_scope": "STAR",
+      "reference_price": "0.93",
+      "risk_status": "NORMAL",
+      "security_id": "SEC-023E5E9565E6BC33513A4682BADDFC10",
+      "source_security_key": "SH.688287",
+      "trade_date": "2026-05-19",
+      "unknown_reason": "SPECIAL_PHASE_EVIDENCE_UNAVAILABLE"
+    },
+    {
+      "board_scope": "SZ_MAIN",
+      "reference_price": "36.98",
+      "risk_status": "NORMAL",
+      "security_id": "SEC-78310452EEBA29E38F21CB145240A01F",
+      "source_security_key": "SZ.002407",
+      "trade_date": "2026-05-20",
+      "unknown_reason": "SPECIAL_REFERENCE_PRICE_UNAVAILABLE"
+    },
+    {
+      "board_scope": "SH_MAIN",
+      "reference_price": "4.08",
+      "risk_status": "NORMAL",
+      "security_id": "SEC-DD8F9B1A0ABFC26DEA028762D9C4E5BC",
+      "source_security_key": "SH.600421",
+      "trade_date": "2026-06-01",
+      "unknown_reason": "SPECIAL_PHASE_EVIDENCE_UNAVAILABLE"
+    },
+    {
+      "board_scope": "SH_MAIN",
+      "reference_price": "3.95",
+      "risk_status": "NORMAL",
+      "security_id": "SEC-BBD6C671EE2FB1B48682CB1147B26F88",
+      "source_security_key": "SH.600599",
+      "trade_date": "2026-06-01",
+      "unknown_reason": "SPECIAL_PHASE_EVIDENCE_UNAVAILABLE"
+    },
+    {
+      "board_scope": "SH_MAIN",
+      "reference_price": "4.51",
+      "risk_status": "NORMAL",
+      "security_id": "SEC-C64CEEE60743290A61AD2855E9F75505",
+      "source_security_key": "SH.600636",
+      "trade_date": "2026-06-01",
+      "unknown_reason": "SPECIAL_PHASE_EVIDENCE_UNAVAILABLE"
+    },
+    {
+      "board_scope": "SH_MAIN",
+      "reference_price": "2.17",
+      "risk_status": "NORMAL",
+      "security_id": "SEC-27CE5837F43A166E2BB32912C18D633E",
+      "source_security_key": "SH.600193",
+      "trade_date": "2026-06-08",
+      "unknown_reason": "SPECIAL_PHASE_EVIDENCE_UNAVAILABLE"
+    },
+    {
+      "board_scope": "SH_MAIN",
+      "reference_price": "2.07",
+      "risk_status": "NORMAL",
+      "security_id": "SEC-06345B54715033B26F8365383A821163",
+      "source_security_key": "SH.600608",
+      "trade_date": "2026-06-08",
+      "unknown_reason": "SPECIAL_PHASE_EVIDENCE_UNAVAILABLE"
+    },
+    {
+      "board_scope": "SH_MAIN",
+      "reference_price": "5.03",
+      "risk_status": "NORMAL",
+      "security_id": "SEC-2B1E4799949166F821A45684596CC022",
+      "source_security_key": "SH.605081",
+      "trade_date": "2026-06-08",
+      "unknown_reason": "SPECIAL_PHASE_EVIDENCE_UNAVAILABLE"
+    },
+    {
+      "board_scope": "STAR",
+      "reference_price": "143.43",
+      "risk_status": "NORMAL",
+      "security_id": "SEC-21CEA99CE88C716A64B97F51EAC014EA",
+      "source_security_key": "SH.688368",
+      "trade_date": "2026-06-09",
+      "unknown_reason": "SPECIAL_REFERENCE_PRICE_UNAVAILABLE"
+    },
+    {
+      "board_scope": "CHINEXT",
+      "reference_price": "2.77",
+      "risk_status": "NORMAL",
+      "security_id": "SEC-376419A77B8044E3475E35D53D4B44CE",
+      "source_security_key": "SZ.300029",
+      "trade_date": "2026-06-18",
+      "unknown_reason": "SPECIAL_PHASE_EVIDENCE_UNAVAILABLE"
+    },
+    {
+      "board_scope": "SZ_MAIN",
+      "reference_price": "2.76",
+      "risk_status": "NORMAL",
+      "security_id": "SEC-5A88E8D22C94CA62A69C7A53F6009970",
+      "source_security_key": "SZ.000004",
+      "trade_date": "2026-06-23",
+      "unknown_reason": "SPECIAL_PHASE_EVIDENCE_UNAVAILABLE"
+    },
+    {
+      "board_scope": "SZ_MAIN",
+      "reference_price": "8.30",
+      "risk_status": "NORMAL",
+      "security_id": "SEC-C67FF05D97B0A34F3C3C0D14FA21A6D3",
+      "source_security_key": "SZ.002898",
+      "trade_date": "2026-06-26",
+      "unknown_reason": "SPECIAL_PHASE_EVIDENCE_UNAVAILABLE"
+    },
+    {
+      "board_scope": "CHINEXT",
+      "reference_price": "23.89",
+      "risk_status": "NORMAL",
+      "security_id": "SEC-A173B2AB82DD14C1F3697CBB2EE24B53",
+      "source_security_key": "SZ.300873",
+      "trade_date": "2026-07-01",
+      "unknown_reason": "SPECIAL_REFERENCE_PRICE_UNAVAILABLE"
+    }
+  ],
+  "reference_policy": "R3 previous-close states are frozen; official delisting first-day events remove the limit check; subsequent delisting-period sessions use effective non-ST board limits; unproved phases fail closed.",
+  "row_count": 4035729,
+  "scope": {
+    "bse": "OPTIONAL_DEGRADED_EXCLUDED",
+    "required_boards": [
+      "SH_MAIN",
+      "SZ_MAIN",
+      "CHINEXT",
+      "STAR"
+    ]
+  },
+  "special_phase_counts": {
+    "DELISTING_FIRST_DAY": 22,
+    "DELISTING_PERIOD": 308
+  },
+  "stage_contract": "PRICE_LIMIT_RULE_R4 + SPECIAL_PRICE_PHASE_V1",
+  "status": "PRICE_LIMIT_R4_CANDIDATE_PASS_WITH_FAIL_CLOSED_UNKNOWN",
+  "tdx_root_write_count": 0,
+  "version": "4.0.0"
+}

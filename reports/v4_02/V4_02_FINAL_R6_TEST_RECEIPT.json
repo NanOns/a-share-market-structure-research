@@ -1,0 +1,28 @@
+{
+  "command": "python -m pytest -q tests/v4_02/test_final_r3_repairs.py tests/v4_02/test_final_r4_special_price_phase.py tests/v4_02/test_r5_generic_runtime.py tests/v4_02/test_r6_generic_production_builder.py",
+  "contract_id": "V4_02_FINAL_R6_TEST_RECEIPT",
+  "execution_commit": "14a8c4e7964db4834dbeb10ceb811552783d0cbd",
+  "failed": 0,
+  "observed_at_utc": "2026-09-27T14:28:03+00:00",
+  "output": "...............................                                          [100%]\n31 passed in 0.06s\n",
+  "passed": 31,
+  "preserved_r4_test_receipt": {
+    "path": "reports/v4_02/V4_02_FINAL_R4_TEST_RECEIPT.json",
+    "result": "PASS",
+    "sha256": "b3fa4e5e148824da7fd21a5b4a13b623100a629d31f6949932d5b25c04d12961"
+  },
+  "preserved_r5_test_receipt": {
+    "path": "reports/v4_02/V4_02_FINAL_R5_TEST_RECEIPT.json",
+    "result": "PASS",
+    "sha256": "5de18f08b39b81ef91de0bb3dbbf734ebaa919f7c826237e49d64aa876f69b5d"
+  },
+  "result": "PASS",
+  "skipped": 0,
+  "tested_files": {
+    "tests/v4_02/test_final_r3_repairs.py": "bf220bc5554864c1d88f8163094d5166b97270a873b3fb0b925025a9ce6ae2c1",
+    "tests/v4_02/test_final_r4_special_price_phase.py": "4287652b4729f412239e4918f04e7197ac81a41820c51697c8a778da8566230e",
+    "tests/v4_02/test_r5_generic_runtime.py": "c51e786961f2e5ef87ca869c34edfaadad42810a2aa648bee8aa173298bf5285",
+    "tests/v4_02/test_r6_generic_production_builder.py": "19a19674fdd256b41bbf7bdaabf08ffc924f83553511e328fb755b1569a1a994"
+  },
+  "version": "6.0.0"
+}

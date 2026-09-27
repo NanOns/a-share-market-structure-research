@@ -1,0 +1,169 @@
+{
+  "checks": {
+    "R5_evidence_preserved": true,
+    "builder_calls_generic_phase_runtime": true,
+    "builder_consumes_event_store_policy_alias_and_daily_close": true,
+    "builder_core_unchanged_since_build_commit": true,
+    "delisting_first_day_and_period_recomputed": true,
+    "historical_phase_inventory_reproduced": true,
+    "production_build_completed": true,
+    "production_code_identifier_scan_pass": true,
+    "production_generic_builder_exists": true,
+    "r4_business_payload_identical": true,
+    "r4_limit_status_inventory_identical": true,
+    "r4_row_count_and_unknown_inventory_identical": true,
+    "source_capture_remains_offline_verified": true,
+    "synthetic_integration_and_regression_tests_pass": true,
+    "test_receipt_binds_current_commit": true,
+    "unknown_phase_fail_closed_recomputed": true,
+    "v4_03_remains_blocked": true
+  },
+  "components": {
+    "ALIAS_RESOLVER": {
+      "bytes": 4700,
+      "path": "src/workbench_analysis/dated_security_alias.py",
+      "sha256": "5f713026d59d63b0818de74e0c59731da350b67c64f909fc704e1a47bf19c6b3"
+    },
+    "BUILD_RECEIPT": {
+      "bytes": 2520,
+      "path": "reports/v4_02/V4_02_PRICE_LIMIT_BUILD_R6.json",
+      "sha256": "68262fad01134019e84c4dac14810428566607ee978962b8f5fe9ec7456e5729"
+    },
+    "CALENDAR": {
+      "bytes": 17888,
+      "path": "data/v4/candidate_calendars/V4_02_MARKET_CALENDAR_20230704_20260924_V2/calendar_sse_20230704_20260924.json",
+      "sha256": "09285bb116db5e7ab644e4942c331ceb9bc715b47f0369b9f228ef9d17df2d53"
+    },
+    "DAILY_R7": {
+      "bytes": 112302935,
+      "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet",
+      "sha256": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90"
+    },
+    "FROZEN_R3_BASE": {
+      "bytes": 156595293,
+      "path": "data/v4/artifact_store/v4_02/V4_02_PRICE_LIMIT_R7_20260927.jsonl.gz",
+      "sha256": "128324b29143e3f5733e02120d1eff3902a7e6f84c4d20f5e4846e3d9b141ee9"
+    },
+    "INDEPENDENT_POSTCHECK": {
+      "bytes": 2293,
+      "path": "reports/v4_02/V4_02_FINAL_INDEPENDENT_POSTCHECK_R6.json",
+      "sha256": "4fcd51ff16f90844c358c0094b5badac315a70a75ab027f8fb3f1c54806b1f5c"
+    },
+    "INTEGRATION_TESTS": {
+      "bytes": 8876,
+      "path": "tests/v4_02/test_r6_generic_production_builder.py",
+      "sha256": "19a19674fdd256b41bbf7bdaabf08ffc924f83553511e328fb755b1569a1a994"
+    },
+    "R4_ACCEPTANCE": {
+      "bytes": 6779,
+      "path": "reports/v4_02/V4_02_FINAL_RECEIPT_R4.json",
+      "sha256": "d24bee3210c919d3e5faab479db59231a4de583a6a9a41511cad349fe38b0f06"
+    },
+    "R4_PRICE": {
+      "bytes": 157119091,
+      "path": "data/v4/artifact_store/v4_02/V4_02_PRICE_LIMIT_R4_20260927.jsonl.gz",
+      "sha256": "dc27382bbe88644b85c09ec07331abd428e3c4091c94c2fffca8967d88590cce"
+    },
+    "R4_RANGE_AUDIT": {
+      "bytes": 151621,
+      "path": "reports/v4_02/V4_02_PRICE_LIMIT_RANGE_EXCEPTION_AUDIT_R4.json",
+      "sha256": "975f3ce59260e6a35d4c407026823b8d99c9cc65eacbc36be201f0bfbcf64292"
+    },
+    "R5_ACCEPTANCE": {
+      "bytes": 2445,
+      "path": "reports/v4_02/V4_02_FINAL_RECEIPT_R5.json",
+      "sha256": "2551c197d6b909135ae95a7f19e3da90b8156525f1ed1920892f69c2bd0c7b24"
+    },
+    "R5_CAPTURE_VERIFY": {
+      "bytes": 9617,
+      "path": "reports/v4_02/V4_02_R5_SOURCE_CAPTURE_VERIFY.json",
+      "sha256": "c254efd8ccd23f5b7e00dfd3f50285ed7cfea49d500fdae2881cf4df3767e269"
+    },
+    "R5_MANIFEST": {
+      "bytes": 5947,
+      "path": "reports/v4_02/V4_02_FINAL_STAGING_MANIFEST_R5.json",
+      "sha256": "67f14699822ddf2141371a546ab2d9ae32d8fb183a414b27062c5521eb4dda8a"
+    },
+    "R6_ALIAS_FACTS": {
+      "bytes": 1534,
+      "path": "data/v4/bootstrap/dated_security_alias_r7.jsonl",
+      "sha256": "115a5b611c64f30cadd8695a9a464d8243cb3afe16d642ea786ff4b7bd107c4a"
+    },
+    "R6_BUILDER": {
+      "bytes": 15441,
+      "path": "scripts/build_v4_02_price_limits_generic.py",
+      "sha256": "e39405d604299a610b11ac8b0672a2bb63c943d49c6dc267555bf3138230ba28"
+    },
+    "R6_EVENTS": {
+      "bytes": 20336,
+      "path": "data/v4/bootstrap/special_price_phase_events_r4.jsonl",
+      "sha256": "bb357ad505a6ace734b6b47f4581efa34c582d8bbf82111d933af037ae9ad522"
+    },
+    "R6_POLICY": {
+      "bytes": 4532,
+      "path": "config/special_price_phase_policy_r6.json",
+      "sha256": "cffd66e633ee2a34c712ee628dcace2026b49764bc9f593dacd90fe39e183c79"
+    },
+    "R6_POSTCHECK_SCRIPT": {
+      "bytes": 6270,
+      "path": "scripts/independent_v4_02_r6_postcheck.py",
+      "sha256": "9051336a41e82f2fe53c48ce5525b1445121a5c61fc111cbc14dda4c3a474698"
+    },
+    "R6_PRICE": {
+      "bytes": 157153754,
+      "path": "data/v4/artifact_store/v4_02/V4_02_PRICE_LIMIT_R6_20260927.jsonl.gz",
+      "sha256": "6f40d6b92e78e8de6f2cc17c867d902e06e56d82d0b7f45c8715469704b4e6af"
+    },
+    "R6_RUNTIME": {
+      "bytes": 19357,
+      "path": "src/workbench_analysis/special_price_phases.py",
+      "sha256": "7e64ca1acd9d1d7c9138915cf3f82ffedb40ea6b3b99349c0857458a09f0db93"
+    },
+    "STANDARD_RULES": {
+      "bytes": 15757,
+      "path": "config/v4_02_price_limit_rules_r3.json",
+      "sha256": "68679333821c50cc8cbed5ff4cd001447cc6571d79b0d074a60b6bb81bdb01e0"
+    },
+    "TEST_RECEIPT": {
+      "bytes": 1489,
+      "path": "reports/v4_02/V4_02_FINAL_R6_TEST_RECEIPT.json",
+      "sha256": "51f91c89b4cadaae470be0ca7f888db59770061328254cffe61b4725564b8667"
+    }
+  },
+  "contract_id": "V4_02_WHOLE_STAGE_STAGING_MANIFEST_R6",
+  "created_at_utc": "2026-09-27T14:28:03+00:00",
+  "governing_upgrade_contract": {
+    "contract_id": "DA-MSR-V4.2.2-CODEX-REV2",
+    "path": "D:/Users/lps/Desktop/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_20260925_codex修改版.md",
+    "sha256": "744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd"
+  },
+  "implementation_commit": "14a8c4e7964db4834dbeb10ceb811552783d0cbd",
+  "new_notice_searches": 0,
+  "new_source_recaptures": 0,
+  "next_stage": "INDEPENDENT_R6_POSTCHECK_AND_FINAL_RECEIPT; V4-03_BLOCKED_PENDING_EXTERNAL_ACCEPTANCE",
+  "r4_status": "HISTORICAL_DATA_CORRECTNESS_ACCEPTED_AND_PRESERVED",
+  "r5_status": "GENERIC_CONTRACTS_ACCEPTED_AND_PRESERVED; PRODUCTION_WIRING_BLOCKED_PENDING_R6",
+  "r6_external_status": "PENDING_R6_EXTERNAL_REVIEW",
+  "r6_task_document": {
+    "path": "D:/Users/lps/Desktop/V4_02_R5_EXTERNAL_AUDIT_AND_R6_GENERIC_PRODUCTION_WIRING_20260927.md",
+    "sha256": "3b4503f44a9fca80fd3d5ab794062bd40149e7d2d596e4460d9469bc2edadf1f"
+  },
+  "scanner_factor_trading_runs": 0,
+  "scope": {
+    "optional_degraded": [
+      "BSE"
+    ],
+    "required_boards": [
+      "SH_MAIN",
+      "SZ_MAIN",
+      "CHINEXT",
+      "STAR"
+    ],
+    "source_cutoff": "2026-09-24"
+  },
+  "stage": "V4-02",
+  "stage_contract": "R3_PRICE_LIMIT_BASE + SPECIAL_PRICE_PHASE_EVENT_V1 + SPECIAL_PRICE_PHASE_POLICY_V2; generic runtime recalculation",
+  "status": "STAGING_CANDIDATE_READY",
+  "tdx_root_write_count": 0,
+  "version": "6.0.0"
+}

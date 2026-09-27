@@ -1,0 +1,70 @@
+{
+  "blockers": [],
+  "checks": {
+    "R5_evidence_preserved": true,
+    "builder_calls_generic_phase_runtime": true,
+    "builder_consumes_event_store_policy_alias_and_daily_close": true,
+    "builder_core_unchanged_since_build_commit": true,
+    "delisting_first_day_and_period_recomputed": true,
+    "historical_phase_inventory_reproduced": true,
+    "production_build_completed": true,
+    "production_code_identifier_scan_pass": true,
+    "production_generic_builder_exists": true,
+    "r4_business_payload_identical": true,
+    "r4_limit_status_inventory_identical": true,
+    "r4_row_count_and_unknown_inventory_identical": true,
+    "source_capture_remains_offline_verified": true,
+    "synthetic_integration_and_regression_tests_pass": true,
+    "test_receipt_binds_current_commit": true,
+    "unknown_phase_fail_closed_recomputed": true,
+    "v4_03_remains_blocked": true
+  },
+  "contract_id": "V4_02_FINAL_ACCEPTANCE_RECEIPT_R6",
+  "evidence": {
+    "independent_postcheck": {
+      "path": "reports/v4_02/V4_02_FINAL_INDEPENDENT_POSTCHECK_R6.json",
+      "sha256": "4fcd51ff16f90844c358c0094b5badac315a70a75ab027f8fb3f1c54806b1f5c",
+      "status": "PASS"
+    },
+    "manifest": {
+      "path": "reports/v4_02/V4_02_FINAL_STAGING_MANIFEST_R6.json",
+      "sha256": "a83f90a0d1acc08e32db5dab049f3bf16a9284e5bf6785cd8f3a2b52aed31678"
+    },
+    "preserved_r5_receipt": {
+      "path": "reports/v4_02/V4_02_FINAL_RECEIPT_R5.json",
+      "sha256": "2551c197d6b909135ae95a7f19e3da90b8156525f1ed1920892f69c2bd0c7b24"
+    },
+    "production_build": {
+      "business_payload_sha256": "6fce7a228c7c4a2148d176ae8be8c90d64788c81707ed1ac60413c8f7264650b",
+      "path": "reports/v4_02/V4_02_PRICE_LIMIT_BUILD_R6.json",
+      "sha256": "68262fad01134019e84c4dac14810428566607ee978962b8f5fe9ec7456e5729"
+    },
+    "tests": {
+      "passed": 31,
+      "path": "reports/v4_02/V4_02_FINAL_R6_TEST_RECEIPT.json",
+      "result": "PASS",
+      "sha256": "51f91c89b4cadaae470be0ca7f888db59770061328254cffe61b4725564b8667"
+    }
+  },
+  "external_acceptance": "PENDING_R6_EXTERNAL_REVIEW",
+  "next_stage": "WAIT_FOR_EXTERNAL_R6_ACCEPTANCE; DO_NOT_START_V4-03",
+  "observed_at_utc": "2026-09-27T14:28:03+00:00",
+  "scanner_factor_trading_runs": 0,
+  "scope": {
+    "optional_degraded": [
+      "BSE"
+    ],
+    "required_boards": [
+      "SH_MAIN",
+      "SZ_MAIN",
+      "CHINEXT",
+      "STAR"
+    ],
+    "source_cutoff": "2026-09-24"
+  },
+  "stage": "V4-02 FINAL GENERIC PRODUCTION WIRING / R6",
+  "status": "PASS_WITH_BSE_SCOPE_DEGRADED",
+  "tdx_root_write_count": 0,
+  "v4_03_entry": "BLOCKED_PENDING_EXTERNAL_ACCEPTANCE",
+  "version": "6.0.0"
+}

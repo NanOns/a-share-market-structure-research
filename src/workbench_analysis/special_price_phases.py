@@ -95,6 +95,10 @@ class SpecialPhaseEventStore:
         event_ids = [x.event_id for x in self.events]
         if len(event_ids) != len(set(event_ids)):
             raise ValueError("SPECIAL_PHASE_EVENT_ID_DUPLICATE")
+        by_security: dict[str, list[SpecialPhaseEvent]] = {}
+        for event in self.events:
+            by_security.setdefault(event.security_id, []).append(event)
+        self._by_security = {key: tuple(value) for key, value in by_security.items()}
 
     @classmethod
     def from_jsonl(cls, path: str | Path) -> "SpecialPhaseEventStore":
@@ -102,13 +106,14 @@ class SpecialPhaseEventStore:
             return cls(json.loads(line) for line in stream if line.strip())
 
     def for_security(self, security_id: str) -> tuple[SpecialPhaseEvent, ...]:
-        return tuple(x for x in self.events if x.security_id == security_id)
+        return self._by_security.get(security_id, ())
 
 
 class PhasePolicyRegistry:
     def __init__(self, contract: Mapping[str, object]):
         self.contract = dict(contract)
         self.policies = tuple(contract.get("policies", ()))
+        self.standard_rule_scope_map = tuple(contract.get("standard_rule_scope_map", ()))
         if not self.policies:
             raise ValueError("SPECIAL_PHASE_POLICIES_EMPTY")
         self.formula_contract = dict(contract.get("formula_contract", {}))
@@ -139,6 +144,15 @@ class PhasePolicyRegistry:
                 raise ValueError("DELISTING_PERIOD_POLICY_UNAVAILABLE")
             policy = candidates[0]
         return int(policy["trading_sessions_including_first_day"])
+
+    def standard_rule_key(self, trade_date: str, board_scope: str) -> tuple[str, str] | None:
+        day = _iso(trade_date)
+        rows = [row for row in self.standard_rule_scope_map if row.get("board_scope") == board_scope
+                and str(row.get("valid_from", "0001-01-01")) <= day
+                and (row.get("valid_to") is None or day <= str(row["valid_to"]))]
+        if len(rows) > 1:
+            raise ValueError("STANDARD_RULE_SCOPE_MAP_AMBIGUOUS")
+        return (str(rows[0]["exchange"]), str(rows[0]["board"])) if rows else None
 
 
 def resolve_event_phase(store: SpecialPhaseEventStore, security_id: str, trade_date: str,
@@ -250,7 +264,8 @@ def special_limit_prices(reference: str | Decimal, policy: Mapping[str, object])
 
 def apply_phase_event(row: Mapping[str, object], phase: SpecialPricePhase, event: SpecialPhaseEvent | None,
                       policies: PhasePolicyRegistry, *, close: str | Decimal | None = None,
-                      regular_rule: Mapping[str, object] | None = None) -> dict:
+                      regular_rule: Mapping[str, object] | None = None,
+                      unknown_reason: str | None = None) -> dict:
     result = dict(row)
     day, board = _iso(result.get("trade_date")), str(result.get("board_scope") or (event.board_scope if event else ""))
     policy = policies.policy_for(phase, day, board)
@@ -261,11 +276,13 @@ def apply_phase_event(row: Mapping[str, object], phase: SpecialPricePhase, event
                       special_phase_effective_date=event.phase_effective_from,
                       special_phase_observed_at=event.observed_at)
     if phase in {SpecialPricePhase.DELISTING_FIRST_DAY, SpecialPricePhase.RELISTING_FIRST_DAY, SpecialPricePhase.IPO_FIRST_5_TRADING_DAYS}:
-        result.update(limit_status="NO_LIMIT", reason=f"{phase.value}_NO_LIMIT", reference_basis="OFFICIAL_SPECIAL_PHASE",
-                      limit_up_price=None, limit_down_price=None, rule_id=(policy or {}).get("policy_id"))
+        result.update(limit_status="NO_LIMIT", reason=(policy or {}).get("reason", f"{phase.value}_NO_LIMIT"),
+                      reference_basis=(policy or {}).get("reference_basis", "OFFICIAL_SPECIAL_PHASE"),
+                      limit_up_price=None, limit_down_price=None,
+                      rule_id=(policy["rule_id"] if policy is not None and "rule_id" in policy else (policy or {}).get("policy_id")))
         return result
     if phase == SpecialPricePhase.UNKNOWN_SPECIAL_PHASE:
-        result.update(limit_status="UNKNOWN", reason=(policy or {}).get("reason", "SPECIAL_PHASE_EVIDENCE_UNAVAILABLE"),
+        result.update(limit_status="UNKNOWN", reason=unknown_reason or (policy or {}).get("reason", "SPECIAL_PHASE_EVIDENCE_UNAVAILABLE"),
                       limit_up_price=None, limit_down_price=None)
         return result
     if phase == SpecialPricePhase.REGULAR:

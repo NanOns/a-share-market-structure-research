@@ -110,7 +110,7 @@ def main() -> int:
         temp_paths.append(Path(name))
         streams.append(gzip.open(name, "wt", encoding="utf-8", newline="\n", compresslevel=6))
     seen: dict[str, set[str]] = defaultdict(set)
-    input_rows = output_rows = merged_rows = 0
+    input_rows = output_rows = target_sessions_emitted = duplicate_rows_removed = 0
     target_days: set[str] = set()
     target_id_key_history: dict[str, set[str]] = defaultdict(set)
 
@@ -122,7 +122,7 @@ def main() -> int:
             current_day = None
 
             def emit_group(group: list[tuple[dict, dict, dict]]) -> None:
-                nonlocal output_rows, merged_rows
+                nonlocal output_rows, target_sessions_emitted, duplicate_rows_removed
                 by_key: dict[str, tuple[dict, dict, dict]] = {}
                 passthrough = []
                 for ur, sr, ir in group:
@@ -145,6 +145,7 @@ def main() -> int:
                 if not set(by_key).issubset(TARGET_KEYS):
                     raise RuntimeError("R7_TARGET_ALIAS_SET_INVALID")
                 target_days.add(str(group[0][0]["trade_date"]).replace("-", ""))
+                duplicate_rows_removed += max(0, len(by_key) - 1)
                 old = by_key.get("SZ.300114")
                 new = by_key.get("SZ.302132")
                 chosen = new or old
@@ -176,7 +177,7 @@ def main() -> int:
                 for stream, row in zip(streams, (ur, sr, ir), strict=True):
                     stream.write(json.dumps(row, ensure_ascii=False, sort_keys=True, separators=(",", ":")) + "\n")
                 output_rows += 1
-                merged_rows += 1
+                target_sessions_emitted += 1
 
             for lines in zip(u, s, i, strict=True):
                 rows = tuple(json.loads(line) for line in lines)
@@ -226,12 +227,14 @@ def main() -> int:
                      "source_capture_sha256": sha(evidence_path),
                      "source_revision": "公告2025-028; 代码变更启用日2025-02-17"},
         "scan": {"input_membership_rows": input_rows, "output_membership_rows": output_rows,
-                 "merged_target_identity_session_rows": merged_rows,
+                 "target_identity_session_rows_emitted": target_sessions_emitted,
+                 "duplicate_membership_rows_removed": duplicate_rows_removed,
                  "target_alias_history": {sid: sorted(keys) for sid, keys in target_id_key_history.items()},
                  "preexisting_multi_alias_stable_identities": len(prior_multi_key),
                  "preexisting_multi_alias_examples": dict(list(sorted(prior_multi_key.items()))[:25]),
                  "unresolved_required_scope_code_change_identities": len(prior_multi_key)},
         "outputs": {},
+        "execution_identity": {"script_sha256": sha(Path(__file__).resolve())},
         "next_stage": "REBUILD_AFFECTED_DAILY_PERIOD_AND_PRICE_LIMIT_ARTIFACTS; V4-03_BLOCKED",
         "observed_at_utc": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
     }
@@ -239,7 +242,8 @@ def main() -> int:
         repair_doc["outputs"][str(path.relative_to(ROOT)).replace("\\", "/")] = {"sha256": sha(path), "bytes": path.stat().st_size}
     atomic_json(ROOT / "reports/v4_02/V4_01_CODE_CHANGE_ALIAS_AUDIT_R7.json", repair_doc)
     print(json.dumps({"status": repair_doc["status"], "input_rows": input_rows,
-                      "output_rows": output_rows, "merged_rows": merged_rows,
+                      "output_rows": output_rows, "target_sessions": target_sessions_emitted,
+                      "duplicate_rows_removed": duplicate_rows_removed,
                       "unresolved": len(prior_multi_key), "output_paths": repair_doc["outputs"]}, ensure_ascii=False))
     return 0 if not prior_multi_key else 2
 

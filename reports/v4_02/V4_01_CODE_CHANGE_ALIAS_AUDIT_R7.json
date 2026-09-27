@@ -6,6 +6,9 @@
     "source_ref": "https://disc.static.szse.cn/disc/disk03/finalpage/2025-02-15/cedb693a-f5ee-4463-9682-ea33d406b569.PDF",
     "source_revision": "公告2025-028; 代码变更启用日2025-02-17"
   },
+  "execution_identity": {
+    "script_sha256": "a6e387ddc4627b157b713baddcadbde2d2505f3360dd7d872515c1a04ff750f3"
+  },
   "next_stage": "REBUILD_AFFECTED_DAILY_PERIOD_AND_PRICE_LIMIT_ARTIFACTS; V4-03_BLOCKED",
   "observed_at_utc": "2026-09-27T00:08:37+00:00",
   "outputs": {
@@ -33,8 +36,8 @@
     "STAR"
   ],
   "scan": {
+    "duplicate_membership_rows_removed": 392,
     "input_membership_rows": 4036121,
-    "merged_target_identity_session_rows": 786,
     "output_membership_rows": 4035729,
     "preexisting_multi_alias_examples": {},
     "preexisting_multi_alias_stable_identities": 0,
@@ -46,6 +49,7 @@
         "SZ.302132"
       ]
     },
+    "target_identity_session_rows_emitted": 786,
     "unresolved_required_scope_code_change_identities": 0
   },
   "status": "PASS_WITH_BOUNDED_ALIAS_REPAIR",

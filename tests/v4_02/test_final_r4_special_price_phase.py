@@ -25,6 +25,12 @@ def test_delisting_first_day_is_no_limit():
     assert phase_limit_ratio("SZ_MAIN", phase, "0.10", "NORMAL") is None
 
 
+def test_delisting_phase_is_not_projected_before_effective_date():
+    event = phase_event()
+    phase = resolve_phase([event], "SEC-1", "2024-06-05", ["2024-06-05", "2024-06-06", "2024-06-07"])
+    assert phase == SpecialPricePhase.REGULAR
+
+
 def test_delisting_second_day_uses_delisting_period_rule():
     event = phase_event()
     phase = resolve_phase([event], "SEC-1", "2024-06-07", ["2024-06-06", "2024-06-07"])

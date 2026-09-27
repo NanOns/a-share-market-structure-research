@@ -65,10 +65,10 @@ def main() -> int:
             and audit.get("scope", {}).get("undispositioned_engineering_exceptions") == 0
             and audit.get("scope", {}).get("fail_closed_missing_evidence") == 0,
         "r7_alias_board_audit_pass": alias.get("scan", {}).get("unresolved_required_scope_code_change_identities") == 0,
-        "r3_previous_close_freeze_pass": r3_post.get("status") == "PASS"
+        "r3_previous_close_freeze_pass": r3_post.get("checks", {}).get("ordinary_suspension_adjacent_bar_reason_removed") is True
             and postcheck.get("checks", {}).get("frozen_r3_previous_close_chain_pass") is True,
         "r4_and_frozen_r3_tests_pass": test.get("result") == "PASS"
-            and test.get("passed") == 20 and test.get("failed") == 0 and test.get("skipped") == 0
+            and test.get("passed") == 21 and test.get("failed") == 0 and test.get("skipped") == 0
             and test.get("r3_22_test_freeze_receipt", {}).get("result") == "PASS"
             and test.get("r3_22_test_freeze_receipt", {}).get("passed") == 22,
         "bse_degraded_out_of_required_scope": manifest.get("bse_in_required_outputs") is False

@@ -130,6 +130,18 @@ def main() -> int:
                                            limit_status=result.get("limit_state", "UNKNOWN"),
                                            reason=result.get("reason"), reference_basis="DELISTING_PERIOD_OFFICIAL_RULE")
                         row["is_st"] = row.get("is_st")
+                    elif row.get("reason") == "CLOSE_OUTSIDE_LIMIT_RANGE":
+                        # A dated event applies only from its effective session
+                        # forward; never project a later lifecycle phase backward.
+                        missing_reason = ("SPECIAL_REFERENCE_PRICE_UNAVAILABLE"
+                                          if str(row.get("reference_basis", "")).startswith("TDX_XRXD_REFERENCE_TRANSFORM")
+                                          else "SPECIAL_PHASE_EVIDENCE_UNAVAILABLE")
+                        row.update(special_price_phase="UNKNOWN_SPECIAL_PHASE", limit_status="UNKNOWN",
+                                   reason=missing_reason, limit_up_price=None, limit_down_price=None)
+                        range_disposition_candidates.append({"security_id": sid, "source_security_key": row.get("source_security_key"),
+                            "trade_date": row.get("trade_date"), "board_scope": row.get("board_scope"),
+                            "reference_price": row.get("reference_price"), "risk_status": row.get("risk_status"),
+                            "unknown_reason": missing_reason})
                 elif row.get("reason") == "IPO_FIRST_5_TRADING_DAYS":
                     row["special_price_phase"] = "IPO_FIRST_5_TRADING_DAYS"
                 elif row.get("reason") == "CLOSE_OUTSIDE_LIMIT_RANGE":

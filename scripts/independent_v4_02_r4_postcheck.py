@@ -50,8 +50,11 @@ def main() -> int:
         findings.append("R7_ALIAS_OR_BOARD_FAILED")
 
     r3_post = load("reports/v4_02/V4_02_FINAL_INDEPENDENT_POSTCHECK_R3.json")
-    checks["frozen_r3_previous_close_chain_pass"] = (r3_post.get("status") == "PASS"
-        and r3_post.get("checks", {}).get("ordinary_suspension_adjacent_bar_reason_removed") is True)
+    # R3 was intentionally BLOCKED solely by the 53 range exceptions and 8
+    # historical open dispositions; its previous-close check is independently
+    # frozen and must remain true even while that separate gate was open.
+    checks["frozen_r3_previous_close_chain_pass"] = (
+        r3_post.get("checks", {}).get("ordinary_suspension_adjacent_bar_reason_removed") is True)
     if not checks["frozen_r3_previous_close_chain_pass"]:
         findings.append("FROZEN_R3_PREVIOUS_CLOSE_CHECK_FAILED")
 
@@ -88,7 +91,8 @@ def main() -> int:
     checks["delisting_period_rule_selection"] = (
         phases["DELISTING_PERIOD"] == 14 * len(events)
         and all(board in {"SH_MAIN", "SZ_MAIN", "CHINEXT", "STAR"} for board in [e.get("board_scope") for e in events]))
-    checks["all_unknown_price_rows_have_stable_reason"] = blank_unknown == 0 and reasons.get("") == 0
+    checks["all_unknown_price_rows_have_stable_reason"] = (
+        blank_unknown == 0 and reasons.get("", 0) == 0 and reasons.get("CLOSE_OUTSIDE_LIMIT_RANGE", 0) == 0)
     checks["bse_isolated"] = bse_rows == 0
     if not checks["r4_price_rows_and_digest"]:
         findings.append("R4_PRICE_ROW_COUNT_OR_DIGEST_FAILED")

@@ -53,6 +53,7 @@ class FactorValue:
     actual_count: int
     suspended_count: int
     input_digest: str
+    output_digest: str
     contract_id: str = CONTRACT_ID
     parameter_set_id: str = PARAMETER_SET_ID
 
@@ -63,28 +64,35 @@ def _digest(parts: object) -> str:
 
 def _result(value: float | bool | None, reason: str | None, rows: Sequence[Observation], kind: str,
             field: str, security_id: str) -> FactorValue:
-    return FactorValue(value, "UNKNOWN" if reason else "OBSERVED", reason,
-                       _digest([kind, field, security_id, [(r.trade_date, r.state,
-                       r.bar.adjustment_basis_id if r.bar else None,
-                       r.bar.source_digest if r.bar else None) for r in rows]]),
-                       rows[0].trade_date if rows else None,
-                       rows[-1].trade_date if rows else None, len(rows),
-                       sum(r.state == "ACTUAL" for r in rows),
-                       sum(r.state == "CONFIRMED_SUSPENSION" for r in rows),
-                       _digest([(r.trade_date, r.bar.source_digest if r.bar else r.state) for r in rows]))
+    payload = {"value": value, "quality_state": "UNKNOWN" if reason else "OBSERVED", "unknown_reason": reason,
+               "window_identity": _digest([kind, field, security_id, [(r.trade_date, r.state,
+               r.bar.adjustment_basis_id if r.bar else None,
+               r.bar.source_digest if r.bar else None) for r in rows]]),
+               "window_start_trade_date": rows[0].trade_date if rows else None,
+               "window_end_trade_date": rows[-1].trade_date if rows else None,
+               "calendar_span": len(rows), "actual_count": sum(r.state == "ACTUAL" for r in rows),
+               "suspended_count": sum(r.state == "CONFIRMED_SUSPENSION" for r in rows),
+               "input_digest": _digest([(r.trade_date, r.bar.source_digest if r.bar else r.state) for r in rows]),
+               "contract_id": CONTRACT_ID, "parameter_set_id": PARAMETER_SET_ID}
+    payload["output_digest"] = _digest(payload)
+    return FactorValue(**payload)
 
 
 def _derived(value: float | bool | None, reason: str | None, field: str,
              security_id: str, dependencies: Sequence[FactorValue]) -> FactorValue:
     starts = [x.window_start_trade_date for x in dependencies if x.window_start_trade_date]
     ends = [x.window_end_trade_date for x in dependencies if x.window_end_trade_date]
-    return FactorValue(value, "UNKNOWN" if reason else "OBSERVED", reason,
-                       _digest([CONTRACT_ID, field, security_id, [x.window_identity for x in dependencies]]),
-                       min(starts) if starts else None, max(ends) if ends else None,
-                       max((x.calendar_span for x in dependencies), default=0),
-                       max((x.actual_count for x in dependencies), default=0),
-                       max((x.suspended_count for x in dependencies), default=0),
-                       _digest([x.input_digest for x in dependencies]))
+    payload = {"value": value, "quality_state": "UNKNOWN" if reason else "OBSERVED", "unknown_reason": reason,
+               "window_identity": _digest([CONTRACT_ID, field, security_id, [x.window_identity for x in dependencies]]),
+               "window_start_trade_date": min(starts) if starts else None,
+               "window_end_trade_date": max(ends) if ends else None,
+               "calendar_span": max((x.calendar_span for x in dependencies), default=0),
+               "actual_count": max((x.actual_count for x in dependencies), default=0),
+               "suspended_count": max((x.suspended_count for x in dependencies), default=0),
+               "input_digest": _digest([x.input_digest for x in dependencies]),
+               "contract_id": CONTRACT_ID, "parameter_set_id": PARAMETER_SET_ID}
+    payload["output_digest"] = _digest(payload)
+    return FactorValue(**payload)
 
 
 def _valid(rows: Sequence[Observation], *, price: bool = True) -> str | None:
@@ -106,8 +114,9 @@ def _tech(history: Sequence[Observation], n: int, *, exclude_current: bool = Fal
     end = len(history) - (1 if exclude_current else 0)
     if end <= 0:
         return [], "INSUFFICIENT_HISTORY"
-    if not exclude_current and history[end - 1].state != "ACTUAL":
-        return [history[end - 1]], history[end - 1].state if history[end - 1].state in {"ADJUSTMENT_UNKNOWN", "IDENTITY_UNKNOWN"} else "CURRENT_BAR_UNAVAILABLE"
+    if not exclude_current and history[end - 1].state in {"UNKNOWN", "ADJUSTMENT_UNKNOWN", "IDENTITY_UNKNOWN", "PRE_LISTING"}:
+        row = history[end - 1]
+        return [row], row.state if row.state in {"ADJUSTMENT_UNKNOWN", "IDENTITY_UNKNOWN"} else "CURRENT_BAR_UNAVAILABLE"
     actual = []
     start = end
     for i in range(end - 1, -1, -1):
@@ -153,11 +162,16 @@ def compute_core(history: Sequence[Observation], security_id: str, *, asof: str 
             raise ValueError("asof must be an explicit market-session endpoint")
     out: dict[str, FactorValue] = {}
 
-    def put(field: str, n: int, formula, *, prior: bool = False, extra: int = 0):
+    def put(field: str, n: int, formula, *, prior: bool = False,
+            current_required: bool = False, extra: int = 0):
         rows, error = _tech(history, n + extra, exclude_current=prior)
         reason = error or _valid([r for r in rows if r.state == "ACTUAL"])
-        if prior:
-            reason = reason or (history[-1].state if history[-1].state in {"ADJUSTMENT_UNKNOWN", "IDENTITY_UNKNOWN"} else _valid(history[-1:]))
+        if current_required:
+            current_state = history[-1].state
+            current_error = (current_state if current_state in {"ADJUSTMENT_UNKNOWN", "IDENTITY_UNKNOWN"}
+                             else "CURRENT_BAR_UNAVAILABLE" if current_state != "ACTUAL"
+                             else _valid(history[-1:]))
+            reason = reason or current_error
             if not reason and rows and _bars(rows)[-1].adjustment_basis_id != history[-1].bar.adjustment_basis_id:
                 reason = "MIXED_ADJUSTMENT_IDENTITY"
         bars = _bars(rows)
@@ -183,9 +197,9 @@ def compute_core(history: Sequence[Observation], security_id: str, *, asof: str 
         put(f"prior_low{n}", n, lambda b: min(x.low for x in b), prior=True)
     for n in (5, 20):
         put(f"amount_ratio{n}", n, lambda b: history[-1].bar.amount / fmean(x.amount for x in b)
-            if fmean(x.amount for x in b) != 0 else None, prior=True)
+            if fmean(x.amount for x in b) != 0 else None, prior=True, current_required=True)
         put(f"volume_ratio{n}", n, lambda b: history[-1].bar.volume / fmean(x.volume for x in b)
-            if fmean(x.volume for x in b) != 0 else None, prior=True)
+            if fmean(x.volume for x in b) != 0 else None, prior=True, current_required=True)
     for n in (1, 3, 5, 20):
         rows, error = _session(history, n)
         reason = error or _valid([rows[0], rows[-1]]) if rows else error
@@ -200,7 +214,7 @@ def compute_core(history: Sequence[Observation], security_id: str, *, asof: str 
         out[f"vol{n}"] = _result(value, reason, rows, CROSS_SECTION, f"vol{n}", security_id)
     put("tr", 1, lambda b: max(b[-1].high - b[-1].low,
                                   abs(b[-1].high - b[-2].close),
-                                  abs(b[-1].low - b[-2].close)), extra=1)
+                                  abs(b[-1].low - b[-2].close)), current_required=True, extra=1)
     for n in (5, 20):
         put(f"atr{n}", n, lambda b: fmean(max(x.high - x.low, abs(x.high - p.close), abs(x.low - p.close))
             for p, x in zip(b[:-1], b[1:])), extra=1)
@@ -222,7 +236,7 @@ def compute_core(history: Sequence[Observation], security_id: str, *, asof: str 
     put("hh_progress", 10, lambda b: max(x.high for x in b[-5:]) > max(x.high for x in b[:5]))
     put("ll_progress", 10, lambda b: min(x.low for x in b[-5:]) < min(x.low for x in b[:5]))
     put("clv", 1, lambda b: (b[-1].close - b[-1].low) / (b[-1].high - b[-1].low)
-        if b[-1].high != b[-1].low else None)
+        if b[-1].high != b[-1].low else None, current_required=True)
     prior_rows, prior_error = _tech(history, 60, exclude_current=True)
     prior_reason = prior_error or _valid([r for r in prior_rows if r.state == "ACTUAL"])
     prior_bars = _bars(prior_rows)
@@ -248,14 +262,19 @@ def compute_core(history: Sequence[Observation], security_id: str, *, asof: str 
         if not reason:
             if name == "pos60":
                 den = out["hhv60"].value - out["llv60"].value
-                value = (history[-1].bar.close - out["llv60"].value) / den if den else None
+                if history[-1].state != "ACTUAL" or history[-1].bar is None:
+                    reason = history[-1].state if history[-1].state in {"ADJUSTMENT_UNKNOWN", "IDENTITY_UNKNOWN"} else "CURRENT_BAR_UNAVAILABLE"
+                elif den == 0:
+                    reason = "ZERO_DENOMINATOR"
+                else:
+                    value = (history[-1].bar.close - out["llv60"].value) / den
             elif name == "range_ratio":
                 den = out["hhv20"].value - out["llv20"].value
                 value = (out["hhv5"].value - out["llv5"].value) / den if den else None
             else:
                 den = out[denominator].value
                 value = out[numerator].value / den if den and den > 0 else None
-            if value is None:
+            if value is None and reason is None:
                 reason = "ZERO_DENOMINATOR"
         out[name] = _derived(value, reason, name, security_id, deps)
     deps = [out["prior_low20"], out["atr20"], out["ret1"]]

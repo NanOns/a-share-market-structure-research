@@ -1,0 +1,136 @@
+{
+  "algorithm_contract_count": 47,
+  "artifact_sha256": {
+    "core_output": "7961546dcd39c6e539ca0263fba04fa8bd6a891d1a6c6e04d40bc17a2eb7b495",
+    "determinism_replay": "3da91b82125fc895263abba86fd1beb7114156781096e91dcbf04d89472622ff",
+    "full_scope_candidate": "6c5f8292239773565d26dab750fa342713952850d26977e81d5fd94b7cf77341",
+    "independent_47_postcheck": "89d815ce0d608c919e49ccdfe2d4b98d282a1754d7a0c69568d0a413c46d8a72",
+    "independent_path_postcheck": "5eed74da186173c46c8f8ae0b083048aaeb4d9fc1dbf90d89bb0f7f48adf9907",
+    "market_path_candidate": "c1198cca58aced5b0cef747c1f33cdd41ab9a56df5065f22f4d3cc3ce984cade"
+  },
+  "baseline": "V4_DEV_BASELINE_HEAD@2026-09-24",
+  "branch": "codex/v4-system-reform",
+  "contract_id": "V4_03_EXTERNAL_ACCEPTANCE_R1_REPAIR_DISPOSITION_20260928",
+  "external_acceptance": "NOT_GRANTED",
+  "final_stage_receipt_generated": false,
+  "findings": {
+    "B01": {
+      "evidence": [
+        "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1@1.2.0",
+        "RULE_AST_V2",
+        "47 per-field machine contracts",
+        "V1.1 validator unchanged; compatibility tests pass"
+      ],
+      "status": "IMPLEMENTED_PENDING_EXTERNAL_REVIEW"
+    },
+    "B02": {
+      "evidence": [
+        "versioned symmetric STRONG/WEAK erratum",
+        "trend boundary vectors"
+      ],
+      "status": "IMPLEMENTED_PENDING_EXTERNAL_REVIEW"
+    },
+    "C01": {
+      "evidence": [
+        "prior extrema exclude T0",
+        "suspended-asof prior extrema/technical vector",
+        "pos60 reason-precedence regression fixed"
+      ],
+      "status": "FIXED_AND_RETESTED"
+    },
+    "C02": {
+      "evidence": [
+        "47 required V4-00G output metadata rows",
+        "output schema digest bound to extension 1.2.0"
+      ],
+      "status": "FIXED_SCHEMA_VALIDATED"
+    },
+    "C03": {
+      "evidence": [
+        "5222 rows x 47 fields",
+        "independent mismatch count 0",
+        "DIAGNOSTIC_NON_PIT lineage; not accepted publication"
+      ],
+      "status": "47_FIELD_DIAGNOSTIC_CANDIDATE_AND_INDEPENDENT_VALUES_QUALITY_PASS"
+    },
+    "C04": {
+      "evidence": [
+        "relative outputs contain PIT start/current universe IDs, session, adjustment set, input digest, prior RPS artifact digest and quality"
+      ],
+      "status": "IDENTITY_FIELDS_ADDED"
+    },
+    "C05": {
+      "evidence": [
+        "native contract registry",
+        "market path candidate with PIT step identity",
+        "sector field-local contracts",
+        "accepted sector membership input absent"
+      ],
+      "status": "CONTRACTS_ADDED_SECTOR_MATERIALIZATION_BLOCKED"
+    },
+    "C06": {
+      "evidence": [
+        "quote, amount, ret1, MA20 use separate field-local quality sets and denominators"
+      ],
+      "status": "FIXED_AND_TESTED"
+    },
+    "C07": {
+      "evidence": [
+        "unknown daily return permanently breaks same-version path suffix",
+        "200 rows independent match"
+      ],
+      "status": "FIXED_AND_INDEPENDENTLY_REPLAYED"
+    }
+  },
+  "framework": {
+    "base_path": "config\\v4_algorithm_contract_framework_v1.json",
+    "base_sha256": "a03fda92aaf608edfb5dd86b533fae576c3d121bc413a61768985e6e53cb4455",
+    "base_version": "1.1.0",
+    "extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
+    "extension_version": "1.2.0"
+  },
+  "gate_summary": {
+    "ast_contracts_47_valid": true,
+    "deterministic_replay_four_artifacts": true,
+    "dev_baseline_mutation": 0,
+    "full_scope_candidate_5222_x_47": true,
+    "independent_all_47_value_quality": "PASS",
+    "market_path_200_session_independent": true,
+    "native_contract_count": 4,
+    "performance_measurement_available": true,
+    "scanner_run_count": 0,
+    "schema_47_valid": true,
+    "sector_accepted_input_component_count": 0,
+    "sector_full_market_materialization": "BLOCKED",
+    "stage_head_mutation": 0,
+    "tdx_root_write_count": 0,
+    "trading_run_count": 0,
+    "v4_02_head_mutation": 0
+  },
+  "internal_stage_acceptance": "NOT_GRANTED",
+  "native_contract_count": 4,
+  "next_stage": "Resolve sector membership input contract; then run full-history/native market-sector materialization and byte-level independent digest regeneration. Do not start V4-04.",
+  "parameter_registry_sha256": "c3cda61e604948935061b077f0f57777ac9dc9917263cab2217ca3c2ac9f28e3",
+  "residual_blockers": [
+    "No accepted V4-01/V4-02 historical sector-membership component exists in the frozen input manifest; full-market sector primitive artifact cannot be produced without introducing an unaccepted membership source.",
+    "Stock-core and relative candidate reuse a 200-market-session bounded diagnostic. Required full-history first-available-date/warm-up acceptance has not been completed.",
+    "Candidate lineage is DIAGNOSTIC_NON_PIT; there is no accepted publication artifact and no V4_03_FINAL_STAGE_RECEIPT_R1.",
+    "Independent postcheck recomputed values and quality for all 47 fields, recomputed each output_digest and checked artifact SHA, but did not regenerate producer input_digest/window_identity byte-for-byte.",
+    "Market-regime axes and sector primitives have contract/test closure but were not materialized as full-market daily artifacts; market path is bounded to the same 200 sessions."
+  ],
+  "schema_field_count": 47,
+  "sector_scope": {
+    "amount_a_calls": 0,
+    "consumer_stage": "V4-08",
+    "full_market_sector_artifact": "NOT_PRODUCED",
+    "library_contract_tests": "ALLOWED",
+    "qualification_calls": 0,
+    "rotation_calls": 0,
+    "seed_calls": 0,
+    "status": "BLOCKED_ACCEPTED_SECTOR_MEMBERSHIP_INPUT_NOT_PRESENT_IN_V4_01_V4_02_BASELINE_MANIFEST",
+    "turnover_or_baostock_calls": 0,
+    "v4_08_formal_fields_published": 0
+  },
+  "status": "REPAIR_IMPLEMENTATION_COMPLETE_STAGE_ACCEPTANCE_BLOCKED",
+  "v4_04_entry": "BLOCKED"
+}

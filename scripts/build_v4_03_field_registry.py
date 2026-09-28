@@ -9,6 +9,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SCOPE = ROOT / "config/v4_03_field_scope_map_v1.json"
 OUTPUT = ROOT / "config/v4_03_field_registry_v1.json"
+SCHEMA_OUTPUT = ROOT / "config/v4_03_output_schema_v1.json"
 
 
 def sha(path):
@@ -44,10 +45,11 @@ def main():
     manifest = json.loads((ROOT / "reports/v4_02/V4_02_FINAL_STAGING_MANIFEST_R6.json").read_text(encoding="utf-8"))
     source = manifest["components"]["DAILY_R7"]["sha256"]
     result = []
+    schema_fields = []
     for field, window in sorted(scope["produced_fields"].items()):
         family, unit, dataset = describe(field)
         cross = window == "CROSS_SECTION_SESSION_WINDOW_V1"
-        result.append({
+        row = {
             "field_id": field, "formula_family": family,
             "producer_contract_id": family, "owner_stage": "V4-03",
             "input_dataset": dataset, "price_basis": "raw_amount" if field.startswith("amount") else "accepted_raw_volume" if field.startswith("volume") else "verified_affine_adjusted_OHLC",
@@ -58,7 +60,19 @@ def main():
             "publication_permission": "V4_03_PRIMITIVE_ONLY",
             "consumer_stage": "V4-04",
             "source_digest_identity": source,
-            "parameter_set_id": scope["parameter_set_id"]})
+            "parameter_set_id": scope["parameter_set_id"]}
+        result.append(row)
+        schema_field = {
+            "field_id": field, "type": "boolean" if unit == "boolean" else "float64",
+            "unit": unit, "producer_contract_id": family, "producer_version": "1.0.0",
+            "requiredness": "REQUIRED", "nullable": True,
+            "as_of": "fixed_market_session_t" if cross else "actual_bar_asof_t",
+            "quality_state": "OBSERVED|UNKNOWN",
+            "missing_policy": "field_local_UNKNOWN_with_reason_no_imputation",
+            "display_label": field}
+        schema_field["output_digest"] = hashlib.sha256(
+            json.dumps(schema_field, sort_keys=True, separators=(",", ":")).encode("utf-8")).hexdigest()
+        schema_fields.append(schema_field)
     payload = {"contract_id": "V4_03_FIELD_REGISTRY_V1", "version": "1.0.0",
                "scope_map_sha256": sha(SCOPE), "frozen_dev_baseline_sha256": sha(ROOT / scope["input_head"]),
                "field_count": len(result), "fields": result,
@@ -66,6 +80,20 @@ def main():
     temp = OUTPUT.with_suffix(".json.tmp")
     temp.write_bytes((json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n").encode("utf-8"))
     os.replace(temp, OUTPUT)
+    framework_path = ROOT / "config/v4_algorithm_contract_framework_v1_2_0.json"
+    schema_payload = {"contract_id": "V4_03_OUTPUT_SCHEMA_V1", "version": "1.0.0",
+                      "framework_contract_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
+                      "framework_stage_id": "V4-00G-SCOPED-CORRECTIVE-REVISION-R1",
+                      "framework_version": json.loads(framework_path.read_text(encoding="utf-8"))["version"],
+                      "framework_sha256": sha(framework_path), "field_count": len(schema_fields),
+                      "fields": schema_fields,
+                      "digest_semantics": "output_digest is the stable digest of the field schema identity; actual artifact values bind their own row and output digests"}
+    from src.v4.contracts.algorithm_contract import validate_output_field
+    for field in schema_fields:
+        validate_output_field(field)
+    temp = SCHEMA_OUTPUT.with_suffix(".json.tmp")
+    temp.write_bytes((json.dumps(schema_payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n").encode("utf-8"))
+    os.replace(temp, SCHEMA_OUTPUT)
     print(f"{len(result)} field metadata rows")
 
 

@@ -1,7 +1,7 @@
 import pytest
 
 from src.v4.factors.core import Bar, Observation, compute_core, market_reference, rps_midrank
-from src.v4.factors.native import historical_market_path, market_axis_primitives, sector_native
+from src.v4.factors.native import historical_market_path, market_axis_primitives, market_trend_axis, sector_native
 from src.v4.factors.relative import relative_factors
 
 
@@ -44,7 +44,7 @@ def test_suspension_crosses_technical_but_blocks_vol():
 
 def test_endpoint_and_unexplained_gap_fail_closed():
     suspended = compute_core(rows(suspension=(99,)), "SH_600000")
-    assert suspended["ma5"].quality_state == "UNKNOWN"
+    assert suspended["ma5"].quality_state == "OBSERVED"
     assert suspended["ret5"].quality_state == "UNKNOWN"
     gap = compute_core(rows(gap=(96,)), "SH_600000")
     assert gap["ma5"].unknown_reason == "UNEXPLAINED_DATA_GAP"
@@ -83,6 +83,20 @@ def test_five_session_suspension_and_zero_amount_volume_denominators():
     assert values["volume_ratio5"].unknown_reason == "ZERO_DENOMINATOR"
 
 
+def test_prior_extrema_and_technical_windows_at_suspended_asof():
+    data = rows(suspension=(99,))
+    result = compute_core(data, "SH_600000")
+    assert result["prior_high20"].quality_state == "OBSERVED"
+    assert result["prior_low20"].quality_state == "OBSERVED"
+    assert result["prior_high20"].window_end_trade_date == data[-2].trade_date
+    assert result["ma20"].quality_state == "OBSERVED"
+    assert result["ma20"].suspended_count == 1
+    assert result["amount_ratio20"].unknown_reason == "CURRENT_BAR_UNAVAILABLE"
+    assert result["ret5"].unknown_reason == "MISSING_OR_SUSPENDED_ENDPOINT"
+    assert result["pos60"].unknown_reason == "CURRENT_BAR_UNAVAILABLE"
+    assert result["clv"].unknown_reason == "CURRENT_BAR_UNAVAILABLE"
+
+
 def test_nonpositive_price_invalidates_required_window():
     bad = rows()
     b = bad[-2].bar
@@ -106,27 +120,84 @@ def test_rps_and_market_reference_boundaries():
 
 
 def test_native_boundaries():
-    assert historical_market_path([("a", .1), ("b", .2)])[-1]["level"] == 1.32
-    primitive = sector_native(["b", "a", "a"], {"a": {"quality_state": "OBSERVED", "ret1": 1, "amount": 100,
-                              "above_ma20": True}})
+    source = "a" * 64
+    assert historical_market_path([("a", .1), ("b", .2)], start_sessions=["0", "a"],
+                                  start_universe_snapshot_ids=["U0", "Ua"],
+                                  market_calendar_id="CAL-1", input_source_digest=source)[-1]["level"] == 1.32
+    primitive = sector_native(["b", "a", "a"], {"a": {"quote_quality_state": "OBSERVED",
+                              "ret1_quality_state": "OBSERVED", "ret1": 1,
+                              "amount_quality_state": "UNKNOWN", "amount": None,
+                              "ma20_quality_state": "OBSERVED", "above_ma20": True}},
+                              trade_date="2026-09-24", market_calendar_id="CAL-1",
+                              sector_membership_snapshot_id="SECTOR-U-1", adjustment_basis_id="QFQ-SET-1",
+                              input_source_digest=source)
     assert primitive["member_count"] == 2
+    assert primitive["positive_breadth_denominator"] == 1
+    assert primitive["ma20_width_denominator"] == 1
+    assert primitive["amount_evaluable_count"] == 0
     assert primitive["publication_permission"] == "NOT_V4_08_SECTOR_FACTORS"
+    second = sector_native(["a"], {"a": {"quote_quality_state": "UNKNOWN",
+                              "ret1_quality_state": "OBSERVED", "ret1": -1,
+                              "amount_quality_state": "OBSERVED", "amount": 50,
+                              "ma20_quality_state": "UNKNOWN", "above_ma20": None}},
+                              trade_date="2026-09-24", market_calendar_id="CAL-1",
+                              sector_membership_snapshot_id="SECTOR-U-2", adjustment_basis_id="QFQ-SET-1",
+                              input_source_digest="b" * 64)
+    assert second["raw_quote_coverage"] == 0
+    assert second["positive_breadth_denominator"] == 1
+    assert second["ma20_width_denominator"] == 0
+    assert second["amount_median_primitive"] == 50
+    assert primitive["output_digest"] != second["output_digest"]
+    assert second["field_quality"]["amount_median_primitive"]["quality_state"] == "OBSERVED"
+    assert second["downstream_scope"]["sector_ranking_permitted"] is False
+    reordered = sector_native(["a", "b"], {"a": {"quote_quality_state": "OBSERVED",
+                               "ret1_quality_state": "OBSERVED", "ret1": 1,
+                               "amount_quality_state": "UNKNOWN", "amount": None,
+                               "ma20_quality_state": "OBSERVED", "above_ma20": True}},
+                               trade_date="2026-09-24", market_calendar_id="CAL-1",
+                               sector_membership_snapshot_id="SECTOR-U-1", adjustment_basis_id="QFQ-SET-1",
+                               input_source_digest=source)
+    assert reordered["input_digest"] == primitive["input_digest"]
+    assert reordered["output_digest"] == primitive["output_digest"]
+    with pytest.raises(ValueError, match="complete time/source/PIT identity"):
+        sector_native(["a"], {}, trade_date="2026-09-24", market_calendar_id="CAL-1",
+                      sector_membership_snapshot_id="", adjustment_basis_id="QFQ", input_source_digest=source)
 
 
 def test_market_axis_exact_thresholds_and_conflict():
+    identity = {"trade_date": "2026-09-24", "market_calendar_id": "CAL-1", "market_snapshot_id": "M-1",
+                "adjustment_basis_id": "QFQ-MKT-1", "input_source_digest": "c" * 64}
     at = market_axis_primitives(breadth=.05, participation=1.2,
-                                limit_coverage=.8, stress_ratio=.05, prior_stress_ratio=.05)
+                                limit_coverage=.8, stress_ratio=.05, prior_stress_ratio=.05, **identity)
     assert at["breadth_axis"] == "STABLE"
     assert at["participation_axis"] == "EXPANDING"
     assert at["stress_level"] == "HIGH"
     assert at["stress_change"] == "STABLE"
-    assert at["trend_axis_blocker"] == "CONTRACT_CONFLICT_MARKET_REGIME_TREND_WEAK_AST"
+    assert at["trend_axis"] == "PRODUCED_BY_MARKET_REGIME_TREND_WEAK_ERRATUM_V1"
     below = market_axis_primitives(breadth=-.050001, participation=.79999,
-                                   limit_coverage=.79999, stress_ratio=.01, prior_stress_ratio=.02)
+                                   limit_coverage=.79999, stress_ratio=.01, prior_stress_ratio=.02, **identity)
     assert below["breadth_axis"] == "DETERIORATING"
     assert below["participation_axis"] == "THIN"
     assert below["stress_level"] is None
     assert below["stress_change"] == "DECLINING"
+    nonfinite = market_axis_primitives(breadth=float("nan"), participation=None,
+                                       limit_coverage=.9, stress_ratio=float("inf"),
+                                       prior_stress_ratio=.01, **identity)
+    assert nonfinite["breadth_axis"] is None
+    assert nonfinite["stress_level"] is None
+    assert nonfinite["field_quality"]["breadth_axis"]["quality_state"] == "UNKNOWN"
+
+
+def test_market_trend_weak_erratum_and_mixed_neutral_states():
+    identity = {"trade_date": "2026-09-24", "market_calendar_id": "CAL-1", "market_snapshot_id": "M-1",
+                "adjustment_basis_id": "QFQ-MKT-1", "input_source_digest": "d" * 64}
+    assert market_trend_axis(index_close=12, index_ma20=11, index_ma20_t_minus_5=10, **identity)["trend_axis"] == "STRONG"
+    assert market_trend_axis(index_close=9, index_ma20=10, index_ma20_t_minus_5=11, **identity)["trend_axis"] == "WEAK"
+    assert market_trend_axis(index_close=9, index_ma20=10, index_ma20_t_minus_5=9, **identity)["trend_axis"] == "NEUTRAL"
+    assert market_trend_axis(index_close=10, index_ma20=10, index_ma20_t_minus_5=11, **identity)["trend_axis"] == "NEUTRAL"
+    unknown = market_trend_axis(index_close=10, index_ma20=None, index_ma20_t_minus_5=9, **identity)
+    assert unknown["trend_axis"] == "UNKNOWN"
+    assert unknown["quality_state"] == "UNKNOWN"
 
 
 def test_relative_factors_keep_rps_and_reference_separate():
@@ -136,11 +207,25 @@ def test_relative_factors_keep_rps_and_reference_separate():
                 3: {"rps5": {"a": 20, "b": 80}, "rps20": {"a": 40, "b": 60}}}
     values, refs = relative_factors(current_returns=returns, historical_rps=previous,
                                     asof_universe=["b", "a"],
-                                    start_universes={1: ["a", "b"], 3: ["a", "b"], 5: ["a", "b"]})
-    assert values["a"]["rps5"] == 0
-    assert values["a"]["rps20"] == 50
-    assert values["a"]["rps5_delta1"] == -10
-    assert values["a"]["rel_market_1"] == pytest.approx(-.05)
+                                    start_universes={1: ["a", "b"], 3: ["a", "b"], 5: ["a", "b"]},
+                                    asof_trade_date="2026-09-24",
+                                    session_dates={"2026-09-24": {1: "2026-09-23", 3: "2026-09-21", 5: "2026-09-17", 20: "2026-08-27", -1: "2026-09-23", -3: "2026-09-21"}},
+                                    market_calendar_id="SSE_2026_V1", universe_snapshot_id="U-T",
+                                    start_universe_snapshot_ids={1: "U-T1", 3: "U-T3", 5: "U-T5"},
+                                    adjustment_basis_id="QFQ-R1", input_source_digest="a" * 64,
+                                    prior_rps_artifact_digests={1: {"rps5": "b" * 64},
+                                                                3: {"rps5": "c" * 64, "rps20": "d" * 64}},
+                                    prior_rps_universe_snapshot_ids={1: {"rps5": "U-T1"},
+                                                                     3: {"rps5": "U-T3", "rps20": "U-T3"}})
+    assert values["a"]["rps5"].value == 0
+    assert values["a"]["rps20"].value == 50
+    assert values["a"]["rps5_delta1"].value == -10
+    assert values["a"]["rps5"].quality_state == "OBSERVED"
+    assert values["a"]["rps5"].universe_snapshot_id == "U-T"
+    assert values["a"]["rps5"].input_digest
+    assert values["a"]["rps5"].start_universe_snapshot_id == "U-T"
+    assert values["a"]["rps5_delta1"].start_universe_snapshot_id == "U-T1"
+    assert values["a"]["rel_market_1"].value == pytest.approx(-.05)
     assert refs[1]["reference_return"] == pytest.approx(.15)
     assert refs[1]["path_identity"] == "HISTORICAL_ENDPOINT_EQUAL_WEIGHT_REFERENCE"
 
@@ -155,3 +240,17 @@ def test_temporal_prefix_and_cross_section_order_determinism():
     left = rps_midrank(values, ["a", "b", "c"])
     right = rps_midrank(dict(reversed(list(values.items()))), ["c", "b", "a"])
     assert left == right
+
+
+def test_market_path_unknown_suffix_requires_new_version_to_rebase():
+    path = historical_market_path([("a", .1), ("b", None), ("c", .2)], start_sessions=["0", "a", "b"],
+                                  start_universe_snapshot_ids=["U0", "Ua", "Ub"],
+                                  market_calendar_id="CAL-1", input_source_digest="e" * 64)
+    assert path[0]["level"] == pytest.approx(1.1)
+    assert path[1]["quality_state"] == "UNKNOWN"
+    assert path[2]["quality_state"] == "UNKNOWN"
+    assert path[2]["rebase_policy"] == "UNKNOWN_SUFFIX_UNTIL_NEW_SERIES_VERSION"
+    new_series = historical_market_path([("c", .2)], start_sessions=["b"], start_universe_snapshot_ids=["Ub"],
+                                        market_calendar_id="CAL-1", input_source_digest="e" * 64,
+                                        series_version="DAILY_REBALANCED_RESEARCH_INDEX_V2")
+    assert new_series[0]["level"] == pytest.approx(1.2)

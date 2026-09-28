@@ -1,0 +1,36 @@
+{
+  "contract_id": "V4_03_NATIVE_SCOPE_MAP_V1",
+  "version": "1.0.0",
+  "owner_stage": "V4-03",
+  "required_board_scope": ["SH_MAIN", "SZ_MAIN", "CHINEXT", "STAR"],
+  "optional_degraded_scope": ["BSE"],
+  "market_primitives": [
+    {"field_id": "market_reference_return_1/3/5", "producer_contract_id": "MARKET_RELATIVE_REFERENCE_V1", "time_semantics": "fixed_market_session_endpoint_t_minus_n_to_t", "universe_semantics": "PIT_universe_at_start_session", "quality_semantics": "UNKNOWN_if_missing_fraction_exceeds_registered_threshold", "consumer_stage": "V4-03/V4-04", "publication_permission": "V4_03_PRIMITIVE_ONLY"},
+    {"field_id": "daily_rebalanced_research_index_level", "producer_contract_id": "V4_03_MARKET_REFERENCE_PATH_V1", "time_semantics": "one_market_session_step_per_row", "universe_semantics": "PIT_universe_at_each_step_start", "quality_semantics": "first_unknown_step_breaks_all_later_rows_in_same_series_version", "consumer_stage": "V4-04", "publication_permission": "V4_03_HISTORICAL_PATH_ONLY"},
+    {"field_id": "breadth_axis/participation_axis/stress_level/stress_change", "producer_contract_id": "MARKET_REGIME_V1_PRIMITIVES", "time_semantics": "fixed_market_session_t", "quality_semantics": "field_local_unknown_when_required_inputs_are_insufficient", "consumer_stage": "V4-04", "publication_permission": "V4_03_PRIMITIVE_ONLY"},
+    {"field_id": "trend_axis", "producer_contract_id": "MARKET_REGIME_TREND_WEAK_ERRATUM_V1", "time_semantics": "fixed_market_session_t_and_t_minus_5", "quality_semantics": "UNKNOWN_when_required_inputs_are_insufficient", "consumer_stage": "V4-04", "publication_permission": "V4_03_PRIMITIVE_ONLY"}
+  ],
+  "sector_primitives": [
+    "normalized_member_set", "member_count", "input_row_count", "raw_quote_evaluable_count", "raw_quote_coverage", "amount_evaluable_count", "amount_median_primitive", "positive_breadth_numerator", "positive_breadth_denominator", "ma20_width_numerator", "ma20_width_denominator", "amount_concentration_evaluable_count", "amount_concentration_numerator", "amount_concentration_denominator", "common_member_intersection", "entered_member_set", "exited_member_set"
+  ],
+  "sector_metric_evaluability": {
+    "raw_quote_coverage": "quote_quality_state == OBSERVED",
+    "amount_metrics": "amount_quality_state == OBSERVED and finite numeric amount",
+    "positive_breadth": "ret1_quality_state == OBSERVED and finite numeric ret1",
+    "ma20_width": "ma20_quality_state == OBSERVED and above_ma20 is bool",
+    "row_level_quality_gate": "PROHIBITED"
+  },
+  "sector_materialization": {
+    "status": "BLOCKED_ACCEPTED_SECTOR_MEMBERSHIP_INPUT_NOT_PRESENT_IN_V4_01_V4_02_BASELINE_MANIFEST",
+    "library_contract_tests": "ALLOWED",
+    "full_market_sector_artifact": "NOT_PRODUCED",
+    "consumer_stage": "V4-08",
+    "v4_08_formal_fields_published": 0,
+    "qualification_calls": 0,
+    "seed_calls": 0,
+    "rotation_calls": 0,
+    "amount_a_calls": 0,
+    "turnover_or_baostock_calls": 0
+  },
+  "deferred_to_v4_08": ["sector_rs5/20", "rank_velocity", "dq5", "breadth_delta", "ma20_width_final", "seed_width", "retention", "entered/exited_final_fields", "top1/top3_concentration_final", "sector_participation_proxy_final", "sector_qualification", "PREWATCH/WARM/CONFIRMED", "rotation"]
+}

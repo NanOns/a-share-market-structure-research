@@ -1,0 +1,43 @@
+{
+  "artifact_sha256_after": {
+    "core": "7961546dcd39c6e539ca0263fba04fa8bd6a891d1a6c6e04d40bc17a2eb7b495",
+    "full_scope": "6c5f8292239773565d26dab750fa342713952850d26977e81d5fd94b7cf77341",
+    "market_path": "c1198cca58aced5b0cef747c1f33cdd41ab9a56df5065f22f4d3cc3ce984cade",
+    "market_references": "ceb2d42fd80390e7a3968d21dff95cee1d2f4416cba09cf4fafd44ccdced817c"
+  },
+  "artifact_sha256_before": {
+    "core": "7961546dcd39c6e539ca0263fba04fa8bd6a891d1a6c6e04d40bc17a2eb7b495",
+    "full_scope": "6c5f8292239773565d26dab750fa342713952850d26977e81d5fd94b7cf77341",
+    "market_path": "c1198cca58aced5b0cef747c1f33cdd41ab9a56df5065f22f4d3cc3ce984cade",
+    "market_references": "ceb2d42fd80390e7a3968d21dff95cee1d2f4416cba09cf4fafd44ccdced817c"
+  },
+  "baseline": "V4_DEV_BASELINE_HEAD@2026-09-24",
+  "cache_state": "OS_AND_DUCKDB_CACHE_NOT_CONTROLLED_OR_CLEARED",
+  "commands": [
+    {
+      "exit_code": 0,
+      "module": "scripts.run_v4_03_core_frozen_diagnostic",
+      "stderr": "",
+      "stdout": "{\"status\": \"DIAGNOSTIC_ONLY_NOT_STAGE_ACCEPTANCE\", \"rows_out\": 5222, \"elapsed_seconds\": 39.472}"
+    },
+    {
+      "exit_code": 0,
+      "module": "scripts.run_v4_03_market_path_candidate",
+      "stderr": "",
+      "stdout": "{\"status\": \"CANDIDATE_NOT_STAGE_ACCEPTANCE\", \"sessions\": 200, \"daily_returns\": 199, \"unknown_returns\": 0, \"elapsed_seconds\": 29.98}"
+    },
+    {
+      "exit_code": 0,
+      "module": "scripts.run_v4_03_full_scope_candidate",
+      "stderr": "",
+      "stdout": "{\"status\": \"FULL_47_FIELD_CANDIDATE_NOT_STAGE_ACCEPTANCE\", \"rows_out\": 5222, \"field_count\": 47, \"elapsed_seconds\": 30.229}"
+    }
+  ],
+  "contract_id": "V4_03_DETERMINISM_REPLAY_R1",
+  "differences": {},
+  "elapsed_seconds": 101.007,
+  "scanner_run_count": 0,
+  "status": "PASS",
+  "tdx_root_write_count": 0,
+  "trading_run_count": 0
+}

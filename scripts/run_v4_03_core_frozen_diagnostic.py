@@ -13,9 +13,12 @@ import io
 import json
 import os
 from pathlib import Path
+import platform
+import threading
 import time
 
 import duckdb
+import psutil
 
 from src.v4.factors import Bar, Observation, compute_core
 
@@ -43,6 +46,20 @@ def atomic_json(path, obj):
 
 def main():
     start = time.monotonic()
+    process = psutil.Process()
+    cpu_started = process.cpu_times()
+    peak_rss = [process.memory_info().rss]
+    sample_stop = threading.Event()
+
+    def sample_memory():
+        while not sample_stop.wait(0.05):
+            try:
+                peak_rss[0] = max(peak_rss[0], process.memory_info().rss)
+            except psutil.Error:
+                return
+
+    sampler = threading.Thread(target=sample_memory, name="v4-03-core-memory-sampler", daemon=True)
+    sampler.start()
     head_path = ROOT / "data/v4/V4_DEV_BASELINE_HEAD.json"
     head = json.loads(head_path.read_text(encoding="utf-8"))
     if head["accepted_data_cutoff"] != "2026-09-24":
@@ -147,6 +164,24 @@ def main():
                                      "fields": {k: asdict(v) for k, v in sorted(fields.items())}},
                                     ensure_ascii=False, sort_keys=True, allow_nan=False) + "\n")
     os.replace(temp, OUT)
+    elapsed = time.monotonic() - start
+    sample_stop.set()
+    sampler.join(timeout=1)
+    cpu_ended = process.cpu_times()
+    cpu_seconds = (cpu_ended.user + cpu_ended.system) - (cpu_started.user + cpu_started.system)
+    memory = process.memory_info()
+    logical_cpus = os.cpu_count() or 1
+    measurement = {"factor_compute_time_seconds": round(elapsed, 3),
+                   "stage_wall_time_seconds": round(elapsed, 3),
+                   "process_cpu_seconds": round(cpu_seconds, 3),
+                   "process_cpu_percent_of_one_logical_cpu": round(cpu_seconds / elapsed * 100, 2) if elapsed else 0,
+                   "process_cpu_percent_of_host_capacity": round(cpu_seconds / elapsed / logical_cpus * 100, 2) if elapsed else 0,
+                   "sampled_peak_rss_bytes": peak_rss[0],
+                   "os_peak_working_set_bytes": getattr(memory, "peak_wset", None),
+                   "hardware": {"platform": platform.platform(), "processor": platform.processor(),
+                                "logical_cpu_count": logical_cpus},
+                   "cache_state": "OS_AND_DUCKDB_CACHE_NOT_CONTROLLED_OR_CLEARED",
+                   "dataset_identity": sha(head_path)}
     receipt = {"contract_id": "V4_03_CORE_REQUIRED_SCOPE_DIAGNOSTIC_R1",
                "status": "DIAGNOSTIC_ONLY_NOT_STAGE_ACCEPTANCE", "cutoff": cutoff,
                "dev_baseline_head_sha256": sha(head_path), "universe_sha256": universe_ref["sha256"],
@@ -157,7 +192,7 @@ def main():
                "field_quality_count": {f"{k[0]}:{k[1]}": v for k, v in sorted(counts.items())},
                "field_unknown_reasons": {f"{k[0]}:{k[1]}": v for k, v in sorted(unknown.items())},
                "board_observed_count": {f"{k[0]}:{k[1]}": v for k, v in sorted(board_observed.items())},
-               "elapsed_seconds": round(time.monotonic() - start, 3),
+               "elapsed_seconds": round(elapsed, 3), "performance_measurement": measurement,
                "history_window_sessions": len(sessions),
                "limitations": ["CORE_FACTOR_V1 stock fields only", "200-session bounded diagnostic history", "no RPS or market reference", "no independent full-market postcheck", "no accepted publication"]}
     atomic_json(RECEIPT, receipt)

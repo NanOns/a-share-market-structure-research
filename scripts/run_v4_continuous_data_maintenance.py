@@ -33,6 +33,7 @@ from workbench_analysis.daily_data_head import (  # noqa: E402
     read_json,
     write_json_atomic,
 )
+from workbench_analysis.dm01_accepted_builder_registry import validate_registry  # noqa: E402
 from tdx.day_reader import read_edge_records  # noqa: E402
 
 CONTRACT = Path("config/v4_continuous_data_maintenance_v1.json")
@@ -481,6 +482,7 @@ def initialize_bootstrap(bindings: dict) -> dict:
 
 def main() -> int:
     now = datetime.now(timezone.utc)
+    builder_registry_result = validate_registry(project_root=ROOT)
     calendar_receipt, official_sessions = build_calendar_bridge(now)
     bindings = accepted_stage_bindings()
     bootstrap_result = initialize_bootstrap(bindings)
@@ -648,7 +650,16 @@ def main() -> int:
         }),
         "baostock_runtime_rejection": baostock_runtime_rejection,
         "local_tdx_coverage_discovery": {**local_tdx_coverage, "readiness_role": "LOCAL_CLIENT_DIAGNOSTIC_ONLY"},
-        "incremental_component_builders": "NOT_WIRED_FAIL_CLOSED",
+        "incremental_component_builders": {
+            "contract_id": builder_registry_result.get("contract_id"),
+            "status": builder_registry_result.get("status"),
+            "bound_builder_count": builder_registry_result.get("bound_builder_count", 0),
+            "missing_builders": builder_registry_result.get("missing_builders", []),
+            "runtime_api_blockers": builder_registry_result.get("runtime_api_blockers", []),
+            "errors": builder_registry_result.get("errors", []),
+            "production_builders_ready": builder_registry_result.get("production_builders_ready", False),
+        },
+        "accepted_builder_registry": builder_registry_result,
         "stage_contract": {"path": DAILY_CONTRACT.as_posix(), "sha256": sha(DAILY_CONTRACT)},
         "source_freeze_contract": {"path": SOURCE_FREEZE_CONTRACT.as_posix(), "sha256": sha(SOURCE_FREEZE_CONTRACT)},
         "component_permissions": component_permissions(),
@@ -675,6 +686,7 @@ def main() -> int:
         "blocked_sessions": blocked,
         "not_completed_sessions": session_receipt["not_completed_sessions"],
         "calendar_status": calendar_receipt["status"],
+        "accepted_builder_registry_status": builder_registry_result.get("status"),
         "tdx_root_write_count": 0,
         "next_stage": "DM01_INDEPENDENT_POSTCHECK_AND_FINAL_RECEIPT",
     }

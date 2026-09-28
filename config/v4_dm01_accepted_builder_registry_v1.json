@@ -1,0 +1,191 @@
+{
+  "contract_id": "V4_DM01_ACCEPTED_BUILDER_REGISTRY_V1",
+  "version": "1.0.0",
+  "status": "BLOCKED_TARGET_DATE_ADAPTER_APIS_MISSING",
+  "description": "Static, hash-bound capability mapping for DM-01 incremental adapters. The adapters may select scope, resolve parent revisions, stage outputs, write receipts, and publish atomically; all domain calculations must call the pinned accepted runtime.",
+  "required_capabilities": [
+    "RAW_DAILY",
+    "IDENTITY_UNIVERSE",
+    "TRADING_STATUS",
+    "ISST",
+    "ADJUSTED_DAILY",
+    "PERIOD_RAW",
+    "PERIOD_ADJUSTED",
+    "PRICE_LIMIT",
+    "SPECIAL_PHASE"
+  ],
+  "runtime_adapter_module": "workbench_analysis.dm01_incremental_component_builders",
+  "stage_acceptance_bindings": {
+    "v4_01_baseline": {
+      "receipt_path": "reports/v4_01/v4_01_final_stage_receipt_R8_1_20260928.json",
+      "receipt_sha256": "84db902a8f1a7d50e5b1b53b341f7c06aa8f1f0d457a2147b2c497c7a427f514",
+      "postcheck_path": "reports/v4_01/V4_01_R8_1_INDEPENDENT_POSTCHECK_R1_20260928.json",
+      "postcheck_sha256": "e0dc6113cc2e9942e78d31b6cbbb76467988bdeeb84c69c39827b4c1e6a00eab",
+      "baseline_identity_map_path": "data/v4/artifact_store/v4_01/security_entity_map_R7_20260927.json",
+      "baseline_universe_path": "data/v4/artifact_store/v4_01/v4_01_historical_universe_required_R7_20260927.jsonl.gz"
+    },
+    "v4_02_baseline": {
+      "accepted_head_path": "data/v4/V4_02_ACCEPTED_HEAD.json",
+      "accepted_head_sha256": "da318a1f82a03f13930af7858ca1640fadbdaedbee85e27d47f9c869c2d6b595",
+      "final_receipt_path": "reports/v4_02/V4_02_FINAL_RECEIPT_R6.json",
+      "final_receipt_sha256": "e2dbfa55539cc89376c90627ed822e0c2b6f81938277919bd717e93dd93c411b",
+      "external_acceptance_path": "reports/v4_02/V4_02_FINAL_EXTERNAL_ACCEPTANCE_R6.json",
+      "external_acceptance_sha256": "42286da4305b792f5ecdc0fcc9a9d722e8ab3c23f6b618bf1ba15bd445ca6970",
+      "cross_stage_postcheck_path": "reports/v4_02/V4_02_R8_CROSS_STAGE_POSTCHECK_20260928.json",
+      "cross_stage_postcheck_sha256": "e6a35495a8a2566d341da9a726e7c3f905c08135ff3fcf2b51797d40e780b626"
+    }
+  },
+  "capabilities": {
+    "RAW_DAILY": {
+      "builder_callable": "build_raw_daily",
+      "runtime_api_assessment": {"status": "SUPPORTING_HELPERS_ONLY", "verified_exports": ["date_identity", "check_raw_quality"], "target_date_artifact_builder_exported": false, "scope": "ROW_IDENTITY_AND_QUALITY_HELPERS_ONLY", "blocker": "The accepted runtime has no callable that maps TDX_PACKAGE_DELTA_V1 rows and the lifecycle snapshot into the required staged component artifact and receipt."},
+      "owner_stage": "V4-02",
+      "accepted_source_receipt": {
+        "path": "reports/v4_02/V4_02_RAW_CANONICAL_FORMAL_ACCEPTANCE_V1.json",
+        "sha256": "d4292852adeca9ab2c666cca19be5f083a1c081e4cc20db9a1591dacd84837e0",
+        "status": "RAW_CANONICAL_DAILY_PASS"
+      },
+      "accepted_algorithm_contract": "V4_02_RAW_CANONICAL_FORMAL_ACCEPTANCE_V1",
+      "accepted_runtime": [
+        {"path": "scripts/v4_02_build_raw_selected_v2.py", "sha256": "128325a48c818378d78116f9785f50bedba348f401ce164802a81e0e7ab88cf6", "callables": ["date_identity", "check_raw_quality"]}
+      ],
+      "incremental_input_contract": ["TDX_PACKAGE_DELTA_V1.target_bars", "CURRENT_LIFECYCLE_SNAPSHOT_V1.source_rows"],
+      "output_contract": {"id": "V4_DM01_RAW_DAILY_INCREMENT_V1", "format": "jsonl", "key": ["security_id|source_security_key", "trade_date"], "authority": "TDX_OFFICIAL_PACKAGE"}
+    },
+    "IDENTITY_UNIVERSE": {
+      "builder_callable": "build_identity_universe",
+      "runtime_api_assessment": {"status": "DOMAIN_CORE_AVAILABLE_ADAPTER_MISSING", "verified_exports": ["discover_identity_events", "build_current_lifecycle_snapshot"], "target_date_artifact_builder_exported": false, "scope": "CURRENT_LIFECYCLE_SNAPSHOT_V1_DOMAIN_FUNCTION", "blocker": "The accepted daily lifecycle function exists, but the registry adapter that binds parent universe, accepted identity records, BaoStock roster, official session bridge, and staged artifact receipt is absent."},
+      "owner_stage": "V4-01 R8.1 baseline + DM-01 daily lifecycle adapter",
+      "accepted_source_receipt": {
+        "path": "reports/v4_01/v4_01_final_stage_receipt_R8_1_20260928.json",
+        "sha256": "84db902a8f1a7d50e5b1b53b341f7c06aa8f1f0d457a2147b2c497c7a427f514",
+        "status": "PASS"
+      },
+      "accepted_algorithm_contract": "SECURITY_IDENTITY_EVENT_DISCOVERY_V1",
+      "accepted_runtime": [
+        {"path": "src/workbench_analysis/security_identity_event_discovery.py", "sha256": "a647c85cdb8e2fe1051a7242f6e56e974b501f7186bff2666da265905d38a6fb", "callables": ["discover_identity_events"]},
+        {"path": "src/workbench_analysis/daily_source_manifests.py", "sha256": "652ad628cfa7e65df3c941e46333d066be9eee7440442787c988bd9c93d613c0", "callables": ["build_current_lifecycle_snapshot"]}
+      ],
+      "incremental_input_contract": ["accepted V4_DATA_ACCEPTED_HEAD.IDENTITY_UNIVERSE", "BAOSTOCK_DAILY_UPDATE_V1.roster", "official_session_bridge", "dated_identity_records"],
+      "output_contract": {"id": "CURRENT_LIFECYCLE_SNAPSHOT_V1", "format": "jsonl", "key": ["security_id|source_security_key", "trade_date"], "absence_is_delisting_evidence": false}
+    },
+    "TRADING_STATUS": {
+      "builder_callable": "build_trading_status",
+      "runtime_api_assessment": {"status": "CLI_ONLY_NO_INCREMENTAL_ENTRYPOINT", "verified_exports": ["main"], "target_date_artifact_builder_exported": false, "scope": "FROZEN_HISTORICAL_CLI", "blocker": "The accepted script exposes only main() and has no target-date callable; invoking it would use its frozen historical paths and would not satisfy the incremental input contract."},
+      "owner_stage": "V4-02",
+      "accepted_source_receipt": {
+        "path": "reports/v4_02/V4_02_DATED_TRADING_STATUS_R6_2_20260926.json",
+        "sha256": "a80b23f6fca49350eb25161e14b2ec9fc552003e94e89c4c624ed23e1b649e55",
+        "status": "DATED_TRADING_STATUS_PASS"
+      },
+      "accepted_algorithm_contract": "V4_02_DATED_TRADING_STATUS_V1",
+      "accepted_runtime": [
+        {"path": "scripts/build_v4_02_dated_trading_status.py", "sha256": "e4e9fbf6722affdfc999b29a670bb03a8a6421882df821ad73c638831ba089cf", "callables": ["main"]}
+      ],
+      "incremental_input_contract": ["RAW_DAILY_INCREMENT_V1", "IDENTITY_UNIVERSE_INCREMENT_V1", "BAOSTOCK_DAILY_UPDATE_V1.tradestatus"],
+      "output_contract": {"id": "V4_DM01_TRADING_STATUS_INCREMENT_V1", "format": "jsonl", "key": ["security_id|source_security_key", "trade_date"], "local_tdx_bar_precedence": true}
+    },
+    "ISST": {
+      "builder_callable": "build_isst",
+      "runtime_api_assessment": {"status": "CLI_ONLY_NO_INCREMENTAL_ENTRYPOINT", "verified_exports": ["main"], "target_date_artifact_builder_exported": false, "scope": "FROZEN_HISTORICAL_CLI", "blocker": "The accepted script exposes only main() and has no target-date callable; invoking it would use its frozen historical paths and would not satisfy the incremental input contract."},
+      "owner_stage": "V4-02",
+      "accepted_source_receipt": {
+        "path": "reports/v4_02/V4_02_DATED_ST_STATUS_V1_R6_2_20260926.json",
+        "sha256": "a5f84c388a7482df83f0998c39dbe737587cc4c4c89a5fb524459e311baea97f",
+        "status": "DATED_ST_STATUS_PASS"
+      },
+      "accepted_algorithm_contract": "V4_02_FULL_MARKET_DATED_ISST_V1",
+      "accepted_runtime": [
+        {"path": "scripts/build_v4_02_full_market_isst.py", "sha256": "093887b52748ff9965fcfb73e312b0791d32baedf9a53740bc08156d31ba84cf", "callables": ["main"]}
+      ],
+      "incremental_input_contract": ["IDENTITY_UNIVERSE_INCREMENT_V1", "BAOSTOCK_DAILY_UPDATE_V1.isST"],
+      "output_contract": {"id": "V4_DM01_ISST_INCREMENT_V1", "format": "jsonl", "key": ["security_id|source_security_key", "trade_date"], "unknown_is_explicit": true}
+    },
+    "ADJUSTED_DAILY": {
+      "builder_callable": "build_adjusted_daily",
+      "runtime_api_assessment": {"status": "DOMAIN_CORE_AVAILABLE_ADAPTER_MISSING", "verified_exports": ["read_gbbq", "build_affine_factors", "adjust_ohlc"], "target_date_artifact_builder_exported": false, "scope": "PRICE_TRANSFORM_HELPERS_WITHOUT_COMPONENT_ARTIFACT_ADAPTER", "blocker": "Accepted adjustment helpers exist, but the accepted daily/period runtime has no target-date adapter that binds source rows, accepted GBBQ dispositions, and component receipt output."},
+      "owner_stage": "V4-02",
+      "accepted_source_receipt": {
+        "path": "reports/v4_02/V4_02_FORMAL_PERIODS_R6_2_20260926.json",
+        "sha256": "7326f108af1529a50660638382142051c38082548223a913421122a633a6b6ac",
+        "status": "FORMAL_PERIODS_CANDIDATE_PASS"
+      },
+      "accepted_algorithm_contract": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+      "accepted_runtime": [
+        {"path": "src/adjustment/tdx_adjustment.py", "sha256": "de8ce814dbdfc2fad7b16f619e1f1085a4dc539591d2bfe6dff876d805e8f6e0", "callables": ["build_affine_factors", "adjust_ohlc"]},
+        {"path": "src/tdx/gbbq_reader.py", "sha256": "8b2b4736bfcec6bed5ae62c58b777c8306792aefd82b362970886c354672d03b", "callables": ["read_gbbq"]}
+      ],
+      "incremental_input_contract": ["RAW_DAILY_INCREMENT_V1", "accepted GBBQ snapshot and per-security dispositions", "target-date cutoff"],
+      "output_contract": {"id": "V4_DM01_ADJUSTED_DAILY_INCREMENT_V1", "format": "jsonl", "key": ["security_id|source_security_key", "trade_date"], "adjustment_readiness_explicit": true}
+    },
+    "PERIOD_RAW": {
+      "builder_callable": "build_period_raw",
+      "runtime_api_assessment": {"status": "FROZEN_CLI_NO_INCREMENTAL_AGGREGATOR", "verified_exports": ["period_key", "natural_period_end", "schemas", "main"], "target_date_artifact_builder_exported": false, "scope": "FULL_HISTORICAL_BUILD_WITH_FROZEN_ASOF", "blocker": "The accepted formal-period aggregation loop is embedded in main(); only period-key/schema helpers are exported, with no parent-plus-target-session incremental aggregator."},
+      "owner_stage": "V4-02",
+      "accepted_source_receipt": {
+        "path": "reports/v4_02/V4_02_FORMAL_PERIODS_R6_2_20260926.json",
+        "sha256": "7326f108af1529a50660638382142051c38082548223a913421122a633a6b6ac",
+        "status": "FORMAL_PERIODS_CANDIDATE_PASS"
+      },
+      "accepted_algorithm_contract": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+      "accepted_runtime": [
+        {"path": "scripts/build_v4_02_formal_periods.py", "sha256": "afa3a28729ebd27c050fb65e3a1f453599fdb2f111dff63478e2dab57c28b26e", "callables": ["period_key", "natural_period_end", "schemas", "main"]}
+      ],
+      "incremental_input_contract": ["parent raw weekly/monthly aggregate", "RAW_DAILY_INCREMENT_V1", "accepted exchange calendar", "TRADING_STATUS_INCREMENT_V1"],
+      "output_contract": {"id": "V4_DM01_PERIOD_RAW_INCREMENT_V1", "format": "jsonl", "key": ["security_id", "period_type", "period_end_date", "as_of_date"], "as_of_only": true}
+    },
+    "PERIOD_ADJUSTED": {
+      "builder_callable": "build_period_adjusted",
+      "runtime_api_assessment": {"status": "FROZEN_CLI_NO_INCREMENTAL_AGGREGATOR", "verified_exports": ["period_key", "natural_period_end", "schemas", "main", "build_affine_factors", "adjust_ohlc"], "target_date_artifact_builder_exported": false, "scope": "FULL_HISTORICAL_BUILD_WITH_FROZEN_ASOF", "blocker": "The accepted adjusted-period aggregation loop is embedded in main(); no target-date parent-plus-session API produces this component artifact."},
+      "owner_stage": "V4-02",
+      "accepted_source_receipt": {
+        "path": "reports/v4_02/V4_02_FORMAL_PERIODS_R6_2_20260926.json",
+        "sha256": "7326f108af1529a50660638382142051c38082548223a913421122a633a6b6ac",
+        "status": "FORMAL_PERIODS_CANDIDATE_PASS"
+      },
+      "accepted_algorithm_contract": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+      "accepted_runtime": [
+        {"path": "scripts/build_v4_02_formal_periods.py", "sha256": "afa3a28729ebd27c050fb65e3a1f453599fdb2f111dff63478e2dab57c28b26e", "callables": ["period_key", "natural_period_end", "schemas", "main"]},
+        {"path": "src/adjustment/tdx_adjustment.py", "sha256": "de8ce814dbdfc2fad7b16f619e1f1085a4dc539591d2bfe6dff876d805e8f6e0", "callables": ["build_affine_factors", "adjust_ohlc"]}
+      ],
+      "incremental_input_contract": ["parent adjusted weekly/monthly aggregate", "ADJUSTED_DAILY_INCREMENT_V1", "accepted exchange calendar", "TRADING_STATUS_INCREMENT_V1"],
+      "output_contract": {"id": "V4_DM01_PERIOD_ADJUSTED_INCREMENT_V1", "format": "jsonl", "key": ["security_id", "period_type", "period_end_date", "as_of_date"], "as_of_only": true}
+    },
+    "PRICE_LIMIT": {
+      "builder_callable": "build_price_limit",
+      "runtime_api_assessment": {"status": "FULL_INPUT_RUNNER_NO_INCREMENTAL_ARTIFACT_API", "verified_exports": ["run_builder", "apply_row_runtime"], "target_date_artifact_builder_exported": false, "scope": "RUN_BUILDER_SCANS_THE_SUPPLIED_BASE_PRICE_FILE", "blocker": "The accepted run_builder consumes a complete base-price file; there is no accepted wrapper that selects the target session and stages the capability artifact using the DM-01 parent revision."},
+      "owner_stage": "V4-02 R6 externally accepted",
+      "accepted_source_receipt": {
+        "path": "reports/v4_02/V4_02_FINAL_EXTERNAL_ACCEPTANCE_R6.json",
+        "sha256": "42286da4305b792f5ecdc0fcc9a9d722e8ab3c23f6b618bf1ba15bd445ca6970",
+        "status": "EXTERNALLY_ACCEPTED"
+      },
+      "accepted_algorithm_contract": "R3_PRICE_LIMIT_BASE + SPECIAL_PRICE_PHASE_EVENT_V1 + SPECIAL_PRICE_PHASE_POLICY_V2",
+      "accepted_runtime": [
+        {"path": "scripts/build_v4_02_price_limits_generic.py", "sha256": "e39405d604299a610b11ac8b0672a2bb63c943d49c6dc267555bf3138230ba28", "callables": ["run_builder", "apply_row_runtime"]},
+        {"path": "src/workbench_analysis/special_price_phases.py", "sha256": "7e64ca1acd9d1d7c9138915cf3f82ffedb40ea6b3b99349c0857458a09f0db93", "callables": ["SpecialPhaseEventStore", "PhasePolicyRegistry", "apply_phase_event"]}
+      ],
+      "incremental_input_contract": ["target-date canonical daily", "target-date dated aliases", "accepted rules and policy", "fail-closed facts"],
+      "output_contract": {"id": "V4_DM01_PRICE_LIMIT_INCREMENT_V1", "format": "jsonl", "key": ["security_id", "trade_date"], "unknown_is_explicit": true}
+    },
+    "SPECIAL_PHASE": {
+      "builder_callable": "build_special_phase",
+      "runtime_api_assessment": {"status": "DOMAIN_CORE_AND_SOURCE_MANIFEST_AVAILABLE_ADAPTER_MISSING", "verified_exports": ["compile_event_phase_index", "apply_row_runtime", "resolve_event_phase", "build_special_phase_source_manifest"], "target_date_artifact_builder_exported": false, "scope": "EVENT_POLICY_RESOLUTION_AND_SOURCE_MANIFEST", "blocker": "Accepted event/policy resolution and the daily source manifest exist, but no builder binds them to the staged SPECIAL_PHASE component artifact and receipt."},
+      "owner_stage": "V4-02 R6 externally accepted",
+      "accepted_source_receipt": {
+        "path": "reports/v4_02/V4_02_FINAL_EXTERNAL_ACCEPTANCE_R6.json",
+        "sha256": "42286da4305b792f5ecdc0fcc9a9d722e8ab3c23f6b618bf1ba15bd445ca6970",
+        "status": "EXTERNALLY_ACCEPTED"
+      },
+      "accepted_algorithm_contract": "SPECIAL_PHASE_SOURCE_MANIFEST_V1 + SPECIAL_PRICE_PHASE_EVENT_V1 + SPECIAL_PRICE_PHASE_POLICY_V2",
+      "accepted_runtime": [
+        {"path": "scripts/build_v4_02_price_limits_generic.py", "sha256": "e39405d604299a610b11ac8b0672a2bb63c943d49c6dc267555bf3138230ba28", "callables": ["compile_event_phase_index", "apply_row_runtime"]},
+        {"path": "src/workbench_analysis/special_price_phases.py", "sha256": "7e64ca1acd9d1d7c9138915cf3f82ffedb40ea6b3b99349c0857458a09f0db93", "callables": ["SpecialPhaseEventStore", "PhasePolicyRegistry", "resolve_event_phase"]},
+        {"path": "src/workbench_analysis/daily_source_manifests.py", "sha256": "652ad628cfa7e65df3c941e46333d066be9eee7440442787c988bd9c93d613c0", "callables": ["build_special_phase_source_manifest"]}
+      ],
+      "incremental_input_contract": ["CURRENT_LIFECYCLE_SNAPSHOT_V1", "SPECIAL_PHASE_SOURCE_MANIFEST_V1", "accepted event store", "accepted policy"],
+      "output_contract": {"id": "V4_DM01_SPECIAL_PHASE_INCREMENT_V1", "format": "jsonl", "key": ["security_id", "trade_date"], "no_event_manifest_is_valid": true}
+    }
+  },
+  "forbidden": ["dynamic_function_discovery", "test_builder", "fake_builder", "fallback_builder", "unaccepted_formula", "v4_stage_head_mutation", "v4_03_start"]
+}

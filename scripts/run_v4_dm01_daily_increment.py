@@ -20,6 +20,7 @@ from workbench_analysis.baostock_runtime_acceptance import (  # noqa: E402
     runtime_acceptance_error,
 )
 from workbench_analysis.baostock_supplemental import package_metadata  # noqa: E402
+from workbench_analysis.dm01_accepted_builder_registry import validate_registry  # noqa: E402
 
 
 def _runtime_acceptance(target_date: str) -> tuple[dict | None, str | None]:
@@ -98,6 +99,7 @@ def main() -> int:
     args = parser.parse_args()
     now = datetime.now(timezone.utc).replace(microsecond=0)
     local = now.astimezone(ZoneInfo("Asia/Shanghai"))
+    builder_registry_result = validate_registry(project_root=ROOT)
     official_sessions = json.loads((ROOT / "reports/v4_dm01/2026-09-28/calendar_bridge_receipt.json").read_text(encoding="utf-8")).get("official_sessions_after_base_cutoff", [])
     bao = None
     bao_smoke = None
@@ -179,7 +181,11 @@ def main() -> int:
             if freeze_code == 0 and source_freeze.get("status") == "SOURCE_FREEZE_READY":
                 readiness = {**readiness, "status": "BLOCKED_COMPONENT_BUILDERS_NOT_WIRED",
                              "source_freeze_path": source_freeze.get("manifest_path"),
-                             "next_blocker": "NO_REAL_ACCEPTED_COMPONENT_BUILDER_REGISTRY_OR_INDEPENDENT_ARTIFACT_POSTCHECK"}
+                             "next_blocker": "NO_REAL_ACCEPTED_COMPONENT_BUILDER_CALLABLES",
+                             "builder_registry_status": builder_registry_result.get("status"),
+                             "builder_registry_errors": builder_registry_result.get("errors", []),
+                             "runtime_api_blockers": builder_registry_result.get("runtime_api_blockers", []),
+                             "unwired_capabilities": builder_registry_result.get("missing_builders", [])}
             else:
                 readiness = {**readiness, "status": "BLOCKED_SOURCE_FREEZE_V2_INVALID",
                              "source_freeze_error": source_freeze.get("reason") or source_freeze.get("status"),
@@ -207,6 +213,7 @@ def main() -> int:
         "special_phase_snapshot": special_phase_snapshot,
         "special_phase_source_receipt": special_phase_receipt,
         "source_freeze": source_freeze,
+        "accepted_builder_registry": builder_registry_result,
         "component_builds": [],
         "data_head_moved": False,
         "stage_accepted_head_moved": False,

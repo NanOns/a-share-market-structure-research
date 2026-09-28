@@ -1,0 +1,4 @@
+/*modified at 2026-09-27 16:20:01*/
+window.HSJDAY_SOFT_SIZE="525.30MB";
+window.HSJDAY_SOFT_TIME="2026-09-25 15:57:50";
+

@@ -1,0 +1,462 @@
+{
+  "acceptance_result": {
+    "bound_production_builder_count": 0,
+    "data_head_promoted": false,
+    "dev_baseline_mutated": false,
+    "independent_real_postcheck": "IMPLEMENTED_NOT_RUN_NO_REAL_COMPONENT_ARTIFACTS",
+    "real_incremental_builders": "BLOCKED_ACCEPTED_TARGET_DATE_ADAPTER_CALLABLES_UNAVAILABLE",
+    "required_production_builder_count": 9,
+    "runtime_api_blockers": [
+      {
+        "capability": "RAW_DAILY",
+        "reason": "The accepted runtime has no callable that maps TDX_PACKAGE_DELTA_V1 rows and the lifecycle snapshot into the required staged component artifact and receipt.",
+        "status": "SUPPORTING_HELPERS_ONLY"
+      },
+      {
+        "capability": "IDENTITY_UNIVERSE",
+        "reason": "The accepted daily lifecycle function exists, but the registry adapter that binds parent universe, accepted identity records, BaoStock roster, official session bridge, and staged artifact receipt is absent.",
+        "status": "DOMAIN_CORE_AVAILABLE_ADAPTER_MISSING"
+      },
+      {
+        "capability": "TRADING_STATUS",
+        "reason": "The accepted script exposes only main() and has no target-date callable; invoking it would use its frozen historical paths and would not satisfy the incremental input contract.",
+        "status": "CLI_ONLY_NO_INCREMENTAL_ENTRYPOINT"
+      },
+      {
+        "capability": "ISST",
+        "reason": "The accepted script exposes only main() and has no target-date callable; invoking it would use its frozen historical paths and would not satisfy the incremental input contract.",
+        "status": "CLI_ONLY_NO_INCREMENTAL_ENTRYPOINT"
+      },
+      {
+        "capability": "ADJUSTED_DAILY",
+        "reason": "Accepted adjustment helpers exist, but the accepted daily/period runtime has no target-date adapter that binds source rows, accepted GBBQ dispositions, and component receipt output.",
+        "status": "DOMAIN_CORE_AVAILABLE_ADAPTER_MISSING"
+      },
+      {
+        "capability": "PERIOD_RAW",
+        "reason": "The accepted formal-period aggregation loop is embedded in main(); only period-key/schema helpers are exported, with no parent-plus-target-session incremental aggregator.",
+        "status": "FROZEN_CLI_NO_INCREMENTAL_AGGREGATOR"
+      },
+      {
+        "capability": "PERIOD_ADJUSTED",
+        "reason": "The accepted adjusted-period aggregation loop is embedded in main(); no target-date parent-plus-session API produces this component artifact.",
+        "status": "FROZEN_CLI_NO_INCREMENTAL_AGGREGATOR"
+      },
+      {
+        "capability": "PRICE_LIMIT",
+        "reason": "The accepted run_builder consumes a complete base-price file; there is no accepted wrapper that selects the target session and stages the capability artifact using the DM-01 parent revision.",
+        "status": "FULL_INPUT_RUNNER_NO_INCREMENTAL_ARTIFACT_API"
+      },
+      {
+        "capability": "SPECIAL_PHASE",
+        "reason": "Accepted event/policy resolution and the daily source manifest exist, but no builder binds them to the staged SPECIAL_PHASE component artifact and receipt.",
+        "status": "DOMAIN_CORE_AND_SOURCE_MANIFEST_AVAILABLE_ADAPTER_MISSING"
+      }
+    ],
+    "stage_head_mutated": false,
+    "static_nine_capability_registry": "PASS",
+    "tdx_root_write_count": 0
+  },
+  "contract_id": "V4_DM01_BUILDER_REGISTRY_STAGE_RECEIPT_V1",
+  "evidence": {
+    "accepted_parent_cutoff": "2026-09-24",
+    "accepted_runtime_bindings": {
+      "ADJUSTED_DAILY": {
+        "accepted_algorithm_contract": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+        "accepted_runtime": [
+          {
+            "callables": [
+              "build_affine_factors",
+              "adjust_ohlc"
+            ],
+            "path": "src/adjustment/tdx_adjustment.py",
+            "sha256": "de8ce814dbdfc2fad7b16f619e1f1085a4dc539591d2bfe6dff876d805e8f6e0"
+          },
+          {
+            "callables": [
+              "read_gbbq"
+            ],
+            "path": "src/tdx/gbbq_reader.py",
+            "sha256": "8b2b4736bfcec6bed5ae62c58b777c8306792aefd82b362970886c354672d03b"
+          }
+        ],
+        "owner_stage": "V4-02",
+        "runtime_api_assessment": {
+          "blocker": "Accepted adjustment helpers exist, but the accepted daily/period runtime has no target-date adapter that binds source rows, accepted GBBQ dispositions, and component receipt output.",
+          "scope": "PRICE_TRANSFORM_HELPERS_WITHOUT_COMPONENT_ARTIFACT_ADAPTER",
+          "status": "DOMAIN_CORE_AVAILABLE_ADAPTER_MISSING",
+          "target_date_artifact_builder_exported": false,
+          "verified_exports": [
+            "read_gbbq",
+            "build_affine_factors",
+            "adjust_ohlc"
+          ]
+        }
+      },
+      "IDENTITY_UNIVERSE": {
+        "accepted_algorithm_contract": "SECURITY_IDENTITY_EVENT_DISCOVERY_V1",
+        "accepted_runtime": [
+          {
+            "callables": [
+              "discover_identity_events"
+            ],
+            "path": "src/workbench_analysis/security_identity_event_discovery.py",
+            "sha256": "a647c85cdb8e2fe1051a7242f6e56e974b501f7186bff2666da265905d38a6fb"
+          },
+          {
+            "callables": [
+              "build_current_lifecycle_snapshot"
+            ],
+            "path": "src/workbench_analysis/daily_source_manifests.py",
+            "sha256": "652ad628cfa7e65df3c941e46333d066be9eee7440442787c988bd9c93d613c0"
+          }
+        ],
+        "owner_stage": "V4-01 R8.1 baseline + DM-01 daily lifecycle adapter",
+        "runtime_api_assessment": {
+          "blocker": "The accepted daily lifecycle function exists, but the registry adapter that binds parent universe, accepted identity records, BaoStock roster, official session bridge, and staged artifact receipt is absent.",
+          "scope": "CURRENT_LIFECYCLE_SNAPSHOT_V1_DOMAIN_FUNCTION",
+          "status": "DOMAIN_CORE_AVAILABLE_ADAPTER_MISSING",
+          "target_date_artifact_builder_exported": false,
+          "verified_exports": [
+            "discover_identity_events",
+            "build_current_lifecycle_snapshot"
+          ]
+        }
+      },
+      "ISST": {
+        "accepted_algorithm_contract": "V4_02_FULL_MARKET_DATED_ISST_V1",
+        "accepted_runtime": [
+          {
+            "callables": [
+              "main"
+            ],
+            "path": "scripts/build_v4_02_full_market_isst.py",
+            "sha256": "093887b52748ff9965fcfb73e312b0791d32baedf9a53740bc08156d31ba84cf"
+          }
+        ],
+        "owner_stage": "V4-02",
+        "runtime_api_assessment": {
+          "blocker": "The accepted script exposes only main() and has no target-date callable; invoking it would use its frozen historical paths and would not satisfy the incremental input contract.",
+          "scope": "FROZEN_HISTORICAL_CLI",
+          "status": "CLI_ONLY_NO_INCREMENTAL_ENTRYPOINT",
+          "target_date_artifact_builder_exported": false,
+          "verified_exports": [
+            "main"
+          ]
+        }
+      },
+      "PERIOD_ADJUSTED": {
+        "accepted_algorithm_contract": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+        "accepted_runtime": [
+          {
+            "callables": [
+              "period_key",
+              "natural_period_end",
+              "schemas",
+              "main"
+            ],
+            "path": "scripts/build_v4_02_formal_periods.py",
+            "sha256": "afa3a28729ebd27c050fb65e3a1f453599fdb2f111dff63478e2dab57c28b26e"
+          },
+          {
+            "callables": [
+              "build_affine_factors",
+              "adjust_ohlc"
+            ],
+            "path": "src/adjustment/tdx_adjustment.py",
+            "sha256": "de8ce814dbdfc2fad7b16f619e1f1085a4dc539591d2bfe6dff876d805e8f6e0"
+          }
+        ],
+        "owner_stage": "V4-02",
+        "runtime_api_assessment": {
+          "blocker": "The accepted adjusted-period aggregation loop is embedded in main(); no target-date parent-plus-session API produces this component artifact.",
+          "scope": "FULL_HISTORICAL_BUILD_WITH_FROZEN_ASOF",
+          "status": "FROZEN_CLI_NO_INCREMENTAL_AGGREGATOR",
+          "target_date_artifact_builder_exported": false,
+          "verified_exports": [
+            "period_key",
+            "natural_period_end",
+            "schemas",
+            "main",
+            "build_affine_factors",
+            "adjust_ohlc"
+          ]
+        }
+      },
+      "PERIOD_RAW": {
+        "accepted_algorithm_contract": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+        "accepted_runtime": [
+          {
+            "callables": [
+              "period_key",
+              "natural_period_end",
+              "schemas",
+              "main"
+            ],
+            "path": "scripts/build_v4_02_formal_periods.py",
+            "sha256": "afa3a28729ebd27c050fb65e3a1f453599fdb2f111dff63478e2dab57c28b26e"
+          }
+        ],
+        "owner_stage": "V4-02",
+        "runtime_api_assessment": {
+          "blocker": "The accepted formal-period aggregation loop is embedded in main(); only period-key/schema helpers are exported, with no parent-plus-target-session incremental aggregator.",
+          "scope": "FULL_HISTORICAL_BUILD_WITH_FROZEN_ASOF",
+          "status": "FROZEN_CLI_NO_INCREMENTAL_AGGREGATOR",
+          "target_date_artifact_builder_exported": false,
+          "verified_exports": [
+            "period_key",
+            "natural_period_end",
+            "schemas",
+            "main"
+          ]
+        }
+      },
+      "PRICE_LIMIT": {
+        "accepted_algorithm_contract": "R3_PRICE_LIMIT_BASE + SPECIAL_PRICE_PHASE_EVENT_V1 + SPECIAL_PRICE_PHASE_POLICY_V2",
+        "accepted_runtime": [
+          {
+            "callables": [
+              "run_builder",
+              "apply_row_runtime"
+            ],
+            "path": "scripts/build_v4_02_price_limits_generic.py",
+            "sha256": "e39405d604299a610b11ac8b0672a2bb63c943d49c6dc267555bf3138230ba28"
+          },
+          {
+            "callables": [
+              "SpecialPhaseEventStore",
+              "PhasePolicyRegistry",
+              "apply_phase_event"
+            ],
+            "path": "src/workbench_analysis/special_price_phases.py",
+            "sha256": "7e64ca1acd9d1d7c9138915cf3f82ffedb40ea6b3b99349c0857458a09f0db93"
+          }
+        ],
+        "owner_stage": "V4-02 R6 externally accepted",
+        "runtime_api_assessment": {
+          "blocker": "The accepted run_builder consumes a complete base-price file; there is no accepted wrapper that selects the target session and stages the capability artifact using the DM-01 parent revision.",
+          "scope": "RUN_BUILDER_SCANS_THE_SUPPLIED_BASE_PRICE_FILE",
+          "status": "FULL_INPUT_RUNNER_NO_INCREMENTAL_ARTIFACT_API",
+          "target_date_artifact_builder_exported": false,
+          "verified_exports": [
+            "run_builder",
+            "apply_row_runtime"
+          ]
+        }
+      },
+      "RAW_DAILY": {
+        "accepted_algorithm_contract": "V4_02_RAW_CANONICAL_FORMAL_ACCEPTANCE_V1",
+        "accepted_runtime": [
+          {
+            "callables": [
+              "date_identity",
+              "check_raw_quality"
+            ],
+            "path": "scripts/v4_02_build_raw_selected_v2.py",
+            "sha256": "128325a48c818378d78116f9785f50bedba348f401ce164802a81e0e7ab88cf6"
+          }
+        ],
+        "owner_stage": "V4-02",
+        "runtime_api_assessment": {
+          "blocker": "The accepted runtime has no callable that maps TDX_PACKAGE_DELTA_V1 rows and the lifecycle snapshot into the required staged component artifact and receipt.",
+          "scope": "ROW_IDENTITY_AND_QUALITY_HELPERS_ONLY",
+          "status": "SUPPORTING_HELPERS_ONLY",
+          "target_date_artifact_builder_exported": false,
+          "verified_exports": [
+            "date_identity",
+            "check_raw_quality"
+          ]
+        }
+      },
+      "SPECIAL_PHASE": {
+        "accepted_algorithm_contract": "SPECIAL_PHASE_SOURCE_MANIFEST_V1 + SPECIAL_PRICE_PHASE_EVENT_V1 + SPECIAL_PRICE_PHASE_POLICY_V2",
+        "accepted_runtime": [
+          {
+            "callables": [
+              "compile_event_phase_index",
+              "apply_row_runtime"
+            ],
+            "path": "scripts/build_v4_02_price_limits_generic.py",
+            "sha256": "e39405d604299a610b11ac8b0672a2bb63c943d49c6dc267555bf3138230ba28"
+          },
+          {
+            "callables": [
+              "SpecialPhaseEventStore",
+              "PhasePolicyRegistry",
+              "resolve_event_phase"
+            ],
+            "path": "src/workbench_analysis/special_price_phases.py",
+            "sha256": "7e64ca1acd9d1d7c9138915cf3f82ffedb40ea6b3b99349c0857458a09f0db93"
+          },
+          {
+            "callables": [
+              "build_special_phase_source_manifest"
+            ],
+            "path": "src/workbench_analysis/daily_source_manifests.py",
+            "sha256": "652ad628cfa7e65df3c941e46333d066be9eee7440442787c988bd9c93d613c0"
+          }
+        ],
+        "owner_stage": "V4-02 R6 externally accepted",
+        "runtime_api_assessment": {
+          "blocker": "Accepted event/policy resolution and the daily source manifest exist, but no builder binds them to the staged SPECIAL_PHASE component artifact and receipt.",
+          "scope": "EVENT_POLICY_RESOLUTION_AND_SOURCE_MANIFEST",
+          "status": "DOMAIN_CORE_AND_SOURCE_MANIFEST_AVAILABLE_ADAPTER_MISSING",
+          "target_date_artifact_builder_exported": false,
+          "verified_exports": [
+            "compile_event_phase_index",
+            "apply_row_runtime",
+            "resolve_event_phase",
+            "build_special_phase_source_manifest"
+          ]
+        }
+      },
+      "TRADING_STATUS": {
+        "accepted_algorithm_contract": "V4_02_DATED_TRADING_STATUS_V1",
+        "accepted_runtime": [
+          {
+            "callables": [
+              "main"
+            ],
+            "path": "scripts/build_v4_02_dated_trading_status.py",
+            "sha256": "e4e9fbf6722affdfc999b29a670bb03a8a6421882df821ad73c638831ba089cf"
+          }
+        ],
+        "owner_stage": "V4-02",
+        "runtime_api_assessment": {
+          "blocker": "The accepted script exposes only main() and has no target-date callable; invoking it would use its frozen historical paths and would not satisfy the incremental input contract.",
+          "scope": "FROZEN_HISTORICAL_CLI",
+          "status": "CLI_ONLY_NO_INCREMENTAL_ENTRYPOINT",
+          "target_date_artifact_builder_exported": false,
+          "verified_exports": [
+            "main"
+          ]
+        }
+      }
+    },
+    "head_sha256": {
+      "data_accepted": "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0",
+      "dev_baseline": "45695460b0147c6ada12e0ebd8e5070ac0a45eebea26603ff5a3daddc4dd5094",
+      "stage_accepted": "ccb6938b7e6859894d11616a814f93fd15fd19598c3ff6d0aeda0ae181582e29"
+    },
+    "known_stage_head_governance_debt": "KNOWN_STAGE_HEAD_GOVERNANCE_DEBT_V4_01_R8_3_NOT_REOPENED",
+    "latest_official_tdx_capture": {
+      "observed_at": "2026-09-28T07:48:08+00:00",
+      "path": "data/v4/source_snapshots/tdx/20260928/capture-20260928T074809411699Z-edfcd8cd3b926ba9/capture_receipt.json",
+      "sha256": "6f0761355090db48d98a483d5dfdf5acb85dfc40dc74cc8c3371414490c1bd42",
+      "snapshot_id": null,
+      "status": "WAIT_TDX_PUBLICATION",
+      "target_date": "2026-09-28",
+      "update_date": "2026-09-25"
+    },
+    "registry_validation": {
+      "bound_builder_count": 0,
+      "capabilities": [
+        "RAW_DAILY",
+        "IDENTITY_UNIVERSE",
+        "TRADING_STATUS",
+        "ISST",
+        "ADJUSTED_DAILY",
+        "PERIOD_RAW",
+        "PERIOD_ADJUSTED",
+        "PRICE_LIMIT",
+        "SPECIAL_PHASE"
+      ],
+      "capability_count": 9,
+      "contract_id": "V4_DM01_ACCEPTED_BUILDER_REGISTRY_V1",
+      "data_head_mutated": false,
+      "dev_baseline_mutated": false,
+      "errors": [],
+      "known_governance_debt": "KNOWN_STAGE_HEAD_GOVERNANCE_DEBT_V4_01_R8_3_NOT_REOPENED",
+      "missing_builders": [
+        "RAW_DAILY",
+        "IDENTITY_UNIVERSE",
+        "TRADING_STATUS",
+        "ISST",
+        "ADJUSTED_DAILY",
+        "PERIOD_RAW",
+        "PERIOD_ADJUSTED",
+        "PRICE_LIMIT",
+        "SPECIAL_PHASE"
+      ],
+      "production_builders_ready": false,
+      "registry_integrity_status": "PASS",
+      "registry_path": "config/v4_dm01_accepted_builder_registry_v1.json",
+      "registry_sha256": "bf87637de82eb7704d9c8f27842880ee9ba6db5315a2b65edd461a31007ddb61",
+      "runtime_adapter_module": "workbench_analysis.dm01_incremental_component_builders",
+      "runtime_adapter_module_exists": false,
+      "runtime_api_blockers": [
+        {
+          "capability": "RAW_DAILY",
+          "reason": "The accepted runtime has no callable that maps TDX_PACKAGE_DELTA_V1 rows and the lifecycle snapshot into the required staged component artifact and receipt.",
+          "status": "SUPPORTING_HELPERS_ONLY"
+        },
+        {
+          "capability": "IDENTITY_UNIVERSE",
+          "reason": "The accepted daily lifecycle function exists, but the registry adapter that binds parent universe, accepted identity records, BaoStock roster, official session bridge, and staged artifact receipt is absent.",
+          "status": "DOMAIN_CORE_AVAILABLE_ADAPTER_MISSING"
+        },
+        {
+          "capability": "TRADING_STATUS",
+          "reason": "The accepted script exposes only main() and has no target-date callable; invoking it would use its frozen historical paths and would not satisfy the incremental input contract.",
+          "status": "CLI_ONLY_NO_INCREMENTAL_ENTRYPOINT"
+        },
+        {
+          "capability": "ISST",
+          "reason": "The accepted script exposes only main() and has no target-date callable; invoking it would use its frozen historical paths and would not satisfy the incremental input contract.",
+          "status": "CLI_ONLY_NO_INCREMENTAL_ENTRYPOINT"
+        },
+        {
+          "capability": "ADJUSTED_DAILY",
+          "reason": "Accepted adjustment helpers exist, but the accepted daily/period runtime has no target-date adapter that binds source rows, accepted GBBQ dispositions, and component receipt output.",
+          "status": "DOMAIN_CORE_AVAILABLE_ADAPTER_MISSING"
+        },
+        {
+          "capability": "PERIOD_RAW",
+          "reason": "The accepted formal-period aggregation loop is embedded in main(); only period-key/schema helpers are exported, with no parent-plus-target-session incremental aggregator.",
+          "status": "FROZEN_CLI_NO_INCREMENTAL_AGGREGATOR"
+        },
+        {
+          "capability": "PERIOD_ADJUSTED",
+          "reason": "The accepted adjusted-period aggregation loop is embedded in main(); no target-date parent-plus-session API produces this component artifact.",
+          "status": "FROZEN_CLI_NO_INCREMENTAL_AGGREGATOR"
+        },
+        {
+          "capability": "PRICE_LIMIT",
+          "reason": "The accepted run_builder consumes a complete base-price file; there is no accepted wrapper that selects the target session and stages the capability artifact using the DM-01 parent revision.",
+          "status": "FULL_INPUT_RUNNER_NO_INCREMENTAL_ARTIFACT_API"
+        },
+        {
+          "capability": "SPECIAL_PHASE",
+          "reason": "Accepted event/policy resolution and the daily source manifest exist, but no builder binds them to the staged SPECIAL_PHASE component artifact and receipt.",
+          "status": "DOMAIN_CORE_AND_SOURCE_MANIFEST_AVAILABLE_ADAPTER_MISSING"
+        }
+      ],
+      "stage_head_mutated": false,
+      "status": "BLOCKED_REAL_ACCEPTED_BUILDERS_UNAVAILABLE",
+      "version": "1.0.0"
+    },
+    "stage_head_v4_01_binding": "84db902a8f1a7d50e5b1b53b341f7c06aa8f1f0d457a2147b2c497c7a427f514"
+  },
+  "next_stage": "EXPOSE_OR_APPROVE_TARGET_DATE_CALLABLES_FOR_THE_PINNED_ACCEPTED_RUNTIMES_WITHOUT_ALGORITHM_CHANGE; BIND_ALL_NINE; THEN_RECHECK_OFFICIAL_TDX_PUBLICATION_AND_RUN_REAL_E2E",
+  "observed_at": "2026-09-28T07:59:16+00:00",
+  "stage_contract": {
+    "algorithm_boundary": "DM-01 may select scope, resolve parent revisions, stage artifacts, write receipts, and publish atomically; component calculations remain pinned to accepted V4-01/V4-02 runtimes.",
+    "latest_applicable_external_audit": {
+      "available": true,
+      "copy_matches_input_attachment": true,
+      "input_attachment_available": true,
+      "input_attachment_path": "D:\\Users\\lps\\Desktop\\V4_DM01_POSTCLOSE_EXTERNAL_AUDIT_R2_20260928.md",
+      "input_attachment_sha256": "bb21a3106f0beadfce1578aa007b8e11ed30ef45041742f64f184357df6b9bdf",
+      "path": "docs/evidence/V4_DM01_POSTCLOSE_EXTERNAL_AUDIT_R2_20260928.md",
+      "sha256": "bb21a3106f0beadfce1578aa007b8e11ed30ef45041742f64f184357df6b9bdf"
+    },
+    "registry_contract_id": "V4_DM01_ACCEPTED_BUILDER_REGISTRY_V1",
+    "registry_path": "config/v4_dm01_accepted_builder_registry_v1.json",
+    "registry_sha256": "bf87637de82eb7704d9c8f27842880ee9ba6db5315a2b65edd461a31007ddb61",
+    "registry_version": "1.0.0",
+    "stage": "V4-DM-01",
+    "v4_03_started": false
+  },
+  "status": "BLOCKED_REAL_ACCEPTED_BUILDERS_UNAVAILABLE",
+  "version": "1.0.0"
+}

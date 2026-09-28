@@ -37,8 +37,8 @@ def test_different_listing_dates_do_not_confirm_distinct_without_identity_eviden
         "SH.600001": _identity("SEC-A", "2010-01-01"),
         "SH.600002": _identity("SEC-B", "2020-01-01"),
     })
-    assert result["events"][0]["resolution_status"] == "UNRESOLVED"
-    assert result["status"] == "BLOCKED"
+    assert result["candidate_count"] == 0
+    assert result["status"] == "PASS"
 
 
 def test_versioned_listing_anchor_alone_is_weak_evidence() -> None:
@@ -122,8 +122,8 @@ def test_nonoverlap_transition_without_identity_evidence_remains_unresolved() ->
 
 def test_required_scope_unresolved_blocks_gate() -> None:
     result = _run(identities={
-        "SH.600001": _identity("SEC-A", "2010-01-01"),
-        "SH.600002": _identity("SEC-B", "2020-01-01"),
+        "SH.600001": {**_identity("SEC-A", "2010-01-01"), "security_name": "Same Issuer"},
+        "SH.600002": {**_identity("SEC-B", "2020-01-01"), "security_name": "Same Issuer"},
     })
     assert result["unresolved_required_scope_candidate_count"] == 1
     assert result["status"] == "BLOCKED"

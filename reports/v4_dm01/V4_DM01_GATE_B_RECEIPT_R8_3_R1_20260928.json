@@ -1,0 +1,63 @@
+{
+  "bootstrap_noop_status": "PASS_NOOP_ALREADY_ACCEPTED",
+  "contract_id": "V4_DM01_GATE_B_RECEIPT_R8_3_R1",
+  "evidence": {
+    "data/v4/V4_DATA_ACCEPTED_HEAD.json": {
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0"
+    },
+    "data/v4/V4_DEV_BASELINE_HEAD.json": {
+      "path": "data/v4/V4_DEV_BASELINE_HEAD.json",
+      "sha256": "45695460b0147c6ada12e0ebd8e5070ac0a45eebea26603ff5a3daddc4dd5094"
+    },
+    "data/v4/V4_STAGE_ACCEPTED_HEAD.json": {
+      "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+      "sha256": "ccb6938b7e6859894d11616a814f93fd15fd19598c3ff6d0aeda0ae181582e29"
+    },
+    "reports/v4_dm01/2026-09-28/initial_e2e_receipt.json": {
+      "path": "reports/v4_dm01/2026-09-28/initial_e2e_receipt.json",
+      "sha256": "45eed48f82be84f494845b22ce02195b3983cf211dedcc03294a7b4a9e046993"
+    },
+    "reports/v4_dm01/2026-09-28/run_summary.json": {
+      "path": "reports/v4_dm01/2026-09-28/run_summary.json",
+      "sha256": "0eeef6ae966191b9582ca2e7aa98b3558ded14de0a85643b12dfc7b8c3b5467e"
+    },
+    "reports/v4_dm01/V4_DM01_INDEPENDENT_POSTCHECK_R1_20260928.json": {
+      "path": "reports/v4_dm01/V4_DM01_INDEPENDENT_POSTCHECK_R1_20260928.json",
+      "sha256": "c7048eae3ce7c07abeb82fd95203cc217c0f44f44ae36189c7a7f12a463d720a"
+    },
+    "reports/v4_joint/V4_R8_3_DM01_TEST_RECEIPT_R1_20260928.json": {
+      "path": "reports/v4_joint/V4_R8_3_DM01_TEST_RECEIPT_R1_20260928.json",
+      "sha256": "58261b6ffdcc7bbd6f854499a748fe7771bd3da053ad9f4fe23bac590d354994"
+    }
+  },
+  "gate_b_status": "BLOCKED",
+  "head_state": {
+    "accepted_trade_date": "2026-09-24",
+    "data_head_moved": false,
+    "data_head_sha256": "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0",
+    "dev_baseline_head_sha256": "45695460b0147c6ada12e0ebd8e5070ac0a45eebea26603ff5a3daddc4dd5094",
+    "stage_head_sha256": "ccb6938b7e6859894d11616a814f93fd15fd19598c3ff6d0aeda0ae181582e29"
+  },
+  "independent_framework_postcheck": "PASS",
+  "next_stage": "WIRE_ACCEPTED_INCREMENTAL_COMPONENT_RUNTIMES_AND_RUN_ONE_SOURCE_READY_SESSION",
+  "observed_at_utc": "2026-09-28T01:56:44+00:00",
+  "owner_stage": "V4-DM-01 REAL INCREMENTAL WIRING",
+  "production_incremental_builders": "NOT_WIRED_FAIL_CLOSED",
+  "real_session_e2e": "NOT_RUN_NO_NEW_COMPLETED_SESSION",
+  "source_readiness": {
+    "files_after_accepted_cutoff": 0,
+    "latest_completed_official_session": "2026-09-24",
+    "local_tdx_latest_tail_date": "2026-09-23",
+    "not_completed_sessions": [
+      "2026-09-28"
+    ],
+    "per_session_build_receipts": [],
+    "source_freeze_receipts": [],
+    "tail_date_is_complete_session": false
+  },
+  "status": "FRAMEWORK_PASS_ONLY",
+  "tdx_root_write_count": 0,
+  "v4_03_status": "BLOCKED",
+  "version": "1.0.0"
+}

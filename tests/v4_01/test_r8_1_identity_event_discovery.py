@@ -41,27 +41,27 @@ def _discover(**kwargs: object) -> dict[str, object]:
     return discover_identity_events(mode="HISTORICAL_BACKSCAN", session_dates=SESSIONS, **kwargs)
 
 
-def test_non_overlapping_code_transition_is_discovered() -> None:
+def test_non_overlapping_code_transition_without_linkage_remains_atomic() -> None:
     report = _discover(
         roster_snapshots=_rosters(),
-        identities={"SH.600001": _identity("SEC-A"), "SH.600002": _identity("SEC-A")},
+        identities={"SH.600001": _identity("SEC-A", name="Old Company"),
+                    "SH.600002": _identity("SEC-A", name="New Company")},
     )
-    assert report["candidate_count"] == 1
-    event = report["events"][0]
-    assert event["source_keys"] == ["SH.600001", "SH.600002"]
-    assert event["effective_date_candidates"] == ["2024-01-03"]
-    assert event["resolution_status"] == "UNRESOLVED"
-    assert event["resolved_security_id"] is None
+    assert report["candidate_count"] == 0
+    assert report["boundary_event_counts"] == {"SECURITY_ENTRY": 1, "SECURITY_EXIT": 1}
+    assert report["unlinked_boundary_anomaly_count"] == 0
 
 
-def test_roster_exit_entry_boundary_becomes_candidate_without_shared_bars() -> None:
+def test_roster_exit_entry_boundary_is_atomic_without_linkage_signal() -> None:
     report = _discover(
         roster_snapshots=_rosters("SZ.000001", "SZ.000002"),
         identities={"SZ.000001": {**_identity("SEC-A"), "exchange": "SZ"},
                     "SZ.000002": {**_identity("SEC-A"), "exchange": "SZ"}},
     )
-    assert report["signal_counts"]["ROSTER_EXIT_ENTRY_ADJACENCY"] == 1
-    assert report["candidate_status_counts"] == {"UNRESOLVED": 1}
+    assert report["candidate_count"] == 1  # exact normalized name, candidate only
+    assert report["signal_counts"]["WEAK_NAME_CONTINUITY"] == 1
+    assert report["boundary_event_counts"] == {"SECURITY_ENTRY": 1, "SECURITY_EXIT": 1}
+    assert "ROSTER_EXIT_ENTRY_ADJACENCY" not in report["signal_counts"]
 
 
 def test_lifecycle_boundary_without_shared_bar_is_candidate() -> None:
@@ -71,7 +71,8 @@ def test_lifecycle_boundary_without_shared_bar_is_candidate() -> None:
         lifecycle_records=[old, new],
         identities={"SH.600001": old, "SH.600002": new},
     )
-    assert report["signal_counts"]["LIFECYCLE_BOUNDARY_ADJACENCY"] == 1
+    assert report["signal_counts"]["WEAK_NAME_CONTINUITY"] == 1
+    assert "LIFECYCLE_BOUNDARY_ADJACENCY" not in report["signal_counts"]
     assert report["candidate_count"] == 1
 
 
@@ -170,7 +171,7 @@ def test_candidate_signal_union_deduplicates_the_same_event() -> None:
                        verified_evidence_digests={digest}, identities=identities)
     assert report["candidate_count"] == 1
     assert set(report["events"][0]["candidate_signals"]) >= {
-        "ROSTER_EXIT_ENTRY_ADJACENCY", "DATED_ALIAS_FACT", "OFFICIAL_CODE_CHANGE_EVENT"
+        "DATED_ALIAS_FACT", "OFFICIAL_CODE_CHANGE_EVENT"
     }
 
 

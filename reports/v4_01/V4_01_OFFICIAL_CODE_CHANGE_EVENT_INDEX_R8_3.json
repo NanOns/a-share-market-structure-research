@@ -1,0 +1,178 @@
+{
+  "contract_id": "OFFICIAL_SECURITY_CODE_CHANGE_EVENT_INDEX_V1",
+  "coverage_receipt_path": "data/v4/source_evidence/official_code_change_event_index/coverage_receipt_v1.json",
+  "coverage_receipt_sha256": "aaccd46636a70b2bf881ce1dff3a9448e8d99426c097e1cdd773bdac94eb15cf",
+  "coverage_receipts": [
+    {
+      "coverage_complete": false,
+      "event_count": 1,
+      "exchange": "CHINEXT",
+      "failed_query_count": 0,
+      "query_or_index_method": "LOCAL_ACCEPTED_DATED_ALIAS_FACTS_AND_CAPTURED_OFFICIAL_NOTICES; full-window exchange archive enumeration not captured",
+      "source_revision": "sha256:115a5b611c64f30cadd8695a9a464d8243cb3afe16d642ea786ff4b7bd107c4a",
+      "unresolved_source_windows": [
+        {
+          "end": "2026-09-24",
+          "reason": "FULL_OFFICIAL_EVENT_ARCHIVE_COVERAGE_NOT_EVIDENCED",
+          "start": "2023-07-04"
+        }
+      ],
+      "window_end": "2026-09-24",
+      "window_start": "2023-07-04"
+    },
+    {
+      "coverage_complete": false,
+      "event_count": 0,
+      "exchange": "SH_MAIN",
+      "failed_query_count": 0,
+      "query_or_index_method": "LOCAL_ACCEPTED_DATED_ALIAS_FACTS_AND_CAPTURED_OFFICIAL_NOTICES; full-window exchange archive enumeration not captured",
+      "source_revision": "sha256:115a5b611c64f30cadd8695a9a464d8243cb3afe16d642ea786ff4b7bd107c4a",
+      "unresolved_source_windows": [
+        {
+          "end": "2026-09-24",
+          "reason": "FULL_OFFICIAL_EVENT_ARCHIVE_COVERAGE_NOT_EVIDENCED",
+          "start": "2023-07-04"
+        }
+      ],
+      "window_end": "2026-09-24",
+      "window_start": "2023-07-04"
+    },
+    {
+      "coverage_complete": false,
+      "event_count": 0,
+      "exchange": "STAR",
+      "failed_query_count": 0,
+      "query_or_index_method": "LOCAL_ACCEPTED_DATED_ALIAS_FACTS_AND_CAPTURED_OFFICIAL_NOTICES; full-window exchange archive enumeration not captured",
+      "source_revision": "sha256:115a5b611c64f30cadd8695a9a464d8243cb3afe16d642ea786ff4b7bd107c4a",
+      "unresolved_source_windows": [
+        {
+          "end": "2026-09-24",
+          "reason": "FULL_OFFICIAL_EVENT_ARCHIVE_COVERAGE_NOT_EVIDENCED",
+          "start": "2023-07-04"
+        }
+      ],
+      "window_end": "2026-09-24",
+      "window_start": "2023-07-04"
+    },
+    {
+      "coverage_complete": false,
+      "event_count": 0,
+      "exchange": "SZ_MAIN",
+      "failed_query_count": 0,
+      "query_or_index_method": "LOCAL_ACCEPTED_DATED_ALIAS_FACTS_AND_CAPTURED_OFFICIAL_NOTICES; full-window exchange archive enumeration not captured",
+      "source_revision": "sha256:115a5b611c64f30cadd8695a9a464d8243cb3afe16d642ea786ff4b7bd107c4a",
+      "unresolved_source_windows": [
+        {
+          "end": "2026-09-24",
+          "reason": "FULL_OFFICIAL_EVENT_ARCHIVE_COVERAGE_NOT_EVIDENCED",
+          "start": "2023-07-04"
+        }
+      ],
+      "window_end": "2026-09-24",
+      "window_start": "2023-07-04"
+    }
+  ],
+  "coverage_status": "BLOCKED",
+  "event_count": 1,
+  "event_index_completeness_pass": false,
+  "events_path": "data/v4/source_evidence/official_code_change_event_index/official_security_code_change_events_v1.jsonl",
+  "events_sha256": "f06079bf528369ce5d77a155a6171d3dcba8c781c68b7204cc070cd2ad7f16c9",
+  "failed_query_count": 0,
+  "history_window": {
+    "end": "2026-09-24",
+    "start": "2023-07-04"
+  },
+  "malformed_event_count": 0,
+  "query_count": 0,
+  "query_or_index_method": "Local accepted aliases plus hash-bound captured official notice evidence",
+  "required_exchanges": [
+    "CHINEXT",
+    "SH_MAIN",
+    "STAR",
+    "SZ_MAIN"
+  ],
+  "source_revision": "sha256:115a5b611c64f30cadd8695a9a464d8243cb3afe16d642ea786ff4b7bd107c4a",
+  "unresolved_source_windows": [
+    {
+      "coverage_complete": false,
+      "event_count_matches": true,
+      "exchange": "CHINEXT",
+      "failed_query_count": 0,
+      "observed_event_count": 1,
+      "reason": "INCOMPLETE_SOURCE_COVERAGE",
+      "reported_event_count": 1,
+      "reported_window_end": "2026-09-24",
+      "reported_window_start": "2023-07-04",
+      "unresolved_source_windows": [
+        {
+          "end": "2026-09-24",
+          "reason": "FULL_OFFICIAL_EVENT_ARCHIVE_COVERAGE_NOT_EVIDENCED",
+          "start": "2023-07-04"
+        }
+      ],
+      "window_end": "2026-09-24",
+      "window_start": "2023-07-04"
+    },
+    {
+      "coverage_complete": false,
+      "event_count_matches": true,
+      "exchange": "SH_MAIN",
+      "failed_query_count": 0,
+      "observed_event_count": 0,
+      "reason": "INCOMPLETE_SOURCE_COVERAGE",
+      "reported_event_count": 0,
+      "reported_window_end": "2026-09-24",
+      "reported_window_start": "2023-07-04",
+      "unresolved_source_windows": [
+        {
+          "end": "2026-09-24",
+          "reason": "FULL_OFFICIAL_EVENT_ARCHIVE_COVERAGE_NOT_EVIDENCED",
+          "start": "2023-07-04"
+        }
+      ],
+      "window_end": "2026-09-24",
+      "window_start": "2023-07-04"
+    },
+    {
+      "coverage_complete": false,
+      "event_count_matches": true,
+      "exchange": "STAR",
+      "failed_query_count": 0,
+      "observed_event_count": 0,
+      "reason": "INCOMPLETE_SOURCE_COVERAGE",
+      "reported_event_count": 0,
+      "reported_window_end": "2026-09-24",
+      "reported_window_start": "2023-07-04",
+      "unresolved_source_windows": [
+        {
+          "end": "2026-09-24",
+          "reason": "FULL_OFFICIAL_EVENT_ARCHIVE_COVERAGE_NOT_EVIDENCED",
+          "start": "2023-07-04"
+        }
+      ],
+      "window_end": "2026-09-24",
+      "window_start": "2023-07-04"
+    },
+    {
+      "coverage_complete": false,
+      "event_count_matches": true,
+      "exchange": "SZ_MAIN",
+      "failed_query_count": 0,
+      "observed_event_count": 0,
+      "reason": "INCOMPLETE_SOURCE_COVERAGE",
+      "reported_event_count": 0,
+      "reported_window_end": "2026-09-24",
+      "reported_window_start": "2023-07-04",
+      "unresolved_source_windows": [
+        {
+          "end": "2026-09-24",
+          "reason": "FULL_OFFICIAL_EVENT_ARCHIVE_COVERAGE_NOT_EVIDENCED",
+          "start": "2023-07-04"
+        }
+      ],
+      "window_end": "2026-09-24",
+      "window_start": "2023-07-04"
+    }
+  ],
+  "version": "1.0.0"
+}

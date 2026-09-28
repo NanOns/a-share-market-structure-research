@@ -184,7 +184,7 @@ def test_new_listing_identity_delta() -> None:
         previous_active={"SH.600001": {"security_id": "SEC-A"}},
         current_active={"SH.600001": {"security_id": "SEC-A"}, "SH.600002": {"security_id": "SEC-B"}},
     )
-    assert any(row["event_type"] == "NEW_LISTING_CANDIDATE" for row in events)
+    assert any(row["event_type"] == "SECURITY_ENTRY" for row in events)
 
 
 def test_delisting_identity_delta() -> None:
@@ -192,17 +192,54 @@ def test_delisting_identity_delta() -> None:
         previous_active={"SH.600001": {"security_id": "SEC-A"}},
         current_active={},
     )
-    assert events == [{"event_type": "DELISTING_CANDIDATE", "source_security_key": "SH.600001",
-                       "security_id": "SEC-A"}]
+    assert events == [{"event_type": "SECURITY_EXIT", "source_security_key": "SH.600001",
+                       "security_id": "SEC-A", "effective_date": None}]
 
 
-def test_nonoverlap_code_change_daily_candidate() -> None:
+def test_nonoverlap_code_change_without_linkage_is_atomic_only() -> None:
     events = identity_delta_events(
         previous_active={"SZ.000001": {"security_id": "SEC-A", "exchange": "SZ"}},
         current_active={"SZ.000002": {"security_id": "SEC-B", "exchange": "SZ"}},
     )
-    assert any(row["event_type"] == "CODE_CHANGE_CANDIDATE" and row["shared_bar_sessions"] == 0
-               for row in events)
+    assert {row["event_type"] for row in events} == {"SECURITY_EXIT", "SECURITY_ENTRY"}
+
+
+def test_single_exit_and_unrelated_ipo_roster_delta_does_not_cartesian_pair() -> None:
+    events = identity_delta_events(
+        previous_active={"SH.600001": {"security_id": "SEC-A", "security_name": "Old Issuer"}},
+        current_active={
+            "SH.600002": {"security_id": "SEC-B", "security_name": "New Issuer B"},
+            "SH.600003": {"security_id": "SEC-C", "security_name": "New Issuer C"},
+            "SH.600004": {"security_id": "SEC-D", "security_name": "New Issuer D"},
+        },
+        trade_date="2026-09-28",
+    )
+    assert len(events) == 4
+    assert all(row["event_type"] in {"SECURITY_EXIT", "SECURITY_ENTRY"} for row in events)
+
+
+def test_exact_name_boundary_emits_candidate_only() -> None:
+    events = identity_delta_events(
+        previous_active={"SH.600001": {"security_id": "SEC-A", "security_name": "Same Company"}},
+        current_active={"SH.600002": {"security_id": "SEC-B", "security_name": "same-company"}},
+        trade_date="2026-09-28",
+    )
+    candidate = next(row for row in events if row["event_type"] == "RELATION_CANDIDATE")
+    assert candidate["linkage_signals"] == ["WEAK_NAME_CONTINUITY"]
+    assert candidate["resolution_status"] == "UNRESOLVED"
+
+
+def test_official_event_links_daily_relation_candidate() -> None:
+    events = identity_delta_events(
+        previous_active={"SH.600001": {"security_id": "SEC-A"}},
+        current_active={"SH.600002": {"security_id": "SEC-B"}},
+        official_code_change_events=[{
+            "old_source_security_key": "SH.600001", "new_source_security_key": "SH.600002",
+            "source_ref": "https://exchange.example/change",
+        }],
+    )
+    candidate = next(row for row in events if row["event_type"] == "RELATION_CANDIDATE")
+    assert candidate["linkage_signals"] == ["OFFICIAL_CODE_CHANGE_EVENT"]
 
 
 def test_suspension_does_not_mean_data_gap() -> None:

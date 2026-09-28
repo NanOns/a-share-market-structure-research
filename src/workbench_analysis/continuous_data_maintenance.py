@@ -182,28 +182,149 @@ def identity_delta_events(
     *,
     previous_active: Mapping[str, Mapping[str, Any]],
     current_active: Mapping[str, Mapping[str, Any]],
+    trade_date: str | None = None,
+    official_code_change_events: Iterable[Mapping[str, Any]] = (),
+    dated_alias_facts: Iterable[Mapping[str, Any]] = (),
+    accepted_provider_predecessor_successor_links: Iterable[Mapping[str, Any]] = (),
+    retrospective_bar_aliases: Iterable[Mapping[str, Any]] = (),
+    source_identity_assignments: Mapping[str, Sequence[Mapping[str, Any]]] | None = None,
 ) -> list[dict[str, Any]]:
-    """Emit generic listing, delisting and adjacent symbol-change candidates."""
+    """Emit atomic daily boundaries and candidates supported by a linkage signal.
+
+    Adjacent exits and entries never form a Cartesian product. A single relation
+    candidate is emitted only for a unique exact-name/versioned-ID match or a
+    supplied official, accepted-provider, alias, or persistent-bar link.
+    """
     old_keys, new_keys = set(previous_active), set(current_active)
     events: list[dict[str, Any]] = []
+    effective_date = iso_day(trade_date).isoformat() if trade_date else None
+    candidates: dict[tuple[str, ...], dict[str, Any]] = {}
+
+    def exchange(key: str, row: Mapping[str, Any]) -> str:
+        return str(row.get("exchange") or key.split(".", 1)[0]).upper()
+
+    def add_candidate(keys: Iterable[object], signal: str, details: Mapping[str, Any] | None = None) -> None:
+        if isinstance(keys, str):
+            keys = (keys,)
+        ordered = tuple(sorted({str(key or "").strip().upper() for key in keys if str(key or "").strip()}))
+        if not ordered:
+            return
+        row = candidates.setdefault(ordered, {
+            "event_type": "RELATION_CANDIDATE",
+            "source_keys": list(ordered),
+            "linkage_signals": [],
+            "resolution_status": "UNRESOLVED",
+        })
+        if signal not in row["linkage_signals"]:
+            row["linkage_signals"].append(signal)
+        if effective_date:
+            row["effective_date"] = effective_date
+        if details:
+            row.setdefault("signal_details", []).append(dict(details))
+
     for key in sorted(new_keys - old_keys):
-        events.append({"event_type": "NEW_LISTING_CANDIDATE", "source_security_key": key,
-                       "security_id": current_active[key].get("security_id")})
+        events.append({"event_type": "SECURITY_ENTRY", "source_security_key": key,
+                       "security_id": current_active[key].get("security_id"), "effective_date": effective_date})
     for key in sorted(old_keys - new_keys):
-        events.append({"event_type": "DELISTING_CANDIDATE", "source_security_key": key,
-                       "security_id": previous_active[key].get("security_id")})
+        events.append({"event_type": "SECURITY_EXIT", "source_security_key": key,
+                       "security_id": previous_active[key].get("security_id"), "effective_date": effective_date})
     exited = sorted(old_keys - new_keys)
     entered = sorted(new_keys - old_keys)
-    for old in exited:
-        for new in entered:
-            left, right = previous_active[old], current_active[new]
-            same_exchange = str(left.get("exchange") or old.split(".", 1)[0]).upper() == str(
-                right.get("exchange") or new.split(".", 1)[0]
-            ).upper()
-            if same_exchange:
-                events.append({"event_type": "CODE_CHANGE_CANDIDATE",
-                               "old_source_security_key": old, "new_source_security_key": new,
-                               "shared_bar_sessions": 0})
+
+    def link_unique_field(field_names: Sequence[str], signal: str) -> None:
+        left_by_value: dict[str, list[str]] = defaultdict(list)
+        right_by_value: dict[str, list[str]] = defaultdict(list)
+        for key in exited:
+            record = previous_active[key]
+            if not (record.get("source_revision_id") or record.get("source_revision")):
+                continue
+            value = next((str(record.get(name) or "").strip() for name in field_names
+                          if str(record.get(name) or "").strip()), "")
+            if value:
+                left_by_value[value].append(key)
+        for key in entered:
+            record = current_active[key]
+            if not (record.get("source_revision_id") or record.get("source_revision")):
+                continue
+            value = next((str(record.get(name) or "").strip() for name in field_names
+                          if str(record.get(name) or "").strip()), "")
+            if value:
+                right_by_value[value].append(key)
+        for value in sorted(set(left_by_value) & set(right_by_value)):
+            if len(left_by_value[value]) != 1 or len(right_by_value[value]) != 1:
+                continue
+            old, new = left_by_value[value][0], right_by_value[value][0]
+            if exchange(old, previous_active[old]) == exchange(new, current_active[new]):
+                add_candidate((old, new), signal, {"versioned_identifier": value})
+
+    link_unique_field(("issuer_id", "issuer_identifier"), "VERSIONED_SAME_ISSUER_ID")
+    link_unique_field(("company_entity_id", "entity_id"), "VERSIONED_SAME_COMPANY_ENTITY_ID")
+
+    def normalized_name(row: Mapping[str, Any]) -> str:
+        value = row.get("security_name") or row.get("name") or row.get("company_name") or ""
+        return "".join(char for char in str(value).upper() if char.isalnum())
+
+    left_names: dict[str, list[str]] = defaultdict(list)
+    right_names: dict[str, list[str]] = defaultdict(list)
+    for key in exited:
+        name = normalized_name(previous_active[key])
+        if name:
+            left_names[name].append(key)
+    for key in entered:
+        name = normalized_name(current_active[key])
+        if name:
+            right_names[name].append(key)
+    for name in sorted(set(left_names) & set(right_names)):
+        if len(left_names[name]) != 1 or len(right_names[name]) != 1:
+            continue
+        old, new = left_names[name][0], right_names[name][0]
+        if exchange(old, previous_active[old]) == exchange(new, current_active[new]):
+            add_candidate((old, new), "WEAK_NAME_CONTINUITY", {"normalized_name_match": name})
+
+    for evidence in official_code_change_events:
+        keys = evidence.get("source_security_keys") or (
+            evidence.get("old_source_security_key"), evidence.get("new_source_security_key")
+        )
+        add_candidate(keys, "OFFICIAL_CODE_CHANGE_EVENT", {"source_ref": evidence.get("source_ref")})
+    alias_groups: dict[str, list[Mapping[str, Any]]] = defaultdict(list)
+    for fact in dated_alias_facts:
+        alias_groups[str(fact.get("security_id") or "")].append(fact)
+    for security_id, facts in alias_groups.items():
+        ordered = sorted(facts, key=lambda row: str(row.get("effective_from") or ""))
+        for left, right in zip(ordered, ordered[1:]):
+            old, new = left.get("source_security_key"), right.get("source_security_key")
+            if old and new and str(old).upper() != str(new).upper():
+                add_candidate((old, new), "DATED_ALIAS_FACT", {"security_id": security_id})
+    for evidence in accepted_provider_predecessor_successor_links:
+        add_candidate(evidence.get("source_security_keys") or (
+            evidence.get("predecessor_source_security_key"), evidence.get("successor_source_security_key")
+        ), "ACCEPTED_PROVIDER_PREDECESSOR_SUCCESSOR_LINK", {"source_ref": evidence.get("source_ref")})
+    for evidence in retrospective_bar_aliases:
+        add_candidate(evidence.get("source_keys") or (
+            evidence.get("old_source_security_key"), evidence.get("new_source_security_key")
+        ), "PERSISTENT_RETROSPECTIVE_BAR_ALIAS", {
+            "shared_identical_raw_bar_sessions": evidence.get("shared_identical_raw_bar_sessions")
+        })
+
+    for source_key, rows in (source_identity_assignments or {}).items():
+        ordered = sorted(rows, key=lambda row: str(row.get("effective_from") or row.get("list_date") or ""))
+        for left, right in zip(ordered, ordered[1:]):
+            end = left.get("effective_to") or left.get("symbol_effective_to") or left.get("delist_date")
+            start = right.get("effective_from") or right.get("symbol_effective_from") or right.get("list_date")
+            if end and start and iso_day(end) < iso_day(start):
+                events.append({"event_type": "SYMBOL_REASSIGNMENT", "source_security_key": source_key,
+                               "effective_date": iso_day(start).isoformat(),
+                               "old_security_id": left.get("security_id"),
+                               "new_security_id": right.get("security_id")})
+                add_candidate((source_key,), "SOURCE_SYMBOL_REASSIGNMENT_OR_CODE_REUSE_CANDIDATE", {
+                    "old_security_id": left.get("security_id"), "new_security_id": right.get("security_id")
+                })
+
+    for row in candidates.values():
+        row["linkage_signals"] = sorted(row["linkage_signals"])
+        if "signal_details" in row:
+            row["signal_details"] = sorted(row["signal_details"], key=lambda item: str(item))
+    events.extend(sorted(candidates.values(), key=lambda row: tuple(row["source_keys"])))
     return events
 
 

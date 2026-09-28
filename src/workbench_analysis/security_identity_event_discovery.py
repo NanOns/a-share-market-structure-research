@@ -20,14 +20,17 @@ SIGNALS = frozenset(
     {
         "OFFICIAL_CODE_CHANGE_EVENT",
         "DATED_ALIAS_FACT",
-        "ROSTER_EXIT_ENTRY_ADJACENCY",
-        "LIFECYCLE_BOUNDARY_ADJACENCY",
+        "ACCEPTED_PROVIDER_PREDECESSOR_SUCCESSOR_LINK",
         "PERSISTENT_RETROSPECTIVE_BAR_ALIAS",
         "SOURCE_SYMBOL_REASSIGNMENT_OR_CODE_REUSE_CANDIDATE",
+        "VERSIONED_SAME_COMPANY_ENTITY_ID",
+        "VERSIONED_SAME_ISSUER_ID",
         "VERSIONED_IDENTITY_RELATION_EVIDENCE",
         "WEAK_NAME_CONTINUITY",
     }
 )
+LINKAGE_CONTRACT_ID = "SECURITY_IDENTITY_EVENT_LINKAGE_V1"
+LINKAGE_CONTRACT_VERSION = "1.0.0"
 _SYMBOL = re.compile(r"^(SH|SZ|BJ)\.([0-9]{6})$", re.IGNORECASE)
 RELATION_POLICY_ID = "IDENTITY_RELATION_EVIDENCE_POLICY_V1"
 RELATION_POLICY_VERSION = "1.0.0"
@@ -88,6 +91,38 @@ def _normalized_name(record: Mapping[str, object] | None) -> str:
         return ""
     value = str(record.get("security_name") or record.get("name") or record.get("company_name") or "")
     return "".join(ch for ch in value.upper() if ch.isalnum())
+
+
+def _versioned_identifier(record: Mapping[str, object], fields: Sequence[str]) -> str:
+    """Return an identifier only when the source row carries a revision marker."""
+    revision = record.get("source_revision_id") or record.get("source_revision")
+    if not revision:
+        return ""
+    for field in fields:
+        value = str(record.get(field) or "").strip()
+        if value:
+            return value
+    return ""
+
+
+def _atomic_boundary(
+    event_type: str,
+    source_key: str,
+    effective_date: date,
+    source: str,
+    details: Mapping[str, object] | None = None,
+) -> dict[str, object]:
+    material = "|".join((event_type, source_key, effective_date.isoformat(), source))
+    payload: dict[str, object] = {
+        "event_id": "SE-" + hashlib.sha256(material.encode("utf-8")).hexdigest()[:24].upper(),
+        "event_type": event_type,
+        "source_security_key": source_key,
+        "effective_date": effective_date.isoformat(),
+        "boundary_source": source,
+    }
+    if details:
+        payload["details"] = {str(key): value for key, value in details.items() if value is not None}
+    return payload
 
 
 def _dated_alias_facts_do_not_overlap(facts: Sequence[Mapping[str, object]]) -> bool:
@@ -284,9 +319,9 @@ def discover_identity_events(
 ) -> dict[str, object]:
     """Build a deterministic union of historical or one-session identity events.
 
-    A roster boundary is paired only within one exchange. Listing dates,
-    source revisions, names, lifecycle boundaries, and bar continuity create
-    candidates only; relation status requires policy-accepted identity evidence.
+    Roster and lifecycle boundaries are emitted as atomic events. They create a
+    relation candidate only when a separate linkage signal joins the two keys.
+    Names and versioned issuer identifiers are candidate-only signals.
     """
     mode = str(mode).upper()
     if mode not in MODES:
@@ -319,13 +354,20 @@ def discover_identity_events(
 
     union = _CandidateUnion(identity_map)
     signal_counts: dict[str, int] = {signal: 0 for signal in sorted(SIGNALS)}
+    boundary_events: dict[str, dict[str, object]] = {}
+
+    def record_boundary(event: dict[str, object]) -> None:
+        boundary_events[str(event["event_id"])] = event
 
     for event in official:
         event_day = _date(event.get("effective_date"))
         if mode == "DAILY_INCREMENTAL" and event_day != target:
             continue
+        keys = _evidence_keys(event)
         old = _key(event.get("old_source_security_key") or event.get("old_symbol"))
         new = _key(event.get("new_source_security_key") or event.get("new_symbol"))
+        if (not old or not new) and len(keys) == 2:
+            old, new = keys
         digest = str(event.get("source_capture_sha256") or event.get("evidence_hash") or "").lower()
         if old and new:
             union.add((old, new), "OFFICIAL_CODE_CHANGE_EVENT", effective_date=event.get("effective_date"),
@@ -339,9 +381,18 @@ def discover_identity_events(
         if mode == "DAILY_INCREMENTAL" and _date(effective_date) != target:
             continue
         if keys:
+            evidence_class = str(evidence.get("evidence_class") or "").upper()
+            if evidence_class == "ACCEPTED_PROVIDER_PREDECESSOR_SUCCESSOR_LINK":
+                signal = "ACCEPTED_PROVIDER_PREDECESSOR_SUCCESSOR_LINK"
+            elif evidence_class == "VERSIONED_SAME_ISSUER_ID":
+                signal = "VERSIONED_SAME_ISSUER_ID"
+            elif evidence_class == "VERSIONED_SAME_COMPANY_ENTITY_ID":
+                signal = "VERSIONED_SAME_COMPANY_ENTITY_ID"
+            else:
+                signal = "VERSIONED_IDENTITY_RELATION_EVIDENCE"
             union.add(
                 keys,
-                "VERSIONED_IDENTITY_RELATION_EVIDENCE",
+                signal,
                 effective_date=effective_date,
                 identity_ids=evidence.get("security_ids"),
                 details={"evidence_class": evidence.get("evidence_class"),
@@ -366,11 +417,12 @@ def discover_identity_events(
                                    "source_capture_sha256": right.get("evidence_hash")})
                 signal_counts["DATED_ALIAS_FACT"] += 1
 
-    # Consecutive official-session rosters expose non-overlapping transitions
-    # without requiring same-day bars for the old and new symbols.
+    # Consecutive rosters expose exits/entries atomically. They do not imply a
+    # relation. Exact-name continuity can link only a unique adjacent pair.
     session_position = {day: index for index, day in enumerate(sessions)}
     prior_day: date | None = None
     prior_codes: set[str] | None = None
+    ambiguous_name_boundary_group_count = 0
     for snapshot in roster_snapshots:
         day = _date(snapshot.get("trade_date") or snapshot.get("date"))
         codes = snapshot.get("source_codes") or snapshot.get("codes") or ()
@@ -387,32 +439,54 @@ def discover_identity_events(
         if adjacent and not (mode == "DAILY_INCREMENTAL" and day != target):
             exited = prior_codes - current_codes
             entered = current_codes - prior_codes
+            eligible_exits: list[str] = []
+            eligible_entries: list[str] = []
             for old in sorted(exited):
-                if old not in required_keys:
+                if old not in required_keys or _board_for(old, identity_map.get(old)) not in REQUIRED_BOARDS:
                     continue
-                old_board = _board_for(old, identity_map.get(old))
-                if old_board not in REQUIRED_BOARDS:
+                eligible_exits.append(old)
+                record_boundary(_atomic_boundary(
+                    "SECURITY_EXIT", old, day, "ADJACENT_OFFICIAL_SESSION_ROSTER",
+                    {"last_present_session": prior_day.isoformat(), "first_absent_session": day.isoformat()},
+                ))
+            for new in sorted(entered):
+                if new not in required_keys or _board_for(new, identity_map.get(new)) not in REQUIRED_BOARDS:
                     continue
-                for new in sorted(entered):
-                    if new not in required_keys:
-                        continue
-                    new_board = _board_for(new, identity_map.get(new))
-                    if new_board not in REQUIRED_BOARDS or _exchange(old) != _exchange(new):
-                        continue
-                    left, right = identity_map.get(old), identity_map.get(new)
-                    same_name = bool(_normalized_name(left) and _normalized_name(left) == _normalized_name(right))
-                    union.add((old, new), "ROSTER_EXIT_ENTRY_ADJACENCY", effective_date=day,
-                              details={"previous_session": prior_day.isoformat(), "first_session": day.isoformat(),
-                                       "old_board": old_board, "new_board": new_board})
-                    signal_counts["ROSTER_EXIT_ENTRY_ADJACENCY"] += 1
-                    if same_name:
-                        union.add((old, new), "WEAK_NAME_CONTINUITY", effective_date=day,
-                                  details={"name_match_is_candidate_only": True})
-                        signal_counts["WEAK_NAME_CONTINUITY"] += 1
+                eligible_entries.append(new)
+                record_boundary(_atomic_boundary(
+                    "SECURITY_ENTRY", new, day, "ADJACENT_OFFICIAL_SESSION_ROSTER",
+                    {"previous_session": prior_day.isoformat(), "first_present_session": day.isoformat()},
+                ))
+
+            old_by_name: dict[str, list[str]] = defaultdict(list)
+            new_by_name: dict[str, list[str]] = defaultdict(list)
+            for key in eligible_exits:
+                name = _normalized_name(identity_map.get(key))
+                if name:
+                    old_by_name[name].append(key)
+            for key in eligible_entries:
+                name = _normalized_name(identity_map.get(key))
+                if name:
+                    new_by_name[name].append(key)
+            for name in sorted(set(old_by_name) & set(new_by_name)):
+                old_matches, new_matches = old_by_name[name], new_by_name[name]
+                if len(old_matches) != 1 or len(new_matches) != 1:
+                    ambiguous_name_boundary_group_count += 1
+                    continue
+                old, new = old_matches[0], new_matches[0]
+                if _exchange(old) != _exchange(new):
+                    continue
+                union.add((old, new), "WEAK_NAME_CONTINUITY", effective_date=day,
+                          details={"name_match_is_candidate_only": True,
+                                   "previous_session": prior_day.isoformat(),
+                                   "first_session": day.isoformat(),
+                                   "normalized_name_match": name})
+                signal_counts["WEAK_NAME_CONTINUITY"] += 1
         prior_day, prior_codes = day, current_codes
 
-    # Independently sourced lifecycle facts expose boundaries even if a roster
-    # snapshot was corrected or unavailable.
+    # Lifecycle facts expose listing/symbol boundaries atomically. A relation
+    # is emitted only for a unique, adjacent pair with a versioned identifier
+    # or exact normalized name in common.
     lifecycle = list(lifecycle_records)
     session_position = {day: index for index, day in enumerate(sessions)}
     starts: dict[date, list[Mapping[str, object]]] = defaultdict(list)
@@ -424,6 +498,55 @@ def discover_identity_events(
             starts[start].append(record)
         if end:
             ends[end].append(record)
+    for record in lifecycle:
+        key = _key(record.get("source_security_key") or record.get("symbol"))
+        if not key or key not in required_keys:
+            continue
+        board = _board_for(key, record)
+        if board not in REQUIRED_BOARDS:
+            continue
+        listing_start = _date(record.get("list_date"))
+        if listing_start is not None and listing_start in allowed_dates:
+            if mode != "DAILY_INCREMENTAL" or listing_start == target:
+                record_boundary(_atomic_boundary("LISTING_START", key, listing_start, "VERSIONED_LIFECYCLE_RECORD"))
+        listing_end = _date(record.get("delist_date"))
+        symbol_end = _date(record.get("effective_to") or record.get("symbol_effective_to"))
+        boundary_day = listing_end or symbol_end
+        if boundary_day is not None and boundary_day in allowed_dates:
+            if mode != "DAILY_INCREMENTAL" or boundary_day == target:
+                event_type = "LISTING_END" if listing_end is not None else "SECURITY_EXIT"
+                record_boundary(_atomic_boundary(event_type, key, boundary_day, "VERSIONED_LIFECYCLE_RECORD"))
+
+    def unique_identifier_links(
+        old_rows: list[Mapping[str, object]], new_rows: list[Mapping[str, object]],
+        fields: Sequence[str], signal: str, effective_date: date,
+    ) -> None:
+        old_by_id: dict[str, list[Mapping[str, object]]] = defaultdict(list)
+        new_by_id: dict[str, list[Mapping[str, object]]] = defaultdict(list)
+        for row in old_rows:
+            value = _versioned_identifier(row, fields)
+            if value:
+                old_by_id[value].append(row)
+        for row in new_rows:
+            value = _versioned_identifier(row, fields)
+            if value:
+                new_by_id[value].append(row)
+        for value in sorted(set(old_by_id) & set(new_by_id)):
+            left_rows, right_rows = old_by_id[value], new_by_id[value]
+            if len(left_rows) != 1 or len(right_rows) != 1:
+                continue
+            old_row, new_row = left_rows[0], right_rows[0]
+            old = _key(old_row.get("source_security_key") or old_row.get("symbol"))
+            new = _key(new_row.get("source_security_key") or new_row.get("symbol"))
+            if (not old or not new or old == new or _exchange(old) != _exchange(new)
+                    or old not in required_keys or new not in required_keys):
+                continue
+            union.add((old, new), signal, effective_date=effective_date,
+                      details={"versioned_identifier": value,
+                               "old_source_revision": old_row.get("source_revision_id") or old_row.get("source_revision"),
+                               "new_source_revision": new_row.get("source_revision_id") or new_row.get("source_revision")})
+            signal_counts[signal] += 1
+
     for end_day, old_rows in ends.items():
         prior_pos = session_position.get(end_day)
         if prior_pos is None or prior_pos + 1 >= len(sessions):
@@ -431,27 +554,41 @@ def discover_identity_events(
         next_day = sessions[prior_pos + 1]
         if mode == "DAILY_INCREMENTAL" and next_day != target:
             continue
-        for old_row in old_rows:
-            old = _key(old_row.get("source_security_key") or old_row.get("symbol"))
-            for new_row in starts.get(next_day, []):
-                new = _key(new_row.get("source_security_key") or new_row.get("symbol"))
-                if (not old or not new or old == new or old not in required_keys or new not in required_keys
-                        or _exchange(old) != _exchange(new)):
-                    continue
-                if _board_for(old, old_row) not in REQUIRED_BOARDS or _board_for(new, new_row) not in REQUIRED_BOARDS:
-                    continue
-                left_anchor = _date(old_row.get("list_date"))
-                right_anchor = _date(new_row.get("list_date"))
-                same_name = bool(_normalized_name(old_row) and _normalized_name(old_row) == _normalized_name(new_row))
-                union.add((old, new), "LIFECYCLE_BOUNDARY_ADJACENCY", effective_date=next_day,
-                          details={"previous_session": end_day.isoformat(), "first_session": next_day.isoformat(),
-                                   "old_source_revision": old_row.get("source_revision_id") or old_row.get("source_revision"),
-                                   "new_source_revision": new_row.get("source_revision_id") or new_row.get("source_revision")})
-                signal_counts["LIFECYCLE_BOUNDARY_ADJACENCY"] += 1
-                if same_name:
-                    union.add((old, new), "WEAK_NAME_CONTINUITY", effective_date=next_day,
-                              details={"name_match_is_candidate_only": True})
-                    signal_counts["WEAK_NAME_CONTINUITY"] += 1
+        next_rows = starts.get(next_day, [])
+        old_rows = [row for row in old_rows
+                    if _key(row.get("source_security_key") or row.get("symbol")) in required_keys]
+        next_rows = [row for row in next_rows
+                     if _key(row.get("source_security_key") or row.get("symbol")) in required_keys]
+        for signal, fields in (
+            ("VERSIONED_SAME_ISSUER_ID", ("issuer_id", "issuer_identifier")),
+            ("VERSIONED_SAME_COMPANY_ENTITY_ID", ("company_entity_id", "entity_id")),
+        ):
+            unique_identifier_links(old_rows, next_rows, fields, signal, next_day)
+        old_by_name: dict[str, list[Mapping[str, object]]] = defaultdict(list)
+        new_by_name: dict[str, list[Mapping[str, object]]] = defaultdict(list)
+        for row in old_rows:
+            name = _normalized_name(row)
+            if name:
+                old_by_name[name].append(row)
+        for row in next_rows:
+            name = _normalized_name(row)
+            if name:
+                new_by_name[name].append(row)
+        for name in sorted(set(old_by_name) & set(new_by_name)):
+            left_rows, right_rows = old_by_name[name], new_by_name[name]
+            if len(left_rows) != 1 or len(right_rows) != 1:
+                ambiguous_name_boundary_group_count += 1
+                continue
+            old = _key(left_rows[0].get("source_security_key") or left_rows[0].get("symbol"))
+            new = _key(right_rows[0].get("source_security_key") or right_rows[0].get("symbol"))
+            if not old or not new or old == new or _exchange(old) != _exchange(new):
+                continue
+            union.add((old, new), "WEAK_NAME_CONTINUITY", effective_date=next_day,
+                      details={"name_match_is_candidate_only": True,
+                               "previous_session": end_day.isoformat(),
+                               "first_session": next_day.isoformat(),
+                               "normalized_name_match": name})
+            signal_counts["WEAK_NAME_CONTINUITY"] += 1
 
     for candidate in retrospective_bar_candidates:
         if mode == "DAILY_INCREMENTAL":
@@ -481,6 +618,11 @@ def discover_identity_events(
             if old_end is not None and new_start is not None and old_end < new_start:
                 if mode == "DAILY_INCREMENTAL" and new_start != target:
                     continue
+                record_boundary(_atomic_boundary(
+                    "SYMBOL_REASSIGNMENT", key, new_start, "VERSIONED_SYMBOL_LIFECYCLE",
+                    {"old_security_id": old_id, "new_security_id": new_id,
+                     "old_effective_to": old_end.isoformat(), "new_effective_from": new_start.isoformat()},
+                ))
                 union.add((key,), "SOURCE_SYMBOL_REASSIGNMENT_OR_CODE_REUSE_CANDIDATE",
                           effective_date=new_start, identity_ids=(old_id, new_id),
                           details={"old_security_id": old_id, "new_security_id": new_id,
@@ -576,9 +718,27 @@ def discover_identity_events(
     unresolved_required = sum(
         event["resolution_status"] == "UNRESOLVED" and event["required_scope_affected"] for event in events
     )
+    boundary_values = sorted(boundary_events.values(), key=lambda row: (
+        str(row["effective_date"]), str(row["event_type"]), str(row["source_security_key"])
+    ))
+    boundary_counts: dict[str, int] = defaultdict(int)
+    linked_boundary_keys = {key for event in events for key in event["source_keys"]}
+    boundary_anomaly_count = 0
+    for event in boundary_values:
+        boundary_counts[str(event["event_type"])] += 1
+        event["linked_to_relation_candidate"] = str(event["source_security_key"]) in linked_boundary_keys
+        if (_date(event.get("effective_date")) is None
+                or not _SYMBOL.fullmatch(str(event.get("source_security_key") or ""))
+                or str(event.get("event_type")) not in {
+                    "SECURITY_EXIT", "SECURITY_ENTRY", "LISTING_START", "LISTING_END", "SYMBOL_REASSIGNMENT"
+                }):
+            boundary_anomaly_count += 1
+
     return {
         "contract_id": "SECURITY_IDENTITY_EVENT_DISCOVERY_V1",
-        "version": "1.0.0",
+        "version": "1.1.0",
+        "linkage_contract": {"contract_id": LINKAGE_CONTRACT_ID,
+                             "version": LINKAGE_CONTRACT_VERSION},
         "identity_relation_policy": {
             "contract_id": RELATION_POLICY_ID,
             "version": RELATION_POLICY_VERSION,
@@ -591,7 +751,13 @@ def discover_identity_events(
         "candidate_count": len(events),
         "candidate_status_counts": dict(sorted(status_counts.items())),
         "unresolved_required_scope_candidate_count": unresolved_required,
+        "boundary_event_count": len(boundary_values),
+        "boundary_event_counts": dict(sorted(boundary_counts.items())),
+        "unlinked_boundary_event_count": sum(not event["linked_to_relation_candidate"] for event in boundary_values),
+        "unlinked_boundary_anomaly_count": boundary_anomaly_count,
+        "ambiguous_name_boundary_group_count": ambiguous_name_boundary_group_count,
         "required_scope": list(REQUIRED_BOARDS),
+        "boundary_events": boundary_values,
         "events": events,
         "fail_closed": {
             "weak_signal_can_merge_identity": False,

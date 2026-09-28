@@ -1,0 +1,64 @@
+{
+  "contract_id": "V4_00_01_02_JOINT_FINAL_RECEIPT_R3",
+  "evidence": {
+    "gate_a_postcheck": {
+      "path": "reports/v4_01/V4_01_R8_3_INDEPENDENT_POSTCHECK.json",
+      "sha256": "255a7ac72f6542d0f419d4792c4549c71d5f8301c6f4f2f0d9f62b5c683f32cc"
+    },
+    "gate_a_stage_receipt": {
+      "path": "reports/v4_01/v4_01_final_stage_receipt_R8_3_20260928.json",
+      "sha256": "21a45c1cf662b3cd35649ada5ab4c821818323e6dbef57de1bbcc9c3cada9871"
+    },
+    "gate_b_postcheck": {
+      "path": "reports/v4_dm01/V4_DM01_INDEPENDENT_POSTCHECK_R1_20260928.json",
+      "sha256": "c7048eae3ce7c07abeb82fd95203cc217c0f44f44ae36189c7a7f12a463d720a"
+    },
+    "gate_b_receipt": {
+      "path": "reports/v4_dm01/V4_DM01_GATE_B_RECEIPT_R8_3_R1_20260928.json",
+      "sha256": "8bab8ca54170f137586021981d5c3369d7ef02e25b54590a4fed4d7a51b9a6c9"
+    },
+    "official_index_coverage": {
+      "path": "reports/v4_01/V4_01_OFFICIAL_CODE_CHANGE_EVENT_INDEX_R8_3.json",
+      "sha256": "84cf233dba4cbc16bf153e6f101b3981eb4eab64f32c83936b8b12a5372a47da"
+    },
+    "phase0_receipt": {
+      "path": "reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json",
+      "sha256": "313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59"
+    },
+    "test_receipt": {
+      "path": "reports/v4_joint/V4_R8_3_DM01_TEST_RECEIPT_R1_20260928.json",
+      "sha256": "58261b6ffdcc7bbd6f854499a748fe7771bd3da053ad9f4fe23bac590d354994"
+    },
+    "v4_02_external_acceptance": {
+      "path": "reports/v4_02/V4_02_FINAL_EXTERNAL_ACCEPTANCE_R6.json",
+      "sha256": "42286da4305b792f5ecdc0fcc9a9d722e8ab3c23f6b618bf1ba15bd445ca6970"
+    }
+  },
+  "external_acceptance": "PENDING_EXTERNAL_AUDIT",
+  "gate_a": {
+    "identity_discovery": "PASS",
+    "independent_postcheck": "PASS",
+    "official_index_coverage": "BLOCKED",
+    "status": "BLOCKED",
+    "tests": "PASS",
+    "unresolved_candidates": 0
+  },
+  "gate_b": {
+    "framework_noop": "PASS_NOOP_ALREADY_ACCEPTED",
+    "independent_postcheck": "PASS",
+    "production_incremental_builders": "NOT_WIRED_FAIL_CLOSED",
+    "real_session_e2e": "NOT_RUN_NO_NEW_COMPLETED_SESSION",
+    "status": "BLOCKED"
+  },
+  "next_stage": "COMPLETE_R8_3_OFFICIAL_COVERAGE_AND_DM01_REAL_BUILDER_WIRING",
+  "observed_at_utc": "2026-09-28T01:56:44+00:00",
+  "stage_status": {
+    "V4_00": "FULL_PASS",
+    "V4_01_R8_3": "BLOCKED_OFFICIAL_INDEX_COVERAGE",
+    "V4_02": "PASS_EXTERNALLY_ACCEPTED",
+    "V4_03": "BLOCKED",
+    "V4_DM01": "FRAMEWORK_PASS_ONLY_PRODUCTION_BUILDERS_NOT_WIRED"
+  },
+  "status": "BLOCKED",
+  "version": "1.0.0"
+}

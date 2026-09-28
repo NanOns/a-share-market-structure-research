@@ -5,6 +5,7 @@ machine algorithm contracts, and full independent postcheck remain separate.
 """
 
 from collections import Counter, defaultdict
+import argparse
 from dataclasses import asdict
 from datetime import datetime, timezone
 import gzip
@@ -45,6 +46,13 @@ def atomic_json(path, obj):
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--full-history", action="store_true", help="use every accepted session through frozen cutoff and write R2 candidate")
+    args = parser.parse_args()
+    out_path = (ROOT / "reports/v4_03/staging/V4_03_CORE_FULL_HISTORY_CANDIDATE_R2.jsonl.gz"
+                if args.full_history else OUT)
+    receipt_path = (ROOT / "reports/v4_03/V4_03_CORE_FULL_HISTORY_CANDIDATE_RECEIPT_R2.json"
+                    if args.full_history else RECEIPT)
     start = time.monotonic()
     process = psutil.Process()
     cpu_started = process.cpu_times()
@@ -80,7 +88,7 @@ def main():
     calendar = [x for x in json.loads(calendar_path.read_text(encoding="utf-8"))["session_dates"] if x <= head["accepted_data_cutoff"]]
     # Bounded diagnostic history. A security needing an older verified bar is
     # explicitly flagged rather than silently accepted with a shortened window.
-    sessions = calendar[-200:]
+    sessions = calendar if args.full_history else calendar[-200:]
     first_session = sessions[0]
     cutoff = head["accepted_data_cutoff"]
     universe_ref = bootstrap["parent_artifacts"]["v4_01_universe"]
@@ -132,8 +140,8 @@ def main():
     unknown = Counter()
     board_counts = Counter()
     board_observed = Counter()
-    temp = OUT.with_suffix(OUT.suffix + ".tmp")
-    OUT.parent.mkdir(parents=True, exist_ok=True)
+    temp = out_path.with_suffix(out_path.suffix + ".tmp")
+    out_path.parent.mkdir(parents=True, exist_ok=True)
     with temp.open("wb") as raw_stream, gzip.GzipFile(fileobj=raw_stream, mode="wb", filename="", mtime=0, compresslevel=6) as compressed, io.TextIOWrapper(compressed, encoding="utf-8") as stream:
         for sid, member in sorted(members.items()):
             observations = []
@@ -163,7 +171,7 @@ def main():
                                      "board_scope": board, "evidence_origin": "DIAGNOSTIC_NON_PIT",
                                      "fields": {k: asdict(v) for k, v in sorted(fields.items())}},
                                     ensure_ascii=False, sort_keys=True, allow_nan=False) + "\n")
-    os.replace(temp, OUT)
+    os.replace(temp, out_path)
     elapsed = time.monotonic() - start
     sample_stop.set()
     sampler.join(timeout=1)
@@ -182,11 +190,11 @@ def main():
                                 "logical_cpu_count": logical_cpus},
                    "cache_state": "OS_AND_DUCKDB_CACHE_NOT_CONTROLLED_OR_CLEARED",
                    "dataset_identity": sha(head_path)}
-    receipt = {"contract_id": "V4_03_CORE_REQUIRED_SCOPE_DIAGNOSTIC_R1",
-               "status": "DIAGNOSTIC_ONLY_NOT_STAGE_ACCEPTANCE", "cutoff": cutoff,
+    receipt = {"contract_id": "V4_03_CORE_FULL_HISTORY_CANDIDATE_RECEIPT_R2" if args.full_history else "V4_03_CORE_REQUIRED_SCOPE_DIAGNOSTIC_R1",
+               "status": "FULL_INPUT_HISTORY_CUTOFF_CANDIDATE_NOT_STAGE_ACCEPTANCE" if args.full_history else "DIAGNOSTIC_ONLY_NOT_STAGE_ACCEPTANCE", "cutoff": cutoff,
                "dev_baseline_head_sha256": sha(head_path), "universe_sha256": universe_ref["sha256"],
                "daily_sha256": daily_ref["sha256"], "calendar_sha256": calendar_ref["sha256"],
-               "trading_status_sha256": sha(status_path), "output_sha256": sha(OUT),
+               "trading_status_sha256": sha(status_path), "output_sha256": sha(out_path),
                "rows_in": raw_rows, "rows_out": len(members), "security_count": len(members),
                "board_count": dict(sorted(board_counts.items())),
                "field_quality_count": {f"{k[0]}:{k[1]}": v for k, v in sorted(counts.items())},
@@ -194,8 +202,10 @@ def main():
                "board_observed_count": {f"{k[0]}:{k[1]}": v for k, v in sorted(board_observed.items())},
                "elapsed_seconds": round(elapsed, 3), "performance_measurement": measurement,
                "history_window_sessions": len(sessions),
-               "limitations": ["CORE_FACTOR_V1 stock fields only", "200-session bounded diagnostic history", "no RPS or market reference", "no independent full-market postcheck", "no accepted publication"]}
-    atomic_json(RECEIPT, receipt)
+               "history_start_session": first_session,
+               "limitations": (["CORE_FACTOR_V1 stock fields only", "cutoff only; historical daily first-availability replay pending", "no RPS or market reference", "no accepted publication"]
+                               if args.full_history else ["CORE_FACTOR_V1 stock fields only", "200-session bounded diagnostic history", "no RPS or market reference", "no independent full-market postcheck", "no accepted publication"])}
+    atomic_json(receipt_path, receipt)
     print(json.dumps({"status": receipt["status"], "rows_out": receipt["rows_out"],
                       "elapsed_seconds": receipt["elapsed_seconds"]}))
 

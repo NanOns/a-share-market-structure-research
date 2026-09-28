@@ -3,13 +3,20 @@
 import hashlib
 import json
 import os
+from datetime import date, timedelta
 from pathlib import Path
-
-from src.v4.contracts.algorithm_contract_v12 import validate_contract_v12
-
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from scripts.independent_v4_03_full_scope_postcheck import independent_core, midranks
+from src.v4.contracts.algorithm_contract_numeric_v12 import validate_contract_with_vectors_v12
+
+
 OUTPUT = ROOT / "config/v4_03_algorithm_contracts_v1.json"
+FIXTURE = ROOT / "config/v4_03_ast_numeric_fixture_v1.json"
 TECH = "TECHNICAL_BAR_WINDOW_V1"
 CROSS = "CROSS_SECTION_SESSION_WINDOW_V1"
 MISSING = "PROPAGATE_UNKNOWN_NO_DROP_NO_SHORTEN"
@@ -176,6 +183,46 @@ def window_ref(window):
     return {"contract_id": window, "identity": identity}
 
 
+def numeric_fixture():
+    history = []
+    for index in range(90):
+        close = 100 + .17 * index + 1.1 * __import__("math").sin(index / 5)
+        opening = close - .35 + .1 * __import__("math").cos(index)
+        history.append({"trade_date": (date(2026, 1, 1) + timedelta(days=index)).isoformat(),
+                        "state": "ACTUAL",
+                        "bar": {"open": opening, "high": max(opening, close) + 1.2 + (index % 5) * .03,
+                                "low": min(opening, close) - 1.1 - (index % 7) * .02,
+                                "close": close, "amount": 1_000_000 + 12_000 * index + (index % 9) * 321,
+                                "volume": 100_000 + 700 * index + (index % 11) * 13,
+                                "basis": "SYNTHETIC_QFQ_V1", "source": "f" * 64}})
+    core = independent_core(history, "SEC-A", .5)
+    target_returns = {f"ret{n}": core[f"ret{n}"][0] for n in (1, 3, 5, 20)}
+    ret5, ret20 = target_returns["ret5"], target_returns["ret20"]
+    cross_section = {"ret5": {"SEC-A": ret5, "SEC-B": ret5 + .01,
+                              "SEC-C": ret5 + .01, "SEC-D": ret5 - .01},
+                     "ret20": {"SEC-A": ret20, "SEC-B": ret20 - .02,
+                               "SEC-C": ret20 + .02, "SEC-D": ret20}}
+    members = ["SEC-A", "SEC-B", "SEC-C", "SEC-D"]
+    rps5 = midranks(cross_section["ret5"], members)[0]["SEC-A"]
+    rps20 = midranks(cross_section["ret20"], members)[0]["SEC-A"]
+    target_scalar = dict(target_returns)
+    target_scalar.update({f"market_reference_return_{n}": target_returns[f"ret{n}"] / 2
+                          for n in (1, 3, 5)})
+    fixture = {"contract_id": "V4_03_AST_NUMERIC_FIXTURE_V1", "version": "1.0.0",
+               "history": history,
+               "relative": {"target_security_id": "SEC-A", "pit_universe": members,
+                            "cross_section": cross_section, "target_scalar": target_scalar,
+                            "field_series": {"rps5": [60.0, 45.0, 50.0, rps5],
+                                             "rps20": [20.0, 40.0, 30.0, rps20]}}}
+    expected = {name: triple[0] for name, triple in core.items()}
+    expected.update({"rps5": rps5, "rps20": rps20,
+                     "rps5_delta1": rps5 - 50.0, "rps5_delta3": rps5 - 60.0,
+                     "rps20_delta3": rps20 - 20.0})
+    expected.update({f"rel_market_{n}": target_returns[f"ret{n}"] - target_scalar[f"market_reference_return_{n}"]
+                     for n in (1, 3, 5)})
+    return fixture, expected
+
+
 def main():
     scope = json.loads((ROOT / "config/v4_03_field_scope_map_v1.json").read_text(encoding="utf-8"))
     output_schema = json.loads((ROOT / "config/v4_03_output_schema_v1.json").read_text(encoding="utf-8"))
@@ -185,6 +232,12 @@ def main():
     extension_path = ROOT / "config/v4_algorithm_contract_framework_v1_2_0.json"
     extension = json.loads(extension_path.read_text(encoding="utf-8"))
     extension_sha256 = hashlib.sha256(extension_path.read_bytes()).hexdigest()
+    fixture, numeric_expected = numeric_fixture()
+    fixture_payload = (json.dumps(fixture, ensure_ascii=False, indent=2, sort_keys=True, allow_nan=False) + "\n").encode("utf-8")
+    fixture_sha256 = hashlib.sha256(fixture_payload).hexdigest()
+    fixture_temp = FIXTURE.with_suffix(".json.tmp")
+    fixture_temp.write_bytes(fixture_payload)
+    os.replace(fixture_temp, FIXTURE)
     contracts = []
     for output_field in sorted(scope["produced_fields"]):
         ast = contract_ast(output_field)
@@ -204,15 +257,18 @@ def main():
                                 "framework": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1@1.2.0",
                                 "framework_extension_sha256": extension_sha256})
         window_refs = [window_ref(w) for w in sorted(windows)]
-        vectors = [{"vector_id": f"{output_field.upper()}_SHORT_HISTORY", "input": {"case": "one_sample_short"},
-                    "expected": {"quality_state": "UNKNOWN", "unknown_reason": "INSUFFICIENT_HISTORY"},
+        vectors = [{"vector_id": f"{output_field.upper()}_OBSERVED_NUMERIC",
+                    "input": {"fixture_id": fixture["contract_id"], "fixture_sha256": fixture_sha256,
+                              "case": "OBSERVED"},
+                    "expected": {"value": numeric_expected[output_field], "quality_state": "OBSERVED"},
+                    "source_digest": source_digest},
+                   {"vector_id": f"{output_field.upper()}_UNKNOWN_INPUT",
+                    "input": {"fixture_id": fixture["contract_id"], "fixture_sha256": fixture_sha256,
+                              "case": "UNKNOWN_INPUT"},
+                    "expected": {"value": None, "quality_state": "UNKNOWN"},
                     "source_digest": source_digest}]
-        if output_field == "ma20":
-            vectors.insert(0, {"vector_id": "MA20_EXACT_20_SAMPLE", "input": {"close": list(range(1, 21))},
-                               "expected": {"value": 10.5, "quality_state": "OBSERVED"},
-                               "source_digest": source_digest})
         contract = {
-            "contract_id": f"V4_03_{output_field.upper()}_V1", "contract_version": "1.0.0",
+            "contract_id": f"V4_03_{output_field.upper()}_V1", "contract_version": "1.1.0",
             "parameter_set_id": registry["parameter_set_id"], "ast_version": "RULE_AST_V2",
             "framework_extension_id": extension["contract_id"],
             "framework_extension_version": extension["version"],
@@ -227,15 +283,19 @@ def main():
             "unknown_policy": {"action": "UNKNOWN", "reason_code": "FIELD_LOCAL_REQUIRED_INPUT_OR_WINDOW_UNKNOWN"},
             "independent_vectors": vectors, "source_digest": source_digest, "enum_contracts": {}}
         try:
-            validate_contract_v12(contract, registry, base, extension, extension_sha256)
+            validate_contract_with_vectors_v12(contract, registry, base, extension, extension_sha256,
+                                               fixture, fixture_sha256)
         except Exception as exc:
             raise RuntimeError(f"contract validation failed for {output_field}: {exc}") from exc
         contracts.append(contract)
-    payload = {"contract_id": "V4_03_ALGORITHM_CONTRACT_SET_V1", "version": "1.0.0",
+    payload = {"contract_id": "V4_03_ALGORITHM_CONTRACT_SET_V1", "version": "1.1.0",
                "framework_extension": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1@1.2.0",
                "framework_extension_sha256": extension_sha256,
+               "numeric_fixture_path": str(FIXTURE.relative_to(ROOT)).replace("\\", "/"),
+               "numeric_fixture_sha256": fixture_sha256,
+               "numeric_vector_count": 2 * len(contracts),
                "contracts": contracts, "contract_count": len(contracts),
-               "validation_status": "ALL_CONTRACT_SCHEMAS_AND_AST_V2_VALIDATED"}
+               "validation_status": "ALL_CONTRACT_SCHEMAS_AST_AND_NUMERIC_VECTORS_VALIDATED"}
     temp = OUTPUT.with_suffix(".json.tmp")
     temp.write_bytes((json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n").encode("utf-8"))
     os.replace(temp, OUTPUT)

@@ -7,6 +7,7 @@ with the diagnostic candidate artifact.
 """
 
 from collections import Counter, defaultdict
+import argparse
 import gzip
 import hashlib
 import json
@@ -238,7 +239,79 @@ def midranks(values, members):
     return scores, {"total": len(set(members)), "evaluable": n}
 
 
+def independent_core_identities(history, sid):
+    """Rebuild producer window/input hashes from accepted rows, not output fields."""
+    identities = {}
+
+    def direct(name, rows, window):
+        identities[name] = {
+            "window_identity": digest([window, name, sid, [(row["trade_date"], row["state"],
+                row["bar"]["basis"] if row["bar"] else None,
+                row["bar"]["source"] if row["bar"] else None) for row in rows]]),
+            "input_digest": digest([(row["trade_date"], row["bar"]["source"]
+                if row["bar"] else row["state"]) for row in rows]),
+        }
+
+    def derived(name, dependencies):
+        identities[name] = {
+            "window_identity": digest(["CORE_FACTOR_V1", name, sid,
+                [identities[field]["window_identity"] for field in dependencies]]),
+            "input_digest": digest([identities[field]["input_digest"] for field in dependencies]),
+        }
+
+    tech = "TECHNICAL_BAR_WINDOW_V1"
+    cross = "CROSS_SECTION_SESSION_WINDOW_V1"
+    for n in (5, 20, 60):
+        rows, _ = tech_window(history, n)
+        for prefix in ("ma", "hhv", "llv"):
+            direct(f"{prefix}{n}", rows, tech)
+        prior_rows, _ = tech_window(history, n, exclude_current=True)
+        for prefix in ("prior_high", "prior_low"):
+            direct(f"{prefix}{n}", prior_rows, tech)
+    for n in (5, 20):
+        rows, _ = tech_window(history, n, exclude_current=True)
+        for prefix in ("amount_ratio", "volume_ratio"):
+            direct(f"{prefix}{n}", [*rows, history[-1]], tech)
+    for n in (1, 3, 5, 20):
+        rows, _ = session_window(history, n)
+        direct(f"ret{n}", rows, cross)
+    for n in (5, 20):
+        rows, _ = session_window(history, n)
+        direct(f"vol{n}", rows, cross)
+    rows, _ = tech_window(history, 2)
+    direct("tr", rows, tech)
+    for n in (5, 20):
+        rows, _ = tech_window(history, n + 1)
+        direct(f"atr{n}", rows, tech)
+    for n, offset in ((20, 5), (60, 10)):
+        rows, _ = tech_window(history, n + offset)
+        direct(f"slope{n}", rows, tech)
+    rows, _ = tech_window(history, 10)
+    direct("hh_progress", rows, tech)
+    direct("ll_progress", rows, tech)
+    rows, _ = tech_window(history, 1)
+    direct("clv", rows, tech)
+    rows, _ = tech_window(history, 60, exclude_current=True)
+    direct("prior60_percentile", [*rows, history[-1]], tech)
+    derived("pos60", ["llv60", "hhv60", "llv60", "hhv60"])
+    derived("range_ratio", ["hhv5", "hhv20", "llv5", "llv20"])
+    derived("atr_ratio", ["atr5", "atr20"])
+    derived("vol_ratio", ["vol5", "vol20"])
+    derived("core_price_damage", ["prior_low20", "atr20", "ret1"])
+    if len(identities) != 39:
+        raise RuntimeError(f"independent core identity coverage is {len(identities)}, expected 39")
+    return identities
+
+
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--full-history", action="store_true")
+    args = parser.parse_args()
+    suffix = "R2" if args.full_history else "R1"
+    core_path = ROOT / ("reports/v4_03/staging/V4_03_CORE_FULL_HISTORY_CANDIDATE_R2.jsonl.gz" if args.full_history else "reports/v4_03/staging/V4_03_CORE_REQUIRED_SCOPE_DIAGNOSTIC_R1.jsonl.gz")
+    candidate_path = ROOT / f"reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_{suffix}.jsonl.gz"
+    candidate_receipt_path = ROOT / f"reports/v4_03/V4_03_FULL_SCOPE_CANDIDATE_RECEIPT_{suffix}.json"
+    output_path = ROOT / f"reports/v4_03/V4_03_INDEPENDENT_POSTCHECK_{suffix}.json"
     started = time.monotonic()
     head_path = ROOT / "data/v4/V4_DEV_BASELINE_HEAD.json"
     head = json.loads(head_path.read_text(encoding="utf-8"))
@@ -260,7 +333,9 @@ def main():
     for path, ref, key in ((daily_path, daily_ref, "daily"), (universe_path, universe_ref, "universe"), (calendar_path, calendar_ref, "calendar")):
         if sha(path) != ref["sha256"]:
             raise RuntimeError(f"accepted {key} source digest mismatch")
-    calendar = [d for d in json.loads(calendar_path.read_text(encoding="utf-8"))["session_dates"] if d <= head["accepted_data_cutoff"]][-200:]
+    calendar = [d for d in json.loads(calendar_path.read_text(encoding="utf-8"))["session_dates"] if d <= head["accepted_data_cutoff"]]
+    if not args.full_history:
+        calendar = calendar[-200:]
     selected_dates = {calendar[-1 - offset] for offset in OFFSETS}
     snapshots = defaultdict(dict)
     with gzip.open(universe_path, "rt", encoding="utf-8") as stream:
@@ -268,10 +343,14 @@ def main():
             row = json.loads(line)
             if row["trade_date"] in selected_dates and row["board_scope"] in REQUIRED:
                 snapshots[row["trade_date"]][row["security_id"]] = row
+    snapshot_ids = {day: digest([(sid, row.get("membership_basis"), row.get("source_revision_id"),
+                                   row.get("eligibility_status")) for sid, row in sorted(members.items())])
+                    for day, members in snapshots.items()}
     current_day = head["accepted_data_cutoff"]
     current_members = set(snapshots[current_day])
     target_ids = set().union(*(set(v) for v in snapshots.values()))
     actual, rejected = defaultdict(dict), defaultdict(dict)
+    raw_endpoint = defaultdict(dict)
     first_day = calendar[0]
     sql = """select canonical_security_id, trade_date, qfq_open, qfq_high, qfq_low, qfq_close,
                      amount, volume, price_basis, adjustment_source_revision, adjusted_quality, trading_status
@@ -286,6 +365,8 @@ def main():
                 continue
             rows_in += 1
             date = f"{day // 10000:04d}-{day // 100 % 100:02d}-{day % 100:02d}"
+            raw_endpoint[sid][date] = {"close": cl, "basis": f"{basis}:{revision}" if basis and revision else None,
+                                       "quality": quality}
             if quality == "READY" and status == "ACTUAL_TRADED" and all(x is not None for x in (op, hi, lo, cl, amount, volume, basis, revision)):
                 actual[sid][date] = {"open": float(op), "high": float(hi), "low": float(lo), "close": float(cl),
                                      "amount": float(amount), "volume": float(volume), "basis": f"{basis}:{revision}",
@@ -328,14 +409,14 @@ def main():
     if damage_multiple is None:
         raise RuntimeError("price-damage parameter is not bound")
     candidate_rows = {}
-    with gzip.open(CORE, "rt", encoding="utf-8") as stream:
+    with gzip.open(core_path, "rt", encoding="utf-8") as stream:
         for line in stream:
             row = json.loads(line)
             candidate_rows[row["security_id"]] = row
     if set(candidate_rows) != current_members:
         raise RuntimeError("core artifact member set differs from frozen current PIT universe")
     full_rows = {}
-    with gzip.open(CANDIDATE, "rt", encoding="utf-8") as stream:
+    with gzip.open(candidate_path, "rt", encoding="utf-8") as stream:
         for line in stream:
             row = json.loads(line)
             full_rows[row["security_id"]] = row
@@ -344,10 +425,12 @@ def main():
     mismatch_by_field = Counter()
     field_quality = Counter()
     digest_invalid = Counter()
+    identity_mismatch_by_field = Counter()
+    identity_checked_by_field = Counter()
     mismatch_samples = []
     checked_by_field = Counter()
 
-    def compare(sid, field, expected, found):
+    def compare(sid, field, expected, found, expected_identity=None):
         value, quality, reason = expected
         if (found.get("quality_state") != quality or found.get("unknown_reason") != reason or
                 (value is None) != (found.get("value") is None) or
@@ -363,6 +446,17 @@ def main():
             value_digest = found.get(name)
             if not isinstance(value_digest, str) or len(value_digest) != 64 or any(c not in "0123456789abcdef" for c in value_digest.lower()):
                 digest_invalid[field] += 1
+        if expected_identity is not None:
+            for name, expected_value in expected_identity.items():
+                identity_checked_by_field[field] += 1
+                found_value = found.get(name)
+                equal = (math.isclose(found_value, expected_value, rel_tol=1e-12, abs_tol=1e-12)
+                         if finite(found_value) and finite(expected_value) else found_value == expected_value)
+                if not equal:
+                    identity_mismatch_by_field[field] += 1
+                    if len(mismatch_samples) < 20:
+                        mismatch_samples.append({"security_id": sid, "field_id": field, "identity": name,
+                                                 "expected": expected_value, "found": found_value})
         output_payload = dict(found)
         output_digest = output_payload.pop("output_digest", None)
         if output_digest != digest(output_payload):
@@ -370,17 +464,64 @@ def main():
 
     for sid in sorted(current_members):
         core_expected = independent_core(histories[sid], sid, float(damage_multiple))
+        core_identities = independent_core_identities(histories[sid], sid)
         core_found = candidate_rows[sid]["fields"]
         if set(core_expected) != set(core_found):
             raise RuntimeError(f"core field set mismatch for {sid}")
         for field, expected in core_expected.items():
-            compare(sid, field, expected, core_found[field])
+            compare(sid, field, expected, core_found[field], core_identities[field])
 
     # Independently replay relative fields from fixed-session closes and PIT snapshots.
     endpoint_offsets = (0, 1, 3, 5, 20, 6, 8, 23)
     dates = {offset: calendar[-1 - offset] for offset in endpoint_offsets}
+    source_digest = digest({"dev_baseline": sha(head_path), "universe": universe_ref["sha256"],
+                            "daily": daily_ref["sha256"], "calendar": calendar_ref["sha256"],
+                            "trading_status": sha(status_path), "endpoint_dates": sorted(selected_dates)})
+    market_calendar_id = f"V4_02_CALENDAR_SHA256:{calendar_ref['sha256']}"
+    current_universe_id = snapshot_ids[current_day]
+
+    def endpoint_basis(sid, day):
+        row = raw_endpoint[sid].get(day)
+        if status_by[sid].get(day) != "ACTUAL_TRADED" or row is None or row["quality"] != "READY":
+            return None
+        return row["basis"] if row["close"] is not None and row["basis"] else None
+
+    def source_basis_for_return(sid, start_offset, end_offset):
+        start, end = dates[start_offset], dates[end_offset]
+        basis = endpoint_basis(sid, start)
+        if basis is None:
+            return None
+        endpoint = endpoint_basis(sid, end)
+        if endpoint is None:
+            return basis
+        if endpoint != basis:
+            return None
+        start_index, end_index = calendar.index(start), calendar.index(end)
+        for day in calendar[start_index + 1:end_index]:
+            if status_by[sid].get(day) == "SUSPENDED":
+                continue
+            row = raw_endpoint[sid].get(day)
+            if (status_by[sid].get(day) != "ACTUAL_TRADED" or row is None or
+                    row["quality"] != "READY" or row["basis"] != basis):
+                return basis
+        return basis
+
+    digest_basis_pairs = set()
+    for sid in target_ids:
+        for horizon in (1, 3, 5, 20):
+            basis = source_basis_for_return(sid, horizon, 0)
+            if basis:
+                digest_basis_pairs.add((sid, basis))
+    for offset, horizon, snapshot_offset, start_offset in ((1, 5, 1, 6), (3, 5, 3, 8), (3, 20, 3, 23)):
+        for sid in snapshots[dates[snapshot_offset]]:
+            basis = source_basis_for_return(sid, start_offset, snapshot_offset)
+            if basis:
+                digest_basis_pairs.add((sid, basis))
+    basis_identity = digest(sorted(digest_basis_pairs))
+    source_identity_mismatch_count = sum(
+        row.get("source_digest") != source_digest or row.get("universe_snapshot_id") != current_universe_id
+        for row in full_rows.values())
     all_returns = {h: {} for h in (1, 3, 5, 20)}
-    basis_pairs = set()
     for sid in target_ids:
         for h in (1, 3, 5, 20):
             start, end = dates[h], dates[0]
@@ -399,9 +540,29 @@ def main():
                     valid = False
                     break
             all_returns[h][sid] = end_bar["close"] / start_bar["close"] - 1 if valid else None
-            if valid:
-                basis_pairs.add((sid, start_bar["basis"]))
     expected_relative = {sid: {} for sid in current_members}
+    expected_relative_identity = {sid: {} for sid in current_members}
+    reference_path = ROOT / f"reports/v4_03/V4_03_MARKET_REFERENCE_CANDIDATE_{suffix}.json"
+    references = json.loads(reference_path.read_text(encoding="utf-8"))
+    reference_identity_mismatch_count = 0
+
+    def bound_identity(field, sid, horizon, start_snapshot, counts, extra_digests=()):
+        identity = {"window_contract": "CROSS_SECTION_SESSION_WINDOW_V1",
+                    "market_calendar_id": market_calendar_id,
+                    "start_session": dates[horizon], "end_session": current_day,
+                    "universe_snapshot_id": current_universe_id,
+                    "start_universe_snapshot_id": start_snapshot,
+                    "adjustment_basis_id": basis_identity}
+        total, evaluable, missing, coverage = counts
+        return {"window_identity": digest(identity),
+                "input_digest": digest([source_digest, *extra_digests, identity, field, sid]),
+                "universe_snapshot_id": current_universe_id,
+                "start_universe_snapshot_id": start_snapshot,
+                "start_session": dates[horizon], "end_session": current_day,
+                "adjustment_basis_id": basis_identity,
+                "universe_count": total, "evaluable_count": evaluable,
+                "missing_count": missing, "coverage": coverage}
+
     missing_limit = float(param["V4_03_MARKET_REFERENCE_MAX_MISSING_FRACTION"])
     for h in (1, 3, 5):
         members = set(snapshots[dates[h]])
@@ -409,17 +570,49 @@ def main():
         total, evaluable, missing = len(members), len(vals), len(members) - len(vals)
         reason = "EMPTY_START_UNIVERSE" if not total else "MISSING_COVERAGE_EXCEEDED" if missing / total > missing_limit else None
         ref = sum(vals.values()) / len(vals) if vals and reason is None else None
+        start_snapshot = snapshot_ids[dates[h]]
+        evaluable_identity = digest(sorted(vals))
+        reference_window = {"window_contract": "CROSS_SECTION_SESSION_WINDOW_V1",
+                            "market_calendar_id": market_calendar_id,
+                            "start_session": dates[h], "end_session": current_day,
+                            "start_universe_snapshot_id": start_snapshot,
+                            "evaluable_set_identity": evaluable_identity,
+                            "adjustment_basis_id": basis_identity}
+        reference_input_digest = digest([source_digest, reference_window, sorted(vals.items())])
+        expected_reference = {"reference_return": ref,
+                              "universe_snapshot_id": start_snapshot,
+                              "evaluable_set_identity": evaluable_identity,
+                              "universe_count": total, "evaluable_count": evaluable,
+                              "missing_count": missing,
+                              "coverage": evaluable / total if total else None,
+                              "window_identity": digest(reference_window),
+                              "adjustment_basis_id": basis_identity,
+                              "input_source_digest": source_digest,
+                              "input_digest": reference_input_digest}
+        actual_reference = references["market_references"].get(str(h), {})
+        for key, value in expected_reference.items():
+            observed = actual_reference.get(key)
+            good = math.isclose(observed, value, rel_tol=1e-12, abs_tol=1e-12) if finite(observed) and finite(value) else observed == value
+            reference_identity_mismatch_count += int(not good)
         for sid in current_members:
             r = all_returns[h].get(sid)
             field = f"rel_market_{h}"
             why = "RETURN_UNKNOWN" if r is None else reason
             expected_relative[sid][field] = (None if why else r - ref, "UNKNOWN" if why else "OBSERVED", why)
+            expected_relative_identity[sid][field] = bound_identity(
+                field, sid, h, start_snapshot, (total, evaluable, missing, evaluable / total if total else None),
+                (reference_input_digest,))
     for h in (5, 20):
         scores, _ = midranks(all_returns[h], current_members)
+        total = len(current_members)
+        evaluable = sum(all_returns[h].get(sid) is not None for sid in current_members)
+        counts = (total, evaluable, total - evaluable, evaluable / total if total else None)
         for sid in current_members:
             value = scores[sid]
             reason = None if value is not None else "INSUFFICIENT_EVALUABLE_UNIVERSE" if sum(v is not None for v in scores.values()) < 2 else "RETURN_UNKNOWN"
             expected_relative[sid][f"rps{h}"] = (value, "UNKNOWN" if reason else "OBSERVED", reason)
+            expected_relative_identity[sid][f"rps{h}"] = bound_identity(
+                f"rps{h}", sid, h, current_universe_id, counts)
     history_scores = {}
     for offset, h, member_offset, start_offset in ((1, 5, 1, 6), (3, 5, 3, 8), (3, 20, 3, 23)):
         start_date, end_date = dates[start_offset], dates[member_offset]
@@ -441,6 +634,16 @@ def main():
             vals[sid] = b["close"] / a["close"] - 1 if evaluable else None
         score, _ = midranks(vals, members)
         history_scores[(offset, h)] = score
+    prior_digest = {}
+    for offset, h, member_offset, start_offset in ((1, 5, 1, 6), (3, 5, 3, 8), (3, 20, 3, 23)):
+        previous_day = dates[member_offset]
+        members = sorted(snapshots[previous_day])
+        prior_digest[(offset, h)] = digest({
+            "origin": "DIAGNOSTIC_NON_PIT_RECOMPUTED",
+            "trade_date": previous_day, "members": members,
+            "scores": sorted(history_scores[(offset, h)].items()),
+            "universe_snapshot_id": snapshot_ids[previous_day],
+            "daily_sha256": daily_ref["sha256"]})
     for sid in current_members:
         for h, offset in ((5, 1), (5, 3), (20, 3)):
             current_score = expected_relative[sid][f"rps{h}"][0]
@@ -449,23 +652,42 @@ def main():
             field = f"rps{h}_delta{offset}"
             expected_relative[sid][field] = (current_score - previous if not reason else None,
                                               "UNKNOWN" if reason else "OBSERVED", reason)
+            prior_universe_id = snapshot_ids[dates[offset]]
+            delta_identity = {"current_window": expected_relative_identity[sid][f"rps{h}"]["window_identity"],
+                              "prior_trade_date": dates[offset], "prior_contract": "RPS_MIDRANK_V1",
+                              "prior_artifact_digest": prior_digest[(offset, h)],
+                              "prior_universe_snapshot_id": prior_universe_id,
+                              "market_calendar_id": market_calendar_id,
+                              "universe_snapshot_id": current_universe_id,
+                              "adjustment_basis_id": basis_identity}
+            rps_counts = expected_relative_identity[sid][f"rps{h}"]
+            expected_relative_identity[sid][field] = {
+                "window_identity": digest(delta_identity),
+                "input_digest": digest([source_digest, prior_digest[(offset, h)], delta_identity, sid]),
+                "universe_snapshot_id": current_universe_id,
+                "start_universe_snapshot_id": prior_universe_id,
+                "start_session": dates[offset], "end_session": current_day,
+                "adjustment_basis_id": basis_identity,
+                "universe_count": rps_counts["universe_count"],
+                "evaluable_count": rps_counts["evaluable_count"],
+                "missing_count": rps_counts["missing_count"], "coverage": rps_counts["coverage"]}
         found = full_rows[sid]["fields"]
         for field, expected in expected_relative[sid].items():
-            compare(sid, field, expected, found[field])
+            compare(sid, field, expected, found[field], expected_relative_identity[sid][field])
 
-    artifact_receipt = json.loads(CANDIDATE_RECEIPT.read_text(encoding="utf-8"))
-    candidate_sha = sha(CANDIDATE)
+    artifact_receipt = json.loads(candidate_receipt_path.read_text(encoding="utf-8"))
+    candidate_sha = sha(candidate_path)
     receipt_match = candidate_sha == artifact_receipt.get("output_sha256")
     field_ids = sorted(checked_by_field)
-    reference_path = ROOT / "reports/v4_03/V4_03_MARKET_REFERENCE_CANDIDATE_R1.json"
-    references = json.loads(reference_path.read_text(encoding="utf-8"))
     reference_digests_ok = all(ref.get("output_digest") == digest({k: v for k, v in ref.items() if k != "output_digest"})
                                for ref in references["market_references"].values())
     references_match = sha(reference_path) == artifact_receipt.get("references_sha256")
     status = "PASS" if (len(field_ids) == 47 and all(checked_by_field[x] == len(current_members) for x in field_ids)
-                        and not mismatch_by_field and not digest_invalid and receipt_match
-                        and reference_digests_ok and references_match) else "FAIL"
-    report = {"contract_id": "V4_03_INDEPENDENT_POSTCHECK_R1",
+                        and not mismatch_by_field and not digest_invalid and not identity_mismatch_by_field
+                        and not source_identity_mismatch_count and not reference_identity_mismatch_count
+                        and all(identity_checked_by_field[x] >= 2 * len(current_members) for x in field_ids)
+                        and receipt_match and reference_digests_ok and references_match) else "FAIL"
+    report = {"contract_id": f"V4_03_INDEPENDENT_POSTCHECK_{suffix}",
               "status": status, "scope": "INDEPENDENT_DIAGNOSTIC_POSTCHECK_NOT_STAGE_ACCEPTANCE",
               "cutoff": current_day, "evidence_origin": "DIAGNOSTIC_NON_PIT",
               "independent_formula_module_imports": [],
@@ -480,13 +702,19 @@ def main():
               "quality_count": {f"{k[0]}:{k[1]}": v for k, v in sorted(field_quality.items())},
               "mismatch_count_by_field": dict(sorted(mismatch_by_field.items())),
               "invalid_digest_count_by_field": dict(sorted(digest_invalid.items())),
+              "identity_mismatch_count_by_field": dict(sorted(identity_mismatch_by_field.items())),
+              "identity_checks_by_field": dict(sorted(identity_checked_by_field.items())),
+              "source_identity_mismatch_count": source_identity_mismatch_count,
+              "market_reference_identity_mismatch_count": reference_identity_mismatch_count,
+              "independent_source_digest": source_digest,
+              "independent_adjustment_basis_set_identity": basis_identity,
               "mismatch_samples": mismatch_samples,
               "comparison": "exact quality and reason; bool exact; numeric abs/rel tolerance 1e-12",
               "elapsed_seconds": round(time.monotonic() - started, 3),
-              "limitations": ["This independently recomputes values and quality for all 47 fields and recomputes each field output_digest over its serialized identity/value/quality. It validates input_digest/window_identity format but does not independently regenerate those two producer identity hashes.",
+              "limitations": ["This independently recomputes values, quality, input_digest and window_identity for all 47 fields and checks each output_digest over the serialized payload.",
                               "Relative RPS delta prior rows are recomputed from frozen historical PIT snapshots in the accepted universe input.",
                               "Candidate lineage remains DIAGNOSTIC_NON_PIT; this does not grant stage acceptance or publication."]}
-    atomic_json(OUTPUT, report)
+    atomic_json(output_path, report)
     print(json.dumps({"status": status, "rows_checked": len(full_rows), "fields_checked": len(field_ids),
                       "mismatches": sum(mismatch_by_field.values()), "elapsed_seconds": report["elapsed_seconds"]}))
     if status != "PASS":

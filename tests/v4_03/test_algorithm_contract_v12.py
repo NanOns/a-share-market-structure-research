@@ -6,6 +6,7 @@ import pytest
 
 from src.v4.contracts.algorithm_contract import ContractValidationError, validate_framework_document
 from src.v4.contracts.algorithm_contract_v12 import validate_ast_v2, validate_contract_v12
+from src.v4.contracts.algorithm_contract_numeric_v12 import validate_contract_with_vectors_v12
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -111,9 +112,15 @@ def test_all_47_serialized_field_contracts_validate_and_reject_undeclared_input(
     extension_sha = __import__("hashlib").sha256((ROOT / "config/v4_algorithm_contract_framework_v1_2_0.json").read_bytes()).hexdigest()
     params = load("config/v4_03_parameter_registry_v1.json")
     payload = load("config/v4_03_algorithm_contracts_v1.json")
+    fixture_path = ROOT / payload["numeric_fixture_path"]
+    fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
+    fixture_sha = __import__("hashlib").sha256(fixture_path.read_bytes()).hexdigest()
+    assert fixture_sha == payload["numeric_fixture_sha256"]
     assert payload["contract_count"] == 47
+    assert payload["numeric_vector_count"] == 94
     for contract in payload["contracts"]:
-        validate_contract_v12(contract, params, framework, extension, extension_sha)
+        assert validate_contract_with_vectors_v12(contract, params, framework, extension,
+                                                  extension_sha, fixture, fixture_sha) == 2
         mutated = copy.deepcopy(contract)
         stack = [mutated["ast"]]
         while stack:
@@ -129,3 +136,25 @@ def test_all_47_serialized_field_contracts_validate_and_reject_undeclared_input(
             raise AssertionError(f"no field reference in {contract['contract_id']}")
         with pytest.raises(ContractValidationError, match="AST_V2_UNDECLARED_FIELD"):
             validate_contract_v12(mutated, params, framework, extension, extension_sha)
+
+
+def test_numeric_validator_rejects_falsified_expected_value_and_missing_negative_vector():
+    framework = load("config/v4_algorithm_contract_framework_v1.json")
+    extension = load("config/v4_algorithm_contract_framework_v1_2_0.json")
+    extension_sha = __import__("hashlib").sha256((ROOT / "config/v4_algorithm_contract_framework_v1_2_0.json").read_bytes()).hexdigest()
+    params = load("config/v4_03_parameter_registry_v1.json")
+    payload = load("config/v4_03_algorithm_contracts_v1.json")
+    fixture_path = ROOT / payload["numeric_fixture_path"]
+    fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
+    fixture_sha = __import__("hashlib").sha256(fixture_path.read_bytes()).hexdigest()
+    ma20 = next(c for c in payload["contracts"] if c["outputs"][0]["field_id"] == "ma20")
+    wrong = copy.deepcopy(ma20)
+    wrong["independent_vectors"][0]["expected"]["value"] += 1
+    with pytest.raises(ContractValidationError, match="AST_V2_VECTOR_VALUE_MISMATCH"):
+        validate_contract_with_vectors_v12(wrong, params, framework, extension, extension_sha,
+                                           fixture, fixture_sha)
+    missing = copy.deepcopy(ma20)
+    missing["independent_vectors"].pop()
+    with pytest.raises(ContractValidationError, match="AST_V2_POSITIVE_NEGATIVE_VECTORS_REQUIRED"):
+        validate_contract_with_vectors_v12(missing, params, framework, extension, extension_sha,
+                                           fixture, fixture_sha)

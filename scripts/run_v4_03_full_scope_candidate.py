@@ -4,6 +4,7 @@ This creates an unaccepted candidate. All inputs remain immutable accepted V4-01
 """
 
 from collections import Counter, defaultdict
+import argparse
 from dataclasses import asdict
 import gzip
 import hashlib
@@ -55,6 +56,20 @@ def atomic_json(path, payload):
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--full-history", action="store_true", help="Use the full accepted daily history core candidate")
+    args = parser.parse_args()
+    suffix = "R2" if args.full_history else "R1"
+    core_receipt_path = ROOT / ("reports/v4_03/V4_03_CORE_FULL_HISTORY_CANDIDATE_RECEIPT_R2.json" if args.full_history else "reports/v4_03/V4_03_CORE_REQUIRED_SCOPE_DIAGNOSTIC_RECEIPT_R1.json")
+    core_data_path = ROOT / ("reports/v4_03/staging/V4_03_CORE_FULL_HISTORY_CANDIDATE_R2.jsonl.gz" if args.full_history else "reports/v4_03/staging/V4_03_CORE_REQUIRED_SCOPE_DIAGNOSTIC_R1.jsonl.gz")
+    output_path = ROOT / f"reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_{suffix}.jsonl.gz"
+    references_path = ROOT / f"reports/v4_03/V4_03_MARKET_REFERENCE_CANDIDATE_{suffix}.json"
+    receipt_path = ROOT / f"reports/v4_03/V4_03_FULL_SCOPE_CANDIDATE_RECEIPT_{suffix}.json"
+    market_path = ROOT / f"reports/v4_03/staging/V4_03_MARKET_REFERENCE_PATH_CANDIDATE_{suffix}.jsonl.gz"
+    market_path_receipt = ROOT / f"reports/v4_03/V4_03_MARKET_PATH_CANDIDATE_RECEIPT_{suffix}.json"
+    core_receipt = json.loads(core_receipt_path.read_text(encoding="utf-8"))
+    if sha(core_data_path) != core_receipt["output_sha256"]:
+        raise RuntimeError("core candidate digest mismatch")
     started = time.monotonic()
     process = psutil.Process()
     cpu_started = process.cpu_times()
@@ -224,15 +239,15 @@ def main():
         prior_rps_universe_snapshot_ids=prior_universe_ids)
 
     core_rows = {}
-    with gzip.open(CORE_DATA, "rt", encoding="utf-8") as stream:
+    with gzip.open(core_data_path, "rt", encoding="utf-8") as stream:
         for line in stream:
             row = json.loads(line)
             core_rows[row["security_id"]] = row
     if set(core_rows) != current_members:
         raise RuntimeError("core diagnostic member set differs from current required PIT universe")
     field_quality = Counter()
-    temp = OUTPUT.with_suffix(OUTPUT.suffix + ".tmp")
-    OUTPUT.parent.mkdir(parents=True, exist_ok=True)
+    temp = output_path.with_suffix(output_path.suffix + ".tmp")
+    output_path.parent.mkdir(parents=True, exist_ok=True)
     with temp.open("wb") as raw, gzip.GzipFile(fileobj=raw, mode="wb", filename="", mtime=0, compresslevel=6) as zipped, io.TextIOWrapper(zipped, encoding="utf-8") as stream:
         for sid, core_row in sorted(core_rows.items()):
             fields = dict(core_row["fields"])
@@ -246,15 +261,15 @@ def main():
                    "evidence_origin": "DIAGNOSTIC_NON_PIT", "universe_snapshot_id": current_universe_id,
                    "source_digest": source_digest, "fields": fields}
             stream.write(json.dumps(row, ensure_ascii=False, sort_keys=True, allow_nan=False) + "\n")
-    os.replace(temp, OUTPUT)
-    references = {"contract_id": "V4_03_MARKET_REFERENCE_CANDIDATE_R1", "as_of": head["accepted_data_cutoff"],
+    os.replace(temp, output_path)
+    references = {"contract_id": f"V4_03_MARKET_REFERENCE_CANDIDATE_{suffix}", "as_of": head["accepted_data_cutoff"],
                   "evidence_origin": "DIAGNOSTIC_NON_PIT", "market_references": market_refs,
                   "input_source_digest": source_digest,
                   "market_path_status": "NOT_COMPUTED_HISTORICAL_DAILY_CHAIN_PENDING",
                   "forward_benchmark_published": False}
-    if MARKET_PATH.exists() and MARKET_PATH_RECEIPT.exists():
-        path_receipt = json.loads(MARKET_PATH_RECEIPT.read_text(encoding="utf-8"))
-        if sha(MARKET_PATH) != path_receipt.get("output_sha256"):
+    if market_path.exists() and market_path_receipt.exists():
+        path_receipt = json.loads(market_path_receipt.read_text(encoding="utf-8"))
+        if sha(market_path) != path_receipt.get("output_sha256"):
             raise RuntimeError("market path candidate digest mismatch")
         references["market_path"] = {"contract_id": "V4_03_MARKET_REFERENCE_PATH_V1",
                                      "series_version": path_receipt["series_version"],
@@ -263,7 +278,7 @@ def main():
                                      "output_sha256": path_receipt["output_sha256"],
                                      "status": path_receipt["status"]}
         references["market_path_status"] = path_receipt["status"]
-    atomic_json(REFERENCES, references)
+    atomic_json(references_path, references)
     elapsed = time.monotonic() - started
     sample_stop.set()
     sampler.join(timeout=1)
@@ -282,22 +297,23 @@ def main():
                                 "logical_cpu_count": logical_cpus},
                    "cache_state": "OS_AND_DUCKDB_CACHE_NOT_CONTROLLED_OR_CLEARED",
                    "dataset_identity": source_digest}
-    receipt = {"contract_id": "V4_03_FULL_SCOPE_CANDIDATE_RECEIPT_R1",
+    receipt = {"contract_id": f"V4_03_FULL_SCOPE_CANDIDATE_RECEIPT_{suffix}",
                "status": "FULL_47_FIELD_CANDIDATE_NOT_STAGE_ACCEPTANCE",
                "cutoff": head["accepted_data_cutoff"], "rows_out": len(core_rows), "field_count": 47,
                "board_count": {k: v for k, v in sorted(Counter(x["board_scope"] for x in core_rows.values()).items())},
                "field_quality_count": {f"{k[0]}:{k[1]}": v for k, v in sorted(field_quality.items())},
                "required_scope_member_set_identity": current_universe_id,
                "adjustment_basis_set_identity": basis_identity,
-               "input_source_digest": source_digest, "output_sha256": sha(OUTPUT),
-               "references_sha256": sha(REFERENCES), "elapsed_seconds": round(elapsed, 3),
+               "input_source_digest": source_digest, "output_sha256": sha(output_path),
+               "references_sha256": sha(references_path), "elapsed_seconds": round(elapsed, 3),
                "performance_measurement": measurement,
-               "market_path_candidate_sha256": sha(MARKET_PATH) if MARKET_PATH.exists() else None,
+               "market_path_candidate_sha256": sha(market_path) if market_path.exists() else None,
                "prior_rps_origin": "DIAGNOSTIC_NON_PIT_RECOMPUTED_NOT_PREVIOUSLY_ACCEPTED",
                "limitations": ["No accepted sector membership input or sector full-market materialization",
-                               "Core stock history is a 200-session bounded diagnostic, not full historical replay",
+                               "Core uses all accepted daily sessions for the cutoff candidate, but first availability was not replayed at every historical as-of date" if args.full_history else "Core stock history is a 200-session bounded diagnostic, not full historical replay",
                                "No accepted publication or final stage receipt"]}
-    atomic_json(RECEIPT, receipt)
+    receipt["core_candidate_sha256"] = core_receipt["output_sha256"]
+    atomic_json(receipt_path, receipt)
     print(json.dumps({"status": receipt["status"], "rows_out": receipt["rows_out"],
                       "field_count": receipt["field_count"], "elapsed_seconds": receipt["elapsed_seconds"]}))
 

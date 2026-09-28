@@ -36,7 +36,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_AMOUNT_RATIO20_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -50,14 +50,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": 1.0654554337921982
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "3fda9bac95b4418b7fb7a757fdf9457f26e6ab835c828c1fff29397c7ace87ae",
-          "vector_id": "AMOUNT_RATIO20_SHORT_HISTORY"
+          "vector_id": "AMOUNT_RATIO20_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "3fda9bac95b4418b7fb7a757fdf9457f26e6ab835c828c1fff29397c7ace87ae",
+          "vector_id": "AMOUNT_RATIO20_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -152,7 +167,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_AMOUNT_RATIO5_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -166,14 +181,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": 1.0181760961445314
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "255d6c2075ca14c255897a84ae77e01e9e41bf25940f55fb1eb706e05cb54295",
-          "vector_id": "AMOUNT_RATIO5_SHORT_HISTORY"
+          "vector_id": "AMOUNT_RATIO5_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "255d6c2075ca14c255897a84ae77e01e9e41bf25940f55fb1eb706e05cb54295",
+          "vector_id": "AMOUNT_RATIO5_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -340,7 +370,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_ATR20_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -354,14 +384,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": 2.7637468866383728
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "b84b76217cb48c258d6377c8a1e2b4ce2904b37159c9d4fd12c124b4a2bd8f85",
-          "vector_id": "ATR20_SHORT_HISTORY"
+          "vector_id": "ATR20_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "b84b76217cb48c258d6377c8a1e2b4ce2904b37159c9d4fd12c124b4a2bd8f85",
+          "vector_id": "ATR20_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -542,7 +587,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_ATR5_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -556,14 +601,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": 2.755775488508829
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "b89ff21bbd94cb99e7d6bbdf0cd67ba6c80a34fed259681133597c9da4fd3c14",
-          "vector_id": "ATR5_SHORT_HISTORY"
+          "vector_id": "ATR5_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "b89ff21bbd94cb99e7d6bbdf0cd67ba6c80a34fed259681133597c9da4fd3c14",
+          "vector_id": "ATR5_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -849,7 +909,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_ATR_RATIO_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -863,14 +923,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": 0.9971157278663677
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "7da46c57482de458b64587cbe19d37a518e8fa4799a2374c689204b0946cc9f2",
-          "vector_id": "ATR_RATIO_SHORT_HISTORY"
+          "vector_id": "ATR_RATIO_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "7da46c57482de458b64587cbe19d37a518e8fa4799a2374c689204b0946cc9f2",
+          "vector_id": "ATR_RATIO_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -990,7 +1065,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_CLV_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -1004,14 +1079,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": 0.5317459062781537
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "3010ecbc0f0ba676983c5520752dccc0b223bc9b27cc691075d1c3ec96abed3e",
-          "vector_id": "CLV_SHORT_HISTORY"
+          "vector_id": "CLV_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "3010ecbc0f0ba676983c5520752dccc0b223bc9b27cc691075d1c3ec96abed3e",
+          "vector_id": "CLV_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -1256,7 +1346,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_CORE_PRICE_DAMAGE_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -1270,14 +1360,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": false
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "adbf320dcd4c68a939937b70af289c96b121662e8403730f26cb7802abd95ef6",
-          "vector_id": "CORE_PRICE_DAMAGE_SHORT_HISTORY"
+          "vector_id": "CORE_PRICE_DAMAGE_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "adbf320dcd4c68a939937b70af289c96b121662e8403730f26cb7802abd95ef6",
+          "vector_id": "CORE_PRICE_DAMAGE_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -1412,7 +1517,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_HH_PROGRESS_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -1426,14 +1531,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": true
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "b1f9fcebb686afdf460e6c2cc76aca84c15b37ba7d33c707b78d17df8126a96b",
-          "vector_id": "HH_PROGRESS_SHORT_HISTORY"
+          "vector_id": "HH_PROGRESS_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "b1f9fcebb686afdf460e6c2cc76aca84c15b37ba7d33c707b78d17df8126a96b",
+          "vector_id": "HH_PROGRESS_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -1517,7 +1637,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_HHV20_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -1531,14 +1651,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": 115.49607760256586
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "3009541e2aeffd4f5e261d3f1bc1810f8e94c8f1fa44a784b5f22a0d8d02d519",
-          "vector_id": "HHV20_SHORT_HISTORY"
+          "vector_id": "HHV20_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "3009541e2aeffd4f5e261d3f1bc1810f8e94c8f1fa44a784b5f22a0d8d02d519",
+          "vector_id": "HHV20_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -1622,7 +1757,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_HHV5_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -1636,14 +1771,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": 115.49607760256586
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "f635ad951fbba0274f2c323045080406fec2461af52d99aff92f91c6babaa318",
-          "vector_id": "HHV5_SHORT_HISTORY"
+          "vector_id": "HHV5_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "f635ad951fbba0274f2c323045080406fec2461af52d99aff92f91c6babaa318",
+          "vector_id": "HHV5_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -1727,7 +1877,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_HHV60_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -1741,14 +1891,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": 115.49607760256586
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "8864b68aa0fa547807ed69f2fbd41fa93860cb30893c489f42c654b5e7db6710",
-          "vector_id": "HHV60_SHORT_HISTORY"
+          "vector_id": "HHV60_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "8864b68aa0fa547807ed69f2fbd41fa93860cb30893c489f42c654b5e7db6710",
+          "vector_id": "HHV60_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -1862,7 +2027,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_LL_PROGRESS_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -1876,14 +2041,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": false
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "209371df63374e7fc591a1ed9c770e0d2e2bb3ee69a465092f606a3a9e1375ee",
-          "vector_id": "LL_PROGRESS_SHORT_HISTORY"
+          "vector_id": "LL_PROGRESS_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "209371df63374e7fc591a1ed9c770e0d2e2bb3ee69a465092f606a3a9e1375ee",
+          "vector_id": "LL_PROGRESS_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -1967,7 +2147,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_LLV20_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -1981,14 +2161,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": 111.603000011573
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "4161417baffbe128ce3e168ba833353b13d34b2996bf711c10f5585db733dcf2",
-          "vector_id": "LLV20_SHORT_HISTORY"
+          "vector_id": "LLV20_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "4161417baffbe128ce3e168ba833353b13d34b2996bf711c10f5585db733dcf2",
+          "vector_id": "LLV20_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -2072,7 +2267,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_LLV5_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -2086,14 +2281,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": 111.82402509459311
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "47af82cf8092e38cf99da4102e1ad91d48fb3025ab1d188ce04dd7d5a69f759f",
-          "vector_id": "LLV5_SHORT_HISTORY"
+          "vector_id": "LLV5_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "47af82cf8092e38cf99da4102e1ad91d48fb3025ab1d188ce04dd7d5a69f759f",
+          "vector_id": "LLV5_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -2177,7 +2387,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_LLV60_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -2191,14 +2401,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": 103.31806809696994
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "f60bc8fa3f32d39eec079c1e5534e83570151cf430d96b3d7125539722d6931a",
-          "vector_id": "LLV60_SHORT_HISTORY"
+          "vector_id": "LLV60_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "f60bc8fa3f32d39eec079c1e5534e83570151cf430d96b3d7125539722d6931a",
+          "vector_id": "LLV60_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -2282,7 +2507,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_MA20_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -2297,45 +2522,28 @@
         {
           "expected": {
             "quality_state": "OBSERVED",
-            "value": 10.5
+            "value": 113.41938975994401
           },
           "input": {
-            "close": [
-              1,
-              2,
-              3,
-              4,
-              5,
-              6,
-              7,
-              8,
-              9,
-              10,
-              11,
-              12,
-              13,
-              14,
-              15,
-              16,
-              17,
-              18,
-              19,
-              20
-            ]
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "ecc61dfcc591ed6635ef711b15a13334cfa1b9473946125edb62b7ea24462c7b",
-          "vector_id": "MA20_EXACT_20_SAMPLE"
+          "vector_id": "MA20_OBSERVED_NUMERIC"
         },
         {
           "expected": {
             "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "value": null
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "ecc61dfcc591ed6635ef711b15a13334cfa1b9473946125edb62b7ea24462c7b",
-          "vector_id": "MA20_SHORT_HISTORY"
+          "vector_id": "MA20_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -2419,7 +2627,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_MA5_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -2433,14 +2641,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": 113.741259204525
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "a7599886a6276db486d534176fd3ac2fe389804b7ec630f4416fc24364360a12",
-          "vector_id": "MA5_SHORT_HISTORY"
+          "vector_id": "MA5_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "a7599886a6276db486d534176fd3ac2fe389804b7ec630f4416fc24364360a12",
+          "vector_id": "MA5_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -2524,7 +2747,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_MA60_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -2538,14 +2761,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": 110.14671763598291
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "cb41d319ba6827ac3e9443fb09495d342abac5afefebef4d779e6b562db432af",
-          "vector_id": "MA60_SHORT_HISTORY"
+          "vector_id": "MA60_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "cb41d319ba6827ac3e9443fb09495d342abac5afefebef4d779e6b562db432af",
+          "vector_id": "MA60_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -2684,7 +2922,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_POS60_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -2698,14 +2936,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": 0.8916079019815633
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "762d785a04f3060eb44e8133bfa5030ce066f66c05e09b1a576841a12b28f32a",
-          "vector_id": "POS60_SHORT_HISTORY"
+          "vector_id": "POS60_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "762d785a04f3060eb44e8133bfa5030ce066f66c05e09b1a576841a12b28f32a",
+          "vector_id": "POS60_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -2805,7 +3058,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_PRIOR60_PERCENTILE_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -2819,14 +3072,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": 100.0
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "d7b2414a89efd27e7127e7bda01f6ecb3b5bc5f7bd10cd63bbd99444ba097d55",
-          "vector_id": "PRIOR60_PERCENTILE_SHORT_HISTORY"
+          "vector_id": "PRIOR60_PERCENTILE_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "d7b2414a89efd27e7127e7bda01f6ecb3b5bc5f7bd10cd63bbd99444ba097d55",
+          "vector_id": "PRIOR60_PERCENTILE_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -2910,7 +3178,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_PRIOR_HIGH20_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -2924,14 +3192,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": 115.20627105229008
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "dfce1c7e0d71d3129998f886b545b2699182ed7e7b076d5bc9c41f9e315d08c9",
-          "vector_id": "PRIOR_HIGH20_SHORT_HISTORY"
+          "vector_id": "PRIOR_HIGH20_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "dfce1c7e0d71d3129998f886b545b2699182ed7e7b076d5bc9c41f9e315d08c9",
+          "vector_id": "PRIOR_HIGH20_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -3015,7 +3298,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_PRIOR_HIGH5_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -3029,14 +3312,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": 115.20627105229008
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "c87bb2072c493aaab785c68241ef81d3d1f3a914758d753336d7479daa6c459f",
-          "vector_id": "PRIOR_HIGH5_SHORT_HISTORY"
+          "vector_id": "PRIOR_HIGH5_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "c87bb2072c493aaab785c68241ef81d3d1f3a914758d753336d7479daa6c459f",
+          "vector_id": "PRIOR_HIGH5_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -3120,7 +3418,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_PRIOR_HIGH60_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -3134,14 +3432,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": 115.20627105229008
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "89f7d73fac9d0c224cea678491648d3ffc4aefef841d42b461c5d5f378c0a2cc",
-          "vector_id": "PRIOR_HIGH60_SHORT_HISTORY"
+          "vector_id": "PRIOR_HIGH60_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "89f7d73fac9d0c224cea678491648d3ffc4aefef841d42b461c5d5f378c0a2cc",
+          "vector_id": "PRIOR_HIGH60_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -3225,7 +3538,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_PRIOR_LOW20_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -3239,14 +3552,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": 111.29740427436076
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "346e00712726516e55587c608ac4eda492b6327b1e3fe536753ac2da33aca9c1",
-          "vector_id": "PRIOR_LOW20_SHORT_HISTORY"
+          "vector_id": "PRIOR_LOW20_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "346e00712726516e55587c608ac4eda492b6327b1e3fe536753ac2da33aca9c1",
+          "vector_id": "PRIOR_LOW20_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -3330,7 +3658,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_PRIOR_LOW5_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -3344,14 +3672,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": 111.78567391350161
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "90742542cb4ceee29a435e55b5740c2b79af9824608d70bd0a30b0d8fd1c52d3",
-          "vector_id": "PRIOR_LOW5_SHORT_HISTORY"
+          "vector_id": "PRIOR_LOW5_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "90742542cb4ceee29a435e55b5740c2b79af9824608d70bd0a30b0d8fd1c52d3",
+          "vector_id": "PRIOR_LOW5_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -3435,7 +3778,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_PRIOR_LOW60_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -3449,14 +3792,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": 102.87413184967599
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "b69fba876b9023e673443d6b74486ec1cb6023a3529a69f810ee7dd29ffb62cf",
-          "vector_id": "PRIOR_LOW60_SHORT_HISTORY"
+          "vector_id": "PRIOR_LOW60_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "b69fba876b9023e673443d6b74486ec1cb6023a3529a69f810ee7dd29ffb62cf",
+          "vector_id": "PRIOR_LOW60_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -3606,7 +3964,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_RANGE_RATIO_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -3620,14 +3978,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": 0.9432261294941875
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "662df5397cc311fe67a809064498713464d13afa93937cd69d367cd57cefe998",
-          "vector_id": "RANGE_RATIO_SHORT_HISTORY"
+          "vector_id": "RANGE_RATIO_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "662df5397cc311fe67a809064498713464d13afa93937cd69d367cd57cefe998",
+          "vector_id": "RANGE_RATIO_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -3718,7 +4091,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_REL_MARKET_1_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -3732,14 +4105,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": 0.0011403399526505043
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "d9c6d37fdf22382d301aa87f72b98415d2ad4605de3e864b07d217491871a09b",
-          "vector_id": "REL_MARKET_1_SHORT_HISTORY"
+          "vector_id": "REL_MARKET_1_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "d9c6d37fdf22382d301aa87f72b98415d2ad4605de3e864b07d217491871a09b",
+          "vector_id": "REL_MARKET_1_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -3831,7 +4219,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_REL_MARKET_3_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -3845,14 +4233,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": 0.0028745950972987044
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "f98fecacff19e36b627f033b47ebf91225b9157bd2f8fdb3197a8d674ceab257",
-          "vector_id": "REL_MARKET_3_SHORT_HISTORY"
+          "vector_id": "REL_MARKET_3_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "f98fecacff19e36b627f033b47ebf91225b9157bd2f8fdb3197a8d674ceab257",
+          "vector_id": "REL_MARKET_3_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -3944,7 +4347,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_REL_MARKET_5_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -3958,14 +4361,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": 0.00384983686442808
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "4b3d4296698d0d22e5b0602c79f40d4f337d8bdd254f8e57622038e639814356",
-          "vector_id": "REL_MARKET_5_SHORT_HISTORY"
+          "vector_id": "REL_MARKET_5_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "4b3d4296698d0d22e5b0602c79f40d4f337d8bdd254f8e57622038e639814356",
+          "vector_id": "REL_MARKET_5_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -4075,7 +4493,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_RET1_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -4089,14 +4507,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": 0.0022806799053010085
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "c1214459661f87c60a8e6d7b73ffe0699c765fadeeaf1ff13e7b20e43cbc3d90",
-          "vector_id": "RET1_SHORT_HISTORY"
+          "vector_id": "RET1_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "c1214459661f87c60a8e6d7b73ffe0699c765fadeeaf1ff13e7b20e43cbc3d90",
+          "vector_id": "RET1_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -4199,7 +4632,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_RET20_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -4213,14 +4646,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": 0.012485914014981114
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "cdd66a476321987d3c5a5a6529da772a4a8550e34720d2c24451d6af8de7c642",
-          "vector_id": "RET20_SHORT_HISTORY"
+          "vector_id": "RET20_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "cdd66a476321987d3c5a5a6529da772a4a8550e34720d2c24451d6af8de7c642",
+          "vector_id": "RET20_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -4323,7 +4771,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_RET3_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -4337,14 +4785,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": 0.005749190194597409
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "8ea73465ca0265741b7c7e650fca5e124d71dfde24c75a7dd1ca06dc339ffebf",
-          "vector_id": "RET3_SHORT_HISTORY"
+          "vector_id": "RET3_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "8ea73465ca0265741b7c7e650fca5e124d71dfde24c75a7dd1ca06dc339ffebf",
+          "vector_id": "RET3_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -4447,7 +4910,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_RET5_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -4461,14 +4924,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": 0.00769967372885616
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "74885c8b919f4255973c340f92c7aa325f4c68cc3043489a849678902187240e",
-          "vector_id": "RET5_SHORT_HISTORY"
+          "vector_id": "RET5_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "74885c8b919f4255973c340f92c7aa325f4c68cc3043489a849678902187240e",
+          "vector_id": "RET5_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -4549,7 +5027,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_RPS20_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -4563,14 +5041,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": 50.0
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "9647519fe4a7aad7ec5013cec3bf697b47f2fd19e9c8b42df0f7ecb36ec2ccc3",
-          "vector_id": "RPS20_SHORT_HISTORY"
+          "vector_id": "RPS20_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "9647519fe4a7aad7ec5013cec3bf697b47f2fd19e9c8b42df0f7ecb36ec2ccc3",
+          "vector_id": "RPS20_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -4670,7 +5163,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_RPS20_DELTA3_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -4684,14 +5177,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": 30.0
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "7d590f3c2c930b79633d9cd1ccfa6fd677df8c72b55d04e46e8f85b59c84ac16",
-          "vector_id": "RPS20_DELTA3_SHORT_HISTORY"
+          "vector_id": "RPS20_DELTA3_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "7d590f3c2c930b79633d9cd1ccfa6fd677df8c72b55d04e46e8f85b59c84ac16",
+          "vector_id": "RPS20_DELTA3_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -4772,7 +5280,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_RPS5_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -4786,14 +5294,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": 33.333333333333336
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "b49fcfd8b5243f864122ec23264831b416902093fe4950059b9640f8ed144df9",
-          "vector_id": "RPS5_SHORT_HISTORY"
+          "vector_id": "RPS5_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "b49fcfd8b5243f864122ec23264831b416902093fe4950059b9640f8ed144df9",
+          "vector_id": "RPS5_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -4893,7 +5416,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_RPS5_DELTA1_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -4907,14 +5430,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": -16.666666666666664
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "cff627d4e04d64119d3cd03be7cd0b2eeacc6bb2a0671b9c0d204bb98b445338",
-          "vector_id": "RPS5_DELTA1_SHORT_HISTORY"
+          "vector_id": "RPS5_DELTA1_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "cff627d4e04d64119d3cd03be7cd0b2eeacc6bb2a0671b9c0d204bb98b445338",
+          "vector_id": "RPS5_DELTA1_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -5007,7 +5545,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_RPS5_DELTA3_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -5021,14 +5559,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": -26.666666666666664
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "a3c4576c6eea3dd3a352e951e4d69f23ced86ed8cbaf2443ada24c9a5c5deffc",
-          "vector_id": "RPS5_DELTA3_SHORT_HISTORY"
+          "vector_id": "RPS5_DELTA3_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "a3c4576c6eea3dd3a352e951e4d69f23ced86ed8cbaf2443ada24c9a5c5deffc",
+          "vector_id": "RPS5_DELTA3_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -5248,7 +5801,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_SLOPE20_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -5262,14 +5815,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": 0.14193185964655616
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "cd79f31113c83303337ca576d2fb393caa85582e7253353784f0fb6cc40bdb70",
-          "vector_id": "SLOPE20_SHORT_HISTORY"
+          "vector_id": "SLOPE20_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "cd79f31113c83303337ca576d2fb393caa85582e7253353784f0fb6cc40bdb70",
+          "vector_id": "SLOPE20_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -5502,7 +6070,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_SLOPE60_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -5516,14 +6084,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": 0.6180886976245998
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "c697d693ee34ec5065f6deb11874478838a3a1331b4bb68d5799330d2afc20d2",
-          "vector_id": "SLOPE60_SHORT_HISTORY"
+          "vector_id": "SLOPE60_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "c697d693ee34ec5065f6deb11874478838a3a1331b4bb68d5799330d2afc20d2",
+          "vector_id": "SLOPE60_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -5693,7 +6276,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_TR_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -5707,14 +6290,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": 2.818982295505819
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "10f6cf40cb46cf625784821062570b64e4b93f94f73ea2e14817586001e45c49",
-          "vector_id": "TR_SHORT_HISTORY"
+          "vector_id": "TR_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "10f6cf40cb46cf625784821062570b64e4b93f94f73ea2e14817586001e45c49",
+          "vector_id": "TR_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -5837,7 +6435,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_VOL20_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -5851,14 +6449,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": 0.0008668609499421638
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "a124f7ec0016cf80e583f1d0b1c4fcfd71499ee34db4c50f3ef4051349c7d9a4",
-          "vector_id": "VOL20_SHORT_HISTORY"
+          "vector_id": "VOL20_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "a124f7ec0016cf80e583f1d0b1c4fcfd71499ee34db4c50f3ef4051349c7d9a4",
+          "vector_id": "VOL20_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -5968,7 +6581,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_VOL5_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -5982,14 +6595,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": 0.000530730647556594
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "f457eec4a10708490eec951eecb98aed65a577118f8a6a7d33a2702e17d5a26d",
-          "vector_id": "VOL5_SHORT_HISTORY"
+          "vector_id": "VOL5_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "f457eec4a10708490eec951eecb98aed65a577118f8a6a7d33a2702e17d5a26d",
+          "vector_id": "VOL5_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -6146,7 +6774,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_VOL_RATIO_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -6160,14 +6788,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": 0.6122442677709775
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "09953d62f2c0a148cd857874ffc9609c4ee9b6fa99da01f082f789a389e5c803",
-          "vector_id": "VOL_RATIO_SHORT_HISTORY"
+          "vector_id": "VOL_RATIO_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "09953d62f2c0a148cd857874ffc9609c4ee9b6fa99da01f082f789a389e5c803",
+          "vector_id": "VOL_RATIO_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -6263,7 +6906,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_VOLUME_RATIO20_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -6277,14 +6920,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": 1.0470485819369235
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "1035113c5fcfa248c7ed4d188511ff942e083afb41e95dd7193cdb565ba15e0f",
-          "vector_id": "VOLUME_RATIO20_SHORT_HISTORY"
+          "vector_id": "VOLUME_RATIO20_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "1035113c5fcfa248c7ed4d188511ff942e083afb41e95dd7193cdb565ba15e0f",
+          "vector_id": "VOLUME_RATIO20_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -6379,7 +7037,7 @@
       },
       "ast_version": "RULE_AST_V2",
       "contract_id": "V4_03_VOLUME_RATIO5_V1",
-      "contract_version": "1.0.0",
+      "contract_version": "1.1.0",
       "enum_contracts": {},
       "framework_extension_id": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1",
       "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
@@ -6393,14 +7051,29 @@
       "independent_vectors": [
         {
           "expected": {
-            "quality_state": "UNKNOWN",
-            "unknown_reason": "INSUFFICIENT_HISTORY"
+            "quality_state": "OBSERVED",
+            "value": 1.0126309826537667
           },
           "input": {
-            "case": "one_sample_short"
+            "case": "OBSERVED",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
           },
           "source_digest": "add46d78174d97661086b6ee6281b2e13e50fde4960833fe8eb4d51fb73599bd",
-          "vector_id": "VOLUME_RATIO5_SHORT_HISTORY"
+          "vector_id": "VOLUME_RATIO5_OBSERVED_NUMERIC"
+        },
+        {
+          "expected": {
+            "quality_state": "UNKNOWN",
+            "value": null
+          },
+          "input": {
+            "case": "UNKNOWN_INPUT",
+            "fixture_id": "V4_03_AST_NUMERIC_FIXTURE_V1",
+            "fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a"
+          },
+          "source_digest": "add46d78174d97661086b6ee6281b2e13e50fde4960833fe8eb4d51fb73599bd",
+          "vector_id": "VOLUME_RATIO5_UNKNOWN_INPUT"
         }
       ],
       "inputs": [
@@ -6464,6 +7137,9 @@
   ],
   "framework_extension": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1@1.2.0",
   "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
-  "validation_status": "ALL_CONTRACT_SCHEMAS_AND_AST_V2_VALIDATED",
-  "version": "1.0.0"
+  "numeric_fixture_path": "config/v4_03_ast_numeric_fixture_v1.json",
+  "numeric_fixture_sha256": "5760a801b7a4e5a82a9dd52b6ebbe031e6876f839a717929cf38d93bf450350a",
+  "numeric_vector_count": 94,
+  "validation_status": "ALL_CONTRACT_SCHEMAS_AST_AND_NUMERIC_VECTORS_VALIDATED",
+  "version": "1.1.0"
 }

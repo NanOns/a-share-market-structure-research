@@ -18,3 +18,7 @@ Implementation response:
 - `pytest -q tests/v4_03 tests/v4_phase0/test_algorithm_contracts.py`: 37 passed. The generated 47 contracts validate; every serialized contract is also subjected to an undeclared-field negative validation vector.
 
 Disposition: **CORRECTIVE IMPLEMENTATION COMPLETE / EXTERNAL AUDIT PENDING**. This closes the implementation portion of this audit item, not its external acceptance. The independent V4-03 stage gate remains blocked by separately listed sector-input and full-history requirements; see `docs/evidence/V4_03_EXTERNAL_ACCEPTANCE_R1_REPAIR_DISPOSITION_20260928.md`.
+
+## R2 numeric execution follow-up (2026-09-28)
+
+The external R1 audit found that structural AST validation did not execute the 47 contracts numerically. R2 adds an independent `RULE_AST_V2` interpreter and a fixed synthetic fixture. All 47 version 1.1.0 contracts now execute one observed and one unknown-input vector (94 total); the receipt is `reports/v4_03/V4_03_AST_NUMERIC_VECTOR_ACCEPTANCE_R2.json`. Negative tests reject a changed expected value and an omitted negative case. This addresses the implementation defect, while external acceptance of the audit item remains pending. The V4-03 stage gate remains blocked independently.

@@ -1,0 +1,552 @@
+{
+  "acceptance_result": "PASS_BOUNDED_BLIND_VALIDATION",
+  "baseline": {
+    "external_acceptance_review_path": "docs/evidence/V4_01_CODE_CHANGE_SOURCE_FINGERPRINT_EXTERNAL_ACCEPTANCE_20260929.md",
+    "external_acceptance_review_sha256": "47588e946fee72611431a8743ec8615fee06da18482e75b0e27868f15bc9e1a1",
+    "latest_applicable_upgrade_document_path": "docs/evidence/V4_PRE03_JOINT_FINAL_SEAL_TASK_R1_20260927.md",
+    "latest_applicable_upgrade_document_sha256": "dbc8c2acb08d6b85be4da595dea10d46037a0ac1828e6bd24dc174c55edcd737",
+    "latest_v4_01_owner_receipt_path": "reports/v4_01/v4_01_final_stage_receipt_R8_3_20260928.json",
+    "latest_v4_01_owner_receipt_sha256": "e0c3f43831e418eca42eacea6a1d938fcf462797abf7187efd116d1d030ed15c",
+    "latest_v4_01_owner_receipt_status": "BLOCKED"
+  },
+  "candidate_detector_module_path": "src/v4_01/source_fingerprint_candidate.py",
+  "candidate_detector_module_sha256": "307b5303667ae34a0130e3ecd1c766cfeed243c8cfdf864fa67eeecede13f77c",
+  "case_manifest_path": "config/v4_01_source_fingerprint_blind_cases_v1.json",
+  "case_manifest_sha256": "aff7a8677fd69a947603617fcba582dc8bf8c2544f2a8f9ccbc480069c938cac",
+  "cases": [
+    {
+      "candidate_auto_link_allowed": false,
+      "candidate_signal_strength": "STRONG_CANDIDATE_ONLY",
+      "captured_report_classifier_output": "PATTERN_D_UNRESOLVED_IDENTITY_RELATION",
+      "captured_report_classifier_used_by_detector": false,
+      "case_id": "BLIND-01",
+      "diagnostic_report": "reports/v4_01/V4_01_CODE_CHANGE_SOURCE_FINGERPRINT_300114_302132_R1.json.gz",
+      "diagnostic_report_compressed_sha256": "7ff8054c5c99d6285df7eca4529e596f152b5f5b3b6910ba6af993b0314bb683",
+      "diagnostic_report_json_sha256": "bf69125b1594b63b2f84c7daec570db4554bceda5d16083b3d9a7167ca0718f3",
+      "disposition": "STRONG_ALIAS_MIGRATION_SOURCE_FINGERPRINT_CANDIDATE",
+      "effective_date": "2025-02-17",
+      "evaluation_match": true,
+      "expected_outcome": "PURE_CODE_RENUMBERING",
+      "features": {
+        "baostock_active_exact_business_days": 3419,
+        "baostock_active_exact_ratio": 0.9997076023391813,
+        "baostock_active_mismatch_samples": [
+          {
+            "date": "2019-02-20",
+            "fields": [
+              "amount"
+            ],
+            "values": {
+              "amount": [
+                "63016557.4800",
+                "63016557.0000"
+              ]
+            }
+          }
+        ],
+        "baostock_history_queries_complete": true,
+        "baostock_new_query_backfills_pre_effective_history": true,
+        "baostock_normalized_suspended_representation_days": 89,
+        "baostock_other_suspended_mismatch_days": [],
+        "baostock_pre_effective_active_both_days": 3420,
+        "baostock_pre_effective_common_dates": 3509,
+        "baostock_pre_effective_overlap_signal": true,
+        "baostock_roster_atomic_flip": false,
+        "baostock_roster_effective_session": {
+          "new_present": true,
+          "old_present": true
+        },
+        "baostock_roster_previous_session": {
+          "new_present": true,
+          "old_present": true
+        },
+        "baostock_status_boundary_days": [],
+        "current_tdx_master_new_code_present": true,
+        "current_tdx_master_old_code_present": false,
+        "duplicate_identical_bar_days": [
+          "2025-02-14"
+        ],
+        "metadata_lifecycle_continuity_support": true,
+        "new_tdx_file_present": true,
+        "new_tdx_pre_effective_history": true,
+        "old_tdx_file_present": true,
+        "provider_returned_codes_match_query_codes": true,
+        "same_exchange": true,
+        "substantive_dual_trade_days": [],
+        "tdx_direct_semantic_overlap_signal": true,
+        "tdx_exact_raw_overlap_ratio": 0.869921075708857,
+        "tdx_longest_raw_prefix_records": 1142,
+        "tdx_new_file_starts_at_shared_ipo_date": true,
+        "tdx_ohlc_amount_exact_on_all_shared_dates": true,
+        "tdx_old_file_ends_previous_session": true,
+        "tdx_overlap_session_count": 3421,
+        "tdx_volume_exact_ratio": 0.9842151417714119
+      },
+      "new_code": "SZ.302132",
+      "old_code": "SZ.300114",
+      "owner_gate_cleared": false,
+      "positive_for_fingerprint_candidate": true,
+      "predicted_positive": true,
+      "production_identity_mutation_authorized": false,
+      "request_count_delta": 10,
+      "source_evidence": [
+        {
+          "capture_exists": true,
+          "capture_hash_matches": true,
+          "capture_observed_at_utc": "2026-09-26T23:59:32Z",
+          "evidence_basis": "Accepted SZSE notice explicitly changes the listed security code from 300114 to 302132 effective 2025-02-17.",
+          "repository_capture_path": "data/v4/source_evidence/v4_02_r3/szse_2025_028_code_change_302132.pdf",
+          "sha256": "dd68049c48df826848f361fd9e7b23dd20b6805144a2e5bc36e54db638611488",
+          "source_ref": "https://disc.static.szse.cn/disc/disk03/finalpage/2025-02-15/cedb693a-f5ee-4463-9682-ea33d406b569.PDF"
+        }
+      ],
+      "source_tdx_unchanged": true
+    },
+    {
+      "candidate_auto_link_allowed": false,
+      "candidate_signal_strength": "STRONG_CANDIDATE_ONLY",
+      "captured_report_classifier_output": "PATTERN_D_UNRESOLVED_IDENTITY_RELATION",
+      "captured_report_classifier_used_by_detector": false,
+      "case_id": "BLIND-02",
+      "diagnostic_report": "reports/v4_01/V4_01_CODE_CHANGE_SOURCE_FINGERPRINT_000022_001872_R1.json.gz",
+      "diagnostic_report_compressed_sha256": "1732eed7ff20de9f4dd327c7c6b7fab3c73d074c18162e8d2888ebf1488bfcb4",
+      "diagnostic_report_json_sha256": "b5a9f2f3840fd4f8bd65ed905386dd102ec901258070b9a3c8efe3ae52034a9e",
+      "disposition": "STRONG_ALIAS_MIGRATION_SOURCE_FINGERPRINT_CANDIDATE",
+      "effective_date": "2018-12-26",
+      "evaluation_match": true,
+      "expected_outcome": "PURE_CODE_RENUMBERING",
+      "features": {
+        "baostock_active_exact_business_days": 5869,
+        "baostock_active_exact_ratio": 0.9972812234494477,
+        "baostock_active_mismatch_samples": [
+          {
+            "date": "1993-09-17",
+            "fields": [
+              "volume",
+              "amount"
+            ],
+            "values": {
+              "amount": [
+                "0.0000",
+                ""
+              ],
+              "volume": [
+                "0",
+                ""
+              ]
+            }
+          },
+          {
+            "date": "1994-07-05",
+            "fields": [
+              "volume",
+              "amount"
+            ],
+            "values": {
+              "amount": [
+                "0.0000",
+                ""
+              ],
+              "volume": [
+                "0",
+                ""
+              ]
+            }
+          },
+          {
+            "date": "1994-07-06",
+            "fields": [
+              "volume",
+              "amount"
+            ],
+            "values": {
+              "amount": [
+                "0.0000",
+                ""
+              ],
+              "volume": [
+                "0",
+                ""
+              ]
+            }
+          },
+          {
+            "date": "1994-07-07",
+            "fields": [
+              "volume",
+              "amount"
+            ],
+            "values": {
+              "amount": [
+                "0.0000",
+                ""
+              ],
+              "volume": [
+                "0",
+                ""
+              ]
+            }
+          },
+          {
+            "date": "1994-11-15",
+            "fields": [
+              "volume",
+              "amount"
+            ],
+            "values": {
+              "amount": [
+                "0.0000",
+                ""
+              ],
+              "volume": [
+                "0",
+                ""
+              ]
+            }
+          },
+          {
+            "date": "1995-02-06",
+            "fields": [
+              "volume",
+              "amount"
+            ],
+            "values": {
+              "amount": [
+                "0.0000",
+                ""
+              ],
+              "volume": [
+                "0",
+                ""
+              ]
+            }
+          },
+          {
+            "date": "1995-02-07",
+            "fields": [
+              "volume",
+              "amount"
+            ],
+            "values": {
+              "amount": [
+                "0.0000",
+                ""
+              ],
+              "volume": [
+                "0",
+                ""
+              ]
+            }
+          },
+          {
+            "date": "1995-02-08",
+            "fields": [
+              "volume",
+              "amount"
+            ],
+            "values": {
+              "amount": [
+                "0.0000",
+                ""
+              ],
+              "volume": [
+                "0",
+                ""
+              ]
+            }
+          },
+          {
+            "date": "1995-02-09",
+            "fields": [
+              "volume",
+              "amount"
+            ],
+            "values": {
+              "amount": [
+                "0.0000",
+                ""
+              ],
+              "volume": [
+                "0",
+                ""
+              ]
+            }
+          },
+          {
+            "date": "1995-02-10",
+            "fields": [
+              "volume",
+              "amount"
+            ],
+            "values": {
+              "amount": [
+                "0.0000",
+                ""
+              ],
+              "volume": [
+                "0",
+                ""
+              ]
+            }
+          }
+        ],
+        "baostock_history_queries_complete": true,
+        "baostock_new_query_backfills_pre_effective_history": true,
+        "baostock_normalized_suspended_representation_days": 363,
+        "baostock_other_suspended_mismatch_days": [],
+        "baostock_pre_effective_active_both_days": 5885,
+        "baostock_pre_effective_common_dates": 6248,
+        "baostock_pre_effective_overlap_signal": true,
+        "baostock_roster_atomic_flip": false,
+        "baostock_roster_effective_session": {
+          "new_present": true,
+          "old_present": true
+        },
+        "baostock_roster_previous_session": {
+          "new_present": true,
+          "old_present": true
+        },
+        "baostock_status_boundary_days": [],
+        "current_tdx_master_new_code_present": true,
+        "current_tdx_master_old_code_present": false,
+        "duplicate_identical_bar_days": [],
+        "metadata_lifecycle_continuity_support": true,
+        "new_tdx_file_present": true,
+        "new_tdx_pre_effective_history": true,
+        "old_tdx_file_present": false,
+        "provider_returned_codes_match_query_codes": true,
+        "same_exchange": true,
+        "substantive_dual_trade_days": [],
+        "tdx_direct_semantic_overlap_signal": false,
+        "tdx_exact_raw_overlap_ratio": null,
+        "tdx_longest_raw_prefix_records": 0,
+        "tdx_new_file_starts_at_shared_ipo_date": true,
+        "tdx_ohlc_amount_exact_on_all_shared_dates": null,
+        "tdx_old_file_ends_previous_session": null,
+        "tdx_overlap_session_count": 0,
+        "tdx_volume_exact_ratio": null
+      },
+      "new_code": "SZ.001872",
+      "old_code": "SZ.000022",
+      "owner_gate_cleared": false,
+      "positive_for_fingerprint_candidate": true,
+      "predicted_positive": true,
+      "production_identity_mutation_authorized": false,
+      "request_count_delta": 10,
+      "source_evidence": [
+        {
+          "capture_exists": true,
+          "capture_hash_matches": true,
+          "capture_observed_at_utc": "2026-09-28T23:00:15Z",
+          "evidence_basis": "The company notice states old-code shares convert to the new code without changing holder share quantity; effective 2018-12-26.",
+          "repository_capture_path": "data/v4/source_evidence/v4_01_source_fingerprint_validation_20260929/szse_2018_12_26_000022_to_001872.pdf",
+          "sha256": "bf406b1759dd7fda45cc46927e36316840b0b1152bb40677a7b52e11568d4350",
+          "source_ref": "https://static.cninfo.com.cn/finalpage/2018-12-26/1205690369.PDF"
+        }
+      ],
+      "source_tdx_unchanged": true
+    },
+    {
+      "candidate_auto_link_allowed": false,
+      "candidate_signal_strength": "NOT_ESTABLISHED",
+      "captured_report_classifier_output": "PATTERN_D_UNRESOLVED_IDENTITY_RELATION",
+      "captured_report_classifier_used_by_detector": false,
+      "case_id": "BLIND-03",
+      "diagnostic_report": "reports/v4_01/V4_01_CODE_CHANGE_SOURCE_FINGERPRINT_000024_001979_R1.json.gz",
+      "diagnostic_report_compressed_sha256": "18c0b42ae0bcbe29c2c32daa212b6823aacaf08e25e48f6e71a15a62e3bce4f0",
+      "diagnostic_report_json_sha256": "16f433984779eef225155ed890cd0da5c2fdd26142bdde793255f4c267e5dace",
+      "disposition": "NO_STRONG_ALIAS_FINGERPRINT_IN_SAMPLE",
+      "effective_date": "2015-12-30",
+      "evaluation_match": true,
+      "expected_outcome": "MERGER_SUCCESSOR_DISTINCT_ISSUER",
+      "features": {
+        "baostock_active_exact_business_days": 0,
+        "baostock_active_exact_ratio": null,
+        "baostock_active_mismatch_samples": [],
+        "baostock_history_queries_complete": true,
+        "baostock_new_query_backfills_pre_effective_history": false,
+        "baostock_normalized_suspended_representation_days": 0,
+        "baostock_other_suspended_mismatch_days": [],
+        "baostock_pre_effective_active_both_days": 0,
+        "baostock_pre_effective_common_dates": 0,
+        "baostock_pre_effective_overlap_signal": false,
+        "baostock_roster_atomic_flip": false,
+        "baostock_roster_effective_session": {
+          "new_present": true,
+          "old_present": true
+        },
+        "baostock_roster_previous_session": {
+          "new_present": false,
+          "old_present": true
+        },
+        "baostock_status_boundary_days": [],
+        "current_tdx_master_new_code_present": true,
+        "current_tdx_master_old_code_present": false,
+        "duplicate_identical_bar_days": [],
+        "metadata_lifecycle_continuity_support": false,
+        "new_tdx_file_present": true,
+        "new_tdx_pre_effective_history": false,
+        "old_tdx_file_present": true,
+        "provider_returned_codes_match_query_codes": true,
+        "same_exchange": true,
+        "substantive_dual_trade_days": [],
+        "tdx_direct_semantic_overlap_signal": false,
+        "tdx_exact_raw_overlap_ratio": null,
+        "tdx_longest_raw_prefix_records": 0,
+        "tdx_new_file_starts_at_shared_ipo_date": false,
+        "tdx_ohlc_amount_exact_on_all_shared_dates": null,
+        "tdx_old_file_ends_previous_session": false,
+        "tdx_overlap_session_count": 0,
+        "tdx_volume_exact_ratio": null
+      },
+      "new_code": "SZ.001979",
+      "old_code": "SZ.000024",
+      "owner_gate_cleared": false,
+      "positive_for_fingerprint_candidate": false,
+      "predicted_positive": false,
+      "production_identity_mutation_authorized": false,
+      "request_count_delta": 10,
+      "source_evidence": [
+        {
+          "capture_exists": true,
+          "capture_hash_matches": true,
+          "capture_observed_at_utc": "2026-09-28T23:00:16Z",
+          "evidence_basis": "The annual report states issuer 001979 absorbed issuer 000024 and 001979 first listed on 2015-12-30; this is a merger-successor control, not a pure code renumbering.",
+          "repository_capture_path": "data/v4/source_evidence/v4_01_source_fingerprint_validation_20260929/cninfo_2015_annual_001979_absorption_000024.pdf",
+          "sha256": "0c1736521016ed825da743254ada302df2d848c0e81cae8ddd760fdcdb302808",
+          "source_ref": "https://static.cninfo.com.cn/finalpage/2016-03-29/1202090493.PDF"
+        }
+      ],
+      "source_tdx_unchanged": true
+    },
+    {
+      "candidate_auto_link_allowed": false,
+      "candidate_signal_strength": "NOT_ESTABLISHED",
+      "captured_report_classifier_output": "PATTERN_D_UNRESOLVED_IDENTITY_RELATION",
+      "captured_report_classifier_used_by_detector": false,
+      "case_id": "BLIND-04",
+      "diagnostic_report": "reports/v4_01/V4_01_CODE_CHANGE_SOURCE_FINGERPRINT_000562_000166_R1.json.gz",
+      "diagnostic_report_compressed_sha256": "c7c469decba710962a5a7ab1d7c96b9977aef4fbcc91ce11096dc7ee88d94ad1",
+      "diagnostic_report_json_sha256": "c219599283728f712ea3a1ebbab901d03e5d45b0deecef931080211ccabc14dd",
+      "disposition": "NO_STRONG_ALIAS_FINGERPRINT_IN_SAMPLE",
+      "effective_date": "2015-01-26",
+      "evaluation_match": true,
+      "expected_outcome": "MERGER_SUCCESSOR_DISTINCT_ISSUER",
+      "features": {
+        "baostock_active_exact_business_days": 0,
+        "baostock_active_exact_ratio": null,
+        "baostock_active_mismatch_samples": [],
+        "baostock_history_queries_complete": true,
+        "baostock_new_query_backfills_pre_effective_history": false,
+        "baostock_normalized_suspended_representation_days": 0,
+        "baostock_other_suspended_mismatch_days": [],
+        "baostock_pre_effective_active_both_days": 0,
+        "baostock_pre_effective_common_dates": 0,
+        "baostock_pre_effective_overlap_signal": false,
+        "baostock_roster_atomic_flip": false,
+        "baostock_roster_effective_session": {
+          "new_present": true,
+          "old_present": true
+        },
+        "baostock_roster_previous_session": {
+          "new_present": false,
+          "old_present": true
+        },
+        "baostock_status_boundary_days": [],
+        "current_tdx_master_new_code_present": true,
+        "current_tdx_master_old_code_present": false,
+        "duplicate_identical_bar_days": [],
+        "metadata_lifecycle_continuity_support": false,
+        "new_tdx_file_present": true,
+        "new_tdx_pre_effective_history": false,
+        "old_tdx_file_present": true,
+        "provider_returned_codes_match_query_codes": true,
+        "same_exchange": true,
+        "substantive_dual_trade_days": [],
+        "tdx_direct_semantic_overlap_signal": false,
+        "tdx_exact_raw_overlap_ratio": null,
+        "tdx_longest_raw_prefix_records": 0,
+        "tdx_new_file_starts_at_shared_ipo_date": false,
+        "tdx_ohlc_amount_exact_on_all_shared_dates": null,
+        "tdx_old_file_ends_previous_session": false,
+        "tdx_overlap_session_count": 0,
+        "tdx_volume_exact_ratio": null
+      },
+      "new_code": "SZ.000166",
+      "old_code": "SZ.000562",
+      "owner_gate_cleared": false,
+      "positive_for_fingerprint_candidate": false,
+      "predicted_positive": false,
+      "production_identity_mutation_authorized": false,
+      "request_count_delta": 10,
+      "source_evidence": [
+        {
+          "capture_exists": true,
+          "capture_hash_matches": true,
+          "capture_observed_at_utc": "2026-09-28T23:00:16Z",
+          "evidence_basis": "The listing notice describes 000166 shares issued in exchange for and absorption of 000562; a merger-successor control, not a pure code renumbering.",
+          "repository_capture_path": "data/v4/source_evidence/v4_01_source_fingerprint_validation_20260929/cninfo_2015_01_26_000562_absorption_000166.pdf",
+          "sha256": "b7cf04f6ca8568c95d87c57e8d0adfd0920be23b6e919073434a9130d50f682b",
+          "source_ref": "https://static.cninfo.com.cn/finalpage/2015-01-26/1200574364.PDF"
+        }
+      ],
+      "source_tdx_unchanged": true
+    }
+  ],
+  "contract_id": "V4_01_SOURCE_FINGERPRINT_CANDIDATE_V1",
+  "contract_path": "config/v4_01_source_fingerprint_candidate_v1.json",
+  "contract_sha256": "d0891162e5290c42f84148b648f0a62c0052ae0ce49fef5d7c807f933988bd02",
+  "contract_version": "1.0.0",
+  "evaluation": {
+    "all_cases_match": true,
+    "all_source_captures_hash_verified": true,
+    "case_count": 4,
+    "false_negative": 0,
+    "false_positive": 0,
+    "negative_count": 2,
+    "positive_count": 2,
+    "tdx_sources_unchanged_for_all_cases": true,
+    "true_negative": 2,
+    "true_positive": 2
+  },
+  "input_head": "d18bdc13607fb1443509208863c8edc5135bc43c",
+  "label_blinding": {
+    "detector_function_called_before_label_file_open": true,
+    "independent_external_reviewer_blinding": false,
+    "labels_used_by_detector": false
+  },
+  "label_manifest_path": "config/v4_01_source_fingerprint_blind_labels_v1.json",
+  "label_manifest_sha256": "2f97945dc9b2577a1f9af82077d542f253f2a333bb93f26a57bd0ed91dadf5f1",
+  "limitations": "The four-case set contains two officially documented pure code-renumbering positives and two merger-successor negative controls. It is label-separated from detector execution but not independently blinded to an external reviewer. Only one positive has both local old/new TDX files for paired semantic overlap; the 0.95 TDX volume research threshold is therefore not calibrated. The result does not estimate market-wide false-positive/false-negative rates and does not establish a SAME_ENTITY confirmation rule.",
+  "next_stage": "EXPAND_INDEPENDENT_BLIND_SET_WITH_MORE_PAIRED_TDX_CASES_AND_REASSESS_RESEARCH_THRESHOLDS; KEEP_PRODUCTION_IDENTITY_UNCHANGED",
+  "observed_at_utc": "2026-09-28T23:19:53+00:00",
+  "request_ledger": {
+    "case_request_count_delta": 40,
+    "operations": {
+      "login": 6,
+      "logout": 6,
+      "query_all_stock_code_change_diagnostic": 12,
+      "query_history_k_data_plus_code_change_diagnostic_adjustflag_3": 24,
+      "query_stock_basic_code_change_diagnostic": 12
+    },
+    "path": "reports/v4_baostock/request_ledger.json",
+    "sha256": "16f2f3a9610be91222d2f69246991d35fcdbffc6b5c3e39d0a636cabb279e54b",
+    "shanghai_day_count": 60
+  },
+  "stage": "V4-01-SOURCE-FINGERPRINT-CANDIDATE-STUDY",
+  "stage_contract": {
+    "BaoStock_raw_payload_retained": true,
+    "TDX_read_only": true,
+    "candidate_only": true,
+    "current_v4_01_owner_gate_cleared": false,
+    "current_v4_01_owner_gate_status": "BLOCKED",
+    "historical_universe_mutation": false,
+    "identity_mutation": false,
+    "independent_confirmation_required": true,
+    "production_integration": false
+  },
+  "validation_script_path": "scripts/validate_v4_01_source_fingerprint_candidates.py",
+  "validation_script_sha256": "0dcffeca67ab27302a1a9626b6c5fd9238fe89808ace3fe6c846047ea636d4d6",
+  "validation_summary_path": "docs/audits/V4_01_SOURCE_FINGERPRINT_CANDIDATE_BLIND_VALIDATION_R1.md",
+  "validation_summary_sha256": "aa127fb470e2ff6d2d3dc984d812850151cd8a290dcff5a7c25846d6a2126d89"
+}

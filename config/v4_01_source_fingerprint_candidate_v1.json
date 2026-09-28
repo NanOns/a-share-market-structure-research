@@ -1,0 +1,67 @@
+{
+  "contract_id": "V4_01_SOURCE_FINGERPRINT_CANDIDATE_V1",
+  "version": "1.0.0",
+  "stage": "V4-01-SOURCE-FINGERPRINT-CANDIDATE-STUDY",
+  "scope": "OFFLINE_RESEARCH_ONLY",
+  "purpose": "Generate explainable code-change identity-relation candidates from TDX and BaoStock source behavior; never confirm identity.",
+  "inputs": [
+    "hash-bound TDX .day file metadata and overlap summaries",
+    "BaoStock query_stock_basic rows",
+    "BaoStock dated roster observations",
+    "BaoStock old/new query_history_k_data_plus raw rows",
+    "effective date and exchange-qualified source keys"
+  ],
+  "research_thresholds": {
+    "minimum_shared_sessions": 20,
+    "tdx_volume_exact_ratio_minimum": 0.95,
+    "baostock_active_exact_ratio_minimum": 0.99,
+    "calibration_status": "EXPLORATORY_ONLY; validation is bounded to two positive and two merger-successor controls; no threshold is accepted for production."
+  },
+  "feature_policy": {
+    "tdx_semantic_fields": ["open", "high", "low", "close", "amount", "volume"],
+    "tdx_reserved_field": "DESCRIPTIVE_ONLY_IGNORED_FOR_SEMANTIC_HISTORY_EQUALITY",
+    "tdx_raw_record_prefix": "DESCRIPTIVE_ONLY_NOT_REQUIRED",
+    "baostock_identity_code_field": "EXCLUDED_FROM_BAR_VALUE_COMPARISON",
+    "suspended_row_normalization": "Only when both tradestatus=0; volume or amount blank and numeric zero are treated as equivalent representation for candidate scoring while strict raw values remain captured.",
+    "amount_tolerance": "NONE; all non-equal amount values remain explicit mismatches.",
+    "identical_dual_actual_bars": "ALIAS_DUPLICATION_SIGNAL_NOT_A_CONTRADICTION",
+    "different_dual_actual_bars": "UNRESOLVED_CONFLICT_FAIL_CLOSED",
+    "metadata": "SUPPORTING_SIGNAL_ONLY"
+  },
+  "candidate_rule": {
+    "all_required": [
+      "new TDX code contains pre-effective history",
+    "both BaoStock long-history queries succeed and provider row codes match their query codes",
+      "BaoStock new-code query contains at least the configured minimum count of pre-effective dates on which both queried aliases are actual trades and at least the configured exact business-field ratio",
+      "either old/new TDX files provide a long semantic overlap signal, or the old TDX file is absent while the new TDX file starts at the shared IPO anchor and BaoStock lifecycle metadata is continuous",
+      "no date shows materially different actual-trade bars under both aliases"
+    ],
+    "result": "STRONG_ALIAS_MIGRATION_SOURCE_FINGERPRINT_CANDIDATE",
+    "interpretation": "Candidate-only source behavior; official or independently accepted versioned evidence is still required to resolve SAME_ENTITY."
+  },
+  "allowed_outputs": [
+    "STRONG_ALIAS_MIGRATION_SOURCE_FINGERPRINT_CANDIDATE",
+    "NO_STRONG_ALIAS_FINGERPRINT_IN_SAMPLE",
+    "INCOMPLETE_OR_UNRESOLVED_SOURCE_FINGERPRINT",
+    "UNRESOLVED_SUBSTANTIVE_DUAL_TRADING_CONFLICT"
+  ],
+  "prohibited": [
+    "canonical identity mutation",
+    "dated alias mutation",
+    "historical universe mutation",
+    "V4-02 or V4-03 artifact mutation",
+    "same-entity confirmation from source fingerprint alone",
+    "security-specific branches in detector logic",
+    "probability or market-performance claims",
+    "TDX source writes"
+  ],
+  "fail_closed": {
+    "candidate_auto_link_allowed": false,
+    "production_identity_mutation_authorized": false,
+    "unresolved_or_incomplete": "Do not alter identity; preserve as candidate evidence or unresolved diagnostic."
+  },
+  "outputs": {
+    "validation_report": "reports/v4_01/V4_01_SOURCE_FINGERPRINT_CANDIDATE_BLIND_VALIDATION_R1.json",
+    "validation_summary": "docs/audits/V4_01_SOURCE_FINGERPRINT_CANDIDATE_BLIND_VALIDATION_R1.md"
+  }
+}

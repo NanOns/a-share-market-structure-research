@@ -32,6 +32,7 @@ from workbench_analysis.baostock_supplemental import (  # noqa: E402
     RequestBudget,
     package_metadata,
 )
+from v4_01.source_fingerprint_candidate import analyze_source_fingerprint  # noqa: E402
 
 CONTRACT_ID = "V4_01_CODE_CHANGE_SOURCE_FINGERPRINT_DIAGNOSTIC_V1"
 CONTRACT_VERSION = "1.0.0"
@@ -474,7 +475,10 @@ def tdx_overlap(old: dict[str, Any], new: dict[str, Any]) -> dict[str, Any]:
         "longest_common_prefix_in_records": prefix,
         "common_prefix_ratio": prefix / old_count if old_count else None,
         "exact_raw_overlap_ratio": exact_raw / len(common_dates) if common_dates else None,
-        "old_history_equals_full_new_prefix": old_count <= len(new_records) and prefix == old_count,
+        # An absent/empty old file is not evidence of a matching prefix.
+        "old_history_equals_full_new_prefix": (
+            old_count > 0 and old_count <= len(new_records) and prefix == old_count
+        ),
         "mismatch_date_range": {
             "first": mismatch_dates[0] if mismatch_dates else None,
             "last": mismatch_dates[-1] if mismatch_dates else None,
@@ -585,9 +589,10 @@ def render_markdown(report: dict[str, Any], json_sha256: str) -> str:
     dual_trade_days = [
         evidence.get("trade_date")
         for contradiction in report["conclusion"]["contradictions"]
-        if contradiction.get("code") == "OVERLAPPING_DUAL_ACTUAL_TRADING"
+        if contradiction.get("code") == "SUBSTANTIVE_OVERLAPPING_DUAL_ACTUAL_TRADING"
         for evidence in contradiction.get("evidence", [])
     ]
+    alias_duplicate_days = signals.get("F6_identical_provider_alias_bar_dates", [])
     f7 = signals["F7_old_close_new_preclose_continuity"]
     metadata = signals["F5_provider_metadata_continuity"]
     lines.extend([
@@ -622,13 +627,13 @@ def render_markdown(report: dict[str, Any], json_sha256: str) -> str:
         f"| F4 BaoStock roster 原子切换 | {signals['F4_baostock_roster_atomic_flip']} |",
         f"| F5 Provider metadata | ipoDate 相同：{metadata.get('ipoDate_equal')}；名称不同：{metadata.get('code_names_differ')}；"
         f"旧 outDate：{metadata.get('old_outDate')}；新 status：{metadata.get('new_status')} |",
-        f"| F6 无双代码同时实际交易 | {signals['F6_no_overlapping_dual_actual_trading']}；"
-        f"发现日期：{dual_trade_days} |",
+        f"| F6 实质不同的双代码实际交易冲突 | {signals.get('F6_substantive_dual_trade_dates', [])}；"
+        f"完全相同的 provider alias bar：{alias_duplicate_days} |",
         f"| F7 收盘/前收盘衔接 | 旧 close：{f7.get('baostock_old_close')}；新 preclose："
         f"{f7.get('baostock_new_preclose')}；新 open：{f7.get('baostock_new_open')} |",
         "",
-        "在 2025-02-14，BaoStock roster 同时列出两个代码，且两次 history query 都返回 tradestatus=1 的完全相同业务行情行。"
-        "这触发双代码实际交易 fail-closed 条件。",
+        "同日两代码查询都返回实际交易时，完全相同的业务 bar 记为 provider alias duplication candidate signal；"
+        "只有业务字段不同的双边实际交易才构成 source conflict。停牌空值/零值表示差异单独归类，成交金额严格比较且无容差。",
         "",
         f"- 未决项：{[item.get('code') for item in report['conclusion']['contradictions']]}；"
         f"长历史差异分类：{bao.get('overlap', {}).get('mismatch_category_counts')}。",
@@ -945,6 +950,7 @@ def main() -> int:
         },
     }
     dual_trade_days = []
+    identical_provider_alias_bar_days = []
     for day, roster in roster_matrix.items():
         if roster.get(old[2]) is not True or roster.get(new[2]) is not True:
             continue
@@ -952,7 +958,7 @@ def main() -> int:
         new_row = bao_window_by_code_date.get((new[2], day))
         if actual_baostock_trade(old_row) and actual_baostock_trade(new_row):
             row_comparison = compare_history_rows([old_row], [new_row], BUSINESS_FIELDS)
-            dual_trade_days.append({
+            evidence = {
                 "source": "BaoStock roster + daily rows",
                 "trade_date": day,
                 "both_present_in_roster": True,
@@ -960,7 +966,11 @@ def main() -> int:
                 "new_query_actual_row": new_row,
                 "business_fields_exact_match": row_comparison["exact_business_field_match_count"] == 1,
                 "business_field_differences": row_comparison["mismatch_samples"],
-            })
+            }
+            if evidence["business_fields_exact_match"]:
+                identical_provider_alias_bar_days.append(evidence)
+            else:
+                dual_trade_days.append(evidence)
 
     old_tdx_meta, new_tdx_meta = day_old["metadata"], day_new["metadata"]
     tdx_overlap_result = tdx_overlap(day_old, day_new)
@@ -973,14 +983,9 @@ def main() -> int:
     bao_new_first = long_summary[new[2]]["first_date"]
     contradictions = []
     if dual_trade_days:
-        contradictions.append({"code": "OVERLAPPING_DUAL_ACTUAL_TRADING", "evidence": dual_trade_days})
+        contradictions.append({"code": "SUBSTANTIVE_OVERLAPPING_DUAL_ACTUAL_TRADING", "evidence": dual_trade_days})
     if any(item.get("row_count", 0) == 0 for item in long_summary.values()):
         contradictions.append({"code": "LONG_HISTORY_QUERY_EMPTY_OR_UNAVAILABLE"})
-    if bao_overlap["mismatch_count"] > 0:
-        contradictions.append({
-            "code": "BAOSTOCK_OLD_NEW_OVERLAP_BUSINESS_FIELD_MISMATCH",
-            "mismatch_count": bao_overlap["mismatch_count"],
-        })
     returned_code_anomalies = {}
     for query_code, summary in long_summary.items():
         returned = summary["provider_returned_codes"]
@@ -996,25 +1001,38 @@ def main() -> int:
             "code": "BAOSTOCK_EVIDENCE_INCOMPLETE",
             "query_failure_count": len(api["query_failures"]),
         })
+    candidate_contract_path = ROOT / "config/v4_01_source_fingerprint_candidate_v1.json"
+    candidate_contract = json.loads(candidate_contract_path.read_text(encoding="utf-8"))
+    candidate_detector = analyze_source_fingerprint({
+        "inputs": {
+            "old_code": old_code,
+            "new_code": new_code,
+            "effective_date": args.effective_date.isoformat(),
+        },
+        "tdx": {
+            "files": {old_code: old_tdx_meta, new_code: new_tdx_meta},
+            "overlap": tdx_overlap_result,
+        },
+        "baostock": {
+            "long_history": api["long_history"],
+            "query_failures": api["query_failures"],
+            "stock_basic_metadata_continuity": metadata_continuity,
+            "roster_matrix": roster_matrix,
+            "window_history": api["window_history"],
+        },
+    }, candidate_contract)
     if contradictions:
         pattern_class = "PATTERN_D_UNRESOLVED_IDENTITY_RELATION"
         candidate_strength = "BLOCKED_FAIL_CLOSED"
-    elif tdx_overlap_result["old_history_equals_full_new_prefix"] and roster_atomic_flip and new_bao_backfills:
-        pattern_class = "PATTERN_A_STRONG_ALIAS_MIGRATION_FINGERPRINT"
-        candidate_strength = "STRONG_CANDIDATE_ONLY"
-    elif new_prehistory and roster_atomic_flip and not new_bao_backfills:
-        pattern_class = "PATTERN_B_TDX_BACKFILL_BAOSTOCK_SPLIT"
-        candidate_strength = (
-            "HIGH_CANDIDATE_ONLY" if tdx_overlap_result["exact_raw_overlap_ratio"] == 1
-            else "MODERATE_CANDIDATE_ONLY_RAW_PREFIX_NOT_EXACT"
-        )
-    elif not new_prehistory and not new_bao_backfills:
+    elif candidate_detector["disposition"] == "STRONG_ALIAS_MIGRATION_SOURCE_FINGERPRINT_CANDIDATE":
+        pattern_class = "STRONG_ALIAS_MIGRATION_SOURCE_FINGERPRINT"
+        candidate_strength = "STRONG_GENERIC_IDENTITY_RELATION_CANDIDATE"
+    elif candidate_detector["disposition"] == "NO_STRONG_ALIAS_FINGERPRINT_IN_SAMPLE":
         pattern_class = "PATTERN_C_SOURCES_SPLIT_BY_CODE"
-        candidate_strength = "LIMITED_CANDIDATE_ONLY"
+        candidate_strength = "NO_STRONG_FINGERPRINT_SIGNAL"
     else:
         pattern_class = "PATTERN_D_UNRESOLVED_IDENTITY_RELATION"
         candidate_strength = "UNRESOLVED_FAIL_CLOSED"
-        contradictions.append({"code": "SOURCE_SEMANTICS_DO_NOT_FIT_A_B_OR_C"})
 
     complete_queries = (
         len(api["stock_basic"]) == 2 and len(api["rosters"]) == len(roster_days)
@@ -1070,7 +1088,9 @@ def main() -> int:
         "F3_old_raw_history_equals_full_new_prefix": tdx_overlap_result["old_history_equals_full_new_prefix"],
         "F4_baostock_roster_atomic_flip": roster_atomic_flip,
         "F5_provider_metadata_continuity": metadata_continuity,
-        "F6_no_overlapping_dual_actual_trading": not dual_trade_days,
+        "F6_no_overlapping_dual_actual_trading": not (dual_trade_days or identical_provider_alias_bar_days),
+        "F6_identical_provider_alias_bar_dates": [item["trade_date"] for item in identical_provider_alias_bar_days],
+        "F6_substantive_dual_trade_dates": [item["trade_date"] for item in dual_trade_days],
         "F6_check_scope": {
             "session_rosters_queried": roster_days,
             "actual_trade_checked_only_when_both_codes_are_rostered": True,
@@ -1219,13 +1239,21 @@ def main() -> int:
             },
         },
         "signals": signals,
+        "candidate_detector": {
+            "contract_id": candidate_contract["contract_id"],
+            "contract_version": candidate_contract["version"],
+            "contract_sha256": sha256_file(candidate_contract_path),
+            **candidate_detector,
+        },
         "conclusion": {
             "pattern_class": pattern_class,
             "candidate_signal_strength": candidate_strength,
             "summary": (
-                "Source behavior is descriptive candidate evidence only. One sample cannot establish a generic confirmation contract."
-                if not contradictions else
                 "Contradictory or incomplete source evidence remains unresolved; fail closed."
+                if contradictions else
+                "Source behavior is descriptive candidate evidence only. A strong fingerprint remains candidate-only; independent evidence is required for SAME_ENTITY."
+                if candidate_detector["disposition"] == "STRONG_ALIAS_MIGRATION_SOURCE_FINGERPRINT_CANDIDATE" else
+                "No strong alias-migration fingerprint was established; retain unresolved or split-by-code research status."
             ),
             "detected_signals": [key for key, value in signals.items() if value is True],
             "contradictions": contradictions,
@@ -1246,10 +1274,7 @@ def main() -> int:
         },
         "next_stage": (
             "DESIGN_GENERIC_CANDIDATE_DETECTOR_AND_BLIND_TEST_MULTIPLE_KNOWN_CODE_CHANGES"
-            if pattern_class in {
-                "PATTERN_A_STRONG_ALIAS_MIGRATION_FINGERPRINT",
-                "PATTERN_B_TDX_BACKFILL_BAOSTOCK_SPLIT",
-            }
+            if pattern_class == "STRONG_ALIAS_MIGRATION_SOURCE_FINGERPRINT"
             else "RETAIN_R8_3_EVIDENCE_POLICY_AND_REASSESS_OFFICIAL_EVENT_COMPLETENESS_GATE"
         ),
         "final_answers": {},
@@ -1272,10 +1297,15 @@ def main() -> int:
               f"exact {bao_overlap['exact_business_field_match_count']}, mismatch {bao_overlap['mismatch_count']}。",
         "13": f"Provider returned code behavior {report['baostock']['provider_returned_code_behavior']}。",
         "14": f"综合模式 {pattern_class}；强度 {candidate_strength}。",
-        "15": "仅作为 candidate evidence；不足以建议新的 confirmation contract。SAME_ENTITY 仍须独立正式证据。",
+        "15": (
+            "强 alias-migration source fingerprint，仅足以生成通用 candidate；不足以建立 SAME_ENTITY confirmation contract。仍须独立正式证据。"
+            if candidate_detector["disposition"] == "STRONG_ALIAS_MIGRATION_SOURCE_FINGERPRINT_CANDIDATE"
+            else "没有从本样本建立强 alias-migration fingerprint；保留 split-by-code 或 unresolved 研究状态，不修改 identity。"
+        ),
         "16": (
-            "发现 BaoStock 2025-02-14 roster 双代码同时存在，且两查询均有完全相同的实际交易 bar；"
-            "另有 81 个长历史差异日期，其中停牌空值/零值表示差异 79 日、实际字段差异 1 日、交易状态差异 1 日。"
+            f"provider alias duplicate 实际交易日期：{signals['F6_identical_provider_alias_bar_dates']}；"
+            f"实质不同的双边实际交易日期：{signals['F6_substantive_dual_trade_dates']}。"
+            f"BaoStock 长历史差异类别：{bao_overlap['mismatch_category_counts']}；停牌空值/零值仅按研究合同归一，成交金额不设置容差。"
         ),
     }
     report_path = json_output if json_output.is_absolute() else ROOT / json_output

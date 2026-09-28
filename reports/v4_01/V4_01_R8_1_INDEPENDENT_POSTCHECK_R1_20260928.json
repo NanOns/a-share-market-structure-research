@@ -1,0 +1,38 @@
+{
+  "checks": {
+    "accepted_universe_full_window": "PASS",
+    "alias_receipt_binds_event": "PASS",
+    "candidate_keys_present_in_accepted_universe": "PASS",
+    "candidate_resolution_evidence_complete": "PASS",
+    "candidate_signal_union_present": "PASS",
+    "dated_roster_full_session_coverage": "PASS",
+    "event_receipt_pass": "PASS",
+    "input_evidence_hashes_match": "PASS",
+    "r7_hashes_unchanged_from_r8": "PASS",
+    "unresolved_required_scope_zero": "PASS",
+    "v4_02_r8_cross_stage_still_passes": "PASS"
+  },
+  "contract_id": "V4_01_R8_1_INDEPENDENT_POSTCHECK_R1",
+  "counts": {
+    "dated_roster_snapshots": 786,
+    "required_scope_candidates": 38,
+    "required_sessions": 786,
+    "required_universe_rows": 4036121,
+    "unresolved_required_scope_candidates": 0
+  },
+  "next_stage": "SEAL_GATE_A_JOINT_R2",
+  "observed_at_utc": "2026-09-28T00:10:50+00:00",
+  "problems": [],
+  "r7_canonical_hashes": {
+    "identity_map_sha256": "e33294fb8d1d71732fdc3df903258b5617345811ecbdb649af8056ccd91427e0",
+    "required_universe_sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b"
+  },
+  "required_boards": [
+    "SH_MAIN",
+    "SZ_MAIN",
+    "CHINEXT",
+    "STAR"
+  ],
+  "status": "PASS",
+  "version": "1.0.0"
+}

@@ -1,0 +1,34 @@
+{
+  "candidate_count": 38,
+  "candidate_signal_coverage": {
+    "DATED_ALIAS_FACT": 1,
+    "LIFECYCLE_BOUNDARY_ADJACENCY": 30,
+    "OFFICIAL_CODE_CHANGE_EVENT": 1,
+    "PERSISTENT_RETROSPECTIVE_BAR_ALIAS": 1,
+    "ROSTER_EXIT_ENTRY_ADJACENCY": 37,
+    "SOURCE_SYMBOL_REASSIGNMENT_OR_CODE_REUSE_CANDIDATE": 0,
+    "WEAK_NAME_CONTINUITY": 0
+  },
+  "candidate_status_counts": {
+    "CONFIRMED_DISTINCT_ENTITY": 37,
+    "CONFIRMED_SAME_ENTITY_CODE_CHANGE": 1
+  },
+  "contract_id": "V4_01_ALIAS_COMPLETENESS_R8_1",
+  "event_discovery_receipt": "reports/v4_01/V4_01_IDENTITY_EVENT_DISCOVERY_R8_1.json",
+  "event_discovery_sha256": "e5c96e5a711fc6fb60233b3e57dce68ddd98d77d7649612bbf0293b617853b7a",
+  "fail_closed": {
+    "required_scope_unresolved_limit": 0,
+    "unresolved_candidate_identity": "UNKNOWN_FOR_AFFECTED_CAPABILITY",
+    "weak_signal_can_merge_identity": false
+  },
+  "next_stage": "R8_1_IDENTITY_UNIVERSE_POSTCHECK",
+  "required_scope": [
+    "SH_MAIN",
+    "SZ_MAIN",
+    "CHINEXT",
+    "STAR"
+  ],
+  "status": "PASS",
+  "unresolved_required_scope_candidate_count": 0,
+  "version": "1.0.0"
+}

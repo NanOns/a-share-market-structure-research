@@ -1,0 +1,53 @@
+{
+  "bindings": {
+    "phase0": {
+      "path": "reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json",
+      "sha256": "313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59"
+    },
+    "tdx_archive": {
+      "cutoff": "2026-09-24",
+      "path": "data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f/hsjday.zip",
+      "sha256": "b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f"
+    },
+    "v4_01_identity_map": {
+      "path": "data/v4/artifact_store/v4_01/security_entity_map_R7_20260927.json",
+      "sha256": "e33294fb8d1d71732fdc3df903258b5617345811ecbdb649af8056ccd91427e0"
+    },
+    "v4_01_r8_1": {
+      "external_acceptance": "PENDING_EXTERNAL_REVIEW",
+      "path": "reports/v4_01/v4_01_final_stage_receipt_R8_1_20260928.json",
+      "sha256": "84db902a8f1a7d50e5b1b53b341f7c06aa8f1f0d457a2147b2c497c7a427f514"
+    },
+    "v4_01_r8_1_postcheck": {
+      "path": "reports/v4_01/V4_01_R8_1_INDEPENDENT_POSTCHECK_R1_20260928.json",
+      "sha256": "e0dc6113cc2e9942e78d31b6cbbb76467988bdeeb84c69c39827b4c1e6a00eab"
+    },
+    "v4_01_universe": {
+      "path": "data/v4/artifact_store/v4_01/v4_01_historical_universe_required_R7_20260927.jsonl.gz",
+      "sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b"
+    },
+    "v4_02_accepted_head": {
+      "path": "data/v4/V4_02_ACCEPTED_HEAD.json",
+      "sha256": "da318a1f82a03f13930af7858ca1640fadbdaedbee85e27d47f9c869c2d6b595"
+    },
+    "v4_02_manifest": {
+      "path": "reports/v4_02/V4_02_FINAL_STAGING_MANIFEST_R6.json",
+      "sha256": "a83f90a0d1acc08e32db5dab049f3bf16a9284e5bf6785cd8f3a2b52aed31678"
+    }
+  },
+  "contract_id": "V4_STAGE_ACCEPTED_HEAD_V1",
+  "data_head_must_not_move_this_pointer": true,
+  "dev_baseline_input_head": "8941119dba4fb8c75d98699f8fa92c3406de9811",
+  "phase0_status": "FULL_PASS",
+  "source_cutoffs": {
+    "V4-01": "2026-09-24",
+    "V4-02": "2026-09-24"
+  },
+  "status": "READY_FOR_EXTERNAL_REVIEW",
+  "technical_baseline": "DA-MSR-V4.2.2-CODEX-REV2",
+  "v4_01_external_acceptance": "PENDING_EXTERNAL_REVIEW",
+  "v4_01_status": "PASS",
+  "v4_02_external_acceptance": "EXTERNALLY_ACCEPTED",
+  "v4_02_status": "PASS",
+  "version": "1.0.0"
+}

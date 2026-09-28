@@ -1,0 +1,37 @@
+{
+  "canonical_data_rows_written": 0,
+  "command": "E:\\python\\python.exe scripts/run_v4_continuous_data_maintenance.py",
+  "contract_id": "V4_DM01_PERFORMANCE_RECEIPT_R1",
+  "cpu_seconds_sampled": 11.859,
+  "large_file_hash_bytes": 550821395,
+  "limitations": [
+    "Metrics measure the post-bootstrap idempotent rerun, not the original bootstrap process.",
+    "Peak working set is sampled every 20 ms; a shorter transient peak may not be observed.",
+    "Rows read is the accepted R7 Required Scope universe scan count recorded by Gate A."
+  ],
+  "measurement_scope": "IDEMPOTENT_NOOP_RERUN; no new official session was complete",
+  "next_stage": "INDEPENDENT_POSTCHECK_AND_FINAL_RECEIPT",
+  "observed_at_utc": "2026-09-28T00:18:39+00:00",
+  "peak_working_set_bytes_sampled": 24793088,
+  "receipt_documents_written": 7,
+  "rows_read": 4036121,
+  "rows_written": 0,
+  "runner_result": {
+    "blocked_sessions": [],
+    "bootstrap": "ALREADY_BOOTSTRAPPED",
+    "latest_completed_session": "2026-09-24",
+    "not_completed_sessions": [
+      "2026-09-28"
+    ],
+    "processed_sessions": [],
+    "status": "PASS_NOOP_ALREADY_ACCEPTED",
+    "summary": "reports/v4_dm01/2026-09-28/run_summary.json",
+    "summary_sha256": "e88df8f2c3add295e77acf72fc3ad8e73aa7faab1a7557168c454609a9a24315"
+  },
+  "securities_affected": 0,
+  "status": "PASS",
+  "stderr": "",
+  "stdout": "{\"status\": \"PASS_NOOP_ALREADY_ACCEPTED\", \"bootstrap\": \"ALREADY_BOOTSTRAPPED\", \"latest_completed_session\": \"2026-09-24\", \"processed_sessions\": [], \"blocked_sessions\": [], \"not_completed_sessions\": [\"2026-09-28\"], \"summary\": \"reports/v4_dm01/2026-09-28/run_summary.json\", \"summary_sha256\": \"e88df8f2c3add295e77acf72fc3ad8e73aa7faab1a7557168c454609a9a24315\"}",
+  "version": "1.0.0",
+  "wall_seconds": 12.07
+}

@@ -1,0 +1,184 @@
+{
+  "command": "python.exe -m pytest -q tests/v4_phase0 tests/v4_01 tests/v4_02 tests/v4_joint tests/v4_dm01",
+  "contract_id": "V4_R8_1_DM01_TEST_RECEIPT_R1",
+  "counts": {
+    "error": 0,
+    "failed": 0,
+    "passed": 241,
+    "skipped": 2,
+    "xfailed": 0,
+    "xpassed": 0
+  },
+  "elapsed_seconds": 3.438,
+  "execution_head": "8941119dba4fb8c75d98699f8fa92c3406de9811",
+  "implementation_files": [
+    {
+      "path": "config/security_identity_event_discovery_v1.json",
+      "sha256": "82c25db40bab5ab18ff82ce232814788fe657c990bc8da3920c7385847c2169e"
+    },
+    {
+      "path": "config/v4_continuous_data_maintenance_v1.json",
+      "sha256": "17689af2a5dc80b7e6e12f17ea3ad11e477e57882525ec1e950c97337c285b08"
+    },
+    {
+      "path": "config/v4_data_accepted_head_v1.json",
+      "sha256": "d442ea422e5d2911ac39a35512d998d15dd522788b78ee96bcbf36589bea1065"
+    },
+    {
+      "path": "config/v4_dm01_bridge_calendar_v1.json",
+      "sha256": "3ea3e6783e08aa4452ca7d51dc92a404320bd965b23007fa950407e055879c97"
+    },
+    {
+      "path": "src/workbench_analysis/security_identity_event_discovery.py",
+      "sha256": "5fe649693a25244434645fbfc13f5a6ef15bcff2995cfd376c15d5852603fa11"
+    },
+    {
+      "path": "src/workbench_analysis/daily_source_freeze.py",
+      "sha256": "01934df2a8d8710f22e32ff9c5ea33a308625435c9b0ea90bc8f56b8f1c73ef2"
+    },
+    {
+      "path": "src/workbench_analysis/daily_data_head.py",
+      "sha256": "25c195396f36e54951b885ac2e663256f0c9570cc52247cf0a2171f0a41e735e"
+    },
+    {
+      "path": "src/workbench_analysis/continuous_data_maintenance.py",
+      "sha256": "b56e60161e640d57eac53eea8bc1e06c33b23745376643475db3542103204a3b"
+    },
+    {
+      "path": "scripts/v4_01_identity_event_discovery_r8_1.py",
+      "sha256": "1b3cf2cb2dbc83ec9093b57e6c296da407a61ea889974bc6cf8b1afe00a228b7"
+    },
+    {
+      "path": "scripts/independent_v4_01_r8_1_postcheck.py",
+      "sha256": "6c36ba5f9a481ef47461798213b307588202772b4d8c31b87150dad4575770a3"
+    },
+    {
+      "path": "scripts/run_v4_continuous_data_maintenance.py",
+      "sha256": "488cb6f57df6288d8bc6ab14da81f81ca7b5b18e4c4f0020826aed0fc7216120"
+    },
+    {
+      "path": "scripts/independent_v4_dm01_postcheck.py",
+      "sha256": "34202040a1063977fef807333cda1e2a4ed1509b6e94ea8f378711f883f898be"
+    },
+    {
+      "path": "scripts/run_v4_r8_1_dm01_test_gate.py",
+      "sha256": "dbc1712f9f58f3b8735dc55b5ce6112ac2d8f1e54a4af0e6d9d467e7512ab64d"
+    },
+    {
+      "path": "scripts/seal_v4_01_r8_1_gate_a.py",
+      "sha256": "0df116da45869786e27389b0678559fd6c7a21e965262e7c6993cb0ce4613169"
+    }
+  ],
+  "next_stage": "RUN_R8_1_DISCOVERY_AND_INDEPENDENT_POSTCHECK",
+  "observed_at_utc": "2026-09-28T00:10:06+00:00",
+  "output_tail": [
+    "........................................................................ [ 29%]",
+    ".....................s..........s....................................... [ 59%]",
+    "........................................................................ [ 88%]",
+    "...........................                                              [100%]",
+    "241 passed, 2 skipped in 3.12s"
+  ],
+  "pytest_version": "pytest 9.1.1",
+  "python_version": "3.13.14",
+  "return_code": 0,
+  "status": "PASS",
+  "test_files": [
+    {
+      "path": "tests/v4_01/test_r8_1_identity_event_discovery.py",
+      "sha256": "c0c3c25a073e8fa1439438c8c37e9e7709fa4989febc5002bc2cf037f0639a35"
+    },
+    {
+      "path": "tests/v4_01/test_r8_generic_alias_completeness.py",
+      "sha256": "ad73a7fcd7a83b867f267462404aa3302ddb0c54a87b4ac471501be39f22648e"
+    },
+    {
+      "path": "tests/v4_02/test_final_closure_pack.py",
+      "sha256": "1106f53cb3407d7b2f04023b0e6fb102bdf3398fff59e9af20fb72fb412b05df"
+    },
+    {
+      "path": "tests/v4_02/test_final_r3_repairs.py",
+      "sha256": "bf220bc5554864c1d88f8163094d5166b97270a873b3fb0b925025a9ce6ae2c1"
+    },
+    {
+      "path": "tests/v4_02/test_final_r4_special_price_phase.py",
+      "sha256": "4287652b4729f412239e4918f04e7197ac81a41820c51697c8a778da8566230e"
+    },
+    {
+      "path": "tests/v4_02/test_r5_generic_runtime.py",
+      "sha256": "c51e786961f2e5ef87ca869c34edfaadad42810a2aa648bee8aa173298bf5285"
+    },
+    {
+      "path": "tests/v4_02/test_r6_generic_production_builder.py",
+      "sha256": "19a19674fdd256b41bbf7bdaabf08ffc924f83553511e328fb755b1569a1a994"
+    },
+    {
+      "path": "tests/v4_dm01/test_continuous_data_maintenance.py",
+      "sha256": "c228ea2549a1b9ea4ee179612b1cf616b489cfba9a7847e9f5aa77b8e22d9693"
+    },
+    {
+      "path": "tests/v4_joint/test_joint_final_receipt_gate.py",
+      "sha256": "ec7f4bc98606a2e4afa1b60e0622bfb0115ba717c4897f7f62010562ac22692d"
+    },
+    {
+      "path": "tests/v4_phase0/test_adjustment_contract_vectors.py",
+      "sha256": "12c78fa5702b28f1693a1d0d04208844e07ed922b15332643d2992665580f424"
+    },
+    {
+      "path": "tests/v4_phase0/test_algorithm_contracts.py",
+      "sha256": "daa2ee95612ddddd9d7baeb394312b2ca03702b263627ebf2a485ba80d74bd62"
+    },
+    {
+      "path": "tests/v4_phase0/test_baostock_supplemental.py",
+      "sha256": "f45c2eddf453abb077d7295cb30c07ed6e5902645d6304f56755f9b7b701e897"
+    },
+    {
+      "path": "tests/v4_phase0/test_canonical_source_selection.py",
+      "sha256": "67174102b0ec8374848e0c9adb400a224dd4b0256ccfffd9e848b46d99bf5cab"
+    },
+    {
+      "path": "tests/v4_phase0/test_phase0_final_gate.py",
+      "sha256": "9b1458bc31cf7b4a7fb6707254e7b9bd2391187f2ce3a45af57dba3e5fd53a51"
+    },
+    {
+      "path": "tests/v4_phase0/test_postgres_schema.py",
+      "sha256": "44a765530c08f45201b1d684e2f8bea39ef4305e500c80b60827c271cfac27df"
+    },
+    {
+      "path": "tests/v4_phase0/test_security_entity_identity.py",
+      "sha256": "af7cdc24fe47cb651164a5bf842ccc5806d4b9eeb558cc3efb7e944c42c4fbe9"
+    },
+    {
+      "path": "tests/v4_phase0/test_source_bundle_identity.py",
+      "sha256": "5cd8e2907afb4486371545b18acd5c1896f9e8430f4b052f214bb9427d379f48"
+    },
+    {
+      "path": "tests/v4_phase0/test_source_overlap_classifier.py",
+      "sha256": "c91b5aaded492520813f417399f05fa7fb1f3dadebb935c72cfb79c2f042b739"
+    },
+    {
+      "path": "tests/v4_phase0/test_tdx_local_snapshot.py",
+      "sha256": "8ea8ae1ba8103382aebf513def49b03263bbc9821b986e6419743c0bad2c6f63"
+    },
+    {
+      "path": "tests/v4_phase0/test_tdx_snapshot.py",
+      "sha256": "b72206f8b57a2fd81208da7daaaa08e9cd331c468036c42efd2ed697cfa6fc00"
+    },
+    {
+      "path": "tests/v4_phase0/test_v4_01_lineage_policy.py",
+      "sha256": "42ffbe68354ad96d58a3977dc5d1a22e54ca1021eb1e4de2ff0ddec845bc730a"
+    },
+    {
+      "path": "tests/v4_phase0/test_v4_01_required_scope_r6.py",
+      "sha256": "f5383b7ebf00a09048ab817e3b8368054206e6f79a06e3e8deee303e88f91bdd"
+    }
+  ],
+  "test_roots": [
+    "tests/v4_phase0",
+    "tests/v4_01",
+    "tests/v4_02",
+    "tests/v4_joint",
+    "tests/v4_dm01"
+  ],
+  "test_tree_sha256": "fd3502c5d31478fa2220a24b042deddc56d319ae47f9fec6377572c93d1ab9e8",
+  "version": "1.0.0"
+}

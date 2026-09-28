@@ -1,0 +1,83 @@
+{
+  "bar_presence_used_to_infer_session": false,
+  "broader_calendar_limitation": "This receipt independently verifies the captured 2026-09-17 exchange notices needed for the 2026-09-24 to 2026-09-28 bridge; it does not reseal the full 2023-2026 official calendar.",
+  "broader_calendar_status": "FORMAL_ACCEPTANCE_PENDING_INDEPENDENT_POSTCHECK",
+  "calendar_revision": "sha256:2b00266a590800a1c230e0f0663036285b518a59e935770ef465390e08701f5e",
+  "closure_ranges_cross_checked": [
+    {
+      "end": "2026-09-27",
+      "start": "2026-09-25"
+    },
+    {
+      "end": "2026-10-07",
+      "start": "2026-10-01"
+    }
+  ],
+  "contract_id": "V4_DM01_OFFICIAL_CALENDAR_BRIDGE_RECEIPT_R1",
+  "latest_completed_official_session": "2026-09-24",
+  "official_sessions_after_base_cutoff": [
+    "2026-09-28"
+  ],
+  "runtime_local": "2026-09-28T08:18:27.807981+08:00",
+  "runtime_rule": "A session is complete only at/after 15:00 Asia/Shanghai.",
+  "scope": {
+    "end_date": "2026-09-28",
+    "required_boards": [
+      "SH_MAIN",
+      "SZ_MAIN",
+      "CHINEXT",
+      "STAR"
+    ],
+    "start_date": "2026-09-24"
+  },
+  "source_capture_manifest": {
+    "as_of_date": "2026-09-26",
+    "captured_at_utc": "2026-09-26T07:19:15+00:00",
+    "path": "data/v4/source_evidence/calendar_amendments_2026/capture_20260926T071911Z/capture_manifest.json",
+    "sha256": "bca983a3e7066a39338bcf48ebb35ca81eaea29436e5d85b30f0396736a1dec7"
+  },
+  "sources": [
+    {
+      "closure_ranges": [
+        {
+          "end": "2026-09-27",
+          "start": "2026-09-25"
+        },
+        {
+          "end": "2026-10-07",
+          "start": "2026-10-01"
+        }
+      ],
+      "market": "SSE",
+      "notice_content_date_crosscheck": "PASS",
+      "published_date": "2026-09-17",
+      "retrieved_at_utc": "2026-09-26T07:19:14+00:00",
+      "source_capture_path": "data/v4/source_evidence/calendar_amendments_2026/capture_20260926T071911Z/sse_2026_mid_autumn_national_day.html",
+      "source_capture_sha256": "779cbf7cc7ab2c4b34db17ceee29e266bc483e075860d8313b85c1d5d0f307bc",
+      "source_id": "sse_2026_mid_autumn_national_day",
+      "source_url": "https://www.sse.com.cn/disclosure/announcement/general/c/c_20260915_10832273.shtml"
+    },
+    {
+      "closure_ranges": [
+        {
+          "end": "2026-09-27",
+          "start": "2026-09-25"
+        },
+        {
+          "end": "2026-10-07",
+          "start": "2026-10-01"
+        }
+      ],
+      "market": "SZSE",
+      "notice_content_date_crosscheck": "PASS",
+      "published_date": "2026-09-17",
+      "retrieved_at_utc": "2026-09-26T07:19:15+00:00",
+      "source_capture_path": "data/v4/source_evidence/calendar_amendments_2026/capture_20260926T071911Z/szse_2026_mid_autumn_national_day.html",
+      "source_capture_sha256": "7b0c4264d27f4ba14a1904ab31cb3b2b870e4e68d6b8d8c0f6cf4254c1a045a4",
+      "source_id": "szse_2026_mid_autumn_national_day",
+      "source_url": "https://www.szse.cn/www/disclosure/notice/general/t20260917_622911.html"
+    }
+  ],
+  "status": "PASS",
+  "version": "1.0.0"
+}

@@ -1,0 +1,39 @@
+{
+  "blocked_sessions": [],
+  "bootstrap_cutoff": "2026-09-24",
+  "bootstrap_receipt": {
+    "path": "reports/v4_dm01/2026-09-28/bootstrap_receipt.json",
+    "sha256": "6f8d6b527c710bae7068cfa942a0f82fbca582b7af71c218d25fdfcf997fee8b"
+  },
+  "calendar_bridge": {
+    "path": "reports/v4_dm01/2026-09-28/calendar_bridge_receipt.json",
+    "sha256": "27d8059c855143e43293add2bff1ae12903fb03ac49a2a938b7588f268110ae1"
+  },
+  "calendar_status": "PASS",
+  "contract": {
+    "path": "config/v4_continuous_data_maintenance_v1.json",
+    "sha256": "17689af2a5dc80b7e6e12f17ea3ad11e477e57882525ec1e950c97337c285b08"
+  },
+  "contract_id": "V4_DM01_RUN_SUMMARY_R1",
+  "head_contract": {
+    "path": "config/v4_data_accepted_head_v1.json",
+    "sha256": "d442ea422e5d2911ac39a35512d998d15dd522788b78ee96bcbf36589bea1065"
+  },
+  "initial_e2e_receipt": {
+    "path": "reports/v4_dm01/2026-09-28/initial_e2e_receipt.json",
+    "sha256": "ecd102f62926b84b6a555f586e0a1d8fc847ee64349e613847ae9ffb12afdfa7"
+  },
+  "latest_data_cutoff": "2026-09-24",
+  "next_stage": "DM01_INDEPENDENT_POSTCHECK_AND_FINAL_RECEIPT",
+  "not_completed_sessions": [
+    "2026-09-28"
+  ],
+  "processed_sessions": [],
+  "session_discovery_receipt": {
+    "path": "reports/v4_dm01/2026-09-28/session_discovery_receipt.json",
+    "sha256": "116539c8a90ba9240b27c3392a82df13d1aef2469e6416ce05aef3c27dd27828"
+  },
+  "status": "PASS_NOOP_ALREADY_ACCEPTED",
+  "tdx_root_write_count": 0,
+  "version": "1.0.0"
+}

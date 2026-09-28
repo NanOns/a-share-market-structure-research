@@ -1,0 +1,196 @@
+{
+  "acceptance_result": {
+    "external_acceptance": "PENDING_EXTERNAL_REVIEW",
+    "incremental_component_builders": "NOT_WIRED_FAIL_CLOSED",
+    "independent_postcheck": "PASS",
+    "regression_tests": "PASS",
+    "stage_00_01_02_modified": false,
+    "tdx_root_write_count": 0,
+    "v4_03_implementation_started": false
+  },
+  "component_permissions": {
+    "ADJUSTED_DAILY": {
+      "affected_reason_counts": {
+        "CORPORATE_ACTION_REFERENCE_UNSUPPORTED": 38,
+        "REFERENCE_CHAIN_BLOCKED_BY_UNSUPPORTED_ACTION": 1
+      },
+      "reason": "Unsupported price-affecting actions remain per-security fail-closed.",
+      "status": "DEGRADED_PASS",
+      "unknown_rows": null
+    },
+    "IDENTITY_UNIVERSE": {
+      "affected_reason_counts": null,
+      "reason": null,
+      "status": "FULL_PASS",
+      "unknown_rows": null
+    },
+    "ISST": {
+      "affected_reason_counts": null,
+      "reason": null,
+      "status": "FULL_PASS",
+      "unknown_rows": null
+    },
+    "PERIOD_ADJUSTED": {
+      "affected_reason_counts": null,
+      "reason": "Adjusted readiness follows per-security adjustment disposition.",
+      "status": "DEGRADED_PASS",
+      "unknown_rows": null
+    },
+    "PERIOD_RAW": {
+      "affected_reason_counts": null,
+      "reason": null,
+      "status": "FULL_PASS",
+      "unknown_rows": null
+    },
+    "PRICE_LIMIT": {
+      "affected_reason_counts": null,
+      "reason": "Unsupported references remain explicit UNKNOWN in required-scope rows.",
+      "status": "DEGRADED_PASS",
+      "unknown_rows": 77
+    },
+    "RAW_DAILY": {
+      "affected_reason_counts": null,
+      "reason": null,
+      "status": "FULL_PASS",
+      "unknown_rows": null
+    },
+    "SPECIAL_PHASE": {
+      "affected_reason_counts": null,
+      "reason": "Unknown special phase remains fail-closed under accepted policy.",
+      "status": "DEGRADED_PASS",
+      "unknown_rows": 31
+    },
+    "TRADING_STATUS": {
+      "affected_reason_counts": null,
+      "reason": null,
+      "status": "FULL_PASS",
+      "unknown_rows": null
+    }
+  },
+  "contract": {
+    "path": "config/v4_continuous_data_maintenance_v1.json",
+    "sha256": "17689af2a5dc80b7e6e12f17ea3ad11e477e57882525ec1e950c97337c285b08"
+  },
+  "contract_id": "V4_DM01_FINAL_RECEIPT_R1",
+  "evidence": {
+    "bootstrap_manifest": {
+      "path": "data/v4/bootstrap/V4_DM01_BOOTSTRAP_MANIFEST_R1.json",
+      "sha256": "80553233c9fce4194bfa3b5256570be9e9a03822460755bcbcfa390eb0b95a9e"
+    },
+    "bootstrap_receipt": {
+      "path": "reports/v4_dm01/2026-09-28/bootstrap_receipt.json",
+      "sha256": "6f8d6b527c710bae7068cfa942a0f82fbca582b7af71c218d25fdfcf997fee8b"
+    },
+    "calendar_bridge_receipt": {
+      "path": "reports/v4_dm01/2026-09-28/calendar_bridge_receipt.json",
+      "sha256": "27d8059c855143e43293add2bff1ae12903fb03ac49a2a938b7588f268110ae1"
+    },
+    "data_accepted_head": {
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0"
+    },
+    "dev_baseline_head": {
+      "path": "data/v4/V4_DEV_BASELINE_HEAD.json",
+      "sha256": "45695460b0147c6ada12e0ebd8e5070ac0a45eebea26603ff5a3daddc4dd5094"
+    },
+    "external_reaudit": {
+      "path": "docs/evidence/V4_PRE03_JOINT_R1_EXTERNAL_REAUDIT_20260928.md",
+      "sha256": "54bf30edd1b9c67ad06bf35f191ed889939d37125cc4cb79caec8ea8a297fdc1"
+    },
+    "gate_a_stage_receipt": {
+      "path": "reports/v4_01/v4_01_final_stage_receipt_R8_1_20260928.json",
+      "sha256": "84db902a8f1a7d50e5b1b53b341f7c06aa8f1f0d457a2147b2c497c7a427f514"
+    },
+    "implementation_pack": {
+      "path": "docs/evidence/V4_R8_1_DM01_IMPLEMENTATION_PACK_R1_20260928.md",
+      "sha256": "9594c7ec404e2ec72d5396e29cd01453fe3b33960d4c701e653951101eca4091"
+    },
+    "independent_postcheck": {
+      "path": "reports/v4_dm01/V4_DM01_INDEPENDENT_POSTCHECK_R1_20260928.json",
+      "sha256": "9ac705e09569ff520dfbb61403041f7060ccec0e29c79057288746cf7319a0b4"
+    },
+    "initial_e2e_receipt": {
+      "path": "reports/v4_dm01/2026-09-28/initial_e2e_receipt.json",
+      "sha256": "ecd102f62926b84b6a555f586e0a1d8fc847ee64349e613847ae9ffb12afdfa7"
+    },
+    "joint_00_01_02_receipt": {
+      "path": "reports/v4_joint/V4_00_01_02_JOINT_FINAL_RECEIPT_R2_20260928.json",
+      "sha256": "030cd6ad2f3b67f101b68dc98c8d55d157c51597b5de8b8dc8a70ac59f2e9df7"
+    },
+    "performance_receipt": {
+      "path": "reports/v4_dm01/2026-09-28/performance_receipt.json",
+      "sha256": "6efb36e7ac37922cf8f841c377079d0320d9278a98a849d03ff607a9626963fe"
+    },
+    "regression_test_gate": {
+      "path": "reports/v4_joint/V4_R8_1_DM01_TEST_RECEIPT_R1_20260928.json",
+      "sha256": "8607b0564675d96f2edd1af265ff2b1220ae43dc905082584e8ddcf42c2416ed"
+    },
+    "runner_summary": {
+      "path": "reports/v4_dm01/2026-09-28/run_summary.json",
+      "sha256": "e88df8f2c3add295e77acf72fc3ad8e73aa7faab1a7557168c454609a9a24315"
+    },
+    "session_discovery_receipt": {
+      "path": "reports/v4_dm01/2026-09-28/session_discovery_receipt.json",
+      "sha256": "116539c8a90ba9240b27c3392a82df13d1aef2469e6416ce05aef3c27dd27828"
+    },
+    "stage_accepted_head": {
+      "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+      "sha256": "ccb6938b7e6859894d11616a814f93fd15fd19598c3ff6d0aeda0ae181582e29"
+    }
+  },
+  "external_acceptance": "PENDING_EXTERNAL_REVIEW",
+  "head_contract": {
+    "path": "config/v4_data_accepted_head_v1.json",
+    "sha256": "d442ea422e5d2911ac39a35512d998d15dd522788b78ee96bcbf36589bea1065"
+  },
+  "internal_result": "PASS_NOOP_ALREADY_ACCEPTED",
+  "next_stage": "WIRE_AND_VERIFY_INCREMENTAL_COMPONENT_BUILDERS; EXTERNAL_REVIEW; V4_03_REMAINS_BLOCKED",
+  "observed_at_utc": "2026-09-28T00:21:00+00:00",
+  "owner_stage": "V4-DM-01 CONTINUOUS DATA MAINTENANCE",
+  "performance": {
+    "cpu_seconds_sampled": 11.859,
+    "limitations": [
+      "Metrics measure the post-bootstrap idempotent rerun, not the original bootstrap process.",
+      "Peak working set is sampled every 20 ms; a shorter transient peak may not be observed.",
+      "Rows read is the accepted R7 Required Scope universe scan count recorded by Gate A."
+    ],
+    "measurement_scope": "IDEMPOTENT_NOOP_RERUN; no new official session was complete",
+    "peak_working_set_bytes_sampled": 24793088,
+    "rows_read": 4036121,
+    "rows_written": 0,
+    "securities_affected": 0,
+    "wall_seconds": 12.07
+  },
+  "scope_limitations": [
+    "Run occurred before the 2026-09-28 15:00 Asia/Shanghai close; no new session was complete.",
+    "No per-session source freeze or component build was triggered in this no-op run.",
+    "The first eligible post-close update still requires frozen current-session sources; otherwise the runner leaves the accepted data head unchanged with SOURCE_NOT_READY.",
+    "If a completed session is source-ready, the current runner fails closed with DM01_INCREMENTAL_COMPONENT_BUILDERS_REQUIRED; this execution did not exercise or validate a new-session component build."
+  ],
+  "stage_contract_result": {
+    "accepted_data_cutoff": "2026-09-24",
+    "blocked_sessions": [],
+    "bootstrap_cutoff": "2026-09-24",
+    "latest_completed_official_session_at_run": "2026-09-24",
+    "not_completed_sessions": [
+      "2026-09-28"
+    ],
+    "official_calendar_capture_verified": true,
+    "per_session_component_build_receipts": [],
+    "processed_sessions": [],
+    "session_dates_inferred_from_bars": false,
+    "source_freeze_receipts": [],
+    "source_readiness": {
+      "status": "NO_NEW_COMPLETED_SESSION"
+    }
+  },
+  "status": "PASS_NOOP_READY_FOR_EXTERNAL_REVIEW",
+  "three_heads": {
+    "data_accepted_head_sha256": "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0",
+    "data_head_cutoff": "2026-09-24",
+    "data_head_does_not_move_stage_or_dev_heads": true,
+    "dev_baseline_head_sha256": "45695460b0147c6ada12e0ebd8e5070ac0a45eebea26603ff5a3daddc4dd5094",
+    "stage_accepted_head_sha256": "ccb6938b7e6859894d11616a814f93fd15fd19598c3ff6d0aeda0ae181582e29"
+  },
+  "version": "1.0.0"
+}

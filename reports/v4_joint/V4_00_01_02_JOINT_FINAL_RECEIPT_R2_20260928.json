@@ -1,0 +1,43 @@
+{
+  "contract_id": "V4_00_01_02_JOINT_FINAL_RECEIPT_R2",
+  "execution_head": "8941119dba4fb8c75d98699f8fa92c3406de9811",
+  "external_acceptance": "PENDING_EXTERNAL_REVIEW",
+  "joint_evidence": {
+    "r8_1_postcheck": {
+      "path": "reports/v4_01/V4_01_R8_1_INDEPENDENT_POSTCHECK_R1_20260928.json",
+      "sha256": "e0dc6113cc2e9942e78d31b6cbbb76467988bdeeb84c69c39827b4c1e6a00eab"
+    },
+    "test_gate": {
+      "path": "reports/v4_joint/V4_R8_1_DM01_TEST_RECEIPT_R1_20260928.json",
+      "sha256": "8607b0564675d96f2edd1af265ff2b1220ae43dc905082584e8ddcf42c2416ed"
+    }
+  },
+  "next_stage": "EXTERNAL_REAUDIT_OF_R8_1_AND_JOINT_RESEAL",
+  "observed_at_utc": "2026-09-28T00:10:58+00:00",
+  "phase0": {
+    "receipt": {
+      "path": "reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json",
+      "sha256": "313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59"
+    },
+    "status": "FULL_PASS"
+  },
+  "status": "PASS_READY_FOR_EXTERNAL_REVIEW",
+  "v4_01": {
+    "r7_canonical_artifacts_unchanged": true,
+    "receipt": {
+      "path": "reports/v4_01/v4_01_final_stage_receipt_R8_1_20260928.json",
+      "sha256": "84db902a8f1a7d50e5b1b53b341f7c06aa8f1f0d457a2147b2c497c7a427f514"
+    },
+    "status": "PASS"
+  },
+  "v4_02": {
+    "external_acceptance": "EXTERNALLY_ACCEPTED",
+    "receipt": {
+      "path": "reports/v4_02/V4_02_FINAL_EXTERNAL_ACCEPTANCE_R6.json",
+      "sha256": "42286da4305b792f5ecdc0fcc9a9d722e8ab3c23f6b618bf1ba15bd445ca6970"
+    },
+    "status": "PASS_WITH_BSE_SCOPE_DEGRADED"
+  },
+  "v4_03_status": "BLOCKED_PENDING_EXTERNAL_REVIEW",
+  "version": "1.0.0"
+}

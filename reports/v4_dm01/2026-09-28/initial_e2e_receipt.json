@@ -1,0 +1,92 @@
+{
+  "adjustment_impact_receipt": {
+    "path": "reports/v4_dm01/2026-09-28/adjustment_impact_receipt.json",
+    "sha256": "0498e9dd5a492f3102e1db766a63e30f015142146729b7ee1b5568ecb89e7d53"
+  },
+  "blocked_sessions": [],
+  "bootstrap_cutoff": "2026-09-24",
+  "bootstrap_receipt": {
+    "path": "reports/v4_dm01/2026-09-28/bootstrap_receipt.json",
+    "sha256": "6f8d6b527c710bae7068cfa942a0f82fbca582b7af71c218d25fdfcf997fee8b"
+  },
+  "component_permissions": {
+    "ADJUSTED_DAILY": {
+      "affected_reason_counts": {
+        "CORPORATE_ACTION_REFERENCE_UNSUPPORTED": 38,
+        "REFERENCE_CHAIN_BLOCKED_BY_UNSUPPORTED_ACTION": 1
+      },
+      "cutoff": "2026-09-24",
+      "reason": "Unsupported price-affecting actions remain per-security fail-closed.",
+      "source_receipt": "V4-02 R6 accepted",
+      "status": "DEGRADED_PASS"
+    },
+    "IDENTITY_UNIVERSE": {
+      "cutoff": "2026-09-24",
+      "source_receipt": "V4-01 R8.1 internal PASS",
+      "status": "FULL_PASS"
+    },
+    "ISST": {
+      "cutoff": "2026-09-24",
+      "source_receipt": "V4-02 R6 accepted",
+      "status": "FULL_PASS"
+    },
+    "PERIOD_ADJUSTED": {
+      "cutoff": "2026-09-24",
+      "reason": "Adjusted readiness follows per-security adjustment disposition.",
+      "source_receipt": "V4-02 R6 accepted",
+      "status": "DEGRADED_PASS"
+    },
+    "PERIOD_RAW": {
+      "cutoff": "2026-09-24",
+      "source_receipt": "V4-02 R6 accepted",
+      "status": "FULL_PASS"
+    },
+    "PRICE_LIMIT": {
+      "cutoff": "2026-09-24",
+      "reason": "Unsupported references remain explicit UNKNOWN in required-scope rows.",
+      "source_receipt": "V4-02 R6 accepted",
+      "status": "DEGRADED_PASS",
+      "unknown_rows": 77
+    },
+    "RAW_DAILY": {
+      "cutoff": "2026-09-24",
+      "source_receipt": "V4-02 R6 accepted",
+      "status": "FULL_PASS"
+    },
+    "SPECIAL_PHASE": {
+      "cutoff": "2026-09-24",
+      "reason": "Unknown special phase remains fail-closed under accepted policy.",
+      "source_receipt": "V4-02 R6 accepted",
+      "status": "DEGRADED_PASS",
+      "unknown_rows": 31
+    },
+    "TRADING_STATUS": {
+      "cutoff": "2026-09-24",
+      "source_receipt": "V4-02 R6 accepted",
+      "status": "FULL_PASS"
+    }
+  },
+  "contract_id": "V4_DM01_INITIAL_E2E_RECEIPT_R1",
+  "data_head_moved_after_bootstrap": false,
+  "data_head_sha256": "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0",
+  "latest_completed_session": "2026-09-24",
+  "per_session_build_receipts": [],
+  "period_impact_receipt": {
+    "path": "reports/v4_dm01/2026-09-28/period_impact_receipt.json",
+    "sha256": "623f43320ee9a459b621f87a25537e4e5b5caca9d19293e3722779c4be00d495"
+  },
+  "processed_sessions": [],
+  "session_discovery_receipt": {
+    "path": "reports/v4_dm01/2026-09-28/session_discovery_receipt.json",
+    "sha256": "116539c8a90ba9240b27c3392a82df13d1aef2469e6416ce05aef3c27dd27828"
+  },
+  "source_freeze_receipts": [],
+  "source_readiness": {
+    "status": "NO_NEW_COMPLETED_SESSION"
+  },
+  "stage_00_01_02_modified": false,
+  "status": "PASS_NOOP_ALREADY_ACCEPTED",
+  "tdx_root_write_count": 0,
+  "v4_03_implementation_started": false,
+  "version": "1.0.0"
+}

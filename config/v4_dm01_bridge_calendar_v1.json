@@ -1,0 +1,47 @@
+{
+  "contract_id": "V4_DM01_OFFICIAL_CALENDAR_BRIDGE_V1",
+  "version": "1.0.0",
+  "coverage": {
+    "accepted_base_cutoff": "2026-09-24",
+    "go_forward_review_date": "2026-09-28",
+    "exchange_markets": ["SSE", "SZSE"],
+    "boards": ["SH_MAIN", "SZ_MAIN", "CHINEXT", "STAR"],
+    "bse": "OPTIONAL_DEGRADED_OUTSIDE_REQUIRED_SCOPE"
+  },
+  "official_source_capture_manifest": "data/v4/source_evidence/calendar_amendments_2026/capture_20260926T071911Z/capture_manifest.json",
+  "official_sources": [
+    {
+      "source_id": "sse_2026_mid_autumn_national_day",
+      "market": "SSE",
+      "source_capture_path": "data/v4/source_evidence/calendar_amendments_2026/capture_20260926T071911Z/sse_2026_mid_autumn_national_day.html",
+      "source_url": "https://www.sse.com.cn/disclosure/announcement/general/c/c_20260915_10832273.shtml",
+      "published_date": "2026-09-17",
+      "closure_ranges": [
+        {"start": "2026-09-25", "end": "2026-09-27"},
+        {"start": "2026-10-01", "end": "2026-10-07"}
+      ]
+    },
+    {
+      "source_id": "szse_2026_mid_autumn_national_day",
+      "market": "SZSE",
+      "source_capture_path": "data/v4/source_evidence/calendar_amendments_2026/capture_20260926T071911Z/szse_2026_mid_autumn_national_day.html",
+      "source_url": "https://www.szse.cn/www/disclosure/notice/general/t20260917_622911.html",
+      "published_date": "2026-09-17",
+      "closure_ranges": [
+        {"start": "2026-09-25", "end": "2026-09-27"},
+        {"start": "2026-10-01", "end": "2026-10-07"}
+      ]
+    }
+  ],
+  "closure_policy": {
+    "session_truth": "WEEKDAY_RULE_MINUS_HASH_VERIFIED_EXCHANGE_CLOSURES",
+    "absence_of_bars_is_never_used_to_infer_a_closure": true,
+    "cross_exchange_range_mismatch": "BLOCKED",
+    "unresolved_relevant_notice": "BLOCKED"
+  },
+  "runtime": {
+    "timezone": "Asia/Shanghai",
+    "market_close_local": "15:00:00",
+    "include_current_date_only_after_close": true
+  }
+}

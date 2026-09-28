@@ -1,0 +1,43 @@
+{
+  "checks": {
+    "accepted_parent_stage_bindings_valid": "PASS",
+    "all_capabilities_present_and_fail_closed": "PASS",
+    "bootstrap_parent_hashes_verified": "PASS",
+    "latest_completed_session_uses_exchange_close": "PASS",
+    "noop_or_source_not_ready_policy_applied": "PASS",
+    "official_exchange_notice_captures_verified": "PASS",
+    "official_session_expansion_matches_notices": "PASS",
+    "r8_1_canonical_reseal_parent_unchanged": "PASS",
+    "runner_receipt_hashes_bind_files": "PASS",
+    "stage_scope_and_tdx_write_guards": "PASS",
+    "three_head_bootstrap_and_immutability": "PASS"
+  },
+  "contract_id": "V4_DM01_INDEPENDENT_POSTCHECK_R1",
+  "counts": {
+    "blocked_sessions": 0,
+    "capabilities": 9,
+    "official_sessions_after_base_cutoff": 1,
+    "processed_sessions": 0
+  },
+  "cutoffs": {
+    "accepted_data_head": "2026-09-24",
+    "bootstrap": "2026-09-24",
+    "latest_completed_session": "2026-09-24"
+  },
+  "head_hashes": {
+    "bootstrap_manifest_sha256": "80553233c9fce4194bfa3b5256570be9e9a03822460755bcbcfa390eb0b95a9e",
+    "data_accepted_head_sha256": "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0",
+    "dev_baseline_sha256": "45695460b0147c6ada12e0ebd8e5070ac0a45eebea26603ff5a3daddc4dd5094",
+    "stage_accepted_head_sha256": "ccb6938b7e6859894d11616a814f93fd15fd19598c3ff6d0aeda0ae181582e29"
+  },
+  "next_stage": "SEAL_DM01_FINAL_RECEIPT_AND_EXTERNAL_REVIEW",
+  "observed_at_utc": "2026-09-28T00:20:10+00:00",
+  "owner_stage_result": "PASS_NOOP_ALREADY_ACCEPTED",
+  "problems": [],
+  "run_summary": {
+    "path": "reports/v4_dm01/2026-09-28/run_summary.json",
+    "sha256": "e88df8f2c3add295e77acf72fc3ad8e73aa7faab1a7557168c454609a9a24315"
+  },
+  "status": "PASS",
+  "version": "1.0.0"
+}

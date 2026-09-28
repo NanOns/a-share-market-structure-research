@@ -1,0 +1,91 @@
+{
+  "acceptance_result": {
+    "external_acceptance": "PENDING_EXTERNAL_REVIEW",
+    "r7_canonical_artifacts_unchanged": true,
+    "required_scope_unresolved_candidates": 0,
+    "stage_gate": "PASS",
+    "v4_02_cross_stage_postcheck": "PASS"
+  },
+  "contract": {
+    "path": "config/security_identity_event_discovery_v1.json",
+    "sha256": "82c25db40bab5ab18ff82ce232814788fe657c990bc8da3920c7385847c2169e"
+  },
+  "contract_id": "V4_01_R8_1_FINAL_STAGE_RECEIPT_R1",
+  "counts": {
+    "candidate_status_counts": {
+      "CONFIRMED_DISTINCT_ENTITY": 37,
+      "CONFIRMED_SAME_ENTITY_CODE_CHANGE": 1
+    },
+    "candidates": 38,
+    "required_sessions": 786,
+    "required_universe_rows": 4036121,
+    "test_counts": {
+      "error": 0,
+      "failed": 0,
+      "passed": 241,
+      "skipped": 2,
+      "xfailed": 0,
+      "xpassed": 0
+    },
+    "unresolved_required_scope_candidates": 0
+  },
+  "evidence": {
+    "alias_completeness": {
+      "path": "reports/v4_01/V4_01_ALIAS_COMPLETENESS_R8_1.json",
+      "sha256": "e8c8ce3cd971eb6a79e970b63d77f2e50e123a0764f612de858615c15a14fb5b"
+    },
+    "external_reaudit": {
+      "path": "docs/evidence/V4_PRE03_JOINT_R1_EXTERNAL_REAUDIT_20260928.md",
+      "sha256": "54bf30edd1b9c67ad06bf35f191ed889939d37125cc4cb79caec8ea8a297fdc1"
+    },
+    "identity_event_discovery": {
+      "path": "reports/v4_01/V4_01_IDENTITY_EVENT_DISCOVERY_R8_1.json",
+      "sha256": "e5c96e5a711fc6fb60233b3e57dce68ddd98d77d7649612bbf0293b617853b7a"
+    },
+    "implementation_pack": {
+      "path": "docs/evidence/V4_R8_1_DM01_IMPLEMENTATION_PACK_R1_20260928.md",
+      "sha256": "9594c7ec404e2ec72d5396e29cd01453fe3b33960d4c701e653951101eca4091"
+    },
+    "independent_postcheck": {
+      "path": "reports/v4_01/V4_01_R8_1_INDEPENDENT_POSTCHECK_R1_20260928.json",
+      "sha256": "e0dc6113cc2e9942e78d31b6cbbb76467988bdeeb84c69c39827b4c1e6a00eab"
+    },
+    "r7_identity_map": {
+      "path": "data/v4/artifact_store/v4_01/security_entity_map_R7_20260927.json",
+      "sha256": "e33294fb8d1d71732fdc3df903258b5617345811ecbdb649af8056ccd91427e0"
+    },
+    "r7_required_universe": {
+      "path": "data/v4/artifact_store/v4_01/v4_01_historical_universe_required_R7_20260927.jsonl.gz",
+      "sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b"
+    },
+    "test_gate": {
+      "path": "reports/v4_joint/V4_R8_1_DM01_TEST_RECEIPT_R1_20260928.json",
+      "sha256": "8607b0564675d96f2edd1af265ff2b1220ae43dc905082584e8ddcf42c2416ed"
+    }
+  },
+  "execution_head": "8941119dba4fb8c75d98699f8fa92c3406de9811",
+  "external_acceptance": "PENDING_EXTERNAL_REVIEW",
+  "next_stage": "AWAIT_EXTERNAL_REVIEW; KEEP_V4_03_BLOCKED",
+  "observed_at_utc": "2026-09-28T00:10:58+00:00",
+  "optional_bse_status": "DEGRADED_EXCLUDED_FROM_REQUIRED_SCOPE",
+  "required_scope_status": "PASS",
+  "stage": "V4-01 R8.1 GENERIC IDENTITY EVENT DISCOVERY",
+  "stage_contract": {
+    "candidate_signal_union": {
+      "DATED_ALIAS_FACT": 1,
+      "LIFECYCLE_BOUNDARY_ADJACENCY": 30,
+      "OFFICIAL_CODE_CHANGE_EVENT": 1,
+      "PERSISTENT_RETROSPECTIVE_BAR_ALIAS": 1,
+      "ROSTER_EXIT_ENTRY_ADJACENCY": 37,
+      "SOURCE_SYMBOL_REASSIGNMENT_OR_CODE_REUSE_CANDIDATE": 0,
+      "WEAK_NAME_CONTINUITY": 0
+    },
+    "canonical_identity_mutation": false,
+    "daily_incremental_mode_contracted": true,
+    "historical_backscan": true,
+    "unresolved_required_scope_limit": 0,
+    "weak_signal_merge_prohibited": true
+  },
+  "status": "PASS",
+  "version": "1.0.0"
+}

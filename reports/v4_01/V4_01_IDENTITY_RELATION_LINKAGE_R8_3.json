@@ -9254,19 +9254,19 @@
   "official_index_coverage": {
     "contract_id": "OFFICIAL_SECURITY_CODE_CHANGE_EVENT_INDEX_V1",
     "coverage_receipt_path": "data/v4/source_evidence/official_code_change_event_index/coverage_receipt_v1.json",
-    "coverage_receipt_sha256": "aaccd46636a70b2bf881ce1dff3a9448e8d99426c097e1cdd773bdac94eb15cf",
+    "coverage_receipt_sha256": "c904bc47d55f99a675443f0b3383f26c886063003bd84ab57d48dc099edceb4a",
     "coverage_receipts": [
       {
         "coverage_complete": false,
         "event_count": 1,
         "exchange": "CHINEXT",
         "failed_query_count": 0,
-        "query_or_index_method": "LOCAL_ACCEPTED_DATED_ALIAS_FACTS_AND_CAPTURED_OFFICIAL_NOTICES; full-window exchange archive enumeration not captured",
-        "source_revision": "sha256:115a5b611c64f30cadd8695a9a464d8243cb3afe16d642ea786ff4b7bd107c4a",
+        "query_or_index_method": "CNINFO official hisAnnouncement fulltext search; 12 bounded phrase/plate queries over sh/sz were captured, including the sz plate; supplemental discovery only, not a published exhaustive code-change registry",
+        "source_revision": "sha256:13cd7f7e10eee2d58da194011c358db9e51f20e7065b29f4beed9cfa31641505",
         "unresolved_source_windows": [
           {
             "end": "2026-09-24",
-            "reason": "FULL_OFFICIAL_EVENT_ARCHIVE_COVERAGE_NOT_EVIDENCED",
+            "reason": "SUPPLEMENTAL_KEYWORD_SEARCH_NOT_EXHAUSTIVE",
             "start": "2023-07-04"
           }
         ],
@@ -9278,12 +9278,12 @@
         "event_count": 0,
         "exchange": "SH_MAIN",
         "failed_query_count": 0,
-        "query_or_index_method": "LOCAL_ACCEPTED_DATED_ALIAS_FACTS_AND_CAPTURED_OFFICIAL_NOTICES; full-window exchange archive enumeration not captured",
-        "source_revision": "sha256:115a5b611c64f30cadd8695a9a464d8243cb3afe16d642ea786ff4b7bd107c4a",
+        "query_or_index_method": "CNINFO official hisAnnouncement fulltext search; 12 bounded phrase/plate queries over sh/sz were captured, including the sh plate; supplemental discovery only, not a published exhaustive code-change registry",
+        "source_revision": "sha256:13cd7f7e10eee2d58da194011c358db9e51f20e7065b29f4beed9cfa31641505",
         "unresolved_source_windows": [
           {
             "end": "2026-09-24",
-            "reason": "FULL_OFFICIAL_EVENT_ARCHIVE_COVERAGE_NOT_EVIDENCED",
+            "reason": "SUPPLEMENTAL_KEYWORD_SEARCH_NOT_EXHAUSTIVE",
             "start": "2023-07-04"
           }
         ],
@@ -9295,12 +9295,12 @@
         "event_count": 0,
         "exchange": "STAR",
         "failed_query_count": 0,
-        "query_or_index_method": "LOCAL_ACCEPTED_DATED_ALIAS_FACTS_AND_CAPTURED_OFFICIAL_NOTICES; full-window exchange archive enumeration not captured",
-        "source_revision": "sha256:115a5b611c64f30cadd8695a9a464d8243cb3afe16d642ea786ff4b7bd107c4a",
+        "query_or_index_method": "CNINFO official hisAnnouncement fulltext search; 12 bounded phrase/plate queries over sh/sz were captured, including the sh plate; supplemental discovery only, not a published exhaustive code-change registry",
+        "source_revision": "sha256:13cd7f7e10eee2d58da194011c358db9e51f20e7065b29f4beed9cfa31641505",
         "unresolved_source_windows": [
           {
             "end": "2026-09-24",
-            "reason": "FULL_OFFICIAL_EVENT_ARCHIVE_COVERAGE_NOT_EVIDENCED",
+            "reason": "SUPPLEMENTAL_KEYWORD_SEARCH_NOT_EXHAUSTIVE",
             "start": "2023-07-04"
           }
         ],
@@ -9312,12 +9312,12 @@
         "event_count": 0,
         "exchange": "SZ_MAIN",
         "failed_query_count": 0,
-        "query_or_index_method": "LOCAL_ACCEPTED_DATED_ALIAS_FACTS_AND_CAPTURED_OFFICIAL_NOTICES; full-window exchange archive enumeration not captured",
-        "source_revision": "sha256:115a5b611c64f30cadd8695a9a464d8243cb3afe16d642ea786ff4b7bd107c4a",
+        "query_or_index_method": "CNINFO official hisAnnouncement fulltext search; 12 bounded phrase/plate queries over sh/sz were captured, including the sz plate; supplemental discovery only, not a published exhaustive code-change registry",
+        "source_revision": "sha256:13cd7f7e10eee2d58da194011c358db9e51f20e7065b29f4beed9cfa31641505",
         "unresolved_source_windows": [
           {
             "end": "2026-09-24",
-            "reason": "FULL_OFFICIAL_EVENT_ARCHIVE_COVERAGE_NOT_EVIDENCED",
+            "reason": "SUPPLEMENTAL_KEYWORD_SEARCH_NOT_EXHAUSTIVE",
             "start": "2023-07-04"
           }
         ],
@@ -9336,15 +9336,39 @@
       "start": "2023-07-04"
     },
     "malformed_event_count": 0,
-    "query_count": 0,
-    "query_or_index_method": "Local accepted aliases plus hash-bound captured official notice evidence",
+    "query_count": 12,
+    "query_or_index_method": "Local accepted aliases, hash-bound captured official notice, and bounded CNINFO full-text searches",
     "required_exchanges": [
       "CHINEXT",
       "SH_MAIN",
       "STAR",
       "SZ_MAIN"
     ],
-    "source_revision": "sha256:115a5b611c64f30cadd8695a9a464d8243cb3afe16d642ea786ff4b7bd107c4a",
+    "source_revision": "sha256:13cd7f7e10eee2d58da194011c358db9e51f20e7065b29f4beed9cfa31641505",
+    "supplemental_search_capture": {
+      "candidate_notice_result_count": 5,
+      "coverage_effect": "DOES_NOT_CLOSE_OFFICIAL_EVENT_INDEX_COVERAGE",
+      "deduplicated_result_count": 5,
+      "excluded_out_of_scope_results": [
+        {
+          "adjunct_url": "finalpage/2024-12-24/1222115368.PDF",
+          "announcement_id": "1222115368",
+          "announcement_time": 1734969600000,
+          "exclusion_reason": "Title identifies a Nasdaq ticker change; it does not establish a change to the A-share source security key.",
+          "org_id": "9900037454",
+          "plate": "sh",
+          "query_id": "sh_03",
+          "search_term": "代码变更",
+          "sec_code": "688235",
+          "title": "百济神州有限公司自愿披露关于变更公司纳斯达克股票代码的公告"
+        }
+      ],
+      "failed_query_count": 0,
+      "observed_at_utc": "2026-09-28T02:20:44+00:00",
+      "path": "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T022044Z/query_manifest.json",
+      "query_count": 12,
+      "sha256": "f75fc912c1c595fc978a73c5d46317415512769118111b3d239e502242494f7a"
+    },
     "unresolved_source_windows": [
       {
         "coverage_complete": false,
@@ -9359,7 +9383,7 @@
         "unresolved_source_windows": [
           {
             "end": "2026-09-24",
-            "reason": "FULL_OFFICIAL_EVENT_ARCHIVE_COVERAGE_NOT_EVIDENCED",
+            "reason": "SUPPLEMENTAL_KEYWORD_SEARCH_NOT_EXHAUSTIVE",
             "start": "2023-07-04"
           }
         ],
@@ -9379,7 +9403,7 @@
         "unresolved_source_windows": [
           {
             "end": "2026-09-24",
-            "reason": "FULL_OFFICIAL_EVENT_ARCHIVE_COVERAGE_NOT_EVIDENCED",
+            "reason": "SUPPLEMENTAL_KEYWORD_SEARCH_NOT_EXHAUSTIVE",
             "start": "2023-07-04"
           }
         ],
@@ -9399,7 +9423,7 @@
         "unresolved_source_windows": [
           {
             "end": "2026-09-24",
-            "reason": "FULL_OFFICIAL_EVENT_ARCHIVE_COVERAGE_NOT_EVIDENCED",
+            "reason": "SUPPLEMENTAL_KEYWORD_SEARCH_NOT_EXHAUSTIVE",
             "start": "2023-07-04"
           }
         ],
@@ -9419,7 +9443,7 @@
         "unresolved_source_windows": [
           {
             "end": "2026-09-24",
-            "reason": "FULL_OFFICIAL_EVENT_ARCHIVE_COVERAGE_NOT_EVIDENCED",
+            "reason": "SUPPLEMENTAL_KEYWORD_SEARCH_NOT_EXHAUSTIVE",
             "start": "2023-07-04"
           }
         ],

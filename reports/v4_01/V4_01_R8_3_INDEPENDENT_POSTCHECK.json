@@ -15,10 +15,13 @@
     "known_code_change_fixture_confirms_same": "PASS",
     "no_r7_same_entity_counterexample": "PASS",
     "official_event_capture_hashes_valid": "PASS",
+    "official_index_coverage_audit_item_open_and_independent": "PASS",
     "official_index_coverage_fails_closed": "PASS",
     "official_index_has_all_exchange_receipts": "PASS",
     "r7_identity_and_universe_hashes_unchanged": "PASS",
     "required_r8_3_dm01_test_gate_passed": "PASS",
+    "supplemental_cninfo_capture_does_not_claim_full_coverage": "PASS",
+    "supplemental_cninfo_capture_is_hash_bound_and_successful": "PASS",
     "unlinked_boundary_anomaly_count_zero": "PASS",
     "unresolved_required_scope_candidate_count_zero": "PASS"
   },
@@ -26,11 +29,11 @@
   "evidence": {
     "discovery": {
       "path": "reports/v4_01/V4_01_IDENTITY_EVENT_DISCOVERY_R8_3.json",
-      "sha256": "04122e43365c22a3ad57764214b7999cf0b541f611ce605fa726ec7af27bccf8"
+      "sha256": "b94854cde9fa178367ba38896cd0e006eaed6aae03a1fd43d446f48655c0ea33"
     },
     "linkage": {
       "path": "reports/v4_01/V4_01_IDENTITY_RELATION_LINKAGE_R8_3.json",
-      "sha256": "18bf0289b09fb8707d22c5bfff1de4f7decd3f504b4b40b86efe1fc5e35b8c94"
+      "sha256": "7983a878a84b663bb4bb02c8a4db06be44618569b8f5773085727dae3a8b9bbe"
     },
     "official_event_index": {
       "path": "data/v4/source_evidence/official_code_change_event_index/official_security_code_change_events_v1.jsonl",
@@ -38,16 +41,24 @@
     },
     "official_index_coverage": {
       "path": "data/v4/source_evidence/official_code_change_event_index/coverage_receipt_v1.json",
-      "sha256": "aaccd46636a70b2bf881ce1dff3a9448e8d99426c097e1cdd773bdac94eb15cf"
+      "sha256": "c904bc47d55f99a675443f0b3383f26c886063003bd84ab57d48dc099edceb4a"
+    },
+    "official_index_coverage_audit_item": {
+      "path": "reports/v4_01/V4_01_OFFICIAL_INDEX_COVERAGE_AUDIT_ITEM_R1_20260928.json",
+      "sha256": "9ea7e57ede6c411e3efcec3cec58cc7fc39afc4847a2baa6a134d53532084b99"
+    },
+    "supplemental_search_capture": {
+      "path": "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T022044Z/query_manifest.json",
+      "sha256": "f75fc912c1c595fc978a73c5d46317415512769118111b3d239e502242494f7a"
     },
     "test_receipt": {
       "path": "reports/v4_joint/V4_R8_3_DM01_TEST_RECEIPT_R1_20260928.json",
-      "sha256": "64ce8b9a36d01f22171f20797d6766bc2184cd9c303659f5ef5555c67c923ef8"
+      "sha256": "c3b726d80a017683d2cfa663dec31429cd066d533213799113ee1ed192a18d9e"
     }
   },
   "gate_a_status": "BLOCKED",
   "next_stage": "COMPLETE_GATE_A_AFTER_FULL_OFFICIAL_INDEX_COVERAGE",
-  "observed_at_utc": "2026-09-28T01:59:08+00:00",
+  "observed_at_utc": "2026-09-28T02:21:34+00:00",
   "official_event_count": 1,
   "official_index_coverage_status": "BLOCKED",
   "status": "PASS",

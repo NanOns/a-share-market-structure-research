@@ -1,0 +1,424 @@
+{
+  "acceptance": "PASS_CAPTURE_ONLY",
+  "candidate_notice_result_count": 5,
+  "candidate_notices": [
+    {
+      "adjunct_url": "finalpage/2024-12-24/1222115368.PDF",
+      "announcement_id": "1222115368",
+      "announcement_time": 1734969600000,
+      "org_id": "9900037454",
+      "plate": "sh",
+      "query_id": "sh_03",
+      "search_term": "代码变更",
+      "sec_code": "688235",
+      "title": "百济神州有限公司自愿披露关于变更公司纳斯达克股票代码的公告"
+    },
+    {
+      "adjunct_url": "finalpage/2025-01-23/1222419352.PDF",
+      "announcement_id": "1222419352",
+      "announcement_time": 1737632654000,
+      "org_id": "9900013408",
+      "plate": "sz",
+      "query_id": "sz_07",
+      "search_term": "证券代码变更",
+      "sec_code": "300114",
+      "title": "中航成飞股份有限公司关于拟变更证券简称、证券代码的提示性公告"
+    },
+    {
+      "adjunct_url": "finalpage/2025-02-05/1222458462.PDF",
+      "announcement_id": "1222458462",
+      "announcement_time": 1738741455000,
+      "org_id": "9900013408",
+      "plate": "sz",
+      "query_id": "sz_07",
+      "search_term": "证券代码变更",
+      "sec_code": "300114",
+      "title": "中航成飞股份有限公司关于拟变更证券简称、证券代码的第二次提示性公告"
+    },
+    {
+      "adjunct_url": "finalpage/2025-02-07/1222485220.PDF",
+      "announcement_id": "1222485220",
+      "announcement_time": 1738925054000,
+      "org_id": "9900013408",
+      "plate": "sz",
+      "query_id": "sz_07",
+      "search_term": "证券代码变更",
+      "sec_code": "300114",
+      "title": "中航成飞股份有限公司关于拟变更证券简称、证券代码的第三次提示性公告"
+    },
+    {
+      "adjunct_url": "finalpage/2025-02-15/1222544408.PDF",
+      "announcement_id": "1222544408",
+      "announcement_time": 1739548800000,
+      "org_id": "9900013408",
+      "plate": "sz",
+      "query_id": "sz_07",
+      "search_term": "证券代码变更",
+      "sec_code": "300114",
+      "title": "中航成飞股份有限公司关于变更公司证券简称及证券代码的实施公告"
+    }
+  ],
+  "contract_id": "CNINFO_CODE_CHANGE_FULLTEXT_SEARCH_CAPTURE_R1",
+  "coverage_effect": "DOES_NOT_CLOSE_OFFICIAL_EVENT_INDEX_COVERAGE",
+  "deduplicated_result_count": 5,
+  "evidence_class": "SUPPLEMENTAL_NON_EXHAUSTIVE_SEARCH",
+  "excluded_out_of_scope_results": [
+    {
+      "adjunct_url": "finalpage/2024-12-24/1222115368.PDF",
+      "announcement_id": "1222115368",
+      "announcement_time": 1734969600000,
+      "exclusion_reason": "Title identifies a Nasdaq ticker change; it does not establish a change to the A-share source security key.",
+      "org_id": "9900037454",
+      "plate": "sh",
+      "query_id": "sh_03",
+      "search_term": "代码变更",
+      "sec_code": "688235",
+      "title": "百济神州有限公司自愿披露关于变更公司纳斯达克股票代码的公告"
+    }
+  ],
+  "failed_query_count": 0,
+  "limitations": [
+    "The official full-text announcement search documents successful query execution and returned hits, not an exhaustive registry of all security-code changes.",
+    "Search phrase variants are bounded; alternate wording, OCR quality, or announcement indexing can cause false negatives.",
+    "CNINFO plate filters are captured as sh/sz search scopes; they do not independently prove complete SH_MAIN, STAR, SZ_MAIN, or CHINEXT event enumeration.",
+    "Candidate titles require notice-level review before they can add or resolve an official identity event."
+  ],
+  "observed_at_utc": "2026-09-28T02:08:43+00:00",
+  "queries": [
+    {
+      "max_pages": 4,
+      "page_size": 30,
+      "pages": [
+        {
+          "capture_path": "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T020843Z/sh_01_page_01.json",
+          "final_url": "https://www.cninfo.com.cn/new/hisAnnouncement/query",
+          "has_more": false,
+          "http_status": 200,
+          "page_num": 1,
+          "requested_at_utc": "2026-09-28T02:08:44+00:00",
+          "response_sha256": "c2a890bbf3a6a53ab02ddc6c1794bf1c72ba45799fe9f59dcc5ba2cc18467114",
+          "result_count": 0,
+          "total_announcement": 0
+        }
+      ],
+      "plate": "sh",
+      "query_id": "sh_01",
+      "result_count": 0,
+      "search_term": "证券代码变更",
+      "status": "PASS",
+      "truncated_at_page_limit": false,
+      "window_end": "2026-09-24",
+      "window_start": "2023-07-04"
+    },
+    {
+      "max_pages": 4,
+      "page_size": 30,
+      "pages": [
+        {
+          "capture_path": "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T020843Z/sh_02_page_01.json",
+          "final_url": "https://www.cninfo.com.cn/new/hisAnnouncement/query",
+          "has_more": false,
+          "http_status": 200,
+          "page_num": 1,
+          "requested_at_utc": "2026-09-28T02:08:44+00:00",
+          "response_sha256": "c2a890bbf3a6a53ab02ddc6c1794bf1c72ba45799fe9f59dcc5ba2cc18467114",
+          "result_count": 0,
+          "total_announcement": 0
+        }
+      ],
+      "plate": "sh",
+      "query_id": "sh_02",
+      "result_count": 0,
+      "search_term": "变更证券代码",
+      "status": "PASS",
+      "truncated_at_page_limit": false,
+      "window_end": "2026-09-24",
+      "window_start": "2023-07-04"
+    },
+    {
+      "max_pages": 4,
+      "page_size": 30,
+      "pages": [
+        {
+          "capture_path": "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T020843Z/sh_03_page_01.json",
+          "final_url": "https://www.cninfo.com.cn/new/hisAnnouncement/query",
+          "has_more": false,
+          "http_status": 200,
+          "page_num": 1,
+          "requested_at_utc": "2026-09-28T02:08:44+00:00",
+          "response_sha256": "b1c64a5eee67c1af8a3448511c78a2f04604e7355f999bd64904882518a89a34",
+          "result_count": 1,
+          "total_announcement": 1
+        }
+      ],
+      "plate": "sh",
+      "query_id": "sh_03",
+      "result_count": 1,
+      "search_term": "代码变更",
+      "status": "PASS",
+      "truncated_at_page_limit": false,
+      "window_end": "2026-09-24",
+      "window_start": "2023-07-04"
+    },
+    {
+      "max_pages": 4,
+      "page_size": 30,
+      "pages": [
+        {
+          "capture_path": "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T020843Z/sh_04_page_01.json",
+          "final_url": "https://www.cninfo.com.cn/new/hisAnnouncement/query",
+          "has_more": false,
+          "http_status": 200,
+          "page_num": 1,
+          "requested_at_utc": "2026-09-28T02:08:45+00:00",
+          "response_sha256": "b1c64a5eee67c1af8a3448511c78a2f04604e7355f999bd64904882518a89a34",
+          "result_count": 1,
+          "total_announcement": 1
+        }
+      ],
+      "plate": "sh",
+      "query_id": "sh_04",
+      "result_count": 1,
+      "search_term": "股票代码变更",
+      "status": "PASS",
+      "truncated_at_page_limit": false,
+      "window_end": "2026-09-24",
+      "window_start": "2023-07-04"
+    },
+    {
+      "max_pages": 4,
+      "page_size": 30,
+      "pages": [
+        {
+          "capture_path": "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T020843Z/sh_05_page_01.json",
+          "final_url": "https://www.cninfo.com.cn/new/hisAnnouncement/query",
+          "has_more": false,
+          "http_status": 200,
+          "page_num": 1,
+          "requested_at_utc": "2026-09-28T02:08:45+00:00",
+          "response_sha256": "b1c64a5eee67c1af8a3448511c78a2f04604e7355f999bd64904882518a89a34",
+          "result_count": 1,
+          "total_announcement": 1
+        }
+      ],
+      "plate": "sh",
+      "query_id": "sh_05",
+      "result_count": 1,
+      "search_term": "变更股票代码",
+      "status": "PASS",
+      "truncated_at_page_limit": false,
+      "window_end": "2026-09-24",
+      "window_start": "2023-07-04"
+    },
+    {
+      "max_pages": 4,
+      "page_size": 30,
+      "pages": [
+        {
+          "capture_path": "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T020843Z/sh_06_page_01.json",
+          "final_url": "https://www.cninfo.com.cn/new/hisAnnouncement/query",
+          "has_more": false,
+          "http_status": 200,
+          "page_num": 1,
+          "requested_at_utc": "2026-09-28T02:08:46+00:00",
+          "response_sha256": "c2a890bbf3a6a53ab02ddc6c1794bf1c72ba45799fe9f59dcc5ba2cc18467114",
+          "result_count": 0,
+          "total_announcement": 0
+        }
+      ],
+      "plate": "sh",
+      "query_id": "sh_06",
+      "result_count": 0,
+      "search_term": "证券代码调整",
+      "status": "PASS",
+      "truncated_at_page_limit": false,
+      "window_end": "2026-09-24",
+      "window_start": "2023-07-04"
+    },
+    {
+      "max_pages": 4,
+      "page_size": 30,
+      "pages": [
+        {
+          "capture_path": "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T020843Z/sz_07_page_01.json",
+          "final_url": "https://www.cninfo.com.cn/new/hisAnnouncement/query",
+          "has_more": false,
+          "http_status": 200,
+          "page_num": 1,
+          "requested_at_utc": "2026-09-28T02:08:46+00:00",
+          "response_sha256": "08edf814756cb37932e5bc2beedc7fb1f79be73034e3f7012d06231175d0a625",
+          "result_count": 4,
+          "total_announcement": 4
+        }
+      ],
+      "plate": "sz",
+      "query_id": "sz_07",
+      "result_count": 4,
+      "search_term": "证券代码变更",
+      "status": "PASS",
+      "truncated_at_page_limit": false,
+      "window_end": "2026-09-24",
+      "window_start": "2023-07-04"
+    },
+    {
+      "max_pages": 4,
+      "page_size": 30,
+      "pages": [
+        {
+          "capture_path": "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T020843Z/sz_08_page_01.json",
+          "final_url": "https://www.cninfo.com.cn/new/hisAnnouncement/query",
+          "has_more": false,
+          "http_status": 200,
+          "page_num": 1,
+          "requested_at_utc": "2026-09-28T02:08:46+00:00",
+          "response_sha256": "08edf814756cb37932e5bc2beedc7fb1f79be73034e3f7012d06231175d0a625",
+          "result_count": 4,
+          "total_announcement": 4
+        }
+      ],
+      "plate": "sz",
+      "query_id": "sz_08",
+      "result_count": 4,
+      "search_term": "变更证券代码",
+      "status": "PASS",
+      "truncated_at_page_limit": false,
+      "window_end": "2026-09-24",
+      "window_start": "2023-07-04"
+    },
+    {
+      "max_pages": 4,
+      "page_size": 30,
+      "pages": [
+        {
+          "capture_path": "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T020843Z/sz_09_page_01.json",
+          "final_url": "https://www.cninfo.com.cn/new/hisAnnouncement/query",
+          "has_more": false,
+          "http_status": 200,
+          "page_num": 1,
+          "requested_at_utc": "2026-09-28T02:08:47+00:00",
+          "response_sha256": "08edf814756cb37932e5bc2beedc7fb1f79be73034e3f7012d06231175d0a625",
+          "result_count": 4,
+          "total_announcement": 4
+        }
+      ],
+      "plate": "sz",
+      "query_id": "sz_09",
+      "result_count": 4,
+      "search_term": "代码变更",
+      "status": "PASS",
+      "truncated_at_page_limit": false,
+      "window_end": "2026-09-24",
+      "window_start": "2023-07-04"
+    },
+    {
+      "max_pages": 4,
+      "page_size": 30,
+      "pages": [
+        {
+          "capture_path": "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T020843Z/sz_10_page_01.json",
+          "final_url": "https://www.cninfo.com.cn/new/hisAnnouncement/query",
+          "has_more": false,
+          "http_status": 200,
+          "page_num": 1,
+          "requested_at_utc": "2026-09-28T02:08:47+00:00",
+          "response_sha256": "c2a890bbf3a6a53ab02ddc6c1794bf1c72ba45799fe9f59dcc5ba2cc18467114",
+          "result_count": 0,
+          "total_announcement": 0
+        }
+      ],
+      "plate": "sz",
+      "query_id": "sz_10",
+      "result_count": 0,
+      "search_term": "股票代码变更",
+      "status": "PASS",
+      "truncated_at_page_limit": false,
+      "window_end": "2026-09-24",
+      "window_start": "2023-07-04"
+    },
+    {
+      "max_pages": 4,
+      "page_size": 30,
+      "pages": [
+        {
+          "capture_path": "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T020843Z/sz_11_page_01.json",
+          "final_url": "https://www.cninfo.com.cn/new/hisAnnouncement/query",
+          "has_more": false,
+          "http_status": 200,
+          "page_num": 1,
+          "requested_at_utc": "2026-09-28T02:08:48+00:00",
+          "response_sha256": "c2a890bbf3a6a53ab02ddc6c1794bf1c72ba45799fe9f59dcc5ba2cc18467114",
+          "result_count": 0,
+          "total_announcement": 0
+        }
+      ],
+      "plate": "sz",
+      "query_id": "sz_11",
+      "result_count": 0,
+      "search_term": "变更股票代码",
+      "status": "PASS",
+      "truncated_at_page_limit": false,
+      "window_end": "2026-09-24",
+      "window_start": "2023-07-04"
+    },
+    {
+      "max_pages": 4,
+      "page_size": 30,
+      "pages": [
+        {
+          "capture_path": "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T020843Z/sz_12_page_01.json",
+          "final_url": "https://www.cninfo.com.cn/new/hisAnnouncement/query",
+          "has_more": false,
+          "http_status": 200,
+          "page_num": 1,
+          "requested_at_utc": "2026-09-28T02:08:48+00:00",
+          "response_sha256": "c2a890bbf3a6a53ab02ddc6c1794bf1c72ba45799fe9f59dcc5ba2cc18467114",
+          "result_count": 0,
+          "total_announcement": 0
+        }
+      ],
+      "plate": "sz",
+      "query_id": "sz_12",
+      "result_count": 0,
+      "search_term": "证券代码调整",
+      "status": "PASS",
+      "truncated_at_page_limit": false,
+      "window_end": "2026-09-24",
+      "window_start": "2023-07-04"
+    }
+  ],
+  "scope": {
+    "max_pages_per_query": 4,
+    "page_size": 30,
+    "plates": [
+      "sh",
+      "sz"
+    ],
+    "query_count": 12,
+    "request_bound": 49,
+    "request_count_including_warmup": 13,
+    "terms": [
+      "证券代码变更",
+      "变更证券代码",
+      "代码变更",
+      "股票代码变更",
+      "变更股票代码",
+      "证券代码调整"
+    ],
+    "window_end": "2026-09-24",
+    "window_start": "2023-07-04"
+  },
+  "source": {
+    "method": "POST",
+    "name": "CNINFO official disclosure search",
+    "origin": "https://www.cninfo.com.cn",
+    "query_endpoint": "https://www.cninfo.com.cn/new/hisAnnouncement/query",
+    "search_interface": "https://www.cninfo.com.cn/new/index"
+  },
+  "version": "1.0.0",
+  "warmup": {
+    "capture_path": "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T020843Z/warmup_response.bin",
+    "final_url": "https://www.cninfo.com.cn/new/index",
+    "http_status": 200,
+    "response_sha256": "804a89ef69c1d72c00ede39867df62fed9d87be74a4def0b6eb7a759d38f9321"
+  }
+}

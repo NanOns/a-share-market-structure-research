@@ -1,0 +1,85 @@
+{
+  "acceptance_criteria": [
+    "Use an official source method whose documented scope supports complete event enumeration, including explicit coverage of SH_MAIN, STAR, SZ_MAIN, and CHINEXT.",
+    "Capture and hash-bind the complete 2023-07-04 through 2026-09-24 archive enumeration, including all pages/windows and source revision metadata.",
+    "Review every code-change event candidate against its official notice and bind source capture hash, publication/effective dates, and old/new source keys.",
+    "Independent validation confirms failed_query_count=0, unresolved_source_windows=[], and reported event counts match the event index for every required exchange."
+  ],
+  "acceptance_result": "NOT_ACCEPTED_INCOMPLETE_EXHAUSTIVE_COVERAGE_EVIDENCE",
+  "audit_item_id": "AUDIT-V4-01-OFFICIAL-CODE-CHANGE-INDEX-COVERAGE-20260928",
+  "contract_id": "V4_01_OFFICIAL_INDEX_COVERAGE_AUDIT_ITEM_V1",
+  "evidence": {
+    "event_index": {
+      "event_count": 1,
+      "path": "data/v4/source_evidence/official_code_change_event_index/official_security_code_change_events_v1.jsonl",
+      "sha256": "f06079bf528369ce5d77a155a6171d3dcba8c781c68b7204cc070cd2ad7f16c9"
+    },
+    "event_index_coverage": {
+      "path": "data/v4/source_evidence/official_code_change_event_index/coverage_receipt_v1.json",
+      "sha256": "c904bc47d55f99a675443f0b3383f26c886063003bd84ab57d48dc099edceb4a"
+    },
+    "supplemental_search_capture": {
+      "candidate_notice_result_count": 5,
+      "coverage_effect": "DOES_NOT_CLOSE_OFFICIAL_EVENT_INDEX_COVERAGE",
+      "deduplicated_result_count": 5,
+      "excluded_out_of_scope_results": [
+        {
+          "adjunct_url": "finalpage/2024-12-24/1222115368.PDF",
+          "announcement_id": "1222115368",
+          "announcement_time": 1734969600000,
+          "exclusion_reason": "Title identifies a Nasdaq ticker change; it does not establish a change to the A-share source security key.",
+          "org_id": "9900037454",
+          "plate": "sh",
+          "query_id": "sh_03",
+          "search_term": "代码变更",
+          "sec_code": "688235",
+          "title": "百济神州有限公司自愿披露关于变更公司纳斯达克股票代码的公告"
+        }
+      ],
+      "failed_query_count": 0,
+      "observed_at_utc": "2026-09-28T02:20:44+00:00",
+      "path": "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T022044Z/query_manifest.json",
+      "query_count": 12,
+      "sha256": "f75fc912c1c595fc978a73c5d46317415512769118111b3d239e502242494f7a"
+    }
+  },
+  "next_action": "Obtain exhaustive official archive or registry coverage evidence, then independently reconcile the resulting event index.",
+  "observed_at_utc": "2026-09-28T02:20:58+00:00",
+  "observed_search_result_summary": {
+    "candidate_notice_result_count": 5,
+    "coverage_effect": "SUPPLEMENTAL_ONLY",
+    "deduplicated_result_count": 5,
+    "excluded_out_of_scope_results": [
+      {
+        "adjunct_url": "finalpage/2024-12-24/1222115368.PDF",
+        "announcement_id": "1222115368",
+        "announcement_time": 1734969600000,
+        "exclusion_reason": "Title identifies a Nasdaq ticker change; it does not establish a change to the A-share source security key.",
+        "org_id": "9900037454",
+        "plate": "sh",
+        "query_id": "sh_03",
+        "search_term": "代码变更",
+        "sec_code": "688235",
+        "title": "百济神州有限公司自愿披露关于变更公司纳斯达克股票代码的公告"
+      }
+    ],
+    "failed_query_count": 0,
+    "query_count": 12
+  },
+  "relationship_to_gate_a": "Tracked independently as an audit item; its unresolved status is a required input to, and currently blocks, Gate A.",
+  "scope": {
+    "history_window": {
+      "end": "2026-09-24",
+      "start": "2023-07-04"
+    },
+    "issue": "The official full-text phrase search is a discovery aid and does not establish exhaustive event enumeration for the required exchange/window scope.",
+    "required_exchanges": [
+      "CHINEXT",
+      "SH_MAIN",
+      "STAR",
+      "SZ_MAIN"
+    ]
+  },
+  "status": "OPEN",
+  "version": "1.0.0"
+}

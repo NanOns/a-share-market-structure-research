@@ -12,6 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DISCOVERY = Path("reports/v4_01/V4_01_IDENTITY_EVENT_DISCOVERY_R8_3.json")
 INDEX_REPORT = Path("reports/v4_01/V4_01_OFFICIAL_CODE_CHANGE_EVENT_INDEX_R8_3.json")
+INDEX_AUDIT_ITEM = Path("reports/v4_01/V4_01_OFFICIAL_INDEX_COVERAGE_AUDIT_ITEM_R1_20260928.json")
 POST_A = Path("reports/v4_01/V4_01_R8_3_INDEPENDENT_POSTCHECK.json")
 TESTS = Path("reports/v4_joint/V4_R8_3_DM01_TEST_RECEIPT_R1_20260928.json")
 DM01_POST = Path("reports/v4_dm01/V4_DM01_INDEPENDENT_POSTCHECK_R1_20260928.json")
@@ -108,11 +109,14 @@ def main() -> int:
         },
         "evidence": {path.as_posix(): ref(path) for path in (
             DISCOVERY, INDEX_REPORT, POST_A, TESTS,
+            INDEX_AUDIT_ITEM,
             Path("config/security_identity_event_linkage_v1.json"),
             Path("config/official_security_code_change_event_index_v1.json"),
             Path("data/v4/source_evidence/official_code_change_event_index/official_security_code_change_events_v1.jsonl"),
             Path("data/v4/source_evidence/official_code_change_event_index/coverage_receipt_v1.json"),
-        )},
+        )} | ({str(index["supplemental_search_capture"]["path"]):
+              ref(Path(str(index["supplemental_search_capture"]["path"])))
+             } if index.get("supplemental_search_capture", {}).get("path") else {}),
         "r7_canonical_artifacts_unchanged": discovery.get("canonical_repair", {}).get("r7_canonical_artifacts_unchanged"),
         "next_stage": "COMPLETE_OFFICIAL_INDEX_FULL_WINDOW_COVERAGE_THEN_RESEAL_GATE_A",
         "v4_03_status": "BLOCKED",

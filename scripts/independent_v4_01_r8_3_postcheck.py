@@ -17,6 +17,7 @@ DISCOVERY = Path("reports/v4_01/V4_01_IDENTITY_EVENT_DISCOVERY_R8_3.json")
 LINKAGE = Path("reports/v4_01/V4_01_IDENTITY_RELATION_LINKAGE_R8_3.json")
 INDEX = Path("data/v4/source_evidence/official_code_change_event_index/official_security_code_change_events_v1.jsonl")
 COVERAGE = Path("data/v4/source_evidence/official_code_change_event_index/coverage_receipt_v1.json")
+INDEX_AUDIT_ITEM = Path("reports/v4_01/V4_01_OFFICIAL_INDEX_COVERAGE_AUDIT_ITEM_R1_20260928.json")
 TEST_RECEIPT = Path("reports/v4_joint/V4_R8_3_DM01_TEST_RECEIPT_R1_20260928.json")
 OUTPUT = Path("reports/v4_01/V4_01_R8_3_INDEPENDENT_POSTCHECK.json")
 OLD_ADJACENCY_SIGNALS = {"ROSTER_EXIT_ENTRY_ADJACENCY", "LIFECYCLE_BOUNDARY_ADJACENCY"}
@@ -35,6 +36,7 @@ def main() -> int:
     discovery, linkage, coverage_doc = read(DISCOVERY), read(LINKAGE), read(COVERAGE)
     linkage_contract = read(Path("config/security_identity_event_linkage_v1.json"))
     test_receipt = read(TEST_RECEIPT)
+    audit_item = read(INDEX_AUDIT_ITEM)
     required_test_names = {
         "test_single_exit_three_unrelated_ipos_does_not_create_three_pairs",
         "test_multiple_exit_entry_same_day_has_no_cartesian_product",
@@ -57,6 +59,17 @@ def main() -> int:
     index_rows = [json.loads(line) for line in (ROOT / INDEX).read_text(encoding="utf-8").splitlines() if line]
     coverage_rows = coverage_doc.get("coverage_receipts", [])
     coverage = validate_index_coverage(coverage_records=coverage_rows, events=index_rows)
+    search_capture = coverage_doc.get("supplemental_search_capture") or {}
+    search_manifest_path = Path(str(search_capture.get("path") or ""))
+    search_manifest = read(search_manifest_path) if search_manifest_path.is_file() else {}
+    raw_search_hashes_valid = bool(search_manifest)
+    if search_manifest:
+        for query in search_manifest.get("queries", []):
+            for page in query.get("pages", []):
+                captured = ROOT / str(page.get("capture_path") or "")
+                if (not captured.is_file()
+                        or hashlib.sha256(captured.read_bytes()).hexdigest() != page.get("response_sha256")):
+                    raw_search_hashes_valid = False
     event_signals = [set(row.get("candidate_signals", [])) for row in discovery.get("events", [])]
     all_signals = set().union(*event_signals) if event_signals else set()
     boundary_types = {str(row.get("event_type")) for row in discovery.get("boundary_events", [])}
@@ -90,6 +103,28 @@ def main() -> int:
         == {"SH_MAIN", "SZ_MAIN", "CHINEXT", "STAR"},
         "official_index_coverage_fails_closed": coverage.get("coverage_status") == "BLOCKED"
         and coverage.get("event_index_completeness_pass") is False,
+        "supplemental_cninfo_capture_is_hash_bound_and_successful": (
+            search_capture.get("sha256") == sha(search_manifest_path)
+            and search_manifest.get("acceptance") == "PASS_CAPTURE_ONLY"
+            and search_manifest.get("coverage_effect") == "DOES_NOT_CLOSE_OFFICIAL_EVENT_INDEX_COVERAGE"
+            and len(search_manifest.get("queries", [])) == 12
+            and search_manifest.get("failed_query_count") == 0
+            and all(row.get("status") == "PASS" and row.get("truncated_at_page_limit") is False
+                    for row in search_manifest.get("queries", []))
+            and raw_search_hashes_valid
+        ),
+        "supplemental_cninfo_capture_does_not_claim_full_coverage": (
+            coverage_doc.get("query_count") == 12
+            and coverage_doc.get("coverage_status") == "BLOCKED"
+            and all(row.get("coverage_complete") is False
+                    and bool(row.get("unresolved_source_windows")) for row in coverage_rows)
+        ),
+        "official_index_coverage_audit_item_open_and_independent": (
+            audit_item.get("status") == "OPEN"
+            and audit_item.get("acceptance_result") == "NOT_ACCEPTED_INCOMPLETE_EXHAUSTIVE_COVERAGE_EVIDENCE"
+            and audit_item.get("relationship_to_gate_a", "").startswith("Tracked independently")
+            and audit_item.get("evidence", {}).get("event_index_coverage", {}).get("sha256") == sha(COVERAGE)
+        ),
         "gate_a_blocked_by_incomplete_official_coverage": discovery.get("gate_a_status") == "BLOCKED"
         and coverage.get("coverage_status") == "BLOCKED",
         "daily_identity_delta_no_cartesian_pairing": "for old in exited:\n        for new in entered:" not in delta_source,
@@ -109,6 +144,10 @@ def main() -> int:
             "linkage": {"path": LINKAGE.as_posix(), "sha256": sha(LINKAGE)},
             "official_event_index": {"path": INDEX.as_posix(), "sha256": sha(INDEX)},
             "official_index_coverage": {"path": COVERAGE.as_posix(), "sha256": sha(COVERAGE)},
+            "official_index_coverage_audit_item": {"path": INDEX_AUDIT_ITEM.as_posix(),
+                                                   "sha256": sha(INDEX_AUDIT_ITEM)},
+            "supplemental_search_capture": {"path": search_manifest_path.as_posix(),
+                                            "sha256": sha(search_manifest_path) if search_manifest_path.is_file() else None},
             "test_receipt": {"path": TEST_RECEIPT.as_posix(), "sha256": sha(TEST_RECEIPT)},
         },
         "candidate_count": discovery.get("candidate_count"),

@@ -37,7 +37,9 @@ INDEX_CONTRACT = Path("config/official_security_code_change_event_index_v1.json"
 INDEX_DIR = Path("data/v4/source_evidence/official_code_change_event_index")
 INDEX_EVENTS = INDEX_DIR / "official_security_code_change_events_v1.jsonl"
 INDEX_COVERAGE = INDEX_DIR / "coverage_receipt_v1.json"
+SEARCH_CAPTURE_ROOT = INDEX_DIR / "cninfo_search"
 INDEX_REPORT = Path("reports/v4_01/V4_01_OFFICIAL_CODE_CHANGE_EVENT_INDEX_R8_3.json")
+INDEX_AUDIT_ITEM = Path("reports/v4_01/V4_01_OFFICIAL_INDEX_COVERAGE_AUDIT_ITEM_R1_20260928.json")
 DISCOVERY = Path("reports/v4_01/V4_01_IDENTITY_EVENT_DISCOVERY_R8_3.json")
 LINKAGE = Path("reports/v4_01/V4_01_IDENTITY_RELATION_LINKAGE_R8_3.json")
 QUEUE = Path("reports/v4_01/V4_01_R8_3_UNRESOLVED_LINKAGE_QUEUE.json")
@@ -113,53 +115,146 @@ def official_event_rows(alias_facts: list[dict[str, Any]]) -> list[dict[str, Any
     return sorted(rows, key=lambda row: (str(row["effective_date"]), str(row["old_source_security_key"])))
 
 
+def supplemental_search_capture() -> dict[str, Any] | None:
+    """Load and hash-check the latest successful bounded CNINFO search capture."""
+    candidates = []
+    if SEARCH_CAPTURE_ROOT.exists():
+        for path in SEARCH_CAPTURE_ROOT.glob("*/query_manifest.json"):
+            try:
+                row = read_json(path)
+            except (OSError, json.JSONDecodeError):
+                continue
+            if (row.get("contract_id") == "CNINFO_CODE_CHANGE_FULLTEXT_SEARCH_CAPTURE_R1"
+                    and row.get("acceptance") == "PASS_CAPTURE_ONLY"
+                    and int(row.get("scope", {}).get("query_count", -1)) == 12):
+                candidates.append((str(row.get("observed_at_utc") or ""), path, row))
+    if not candidates:
+        return None
+    _, path, row = max(candidates, key=lambda item: item[0])
+    resolved_path = path.resolve()
+    expected_queries = 12
+    if len(row.get("queries", [])) != expected_queries or int(row.get("failed_query_count", -1)) != 0:
+        raise SystemExit("R8_3_SUPPLEMENTAL_SEARCH_CAPTURE_INVALID")
+    for query in row["queries"]:
+        if query.get("status") != "PASS" or query.get("truncated_at_page_limit") is not False:
+            raise SystemExit("R8_3_SUPPLEMENTAL_SEARCH_QUERY_INCOMPLETE")
+        for page in query.get("pages", []):
+            captured = ROOT / str(page.get("capture_path") or "")
+            if not captured.is_file() or digest(captured) != page.get("response_sha256"):
+                raise SystemExit("R8_3_SUPPLEMENTAL_SEARCH_RESPONSE_HASH_MISMATCH")
+    return {
+        "manifest_path": resolved_path.relative_to(ROOT).as_posix(),
+        "manifest_sha256": digest(resolved_path),
+        "manifest": row,
+    }
+
+
 def write_event_index(events: list[dict[str, Any]], alias_facts_digest: str) -> tuple[dict[str, Any], dict[str, Any]]:
     atomic_bytes(INDEX_EVENTS, b"".join(
         (json.dumps(row, ensure_ascii=False, sort_keys=True, separators=(",", ":")) + "\n").encode("utf-8")
         for row in events
     ))
+    search_capture = supplemental_search_capture()
+    search_manifest = search_capture["manifest"] if search_capture else None
+    search_digest = search_capture["manifest_sha256"] if search_capture else None
+    source_revision = (
+        "sha256:" + hashlib.sha256((alias_facts_digest + "|" + search_digest).encode("utf-8")).hexdigest()
+        if search_digest else "sha256:" + alias_facts_digest
+    )
+    query_count = int(search_manifest.get("scope", {}).get("query_count", 0)) if search_manifest else 0
+    failed_query_count = int(search_manifest.get("failed_query_count", 0)) if search_manifest else 0
+    failed_by_plate = {"sh": 0, "sz": 0}
+    if search_manifest:
+        for query in search_manifest.get("queries", []):
+            if query.get("status") != "PASS":
+                plate_key = str(query.get("plate") or "").lower()
+                if plate_key in failed_by_plate:
+                    failed_by_plate[plate_key] += 1
     coverage_records = []
     for exchange in sorted(REQUIRED_EXCHANGES):
         exchange_event_count = sum(row["exchange"] == exchange for row in events)
+        plate = "sh" if exchange in {"SH_MAIN", "STAR"} else "sz"
         coverage_records.append({
             "exchange": exchange,
             "window_start": START_DATE,
             "window_end": END_DATE,
             "coverage_complete": False,
             "query_or_index_method": (
+                (f"CNINFO official hisAnnouncement fulltext search; 12 bounded phrase/plate queries "
+                 f"over sh/sz were captured, including the {plate} plate; supplemental discovery only, "
+                 "not a published exhaustive code-change registry")
+                if search_manifest else
                 "LOCAL_ACCEPTED_DATED_ALIAS_FACTS_AND_CAPTURED_OFFICIAL_NOTICES; "
                 "full-window exchange archive enumeration not captured"
             ),
-            "source_revision": "sha256:" + alias_facts_digest,
+            "source_revision": source_revision,
             "event_count": exchange_event_count,
-            "failed_query_count": 0,
+            "failed_query_count": (
+                failed_by_plate[plate]
+                if search_manifest and exchange in {"SH_MAIN", "SZ_MAIN"} else 0
+            ),
+            "failed_query_count_scope": "Shared CNINFO plate-level failures are counted once on the corresponding main-board receipt; query results do not partition star/chinext coverage.",
             "unresolved_source_windows": [{"start": START_DATE, "end": END_DATE,
-                                           "reason": "FULL_OFFICIAL_EVENT_ARCHIVE_COVERAGE_NOT_EVIDENCED"}],
+                                           "reason": (
+                                               "SUPPLEMENTAL_KEYWORD_SEARCH_NOT_EXHAUSTIVE"
+                                               if search_manifest else
+                                               "FULL_OFFICIAL_EVENT_ARCHIVE_COVERAGE_NOT_EVIDENCED"
+                                           )}],
         })
-    atomic_json(INDEX_COVERAGE, {
+    coverage_payload = {
         "contract_id": INDEX_CONTRACT_ID,
         "version": "1.0.0",
         "history_window": {"start": START_DATE, "end": END_DATE},
         "required_exchanges": sorted(REQUIRED_EXCHANGES),
-        "query_or_index_method": "Local accepted aliases plus hash-bound captured official notice evidence",
-        "source_revision": "sha256:" + alias_facts_digest,
-        "query_count": 0,
-        "failed_query_count": 0,
+        "query_or_index_method": (
+            "Local accepted aliases, hash-bound captured official notice, and bounded CNINFO full-text searches"
+            if search_manifest else "Local accepted aliases plus hash-bound captured official notice evidence"
+        ),
+        "source_revision": source_revision,
+        "query_count": query_count,
+        "failed_query_count": failed_query_count,
         "coverage_receipts": coverage_records,
         "events_path": INDEX_EVENTS.as_posix(),
         "events_sha256": digest(ROOT / INDEX_EVENTS),
-        "coverage_limitations": ["No systematic full-window official exchange archive query/capture exists in current evidence."],
-    })
+        "coverage_limitations": [
+            "CNINFO full-text keyword search captures query execution and returned hits, not exhaustive event enumeration.",
+            "The phrase set is bounded; alternate wording, OCR, and indexing behavior may omit relevant notices.",
+            "The CNINFO sh/sz plate filter does not independently prove board-level event coverage for SH_MAIN, STAR, SZ_MAIN, or CHINEXT.",
+            "Official archive completeness for the required history window remains unproved; keep the full window unresolved.",
+        ] if search_manifest else [
+            "No systematic full-window official exchange archive query/capture exists in current evidence."
+        ],
+    }
+    if search_capture:
+        coverage_payload["supplemental_search_capture"] = {
+            "path": search_capture["manifest_path"],
+            "sha256": search_capture["manifest_sha256"],
+            "observed_at_utc": search_manifest.get("observed_at_utc"),
+            "query_count": query_count,
+            "failed_query_count": failed_query_count,
+            "deduplicated_result_count": search_manifest.get("deduplicated_result_count"),
+            "candidate_notice_result_count": search_manifest.get("candidate_notice_result_count"),
+            "excluded_out_of_scope_results": search_manifest.get("excluded_out_of_scope_results", []),
+            "coverage_effect": search_manifest.get("coverage_effect"),
+        }
     coverage = validate_index_coverage(coverage_records=coverage_records, events=events,
                                        window_start=START_DATE, window_end=END_DATE)
+    coverage_payload.update({
+        "coverage_status": coverage.get("coverage_status"),
+        "event_index_completeness_pass": coverage.get("event_index_completeness_pass"),
+        "unresolved_source_windows": coverage.get("unresolved_source_windows"),
+        "malformed_event_count": coverage.get("malformed_event_count"),
+    })
+    atomic_json(INDEX_COVERAGE, coverage_payload)
     coverage.update({
         "events_path": INDEX_EVENTS.as_posix(),
         "events_sha256": digest(ROOT / INDEX_EVENTS),
         "coverage_receipt_path": INDEX_COVERAGE.as_posix(),
         "coverage_receipt_sha256": digest(ROOT / INDEX_COVERAGE),
-        "query_or_index_method": "Local accepted aliases plus hash-bound captured official notice evidence",
-        "source_revision": "sha256:" + alias_facts_digest,
-        "query_count": 0,
+        "query_or_index_method": coverage_payload["query_or_index_method"],
+        "source_revision": source_revision,
+        "query_count": query_count,
+        "supplemental_search_capture": coverage_payload.get("supplemental_search_capture"),
     })
     return coverage, {"coverage_receipts": coverage_records}
 
@@ -182,6 +277,45 @@ def main() -> int:
 
     index_events = official_event_rows(alias_facts)
     index_coverage, _ = write_event_index(index_events, digest(ROOT / ALIAS_FACTS))
+    search_ref = index_coverage.get("supplemental_search_capture")
+    audit_item = {
+        "contract_id": "V4_01_OFFICIAL_INDEX_COVERAGE_AUDIT_ITEM_V1",
+        "version": "1.0.0",
+        "audit_item_id": "AUDIT-V4-01-OFFICIAL-CODE-CHANGE-INDEX-COVERAGE-20260928",
+        "observed_at_utc": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
+        "status": "OPEN",
+        "scope": {
+            "required_exchanges": sorted(REQUIRED_EXCHANGES),
+            "history_window": {"start": START_DATE, "end": END_DATE},
+            "issue": "The official full-text phrase search is a discovery aid and does not establish exhaustive event enumeration for the required exchange/window scope.",
+        },
+        "evidence": {
+            "event_index_coverage": {"path": INDEX_COVERAGE.as_posix(),
+                                     "sha256": digest(ROOT / INDEX_COVERAGE)},
+            "event_index": {"path": INDEX_EVENTS.as_posix(),
+                            "sha256": digest(ROOT / INDEX_EVENTS),
+                            "event_count": len(index_events)},
+            "supplemental_search_capture": search_ref,
+        },
+        "observed_search_result_summary": {
+            "query_count": index_coverage.get("query_count", 0),
+            "failed_query_count": index_coverage.get("failed_query_count", 0),
+            "deduplicated_result_count": (search_ref or {}).get("deduplicated_result_count", 0),
+            "candidate_notice_result_count": (search_ref or {}).get("candidate_notice_result_count", 0),
+            "excluded_out_of_scope_results": (search_ref or {}).get("excluded_out_of_scope_results", []),
+            "coverage_effect": "SUPPLEMENTAL_ONLY",
+        },
+        "acceptance_criteria": [
+            "Use an official source method whose documented scope supports complete event enumeration, including explicit coverage of SH_MAIN, STAR, SZ_MAIN, and CHINEXT.",
+            "Capture and hash-bind the complete 2023-07-04 through 2026-09-24 archive enumeration, including all pages/windows and source revision metadata.",
+            "Review every code-change event candidate against its official notice and bind source capture hash, publication/effective dates, and old/new source keys.",
+            "Independent validation confirms failed_query_count=0, unresolved_source_windows=[], and reported event counts match the event index for every required exchange.",
+        ],
+        "acceptance_result": "NOT_ACCEPTED_INCOMPLETE_EXHAUSTIVE_COVERAGE_EVIDENCE",
+        "relationship_to_gate_a": "Tracked independently as an audit item; its unresolved status is a required input to, and currently blocks, Gate A.",
+        "next_action": "Obtain exhaustive official archive or registry coverage evidence, then independently reconcile the resulting event index.",
+    }
+    atomic_json(INDEX_AUDIT_ITEM, audit_item)
     session_dates, required_source_keys, universe_rows, source_assignments, board_rows = scan_universe_assignments(
         UNIVERSE_R6, id_metadata
     )
@@ -275,6 +409,8 @@ def main() -> int:
         "official_event_index": {"path": INDEX_EVENTS.as_posix(), "sha256": digest(ROOT / INDEX_EVENTS)},
         "official_event_index_coverage": {"path": INDEX_COVERAGE.as_posix(),
                                            "sha256": digest(ROOT / INDEX_COVERAGE)},
+        "official_index_coverage_audit_item": {"path": INDEX_AUDIT_ITEM.as_posix(),
+                                                "sha256": digest(ROOT / INDEX_AUDIT_ITEM)},
         "r7_identity_map": {"path": IDENTITY_R7.as_posix(), "sha256": actual_hashes["identity_map_sha256"]},
         "r7_required_universe": {"path": UNIVERSE_R7.as_posix(), "sha256": actual_hashes["required_universe_sha256"]},
     }
@@ -326,7 +462,7 @@ def main() -> int:
         "unresolved_required_scope_candidate_count": result["unresolved_required_scope_candidate_count"],
         "boundary_event_count": result["boundary_event_count"],
         "index_coverage_status": index_coverage["coverage_status"],
-        "receipts": [INDEX_REPORT.as_posix(), DISCOVERY.as_posix(), LINKAGE.as_posix(), QUEUE.as_posix()],
+        "receipts": [INDEX_REPORT.as_posix(), INDEX_AUDIT_ITEM.as_posix(), DISCOVERY.as_posix(), LINKAGE.as_posix(), QUEUE.as_posix()],
     }, ensure_ascii=False))
     return 0 if result["gate_a_status"] == "PASS" else 2
 

@@ -44,7 +44,7 @@ def main():
             digests.append(sha(artifact))
             print(f"{name} replay {attempt + 1}/2: {digests[-1]}", flush=True)
         results[name] = {"artifact_path": path, "baseline_sha256": before, "replay_sha256": digests,
-                         "deterministic": digests[0] == digests[1]}
+                         "deterministic": (before is None or before == digests[0]) and digests[0] == digests[1]}
     status = "PASS" if all(x["deterministic"] for x in results.values()) else "FAIL"
     report = {"contract_id": "V4_03_DETERMINISM_REPLAY_R3", "status": status,
               "governing_task": "docs/audits/V4_03_R3_EXTERNAL_BLOCKER_CLOSURE_TASK_20260928.md",

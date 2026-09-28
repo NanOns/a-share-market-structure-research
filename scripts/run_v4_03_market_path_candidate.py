@@ -171,7 +171,7 @@ def main():
     temp = output_path.with_suffix(output_path.suffix + ".tmp")
     output_path.parent.mkdir(parents=True, exist_ok=True)
     base_row = {"contract_id": "V4_03_MARKET_REFERENCE_PATH_V1", "contract_version": "1.0.0",
-                "parameter_set_id": parameters["parameter_set_id"], "evidence_origin": "DIAGNOSTIC_NON_PIT",
+                "parameter_set_id": parameters["parameter_set_id"], "evidence_origin": "V4_03_PIT_STAGING_CANDIDATE" if args.full_history else "DIAGNOSTIC_NON_PIT",
                 "trade_date": calendar[0], "start_session": None, "end_session": calendar[0],
                 "start_universe_snapshot_id": snapshot_ids[calendar[0]],
                 "evaluable_set_identity": None, "universe_count": len(snapshots[calendar[0]]),
@@ -191,7 +191,7 @@ def main():
         zipped.write((json.dumps(base_row, ensure_ascii=False, sort_keys=True, allow_nan=False) + "\n").encode("utf-8"))
         for facts, path_fact in zip(daily_identities, path_rows):
             row = {"contract_id": "V4_03_MARKET_REFERENCE_PATH_V1", "contract_version": "1.0.0",
-                   "parameter_set_id": parameters["parameter_set_id"], "evidence_origin": "DIAGNOSTIC_NON_PIT",
+                   "parameter_set_id": parameters["parameter_set_id"], "evidence_origin": "V4_03_PIT_STAGING_CANDIDATE" if args.full_history else "DIAGNOSTIC_NON_PIT",
                    **facts, "daily_return_quality_state": facts["quality_state"],
                    "daily_return_unknown_reason": facts["unknown_reason"],
                    "quality_state": path_fact["quality_state"], "unknown_reason": path_fact["unknown_reason"],
@@ -226,6 +226,7 @@ def main():
                    "dataset_identity": source_digest}
     receipt = {"contract_id": "V4_03_MARKET_REFERENCE_PATH_RECEIPT_R3" if args.full_history else "V4_03_MARKET_PATH_CANDIDATE_RECEIPT_R1",
                "status": "CANDIDATE_NOT_STAGE_ACCEPTANCE", "path_identity": "DAILY_REBALANCED_RESEARCH_INDEX",
+               "evidence_origin": "V4_03_PIT_STAGING_CANDIDATE" if args.full_history else "DIAGNOSTIC_NON_PIT",
                "series_version": "DAILY_REBALANCED_RESEARCH_INDEX_V1", "cutoff": calendar[-1],
                "sessions": len(calendar), "daily_returns": len(daily_returns), "rows_in": rows_in,
                "required_scope_member_set_policy": "PIT_UNIVERSE_AT_START_SESSION",

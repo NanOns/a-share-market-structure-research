@@ -59,6 +59,22 @@ def test_native_vectors_and_sector_missing_identity():
         execute(sector["rule"], {"members": [], "rows": {}}, params)
 
 
+def test_market_regime_raw_contract_excludes_membership_churn_and_uses_member_median():
+    schema = read("config/v4_03_native_rule_contracts_r3.json")
+    params = {x["parameter_id"]: x["value"] for x in read("config/v4_03_parameter_registry_v1.json")["entries"]}
+    params.update(read("config/v4_03_parameter_set_v1.json")["engineering_candidate_thresholds"])
+    regime = next(c for c in schema["contracts"] if c["contract_id"] == "MARKET_REGIME_V1_PRIMITIVES")
+    vectors = {v["vector_id"]: v for v in regime["raw_vectors"]}
+    rule = regime["rule"]["raw_primitive_rule"]
+    result = execute(rule, vectors["REGIME_RAW_MEMBERSHIP"]["input"], params)
+    assert result["breadth_common_count"] == 2 and result["breadth_delta3"] == .5
+    assert result["participation_median_amount_ratio20"] == 1
+    assert result["stress_same_member_current_ratio"] == .5
+    partial = execute(rule, vectors["REGIME_RAW_PARTIAL"]["input"], params)
+    assert partial["participation_evaluable_count"] == 1
+    assert partial["participation_axis"] == "EXPANDING"
+
+
 def test_trend_producer_identity_tamper():
     scope = read("config/v4_03_native_scope_map_v1.json")
     registry = read("config/v4_03_native_contract_registry_v1.json")

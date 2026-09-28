@@ -5,17 +5,23 @@
   "failures": [],
   "governing_task": "docs/audits/V4_03_R3_EXTERNAL_BLOCKER_CLOSURE_TASK_20260928.md",
   "interpreter": "src/v4/contracts/native_rule_r3.py; no production native/relative factor imports",
-  "interpreter_sha256": "dea7d653e92b2c3e1c19e4785cfdcdcbeea10203b103f79e246bb36d33dfe780",
+  "interpreter_sha256": "e82041b67295940e2bb407084971724327e6c4f734be0fab5de70316cd5bb06b",
+  "market_regime_raw_derivation_covered": true,
   "native_registry_sha256": "75880578143ba1f72d266f529ddf952c3b81793fdb9611dea630f564be7322a4",
   "parameter_registry_sha256": "c3cda61e604948935061b077f0f57777ac9dc9917263cab2217ca3c2ac9f28e3",
-  "passed_count": 20,
+  "passed_count": 25,
   "per_contract_categories": {
     "MARKET_REGIME_V1_PRIMITIVES": [
       "threshold_above",
       "threshold_exact_boundary",
       "threshold_below",
       "unknown_and_coverage",
-      "mixed_trend_neutral"
+      "mixed_trend_neutral",
+      "common_membership_enter_exit",
+      "member_amount_ratio20_partial_unknown",
+      "missing_common_endpoint",
+      "unexplained_amount_window_gap",
+      "same_member_stress_vs_changed_universe"
     ],
     "MARKET_RELATIVE_REFERENCE_V1": [
       "normal_coverage",
@@ -39,8 +45,8 @@
       "missing_membership_identity"
     ]
   },
-  "rule_schema_sha256": "04385326972c3f55efe044490480df97f0a4b31779a2b5daadb1a8842c6ee88a",
+  "rule_schema_sha256": "dcb39d9a185dc7b55d3144d9ccf91df528cda976b238fea32c8f33bda4760d2c",
   "stage_acceptance": "NOT_GRANTED",
   "status": "PASS",
-  "vector_count": 20
+  "vector_count": 25
 }

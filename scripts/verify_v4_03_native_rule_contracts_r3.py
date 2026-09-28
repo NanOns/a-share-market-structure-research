@@ -36,7 +36,7 @@ def main():
     registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
     if {x["contract_id"] for x in payload["contracts"]} != {x["contract_id"] for x in registry["contracts"]}:
         raise RuntimeError("native rule/registry contracts differ")
-    if payload["version"] != "1.0.0" or len(payload["contracts"]) != 4:
+    if payload["version"] != "1.1.0" or len(payload["contracts"]) != 4:
         raise RuntimeError("native rule schema version or count mismatch")
     params = {x["parameter_id"]: x["value"] for x in json.loads((ROOT / "config/v4_03_parameter_registry_v1.json").read_text(encoding="utf-8"))["entries"]}
     params.update(json.loads((ROOT / "config/v4_03_parameter_set_v1.json").read_text(encoding="utf-8"))["engineering_candidate_thresholds"])
@@ -55,6 +55,12 @@ def main():
             expected = vector["expected_subset"]
             if any(key not in actual or not equal(actual[key], value) for key, value in expected.items()):
                 failures.append({"contract_id": contract["contract_id"], "vector_id": vector["vector_id"], "actual": actual})
+        for vector in contract.get("raw_vectors", []):
+            count += 1
+            categories.setdefault(contract["contract_id"], []).append(vector["category"])
+            actual = execute(rule["raw_primitive_rule"], vector["input"], params)
+            if any(key not in actual or not equal(actual[key], value) for key, value in vector["expected_subset"].items()):
+                failures.append({"contract_id": contract["contract_id"], "vector_id": vector["vector_id"], "actual": actual})
     receipt = {"contract_id": "V4_03_NATIVE_CONTRACT_ACCEPTANCE_R3", "status": "PASS" if not failures else "FAIL",
                "governing_task": "docs/audits/V4_03_R3_EXTERNAL_BLOCKER_CLOSURE_TASK_20260928.md",
                "rule_schema_sha256": sha(RULES), "native_registry_sha256": sha(REGISTRY),
@@ -63,6 +69,7 @@ def main():
                "contract_count": len(payload["contracts"]), "vector_count": count,
                "passed_count": count-len(failures), "failed_count": len(failures),
                "per_contract_categories": categories, "failures": failures,
+               "market_regime_raw_derivation_covered": len(payload["contracts"][2].get("raw_vectors", [])) >= 4,
                "interpreter": "src/v4/contracts/native_rule_r3.py; no production native/relative factor imports",
                "stage_acceptance": "NOT_GRANTED"}
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)

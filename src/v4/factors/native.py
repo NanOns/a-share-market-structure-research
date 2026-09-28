@@ -18,7 +18,9 @@ def market_axis_primitives(*, breadth: float | None, participation: float | None
                            limit_coverage: float | None, stress_ratio: float | None,
                            prior_stress_ratio: float | None, trade_date: str,
                            market_calendar_id: str, market_snapshot_id: str,
-                           adjustment_basis_id: str, input_source_digest: str) -> dict:
+                             adjustment_basis_id: str, input_source_digest: str,
+                             stress_change_current_ratio: float | None = None,
+                             stress_change_current_provided: bool = False) -> dict:
     """Deterministic axes other than trend; final regime UI remains V4-04."""
     breadth_boundary = candidate_threshold("market_breadth_axis")
     participation_high = candidate_threshold("market_participation_expanding")
@@ -34,7 +36,9 @@ def market_axis_primitives(*, breadth: float | None, participation: float | None
     breadth_axis = ("IMPROVING" if breadth > breadth_boundary else "DETERIORATING" if breadth < -breadth_boundary else "STABLE") if breadth_known else None
     participation_axis = ("EXPANDING" if participation >= participation_high else "THIN" if participation < participation_low else "NORMAL") if participation_known else None
     stress_level = ("HIGH" if stress_ratio >= stress_high else "ELEVATED" if stress_ratio >= stress_elevated else "LOW") if stress_known and coverage_known and limit_coverage >= stress_coverage else None
-    stress_change = ("RISING" if stress_ratio > prior_stress_ratio else "DECLINING" if stress_ratio < prior_stress_ratio else "STABLE") if stress_known and prior_stress_known else None
+    change_current = stress_change_current_ratio if stress_change_current_provided else stress_ratio
+    change_current_known = isinstance(change_current, (int, float)) and not isinstance(change_current, bool) and math.isfinite(change_current)
+    stress_change = ("RISING" if change_current > prior_stress_ratio else "DECLINING" if change_current < prior_stress_ratio else "STABLE") if change_current_known and prior_stress_known else None
     identity = {"trade_date": trade_date, "market_calendar_id": market_calendar_id,
                 "market_snapshot_id": market_snapshot_id, "adjustment_basis_id": adjustment_basis_id,
                 "input_source_digest": input_source_digest}
@@ -53,7 +57,8 @@ def market_axis_primitives(*, breadth: float | None, participation: float | None
                               "stress_level": {"quality_state": "OBSERVED" if stress_level is not None else "UNKNOWN", "unknown_reason": None if stress_level is not None else "STRESS_INPUT_OR_COVERAGE_UNKNOWN"},
                               "stress_change": {"quality_state": "OBSERVED" if stress_change is not None else "UNKNOWN", "unknown_reason": None if stress_change is not None else "STRESS_CHANGE_INPUT_UNKNOWN"}}}
     output["input_digest"] = sha256(json.dumps([identity, breadth, participation, limit_coverage,
-                                                stress_ratio, prior_stress_ratio], sort_keys=True,
+                                                  stress_ratio, prior_stress_ratio, stress_change_current_ratio,
+                                                  stress_change_current_provided], sort_keys=True,
                                                separators=(",", ":"), default=str).encode()).hexdigest()
     output["output_digest"] = sha256(json.dumps(output, sort_keys=True, separators=(",", ":"), default=str).encode()).hexdigest()
     return output

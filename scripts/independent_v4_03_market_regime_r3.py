@@ -1,11 +1,12 @@
 """Independent full-session replay of V4-03 market regime primitive inputs."""
 
-from collections import defaultdict
+from collections import defaultdict, deque
 import gzip
 import hashlib
 import json
 import math
 import os
+from statistics import median
 from pathlib import Path
 
 import duckdb
@@ -48,6 +49,7 @@ def main():
     found = [json.loads(line) for line in gzip.open(CANDIDATE, "rt", encoding="utf-8")]
     path_rows = [json.loads(line) for line in gzip.open(PATH, "rt", encoding="utf-8")]
     days = [row["trade_date"] for row in path_rows]
+    day_index = {day: i for i, day in enumerate(days)}
     candidate_sha = sha(CANDIDATE)
     receipt = json.loads(RECEIPT.read_text(encoding="utf-8"))
     members, parts = defaultdict(set), defaultdict(list)
@@ -61,14 +63,20 @@ def main():
                 members[day].add(sid)
                 parts[day].append((sid, row.get("membership_basis"), row.get("source_revision_id"), row.get("eligibility_status")))
     snapshots = {day: digest(sorted(parts[day])) for day in days}
-    limits = defaultdict(lambda: [0, 0])
+    status_path = ROOT / "data/v4/artifact_store/v4_02/V4_02_DATED_TRADING_STATUS_R7_20260927.jsonl.gz"
+    suspended = defaultdict(set)
+    with gzip.open(status_path, "rt", encoding="utf-8") as stream:
+        for line in stream:
+            fact = json.loads(line)
+            if fact["status"] == "SUSPENDED" and fact["trade_date"] in day_index:
+                suspended[fact["security_id"]].add(fact["trade_date"])
+    limits = defaultdict(dict)
     with gzip.open(ROOT / limit_ref["path"], "rt", encoding="utf-8") as stream:
         for line in stream:
             row = json.loads(line)
             day, sid = row["trade_date"], row["security_id"]
             if sid in members.get(day, ()) and row["limit_status"] in {"LIMIT_UP", "LIMIT_DOWN", "NOT_LIMIT"}:
-                limits[day][0] += 1
-                limits[day][1] += row["limit_status"] == "LIMIT_DOWN"
+                limits[day][sid] = row["limit_status"]
     # This read order differs from the producer's security-major scan. Each
     # day uses only the immediately preceding accepted market session.
     sql = """select canonical_security_id, trade_date, qfq_close, amount, price_basis,
@@ -76,64 +84,102 @@ def main():
              from read_parquet(?) where board_scope in ('SH_MAIN','SZ_MAIN','CHINEXT','STAR')
              order by trade_date, canonical_security_id"""
     cursor = duckdb.connect().execute(sql, [(ROOT / daily_ref["path"]).as_posix()])
-    aggregates = defaultdict(lambda: [0, 0, 0, 0.0, 0, set()])
-    previous, current, current_day = {}, {}, None
+    returns, ratios, basis_sets = defaultdict(dict), defaultdict(dict), defaultdict(set)
+    amount_history = defaultdict(lambda: deque(maxlen=20))
+    last_amount_day = {}
+    previous, current, current_day, previous_day = {}, {}, None, None
     prior_day = {days[i]: days[i-1] for i in range(1, len(days))}
     while block := cursor.fetchmany(50000):
         for sid, raw_day, close, amount, basis, revision, quality, status in block:
             day = f"{raw_day // 10000:04d}-{raw_day // 100 % 100:02d}-{raw_day % 100:02d}"
             if day != current_day:
+                previous_day = current_day
                 previous, current, current_day = current, {}, day
             coord = f"{basis}:{revision}" if basis and revision else None
             current[sid] = (close, coord, quality, status)
+            valid_amount = quality == "READY" and status == "ACTUAL_TRADED" and coord and amount is not None and math.isfinite(float(amount)) and amount >= 0
+            history = amount_history[sid]
+            if valid_amount:
+                previous_amount_day = last_amount_day.get(sid)
+                if previous_amount_day in day_index and day in day_index:
+                    intervening = days[day_index[previous_amount_day]+1:day_index[day]]
+                    if any(x not in suspended[sid] for x in intervening):
+                        history.clear()
+                elif previous_amount_day is not None:
+                    history.clear()
+                if history and history[-1][0] != coord:
+                    history.clear()
+                if sid in members.get(day, ()) and len(history) == 20:
+                    denominator = sum(item[1] for item in history) / 20
+                    if denominator > 0:
+                        ratios[day][sid] = float(amount) / denominator
+                history.append((coord, float(amount)))
+                last_amount_day[sid] = day
+            elif status != "SUSPENDED":
+                history.clear()
+                last_amount_day.pop(sid, None)
             if sid not in members.get(day, ()):
                 continue
-            acc = aggregates[day]
-            if quality == "READY" and status == "ACTUAL_TRADED" and amount is not None and math.isfinite(float(amount)) and amount >= 0:
-                acc[3] += float(amount)
-                acc[4] += 1
             prev = previous.get(sid)
-            if prev and prior_day.get(day) and prev[1] == coord and coord and prev[2] == quality == "READY" and prev[3] == status == "ACTUAL_TRADED" and prev[0] and close is not None and float(prev[0]) > 0:
+            if prev and previous_day == prior_day.get(day) and prev[1] == coord and coord and prev[2] == quality == "READY" and prev[3] == status == "ACTUAL_TRADED" and prev[0] and close is not None and float(prev[0]) > 0:
                 change = float(close)/float(prev[0]) - 1
-                acc[0] += change > 0
-                acc[1] += change < 0
-                acc[2] += 1
-                acc[5].add((sid, coord))
+                returns[day][sid] = change
+                basis_sets[day].add((sid, coord))
     thresholds = json.loads((ROOT / "config/v4_03_parameter_set_v1.json").read_text(encoding="utf-8"))["engineering_candidate_thresholds"]
     source_digest = digest({"head": sha(head_path), "daily": daily_ref["sha256"], "universe": universe_ref["sha256"],
-                            "calendar": calendar_ref["sha256"], "price_limit": limit_ref["sha256"], "path": sha(PATH)})
-    amounts, levels, previous_stress, mismatches, samples = [], [], None, 0, []
+                            "calendar": calendar_ref["sha256"], "price_limit": limit_ref["sha256"],
+                            "trading_status": sha(status_path), "path": sha(PATH)})
+    levels, mismatches, samples = [], 0, []
     calendar_id = f"V4_02_CALENDAR_SHA256:{calendar_ref['sha256']}"
     for i, (day, row) in enumerate(zip(days, found)):
-        advance, decline, ret_count, amount_sum, amount_count, basis_set = aggregates[day]
-        limit_count, down = limits[day]
+        limits_now = limits[day]
+        limit_count = len(limits_now)
+        down = sum(value == "LIMIT_DOWN" for value in limits_now.values())
         count = len(members[day])
+        old3 = days[i-3] if i >= 3 else None
+        shared3 = members[day] & members[old3] if old3 else set()
+        eligible3 = sorted(sid for sid in shared3 if sid in returns[day] and sid in returns[old3]) if old3 else []
+        breadth_now = sum(returns[day][sid] > 0 for sid in eligible3)/len(eligible3) if eligible3 else None
+        breadth_old = sum(returns[old3][sid] > 0 for sid in eligible3)/len(eligible3) if eligible3 else None
+        breadth = breadth_now-breadth_old if eligible3 else None
+        participation = median(ratios[day].values()) if ratios[day] else None
+        old1 = days[i-1] if i else None
+        shared1 = members[day] & members[old1] if old1 else set()
+        eligible1 = sorted(sid for sid in shared1 if sid in limits_now and sid in limits[old1]) if old1 else []
+        stress_same_now = sum(limits_now[sid] == "LIMIT_DOWN" for sid in eligible1)/len(eligible1) if eligible1 else None
+        stress_same_old = sum(limits[old1][sid] == "LIMIT_DOWN" for sid in eligible1)/len(eligible1) if eligible1 else None
         level = path_rows[i]["level"]
         levels.append(level)
-        baseline = sum(amounts[-20:])/20 if len(amounts) >= 20 and all(x is not None for x in amounts[-20:]) else None
         ma = sum(levels[-20:])/20 if len(levels) >= 20 and all(x is not None for x in levels[-20:]) else None
         old_ma = sum(levels[-25:-5])/20 if len(levels) >= 25 and all(x is not None for x in levels[-25:-5]) else None
         stress = down/limit_count if limit_count else None
-        raw = {"advance": advance, "decline": decline, "breadth_denominator": ret_count,
-               "amount_sum": amount_sum if amount_count else None, "amount_evaluable_count": amount_count,
-               "amount_ma20": baseline, "limit_down_count": down, "limit_evaluable_count": limit_count,
-               "limit_coverage": limit_count/count, "stress_ratio": stress, "prior_stress_ratio": previous_stress,
+        raw = {"breadth_common_count": len(shared3), "breadth_evaluable_count": len(eligible3),
+               "breadth_evaluable_set_id": digest(eligible3), "breadth_t": breadth_now,
+               "breadth_t_minus_3": breadth_old, "breadth_delta3": breadth,
+               "participation_evaluable_count": len(ratios[day]), "participation_median_amount_ratio20": participation,
+               "participation_evaluable_set_id": digest(sorted(ratios[day])),
+               "limit_down_count": down, "limit_evaluable_count": limit_count,
+               "limit_coverage": limit_count/count, "stress_ratio": stress,
+               "stress_common_count": len(shared1), "stress_evaluable_count": len(eligible1),
+               "stress_evaluable_set_id": digest(eligible1),
+               "stress_same_member_current_ratio": stress_same_now,
+               "stress_same_member_prior_ratio": stress_same_old,
                "index_close": level, "index_ma20": ma, "index_ma20_t_minus_5": old_ma,
-               "universe_count": count, "breadth_coverage": ret_count/count,
-               "amount_coverage": amount_count/count, "limit_coverage_denominator": count,
+               "universe_count": count, "breadth_coverage": len(eligible3)/len(shared3) if shared3 else None,
+               "amount_coverage": len(ratios[day])/count, "limit_coverage_denominator": count,
                "index_source": "V4_03_MARKET_REFERENCE_PATH_V1"}
-        breadth = (advance-decline)/ret_count if ret_count else None
-        participation = amount_sum/baseline if baseline and amount_count else None
         coverage = limit_count/count
         axes = {"breadth_axis": ("IMPROVING" if breadth > thresholds["market_breadth_axis"] else "DETERIORATING" if breadth < -thresholds["market_breadth_axis"] else "STABLE") if breadth is not None else None,
                 "participation_axis": ("EXPANDING" if participation >= thresholds["market_participation_expanding"] else "THIN" if participation < thresholds["market_participation_thin"] else "NORMAL") if participation is not None else None,
                 "stress_level": ("HIGH" if stress >= thresholds["market_stress_high"] else "ELEVATED" if stress >= thresholds["market_stress_elevated"] else "LOW") if stress is not None and coverage >= thresholds["market_stress_min_limit_coverage"] else None,
-                "stress_change": ("RISING" if stress > previous_stress else "DECLINING" if stress < previous_stress else "STABLE") if stress is not None and previous_stress is not None else None,
+                "stress_change": ("RISING" if stress_same_now > stress_same_old else "DECLINING" if stress_same_now < stress_same_old else "STABLE") if stress_same_now is not None and stress_same_old is not None else None,
                 "trend_axis": "UNKNOWN" if level is None or ma is None or old_ma is None else "STRONG" if level > ma > old_ma else "WEAK" if level < ma < old_ma else "NEUTRAL"}
         identity = {"trade_date": day, "market_calendar_id": calendar_id, "market_snapshot_id": snapshots[day],
-                    "adjustment_basis_id": digest(sorted(basis_set)), "input_source_digest": source_digest}
+                "adjustment_basis_id": digest(sorted(basis_sets[day])), "input_source_digest": source_digest}
         bad = [key for key, value in raw.items() if not same(value, row["raw"].get(key))]
         bad += [key for key, value in axes.items() if row.get(key) != value]
+        if row.get("evidence_origin") != "V4_03_PIT_STAGING_CANDIDATE":
+            bad.append("evidence_origin")
         if row.get("identity") != identity or row.get("input_digest") != digest([identity, raw]):
             bad.append("input_identity")
         if row.get("output_digest") != digest({k: v for k, v in row.items() if k != "output_digest"}):
@@ -142,15 +188,14 @@ def main():
             mismatches += 1
             if len(samples) < 20:
                 samples.append({"trade_date": day, "fields": bad})
-        amounts.append(amount_sum if amount_count else None)
-        previous_stress = stress
     status = "PASS" if len(found) == len(days) and not mismatches and receipt["output_sha256"] == candidate_sha else "FAIL"
     report = {"contract_id": "V4_03_MARKET_REGIME_NATIVE_INDEPENDENT_POSTCHECK_R3", "status": status,
               "rows_checked": len(found), "expected_sessions": len(days), "mismatch_rows": mismatches,
               "mismatch_samples": samples, "candidate_sha256": candidate_sha,
               "candidate_receipt_sha_match": receipt["output_sha256"] == candidate_sha,
               "source_digest": source_digest, "governing_task": "docs/audits/V4_03_R3_EXTERNAL_BLOCKER_CLOSURE_TASK_20260928.md",
-              "independent_producer_imports": []}
+              "independent_producer_imports": [], "contract_conformance": status,
+              "evidence_origin": "V4_03_PIT_STAGING_CANDIDATE"}
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     tmp = OUTPUT.with_suffix(OUTPUT.suffix + ".tmp")
     tmp.write_text(json.dumps(report, ensure_ascii=False, sort_keys=True, indent=2, allow_nan=False) + "\n", encoding="utf-8")

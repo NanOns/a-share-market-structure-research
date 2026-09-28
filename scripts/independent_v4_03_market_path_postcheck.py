@@ -162,6 +162,8 @@ def main():
             bad.append("market_calendar_id")
         if got.get("series_version") != receipt.get("series_version"):
             bad.append("series_version")
+        if got.get("evidence_origin") != ("V4_03_PIT_STAGING_CANDIDATE" if args.full_history else "DIAGNOSTIC_NON_PIT"):
+            bad.append("evidence_origin")
         if idx and not (math.isclose(got["daily_return"], want["reference_return"], rel_tol=1e-12, abs_tol=1e-12)
                         if got.get("daily_return") is not None and want["reference_return"] is not None
                         else got.get("daily_return") == want["reference_return"]):
@@ -189,7 +191,9 @@ def main():
             mismatches += 1
             if len(samples) < 20:
                 samples.append({"row": idx, "fields": bad, "date": got.get("trade_date")})
-    status = "PASS" if len(expected) == len(found) == len(sessions) and mismatches == 0 and candidate_sha == receipt.get("output_sha256") else "FAIL"
+    status = "PASS" if (len(expected) == len(found) == len(sessions) and mismatches == 0
+                        and candidate_sha == receipt.get("output_sha256")
+                        and receipt.get("evidence_origin") == ("V4_03_PIT_STAGING_CANDIDATE" if args.full_history else "DIAGNOSTIC_NON_PIT")) else "FAIL"
     report = {"contract_id": "V4_03_MARKET_REFERENCE_PATH_INDEPENDENT_POSTCHECK_R3" if args.full_history else "V4_03_MARKET_PATH_INDEPENDENT_POSTCHECK_R1", "status": status,
               "governing_task": "docs/audits/V4_03_R3_EXTERNAL_BLOCKER_CLOSURE_TASK_20260928.md" if args.full_history else None,
               "scope": "INDEPENDENT_MARKET_PATH_CANDIDATE_POSTCHECK_NOT_STAGE_ACCEPTANCE",
@@ -200,7 +204,7 @@ def main():
               "rebase_policy": "UNKNOWN_SUFFIX_UNTIL_NEW_SERIES_VERSION",
               "tolerance": "numeric abs/rel tolerance 1e-12", "elapsed_seconds": round(time.monotonic() - started, 3),
               "scanner_run_count": 0, "trading_run_count": 0, "tdx_root_write_count": 0,
-              "evidence_origin": "DIAGNOSTIC_NON_PIT"}
+              "evidence_origin": "V4_03_PIT_STAGING_CANDIDATE" if args.full_history else "DIAGNOSTIC_NON_PIT"}
     postcheck_path.parent.mkdir(parents=True, exist_ok=True)
     temp = postcheck_path.with_suffix(postcheck_path.suffix + ".tmp")
     temp.write_text(json.dumps(report, ensure_ascii=False, sort_keys=True, indent=2) + "\n", encoding="utf-8")

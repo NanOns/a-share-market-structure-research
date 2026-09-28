@@ -1,5 +1,5 @@
 {
-  "candidate_output_sha256": "f63fb6d80d3e89b992692d90769db02249a02b9571b6eca8eeaf57c96e215caa",
+  "candidate_output_sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e",
   "candidate_receipt_sha256_matches": true,
   "checks_per_field": {
     "amount_ratio20": 5222,
@@ -53,8 +53,8 @@
   "comparison": "exact quality and reason; bool exact; numeric abs/rel tolerance 1e-12",
   "contract_id": "V4_03_INDEPENDENT_POSTCHECK_R3",
   "cutoff": "2026-09-24",
-  "elapsed_seconds": 98.84,
-  "evidence_origin": "DIAGNOSTIC_NON_PIT",
+  "elapsed_seconds": 97.214,
+  "evidence_origin": "V4_03_PIT_STAGING_CANDIDATE",
   "fields_checked": 47,
   "governing_task": "docs/audits/V4_03_R3_EXTERNAL_BLOCKER_CLOSURE_TASK_20260928.md",
   "identity_checks_by_field": {
@@ -122,7 +122,7 @@
   "limitations": [
     "This independently recomputes values, quality, input_digest and window_identity for all 47 fields and checks each output_digest over the serialized payload.",
     "Relative RPS delta prior rows are recomputed from frozen historical PIT snapshots in the accepted universe input.",
-    "Candidate lineage remains DIAGNOSTIC_NON_PIT; this does not grant stage acceptance or publication."
+    "PIT historical staging remains unaccepted; this does not grant stage acceptance or publication."
   ],
   "market_reference_identity_mismatch_count": 0,
   "market_reference_output_digests_recomputed": true,

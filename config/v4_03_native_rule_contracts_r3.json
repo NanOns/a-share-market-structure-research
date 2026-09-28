@@ -205,8 +205,632 @@
     },
     {
       "contract_id": "MARKET_REGIME_V1_PRIMITIVES",
+      "raw_vectors": [
+        {
+          "category": "common_membership_enter_exit",
+          "expected_subset": {
+            "breadth_axis": "IMPROVING",
+            "breadth_common_count": 2,
+            "breadth_delta3": 0.5,
+            "participation_median_amount_ratio20": 1,
+            "stress_change": "RISING",
+            "stress_common_count": 2,
+            "stress_same_member_current_ratio": 0.5,
+            "stress_same_member_prior_ratio": 0
+          },
+          "input": {
+            "amount_t": {
+              "A": 15,
+              "B": 5,
+              "NEW": 100
+            },
+            "index_close": 12,
+            "index_ma20": 11,
+            "index_ma20_t_minus_5": 10,
+            "limit_t": {
+              "A": "LIMIT_DOWN",
+              "B": "NOT_LIMIT",
+              "NEW": "LIMIT_DOWN"
+            },
+            "limit_t_minus_1": {
+              "A": "NOT_LIMIT",
+              "B": "NOT_LIMIT",
+              "OLD": "LIMIT_DOWN"
+            },
+            "members_t": [
+              "A",
+              "B",
+              "NEW"
+            ],
+            "members_t_minus_1": [
+              "A",
+              "B",
+              "OLD"
+            ],
+            "members_t_minus_3": [
+              "A",
+              "B",
+              "EXIT"
+            ],
+            "prior20_actual_amounts": {
+              "A": [
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10
+              ],
+              "B": [
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10
+              ],
+              "NEW": [
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100
+              ]
+            },
+            "prior20_window_valid": {
+              "A": true,
+              "B": true,
+              "NEW": true
+            },
+            "ret1_t": {
+              "A": 0.1,
+              "B": -0.1,
+              "NEW": 0.9
+            },
+            "ret1_t_minus_3": {
+              "A": -0.1,
+              "B": -0.1,
+              "EXIT": 0.9
+            }
+          },
+          "vector_id": "REGIME_RAW_MEMBERSHIP"
+        },
+        {
+          "category": "member_amount_ratio20_partial_unknown",
+          "expected_subset": {
+            "participation_axis": "EXPANDING",
+            "participation_evaluable_count": 1,
+            "participation_median_amount_ratio20": 1.5
+          },
+          "input": {
+            "amount_t": {
+              "A": 15,
+              "B": 5,
+              "NEW": 100
+            },
+            "index_close": 12,
+            "index_ma20": 11,
+            "index_ma20_t_minus_5": 10,
+            "limit_t": {
+              "A": "LIMIT_DOWN",
+              "B": "NOT_LIMIT",
+              "NEW": "LIMIT_DOWN"
+            },
+            "limit_t_minus_1": {
+              "A": "NOT_LIMIT",
+              "B": "NOT_LIMIT",
+              "OLD": "LIMIT_DOWN"
+            },
+            "members_t": [
+              "A",
+              "B",
+              "NEW"
+            ],
+            "members_t_minus_1": [
+              "A",
+              "B",
+              "OLD"
+            ],
+            "members_t_minus_3": [
+              "A",
+              "B",
+              "EXIT"
+            ],
+            "prior20_actual_amounts": {
+              "A": [
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10
+              ],
+              "B": [
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10
+              ]
+            },
+            "prior20_window_valid": {
+              "A": true,
+              "B": true,
+              "NEW": true
+            },
+            "ret1_t": {
+              "A": 0.1,
+              "B": -0.1,
+              "NEW": 0.9
+            },
+            "ret1_t_minus_3": {
+              "A": -0.1,
+              "B": -0.1,
+              "EXIT": 0.9
+            }
+          },
+          "vector_id": "REGIME_RAW_PARTIAL"
+        },
+        {
+          "category": "missing_common_endpoint",
+          "expected_subset": {
+            "breadth_axis": null,
+            "breadth_delta3": null,
+            "stress_change": null
+          },
+          "input": {
+            "amount_t": {
+              "A": 15,
+              "B": 5,
+              "NEW": 100
+            },
+            "index_close": 12,
+            "index_ma20": 11,
+            "index_ma20_t_minus_5": 10,
+            "limit_t": {
+              "A": "LIMIT_DOWN",
+              "B": "NOT_LIMIT",
+              "NEW": "LIMIT_DOWN"
+            },
+            "limit_t_minus_1": {},
+            "members_t": [
+              "A",
+              "B",
+              "NEW"
+            ],
+            "members_t_minus_1": [
+              "A",
+              "B",
+              "OLD"
+            ],
+            "members_t_minus_3": [
+              "A",
+              "B",
+              "EXIT"
+            ],
+            "prior20_actual_amounts": {
+              "A": [
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10
+              ],
+              "B": [
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10
+              ],
+              "NEW": [
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100
+              ]
+            },
+            "prior20_window_valid": {
+              "A": true,
+              "B": true,
+              "NEW": true
+            },
+            "ret1_t": {
+              "A": 0.1,
+              "B": -0.1,
+              "NEW": 0.9
+            },
+            "ret1_t_minus_3": {}
+          },
+          "vector_id": "REGIME_RAW_UNKNOWN"
+        },
+        {
+          "category": "unexplained_amount_window_gap",
+          "expected_subset": {
+            "participation_axis": "THIN",
+            "participation_evaluable_count": 1,
+            "participation_median_amount_ratio20": 0.5
+          },
+          "input": {
+            "amount_t": {
+              "A": 15,
+              "B": 5,
+              "NEW": 100
+            },
+            "index_close": 12,
+            "index_ma20": 11,
+            "index_ma20_t_minus_5": 10,
+            "limit_t": {
+              "A": "LIMIT_DOWN",
+              "B": "NOT_LIMIT",
+              "NEW": "LIMIT_DOWN"
+            },
+            "limit_t_minus_1": {
+              "A": "NOT_LIMIT",
+              "B": "NOT_LIMIT",
+              "OLD": "LIMIT_DOWN"
+            },
+            "members_t": [
+              "A",
+              "B",
+              "NEW"
+            ],
+            "members_t_minus_1": [
+              "A",
+              "B",
+              "OLD"
+            ],
+            "members_t_minus_3": [
+              "A",
+              "B",
+              "EXIT"
+            ],
+            "prior20_actual_amounts": {
+              "A": [
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10
+              ],
+              "B": [
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10
+              ],
+              "NEW": [
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100
+              ]
+            },
+            "prior20_window_valid": {
+              "A": false,
+              "B": true,
+              "NEW": false
+            },
+            "ret1_t": {
+              "A": 0.1,
+              "B": -0.1,
+              "NEW": 0.9
+            },
+            "ret1_t_minus_3": {
+              "A": -0.1,
+              "B": -0.1,
+              "EXIT": 0.9
+            }
+          },
+          "vector_id": "REGIME_RAW_AMOUNT_GAP"
+        },
+        {
+          "category": "same_member_stress_vs_changed_universe",
+          "expected_subset": {
+            "stress_change": "DECLINING",
+            "stress_same_member_current_ratio": 0,
+            "stress_same_member_prior_ratio": 0.5
+          },
+          "input": {
+            "amount_t": {
+              "A": 15,
+              "B": 5,
+              "NEW": 100
+            },
+            "index_close": 12,
+            "index_ma20": 11,
+            "index_ma20_t_minus_5": 10,
+            "limit_t": {
+              "A": "NOT_LIMIT",
+              "B": "NOT_LIMIT",
+              "NEW": "LIMIT_DOWN"
+            },
+            "limit_t_minus_1": {
+              "A": "LIMIT_DOWN",
+              "B": "NOT_LIMIT",
+              "OLD": "NOT_LIMIT"
+            },
+            "members_t": [
+              "A",
+              "B",
+              "NEW"
+            ],
+            "members_t_minus_1": [
+              "A",
+              "B",
+              "OLD"
+            ],
+            "members_t_minus_3": [
+              "A",
+              "B",
+              "EXIT"
+            ],
+            "prior20_actual_amounts": {
+              "A": [
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10
+              ],
+              "B": [
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10
+              ],
+              "NEW": [
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100
+              ]
+            },
+            "prior20_window_valid": {
+              "A": true,
+              "B": true,
+              "NEW": true
+            },
+            "ret1_t": {
+              "A": 0.1,
+              "B": -0.1,
+              "NEW": 0.9
+            },
+            "ret1_t_minus_3": {
+              "A": -0.1,
+              "B": -0.1,
+              "EXIT": 0.9
+            }
+          },
+          "vector_id": "REGIME_RAW_STRESS_SCOPE"
+        }
+      ],
       "rule": {
+        "governing_section": "REV2 §27; common-member delta definition §15",
         "operator": "MARKET_REGIME_AXES",
+        "raw_primitive_rule": {
+          "amount_window_policy": "CONFIRMED_SUSPENSION_SKIP; UNEXPLAINED_GAP_OR_MIXED_BASIS_UNKNOWN",
+          "breadth_policy": "PIT_COMMON_T_T_MINUS_3_BOTH_RET1_EVALUABLE",
+          "operator": "MARKET_REGIME_REV2_RAW",
+          "prior_actual_bar_count": 20,
+          "stress_change_policy": "PIT_COMMON_T_T_MINUS_1_BOTH_LIMIT_EVALUABLE",
+          "valid_limit_statuses": [
+            "LIMIT_UP",
+            "LIMIT_DOWN",
+            "NOT_LIMIT"
+          ]
+        },
         "trend_producer": "MARKET_REGIME_TREND_WEAK_ERRATUM_V1"
       },
       "vectors": [
@@ -483,5 +1107,5 @@
     }
   ],
   "governing_task": "docs/audits/V4_03_R3_EXTERNAL_BLOCKER_CLOSURE_TASK_20260928.md",
-  "version": "1.0.0"
+  "version": "1.1.0"
 }

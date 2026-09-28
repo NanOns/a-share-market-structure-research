@@ -43,10 +43,47 @@ def execute(rule: dict, inputs: dict, parameters: dict) -> dict:
         breadth = ("IMPROVING" if b > parameters["market_breadth_axis"] else "DETERIORATING" if b < -parameters["market_breadth_axis"] else "STABLE") if _finite(b) else None
         participation = ("EXPANDING" if p >= parameters["market_participation_expanding"] else "THIN" if p < parameters["market_participation_thin"] else "NORMAL") if _finite(p) else None
         stress = ("HIGH" if s >= parameters["market_stress_high"] else "ELEVATED" if s >= parameters["market_stress_elevated"] else "LOW") if _finite(s) and _finite(coverage) and coverage >= parameters["market_stress_min_limit_coverage"] else None
-        change = ("RISING" if s > old else "DECLINING" if s < old else "STABLE") if _finite(s) and _finite(old) else None
+        change_s = inputs.get("stress_change_current", s)
+        change = ("RISING" if change_s > old else "DECLINING" if change_s < old else "STABLE") if _finite(change_s) and _finite(old) else None
         trend = "UNKNOWN" if not all(_finite(x) for x in (close, ma, prior_ma)) else "STRONG" if close > ma > prior_ma else "WEAK" if close < ma < prior_ma else "NEUTRAL"
         return {"breadth_axis": breadth, "participation_axis": participation, "stress_level": stress,
                 "stress_change": change, "trend_axis": trend}
+    if op == "MARKET_REGIME_REV2_RAW":
+        current = set(inputs["members_t"])
+        prior3 = set(inputs["members_t_minus_3"])
+        common3 = current & prior3
+        ret_now, ret_old = inputs["ret1_t"], inputs["ret1_t_minus_3"]
+        eligible3 = sorted(sid for sid in common3 if _finite(ret_now.get(sid)) and _finite(ret_old.get(sid)))
+        breadth_now = sum(ret_now[sid] > 0 for sid in eligible3)/len(eligible3) if eligible3 else None
+        breadth_old = sum(ret_old[sid] > 0 for sid in eligible3)/len(eligible3) if eligible3 else None
+        breadth = breadth_now-breadth_old if eligible3 else None
+        ratios = []
+        for sid in current:
+            amount = inputs["amount_t"].get(sid)
+            history = inputs["prior20_actual_amounts"].get(sid, [])
+            if inputs["prior20_window_valid"].get(sid) is True and _finite(amount) and amount >= 0 and len(history) == rule["prior_actual_bar_count"] and all(_finite(x) and x >= 0 for x in history):
+                mean = sum(history)/len(history)
+                if mean > 0:
+                    ratios.append(amount/mean)
+        participation = median(ratios) if ratios else None
+        valid_status = set(rule["valid_limit_statuses"])
+        now = {sid: status for sid, status in inputs["limit_t"].items() if sid in current and status in valid_status}
+        coverage = len(now)/len(current) if current else None
+        stress = sum(x == "LIMIT_DOWN" for x in now.values())/len(now) if now else None
+        common1 = current & set(inputs["members_t_minus_1"])
+        prior = inputs["limit_t_minus_1"]
+        eligible1 = sorted(sid for sid in common1 if sid in now and prior.get(sid) in valid_status)
+        stress_now = sum(now[sid] == "LIMIT_DOWN" for sid in eligible1)/len(eligible1) if eligible1 else None
+        stress_old = sum(prior[sid] == "LIMIT_DOWN" for sid in eligible1)/len(eligible1) if eligible1 else None
+        axes = execute({"operator": "MARKET_REGIME_AXES"}, {"breadth": breadth, "participation": participation,
+                       "stress": stress, "prior_stress": stress_old, "stress_change_current": stress_now,
+                       "limit_coverage": coverage, "index_close": inputs.get("index_close"),
+                       "index_ma20": inputs.get("index_ma20"), "index_ma20_t_minus_5": inputs.get("index_ma20_t_minus_5")}, parameters)
+        return {"breadth_common_count": len(common3), "breadth_evaluable_count": len(eligible3),
+                "breadth_delta3": breadth, "participation_evaluable_count": len(ratios),
+                "participation_median_amount_ratio20": participation,
+                "stress_common_count": len(common1), "stress_evaluable_count": len(eligible1),
+                "stress_same_member_current_ratio": stress_now, "stress_same_member_prior_ratio": stress_old, **axes}
     if op == "SECTOR_FIELD_LOCAL_PRIMITIVES":
         if not inputs.get("membership_snapshot_id"):
             raise ValueError("accepted PIT sector membership identity missing")

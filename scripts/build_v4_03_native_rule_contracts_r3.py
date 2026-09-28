@@ -35,6 +35,38 @@ def main():
         vector("REGIME_UNKNOWN", "unknown_and_coverage", {"breadth": None, "participation": None, "stress": .02, "prior_stress": None, "limit_coverage": .5, "index_close": None, "index_ma20": 10, "index_ma20_t_minus_5": 9}, {"breadth_axis": None, "participation_axis": None, "stress_level": None, "stress_change": None, "trend_axis": "UNKNOWN"}),
         vector("REGIME_MIXED", "mixed_trend_neutral", {"breadth": 0, "participation": 1, "stress": 0, "prior_stress": 0, "limit_coverage": 1, "index_close": 9, "index_ma20": 10, "index_ma20_t_minus_5": 9}, {"trend_axis": "NEUTRAL"}),
     ]
+    raw_base = {"members_t": ["A", "B", "NEW"], "members_t_minus_3": ["A", "B", "EXIT"],
+                "members_t_minus_1": ["A", "B", "OLD"],
+                "ret1_t": {"A": .1, "B": -.1, "NEW": .9},
+                "ret1_t_minus_3": {"A": -.1, "B": -.1, "EXIT": .9},
+                "amount_t": {"A": 15, "B": 5, "NEW": 100},
+                "prior20_actual_amounts": {"A": [10]*20, "B": [10]*20, "NEW": [100]*20},
+                "prior20_window_valid": {"A": True, "B": True, "NEW": True},
+                "limit_t": {"A": "LIMIT_DOWN", "B": "NOT_LIMIT", "NEW": "LIMIT_DOWN"},
+                "limit_t_minus_1": {"A": "NOT_LIMIT", "B": "NOT_LIMIT", "OLD": "LIMIT_DOWN"},
+                "index_close": 12, "index_ma20": 11, "index_ma20_t_minus_5": 10}
+    raw_vectors = [
+        vector("REGIME_RAW_MEMBERSHIP", "common_membership_enter_exit", raw_base,
+               {"breadth_common_count": 2, "breadth_delta3": .5, "stress_common_count": 2,
+                "stress_same_member_current_ratio": .5, "stress_same_member_prior_ratio": 0,
+                "stress_change": "RISING", "breadth_axis": "IMPROVING", "participation_median_amount_ratio20": 1}),
+        vector("REGIME_RAW_PARTIAL", "member_amount_ratio20_partial_unknown",
+               {**raw_base, "prior20_actual_amounts": {"A": [10]*20, "B": [10]*19}},
+               {"participation_evaluable_count": 1, "participation_median_amount_ratio20": 1.5,
+                "participation_axis": "EXPANDING"}),
+        vector("REGIME_RAW_UNKNOWN", "missing_common_endpoint",
+               {**raw_base, "ret1_t_minus_3": {}, "limit_t_minus_1": {}},
+               {"breadth_delta3": None, "breadth_axis": None, "stress_change": None}),
+        vector("REGIME_RAW_AMOUNT_GAP", "unexplained_amount_window_gap",
+               {**raw_base, "prior20_window_valid": {"A": False, "B": True, "NEW": False}},
+               {"participation_evaluable_count": 1, "participation_median_amount_ratio20": .5,
+                "participation_axis": "THIN"}),
+        vector("REGIME_RAW_STRESS_SCOPE", "same_member_stress_vs_changed_universe",
+               {**raw_base, "limit_t": {"A": "NOT_LIMIT", "B": "NOT_LIMIT", "NEW": "LIMIT_DOWN"},
+                "limit_t_minus_1": {"A": "LIMIT_DOWN", "B": "NOT_LIMIT", "OLD": "NOT_LIMIT"}},
+               {"stress_same_member_current_ratio": 0, "stress_same_member_prior_ratio": .5,
+                "stress_change": "DECLINING"}),
+    ]
     a = {"quote_quality_state": "OBSERVED", "amount_quality_state": "OBSERVED", "amount": 10,
          "ret1_quality_state": "OBSERVED", "ret1": .1, "ma20_quality_state": "OBSERVED", "above_ma20": True}
     b = {"quote_quality_state": "UNKNOWN", "amount_quality_state": "OBSERVED", "amount": 30,
@@ -53,10 +85,17 @@ def main():
     contracts = [
         {"contract_id": "MARKET_RELATIVE_REFERENCE_V1", "rule": {"operator": "PIT_EQUAL_WEIGHT_REFERENCE", "missing_gate_parameter_id": "V4_03_MARKET_REFERENCE_MAX_MISSING_FRACTION"}, "vectors": reference},
         {"contract_id": "V4_03_MARKET_REFERENCE_PATH_V1", "rule": {"operator": "UNKNOWN_SUFFIX_PATH", "base_level": 1.0, "rebase_requires_new_series_version": True}, "vectors": path},
-        {"contract_id": "MARKET_REGIME_V1_PRIMITIVES", "rule": {"operator": "MARKET_REGIME_AXES", "trend_producer": "MARKET_REGIME_TREND_WEAK_ERRATUM_V1"}, "vectors": regime},
+        {"contract_id": "MARKET_REGIME_V1_PRIMITIVES", "rule": {"operator": "MARKET_REGIME_AXES", "trend_producer": "MARKET_REGIME_TREND_WEAK_ERRATUM_V1",
+         "raw_primitive_rule": {"operator": "MARKET_REGIME_REV2_RAW", "prior_actual_bar_count": 20,
+                                "amount_window_policy": "CONFIRMED_SUSPENSION_SKIP; UNEXPLAINED_GAP_OR_MIXED_BASIS_UNKNOWN",
+                                "valid_limit_statuses": ["LIMIT_UP", "LIMIT_DOWN", "NOT_LIMIT"],
+                                "breadth_policy": "PIT_COMMON_T_T_MINUS_3_BOTH_RET1_EVALUABLE",
+                                "stress_change_policy": "PIT_COMMON_T_T_MINUS_1_BOTH_LIMIT_EVALUABLE"},
+         "governing_section": "REV2 §27; common-member delta definition §15"}, "vectors": regime,
+         "raw_vectors": raw_vectors},
         {"contract_id": "V4_03_SECTOR_NATIVE_PRIMITIVE_V1", "rule": {"operator": "SECTOR_FIELD_LOCAL_PRIMITIVES", "membership_identity_required_for_publication": True}, "vectors": sector},
     ]
-    payload = {"contract_id": "V4_03_NATIVE_DETERMINISTIC_RULE_SCHEMA_R3", "version": "1.0.0",
+    payload = {"contract_id": "V4_03_NATIVE_DETERMINISTIC_RULE_SCHEMA_R3", "version": "1.1.0",
                "amendment": "Native aggregate/stateful rules use this executable deterministic schema because RULE_AST_V2 cannot express path state or set-identity objects without changing existing 1.1 contracts.",
                "governing_task": "docs/audits/V4_03_R3_EXTERNAL_BLOCKER_CLOSURE_TASK_20260928.md",
                "contracts": contracts}
@@ -64,7 +103,7 @@ def main():
     tmp = OUTPUT.with_suffix(OUTPUT.suffix + ".tmp")
     tmp.write_text(json.dumps(payload, ensure_ascii=False, sort_keys=True, indent=2, allow_nan=False) + "\n", encoding="utf-8")
     os.replace(tmp, OUTPUT)
-    print(sum(len(c["vectors"]) for c in contracts))
+    print(sum(len(c["vectors"]) + len(c.get("raw_vectors", [])) for c in contracts))
 
 
 if __name__ == "__main__":

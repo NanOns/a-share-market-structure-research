@@ -44,7 +44,7 @@ def main():
     if any(sha(ROOT / ref["path"]) != ref["sha256"] for ref in source_refs.values()):
         raise RuntimeError("accepted upstream source identity mismatch")
     tests = {"command": "python -m pytest -q tests/v4_03 tests/v4_phase0/test_algorithm_contracts.py",
-             "passed": 46, "failed": 0}
+             "passed": 47, "failed": 0}
     common = {"contract_hashes": {
                   "field_contracts": sha(ROOT / "config/v4_03_algorithm_contracts_v1.json"),
                   "native_rule_schema": sha(ROOT / "config/v4_03_native_rule_contracts_r3.json"),
@@ -60,8 +60,12 @@ def main():
         "market_path": sha(ROOT / "reports/v4_03/staging/V4_03_MARKET_REFERENCE_PATH_CANDIDATE_R3.jsonl.gz"),
         "market_regime": sha(ROOT / "reports/v4_03/staging/V4_03_MARKET_REGIME_NATIVE_CANDIDATE_R3.jsonl.gz")}
     all_pass = all(report["status"] == "PASS" for report in reports.values())
-    if not all_pass:
-        raise RuntimeError("R3 acceptance prerequisite receipt failed")
+    regime_conformant = (reports["regime"].get("contract_conformance") == "PASS"
+                         and reports["native"].get("market_regime_raw_derivation_covered") is True)
+    pit_metadata_correct = (reports["full"].get("evidence_origin") == "V4_03_PIT_STAGING_CANDIDATE"
+                            and reports["path"].get("evidence_origin") == "V4_03_PIT_STAGING_CANDIDATE"
+                            and reports["regime"].get("evidence_origin") == "V4_03_PIT_STAGING_CANDIDATE")
+    ready = all_pass and regime_conformant and pit_metadata_correct
     capabilities = {
         "STOCK_CORE": {"status": "PASS_CANDIDATE", "artifacts": ["full_scope"],
                        "independent_postchecks": ["full"], "residual_blockers": []},
@@ -69,8 +73,9 @@ def main():
                          "independent_postchecks": ["prior", "full"], "residual_blockers": []},
         "MARKET_REFERENCE": {"status": "PASS_CANDIDATE", "artifacts": ["market_path"],
                              "independent_postchecks": ["path"], "residual_blockers": []},
-        "MARKET_REGIME": {"status": "PASS_CANDIDATE", "artifacts": ["market_regime"],
-                          "independent_postchecks": ["regime", "producer"], "residual_blockers": []},
+        "MARKET_REGIME": {"status": "PASS_CANDIDATE" if ready else "BLOCKED", "artifacts": ["market_regime"],
+                          "independent_postchecks": ["regime", "producer"],
+                          "residual_blockers": [] if ready else ["MARKET_REGIME_REV2_CONFORMANCE_NOT_PROVEN"]},
         "SECTOR_NATIVE": {"status": "BLOCKED", "artifacts": [], "independent_postchecks": [],
                           "residual_blockers": ["BLOCKED_MISSING_ACCEPTED_PIT_MEMBERSHIP"]},
     }
@@ -80,9 +85,10 @@ def main():
                   "SECTOR_DEPENDENT_STOCK_PATHS": "BLOCKED_OR_SHADOW_ONLY",
                   "V4_04_EXECUTION_THIS_TASK": "NOT_STARTED",
                   "V4_05_REPLAY_GATE_A_EXECUTION_THIS_TASK": "NOT_STARTED"}
-    payload = {"contract_id": "V4_03_STAGE_DISPOSITION_R3", "status": "CAPABILITY_SCOPED_PASS_CANDIDATE_NOT_FINAL_ACCEPTANCE",
+    payload = {"contract_id": "V4_03_STAGE_DISPOSITION_R3", "status": "CAPABILITY_SCOPED_PASS_CANDIDATE_NOT_FINAL_ACCEPTANCE" if ready else "BLOCKED_PENDING_CORRECTIVE_EVIDENCE",
                "governing_task": TASK, "base_task": "docs/audits/V4_03_PURE_CORE_FACTORS_IMPLEMENTATION_TASK_20260927.md",
-               "external_review_ready": "TRUE_WITH_CAPABILITY_SCOPE", "v4_03_final_acceptance": "NOT_GRANTED",
+               "external_review_ready": "TRUE_WITH_CAPABILITY_SCOPE" if ready else "FALSE", "v4_03_final_acceptance": "NOT_GRANTED",
+               "market_regime_rev2_conformance": regime_conformant, "pit_metadata_correct": pit_metadata_correct,
                "v4_04_entry": "BLOCKED_UNTIL_EXTERNAL_ACCEPTANCE", "capabilities": capabilities,
                "dependency_permissions": dependency, "artifact_hashes": artifact_hashes,
                "evidence_receipts": {name: {"path": path, "sha256": sha(ROOT / path), "status": reports[name]["status"]}

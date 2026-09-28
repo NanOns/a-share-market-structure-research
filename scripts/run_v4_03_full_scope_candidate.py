@@ -279,12 +279,19 @@ def main():
                 field_quality[(name, value["quality_state"])] += 1
             row = {"security_id": sid, "trade_date": head["accepted_data_cutoff"],
                    "board_scope": core_row["board_scope"], "membership_basis": snapshots[head["accepted_data_cutoff"]][sid]["membership_basis"],
-                   "evidence_origin": "DIAGNOSTIC_NON_PIT", "universe_snapshot_id": current_universe_id,
+                   "evidence_origin": "V4_03_PIT_STAGING_CANDIDATE" if args.r3 else "DIAGNOSTIC_NON_PIT", "universe_snapshot_id": current_universe_id,
                    "source_digest": source_digest, "fields": fields}
             stream.write(json.dumps(row, ensure_ascii=False, sort_keys=True, allow_nan=False) + "\n")
-    os.replace(temp, output_path)
+    for attempt in range(20):
+        try:
+            os.replace(temp, output_path)
+            break
+        except PermissionError:
+            if attempt == 19:
+                raise
+            time.sleep(.5)
     references = {"contract_id": f"V4_03_MARKET_REFERENCE_CANDIDATE_{suffix}", "as_of": head["accepted_data_cutoff"],
-                  "evidence_origin": "DIAGNOSTIC_NON_PIT", "market_references": market_refs,
+                  "evidence_origin": "V4_03_PIT_STAGING_CANDIDATE" if args.r3 else "DIAGNOSTIC_NON_PIT", "market_references": market_refs,
                   "input_source_digest": source_digest,
                   "market_path_status": "NOT_COMPUTED_HISTORICAL_DAILY_CHAIN_PENDING",
                   "forward_benchmark_published": False}
@@ -335,6 +342,7 @@ def main():
                                "No accepted publication or final stage receipt"]}
     receipt["core_candidate_sha256"] = core_receipt["output_sha256"]
     if args.r3:
+        receipt["evidence_origin"] = "V4_03_PIT_STAGING_CANDIDATE"
         receipt["prior_rps_origin"] = "V4_03_STAGE_OWNED_HISTORICAL_STAGING_R3"
         receipt["prior_rps_artifact_sha256"] = prior_artifact_sha
         receipt["governing_task"] = "docs/audits/V4_03_R3_EXTERNAL_BLOCKER_CLOSURE_TASK_20260928.md"

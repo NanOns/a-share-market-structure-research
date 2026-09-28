@@ -521,6 +521,7 @@ def main():
     basis_identity = digest(sorted(digest_basis_pairs))
     source_identity_mismatch_count = sum(
         row.get("source_digest") != source_digest or row.get("universe_snapshot_id") != current_universe_id
+        or row.get("evidence_origin") != ("V4_03_PIT_STAGING_CANDIDATE" if args.r3 else "DIAGNOSTIC_NON_PIT")
         for row in full_rows.values())
     all_returns = {h: {} for h in (1, 3, 5, 20)}
     for sid in target_ids:
@@ -723,7 +724,7 @@ def main():
     report = {"contract_id": f"V4_03_INDEPENDENT_POSTCHECK_{suffix}",
               "status": status, "scope": "INDEPENDENT_DIAGNOSTIC_POSTCHECK_NOT_STAGE_ACCEPTANCE",
               "governing_task": "docs/audits/V4_03_R3_EXTERNAL_BLOCKER_CLOSURE_TASK_20260928.md" if args.r3 else None,
-              "cutoff": current_day, "evidence_origin": "DIAGNOSTIC_NON_PIT",
+              "cutoff": current_day, "evidence_origin": "V4_03_PIT_STAGING_CANDIDATE" if args.r3 else "DIAGNOSTIC_NON_PIT",
               "independent_formula_module_imports": [],
               "inputs": {"dev_baseline_head_sha256": sha(head_path), "universe_sha256": universe_ref["sha256"],
                          "daily_sha256": daily_ref["sha256"], "calendar_sha256": calendar_ref["sha256"],
@@ -749,7 +750,7 @@ def main():
               "elapsed_seconds": round(time.monotonic() - started, 3),
               "limitations": ["This independently recomputes values, quality, input_digest and window_identity for all 47 fields and checks each output_digest over the serialized payload.",
                               "Relative RPS delta prior rows are recomputed from frozen historical PIT snapshots in the accepted universe input.",
-                              "Candidate lineage remains DIAGNOSTIC_NON_PIT; this does not grant stage acceptance or publication."]}
+                              "PIT historical staging remains unaccepted; this does not grant stage acceptance or publication." if args.r3 else "Candidate lineage remains DIAGNOSTIC_NON_PIT; this does not grant stage acceptance or publication."]}
     atomic_json(output_path, report)
     print(json.dumps({"status": status, "rows_checked": len(full_rows), "fields_checked": len(field_ids),
                       "mismatches": sum(mismatch_by_field.values()), "elapsed_seconds": report["elapsed_seconds"]}))

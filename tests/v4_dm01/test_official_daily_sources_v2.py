@@ -17,6 +17,11 @@ from workbench_analysis.baostock_daily_update_source import (
     crosscheck_tdx_with_baostock,
 )
 from workbench_analysis.baostock_supplemental import BaoStockError, RequestBudget
+from workbench_analysis.baostock_runtime_acceptance import (
+    build_runtime_acceptance_manifest,
+    load_runtime_acceptance_manifest,
+    runtime_acceptance_error,
+)
 from workbench_analysis.continuous_data_maintenance import (
     BAR_STATUS_SUSPENDED,
     BAR_STATUS_UNKNOWN,
@@ -28,10 +33,23 @@ from workbench_analysis.daily_increment_builder import (
     build_raw_increment_staging,
     run_incremental_components,
 )
+from workbench_analysis.daily_increment_postcheck import (
+    independent_daily_increment_postcheck,
+    make_independent_postcheck_callback,
+)
 from workbench_analysis.daily_source_freeze import build_source_freeze_manifest_v2
+from workbench_analysis.daily_source_manifests import (
+    build_current_lifecycle_snapshot,
+    build_special_phase_source_manifest,
+)
 from workbench_analysis.daily_source_orchestrator import evaluate_daily_source_readiness
+from workbench_analysis.gbbq_source_revision_probe import probe_gbbq_source_revision
 from workbench_analysis.tdx_official_daily_source import TDXSourceError
-from workbench_analysis.tdx_snapshot_delta import TDXDeltaError, build_tdx_package_delta
+from workbench_analysis.tdx_snapshot_delta import (
+    TDXDeltaError,
+    build_tdx_package_delta,
+    build_tdx_session_delta_view,
+)
 
 
 TARGET = "2026-09-28"
@@ -229,6 +247,35 @@ def test_historical_correction_is_detected(tmp_path):
     assert delta["entry_events"][0]["classification"] == "APPEND_WITH_HISTORICAL_CORRECTION"
 
 
+def test_one_full_package_delta_supports_multiple_session_views(tmp_path):
+    parent = _zip(tmp_path / "parent.zip", {
+        "sh/lday/sh600000.day": _day_file((20260924, 990)),
+        "sz/lday/sz000001.day": _day_file((20260924, 1000)),
+    })
+    current = _zip(tmp_path / "current.zip", {
+        "sh/lday/sh600000.day": _day_file((20260924, 990), (20260925, 995), (TARGET_NUMBER, 1010)),
+        "sz/lday/sz000001.day": _day_file((20260924, 1000), (20260925, 1005), (TARGET_NUMBER, 1000)),
+    })
+    source_delta = build_tdx_package_delta(parent_zip=parent, current_zip=current, target_date=TARGET,
+                                           parent_snapshot_id="parent", current_snapshot_id="current")
+    assert source_delta["changed_file_manifest"]
+    assert all(item["sha256"] and item["bytes"] > 0 and item["trade_date"] == TARGET
+               for item in source_delta["changed_file_manifest"])
+    first = build_tdx_session_delta_view(source_delta, "2026-09-25")
+    last = build_tdx_session_delta_view(source_delta, TARGET)
+    assert first["status"] == last["status"] == "READY"
+    assert first["target_bar_count"] == last["target_bar_count"] == 2
+    assert first["current_snapshot_id"] == last["current_snapshot_id"] == "current"
+    assert first["package_delta_sha256"] == last["package_delta_sha256"] == source_delta["delta_sha256"]
+    for view in (first, last):
+        staged = build_raw_increment_staging(
+            trade_date=view["target_date"], source_snapshot_id="current", delta=view,
+            output_path=tmp_path / f"raw_{view['target_date']}.jsonl", tdx_root=tmp_path / "tdx",
+        )
+        assert staged["status"] == "STAGING_READY"
+        assert staged["rows"] == 2
+
+
 def test_truncation_blocks(tmp_path):
     parent = _zip(tmp_path / "parent.zip", {
         "sh/lday/sh600000.day": _day_file((20260923, 980), (20260924, 990)),
@@ -239,6 +286,20 @@ def test_truncation_blocks(tmp_path):
         "sz/lday/sz000001.day": _day_file((20260924, 1000)),
     })
     with pytest.raises(TDXDeltaError, match="TRUNCATION"):
+        build_tdx_package_delta(parent_zip=parent, current_zip=current, target_date=TARGET,
+                                parent_snapshot_id="parent", current_snapshot_id="current")
+
+
+def test_same_length_day_file_trade_date_rewrite_blocks(tmp_path):
+    parent = _zip(tmp_path / "parent.zip", {
+        "sh/lday/sh600000.day": _day_file((20260923, 980), (20260924, 990)),
+        "sz/lday/sz000001.day": _day_file((20260924, 1000)),
+    })
+    current = _zip(tmp_path / "current.zip", {
+        "sh/lday/sh600000.day": _day_file((20260922, 980), (20260924, 990)),
+        "sz/lday/sz000001.day": _day_file((20260924, 1000)),
+    })
+    with pytest.raises(TDXDeltaError, match="REWRITE"):
         build_tdx_package_delta(parent_zip=parent, current_zip=current, target_date=TARGET,
                                 parent_snapshot_id="parent", current_snapshot_id="current")
 
@@ -263,10 +324,11 @@ class FakeSDK:
 
 
 class FakeBaoClient:
-    def __init__(self, daily_rows=None, factor_rows=None, *, provider_date=TARGET, budget=None):
+    def __init__(self, daily_rows=None, factor_rows=None, *, provider_date=TARGET, budget=None,
+                 auth_mode="PUBLIC_ANONYMOUS"):
         self.logged_in = True
         self.sdk = FakeSDK()
-        self.auth_mode = "PUBLIC_ANONYMOUS"
+        self.auth_mode = auth_mode
         self.daily_rows = [] if daily_rows is None else daily_rows
         self.factor_rows = [] if factor_rows is None else factor_rows
         self.provider_date = provider_date
@@ -298,13 +360,29 @@ def _factor_row(**overrides):
     return row
 
 
-def _bao_capture(monkeypatch, tmp_path, client):
-    monkeypatch.setattr(bao_source, "package_metadata", lambda: {
-        "package": "baostock", "version": "0.9.3", "installed_python_sources_sha256": "sdk-hash"
-    })
+def _runtime_manifest(sdk=None, auth_mode="PUBLIC_ANONYMOUS", target=TARGET):
+    sdk = sdk or {"package": "baostock", "version": "0.9.3", "installed_python_sources_sha256": "sdk-hash"}
+    live_smoke = {
+        "status": "PASS", "target_date": target, "auth_mode": auth_mode,
+        "daily": {"method": bao_source.DAILY_METHOD, "provider_date": target, "row_count": 1,
+                  "fields": sorted(_daily_row(day=target)), "response_sha256": "d" * 64},
+        "adjustment_factor": {"method": bao_source.FACTOR_METHOD, "provider_date": target, "row_count": 0,
+                               "fields": sorted(_factor_row().keys()), "response_sha256": "e" * 64},
+    }
+    return build_runtime_acceptance_manifest(
+        sdk=sdk, auth_mode=auth_mode, live_smoke=live_smoke,
+        smoke_receipt_path="reports/test/live_smoke_receipt.json", smoke_receipt_sha256="f" * 64,
+    )
+
+
+def _bao_capture(monkeypatch, tmp_path, client, sdk=None, runtime_manifest=None):
+    sdk = sdk or {"package": "baostock", "version": "0.9.3", "installed_python_sources_sha256": "sdk-hash"}
+    monkeypatch.setattr(bao_source, "package_metadata", lambda: sdk)
+    runtime_manifest = runtime_manifest or _runtime_manifest(sdk, client.auth_mode)
     return capture_baostock_daily_update(trade_date=TARGET, client=client, snapshot_root=tmp_path / "snapshots",
                                          tdx_root=tmp_path / "client" / "vipdoc",
-                                         observed_at="2026-09-28T09:00:00+00:00")
+                                         observed_at="2026-09-28T09:00:00+00:00",
+                                         runtime_acceptance_manifest=runtime_manifest)
 
 
 def test_dailyupdates_exact_trade_date(monkeypatch, tmp_path):
@@ -380,15 +458,59 @@ def test_request_budget_enforced(monkeypatch, tmp_path):
         _bao_capture(monkeypatch, tmp_path, client)
 
 
-def test_public_sdk_runtime_pin_mismatch_fails_before_query(monkeypatch, tmp_path):
+def test_public_sdk_runtime_fingerprint_mismatch_fails_before_query(monkeypatch, tmp_path):
     client = FakeBaoClient([_daily_row()], [])
-    monkeypatch.setattr(bao_source, "package_metadata", lambda: {
-        "package": "baostock", "version": "0.9.4", "installed_python_sources_sha256": "sdk-hash"
-    })
-    with pytest.raises(BaoStockDailyUpdateError, match="RUNTIME_AUTH_PIN_MISMATCH"):
+    changed_sdk = {"package": "baostock", "version": "0.9.4", "installed_python_sources_sha256": "changed-sdk-hash"}
+    monkeypatch.setattr(bao_source, "package_metadata", lambda: changed_sdk)
+    with pytest.raises(BaoStockDailyUpdateError, match="SDK_FINGERPRINT_MISMATCH"):
         capture_baostock_daily_update(trade_date=TARGET, client=client, snapshot_root=tmp_path / "snapshots",
-                                     tdx_root=tmp_path / "client")
+                                     tdx_root=tmp_path / "client", runtime_acceptance_manifest=_runtime_manifest())
     assert client.calls == []
+
+
+def test_baostock_runtime_manifest_accepts_fingerprinted_runtime_for_any_auth_mode(monkeypatch, tmp_path):
+    sdk = {"package": "baostock", "version": "0.9.5", "installed_python_sources_sha256": "accepted-sdk-hash"}
+    client = FakeBaoClient([_daily_row()], [], auth_mode="PUBLIC_ACCOUNT")
+    result = _bao_capture(monkeypatch, tmp_path, client, sdk=sdk)
+    assert result["sdk"]["version"] == "0.9.5"
+    assert result["sdk"]["installed_python_sources_sha256"] == "accepted-sdk-hash"
+
+
+def test_baostock_runtime_manifest_binds_auth_mode(monkeypatch, tmp_path):
+    sdk = {"package": "baostock", "version": "0.9.3", "installed_python_sources_sha256": "sdk-hash"}
+    client = FakeBaoClient([_daily_row()], [], auth_mode="PUBLIC_ANONYMOUS")
+    manifest = _runtime_manifest(sdk, auth_mode="PUBLIC_ACCOUNT")
+    with pytest.raises(BaoStockDailyUpdateError, match="AUTH_MODE_MISMATCH"):
+        _bao_capture(monkeypatch, tmp_path, client, sdk=sdk, runtime_manifest=manifest)
+    assert client.calls == []
+
+
+def test_baostock_live_dailyupdates_smoke_receipt_can_activate_dm01(tmp_path):
+    seed = _runtime_manifest()
+    runtime = seed["runtime"]
+    live_smoke = seed["live_smoke"]
+    receipt = {
+        "contract_id": "BAOSTOCK_DAILY_UPDATE_LIVE_SMOKE_V1",
+        "status": "PASS",
+        "auth_mode": seed["auth_mode"],
+        "runtime": runtime,
+        "live_smoke": live_smoke,
+    }
+    receipt_path = tmp_path / "reports" / "live_smoke_receipt.json"
+    receipt_path.parent.mkdir(parents=True)
+    receipt_bytes = (json.dumps(receipt, ensure_ascii=False, sort_keys=True, indent=2) + "\n").encode()
+    receipt_path.write_bytes(receipt_bytes)
+    manifest = build_runtime_acceptance_manifest(
+        sdk=runtime,
+        auth_mode=seed["auth_mode"],
+        live_smoke=live_smoke,
+        smoke_receipt_path="reports/live_smoke_receipt.json",
+        smoke_receipt_sha256=hashlib.sha256(receipt_bytes).hexdigest(),
+    )
+    manifest_path = tmp_path / "reports" / "accepted_runtime_manifest.json"
+    manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+    loaded = load_runtime_acceptance_manifest(manifest_path, project_root=tmp_path, tdx_root=tmp_path / "tdx-read-only")
+    assert runtime_acceptance_error(loaded, sdk=runtime, auth_mode=seed["auth_mode"]) is None
 
 
 def test_tdx_ready_baostock_not_ready_does_not_promote(tmp_path):
@@ -499,6 +621,8 @@ def test_tdx_baostock_price_conflict_keeps_tdx_authority():
     bao_rows = [{"code": "sh.600000", "close": "9.9", "volume": "1000", "amount": "10000", "tradestatus": "0"}]
     result = crosscheck_tdx_with_baostock(trade_date=TARGET, tdx_rows=tdx_rows, baostock_rows=bao_rows)
     assert result["status"] == "CONFLICTS_FOUND"
+    assert result["gate_effect"] == "DIAGNOSTIC_ONLY"
+    assert result["data_head_blocking"] is False
     assert result["tdx_remains_canonical_authority"] is True
     assert result["baostock_rows_promoted_to_raw"] is False
 
@@ -553,3 +677,293 @@ def test_raw_increment_staging_never_uses_baostock(tmp_path):
     assert artifact["bao_stock_ohlc_used"] is False
     assert row["canonical_security_id"] is None
     assert row["source_authority"] == "TDX_OFFICIAL_PACKAGE"
+
+
+def _gbbq_fixture(tmp_path, *, changed=False, missing_source=False):
+    tdx_root = tmp_path / "tdx"
+    source_root = tdx_root / "vipdoc" / "cw"
+    accepted_root = tmp_path / "project" / "accepted_gbbq"
+    output_root = tmp_path / "project" / "source_snapshot_store"
+    source_root.mkdir(parents=True)
+    accepted_root.mkdir(parents=True)
+    contents = {"gbbq": b"accepted-gbbq", "gbbq.map": b"accepted-map"}
+    files = {}
+    for name, raw in contents.items():
+        (accepted_root / name).write_bytes(raw)
+        files[name] = {"bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest(), "path": name}
+        if not missing_source:
+            current = raw + b"-revision" if changed and name == "gbbq" else raw
+            (source_root / name).write_bytes(current)
+    (accepted_root / "manifest.json").write_text(json.dumps({
+        "contract_id": "V4_02_GBBQ_FORWARD_SNAPSHOT_V1",
+        "snapshot_id": "sha256-accepted",
+        "files": files,
+        "first_eligible_formal_trade_date": TARGET,
+        "immutable": True,
+    }), encoding="utf-8")
+    result = probe_gbbq_source_revision(
+        target_date=TARGET,
+        current_source_root=source_root,
+        accepted_snapshot_root=accepted_root,
+        output_snapshot_root=output_root,
+        observed_at="2026-09-28T07:00:00+00:00",
+        official_sessions_after_target=["2026-09-29"],
+        tdx_root=tdx_root,
+    )
+    return result, source_root, output_root
+
+
+def test_gbbq_unchanged_revision_reuses_existing_snapshot(tmp_path):
+    result, _source_root, output_root = _gbbq_fixture(tmp_path)
+    assert result["status"] == "REUSE_ACCEPTED_GBBQ_SNAPSHOT"
+    assert result["accepted_snapshot_id"] == "sha256-accepted"
+    assert not (output_root / "gbbq").exists()
+
+
+def test_gbbq_changed_revision_freezes_new_snapshot(tmp_path):
+    result, source_root, output_root = _gbbq_fixture(tmp_path, changed=True)
+    assert result["status"] == "NEW_GBBQ_REVISION_FROZEN_REQUIRES_ADJUSTMENT_IMPACT"
+    assert result["eligible_for_target_date"] is False
+    snapshot = output_root / "gbbq" / result["new_snapshot_id"]
+    assert (snapshot / "gbbq").read_bytes() == (source_root / "gbbq").read_bytes()
+    assert result["tdx_root_write_count"] == 0
+
+
+def test_gbbq_missing_local_source_does_not_claim_reuse(tmp_path):
+    result, _source_root, _output_root = _gbbq_fixture(tmp_path, missing_source=True)
+    assert result["status"] == "WAIT_GBBQ_CURRENT_SOURCE_UNAVAILABLE"
+    assert set(result["missing_source_files"]) == {"gbbq", "gbbq.map"}
+
+
+def test_no_special_event_still_produces_valid_source_manifest(tmp_path):
+    event_path = tmp_path / "data" / "special_events.jsonl"
+    policy_path = tmp_path / "config" / "special_policy.json"
+    event_path.parent.mkdir(parents=True)
+    policy_path.parent.mkdir(parents=True)
+    event_path.write_text("", encoding="utf-8")
+    policy_path.write_text(json.dumps({"contract_id": "SPECIAL_PRICE_PHASE_POLICY_V1",
+                                      "policies": [{"phase": "REGULAR", "valid_from": "2020-01-01"}]}),
+                           encoding="utf-8")
+    stage_manifest_path = tmp_path / "reports" / "v402_manifest.json"
+    stage_manifest_path.parent.mkdir(parents=True)
+    stage_manifest = {"components": {
+        "R6_EVENTS": {"path": "data/special_events.jsonl", "sha256": hashlib.sha256(b"").hexdigest(), "bytes": 0},
+        "R6_POLICY": {"path": "config/special_policy.json", "sha256": hashlib.sha256(policy_path.read_bytes()).hexdigest(),
+                      "bytes": policy_path.stat().st_size},
+    }}
+    stage_manifest_bytes = (json.dumps(stage_manifest, sort_keys=True, indent=2) + "\n").encode()
+    stage_manifest_path.write_bytes(stage_manifest_bytes)
+    acceptance_path = tmp_path / "reports" / "v402_acceptance.json"
+    acceptance_path.write_text(json.dumps({
+        "acceptance_result": {"external_acceptance": "EXTERNALLY_ACCEPTED"},
+        "evidence": {"manifest": {"sha256": hashlib.sha256(stage_manifest_bytes).hexdigest()}},
+    }), encoding="utf-8")
+    lifecycle_artifact = tmp_path / "reports" / "current_lifecycle.json"
+    lifecycle_artifact.write_text(json.dumps({"trade_date": TARGET, "active_security_ids": []}), encoding="utf-8")
+    lifecycle = {
+        "contract_id": "CURRENT_LIFECYCLE_SNAPSHOT_V1",
+        "status": "READY",
+        "trade_date": TARGET,
+        "artifact_path": "reports/current_lifecycle.json",
+        "artifact_sha256": hashlib.sha256(lifecycle_artifact.read_bytes()).hexdigest(),
+        "source_revision": "lifecycle-r1",
+        "active_security_ids": [],
+    }
+    result = build_special_phase_source_manifest(
+        trade_date=TARGET,
+        project_root=tmp_path,
+        v402_external_acceptance_path=acceptance_path,
+        v402_stage_manifest_path=stage_manifest_path,
+        event_store_path=event_path,
+        policy_path=policy_path,
+        lifecycle_snapshot=lifecycle,
+        observed_at="2026-09-28T07:00:00+00:00",
+        tdx_root=tmp_path / "tdx-read-only",
+    )
+    assert result["status"] == "READY"
+    assert result["event_status"] == "NO_NEW_SPECIAL_PHASE_EVENT"
+    assert result["active_event_count"] == 0
+    assert len(result["manifest_sha256"]) == 64
+
+
+def test_no_identity_event_still_produces_valid_lifecycle_snapshot():
+    identities = [
+        {"source_security_key": "SH.600000", "security_id": "SEC-SH600000", "board": "SH_MAIN",
+         "security_type": "A_STOCK", "list_date": "1999-11-10"},
+        {"source_security_key": "SZ.000001", "security_id": "SEC-SZ000001", "board": "SZ_MAIN",
+         "security_type": "A_STOCK", "list_date": "1991-04-03"},
+    ]
+    manifest = build_current_lifecycle_snapshot(
+        trade_date=TARGET,
+        baseline_date="2026-09-24",
+        baseline_data_head={
+            "accepted_trade_date": "2026-09-24",
+            "component_permissions": {"IDENTITY_UNIVERSE": {"cutoff": "2026-09-24", "status": "FULL_PASS"}},
+        },
+        parent_universe_rows=[{"trade_date": "2026-09-24", "source_security_key": row["source_security_key"]}
+                              for row in identities],
+        identity_records=identities,
+        baostock_snapshot={
+            "status": "BAOSTOCK_DAILY_SNAPSHOT_READY", "trade_date": TARGET, "provider_date": TARGET,
+            "snapshot_id": "sha256-test-roster", "daily_rows": [
+                {"code": "sh.600000", "date": TARGET}, {"code": "sz.000001", "date": TARGET},
+            ],
+        },
+        official_session_bridge={
+            "status": "PASS", "latest_completed_official_session": "2026-09-24",
+            "official_sessions_after_base_cutoff": [TARGET],
+        },
+        source_evidence={"baseline_data_head_sha256": "parent-head", "baostock_snapshot_sha256": "bao"},
+        observed_at="2026-09-28T07:10:00+00:00",
+    )
+    assert manifest["status"] == "READY"
+    assert manifest["event_status"] == "PASS_NO_IDENTITY_EVENT"
+    assert manifest["active_security_ids"] == ["SEC-SH600000", "SEC-SZ000001"]
+    assert manifest["absence_is_delisting_evidence"] is False
+
+
+def test_unmapped_new_lifecycle_candidate_only_degrades_affected_security():
+    identities = [
+        {"source_security_key": "SH.600000", "security_id": "SEC-SH600000", "board": "SH_MAIN",
+         "security_type": "A_STOCK", "list_date": "1999-11-10"},
+    ]
+    manifest = build_current_lifecycle_snapshot(
+        trade_date=TARGET,
+        baseline_date="2026-09-24",
+        baseline_data_head={
+            "accepted_trade_date": "2026-09-24",
+            "component_permissions": {"IDENTITY_UNIVERSE": {"cutoff": "2026-09-24", "status": "FULL_PASS"}},
+        },
+        parent_universe_rows=[{"trade_date": "2026-09-24", "source_security_key": "SH.600000"}],
+        identity_records=identities,
+        baostock_snapshot={
+            "status": "BAOSTOCK_DAILY_SNAPSHOT_READY", "trade_date": TARGET, "provider_date": TARGET,
+            "snapshot_id": "sha256-test-roster", "daily_rows": [
+                {"code": "sh.600000", "date": TARGET}, {"code": "sh.688999", "date": TARGET},
+            ],
+        },
+        official_session_bridge={
+            "status": "PASS", "latest_completed_official_session": "2026-09-24",
+            "official_sessions_after_base_cutoff": [TARGET],
+        },
+        source_evidence={"baseline_data_head_sha256": "parent-head", "baostock_snapshot_sha256": "bao"},
+        observed_at="2026-09-28T07:10:00+00:00",
+    )
+    assert manifest["status"] == "DEGRADED_PASS"
+    assert manifest["event_status"] == "NEW_SOURCE_KEYS_ISOLATED_UNKNOWN"
+    assert manifest["unknown_source_keys"] == ["SH.688999"]
+    assert manifest["active_security_ids"] == ["SEC-SH600000"]
+
+
+def test_real_independent_postcheck_reads_artifacts(tmp_path):
+    families = (
+        "TDX_PAGE_CAPTURE", "TDX_FULL_PACKAGE", "TDX_PACKAGE_DELTA", "OFFICIAL_CALENDAR",
+        "BAOSTOCK_DAILY_UPDATE", "BAOSTOCK_ADJUSTMENT_FACTOR", "GBBQ", "IDENTITY_LIFECYCLE", "SPECIAL_PRICE_PHASE",
+    )
+    source_files = {}
+    package_sha = "1" * 64
+    snapshot_id = "sha256-" + package_sha
+    for family in families:
+        if family == "TDX_FULL_PACKAGE":
+            path = tmp_path / "tdx" / snapshot_id / "hsjday.zip"
+            path.parent.mkdir(parents=True)
+            content = b"z"
+            source_revision = snapshot_id
+            source_sha = package_sha
+        elif family == "TDX_PAGE_CAPTURE":
+            path = tmp_path / f"source_{family}.json"
+            content = json.dumps({"target_date": TARGET, "update_date": TARGET, "snapshot_id": snapshot_id,
+                                  "download": {"sha256": package_sha}}).encode()
+            source_revision = family + "-r1"
+            source_sha = hashlib.sha256(content).hexdigest()
+        elif family == "TDX_PACKAGE_DELTA":
+            path = tmp_path / f"source_{family}.json"
+            content = json.dumps({"target_date": TARGET, "current_snapshot_id": snapshot_id,
+                                  "delta_sha256": "delta-sha"}).encode()
+            source_revision = "delta-sha"
+            source_sha = hashlib.sha256(content).hexdigest()
+        else:
+            path = tmp_path / f"source_{family}.json"
+            content = family.encode()
+            source_revision = family + "-r1"
+            source_sha = hashlib.sha256(content).hexdigest()
+        path.write_bytes(content)
+        source_files[family] = {
+            "path": str(path), "source_revision": source_revision,
+            "sha256": source_sha, "bytes": len(content),
+        }
+    source_freeze = build_source_freeze_manifest_v2(
+        trade_date=TARGET, sources=source_files, changed_tdx_files=[],
+        observed_at="2026-09-28T09:00:00+00:00", ingested_at="2026-09-28T09:00:00+00:00",
+        system_available_at="2026-09-28T09:00:00+00:00",
+    )
+    keys = [
+        {"security_id": "SEC-SH600000", "trade_date": TARGET_NUMBER},
+        {"security_id": "SEC-SZ000001", "trade_date": TARGET_NUMBER},
+    ]
+    component_receipts = {}
+    for capability in CAPABILITIES:
+        rows = [dict(row) for row in keys]
+        if capability == "TRADING_STATUS":
+            for row in rows:
+                row.update({"status": "TRADING", "actual_bar_present": True})
+        if capability == "RAW_DAILY":
+            for row in rows:
+                row.update({"source_snapshot_id": snapshot_id, "source_authority": "TDX_OFFICIAL_PACKAGE",
+                            "bao_stock_ohlc_used": False, "bao_stock_ohlc_substitution_permitted": False})
+        if capability == "ADJUSTED_DAILY":
+            for row in rows:
+                row["adjustment_readiness"] = "READY"
+        payload = {"contract_id": f"{capability}_ARTIFACT_V1", "trade_date": TARGET, "rows": rows}
+        artifact_path = tmp_path / f"{capability}.json"
+        artifact_bytes = json.dumps(payload, sort_keys=True).encode()
+        artifact_path.write_bytes(artifact_bytes)
+        component_receipts[capability] = {
+            "contract_id": f"{capability}_INCREMENT_V1", "version": "1.0.0", "status": "FULL_PASS",
+            "trade_date": TARGET, "row_count": len(rows),
+            "input_source_revisions": {
+                name: source_freeze["source_families"][name]["source_revision"]
+                for name in ("TDX_FULL_PACKAGE", "TDX_PACKAGE_DELTA")
+            },
+            "parent_artifact_revision": None, "elapsed_ms": 1,
+            "unknown_or_degraded_rows": [],
+            "artifact": {"path": str(artifact_path), "sha256": hashlib.sha256(artifact_bytes).hexdigest()},
+        }
+    stage_path = tmp_path / "stage_head.json"
+    dev_path = tmp_path / "dev_head.json"
+    data_path = tmp_path / "data_head.json"
+    stage_path.write_text("stage", encoding="utf-8")
+    dev_path.write_text("dev", encoding="utf-8")
+    data_path.write_text("data", encoding="utf-8")
+    stage_hash = hashlib.sha256(b"stage").hexdigest()
+    dev_hash = hashlib.sha256(b"dev").hexdigest()
+    result = independent_daily_increment_postcheck(
+        trade_date=TARGET, source_freeze=source_freeze, component_receipts=component_receipts,
+        data_head_path=data_path, stage_head_path=stage_path, dev_baseline_path=dev_path,
+        expected_data_head_sha256=hashlib.sha256(b"data").hexdigest(),
+        expected_stage_head_sha256=stage_hash, expected_dev_baseline_sha256=dev_hash,
+        tdx_root=tmp_path / "tdx-read-only",
+    )
+    assert result["status"] == "PASS"
+    assert result["data_head_promotion_permitted"] is True
+    assert result["checks"]["trading_status_covers_raw_bars"] == "PASS"
+
+
+def test_fake_artifact_builders_do_not_pass_real_postcheck(tmp_path):
+    tdx_root, staging, head, stage, dev = _increment_env(tmp_path)
+    source_freeze = _source_freeze()
+    callback = make_independent_postcheck_callback(
+        staging_root=staging, report_root=tmp_path / "postcheck",
+        data_head_path=head, stage_head_path=stage, dev_baseline_path=dev,
+        source_freeze=source_freeze, tdx_root=tdx_root,
+    )
+    delta = {"status": "READY", "target_date": TARGET, "current_snapshot_id": "tdx-snapshot",
+             "delta_sha256": "delta-sha", "target_bars": [{"security_id": "SH.600000", "trade_date": TARGET_NUMBER}]}
+    result = run_incremental_components(
+        trade_date=TARGET, source_freeze=source_freeze, tdx_delta=delta, parent_artifacts={},
+        builders=_all_builders(staging), staging_root=staging, head_path=head, stage_head_path=stage,
+        dev_baseline_path=dev, independent_postcheck=callback, tdx_root=tdx_root,
+    )
+    assert result["status"] == "BLOCKED"
+    assert result["promotion"]["head_moved"] is False
+    assert json.loads(head.read_text(encoding="utf-8"))["accepted_trade_date"] == "2026-09-24"

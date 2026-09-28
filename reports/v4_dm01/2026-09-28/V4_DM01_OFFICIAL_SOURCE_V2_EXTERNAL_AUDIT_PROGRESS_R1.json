@@ -1,0 +1,98 @@
+{
+  "acceptance_result": "PRE_LIVE_PARTIAL_REPAIRS; DM-01 NOT ACCEPTED; DATA HEAD REMAINS 2026-09-24",
+  "accepted_data_head": {
+    "accepted_trade_date": "2026-09-24",
+    "head_sha256": "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0",
+    "moved": false
+  },
+  "audit_document": {
+    "path": "docs/evidence/V4_DM01_OFFICIAL_SOURCE_V2_EXTERNAL_AUDIT_R1_20260928.md",
+    "sha256": "a22789a8afee891685e6a7b06376e6f252679095fb005ffedf206999f9030890"
+  },
+  "branch": "codex/v4-system-reform",
+  "code_evidence": {
+    "config/baostock_supplemental_contract_v1.json": "b90979d0e0c96c18c42e11de46d1940d84f3121c765870ce6997b8ce2b0c5799",
+    "config/v4_continuous_data_maintenance_v2.json": "e31f94040d901cedcce64b4ef7775ef23afc816f82873dc7527d38675ec78d90",
+    "scripts/accept_v4_dm01_baostock_runtime.py": "a715d1f1697ebc2c957a5ca4e65c4a5b4493071450c07433dd0c2c3e00b7eec8",
+    "scripts/build_tdx_snapshot_delta.py": "3e15fc073f91bc981655079986406de544d2490bb25e4e96a1e9a496c512688b",
+    "scripts/build_v4_dm01_lifecycle_snapshot.py": "3cf52eab332b31d045bc71af6d8b7aa3c362b3ae3750612aec89c34e8c09eb36",
+    "scripts/build_v4_dm01_special_phase_manifest.py": "dd4c905a3a76f03a7a60b1b19a9c7f5384af85741f00b3498cd560f84d8cda2f",
+    "scripts/capture_baostock_daily_update.py": "aab18b6516aaec7d67bfda2eb34245522b7c23bc9aa1f3067d759c1063c39ce7",
+    "scripts/freeze_v4_dm01_daily_sources.py": "35495909c82e57b330eb78b88d7cf7e9b5cfcc35fa369154106922b56063b0e9",
+    "scripts/probe_v4_dm01_gbbq_revision.py": "dd9da281d5d0fe4fbefa714e7aec60c98a82929b7ceed48cca4b43df29c5f009",
+    "scripts/run_v4_continuous_data_maintenance.py": "f0a925f1f066bdf5fe37ba25ed0c579fdc60b066034c756af82155ad63004742",
+    "scripts/run_v4_dm01_daily_increment.py": "987364d53ca373d7988786583274fb3b5cb2d54f5960c1fd5d6d35eb1c8e5d42",
+    "src/workbench_analysis/baostock_daily_update_source.py": "1656a319679d052af4e4c5efb1ae41b1b02404343ffbaed12a734397e94ae4e0",
+    "src/workbench_analysis/baostock_runtime_acceptance.py": "f52c33fab8052758542c75ff1f8392b68163840bd547df9aeb382893e86bb80d",
+    "src/workbench_analysis/baostock_supplemental.py": "4172ab79382f30c46680fbc0dfd96c6567fe967831d6f978fc609f07759bdac6",
+    "src/workbench_analysis/daily_increment_builder.py": "4c68ef9e09e51995a9bab2cb89651f068d6199cacfe88d828543f6500efb2a93",
+    "src/workbench_analysis/daily_increment_postcheck.py": "8857b38fddda5d8f6d423ca74115c42c67bec730038bf3eb18b5563204765dc8",
+    "src/workbench_analysis/daily_source_manifests.py": "652ad628cfa7e65df3c941e46333d066be9eee7440442787c988bd9c93d613c0",
+    "src/workbench_analysis/daily_source_orchestrator.py": "9eb44635dd66e6dfcd7054df961b9dc63a6667ff11da29f17c2ffd69fb805a65",
+    "src/workbench_analysis/gbbq_source_revision_probe.py": "ce6446676a1619a328abef7197dd0ec2e4ffb6a4950b3322123f78a4c468f83e",
+    "src/workbench_analysis/tdx_snapshot_delta.py": "b46d0f7e91de019f3d1986735faaf0a433753b5657c257f1fd8f533181733f45",
+    "tests/v4_dm01/test_official_daily_sources_v2.py": "65bd1e5adb0f2c63c9cd883911945e69a39ac14deac2492fda93341494c1dcbc"
+  },
+  "contract_id": "V4_DM01_EXTERNAL_AUDIT_EXECUTION_RECEIPT_R1",
+  "immutable_heads": {
+    "dev_baseline_sha256": "45695460b0147c6ada12e0ebd8e5070ac0a45eebea26603ff5a3daddc4dd5094",
+    "stage_accepted_head_sha256": "ccb6938b7e6859894d11616a814f93fd15fd19598c3ff6d0aeda0ae181582e29"
+  },
+  "implementation_completed": [
+    "TDX same-length .day date-identity rewrite detection",
+    "BaoStock DailyUpdates runtime acceptance bound to installed source digest, actual auth mode, methods and exact-date smoke",
+    "GBBQ current revision probe with immutable-snapshot reuse / changed-revision fail-closed status",
+    "daily lifecycle snapshot bound to accepted parent head and exact-date roster; ambiguous/new codes isolated as unknown; absence is not delisting evidence",
+    "special-phase daily manifest bound to externally accepted V4-02 event store, policy and lifecycle snapshot",
+    "full package delta with multiple chronological session views and per-session raw staging",
+    "independent postcheck reads source and component artifacts, checks TDX binding, key uniqueness, status/bar relation, target cutoffs, and immutable heads; fake-artifact rejection exercised"
+  ],
+  "next_stage": "After 15:00 Asia/Shanghai, run the official TDX page/date gate. If update_date is 2026-09-28, continue with package delta, bounded BaoStock smoke/capture, GBBQ probe, lifecycle and special-phase manifests, then source freeze. Keep the data head unchanged until real builders and the independent postcheck both pass.",
+  "observed_at_asia_shanghai": "2026-09-28T14:55:30+08:00",
+  "observed_at_utc": "2026-09-28T06:55:30+00:00",
+  "open_acceptance_gates": [
+    "P0-2 exact-date live runtime smoke and BaoStock capture not run before close",
+    "P0-3 GBBQ revision probe pending post-close; current-source equality has not been established",
+    "P0-6 no real accepted incremental builder registry for all nine capabilities; production runner must block",
+    "P0-7 checker is implemented and mechanics-tested, but cannot run production postcheck without real builder artifacts",
+    "P0-8 post-close 2026-09-28 E2E not run"
+  ],
+  "preclose_source_readiness": {
+    "baostock_capture": null,
+    "observed_at_utc": "2026-09-28T06:44:39+00:00",
+    "path": "reports/v4_dm01/2026-09-28/source_readiness_receipt_r2.json",
+    "sha256": "9bef0d19e1524f79ca75f70530dd9a74c0f7251f0c91dafc37ca25700753d909",
+    "status": "WAIT_MARKET_CLOSE",
+    "tdx_page_capture": null,
+    "tdx_root_write_count": 0
+  },
+  "premature_observation_correction": {
+    "download": null,
+    "observed_at_asia_shanghai": "2026-09-28T13:33:31+08:00",
+    "observed_at_utc": "2026-09-28T05:33:31+00:00",
+    "path": "data/v4/source_snapshots/tdx/20260928/capture-20260928T053332481071Z-edfcd8cd3b926ba9/capture_receipt.json",
+    "readiness_evidence_valid": false,
+    "reason": "Pre-15:00 metadata-only observation; no archive downloaded. The earlier claim that Shanghai 15:00 had passed was a UTC/local-time conversion error.",
+    "sha256": "8cc2a10ba8d4d42bfd316939348e1690eef66a56b561fe407ab327dc7f58f573",
+    "status": "WAIT_TDX_PUBLICATION",
+    "tdx_root_write_count": 0,
+    "update_date": "2026-09-25"
+  },
+  "stage": "DM-01 Official Daily Source v2 External Audit Repairs (pre-live checkpoint)",
+  "stage_contract": {
+    "path": "config/v4_continuous_data_maintenance_v2.json",
+    "sha256": "e31f94040d901cedcce64b4ef7775ef23afc816f82873dc7527d38675ec78d90"
+  },
+  "starting_commit": "f158c95ea32c24e4dea609812d8f20dc9e539315",
+  "tdx_root_write_count": 0,
+  "verification": {
+    "failed": 0,
+    "git_diff_check": "PASS for code/config/receipt paths; exact copied audit markdown retains source hard-break trailing spaces",
+    "local_baostock_version": "0.9.3",
+    "passed": 89,
+    "py_compile": "PASS",
+    "result": "PASS",
+    "tests": "python -m pytest -q tests/v4_dm01"
+  },
+  "version": "1.0.0"
+}

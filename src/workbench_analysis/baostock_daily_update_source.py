@@ -18,6 +18,7 @@ from workbench_analysis.baostock_supplemental import (
     package_metadata,
 )
 from workbench_analysis.daily_source_freeze import ensure_outside_tdx
+from workbench_analysis.baostock_runtime_acceptance import runtime_acceptance_error
 
 
 CONTRACT_ID = "BAOSTOCK_DAILY_UPDATE_SOURCE_V1"
@@ -169,6 +170,8 @@ def crosscheck_tdx_with_baostock(
         "comparisons": comparisons,
         "conflicts": conflicts,
         "set_gaps": set_gaps,
+        "gate_effect": "DIAGNOSTIC_ONLY",
+        "data_head_blocking": False,
         "tdx_remains_canonical_authority": True,
         "baostock_rows_promoted_to_raw": False,
         "sha256": hashlib.sha256(canonical).hexdigest(),
@@ -187,6 +190,7 @@ def capture_baostock_daily_update(
     snapshot_root: Path,
     tdx_root: Path = Path("D:/new_tdx"),
     observed_at: str | None = None,
+    runtime_acceptance_manifest: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Fetch two date-level batch responses through the bounded shared client."""
     try:
@@ -202,9 +206,15 @@ def capture_baostock_daily_update(
         sdk = package_metadata()
     except BaoStockError as exc:
         raise BaoStockDailyUpdateError("BAOSTOCK_RUNTIME_NOT_PINNED") from exc
-    expected_version = "0.9.4" if client.auth_mode == "VIP_API_KEY" else "0.9.3"
-    if sdk.get("version") != expected_version:
-        raise BaoStockDailyUpdateError("BAOSTOCK_RUNTIME_AUTH_PIN_MISMATCH")
+    runtime_error = runtime_acceptance_error(
+        runtime_acceptance_manifest,
+        sdk=sdk,
+        auth_mode=str(getattr(client, "auth_mode", "PUBLIC_ANONYMOUS")),
+    )
+    if runtime_error:
+        raise BaoStockDailyUpdateError("BAOSTOCK_" + runtime_error)
+    if runtime_acceptance_manifest["live_smoke"]["target_date"] != trade_date:
+        raise BaoStockDailyUpdateError("BAOSTOCK_RUNTIME_ACCEPTANCE_TARGET_DATE_MISMATCH")
     observed = observed_at or datetime.now(timezone.utc).replace(microsecond=0).isoformat()
     try:
         parsed_observed = datetime.fromisoformat(observed.replace("Z", "+00:00"))

@@ -112,14 +112,22 @@ def build_tdx_package_delta(
             appended_bars: list[dict[str, Any]] = []
             revisions: list[dict[str, Any]] = []
             entry_events: list[dict[str, Any]] = []
+            changed_file_manifest: list[dict[str, Any]] = []
             parsed_count = 0
             for path in sorted(set(changed + added)):
-                lower = path.lower()
+                lower = path.replace("\\", "/").lower()
+                current_raw = current.read(new_entries[lower])
+                changed_file_manifest.append({
+                    "path": path,
+                    "trade_date": target_date,
+                    "sha256": _sha(current_raw),
+                    "bytes": len(current_raw),
+                    "classification": "CHANGED" if lower in old_entries else "NEW",
+                })
                 if not lower.endswith(".day"):
                     entry_events.append({"path": path, "classification": "CHANGED_NON_DAILY_ENTRY" if path in changed else "NEW_NON_DAILY_ENTRY"})
                     continue
                 key = _security_key(lower)
-                current_raw = current.read(new_entries[lower])
                 new_records = _records(current_raw)
                 parsed_count += 1
                 old_records: list[tuple[bytes, dict[str, Any]]] = []
@@ -130,6 +138,11 @@ def build_tdx_package_delta(
                 if len(new_chunks) < len(old_chunks):
                     raise TDXDeltaError("SOURCE_REVISION_ANOMALY_TRUNCATION")
                 common = min(len(old_chunks), len(new_chunks))
+                if any(
+                    old_records[index][1]["trade_date"] != new_records[index][1]["trade_date"]
+                    for index in range(common)
+                ):
+                    raise TDXDeltaError("SOURCE_REVISION_ANOMALY_REWRITE")
                 changed_indices = [i for i in range(common) if old_chunks[i] != new_chunks[i]]
                 same_date_prefix = len(new_records) >= len(old_records) and all(
                     old_records[index][1]["trade_date"] == new_records[index][1]["trade_date"]
@@ -144,6 +157,7 @@ def build_tdx_package_delta(
                         "security_id": key,
                         "affected_from": min(affected),
                         "affected_to": max(affected),
+                        "affected_trade_dates": sorted(set(affected)),
                         "source_snapshot_old": parent_snapshot_id,
                         "source_snapshot_new": current_snapshot_id,
                         "old_rows_sha256": _sha(b"".join(old_chunks[i] for i in changed_indices)),
@@ -199,6 +213,7 @@ def build_tdx_package_delta(
                 "appended_bar_count": len(appended_bars),
                 "revision_events": revisions,
                 "entry_events": entry_events,
+                "changed_file_manifest": changed_file_manifest,
                 "full_historical_rehash_performed": False,
                 "tdx_root_write_count": 0,
             }
@@ -207,3 +222,44 @@ def build_tdx_package_delta(
             return payload
     except zipfile.BadZipFile as exc:
         raise TDXDeltaError("TDX_ZIP_INVALID") from exc
+
+
+def build_tdx_session_delta_view(package_delta: dict[str, Any], trade_date: str) -> dict[str, Any]:
+    """Select one official session from a single full-package source delta."""
+    try:
+        date.fromisoformat(trade_date)
+    except ValueError as exc:
+        raise TDXDeltaError("TARGET_DATE_INVALID") from exc
+    if package_delta.get("contract_id") != "TDX_PACKAGE_DELTA_V1" or not package_delta.get("delta_sha256"):
+        raise TDXDeltaError("TDX_PACKAGE_DELTA_IDENTITY_MISSING")
+    parent = package_delta.get("parent_snapshot_id")
+    current = package_delta.get("current_snapshot_id")
+    if not parent or not current or parent == current:
+        raise TDXDeltaError("TDX_PACKAGE_DELTA_LINEAGE_INVALID")
+    day = int(trade_date.replace("-", ""))
+    source_rows = package_delta.get("appended_bars", [])
+    rows = [dict(row) for row in source_rows if int(row.get("trade_date", -1)) == day]
+    corrections = [
+        dict(event) for event in package_delta.get("revision_events", [])
+        if day in {int(value) for value in event.get("affected_trade_dates", [])}
+    ]
+    rows.sort(key=lambda row: (str(row.get("security_id") or ""), int(row["trade_date"])))
+    payload = {
+        "contract_id": "TDX_SESSION_DELTA_VIEW_V1",
+        "version": "1.0.0",
+        "status": "READY" if rows else "NO_TARGET_DATE_BARS",
+        "target_date": trade_date,
+        "parent_snapshot_id": parent,
+        "current_snapshot_id": current,
+        "package_delta_sha256": package_delta["delta_sha256"],
+        "target_bars": rows,
+        "target_bar_count": len(rows),
+        "historical_corrections": corrections,
+        "revision_events": corrections,
+        "historical_correction_count": len(corrections),
+        "full_historical_rehash_performed": False,
+        "tdx_root_write_count": 0,
+    }
+    canonical = json.dumps(payload, sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode()
+    payload["session_delta_sha256"] = hashlib.sha256(canonical).hexdigest()
+    return payload

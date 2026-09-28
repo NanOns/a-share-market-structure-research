@@ -94,6 +94,8 @@ def build_raw_increment_staging(
             "source_snapshot_id": source_snapshot_id,
             "source_authority": "TDX_OFFICIAL_PACKAGE",
             "knowledge_lineage": "PIT_OBSERVED",
+            "bao_stock_ohlc_used": False,
+            "bao_stock_ohlc_substitution_permitted": False,
             "canonical_acceptance": "STAGING_ONLY_PENDING_IDENTITY_AND_COMPONENT_BUILD",
         })
     lines = [json.dumps(row, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8") + b"\n"

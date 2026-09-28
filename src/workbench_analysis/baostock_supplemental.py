@@ -27,8 +27,8 @@ CONTRACT_ID = "BAOSTOCK_SUPPLEMENTAL_SOURCE_V1"
 CONTRACT_VERSION = "1.1.0"
 FIELD_MAP_VERSION = "BAOSTOCK_FIELD_MAP_V1.1"
 PUBLIC_PACKAGE_VERSION = "0.9.3"
-VIP_PACKAGE_VERSION = "0.9.4"
-SUPPORTED_PACKAGE_VERSIONS = {PUBLIC_PACKAGE_VERSION, VIP_PACKAGE_VERSION}
+VIP_PACKAGE_VERSION = PUBLIC_PACKAGE_VERSION
+SUPPORTED_PACKAGE_VERSIONS = {PUBLIC_PACKAGE_VERSION}
 # Backward-compatible alias for tests and callers that historically referred to
 # the public/runtime package version.
 PACKAGE_VERSION = PUBLIC_PACKAGE_VERSION
@@ -243,11 +243,15 @@ class BaoStockClient:
     """One serialized SDK session with bounded calls and secret-free metadata."""
 
     def __init__(self, budget: RequestBudget, sdk: Any | None = None, timeout: int = REQUEST_TIMEOUT_SECONDS,
-                 auth_mode: str | None = None):
+                 auth_mode: str | None = None,
+                 runtime_acceptance_manifest: dict[str, Any] | None = None,
+                 allow_unaccepted_runtime_smoke: bool = False):
         self.budget = budget
         self.sdk = sdk
         self.timeout = timeout
         self.auth_mode = (auth_mode or os.environ.get("BAOSTOCK_AUTH_MODE") or DEFAULT_AUTH_MODE).upper()
+        self.runtime_acceptance_manifest = runtime_acceptance_manifest
+        self.allow_unaccepted_runtime_smoke = allow_unaccepted_runtime_smoke
         self.logged_in = False
         self._lock_held = False
         self._process_lock: Path | None = None
@@ -317,10 +321,18 @@ class BaoStockClient:
             if self.sdk is None:
                 import baostock as self_sdk  # type: ignore[no-redef]
                 self.sdk = self_sdk
-            version = importlib.metadata.version("baostock")
-            expected_version = VIP_PACKAGE_VERSION if self.auth_mode == "VIP_API_KEY" else PUBLIC_PACKAGE_VERSION
-            if version != expected_version:
-                raise BaoStockError("BAOSTOCK_PACKAGE_VERSION_UNPINNED_FOR_AUTH_MODE")
+            sdk_metadata = package_metadata()
+            if self.runtime_acceptance_manifest is not None:
+                from workbench_analysis.baostock_runtime_acceptance import runtime_acceptance_error
+
+                runtime_error = runtime_acceptance_error(
+                    self.runtime_acceptance_manifest, sdk=sdk_metadata, auth_mode=self.auth_mode
+                )
+                if runtime_error:
+                    raise BaoStockError("BAOSTOCK_" + runtime_error)
+            elif (not self.allow_unaccepted_runtime_smoke
+                  and sdk_metadata.get("version") != PUBLIC_PACKAGE_VERSION):
+                raise BaoStockError("BAOSTOCK_PACKAGE_VERSION_NOT_IN_DEFAULT_PIN")
             prior_timeout = socket.getdefaulttimeout()
             socket.setdefaulttimeout(self.timeout)
             try:
@@ -496,10 +508,8 @@ class _NullWriter:
 
 
 def package_metadata() -> dict[str, str]:
-    """Return pinned runtime metadata without any credential-derived values."""
+    """Return installed runtime identity without any credential-derived values."""
     dist = importlib.metadata.distribution("baostock")
-    if dist.version not in SUPPORTED_PACKAGE_VERSIONS:
-        raise BaoStockError("BAOSTOCK_PACKAGE_VERSION_UNPINNED")
     package_files = sorted(str(path).replace("\\", "/") for path in (dist.files or ()) if str(path).endswith(".py"))
     digest = hashlib.sha256()
     for relative in package_files:
@@ -513,8 +523,7 @@ def package_metadata() -> dict[str, str]:
         "installed_python_sources_sha256": digest.hexdigest(),
         "supported_auth_modes": ",".join(sorted(AUTH_MODES)),
         "default_auth_mode": DEFAULT_AUTH_MODE,
-        "expected_version_for_default_auth_mode": PUBLIC_PACKAGE_VERSION,
-        "expected_version_for_vip_auth_mode": VIP_PACKAGE_VERSION,
+        "default_runtime_pin": PUBLIC_PACKAGE_VERSION,
         "adjustflag": ADJUSTFLAG,
         "fields": FIELDS,
     }

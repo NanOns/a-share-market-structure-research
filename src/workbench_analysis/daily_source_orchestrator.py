@@ -72,7 +72,8 @@ def evaluate_daily_source_readiness(
             or "adjustment_factor_rows" not in baostock_capture):
         return {"status": "WAIT_BAOSTOCK_DAILY_UPDATE", "trade_date": trade_date,
                 "baostock_status": baostock_capture.get("status") if baostock_capture else None}
-    if not _ready_record(gbbq_snapshot, accepted_statuses={"GO_FORWARD_SNAPSHOT_FROZEN", "READY", "NOOP_SOURCE_ALREADY_FROZEN"}):
+    if not _ready_record(gbbq_snapshot, accepted_statuses={"GO_FORWARD_SNAPSHOT_FROZEN", "READY", "NOOP_SOURCE_ALREADY_FROZEN",
+                                                           "REUSE_ACCEPTED_GBBQ_SNAPSHOT"}):
         return {"status": "WAIT_GBBQ_SNAPSHOT_IF_REQUIRED", "trade_date": trade_date}
     if not _ready_record(lifecycle_snapshot, accepted_statuses={"READY", "FULL_PASS", "DEGRADED_PASS"}):
         return {"status": "WAIT_IDENTITY_LIFECYCLE_SNAPSHOT", "trade_date": trade_date}

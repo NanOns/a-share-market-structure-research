@@ -134,6 +134,17 @@
     "request_time_online_enrichment": false,
     "core_flow_waits_for_supplement": false
   },
+  "dm01_daily_updates": {
+    "runtime_acceptance_contract": "BAOSTOCK_DAILY_UPDATE_RUNTIME_ACCEPTANCE_V1",
+    "production_network_enabled_after_acceptance": true,
+    "runtime_acceptance_manifest_template": "reports/v4_baostock/runtime_acceptance/{YYYYMMDD}/accepted_runtime_manifest.json",
+    "live_smoke_receipt_template": "reports/v4_baostock/runtime_acceptance/{YYYYMMDD}/live_smoke_receipt.json",
+    "production_requests_require_exact_target_date_smoke": true,
+    "acceptance_scope_only": ["query_daily_history_k_AStock", "query_daily_adjust_factor"],
+    "max_rows_per_date_batch": 20000,
+    "max_pages_per_date_batch": 1,
+    "does_not_activate_other_baostock_capabilities": true
+  },
   "failure_policy": {
     "fail_closed_for_supplemental_capability": true,
     "does_not_block_or_invalidate_accepted_core_publication": true,

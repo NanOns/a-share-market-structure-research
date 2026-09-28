@@ -20,6 +20,12 @@ from workbench_analysis.continuous_data_maintenance import (  # noqa: E402
     plan_catch_up,
 )
 from workbench_analysis.daily_source_orchestrator import evaluate_daily_source_readiness  # noqa: E402
+from workbench_analysis.daily_source_freeze import source_freeze_complete_v2  # noqa: E402
+from workbench_analysis.baostock_runtime_acceptance import (  # noqa: E402
+    load_runtime_acceptance_manifest,
+    runtime_acceptance_error,
+)
+from workbench_analysis.baostock_supplemental import package_metadata  # noqa: E402
 from workbench_analysis.daily_data_head import (  # noqa: E402
     CAPABILITIES,
     build_data_head,
@@ -164,6 +170,88 @@ def discover_baostock_daily_capture(trade_date: str) -> dict | None:
                 and record.get("daily_rows") and "adjustment_factor_rows" in record):
             candidates.append(record)
     return max(candidates, key=lambda item: str(item.get("received_at") or "")) if candidates else None
+
+
+def discover_baostock_runtime_acceptance(trade_date: str) -> tuple[dict | None, str | None]:
+    """Accept only an exact-date live smoke receipt bound to this installed SDK/auth mode."""
+    contract = read(Path("config/baostock_supplemental_contract_v1.json"))
+    settings = contract.get("dm01_daily_updates", {})
+    template = settings.get("runtime_acceptance_manifest_template")
+    if settings.get("runtime_acceptance_contract") != "BAOSTOCK_DAILY_UPDATE_RUNTIME_ACCEPTANCE_V1" or not template:
+        return None, "RUNTIME_ACCEPTANCE_CONTRACT_INVALID"
+    path = ROOT / str(template).replace("{YYYYMMDD}", trade_date.replace("-", ""))
+    try:
+        manifest = load_runtime_acceptance_manifest(path, project_root=ROOT)
+    except ValueError as exc:
+        return None, str(exc)
+    auth_mode = str(manifest.get("auth_mode") or "")
+    error = runtime_acceptance_error(manifest, sdk=package_metadata(), auth_mode=auth_mode)
+    if error:
+        return None, error
+    if manifest.get("live_smoke", {}).get("target_date") != trade_date:
+        return None, "RUNTIME_ACCEPTANCE_TARGET_DATE_MISMATCH"
+    return manifest, None
+
+
+def discover_accepted_gbbq_snapshot(trade_date: str) -> dict | None:
+    probe_path = ROOT / "reports/v4_dm01" / trade_date / "gbbq_revision_probe_receipt_v1.json"
+    try:
+        probe = json.loads(probe_path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return None
+    if probe.get("trade_date") != trade_date or probe.get("status") != "REUSE_ACCEPTED_GBBQ_SNAPSHOT":
+        return probe
+    manifest_path = Path(str(probe.get("accepted_manifest_path") or ""))
+    try:
+        if sha(manifest_path) != probe.get("accepted_manifest_sha256"):
+            return {**probe, "status": "BLOCKED_GBBQ_ACCEPTED_MANIFEST_DIGEST_MISMATCH"}
+        manifest = read(manifest_path)
+        if manifest.get("snapshot_id") != probe.get("accepted_snapshot_id"):
+            return {**probe, "status": "BLOCKED_GBBQ_ACCEPTED_SNAPSHOT_ID_MISMATCH"}
+    except (OSError, ValueError):
+        return {**probe, "status": "BLOCKED_GBBQ_ACCEPTED_MANIFEST_UNREADABLE"}
+    return {**probe, "status": "REUSE_ACCEPTED_GBBQ_SNAPSHOT"}
+
+
+def discover_lifecycle_snapshot(trade_date: str) -> dict | None:
+    artifact = ROOT / "reports/v4_dm01" / trade_date / "current_lifecycle_snapshot.json"
+    receipt_path = ROOT / "reports/v4_dm01" / trade_date / "current_lifecycle_snapshot_receipt.json"
+    try:
+        data = read(artifact)
+        receipt = read(receipt_path)
+    except (OSError, ValueError):
+        return None
+    if (data.get("trade_date") != trade_date or data.get("contract_id") != "CURRENT_LIFECYCLE_SNAPSHOT_V1"
+            or data.get("status") not in {"READY", "DEGRADED_PASS"}
+            or receipt.get("artifact_sha256") != sha(artifact)):
+        return None
+    return data
+
+
+def discover_special_phase_snapshot(trade_date: str) -> dict | None:
+    receipt_path = ROOT / "reports/v4_dm01" / trade_date / "special_phase_source_manifest_receipt_v1.json"
+    try:
+        receipt = read(receipt_path)
+        artifact = Path(str(receipt.get("manifest_path") or ""))
+        data = read(artifact)
+    except (OSError, ValueError):
+        return None
+    if (receipt.get("trade_date") != trade_date or receipt.get("status") not in {"READY", "DEGRADED_PASS"}
+            or data.get("trade_date") != trade_date or data.get("status") not in {"READY", "DEGRADED_PASS"}
+            or sha(artifact) != receipt.get("manifest_sha256")):
+        return None
+    return data
+
+
+def discover_source_freeze(trade_date: str) -> dict | None:
+    path = ROOT / "reports/v4_dm01" / trade_date / "daily_source_freeze_v2.json"
+    try:
+        manifest = read(path)
+    except (OSError, ValueError):
+        return None
+    if manifest.get("trade_date") != trade_date or not source_freeze_complete_v2(manifest):
+        return None
+    return manifest
 
 
 def build_calendar_bridge(now: datetime) -> tuple[dict, list[str]]:
@@ -414,29 +502,37 @@ def main() -> int:
     component_builder_block = False
     official_tdx_capture = None
     baostock_capture = None
+    baostock_runtime_acceptance = None
+    baostock_runtime_rejection = None
+    gbbq_capture = None
+    lifecycle = None
+    special_phase = None
+    source_freeze = None
     source_readiness_result = {"status": "NO_NEW_COMPLETED_SESSION"}
     source_wait_status = None
     if ready:
         target = ready[0]
         official_tdx_capture = discover_official_tdx_capture(target)
         baostock_capture = discover_baostock_daily_capture(target)
-        gbbq_capture = read(Path("data/v4/source_snapshot_store/gbbq/sha256-775d82c58b5b46ec1d21478f86ba8ef90302691982e68d5c4cfcd51fddda666e/manifest.json"))
-        gbbq_capture["status"] = "GO_FORWARD_SNAPSHOT_FROZEN"
-        # Accepted historical identity permission alone is not a target-date lifecycle snapshot.
-        lifecycle = None
-        # A target-date special-phase manifest must be bound before this family is ready.
-        special_phase = None
+        baostock_runtime_acceptance, baostock_runtime_rejection = discover_baostock_runtime_acceptance(target)
+        gbbq_capture = discover_accepted_gbbq_snapshot(target)
+        lifecycle = discover_lifecycle_snapshot(target)
+        special_phase = discover_special_phase_snapshot(target)
         source_readiness_result = evaluate_daily_source_readiness(
             trade_date=target,
             observed_at=now.isoformat(),
             official_session_confirmed=True,
             tdx_capture=official_tdx_capture,
             baostock_capture=baostock_capture,
-            baostock_capability_accepted=False,
+            baostock_capability_accepted=baostock_runtime_acceptance is not None,
             gbbq_snapshot=gbbq_capture,
             lifecycle_snapshot=lifecycle,
             special_phase_snapshot=special_phase,
         )
+        source_freeze = discover_source_freeze(target) if source_readiness_result.get("status") == "SOURCE_FREEZE_READY" else None
+        if source_readiness_result.get("status") == "SOURCE_FREEZE_READY" and source_freeze is None:
+            source_readiness_result = {**source_readiness_result, "status": "WAIT_DAILY_SOURCE_FREEZE_V2",
+                                       "reason": "COMPLETE_HASH_VERIFIED_SOURCE_FREEZE_NOT_AVAILABLE"}
         if source_readiness_result["status"] != "SOURCE_FREEZE_READY":
             blocked = ready
             ready = []
@@ -511,6 +607,16 @@ def main() -> int:
     e2e_status = (source_wait_status if blocked_source else
                   "BLOCKED_COMPONENT_BUILDERS_NOT_WIRED" if component_builder_block else
                   "PASS_NOOP_ALREADY_ACCEPTED")
+    source_freeze_receipts = []
+    if source_freeze is not None:
+        source_freeze_path = ROOT / "reports/v4_dm01" / target / "daily_source_freeze_v2.json"
+        source_freeze_receipts.append({"path": source_freeze_path.as_posix(), "sha256": sha(source_freeze_path)})
+    tdx_delta_receipt = None
+    if official_tdx_capture and official_tdx_capture.get("snapshot_id"):
+        package_path = Path(str((official_tdx_capture.get("download") or {}).get("path") or ""))
+        candidate = package_path.parent / "delta" / target.replace("-", "") / "tdx_delta_build_receipt.json"
+        if candidate.is_file():
+            tdx_delta_receipt = {"path": candidate.as_posix(), "sha256": sha(candidate)}
     e2e = {
         "contract_id": "V4_DM01_INITIAL_E2E_RECEIPT_R1",
         "version": "1.0.0",
@@ -519,7 +625,7 @@ def main() -> int:
         "latest_completed_session": latest_complete,
         "processed_sessions": ready,
         "blocked_sessions": blocked,
-        "source_freeze_receipts": [],
+        "source_freeze_receipts": source_freeze_receipts,
         "per_session_build_receipts": [],
         "adjustment_impact_receipt": {"path": adjustment_path.as_posix(), "sha256": adjustment_sha},
         "period_impact_receipt": {"path": period_path.as_posix(), "sha256": period_sha},
@@ -529,7 +635,18 @@ def main() -> int:
         "data_head_moved_after_bootstrap": bool(ready),
         "source_readiness": source_readiness_result,
         "official_tdx_package_capture": official_tdx_capture,
+        "tdx_delta_build_receipt": tdx_delta_receipt,
         "baostock_daily_capture": baostock_capture,
+        "gbbq_revision_probe": discover_accepted_gbbq_snapshot(target) if ready or blocked else None,
+        "lifecycle_snapshot": lifecycle,
+        "special_phase_source_manifest": special_phase,
+        "baostock_runtime_acceptance": (None if baostock_runtime_acceptance is None else {
+            "contract_id": baostock_runtime_acceptance.get("contract_id"),
+            "manifest_sha256": baostock_runtime_acceptance.get("manifest_sha256"),
+            "auth_mode": baostock_runtime_acceptance.get("auth_mode"),
+            "runtime": baostock_runtime_acceptance.get("runtime"),
+        }),
+        "baostock_runtime_rejection": baostock_runtime_rejection,
         "local_tdx_coverage_discovery": {**local_tdx_coverage, "readiness_role": "LOCAL_CLIENT_DIAGNOSTIC_ONLY"},
         "incremental_component_builders": "NOT_WIRED_FAIL_CLOSED",
         "stage_contract": {"path": DAILY_CONTRACT.as_posix(), "sha256": sha(DAILY_CONTRACT)},

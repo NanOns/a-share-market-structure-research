@@ -26,9 +26,19 @@
     "tdx_local_vipdoc": "DIAGNOSTIC_ONLY",
     "baostock_daily_api": "query_daily_history_k_AStock(date)",
     "baostock_factor_api": "query_daily_adjust_factor(date)",
-    "baostock_production_network_enabled": false,
-    "baostock_activation_gate": "V4_00F_AUDIT_CLOSED_AND_WORKER_ENFORCES_ALL_BOUNDS",
-    "baostock_capability_status_until_gate_closes": "UNAVAILABLE",
+    "other_baostock_supplemental_network_enabled": false,
+    "other_baostock_supplemental_activation_gate": "V4_00F_AUDIT_CLOSED_AND_WORKER_ENFORCES_ALL_BOUNDS",
+    "dm01_daily_updates": {
+      "production_network_enabled": true,
+      "activation_gate": "BAOSTOCK_DAILY_UPDATE_RUNTIME_ACCEPTANCE_V1",
+      "acceptance_scope": ["query_daily_history_k_AStock(date)", "query_daily_adjust_factor(date)"],
+      "requires_exact_target_date_live_smoke": true,
+      "requires_installed_source_digest_and_auth_mode_binding": true,
+      "bounded_query_count_per_smoke": 2,
+      "bounded_query_count_per_capture": 2,
+      "max_rows_per_query": 20000,
+      "capability_status_without_accepted_smoke": "UNAVAILABLE"
+    },
     "gbbq": "EXISTING_VERSIONED_GO_FORWARD_SNAPSHOT",
     "source_snapshots": "data/v4/source_snapshots/{tdx|baostock}/YYYYMMDD/<content-addressed-id>/",
     "source_not_ready_statuses": ["WAIT_MARKET_CLOSE", "WAIT_TDX_PUBLICATION", "WAIT_BAOSTOCK_DAILY_UPDATE", "WAIT_GBBQ_SNAPSHOT_IF_REQUIRED"]

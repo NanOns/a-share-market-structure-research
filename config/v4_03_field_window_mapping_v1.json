@@ -1,0 +1,26 @@
+{
+  "contract_id": "V4_03_FIELD_WINDOW_MAPPING_V1",
+  "version": "1.0.0",
+  "framework_ref": "V4_ALGORITHM_CONTRACT_FRAMEWORK_V1@1.1.0",
+  "technical": {
+    "maN": {"include_current_bar": true, "required_actual_bars": "N", "previous_close": "none", "offset": "none"},
+    "hhvN_llvN": {"include_current_bar": true, "required_actual_bars": "N", "previous_close": "none", "offset": "none"},
+    "prior_highN_prior_lowN": {"include_current_bar": false, "required_actual_bars": "N strictly before t", "previous_close": "none", "offset": "one current actual bar excluded"},
+    "tr_atrN": {"include_current_bar": true, "required_actual_bars": "N plus previous actual bar", "previous_close": "previous verified actual bar across confirmed suspension", "offset": "actual bar"},
+    "slope20": {"include_current_bar": true, "required_actual_bars": "25", "previous_close": "none", "offset": "5 actual bars; MA20[t-5 actual bars]"},
+    "slope60": {"include_current_bar": true, "required_actual_bars": "70", "previous_close": "none", "offset": "10 actual bars; MA60[t-10 actual bars]"},
+    "hh_ll_progress": {"include_current_bar": true, "required_actual_bars": "10", "previous_close": "none", "offset": "latest 5 compared with preceding 5 actual bars"},
+    "amount_volume_ratioN": {"include_current_bar": "numerator only", "required_actual_bars": "N prior plus t", "previous_close": "none", "offset": "N prior actual bars strictly before t"},
+    "range_ratio": {"include_current_bar": true, "required_actual_bars": "20", "previous_close": "none", "offset": "HHV/LLV 5 and 20 same as-of"},
+    "atr_ratio": {"include_current_bar": true, "required_actual_bars": "21", "previous_close": "previous actual bar", "offset": "ATR5 / ATR20"},
+    "clv": {"include_current_bar": true, "required_actual_bars": "1", "previous_close": "none", "offset": "none"},
+    "core_price_damage": {"include_current_bar": true, "required_actual_bars": "21 plus ret1 fixed session endpoint", "previous_close": "previous actual bar for ATR", "offset": "prior_low20 excludes current"}
+  },
+  "cross_section": {
+    "retN": {"start_session": "t-N", "end_session": "t", "endpoint_moves": false, "intermediate_confirmed_suspension": "annotate", "unknown_gap": "UNKNOWN"},
+    "volN": {"start_session": "t-N", "end_session": "t", "required_closes": "N+1 consecutive market sessions", "suspension": "UNKNOWN", "ddof": 0},
+    "rpsN": {"window": "retN fixed market sessions", "universe": "same-date historical PIT evaluable", "n_less_than_two": "UNKNOWN"},
+    "rel_market_N": {"window": "retN fixed market sessions", "reference": "MARKET_RELATIVE_REFERENCE_V1 start-date historical universe"}
+  },
+  "forward": {"contract_id": "FORWARD_SESSION_WINDOW_V1", "consumption": "BOUNDARY_REFERENCE_ONLY", "computed_in_v4_03": false}
+}

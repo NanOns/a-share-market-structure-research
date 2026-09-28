@@ -1,0 +1,35 @@
+{
+  "contract_id": "V4_03_FIELD_SCOPE_MAP_V1",
+  "version": "1.0.0",
+  "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+  "input_head": "data/v4/V4_DEV_BASELINE_HEAD.json",
+  "accepted_data_cutoff": "2026-09-24",
+  "price_basis": "same-day verified affine adjusted OHLC; raw CNY amount and accepted raw volume unit",
+  "historical_evidence_origin": "DIAGNOSTIC_NON_PIT",
+  "produced_fields": {
+    "ma5": "TECHNICAL_BAR_WINDOW_V1", "ma20": "TECHNICAL_BAR_WINDOW_V1", "ma60": "TECHNICAL_BAR_WINDOW_V1",
+    "ret1": "CROSS_SECTION_SESSION_WINDOW_V1", "ret3": "CROSS_SECTION_SESSION_WINDOW_V1", "ret5": "CROSS_SECTION_SESSION_WINDOW_V1", "ret20": "CROSS_SECTION_SESSION_WINDOW_V1",
+    "vol5": "CROSS_SECTION_SESSION_WINDOW_V1", "vol20": "CROSS_SECTION_SESSION_WINDOW_V1",
+    "tr": "TECHNICAL_BAR_WINDOW_V1", "atr5": "TECHNICAL_BAR_WINDOW_V1", "atr20": "TECHNICAL_BAR_WINDOW_V1",
+    "hhv5": "TECHNICAL_BAR_WINDOW_V1", "hhv20": "TECHNICAL_BAR_WINDOW_V1", "hhv60": "TECHNICAL_BAR_WINDOW_V1",
+    "llv5": "TECHNICAL_BAR_WINDOW_V1", "llv20": "TECHNICAL_BAR_WINDOW_V1", "llv60": "TECHNICAL_BAR_WINDOW_V1",
+    "prior_high5": "TECHNICAL_BAR_WINDOW_V1", "prior_high20": "TECHNICAL_BAR_WINDOW_V1", "prior_high60": "TECHNICAL_BAR_WINDOW_V1",
+    "prior_low5": "TECHNICAL_BAR_WINDOW_V1", "prior_low20": "TECHNICAL_BAR_WINDOW_V1", "prior_low60": "TECHNICAL_BAR_WINDOW_V1",
+    "pos60": "TECHNICAL_BAR_WINDOW_V1", "slope20": "TECHNICAL_BAR_WINDOW_V1", "slope60": "TECHNICAL_BAR_WINDOW_V1",
+    "hh_progress": "TECHNICAL_BAR_WINDOW_V1", "ll_progress": "TECHNICAL_BAR_WINDOW_V1",
+    "range_ratio": "TECHNICAL_BAR_WINDOW_V1", "atr_ratio": "TECHNICAL_BAR_WINDOW_V1", "vol_ratio": "CROSS_SECTION_SESSION_WINDOW_V1",
+    "amount_ratio5": "TECHNICAL_BAR_WINDOW_V1", "amount_ratio20": "TECHNICAL_BAR_WINDOW_V1",
+    "volume_ratio5": "TECHNICAL_BAR_WINDOW_V1", "volume_ratio20": "TECHNICAL_BAR_WINDOW_V1",
+    "prior60_percentile": "TECHNICAL_BAR_WINDOW_V1", "clv": "TECHNICAL_BAR_WINDOW_V1", "core_price_damage": "TECHNICAL_BAR_WINDOW_V1",
+    "rps5": "CROSS_SECTION_SESSION_WINDOW_V1", "rps20": "CROSS_SECTION_SESSION_WINDOW_V1",
+    "rps5_delta1": "CROSS_SECTION_SESSION_WINDOW_V1", "rps5_delta3": "CROSS_SECTION_SESSION_WINDOW_V1", "rps20_delta3": "CROSS_SECTION_SESSION_WINDOW_V1",
+    "rel_market_1": "CROSS_SECTION_SESSION_WINDOW_V1", "rel_market_3": "CROSS_SECTION_SESSION_WINDOW_V1", "rel_market_5": "CROSS_SECTION_SESSION_WINDOW_V1"
+  },
+  "deferred_fields": {
+    "V4-04": ["trend_state", "weekly_trend_state", "monthly_trend_state", "position_state", "ma_structure_state", "compression_state", "amount_state", "volume_state", "core_participation_result", "core_extension_risk", "regime_ui", "final_core_profile_row"],
+    "V4-08": ["sector_rs5", "sector_rs20", "rank_velocity", "dq5", "breadth_delta", "ma20_width", "seed_width", "retention", "top1_concentration", "top3_concentration", "sector_participation_proxy", "sector_qualification", "rotation"],
+    "V4-15": ["forward_market_benchmark", "relative_market_return_marked", "forward_settlement"]
+  },
+  "unknown_policy": "field-local UNKNOWN; no fill, window shortening, epsilon, or survivor substitution",
+  "publication_permission": "V4-03_PRIMITIVES_ONLY"
+}

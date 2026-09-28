@@ -1,0 +1,23 @@
+{
+  "accepted_daily_sha256": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90",
+  "actual": {
+    "ma20": 5.3385,
+    "ret5": 0.028089887640449396,
+    "vol20": 0.013194955354489937
+  },
+  "checks": {
+    "ma20": true,
+    "ret5": true,
+    "vol20": true
+  },
+  "contract_id": "V4_03_REAL_SAMPLE_INDEPENDENT_POSTCHECK_R1",
+  "expected": {
+    "ma20": 5.3385,
+    "ret5": 0.028089887640449396,
+    "vol20": 0.013194955354489937
+  },
+  "independent_formulas": "plain mean, fixed-endpoint ratio, population standard deviation of 20 adjacent log returns",
+  "limitations": "Three fields and one security only; not V4-03 full-market independent acceptance",
+  "sample_sha256": "607a65eae62ac5a122b98f734aef9ab5d9e0e2157efd780a82f1789497e5536c",
+  "status": "DIAGNOSTIC_SAMPLE_PASS"
+}

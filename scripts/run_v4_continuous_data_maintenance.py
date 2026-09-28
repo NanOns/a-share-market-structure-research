@@ -18,8 +18,8 @@ from workbench_analysis.continuous_data_maintenance import (  # noqa: E402
     latest_completed_session,
     official_weekday_sessions,
     plan_catch_up,
-    source_readiness,
 )
+from workbench_analysis.daily_source_orchestrator import evaluate_daily_source_readiness  # noqa: E402
 from workbench_analysis.daily_data_head import (  # noqa: E402
     CAPABILITIES,
     build_data_head,
@@ -30,6 +30,8 @@ from workbench_analysis.daily_data_head import (  # noqa: E402
 from tdx.day_reader import read_edge_records  # noqa: E402
 
 CONTRACT = Path("config/v4_continuous_data_maintenance_v1.json")
+DAILY_CONTRACT = Path("config/v4_continuous_data_maintenance_v2.json")
+SOURCE_FREEZE_CONTRACT = Path("config/v4_daily_source_freeze_v2.json")
 HEAD_CONTRACT = Path("config/v4_data_accepted_head_v1.json")
 BRIDGE_CONTRACT = Path("config/v4_dm01_bridge_calendar_v1.json")
 PHASE0_RECEIPT = Path("reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json")
@@ -85,7 +87,7 @@ def notice_text_matches(path: Path) -> bool:
 
 
 def discover_local_tdx_coverage() -> dict:
-    """Read the local TDX daily-file tails without writing beneath the TDX root."""
+    """Diagnostic only; this local-client scan never gates daily source readiness."""
     latest_by_file: dict[str, int] = {}
     invalid = 0
     for market in ("sh", "sz"):
@@ -111,7 +113,57 @@ def discover_local_tdx_coverage() -> dict:
         "file_count_after_bootstrap_cutoff": sum(value > int(BASE_CUTOFF.replace("-", ""))
                                                   for value in latest_by_file.values()),
         "tail_date_means_complete_market_session": False,
+        "readiness_role": "LOCAL_CLIENT_DIAGNOSTIC_ONLY",
     }
+
+
+def discover_official_tdx_capture(trade_date: str) -> dict | None:
+    """Resolve the newest immutable official page/package capture for a session."""
+    folder = ROOT / "data/v4/source_snapshots/tdx" / trade_date.replace("-", "")
+    candidates = []
+    if not folder.is_dir():
+        return None
+    for receipt_path in folder.glob("capture-*/capture_receipt.json"):
+        try:
+            receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            continue
+        if receipt.get("target_date") == trade_date:
+            candidates.append((str(receipt.get("observed_at") or ""), receipt))
+    if not candidates:
+        return None
+    receipt = max(candidates, key=lambda item: item[0])[1]
+    if receipt.get("status") not in {"TDX_PACKAGE_READY", "NOOP_SOURCE_ALREADY_FROZEN"}:
+        return receipt
+    download = receipt.get("download") or {}
+    package_path = Path(str(download.get("path") or ""))
+    if not package_path.is_file() or receipt.get("zip_validation", {}).get("crc_integrity") != "PASS":
+        return {**receipt, "status": "WAIT_TDX_PUBLICATION", "reason": "PACKAGE_OR_CRC_EVIDENCE_MISSING"}
+    digest = hashlib.sha256()
+    with package_path.open("rb") as stream:
+        for block in iter(lambda: stream.read(1024 * 1024), b""):
+            digest.update(block)
+    if digest.hexdigest() != download.get("sha256"):
+        return {**receipt, "status": "WAIT_TDX_PUBLICATION", "reason": "PACKAGE_HASH_MISMATCH"}
+    return receipt
+
+
+def discover_baostock_daily_capture(trade_date: str) -> dict | None:
+    """Resolve a frozen date-level batch snapshot; no row-wise fallback is allowed."""
+    folder = ROOT / "data/v4/source_snapshots/baostock" / trade_date.replace("-", "")
+    if not folder.is_dir():
+        return None
+    candidates = []
+    for snapshot in folder.glob("sha256-*/daily_update.json"):
+        try:
+            record = json.loads(snapshot.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            continue
+        if (record.get("trade_date") == trade_date and record.get("provider_date") == trade_date
+                and record.get("status") in {"BAOSTOCK_DAILY_SNAPSHOT_READY", "NOOP_SOURCE_ALREADY_FROZEN"}
+                and record.get("daily_rows") and "adjustment_factor_rows" in record):
+            candidates.append(record)
+    return max(candidates, key=lambda item: str(item.get("received_at") or "")) if candidates else None
 
 
 def build_calendar_bridge(now: datetime) -> tuple[dict, list[str]]:
@@ -360,18 +412,36 @@ def main() -> int:
     ready = list(plan["promotable_sessions"])
     local_tdx_coverage = discover_local_tdx_coverage()
     component_builder_block = False
-    observed_tdx_date = local_tdx_coverage.get("latest_tail_date")
+    official_tdx_capture = None
+    baostock_capture = None
+    source_readiness_result = {"status": "NO_NEW_COMPLETED_SESSION"}
+    source_wait_status = None
     if ready:
-        readiness = source_readiness(
-            trade_date=ready[0],
-            tdx_available_through=observed_tdx_date,
-            accepted_package_available_through=BASE_CUTOFF,
-            calendar_session_confirmed=True,
+        target = ready[0]
+        official_tdx_capture = discover_official_tdx_capture(target)
+        baostock_capture = discover_baostock_daily_capture(target)
+        gbbq_capture = read(Path("data/v4/source_snapshot_store/gbbq/sha256-775d82c58b5b46ec1d21478f86ba8ef90302691982e68d5c4cfcd51fddda666e/manifest.json"))
+        gbbq_capture["status"] = "GO_FORWARD_SNAPSHOT_FROZEN"
+        # Accepted historical identity permission alone is not a target-date lifecycle snapshot.
+        lifecycle = None
+        # A target-date special-phase manifest must be bound before this family is ready.
+        special_phase = None
+        source_readiness_result = evaluate_daily_source_readiness(
+            trade_date=target,
+            observed_at=now.isoformat(),
+            official_session_confirmed=True,
+            tdx_capture=official_tdx_capture,
+            baostock_capture=baostock_capture,
+            baostock_capability_accepted=False,
+            gbbq_snapshot=gbbq_capture,
+            lifecycle_snapshot=lifecycle,
+            special_phase_snapshot=special_phase,
         )
-        if readiness["status"] != "READY":
+        if source_readiness_result["status"] != "SOURCE_FREEZE_READY":
             blocked = ready
             ready = []
-            plan["status"] = "BLOCKED_SOURCE_NOT_READY"
+            source_wait_status = source_readiness_result["status"]
+            plan["status"] = source_wait_status
             plan["promotable_sessions"] = []
             plan["blocked_sessions"] = blocked
         else:
@@ -407,7 +477,7 @@ def main() -> int:
     session_receipt = {
         "contract_id": "V4_DM01_SESSION_DISCOVERY_RECEIPT_R1",
         "version": "1.0.0",
-        "status": "PASS" if plan["status"] == "READY" else "BLOCKED",
+        "status": "PASS" if plan["status"] in {"READY", "SOURCE_FREEZE_READY"} else "WAITING" if source_wait_status else "BLOCKED",
         "calendar_receipt": {"path": calendar_path.as_posix(), "sha256": calendar_sha},
         "official_sessions_after_base_cutoff": calendar_receipt["official_sessions_after_base_cutoff"],
         "target_cutoff": latest_complete,
@@ -437,14 +507,10 @@ def main() -> int:
         "period_revisions": [],
         "closed_raw_periods_mutated": False,
     })
-    blocked_source = any(
-        day in blocked for day in plan.get("candidate_sessions", [])
-    )
-    e2e_status = (
-        "BLOCKED_SOURCE_NOT_READY" if blocked_source else
-        "BLOCKED_COMPONENT_BUILDERS_NOT_WIRED" if component_builder_block else
-        "PASS_NOOP_ALREADY_ACCEPTED"
-    )
+    blocked_source = bool(blocked and source_wait_status)
+    e2e_status = (source_wait_status if blocked_source else
+                  "BLOCKED_COMPONENT_BUILDERS_NOT_WIRED" if component_builder_block else
+                  "PASS_NOOP_ALREADY_ACCEPTED")
     e2e = {
         "contract_id": "V4_DM01_INITIAL_E2E_RECEIPT_R1",
         "version": "1.0.0",
@@ -461,18 +527,13 @@ def main() -> int:
         "session_discovery_receipt": {"path": session_path.as_posix(), "sha256": session_sha},
         "data_head_sha256": sha(DATA_HEAD),
         "data_head_moved_after_bootstrap": bool(ready),
-        "source_readiness": (
-            source_readiness(trade_date=blocked[0], tdx_available_through=observed_tdx_date,
-                             accepted_package_available_through=BASE_CUTOFF,
-                             calendar_session_confirmed=True)
-            if blocked and blocked_source else
-            source_readiness(trade_date=blocked[0], tdx_available_through=observed_tdx_date,
-                             accepted_package_available_through=BASE_CUTOFF,
-                             calendar_session_confirmed=True)
-            if component_builder_block else {"status": "NO_NEW_COMPLETED_SESSION"}
-        ),
-        "local_tdx_coverage_discovery": local_tdx_coverage,
+        "source_readiness": source_readiness_result,
+        "official_tdx_package_capture": official_tdx_capture,
+        "baostock_daily_capture": baostock_capture,
+        "local_tdx_coverage_discovery": {**local_tdx_coverage, "readiness_role": "LOCAL_CLIENT_DIAGNOSTIC_ONLY"},
         "incremental_component_builders": "NOT_WIRED_FAIL_CLOSED",
+        "stage_contract": {"path": DAILY_CONTRACT.as_posix(), "sha256": sha(DAILY_CONTRACT)},
+        "source_freeze_contract": {"path": SOURCE_FREEZE_CONTRACT.as_posix(), "sha256": sha(SOURCE_FREEZE_CONTRACT)},
         "component_permissions": component_permissions(),
         "stage_00_01_02_modified": False,
         "v4_03_implementation_started": False,
@@ -484,7 +545,8 @@ def main() -> int:
         "contract_id": "V4_DM01_RUN_SUMMARY_R1",
         "version": "1.0.0",
         "status": e2e_status,
-        "contract": {"path": CONTRACT.as_posix(), "sha256": sha(CONTRACT)},
+        "contract": {"path": DAILY_CONTRACT.as_posix(), "sha256": sha(DAILY_CONTRACT)},
+        "bootstrap_contract": {"path": CONTRACT.as_posix(), "sha256": sha(CONTRACT)},
         "head_contract": {"path": HEAD_CONTRACT.as_posix(), "sha256": sha(HEAD_CONTRACT)},
         "calendar_bridge": {"path": calendar_path.as_posix(), "sha256": calendar_sha},
         "bootstrap_receipt": {"path": bootstrap_path.as_posix(), "sha256": bootstrap_receipt_sha},
@@ -511,7 +573,9 @@ def main() -> int:
         "summary": run_summary_path.as_posix(),
         "summary_sha256": run_summary_sha,
     }, ensure_ascii=False))
-    return 0 if e2e_status == "PASS_NOOP_ALREADY_ACCEPTED" else 2
+    return 0 if e2e_status in {"PASS_NOOP_ALREADY_ACCEPTED", "WAIT_MARKET_CLOSE", "WAIT_TDX_PUBLICATION",
+                               "WAIT_BAOSTOCK_DAILY_UPDATE", "WAIT_GBBQ_SNAPSHOT_IF_REQUIRED",
+                               "WAIT_IDENTITY_LIFECYCLE_SNAPSHOT", "WAIT_SPECIAL_PHASE_SNAPSHOT"} else 2
 
 
 if __name__ == "__main__":

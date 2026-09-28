@@ -1,0 +1,55 @@
+{
+  "contract_id": "V4_CONTINUOUS_DATA_MAINTENANCE_V2",
+  "version": "2.0.0",
+  "owner_stage": "V4-DM-01",
+  "consulted_design": "docs/evidence/V4_DM01_OFFICIAL_DAILY_SOURCE_DESIGN_V2_20260928.md",
+  "base_cutoff": "2026-09-24",
+  "heads": {
+    "stage_accepted_head": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+    "data_accepted_head": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+    "dev_baseline_head": "data/v4/V4_DEV_BASELINE_HEAD.json",
+    "stage_and_dev_head_movement": false,
+    "data_head_movement_requires_all_gates": true
+  },
+  "session_policy": {
+    "calendar_authority": "official_versioned_exchange_session_contract",
+    "catch_up_order": "strictly_sequential",
+    "blocked_session_prevents_later_promotion": true,
+    "market_timezone": "Asia/Shanghai",
+    "market_close_local": "15:00:00",
+    "page_or_provider_publication_time_is_not_assumed": true
+  },
+  "source_freeze_contract": "config/v4_daily_source_freeze_v2.json",
+  "source_capture": {
+    "tdx_page": "https://www.tdx.com.cn/article/vipdata.html",
+    "tdx_primary": "TDX_OFFICIAL_FULL_PACKAGE_SNAPSHOT",
+    "tdx_local_vipdoc": "DIAGNOSTIC_ONLY",
+    "baostock_daily_api": "query_daily_history_k_AStock(date)",
+    "baostock_factor_api": "query_daily_adjust_factor(date)",
+    "baostock_production_network_enabled": false,
+    "baostock_activation_gate": "V4_00F_AUDIT_CLOSED_AND_WORKER_ENFORCES_ALL_BOUNDS",
+    "baostock_capability_status_until_gate_closes": "UNAVAILABLE",
+    "gbbq": "EXISTING_VERSIONED_GO_FORWARD_SNAPSHOT",
+    "source_snapshots": "data/v4/source_snapshots/{tdx|baostock}/YYYYMMDD/<content-addressed-id>/",
+    "source_not_ready_statuses": ["WAIT_MARKET_CLOSE", "WAIT_TDX_PUBLICATION", "WAIT_BAOSTOCK_DAILY_UPDATE", "WAIT_GBBQ_SNAPSHOT_IF_REQUIRED"]
+  },
+  "builder": {
+    "accepted_runtime_only": true,
+    "incremental_target": "TARGET_DATE_PLUS_EXPLICIT_AFFECTED_REVISIONS",
+    "full_history_rebuild_each_session": false,
+    "required_components": ["RAW_DAILY", "IDENTITY_UNIVERSE", "TRADING_STATUS", "ISST", "ADJUSTED_DAILY", "PERIOD_RAW", "PERIOD_ADJUSTED", "PRICE_LIMIT", "SPECIAL_PHASE"],
+    "unwired_builder_policy": "BLOCKED_COMPONENT_BUILDERS_NOT_WIRED"
+  },
+  "source_authority": {
+    "raw_ohlc_volume_amount": "TDX_OFFICIAL_PACKAGE_ONLY",
+    "baostock_daily": "FINGERPRINT_AND_DATED_SUPPLEMENTAL_FACTS_ONLY",
+    "baostock_adjustment_factor": "AUDIT_FACT_ONLY_NOT_CANONICAL_QFQ",
+    "missing_bar": "UNKNOWN_UNLESS_DATED_STATUS_AND_LIFECYCLE_EVIDENCE_CLASSIFY_IT"
+  },
+  "outputs": {
+    "source_snapshots": "data/v4/source_snapshots/",
+    "daily_receipts": "reports/v4_dm01/YYYYMMDD/",
+    "final_receipt": "reports/v4_dm01/V4_DM01_FINAL_RECEIPT_R2_20260928.json"
+  },
+  "prohibited": ["V4-03_implementation", "write_to_configured_tdx_root", "bao_stock_raw_substitution", "full_history_rehash_as_daily_work"]
+}

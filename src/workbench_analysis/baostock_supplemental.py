@@ -423,6 +423,7 @@ class BaoStockClient:
                     "error_code": str(getattr(result, "error_code", "UNKNOWN")),
                     "error_msg": self._safe_message(getattr(result, "error_msg", "")),
                     "fields": list(getattr(result, "fields", [])),
+                    "provider_date": str(getattr(result, "date", "") or "") or None,
                 }
                 if getattr(result, "error_code", None) != "0":
                     provider_code = str(getattr(result, "error_code", "UNKNOWN"))
@@ -448,6 +449,7 @@ class BaoStockClient:
                     "error_msg": self._safe_message(getattr(result, "error_msg", "")),
                     "fields": list(getattr(result, "fields", [])),
                     "page_count": pages,
+                    "provider_date": str(getattr(result, "date", "") or "") or None,
                 }
                 if metadata["error_code"] != "0":
                     raise BaoStockError("BAOSTOCK_QUERY_FAILED_AFTER_PAGINATION",

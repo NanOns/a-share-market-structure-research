@@ -1,0 +1,30 @@
+{
+  "command": "python -m pytest -q tests/v4_dm01",
+  "contract_id": "V4_DM01_OFFICIAL_DAILY_SOURCE_TEST_RECEIPT_R2",
+  "data_head_moved": false,
+  "failed": 0,
+  "file_sha256": {
+    "scripts/build_tdx_snapshot_delta.py": "d230840686360c00eb490545417db70b52a7fe8fc475afc1966d58a97bf44454",
+    "scripts/capture_baostock_daily_update.py": "732d98a0ec0a998e1e7f8928719a1ec4d77bcc8ca588457cd997e01a903e9c0d",
+    "scripts/capture_tdx_official_daily_package.py": "e644154ab107c088aaeb833804968c80818e66a0a5ef74a886f9812a599f906a",
+    "scripts/run_v4_continuous_data_maintenance.py": "361c2c347016b29b9dc4fcd49cf381ee1b89ee8df79b43608c18af204ad8e27f",
+    "scripts/run_v4_dm01_daily_increment.py": "37d05afd5be7a06b5953d52fe3692fc7a6fe12f76dc3260631aeb6858778d8d7",
+    "src/workbench_analysis/baostock_daily_update_source.py": "289428617f3ea9fea06b5067578c963a4fb099e062320372a2d6d4a493189873",
+    "src/workbench_analysis/baostock_supplemental.py": "07024c4fbbef05ff40dc3b66b12909d18c7354f98b80bb6562dc606cd5437133",
+    "src/workbench_analysis/daily_increment_builder.py": "5660b1b9dc3e90630bd4711f9e6132335f5117ae2eefb117a35c965651b6242f",
+    "src/workbench_analysis/daily_source_freeze.py": "ce44d2be3d7e9a7b3e3553b09d99d384ee0771f53333ede3b3430fbcf6a51996",
+    "src/workbench_analysis/daily_source_orchestrator.py": "665c4ac66d9974f95309b0589a0cbd206dbac41f073e12301d833e5d6847675a",
+    "src/workbench_analysis/tdx_official_daily_source.py": "077026b929a4007c01ff5320599704a43dbd4e8b7055e633bfd346f97e3d3fc2",
+    "src/workbench_analysis/tdx_snapshot_delta.py": "4918e3547f3f491f9b2c3a20da5a1de3344710c4d5a72b317a9f783b45dc0e97",
+    "tests/v4_dm01/test_continuous_data_maintenance.py": "b61773c8266d6ad254b10b513c2ff2d60e3a0acd1aade3f6fb015594ab7125ad",
+    "tests/v4_dm01/test_official_daily_sources_v2.py": "305b5a33527a958072c1e900351b8e3f30cbf1655bc0556c07071223e9318336"
+  },
+  "observed_at": "2026-09-28T03:52:03+00:00",
+  "passed": 76,
+  "release_readiness": "TESTS_ALONE_DO_NOT_ESTABLISH_RELEASE_READINESS",
+  "scope": "Official TDX source parsing/download safety, immutable source identities, date-batch BaoStock schema/runtime gates, source freeze, target-date deltas/revisions, non-substitution, wait states, builder/head guards, and V1 DM-01 regression tests.",
+  "status": "PASS",
+  "syntax_and_diff_check": "PASS: changed Python files py_compile; staged code git diff --check (source design artifact preserves original Markdown hardbreaks)",
+  "tdx_root_write_count": 0,
+  "version": "2.0.0"
+}

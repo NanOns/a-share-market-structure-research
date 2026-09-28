@@ -1,0 +1,85 @@
+{
+  "acceptance_result": {
+    "baostock_2026_09_28_daily_update": "WAIT; independent V4-00F gate is OPEN and production network is disabled",
+    "component_tests": "PASS_76",
+    "composite_source_freeze": "NOT_READY",
+    "data_head_promotion": "NOT_PERFORMED",
+    "incremental_component_build": "BLOCKED_COMPONENT_BUILDERS_NOT_WIRED",
+    "independent_real_e2e_postcheck": "NOT_RUN",
+    "tdx_2026_09_28_publication": "WAIT_MARKET_CLOSE; no current-day package downloaded",
+    "v4_03_started": false
+  },
+  "contract_id": "V4_DM01_OFFICIAL_DAILY_SOURCE_STAGE_RECEIPT_R2",
+  "evidence": {
+    "baostock_api_verification": {
+      "official_reference": "https://www.baostock.com/mainContent?file=DailyUpdates.md",
+      "path": "docs/evidence/V4_DM01_BAOSTOCK_DAILYUPDATES_API_VERIFICATION_20260928.md",
+      "sha256": "ce5d5445b20a871e7e7664eaa649a63e1eee735489fb82d99526b5624d21a03d"
+    },
+    "independent_baostock_audit": {
+      "capability": "UNAVAILABLE",
+      "path": "docs/audits/V4_00F_BAOSTOCK_GATE_AUDIT_20260925.md",
+      "sha256": "c2b0502c241a36128da9b597e5f5c0b28c987d69f2a3196dd720bcf7594e0af3",
+      "status": "OPEN"
+    },
+    "preclose_readiness": {
+      "path": "reports/v4_dm01/2026-09-28/source_readiness_receipt_r2.json",
+      "sha256": "3ba9b0485ef39cce76f9938a2df7d663dabfdfc99650ae70705785032f595994",
+      "status": "WAIT_MARKET_CLOSE"
+    },
+    "tdx_prior_read_only_observation": {
+      "date_seen": "2026-09-25",
+      "official_metadata_url": "https://data.tdx.com.cn/vipdoc/_hsjdayinfo.js",
+      "readiness_use": "NONE; not frozen as current-session package evidence"
+    },
+    "test_receipt": {
+      "path": "reports/v4_dm01/2026-09-28/dm01_v2_implementation_test_receipt.json",
+      "sha256": "7828975261af48d4048e597093daf827ef6da417fbd2f79a53a222b214904a2d"
+    },
+    "workspace_sdk": {
+      "public_contract_pin": "0.9.3",
+      "target_date_network_request_made": false,
+      "version": "0.9.4"
+    }
+  },
+  "implementation": {
+    "accepted_runtime_component_builders": "NOT_WIRED_FAIL_CLOSED",
+    "baostock_daily_batch_adapter": "IMPLEMENTED_EXACT_DATE_FIELDS_BUDGET_RUNTIME_PIN_AND_AUDIT_FACT_ROLE",
+    "raw_increment_staging": "IMPLEMENTED_TDX_ONLY_WITHOUT_INVENTED_CANONICAL_IDENTITY",
+    "source_freeze_v2": "IMPLEMENTED_ALL_REQUIRED_FAMILIES_AND_HASH_BOUND_TIMESTAMPS",
+    "tdx_official_page_package_capture": "IMPLEMENTED_BOUNDED_REDIRECT_AND_SIZE_GUARDS_ATOMIC_CONTENT_ADDRESSED_SNAPSHOTS",
+    "tdx_snapshot_delta": "IMPLEMENTED_CHANGED_ENTRY_ONLY_APPEND_CORRECTION_TRUNCATION_CLASSIFICATION"
+  },
+  "latest_applicable_design": {
+    "path": "docs/evidence/V4_DM01_OFFICIAL_DAILY_SOURCE_DESIGN_V2_20260928.md",
+    "sha256": "d45364307c9b98501189d349c9a25ea9dacd70f34705114d69d97dd01efc1c7f"
+  },
+  "next_stage": "AFTER_15_00_ASIA_SHANGHAI_RECHECK_OFFICIAL_TDX_PAGE; DOWNLOAD_ONLY_ON_EXACT_TARGET_DATE; RESOLVE_00F_BAOSTOCK_GATE_AND_RUNTIME_PIN; WIRE_ACCEPTED_00_01_02_INCREMENT_BUILDERS; THEN_RUN_INDEPENDENT_POSTCHECK",
+  "observed_at": "2026-09-28T03:52:03+00:00",
+  "owner_stage": "V4-DM-01",
+  "source_freeze_contract": {
+    "path": "config/v4_daily_source_freeze_v2.json",
+    "sha256": "517d89d769b5d712be3be80beba5f37c5cc9ba195b36999eca3dc029d8afa101"
+  },
+  "stage_contract": {
+    "path": "config/v4_continuous_data_maintenance_v2.json",
+    "sha256": "88e53fe47804ebf8cba065c10562de30b1582e52ea19605470d45fdbcd28dfc9"
+  },
+  "status": "PARTIAL_IMPLEMENTATION_WAITING_FOR_AFTER_CLOSE_SOURCES_AND_ACCEPTED_BUILDERS",
+  "tdx_root_write_count": 0,
+  "three_heads": {
+    "data_accepted": {
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0"
+    },
+    "dev_baseline": {
+      "path": "data/v4/V4_DEV_BASELINE_HEAD.json",
+      "sha256": "45695460b0147c6ada12e0ebd8e5070ac0a45eebea26603ff5a3daddc4dd5094"
+    },
+    "stage_accepted": {
+      "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+      "sha256": "ccb6938b7e6859894d11616a814f93fd15fd19598c3ff6d0aeda0ae181582e29"
+    }
+  },
+  "version": "2.0.0"
+}

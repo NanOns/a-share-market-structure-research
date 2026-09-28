@@ -488,6 +488,22 @@ def tdx_overlap(old: dict[str, Any], new: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def f6_actual_trading_signals(
+    substantive_dual_trade_days: list[dict[str, Any]],
+    identical_provider_alias_bar_days: list[dict[str, Any]],
+) -> dict[str, Any]:
+    """Separate identical provider alias bars from substantive dual-bar conflicts."""
+    return {
+        "F6_no_substantive_dual_actual_trading": not substantive_dual_trade_days,
+        "F6_identical_provider_alias_bar_dates": [
+            item["trade_date"] for item in identical_provider_alias_bar_days
+        ],
+        "F6_substantive_dual_trade_dates": [
+            item["trade_date"] for item in substantive_dual_trade_days
+        ],
+    }
+
+
 def provider_code_set(rows: list[dict[str, str]]) -> list[str]:
     return sorted({row.get("code", "") for row in rows if row.get("code")})
 
@@ -1088,9 +1104,7 @@ def main() -> int:
         "F3_old_raw_history_equals_full_new_prefix": tdx_overlap_result["old_history_equals_full_new_prefix"],
         "F4_baostock_roster_atomic_flip": roster_atomic_flip,
         "F5_provider_metadata_continuity": metadata_continuity,
-        "F6_no_overlapping_dual_actual_trading": not (dual_trade_days or identical_provider_alias_bar_days),
-        "F6_identical_provider_alias_bar_dates": [item["trade_date"] for item in identical_provider_alias_bar_days],
-        "F6_substantive_dual_trade_dates": [item["trade_date"] for item in dual_trade_days],
+        **f6_actual_trading_signals(dual_trade_days, identical_provider_alias_bar_days),
         "F6_check_scope": {
             "session_rosters_queried": roster_days,
             "actual_trade_checked_only_when_both_codes_are_rostered": True,

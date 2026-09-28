@@ -41,3 +41,11 @@
 **验收结果：`OPEN_NEEDS_MORE_PAIRED_AND_CROSS_SCOPE_SAMPLES`**
 
 **production identity mutation：`PROHIBITED`**
+
+## 2026-09-29 外部验收 R1 后续处置
+
+外部验收原文已按字节归档至 `docs/evidence/V4_01_SOURCE_FINGERPRINT_BLIND_STUDY_EXTERNAL_ACCEPTANCE_R1_20260929.md`，SHA-256：`6db29d56cddce77ca1b5f33e2d75197208abb710aa8cbc19d247156c8fe9060a`。处置与阶段合同、测试结果、接受边界、下一阶段记录见 `docs/audits/V4_01_SOURCE_FINGERPRINT_BLIND_STUDY_EXTERNAL_ACCEPTANCE_R1_DISPOSITION_20260929.md`。
+
+- P1 F6 语义残留已修复：信号只依据实质不同的双代码 actual bars；完全相同的 provider alias bar 独立列示。
+- 冻结的 candidate contract v1.0 和研究阈值未变。新增 synthetic contract tests 覆盖 0.95/0.99 边界、停牌空值/零值归一、实质冲突、provider code mismatch、重复日期、不完整查询及 metadata-only 不产候选；指定测试文件 `10 passed`。
+- 扩样关闭条件尚未满足：至少两个额外 paired-TDX 正样本、跨市场及困难负样本仍开放。本审计项维持 `OPEN`；不据此改变 V4-01 Gate A 或生产身份。

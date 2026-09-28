@@ -10,26 +10,67 @@
   "contract_sha256": "e31f94040d901cedcce64b4ef7775ef23afc816f82873dc7527d38675ec78d90",
   "data_head_moved": false,
   "dev_baseline_head_moved": false,
-  "gbbq_revision_probe": null,
+  "gbbq_revision_probe": {
+    "accepted_manifest_sha256": "f8c799f999482f385a4b1d6153ae9dafe7794aff5ddabee6e718e7fd119bad32",
+    "accepted_snapshot_id": "sha256-775d82c58b5b46ec1d21478f86ba8ef90302691982e68d5c4cfcd51fddda666e",
+    "contract_id": "GBBQ_SOURCE_REVISION_PROBE_V1",
+    "missing_source_files": [
+      "gbbq",
+      "gbbq.map"
+    ],
+    "status": "WAIT_GBBQ_CURRENT_SOURCE_UNAVAILABLE",
+    "tdx_root_write_count": 0,
+    "trade_date": "2026-09-28"
+  },
   "lifecycle_snapshot": null,
   "lifecycle_snapshot_receipt": null,
   "next_stage": "CAPTURE_TDX_AND_BAOSTOCK_AFTER_OFFICIAL_RELEASE; BUILD_ONLY_AFTER_ALL_V2_SOURCE_FAMILIES_READY",
-  "observed_at": "2026-09-28T06:44:39+00:00",
+  "observed_at": "2026-09-28T07:00:29+00:00",
   "source_freeze": null,
   "source_readiness": {
-    "observed_at": "2026-09-28T06:44:39+00:00",
-    "status": "WAIT_MARKET_CLOSE",
-    "system_available_at": null,
+    "observed_tdx_update_date": "2026-09-25",
+    "status": "WAIT_TDX_PUBLICATION",
     "trade_date": "2026-09-28"
   },
   "special_phase_snapshot": null,
   "special_phase_source_receipt": null,
   "stage_accepted_head_moved": false,
   "stage_contract": "V4_CONTINUOUS_DATA_MAINTENANCE_V2",
-  "status": "WAIT_MARKET_CLOSE",
+  "status": "WAIT_TDX_PUBLICATION",
   "target_date": "2026-09-28",
   "tdx_delta_build": null,
-  "tdx_page_capture": null,
+  "tdx_page_capture": {
+    "contract_id": "TDX_OFFICIAL_DAILY_PACKAGE_SOURCE_V1",
+    "download": null,
+    "downloaded_at": null,
+    "observed_at": "2026-09-28T07:00:29+00:00",
+    "page_html_path": "E:\\codex work\\大A交易\\data\\v4\\source_snapshots\\tdx\\20260928\\capture-20260928T070030089624Z-edfcd8cd3b926ba9\\page.html",
+    "page_http_metadata": {
+      "Content-Type": "text/html",
+      "ETag": "\"6ab0e845-6320\"",
+      "Last-Modified": "Mon, 21 Sep 2026 08:18:13 GMT"
+    },
+    "page_sha256": "92b455e0e5eb03637eb55c98514a3f392e071bb1bab1d7b639d9ca9919de0c61",
+    "page_url": "https://www.tdx.com.cn/article/vipdata.html",
+    "receipt_path": "E:\\codex work\\大A交易\\data\\v4\\source_snapshots\\tdx\\20260928\\capture-20260928T070030089624Z-edfcd8cd3b926ba9\\capture_receipt.json",
+    "resolved_download_url": "https://data.tdx.com.cn/vipdoc/hsjday.zip",
+    "snapshot_id": null,
+    "status": "WAIT_TDX_PUBLICATION",
+    "target_date": "2026-09-28",
+    "tdx_root_write_count": 0,
+    "update_date": "2026-09-25",
+    "update_info_http_metadata": {
+      "Content-Type": "application/javascript",
+      "ETag": "\"6ab8d1b1-78\"",
+      "Last-Modified": "Sun, 27 Sep 2026 08:20:01 GMT"
+    },
+    "update_info_path": "E:\\codex work\\大A交易\\data\\v4\\source_snapshots\\tdx\\20260928\\capture-20260928T070030089624Z-edfcd8cd3b926ba9\\update_info.js",
+    "update_info_sha256": "40a72d2b0794d81b0b41b9571bcc7e4daabac900a806b60d6da3b9c4b920bc74",
+    "update_info_url": "https://data.tdx.com.cn/vipdoc/_hsjdayinfo.js?t=179057882",
+    "update_time": "15:57:50",
+    "version": "1.0.0",
+    "zip_validation": null
+  },
   "tdx_root_write_count": 0,
   "version": "2.0.0"
 }

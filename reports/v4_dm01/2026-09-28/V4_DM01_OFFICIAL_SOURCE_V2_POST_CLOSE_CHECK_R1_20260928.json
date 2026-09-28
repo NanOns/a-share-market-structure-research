@@ -1,0 +1,42 @@
+{
+  "contract_id": "V4_DM01_OFFICIAL_SOURCE_V2_POST_CLOSE_CHECK_R1",
+  "stage_contract": "V4_CONTINUOUS_DATA_MAINTENANCE_V2",
+  "target_date": "2026-09-28",
+  "observed_at_utc": "2026-09-28T07:00:29+00:00",
+  "observed_at_asia_shanghai": "2026-09-28T15:00:29+08:00",
+  "acceptance_result": "WAIT_TDX_PUBLICATION",
+  "evidence": {
+    "source_readiness_receipt": "reports/v4_dm01/2026-09-28/source_readiness_receipt_r2.json",
+    "source_readiness_receipt_sha256": "4198fd48cee0c2693c22c0ffe0f0f97b6a531b513fb7a38e3a64b3c9620b118a",
+    "tdx_capture_receipt": "data/v4/source_snapshots/tdx/20260928/capture-20260928T070030089624Z-edfcd8cd3b926ba9/capture_receipt.json",
+    "tdx_capture_receipt_sha256": "ad400fb95499e001db67f9b817fb7cd04c7558a2eba3f470436ca7498669aa02",
+    "tdx_official_page_sha256": "92b455e0e5eb03637eb55c98514a3f392e071bb1bab1d7b639d9ca9919de0c61",
+    "tdx_update_info_sha256": "40a72d2b0794d81b0b41b9571bcc7e4daabac900a806b60d6da3b9c4b920bc74",
+    "tdx_update_date": "2026-09-25",
+    "tdx_target_date_package_downloaded": false,
+    "baostock_runtime_smoke_or_capture_called": false,
+    "gbbq_revision_probe": {
+      "status": "WAIT_GBBQ_CURRENT_SOURCE_UNAVAILABLE",
+      "missing_source_files": [
+        "gbbq",
+        "gbbq.map"
+      ]
+    },
+    "tdx_root_write_count": 0,
+    "data_head_moved": false,
+    "stage_accepted_head_moved": false,
+    "dev_baseline_head_moved": false,
+    "source_freeze_created": false,
+    "component_builders_run": []
+  },
+  "acceptance_notes": [
+    "The post-close official source check completed after 15:00 Asia/Shanghai.",
+    "The published TDX update date was 2026-09-25, so the 2026-09-28 package gate did not pass.",
+    "Baostock exact-date runtime smoke and capture were correctly not invoked because the TDX package gate was not ready.",
+    "The local current GBBQ source files were unavailable; no current-source equivalence was claimed.",
+    "No source freeze, component build, or data-head promotion occurred."
+  ],
+  "next_stage": "Wait for TDX to publish update_date 2026-09-28 and for current GBBQ files to become available; rerun the bounded post-close gate. Continue to hold Data Head until all source families, real component builders, and independent postcheck pass.",
+  "source_code_commit": "e29002b",
+  "tdx_root_write_count": 0
+}

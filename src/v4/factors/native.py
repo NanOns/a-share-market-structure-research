@@ -47,13 +47,11 @@ def market_axis_primitives(*, breadth: float | None, participation: float | None
             "identity": identity,
             "breadth_axis": breadth_axis, "participation_axis": participation_axis,
             "stress_level": stress_level, "stress_change": stress_change,
-            "trend_axis": "PRODUCED_BY_MARKET_REGIME_TREND_WEAK_ERRATUM_V1",
             "regime_ui_publication": "NOT_PUBLISHED_V4_03",
             "field_quality": {"breadth_axis": {"quality_state": "OBSERVED" if breadth_known else "UNKNOWN", "unknown_reason": None if breadth_known else "BREADTH_UNKNOWN_OR_NONFINITE"},
                               "participation_axis": {"quality_state": "OBSERVED" if participation_known else "UNKNOWN", "unknown_reason": None if participation_known else "PARTICIPATION_UNKNOWN_OR_NONFINITE"},
                               "stress_level": {"quality_state": "OBSERVED" if stress_level is not None else "UNKNOWN", "unknown_reason": None if stress_level is not None else "STRESS_INPUT_OR_COVERAGE_UNKNOWN"},
-                              "stress_change": {"quality_state": "OBSERVED" if stress_change is not None else "UNKNOWN", "unknown_reason": None if stress_change is not None else "STRESS_CHANGE_INPUT_UNKNOWN"},
-                              "trend_axis": {"quality_state": "PENDING_TREND_INPUTS", "contract_id": "MARKET_REGIME_TREND_WEAK_ERRATUM_V1"}}}
+                              "stress_change": {"quality_state": "OBSERVED" if stress_change is not None else "UNKNOWN", "unknown_reason": None if stress_change is not None else "STRESS_CHANGE_INPUT_UNKNOWN"}}}
     output["input_digest"] = sha256(json.dumps([identity, breadth, participation, limit_coverage,
                                                 stress_ratio, prior_stress_ratio], sort_keys=True,
                                                separators=(",", ":"), default=str).encode()).hexdigest()

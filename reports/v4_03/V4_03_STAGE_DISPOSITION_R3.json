@@ -1,0 +1,141 @@
+{
+  "artifact_hashes": {
+    "full_scope": "f63fb6d80d3e89b992692d90769db02249a02b9571b6eca8eeaf57c96e215caa",
+    "market_path": "c325e98bd101e6951c436e010c99e00a0e1910436c811c9d6c69b31c54f73613",
+    "market_regime": "62a37af62660721ec9c9dc3d3b670339189ed7f106cbd260fbee7071f281b088",
+    "prior_rps": "90d5998ba93b60f8061c759952a0f635e4e44fb0cd12fce73331e40d95ff7041"
+  },
+  "base_task": "docs/audits/V4_03_PURE_CORE_FACTORS_IMPLEMENTATION_TASK_20260927.md",
+  "capabilities": {
+    "MARKET_REFERENCE": {
+      "artifacts": [
+        "market_path"
+      ],
+      "independent_postchecks": [
+        "path"
+      ],
+      "residual_blockers": [],
+      "status": "PASS_CANDIDATE"
+    },
+    "MARKET_REGIME": {
+      "artifacts": [
+        "market_regime"
+      ],
+      "independent_postchecks": [
+        "regime",
+        "producer"
+      ],
+      "residual_blockers": [],
+      "status": "PASS_CANDIDATE"
+    },
+    "RELATIVE_RPS": {
+      "artifacts": [
+        "prior_rps",
+        "full_scope"
+      ],
+      "independent_postchecks": [
+        "prior",
+        "full"
+      ],
+      "residual_blockers": [],
+      "status": "PASS_CANDIDATE"
+    },
+    "SECTOR_NATIVE": {
+      "artifacts": [],
+      "independent_postchecks": [],
+      "residual_blockers": [
+        "BLOCKED_MISSING_ACCEPTED_PIT_MEMBERSHIP"
+      ],
+      "status": "BLOCKED"
+    },
+    "STOCK_CORE": {
+      "artifacts": [
+        "full_scope"
+      ],
+      "independent_postchecks": [
+        "full"
+      ],
+      "residual_blockers": [],
+      "status": "PASS_CANDIDATE"
+    }
+  },
+  "contract_hashes": {
+    "field_contracts": "b36d3058ae9e557642389ef264f8451076a0b9876ec423299d64d1a890e054d2",
+    "native_registry": "75880578143ba1f72d266f529ddf952c3b81793fdb9611dea630f564be7322a4",
+    "native_rule_schema": "04385326972c3f55efe044490480df97f0a4b31779a2b5daadb1a8842c6ee88a",
+    "r3_task": "93644a5ad17a441061b98409ea36120622bd3443015d369c2fbd8b8b408dbf7b"
+  },
+  "contract_id": "V4_03_STAGE_DISPOSITION_R3",
+  "dependency_permissions": {
+    "SECTOR_DEPENDENT_STOCK_PATHS": "BLOCKED_OR_SHADOW_ONLY",
+    "V4_04_EXECUTION_THIS_TASK": "NOT_STARTED",
+    "V4_04_MARKET_ENTRY": "PENDING_INDEPENDENT_EXTERNAL_ACCEPTANCE",
+    "V4_04_STOCK_CORE_ENTRY": "PENDING_INDEPENDENT_EXTERNAL_ACCEPTANCE",
+    "V4_05_REPLAY_GATE_A_EXECUTION_THIS_TASK": "NOT_STARTED",
+    "V4_08_SECTOR_ENTRY": "BLOCKED_MISSING_ACCEPTED_PIT_MEMBERSHIP"
+  },
+  "evidence_receipts": {
+    "determinism": {
+      "path": "reports/v4_03/V4_03_DETERMINISM_REPLAY_R3.json",
+      "sha256": "49ce7cceff7dc2a01f6d2e01ee38f51ec0edcc7c1c3e8de8ab94e2179ab4949c",
+      "status": "PASS"
+    },
+    "full": {
+      "path": "reports/v4_03/V4_03_INDEPENDENT_POSTCHECK_R3.json",
+      "sha256": "b67b721fe5717eee2cbd927c12d1020adf2c62e2a9a9ed8f47140757eb9a2300",
+      "status": "PASS"
+    },
+    "golden": {
+      "path": "reports/v4_03/V4_03_AST_GOLDEN_VECTOR_ACCEPTANCE_R3.json",
+      "sha256": "5709de54150acad206cd4b93387c35358f5ebacb6563cf6a2f0b30ec03a83df0",
+      "status": "PASS"
+    },
+    "native": {
+      "path": "reports/v4_03/V4_03_NATIVE_CONTRACT_ACCEPTANCE_R3.json",
+      "sha256": "f83c2964f0bafa8f2f710e7f78f87cd746ec5f7c42cc34f2a78876c006fe3db1",
+      "status": "PASS"
+    },
+    "path": {
+      "path": "reports/v4_03/V4_03_MARKET_REFERENCE_PATH_INDEPENDENT_POSTCHECK_R3.json",
+      "sha256": "4820d4ccedf5c8001ed4931e491a8385873315393d5526b671c6f8bc7f58d4a2",
+      "status": "PASS"
+    },
+    "prior": {
+      "path": "reports/v4_03/V4_03_PRIOR_RPS_INDEPENDENT_POSTCHECK_R3.json",
+      "sha256": "fd514743f23528c1b95a53b34e3dc9d687f384d390c69d9e4dd74e21ba829fa2",
+      "status": "PASS"
+    },
+    "producer": {
+      "path": "reports/v4_03/V4_03_CONTRACT_PRODUCER_CONSISTENCY_R3.json",
+      "sha256": "74d410261655bf99da66332953da04b7b427524662548d585b7322e75e789057",
+      "status": "PASS"
+    },
+    "regime": {
+      "path": "reports/v4_03/V4_03_MARKET_REGIME_NATIVE_INDEPENDENT_POSTCHECK_R3.json",
+      "sha256": "d8d4de6de2f49358b7adfaf186e61379e0f0981c232ff125efdc0c5d1677502b",
+      "status": "PASS"
+    }
+  },
+  "external_review_ready": "TRUE_WITH_CAPABILITY_SCOPE",
+  "governing_task": "docs/audits/V4_03_R3_EXTERNAL_BLOCKER_CLOSURE_TASK_20260928.md",
+  "next_stage": "Request independent external V4-03 acceptance of Stock/Market candidate and scoped Sector degradation; do not execute V4-04 before acceptance",
+  "scanner_run_count": 0,
+  "source_hashes": {
+    "calendar": "09285bb116db5e7ab644e4942c331ceb9bc715b47f0369b9f228ef9d17df2d53",
+    "daily": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90",
+    "dev_head": "45695460b0147c6ada12e0ebd8e5070ac0a45eebea26603ff5a3daddc4dd5094",
+    "price_limit": "128324b29143e3f5733e02120d1eff3902a7e6f84c4d20f5e4846e3d9b141ee9",
+    "universe": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b",
+    "v4_02_accepted_head": "da318a1f82a03f13930af7858ca1640fadbdaedbee85e27d47f9c869c2d6b595"
+  },
+  "status": "CAPABILITY_SCOPED_PASS_CANDIDATE_NOT_FINAL_ACCEPTANCE",
+  "tdx_root_write_count": 0,
+  "tests": {
+    "command": "python -m pytest -q tests/v4_03 tests/v4_phase0/test_algorithm_contracts.py",
+    "failed": 0,
+    "passed": 46
+  },
+  "trading_run_count": 0,
+  "v4_03_final_acceptance": "NOT_GRANTED",
+  "v4_04_entry": "BLOCKED_UNTIL_EXTERNAL_ACCEPTANCE"
+}

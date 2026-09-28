@@ -1,0 +1,46 @@
+{
+  "contract_count": 4,
+  "contract_id": "V4_03_NATIVE_CONTRACT_ACCEPTANCE_R3",
+  "failed_count": 0,
+  "failures": [],
+  "governing_task": "docs/audits/V4_03_R3_EXTERNAL_BLOCKER_CLOSURE_TASK_20260928.md",
+  "interpreter": "src/v4/contracts/native_rule_r3.py; no production native/relative factor imports",
+  "interpreter_sha256": "dea7d653e92b2c3e1c19e4785cfdcdcbeea10203b103f79e246bb36d33dfe780",
+  "native_registry_sha256": "75880578143ba1f72d266f529ddf952c3b81793fdb9611dea630f564be7322a4",
+  "parameter_registry_sha256": "c3cda61e604948935061b077f0f57777ac9dc9917263cab2217ca3c2ac9f28e3",
+  "passed_count": 20,
+  "per_contract_categories": {
+    "MARKET_REGIME_V1_PRIMITIVES": [
+      "threshold_above",
+      "threshold_exact_boundary",
+      "threshold_below",
+      "unknown_and_coverage",
+      "mixed_trend_neutral"
+    ],
+    "MARKET_RELATIVE_REFERENCE_V1": [
+      "normal_coverage",
+      "missing_threshold",
+      "universe_n_lt_2",
+      "endpoint_unavailable",
+      "evaluable_set_identity_change"
+    ],
+    "V4_03_MARKET_REFERENCE_PATH_V1": [
+      "normal_chain",
+      "unknown_suffix",
+      "new_series_rebase",
+      "pit_universe_change_input"
+    ],
+    "V4_03_SECTOR_NATIVE_PRIMITIVE_V1": [
+      "field_local_denominator",
+      "empty_member_set",
+      "partial_evaluable_rows",
+      "member_reorder_invariance",
+      "member_change",
+      "missing_membership_identity"
+    ]
+  },
+  "rule_schema_sha256": "04385326972c3f55efe044490480df97f0a4b31779a2b5daadb1a8842c6ee88a",
+  "stage_acceptance": "NOT_GRANTED",
+  "status": "PASS",
+  "vector_count": 20
+}

@@ -22,6 +22,7 @@ import psutil
 from src.v4.factors import Bar
 from src.v4.factors.core import rps_midrank
 from src.v4.factors.relative import relative_factors
+from scripts.build_v4_03_prior_rps_staging import validate_artifact
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -58,15 +59,16 @@ def atomic_json(path, payload):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--full-history", action="store_true", help="Use the full accepted daily history core candidate")
+    parser.add_argument("--r3", action="store_true", help="Consume stage-owned prior RPS and full historical market path")
     args = parser.parse_args()
-    suffix = "R2" if args.full_history else "R1"
-    core_receipt_path = ROOT / ("reports/v4_03/V4_03_CORE_FULL_HISTORY_CANDIDATE_RECEIPT_R2.json" if args.full_history else "reports/v4_03/V4_03_CORE_REQUIRED_SCOPE_DIAGNOSTIC_RECEIPT_R1.json")
-    core_data_path = ROOT / ("reports/v4_03/staging/V4_03_CORE_FULL_HISTORY_CANDIDATE_R2.jsonl.gz" if args.full_history else "reports/v4_03/staging/V4_03_CORE_REQUIRED_SCOPE_DIAGNOSTIC_R1.jsonl.gz")
+    suffix = "R3" if args.r3 else "R2" if args.full_history else "R1"
+    core_receipt_path = ROOT / ("reports/v4_03/V4_03_CORE_FULL_HISTORY_CANDIDATE_RECEIPT_R2.json" if args.full_history or args.r3 else "reports/v4_03/V4_03_CORE_REQUIRED_SCOPE_DIAGNOSTIC_RECEIPT_R1.json")
+    core_data_path = ROOT / ("reports/v4_03/staging/V4_03_CORE_FULL_HISTORY_CANDIDATE_R2.jsonl.gz" if args.full_history or args.r3 else "reports/v4_03/staging/V4_03_CORE_REQUIRED_SCOPE_DIAGNOSTIC_R1.jsonl.gz")
     output_path = ROOT / f"reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_{suffix}.jsonl.gz"
     references_path = ROOT / f"reports/v4_03/V4_03_MARKET_REFERENCE_CANDIDATE_{suffix}.json"
     receipt_path = ROOT / f"reports/v4_03/V4_03_FULL_SCOPE_CANDIDATE_RECEIPT_{suffix}.json"
     market_path = ROOT / f"reports/v4_03/staging/V4_03_MARKET_REFERENCE_PATH_CANDIDATE_{suffix}.jsonl.gz"
-    market_path_receipt = ROOT / f"reports/v4_03/V4_03_MARKET_PATH_CANDIDATE_RECEIPT_{suffix}.json"
+    market_path_receipt = ROOT / ("reports/v4_03/V4_03_MARKET_REFERENCE_PATH_RECEIPT_R3.json" if args.r3 else f"reports/v4_03/V4_03_MARKET_PATH_CANDIDATE_RECEIPT_{suffix}.json")
     core_receipt = json.loads(core_receipt_path.read_text(encoding="utf-8"))
     if sha(core_data_path) != core_receipt["output_sha256"]:
         raise RuntimeError("core candidate digest mismatch")
@@ -204,23 +206,42 @@ def main():
     prior_digests = {1: {}, 3: {}}
     prior_universe_ids = {1: {}, 3: {}}
     prior_specs = ((1, 5, 1, 6), (3, 5, 3, 8), (3, 20, 3, 23))
-    for offset, horizon, snapshot_offset, start_offset in prior_specs:
-        snap_date = dates[snapshot_offset]
-        members = sorted(snapshots[snap_date])
-        returns = {}
-        for sid in members:
-            returns[sid], _, basis = session_return(sid, start_offset, snapshot_offset)
-            if basis:
-                basis_pairs.add((sid, basis))
-        scores, _ = rps_midrank(returns, members)
-        field = f"rps{horizon}"
-        historical_rps[offset][field] = scores
-        prior_digests[offset][field] = hash_object({"origin": "DIAGNOSTIC_NON_PIT_RECOMPUTED",
-                                                    "trade_date": snap_date, "members": members,
-                                                    "scores": sorted(scores.items()),
-                                                    "universe_snapshot_id": snapshot_ids[snap_date],
-                                                    "daily_sha256": daily_ref["sha256"]})
-        prior_universe_ids[offset][field] = snapshot_ids[snap_date]
+    prior_artifact_sha = None
+    if args.r3:
+        prior_path = ROOT / "reports/v4_03/staging/V4_03_PRIOR_RPS_STAGING_R3.json"
+        prior_artifact, prior_artifact_sha = validate_artifact(
+            prior_path, ROOT / "reports/v4_03/V4_03_PRIOR_RPS_STAGING_RECEIPT_R3.json")
+        prior_rows = {(row["trade_date"], row["field_id"]): row for row in prior_artifact["rows"]}
+        for offset, horizon, snapshot_offset, start_offset in prior_specs:
+            snap_date, field = dates[snapshot_offset], f"rps{horizon}"
+            row = prior_rows[(snap_date, field)]
+            if row["universe_snapshot_id"] != snapshot_ids[snap_date] or row["output_digest"] != hash_object({k: v for k, v in row.items() if k != "output_digest"}):
+                raise RuntimeError("prior RPS PIT identity or row digest mismatch")
+            historical_rps[offset][field] = dict(row["scores"])
+            prior_digests[offset][field] = hash_object([prior_artifact_sha, row["output_digest"]])
+            prior_universe_ids[offset][field] = row["universe_snapshot_id"]
+            for sid in snapshots[snap_date]:
+                _, _, basis = session_return(sid, start_offset, snapshot_offset)
+                if basis:
+                    basis_pairs.add((sid, basis))
+    else:
+        for offset, horizon, snapshot_offset, start_offset in prior_specs:
+            snap_date = dates[snapshot_offset]
+            members = sorted(snapshots[snap_date])
+            returns = {}
+            for sid in members:
+                returns[sid], _, basis = session_return(sid, start_offset, snapshot_offset)
+                if basis:
+                    basis_pairs.add((sid, basis))
+            scores, _ = rps_midrank(returns, members)
+            field = f"rps{horizon}"
+            historical_rps[offset][field] = scores
+            prior_digests[offset][field] = hash_object({"origin": "DIAGNOSTIC_NON_PIT_RECOMPUTED",
+                                                        "trade_date": snap_date, "members": members,
+                                                        "scores": sorted(scores.items()),
+                                                        "universe_snapshot_id": snapshot_ids[snap_date],
+                                                        "daily_sha256": daily_ref["sha256"]})
+            prior_universe_ids[offset][field] = snapshot_ids[snap_date]
 
     basis_identity = hash_object(sorted(basis_pairs))
     source_digest = hash_object({"dev_baseline": sha(head_path), "universe": universe_ref["sha256"],
@@ -310,9 +331,13 @@ def main():
                "market_path_candidate_sha256": sha(market_path) if market_path.exists() else None,
                "prior_rps_origin": "DIAGNOSTIC_NON_PIT_RECOMPUTED_NOT_PREVIOUSLY_ACCEPTED",
                "limitations": ["No accepted sector membership input or sector full-market materialization",
-                               "Core uses all accepted daily sessions for the cutoff candidate, but first availability was not replayed at every historical as-of date" if args.full_history else "Core stock history is a 200-session bounded diagnostic, not full historical replay",
+                               "Full historical Data/Factor Replay Gate remains V4-05 scope" if args.r3 else "Core uses all accepted daily sessions for the cutoff candidate, but first availability was not replayed at every historical as-of date" if args.full_history else "Core stock history is a 200-session bounded diagnostic, not full historical replay",
                                "No accepted publication or final stage receipt"]}
     receipt["core_candidate_sha256"] = core_receipt["output_sha256"]
+    if args.r3:
+        receipt["prior_rps_origin"] = "V4_03_STAGE_OWNED_HISTORICAL_STAGING_R3"
+        receipt["prior_rps_artifact_sha256"] = prior_artifact_sha
+        receipt["governing_task"] = "docs/audits/V4_03_R3_EXTERNAL_BLOCKER_CLOSURE_TASK_20260928.md"
     atomic_json(receipt_path, receipt)
     print(json.dumps({"status": receipt["status"], "rows_out": receipt["rows_out"],
                       "field_count": receipt["field_count"], "elapsed_seconds": receipt["elapsed_seconds"]}))

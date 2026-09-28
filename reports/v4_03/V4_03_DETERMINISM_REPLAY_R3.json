@@ -1,0 +1,54 @@
+{
+  "contract_id": "V4_03_DETERMINISM_REPLAY_R3",
+  "governing_task": "docs/audits/V4_03_R3_EXTERNAL_BLOCKER_CLOSURE_TASK_20260928.md",
+  "results": {
+    "contract_vectors": {
+      "artifact_path": "reports/v4_03/V4_03_AST_GOLDEN_VECTOR_ACCEPTANCE_R3.json",
+      "baseline_sha256": "9c4021c300e5a7ee4ba038feac7c22b788ff7c84c3af4897738542f90cef37f4",
+      "deterministic": true,
+      "replay_sha256": [
+        "5709de54150acad206cd4b93387c35358f5ebacb6563cf6a2f0b30ec03a83df0",
+        "5709de54150acad206cd4b93387c35358f5ebacb6563cf6a2f0b30ec03a83df0"
+      ]
+    },
+    "full_scope": {
+      "artifact_path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+      "baseline_sha256": "f63fb6d80d3e89b992692d90769db02249a02b9571b6eca8eeaf57c96e215caa",
+      "deterministic": true,
+      "replay_sha256": [
+        "f63fb6d80d3e89b992692d90769db02249a02b9571b6eca8eeaf57c96e215caa",
+        "f63fb6d80d3e89b992692d90769db02249a02b9571b6eca8eeaf57c96e215caa"
+      ]
+    },
+    "market_path": {
+      "artifact_path": "reports/v4_03/staging/V4_03_MARKET_REFERENCE_PATH_CANDIDATE_R3.jsonl.gz",
+      "baseline_sha256": "c325e98bd101e6951c436e010c99e00a0e1910436c811c9d6c69b31c54f73613",
+      "deterministic": true,
+      "replay_sha256": [
+        "c325e98bd101e6951c436e010c99e00a0e1910436c811c9d6c69b31c54f73613",
+        "c325e98bd101e6951c436e010c99e00a0e1910436c811c9d6c69b31c54f73613"
+      ]
+    },
+    "market_regime": {
+      "artifact_path": "reports/v4_03/staging/V4_03_MARKET_REGIME_NATIVE_CANDIDATE_R3.jsonl.gz",
+      "baseline_sha256": "62a37af62660721ec9c9dc3d3b670339189ed7f106cbd260fbee7071f281b088",
+      "deterministic": true,
+      "replay_sha256": [
+        "62a37af62660721ec9c9dc3d3b670339189ed7f106cbd260fbee7071f281b088",
+        "62a37af62660721ec9c9dc3d3b670339189ed7f106cbd260fbee7071f281b088"
+      ]
+    },
+    "prior_rps": {
+      "artifact_path": "reports/v4_03/staging/V4_03_PRIOR_RPS_STAGING_R3.json",
+      "baseline_sha256": "90d5998ba93b60f8061c759952a0f635e4e44fb0cd12fce73331e40d95ff7041",
+      "deterministic": true,
+      "replay_sha256": [
+        "90d5998ba93b60f8061c759952a0f635e4e44fb0cd12fce73331e40d95ff7041",
+        "90d5998ba93b60f8061c759952a0f635e4e44fb0cd12fce73331e40d95ff7041"
+      ]
+    }
+  },
+  "runs_per_artifact": 2,
+  "stage_acceptance": "NOT_GRANTED",
+  "status": "PASS"
+}

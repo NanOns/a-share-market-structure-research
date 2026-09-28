@@ -306,9 +306,10 @@ def independent_core_identities(history, sid):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--full-history", action="store_true")
+    parser.add_argument("--r3", action="store_true")
     args = parser.parse_args()
-    suffix = "R2" if args.full_history else "R1"
-    core_path = ROOT / ("reports/v4_03/staging/V4_03_CORE_FULL_HISTORY_CANDIDATE_R2.jsonl.gz" if args.full_history else "reports/v4_03/staging/V4_03_CORE_REQUIRED_SCOPE_DIAGNOSTIC_R1.jsonl.gz")
+    suffix = "R3" if args.r3 else "R2" if args.full_history else "R1"
+    core_path = ROOT / ("reports/v4_03/staging/V4_03_CORE_FULL_HISTORY_CANDIDATE_R2.jsonl.gz" if args.full_history or args.r3 else "reports/v4_03/staging/V4_03_CORE_REQUIRED_SCOPE_DIAGNOSTIC_R1.jsonl.gz")
     candidate_path = ROOT / f"reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_{suffix}.jsonl.gz"
     candidate_receipt_path = ROOT / f"reports/v4_03/V4_03_FULL_SCOPE_CANDIDATE_RECEIPT_{suffix}.json"
     output_path = ROOT / f"reports/v4_03/V4_03_INDEPENDENT_POSTCHECK_{suffix}.json"
@@ -334,7 +335,7 @@ def main():
         if sha(path) != ref["sha256"]:
             raise RuntimeError(f"accepted {key} source digest mismatch")
     calendar = [d for d in json.loads(calendar_path.read_text(encoding="utf-8"))["session_dates"] if d <= head["accepted_data_cutoff"]]
-    if not args.full_history:
+    if not args.full_history and not args.r3:
         calendar = calendar[-200:]
     selected_dates = {calendar[-1 - offset] for offset in OFFSETS}
     snapshots = defaultdict(dict)
@@ -614,6 +615,8 @@ def main():
             expected_relative_identity[sid][f"rps{h}"] = bound_identity(
                 f"rps{h}", sid, h, current_universe_id, counts)
     history_scores = {}
+    history_returns = {}
+    history_basis = {}
     for offset, h, member_offset, start_offset in ((1, 5, 1, 6), (3, 5, 3, 8), (3, 20, 3, 23)):
         start_date, end_date = dates[start_offset], dates[member_offset]
         members = set(snapshots[end_date])
@@ -634,16 +637,45 @@ def main():
             vals[sid] = b["close"] / a["close"] - 1 if evaluable else None
         score, _ = midranks(vals, members)
         history_scores[(offset, h)] = score
+        history_returns[(offset, h)] = vals
+        history_basis[(offset, h)] = digest(sorted((sid, actual[sid][start_date]["basis"])
+                                                  for sid, value in vals.items() if value is not None))
     prior_digest = {}
+    prior_artifact_sha = None
+    prior_artifact_mismatch_count = 0
+    prior_rows = {}
+    if args.r3:
+        prior_path = ROOT / "reports/v4_03/staging/V4_03_PRIOR_RPS_STAGING_R3.json"
+        prior_artifact_sha = sha(prior_path)
+        prior_receipt = json.loads((ROOT / "reports/v4_03/V4_03_PRIOR_RPS_STAGING_RECEIPT_R3.json").read_text(encoding="utf-8"))
+        prior_artifact_mismatch_count += int(prior_artifact_sha != prior_receipt["artifact_sha256"])
+        prior_payload = json.loads(prior_path.read_text(encoding="utf-8"))
+        prior_rows = {(row["trade_date"], row["field_id"]): row for row in prior_payload["rows"]}
+        prior_source_digest = digest({"dev_baseline": sha(head_path), "universe": universe_ref["sha256"],
+                                      "daily": daily_ref["sha256"], "calendar": calendar_ref["sha256"],
+                                      "trading_status": sha(status_path)})
     for offset, h, member_offset, start_offset in ((1, 5, 1, 6), (3, 5, 3, 8), (3, 20, 3, 23)):
         previous_day = dates[member_offset]
         members = sorted(snapshots[previous_day])
-        prior_digest[(offset, h)] = digest({
-            "origin": "DIAGNOSTIC_NON_PIT_RECOMPUTED",
-            "trade_date": previous_day, "members": members,
-            "scores": sorted(history_scores[(offset, h)].items()),
-            "universe_snapshot_id": snapshot_ids[previous_day],
-            "daily_sha256": daily_ref["sha256"]})
+        if args.r3:
+            row = prior_rows[(previous_day, f"rps{h}")]
+            prior_artifact_mismatch_count += int(row["universe_snapshot_id"] != snapshot_ids[previous_day])
+            prior_artifact_mismatch_count += int(row["scores"] != [[sid, value] for sid, value in sorted(history_scores[(offset, h)].items())])
+            prior_artifact_mismatch_count += int(row["output_digest"] != digest({k: v for k, v in row.items() if k != "output_digest"}))
+            prior_artifact_mismatch_count += int(row["member_count"] != len(members))
+            prior_artifact_mismatch_count += int(row["evaluable_count"] != sum(v is not None for v in history_scores[(offset, h)].values()))
+            prior_artifact_mismatch_count += int(row["input_source_digest"] != prior_source_digest)
+            prior_artifact_mismatch_count += int(row["adjustment_basis_identity"] != history_basis[(offset, h)])
+            prior_artifact_mismatch_count += int(row["input_digest"] != digest([previous_day, f"rps{h}", snapshot_ids[previous_day],
+                                                                                sorted(history_returns[(offset, h)].items()), prior_source_digest]))
+            prior_digest[(offset, h)] = digest([prior_artifact_sha, row["output_digest"]])
+        else:
+            prior_digest[(offset, h)] = digest({
+                "origin": "DIAGNOSTIC_NON_PIT_RECOMPUTED",
+                "trade_date": previous_day, "members": members,
+                "scores": sorted(history_scores[(offset, h)].items()),
+                "universe_snapshot_id": snapshot_ids[previous_day],
+                "daily_sha256": daily_ref["sha256"]})
     for sid in current_members:
         for h, offset in ((5, 1), (5, 3), (20, 3)):
             current_score = expected_relative[sid][f"rps{h}"][0]
@@ -686,9 +718,11 @@ def main():
                         and not mismatch_by_field and not digest_invalid and not identity_mismatch_by_field
                         and not source_identity_mismatch_count and not reference_identity_mismatch_count
                         and all(identity_checked_by_field[x] >= 2 * len(current_members) for x in field_ids)
-                        and receipt_match and reference_digests_ok and references_match) else "FAIL"
+                        and receipt_match and reference_digests_ok and references_match
+                        and prior_artifact_mismatch_count == 0) else "FAIL"
     report = {"contract_id": f"V4_03_INDEPENDENT_POSTCHECK_{suffix}",
               "status": status, "scope": "INDEPENDENT_DIAGNOSTIC_POSTCHECK_NOT_STAGE_ACCEPTANCE",
+              "governing_task": "docs/audits/V4_03_R3_EXTERNAL_BLOCKER_CLOSURE_TASK_20260928.md" if args.r3 else None,
               "cutoff": current_day, "evidence_origin": "DIAGNOSTIC_NON_PIT",
               "independent_formula_module_imports": [],
               "inputs": {"dev_baseline_head_sha256": sha(head_path), "universe_sha256": universe_ref["sha256"],
@@ -705,6 +739,8 @@ def main():
               "identity_mismatch_count_by_field": dict(sorted(identity_mismatch_by_field.items())),
               "identity_checks_by_field": dict(sorted(identity_checked_by_field.items())),
               "source_identity_mismatch_count": source_identity_mismatch_count,
+              "prior_artifact_sha256": prior_artifact_sha,
+              "prior_artifact_mismatch_count": prior_artifact_mismatch_count,
               "market_reference_identity_mismatch_count": reference_identity_mismatch_count,
               "independent_source_digest": source_digest,
               "independent_adjustment_basis_set_identity": basis_identity,

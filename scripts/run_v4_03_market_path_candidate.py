@@ -1,6 +1,7 @@
 """Build a frozen-baseline daily-rebalanced research-market path candidate."""
 
 from collections import defaultdict
+import argparse
 import gzip
 import hashlib
 import json
@@ -42,6 +43,11 @@ def write_atomic_json(path, value):
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--full-history", action="store_true")
+    args = parser.parse_args()
+    output_path = ROOT / ("reports/v4_03/staging/V4_03_MARKET_REFERENCE_PATH_CANDIDATE_R3.jsonl.gz" if args.full_history else "reports/v4_03/staging/V4_03_MARKET_REFERENCE_PATH_CANDIDATE_R1.jsonl.gz")
+    receipt_path = ROOT / ("reports/v4_03/V4_03_MARKET_REFERENCE_PATH_RECEIPT_R3.json" if args.full_history else "reports/v4_03/V4_03_MARKET_PATH_CANDIDATE_RECEIPT_R1.json")
     started = time.monotonic()
     process = psutil.Process()
     cpu_started = process.cpu_times()
@@ -73,7 +79,9 @@ def main():
     for path, ref in ((daily_path, daily_ref), (calendar_path, calendar_ref), (universe_path, universe_ref)):
         if sha(path) != ref["sha256"]:
             raise RuntimeError(f"accepted source digest mismatch: {path.name}")
-    calendar = [d for d in json.loads(calendar_path.read_text(encoding="utf-8"))["session_dates"] if d <= head["accepted_data_cutoff"]][-200:]
+    calendar = [d for d in json.loads(calendar_path.read_text(encoding="utf-8"))["session_dates"] if d <= head["accepted_data_cutoff"]]
+    if not args.full_history:
+        calendar = calendar[-200:]
     wanted = set(calendar)
     snapshots = defaultdict(dict)
     with gzip.open(universe_path, "rt", encoding="utf-8") as stream:
@@ -160,8 +168,8 @@ def main():
         start_universe_snapshot_ids=[row["start_universe_snapshot_id"] for row in daily_identities],
         market_calendar_id=f"V4_02_CALENDAR_SHA256:{calendar_ref['sha256']}",
         input_source_digest=source_digest, series_version="DAILY_REBALANCED_RESEARCH_INDEX_V1")
-    temp = OUTPUT.with_suffix(OUTPUT.suffix + ".tmp")
-    OUTPUT.parent.mkdir(parents=True, exist_ok=True)
+    temp = output_path.with_suffix(output_path.suffix + ".tmp")
+    output_path.parent.mkdir(parents=True, exist_ok=True)
     base_row = {"contract_id": "V4_03_MARKET_REFERENCE_PATH_V1", "contract_version": "1.0.0",
                 "parameter_set_id": parameters["parameter_set_id"], "evidence_origin": "DIAGNOSTIC_NON_PIT",
                 "trade_date": calendar[0], "start_session": None, "end_session": calendar[0],
@@ -178,7 +186,7 @@ def main():
                 "window_identity": digest([calendar_ref["sha256"], calendar[0], snapshot_ids[calendar[0]], "SERIES_BASE_1.0"])}
     base_row["input_digest"] = digest([source_digest, calendar[0], snapshot_ids[calendar[0]], "SERIES_BASE_1.0"])
     base_row["output_digest"] = digest(base_row)
-    temp = OUTPUT.with_suffix(OUTPUT.suffix + ".tmp")
+    temp = output_path.with_suffix(output_path.suffix + ".tmp")
     with temp.open("wb") as raw, gzip.GzipFile(fileobj=raw, mode="wb", filename="", mtime=0, compresslevel=6) as zipped:
         zipped.write((json.dumps(base_row, ensure_ascii=False, sort_keys=True, allow_nan=False) + "\n").encode("utf-8"))
         for facts, path_fact in zip(daily_identities, path_rows):
@@ -196,7 +204,7 @@ def main():
             row["input_digest"] = path_fact["input_digest"]
             row["output_digest"] = digest(row)
             zipped.write((json.dumps(row, ensure_ascii=False, sort_keys=True, allow_nan=False) + "\n").encode("utf-8"))
-    os.replace(temp, OUTPUT)
+    os.replace(temp, output_path)
     unknown_days = [row["trade_date"] for row, path in zip(daily_identities, path_rows) if path["quality_state"] == "UNKNOWN"]
     elapsed = time.monotonic() - started
     sample_stop.set()
@@ -216,17 +224,19 @@ def main():
                                 "logical_cpu_count": logical_cpus},
                    "cache_state": "OS_AND_DUCKDB_CACHE_NOT_CONTROLLED_OR_CLEARED",
                    "dataset_identity": source_digest}
-    receipt = {"contract_id": "V4_03_MARKET_PATH_CANDIDATE_RECEIPT_R1",
+    receipt = {"contract_id": "V4_03_MARKET_REFERENCE_PATH_RECEIPT_R3" if args.full_history else "V4_03_MARKET_PATH_CANDIDATE_RECEIPT_R1",
                "status": "CANDIDATE_NOT_STAGE_ACCEPTANCE", "path_identity": "DAILY_REBALANCED_RESEARCH_INDEX",
                "series_version": "DAILY_REBALANCED_RESEARCH_INDEX_V1", "cutoff": calendar[-1],
                "sessions": len(calendar), "daily_returns": len(daily_returns), "rows_in": rows_in,
                "required_scope_member_set_policy": "PIT_UNIVERSE_AT_START_SESSION",
                "unknown_daily_return_count": len(unknown_days), "first_unknown_daily_return": unknown_days[0] if unknown_days else None,
                "rebase_policy": "UNKNOWN_SUFFIX_UNTIL_NEW_SERIES_VERSION",
-               "source_digest": source_digest, "output_sha256": sha(OUTPUT),
+               "source_digest": source_digest, "output_sha256": sha(output_path),
+               "first_session": calendar[0], "last_session": calendar[-1],
+               "governing_task": "docs/audits/V4_03_R3_EXTERNAL_BLOCKER_CLOSURE_TASK_20260928.md" if args.full_history else None,
                "elapsed_seconds": round(elapsed, 3), "performance_measurement": measurement,
                "scanner_run_count": 0, "trading_run_count": 0, "tdx_root_write_count": 0}
-    write_atomic_json(RECEIPT, receipt)
+    write_atomic_json(receipt_path, receipt)
     print(json.dumps({"status": receipt["status"], "sessions": receipt["sessions"],
                       "daily_returns": receipt["daily_returns"], "unknown_returns": receipt["unknown_daily_return_count"],
                       "elapsed_seconds": receipt["elapsed_seconds"]}))

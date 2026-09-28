@@ -26,11 +26,18 @@ class NumericContext:
         self.relative = {} if missing else fixture["relative"]
         self.parameters = parameters
         self.target = self.relative.get("target_security_id")
+        actual = [row.get("bar") for row in self.history if row["state"] == "ACTUAL" and row.get("bar")]
+        anchor = actual[-1] if actual else None
+        self.basis = anchor.get("basis") if anchor else None
+        self.source = anchor.get("source") if anchor else None
 
     def prior(self, position: int, count: int, mode: str) -> int | None:
         if mode == "CROSS_SECTION_SESSION_WINDOW_V1":
             prior = position - count
-            return prior if prior >= 0 else None
+            if prior < 0 or any(self.history[i]["state"] not in {"ACTUAL", "CONFIRMED_SUSPENSION"}
+                                for i in range(prior, position + 1)):
+                return None
+            return prior
         found = 0
         for index in range(position - 1, -1, -1):
             state = self.history[index]["state"]
@@ -51,6 +58,8 @@ class NumericContext:
             indexes = list(range(start, end))
             return indexes if all(self.history[i]["state"] == "ACTUAL" for i in indexes) else None
         indexes = []
+        if include_current and (position < 0 or self.history[position]["state"] != "ACTUAL"):
+            return None
         start = position if include_current else position - 1
         for index in range(start, -1, -1):
             state = self.history[index]["state"]
@@ -63,8 +72,11 @@ class NumericContext:
         return None
 
     def field(self, name: str, position: int, member: str | None) -> Any:
+        cross = self.relative.get("cross_section", {}).get(name, {})
+        if member is not None and member in cross:
+            return cross[member]
         if member is not None and member != self.target:
-            return self.relative.get("cross_section", {}).get(name, {}).get(member)
+            return None
         series = self.relative.get("field_series", {}).get(name)
         if series is not None:
             offset = len(self.history) - 1 - position
@@ -75,7 +87,12 @@ class NumericContext:
         if position < 0 or position >= len(self.history):
             return None
         row = self.history[position]
-        return row["bar"].get(name) if row["state"] == "ACTUAL" and row.get("bar") else None
+        if row["state"] != "ACTUAL" or not row.get("bar"):
+            return None
+        bar = row["bar"]
+        if bar.get("basis") != self.basis or bar.get("source") != self.source:
+            return None
+        return bar.get(name)
 
     def eval(self, node: Mapping[str, Any], position: int, mode: str, member: str | None = None) -> Any:
         kind = node["type"]

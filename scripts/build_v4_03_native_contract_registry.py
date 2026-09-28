@@ -112,18 +112,15 @@ def main():
     trend = json.loads(trend_path.read_text(encoding="utf-8"))
     regime_id = "MARKET_REGIME_V1_PRIMITIVES"
     regime_fields = [schema(name, "enum", "axis_state", regime_id, "fixed_market_session_t", "UNKNOWN_when_required_input_unknown")
-                     for name in ("breadth_axis", "participation_axis", "stress_level", "stress_change", "trend_axis")]
+                     for name in ("breadth_axis", "participation_axis", "stress_level", "stress_change")]
     contracts.append(contract(
         regime_id, regime_fields,
         inputs=[input_field("breadth", "float64", "fraction", "V4_03_MARKET_NATIVE_INPUTS"),
                 input_field("participation", "float64", "ratio", "V4_03_MARKET_NATIVE_INPUTS"),
                 input_field("limit_coverage", "float64", "fraction", "V4_02_ACCEPTED_PRICE_LIMIT_FACTS"),
                 input_field("stress_ratio", "float64", "fraction", "V4_03_MARKET_NATIVE_INPUTS"),
-                input_field("prior_stress_ratio", "float64", "fraction", "V4_03_MARKET_NATIVE_INPUTS"),
-                input_field("trend_close", "float64", "adjusted_price", "V4_02_ACCEPTED_ADJUSTED_DAILY"),
-                input_field("trend_ma20", "float64", "adjusted_price", "V4_03_CORE_FACTOR_DAILY_V1"),
-                input_field("trend_ma20_t_minus_5", "float64", "adjusted_price", "V4_03_CORE_FACTOR_DAILY_V1")],
-        time_semantics="fixed market session t; trend comparison additionally consumes t-5",
+                input_field("prior_stress_ratio", "float64", "fraction", "V4_03_MARKET_NATIVE_INPUTS")],
+        time_semantics="fixed market session t; trend produced by separate erratum contract",
         identity_fields=["trade_date", "market_calendar_id", "market_snapshot_id", "adjustment_basis_id", "input_source_digest", "parameter_set_id"],
         window_contract="CROSS_SECTION_SESSION_WINDOW_V1",
         algorithm={"rule_table": {"breadth_axis": {"gt_positive_threshold": "IMPROVING", "lt_negative_threshold": "DETERIORATING", "otherwise": "STABLE"},

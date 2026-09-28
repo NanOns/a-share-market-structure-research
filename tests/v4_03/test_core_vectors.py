@@ -173,7 +173,7 @@ def test_market_axis_exact_thresholds_and_conflict():
     assert at["participation_axis"] == "EXPANDING"
     assert at["stress_level"] == "HIGH"
     assert at["stress_change"] == "STABLE"
-    assert at["trend_axis"] == "PRODUCED_BY_MARKET_REGIME_TREND_WEAK_ERRATUM_V1"
+    assert "trend_axis" not in at
     below = market_axis_primitives(breadth=-.050001, participation=.79999,
                                    limit_coverage=.79999, stress_ratio=.01, prior_stress_ratio=.02, **identity)
     assert below["breadth_axis"] == "DETERIORATING"

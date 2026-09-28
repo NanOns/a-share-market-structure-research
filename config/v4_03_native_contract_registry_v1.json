@@ -176,10 +176,10 @@
         "evaluable_rule": "finite return and verified same-security adjustment identity at both fixed endpoints",
         "unknown_reason": "EMPTY_START_UNIVERSE or MISSING_COVERAGE_EXCEEDED when missing_fraction > registered threshold"
       },
-      "source_digest": "bb396979b75f70b3f1fbd7ddc136d06cb469e3019ba285abe461eed65df8bc5b",
+      "source_digest": "22610868d6ed93de0a27df991ebab33d60e985cfe3fca4fd56ff9b8df5f30014",
       "source_ids": {
         "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
-        "native_sha256": "e7c674ae02fbc3e411391634d8b610b29045071686df55ab04a1296a8950aebc",
+        "native_sha256": "6f20038294c97228a50e6bd003c62bf5cfada4175171a8faa4644b956eed30a9",
         "parameter_registry_sha256": "c3cda61e604948935061b077f0f57777ac9dc9917263cab2217ca3c2ac9f28e3",
         "relative_sha256": "74034b819cd845e8177eee24b30cd441e94b1619f393b67c24c5397076af82ab",
         "scope_map_sha256": "7f6f2e15de01c28ca2b35420b0ce12e171e13c9c954a0924ac91aea3990e4e81"
@@ -349,10 +349,10 @@
         "missing_gate_parameter_id": "V4_03_MARKET_REFERENCE_MAX_MISSING_FRACTION",
         "unknown_reason": "unknown daily return breaks all later path rows in this series version"
       },
-      "source_digest": "db648784047d24703c57b21f7e02608aa963f6f25c33f935a0e82efb5e290c86",
+      "source_digest": "1ff29398eeb8a7823c8d92806ac34fda97bf565b38753d01bb17c46729fac178",
       "source_ids": {
         "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
-        "native_sha256": "e7c674ae02fbc3e411391634d8b610b29045071686df55ab04a1296a8950aebc",
+        "native_sha256": "6f20038294c97228a50e6bd003c62bf5cfada4175171a8faa4644b956eed30a9",
         "parameter_registry_sha256": "c3cda61e604948935061b077f0f57777ac9dc9917263cab2217ca3c2ac9f28e3",
         "relative_sha256": "74034b819cd845e8177eee24b30cd441e94b1619f393b67c24c5397076af82ab",
         "scope_map_sha256": "7f6f2e15de01c28ca2b35420b0ce12e171e13c9c954a0924ac91aea3990e4e81"
@@ -439,27 +439,6 @@
           "source": "V4_03_MARKET_NATIVE_INPUTS",
           "type": "float64",
           "unit": "fraction"
-        },
-        {
-          "field_id": "trend_close",
-          "required": true,
-          "source": "V4_02_ACCEPTED_ADJUSTED_DAILY",
-          "type": "float64",
-          "unit": "adjusted_price"
-        },
-        {
-          "field_id": "trend_ma20",
-          "required": true,
-          "source": "V4_03_CORE_FACTOR_DAILY_V1",
-          "type": "float64",
-          "unit": "adjusted_price"
-        },
-        {
-          "field_id": "trend_ma20_t_minus_5",
-          "required": true,
-          "source": "V4_03_CORE_FACTOR_DAILY_V1",
-          "type": "float64",
-          "unit": "adjusted_price"
         }
       ],
       "outputs": [
@@ -518,20 +497,6 @@
           "requiredness": "REQUIRED",
           "type": "enum",
           "unit": "axis_state"
-        },
-        {
-          "as_of": "fixed_market_session_t",
-          "display_label": "trend_axis",
-          "field_id": "trend_axis",
-          "missing_policy": "UNKNOWN_when_required_input_unknown",
-          "nullable": true,
-          "output_digest": "31af3a1637150e11b8a32ca5adb326d51037c53e4297a8f14e149433f098de53",
-          "producer_contract_id": "MARKET_REGIME_V1_PRIMITIVES",
-          "producer_version": "1.0.0",
-          "quality_state": "OBSERVED|UNKNOWN",
-          "requiredness": "REQUIRED",
-          "type": "enum",
-          "unit": "axis_state"
         }
       ],
       "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
@@ -544,15 +509,15 @@
         "field_local_unknown": true,
         "regime_ui_publication": "NOT_PUBLISHED_V4_03"
       },
-      "source_digest": "ddd2d3bfaae50ca2f1f435b7dea4299d38ed5e881c48ef8e541aac3db153fada",
+      "source_digest": "8b2f83bcfde788d94ab8fe7485c958049dcca74d432a1373ddb296e6043ee927",
       "source_ids": {
         "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
-        "native_sha256": "e7c674ae02fbc3e411391634d8b610b29045071686df55ab04a1296a8950aebc",
+        "native_sha256": "6f20038294c97228a50e6bd003c62bf5cfada4175171a8faa4644b956eed30a9",
         "parameter_registry_sha256": "c3cda61e604948935061b077f0f57777ac9dc9917263cab2217ca3c2ac9f28e3",
         "relative_sha256": "74034b819cd845e8177eee24b30cd441e94b1619f393b67c24c5397076af82ab",
         "scope_map_sha256": "7f6f2e15de01c28ca2b35420b0ce12e171e13c9c954a0924ac91aea3990e4e81"
       },
-      "time_semantics": "fixed market session t; trend comparison additionally consumes t-5",
+      "time_semantics": "fixed market session t; trend produced by separate erratum contract",
       "window_contract": "CROSS_SECTION_SESSION_WINDOW_V1"
     },
     {
@@ -847,10 +812,10 @@
         "publication_permission": "NOT_V4_08_SECTOR_FACTORS",
         "quality_is_field_local": true
       },
-      "source_digest": "92f8357ea8234957083dc93540ccd9a9127b650128852dc8ca29aa113d2a6f9c",
+      "source_digest": "8863520d7fb105ddd9c48921d2bde073f00d519cb05c2779b1d2d4eafeae1790",
       "source_ids": {
         "framework_extension_sha256": "0fe73d773d8fdda4a700991da2bf8b02b75cbef29d63a9b4b82340923b927d5d",
-        "native_sha256": "e7c674ae02fbc3e411391634d8b610b29045071686df55ab04a1296a8950aebc",
+        "native_sha256": "6f20038294c97228a50e6bd003c62bf5cfada4175171a8faa4644b956eed30a9",
         "parameter_registry_sha256": "c3cda61e604948935061b077f0f57777ac9dc9917263cab2217ca3c2ac9f28e3",
         "relative_sha256": "74034b819cd845e8177eee24b30cd441e94b1619f393b67c24c5397076af82ab",
         "scope_map_sha256": "7f6f2e15de01c28ca2b35420b0ce12e171e13c9c954a0924ac91aea3990e4e81"

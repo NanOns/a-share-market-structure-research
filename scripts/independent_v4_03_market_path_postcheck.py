@@ -1,10 +1,12 @@
 """Independent check of the bounded V4-03 daily rebalanced market path."""
 
 from collections import defaultdict
+import argparse
 import gzip
 import hashlib
 import json
 import math
+import os
 from pathlib import Path
 import time
 
@@ -31,6 +33,12 @@ def digest(value):
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--full-history", action="store_true")
+    args = parser.parse_args()
+    output_path = ROOT / ("reports/v4_03/staging/V4_03_MARKET_REFERENCE_PATH_CANDIDATE_R3.jsonl.gz" if args.full_history else "reports/v4_03/staging/V4_03_MARKET_REFERENCE_PATH_CANDIDATE_R1.jsonl.gz")
+    receipt_path = ROOT / ("reports/v4_03/V4_03_MARKET_REFERENCE_PATH_RECEIPT_R3.json" if args.full_history else "reports/v4_03/V4_03_MARKET_PATH_CANDIDATE_RECEIPT_R1.json")
+    postcheck_path = ROOT / ("reports/v4_03/V4_03_MARKET_REFERENCE_PATH_INDEPENDENT_POSTCHECK_R3.json" if args.full_history else "reports/v4_03/V4_03_MARKET_PATH_INDEPENDENT_POSTCHECK_R1.json")
     started = time.monotonic()
     head_path = ROOT / "data/v4/V4_DEV_BASELINE_HEAD.json"
     head = json.loads(head_path.read_text(encoding="utf-8"))
@@ -45,7 +53,9 @@ def main():
     for path, ref in ((daily_path, daily_ref), (calendar_path, calendar_ref), (universe_path, universe_ref)):
         if sha(path) != ref["sha256"]:
             raise RuntimeError(f"accepted source digest mismatch: {path.name}")
-    sessions = [x for x in json.loads(calendar_path.read_text(encoding="utf-8"))["session_dates"] if x <= head["accepted_data_cutoff"]][-200:]
+    sessions = [x for x in json.loads(calendar_path.read_text(encoding="utf-8"))["session_dates"] if x <= head["accepted_data_cutoff"]]
+    if not args.full_history:
+        sessions = sessions[-200:]
     session_set = set(sessions)
     universe_by = defaultdict(dict)
     with gzip.open(universe_path, "rt", encoding="utf-8") as stream:
@@ -129,10 +139,10 @@ def main():
                          "start_universe_snapshot_id": snapshot_id[start],
                          "adjustment_basis_id": digest(sorted(bases))})
     found = []
-    with gzip.open(OUTPUT, "rt", encoding="utf-8") as stream:
+    with gzip.open(output_path, "rt", encoding="utf-8") as stream:
         found = [json.loads(line) for line in stream]
-    candidate_sha = sha(OUTPUT)
-    receipt = json.loads(RECEIPT.read_text(encoding="utf-8"))
+    candidate_sha = sha(output_path)
+    receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
     mismatches, samples = 0, []
     for idx, (want, got) in enumerate(zip(expected, found)):
         check_fields = ("trade_date", "start_session", "end_session", "reference_return", "level", "quality_state",
@@ -148,10 +158,29 @@ def main():
                 bad.append(key)
         if got.get("input_source_digest") != source_digest:
             bad.append("input_source_digest")
+        if got.get("market_calendar_id") != f"V4_02_CALENDAR_SHA256:{calendar_ref['sha256']}":
+            bad.append("market_calendar_id")
+        if got.get("series_version") != receipt.get("series_version"):
+            bad.append("series_version")
+        if idx and not (math.isclose(got["daily_return"], want["reference_return"], rel_tol=1e-12, abs_tol=1e-12)
+                        if got.get("daily_return") is not None and want["reference_return"] is not None
+                        else got.get("daily_return") == want["reference_return"]):
+            bad.append("daily_return")
         if got.get("contract_id") != "V4_03_MARKET_REFERENCE_PATH_V1" or got.get("path_identity") != "DAILY_REBALANCED_RESEARCH_INDEX":
             bad.append("contract_identity")
-        if len(got.get("input_digest", "")) != 64 or len(got.get("window_identity", "")) != 64:
-            bad.append("digest_shape")
+        if idx == 0:
+            expected_window = digest([calendar_ref["sha256"], sessions[0], snapshot_id[sessions[0]], "SERIES_BASE_1.0"])
+            expected_input = digest([source_digest, sessions[0], snapshot_id[sessions[0]], "SERIES_BASE_1.0"])
+        else:
+            expected_window = digest([got["market_calendar_id"], want["start_session"], want["end_session"],
+                                      want["start_universe_snapshot_id"], want["adjustment_basis_id"]])
+            expected_input = digest([source_digest, want["start_session"], want["end_session"],
+                                     want["reference_return"], want["start_universe_snapshot_id"],
+                                     got["series_version"]])
+        if got.get("window_identity") != expected_window:
+            bad.append("window_identity")
+        if got.get("input_digest") != expected_input:
+            bad.append("input_digest")
         output_without_digest = dict(got)
         stored_output_digest = output_without_digest.pop("output_digest", None)
         if stored_output_digest != digest(output_without_digest):
@@ -161,7 +190,8 @@ def main():
             if len(samples) < 20:
                 samples.append({"row": idx, "fields": bad, "date": got.get("trade_date")})
     status = "PASS" if len(expected) == len(found) == len(sessions) and mismatches == 0 and candidate_sha == receipt.get("output_sha256") else "FAIL"
-    report = {"contract_id": "V4_03_MARKET_PATH_INDEPENDENT_POSTCHECK_R1", "status": status,
+    report = {"contract_id": "V4_03_MARKET_REFERENCE_PATH_INDEPENDENT_POSTCHECK_R3" if args.full_history else "V4_03_MARKET_PATH_INDEPENDENT_POSTCHECK_R1", "status": status,
+              "governing_task": "docs/audits/V4_03_R3_EXTERNAL_BLOCKER_CLOSURE_TASK_20260928.md" if args.full_history else None,
               "scope": "INDEPENDENT_MARKET_PATH_CANDIDATE_POSTCHECK_NOT_STAGE_ACCEPTANCE",
               "cutoff": last_day, "rows_checked": len(found), "expected_rows": len(expected), "rows_in": rows_in,
               "candidate_output_sha256": candidate_sha, "receipt_sha_match": candidate_sha == receipt.get("output_sha256"),
@@ -171,7 +201,10 @@ def main():
               "tolerance": "numeric abs/rel tolerance 1e-12", "elapsed_seconds": round(time.monotonic() - started, 3),
               "scanner_run_count": 0, "trading_run_count": 0, "tdx_root_write_count": 0,
               "evidence_origin": "DIAGNOSTIC_NON_PIT"}
-    POSTCHECK.write_text(json.dumps(report, ensure_ascii=False, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+    postcheck_path.parent.mkdir(parents=True, exist_ok=True)
+    temp = postcheck_path.with_suffix(postcheck_path.suffix + ".tmp")
+    temp.write_text(json.dumps(report, ensure_ascii=False, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+    os.replace(temp, postcheck_path)
     print(json.dumps({"status": status, "rows_checked": len(found), "mismatch_rows": mismatches,
                       "elapsed_seconds": report["elapsed_seconds"]}))
     if status != "PASS":

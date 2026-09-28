@@ -27,6 +27,7 @@ from workbench_analysis.daily_data_head import (  # noqa: E402
     read_json,
     write_json_atomic,
 )
+from tdx.day_reader import read_edge_records  # noqa: E402
 
 CONTRACT = Path("config/v4_continuous_data_maintenance_v1.json")
 HEAD_CONTRACT = Path("config/v4_data_accepted_head_v1.json")
@@ -81,6 +82,36 @@ def notice_text_matches(path: Path) -> bool:
     text = re.sub(r"<[^>]+>", " ", text)
     text = re.sub(r"\s+", "", text)
     return all(value in text for value in ("9月25日", "9月27日", "9月28日", "10月1日", "10月7日", "10月8日"))
+
+
+def discover_local_tdx_coverage() -> dict:
+    """Read the local TDX daily-file tails without writing beneath the TDX root."""
+    latest_by_file: dict[str, int] = {}
+    invalid = 0
+    for market in ("sh", "sz"):
+        folder = TDX_ROOT / "vipdoc" / market / "lday"
+        if not folder.is_dir():
+            continue
+        for path in folder.glob(f"{market}[0-9][0-9][0-9][0-9][0-9][0-9].day"):
+            try:
+                _, last = read_edge_records(path)
+                datetime.strptime(str(last.trade_date), "%Y%m%d")
+                latest_by_file[path.name] = int(last.trade_date)
+            except (OSError, ValueError):
+                invalid += 1
+    max_date = max(latest_by_file.values(), default=None)
+    return {
+        "root": str(TDX_ROOT),
+        "read_only": True,
+        "eligible_daily_file_count": len(latest_by_file),
+        "invalid_or_unreadable_daily_file_count": invalid,
+        "latest_tail_date": (datetime.strptime(str(max_date), "%Y%m%d").date().isoformat()
+                             if max_date is not None else None),
+        "file_count_at_latest_tail_date": sum(value == max_date for value in latest_by_file.values()),
+        "file_count_after_bootstrap_cutoff": sum(value > int(BASE_CUTOFF.replace("-", ""))
+                                                  for value in latest_by_file.values()),
+        "tail_date_means_complete_market_session": False,
+    }
 
 
 def build_calendar_bridge(now: datetime) -> tuple[dict, list[str]]:
@@ -327,10 +358,13 @@ def main() -> int:
     )
     blocked = []
     ready = list(plan["promotable_sessions"])
+    local_tdx_coverage = discover_local_tdx_coverage()
+    component_builder_block = False
+    observed_tdx_date = local_tdx_coverage.get("latest_tail_date")
     if ready:
         readiness = source_readiness(
             trade_date=ready[0],
-            tdx_available_through=BASE_CUTOFF,
+            tdx_available_through=observed_tdx_date,
             accepted_package_available_through=BASE_CUTOFF,
             calendar_session_confirmed=True,
         )
@@ -341,7 +375,15 @@ def main() -> int:
             plan["promotable_sessions"] = []
             plan["blocked_sessions"] = blocked
         else:
-            raise SystemExit("DM01_INCREMENTAL_COMPONENT_BUILDERS_REQUIRED")
+            # Builder contracts do not promote placeholders. Keep the target held
+            # and emit an auditable blocker until all production component builders
+            # are bound to the accepted V4-01/V4-02 runtime.
+            component_builder_block = True
+            blocked = ready
+            ready = []
+            plan["status"] = "BLOCKED_COMPONENT_BUILDERS_NOT_WIRED"
+            plan["promotable_sessions"] = []
+            plan["blocked_sessions"] = blocked
 
     run_date = datetime.now(SHANGHAI).date().isoformat()
     run_dir = Path(f"reports/v4_dm01/{run_date}")
@@ -398,7 +440,11 @@ def main() -> int:
     blocked_source = any(
         day in blocked for day in plan.get("candidate_sessions", [])
     )
-    e2e_status = "BLOCKED_SOURCE_NOT_READY" if blocked_source else "PASS_NOOP_ALREADY_ACCEPTED"
+    e2e_status = (
+        "BLOCKED_SOURCE_NOT_READY" if blocked_source else
+        "BLOCKED_COMPONENT_BUILDERS_NOT_WIRED" if component_builder_block else
+        "PASS_NOOP_ALREADY_ACCEPTED"
+    )
     e2e = {
         "contract_id": "V4_DM01_INITIAL_E2E_RECEIPT_R1",
         "version": "1.0.0",
@@ -416,11 +462,17 @@ def main() -> int:
         "data_head_sha256": sha(DATA_HEAD),
         "data_head_moved_after_bootstrap": bool(ready),
         "source_readiness": (
-            source_readiness(trade_date=blocked[0], tdx_available_through=BASE_CUTOFF,
+            source_readiness(trade_date=blocked[0], tdx_available_through=observed_tdx_date,
                              accepted_package_available_through=BASE_CUTOFF,
                              calendar_session_confirmed=True)
-            if blocked else {"status": "NO_NEW_COMPLETED_SESSION"}
+            if blocked and blocked_source else
+            source_readiness(trade_date=blocked[0], tdx_available_through=observed_tdx_date,
+                             accepted_package_available_through=BASE_CUTOFF,
+                             calendar_session_confirmed=True)
+            if component_builder_block else {"status": "NO_NEW_COMPLETED_SESSION"}
         ),
+        "local_tdx_coverage_discovery": local_tdx_coverage,
+        "incremental_component_builders": "NOT_WIRED_FAIL_CLOSED",
         "component_permissions": component_permissions(),
         "stage_00_01_02_modified": False,
         "v4_03_implementation_started": False,

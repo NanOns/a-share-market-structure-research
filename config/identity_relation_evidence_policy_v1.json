@@ -1,0 +1,69 @@
+{
+  "contract_id": "IDENTITY_RELATION_EVIDENCE_POLICY_V1",
+  "version": "1.0.0",
+  "owner_stage": "V4-01-R8.2",
+  "weak_candidate_signals": [
+    "ROSTER_EXIT_ENTRY_ADJACENCY",
+    "LIFECYCLE_BOUNDARY_ADJACENCY",
+    "DIFFERENT_LISTING_DATES",
+    "SOURCE_REVISION_PRESENT",
+    "SAME_NAME",
+    "BAR_CONTINUITY"
+  ],
+  "weak_signal_policy": "CANDIDATE_ONLY_NEVER_CONFIRM_SAME_OR_DISTINCT",
+  "same_entity_confirmation": {
+    "accepted_evidence_classes": [
+      "OFFICIAL_CODE_CHANGE_NOTICE",
+      "VERSIONED_ACCEPTED_IDENTITY_ALIAS"
+    ],
+    "required_fields": [
+      "source_security_keys",
+      "canonical_security_id",
+      "effective_date",
+      "source_ref",
+      "source_capture_path",
+      "source_capture_sha256",
+      "observed_at",
+      "system_available_at"
+    ],
+      "dated_alias_intervals_must_not_overlap": true,
+      "accepted_alias_contract": "DATED_SECURITY_ALIAS_V1",
+      "accepted_alias_requires_versioned_source_revision": true
+  },
+  "distinct_entity_confirmation": {
+    "accepted_evidence_classes": [
+      "OFFICIAL_DISTINCT_ISSUER_IDENTITY",
+      "VERSIONED_ACCEPTED_LIFECYCLE_IDENTITY"
+    ],
+    "required_fields": [
+      "source_security_keys",
+      "security_ids",
+      "issuer_ids",
+      "effective_date",
+      "source_ref",
+      "source_capture_path",
+      "source_capture_sha256",
+      "observed_at",
+      "system_available_at"
+    ],
+    "issuer_ids_must_be_distinct": true,
+    "accepted_lifecycle_identity_requires_acceptance_receipt_hash": true
+  },
+  "evidence_hash_policy": {
+    "capture_digest_must_be_in_verified_evidence_set": true,
+    "accepted_lifecycle_receipt_digest_must_be_in_verified_evidence_set": true,
+    "accepted_alias_fact_capture_digest_must_be_in_verified_evidence_set": true,
+    "source_revision_or_listing_date_alone_is_sufficient": false
+  },
+  "unresolved_policy": {
+    "resolution_status": "UNRESOLVED",
+    "affected_identity_capability": "UNKNOWN",
+    "required_scope_unresolved_limit": 0,
+    "fail_closed": true
+  },
+  "outputs": {
+    "event_discovery": "reports/v4_01/V4_01_IDENTITY_EVENT_DISCOVERY_R8_2.json",
+    "unresolved_queue": "reports/v4_01/V4_01_R8_2_UNRESOLVED_AUDIT_QUEUE.json",
+    "stage_receipt": "reports/v4_01/V4_01_R8_2_STAGE_RECEIPT.json"
+  }
+}

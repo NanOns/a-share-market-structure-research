@@ -1,0 +1,30 @@
+{
+  "checks": {
+    "confirmed_relations_have_policy_evidence": "PASS",
+    "discovery_and_queue_receipts_exist": "PASS",
+    "execution_and_regression_receipts_bound": "PASS",
+    "generic_logic_has_no_security_fixture_branch": "PASS",
+    "r7_canonical_artifacts_unchanged": "PASS",
+    "required_scope_unresolved_fails_gate": "PASS",
+    "versioned_policy_bound": "PASS",
+    "weak_signals_never_confirm_distinct": "PASS"
+  },
+  "contract_id": "V4_01_R8_2_INDEPENDENT_POSTCHECK_R1",
+  "counts": {
+    "candidates": 38,
+    "confirmed_distinct": 0,
+    "confirmed_same": 1,
+    "unresolved_required_scope": 37
+  },
+  "external_acceptance": "PENDING_EXTERNAL_AUDIT",
+  "next_stage": "EXTERNAL_R8_2_AUDIT_AND_OFFICIAL_DISTINCT_EVIDENCE_TRIAGE",
+  "observed_at_utc": "2026-09-28T01:11:22+00:00",
+  "owner_stage_result": "BLOCKED",
+  "problems": [],
+  "r7_canonical_hashes": {
+    "identity_map_sha256": "e33294fb8d1d71732fdc3df903258b5617345811ecbdb649af8056ccd91427e0",
+    "required_universe_sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b"
+  },
+  "status": "PASS",
+  "version": "1.0.0"
+}

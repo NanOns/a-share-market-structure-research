@@ -24,10 +24,19 @@ SIGNALS = frozenset(
         "LIFECYCLE_BOUNDARY_ADJACENCY",
         "PERSISTENT_RETROSPECTIVE_BAR_ALIAS",
         "SOURCE_SYMBOL_REASSIGNMENT_OR_CODE_REUSE_CANDIDATE",
+        "VERSIONED_IDENTITY_RELATION_EVIDENCE",
         "WEAK_NAME_CONTINUITY",
     }
 )
 _SYMBOL = re.compile(r"^(SH|SZ|BJ)\.([0-9]{6})$", re.IGNORECASE)
+RELATION_POLICY_ID = "IDENTITY_RELATION_EVIDENCE_POLICY_V1"
+RELATION_POLICY_VERSION = "1.0.0"
+SAME_ENTITY_EVIDENCE_CLASSES = frozenset({
+    "OFFICIAL_CODE_CHANGE_NOTICE", "VERSIONED_ACCEPTED_IDENTITY_ALIAS",
+})
+DISTINCT_ENTITY_EVIDENCE_CLASSES = frozenset({
+    "OFFICIAL_DISTINCT_ISSUER_IDENTITY", "VERSIONED_ACCEPTED_LIFECYCLE_IDENTITY",
+})
 
 
 def _date(value: object | None) -> date | None:
@@ -103,6 +112,105 @@ def _candidate_id(keys: Sequence[str], ids: Sequence[str]) -> str:
     return "IE-" + hashlib.sha256(material.encode("utf-8")).hexdigest()[:24].upper()
 
 
+def _has_aware_timestamp(value: object) -> bool:
+    from datetime import datetime
+
+    try:
+        parsed = datetime.fromisoformat(str(value or "").replace("Z", "+00:00"))
+    except ValueError:
+        return False
+    return parsed.tzinfo is not None and parsed.utcoffset() is not None
+
+
+def _evidence_keys(evidence: Mapping[str, object]) -> tuple[str, ...]:
+    raw = evidence.get("source_security_keys")
+    if raw is None:
+        raw = (evidence.get("old_source_security_key"), evidence.get("new_source_security_key"))
+    if isinstance(raw, str):
+        raw = (raw,)
+    return tuple(sorted({_key(value) for value in raw if _key(value)}))
+
+
+def _evidence_hash(evidence: Mapping[str, object]) -> str:
+    return str(evidence.get("source_capture_sha256") or evidence.get("evidence_hash") or "").lower()
+
+
+def _valid_relation_evidence(
+    evidence: Mapping[str, object],
+    *,
+    relation: str,
+    candidate_keys: Sequence[str],
+    candidate_ids: Sequence[str],
+    verified_digests: set[str],
+    accepted_classes: frozenset[str],
+) -> bool:
+    evidence_relation = str(evidence.get("entity_relation") or evidence.get("relation") or "").upper()
+    evidence_class = str(evidence.get("evidence_class") or "").upper()
+    digest = _evidence_hash(evidence)
+    effective_date = _date(evidence.get("effective_date"))
+    required_common = (
+        bool(evidence.get("source_ref")),
+        bool(evidence.get("source_capture_path") or evidence.get("evidence_capture_path")),
+        digest in verified_digests,
+        effective_date is not None,
+        _has_aware_timestamp(evidence.get("observed_at")),
+        _has_aware_timestamp(evidence.get("system_available_at")),
+    )
+    if evidence_relation != relation or evidence_class not in accepted_classes or not all(required_common):
+        return False
+    if _evidence_keys(evidence) != tuple(sorted({_key(value) for value in candidate_keys if _key(value)})):
+        return False
+
+    security_ids = {str(value or "") for value in evidence.get("security_ids", []) if str(value or "")}
+    if relation == "SAME_ENTITY":
+        canonical_id = str(evidence.get("canonical_security_id") or evidence.get("security_id") or "")
+        if evidence_class == "OFFICIAL_CODE_CHANGE_NOTICE":
+            return len(candidate_keys) == 2 and bool(canonical_id)
+        if (str(evidence.get("contract_id") or "") != "DATED_SECURITY_ALIAS_V1"
+                or str(evidence.get("source_revision") or "").lower()
+                not in {digest, "sha256:" + digest}):
+            return False
+        return len(candidate_keys) == 2 and bool(canonical_id)
+
+    issuer_ids = {str(value or "") for value in evidence.get("issuer_ids", []) if str(value or "")}
+    if len(security_ids) != 2 or len(issuer_ids) != 2:
+        return False
+    if len(candidate_keys) == 1:
+        if len(set(candidate_ids)) < 2 or security_ids != set(candidate_ids):
+            return False
+    elif len(candidate_keys) == 2:
+        if set(candidate_ids) and security_ids != set(candidate_ids):
+            return False
+    else:
+        return False
+    if evidence_class == "VERSIONED_ACCEPTED_LIFECYCLE_IDENTITY":
+        acceptance_digest = str(evidence.get("acceptance_receipt_sha256") or "").lower()
+        if not evidence.get("acceptance_receipt_path") or acceptance_digest not in verified_digests:
+            return False
+    return True
+
+
+def _alias_facts_are_strong_same_entity_evidence(
+    facts: Sequence[Mapping[str, object]], verified_digests: set[str]
+) -> bool:
+    required_roles = {"PREDECESSOR", "CURRENT"}
+    roles = {str(fact.get("alias_role") or "").upper() for fact in facts}
+    for fact in facts:
+        digest = str(fact.get("evidence_hash") or fact.get("source_capture_sha256") or "").lower()
+        if (
+            str(fact.get("contract_id") or "") != "DATED_SECURITY_ALIAS_V1"
+            or digest not in verified_digests
+            or not (fact.get("evidence_ref") or fact.get("source_ref"))
+            or not (fact.get("evidence_capture_path") or fact.get("source_capture_path"))
+            or str(fact.get("source_revision") or "").lower() not in {digest, "sha256:" + digest}
+            or _date(fact.get("effective_from")) is None
+            or not _has_aware_timestamp(fact.get("observed_at"))
+            or not _has_aware_timestamp(fact.get("system_available_at"))
+        ):
+            return False
+    return required_roles <= roles
+
+
 class _CandidateUnion:
     def __init__(self, identities: Mapping[str, Mapping[str, object]]):
         self.identities = identities
@@ -168,6 +276,7 @@ def discover_identity_events(
     required_scope_source_keys: Iterable[str] | None = None,
     alias_facts: Iterable[Mapping[str, object]] = (),
     official_events: Iterable[Mapping[str, object]] = (),
+    identity_relation_evidence: Iterable[Mapping[str, object]] = (),
     verified_evidence_digests: set[str] | None = None,
     retrospective_bar_candidates: Iterable[Mapping[str, object]] = (),
     source_identity_assignments: Mapping[str, Iterable[Mapping[str, object]]] | None = None,
@@ -175,9 +284,9 @@ def discover_identity_events(
 ) -> dict[str, object]:
     """Build a deterministic union of historical or one-session identity events.
 
-    A roster boundary is paired only within one exchange. Different accepted
-    listing anchors resolve that weak adjacency as distinct; equal or missing
-    anchors remain candidates until stronger dated evidence is available.
+    A roster boundary is paired only within one exchange. Listing dates,
+    source revisions, names, lifecycle boundaries, and bar continuity create
+    candidates only; relation status requires policy-accepted identity evidence.
     """
     mode = str(mode).upper()
     if mode not in MODES:
@@ -196,6 +305,7 @@ def discover_identity_events(
         required_keys = {_key(key) for key in required_scope_source_keys}
     aliases = list(alias_facts)
     official = list(official_events)
+    relation_evidence = list(identity_relation_evidence)
     verified = {str(value).lower() for value in (verified_evidence_digests or set())}
     sessions = sorted({day for value in session_dates if (day := _date(value)) is not None})
     allowed_dates = set(sessions)
@@ -222,6 +332,24 @@ def discover_identity_events(
                       details={"source_ref": event.get("source_ref"), "source_capture_sha256": digest,
                                "system_available_at": event.get("system_available_at")})
             signal_counts["OFFICIAL_CODE_CHANGE_EVENT"] += 1
+
+    for evidence in relation_evidence:
+        keys = _evidence_keys(evidence)
+        effective_date = evidence.get("effective_date")
+        if mode == "DAILY_INCREMENTAL" and _date(effective_date) != target:
+            continue
+        if keys:
+            union.add(
+                keys,
+                "VERSIONED_IDENTITY_RELATION_EVIDENCE",
+                effective_date=effective_date,
+                identity_ids=evidence.get("security_ids"),
+                details={"evidence_class": evidence.get("evidence_class"),
+                         "entity_relation": evidence.get("entity_relation") or evidence.get("relation"),
+                         "source_ref": evidence.get("source_ref"),
+                         "source_capture_sha256": _evidence_hash(evidence)},
+            )
+            signal_counts["VERSIONED_IDENTITY_RELATION_EVIDENCE"] += 1
 
     alias_groups: dict[str, list[Mapping[str, object]]] = defaultdict(list)
     for fact in aliases:
@@ -363,12 +491,11 @@ def discover_identity_events(
     alias_by_key: dict[str, list[Mapping[str, object]]] = defaultdict(list)
     for fact in aliases:
         alias_by_key[_key(fact.get("source_security_key"))].append(fact)
-    official_by_pair: dict[tuple[str, str], list[Mapping[str, object]]] = defaultdict(list)
-    for event in official:
-        pair = tuple(sorted((_key(event.get("old_source_security_key") or event.get("old_symbol")),
-                             _key(event.get("new_source_security_key") or event.get("new_symbol")))))
-        if all(pair):
-            official_by_pair[pair].append(event)
+    official_by_pair: dict[tuple[str, ...], list[Mapping[str, object]]] = defaultdict(list)
+    for evidence in [*official, *relation_evidence]:
+        pair = _evidence_keys(evidence)
+        if pair:
+            official_by_pair[pair].append(evidence)
 
     status_counts: dict[str, int] = defaultdict(int)
     for event in events:
@@ -378,85 +505,70 @@ def discover_identity_events(
         aliases_cover = len(keys) > 1 and {_key(fact.get("source_security_key")) for fact in facts} == set(keys)
         evidence_hashes = {str(fact.get("evidence_hash") or "").lower() for fact in facts}
         same_entity_fact = (
-            aliases_cover and bool(facts) and all(digest in verified for digest in evidence_hashes)
+            aliases_cover and bool(facts)
             and len({str(fact.get("security_id") or "") for fact in facts}) == 1
             and {str(fact.get("alias_role") or "").upper() for fact in facts} >= {"PREDECESSOR", "CURRENT"}
             and _dated_alias_facts_do_not_overlap(facts)
+            and _alias_facts_are_strong_same_entity_evidence(facts, verified)
         )
-        pair = tuple(sorted(keys)) if len(keys) == 2 else ()
-        official_match = [
-            row for row in official_by_pair.get(pair, [])
-            if str(row.get("source_capture_sha256") or row.get("evidence_hash") or "").lower() in verified
-        ]
-        confirmed_id = next(iter({str(fact.get("security_id") or "") for fact in facts}), "") if facts else ""
-        if same_entity_fact and confirmed_id:
-            event["resolution_status"] = "CONFIRMED_SAME_ENTITY_CODE_CHANGE"
-            event["resolved_security_id"] = confirmed_id
-            event["resolution_reason"] = "DATED_ALIAS_FACT_WITH_HASH_VERIFIED_OFFICIAL_EVIDENCE"
-            event["resolution_evidence"] = [
-                {
-                    "source_security_key": _key(fact.get("source_security_key")),
-                    "security_id": fact.get("security_id"),
-                    "effective_from": fact.get("effective_from"),
-                    "effective_to": fact.get("effective_to"),
-                    "source_revision": fact.get("source_revision"),
-                    "evidence_ref": fact.get("evidence_ref"),
-                    "evidence_capture_path": fact.get("evidence_capture_path"),
-                    "evidence_hash": fact.get("evidence_hash"),
-                    "observed_at": fact.get("observed_at"),
-                    "system_available_at": fact.get("system_available_at"),
-                }
-                for fact in facts
-            ]
-        elif official_match and str(official_match[0].get("entity_relation") or "").upper() == "SAME_ENTITY":
-            resolved = str(official_match[0].get("security_id") or "")
-            if resolved:
+        pair = tuple(sorted(keys))
+        candidate_evidence = list(official_by_pair.get(pair, []))
+        if same_entity_fact:
+            current = next((fact for fact in facts
+                            if str(fact.get("alias_role") or "").upper() == "CURRENT"), {})
+            candidate_evidence.append({
+                "entity_relation": "SAME_ENTITY",
+                "evidence_class": "VERSIONED_ACCEPTED_IDENTITY_ALIAS",
+                "source_security_keys": keys,
+                "canonical_security_id": next(iter({str(fact.get("security_id") or "") for fact in facts})),
+                "contract_id": current.get("contract_id"),
+                "source_revision": current.get("source_revision"),
+                "effective_date": current.get("effective_from"),
+                "source_ref": current.get("evidence_ref") or current.get("source_ref"),
+                "source_capture_path": current.get("evidence_capture_path") or current.get("source_capture_path"),
+                "source_capture_sha256": current.get("evidence_hash") or current.get("source_capture_sha256"),
+                "observed_at": current.get("observed_at"),
+                "system_available_at": current.get("system_available_at"),
+            })
+        valid: list[Mapping[str, object]] = []
+        for proof in candidate_evidence:
+            relation = str(proof.get("entity_relation") or proof.get("relation") or "").upper()
+            accepted = SAME_ENTITY_EVIDENCE_CLASSES if relation == "SAME_ENTITY" else DISTINCT_ENTITY_EVIDENCE_CLASSES
+            if _valid_relation_evidence(
+                proof, relation=relation, candidate_keys=keys, candidate_ids=ids,
+                verified_digests=verified, accepted_classes=accepted,
+            ):
+                valid.append(proof)
+        outcomes = {
+            (str(proof.get("entity_relation") or proof.get("relation") or "").upper(),
+             str(proof.get("canonical_security_id") or proof.get("security_id") or ""),
+             tuple(sorted(str(value) for value in proof.get("security_ids", []) if str(value))))
+            for proof in valid
+        }
+        if len(outcomes) == 1:
+            relation, canonical_id, _ = next(iter(outcomes))
+            proof = valid[0]
+            if relation == "SAME_ENTITY" and canonical_id:
                 event["resolution_status"] = "CONFIRMED_SAME_ENTITY_CODE_CHANGE"
-                event["resolved_security_id"] = resolved
-                event["resolution_reason"] = "HASH_VERIFIED_OFFICIAL_CODE_CHANGE_EVENT"
-                event["resolution_evidence"] = [{
-                    "source_ref": official_match[0].get("source_ref"),
-                    "source_capture_path": official_match[0].get("source_capture_path"),
-                    "source_capture_sha256": official_match[0].get("source_capture_sha256"),
-                    "effective_date": official_match[0].get("effective_date"),
-                    "observed_at": official_match[0].get("observed_at"),
-                    "system_available_at": official_match[0].get("system_available_at"),
-                    "security_id": resolved,
-                }]
-            else:
-                event["resolution_status"] = "UNRESOLVED"
-                event["resolved_security_id"] = None
-                event["resolution_reason"] = "OFFICIAL_EVENT_LACKS_CANONICAL_SECURITY_ID"
-                event["resolution_evidence"] = []
-        elif len(keys) == 1 and len(set(ids)) >= 2:
-            event["resolution_status"] = "CONFIRMED_DISTINCT_ENTITY"
-            event["resolved_security_id"] = None
-            event["resolution_reason"] = "SAME_SYMBOL_HAS_DISJOINT_VERSIONED_LISTING_LIFECYCLES"
-            event["resolution_evidence"] = [
-                {"security_id": str(row.get("security_id") or ""), "source_revision": row.get("source_revision_id") or row.get("source_revision"),
-                 "list_date": row.get("list_date"), "effective_from": row.get("effective_from"),
-                 "effective_to": row.get("effective_to")}
-                for row in (source_identity_assignments or {}).get(keys[0], ())
-            ]
-        else:
-            records = [identity_map.get(key, {}) for key in keys]
-            anchors = [_date(row.get("list_date")) for row in records]
-            revisions = [str(row.get("source_revision_id") or row.get("source_revision") or "") for row in records]
-            if len(keys) == 2 and all(anchors) and anchors[0] != anchors[1] and all(revisions):
+                event["resolved_security_id"] = canonical_id
+                event["resolution_reason"] = "POLICY_ACCEPTED_HASH_VERIFIED_SAME_ENTITY_EVIDENCE"
+            elif relation == "DISTINCT_ENTITY":
                 event["resolution_status"] = "CONFIRMED_DISTINCT_ENTITY"
                 event["resolved_security_id"] = None
-                event["resolution_reason"] = "DIFFERENT_VERSIONED_LISTING_ANCHORS"
-                event["resolution_evidence"] = [
-                    {"source_security_key": key, "security_id": _identity_id(record),
-                     "list_date": record.get("list_date"),
-                     "source_revision": record.get("source_revision_id") or record.get("source_revision")}
-                    for key, record in zip(keys, records, strict=True)
-                ]
+                event["resolution_reason"] = "POLICY_ACCEPTED_HASH_VERIFIED_DISTINCT_ISSUER_EVIDENCE"
             else:
                 event["resolution_status"] = "UNRESOLVED"
                 event["resolved_security_id"] = None
-                event["resolution_reason"] = "CANDIDATE_LACKS_VERIFIED_DATED_IDENTITY_EVIDENCE"
-                event["resolution_evidence"] = []
+                event["resolution_reason"] = "POLICY_ACCEPTED_EVIDENCE_LACKS_REQUIRED_IDENTITY_FIELDS"
+            event["resolution_evidence"] = [proof]
+        else:
+            event["resolution_status"] = "UNRESOLVED"
+            event["resolved_security_id"] = None
+            event["resolution_reason"] = (
+                "CONFLICTING_POLICY_ACCEPTED_RELATION_EVIDENCE" if len(outcomes) > 1
+                else "CANDIDATE_LACKS_POLICY_ACCEPTED_DATED_IDENTITY_EVIDENCE"
+            )
+            event["resolution_evidence"] = []
         event["affected_boards"] = sorted({_board_for(key, identity_map.get(key)) for key in keys})
         event["required_scope_affected"] = any(board in REQUIRED_BOARDS for board in event["affected_boards"])
         status_counts[str(event["resolution_status"])] += 1
@@ -467,6 +579,10 @@ def discover_identity_events(
     return {
         "contract_id": "SECURITY_IDENTITY_EVENT_DISCOVERY_V1",
         "version": "1.0.0",
+        "identity_relation_policy": {
+            "contract_id": RELATION_POLICY_ID,
+            "version": RELATION_POLICY_VERSION,
+        },
         "mode": mode,
         "target_date": _date(target_date).isoformat() if _date(target_date) else None,
         "status": "PASS" if unresolved_required == 0 else "BLOCKED",

@@ -1,0 +1,53 @@
+{
+  "acceptance_result": {
+    "external_acceptance": "PENDING_EXTERNAL_AUDIT",
+    "gate_a_internal_postcheck": "PASS",
+    "gate_a_owner_gate": "BLOCKED"
+  },
+  "contract_id": "V4_01_R8_2_FINAL_STAGE_RECEIPT_R1",
+  "evidence": {
+    "event_discovery": {
+      "path": "reports/v4_01/V4_01_IDENTITY_EVENT_DISCOVERY_R8_2.json",
+      "sha256": "d033b370206137d2360f818a23a373d70ec1664eee16aec071332710b7ca13b6"
+    },
+    "independent_postcheck": {
+      "path": "reports/v4_01/V4_01_R8_2_INDEPENDENT_POSTCHECK_R1_20260928.json",
+      "sha256": "152c56bdb316e91eb54ed4baf07c0d5e5850af3ec9ca1d8c0cb8e0fd302b1e63"
+    },
+    "policy": {
+      "path": "config/identity_relation_evidence_policy_v1.json",
+      "sha256": "b8ab31d62ed27b1bd27ffe2d9af378dd1539765d66b7b7e0958325aa5808006c"
+    },
+    "r7_identity_map": {
+      "path": "data/v4/artifact_store/v4_01/security_entity_map_R7_20260927.json",
+      "sha256": "e33294fb8d1d71732fdc3df903258b5617345811ecbdb649af8056ccd91427e0"
+    },
+    "r7_required_universe": {
+      "path": "data/v4/artifact_store/v4_01/v4_01_historical_universe_required_R7_20260927.jsonl.gz",
+      "sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b"
+    },
+    "test_gate": {
+      "path": "reports/v4_joint/V4_R8_2_DM01_TEST_RECEIPT_R1_20260928.json",
+      "sha256": "e2d1d2a4ad5beb0e39af6af87cc6fbe100155fee500e3a72dac67a5499a18899"
+    },
+    "unresolved_queue": {
+      "path": "reports/v4_01/V4_01_R8_2_UNRESOLVED_AUDIT_QUEUE.json",
+      "sha256": "1206128edbf72f28cfaa129aabf83e65a17bfb4481722de0c888ea8d0e9e3230"
+    }
+  },
+  "external_acceptance": "PENDING_EXTERNAL_AUDIT",
+  "next_stage": "EXTERNAL_R8_2_AUDIT_AND_OFFICIAL_DISTINCT_EVIDENCE_TRIAGE",
+  "observed_at_utc": "2026-09-28T01:11:22+00:00",
+  "required_scope_status": "BLOCKED",
+  "stage": "V4-01 R8.2 IDENTITY RELATION EVIDENCE POLICY",
+  "stage_contract": {
+    "canonical_identity_mutation": false,
+    "relation_policy_id": "IDENTITY_RELATION_EVIDENCE_POLICY_V1",
+    "relation_policy_version": "1.0.0",
+    "required_scope_unresolved_limit": 0,
+    "weak_candidate_signals_can_confirm_relation": false
+  },
+  "status": "BLOCKED",
+  "v4_03_status": "BLOCKED",
+  "version": "1.0.0"
+}

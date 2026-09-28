@@ -1,0 +1,43 @@
+{
+  "command": [
+    "-m",
+    "pytest",
+    "-q",
+    "tests/v4_01",
+    "tests/v4_dm01"
+  ],
+  "contract_id": "V4_R8_2_DM01_TEST_RECEIPT_R1",
+  "counts": {
+    "error": 0,
+    "errors": 0,
+    "failed": 0,
+    "passed": 71,
+    "skipped": 0
+  },
+  "exit_code": 0,
+  "next_stage": "R8_2_INDEPENDENT_POLICY_POSTCHECK",
+  "observed_at_utc": "2026-09-28T01:11:16+00:00",
+  "runner_sha256": "3bb9bf4ce2e6a26878ce91d20accdf2cd19d75e6e3dc9995dc49fc1133f2cf0b",
+  "status": "PASS",
+  "summary": "71 passed in 0.11s",
+  "test_file_count": 4,
+  "test_files": [
+    {
+      "path": "tests/v4_01/test_r8_1_identity_event_discovery.py",
+      "sha256": "8e4f98b586f477503e3261ecae101503d4279ea2956e6400bcc7c678b0efe7e4"
+    },
+    {
+      "path": "tests/v4_01/test_r8_2_identity_relation_evidence.py",
+      "sha256": "21a338f0b9fa841c55b1507d6e0715d245d0538905f9ea92bcbe9b9d05c053ab"
+    },
+    {
+      "path": "tests/v4_01/test_r8_generic_alias_completeness.py",
+      "sha256": "ad73a7fcd7a83b867f267462404aa3302ddb0c54a87b4ac471501be39f22648e"
+    },
+    {
+      "path": "tests/v4_dm01/test_continuous_data_maintenance.py",
+      "sha256": "c228ea2549a1b9ea4ee179612b1cf616b489cfba9a7847e9f5aa77b8e22d9693"
+    }
+  ],
+  "version": "1.0.0"
+}

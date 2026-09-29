@@ -359,7 +359,7 @@ def main() -> None:
               "sample_categories": categories,
               "sampled_checks": dict(sampled_checks), "limitations": ["sampled source recomputation; all state AST evidence independently checked"]}
     OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text(json.dumps(result, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+    OUT.write_bytes((json.dumps(result, sort_keys=True, indent=2) + "\n").encode("utf-8"))
     print(json.dumps({"status": result["status"], "rows": len(rows), "sample": len(sample), "checks": sampled_checks}, default=dict))
 
 

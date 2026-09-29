@@ -30,7 +30,7 @@ def hash_file(path: Path) -> str:
 def write(name: str, payload: dict) -> dict:
     path = REPORT / name
     tmp = path.with_suffix(path.suffix + ".tmp")
-    tmp.write_text(json.dumps(payload, ensure_ascii=False, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+    tmp.write_bytes((json.dumps(payload, ensure_ascii=False, sort_keys=True, indent=2) + "\n").encode("utf-8"))
     os.replace(tmp, path)
     return {"path": str(path.relative_to(ROOT)).replace("\\", "/"), "sha256": hash_file(path), "byte_count": path.stat().st_size}
 

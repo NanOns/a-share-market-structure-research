@@ -203,7 +203,7 @@ def rule_asts() -> dict:
 def write(name: str, payload: dict) -> None:
     target = OUT / name
     tmp = target.with_suffix(target.suffix + ".tmp")
-    tmp.write_text(json.dumps(payload, ensure_ascii=False, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+    tmp.write_bytes((json.dumps(payload, ensure_ascii=False, sort_keys=True, indent=2) + "\n").encode("utf-8"))
     os.replace(tmp, target)
 
 

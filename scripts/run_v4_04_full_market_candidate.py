@@ -245,7 +245,7 @@ def main() -> None:
                             "byte_count": OUT.stat().st_size}}
     RECEIPT.parent.mkdir(parents=True, exist_ok=True)
     receipt_tmp = RECEIPT.with_suffix(".json.tmp")
-    receipt_tmp.write_text(json.dumps(receipt, ensure_ascii=False, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+    receipt_tmp.write_bytes((json.dumps(receipt, ensure_ascii=False, sort_keys=True, indent=2) + "\n").encode("utf-8"))
     os.replace(receipt_tmp, RECEIPT)
     print(json.dumps({"rows": sum(boards.values()), "boards": boards, "quality": quality, "artifact_sha256": h}, default=dict))
 

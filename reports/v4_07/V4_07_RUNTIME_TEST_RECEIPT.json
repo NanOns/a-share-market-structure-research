@@ -1,0 +1,20 @@
+{
+  "candidate_artifact_sha256": "d7771d11cf03f0948bb9aa84798c86e1aeb16af14e777c4b84e305eef0fca23c",
+  "candidate_logical_digest": "b2fba6054f93d5155198982cda10feab8a21c4239e94df7023b7dbca2b654cd1",
+  "contract_id": "V4_07_RUNTIME_TEST_RECEIPT_V1",
+  "focused_v4_07_command": "python -m pytest tests/v4_07 -q",
+  "focused_v4_07_log_sha256": "fadee6b6cb3af9a9bb9b5ada799eab681bac3f4fde240d998d99ca3b24e01470",
+  "focused_v4_07_output": "....................................                                     [100%]\n36 passed in 22.40s",
+  "isolated_database_identity": {
+    "database": "market_research",
+    "database_is_disposable": true,
+    "dsn_source": "process environment WORKBENCH_PG_DSN; config/.env not read or created",
+    "host": "127.0.0.1",
+    "port": 2724,
+    "user": "postgres"
+  },
+  "required_full_regression_command": "python -m pytest tests/v4_01 tests/v4_02 tests/v4_03 tests/v4_04 tests/v4_05 tests/v4_06 tests/v4_07 tests/v4_joint tests/v4_phase0 -q",
+  "required_full_regression_output": "........................................................................ [ 13%]\n........................................................................ [ 26%]\n........................................................................ [ 40%]\n........................................................................ [ 53%]\n........................................................................ [ 67%]\n........................................................................ [ 80%]\n..............................................................s......... [ 94%]\n.s.............................                                          [100%]\n533 passed, 2 skipped in 28.21s",
+  "required_full_regression_status": "PASS_ISOLATED_FULL_REGRESSION",
+  "status": "PASS_FOCUSED_AND_REQUIRED_FULL_REGRESSION"
+}

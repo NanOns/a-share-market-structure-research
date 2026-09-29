@@ -1,0 +1,43 @@
+{
+  "contract_id": "V4_06_R2_CLEAN_CHECKOUT_RECEIPT_V1",
+  "status": "PASS",
+  "verified_at_utc": "2026-09-29T16:02:54Z",
+  "implementation_commit": "4c6051586a617d01f2ebbe142ea4ded05660fec7",
+  "checkout": {
+    "type": "managed detached Git worktree",
+    "tracked_working_tree_clean": true,
+    "head_matches_implementation_commit": true
+  },
+  "accepted_input": {
+    "publication_id": "PUB-3c03e227-c60a-4d8c-86ae-2861507c257b",
+    "trade_date": "2026-09-28",
+    "core_logical_digest": "d195518796acc64015174eac8f9bb8721a27095311ece00baedf8c12b0633e74",
+    "identity_count": 5222,
+    "input_root_binding": "V4_06_ACCEPTED_INPUTS_ROOT pointed to the primary checkout's materialized accepted evidence; read-only",
+    "core_head_unchanged": true
+  },
+  "checks": {
+    "focused_tests": {
+      "command": "python -m pytest tests/v4_06 -q",
+      "exit_code": 0,
+      "passed": 69,
+      "failed": 0,
+      "result": "69 passed in 0.44s"
+    },
+    "python_compile": {
+      "command": "python -m py_compile scripts/build_v4_06_r2_candidate_evidence.py scripts/run_v4_06_r2_migration_acceptance.py src/workbench_analysis/v4_06_supplemental.py",
+      "exit_code": 0
+    },
+    "migration_replay": {
+      "command": "python scripts/run_v4_06_r2_migration_acceptance.py",
+      "exit_code": 0,
+      "status": "PASS",
+      "postgres_version": "18.6",
+      "migration_014_sha256": "fff140f483738b6fb8e94e06a4e2c681111de94ceb1c415d18c188a9d95977e3",
+      "rollback_014_isolated": "PASS",
+      "production_connection_used": false,
+      "cleanup_succeeded": true
+    }
+  },
+  "clean_checkout_input_note": "The clean worktree's local stage evidence contained an unhydrated LFS pointer for the accepted factor artifact. The replay explicitly used the primary checkout's materialized accepted V4-05 evidence root and verified the expected publication and digest; no accepted input was modified."
+}

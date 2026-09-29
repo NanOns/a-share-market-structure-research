@@ -1,0 +1,121 @@
+{
+  "binding_quality_separate_from_turnover_state": true,
+  "contract": {
+    "contract_id": "TURNOVER_CONTEXT_V1",
+    "contract_version": "2.0.0",
+    "path": "config/turnover_context_contract_v2.json",
+    "sha256": "762de1b841e61c0085c0efadc3959af4ed3ac36d1c0101ffbb101846a305f22f"
+  },
+  "contract_id": "V4_06_R2_CONTRACT_SEMANTICS_ACCEPTANCE_V1",
+  "pct60_boundaries_pass": true,
+  "pct60_state_boundaries": [
+    {
+      "actual": "LOW",
+      "expected": "LOW",
+      "pct60": 19.999999
+    },
+    {
+      "actual": "NORMAL",
+      "expected": "NORMAL",
+      "pct60": 20
+    },
+    {
+      "actual": "NORMAL",
+      "expected": "NORMAL",
+      "pct60": 69.999999
+    },
+    {
+      "actual": "ELEVATED",
+      "expected": "ELEVATED",
+      "pct60": 70
+    },
+    {
+      "actual": "ELEVATED",
+      "expected": "ELEVATED",
+      "pct60": 89.999999
+    },
+    {
+      "actual": "HIGH",
+      "expected": "HIGH",
+      "pct60": 90
+    },
+    {
+      "actual": "HIGH",
+      "expected": "HIGH",
+      "pct60": 96.999999
+    },
+    {
+      "actual": "EXTREME",
+      "expected": "EXTREME",
+      "pct60": 97
+    },
+    {
+      "actual": "EXTREME",
+      "expected": "EXTREME",
+      "pct60": 100
+    }
+  ],
+  "percentile_formula": "100 * (count(prior < current) + 0.5 * count(prior == current)) / N",
+  "percentile_vectors": [
+    {
+      "formula_oracle_independent": true,
+      "id": "all_prior_above",
+      "independent_expected_percentile": 0.0,
+      "range": [
+        0,
+        100
+      ],
+      "runtime_boundary_suite": "tests/v4_06/test_v4_06_supplemental.py",
+      "unit": "PERCENT"
+    },
+    {
+      "formula_oracle_independent": true,
+      "id": "all_prior_below",
+      "independent_expected_percentile": 100.0,
+      "range": [
+        0,
+        100
+      ],
+      "runtime_boundary_suite": "tests/v4_06/test_v4_06_supplemental.py",
+      "unit": "PERCENT"
+    },
+    {
+      "formula_oracle_independent": true,
+      "id": "all_equal",
+      "independent_expected_percentile": 50.0,
+      "range": [
+        0,
+        100
+      ],
+      "runtime_boundary_suite": "tests/v4_06/test_v4_06_supplemental.py",
+      "unit": "PERCENT"
+    },
+    {
+      "formula_oracle_independent": true,
+      "id": "mixed_lower_equal_higher",
+      "independent_expected_percentile": 70.0,
+      "range": [
+        0,
+        100
+      ],
+      "runtime_boundary_suite": "tests/v4_06/test_v4_06_supplemental.py",
+      "unit": "PERCENT"
+    }
+  ],
+  "runtime_percentile_results": {
+    "percentile_all_equal": 50.0,
+    "percentile_all_prior_above": 0.0,
+    "percentile_all_prior_below": 100.0,
+    "percentile_mixed_lower_equal_higher": 70.0
+  },
+  "state_cases": {
+    "fifty_nine_strict_samples": "UNKNOWN_DATA",
+    "sixty_strict_samples": "EXTREME",
+    "target_pending": "PENDING",
+    "target_unavailable": "UNAVAILABLE",
+    "unknown_gap": "UNKNOWN_DATA"
+  },
+  "state_cases_match_contract": true,
+  "status": "PASS",
+  "turnover_context_alias": "DEPRECATED_INTERNAL_ALIAS_EXACTLY_EQUAL_TO_TURNOVER_STATE"
+}

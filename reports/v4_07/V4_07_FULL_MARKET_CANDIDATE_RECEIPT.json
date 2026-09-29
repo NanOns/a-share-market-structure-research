@@ -1,0 +1,526 @@
+{
+  "acceptance_gates": {
+    "clean_checkout": "PASS_CLEAN_COMMITTED_CHECKOUT",
+    "contract_freeze": "PASS_CONTRACT_FREEZE_CANDIDATE",
+    "determinism": "PASS_IDENTICAL_STABLE_FIELDS_AND_LOGICAL_DIGEST",
+    "field_registry": "PASS",
+    "full_market_candidate": "PASS_5222_ROWS_WITH_TRUE_FALSE_UNKNOWN_RECONCILIATION",
+    "independent_postcheck": "PASS_5222_ROWS_ZERO_MISMATCHES",
+    "machine_vector_runtime": "PASS",
+    "postgres_migration_and_rollback": "PASS_ISOLATED_POSTGRES_18_6",
+    "regression_gate": "533 passed, 2 skipped in 28.21s",
+    "supplemental_isolation": "PASS_A_TO_E_IDENTICAL_DIGEST"
+  },
+  "acceptance_result": "CANDIDATE_EXECUTION_AND_REQUIRED_GATES_PASS; independent external acceptance pending",
+  "accepted_identity_count": 5222,
+  "accepted_inputs_root": "E:\\codex work\\大A交易",
+  "artifact_path": "reports/v4_07/staging/V4_07_BASE_SEED_CANDIDATE_R1.jsonl.gz",
+  "artifact_sha256": "d7771d11cf03f0948bb9aa84798c86e1aeb16af14e777c4b84e305eef0fca23c",
+  "board_counts": {
+    "CHINEXT": 1408,
+    "SH_MAIN": 1702,
+    "STAR": 618,
+    "SZ_MAIN": 1494
+  },
+  "candidate_status": "V4_07_BASE_SEED_CANDIDATE_R1",
+  "contract_id": "V4_07_FULL_MARKET_CANDIDATE_RECEIPT_V1",
+  "created_at": "2026-09-29T00:00:00Z",
+  "created_at_excluded_from_logical_digest": true,
+  "logical_artifact_digest": "b2fba6054f93d5155198982cda10feab8a21c4239e94df7023b7dbca2b654cd1",
+  "next_stage": "Independent external V4-07 audit; accepted-head promotion and V4-08 remain blocked until a separate external acceptance decision.",
+  "participation_annotation_counts": {
+    "CONFLICTING": 832,
+    "NEUTRAL": 4182,
+    "SUPPORTED": 170,
+    "UNKNOWN": 38
+  },
+  "publication_id": "PUB-3c03e227-c60a-4d8c-86ae-2861507c257b",
+  "row_count": 5222,
+  "s1_state_counts": {
+    "FALSE": 3772,
+    "TRUE": 0,
+    "UNKNOWN": 1450
+  },
+  "s2_state_counts": {
+    "FALSE": 3423,
+    "TRUE": 0,
+    "UNKNOWN": 1799
+  },
+  "source_bindings": {
+    "core_logical_digest": "d195518796acc64015174eac8f9bb8721a27095311ece00baedf8c12b0633e74",
+    "core_profile_artifact_sha256": "9a6ebedc715bc4b310ecf76c77e01cb6dfe9dadc17d335b5fc9afbcc2f6f3fa0",
+    "core_profile_receipt_sha256": "faffc0633dc2e9708fe496b6fc8035734ff56066975952c9469642156b29fb71",
+    "exact_ledger_binding_sha256": "adcc5fca4b21dc0fa6263ebd4f10e9dc25057f5c67e98cc6ac365bea42d1c804",
+    "full_scope_factors_artifact_sha256": "17ae571629b76399e32d9e8a243268ea1fac619e1c5168d307bfd8ebf1494c48",
+    "full_scope_factors_logical_digest": "0cfe708567935726f0ad51ae4bb47237ec7aee556db3437c12f21f0c623bd0d2",
+    "full_scope_factors_receipt_sha256": "f78c76978a3fd267f516ce37b8baed92e40c9d6160d4fc3b3f8c37045cebad38",
+    "model_contract_id": "BASE_SEED_V1",
+    "parameter_set_id": "V4_07_BASE_SEED_PARAMETER_SET_V1",
+    "profile_row_publication_id": "V4_05_R4_T0_CURRENT_COORDINATE",
+    "publication_id": "PUB-3c03e227-c60a-4d8c-86ae-2861507c257b",
+    "trade_date": "2026-09-28"
+  },
+  "source_core_logical_digest": "d195518796acc64015174eac8f9bb8721a27095311ece00baedf8c12b0633e74",
+  "stage_contract": "V4_06_R2_CONTRACT_REPAIR_AND_V4_07_BASE_SEED_STAGE_TASK_20260929",
+  "state_counts": {
+    "FALSE": 2443,
+    "TRUE": 0,
+    "UNKNOWN": 2779
+  },
+  "state_counts_by_board": {
+    "CHINEXT": {
+      "FALSE": 619,
+      "TRUE": 0,
+      "UNKNOWN": 789
+    },
+    "SH_MAIN": {
+      "FALSE": 802,
+      "TRUE": 0,
+      "UNKNOWN": 900
+    },
+    "STAR": {
+      "FALSE": 306,
+      "TRUE": 0,
+      "UNKNOWN": 312
+    },
+    "SZ_MAIN": {
+      "FALSE": 716,
+      "TRUE": 0,
+      "UNKNOWN": 778
+    }
+  },
+  "target_trade_date": "2026-09-28",
+  "terminal_status": "V4_07_BASE_SEED_CANDIDATE_R1",
+  "unknown_quality_inventory": {
+    "by_board": [
+      {
+        "board": "CHINEXT",
+        "count": 3,
+        "field_id": "actual_bar",
+        "reason": "UPSTREAM_TRADING_STATUS:UNKNOWN"
+      },
+      {
+        "board": "CHINEXT",
+        "count": 13,
+        "field_id": "bias20_atr",
+        "reason": "ATR_OR_PRICE_INPUT_UNAVAILABLE"
+      },
+      {
+        "board": "CHINEXT",
+        "count": 8,
+        "field_id": "close_t",
+        "reason": "MISSING_ACCEPTED_CORE_FIELD:close_t"
+      },
+      {
+        "board": "CHINEXT",
+        "count": 311,
+        "field_id": "close_t_minus_1",
+        "reason": "ACCEPTED_T_MINUS_1_CORE_FIELD_UNAVAILABLE"
+      },
+      {
+        "board": "CHINEXT",
+        "count": 17,
+        "field_id": "compression_state",
+        "reason": "REQUIRED_INPUT_UNKNOWN"
+      },
+      {
+        "board": "CHINEXT",
+        "count": 14,
+        "field_id": "core_participation_result",
+        "reason": "REQUIRED_INPUT_UNKNOWN"
+      },
+      {
+        "board": "CHINEXT",
+        "count": 8,
+        "field_id": "core_price_damage",
+        "reason": "ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "board": "CHINEXT",
+        "count": 5,
+        "field_id": "core_price_damage",
+        "reason": "INSUFFICIENT_HISTORY"
+      },
+      {
+        "board": "CHINEXT",
+        "count": 1,
+        "field_id": "core_price_damage",
+        "reason": "MISSING_OR_SUSPENDED_ENDPOINT"
+      },
+      {
+        "board": "CHINEXT",
+        "count": 789,
+        "field_id": "delta3",
+        "reason": "BOOTSTRAP_INSUFFICIENT_FORWARD_HISTORY"
+      },
+      {
+        "board": "CHINEXT",
+        "count": 13,
+        "field_id": "ma20_t",
+        "reason": "MISSING_ACCEPTED_CORE_FIELD:ma20_t"
+      },
+      {
+        "board": "CHINEXT",
+        "count": 311,
+        "field_id": "ma20_t_minus_1",
+        "reason": "ACCEPTED_T_MINUS_1_CORE_FIELD_UNAVAILABLE"
+      },
+      {
+        "board": "CHINEXT",
+        "count": 13,
+        "field_id": "ma_structure_state",
+        "reason": "REQUIRED_INPUT_UNKNOWN"
+      },
+      {
+        "board": "CHINEXT",
+        "count": 13,
+        "field_id": "minimum_liquidity",
+        "reason": "PRIOR20_AMOUNT_UNAVAILABLE"
+      },
+      {
+        "board": "CHINEXT",
+        "count": 14,
+        "field_id": "severe_extension",
+        "reason": "REQUIRED_INPUT_UNKNOWN"
+      },
+      {
+        "board": "SH_MAIN",
+        "count": 5,
+        "field_id": "actual_bar",
+        "reason": "UPSTREAM_TRADING_STATUS:UNKNOWN"
+      },
+      {
+        "board": "SH_MAIN",
+        "count": 9,
+        "field_id": "bias20_atr",
+        "reason": "ATR_OR_PRICE_INPUT_UNAVAILABLE"
+      },
+      {
+        "board": "SH_MAIN",
+        "count": 6,
+        "field_id": "close_t",
+        "reason": "MISSING_ACCEPTED_CORE_FIELD:close_t"
+      },
+      {
+        "board": "SH_MAIN",
+        "count": 274,
+        "field_id": "close_t_minus_1",
+        "reason": "ACCEPTED_T_MINUS_1_CORE_FIELD_UNAVAILABLE"
+      },
+      {
+        "board": "SH_MAIN",
+        "count": 13,
+        "field_id": "compression_state",
+        "reason": "REQUIRED_INPUT_UNKNOWN"
+      },
+      {
+        "board": "SH_MAIN",
+        "count": 9,
+        "field_id": "core_participation_result",
+        "reason": "REQUIRED_INPUT_UNKNOWN"
+      },
+      {
+        "board": "SH_MAIN",
+        "count": 6,
+        "field_id": "core_price_damage",
+        "reason": "ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "board": "SH_MAIN",
+        "count": 3,
+        "field_id": "core_price_damage",
+        "reason": "INSUFFICIENT_HISTORY"
+      },
+      {
+        "board": "SH_MAIN",
+        "count": 900,
+        "field_id": "delta3",
+        "reason": "BOOTSTRAP_INSUFFICIENT_FORWARD_HISTORY"
+      },
+      {
+        "board": "SH_MAIN",
+        "count": 9,
+        "field_id": "ma20_t",
+        "reason": "MISSING_ACCEPTED_CORE_FIELD:ma20_t"
+      },
+      {
+        "board": "SH_MAIN",
+        "count": 274,
+        "field_id": "ma20_t_minus_1",
+        "reason": "ACCEPTED_T_MINUS_1_CORE_FIELD_UNAVAILABLE"
+      },
+      {
+        "board": "SH_MAIN",
+        "count": 9,
+        "field_id": "ma_structure_state",
+        "reason": "REQUIRED_INPUT_UNKNOWN"
+      },
+      {
+        "board": "SH_MAIN",
+        "count": 9,
+        "field_id": "minimum_liquidity",
+        "reason": "PRIOR20_AMOUNT_UNAVAILABLE"
+      },
+      {
+        "board": "SH_MAIN",
+        "count": 10,
+        "field_id": "severe_extension",
+        "reason": "REQUIRED_INPUT_UNKNOWN"
+      },
+      {
+        "board": "STAR",
+        "count": 1,
+        "field_id": "actual_bar",
+        "reason": "UPSTREAM_TRADING_STATUS:UNKNOWN"
+      },
+      {
+        "board": "STAR",
+        "count": 3,
+        "field_id": "bias20_atr",
+        "reason": "ATR_OR_PRICE_INPUT_UNAVAILABLE"
+      },
+      {
+        "board": "STAR",
+        "count": 1,
+        "field_id": "close_t",
+        "reason": "MISSING_ACCEPTED_CORE_FIELD:close_t"
+      },
+      {
+        "board": "STAR",
+        "count": 195,
+        "field_id": "close_t_minus_1",
+        "reason": "ACCEPTED_T_MINUS_1_CORE_FIELD_UNAVAILABLE"
+      },
+      {
+        "board": "STAR",
+        "count": 5,
+        "field_id": "compression_state",
+        "reason": "REQUIRED_INPUT_UNKNOWN"
+      },
+      {
+        "board": "STAR",
+        "count": 3,
+        "field_id": "core_participation_result",
+        "reason": "REQUIRED_INPUT_UNKNOWN"
+      },
+      {
+        "board": "STAR",
+        "count": 1,
+        "field_id": "core_price_damage",
+        "reason": "ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "board": "STAR",
+        "count": 2,
+        "field_id": "core_price_damage",
+        "reason": "INSUFFICIENT_HISTORY"
+      },
+      {
+        "board": "STAR",
+        "count": 312,
+        "field_id": "delta3",
+        "reason": "BOOTSTRAP_INSUFFICIENT_FORWARD_HISTORY"
+      },
+      {
+        "board": "STAR",
+        "count": 3,
+        "field_id": "ma20_t",
+        "reason": "MISSING_ACCEPTED_CORE_FIELD:ma20_t"
+      },
+      {
+        "board": "STAR",
+        "count": 195,
+        "field_id": "ma20_t_minus_1",
+        "reason": "ACCEPTED_T_MINUS_1_CORE_FIELD_UNAVAILABLE"
+      },
+      {
+        "board": "STAR",
+        "count": 4,
+        "field_id": "ma_structure_state",
+        "reason": "REQUIRED_INPUT_UNKNOWN"
+      },
+      {
+        "board": "STAR",
+        "count": 3,
+        "field_id": "minimum_liquidity",
+        "reason": "PRIOR20_AMOUNT_UNAVAILABLE"
+      },
+      {
+        "board": "STAR",
+        "count": 3,
+        "field_id": "severe_extension",
+        "reason": "REQUIRED_INPUT_UNKNOWN"
+      },
+      {
+        "board": "SZ_MAIN",
+        "count": 3,
+        "field_id": "actual_bar",
+        "reason": "UPSTREAM_TRADING_STATUS:UNKNOWN"
+      },
+      {
+        "board": "SZ_MAIN",
+        "count": 12,
+        "field_id": "bias20_atr",
+        "reason": "ATR_OR_PRICE_INPUT_UNAVAILABLE"
+      },
+      {
+        "board": "SZ_MAIN",
+        "count": 12,
+        "field_id": "close_t",
+        "reason": "MISSING_ACCEPTED_CORE_FIELD:close_t"
+      },
+      {
+        "board": "SZ_MAIN",
+        "count": 231,
+        "field_id": "close_t_minus_1",
+        "reason": "ACCEPTED_T_MINUS_1_CORE_FIELD_UNAVAILABLE"
+      },
+      {
+        "board": "SZ_MAIN",
+        "count": 19,
+        "field_id": "compression_state",
+        "reason": "REQUIRED_INPUT_UNKNOWN"
+      },
+      {
+        "board": "SZ_MAIN",
+        "count": 12,
+        "field_id": "core_participation_result",
+        "reason": "REQUIRED_INPUT_UNKNOWN"
+      },
+      {
+        "board": "SZ_MAIN",
+        "count": 12,
+        "field_id": "core_price_damage",
+        "reason": "ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "board": "SZ_MAIN",
+        "count": 778,
+        "field_id": "delta3",
+        "reason": "BOOTSTRAP_INSUFFICIENT_FORWARD_HISTORY"
+      },
+      {
+        "board": "SZ_MAIN",
+        "count": 12,
+        "field_id": "ma20_t",
+        "reason": "MISSING_ACCEPTED_CORE_FIELD:ma20_t"
+      },
+      {
+        "board": "SZ_MAIN",
+        "count": 231,
+        "field_id": "ma20_t_minus_1",
+        "reason": "ACCEPTED_T_MINUS_1_CORE_FIELD_UNAVAILABLE"
+      },
+      {
+        "board": "SZ_MAIN",
+        "count": 12,
+        "field_id": "ma_structure_state",
+        "reason": "REQUIRED_INPUT_UNKNOWN"
+      },
+      {
+        "board": "SZ_MAIN",
+        "count": 12,
+        "field_id": "minimum_liquidity",
+        "reason": "PRIOR20_AMOUNT_UNAVAILABLE"
+      },
+      {
+        "board": "SZ_MAIN",
+        "count": 12,
+        "field_id": "severe_extension",
+        "reason": "REQUIRED_INPUT_UNKNOWN"
+      }
+    ],
+    "by_reason": [
+      {
+        "base_seed_state": "UNKNOWN",
+        "count": 12,
+        "field_id": "actual_bar",
+        "reason": "UPSTREAM_TRADING_STATUS:UNKNOWN"
+      },
+      {
+        "base_seed_state": "UNKNOWN",
+        "count": 37,
+        "field_id": "bias20_atr",
+        "reason": "ATR_OR_PRICE_INPUT_UNAVAILABLE"
+      },
+      {
+        "base_seed_state": "UNKNOWN",
+        "count": 27,
+        "field_id": "close_t",
+        "reason": "MISSING_ACCEPTED_CORE_FIELD:close_t"
+      },
+      {
+        "base_seed_state": "UNKNOWN",
+        "count": 1011,
+        "field_id": "close_t_minus_1",
+        "reason": "ACCEPTED_T_MINUS_1_CORE_FIELD_UNAVAILABLE"
+      },
+      {
+        "base_seed_state": "UNKNOWN",
+        "count": 54,
+        "field_id": "compression_state",
+        "reason": "REQUIRED_INPUT_UNKNOWN"
+      },
+      {
+        "base_seed_state": "UNKNOWN",
+        "count": 38,
+        "field_id": "core_participation_result",
+        "reason": "REQUIRED_INPUT_UNKNOWN"
+      },
+      {
+        "base_seed_state": "UNKNOWN",
+        "count": 27,
+        "field_id": "core_price_damage",
+        "reason": "ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "base_seed_state": "UNKNOWN",
+        "count": 10,
+        "field_id": "core_price_damage",
+        "reason": "INSUFFICIENT_HISTORY"
+      },
+      {
+        "base_seed_state": "UNKNOWN",
+        "count": 1,
+        "field_id": "core_price_damage",
+        "reason": "MISSING_OR_SUSPENDED_ENDPOINT"
+      },
+      {
+        "base_seed_state": "UNKNOWN",
+        "count": 2779,
+        "field_id": "delta3",
+        "reason": "BOOTSTRAP_INSUFFICIENT_FORWARD_HISTORY"
+      },
+      {
+        "base_seed_state": "UNKNOWN",
+        "count": 37,
+        "field_id": "ma20_t",
+        "reason": "MISSING_ACCEPTED_CORE_FIELD:ma20_t"
+      },
+      {
+        "base_seed_state": "UNKNOWN",
+        "count": 1011,
+        "field_id": "ma20_t_minus_1",
+        "reason": "ACCEPTED_T_MINUS_1_CORE_FIELD_UNAVAILABLE"
+      },
+      {
+        "base_seed_state": "UNKNOWN",
+        "count": 38,
+        "field_id": "ma_structure_state",
+        "reason": "REQUIRED_INPUT_UNKNOWN"
+      },
+      {
+        "base_seed_state": "UNKNOWN",
+        "count": 37,
+        "field_id": "minimum_liquidity",
+        "reason": "PRIOR20_AMOUNT_UNAVAILABLE"
+      },
+      {
+        "base_seed_state": "UNKNOWN",
+        "count": 39,
+        "field_id": "severe_extension",
+        "reason": "REQUIRED_INPUT_UNKNOWN"
+      }
+    ]
+  }
+}

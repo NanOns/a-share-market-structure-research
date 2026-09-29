@@ -1,0 +1,41 @@
+{
+  "contract_id": "V4_07_SUPPLEMENTAL_ISOLATION_V1",
+  "distinct_logical_digest_count": 1,
+  "expected_equal_logical_digest": "b2fba6054f93d5155198982cda10feab8a21c4239e94df7023b7dbca2b654cd1",
+  "forbidden_input_classes": [
+    "V4-06 turnover fields",
+    "supplemental participation context",
+    "supplemental extension note",
+    "binding quality conflict"
+  ],
+  "scenario_count": 5,
+  "scenarios": {
+    "A_NO_SIDECAR": {
+      "artifact_rows_sha256": "fd4dd0f7528b9199693792d028c48957bfe6d46eea9192bcba1a548a6549f214",
+      "logical_digest": "b2fba6054f93d5155198982cda10feab8a21c4239e94df7023b7dbca2b654cd1",
+      "row_count": 5222
+    },
+    "B_PENDING_SIDECAR": {
+      "artifact_rows_sha256": "fd4dd0f7528b9199693792d028c48957bfe6d46eea9192bcba1a548a6549f214",
+      "logical_digest": "b2fba6054f93d5155198982cda10feab8a21c4239e94df7023b7dbca2b654cd1",
+      "row_count": 5222
+    },
+    "C_SYNTHETIC_TURNOVER": {
+      "artifact_rows_sha256": "fd4dd0f7528b9199693792d028c48957bfe6d46eea9192bcba1a548a6549f214",
+      "logical_digest": "b2fba6054f93d5155198982cda10feab8a21c4239e94df7023b7dbca2b654cd1",
+      "row_count": 5222
+    },
+    "D_EXTENSION_NOTE_CHANGED": {
+      "artifact_rows_sha256": "fd4dd0f7528b9199693792d028c48957bfe6d46eea9192bcba1a548a6549f214",
+      "logical_digest": "b2fba6054f93d5155198982cda10feab8a21c4239e94df7023b7dbca2b654cd1",
+      "row_count": 5222
+    },
+    "E_BINDING_QUALITY_CONFLICT": {
+      "artifact_rows_sha256": "fd4dd0f7528b9199693792d028c48957bfe6d46eea9192bcba1a548a6549f214",
+      "logical_digest": "b2fba6054f93d5155198982cda10feab8a21c4239e94df7023b7dbca2b654cd1",
+      "row_count": 5222
+    }
+  },
+  "source_contract_scope": "accepted V4-05 Core + Full Scope Factors; no V4-06 data read",
+  "status": "PASS_V4_06_FORBIDDEN_INPUT_MATRIX"
+}

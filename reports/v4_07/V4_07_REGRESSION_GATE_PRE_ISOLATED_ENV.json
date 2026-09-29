@@ -1,0 +1,66 @@
+{
+  "contract_id": "V4_07_REGRESSION_GATE_V1",
+  "status": "BLOCKED_REQUIRED_PHASE0_POSTGRES_INTEGRATION_GATE",
+  "full_command": "python -m pytest tests/v4_01 tests/v4_02 tests/v4_03 tests/v4_04 tests/v4_05 tests/v4_06 tests/v4_07 tests/v4_joint tests/v4_phase0 -q",
+  "full_suite_counts": {
+    "passed": 468,
+    "failed": 29,
+    "skipped": 2
+  },
+  "full_suite_exact_failed_tests": [
+    "tests/v4_phase0/test_postgres_schema.py::test_fresh_v4_schema_has_revisionable_pit_and_publication_relations",
+    "tests/v4_phase0/test_postgres_schema.py::test_reset_leaves_no_legacy_heads_or_runtime_publications",
+    "tests/v4_phase0/test_postgres_schema.py::test_each_revision_has_unique_publication_id_and_same_day_parent_identity",
+    "tests/v4_phase0/test_postgres_schema.py::test_same_day_parent_must_match_namespace_and_trade_date",
+    "tests/v4_phase0/test_postgres_schema.py::test_revision_lineage_no_fork_and_core_revision_unique_per_date_namespace",
+    "tests/v4_phase0/test_postgres_schema.py::test_prior_session_publication_namespace_and_digest_are_validated",
+    "tests/v4_phase0/test_postgres_schema.py::test_prior_publication_must_be_accepted_and_equal_previous_session_head",
+    "tests/v4_phase0/test_postgres_schema.py::test_prior_state_head_must_belong_to_prior_publication",
+    "tests/v4_phase0/test_postgres_schema.py::test_prior_publication_must_be_accepted",
+    "tests/v4_phase0/test_postgres_schema.py::test_prior_publication_must_equal_previous_session_publication_head",
+    "tests/v4_phase0/test_postgres_schema.py::test_prior_session_logical_digest_must_match_state_head",
+    "tests/v4_phase0/test_postgres_schema.py::test_same_day_revision_cannot_change_prior_publication_id",
+    "tests/v4_phase0/test_postgres_schema.py::test_same_day_revision_cannot_change_prior_state_head",
+    "tests/v4_phase0/test_postgres_schema.py::test_same_day_revision_cannot_change_prior_logical_digest",
+    "tests/v4_phase0/test_postgres_schema.py::test_same_day_revision_cannot_switch_prior_publication_to_gap",
+    "tests/v4_phase0/test_postgres_schema.py::test_same_day_revision_cannot_change_frozen_prior_identity",
+    "tests/v4_phase0/test_postgres_schema.py::test_gap_rejected_when_previous_session_accepted_head_exists_and_head_is_frozen",
+    "tests/v4_phase0/test_postgres_schema.py::test_gap_is_allowed_when_previous_session_has_no_accepted_head",
+    "tests/v4_phase0/test_postgres_schema.py::test_new_earlier_calendar_session_cannot_invalidate_initial_boundary",
+    "tests/v4_phase0/test_postgres_schema.py::test_lifecycle_machine_contract_matches_schema",
+    "tests/v4_phase0/test_postgres_schema.py::test_r5_security_lifecycle_history_contract_matches_formal_schema",
+    "tests/v4_phase0/test_postgres_schema.py::test_r6_2_provider_facts_and_normalized_intervals_are_separate_append_only_contracts",
+    "tests/v4_phase0/test_postgres_schema.py::test_lifecycle_history_late_correction_is_append_only_and_cutoff_selectable",
+    "tests/v4_phase0/test_postgres_schema.py::test_membership_machine_contract_matches_schema",
+    "tests/v4_phase0/test_postgres_schema.py::test_lifecycle_fact_revision_and_knowledge_timestamps_match_source_revision",
+    "tests/v4_phase0/test_postgres_schema.py::test_pit_fact_revision_chain_and_late_correction_are_append_only",
+    "tests/v4_phase0/test_postgres_schema.py::test_current_universe_member_is_not_historical_membership_proof",
+    "tests/v4_phase0/test_postgres_schema.py::test_source_revision_fork_is_rejected",
+    "tests/v4_phase0/test_postgres_schema.py::test_failed_schema_migration_rolls_back_all_ddl"
+  ],
+  "failed_test_count": 29,
+  "remaining_failure_class": "All 29 failures are tests/v4_phase0/test_postgres_schema.py; each fails while scripts/apply_v4_phase0_schema.py attempts to read the absent ignored config/.env before connecting to PostgreSQL.",
+  "config_env_present": false,
+  "configured_database_used": false,
+  "isolated_phase0_database_run": "NOT_RUN: test harness hard-codes config/.env; parent instructed not to use or create config/.env.",
+  "non_phase0_command": "python -m pytest tests/v4_01 tests/v4_02 tests/v4_03 tests/v4_04 tests/v4_05 tests/v4_06 tests/v4_07 tests/v4_joint -q",
+  "non_phase0_counts": {
+    "passed": 365,
+    "failed": 0,
+    "skipped": 0
+  },
+  "focused_v4_07_counts": {
+    "passed": 36,
+    "failed": 0,
+    "skipped": 0
+  },
+  "accepted_inputs_root": "E:\\codex work\\大A交易 (read-only; V4_06_ACCEPTED_INPUTS_ROOT and V4_07_ACCEPTED_INPUTS_ROOT)",
+  "tracked_lfs_hydration": "All 23 tracked LFS objects hydrated from local Git LFS cache; no source files changed in Git status.",
+  "logs": {
+    "full_suite_sha256": "bfe7df75a0cbb56a5c069e2b61bd65ecced53d2882c58481e4d5115978f5eb24",
+    "focused_v4_07_sha256": "69f3bf0df14d669e4f7295093b6f4176070a29e19fd0d280ef3861c56845d9da",
+    "non_phase0_sha256": "bb598df30ea00f8d65f238301f74aff70ab4cb1e2fb6326bff2a879bb55b53fc"
+  },
+  "acceptance": "Candidate evidence is complete, but stage regression gate remains blocked; do not mark V4-07 accepted or unblock V4-08.",
+  "created_at": "2026-09-30"
+}

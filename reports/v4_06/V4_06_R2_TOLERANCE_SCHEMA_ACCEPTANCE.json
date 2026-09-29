@@ -1,0 +1,61 @@
+{
+  "contract_id": "V4_06_R2_TOLERANCE_SCHEMA_ACCEPTANCE_V1",
+  "contract_version_field_consumed": true,
+  "current_real_config": {
+    "binding_quality": "BOUND_SOFT",
+    "reason_codes": [
+      "SOURCE_TOLERANCE_UNFROZEN"
+    ],
+    "strict_binding_forbidden": true
+  },
+  "denominator_acceptance_negative_cases": {
+    "denominator_missing_accepted_at_utc": true,
+    "denominator_missing_accepted_by": true,
+    "denominator_missing_evidence_digest": true,
+    "denominator_wrong_basis": true
+  },
+  "epsilon_boundary": {
+    "at_tolerance": "BOUND_STRICT",
+    "outside_tolerance": "UNBOUND"
+  },
+  "live_baostock_tolerance_audit": "OPEN_NO_TOLERANCE_OR_DENOMINATOR_SEMANTICS_INFERRED",
+  "persisted_config_path": "config/baostock_turnover_binding_tolerance_v1.json",
+  "persisted_config_sha256": "6b13c9eca852b582cd23103d9391d5c195e700c4bde0881db3737eaa4206ac5f",
+  "persisted_schema_keys": [
+    "acceptance",
+    "comparison_basis",
+    "contract_id",
+    "contract_version",
+    "dataset_id",
+    "denominator_semantics_acceptance",
+    "diagnostic_rows_allowed",
+    "evidence_receipt",
+    "next_action",
+    "required_evidence",
+    "required_fields",
+    "source_contract_id",
+    "status",
+    "strict_binding_allowed",
+    "tolerances"
+  ],
+  "status": "PASS",
+  "strict_gate_negative_cases": {
+    "acceptance_not_independent": true,
+    "missing_denominator_acceptance": true,
+    "missing_evidence": true,
+    "missing_reviewer": true,
+    "missing_timestamp": true,
+    "non_frozen_status": true,
+    "strict_binding_allowed_false": true,
+    "wrong_comparison_basis": true,
+    "wrong_contract_id": true,
+    "wrong_contract_version": true,
+    "wrong_dataset": true,
+    "wrong_source_contract": true
+  },
+  "synthetic_accepted_copy": {
+    "binding_quality": "BOUND_STRICT",
+    "fixture_only": true,
+    "not_live_source_acceptance": true
+  }
+}

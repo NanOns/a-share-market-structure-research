@@ -18,3 +18,14 @@
 - Persistence contract frozen before migration: `config/v4_07_persistence_contract_v1.json`; migration slot `015` (Workstream A owns `014`).
 - Current acceptance result: contract/persistence contracts frozen; candidate implementation and runtime gates pending.
 - Stage-entry result: scope, accepted source bindings, BASE_SEED_V1 contract, field registry, vectors, and persistence contract are recorded before detector implementation. Candidate execution and release gates remain pending at stage entry.
+
+## Candidate closure
+
+- Workstream A dependency commit: `4c6051586a617d01f2ebbe142ea4ded05660fec7`.
+- Candidate implementation commit: `8cf4b5b87596ef128d47586711549a9ab7cd6dc9`.
+- Full market result: 5,222 rows; `FALSE=2,443`, `UNKNOWN=2,779`, `TRUE=0`; logical digest `b2fba6054f93d5155198982cda10feab8a21c4239e94df7023b7dbca2b654cd1`.
+- Contract vectors, A–E isolation matrix, deterministic replay, independent 5,222-row recompute, isolated migration/rollback, and the required combined regression all PASS.
+- Combined regression output: `533 passed, 2 skipped in 28.21s` on disposable PostgreSQL 18.6 database `market_research`; the temporary cluster was removed. `WORKBENCH_PG_DSN` was passed in process environment; `config/.env` was neither read nor created.
+- Accepted V4-05 `rps5_delta3` is UNKNOWN on every row due to `BOOTSTRAP_INSUFFICIENT_FORWARD_HISTORY`; accepted T-1 close/MA20 fields are absent. Those UNKNOWNs are preserved without raw-source reconstruction.
+- Terminal status: `V4_07_BASE_SEED_CANDIDATE_R1`; no accepted-head promotion. Await independent external V4-07 audit before any subsequent stage.
+- Evidence index: `reports/v4_07/V4_07_STAGE_RESULT.json` and `reports/v4_07/V4_07_STAGE_CANDIDATE_MANIFEST.json`.

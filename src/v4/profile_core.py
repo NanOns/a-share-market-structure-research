@@ -183,8 +183,10 @@ def drawdown(inputs: Mapping[str, object], horizon: int) -> State:
     contract = "POSITION_STATE_V1"
     if not _required(inputs, keys) or _number(inputs, keys[1]) <= 0:
         return _state("UNKNOWN", contract, inputs, keys, "REQUIRED_INPUT_UNKNOWN_OR_ZERO_HIGH")
-    ratio = _number(inputs, "close") / _number(inputs, keys[1]) - 1
-    return _state("SHALLOW" if ratio >= P["DRAWDOWN_SHALLOW"] else "MODERATE" if ratio >= P["DRAWDOWN_MODERATE"] else "DEEP", contract, inputs, keys)
+    price_ratio = _number(inputs, "close") / _number(inputs, keys[1])
+    return _state("SHALLOW" if price_ratio >= 1 + P["DRAWDOWN_SHALLOW"] else
+                  "MODERATE" if price_ratio >= 1 + P["DRAWDOWN_MODERATE"] else "DEEP",
+                  contract, inputs, keys)
 
 
 def closed_period_trend(inputs: Mapping[str, object], period: str) -> State:

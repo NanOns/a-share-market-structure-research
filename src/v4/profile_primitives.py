@@ -135,8 +135,7 @@ def derive_daily(bars: Sequence[Mapping], factors: Mapping[str, Mapping],
     prior_window = int(P["PRIOR_AMOUNT_WINDOW"])
     prior_rows = bars[-prior_window-1:-1] if current else []
     liquid_status_ok, liquid_span, liquid_suspended, liquid_status_evidence = technical_window_status(prior_rows, statuses, calendar)
-    amount_factor_ok = _factor(factors, "amount_ratio20") is not None
-    liquid_ok = (current and amount_factor_ok and len(prior_rows) == prior_window and liquid_status_ok and
+    liquid_ok = (current and len(prior_rows) == prior_window and liquid_status_ok and
                  all(isinstance(x.get("amount"), (int, float)) for x in prior_rows))
     mean_amount = fmean(float(x["amount"]) for x in prior_rows) if liquid_ok else None
     output["minimum_liquidity"] = _result(mean_amount >= P["MINIMUM_LIQUIDITY_CNY"] if liquid_ok else None,

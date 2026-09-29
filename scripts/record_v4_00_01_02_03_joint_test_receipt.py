@@ -37,10 +37,17 @@ def git(*args: str) -> str:
 
 
 def changed_file_identities() -> list[dict[str, Any]]:
-    raw = git("status", "--short", "--untracked-files=all").splitlines()
+    # Do not pass porcelain output through git(), which strips leading spaces
+    # and would remove the first status column from the first row. The fixed
+    # three-character prefix is XY plus one separator for every row.
+    raw = subprocess.check_output(
+        ["git", "status", "--short", "--untracked-files=all"], cwd=ROOT
+    ).decode("utf-8", "replace").splitlines()
     found = []
     for line in raw:
-        rel = line[3:].strip()
+        if not line:
+            continue
+        rel = line[3:]
         path = ROOT / rel
         found.append({"path": rel.replace("\\", "/"), "sha256": sha_file(path) if path.is_file() else None, "exists": path.is_file()})
     return found

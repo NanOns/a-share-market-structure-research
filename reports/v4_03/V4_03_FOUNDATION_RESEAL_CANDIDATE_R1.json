@@ -1,0 +1,60 @@
+{
+  "amendment_candidate": {
+    "path": "reports/v4_03/V4_03_SECTOR_OWNERSHIP_AMENDMENT_R1.json",
+    "sha256": "c5842f53e18420de406575c12c43fc10a605b6f578de55514d08add02edd8ae4"
+  },
+  "capabilities": {
+    "MARKET_REFERENCE": "PASS_CANDIDATE",
+    "MARKET_REGIME": "PASS_CANDIDATE",
+    "RELATIVE_RPS": "PASS_CANDIDATE",
+    "SECTOR_NATIVE_CONTRACT": "PASS",
+    "SECTOR_NATIVE_FULL_MARKET": "BLOCKED_MISSING_ACCEPTED_PIT_MEMBERSHIP",
+    "STOCK_CORE": "PASS_CANDIDATE"
+  },
+  "contract_id": "V4_03_FOUNDATION_RESEAL_CANDIDATE_R1",
+  "decision": "NO_CANONICAL_REBUILD_OR_ACCEPTED_HEAD_PROMOTION; existing upstream hashes are unchanged; amendment and V4-01 R9 remain candidates until external review.",
+  "existing_accepted_head_modified": false,
+  "existing_v4_03_accepted_head": {
+    "byte_count": 1607,
+    "path": "data/v4/V4_03_ACCEPTED_HEAD.json",
+    "sha256": "734bd27a5d53b2f18e3d62aa96ac63c91ccc6d9f848e942bc1efc410c88d4370"
+  },
+  "external_acceptance": "PENDING_EXTERNAL_REVIEW",
+  "membership_dependent_materialization_rebuilt": false,
+  "observed_at_utc": "2026-09-29T00:51:39+00:00",
+  "stage": "V4-03 CONDITIONAL RESEAL CANDIDATE",
+  "stage_record": {
+    "acceptance_result": "CANDIDATE_ONLY_PENDING_EXTERNAL_ACCEPTANCE",
+    "evidence": "Current accepted V4-03 head hash bindings and R3 capability receipts",
+    "next_stage": "JOINT_00_03_EXTERNAL_REVIEW",
+    "stage_contract": "V4-03 final receipt and accepted head; R2 amendment scope"
+  },
+  "status": "PASS_WITH_SECTOR_SCOPE_DEGRADED_CANDIDATE",
+  "upstream": {
+    "existing_v4_03_head_upstream_identities_match": true,
+    "v4_01_identity_map": {
+      "byte_count": 5528197,
+      "path": "data/v4/artifact_store/v4_01/security_entity_map_R7_20260927.json",
+      "sha256": "e33294fb8d1d71732fdc3df903258b5617345811ecbdb649af8056ccd91427e0"
+    },
+    "v4_01_required_universe": {
+      "byte_count": 239298684,
+      "path": "data/v4/artifact_store/v4_01/v4_01_historical_universe_required_R7_20260927.jsonl.gz",
+      "sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b"
+    },
+    "v4_02_accepted_head": {
+      "byte_count": 1602,
+      "path": "data/v4/V4_02_ACCEPTED_HEAD.json",
+      "sha256": "da318a1f82a03f13930af7858ca1640fadbdaedbee85e27d47f9c869c2d6b595"
+    },
+    "v4_02_manifest": {
+      "byte_count": 6971,
+      "path": "reports/v4_02/V4_02_FINAL_STAGING_MANIFEST_R6.json",
+      "sha256": "a83f90a0d1acc08e32db5dab049f3bf16a9284e5bf6785cd8f3a2b52aed31678"
+    }
+  },
+  "v4_03_rebuilt": false,
+  "v4_04_entry": "BLOCKED_PENDING_FINAL_EXTERNAL_ACCEPTANCE",
+  "v4_08_sector_rotation": "BLOCKED_MISSING_ACCEPTED_PIT_MEMBERSHIP",
+  "version": "1.0.0-candidate"
+}

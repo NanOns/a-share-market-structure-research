@@ -1,0 +1,188 @@
+{
+  "checks": {
+    "accepted_input_hash_bindings_match_global_head": true,
+    "all_330_entry_tdx_files_present_and_first_records_match": true,
+    "calibration_audit_deferred_non_blocking": true,
+    "candidate_pair_independently_redecoded": true,
+    "four_bounded_official_label_crosschecks_verified": true,
+    "frozen_baostock_alias_bar_replayed": true,
+    "independent_boundary_inventory_matches_scan": true,
+    "known_r8_3_official_event_recovered": true,
+    "official_event_index_incomplete_but_retained_as_cross_check": true,
+    "official_notice_and_accepted_dated_alias_confirm_pair": true,
+    "pre_effective_tdx_anomalies_match_scan": true,
+    "production_identity_unchanged": true,
+    "r8_and_r8_3_postchecks_pass": true,
+    "resolution_complete": true,
+    "tdx_archive_unchanged_during_postcheck": true
+  },
+  "contract_id": "V4_01_IDENTITY_COMPLETENESS_GATE_V2_POSTCHECK",
+  "execution_identity": {
+    "input_commit": "e307892b138a3e5e1925546095d884e7900083d2",
+    "python_version": "3.13.14",
+    "script_sha256": "383ab89ece3d66c0b6aeff2a76f8fae1bc975a05f94eba68ebe1e29cd8409a19"
+  },
+  "inputs": {
+    "config/v4_01_source_fingerprint_blind_labels_v1.json": {
+      "byte_count": 3318,
+      "path": "config/v4_01_source_fingerprint_blind_labels_v1.json",
+      "sha256": "2f97945dc9b2577a1f9af82077d542f253f2a333bb93f26a57bd0ed91dadf5f1"
+    },
+    "data/v4/V4_STAGE_ACCEPTED_HEAD.json": {
+      "byte_count": 2605,
+      "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+      "sha256": "87c4e35a1cc8a01fbcebf1562fb0477a6dc09881fcf2c74f2a2062f5cfaac1db"
+    },
+    "data/v4/artifact_store/v4_01/security_entity_map_R7_20260927.json": {
+      "byte_count": 5528197,
+      "path": "data/v4/artifact_store/v4_01/security_entity_map_R7_20260927.json",
+      "sha256": "e33294fb8d1d71732fdc3df903258b5617345811ecbdb649af8056ccd91427e0"
+    },
+    "data/v4/artifact_store/v4_01/v4_01_historical_universe_required_R7_20260927.jsonl.gz": {
+      "byte_count": 239298684,
+      "path": "data/v4/artifact_store/v4_01/v4_01_historical_universe_required_R7_20260927.jsonl.gz",
+      "sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b"
+    },
+    "data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f/hsjday.zip": {
+      "byte_count": 550821395,
+      "path": "data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f/hsjday.zip",
+      "sha256": "b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f"
+    },
+    "data/v4/source_evidence/official_code_change_event_index/coverage_receipt_v1.json": {
+      "byte_count": 8622,
+      "path": "data/v4/source_evidence/official_code_change_event_index/coverage_receipt_v1.json",
+      "sha256": "c904bc47d55f99a675443f0b3383f26c886063003bd84ab57d48dc099edceb4a"
+    },
+    "data/v4/source_evidence/official_code_change_event_index/official_security_code_change_events_v1.jsonl": {
+      "byte_count": 805,
+      "path": "data/v4/source_evidence/official_code_change_event_index/official_security_code_change_events_v1.jsonl",
+      "sha256": "f06079bf528369ce5d77a155a6171d3dcba8c781c68b7204cc070cd2ad7f16c9"
+    },
+    "data/v4/source_evidence/v4_02_r3/szse_2025_028_code_change_302132.pdf": {
+      "byte_count": 370156,
+      "path": "data/v4/source_evidence/v4_02_r3/szse_2025_028_code_change_302132.pdf",
+      "sha256": "dd68049c48df826848f361fd9e7b23dd20b6805144a2e5bc36e54db638611488"
+    },
+    "docs/audits/V4_01_SOURCE_FINGERPRINT_CALIBRATION_AUDIT_ITEM_R1_20260929.md": {
+      "byte_count": 4252,
+      "path": "docs/audits/V4_01_SOURCE_FINGERPRINT_CALIBRATION_AUDIT_ITEM_R1_20260929.md",
+      "sha256": "33efabb84b705b4afd731e413716ef6040b4ecb067fa3d242e03447fd485a497"
+    },
+    "reports/v4_01/V4_01_CODE_CHANGE_SOURCE_FINGERPRINT_300114_302132_R1.json": {
+      "byte_count": 3176497,
+      "path": "reports/v4_01/V4_01_CODE_CHANGE_SOURCE_FINGERPRINT_300114_302132_R1.json",
+      "sha256": "bf69125b1594b63b2f84c7daec570db4554bceda5d16083b3d9a7167ca0718f3"
+    },
+    "reports/v4_01/V4_01_FULL_SCOPE_SOURCE_FINGERPRINT_SCAN_R1.json": {
+      "byte_count": 358018,
+      "path": "reports/v4_01/V4_01_FULL_SCOPE_SOURCE_FINGERPRINT_SCAN_R1.json",
+      "sha256": "80c7edbe63be276ffaa1adc6bc0e00c38fd4f2a53b6c8b42d503af290bb937c7"
+    },
+    "reports/v4_01/V4_01_IDENTITY_EVENT_DISCOVERY_R8_3.json": {
+      "byte_count": 329298,
+      "path": "reports/v4_01/V4_01_IDENTITY_EVENT_DISCOVERY_R8_3.json",
+      "sha256": "b94854cde9fa178367ba38896cd0e006eaed6aae03a1fd43d446f48655c0ea33"
+    },
+    "reports/v4_01/V4_01_R8_3_INDEPENDENT_POSTCHECK.json": {
+      "byte_count": 3244,
+      "path": "reports/v4_01/V4_01_R8_3_INDEPENDENT_POSTCHECK.json",
+      "sha256": "9b6b382439ff21afbe9457a4debc098f062984986e1e0ffed1261cdac5b86069"
+    },
+    "reports/v4_01/V4_01_R8_IDENTITY_UNIVERSE_POSTCHECK_20260928.json": {
+      "byte_count": 3901,
+      "path": "reports/v4_01/V4_01_R8_IDENTITY_UNIVERSE_POSTCHECK_20260928.json",
+      "sha256": "b477b50a6badb3c68e4b78c430586a4b9818ed5bf7b000d61a7cd20f91274716"
+    },
+    "reports/v4_01/V4_01_SOURCE_FINGERPRINT_CANDIDATE_BLIND_VALIDATION_R1.json": {
+      "byte_count": 22330,
+      "path": "reports/v4_01/V4_01_SOURCE_FINGERPRINT_CANDIDATE_BLIND_VALIDATION_R1.json",
+      "sha256": "bc0426812585c6cd0974bc9f1e78db39f2a052cf24bb6540cf1c985114e2ee55"
+    }
+  },
+  "observed_at": "2026-09-29T08:56:44+08:00",
+  "recomputed_scope": {
+    "board_rows": {
+      "CHINEXT": 1072290,
+      "SH_MAIN": 1331624,
+      "STAR": 458582,
+      "SZ_MAIN": 1173233
+    },
+    "duplicate_source_key_session_rows": 0,
+    "entry_count": 330,
+    "exit_count": 129,
+    "first_session": "2023-07-04",
+    "first_session_baseline_key_count": 5021,
+    "last_session": "2026-09-24",
+    "rows_scanned": 4035729,
+    "session_count": 786,
+    "source_key_count": 5351
+  },
+  "recomputed_tdx_candidate": {
+    "new": {
+      "byte_count": 122112,
+      "code": "SZ.302132",
+      "duplicate_dates": 0,
+      "first_date": "2010-08-27",
+      "last_date": "2026-09-24",
+      "non_increasing_dates": 0,
+      "record_count": 3816,
+      "sha256": "08269c85bb95fa3b31adc7ed5451396d7706d3039955988124e33f7659adf37b",
+      "tail_bytes": 0
+    },
+    "ohlc_amount_exact_count": 3421,
+    "old": {
+      "byte_count": 109472,
+      "code": "SZ.300114",
+      "duplicate_dates": 0,
+      "first_date": "2010-08-27",
+      "last_date": "2025-02-14",
+      "non_increasing_dates": 0,
+      "record_count": 3421,
+      "sha256": "08cf59e7d31aa0b0eae1f097e8cf782b1d6fb2124f8a3e784e19ccf830e29d54",
+      "tail_bytes": 0
+    },
+    "shared_pre_effective_sessions": 3421,
+    "thresholds": {
+      "baostock_active_exact_ratio_minimum": 0.99,
+      "calibration_status": "EXPLORATORY_ONLY; validation is bounded to two positive and two merger-successor controls; no threshold is accepted for production.",
+      "minimum_shared_sessions": 20,
+      "tdx_volume_exact_ratio_minimum": 0.95
+    },
+    "volume_exact_count": 3420,
+    "volume_exact_ratio": 0.9997076878105817
+  },
+  "replayed_baostock_alias_bar": {
+    "business_fields_exact_excluding_query_code": true,
+    "date": "2025-02-14",
+    "interpretation": "PROVIDER_ALIAS_DUPLICATION_SIGNAL; not an independent confirmation source",
+    "new_query_code": "sz.302132",
+    "old_query_code": "sz.300114"
+  },
+  "resolution_receipt": {
+    "path": "reports/v4_01/V4_01_IDENTITY_RELATION_RESOLUTION_R1.json",
+    "sha256": "381057030048eb65af75cf7d4aa36244c357d5b5f80ff1afe66eb742ae91446c"
+  },
+  "stage": "V4-01 INDEPENDENT IDENTITY COMPLETENESS POSTCHECK",
+  "stage_contract": {
+    "canonical_identity_mutation": false,
+    "historical_universe_mutation": false,
+    "imports_production_scanner": false,
+    "imports_production_tdx_decoder": false,
+    "independent_implementation": true,
+    "tdx_root_write_count": 0
+  },
+  "stage_record": {
+    "acceptance_result": "PASS_INDEPENDENT_POSTCHECK",
+    "evidence": "Independent gzip row scan, struct-only TDX decode, frozen BaoStock report replay, accepted R7 identity and official-event evidence",
+    "next_stage": "V4-01 FINAL CANDIDATE"
+  },
+  "status": "PASS_INDEPENDENT_POSTCHECK",
+  "summary": {
+    "next_stage": "BUILD_FINAL_STAGE_CANDIDATE_WITH_EXTERNAL_ACCEPTANCE_PENDING",
+    "official_event_index_exhaustiveness_claimed": false,
+    "required_scope_unresolved_identity_relations": 0,
+    "source_fingerprint_calibration": "DEFERRED_NON_BLOCKING_RESEARCH",
+    "unlinked_boundary_anomalies": 0
+  },
+  "version": "1.0.0-candidate"
+}

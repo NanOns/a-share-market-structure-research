@@ -1,0 +1,168 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/v4_phase0",
+    "tests/v4_01",
+    "tests/v4_02",
+    "tests/v4_03"
+  ],
+  "contract_id": "V4_00_01_02_03_FULL_CHAIN_TEST_RECEIPT_R1",
+  "counts": {
+    "error": 0,
+    "failed": 0,
+    "passed": 267,
+    "skipped": 2,
+    "xfailed": 0,
+    "xpassed": 0
+  },
+  "duration_seconds": 3.438,
+  "execution_identity": {
+    "branch": "codex/v4-system-reform",
+    "pytest_version": "pytest 9.1.1",
+    "python_version": "3.13.14",
+    "tested_commit": "e307892b138a3e5e1925546095d884e7900083d2",
+    "working_tree_changed_file_count": 14,
+    "working_tree_changed_files": [
+      {
+        "exists": false,
+        "path": "onfig/v4_02_stage_acceptance_mapping_v2.json",
+        "sha256": null
+      },
+      {
+        "exists": true,
+        "path": "docs/audits/V4_01_SOURCE_FINGERPRINT_CALIBRATION_AUDIT_ITEM_R1_20260929.md",
+        "sha256": "33efabb84b705b4afd731e413716ef6040b4ecb067fa3d242e03447fd485a497"
+      },
+      {
+        "exists": true,
+        "path": "tests/v4_phase0/test_baostock_supplemental.py",
+        "sha256": "da115c4406ee78dd3ea32503cbe8bc5ae7998fdabe3fc2bb0bee372f4bc4b426"
+      },
+      {
+        "exists": true,
+        "path": "config/v4_01_identity_completeness_gate_v2.json",
+        "sha256": "3467b5bae8ea2dfa3d112e73546e2a02d8e8cd337bf23e6de083d8aa82895951"
+      },
+      {
+        "exists": true,
+        "path": "docs/audits/V4_01_IDENTITY_COMPLETENESS_GATE_V2_AMENDMENT_20260929.md",
+        "sha256": "8fcf81b760d0342481177a860dab772f2edd6deed253bd7f6f7a6be9afa6d77e"
+      },
+      {
+        "exists": true,
+        "path": "docs/audits/V4_03_SECTOR_OWNERSHIP_AMENDMENT_V1_20260929.md",
+        "sha256": "e09394498c836f11ca33b7b1f3fde73b588b0cd9cd8a91321eae30cbfeca966c"
+      },
+      {
+        "exists": true,
+        "path": "docs/evidence/V4_00_01_02_03_FOUNDATION_FULL_PASS_FINAL_CLOSURE_TASK_R2_20260929.md",
+        "sha256": "57608b0ca2e283a9c60d7906b441cc9d5cc788bf74f97c50637a198886eace3e"
+      },
+      {
+        "exists": true,
+        "path": "docs/evidence/V4_01_CODE_CHANGE_TDX_BAOSTOCK_FINGERPRINT_DIAGNOSTIC_TASK_20260928.md",
+        "sha256": "1feadc27fa3f8f5929f07e58992fd0b8b25b89ba37aa9b6a0c09688d58e60e23"
+      },
+      {
+        "exists": true,
+        "path": "scripts/postcheck_v4_01_identity_completeness_gate_v2.py",
+        "sha256": "383ab89ece3d66c0b6aeff2a76f8fae1bc975a05f94eba68ebe1e29cd8409a19"
+      },
+      {
+        "exists": true,
+        "path": "scripts/reconcile_v4_02_current_truth.py",
+        "sha256": "516bfd34594c14437a11f427973f630bc37f8e2dd610a7aa6590b041652434ba"
+      },
+      {
+        "exists": true,
+        "path": "scripts/record_v4_00_01_02_03_joint_test_receipt.py",
+        "sha256": "db90823543a4842ba7c82637c1d13e1d696f7ba553feaaa60f94d29e53079d82"
+      },
+      {
+        "exists": true,
+        "path": "scripts/record_v4_00_03_candidate_receipts.py",
+        "sha256": "ef4520a67b419588edba7c9af77b452066a834a17081f037c99048044a83d39f"
+      },
+      {
+        "exists": true,
+        "path": "scripts/scan_v4_01_identity_completeness_gate_v2.py",
+        "sha256": "b391593c764a8ffc42dda2e71e75422fa7d3b3bea07a4c67b1e59f0dbcf2010d"
+      },
+      {
+        "exists": true,
+        "path": "scripts/validate_v4_00_01_02_03_full_chain.py",
+        "sha256": "2d58eb5d95f03cf7f0641b713d10abc5c3e5a7f1eecd63ecfeb6a883dc7b1deb"
+      }
+    ]
+  },
+  "observed_at_utc": "2026-09-29T01:00:19+00:00",
+  "output_tail": "........................................................................ [ 26%]\n.....................s..........s....................................... [ 53%]\n........................................................................ [ 80%]\n.....................................................                    [100%]\n267 passed, 2 skipped in 3.09s",
+  "result": "PASS",
+  "return_code": 0,
+  "stage": "V4-00..V4-03 CURRENT-WORKTREE COMBINED REGRESSION",
+  "stage_record": {
+    "acceptance_result": "PASS",
+    "evidence": "Exact pytest command, file set, interpreter, output digest, counts, and duration",
+    "next_stage": "RUN_CANDIDATE_FULL_CHAIN_VALIDATOR",
+    "stage_contract": "V4-00..V4-03 R2 foundation closure task combined current-HEAD regression"
+  },
+  "status": "PASS",
+  "stdout_stderr_sha256": "5231c6888b6add51c08fd1cd817df789ca424bc5fa05fa946163be7db8fe686e",
+  "superseded_prior_attempt": {
+    "disposition": "SUPERSEDED_BY_CURRENT_FULL_SUITE_RUN_AFTER_TEST_FIXTURE_ALIGNMENT",
+    "path": "reports/v4_joint/V4_00_01_02_03_FULL_CHAIN_TEST_ATTEMPT_R1_FAILED.json",
+    "sha256": "8592d647a2b61055523964d2259d1531cd4e49b61ca2be0c94e3a74621b56924",
+    "status": "FAIL",
+    "terminal_summary": "2 failed, 265 passed, 2 skipped in 4.79s"
+  },
+  "tdx_root_write_count": 0,
+  "terminal_summary": "267 passed, 2 skipped in 3.09s",
+  "test_contract_alignment": [
+    {
+      "change": "Mock package_metadata() to supply an unpinned runtime version and assert the current fail-closed error token; assert current default_runtime_pin metadata field.",
+      "production_runtime_changed": false,
+      "test_file": "tests/v4_phase0/test_baostock_supplemental.py"
+    }
+  ],
+  "test_file_count": 28,
+  "test_files": [
+    "tests/v4_01/test_r8_1_identity_event_discovery.py",
+    "tests/v4_01/test_r8_2_identity_relation_evidence.py",
+    "tests/v4_01/test_r8_3_identity_event_linkage.py",
+    "tests/v4_01/test_r8_3_official_search_capture.py",
+    "tests/v4_01/test_r8_generic_alias_completeness.py",
+    "tests/v4_01/test_source_fingerprint_candidate.py",
+    "tests/v4_02/test_final_closure_pack.py",
+    "tests/v4_02/test_final_r3_repairs.py",
+    "tests/v4_02/test_final_r4_special_price_phase.py",
+    "tests/v4_02/test_r5_generic_runtime.py",
+    "tests/v4_02/test_r6_generic_production_builder.py",
+    "tests/v4_03/test_algorithm_contract_v12.py",
+    "tests/v4_03/test_ast_golden_r3.py",
+    "tests/v4_03/test_core_vectors.py",
+    "tests/v4_03/test_r3_closure.py",
+    "tests/v4_phase0/test_adjustment_contract_vectors.py",
+    "tests/v4_phase0/test_algorithm_contracts.py",
+    "tests/v4_phase0/test_baostock_supplemental.py",
+    "tests/v4_phase0/test_canonical_source_selection.py",
+    "tests/v4_phase0/test_phase0_final_gate.py",
+    "tests/v4_phase0/test_postgres_schema.py",
+    "tests/v4_phase0/test_security_entity_identity.py",
+    "tests/v4_phase0/test_source_bundle_identity.py",
+    "tests/v4_phase0/test_source_overlap_classifier.py",
+    "tests/v4_phase0/test_tdx_local_snapshot.py",
+    "tests/v4_phase0/test_tdx_snapshot.py",
+    "tests/v4_phase0/test_v4_01_lineage_policy.py",
+    "tests/v4_phase0/test_v4_01_required_scope_r6.py"
+  ],
+  "test_roots": [
+    "tests/v4_phase0",
+    "tests/v4_01",
+    "tests/v4_02",
+    "tests/v4_03"
+  ],
+  "version": "1.0.0"
+}

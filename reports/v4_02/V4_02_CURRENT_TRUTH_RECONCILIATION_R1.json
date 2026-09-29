@@ -1,0 +1,96 @@
+{
+  "blockers": [],
+  "checks": {
+    "r4_audit_closed_and_all_rows_dispositioned": true,
+    "r6_accepted_head_and_receipt_bind": true,
+    "r6_external_acceptance_and_postchecks_pass": true,
+    "r7_identity_and_universe_hashes_unchanged": true
+  },
+  "contract_id": "V4_02_CURRENT_TRUTH_RECONCILIATION_R1",
+  "current_truth": {
+    "current_open_engineering_exception": 0,
+    "external_acceptance": "EXTERNALLY_ACCEPTED_R6",
+    "price_limit_audits": {
+      "R1": "SUPERSEDED",
+      "R3": "HISTORICAL_BLOCKED",
+      "R4": "CLOSED"
+    },
+    "r4_current_exception_rows": 53,
+    "r4_fail_closed_unknown_rows": 31,
+    "r4_undispositioned_engineering_exceptions": 0,
+    "r7_canonical_inputs_unchanged": true,
+    "unknown_rows_claimed_resolved": 0,
+    "v4_01_upstream_rebind": "NOT_REQUIRED_CANONICAL_HASHES_UNCHANGED; WAIT_FOR_R9_EXTERNAL_ACCEPTANCE",
+    "v4_02": "PASS_WITH_BSE_SCOPE_DEGRADED",
+    "v4_02_rebuild": false
+  },
+  "evidence": {
+    "r4_official_source_capture_index": {
+      "byte_count": 7964,
+      "path": "reports/v4_02/V4_02_R4_OFFICIAL_SOURCE_CAPTURE_INDEX.json",
+      "sha256": "a3f36b30c4f4f004074f1753c9e9feef3d62cb1794d322cea00c4b19fa8f325e"
+    },
+    "v4_01_identity_map_r7": {
+      "byte_count": 5528197,
+      "path": "data/v4/artifact_store/v4_01/security_entity_map_R7_20260927.json",
+      "sha256": "e33294fb8d1d71732fdc3df903258b5617345811ecbdb649af8056ccd91427e0"
+    },
+    "v4_01_universe_r7": {
+      "byte_count": 239298684,
+      "path": "data/v4/artifact_store/v4_01/v4_01_historical_universe_required_R7_20260927.jsonl.gz",
+      "sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b"
+    },
+    "v4_02_accepted_head": {
+      "byte_count": 1602,
+      "path": "data/v4/V4_02_ACCEPTED_HEAD.json",
+      "sha256": "da318a1f82a03f13930af7858ca1640fadbdaedbee85e27d47f9c869c2d6b595"
+    },
+    "v4_02_cross_stage_postcheck_r8": {
+      "byte_count": 3805,
+      "path": "reports/v4_02/V4_02_R8_CROSS_STAGE_POSTCHECK_20260928.json",
+      "sha256": "e6a35495a8a2566d341da9a726e7c3f905c08135ff3fcf2b51797d40e780b626"
+    },
+    "v4_02_external_acceptance_r6": {
+      "byte_count": 3853,
+      "path": "reports/v4_02/V4_02_FINAL_EXTERNAL_ACCEPTANCE_R6.json",
+      "sha256": "42286da4305b792f5ecdc0fcc9a9d722e8ab3c23f6b618bf1ba15bd445ca6970"
+    },
+    "v4_02_final_receipt_r6": {
+      "byte_count": 2642,
+      "path": "reports/v4_02/V4_02_FINAL_RECEIPT_R6.json",
+      "sha256": "e2dbfa55539cc89376c90627ed822e0c2b6f81938277919bd717e93dd93c411b"
+    },
+    "v4_02_independent_postcheck_r6": {
+      "byte_count": 2293,
+      "path": "reports/v4_02/V4_02_FINAL_INDEPENDENT_POSTCHECK_R6.json",
+      "sha256": "4fcd51ff16f90844c358c0094b5badac315a70a75ab027f8fb3f1c54806b1f5c"
+    },
+    "v4_02_price_limit_range_audit_r4": {
+      "byte_count": 151621,
+      "path": "reports/v4_02/V4_02_PRICE_LIMIT_RANGE_EXCEPTION_AUDIT_R4.json",
+      "sha256": "975f3ce59260e6a35d4c407026823b8d99c9cc65eacbc36be201f0bfbcf64292"
+    }
+  },
+  "execution_identity": {
+    "input_commit": "e307892b138a3e5e1925546095d884e7900083d2",
+    "python_version": "3.13.14",
+    "script_sha256": "516bfd34594c14437a11f427973f630bc37f8e2dd610a7aa6590b041652434ba"
+  },
+  "observed_at_utc": "2026-09-29T00:48:08+00:00",
+  "stage": "V4-02 CURRENT TRUTH RECONCILIATION",
+  "stage_contract": {
+    "canonical_artifacts_rebuilt": false,
+    "mapping_path": "config/v4_02_stage_acceptance_mapping_v2.json",
+    "mapping_sha256_after": "8cd936a816dd89ca13e8178670fb6425d68895ef50ca400f194e4c69b585d799",
+    "mapping_sha256_before": "e7eafe81ad03af042a352ead93fd8c1c09dbb0478d31e673e8f54944d5e984b9",
+    "v4_01_accepted_identity_modified": false,
+    "v4_02_accepted_head_modified": false
+  },
+  "stage_record": {
+    "acceptance_result": "PASS_CURRENT_TRUTH_RECONCILIATION",
+    "evidence": "R6 external acceptance + R6/R8 independent postchecks + R4 row disposition audit; no rebuild",
+    "next_stage": "BIND_TO_V4_01_R9_AFTER_EXTERNAL_ACCEPTANCE"
+  },
+  "status": "PASS_CURRENT_TRUTH_RECONCILIATION",
+  "version": "1.0.0-candidate"
+}

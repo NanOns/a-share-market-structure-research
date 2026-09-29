@@ -1,7 +1,7 @@
 # V4-01 源级指纹阈值校准审计项 R1
 
 - 审计项 ID：`AUDIT-V4-01-SOURCE-FINGERPRINT-CALIBRATION-20260929`
-- 状态：`OPEN`
+- 状态：`DEFERRED_NON_BLOCKING_RESEARCH`
 - 日期：2026-09-29
 - 所属阶段：`V4-01-SOURCE-FINGERPRINT-CANDIDATE-STUDY`
 - 独立于：`V4-01 Gate A / official code-change event index coverage`
@@ -38,9 +38,20 @@
 
 候选合同保持研究专用。此次 `PASS_BOUNDED_BLIND_VALIDATION` 仅代表四案数据采集完整、标签 hash 验证通过、四个输出符合冻结标签，以及 TDX 输入不变；本审计项继续开放，不阻断本候选研究报告，但也不改变 V4-01 Gate A。
 
-**验收结果：`OPEN_NEEDS_MORE_PAIRED_AND_CROSS_SCOPE_SAMPLES`**
+**验收结果：`DEFERRED_NON_BLOCKING_RESEARCH`**
 
 **production identity mutation：`PROHIBITED`**
+
+## 2026-09-29 foundation closure task R2 disposition
+
+本研究项不关闭，后续 paired-TDX、跨市场样本与阈值校准仍可继续；但按基础链 R2 任务，本研究不再是 V4-01 owner-gate blocker，也不授予生产确认权限。
+
+- 当前状态：`DEFERRED_NON_BLOCKING_RESEARCH`
+- `owner_stage_blocker = false`
+- `production_confirmation_authority = false`
+- 阈值合同：V1.0 原样冻结；本轮全 Required Scope scan 未调阈值。
+- 阶段证据：`reports/v4_01/V4_01_FULL_SCOPE_SOURCE_FINGERPRINT_SCAN_R1.json` 与 `reports/v4_01/V4_01_IDENTITY_COMPLETENESS_GATE_V2_POSTCHECK_R1.json`。
+- 下一阶段：独立外部验收后，后续研究仍可补充更多 paired TDX、SH/STAR 与困难负样本；研究通过也不能替代正式身份确认。
 
 ## 2026-09-29 外部验收 R1 后续处置
 

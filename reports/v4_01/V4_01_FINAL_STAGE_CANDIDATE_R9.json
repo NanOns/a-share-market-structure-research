@@ -1,0 +1,53 @@
+{
+  "canonical_identity_unchanged": true,
+  "contract_id": "V4_01_FINAL_STAGE_CANDIDATE_R9",
+  "evidence": {
+    "postcheck": {
+      "path": "reports/v4_01/V4_01_IDENTITY_COMPLETENESS_GATE_V2_POSTCHECK_R1.json",
+      "sha256": "71eb5efa44bd46131618873fcb6834e9feabd93a65f82cf7073d8d9d615380d1"
+    },
+    "resolution": {
+      "path": "reports/v4_01/V4_01_IDENTITY_RELATION_RESOLUTION_R1.json",
+      "sha256": "381057030048eb65af75cf7d4aa36244c357d5b5f80ff1afe66eb742ae91446c"
+    },
+    "scan": {
+      "path": "reports/v4_01/V4_01_FULL_SCOPE_SOURCE_FINGERPRINT_SCAN_R1.json",
+      "sha256": "80c7edbe63be276ffaa1adc6bc0e00c38fd4f2a53b6c8b42d503af290bb937c7"
+    }
+  },
+  "external_acceptance": "PENDING_EXTERNAL_REVIEW",
+  "identity_candidate": {
+    "path": "data/v4/V4_01_ACCEPTED_HEAD_CANDIDATE.json",
+    "sha256": "a11c7f21b5710f4dcefbe2417a297fd4544cce761b0e427afedc028e423217f3"
+  },
+  "known_event_index": {
+    "exhaustiveness_claimed": false,
+    "role": "KNOWN_EVENT_CROSS_CHECK_AND_CONFIRMATION_SOURCE",
+    "status": "COVERAGE_INCOMPLETE_RETAINED_AS_HISTORICAL_FACT"
+  },
+  "next_stage": "WAIT_FOR_INDEPENDENT_EXTERNAL_ACCEPTANCE; DO_NOT_UPDATE_GLOBAL_HEAD_OR_START_V4_04",
+  "observed_at": "2026-09-29T08:56:44+08:00",
+  "required_scope": {
+    "boards": [
+      "CHINEXT",
+      "SH_MAIN",
+      "STAR",
+      "SZ_MAIN"
+    ],
+    "history_end": "2026-09-24",
+    "history_start": "2023-07-04",
+    "sessions": 786,
+    "status": "FULL_PASS_CANDIDATE",
+    "unlinked_boundary_anomalies": 0,
+    "unresolved_identity_relations": 0
+  },
+  "source_fingerprint_calibration": "DEFERRED_NON_BLOCKING_RESEARCH",
+  "stage": "V4-01 FINAL STAGE",
+  "stage_record": {
+    "acceptance_result": "CANDIDATE_PENDING_EXTERNAL_ACCEPTANCE",
+    "evidence": "Full Required Scope R7 boundary inventory; R8.3 cross-check; TDX-first scan; official resolution; independent postcheck",
+    "next_stage": "INDEPENDENT_EXTERNAL_ACCEPTANCE"
+  },
+  "status": "FULL_PASS_CANDIDATE",
+  "version": "9.0.0-candidate"
+}

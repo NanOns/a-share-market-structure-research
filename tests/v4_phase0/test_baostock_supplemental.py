@@ -255,8 +255,8 @@ def test_public_anonymous_mode_uses_no_credentials_or_api_key(monkeypatch, tmp_p
 
 
 def test_public_runtime_fails_closed_on_unverified_sdk_version(monkeypatch, tmp_path: Path):
-    monkeypatch.setattr(bao.importlib.metadata, "version", lambda _: bao.VIP_PACKAGE_VERSION)
-    with pytest.raises(bao.BaoStockError, match="BAOSTOCK_PACKAGE_VERSION_UNPINNED_FOR_AUTH_MODE"):
+    monkeypatch.setattr(bao, "package_metadata", lambda: {"version": "0.0.0-unverified"})
+    with pytest.raises(bao.BaoStockError, match="BAOSTOCK_PACKAGE_VERSION_NOT_IN_DEFAULT_PIN"):
         with bao.BaoStockClient(bao.RequestBudget(tmp_path / "ledger.json"), sdk=object(),
                                 auth_mode="PUBLIC_ANONYMOUS"):
             pytest.fail("unverified public SDK version must be rejected")
@@ -268,7 +268,7 @@ def test_package_metadata_is_pinned_and_secret_free():
     metadata = bao.package_metadata()
     assert metadata["version"] in bao.SUPPORTED_PACKAGE_VERSIONS
     assert metadata["default_auth_mode"] == "PUBLIC_ANONYMOUS"
-    assert metadata["expected_version_for_default_auth_mode"] == "0.9.3"
+    assert metadata["default_runtime_pin"] == "0.9.3"
     assert "VIP_API_KEY" in metadata["supported_auth_modes"]
     assert "password" not in json.dumps(metadata).lower()
 

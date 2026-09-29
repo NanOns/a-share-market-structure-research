@@ -1,0 +1,62 @@
+{
+  "authority_scope": {
+    "current_receipt_external_acceptance_field": "PENDING_JOINT_EXTERNAL_REVIEW",
+    "interpretation": "The V4-00-specific review is accepted for Phase0 obligations. The current R5 receipt's PENDING_JOINT_EXTERNAL_REVIEW remains true for the combined 00-03 seal and is not overwritten.",
+    "phase0_current_receipt_status": "FULL_PASS",
+    "phase0_r4_authority_acceptance_at_time": "DEGRADED_PASS",
+    "phase0_r4_entry_authority": "DA-MSR-V4-PHASE0-FINAL-EXTERNAL-ACCEPTANCE-R4",
+    "v4_00_specific_external_review_result": "FULL_PASS; NO_NEW_OBJECTION"
+  },
+  "bindings": {
+    "current_phase0_receipt": {
+      "byte_count": 14147,
+      "path": "reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json",
+      "sha256": "313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59"
+    },
+    "global_accepted_head": {
+      "byte_count": 2605,
+      "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+      "sha256": "87c4e35a1cc8a01fbcebf1562fb0477a6dc09881fcf2c74f2a2062f5cfaac1db"
+    },
+    "phase0_r4_reseal_evidence": {
+      "byte_count": 1791,
+      "path": "docs/audits/V4_PHASE0_EXTERNAL_ACCEPTANCE_R4_RESEAL_20260925.md",
+      "sha256": "3aba4935bb4885253f494818cc6099bc20b06a17b3fbbfb2c9701bcd99923fa9"
+    },
+    "v4_00_specific_external_review": {
+      "byte_count": 5849,
+      "path": "docs/evidence/V4_PRE03_JOINT_R1_EXTERNAL_REAUDIT_20260928.md",
+      "sha256": "54bf30edd1b9c67ad06bf35f191ed889939d37125cc4cb79caec8ea8a297fdc1"
+    }
+  },
+  "checks": {
+    "current_phase0_receipt_hash_bound_by_global_head": true,
+    "current_phase0_receipt_is_full_pass": true,
+    "independent_joint_review_accepts_v4_00_scope": true,
+    "phase0_core_blockers_empty": true,
+    "phase0_r4_entry_authority_preserved": true
+  },
+  "contract_id": "V4_00_CURRENT_AUTHORITY_NORMALIZATION_R1",
+  "execution_identity": {
+    "input_commit": "e307892b138a3e5e1925546095d884e7900083d2",
+    "python_version": "3.13.14",
+    "script_sha256": "ef4520a67b419588edba7c9af77b452066a834a17081f037c99048044a83d39f"
+  },
+  "joint_00_01_02_03_external_acceptance": "PENDING_EXTERNAL_REVIEW",
+  "mutations": {
+    "00a_to_00h_reexecuted": false,
+    "global_accepted_head_modified": false,
+    "phase0_receipt_modified": false
+  },
+  "observed_at_utc": "2026-09-29T00:51:39+00:00",
+  "stage": "V4-00 CURRENT AUTHORITY NORMALIZATION",
+  "stage_record": {
+    "acceptance_result": "FULL_PASS",
+    "evidence": "Current R5 FULL_PASS receipt, R4 scope authority, and external R1 finding V4-00 FULL_PASS/no new objection",
+    "next_stage": "BIND_IN_FOUNDATION_CANDIDATE; KEEP_JOINT_EXTERNAL_REVIEW_PENDING",
+    "stage_contract": "V4_PHASE0_FINAL_ACCEPTANCE_R5_STAGE_OBLIGATION plus Phase0 R4 receipt-only external seal and V4-00-specific R1 external disposition"
+  },
+  "status": "FULL_PASS",
+  "v4_00_external_acceptance": "ACCEPTED_SCOPE_SPECIFIC",
+  "version": "1.0.0-candidate"
+}

@@ -1,0 +1,108 @@
+{
+  "candidate_only": true,
+  "checks": {
+    "accepted_head_modified": false,
+    "full_market_materialization_remains_blocked_without_pit_membership": true,
+    "membership_independent_sector_native_contract_pass": true,
+    "pit_membership_fabricated": false,
+    "stock_and_market_capabilities_pass_candidate": true,
+    "upstream_v4_01_v4_02_hashes_match_existing_v4_03_head": true
+  },
+  "contract_id": "V4_03_SECTOR_OWNERSHIP_AMENDMENT_V1",
+  "current_tdx_membership_policy": {
+    "diagnostic_only": true,
+    "historical_backtest_safe": false,
+    "pit_membership": false
+  },
+  "document": {
+    "byte_count": 3100,
+    "path": "docs/audits/V4_03_SECTOR_OWNERSHIP_AMENDMENT_V1_20260929.md",
+    "sha256": "e09394498c836f11ca33b7b1f3fde73b588b0cd9cd8a91321eae30cbfeca966c"
+  },
+  "evidence": {
+    "data/v4/V4_02_ACCEPTED_HEAD.json": {
+      "byte_count": 1602,
+      "path": "data/v4/V4_02_ACCEPTED_HEAD.json",
+      "sha256": "da318a1f82a03f13930af7858ca1640fadbdaedbee85e27d47f9c869c2d6b595"
+    },
+    "data/v4/V4_03_ACCEPTED_HEAD.json": {
+      "byte_count": 1607,
+      "path": "data/v4/V4_03_ACCEPTED_HEAD.json",
+      "sha256": "734bd27a5d53b2f18e3d62aa96ac63c91ccc6d9f848e942bc1efc410c88d4370"
+    },
+    "data/v4/artifact_store/v4_01/security_entity_map_R7_20260927.json": {
+      "byte_count": 5528197,
+      "path": "data/v4/artifact_store/v4_01/security_entity_map_R7_20260927.json",
+      "sha256": "e33294fb8d1d71732fdc3df903258b5617345811ecbdb649af8056ccd91427e0"
+    },
+    "data/v4/artifact_store/v4_01/v4_01_historical_universe_required_R7_20260927.jsonl.gz": {
+      "byte_count": 239298684,
+      "path": "data/v4/artifact_store/v4_01/v4_01_historical_universe_required_R7_20260927.jsonl.gz",
+      "sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b"
+    },
+    "reports/v4_02/V4_02_FINAL_STAGING_MANIFEST_R6.json": {
+      "byte_count": 6971,
+      "path": "reports/v4_02/V4_02_FINAL_STAGING_MANIFEST_R6.json",
+      "sha256": "a83f90a0d1acc08e32db5dab049f3bf16a9284e5bf6785cd8f3a2b52aed31678"
+    },
+    "reports/v4_03/V4_03_AST_GOLDEN_VECTOR_ACCEPTANCE_R3.json": {
+      "byte_count": 8281,
+      "path": "reports/v4_03/V4_03_AST_GOLDEN_VECTOR_ACCEPTANCE_R3.json",
+      "sha256": "5709de54150acad206cd4b93387c35358f5ebacb6563cf6a2f0b30ec03a83df0"
+    },
+    "reports/v4_03/V4_03_CONTRACT_PRODUCER_CONSISTENCY_R3.json": {
+      "byte_count": 1050,
+      "path": "reports/v4_03/V4_03_CONTRACT_PRODUCER_CONSISTENCY_R3.json",
+      "sha256": "a284243970ade23fb3043680a15e28c4bbedeb8989b3f46bd464605d3df0fc87"
+    },
+    "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json": {
+      "byte_count": 6714,
+      "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+      "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+    },
+    "reports/v4_03/V4_03_NATIVE_CONTRACT_ACCEPTANCE_R3.json": {
+      "byte_count": 1892,
+      "path": "reports/v4_03/V4_03_NATIVE_CONTRACT_ACCEPTANCE_R3.json",
+      "sha256": "2aaeec54bbbb9d3a228f5dc6b6117f2f0c8a58f238bac993015d859a8c41aa04"
+    },
+    "reports/v4_03/V4_03_SECTOR_NATIVE_BOUNDARY_ACCEPTANCE_R1.json": {
+      "byte_count": 379,
+      "path": "reports/v4_03/V4_03_SECTOR_NATIVE_BOUNDARY_ACCEPTANCE_R1.json",
+      "sha256": "5d9afb61b0af286e81bebd38bc5f08731d48c7f01127c298cf1df3b850a20da4"
+    },
+    "reports/v4_03/V4_03_STAGE_DISPOSITION_R3.json": {
+      "byte_count": 5546,
+      "path": "reports/v4_03/V4_03_STAGE_DISPOSITION_R3.json",
+      "sha256": "0f580967704998a4292fca003e219c34637ff6a1c49b5c3282f85a2eb8de0cf3"
+    }
+  },
+  "external_acceptance": "PENDING_EXTERNAL_REVIEW",
+  "moved_to_v4_08": [
+    "PIT_SECTOR_MEMBERSHIP_RECONSTRUCTION",
+    "FULL_MARKET_SECTOR_MATERIALIZATION",
+    "SECTOR_NATIVE_FULL_MARKET_ROWS",
+    "SECTOR_ROTATION_PRODUCTION_INPUTS"
+  ],
+  "retained_sector_contract_status": "PASS",
+  "retained_v4_03_capabilities": [
+    "SECTOR_NATIVE_SCHEMA",
+    "MACHINE_CONTRACTS",
+    "FIELD_LOCAL_QUALITY_SEMANTICS",
+    "COMMON_MEMBER_SEMANTICS",
+    "NATIVE_PRIMITIVE_FORMULAS",
+    "SYNTHETIC_AND_LIBRARY_VECTORS"
+  ],
+  "sector_materialization_status": "BLOCKED_MISSING_ACCEPTED_PIT_MEMBERSHIP",
+  "stage": "V4-03 SECTOR OWNERSHIP AMENDMENT",
+  "stage_record": {
+    "acceptance_result": "AMENDMENT_CANDIDATE_PENDING_EXTERNAL_ACCEPTANCE",
+    "evidence": "Existing V4-03 R3 receipts plus accepted V4-01/V4-02 canonical hash equality; no materialization rebuild",
+    "next_stage": "INDEPENDENT_EXTERNAL_AMENDMENT_ACCEPTANCE",
+    "stage_contract": "V4-03 capability-scoped disposition and V4_03_SECTOR_OWNERSHIP_AMENDMENT_V1"
+  },
+  "status": "AMENDMENT_CANDIDATE_PENDING_EXTERNAL_ACCEPTANCE",
+  "upstream_identity_hashes_unchanged": true,
+  "v4_04_entry": "BLOCKED_PENDING_JOINT_EXTERNAL_ACCEPTANCE",
+  "v4_08_entry": "BLOCKED_UNTIL_ACCEPTED_PIT_MEMBERSHIP_BASELINE_AND_RECONSTRUCTION",
+  "version": "1.0.0-candidate"
+}

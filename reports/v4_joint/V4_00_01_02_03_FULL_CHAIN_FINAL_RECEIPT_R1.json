@@ -1,0 +1,128 @@
+{
+  "blockers": [],
+  "canonical_artifact_changes": {
+    "v4_01_identity_map_changed": false,
+    "v4_01_universe_changed": false,
+    "v4_02_rebuilt": false,
+    "v4_03_rebuilt": false,
+    "v4_03_scope_amendment_created_as_candidate": true
+  },
+  "chain_validator_receipt": {
+    "path": "reports/v4_joint/V4_00_01_02_03_FULL_CHAIN_VALIDATION_R1.json",
+    "sha256": "09968ff904d8878ba6512b7470c13b3ff02ceb3629cb8f295034057683a040c3"
+  },
+  "contract_id": "V4_00_01_02_03_FULL_CHAIN_FINAL_RECEIPT_R1",
+  "current_commit": "e307892b138a3e5e1925546095d884e7900083d2",
+  "deferred_non_blocking": {
+    "BSE_OPTIONAL_DEGRADED": true,
+    "INCREMENTAL_UPDATE_DEFERRED_NON_BLOCKING": true,
+    "SCANNER_TRADING_FOCUS_NOT_STARTED": true,
+    "SOURCE_FINGERPRINT_CALIBRATION_DEFERRED_NON_BLOCKING_RESEARCH": true,
+    "V4_05_NOT_STARTED": true,
+    "V4_06_NOT_STARTED": true,
+    "V4_08_MEMBERSHIP_ROTATION_NOT_STARTED_OR_BLOCKED": true
+  },
+  "external_review_ready": true,
+  "final_external_acceptance": "NOT_GRANTED",
+  "future_owner_capabilities": {
+    "V4_04": "BLOCKED_UNTIL_JOINT_EXTERNAL_ACCEPTANCE",
+    "V4_08_SECTOR_ROTATION": "BLOCKED_UNTIL_ACCEPTED_PIT_MEMBERSHIP"
+  },
+  "next_stage": "INDEPENDENT_EXTERNAL_REVIEW; NO_GLOBAL_ACCEPTED_HEAD_PROMOTION; V4_04_BLOCKED",
+  "pending_external_acceptance": [
+    "V4_01_IDENTITY_COMPLETENESS_GATE_V2_EXTERNAL_ACCEPTANCE",
+    "V4_03_SECTOR_OWNERSHIP_AMENDMENT_V1_EXTERNAL_ACCEPTANCE",
+    "JOINT_00_01_02_03_FINAL_EXTERNAL_ACCEPTANCE"
+  ],
+  "scanner_trading_tdx_counts": {
+    "scanner_runs": 0,
+    "tdx_root_writes": 0,
+    "trading_runs": 0
+  },
+  "stage": "V4-00..V4-03 FOUNDATION FULL-CHAIN CANDIDATE",
+  "stage_record": {
+    "acceptance_result": "FULL_PASS_CANDIDATE",
+    "evidence": "Per-stage candidate receipts, hash bindings, independent checks, and combined regression receipt",
+    "next_stage": "REQUEST_INDEPENDENT_EXTERNAL_REVIEW; DO_NOT_PROMOTE_GLOBAL_ACCEPTED_HEAD_OR_START_V4_04",
+    "stage_contract": "V4-00..V4-03 foundation closure task R2 candidate gate"
+  },
+  "status": "FULL_PASS_CANDIDATE",
+  "superseded_test_attempt": {
+    "byte_count": 7073,
+    "path": "reports/v4_joint/V4_00_01_02_03_FULL_CHAIN_TEST_ATTEMPT_R1_FAILED.json",
+    "result_disposition": "SUPERSEDED_BY_FULL_PASSING_RERUN; stale test fixture/API expectations corrected; production V4-00 code was not changed",
+    "sha256": "8592d647a2b61055523964d2259d1531cd4e49b61ca2be0c94e3a74621b56924",
+    "status": "FAIL"
+  },
+  "test_receipt": {
+    "byte_count": 6805,
+    "path": "reports/v4_joint/V4_00_01_02_03_FULL_CHAIN_TEST_RECEIPT_R1.json",
+    "sha256": "3a36dbf49bf8e28e4a355732d42f182a2f4f5f935653c734ddbcf7c22389a3fa"
+  },
+  "v4_00": {
+    "authority_receipt": {
+      "byte_count": 2910,
+      "path": "reports/v4_phase0/V4_00_CURRENT_AUTHORITY_NORMALIZATION_R1.json",
+      "sha256": "e9a25868475f153d99d8335cbe31c7fa4f077e691b99a9e1da2b158326763c7c"
+    },
+    "external_acceptance": "ACCEPTED_SCOPE_SPECIFIC",
+    "status": "FULL_PASS"
+  },
+  "v4_01": {
+    "accepted_head": "CANDIDATE_ONLY",
+    "external_acceptance": "PENDING_EXTERNAL_REVIEW",
+    "identity_sha256": "e33294fb8d1d71732fdc3df903258b5617345811ecbdb649af8056ccd91427e0",
+    "postcheck": {
+      "byte_count": 8538,
+      "path": "reports/v4_01/V4_01_IDENTITY_COMPLETENESS_GATE_V2_POSTCHECK_R1.json",
+      "sha256": "71eb5efa44bd46131618873fcb6834e9feabd93a65f82cf7073d8d9d615380d1"
+    },
+    "resolution": {
+      "byte_count": 10777,
+      "path": "reports/v4_01/V4_01_IDENTITY_RELATION_RESOLUTION_R1.json",
+      "sha256": "381057030048eb65af75cf7d4aa36244c357d5b5f80ff1afe66eb742ae91446c"
+    },
+    "scan": {
+      "byte_count": 358018,
+      "path": "reports/v4_01/V4_01_FULL_SCOPE_SOURCE_FINGERPRINT_SCAN_R1.json",
+      "sha256": "80c7edbe63be276ffaa1adc6bc0e00c38fd4f2a53b6c8b42d503af290bb937c7"
+    },
+    "status": "FULL_PASS_CANDIDATE",
+    "universe_sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b"
+  },
+  "v4_02": {
+    "accepted_head": {
+      "byte_count": 1602,
+      "path": "data/v4/V4_02_ACCEPTED_HEAD.json",
+      "sha256": "da318a1f82a03f13930af7858ca1640fadbdaedbee85e27d47f9c869c2d6b595"
+    },
+    "current_fail_closed_unknown_rows": 31,
+    "current_open_engineering_exception": 0,
+    "current_truth": {
+      "byte_count": 4080,
+      "path": "reports/v4_02/V4_02_CURRENT_TRUTH_RECONCILIATION_R1.json",
+      "sha256": "dcec405fda0647d9a3ab1226895e9647b181f557ffa3a73b6bf82191ad906314"
+    },
+    "external_acceptance": "EXTERNALLY_ACCEPTED",
+    "status": "PASS_WITH_BSE_SCOPE_DEGRADED"
+  },
+  "v4_03": {
+    "accepted_head_unchanged": true,
+    "amendment_external_acceptance": "PENDING_EXTERNAL_REVIEW",
+    "capabilities": {
+      "MARKET_REFERENCE": "PASS_CANDIDATE",
+      "MARKET_REGIME": "PASS_CANDIDATE",
+      "RELATIVE_RPS": "PASS_CANDIDATE",
+      "SECTOR_NATIVE_CONTRACT": "PASS",
+      "SECTOR_NATIVE_FULL_MARKET": "BLOCKED_MISSING_ACCEPTED_PIT_MEMBERSHIP",
+      "STOCK_CORE": "PASS_CANDIDATE"
+    },
+    "ownership_amendment": {
+      "byte_count": 4903,
+      "path": "reports/v4_03/V4_03_SECTOR_OWNERSHIP_AMENDMENT_R1.json",
+      "sha256": "c5842f53e18420de406575c12c43fc10a605b6f578de55514d08add02edd8ae4"
+    },
+    "status": "PASS_WITH_SECTOR_SCOPE_DEGRADED_CANDIDATE"
+  },
+  "version": "1.0.0-candidate"
+}

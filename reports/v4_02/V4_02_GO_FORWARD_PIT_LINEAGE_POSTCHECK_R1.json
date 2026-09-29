@@ -1,0 +1,17 @@
+{
+  "contract_id": "V4_02_GO_FORWARD_PIT_LINEAGE_POSTCHECK_R1",
+  "implementation_commit": "7042c6385daded8a9f4bee0360a72e8d73304270",
+  "independent_checks": [
+    "source capture receipt hash",
+    "official update-info hash",
+    "no validated project-controlled Sep-28 archive",
+    "zero local SH/SZ final bars at Sep-28",
+    "Sep-26 GBBQ manifest identity",
+    "historical PIT remains blocked",
+    "accepted heads unchanged"
+  ],
+  "manifest_sha256": "e5ceaa6b6becb33c45b194e5a58f208c1a045926ba02410c79eb5b6fec7311b1",
+  "stage_result": "V4_02_GO_FORWARD_BLOCKED_NO_COMPLETE_20260928_RAW",
+  "status": "PASS_FOR_BLOCK_EVIDENCE_ONLY",
+  "test_command": "python -m scripts.postcheck_v4_02_go_forward_raw_r1; python -m compileall -q scripts/probe_v4_02_go_forward_raw_r1.py scripts/postcheck_v4_02_go_forward_raw_r1.py"
+}

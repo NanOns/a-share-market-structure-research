@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from collections import Counter, defaultdict
+from datetime import datetime, timezone
 from decimal import Decimal
 import gzip
 from hashlib import sha256
@@ -11,6 +12,7 @@ import os
 from pathlib import Path
 import sys
 import tempfile
+from zoneinfo import ZoneInfo
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
@@ -85,7 +87,8 @@ def main() -> None:
     active, unresolved = target_identity(accepted_keys, target_keys, identity["records"], "2026-09-28")
     if unresolved or set(active) != target_keys:
         raise ValueError("V4_02_GO_FORWARD_BLOCKED_UNIVERSE_IDENTITY")
-    raw_published_at = "2026-09-28T07:58:05Z"
+    raw_published_at = datetime.strptime(capture["official_publication_time"], "%Y-%m-%d %H:%M:%S").replace(
+        tzinfo=ZoneInfo("Asia/Shanghai")).astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
     raw_available_at = capture["attempts"][-1]["finished_at"]
     formal_publication_at = raw_available_at
     code_change_keys = {r["source_security_key"] for r in identity["records"] if r.get("alias_role") == "SUCCESSOR" and r.get("symbol_effective_from") and r["symbol_effective_from"] <= "2026-09-28"}

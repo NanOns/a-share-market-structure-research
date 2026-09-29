@@ -15,11 +15,9 @@ from typing import Any, Iterable, Mapping, Sequence
 CONTRACT_ID = "BASE_SEED_V1"
 CONTRACT_VERSION = "1.0.0"
 PARAMETER_SET_ID = "V4_07_BASE_SEED_PARAMETER_SET_V1"
-TRADE_DATE = "2026-09-28"
-FORMAL_PUBLICATION_ID = "PUB-3c03e227-c60a-4d8c-86ae-2861507c257b"
-PROFILE_ROW_PUBLICATION_ID = "V4_05_R4_T0_CURRENT_COORDINATE"
-CORE_LOGICAL_DIGEST = "d195518796acc64015174eac8f9bb8721a27095311ece00baedf8c12b0633e74"
-EXPECTED_BOARD_COUNTS = {"SH_MAIN": 1702, "SZ_MAIN": 1494, "CHINEXT": 1408, "STAR": 618}
+POSITION_BIAS_PARAMETER_ID = "V4_07_POSITION_BIAS20_ATR_MAX"
+DELTA3_IMPROVING_PARAMETER_ID = "V4_07_DELTA3_IMPROVING_MIN_POINTS"
+DELTA3_STRONG_PARAMETER_ID = "V4_07_DELTA3_STRONG_MIN_POINTS"
 
 
 def canonical_json(value: Any) -> bytes:
@@ -38,6 +36,41 @@ def sha256_file(path: Path) -> str:
         for chunk in iter(lambda: stream.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def _parameter_values(parameter_set: Mapping[str, Any]) -> dict[str, float]:
+    """Resolve the three BASE_SEED thresholds from one explicit parameter instance."""
+    if parameter_set.get("parameter_set_id") != PARAMETER_SET_ID:
+        raise ValueError("unsupported BASE_SEED parameter-set identity")
+    entries = parameter_set.get("parameters")
+    if not isinstance(entries, list):
+        raise ValueError("BASE_SEED parameter instance has no parameter list")
+    by_id: dict[str, Mapping[str, Any]] = {}
+    for entry in entries:
+        if not isinstance(entry, Mapping):
+            raise ValueError("BASE_SEED parameter entry is malformed")
+        parameter_id = entry.get("parameter_id")
+        if not isinstance(parameter_id, str) or parameter_id in by_id:
+            raise ValueError("BASE_SEED parameter IDs are missing or duplicated")
+        by_id[parameter_id] = entry
+
+    specifications = {
+        POSITION_BIAS_PARAMETER_ID: "STRICT_LT",
+        DELTA3_IMPROVING_PARAMETER_ID: "GTE",
+        DELTA3_STRONG_PARAMETER_ID: "GTE",
+    }
+    values: dict[str, float] = {}
+    for parameter_id, comparison in specifications.items():
+        entry = by_id.get(parameter_id)
+        if not isinstance(entry, Mapping):
+            raise ValueError(f"BASE_SEED parameter is missing: {parameter_id}")
+        if entry.get("status") != "FROZEN_CANDIDATE" or entry.get("comparison") != comparison:
+            raise ValueError(f"BASE_SEED parameter contract mismatch: {parameter_id}")
+        value = entry.get("value")
+        if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(float(value)):
+            raise ValueError(f"BASE_SEED parameter value is invalid: {parameter_id}")
+        values[parameter_id] = float(value)
+    return values
 
 
 def _read_json(path: Path) -> Any:
@@ -80,6 +113,13 @@ def _validate_frozen_package(root: Path) -> tuple[dict[str, Any], dict[str, Any]
         raise ValueError("BASE_SEED_V1 package is not frozen")
     if params.get("parameter_set_id") != PARAMETER_SET_ID or fields.get("source_contract_id") != CONTRACT_ID:
         raise ValueError("BASE_SEED_V1 package identity mismatch")
+    if contract.get("rule_ast", {}).get("position_ok", {}).get("right_parameter") != POSITION_BIAS_PARAMETER_ID:
+        raise ValueError("position_ok AST is not bound to its registered parameter")
+    if contract.get("rule_ast", {}).get("relative_change_improving", {}).get("right_parameter") != DELTA3_IMPROVING_PARAMETER_ID:
+        raise ValueError("relative_change_improving AST is not bound to its registered parameter")
+    if contract.get("rule_ast", {}).get("relative_change_strong", {}).get("right_parameter") != DELTA3_STRONG_PARAMETER_ID:
+        raise ValueError("relative_change_strong AST is not bound to its registered parameter")
+    _parameter_values(params)
     frozen = receipt.get("config_sha256", {})
     for path in (contract_path, params_path, fields_path, vectors_path):
         relative = path.relative_to(root).as_posix()
@@ -93,19 +133,35 @@ def _load_accepted_source_context(
 ) -> tuple[dict[str, Any], list[dict[str, Any]], list[dict[str, Any]]]:
     root = root.resolve()
     source_root = (accepted_inputs_root or root).resolve()
-    contract, _params, _fields, freeze = _validate_frozen_package(root)
+    contract, params, _fields, freeze = _validate_frozen_package(root)
     stage_head = _read_json(_repo_path(source_root, "data/v4/V4_STAGE_ACCEPTED_HEAD.json"))
     accepted_head = _read_json(_repo_path(source_root, "data/v4/V4_05_ACCEPTED_HEAD.json"))
-    if stage_head.get("accepted_stage_range") != "V4_00_TO_V4_05_ACCEPTED":
-        raise ValueError("global accepted range moved from the V4-05 boundary")
     if stage_head.get("v4_05_external_acceptance") != "EXTERNALLY_ACCEPTED":
         raise ValueError("V4-05 is not externally accepted")
-    if accepted_head.get("external_acceptance_decision") != "V4_05_EXTERNAL_ACCEPTANCE_PASS_R4_2":
-        raise ValueError("unexpected V4-05 accepted head")
-    if accepted_head.get("accepted_artifact", {}).get("logical_digest") != CORE_LOGICAL_DIGEST:
-        raise ValueError("accepted Core logical digest mismatch")
-    if accepted_head.get("target_trade_date") != TRADE_DATE or accepted_head.get("target_identity_count") != 5222:
-        raise ValueError("accepted V4-05 target scope mismatch")
+    if accepted_head.get("stage") != "V4-05" or accepted_head.get("external_acceptance") != "EXTERNALLY_ACCEPTED":
+        raise ValueError("accepted V4-05 head is not externally accepted")
+    trade_date = accepted_head.get("target_trade_date")
+    expected_identity_count = accepted_head.get("target_identity_count")
+    core_logical_digest = accepted_head.get("accepted_artifact", {}).get("logical_digest")
+    if not isinstance(trade_date, str) or re.fullmatch(r"\d{4}-\d{2}-\d{2}", trade_date) is None:
+        raise ValueError("accepted V4-05 target trade date is invalid")
+    try:
+        datetime.strptime(trade_date, "%Y-%m-%d")
+    except ValueError as exc:
+        raise ValueError("accepted V4-05 target trade date is invalid") from exc
+    if isinstance(expected_identity_count, bool) or not isinstance(expected_identity_count, int) or expected_identity_count <= 0:
+        raise ValueError("accepted V4-05 target identity count is invalid")
+    if not isinstance(core_logical_digest, str) or re.fullmatch(r"[0-9a-f]{64}", core_logical_digest) is None:
+        raise ValueError("accepted V4-05 Core logical digest is invalid")
+
+    global_binding = stage_head.get("v4_05_binding")
+    if not isinstance(global_binding, Mapping):
+        raise ValueError("global accepted head has no V4-05 binding")
+    global_head_path, global_head_sha = _verify_file_binding(source_root, global_binding, "global V4-05 accepted-head binding")
+    if global_head_path != _repo_path(source_root, "data/v4/V4_05_ACCEPTED_HEAD.json"):
+        raise ValueError("global accepted head points to a different V4-05 head")
+    if global_head_sha != sha256_file(_repo_path(source_root, "data/v4/V4_05_ACCEPTED_HEAD.json")):
+        raise ValueError("global accepted head binding is stale")
 
     bindings = accepted_head.get("evidence_bindings", {})
     ledger_binding = bindings.get("exact_candidate_ledger_binding")
@@ -116,19 +172,13 @@ def _load_accepted_source_context(
     if ledger.get("status") != "PASS" or ledger.get("all_exact_bindings_match") is not True or ledger.get("old_r4_binding_count") != 0:
         raise ValueError("V4-05 exact ledger acceptance gate failed")
     formal_publication_id = ledger.get("actual_postgresql", {}).get("publication_head", {}).get("publication_id")
-    if formal_publication_id != FORMAL_PUBLICATION_ID:
-        raise ValueError("accepted V4-05 publication identity mismatch")
+    if not isinstance(formal_publication_id, str) or not formal_publication_id:
+        raise ValueError("accepted V4-05 publication identity is missing")
 
     core_binding = accepted_head.get("accepted_artifact", {})
     factors_binding = accepted_head.get("accepted_artifacts", {}).get("full_scope_factors", {})
     core_path, core_sha = _verify_file_binding(source_root, core_binding, "accepted Core Profile")
     factors_path, factors_sha = _verify_file_binding(source_root, factors_binding, "accepted Full Scope Factors")
-    if core_sha != "9a6ebedc715bc4b310ecf76c77e01cb6dfe9dadc17d335b5fc9afbcc2f6f3fa0":
-        raise ValueError("accepted Core Profile artifact identity is not the frozen R4.1 input")
-    if factors_sha != "17ae571629b76399e32d9e8a243268ea1fac619e1c5168d307bfd8ebf1494c48":
-        raise ValueError("accepted Full Scope Factors artifact identity mismatch")
-    if factors_binding.get("logical_digest") != "0cfe708567935726f0ad51ae4bb47237ec7aee556db3437c12f21f0c623bd0d2":
-        raise ValueError("accepted Full Scope Factors logical digest mismatch")
 
     # Receipts named by the Accepted Head independently bind candidate file scope and logical identity.
     core_receipt_binding = bindings.get("r4_1_core_profile_receipt")
@@ -139,7 +189,7 @@ def _load_accepted_source_context(
     factor_receipt_path, factor_receipt_sha = _verify_file_binding(source_root, factor_receipt_binding, "Full Scope Factors receipt")
     core_receipt = _read_json(core_receipt_path)
     factor_receipt = _read_json(factor_receipt_path)
-    if core_receipt.get("logical_digest") != CORE_LOGICAL_DIGEST or core_receipt.get("row_count") != 5222:
+    if core_receipt.get("logical_digest") != core_logical_digest or core_receipt.get("row_count") != expected_identity_count:
         raise ValueError("accepted Core Profile receipt does not bind the target digest/scope")
     if core_receipt.get("artifact_sha256") != core_sha:
         raise ValueError("Core Profile receipt/artifact binding mismatch")
@@ -148,11 +198,27 @@ def _load_accepted_source_context(
     if factor_receipt.get("artifact_sha256") != factors_sha:
         raise ValueError("Full Scope Factors receipt/artifact binding mismatch")
 
+    with gzip.open(core_path, "rt", encoding="utf-8") as stream:
+        core_rows = [json.loads(line) for line in stream if line.strip()]
+    with gzip.open(factors_path, "rt", encoding="utf-8") as stream:
+        factor_rows = [json.loads(line) for line in stream if line.strip()]
+    if len(core_rows) != expected_identity_count or len(factor_rows) != expected_identity_count:
+        raise ValueError("accepted V4-05 input row count differs from its accepted-head context")
+    profile_publications = {row.get("publication_id") for row in core_rows}
+    if len(profile_publications) != 1 or not all(isinstance(value, str) and value for value in profile_publications):
+        raise ValueError("accepted Core Profile row publication namespace is missing or mixed")
+    profile_row_publication_id = next(iter(profile_publications))
+    board_counts = Counter(str(row.get("board")) for row in core_rows)
+    if any(not board or board == "None" for board in board_counts) or sum(board_counts.values()) != expected_identity_count:
+        raise ValueError("accepted Core Profile board scope is invalid")
+    if any(row.get("trade_date") != trade_date for row in core_rows + factor_rows):
+        raise ValueError("accepted V4-05 artifacts do not match the accepted-head trade date")
+
     source_bindings = {
         "publication_id": formal_publication_id,
-        "profile_row_publication_id": PROFILE_ROW_PUBLICATION_ID,
-        "trade_date": TRADE_DATE,
-        "core_logical_digest": CORE_LOGICAL_DIGEST,
+        "profile_row_publication_id": profile_row_publication_id,
+        "trade_date": trade_date,
+        "core_logical_digest": core_logical_digest,
         "core_profile_artifact_sha256": core_sha,
         "core_profile_receipt_sha256": core_receipt_sha,
         "full_scope_factors_logical_digest": factors_binding["logical_digest"],
@@ -161,18 +227,24 @@ def _load_accepted_source_context(
         "exact_ledger_binding_sha256": ledger_sha,
         "model_contract_id": contract["contract_id"],
         "parameter_set_id": PARAMETER_SET_ID,
+        "contract_sha256": sha256_file(root / "config/v4_07_base_seed_contract_v1.json"),
+        "parameter_set_sha256": sha256_file(root / "config/v4_07_parameter_set_v1.json"),
+        "accepted_identity_count": expected_identity_count,
+        "expected_board_counts": dict(sorted(board_counts.items())),
     }
-    frozen_sources = freeze.get("source_bindings", {})
-    if frozen_sources.get("core_profile", {}).get("sha256") != core_sha or frozen_sources.get("full_scope_factors", {}).get("sha256") != factors_sha:
-        raise ValueError("accepted data source identity differs from contract freeze receipt")
-
-    with gzip.open(core_path, "rt", encoding="utf-8") as stream:
-        core_rows = [json.loads(line) for line in stream if line.strip()]
-    with gzip.open(factors_path, "rt", encoding="utf-8") as stream:
-        factor_rows = [json.loads(line) for line in stream if line.strip()]
-    if len(core_rows) != 5222 or len(factor_rows) != 5222:
-        raise ValueError("accepted V4-05 input row count mismatch")
-    return source_bindings, core_rows, factor_rows
+    run_context = {
+        "source_bindings": source_bindings,
+        "trade_date": trade_date,
+        "publication_id": formal_publication_id,
+        "profile_row_publication_id": profile_row_publication_id,
+        "core_logical_digest": core_logical_digest,
+        "expected_identity_count": expected_identity_count,
+        "expected_board_counts": dict(sorted(board_counts.items())),
+        "parameter_set": params,
+        "contract_digest": source_bindings["contract_sha256"],
+        "parameter_set_digest": source_bindings["parameter_set_sha256"],
+    }
+    return run_context, core_rows, factor_rows
 
 
 def _unknown(reason: str) -> dict[str, Any]:
@@ -232,7 +304,7 @@ def _state_value(item: Any, field_id: str, expected_type: str) -> dict[str, Any]
     return _unknown(f"INVALID_ACCEPTED_VALUE:{field_id}")
 
 
-def _identity_fact(row: Mapping[str, Any]) -> dict[str, Any]:
+def _identity_fact(row: Mapping[str, Any], run_context: Mapping[str, Any]) -> dict[str, Any]:
     security_id = row.get("security_id")
     symbol = row.get("symbol")
     board = row.get("board")
@@ -242,17 +314,16 @@ def _identity_fact(row: Mapping[str, Any]) -> dict[str, Any]:
         and isinstance(symbol, str)
         and re.fullmatch(r"(?:SH|SZ)\.[0-9]{6}", symbol) is not None
         and isinstance(board, str)
-        and board in EXPECTED_BOARD_COUNTS
-        and ((board in {"SH_MAIN", "STAR"} and symbol.startswith("SH."))
-             or (board in {"SZ_MAIN", "CHINEXT"} and symbol.startswith("SZ.")))
-        and row.get("trade_date") == TRADE_DATE
-        and row.get("publication_id") == PROFILE_ROW_PUBLICATION_ID
+        and board in run_context["expected_board_counts"]
+        and symbol.startswith(("SH.", "SZ."))
+        and row.get("trade_date") == run_context["trade_date"]
+        and row.get("publication_id") == run_context["profile_row_publication_id"]
         and row.get("historical_as_recorded_claim") is False
     )
     return _known(True) if row_valid else _unknown("ACCEPTED_CORE_IDENTITY_BINDING_INVALID")
 
 
-def _normalize_facts(core: Mapping[str, Any], factor: Mapping[str, Any]) -> dict[str, dict[str, Any]]:
+def _normalize_facts(core: Mapping[str, Any], factor: Mapping[str, Any], run_context: Mapping[str, Any]) -> dict[str, dict[str, Any]]:
     facts: dict[str, dict[str, Any]] = {}
     facts["research_universe"] = _known(True)  # Membership is the validated row in the exact accepted full-scope profile.
     status = core.get("trading_status")
@@ -262,7 +333,7 @@ def _normalize_facts(core: Mapping[str, Any], factor: Mapping[str, Any]) -> dict
         facts["actual_bar"] = _known(False)
     else:
         facts["actual_bar"] = _unknown(f"UPSTREAM_TRADING_STATUS:{status or 'MISSING'}")
-    facts["price_identity_READY"] = _identity_fact(core)
+    facts["price_identity_READY"] = _identity_fact(core, run_context)
 
     derived = core.get("derived_fields", {})
     primitive_quality = core.get("primitive_quality", {})
@@ -343,17 +414,17 @@ def _compare_number(fact: Mapping[str, Any], comparator: str, threshold: float) 
     return "TRUE" if (number < threshold if comparator == "LT" else number >= threshold) else "FALSE"
 
 
-def _eval(facts: Mapping[str, Mapping[str, Any]]) -> dict[str, Any]:
+def _eval(facts: Mapping[str, Mapping[str, Any]], parameters: Mapping[str, float]) -> dict[str, Any]:
     safety = _tri_and((
         _tri(facts["research_universe"]), _tri(facts["actual_bar"]),
         _tri(facts["price_identity_READY"]), _tri(facts["minimum_liquidity"]),
         _tri_not(_tri(facts["core_price_damage"])), _tri_not(_tri(facts["severe_extension"])),
     ))
-    bias = _compare_number(facts["bias20_atr"], "LT", 3.0)
+    bias = _compare_number(facts["bias20_atr"], "LT", parameters[POSITION_BIAS_PARAMETER_ID])
     compression = facts["compression_state"].get("value")
     structure = "UNKNOWN" if compression is None else "TRUE" if compression in {"COMPRESSING", "COMPRESSING_STRONG"} else "FALSE"
-    delta_improving = _compare_number(facts["delta3"], "GTE", 3.0)
-    delta_strong = _compare_number(facts["delta3"], "GTE", 10.0)
+    delta_improving = _compare_number(facts["delta3"], "GTE", parameters[DELTA3_IMPROVING_PARAMETER_ID])
+    delta_strong = _compare_number(facts["delta3"], "GTE", parameters[DELTA3_STRONG_PARAMETER_ID])
     ma_state = facts["ma_structure_state"].get("value")
     bull_transition = "UNKNOWN" if ma_state is None else "TRUE" if ma_state == "BULL_TRANSITION" else "FALSE"
     previous_close = _number(facts["close_t_minus_1"].get("value"))
@@ -438,21 +509,15 @@ def _eval(facts: Mapping[str, Mapping[str, Any]]) -> dict[str, Any]:
 
 
 
-def evaluate_facts(facts: Mapping[str, Mapping[str, Any]]) -> dict[str, Any]:
+def evaluate_facts(
+    facts: Mapping[str, Mapping[str, Any]], parameter_set: Mapping[str, Any]
+) -> dict[str, Any]:
     """Evaluate one already projected BASE_SEED_V1 fact map."""
-    return _eval(facts)
+    return _eval(facts, _parameter_values(parameter_set))
 
 def _input_digest(core: Mapping[str, Any], facts: Mapping[str, Mapping[str, Any]], source_bindings: Mapping[str, Any]) -> str:
     payload = {
-        "source_bindings": {
-            "publication_id": source_bindings["publication_id"],
-            "profile_row_publication_id": source_bindings["profile_row_publication_id"],
-            "trade_date": source_bindings["trade_date"],
-            "core_logical_digest": source_bindings["core_logical_digest"],
-            "core_profile_artifact_sha256": source_bindings["core_profile_artifact_sha256"],
-            "full_scope_factors_logical_digest": source_bindings["full_scope_factors_logical_digest"],
-            "full_scope_factors_artifact_sha256": source_bindings["full_scope_factors_artifact_sha256"],
-        },
+        "source_bindings": dict(source_bindings),
         "identity": {"trade_date": core.get("trade_date"), "security_id": core.get("security_id"), "symbol": core.get("symbol"), "board": core.get("board")},
         "accepted_facts": facts,
     }
@@ -468,16 +533,11 @@ def _logical_digest(rows: Sequence[Mapping[str, Any]], source_bindings: Mapping[
     logical_rows = [{key: value for key, value in row.items() if key != "created_at"} for row in rows]
     logical_rows.sort(key=lambda row: (row["trade_date"], row["security_id"]))
     payload = {
-        "contract_id": CONTRACT_ID,
-        "parameter_set_id": PARAMETER_SET_ID,
-        "accepted_source_bindings": {
-            "publication_id": source_bindings["publication_id"],
-            "trade_date": source_bindings["trade_date"],
-            "core_logical_digest": source_bindings["core_logical_digest"],
-            "core_profile_artifact_sha256": source_bindings["core_profile_artifact_sha256"],
-            "full_scope_factors_logical_digest": source_bindings["full_scope_factors_logical_digest"],
-            "full_scope_factors_artifact_sha256": source_bindings["full_scope_factors_artifact_sha256"],
-        },
+        "contract_id": source_bindings["model_contract_id"],
+        "contract_sha256": source_bindings["contract_sha256"],
+        "parameter_set_id": source_bindings["parameter_set_id"],
+        "parameter_set_sha256": source_bindings["parameter_set_sha256"],
+        "accepted_source_bindings": dict(source_bindings),
         "rows": logical_rows,
     }
     return sha256_bytes(canonical_json(payload))
@@ -486,7 +546,7 @@ def _logical_digest(rows: Sequence[Mapping[str, Any]], source_bindings: Mapping[
 def build_candidate_from_records(
     core_records: Sequence[Mapping[str, Any]],
     factor_records: Sequence[Mapping[str, Any]],
-    source_bindings: Mapping[str, Any],
+    run_context: Mapping[str, Any],
     *,
     created_at: str | None = None,
 ) -> dict[str, Any]:
@@ -495,10 +555,43 @@ def build_candidate_from_records(
     Records later than T are ignored before identity joins; no future fact can enter the logical result.
     Unknown accepted inputs remain UNKNOWN. Arbitrary extra record keys are not projected or hashed.
     """
-    target_core = [row for row in core_records if row.get("trade_date") == TRADE_DATE]
-    target_factors = [row for row in factor_records if row.get("trade_date") == TRADE_DATE]
-    if len(target_core) != 5222 or len(target_factors) != 5222:
-        raise ValueError("target date must contain the exact accepted 5,222-row scope")
+    required_context = (
+        "trade_date", "publication_id", "profile_row_publication_id", "core_logical_digest",
+        "expected_identity_count", "expected_board_counts", "source_bindings", "parameter_set",
+        "contract_digest", "parameter_set_digest",
+    )
+    if any(key not in run_context for key in required_context):
+        raise ValueError("accepted run context is incomplete")
+    if not isinstance(run_context["trade_date"], str) or re.fullmatch(r"\d{4}-\d{2}-\d{2}", run_context["trade_date"]) is None:
+        raise ValueError("accepted run context trade date is invalid")
+    expected_count = run_context["expected_identity_count"]
+    expected_boards = run_context["expected_board_counts"]
+    if isinstance(expected_count, bool) or not isinstance(expected_count, int) or expected_count <= 0:
+        raise ValueError("accepted run context identity count is invalid")
+    if not isinstance(expected_boards, Mapping) or not expected_boards:
+        raise ValueError("accepted run context board scope is missing")
+    if any(not isinstance(board, str) or not board or isinstance(count, bool) or not isinstance(count, int) or count <= 0
+           for board, count in expected_boards.items()) or sum(expected_boards.values()) != expected_count:
+        raise ValueError("accepted run context board scope is invalid")
+    source_bindings = run_context["source_bindings"]
+    expected_bindings = {
+        "trade_date": run_context["trade_date"],
+        "publication_id": run_context["publication_id"],
+        "profile_row_publication_id": run_context["profile_row_publication_id"],
+        "core_logical_digest": run_context["core_logical_digest"],
+        "accepted_identity_count": expected_count,
+        "expected_board_counts": dict(sorted(expected_boards.items())),
+        "contract_sha256": run_context["contract_digest"],
+        "parameter_set_sha256": run_context["parameter_set_digest"],
+    }
+    if any(source_bindings.get(key) != value for key, value in expected_bindings.items()):
+        raise ValueError("accepted run context/source binding mismatch")
+    parameter_values = _parameter_values(run_context["parameter_set"])
+
+    target_core = [row for row in core_records if row.get("trade_date") == run_context["trade_date"]]
+    target_factors = [row for row in factor_records if row.get("trade_date") == run_context["trade_date"]]
+    if len(target_core) != expected_count or len(target_factors) != expected_count:
+        raise ValueError("target date row count differs from accepted run context")
     core_by_id: dict[str, Mapping[str, Any]] = {}
     factor_by_id: dict[str, Mapping[str, Any]] = {}
     for row in target_core:
@@ -514,8 +607,8 @@ def build_candidate_from_records(
     if set(core_by_id) != set(factor_by_id):
         raise ValueError("accepted factor/Core identity sets differ")
     board_counts = Counter(str(row.get("board")) for row in target_core)
-    if dict(board_counts) != EXPECTED_BOARD_COUNTS:
-        raise ValueError(f"accepted Core board count mismatch: {dict(board_counts)}")
+    if dict(sorted(board_counts.items())) != dict(sorted(expected_boards.items())):
+        raise ValueError(f"accepted Core board count differs from accepted run context: {dict(board_counts)}")
     now = created_at or datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
     rows: list[dict[str, Any]] = []
     for sid in sorted(core_by_id):
@@ -523,14 +616,14 @@ def build_candidate_from_records(
         factor = factor_by_id[sid]
         if factor.get("board_scope") != core.get("board") or factor.get("coordinate_basis") != core.get("coordinate_basis"):
             raise ValueError(f"accepted factor/Core row binding mismatch for {sid}")
-        if core.get("publication_id") != PROFILE_ROW_PUBLICATION_ID:
+        if core.get("publication_id") != run_context["profile_row_publication_id"]:
             raise ValueError(f"accepted Core row publication namespace mismatch for {sid}")
-        facts = _normalize_facts(core, factor)
-        derived = _eval(facts)
+        facts = _normalize_facts(core, factor, run_context)
+        derived = _eval(facts, parameter_values)
         row = {
-            "publication_id": source_bindings["publication_id"],
+            "publication_id": run_context["publication_id"],
             "source_publication_id": core["publication_id"],
-            "trade_date": TRADE_DATE,
+            "trade_date": run_context["trade_date"],
             "security_id": sid,
             "base_seed_state": derived["base_seed_state"],
             "matched_seed_paths": derived["matched_seed_paths"],
@@ -540,9 +633,9 @@ def build_candidate_from_records(
             "quality": derived["quality"],
             "quality_codes": derived["quality_codes"],
             "seed_participation_annotation": derived["seed_participation_annotation"],
-            "model_contract_id": CONTRACT_ID,
-            "parameter_set_id": PARAMETER_SET_ID,
-            "source_core_logical_digest": CORE_LOGICAL_DIGEST,
+            "model_contract_id": source_bindings["model_contract_id"],
+            "parameter_set_id": source_bindings["parameter_set_id"],
+            "source_core_logical_digest": run_context["core_logical_digest"],
             "input_digest": _input_digest(core, facts, source_bindings),
             "created_at": now,
         }
@@ -586,9 +679,13 @@ def run_accepted_candidate(
     created_at: str | None = None,
     accepted_inputs_root: Path | None = None,
 ) -> dict[str, Any]:
-    source_bindings, core_rows, factor_rows = _load_accepted_source_context(root, accepted_inputs_root)
-    result = build_candidate_from_records(core_rows, factor_rows, source_bindings, created_at=created_at)
-    board_by_security_id = {str(row["security_id"]): str(row["board"]) for row in core_rows if row.get("trade_date") == TRADE_DATE}
+    run_context, core_rows, factor_rows = _load_accepted_source_context(root, accepted_inputs_root)
+    result = build_candidate_from_records(core_rows, factor_rows, run_context, created_at=created_at)
+    board_by_security_id = {
+        str(row["security_id"]): str(row["board"])
+        for row in core_rows
+        if row.get("trade_date") == run_context["trade_date"]
+    }
     result["unknown_reason_inventory"] = unknown_reason_inventory(result["rows"], board_by_security_id)
     atomic_write_gzip_jsonl(output_path, result["rows"])
     result["artifact_path"] = str(output_path)

@@ -31,9 +31,9 @@ def atomic_json(path: Path, payload: object) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Run the frozen V4-07 BASE_SEED_V1 candidate over accepted V4-05 Core inputs.")
-    parser.add_argument("--output", type=Path, default=ROOT / "reports/v4_07/staging/V4_07_BASE_SEED_CANDIDATE_R1.jsonl.gz")
+    parser.add_argument("--output", type=Path, default=ROOT / "reports/v4_07/staging/V4_07_BASE_SEED_CANDIDATE_R2.jsonl.gz")
     parser.add_argument("--created-at", help="Explicit UTC timestamp for deterministic replay evidence only.")
-    parser.add_argument("--receipt", type=Path, default=ROOT / "reports/v4_07/V4_07_FULL_MARKET_CANDIDATE_RECEIPT.json")
+    parser.add_argument("--receipt", type=Path, default=ROOT / "reports/v4_07/V4_07_R2_FULL_MARKET_CANDIDATE_RECEIPT.json")
     parser.add_argument(
         "--accepted-inputs-root",
         type=Path,
@@ -47,13 +47,13 @@ def main() -> int:
     stamp = args.created_at or datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
     result = run_accepted_candidate(ROOT, output, created_at=stamp, accepted_inputs_root=args.accepted_inputs_root)
     receipt = {
-        "contract_id": "V4_07_FULL_MARKET_CANDIDATE_RECEIPT_V1",
+        "contract_id": "V4_07_FULL_MARKET_CANDIDATE_RECEIPT_R2",
         "stage_contract": "V4_06_R2_CONTRACT_REPAIR_AND_V4_07_BASE_SEED_STAGE_TASK_20260929",
-        "candidate_status": "V4_07_ENGINEERING_CANDIDATE_PENDING_GATES",
-        "target_trade_date": "2026-09-28",
-        "publication_id": "PUB-3c03e227-c60a-4d8c-86ae-2861507c257b",
-        "source_core_logical_digest": "d195518796acc64015174eac8f9bb8721a27095311ece00baedf8c12b0633e74",
-        "accepted_identity_count": 5222,
+        "candidate_status": "V4_07_ENGINEERING_CANDIDATE_R2_PENDING_EXTERNAL_ACCEPTANCE",
+        "target_trade_date": result["source_bindings"]["trade_date"],
+        "publication_id": result["source_bindings"]["publication_id"],
+        "source_core_logical_digest": result["source_bindings"]["core_logical_digest"],
+        "accepted_identity_count": result["source_bindings"]["accepted_identity_count"],
         "accepted_inputs_root": str(args.accepted_inputs_root.resolve()) if args.accepted_inputs_root else "stage_repository_root",
         "row_count": result["row_count"],
         "artifact_path": output.relative_to(ROOT).as_posix() if output.is_relative_to(ROOT) else str(output),
@@ -76,7 +76,9 @@ def main() -> int:
             "postgres_migration_and_rollback": "PENDING",
             "regression_gate": "PENDING"
         },
-        "next_stage": "V4_07_INDEPENDENT_POSTCHECK_ISOLATION_DETERMINISM_AND_PERSISTENCE_GATES"
+        "contract_sha256": result["source_bindings"]["contract_sha256"],
+        "parameter_set_sha256": result["source_bindings"]["parameter_set_sha256"],
+        "next_stage": "V4_07_R2_INDEPENDENT_PARAMETER_AND_MULTI_DATE_PRODUCER_REVIEW"
     }
     atomic_json(receipt_path, receipt)
     print(json.dumps({

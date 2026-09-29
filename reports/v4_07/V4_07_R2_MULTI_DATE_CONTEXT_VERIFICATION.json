@@ -1,0 +1,39 @@
+{
+  "accepted_source_artifact_sha256": "9a6ebedc715bc4b310ecf76c77e01cb6dfe9dadc17d335b5fc9afbcc2f6f3fa0",
+  "contract_id": "V4_07_R2_MULTI_DATE_CONTEXT_VERIFICATION_V1",
+  "different_row_counts_exercised": true,
+  "future_row_does_not_change_prior_date": true,
+  "next_stage": "V4_07_R2_INDEPENDENT_POSTCHECK_AND_EXTERNAL_REVIEW",
+  "producer": "src/v4/base_seed.py::build_candidate_from_records",
+  "publication_identity_isolation": true,
+  "source_digest_isolation": true,
+  "status": "PASS_CONTEXT_DRIVEN_MULTI_DATE_PRODUCER",
+  "synthetic_accepted_contexts": [
+    {
+      "candidate_logical_digest": "aa857dc58e2b84369156eb91523e610c113e5e622b158f53fa5c8a50b0bd0edd",
+      "core_logical_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "expected_board_counts": {
+        "SH_MAIN": 2
+      },
+      "expected_identity_count": 2,
+      "factor_logical_digest": "2aae48c086837c44533237c283079c1286b717b2faefe5434ff82cda0dbe957e",
+      "output_row_count": 2,
+      "profile_row_publication_id": "SYNTHETIC-PROFILE-T",
+      "publication_id": "SYNTHETIC-PUBLICATION-T",
+      "trade_date": "2026-09-28"
+    },
+    {
+      "candidate_logical_digest": "79df7b900e7e780ad1a8fbb3fc29958acecc7ebaad58e9e6b192511931cc0c1e",
+      "core_logical_digest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "expected_board_counts": {
+        "SH_MAIN": 1
+      },
+      "expected_identity_count": 1,
+      "factor_logical_digest": "dd057e5180d21cbe0396b3544dc49fbe9351d2d49a20628ea77dde0e8e9bef0b",
+      "output_row_count": 1,
+      "profile_row_publication_id": "SYNTHETIC-PROFILE-T1",
+      "publication_id": "SYNTHETIC-PUBLICATION-T1",
+      "trade_date": "2026-09-29"
+    }
+  ]
+}

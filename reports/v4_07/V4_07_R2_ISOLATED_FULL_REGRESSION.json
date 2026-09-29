@@ -1,0 +1,103 @@
+{
+  "contract_id": "V4_07_ISOLATED_FULL_REGRESSION_V1",
+  "created_at": "2026-09-29T23:36:40Z",
+  "database_identity": {
+    "database": "market_research",
+    "database_is_disposable": true,
+    "dsn_source": "process environment WORKBENCH_PG_DSN; config/.env not read or created",
+    "host": "127.0.0.1",
+    "port": 8511,
+    "user": "postgres"
+  },
+  "migration_014_read_only_source": "E:\\codex work\\大A交易\\src\\workbench_db\\migrations\\v4_postgres\\014_v4_06_turnover_contract_semantics_r2.sql",
+  "migration_014_sha256": "fff140f483738b6fb8e94e06a4e2c681111de94ceb1c415d18c188a9d95977e3",
+  "migration_015_sha256": "ebab277fe04a9bb1567d6c7b7ed8a306bbe8e6a5f083e84f8ab5d213e4a131b3",
+  "migration_run": {
+    "migration_ledger_table_count": 1,
+    "migrations": [
+      {
+        "checksum_sha256": "391bf52595fc9da86bbce175b667a5b15c18684c4fbfb8e54cdcf65872dff260",
+        "status": "APPLIED",
+        "version": "V4_PHASE0_FOUNDATION_V1"
+      },
+      {
+        "checksum_sha256": "d8dcc13609ea73923dd68ad21d9c91eed69128047203a481764edeb72ea45dac",
+        "status": "APPLIED",
+        "version": "V4_PHASE0_NAMESPACE_INTEGRITY_V1"
+      },
+      {
+        "checksum_sha256": "e1e2886c04c45121530e1fcf506297921c9cca2eecec3ee06be77e2520887d77",
+        "status": "APPLIED",
+        "version": "V4_PHASE0_CONTRACT_ALIGNMENT_R2"
+      },
+      {
+        "checksum_sha256": "905af9323f613d3ae917000859f2306ce3d2a2ec6be43431233c5f4ce0e8a1b3",
+        "status": "APPLIED",
+        "version": "V4_PUBLICATION_HEAD_REVISION_IDENTITY_R2"
+      },
+      {
+        "checksum_sha256": "54d32de8e20afc773638b38aa555c47a5c5e8cb9b0bba82bb60fbd820a2d3b66",
+        "status": "APPLIED",
+        "version": "V4_MARKET_SESSION_PUBLICATION_CHAIN_R2"
+      },
+      {
+        "checksum_sha256": "d6ccd5dae3900fa07134a18e2f4f41ed2fbc3dde2fa4d5be79958d82d616a949",
+        "status": "APPLIED",
+        "version": "V4_FACT_SOURCE_GUARD_TABLE_SPECIFIC_FIELDS_R2"
+      },
+      {
+        "checksum_sha256": "f7df9d66c6edb13e948cbd92888af140ad335cb2984b9b0078e5498eee1cb4a0",
+        "status": "APPLIED",
+        "version": "V4_STATE_AND_NAMESPACE_PUBLICATION_IDENTITY_R2"
+      },
+      {
+        "checksum_sha256": "3d541d9540d64463068907d20062403d7ee41373c42afa5c34c7e0d7117b338b",
+        "status": "APPLIED",
+        "version": "V4_PRIOR_SESSION_STATE_FREEZE_INTEGRITY_R3"
+      },
+      {
+        "checksum_sha256": "ae4a7043367a490483618944b8efaf473062f82371e500ab60e5a79a4d55d2e8",
+        "status": "APPLIED",
+        "version": "V4_PUBLICATION_HEAD_GUARD_SQL_ALIAS_FIX_R3"
+      },
+      {
+        "checksum_sha256": "a7f9bc76db45b4f6297ed299be2576d299d243daa45b3b13a5f9e42dccf7b87f",
+        "status": "APPLIED",
+        "version": "V4_SECURITY_LIFECYCLE_HISTORY_R5_V1"
+      },
+      {
+        "checksum_sha256": "a562a409a012c32ce7ce879b6377704079e47289de2db0a24c589070e06957e1",
+        "status": "APPLIED",
+        "version": "V4_SECURITY_MEMBERSHIP_INTERVAL_R6_2_V1"
+      },
+      {
+        "checksum_sha256": "3e206b8c20959f862f9d293a42a215af624416905f23083c17ca6e2ec22f9b70",
+        "status": "APPLIED",
+        "version": "V4_PROVIDER_LIFECYCLE_FACT_R6_2_V1"
+      },
+      {
+        "checksum_sha256": "6aa326f725ad98179b112be6b6f34346c5fbc70d69c4798d2259f01d3c3337e1",
+        "status": "APPLIED",
+        "version": "V4_06_STOCK_PROFILE_ENRICHMENTS_V1"
+      },
+      {
+        "checksum_sha256": "fff140f483738b6fb8e94e06a4e2c681111de94ceb1c415d18c188a9d95977e3",
+        "status": "APPLIED",
+        "version": "V4_06_TURNOVER_CONTRACT_SEMANTICS_R2"
+      },
+      {
+        "checksum_sha256": "ebab277fe04a9bb1567d6c7b7ed8a306bbe8e6a5f083e84f8ab5d213e4a131b3",
+        "status": "APPLIED",
+        "version": "V4_07_BASE_SEED_RESULTS_V1"
+      }
+    ],
+    "status": "APPLIED",
+    "v4_table_count": 21
+  },
+  "postgres_version": "postgres (PostgreSQL) 18.6",
+  "status": "PASS_ISOLATED_FULL_REGRESSION",
+  "temporary_cluster_cleaned_up": true,
+  "test_command": "python -m pytest tests/v4_01 tests/v4_02 tests/v4_03 tests/v4_04 tests/v4_05 tests/v4_06 tests/v4_07 tests/v4_joint tests/v4_phase0 -q",
+  "test_output": "........................................................................ [ 13%]\n........................................................................ [ 26%]\n........................................................................ [ 40%]\n........................................................................ [ 53%]\n........................................................................ [ 66%]\n........................................................................ [ 80%]\n...................................................................s.... [ 93%]\n......s.............................                                     [100%]\n538 passed, 2 skipped in 30.98s",
+  "test_summary": "538 passed, 2 skipped in 30.98s"
+}

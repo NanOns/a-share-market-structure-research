@@ -1,0 +1,46 @@
+{
+  "cases": [
+    {
+      "fixture_value": 2.5,
+      "formal_config_changed": true,
+      "formal_state": "TRUE",
+      "formal_value": 3,
+      "independent_equals_production": true,
+      "machine_equals_production": true,
+      "parameter_id": "V4_07_POSITION_BIAS20_ATR_MAX",
+      "perturbed_state": "FALSE",
+      "predicate": "position_ok"
+    },
+    {
+      "fixture_value": 4,
+      "formal_config_changed": true,
+      "formal_state": "TRUE",
+      "formal_value": 3,
+      "independent_equals_production": true,
+      "machine_equals_production": true,
+      "parameter_id": "V4_07_DELTA3_IMPROVING_MIN_POINTS",
+      "perturbed_state": "FALSE",
+      "predicate": "relative_change_improving"
+    },
+    {
+      "fixture_value": 11,
+      "formal_config_changed": true,
+      "formal_state": "TRUE",
+      "formal_value": 10,
+      "independent_equals_production": true,
+      "machine_equals_production": true,
+      "parameter_id": "V4_07_DELTA3_STRONG_MIN_POINTS",
+      "perturbed_state": "FALSE",
+      "predicate": "relative_change_strong"
+    }
+  ],
+  "contract_id": "V4_07_R2_PARAMETER_BINDING_VERIFICATION_V1",
+  "formal_parameter_config_unchanged": true,
+  "formal_parameter_set_sha256_after": "241785e1a97dd2283eb8b361eb791f4e5c8f6ca67579a06f2a2d38c0c7586a1a",
+  "formal_parameter_set_sha256_before": "241785e1a97dd2283eb8b361eb791f4e5c8f6ca67579a06f2a2d38c0c7586a1a",
+  "independent_verifier_imports_production_evaluator": false,
+  "next_stage": "V4_07_R2_INDEPENDENT_POSTCHECK_AND_EXTERNAL_REVIEW",
+  "parameter_set_id": "V4_07_BASE_SEED_PARAMETER_SET_V1",
+  "production_evaluator_threshold_literals_found": false,
+  "status": "PASS_PARAMETER_INSTANCE_DRIVES_ALL_EXECUTORS"
+}

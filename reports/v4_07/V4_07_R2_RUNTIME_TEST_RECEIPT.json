@@ -1,0 +1,20 @@
+{
+  "accepted_inputs_root": "E:\\codex work\\大A交易",
+  "command": "python -m pytest tests/v4_07 -q",
+  "contract_id": "V4_07_R2_RUNTIME_TEST_RECEIPT_V1",
+  "created_at_utc": "2026-09-29T23:37:55Z",
+  "exit_code": 0,
+  "output": ".........................................                                [100%]\n41 passed in 25.13s",
+  "stage_contract": "V4_06_R2_CONTRACT_REPAIR_AND_V4_07_BASE_SEED_STAGE_TASK_20260929",
+  "status": "PASS",
+  "test_scope": [
+    "frozen BASE_SEED machine vectors",
+    "parameter-set fixture perturbation synchronized across machine executor, production evaluator, and independent verifier",
+    "production evaluator rejects threshold literal fallback",
+    "accepted run context binds source publication, date, digest, identity count, and board scope",
+    "T and T+1 synthetic accepted-context isolation with different row counts",
+    "future-date rows do not affect prior-date output",
+    "V4-06 forbidden-input isolation",
+    "accepted-input determinism"
+  ]
+}

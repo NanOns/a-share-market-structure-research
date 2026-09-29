@@ -1,0 +1,25 @@
+{
+  "contract_id": "V4_02_GO_FORWARD_R3_TEST_RECEIPT",
+  "dependency_versions": {
+    "duckdb": "1.5.5",
+    "numpy": "2.5.1",
+    "pyarrow": "24.0.0",
+    "pytest": "9.1.1"
+  },
+  "exact_test_command": "python -m pytest -q tests/v4_01 tests/v4_02 tests/v4_03 tests/v4_04 tests/v4_joint tests/v4_phase0",
+  "exit_code": 0,
+  "failed": 0,
+  "finished_at": "2026-09-29T08:26:21+00:00",
+  "implementation_commit": "f6197db9a73f4584616db1af98bcf9c7e339493e",
+  "output_tail": "........................................................................ [ 17%]\n........................................................................ [ 35%]\n........................................................................ [ 53%]\n........................................................................ [ 71%]\n........................................................................ [ 89%]\n..s..........s.............................                              [100%]\n401 passed, 2 skipped in 3.19s\n",
+  "passed": 401,
+  "python_version": "3.13.14 (tags/v3.13.14:fd17997, Jun 10 2026, 13:03:48) [MSC v.1944 64 bit (AMD64)]",
+  "skipped": 2,
+  "started_at": "2026-09-29T08:26:18+00:00",
+  "test_file_hashes": {
+    "scripts/build_v4_02_go_forward_adjusted_r3.py": "b4bfa2df3ff80a84cdc3fb5d023969478d282173dc15ba7a06d846de59d36a23",
+    "src/v4/accepted_input.py": "c60c167b89b9b6344198648305e7226f5e1aa366d249077944c93c4506953081",
+    "src/v4/go_forward_r3.py": "4461f17fc2e42bc82a555b88a2082025b71f0286a1ad08b78104dac4e46ec198",
+    "tests/v4_02/test_go_forward_r3.py": "027446b6c7343def086181a360230ae785ef93109e2b44b43cc48a4ed4fc81ec"
+  }
+}

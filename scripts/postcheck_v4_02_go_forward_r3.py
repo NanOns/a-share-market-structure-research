@@ -27,7 +27,14 @@ def main():
     universe = r("V4_02_GO_FORWARD_UNIVERSE_CANDIDATE_R3.json")
     diff = r("V4_02_GO_FORWARD_R2_R3_DIFF_R3.json")
     later = r("V4_02_GO_FORWARD_GBBQ_LATER_REVISION_R2.json")
+    restore = r("V4_02_GO_FORWARD_REMOTE_LFS_RESTORE_R3.json")
+    tests = r("V4_02_GO_FORWARD_R3_TEST_RECEIPT.json")
     assert digest(ROOT / capture["package_path"]) == capture["package_sha256"]
+    assert restore["status"] == "PASS" and restore["restored_sha256"] == capture["package_sha256"]
+    assert restore["restored_bytes"] == 551001603
+    assert tests["exit_code"] == 0 and tests["failed"] == 0 and tests["passed"] >= 401
+    for path, expected in tests["test_file_hashes"].items():
+        assert digest(ROOT / path) == expected
     with zipfile.ZipFile(ROOT / capture["package_path"]) as archive:
         assert archive.testzip() is None
     assert universe["status"] == "PASS_CANDIDATE" and not universe["unresolved_target_source_keys"]
@@ -59,6 +66,8 @@ def main():
               "candidate_rows": count, "logical_digest": logical.hexdigest(), "business_diff": "NONE",
               "publication_ordering": "PASS_ALL_ROWS", "accepted_heads_unchanged": True,
               "later_gbbq_used": False, "tdx_root_write_count": 0}
+    result["remote_lfs_restore"] = "PASS"
+    result["runtime_tests"] = {"passed": tests["passed"], "failed": tests["failed"], "skipped": tests["skipped"]}
     path = ROOT / "reports/v4_02/V4_02_GO_FORWARD_PIT_LINEAGE_POSTCHECK_R3.json"
     path.write_text(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print("R3_POSTCHECK_PASS", count)

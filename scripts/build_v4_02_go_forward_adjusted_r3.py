@@ -17,12 +17,13 @@ sys.path.insert(0, str(ROOT / "src"))
 from adjustment.tdx_adjustment import build_affine_factors, xrxd_from_gbbq  # noqa: E402
 from tdx.day_reader import DAY_RECORD_LENGTH, decode_record  # noqa: E402
 from tdx.gbbq_reader import read_gbbq  # noqa: E402
+from src.v4.go_forward_r3 import target_identity, publication_time
 
 TARGET = 20260928
 GBBQ_ID = "sha256-775d82c58b5b46ec1d21478f86ba8ef90302691982e68d5c4cfcd51fddda666e"
-OUT = ROOT / "reports/v4_02/staging/V4_02_GO_FORWARD_ADJUSTED_T0_CANDIDATE_R2.jsonl.gz"
-RECEIPT = ROOT / "reports/v4_02/V4_02_GO_FORWARD_ADJUSTED_DAILY_RECEIPT_R2.json"
-SAMPLES = ROOT / "reports/v4_02/V4_02_GO_FORWARD_ADJUSTMENT_SAMPLES_R2.json"
+OUT = ROOT / "reports/v4_02/staging/V4_02_GO_FORWARD_ADJUSTED_T0_CANDIDATE_R3.jsonl.gz"
+RECEIPT = ROOT / "reports/v4_02/V4_02_GO_FORWARD_ADJUSTED_DAILY_RECEIPT_R3.json"
+SAMPLES = ROOT / "reports/v4_02/V4_02_GO_FORWARD_ADJUSTMENT_SAMPLES_R3.json"
 
 
 def packed(value: dict) -> bytes:
@@ -48,7 +49,7 @@ def atomic_json(path: Path, obj: dict) -> None:
 
 def main() -> None:
     capture = json.loads((ROOT / "reports/v4_02/V4_02_GO_FORWARD_TDX_CAPTURE_ATTEMPT_R2.json").read_text(encoding="utf-8"))
-    universe = json.loads((ROOT / "reports/v4_02/V4_02_GO_FORWARD_UNIVERSE_CANDIDATE_R2.json").read_text(encoding="utf-8"))
+    universe = json.loads((ROOT / "reports/v4_02/V4_02_GO_FORWARD_UNIVERSE_CANDIDATE_R3.json").read_text(encoding="utf-8"))
     overlap = json.loads((ROOT / "reports/v4_02/V4_02_GO_FORWARD_RAW_OVERLAP_R2.json").read_text(encoding="utf-8"))
     package = json.loads((ROOT / "reports/v4_02/V4_02_GO_FORWARD_TDX_PACKAGE_RECEIPT_R2.json").read_text(encoding="utf-8"))
     if universe["status"] != "PASS_CANDIDATE" or overlap["status"] != "PASS" or package["status"] != "TARGET_DATE_CONTENT_PASS":
@@ -80,16 +81,14 @@ def main() -> None:
             candidate = json.loads(line)
             if candidate["trade_date"] == "2026-09-24":
                 accepted_keys.add(candidate["source_security_key"])
+    target_keys = set(accepted_keys) | set(universe["new_source_keys"])
+    active, unresolved = target_identity(accepted_keys, target_keys, identity["records"], "2026-09-28")
+    if unresolved or set(active) != target_keys:
+        raise ValueError("V4_02_GO_FORWARD_BLOCKED_UNIVERSE_IDENTITY")
+    raw_published_at = "2026-09-28T07:58:05Z"
+    raw_available_at = capture["attempts"][-1]["finished_at"]
+    formal_publication_at = raw_available_at
     code_change_keys = {r["source_security_key"] for r in identity["records"] if r.get("alias_role") == "SUCCESSOR" and r.get("symbol_effective_from") and r["symbol_effective_from"] <= "2026-09-28"}
-    active = {}
-    for row in identity["records"]:
-        key = row["source_security_key"]
-        if (key in accepted_keys and row["security_type"] == "A_STOCK" and key.startswith(("SH.", "SZ."))
-                and (not row.get("symbol_effective_from") or row["symbol_effective_from"] <= "2026-09-28")
-                and (not row.get("symbol_effective_to") or row["symbol_effective_to"] >= "2026-09-28")
-                and (not row.get("list_date") or row["list_date"] <= "2026-09-28")
-                and (not row.get("delist_date") or row["delist_date"] >= "2026-09-28")):
-            active[key] = row
     extracted = ROOT / package["extraction_root"]
     counts = Counter()
     samples = {}
@@ -142,18 +141,23 @@ def main() -> None:
                     board = ("SH_MAIN" if market == "SH" and code.startswith("60") else
                              "STAR" if market == "SH" else
                              "CHINEXT" if code.startswith("30") else "SZ_MAIN")
+                    time_lineage = publication_time(TARGET, latest.trade_date, raw_published_at,
+                                                   raw_available_at, gbbq_manifest["system_available_at"],
+                                                   formal_publication_at)
                     output_row = {
                         "contract_id": forward_contract["contract_id"],
                         "contract_sha256": forward_contract_sha,
                         "security_id": row["security_id"], "source_security_key": key, "board_scope": board,
                         "target_trade_date": TARGET, "source_asof": TARGET,
+                        **time_lineage,
+                        "new_listing_provenance": universe["new_source_key_identity"].get(key),
                         "system_available_at": capture["attempts"][-1]["finished_at"],
                         "raw_source_snapshot_id": f"sha256-{capture['package_sha256']}",
                         "raw_source_digest": file_sha(source),
                         "adjustment_snapshot_id": GBBQ_ID, "adjustment_snapshot_digest": gbbq_sha,
                         "adjustment_system_available_at": gbbq_manifest["system_available_at"],
                         "max_source_trade_date": latest.trade_date,
-                        "knowledge_lineage": "PIT_OBSERVED", "coordinate_basis": "T0_CURRENT_COORDINATE",
+                        "knowledge_lineage": "PIT_OBSERVED_AFTER_FORMAL_PUBLICATION", "coordinate_basis": "T0_CURRENT_COORDINATE",
                         "historical_as_recorded_claim": False,
                         "source_visibility_basis": "FROZEN_PRE_T0_GBBQ_SNAPSHOT",
                         "adjusted_quality": quality,
@@ -195,7 +199,7 @@ def main() -> None:
         os.replace(temp_name, OUT)
     finally:
         Path(temp_name).unlink(missing_ok=True)
-    receipt = {"contract_id": "V4_02_GO_FORWARD_ADJUSTED_DAILY_RECEIPT_R2",
+    receipt = {"contract_id": "V4_02_GO_FORWARD_ADJUSTED_DAILY_RECEIPT_R3",
                "status": "FULL_MARKET_T0_CANDIDATE_BUILT", "target_trade_date": TARGET,
                "package_sha256": capture["package_sha256"], "gbbq_snapshot_id": GBBQ_ID,
                "gbbq_sha256": gbbq_sha, "adjustment_contract_sha256": forward_contract_sha,
@@ -206,7 +210,7 @@ def main() -> None:
                "historical_as_recorded_adjusted_price": "BLOCKED_NO_FIRST_AVAILABILITY_EVIDENCE",
                "tdx_root_write_count": 0}
     atomic_json(RECEIPT, receipt)
-    atomic_json(SAMPLES, {"contract_id": "V4_02_GO_FORWARD_ADJUSTMENT_SAMPLES_R2",
+    atomic_json(SAMPLES, {"contract_id": "V4_02_GO_FORWARD_ADJUSTMENT_SAMPLES_R3",
                           "target_trade_date": TARGET, "sample_kinds": samples,
                           "unavailable_kinds": sorted(set(["cash_dividend", "share_bonus_transfer", "rights_issue", "combined", "no_action", "no_t0_bar", "code_change"]) - samples.keys())})
     print(receipt["status"], dict(counts), logical.hexdigest())

@@ -44,7 +44,7 @@ def resolve(root: Path) -> dict[str, AcceptedInput]:
     root = root.resolve()
     stage = _json(root, "data/v4/V4_STAGE_ACCEPTED_HEAD.json")
     if (stage.get("status") != "FOUNDATION_FULL_PASS" or
-            stage.get("v4_04_entry") != "AUTHORIZED_FULL_CHAIN" or
+            stage.get("v4_04_entry") not in {"AUTHORIZED_FULL_CHAIN", "COMPLETED_EXTERNALLY_ACCEPTED"} or
             stage.get("v4_03_status") != "FULL_PASS_AMENDED_SCOPE"):
         raise ValueError("V4-04 accepted entry authority missing")
     bindings = stage["bindings"]

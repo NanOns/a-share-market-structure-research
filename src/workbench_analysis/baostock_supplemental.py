@@ -61,6 +61,8 @@ class NormalizedRow:
     volume_shares: int | None
     amount_cny: float | None
     turn_fraction: float | None
+    turn_source_value: str | None
+    turn_source_unit: str
     tradestatus: str
     is_st: str
     source_digest: str
@@ -98,7 +100,8 @@ def normalize_row(query_code: str, row: dict[str, Any]) -> NormalizedRow:
         volume_number = float(volume_raw) if volume_raw else None
         volume = int(volume_number) if volume_number is not None else None
         amount = float(amount_raw) if amount_raw else None
-        turn = normalize_turn(row.get("turn"))
+        turn_raw = str(row.get("turn", "")).strip()
+        turn = normalize_turn(turn_raw)
     except (KeyError, TypeError, ValueError, OverflowError) as exc:
         raise BaoStockError("INVALID_BAOSTOCK_ROW") from exc
     try:
@@ -122,6 +125,8 @@ def normalize_row(query_code: str, row: dict[str, Any]) -> NormalizedRow:
         "volume_shares": volume,
         "amount_cny": amount,
         "turn_fraction": turn,
+        "turn_source_value": turn_raw or None,
+        "turn_source_unit": "PERCENT_POINTS",
         "tradestatus": tradestatus,
         "is_st": is_st,
     }

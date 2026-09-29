@@ -120,9 +120,13 @@ def run_command(args: list[str], *, env: dict[str, str] | None = None) -> subpro
 
 def migration_receipt(pg: psycopg.Connection) -> list[dict[str, str]]:
     rows = []
-    if EXPECTED_MIGRATIONS != OFFICIAL_MIGRATION_VERSIONS:
-        raise AssertionError("R4.1 migration registry differs from the project migration runner")
-    paths = sorted(MIGRATION_DIR.glob("*.sql"))
+    # This R4.1 replay is frozen at its original 12-migration baseline. Later
+    # append-only stage migrations are deliberately excluded from that replay.
+    if any(OFFICIAL_MIGRATION_VERSIONS.get(name) != version
+           for name, version in EXPECTED_MIGRATIONS.items()):
+        raise AssertionError("R4.1 frozen migration registry differs from the project migration runner")
+    paths = sorted(path for path in MIGRATION_DIR.glob("*.sql")
+                   if path.name in EXPECTED_MIGRATIONS)
     if len(paths) != 12:
         raise AssertionError(f"expected 12 formal migrations, got {len(paths)}")
     for path in paths:

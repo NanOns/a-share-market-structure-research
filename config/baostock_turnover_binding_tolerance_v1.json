@@ -1,0 +1,35 @@
+{
+  "contract_id": "BAOSTOCK_TURNOVER_BINDING_TOLERANCE_V1",
+  "contract_version": "1.0.0",
+  "source_contract_id": "BAOSTOCK_SUPPLEMENTAL_SOURCE_V1",
+  "dataset_id": "BAOSTOCK_TURNOVER_DAILY_V1",
+  "status": "UNFROZEN_NO_INDEPENDENT_ACCEPTANCE",
+  "acceptance": "NOT_ACCEPTED",
+  "tolerances": null,
+  "required_fields": ["close", "volume", "amount"],
+  "comparison_basis": {
+    "close": "CNY per share absolute difference",
+    "volume": "shares absolute difference",
+    "amount": "CNY absolute difference"
+  },
+  "required_evidence": [
+    "representative_independent_expected_samples",
+    "exact_security_identity_and_trade_date",
+    "tradestatus_cross_check",
+    "unit_normalized_close_volume_amount_fingerprint",
+    "boundary_acceptance_plus_minus_epsilon",
+    "independent_reviewer_and_timestamp",
+    "provider_defined_circulating_shares_denominator_acceptance"
+  ],
+  "denominator_semantics_acceptance": {
+    "status": "NOT_ACCEPTED",
+    "basis": "PROVIDER_DEFINED_CIRCULATING_SHARES",
+    "evidence_digest": null,
+    "accepted_by": null,
+    "accepted_at_utc": null
+  },
+  "strict_binding_allowed": false,
+  "diagnostic_rows_allowed": true,
+  "evidence_receipt": "reports/v4_06/V4_06_BINDING_TOLERANCE_ACCEPTANCE.json",
+  "next_action": "Keep BAOSTOCK_TURNOVER_DAILY_V1 disabled until independent acceptance closes this contract."
+}

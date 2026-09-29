@@ -1,0 +1,51 @@
+{
+  "contract_id": "TURNOVER_CONTEXT_V1",
+  "contract_version": "1.0.0",
+  "provider_scope": ["BAOSTOCK"],
+  "input_unit": "PERCENT_POINTS",
+  "output_unit": "FRACTION",
+  "denominator": "PROVIDER_DEFINED_CIRCULATING_SHARES",
+  "baseline": {
+    "windows": [5, 20, 60],
+    "minimum_prior_strict_bound_actual_samples": 60,
+    "maximum_lookback_market_sessions": 250,
+    "target_session_excluded_from_prior": true,
+    "confirmed_suspensions": "SKIP_USING_LOCAL_DATED_STATUS",
+    "unknown_missing_session": "STOP_HISTORY_DO_NOT_SKIP",
+    "insufficient_history_effect": "DEGRADE_TURNOVER_METRICS_ONLY"
+  },
+  "metrics": {
+    "turnover_rate": "current target-date BOUND_STRICT normalized fraction",
+    "turnover_ma5": "mean of the five most recent prior strict actual-traded samples",
+    "turnover_median20": "median of the twenty most recent prior strict actual-traded samples",
+    "turnover_ratio20": "current turnover_rate / turnover_median20; unavailable when denominator <= 0",
+    "turnover_pct5": "midpoint empirical percentile of current rate among five prior strict samples",
+    "turnover_pct20": "midpoint empirical percentile of current rate among twenty prior strict samples",
+    "turnover_pct60": "midpoint empirical percentile of current rate among sixty prior strict samples",
+    "turnover_delta3": "current rate minus the third prior strict actual-traded sample; unavailable if endpoint missing"
+  },
+  "percentile_formula": "(count(prior < current) + 0.5 * count(prior == current)) / N",
+  "turnover_context": {
+    "requires_minimum_60_prior_samples": true,
+    "HIGH": "turnover_pct20 >= 0.80",
+    "LOW": "turnover_pct20 <= 0.20",
+    "NORMAL": "0.20 < turnover_pct20 < 0.80",
+    "otherwise": "UNKNOWN"
+  },
+  "binding_statuses": ["BOUND_STRICT", "BOUND_SOFT", "UNAVAILABLE", "STALE", "MISSING", "UNBOUND", "SOURCE_NOT_READY"],
+  "only_bound_strict_enters_factor": true,
+  "bound_soft": "DIAGNOSTIC_ONLY",
+  "core_effect": "NONE",
+  "core_publication_identity_mutation": false,
+  "factor_output_fields": [
+    "turnover_rate", "turnover_ma5", "turnover_median20", "turnover_ratio20",
+    "turnover_pct5", "turnover_pct20", "turnover_pct60", "turnover_delta3",
+    "turnover_state", "turnover_context"
+  ],
+  "explainability": {
+    "retain_sample_dates": true,
+    "retain_binding_statuses": true,
+    "retain_quality_codes": true,
+    "no_epsilon_for_nonpositive_denominator": true
+  }
+}

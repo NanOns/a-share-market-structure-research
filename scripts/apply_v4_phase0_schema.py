@@ -23,6 +23,7 @@ VERSIONS={
     "010_security_lifecycle_history_r5.sql":"V4_SECURITY_LIFECYCLE_HISTORY_R5_V1",
     "011_security_membership_interval_r6_2.sql":"V4_SECURITY_MEMBERSHIP_INTERVAL_R6_2_V1",
     "012_provider_lifecycle_fact_r6_2.sql":"V4_PROVIDER_LIFECYCLE_FACT_R6_2_V1",
+    "013_v4_06_stock_profile_enrichments.sql":"V4_06_STOCK_PROFILE_ENRICHMENTS_V1",
 }
 
 def dsn():

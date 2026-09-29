@@ -1,0 +1,50 @@
+{
+  "contract_id": "V4_06_TURNOVER_CONTEXT_ACCEPTANCE_V1",
+  "core_effect": "NONE",
+  "disposition": "Engine contract is implemented and tested; live BaoStock values remain excluded from formal turnover context.",
+  "engine_acceptance": "PASS_ON_DETERMINISTIC_STRICT_BOUND_FIXTURES",
+  "factor_contract": {
+    "byte_count": 2418,
+    "contract_id": "TURNOVER_CONTEXT_V1",
+    "contract_version": "1.0.0",
+    "path": "config/turnover_context_contract_v1.json",
+    "sha256": "68409acf69fc1919c5a3ebed8a84b68840cb8dcf4ffa15933042c369c77ed64f"
+  },
+  "live_capability": {
+    "formal_live_metric_eligible": false,
+    "reason": "No independently accepted tolerance or provider denominator semantics; live target fingerprints conflict.",
+    "representative_target_rows": 4,
+    "strict_bound_rows": 0,
+    "target_date": "2026-09-28"
+  },
+  "metrics": {
+    "turnover_delta3": "current rate minus the third prior strict actual-traded sample; unavailable if endpoint missing",
+    "turnover_ma5": "mean of the five most recent prior strict actual-traded samples",
+    "turnover_median20": "median of the twenty most recent prior strict actual-traded samples",
+    "turnover_pct20": "midpoint empirical percentile of current rate among twenty prior strict samples",
+    "turnover_pct5": "midpoint empirical percentile of current rate among five prior strict samples",
+    "turnover_pct60": "midpoint empirical percentile of current rate among sixty prior strict samples",
+    "turnover_rate": "current target-date BOUND_STRICT normalized fraction",
+    "turnover_ratio20": "current turnover_rate / turnover_median20; unavailable when denominator <= 0"
+  },
+  "observed_at_utc": "2026-09-29T15:03:27+00:00",
+  "runtime_tests": {
+    "passed": 33,
+    "receipt_path": "reports/v4_06/V4_06_RUNTIME_TEST_RECEIPT.json",
+    "required_history_cases_present": true
+  },
+  "status": "PASS_ENGINE_WITH_LIVE_CAPABILITY_DEGRADED",
+  "strict_rules": {
+    "confirmed_suspensions": "SKIP_USING_LOCAL_DATED_STATUS",
+    "insufficient_history_effect": "DEGRADE_TURNOVER_METRICS_ONLY",
+    "maximum_lookback_market_sessions": 250,
+    "minimum_prior_strict_bound_actual_samples": 60,
+    "target_session_excluded_from_prior": true,
+    "unknown_missing_session": "STOP_HISTORY_DO_NOT_SKIP",
+    "windows": [
+      5,
+      20,
+      60
+    ]
+  }
+}

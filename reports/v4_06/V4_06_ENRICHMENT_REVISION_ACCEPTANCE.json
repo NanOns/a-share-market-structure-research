@@ -1,0 +1,66 @@
+{
+  "accepted_publication_identity": {
+    "core_state_logical_digest": "d195518796acc64015174eac8f9bb8721a27095311ece00baedf8c12b0633e74",
+    "publication_id": "PUB-3c03e227-c60a-4d8c-86ae-2861507c257b",
+    "trade_date": "2026-09-28"
+  },
+  "checks": {
+    "accepted_core_profile_logical_digest": "d195518796acc64015174eac8f9bb8721a27095311ece00baedf8c12b0633e74",
+    "accepted_core_publication_id": "PUB-3c03e227-c60a-4d8c-86ae-2861507c257b",
+    "core_publication_head_after": {
+      "model_namespace_id": "NS-V4-05-R4-2-9c8c3d43d2164e4ab024527574db3392",
+      "publication_id": "PUB-3c03e227-c60a-4d8c-86ae-2861507c257b",
+      "state_head_id": "STATE-f31e5849-425f-4763-b5b0-9deff40f230e",
+      "state_logical_digest": "d195518796acc64015174eac8f9bb8721a27095311ece00baedf8c12b0633e74",
+      "trade_date": "2026-09-28"
+    },
+    "core_publication_head_before": {
+      "model_namespace_id": "NS-V4-05-R4-2-9c8c3d43d2164e4ab024527574db3392",
+      "publication_id": "PUB-3c03e227-c60a-4d8c-86ae-2861507c257b",
+      "state_head_id": "STATE-f31e5849-425f-4763-b5b0-9deff40f230e",
+      "state_logical_digest": "d195518796acc64015174eac8f9bb8721a27095311ece00baedf8c12b0633e74",
+      "trade_date": "2026-09-28"
+    },
+    "core_publication_head_unchanged": true,
+    "delete_rejected": true,
+    "duplicate_identity_rejected": true,
+    "isolated_fixture_source_is_synthetic": true,
+    "isolated_rollback": "PASS",
+    "manifest_count": 2,
+    "migration_sha256": "6aa326f725ad98179b112be6b6f34346c5fbc70d69c4798d2259f01d3c3337e1",
+    "migration_version": "V4_06_STOCK_PROFILE_ENRICHMENTS_V1",
+    "production_connection_used": false,
+    "same_publication_revisions": [
+      {
+        "revision": 1,
+        "rows": 1
+      },
+      {
+        "revision": 2,
+        "rows": 1
+      }
+    ],
+    "update_rejected": true
+  },
+  "contract_id": "V4_06_ENRICHMENT_REVISION_ACCEPTANCE_V1",
+  "core_revision_created": false,
+  "observed_at_utc": "2026-09-29T15:03:27+00:00",
+  "production_database_connection_used": false,
+  "row_query_identity_persisted": {
+    "fields": [
+      "provider_code",
+      "frequency",
+      "start_date",
+      "end_date",
+      "adjustflag"
+    ],
+    "validation": "Exact key set, normalized BaoStock code, daily frequency, adjustflag=3, and query range containing the target date."
+  },
+  "schema_migration_receipt": {
+    "byte_count": 5365,
+    "path": "reports/v4_06/V4_06_SCHEMA_MIGRATION_RECEIPT.json",
+    "sha256": "0374f93380d763f43c44c5e7ebe3e962fab419629cf6488ecbf869e21969b347"
+  },
+  "status": "PASS",
+  "writes_are_sidecars": true
+}

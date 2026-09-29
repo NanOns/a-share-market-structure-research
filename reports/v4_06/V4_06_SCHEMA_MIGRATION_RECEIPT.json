@@ -1,0 +1,138 @@
+{
+  "base_migrations": [
+    {
+      "checksum_sha256": "391bf52595fc9da86bbce175b667a5b15c18684c4fbfb8e54cdcf65872dff260",
+      "filename": "001_v4_phase0_foundation.sql",
+      "status": "APPLIED",
+      "version": "V4_PHASE0_FOUNDATION_V1"
+    },
+    {
+      "checksum_sha256": "d8dcc13609ea73923dd68ad21d9c91eed69128047203a481764edeb72ea45dac",
+      "filename": "002_namespace_integrity.sql",
+      "status": "APPLIED",
+      "version": "V4_PHASE0_NAMESPACE_INTEGRITY_V1"
+    },
+    {
+      "checksum_sha256": "e1e2886c04c45121530e1fcf506297921c9cca2eecec3ee06be77e2520887d77",
+      "filename": "003_phase0_contract_alignment.sql",
+      "status": "APPLIED",
+      "version": "V4_PHASE0_CONTRACT_ALIGNMENT_R2"
+    },
+    {
+      "checksum_sha256": "905af9323f613d3ae917000859f2306ce3d2a2ec6be43431233c5f4ce0e8a1b3",
+      "filename": "004_publication_head_revision_identity.sql",
+      "status": "APPLIED",
+      "version": "V4_PUBLICATION_HEAD_REVISION_IDENTITY_R2"
+    },
+    {
+      "checksum_sha256": "54d32de8e20afc773638b38aa555c47a5c5e8cb9b0bba82bb60fbd820a2d3b66",
+      "filename": "005_market_session_publication_chain.sql",
+      "status": "APPLIED",
+      "version": "V4_MARKET_SESSION_PUBLICATION_CHAIN_R2"
+    },
+    {
+      "checksum_sha256": "d6ccd5dae3900fa07134a18e2f4f41ed2fbc3dde2fa4d5be79958d82d616a949",
+      "filename": "006_fact_source_guard_table_specific_fields.sql",
+      "status": "APPLIED",
+      "version": "V4_FACT_SOURCE_GUARD_TABLE_SPECIFIC_FIELDS_R2"
+    },
+    {
+      "checksum_sha256": "f7df9d66c6edb13e948cbd92888af140ad335cb2984b9b0078e5498eee1cb4a0",
+      "filename": "007_state_and_namespace_publication_identity.sql",
+      "status": "APPLIED",
+      "version": "V4_STATE_AND_NAMESPACE_PUBLICATION_IDENTITY_R2"
+    },
+    {
+      "checksum_sha256": "3d541d9540d64463068907d20062403d7ee41373c42afa5c34c7e0d7117b338b",
+      "filename": "008_prior_session_state_freeze_integrity.sql",
+      "status": "APPLIED",
+      "version": "V4_PRIOR_SESSION_STATE_FREEZE_INTEGRITY_R3"
+    },
+    {
+      "checksum_sha256": "ae4a7043367a490483618944b8efaf473062f82371e500ab60e5a79a4d55d2e8",
+      "filename": "009_publication_head_guard_sql_alias_fix.sql",
+      "status": "APPLIED",
+      "version": "V4_PUBLICATION_HEAD_GUARD_SQL_ALIAS_FIX_R3"
+    },
+    {
+      "checksum_sha256": "a7f9bc76db45b4f6297ed299be2576d299d243daa45b3b13a5f9e42dccf7b87f",
+      "filename": "010_security_lifecycle_history_r5.sql",
+      "status": "APPLIED",
+      "version": "V4_SECURITY_LIFECYCLE_HISTORY_R5_V1"
+    },
+    {
+      "checksum_sha256": "a562a409a012c32ce7ce879b6377704079e47289de2db0a24c589070e06957e1",
+      "filename": "011_security_membership_interval_r6_2.sql",
+      "status": "APPLIED",
+      "version": "V4_SECURITY_MEMBERSHIP_INTERVAL_R6_2_V1"
+    },
+    {
+      "checksum_sha256": "3e206b8c20959f862f9d293a42a215af624416905f23083c17ca6e2ec22f9b70",
+      "filename": "012_provider_lifecycle_fact_r6_2.sql",
+      "status": "APPLIED",
+      "version": "V4_PROVIDER_LIFECYCLE_FACT_R6_2_V1"
+    }
+  ],
+  "checks": {
+    "accepted_core_profile_logical_digest": "d195518796acc64015174eac8f9bb8721a27095311ece00baedf8c12b0633e74",
+    "accepted_core_publication_id": "PUB-3c03e227-c60a-4d8c-86ae-2861507c257b",
+    "core_publication_head_after": {
+      "model_namespace_id": "NS-V4-05-R4-2-9c8c3d43d2164e4ab024527574db3392",
+      "publication_id": "PUB-3c03e227-c60a-4d8c-86ae-2861507c257b",
+      "state_head_id": "STATE-f31e5849-425f-4763-b5b0-9deff40f230e",
+      "state_logical_digest": "d195518796acc64015174eac8f9bb8721a27095311ece00baedf8c12b0633e74",
+      "trade_date": "2026-09-28"
+    },
+    "core_publication_head_before": {
+      "model_namespace_id": "NS-V4-05-R4-2-9c8c3d43d2164e4ab024527574db3392",
+      "publication_id": "PUB-3c03e227-c60a-4d8c-86ae-2861507c257b",
+      "state_head_id": "STATE-f31e5849-425f-4763-b5b0-9deff40f230e",
+      "state_logical_digest": "d195518796acc64015174eac8f9bb8721a27095311ece00baedf8c12b0633e74",
+      "trade_date": "2026-09-28"
+    },
+    "core_publication_head_unchanged": true,
+    "delete_rejected": true,
+    "duplicate_identity_rejected": true,
+    "isolated_fixture_source_is_synthetic": true,
+    "isolated_rollback": "PASS",
+    "manifest_count": 2,
+    "migration_sha256": "6aa326f725ad98179b112be6b6f34346c5fbc70d69c4798d2259f01d3c3337e1",
+    "migration_version": "V4_06_STOCK_PROFILE_ENRICHMENTS_V1",
+    "production_connection_used": false,
+    "same_publication_revisions": [
+      {
+        "revision": 1,
+        "rows": 1
+      },
+      {
+        "revision": 2,
+        "rows": 1
+      }
+    ],
+    "update_rejected": true
+  },
+  "cleanup": {
+    "attempted": true,
+    "cluster_removed": true,
+    "server_stopped": true,
+    "succeeded": true
+  },
+  "contract_id": "V4_06_POSTGRES_MIGRATION_ACCEPTANCE_V1",
+  "finished_at_utc": "2026-09-29T15:02:05+00:00",
+  "isolated_connection_identity": {
+    "cluster_root": "TEMP_PATH_REDACTED",
+    "database": "postgres",
+    "host": "127.0.0.1",
+    "in_recovery": false,
+    "port": 2065,
+    "postgres_version": "18.6",
+    "server_address": "127.0.0.1/32",
+    "server_port": 2065,
+    "user": "postgres"
+  },
+  "postgres_bin": "E:\\Postgres\\bin",
+  "postgres_version": "psql (PostgreSQL) 18.6",
+  "production_connection_used": false,
+  "started_at_utc": "2026-09-29T15:02:03+00:00",
+  "status": "PASS"
+}

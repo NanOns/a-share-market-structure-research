@@ -1,0 +1,127 @@
+{
+  "accepted_head_created": false,
+  "accepted_v4_05": {
+    "core_profile_logical_digest": "d195518796acc64015174eac8f9bb8721a27095311ece00baedf8c12b0633e74",
+    "publication_id": "PUB-3c03e227-c60a-4d8c-86ae-2861507c257b",
+    "target_trade_date": "2026-09-28"
+  },
+  "branch": "codex/v4-system-reform",
+  "capabilities": {
+    "BAOSTOCK_LIVE_STRICT_BINDING": "BLOCKED_DEGRADED",
+    "CORE_DEPENDENCY": "NONE",
+    "SUPPLEMENTAL_PIPELINE": "PASS",
+    "TURNOVER_CONTEXT_ENGINE": "PASS"
+  },
+  "clean_checkout_receipt": {
+    "byte_count": 2802,
+    "path": "reports/v4_06/V4_06_CLEAN_CHECKOUT_RECEIPT.json",
+    "sha256": "9b5644ad3241ae6d7bbdc9528c097cdbddab4778eeabc2d52bf717d656e140e2"
+  },
+  "contract_id": "V4_06_STAGE_CANDIDATE_MANIFEST_V1",
+  "created_at_utc": "2026-09-29T15:03:27+00:00",
+  "evidence_files": {
+    "reports/v4_06/V4_06_BINDING_TOLERANCE_ACCEPTANCE.json": {
+      "byte_count": 5758,
+      "path": "reports/v4_06/V4_06_BINDING_TOLERANCE_ACCEPTANCE.json",
+      "sha256": "34a31aef8b98d6ebba51fd3b41cddcb0e92bbedb847400fae60d93509efcb625"
+    },
+    "reports/v4_06/V4_06_CLEAN_CHECKOUT_RECEIPT.json": {
+      "byte_count": 2802,
+      "path": "reports/v4_06/V4_06_CLEAN_CHECKOUT_RECEIPT.json",
+      "sha256": "9b5644ad3241ae6d7bbdc9528c097cdbddab4778eeabc2d52bf717d656e140e2"
+    },
+    "reports/v4_06/V4_06_CLOSURE.md": {
+      "byte_count": 2942,
+      "path": "reports/v4_06/V4_06_CLOSURE.md",
+      "sha256": "d2e375587bb10a6864ebbc46c5490f4c8113130971e26c41e9f32106ff770d70"
+    },
+    "reports/v4_06/V4_06_CORE_ISOLATION_ACCEPTANCE.json": {
+      "byte_count": 8546,
+      "path": "reports/v4_06/V4_06_CORE_ISOLATION_ACCEPTANCE.json",
+      "sha256": "2eb1828e093a655f0cfd951a37224363369fa0202a0ca6205493e7d408047c7f"
+    },
+    "reports/v4_06/V4_06_ENRICHMENT_REVISION_ACCEPTANCE.json": {
+      "byte_count": 2589,
+      "path": "reports/v4_06/V4_06_ENRICHMENT_REVISION_ACCEPTANCE.json",
+      "sha256": "69c176883fbca91f4a58adbed5bde3552b19121b6a9ca225d09e535660c95e5b"
+    },
+    "reports/v4_06/V4_06_LIVE_BINDING_BLOCKER.json": {
+      "byte_count": 1724,
+      "path": "reports/v4_06/V4_06_LIVE_BINDING_BLOCKER.json",
+      "sha256": "5ec653cc883af1bba42ed93b9698bc800123fce393fe97d6e5524debc547dfc9"
+    },
+    "reports/v4_06/V4_06_LIVE_PROBE_RECEIPT.json": {
+      "byte_count": 30136,
+      "path": "reports/v4_06/V4_06_LIVE_PROBE_RECEIPT.json",
+      "sha256": "1aadf41ed50414dea3c6920232c0a6d13de092c8a3dcdab8dfc009b9db58cd32"
+    },
+    "reports/v4_06/V4_06_REQUEST_BUDGET_RECEIPT.json": {
+      "byte_count": 1184,
+      "path": "reports/v4_06/V4_06_REQUEST_BUDGET_RECEIPT.json",
+      "sha256": "4a2356dd31b4c85130aad8b305e9de9c1946fad20f3cdba3d87f6c654e8ec13e"
+    },
+    "reports/v4_06/V4_06_RUNTIME_TEST_RECEIPT.json": {
+      "byte_count": 920,
+      "path": "reports/v4_06/V4_06_RUNTIME_TEST_RECEIPT.json",
+      "sha256": "e903bb0f89723106d81d041bdca883498f713e78082698a0ee2f93fc4434e005"
+    },
+    "reports/v4_06/V4_06_SCHEMA_MIGRATION_RECEIPT.json": {
+      "byte_count": 5365,
+      "path": "reports/v4_06/V4_06_SCHEMA_MIGRATION_RECEIPT.json",
+      "sha256": "0374f93380d763f43c44c5e7ebe3e962fab419629cf6488ecbf869e21969b347"
+    },
+    "reports/v4_06/V4_06_SOURCE_CONTRACT_AUDIT.json": {
+      "byte_count": 2501,
+      "path": "reports/v4_06/V4_06_SOURCE_CONTRACT_AUDIT.json",
+      "sha256": "6de462d11bd1bcbaa4c2b10d08e5356d867332e49f1f7131a47a57f6169e8e09"
+    },
+    "reports/v4_06/V4_06_STAGE_ENTRY.md": {
+      "byte_count": 5768,
+      "path": "reports/v4_06/V4_06_STAGE_ENTRY.md",
+      "sha256": "8d4db5d54d663298d4ac2cf567512b4c208e0457d0b4bb195f160b673db6015e"
+    },
+    "reports/v4_06/V4_06_TURNOVER_CONTEXT_ACCEPTANCE.json": {
+      "byte_count": 2329,
+      "path": "reports/v4_06/V4_06_TURNOVER_CONTEXT_ACCEPTANCE.json",
+      "sha256": "a79397f94cbca0b84d94b90955efbc163ff868a82177a69a5d4ece03a55f090c"
+    }
+  },
+  "external_acceptance": "PENDING",
+  "limitations": [
+    "No independent BaoStock tolerance acceptance.",
+    "No independent provider-defined circulating-shares semantic acceptance.",
+    "Accepted V4-05 artifact does not expose the full six-component Core digest vector.",
+    "Official API reference page returned no readable body during this stage."
+  ],
+  "next_stage": "Independent external acceptance of this candidate; keep V4-07 unstarted and V4-08 blocked.",
+  "open_audits": [
+    {
+      "audit_id": "V4-06-BAOSTOCK-BINDING-TOLERANCE-01",
+      "path": "docs/audits/V4_06_BAOSTOCK_BINDING_TOLERANCE_AUDIT_R1_20260929.md",
+      "sha256": "a43a449c06324c6b775f3e02702ed7008aed30b11adf31e71b39493bd74b1f13",
+      "status": "OPEN"
+    }
+  ],
+  "source_commit_sha": "232f8d83525f322116b2c757cf1db42a41d1a908",
+  "source_files": {
+    "config/baostock_turnover_binding_tolerance_v1.json": "6b13c9eca852b582cd23103d9391d5c195e700c4bde0881db3737eaa4206ac5f",
+    "config/turnover_context_contract_v1.json": "68409acf69fc1919c5a3ebed8a84b68840cb8dcf4ffa15933042c369c77ed64f",
+    "scripts/apply_v4_phase0_schema.py": "7dec2d9ddd26762cc9ebeec2fb8596c14d26fcc1f7de2181c62af83a8ddc50d5",
+    "scripts/build_v4_06_candidate_evidence.py": "2396d957027ba9d80b102c0ce21d54d79c813177045988f699d8b3e8f3bd8729",
+    "scripts/run_v4_05_r4_1_postgres_ledger.py": "9896751865637517cfb907b119ff2930feb102cfa59fbc8059e10254dda2c6ab",
+    "scripts/run_v4_06_live_binding_probe.py": "faf3880f8affb387b5dcc67b17afa34fbead350ca013375e0bf082170ca2f7f0",
+    "scripts/run_v4_06_migration_acceptance.py": "4a184b534835a1ef122234a9051408cf03b15a912a367fafbb875a81b1478528",
+    "src/workbench_analysis/baostock_supplemental.py": "ee4eb0395dac80ef3b3453ea2ab1c42cf26a391070982c22e10d51ded5f97c64",
+    "src/workbench_analysis/v4_06_supplemental.py": "e48435c7c0756624192e3f2655cb3c71ed503040789ef44d195bb20ceac99028",
+    "src/workbench_db/migrations/v4_postgres/013_v4_06_stock_profile_enrichments.sql": "6aa326f725ad98179b112be6b6f34346c5fbc70d69c4798d2259f01d3c3337e1",
+    "src/workbench_db/migrations/v4_postgres/rollback/013_v4_06_stock_profile_enrichments.sql": "356fb067112737bcc1297e03f2317bf95b158963533cbe1f9decdc06aa3def57"
+  },
+  "stage": "V4-06 Supplemental Enrichment",
+  "stage_entry": {
+    "byte_count": 5768,
+    "path": "reports/v4_06/V4_06_STAGE_ENTRY.md",
+    "sha256": "8d4db5d54d663298d4ac2cf567512b4c208e0457d0b4bb195f160b673db6015e"
+  },
+  "stage_status": "DEGRADED_PASS_CANDIDATE",
+  "starting_head": "e0fbcc665b0926322b5098c0c99465fa2b427cb8"
+}

@@ -1,0 +1,39 @@
+{
+  "actual_probe_policy": {
+    "daily_hard_stop": 45000,
+    "daily_soft_stop": 40000,
+    "max_concurrent_requests": 1,
+    "max_retries": 1,
+    "p0_reserved_headroom": 5000,
+    "per_request_timeout_seconds": 30,
+    "priority": "P1_MISSING_RECENT_WINDOW",
+    "retry_counted": true,
+    "serial": true
+  },
+  "checkpoint": {
+    "path": "reports/v4_06/staging/V4_06_LIVE_PROBE_CHECKPOINT_R2.json",
+    "sha256": "4e2820333656d462ad20c8190a36046037ac759791028fbb6ec0b9e9d6568b7d",
+    "source_rows_persisted": false
+  },
+  "contract_id": "V4_06_REQUEST_BUDGET_RECEIPT_V1",
+  "daily_budget_exhausted": false,
+  "final_probe_request_count": {
+    "after": 72,
+    "before": 66,
+    "delta": 6,
+    "shanghai_date": "2026-09-29"
+  },
+  "ledger": {
+    "byte_count": 3000,
+    "path": "reports/v4_baostock/request_ledger.json",
+    "sha256": "5e00084849af0ff61755c70137336ce10310923acd3a13f6d621cd86d19fa24c"
+  },
+  "observed_at_utc": "2026-09-29T15:03:27+00:00",
+  "p0_daily_incremental_headroom_preserved": true,
+  "probe_jobs": 2,
+  "probe_security_queries_per_job": 4,
+  "stage_delta": 12,
+  "stage_entry_count": 60,
+  "stage_final_count": 72,
+  "status": "PASS_WITHIN_BOUNDS"
+}

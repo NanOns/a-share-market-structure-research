@@ -1,0 +1,24 @@
+{
+  "command": "python -m pytest tests/v4_06 -q",
+  "contract_id": "V4_06_RUNTIME_TEST_RECEIPT_V1",
+  "exit_code": 0,
+  "migration_acceptance_receipt": {
+    "byte_count": 5365,
+    "path": "reports/v4_06/V4_06_SCHEMA_MIGRATION_RECEIPT.json",
+    "sha256": "0374f93380d763f43c44c5e7ebe3e962fab419629cf6488ecbf869e21969b347"
+  },
+  "observed_at_utc": "2026-09-29T15:03:27+00:00",
+  "output": ".................................                                        [100%]\n33 passed in 0.39s",
+  "passed": 33,
+  "status": "PASS",
+  "test_scope": [
+    "source unit/raw provenance",
+    "identity/date/status and binding gate",
+    "tolerance fixtures",
+    "5/20/60 windows, 60 boundary, 250 cap, suspension, missing gap, ratio and delta3",
+    "request priority/budget/retry/checkpoint/circuit breaker",
+    "append-only revisions/manifests",
+    "A/B/C/D Core isolation fixture",
+    "source digest determinism"
+  ]
+}

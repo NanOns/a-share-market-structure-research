@@ -1,0 +1,175 @@
+{
+  "actual_live_results": {
+    "completed_securities": 4,
+    "provider_error": null,
+    "requested_securities": 4,
+    "security_summaries": [
+      {
+        "common_dates": 245,
+        "exact_close_volume_amount_rows": 0,
+        "max_abs_delta": {
+          "amount": 123.44000005722046,
+          "close": 0.0,
+          "volume": 0
+        },
+        "provider_code": "sz.000001",
+        "query_rows": 245,
+        "target_status": "UNBOUND"
+      },
+      {
+        "common_dates": 245,
+        "exact_close_volume_amount_rows": 0,
+        "max_abs_delta": {
+          "amount": 63.269999980926514,
+          "close": 0.0,
+          "volume": 0
+        },
+        "provider_code": "sh.600000",
+        "query_rows": 245,
+        "target_status": "UNBOUND"
+      },
+      {
+        "common_dates": 245,
+        "exact_close_volume_amount_rows": 0,
+        "max_abs_delta": {
+          "amount": 990.7599983215332,
+          "close": 0.0,
+          "volume": 0
+        },
+        "provider_code": "sz.300750",
+        "query_rows": 245,
+        "target_status": "UNBOUND"
+      },
+      {
+        "common_dates": 245,
+        "exact_close_volume_amount_rows": 0,
+        "max_abs_delta": {
+          "amount": 56.1800000667572,
+          "close": 0.0,
+          "volume": 0
+        },
+        "provider_code": "sh.688001",
+        "query_rows": 245,
+        "target_status": "UNBOUND"
+      }
+    ],
+    "strict_bound_rows": 0,
+    "target_rows_observed": 4,
+    "target_samples": [
+      {
+        "abs_delta": {
+          "amount": 11.600000023841858,
+          "close": 0.0,
+          "volume": 0
+        },
+        "binding_status": "UNBOUND",
+        "board_scope": "SZ_MAIN",
+        "fingerprint_exact": false,
+        "provider_code": "sz.000001",
+        "quality_codes": [
+          "LOCAL_SOURCE_FINGERPRINT_CONFLICT"
+        ],
+        "security_id": "SEC-2E53B479D272684BB4C98C1AC64D6D9C",
+        "source_digest": "aca947fee104b8acbff040cd010ac6f15b05691eda43a30dbfea672724dea287",
+        "trade_date": "2026-09-28",
+        "turnover_normalized_fraction": 0.003686,
+        "turnover_raw_unit": "PERCENT_POINTS",
+        "turnover_raw_value": "0.368600"
+      },
+      {
+        "abs_delta": {
+          "amount": 50.15000009536743,
+          "close": 0.0,
+          "volume": 0
+        },
+        "binding_status": "UNBOUND",
+        "board_scope": "SH_MAIN",
+        "fingerprint_exact": false,
+        "provider_code": "sh.600000",
+        "quality_codes": [
+          "LOCAL_SOURCE_FINGERPRINT_CONFLICT"
+        ],
+        "security_id": "SEC-62C40F6EEABB12A3B3F00D4FB0B61ED0",
+        "source_digest": "d2009c50a38b4468efb78b83831e9b45c75c95c5d2b493e87bfc7a4ac65221a0",
+        "trade_date": "2026-09-28",
+        "turnover_normalized_fraction": 0.0035570000000000003,
+        "turnover_raw_unit": "PERCENT_POINTS",
+        "turnover_raw_value": "0.355700"
+      },
+      {
+        "abs_delta": {
+          "amount": 481.0300006866455,
+          "close": 0.0,
+          "volume": 0
+        },
+        "binding_status": "UNBOUND",
+        "board_scope": "CHINEXT",
+        "fingerprint_exact": false,
+        "provider_code": "sz.300750",
+        "quality_codes": [
+          "LOCAL_SOURCE_FINGERPRINT_CONFLICT"
+        ],
+        "security_id": "SEC-AEE0256E7B7F1A35E965479B1BD73C28",
+        "source_digest": "136b87c45227b034c21bad68fc6afca6e10765745ef12d6237e702cc6edfc7fe",
+        "trade_date": "2026-09-28",
+        "turnover_normalized_fraction": 0.00796,
+        "turnover_raw_unit": "PERCENT_POINTS",
+        "turnover_raw_value": "0.796000"
+      },
+      {
+        "abs_delta": {
+          "amount": 3.309999942779541,
+          "close": 0.0,
+          "volume": 0
+        },
+        "binding_status": "UNBOUND",
+        "board_scope": "STAR",
+        "fingerprint_exact": false,
+        "provider_code": "sh.688001",
+        "quality_codes": [
+          "LOCAL_SOURCE_FINGERPRINT_CONFLICT"
+        ],
+        "security_id": "SEC-D3EED550704BA2AF939F26BE785B0163",
+        "source_digest": "a174fc98ae1e862e9399c0cdd975ca881824245537e10367a3d3c925a2ca3945",
+        "trade_date": "2026-09-28",
+        "turnover_normalized_fraction": 0.025074,
+        "turnover_raw_unit": "PERCENT_POINTS",
+        "turnover_raw_value": "2.507400"
+      }
+    ]
+  },
+  "contract_id": "V4_06_BINDING_TOLERANCE_ACCEPTANCE_V1",
+  "denominator_semantics_acceptance": {
+    "accepted_at_utc": null,
+    "accepted_by": null,
+    "basis": "PROVIDER_DEFINED_CIRCULATING_SHARES",
+    "evidence_digest": null,
+    "status": "NOT_ACCEPTED"
+  },
+  "disposition": "Do not claim BOUND_STRICT; keep the BaoStock dataset disabled and the independent audit OPEN.",
+  "independent_acceptance": "NOT_ACCEPTED",
+  "live_probe_receipt": {
+    "byte_count": 30136,
+    "path": "reports/v4_06/V4_06_LIVE_PROBE_RECEIPT.json",
+    "sha256": "1aadf41ed50414dea3c6920232c0a6d13de092c8a3dcdab8dfc009b9db58cd32"
+  },
+  "observed_at_utc": "2026-09-29T15:03:27+00:00",
+  "source_tolerance_criteria": {
+    "close_volume_amount_fingerprint": "OBSERVED; AMOUNT CONFLICTS IN ALL FOUR SAMPLES",
+    "denominator_basis": "NOT_ACCEPTED",
+    "independent_reviewer": "MISSING",
+    "plus_minus_epsilon_boundary": "UNIT_TEST_FIXTURE_ONLY; NOT INDEPENDENT LIVE ACCEPTANCE",
+    "representative_samples": "PRESENT_DIAGNOSTIC_ONLY"
+  },
+  "status": "DEGRADED_PASS_DIAGNOSTIC_ONLY",
+  "tolerance_contract": {
+    "acceptance": "NOT_ACCEPTED",
+    "byte_count": 1353,
+    "contract_id": "BAOSTOCK_TURNOVER_BINDING_TOLERANCE_V1",
+    "contract_version": "1.0.0",
+    "path": "config/baostock_turnover_binding_tolerance_v1.json",
+    "sha256": "6b13c9eca852b582cd23103d9391d5c195e700c4bde0881db3737eaa4206ac5f",
+    "strict_binding_allowed": false,
+    "tolerances": null
+  }
+}

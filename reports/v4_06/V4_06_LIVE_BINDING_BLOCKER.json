@@ -1,0 +1,45 @@
+{
+  "accepted_core_logical_digest": "d195518796acc64015174eac8f9bb8721a27095311ece00baedf8c12b0633e74",
+  "accepted_core_publication_id": "PUB-3c03e227-c60a-4d8c-86ae-2861507c257b",
+  "contract_id": "V4_06_LIVE_BINDING_BLOCKER_V1",
+  "impact_scope": "BAOSTOCK_TURNOVER_DAILY_V1 remains disabled; supplemental turnover rows stay diagnostic-only; accepted V4-05 Core is unchanged.",
+  "next_action": "Independent reviewer must accept official field/unit evidence, source-specific tolerance, expected samples, and denominator semantics.",
+  "observed_at_utc": "2026-09-29T14:49:10+00:00",
+  "provider_error_code": null,
+  "provider_error_message": null,
+  "provider_transport_status": {
+    "login": {
+      "error_code": "0",
+      "error_msg": "success"
+    },
+    "logout": {
+      "error_code": "0",
+      "error_msg": "success"
+    },
+    "queries_completed": 4,
+    "target_rows_observed": 4
+  },
+  "reason": "Independent BaoStock tolerance and denominator acceptance are missing; live target fingerprints conflict.",
+  "request_ledger": {
+    "byte_count": 3000,
+    "final_count": 72,
+    "path": "reports/v4_baostock/request_ledger.json",
+    "sha256": "5e00084849af0ff61755c70137336ce10310923acd3a13f6d621cd86d19fa24c",
+    "shanghai_date": "2026-09-29",
+    "stage_delta": 12,
+    "stage_entry_count": 60
+  },
+  "request_range": {
+    "adjustflag": "3",
+    "end": "2026-09-28",
+    "frequency": "d",
+    "start": "2025-09-23"
+  },
+  "source_receipt": {
+    "byte_count": 30136,
+    "path": "reports/v4_06/V4_06_LIVE_PROBE_RECEIPT.json",
+    "sha256": "1aadf41ed50414dea3c6920232c0a6d13de092c8a3dcdab8dfc009b9db58cd32"
+  },
+  "status": "STRICT_BINDING_BLOCKED_DIAGNOSTIC_ONLY",
+  "target_trade_date": "2026-09-28"
+}

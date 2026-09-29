@@ -1,0 +1,19 @@
+{
+  "artifacts": {
+    "reports/v4_05/V4_05_REPLAY_DATE_MATRIX_R1.json": "ba8993b68b09cafdd47824191f1b568d1621ac9406b0d034e91bd339278d44a7",
+    "reports/v4_05/V4_05_REPLAY_GATE_A_AUDIT_R1.json": "96c73e4278206136eb3715dd9adad1c54fb1b23a4df30e9645c45ae1481434f5",
+    "reports/v4_05/V4_05_REPLAY_GATE_A_STAGE_RECORD_R1.md": "c92f3272c9eb932d70a8afc093f79f3af1609e7ea9108bfc0011b4a245edea4d"
+  },
+  "checks": [
+    "accepted head and source hash chain",
+    "independent DuckDB lineage count = 4026611",
+    "G03 BLOCKED",
+    "G04-G08 NOT_RUN_BLOCKED_BY_G03",
+    "DATA_FACTOR_REPLAY_PASS false"
+  ],
+  "contract_id": "V4_05_INDEPENDENT_POSTCHECK_RECEIPT_R1",
+  "implementation_commit": "30b0de6485c6b590bffd11fabcbd99cfd4af1fd3",
+  "stage_result": "V4_05_BLOCKED_UPSTREAM_DEFECT_HISTORICAL_ADJUSTED_PRICE_PIT_LINEAGE",
+  "status": "PASS_FOR_BLOCK_EVIDENCE_ONLY",
+  "test_command": "python -m compileall -q src/v4/replay_inputs.py scripts/freeze_v4_05_replay_matrix.py scripts/audit_v4_05_replay_gate_a.py scripts/postcheck_v4_05_replay_gate_a.py; python -m scripts.postcheck_v4_05_replay_gate_a"
+}

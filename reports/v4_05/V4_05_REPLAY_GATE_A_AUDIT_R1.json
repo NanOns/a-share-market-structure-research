@@ -1,0 +1,164 @@
+{
+  "accepted_input_authority": {
+    "global_head_sha256": "c710c1a6aa6012ff91967c86abdef1fa96050c9a02b16c8dc720a0b24ed4d9cc",
+    "r4_manifest_sha256": "278ecb78571506ee7eac57b953367729ffaa9d361f9d240b4871843bf9d3957e",
+    "source_cutoff": "2026-09-24",
+    "v4_04_accepted_head_sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a",
+    "v4_04_implementation_commit": "044dc637f90b35c6097bb800b1d4d755fdfb792c"
+  },
+  "capabilities": {
+    "HISTORICAL_ADJUSTED_PRICE": {
+      "affected_dates": [
+        20230704,
+        20260924
+      ],
+      "affected_entities": "all accepted daily entities",
+      "affected_fields": [
+        "qfq_mul",
+        "qfq_add",
+        "qfq_open",
+        "qfq_high",
+        "qfq_low",
+        "qfq_close"
+      ],
+      "capability_scope": "AS_RECORDED historical adjusted coordinates",
+      "evidence": [
+        "G03_ADJUSTMENT_REPRODUCIBILITY"
+      ],
+      "reasons": [
+        "No historical first-availability metadata for accepted adjustment coordinates"
+      ],
+      "status": "BLOCKED"
+    },
+    "MARKET_REFERENCE": {
+      "affected_dates": "historical replay matrix",
+      "affected_entities": "frozen matrix",
+      "affected_fields": "replay output",
+      "capability_scope": "MARKET_REFERENCE",
+      "evidence": [
+        "G03_ADJUSTMENT_REPRODUCIBILITY"
+      ],
+      "reasons": [
+        "Execution halted at G03 upstream blocker"
+      ],
+      "status": "BLOCKED"
+    },
+    "MARKET_REGIME": {
+      "affected_dates": "historical replay matrix",
+      "affected_entities": "frozen matrix",
+      "affected_fields": "replay output",
+      "capability_scope": "MARKET_REGIME",
+      "evidence": [
+        "G03_ADJUSTMENT_REPRODUCIBILITY"
+      ],
+      "reasons": [
+        "Execution halted at G03 upstream blocker"
+      ],
+      "status": "BLOCKED"
+    },
+    "MONTHLY_PERIOD": {
+      "affected_dates": "historical replay matrix",
+      "affected_entities": "frozen matrix",
+      "affected_fields": "replay output",
+      "capability_scope": "MONTHLY_PERIOD",
+      "evidence": [
+        "G03_ADJUSTMENT_REPRODUCIBILITY"
+      ],
+      "reasons": [
+        "Execution halted at G03 upstream blocker"
+      ],
+      "status": "BLOCKED"
+    },
+    "STOCK_CORE": {
+      "affected_dates": "historical replay matrix",
+      "affected_entities": "frozen matrix",
+      "affected_fields": "replay output",
+      "capability_scope": "STOCK_CORE",
+      "evidence": [
+        "G03_ADJUSTMENT_REPRODUCIBILITY"
+      ],
+      "reasons": [
+        "Execution halted at G03 upstream blocker"
+      ],
+      "status": "BLOCKED"
+    },
+    "WEEKLY_PERIOD": {
+      "affected_dates": "historical replay matrix",
+      "affected_entities": "frozen matrix",
+      "affected_fields": "replay output",
+      "capability_scope": "WEEKLY_PERIOD",
+      "evidence": [
+        "G03_ADJUSTMENT_REPRODUCIBILITY"
+      ],
+      "reasons": [
+        "Execution halted at G03 upstream blocker"
+      ],
+      "status": "BLOCKED"
+    }
+  },
+  "contract_id": "V4_05_REPLAY_GATE_A_AUDIT_R1",
+  "data_factor_replay_pass": false,
+  "frozen_matrix": "reports/v4_05/V4_05_REPLAY_DATE_MATRIX_R1.json",
+  "gates": {
+    "G01_TDX_SOURCE_IDENTITY": {
+      "accepted_inputs_verified": [
+        "calendar",
+        "calendar_szse",
+        "daily",
+        "factors",
+        "market_regime",
+        "monthly",
+        "profile",
+        "tdx_archive",
+        "trading_status",
+        "universe",
+        "weekly"
+      ],
+      "archive_sha256": "b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f",
+      "status": "PASS"
+    },
+    "G02_HISTORICAL_UNIVERSE": {
+      "later_listing_early_rows": 0,
+      "later_listing_recent_rows": 1,
+      "recent_board_entities_found": [
+        "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "SEC-002610CF9EBB4227722834AADA8F757E",
+        "SEC-0051683845B17D59641B7D1DC261FE2A"
+      ],
+      "status": "PASS_SAMPLED_BOUNDARY"
+    },
+    "G03_ADJUSTMENT_REPRODUCIBILITY": {
+      "accepted_v4_02_pit_receipt": "reports/v4_02/V4_02_CANONICAL_DAILY_PIT_20260924_085207Z_stage_receipt.json",
+      "accepted_v4_02_receipt": "reports/v4_02/V4_02_DATA_PERIOD_MAINLINE_FINAL_ACCEPTANCE_R2.json",
+      "lineage_counts": [
+        {
+          "first_trade_date": 20230704,
+          "knowledge_lineage": "DIAGNOSTIC_NON_PIT_CURRENT_METADATA_SNAPSHOT",
+          "last_trade_date": 20260924,
+          "rows": 4026611
+        }
+      ],
+      "reason": "AS_RECORDED historical adjustment availability cannot be proved from current-metadata snapshot",
+      "status": "BLOCKED"
+    },
+    "G04_DAILY_DETERMINISM": {
+      "status": "NOT_RUN_BLOCKED_BY_G03"
+    },
+    "G05_FORMAL_PERIOD_ASOF": {
+      "status": "NOT_RUN_BLOCKED_BY_G03"
+    },
+    "G06_FACTOR_MAX_SOURCE_DATE": {
+      "status": "NOT_RUN_BLOCKED_BY_G03"
+    },
+    "G07_CORE_PROFILE_REPLAY": {
+      "status": "NOT_RUN_BLOCKED_BY_G03"
+    },
+    "G08_REVISION_IDEMPOTENCY": {
+      "status": "NOT_RUN_BLOCKED_BY_G03"
+    }
+  },
+  "next_stage": "BLOCKED_PENDING_SEPARATELY_ACCEPTED_HISTORICAL_ADJUSTMENT_PIT_REPAIR",
+  "status": "V4_05_BLOCKED_UPSTREAM_DEFECT_HISTORICAL_ADJUSTED_PRICE_PIT_LINEAGE",
+  "v4_08_sector_pit": "SEPARATELY_BLOCKED"
+}

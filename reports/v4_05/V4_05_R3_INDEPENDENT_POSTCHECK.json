@@ -1,0 +1,40 @@
+{
+  "checks": {
+    "accepted_head_binding": true,
+    "calendar:SSE": true,
+    "calendar:SZSE": true,
+    "capability_scope": true,
+    "daily_history": true,
+    "determinism": true,
+    "factor_row_set": true,
+    "historical_block": true,
+    "market_reference": true,
+    "market_regime": true,
+    "period_digest": true,
+    "period_hash": true,
+    "period_target_coverage": true,
+    "prior_rps_bootstrap": true,
+    "profile_quality": true,
+    "profile_row_set": true,
+    "revision": true,
+    "source:gbbq_snapshot": true,
+    "source:official_tdx_package": true,
+    "target_coordinates": true,
+    "target_row_set": true,
+    "temporal": true,
+    "unknown_no_bar": true,
+    "unknown_propagation": true,
+    "v4_08_block": true
+  },
+  "contract_id": "V4_05_R3_INDEPENDENT_POSTCHECK_V1",
+  "daily_rows_scanned": 1299408,
+  "factor_rows_scanned": 5222,
+  "period_current_counts": {
+    "MONTHLY:QFQ": 5222,
+    "MONTHLY:RAW": 5222,
+    "WEEKLY:QFQ": 5222,
+    "WEEKLY:RAW": 5222
+  },
+  "profile_rows_scanned": 5222,
+  "status": "PASS"
+}

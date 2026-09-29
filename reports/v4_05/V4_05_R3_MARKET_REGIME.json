@@ -1,0 +1,100 @@
+{
+  "axes": {
+    "as_of": "2026-09-28",
+    "breadth_axis": null,
+    "contract_id": "MARKET_REGIME_V1_PRIMITIVES",
+    "contract_version": "1.0.0",
+    "field_quality": {
+      "breadth_axis": {
+        "quality_state": "UNKNOWN",
+        "unknown_reason": "BREADTH_UNKNOWN_OR_NONFINITE"
+      },
+      "participation_axis": {
+        "quality_state": "OBSERVED",
+        "unknown_reason": null
+      },
+      "stress_change": {
+        "quality_state": "UNKNOWN",
+        "unknown_reason": "STRESS_CHANGE_INPUT_UNKNOWN"
+      },
+      "stress_level": {
+        "quality_state": "UNKNOWN",
+        "unknown_reason": "STRESS_INPUT_OR_COVERAGE_UNKNOWN"
+      }
+    },
+    "identity": {
+      "adjustment_basis_id": "T0_CURRENT_COORDINATE",
+      "input_source_digest": "1b1c0edd93f3f82b3238348127038a64ea34286c5c735abab80467b08c0c912e",
+      "market_calendar_id": "V4_05_R3_CALENDAR:6188c28ae84890b1f2f7c6b44833528bfe5b00b819b25b9fbbedff3022c3b54a",
+      "market_snapshot_id": "3743887f6050124dc551184d86b3fd60a9388e7188fd7abfac165b21eb361cee",
+      "trade_date": "2026-09-28"
+    },
+    "input_digest": "bed7a4ac5d424c1c94d70131b5b3090a1e5f10a67ba08d70092bacf331504091",
+    "output_digest": "bfde53bbf5943e6e0f42fbaa6d794a8fc8cc18d6c37c1403c390d3eee10646b8",
+    "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+    "participation_axis": "NORMAL",
+    "regime_ui_publication": "NOT_PUBLISHED_V4_03",
+    "stress_change": null,
+    "stress_level": null
+  },
+  "contract_id": "V4_05_R3_MARKET_REGIME_REPLAY_V1",
+  "formal_publication_at": "2026-09-29T06:53:52+00:00",
+  "historical_as_recorded_claim": false,
+  "index_reference": {
+    "ma20": 1.3936824592198966,
+    "ma20_t_minus_5": 1.3862551199676536,
+    "path": "reports/v4_03/staging/V4_03_MARKET_REFERENCE_PATH_CANDIDATE_R3.jsonl.gz",
+    "prior_level": 1.4017617235706727,
+    "sha256": "898a6554eaefae1206d5a228e2b99f78743ef2d749d40579862c9a5de1bdaedb",
+    "target_daily_return": -0.022314506957301243,
+    "target_level": 1.3704821018375763
+  },
+  "max_source_trade_date": 20260928,
+  "regime_ui": {
+    "evidence": {
+      "breadth_axis": null,
+      "candidate": "UNKNOWN",
+      "consecutive_count": 0,
+      "last_known": "NEUTRAL",
+      "market_input_digest": "21b8762b91899a0864c20e53ab3d6349124fb0168d7798800b7af5348fb587d8",
+      "participation_axis": "NORMAL",
+      "stress_change": null,
+      "stress_level": null,
+      "trend_axis": "NEUTRAL"
+    },
+    "unknown_reason": "REQUIRED_MARKET_AXIS_UNKNOWN",
+    "value": "UNKNOWN"
+  },
+  "status": "DEGRADED_PASS_FIELD_LOCAL_UNKNOWN",
+  "target_amount_evaluable_count": 5185,
+  "target_index_input_source_digest": "1b1c0edd93f3f82b3238348127038a64ea34286c5c735abab80467b08c0c912e",
+  "target_limit_status": "UNKNOWN_NO_ACCEPTED_SEP28_PRICE_LIMIT_FACTS",
+  "target_row": {
+    "breadth_axis": null,
+    "output_digest": "21b8762b91899a0864c20e53ab3d6349124fb0168d7798800b7af5348fb587d8",
+    "participation_axis": "NORMAL",
+    "stress_change": null,
+    "stress_level": null,
+    "trade_date": "2026-09-28",
+    "trend_axis": "NEUTRAL"
+  },
+  "target_trade_date": "2026-09-28",
+  "trend": {
+    "contract_id": "MARKET_REGIME_TREND_WEAK_ERRATUM_V1",
+    "contract_version": "1.0.0",
+    "identity": {
+      "adjustment_basis_id": "T0_CURRENT_COORDINATE",
+      "input_source_digest": "1b1c0edd93f3f82b3238348127038a64ea34286c5c735abab80467b08c0c912e",
+      "market_calendar_id": "V4_05_R3_CALENDAR:6188c28ae84890b1f2f7c6b44833528bfe5b00b819b25b9fbbedff3022c3b54a",
+      "market_snapshot_id": "3743887f6050124dc551184d86b3fd60a9388e7188fd7abfac165b21eb361cee",
+      "trade_date": "2026-09-28"
+    },
+    "input_digest": "da175de59a49ce581793cfe68040fd73c64b313ee45e64dc09ef1f4689f28c43",
+    "output_digest": "fd71fa98c18014ee2a5a9e2b1f9be0d64fcc79b1b8fd474a4581180396b41ba9",
+    "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+    "quality_state": "OBSERVED",
+    "regime_ui_publication": "NOT_PUBLISHED_V4_03",
+    "trend_axis": "NEUTRAL",
+    "unknown_reason": null
+  }
+}

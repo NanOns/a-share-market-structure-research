@@ -1,0 +1,108 @@
+{
+  "artifacts": {
+    "V4_05_R3_ACCEPTED_INPUT_MANIFEST.json": {
+      "byte_count": 2990,
+      "sha256": "1711236e3104fc20bfe150502d07884cdf4ba852d31200bad1a3badf8f0a0499"
+    },
+    "V4_05_R3_CALENDAR_RECEIPT.json": {
+      "byte_count": 2142,
+      "sha256": "36e4757d70d779e11b5de950ba2ab657dede74167299329e4c60e1b72bff52f6"
+    },
+    "V4_05_R3_CAPABILITY_GATE.json": {
+      "byte_count": 4497,
+      "sha256": "1ec23b0f5c7c5c73291f5b7463a5ec32857544930ed5d97cb4e86375c961d49c"
+    },
+    "V4_05_R3_CLOSURE.md": {
+      "byte_count": 991,
+      "sha256": "25bfce5941395b09b27b7d5d9a2701f6f9fa0637855bbaebb6c920ea92630a9b"
+    },
+    "V4_05_R3_CORE_PROFILE_REPLAY.json": {
+      "byte_count": 2490,
+      "sha256": "7f95edc2f1125f1a2a9d9e4a3741a1f9731fa8cc1783efd71921e9959955b93e"
+    },
+    "V4_05_R3_DAILY_HISTORY_RECEIPT.json": {
+      "byte_count": 1024,
+      "sha256": "51460d30068e985aa16d9a98f4d5b6fb8c58bc5af3496faa8aa6dfcc4dc7e265"
+    },
+    "V4_05_R3_DETERMINISM.json": {
+      "byte_count": 1048,
+      "sha256": "178fac6589ecab3b95e21a148071c672fd719626e26458bf6e5f71533dd41573"
+    },
+    "V4_05_R3_FACTOR_SOURCE_TIME.json": {
+      "byte_count": 8474,
+      "sha256": "bc4ac4484353f229fd206c85d504062f56ff9df898993a9c8a00074ad2d59bee"
+    },
+    "V4_05_R3_FULL_SCOPE_FACTORS_RECEIPT.json": {
+      "byte_count": 3481,
+      "sha256": "302781e94849aff1088028e78eec86d9cf46b5a40dce27a360c395c711e36833"
+    },
+    "V4_05_R3_INDEPENDENT_POSTCHECK.json": {
+      "byte_count": 1051,
+      "sha256": "022aec7a4659a271769fc9662ceacbaf30e2590d0a6261c31d50702cda63a13d"
+    },
+    "V4_05_R3_MARKET_REFERENCE.json": {
+      "byte_count": 3982,
+      "sha256": "7faab4bb40bec9c9d1d95caf83a15fc45f7cd6743661b6bf5b86c0b2c82aca3f"
+    },
+    "V4_05_R3_MARKET_REGIME.json": {
+      "byte_count": 4023,
+      "sha256": "d10dc49430aed873404482e88d32a7752449fa4d469fcd1fbeee5996efad33f3"
+    },
+    "V4_05_R3_PERIOD_ASOF.json": {
+      "byte_count": 2167,
+      "sha256": "79db02ad609029a8f4b92deebcef908d1b7b095e42b9871cad996ad2796cceb6"
+    },
+    "V4_05_R3_REVISION_IDEMPOTENCY.json": {
+      "byte_count": 1468,
+      "sha256": "5f7445b54014355e61aefec9bebb094af9d76d66418a6dbaf38209934cb22198"
+    },
+    "V4_05_R3_RUNTIME_TEST_RECEIPT.json": {
+      "byte_count": 6130,
+      "sha256": "ae3aa3403d132697e06aa9339d2fc34c0180e69ae33b590c562e07d238408762"
+    },
+    "V4_05_R3_STAGE_ENTRY.md": {
+      "byte_count": 571,
+      "sha256": "f216377b99d7d310471e720839658270934647e81099f7317e0ce963b7d0fe4c"
+    },
+    "V4_05_R3_TEMPORAL_LEAKAGE.json": {
+      "byte_count": 1378,
+      "sha256": "e6f96fc19370ddf29d24d95ecb8c9499fec05f2788c6afe24eadce016f133378"
+    },
+    "staging/V4_05_R3_FULL_MARKET_CORE_PROFILE.jsonl.gz": {
+      "byte_count": 48847016,
+      "sha256": "ec27446201b22e16364df617a1ce735e57029bf27f275ec9a8bb159acdc5b3be"
+    },
+    "staging/V4_05_R3_FULL_SCOPE_FACTORS.jsonl.gz": {
+      "byte_count": 30265965,
+      "sha256": "ea7a512ec8e290bb417b4763c989f08bb59e9c881c0a2f59d157ccc3c9801cfc"
+    },
+    "staging/V4_05_R3_PERIOD_ASOF.jsonl.gz": {
+      "byte_count": 60108555,
+      "sha256": "46225dc8bbac4e93e1b6e9d8eb07dda545828f02dc9f6ba44f48cffbdcf36d51"
+    },
+    "staging/V4_05_R3_PURE_CORE_FACTORS.jsonl.gz": {
+      "byte_count": 26822192,
+      "sha256": "c1306e00e970c47973fe98d4b08ed04661c34686d74e24feb12c134790af2ea2"
+    },
+    "staging/V4_05_R3_T0_COORDINATE_DAILY_HISTORY.jsonl.gz": {
+      "byte_count": 52034710,
+      "sha256": "7d67a7d49eb512c7f9e6f78bfde0b7dae329cda356006de1abe6b2dc679ff8c7"
+    }
+  },
+  "contract_id": "V4_05_R3_STAGE_CANDIDATE_MANIFEST_V1",
+  "data_factor_replay_pass": {
+    "scope": "CURRENT_FORWARD_STOCK_CORE",
+    "status": "DEGRADED_PASS"
+  },
+  "external_acceptance": "PENDING",
+  "historical_as_recorded_adjusted_price": "BLOCKED_NO_FIRST_AVAILABILITY_EVIDENCE",
+  "implementation_commit": "fc92ce7292794583ef4bd1bb0d7f33e5f10cccc1",
+  "stage_record": {
+    "acceptance_result": "DEGRADED_PASS_CURRENT_FORWARD_STOCK_CORE_CANDIDATE",
+    "evidence": "R3 hash-bound daily, calendar, period, factor, market, profile, deterministic, temporal, postcheck and runtime receipts",
+    "next_stage": "INDEPENDENT_EXTERNAL_AUDIT_R3",
+    "stage_contract": "V4_05_REPLAY_GATE_A_R3"
+  },
+  "status": "V4_05_DATA_FACTOR_REPLAY_DEGRADED_PASS_CANDIDATE_R3",
+  "tdx_root_write_count": 0
+}

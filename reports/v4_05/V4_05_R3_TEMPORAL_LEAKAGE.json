@@ -1,0 +1,43 @@
+{
+  "additional_positive_checks": 2,
+  "cases": {
+    "A_T_PLUS_ONE_RAW": {
+      "status": "PASS",
+      "test": "test_future_raw_price_does_not_enter_t0_history"
+    },
+    "B_LATER_WEEK_SESSION": {
+      "status": "PASS",
+      "test": "test_future_sessions_cannot_change_monday_or_month_asof[WEEKLY]"
+    },
+    "C_FUTURE_MONTH_END": {
+      "status": "PASS",
+      "test": "test_future_sessions_cannot_change_monday_or_month_asof[MONTHLY]"
+    },
+    "D_FUTURE_IDENTITY": {
+      "status": "PASS",
+      "test": "test_future_identity_metadata_cannot_change_target_membership"
+    },
+    "E_LATER_GBBQ_REVISION": {
+      "status": "PASS",
+      "test": "test_later_gbbq_revision_cannot_replace_accepted_snapshot"
+    },
+    "F_LATE_PROVIDER": {
+      "status": "PASS",
+      "test": "test_late_provider_is_excluded"
+    },
+    "G_FUTURE_FACTOR_SOURCE": {
+      "status": "PASS",
+      "test": "test_future_factor_source_is_hard_blocked"
+    },
+    "H_FUTURE_MARKET_INPUT": {
+      "status": "PASS",
+      "test": "test_future_market_regime_input_is_hard_blocked"
+    }
+  },
+  "command": "python -m pytest -q tests/v4_05/test_replay_gate_a_r3.py",
+  "contract_id": "V4_05_R3_TEMPORAL_NEGATIVE_SUITE_V1",
+  "exit_code": 0,
+  "pytest_summary": "10 passed in 0.92s",
+  "status": "PASS",
+  "test_file_sha256": "0f9773e4ee84a8421a70570cc67e8d87bea6b1a707e2322dfa2643246b4dffab"
+}

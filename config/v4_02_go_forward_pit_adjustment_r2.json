@@ -1,0 +1,27 @@
+{
+  "contract_id": "V4_02_GO_FORWARD_T0_CURRENT_COORDINATE_R2",
+  "version": "2.0.0",
+  "target_trade_date": "2026-09-28",
+  "source_authority": {
+    "raw": "OFFICIAL_TDX_FULL_DAILY_PACKAGE_HASH_BOUND",
+    "adjustment": "GBBQ_SNAPSHOT_20260926T130705Z",
+    "identity": "V4_01_ACCEPTED_DATED_ENTITY_MAP_AND_UNIVERSE"
+  },
+  "coordinate_basis": "T0_CURRENT_COORDINATE",
+  "historical_as_recorded_claim": false,
+  "knowledge_lineage": "PIT_OBSERVED_AFTER_FORMAL_PUBLICATION",
+  "formal_publication_not_before": "MAX(OFFICIAL_RAW_CAPTURE_FINISHED_AT, GBBQ_SYSTEM_AVAILABLE_AT)",
+  "adjustment_engine": "tdx-affine-qfq-v0.2",
+  "event_policy": {
+    "source_snapshot": "ONLY_FROZEN_20260926_GBBQ",
+    "effective_date_max": "2026-09-28",
+    "supported_price_event_categories": [1],
+    "unsupported_or_unknown_price_event_disposition": "ADJUSTED_UNAVAILABLE_UNSUPPORTED_OR_UNKNOWN_EVENT",
+    "non_price_event_disposition": "IGNORE_FOR_QFQ_BUT_RETAIN_IN_VISIBLE_EVENT_SET",
+    "no_target_raw_bar_disposition": "ADJUSTED_UNAVAILABLE_NO_T0_RAW",
+    "later_snapshot_rule": "DIAGNOSTIC_ONLY_NO_RETROACTIVE_T0_REWRITE"
+  },
+  "output_scope": "ALL_ACCEPTED_REQUIRED_BOARD_IDENTITIES_AT_T0",
+  "bse_policy": "OPTIONAL_DEGRADED",
+  "no_baostock_qfq_fallback": true
+}

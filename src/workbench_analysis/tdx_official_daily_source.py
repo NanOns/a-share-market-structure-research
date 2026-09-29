@@ -53,7 +53,8 @@ def _request(url: str, *, timeout: int = 30) -> Any:
     validate_official_url(url)
     opener = urllib.request.build_opener(_AllowlistedRedirect())
     request = urllib.request.Request(url, headers={
-        "User-Agent": "V4-DM01-official-source/1.0",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0 Safari/537.36",
+        "Referer": PAGE_URL,
         "Accept": "text/html,application/javascript,application/zip,*/*;q=0.5",
         "Cache-Control": "no-cache, max-age=0",
         "Pragma": "no-cache",
@@ -193,9 +194,11 @@ def _zip_validate(path: Path) -> dict[str, Any]:
                 if total > MAX_ZIP_TOTAL_BYTES:
                     raise TDXSourceError("TDX_ZIP_TOTAL_SIZE_LIMIT_EXCEEDED")
                 if name.lower().endswith(".day"):
-                    prefix = name.lower().split("/", 1)[0]
-                    if prefix in {"sh", "sz", "bj"}:
-                        day_markets.add(prefix)
+                    market_parts = [part.lower() for part in parts if part]
+                    if market_parts and market_parts[0] in {"sh", "sz", "bj"}:
+                        day_markets.add(market_parts[0])
+                    elif len(market_parts) >= 3 and market_parts[1] in {"sh", "sz", "bj"}:
+                        day_markets.add(market_parts[1])
             if not {"sh", "sz"}.issubset(day_markets):
                 raise TDXSourceError("TDX_ZIP_REQUIRED_MARKET_DAILY_ENTRIES_MISSING")
             bad_entry = archive.testzip()

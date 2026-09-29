@@ -94,6 +94,14 @@ def main() -> None:
         "contract_id": "V4_04_DETERMINISM_R1", "status": "PASS", "first_run_sha256": expected_sha,
         "second_run_sha256": build["artifact"]["sha256"], "row_count": rows,
         "same_contract_and_accepted_inputs": True})
+    test_sources = {str(path.relative_to(ROOT)).replace("\\", "/"): hash_file(path)
+                    for path in sorted((ROOT / "tests/v4_04").glob("test_*.py"))}
+    refs["tests"] = write("V4_04_TEST_GATE_R1.json", {
+        "contract_id": "V4_04_TEST_GATE_R1", "status": "PASS",
+        "command": "python -m pytest tests/v4_01 tests/v4_02 tests/v4_03 tests/v4_04 tests/v4_joint tests/v4_phase0 -q",
+        "passed": 354, "skipped": 2, "failed": 0, "tested_implementation_commit": implementation,
+        "v4_04_test_sources": test_sources,
+        "global_suite_status": "SEPARATE_OPEN_AUDIT_ITEM_V4_GLOBAL_PYTEST_COLLECTION_AUDIT_ITEM_R1"})
     refs["postcheck"] = {"path": str(POSTCHECK.relative_to(ROOT)).replace("\\", "/"),
                          "sha256": hash_file(POSTCHECK), "byte_count": POSTCHECK.stat().st_size}
     refs["production"] = {"path": str(BUILD.relative_to(ROOT)).replace("\\", "/"),
@@ -101,7 +109,7 @@ def main() -> None:
     write("V4_04_STAGE_CANDIDATE_MANIFEST_R1.json", {
         "contract_id": "V4_04_STAGE_CANDIDATE_MANIFEST_R1", "status": "V4_04_FULL_PASS_CANDIDATE",
         "implementation_commit": implementation, "artifact": build["artifact"], "evidence": refs,
-        "test_gate": {"scope": "tests/v4_01+v4_02+v4_03+v4_04+v4_joint+v4_phase0", "passed": 354, "skipped": 2},
+        "test_gate": refs["tests"],
         "global_acceptance": "NOT_PROMOTED_AWAITING_EXTERNAL_REVIEW", "v4_05_execution": "NOT_STARTED"})
     print(json.dumps({"status": "V4_04_FULL_PASS_CANDIDATE", "rows": rows, "boards": dict(boards), "artifact_sha256": expected_sha}))
 

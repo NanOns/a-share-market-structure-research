@@ -198,7 +198,7 @@
       },
       {
         "audit_id": "V4_02_PRICE_LIMIT_RANGE_EXCEPTION_AUDIT_R4",
-        "current_fail_closed_unknown_rows": 31,
+        "r4_fail_closed_exception_subset_rows": 31,
         "receipt_path": "reports/v4_02/V4_02_PRICE_LIMIT_RANGE_EXCEPTION_AUDIT_R4.json",
         "receipt_sha256": "975f3ce59260e6a35d4c407026823b8d99c9cc65eacbc36be201f0bfbcf64292",
         "stage_gate_disposition": "PASS_UNDISPOSITIONED_ENGINEERING_EXCEPTIONS_ZERO",
@@ -207,24 +207,30 @@
       }
     ],
     "canonical_rebuild_performed": false,
-    "current_fail_closed_unknown_rows": 31,
     "current_open_engineering_exception": 0,
     "entry": "V4_02_EXTERNALLY_ACCEPTED_R6; R4_RANGE_AUDIT_CLOSED",
     "known_open_capabilities": [],
-    "next_stage": "V4_03_AMENDED_SCOPE_CANDIDATE; WAIT_FOR_JOINT_EXTERNAL_ACCEPTANCE",
+    "next_stage": "JOINT_FINAL_EXTERNAL_ACCEPTANCE",
     "open_audits": [],
+    "price_limit_unknown_counts": {
+      "r4_fail_closed_exception_subset_rows": 31,
+      "r6_price_limit_total_unknown_rows": 77,
+      "r6_unknown_special_phase_rows": 31,
+      "undispositioned_engineering_exceptions": 0,
+      "unknown_rows_claimed_resolved": 0
+    },
     "stage_acceptance": "PASS_WITH_BSE_SCOPE_DEGRADED",
     "stage_acceptance_external": "EXTERNALLY_ACCEPTED_R6",
-    "stage_implementation": "FINAL_CLOSURE_PACK_R2_PASS; R6_EXTERNAL_ACCEPTANCE_PRESERVED; R4_RANGE_AUDIT_CLOSED; 31_CURRENT_ROWS_RETAINED_UNKNOWN_FAIL_CLOSED; UNDISPOSITIONED_ENGINEERING_EXCEPTIONS_ZERO",
+    "stage_implementation": "FINAL_CLOSURE_PACK_R2_PASS; R6_EXTERNAL_ACCEPTANCE_PRESERVED; R4_RANGE_AUDIT_CLOSED; R6_PRICE_LIMIT_TOTAL_UNKNOWN=77; R6_UNKNOWN_SPECIAL_PHASE=31; R4_FAIL_CLOSED_EXCEPTION_SUBSET=31; UNDISPOSITIONED_ENGINEERING_EXCEPTIONS_ZERO",
     "upstream_rebind": {
       "performed": false,
-      "reason": "R7 identity and universe hashes remain unchanged; V4-01 R9 remains candidate-only pending external acceptance.",
+      "reason": "R7 identity and universe hashes remain unchanged; V4-01 R10 remains a candidate pending joint external acceptance.",
       "required": false,
       "v4_01_identity_map_sha256": "e33294fb8d1d71732fdc3df903258b5617345811ecbdb649af8056ccd91427e0",
       "v4_01_universe_sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b"
     }
   },
-  "current_truth_reconciliation_receipt": "reports/v4_02/V4_02_CURRENT_TRUTH_RECONCILIATION_R1.json",
+  "current_truth_reconciliation_receipt": "reports/v4_02/V4_02_CURRENT_TRUTH_RECONCILIATION_R2.json",
   "entry": {
     "bse_policy": "OPTIONAL_DEGRADED_ISOLATED",
     "generic_degraded_pass_allowed": false,
@@ -258,10 +264,12 @@
     "r3": "HISTORICAL_BLOCKED",
     "r4": "CLOSED",
     "r4_current_exception_rows": 53,
-    "r4_fail_closed_unknown_rows": 31,
+    "r4_fail_closed_exception_subset_rows": 31,
     "r4_resolved_special_phase_rows": 22,
+    "r6_price_limit_total_unknown_rows": 77,
+    "r6_unknown_special_phase_rows": 31,
     "undispositioned_engineering_exceptions": 0,
-    "unknown_rows_are_not_claimed_as_cause_resolved": true
+    "unknown_rows_claimed_resolved": 0
   },
   "stage": "V4-02",
   "superseded_dispositions": [

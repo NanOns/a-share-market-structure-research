@@ -18,12 +18,13 @@ R6_HEAD = Path("data/v4/V4_02_ACCEPTED_HEAD.json")
 R6_RECEIPT = Path("reports/v4_02/V4_02_FINAL_RECEIPT_R6.json")
 R6_EXTERNAL = Path("reports/v4_02/V4_02_FINAL_EXTERNAL_ACCEPTANCE_R6.json")
 R6_POSTCHECK = Path("reports/v4_02/V4_02_FINAL_INDEPENDENT_POSTCHECK_R6.json")
+R6_BUILD = Path("reports/v4_02/V4_02_PRICE_LIMIT_BUILD_R6.json")
 R8_POSTCHECK = Path("reports/v4_02/V4_02_R8_CROSS_STAGE_POSTCHECK_20260928.json")
 R4_AUDIT = Path("reports/v4_02/V4_02_PRICE_LIMIT_RANGE_EXCEPTION_AUDIT_R4.json")
 R4_CAPTURE_INDEX = Path("reports/v4_02/V4_02_R4_OFFICIAL_SOURCE_CAPTURE_INDEX.json")
 IDENTITY = Path("data/v4/artifact_store/v4_01/security_entity_map_R7_20260927.json")
 UNIVERSE = Path("data/v4/artifact_store/v4_01/v4_01_historical_universe_required_R7_20260927.jsonl.gz")
-OUTPUT = Path("reports/v4_02/V4_02_CURRENT_TRUTH_RECONCILIATION_R1.json")
+OUTPUT = Path("reports/v4_02/V4_02_CURRENT_TRUTH_RECONCILIATION_R2.json")
 
 
 def sha(path: Path) -> str:
@@ -63,6 +64,7 @@ def main() -> int:
     receipt = load(R6_RECEIPT)
     external = load(R6_EXTERNAL)
     postcheck = load(R6_POSTCHECK)
+    build = load(R6_BUILD)
     r8_postcheck = load(R8_POSTCHECK)
     r4_audit = load(R4_AUDIT)
     capture_index = load(R4_CAPTURE_INDEX)
@@ -92,6 +94,16 @@ def main() -> int:
         global_input_identity["v4_01_identity_map_sha256"] == r8_postcheck.get("r8_binding", {}).get("canonical_identity_sha256")
         and global_input_identity["v4_01_universe_sha256"] == r8_postcheck.get("r8_binding", {}).get("canonical_historical_universe_sha256")
     )
+    r6_total_unknown = int(build.get("unknown_rows", -1))
+    r6_unknown_special_phase = int(build.get("special_phase_counts", {}).get("UNKNOWN_SPECIAL_PHASE", -1))
+    r4_fail_closed_subset = int(r4_audit.get("scope", {}).get("r3_fail_closed_dispositioned", -1))
+    r4_undispositioned = int(r4_audit.get("scope", {}).get("undispositioned_engineering_exceptions", -1))
+    unknown_counts_match = (
+        r6_total_unknown == 77
+        and r6_unknown_special_phase == 31
+        and r4_fail_closed_subset == 31
+        and r4_undispositioned == 0
+    )
 
     blockers = []
     if not head_binds:
@@ -102,6 +114,8 @@ def main() -> int:
         blockers.append("R4_RANGE_AUDIT_NOT_CLOSED_OR_EVIDENCE_INCOMPLETE")
     if not canonical_unchanged:
         blockers.append("V4_01_CANONICAL_INPUT_IDENTITY_CHANGED_REBUILD_OR_REBIND_REQUIRED")
+    if not unknown_counts_match:
+        blockers.append("V4_02_UNKNOWN_COUNT_BREAKDOWN_DOES_NOT_MATCH_R6_AND_R4_EVIDENCE")
 
     mapping.setdefault("current_disposition", {})
     current = mapping["current_disposition"]
@@ -114,16 +128,24 @@ def main() -> int:
     current["stage_acceptance"] = "PASS_WITH_BSE_SCOPE_DEGRADED" if not blockers else "BLOCKED_CURRENT_TRUTH_RECONCILIATION"
     current["stage_implementation"] = (
         "FINAL_CLOSURE_PACK_R2_PASS; R6_EXTERNAL_ACCEPTANCE_PRESERVED; R4_RANGE_AUDIT_CLOSED; "
-        "31_CURRENT_ROWS_RETAINED_UNKNOWN_FAIL_CLOSED; UNDISPOSITIONED_ENGINEERING_EXCEPTIONS_ZERO"
+        "R6_PRICE_LIMIT_TOTAL_UNKNOWN=77; R6_UNKNOWN_SPECIAL_PHASE=31; "
+        "R4_FAIL_CLOSED_EXCEPTION_SUBSET=31; UNDISPOSITIONED_ENGINEERING_EXCEPTIONS_ZERO"
     )
     current["current_open_engineering_exception"] = 0 if r4_closed else r4_audit.get("scope", {}).get("undispositioned_engineering_exceptions")
-    current["current_fail_closed_unknown_rows"] = int(r4_audit.get("scope", {}).get("r3_fail_closed_dispositioned", -1))
+    current.pop("current_fail_closed_unknown_rows", None)
+    current["price_limit_unknown_counts"] = {
+        "r6_price_limit_total_unknown_rows": r6_total_unknown,
+        "r6_unknown_special_phase_rows": r6_unknown_special_phase,
+        "r4_fail_closed_exception_subset_rows": r4_fail_closed_subset,
+        "undispositioned_engineering_exceptions": r4_undispositioned,
+        "unknown_rows_claimed_resolved": 0,
+    }
     current["accepted_head_unchanged"] = True
     current["canonical_rebuild_performed"] = False
     current["upstream_rebind"] = {
         "required": not canonical_unchanged,
         "performed": False,
-        "reason": "R7 identity and universe hashes remain unchanged; V4-01 R9 remains candidate-only pending external acceptance." if canonical_unchanged else "Input identity changed; rebind is blocked until accepted V4-01 head exists.",
+        "reason": "R7 identity and universe hashes remain unchanged; V4-01 R10 remains a candidate pending joint external acceptance." if canonical_unchanged else "Input identity changed; rebind is blocked until accepted V4-01 head exists.",
         **global_input_identity,
     }
     current["audit_history"] = [
@@ -144,7 +166,7 @@ def main() -> int:
             "status": r4_audit.get("status"),
             "stage_gate_disposition": r4_audit.get("stage_gate_disposition"),
             "undispositioned_engineering_exceptions": r4_audit.get("scope", {}).get("undispositioned_engineering_exceptions"),
-            "current_fail_closed_unknown_rows": r4_audit.get("scope", {}).get("r3_fail_closed_dispositioned"),
+            "r4_fail_closed_exception_subset_rows": r4_fail_closed_subset,
             "receipt_path": R4_AUDIT.as_posix(),
             "receipt_sha256": sha(R4_AUDIT),
         },
@@ -153,18 +175,20 @@ def main() -> int:
         {"receipt": R4_AUDIT.as_posix(), "sha256": sha(R4_AUDIT), "status": r4_audit.get("status"), "scope": "Current range exceptions remain fail-closed and audit closure failed."}
     ]
     current["known_open_capabilities"] = [] if not blockers else blockers
-    current["next_stage"] = "V4_03_AMENDED_SCOPE_CANDIDATE; WAIT_FOR_JOINT_EXTERNAL_ACCEPTANCE" if not blockers else "REPAIR_CURRENT_TRUTH_BLOCKERS"
+    current["next_stage"] = "JOINT_FINAL_EXTERNAL_ACCEPTANCE" if not blockers else "REPAIR_CURRENT_TRUTH_BLOCKERS"
     mapping["price_limit_current_truth"] = {
         "r1": "SUPERSEDED",
         "r3": "HISTORICAL_BLOCKED",
         "r4": "CLOSED" if r4_closed else r4_audit.get("status"),
         "r4_current_exception_rows": r4_audit.get("scope", {}).get("r3_current_exception_rows"),
-        "r4_fail_closed_unknown_rows": r4_audit.get("scope", {}).get("r3_fail_closed_dispositioned"),
+        "r6_price_limit_total_unknown_rows": r6_total_unknown,
+        "r6_unknown_special_phase_rows": r6_unknown_special_phase,
+        "r4_fail_closed_exception_subset_rows": r4_fail_closed_subset,
         "r4_resolved_special_phase_rows": r4_audit.get("scope", {}).get("r3_resolved_special_phase"),
-        "undispositioned_engineering_exceptions": r4_audit.get("scope", {}).get("undispositioned_engineering_exceptions"),
+        "undispositioned_engineering_exceptions": r4_undispositioned,
         "fail_closed_missing_evidence": r4_audit.get("scope", {}).get("fail_closed_missing_evidence"),
         "current_open_engineering_exception": 0 if r4_closed else None,
-        "unknown_rows_are_not_claimed_as_cause_resolved": True,
+        "unknown_rows_claimed_resolved": 0,
     }
     current["stage_acceptance_external"] = "EXTERNALLY_ACCEPTED_R6" if not blockers else "RETAIN_PREVIOUS_ACCEPTANCE; RECONCILIATION_BLOCKED"
     mapping["current_truth_reconciliation_receipt"] = OUTPUT.as_posix()
@@ -184,8 +208,8 @@ def main() -> int:
     status = "PASS_CURRENT_TRUTH_RECONCILIATION" if not blockers else "BLOCKED"
     observed = datetime.now(timezone.utc).isoformat(timespec="seconds")
     report = {
-        "contract_id": "V4_02_CURRENT_TRUTH_RECONCILIATION_R1",
-        "version": "1.0.0-candidate",
+        "contract_id": "V4_02_CURRENT_TRUTH_RECONCILIATION_R2",
+        "version": "2.0.0-candidate",
         "stage": "V4-02 CURRENT TRUTH RECONCILIATION",
         "status": status,
         "observed_at_utc": observed,
@@ -202,6 +226,7 @@ def main() -> int:
             "v4_02_final_receipt_r6": identity(R6_RECEIPT),
             "v4_02_external_acceptance_r6": identity(R6_EXTERNAL),
             "v4_02_independent_postcheck_r6": identity(R6_POSTCHECK),
+            "v4_02_price_limit_build_r6": identity(R6_BUILD),
             "v4_02_cross_stage_postcheck_r8": identity(R8_POSTCHECK),
             "v4_02_price_limit_range_audit_r4": identity(R4_AUDIT),
             "r4_official_source_capture_index": identity(R4_CAPTURE_INDEX),
@@ -213,25 +238,31 @@ def main() -> int:
             "external_acceptance": "EXTERNALLY_ACCEPTED_R6",
             "price_limit_audits": {"R1": "SUPERSEDED", "R3": "HISTORICAL_BLOCKED", "R4": "CLOSED" if r4_closed else r4_audit.get("status")},
             "r4_current_exception_rows": r4_audit.get("scope", {}).get("r3_current_exception_rows"),
-            "r4_fail_closed_unknown_rows": r4_audit.get("scope", {}).get("r3_fail_closed_dispositioned"),
-            "r4_undispositioned_engineering_exceptions": r4_audit.get("scope", {}).get("undispositioned_engineering_exceptions"),
+            "r6_price_limit_total_unknown_rows": r6_total_unknown,
+            "r6_unknown_special_phase_rows": r6_unknown_special_phase,
+            "r4_fail_closed_exception_subset_rows": r4_fail_closed_subset,
+            "undispositioned_engineering_exceptions": r4_undispositioned,
             "current_open_engineering_exception": 0 if r4_closed else None,
             "unknown_rows_claimed_resolved": 0,
             "r7_canonical_inputs_unchanged": canonical_unchanged,
             "v4_02_rebuild": False,
-            "v4_01_upstream_rebind": "NOT_REQUIRED_CANONICAL_HASHES_UNCHANGED; WAIT_FOR_R9_EXTERNAL_ACCEPTANCE",
+            "v4_01_upstream_rebind": "NOT_REQUIRED_CANONICAL_HASHES_UNCHANGED; WAIT_FOR_R10_FINAL_EXTERNAL_ACCEPTANCE",
         },
         "checks": {
             "r6_accepted_head_and_receipt_bind": head_binds,
             "r6_external_acceptance_and_postchecks_pass": r6_checks,
             "r4_audit_closed_and_all_rows_dispositioned": r4_closed,
+            "r6_total_unknown_equals_r6_build": r6_total_unknown == 77,
+            "r6_unknown_special_phase_subset_equals_31": r6_unknown_special_phase == 31,
+            "r4_fail_closed_exception_subset_equals_31": r4_fail_closed_subset == 31,
+            "unknown_rows_claimed_resolved_is_zero": True,
             "r7_identity_and_universe_hashes_unchanged": canonical_unchanged,
         },
         "blockers": blockers,
         "stage_record": {
-            "evidence": "R6 external acceptance + R6/R8 independent postchecks + R4 row disposition audit; no rebuild",
+            "evidence": "R6 external acceptance and build counts + R6/R8 independent postchecks + separately counted R4 exception subset; no rebuild",
             "acceptance_result": status,
-            "next_stage": "BIND_TO_V4_01_R9_AFTER_EXTERNAL_ACCEPTANCE" if status.startswith("PASS") else "REPAIR_LISTED_BLOCKERS",
+            "next_stage": "BIND_TO_V4_01_R10_AFTER_FINAL_EXTERNAL_ACCEPTANCE" if status.startswith("PASS") else "REPAIR_LISTED_BLOCKERS",
         },
         "execution_identity": {
             "input_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
@@ -241,7 +272,7 @@ def main() -> int:
     }
     report_bytes = (json.dumps(report, ensure_ascii=False, sort_keys=True, indent=2) + "\n").encode("utf-8")
     atomic_write(OUTPUT, report_bytes)
-    print(json.dumps({"status": status, "blockers": blockers, "mapping_sha256": updated_mapping_sha, "receipt_sha256": hashlib.sha256(report_bytes).hexdigest(), "current_open_engineering_exception": mapping["price_limit_current_truth"]["current_open_engineering_exception"], "current_fail_closed_unknown_rows": mapping["price_limit_current_truth"]["r4_fail_closed_unknown_rows"]}, ensure_ascii=False, indent=2))
+    print(json.dumps({"status": status, "blockers": blockers, "mapping_sha256": updated_mapping_sha, "receipt_sha256": hashlib.sha256(report_bytes).hexdigest(), "current_open_engineering_exception": mapping["price_limit_current_truth"]["current_open_engineering_exception"], "r6_price_limit_total_unknown_rows": r6_total_unknown, "r6_unknown_special_phase_rows": r6_unknown_special_phase, "r4_fail_closed_exception_subset_rows": r4_fail_closed_subset}, ensure_ascii=False, indent=2))
     return 0 if status.startswith("PASS") else 2
 
 

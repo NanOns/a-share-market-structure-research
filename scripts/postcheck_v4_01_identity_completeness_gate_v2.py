@@ -16,6 +16,19 @@ from datetime import date, datetime
 from pathlib import Path
 from typing import Any
 
+try:
+    from v4_01_generic_relation_resolution import (
+        build_candidate_union,
+        candidates_from_events,
+        validate_resolution_coverage,
+    )
+except ModuleNotFoundError:  # imported by tests as scripts.postcheck_...
+    from scripts.v4_01_generic_relation_resolution import (
+        build_candidate_union,
+        candidates_from_events,
+        validate_resolution_coverage,
+    )
+
 ROOT = Path(__file__).resolve().parents[1]
 UNIVERSE = Path("data/v4/artifact_store/v4_01/v4_01_historical_universe_required_R7_20260927.jsonl.gz")
 IDENTITY = Path("data/v4/artifact_store/v4_01/security_entity_map_R7_20260927.json")
@@ -29,17 +42,18 @@ GATE = Path("config/v4_01_identity_completeness_gate_v2.json")
 FINGERPRINT_CONTRACT = Path("config/v4_01_source_fingerprint_candidate_v1.json")
 OFFICIAL_INDEX = Path("data/v4/source_evidence/official_code_change_event_index/official_security_code_change_events_v1.jsonl")
 OFFICIAL_COVERAGE = Path("data/v4/source_evidence/official_code_change_event_index/coverage_receipt_v1.json")
-OFFICIAL_PDF = Path("data/v4/source_evidence/v4_02_r3/szse_2025_028_code_change_302132.pdf")
-FROZEN_DIAGNOSTIC = Path("reports/v4_01/V4_01_CODE_CHANGE_SOURCE_FINGERPRINT_300114_302132_R1.json")
+REPORTS_V401 = Path("reports/v4_01")
 BLIND_RECEIPT = Path("reports/v4_01/V4_01_SOURCE_FINGERPRINT_CANDIDATE_BLIND_VALIDATION_R1.json")
 BLIND_LABELS = Path("config/v4_01_source_fingerprint_blind_labels_v1.json")
 EXTERNAL_CODE_REVIEW = Path("docs/evidence/V4_01_CODE_CHANGE_SOURCE_FINGERPRINT_EXTERNAL_ACCEPTANCE_20260929.md")
 EXTERNAL_BLIND_REVIEW = Path("docs/evidence/V4_01_SOURCE_FINGERPRINT_BLIND_STUDY_EXTERNAL_ACCEPTANCE_R1_20260929.md")
-CORRECTION_DISPOSITION = Path("docs/audits/V4_01_CODE_CHANGE_SOURCE_FINGERPRINT_EXTERNAL_ACCEPTANCE_CORRECTION_R2_20260929.md")
+EXTERNAL_AUDIT = Path("docs/evidence/V4_00_01_02_03_FOUNDATION_CANDIDATE_EXTERNAL_AUDIT_R1_20260929.md")
+REPAIR_TASK = Path("docs/evidence/V4_00_01_02_03_FOUNDATION_FINAL_REPAIR_TASK_R3_20260929.md")
+EXTERNAL_REVIEW_HEAD = "ecfcc3209404df5ccc7daaf6af905459cc075542"
 CALIBRATION_AUDIT = Path("docs/audits/V4_01_SOURCE_FINGERPRINT_CALIBRATION_AUDIT_ITEM_R1_20260929.md")
-OUTPUT_RESOLUTION = Path("reports/v4_01/V4_01_IDENTITY_RELATION_RESOLUTION_R1.json")
-OUTPUT_POSTCHECK = Path("reports/v4_01/V4_01_IDENTITY_COMPLETENESS_GATE_V2_POSTCHECK_R1.json")
-OUTPUT_FINAL_CANDIDATE = Path("reports/v4_01/V4_01_FINAL_STAGE_CANDIDATE_R9.json")
+OUTPUT_RESOLUTION = Path("reports/v4_01/V4_01_IDENTITY_RELATION_RESOLUTION_R2.json")
+OUTPUT_POSTCHECK = Path("reports/v4_01/V4_01_IDENTITY_COMPLETENESS_GATE_V2_POSTCHECK_R2.json")
+OUTPUT_FINAL_CANDIDATE = Path("reports/v4_01/V4_01_FINAL_STAGE_CANDIDATE_R10.json")
 OUTPUT_HEAD_CANDIDATE = Path("data/v4/V4_01_ACCEPTED_HEAD_CANDIDATE.json")
 REQUIRED_BOARDS = {"SH_MAIN", "SZ_MAIN", "CHINEXT", "STAR"}
 DAY = struct.Struct("<IIIIIfII")
@@ -106,6 +120,238 @@ def decode_day(raw: bytes, code: str) -> tuple[dict[str, dict[str, Any]], dict[s
         "first_date": next(iter(rows), None),
         "last_date": next(reversed(rows), None),
         "sha256": hashlib.sha256(raw).hexdigest(),
+    }
+
+
+def independent_tdx_comparison(archive: zipfile.ZipFile, candidate: dict[str, Any], contract: dict[str, Any]) -> dict[str, Any]:
+    old_code = str(candidate["old_source_security_key"]).upper()
+    new_code = str(candidate["new_source_security_key"]).upper()
+    effective_date = str(candidate["effective_date"])
+    try:
+        old_raw = archive.read(archive_member(old_code))
+        new_raw = archive.read(archive_member(new_code))
+    except KeyError as exc:
+        return {
+            "decoded": False,
+            "error": "TDX_MEMBER_MISSING",
+            "missing_member": str(exc),
+            "old": None,
+            "new": None,
+            "shared_pre_effective_sessions": 0,
+            "ohlc_amount_exact_count": 0,
+            "volume_exact_count": 0,
+            "volume_exact_ratio": None,
+            "semantic_candidate_match": False,
+        }
+    old_rows, old_meta = decode_day(old_raw, old_code)
+    new_rows, new_meta = decode_day(new_raw, new_code)
+    shared = sorted(day for day in old_rows.keys() & new_rows.keys() if day < effective_date)
+    strict_exact = sum(
+        all(old_rows[day][field] == new_rows[day][field] for field in STRICT_FIELDS)
+        for day in shared
+    )
+    volume_exact = sum(old_rows[day]["volume"] == new_rows[day]["volume"] for day in shared)
+    threshold = contract.get("research_thresholds", {})
+    minimum_sessions = int(threshold.get("minimum_shared_sessions", 20))
+    minimum_volume_ratio = float(threshold.get("tdx_volume_exact_ratio_minimum", 0.95))
+    decoded = all(
+        meta["tail_bytes"] == 0
+        and meta["duplicate_dates"] == 0
+        and meta["non_increasing_dates"] == 0
+        for meta in (old_meta, new_meta)
+    )
+    ratio = volume_exact / len(shared) if shared else None
+    return {
+        "decoded": decoded,
+        "old": old_meta,
+        "new": new_meta,
+        "shared_pre_effective_sessions": len(shared),
+        "ohlc_amount_exact_count": strict_exact,
+        "volume_exact_count": volume_exact,
+        "volume_exact_ratio": ratio,
+        "semantic_candidate_match": bool(
+            decoded
+            and len(shared) >= minimum_sessions
+            and strict_exact == len(shared)
+            and ratio is not None
+            and ratio >= minimum_volume_ratio
+        ),
+        "thresholds": {
+            "minimum_shared_sessions": minimum_sessions,
+            "tdx_volume_exact_ratio_minimum": minimum_volume_ratio,
+            "used_for_identity_confirmation": False,
+        },
+    }
+
+
+def frozen_baostock_evidence(candidate: dict[str, Any]) -> dict[str, Any]:
+    old_code = str(candidate["old_source_security_key"]).lower()
+    new_code = str(candidate["new_source_security_key"]).lower()
+    old_digits, new_digits = old_code.split(".", 1)[-1], new_code.split(".", 1)[-1]
+    stem = f"V4_01_CODE_CHANGE_SOURCE_FINGERPRINT_{old_digits}_{new_digits}_R1.json"
+    relative = REPORTS_V401 / stem
+    source_path = ROOT / relative
+    compressed = False
+    if not source_path.is_file():
+        relative = REPORTS_V401 / f"{stem}.gz"
+        source_path = ROOT / relative
+        compressed = source_path.is_file()
+    if not source_path.is_file():
+        return {"available": False, "status": "NOT_AVAILABLE_FOR_CANDIDATE"}
+    try:
+        if compressed:
+            with gzip.open(source_path, "rt", encoding="utf-8") as stream:
+                diagnostic = json.load(stream)
+        else:
+            diagnostic = json.loads(source_path.read_text(encoding="utf-8"))
+        long_history = diagnostic.get("baostock", {}).get("long_history", {})
+        old_rows = long_history.get(old_code, {}).get("raw_rows", [])
+        new_rows = long_history.get(new_code, {}).get("raw_rows", [])
+        old_by_date = {str(row.get("date")): row for row in old_rows}
+        new_by_date = {str(row.get("date")): row for row in new_rows}
+        shared_dates = sorted((old_by_date.keys() & new_by_date.keys()))
+        value_fields = sorted((old_by_date[shared_dates[0]].keys() & new_by_date[shared_dates[0]].keys()) - {"code", "date"}) if shared_dates else []
+        exact_dates = [
+            day for day in shared_dates
+            if all(old_by_date[day].get(field) == new_by_date[day].get(field) for field in value_fields)
+        ]
+        return {
+            "available": True,
+            "status": "FROZEN_PAIR_EVIDENCE_READ" if old_rows and new_rows else "FROZEN_REPORT_PAIR_ROWS_INCOMPLETE",
+            "path": relative.as_posix(),
+            "sha256": file_sha(relative),
+            "compressed": compressed,
+            "old_query_row_count": len(old_rows),
+            "new_query_row_count": len(new_rows),
+            "shared_date_count": len(shared_dates),
+            "exact_shared_bar_count_excluding_query_code": len(exact_dates),
+            "compared_fields": value_fields,
+            "used_for_identity_confirmation": False,
+        }
+    except (OSError, ValueError, json.JSONDecodeError) as exc:
+        return {
+            "available": True,
+            "status": "FROZEN_REPORT_READ_FAILED",
+            "path": relative.as_posix(),
+            "sha256": file_sha(relative),
+            "error": type(exc).__name__,
+            "used_for_identity_confirmation": False,
+        }
+
+
+def _dated_identity_pair(
+    candidate: dict[str, Any], identity_records: list[dict[str, Any]]
+) -> dict[str, Any]:
+    old_code = candidate["old_source_security_key"]
+    new_code = candidate["new_source_security_key"]
+    effective = candidate["effective_date"]
+    prior = (date.fromisoformat(effective) - timedelta(days=1)).isoformat()
+    old_rows = [row for row in identity_records if row.get("source_security_key") == old_code]
+    new_rows = [row for row in identity_records if row.get("source_security_key") == new_code]
+    old = next((row for row in old_rows if row.get("symbol_effective_to") == prior or row.get("effective_to") == prior), None)
+    new = next((row for row in new_rows if row.get("symbol_effective_from") == effective or row.get("effective_from") == effective), None)
+    old_id = (old or {}).get("security_id")
+    new_id = (new or {}).get("security_id")
+    return {
+        "boundary_facts_match": old is not None and new is not None,
+        "same_security_id": bool(old_id and old_id == new_id),
+        "distinct_security_ids": bool(old_id and new_id and old_id != new_id),
+        "old_fact": old,
+        "new_fact": new,
+    }
+
+
+def _verified_official_event(
+    candidate: dict[str, Any], official_events: list[dict[str, Any]]
+) -> tuple[dict[str, Any] | None, dict[str, Any]]:
+    key = (
+        candidate["old_source_security_key"],
+        candidate["new_source_security_key"],
+        candidate["effective_date"],
+    )
+    for event in official_events:
+        event_key = (
+            str(event.get("old_source_security_key") or "").upper(),
+            str(event.get("new_source_security_key") or "").upper(),
+            str(event.get("effective_date") or ""),
+        )
+        if event_key != key:
+            continue
+        relative = Path(str(event.get("source_capture_path") or ""))
+        resolved = (ROOT / relative).resolve()
+        root_resolved = ROOT.resolve()
+        safe_path = resolved == root_resolved or root_resolved in resolved.parents
+        actual_hash = file_sha(relative) if safe_path and (ROOT / relative).is_file() else None
+        bound_hash = str(event.get("source_capture_sha256") or "")
+        return event, {
+            "event_index_match": True,
+            "capture_path": relative.as_posix(),
+            "capture_sha256_bound": bound_hash or None,
+            "capture_sha256_actual": actual_hash,
+            "capture_hash_verified": bool(bound_hash and actual_hash == bound_hash),
+            "entity_relation": event.get("entity_relation"),
+            "evidence_class": event.get("evidence_class"),
+        }
+    return None, {"event_index_match": False, "capture_hash_verified": False}
+
+
+def resolve_candidate(
+    candidate: dict[str, Any],
+    *,
+    archive: zipfile.ZipFile,
+    identity_records: list[dict[str, Any]],
+    official_events: list[dict[str, Any]],
+    fingerprint_contract: dict[str, Any],
+) -> dict[str, Any]:
+    tdx = independent_tdx_comparison(archive, candidate, fingerprint_contract)
+    baostock = frozen_baostock_evidence(candidate)
+    identity_pair = _dated_identity_pair(candidate, identity_records)
+    official_event, official_evidence = _verified_official_event(candidate, official_events)
+    relation = str((official_event or {}).get("entity_relation") or "").upper()
+    identity_revision_bound = bool(
+        identity_pair["boundary_facts_match"]
+        and identity_pair["same_security_id"]
+        and identity_pair["old_fact"].get("source_revision_id")
+        and identity_pair["old_fact"].get("source_revision_id") == identity_pair["new_fact"].get("source_revision_id")
+    )
+    official_verified = official_evidence.get("capture_hash_verified") is True
+
+    resolution = "UNRESOLVED_IDENTITY_RELATION"
+    basis = "NO_MATCHING_INDEPENDENT_OFFICIAL_OR_ACCEPTED_DATED_IDENTITY_EVIDENCE"
+    if identity_revision_bound and (official_verified or str(identity_pair["old_fact"].get("source_revision_id", "")).startswith("sha256:")):
+        resolution = "CONFIRMED_SAME_ENTITY_CODE_CHANGE"
+        basis = "ACCEPTED_DATED_IDENTITY_INTERVALS_WITH_SHARED_SECURITY_ID_AND_BOUND_SOURCE_REVISION"
+    if official_verified and identity_pair["boundary_facts_match"]:
+        if relation in {"SAME_ENTITY", "SAME_ENTITY_CODE_CHANGE", "CODE_CHANGE_SAME_ENTITY"} and identity_pair["same_security_id"]:
+            resolution = "CONFIRMED_SAME_ENTITY_CODE_CHANGE"
+            basis = "HASH_VERIFIED_OFFICIAL_SAME_ENTITY_EVENT_AND_ACCEPTED_DATED_IDENTITY_FACTS"
+        elif relation in {"DISTINCT_MERGER_SUCCESSOR", "MERGER_SUCCESSOR", "DISTINCT_ENTITY_MERGER_SUCCESSOR"} and identity_pair["distinct_security_ids"]:
+            resolution = "CONFIRMED_DISTINCT_MERGER_SUCCESSOR"
+            basis = "HASH_VERIFIED_OFFICIAL_MERGER_SUCCESSOR_EVENT_AND_DISTINCT_ACCEPTED_IDENTITY_FACTS"
+        elif relation in {"DISTINCT_CODE_REUSE", "CODE_REUSE", "REUSED_CODE_DISTINCT_ENTITY"} and identity_pair["distinct_security_ids"]:
+            resolution = "CONFIRMED_DISTINCT_CODE_REUSE"
+            basis = "HASH_VERIFIED_OFFICIAL_CODE_REUSE_EVENT_AND_DISTINCT_ACCEPTED_IDENTITY_FACTS"
+
+    return {
+        **candidate,
+        "resolution": resolution,
+        "resolution_basis": basis,
+        "source_fingerprint_candidate": "CANDIDATE_DISCOVERY_ONLY" if "source_fingerprint_scan" in candidate.get("sources", []) else "NOT_A_SOURCE_FINGERPRINT_SCAN_CANDIDATE",
+        "independent_confirmation": {
+            "official_event": official_evidence,
+            "accepted_dated_identity": {
+                "boundary_facts_match": identity_pair["boundary_facts_match"],
+                "same_security_id": identity_pair["same_security_id"],
+                "distinct_security_ids": identity_pair["distinct_security_ids"],
+                "old_fact": identity_pair["old_fact"],
+                "new_fact": identity_pair["new_fact"],
+            },
+        },
+        "independent_source_replay": {
+            "tdx_semantic_redecode": tdx,
+            "frozen_baostock_evidence": baostock,
+        },
+        "canonical_identity_mutation": False,
     }
 
 
@@ -203,7 +449,6 @@ def main() -> int:
     identity_map = load_json(IDENTITY)
     r8_check = load_json(R8_POSTCHECK)
     r83_check = load_json(R83_POSTCHECK)
-    diagnostic = load_json(FROZEN_DIAGNOSTIC)
     blind_receipt = load_json(BLIND_RECEIPT)
     labels = load_json(BLIND_LABELS)
     coverage_receipt = load_json(OFFICIAL_COVERAGE)
@@ -232,10 +477,37 @@ def main() -> int:
         and universe_hash == bound_universe.get("sha256")
     )
 
+    identity_records = identity_map.get("records", [])
+    official_events = [json.loads(line) for line in (ROOT / OFFICIAL_INDEX).read_text(encoding="utf-8").splitlines() if line.strip()]
+    window_start = str(scan["scope"]["first_session"])
+    window_end = str(scan["scope"]["last_session"])
+    r8_generic_candidates = candidates_from_events(
+        discovery.get("events", []),
+        source="r8_generic_relation",
+        window_start=window_start,
+        window_end=window_end,
+        identity_records=identity_records,
+        require_required_scope=True,
+    )
+    known_official_candidates = candidates_from_events(
+        official_events,
+        source="known_official_event",
+        window_start=window_start,
+        window_end=window_end,
+    )
+    candidate_union = build_candidate_union(
+        scan.get("relation_candidates", []),
+        r8_generic_candidates,
+        known_official_candidates,
+        window_start=window_start,
+        window_end=window_end,
+    )
+
     entry_expectations = {item["source_security_key"]: item for item in scan_boundaries["source_entries"]}
     entry_checks = {item["source_security_key"]: item for item in scan_boundaries["entry_tdx_checks"]}
     recomputed_pre_effective: list[dict[str, Any]] = []
     archive_entry_hashes_match = True
+    candidate_resolutions = []
     with zipfile.ZipFile(ROOT / ARCHIVE) as archive:
         for code, entry in entry_expectations.items():
             member = archive_member(code)
@@ -256,64 +528,41 @@ def main() -> int:
                 archive_entry_hashes_match = False
             if first_date < entry["entry_date"]:
                 recomputed_pre_effective.append({"source_security_key": code, "entry_date": entry["entry_date"], "tdx_first_date": first_date})
+        fingerprint_contract = load_json(FINGERPRINT_CONTRACT)
+        for candidate in candidate_union.values():
+            candidate_resolutions.append(resolve_candidate(
+                candidate,
+                archive=archive,
+                identity_records=identity_records,
+                official_events=official_events,
+                fingerprint_contract=fingerprint_contract,
+            ))
 
-        candidate_pair = ("SZ.300114", "SZ.302132", "2025-02-17")
-        old_info = archive.getinfo(archive_member(candidate_pair[0]))
-        new_info = archive.getinfo(archive_member(candidate_pair[1]))
-        with archive.open(old_info, "r") as source:
-            old_raw = source.read()
-        with archive.open(new_info, "r") as source:
-            new_raw = source.read()
-    old, old_meta = decode_day(old_raw, candidate_pair[0])
-    new, new_meta = decode_day(new_raw, candidate_pair[1])
-    shared = sorted(day for day in old.keys() & new.keys() if day < candidate_pair[2])
-    strict_exact = 0
-    volume_exact = 0
-    for day in shared:
-        strict_exact += int(all(old[day][field] == new[day][field] for field in STRICT_FIELDS))
-        volume_exact += int(old[day]["volume"] == new[day]["volume"])
-    semantic_check = (
-        old_meta["tail_bytes"] == new_meta["tail_bytes"] == 0
-        and old_meta["duplicate_dates"] == new_meta["duplicate_dates"] == 0
-        and old_meta["non_increasing_dates"] == new_meta["non_increasing_dates"] == 0
-        and len(shared) >= 20
-        and strict_exact == len(shared)
-        and volume_exact / len(shared) >= 0.95
+    resolution_coverage = validate_resolution_coverage(candidate_union, candidate_resolutions)
+    candidate_tdx_decode_complete = all(
+        item["independent_source_replay"]["tdx_semantic_redecode"].get("decoded") is True
+        for item in candidate_resolutions
     )
-    expected_pair = next((item for item in scan["relation_candidates"] if (item["old_source_security_key"], item["new_source_security_key"], item["effective_date"]) == candidate_pair), None)
-    scan_pair_matches = bool(expected_pair) and (
-        expected_pair["tdx_semantic_comparison"]["shared_pre_effective_sessions"] == len(shared)
-        and expected_pair["tdx_semantic_comparison"]["ohlc_amount_exact_count"] == strict_exact
-        and expected_pair["tdx_semantic_comparison"]["volume_exact_count"] == volume_exact
-        and expected_pair["tdx_semantic_comparison"]["old"]["sha256"] == old_meta["sha256"]
-        and expected_pair["tdx_semantic_comparison"]["new"]["sha256"] == new_meta["sha256"]
-    )
-
-    records = identity_map.get("records", [])
-    old_identity = next((item for item in records if item.get("source_security_key") == "SZ.300114"), None)
-    new_identity = next((item for item in records if item.get("source_security_key") == "SZ.302132"), None)
-    official_events = [json.loads(line) for line in (ROOT / OFFICIAL_INDEX).read_text(encoding="utf-8").splitlines() if line.strip()]
-    official_event = next((item for item in official_events if item.get("old_source_security_key") == "SZ.300114" and item.get("new_source_security_key") == "SZ.302132"), None)
-    official_pdf_hash = file_sha(OFFICIAL_PDF)
-    official_identity_confirmed = bool(
-        old_identity and new_identity and official_event
-        and old_identity.get("security_id") == new_identity.get("security_id")
-        and old_identity.get("source_revision_id") == new_identity.get("source_revision_id")
-        and old_identity.get("symbol_effective_to") == "2025-02-16"
-        and new_identity.get("symbol_effective_from") == "2025-02-17"
-        and old_identity.get("source_revision_id") == f"sha256:{official_pdf_hash}"
-        and official_event.get("source_capture_sha256") == official_pdf_hash
-        and official_event.get("entity_relation") == "SAME_ENTITY"
-        and official_event.get("effective_date") == "2025-02-17"
-    )
-
-    old_rows = diagnostic.get("baostock", {}).get("long_history", {}).get("sz.300114", {}).get("raw_rows", [])
-    new_rows = diagnostic.get("baostock", {}).get("long_history", {}).get("sz.302132", {}).get("raw_rows", [])
-    row_fields = ("date", "open", "high", "low", "close", "preclose", "volume", "amount", "adjustflag", "turn", "tradestatus", "isST")
-    old_bar = next((row for row in old_rows if row.get("date") == "2025-02-14"), None)
-    new_bar = next((row for row in new_rows if row.get("date") == "2025-02-14"), None)
-    alias_bar_exact = bool(old_bar and new_bar and all(old_bar.get(field) == new_bar.get(field) for field in row_fields))
-    alias_bar_exact = alias_bar_exact and old_bar.get("tradestatus") == "1" and new_bar.get("tradestatus") == "1"
+    scan_candidate_by_key = {
+        (item["old_source_security_key"], item["new_source_security_key"], item["effective_date"]): item
+        for item in scan.get("relation_candidates", [])
+    }
+    scan_candidate_replays_match = True
+    for item in candidate_resolutions:
+        key = (item["old_source_security_key"], item["new_source_security_key"], item["effective_date"])
+        scanned = scan_candidate_by_key.get(key)
+        replay = item["independent_source_replay"]["tdx_semantic_redecode"]
+        if scanned is not None:
+            expected = scanned.get("tdx_semantic_comparison", {})
+            scan_candidate_replays_match &= (
+                expected.get("shared_pre_effective_sessions") == replay.get("shared_pre_effective_sessions")
+                and expected.get("ohlc_amount_exact_count") == replay.get("ohlc_amount_exact_count")
+                and expected.get("volume_exact_count") == replay.get("volume_exact_count")
+                and expected.get("old", {}).get("sha256") == replay.get("old", {}).get("sha256")
+                and expected.get("new", {}).get("sha256") == replay.get("new", {}).get("sha256")
+            )
+    # Fixed blind labels stay inside known_bounded_validation_crosschecks and
+    # never contribute keys to the Required Scope candidate union.
     blind_case_pairs = {
         "BLIND-01": ("SZ.300114", "SZ.302132", "CONFIRMED_SAME_ENTITY_CODE_CHANGE"),
         "BLIND-02": ("SZ.000022", "SZ.001872", "CONFIRMED_SAME_ENTITY_CODE_CHANGE"),
@@ -357,52 +606,16 @@ def main() -> int:
             "canonical_identity_changed": False,
         })
 
-    r83_boundary = discovery.get("boundary_events", [])
-    known_official_pair_in_boundary_or_resolution = any(
-        item.get("source_security_key") == "SZ.300114" and item.get("linked_to_relation_candidate") is True
-        for item in r83_boundary
-    ) and any(item["old_source_security_key"] == "SZ.300114" and item["new_source_security_key"] == "SZ.302132" for item in benchmark_resolutions)
-    candidate_resolution = "CONFIRMED_SAME_ENTITY_CODE_CHANGE" if official_identity_confirmed and semantic_check and alias_bar_exact else "UNRESOLVED_IDENTITY_RELATION"
-    resolution_items = [
-        {
-            "candidate_id": expected_pair.get("candidate_id") if expected_pair else None,
-            "old_source_security_key": "SZ.300114",
-            "new_source_security_key": "SZ.302132",
-            "effective_date": "2025-02-17",
-            "resolution": candidate_resolution,
-            "resolution_basis": "OFFICIAL_DATED_CODE_CHANGE_NOTICE_AND_ACCEPTED_R7_ALIAS_FACT; source fingerprint remains candidate-only",
-            "source_fingerprint_candidate": "STRONG_ALIAS_MIGRATION_SOURCE_FINGERPRINT_CANDIDATE",
-            "independent_confirmation": {
-                "official_notice_path": OFFICIAL_PDF.as_posix(),
-                "official_notice_sha256": official_pdf_hash,
-                "official_event_index_path": OFFICIAL_INDEX.as_posix(),
-                "official_event_index_sha256": file_sha(OFFICIAL_INDEX),
-                "accepted_identity_map_path": IDENTITY.as_posix(),
-                "accepted_identity_map_sha256": identity_hash,
-                "dated_alias_fact": {
-                    "source_revision_id": old_identity.get("source_revision_id") if old_identity else None,
-                    "same_security_id": bool(old_identity and new_identity and old_identity.get("security_id") == new_identity.get("security_id")),
-                    "old_symbol_effective_to": old_identity.get("symbol_effective_to") if old_identity else None,
-                    "new_symbol_effective_from": new_identity.get("symbol_effective_from") if new_identity else None,
-                },
-            },
-            "independent_source_replay": {
-                "tdx_archive_semantic_check": semantic_check,
-                "tdx_shared_pre_effective_sessions": len(shared),
-                "tdx_ohlc_amount_exact_count": strict_exact,
-                "tdx_volume_exact_count": volume_exact,
-                "tdx_volume_exact_ratio": volume_exact / len(shared) if shared else None,
-                "baostock_identical_actual_bar_date": "2025-02-14" if alias_bar_exact else None,
-                "baostock_duplicate_alias_bar_fields_exact": alias_bar_exact,
-                "prior_classifier_correction_path": CORRECTION_DISPOSITION.as_posix(),
-                "prior_classifier_correction_sha256": file_sha(CORRECTION_DISPOSITION),
-            },
-            "canonical_identity_mutation": False,
-        }
-    ]
-    resolution_items.extend(benchmark_resolutions[1:])
-    # The four bounded blind cases are cross-checks, not extra full-scope scan discoveries.
-    unresolved = sum(item["resolution"] == "UNRESOLVED_IDENTITY_RELATION" for item in resolution_items)
+    r8_keys = {
+        (item["old_source_security_key"], item["new_source_security_key"], item["effective_date"])
+        for item in r8_generic_candidates
+    }
+    official_keys = {
+        (item["old_source_security_key"], item["new_source_security_key"], item["effective_date"])
+        for item in known_official_candidates
+    }
+    union_keys = set(candidate_union)
+    unresolved = resolution_coverage["unresolved_count"]
 
     checks = {
         "accepted_input_hash_bindings_match_global_head": input_bindings_match,
@@ -412,11 +625,11 @@ def main() -> int:
             {"source_security_key": item["new_source_security_key"], "entry_date": item["entry_date"], "tdx_first_date": item["tdx_first_date"]}
             for item in scan.get("source_fingerprint_anomalies", [])
         ],
-        "candidate_pair_independently_redecoded": scan_pair_matches and semantic_check,
-        "official_notice_and_accepted_dated_alias_confirm_pair": official_identity_confirmed,
-        "frozen_baostock_alias_bar_replayed": alias_bar_exact,
+        "all_union_candidates_independently_tdx_decoded": candidate_tdx_decode_complete,
+        "scan_candidate_tdx_replays_match_scan": scan_candidate_replays_match,
         "four_bounded_official_label_crosschecks_verified": benchmark_evidence_ok,
-        "known_r8_3_official_event_recovered": known_official_pair_in_boundary_or_resolution,
+        "r8_generic_candidates_included_in_union": r8_keys.issubset(union_keys),
+        "in_window_known_official_candidates_included_in_union": official_keys.issubset(union_keys),
         "r8_and_r8_3_postchecks_pass": r8_check.get("status") == "PASS" and r83_check.get("status") == "PASS",
         "official_event_index_incomplete_but_retained_as_cross_check": (
             bool(coverage_receipt.get("coverage_receipts"))
@@ -431,13 +644,13 @@ def main() -> int:
         "tdx_archive_unchanged_during_postcheck": file_sha(ARCHIVE) == archive_hash,
         "production_identity_unchanged": file_sha(IDENTITY) == identity_hash and file_sha(UNIVERSE) == universe_hash,
     }
-    checks["resolution_complete"] = unresolved == 0 and all(item["resolution"] != "UNRESOLVED_IDENTITY_RELATION" for item in resolution_items)
+    checks["resolution_complete"] = resolution_coverage["status"] == "PASS" and unresolved == 0
     postcheck_status = "PASS_INDEPENDENT_POSTCHECK" if all(checks.values()) else "BLOCKED"
     observed_at = datetime.now().astimezone().isoformat(timespec="seconds")
 
     resolution = {
-        "contract_id": "V4_01_IDENTITY_RELATION_RESOLUTION_R1",
-        "version": "1.0.0-candidate",
+        "contract_id": "V4_01_IDENTITY_RELATION_RESOLUTION_R2",
+        "version": "2.0.0-candidate",
         "stage": "V4-01 RELATION CANDIDATE RESOLUTION",
         "status": "RESOLVED_CANDIDATE" if checks["resolution_complete"] else "BLOCKED",
         "observed_at": observed_at,
@@ -449,29 +662,41 @@ def main() -> int:
             "candidate_thresholds_changed": False,
             "fingerprint_auto_confirmation": False,
             "production_identity_mutation": False,
+            "candidate_union_key": ["old_source_security_key", "new_source_security_key", "effective_date"],
+            "candidate_union_sources": ["source_fingerprint_scan", "r8_generic_relation", "known_official_event"],
+            "resolution_coverage_must_equal_candidate_union": True,
         },
         "inputs": {
             path.as_posix(): file_identity(path)
             for path in (
-                SCAN, DISCOVERY, IDENTITY, OFFICIAL_INDEX, OFFICIAL_COVERAGE, OFFICIAL_PDF, FROZEN_DIAGNOSTIC,
+                SCAN, DISCOVERY, IDENTITY, OFFICIAL_INDEX, OFFICIAL_COVERAGE,
                 BLIND_RECEIPT, BLIND_LABELS, EXTERNAL_CODE_REVIEW, EXTERNAL_BLIND_REVIEW,
-                CORRECTION_DISPOSITION, CALIBRATION_AUDIT,
+                EXTERNAL_AUDIT, REPAIR_TASK, CALIBRATION_AUDIT,
             )
         },
-        "required_scope_relation_candidates": resolution_items[:1],
-        "known_bounded_validation_crosschecks": resolution_items[1:],
+        "candidate_union": [candidate_union[key] for key in sorted(candidate_union)],
+        "required_scope_relation_candidates": candidate_resolutions,
+        "known_bounded_validation_crosschecks": benchmark_resolutions,
+        "resolution_coverage": resolution_coverage,
         "summary": {
-            "required_scope_candidate_count": len(scan.get("relation_candidates", [])),
-            "required_scope_confirmed_same_entity_count": sum(item["resolution"] == "CONFIRMED_SAME_ENTITY_CODE_CHANGE" for item in resolution_items[:1]),
-            "required_scope_confirmed_distinct_count": 0,
-            "required_scope_unresolved_count": sum(item["resolution"] == "UNRESOLVED_IDENTITY_RELATION" for item in resolution_items[:1]),
+            "required_scope_candidate_count": len(candidate_union),
+            "resolution_count": len(candidate_resolutions),
+            "required_scope_confirmed_same_entity_count": sum(item["resolution"] == "CONFIRMED_SAME_ENTITY_CODE_CHANGE" for item in candidate_resolutions),
+            "required_scope_confirmed_distinct_merger_successor_count": sum(item["resolution"] == "CONFIRMED_DISTINCT_MERGER_SUCCESSOR" for item in candidate_resolutions),
+            "required_scope_confirmed_distinct_code_reuse_count": sum(item["resolution"] == "CONFIRMED_DISTINCT_CODE_REUSE" for item in candidate_resolutions),
+            "required_scope_unresolved_count": unresolved,
+            "candidate_union_source_counts": {
+                "source_fingerprint_scan": len(scan.get("relation_candidates", [])),
+                "r8_generic_relation": len(r8_generic_candidates),
+                "in_window_known_official_event": len(known_official_candidates),
+            },
             "known_event_index_coverage_complete": all(item.get("coverage_complete") is True for item in coverage_receipt.get("coverage_receipts", [])),
             "known_event_index_role": "KNOWN_EVENT_CROSS_CHECK_AND_CONFIRMATION_SOURCE; NOT_SOLE_EXHAUSTIVE_COMPLETENESS_GATE",
             "canonical_identity_changed": False,
             "next_stage": "INDEPENDENT_COMPLETENESS_POSTCHECK_AND_CANDIDATE_RECEIPT" if checks["resolution_complete"] else "BLOCKED_LIST_UNRESOLVED_PAIR_AND_MINIMUM_CONFIRMATION_GAP",
         },
         "stage_record": {
-            "evidence": "official dated code change notice + hash-bound R7 alias fact + source-fingerprint candidate + frozen BaoStock row replay + blind-labeled official crosschecks",
+            "evidence": "Full candidate union, one independent TDX decode per canonical relation key, matching accepted identity and hash-bound official evidence where available, frozen BaoStock evidence where available, and blind crosschecks",
             "acceptance_result": "CANDIDATE_RESOLUTION_COMPLETE" if checks["resolution_complete"] else "BLOCKED",
             "next_stage": "INDEPENDENT_COMPLETENESS_POSTCHECK" if checks["resolution_complete"] else "RESOLVE_ONLY_LISTED_PAIR",
         },
@@ -480,8 +705,8 @@ def main() -> int:
     resolution_sha = hashlib.sha256(resolution_bytes).hexdigest()
 
     postcheck = {
-        "contract_id": "V4_01_IDENTITY_COMPLETENESS_GATE_V2_POSTCHECK",
-        "version": "1.0.0-candidate",
+        "contract_id": "V4_01_IDENTITY_COMPLETENESS_GATE_V2_POSTCHECK_R2",
+        "version": "2.0.0-candidate",
         "stage": "V4-01 INDEPENDENT IDENTITY COMPLETENESS POSTCHECK",
         "status": postcheck_status,
         "observed_at": observed_at,
@@ -495,7 +720,7 @@ def main() -> int:
         },
         "inputs": {
             path.as_posix(): file_identity(path)
-            for path in (UNIVERSE, IDENTITY, GLOBAL_HEAD, ARCHIVE, DISCOVERY, R8_POSTCHECK, R83_POSTCHECK, SCAN, FROZEN_DIAGNOSTIC, BLIND_RECEIPT, BLIND_LABELS, OFFICIAL_INDEX, OFFICIAL_COVERAGE, OFFICIAL_PDF, CALIBRATION_AUDIT)
+            for path in (UNIVERSE, IDENTITY, GLOBAL_HEAD, ARCHIVE, DISCOVERY, R8_POSTCHECK, R83_POSTCHECK, SCAN, BLIND_RECEIPT, BLIND_LABELS, OFFICIAL_INDEX, OFFICIAL_COVERAGE, EXTERNAL_AUDIT, REPAIR_TASK, CALIBRATION_AUDIT)
         },
         "recomputed_scope": {
             "rows_scanned": independent["rows_scanned"],
@@ -509,27 +734,14 @@ def main() -> int:
             "duplicate_source_key_session_rows": independent["duplicate_source_key_session_rows"],
             "board_rows": independent["board_rows"],
         },
-        "recomputed_tdx_candidate": {
-            "old": old_meta,
-            "new": new_meta,
-            "shared_pre_effective_sessions": len(shared),
-            "ohlc_amount_exact_count": strict_exact,
-            "volume_exact_count": volume_exact,
-            "volume_exact_ratio": volume_exact / len(shared) if shared else None,
-            "thresholds": load_json(FINGERPRINT_CONTRACT).get("research_thresholds"),
-        },
-        "replayed_baostock_alias_bar": {
-            "date": "2025-02-14",
-            "old_query_code": old_bar.get("code") if old_bar else None,
-            "new_query_code": new_bar.get("code") if new_bar else None,
-            "business_fields_exact_excluding_query_code": alias_bar_exact,
-            "interpretation": "PROVIDER_ALIAS_DUPLICATION_SIGNAL; not an independent confirmation source",
-        },
+        "candidate_resolution_replay_count": len(candidate_resolutions),
+        "candidate_tdx_decode_complete": candidate_tdx_decode_complete,
+        "candidate_union_key_set": [list(key) for key in sorted(candidate_union)],
         "checks": checks,
         "resolution_receipt": {"path": OUTPUT_RESOLUTION.as_posix(), "sha256": resolution_sha},
         "summary": {
             "unlinked_boundary_anomalies": int(discovery.get("unlinked_boundary_anomaly_count", -1)),
-            "required_scope_unresolved_identity_relations": sum(item["resolution"] == "UNRESOLVED_IDENTITY_RELATION" for item in resolution_items[:1]),
+            "required_scope_unresolved_identity_relations": unresolved,
             "official_event_index_exhaustiveness_claimed": False,
             "source_fingerprint_calibration": "DEFERRED_NON_BLOCKING_RESEARCH",
             "next_stage": "BUILD_FINAL_STAGE_CANDIDATE_WITH_EXTERNAL_ACCEPTANCE_PENDING" if postcheck_status == "PASS_INDEPENDENT_POSTCHECK" else "BLOCKED_REPAIR_FAILED_CHECKS",
@@ -551,16 +763,16 @@ def main() -> int:
     head_candidate = {
         "contract_id": "V4_01_ACCEPTED_HEAD_CANDIDATE_V1",
         "stage": "V4-01",
-        "status": "FULL_PASS_CANDIDATE",
+        "status": "FULL_PASS_CANDIDATE" if postcheck_status == "PASS_INDEPENDENT_POSTCHECK" else "BLOCKED",
         "external_acceptance": "PENDING_EXTERNAL_REVIEW",
         "candidate_only": True,
         "required_scope": {
-            "status": "FULL_PASS_CANDIDATE",
+            "status": "FULL_PASS_CANDIDATE" if postcheck_status == "PASS_INDEPENDENT_POSTCHECK" else "BLOCKED",
             "boards": sorted(REQUIRED_BOARDS),
             "history_start": scan["scope"]["first_session"],
             "history_end": scan["scope"]["last_session"],
             "sessions": scan["scope"]["session_count"],
-            "unresolved_identity_relations": sum(item["resolution"] == "UNRESOLVED_IDENTITY_RELATION" for item in resolution_items[:1]),
+            "unresolved_identity_relations": unresolved,
             "unlinked_boundary_anomalies": int(discovery.get("unlinked_boundary_anomaly_count", -1)),
         },
         "optional_scope": {"BSE": "DEGRADED_OPTIONAL_EXCLUDED_FROM_REQUIRED_GATE"},
@@ -601,11 +813,17 @@ def main() -> int:
     head_sha = hashlib.sha256(head_bytes).hexdigest()
 
     final_candidate = {
-        "contract_id": "V4_01_FINAL_STAGE_CANDIDATE_R9",
-        "version": "9.0.0-candidate",
+        "contract_id": "V4_01_FINAL_STAGE_CANDIDATE_R10",
+        "version": "10.0.0-candidate",
         "stage": "V4-01 FINAL STAGE",
         "status": "FULL_PASS_CANDIDATE" if postcheck_status == "PASS_INDEPENDENT_POSTCHECK" and checks["resolution_complete"] else "BLOCKED",
         "external_acceptance": "PENDING_EXTERNAL_REVIEW",
+        "gate_contract_external_acceptance": "ACCEPTED_BY_EXTERNAL_AUDIT_20260929",
+        "gate_contract_acceptance_evidence": {
+            "external_review_head": EXTERNAL_REVIEW_HEAD,
+            "audit_document": file_identity(EXTERNAL_AUDIT),
+            "repair_task_document": file_identity(REPAIR_TASK),
+        },
         "observed_at": observed_at,
         "identity_candidate": {"path": OUTPUT_HEAD_CANDIDATE.as_posix(), "sha256": head_sha},
         "canonical_identity_unchanged": True,
@@ -628,15 +846,17 @@ def main() -> int:
 
     print(json.dumps({
         "status": postcheck_status,
-        "required_scope_candidate_resolution": candidate_resolution,
+        "required_scope_candidate_count": len(candidate_union),
+        "required_scope_resolution_count": len(candidate_resolutions),
+        "required_scope_unresolved_count": unresolved,
+        "resolution_coverage": resolution_coverage["status"],
         "checks_passed": sum(bool(value) for value in checks.values()),
         "checks_total": len(checks),
         "source_rows": independent["rows_scanned"],
         "sessions": len(independent["session_dates"]),
         "entry_boundaries": len(independent["entries"]),
         "exit_boundaries": len(independent["exits"]),
-        "candidate_shared_sessions": len(shared),
-        "candidate_volume_exact_ratio": volume_exact / len(shared) if shared else None,
+        "candidate_tdx_redecoded": candidate_tdx_decode_complete,
         "resolution_sha256": resolution_sha,
         "postcheck_sha256": postcheck_sha,
         "head_candidate_sha256": head_sha,

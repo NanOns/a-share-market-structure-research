@@ -29,6 +29,7 @@ V403_NATIVE_ACCEPTANCE = Path("reports/v4_03/V4_03_NATIVE_CONTRACT_ACCEPTANCE_R3
 V403_PRODUCER_CHECK = Path("reports/v4_03/V4_03_CONTRACT_PRODUCER_CONSISTENCY_R3.json")
 V403_VECTOR_ACCEPTANCE = Path("reports/v4_03/V4_03_AST_GOLDEN_VECTOR_ACCEPTANCE_R3.json")
 AMENDMENT_DOC = Path("docs/audits/V4_03_SECTOR_OWNERSHIP_AMENDMENT_V1_20260929.md")
+EXTERNAL_AUDIT = Path("docs/evidence/V4_00_01_02_03_FOUNDATION_CANDIDATE_EXTERNAL_AUDIT_R1_20260929.md")
 AMENDMENT_RECEIPT = Path("reports/v4_03/V4_03_SECTOR_OWNERSHIP_AMENDMENT_R1.json")
 RESEAL_CANDIDATE = Path("reports/v4_03/V4_03_FOUNDATION_RESEAL_CANDIDATE_R1.json")
 V400_RECEIPT = Path("reports/v4_phase0/V4_00_CURRENT_AUTHORITY_NORMALIZATION_R1.json")
@@ -92,6 +93,11 @@ def main() -> int:
     native = load(V403_NATIVE_ACCEPTANCE)
     producer = load(V403_PRODUCER_CHECK)
     vectors = load(V403_VECTOR_ACCEPTANCE)
+    external_audit_text = (ROOT / EXTERNAL_AUDIT).read_text(encoding="utf-8")
+    amendment_external_acceptance = (
+        "V4_03_SECTOR_OWNERSHIP_AMENDMENT_V1 = EXTERNAL_ACCEPTANCE_PASS" in external_audit_text
+        and "ecfcc3209404df5ccc7daaf6af905459cc075542" in external_audit_text
+    )
 
     phase0_binding = global_head.get("bindings", {}).get("phase0", {})
     phase0_external_r4 = phase0.get("external_acceptance_r4", {})
@@ -161,13 +167,15 @@ def main() -> int:
     amendment_text = """# V4-03 Sector Ownership Amendment V1 — Candidate\n\n- 日期：2026-09-29\n- 合同：`V4_03_SECTOR_OWNERSHIP_AMENDMENT_V1 v1.0.0-candidate`\n- 状态：`AMENDMENT_CANDIDATE_PENDING_EXTERNAL_ACCEPTANCE`\n- 适用阶段：V4-03 / V4-08\n\n## 决策\n\n本 amendment 调整依赖 accepted point-in-time (PIT) sector membership 的 materialization 所属阶段。它不删除 V4-03 的算法验收，也不降低质量门。V4-03 保留 membership-independent 的 Sector Native schema、machine contracts、field-local quality semantics、common-member semantics、native primitive formulas 与 synthetic/library vectors；这些内容的既有 machine-contract / producer-consistency / golden-vector receipts 继续绑定为 V4-03 evidence。\n\n由于当前无 accepted historical PIT sector membership，V4-03 不生成 full-market sector rows。以下能力统一迁移至 V4-08 Sector / Rotation owner stage：\n\n- PIT sector member snapshots 与 historical membership reconstruction；\n- full-market Sector Native materialization；\n- sector-native full-market rows；\n- 任何消费历史 Sector/Rotation inputs 的生产路径。\n\n`CURRENT_TDX_MEMBERSHIP` 仍为 diagnostic input，`pit_membership=false`，`historical_backtest_safe=false`。V4-08 必须先建立正式、可追溯的 membership source contract 与 baseline/PIT reconstruction，再产出、读取上述 materialization。此边界不授权将当前成员表回填到历史。\n\n## Stage status and downstream permissions\n\nAmendment 外部验收前，V4-03 为 `PASS_WITH_SECTOR_SCOPE_DEGRADED` candidate：Stock Core、Relative RPS、Market Reference、Market Regime 按各自现有 candidate receipts；Sector Native contract 保持 PASS，sector materialization 保持 `BLOCKED_MISSING_ACCEPTED_PIT_MEMBERSHIP`。当前 V4-03 accepted head 不变。\n\n外部接受本 amendment 与 00-03 joint candidate 后，V4-03 可按修订范围申请 `FULL_PASS_AMENDED_SCOPE`。V4-04 Stock Core 仍须等待 joint external acceptance；V4-08 Sector/Rotation 仍 blocked，直到接受的 PIT membership baseline 和 full historical reconstruction 完成。Sector-dependent stock paths 继续 BLOCKED 或 SHADOW_ONLY。\n\n## 不变项\n\n- 没有伪造 historical PIT membership，也没有使用 `CURRENT_TDX_MEMBERSHIP` 回填历史。\n- 没有修改 V4-01/V4-02 accepted input identities。\n- 没有重建 V4-03 的 47 fields、market path 或 Market Regime。\n- 没有生成 sector full-market rows、qualification、rotation 或 V4-08 production。\n- 本 amendment 是 review candidate；未创建 V4-03 accepted head，也未授权 V4-04。\n\n## 阶段记录\n\n- Stage contract：V4-03 current capability contracts + V4-03 Sector Native boundary receipt + this versioned ownership amendment.\n- Evidence：V4-03 R3 capability disposition、native machine-contract/producer/golden-vector PASS receipts、sector boundary `BLOCKED_ACCEPTED_SECTOR_MEMBERSHIP_INPUT_MISSING`。\n- Acceptance：`AMENDMENT_CANDIDATE_PENDING_EXTERNAL_ACCEPTANCE`。\n- Next stage：独立外部验收；之后才能按 accepted upstream/head policy 更新 sealed scope。\n"""
     amendment_bytes = atomic_text(AMENDMENT_DOC, amendment_text)
     amendment_sha = hashlib.sha256(amendment_bytes).hexdigest()
-    amend_status = "AMENDMENT_CANDIDATE_PENDING_EXTERNAL_ACCEPTANCE" if upstream_matches and stock_market_candidate_pass and sector_contract_pass and sector_materialization_blocked else "BLOCKED"
+    amend_status = "AMENDMENT_ACCEPTED_BY_EXTERNAL_AUDIT_20260929" if upstream_matches and stock_market_candidate_pass and sector_contract_pass and sector_materialization_blocked and amendment_external_acceptance else "BLOCKED"
     amendment = {
         "contract_id": "V4_03_SECTOR_OWNERSHIP_AMENDMENT_V1",
         "version": "1.0.0-candidate",
         "stage": "V4-03 SECTOR OWNERSHIP AMENDMENT",
         "status": amend_status,
-        "external_acceptance": "PENDING_EXTERNAL_REVIEW",
+        "external_amendment_acceptance": "ACCEPTED_BY_EXTERNAL_AUDIT_20260929" if amendment_external_acceptance else "PENDING_EXTERNAL_REVIEW",
+        "external_acceptance_evidence": evidence(EXTERNAL_AUDIT),
+        "external_review_head": "ecfcc3209404df5ccc7daaf6af905459cc075542",
         "candidate_only": True,
         "document": {"path": AMENDMENT_DOC.as_posix(), "sha256": amendment_sha, "byte_count": len(amendment_bytes)},
         "retained_v4_03_capabilities": ["SECTOR_NATIVE_SCHEMA", "MACHINE_CONTRACTS", "FIELD_LOCAL_QUALITY_SEMANTICS", "COMMON_MEMBER_SEMANTICS", "NATIVE_PRIMITIVE_FORMULAS", "SYNTHETIC_AND_LIBRARY_VECTORS"],
@@ -176,13 +184,14 @@ def main() -> int:
         "sector_materialization_status": "BLOCKED_MISSING_ACCEPTED_PIT_MEMBERSHIP" if sector_materialization_blocked else "NOT_CONFIRMED",
         "current_tdx_membership_policy": {"pit_membership": False, "historical_backtest_safe": False, "diagnostic_only": True},
         "upstream_identity_hashes_unchanged": upstream_matches,
-        "v4_04_entry": "BLOCKED_PENDING_JOINT_EXTERNAL_ACCEPTANCE",
+        "v4_04_entry": "PENDING_FINAL_EXTERNAL_ACCEPTANCE",
         "v4_08_entry": "BLOCKED_UNTIL_ACCEPTED_PIT_MEMBERSHIP_BASELINE_AND_RECONSTRUCTION",
         "checks": {
             "upstream_v4_01_v4_02_hashes_match_existing_v4_03_head": upstream_matches,
             "stock_and_market_capabilities_pass_candidate": stock_market_candidate_pass,
             "membership_independent_sector_native_contract_pass": sector_contract_pass,
             "full_market_materialization_remains_blocked_without_pit_membership": sector_materialization_blocked,
+            "external_amendment_acceptance_bound": amendment_external_acceptance,
             "accepted_head_modified": False,
             "pit_membership_fabricated": False,
         },
@@ -194,7 +203,7 @@ def main() -> int:
             "stage_contract": "V4-03 capability-scoped disposition and V4_03_SECTOR_OWNERSHIP_AMENDMENT_V1",
             "evidence": "Existing V4-03 R3 receipts plus accepted V4-01/V4-02 canonical hash equality; no materialization rebuild",
             "acceptance_result": amend_status,
-            "next_stage": "INDEPENDENT_EXTERNAL_AMENDMENT_ACCEPTANCE",
+            "next_stage": "JOINT_FINAL_EXTERNAL_ACCEPTANCE" if amend_status != "BLOCKED" else "REPAIR_AMENDMENT_RECEIPT_BLOCKERS",
         },
     }
     amendment_bytes = atomic_json(AMENDMENT_RECEIPT, amendment)
@@ -204,7 +213,8 @@ def main() -> int:
         "version": "1.0.0-candidate",
         "stage": "V4-03 CONDITIONAL RESEAL CANDIDATE",
         "status": "PASS_WITH_SECTOR_SCOPE_DEGRADED_CANDIDATE" if amend_status != "BLOCKED" else "BLOCKED",
-        "external_acceptance": "PENDING_EXTERNAL_REVIEW",
+        "external_amendment_acceptance": "ACCEPTED_BY_EXTERNAL_AUDIT_20260929" if amendment_external_acceptance else "PENDING_EXTERNAL_REVIEW",
+        "external_review_head": "ecfcc3209404df5ccc7daaf6af905459cc075542",
         "observed_at_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "decision": "NO_CANONICAL_REBUILD_OR_ACCEPTED_HEAD_PROMOTION; existing upstream hashes are unchanged; amendment and V4-01 R9 remain candidates until external review.",
         "upstream": {
@@ -227,13 +237,13 @@ def main() -> int:
         "existing_accepted_head_modified": False,
         "v4_03_rebuilt": False,
         "membership_dependent_materialization_rebuilt": False,
-        "v4_04_entry": "BLOCKED_PENDING_FINAL_EXTERNAL_ACCEPTANCE",
+        "v4_04_entry": "PENDING_FINAL_EXTERNAL_ACCEPTANCE",
         "v4_08_sector_rotation": "BLOCKED_MISSING_ACCEPTED_PIT_MEMBERSHIP",
         "stage_record": {
             "stage_contract": "V4-03 final receipt and accepted head; R2 amendment scope",
             "evidence": "Current accepted V4-03 head hash bindings and R3 capability receipts",
             "acceptance_result": "CANDIDATE_ONLY_PENDING_EXTERNAL_ACCEPTANCE" if amend_status != "BLOCKED" else "BLOCKED",
-            "next_stage": "JOINT_00_03_EXTERNAL_REVIEW",
+            "next_stage": "JOINT_FINAL_EXTERNAL_ACCEPTANCE" if amendment_external_acceptance else "EXTERNAL_AMENDMENT_ACCEPTANCE",
         },
     }
     reseal_bytes = atomic_json(RESEAL_CANDIDATE, reseal)

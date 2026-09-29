@@ -14,9 +14,19 @@ REPORT = ROOT / "reports/v4_05/V4_05_R4_2_CLEAN_CHECKOUT_RUNTIME.json"
 LFS_INPUTS = (
     "data/v4/artifact_store/v4_01/security_entity_map_R5_20260925.json",
     "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet",
+    "data/v4/artifact_store/v4_02/V4_02_FORMAL_WEEKLY_RAW_QFQ_R7_20260927.parquet",
+    "data/v4/artifact_store/v4_02/V4_02_FORMAL_MONTHLY_RAW_QFQ_R7_20260927.parquet",
+    "data/v4/artifact_store/v4_02/V4_02_DATED_TRADING_STATUS_R7_20260927.jsonl.gz",
+    "data/v4/artifact_store/v4_01/v4_01_historical_universe_required_R7_20260927.jsonl.gz",
     "reports/v4_03/staging/V4_03_PRIOR_RPS_STAGING_R3.json",
     "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+    "reports/v4_05/staging/V4_05_R3_FULL_MARKET_CORE_PROFILE.jsonl.gz",
     "reports/v4_05/staging/V4_05_R3_FULL_SCOPE_FACTORS.jsonl.gz",
+    "reports/v4_05/staging/V4_05_R3_PERIOD_ASOF.jsonl.gz",
+    "reports/v4_05/staging/V4_05_R3_PURE_CORE_FACTORS.jsonl.gz",
+    "reports/v4_05/staging/V4_05_R3_T0_COORDINATE_DAILY_HISTORY.jsonl.gz",
+    "reports/v4_05/staging/V4_05_R4_FULL_MARKET_CORE_PROFILE.jsonl.gz",
+    "reports/v4_05/staging/V4_05_R4_FULL_SCOPE_FACTORS.jsonl.gz",
     "reports/v4_05/staging/V4_05_R4_PERIOD_ASOF.jsonl.gz",
     "reports/v4_05/staging/V4_05_R4_1_PERIOD_ASOF.jsonl.gz",
     "reports/v4_05/staging/V4_05_R4_1_FULL_SCOPE_FACTORS.jsonl.gz",
@@ -66,12 +76,15 @@ def build() -> dict:
         pointers = {path: parse_pointer(run(["git", "show", f"{commit}:{path}"], cwd=clone, env=env).stdout)
                     for path in LFS_INPUTS}
         include = ",".join(LFS_INPUTS)
-        run(["git", "lfs", "fetch", "origin", commit, f"--include={include}"], cwd=clone, env=env)
+        run(["git", "lfs", "fetch", f"--include={include}", "origin", commit], cwd=clone, env=env)
         run(["git", "lfs", "checkout", *LFS_INPUTS], cwd=clone, env=env)
         for relative, expected in pointers.items():
             restored = object_sha(clone / relative)
             lfs_restore[relative] = {"pointer": expected, "restored": restored,
                                      "matches": expected == restored}
+        if not all(item["matches"] for item in lfs_restore.values()):
+            raise RuntimeError("fresh-clone LFS restore mismatch: " + json.dumps(lfs_restore,
+                                                                                ensure_ascii=False, sort_keys=True))
 
         exact_test_command = [sys.executable, "-m", "pytest", "-q", "-rs",
                               "tests/v4_05/test_v4_05_r4_2_exact_candidate_binding.py"]

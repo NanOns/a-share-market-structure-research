@@ -1,0 +1,77 @@
+{
+  "accepted_artifacts": {
+    "core_profile": {
+      "byte_count": 48848465,
+      "logical_digest": "d195518796acc64015174eac8f9bb8721a27095311ece00baedf8c12b0633e74",
+      "path": "reports/v4_05/staging/V4_05_R4_1_FULL_MARKET_CORE_PROFILE.jsonl.gz",
+      "sha256": "9a6ebedc715bc4b310ecf76c77e01cb6dfe9dadc17d335b5fc9afbcc2f6f3fa0"
+    },
+    "full_scope_factors": {
+      "byte_count": 32316843,
+      "logical_digest": "0cfe708567935726f0ad51ae4bb47237ec7aee556db3437c12f21f0c623bd0d2",
+      "path": "reports/v4_05/staging/V4_05_R4_1_FULL_SCOPE_FACTORS.jsonl.gz",
+      "sha256": "17ae571629b76399e32d9e8a243268ea1fac619e1c5168d307bfd8ebf1494c48"
+    },
+    "period_asof": {
+      "byte_count": 60108125,
+      "path": "reports/v4_05/staging/V4_05_R4_1_PERIOD_ASOF.jsonl.gz",
+      "sha256": "e54674e8459e1258610639d76fac7a5f7b6093a4013f912b8937fb6fa96c2233"
+    }
+  },
+  "accepted_head": {
+    "byte_count": 8456,
+    "path": "data/v4/V4_05_ACCEPTED_HEAD.json",
+    "sha256": "fc929d85553a900a6479ac9f50291d50cf750ad0e6c21fc58e4e05e92189f5cb"
+  },
+  "candidate_manifest": {
+    "byte_count": 4393,
+    "path": "reports/v4_05/V4_05_R4_2_STAGE_CANDIDATE_MANIFEST.json",
+    "sha256": "e1dc95d794972ee1db99517c649c6702cd58b6e86a69ddd4319c5fccefc60eba"
+  },
+  "checks": {
+    "accepted_artifact_hashes": true,
+    "accepted_head_complete": true,
+    "accepted_head_evidence_bindings_valid": true,
+    "all_required_evidence_paths_integral": true,
+    "candidate_manifest_authority": true,
+    "external_acceptance_decision_exact": true,
+    "external_acceptance_scope_complete": true,
+    "global_head_binds_v4_05": true,
+    "global_head_only_advanced_through_v4_05": true,
+    "historical_adjusted_price_blocker_retained": true,
+    "market_snapshot_reference_and_regime": true,
+    "postgresql_g08": true,
+    "promotion_task_matches_stage": true,
+    "r4_1_canonical_hash_and_head_validation": true,
+    "r4_1_clean_clone_determinism_and_published_lfs": true,
+    "r4_2_exact_binding": true,
+    "r4_2_independent_postcheck": true,
+    "r4_2_runtime": true,
+    "reviewed_starting_head": true,
+    "v4_06_only_authorized_after_promotion_validation": true,
+    "v4_07_v4_08_not_started_and_no_successor_artifacts": true,
+    "v4_08_blocker_retained": true
+  },
+  "contract_id": "V4_05_ACCEPTED_HEAD_PROMOTION_VALIDATION_R1",
+  "exact_candidate_ledger_binding": {
+    "all_exact_bindings_match": true,
+    "old_r4_binding_count": 0,
+    "state_logical_digest": "d195518796acc64015174eac8f9bb8721a27095311ece00baedf8c12b0633e74"
+  },
+  "external_acceptance_decision": "V4_05_EXTERNAL_ACCEPTANCE_PASS_R4_2",
+  "global_head": {
+    "byte_count": 3990,
+    "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+    "sha256": "6fd6e16b3769726f14e44b1d2062d087fd40ec1ede51956a5353631896547043"
+  },
+  "phase": "final",
+  "promotion_validation_head": "06f1c0fd4a60e4f37e5f93fe729c84a04205c16b",
+  "reviewed_starting_head": "06f1c0fd4a60e4f37e5f93fe729c84a04205c16b",
+  "stage_record": {
+    "acceptance_result": "V4_05_ACCEPTED_HEAD_PROMOTION_PASS_R1",
+    "evidence": "Independent byte/hash validation of external acceptance, exact candidate, PostgreSQL G08, R4.1 proofs, LFS restore, accepted/global heads and successor gates.",
+    "next_stage": "V4-06 Supplemental Enrichment authorized; implementation not started",
+    "stage_contract": "V4_05_ACCEPTED_HEAD_PROMOTION_V4_06_ENTRY_TASK_20260929"
+  },
+  "status": "PASS"
+}

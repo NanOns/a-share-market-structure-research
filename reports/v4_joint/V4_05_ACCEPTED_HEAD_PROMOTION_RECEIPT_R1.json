@@ -1,0 +1,98 @@
+{
+  "accepted_artifacts": {
+    "core_profile": {
+      "byte_count": 48848465,
+      "logical_digest": "d195518796acc64015174eac8f9bb8721a27095311ece00baedf8c12b0633e74",
+      "path": "reports/v4_05/staging/V4_05_R4_1_FULL_MARKET_CORE_PROFILE.jsonl.gz",
+      "sha256": "9a6ebedc715bc4b310ecf76c77e01cb6dfe9dadc17d335b5fc9afbcc2f6f3fa0"
+    },
+    "full_scope_factors": {
+      "byte_count": 32316843,
+      "logical_digest": "0cfe708567935726f0ad51ae4bb47237ec7aee556db3437c12f21f0c623bd0d2",
+      "path": "reports/v4_05/staging/V4_05_R4_1_FULL_SCOPE_FACTORS.jsonl.gz",
+      "sha256": "17ae571629b76399e32d9e8a243268ea1fac619e1c5168d307bfd8ebf1494c48"
+    },
+    "period_asof": {
+      "byte_count": 60108125,
+      "path": "reports/v4_05/staging/V4_05_R4_1_PERIOD_ASOF.jsonl.gz",
+      "sha256": "e54674e8459e1258610639d76fac7a5f7b6093a4013f912b8937fb6fa96c2233"
+    }
+  },
+  "accepted_candidate": "V4_05_DATA_FACTOR_REPLAY_DEGRADED_PASS_CANDIDATE_R4_2",
+  "accepted_head": {
+    "byte_count": 8456,
+    "path": "data/v4/V4_05_ACCEPTED_HEAD.json",
+    "sha256": "fc929d85553a900a6479ac9f50291d50cf750ad0e6c21fc58e4e05e92189f5cb"
+  },
+  "checks": {
+    "accepted_artifact_hashes": true,
+    "accepted_head_complete": true,
+    "accepted_head_evidence_bindings_valid": true,
+    "all_required_evidence_paths_integral": true,
+    "candidate_manifest_authority": true,
+    "external_acceptance_decision_exact": true,
+    "external_acceptance_scope_complete": true,
+    "global_head_binds_v4_05": true,
+    "global_head_only_advanced_through_v4_05": true,
+    "historical_adjusted_price_blocker_retained": true,
+    "market_snapshot_reference_and_regime": true,
+    "postgresql_g08": true,
+    "promotion_task_matches_stage": true,
+    "r4_1_canonical_hash_and_head_validation": true,
+    "r4_1_clean_clone_determinism_and_published_lfs": true,
+    "r4_2_exact_binding": true,
+    "r4_2_independent_postcheck": true,
+    "r4_2_runtime": true,
+    "reviewed_starting_head": true,
+    "v4_06_only_authorized_after_promotion_validation": true,
+    "v4_07_v4_08_not_started_and_no_successor_artifacts": true,
+    "v4_08_blocker_retained": true
+  },
+  "contract_id": "V4_05_ACCEPTED_HEAD_PROMOTION_RECEIPT_R1",
+  "exact_candidate_ledger_binding": {
+    "all_exact_bindings_match": true,
+    "old_r4_binding_count": 0,
+    "state_logical_digest": "d195518796acc64015174eac8f9bb8721a27095311ece00baedf8c12b0633e74"
+  },
+  "external_acceptance_decision": "V4_05_EXTERNAL_ACCEPTANCE_PASS_R4_2",
+  "external_acceptance_evidence": {
+    "byte_count": 5245,
+    "path": "docs/evidence/V4_05_REPLAY_GATE_A_R4_2_FINAL_EXTERNAL_ACCEPTANCE_20260929.md",
+    "sha256": "dcd88edd03adb723c153bcb1d358aeb3904e0e4484a26548583579647c7fcf86"
+  },
+  "final_independent_validation": {
+    "byte_count": 3422,
+    "path": "reports/v4_joint/V4_05_ACCEPTED_HEAD_PROMOTION_VALIDATION_R1.json",
+    "sha256": "f63c4bb5951d5b1f85be6aa22da398a442b4630b3f67d93e13ff298ceccddd5e"
+  },
+  "global_head": {
+    "byte_count": 3990,
+    "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+    "sha256": "6fd6e16b3769726f14e44b1d2062d087fd40ec1ede51956a5353631896547043"
+  },
+  "promotion_preflight_validation": {
+    "byte_count": 3426,
+    "path": "reports/v4_joint/V4_05_ACCEPTED_HEAD_PROMOTION_PREFLIGHT_R1.json",
+    "sha256": "16388638f1029b57a7f663dc694c32163c7e3deab2f80ff75010c0843814410d"
+  },
+  "promotion_task": {
+    "byte_count": 4349,
+    "path": "docs/evidence/V4_05_ACCEPTED_HEAD_PROMOTION_V4_06_ENTRY_TASK_20260929.md",
+    "sha256": "ddb1526ca4c1eee78c4c9579db7f1760ac41cff71f0f60c553ae7c27e048b206"
+  },
+  "stage_record": {
+    "acceptance_result": "V4_05_ACCEPTED_HEAD_PROMOTION_PASS_R1",
+    "evidence": "Externally accepted R4.2 candidate promoted; independent validator passed all 12 requested checks; V4-06 entry authorization recorded without implementation.",
+    "next_stage": "WAIT_FOR_NEXT_EXTERNAL_AUDIT",
+    "stage_contract": "V4_05_ACCEPTED_HEAD_PROMOTION_V4_06_ENTRY_TASK_20260929"
+  },
+  "status": "PASS",
+  "terminal_state": {
+    "data_factor_replay_pass": "DEGRADED_PASS_CURRENT_FORWARD_SCOPE",
+    "v4_05": "EXTERNALLY_ACCEPTED",
+    "v4_06_entry": "AUTHORIZED_SUPPLEMENTAL_ENRICHMENT",
+    "v4_06_implementation": "NOT_STARTED",
+    "v4_07": "NOT_STARTED",
+    "v4_08": "BLOCKED"
+  }
+}

@@ -1,0 +1,181 @@
+{
+  "accepted_artifact": {
+    "byte_count": 48848465,
+    "logical_digest": "d195518796acc64015174eac8f9bb8721a27095311ece00baedf8c12b0633e74",
+    "path": "reports/v4_05/staging/V4_05_R4_1_FULL_MARKET_CORE_PROFILE.jsonl.gz",
+    "sha256": "9a6ebedc715bc4b310ecf76c77e01cb6dfe9dadc17d335b5fc9afbcc2f6f3fa0"
+  },
+  "accepted_artifacts": {
+    "core_profile": {
+      "byte_count": 48848465,
+      "logical_digest": "d195518796acc64015174eac8f9bb8721a27095311ece00baedf8c12b0633e74",
+      "path": "reports/v4_05/staging/V4_05_R4_1_FULL_MARKET_CORE_PROFILE.jsonl.gz",
+      "sha256": "9a6ebedc715bc4b310ecf76c77e01cb6dfe9dadc17d335b5fc9afbcc2f6f3fa0"
+    },
+    "full_scope_factors": {
+      "byte_count": 32316843,
+      "logical_digest": "0cfe708567935726f0ad51ae4bb47237ec7aee556db3437c12f21f0c623bd0d2",
+      "path": "reports/v4_05/staging/V4_05_R4_1_FULL_SCOPE_FACTORS.jsonl.gz",
+      "sha256": "17ae571629b76399e32d9e8a243268ea1fac619e1c5168d307bfd8ebf1494c48"
+    },
+    "period_asof": {
+      "byte_count": 60108125,
+      "path": "reports/v4_05/staging/V4_05_R4_1_PERIOD_ASOF.jsonl.gz",
+      "sha256": "e54674e8459e1258610639d76fac7a5f7b6093a4013f912b8937fb6fa96c2233"
+    }
+  },
+  "accepted_at_date": "2026-09-29",
+  "accepted_candidate": "V4_05_DATA_FACTOR_REPLAY_DEGRADED_PASS_CANDIDATE_R4_2",
+  "accepted_manifest": {
+    "byte_count": 4393,
+    "path": "reports/v4_05/V4_05_R4_2_STAGE_CANDIDATE_MANIFEST.json",
+    "sha256": "e1dc95d794972ee1db99517c649c6702cd58b6e86a69ddd4319c5fccefc60eba"
+  },
+  "capabilities": {
+    "CURRENT_FORWARD_ADJUSTED_PRICE": "FULL_PASS",
+    "CURRENT_FORWARD_STOCK_CORE": "DEGRADED_PASS",
+    "DATA_FACTOR_REPLAY_PASS": "DEGRADED_PASS",
+    "HISTORICAL_AS_RECORDED_ADJUSTED_PRICE": "BLOCKED_NO_FIRST_AVAILABILITY_EVIDENCE",
+    "MARKET_REFERENCE": "FULL_PASS",
+    "MARKET_REGIME": "DEGRADED_PASS",
+    "MONTHLY_PERIOD": "DEGRADED_PASS",
+    "PURE_CORE_FACTORS": "DEGRADED_PASS",
+    "WEEKLY_PERIOD": "DEGRADED_PASS"
+  },
+  "contract_id": "V4_05_ACCEPTED_HEAD_V1",
+  "evidence_bindings": {
+    "candidate_manifest": {
+      "byte_count": 4393,
+      "path": "reports/v4_05/V4_05_R4_2_STAGE_CANDIDATE_MANIFEST.json",
+      "sha256": "e1dc95d794972ee1db99517c649c6702cd58b6e86a69ddd4319c5fccefc60eba"
+    },
+    "clean_checkout_runtime": {
+      "byte_count": 10593,
+      "path": "reports/v4_05/V4_05_R4_2_CLEAN_CHECKOUT_RUNTIME.json",
+      "sha256": "fdf9d7907b93291eee98e031cef42347d2d028860469b7b372063bb30e694e22"
+    },
+    "exact_candidate_ledger_binding": {
+      "byte_count": 15610,
+      "path": "reports/v4_05/V4_05_R4_2_EXACT_CANDIDATE_LEDGER_BINDING.json",
+      "sha256": "adcc5fca4b21dc0fa6263ebd4f10e9dc25057f5c67e98cc6ac365bea42d1c804"
+    },
+    "external_acceptance": {
+      "byte_count": 5245,
+      "path": "docs/evidence/V4_05_REPLAY_GATE_A_R4_2_FINAL_EXTERNAL_ACCEPTANCE_20260929.md",
+      "sha256": "dcd88edd03adb723c153bcb1d358aeb3904e0e4484a26548583579647c7fcf86"
+    },
+    "independent_postcheck": {
+      "byte_count": 3283,
+      "path": "reports/v4_05/V4_05_R4_2_INDEPENDENT_POSTCHECK.json",
+      "sha256": "385704190508f3a9442af2f4f2a53a740ef7682b01dd33f3e3386936b94ac227"
+    },
+    "postgres_revision_ledger": {
+      "byte_count": 63674,
+      "path": "reports/v4_05/V4_05_R4_2_POSTGRES_REVISION_LEDGER_IDEMPOTENCY.json",
+      "sha256": "75f601ea61c00f4a8d240f151d2117e2aaefa6d73139bfd1d1eae3c1934f460d"
+    },
+    "promotion_task": {
+      "byte_count": 4349,
+      "path": "docs/evidence/V4_05_ACCEPTED_HEAD_PROMOTION_V4_06_ENTRY_TASK_20260929.md",
+      "sha256": "ddb1526ca4c1eee78c4c9579db7f1760ac41cff71f0f60c553ae7c27e048b206"
+    },
+    "r4_1_accepted_head_hash_validation": {
+      "byte_count": 3942,
+      "path": "reports/v4_05/V4_05_R4_1_ACCEPTED_HEAD_HASH_VALIDATION.json",
+      "sha256": "e697540156c6a1fe16f53d78d9fb486de0749d1fa1dccf1913c3844c88da1f93"
+    },
+    "r4_1_candidate_manifest": {
+      "byte_count": 5980,
+      "path": "reports/v4_05/V4_05_R4_1_STAGE_CANDIDATE_MANIFEST.json",
+      "sha256": "e4adabedbd3a5fec62fcd251facdad3f47bf6a79eac0e09256f62bcd5d0cfe5f"
+    },
+    "r4_1_canonical_hash_policy": {
+      "byte_count": 2022,
+      "path": "reports/v4_05/V4_05_R4_1_CANONICAL_HASH_POLICY.json",
+      "sha256": "c5c688bedec1312e772c97aef2090db71ed071ecdc724664e57a64514c158dd9"
+    },
+    "r4_1_clean_clone_determinism": {
+      "byte_count": 8812,
+      "path": "reports/v4_05/V4_05_R4_1_CLEAN_CLONE_DETERMINISM.json",
+      "sha256": "0e18c2549dac41f5719a979da160b39e7c798290bb32d25a2ff744a2022b2c96"
+    },
+    "r4_1_core_profile_receipt": {
+      "byte_count": 2492,
+      "path": "reports/v4_05/V4_05_R4_1_CORE_PROFILE_REPLAY.json",
+      "sha256": "faffc0633dc2e9708fe496b6fc8035734ff56066975952c9469642156b29fb71"
+    },
+    "r4_1_full_scope_factors_receipt": {
+      "byte_count": 3577,
+      "path": "reports/v4_05/V4_05_R4_1_FULL_SCOPE_FACTORS_RECEIPT.json",
+      "sha256": "f78c76978a3fd267f516ce37b8baed92e40c9d6160d4fc3b3f8c37045cebad38"
+    },
+    "r4_1_market_reference_receipt": {
+      "byte_count": 8616,
+      "path": "reports/v4_05/V4_05_R4_1_MARKET_REFERENCE.json",
+      "sha256": "c3b1528114eb888b12418fdb32e6d99f72418d1b77ec44ebaf32c5cd6e653ed4"
+    },
+    "r4_1_market_regime_receipt": {
+      "byte_count": 4650,
+      "path": "reports/v4_05/V4_05_R4_1_MARKET_REGIME.json",
+      "sha256": "5c2644ffc8ea867c4e6cac39e97568bb589f3337dece54bcccd46608e07d5f18"
+    },
+    "r4_1_market_snapshot_identity_receipt": {
+      "byte_count": 2620,
+      "path": "reports/v4_05/V4_05_R4_1_MARKET_SNAPSHOT_IDENTITY.json",
+      "sha256": "b9f01c3162fc60975d1ee7f67f5e3e5256350a1b8d9d1aad9122818d11781fe2"
+    },
+    "r4_1_period_asof_receipt": {
+      "byte_count": 2596,
+      "path": "reports/v4_05/V4_05_R4_1_PERIOD_ASOF.json",
+      "sha256": "09c864e96b0d31d27c37304049dd65120d6bf5cbba3e4e8b5f1eaa698bdf4efd"
+    },
+    "r4_1_published_lfs_restore": {
+      "byte_count": 2678,
+      "path": "reports/v4_05/V4_05_R4_1_PUBLISHED_LFS_RESTORE.json",
+      "sha256": "65dc1947439d4f033b7962238259a068d6ecdc5b5569824961e5261f541493a4"
+    },
+    "r4_2_closure": {
+      "byte_count": 2273,
+      "path": "reports/v4_05/V4_05_R4_2_CLOSURE.md",
+      "sha256": "650568ef3ded8696b79d3c6bdc59c9eb76e0395388d96a74dbf95cef03e364ec"
+    }
+  },
+  "evidence_seal_commit": "06f1c0fd4a60e4f37e5f93fe729c84a04205c16b",
+  "external_acceptance": "EXTERNALLY_ACCEPTED",
+  "external_acceptance_decision": "V4_05_EXTERNAL_ACCEPTANCE_PASS_R4_2",
+  "external_acceptance_evidence": {
+    "byte_count": 5245,
+    "path": "docs/evidence/V4_05_REPLAY_GATE_A_R4_2_FINAL_EXTERNAL_ACCEPTANCE_20260929.md",
+    "sha256": "dcd88edd03adb723c153bcb1d358aeb3904e0e4484a26548583579647c7fcf86"
+  },
+  "historical_as_recorded_adjusted_price": "BLOCKED_NO_FIRST_AVAILABILITY_EVIDENCE",
+  "implementation_commit": "1a88fcba876e619e45584964cc11fde48b1883f8",
+  "ledger_state_logical_digest": "d195518796acc64015174eac8f9bb8721a27095311ece00baedf8c12b0633e74",
+  "market_reference_canonical_identity": "7ba19ea03c8cab1858de98f898463cd0257577d118b227b9c1c3a09271d2bc98",
+  "market_reference_one_session_output_digest": "80d8ac5cc69e8ae4d165f89324e45d0cc7e49a81d13339b31ff8fbec5e578554",
+  "market_reference_values": {
+    "1": -0.022314506957301243,
+    "3": -0.03792535346523633,
+    "5": -0.01769091161662751
+  },
+  "market_regime_trend_axis": "UNKNOWN",
+  "market_snapshot_id": "92773afba01ac100c9165190423d0228c2b5f9a42549ef8f4d955eba904c3cdb",
+  "next_stage": "V4-06_SUPPLEMENTAL_ENRICHMENT_ENTRY_AFTER_PROMOTION_VALIDATION",
+  "promotion_task": {
+    "byte_count": 4349,
+    "path": "docs/evidence/V4_05_ACCEPTED_HEAD_PROMOTION_V4_06_ENTRY_TASK_20260929.md",
+    "sha256": "ddb1526ca4c1eee78c4c9579db7f1760ac41cff71f0f60c553ae7c27e048b206"
+  },
+  "source_cutoff": "2026-09-24",
+  "stage": "V4-05",
+  "stage_record": {
+    "acceptance_result": "DATA_FACTOR_REPLAY_DEGRADED_PASS / EXTERNALLY_ACCEPTED",
+    "evidence": "External R4.2 acceptance; exact R4.1 PostgreSQL ledger identity; hash, determinism, LFS restore and clean-checkout evidence.",
+    "next_stage": "V4-06 Supplemental Enrichment entry authorized after independent promotion validation",
+    "stage_contract": "V4_05_ACCEPTED_HEAD_PROMOTION_V4_06_ENTRY_TASK_20260929"
+  },
+  "status": "DATA_FACTOR_REPLAY_DEGRADED_PASS",
+  "target_identity_count": 5222,
+  "target_market_snapshot_id": "92773afba01ac100c9165190423d0228c2b5f9a42549ef8f4d955eba904c3cdb",
+  "target_trade_date": "2026-09-28"
+}

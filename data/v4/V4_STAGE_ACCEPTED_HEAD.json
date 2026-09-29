@@ -1,4 +1,5 @@
 {
+  "accepted_stage_range": "V4_00_TO_V4_04_ACCEPTED; V4_05_NOT_ACCEPTED",
   "bindings": {
     "phase0": {
       "path": "reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json",
@@ -57,7 +58,15 @@
   },
   "v4_03_external_acceptance": "EXTERNALLY_ACCEPTED",
   "v4_03_status": "FULL_PASS_AMENDED_SCOPE",
-  "v4_04_entry": "AUTHORIZED_FULL_CHAIN",
+  "v4_04_binding": {
+    "byte_count": 6837,
+    "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+    "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+  },
+  "v4_04_entry": "COMPLETED_EXTERNALLY_ACCEPTED",
+  "v4_04_external_acceptance": "EXTERNALLY_ACCEPTED",
+  "v4_04_status": "FULL_PASS_REQUIRED_SCOPE",
+  "v4_05_entry": "AUTHORIZED_REPLAY_GATE_A",
   "v4_08_sector_entry": "BLOCKED_UNTIL_ACCEPTED_PIT_MEMBERSHIP_BASELINE_AND_RECONSTRUCTION",
-  "version": "2.0.0"
+  "version": "2.1.0"
 }

@@ -1,0 +1,165 @@
+{
+  "accepted_artifact": {
+    "byte_count": 48963733,
+    "path": "reports/v4_04/staging/V4_04_FULL_MARKET_CORE_PROFILE_CANDIDATE_R4.jsonl.gz",
+    "sha256": "b1ce4e4cb227f7cc25271005debfc9fc7bfaf61d39e20c96592921dd361e3b52"
+  },
+  "accepted_at_date": "2026-09-29",
+  "accepted_manifest": {
+    "byte_count": 3671,
+    "path": "reports/v4_04/V4_04_STAGE_CANDIDATE_MANIFEST_R4.json",
+    "sha256": "278ecb78571506ee7eac57b953367729ffaa9d361f9d240b4871843bf9d3957e"
+  },
+  "capabilities": {
+    "ADVANCED_STRUCTURE": "NOT_IN_V4_04_SCOPE",
+    "DATA_FACTOR_REPLAY_PASS": "PENDING_V4_05",
+    "MARKET_REGIME_UI": "PASS",
+    "PURE_CORE_COMPRESSION": "PASS",
+    "PURE_CORE_EXTENSION": "PASS",
+    "PURE_CORE_MA_STRUCTURE": "PASS",
+    "PURE_CORE_PARTICIPATION": "PASS",
+    "PURE_CORE_POSITION": "PASS",
+    "PURE_CORE_RELATIVE": "PASS",
+    "PURE_CORE_TREND": "PASS",
+    "SECTOR_ROTATION_PRODUCTION": "NOT_IN_V4_04_SCOPE",
+    "STOCK_BASE_SEED": "NOT_IN_V4_04_SCOPE",
+    "STOCK_CORE_FULL_MARKET_PROFILE": "PASS",
+    "STOCK_PREWATCH": "NOT_IN_V4_04_SCOPE",
+    "TECHNICAL_WINDOW_TRACEABILITY": "PASS",
+    "TURNOVER_CONTEXT": "NOT_IN_V4_04_SCOPE"
+  },
+  "contract_bindings": {
+    "config/v4_04_algorithm_contracts_v3.json": {
+      "byte_count": 42408,
+      "path": "config/v4_04_algorithm_contracts_v3.json",
+      "sha256": "0b144bd2a9f033336da338d5b71649f8e20ebafe65095efcd5c4a7d8663db970"
+    },
+    "config/v4_04_field_registry_v2.json": {
+      "byte_count": 20506,
+      "path": "config/v4_04_field_registry_v2.json",
+      "sha256": "aceed3d159cf3c7beb3306fb2b90eb22af935bb7f27ebeb29a9e8abc5653f9c1"
+    },
+    "config/v4_04_field_window_mapping_v1.json": {
+      "byte_count": 775,
+      "path": "config/v4_04_field_window_mapping_v1.json",
+      "sha256": "0ee0312b48ace787c85890e60afb4a15a6c64d98d7956636c06e5bd87e09de4d"
+    },
+    "config/v4_04_output_schema_v2.json": {
+      "byte_count": 2624,
+      "path": "config/v4_04_output_schema_v2.json",
+      "sha256": "71f34fd701e61eb463666fc811fbb97dc7092a8f512d34c26b17888207bc78ee"
+    },
+    "config/v4_04_parameter_set_v1.json": {
+      "byte_count": 17586,
+      "path": "config/v4_04_parameter_set_v1.json",
+      "sha256": "5b19a23dfbf6b214f5ee7c7cce5df5674db69d099386038c082317819812ced5"
+    }
+  },
+  "contract_id": "V4_04_ACCEPTED_HEAD_V1",
+  "evidence_seal_commit": "b7dc52d94d7bd81b8f55e1009d3eb271689f0943",
+  "external_acceptance": "EXTERNALLY_ACCEPTED",
+  "external_acceptance_evidence": {
+    "byte_count": 10647,
+    "path": "docs/evidence/V4_04_FINAL_EXTERNAL_ACCEPTANCE_R1_20260929.md",
+    "sha256": "5170a3319396410879f0ae00bdb65cc79c152f9d5df84dc84ca84c63cc1f1a50"
+  },
+  "historical_candidate_hashes": {
+    "R1": "afbea0ab09cbe28cfb5648495264ce346ccce22f5ca40b15b24112b6d8eb2e07",
+    "R2": "89ed21dbdcc5abf377d2fda8299c444e7cd687fabb0eb5648ef5f12b8c4c0f12",
+    "R3": "0c0fccd06fd2c2bad856b529d3ae2bcf64584f451e97961380997d72830b46b6"
+  },
+  "implementation_commit": "044dc637f90b35c6097bb800b1d4d755fdfb792c",
+  "next_stage": "V4-05_REPLAY_GATE_A_AUTHORIZED_AFTER_PROMOTION_VALIDATION",
+  "r4_evidence_bindings": {
+    "consumed_sources": {
+      "byte_count": 2530,
+      "path": "reports/v4_04/V4_04_CONSUMED_SOURCE_MANIFEST_R4.json",
+      "sha256": "807f802314300b03ac97f4299e25153282fe0ce01f4d549e6d4f8af68564a3ee"
+    },
+    "contract_digest": {
+      "byte_count": 817,
+      "path": "reports/v4_04/V4_04_CONTRACT_PARAMETER_DIGEST_R4.json",
+      "sha256": "3328aa9564a7a70ed6d82a52e95de1816f2d1b69abdf04ff1801d96f7c2d7f45"
+    },
+    "determinism": {
+      "byte_count": 311,
+      "path": "reports/v4_04/V4_04_DETERMINISM_R4.json",
+      "sha256": "b57c52e290f45092c4718cf2d1bde4907056e3857d3c61602cec9534b3f3ee4a"
+    },
+    "field_completeness": {
+      "byte_count": 4771,
+      "path": "reports/v4_04/V4_04_FIELD_COMPLETENESS_R4.json",
+      "sha256": "71281c038f076c97660f0876de6abff4f8a73c0ee35f9455c77792ccd19ce387"
+    },
+    "input_identity": {
+      "byte_count": 420,
+      "path": "reports/v4_04/V4_04_INPUT_IDENTITY_R4.json",
+      "sha256": "c64e60107f1738d2ae90706565fc8ccd91a28592ff5280892915fbfabaee205c"
+    },
+    "machine_vectors": {
+      "byte_count": 3595,
+      "path": "reports/v4_04/V4_04_MACHINE_VECTOR_COVERAGE_R4.json",
+      "sha256": "c8b412d35713b8bb5e83870356594b1b47c5a3151c68af5168a828aa29ed499c"
+    },
+    "postcheck": {
+      "byte_count": 3367,
+      "path": "reports/v4_04/V4_04_INDEPENDENT_POSTCHECK_R4.json",
+      "sha256": "6b31183b8e09db43fb926af094d7112f391579d4efae91f6448182a1bad6ed47"
+    },
+    "production": {
+      "byte_count": 3614,
+      "path": "reports/v4_04/V4_04_FULL_MARKET_CANDIDATE_RECEIPT_R4.json",
+      "sha256": "79f607fb504856aaeb19cd94b836d459a32e3481d4c1b12dafed78aba4d708cf"
+    },
+    "quality_inventory": {
+      "byte_count": 1280,
+      "path": "reports/v4_04/V4_04_UNKNOWN_QUALITY_INVENTORY_R4.json",
+      "sha256": "9996c3485041bd1e48b86e4e20a609bf67d69666657075d7440d83d5cb098e7e"
+    },
+    "registry_consistency": {
+      "byte_count": 308,
+      "path": "reports/v4_04/V4_04_REGISTRY_ARTIFACT_CONSISTENCY_R4.json",
+      "sha256": "0ae642aa836af0135c4fab93700cc9e76252ea640e419552dd6ed26143522e98"
+    },
+    "row_count": {
+      "byte_count": 378,
+      "path": "reports/v4_04/V4_04_ROW_BOARD_COUNT_R4.json",
+      "sha256": "07f1bff4752af6f05084d4df277093daadc1cb73b67d5841328f7dddbc1c5f95"
+    },
+    "tests": {
+      "byte_count": 5699,
+      "path": "reports/v4_04/V4_04_TEST_GATE_R4.json",
+      "sha256": "1e335a29b8300aaf68aa86150a03646c23da86af6e98bbb358ff2c9447076c78"
+    },
+    "window_traceability": {
+      "byte_count": 711,
+      "path": "reports/v4_04/V4_04_WINDOW_TRACEABILITY_R4.json",
+      "sha256": "264372e5724c56a5c3e6450ef081ac0fac4cb71f4e8eb80a4dbdd9ef7fcb2ad7"
+    }
+  },
+  "source_cutoff": "2026-09-24",
+  "stage": "V4-04",
+  "stage_record": {
+    "acceptance_result": "FULL_PASS_REQUIRED_SCOPE / EXTERNALLY_ACCEPTED",
+    "evidence": "R4 manifest, independent postcheck, machine semantic coverage, deterministic build and focused runtime gate",
+    "next_stage": "V4-05 Replay Gate A authorized after promotion validation",
+    "stage_contract": "V4_04_FULL_MARKET_CORE_PROFILE_R4"
+  },
+  "status": "FULL_PASS_REQUIRED_SCOPE",
+  "upstream_identities": {
+    "v4_01_accepted_head": {
+      "byte_count": 4564,
+      "path": "data/v4/V4_01_ACCEPTED_HEAD.json",
+      "sha256": "b8ea5b8091629d116c860f9bf6a1a398301d75be16af7b08ff526fba9329bf6b"
+    },
+    "v4_02_accepted_head": {
+      "path": "data/v4/V4_02_ACCEPTED_HEAD.json",
+      "sha256": "da318a1f82a03f13930af7858ca1640fadbdaedbee85e27d47f9c869c2d6b595"
+    },
+    "v4_03_accepted_head": {
+      "byte_count": 4924,
+      "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+      "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+    }
+  }
+}

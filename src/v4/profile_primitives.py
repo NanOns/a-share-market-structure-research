@@ -50,8 +50,34 @@ def _factor(factors: Mapping[str, Mapping], name: str) -> float | bool | None:
     return item.get("value") if item.get("quality_state") == "OBSERVED" else None
 
 
+def technical_window_status(rows: Sequence[Mapping], statuses: Sequence[str | tuple[str, str]],
+                            calendar: Sequence[str] | None) -> tuple[bool, int, int, list]:
+    """Validate the calendar span of an actual-bar window, including missing rows."""
+    if not rows:
+        return False, 0, 0, []
+    start, end = str(rows[0]["trade_date"]), str(rows[-1]["trade_date"])
+    actual_dates = [str(row["trade_date"]) for row in rows]
+    dated = [(str(x[0]), x[1]) for x in statuses if isinstance(x, tuple) and start <= str(x[0]) <= end]
+    if dated:
+        expected = [date for date in calendar if start <= date <= end] if calendar is not None else [x[0] for x in dated]
+        by_date = dict(dated)
+        valid = (len(dated) == len(by_date) == len(expected) and
+                 set(by_date) == set(expected) and
+                 set(actual_dates) == {date for date, status in dated if status == "ACTUAL_TRADED"} and
+                 all(status in ("ACTUAL_TRADED", "SUSPENDED") for _, status in dated))
+        return valid, len(expected), sum(status == "SUSPENDED" for _, status in dated), dated
+    if calendar is not None:
+        expected = [date for date in calendar if start <= date <= end]
+        return False, len(expected), 0, []
+    # Legacy date-free fixtures cannot prove missing calendar rows; production supplies dated rows and calendar.
+    values = list(statuses)
+    return (len(values) >= len(rows) and all(x in ("ACTUAL_TRADED", "SUSPENDED") for x in values),
+            len(rows), 0, values)
+
+
 def derive_daily(bars: Sequence[Mapping], factors: Mapping[str, Mapping],
-                 statuses: Sequence[str | tuple[str, str]], asof: str) -> dict[str, Derived]:
+                 statuses: Sequence[str | tuple[str, str]], asof: str,
+                 calendar: Sequence[str] | None = None) -> dict[str, Derived]:
     """Bars ascend by date and contain only actual sessions through asof.
 
     Statuses cover the same calendar span as the 250-bar window. Any unexplained
@@ -72,16 +98,18 @@ def derive_daily(bars: Sequence[Mapping], factors: Mapping[str, Mapping],
 
     ma10_window = int(P["MA10_WINDOW"])
     ma10_rows = bars[-ma10_window:]
-    ma10_ok = (current and len(ma10_rows) == ma10_window and
+    ma10_status_ok, ma10_span, ma10_suspended, ma10_status_evidence = technical_window_status(ma10_rows, statuses, calendar)
+    ma10_ok = (current and len(ma10_rows) == ma10_window and ma10_status_ok and
                all(row.get("adjusted_quality") == "READY" and row.get("qfq_close") is not None for row in ma10_rows))
     output["ma10"] = _result(fmean(float(x["qfq_close"]) for x in ma10_rows) if ma10_ok else None,
                               None if ma10_ok else "MA10_WINDOW_OR_ENDPOINT_UNAVAILABLE",
-                              [(x.get("trade_date"), x.get("qfq_close"), x.get("adjusted_quality")) for x in ma10_rows],
-                              len(ma10_rows), span(ma10_rows)[0], *bounds(ma10_rows), span(ma10_rows)[1])
+                              {"bars": [(x.get("trade_date"), x.get("qfq_close"), x.get("adjusted_quality")) for x in ma10_rows],
+                               "statuses": ma10_status_evidence, "calendar_span": ma10_span},
+                              len(ma10_rows), ma10_span, *bounds(ma10_rows), ma10_suspended)
 
     pos_window = int(P["POS250_WINDOW"])
     pos_rows = bars[-pos_window:]
-    long_status_ok = len(status_values) >= pos_window and all(x in ("ACTUAL_TRADED", "SUSPENDED") for x in status_values)
+    long_status_ok, pos_span, pos_suspended, pos_status_evidence = technical_window_status(pos_rows, statuses, calendar)
     pos_ok = (current and len(pos_rows) == pos_window and long_status_ok and
               all(x.get("adjusted_quality") == "READY" and x.get("qfq_high") is not None and x.get("qfq_low") is not None for x in pos_rows))
     high = max(float(x["qfq_high"]) for x in pos_rows) if pos_ok else None
@@ -90,8 +118,8 @@ def derive_daily(bars: Sequence[Mapping], factors: Mapping[str, Mapping],
     reason = None if pos_ok and den > 0 else "POS250_WINDOW_OR_DENOMINATOR_UNAVAILABLE"
     output["pos250"] = _result((close - low) / den if reason is None else None, reason,
                                 [(x.get("trade_date"), x.get("qfq_high"), x.get("qfq_low"), x.get("adjusted_quality"))
-                                 for x in pos_rows] + list(statuses), len(pos_rows), span(pos_rows)[0] if pos_rows else len(status_values),
-                                *bounds(pos_rows), span(pos_rows)[1] if pos_rows else status_values.count("SUSPENDED"))
+                                 for x in pos_rows] + pos_status_evidence, len(pos_rows), pos_span,
+                                *bounds(pos_rows), pos_suspended)
 
     atr = _factor(factors, "atr20")
     ma20 = _factor(factors, "ma20")
@@ -106,14 +134,16 @@ def derive_daily(bars: Sequence[Mapping], factors: Mapping[str, Mapping],
 
     prior_window = int(P["PRIOR_AMOUNT_WINDOW"])
     prior_rows = bars[-prior_window-1:-1] if current else []
+    liquid_status_ok, liquid_span, liquid_suspended, liquid_status_evidence = technical_window_status(prior_rows, statuses, calendar)
     amount_factor_ok = _factor(factors, "amount_ratio20") is not None
-    liquid_ok = (current and amount_factor_ok and len(prior_rows) == prior_window and
+    liquid_ok = (current and amount_factor_ok and len(prior_rows) == prior_window and liquid_status_ok and
                  all(isinstance(x.get("amount"), (int, float)) for x in prior_rows))
     mean_amount = fmean(float(x["amount"]) for x in prior_rows) if liquid_ok else None
     output["minimum_liquidity"] = _result(mean_amount >= P["MINIMUM_LIQUIDITY_CNY"] if liquid_ok else None,
                                             None if liquid_ok else "PRIOR20_AMOUNT_UNAVAILABLE",
-                                            [(x.get("trade_date"), x.get("amount")) for x in prior_rows],
-                                            len(prior_rows), span(prior_rows)[0], *bounds(prior_rows), span(prior_rows)[1])
+                                            {"bars": [(x.get("trade_date"), x.get("amount")) for x in prior_rows],
+                                             "statuses": liquid_status_evidence, "calendar_span": liquid_span},
+                                            len(prior_rows), liquid_span, *bounds(prior_rows), liquid_suspended)
     return output
 
 

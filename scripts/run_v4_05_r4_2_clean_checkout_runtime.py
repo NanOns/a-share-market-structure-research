@@ -79,6 +79,13 @@ def build() -> dict:
         cli_summary = json.loads(ledger_result.stdout.strip().splitlines()[-1])
         ledger_path = clone / "reports/v4_05/V4_05_R4_2_POSTGRES_REVISION_LEDGER_IDEMPOTENCY.json"
         ledger = json.loads(ledger_path.read_text(encoding="utf-8"))
+        if ledger.get("status") != "PASS" or not ledger.get("cases", {}).get("cases"):
+            raise RuntimeError("fresh-clone PostgreSQL runner failed: " + json.dumps({
+                "cli_summary": cli_summary, "error": ledger.get("error"),
+                "runtime_test_receipt": ledger.get("runtime_test_receipt"),
+                "test_stdout": ledger.get("test_stdout"), "test_stderr": ledger.get("test_stderr"),
+                "traceback": ledger.get("traceback"), "cleanup": ledger.get("cleanup")},
+                ensure_ascii=False))
         cases = ledger["cases"]["cases"]
         i_status = {
             "I01_identical_replay": cases["I01_identical_replay"]["status"],

@@ -2,6 +2,7 @@
   "candidate_only": true,
   "checks": {
     "accepted_head_modified": false,
+    "external_amendment_acceptance_bound": true,
     "full_market_materialization_remains_blocked_without_pit_membership": true,
     "membership_independent_sector_native_contract_pass": true,
     "pit_membership_fabricated": false,
@@ -76,7 +77,13 @@
       "sha256": "0f580967704998a4292fca003e219c34637ff6a1c49b5c3282f85a2eb8de0cf3"
     }
   },
-  "external_acceptance": "PENDING_EXTERNAL_REVIEW",
+  "external_acceptance_evidence": {
+    "byte_count": 6194,
+    "path": "docs/evidence/V4_00_01_02_03_FOUNDATION_CANDIDATE_EXTERNAL_AUDIT_R1_20260929.md",
+    "sha256": "b374df76ab9e479c86b3dd5b69d7f8035fea5f42d552895676e6c8a681a9a0c0"
+  },
+  "external_amendment_acceptance": "ACCEPTED_BY_EXTERNAL_AUDIT_20260929",
+  "external_review_head": "ecfcc3209404df5ccc7daaf6af905459cc075542",
   "moved_to_v4_08": [
     "PIT_SECTOR_MEMBERSHIP_RECONSTRUCTION",
     "FULL_MARKET_SECTOR_MATERIALIZATION",
@@ -95,14 +102,14 @@
   "sector_materialization_status": "BLOCKED_MISSING_ACCEPTED_PIT_MEMBERSHIP",
   "stage": "V4-03 SECTOR OWNERSHIP AMENDMENT",
   "stage_record": {
-    "acceptance_result": "AMENDMENT_CANDIDATE_PENDING_EXTERNAL_ACCEPTANCE",
+    "acceptance_result": "AMENDMENT_ACCEPTED_BY_EXTERNAL_AUDIT_20260929",
     "evidence": "Existing V4-03 R3 receipts plus accepted V4-01/V4-02 canonical hash equality; no materialization rebuild",
-    "next_stage": "INDEPENDENT_EXTERNAL_AMENDMENT_ACCEPTANCE",
+    "next_stage": "JOINT_FINAL_EXTERNAL_ACCEPTANCE",
     "stage_contract": "V4-03 capability-scoped disposition and V4_03_SECTOR_OWNERSHIP_AMENDMENT_V1"
   },
-  "status": "AMENDMENT_CANDIDATE_PENDING_EXTERNAL_ACCEPTANCE",
+  "status": "AMENDMENT_ACCEPTED_BY_EXTERNAL_AUDIT_20260929",
   "upstream_identity_hashes_unchanged": true,
-  "v4_04_entry": "BLOCKED_PENDING_JOINT_EXTERNAL_ACCEPTANCE",
+  "v4_04_entry": "PENDING_FINAL_EXTERNAL_ACCEPTANCE",
   "v4_08_entry": "BLOCKED_UNTIL_ACCEPTED_PIT_MEMBERSHIP_BASELINE_AND_RECONSTRUCTION",
   "version": "1.0.0-candidate"
 }

@@ -1,0 +1,132 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "-q",
+    "-rs",
+    "tests/v4_phase0",
+    "tests/v4_01",
+    "tests/v4_02",
+    "tests/v4_03"
+  ],
+  "contract_id": "V4_00_01_02_03_FULL_CHAIN_TEST_RECEIPT_R2",
+  "counts": {
+    "error": 0,
+    "failed": 0,
+    "passed": 275,
+    "skipped": 2,
+    "xfailed": 0,
+    "xpassed": 0
+  },
+  "duration_seconds": 3.756,
+  "execution_identity": {
+    "branch": "codex/v4-system-reform",
+    "pytest_version": "pytest 9.1.1",
+    "python_version": "3.13.14",
+    "tested_code_commit": "b3b728593e7396553281a65ee55d8ec7fadaaf4f",
+    "working_tree_changed_file_count_after_tests": 0,
+    "working_tree_changed_files": [],
+    "working_tree_clean_at_test_start": true
+  },
+  "git_status": {
+    "after_tests_before_receipt": "## codex/v4-system-reform...origin/codex/v4-system-reform [ahead 3]\n",
+    "at_test_start": "## codex/v4-system-reform...origin/codex/v4-system-reform [ahead 3]\n",
+    "clean_after_tests_before_receipt": true,
+    "clean_at_test_start": true,
+    "porcelain_after_tests_before_receipt": "",
+    "porcelain_at_test_start": ""
+  },
+  "observed_at_utc": "2026-09-29T02:08:31+00:00",
+  "output_tail": "........................................................................ [ 25%]\n.....................s..........s....................................... [ 51%]\n........................................................................ [ 77%]\n.............................................................            [100%]\n=========================== short test summary info ===========================\nSKIPPED [1] tests\\v4_phase0\\test_tdx_local_snapshot.py:54: symlink creation unavailable\nSKIPPED [1] tests\\v4_phase0\\test_tdx_snapshot.py:101: symlink creation is unavailable on this runner\n275 passed, 2 skipped in 3.30s",
+  "result": "PASS",
+  "return_code": 0,
+  "skip_details": {
+    "count": 2,
+    "items": [
+      {
+        "count": 1,
+        "reason": "symlink creation unavailable",
+        "required_scope": false,
+        "scope_disposition": "OPTIONAL_OR_PLATFORM_SKIP",
+        "summary_line": "SKIPPED [1] tests\\v4_phase0\\test_tdx_local_snapshot.py:54: symlink creation unavailable",
+        "test_location": "tests\\v4_phase0\\test_tdx_local_snapshot.py:54"
+      },
+      {
+        "count": 1,
+        "reason": "symlink creation is unavailable on this runner",
+        "required_scope": false,
+        "scope_disposition": "OPTIONAL_OR_PLATFORM_SKIP",
+        "summary_line": "SKIPPED [1] tests\\v4_phase0\\test_tdx_snapshot.py:101: symlink creation is unavailable on this runner",
+        "test_location": "tests\\v4_phase0\\test_tdx_snapshot.py:101"
+      }
+    ],
+    "required_scope_skip_count": 0,
+    "unexplained_skip_count": 0
+  },
+  "stage": "V4-00..V4-03 CURRENT-WORKTREE COMBINED REGRESSION",
+  "stage_record": {
+    "acceptance_result": "PASS",
+    "evidence": "Exact pytest command, clean-at-start git status, tested code commit, file set, interpreter, skip names/reasons, output digest, counts, and duration",
+    "next_stage": "GENERATE_STAGE_EVIDENCE_AND_FULL_CHAIN_VALIDATION",
+    "stage_contract": "V4-00..V4-03 R3 foundation repair; clean tested code commit and -rs skip accountability"
+  },
+  "status": "PASS",
+  "stdout_stderr_sha256": "b18fa9f08d029834477e7572eebea968feb386d6644bd80296d4792496f0f787",
+  "superseded_prior_attempt": {
+    "disposition": "SUPERSEDED_BY_CURRENT_FULL_SUITE_RUN_AFTER_TEST_FIXTURE_ALIGNMENT",
+    "path": "reports/v4_joint/V4_00_01_02_03_FULL_CHAIN_TEST_ATTEMPT_R1_FAILED.json",
+    "sha256": "8592d647a2b61055523964d2259d1531cd4e49b61ca2be0c94e3a74621b56924",
+    "status": "FAIL",
+    "terminal_summary": "2 failed, 265 passed, 2 skipped in 4.79s"
+  },
+  "tdx_root_write_count": 0,
+  "terminal_summary": "275 passed, 2 skipped in 3.30s",
+  "test_contract_alignment": [
+    {
+      "change": "Mock package_metadata() to supply an unpinned runtime version and assert the current fail-closed error token; assert current default_runtime_pin metadata field.",
+      "production_runtime_changed": false,
+      "test_file": "tests/v4_phase0/test_baostock_supplemental.py"
+    }
+  ],
+  "test_file_count": 30,
+  "test_files": [
+    "tests/v4_01/test_r8_1_identity_event_discovery.py",
+    "tests/v4_01/test_r8_2_identity_relation_evidence.py",
+    "tests/v4_01/test_r8_3_identity_event_linkage.py",
+    "tests/v4_01/test_r8_3_official_search_capture.py",
+    "tests/v4_01/test_r8_generic_alias_completeness.py",
+    "tests/v4_01/test_source_fingerprint_candidate.py",
+    "tests/v4_01/test_v4_01_generic_candidate_union.py",
+    "tests/v4_01/test_v4_01_receipt_parsing.py",
+    "tests/v4_02/test_final_closure_pack.py",
+    "tests/v4_02/test_final_r3_repairs.py",
+    "tests/v4_02/test_final_r4_special_price_phase.py",
+    "tests/v4_02/test_r5_generic_runtime.py",
+    "tests/v4_02/test_r6_generic_production_builder.py",
+    "tests/v4_03/test_algorithm_contract_v12.py",
+    "tests/v4_03/test_ast_golden_r3.py",
+    "tests/v4_03/test_core_vectors.py",
+    "tests/v4_03/test_r3_closure.py",
+    "tests/v4_phase0/test_adjustment_contract_vectors.py",
+    "tests/v4_phase0/test_algorithm_contracts.py",
+    "tests/v4_phase0/test_baostock_supplemental.py",
+    "tests/v4_phase0/test_canonical_source_selection.py",
+    "tests/v4_phase0/test_phase0_final_gate.py",
+    "tests/v4_phase0/test_postgres_schema.py",
+    "tests/v4_phase0/test_security_entity_identity.py",
+    "tests/v4_phase0/test_source_bundle_identity.py",
+    "tests/v4_phase0/test_source_overlap_classifier.py",
+    "tests/v4_phase0/test_tdx_local_snapshot.py",
+    "tests/v4_phase0/test_tdx_snapshot.py",
+    "tests/v4_phase0/test_v4_01_lineage_policy.py",
+    "tests/v4_phase0/test_v4_01_required_scope_r6.py"
+  ],
+  "test_roots": [
+    "tests/v4_phase0",
+    "tests/v4_01",
+    "tests/v4_02",
+    "tests/v4_03"
+  ],
+  "version": "1.0.0"
+}

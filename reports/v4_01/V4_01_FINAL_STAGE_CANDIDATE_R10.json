@@ -1,0 +1,67 @@
+{
+  "canonical_identity_unchanged": true,
+  "contract_id": "V4_01_FINAL_STAGE_CANDIDATE_R10",
+  "evidence": {
+    "postcheck": {
+      "path": "reports/v4_01/V4_01_IDENTITY_COMPLETENESS_GATE_V2_POSTCHECK_R2.json",
+      "sha256": "22f3f71f93d9a997af03e7835ce7d29439d588d597626cc2d85e91e8d66a6bf9"
+    },
+    "resolution": {
+      "path": "reports/v4_01/V4_01_IDENTITY_RELATION_RESOLUTION_R2.json",
+      "sha256": "23efd9f739558a3473b86b9968ffbc8c984cb432cf906d2126758daaba09fcf1"
+    },
+    "scan": {
+      "path": "reports/v4_01/V4_01_FULL_SCOPE_SOURCE_FINGERPRINT_SCAN_R1.json",
+      "sha256": "250077b6eceff33ed9433812a489396102c0e37790e30871e83fda50a62becac"
+    }
+  },
+  "external_acceptance": "PENDING_EXTERNAL_REVIEW",
+  "gate_contract_acceptance_evidence": {
+    "audit_document": {
+      "byte_count": 6194,
+      "path": "docs/evidence/V4_00_01_02_03_FOUNDATION_CANDIDATE_EXTERNAL_AUDIT_R1_20260929.md",
+      "sha256": "b374df76ab9e479c86b3dd5b69d7f8035fea5f42d552895676e6c8a681a9a0c0"
+    },
+    "external_review_head": "ecfcc3209404df5ccc7daaf6af905459cc075542",
+    "repair_task_document": {
+      "byte_count": 4469,
+      "path": "docs/evidence/V4_00_01_02_03_FOUNDATION_FINAL_REPAIR_TASK_R3_20260929.md",
+      "sha256": "86ee9d6326e8fd965c4bbdfec6fa8550629adea6377aead4b8d3d09a7b3b138a"
+    }
+  },
+  "gate_contract_external_acceptance": "ACCEPTED_BY_EXTERNAL_AUDIT_20260929",
+  "identity_candidate": {
+    "path": "data/v4/V4_01_ACCEPTED_HEAD_CANDIDATE.json",
+    "sha256": "27d7403663ab4b701b8e84e06e2e6767557aa8cf66dd530703691a90dc8aa9e5"
+  },
+  "known_event_index": {
+    "exhaustiveness_claimed": false,
+    "role": "KNOWN_EVENT_CROSS_CHECK_AND_CONFIRMATION_SOURCE",
+    "status": "COVERAGE_INCOMPLETE_RETAINED_AS_HISTORICAL_FACT"
+  },
+  "next_stage": "WAIT_FOR_INDEPENDENT_EXTERNAL_ACCEPTANCE; DO_NOT_UPDATE_GLOBAL_HEAD_OR_START_V4_04",
+  "observed_at": "2026-09-29T10:08:52+08:00",
+  "required_scope": {
+    "boards": [
+      "CHINEXT",
+      "SH_MAIN",
+      "STAR",
+      "SZ_MAIN"
+    ],
+    "history_end": "2026-09-24",
+    "history_start": "2023-07-04",
+    "sessions": 786,
+    "status": "FULL_PASS_CANDIDATE",
+    "unlinked_boundary_anomalies": 0,
+    "unresolved_identity_relations": 0
+  },
+  "source_fingerprint_calibration": "DEFERRED_NON_BLOCKING_RESEARCH",
+  "stage": "V4-01 FINAL STAGE",
+  "stage_record": {
+    "acceptance_result": "CANDIDATE_PENDING_EXTERNAL_ACCEPTANCE",
+    "evidence": "Full Required Scope R7 boundary inventory; R8.3 cross-check; TDX-first scan; official resolution; independent postcheck",
+    "next_stage": "INDEPENDENT_EXTERNAL_ACCEPTANCE"
+  },
+  "status": "FULL_PASS_CANDIDATE",
+  "version": "10.0.0-candidate"
+}

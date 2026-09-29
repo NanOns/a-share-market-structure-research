@@ -1,0 +1,375 @@
+{
+  "candidate_union": [
+    {
+      "candidate_key": [
+        "SZ.300114",
+        "SZ.302132",
+        "2025-02-17"
+      ],
+      "effective_date": "2025-02-17",
+      "new_source_security_key": "SZ.302132",
+      "old_source_security_key": "SZ.300114",
+      "source_event_ids": [
+        "0c957e93d7fda975c29e11ad",
+        "IE-EB4FA5D8F70BB86A07FE21F5"
+      ],
+      "sources": [
+        "source_fingerprint_scan",
+        "r8_generic_relation",
+        "known_official_event"
+      ]
+    }
+  ],
+  "contract_id": "V4_01_IDENTITY_RELATION_RESOLUTION_R2",
+  "inputs": {
+    "config/v4_01_source_fingerprint_blind_labels_v1.json": {
+      "byte_count": 3318,
+      "path": "config/v4_01_source_fingerprint_blind_labels_v1.json",
+      "sha256": "2f97945dc9b2577a1f9af82077d542f253f2a333bb93f26a57bd0ed91dadf5f1"
+    },
+    "data/v4/artifact_store/v4_01/security_entity_map_R7_20260927.json": {
+      "byte_count": 5528197,
+      "path": "data/v4/artifact_store/v4_01/security_entity_map_R7_20260927.json",
+      "sha256": "e33294fb8d1d71732fdc3df903258b5617345811ecbdb649af8056ccd91427e0"
+    },
+    "data/v4/source_evidence/official_code_change_event_index/coverage_receipt_v1.json": {
+      "byte_count": 8622,
+      "path": "data/v4/source_evidence/official_code_change_event_index/coverage_receipt_v1.json",
+      "sha256": "c904bc47d55f99a675443f0b3383f26c886063003bd84ab57d48dc099edceb4a"
+    },
+    "data/v4/source_evidence/official_code_change_event_index/official_security_code_change_events_v1.jsonl": {
+      "byte_count": 805,
+      "path": "data/v4/source_evidence/official_code_change_event_index/official_security_code_change_events_v1.jsonl",
+      "sha256": "f06079bf528369ce5d77a155a6171d3dcba8c781c68b7204cc070cd2ad7f16c9"
+    },
+    "docs/audits/V4_01_SOURCE_FINGERPRINT_CALIBRATION_AUDIT_ITEM_R1_20260929.md": {
+      "byte_count": 4252,
+      "path": "docs/audits/V4_01_SOURCE_FINGERPRINT_CALIBRATION_AUDIT_ITEM_R1_20260929.md",
+      "sha256": "33efabb84b705b4afd731e413716ef6040b4ecb067fa3d242e03447fd485a497"
+    },
+    "docs/evidence/V4_00_01_02_03_FOUNDATION_CANDIDATE_EXTERNAL_AUDIT_R1_20260929.md": {
+      "byte_count": 6194,
+      "path": "docs/evidence/V4_00_01_02_03_FOUNDATION_CANDIDATE_EXTERNAL_AUDIT_R1_20260929.md",
+      "sha256": "b374df76ab9e479c86b3dd5b69d7f8035fea5f42d552895676e6c8a681a9a0c0"
+    },
+    "docs/evidence/V4_00_01_02_03_FOUNDATION_FINAL_REPAIR_TASK_R3_20260929.md": {
+      "byte_count": 4469,
+      "path": "docs/evidence/V4_00_01_02_03_FOUNDATION_FINAL_REPAIR_TASK_R3_20260929.md",
+      "sha256": "86ee9d6326e8fd965c4bbdfec6fa8550629adea6377aead4b8d3d09a7b3b138a"
+    },
+    "docs/evidence/V4_01_CODE_CHANGE_SOURCE_FINGERPRINT_EXTERNAL_ACCEPTANCE_20260929.md": {
+      "byte_count": 13255,
+      "path": "docs/evidence/V4_01_CODE_CHANGE_SOURCE_FINGERPRINT_EXTERNAL_ACCEPTANCE_20260929.md",
+      "sha256": "47588e946fee72611431a8743ec8615fee06da18482e75b0e27868f15bc9e1a1"
+    },
+    "docs/evidence/V4_01_SOURCE_FINGERPRINT_BLIND_STUDY_EXTERNAL_ACCEPTANCE_R1_20260929.md": {
+      "byte_count": 9615,
+      "path": "docs/evidence/V4_01_SOURCE_FINGERPRINT_BLIND_STUDY_EXTERNAL_ACCEPTANCE_R1_20260929.md",
+      "sha256": "6db29d56cddce77ca1b5f33e2d75197208abb710aa8cbc19d247156c8fe9060a"
+    },
+    "reports/v4_01/V4_01_FULL_SCOPE_SOURCE_FINGERPRINT_SCAN_R1.json": {
+      "byte_count": 358018,
+      "path": "reports/v4_01/V4_01_FULL_SCOPE_SOURCE_FINGERPRINT_SCAN_R1.json",
+      "sha256": "250077b6eceff33ed9433812a489396102c0e37790e30871e83fda50a62becac"
+    },
+    "reports/v4_01/V4_01_IDENTITY_EVENT_DISCOVERY_R8_3.json": {
+      "byte_count": 329298,
+      "path": "reports/v4_01/V4_01_IDENTITY_EVENT_DISCOVERY_R8_3.json",
+      "sha256": "b94854cde9fa178367ba38896cd0e006eaed6aae03a1fd43d446f48655c0ea33"
+    },
+    "reports/v4_01/V4_01_SOURCE_FINGERPRINT_CANDIDATE_BLIND_VALIDATION_R1.json": {
+      "byte_count": 22330,
+      "path": "reports/v4_01/V4_01_SOURCE_FINGERPRINT_CANDIDATE_BLIND_VALIDATION_R1.json",
+      "sha256": "bc0426812585c6cd0974bc9f1e78db39f2a052cf24bb6540cf1c985114e2ee55"
+    }
+  },
+  "known_bounded_validation_crosschecks": [
+    {
+      "candidate_evaluation_matches_label_without_auto_link": true,
+      "canonical_identity_changed": false,
+      "case_id": "BLIND-01",
+      "independent_official_evidence": [
+        {
+          "capture_observed_at_utc": "2026-09-26T23:59:32Z",
+          "captured_file_sha256_verified": true,
+          "evidence_basis": "Accepted SZSE notice explicitly changes the listed security code from 300114 to 302132 effective 2025-02-17.",
+          "repository_capture_path": "data/v4/source_evidence/v4_02_r3/szse_2025_028_code_change_302132.pdf",
+          "sha256": "dd68049c48df826848f361fd9e7b23dd20b6805144a2e5bc36e54db638611488",
+          "source_ref": "https://disc.static.szse.cn/disc/disk03/finalpage/2025-02-15/cedb693a-f5ee-4463-9682-ea33d406b569.PDF"
+        }
+      ],
+      "new_source_security_key": "SZ.302132",
+      "old_source_security_key": "SZ.300114",
+      "required_scope_scan_window": true,
+      "resolution": "CONFIRMED_SAME_ENTITY_CODE_CHANGE"
+    },
+    {
+      "candidate_evaluation_matches_label_without_auto_link": true,
+      "canonical_identity_changed": false,
+      "case_id": "BLIND-02",
+      "independent_official_evidence": [
+        {
+          "capture_observed_at_utc": "2026-09-28T23:00:15Z",
+          "captured_file_sha256_verified": true,
+          "evidence_basis": "The company notice states old-code shares convert to the new code without changing holder share quantity; effective 2018-12-26.",
+          "repository_capture_path": "data/v4/source_evidence/v4_01_source_fingerprint_validation_20260929/szse_2018_12_26_000022_to_001872.pdf",
+          "sha256": "bf406b1759dd7fda45cc46927e36316840b0b1152bb40677a7b52e11568d4350",
+          "source_ref": "https://static.cninfo.com.cn/finalpage/2018-12-26/1205690369.PDF"
+        }
+      ],
+      "new_source_security_key": "SZ.001872",
+      "old_source_security_key": "SZ.000022",
+      "required_scope_scan_window": false,
+      "resolution": "CONFIRMED_SAME_ENTITY_CODE_CHANGE"
+    },
+    {
+      "candidate_evaluation_matches_label_without_auto_link": true,
+      "canonical_identity_changed": false,
+      "case_id": "BLIND-03",
+      "independent_official_evidence": [
+        {
+          "capture_observed_at_utc": "2026-09-28T23:00:16Z",
+          "captured_file_sha256_verified": true,
+          "evidence_basis": "The annual report states issuer 001979 absorbed issuer 000024 and 001979 first listed on 2015-12-30; this is a merger-successor control, not a pure code renumbering.",
+          "repository_capture_path": "data/v4/source_evidence/v4_01_source_fingerprint_validation_20260929/cninfo_2015_annual_001979_absorption_000024.pdf",
+          "sha256": "0c1736521016ed825da743254ada302df2d848c0e81cae8ddd760fdcdb302808",
+          "source_ref": "https://static.cninfo.com.cn/finalpage/2016-03-29/1202090493.PDF"
+        }
+      ],
+      "new_source_security_key": "SZ.001979",
+      "old_source_security_key": "SZ.000024",
+      "required_scope_scan_window": false,
+      "resolution": "CONFIRMED_DISTINCT_MERGER_SUCCESSOR"
+    },
+    {
+      "candidate_evaluation_matches_label_without_auto_link": true,
+      "canonical_identity_changed": false,
+      "case_id": "BLIND-04",
+      "independent_official_evidence": [
+        {
+          "capture_observed_at_utc": "2026-09-28T23:00:16Z",
+          "captured_file_sha256_verified": true,
+          "evidence_basis": "The listing notice describes 000166 shares issued in exchange for and absorption of 000562; a merger-successor control, not a pure code renumbering.",
+          "repository_capture_path": "data/v4/source_evidence/v4_01_source_fingerprint_validation_20260929/cninfo_2015_01_26_000562_absorption_000166.pdf",
+          "sha256": "b7cf04f6ca8568c95d87c57e8d0adfd0920be23b6e919073434a9130d50f682b",
+          "source_ref": "https://static.cninfo.com.cn/finalpage/2015-01-26/1200574364.PDF"
+        }
+      ],
+      "new_source_security_key": "SZ.000166",
+      "old_source_security_key": "SZ.000562",
+      "required_scope_scan_window": false,
+      "resolution": "CONFIRMED_DISTINCT_MERGER_SUCCESSOR"
+    }
+  ],
+  "observed_at": "2026-09-29T10:08:52+08:00",
+  "required_scope_relation_candidates": [
+    {
+      "candidate_key": [
+        "SZ.300114",
+        "SZ.302132",
+        "2025-02-17"
+      ],
+      "canonical_identity_mutation": false,
+      "effective_date": "2025-02-17",
+      "independent_confirmation": {
+        "accepted_dated_identity": {
+          "boundary_facts_match": true,
+          "distinct_security_ids": false,
+          "new_fact": {
+            "alias_role": "CURRENT",
+            "board": "CHINEXT",
+            "delist_date": null,
+            "evidence_source": "SZSE_2025_028_IMPLEMENTATION_ANNOUNCEMENT",
+            "exchange": "SZ",
+            "identity_quality": "OFFICIAL_DATED_CODE_CHANGE_REPAIR_R7",
+            "lifecycle_entity_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+            "list_date": "2010-08-27",
+            "provider_status_observed": "0",
+            "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+            "security_type": "A_STOCK",
+            "source_contract_id": "V4_01_SECURITY_ALIAS_BOARD_REPAIR_R7",
+            "source_revision_id": "sha256:dd68049c48df826848f361fd9e7b23dd20b6805144a2e5bc36e54db638611488",
+            "source_security_key": "SZ.302132",
+            "symbol": "SZ.302132",
+            "symbol_effective_from": "2025-02-17",
+            "symbol_effective_to": null
+          },
+          "old_fact": {
+            "alias_role": "PREDECESSOR",
+            "board": "CHINEXT",
+            "delist_date": null,
+            "evidence_source": "SZSE_2025_028_IMPLEMENTATION_ANNOUNCEMENT",
+            "exchange": "SZ",
+            "identity_quality": "OFFICIAL_DATED_CODE_CHANGE_REPAIR_R7",
+            "lifecycle_entity_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+            "list_date": "2010-08-27",
+            "provider_status_observed": "0",
+            "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+            "security_type": "A_STOCK",
+            "source_contract_id": "V4_01_SECURITY_ALIAS_BOARD_REPAIR_R7",
+            "source_revision_id": "sha256:dd68049c48df826848f361fd9e7b23dd20b6805144a2e5bc36e54db638611488",
+            "source_security_key": "SZ.300114",
+            "symbol": "SZ.300114",
+            "symbol_effective_from": "2010-08-27",
+            "symbol_effective_to": "2025-02-16"
+          },
+          "same_security_id": true
+        },
+        "official_event": {
+          "capture_hash_verified": true,
+          "capture_path": "data/v4/source_evidence/v4_02_r3/szse_2025_028_code_change_302132.pdf",
+          "capture_sha256_actual": "dd68049c48df826848f361fd9e7b23dd20b6805144a2e5bc36e54db638611488",
+          "capture_sha256_bound": "dd68049c48df826848f361fd9e7b23dd20b6805144a2e5bc36e54db638611488",
+          "entity_relation": "SAME_ENTITY",
+          "event_index_match": true,
+          "evidence_class": "OFFICIAL_CODE_CHANGE_NOTICE"
+        }
+      },
+      "independent_source_replay": {
+        "frozen_baostock_evidence": {
+          "available": true,
+          "compared_fields": [
+            "adjustflag",
+            "amount",
+            "close",
+            "high",
+            "isST",
+            "low",
+            "open",
+            "preclose",
+            "tradestatus",
+            "turn",
+            "volume"
+          ],
+          "compressed": false,
+          "exact_shared_bar_count_excluding_query_code": 1376,
+          "new_query_row_count": 3514,
+          "old_query_row_count": 3511,
+          "path": "reports/v4_01/V4_01_CODE_CHANGE_SOURCE_FINGERPRINT_300114_302132_R1.json",
+          "sha256": "bf69125b1594b63b2f84c7daec570db4554bceda5d16083b3d9a7167ca0718f3",
+          "shared_date_count": 3510,
+          "status": "FROZEN_PAIR_EVIDENCE_READ",
+          "used_for_identity_confirmation": false
+        },
+        "tdx_semantic_redecode": {
+          "decoded": true,
+          "new": {
+            "byte_count": 122112,
+            "code": "SZ.302132",
+            "duplicate_dates": 0,
+            "first_date": "2010-08-27",
+            "last_date": "2026-09-24",
+            "non_increasing_dates": 0,
+            "record_count": 3816,
+            "sha256": "08269c85bb95fa3b31adc7ed5451396d7706d3039955988124e33f7659adf37b",
+            "tail_bytes": 0
+          },
+          "ohlc_amount_exact_count": 3421,
+          "old": {
+            "byte_count": 109472,
+            "code": "SZ.300114",
+            "duplicate_dates": 0,
+            "first_date": "2010-08-27",
+            "last_date": "2025-02-14",
+            "non_increasing_dates": 0,
+            "record_count": 3421,
+            "sha256": "08cf59e7d31aa0b0eae1f097e8cf782b1d6fb2124f8a3e784e19ccf830e29d54",
+            "tail_bytes": 0
+          },
+          "semantic_candidate_match": true,
+          "shared_pre_effective_sessions": 3421,
+          "thresholds": {
+            "minimum_shared_sessions": 20,
+            "tdx_volume_exact_ratio_minimum": 0.95,
+            "used_for_identity_confirmation": false
+          },
+          "volume_exact_count": 3420,
+          "volume_exact_ratio": 0.9997076878105817
+        }
+      },
+      "new_source_security_key": "SZ.302132",
+      "old_source_security_key": "SZ.300114",
+      "resolution": "CONFIRMED_SAME_ENTITY_CODE_CHANGE",
+      "resolution_basis": "HASH_VERIFIED_OFFICIAL_SAME_ENTITY_EVENT_AND_ACCEPTED_DATED_IDENTITY_FACTS",
+      "source_event_ids": [
+        "0c957e93d7fda975c29e11ad",
+        "IE-EB4FA5D8F70BB86A07FE21F5"
+      ],
+      "source_fingerprint_candidate": "CANDIDATE_DISCOVERY_ONLY",
+      "sources": [
+        "source_fingerprint_scan",
+        "r8_generic_relation",
+        "known_official_event"
+      ]
+    }
+  ],
+  "resolution_coverage": {
+    "candidate_union_count": 1,
+    "candidate_union_keys": [
+      [
+        "SZ.300114",
+        "SZ.302132",
+        "2025-02-17"
+      ]
+    ],
+    "duplicate_resolution_count": 0,
+    "extra_keys": [],
+    "invalid_state_count": 0,
+    "missing_keys": [],
+    "resolution_count": 1,
+    "resolution_keys": [
+      [
+        "SZ.300114",
+        "SZ.302132",
+        "2025-02-17"
+      ]
+    ],
+    "status": "PASS",
+    "unresolved_count": 0
+  },
+  "stage": "V4-01 RELATION CANDIDATE RESOLUTION",
+  "stage_contract": {
+    "candidate_threshold_contract_path": "config/v4_01_source_fingerprint_candidate_v1.json",
+    "candidate_threshold_contract_sha256": "d0891162e5290c42f84148b648f0a62c0052ae0ce49fef5d7c807f933988bd02",
+    "candidate_thresholds_changed": false,
+    "candidate_union_key": [
+      "old_source_security_key",
+      "new_source_security_key",
+      "effective_date"
+    ],
+    "candidate_union_sources": [
+      "source_fingerprint_scan",
+      "r8_generic_relation",
+      "known_official_event"
+    ],
+    "fingerprint_auto_confirmation": false,
+    "gate_contract_path": "config/v4_01_identity_completeness_gate_v2.json",
+    "gate_contract_sha256": "3467b5bae8ea2dfa3d112e73546e2a02d8e8cd337bf23e6de083d8aa82895951",
+    "production_identity_mutation": false,
+    "resolution_coverage_must_equal_candidate_union": true
+  },
+  "stage_record": {
+    "acceptance_result": "CANDIDATE_RESOLUTION_COMPLETE",
+    "evidence": "Full candidate union, one independent TDX decode per canonical relation key, matching accepted identity and hash-bound official evidence where available, frozen BaoStock evidence where available, and blind crosschecks",
+    "next_stage": "INDEPENDENT_COMPLETENESS_POSTCHECK"
+  },
+  "status": "RESOLVED_CANDIDATE",
+  "summary": {
+    "candidate_union_source_counts": {
+      "in_window_known_official_event": 1,
+      "r8_generic_relation": 1,
+      "source_fingerprint_scan": 1
+    },
+    "canonical_identity_changed": false,
+    "known_event_index_coverage_complete": false,
+    "known_event_index_role": "KNOWN_EVENT_CROSS_CHECK_AND_CONFIRMATION_SOURCE; NOT_SOLE_EXHAUSTIVE_COMPLETENESS_GATE",
+    "next_stage": "INDEPENDENT_COMPLETENESS_POSTCHECK_AND_CANDIDATE_RECEIPT",
+    "required_scope_candidate_count": 1,
+    "required_scope_confirmed_distinct_code_reuse_count": 0,
+    "required_scope_confirmed_distinct_merger_successor_count": 0,
+    "required_scope_confirmed_same_entity_count": 1,
+    "required_scope_unresolved_count": 0,
+    "resolution_count": 1
+  },
+  "version": "2.0.0-candidate"
+}

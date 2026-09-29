@@ -1,7 +1,7 @@
 {
   "amendment_candidate": {
     "path": "reports/v4_03/V4_03_SECTOR_OWNERSHIP_AMENDMENT_R1.json",
-    "sha256": "c5842f53e18420de406575c12c43fc10a605b6f578de55514d08add02edd8ae4"
+    "sha256": "9f702b99cfaa15519f10e4cdcf0835a51792dc75e0a354aee4a18ca64abe547d"
   },
   "capabilities": {
     "MARKET_REFERENCE": "PASS_CANDIDATE",
@@ -19,14 +19,15 @@
     "path": "data/v4/V4_03_ACCEPTED_HEAD.json",
     "sha256": "734bd27a5d53b2f18e3d62aa96ac63c91ccc6d9f848e942bc1efc410c88d4370"
   },
-  "external_acceptance": "PENDING_EXTERNAL_REVIEW",
+  "external_amendment_acceptance": "ACCEPTED_BY_EXTERNAL_AUDIT_20260929",
+  "external_review_head": "ecfcc3209404df5ccc7daaf6af905459cc075542",
   "membership_dependent_materialization_rebuilt": false,
-  "observed_at_utc": "2026-09-29T01:04:02+00:00",
+  "observed_at_utc": "2026-09-29T02:09:09+00:00",
   "stage": "V4-03 CONDITIONAL RESEAL CANDIDATE",
   "stage_record": {
     "acceptance_result": "CANDIDATE_ONLY_PENDING_EXTERNAL_ACCEPTANCE",
     "evidence": "Current accepted V4-03 head hash bindings and R3 capability receipts",
-    "next_stage": "JOINT_00_03_EXTERNAL_REVIEW",
+    "next_stage": "JOINT_FINAL_EXTERNAL_ACCEPTANCE",
     "stage_contract": "V4-03 final receipt and accepted head; R2 amendment scope"
   },
   "status": "PASS_WITH_SECTOR_SCOPE_DEGRADED_CANDIDATE",
@@ -54,7 +55,7 @@
     }
   },
   "v4_03_rebuilt": false,
-  "v4_04_entry": "BLOCKED_PENDING_FINAL_EXTERNAL_ACCEPTANCE",
+  "v4_04_entry": "PENDING_FINAL_EXTERNAL_ACCEPTANCE",
   "v4_08_sector_rotation": "BLOCKED_MISSING_ACCEPTED_PIT_MEMBERSHIP",
   "version": "1.0.0-candidate"
 }

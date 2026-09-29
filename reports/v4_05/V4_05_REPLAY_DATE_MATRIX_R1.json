@@ -1,0 +1,94 @@
+{
+  "authority": {
+    "global_head_sha256": "c710c1a6aa6012ff91967c86abdef1fa96050c9a02b16c8dc720a0b24ed4d9cc",
+    "r4_manifest_sha256": "278ecb78571506ee7eac57b953367729ffaa9d361f9d240b4871843bf9d3957e",
+    "source_cutoff": "2026-09-24",
+    "v4_04_accepted_head_sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a",
+    "v4_04_implementation_commit": "044dc637f90b35c6097bb800b1d4d755fdfb792c"
+  },
+  "cases": {
+    "adjustment_sensitive": {
+      "board_scope": "SH_MAIN",
+      "security_id": "SEC-005EA670068174623A3C365FCA9A8B2D",
+      "trade_date": "20260918"
+    },
+    "board_coverage": [
+      {
+        "board_scope": "CHINEXT",
+        "security_id": "SEC-002610CF9EBB4227722834AADA8F757E",
+        "trade_date": "20260924"
+      },
+      {
+        "board_scope": "SH_MAIN",
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "trade_date": "20260924"
+      },
+      {
+        "board_scope": "STAR",
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "trade_date": "20260924"
+      },
+      {
+        "board_scope": "SZ_MAIN",
+        "security_id": "SEC-0051683845B17D59641B7D1DC261FE2A",
+        "trade_date": "20260924"
+      }
+    ],
+    "code_change": {
+      "predecessor_key": "SZ.300114",
+      "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+      "successor_key": "SZ.302132",
+      "transition_date": "2025-02-17"
+    },
+    "midmonth_monthly_asof": {
+      "trade_date": "20260918"
+    },
+    "monday_weekly_asof": {
+      "trade_date": "20260921"
+    },
+    "recent": {
+      "trade_date": "20260924"
+    },
+    "short_history": {
+      "board_scope": "CHINEXT",
+      "first_trade_date": "20260922",
+      "security_id": "SEC-B9FCBA3896CC48C09B01286A0B75A11F",
+      "trade_date": "20260924"
+    },
+    "suspension_resumption": {
+      "resumed_date": "2026-06-22",
+      "security_id": "SEC-6D96953C4813650A2F06DF53EE7D3FC8",
+      "suspended_date": "2026-06-18",
+      "suspended_status": "SUSPENDED"
+    }
+  },
+  "contract_id": "V4_05_REPLAY_DATE_MATRIX_R1",
+  "input_hashes": {
+    "calendar": "09285bb116db5e7ab644e4942c331ceb9bc715b47f0369b9f228ef9d17df2d53",
+    "calendar_szse": "9c56dcf2077a19d303f504fcf22f962d9d71ed626030b61ad2aa77a201897900",
+    "daily": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90",
+    "factors": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e",
+    "market_regime": "89aae8484aa98837c3d6c685d48365edae2913ac506dd12916f8c56e92a9b139",
+    "monthly": "790ae9dd13bc363c431b2a7d02e3c6db868bc5d0b3d85a8c9a2acbd5dfd90ff3",
+    "profile": "b1ce4e4cb227f7cc25271005debfc9fc7bfaf61d39e20c96592921dd361e3b52",
+    "tdx_archive": "b6b88d777c74f302376513bad35e9c0e35284a65bc2d9826be25accf4d58807f",
+    "trading_status": "ad65d2e1b3ca835a310cfa2a35f7bfd417a42020e27f2e77d4a79597aa018de9",
+    "universe": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b",
+    "weekly": "8eda09c0ca55b986cbebe0aa32454a22835492a6286c1237473c729ea2af0294"
+  },
+  "selection_rules": {
+    "adjustment": "lexicographically smallest security id at midmonth with qfq_mul != 1 or qfq_add != 0",
+    "board": "lexicographically smallest security id per board on recent date",
+    "code_change": "unique required-board accepted identity-map interval transition, earliest such transition",
+    "midmonth": "latest accepted daily date with calendar day 12..18 <= cutoff",
+    "monday": "latest accepted daily Monday <= cutoff",
+    "recent": "latest accepted daily trade date <= accepted source cutoff",
+    "resumption": "earliest recent status transition from non-ACTUAL_TRADED to ACTUAL_TRADED in last 70 accepted daily sessions; security id tie-break",
+    "short_history": "latest first-trade date >= 2026-08-01 with trade on recent date; security id tie-break"
+  },
+  "status": "FROZEN_BEFORE_REPLAY_OUTPUT",
+  "status_scan": {
+    "entities": 5233,
+    "resumption_candidates": 111
+  }
+}

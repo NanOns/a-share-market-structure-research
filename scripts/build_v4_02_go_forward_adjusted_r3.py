@@ -91,7 +91,12 @@ def main() -> None:
         tzinfo=ZoneInfo("Asia/Shanghai")).astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
     raw_available_at = capture["attempts"][-1]["finished_at"]
     formal_publication_at = raw_available_at
-    code_change_keys = {r["source_security_key"] for r in identity["records"] if r.get("alias_role") == "SUCCESSOR" and r.get("symbol_effective_from") and r["symbol_effective_from"] <= "2026-09-28"}
+    aliases = defaultdict(set)
+    for alias in identity["records"]:
+        aliases[alias["security_id"]].add(alias["source_security_key"])
+    code_change_keys = {alias["source_security_key"] for alias in identity["records"]
+                        if len(aliases[alias["security_id"]]) > 1 and alias.get("symbol_effective_from")
+                        and alias["symbol_effective_from"] <= "2026-09-28"}
     extracted = ROOT / package["extraction_root"]
     counts = Counter()
     samples = {}

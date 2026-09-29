@@ -80,7 +80,12 @@ def main() -> None:
             candidate = json.loads(line)
             if candidate["trade_date"] == "2026-09-24":
                 accepted_keys.add(candidate["source_security_key"])
-    code_change_keys = {r["source_security_key"] for r in identity["records"] if r.get("alias_role") == "SUCCESSOR" and r.get("symbol_effective_from") and r["symbol_effective_from"] <= "2026-09-28"}
+    aliases = defaultdict(set)
+    for alias in identity["records"]:
+        aliases[alias["security_id"]].add(alias["source_security_key"])
+    code_change_keys = {alias["source_security_key"] for alias in identity["records"]
+                        if len(aliases[alias["security_id"]]) > 1 and alias.get("symbol_effective_from")
+                        and alias["symbol_effective_from"] <= "2026-09-28"}
     active = {}
     for row in identity["records"]:
         key = row["source_security_key"]

@@ -172,6 +172,67 @@
         }
       ]
     },
+    "code_change": {
+      "row": {
+        "adjusted_quality": "ADJUSTED_READY",
+        "adjustment_reason": null,
+        "adjustment_snapshot_digest": "f8c6a60e052a3fd7f8c3a043dbc9c53311a7599e1b36bb6cc140058f56269ef1",
+        "adjustment_snapshot_id": "sha256-775d82c58b5b46ec1d21478f86ba8ef90302691982e68d5c4cfcd51fddda666e",
+        "adjustment_source_available_at": "2026-09-26T13:07:05Z",
+        "adjustment_system_available_at": "2026-09-26T13:07:05Z",
+        "blocking_event_categories": [],
+        "board_scope": "CHINEXT",
+        "contract_id": "V4_02_GO_FORWARD_T0_CURRENT_COORDINATE_R2",
+        "contract_sha256": "9bc22579ab4e7547f69ab38899d4ae6ee60b49d51dee574b50b18cbb277f1069",
+        "coordinate_basis": "T0_CURRENT_COORDINATE",
+        "formal_publication_at": "2026-09-29T06:53:52+00:00",
+        "historical_as_recorded_claim": false,
+        "knowledge_lineage": "PIT_OBSERVED_AFTER_FORMAL_PUBLICATION",
+        "lookback_bar_count": 251,
+        "lookback_logical_digest": "d1637a8bc2834827860cc13c9d8773a60344101ac151c27c1bf1b598d89dc40f",
+        "max_source_trade_date": 20260928,
+        "new_listing_provenance": null,
+        "official_raw_source_published_at": "2026-09-28T07:58:05Z",
+        "project_raw_source_available_at": "2026-09-29T06:53:52+00:00",
+        "qfq_add": "0",
+        "qfq_mul": "1",
+        "qfq_ohlc": [
+          "58.16",
+          "59.08",
+          "57.80",
+          "58.73"
+        ],
+        "raw_ohlc": [
+          "58.16",
+          "59.08",
+          "57.8",
+          "58.73"
+        ],
+        "raw_source_digest": "b56d79a87cd4bc9d1bde1f7ed131b56cf1050280dee3b789477e739fb92e5789",
+        "raw_source_snapshot_id": "sha256-70b79898325ef6c67ea697f922d38fa3fd523e2ad62879b1b9fcb59fce52bf0c",
+        "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+        "source_asof": 20260928,
+        "source_security_key": "SZ.302132",
+        "source_visibility_basis": "FROZEN_PRE_T0_GBBQ_SNAPSHOT",
+        "system_available_at": "2026-09-29T06:53:52+00:00",
+        "target_trade_date": 20260928,
+        "visible_effective_event_count": 1,
+        "visible_effective_event_set_digest": "8546d641a1fc3ab7cf8a416277572277b731d956466be2251428e5ec62d2782c"
+      },
+      "visible_event_set": [
+        {
+          "c": [
+            3.859999895095825,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "category": 1,
+          "date": 20260616,
+          "index": 116194
+        }
+      ]
+    },
     "combined": {
       "row": {
         "adjusted_quality": "ADJUSTED_READY",
@@ -658,7 +719,5 @@
     }
   },
   "target_trade_date": 20260928,
-  "unavailable_kinds": [
-    "code_change"
-  ]
+  "unavailable_kinds": []
 }

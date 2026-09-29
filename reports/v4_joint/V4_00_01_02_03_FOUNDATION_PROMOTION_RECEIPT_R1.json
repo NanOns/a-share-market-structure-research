@@ -1,0 +1,131 @@
+{
+  "accepted_heads": {
+    "global_foundation": {
+      "byte_count": 2718,
+      "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+      "sha256": "b008c1bc9fa63df4709104bb49a0f99237926b5fe43314806de8b41b278207bd"
+    },
+    "v4_01": {
+      "byte_count": 4564,
+      "path": "data/v4/V4_01_ACCEPTED_HEAD.json",
+      "sha256": "b8ea5b8091629d116c860f9bf6a1a398301d75be16af7b08ff526fba9329bf6b"
+    },
+    "v4_02": {
+      "byte_count": 1602,
+      "path": "data/v4/V4_02_ACCEPTED_HEAD.json",
+      "sha256": "da318a1f82a03f13930af7858ca1640fadbdaedbee85e27d47f9c869c2d6b595"
+    },
+    "v4_03_amended_scope": {
+      "byte_count": 4924,
+      "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+      "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+    }
+  },
+  "candidate_head": "8eb0bfeb0ec2eca7bfb3a3c5c2ca016160151b90",
+  "canonical_identities_unchanged": {
+    "changed": false,
+    "v4_01_identity_map_sha256": "e33294fb8d1d71732fdc3df903258b5617345811ecbdb649af8056ccd91427e0",
+    "v4_01_required_universe_sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b",
+    "v4_02_accepted_head_sha256": "da318a1f82a03f13930af7858ca1640fadbdaedbee85e27d47f9c869c2d6b595",
+    "v4_03_pre_amendment_head_sha256": "734bd27a5d53b2f18e3d62aa96ac63c91ccc6d9f848e942bc1efc410c88d4370"
+  },
+  "contract_id": "V4_00_01_02_03_FOUNDATION_PROMOTION_RECEIPT_R1",
+  "external_acceptance_authority": {
+    "decision": "V4_00_01_02_03_FOUNDATION_FULL_CHAIN = EXTERNAL_ACCEPTANCE_PASS",
+    "document": {
+      "byte_count": 4572,
+      "path": "docs/evidence/V4_00_01_02_03_FOUNDATION_FINAL_EXTERNAL_ACCEPTANCE_R2_20260929.md",
+      "sha256": "34e8ef3903696743f8a59f782797cf97b7206f52eb57db67caa097d94e117aa3"
+    },
+    "reviewed_head": "8eb0bfeb0ec2eca7bfb3a3c5c2ca016160151b90",
+    "v4_04_entry_after_promotion": "AUTHORIZED"
+  },
+  "formal_status": {
+    "foundation": "FOUNDATION_FULL_PASS",
+    "incremental_update": "DEFERRED_NON_BLOCKING",
+    "v4_00": "FULL_PASS",
+    "v4_01": "FULL_PASS_REQUIRED_SCOPE",
+    "v4_01_external_acceptance": "EXTERNALLY_ACCEPTED",
+    "v4_02": "FULL_PASS_REQUIRED_SCOPE",
+    "v4_02_external_acceptance": "EXTERNALLY_ACCEPTED",
+    "v4_02_optional_scope": "BSE_OPTIONAL_DEGRADED",
+    "v4_03": "FULL_PASS_AMENDED_SCOPE",
+    "v4_03_external_acceptance": "EXTERNALLY_ACCEPTED",
+    "v4_04_entry": "AUTHORIZED_FULL_CHAIN",
+    "v4_08_sector_entry": "BLOCKED_UNTIL_ACCEPTED_PIT_MEMBERSHIP_BASELINE_AND_RECONSTRUCTION"
+  },
+  "observed_at_utc": "2026-09-29T02:36:40+00:00",
+  "promotion_commit": "47b14fd2e0330c1abe49cddc9a0e4329a9ba792c",
+  "promotion_scope": {
+    "changed_paths_only_accepted_heads_global_seal_and_evidence": true,
+    "global_accepted_pointers_unique_and_current": true,
+    "obsolete_r8_1_pending_binding_removed_from_current_authority": true,
+    "scanner_runs": 0,
+    "tdx_root_writes": 0,
+    "trading_runs": 0,
+    "v4_03_business_artifacts_rebuilt": false
+  },
+  "promotion_task": {
+    "byte_count": 3293,
+    "path": "docs/evidence/V4_00_01_02_03_FOUNDATION_ACCEPTED_HEAD_PROMOTION_TASK_R1_20260929.md",
+    "sha256": "82366a0264ceecfcb3144aed0fe09cef71eb35cacf74ebd9077ca396104be38b"
+  },
+  "stage": "V4-00..V4-03 EXTERNALLY ACCEPTED FOUNDATION PROMOTION",
+  "stage_record": {
+    "acceptance_result": "PROMOTION_PASS / FOUNDATION_FULL_PASS",
+    "evidence": "Hash-bound final external acceptance; V4-01 accepted head evidence, unchanged R7 canonical identities; V4-02 R6 acceptance retained; V4-03 amended-scope seal; read-only 39-check promotion validator.",
+    "next_stage": "STOP_AFTER_PROMOTION; V4-04 entry is authorized by the accepted chain, but V4-04 work was not started in this task.",
+    "stage_contract": "V4_00_01_02_03_FOUNDATION_ACCEPTED_HEAD_PROMOTION_TASK_R1_20260929 + V4_00_01_02_03_FOUNDATION_FINAL_EXTERNAL_ACCEPTANCE_R2_20260929"
+  },
+  "status": "PROMOTION_PASS",
+  "validator": {
+    "blockers": [],
+    "checks": {
+      "candidate_is_direct_parent": true,
+      "external_document_authorizes_full_chain_acceptance": true,
+      "external_review_head_matches_promotion_baseline": true,
+      "global_authority_contains_no_pending_required_stage": true,
+      "global_foundation_full_pass_and_phase0_full_pass": true,
+      "global_optional_and_deferred_scopes_preserved": true,
+      "global_stale_r81_binding_removed": true,
+      "global_v400_v401_v402_v403_final_statuses": true,
+      "global_v401_pointer_unique_current": true,
+      "global_v402_pointer_exact": true,
+      "global_v403_pointer_unique_current": true,
+      "global_v404_authorized_full_chain": true,
+      "global_v408_block_exact": true,
+      "no_canonical_or_business_artifact_in_promotion_diff": true,
+      "no_tdx_scanner_or_trading_execution_in_promotion_task": true,
+      "phase0_receipt_hash_unchanged": true,
+      "promotion_commit_is_head": true,
+      "promotion_commit_parent_is_exact_baseline": true,
+      "promotion_diff_only_heads_seal_and_evidence": true,
+      "v401_acceptance_authority_bound": true,
+      "v401_candidate_is_full_pass_candidate": true,
+      "v401_candidate_union_resolves_exactly": true,
+      "v401_canonical_identity_and_universe_hashes_exact": true,
+      "v401_final_external_document_hash_exact": true,
+      "v401_gate_scan_resolution_postcheck_candidate_bound": true,
+      "v401_independent_postcheck_all_checks_pass": true,
+      "v401_required_evidence_refs_hash_valid": true,
+      "v401_required_scope_externally_accepted": true,
+      "v402_accepted_head_hash_unchanged": true,
+      "v402_bse_optional_degradation_preserved": true,
+      "v402_external_acceptance_receipt_still_passes": true,
+      "v403_all_required_capabilities_pass": true,
+      "v403_amended_scope_externally_accepted": true,
+      "v403_amendment_external_acceptance_bound": true,
+      "v403_business_artifacts_not_rebuilt": true,
+      "v403_evidence_hashes_valid": true,
+      "v403_old_head_untouched_and_versioned": true,
+      "v403_v408_sector_block_preserved": true,
+      "worktree_clean_before_receipt": true
+    },
+    "checks_passed": 39,
+    "checks_total": 39,
+    "contract_id": "V4_00_01_02_03_ACCEPTED_HEAD_PROMOTION_VALIDATOR_R1",
+    "mode": "READ_ONLY_PROMOTION_DIFF_AND_BINDING_VALIDATION",
+    "status": "PASS"
+  },
+  "version": "1.0.0"
+}

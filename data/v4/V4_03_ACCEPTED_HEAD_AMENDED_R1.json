@@ -1,0 +1,115 @@
+{
+  "accepted_at_date": "2026-09-29",
+  "amendment": {
+    "byte_count": 5263,
+    "path": "reports/v4_03/V4_03_SECTOR_OWNERSHIP_AMENDMENT_R1.json",
+    "sha256": "9f702b99cfaa15519f10e4cdcf0835a51792dc75e0a354aee4a18ca64abe547d"
+  },
+  "business_artifacts_rebuilt": false,
+  "capabilities": {
+    "MARKET_REFERENCE": "PASS",
+    "MARKET_REGIME": "PASS",
+    "RELATIVE_RPS": "PASS",
+    "SECTOR_NATIVE_CONTRACT": "PASS",
+    "SECTOR_NATIVE_FULL_MARKET": "BLOCKED_MISSING_ACCEPTED_PIT_MEMBERSHIP",
+    "STOCK_CORE": "PASS"
+  },
+  "contract_id": "V4_03_ACCEPTED_HEAD_AMENDED_V1",
+  "evidence_bindings": {
+    "reports/v4_03/V4_03_AST_GOLDEN_VECTOR_ACCEPTANCE_R3.json": {
+      "byte_count": 8281,
+      "path": "reports/v4_03/V4_03_AST_GOLDEN_VECTOR_ACCEPTANCE_R3.json",
+      "sha256": "5709de54150acad206cd4b93387c35358f5ebacb6563cf6a2f0b30ec03a83df0"
+    },
+    "reports/v4_03/V4_03_CONTRACT_PRODUCER_CONSISTENCY_R3.json": {
+      "byte_count": 1050,
+      "path": "reports/v4_03/V4_03_CONTRACT_PRODUCER_CONSISTENCY_R3.json",
+      "sha256": "a284243970ade23fb3043680a15e28c4bbedeb8989b3f46bd464605d3df0fc87"
+    },
+    "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json": {
+      "byte_count": 6714,
+      "path": "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+      "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+    },
+    "reports/v4_03/V4_03_NATIVE_CONTRACT_ACCEPTANCE_R3.json": {
+      "byte_count": 1892,
+      "path": "reports/v4_03/V4_03_NATIVE_CONTRACT_ACCEPTANCE_R3.json",
+      "sha256": "2aaeec54bbbb9d3a228f5dc6b6117f2f0c8a58f238bac993015d859a8c41aa04"
+    },
+    "reports/v4_03/V4_03_SECTOR_NATIVE_BOUNDARY_ACCEPTANCE_R1.json": {
+      "byte_count": 379,
+      "path": "reports/v4_03/V4_03_SECTOR_NATIVE_BOUNDARY_ACCEPTANCE_R1.json",
+      "sha256": "5d9afb61b0af286e81bebd38bc5f08731d48c7f01127c298cf1df3b850a20da4"
+    },
+    "reports/v4_03/V4_03_SECTOR_OWNERSHIP_AMENDMENT_R1.json": {
+      "byte_count": 5263,
+      "path": "reports/v4_03/V4_03_SECTOR_OWNERSHIP_AMENDMENT_R1.json",
+      "sha256": "9f702b99cfaa15519f10e4cdcf0835a51792dc75e0a354aee4a18ca64abe547d"
+    },
+    "reports/v4_03/V4_03_STAGE_DISPOSITION_R3.json": {
+      "byte_count": 5546,
+      "path": "reports/v4_03/V4_03_STAGE_DISPOSITION_R3.json",
+      "sha256": "0f580967704998a4292fca003e219c34637ff6a1c49b5c3282f85a2eb8de0cf3"
+    }
+  },
+  "external_acceptance": "EXTERNALLY_ACCEPTED",
+  "final_external_acceptance": {
+    "byte_count": 4572,
+    "path": "docs/evidence/V4_00_01_02_03_FOUNDATION_FINAL_EXTERNAL_ACCEPTANCE_R2_20260929.md",
+    "sha256": "34e8ef3903696743f8a59f782797cf97b7206f52eb57db67caa097d94e117aa3"
+  },
+  "incremental_update": "DEFERRED_NON_BLOCKING",
+  "scope_amendment": {
+    "moved_to_v4_08": [
+      "PIT_SECTOR_MEMBERSHIP_BASELINE",
+      "HISTORICAL_MEMBERSHIP_RECONSTRUCTION",
+      "FULL_MARKET_SECTOR_MATERIALIZATION",
+      "SECTOR_ROTATION_PRODUCTION_INPUTS"
+    ],
+    "retained_in_v4_03": [
+      "STOCK_CORE",
+      "RELATIVE_RPS",
+      "MARKET_REFERENCE",
+      "MARKET_REGIME",
+      "SECTOR_NATIVE_CONTRACT"
+    ]
+  },
+  "source_cutoff": "2026-09-24",
+  "stage": "V4-03",
+  "stage_record": {
+    "acceptance_result": "FULL_PASS_AMENDED_SCOPE / EXTERNALLY_ACCEPTED",
+    "evidence": "Externally accepted V4-03 ownership amendment and retained native contract/vector receipts; upstream V4-01/V4-02 identities match; no business artifact rebuild.",
+    "next_stage": "V4-04 entry authorized after global accepted-head promotion; V4-08 remains blocked; no successor work in this task.",
+    "stage_contract": "V4_00_01_02_03_FOUNDATION_ACCEPTED_HEAD_PROMOTION_TASK_R1_20260929"
+  },
+  "status": "FULL_PASS_AMENDED_SCOPE",
+  "supersedes": {
+    "byte_count": 1607,
+    "path": "data/v4/V4_03_ACCEPTED_HEAD.json",
+    "sha256": "734bd27a5d53b2f18e3d62aa96ac63c91ccc6d9f848e942bc1efc410c88d4370"
+  },
+  "upstream_identities": {
+    "v4_01_identity_map": {
+      "byte_count": 5528197,
+      "path": "data/v4/artifact_store/v4_01/security_entity_map_R7_20260927.json",
+      "sha256": "e33294fb8d1d71732fdc3df903258b5617345811ecbdb649af8056ccd91427e0"
+    },
+    "v4_01_universe": {
+      "byte_count": 239298684,
+      "path": "data/v4/artifact_store/v4_01/v4_01_historical_universe_required_R7_20260927.jsonl.gz",
+      "sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b"
+    },
+    "v4_02_accepted_head": {
+      "byte_count": 1602,
+      "path": "data/v4/V4_02_ACCEPTED_HEAD.json",
+      "sha256": "da318a1f82a03f13930af7858ca1640fadbdaedbee85e27d47f9c869c2d6b595"
+    },
+    "v4_02_manifest": {
+      "byte_count": 6971,
+      "path": "reports/v4_02/V4_02_FINAL_STAGING_MANIFEST_R6.json",
+      "sha256": "a83f90a0d1acc08e32db5dab049f3bf16a9284e5bf6785cd8f3a2b52aed31678"
+    }
+  },
+  "v4_04_entry": "AUTHORIZED_FULL_CHAIN",
+  "v4_08_sector_entry": "BLOCKED_UNTIL_ACCEPTED_PIT_MEMBERSHIP_BASELINE_AND_RECONSTRUCTION"
+}

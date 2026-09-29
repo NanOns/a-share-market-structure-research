@@ -1,0 +1,114 @@
+{
+  "acceptance_authority": {
+    "decision": "V4_01_REQUIRED_SCOPE = EXTERNAL_ACCEPTANCE_PASS",
+    "final_external_acceptance": {
+      "byte_count": 4572,
+      "path": "docs/evidence/V4_00_01_02_03_FOUNDATION_FINAL_EXTERNAL_ACCEPTANCE_R2_20260929.md",
+      "sha256": "34e8ef3903696743f8a59f782797cf97b7206f52eb57db67caa097d94e117aa3"
+    },
+    "promotion_task": {
+      "byte_count": 3293,
+      "path": "docs/evidence/V4_00_01_02_03_FOUNDATION_ACCEPTED_HEAD_PROMOTION_TASK_R1_20260929.md",
+      "sha256": "82366a0264ceecfcb3144aed0fe09cef71eb35cacf74ebd9077ca396104be38b"
+    },
+    "reviewed_candidate_commit": "8eb0bfeb0ec2eca7bfb3a3c5c2ca016160151b90"
+  },
+  "accepted_at_date": "2026-09-29",
+  "candidate_head": {
+    "byte_count": 3366,
+    "path": "data/v4/V4_01_ACCEPTED_HEAD_CANDIDATE.json",
+    "sha256": "6f84145fa0e2ef2427ec85349dfd4385fb31936e87a03b06a552ec81afb03ad9"
+  },
+  "canonical_identity": {
+    "changed": false,
+    "path": "data/v4/artifact_store/v4_01/security_entity_map_R7_20260927.json",
+    "sha256": "e33294fb8d1d71732fdc3df903258b5617345811ecbdb649af8056ccd91427e0"
+  },
+  "contract_id": "V4_01_ACCEPTED_HEAD_V1",
+  "evidence_bindings": {
+    "candidate_head": {
+      "byte_count": 3366,
+      "path": "data/v4/V4_01_ACCEPTED_HEAD_CANDIDATE.json",
+      "sha256": "6f84145fa0e2ef2427ec85349dfd4385fb31936e87a03b06a552ec81afb03ad9"
+    },
+    "final_candidate_r10": {
+      "byte_count": 2678,
+      "path": "reports/v4_01/V4_01_FINAL_STAGE_CANDIDATE_R10.json",
+      "sha256": "417e80e5278ca6a0731cbe40565c3f5d4acda40f82253467d9aefc1be23e9da6"
+    },
+    "full_scope_scan_r1": {
+      "byte_count": 358018,
+      "path": "reports/v4_01/V4_01_FULL_SCOPE_SOURCE_FINGERPRINT_SCAN_R1.json",
+      "sha256": "250077b6eceff33ed9433812a489396102c0e37790e30871e83fda50a62becac"
+    },
+    "gate_v2_contract": {
+      "byte_count": 3911,
+      "path": "config/v4_01_identity_completeness_gate_v2.json",
+      "sha256": "3467b5bae8ea2dfa3d112e73546e2a02d8e8cd337bf23e6de083d8aa82895951"
+    },
+    "independent_postcheck_r2": {
+      "byte_count": 7278,
+      "path": "reports/v4_01/V4_01_IDENTITY_COMPLETENESS_GATE_V2_POSTCHECK_R2.json",
+      "sha256": "3b2d61fb76e6e580210203296fa57d469df5fa49625362229be18df9744f8dda"
+    },
+    "known_official_event_index": {
+      "byte_count": 805,
+      "path": "data/v4/source_evidence/official_code_change_event_index/official_security_code_change_events_v1.jsonl",
+      "sha256": "f06079bf528369ce5d77a155a6171d3dcba8c781c68b7204cc070cd2ad7f16c9"
+    },
+    "relation_resolution_r2": {
+      "byte_count": 16448,
+      "path": "reports/v4_01/V4_01_IDENTITY_RELATION_RESOLUTION_R2.json",
+      "sha256": "141955a389b72f3bee958c25eef454d671229fb9f0735240ddddd032e7626d5d"
+    }
+  },
+  "external_acceptance": "EXTERNALLY_ACCEPTED",
+  "historical_universe": {
+    "changed": false,
+    "path": "data/v4/artifact_store/v4_01/v4_01_historical_universe_required_R7_20260927.jsonl.gz",
+    "sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b"
+  },
+  "optional_scope": {
+    "BSE": "DEGRADED_OPTIONAL_EXCLUDED_FROM_REQUIRED_GATE"
+  },
+  "relation_resolution": {
+    "effective_date": "2025-02-17",
+    "new_code": "SZ.302132",
+    "old_code": "SZ.300114",
+    "relation": "CONFIRMED_SAME_ENTITY_CODE_CHANGE"
+  },
+  "required_scope": {
+    "boards": [
+      "CHINEXT",
+      "SH_MAIN",
+      "STAR",
+      "SZ_MAIN"
+    ],
+    "candidate_union_count": 1,
+    "duplicate_resolution_count": 0,
+    "entry_boundaries": 330,
+    "entry_tdx_files": "330/330",
+    "exit_boundaries": 129,
+    "extra_keys": [],
+    "history_end": "2026-09-24",
+    "history_start": "2023-07-04",
+    "invalid_state_count": 0,
+    "missing_keys": [],
+    "r8_3_atomic_boundaries": 917,
+    "resolution_count": 1,
+    "sessions": 786,
+    "source_keys": 5351,
+    "status": "FULL_PASS_REQUIRED_SCOPE",
+    "unresolved_count": 0
+  },
+  "source_cutoff": "2026-09-24",
+  "source_fingerprint_calibration": "DEFERRED_NON_BLOCKING_RESEARCH",
+  "stage": "V4-01",
+  "stage_record": {
+    "acceptance_result": "FULL_PASS_REQUIRED_SCOPE / EXTERNALLY_ACCEPTED",
+    "evidence": "Hash-bound V4-01 Gate V2, full-scope scan R1, relation resolution R2, postcheck R2, final candidate R10, unchanged R7 canonical identities, and final external acceptance R2.",
+    "next_stage": "V4-04 entry authorized after full-chain accepted-head promotion; do not start V4-04 in this task.",
+    "stage_contract": "V4_00_01_02_03_FOUNDATION_ACCEPTED_HEAD_PROMOTION_TASK_R1_20260929"
+  },
+  "status": "FULL_PASS_REQUIRED_SCOPE"
+}

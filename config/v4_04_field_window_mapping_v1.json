@@ -1,0 +1,16 @@
+{
+  "accepted_v4_03_mapping_path": "config/v4_03_field_window_mapping_v1.json",
+  "accepted_v4_03_mapping_sha256": "30040aa62eb1c01b1712bc95532a972149416e9d4ae280d053e0e05e056aaef4",
+  "closed_period_states": {
+    "monthly_trend_state": "last_4_CLOSED_ONLY_QFQ_monthly_periods",
+    "weekly_trend_state": "last_6_CLOSED_ONLY_QFQ_weekly_periods"
+  },
+  "contract_id": "V4_04_FIELD_WINDOW_MAPPING_V1",
+  "derived_fields": {
+    "bias20_atr": "current_close_minus_accepted_ma20_over_accepted_atr20",
+    "dist_high20_atr": "accepted_prior_high20_minus_current_close_over_accepted_atr20",
+    "ma10": "current_10_actual_QFQ_close",
+    "minimum_liquidity": "prior_20_actual_raw_CNY_amount_excluding_T",
+    "pos250": "current_250_actual_QFQ_high_low_with_status_calendar"
+  }
+}

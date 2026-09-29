@@ -26,6 +26,11 @@ class Derived:
     window_identity: str
     actual_count: int
     calendar_span: int
+    window_start_trade_date: str | None = None
+    window_end_trade_date: str | None = None
+    suspended_count: int = 0
+    window_contract_id: str = "TECHNICAL_BAR_WINDOW_V1"
+    field_window_mapping_id: str = "V4_04_FIELD_WINDOW_MAPPING_V1"
 
 
 def _hash(value: object) -> str:
@@ -33,10 +38,11 @@ def _hash(value: object) -> str:
 
 
 def _result(value: float | bool | None, reason: str | None, inputs: object,
-            actual_count: int, calendar_span: int) -> Derived:
+            actual_count: int, calendar_span: int, start: str | None = None,
+            end: str | None = None, suspended_count: int = 0) -> Derived:
     return Derived(value if reason is None else None, "OBSERVED" if reason is None else "UNKNOWN", reason,
                    CONTRACT_ID, PARAMETER_SET_ID, _hash(inputs), _hash([CONTRACT_ID, inputs]),
-                   actual_count, calendar_span)
+                   actual_count, calendar_span, start, end, suspended_count)
 
 
 def _factor(factors: Mapping[str, Mapping], name: str) -> float | bool | None:
@@ -45,7 +51,7 @@ def _factor(factors: Mapping[str, Mapping], name: str) -> float | bool | None:
 
 
 def derive_daily(bars: Sequence[Mapping], factors: Mapping[str, Mapping],
-                 statuses: Sequence[str], asof: str) -> dict[str, Derived]:
+                 statuses: Sequence[str | tuple[str, str]], asof: str) -> dict[str, Derived]:
     """Bars ascend by date and contain only actual sessions through asof.
 
     Statuses cover the same calendar span as the 250-bar window. Any unexplained
@@ -56,19 +62,26 @@ def derive_daily(bars: Sequence[Mapping], factors: Mapping[str, Mapping],
     current = latest is not None and str(latest["trade_date"]) == asof and latest.get("adjusted_quality") == "READY"
     close = float(latest["qfq_close"]) if current and latest.get("qfq_close") is not None else None
     output: dict[str, Derived] = {}
+    status_values = [x[1] if isinstance(x, tuple) else x for x in statuses]
+    def bounds(rows):
+        return (str(rows[0]["trade_date"]), str(rows[-1]["trade_date"])) if rows else (None, None)
+    def span(rows):
+        start, end = bounds(rows)
+        dated = [entry[1] for entry in statuses if isinstance(entry, tuple) and start <= entry[0] <= end] if start else []
+        return (len(dated), dated.count("SUSPENDED")) if dated else (len(rows), 0)
 
     ma10_window = int(P["MA10_WINDOW"])
     ma10_rows = bars[-ma10_window:]
-    ma10_ok = (current and len(ma10_rows) == ma10_window and _factor(factors, "ma20") is not None and
+    ma10_ok = (current and len(ma10_rows) == ma10_window and
                all(row.get("adjusted_quality") == "READY" and row.get("qfq_close") is not None for row in ma10_rows))
     output["ma10"] = _result(fmean(float(x["qfq_close"]) for x in ma10_rows) if ma10_ok else None,
                               None if ma10_ok else "MA10_WINDOW_OR_ENDPOINT_UNAVAILABLE",
                               [(x.get("trade_date"), x.get("qfq_close"), x.get("adjusted_quality")) for x in ma10_rows],
-                              len(ma10_rows), len(ma10_rows))
+                              len(ma10_rows), span(ma10_rows)[0], *bounds(ma10_rows), span(ma10_rows)[1])
 
     pos_window = int(P["POS250_WINDOW"])
     pos_rows = bars[-pos_window:]
-    long_status_ok = len(statuses) >= pos_window and all(x in ("ACTUAL_TRADED", "SUSPENDED") for x in statuses)
+    long_status_ok = len(status_values) >= pos_window and all(x in ("ACTUAL_TRADED", "SUSPENDED") for x in status_values)
     pos_ok = (current and len(pos_rows) == pos_window and long_status_ok and
               all(x.get("adjusted_quality") == "READY" and x.get("qfq_high") is not None and x.get("qfq_low") is not None for x in pos_rows))
     high = max(float(x["qfq_high"]) for x in pos_rows) if pos_ok else None
@@ -77,7 +90,8 @@ def derive_daily(bars: Sequence[Mapping], factors: Mapping[str, Mapping],
     reason = None if pos_ok and den > 0 else "POS250_WINDOW_OR_DENOMINATOR_UNAVAILABLE"
     output["pos250"] = _result((close - low) / den if reason is None else None, reason,
                                 [(x.get("trade_date"), x.get("qfq_high"), x.get("qfq_low"), x.get("adjusted_quality"))
-                                 for x in pos_rows] + list(statuses), len(pos_rows), len(statuses))
+                                 for x in pos_rows] + list(statuses), len(pos_rows), span(pos_rows)[0] if pos_rows else len(status_values),
+                                *bounds(pos_rows), span(pos_rows)[1] if pos_rows else status_values.count("SUSPENDED"))
 
     atr = _factor(factors, "atr20")
     ma20 = _factor(factors, "ma20")
@@ -87,7 +101,8 @@ def derive_daily(bars: Sequence[Mapping], factors: Mapping[str, Mapping],
                              ("dist_high20_atr", None if prior_high20 is None else prior_high20 - close if close is not None else None)):
         ok = ratio_ok and numerator is not None
         output[field] = _result(numerator / atr if ok else None, None if ok else "ATR_OR_PRICE_INPUT_UNAVAILABLE",
-                                {"close": close, "atr20": atr, "numerator": numerator}, 1, 1)
+                                {"close": close, "atr20": atr, "numerator": numerator}, 1, 1,
+                                str(latest["trade_date"]) if latest else None, asof)
 
     prior_window = int(P["PRIOR_AMOUNT_WINDOW"])
     prior_rows = bars[-prior_window-1:-1] if current else []
@@ -98,7 +113,7 @@ def derive_daily(bars: Sequence[Mapping], factors: Mapping[str, Mapping],
     output["minimum_liquidity"] = _result(mean_amount >= P["MINIMUM_LIQUIDITY_CNY"] if liquid_ok else None,
                                             None if liquid_ok else "PRIOR20_AMOUNT_UNAVAILABLE",
                                             [(x.get("trade_date"), x.get("amount")) for x in prior_rows],
-                                            len(prior_rows), len(prior_rows))
+                                            len(prior_rows), span(prior_rows)[0], *bounds(prior_rows), span(prior_rows)[1])
     return output
 
 

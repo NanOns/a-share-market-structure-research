@@ -100,6 +100,15 @@ def parse_skip_details(output: str) -> dict[str, Any]:
     }
 
 
+def parse_terminal_summary(output: str) -> str:
+    summary_headers = re.findall(r"(?m)^=+\s*(.*?)\s*=+$", output)
+    count_summary = next(
+        (line.strip() for line in reversed(output.splitlines()) if re.search(r"\b\d+\s+(?:passed|failed|skipped|error)\b", line)),
+        None,
+    )
+    return count_summary or (summary_headers[-1] if summary_headers else (output.splitlines()[-1] if output else "NO_PYTEST_OUTPUT"))
+
+
 def atomic_write(path: Path, payload: bytes) -> None:
     target = ROOT / path
     target.parent.mkdir(parents=True, exist_ok=True)
@@ -142,12 +151,7 @@ def main() -> int:
     duration = time.perf_counter() - start
     combined = (result.stdout + ("\n" + result.stderr if result.stderr else "")).strip()
     status_after_tests = git_status_snapshot()
-    summary_match = re.findall(r"(?m)^=+\s*(.*?)\s*=+$", combined)
-    count_summary = next(
-        (line.strip() for line in reversed(combined.splitlines()) if re.search(r"\b\d+\s+(?:passed|failed|skipped|error)\b", line)),
-        None,
-    )
-    terminal_summary = summary_match[-1] if summary_match else count_summary or (combined.splitlines()[-1] if combined else "NO_PYTEST_OUTPUT")
+    terminal_summary = parse_terminal_summary(combined)
     counts = {}
     for key in ("passed", "failed", "skipped", "error", "xfailed", "xpassed"):
         match = re.search(rf"\b(\d+)\s+{key}\b", terminal_summary)

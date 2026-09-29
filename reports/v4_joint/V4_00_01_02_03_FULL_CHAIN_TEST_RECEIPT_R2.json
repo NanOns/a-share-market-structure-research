@@ -19,26 +19,26 @@
     "xfailed": 0,
     "xpassed": 0
   },
-  "duration_seconds": 3.756,
+  "duration_seconds": 3.724,
   "execution_identity": {
     "branch": "codex/v4-system-reform",
     "pytest_version": "pytest 9.1.1",
     "python_version": "3.13.14",
-    "tested_code_commit": "b3b728593e7396553281a65ee55d8ec7fadaaf4f",
+    "tested_code_commit": "8a446d6d8c3d6b05ea0ff3617288422685d68c53",
     "working_tree_changed_file_count_after_tests": 0,
     "working_tree_changed_files": [],
     "working_tree_clean_at_test_start": true
   },
   "git_status": {
-    "after_tests_before_receipt": "## codex/v4-system-reform...origin/codex/v4-system-reform [ahead 3]\n",
-    "at_test_start": "## codex/v4-system-reform...origin/codex/v4-system-reform [ahead 3]\n",
+    "after_tests_before_receipt": "## codex/v4-system-reform...origin/codex/v4-system-reform [ahead 5]\n",
+    "at_test_start": "## codex/v4-system-reform...origin/codex/v4-system-reform [ahead 5]\n",
     "clean_after_tests_before_receipt": true,
     "clean_at_test_start": true,
     "porcelain_after_tests_before_receipt": "",
     "porcelain_at_test_start": ""
   },
-  "observed_at_utc": "2026-09-29T02:08:31+00:00",
-  "output_tail": "........................................................................ [ 25%]\n.....................s..........s....................................... [ 51%]\n........................................................................ [ 77%]\n.............................................................            [100%]\n=========================== short test summary info ===========================\nSKIPPED [1] tests\\v4_phase0\\test_tdx_local_snapshot.py:54: symlink creation unavailable\nSKIPPED [1] tests\\v4_phase0\\test_tdx_snapshot.py:101: symlink creation is unavailable on this runner\n275 passed, 2 skipped in 3.30s",
+  "observed_at_utc": "2026-09-29T02:11:44+00:00",
+  "output_tail": "........................................................................ [ 25%]\n.....................s..........s....................................... [ 51%]\n........................................................................ [ 77%]\n.............................................................            [100%]\n=========================== short test summary info ===========================\nSKIPPED [1] tests\\v4_phase0\\test_tdx_local_snapshot.py:54: symlink creation unavailable\nSKIPPED [1] tests\\v4_phase0\\test_tdx_snapshot.py:101: symlink creation is unavailable on this runner\n275 passed, 2 skipped in 3.31s",
   "result": "PASS",
   "return_code": 0,
   "skip_details": {
@@ -72,7 +72,7 @@
     "stage_contract": "V4-00..V4-03 R3 foundation repair; clean tested code commit and -rs skip accountability"
   },
   "status": "PASS",
-  "stdout_stderr_sha256": "b18fa9f08d029834477e7572eebea968feb386d6644bd80296d4792496f0f787",
+  "stdout_stderr_sha256": "832f8af3dd2ff7b6f5cd6a6797a1d47d49cd0f8234b31b7de6f6caa9282867ea",
   "superseded_prior_attempt": {
     "disposition": "SUPERSEDED_BY_CURRENT_FULL_SUITE_RUN_AFTER_TEST_FIXTURE_ALIGNMENT",
     "path": "reports/v4_joint/V4_00_01_02_03_FULL_CHAIN_TEST_ATTEMPT_R1_FAILED.json",
@@ -81,7 +81,7 @@
     "terminal_summary": "2 failed, 265 passed, 2 skipped in 4.79s"
   },
   "tdx_root_write_count": 0,
-  "terminal_summary": "275 passed, 2 skipped in 3.30s",
+  "terminal_summary": "275 passed, 2 skipped in 3.31s",
   "test_contract_alignment": [
     {
       "change": "Mock package_metadata() to supply an unpinned runtime version and assert the current fail-closed error token; assert current default_runtime_pin metadata field.",

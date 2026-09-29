@@ -6,7 +6,7 @@
 - Governing task: `docs/evidence/V4_05_REPLAY_GATE_A_R4_1_POSTGRES_HASH_CLOSURE_TASK_20260929.md`.
 - Latest prior audit: `docs/evidence/V4_05_REPLAY_GATE_A_R4_EXTERNAL_AUDIT_20260929.md`.
 - Starting HEAD: `e751c9dc63ba6e6325b50daa15e849091e18f5dc`.
-- Implementation and source-input commit: `bdc2f65a09efc006fe9ca5806f3d5b244b564f42`.
+- Implementation and source-input commit: `be1f3e35068b5be6519dca2ea4293df74c8d992a`.
 - Scope is limited to closing PostgreSQL ledger replay (B03) and governance hash-domain / clean-clone determinism (B05).
 
 ## Frozen R4 values
@@ -22,7 +22,7 @@
 - PostgreSQL: psql (PostgreSQL) 18.6; 12 official migrations; I01–I05 pass in an isolated disposable database; production connection used: `false`.
 - Hash policy: `PASS`; the original Accepted Head promotion binding is preserved while downstream JSON identities use `CANONICAL_JSON_SHA256_V1`.
 - Exact pushed-commit clone: `PASS`; 7 LFS source inputs restored, 10 generated outputs compared byte-for-byte.
-- Published R4.1 LFS payload restore: `PENDING_ARTIFACT_PUSH`.
+- Published R4.1 LFS payload restore: `PASS`.
 - Runtime suite: `426 passed, 2 skipped in 4.33s`; PostgreSQL schema test ran; both skipped tests and reasons are listed in the runtime receipt.
 - R4.1 status: `V4_05_DATA_FACTOR_REPLAY_DEGRADED_PASS_CANDIDATE_R4_1`. External acceptance remains `PENDING`; no V4-05 Accepted Head was created and no V4-06/V4-07 stage was started.
 - Next stage: `INDEPENDENT_EXTERNAL_AUDIT_R4_1`.

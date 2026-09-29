@@ -244,6 +244,7 @@ External acceptance: `PENDING`
 - **B03 PostgreSQL ledger:** PostgreSQL {postgres['postgres_version']}, 12 formal migrations, isolated database, no production connection, I01–I05 passed, transaction rollback and cleanup verified.
 - **B05 canonical identity:** governance JSON now uses `CANONICAL_JSON_SHA256_V1`; the V4-02 global accepted binding remains `{head_validation['go_forward_head']['global_stage_binding_sha256']}` and matches the reconstructed frozen representation. Protected accepted heads are unchanged.
 - **Determinism:** the pushed implementation commit `{clone['implementation_commit']}` was rebuilt in a fresh remote clone after LFS fetch/checkout. All {len(clone['deterministic_outputs'])} required generated outputs have identical bytes and logical projections.
+- **Published LFS payloads:** fresh-clone restore for candidate commit `{published_lfs['candidate_commit'] if published_lfs else 'PENDING'}` is `{published_lfs['status'] if published_lfs else 'PENDING'}`; all R4.1 LFS output OIDs, sizes, and restored bytes match.
 
 ## Business values remain frozen
 

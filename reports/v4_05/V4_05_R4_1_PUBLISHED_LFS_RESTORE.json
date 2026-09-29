@@ -1,0 +1,67 @@
+{
+  "candidate_commit": "be1f3e35068b5be6519dca2ea4293df74c8d992a",
+  "clone_directory_removed": true,
+  "clone_source": "https://github.com/NanOns/a-share-market-structure-research.git",
+  "contract_id": "V4_05_R4_1_PUBLISHED_LFS_RESTORE_V1",
+  "fresh_clone_head": "be1f3e35068b5be6519dca2ea4293df74c8d992a",
+  "restored_artifacts": {
+    "reports/v4_05/staging/V4_05_R4_1_FULL_MARKET_CORE_PROFILE.jsonl.gz": {
+      "artifact_bytes_equal": true,
+      "clone_matches_pointer": true,
+      "fresh_clone_restored_artifact": {
+        "byte_count": 48848465,
+        "sha256": "9a6ebedc715bc4b310ecf76c77e01cb6dfe9dadc17d335b5fc9afbcc2f6f3fa0"
+      },
+      "git_lfs_pointer": {
+        "byte_count": 48848465,
+        "sha256": "9a6ebedc715bc4b310ecf76c77e01cb6dfe9dadc17d335b5fc9afbcc2f6f3fa0"
+      },
+      "pointer_matches_artifact": true,
+      "primary_artifact": {
+        "byte_count": 48848465,
+        "sha256": "9a6ebedc715bc4b310ecf76c77e01cb6dfe9dadc17d335b5fc9afbcc2f6f3fa0"
+      }
+    },
+    "reports/v4_05/staging/V4_05_R4_1_FULL_SCOPE_FACTORS.jsonl.gz": {
+      "artifact_bytes_equal": true,
+      "clone_matches_pointer": true,
+      "fresh_clone_restored_artifact": {
+        "byte_count": 32316843,
+        "sha256": "17ae571629b76399e32d9e8a243268ea1fac619e1c5168d307bfd8ebf1494c48"
+      },
+      "git_lfs_pointer": {
+        "byte_count": 32316843,
+        "sha256": "17ae571629b76399e32d9e8a243268ea1fac619e1c5168d307bfd8ebf1494c48"
+      },
+      "pointer_matches_artifact": true,
+      "primary_artifact": {
+        "byte_count": 32316843,
+        "sha256": "17ae571629b76399e32d9e8a243268ea1fac619e1c5168d307bfd8ebf1494c48"
+      }
+    },
+    "reports/v4_05/staging/V4_05_R4_1_PERIOD_ASOF.jsonl.gz": {
+      "artifact_bytes_equal": true,
+      "clone_matches_pointer": true,
+      "fresh_clone_restored_artifact": {
+        "byte_count": 60108125,
+        "sha256": "e54674e8459e1258610639d76fac7a5f7b6093a4013f912b8937fb6fa96c2233"
+      },
+      "git_lfs_pointer": {
+        "byte_count": 60108125,
+        "sha256": "e54674e8459e1258610639d76fac7a5f7b6093a4013f912b8937fb6fa96c2233"
+      },
+      "pointer_matches_artifact": true,
+      "primary_artifact": {
+        "byte_count": 60108125,
+        "sha256": "e54674e8459e1258610639d76fac7a5f7b6093a4013f912b8937fb6fa96c2233"
+      }
+    }
+  },
+  "stage_record": {
+    "acceptance_result": "PASS",
+    "evidence": "Pushed R4.1 LFS pointers fetched and restored in a fresh clone, then object OID, size, and SHA-256 compared with primary bytes.",
+    "next_stage": "INDEPENDENT_EXTERNAL_AUDIT_R4_1",
+    "stage_contract": "V4_05_REPLAY_GATE_A_R4_1_POSTGRES_HASH_CLOSURE"
+  },
+  "status": "PASS"
+}

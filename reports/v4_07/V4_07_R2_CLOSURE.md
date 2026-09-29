@@ -18,6 +18,7 @@
 - Identical accepted-context replay passed. Machine vectors: 30 checked, 0 mismatches.
 - Focused V4-07 runtime: 41 passed in 25.13s.
 - Isolated full regression: 538 passed, 2 skipped in 30.98s on postgres (PostgreSQL) 18.6; disposable PostgreSQL cluster cleaned up. Migration 015 apply/rollback: PASS_ISOLATED_MIGRATION_AND_ROLLBACK.
+- Clean checkout replay: PASS_CLEAN_CHECKOUT_REPLAY at e751070cb5018c76229b87bc0c7ec749a0a36f7a; candidate bytes and logical digest match the R2 receipt.
 
 ## Scoped capability limitation
 
@@ -41,3 +42,4 @@ The accepted V4-05 input still reports rps5_delta3 UNKNOWN for all 5222 identiti
 - V4_07_R2_RUNTIME_TEST_RECEIPT.json
 - V4_07_R2_ISOLATED_FULL_REGRESSION.json
 - V4_07_R2_MIGRATION_ROLLBACK_VERIFICATION.json
+- V4_07_R2_CLEAN_CHECKOUT_VERIFICATION.json

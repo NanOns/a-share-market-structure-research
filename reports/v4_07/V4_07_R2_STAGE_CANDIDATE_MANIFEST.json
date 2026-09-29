@@ -21,7 +21,7 @@
   "candidate_status": "V4_07_R2_CANDIDATE_PASS_PENDING_EXTERNAL_ACCEPTANCE_SIGNAL_CAPABILITY_DEGRADED",
   "contract_id": "V4_07_R2_STAGE_CANDIDATE_MANIFEST_V1",
   "contract_sha256": "73e686fb3bd15ef8afa893efc804d14cb2339f76975a40b5649d5265d327122f",
-  "created_at_utc": "2026-09-29T23:42:52Z",
+  "created_at_utc": "2026-09-29T23:46:19Z",
   "external_acceptance": "PENDING",
   "files": [
     {
@@ -75,6 +75,11 @@
       "sha256": "548b8c32aaeb8e30afa74f4e58a79a75dffc55c4d09ee4da381bcab942b0c65e"
     },
     {
+      "byte_count": 828,
+      "path": "reports/v4_07/V4_07_R2_CLEAN_CHECKOUT_VERIFICATION.json",
+      "sha256": "58c28c530cb744a421ad2fba0b702f87de50fbb93cf68f4088883455dc9c2a89"
+    },
+    {
       "byte_count": 2548,
       "path": "reports/audits/V4_07_PRIOR_RPS_ACCEPTED_INPUT_BOOTSTRAP_AUDIT_20260930.md",
       "sha256": "6acc784240ce61f9e49690f1805b12e558097f37c5b22451605adba6187d95f0"
@@ -125,9 +130,14 @@
       "sha256": "a9354c73b0c8a1509df638bbb5a8acee82e14fdfe227a35f817abb35c30c1147"
     },
     {
-      "byte_count": 14317,
+      "byte_count": 4011,
+      "path": "scripts/verify_v4_07_r2_clean_checkout.py",
+      "sha256": "d2513c676aeb4cb6b1eefb49fac2248c5a8cdf280210caf026817f8000b62fc3"
+    },
+    {
+      "byte_count": 14907,
       "path": "scripts/build_v4_07_r2_closure.py",
-      "sha256": "7d4f751209841e15ef14506e7ac13fd0b72006493adf3ab69f9b262b7ba0f97a"
+      "sha256": "6727b55eef68be2a3b18556eca45dcff2056674014da90bb8266d72313bed4dd"
     },
     {
       "byte_count": 10373,
@@ -175,20 +185,20 @@
       "sha256": "bb9992c581092f91ba69ad8390daf522d3441951f5bc61437ff0e4653ed74e72"
     },
     {
-      "byte_count": 1919,
+      "byte_count": 1976,
       "path": "reports/v4_07/V4_07_R2_STAGE_RESULT.json",
-      "sha256": "a04432324828a0943e2dcc722c5f7da841a6265ca965843b068cabef775fb2a3"
+      "sha256": "1bc708316844d4c70e3d33ce3096cc912e4b3eb4f02776ddfbbe6c6ddb68293f"
     },
     {
-      "byte_count": 3140,
+      "byte_count": 3338,
       "path": "reports/v4_07/V4_07_R2_CLOSURE.md",
-      "sha256": "5478fd76068e6d2c09902964913af123af1cea7507a8347e33390e86e890310f"
+      "sha256": "b737c1eb2841404bdfde3a7a00db5b465d3cf80a65007f0356be3eff6fbaffb9"
     }
   ],
   "global_stage_head_sha256": "6fd6e16b3769726f14e44b1d2062d087fd40ec1ede51956a5353631896547043",
   "next_stage": "V4_07_R2_INDEPENDENT_EXTERNAL_ACCEPTANCE",
   "parameter_set_sha256": "241785e1a97dd2283eb8b361eb791f4e5c8f6ca67579a06f2a2d38c0c7586a1a",
-  "scoped_file_count": 32,
+  "scoped_file_count": 34,
   "stage_contract": "V4_06_R2_CONTRACT_REPAIR_AND_V4_07_BASE_SEED_STAGE_TASK_20260929",
   "starting_head": "131d437e5ad9124e3a60648c5a9ce4c9cf7d39e4",
   "v4_05_accepted_head_sha256": "fc929d85553a900a6479ac9f50291d50cf750ad0e6c21fc58e4e05e92189f5cb",

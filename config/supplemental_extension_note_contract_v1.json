@@ -1,0 +1,23 @@
+{
+  "contract_id": "SUPPLEMENTAL_EXTENSION_NOTE_V1",
+  "contract_version": "1.0.0",
+  "producer": "V4_06_SUPPLEMENTAL_ENRICHMENT",
+  "source_family": "BAOSTOCK_TURNOVER_DAILY_V1",
+  "source_revision_binding": ["source_revision_id", "source_digest"],
+  "producer_time_field": "produced_at_utc",
+  "accepted_core_reference": {
+    "contract_id": "EXTENSION_RISK_V1",
+    "fields": ["core_extension_risk", "fact_digest", "publication_id", "trade_date"]
+  },
+  "state_values": ["AVAILABLE", "PENDING", "UNAVAILABLE", "UNKNOWN_DATA"],
+  "propagates_turnover_states": ["PENDING", "UNAVAILABLE", "UNKNOWN_DATA"],
+  "annotation_only": true,
+  "effects": {
+    "core": "NONE",
+    "prewatch": "NONE",
+    "base_seed_eligibility": "NONE",
+    "maturity": "NONE",
+    "focus_activation": "NONE"
+  },
+  "no_second_extension_risk_algorithm": true
+}

@@ -19,15 +19,18 @@ from workbench_analysis.baostock_supplemental import BaoStockClient, BaoStockErr
 
 
 CONTRACT_ID = "TURNOVER_CONTEXT_V1"
-CONTRACT_VERSION = "1.0.0"
+CONTRACT_VERSION = "2.0.0"
 SOURCE_CONTRACT_ID = "BAOSTOCK_SUPPLEMENTAL_SOURCE_V1"
 PROVIDER = "BAOSTOCK"
+REASON_STATE_MAP_PATH = Path(__file__).resolve().parents[2] / "config" / "v4_06_turnover_reason_state_map_v1.json"
 BINDING_STATUSES = frozenset({
     "BOUND_STRICT", "BOUND_SOFT", "UNAVAILABLE", "STALE", "MISSING", "UNBOUND", "SOURCE_NOT_READY"
 })
 SESSION_STATES = frozenset({"BOUND_STRICT", "CONFIRMED_SUSPENSION", "UNKNOWN"})
 WINDOWS = (5, 20, 60)
 MAX_LOOKBACK = 250
+TURNOVER_SEMANTIC_STATES = frozenset({"LOW", "NORMAL", "ELEVATED", "HIGH", "EXTREME",
+                                      "PENDING", "UNAVAILABLE", "UNKNOWN_DATA"})
 
 
 class SupplementalError(ValueError):
@@ -86,30 +89,60 @@ def map_code_change(old_code: str, new_code: str, security_id: str,
     return new_code
 
 
+def _accepted_timestamp(value: Any) -> bool:
+    if not isinstance(value, str) or not value:
+        return False
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return False
+    return parsed.tzinfo is not None and parsed.utcoffset() is not None
+
+
+def _reviewer_present(value: Any) -> bool:
+    return isinstance(value, str) and bool(value.strip())
+
+
 def _tolerance_values(contract: Mapping[str, Any] | None) -> tuple[dict[str, float] | None, bool]:
     if not contract:
+        return None, False
+    if (contract.get("contract_id") != "BAOSTOCK_TURNOVER_BINDING_TOLERANCE_V1"
+            or contract.get("contract_version") != "1.0.0"
+            or contract.get("source_contract_id") != SOURCE_CONTRACT_ID
+            or contract.get("dataset_id") != "BAOSTOCK_TURNOVER_DAILY_V1"
+            or contract.get("required_fields") != ["close", "volume", "amount"]
+            or contract.get("comparison_basis") != {
+                "close": "CNY per share absolute difference",
+                "volume": "shares absolute difference",
+                "amount": "CNY absolute difference",
+            }):
         return None, False
     raw = contract.get("tolerances")
     if not isinstance(raw, Mapping) or set(raw) != {"close", "volume", "amount"}:
         return None, False
-    values = {key: float(raw[key]) for key in raw}
+    try:
+        values = {key: float(raw[key]) for key in raw}
+    except (TypeError, ValueError, OverflowError) as exc:
+        raise SupplementalError("TOLERANCE_CONTRACT_INVALID") from exc
     if any(not math.isfinite(value) or value < 0 for value in values.values()):
         raise SupplementalError("TOLERANCE_CONTRACT_INVALID")
+    denominator = contract.get("denominator_semantics_acceptance")
+    if not isinstance(denominator, Mapping):
+        return values, False
+    status = str(contract.get("status", ""))
+    denominator_status = str(denominator.get("status", ""))
     accepted = (
         contract.get("acceptance") == "INDEPENDENTLY_ACCEPTED"
-        and bool(contract.get("contract_id"))
-        and bool(contract.get("version"))
+        and status in {"ACCEPTED", "FROZEN", "INDEPENDENTLY_ACCEPTED"}
+        and contract.get("strict_binding_allowed") is True
         and _valid_sha(str(contract.get("evidence_digest", "")))
-        and bool(contract.get("accepted_by"))
-        and bool(contract.get("accepted_at_utc"))
-        and contract.get("source_contract_id") == SOURCE_CONTRACT_ID
-        and contract.get("dataset_id") == "BAOSTOCK_TURNOVER_DAILY_V1"
-        and isinstance(contract.get("denominator_semantics_acceptance"), Mapping)
-        and contract["denominator_semantics_acceptance"].get("status") == "INDEPENDENTLY_ACCEPTED"
-        and contract["denominator_semantics_acceptance"].get("basis") == "PROVIDER_DEFINED_CIRCULATING_SHARES"
-        and _valid_sha(str(contract["denominator_semantics_acceptance"].get("evidence_digest", "")))
-        and bool(contract["denominator_semantics_acceptance"].get("accepted_by"))
-        and bool(contract["denominator_semantics_acceptance"].get("accepted_at_utc"))
+        and _reviewer_present(contract.get("accepted_by"))
+        and _accepted_timestamp(contract.get("accepted_at_utc"))
+        and denominator_status == "INDEPENDENTLY_ACCEPTED"
+        and denominator.get("basis") == "PROVIDER_DEFINED_CIRCULATING_SHARES"
+        and _valid_sha(str(denominator.get("evidence_digest", "")))
+        and _reviewer_present(denominator.get("accepted_by"))
+        and _accepted_timestamp(denominator.get("accepted_at_utc"))
     )
     return values, accepted
 
@@ -155,15 +188,15 @@ def evaluate_binding(local: Mapping[str, Any], source: NormalizedRow | None, *,
         return "UNBOUND", ("FINGERPRINT_VALUE_INVALID",)
     tolerance, independently_accepted = _tolerance_values(tolerance_contract)
     if tolerance is None:
-        return "UNBOUND", ("SOURCE_TOLERANCE_UNFROZEN",)
+        return "BOUND_SOFT", ("SOURCE_TOLERANCE_UNFROZEN",)
+    if not independently_accepted:
+        return "BOUND_SOFT", ("TOLERANCE_NOT_INDEPENDENTLY_ACCEPTED",)
     if any(abs(left - right) > tolerance[key] for key, (left, right) in pairs.items()):
         return "UNBOUND", ("LOCAL_SOURCE_FINGERPRINT_CONFLICT",)
     status_matches = (str(local.get("tradestatus", "")) == source.tradestatus
                       and str(local.get("isST", "")) == source.is_st)
     if not status_matches:
         return "BOUND_SOFT", ("LOCAL_STATUS_CROSSCHECK_CONFLICT",)
-    if not independently_accepted:
-        return "BOUND_SOFT", ("TOLERANCE_NOT_INDEPENDENTLY_ACCEPTED",)
     return "BOUND_STRICT", ()
 
 
@@ -179,7 +212,124 @@ def _rate(value: Any) -> float | None:
 def _midpoint_percentile(current: float, prior: list[float]) -> float | None:
     if not prior:
         return None
-    return (sum(value < current for value in prior) + 0.5 * sum(value == current for value in prior)) / len(prior)
+    return 100.0 * (sum(value < current for value in prior)
+                    + 0.5 * sum(value == current for value in prior)) / len(prior)
+
+
+def _load_turnover_reason_state_contract(path: Path = REASON_STATE_MAP_PATH) -> dict[str, Any]:
+    try:
+        payload = json.loads(Path(path).read_text(encoding="utf-8"))
+        mapping = payload["reason_states"]
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        raise SupplementalError("TURNOVER_REASON_STATE_MAP_INVALID") from exc
+    if (payload.get("contract_id") != "V4_06_TURNOVER_REASON_STATE_MAP_V1"
+            or payload.get("contract_version") != "1.0.0"
+            or payload.get("binding_quality_is_separate") is not True
+            or not isinstance(mapping, Mapping)
+            or any(value not in {"PENDING", "UNAVAILABLE", "UNKNOWN_DATA"} for value in mapping.values())
+            or set(payload.get("degradation_precedence", [])) != {"PENDING", "UNAVAILABLE", "UNKNOWN_DATA"}):
+        raise SupplementalError("TURNOVER_REASON_STATE_MAP_INVALID")
+    return payload
+
+
+def load_turnover_reason_state_map(path: Path = REASON_STATE_MAP_PATH) -> dict[str, str]:
+    """Load the versioned, machine-readable reason-to-semantic-state registry."""
+    mapping = _load_turnover_reason_state_contract(path)["reason_states"]
+    return {str(key): str(value) for key, value in mapping.items()}
+
+
+def turnover_state_for_reasons(reason_codes: Iterable[str], *, default: str = "UNAVAILABLE",
+                               reason_state_map: Mapping[str, str] | None = None) -> str:
+    contract = _load_turnover_reason_state_contract()
+    mapping = dict(reason_state_map or contract["reason_states"])
+    states = {mapping[str(code)] for code in reason_codes if str(code) in mapping}
+    for state in contract["degradation_precedence"]:
+        if state in states:
+            return state
+    if default not in {"PENDING", "UNAVAILABLE", "UNKNOWN_DATA"}:
+        raise SupplementalError("TURNOVER_DEGRADATION_DEFAULT_INVALID")
+    return default
+
+
+def classify_turnover_pct60(percentile: float | None) -> str:
+    if percentile is None:
+        return "UNKNOWN_DATA"
+    value = float(percentile)
+    if not math.isfinite(value) or not 0 <= value <= 100:
+        raise SupplementalError("TURNOVER_PERCENTILE_OUT_OF_RANGE")
+    if value < 20:
+        return "LOW"
+    if value < 70:
+        return "NORMAL"
+    if value < 90:
+        return "ELEVATED"
+    if value < 97:
+        return "HIGH"
+    return "EXTREME"
+
+
+def make_supplemental_extension_note(*, turnover_state: str, turnover_pct60: float | None,
+                                    source_revision_id: str, source_digest: str, produced_at: str,
+                                    core_extension_fact: Mapping[str, Any] | None) -> dict[str, Any]:
+    """Attach supplemental turnover provenance beside, never over, Core risk."""
+    if turnover_state not in TURNOVER_SEMANTIC_STATES:
+        raise SupplementalError("TURNOVER_STATE_INVALID")
+    if turnover_pct60 is not None and (not math.isfinite(float(turnover_pct60)) or not 0 <= float(turnover_pct60) <= 100):
+        raise SupplementalError("TURNOVER_PERCENTILE_OUT_OF_RANGE")
+    if not _valid_sha(source_digest):
+        raise SupplementalError("EXTENSION_NOTE_SOURCE_DIGEST_INVALID")
+    try:
+        timestamp = datetime.fromisoformat(str(produced_at).replace("Z", "+00:00"))
+    except ValueError as exc:
+        raise SupplementalError("EXTENSION_NOTE_TIMESTAMP_INVALID") from exc
+    if timestamp.tzinfo is None or timestamp.utcoffset() is None:
+        raise SupplementalError("EXTENSION_NOTE_TIMESTAMP_INVALID")
+    note_state = turnover_state if turnover_state in {"PENDING", "UNAVAILABLE", "UNKNOWN_DATA"} else "AVAILABLE"
+    reasons: list[str] = []
+    core_reference: dict[str, Any] | None = None
+    if note_state == "AVAILABLE":
+        if not isinstance(core_extension_fact, Mapping):
+            note_state = "UNKNOWN_DATA"
+            reasons = ["CORE_EXTENSION_FACT_UNAVAILABLE"]
+        else:
+            risk = str(core_extension_fact.get("core_extension_risk", ""))
+            digest = str(core_extension_fact.get("fact_digest", ""))
+            if (core_extension_fact.get("contract_id") != "EXTENSION_RISK_V1"
+                    or risk not in {"LOW", "MEDIUM", "HIGH", "EXTREME"}
+                    or not _valid_sha(digest)
+                    or not core_extension_fact.get("publication_id")
+                    or not core_extension_fact.get("trade_date")):
+                note_state = "UNKNOWN_DATA"
+                reasons = ["CORE_EXTENSION_FACT_INVALID"]
+            else:
+                core_reference = {
+                    "contract_id": "EXTENSION_RISK_V1",
+                    "core_extension_risk": risk,
+                    "fact_digest": digest,
+                    "publication_id": str(core_extension_fact["publication_id"]),
+                    "trade_date": str(core_extension_fact["trade_date"]),
+                }
+    return {
+        "contract_id": "SUPPLEMENTAL_EXTENSION_NOTE_V1",
+        "contract_version": "1.0.0",
+        "producer": "V4_06_SUPPLEMENTAL_ENRICHMENT",
+        "produced_at_utc": timestamp.astimezone(timezone.utc).isoformat().replace("+00:00", "Z"),
+        "source_revision_id": str(source_revision_id),
+        "source_digest": source_digest,
+        "state": note_state,
+        "reason_codes": reasons,
+        "core_extension_fact": core_reference,
+        "supplemental_observation": {
+            "turnover_state": turnover_state,
+            "turnover_pct60": turnover_pct60,
+            "relationship": "SIDE_BY_SIDE_ANNOTATION_ONLY"
+        },
+        "core_effect": "NONE",
+        "prewatch_effect": "NONE",
+        "base_seed_eligibility_effect": "NONE",
+        "maturity_effect": "NONE",
+        "focus_activation_effect": "NONE"
+    }
 
 
 def compute_turnover_context(*, target_trade_date: str, target: Mapping[str, Any] | None,
@@ -198,7 +348,8 @@ def compute_turnover_context(*, target_trade_date: str, target: Mapping[str, Any
         "turnover_rate": None, "turnover_ma5": None, "turnover_median20": None,
         "turnover_ratio20": None, "turnover_pct5": None, "turnover_pct20": None,
         "turnover_pct60": None, "turnover_delta3": None,
-        "turnover_state": "UNAVAILABLE", "turnover_context": "UNKNOWN",
+        "turnover_state": "UNAVAILABLE", "turnover_context": "UNAVAILABLE",
+        "binding_quality": "MISSING",
         "quality_codes": [], "prior_sample_dates": {"5": [], "20": [], "60": []},
         "prior_strict_sample_count": 0, "lookback_market_session_count": 0,
     }
@@ -208,12 +359,20 @@ def compute_turnover_context(*, target_trade_date: str, target: Mapping[str, Any
     if status not in BINDING_STATUSES:
         raise SupplementalError("BINDING_STATUS_INVALID")
     if status != "BOUND_STRICT":
-        return {**empty, "turnover_state": status, "quality_codes": ["TARGET_NOT_BOUND_STRICT"]}
+        reasons = target.get("binding_reason_codes", target.get("quality_codes", []))
+        reasons = list(reasons) if isinstance(reasons, (list, tuple, set)) else []
+        if not reasons:
+            reasons = ["BINDING_REASON_UNKNOWN"]
+        state = turnover_state_for_reasons(reasons)
+        return {**empty, "turnover_state": state, "turnover_context": state,
+                "binding_quality": status, "quality_codes": reasons or ["TARGET_NOT_BOUND_STRICT"]}
     if str(target.get("local_tradestatus", "1")) != "1":
-        return {**empty, "turnover_state": "UNAVAILABLE", "quality_codes": ["TARGET_NOT_ACTUAL_TRADE"]}
+        return {**empty, "turnover_state": "UNAVAILABLE", "turnover_context": "UNAVAILABLE",
+                "binding_quality": status, "quality_codes": ["TARGET_NOT_ACTUAL_TRADE"]}
     current = _rate(target.get("turnover_rate"))
     if current is None:
-        return {**empty, "turnover_state": "MISSING", "quality_codes": ["TARGET_TURNOVER_MISSING"]}
+        return {**empty, "turnover_state": "UNAVAILABLE", "turnover_context": "UNAVAILABLE",
+                "binding_quality": status, "quality_codes": ["TARGET_TURNOVER_MISSING"]}
 
     sessions = []
     seen_dates: set[str] = set()
@@ -269,20 +428,8 @@ def compute_turnover_context(*, target_trade_date: str, target: Mapping[str, Any
                 result["turnover_median20"] = (ordered[9] + ordered[10]) / 2
                 denominator = result["turnover_median20"]
                 result["turnover_ratio20"] = current / denominator if denominator > 0 else None
-            elif window == 60:
-                result["turnover_context"] = (
-                    "HIGH" if result["turnover_pct20"] is not None and result["turnover_pct20"] >= 0.8
-                    else "LOW" if result["turnover_pct20"] is not None and result["turnover_pct20"] <= 0.2
-                    else "NORMAL" if result["turnover_pct20"] is not None
-                    else "UNKNOWN"
-                )
     result["prior_sample_dates"] = sample_dates
     result["turnover_delta3"] = current - actual[2]["turnover_rate"] if len(actual) >= 3 else None
-    if len(actual) >= 60 and not gap_seen:
-        result["turnover_state"] = "AVAILABLE"
-    else:
-        result["turnover_state"] = "DEGRADED"
-        result["turnover_context"] = "UNKNOWN"
     codes = []
     if len(actual) < 60:
         codes.append("INSUFFICIENT_PRIOR_STRICT_HISTORY")
@@ -293,6 +440,12 @@ def compute_turnover_context(*, target_trade_date: str, target: Mapping[str, Any
     if len(actual) < 3:
         codes.append("DELTA3_ENDPOINT_MISSING")
     result["quality_codes"] = codes
+    semantic_state = (classify_turnover_pct60(result["turnover_pct60"])
+                      if len(actual) >= 60 and not gap_seen
+                      else turnover_state_for_reasons(codes, default="UNKNOWN_DATA"))
+    result["turnover_state"] = semantic_state
+    result["turnover_context"] = semantic_state
+    result["binding_quality"] = status
     return result
 
 
@@ -312,6 +465,7 @@ class SupplementalRow:
     turnover_state: str
     turnover_context: str
     supplemental_participation_context: dict[str, Any]
+    supplemental_extension_note: dict[str, Any]
     provider_asof: str | None
     binding_quality: str
     quality_codes: tuple[str, ...]
@@ -335,7 +489,8 @@ class SupplementalRow:
             raise SupplementalError("ENRICHMENT_IDENTITY_INVALID")
         if self.provider != PROVIDER or self.binding_quality not in BINDING_STATUSES:
             raise SupplementalError("ENRICHMENT_CAPABILITY_INVALID")
-        if self.source_contract_id != SOURCE_CONTRACT_ID or not _valid_sha(self.source_digest):
+        if (self.source_contract_id != SOURCE_CONTRACT_ID or not self.source_revision_id
+                or not _valid_sha(self.source_digest)):
             raise SupplementalError("ENRICHMENT_PROVENANCE_INVALID")
         required_query_keys = {"provider_code", "frequency", "start_date", "end_date", "adjustflag"}
         if not isinstance(self.query_identity, Mapping) or set(self.query_identity) != required_query_keys:
@@ -362,12 +517,58 @@ class SupplementalRow:
                 raise SupplementalError("TURNOVER_METRIC_NOT_FINITE")
         for name in ("turnover_pct5", "turnover_pct20", "turnover_pct60"):
             value = getattr(self, name)
-            if value is not None and (not math.isfinite(float(value)) or not 0 <= float(value) <= 1):
+            if value is not None and (not math.isfinite(float(value)) or not 0 <= float(value) <= 100):
                 raise SupplementalError("TURNOVER_PERCENTILE_OUT_OF_RANGE")
-        if self.binding_quality == "BOUND_SOFT" and self.turnover_context not in {"UNKNOWN", "DIAGNOSTIC_ONLY"}:
-            raise SupplementalError("SOFT_BINDING_SEMANTIC_USE_FORBIDDEN")
-        if self.binding_quality != "BOUND_STRICT" and self.turnover_context not in {"UNKNOWN", "DIAGNOSTIC_ONLY"}:
-            raise SupplementalError("UNBOUND_SEMANTIC_USE_FORBIDDEN")
+        if self.turnover_state not in TURNOVER_SEMANTIC_STATES:
+            raise SupplementalError("TURNOVER_STATE_INVALID")
+        if self.turnover_state in {"LOW", "NORMAL", "ELEVATED", "HIGH", "EXTREME"}:
+            if (self.binding_quality != "BOUND_STRICT" or self.turnover_pct60 is None
+                    or classify_turnover_pct60(self.turnover_pct60) != self.turnover_state):
+                raise SupplementalError("TURNOVER_STATE_PERCENTILE_MISMATCH")
+        elif self.turnover_state == "UNKNOWN_DATA":
+            if self.binding_quality != "BOUND_STRICT":
+                raise SupplementalError("TURNOVER_STATE_BINDING_QUALITY_MISMATCH")
+        elif self.binding_quality == "BOUND_STRICT":
+            raise SupplementalError("TURNOVER_STATE_BINDING_QUALITY_MISMATCH")
+        if self.turnover_context != self.turnover_state:
+            raise SupplementalError("TURNOVER_CONTEXT_ALIAS_MISMATCH")
+        if not isinstance(self.supplemental_extension_note, Mapping):
+            raise SupplementalError("SUPPLEMENTAL_EXTENSION_NOTE_INVALID")
+        note = self.supplemental_extension_note
+        if (note.get("contract_id") != "SUPPLEMENTAL_EXTENSION_NOTE_V1"
+                or note.get("contract_version") != "1.0.0"
+                or note.get("producer") != "V4_06_SUPPLEMENTAL_ENRICHMENT"
+                or note.get("source_revision_id") != self.source_revision_id
+                or note.get("source_digest") != self.source_digest
+                or note.get("state") not in {"AVAILABLE", "PENDING", "UNAVAILABLE", "UNKNOWN_DATA"}
+                or note.get("core_effect") != "NONE"
+                or note.get("prewatch_effect") != "NONE"
+                or note.get("base_seed_eligibility_effect") != "NONE"
+                or note.get("maturity_effect") != "NONE"
+                or note.get("focus_activation_effect") != "NONE"):
+            raise SupplementalError("SUPPLEMENTAL_EXTENSION_NOTE_INVALID")
+        if not _accepted_timestamp(note.get("produced_at_utc")):
+            raise SupplementalError("SUPPLEMENTAL_EXTENSION_NOTE_INVALID")
+        if self.turnover_state in {"PENDING", "UNAVAILABLE", "UNKNOWN_DATA"} \
+                and note.get("state") != self.turnover_state:
+            raise SupplementalError("SUPPLEMENTAL_EXTENSION_NOTE_STATE_MISMATCH")
+        observation = note.get("supplemental_observation")
+        if (not isinstance(observation, Mapping)
+                or observation.get("turnover_state") != self.turnover_state
+                or observation.get("turnover_pct60") != self.turnover_pct60
+                or observation.get("relationship") != "SIDE_BY_SIDE_ANNOTATION_ONLY"):
+            raise SupplementalError("SUPPLEMENTAL_EXTENSION_NOTE_STATE_MISMATCH")
+        core_reference = note.get("core_extension_fact")
+        if note.get("state") == "AVAILABLE":
+            if (not isinstance(core_reference, Mapping)
+                    or core_reference.get("contract_id") != "EXTENSION_RISK_V1"
+                    or core_reference.get("publication_id") != self.publication_id
+                    or core_reference.get("trade_date") != self.trade_date
+                    or core_reference.get("core_extension_risk") not in {"LOW", "MEDIUM", "HIGH", "EXTREME"}
+                    or not _valid_sha(str(core_reference.get("fact_digest", "")))):
+                raise SupplementalError("SUPPLEMENTAL_EXTENSION_NOTE_CORE_BINDING_INVALID")
+        elif core_reference is not None:
+            raise SupplementalError("SUPPLEMENTAL_EXTENSION_NOTE_CORE_BINDING_INVALID")
 
 
 def make_manifest(*, publication_id: str, enrichment_revision: int, provider: str,
@@ -413,7 +614,8 @@ def build_supplemental_row(*, publication_id: str, security_id: str, enrichment_
                            source_revision_id: str, source_digest: str,
                            turnover_context: Mapping[str, Any] | None,
                            created_at: str, provider_asof: str | None = None,
-                           binding_quality_codes: Iterable[str] = ()) -> SupplementalRow:
+                           binding_quality_codes: Iterable[str] = (),
+                           core_extension_fact: Mapping[str, Any] | None = None) -> SupplementalRow:
     """Create a persistable row while keeping soft/unbound rows diagnostic."""
     if binding_quality not in BINDING_STATUSES:
         raise SupplementalError("BINDING_STATUS_INVALID")
@@ -429,22 +631,36 @@ def build_supplemental_row(*, publication_id: str, security_id: str, enrichment_
     if source is not None and source.source_digest != source_digest:
         raise SupplementalError("SUPPLEMENTAL_SOURCE_DIGEST_MISMATCH")
     metrics = dict(turnover_context or {}) if strict else {}
+    binding_quality_codes = tuple(binding_quality_codes)
     current = source.turn_fraction if source is not None else None
     quality_codes = tuple(sorted(set(binding_quality_codes) | set(metrics.get("quality_codes", []))))
-    context_value = str(metrics.get("turnover_context", "UNKNOWN")) if strict else "UNKNOWN"
-    state_value = str(metrics.get("turnover_state", "AVAILABLE")) if strict else binding_quality
+    if strict:
+        state_value = str(metrics.get("turnover_state", "UNKNOWN_DATA"))
+    else:
+        if not binding_quality_codes:
+            binding_quality_codes = ("BINDING_REASON_UNKNOWN",)
+        default = "UNAVAILABLE"
+        state_value = turnover_state_for_reasons(binding_quality_codes, default=default)
+    context_value = state_value
     participation = {
         "contract_id": CONTRACT_ID, "contract_version": CONTRACT_VERSION,
-        "binding_quality": binding_quality, "turnover_context": context_value,
+        "binding_quality": binding_quality, "turnover_state": state_value,
+        "turnover_context": context_value, "turnover_context_deprecated_alias": True,
         "prior_strict_sample_count": int(metrics.get("prior_strict_sample_count", 0)),
         "prior_sample_dates": metrics.get("prior_sample_dates", {"5": [], "20": [], "60": []}),
         "quality_codes": list(quality_codes), "effect": "NONE",
     }
+    extension_note = make_supplemental_extension_note(
+        turnover_state=state_value, turnover_pct60=metrics.get("turnover_pct60"),
+        source_revision_id=source_revision_id, source_digest=source_digest, produced_at=created_at,
+        core_extension_fact=core_extension_fact,
+    )
     row = SupplementalRow(
         publication_id=publication_id, security_id=security_id, enrichment_revision=enrichment_revision,
         provider=PROVIDER, trade_date=trade_date, query_identity=dict(query_identity),
         turnover_rate=current, turnover_state=state_value,
         turnover_context=context_value, supplemental_participation_context=participation,
+        supplemental_extension_note=extension_note,
         provider_asof=provider_asof, binding_quality=binding_quality, quality_codes=quality_codes,
         source_contract_id=SOURCE_CONTRACT_ID,
         source_revision_id=source_revision_id,
@@ -552,15 +768,17 @@ class PostgresSupplementalWriter:
                         source_contract_version,field_map_version,raw_source_value,raw_source_unit,turnover_rate,
                         turnover_ma5,turnover_median20,turnover_ratio20,turnover_pct5,turnover_pct20,
                         turnover_pct60,turnover_delta3,turnover_state,turnover_context,
-                        supplemental_participation_context,provider_asof,binding_quality,quality_codes,
+                        supplemental_participation_context,supplemental_extension_note,
+                        provider_asof,binding_quality,quality_codes,
                         source_revision_id,source_digest,created_at)
-                       values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)""",
+                       values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)""",
                     (row.publication_id, row.security_id, row.enrichment_revision, row.provider, row.trade_date,
                      Jsonb(row.query_identity), row.source_contract_id, row.source_contract_version, "BAOSTOCK_FIELD_MAP_V1.1",
                      row.raw_source_value, row.raw_source_unit, row.turnover_rate, row.turnover_ma5,
                      row.turnover_median20, row.turnover_ratio20, row.turnover_pct5, row.turnover_pct20,
                      row.turnover_pct60, row.turnover_delta3, row.turnover_state, row.turnover_context,
-                     Jsonb(row.supplemental_participation_context), row.provider_asof, row.binding_quality,
+                     Jsonb(row.supplemental_participation_context), Jsonb(row.supplemental_extension_note),
+                     row.provider_asof, row.binding_quality,
                      Jsonb(list(row.quality_codes)), row.source_revision_id, row.source_digest, row.created_at),
                 )
 
@@ -580,9 +798,11 @@ def core_component_digests(components: Mapping[str, Any]) -> dict[str, str]:
 def run_core_isolation_matrix(core_components: Mapping[str, Any], scenarios: Mapping[str, Any]) -> dict[str, Any]:
     """Prove sidecar presence/order never mutates the supplied Core digest vector."""
     baseline = core_component_digests(core_components)
-    required_scenarios = {"A_NO_TURNOVER", "B_TURNOVER_PRE_CACHED", "C_TURNOVER_AFTER_ACCEPTANCE",
-                          "D_PROVIDER_STATUS_CONFLICT"}
-    if set(scenarios) != required_scenarios:
+    legacy_scenarios = {"A_NO_TURNOVER", "B_TURNOVER_PRE_CACHED", "C_TURNOVER_AFTER_ACCEPTANCE",
+                        "D_PROVIDER_STATUS_CONFLICT"}
+    r2_scenarios = {"A_NO_TURNOVER_SIDECAR", "B_PENDING_SIDECAR", "C_SYNTHETIC_TURNOVER",
+                    "D_EXTENSION_NOTE_CHANGED", "E_BINDING_QUALITY_CONFLICT"}
+    if set(scenarios) not in (legacy_scenarios, r2_scenarios):
         raise SupplementalError("CORE_ISOLATION_SCENARIO_SET_INVALID")
     results = {}
     for name, scenario in sorted(scenarios.items()):

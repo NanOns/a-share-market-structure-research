@@ -263,6 +263,7 @@ def main() -> int:
         "external_audit": evidence(EXTERNAL_AUDIT),
         "external_review_ready": status == "FULL_PASS_CANDIDATE",
         "final_external_acceptance": "NOT_GRANTED",
+        "v4_04_entry": "PENDING_FINAL_EXTERNAL_ACCEPTANCE",
         "v4_00": {
             "status": v400.get("status"),
             "external_acceptance": v400.get("v4_00_external_acceptance"),

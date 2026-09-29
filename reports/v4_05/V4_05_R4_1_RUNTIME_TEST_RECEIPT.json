@@ -1,0 +1,74 @@
+{
+  "clean_clone_rebuild": {
+    "implementation_commit": "bdc2f65a09efc006fe9ca5806f3d5b244b564f42",
+    "lfs_inputs_restored": 7,
+    "outputs_compared": 10,
+    "status": "PASS"
+  },
+  "contract_id": "V4_05_R4_1_RUNTIME_TEST_RECEIPT_V1",
+  "implementation_commit": "bdc2f65a09efc006fe9ca5806f3d5b244b564f42",
+  "postgresql_integration": {
+    "applied_migration_count": 12,
+    "case_ids": [
+      "I01_identical_replay",
+      "I02_changed_source_revision",
+      "I03_negative_guards",
+      "I04_transaction_rollback",
+      "I05_prior_state_freeze"
+    ],
+    "cleanup": {
+      "attempted": true,
+      "cluster_removed": true,
+      "server_stopped": true,
+      "succeeded": true
+    },
+    "isolated_connection_identity": {
+      "cluster_root": "TEMP_PATH_REDACTED",
+      "database": "v4_05_r4_1_isolated_293b24108d",
+      "host": "127.0.0.1",
+      "in_recovery": false,
+      "matches_configured_workbench_database": false,
+      "port": 7903,
+      "postgres_version": "18.6",
+      "server_address": "127.0.0.1/32",
+      "server_port": 7903,
+      "user": "postgres"
+    },
+    "postgres_version": "psql (PostgreSQL) 18.6",
+    "production_connection_used": false,
+    "status": "PASS"
+  },
+  "stage_record": {
+    "acceptance_result": "PASS",
+    "evidence": "Full required V4 runtime suite, isolated formal PostgreSQL I01-I05, and pushed-commit clean-clone rebuild completed.",
+    "next_stage": "INDEPENDENT_EXTERNAL_AUDIT_R4_1",
+    "stage_contract": "V4_05_REPLAY_GATE_A_R4_1_POSTGRES_HASH_CLOSURE"
+  },
+  "status": "PASS",
+  "suite": {
+    "command": [
+      "-m",
+      "pytest",
+      "-q",
+      "-rs",
+      "tests/v4_01",
+      "tests/v4_02",
+      "tests/v4_03",
+      "tests/v4_04",
+      "tests/v4_05",
+      "tests/v4_joint",
+      "tests/v4_phase0"
+    ],
+    "duration": "4.33s",
+    "passed": 426,
+    "postgres_schema_test_file": "tests/v4_phase0/test_postgres_schema.py",
+    "postgres_schema_tests_ran": true,
+    "pytest_output_sha256": "1c3557cc3a64404b0b2fe2b0f9f79105118a5bd73b4339fb68d7557c79076775",
+    "skipped": 2,
+    "skipped_test_names_and_reasons": [
+      "SKIPPED [1] tests\\v4_phase0\\test_tdx_local_snapshot.py:54: symlink creation unavailable",
+      "SKIPPED [1] tests\\v4_phase0\\test_tdx_snapshot.py:101: symlink creation is unavailable on this runner"
+    ],
+    "summary": "426 passed, 2 skipped in 4.33s"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "binary_artifact_identity": "SHA256 of raw bytes for gzip, parquet, zip, and GBBQ payloads.",
+  "contract_id": "V4_05_R4_1_CANONICAL_HASH_POLICY_V1",
+  "frozen_promotion_binding_compatibility": {
+    "algorithm_id": "FROZEN_ACCEPTED_HEAD_SHA256_V1",
+    "binding_valid": true,
+    "canonical_json_sha256": "206581adca674841a21a7497a3f73ce22dbedd0f18f2ce38bed003df8f42dac9",
+    "frozen_promotion_sha256": "83fa37ded40337d69ff0e447a0b6a3bc293d2ca95ea9c8aa009f0f104776c4be",
+    "global_stage_binding_sha256": "83fa37ded40337d69ff0e447a0b6a3bc293d2ca95ea9c8aa009f0f104776c4be",
+    "reason": "Preserve the externally promoted immutable binding by recreating its original CRLF file representation from the unchanged Git LF blob. Downstream business identities use CANONICAL_JSON_SHA256_V1.",
+    "reconstructed_frozen_crlf_sha256": "83fa37ded40337d69ff0e447a0b6a3bc293d2ca95ea9c8aa009f0f104776c4be",
+    "repository_canonical_lf_sha256": "613a2e46876aeb3283fa268f717134347f4df236e0d935b47b3a770eb0d1afbf",
+    "scope": "data/v4/V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD.json"
+  },
+  "governance_json_identity": {
+    "algorithm_id": "CANONICAL_JSON_SHA256_V1",
+    "parse": "UTF-8 JSON (optional BOM), parsed as JSON values",
+    "serialize": "UTF-8; ensure_ascii=false; sort_keys=true; separators=(',',':'); allow_nan=false; no newline",
+    "use": "Business/source identity for JSON governance heads and JSON report inputs; independent of file whitespace and line endings."
+  },
+  "newline_negative_test": {
+    "canonical_governance_sha_and_downstream_identity_must_match": true,
+    "lf_crlf_raw_hashes_may_differ": true,
+    "test": "tests/v4_05/test_v4_05_r4_1_canonical_hash.py"
+  },
+  "ordinary_governance_text_identity": {
+    "algorithm_id": "CANONICAL_TEXT_SHA256_V1",
+    "normalize": "UTF-8 without BOM; CRLF and CR normalized to LF"
+  },
+  "prohibited_identity_input": "OS working-tree raw-byte SHA for governance files.",
+  "stage_contract": "V4_05_REPLAY_GATE_A_R4_1_POSTGRES_HASH_CLOSURE",
+  "status": "PASS"
+}

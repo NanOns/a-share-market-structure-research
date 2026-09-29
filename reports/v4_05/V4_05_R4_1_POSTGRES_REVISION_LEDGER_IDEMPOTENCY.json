@@ -1,0 +1,587 @@
+{
+  "applied_migration_count": 12,
+  "cases": {
+    "cases": {
+      "I01_identical_replay": {
+        "computation_identity_sha256": "62827a6ea868cba2879d9b38d4d76b161970c442949561ec1ec247d36a7cab9c",
+        "consumed_source_rows": 14,
+        "core_revision": 1,
+        "counts_after_first": {
+          "consumed_sources": 14,
+          "publication_events": 2,
+          "publication_heads": 1,
+          "publications": 1,
+          "source_revisions": 14,
+          "state_heads": 1
+        },
+        "counts_after_second": {
+          "consumed_sources": 14,
+          "publication_events": 2,
+          "publication_heads": 1,
+          "publications": 1,
+          "source_revisions": 14,
+          "state_heads": 1
+        },
+        "counts_before": {
+          "consumed_sources": 0,
+          "publication_events": 0,
+          "publication_heads": 0,
+          "publications": 0,
+          "source_revisions": 14,
+          "state_heads": 0
+        },
+        "logical_identity_reused": true,
+        "logical_output_identity_sha256": "c0572e7c9d481ee8b1a251779df2bf15bce98f1728a57ff8e96ba7ae2219fb77",
+        "opaque_publication_id": true,
+        "publication_event_rows": 2,
+        "publication_head": {
+          "publication_id": "PUB-f52dd2eb-5785-48cf-b7a1-e7ba42ebb7b4",
+          "state_head_id": "STATE-5ba9ea15-ed29-4e12-9ecb-3b5176cf2c86",
+          "state_logical_digest": "c0572e7c9d481ee8b1a251779df2bf15bce98f1728a57ff8e96ba7ae2219fb77"
+        },
+        "publication_ids": [
+          "PUB-f52dd2eb-5785-48cf-b7a1-e7ba42ebb7b4",
+          "PUB-f52dd2eb-5785-48cf-b7a1-e7ba42ebb7b4"
+        ],
+        "publication_lineage_id": "LINEAGE-7324c355-000e-4615-be15-a9320f8a3e87",
+        "revision_no": 1,
+        "source_manifest_sha256": "dbb2409adfbc5b66ec1d273e3081ac96f4c0c5fef44d14c2c98ec7cbe83dbc9f",
+        "state_head": {
+          "logical_digest": "c0572e7c9d481ee8b1a251779df2bf15bce98f1728a57ff8e96ba7ae2219fb77",
+          "state_head_id": "STATE-5ba9ea15-ed29-4e12-9ecb-3b5176cf2c86"
+        },
+        "status": "PASS"
+      },
+      "I02_changed_source_revision": {
+        "business_logical_output_unchanged": true,
+        "computation_identity_sha256_after": "ca7a8a8c528d094cdf7f21fdef9723c422156ab2702c99368fe16647b31f007f",
+        "computation_identity_sha256_before": "62827a6ea868cba2879d9b38d4d76b161970c442949561ec1ec247d36a7cab9c",
+        "controlled_source_digest_after": "82cc32e1515778aa84479a670774909c3472b8d75d2cc63c4f103a8796859e17",
+        "controlled_source_digest_before": "70b79898325ef6c67ea697f922d38fa3fd523e2ad62879b1b9fcb59fce52bf0c",
+        "core_revision": 2,
+        "new_consumed_source_manifest": {
+          "CONTRACTS": {
+            "digest": "3cdb078771b858ad5b2bd90c192542efc8400f1fbfab414200d6d432e4def5ba",
+            "source_revision_id": "CONTRACTS:3cdb078771b858ad5b2bd90c192542efc8400f1fbfab414200d6d432e4def5ba"
+          },
+          "CORE_PROFILE": {
+            "digest": "2b1f881fc408f044253df9a3fb605e5a6059a17be7b2310f97a46620a8d32d2f",
+            "source_revision_id": "CORE_PROFILE:2b1f881fc408f044253df9a3fb605e5a6059a17be7b2310f97a46620a8d32d2f"
+          },
+          "DAILY_HISTORY": {
+            "digest": "7d67a7d49eb512c7f9e6f78bfde0b7dae329cda356006de1abe6b2dc679ff8c7",
+            "source_revision_id": "DAILY_HISTORY:7d67a7d49eb512c7f9e6f78bfde0b7dae329cda356006de1abe6b2dc679ff8c7"
+          },
+          "FROZEN_GBBQ": {
+            "digest": "775d82c58b5b46ec1d21478f86ba8ef90302691982e68d5c4cfcd51fddda666e",
+            "source_revision_id": "FROZEN_GBBQ:sha256-775d82c58b5b46ec1d21478f86ba8ef90302691982e68d5c4cfcd51fddda666e"
+          },
+          "FULL_SCOPE_FACTORS": {
+            "digest": "85775ffd490853e8483294e5a61e17e842e754dbb7c80c3f096c132771df5df3",
+            "source_revision_id": "FULL_SCOPE_FACTORS:85775ffd490853e8483294e5a61e17e842e754dbb7c80c3f096c132771df5df3"
+          },
+          "MARKET_CALENDAR": {
+            "digest": "2d81cfe80a1dd767adbf75cb5917fbe7ea81a93e5335064a787890e20796e410",
+            "source_revision_id": "MARKET_CALENDAR:2d81cfe80a1dd767adbf75cb5917fbe7ea81a93e5335064a787890e20796e410"
+          },
+          "MARKET_REFERENCE": {
+            "digest": "4a068eb5521fa841bef7a39c0a1815ca42255782290425d48dbf9162f10610bf",
+            "source_revision_id": "MARKET_REFERENCE:4a068eb5521fa841bef7a39c0a1815ca42255782290425d48dbf9162f10610bf"
+          },
+          "PARAMETERS": {
+            "digest": "37e00c6276d0af91b9e90401e021b6171b67f7d28b1b9b21b4af9a1742b7b5c8",
+            "source_revision_id": "PARAMETERS:37e00c6276d0af91b9e90401e021b6171b67f7d28b1b9b21b4af9a1742b7b5c8"
+          },
+          "PERIOD_ASOF": {
+            "digest": "e54674e8459e1258610639d76fac7a5f7b6093a4013f912b8937fb6fa96c2233",
+            "source_revision_id": "PERIOD_ASOF:e54674e8459e1258610639d76fac7a5f7b6093a4013f912b8937fb6fa96c2233"
+          },
+          "TDX_RAW_PACKAGE": {
+            "digest": "82cc32e1515778aa84479a670774909c3472b8d75d2cc63c4f103a8796859e17",
+            "source_revision_id": "TDX_RAW_PACKAGE:CONTROLLED_REV2:194fefea-d2a0-4603-ae21-a5e75ff6fc05"
+          },
+          "V4_01_ACCEPTED_HEAD": {
+            "digest": "0e74c07d585d5e857da2cfcedaa3405f555325b3ef4dd21e1f23822a7b336550",
+            "source_revision_id": "V4_01_ACCEPTED_HEAD:0e74c07d585d5e857da2cfcedaa3405f555325b3ef4dd21e1f23822a7b336550"
+          },
+          "V4_02_GO_FORWARD_HEAD": {
+            "digest": "206581adca674841a21a7497a3f73ce22dbedd0f18f2ce38bed003df8f42dac9",
+            "source_revision_id": "V4_02_GO_FORWARD_HEAD:206581adca674841a21a7497a3f73ce22dbedd0f18f2ce38bed003df8f42dac9"
+          },
+          "V4_03_ACCEPTED_HEAD": {
+            "digest": "2ba4315086eb04556fe158488a446f107a0dd4a07e73505ac8dfc57220ca1fe5",
+            "source_revision_id": "V4_03_ACCEPTED_HEAD:2ba4315086eb04556fe158488a446f107a0dd4a07e73505ac8dfc57220ca1fe5"
+          },
+          "V4_04_ACCEPTED_HEAD": {
+            "digest": "fa87be25a576e7bb74fa61d652b1c0696c7cad415367ccd571b845eeaffccf5d",
+            "source_revision_id": "V4_04_ACCEPTED_HEAD:fa87be25a576e7bb74fa61d652b1c0696c7cad415367ccd571b845eeaffccf5d"
+          }
+        },
+        "new_opaque_publication_id": "PUB-967638f5-3c58-46e9-8dcf-07135028a2e6",
+        "old_revision_immutable": true,
+        "publication_head_after_explicit_accept": {
+          "publication_id": "PUB-967638f5-3c58-46e9-8dcf-07135028a2e6",
+          "state_head_id": "STATE-7867c194-d9c8-4cb1-b076-0aa014ae0e91",
+          "state_logical_digest": "c0572e7c9d481ee8b1a251779df2bf15bce98f1728a57ff8e96ba7ae2219fb77"
+        },
+        "publication_head_before_explicit_accept": {
+          "publication_id": "PUB-f52dd2eb-5785-48cf-b7a1-e7ba42ebb7b4",
+          "state_head_id": "STATE-5ba9ea15-ed29-4e12-9ecb-3b5176cf2c86",
+          "state_logical_digest": "c0572e7c9d481ee8b1a251779df2bf15bce98f1728a57ff8e96ba7ae2219fb77"
+        },
+        "revision_no": 2,
+        "same_day_revision_parent_id": "PUB-f52dd2eb-5785-48cf-b7a1-e7ba42ebb7b4",
+        "same_publication_lineage_id": "LINEAGE-7324c355-000e-4615-be15-a9320f8a3e87",
+        "source_manifest_sha256_after": "0fe15dcb86909132aba37ce33b2ae01bd29b57cf96a6c9e33c688d9c90d6ccbd",
+        "source_manifest_sha256_before": "dbb2409adfbc5b66ec1d273e3081ac96f4c0c5fef44d14c2c98ec7cbe83dbc9f",
+        "source_revision_id_after": "TDX_RAW_PACKAGE:CONTROLLED_REV2:194fefea-d2a0-4603-ae21-a5e75ff6fc05",
+        "source_revision_id_before": "TDX_RAW_PACKAGE:sha256-70b79898325ef6c67ea697f922d38fa3fd523e2ad62879b1b9fcb59fce52bf0c",
+        "status": "PASS"
+      },
+      "I03_negative_guards": {
+        "duplicate_core_revision": {
+          "constraint": "uq_publication_namespace_trade_date_core",
+          "message": "duplicate key value violates unique constraint \"uq_publication_namespace_trade_date_core\"",
+          "rejected": true,
+          "sqlstate": "23505"
+        },
+        "head_to_nonaccepted_publication": {
+          "constraint": null,
+          "message": "V4_PUBLICATION_HEAD_TARGET_INVALID",
+          "rejected": true,
+          "sqlstate": "P0001"
+        },
+        "head_to_wrong_state_head": {
+          "constraint": null,
+          "message": "V4_PUBLICATION_HEAD_STATE_TARGET_INVALID",
+          "rejected": true,
+          "sqlstate": "P0001"
+        },
+        "lineage_mismatch": {
+          "constraint": null,
+          "message": "V4_SAME_DAY_PARENT_INVALID",
+          "rejected": true,
+          "sqlstate": "P0001"
+        },
+        "revision_no_skip": {
+          "constraint": null,
+          "message": "V4_SAME_DAY_PARENT_INVALID",
+          "rejected": true,
+          "sqlstate": "P0001"
+        },
+        "same_day_parent_fork": {
+          "constraint": null,
+          "message": "V4_SAME_DAY_PARENT_INVALID",
+          "rejected": true,
+          "sqlstate": "P0001"
+        },
+        "same_source_revision_id_different_payload": {
+          "constraint": "source_revisions_pkey",
+          "message": "duplicate key value violates unique constraint \"source_revisions_pkey\"",
+          "rejected": true,
+          "sqlstate": "23505"
+        }
+      },
+      "I04_transaction_rollback": [
+        {
+          "after_counts": {
+            "consumed_sources": 28,
+            "publication_events": 4,
+            "publication_heads": 1,
+            "publications": 3,
+            "source_revisions": 15,
+            "state_heads": 2
+          },
+          "before_counts": {
+            "consumed_sources": 28,
+            "publication_events": 4,
+            "publication_heads": 1,
+            "publications": 3,
+            "source_revisions": 15,
+            "state_heads": 2
+          },
+          "dangling_rows": {
+            "consumed_source": 0,
+            "events": 0,
+            "publication": 0,
+            "source_revision": 0,
+            "state_head": 0
+          },
+          "failure_point": "AFTER_PUBLICATION_INSERT",
+          "head_unchanged": true,
+          "passed": true
+        },
+        {
+          "after_counts": {
+            "consumed_sources": 28,
+            "publication_events": 4,
+            "publication_heads": 1,
+            "publications": 3,
+            "source_revisions": 15,
+            "state_heads": 2
+          },
+          "before_counts": {
+            "consumed_sources": 28,
+            "publication_events": 4,
+            "publication_heads": 1,
+            "publications": 3,
+            "source_revisions": 15,
+            "state_heads": 2
+          },
+          "dangling_rows": {
+            "consumed_source": 0,
+            "events": 0,
+            "publication": 0,
+            "source_revision": 0,
+            "state_head": 0
+          },
+          "failure_point": "AFTER_PARTIAL_CONSUMED_SOURCE_INSERT",
+          "head_unchanged": true,
+          "passed": true
+        },
+        {
+          "after_counts": {
+            "consumed_sources": 28,
+            "publication_events": 4,
+            "publication_heads": 1,
+            "publications": 3,
+            "source_revisions": 15,
+            "state_heads": 2
+          },
+          "before_counts": {
+            "consumed_sources": 28,
+            "publication_events": 4,
+            "publication_heads": 1,
+            "publications": 3,
+            "source_revisions": 15,
+            "state_heads": 2
+          },
+          "dangling_rows": {
+            "consumed_source": 0,
+            "events": 0,
+            "publication": 0,
+            "source_revision": 0,
+            "state_head": 0
+          },
+          "failure_point": "BEFORE_ACCEPTED_HEAD_UPDATE",
+          "head_unchanged": true,
+          "passed": true
+        }
+      ],
+      "I05_prior_state_freeze": {
+        "change_prior_state_head": {
+          "constraint": "fk_publication_prior_state_head",
+          "message": "update or delete on table \"state_heads\" violates foreign key constraint \"fk_publication_prior_state_head\" on table \"publications\"",
+          "rejected": true,
+          "sqlstate": "23503"
+        },
+        "change_prior_state_logical_digest": {
+          "constraint": "fk_publication_head_state_identity",
+          "message": "update or delete on table \"state_heads\" violates foreign key constraint \"fk_publication_head_state_identity\" on table \"publication_heads\"",
+          "rejected": true,
+          "sqlstate": "23503"
+        },
+        "delete_prior_publication_head": {
+          "constraint": null,
+          "message": "V4_PUBLICATION_HEAD_FROZEN_BY_NEXT_SESSION",
+          "rejected": true,
+          "sqlstate": "P0001"
+        },
+        "next_session_publication_bound_to_prior_accepted_state": {
+          "fixture_contains_market_data": false,
+          "prior_session_publication_id": "PUB-967638f5-3c58-46e9-8dcf-07135028a2e6",
+          "prior_session_state_head": "STATE-7867c194-d9c8-4cb1-b076-0aa014ae0e91",
+          "prior_session_state_logical_digest": "c0572e7c9d481ee8b1a251779df2bf15bce98f1728a57ff8e96ba7ae2219fb77",
+          "publication_id": "PUB-285271a9-f420-4f9d-9fc7-f6d527d87bc7",
+          "status": "CANDIDATE",
+          "trade_date": "2026-09-29"
+        },
+        "publication_head_unchanged": true,
+        "replace_prior_publication_head": {
+          "constraint": null,
+          "message": "V4_PUBLICATION_HEAD_FROZEN_BY_NEXT_SESSION",
+          "rejected": true,
+          "sqlstate": "P0001"
+        }
+      }
+    },
+    "consumed_source_rows_after_changed_revision": [
+      {
+        "digest": "3cdb078771b858ad5b2bd90c192542efc8400f1fbfab414200d6d432e4def5ba",
+        "source_key": "CONTRACTS",
+        "source_revision_id": "CONTRACTS:3cdb078771b858ad5b2bd90c192542efc8400f1fbfab414200d6d432e4def5ba"
+      },
+      {
+        "digest": "2b1f881fc408f044253df9a3fb605e5a6059a17be7b2310f97a46620a8d32d2f",
+        "source_key": "CORE_PROFILE",
+        "source_revision_id": "CORE_PROFILE:2b1f881fc408f044253df9a3fb605e5a6059a17be7b2310f97a46620a8d32d2f"
+      },
+      {
+        "digest": "7d67a7d49eb512c7f9e6f78bfde0b7dae329cda356006de1abe6b2dc679ff8c7",
+        "source_key": "DAILY_HISTORY",
+        "source_revision_id": "DAILY_HISTORY:7d67a7d49eb512c7f9e6f78bfde0b7dae329cda356006de1abe6b2dc679ff8c7"
+      },
+      {
+        "digest": "775d82c58b5b46ec1d21478f86ba8ef90302691982e68d5c4cfcd51fddda666e",
+        "source_key": "FROZEN_GBBQ",
+        "source_revision_id": "FROZEN_GBBQ:sha256-775d82c58b5b46ec1d21478f86ba8ef90302691982e68d5c4cfcd51fddda666e"
+      },
+      {
+        "digest": "85775ffd490853e8483294e5a61e17e842e754dbb7c80c3f096c132771df5df3",
+        "source_key": "FULL_SCOPE_FACTORS",
+        "source_revision_id": "FULL_SCOPE_FACTORS:85775ffd490853e8483294e5a61e17e842e754dbb7c80c3f096c132771df5df3"
+      },
+      {
+        "digest": "2d81cfe80a1dd767adbf75cb5917fbe7ea81a93e5335064a787890e20796e410",
+        "source_key": "MARKET_CALENDAR",
+        "source_revision_id": "MARKET_CALENDAR:2d81cfe80a1dd767adbf75cb5917fbe7ea81a93e5335064a787890e20796e410"
+      },
+      {
+        "digest": "4a068eb5521fa841bef7a39c0a1815ca42255782290425d48dbf9162f10610bf",
+        "source_key": "MARKET_REFERENCE",
+        "source_revision_id": "MARKET_REFERENCE:4a068eb5521fa841bef7a39c0a1815ca42255782290425d48dbf9162f10610bf"
+      },
+      {
+        "digest": "37e00c6276d0af91b9e90401e021b6171b67f7d28b1b9b21b4af9a1742b7b5c8",
+        "source_key": "PARAMETERS",
+        "source_revision_id": "PARAMETERS:37e00c6276d0af91b9e90401e021b6171b67f7d28b1b9b21b4af9a1742b7b5c8"
+      },
+      {
+        "digest": "e54674e8459e1258610639d76fac7a5f7b6093a4013f912b8937fb6fa96c2233",
+        "source_key": "PERIOD_ASOF",
+        "source_revision_id": "PERIOD_ASOF:e54674e8459e1258610639d76fac7a5f7b6093a4013f912b8937fb6fa96c2233"
+      },
+      {
+        "digest": "82cc32e1515778aa84479a670774909c3472b8d75d2cc63c4f103a8796859e17",
+        "source_key": "TDX_RAW_PACKAGE",
+        "source_revision_id": "TDX_RAW_PACKAGE:CONTROLLED_REV2:194fefea-d2a0-4603-ae21-a5e75ff6fc05"
+      },
+      {
+        "digest": "0e74c07d585d5e857da2cfcedaa3405f555325b3ef4dd21e1f23822a7b336550",
+        "source_key": "V4_01_ACCEPTED_HEAD",
+        "source_revision_id": "V4_01_ACCEPTED_HEAD:0e74c07d585d5e857da2cfcedaa3405f555325b3ef4dd21e1f23822a7b336550"
+      },
+      {
+        "digest": "206581adca674841a21a7497a3f73ce22dbedd0f18f2ce38bed003df8f42dac9",
+        "source_key": "V4_02_GO_FORWARD_HEAD",
+        "source_revision_id": "V4_02_GO_FORWARD_HEAD:206581adca674841a21a7497a3f73ce22dbedd0f18f2ce38bed003df8f42dac9"
+      },
+      {
+        "digest": "2ba4315086eb04556fe158488a446f107a0dd4a07e73505ac8dfc57220ca1fe5",
+        "source_key": "V4_03_ACCEPTED_HEAD",
+        "source_revision_id": "V4_03_ACCEPTED_HEAD:2ba4315086eb04556fe158488a446f107a0dd4a07e73505ac8dfc57220ca1fe5"
+      },
+      {
+        "digest": "fa87be25a576e7bb74fa61d652b1c0696c7cad415367ccd571b845eeaffccf5d",
+        "source_key": "V4_04_ACCEPTED_HEAD",
+        "source_revision_id": "V4_04_ACCEPTED_HEAD:fa87be25a576e7bb74fa61d652b1c0696c7cad415367ccd571b845eeaffccf5d"
+      }
+    ],
+    "market_calendar_id": "V4_05_MARKET_CALENDAR_V1:2d81cfe80a1dd767adbf75cb5917fbe7ea81a93e5335064a787890e20796e410",
+    "model_contract_id": "V4_05_REPLAY_GATE_A_R4_1_CANDIDATE",
+    "model_namespace_id": "NS-V4-05-R4-1-559df375a8224410918d19ff3b06f523",
+    "production_runtime_rows_written": 0,
+    "publication_head": {
+      "publication_id": "PUB-967638f5-3c58-46e9-8dcf-07135028a2e6",
+      "state_head_id": "STATE-7867c194-d9c8-4cb1-b076-0aa014ae0e91",
+      "state_logical_digest": "c0572e7c9d481ee8b1a251779df2bf15bce98f1728a57ff8e96ba7ae2219fb77"
+    },
+    "publication_ids": {
+      "controlled_source_revision": "PUB-967638f5-3c58-46e9-8dcf-07135028a2e6",
+      "r4_initial": "PUB-f52dd2eb-5785-48cf-b7a1-e7ba42ebb7b4",
+      "synthetic_next_session_guard_fixture": "PUB-285271a9-f420-4f9d-9fc7-f6d527d87bc7"
+    },
+    "publication_lineage_id": "LINEAGE-7324c355-000e-4615-be15-a9320f8a3e87",
+    "revision_identities": [
+      {
+        "computation_identity_sha256": "62827a6ea868cba2879d9b38d4d76b161970c442949561ec1ec247d36a7cab9c",
+        "core_revision": 1,
+        "logical_output_identity_sha256": "c0572e7c9d481ee8b1a251779df2bf15bce98f1728a57ff8e96ba7ae2219fb77",
+        "prior_session_gap_reason": "PREVIOUS_SESSION_HAS_NO_ACCEPTED_HEAD",
+        "publication_id": "PUB-f52dd2eb-5785-48cf-b7a1-e7ba42ebb7b4",
+        "revision_no": 1,
+        "same_day_revision_parent_id": null,
+        "source_manifest_sha256": "dbb2409adfbc5b66ec1d273e3081ac96f4c0c5fef44d14c2c98ec7cbe83dbc9f",
+        "status_after_accept": "ACCEPTED"
+      },
+      {
+        "computation_identity_sha256": "ca7a8a8c528d094cdf7f21fdef9723c422156ab2702c99368fe16647b31f007f",
+        "core_revision": 2,
+        "logical_output_identity_sha256": "c0572e7c9d481ee8b1a251779df2bf15bce98f1728a57ff8e96ba7ae2219fb77",
+        "prior_session_gap_reason": "PREVIOUS_SESSION_HAS_NO_ACCEPTED_HEAD",
+        "publication_id": "PUB-967638f5-3c58-46e9-8dcf-07135028a2e6",
+        "revision_no": 2,
+        "same_day_revision_parent_id": "PUB-f52dd2eb-5785-48cf-b7a1-e7ba42ebb7b4",
+        "source_manifest_sha256": "0fe15dcb86909132aba37ce33b2ae01bd29b57cf96a6c9e33c688d9c90d6ccbd",
+        "status_after_accept": "ACCEPTED"
+      }
+    ],
+    "row_counts": {
+      "after_first_replay": {
+        "consumed_sources": 14,
+        "publication_events": 2,
+        "publication_heads": 1,
+        "publications": 1,
+        "source_revisions": 14,
+        "state_heads": 1
+      },
+      "after_identical_replay": {
+        "consumed_sources": 14,
+        "publication_events": 2,
+        "publication_heads": 1,
+        "publications": 1,
+        "source_revisions": 14,
+        "state_heads": 1
+      },
+      "final": {
+        "consumed_sources": 28,
+        "publication_events": 4,
+        "publication_heads": 1,
+        "publications": 4,
+        "source_revisions": 15,
+        "state_heads": 2
+      }
+    },
+    "state_head": {
+      "logical_digest": "c0572e7c9d481ee8b1a251779df2bf15bce98f1728a57ff8e96ba7ae2219fb77",
+      "state_head_id": "STATE-7867c194-d9c8-4cb1-b076-0aa014ae0e91"
+    },
+    "status": "PASS",
+    "target_identities": 5222,
+    "target_trade_date": "2026-09-28"
+  },
+  "cleanup": {
+    "attempted": true,
+    "cluster_removed": true,
+    "server_stopped": true,
+    "succeeded": true
+  },
+  "contract_id": "V4_05_R4_1_POSTGRES_REVISION_LEDGER_IDEMPOTENCY_V1",
+  "isolated_connection_identity": {
+    "cluster_root": "TEMP_PATH_REDACTED",
+    "database": "v4_05_r4_1_isolated_293b24108d",
+    "host": "127.0.0.1",
+    "in_recovery": false,
+    "matches_configured_workbench_database": false,
+    "port": 7903,
+    "postgres_version": "18.6",
+    "server_address": "127.0.0.1/32",
+    "server_port": 7903,
+    "user": "postgres"
+  },
+  "migration_versions_and_checksums": [
+    {
+      "checksum_sha256": "391bf52595fc9da86bbce175b667a5b15c18684c4fbfb8e54cdcf65872dff260",
+      "filename": "001_v4_phase0_foundation.sql",
+      "status": "APPLIED",
+      "version": "V4_PHASE0_FOUNDATION_V1"
+    },
+    {
+      "checksum_sha256": "d8dcc13609ea73923dd68ad21d9c91eed69128047203a481764edeb72ea45dac",
+      "filename": "002_namespace_integrity.sql",
+      "status": "APPLIED",
+      "version": "V4_PHASE0_NAMESPACE_INTEGRITY_V1"
+    },
+    {
+      "checksum_sha256": "e1e2886c04c45121530e1fcf506297921c9cca2eecec3ee06be77e2520887d77",
+      "filename": "003_phase0_contract_alignment.sql",
+      "status": "APPLIED",
+      "version": "V4_PHASE0_CONTRACT_ALIGNMENT_R2"
+    },
+    {
+      "checksum_sha256": "905af9323f613d3ae917000859f2306ce3d2a2ec6be43431233c5f4ce0e8a1b3",
+      "filename": "004_publication_head_revision_identity.sql",
+      "status": "APPLIED",
+      "version": "V4_PUBLICATION_HEAD_REVISION_IDENTITY_R2"
+    },
+    {
+      "checksum_sha256": "54d32de8e20afc773638b38aa555c47a5c5e8cb9b0bba82bb60fbd820a2d3b66",
+      "filename": "005_market_session_publication_chain.sql",
+      "status": "APPLIED",
+      "version": "V4_MARKET_SESSION_PUBLICATION_CHAIN_R2"
+    },
+    {
+      "checksum_sha256": "d6ccd5dae3900fa07134a18e2f4f41ed2fbc3dde2fa4d5be79958d82d616a949",
+      "filename": "006_fact_source_guard_table_specific_fields.sql",
+      "status": "APPLIED",
+      "version": "V4_FACT_SOURCE_GUARD_TABLE_SPECIFIC_FIELDS_R2"
+    },
+    {
+      "checksum_sha256": "f7df9d66c6edb13e948cbd92888af140ad335cb2984b9b0078e5498eee1cb4a0",
+      "filename": "007_state_and_namespace_publication_identity.sql",
+      "status": "APPLIED",
+      "version": "V4_STATE_AND_NAMESPACE_PUBLICATION_IDENTITY_R2"
+    },
+    {
+      "checksum_sha256": "3d541d9540d64463068907d20062403d7ee41373c42afa5c34c7e0d7117b338b",
+      "filename": "008_prior_session_state_freeze_integrity.sql",
+      "status": "APPLIED",
+      "version": "V4_PRIOR_SESSION_STATE_FREEZE_INTEGRITY_R3"
+    },
+    {
+      "checksum_sha256": "ae4a7043367a490483618944b8efaf473062f82371e500ab60e5a79a4d55d2e8",
+      "filename": "009_publication_head_guard_sql_alias_fix.sql",
+      "status": "APPLIED",
+      "version": "V4_PUBLICATION_HEAD_GUARD_SQL_ALIAS_FIX_R3"
+    },
+    {
+      "checksum_sha256": "a7f9bc76db45b4f6297ed299be2576d299d243daa45b3b13a5f9e42dccf7b87f",
+      "filename": "010_security_lifecycle_history_r5.sql",
+      "status": "APPLIED",
+      "version": "V4_SECURITY_LIFECYCLE_HISTORY_R5_V1"
+    },
+    {
+      "checksum_sha256": "a562a409a012c32ce7ce879b6377704079e47289de2db0a24c589070e06957e1",
+      "filename": "011_security_membership_interval_r6_2.sql",
+      "status": "APPLIED",
+      "version": "V4_SECURITY_MEMBERSHIP_INTERVAL_R6_2_V1"
+    },
+    {
+      "checksum_sha256": "3e206b8c20959f862f9d293a42a215af624416905f23083c17ca6e2ec22f9b70",
+      "filename": "012_provider_lifecycle_fact_r6_2.sql",
+      "status": "APPLIED",
+      "version": "V4_PROVIDER_LIFECYCLE_FACT_R6_2_V1"
+    }
+  ],
+  "postgres_bin": "E:\\Postgres\\bin",
+  "postgres_version": "psql (PostgreSQL) 18.6",
+  "production_connection_used": false,
+  "runtime_test_receipt": {
+    "command": [
+      "-m",
+      "pytest",
+      "-q",
+      "-rs",
+      "tests/v4_01",
+      "tests/v4_02",
+      "tests/v4_03",
+      "tests/v4_04",
+      "tests/v4_05",
+      "tests/v4_joint",
+      "tests/v4_phase0"
+    ],
+    "isolated_connection_identity": {
+      "cluster_root": "TEMP_PATH_REDACTED",
+      "database": "v4_05_r4_1_isolated_293b24108d",
+      "host": "127.0.0.1",
+      "in_recovery": false,
+      "matches_configured_workbench_database": false,
+      "port": 7903,
+      "postgres_version": "18.6",
+      "server_address": "127.0.0.1/32",
+      "server_port": 7903,
+      "user": "postgres"
+    },
+    "postgres_schema_tests_invoked_by_full_suite": true,
+    "skipped_test_names_and_reasons": [
+      "SKIPPED [1] tests\\v4_phase0\\test_tdx_local_snapshot.py:54: symlink creation unavailable",
+      "SKIPPED [1] tests\\v4_phase0\\test_tdx_snapshot.py:101: symlink creation is unavailable on this runner"
+    ],
+    "status": "PASS",
+    "stdout_tail": "........................................................................ [ 16%]\n........................................................................ [ 33%]\n........................................................................ [ 50%]\n........................................................................ [ 67%]\n........................................................................ [ 84%]\n...........................s..........s.............................     [100%]\n=========================== short test summary info ===========================\nSKIPPED [1] tests\\v4_phase0\\test_tdx_local_snapshot.py:54: symlink creation unavailable\nSKIPPED [1] tests\\v4_phase0\\test_tdx_snapshot.py:101: symlink creation is unavailable on this runner\n426 passed, 2 skipped in 4.33s\n",
+    "summary": "426 passed, 2 skipped in 4.33s",
+    "tests_v4_phase0_test_postgres_schema_ran": true
+  },
+  "status": "PASS",
+  "test_output_digest": "1c3557cc3a64404b0b2fe2b0f9f79105118a5bd73b4339fb68d7557c79076775"
+}

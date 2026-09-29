@@ -1,0 +1,104 @@
+{
+  "allowed_identity_rebinds": {
+    "core_profile_source_digest": {
+      "r4": "4cb61859071c4b2129d97fdf58b57b88053f2b3c325bc6b3aa1bb6bbe9ad71ce",
+      "r4_1": "258604dc7c2cd09e5a758d184019340a2f0bc3107e3ec26a6a3d0ae2292e70dc"
+    },
+    "factor_market_reference_hash": {
+      "r4": "00104e1132ba3336317e5f07404fccebc501b40e6f3c6e63b851578283ee6d36",
+      "r4_1": "7ba19ea03c8cab1858de98f898463cd0257577d118b227b9c1c3a09271d2bc98"
+    },
+    "go_forward_head_identity": {
+      "r4": "83fa37ded40337d69ff0e447a0b6a3bc293d2ca95ea9c8aa009f0f104776c4be",
+      "r4_1": "206581adca674841a21a7497a3f73ce22dbedd0f18f2ce38bed003df8f42dac9"
+    },
+    "market_reference_input_source_digest": {
+      "r4": "b47eeb5bdc1cebf82966c90068797dc21b041d5e80926b2001a7234d6a8b156a",
+      "r4_1": "9612b8ad6ff08a0cd5789c72f43735ecc382f4daa3ef11aca13a9561bce7941e"
+    },
+    "market_regime_input_source_digest": {
+      "r4": "e7504f91520c393c398ce914860407838c7e501b94a0003c101c7c00b0390a9e",
+      "r4_1": "755e95e4f4565f7d739d53c87a45230eea20c2fd188d26907f2601529c219b9e"
+    }
+  },
+  "artifacts": {
+    "reports/v4_05/V4_05_R4_1_MARKET_REFERENCE.json": {
+      "byte_count": 8616,
+      "sha256": "c3b1528114eb888b12418fdb32e6d99f72418d1b77ec44ebaf32c5cd6e653ed4"
+    },
+    "reports/v4_05/V4_05_R4_1_MARKET_REGIME.json": {
+      "byte_count": 4650,
+      "sha256": "5c2644ffc8ea867c4e6cac39e97568bb589f3337dece54bcccd46608e07d5f18"
+    },
+    "reports/v4_05/V4_05_R4_1_TARGET_MARKET_SNAPSHOT.json": {
+      "byte_count": 5644977,
+      "sha256": "304991796358d7253f573ab55f0130b8920235e04ac457b0081fb827ee1756f3"
+    },
+    "reports/v4_05/staging/V4_05_R4_1_FULL_MARKET_CORE_PROFILE.jsonl.gz": {
+      "byte_count": 48848465,
+      "sha256": "9a6ebedc715bc4b310ecf76c77e01cb6dfe9dadc17d335b5fc9afbcc2f6f3fa0"
+    },
+    "reports/v4_05/staging/V4_05_R4_1_FULL_SCOPE_FACTORS.jsonl.gz": {
+      "byte_count": 32316843,
+      "sha256": "17ae571629b76399e32d9e8a243268ea1fac619e1c5168d307bfd8ebf1494c48"
+    },
+    "reports/v4_05/staging/V4_05_R4_1_PERIOD_ASOF.jsonl.gz": {
+      "byte_count": 60108125,
+      "sha256": "e54674e8459e1258610639d76fac7a5f7b6093a4013f912b8937fb6fa96c2233"
+    }
+  },
+  "business_field_changes": 0,
+  "change_samples": [],
+  "contract_id": "V4_05_R4_1_R4_DIFF_V1",
+  "core_profile_state_rows_compared": 5222,
+  "factor_business_rows_compared": 5222,
+  "frozen_values": {
+    "core_profile_logical_digest": {
+      "r4": "c0572e7c9d481ee8b1a251779df2bf15bce98f1728a57ff8e96ba7ae2219fb77",
+      "r4_1": "d195518796acc64015174eac8f9bb8721a27095311ece00baedf8c12b0633e74",
+      "state_values_equal": true
+    },
+    "factor_logical_digest": {
+      "business_values_equal": true,
+      "r4": "03428b25af4c0689e4efd7fdc2cfeecd0ab1d444a2d201f625a721e1606dc9e2",
+      "r4_1": "0cfe708567935726f0ad51ae4bb47237ec7aee556db3437c12f21f0c623bd0d2"
+    },
+    "market_reference_1_3_5": {
+      "1": -0.022314506957301243,
+      "3": -0.03792535346523633,
+      "5": -0.01769091161662751
+    },
+    "market_regime_trend_axis": {
+      "r4": "UNKNOWN",
+      "r4_1": "UNKNOWN"
+    },
+    "market_snapshot_id": {
+      "equal": true,
+      "r4": "92773afba01ac100c9165190423d0228c2b5f9a42549ef8f4d955eba904c3cdb",
+      "r4_1": "92773afba01ac100c9165190423d0228c2b5f9a42549ef8f4d955eba904c3cdb"
+    },
+    "period_rows": {
+      "artifact_sha256_equal": true,
+      "r4": 694692,
+      "r4_1": 694692,
+      "r4_1_sha256": "e54674e8459e1258610639d76fac7a5f7b6093a4013f912b8937fb6fa96c2233",
+      "r4_sha256": "e54674e8459e1258610639d76fac7a5f7b6093a4013f912b8937fb6fa96c2233"
+    }
+  },
+  "profile_row_set": {
+    "r4": 5222,
+    "r4_1": 5222,
+    "same_id_set": true
+  },
+  "stage_record": {
+    "acceptance_result": "PASS",
+    "evidence": "R4.1 rebuilds retain all frozen R4 business values and state values; only canonical source/output lineage identities rebind.",
+    "next_stage": "INDEPENDENT_EXTERNAL_AUDIT_R4_1",
+    "stage_contract": "V4_05_REPLAY_GATE_A_R4_1_POSTGRES_HASH_CLOSURE"
+  },
+  "state_changes": 0,
+  "status": "PASS",
+  "target_identities": 5222,
+  "target_trade_date": "2026-09-28",
+  "unexpected_business_value_drift": 0
+}

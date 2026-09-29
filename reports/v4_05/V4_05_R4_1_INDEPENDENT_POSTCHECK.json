@@ -1,0 +1,92 @@
+{
+  "accepted_head_state": {
+    "stage_head_unchanged": true,
+    "v4_05_accepted_head_created": false,
+    "v4_06_v4_07_started": false
+  },
+  "artifact_identities": {
+    "reports/v4_05/V4_05_R4_1_CORE_PROFILE_REPLAY.json": {
+      "byte_count": 2492,
+      "exists": true,
+      "sha256": "faffc0633dc2e9708fe496b6fc8035734ff56066975952c9469642156b29fb71"
+    },
+    "reports/v4_05/V4_05_R4_1_FULL_SCOPE_FACTORS_RECEIPT.json": {
+      "byte_count": 3577,
+      "exists": true,
+      "sha256": "f78c76978a3fd267f516ce37b8baed92e40c9d6160d4fc3b3f8c37045cebad38"
+    },
+    "reports/v4_05/V4_05_R4_1_MARKET_REFERENCE.json": {
+      "byte_count": 8616,
+      "exists": true,
+      "sha256": "c3b1528114eb888b12418fdb32e6d99f72418d1b77ec44ebaf32c5cd6e653ed4"
+    },
+    "reports/v4_05/V4_05_R4_1_MARKET_REGIME.json": {
+      "byte_count": 4650,
+      "exists": true,
+      "sha256": "5c2644ffc8ea867c4e6cac39e97568bb589f3337dece54bcccd46608e07d5f18"
+    },
+    "reports/v4_05/V4_05_R4_1_MARKET_SNAPSHOT_IDENTITY.json": {
+      "byte_count": 2620,
+      "exists": true,
+      "sha256": "b9f01c3162fc60975d1ee7f67f5e3e5256350a1b8d9d1aad9122818d11781fe2"
+    },
+    "reports/v4_05/V4_05_R4_1_PERIOD_ASOF.json": {
+      "byte_count": 2596,
+      "exists": true,
+      "sha256": "09c864e96b0d31d27c37304049dd65120d6bf5cbba3e4e8b5f1eaa698bdf4efd"
+    },
+    "reports/v4_05/V4_05_R4_1_TARGET_MARKET_SNAPSHOT.json": {
+      "byte_count": 5644977,
+      "exists": true,
+      "sha256": "304991796358d7253f573ab55f0130b8920235e04ac457b0081fb827ee1756f3"
+    },
+    "reports/v4_05/staging/V4_05_R4_1_FULL_MARKET_CORE_PROFILE.jsonl.gz": {
+      "byte_count": 48848465,
+      "exists": true,
+      "sha256": "9a6ebedc715bc4b310ecf76c77e01cb6dfe9dadc17d335b5fc9afbcc2f6f3fa0"
+    },
+    "reports/v4_05/staging/V4_05_R4_1_FULL_SCOPE_FACTORS.jsonl.gz": {
+      "byte_count": 32316843,
+      "exists": true,
+      "sha256": "17ae571629b76399e32d9e8a243268ea1fac619e1c5168d307bfd8ebf1494c48"
+    },
+    "reports/v4_05/staging/V4_05_R4_1_PERIOD_ASOF.jsonl.gz": {
+      "byte_count": 60108125,
+      "exists": true,
+      "sha256": "e54674e8459e1258610639d76fac7a5f7b6093a4013f912b8937fb6fa96c2233"
+    }
+  },
+  "candidate_status": "V4_05_DATA_FACTOR_REPLAY_DEGRADED_PASS_CANDIDATE_R4_1",
+  "checks": {
+    "R4_business_values_frozen": true,
+    "candidate_and_Accepted_Head_discipline": true,
+    "canonical_hash_and_frozen_head_binding": true,
+    "clean_clone_and_LFS": true,
+    "postgres_formal_migrations_and_cases": true,
+    "required_artifacts_present": true,
+    "runtime_suite_and_skip_disclosure": true
+  },
+  "contract_id": "V4_05_R4_1_INDEPENDENT_POSTCHECK_V1",
+  "evidence_generation_head": "bdc2f65a09efc006fe9ca5806f3d5b244b564f42",
+  "external_acceptance": "PENDING",
+  "frozen_values": {
+    "market_reference_1_3_5": {
+      "1": -0.022314506957301243,
+      "3": -0.03792535346523633,
+      "5": -0.01769091161662751
+    },
+    "market_snapshot_id": "92773afba01ac100c9165190423d0228c2b5f9a42549ef8f4d955eba904c3cdb",
+    "profile_row_count": 5222,
+    "target_member_count": 5222,
+    "target_trade_date": "2026-09-28",
+    "trend_axis": "UNKNOWN"
+  },
+  "implementation_commit": "bdc2f65a09efc006fe9ca5806f3d5b244b564f42",
+  "stage_record": {
+    "acceptance_result": "PASS_CANDIDATE_PENDING_EXTERNAL_AUDIT",
+    "evidence": "Independent report, hash, identity, output-byte, test-disclosure, LFS OID, and head-discipline checks.",
+    "next_stage": "INDEPENDENT_EXTERNAL_AUDIT_R4_1",
+    "stage_contract": "V4_05_REPLAY_GATE_A_R4_1_POSTGRES_HASH_CLOSURE"
+  },
+  "status": "PASS"
+}

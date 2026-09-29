@@ -5,6 +5,7 @@ from scripts.v4_01_generic_relation_resolution import (
     candidates_from_events,
     validate_resolution_coverage,
 )
+from scripts.postcheck_v4_01_identity_completeness_gate_v2 import _dated_identity_pair
 
 
 WINDOW = {"window_start": "2023-07-04", "window_end": "2026-09-24"}
@@ -113,3 +114,14 @@ def test_resolution_key_outside_union_blocks() -> None:
     result = validate_resolution_coverage(union, [extra])
     assert result["status"] == "BLOCKED"
     assert result["extra_keys"] == [["SZ.600009", "SZ.600109", "2024-09-09"]]
+
+
+def test_dated_identity_evidence_is_resolved_generically() -> None:
+    candidate = _candidate("SZ.600010", "SZ.600110", "2024-02-01")
+    facts = [
+        {"source_security_key": "SZ.600010", "security_id": "SEC-X", "symbol_effective_to": "2024-01-31"},
+        {"source_security_key": "SZ.600110", "security_id": "SEC-X", "symbol_effective_from": "2024-02-01"},
+    ]
+    result = _dated_identity_pair(candidate, facts)
+    assert result["boundary_facts_match"] is True
+    assert result["same_security_id"] is True

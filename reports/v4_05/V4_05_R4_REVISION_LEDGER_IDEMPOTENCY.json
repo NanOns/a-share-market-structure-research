@@ -1,0 +1,124 @@
+{
+  "after_changed_source_accept_counts": {
+    "publication_consumed_sources": 10,
+    "publication_heads": 1,
+    "publication_revision_events": 4,
+    "publications": 2,
+    "source_revisions": 6
+  },
+  "after_changed_source_candidate_counts": {
+    "publication_consumed_sources": 10,
+    "publication_heads": 1,
+    "publication_revision_events": 3,
+    "publications": 2,
+    "source_revisions": 6
+  },
+  "after_first_replay_counts": {
+    "publication_consumed_sources": 5,
+    "publication_heads": 0,
+    "publication_revision_events": 1,
+    "publications": 1,
+    "source_revisions": 5
+  },
+  "after_second_replay_counts": {
+    "publication_consumed_sources": 5,
+    "publication_heads": 0,
+    "publication_revision_events": 1,
+    "publications": 1,
+    "source_revisions": 5
+  },
+  "before_counts": {
+    "publication_consumed_sources": 0,
+    "publication_heads": 0,
+    "publication_revision_events": 0,
+    "publications": 0,
+    "source_revisions": 0
+  },
+  "cases": {
+    "I01_identical_replay": {
+      "first_created": true,
+      "head_id": "PUB-df978fc0696fe4f66b697f80",
+      "no_count_drift": true,
+      "publication_id": "PUB-df978fc0696fe4f66b697f80",
+      "same_publication_id": true,
+      "second_created": false
+    },
+    "I02_changed_source_revision": {
+      "head_after_explicit_accept": "PUB-03a0784ddbd1f629d461765c",
+      "head_before_explicit_accept": "PUB-df978fc0696fe4f66b697f80",
+      "new_revision_appended": true,
+      "predecessor_publication_id": "PUB-df978fc0696fe4f66b697f80",
+      "prior_revision_immutable": true,
+      "publication_id": "PUB-03a0784ddbd1f629d461765c",
+      "source_revision_digests": {
+        "r1": "515df35df39ad8fc31b7ddd1cf8880df3a44661c6d7846123b10ee53ed062fac",
+        "r2": "4860b28b35a953a81c39b27bae7964dd677f7c5f080defe29526b94dbfddc450"
+      }
+    },
+    "I03_same_revision_different_payload": {
+      "hard_fail": true,
+      "message": "SAME_SOURCE_REVISION_ID_DIFFERENT_PAYLOAD"
+    },
+    "I04_transaction_rollback": {
+      "after_counts": {
+        "publication_consumed_sources": 10,
+        "publication_heads": 1,
+        "publication_revision_events": 4,
+        "publications": 2,
+        "source_revisions": 6
+      },
+      "before_counts": {
+        "publication_consumed_sources": 10,
+        "publication_heads": 1,
+        "publication_revision_events": 4,
+        "publications": 2,
+        "source_revisions": 6
+      },
+      "dangling_consumed_sources": 0,
+      "dangling_publications": 0,
+      "failure_point": "AFTER_CONSUMED_SOURCE_BEFORE_HEAD",
+      "rollback_result": true
+    }
+  },
+  "cleanup": {
+    "attempted": true,
+    "succeeded": true
+  },
+  "contract_equivalence": [
+    "append-only publication revisions",
+    "immutable consumed-source binding",
+    "unique replay identity",
+    "explicit accepted-head transition",
+    "revision predecessor",
+    "atomic transaction rollback"
+  ],
+  "contract_id": "V4_05_R4_REVISION_LEDGER_IDEMPOTENCY_V1",
+  "database_engine": "SQLite isolated disposable database",
+  "database_path_redacted": "v4_05_r4_ledger_5ffd6485aa9d447e859a6beaabc6e7a7.sqlite3",
+  "final_counts": {
+    "publication_consumed_sources": 10,
+    "publication_heads": 1,
+    "publication_revision_events": 4,
+    "publications": 2,
+    "source_revisions": 6
+  },
+  "namespace": "v4-05-r4-isolated-replay",
+  "namespace_id": "NS-V4-05-R4-ISOLATED",
+  "publication_lineage": [
+    [
+      "PUB-df978fc0696fe4f66b697f80",
+      1,
+      "ACCEPTED",
+      null
+    ],
+    [
+      "PUB-03a0784ddbd1f629d461765c",
+      2,
+      "ACCEPTED",
+      "PUB-df978fc0696fe4f66b697f80"
+    ]
+  ],
+  "schema_migration_id": "V4_05_R4_ISOLATED_LEDGER_HARNESS_V1",
+  "schema_migration_sha256": "de38b62b049fa28af48f9874c51aa8337fc63d3d08ffa9b5c4cee349c788d508",
+  "status": "PASS"
+}

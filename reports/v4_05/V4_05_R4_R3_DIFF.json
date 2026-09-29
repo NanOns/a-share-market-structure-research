@@ -1,0 +1,598 @@
+{
+  "business_field_changes": [],
+  "change_counts": {
+    "output_digest_changed": 5222,
+    "period_lineage_changed:monthly_trend_state": 27,
+    "period_lineage_changed:weekly_trend_state": 27,
+    "source_digest_changed": 5222
+  },
+  "contract_id": "V4_05_R4_R3_DIFF_V1",
+  "expected_drift_explanation": [
+    "source digests and output digests are rebound to R4 artifacts",
+    "period lineage views use the accepted temporal enum even when QFQ inputs are blocked",
+    "market trend is UNKNOWN because accepted V4-03 path continuation is not authorized"
+  ],
+  "market_identity_change": {
+    "r3_adjustment_basis_id": "T0_CURRENT_COORDINATE",
+    "r3_market_snapshot_id": "3743887f6050124dc551184d86b3fd60a9388e7188fd7abfac165b21eb361cee",
+    "r3_trend_axis": "NEUTRAL",
+    "r4_adjustment_basis_id": "85f3dfcb82dfaaa4661a3594f1b7ece00897a9ddf08e7b6a5a7583fe23529c67",
+    "r4_market_snapshot_id": "92773afba01ac100c9165190423d0228c2b5f9a42549ef8f4d955eba904c3cdb",
+    "r4_trend_axis": "UNKNOWN"
+  },
+  "period_lineage_changes": [
+    {
+      "field": "weekly_trend_state",
+      "r3": [
+        "BLOCKED",
+        "2026-09-30",
+        "bfcf87f454e6f439cd044922a85e1b56cb639949e765fdf20f9420de88fc5f88"
+      ],
+      "r4": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "e7c0081afa3abbf35673bd0aaa98fb9a4e901939af0d23518a2f57a40a18c8ce"
+      ],
+      "security_id": "SEC-8F5A2AC49C96965FFEF9DB8F03E9F09A"
+    },
+    {
+      "field": "monthly_trend_state",
+      "r3": [
+        "BLOCKED",
+        "2026-09-30",
+        "fbb5bb7f8d34aabced33db7b62a143ed6c7efac83b855f41a3878ec9c0176011"
+      ],
+      "r4": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "b9156bc864557b3b6ffe6ac3c3649c2f2d0883681084dbb1f387562643ac8623"
+      ],
+      "security_id": "SEC-8F5A2AC49C96965FFEF9DB8F03E9F09A"
+    },
+    {
+      "field": "weekly_trend_state",
+      "r3": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "7da74599905c55c90c091078789fadd8fa6c2759e19add7b3bbb6037a9da2f3a"
+      ],
+      "r4": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "4f7ab026062609360421e003aca263e577293ecd3ecd5836f0817dbdc7adf92f"
+      ],
+      "security_id": "SEC-11E54DE9C2693CFA40A4C091BCD5ABF9"
+    },
+    {
+      "field": "monthly_trend_state",
+      "r3": [
+        "BLOCKED",
+        "2026-09-30",
+        "286dac6d572fa52d96cb1ad195133120a89b0974f17f87903e8be87c2a5696ee"
+      ],
+      "r4": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "9e5225a7f77d2012418eb16eb7a973b2581cf9f6fd535e2b21db5c9390aaf840"
+      ],
+      "security_id": "SEC-11E54DE9C2693CFA40A4C091BCD5ABF9"
+    },
+    {
+      "field": "weekly_trend_state",
+      "r3": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "115c6fe4801c72915d933f0d0322b215886894cbbbe922ae769987fe5c70ac43"
+      ],
+      "r4": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "1999b8b8e3085c6da02920059144ee4bf67e8514ac89b62b0022e2e5f9ed10ae"
+      ],
+      "security_id": "SEC-6054AE867A60481EDA16B0E02AF1DB09"
+    },
+    {
+      "field": "monthly_trend_state",
+      "r3": [
+        "BLOCKED",
+        "2026-09-30",
+        "ceca2cb3ee461d1b3b6a0ea7ec37e7a8f534b46f2ed530af77f95cd769c36a0e"
+      ],
+      "r4": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "527f4d898e0ac920ec582bbd0c4f01a83a8066b2e2d700097d686dd859375e73"
+      ],
+      "security_id": "SEC-6054AE867A60481EDA16B0E02AF1DB09"
+    },
+    {
+      "field": "weekly_trend_state",
+      "r3": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "7cc1b681a2c7d3ea2913229d074dcf28de1be69633863224152097bc5ce1bdee"
+      ],
+      "r4": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "89b429bea1fce713bcc040954096207ea773914180e63aa55be1d76baa4a00ac"
+      ],
+      "security_id": "SEC-CAFBE206FEA136BCF9C5923BDC15586A"
+    },
+    {
+      "field": "monthly_trend_state",
+      "r3": [
+        "BLOCKED",
+        "2026-09-30",
+        "b964613d193a3346e81336eb2c030f3675597d6cb7be956e510ff3d8a73d6c6e"
+      ],
+      "r4": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "b0ac5bec8c977b7c8c13e522de7ac2b5f189bc61a8d2e06e8210f0711251bc83"
+      ],
+      "security_id": "SEC-CAFBE206FEA136BCF9C5923BDC15586A"
+    },
+    {
+      "field": "weekly_trend_state",
+      "r3": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "417de8d3fa9bede059acfb501a91a27d5d4ba6ba7352a909a63805b321e4594f"
+      ],
+      "r4": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "ec97b0d6da7d5f4b9911b43956a4e993bbb6dfb76947d183b0468caebf8f4bf1"
+      ],
+      "security_id": "SEC-3AF86E6FE8E230C902EDEBCF49B8FB9B"
+    },
+    {
+      "field": "monthly_trend_state",
+      "r3": [
+        "BLOCKED",
+        "2026-09-30",
+        "ab8b2ba4431d5ef609c880a4bf2e94f1be24b6f19cb23f10fe9b33b6fd008d87"
+      ],
+      "r4": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "ce240d2deb0ebaaf783f2cf53dc53ae14e079704abab7308514690f71b323599"
+      ],
+      "security_id": "SEC-3AF86E6FE8E230C902EDEBCF49B8FB9B"
+    },
+    {
+      "field": "weekly_trend_state",
+      "r3": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "892aa948df0903cedc8d1f3267ada0c42d12986b321c03cf94f9b308b72813a9"
+      ],
+      "r4": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "b1c2a4add0218f45363f82b685175a0a3031d07ae2c45e15efb8e7ca10e7a7ed"
+      ],
+      "security_id": "SEC-340382159F3CB4C7713AEC707561055E"
+    },
+    {
+      "field": "monthly_trend_state",
+      "r3": [
+        "BLOCKED",
+        "2026-09-30",
+        "91035f9da424dd95ad4511a9a7c14ec1358808e65ff79614d39ab91cde17c45b"
+      ],
+      "r4": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "4fa696a997c5edb94cf9d579a07c04ca0d223a62b3b37d7e32bb976b0102d507"
+      ],
+      "security_id": "SEC-340382159F3CB4C7713AEC707561055E"
+    },
+    {
+      "field": "weekly_trend_state",
+      "r3": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "2b00fa424200578e6ad402df0e8dbafcac8ec6b1c69b9260c568fcb05d477340"
+      ],
+      "r4": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "49562a18285f016d704df1d17f9206698b6b6da6404eca6a382aede10b63ed9b"
+      ],
+      "security_id": "SEC-25106EB81E18F2C63CA4F3BD11EAD8DD"
+    },
+    {
+      "field": "monthly_trend_state",
+      "r3": [
+        "BLOCKED",
+        "2026-09-30",
+        "eafcf549fc46535fca8f6360a1a7dac00295724c16169e29623e6e626985fd6d"
+      ],
+      "r4": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "14dc2c4d5aababb85fef007c83ad4a28bd786fd44b7d61ddad6eb9d461a49f63"
+      ],
+      "security_id": "SEC-25106EB81E18F2C63CA4F3BD11EAD8DD"
+    },
+    {
+      "field": "weekly_trend_state",
+      "r3": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "98ea1ec95d72989bb793cc3bb5f65ac98c8400d6f116c1acdd5e7bcda694b6e3"
+      ],
+      "r4": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "a7e95cb421479a2d9d05f63737a682e1dd768b4c10cbcfbfc2eca4ee7f4a5d64"
+      ],
+      "security_id": "SEC-9C973B4FDFA9C42E9574D1446FF54034"
+    },
+    {
+      "field": "monthly_trend_state",
+      "r3": [
+        "BLOCKED",
+        "2026-09-30",
+        "8b8ca894f3a10eb7cf89b7e7930398e0d3d1f3bf1559116029a1258d18653b39"
+      ],
+      "r4": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "87729b179027535d3d648b6a6f89fea87bb3b43d11ac52e68534998182d02b0a"
+      ],
+      "security_id": "SEC-9C973B4FDFA9C42E9574D1446FF54034"
+    },
+    {
+      "field": "weekly_trend_state",
+      "r3": [
+        "BLOCKED",
+        "2026-09-30",
+        "32f539094ada1cafd8c6b9534bfa87b6dda67f45c85fa048148257774699e480"
+      ],
+      "r4": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "555b164373e3e991e200364a173b6499fbc05568b0f6e2fc59460ffa7da63065"
+      ],
+      "security_id": "SEC-35775DA77A69E8EB5ABF64E685EF19FC"
+    },
+    {
+      "field": "monthly_trend_state",
+      "r3": [
+        "BLOCKED",
+        "2026-09-30",
+        "c7f402bfa006871fbc135177dc4cb6f0fa543c195e9e228596db2ae801e3e3ca"
+      ],
+      "r4": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "4e793d9ca3f925f5c0ad1dd7badc1ce8cef68eb76c94d55507cd9206658af7df"
+      ],
+      "security_id": "SEC-35775DA77A69E8EB5ABF64E685EF19FC"
+    },
+    {
+      "field": "weekly_trend_state",
+      "r3": [
+        "BLOCKED",
+        "2026-09-30",
+        "587c9156625f7683665992f2df52b7bfa2e958ef880f0f58858e2f4c80b361e9"
+      ],
+      "r4": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "b66eb4881fc11620cdf0d2e468e12f4026083d7c085ec8e60071e8dd9f43159c"
+      ],
+      "security_id": "SEC-30D1A45742773639EB00C70A711E4C04"
+    },
+    {
+      "field": "monthly_trend_state",
+      "r3": [
+        "BLOCKED",
+        "2026-09-30",
+        "a15fc8f73c86eaed5bbb7d090b8bf82f6fba03718806fbcfebb1428c3036a960"
+      ],
+      "r4": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "5bde7134837769fa88c6cb706a7c73bc4c1e5554119c11dae6e5ba4b1ceae422"
+      ],
+      "security_id": "SEC-30D1A45742773639EB00C70A711E4C04"
+    },
+    {
+      "field": "weekly_trend_state",
+      "r3": [
+        "BLOCKED",
+        "2026-09-30",
+        "a884b254b33dee5c141ec6334cc7ec40276a2d397b97a64ae0ca66735a686cb9"
+      ],
+      "r4": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "ca199705e6529d9b5a18f0dfbaf14a9c517e3ed6793a3db89ef94a24d2613f57"
+      ],
+      "security_id": "SEC-ABF1160A946C4F1321503DF093C24A0F"
+    },
+    {
+      "field": "monthly_trend_state",
+      "r3": [
+        "BLOCKED",
+        "2026-09-30",
+        "1cf4ce2e47d4340b49122ba8bd5f9a5c26342eae288a0fdb87d8a5e8071e27ae"
+      ],
+      "r4": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "b00202800d23486f625761d8a2979086d33f45838ad3a525b55b79d67657fd9a"
+      ],
+      "security_id": "SEC-ABF1160A946C4F1321503DF093C24A0F"
+    },
+    {
+      "field": "weekly_trend_state",
+      "r3": [
+        "BLOCKED",
+        "2026-09-30",
+        "3345ac0501e21f516f90e64f45970c153d527a86bcecfbe2c1af9ee487684394"
+      ],
+      "r4": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "e3a8f1acdd72c2a4f9c7f472f26338cd2f6e1e2821c6967afef6dcc158ebb429"
+      ],
+      "security_id": "SEC-E8F172CA42780258DBEEDB78A0E4A75C"
+    },
+    {
+      "field": "monthly_trend_state",
+      "r3": [
+        "BLOCKED",
+        "2026-09-30",
+        "b197f78ab96f3ef40cb1ae54a5e3c8d0eeb161cee4a640752f8612c78f512ae3"
+      ],
+      "r4": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "f89088e69c7361dacb04a73198741e960f2b58c8a9ab60a772141fefcfaa7e4a"
+      ],
+      "security_id": "SEC-E8F172CA42780258DBEEDB78A0E4A75C"
+    },
+    {
+      "field": "weekly_trend_state",
+      "r3": [
+        "BLOCKED",
+        "2026-09-30",
+        "563c85ba536dd4c4e560d33f2ccfbd9af10f6edecd577c706fb9751ffa5f95c5"
+      ],
+      "r4": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "4777684ecbfdae6b100283bb3028244e95def4826a02bc09cef607aca64c40a7"
+      ],
+      "security_id": "SEC-8C7B0104BCBBE198B25C7A447C445233"
+    },
+    {
+      "field": "monthly_trend_state",
+      "r3": [
+        "BLOCKED",
+        "2026-09-30",
+        "b238b79d98ab5daf79152c54c3b36f50307b1612bc3f8943a79900978e91658a"
+      ],
+      "r4": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "71cc5aa13eae35dea9b19ae2d9d5b2326cc8275275f1a539b14f79f47c00c9d2"
+      ],
+      "security_id": "SEC-8C7B0104BCBBE198B25C7A447C445233"
+    },
+    {
+      "field": "weekly_trend_state",
+      "r3": [
+        "BLOCKED",
+        "2026-09-30",
+        "2112cc79530a5214e5142f6e43b902c23bc20ac64ec3502fd977f2cfc98ee96a"
+      ],
+      "r4": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "198e47b3e9aae5fd7deea9ec9d47f3064dc8fb144efbdafe0abc8a84d3d17a33"
+      ],
+      "security_id": "SEC-18E752D1F19BAB2316F860E36E906C67"
+    },
+    {
+      "field": "monthly_trend_state",
+      "r3": [
+        "BLOCKED",
+        "2026-09-30",
+        "632e050c27306522fdb5196de94966423b93c00923683f3a5c36f5e73aa28391"
+      ],
+      "r4": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "4a1bf80c72c98624edc8301fd40ff7e7ed66312ef3a93e06a1a5d8880f7bd2a9"
+      ],
+      "security_id": "SEC-18E752D1F19BAB2316F860E36E906C67"
+    },
+    {
+      "field": "weekly_trend_state",
+      "r3": [
+        "BLOCKED",
+        "2026-09-30",
+        "be4cb95bc99e317082501fbd883754afe7ad3d2ffb06049a891c1de423042b13"
+      ],
+      "r4": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "94f3480cae34d3173a1cd49368ebf3946ec725c4ff724d86334f0adfa4fbc530"
+      ],
+      "security_id": "SEC-581D10525B31F1CDBDAD427938A5E4F8"
+    },
+    {
+      "field": "monthly_trend_state",
+      "r3": [
+        "BLOCKED",
+        "2026-09-30",
+        "2e01278c0e3d04beb35d27ce89dad9395de399d890c5f144ba0724a3569b8283"
+      ],
+      "r4": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "302760d204246123bdf19663f79620d4a73487fa7a67ed30b98fe1baea1c9281"
+      ],
+      "security_id": "SEC-581D10525B31F1CDBDAD427938A5E4F8"
+    },
+    {
+      "field": "weekly_trend_state",
+      "r3": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "4bd9c1e0bf813e0a4a260b8c5d2ae1a51d5a339a7431c0e8f257c62c4019f52b"
+      ],
+      "r4": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "8181967d4999a2629baf31b6c0c87a8ab8780b890739a8bac0bfb0cea6a7076a"
+      ],
+      "security_id": "SEC-E11DA4A25B7F65C3E8229D5A76504A94"
+    },
+    {
+      "field": "monthly_trend_state",
+      "r3": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "5f1121fd55bfb6e7051bbd01421a8ffea2163e9c3d314fbf2c1741a5ae80436c"
+      ],
+      "r4": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "2eb13085067826a11af3d826a439987b34a782916bbfc8afce1f31ddd1686f24"
+      ],
+      "security_id": "SEC-E11DA4A25B7F65C3E8229D5A76504A94"
+    },
+    {
+      "field": "weekly_trend_state",
+      "r3": [
+        "BLOCKED",
+        "2026-09-30",
+        "9399b4dcfccc112e09d3e5ee249b6043f8e693773a550b74513fa9ec2ce1a745"
+      ],
+      "r4": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "fd25e02ac8633505f2864d8b9c209e9f094d043e649d4014085ca2963c8e3bc5"
+      ],
+      "security_id": "SEC-D0F0DDAC64451CA20CC62383CF08A9E4"
+    },
+    {
+      "field": "monthly_trend_state",
+      "r3": [
+        "BLOCKED",
+        "2026-09-30",
+        "5e945a8e0b01afad6080c43e47eb1bf4ae843ff9b8bc765f2c5633a737d93d13"
+      ],
+      "r4": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "c3e0bb7a852cb381a1c5b07abc8ea633e2f3507ed5cae3b249be0f9f861c56eb"
+      ],
+      "security_id": "SEC-D0F0DDAC64451CA20CC62383CF08A9E4"
+    },
+    {
+      "field": "weekly_trend_state",
+      "r3": [
+        "BLOCKED",
+        "2026-09-30",
+        "d273cf50a29086dc083196e3d40a49621bb010741122a44f6edc326f1f1d3315"
+      ],
+      "r4": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "42feb77a4af45499eab79b3aadb8c532ce03651d38b4cefb6031b7b592c62e0b"
+      ],
+      "security_id": "SEC-D7686A4DD9712DEDBD8048E9EADACE11"
+    },
+    {
+      "field": "monthly_trend_state",
+      "r3": [
+        "BLOCKED",
+        "2026-09-30",
+        "be3aef74410ef8f369aa987d3c8b38a948bbf8d955d9317807801a355d25ca65"
+      ],
+      "r4": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "8de8cbcd56640dcbcb27e25a43e31856c446de192837ea26646bb6208e6366fa"
+      ],
+      "security_id": "SEC-D7686A4DD9712DEDBD8048E9EADACE11"
+    },
+    {
+      "field": "weekly_trend_state",
+      "r3": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "9249fb34f3c6ac29b01e3a317693ff5189015156e51eb6ecbff3d61ccdc1930b"
+      ],
+      "r4": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "b1cc610e48521405a28b04c7ff9be25a6a14f2c853192f43c40ebe441fb4e555"
+      ],
+      "security_id": "SEC-A94CC314405C8437CE79555A7DC05B82"
+    },
+    {
+      "field": "monthly_trend_state",
+      "r3": [
+        "BLOCKED",
+        "2026-09-30",
+        "60a1bbff5652271eb26248019714c0e30ba9feb053bbd3d854a1c8518819e293"
+      ],
+      "r4": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "0f4b9e306555b4a0bbaffd2aac20d564e8e6762ca6f666125052f689e620a3bd"
+      ],
+      "security_id": "SEC-A94CC314405C8437CE79555A7DC05B82"
+    },
+    {
+      "field": "weekly_trend_state",
+      "r3": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "d133ac5ce6c61a58208b0182404bb09e8c8aa795623d6212f0a18b0874ed2f0d"
+      ],
+      "r4": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "3ae6ce0c46fabd27627effc9db1fb0e3abe00d8d4d269d96a8c70fd1507cfb0c"
+      ],
+      "security_id": "SEC-B17169139D0E3492B2CA012774B6B125"
+    },
+    {
+      "field": "monthly_trend_state",
+      "r3": [
+        "BLOCKED",
+        "2026-09-30",
+        "6f8f4f0e3f03fd2f840e81d7f8f35bff7ef1fe63ae97345da3204a18c5635c47"
+      ],
+      "r4": [
+        "AS_OF_PARTIAL",
+        "2026-09-30",
+        "4897e6309db5ac67b546979fcbe1fba417d7620a75c74a5f747569f1ff134395"
+      ],
+      "security_id": "SEC-B17169139D0E3492B2CA012774B6B125"
+    }
+  ],
+  "profile_sha256": {
+    "r3": "ec27446201b22e16364df617a1ce735e57029bf27f275ec9a8bb159acdc5b3be",
+    "r4": "2b1f881fc408f044253df9a3fb605e5a6059a17be7b2310f97a46620a8d32d2f"
+  },
+  "row_set": {
+    "r3_rows": 5222,
+    "r4_rows": 5222,
+    "same_ordered_id_set": true
+  },
+  "state_changes": [],
+  "status": "PASS",
+  "unexpected_business_value_drift": 0,
+  "unknown_reason_changes": []
+}

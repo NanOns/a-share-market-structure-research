@@ -1,0 +1,49 @@
+{
+  "accepted_contracts": {
+    "config/v4_04_algorithm_contracts_v3.json": "0b144bd2a9f033336da338d5b71649f8e20ebafe65095efcd5c4a7d8663db970",
+    "config/v4_04_field_registry_v2.json": "aceed3d159cf3c7beb3306fb2b90eb22af935bb7f27ebeb29a9e8abc5653f9c1",
+    "config/v4_04_field_window_mapping_v1.json": "0ee0312b48ace787c85890e60afb4a15a6c64d98d7956636c06e5bd87e09de4d",
+    "config/v4_04_output_schema_v2.json": "71f34fd701e61eb463666fc811fbb97dc7092a8f512d34c26b17888207bc78ee",
+    "config/v4_04_parameter_set_v1.json": "5b19a23dfbf6b214f5ee7c7cce5df5674db69d099386038c082317819812ced5"
+  },
+  "artifact_path": "reports/v4_05/staging/V4_05_R4_FULL_MARKET_CORE_PROFILE.jsonl.gz",
+  "artifact_sha256": "2b1f881fc408f044253df9a3fb605e5a6059a17be7b2310f97a46620a8d32d2f",
+  "board_counts": {
+    "CHINEXT": 1408,
+    "SH_MAIN": 1702,
+    "STAR": 618,
+    "SZ_MAIN": 1494
+  },
+  "contract_digest": "50e33a407c935f58da7ab06bb571b9e009d0303f795e3381134e80df5246ce69",
+  "contract_id": "V4_05_R4_CORE_PROFILE_REPLAY_V1",
+  "formal_publication_at": "2026-09-29T06:53:52+00:00",
+  "historical_as_recorded_claim": false,
+  "logical_digest": "c0572e7c9d481ee8b1a251779df2bf15bce98f1728a57ff8e96ba7ae2219fb77",
+  "max_source_trade_date": 20260928,
+  "quality_counts": {
+    "PARTIAL_UNKNOWN": 5222
+  },
+  "row_count": 5222,
+  "source_digest": "4cb61859071c4b2129d97fdf58b57b88053f2b3c325bc6b3aa1bb6bbe9ad71ce",
+  "state_unknown_reasons": {
+    "amount_state:REQUIRED_INPUT_UNKNOWN": 37,
+    "compression_state:REQUIRED_INPUT_UNKNOWN": 57,
+    "core_extension_risk:REQUIRED_INPUT_UNKNOWN": 40,
+    "core_participation_result:REQUIRED_INPUT_UNKNOWN": 38,
+    "drawdown20_state:REQUIRED_INPUT_UNKNOWN_OR_ZERO_HIGH": 37,
+    "drawdown60_state:REQUIRED_INPUT_UNKNOWN_OR_ZERO_HIGH": 50,
+    "ma_structure_state:REQUIRED_INPUT_UNKNOWN": 38,
+    "monthly_trend_state:CLOSED_PERIOD_OR_INPUT_UNAVAILABLE": 187,
+    "near_high20_state:REQUIRED_INPUT_UNKNOWN_OR_ZERO_ATR": 37,
+    "near_high60_state:REQUIRED_INPUT_UNKNOWN_OR_ZERO_ATR": 50,
+    "position_state:REQUIRED_INPUT_UNKNOWN": 50,
+    "regime_ui:REQUIRED_MARKET_AXIS_UNKNOWN": 5222,
+    "relative_market_state:REQUIRED_INPUT_UNKNOWN": 5222,
+    "severe_extension:REQUIRED_INPUT_UNKNOWN": 40,
+    "trend_state:REQUIRED_INPUT_UNKNOWN": 54,
+    "volume_state:REQUIRED_INPUT_UNKNOWN": 37,
+    "weekly_trend_state:CLOSED_PERIOD_OR_INPUT_UNAVAILABLE": 62
+  },
+  "status": "DEGRADED_PASS_FIELD_LOCAL_UNKNOWN",
+  "upstream_adjusted_unavailable_entities": 27
+}

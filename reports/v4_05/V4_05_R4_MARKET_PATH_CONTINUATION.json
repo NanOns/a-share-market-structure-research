@@ -1,0 +1,22 @@
+{
+  "accepted_rows_modified": false,
+  "contract_id": "V4_05_R4_MARKET_PATH_CONTINUATION_V1",
+  "coordinate_diagnostic_artifact": "reports/v4_05/V4_05_R4_MARKET_PATH_COORDINATE_DIAGNOSTIC.json",
+  "decision": "OPTION_C_FAIL_CLOSED",
+  "output_digest": null,
+  "path_level": null,
+  "prior_path_artifact": "reports/v4_03/staging/V4_03_MARKET_REFERENCE_PATH_CANDIDATE_R3.jsonl.gz",
+  "prior_path_sha256": "898a6554eaefae1206d5a228e2b99f78743ef2d749d40579862c9a5de1bdaedb",
+  "prior_row_output_digest": "6f6909562191bb8707a0d1adb92d9b8e244997e76b813e2f7268b9696a3926df",
+  "prior_row_trade_date": "2026-09-24",
+  "prior_series_version": "DAILY_REBALANCED_RESEARCH_INDEX_V1",
+  "reason": "accepted R3 series prohibits unknown suffix until a new series version; no R4 contract migration authorizes appending a T0 fixed-cohort row",
+  "rebase_policy": "UNKNOWN_SUFFIX_UNTIL_NEW_SERIES_VERSION",
+  "status": "DEGRADED_PASS",
+  "target_adjustment_basis_id": "a39960ba264f8d7cdb3ff1be850aa6867c98c82dbaf9b56fd41538829d25d2ff",
+  "target_evaluable_set_identity": "2e84104716d7cf5094056e84eced3955c1bfd870048998175f0fb85ad11833b9",
+  "target_path_row_published": false,
+  "target_reference_output_digest": "c37a73892565b7f019d441be0910cdd726cc83865cc600441085ac48fb2d30c6",
+  "target_start_universe_snapshot_id": "9ae340caf36a3d25dae3b4f9925a7fbe0687b021a3ab855b264d61427b4c6fbf",
+  "trend_axis": "UNKNOWN"
+}

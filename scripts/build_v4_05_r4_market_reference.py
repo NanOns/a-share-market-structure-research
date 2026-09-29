@@ -13,12 +13,14 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from src.v4.replay_r4_identity import accepted_universe_snapshot_id, adjustment_basis_id, digest, target_market_snapshot_id
+from src.v4.canonical_governance_hash import CANONICAL_JSON_SHA256_V1, canonical_json_file_sha256
+from src.v4.r4_replay_paths import replay_report_path
 
 TARGET = "2026-09-28"
 TARGET_INT = 20260928
-SNAPSHOT_OUT = ROOT / "reports/v4_05/V4_05_R4_TARGET_MARKET_SNAPSHOT.json"
-IDENTITY_OUT = ROOT / "reports/v4_05/V4_05_R4_MARKET_SNAPSHOT_IDENTITY.json"
-REFERENCE_OUT = ROOT / "reports/v4_05/V4_05_R4_MARKET_REFERENCE.json"
+SNAPSHOT_OUT = replay_report_path(ROOT, "reports/v4_05/V4_05_R4_TARGET_MARKET_SNAPSHOT.json")
+IDENTITY_OUT = replay_report_path(ROOT, "reports/v4_05/V4_05_R4_MARKET_SNAPSHOT_IDENTITY.json")
+REFERENCE_OUT = replay_report_path(ROOT, "reports/v4_05/V4_05_R4_MARKET_REFERENCE.json")
 
 
 def sha(path: Path) -> str:
@@ -36,7 +38,7 @@ def iso_day(value: int | str) -> str:
 
 def atomic_json(path: Path, value: object) -> None:
     tmp = path.with_suffix(path.suffix + ".tmp")
-    tmp.write_text(json.dumps(value, ensure_ascii=False, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+    tmp.write_bytes((json.dumps(value, ensure_ascii=False, sort_keys=True, indent=2) + "\n").encode("utf-8"))
     os.replace(tmp, path)
 
 
@@ -85,7 +87,8 @@ def main() -> dict:
             "snapshot_identity_algorithm_id": "V4_03_UNIVERSE_SNAPSHOT_IDENTITY_V1",
             "source_artifact": accepted_v401_path.relative_to(ROOT).as_posix(),
             "source_artifact_sha": sha(accepted_v401_path),
-            "source_head_sha": sha(ROOT / "data/v4/V4_01_ACCEPTED_HEAD.json"),
+            "source_head_sha": canonical_json_file_sha256(ROOT / "data/v4/V4_01_ACCEPTED_HEAD.json"),
+            "source_head_hash_algorithm": CANONICAL_JSON_SHA256_V1,
         }
 
     target_members: dict[str, dict] = {}
@@ -143,12 +146,15 @@ def main() -> dict:
         if bar["adjusted_quality"] == "READY" and bar["qfq_ohlc"] is not None:
             target_basis_rows.append((sid, bar["coordinate_basis"], bar["gbbq_snapshot_identity"], bar["raw_package_identity"]))
     target_basis_id = adjustment_basis_id(target_basis_rows)
+    v401_head_sha = canonical_json_file_sha256(ROOT / "data/v4/V4_01_ACCEPTED_HEAD.json")
+    go_forward_head_sha = canonical_json_file_sha256(go_forward_head_path)
     snapshot = {"contract_id": "V4_05_TARGET_MARKET_SNAPSHOT_IDENTITY_V1", "target_trade_date": TARGET,
                 "member_count": len(target_members), "market_snapshot_id": target_id,
                 "membership_semantics": "exact rows from externally accepted V4-02 go-forward T0 target candidate",
                 "source_candidate_path": target_path.relative_to(ROOT).as_posix(),
                 "source_candidate_sha256": sha(target_path), "source_head_path": go_forward_head_path.relative_to(ROOT).as_posix(),
-                "source_head_sha256": sha(go_forward_head_path),
+                "source_head_sha256": go_forward_head_sha,
+                "source_head_hash_algorithm": CANONICAL_JSON_SHA256_V1,
                 "identity_algorithm": "SHA256(canonical_json({contract_id,target_trade_date,sorted(security_id,source_security_key,membership_basis,source_revision_id,eligibility_status)}))",
                 "coordinate_basis": "T0_CURRENT_COORDINATE", "historical_as_recorded_claim": False,
                 "target_adjustment_basis_id": target_basis_id,
@@ -156,8 +162,16 @@ def main() -> dict:
     atomic_json(SNAPSHOT_OUT, snapshot)
 
     market_calendar_id = "V4_05_MARKET_CALENDAR_V1:" + digest({name: binding["sha256"] for name, binding in calendar_receipt["calendar_bindings"].items()})
-    input_digest = digest({"daily_history_sha256": sha(r3_daily_path), "accepted_v4_01_universe_sha256": sha(accepted_v401_path),
-                           "accepted_v4_02_target_candidate_sha256": sha(target_path), "calendar_identity": calendar_receipt["calendar_bindings"]})
+    input_source_identity = {
+        "daily_history_sha256": sha(r3_daily_path),
+        "accepted_v4_01_universe_sha256": sha(accepted_v401_path),
+        "accepted_v4_01_head_sha256": v401_head_sha,
+        "accepted_v4_02_target_candidate_sha256": sha(target_path),
+        "accepted_v4_02_go_forward_head_sha256": go_forward_head_sha,
+        "governance_head_hash_algorithm": CANONICAL_JSON_SHA256_V1,
+        "calendar_identity": calendar_receipt["calendar_bindings"],
+    }
+    input_digest = digest(input_source_identity)
     horizons = {}
     for horizon, start in starts.items():
         members = sorted(row["security_id"] for row in start_rows[start])
@@ -205,13 +219,18 @@ def main() -> dict:
                          "target_market_snapshot_id": target_id, "target_adjustment_basis_id": target_basis_id,
                          "horizons": horizons, "start_universe_provenance": start_meta,
                          "accepted_v4_01_universe_sha256": sha(accepted_v401_path),
+                         "accepted_v4_01_head_sha256": v401_head_sha,
                          "accepted_v4_02_target_candidate_sha256": sha(target_path),
+                         "accepted_v4_02_go_forward_head_sha256": go_forward_head_sha,
+                         "governance_head_hash_algorithm": CANONICAL_JSON_SHA256_V1,
+                         "input_source_identity": input_source_identity,
                          "daily_history_sha256": sha(r3_daily_path), "calendar_sha256": calendar_ref["sha256"],
                          "max_source_trade_date": TARGET_INT}
     atomic_json(IDENTITY_OUT, {"contract_id": "V4_05_R4_MARKET_SNAPSHOT_IDENTITY_V1", "status": "PASS",
                                "target_trade_date": TARGET, "target_market_snapshot_id": target_id,
                                "target_market_snapshot_artifact": SNAPSHOT_OUT.relative_to(ROOT).as_posix(),
-                               "target_market_snapshot_sha256": sha(SNAPSHOT_OUT),
+                               "target_market_snapshot_sha256": canonical_json_file_sha256(SNAPSHOT_OUT),
+                               "target_market_snapshot_hash_algorithm": CANONICAL_JSON_SHA256_V1,
                                "target_member_count": len(target_members), "target_adjustment_basis_id": target_basis_id,
                                "target_identity_algorithm_id": "V4_05_TARGET_MARKET_SNAPSHOT_IDENTITY_V1",
                                "start_universe_snapshots": start_meta,

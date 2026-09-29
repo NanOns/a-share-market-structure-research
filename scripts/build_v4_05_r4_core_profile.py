@@ -15,9 +15,11 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from src.v4.market_regime_ui import RegimeUI
 from src.v4.replay_r3_guards import require_factor_visibility
+from src.v4.canonical_governance_hash import canonical_json_file_sha256
+from src.v4.r4_replay_paths import replay_report_path
 
-OUT = ROOT / "reports/v4_05/staging/V4_05_R4_FULL_MARKET_CORE_PROFILE.jsonl.gz"
-RECEIPT = ROOT / "reports/v4_05/V4_05_R4_CORE_PROFILE_REPLAY.json"
+OUT = replay_report_path(ROOT, "reports/v4_05/staging/V4_05_R4_FULL_MARKET_CORE_PROFILE.jsonl.gz")
+RECEIPT = replay_report_path(ROOT, "reports/v4_05/V4_05_R4_CORE_PROFILE_REPLAY.json")
 TARGET = "2026-09-28"
 CONTRACTS = ("config/v4_04_field_registry_v2.json", "config/v4_04_output_schema_v2.json", "config/v4_04_algorithm_contracts_v3.json", "config/v4_04_parameter_set_v1.json", "config/v4_04_field_window_mapping_v1.json")
 
@@ -50,14 +52,18 @@ def main():
     spec.loader.exec_module(builder)
     builder.CUTOFF = TARGET
     history = json.loads((ROOT / "reports/v4_05/V4_05_R4_DAILY_HISTORY_RECEIPT.json").read_text(encoding="utf-8"))
-    period = json.loads((ROOT / "reports/v4_05/V4_05_R4_PERIOD_ASOF.json").read_text(encoding="utf-8"))
-    factor = json.loads((ROOT / "reports/v4_05/V4_05_R4_FULL_SCOPE_FACTORS_RECEIPT.json").read_text(encoding="utf-8"))
-    regime = json.loads((ROOT / "reports/v4_05/V4_05_R4_MARKET_REGIME.json").read_text(encoding="utf-8"))
+    period = json.loads(replay_report_path(ROOT, "reports/v4_05/V4_05_R4_PERIOD_ASOF.json").read_text(encoding="utf-8"))
+    factor = json.loads(replay_report_path(ROOT, "reports/v4_05/V4_05_R4_FULL_SCOPE_FACTORS_RECEIPT.json").read_text(encoding="utf-8"))
+    regime_path = replay_report_path(ROOT, "reports/v4_05/V4_05_R4_MARKET_REGIME.json")
+    regime = json.loads(regime_path.read_text(encoding="utf-8"))
     calendar_receipt = json.loads((ROOT / "reports/v4_05/V4_05_R4_CALENDAR_RECEIPT.json").read_text(encoding="utf-8"))
     calendars = {market: json.loads((ROOT / calendar_receipt["calendar_bindings"][market]["path"]).read_text(encoding="utf-8"))["session_dates"] for market in ("SSE", "SZSE")}
     regime_ui = RegimeUI("UNKNOWN", "UNKNOWN", None, 0, regime["regime_ui"]["evidence"], regime["regime_ui"]["unknown_reason"])
-    contract_digest = builder.digest({name: sha(ROOT / name) for name in CONTRACTS})
-    source_digest = builder.digest({"daily": history["artifact_sha256"], "period": period["artifact_sha256"], "factor": factor["artifact_sha256"], "regime": sha(ROOT / "reports/v4_05/V4_05_R4_MARKET_REGIME.json"), "calendar": calendar_receipt["calendar_bindings"]})
+    contract_digest = builder.digest({name: canonical_json_file_sha256(ROOT / name) for name in CONTRACTS})
+    source_digest = builder.digest({"daily": history["artifact_sha256"], "period": period["artifact_sha256"],
+                                    "factor": factor["artifact_sha256"],
+                                    "regime": canonical_json_file_sha256(regime_path),
+                                    "calendar": calendar_receipt["calendar_bindings"]})
     suspended = defaultdict(set)
     with gzip.open(ROOT / "data/v4/artifact_store/v4_02/V4_02_DATED_TRADING_STATUS_R7_20260927.jsonl.gz", "rt", encoding="utf-8") as stream:
         for line in stream:

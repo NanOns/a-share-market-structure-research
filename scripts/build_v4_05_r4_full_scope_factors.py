@@ -7,12 +7,17 @@ import gzip
 import json
 import os
 from pathlib import Path
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from src.v4.canonical_governance_hash import CANONICAL_JSON_SHA256_V1, canonical_json_file_sha256
+from src.v4.r4_replay_paths import replay_report_path
+
 IN = ROOT / "reports/v4_05/staging/V4_05_R3_FULL_SCOPE_FACTORS.jsonl.gz"
-REFERENCE = ROOT / "reports/v4_05/V4_05_R4_MARKET_REFERENCE.json"
-OUT = ROOT / "reports/v4_05/staging/V4_05_R4_FULL_SCOPE_FACTORS.jsonl.gz"
-RECEIPT = ROOT / "reports/v4_05/V4_05_R4_FULL_SCOPE_FACTORS_RECEIPT.json"
+REFERENCE = replay_report_path(ROOT, "reports/v4_05/V4_05_R4_MARKET_REFERENCE.json")
+OUT = replay_report_path(ROOT, "reports/v4_05/staging/V4_05_R4_FULL_SCOPE_FACTORS.jsonl.gz")
+RECEIPT = replay_report_path(ROOT, "reports/v4_05/V4_05_R4_FULL_SCOPE_FACTORS_RECEIPT.json")
 
 
 def digest(value: object) -> str:
@@ -68,12 +73,13 @@ def main() -> dict:
                "artifact_path": OUT.relative_to(ROOT).as_posix(), "artifact_sha256": sha(OUT),
                "logical_digest": logical.hexdigest(), "row_count": counts.pop("rows"),
                "field_quality_count": dict(counts), "source_r3_sha256": sha(IN),
-               "market_reference_sha256": sha(REFERENCE),
+               "market_reference_sha256": canonical_json_file_sha256(REFERENCE),
+               "market_reference_hash_algorithm": CANONICAL_JSON_SHA256_V1,
                "unresolved_prior_rps_fields": ["rps5_delta1", "rps5_delta3", "rps20_delta3"],
                "formulas_changed": False, "max_source_trade_date": 20260928,
                "historical_as_recorded_claim": False}
     temp = RECEIPT.with_suffix(RECEIPT.suffix + ".tmp")
-    temp.write_text(json.dumps(receipt, ensure_ascii=False, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+    temp.write_bytes((json.dumps(receipt, ensure_ascii=False, sort_keys=True, indent=2) + "\n").encode("utf-8"))
     os.replace(temp, RECEIPT)
     return receipt
 

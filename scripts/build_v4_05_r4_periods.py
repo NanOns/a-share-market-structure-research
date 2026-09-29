@@ -12,9 +12,10 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from scripts import build_v4_05_r3_periods as accepted_source
+from src.v4.r4_replay_paths import replay_report_path
 
-OUT = ROOT / "reports/v4_05/staging/V4_05_R4_PERIOD_ASOF.jsonl.gz"
-RECEIPT = ROOT / "reports/v4_05/V4_05_R4_PERIOD_ASOF.json"
+OUT = replay_report_path(ROOT, "reports/v4_05/staging/V4_05_R4_PERIOD_ASOF.jsonl.gz")
+RECEIPT = replay_report_path(ROOT, "reports/v4_05/V4_05_R4_PERIOD_ASOF.json")
 
 
 def aggregate(*args, **kwargs):
@@ -82,7 +83,7 @@ def main() -> dict:
                "qfq_unavailable_rows": {"period_view_remains_temporal": True, "period_status": "BLOCKED_BY_ADJUSTMENT",
                                          "ohlc": None, "adjusted_quality": "UNKNOWN"}}
     temp = RECEIPT.with_suffix(RECEIPT.suffix + ".tmp")
-    temp.write_text(json.dumps(receipt, ensure_ascii=False, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+    temp.write_bytes((json.dumps(receipt, ensure_ascii=False, sort_keys=True, indent=2) + "\n").encode("utf-8"))
     os.replace(temp, RECEIPT)
     return receipt
 

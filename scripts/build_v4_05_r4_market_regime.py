@@ -14,9 +14,11 @@ sys.path.insert(0, str(ROOT))
 from src.v4.factors.native import market_axis_primitives
 from src.v4.market_regime_ui import project
 from src.v4.replay_r4_identity import digest
+from src.v4.canonical_governance_hash import CANONICAL_JSON_SHA256_V1, canonical_json_file_sha256
+from src.v4.r4_replay_paths import replay_report_path
 
 TARGET = "2026-09-28"
-OUT = ROOT / "reports/v4_05/V4_05_R4_MARKET_REGIME.json"
+OUT = replay_report_path(ROOT, "reports/v4_05/V4_05_R4_MARKET_REGIME.json")
 
 
 def sha(path: Path) -> str:
@@ -24,10 +26,10 @@ def sha(path: Path) -> str:
 
 
 def main() -> dict:
-    ref_path = ROOT / "reports/v4_05/V4_05_R4_MARKET_REFERENCE.json"
-    identity_path = ROOT / "reports/v4_05/V4_05_R4_MARKET_SNAPSHOT_IDENTITY.json"
-    snapshot_path = ROOT / "reports/v4_05/V4_05_R4_TARGET_MARKET_SNAPSHOT.json"
-    factor_receipt_path = ROOT / "reports/v4_05/V4_05_R4_FULL_SCOPE_FACTORS_RECEIPT.json"
+    ref_path = replay_report_path(ROOT, "reports/v4_05/V4_05_R4_MARKET_REFERENCE.json")
+    identity_path = replay_report_path(ROOT, "reports/v4_05/V4_05_R4_MARKET_SNAPSHOT_IDENTITY.json")
+    snapshot_path = replay_report_path(ROOT, "reports/v4_05/V4_05_R4_TARGET_MARKET_SNAPSHOT.json")
+    factor_receipt_path = replay_report_path(ROOT, "reports/v4_05/V4_05_R4_FULL_SCOPE_FACTORS_RECEIPT.json")
     ref = json.loads(ref_path.read_text(encoding="utf-8"))
     identity = json.loads(identity_path.read_text(encoding="utf-8"))
     snapshot = json.loads(snapshot_path.read_text(encoding="utf-8"))
@@ -46,7 +48,10 @@ def main() -> dict:
         "market_calendar_id": ref["market_calendar_id"],
         "market_snapshot_id": identity["target_market_snapshot_id"],
         "adjustment_basis_id": identity["target_adjustment_basis_id"],
-        "input_source_digest": digest({"market_reference": sha(ref_path), "snapshot": sha(snapshot_path),
+        "input_source_digest": digest({"market_reference": canonical_json_file_sha256(ref_path),
+                                        "market_reference_hash_algorithm": CANONICAL_JSON_SHA256_V1,
+                                        "snapshot": canonical_json_file_sha256(snapshot_path),
+                                        "snapshot_hash_algorithm": CANONICAL_JSON_SHA256_V1,
                                         "factor_file": sha(factors_path), "candidate": factors_receipt}),
         "path_series_identity": "V4_03_MARKET_REFERENCE_PATH_V1:UNKNOWN_SUFFIX_UNTIL_NEW_SERIES_VERSION",
         "parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
@@ -75,14 +80,16 @@ def main() -> dict:
               "target_trade_date": TARGET, "target_row": target_row, "axes": axes, "trend": trend,
               "regime_ui": {"value": projection.value, "unknown_reason": projection.unknown_reason,
                             "evidence": projection.evidence}, "identity": market_identity,
-              "market_snapshot_artifact_sha256": sha(snapshot_path), "target_amount_evaluable_count": len(amounts),
+              "market_snapshot_artifact_sha256": canonical_json_file_sha256(snapshot_path),
+              "market_snapshot_artifact_hash_algorithm": CANONICAL_JSON_SHA256_V1,
+              "target_amount_evaluable_count": len(amounts),
               "target_limit_status": "UNKNOWN_NO_ACCEPTED_SEP28_PRICE_LIMIT_FACTS",
               "path_continuation_policy": "OPTION_C_FAIL_CLOSED", "target_path_row_published": False,
               "target_coordinate_diagnostic_is_not_accepted_path": True,
               "formal_publication_at": "2026-09-29T06:53:52+00:00", "max_source_trade_date": 20260928,
               "historical_as_recorded_claim": False}
     temp = OUT.with_suffix(OUT.suffix + ".tmp")
-    temp.write_text(json.dumps(result, ensure_ascii=False, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+    temp.write_bytes((json.dumps(result, ensure_ascii=False, sort_keys=True, indent=2) + "\n").encode("utf-8"))
     os.replace(temp, OUT)
     return result
 

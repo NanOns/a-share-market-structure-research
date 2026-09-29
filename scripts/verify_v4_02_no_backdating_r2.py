@@ -36,6 +36,9 @@ def main() -> None:
     polluted = build_affine_factors(dates, [e for _, e in tagged])[20260924]
     assert (frozen.qfq_mul, frozen.qfq_add) == (baseline.qfq_mul, baseline.qfq_add)
     assert (polluted.qfq_mul, polluted.qfq_add) != (baseline.qfq_mul, baseline.qfq_add)
+    later = json.loads((ROOT / "reports/v4_02/V4_02_GO_FORWARD_GBBQ_LATER_REVISION_R2.json").read_text(encoding="utf-8"))
+    assert later["price_affected_security_count"] == 0
+    assert later["later_records_used_for_t0_qfq"] is False
     receipt = {"contract_id": "V4_02_GO_FORWARD_NO_BACKDATING_R2", "status": "PASS",
                "target_trade_date": "2026-09-28", "sample_security_key": key,
                "frozen_snapshot_id": GBBQ_ID, "synthetic_later_only_event_effective_date": 20260928,
@@ -43,8 +46,10 @@ def main() -> None:
                "frozen_with_later_only_record_factor": [str(frozen.qfq_mul), str(frozen.qfq_add)],
                "polluted_factor_if_later_record_incorrectly_used": [str(polluted.qfq_mul), str(polluted.qfq_add)],
                "later_only_record_influenced_t0": False,
-               "actual_later_snapshot_available": False,
-               "actual_revision_comparison": "NOT_AVAILABLE_NO_LATER_FROZEN_GBBQ_SNAPSHOT"}
+               "actual_later_snapshot_available": True,
+               "actual_later_snapshot_id": later["later_snapshot_id"],
+               "actual_revision_comparison": later["classification_counts"],
+               "actual_late_le_t0_price_affected_security_count": 0}
     path = ROOT / "reports/v4_02/V4_02_GO_FORWARD_NO_BACKDATING_R2.json"
     path.write_text(json.dumps(receipt, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(receipt["status"])

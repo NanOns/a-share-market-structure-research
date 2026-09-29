@@ -42,6 +42,7 @@ def main() -> None:
     candidate = read("V4_02_GO_FORWARD_ADJUSTED_DAILY_RECEIPT_R2.json")
     no_backdating = read("V4_02_GO_FORWARD_NO_BACKDATING_R2.json")
     determinism = read("V4_02_GO_FORWARD_DETERMINISM_R2.json")
+    later = read("V4_02_GO_FORWARD_GBBQ_LATER_REVISION_R2.json")
     archive = ROOT / capture["package_path"]
     assert digest(archive) == capture["package_sha256"] == package["package_sha256"]
     assert zipfile.is_zipfile(archive)
@@ -89,6 +90,19 @@ def main() -> None:
     assert manifest["system_available_at"] == "2026-09-26T13:07:05Z"
     assert digest(gbbq_root / "gbbq") == candidate["gbbq_sha256"]
     assert digest(gbbq_root / "gbbq.map") == manifest["files"]["gbbq.map"]["sha256"]
+    later_path = ROOT / later["later_snapshot_paths"]["gbbq"]
+    later_manifest = json.loads((later_path.parent / "manifest.json").read_text(encoding="utf-8"))
+    assert later_manifest["snapshot_id"] == later["later_snapshot_id"]
+    assert later_manifest["t0_qfq_input"] is False
+    assert later_manifest["file_hashes"] == later["later_file_hashes"]
+    assert digest(later_path) == later["later_file_hashes"]["gbbq"]
+    assert digest(ROOT / later["later_snapshot_paths"]["gbbq.map"]) == later["later_file_hashes"]["gbbq.map"]
+    price_categories = {1, 4, 6, 11, 12, 13, 14, 15}
+    def price_event_set(path: Path) -> list[tuple]:
+        return sorted((e.security_id, e.event_date, e.category, e.c1, e.c2, e.c3, e.c4)
+                      for e in read_gbbq(path) if e.event_date <= 20260928 and e.category in price_categories)
+    assert price_event_set(gbbq_root / "gbbq") == price_event_set(later_path)
+    assert later["price_affected_security_count"] == 0 and later["later_records_used_for_t0_qfq"] is False
     assert candidate["first_possible_formal_publication_at"] == capture["attempts"][-1]["finished_at"]
     contract_sha = digest(ROOT / "config/v4_02_go_forward_pit_adjustment_r2.json")
     assert candidate["adjustment_contract_sha256"] == contract_sha
@@ -136,6 +150,7 @@ def main() -> None:
         history.update((json.dumps(item, ensure_ascii=False, sort_keys=True, separators=(",", ":")) + "\n").encode())
     assert history.hexdigest() == row["lookback_logical_digest"]
     assert no_backdating["status"] == "PASS" and no_backdating["later_only_record_influenced_t0"] is False
+    assert no_backdating["actual_later_snapshot_id"] == later["later_snapshot_id"]
     assert determinism["same_logical_digest"] and determinism["same_compressed_sha256"]
     assert determinism["first_run_logical_digest"] == determinism["second_run_logical_digest"] == logical.hexdigest()
     assert determinism["first_run_compressed_sha256"] == determinism["second_run_compressed_sha256"] == candidate["candidate_sha256"]
@@ -146,6 +161,9 @@ def main() -> None:
               "package_sha256": capture["package_sha256"], "target_bar_counts": dict(counts),
               "candidate_logical_digest": logical.hexdigest(), "candidate_rows": len(rows),
               "quality_counts": dict(quality), "sample_qfq_lookback_recomputed": key,
+              "later_snapshot_id": later["later_snapshot_id"],
+              "later_price_event_set_identical_to_t0_frozen_snapshot": True,
+              "later_snapshot_classification_counts": later["classification_counts"],
               "accepted_heads_unchanged": True, "tdx_root_write_count": 0,
               "historical_as_recorded_adjusted_price": "BLOCKED_NO_FIRST_AVAILABILITY_EVIDENCE"}
     OUT.write_text(json.dumps(output, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")

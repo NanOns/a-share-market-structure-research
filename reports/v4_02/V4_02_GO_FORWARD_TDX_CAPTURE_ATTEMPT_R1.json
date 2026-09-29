@@ -1,0 +1,14 @@
+{
+  "contract_id": "V4_02_GO_FORWARD_TDX_CAPTURE_ATTEMPT_R1",
+  "target_trade_date": "2026-09-28",
+  "attempted_at_asia_shanghai": "2026-09-29T14:38:07+08:00",
+  "command": "python scripts/capture_tdx_official_daily_package.py --target-date 2026-09-28",
+  "exit_code": 1,
+  "result": {
+    "status": "BLOCKED_TDX_SOURCE_CAPTURE",
+    "reason": "TDX_ZIP_INVALID"
+  },
+  "captured_update_info": "data/v4/source_snapshots/tdx/20260928/capture-20260929T063807222649Z-1914aeec4ff7a23e/update_info.js",
+  "archive_persisted": false,
+  "tdx_root_write_count": 0
+}

@@ -1,0 +1,284 @@
+{
+  "clean_checkout_head": "1a88fcba876e619e45584964cc11fde48b1883f8",
+  "clone_directory_removed": true,
+  "clone_source": "https://github.com/NanOns/a-share-market-structure-research.git",
+  "contract_id": "V4_05_R4_2_CLEAN_CHECKOUT_RUNTIME_V1",
+  "exact_candidate_binding_test": {
+    "command": [
+      "-m",
+      "pytest",
+      "-q",
+      "-rs",
+      "tests/v4_05/test_v4_05_r4_2_exact_candidate_binding.py"
+    ],
+    "passed": true,
+    "stdout": "..                                                                       [100%]\n2 passed in 0.84s"
+  },
+  "implementation_commit": "1a88fcba876e619e45584964cc11fde48b1883f8",
+  "lfs_restore": {
+    "inputs": {
+      "data/v4/artifact_store/v4_01/security_entity_map_R5_20260925.json": {
+        "matches": true,
+        "pointer": {
+          "byte_count": 5669001,
+          "sha256": "e05f2ea79a91b0b84b48043a2ae7fbf7b0aefc7b954de61857e8f3db854627de"
+        },
+        "restored": {
+          "byte_count": 5669001,
+          "sha256": "e05f2ea79a91b0b84b48043a2ae7fbf7b0aefc7b954de61857e8f3db854627de"
+        }
+      },
+      "data/v4/artifact_store/v4_01/v4_01_historical_universe_required_R7_20260927.jsonl.gz": {
+        "matches": true,
+        "pointer": {
+          "byte_count": 239298684,
+          "sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b"
+        },
+        "restored": {
+          "byte_count": 239298684,
+          "sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b"
+        }
+      },
+      "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet": {
+        "matches": true,
+        "pointer": {
+          "byte_count": 112302935,
+          "sha256": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90"
+        },
+        "restored": {
+          "byte_count": 112302935,
+          "sha256": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90"
+        }
+      },
+      "data/v4/artifact_store/v4_02/V4_02_DATED_TRADING_STATUS_R7_20260927.jsonl.gz": {
+        "matches": true,
+        "pointer": {
+          "byte_count": 100075252,
+          "sha256": "ad65d2e1b3ca835a310cfa2a35f7bfd417a42020e27f2e77d4a79597aa018de9"
+        },
+        "restored": {
+          "byte_count": 100075252,
+          "sha256": "ad65d2e1b3ca835a310cfa2a35f7bfd417a42020e27f2e77d4a79597aa018de9"
+        }
+      },
+      "data/v4/artifact_store/v4_02/V4_02_FORMAL_MONTHLY_RAW_QFQ_R7_20260927.parquet": {
+        "matches": true,
+        "pointer": {
+          "byte_count": 19627759,
+          "sha256": "790ae9dd13bc363c431b2a7d02e3c6db868bc5d0b3d85a8c9a2acbd5dfd90ff3"
+        },
+        "restored": {
+          "byte_count": 19627759,
+          "sha256": "790ae9dd13bc363c431b2a7d02e3c6db868bc5d0b3d85a8c9a2acbd5dfd90ff3"
+        }
+      },
+      "data/v4/artifact_store/v4_02/V4_02_FORMAL_WEEKLY_RAW_QFQ_R7_20260927.parquet": {
+        "matches": true,
+        "pointer": {
+          "byte_count": 81005147,
+          "sha256": "8eda09c0ca55b986cbebe0aa32454a22835492a6286c1237473c729ea2af0294"
+        },
+        "restored": {
+          "byte_count": 81005147,
+          "sha256": "8eda09c0ca55b986cbebe0aa32454a22835492a6286c1237473c729ea2af0294"
+        }
+      },
+      "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json": {
+        "matches": true,
+        "pointer": {
+          "byte_count": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        },
+        "restored": {
+          "byte_count": 6714,
+          "sha256": "678c0a47913820e0ad945da4ece429be7836ba31583986a9e23280e2ec904649"
+        }
+      },
+      "reports/v4_03/staging/V4_03_PRIOR_RPS_STAGING_R3.json": {
+        "matches": true,
+        "pointer": {
+          "byte_count": 921179,
+          "sha256": "90d5998ba93b60f8061c759952a0f635e4e44fb0cd12fce73331e40d95ff7041"
+        },
+        "restored": {
+          "byte_count": 921179,
+          "sha256": "90d5998ba93b60f8061c759952a0f635e4e44fb0cd12fce73331e40d95ff7041"
+        }
+      },
+      "reports/v4_05/staging/V4_05_R3_FULL_MARKET_CORE_PROFILE.jsonl.gz": {
+        "matches": true,
+        "pointer": {
+          "byte_count": 48847016,
+          "sha256": "ec27446201b22e16364df617a1ce735e57029bf27f275ec9a8bb159acdc5b3be"
+        },
+        "restored": {
+          "byte_count": 48847016,
+          "sha256": "ec27446201b22e16364df617a1ce735e57029bf27f275ec9a8bb159acdc5b3be"
+        }
+      },
+      "reports/v4_05/staging/V4_05_R3_FULL_SCOPE_FACTORS.jsonl.gz": {
+        "matches": true,
+        "pointer": {
+          "byte_count": 30265965,
+          "sha256": "ea7a512ec8e290bb417b4763c989f08bb59e9c881c0a2f59d157ccc3c9801cfc"
+        },
+        "restored": {
+          "byte_count": 30265965,
+          "sha256": "ea7a512ec8e290bb417b4763c989f08bb59e9c881c0a2f59d157ccc3c9801cfc"
+        }
+      },
+      "reports/v4_05/staging/V4_05_R3_PERIOD_ASOF.jsonl.gz": {
+        "matches": true,
+        "pointer": {
+          "byte_count": 60108555,
+          "sha256": "46225dc8bbac4e93e1b6e9d8eb07dda545828f02dc9f6ba44f48cffbdcf36d51"
+        },
+        "restored": {
+          "byte_count": 60108555,
+          "sha256": "46225dc8bbac4e93e1b6e9d8eb07dda545828f02dc9f6ba44f48cffbdcf36d51"
+        }
+      },
+      "reports/v4_05/staging/V4_05_R3_PURE_CORE_FACTORS.jsonl.gz": {
+        "matches": true,
+        "pointer": {
+          "byte_count": 26822192,
+          "sha256": "c1306e00e970c47973fe98d4b08ed04661c34686d74e24feb12c134790af2ea2"
+        },
+        "restored": {
+          "byte_count": 26822192,
+          "sha256": "c1306e00e970c47973fe98d4b08ed04661c34686d74e24feb12c134790af2ea2"
+        }
+      },
+      "reports/v4_05/staging/V4_05_R3_T0_COORDINATE_DAILY_HISTORY.jsonl.gz": {
+        "matches": true,
+        "pointer": {
+          "byte_count": 52034710,
+          "sha256": "7d67a7d49eb512c7f9e6f78bfde0b7dae329cda356006de1abe6b2dc679ff8c7"
+        },
+        "restored": {
+          "byte_count": 52034710,
+          "sha256": "7d67a7d49eb512c7f9e6f78bfde0b7dae329cda356006de1abe6b2dc679ff8c7"
+        }
+      },
+      "reports/v4_05/staging/V4_05_R4_1_FULL_MARKET_CORE_PROFILE.jsonl.gz": {
+        "matches": true,
+        "pointer": {
+          "byte_count": 48848465,
+          "sha256": "9a6ebedc715bc4b310ecf76c77e01cb6dfe9dadc17d335b5fc9afbcc2f6f3fa0"
+        },
+        "restored": {
+          "byte_count": 48848465,
+          "sha256": "9a6ebedc715bc4b310ecf76c77e01cb6dfe9dadc17d335b5fc9afbcc2f6f3fa0"
+        }
+      },
+      "reports/v4_05/staging/V4_05_R4_1_FULL_SCOPE_FACTORS.jsonl.gz": {
+        "matches": true,
+        "pointer": {
+          "byte_count": 32316843,
+          "sha256": "17ae571629b76399e32d9e8a243268ea1fac619e1c5168d307bfd8ebf1494c48"
+        },
+        "restored": {
+          "byte_count": 32316843,
+          "sha256": "17ae571629b76399e32d9e8a243268ea1fac619e1c5168d307bfd8ebf1494c48"
+        }
+      },
+      "reports/v4_05/staging/V4_05_R4_1_PERIOD_ASOF.jsonl.gz": {
+        "matches": true,
+        "pointer": {
+          "byte_count": 60108125,
+          "sha256": "e54674e8459e1258610639d76fac7a5f7b6093a4013f912b8937fb6fa96c2233"
+        },
+        "restored": {
+          "byte_count": 60108125,
+          "sha256": "e54674e8459e1258610639d76fac7a5f7b6093a4013f912b8937fb6fa96c2233"
+        }
+      },
+      "reports/v4_05/staging/V4_05_R4_FULL_MARKET_CORE_PROFILE.jsonl.gz": {
+        "matches": true,
+        "pointer": {
+          "byte_count": 48847143,
+          "sha256": "2b1f881fc408f044253df9a3fb605e5a6059a17be7b2310f97a46620a8d32d2f"
+        },
+        "restored": {
+          "byte_count": 48847143,
+          "sha256": "2b1f881fc408f044253df9a3fb605e5a6059a17be7b2310f97a46620a8d32d2f"
+        }
+      },
+      "reports/v4_05/staging/V4_05_R4_FULL_SCOPE_FACTORS.jsonl.gz": {
+        "matches": true,
+        "pointer": {
+          "byte_count": 32316808,
+          "sha256": "85775ffd490853e8483294e5a61e17e842e754dbb7c80c3f096c132771df5df3"
+        },
+        "restored": {
+          "byte_count": 32316808,
+          "sha256": "85775ffd490853e8483294e5a61e17e842e754dbb7c80c3f096c132771df5df3"
+        }
+      },
+      "reports/v4_05/staging/V4_05_R4_PERIOD_ASOF.jsonl.gz": {
+        "matches": true,
+        "pointer": {
+          "byte_count": 60108125,
+          "sha256": "e54674e8459e1258610639d76fac7a5f7b6093a4013f912b8937fb6fa96c2233"
+        },
+        "restored": {
+          "byte_count": 60108125,
+          "sha256": "e54674e8459e1258610639d76fac7a5f7b6093a4013f912b8937fb6fa96c2233"
+        }
+      }
+    },
+    "status": "PASS"
+  },
+  "postgres_ledger_run": {
+    "all_exact_bindings_match": true,
+    "applied_migration_count": 12,
+    "cases": {
+      "I01_identical_replay": "PASS",
+      "I02_changed_source_revision": "PASS",
+      "I03_negative_guards": "PASS",
+      "I04_transaction_rollback": "PASS",
+      "I05_prior_state_freeze": "PASS"
+    },
+    "cleanup": {
+      "attempted": true,
+      "cluster_removed": true,
+      "server_stopped": true,
+      "succeeded": true
+    },
+    "command": [
+      "scripts/run_v4_05_r4_1_postgres_ledger.py"
+    ],
+    "isolated_connection_identity": {
+      "cluster_root": "TEMP_PATH_REDACTED",
+      "database": "v4_05_r4_2_isolated_210675575f",
+      "host": "127.0.0.1",
+      "in_recovery": false,
+      "matches_configured_workbench_database": false,
+      "port": 1719,
+      "postgres_version": "18.6",
+      "server_address": "127.0.0.1/32",
+      "server_port": 1719,
+      "user": "postgres"
+    },
+    "old_r4_binding_count": 0,
+    "postgres_version": "psql (PostgreSQL) 18.6",
+    "production_connection_used": false,
+    "runtime_suite": {
+      "skipped_test_names_and_reasons": [
+        "SKIPPED [1] tests\\v4_phase0\\test_tdx_local_snapshot.py:54: symlink creation unavailable",
+        "SKIPPED [1] tests\\v4_phase0\\test_tdx_snapshot.py:101: symlink creation is unavailable on this runner"
+      ],
+      "summary": "428 passed, 2 skipped in 6.69s",
+      "tests_v4_phase0_test_postgres_schema_ran": true
+    },
+    "state_logical_digest": "d195518796acc64015174eac8f9bb8721a27095311ece00baedf8c12b0633e74",
+    "status": "PASS"
+  },
+  "stage_record": {
+    "acceptance_result": "PASS_CANDIDATE_PENDING_EXTERNAL_AUDIT",
+    "evidence": "Fresh pushed-commit clone restored exact candidate LFS artifacts, ran the binding regression test, then formal PostgreSQL I01-I05 and the complete required pytest suite.",
+    "next_stage": "INDEPENDENT_EXTERNAL_AUDIT_R4_2",
+    "stage_contract": "V4_05_REPLAY_GATE_A_R4_2_EXACT_LEDGER_BINDING"
+  },
+  "status": "PASS"
+}

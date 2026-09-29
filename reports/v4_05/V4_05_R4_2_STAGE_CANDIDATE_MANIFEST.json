@@ -1,0 +1,101 @@
+{
+  "accepted_head_discipline": {
+    "protected_heads_unchanged": true,
+    "v4_05_accepted_head_created": false,
+    "v4_06_or_v4_07_started": false
+  },
+  "all_exact_bindings_match": true,
+  "artifact_and_evidence_hashes": {
+    "docs/evidence/V4_05_REPLAY_GATE_A_R4_1_EXTERNAL_AUDIT_20260929.md": {
+      "byte_count": 4832,
+      "sha256": "3676abe0832866734045b2b6e7a33aef03da1336902ea0da120ea3d0a9b9cafe"
+    },
+    "docs/evidence/V4_05_REPLAY_GATE_A_R4_2_EXACT_LEDGER_BINDING_TASK_20260929.md": {
+      "byte_count": 4227,
+      "sha256": "0066ab2641039e9db77c39ee5469608c5220099217ca2846795a785f5d5d64ff"
+    },
+    "reports/v4_05/V4_05_R4_1_R4_DIFF.json": {
+      "byte_count": 4155,
+      "sha256": "2ed9b51ac2e713ddaf806959f8b026d104a1ae44b763aa321036d0133c14bd1c"
+    },
+    "reports/v4_05/V4_05_R4_1_STAGE_CANDIDATE_MANIFEST.json": {
+      "byte_count": 5980,
+      "sha256": "e4adabedbd3a5fec62fcd251facdad3f47bf6a79eac0e09256f62bcd5d0cfe5f"
+    },
+    "reports/v4_05/V4_05_R4_2_CLEAN_CHECKOUT_RUNTIME.json": {
+      "byte_count": 10593,
+      "sha256": "fdf9d7907b93291eee98e031cef42347d2d028860469b7b372063bb30e694e22"
+    },
+    "reports/v4_05/V4_05_R4_2_CLOSURE.md": {
+      "byte_count": 2273,
+      "sha256": "650568ef3ded8696b79d3c6bdc59c9eb76e0395388d96a74dbf95cef03e364ec"
+    },
+    "reports/v4_05/V4_05_R4_2_EXACT_CANDIDATE_LEDGER_BINDING.json": {
+      "byte_count": 15610,
+      "sha256": "adcc5fca4b21dc0fa6263ebd4f10e9dc25057f5c67e98cc6ac365bea42d1c804"
+    },
+    "reports/v4_05/V4_05_R4_2_INDEPENDENT_POSTCHECK.json": {
+      "byte_count": 3283,
+      "sha256": "385704190508f3a9442af2f4f2a53a740ef7682b01dd33f3e3386936b94ac227"
+    },
+    "reports/v4_05/V4_05_R4_2_POSTGRES_REVISION_LEDGER_IDEMPOTENCY.json": {
+      "byte_count": 63674,
+      "sha256": "75f601ea61c00f4a8d240f151d2117e2aaefa6d73139bfd1d1eae3c1934f460d"
+    },
+    "reports/v4_05/V4_05_R4_2_RUNTIME_TEST_RECEIPT.json": {
+      "byte_count": 2549,
+      "sha256": "6f5991d241f22a98f49effb059dcea91e5f208ccb6e2f483724348264edbf53d"
+    },
+    "reports/v4_05/V4_05_R4_2_STAGE_ENTRY.md": {
+      "byte_count": 2040,
+      "sha256": "5b7f2db100aecb8d8951896ae77822cf94b25ba5f22e49bb304f939468940f0d"
+    },
+    "scripts/build_v4_05_r4_2_closure_evidence.py": {
+      "byte_count": 25676,
+      "sha256": "17eb9a7503644c58a968bc8068f3a8e66f9cce1e8c2d0689315d14ec878f9519"
+    },
+    "scripts/run_v4_05_r4_1_postgres_ledger.py": {
+      "byte_count": 64273,
+      "sha256": "194c02bf97c134a4f8149deb72d32c7c4391d21a9896c6a29f728b66b89e2809"
+    },
+    "scripts/run_v4_05_r4_2_clean_checkout_runtime.py": {
+      "byte_count": 10005,
+      "sha256": "1235c5ccd667b32d20697d4cd83628f13039bb0f20eabe4896c5b7799aa1e5f5"
+    },
+    "tests/v4_05/test_v4_05_r4_2_exact_candidate_binding.py": {
+      "byte_count": 3111,
+      "sha256": "5fcf503887d05f7328df2d1c3bd4db971b51beb943a8deed095d0588fa9e9a5c"
+    }
+  },
+  "assembled_on_head": "1a88fcba876e619e45584964cc11fde48b1883f8",
+  "business_state": {
+    "business_field_changes": 0,
+    "current_forward_stock_core": "DEGRADED_PASS",
+    "historical_as_recorded_adjusted_price": "BLOCKED_NO_FIRST_AVAILABILITY_EVIDENCE",
+    "market_reference_1_3_5": {
+      "1": -0.022314506957301243,
+      "3": -0.03792535346523633,
+      "5": -0.01769091161662751
+    },
+    "market_regime_trend_axis": "UNKNOWN",
+    "state_changes": 0,
+    "target_identities": 5222,
+    "target_trade_date": "2026-09-28",
+    "unexpected_business_value_drift": 0
+  },
+  "candidate_manifest_path": "reports/v4_05/V4_05_R4_1_STAGE_CANDIDATE_MANIFEST.json",
+  "candidate_manifest_sha256": "e4adabedbd3a5fec62fcd251facdad3f47bf6a79eac0e09256f62bcd5d0cfe5f",
+  "contract_id": "V4_05_R4_2_STAGE_CANDIDATE_MANIFEST_V1",
+  "external_acceptance": "PENDING",
+  "implementation_commit": "1a88fcba876e619e45584964cc11fde48b1883f8",
+  "manifest_self_hash_omitted": true,
+  "old_r4_binding_count": 0,
+  "stage_record": {
+    "acceptance_result": "PASS_CANDIDATE_PENDING_EXTERNAL_AUDIT",
+    "evidence": "Exact R4.1 source binding in the formal PostgreSQL ledger, fresh-clone runtime suite, and independent head/business postcheck.",
+    "next_stage": "INDEPENDENT_EXTERNAL_AUDIT_R4_2",
+    "stage_contract": "V4_05_REPLAY_GATE_A_R4_2_EXACT_LEDGER_BINDING"
+  },
+  "starting_head": "f1e3d2ee4721e4880c043e8ca949e7c1e47dce41",
+  "status": "V4_05_DATA_FACTOR_REPLAY_DEGRADED_PASS_CANDIDATE_R4_2"
+}

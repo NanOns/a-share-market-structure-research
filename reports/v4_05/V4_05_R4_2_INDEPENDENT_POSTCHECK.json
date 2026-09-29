@@ -1,0 +1,81 @@
+{
+  "business_freeze": {
+    "business_field_changes": 0,
+    "market_reference_1_3_5": {
+      "1": -0.022314506957301243,
+      "3": -0.03792535346523633,
+      "5": -0.01769091161662751
+    },
+    "market_regime_trend_axis": "UNKNOWN",
+    "state_changes": 0,
+    "target_identities": 5222,
+    "target_trade_date": "2026-09-28",
+    "unexpected_business_value_drift": 0
+  },
+  "candidate_status": "V4_05_DATA_FACTOR_REPLAY_DEGRADED_PASS_CANDIDATE_R4_2",
+  "checks": {
+    "Accepted_Head_discipline": true,
+    "R4_business_values_frozen": true,
+    "exact_R4_1_candidate_cross_binding": true,
+    "external_acceptance_pending": true,
+    "fresh_clone_exact_test_and_full_runtime": true,
+    "official_postgres_migrations_isolated": true,
+    "required_skips_disclosed": true
+  },
+  "contract_id": "V4_05_R4_2_INDEPENDENT_POSTCHECK_V1",
+  "evidence_assembly_head": "1a88fcba876e619e45584964cc11fde48b1883f8",
+  "exact_candidate_binding": {
+    "all_exact_bindings_match": true,
+    "candidate_manifest_sha256": "e4adabedbd3a5fec62fcd251facdad3f47bf6a79eac0e09256f62bcd5d0cfe5f",
+    "old_r4_binding_count": 0,
+    "state_logical_digest": "d195518796acc64015174eac8f9bb8721a27095311ece00baedf8c12b0633e74"
+  },
+  "external_acceptance": "PENDING",
+  "implementation_commit": "1a88fcba876e619e45584964cc11fde48b1883f8",
+  "protected_heads": {
+    "data/v4/V4_01_ACCEPTED_HEAD.json": {
+      "current_git_blob": "353cd3f30212e974129544af149663186648a88a",
+      "starting_git_blob": "353cd3f30212e974129544af149663186648a88a",
+      "unchanged": true,
+      "worktree_unchanged": true
+    },
+    "data/v4/V4_02_ACCEPTED_HEAD.json": {
+      "current_git_blob": "53d9fbd1d405defbc96549882fee31f1b4ef02ac",
+      "starting_git_blob": "53d9fbd1d405defbc96549882fee31f1b4ef02ac",
+      "unchanged": true,
+      "worktree_unchanged": true
+    },
+    "data/v4/V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD.json": {
+      "current_git_blob": "22fe06ddf0f42bff7ebf3bdf55c542dd50ae11bf",
+      "starting_git_blob": "22fe06ddf0f42bff7ebf3bdf55c542dd50ae11bf",
+      "unchanged": true,
+      "worktree_unchanged": true
+    },
+    "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json": {
+      "current_git_blob": "22b6abf947e58e5f48bb9d01afec5ed82dfde935",
+      "starting_git_blob": "22b6abf947e58e5f48bb9d01afec5ed82dfde935",
+      "unchanged": true,
+      "worktree_unchanged": true
+    },
+    "data/v4/V4_04_ACCEPTED_HEAD.json": {
+      "current_git_blob": "b9b37367a014545a7738e68f1aa620475f134315",
+      "starting_git_blob": "b9b37367a014545a7738e68f1aa620475f134315",
+      "unchanged": true,
+      "worktree_unchanged": true
+    },
+    "data/v4/V4_STAGE_ACCEPTED_HEAD.json": {
+      "current_git_blob": "a77a8a5c2426efa1f216c3cf1bd0b9549b4a6b79",
+      "starting_git_blob": "a77a8a5c2426efa1f216c3cf1bd0b9549b4a6b79",
+      "unchanged": true,
+      "worktree_unchanged": true
+    }
+  },
+  "stage_record": {
+    "acceptance_result": "PASS_CANDIDATE_PENDING_EXTERNAL_AUDIT",
+    "evidence": "Exact binding receipt, clean clone suite, formal PostgreSQL identity, frozen business diff and unchanged accepted-head hashes.",
+    "next_stage": "INDEPENDENT_EXTERNAL_AUDIT_R4_2",
+    "stage_contract": "V4_05_REPLAY_GATE_A_R4_2_EXACT_LEDGER_BINDING"
+  },
+  "status": "PASS",
+  "v4_05_accepted_head_absent": true
+}

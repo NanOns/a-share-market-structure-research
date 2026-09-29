@@ -1,4 +1,4 @@
-"""Run V4-05 R4.1 ledger acceptance probes on a fresh disposable PostgreSQL cluster."""
+"""Run V4-05 R4.2 ledger probes against the exact R4.1 candidate identity."""
 from __future__ import annotations
 
 from datetime import date, datetime, timezone
@@ -23,7 +23,31 @@ sys.path.insert(0, str(ROOT))
 from scripts.apply_v4_phase0_schema import VERSIONS as OFFICIAL_MIGRATION_VERSIONS
 
 MIGRATION_DIR = ROOT / "src/workbench_db/migrations/v4_postgres"
-OUT = ROOT / "reports/v4_05/V4_05_R4_1_POSTGRES_REVISION_LEDGER_IDEMPOTENCY.json"
+REPORTS = ROOT / "reports/v4_05"
+OUT = REPORTS / "V4_05_R4_2_POSTGRES_REVISION_LEDGER_IDEMPOTENCY.json"
+R4_1_MANIFEST_REL = "reports/v4_05/V4_05_R4_1_STAGE_CANDIDATE_MANIFEST.json"
+R4_1_EXACT_IDENTITIES = {
+    "CORE_PROFILE": {
+        "artifact_path": "reports/v4_05/staging/V4_05_R4_1_FULL_MARKET_CORE_PROFILE.jsonl.gz",
+        "artifact_sha256": "9a6ebedc715bc4b310ecf76c77e01cb6dfe9dadc17d335b5fc9afbcc2f6f3fa0",
+        "logical_digest": "d195518796acc64015174eac8f9bb8721a27095311ece00baedf8c12b0633e74",
+    },
+    "FULL_SCOPE_FACTORS": {
+        "artifact_path": "reports/v4_05/staging/V4_05_R4_1_FULL_SCOPE_FACTORS.jsonl.gz",
+        "artifact_sha256": "17ae571629b76399e32d9e8a243268ea1fac619e1c5168d307bfd8ebf1494c48",
+        "logical_digest": "0cfe708567935726f0ad51ae4bb47237ec7aee556db3437c12f21f0c623bd0d2",
+    },
+    "PERIOD_ASOF": {
+        "artifact_path": "reports/v4_05/staging/V4_05_R4_1_PERIOD_ASOF.jsonl.gz",
+        "artifact_sha256": "e54674e8459e1258610639d76fac7a5f7b6093a4013f912b8937fb6fa96c2233",
+    },
+    "MARKET_REFERENCE": {
+        "artifact_path": "reports/v4_05/V4_05_R4_1_MARKET_REFERENCE.json",
+        "one_session_output_digest": "80d8ac5cc69e8ae4d165f89324e45d0cc7e49a81d13339b31ff8fbec5e578554",
+    },
+    "MARKET_REGIME": {"artifact_path": "reports/v4_05/V4_05_R4_1_MARKET_REGIME.json"},
+    "MARKET_SNAPSHOT_IDENTITY": {"artifact_path": "reports/v4_05/V4_05_R4_1_MARKET_SNAPSHOT_IDENTITY.json"},
+}
 TEST_DIRS = ["tests/v4_01", "tests/v4_02", "tests/v4_03", "tests/v4_04",
              "tests/v4_05", "tests/v4_joint", "tests/v4_phase0"]
 TABLES = ("source_revisions", "publications", "publication_consumed_sources",
@@ -125,22 +149,88 @@ def runtime_counts(pg: psycopg.Connection) -> dict[str, int]:
     return {table: int(pg.execute(f"select count(*) from v4.{table}").fetchone()[0]) for table in TABLES}
 
 
+def candidate_inputs() -> dict[str, object]:
+    reports = REPORTS
+    manifest_path = ROOT / R4_1_MANIFEST_REL
+    manifest = json.loads(manifest_path.read_text("utf-8"))
+    if manifest.get("status") != "V4_05_DATA_FACTOR_REPLAY_DEGRADED_PASS_CANDIDATE_R4_1":
+        raise AssertionError("R4.1 candidate manifest is not the expected closure candidate")
+    if manifest.get("external_acceptance") != "PENDING":
+        raise AssertionError("R4.1 candidate must remain externally pending")
+    manifest_sha = file_sha(manifest_path)
+    loaded = {}
+    for key, expected in R4_1_EXACT_IDENTITIES.items():
+        receipt_name = {
+            "CORE_PROFILE": "V4_05_R4_1_CORE_PROFILE_REPLAY.json",
+            "FULL_SCOPE_FACTORS": "V4_05_R4_1_FULL_SCOPE_FACTORS_RECEIPT.json",
+            "PERIOD_ASOF": "V4_05_R4_1_PERIOD_ASOF.json",
+            "MARKET_REFERENCE": "V4_05_R4_1_MARKET_REFERENCE.json",
+            "MARKET_REGIME": "V4_05_R4_1_MARKET_REGIME.json",
+            "MARKET_SNAPSHOT_IDENTITY": "V4_05_R4_1_MARKET_SNAPSHOT_IDENTITY.json",
+        }[key]
+        receipt_path = reports / receipt_name
+        receipt = json.loads(receipt_path.read_text("utf-8"))
+        artifact_path = ROOT / expected["artifact_path"]
+        raw_sha = file_sha(artifact_path)
+        manifest_binding = manifest.get("artifact_and_evidence_hashes", {}).get(expected["artifact_path"])
+        if manifest_binding != {"sha256": raw_sha, "byte_count": artifact_path.stat().st_size}:
+            raise AssertionError(f"R4.1 manifest does not bind {key} artifact bytes")
+        if key in {"CORE_PROFILE", "FULL_SCOPE_FACTORS", "PERIOD_ASOF"}:
+            if receipt.get("artifact_path") != expected["artifact_path"] or receipt.get("artifact_sha256") != raw_sha:
+                raise AssertionError(f"R4.1 {key} receipt does not bind its artifact")
+            if "logical_digest" in expected and receipt.get("logical_digest") != expected["logical_digest"]:
+                raise AssertionError(f"R4.1 {key} logical identity differs from its audited exact identity")
+        elif key == "MARKET_REFERENCE":
+            if receipt.get("horizons", {}).get("1", {}).get("output_digest") != expected["one_session_output_digest"]:
+                raise AssertionError("R4.1 one-session market reference output digest changed")
+        elif key == "MARKET_SNAPSHOT_IDENTITY":
+            if receipt.get("status") != "PASS" or receipt.get("target_member_count") != 5222:
+                raise AssertionError("R4.1 target market snapshot identity receipt is invalid")
+        elif key == "MARKET_REGIME" and receipt.get("target_row", {}).get("trend_axis") != "UNKNOWN":
+            raise AssertionError("R4.1 market regime trend axis must remain UNKNOWN")
+        receipt_sha = file_sha(receipt_path)
+        receipt_binding = manifest.get("artifact_and_evidence_hashes", {}).get(receipt_path.relative_to(ROOT).as_posix())
+        if receipt_binding != {"sha256": receipt_sha, "byte_count": receipt_path.stat().st_size}:
+            raise AssertionError(f"R4.1 candidate manifest does not bind {key} receipt")
+        loaded[key] = {"receipt": receipt, "receipt_path": receipt_path,
+                       "receipt_sha256": receipt_sha, "artifact_path": artifact_path,
+                       "artifact_sha256": raw_sha, "manifest_path": manifest_path,
+                       "manifest_sha256": manifest_sha,
+                       "canonical_identity_sha256": canonical_json_file_sha(receipt_path)}
+    if len(manifest.get("frozen_business_state", {}).get("market_reference_1_3_5", {})) != 3:
+        raise AssertionError("R4.1 candidate manifest lacks frozen market reference values")
+    if manifest["frozen_business_state"].get("business_field_changes") != 0 \
+            or manifest["frozen_business_state"].get("state_changes") != 0 \
+            or manifest["frozen_business_state"].get("unexpected_business_value_drift") != 0 \
+            or manifest["frozen_business_state"].get("trend_axis") != "UNKNOWN":
+        raise AssertionError("R4.1 frozen business-state assertions are not satisfied")
+    return {"manifest": manifest, "manifest_path": manifest_path, "manifest_sha256": manifest_sha,
+            "sources": loaded}
+
+
 def source_specs() -> dict[str, dict]:
-    reports = ROOT / "reports/v4_05"
+    reports = REPORTS
+    bundle = candidate_inputs()
+    source = bundle["sources"]
     accepted = json.loads((ROOT / "data/v4/V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD.json").read_text("utf-8"))
-    factor = json.loads((reports / "V4_05_R4_FULL_SCOPE_FACTORS_RECEIPT.json").read_text("utf-8"))
-    profile = json.loads((reports / "V4_05_R4_CORE_PROFILE_REPLAY.json").read_text("utf-8"))
-    reference = json.loads((reports / "V4_05_R4_MARKET_REFERENCE.json").read_text("utf-8"))
+    factor = source["FULL_SCOPE_FACTORS"]["receipt"]
+    profile = source["CORE_PROFILE"]["receipt"]
+    reference = source["MARKET_REFERENCE"]["receipt"]
+    period = source["PERIOD_ASOF"]["receipt"]
+    regime = source["MARKET_REGIME"]["receipt"]
+    snapshot_identity = source["MARKET_SNAPSHOT_IDENTITY"]["receipt"]
     daily = json.loads((reports / "V4_05_R4_DAILY_HISTORY_RECEIPT.json").read_text("utf-8"))
-    period = json.loads((reports / "V4_05_R4_PERIOD_ASOF.json").read_text("utf-8"))
     calendar = json.loads((reports / "V4_05_R4_CALENDAR_RECEIPT.json").read_text("utf-8"))
     v4_01_head = ROOT / "data/v4/V4_01_ACCEPTED_HEAD.json"
     v4_02_head = ROOT / "data/v4/V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD.json"
     v4_03_head = ROOT / "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json"
     v4_04_head = ROOT / "data/v4/V4_04_ACCEPTED_HEAD.json"
-    factor_path = ROOT / factor["artifact_path"]
-    profile_path = ROOT / profile["artifact_path"]
-    period_path = ROOT / period["artifact_path"]
+    factor_path = source["FULL_SCOPE_FACTORS"]["artifact_path"]
+    profile_path = source["CORE_PROFILE"]["artifact_path"]
+    period_path = source["PERIOD_ASOF"]["artifact_path"]
+    reference_path = source["MARKET_REFERENCE"]["receipt_path"]
+    regime_path = source["MARKET_REGIME"]["receipt_path"]
+    snapshot_identity_path = source["MARKET_SNAPSHOT_IDENTITY"]["receipt_path"]
     gbbq_digest = daily["gbbq_snapshot_id"].removeprefix("sha256-")
     calendar_digest = reference["market_calendar_id"].split(":", 1)[1]
     contracts = {name: canonical_json_file_sha(ROOT / name) for name in (
@@ -169,16 +259,36 @@ def source_specs() -> dict[str, dict]:
         "DAILY_HISTORY": {"revision_id": f"DAILY_HISTORY:{daily['artifact_sha256']}", "digest": daily["artifact_sha256"],
                           "payload": {"logical_digest": daily["logical_digest"], "artifact_path": daily["artifact_path"]}},
         "PERIOD_ASOF": {"revision_id": f"PERIOD_ASOF:{file_sha(period_path)}", "digest": file_sha(period_path),
-                        "payload": {"logical_digest": period["logical_digest"], "artifact_path": period["artifact_path"]}},
-        "MARKET_REFERENCE": {"revision_id": f"MARKET_REFERENCE:{canonical_json_file_sha(reports / 'V4_05_R4_MARKET_REFERENCE.json')}",
-                              "digest": canonical_json_file_sha(reports / "V4_05_R4_MARKET_REFERENCE.json"),
+                        "payload": {"logical_digest": period["logical_digest"], "artifact_path": period["artifact_path"],
+                                    "artifact_sha256": period["artifact_sha256"],
+                                    "receipt_path": source["PERIOD_ASOF"]["receipt_path"].relative_to(ROOT).as_posix()}},
+        "MARKET_REFERENCE": {"revision_id": f"MARKET_REFERENCE:{canonical_json_file_sha(reference_path)}",
+                              "digest": canonical_json_file_sha(reference_path),
                               "payload": {"output_digests": {key: value["output_digest"] for key, value in reference["horizons"].items()},
-                                          "market_calendar_id": reference["market_calendar_id"]}},
+                                          "market_calendar_id": reference["market_calendar_id"],
+                                          "artifact_path": reference_path.relative_to(ROOT).as_posix(),
+                                          "canonical_identity_sha256": canonical_json_file_sha(reference_path)}},
         "FULL_SCOPE_FACTORS": {"revision_id": f"FULL_SCOPE_FACTORS:{file_sha(factor_path)}", "digest": file_sha(factor_path),
-                               "payload": {"logical_digest": factor["logical_digest"], "artifact_path": factor["artifact_path"]}},
+                               "payload": {"logical_digest": factor["logical_digest"], "artifact_path": factor["artifact_path"],
+                                           "artifact_sha256": factor["artifact_sha256"],
+                                           "receipt_path": source["FULL_SCOPE_FACTORS"]["receipt_path"].relative_to(ROOT).as_posix()}},
         "CORE_PROFILE": {"revision_id": f"CORE_PROFILE:{file_sha(profile_path)}", "digest": file_sha(profile_path),
                          "payload": {"logical_digest": profile["logical_digest"], "artifact_path": profile["artifact_path"],
+                                     "artifact_sha256": profile["artifact_sha256"],
+                                     "receipt_path": source["CORE_PROFILE"]["receipt_path"].relative_to(ROOT).as_posix(),
                                      "row_count": profile["row_count"], "historical_as_recorded_claim": False}},
+        "MARKET_REGIME": {"revision_id": f"MARKET_REGIME:{canonical_json_file_sha(regime_path)}",
+                          "digest": canonical_json_file_sha(regime_path),
+                          "payload": {"artifact_path": regime_path.relative_to(ROOT).as_posix(),
+                                      "target_trade_date": regime.get("target_trade_date"),
+                                      "trend_axis": regime["target_row"]["trend_axis"],
+                                      "canonical_identity_sha256": canonical_json_file_sha(regime_path)}},
+        "MARKET_SNAPSHOT_IDENTITY": {"revision_id": f"MARKET_SNAPSHOT_IDENTITY:{canonical_json_file_sha(snapshot_identity_path)}",
+                                     "digest": canonical_json_file_sha(snapshot_identity_path),
+                                     "payload": {"artifact_path": snapshot_identity_path.relative_to(ROOT).as_posix(),
+                                                 "target_market_snapshot_id": snapshot_identity["target_market_snapshot_id"],
+                                                 "target_member_count": snapshot_identity["target_member_count"],
+                                                 "canonical_identity_sha256": canonical_json_file_sha(snapshot_identity_path)}},
         "CONTRACTS": {"revision_id": f"CONTRACTS:{digest(contracts)}", "digest": digest(contracts), "payload": contracts},
         "PARAMETERS": {"revision_id": f"PARAMETERS:{digest({k:v for k,v in contracts.items() if 'parameter' in k})}",
                        "digest": digest({k:v for k,v in contracts.items() if 'parameter' in k}),
@@ -232,9 +342,10 @@ def expected_rejection(operation) -> dict:
 
 
 def run_ledger(pg: psycopg.Connection) -> dict:
-    reports = ROOT / "reports/v4_05"
-    market = json.loads((reports / "V4_05_R4_MARKET_REFERENCE.json").read_text("utf-8"))
-    core = json.loads((reports / "V4_05_R4_CORE_PROFILE_REPLAY.json").read_text("utf-8"))
+    reports = REPORTS
+    bundle = candidate_inputs()
+    market = bundle["sources"]["MARKET_REFERENCE"]["receipt"]
+    core = bundle["sources"]["CORE_PROFILE"]["receipt"]
     accepted = json.loads((ROOT / "data/v4/V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD.json").read_text("utf-8"))
     calendar = json.loads((reports / "V4_05_R4_CALENDAR_RECEIPT.json").read_text("utf-8"))
     market_calendar_id = market["market_calendar_id"]
@@ -245,11 +356,11 @@ def run_ledger(pg: psycopg.Connection) -> dict:
     successor_day = date.fromisoformat(sessions[sessions.index(target.isoformat()) + 1])
     session_no = {date.fromisoformat(day): i + 1 for i, day in enumerate(sessions)}
     suffix = uuid.uuid4().hex
-    namespace_id = f"NS-V4-05-R4-1-{suffix}"
-    model_contract_id = "V4_05_REPLAY_GATE_A_R4_1_CANDIDATE"
+    namespace_id = f"NS-V4-05-R4-2-{suffix}"
+    model_contract_id = "V4_05_REPLAY_GATE_A_R4_2_EXACT_CANDIDATE"
     lineage_id = f"LINEAGE-{uuid.uuid4()}"
     pg.execute("insert into v4.model_namespaces(namespace_id,model_contract_id,execution_mode,namespace) values (%s,%s,'REPLAY',%s)",
-               (namespace_id, model_contract_id, f"R4.1 isolated replay {suffix}"))
+               (namespace_id, model_contract_id, f"R4.2 exact R4.1 candidate replay {suffix}"))
     for day in (prior_day, target, successor_day):
         pg.execute("""insert into v4.market_calendar_sessions(market_calendar_id,session_no,trade_date,calendar_digest)
                       values (%s,%s,%s,%s)""", (market_calendar_id, session_no[day], day, calendar_digest))
@@ -258,23 +369,25 @@ def run_ledger(pg: psycopg.Connection) -> dict:
     source_identity = {key: {"source_revision_id": spec["revision_id"], "digest": spec["digest"]}
                        for key, spec in sorted(source_rows.items())}
     for key, spec in source_rows.items():
-        insert_source_revision(pg, revision_id=spec["revision_id"], logical_fact_id=f"R4-1::{key}", revision_no=1,
+        insert_source_revision(pg, revision_id=spec["revision_id"], logical_fact_id=f"R4-2::{key}", revision_no=1,
                                payload=spec["payload"], payload_digest=spec["digest"])
     source_manifest_sha = digest(source_identity)
-    r4_output_identity = {"market_reference_output_digests": {
+    candidate_output_identity = {"market_reference_output_digests": {
                               key: value["output_digest"] for key, value in market["horizons"].items()},
                           "core_profile_logical_digest": core["logical_digest"],
                           "core_profile_artifact_sha256": core["artifact_sha256"],
                           "core_profile_rows": core["row_count"],
-                          "target_market_calendar_id": market_calendar_id}
-    contract_parameters = {"stage_contract": "V4_05_REPLAY_GATE_A_R4_1_POSTGRES_HASH_CLOSURE",
+                          "target_market_calendar_id": market_calendar_id,
+                          "candidate_manifest_sha256": bundle["manifest_sha256"],
+                          "candidate_stage": "R4.1"}
+    contract_parameters = {"stage_contract": "V4_05_REPLAY_GATE_A_R4_2_EXACT_LEDGER_BINDING",
                            "factor_contract": "V4_05_R4_FULL_SCOPE_FACTOR_REPLAY_V1",
                            "profile_contract": "V4_05_R4_CORE_PROFILE_REPLAY_V1",
                            "target_trade_date": target.isoformat(), "target_identities": 5222,
                            "historical_as_recorded_claim": False}
     computation_sha = digest({"contract_parameters": contract_parameters,
                               "source_manifest_sha256": source_manifest_sha,
-                              "r4_output_identity": r4_output_identity})
+                              "candidate_output_identity": candidate_output_identity})
     state_digest_1 = core["logical_digest"]
     state_head_1 = f"STATE-{uuid.uuid4()}"
     publication_1 = f"PUB-{uuid.uuid4()}"
@@ -292,7 +405,7 @@ def run_ledger(pg: psycopg.Connection) -> dict:
                    (publication_1, lineage_id, target, market_calendar_id, namespace_id, source_manifest_sha, computation_sha,
                     "PREVIOUS_SESSION_HAS_NO_ACCEPTED_HEAD"))
         insert_consumed_sources(pg, publication_1, 1, source_identity)
-        pg.execute("insert into v4.publication_revision_events(event_id,publication_id,event_type,reason) values (%s,%s,'CREATED','R4 exact replay')",
+        pg.execute("insert into v4.publication_revision_events(event_id,publication_id,event_type,reason) values (%s,%s,'CREATED','R4.2 exact candidate replay')",
                    (event_created_1, publication_1))
         pg.execute("insert into v4.state_heads(namespace_id,state_head_id,publication_id,logical_digest) values (%s,%s,%s,%s)",
                    (namespace_id, state_head_1, publication_1, state_digest_1))
@@ -310,7 +423,7 @@ def run_ledger(pg: psycopg.Connection) -> dict:
                          (target, namespace_id, lineage_id, source_manifest_sha, computation_sha)).fetchone()
         if row:
             return row[0]
-        raise AssertionError("R4 replay identity disappeared")
+        raise AssertionError("R4.1 exact candidate replay identity disappeared")
     replayed_id = replay_identical()
     counts_after_second = counts_for_identity(pg, namespace_id)
     head_after_second = pg.execute("select publication_id,state_head_id,state_logical_digest from v4.publication_heads where trade_date=%s and model_namespace_id=%s",
@@ -337,7 +450,7 @@ def run_ledger(pg: psycopg.Connection) -> dict:
     tdx2_id = f"TDX_RAW_PACKAGE:CONTROLLED_REV2:{uuid.uuid4()}"
     tdx2_digest = sha256((tdx1["digest"] + ":controlled-r2").encode("ascii")).hexdigest()
     tdx2_payload = {**tdx1["payload"], "controlled_revision_probe": "R2", "supersedes_revision_id": tdx1["revision_id"]}
-    insert_source_revision(pg, revision_id=tdx2_id, logical_fact_id="R4-1::TDX_RAW_PACKAGE", revision_no=2,
+    insert_source_revision(pg, revision_id=tdx2_id, logical_fact_id="R4-2::TDX_RAW_PACKAGE", revision_no=2,
                            payload=tdx2_payload, payload_digest=tdx2_digest,
                            supersedes_revision_id=tdx1["revision_id"])
     source_identity_2 = dict(source_identity)
@@ -345,7 +458,7 @@ def run_ledger(pg: psycopg.Connection) -> dict:
     source_manifest_sha_2 = digest(source_identity_2)
     computation_sha_2 = digest({"contract_parameters": contract_parameters,
                                 "source_manifest_sha256": source_manifest_sha_2,
-                                "r4_output_identity": r4_output_identity})
+                                "candidate_output_identity": candidate_output_identity})
     state_head_2 = f"STATE-{uuid.uuid4()}"
     state_digest_2 = state_digest_1
     with pg.transaction():
@@ -410,7 +523,7 @@ def run_ledger(pg: psycopg.Connection) -> dict:
 
     def duplicate_source_identity():
         spec = tdx1
-        insert_source_revision(pg, revision_id=spec["revision_id"], logical_fact_id="R4-1::TDX_RAW_PACKAGE",
+        insert_source_revision(pg, revision_id=spec["revision_id"], logical_fact_id="R4-2::TDX_RAW_PACKAGE",
                                revision_no=1, payload={"changed_payload": True},
                                payload_digest=sha256(b"different payload under identical source_revision_id").hexdigest())
 
@@ -474,7 +587,7 @@ def run_ledger(pg: psycopg.Connection) -> dict:
                                  (target, namespace_id)).fetchone()
         try:
             with pg.transaction():
-                insert_source_revision(pg, revision_id=rollback_source, logical_fact_id="R4-1::TDX_RAW_PACKAGE",
+                insert_source_revision(pg, revision_id=rollback_source, logical_fact_id="R4-2::TDX_RAW_PACKAGE",
                                        revision_no=3, payload={"fault_injection": failure_point},
                                        payload_digest=sha256((rollback_source+failure_point).encode()).hexdigest(),
                                        supersedes_revision_id=tdx2_id)
@@ -573,15 +686,63 @@ def run_ledger(pg: psycopg.Connection) -> dict:
 
     final_head = {"publication_id": frozen_head_after[0], "state_head_id": frozen_head_after[1],
                   "state_logical_digest": frozen_head_after[2].strip()}
-    consumed_rows = [dict(source_key=row[0], source_revision_id=row[1], digest=row[2].strip())
-                     for row in pg.execute("select source_key,source_revision_id,digest from v4.publication_consumed_sources where publication_id=%s order by source_key",
-                                           (publication_2,)).fetchall()]
+
+    def read_consumed_sources(publication_id: str) -> list[dict]:
+        rows = pg.execute("""select c.source_key,c.source_revision_id,c.digest,s.payload
+                             from v4.publication_consumed_sources c
+                             join v4.source_revisions s on s.source_revision_id=c.source_revision_id
+                            where c.publication_id=%s order by c.source_key""", (publication_id,)).fetchall()
+        return [dict(source_key=row[0], source_revision_id=row[1], digest=row[2].strip(), payload=row[3])
+                for row in rows]
+
+    baseline_consumed_rows = read_consumed_sources(publication_1)
+    consumed_rows = read_consumed_sources(publication_2)
+    baseline_by_key = {row["source_key"]: row for row in baseline_consumed_rows}
+    expected = bundle["sources"]
+    exact_binding_checks = {
+        "core_profile_ledger_digest_equals_r4_1_artifact_sha":
+            baseline_by_key["CORE_PROFILE"]["digest"] == expected["CORE_PROFILE"]["artifact_sha256"],
+        "full_scope_factors_ledger_digest_equals_r4_1_artifact_sha":
+            baseline_by_key["FULL_SCOPE_FACTORS"]["digest"] == expected["FULL_SCOPE_FACTORS"]["artifact_sha256"],
+        "period_asof_ledger_digest_equals_r4_1_artifact_sha":
+            baseline_by_key["PERIOD_ASOF"]["digest"] == expected["PERIOD_ASOF"]["artifact_sha256"],
+        "market_reference_ledger_digest_equals_r4_1_canonical_identity":
+            baseline_by_key["MARKET_REFERENCE"]["digest"] == expected["MARKET_REFERENCE"]["canonical_identity_sha256"],
+        "market_reference_output_digest_is_r4_1_exact":
+            baseline_by_key["MARKET_REFERENCE"]["payload"]["output_digests"]["1"] ==
+            R4_1_EXACT_IDENTITIES["MARKET_REFERENCE"]["one_session_output_digest"],
+        "market_regime_ledger_identity_is_r4_1":
+            baseline_by_key["MARKET_REGIME"]["digest"] == expected["MARKET_REGIME"]["canonical_identity_sha256"],
+        "market_snapshot_identity_is_r4_1":
+            baseline_by_key["MARKET_SNAPSHOT_IDENTITY"]["digest"] ==
+            expected["MARKET_SNAPSHOT_IDENTITY"]["canonical_identity_sha256"],
+        "state_head_logical_digest_equals_r4_1_core_profile_logical_digest":
+            state_digest_1 == R4_1_EXACT_IDENTITIES["CORE_PROFILE"]["logical_digest"],
+        "publication_head_logical_digest_equals_r4_1_core_profile_logical_digest":
+            final_head["state_logical_digest"] == R4_1_EXACT_IDENTITIES["CORE_PROFILE"]["logical_digest"],
+    }
+    old_r4_names = ("V4_05_R4_CORE_PROFILE_REPLAY.json", "V4_05_R4_FULL_SCOPE_FACTORS_RECEIPT.json",
+                    "V4_05_R4_MARKET_REFERENCE.json", "V4_05_R4_PERIOD_ASOF.json")
+
+    def payload_text(value: object) -> str:
+        if isinstance(value, dict):
+            return " ".join(payload_text(item) for item in value.values())
+        if isinstance(value, (list, tuple)):
+            return " ".join(payload_text(item) for item in value)
+        return str(value)
+
+    old_r4_binding_count = sum(
+        old_name in payload_text(row["payload"])
+        for row in baseline_consumed_rows for old_name in old_r4_names)
+    all_exact_bindings_match = all(exact_binding_checks.values()) and old_r4_binding_count == 0
+    if not all_exact_bindings_match:
+        raise AssertionError(f"R4.1 exact ledger binding failed: {exact_binding_checks}; old R4 count={old_r4_binding_count}")
     final_counts = counts_for_identity(pg, namespace_id)
     return {
         "status": "PASS", "target_trade_date": target.isoformat(), "target_identities": 5222,
         "market_calendar_id": market_calendar_id, "model_namespace_id": namespace_id,
         "model_contract_id": model_contract_id, "publication_lineage_id": lineage_id,
-        "publication_ids": {"r4_initial": publication_1, "controlled_source_revision": publication_2,
+        "publication_ids": {"r4_1_candidate_initial": publication_1, "controlled_source_revision": publication_2,
                             "synthetic_next_session_guard_fixture": successor_publication},
         "revision_identities": [{"publication_id": publication_1, "revision_no": 1, "core_revision": 1,
                                   "status_after_accept": "ACCEPTED", "same_day_revision_parent_id": None,
@@ -597,7 +758,15 @@ def run_ledger(pg: psycopg.Connection) -> dict:
                                   "logical_output_identity_sha256": state_digest_2}],
         "publication_head": final_head,
         "state_head": {"state_head_id": final_head["state_head_id"], "logical_digest": final_head["state_logical_digest"]},
-        "consumed_source_rows_after_changed_revision": consumed_rows,
+        "baseline_source_manifest_sha256": source_manifest_sha,
+        "baseline_source_manifest": baseline_consumed_rows,
+        "actual_consumed_source_identities_after_changed_revision": consumed_rows,
+        "exact_candidate_binding": {"candidate_manifest_path": R4_1_MANIFEST_REL,
+                                     "candidate_manifest_sha256": bundle["manifest_sha256"],
+                                     "comparisons": exact_binding_checks,
+                                     "all_exact_bindings_match": all_exact_bindings_match,
+                                     "old_r4_binding_count": old_r4_binding_count,
+                                     "state_logical_digest": state_digest_1},
         "cases": {"I01_identical_replay": i01, "I02_changed_source_revision": i02,
                   "I03_negative_guards": i03, "I04_transaction_rollback": rollback_checks,
                   "I05_prior_state_freeze": i05},
@@ -609,13 +778,15 @@ def run_ledger(pg: psycopg.Connection) -> dict:
 
 def run() -> dict:
     bin_dir = pg_bin()
-    root = Path(tempfile.mkdtemp(prefix="v4_05_r4_1_pg_")).resolve()
+    root = Path(tempfile.mkdtemp(prefix="v4_05_r4_2_pg_")).resolve()
     data_dir, log_path = root / "data", root / "postgres.log"
-    port, db_name = free_port(), f"v4_05_r4_1_isolated_{uuid.uuid4().hex[:10]}"
+    port, db_name = free_port(), f"v4_05_r4_2_isolated_{uuid.uuid4().hex[:10]}"
     process_started = False
-    receipt: dict = {"contract_id": "V4_05_R4_1_POSTGRES_REVISION_LEDGER_IDEMPOTENCY_V1",
+    receipt: dict = {"contract_id": "V4_05_R4_2_POSTGRES_REVISION_LEDGER_IDEMPOTENCY_V1",
                      "status": "FAIL", "postgres_bin": str(bin_dir),
                      "production_connection_used": False,
+                     "candidate_manifest_path": R4_1_MANIFEST_REL,
+                     "candidate_manifest_sha256": file_sha(ROOT / R4_1_MANIFEST_REL),
                      "isolated_connection_identity": {"host": "127.0.0.1", "port": port,
                                                       "database": db_name, "user": "postgres",
                                                       "cluster_root": "TEMP_PATH_REDACTED"},
@@ -665,6 +836,12 @@ def run() -> dict:
         with psycopg.connect(isolated_dsn) as pg:
             receipt["cases"] = run_ledger(pg)
             receipt["applied_migration_count"] = int(pg.execute("select count(*) from v4_meta.schema_migrations").fetchone()[0])
+        receipt["baseline_source_manifest_sha256"] = receipt["cases"]["baseline_source_manifest_sha256"]
+        receipt["baseline_source_manifest"] = receipt["cases"]["baseline_source_manifest"]
+        receipt["actual_consumed_source_identities"] = receipt["cases"]["actual_consumed_source_identities_after_changed_revision"]
+        receipt["actual_state_head"] = receipt["cases"]["state_head"]
+        receipt["actual_publication_head"] = receipt["cases"]["publication_head"]
+        receipt["exact_candidate_binding"] = receipt["cases"]["exact_candidate_binding"]
         receipt["status"] = "PASS" if receipt["cases"]["status"] == "PASS" and receipt["runtime_test_receipt"]["status"] == "PASS" else "FAIL"
         receipt["test_output_digest"] = sha256(tests.stdout.encode("utf-8")).hexdigest()
     except Exception as exc:
@@ -693,6 +870,12 @@ def run() -> dict:
         receipt["cleanup"] = cleanup
     if not receipt["cleanup"]["succeeded"]:
         receipt["status"] = "FAIL"
+    receipt["stage_record"] = {
+        "stage_contract": "V4_05_REPLAY_GATE_A_R4_2_EXACT_LEDGER_BINDING",
+        "acceptance_result": "PASS_CANDIDATE_PENDING_EXTERNAL_AUDIT" if receipt["status"] == "PASS" else "FAIL",
+        "evidence": "Formal PostgreSQL I01-I05 replay consumes exact R4.1 candidate artifacts; exact bindings, regression guard and complete runtime suite recorded.",
+        "next_stage": "INDEPENDENT_EXTERNAL_AUDIT_R4_2",
+    }
     atomic_json(OUT, receipt)
     return receipt
 
@@ -700,5 +883,7 @@ def run() -> dict:
 if __name__ == "__main__":
     result = run()
     print(json.dumps({"status": result["status"], "receipt": OUT.relative_to(ROOT).as_posix(),
+                      "all_exact_bindings_match": result.get("exact_candidate_binding", {}).get("all_exact_bindings_match"),
+                      "old_r4_binding_count": result.get("exact_candidate_binding", {}).get("old_r4_binding_count"),
                       "error": result.get("error"), "cleanup": result.get("cleanup"),
                       "tests": result.get("runtime_test_receipt", {}).get("summary")}, ensure_ascii=False))

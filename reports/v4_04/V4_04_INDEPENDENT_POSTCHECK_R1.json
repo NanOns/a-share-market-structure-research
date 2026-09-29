@@ -1,0 +1,55 @@
+{
+  "artifact_sha256": "175e5149075fd8e6b2c9d5b0f1d0aed10c052f16361218eefaff8f2049e5b522",
+  "board_count": {
+    "CHINEXT": 1408,
+    "SH_MAIN": 1702,
+    "STAR": 618,
+    "SZ_MAIN": 1494
+  },
+  "contract_id": "V4_04_INDEPENDENT_POSTCHECK_R1",
+  "limitations": [
+    "sampled source recomputation; all state AST evidence independently checked"
+  ],
+  "rows_checked": 5222,
+  "sample_categories": {
+    "boards": [
+      "CHINEXT",
+      "SH_MAIN",
+      "STAR",
+      "SZ_MAIN"
+    ],
+    "high_zone": 4,
+    "low_zone": 7,
+    "nearest_pos60_0_8_distance": 1.1102230246251565e-16,
+    "recent_or_short_history": 2,
+    "suspended": 2,
+    "unknown": 10
+  },
+  "sampled_checks": {
+    "ma10": 21,
+    "minimum_liquidity": 21,
+    "monthly": 22,
+    "pos250": 19,
+    "weekly": 20
+  },
+  "source_recompute_sample_count": 27,
+  "status": "PASS",
+  "unknown_by_state": {
+    "amount_state": 198,
+    "compression_state": 217,
+    "core_extension_risk": 201,
+    "core_participation_result": 201,
+    "drawdown20_state": 198,
+    "drawdown60_state": 211,
+    "ma_structure_state": 199,
+    "monthly_trend_state": 205,
+    "near_high20_state": 198,
+    "near_high60_state": 211,
+    "position_state": 211,
+    "relative_market_state": 221,
+    "severe_extension": 201,
+    "trend_state": 215,
+    "volume_state": 198,
+    "weekly_trend_state": 204
+  }
+}

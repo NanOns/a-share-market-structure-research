@@ -1,6 +1,8 @@
+import pytest
+
 from src.v4.profile_core import (
-    compression, extension_risk, ma_structure, participation, position,
-    ratio_state, relative, trend,
+    closed_period_trend, compression, drawdown, extension_risk, ma_structure,
+    near_high, participation, position, ratio_state, relative, severe_extension, trend,
 )
 
 
@@ -17,9 +19,12 @@ def test_first_true_precedence_and_unknown_gates():
     assert ma_structure(row).value == "BULL_ALIGNED"
     assert compression(row).value == "COMPRESSING_STRONG"
     assert relative(row, "COMPRESSING_STRONG", "BULL_ALIGNED").value == "ACTIVE_EMERGENCE"
+    assert relative(row, "COMPRESSING_STRONG", "BULL_ALIGNED").evidence["compression_state"] == "COMPRESSING_STRONG"
+    assert compression(row).evidence["minimum_liquidity"] is True
     assert ratio_state(row, "amount_ratio20").value == "CONTRACTED"
     assert participation(row).value == "LOW_PARTICIPATION_ADVANCE"
     assert extension_risk(row).value == "HIGH"
+    assert severe_extension(extension_risk(row)).value is False
     row["atr_ratio"] = 1.5
     assert compression(row).value == "EXPANDING_EXTREME"
     row["amount_ratio20"] = 1.3
@@ -32,5 +37,18 @@ def test_first_true_precedence_and_unknown_gates():
 
 def test_no_unearned_risk_or_trend():
     assert extension_risk({"bias20_atr": 4}).value == "EXTREME"
+    assert severe_extension(extension_risk({"bias20_atr": 4})).value is True
+    assert severe_extension(extension_risk({"bias20_atr": 1})).value is None
     assert extension_risk({"bias20_atr": 1}).value == "UNKNOWN"
     assert trend({"close": 1}).value == "UNKNOWN"
+
+
+def test_closed_period_and_position_descriptions():
+    assert closed_period_trend({"period_view": "CLOSED_ONLY", "close": 12, "ma5": 11, "previous_ma5": 10}, "weekly").value == "WEEKLY_UP"
+    assert closed_period_trend({"period_view": "ASOF_PARTIAL", "close": 12, "ma5": 11, "previous_ma5": 10}, "weekly").value == "UNKNOWN"
+    assert closed_period_trend({"period_view": "CLOSED_ONLY", "close": 8, "ma3": 9, "previous_ma3": 10}, "monthly").value == "MONTHLY_DOWN"
+    assert near_high({"prior_high20": 10, "close": 11, "atr20": 2}, 20).value == "ABOVE_PRIOR_HIGH"
+    assert near_high({"prior_high20": 10, "close": 9, "atr20": 0}, 20).value == "UNKNOWN"
+    assert drawdown({"close": 8, "hhv60": 10}, 60).value == "DEEP"
+    with pytest.raises(ValueError):
+        ratio_state({}, "arbitrary_key")

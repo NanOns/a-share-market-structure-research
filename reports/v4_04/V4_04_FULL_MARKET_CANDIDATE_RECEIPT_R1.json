@@ -1,0 +1,81 @@
+{
+  "artifact": {
+    "byte_count": 24435730,
+    "path": "reports/v4_04/staging/V4_04_FULL_MARKET_CORE_PROFILE_CANDIDATE_R1.jsonl.gz",
+    "sha256": "175e5149075fd8e6b2c9d5b0f1d0aed10c052f16361218eefaff8f2049e5b522"
+  },
+  "board_count": {
+    "CHINEXT": 1408,
+    "SH_MAIN": 1702,
+    "STAR": 618,
+    "SZ_MAIN": 1494
+  },
+  "contract_digest": "19772c971efe2c4c9fb16a929e7a73e7e5bdb89d9a37b1e397a839ffed1cd94d",
+  "contract_files": {
+    "config/v4_04_algorithm_contracts_v1.json": "4728da02e3380c822ef7659b353029c189258db8dab32bb233fcd69b7284afde",
+    "config/v4_04_field_registry_v1.json": "44a261c486a66ce3de6197442ea2639ddda92c3adaf7a3ab29f183f6f0e6fdb0",
+    "config/v4_04_output_schema_v1.json": "c78b396f30fe1bc985a5d485faff6719216236a24f8473e7477ed68e9dc16812",
+    "config/v4_04_parameter_set_v1.json": "a6a7383ac228697b2ebdefa63c54b2c860019f5f3e8d39b163c1a27a34f83a61"
+  },
+  "contract_id": "V4_04_FULL_MARKET_CANDIDATE_RECEIPT_R1",
+  "cutoff": "2026-09-24",
+  "quality_count": {
+    "COMPLETE": 4981,
+    "PARTIAL_UNKNOWN": 241
+  },
+  "required_boards": [
+    "SH_MAIN",
+    "SZ_MAIN",
+    "CHINEXT",
+    "STAR"
+  ],
+  "row_count": 5222,
+  "sources": {
+    "calendar": {
+      "contract_id": "V4_02_CALENDAR",
+      "path": "data/v4/candidate_calendars/V4_02_MARKET_CALENDAR_20230704_20260924_V2/calendar_sse_20230704_20260924.json",
+      "sha256": "09285bb116db5e7ab644e4942c331ceb9bc715b47f0369b9f228ef9d17df2d53"
+    },
+    "calendar_szse": {
+      "contract_id": "V4_02_CALENDAR_SZSE",
+      "path": "data/v4/candidate_calendars/V4_02_MARKET_CALENDAR_20230704_20260924_V2/calendar_szse_20230704_20260924.json",
+      "sha256": "9c56dcf2077a19d303f504fcf22f962d9d71ed626030b61ad2aa77a201897900"
+    },
+    "daily": {
+      "contract_id": "V4_02_CANONICAL_DAILY",
+      "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet",
+      "sha256": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90"
+    },
+    "factors": {
+      "contract_id": "V4_03_STOCK_CORE",
+      "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+      "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+    },
+    "market_regime": {
+      "contract_id": "MARKET_REGIME_V1_PRIMITIVES",
+      "path": "reports/v4_03/staging/V4_03_MARKET_REGIME_NATIVE_CANDIDATE_R3.jsonl.gz",
+      "sha256": "89aae8484aa98837c3d6c685d48365edae2913ac506dd12916f8c56e92a9b139"
+    },
+    "monthly": {
+      "contract_id": "V4_02_FORMAL_MONTHLY",
+      "path": "data/v4/artifact_store/v4_02/V4_02_FORMAL_MONTHLY_RAW_QFQ_R7_20260927.parquet",
+      "sha256": "790ae9dd13bc363c431b2a7d02e3c6db868bc5d0b3d85a8c9a2acbd5dfd90ff3"
+    },
+    "trading_status": {
+      "contract_id": "V4_02_TRADING_STATUS",
+      "path": "data/v4/artifact_store/v4_02/V4_02_DATED_TRADING_STATUS_R7_20260927.jsonl.gz",
+      "sha256": "ad65d2e1b3ca835a310cfa2a35f7bfd417a42020e27f2e77d4a79597aa018de9"
+    },
+    "universe": {
+      "contract_id": "V4_01_HISTORICAL_UNIVERSE",
+      "path": "data/v4/artifact_store/v4_01/v4_01_historical_universe_required_R7_20260927.jsonl.gz",
+      "sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b"
+    },
+    "weekly": {
+      "contract_id": "V4_02_FORMAL_WEEKLY",
+      "path": "data/v4/artifact_store/v4_02/V4_02_FORMAL_WEEKLY_RAW_QFQ_R7_20260927.parquet",
+      "sha256": "8eda09c0ca55b986cbebe0aa32454a22835492a6286c1237473c729ea2af0294"
+    }
+  },
+  "status": "STAGING_ONLY_NOT_ACCEPTED"
+}

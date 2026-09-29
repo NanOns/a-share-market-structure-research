@@ -12,6 +12,11 @@ import tempfile
 ROOT = Path(__file__).resolve().parents[1]
 REPORT = ROOT / "reports/v4_05/V4_05_R4_2_CLEAN_CHECKOUT_RUNTIME.json"
 LFS_INPUTS = (
+    "data/v4/artifact_store/v4_01/security_entity_map_R5_20260925.json",
+    "reports/v4_03/staging/V4_03_PRIOR_RPS_STAGING_R3.json",
+    "reports/v4_03/V4_03_FINAL_STAGE_RECEIPT_R1_20260928.json",
+    "reports/v4_05/staging/V4_05_R3_FULL_SCOPE_FACTORS.jsonl.gz",
+    "reports/v4_05/staging/V4_05_R4_PERIOD_ASOF.jsonl.gz",
     "reports/v4_05/staging/V4_05_R4_1_PERIOD_ASOF.jsonl.gz",
     "reports/v4_05/staging/V4_05_R4_1_FULL_SCOPE_FACTORS.jsonl.gz",
     "reports/v4_05/staging/V4_05_R4_1_FULL_MARKET_CORE_PROFILE.jsonl.gz",

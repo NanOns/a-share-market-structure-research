@@ -9,10 +9,10 @@
   },
   "chain_validator_receipt": {
     "path": "reports/v4_joint/V4_00_01_02_03_FULL_CHAIN_VALIDATION_R1.json",
-    "sha256": "09968ff904d8878ba6512b7470c13b3ff02ceb3629cb8f295034057683a040c3"
+    "sha256": "ec679595a7f9e965963ea81f8e310af84d3e89eecb8737a83623d44ec51b25af"
   },
   "contract_id": "V4_00_01_02_03_FULL_CHAIN_FINAL_RECEIPT_R1",
-  "current_commit": "e307892b138a3e5e1925546095d884e7900083d2",
+  "current_commit": "50414582dc138fd93010e138d4f51a485b64c3c2",
   "deferred_non_blocking": {
     "BSE_OPTIONAL_DEGRADED": true,
     "INCREMENTAL_UPDATE_DEFERRED_NON_BLOCKING": true,
@@ -55,15 +55,15 @@
     "status": "FAIL"
   },
   "test_receipt": {
-    "byte_count": 6805,
+    "byte_count": 6272,
     "path": "reports/v4_joint/V4_00_01_02_03_FULL_CHAIN_TEST_RECEIPT_R1.json",
-    "sha256": "3a36dbf49bf8e28e4a355732d42f182a2f4f5f935653c734ddbcf7c22389a3fa"
+    "sha256": "e79bdd725ced1a5085f2c934d4bbc6ead9825dd29cb601ed41ab973aaa8e1615"
   },
   "v4_00": {
     "authority_receipt": {
       "byte_count": 2910,
       "path": "reports/v4_phase0/V4_00_CURRENT_AUTHORITY_NORMALIZATION_R1.json",
-      "sha256": "e9a25868475f153d99d8335cbe31c7fa4f077e691b99a9e1da2b158326763c7c"
+      "sha256": "2799474e25103a6bda7a1b289578924a929a2c6632818bfb3122a85406d8cdf1"
     },
     "external_acceptance": "ACCEPTED_SCOPE_SPECIFIC",
     "status": "FULL_PASS"
@@ -75,17 +75,17 @@
     "postcheck": {
       "byte_count": 8538,
       "path": "reports/v4_01/V4_01_IDENTITY_COMPLETENESS_GATE_V2_POSTCHECK_R1.json",
-      "sha256": "71eb5efa44bd46131618873fcb6834e9feabd93a65f82cf7073d8d9d615380d1"
+      "sha256": "1c2aca57e7ecc59fa66eec64de63176772ff581d9f0051a0faf71accbadb9708"
     },
     "resolution": {
       "byte_count": 10777,
       "path": "reports/v4_01/V4_01_IDENTITY_RELATION_RESOLUTION_R1.json",
-      "sha256": "381057030048eb65af75cf7d4aa36244c357d5b5f80ff1afe66eb742ae91446c"
+      "sha256": "e1780181f34751bb8d6b9b2c03c4a912d4bab52d565a11d5f0694bbf746e9950"
     },
     "scan": {
       "byte_count": 358018,
       "path": "reports/v4_01/V4_01_FULL_SCOPE_SOURCE_FINGERPRINT_SCAN_R1.json",
-      "sha256": "80c7edbe63be276ffaa1adc6bc0e00c38fd4f2a53b6c8b42d503af290bb937c7"
+      "sha256": "250077b6eceff33ed9433812a489396102c0e37790e30871e83fda50a62becac"
     },
     "status": "FULL_PASS_CANDIDATE",
     "universe_sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b"
@@ -101,7 +101,7 @@
     "current_truth": {
       "byte_count": 4080,
       "path": "reports/v4_02/V4_02_CURRENT_TRUTH_RECONCILIATION_R1.json",
-      "sha256": "dcec405fda0647d9a3ab1226895e9647b181f557ffa3a73b6bf82191ad906314"
+      "sha256": "e2280b4c52729d8a40faff6dbeadc5ebf5aa70b92eb0b9529bc2dd0a889a3baf"
     },
     "external_acceptance": "EXTERNALLY_ACCEPTED",
     "status": "PASS_WITH_BSE_SCOPE_DEGRADED"

@@ -1,0 +1,34 @@
+{
+  "accepted_head_sha256": "83fa37ded40337d69ff0e447a0b6a3bc293d2ca95ea9c8aa009f0f104776c4be",
+  "checks": {
+    "baseline:data/v4/V4_02_ACCEPTED_HEAD.json": true,
+    "baseline:data/v4/V4_04_ACCEPTED_HEAD.json": true,
+    "binding:candidate_manifest": true,
+    "binding:external_acceptance": true,
+    "binding:gbbq_snapshot": true,
+    "binding:independent_postcheck": true,
+    "binding:official_tdx_package": true,
+    "binding:publication_time": true,
+    "binding:r2_r3_diff": true,
+    "binding:remote_lfs_restore": true,
+    "binding:runtime_tests": true,
+    "candidate": true,
+    "entry": true,
+    "external_decision": true,
+    "global_binding": true,
+    "historical_block": true,
+    "original_foundation_binding": true,
+    "r2_not_started": true,
+    "source_identity": true,
+    "v4_08_block": true
+  },
+  "contract_id": "V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD_PROMOTION_VALIDATOR_R1",
+  "global_head_sha256": "5d36e9204987e11ed4d1af7ce324f6bd300fee6f8e6f671d57b8978e8ee66dd4",
+  "stage_record": {
+    "acceptance_result": "PASS",
+    "evidence": "Independently checked byte hashes, baseline heads, external decision, and downstream ordering",
+    "next_stage": "V4-05 Replay Gate A R2 only on PASS",
+    "stage_contract": "V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD_V1"
+  },
+  "status": "PASS"
+}

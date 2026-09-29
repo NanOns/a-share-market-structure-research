@@ -36,6 +36,7 @@
   "data_head_must_not_move_this_pointer": true,
   "dev_baseline_input_head": "8941119dba4fb8c75d98699f8fa92c3406de9811",
   "foundation_external_acceptance": "EXTERNALLY_ACCEPTED",
+  "historical_as_recorded_adjusted_price": "BLOCKED_NO_FIRST_AVAILABILITY_EVIDENCE",
   "incremental_update": "DEFERRED_NON_BLOCKING",
   "phase0_status": "FULL_PASS",
   "source_cutoffs": {
@@ -49,6 +50,14 @@
   "v4_01_external_acceptance": "EXTERNALLY_ACCEPTED",
   "v4_01_status": "FULL_PASS_REQUIRED_SCOPE",
   "v4_02_external_acceptance": "EXTERNALLY_ACCEPTED",
+  "v4_02_go_forward_first_target": "2026-09-28",
+  "v4_02_go_forward_pit_binding": {
+    "byte_count": 4142,
+    "path": "data/v4/V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD.json",
+    "sha256": "83fa37ded40337d69ff0e447a0b6a3bc293d2ca95ea9c8aa009f0f104776c4be"
+  },
+  "v4_02_go_forward_pit_external_acceptance": "EXTERNALLY_ACCEPTED",
+  "v4_02_go_forward_pit_status": "FULL_PASS_GO_FORWARD_SCOPE",
   "v4_02_optional_scope": "BSE_OPTIONAL_DEGRADED",
   "v4_02_status": "FULL_PASS_REQUIRED_SCOPE",
   "v4_03_binding": {
@@ -66,7 +75,7 @@
   "v4_04_entry": "COMPLETED_EXTERNALLY_ACCEPTED",
   "v4_04_external_acceptance": "EXTERNALLY_ACCEPTED",
   "v4_04_status": "FULL_PASS_REQUIRED_SCOPE",
-  "v4_05_entry": "AUTHORIZED_REPLAY_GATE_A",
+  "v4_05_entry": "AUTHORIZED_REPLAY_GATE_A_R2",
   "v4_08_sector_entry": "BLOCKED_UNTIL_ACCEPTED_PIT_MEMBERSHIP_BASELINE_AND_RECONSTRUCTION",
-  "version": "2.1.0"
+  "version": "2.2.0"
 }

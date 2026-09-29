@@ -8,7 +8,7 @@ R4 repaired the contract and identity defects found by the R3 external audit wit
 
 The V4-03 market path has a frozen `UNKNOWN_SUFFIX_UNTIL_NEW_SERIES_VERSION` policy. R4 therefore chose Option C: no Sep-28 accepted-series path row was published, target `trend_axis` is `UNKNOWN`, and the Market Regime is `DEGRADED_PASS`. A separate 25-session current-coordinate diagnostic quantifies path differences and leaves all accepted V4-03 path rows unchanged.
 
-The isolated revision ledger replay passed I01–I04 with observed query counts and successful cleanup. Remote LFS restore evidence is pending the fresh clone of the pushed artifact commit and will be bound in the final R4 candidate manifest.
+The isolated revision ledger replay passed I01–I04 with observed query counts and successful cleanup. Fresh-clone remote LFS recovery passed for all five R3 artifacts and all three new R4 LFS artifacts; every pointer OID, byte count, and restored SHA256 matched. The receipt records remote commit `569b55862cd6115bc4456ccfb0ee7e98ee42da42`.
 
 The 423-test regression suite passed with 2 skips, the independent numeric postcheck passed 65 samples across four boards and required data states, and the six primary R4 artifacts reproduced byte-for-byte on the second build. The R3→R4 profile diff preserves all 5,222 rows with zero unexpected business-value drift.
 

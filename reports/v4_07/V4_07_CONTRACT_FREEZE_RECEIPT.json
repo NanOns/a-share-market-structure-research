@@ -1,0 +1,120 @@
+{
+  "acceptance_result": "CANDIDATE_CONTRACT_FROZEN; engineering, full-market, persistence, and regression gates pending",
+  "accepted_source_validation": {
+    "board_counts": {
+      "CHINEXT": 1408,
+      "SH_MAIN": 1702,
+      "STAR": 618,
+      "SZ_MAIN": 1494
+    },
+    "core_logical_digest": "d195518796acc64015174eac8f9bb8721a27095311ece00baedf8c12b0633e74",
+    "core_profile_row_publication_id": "V4_05_R4_T0_CURRENT_COORDINATE",
+    "core_rows": 5222,
+    "delta3_field": "rps5_delta3",
+    "delta3_quality_distribution": {
+      "UNKNOWN|BOOTSTRAP_INSUFFICIENT_FORWARD_HISTORY": 5222
+    },
+    "factor_identity_join": "EXACT_ONE_TO_ONE",
+    "formal_publication_id": "PUB-3c03e227-c60a-4d8c-86ae-2861507c257b",
+    "full_factor_rows": 5222,
+    "t_minus_1_core_fields": "ABSENT_FROM_ACCEPTED_CORE_PROFILE; reclaim branch evaluates UNKNOWN unless BULL_TRANSITION OR branch is decisive",
+    "target_trade_date": "2026-09-28",
+    "unique_security_id_count": 5222
+  },
+  "config_sha256": {
+    "config/v4_07_base_seed_contract_v1.json": "73e686fb3bd15ef8afa893efc804d14cb2339f76975a40b5649d5265d327122f",
+    "config/v4_07_field_registry_v1.json": "dfafc55bab95efb553d62564350299726a27038da3e207ce04986f340e1f9f2c",
+    "config/v4_07_machine_vectors_v1.json": "41c20ca24fc6fd52fbf322129f0e8a822ecca078603d24be9566bed60267dedb",
+    "config/v4_07_parameter_set_v1.json": "241785e1a97dd2283eb8b361eb791f4e5c8f6ca67579a06f2a2d38c0c7586a1a"
+  },
+  "contract_id": "V4_07_CONTRACT_FREEZE_RECEIPT_V1",
+  "contract_id_frozen": "BASE_SEED_V1",
+  "machine_vectors": {
+    "checked_vector_ids": [
+      "SAFETY_ALL_TRUE",
+      "SAFETY_HARD_FALSE",
+      "SAFETY_REQUIRED_UNKNOWN",
+      "SAFETY_FALSE_DOMINATES_UNKNOWN",
+      "SAFETY_SEVERE_EXTENSION_TRUE",
+      "SAFETY_MINIMUM_LIQUIDITY_FALSE",
+      "SAFETY_MINIMUM_LIQUIDITY_UNKNOWN",
+      "S1_BIAS_EQ_3",
+      "S1_BIAS_JUST_BELOW_3",
+      "S1_COMPRESSING_STRONG",
+      "S1_NON_COMPRESSING",
+      "S1_DELTA_EQ_3",
+      "S1_DELTA_JUST_BELOW_3",
+      "S1_DELTA_UNKNOWN",
+      "S2_DELTA_EQ_10",
+      "S2_DELTA_JUST_BELOW_10",
+      "S2_BULL_TRANSITION",
+      "S2_RECLAIM_PREVIOUS_EQUALITY",
+      "S2_RECLAIM_CURRENT_EQUALITY_NOT_ABOVE",
+      "S2_T_MINUS_1_UNKNOWN",
+      "S2_T_CURRENT_UNKNOWN",
+      "OR_S1_TRUE_S2_UNKNOWN",
+      "OR_S1_FALSE_S2_UNKNOWN",
+      "OR_BOTH_FALSE",
+      "BASE_SAFETY_FALSE_DOMINATES_UNKNOWN_PATHS",
+      "ANNOTATION_SUPPORTED",
+      "ANNOTATION_REVERSAL_CONFLICTING",
+      "ANNOTATION_LOW_EFFICIENCY_CONFLICTING",
+      "ANNOTATION_NEUTRAL",
+      "ANNOTATION_UNKNOWN"
+    ],
+    "frozen_count": 32,
+    "independent_expected_status": "PASS",
+    "independently_evaluated_before_detector": 30,
+    "integration_vectors_pending_implementation": [
+      "TEMPORAL_FUTURE_ROW_IGNORED",
+      "V406_SIDECAR_IGNORED"
+    ]
+  },
+  "next_stage": "V4_07_BASE_SEED_CANDIDATE_IMPLEMENTATION_AND_REQUIRED_GATES",
+  "parameter_set_id": "V4_07_BASE_SEED_PARAMETER_SET_V1",
+  "production_detector_written_at_freeze": false,
+  "source_bindings": {
+    "AGENTS.md": {
+      "sha256": "b72647b6275f6ae3489a24ccc8a9e1e29d0e440739c3e2f360c7f05bf44e403d"
+    },
+    "REV2": {
+      "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV2_20260925.md",
+      "sha256": "744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd"
+    },
+    "accepted_v4_05_head": {
+      "path": "data/v4/V4_05_ACCEPTED_HEAD.json",
+      "sha256": "fc929d85553a900a6479ac9f50291d50cf750ad0e6c21fc58e4e05e92189f5cb"
+    },
+    "core_profile": {
+      "formal_publication_id": "PUB-3c03e227-c60a-4d8c-86ae-2861507c257b",
+      "logical_digest": "d195518796acc64015174eac8f9bb8721a27095311ece00baedf8c12b0633e74",
+      "path": "reports/v4_05/staging/V4_05_R4_1_FULL_MARKET_CORE_PROFILE.jsonl.gz",
+      "row_publication_id": "V4_05_R4_T0_CURRENT_COORDINATE",
+      "rows": 5222,
+      "sha256": "9a6ebedc715bc4b310ecf76c77e01cb6dfe9dadc17d335b5fc9afbcc2f6f3fa0"
+    },
+    "full_scope_factors": {
+      "logical_digest": "0cfe708567935726f0ad51ae4bb47237ec7aee556db3437c12f21f0c623bd0d2",
+      "path": "reports/v4_05/staging/V4_05_R4_1_FULL_SCOPE_FACTORS.jsonl.gz",
+      "rows": 5222,
+      "sha256": "17ae571629b76399e32d9e8a243268ea1fac619e1c5168d307bfd8ebf1494c48"
+    },
+    "global_accepted_head": {
+      "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+      "sha256": "6fd6e16b3769726f14e44b1d2062d087fd40ec1ede51956a5353631896547043"
+    },
+    "stage_task": {
+      "path": "D:/Users/lps/Desktop/V4_06_R2_CONTRACT_REPAIR_AND_V4_07_BASE_SEED_STAGE_TASK_20260929.md",
+      "sha256": "7cf3b2e7afe89e5cb286edfafb4bd7c7087b2887bbf344cddbd83547baef484f"
+    },
+    "v4_05_exact_ledger_binding": {
+      "all_exact_bindings_match": true,
+      "old_r4_binding_count": 0,
+      "path": "reports/v4_05/V4_05_R4_2_EXACT_CANDIDATE_LEDGER_BINDING.json",
+      "sha256": "adcc5fca4b21dc0fa6263ebd4f10e9dc25057f5c67e98cc6ac365bea42d1c804"
+    }
+  },
+  "stage_contract": "V4_06_R2_CONTRACT_REPAIR_AND_V4_07_BASE_SEED_STAGE_TASK_20260929",
+  "starting_head": "0f13e1b55d86ee74dfc489a48e95a766111a617a",
+  "status": "PASS_CONTRACT_FREEZE_CANDIDATE"
+}

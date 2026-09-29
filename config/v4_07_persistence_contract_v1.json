@@ -1,0 +1,157 @@
+{
+  "append_only": "BEFORE UPDATE OR DELETE rejection trigger using existing v4.reject_append_only_mutation(); rollback only against isolated empty candidate schema",
+  "contract_id": "V4_07_BASE_SEED_PERSISTENCE_V1",
+  "deterministic_unique_key": [
+    "publication_id",
+    "trade_date",
+    "security_id",
+    "model_contract_id",
+    "parameter_set_id",
+    "input_digest"
+  ],
+  "migration": "src/workbench_db/migrations/v4_postgres/015_v4_07_base_seed_results.sql",
+  "migration_order": "015 is reserved after parallel Workstream A migration 014; no migration-number collision.",
+  "model_contract_id": "BASE_SEED_V1",
+  "parameter_set_id": "V4_07_BASE_SEED_PARAMETER_SET_V1",
+  "rollback": "src/workbench_db/migrations/v4_postgres/rollback/015_v4_07_base_seed_results.sql",
+  "rollback_guarantee": "Drop only v4.base_seed_results in isolated migration validation; leave V4-05 publications, Core tables, and shared append-only trigger function untouched.",
+  "row_identity": [
+    "publication_id",
+    "trade_date",
+    "security_id",
+    "model_contract_id",
+    "parameter_set_id",
+    "input_digest"
+  ],
+  "schema": [
+    {
+      "binding": "formal accepted V4-05 publication",
+      "name": "publication_id",
+      "required": true,
+      "type": "text"
+    },
+    {
+      "name": "trade_date",
+      "required": true,
+      "type": "date"
+    },
+    {
+      "name": "security_id",
+      "required": true,
+      "type": "text"
+    },
+    {
+      "check": "BASE_SEED_V1",
+      "name": "model_contract_id",
+      "required": true,
+      "type": "text"
+    },
+    {
+      "check": "V4_07_BASE_SEED_PARAMETER_SET_V1",
+      "name": "parameter_set_id",
+      "required": true,
+      "type": "text"
+    },
+    {
+      "binding": "accepted Core Profile row publication namespace",
+      "name": "source_publication_id",
+      "required": true,
+      "type": "text"
+    },
+    {
+      "check": "lowercase sha256",
+      "name": "source_core_logical_digest",
+      "required": true,
+      "type": "char(64)"
+    },
+    {
+      "check": "lowercase sha256",
+      "name": "input_digest",
+      "required": true,
+      "type": "char(64)"
+    },
+    {
+      "check": "lowercase sha256",
+      "name": "fact_digest",
+      "required": true,
+      "type": "char(64)"
+    },
+    {
+      "check": [
+        "TRUE",
+        "FALSE",
+        "UNKNOWN"
+      ],
+      "name": "base_seed_state",
+      "required": true,
+      "type": "text"
+    },
+    {
+      "check": "array",
+      "name": "matched_seed_paths",
+      "required": true,
+      "type": "jsonb"
+    },
+    {
+      "check": "object",
+      "name": "domain_states",
+      "required": true,
+      "type": "jsonb"
+    },
+    {
+      "check": "array",
+      "name": "waiting_for",
+      "required": true,
+      "type": "jsonb"
+    },
+    {
+      "check": "array",
+      "name": "invalid_if",
+      "required": true,
+      "type": "jsonb"
+    },
+    {
+      "check": [
+        "COMPLETE",
+        "PARTIAL_UNKNOWN"
+      ],
+      "name": "quality",
+      "required": true,
+      "type": "text"
+    },
+    {
+      "check": "array",
+      "name": "quality_codes",
+      "required": true,
+      "type": "jsonb"
+    },
+    {
+      "check": [
+        "SUPPORTED",
+        "CONFLICTING",
+        "NEUTRAL",
+        "UNKNOWN"
+      ],
+      "name": "seed_participation_annotation",
+      "required": true,
+      "type": "text"
+    },
+    {
+      "default": "now()",
+      "name": "created_at",
+      "required": true,
+      "type": "timestamptz"
+    }
+  ],
+  "source_binding_fields": [
+    "source_publication_id",
+    "source_core_logical_digest",
+    "input_digest",
+    "fact_digest"
+  ],
+  "stage": "V4-07",
+  "status": "FROZEN_CANDIDATE",
+  "storage_mode": "publication-bound append-only candidate rows; no accepted Core row mutation",
+  "table": "v4.base_seed_results",
+  "version": "1.0.0"
+}

@@ -1,0 +1,400 @@
+{
+  "base_input": {
+    "actual_bar": "TRUE",
+    "bias20_atr": 2.0,
+    "close_t": 11.0,
+    "close_t_minus_1": null,
+    "compression_state": "COMPRESSING",
+    "core_participation_result": "HIGH_PARTICIPATION_EFFECTIVE_ADVANCE",
+    "core_price_damage": "FALSE",
+    "delta3": 3.0,
+    "ma20_t": 10.0,
+    "ma20_t_minus_1": null,
+    "ma_structure_state": "BEAR_ALIGNED",
+    "minimum_liquidity": "TRUE",
+    "price_identity_READY": "TRUE",
+    "research_universe": "TRUE",
+    "severe_extension": "FALSE"
+  },
+  "contract_id": "V4_07_MACHINE_VECTORS_V1",
+  "required_cases": [
+    "safety_true_false_unknown_dominance",
+    "bias20_atr_boundary_3",
+    "compression_enum_paths",
+    "delta3_boundaries_3_and_10",
+    "bull_transition",
+    "MA20_reclaim_t_minus_1_equality",
+    "current_close_strictly_above_MA20",
+    "missing_t_minus_1_unknown",
+    "missing_t_unknown",
+    "kleene_or_dominance",
+    "participation_map",
+    "future_row_no_effect"
+  ],
+  "source_contract_id": "BASE_SEED_V1",
+  "status": "FROZEN_CANDIDATE",
+  "vectors": [
+    {
+      "expected": {
+        "safety": "TRUE"
+      },
+      "overrides": {},
+      "suite": "safety",
+      "vector_id": "SAFETY_ALL_TRUE"
+    },
+    {
+      "expected": {
+        "safety": "FALSE"
+      },
+      "overrides": {
+        "actual_bar": "FALSE"
+      },
+      "suite": "safety",
+      "vector_id": "SAFETY_HARD_FALSE"
+    },
+    {
+      "expected": {
+        "safety": "UNKNOWN"
+      },
+      "overrides": {
+        "actual_bar": "UNKNOWN"
+      },
+      "suite": "safety",
+      "vector_id": "SAFETY_REQUIRED_UNKNOWN"
+    },
+    {
+      "expected": {
+        "safety": "FALSE"
+      },
+      "overrides": {
+        "actual_bar": "FALSE",
+        "minimum_liquidity": "UNKNOWN"
+      },
+      "suite": "safety",
+      "vector_id": "SAFETY_FALSE_DOMINATES_UNKNOWN"
+    },
+    {
+      "expected": {
+        "safety": "FALSE"
+      },
+      "overrides": {
+        "severe_extension": "TRUE"
+      },
+      "suite": "safety",
+      "vector_id": "SAFETY_SEVERE_EXTENSION_TRUE"
+    },
+    {
+      "expected": {
+        "safety": "FALSE"
+      },
+      "overrides": {
+        "minimum_liquidity": "FALSE"
+      },
+      "suite": "safety",
+      "vector_id": "SAFETY_MINIMUM_LIQUIDITY_FALSE"
+    },
+    {
+      "expected": {
+        "safety": "UNKNOWN"
+      },
+      "overrides": {
+        "minimum_liquidity": "UNKNOWN"
+      },
+      "suite": "safety",
+      "vector_id": "SAFETY_MINIMUM_LIQUIDITY_UNKNOWN"
+    },
+    {
+      "expected": {
+        "S1": "FALSE",
+        "position_ok": "FALSE"
+      },
+      "overrides": {
+        "bias20_atr": 3.0
+      },
+      "suite": "S1",
+      "vector_id": "S1_BIAS_EQ_3"
+    },
+    {
+      "expected": {
+        "S1": "TRUE",
+        "position_ok": "TRUE"
+      },
+      "overrides": {
+        "bias20_atr": 2.999999
+      },
+      "suite": "S1",
+      "vector_id": "S1_BIAS_JUST_BELOW_3"
+    },
+    {
+      "expected": {
+        "S1": "TRUE",
+        "structure_improving": "TRUE"
+      },
+      "overrides": {
+        "compression_state": "COMPRESSING_STRONG"
+      },
+      "suite": "S1",
+      "vector_id": "S1_COMPRESSING_STRONG"
+    },
+    {
+      "expected": {
+        "S1": "FALSE",
+        "structure_improving": "FALSE"
+      },
+      "overrides": {
+        "compression_state": "NORMAL"
+      },
+      "suite": "S1",
+      "vector_id": "S1_NON_COMPRESSING"
+    },
+    {
+      "expected": {
+        "S1": "TRUE",
+        "relative_change_improving": "TRUE"
+      },
+      "overrides": {
+        "delta3": 3.0
+      },
+      "suite": "S1",
+      "vector_id": "S1_DELTA_EQ_3"
+    },
+    {
+      "expected": {
+        "S1": "FALSE",
+        "relative_change_improving": "FALSE"
+      },
+      "overrides": {
+        "delta3": 2.999999
+      },
+      "suite": "S1",
+      "vector_id": "S1_DELTA_JUST_BELOW_3"
+    },
+    {
+      "expected": {
+        "S1": "UNKNOWN",
+        "relative_change_improving": "UNKNOWN"
+      },
+      "overrides": {
+        "delta3": null
+      },
+      "suite": "S1",
+      "vector_id": "S1_DELTA_UNKNOWN"
+    },
+    {
+      "expected": {
+        "S2": "TRUE",
+        "relative_change_strong": "TRUE",
+        "trend_transition_early": "TRUE"
+      },
+      "overrides": {
+        "delta3": 10.0,
+        "ma_structure_state": "BULL_TRANSITION"
+      },
+      "suite": "S2",
+      "vector_id": "S2_DELTA_EQ_10"
+    },
+    {
+      "expected": {
+        "S2": "FALSE",
+        "relative_change_strong": "FALSE"
+      },
+      "overrides": {
+        "delta3": 9.999999,
+        "ma_structure_state": "BULL_TRANSITION"
+      },
+      "suite": "S2",
+      "vector_id": "S2_DELTA_JUST_BELOW_10"
+    },
+    {
+      "expected": {
+        "S2": "TRUE",
+        "trend_transition_early": "TRUE"
+      },
+      "overrides": {
+        "delta3": 10.0,
+        "ma_structure_state": "BULL_TRANSITION"
+      },
+      "suite": "S2",
+      "vector_id": "S2_BULL_TRANSITION"
+    },
+    {
+      "expected": {
+        "S2": "TRUE",
+        "trend_transition_early": "TRUE"
+      },
+      "overrides": {
+        "close_t": 10.000001,
+        "close_t_minus_1": 10.0,
+        "delta3": 10.0,
+        "ma20_t": 10.0,
+        "ma20_t_minus_1": 10.0,
+        "ma_structure_state": "BEAR_ALIGNED"
+      },
+      "suite": "S2",
+      "vector_id": "S2_RECLAIM_PREVIOUS_EQUALITY"
+    },
+    {
+      "expected": {
+        "S2": "FALSE",
+        "trend_transition_early": "FALSE"
+      },
+      "overrides": {
+        "close_t": 10.0,
+        "close_t_minus_1": 9.0,
+        "delta3": 10.0,
+        "ma20_t": 10.0,
+        "ma20_t_minus_1": 10.0,
+        "ma_structure_state": "BEAR_ALIGNED"
+      },
+      "suite": "S2",
+      "vector_id": "S2_RECLAIM_CURRENT_EQUALITY_NOT_ABOVE"
+    },
+    {
+      "expected": {
+        "S2": "UNKNOWN",
+        "trend_transition_early": "UNKNOWN"
+      },
+      "overrides": {
+        "close_t_minus_1": null,
+        "delta3": 10.0,
+        "ma_structure_state": "BEAR_ALIGNED"
+      },
+      "suite": "S2",
+      "vector_id": "S2_T_MINUS_1_UNKNOWN"
+    },
+    {
+      "expected": {
+        "S2": "UNKNOWN",
+        "trend_transition_early": "UNKNOWN"
+      },
+      "overrides": {
+        "close_t": null,
+        "delta3": 10.0,
+        "ma_structure_state": "BEAR_ALIGNED"
+      },
+      "suite": "S2",
+      "vector_id": "S2_T_CURRENT_UNKNOWN"
+    },
+    {
+      "expected": {
+        "S1": "TRUE",
+        "S2": "UNKNOWN",
+        "seed_paths": "TRUE"
+      },
+      "overrides": {
+        "delta3": 10.0,
+        "ma_structure_state": "UNKNOWN"
+      },
+      "suite": "OR",
+      "vector_id": "OR_S1_TRUE_S2_UNKNOWN"
+    },
+    {
+      "expected": {
+        "S1": "FALSE",
+        "S2": "UNKNOWN",
+        "seed_paths": "UNKNOWN"
+      },
+      "overrides": {
+        "compression_state": "NORMAL",
+        "delta3": 10.0,
+        "ma_structure_state": "BEAR_ALIGNED"
+      },
+      "suite": "OR",
+      "vector_id": "OR_S1_FALSE_S2_UNKNOWN"
+    },
+    {
+      "expected": {
+        "S1": "FALSE",
+        "S2": "FALSE",
+        "seed_paths": "FALSE"
+      },
+      "overrides": {
+        "compression_state": "NORMAL",
+        "delta3": 2.0,
+        "ma_structure_state": "BEAR_ALIGNED"
+      },
+      "suite": "OR",
+      "vector_id": "OR_BOTH_FALSE"
+    },
+    {
+      "expected": {
+        "base_seed_state": "FALSE"
+      },
+      "overrides": {
+        "actual_bar": "FALSE",
+        "delta3": null
+      },
+      "suite": "safety",
+      "vector_id": "BASE_SAFETY_FALSE_DOMINATES_UNKNOWN_PATHS"
+    },
+    {
+      "expected": {
+        "seed_participation_annotation": "SUPPORTED"
+      },
+      "overrides": {
+        "core_participation_result": "HIGH_PARTICIPATION_EFFECTIVE_ADVANCE"
+      },
+      "suite": "participation",
+      "vector_id": "ANNOTATION_SUPPORTED"
+    },
+    {
+      "expected": {
+        "seed_participation_annotation": "CONFLICTING"
+      },
+      "overrides": {
+        "core_participation_result": "HIGH_PARTICIPATION_REVERSAL"
+      },
+      "suite": "participation",
+      "vector_id": "ANNOTATION_REVERSAL_CONFLICTING"
+    },
+    {
+      "expected": {
+        "seed_participation_annotation": "CONFLICTING"
+      },
+      "overrides": {
+        "core_participation_result": "HIGH_PARTICIPATION_LOW_EFFICIENCY"
+      },
+      "suite": "participation",
+      "vector_id": "ANNOTATION_LOW_EFFICIENCY_CONFLICTING"
+    },
+    {
+      "expected": {
+        "seed_participation_annotation": "NEUTRAL"
+      },
+      "overrides": {
+        "core_participation_result": "NORMAL_PARTICIPATION"
+      },
+      "suite": "participation",
+      "vector_id": "ANNOTATION_NEUTRAL"
+    },
+    {
+      "expected": {
+        "seed_participation_annotation": "UNKNOWN"
+      },
+      "overrides": {
+        "core_participation_result": "UNKNOWN"
+      },
+      "suite": "participation",
+      "vector_id": "ANNOTATION_UNKNOWN"
+    },
+    {
+      "expected": {
+        "future_row_changes_result": false
+      },
+      "note": "Appending a row with trade_date 2026-09-29 must not change the T=2026-09-28 logical result.",
+      "overrides": {},
+      "suite": "temporal",
+      "vector_id": "TEMPORAL_FUTURE_ROW_IGNORED"
+    },
+    {
+      "expected": {
+        "supplemental_isolation_expected": "IDENTICAL"
+      },
+      "note": "A-E sidecar mutations do not enter the source projection or result digest.",
+      "overrides": {},
+      "suite": "isolation",
+      "vector_id": "V406_SIDECAR_IGNORED"
+    }
+  ],
+  "version": "1.0.0"
+}

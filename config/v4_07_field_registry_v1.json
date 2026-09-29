@@ -1,0 +1,312 @@
+{
+  "contract_id": "V4_07_FIELD_REGISTRY_V1",
+  "digest_semantics": "Each field value/quality/reason is included in the per-row input_digest; see contract output_digest.",
+  "fields": [
+    {
+      "data_type": "tri_bool",
+      "field_id": "research_universe",
+      "producer": "accepted V4-05 Core Profile identity scope",
+      "producer_contract_id": "V4_05_R4_CORE_PROFILE_REPLAY_V1",
+      "required": true,
+      "source_identity": "publication_id + trade_date + security_id + accepted Core logical digest",
+      "source_path": "accepted profile row membership after exact head/artifact/hash/5222-scope validation",
+      "time_semantics": "asof_T",
+      "unit": "none",
+      "unknown_policy": "missing or failed identity scope is UNKNOWN / source gate blocks; do not infer from external universe"
+    },
+    {
+      "data_type": "tri_bool",
+      "enum_map": {
+        "ACTUAL_TRADED": "TRUE",
+        "SUSPENDED": "FALSE",
+        "UNKNOWN": "UNKNOWN"
+      },
+      "field_id": "actual_bar",
+      "producer": "accepted V4-05 Core Profile",
+      "producer_contract_id": "TRADING_STATUS_V1",
+      "required": true,
+      "source_path": "trading_status",
+      "time_semantics": "actual_bar_at_T",
+      "unit": "none",
+      "unknown_policy": "unmapped/missing status UNKNOWN"
+    },
+    {
+      "data_type": "tri_bool",
+      "field_id": "price_identity_READY",
+      "producer": "accepted V4-05 Core Profile source binding",
+      "producer_contract_id": "V4_05_ACCEPTED_CORE_IDENTITY_BINDING_V1",
+      "required": true,
+      "source_path": "security_id + symbol + board + trade_date + publication_id + row source digest, validated against the accepted artifact binding and uniqueness",
+      "time_semantics": "asof_T",
+      "unit": "none",
+      "unknown_policy": "conflicting or invalid identity fails row binding as UNKNOWN; never repair identity from a later source"
+    },
+    {
+      "data_type": "tri_bool",
+      "field_id": "minimum_liquidity",
+      "producer": "accepted V4-04 derived primitive carried by V4-05 Core Profile",
+      "producer_contract_id": "V4_04_DERIVED_PRIMITIVES_V1",
+      "required": true,
+      "source_path": "derived_fields.minimum_liquidity.value; quality must be OBSERVED",
+      "time_semantics": "prior20_actual_sessions_asof_T",
+      "unit": "none",
+      "unit_semantics": "prior20 mean amount >= 20,000,000 CNY as frozen by REV2 §14.2; V4-07 consumes bool only",
+      "unknown_policy": "preserve accepted quality/reason"
+    },
+    {
+      "data_type": "tri_bool",
+      "field_id": "core_price_damage",
+      "producer": "accepted V4-04 TREND_STATE_V1 evidence",
+      "producer_contract_id": "TREND_STATE_V1",
+      "required": true,
+      "source_path": "states.trend_state.evidence.core_price_damage",
+      "time_semantics": "asof_T",
+      "unit": "none",
+      "unknown_policy": "preserve null/missing as UNKNOWN"
+    },
+    {
+      "data_type": "tri_bool",
+      "field_id": "severe_extension",
+      "producer": "accepted V4-04 extension risk state",
+      "producer_contract_id": "EXTENSION_RISK_V1",
+      "required": true,
+      "source_path": "states.severe_extension.value",
+      "time_semantics": "asof_T",
+      "unit": "none",
+      "unknown_policy": "preserve UNKNOWN; never derive from turnover"
+    },
+    {
+      "data_type": "float64",
+      "field_id": "bias20_atr",
+      "producer": "accepted V4-04 derived primitive",
+      "producer_contract_id": "V4_04_DERIVED_PRIMITIVES_V1",
+      "required": true,
+      "source_path": "derived_fields.bias20_atr.value; quality must be OBSERVED",
+      "time_semantics": "asof_T",
+      "unit": "ATR_multiple",
+      "unknown_policy": "preserve accepted quality/reason"
+    },
+    {
+      "accepted_values": [
+        "COMPRESSING",
+        "COMPRESSING_STRONG",
+        "NORMAL",
+        "EXPANDING",
+        "EXPANDING_EXTREME",
+        "UNKNOWN"
+      ],
+      "data_type": "enum",
+      "field_id": "compression_state",
+      "producer": "accepted V4-04 Core Profile",
+      "producer_contract_id": "COMPRESSION_STATE_V1",
+      "required": true,
+      "source_path": "states.compression_state.value",
+      "time_semantics": "asof_T",
+      "unit": "state",
+      "unknown_policy": "UNKNOWN stays UNKNOWN"
+    },
+    {
+      "data_type": "float64",
+      "field_id": "delta3",
+      "producer": "accepted V4-03 relative factor carried by V4-05 Full Scope Factors",
+      "producer_contract_id": "V4_03_RELATIVE_FACTOR_V1",
+      "required": true,
+      "source_path": "fields.rps5_delta3.value; cross-check quality/reason/input/output/window identity against Core Profile primitive_quality.rps5_delta3",
+      "time_semantics": "rps5[T] - rps5[T-3], asof_T, no future data",
+      "unit": "RPS_points",
+      "unknown_policy": "preserve accepted UNKNOWN; no alternate delta or recomputation"
+    },
+    {
+      "accepted_values": [
+        "BULL_ALIGNED",
+        "BULL_TRANSITION",
+        "BEAR_ALIGNED",
+        "BEAR_TRANSITION",
+        "MIXED",
+        "UNKNOWN"
+      ],
+      "data_type": "enum",
+      "field_id": "ma_structure_state",
+      "producer": "accepted V4-04 Core Profile",
+      "producer_contract_id": "MA_STRUCTURE_V1",
+      "required": true,
+      "source_path": "states.ma_structure_state.value",
+      "time_semantics": "asof_T",
+      "unit": "state",
+      "unknown_policy": "UNKNOWN stays UNKNOWN"
+    },
+    {
+      "data_type": "decimal",
+      "field_id": "close_t",
+      "price_basis": "accepted T0 current QFQ coordinate",
+      "producer": "accepted V4-04 TREND_STATE_V1 evidence",
+      "producer_contract_id": "TREND_STATE_V1",
+      "required": true,
+      "source_path": "states.trend_state.evidence.close",
+      "time_semantics": "T",
+      "unit": "CNY_per_share",
+      "unknown_policy": "preserve missing as UNKNOWN"
+    },
+    {
+      "data_type": "decimal",
+      "field_id": "ma20_t",
+      "price_basis": "accepted T0 current QFQ coordinate",
+      "producer": "accepted V4-04 TREND_STATE_V1 evidence",
+      "producer_contract_id": "TREND_STATE_V1",
+      "required": true,
+      "source_path": "states.trend_state.evidence.ma20",
+      "time_semantics": "T",
+      "unit": "CNY_per_share",
+      "unknown_policy": "preserve missing as UNKNOWN"
+    },
+    {
+      "data_type": "decimal",
+      "field_id": "close_t_minus_1",
+      "price_basis": "accepted T0 current QFQ coordinate",
+      "producer": "accepted V4-05 Core Profile when present",
+      "producer_contract_id": "BASE_SEED_V1_INPUTS",
+      "required": true,
+      "required_for": "MA20 reclaim OR branch only",
+      "source_path": "NOT_PRESENT_IN_ACCEPTED_PROFILE_ARTIFACT_R4_1",
+      "time_semantics": "T-1",
+      "unit": "CNY_per_share",
+      "unknown_policy": "ACCEPTED_T_MINUS_1_CORE_FIELD_UNAVAILABLE; no raw source reconstruction"
+    },
+    {
+      "data_type": "decimal",
+      "field_id": "ma20_t_minus_1",
+      "price_basis": "accepted T0 current QFQ coordinate",
+      "producer": "accepted V4-05 Core Profile when present",
+      "producer_contract_id": "BASE_SEED_V1_INPUTS",
+      "required": true,
+      "required_for": "MA20 reclaim OR branch only",
+      "source_path": "NOT_PRESENT_IN_ACCEPTED_PROFILE_ARTIFACT_R4_1",
+      "time_semantics": "T-1",
+      "unit": "CNY_per_share",
+      "unknown_policy": "ACCEPTED_T_MINUS_1_CORE_FIELD_UNAVAILABLE; no raw source reconstruction"
+    },
+    {
+      "accepted_values": [
+        "HIGH_PARTICIPATION_EFFECTIVE_ADVANCE",
+        "HIGH_PARTICIPATION_REVERSAL",
+        "HIGH_PARTICIPATION_LOW_EFFICIENCY",
+        "LOW_PARTICIPATION_ADVANCE",
+        "LOW_PARTICIPATION_DECLINE",
+        "NORMAL_PARTICIPATION",
+        "UNKNOWN"
+      ],
+      "data_type": "enum",
+      "field_id": "core_participation_result",
+      "producer": "accepted V4-04 Core Profile",
+      "producer_contract_id": "AMOUNT_VOLUME_STATE_V1",
+      "required": true,
+      "source_path": "states.core_participation_result.value",
+      "time_semantics": "asof_T",
+      "unit": "state",
+      "unknown_policy": "UNKNOWN stays UNKNOWN; mapping in BASE_SEED_PARTICIPATION_MAP_V1"
+    }
+  ],
+  "output_fields": [
+    {
+      "field_id": "publication_id",
+      "required": true,
+      "source": "accepted V4-05 PostgreSQL publication head bound by R4.2 exact ledger receipt",
+      "type": "string"
+    },
+    {
+      "field_id": "trade_date",
+      "required": true,
+      "source": "accepted Core Profile trade_date",
+      "type": "date"
+    },
+    {
+      "field_id": "security_id",
+      "required": true,
+      "source": "accepted Core Profile security_id",
+      "type": "string"
+    },
+    {
+      "field_id": "base_seed_state",
+      "required": true,
+      "type": "enum[TRUE,FALSE,UNKNOWN]"
+    },
+    {
+      "field_id": "matched_seed_paths",
+      "required": true,
+      "type": "array[string]"
+    },
+    {
+      "field_id": "domain_states",
+      "required": true,
+      "type": "object[string,enum]"
+    },
+    {
+      "field_id": "waiting_for",
+      "required": true,
+      "type": "array[object]"
+    },
+    {
+      "field_id": "invalid_if",
+      "required": true,
+      "type": "array[object]"
+    },
+    {
+      "field_id": "quality",
+      "required": true,
+      "type": "enum[COMPLETE,PARTIAL_UNKNOWN]"
+    },
+    {
+      "field_id": "quality_codes",
+      "required": true,
+      "type": "array[string]"
+    },
+    {
+      "field_id": "seed_participation_annotation",
+      "required": true,
+      "type": "enum[SUPPORTED,CONFLICTING,NEUTRAL,UNKNOWN]"
+    },
+    {
+      "field_id": "model_contract_id",
+      "required": true,
+      "type": "string",
+      "value": "BASE_SEED_V1"
+    },
+    {
+      "field_id": "parameter_set_id",
+      "required": true,
+      "type": "string",
+      "value": "V4_07_BASE_SEED_PARAMETER_SET_V1"
+    },
+    {
+      "field_id": "source_publication_id",
+      "required": true,
+      "source": "accepted Core Profile row publication_id namespace value; expected V4_05_R4_T0_CURRENT_COORDINATE",
+      "type": "string"
+    },
+    {
+      "field_id": "source_core_logical_digest",
+      "required": true,
+      "type": "sha256"
+    },
+    {
+      "field_id": "input_digest",
+      "required": true,
+      "type": "sha256"
+    },
+    {
+      "field_id": "fact_digest",
+      "required": true,
+      "type": "sha256"
+    },
+    {
+      "digest_inclusion": false,
+      "field_id": "created_at",
+      "required": true,
+      "type": "timestamp_utc"
+    }
+  ],
+  "source_contract_id": "BASE_SEED_V1",
+  "stage": "V4-07",
+  "status": "FROZEN_CANDIDATE",
+  "version": "1.0.0"
+}

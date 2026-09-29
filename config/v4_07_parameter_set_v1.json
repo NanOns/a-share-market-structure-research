@@ -1,0 +1,41 @@
+{
+  "claims": "Engineering candidate thresholds from REV2; no optimum or probability claim.",
+  "owner_stage": "V4-07",
+  "parameter_set_id": "V4_07_BASE_SEED_PARAMETER_SET_V1",
+  "parameters": [
+    {
+      "authority": "REV2 §14.3",
+      "comparison": "STRICT_LT",
+      "parameter_id": "V4_07_POSITION_BIAS20_ATR_MAX",
+      "status": "FROZEN_CANDIDATE",
+      "unit": "ATR_multiple",
+      "value": 3
+    },
+    {
+      "authority": "REV2 §14.3; §10E defines delta3 from rps5",
+      "comparison": "GTE",
+      "parameter_id": "V4_07_DELTA3_IMPROVING_MIN_POINTS",
+      "status": "FROZEN_CANDIDATE",
+      "unit": "RPS_points",
+      "value": 3
+    },
+    {
+      "authority": "REV2 §14.3; §10E defines delta3 from rps5",
+      "comparison": "GTE",
+      "parameter_id": "V4_07_DELTA3_STRONG_MIN_POINTS",
+      "status": "FROZEN_CANDIDATE",
+      "unit": "RPS_points",
+      "value": 10
+    },
+    {
+      "authority": "REV2 §14.2; consumed only via accepted V4-04 minimum_liquidity value",
+      "comparison": "GTE",
+      "parameter_id": "V4_07_MINIMUM_LIQUIDITY_PRIOR20_CNY",
+      "status": "FROZEN_INHERITED_NOT_RECOMPUTED",
+      "unit": "CNY",
+      "value": 20000000
+    }
+  ],
+  "status": "FROZEN_CANDIDATE",
+  "version": "1.0.0"
+}

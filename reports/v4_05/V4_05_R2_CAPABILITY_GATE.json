@@ -1,0 +1,129 @@
+{
+  "capabilities": [
+    {
+      "affected_dates": [
+        "2026-09-28"
+      ],
+      "affected_entities": 5222,
+      "affected_fields": [
+        "CURRENT_FORWARD_STOCK_CORE"
+      ],
+      "capability_scope": "CURRENT_FORWARD_STOCK_CORE",
+      "evidence": [
+        "V4_05_R2_FACTOR_SOURCE_TIME.json",
+        "V4_05_R2_CORE_PROFILE_REPLAY.json"
+      ],
+      "reasons": [
+        "weekly/monthly, factor and Core Profile replay not complete"
+      ],
+      "status": "BLOCKED"
+    },
+    {
+      "affected_dates": [
+        "pre-project historical dates"
+      ],
+      "affected_entities": "historical accepted universe",
+      "affected_fields": [
+        "qfq_ohlc"
+      ],
+      "capability_scope": "HISTORICAL_AS_RECORDED_ADJUSTED_PRICE",
+      "evidence": [
+        "V4_05_R2_ADJUSTMENT_REPRODUCIBILITY.json"
+      ],
+      "reasons": [
+        "BLOCKED_NO_FIRST_AVAILABILITY_EVIDENCE"
+      ],
+      "status": "BLOCKED"
+    },
+    {
+      "affected_dates": [
+        "2026-09-28"
+      ],
+      "affected_entities": 5222,
+      "affected_fields": [
+        "WEEKLY_PERIOD"
+      ],
+      "capability_scope": "WEEKLY_PERIOD",
+      "evidence": [
+        "V4_05_R2_PERIOD_ASOF.json"
+      ],
+      "reasons": [
+        "TARGET_DATE_ACCEPTED_INPUT_SERIES_NOT_MATERIALIZED"
+      ],
+      "status": "BLOCKED"
+    },
+    {
+      "affected_dates": [
+        "2026-09-28"
+      ],
+      "affected_entities": 5222,
+      "affected_fields": [
+        "MONTHLY_PERIOD"
+      ],
+      "capability_scope": "MONTHLY_PERIOD",
+      "evidence": [
+        "V4_05_R2_PERIOD_ASOF.json"
+      ],
+      "reasons": [
+        "TARGET_DATE_ACCEPTED_INPUT_SERIES_NOT_MATERIALIZED"
+      ],
+      "status": "BLOCKED"
+    },
+    {
+      "affected_dates": [
+        "2026-09-28"
+      ],
+      "affected_entities": 5222,
+      "affected_fields": [
+        "MARKET_REFERENCE"
+      ],
+      "capability_scope": "MARKET_REFERENCE",
+      "evidence": [
+        "V4_05_R2_MARKET_REFERENCE_REGIME.json"
+      ],
+      "reasons": [
+        "TARGET_DATE_ACCEPTED_INPUT_SERIES_NOT_MATERIALIZED"
+      ],
+      "status": "BLOCKED"
+    },
+    {
+      "affected_dates": [
+        "2026-09-28"
+      ],
+      "affected_entities": 5222,
+      "affected_fields": [
+        "MARKET_REGIME"
+      ],
+      "capability_scope": "MARKET_REGIME",
+      "evidence": [
+        "V4_05_R2_MARKET_REFERENCE_REGIME.json"
+      ],
+      "reasons": [
+        "TARGET_DATE_ACCEPTED_INPUT_SERIES_NOT_MATERIALIZED"
+      ],
+      "status": "BLOCKED"
+    },
+    {
+      "affected_dates": [
+        "2026-09-28"
+      ],
+      "affected_entities": 5222,
+      "affected_fields": [
+        "qfq_ohlc"
+      ],
+      "capability_scope": "CURRENT_FORWARD_ADJUSTED_PRICE",
+      "evidence": [
+        "V4_05_R2_ADJUSTMENT_REPRODUCIBILITY.json",
+        "V4_05_R2_DAILY_DETERMINISM.json"
+      ],
+      "reasons": [],
+      "status": "FULL_PASS"
+    }
+  ],
+  "contract_id": "V4_05_CAPABILITY_GATE_R2",
+  "data_factor_replay_pass": [],
+  "historical_as_recorded_adjusted_price": "BLOCKED_NO_FIRST_AVAILABILITY_EVIDENCE",
+  "next_stage": "COMPLETE_TARGET_DATE_SERIES_FACTORS_REFERENCE_AND_PROFILE_BEFORE_EXTERNAL_AUDIT",
+  "status": "BLOCKED_REQUIRED_CURRENT_FORWARD_STOCK_CORE",
+  "target_trade_date": "2026-09-28"
+}

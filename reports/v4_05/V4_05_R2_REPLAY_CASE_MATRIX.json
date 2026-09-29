@@ -1,0 +1,46 @@
+{
+  "cases": {
+    "code_change_identity": {
+      "evidence": "reports/v4_02/V4_02_GO_FORWARD_ADJUSTMENT_SAMPLES_R3.json",
+      "status": "PASS_UPSTREAM_ACCEPTED_R3"
+    },
+    "future_raw_row": {
+      "evidence": "V4_05_R2_TEMPORAL_LEAKAGE.json",
+      "status": "BLOCKED_UNEXECUTED_R2"
+    },
+    "incomplete_month": {
+      "evidence": "V4_05_R2_PERIOD_ASOF.json",
+      "status": "BLOCKED_UNEXECUTED"
+    },
+    "later_gbbq_revision": {
+      "evidence": "V4_05_R2_TEMPORAL_LEAKAGE.json",
+      "status": "BLOCKED_UNEXECUTED_R2"
+    },
+    "monday_weekly_asof": {
+      "evidence": "V4_05_R2_PERIOD_ASOF.json",
+      "status": "BLOCKED_UNEXECUTED"
+    },
+    "no_t0_bar": {
+      "evidence": "V4_05_R2_ADJUSTMENT_REPRODUCIBILITY.json",
+      "status": "PASS_QUALITY_PROPAGATION"
+    },
+    "sep28_current_forward": {
+      "evidence": "V4_05_R2_DAILY_DETERMINISM.json",
+      "status": "PASS_DAILY_ONLY"
+    },
+    "synthetic_unresolved_new_key": {
+      "evidence": "tests/v4_02/test_go_forward_r3.py",
+      "status": "PASS_UPSTREAM_ACCEPTED_R3"
+    },
+    "synthetic_valid_new_listing": {
+      "evidence": "tests/v4_02/test_go_forward_r3.py",
+      "status": "PASS_UPSTREAM_ACCEPTED_R3"
+    },
+    "unsupported_adjustment": {
+      "evidence": "V4_05_R2_ADJUSTMENT_REPRODUCIBILITY.json",
+      "status": "PASS_QUALITY_PROPAGATION"
+    }
+  },
+  "contract_id": "V4_05_REPLAY_CASE_MATRIX_R2",
+  "target_trade_date": "2026-09-28"
+}

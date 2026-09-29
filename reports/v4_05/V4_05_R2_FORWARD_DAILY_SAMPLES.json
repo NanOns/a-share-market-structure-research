@@ -1,0 +1,723 @@
+{
+  "contract_id": "V4_02_GO_FORWARD_ADJUSTMENT_SAMPLES_R3",
+  "sample_kinds": {
+    "cash_dividend": {
+      "row": {
+        "adjusted_quality": "ADJUSTED_READY",
+        "adjustment_reason": null,
+        "adjustment_snapshot_digest": "f8c6a60e052a3fd7f8c3a043dbc9c53311a7599e1b36bb6cc140058f56269ef1",
+        "adjustment_snapshot_id": "sha256-775d82c58b5b46ec1d21478f86ba8ef90302691982e68d5c4cfcd51fddda666e",
+        "adjustment_source_available_at": "2026-09-26T13:07:05Z",
+        "adjustment_system_available_at": "2026-09-26T13:07:05Z",
+        "blocking_event_categories": [],
+        "board_scope": "SH_MAIN",
+        "contract_id": "V4_02_GO_FORWARD_T0_CURRENT_COORDINATE_R2",
+        "contract_sha256": "9bc22579ab4e7547f69ab38899d4ae6ee60b49d51dee574b50b18cbb277f1069",
+        "coordinate_basis": "T0_CURRENT_COORDINATE",
+        "formal_publication_at": "2026-09-29T06:53:52+00:00",
+        "historical_as_recorded_claim": false,
+        "knowledge_lineage": "PIT_OBSERVED_AFTER_FORMAL_PUBLICATION",
+        "lookback_bar_count": 251,
+        "lookback_logical_digest": "175e9bcb7729b70816590b563268a8664b8e3a4378db0c6e6614e4a90b9ef2f4",
+        "max_source_trade_date": 20260928,
+        "new_listing_provenance": null,
+        "official_raw_source_published_at": "2026-09-28T07:58:05Z",
+        "project_raw_source_available_at": "2026-09-29T06:53:52+00:00",
+        "qfq_add": "0",
+        "qfq_mul": "1",
+        "qfq_ohlc": [
+          "9.03",
+          "9.18",
+          "9.00",
+          "9.16"
+        ],
+        "raw_ohlc": [
+          "9.03",
+          "9.18",
+          "9.0",
+          "9.16"
+        ],
+        "raw_source_digest": "9a737f94f4b3f902002693815249726f1e52a01392fb3a6628c7a9b7c7319d98",
+        "raw_source_snapshot_id": "sha256-70b79898325ef6c67ea697f922d38fa3fd523e2ad62879b1b9fcb59fce52bf0c",
+        "security_id": "SEC-62C40F6EEABB12A3B3F00D4FB0B61ED0",
+        "source_asof": 20260928,
+        "source_security_key": "SH.600000",
+        "source_visibility_basis": "FROZEN_PRE_T0_GBBQ_SNAPSHOT",
+        "system_available_at": "2026-09-29T06:53:52+00:00",
+        "target_trade_date": 20260928,
+        "visible_effective_event_count": 10,
+        "visible_effective_event_set_digest": "3ff7b5d50a92cffc24ff58cd5f75a9827ca5d900ef72fe92a1280a7b33c0001c"
+      },
+      "sample_event": {
+        "c": [
+          4.199999809265137,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "category": 1,
+        "date": 20260716,
+        "index": 117839
+      },
+      "visible_event_set": [
+        {
+          "c": [
+            3026768.0,
+            3026768.0,
+            3135468.75,
+            3135468.75
+          ],
+          "category": 5,
+          "date": 20250930,
+          "index": 117830
+        },
+        {
+          "c": [
+            3135468.75,
+            3135468.75,
+            3137867.5,
+            3137867.5
+          ],
+          "category": 5,
+          "date": 20251010,
+          "index": 117831
+        },
+        {
+          "c": [
+            3137867.5,
+            3137867.5,
+            3182884.25,
+            3182884.25
+          ],
+          "category": 5,
+          "date": 20251013,
+          "index": 117832
+        },
+        {
+          "c": [
+            3182884.25,
+            3182884.25,
+            3237967.75,
+            3237967.75
+          ],
+          "category": 5,
+          "date": 20251015,
+          "index": 117833
+        },
+        {
+          "c": [
+            3237967.75,
+            3237967.75,
+            3250324.25,
+            3250324.25
+          ],
+          "category": 5,
+          "date": 20251016,
+          "index": 117834
+        },
+        {
+          "c": [
+            3250324.25,
+            3250324.25,
+            3269302.0,
+            3269302.0
+          ],
+          "category": 5,
+          "date": 20251017,
+          "index": 117835
+        },
+        {
+          "c": [
+            3269302.0,
+            3269302.0,
+            3318702.75,
+            3318702.75
+          ],
+          "category": 5,
+          "date": 20251023,
+          "index": 117836
+        },
+        {
+          "c": [
+            3318702.75,
+            3318702.75,
+            3330577.0,
+            3330577.0
+          ],
+          "category": 5,
+          "date": 20251024,
+          "index": 117837
+        },
+        {
+          "c": [
+            3330577.0,
+            3330577.0,
+            3330583.75,
+            3330583.75
+          ],
+          "category": 5,
+          "date": 20251027,
+          "index": 117838
+        },
+        {
+          "c": [
+            4.199999809265137,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "category": 1,
+          "date": 20260716,
+          "index": 117839
+        }
+      ]
+    },
+    "code_change": {
+      "row": {
+        "adjusted_quality": "ADJUSTED_READY",
+        "adjustment_reason": null,
+        "adjustment_snapshot_digest": "f8c6a60e052a3fd7f8c3a043dbc9c53311a7599e1b36bb6cc140058f56269ef1",
+        "adjustment_snapshot_id": "sha256-775d82c58b5b46ec1d21478f86ba8ef90302691982e68d5c4cfcd51fddda666e",
+        "adjustment_source_available_at": "2026-09-26T13:07:05Z",
+        "adjustment_system_available_at": "2026-09-26T13:07:05Z",
+        "blocking_event_categories": [],
+        "board_scope": "CHINEXT",
+        "contract_id": "V4_02_GO_FORWARD_T0_CURRENT_COORDINATE_R2",
+        "contract_sha256": "9bc22579ab4e7547f69ab38899d4ae6ee60b49d51dee574b50b18cbb277f1069",
+        "coordinate_basis": "T0_CURRENT_COORDINATE",
+        "formal_publication_at": "2026-09-29T06:53:52+00:00",
+        "historical_as_recorded_claim": false,
+        "knowledge_lineage": "PIT_OBSERVED_AFTER_FORMAL_PUBLICATION",
+        "lookback_bar_count": 251,
+        "lookback_logical_digest": "d1637a8bc2834827860cc13c9d8773a60344101ac151c27c1bf1b598d89dc40f",
+        "max_source_trade_date": 20260928,
+        "new_listing_provenance": null,
+        "official_raw_source_published_at": "2026-09-28T07:58:05Z",
+        "project_raw_source_available_at": "2026-09-29T06:53:52+00:00",
+        "qfq_add": "0",
+        "qfq_mul": "1",
+        "qfq_ohlc": [
+          "58.16",
+          "59.08",
+          "57.80",
+          "58.73"
+        ],
+        "raw_ohlc": [
+          "58.16",
+          "59.08",
+          "57.8",
+          "58.73"
+        ],
+        "raw_source_digest": "b56d79a87cd4bc9d1bde1f7ed131b56cf1050280dee3b789477e739fb92e5789",
+        "raw_source_snapshot_id": "sha256-70b79898325ef6c67ea697f922d38fa3fd523e2ad62879b1b9fcb59fce52bf0c",
+        "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+        "source_asof": 20260928,
+        "source_security_key": "SZ.302132",
+        "source_visibility_basis": "FROZEN_PRE_T0_GBBQ_SNAPSHOT",
+        "system_available_at": "2026-09-29T06:53:52+00:00",
+        "target_trade_date": 20260928,
+        "visible_effective_event_count": 1,
+        "visible_effective_event_set_digest": "8546d641a1fc3ab7cf8a416277572277b731d956466be2251428e5ec62d2782c"
+      },
+      "visible_event_set": [
+        {
+          "c": [
+            3.859999895095825,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "category": 1,
+          "date": 20260616,
+          "index": 116194
+        }
+      ]
+    },
+    "combined": {
+      "row": {
+        "adjusted_quality": "ADJUSTED_READY",
+        "adjustment_reason": null,
+        "adjustment_snapshot_digest": "f8c6a60e052a3fd7f8c3a043dbc9c53311a7599e1b36bb6cc140058f56269ef1",
+        "adjustment_snapshot_id": "sha256-775d82c58b5b46ec1d21478f86ba8ef90302691982e68d5c4cfcd51fddda666e",
+        "adjustment_source_available_at": "2026-09-26T13:07:05Z",
+        "adjustment_system_available_at": "2026-09-26T13:07:05Z",
+        "blocking_event_categories": [],
+        "board_scope": "SH_MAIN",
+        "contract_id": "V4_02_GO_FORWARD_T0_CURRENT_COORDINATE_R2",
+        "contract_sha256": "9bc22579ab4e7547f69ab38899d4ae6ee60b49d51dee574b50b18cbb277f1069",
+        "coordinate_basis": "T0_CURRENT_COORDINATE",
+        "formal_publication_at": "2026-09-29T06:53:52+00:00",
+        "historical_as_recorded_claim": false,
+        "knowledge_lineage": "PIT_OBSERVED_AFTER_FORMAL_PUBLICATION",
+        "lookback_bar_count": 251,
+        "lookback_logical_digest": "f95ba694b2b5b2cc996f66bb1c7f9b150dcc689fe67ae70626e2ef071e139515",
+        "max_source_trade_date": 20260928,
+        "new_listing_provenance": null,
+        "official_raw_source_published_at": "2026-09-28T07:58:05Z",
+        "project_raw_source_available_at": "2026-09-29T06:53:52+00:00",
+        "qfq_add": "0",
+        "qfq_mul": "1",
+        "qfq_ohlc": [
+          "14.66",
+          "14.85",
+          "14.49",
+          "14.58"
+        ],
+        "raw_ohlc": [
+          "14.66",
+          "14.85",
+          "14.49",
+          "14.58"
+        ],
+        "raw_source_digest": "c43a9f60252ca96b8eadb6ca12a8d83f93d45d13b59561f6150b9409a584638d",
+        "raw_source_snapshot_id": "sha256-70b79898325ef6c67ea697f922d38fa3fd523e2ad62879b1b9fcb59fce52bf0c",
+        "security_id": "SEC-AE4BDB78FA36EA583E98908F2343F65F",
+        "source_asof": 20260928,
+        "source_security_key": "SH.600262",
+        "source_visibility_basis": "FROZEN_PRE_T0_GBBQ_SNAPSHOT",
+        "system_available_at": "2026-09-29T06:53:52+00:00",
+        "target_trade_date": 20260928,
+        "visible_effective_event_count": 2,
+        "visible_effective_event_set_digest": "d88c94dfafcbe211663cf4c5f069b5d48bf1b724058f55ba56de64d22117dbf0"
+      },
+      "sample_event": {
+        "c": [
+          3.809999942779541,
+          0.0,
+          4.0,
+          0.0
+        ],
+        "category": 1,
+        "date": 20260717,
+        "index": 125989
+      },
+      "visible_event_set": [
+        {
+          "c": [
+            3.809999942779541,
+            0.0,
+            4.0,
+            0.0
+          ],
+          "category": 1,
+          "date": 20260717,
+          "index": 125989
+        },
+        {
+          "c": [
+            17000.0,
+            17000.0,
+            23800.0,
+            23800.0
+          ],
+          "category": 9,
+          "date": 20260717,
+          "index": 125990
+        }
+      ]
+    },
+    "no_action": {
+      "row": {
+        "adjusted_quality": "ADJUSTED_READY",
+        "adjustment_reason": null,
+        "adjustment_snapshot_digest": "f8c6a60e052a3fd7f8c3a043dbc9c53311a7599e1b36bb6cc140058f56269ef1",
+        "adjustment_snapshot_id": "sha256-775d82c58b5b46ec1d21478f86ba8ef90302691982e68d5c4cfcd51fddda666e",
+        "adjustment_source_available_at": "2026-09-26T13:07:05Z",
+        "adjustment_system_available_at": "2026-09-26T13:07:05Z",
+        "blocking_event_categories": [],
+        "board_scope": "SH_MAIN",
+        "contract_id": "V4_02_GO_FORWARD_T0_CURRENT_COORDINATE_R2",
+        "contract_sha256": "9bc22579ab4e7547f69ab38899d4ae6ee60b49d51dee574b50b18cbb277f1069",
+        "coordinate_basis": "T0_CURRENT_COORDINATE",
+        "formal_publication_at": "2026-09-29T06:53:52+00:00",
+        "historical_as_recorded_claim": false,
+        "knowledge_lineage": "PIT_OBSERVED_AFTER_FORMAL_PUBLICATION",
+        "lookback_bar_count": 251,
+        "lookback_logical_digest": "14ecdf7d1998219f47b623b0f8254be354d9af76e50236f91fcecd1bf0f3eb3a",
+        "max_source_trade_date": 20260928,
+        "new_listing_provenance": null,
+        "official_raw_source_published_at": "2026-09-28T07:58:05Z",
+        "project_raw_source_available_at": "2026-09-29T06:53:52+00:00",
+        "qfq_add": "0",
+        "qfq_mul": "1",
+        "qfq_ohlc": [
+          "5.45",
+          "5.95",
+          "5.44",
+          "5.83"
+        ],
+        "raw_ohlc": [
+          "5.45",
+          "5.95",
+          "5.44",
+          "5.83"
+        ],
+        "raw_source_digest": "392894a10b8926141fc41d181933493917022cab073e14aaa4a02ef8c06828e8",
+        "raw_source_snapshot_id": "sha256-70b79898325ef6c67ea697f922d38fa3fd523e2ad62879b1b9fcb59fce52bf0c",
+        "security_id": "SEC-7F415A4A00D6F3B290BFC980281EDA86",
+        "source_asof": 20260928,
+        "source_security_key": "SH.600006",
+        "source_visibility_basis": "FROZEN_PRE_T0_GBBQ_SNAPSHOT",
+        "system_available_at": "2026-09-29T06:53:52+00:00",
+        "target_trade_date": 20260928,
+        "visible_effective_event_count": 0,
+        "visible_effective_event_set_digest": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+      },
+      "visible_event_set": []
+    },
+    "no_t0_bar": {
+      "row": {
+        "adjusted_quality": "ADJUSTED_UNAVAILABLE_NO_T0_RAW",
+        "adjustment_reason": "NO_T0_RAW_BAR",
+        "adjustment_snapshot_digest": "f8c6a60e052a3fd7f8c3a043dbc9c53311a7599e1b36bb6cc140058f56269ef1",
+        "adjustment_snapshot_id": "sha256-775d82c58b5b46ec1d21478f86ba8ef90302691982e68d5c4cfcd51fddda666e",
+        "adjustment_source_available_at": "2026-09-26T13:07:05Z",
+        "adjustment_system_available_at": "2026-09-26T13:07:05Z",
+        "blocking_event_categories": [],
+        "board_scope": "SH_MAIN",
+        "contract_id": "V4_02_GO_FORWARD_T0_CURRENT_COORDINATE_R2",
+        "contract_sha256": "9bc22579ab4e7547f69ab38899d4ae6ee60b49d51dee574b50b18cbb277f1069",
+        "coordinate_basis": "T0_CURRENT_COORDINATE",
+        "formal_publication_at": "2026-09-29T06:53:52+00:00",
+        "historical_as_recorded_claim": false,
+        "knowledge_lineage": "PIT_OBSERVED_AFTER_FORMAL_PUBLICATION",
+        "lookback_bar_count": 251,
+        "lookback_logical_digest": null,
+        "max_source_trade_date": 20260914,
+        "new_listing_provenance": null,
+        "official_raw_source_published_at": "2026-09-28T07:58:05Z",
+        "project_raw_source_available_at": "2026-09-29T06:53:52+00:00",
+        "qfq_add": null,
+        "qfq_mul": null,
+        "qfq_ohlc": null,
+        "raw_ohlc": null,
+        "raw_source_digest": "9ab5c2936d6bf009767b37799db34ec8a78bfad5848a172e4be3738baf2ea22c",
+        "raw_source_snapshot_id": "sha256-70b79898325ef6c67ea697f922d38fa3fd523e2ad62879b1b9fcb59fce52bf0c",
+        "security_id": "SEC-11E54DE9C2693CFA40A4C091BCD5ABF9",
+        "source_asof": 20260928,
+        "source_security_key": "SH.601059",
+        "source_visibility_basis": "FROZEN_PRE_T0_GBBQ_SNAPSHOT",
+        "system_available_at": "2026-09-29T06:53:52+00:00",
+        "target_trade_date": 20260928,
+        "visible_effective_event_count": 4,
+        "visible_effective_event_set_digest": "88878f6c0bf59488a09d30d42db6e9957e14392c4515a0af650179d5ceb78cfb"
+      },
+      "visible_event_set": [
+        {
+          "c": [
+            0.27000001072883606,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "category": 1,
+          "date": 20250815,
+          "index": 149430
+        },
+        {
+          "c": [
+            0.4699999988079071,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "category": 1,
+          "date": 20251027,
+          "index": 149431
+        },
+        {
+          "c": [
+            69160.0,
+            324300.0,
+            324300.0,
+            324300.0
+          ],
+          "category": 5,
+          "date": 20260202,
+          "index": 149432
+        },
+        {
+          "c": [
+            0.4000000059604645,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "category": 1,
+          "date": 20260728,
+          "index": 149433
+        }
+      ]
+    },
+    "rights_issue": {
+      "row": {
+        "adjusted_quality": "ADJUSTED_READY",
+        "adjustment_reason": null,
+        "adjustment_snapshot_digest": "f8c6a60e052a3fd7f8c3a043dbc9c53311a7599e1b36bb6cc140058f56269ef1",
+        "adjustment_snapshot_id": "sha256-775d82c58b5b46ec1d21478f86ba8ef90302691982e68d5c4cfcd51fddda666e",
+        "adjustment_source_available_at": "2026-09-26T13:07:05Z",
+        "adjustment_system_available_at": "2026-09-26T13:07:05Z",
+        "blocking_event_categories": [],
+        "board_scope": "CHINEXT",
+        "contract_id": "V4_02_GO_FORWARD_T0_CURRENT_COORDINATE_R2",
+        "contract_sha256": "9bc22579ab4e7547f69ab38899d4ae6ee60b49d51dee574b50b18cbb277f1069",
+        "coordinate_basis": "T0_CURRENT_COORDINATE",
+        "formal_publication_at": "2026-09-29T06:53:52+00:00",
+        "historical_as_recorded_claim": false,
+        "knowledge_lineage": "PIT_OBSERVED_AFTER_FORMAL_PUBLICATION",
+        "lookback_bar_count": 251,
+        "lookback_logical_digest": "c2856615b1de2022b4627a2436cb824f62846cf658bff6b61200b8275beb82dd",
+        "max_source_trade_date": 20260928,
+        "new_listing_provenance": null,
+        "official_raw_source_published_at": "2026-09-28T07:58:05Z",
+        "project_raw_source_available_at": "2026-09-29T06:53:52+00:00",
+        "qfq_add": "0",
+        "qfq_mul": "1",
+        "qfq_ohlc": [
+          "4.43",
+          "4.45",
+          "4.33",
+          "4.42"
+        ],
+        "raw_ohlc": [
+          "4.43",
+          "4.45",
+          "4.33",
+          "4.42"
+        ],
+        "raw_source_digest": "1e20a6caddbabf07b17709d0739b3f77a277b456cf82c1bd6e974cfb272e52b4",
+        "raw_source_snapshot_id": "sha256-70b79898325ef6c67ea697f922d38fa3fd523e2ad62879b1b9fcb59fce52bf0c",
+        "security_id": "SEC-174A84700DE32A40D92B7FE4B80CBBDE",
+        "source_asof": 20260928,
+        "source_security_key": "SZ.300176",
+        "source_visibility_basis": "FROZEN_PRE_T0_GBBQ_SNAPSHOT",
+        "system_available_at": "2026-09-29T06:53:52+00:00",
+        "target_trade_date": 20260928,
+        "visible_effective_event_count": 3,
+        "visible_effective_event_set_digest": "39661d599e3979bbd2bd13612e38cca7ea35e497be859af0162bc61d057123c1"
+      },
+      "sample_event": {
+        "c": [
+          0.0,
+          3.359999895095825,
+          0.0,
+          4.0
+        ],
+        "category": 1,
+        "date": 20260821,
+        "index": 80987
+      },
+      "visible_event_set": [
+        {
+          "c": [
+            0.20000000298023224,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "category": 1,
+          "date": 20260618,
+          "index": 80986
+        },
+        {
+          "c": [
+            0.0,
+            3.359999895095825,
+            0.0,
+            4.0
+          ],
+          "category": 1,
+          "date": 20260821,
+          "index": 80987
+        },
+        {
+          "c": [
+            38728.078125,
+            38728.078125,
+            53145.390625,
+            53145.390625
+          ],
+          "category": 5,
+          "date": 20260902,
+          "index": 80988
+        }
+      ]
+    },
+    "share_bonus_transfer": {
+      "row": {
+        "adjusted_quality": "ADJUSTED_READY",
+        "adjustment_reason": null,
+        "adjustment_snapshot_digest": "f8c6a60e052a3fd7f8c3a043dbc9c53311a7599e1b36bb6cc140058f56269ef1",
+        "adjustment_snapshot_id": "sha256-775d82c58b5b46ec1d21478f86ba8ef90302691982e68d5c4cfcd51fddda666e",
+        "adjustment_source_available_at": "2026-09-26T13:07:05Z",
+        "adjustment_system_available_at": "2026-09-26T13:07:05Z",
+        "blocking_event_categories": [],
+        "board_scope": "SH_MAIN",
+        "contract_id": "V4_02_GO_FORWARD_T0_CURRENT_COORDINATE_R2",
+        "contract_sha256": "9bc22579ab4e7547f69ab38899d4ae6ee60b49d51dee574b50b18cbb277f1069",
+        "coordinate_basis": "T0_CURRENT_COORDINATE",
+        "formal_publication_at": "2026-09-29T06:53:52+00:00",
+        "historical_as_recorded_claim": false,
+        "knowledge_lineage": "PIT_OBSERVED_AFTER_FORMAL_PUBLICATION",
+        "lookback_bar_count": 251,
+        "lookback_logical_digest": "fbe52603e4b371b9e28d252021760082971f08044c28a74baf11b4796f0129f3",
+        "max_source_trade_date": 20260928,
+        "new_listing_provenance": null,
+        "official_raw_source_published_at": "2026-09-28T07:58:05Z",
+        "project_raw_source_available_at": "2026-09-29T06:53:52+00:00",
+        "qfq_add": "0",
+        "qfq_mul": "1",
+        "qfq_ohlc": [
+          "34.01",
+          "35.50",
+          "33.12",
+          "33.55"
+        ],
+        "raw_ohlc": [
+          "34.01",
+          "35.5",
+          "33.12",
+          "33.55"
+        ],
+        "raw_source_digest": "93c219f2919ca9702cd7a8b79bc5d42895b4d59f9f39d52e76f770da32c33141",
+        "raw_source_snapshot_id": "sha256-70b79898325ef6c67ea697f922d38fa3fd523e2ad62879b1b9fcb59fce52bf0c",
+        "security_id": "SEC-22915219CB95D00488B8593FDDBE575A",
+        "source_asof": 20260928,
+        "source_security_key": "SH.605100",
+        "source_visibility_basis": "FROZEN_PRE_T0_GBBQ_SNAPSHOT",
+        "system_available_at": "2026-09-29T06:53:52+00:00",
+        "target_trade_date": 20260928,
+        "visible_effective_event_count": 4,
+        "visible_effective_event_set_digest": "d63bf755f0a3909181b82e80b3cd32d39895654804d1e8029dc472bfc2f6af62"
+      },
+      "sample_event": {
+        "c": [
+          0.0,
+          0.0,
+          4.0,
+          0.0
+        ],
+        "category": 1,
+        "date": 20260525,
+        "index": 171604
+      },
+      "visible_event_set": [
+        {
+          "c": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "category": 1,
+          "date": 20250930,
+          "index": 171602
+        },
+        {
+          "c": [
+            16993.19921875,
+            17113.19921875,
+            16993.19921875,
+            17073.0
+          ],
+          "category": 5,
+          "date": 20251024,
+          "index": 171603
+        },
+        {
+          "c": [
+            0.0,
+            0.0,
+            4.0,
+            0.0
+          ],
+          "category": 1,
+          "date": 20260525,
+          "index": 171604
+        },
+        {
+          "c": [
+            16993.19921875,
+            17073.0,
+            23790.48046875,
+            23902.19921875
+          ],
+          "category": 9,
+          "date": 20260525,
+          "index": 171605
+        }
+      ]
+    },
+    "unsupported": {
+      "row": {
+        "adjusted_quality": "ADJUSTED_UNAVAILABLE_UNSUPPORTED_OR_UNKNOWN_EVENT",
+        "adjustment_reason": "UNSUPPORTED_OR_UNKNOWN_PRICE_EVENT",
+        "adjustment_snapshot_digest": "f8c6a60e052a3fd7f8c3a043dbc9c53311a7599e1b36bb6cc140058f56269ef1",
+        "adjustment_snapshot_id": "sha256-775d82c58b5b46ec1d21478f86ba8ef90302691982e68d5c4cfcd51fddda666e",
+        "adjustment_source_available_at": "2026-09-26T13:07:05Z",
+        "adjustment_system_available_at": "2026-09-26T13:07:05Z",
+        "blocking_event_categories": [
+          15
+        ],
+        "board_scope": "SH_MAIN",
+        "contract_id": "V4_02_GO_FORWARD_T0_CURRENT_COORDINATE_R2",
+        "contract_sha256": "9bc22579ab4e7547f69ab38899d4ae6ee60b49d51dee574b50b18cbb277f1069",
+        "coordinate_basis": "T0_CURRENT_COORDINATE",
+        "formal_publication_at": "2026-09-29T06:53:52+00:00",
+        "historical_as_recorded_claim": false,
+        "knowledge_lineage": "PIT_OBSERVED_AFTER_FORMAL_PUBLICATION",
+        "lookback_bar_count": 251,
+        "lookback_logical_digest": null,
+        "max_source_trade_date": 20260928,
+        "new_listing_provenance": null,
+        "official_raw_source_published_at": "2026-09-28T07:58:05Z",
+        "project_raw_source_available_at": "2026-09-29T06:53:52+00:00",
+        "qfq_add": null,
+        "qfq_mul": null,
+        "qfq_ohlc": null,
+        "raw_ohlc": [
+          "3.21",
+          "3.42",
+          "3.17",
+          "3.37"
+        ],
+        "raw_source_digest": "c984ffbc87b2a61c8cebf04a0d6486168a97e34dcf939d6f48288f2d91a774a4",
+        "raw_source_snapshot_id": "sha256-70b79898325ef6c67ea697f922d38fa3fd523e2ad62879b1b9fcb59fce52bf0c",
+        "security_id": "SEC-8F5A2AC49C96965FFEF9DB8F03E9F09A",
+        "source_asof": 20260928,
+        "source_security_key": "SH.600165",
+        "source_visibility_basis": "FROZEN_PRE_T0_GBBQ_SNAPSHOT",
+        "system_available_at": "2026-09-29T06:53:52+00:00",
+        "target_trade_date": 20260928,
+        "visible_effective_event_count": 2,
+        "visible_effective_event_set_digest": "c5c7f53c0c72cfe9e0c9e15cadb6023b6d98af033c3240150aef6e93e0a21eb5"
+      },
+      "visible_event_set": [
+        {
+          "c": [
+            68488.375,
+            68488.375,
+            73291.3671875,
+            161588.375
+          ],
+          "category": 9,
+          "date": 20251211,
+          "index": 123088
+        },
+        {
+          "c": [
+            0.0,
+            0.0,
+            13.593000411987305,
+            0.0
+          ],
+          "category": 15,
+          "date": 20251211,
+          "index": 123089
+        }
+      ]
+    }
+  },
+  "target_trade_date": 20260928,
+  "unavailable_kinds": []
+}

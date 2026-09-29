@@ -1,0 +1,92 @@
+{
+  "accepted_head_promotion_commit": "fb6a367",
+  "artifacts": {
+    "V4_05_R2_ACCEPTED_INPUT_MANIFEST.json": {
+      "byte_count": 1704,
+      "sha256": "1aca4afa760b4c5674d5566eba3f073cc1c2f4a9c83bdf9577025373b75568b1"
+    },
+    "V4_05_R2_ADJUSTMENT_REPRODUCIBILITY.json": {
+      "byte_count": 262,
+      "sha256": "0df20cdd4cf10a68b2fe5ad2e64a26a37a223123e5b7cb67fca0981ac8c185bd"
+    },
+    "V4_05_R2_CAPABILITY_GATE.json": {
+      "byte_count": 3398,
+      "sha256": "53bd200edc2c32038e11b0c45c2b9812e51ecbe2aeacc13081a6ab0269d41432"
+    },
+    "V4_05_R2_CORE_PROFILE_REPLAY.json": {
+      "byte_count": 419,
+      "sha256": "54d2507410c0707ff3960156d0b9cd78c3e62206495a41e722cd5b7c8a3d213a"
+    },
+    "V4_05_R2_DAILY_DETERMINISM.json": {
+      "byte_count": 369,
+      "sha256": "0e9d50b6d99b7ff6cf1c5f49b8fee8d71b88c42a281a1d8ae841b7cb89e6dde1"
+    },
+    "V4_05_R2_FACTOR_SOURCE_TIME.json": {
+      "byte_count": 413,
+      "sha256": "7d71c6a4e778cfb8d45640195abdee799568d8dd2fb3eafac582fffdce27b592"
+    },
+    "V4_05_R2_FORWARD_DAILY_BUILD_RECEIPT.json": {
+      "byte_count": 1331,
+      "sha256": "2cc0cf847e83d12279e9001b5e5cf27a600d94bceefaa0359012faee692bd7cb"
+    },
+    "V4_05_R2_FORWARD_DAILY_SAMPLES.json": {
+      "byte_count": 24567,
+      "sha256": "f2def6557a289a15a46f2c00da91cfd257d1e5c45c1bd7f1ba6e8e101e541a27"
+    },
+    "V4_05_R2_INDEPENDENT_POSTCHECK.json": {
+      "byte_count": 482,
+      "sha256": "f86cd8e54586788e07bad941bfe9dc310cf4c473c1b1d27d20c495fdb71b0fb4"
+    },
+    "V4_05_R2_MARKET_REFERENCE_REGIME.json": {
+      "byte_count": 403,
+      "sha256": "f2e0dc03586fc2e041682042ee416f38e403eb81e2afc19bca57c7a5e3dc8970"
+    },
+    "V4_05_R2_PERIOD_ASOF.json": {
+      "byte_count": 425,
+      "sha256": "1b9744324344cf62c0056465b89cc9f47814147e6f23878804a9bc5b5595915a"
+    },
+    "V4_05_R2_REPLAY_CASE_MATRIX.json": {
+      "byte_count": 1485,
+      "sha256": "09696d15f8f4fa3b369b6a93ced2633020e3540a8725f78bce43ae3f2b7c1d3f"
+    },
+    "V4_05_R2_REVISION_IDEMPOTENCY.json": {
+      "byte_count": 427,
+      "sha256": "9dacc7d2831def4f287eb9dcbf74e57d034a50ce0709f9fa0fb6eb175791427d"
+    },
+    "V4_05_R2_RUNTIME_TEST_RECEIPT.json": {
+      "byte_count": 397,
+      "sha256": "b6c0b129ccc0e68d958eb6f9014964fff9f4cb99df322f5abaa697acd5c21e43"
+    },
+    "V4_05_R2_SOURCE_IDENTITY.json": {
+      "byte_count": 262,
+      "sha256": "d188b522467ae04c8e434daa39b177d8048fe679595295c405a08727a9a6eeb0"
+    },
+    "V4_05_R2_STAGE_ENTRY.md": {
+      "byte_count": 683,
+      "sha256": "68548d96ebcd9f841202d83f8546b8955eb789e24ae69e7dac1250c3fc7151f3"
+    },
+    "V4_05_R2_TEMPORAL_LEAKAGE.json": {
+      "byte_count": 408,
+      "sha256": "0cea229d3bc8a5a030ce2bcb8c6275db547ec4715a419f12c3e87d29770b30a2"
+    },
+    "V4_05_R2_UNIVERSE_IDENTITY.json": {
+      "byte_count": 319,
+      "sha256": "462db5ffabca05463a4ab95baf4c3fc7f88a3ffa0fd7b6647c281aa9696128b3"
+    },
+    "staging/V4_05_R2_FORWARD_DAILY_REPLAY.jsonl.gz": {
+      "byte_count": 944823,
+      "sha256": "7d87f5164c11f791ad24ad7c05139dca949f1c891523616ece907cd0f28fd8c8"
+    }
+  },
+  "contract_id": "V4_05_REPLAY_GATE_A_R2_STAGE_CANDIDATE_MANIFEST",
+  "data_factor_replay_pass": [],
+  "historical_as_recorded_adjusted_price": "BLOCKED_NO_FIRST_AVAILABILITY_EVIDENCE",
+  "stage_record": {
+    "acceptance_result": "CURRENT_FORWARD_ADJUSTED_PRICE_FULL_PASS; STOCK_CORE_BLOCKED",
+    "evidence": "R2 two-run daily replay, capability matrix, independent scoped postcheck, runtime tests",
+    "next_stage": "Finish target-date periods, factor, market reference and Core Profile before independent external acceptance",
+    "stage_contract": "V4_05_REPLAY_GATE_A_R2_CAPABILITY_SCOPED"
+  },
+  "status": "BLOCKED_REQUIRED_CURRENT_FORWARD_STOCK_CORE",
+  "tdx_root_write_count": 0
+}

@@ -1,0 +1,10 @@
+{
+  "contract_id": "V4_05_R2_REVISION_IDEMPOTENCY",
+  "daily_evidence": "V4_05_R2_DAILY_DETERMINISM.json",
+  "detail": "Daily source rebuild is deterministic, but no Sep-28 factor/profile publication revision exists for idempotency verification.",
+  "gate": "G08",
+  "no_pass_claim": true,
+  "reason": "TARGET_DATE_ACCEPTED_INPUT_SERIES_NOT_MATERIALIZED",
+  "status": "BLOCKED",
+  "target_trade_date": "2026-09-28"
+}

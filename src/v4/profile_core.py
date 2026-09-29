@@ -32,7 +32,8 @@ def _number(inputs: Mapping[str, object], key: str) -> float | None:
 
 def _state(value: str, contract: str, inputs: Mapping[str, object], keys: tuple[str, ...],
            reason: str | None = None) -> State:
-    return State(value, contract, {key: _number(inputs, key) for key in keys}, reason)
+    return State(value, contract, {key: inputs[key] if isinstance(inputs.get(key), bool)
+                                   else _number(inputs, key) for key in keys}, reason)
 
 
 def _required(inputs: Mapping[str, object], keys: tuple[str, ...]) -> bool:

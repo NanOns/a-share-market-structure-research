@@ -1,0 +1,144 @@
+{
+  "algorithm_sha256": "0b144bd2a9f033336da338d5b71649f8e20ebafe65095efcd5c4a7d8663db970",
+  "branch_count": 70,
+  "branch_specific_unknown_vectors": 2,
+  "branches_tested": {
+    "AMOUNT_VOLUME_STATE_V1.participation": [
+      "HIGH_PARTICIPATION_EFFECTIVE_ADVANCE",
+      "HIGH_PARTICIPATION_LOW_EFFICIENCY",
+      "HIGH_PARTICIPATION_REVERSAL",
+      "LOW_PARTICIPATION_ADVANCE",
+      "LOW_PARTICIPATION_DECLINE",
+      "NORMAL_PARTICIPATION"
+    ],
+    "AMOUNT_VOLUME_STATE_V1.ratio": [
+      "CONTRACTED",
+      "EXPANDED",
+      "NORMAL",
+      "VERY_DRY",
+      "VERY_EXPANDED"
+    ],
+    "COMPRESSION_STATE_V1": [
+      "COMPRESSING",
+      "COMPRESSING_STRONG",
+      "EXPANDING",
+      "EXPANDING_EXTREME",
+      "NORMAL"
+    ],
+    "EXTENSION_RISK_V1": [
+      "EXTREME",
+      "HIGH",
+      "LOW",
+      "MEDIUM"
+    ],
+    "EXTENSION_RISK_V1.severe": [
+      false,
+      true
+    ],
+    "MARKET_REGIME_V1.regime_ui": [
+      "CAPITULATION",
+      "NEUTRAL",
+      "RECOVERY_ATTEMPT",
+      "RISK_OFF",
+      "RISK_ON"
+    ],
+    "MA_STRUCTURE_V1": [
+      "BEAR_ALIGNED",
+      "BEAR_TRANSITION",
+      "BULL_ALIGNED",
+      "BULL_TRANSITION",
+      "MIXED"
+    ],
+    "POSITION_STATE_V1": [
+      "EXTENDED",
+      "HIGH_ZONE",
+      "LOW_ZONE",
+      "MID_HIGH",
+      "MID_LOW",
+      "MID_ZONE"
+    ],
+    "POSITION_STATE_V1.drawdown": [
+      "DEEP",
+      "MODERATE",
+      "SHALLOW"
+    ],
+    "POSITION_STATE_V1.near_high": [
+      "ABOVE_PRIOR_HIGH",
+      "BELOW",
+      "NEAR"
+    ],
+    "RELATIVE_STATE_V1": [
+      "ACTIVE_EMERGENCE",
+      "IMPROVING",
+      "LAGGING",
+      "LEADING_ACCELERATING",
+      "LEADING_STABLE",
+      "NEUTRAL",
+      "PASSIVE_RESILIENCE",
+      "WEAKENING"
+    ],
+    "TREND_STATE_V1.closed_period": [
+      "MONTHLY_DOWN",
+      "MONTHLY_FLAT",
+      "MONTHLY_UP",
+      "WEEKLY_DOWN",
+      "WEEKLY_FLAT",
+      "WEEKLY_UP"
+    ],
+    "TREND_STATE_V1.daily": [
+      "DOWNTREND",
+      "DOWNTREND_STRONG",
+      "SIDEWAYS",
+      "SIDEWAYS_STRONG",
+      "SIDEWAYS_WEAK",
+      "UPTREND",
+      "UPTREND_STRONG"
+    ],
+    "V4_04_DERIVED_PRIMITIVES_V1.bias20_atr": [
+      "VALUE_AND_UNKNOWN"
+    ],
+    "V4_04_DERIVED_PRIMITIVES_V1.dist_high20_atr": [
+      "VALUE_AND_UNKNOWN"
+    ],
+    "V4_04_DERIVED_PRIMITIVES_V1.ma10": [
+      "VALUE_AND_UNKNOWN"
+    ],
+    "V4_04_DERIVED_PRIMITIVES_V1.minimum_liquidity": [
+      "VALUE_AND_UNKNOWN"
+    ],
+    "V4_04_DERIVED_PRIMITIVES_V1.pos250": [
+      "VALUE_AND_UNKNOWN"
+    ]
+  },
+  "contract_id": "V4_04_MACHINE_VECTOR_COVERAGE_R4",
+  "enum_unknown_vectors": 3,
+  "inclusive_boundary_vectors": 2,
+  "machine_rule_count": 18,
+  "parameter_sha256": "5b19a23dfbf6b214f5ee7c7cce5df5674db69d099386038c082317819812ced5",
+  "rules_missing_vector_coverage": [],
+  "rules_with_full_vector_coverage": [
+    "AMOUNT_VOLUME_STATE_V1.participation",
+    "AMOUNT_VOLUME_STATE_V1.ratio",
+    "COMPRESSION_STATE_V1",
+    "EXTENSION_RISK_V1",
+    "EXTENSION_RISK_V1.severe",
+    "MARKET_REGIME_V1.regime_ui",
+    "MA_STRUCTURE_V1",
+    "POSITION_STATE_V1",
+    "POSITION_STATE_V1.drawdown",
+    "POSITION_STATE_V1.near_high",
+    "RELATIVE_STATE_V1",
+    "TREND_STATE_V1.closed_period",
+    "TREND_STATE_V1.daily",
+    "V4_04_DERIVED_PRIMITIVES_V1.bias20_atr",
+    "V4_04_DERIVED_PRIMITIVES_V1.dist_high20_atr",
+    "V4_04_DERIVED_PRIMITIVES_V1.ma10",
+    "V4_04_DERIVED_PRIMITIVES_V1.minimum_liquidity",
+    "V4_04_DERIVED_PRIMITIVES_V1.pos250"
+  ],
+  "semantic_categories_status": "PASS",
+  "stateful_hysteresis_vectors": 2,
+  "status": "PASS",
+  "threshold_vectors": 78,
+  "unknown_vectors": 32
+}

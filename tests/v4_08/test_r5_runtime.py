@@ -26,6 +26,13 @@ def test_missing_history_not_current_membership_replay():
     value,reason,meta=common_delta({'A'},None,{}, {},'ret1','2026-09-30',None,lambda v:int(v>0))
     assert value is None and reason=='NO_PRIOR_ACCEPTED_PIT_HISTORY' and meta['prior_member_count'] is None
 
+def test_absent_target_publication_does_not_create_zero_quote_coverage():
+    params,*_=package()
+    members=[dict(sector_type='INDUSTRY',sector_id='SYNTHETIC',security_id='MEMBER',snapshot_id='SNAPSHOT',target_trade_date='2026-09-30')]
+    row=build_native(members,{},target='2026-09-30',snapshot_id='SNAPSHOT',publication_id='FIXTURE',parameter_set=params,source_bindings={})[0]
+    assert row['fields']['sector_quote_coverage']['value'] is None
+    assert row['fields']['sector_quote_coverage']['quality']=='UNKNOWN'
+
 @pytest.mark.parametrize('old,now,expected',[([],{},'NOT_APPLICABLE'),(['A'],{},'UNKNOWN'),(['A','B'],{'A':True,'B':False},'ACCEPTED')])
 def test_frozen_denominator(old,now,expected):assert retention(old,now)[1]==expected
 

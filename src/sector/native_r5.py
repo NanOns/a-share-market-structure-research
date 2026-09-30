@@ -87,8 +87,10 @@ def build_native(memberships, current, *, target, snapshot_id, publication_id, p
                 source_publications=source_bindings, membership_snapshot_id=snapshot_id,
                 model_contract_id=PRODUCER, parameter_set_id=parameter_set['parameter_set_id'], **extra)
         valid=sum(observed(current.get(m),'ret1',target) is not None for m in members)
-        put('membership_ready',True);put('sector_member_count',len(members));put('sector_quote_coverage',valid/len(members))
-        eligible=len(members)>=params[required[0]] and valid/len(members)>=params[required[1]]
+        target_publication_available=any(r.get('trade_date')==target for r in current.values())
+        coverage=valid/len(members) if target_publication_available else None
+        put('membership_ready',True);put('sector_member_count',len(members));put('sector_quote_coverage',coverage,'NO_TARGET_ACCEPTED_CORE_FACTS' if coverage is None else None)
+        eligible=len(members)>=params[required[0]] and coverage is not None and coverage>=params[required[1]]
         row['rank_eligible']=eligible
         for n in (1,5,20,60):
             values=[observed(current.get(m),f'ret{n}',target) for m in members]

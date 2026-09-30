@@ -40,6 +40,7 @@ def main():
     if corehead['external_acceptance']!='EXTERNALLY_ACCEPTED' or seedhead['external_acceptance']!='EXTERNALLY_ACCEPTED':raise ValueError('UNACCEPTED_CORE_OR_SEED')
     target=snapshot['target_trade_date'];factors=rows(corehead['accepted_artifacts']['full_scope_factors']);seed_rows=rows(seedhead['evidence_bindings']['candidate_artifact'])
     dates=Counter(r['trade_date'] for r in factors);seed_dates=Counter(r['trade_date'] for r in seed_rows)
+    if any(date>target for date in [*dates,*seed_dates]):raise ValueError('FUTURE_ACCEPTED_INPUT_NOT_ALLOWED_AT_TARGET')
     current={}
     for row in factors:
         if row['trade_date']!=target:continue

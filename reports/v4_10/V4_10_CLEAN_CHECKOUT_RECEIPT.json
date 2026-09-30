@@ -1,0 +1,68 @@
+{
+  "config_dot_env_present": false,
+  "config_dot_env_read": false,
+  "contract_id": "V4_10_CLEAN_CHECKOUT_RECEIPT_V1",
+  "created_at_utc": "2026-09-30T16:39:12.520894+00:00",
+  "detached_head": true,
+  "elapsed_seconds": 227.981,
+  "git_status_after": "",
+  "git_status_before": "",
+  "independent_vectors": "PASS",
+  "promotion_validation": {
+    "accepted_head": {
+      "byte_count": 11474,
+      "path": "data/v4/V4_09_ACCEPTED_HEAD.json",
+      "sha256": "641ef9e2e6fe8f461a9b765262e739791a6d3fdd220b0eff7947e2690de3a87d"
+    },
+    "checks": {
+      "accepted_evidence_exact": true,
+      "accepted_identity": true,
+      "all_candidate_bindings_exact": true,
+      "amended_upstream_exact": true,
+      "artifact_exact": true,
+      "artifact_exact_binding": true,
+      "audited_ancestor": true,
+      "audits_preserved": true,
+      "canonical_evidence_set": true,
+      "capabilities_exact": true,
+      "evidence_pass": true,
+      "external_exact": true,
+      "global_binding": true,
+      "implementation_exact": true,
+      "no_symbol_pass": true,
+      "parent_exact": true,
+      "permissions_false": true,
+      "promotion_idempotent": true,
+      "protected_unchanged": true,
+      "runtime_contracts_match_audited_commit": true,
+      "upstream_exact": true
+    },
+    "contract_id": "V4_09_ACCEPTED_HEAD_PROMOTION_VALIDATION_R1",
+    "global_head": {
+      "byte_count": 7562,
+      "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+      "sha256": "f7607601de402f2b2bdada84dffdefbacad7f9f66e252c57dfdf045060e90e99"
+    },
+    "protected_head_bindings": [
+      {
+        "byte_count": 2478,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0"
+      },
+      {
+        "byte_count": 602,
+        "path": "data/v4/V4_DEV_BASELINE_HEAD.json",
+        "sha256": "45695460b0147c6ada12e0ebd8e5070ac0a45eebea26603ff5a3daddc4dd5094"
+      },
+      {
+        "byte_count": 2151,
+        "path": "data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json",
+        "sha256": "d6374a73b8084ccd383cbb4f75428ed91176e91cc09d87c3329041d57c5bd9ed"
+      }
+    ],
+    "status": "PASS"
+  },
+  "status": "PASS_CLEAN_DETACHED_CHECKOUT",
+  "temporary_cluster_destroyed": true,
+  "tested_commit": "e3b29a434c57a94cc5fe68edc3de647862da4ec4"
+}

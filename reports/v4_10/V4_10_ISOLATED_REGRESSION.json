@@ -1,0 +1,41 @@
+{
+  "config_dot_env_read": false,
+  "configured_or_production_database_used": false,
+  "contract_id": "V4_10_ISOLATED_REGRESSION_V1",
+  "dsn_source": "PROCESS_ENVIRONMENT_DISPOSABLE_CLUSTER",
+  "historical_test_supersession": {
+    "deselected_exact_node": "tests/v4_09/test_stock_prewatch.py::test_production_and_v4_09_acceptance_stay_disabled",
+    "original_test_bytes_preserved": true,
+    "reason": "Candidate-only absence guard superseded by externally authorized V4-09 accepted-head promotion",
+    "replacement": "tests/v4_10/test_promotion.py: exact external decision/commits/upstream/artifact, permission false and overclaim rejection"
+  },
+  "required_families": [
+    "tests/v4_01",
+    "tests/v4_02",
+    "tests/v4_03",
+    "tests/v4_04",
+    "tests/v4_05",
+    "tests/v4_06",
+    "tests/v4_07",
+    "tests/v4_08",
+    "tests/v4_joint",
+    "tests/v4_phase0",
+    "tests/v4_09",
+    "tests/v4_10",
+    "tests/test_fixed_qfq_samples.py",
+    "tests/test_phase0_2a_gate.py",
+    "tests/test_phase1_qa_sample_selector.py",
+    "tests/governance/test_no_symbol_specific_runtime_logic.py"
+  ],
+  "status": "PASS",
+  "stderr": "",
+  "stdout": "........................................................................ [  7%]\n........................................................................ [ 14%]\n........................................................................ [ 21%]\n........................................................................ [ 28%]\n........................................................................ [ 35%]\n........................................................................ [ 42%]\n........................................................................ [ 49%]\n........................................................................ [ 56%]\n........................................................................ [ 63%]\n..s..........s.......................................................... [ 70%]\n........................................................................ [ 77%]\n........................................................................ [ 84%]\n........................................................................ [ 91%]\n........................................................................ [ 98%]\n...............                                                          [100%]\n1021 passed, 2 skipped, 1 deselected in 135.61s (0:02:15)\n",
+  "summary": {
+    "errors": 0,
+    "failures": 0,
+    "passed": 1021,
+    "skipped": 2,
+    "tests": 1023
+  },
+  "tested_commit": "e3b29a434c57a94cc5fe68edc3de647862da4ec4"
+}

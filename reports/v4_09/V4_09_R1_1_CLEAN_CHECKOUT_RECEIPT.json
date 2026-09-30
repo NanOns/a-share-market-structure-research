@@ -1,0 +1,89 @@
+{
+  "config_dot_env_present": false,
+  "contract_id": "V4_09_R1_1_CLEAN_CHECKOUT_RECEIPT",
+  "created_at_utc": "2026-09-30T15:43:56.377738+00:00",
+  "detached_head": true,
+  "elapsed_seconds": 300.034,
+  "git_status_after": "",
+  "git_status_before": "",
+  "promotion_validation": {
+    "accepted_head": {
+      "byte_count": 21493,
+      "path": "data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json",
+      "sha256": "f2a35cebd18e8caf723e7900133333ce4b8df1a8314cb190dade7b0ea7624a3f"
+    },
+    "b0_implementation": {
+      "byte_count": 977,
+      "path": "reports/v4_08/V4_08_R5_B0_IMPLEMENTATION.json",
+      "sha256": "bdb7392559be95ebd06a2fa9ba050051b72b0ce852d98ec6758d6e694509f8fc"
+    },
+    "checks": {
+      "accepted_no_symbol_pass": true,
+      "amended_evidence_exact": true,
+      "amended_identity": true,
+      "amendment_idempotent": true,
+      "amendment_parent_exact": true,
+      "audited_commit_is_ancestor": true,
+      "audits_preserved": true,
+      "b0_contract_matches_implementation": true,
+      "b0_evidence_binding_matches_implementation": true,
+      "b0_producer_exports_evaluate_b0": true,
+      "b0_producer_matches_implementation": true,
+      "candidate_and_evidence_sha_exact": true,
+      "capability_unchanged": true,
+      "data_dev_pit_unchanged": true,
+      "external_acceptance_exact_decision_and_commits": true,
+      "global_points_to_amended": true,
+      "global_range_preserved": true,
+      "membership_binding_exact": true,
+      "old_head_preserved": true,
+      "parameter_sha_exact": true,
+      "permissions_false": true,
+      "prior_clean_regression_schema_pass": true,
+      "superseded_binding_exact": true,
+      "v4_09_not_accepted": true
+    },
+    "contract_id": "V4_08_ACCEPTED_HEAD_AMENDMENT_R1_VALIDATION",
+    "global_head": {
+      "byte_count": 6789,
+      "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+      "sha256": "6620089e9a1ca550e89c2c0bb177887528c8e7d160a44c584664f04b91a1c48e"
+    },
+    "protected_head_bindings": [
+      {
+        "byte_count": 2478,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0"
+      },
+      {
+        "byte_count": 602,
+        "path": "data/v4/V4_DEV_BASELINE_HEAD.json",
+        "sha256": "45695460b0147c6ada12e0ebd8e5070ac0a45eebea26603ff5a3daddc4dd5094"
+      },
+      {
+        "byte_count": 2151,
+        "path": "data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json",
+        "sha256": "d6374a73b8084ccd383cbb4f75428ed91176e91cc09d87c3329041d57c5bd9ed"
+      }
+    ],
+    "status": "PASS",
+    "superseded_head": {
+      "byte_count": 20553,
+      "path": "data/v4/V4_08_ACCEPTED_HEAD.json",
+      "sha256": "b9ba34374ce35eefab705469de1e005758b90fa1f58ea5bba96fac08571073bc"
+    }
+  },
+  "reproduction": [
+    {
+      "script": "materialize_v4_09_stock_prewatch.py",
+      "stdout": "{\"status\": \"ENGINEERING_CANDIDATE\", \"row_count\": 5222, \"raw_counts\": {\"TRUE\": 0, \"FALSE\": 2443, \"UNKNOWN\": 2779}, \"bucket_counts\": {\"A\": 0, \"B\": 0, \"C\": 0, \"D\": 0, \"UNKNOWN_BUCKET\": 2779, \"NOT_ELIGIBLE\": 2443}, \"artifact\": {\"path\": \"data/v4/artifact_store/v4_09/V4_09_STOCK_PREWATCH_2026-09-28_edb35a7b7aa382add631d80d105575c00274b638cef112b58e7e2687510e9a6e.jsonl.gz\", \"sha256\": \"8b92cbd96a8145005bad89374349582c075cf367722b956a75243d59aa64d18d\", \"byte_count\": 377494, \"logical_digest\": \"edb35a7b7aa382add631d80d105575c00274b638cef112b58e7e2687510e9a6e\", \"publication_id\": \"V4_09:e38b5feb1696e283334692f21d7e99b1869a22552a50e0144b71c07acf4386c1\", \"trade_date\": \"2026-09-28\"}}\n"
+    },
+    {
+      "script": "verify_v4_09_stock_prewatch.py",
+      "stdout": "{\"status\": \"PASS\", \"row_count\": 5222, \"raw_counts\": {\"FALSE\": 2443, \"TRUE\": 0, \"UNKNOWN\": 2779}, \"vector_count\": 150}\n"
+    }
+  ],
+  "status": "PASS_CLEAN_DETACHED_CHECKOUT",
+  "temporary_cluster_destroyed": true,
+  "tested_commit": "5eca56d3555a826c4cca94d6e3d7ae9d11628be6"
+}

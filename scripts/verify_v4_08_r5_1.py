@@ -31,7 +31,7 @@ def compact_scan(scan):
     return result
 
 
-def main():
+def main(*, scan_governance=True):
     with tempfile.TemporaryDirectory(prefix='v4_08_r5_1_test_only_') as temp:
         junit=Path(temp)/'tests.xml'
         result=subprocess.run([sys.executable,'-m','pytest','-q','tests/v4_08/test_r5_1_accepted_adapter.py','tests/v4_08/test_r5_runtime.py',f'--junitxml={junit}'],cwd=ROOT,capture_output=True,text=True,encoding='utf8')
@@ -57,11 +57,12 @@ def main():
     binding=candidate['input_bindings']['canonical_input_binding']
     report('RAW_AMOUNT_INPUT_BINDING',dict(status='PASS_ACCEPTED_AUTHORITY_WIRED_TARGET_SOURCE_UNAVAILABLE',**binding,amount_field='canonical_daily.amount',amount_unit='CNY',amount_ratio20_substituted=False,missing_coerced_to_zero=False,date_mismatch='UNKNOWN',future_source='REJECT',digest_mismatch='REJECT'))
     report('PRICE_BASIS_INPUT_BINDING',dict(status='PASS_ACCEPTED_AUTHORITY_WIRED_TARGET_SOURCE_UNAVAILABLE',**binding,close_authority='price_artifact.qfq_ohlc[3]',price_basis_id='coordinate_basis:adjustment_snapshot_id',revision_authority='adjustment_snapshot_digest',cross_day='exact per-member identity equality',corporate_action_transition='UNKNOWN; no accepted affine conversion contract applied',synthetic_constant_used_in_production=False))
-    governance=run(ROOT)
-    report('NO_SYMBOL_SPECIFIC_SYSTEM_LOGIC_SCAN',compact_scan(governance))
-    if governance['status']!='PASS':raise RuntimeError('NO_SYMBOL_GATE_FAILED')
+    governance=run(ROOT) if scan_governance else None
+    if governance is not None:
+        report('NO_SYMBOL_SPECIFIC_SYSTEM_LOGIC_SCAN',compact_scan(governance))
+        if governance['status']!='PASS':raise RuntimeError('NO_SYMBOL_GATE_FAILED')
     report('STAGE_CANDIDATE_MANIFEST',dict(status='R5_1_ENGINEERING_CANDIDATE_PENDING_CLEAN_VERIFICATION',artifacts=candidate['artifacts'],input_bindings=candidate['input_bindings'],b2_adapter_model_digest=ast['adapter_model_digest'],parameter_sha256=bind('config/v4_08_algorithm_parameter_set_r5.json')['sha256'],final_v4_08_accepted_head_written=False,production_permission=False,next_stage='INDEPENDENT_EXTERNAL_REAUDIT',independent_open_audits=['Prior-RPS','AUD-AMOUNT-A-06','target accepted Core availability','V4-01 dated roster']))
-    print(json.dumps(dict(status='PASS',targeted_tests=len(cases),no_symbol_scan=governance['status'])))
+    print(json.dumps(dict(status='PASS',targeted_tests=len(cases),no_symbol_scan=governance['status'] if governance is not None else 'NOT_EXECUTED_TARGETED_ONLY')))
 
 
-if __name__=='__main__':main()
+if __name__=='__main__':main(scan_governance='--targeted-only' not in sys.argv)

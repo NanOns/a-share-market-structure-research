@@ -1,4 +1,5 @@
 {
+  "acceptance_result": "PASS_ENGINEERING_CANDIDATE_ONLY_EXTERNAL_REAUDIT_PENDING",
   "artifacts": {
     "B0": {
       "byte_count": 21682,
@@ -22,6 +23,75 @@
     }
   },
   "b2_adapter_model_digest": "bb0ef9611c01db2cfd493a82037fb20f64aad15fba0c7e8e7433a0f5d28f11da",
+  "clean_regression_summary": {
+    "errors": 0,
+    "failures": 0,
+    "passed": 696,
+    "skipped": 2,
+    "tests": 698
+  },
+  "evidence_bindings": [
+    {
+      "path": "reports/v4_08/V4_08_R5_1_ACCEPTED_INPUT_ADAPTER_INTEGRATION.json",
+      "sha256": "298e9218b1bb7130c1b807b496f08753d04c683548763de9528a45084e362c98"
+    },
+    {
+      "path": "reports/v4_08/V4_08_R5_1_B2_LEGACY_MIXED_SEMANTIC_GOLDEN.json",
+      "sha256": "f1826e6d7786b2b0eecb59fb171f913ae2dc5e045bd41df8d81945bd5fe38f2b"
+    },
+    {
+      "path": "reports/v4_08/V4_08_R5_1_B2_RANK_UNIVERSE_PARITY.json",
+      "sha256": "f1826e6d7786b2b0eecb59fb171f913ae2dc5e045bd41df8d81945bd5fe38f2b"
+    },
+    {
+      "path": "reports/v4_08/V4_08_R5_1_B2_SEMANTIC_PROVENANCE.json",
+      "sha256": "e952ffd5c9c44e5ece58be6f07f9aef706ec2f4c4507141ee987557e71590ff1"
+    },
+    {
+      "path": "reports/v4_08/V4_08_R5_1_CLEAN_CHECKOUT_RECEIPT.json",
+      "sha256": "3b5a7e9da49e1c0d02d4e23fe19840b6c960d034dfca127a505834df59da1a74"
+    },
+    {
+      "path": "reports/v4_08/V4_08_R5_1_CLOSURE.md",
+      "sha256": "853e8c304770748a706137cd0d5de4e3cb2810358dd05acebb719d80dbc5e83f"
+    },
+    {
+      "path": "reports/v4_08/V4_08_R5_1_CONCENTRATION_INTEGRATION.json",
+      "sha256": "82e4906ab44f505413b8b0c5f2c1064cc0730e3e95e90534cfc581ea258476f4"
+    },
+    {
+      "path": "reports/v4_08/V4_08_R5_1_FEEDBACK_ISOLATION.json",
+      "sha256": "514a05fa49721671b4f118c42584197e5a42e58f0cd4729b010be36038948049"
+    },
+    {
+      "path": "reports/v4_08/V4_08_R5_1_ISOLATED_REGRESSION.json",
+      "sha256": "2fd8419f30fdd9b4ec18f7f800e6a9f8f1ac540161d260cd5132de50c93777e6"
+    },
+    {
+      "path": "reports/v4_08/V4_08_R5_1_NO_SYMBOL_SPECIFIC_SYSTEM_LOGIC_SCAN.json",
+      "sha256": "284be3d2cdd0a189c7fce9515c9c55b33be9f87e1779c20d207f6d31707cded9"
+    },
+    {
+      "path": "reports/v4_08/V4_08_R5_1_PRICE_BASIS_INPUT_BINDING.json",
+      "sha256": "9d921079b6a0b238b70d08244475f75e197cc405e568add3fad003575ee53d38"
+    },
+    {
+      "path": "reports/v4_08/V4_08_R5_1_RAW_AMOUNT_INPUT_BINDING.json",
+      "sha256": "c535eb46a1564264c556fd360e891da85ba8c401c9a510c6487b3c664d5eb3d8"
+    },
+    {
+      "path": "reports/v4_08/V4_08_R5_1_ROTATION_PRICE_PATH_INTEGRATION.json",
+      "sha256": "c7db1e8dda103e8f2f3f67d139c976e840e41331dfcc9ce25a9638c622b6d9c9"
+    },
+    {
+      "path": "reports/v4_08/V4_08_R5_1_SCHEMA_MIGRATION_RECEIPT.json",
+      "sha256": "b077ee3f9dbb8f0fecc9b4b474b8879bf71f391b5308ef7877b36c3102b45132"
+    },
+    {
+      "path": "reports/v4_08/V4_08_R5_1_STAGE_ENTRY.md",
+      "sha256": "47355689747a6b331cf3ad9fa4d1372fee8cac5391dd4b062dbd2cedb1d072bf"
+    }
+  ],
   "final_v4_08_accepted_head_written": false,
   "independent_open_audits": [
     "Prior-RPS",
@@ -214,5 +284,6 @@
   "next_stage": "INDEPENDENT_EXTERNAL_REAUDIT",
   "parameter_sha256": "0204d7c4fadf86871b6a079f755593b1a3f8ad18bb718f73ba33db0b70f67548",
   "production_permission": false,
-  "status": "R5_1_ENGINEERING_CANDIDATE_PENDING_CLEAN_VERIFICATION"
+  "status": "V4_08_R5_1_READY_FOR_EXTERNAL_REAUDIT",
+  "tested_implementation_commit": "d4d2e861bf99ef2867a6579345a156fe18b6f5b5"
 }

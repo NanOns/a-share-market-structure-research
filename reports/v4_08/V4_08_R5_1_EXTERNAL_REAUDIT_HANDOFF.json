@@ -1,0 +1,229 @@
+{
+  "b2_adapter_model_digest": "bb0ef9611c01db2cfd493a82037fb20f64aad15fba0c7e8e7433a0f5d28f11da",
+  "b2_semantic_dependencies": [
+    {
+      "path": "config/sector_semantics.yaml",
+      "role": "declaration; exact legacy resolver uses explicit fields, empty override registry",
+      "sha256": "e0b133f2ff37c5480d3683ee283ccb976d8da69d1eca886ca8a4e9daf0f77303",
+      "version": "workbench-semantic-v2.1"
+    },
+    {
+      "path": "config/sector_roles.yaml",
+      "role": "declaration of excluded theme names",
+      "sha256": "98cb07c5b2ec0e22f2ff5e788d8130319f672ef89df7fdef6f7614aa92ed2975",
+      "version": "sector-role-v0.1"
+    },
+    {
+      "path": "src/workbench_service/semantic.py",
+      "role": "exact resolve_semantics",
+      "sha256": "116e91557d403c37512d153506d40b6b0aedb9dca594769720345f7a87821cb0",
+      "version": "workbench-semantic-v2.1"
+    },
+    {
+      "path": "src/sector/roles.py",
+      "role": "exact name/type role producer",
+      "sha256": "fd361e8b2410871505a5e48db250e9c0c31343b7c14ca34667d246d4d874b17a",
+      "version": "sector-role-v0.1"
+    },
+    {
+      "path": "src/sector/phase2.py",
+      "role": "prepare valid_member and validity sector_valid producer",
+      "sha256": "9455bae1578c4a785e034eb0ff852dcd98d7218a66027e0ea3f11489fd3727a1",
+      "version": "sector-factor-contract-v1.1-correctness"
+    },
+    {
+      "path": "src/workbench_service/strength_association.py",
+      "role": "EXCLUDED_ROLES and keyword hint sets",
+      "sha256": "f9a39a9bc100e932fa04f32c46bf3aa62287b6a358382d4f6b01e4b02084be29",
+      "version": "semantic-keyword-dependency-r5.1"
+    },
+    {
+      "path": "src/sector/semantic_input_r5_1.py",
+      "role": "accepted mapping and fail-closed semantics",
+      "sha256": "f8760dd0420e803ff28915afd43a9ff54635dde6a16f1fa515a05c7b0193cde4",
+      "version": "V4_08_B2_SEMANTIC_MAPPING_R5_1"
+    }
+  ],
+  "blockers": {
+    "R5_B01": "PASS_ENGINEERING_CANDIDATE",
+    "R5_B02": "PASS_ENGINEERING_CANDIDATE",
+    "R5_B03": "PASS_ENGINEERING_CANDIDATE"
+  },
+  "changed_paths": [
+    "AGENTS.md",
+    "config/v4_08_accepted_input_contract_r5_1.json",
+    "config/v4_08_b2_machine_ast_r5.json",
+    "data/v4/artifact_store/v4_08/V4_08_R5_B0_20260930_17fe0b83a55f52d66016.jsonl.gz",
+    "data/v4/artifact_store/v4_08/V4_08_R5_B0_20260930_87447ccd136d152b8372.jsonl.gz",
+    "data/v4/artifact_store/v4_08/V4_08_R5_B0_20260930_ce3b9ede6ec4d0e94ed6.jsonl.gz",
+    "data/v4/artifact_store/v4_08/V4_08_R5_B2_20260930_17fe0b83a55f52d66016.jsonl.gz",
+    "data/v4/artifact_store/v4_08/V4_08_R5_B2_20260930_87447ccd136d152b8372.jsonl.gz",
+    "data/v4/artifact_store/v4_08/V4_08_R5_B2_20260930_ce3b9ede6ec4d0e94ed6.jsonl.gz",
+    "data/v4/artifact_store/v4_08/V4_08_R5_ROTATION_20260930_17fe0b83a55f52d66016.jsonl.gz",
+    "data/v4/artifact_store/v4_08/V4_08_R5_ROTATION_20260930_87447ccd136d152b8372.jsonl.gz",
+    "data/v4/artifact_store/v4_08/V4_08_R5_ROTATION_20260930_ce3b9ede6ec4d0e94ed6.jsonl.gz",
+    "data/v4/artifact_store/v4_08/V4_08_R5_SECTOR_NATIVE_20260930_17fe0b83a55f52d66016.jsonl.gz",
+    "data/v4/artifact_store/v4_08/V4_08_R5_SECTOR_NATIVE_20260930_87447ccd136d152b8372.jsonl.gz",
+    "data/v4/artifact_store/v4_08/V4_08_R5_SECTOR_NATIVE_20260930_ce3b9ede6ec4d0e94ed6.jsonl.gz",
+    "docs/evidence/V4_08_R5_1_THREE_BLOCKER_TARGETED_REPAIR_TASK_20260930.md",
+    "docs/evidence/V4_08_R5_INDEPENDENT_EXTERNAL_ACCEPTANCE_AUDIT_R1_20260930.md",
+    "reports/v4_08/V4_08_R5_1_ACCEPTED_INPUT_ADAPTER_INTEGRATION.json",
+    "reports/v4_08/V4_08_R5_1_B2_LEGACY_MIXED_SEMANTIC_GOLDEN.json",
+    "reports/v4_08/V4_08_R5_1_B2_RANK_UNIVERSE_PARITY.json",
+    "reports/v4_08/V4_08_R5_1_B2_SEMANTIC_PROVENANCE.json",
+    "reports/v4_08/V4_08_R5_1_CONCENTRATION_INTEGRATION.json",
+    "reports/v4_08/V4_08_R5_1_FEEDBACK_ISOLATION.json",
+    "reports/v4_08/V4_08_R5_1_NO_SYMBOL_SPECIFIC_SYSTEM_LOGIC_SCAN.json",
+    "reports/v4_08/V4_08_R5_1_PRICE_BASIS_INPUT_BINDING.json",
+    "reports/v4_08/V4_08_R5_1_RAW_AMOUNT_INPUT_BINDING.json",
+    "reports/v4_08/V4_08_R5_1_ROTATION_PRICE_PATH_INTEGRATION.json",
+    "reports/v4_08/V4_08_R5_1_STAGE_CANDIDATE_MANIFEST.json",
+    "reports/v4_08/V4_08_R5_1_STAGE_ENTRY.md",
+    "reports/v4_08/V4_08_R5_B0_FULL_MARKET.json",
+    "reports/v4_08/V4_08_R5_B0_IMPLEMENTATION.json",
+    "reports/v4_08/V4_08_R5_B2_FULL_MARKET.json",
+    "reports/v4_08/V4_08_R5_ROTATION_FULL_MARKET.json",
+    "reports/v4_08/V4_08_R5_ROTATION_IMPLEMENTATION.json",
+    "reports/v4_08/V4_08_R5_SECTOR_NATIVE_FULL_MARKET.json",
+    "reports/v4_08/V4_08_R5_SECTOR_NATIVE_IMPLEMENTATION.json",
+    "reports/v4_08/V4_08_R5_STAGE_CANDIDATE_MANIFEST.json",
+    "scripts/freeze_v4_08_r5_contracts.py",
+    "scripts/materialize_v4_08_r5.py",
+    "scripts/run_v4_08_r5_1_isolated_verification.py",
+    "scripts/verify_v4_08_r5_1.py",
+    "src/sector/accepted_input_r5_1.py",
+    "src/sector/legacy_b2_r5.py",
+    "src/sector/rotation_r5.py",
+    "src/sector/semantic_input_r5_1.py",
+    "tests/v4_08/test_r5_1_accepted_adapter.py",
+    "tests/v4_08/test_r5_runtime.py"
+  ],
+  "closure": {
+    "path": "reports/v4_08/V4_08_R5_1_CLOSURE.md",
+    "sha256": "853e8c304770748a706137cd0d5de4e3cb2810358dd05acebb719d80dbc5e83f"
+  },
+  "external_acceptance_pending": true,
+  "fixture_entered_formal_head": false,
+  "global_stage_range": "V4_00_TO_V4_07_ACCEPTED",
+  "next_stage": "INDEPENDENT_EXTERNAL_REAUDIT",
+  "no_symbol": {
+    "hard_gated_equity_symbol_hits": 0,
+    "status": "PASS",
+    "unclassified_paths": []
+  },
+  "price_basis_binding": {
+    "amount_source_capability": "AVAILABLE_VERIFIED",
+    "amount_source_revision": "PER_ROW_adjustment_source_revision",
+    "canonical_daily": {
+      "bytes": 112302935,
+      "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet",
+      "sha256": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90"
+    },
+    "canonical_daily_head": {
+      "path": "data/v4/V4_02_ACCEPTED_HEAD.json",
+      "sha256": "a9784d4bcdec9d62f2e74945e6d26ec20f7af1c19440bf7dec46583932d9f653",
+      "sha256_algorithm": "CANONICAL_JSON_SHA256_V1"
+    },
+    "canonical_daily_manifest": {
+      "path": "reports/v4_02/V4_02_FINAL_STAGING_MANIFEST_R6.json",
+      "sha256": "a83f90a0d1acc08e32db5dab049f3bf16a9284e5bf6785cd8f3a2b52aed31678"
+    },
+    "canonical_daily_source_digest": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90",
+    "close_authority": "price_artifact.qfq_ohlc[3]",
+    "contract_id": "V4_08_ACCEPTED_INPUT_ADAPTER_R5_1",
+    "corporate_action_transition": "UNKNOWN; no accepted affine conversion contract applied",
+    "cross_day": "exact per-member identity equality",
+    "cutoff": "2026-09-30T23:59:59+08:00",
+    "daily_available_at": "2026-09-27T22:28:03+08:00",
+    "price_artifact": {
+      "byte_count": 944823,
+      "path": "reports/v4_02/staging/V4_02_GO_FORWARD_ADJUSTED_T0_CANDIDATE_R3.jsonl.gz",
+      "sha256": "7d87f5164c11f791ad24ad7c05139dca949f1c891523616ece907cd0f28fd8c8"
+    },
+    "price_basis_id": "coordinate_basis:adjustment_snapshot_id",
+    "price_head": {
+      "path": "data/v4/V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD.json",
+      "sha256": "206581adca674841a21a7497a3f73ce22dbedd0f18f2ce38bed003df8f42dac9",
+      "sha256_algorithm": "CANONICAL_JSON_SHA256_V1"
+    },
+    "price_identity_authority": "coordinate_basis:adjustment_snapshot_id; adjustment_snapshot_digest retained",
+    "price_logical_digest": "a5600d7f1416434bd54e778c2e7e847e309de1c21d71df5677f92daee1791400",
+    "price_source_capability": "AVAILABLE_VERIFIED",
+    "revision_authority": "adjustment_snapshot_digest",
+    "status": "PASS_ACCEPTED_AUTHORITY_WIRED_TARGET_SOURCE_UNAVAILABLE",
+    "synthetic_constant_used_in_production": false,
+    "target_trade_date": "2026-09-30"
+  },
+  "production_permission": false,
+  "raw_amount_binding": {
+    "amount_field": "canonical_daily.amount",
+    "amount_ratio20_substituted": false,
+    "amount_source_capability": "AVAILABLE_VERIFIED",
+    "amount_source_revision": "PER_ROW_adjustment_source_revision",
+    "amount_unit": "CNY",
+    "canonical_daily": {
+      "bytes": 112302935,
+      "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet",
+      "sha256": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90"
+    },
+    "canonical_daily_head": {
+      "path": "data/v4/V4_02_ACCEPTED_HEAD.json",
+      "sha256": "a9784d4bcdec9d62f2e74945e6d26ec20f7af1c19440bf7dec46583932d9f653",
+      "sha256_algorithm": "CANONICAL_JSON_SHA256_V1"
+    },
+    "canonical_daily_manifest": {
+      "path": "reports/v4_02/V4_02_FINAL_STAGING_MANIFEST_R6.json",
+      "sha256": "a83f90a0d1acc08e32db5dab049f3bf16a9284e5bf6785cd8f3a2b52aed31678"
+    },
+    "canonical_daily_source_digest": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90",
+    "contract_id": "V4_08_ACCEPTED_INPUT_ADAPTER_R5_1",
+    "cutoff": "2026-09-30T23:59:59+08:00",
+    "daily_available_at": "2026-09-27T22:28:03+08:00",
+    "date_mismatch": "UNKNOWN",
+    "digest_mismatch": "REJECT",
+    "future_source": "REJECT",
+    "missing_coerced_to_zero": false,
+    "price_artifact": {
+      "byte_count": 944823,
+      "path": "reports/v4_02/staging/V4_02_GO_FORWARD_ADJUSTED_T0_CANDIDATE_R3.jsonl.gz",
+      "sha256": "7d87f5164c11f791ad24ad7c05139dca949f1c891523616ece907cd0f28fd8c8"
+    },
+    "price_head": {
+      "path": "data/v4/V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD.json",
+      "sha256": "206581adca674841a21a7497a3f73ce22dbedd0f18f2ce38bed003df8f42dac9",
+      "sha256_algorithm": "CANONICAL_JSON_SHA256_V1"
+    },
+    "price_identity_authority": "coordinate_basis:adjustment_snapshot_id; adjustment_snapshot_digest retained",
+    "price_logical_digest": "a5600d7f1416434bd54e778c2e7e847e309de1c21d71df5677f92daee1791400",
+    "price_source_capability": "AVAILABLE_VERIFIED",
+    "status": "PASS_ACCEPTED_AUTHORITY_WIRED_TARGET_SOURCE_UNAVAILABLE",
+    "target_trade_date": "2026-09-30"
+  },
+  "real_target_distribution": {
+    "B0": {
+      "UNKNOWN": 378
+    },
+    "B2": {
+      "UNKNOWN": 378
+    },
+    "ROTATION": {
+      "UNKNOWN": 378
+    }
+  },
+  "regression": {
+    "errors": 0,
+    "failures": 0,
+    "passed": 696,
+    "skipped": 2,
+    "tests": 698
+  },
+  "semantic_mapping": "Accepted exact legacy_valid_member producer observations -> same validity rule; absent producer observations -> UNKNOWN. EXCLUDED_ROLE proves sector_valid false independently.",
+  "stage_manifest": {
+    "path": "reports/v4_08/V4_08_R5_1_STAGE_CANDIDATE_MANIFEST.json",
+    "sha256": "80b28889305d4a3b0bf0edab71ad707b791469a9bef29812551a47bdfd0bdd79"
+  },
+  "starting_head": "10d500ce51a9a0914c0d812c1c1fee761c5a3af9",
+  "status": "V4_08_R5_1_READY_FOR_EXTERNAL_REAUDIT",
+  "target_accepted_core_count": 0,
+  "tested_implementation_commit": "d4d2e861bf99ef2867a6579345a156fe18b6f5b5"
+}

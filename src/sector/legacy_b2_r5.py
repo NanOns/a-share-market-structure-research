@@ -29,8 +29,10 @@ def build_b2_inputs(native_rows,current,target,source_config):
             positive_count=sum(v>0 for v in returns) if returns else None,
             top1_positive_share=max(positive)/sum(positive) if sum(positive)>0 else None,
             ma20_width=row['fields']['ma20_width']['value'],b_delta3=row['fields']['breadth_delta3']['value'],ma20_delta3=row['fields']['ma20_delta3']['value'],
-            dq5_3=row['fields']['dq5']['value']/100 if row['fields']['dq5']['value'] is not None else None,
-            q20=row['fields']['sector_rs20_pct']['value']/100 if row['fields']['sector_rs20_pct']['value'] is not None else None)
+            # Legacy cycle q20/dq5_3 have their own rank universe and average
+            # rank/N semantics. V4 section 10A0 ranks are not equivalent.
+            # No accepted exact legacy rank publication is admitted here.
+            dq5_3=None,q20=None)
         result[row['sector_id']]={k:{'value':v,'quality':'ACCEPTED' if v is not None else 'UNKNOWN'} for k,v in values.items()}
     for typ in ('INDUSTRY','THEME'):
         rows=[r for r in native_rows if r['sector_type']==typ]

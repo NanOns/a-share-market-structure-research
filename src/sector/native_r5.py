@@ -149,10 +149,10 @@ def build_native(memberships, current, *, target, snapshot_id, publication_id, p
             for row in [r for r in rows if r['sector_type']==typ]:
                 field=row['fields'][f'sector_rs{n}'];value=field['value']
                 rank=None
-                if row in pool:
+                if row in pool and len(pool)>=2:
                     lower=sum(r['fields'][f'sector_rs{n}']['value']<value for r in pool)
                     tied=sum(r['fields'][f'sector_rs{n}']['value']==value for r in pool)
-                    rank=100*(lower+(tied+1)/2)/len(pool)
+                    rank=100*(lower+.5*(tied-1))/(len(pool)-1)
                 row['fields'][f'sector_rs{n}_pct']={**field,'value':rank,'quality':'ACCEPTED' if rank is not None else 'UNKNOWN',
                     'reason_code':None if rank is not None else 'NO_QUALIFIED_RANK_INPUT', 'rank_denominator':len(pool),'rank_membership_snapshot_id':snapshot_id}
     for row in rows:

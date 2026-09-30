@@ -37,6 +37,23 @@ def test_absent_target_publication_does_not_create_zero_quote_coverage():
         assert registry[field]['producer']==item['producer']
         assert registry[field]['time_role']==item['time_role']
 
+def test_native_midrank_is_section_10a0_not_legacy_display_percentile():
+    params,*_=package();members=[];current={}
+    for sector,ret in [('FIRST',.1),('SECOND',.1)]:
+        for index in range(5):
+            member=f'{sector}_{index}'
+            members.append(dict(sector_type='INDUSTRY',sector_id=sector,security_id=member,snapshot_id='SNAPSHOT',target_trade_date='2026-09-30'))
+            current[member]={'trade_date':'2026-09-30','fields':{f:fact(v) for f,v in {'ret1':.01,'ret5':ret,'ret20':ret,'ret60':ret,'close_minus_ma20':1,'amount':10,'amount_ratio20':1,'rps20':85}.items()}}
+    result=build_native(members,current,target='2026-09-30',snapshot_id='SNAPSHOT',publication_id='FIXTURE',parameter_set=params,source_bindings={})
+    assert {r['fields']['sector_rs5_pct']['value'] for r in result}=={50}
+    assert result[0]['fields']['sector_rs5']['value']==.1
+    assert result[0]['fields']['breadth_ret1']['value']==1
+    assert result[0]['fields']['ma20_width']['value']==1
+    assert result[0]['fields']['top1_concentration']['value']==.2
+    assert result[0]['fields']['participation_proxy']['value']==1
+    single=build_native(members[:5],current,target='2026-09-30',snapshot_id='SNAPSHOT',publication_id='FIXTURE',parameter_set=params,source_bindings={})
+    assert single[0]['fields']['sector_rs5_pct']['value'] is None
+
 @pytest.mark.parametrize('old,now,expected',[([],{},'NOT_APPLICABLE'),(['A'],{},'UNKNOWN'),(['A','B'],{'A':True,'B':False},'ACCEPTED')])
 def test_frozen_denominator(old,now,expected):assert retention(old,now)[1]==expected
 
@@ -123,6 +140,7 @@ def test_actual_legacy_current_function_against_pit_adapter():
             members.append(dict(sector_id=f'SECTOR_{sector}',security_id=member,trade_date='2026-09-30',ret1=value,sector_type='INDUSTRY',sector_name='GENERIC INDUSTRY',semantic_bucket='NORMAL_ATTRIBUTE',sector_valid=True))
         native.append(dict(sector_id=f'SECTOR_{sector}',sector_type='INDUSTRY',member_ids=ids,fields={f:{'value':None} for f in ('ma20_width','breadth_delta3','ma20_delta3','dq5','sector_rs20_pct')}))
     inputs=build_b2_inputs(native,current,'2026-09-30',cfg)
+    assert all(f['q20']['value'] is None and f['dq5_3']['value'] is None for f in inputs.values())
     source=build_sector_current(pd.DataFrame(members),pd.DataFrame(members)[['security_id','trade_date','ret1']],cfg)
     actual={row['sector_id']:row['current'] for row in source.to_dict('records')}
     assert actual['SECTOR_4'] is True

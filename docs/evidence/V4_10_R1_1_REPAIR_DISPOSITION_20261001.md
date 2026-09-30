@@ -1,0 +1,22 @@
+# V4-10 R1.1 repair disposition
+
+External baseline: V4_10_EXTERNAL_ACCEPTANCE_BLOCKED_R1 at 14db3ef521d34b366bf5a22bad2a3564838ce8bf. This document records the engineering candidate response, not external acceptance.
+
+| Item | Repair boundary | Independent evidence |
+|---|---|---|
+| B01 prior authenticity | Full versioned output schema, content-address identity, exact immutable row/publication/consumer/model/parameter binding from out-of-band PostgreSQL ledger, and frozen calendar/date/session relation | R1.1 prior lineage acceptance, independent SQL-backed postcheck and forgery vectors |
+| B02 model boundary | Bare boolean rejected. NONE has exact shape; AUTHORIZED binds an existing immutable owner-issued migration manifest with from/to identity, effective date and digest. Synthetic fixture status remains isolated | R1.1 boundary acceptance, missing/wrong/digest/unpublished negatives and follow-up preservation invariant |
+| B03 state-changing facts | One envelope and registry for 13 fields; value/quality/status, producer, parameter, exact publication membership, source-field digest, time role, required/optional and availability. Accepted stock producers cannot be relabelled as sector facts | R1.1 provenance acceptance; independent field/publication/time-role checks; future timestamp and producer-scope negatives |
+| B04 publication list | Strict nonempty unique stable-ID array in both modes; canonical sorted representation and whole field-binding manifest digest; every accepted referenced publication must exist in the trusted ledger | R1.1 input manifest shape acceptance and exact-membership negatives |
+| B05 DB identity | Choice A. Migration 023 adds independent PostgreSQL canonical/digest and state-ID validation, lineage column equality, source/owner/publication/calendar checks, plus deferred publication digest/row-count validation. Ordinary result writers cannot register source/boundary/calendar manifests. Migration 022 remains immutable | R1.1 schema acceptance, direct SQL forgery rejection, ordinary-writer registrar denial, old R1 readback, revision and rollback probes |
+| B06 independent coverage | Preserve original 98-vector candidate. R1.1 adds static negative fixtures and real SQL probes. Required lineage tags are hardcoded in verifier, not inferred from vector declarations | R1.1 independent postcheck and machine coverage |
+
+Canonicalization: V4_10_CANONICAL_JSON_R1_1 defines sorted keys, compact UTF-8 JSON and normalized finite plain numbers (including 1.0→1 and -0→0). Python and PostgreSQL implement it independently and test exponents, boundaries and Unicode. New R1.1 rows are content addressed under this explicit protocol. Original R1 payloads and publication IDs remain readable and unchanged; new writes require the R1.1 interface marker. Synthetic fixture conversion is invoked only by tests/verifier, never implicitly by reduce_state or accepted-mode resolution.
+
+Trusted issuer boundary: the engineering DB owner publishes immutable source and migration manifests; serialized API callers supply no authority object. A caller-created hash or dict is insufficient. Tests simulate this owner in a disposable database and label their manifests as gate fixtures; they do not establish real market signal acceptance. Future production authority, full detector DAG and multi-version cutover are outside this repair task.
+
+V4-11 Confirmation, V4-12 frozen invalidation/creation/scenario producers and follow-up settlement owner remain NOT_IMPLEMENTED. Their values remain UNKNOWN. Stock WARM is NOT_APPLICABLE. Other sector adapters require their own extraction/entry contract; only accepted native dq5 is registered for sector scope at this interface revision. No upstream capability is downgraded or promoted by this interface restriction.
+
+Business contract RESEARCH_STATE_V1 and thresholds 2/10/3/3 are unchanged. V4-09 KEEP_ACCEPTED, N01/N02 OPEN, all historical independent capability/audit states unchanged. Protected heads and production/shadow/Focus permissions unchanged; V4-10 Accepted Head absent, V4-11 blocked.
+
+After all G01–G17 checks pass, commit/push code and evidence and stop at V4_10_R1_1_REPAIR_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT. Only independent external acceptance may advance the gate.

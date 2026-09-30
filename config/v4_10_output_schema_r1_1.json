@@ -1,0 +1,131 @@
+{
+  "axes": {
+    "health": [
+      "IMPROVING",
+      "STABLE",
+      "WEAKENING",
+      "DAMAGED",
+      "EXHAUSTED",
+      "UNKNOWN"
+    ],
+    "maturity": [
+      "NONE",
+      "SEED",
+      "PREWATCH",
+      "WARM",
+      "CONFIRMED"
+    ],
+    "scenario": {
+      "SECTOR": [
+        "BASE_BUILD",
+        "BREADTH_BUILD",
+        "RECOVERY_BUILD",
+        "BROADENING",
+        "REACCELERATING",
+        "SUSTAINED",
+        "NONE"
+      ],
+      "STOCK": [
+        "SETUP",
+        "LAUNCH_CONFIRM",
+        "RECOVERY_TURN",
+        "STRONG_PULLBACK",
+        "TREND_CONTINUE",
+        "NONE"
+      ]
+    },
+    "tracking": [
+      "ACTIVE",
+      "FOLLOWUP",
+      "CLOSED"
+    ],
+    "validity": [
+      "VALID",
+      "INVALIDATED",
+      "UNKNOWN"
+    ]
+  },
+  "canonicalization_contract_id": "V4_10_CANONICAL_JSON_R1_1",
+  "counter_fields": [
+    "session_index",
+    "expiry_count",
+    "downgrade_count",
+    "market_age"
+  ],
+  "final_eligibility": [
+    "TRUE",
+    "FALSE",
+    "UNKNOWN"
+  ],
+  "nullable_string_fields": [
+    "episode_id",
+    "parent_episode_id",
+    "invalidation_contract_id",
+    "downgrade_candidate"
+  ],
+  "persistence": "append-only engineering publication + entity/type/episode-scoped results; no UPDATE/DELETE",
+  "required": [
+    "publication_id",
+    "entity_id",
+    "entity_type",
+    "trade_date",
+    "session_index",
+    "calendar_publication_id",
+    "mode",
+    "maturity",
+    "health",
+    "validity",
+    "tracking",
+    "scenario",
+    "scenario_status",
+    "state_freshness",
+    "final_eligibility",
+    "raw_qualification",
+    "detector_statuses",
+    "episode_id",
+    "parent_episode_id",
+    "prior_state_binding",
+    "input_publication_ids",
+    "model_contract_id",
+    "parameter_set_id",
+    "input_digest",
+    "matched_predicates",
+    "unknown_predicates",
+    "transition_reasons",
+    "expiry_count",
+    "improvement_baseline",
+    "market_age",
+    "downgrade_candidate",
+    "downgrade_count",
+    "exit_session_index",
+    "boundary_event",
+    "preserved_followup_episode_ids",
+    "interface_contract_id",
+    "canonicalization_contract_id",
+    "calendar_binding",
+    "input_provenance",
+    "input_publication_manifest_digest",
+    "invalidation_contract_id",
+    "cutoff"
+  ],
+  "schema_id": "V4_10_REDUCER_OUTPUT_SCHEMA_R1_1",
+  "state_freshness": [
+    "FRESH",
+    "STALE"
+  ],
+  "string_fields": [
+    "publication_id",
+    "entity_id",
+    "entity_type",
+    "trade_date",
+    "calendar_publication_id",
+    "mode",
+    "model_contract_id",
+    "parameter_set_id",
+    "interface_contract_id",
+    "canonicalization_contract_id",
+    "input_digest",
+    "input_publication_manifest_digest"
+  ],
+  "type": "object"
+}

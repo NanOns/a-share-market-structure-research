@@ -2,9 +2,15 @@ from copy import deepcopy
 import json
 from pathlib import Path
 import pytest
-from src.v4.research_state import reduce_state, digest
+from src.v4.research_state import reduce_state as reduce_current, digest
 from scripts.freeze_v4_10_contract import fixture, prior, with_prior
-from scripts.verify_v4_10_state_reducer import check_vectors
+from scripts.verify_v4_10_r1_1 import check_vectors
+from scripts.v4_10_r1_1_fixtures import adapt_r1_input,accepted_bundle,publish_setup
+from src.v4.state_provenance import PostgresEngineeringLedger
+
+def reduce_state(old):
+    # Explicit synthetic adapter retains the original static business oracle.
+    return reduce_current(adapt_r1_input(old))
 
 ROOT=Path(__file__).resolve().parents[2]
 VECTORS=json.loads((ROOT/'config/v4_10_machine_vectors_v1.json').read_text(encoding='utf8'))['vectors']
@@ -18,8 +24,8 @@ def test_independent_vector(vector):
         assert {k:r[k] for k in vector['expected']}==vector['expected']
         assert reduce_state(vector['input'])==r
 
-def test_independent_postcheck_has_complete_axis_and_transition_coverage():
-    post,coverage=check_vectors()
+def test_independent_postcheck_has_complete_axis_and_transition_coverage(pg):
+    post,coverage=check_vectors(pg)
     assert post['status']=='PASS'
     assert set(coverage['axes']['maturity'])=={'NONE','SEED','PREWATCH','WARM','CONFIRMED'}
     assert set(coverage['axes']['tracking'])=={'ACTIVE','FOLLOWUP','CLOSED'}
@@ -42,13 +48,9 @@ def test_expiry_baseline_accumulates_and_unknown_keeps_market_age():
     assert state['improvement_baseline']==3.1 and state['expiry_count']==1
     assert state['market_age']==4
 
-def test_real_input_missing_confirmation_is_unknown():
-    x=fixture();x['mode']='ACCEPTED_FACT_INTERFACE'
-    x['detectors']['CONFIRMED'].update(status='NOT_IMPLEMENTED',value='UNKNOWN')
-    for stage,contract,param in [('SEED','BASE_SEED_V1','V4_07_BASE_SEED_PARAMETER_SET_V1'),
-            ('PREWATCH','STOCK_PREWATCH_V1','V4_09_STOCK_PREWATCH_PARAMETER_SET_V1')]:
-        x['detectors'][stage].update(status='IMPLEMENTED',contract_id=contract,parameter_set_id=param)
-    r=reduce_state(x)
+def test_real_input_missing_confirmation_is_unknown(pg):
+    x,manifests=accepted_bundle();publish_setup(pg,manifests)
+    r=reduce_current(x,ledger=PostgresEngineeringLedger(pg))
     assert r['final_eligibility']=='UNKNOWN' and r['episode_id'] is None
 
 def test_false_or_unknown_cannot_be_coerced_from_python_boolean():

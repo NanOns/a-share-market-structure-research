@@ -1,0 +1,36 @@
+{
+  "accepted_resolver": "PostgresEngineeringLedger supplied outside serialized request; requires immutable DB rows",
+  "input_publication_ids": {
+    "items": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "minItems": 1,
+    "type": "array",
+    "uniqueItems": true
+  },
+  "provenance": "every state-changing field registered in V4_10_STATE_INPUT_PROVENANCE_V1",
+  "required": [
+    "interface_contract_id",
+    "entity_id",
+    "entity_type",
+    "trade_date",
+    "session_index",
+    "calendar_publication_id",
+    "calendar_binding",
+    "mode",
+    "cutoff",
+    "input_publication_ids",
+    "input_provenance",
+    "input_publication_manifest_digest",
+    "prior_state",
+    "prior_state_binding",
+    "model_boundary"
+  ],
+  "schema_id": "V4_10_REDUCER_INPUT_SCHEMA_R1_1",
+  "synthetic_context_keys": [
+    "synthetic_calendar_manifest",
+    "synthetic_boundary_manifest"
+  ],
+  "type": "object"
+}

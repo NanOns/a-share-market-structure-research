@@ -121,4 +121,6 @@ def main():
     print(json.dumps(dict(status=clean['status'],tested_commit=head,regression=summary,no_symbol=governance['status'],schema_checks=schema['checks'])))
     return clean['status']=='FAIL'
 
-if __name__=='__main__':sys.exit(main())
+if __name__=='__main__':
+    from scripts.run_v4_10_r1_1_isolated_verification import main as repair_main
+    sys.exit(repair_main())

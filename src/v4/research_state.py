@@ -5,30 +5,31 @@ import json
 import math
 from datetime import date
 from pathlib import Path
+from .state_identity import digest, INTERFACE, CANONICALIZATION
+from .state_provenance import validate_inputs, validate_output
 
 ROOT = Path(__file__).resolve().parents[2]
 CONTRACT = 'RESEARCH_STATE_V1'
 PARAMETERS = 'V4_10_STATE_REDUCER_PARAMETER_SET_V1'
 TRI = {'TRUE', 'FALSE', 'UNKNOWN'}
 
-def digest(value):
-    return hashlib.sha256(json.dumps(value, sort_keys=True, ensure_ascii=False, separators=(',', ':'), allow_nan=False).encode()).hexdigest()
-
 def load_package():
-    freeze=json.loads((ROOT/'reports/v4_10/V4_10_CONTRACT_FREEZE.json').read_text(encoding='utf8'))
-    if freeze['status']!='PASS_INTERFACE_SCOPE_FREEZE' or freeze['contract_id']!='V4_10_CONTRACT_FREEZE_V1':
+    freeze=json.loads((ROOT/'reports/v4_10/V4_10_R1_1_CONTRACT_FREEZE.json').read_text(encoding='utf8'))
+    if freeze['status']!='PASS_R1_1_LINEAGE_INTERFACE_FREEZE' or freeze['contract_id']!='V4_10_R1_1_CONTRACT_FREEZE':
         raise ValueError('STATE_FREEZE_IDENTITY_MISMATCH')
     for binding in freeze['bindings'].values():
         if hashlib.sha256((ROOT/binding['path']).read_bytes()).hexdigest()!=binding['sha256']:
             raise ValueError('STATE_FREEZE_BINDING_MISMATCH')
     def read(name):
-        return json.loads((ROOT/('config/v4_10_'+name+'_v1.json')).read_text(encoding='utf8'))
+        return json.loads((ROOT/('config/v4_10_'+name+'_r1_1.json')).read_text(encoding='utf8'))
     c, a, p = read('research_state_contract'), read('machine_ast'), read('parameter_set')
     if c['contract_id']!=CONTRACT or p['parameter_set_id']!=PARAMETERS or a['rule_order']!=c['rule_order']:
         raise ValueError('STATE_CONTRACT_IDENTITY_MISMATCH')
     if a['rule_order']!=['R1_MODEL_BOUNDARY','R2_HARD_INVALIDATION','R3_REQUIRED_UNKNOWN','R4_STAGE_SELECTION',
                          'R5_HYSTERESIS','R6_HEALTH','R7_TRACKING','R8_EXPIRY','R9_REENTRY']:
         raise ValueError('STATE_RULE_ORDER_MISMATCH')
+    if any(p[k]!=v for k,v in dict(downgrade_sessions=2,expiry_sessions=10,expiry_improvement_pp=3,health_deadband_pp=3).items()):
+        raise ValueError('UNAUTHORIZED_BUSINESS_PARAMETER_CHANGE')
     return c, a, p
 
 def _fact(value, field, unknown):
@@ -36,14 +37,14 @@ def _fact(value, field, unknown):
     if value=='UNKNOWN': unknown.append(field)
     return value
 
-def reduce_state(inputs):
+def reduce_state(inputs, *, ledger=None):
     """Reduce explicit publication facts; synthetic positives require declared fixture mode.
 
     session_index is a monotone index from the caller's bound market calendar, never
     calendar-day subtraction. prior_state_binding freezes the whole previous payload.
     """
     c, ast, p = load_package()
-    x=deepcopy(inputs); required=c['input_required_fields']
+    x=validate_inputs(inputs,ledger); required=c['input_required_fields']
     if set(required)-set(x): raise ValueError('MISSING_STATE_INPUT_FIELDS')
     if x['entity_type'] not in ('STOCK','SECTOR') or x['mode'] not in ('SYNTHETIC_CONTRACT_VECTOR','ACCEPTED_FACT_INTERFACE'):
         raise ValueError('STATE_INPUT_SCOPE_INVALID')
@@ -52,12 +53,10 @@ def reduce_state(inputs):
     date.fromisoformat(x['trade_date'])
     if not x['entity_id'] or not x['calendar_publication_id'] or not x['input_publication_ids']:
         raise ValueError('EXPLICIT_INPUT_PUBLICATION_LINEAGE_REQUIRED')
-    if type(x['suspended']) is not bool or type(x['followup_complete']) is not bool or type(x['model_boundary']) is not bool:
+    if x['suspended'] not in TRI or x['followup_complete'] not in TRI or type(x['model_boundary']) is not bool:
         raise ValueError('STATE_BOOLEAN_INTERFACE_INVALID')
     prior=x['prior_state']; boundary=x['model_boundary']; previous=prior
     if prior:
-        if x['prior_state_binding']!={'publication_id':prior['publication_id'],'payload_digest':digest(prior)}:
-            raise ValueError('PRIOR_STATE_BINDING_MISMATCH')
         if prior['entity_id']!=x['entity_id'] or prior['entity_type']!=x['entity_type'] or prior['session_index']>x['session_index']:
             raise ValueError('ILLEGAL_PRIOR_STATE_LINEAGE')
         if (prior['model_contract_id']!=CONTRACT or prior['parameter_set_id']!=PARAMETERS) and not boundary:
@@ -72,7 +71,7 @@ def reduce_state(inputs):
         raise ValueError('ORPHAN_PRIOR_STATE_BINDING')
     if boundary: prior=None  # old episode remains in separate immutable publication
     reasons=['MODEL_BOUNDARY'] if boundary else []
-    unknown=[]; matched=[]; fact_values={}; statuses={}
+    unknown=list(x['provenance_unknown']); matched=[]; fact_values={}; statuses={}
     for stage in ast['stage_precedence']:
         f=x['detectors'][stage]
         statuses[stage]=f['status']
@@ -99,7 +98,9 @@ def reduce_state(inputs):
         if value=='TRUE': matched.append(stage)
     damage=_fact(x['core_price_damage'],'core_price_damage',unknown)
     invalid=x['frozen_invalidation']
-    invalid_value=_fact(invalid['value'],'frozen_invalidation',unknown)
+    invalid_required=bool(prior and prior['episode_id'])
+    invalid_value=_fact(invalid['value'],'frozen_invalidation',unknown if invalid_required else [])
+    _fact(x['suspended'],'suspended',unknown)
     if invalid_value=='TRUE' and (not prior or not prior['episode_id'] or invalid['episode_id']!=prior['episode_id'] or
             not invalid['contract_id'] or invalid['contract_id']!=prior.get('invalidation_contract_id')):
         invalid_value='UNKNOWN'; unknown.append('invalidation:EPISODE_CONTRACT_MISMATCH')
@@ -111,6 +112,9 @@ def reduce_state(inputs):
     episode=prior['episode_id'] if prior else None
     result=dict(entity_id=x['entity_id'], entity_type=x['entity_type'], trade_date=x['trade_date'], session_index=x['session_index'],
         calendar_publication_id=x['calendar_publication_id'], mode=x['mode'], model_contract_id=CONTRACT,parameter_set_id=PARAMETERS,
+        cutoff=x['cutoff'],
+        interface_contract_id=INTERFACE,canonicalization_contract_id=CANONICALIZATION,calendar_binding=x['calendar_binding'],
+        input_provenance=x['input_provenance'],input_publication_manifest_digest=x['input_publication_manifest_digest'],
         prior_state_binding=x['prior_state_binding'],input_publication_ids=x['input_publication_ids'],input_digest=digest(x),
         maturity=old_stage,health='UNKNOWN',validity='UNKNOWN',tracking=prior['tracking'] if prior else 'CLOSED',
         scenario=prior['scenario'] if prior else 'NONE',scenario_status='UNKNOWN',state_freshness='STALE',
@@ -122,18 +126,24 @@ def reduce_state(inputs):
         market_age=(prior.get('market_age',0)+x['session_index']-prior['session_index']) if prior else 0,
         exit_session_index=prior.get('exit_session_index') if prior else None,
         matched_predicates=matched,unknown_predicates=unknown,transition_reasons=reasons,
-        boundary_event=dict(kind='MODEL_BOUNDARY',previous_episode_id=previous['episode_id'] if previous else None) if boundary else None,
+        boundary_event=dict(kind='MODEL_BOUNDARY',previous_episode_id=previous['episode_id'] if previous else None,
+            authorized_manifest=x['authorized_boundary']) if boundary else None,
         preserved_followup_episode_ids=([previous['episode_id']] if boundary and previous and previous['episode_id'] else
             list(prior.get('preserved_followup_episode_ids',[])) if prior else []))
     def finish():
+        for field,fact in x['input_provenance'].items():
+            if not fact['required'] and fact['quality']=='UNKNOWN':
+                reason=field+':OPTIONAL_INPUT_UNKNOWN'
+                if reason not in unknown:unknown.append(reason)
         result['publication_id']='V4_10:'+digest(result)
+        validate_output(result)
         return result
     if episode and (damage=='TRUE' or invalid_value=='TRUE'):
         result.update(maturity='NONE',health='DAMAGED',validity='INVALIDATED',final_eligibility='FALSE',tracking='FOLLOWUP',
             state_freshness='FRESH',exit_session_index=x['session_index'])
         reasons.append('HARD_INVALIDATION'); return finish()
-    if unknown or x['suspended']:
-        if x['suspended']: unknown.append('SUSPENSION')
+    if unknown or x['suspended']=='TRUE':
+        if x['suspended']=='TRUE': unknown.append('SUSPENSION')
         reasons.append('REQUIRED_FACTS_UNKNOWN_PRESERVE'); return finish()
     stage=next((s for s in ast['stage_precedence'] if fact_values.get(s)=='TRUE'),'NONE')
     result.update(validity='VALID',state_freshness='FRESH',final_eligibility='TRUE' if stage!='NONE' else 'FALSE')
@@ -171,7 +181,7 @@ def reduce_state(inputs):
     if stage=='NONE':
         result['tracking']='FOLLOWUP' if episode else 'CLOSED'
         if episode and old_stage!='NONE': result['exit_session_index']=x['session_index']; reasons.append('EXITED')
-        if episode and x['followup_complete']: result['tracking']='CLOSED'; reasons.append('FOLLOWUP_COMPLETE')
+        if episode and x['followup_complete']=='TRUE': result['tracking']='CLOSED'; reasons.append('FOLLOWUP_COMPLETE')
     elif result['final_eligibility']=='TRUE':
         exited=prior and prior.get('exit_session_index') is not None and prior['maturity']=='NONE'
         if exited and x['session_index']<=prior['exit_session_index']:

@@ -57,4 +57,6 @@ def main():
     print(json.dumps(dict(status=result['status'],vector_count=result['vector_count'],mismatch_count=result['mismatch_count'])))
     return result['status']!='PASS'
 
-if __name__=='__main__':sys.exit(main())
+if __name__=='__main__':
+    from scripts.verify_v4_10_r1_1 import main as repair_main
+    sys.exit(repair_main())

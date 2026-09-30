@@ -1,0 +1,249 @@
+{
+  "accepted_stage_range": "V4_00_TO_V4_07_ACCEPTED",
+  "artifacts": {
+    "B0": {
+      "byte_count": 10599,
+      "path": "data/v4/artifact_store/v4_08/V4_08_R5_B0_20260930_3c722da3453a5350930e.jsonl.gz",
+      "sha256": "b33514754e697a66fbbb2e7145cc55206f157be8d9af83234bec94638a4d6470"
+    },
+    "B2": {
+      "byte_count": 11466,
+      "path": "data/v4/artifact_store/v4_08/V4_08_R5_B2_20260930_3c722da3453a5350930e.jsonl.gz",
+      "sha256": "f80bf82a9d51a538eb4118f92e266bd5555a36c1f09557f5c45b0a8f19360acd"
+    },
+    "ROTATION": {
+      "byte_count": 1142740,
+      "path": "data/v4/artifact_store/v4_08/V4_08_R5_ROTATION_20260930_3c722da3453a5350930e.jsonl.gz",
+      "sha256": "243df3f8fbdf2f14775bcdaeab6acac9f7d84047d00c3e456fbc9a6932e5a2e8"
+    },
+    "SECTOR_NATIVE": {
+      "byte_count": 1631410,
+      "path": "data/v4/artifact_store/v4_08/V4_08_R5_SECTOR_NATIVE_20260930_3c722da3453a5350930e.jsonl.gz",
+      "sha256": "873f13c18bc4ad6ef59bc7b51400018b66bf7ee704772f31287f4502abbff813"
+    }
+  },
+  "b2_ast": {
+    "byte_count": 26820,
+    "path": "config/v4_08_b2_machine_ast_r5.json",
+    "sha256": "87a0a27d664317182cfbcee73e98e575d731b1b6105c710d01c4a1a5f845bd40"
+  },
+  "b2_source_extraction": {
+    "byte_count": 2546,
+    "path": "reports/v4_08/V4_08_R5_B2_LEGACY_SOURCE_EXTRACTION.json",
+    "sha256": "3ea89eb0fdedc9ba0c4f5d7afb6ab11be100b22f33c5107207c37bd7e54d39cd"
+  },
+  "candidate_manifest_classification": "PRE_FINAL_GATE_CANDIDATE_SNAPSHOT; immutable producer snapshot, final gate receipts and this handoff establish engineering readiness separately",
+  "capabilities": {
+    "B0_SEED_DEPENDENT": "DEGRADED_UNKNOWN",
+    "B2_AMOUNT_A": "DIAGNOSTIC",
+    "B2_NON_AMOUNT_A": "IMPLEMENTED_TARGET_CORE_UNAVAILABLE",
+    "ROTATION_HISTORY_DEPENDENT": "SHADOW_UNKNOWN",
+    "SECTOR_NATIVE_NON_SEED": "IMPLEMENTED_TARGET_CORE_UNAVAILABLE"
+  },
+  "clean_checkout": {
+    "candidate_reproduction_changed_tracked_files": false,
+    "config_dot_env_present": false,
+    "config_dot_env_read": false,
+    "detached_head": true,
+    "git_clean_before_after": true,
+    "temporary_cluster_destroyed": true
+  },
+  "evidence_bindings": {
+    "V4_08_R5_B0_FULL_MARKET.json": {
+      "byte_count": 888,
+      "path": "reports/v4_08/V4_08_R5_B0_FULL_MARKET.json",
+      "sha256": "b70b4af1394bb582e9946a5f490e1f7fdfcbaecd6aedec9ac89bf0a4a157c4a8"
+    },
+    "V4_08_R5_B0_IMPLEMENTATION.json": {
+      "byte_count": 977,
+      "path": "reports/v4_08/V4_08_R5_B0_IMPLEMENTATION.json",
+      "sha256": "ac2bc9e332614d7c879159687adf06ba2b450aa482afdc0a25ae3c5d9c9a3a91"
+    },
+    "V4_08_R5_B2_FULL_MARKET.json": {
+      "byte_count": 888,
+      "path": "reports/v4_08/V4_08_R5_B2_FULL_MARKET.json",
+      "sha256": "903a78510c033a7531a1f9f98e5515b8b1017ddb30e3d85655e98ce1948d2134"
+    },
+    "V4_08_R5_B2_GOLDEN_VECTORS.json": {
+      "byte_count": 14192,
+      "path": "reports/v4_08/V4_08_R5_B2_GOLDEN_VECTORS.json",
+      "sha256": "041c3582dd40a8ae72b1c12f2ddcf557be76d6b7627fc7a697ef8b6c35ed3f3a"
+    },
+    "V4_08_R5_B2_INDEPENDENT_POSTCHECK.json": {
+      "byte_count": 257,
+      "path": "reports/v4_08/V4_08_R5_B2_INDEPENDENT_POSTCHECK.json",
+      "sha256": "c91966f3624ded2b1a96411454ecb9aba35772832e6a1d09feb656f8a1600440"
+    },
+    "V4_08_R5_B2_LEGACY_SOURCE_EXTRACTION.json": {
+      "byte_count": 2546,
+      "path": "reports/v4_08/V4_08_R5_B2_LEGACY_SOURCE_EXTRACTION.json",
+      "sha256": "3ea89eb0fdedc9ba0c4f5d7afb6ab11be100b22f33c5107207c37bd7e54d39cd"
+    },
+    "V4_08_R5_B2_MACHINE_AST.json": {
+      "byte_count": 26820,
+      "path": "reports/v4_08/V4_08_R5_B2_MACHINE_AST.json",
+      "sha256": "87a0a27d664317182cfbcee73e98e575d731b1b6105c710d01c4a1a5f845bd40"
+    },
+    "V4_08_R5_CLEAN_CHECKOUT_RECEIPT.json": {
+      "byte_count": 9605,
+      "path": "reports/v4_08/V4_08_R5_CLEAN_CHECKOUT_RECEIPT.json",
+      "sha256": "612f8d0ca5f193ed4771953843809d2cf42f5f696f7b4966737bbbd3c1e5d9b9"
+    },
+    "V4_08_R5_COMMON_MEMBER_QUALITY.json": {
+      "byte_count": 473556,
+      "path": "reports/v4_08/V4_08_R5_COMMON_MEMBER_QUALITY.json",
+      "sha256": "15a858f4e3ff6687d6c0c79af9db0daa34c164245c44eb569c6aa140f188b61c"
+    },
+    "V4_08_R5_FEEDBACK_ISOLATION.json": {
+      "byte_count": 1047,
+      "path": "reports/v4_08/V4_08_R5_FEEDBACK_ISOLATION.json",
+      "sha256": "8da54fae59750ac88fac21908861bc2537a78574e3a8e70a6bac073e8e3b5d4e"
+    },
+    "V4_08_R5_ISOLATED_REGRESSION.json": {
+      "byte_count": 1750,
+      "path": "reports/v4_08/V4_08_R5_ISOLATED_REGRESSION.json",
+      "sha256": "fdbd928012dc7921fb35575c38917560600271de974546d43e70565390ba50d4"
+    },
+    "V4_08_R5_NO_SYMBOL_SPECIFIC_SYSTEM_LOGIC_SCAN.json": {
+      "byte_count": 29098870,
+      "path": "reports/v4_08/V4_08_R5_NO_SYMBOL_SPECIFIC_SYSTEM_LOGIC_SCAN.json",
+      "sha256": "61acda34038473f25270adac8a80eb78dd95b04858e204bd5932525426071485"
+    },
+    "V4_08_R5_PARAMETER_BINDING_PERTURBATION.json": {
+      "byte_count": 1593,
+      "path": "reports/v4_08/V4_08_R5_PARAMETER_BINDING_PERTURBATION.json",
+      "sha256": "33bcbcde9f9bee92858585b41348c30284fe3cdce8651b6661d8600c83623eaf"
+    },
+    "V4_08_R5_PIT_MEMBERSHIP_PROMOTION.json": {
+      "byte_count": 572,
+      "path": "reports/v4_08/V4_08_R5_PIT_MEMBERSHIP_PROMOTION.json",
+      "sha256": "14b6c4a25428c871079fea244e36a16e00024ed76e20ae40df9231ef1e39e1a8"
+    },
+    "V4_08_R5_RETENTION_PARAMETER_DECISION_PACKAGE.json": {
+      "byte_count": 10174,
+      "path": "reports/v4_08/V4_08_R5_RETENTION_PARAMETER_DECISION_PACKAGE.json",
+      "sha256": "b40d74aa30313a6d3ee09f49fe18f42c9230ab860e2fc1db39ca1f9aa2291f22"
+    },
+    "V4_08_R5_ROTATION_FULL_MARKET.json": {
+      "byte_count": 896,
+      "path": "reports/v4_08/V4_08_R5_ROTATION_FULL_MARKET.json",
+      "sha256": "9ece0d8d40a9f2c9c2171e3a99027b7f0d29bce0a874061e3bd8b88998587f80"
+    },
+    "V4_08_R5_ROTATION_IMPLEMENTATION.json": {
+      "byte_count": 984,
+      "path": "reports/v4_08/V4_08_R5_ROTATION_IMPLEMENTATION.json",
+      "sha256": "0f17ef1dacfd12545e6062684998b737b0522d8a5c98afde0b5866919ec58660"
+    },
+    "V4_08_R5_SCHEMA_MIGRATION_RECEIPT.json": {
+      "byte_count": 6701,
+      "path": "reports/v4_08/V4_08_R5_SCHEMA_MIGRATION_RECEIPT.json",
+      "sha256": "af6768116e01396be4075cd5f63d8f1d8cdc81f38e960a21a57822fbbc1078d3"
+    },
+    "V4_08_R5_SECTOR_NATIVE_FULL_MARKET.json": {
+      "byte_count": 904,
+      "path": "reports/v4_08/V4_08_R5_SECTOR_NATIVE_FULL_MARKET.json",
+      "sha256": "9c18f59fc26ed164ad88ceeaf36f7d70002496a30445f22422c8674d9b73bc6e"
+    },
+    "V4_08_R5_SECTOR_NATIVE_IMPLEMENTATION.json": {
+      "byte_count": 986,
+      "path": "reports/v4_08/V4_08_R5_SECTOR_NATIVE_IMPLEMENTATION.json",
+      "sha256": "6313c9111bfed4f059975ec1df81124bfc337ad3e511c7a590c272a78d3ea1b2"
+    },
+    "V4_08_R5_STAGE_CANDIDATE_MANIFEST.json": {
+      "byte_count": 4827,
+      "path": "reports/v4_08/V4_08_R5_STAGE_CANDIDATE_MANIFEST.json",
+      "sha256": "2adf23c8b8332f64f0c362a5e1c318740ebeafee0fa4c988d72dc4e29448f6fb"
+    }
+  },
+  "evidence_head_relationship": "The subsequent evidence-only commit containing this handoff is also pushed; its exact remote HEAD is reported in the session. Runtime code and candidate artifacts are bound to final_implementation_commit.",
+  "external_acceptance": "PENDING_INDEPENDENT_R5_AUDIT",
+  "final_implementation_commit": "3adf4378a1dfa5e6eea60c2efb6e7e913db1cec1",
+  "final_v4_08_accepted_head_written": false,
+  "first_accepted_trade_date": "2026-09-30",
+  "five_retention_parameter_values": {
+    "V4_08_EARLY_BREADTH_DELTA_MIN": 0,
+    "V4_08_EARLY_BREADTH_RETENTION_MIN": 0.6,
+    "V4_08_EARLY_SEED_RETENTION_MIN": 0.6666666666666666,
+    "V4_08_EARLY_TOP1_CONCENTRATION_MAX": 0.3333333333333333,
+    "V4_08_MATURE_STRONG_RETENTION_MIN": 0.75
+  },
+  "full_market_distributions": {
+    "B0": {
+      "UNKNOWN": 378
+    },
+    "B2": {
+      "UNKNOWN": 378
+    },
+    "ROTATION": {
+      "UNKNOWN": 378
+    },
+    "SECTOR_NATIVE": {
+      "PRIMITIVES": 378
+    }
+  },
+  "git_branch": "codex/v4-system-reform",
+  "git_remote": "https://github.com/NanOns/a-share-market-structure-research.git",
+  "global_accepted_head": {
+    "byte_count": 5999,
+    "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+    "sha256": "74b0fdd3358ab0da95ffa0522a5cf9a34bb168cb0bfb0a8adfbfc32d5578ef71"
+  },
+  "governance": {
+    "hard_gated_equity_symbol_hits": 0,
+    "status": "PASS",
+    "tested_commit": "3adf4378a1dfa5e6eea60c2efb6e7e913db1cec1",
+    "unclassified_paths": []
+  },
+  "independent_audits": {
+    "AUD-AMOUNT-A-06": "OPEN_DIAGNOSTIC_ONLY",
+    "AUD-V4-08-TARGET-CORE-01": "OPEN_INPUT_AVAILABILITY",
+    "Prior-RPS": "OPEN",
+    "V4-01 listing-anchor reconciliation": "OPEN"
+  },
+  "legacy_warm_branches": "All three depend on Amount A; diagnostic only. Legacy cycle q20/dq5_3 are not inferred from V4 midrank or accepted by a unit-only cast. Missing exact legacy inputs remain UNKNOWN.",
+  "membership_scope": "FORWARD_PIT_MEMBERSHIP_ONLY",
+  "next_stage": "INDEPENDENT_R5_EXTERNAL_ACCEPTANCE; STOP_AFTER_PUSH",
+  "parameter_set": {
+    "byte_count": 4045,
+    "path": "config/v4_08_algorithm_parameter_set_r5.json",
+    "sha256": "0204d7c4fadf86871b6a079f755593b1a3f8ad18bb718f73ba33db0b70f67548"
+  },
+  "postgresql_full_market_readback": {
+    "accepted_scope": "ENGINEERING_CANDIDATE",
+    "publication_digest": "9e3cdee59249ba5e0c45dc1dc264cbb83519b7f0eb2cee99a3ae85084e0180b7",
+    "publication_id": "V4_08_R5_ENGINEERING_20260930_3c722da3453a5350930e",
+    "row_count": 1512,
+    "status": "PASS_EXACT_DATABASE_READBACK",
+    "target_trade_date": "2026-09-30"
+  },
+  "real_base_seed_signal": "DEGRADED_UNKNOWN",
+  "regression_summary": {
+    "errors": 0,
+    "failures": 0,
+    "passed": 675,
+    "skipped": 2,
+    "tests": 677
+  },
+  "required_starting_head": "75767711835207109927f2babfb547415f89d3fb",
+  "required_unknown_reasons": [
+    "NO_PRIOR_ACCEPTED_PIT_HISTORY",
+    "NO_TARGET_ACCEPTED_CORE_FACTS",
+    "DEGRADED_BY_UPSTREAM_BASE_SEED_SIGNAL",
+    "AUD_AMOUNT_A_06_OPEN"
+  ],
+  "row_count": 50162,
+  "scoped_pit_membership_accepted_head": {
+    "byte_count": 2151,
+    "path": "data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json",
+    "sha256": "d6374a73b8084ccd383cbb4f75428ed91176e91cc09d87c3329041d57c5bd9ed"
+  },
+  "sector_count": 378,
+  "sector_counts": {
+    "INDUSTRY": 110,
+    "THEME": 268
+  },
+  "sector_rotation_production_permission_granted": false,
+  "status": "V4_08_R5_READY_FOR_EXTERNAL_ACCEPTANCE_ENGINEERING_SCOPE",
+  "target_accepted_core_count": 0,
+  "verified_pushed_code_head": "3adf4378a1dfa5e6eea60c2efb6e7e913db1cec1"
+}

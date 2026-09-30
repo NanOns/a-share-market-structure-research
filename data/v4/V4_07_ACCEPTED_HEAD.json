@@ -1,0 +1,140 @@
+{
+  "accepted_at_date": "2026-09-30",
+  "accepted_input": {
+    "core_logical_digest": "d195518796acc64015174eac8f9bb8721a27095311ece00baedf8c12b0633e74",
+    "expected_board_counts": {
+      "CHINEXT": 1408,
+      "SH_MAIN": 1702,
+      "STAR": 618,
+      "SZ_MAIN": 1494
+    },
+    "identity_count": 5222,
+    "publication_id": "PUB-3c03e227-c60a-4d8c-86ae-2861507c257b",
+    "trade_date": "2026-09-28"
+  },
+  "candidate_artifact": {
+    "actual_byte_count": 614146,
+    "actual_sha256": "bb9992c581092f91ba69ad8390daf522d3441951f5bc61437ff0e4653ed74e72",
+    "logical_digest": "28c5f6f71f6568c29bb8b1580f8c6ff22475222c802b4d5317a3f0cbb3b16015",
+    "path": "reports/v4_07/staging/V4_07_BASE_SEED_CANDIDATE_R2.jsonl.gz",
+    "row_count": 5222,
+    "sha256": "bb9992c581092f91ba69ad8390daf522d3441951f5bc61437ff0e4653ed74e72"
+  },
+  "candidate_implementation_commit": "e751070cb5018c76229b87bc0c7ec749a0a36f7a",
+  "candidate_receipt_classification": "PRE_FINAL_GATE_CANDIDATE_SNAPSHOT",
+  "capabilities": {
+    "REAL_BASE_SEED_SIGNAL": "DEGRADED_BY_ACCEPTED_PRIOR_RPS_BOOTSTRAP_UNKNOWN",
+    "V4_07_ENGINEERING": "EXTERNALLY_ACCEPTED"
+  },
+  "contract_id": "V4_07_ACCEPTED_HEAD_V1",
+  "contract_sha256": "73e686fb3bd15ef8afa893efc804d14cb2339f76975a40b5649d5265d327122f",
+  "evidence_bindings": {
+    "candidate_artifact": {
+      "byte_count": 614146,
+      "path": "reports/v4_07/staging/V4_07_BASE_SEED_CANDIDATE_R2.jsonl.gz",
+      "sha256": "bb9992c581092f91ba69ad8390daf522d3441951f5bc61437ff0e4653ed74e72"
+    },
+    "candidate_manifest": {
+      "byte_count": 7979,
+      "path": "reports/v4_07/V4_07_R2_STAGE_CANDIDATE_MANIFEST.json",
+      "sha256": "4ab38f629c3839e57106164bf20fd0b8d99252abea0da5684b93ba8a08971352"
+    },
+    "clean_checkout": {
+      "byte_count": 828,
+      "path": "reports/v4_07/V4_07_R2_CLEAN_CHECKOUT_VERIFICATION.json",
+      "sha256": "58c28c530cb744a421ad2fba0b702f87de50fbb93cf68f4088883455dc9c2a89"
+    },
+    "contract": {
+      "byte_count": 7662,
+      "path": "config/v4_07_base_seed_contract_v1.json",
+      "sha256": "73e686fb3bd15ef8afa893efc804d14cb2339f76975a40b5649d5265d327122f"
+    },
+    "determinism": {
+      "byte_count": 728,
+      "path": "reports/v4_07/V4_07_R2_DETERMINISM_VERIFICATION.json",
+      "sha256": "5e2b494392d70f7883a60bfe35dfe40c8cdc2059062b9700e1c3a25f7861e1dd"
+    },
+    "external_acceptance_record": {
+      "byte_count": 699,
+      "path": "docs/evidence/V4_07_R2_FINAL_EXTERNAL_ACCEPTANCE_20260930.md",
+      "sha256": "b143a77da11906ebfae155dac155074811c30ccaba4c253dda4692a6043cb437"
+    },
+    "independent_postcheck": {
+      "byte_count": 3328,
+      "path": "reports/v4_07/V4_07_R2_INDEPENDENT_POSTCHECK.json",
+      "sha256": "c0afba7a08fa7c495057ef0437427f4ac7be7eaca4040ef8215baf59c4239a2b"
+    },
+    "isolated_regression": {
+      "byte_count": 4874,
+      "path": "reports/v4_07/V4_07_R2_ISOLATED_FULL_REGRESSION.json",
+      "sha256": "728830d597b7a6f3bfe960ed580759b1d1c2d50d14939a9cdf5cedae273c22ce"
+    },
+    "machine_vectors": {
+      "byte_count": 566,
+      "path": "reports/v4_07/V4_07_R2_MACHINE_VECTOR_COVERAGE.json",
+      "sha256": "95c4778644e531dbd127c7e85acc075e486c8955b7e473fe981974c54ce96058"
+    },
+    "migration_rollback": {
+      "byte_count": 707,
+      "path": "reports/v4_07/V4_07_R2_MIGRATION_ROLLBACK_VERIFICATION.json",
+      "sha256": "9353ca10a9de39bedc68b3ba8342f09b77c9b8412d2cba5588b1b5ecce9373a2"
+    },
+    "multi_date_context": {
+      "byte_count": 1737,
+      "path": "reports/v4_07/V4_07_R2_MULTI_DATE_CONTEXT_VERIFICATION.json",
+      "sha256": "b490d23a1c4581722186613058caf3d8356de302746c1429e14c420848f80417"
+    },
+    "parameter_binding": {
+      "byte_count": 1702,
+      "path": "reports/v4_07/V4_07_R2_PARAMETER_BINDING_VERIFICATION.json",
+      "sha256": "6132e2729969a05bff7a08e09acbf98ba661e5bc1a228af62a7157e04af4d30b"
+    },
+    "parameter_set": {
+      "byte_count": 1252,
+      "path": "config/v4_07_parameter_set_v1.json",
+      "sha256": "241785e1a97dd2283eb8b361eb791f4e5c8f6ca67579a06f2a2d38c0c7586a1a"
+    },
+    "pre_final_candidate_receipt": {
+      "byte_count": 14560,
+      "path": "reports/v4_07/V4_07_R2_FULL_MARKET_CANDIDATE_RECEIPT.json",
+      "sha256": "0376b452c27b4053aaa468ff6888aba709b4da78081d05318c2b641123ec08d6"
+    },
+    "prior_rps_audit": {
+      "byte_count": 2548,
+      "path": "reports/audits/V4_07_PRIOR_RPS_ACCEPTED_INPUT_BOOTSTRAP_AUDIT_20260930.md",
+      "sha256": "6acc784240ce61f9e49690f1805b12e558097f37c5b22451605adba6187d95f0"
+    },
+    "runtime": {
+      "byte_count": 1007,
+      "path": "reports/v4_07/V4_07_R2_RUNTIME_TEST_RECEIPT.json",
+      "sha256": "3d48a4186e69629206de19b1ca372f627c104136e3965d7fa430e401fcd8926d"
+    }
+  },
+  "evidence_seal_commit": "075163fd7bf3d4210004734f849cff9225bc6ecf",
+  "external_acceptance": "EXTERNALLY_ACCEPTED",
+  "external_acceptance_decision": "V4_07_EXTERNAL_ACCEPTANCE_PASS_R2_ENGINEERING_SCOPE",
+  "external_decision_source": {
+    "document": "V4_07_R2_INDEPENDENT_EXTERNAL_ACCEPTANCE_20260930.md",
+    "sha256": "082ebdecc7efd45a643a6b887250436c0bcac796c59178de4a8d19e37191296c"
+  },
+  "parameter_set_sha256": "241785e1a97dd2283eb8b361eb791f4e5c8f6ca67579a06f2a2d38c0c7586a1a",
+  "prior_rps_audit": {
+    "audit_id": "V4_07_PRIOR_RPS_ACCEPTED_INPUT_BOOTSTRAP_01",
+    "binding": {
+      "byte_count": 2548,
+      "path": "reports/audits/V4_07_PRIOR_RPS_ACCEPTED_INPUT_BOOTSTRAP_AUDIT_20260930.md",
+      "sha256": "6acc784240ce61f9e49690f1805b12e558097f37c5b22451605adba6187d95f0"
+    },
+    "status": "OPEN"
+  },
+  "stage": "V4-07",
+  "stage_record": {
+    "acceptance_result": "V4_07_EXTERNAL_ACCEPTANCE_PASS_R2_ENGINEERING_SCOPE / ENGINEERING_PASS",
+    "evidence": "Independent postcheck, frozen contract and parameter binding, multi-date producer context, 30 machine vectors, determinism, runtime, isolated 538-pass regression, migration/rollback and clean-checkout receipts.",
+    "next_stage": "V4_08_PIT_SECTOR_MEMBERSHIP_BASELINE_R1",
+    "stage_contract": "V4_06_R2_CONTRACT_REPAIR_AND_V4_07_BASE_SEED_STAGE_TASK_20260929"
+  },
+  "status": "ENGINEERING_PASS",
+  "t_minus_1_input_limitation": "The accepted V4-05 Full Scope Factors expose rps5_delta3 as UNKNOWN for 5,222/5,222 identities because required accepted forward history is unavailable; the V4-07 producer must preserve UNKNOWN.",
+  "version": "1.0.0"
+}

@@ -1,5 +1,5 @@
 {
-  "accepted_stage_range": "V4_00_TO_V4_06_ACCEPTED",
+  "accepted_stage_range": "V4_00_TO_V4_07_ACCEPTED",
   "bindings": {
     "phase0": {
       "path": "reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json",
@@ -105,8 +105,31 @@
     "sha256": "f3c3779c19a0964d00d6197fadf2b33febd12e37b973ef2ea7096ac6ab2e8595"
   },
   "v4_06_status": "DEGRADED_PASS",
+  "v4_07_binding": {
+    "byte_count": 6362,
+    "path": "data/v4/V4_07_ACCEPTED_HEAD.json",
+    "sha256": "b22117b0d14c35167cba86cb7398d878d7112f9cf17c1a427fa92766e78f880f"
+  },
   "v4_07_entry": "AUTHORIZED_AFTER_V4_06_PROMOTION_VALIDATION",
-  "v4_07_status": "NOT_PROMOTED",
-  "v4_08_sector_entry": "BLOCKED_UNTIL_ACCEPTED_PIT_MEMBERSHIP_BASELINE_AND_RECONSTRUCTION",
+  "v4_07_external_acceptance": "V4_07_EXTERNAL_ACCEPTANCE_PASS_R2_ENGINEERING_SCOPE",
+  "v4_07_prior_rps_audit": {
+    "byte_count": 2548,
+    "path": "reports/audits/V4_07_PRIOR_RPS_ACCEPTED_INPUT_BOOTSTRAP_AUDIT_20260930.md",
+    "sha256": "6acc784240ce61f9e49690f1805b12e558097f37c5b22451605adba6187d95f0"
+  },
+  "v4_07_promotion_receipt": {
+    "byte_count": 741,
+    "path": "reports/v4_joint/V4_07_ACCEPTED_HEAD_PROMOTION_RECEIPT_R1.json",
+    "sha256": "ac1a0ec846b22a03ed148e875c0a62c7fadb07886391fda0fe209fa6659865bf"
+  },
+  "v4_07_promotion_validation": {
+    "byte_count": 19029,
+    "path": "reports/v4_joint/V4_07_ACCEPTED_HEAD_PROMOTION_VALIDATION_R1.json",
+    "sha256": "ed1a6037eb4d9d78673b350dfc584ba9984506cbfbc4a28b79f1e5939d73a056"
+  },
+  "v4_07_real_signal_capability": "DEGRADED_BY_ACCEPTED_PRIOR_RPS_BOOTSTRAP_UNKNOWN",
+  "v4_07_status": "ENGINEERING_PASS",
+  "v4_08_production_status": "BLOCKED_UNTIL_ACCEPTED_PIT_MEMBERSHIP_BASELINE_AND_RECONSTRUCTION",
+  "v4_08_sector_entry": "AUTHORIZED_FOR_MEMBERSHIP_BASELINE_ENGINEERING_ONLY",
   "version": "2.3.0"
 }

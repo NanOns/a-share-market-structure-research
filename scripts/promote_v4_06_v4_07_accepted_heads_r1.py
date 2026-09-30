@@ -336,6 +336,8 @@ def check_v407() -> dict[str, Any]:
     }
     receipts = assert_pass_receipts(receipt_paths)
     postcheck = load_json(receipt_paths["independent_postcheck"])
+    candidate_receipt_path = "reports/v4_07/V4_07_R2_FULL_MARKET_CANDIDATE_RECEIPT.json"
+    candidate_receipt = load_json(candidate_receipt_path)
     vectors = load_json(receipt_paths["machine_vectors"])
     regression = load_json(receipt_paths["isolated_regression"])
     migration = load_json(receipt_paths["migration_rollback"])
@@ -363,6 +365,7 @@ def check_v407() -> dict[str, Any]:
         "migration_rollback_pass": migration.get("status", "").startswith("PASS") and all(migration.get("checks", {}).values()),
         "prior_rps_audit_remains_open": audit_open,
         "candidate_receipt_classified_pre_final_gate": True,
+        "candidate_receipt_is_pending_snapshot": "PENDING" in candidate_receipt.get("candidate_status", "") and any(value == "PENDING" for value in candidate_receipt.get("acceptance_gates", {}).values()),
         "real_signal_degradation_retained": True,
     }
     return {
@@ -371,6 +374,7 @@ def check_v407() -> dict[str, Any]:
         "receipts": receipts,
         "candidate_artifact": {**candidate, "actual_sha256": digest_file(candidate["path"]), "actual_byte_count": path(candidate["path"]).stat().st_size},
         "candidate_receipt_classification": "PRE_FINAL_GATE_CANDIDATE_SNAPSHOT",
+        "pre_final_candidate_receipt": {"path": candidate_receipt_path, "sha256": digest_file(candidate_receipt_path), "byte_count": path(candidate_receipt_path).stat().st_size},
         "external_acceptance_decision": "V4_07_EXTERNAL_ACCEPTANCE_PASS_R2_ENGINEERING_SCOPE",
         "real_signal_capability": "DEGRADED_BY_ACCEPTED_PRIOR_RPS_BOOTSTRAP_UNKNOWN",
         "prior_rps_audit": binding(RPS_AUDIT),
@@ -389,6 +393,7 @@ def prepare_v407() -> None:
     evidence_paths = {
         "candidate_manifest": V407_MANIFEST,
         "candidate_artifact": manifest["candidate_artifact"]["path"],
+        "pre_final_candidate_receipt": "reports/v4_07/V4_07_R2_FULL_MARKET_CANDIDATE_RECEIPT.json",
         "contract": "config/v4_07_base_seed_contract_v1.json",
         "parameter_set": "config/v4_07_parameter_set_v1.json",
         "independent_postcheck": "reports/v4_07/V4_07_R2_INDEPENDENT_POSTCHECK.json",

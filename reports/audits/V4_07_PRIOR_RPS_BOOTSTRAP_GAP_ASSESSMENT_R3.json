@@ -1,0 +1,42 @@
+{
+  "accepted_prior_rps_values_created": false,
+  "audit_id": "V4_07_PRIOR_RPS_ACCEPTED_INPUT_BOOTSTRAP_01",
+  "impact": "True Seed-dependent fields remain UNKNOWN; non-blocking for membership/native non-seed/AST engineering.",
+  "new_input_assessment": {
+    "accepted_prior_rps_factor_publication_available": false,
+    "calendar_and_incremental_identity_accepted": false,
+    "calendar_extension_candidate": {
+      "byte_count": 681,
+      "path": "data/v4/V4_02_GO_FORWARD_CALENDAR_EXTENSION_CANDIDATE_HEAD_R1.json",
+      "sha256": "800a32d26b8a6089f67eda77e84c2364d4d0fd8a9879ed1b5c620be71202631b"
+    },
+    "dated_identity_candidate": {
+      "byte_count": 665,
+      "path": "data/v4/V4_01_GO_FORWARD_IDENTITY_CANDIDATE_HEAD_R1.json",
+      "sha256": "9ef49acc749daeb954cce0433363d0f28e54720db58c92fc20da77080049bb2c"
+    },
+    "required_prior_endpoints": [
+      "2026-09-29",
+      "2026-09-24"
+    ],
+    "retrospective_membership_not_used_as_historical_universe": true,
+    "target": "2026-09-30"
+  },
+  "required_next_inputs": [
+    "accepted dated universe snapshots for T-1/T-3",
+    "accepted session calendar",
+    "accepted adjustment basis and source identities",
+    "independent RPS cross-section recomputation",
+    "first-available/warm-up reconciliation",
+    "new append-only accepted factor publication/revision"
+  ],
+  "starting_evidence": {
+    "byte_count": 1045,
+    "path": "reports/audits/V4_07_PRIOR_RPS_BOOTSTRAP_GAP_ASSESSMENT_R2.json",
+    "sha256": "6a79951fa6db6df37f5234ff5aee22a12e2566e04a8a693b088877ad76d257be"
+  },
+  "status": "OPEN_REPAIR_CONTINUES_INDEPENDENTLY",
+  "thresholds_changed": false,
+  "v4_03_r3_staging_values_copied": false,
+  "v4_05_accepted_artifacts_modified": false
+}

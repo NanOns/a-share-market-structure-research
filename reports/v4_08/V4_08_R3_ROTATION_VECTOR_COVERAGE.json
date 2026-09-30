@@ -1,0 +1,80 @@
+{
+  "canonical_ast_branch_tests": {
+    "byte_count": 10127,
+    "path": "tests/v4_08/test_r3_admission_and_ast.py",
+    "sha256": "b8d780bda8faab4cf45cc58816ad77574cfb09ca08a867f50c2078b65225d3e3"
+  },
+  "forbidden_input_mutation_tests": true,
+  "formal_consumer_enabled": false,
+  "status": "PASS_R1A_R1B_R2_R3",
+  "vectors": [
+    {
+      "actual": {
+        "rotation_accepted_possible": false,
+        "rotation_expanding_allowed": false,
+        "rotation_in_possible": true,
+        "rotation_reaccelerating_allowed": false
+      },
+      "expected": {
+        "rotation_accepted_possible": false,
+        "rotation_expanding_allowed": false,
+        "rotation_in_possible": true,
+        "rotation_reaccelerating_allowed": false
+      },
+      "id": "R1A",
+      "premise_basis": "SYNTHETIC_PREDICATE_PREMISES; no runtime parameter substitution",
+      "status": "PASS"
+    },
+    {
+      "actual": {
+        "rotation_accepted_possible": true,
+        "rotation_expanding_allowed": false,
+        "rotation_in_possible": true,
+        "rotation_reaccelerating_allowed": false
+      },
+      "expected": {
+        "rotation_accepted_possible": true,
+        "rotation_expanding_allowed": false,
+        "rotation_in_possible": true,
+        "rotation_reaccelerating_allowed": false
+      },
+      "id": "R1B",
+      "premise_basis": "SYNTHETIC_PREDICATE_PREMISES; no runtime parameter substitution",
+      "status": "PASS"
+    },
+    {
+      "actual": {
+        "rotation_accepted_possible": false,
+        "rotation_expanding_allowed": false,
+        "rotation_in_possible": false,
+        "rotation_reaccelerating_allowed": false
+      },
+      "expected": {
+        "rotation_accepted_possible": false,
+        "rotation_expanding_allowed": false,
+        "rotation_in_possible": false,
+        "rotation_reaccelerating_allowed": false
+      },
+      "id": "R2",
+      "premise_basis": "SYNTHETIC_PREDICATE_PREMISES; no runtime parameter substitution",
+      "status": "PASS"
+    },
+    {
+      "actual": {
+        "rotation_accepted_possible": false,
+        "rotation_expanding_allowed": false,
+        "rotation_in_possible": false,
+        "rotation_reaccelerating_allowed": false
+      },
+      "expected": {
+        "rotation_accepted_possible": false,
+        "rotation_expanding_allowed": false,
+        "rotation_in_possible": false,
+        "rotation_reaccelerating_allowed": false
+      },
+      "id": "R3",
+      "premise_basis": "SYNTHETIC_PREDICATE_PREMISES; no runtime parameter substitution",
+      "status": "PASS"
+    }
+  ]
+}

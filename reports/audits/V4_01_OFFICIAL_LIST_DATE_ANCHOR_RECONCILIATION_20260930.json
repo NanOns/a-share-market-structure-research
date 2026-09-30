@@ -1,0 +1,39 @@
+{
+  "audit_id": "V4_01_OFFICIAL_LIST_DATE_ANCHOR_RECONCILIATION_01",
+  "current_stage_gate_impact": "Both dates precede target and active catalogue confirms trading-universe membership; anchor reconciliation has independent evidence/acceptance scope.",
+  "discrepancies": [
+    {
+      "accepted_canonical_listing_anchor": "2006-10-26",
+      "official_catalogue_first_listing_date": "2000-07-19",
+      "security_id": "SEC-E43BA734DCB6989B5F29F4E5CFE2F752",
+      "source_security_key": "SH.600018"
+    }
+  ],
+  "evidence": {
+    "official_sse": [
+      {
+        "byte_count": 1027830,
+        "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SSE_stock_list.html",
+        "sha256": "56ba02b369553d55b92686cd1b5d5b8e6570f454d19054cf5467176746064719"
+      },
+      {
+        "byte_count": 352211,
+        "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SSE_STAR_stock_list.html",
+        "sha256": "ef501d54f0ac0ceb24d487f38d3b0a4e4ce4559cca0df691be4c6092fb6229e7"
+      }
+    ],
+    "official_szse": {
+      "byte_count": 1132013,
+      "path": "reports/v4_08/V4_08_R3_TARGET_ACTIVE_EXCHANGE_CATALOGUE.json",
+      "sha256": "d5cd21495c5d2eb585610604c1815f8f4c95466137cf9b0bb7964a5c481ac321"
+    },
+    "parent": {
+      "byte_count": 5528197,
+      "path": "data/v4/artifact_store/v4_01/security_entity_map_R7_20260927.json",
+      "sha256": "e33294fb8d1d71732fdc3df903258b5617345811ecbdb649af8056ccd91427e0"
+    }
+  },
+  "required_acceptance": "Official corporate/lifecycle event adjudication and independent audit of entity anchor; preserve historical canonical identities.",
+  "scope": "Reconcile accepted stable entity listing anchors with exchange catalogue first-listing dates, including potential corporate reorganization history. No accepted canonical id is rewritten by this stage.",
+  "status": "OPEN_SEPARATE_LIFECYCLE_ANCHOR_AUDIT"
+}

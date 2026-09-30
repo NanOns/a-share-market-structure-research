@@ -1,0 +1,24 @@
+{
+  "checks": {
+    "B07_fact_trigger_rejects_mixed_source_basis": true,
+    "B07_formal_view_rejects_corrupt_mixed_basis": true,
+    "B07_revision_insert_rejects_current_with_pit_quality": true,
+    "B07_snapshot_trigger_rejects_mixed_source_basis": true,
+    "basis_quality_cross_pairs_rejected": true,
+    "basis_quality_four_pairs": true,
+    "positive_pit_formal_fact_visible": true,
+    "rollback_removes_only_r3": true
+  },
+  "independent_disposable_verifier": {
+    "byte_count": 12817,
+    "path": "scripts/run_v4_08_r3_isolated_verification.py",
+    "sha256": "2035c36403397e0c92c57c71864390c742051ca618311200a98dfa2bdec9e87c"
+  },
+  "production_schema_modified": false,
+  "schema_receipt": {
+    "byte_count": 9845,
+    "path": "reports/v4_08/V4_08_R3_SCHEMA_MIGRATION_RECEIPT.json",
+    "sha256": "9a3d0d5e7d7f470ebb7709850a51a372572d849de169815d6ec8f4e81df08731"
+  },
+  "status": "PASS_ENGINEERING_B07_THREE_LAYERS"
+}

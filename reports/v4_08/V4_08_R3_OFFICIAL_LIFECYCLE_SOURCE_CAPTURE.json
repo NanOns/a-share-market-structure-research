@@ -1,0 +1,439 @@
+{
+  "capture_id": "capture_20260930T063255Z",
+  "complete_observed_at": "2026-09-30T06:32:58.072919Z",
+  "contract_id": "V4_01_GO_FORWARD_OFFICIAL_LIFECYCLE_SOURCE_V1",
+  "request_count": 21,
+  "sources": [
+    {
+      "byte_count": 36281,
+      "expected": [
+        "001246",
+        "2026年9月30日",
+        "主板上市"
+      ],
+      "expected_phrase_checks": {
+        "001246": true,
+        "2026年9月30日": true,
+        "主板上市": true
+      },
+      "extracted_text_path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_001246_listing.txt",
+      "extracted_text_sha256": "cb0dc86fe2ac92262cf1fc1ca24073f7660da654c375c95fc8053129d662f9cc",
+      "http_status": 200,
+      "id": "SZ_001246_listing",
+      "key": "SZ.001246",
+      "observed_at": "2026-09-30T06:32:55.262857Z",
+      "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_001246_listing.html",
+      "published_date": "2026-09-29",
+      "request_started_at": "2026-09-30T06:32:55.014288Z",
+      "sha256": "1f7e39647a3c46041d8e1cb501e9814673b07b98ecc6f3ee4a119c6e1797dfaf",
+      "status": "PASS_CAPTURE",
+      "url": "https://epaper.stcn.com/con/202609/29/content_2979960.html"
+    },
+    {
+      "byte_count": 12792,
+      "expected": [
+        "301716",
+        "2026年09月29日",
+        "创业板"
+      ],
+      "expected_phrase_checks": {
+        "2026年09月29日": true,
+        "301716": true,
+        "创业板": true
+      },
+      "extracted_text_path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301716_listing.txt",
+      "extracted_text_sha256": "93b7cdb2cc81ab1c6982febb7f67dcf0903fad9139dff02de8840be32e60f452",
+      "http_status": 200,
+      "id": "SZ_301716_listing",
+      "key": "SZ.301716",
+      "observed_at": "2026-09-30T06:32:55.331993Z",
+      "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301716_listing.html",
+      "published_date": "2026-09-29",
+      "request_started_at": "2026-09-30T06:32:55.014749Z",
+      "sha256": "4ab8ce7a6a948ab48c6ef190641078a77914977b1b46adfbf19f0ac608831c62",
+      "status": "PASS_CAPTURE",
+      "url": "https://www.szse.cn/aboutus/trends/news/t20260929_623109.html"
+    },
+    {
+      "byte_count": 48336,
+      "expected": [
+        "通则康威",
+        "2026年10月9日"
+      ],
+      "expected_phrase_checks": {
+        "2026年10月9日": true,
+        "通则康威": true
+      },
+      "extracted_text_path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301718_issuance.txt",
+      "extracted_text_sha256": "7f185a03dcf331f0d1e4d2fa23b2db7d8befecbf1a5d3afabad971387cca49b4",
+      "http_status": 200,
+      "id": "SZ_301718_issuance",
+      "key": "SZ.301718",
+      "observed_at": "2026-09-30T06:32:55.461548Z",
+      "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301718_issuance.html",
+      "published_date": "2026-09-23",
+      "request_started_at": "2026-09-30T06:32:55.014970Z",
+      "sha256": "0f7f448b907118f232a0001244f2d4a3960b3020c98aa7758eaeb8d8c7968f23",
+      "status": "PASS_CAPTURE",
+      "url": "https://paper.cnstock.com/html/2026-09/23/content_2272047.htm"
+    },
+    {
+      "byte_count": 6866256,
+      "expected": [
+        "联亚药业",
+        "301569",
+        "2026年9月30日"
+      ],
+      "expected_phrase_checks": {
+        "2026年9月30日": true,
+        "301569": true,
+        "联亚药业": true
+      },
+      "extracted_text_path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301569_issuance.txt",
+      "extracted_text_sha256": "a416bf8e600ba11e6bfa09d1f4f5ad5319b4a6e7df265ae093ada69fd2e32a66",
+      "http_status": 200,
+      "id": "SZ_301569_issuance",
+      "key": "SZ.301569",
+      "observed_at": "2026-09-30T06:32:55.349153Z",
+      "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301569_issuance.pdf",
+      "published_date": "2026-09-24",
+      "request_started_at": "2026-09-30T06:32:55.015143Z",
+      "sha256": "441f3c012a164baea04baa510431e2fdafefa8541b0e654c65ffcdf851bfd96a",
+      "status": "PASS_CAPTURE",
+      "url": "https://static.cninfo.com.cn/finalpage/2026-09-24/1225578998.PDF"
+    },
+    {
+      "byte_count": 78563,
+      "expected": [
+        "粤芯半导体",
+        "301660"
+      ],
+      "expected_phrase_checks": {
+        "301660": false,
+        "粤芯半导体": true
+      },
+      "extracted_text_path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301660_issuance.txt",
+      "extracted_text_sha256": "905675b9f582119b199ddffefb37727ed897deb790d9f0618209755defe0d700",
+      "http_status": 200,
+      "id": "SZ_301660_issuance",
+      "key": "SZ.301660",
+      "observed_at": "2026-09-30T06:32:55.439411Z",
+      "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301660_issuance.html",
+      "published_date": "2026-09-23",
+      "request_started_at": "2026-09-30T06:32:55.271928Z",
+      "sha256": "10820f31b6bcc1d5042763d45757aa0d284b9dc5bd19a2253b21344c0ce7c3ca",
+      "status": "CAPTURED_EXPECTED_PHRASE_MISSING",
+      "url": "https://epaper.cs.com.cn/zgzqb/html/2026-09/23/nw.D110000zgzqb_20260923_1-A17.htm"
+    },
+    {
+      "byte_count": 236552,
+      "expected": [
+        "海尔施",
+        "暂缓"
+      ],
+      "expected_phrase_checks": {
+        "暂缓": true,
+        "海尔施": true
+      },
+      "extracted_text_path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SH_601206_suspension.txt",
+      "extracted_text_sha256": "560347b71f0e5369f6f9d62ddd4594a309f31401d32b62aa5d4c119d39ad2e0e",
+      "http_status": 200,
+      "id": "SH_601206_suspension",
+      "key": "SH.601206",
+      "observed_at": "2026-09-30T06:32:55.803847Z",
+      "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SH_601206_suspension.pdf",
+      "published_date": "2016-08-17",
+      "request_started_at": "2026-09-30T06:32:55.374393Z",
+      "sha256": "60b9836e3f921febeafe26227b1232f605d9dfef3fc5ac4c41d7383260b9a29b",
+      "status": "PASS_CAPTURE",
+      "url": "https://static.cninfo.com.cn/finalpage/2016-08-17/1202574972.PDF"
+    },
+    {
+      "byte_count": 501937,
+      "expected": [
+        "鑫广绿环",
+        "暂缓"
+      ],
+      "expected_phrase_checks": {
+        "暂缓": true,
+        "鑫广绿环": true
+      },
+      "extracted_text_path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SH_603302_suspension.txt",
+      "extracted_text_sha256": "7783e63a44c19cedb14f702bf316449b7565dbb96240310158cf2742f92e75f0",
+      "http_status": 200,
+      "id": "SH_603302_suspension",
+      "key": "SH.603302",
+      "observed_at": "2026-09-30T06:32:55.653244Z",
+      "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SH_603302_suspension.pdf",
+      "published_date": "2017-12-14",
+      "request_started_at": "2026-09-30T06:32:55.455228Z",
+      "sha256": "36ca1b50986728fc2dfc5c1eef51b0b5c2dfcc45a0475b320d5c531c87eebdd5",
+      "status": "PASS_CAPTURE",
+      "url": "https://epaper.cs.com.cn/zgzqb/images/2017-12/14/A14/AGG0141214C.pdf"
+    },
+    {
+      "byte_count": 549909,
+      "expected": [
+        "浙江国祥",
+        "暂停"
+      ],
+      "expected_phrase_checks": {
+        "暂停": true,
+        "浙江国祥": true
+      },
+      "extracted_text_path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SH_603361_suspension.txt",
+      "extracted_text_sha256": "1658c1037b985b7fb0824f95d59eeed92cfabb757960841771c477832e8378db",
+      "http_status": 200,
+      "id": "SH_603361_suspension",
+      "key": "SH.603361",
+      "observed_at": "2026-09-30T06:32:55.810726Z",
+      "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SH_603361_suspension.pdf",
+      "published_date": "2023-10-09",
+      "request_started_at": "2026-09-30T06:32:55.476158Z",
+      "sha256": "6e55b486500f56e89718fbd6627e8563060b0437d43ee5c7ca5efb136dc49aa2",
+      "status": "PASS_CAPTURE",
+      "url": "https://epaper.stcn.com/att/202310/09/e096c34e-7b23-4844-9249-8cc1df2810b2.pdf"
+    },
+    {
+      "byte_count": 28477,
+      "expected": [
+        "蚂蚁",
+        "暂缓上市"
+      ],
+      "expected_phrase_checks": {
+        "暂缓上市": true,
+        "蚂蚁": true
+      },
+      "extracted_text_path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SH_688688_suspension.txt",
+      "extracted_text_sha256": "10833fc573e4d187dd91e33062901728a0a483a3e8d7f4bc47958690212c6be6",
+      "http_status": 200,
+      "id": "SH_688688_suspension",
+      "key": "SH.688688",
+      "observed_at": "2026-09-30T06:32:56.368810Z",
+      "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SH_688688_suspension.html",
+      "published_date": "2020-11-03",
+      "request_started_at": "2026-09-30T06:32:55.946461Z",
+      "sha256": "ee5e483ad9fe4b8d64fe679ac1b7d525a4adf925cdd0862e818db140f4d39cc6",
+      "status": "PASS_CAPTURE",
+      "url": "https://www.sse.com.cn/disclosure/announcement/general/c/c_20201103_5253315.shtml"
+    },
+    {
+      "byte_count": 15989,
+      "expected": [],
+      "expected_phrase_checks": {},
+      "extracted_text_path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_001235_exchange_query.txt",
+      "extracted_text_sha256": "a3e7b088149dce98144a46f245b82a1de6665874997c66b1fb884735ec40fe12",
+      "http_status": 200,
+      "id": "SZ_001235_exchange_query",
+      "key": "SZ.001235",
+      "observed_at": "2026-09-30T06:32:56.431239Z",
+      "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_001235_exchange_query.html",
+      "published_date": null,
+      "request_started_at": "2026-09-30T06:32:56.134907Z",
+      "sha256": "f5d3b831f1e4488631954ef2abdd35964690ef193cf68bdc59a907872d3aff22",
+      "status": "PASS_CAPTURE",
+      "url": "https://www.szse.cn/api/report/ShowReport/data?SHOWTYPE=JSON&CATALOGID=1110&tab1PAGENO=1&TABKEY=tab1&txtDMorJC=001235"
+    },
+    {
+      "byte_count": 420126,
+      "expected": [
+        "天常",
+        "暂缓"
+      ],
+      "expected_phrase_checks": {
+        "天常": true,
+        "暂缓": true
+      },
+      "extracted_text_path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_300728_suspension.txt",
+      "extracted_text_sha256": "253a2e337aa8a84ddc1c8b94ef887f933c420f26bfe38cf40a1eccb14ccd765b",
+      "http_status": 200,
+      "id": "SZ_300728_suspension",
+      "key": "SZ.300728",
+      "observed_at": "2026-09-30T06:32:56.591432Z",
+      "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_300728_suspension.pdf",
+      "published_date": "2017-11-13",
+      "request_started_at": "2026-09-30T06:32:56.135586Z",
+      "sha256": "48ee4325eb44d8bfa224aae3b519e7d22491d661c94f845b197b441063375e4e",
+      "status": "PASS_CAPTURE",
+      "url": "https://static.cninfo.com.cn/finalpage/2017-11-13/1204137963.PDF"
+    },
+    {
+      "byte_count": 21476,
+      "expected": [],
+      "expected_phrase_checks": {},
+      "extracted_text_path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZSE_stock_list.txt",
+      "extracted_text_sha256": "ce0b3fc7d034c1fe8568188755498541d9bf498aae4e3bb28cff2be9f6e9260c",
+      "http_status": 200,
+      "id": "SZSE_stock_list",
+      "key": null,
+      "observed_at": "2026-09-30T06:32:56.692514Z",
+      "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZSE_stock_list.html",
+      "published_date": null,
+      "request_started_at": "2026-09-30T06:32:56.377807Z",
+      "sha256": "5385340d5d464a8f890d3d3f7f7b86697a9509841e1a05888aeb272a948ac59a",
+      "status": "PASS_CAPTURE",
+      "url": "https://www.szse.cn/api/report/ShowReport/data?SHOWTYPE=JSON&CATALOGID=1110&tab1PAGENO=1&tab1PAGESIZE=10000&TABKEY=tab1"
+    },
+    {
+      "byte_count": 1027830,
+      "expected": [],
+      "expected_phrase_checks": {},
+      "extracted_text_path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SSE_stock_list.txt",
+      "extracted_text_sha256": "56ba02b369553d55b92686cd1b5d5b8e6570f454d19054cf5467176746064719",
+      "http_status": 200,
+      "id": "SSE_stock_list",
+      "key": null,
+      "observed_at": "2026-09-30T06:32:57.174932Z",
+      "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SSE_stock_list.html",
+      "published_date": null,
+      "request_started_at": "2026-09-30T06:32:56.435173Z",
+      "sha256": "56ba02b369553d55b92686cd1b5d5b8e6570f454d19054cf5467176746064719",
+      "status": "PASS_CAPTURE",
+      "url": "https://query.sse.com.cn/sseQuery/commonQuery.do?sqlId=COMMON_SSE_CP_GPJCTPZ_GPLB_GP_L&STOCK_TYPE=1&pageHelp.pageSize=10000&pageHelp.pageNo=1"
+    },
+    {
+      "byte_count": 15989,
+      "expected": [],
+      "expected_phrase_checks": {},
+      "extracted_text_path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_300728_exchange_query.txt",
+      "extracted_text_sha256": "af1facc121faed2511d2d2063e57925c8b359d738541c38b21798ba4dacf7b1c",
+      "http_status": 200,
+      "id": "SZ_300728_exchange_query",
+      "key": "SZ.300728",
+      "observed_at": "2026-09-30T06:32:57.002875Z",
+      "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_300728_exchange_query.html",
+      "published_date": null,
+      "request_started_at": "2026-09-30T06:32:56.696431Z",
+      "sha256": "2de11340ba60827b5cf18ea2fd5bf541e34d5d2c55f85bf0960157ae0a3c5d14",
+      "status": "PASS_CAPTURE",
+      "url": "https://www.szse.cn/api/report/ShowReport/data?SHOWTYPE=JSON&CATALOGID=1110&tab1PAGENO=1&TABKEY=tab1&txtDMorJC=300728"
+    },
+    {
+      "byte_count": 15989,
+      "expected": [],
+      "expected_phrase_checks": {},
+      "extracted_text_path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301569_exchange_query.txt",
+      "extracted_text_sha256": "c7ffcbc14bbf6665edcba19c497bf6dc3eb491e47f8c287cba3c39a3f16df90a",
+      "http_status": 200,
+      "id": "SZ_301569_exchange_query",
+      "key": "SZ.301569",
+      "observed_at": "2026-09-30T06:32:57.050552Z",
+      "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301569_exchange_query.html",
+      "published_date": null,
+      "request_started_at": "2026-09-30T06:32:56.733536Z",
+      "sha256": "fb8add56d691281fad25aa532f6ca1c5cc42de8e987cf44294aeea21ac89f7d5",
+      "status": "PASS_CAPTURE",
+      "url": "https://www.szse.cn/api/report/ShowReport/data?SHOWTYPE=JSON&CATALOGID=1110&tab1PAGENO=1&TABKEY=tab1&txtDMorJC=301569"
+    },
+    {
+      "byte_count": 15989,
+      "expected": [],
+      "expected_phrase_checks": {},
+      "extracted_text_path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301660_exchange_query.txt",
+      "extracted_text_sha256": "c5a5a5a20e080ed136c5a460163d86dfe02327803a89026bdaad1a87b4a6c9ac",
+      "http_status": 200,
+      "id": "SZ_301660_exchange_query",
+      "key": "SZ.301660",
+      "observed_at": "2026-09-30T06:32:57.312439Z",
+      "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301660_exchange_query.html",
+      "published_date": null,
+      "request_started_at": "2026-09-30T06:32:57.006097Z",
+      "sha256": "d5001563e778cb013158d1d467adbdbe7226bdf98cff00883f2b2673ffaf6f18",
+      "status": "PASS_CAPTURE",
+      "url": "https://www.szse.cn/api/report/ShowReport/data?SHOWTYPE=JSON&CATALOGID=1110&tab1PAGENO=1&TABKEY=tab1&txtDMorJC=301660"
+    },
+    {
+      "byte_count": 15989,
+      "expected": [],
+      "expected_phrase_checks": {},
+      "extracted_text_path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301718_exchange_query.txt",
+      "extracted_text_sha256": "f22d825db03f749a4a781eb4db91dd5b384efb3a2ab71d897d65ea226d8f20a5",
+      "http_status": 200,
+      "id": "SZ_301718_exchange_query",
+      "key": "SZ.301718",
+      "observed_at": "2026-09-30T06:32:57.338910Z",
+      "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301718_exchange_query.html",
+      "published_date": null,
+      "request_started_at": "2026-09-30T06:32:57.053795Z",
+      "sha256": "987965b23ae099ed4e096603bfbfcac7684ab32fb9c45d2ca526b25f06a84013",
+      "status": "PASS_CAPTURE",
+      "url": "https://www.szse.cn/api/report/ShowReport/data?SHOWTYPE=JSON&CATALOGID=1110&tab1PAGENO=1&TABKEY=tab1&txtDMorJC=301718"
+    },
+    {
+      "byte_count": 16281,
+      "expected": [],
+      "expected_phrase_checks": {},
+      "extracted_text_path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_001246_exchange_query.txt",
+      "extracted_text_sha256": "a27cd9f988641773e73610714130d2101acea1251cf9457ed7b0b04d9ebcc10e",
+      "http_status": 200,
+      "id": "SZ_001246_exchange_query",
+      "key": "SZ.001246",
+      "observed_at": "2026-09-30T06:32:57.454485Z",
+      "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_001246_exchange_query.html",
+      "published_date": null,
+      "request_started_at": "2026-09-30T06:32:57.196975Z",
+      "sha256": "9c3e88c36f212214e77aab8b34092894b18f6be1169e5e83643334e7bfc7fa7d",
+      "status": "PASS_CAPTURE",
+      "url": "https://www.szse.cn/api/report/ShowReport/data?SHOWTYPE=JSON&CATALOGID=1110&tab1PAGENO=1&TABKEY=tab1&txtDMorJC=001246"
+    },
+    {
+      "byte_count": 16280,
+      "expected": [],
+      "expected_phrase_checks": {},
+      "extracted_text_path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301716_exchange_query.txt",
+      "extracted_text_sha256": "2f7f256d43b14f7bf674243f5431a3f68cb871a75218afc6907d3e1950a964c2",
+      "http_status": 200,
+      "id": "SZ_301716_exchange_query",
+      "key": "SZ.301716",
+      "observed_at": "2026-09-30T06:32:57.607767Z",
+      "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301716_exchange_query.html",
+      "published_date": null,
+      "request_started_at": "2026-09-30T06:32:57.316249Z",
+      "sha256": "38d05965e5f224e1cbd299324670affe7308e7ee70ac640518003603fffa9b97",
+      "status": "PASS_CAPTURE",
+      "url": "https://www.szse.cn/api/report/ShowReport/data?SHOWTYPE=JSON&CATALOGID=1110&tab1PAGENO=1&TABKEY=tab1&txtDMorJC=301716"
+    },
+    {
+      "byte_count": 352211,
+      "expected": [],
+      "expected_phrase_checks": {},
+      "extracted_text_path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SSE_STAR_stock_list.txt",
+      "extracted_text_sha256": "ef501d54f0ac0ceb24d487f38d3b0a4e4ce4559cca0df691be4c6092fb6229e7",
+      "http_status": 200,
+      "id": "SSE_STAR_stock_list",
+      "key": null,
+      "observed_at": "2026-09-30T06:32:57.991971Z",
+      "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SSE_STAR_stock_list.html",
+      "published_date": null,
+      "request_started_at": "2026-09-30T06:32:57.341936Z",
+      "sha256": "ef501d54f0ac0ceb24d487f38d3b0a4e4ce4559cca0df691be4c6092fb6229e7",
+      "status": "PASS_CAPTURE",
+      "url": "https://query.sse.com.cn/sseQuery/commonQuery.do?sqlId=COMMON_SSE_CP_GPJCTPZ_GPLB_GP_L&STOCK_TYPE=8&pageHelp.pageSize=10000&pageHelp.pageNo=1"
+    },
+    {
+      "byte_count": 545039,
+      "expected": [
+        "A股代码",
+        "A股上市日期"
+      ],
+      "expected_phrase_checks": {
+        "A股上市日期": false,
+        "A股代码": false
+      },
+      "extracted_text_path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZSE_complete_stock_list_xlsx.txt",
+      "extracted_text_sha256": "37e7edd15ff69fbc44775c5bd5272bf382d6aab210ee9519a2c2c89d80ad40f1",
+      "http_status": 200,
+      "id": "SZSE_complete_stock_list_xlsx",
+      "key": null,
+      "observed_at": "2026-09-30T06:32:58.072919Z",
+      "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZSE_complete_stock_list_xlsx.xlsx",
+      "published_date": null,
+      "request_started_at": "2026-09-30T06:32:57.457691Z",
+      "sha256": "c9e170a0902a527a67b306d73814e4dce1f84d4cb7e8ea0a92079ddae45efb32",
+      "status": "CAPTURED_EXPECTED_PHRASE_MISSING",
+      "url": "https://www.szse.cn/api/report/ShowReport?SHOWTYPE=xlsx&CATALOGID=1110&TABKEY=tab1"
+    }
+  ],
+  "status": "CAPTURE_COMPLETED_WITH_PER_SOURCE_GATES",
+  "total_bytes": 10838291
+}

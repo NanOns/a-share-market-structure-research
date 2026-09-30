@@ -1,0 +1,43 @@
+{
+  "B2_legacy_adapter": "NOT_IMPLEMENTED",
+  "models": [
+    {
+      "ast_digest": "9afab6dc8b5e566701b41622f692d2503ea06b9ad41f85ce7301a267c4f3f8a0",
+      "contract": {
+        "byte_count": 4169,
+        "path": "config/v4_08_sector_prewatch_contract_v2.json",
+        "sha256": "96aadefbfb429b5c3a3359ee3c366db254a6f1616aec1df79b2520a9601ed2d2"
+      },
+      "formal_consumer_enabled": false,
+      "model_contract_id": "V4_08_SECTOR_PREWATCH_B0_V2",
+      "validation": {
+        "rule_count": 2,
+        "status": "PASS"
+      }
+    },
+    {
+      "ast_digest": "62986588f0001c572980265ff014d8ab3de8ddca132946125e9d21c37a6a00b7",
+      "contract": {
+        "byte_count": 19247,
+        "path": "config/v4_08_rotation_core_contract_v2.json",
+        "sha256": "558c5b964b2259e418f08a1ac1fa9374d624fe2d6742673d99256cece62375c3"
+      },
+      "formal_consumer_enabled": false,
+      "model_contract_id": "ROTATION_CORE_V1_R3",
+      "validation": {
+        "rule_count": 15,
+        "status": "PASS"
+      }
+    }
+  ],
+  "pending_parameters": [
+    "V4_08_EARLY_SEED_RETENTION_MIN",
+    "V4_08_EARLY_BREADTH_RETENTION_MIN",
+    "V4_08_EARLY_BREADTH_DELTA_MIN",
+    "V4_08_EARLY_TOP1_CONCENTRATION_MAX",
+    "V4_08_MATURE_STRONG_RETENTION_MIN"
+  ],
+  "production_fsm": "V4_10_NOT_IMPLEMENTED",
+  "status": "PASS_STRUCTURED_BOUND_AST_ENGINEERING_ONLY",
+  "terminal_and_fallback_predicates_included": true
+}

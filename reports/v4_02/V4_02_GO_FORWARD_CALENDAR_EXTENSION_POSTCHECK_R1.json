@@ -1,0 +1,28 @@
+{
+  "checks": {
+    "both_exchanges_identical_dates": true,
+    "contiguous_parent_session_numbers": true,
+    "official_reopening_is_2026_09_28": true,
+    "target_is_valid_session": true
+  },
+  "extension": {
+    "byte_count": 4974,
+    "path": "data/v4/artifact_store/v4_02/market_calendar_GO_FORWARD_20260930_R1.json",
+    "sha256": "abb832c49e447996b33d7ebf4f233ccfbd4d7f4abc0722caa164d8e25a9ecfc3"
+  },
+  "formal_promotion_required": true,
+  "independent_checks": {
+    "both_exchanges_identical_dates": true,
+    "official_holiday_reopening_verified": true,
+    "parent_digests_unchanged": true,
+    "session_numbers_recomputed_from_parent": true,
+    "target_is_valid_session": true
+  },
+  "independent_verifier": {
+    "active_catalogue_keys": 5370,
+    "path": "scripts/postcheck_v4_08_r3_admission.py",
+    "producer_admission_functions_imported": false,
+    "sha256": "833d3a6eddff04aeda19badff0c8ea37bb5bff245c004957a87b75511cfd1ed3"
+  },
+  "status": "PASS_ENGINEERING_EXTERNAL_PROMOTION_REQUIRED"
+}

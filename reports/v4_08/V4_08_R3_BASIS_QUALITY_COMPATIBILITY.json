@@ -1,0 +1,20 @@
+{
+  "other_diagnostic_quality_behavior": "Not automatically formal; existing formal view whitelist remains mandatory",
+  "required_pairs": {
+    "CURRENT_REPLAY_DIAGNOSTIC": "CURRENT_MEMBERSHIP_REPLAY",
+    "CURRENT_TDX_DIAGNOSTIC": "CURRENT_TDX_MEMBERSHIP",
+    "DERIVED_PARENT_DIAGNOSTIC": "DERIVED_PARENT_MEMBERSHIP",
+    "PIT_OBSERVED_ACCEPTED": "PIT_OBSERVED"
+  },
+  "same_basis_chain_required": [
+    "source_revision",
+    "snapshot",
+    "fact"
+  ],
+  "schema_receipt": {
+    "byte_count": 9845,
+    "path": "reports/v4_08/V4_08_R3_SCHEMA_MIGRATION_RECEIPT.json",
+    "sha256": "9a3d0d5e7d7f470ebb7709850a51a372572d849de169815d6ec8f4e81df08731"
+  },
+  "status": "PASS_FOUR_VALID_AND_TWELVE_INVALID_PAIRS"
+}

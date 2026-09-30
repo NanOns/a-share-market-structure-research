@@ -1,0 +1,97 @@
+{
+  "formal_consumer_enabled": false,
+  "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_V1",
+  "status": "SYNTHETIC_PREDICATE_PREMISES_ONLY",
+  "vector_set_id": "V4_08_R3_ROTATION_MACHINE_VECTORS_V1",
+  "vectors": [
+    {
+      "expected": {
+        "rotation_accepted_possible": false,
+        "rotation_expanding_allowed": false,
+        "rotation_in_possible": true,
+        "rotation_reaccelerating_allowed": false
+      },
+      "id": "R1A",
+      "scenario": {
+        "acceptance_breadth_floor_pass": true,
+        "basket_return_positive": true,
+        "breadth_delta_pass": true,
+        "breadth_retention_pass": true,
+        "diffusion_pass": true,
+        "prior_state": "ROTATION_ACCEPTED",
+        "pulse": true,
+        "pulse_age_sessions": 1,
+        "seed_retention_pass": true,
+        "strong_prev": 0,
+        "top1_concentration_pass": true
+      }
+    },
+    {
+      "expected": {
+        "rotation_accepted_possible": true,
+        "rotation_expanding_allowed": false,
+        "rotation_in_possible": true,
+        "rotation_reaccelerating_allowed": false
+      },
+      "id": "R1B",
+      "scenario": {
+        "acceptance_breadth_floor_pass": true,
+        "basket_return_positive": true,
+        "breadth_delta1": -0.04,
+        "breadth_delta_pass": true,
+        "breadth_retention_pass": true,
+        "diffusion_pass": true,
+        "prior_state": "ROTATION_ACCEPTED",
+        "pulse": true,
+        "pulse_age_sessions": 2,
+        "seed_retention_pass": true,
+        "strong_prev": 0,
+        "top1_concentration_pass": true
+      }
+    },
+    {
+      "expected": {
+        "rotation_accepted_possible": false,
+        "rotation_expanding_allowed": false,
+        "rotation_in_possible": false,
+        "rotation_reaccelerating_allowed": false
+      },
+      "id": "R2",
+      "scenario": {
+        "acceptance_breadth_floor_pass": false,
+        "basket_return_positive": true,
+        "breadth_delta_pass": false,
+        "breadth_retention_pass": false,
+        "diffusion_pass": false,
+        "prior_state": "ROTATION_ACCEPTED",
+        "pulse": false,
+        "pulse_age_sessions": 3,
+        "seed_retention_pass": false,
+        "strong_prev": 12,
+        "top1_concentration_pass": true
+      }
+    },
+    {
+      "expected": {
+        "rotation_accepted_possible": false,
+        "rotation_expanding_allowed": false,
+        "rotation_in_possible": false,
+        "rotation_reaccelerating_allowed": false
+      },
+      "id": "R3",
+      "scenario": {
+        "acceptance_breadth_floor_pass": true,
+        "basket_return_positive": true,
+        "breadth_delta_pass": true,
+        "breadth_retention_pass": true,
+        "diffusion_pass": false,
+        "prior_state": "ROTATION_IN",
+        "pulse": true,
+        "pulse_age_sessions": 3,
+        "seed_retention_pass": true,
+        "strong_prev": 5,
+        "top1_concentration_pass": false
+      }
+    }
+  ]
+}

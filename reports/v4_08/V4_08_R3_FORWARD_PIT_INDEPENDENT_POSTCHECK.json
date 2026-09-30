@@ -1,0 +1,40 @@
+{
+  "calendar_postcheck": {
+    "path": "reports/v4_02/V4_02_GO_FORWARD_CALENDAR_EXTENSION_POSTCHECK_R1.json",
+    "sha256": "75b2580d1daa1405ac701a3b5513deb339c294f1142f1dc1f1cd50737e3244a7"
+  },
+  "checks": {
+    "all_new_keys_are_dated_official_listings": true,
+    "daily_observation_date_matches_target": true,
+    "frozen_source_hashes_match": true,
+    "no_excluded_row_prospectively_admitted": true,
+    "no_unauthorized_pit_snapshot_created": true,
+    "no_v4_08_accepted_head_created": true,
+    "prelist_and_noncore_preserved_in_diagnostics": true,
+    "unknown_required_remainder_zero": true
+  },
+  "formal_rows_are_zero_pending_input_promotion": true,
+  "identity_postcheck": {
+    "path": "reports/v4_01/V4_01_GO_FORWARD_IDENTITY_INDEPENDENT_POSTCHECK_R1.json",
+    "sha256": "f5075537d55903910044c47d31197d46d42ad48c84f3caa787264e73ae9c8194"
+  },
+  "independent_checks": {
+    "every_diagnostic_row_independently_adjudicated": true,
+    "member_counts_and_exclusions_recomputed": true,
+    "no_formal_snapshot_or_accepted_head": true,
+    "no_self_promotion": true,
+    "source_hashes_and_daily_timestamps_recomputed": true
+  },
+  "independent_verifier": {
+    "active_catalogue_keys": 5370,
+    "path": "scripts/postcheck_v4_08_r3_admission.py",
+    "producer_admission_functions_imported": false,
+    "sha256": "833d3a6eddff04aeda19badff0c8ea37bb5bff245c004957a87b75511cfd1ed3"
+  },
+  "schema_receipt": {
+    "byte_count": 8415,
+    "path": "reports/v4_08/V4_08_R3_SCHEMA_MIGRATION_RECEIPT.json",
+    "sha256": "2222d3b760d69c48284779a33c96597d6df97d7421c4ba1f7626d5e402f20171"
+  },
+  "status": "PASS_ENGINEERING_INPUT_PROMOTION_BLOCKED"
+}

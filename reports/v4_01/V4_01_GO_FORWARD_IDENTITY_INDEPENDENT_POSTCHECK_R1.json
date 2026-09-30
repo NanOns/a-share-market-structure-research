@@ -1,0 +1,31 @@
+{
+  "checks": {
+    "all_11_terminal_dispositions": true,
+    "new_listing_dates_match_official_report": true,
+    "no_active_lifecycle_ambiguity": true,
+    "no_duplicate_new_canonical_ids": true,
+    "prior_records_exactly_preserved": true
+  },
+  "contract_id": "V4_01_GO_FORWARD_IDENTITY_INDEPENDENT_POSTCHECK_R1",
+  "formal_promotion_authority": "Independent external acceptance required, consistent with existing V4_01_ACCEPTED_HEAD.acceptance_authority",
+  "identity_revision": {
+    "byte_count": 4327219,
+    "path": "data/v4/artifact_store/v4_01/security_entity_map_GO_FORWARD_20260930_R1.json",
+    "sha256": "98c0d0c828c18d2dd012f5f2de27d420da49183c20116a790af91a33b7d12603"
+  },
+  "independent_checks": {
+    "all_11_terminal_dispositions": true,
+    "candidate_not_self_promoted": true,
+    "canonical_ids_independently_recomputed": true,
+    "no_active_lifecycle_ambiguity": true,
+    "official_complete_catalogues_recomputed": true,
+    "prior_records_exactly_preserved": true
+  },
+  "independent_verifier": {
+    "active_catalogue_keys": 5370,
+    "path": "scripts/postcheck_v4_08_r3_admission.py",
+    "producer_admission_functions_imported": false,
+    "sha256": "833d3a6eddff04aeda19badff0c8ea37bb5bff245c004957a87b75511cfd1ed3"
+  },
+  "status": "PASS_ENGINEERING_EXTERNAL_PROMOTION_REQUIRED"
+}

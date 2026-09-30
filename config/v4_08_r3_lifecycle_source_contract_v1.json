@@ -1,0 +1,207 @@
+{
+  "allowed_hosts": [
+    "www.szse.cn",
+    "query.sse.com.cn",
+    "www.sse.com.cn",
+    "static.cninfo.com.cn",
+    "epaper.stcn.com",
+    "epaper.cs.com.cn",
+    "paper.cnstock.com",
+    "www.cninfo.com.cn"
+  ],
+  "maximum_catalogue_pages": 160,
+  "maximum_parallel_requests": 4,
+  "maximum_requests": 180,
+  "maximum_response_bytes": 8000000,
+  "maximum_total_response_bytes": 60000000,
+  "raw_evidence_root": "data/v4/source_evidence/v4_08_r3",
+  "source_contract_id": "V4_01_GO_FORWARD_OFFICIAL_LIFECYCLE_SOURCE_V1",
+  "sources": [
+    {
+      "expected": [
+        "001246",
+        "2026年9月30日",
+        "主板上市"
+      ],
+      "id": "SZ_001246_listing",
+      "key": "SZ.001246",
+      "published_date": "2026-09-29",
+      "url": "https://epaper.stcn.com/con/202609/29/content_2979960.html"
+    },
+    {
+      "expected": [
+        "301716",
+        "2026年09月29日",
+        "创业板"
+      ],
+      "id": "SZ_301716_listing",
+      "key": "SZ.301716",
+      "published_date": "2026-09-29",
+      "url": "https://www.szse.cn/aboutus/trends/news/t20260929_623109.html"
+    },
+    {
+      "expected": [
+        "通则康威",
+        "2026年10月9日"
+      ],
+      "id": "SZ_301718_issuance",
+      "key": "SZ.301718",
+      "published_date": "2026-09-23",
+      "url": "https://paper.cnstock.com/html/2026-09/23/content_2272047.htm"
+    },
+    {
+      "expected": [
+        "联亚药业",
+        "301569",
+        "2026年9月30日"
+      ],
+      "id": "SZ_301569_issuance",
+      "key": "SZ.301569",
+      "published_date": "2026-09-24",
+      "url": "https://static.cninfo.com.cn/finalpage/2026-09-24/1225578998.PDF"
+    },
+    {
+      "expected": [
+        "粤芯半导体",
+        "301660"
+      ],
+      "id": "SZ_301660_issuance",
+      "key": "SZ.301660",
+      "published_date": "2026-09-23",
+      "url": "https://epaper.cs.com.cn/zgzqb/html/2026-09/23/nw.D110000zgzqb_20260923_1-A17.htm"
+    },
+    {
+      "expected": [
+        "海尔施",
+        "暂缓"
+      ],
+      "id": "SH_601206_suspension",
+      "key": "SH.601206",
+      "published_date": "2016-08-17",
+      "url": "https://static.cninfo.com.cn/finalpage/2016-08-17/1202574972.PDF"
+    },
+    {
+      "expected": [
+        "鑫广绿环",
+        "暂缓"
+      ],
+      "id": "SH_603302_suspension",
+      "key": "SH.603302",
+      "published_date": "2017-12-14",
+      "url": "https://epaper.cs.com.cn/zgzqb/images/2017-12/14/A14/AGG0141214C.pdf"
+    },
+    {
+      "expected": [
+        "浙江国祥",
+        "暂停"
+      ],
+      "id": "SH_603361_suspension",
+      "key": "SH.603361",
+      "published_date": "2023-10-09",
+      "url": "https://epaper.stcn.com/att/202310/09/e096c34e-7b23-4844-9249-8cc1df2810b2.pdf"
+    },
+    {
+      "expected": [
+        "蚂蚁",
+        "暂缓上市"
+      ],
+      "id": "SH_688688_suspension",
+      "key": "SH.688688",
+      "published_date": "2020-11-03",
+      "url": "https://www.sse.com.cn/disclosure/announcement/general/c/c_20201103_5253315.shtml"
+    },
+    {
+      "expected": [],
+      "id": "SZ_001235_exchange_query",
+      "key": "SZ.001235",
+      "published_date": null,
+      "url": "https://www.szse.cn/api/report/ShowReport/data?SHOWTYPE=JSON&CATALOGID=1110&tab1PAGENO=1&TABKEY=tab1&txtDMorJC=001235"
+    },
+    {
+      "expected": [
+        "天常",
+        "暂缓"
+      ],
+      "id": "SZ_300728_suspension",
+      "key": "SZ.300728",
+      "published_date": "2017-11-13",
+      "url": "https://static.cninfo.com.cn/finalpage/2017-11-13/1204137963.PDF"
+    },
+    {
+      "expected": [],
+      "id": "SZSE_stock_list",
+      "key": null,
+      "published_date": null,
+      "url": "https://www.szse.cn/api/report/ShowReport/data?SHOWTYPE=JSON&CATALOGID=1110&tab1PAGENO=1&tab1PAGESIZE=10000&TABKEY=tab1"
+    },
+    {
+      "expected": [],
+      "id": "SSE_stock_list",
+      "key": null,
+      "published_date": null,
+      "url": "https://query.sse.com.cn/sseQuery/commonQuery.do?sqlId=COMMON_SSE_CP_GPJCTPZ_GPLB_GP_L&STOCK_TYPE=1&pageHelp.pageSize=10000&pageHelp.pageNo=1"
+    },
+    {
+      "expected": [],
+      "id": "SZ_300728_exchange_query",
+      "key": "SZ.300728",
+      "published_date": null,
+      "url": "https://www.szse.cn/api/report/ShowReport/data?SHOWTYPE=JSON&CATALOGID=1110&tab1PAGENO=1&TABKEY=tab1&txtDMorJC=300728"
+    },
+    {
+      "expected": [],
+      "id": "SZ_301569_exchange_query",
+      "key": "SZ.301569",
+      "published_date": null,
+      "url": "https://www.szse.cn/api/report/ShowReport/data?SHOWTYPE=JSON&CATALOGID=1110&tab1PAGENO=1&TABKEY=tab1&txtDMorJC=301569"
+    },
+    {
+      "expected": [],
+      "id": "SZ_301660_exchange_query",
+      "key": "SZ.301660",
+      "published_date": null,
+      "url": "https://www.szse.cn/api/report/ShowReport/data?SHOWTYPE=JSON&CATALOGID=1110&tab1PAGENO=1&TABKEY=tab1&txtDMorJC=301660"
+    },
+    {
+      "expected": [],
+      "id": "SZ_301718_exchange_query",
+      "key": "SZ.301718",
+      "published_date": null,
+      "url": "https://www.szse.cn/api/report/ShowReport/data?SHOWTYPE=JSON&CATALOGID=1110&tab1PAGENO=1&TABKEY=tab1&txtDMorJC=301718"
+    },
+    {
+      "expected": [],
+      "id": "SZ_001246_exchange_query",
+      "key": "SZ.001246",
+      "published_date": null,
+      "url": "https://www.szse.cn/api/report/ShowReport/data?SHOWTYPE=JSON&CATALOGID=1110&tab1PAGENO=1&TABKEY=tab1&txtDMorJC=001246"
+    },
+    {
+      "expected": [],
+      "id": "SZ_301716_exchange_query",
+      "key": "SZ.301716",
+      "published_date": null,
+      "url": "https://www.szse.cn/api/report/ShowReport/data?SHOWTYPE=JSON&CATALOGID=1110&tab1PAGENO=1&TABKEY=tab1&txtDMorJC=301716"
+    },
+    {
+      "expected": [],
+      "id": "SSE_STAR_stock_list",
+      "key": null,
+      "published_date": null,
+      "url": "https://query.sse.com.cn/sseQuery/commonQuery.do?sqlId=COMMON_SSE_CP_GPJCTPZ_GPLB_GP_L&STOCK_TYPE=8&pageHelp.pageSize=10000&pageHelp.pageNo=1"
+    },
+    {
+      "expected": [
+        "A股代码",
+        "A股上市日期"
+      ],
+      "id": "SZSE_complete_stock_list_xlsx",
+      "key": null,
+      "published_date": null,
+      "url": "https://www.szse.cn/api/report/ShowReport?SHOWTYPE=xlsx&CATALOGID=1110&TABKEY=tab1"
+    }
+  ],
+  "target_date": "2026-09-30",
+  "timeout_seconds": 15,
+  "unknown_policy": "Failed capture, incomplete exchange list or missing target-day lifecycle proof remains AMBIGUOUS_IDENTITY; no regex admission."
+}

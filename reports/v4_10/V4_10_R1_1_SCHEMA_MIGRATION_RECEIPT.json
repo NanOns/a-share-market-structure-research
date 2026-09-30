@@ -1,0 +1,246 @@
+{
+  "checks": {
+    "023_database_policy_matches_frozen_field_contract": true,
+    "023_exact_readback_and_retry": true,
+    "023_historical_022_file_unchanged": true,
+    "023_independent_vectors_and_direct_sql_probes": true,
+    "023_old_valid_R1_rows_readable": true,
+    "023_ordinary_result_writer_cannot_register_input_manifest": true,
+    "023_research_state_engineering_publications_delete_rejected": true,
+    "023_research_state_engineering_publications_update_rejected": true,
+    "023_research_state_engineering_results_delete_rejected": true,
+    "023_research_state_engineering_results_update_rejected": true,
+    "023_research_state_field_policy_r1_1_delete_rejected": true,
+    "023_research_state_field_policy_r1_1_update_rejected": true,
+    "023_research_state_input_manifests_delete_rejected": true,
+    "023_research_state_input_manifests_update_rejected": true,
+    "023_research_state_lineage_ledger_delete_rejected": true,
+    "023_research_state_lineage_ledger_update_rejected": true,
+    "023_restore_exact_new_schema_and_readback": true,
+    "023_revision_chain_and_old_payload_preserved": true,
+    "023_revision_identity_conflict_rejected": true,
+    "023_rollback_after_new_rows_restores_022_schema": true,
+    "023_rollback_exact_022_schema": true,
+    "023_rollback_exact_old_022_rows": true,
+    "023_rollback_retains_old_payload_bytes": true,
+    "023_same_publication_conflict_rejected": true,
+    "B07_fact_trigger_rejects_mixed_source_basis": true,
+    "B07_formal_view_rejects_corrupt_mixed_basis": true,
+    "B07_revision_insert_rejects_current_with_pit_quality": true,
+    "B07_snapshot_trigger_rejects_mixed_source_basis": true,
+    "basis_quality_cross_pairs_rejected": true,
+    "basis_quality_four_pairs": true,
+    "positive_pit_formal_fact_visible": true,
+    "rollback_removes_only_r3": true
+  },
+  "config_dot_env_read": false,
+  "configured_or_production_database_used": false,
+  "contract_id": "V4_10_R1_1_SCHEMA_MIGRATION_RECEIPT",
+  "database_identity": {
+    "database": "market_research",
+    "owner": "postgres",
+    "server_address": "127.0.0.1/32",
+    "server_port": 6178,
+    "version": "PostgreSQL 18.6 on x86_64-windows, compiled by msvc-19.44.35228, 64-bit"
+  },
+  "db_choice": "A_DATABASE_CANONICAL_IDENTITY_AND_LINEAGE_GUARD",
+  "direct_sql_probes": {
+    "direct_sql_boundary_manifest_field_mismatch": true,
+    "direct_sql_calendar_binding_mismatch": true,
+    "direct_sql_forged_payload_digest": true,
+    "direct_sql_forged_state_publication_id": true,
+    "direct_sql_null_cutoff": true,
+    "direct_sql_producer_lineage_mismatch": true,
+    "direct_sql_unpublished_extra_input": true
+  },
+  "historical_publication_digest": "721b79d4bd0f8045354d2fb15942673befc8269f7b67dbe5b1e746734e9eb61a",
+  "legacy_row_payload": {
+    "boundary_event": null,
+    "calendar_publication_id": "FIXTURE_MARKET_CALENDAR_V1",
+    "detector_statuses": {
+      "CONFIRMED": "SYNTHETIC",
+      "PREWATCH": "SYNTHETIC",
+      "SEED": "SYNTHETIC",
+      "WARM": "NOT_APPLICABLE"
+    },
+    "downgrade_candidate": null,
+    "downgrade_count": 0,
+    "entity_id": "fixture-entity",
+    "entity_type": "STOCK",
+    "episode_id": "EP:3cd7d47ef7a12fec1fe2674cfe65856bbc42ea3634a6c7a9793fd4a027b20e94",
+    "exit_session_index": null,
+    "expiry_count": 1,
+    "final_eligibility": "TRUE",
+    "health": "STABLE",
+    "improvement_baseline": 0,
+    "input_digest": "ebdd4a086633535aff1bc66c7938528feedbbcefc9f2e01b00467a7a4f6c35da",
+    "input_publication_ids": [
+      "FIXTURE_FACTS"
+    ],
+    "invalidation_contract_id": "FIXTURE_EPISODE_INVALIDATION_V1",
+    "market_age": 0,
+    "matched_predicates": [
+      "PREWATCH"
+    ],
+    "maturity": "PREWATCH",
+    "mode": "SYNTHETIC_CONTRACT_VECTOR",
+    "model_contract_id": "RESEARCH_STATE_V1",
+    "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+    "parent_episode_id": null,
+    "preserved_followup_episode_ids": [],
+    "prior_state_binding": null,
+    "publication_id": "V4_10:8081962d3313b5778e62ded4d4c122ea7b24f0ac32657829c7249e5ac835372e",
+    "raw_qualification": {
+      "CONFIRMED": "FALSE",
+      "PREWATCH": "TRUE",
+      "SEED": "FALSE"
+    },
+    "scenario": "NONE",
+    "scenario_status": "KNOWN",
+    "session_index": 20,
+    "state_freshness": "FRESH",
+    "tracking": "ACTIVE",
+    "trade_date": "2026-09-28",
+    "transition_reasons": [
+      "UPGRADE_IMMEDIATE",
+      "ENROLLED"
+    ],
+    "unknown_predicates": [],
+    "validity": "VALID"
+  },
+  "migrations": [
+    {
+      "byte_count": 8011,
+      "path": "src/workbench_db/migrations/v4_postgres/001_v4_phase0_foundation.sql",
+      "sha256": "391bf52595fc9da86bbce175b667a5b15c18684c4fbfb8e54cdcf65872dff260"
+    },
+    {
+      "byte_count": 1897,
+      "path": "src/workbench_db/migrations/v4_postgres/002_namespace_integrity.sql",
+      "sha256": "d8dcc13609ea73923dd68ad21d9c91eed69128047203a481764edeb72ea45dac"
+    },
+    {
+      "byte_count": 12047,
+      "path": "src/workbench_db/migrations/v4_postgres/003_phase0_contract_alignment.sql",
+      "sha256": "e1e2886c04c45121530e1fcf506297921c9cca2eecec3ee06be77e2520887d77"
+    },
+    {
+      "byte_count": 558,
+      "path": "src/workbench_db/migrations/v4_postgres/004_publication_head_revision_identity.sql",
+      "sha256": "905af9323f613d3ae917000859f2306ce3d2a2ec6be43431233c5f4ce0e8a1b3"
+    },
+    {
+      "byte_count": 3422,
+      "path": "src/workbench_db/migrations/v4_postgres/005_market_session_publication_chain.sql",
+      "sha256": "54d32de8e20afc773638b38aa555c47a5c5e8cb9b0bba82bb60fbd820a2d3b66"
+    },
+    {
+      "byte_count": 969,
+      "path": "src/workbench_db/migrations/v4_postgres/006_fact_source_guard_table_specific_fields.sql",
+      "sha256": "d6ccd5dae3900fa07134a18e2f4f41ed2fbc3dde2fa4d5be79958d82d616a949"
+    },
+    {
+      "byte_count": 768,
+      "path": "src/workbench_db/migrations/v4_postgres/007_state_and_namespace_publication_identity.sql",
+      "sha256": "f7df9d66c6edb13e948cbd92888af140ad335cb2984b9b0078e5498eee1cb4a0"
+    },
+    {
+      "byte_count": 11777,
+      "path": "src/workbench_db/migrations/v4_postgres/008_prior_session_state_freeze_integrity.sql",
+      "sha256": "3d541d9540d64463068907d20062403d7ee41373c42afa5c34c7e0d7117b338b"
+    },
+    {
+      "byte_count": 4279,
+      "path": "src/workbench_db/migrations/v4_postgres/009_publication_head_guard_sql_alias_fix.sql",
+      "sha256": "ae4a7043367a490483618944b8efaf473062f82371e500ab60e5a79a4d55d2e8"
+    },
+    {
+      "byte_count": 3197,
+      "path": "src/workbench_db/migrations/v4_postgres/010_security_lifecycle_history_r5.sql",
+      "sha256": "a7f9bc76db45b4f6297ed299be2576d299d243daa45b3b13a5f9e42dccf7b87f"
+    },
+    {
+      "byte_count": 3341,
+      "path": "src/workbench_db/migrations/v4_postgres/011_security_membership_interval_r6_2.sql",
+      "sha256": "a562a409a012c32ce7ce879b6377704079e47289de2db0a24c589070e06957e1"
+    },
+    {
+      "byte_count": 2767,
+      "path": "src/workbench_db/migrations/v4_postgres/012_provider_lifecycle_fact_r6_2.sql",
+      "sha256": "3e206b8c20959f862f9d293a42a215af624416905f23083c17ca6e2ec22f9b70"
+    },
+    {
+      "byte_count": 4248,
+      "path": "src/workbench_db/migrations/v4_postgres/013_v4_06_stock_profile_enrichments.sql",
+      "sha256": "6aa326f725ad98179b112be6b6f34346c5fbc70d69c4798d2259f01d3c3337e1"
+    },
+    {
+      "byte_count": 2465,
+      "path": "src/workbench_db/migrations/v4_postgres/014_v4_06_turnover_contract_semantics_r2.sql",
+      "sha256": "fff140f483738b6fb8e94e06a4e2c681111de94ceb1c415d18c188a9d95977e3"
+    },
+    {
+      "byte_count": 2053,
+      "path": "src/workbench_db/migrations/v4_postgres/015_v4_07_base_seed_results.sql",
+      "sha256": "ebab277fe04a9bb1567d6c7b7ed8a306bbe8e6a5f083e84f8ab5d213e4a131b3"
+    },
+    {
+      "byte_count": 9268,
+      "path": "src/workbench_db/migrations/v4_postgres/016_v4_08_sector_membership.sql",
+      "sha256": "45db743c2d223308d8b95a1dbe4cb7548f3ff553c04a021058be1ed7d34cb6e5"
+    },
+    {
+      "byte_count": 1074,
+      "path": "src/workbench_db/migrations/v4_postgres/017_v4_08_membership_fact_evidence_view.sql",
+      "sha256": "633998684434e06b089f622c7c2a8bc37743ab945e53f94b06ca496de8ee77fc"
+    },
+    {
+      "byte_count": 11058,
+      "path": "src/workbench_db/migrations/v4_postgres/018_v4_08_membership_contract_repair_r2.sql",
+      "sha256": "abaf9fa2ce432deca155292de9e6bb574ba7f1e4de7d5611ac56cc0106e3eb51"
+    },
+    {
+      "byte_count": 4679,
+      "path": "src/workbench_db/migrations/v4_postgres/019_v4_08_membership_source_basis_guard_r3.sql",
+      "sha256": "ec1fd08c6fef018ba0f92131e0e37de376372946ed935d9e5b2602ba024e6975"
+    },
+    {
+      "byte_count": 2657,
+      "path": "src/workbench_db/migrations/v4_postgres/020_v4_08_sector_rotation_r5.sql",
+      "sha256": "3e7a877c73976f6665b053d6eab1da03bd232a77e8145b07ac7c34124d78c9a1"
+    },
+    {
+      "byte_count": 4305,
+      "path": "src/workbench_db/migrations/v4_postgres/021_v4_09_stock_prewatch.sql",
+      "sha256": "dcbcd468b7651c233a636c81e81bdbd1dc5b7ca85c42d4769c52b42ef5b7dc1c"
+    },
+    {
+      "byte_count": 5849,
+      "path": "src/workbench_db/migrations/v4_postgres/022_v4_10_research_state_interface.sql",
+      "sha256": "cfa37902a75b100e05813e3fb0b63e3884bf369d4c1913067e5714eb9004a732"
+    },
+    {
+      "byte_count": 19217,
+      "path": "src/workbench_db/migrations/v4_postgres/023_v4_10_research_state_lineage_hardening.sql",
+      "sha256": "e308a42738d32a8a02dd4c1859a1e5de3d561044ca148bd13949932113a3a97b"
+    }
+  ],
+  "readback": {
+    "publication_digest": "e5fe5ea9dce62229b6f7d81bf280e1a953505455edc4acac30789d85ad2bcec3",
+    "publication_id": "R1_1_READBACK",
+    "revision_of": null,
+    "row_count": 2,
+    "status": "PASS_EXACT_DATABASE_READBACK"
+  },
+  "revision_readback": {
+    "publication_digest": "43822e778ad23a84c06a7157647ebf50a8ac5016fc9b483fe1f03c85c6c5891b",
+    "publication_id": "R1_1_READBACK_REVISION_2",
+    "revision_of": "R1_1_READBACK",
+    "row_count": 2,
+    "status": "PASS_EXACT_DATABASE_READBACK"
+  },
+  "scope": "DISPOSABLE_ENGINEERING_GATE_FIXTURES_ONLY",
+  "status": "PASS",
+  "temporary_cluster_destroyed": true,
+  "tested_commit": "6049973cd78e51cdeb2ba33461f20ce96b13c8d6"
+}

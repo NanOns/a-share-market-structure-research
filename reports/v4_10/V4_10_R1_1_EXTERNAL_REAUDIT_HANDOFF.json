@@ -1,0 +1,47 @@
+{
+  "acceptance_gates": {
+    "G01_V4_09_accepted_head_unchanged": "PASS",
+    "G02_prior_full_schema_authenticity": "PASS",
+    "G03_prior_content_address_identity": "PASS",
+    "G04_prior_calendar_lineage": "PASS",
+    "G05_model_boundary_authorized_manifest": "PASS",
+    "G06_state_changing_field_provenance": "PASS",
+    "G07_frozen_invalidation_fail_closed": "PASS",
+    "G08_followup_completion_owner_gate": "PASS",
+    "G09_input_manifest_canonical_shape": "PASS",
+    "G10_DB_payload_publication_identity": "PASS",
+    "G11_independent_negative_vectors": "PASS",
+    "G12_original_semantic_vectors": "PASS",
+    "G13_append_only_revision_rollback": "PASS",
+    "G14_no_symbol": "PASS",
+    "G15_clean_detached_full_regression": "PASS",
+    "G16_production_shadow_focus_false": "PASS",
+    "G17_V4_10_accepted_head_absent": "PASS"
+  },
+  "closure": {
+    "byte_count": 3343,
+    "path": "reports/v4_10/V4_10_R1_1_CLOSURE.md",
+    "sha256": "2723786b325f446885d3efddbf94bb34c96da6ac750d51ad6bafc757ce5b7067"
+  },
+  "external_acceptance": "PENDING_INDEPENDENT_EXTERNAL_REAUDIT",
+  "focus_cutover_permission": false,
+  "manifest": {
+    "byte_count": 76278,
+    "path": "reports/v4_10/V4_10_R1_1_STAGE_CANDIDATE_MANIFEST.json",
+    "sha256": "58951545202c0f0eab9bf573f726f48cb5e9c51ee6326b37cdaec9cc9912b01a"
+  },
+  "next_stage": "STOP_FOR_INDEPENDENT_EXTERNAL_REAUDIT; V4-11 BLOCKED until separate acceptance and promotion/entry authority",
+  "production_permission": false,
+  "regression_summary": {
+    "errors": 0,
+    "failures": 0,
+    "passed": 1090,
+    "skipped": 2,
+    "tests": 1092
+  },
+  "shadow_production_permission": false,
+  "status": "V4_10_R1_1_REPAIR_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
+  "stop_here": true,
+  "tested_implementation_commit": "6049973cd78e51cdeb2ba33461f20ce96b13c8d6",
+  "vector_count": 149
+}

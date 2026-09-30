@@ -43,10 +43,17 @@ def main():
         p in ['src/v4/stock_prewatch.py','src/v4/base_seed.py','src/v4/sector_native.py',
             'src/workbench_db/migrations/v4_postgres/022_v4_10_research_state_interface.sql',
             'src/workbench_db/migrations/v4_postgres/rollback/022_v4_10_research_state_interface.sql']]
-    for path in protected:
+    changed_worktree=git_bytes('diff','--name-only',BASELINE).decode('utf8').splitlines()
+    if set(protected)&set(changed_worktree):raise ValueError('PROTECTED_GIT_TREE_CHANGED')
+    # Historical data uses Git LFS and text filters. Preserve its Git identity;
+    # compare stage-protected heads and the audited R1/V4-09 evidence as exact bytes.
+    exact_paths=[p for p in protected if not p.startswith(('data/v4/','docs/audits/'))]
+    for path in exact_paths:
         if (ROOT/path).read_bytes()!=git_bytes('show',BASELINE+':'+path):raise ValueError('PROTECTED_ORIGINAL_CHANGED:'+path)
+    for b in freeze['protected_bindings']:
+        if bind(b['path'])!=b:raise ValueError('PROTECTED_HEAD_BYTES_CHANGED')
     changed=git_bytes('diff','--name-only',BASELINE,tested).decode('utf8').splitlines()
-    sources=[p for p in changed if p.startswith(('src/','scripts/','tests/','config/'))]
+    sources=[p for p in changed if p.startswith(('src/','scripts/','tests/','config/')) and p!='scripts/seal_v4_10_r1_1_candidate.py']
     for path in sources:
         if (ROOT/path).read_bytes()!=git_bytes('show',tested+':'+path):raise ValueError('TESTED_SOURCE_CHANGED:'+path)
     promotion=validate()
@@ -87,7 +94,11 @@ def main():
         authority=freeze['authority'],repair_task=freeze['repair_task'],stage_entry=freeze['stage_entry'],
         disposition=bind('docs/evidence/V4_10_R1_1_REPAIR_DISPOSITION_20261001.md'),contracts=freeze['bindings'],
         source_implementation_bindings=[bind(p) for p in sources],evidence_bindings={n:bind(PREFIX+n+'.json') for n in EVIDENCE},
-        original_protected_bindings=[bind(p) for p in protected],protected_head_bindings=freeze['protected_bindings'],
+        original_protected_bindings=[bind(p) for p in exact_paths],protected_head_bindings=freeze['protected_bindings'],
+        protected_original_git_tree=dict(baseline_commit=BASELINE,paths=protected,changed_paths=[],
+            historical_data_identity='Git tree unchanged, accounting for existing LFS and newline checkout filters; stage-protected heads additionally exact-byte checked'),
+        evidence_packaging_source=bind('scripts/seal_v4_10_r1_1_candidate.py'),
+        evidence_packaging_revision='Post-regression seal correction handles pre-existing historical LFS/newline filters; tested reducer, migration, configs and regression code unchanged',
         acceptance_gates={g:'PASS' for g in gates},business_thresholds={k:params[k] for k in ['downgrade_sessions','expiry_sessions','expiry_improvement_pp','health_deadband_pp']},
         vector_count=post['vector_count'],regression_summary=summary,historical_test_supersession=dict(deselected_exact_node=authorized_node,new_deselects=[]),
         db_choice='A_DATABASE_CANONICAL_IDENTITY_AND_LINEAGE_GUARD',trusted_issuer='Engineering ledger DB owner only; API callers and ordinary result writers cannot register immutable input manifests',

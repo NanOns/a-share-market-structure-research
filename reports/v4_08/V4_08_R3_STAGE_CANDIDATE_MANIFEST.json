@@ -1,6 +1,6 @@
 {
   "contract_id": "V4_08_R3_STAGE_CANDIDATE_MANIFEST_V1",
-  "file_count": 251,
+  "file_count": 258,
   "files": [
     {
       "byte_count": 2063,
@@ -1048,6 +1048,11 @@
       "sha256": "ae1e359134e813246116c6fefb3593149deebe04a9a29f12d411d81ba63bda85"
     },
     {
+      "byte_count": 1039,
+      "path": "reports/v4_01/V4_01_GO_FORWARD_IDENTITY_CLEAN_CHECKOUT_R1.json",
+      "sha256": "af1645733e870ecc7d190a152b43353bb020f3587e3088c55e0a7b965e6a7e55"
+    },
+    {
       "byte_count": 16124,
       "path": "reports/v4_01/V4_01_GO_FORWARD_IDENTITY_INCREMENT_R1.json",
       "sha256": "2f77a280c2de61f5a953bb2a804c3696a4b5ae5a306bc4ae1f6d18ecfad1be23"
@@ -1098,6 +1103,26 @@
       "sha256": "6d1b72a9914ee475700eec071125417a153060c24c54e9507da54fd9a6ef569f"
     },
     {
+      "byte_count": 658,
+      "path": "reports/v4_08/V4_08_R3_CLEAN_ADMISSION_VERIFIER.json",
+      "sha256": "a5f41535c7f2ef229c60524827f73376fa1c5219cc933cc341b30271dc44b8dd"
+    },
+    {
+      "byte_count": 7560,
+      "path": "reports/v4_08/V4_08_R3_CLEAN_CHECKOUT_RECEIPT.json",
+      "sha256": "b2604dfc9ea36b3ce57534d24c563d2eff8415d3a7223368101437d29ab85ae8"
+    },
+    {
+      "byte_count": 1659,
+      "path": "reports/v4_08/V4_08_R3_CLOSURE.md",
+      "sha256": "31c1754f83344588bb581f1b7fdaeceee46426c3a0e70067dc92fd140e0400ca"
+    },
+    {
+      "byte_count": 18896,
+      "path": "reports/v4_08/V4_08_R3_EXTERNAL_REAUDIT_HANDOFF.json",
+      "sha256": "93e0cbac999d57cabbf0d893d8af46d1e22219ec1821cd98ed773deb5af23b6d"
+    },
+    {
       "byte_count": 441,
       "path": "reports/v4_08/V4_08_R3_FORMAL_UNIVERSE_IDENTITY_GATE.json",
       "sha256": "72d2109d148ef95b8de1cf7ff28e331eb274b05f235d1e552b17868ce829f065"
@@ -1141,6 +1166,16 @@
       "byte_count": 12204,
       "path": "reports/v4_08/V4_08_R3_IDENTITY_LIFECYCLE_ADJUDICATION.json",
       "sha256": "b94ed393a88d7cfb8bc1e33b473872bd8ab72e94f5701fc2e0ddd23f26ac8c7d"
+    },
+    {
+      "byte_count": 8456,
+      "path": "reports/v4_08/V4_08_R3_IMMUTABLE_BASELINE_CHECK.json",
+      "sha256": "6d77bd0e42a739d28b47cc5ac5ed4a3d8353285aa03b7b4025f93f40a27234a7"
+    },
+    {
+      "byte_count": 7525,
+      "path": "reports/v4_08/V4_08_R3_ISOLATED_REGRESSION.json",
+      "sha256": "405b82ca2d4ff7bc219582844d3235600d191a3b3940a553f44a858c7b38dc7c"
     },
     {
       "byte_count": 20063,
@@ -1261,6 +1296,6 @@
   "no_V4_08_Accepted_Head": true,
   "self_hash_excluded": true,
   "starting_head": "0581731c1284e82380fa115156f1dc0a16a38bd4",
-  "status": "IMPLEMENTATION_INPUTS_PREPARED",
+  "status": "SEALED_FOR_EXTERNAL_AUDIT",
   "unrelated_FEP_artifacts_staged": false
 }

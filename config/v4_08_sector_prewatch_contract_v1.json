@@ -1,0 +1,25 @@
+{
+  "contract_id": "V4_08_SECTOR_PREWATCH_B0_V1",
+  "version": "1.0.0",
+  "owner_stage": "V4-08",
+  "status": "FROZEN_ENGINEERING_CANDIDATE",
+  "authority": {"governing_contract": "DA-MSR-V4.2.2-CODEX-REV2", "sections": ["15", "16", "17", "78"]},
+  "input_boundary": {
+    "read": ["accepted Core", "accepted BASE_SEED_V1", "accepted PIT membership", "frozen t-1 sector state"],
+    "forbidden": ["same-day final stock PREWATCH", "Focus", "Radar", "V4-06 turnover", "future confirmation", "future outcomes", "STYLE", "UNKNOWN"],
+    "base_seed_degraded_behavior": "seed_width=UNKNOWN; reason=DEGRADED_BY_UPSTREAM_BASE_SEED_SIGNAL"
+  },
+  "ast": {
+    "sector_safety": {"op": "AND", "args": ["membership_READY", "member_count>=V4_08_SECTOR_MIN_MEMBERS", "quote_coverage>=V4_08_SECTOR_MIN_QUOTE_COVERAGE"]},
+    "prewatch_raw": {"op": "AND", "args": ["sector_safety", "dq5>=3", {"op": "OR", "args": ["breadth_delta3>0", "ma20_delta3>0"]}, "adjusted_seed_width>=0.05"]},
+    "unknown_semantics": "three-valued REV2 logic; unknown required input yields UNKNOWN unless another valid OR branch is true; UNKNOWN does not become FALSE"
+  },
+  "output": {
+    "field": "prewatch_raw",
+    "not_mutually_exclusive_with_higher_stage": true,
+    "final_maturity_owner": "D2 reducer; select highest confirmed qualification",
+    "warm_confirmed": "NOT_IMPLEMENTED until exact pure-Core legacy AST acceptance; do not infer from labels"
+  },
+  "formal_consumer_enabled": false,
+  "parameter_set": "V4_08_ALGORITHM_PARAMETER_SET_V1"
+}

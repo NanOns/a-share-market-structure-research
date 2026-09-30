@@ -1,0 +1,24 @@
+{
+  "contract_id": "V4_08_TDX_SOURCE_AVAILABILITY_POLICY_CANDIDATE_V1",
+  "version": "1.0.0",
+  "status": "SOURCE_SPECIFIC_AMENDMENT_CANDIDATE_PENDING_EXTERNAL_REVIEW",
+  "source_scope": [
+    "T0002/hq_cache/tdxhy.cfg",
+    "T0002/hq_cache/tdxzs.cfg",
+    "T0002/hq_cache/infoharbor_block.dat"
+  ],
+  "proposed_provider_available_at_basis": "PROJECT_FIRST_OBSERVED_PROVIDER_BYTES",
+  "semantics": "The timestamp is the earliest evidenced time by which the project had observed and frozen the complete exact local TDX byte set. It does not claim the provider's original publication time.",
+  "bundle_time_rule": "Use the maximum per-file observed_at in the immutable capture receipt, because the complete byte set did not exist as a frozen project input until its last component was observed.",
+  "proposed_timestamp": "2026-09-30T00:45:21.890265Z",
+  "system_available_at": "2026-09-30T00:45:22.133876Z",
+  "filesystem_mtime_is_provider_availability": false,
+  "backdating": "PROHIBITED",
+  "acceptance": "EXTERNAL_REVIEW_REQUIRED_BEFORE_FORMAL_PIT_CONSUMPTION",
+  "membership_asof": {
+    "status": "UNVERIFIED_CANDIDATE",
+    "proposed_basis": "PROJECT_FIRST_OBSERVED_SOURCE_STATE",
+    "rule": "Candidate date may not precede complete project observation date; provider effective date remains unknown until independently accepted."
+  },
+  "scope": "SOURCE_SPECIFIC_TO_HASH_BOUND_R1_TDX_FILES; NOT A GLOBAL PROVIDER POLICY"
+}

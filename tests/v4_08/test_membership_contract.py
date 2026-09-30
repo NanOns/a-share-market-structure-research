@@ -4,14 +4,18 @@ import pytest
 
 from src.sector.membership_baseline import (
     classify_replay_rows,
+    build_source_revision_identity,
     derive_parent_membership,
     formal_membership_eligible,
+    formal_identity_scope_gate,
     identity_postcheck,
     map_source_sector_type,
     select_available_revisions,
     seed_dependent_state,
     snapshot_digest,
     validate_revision_chain,
+    validate_forward_target_date,
+    validate_snapshot_basis,
     verify_file_digests,
 )
 
@@ -26,6 +30,9 @@ def _row(**overrides):
         "source_sector_type": "industry", "membership_basis": "PIT_OBSERVED",
         "membership_quality": "PIT_OBSERVED_ACCEPTED", "pit_observed": True,
         "historical_backtest_safe": True, "identity_status": "MAPPED",
+        "snapshot_membership_quality": "PIT_OBSERVED_ACCEPTED",
+        "source_revision_quality": "PIT_OBSERVED_ACCEPTED",
+        "source_revision_chain_valid": True,
         "target_trade_date": "2026-09-30", "membership_asof_date": "2026-09-30",
         "cutoff": "2026-09-30T08:00:00Z", "provider_available_at": "2026-09-30T07:59:00Z",
         "system_available_at": "2026-09-30T08:00:00Z",
@@ -63,6 +70,11 @@ def test_formal_membership_requires_provider_and_system_availability_within_cuto
     assert not formal_membership_eligible(_row(provider_available_at="2026-09-30T08:00:01Z"))
     assert not formal_membership_eligible(_row(system_available_at="2026-09-30T08:00:01Z"))
     assert not formal_membership_eligible(_row(membership_asof_date="2026-10-01"))
+    assert not formal_membership_eligible(_row(membership_asof_date="2026-09-29"))
+    assert not formal_membership_eligible(_row(membership_quality="SOURCE_TIME_UNVERIFIED"))
+    assert not formal_membership_eligible(_row(source_revision_quality="SOURCE_TIME_UNVERIFIED"))
+    assert not formal_membership_eligible(_row(snapshot_membership_quality="SOURCE_TIME_UNVERIFIED"))
+    assert not formal_membership_eligible(_row(source_revision_chain_valid=False))
 
 
 def test_t_snapshot_is_unchanged_by_t_plus_1_correction():
@@ -110,6 +122,34 @@ def test_unknown_security_identity_is_retained_and_reported():
     assert result["status"] == "BLOCKED"
 
 
+def test_unresolved_non_core_and_bse_do_not_block_four_board_identity_gate():
+    result = formal_identity_scope_gate([
+        {"classification": "ETF_OR_FUND", "formal_board_candidate": None},
+        {"classification": "CONVERTIBLE_BOND", "formal_board_candidate": None},
+        {"classification": "BSE_OPTIONAL", "formal_board_candidate": None},
+        {"classification": "INDEX", "formal_board_candidate": None},
+    ])
+    assert result["status"] == "PASS"
+    assert result["blocking_key_count"] == 0
+
+
+def test_ambiguous_required_board_identity_blocks_only_affected_scope():
+    result = formal_identity_scope_gate([
+        {"classification": "AMBIGUOUS_IDENTITY", "formal_board_candidate": "STAR"},
+        {"classification": "BSE_OPTIONAL", "formal_board_candidate": None},
+    ])
+    assert result["status"] == "BLOCKED"
+    assert result["blocking_keys_by_board"]["STAR"] == 1
+    assert result["blocking_keys_by_board"]["SH_MAIN"] == 0
+
+
+def test_forward_candidate_date_cannot_precede_complete_source_observation():
+    result = validate_forward_target_date("2026-09-28", "2026-09-30T00:45:21.890265Z")
+    assert result["status"] == "BLOCKED"
+    assert result["reason"] == "TARGET_PRECEDES_FIRST_COMPLETE_SOURCE_OBSERVATION"
+    assert validate_forward_target_date("2026-09-30", "2026-09-30T00:45:21.890265Z")["status"] == "PASS"
+
+
 def test_style_is_excluded_from_formal_sector_and_rotation_qualification():
     row = _row(sector_type="STYLE", sector_id="STYLE:1")
     assert not formal_membership_eligible(row)
@@ -136,9 +176,45 @@ def test_parent_industry_is_child_union_and_deduplicates_members():
     assert all(row["membership_basis"] == "DERIVED_PARENT_MEMBERSHIP" for row in parents)
 
 
+def test_parent_replay_keeps_parent_basis_and_is_separate_from_raw_replay_snapshot():
+    raw = _row(membership_basis="CURRENT_TDX_MEMBERSHIP", membership_quality="CURRENT_TDX_DIAGNOSTIC")
+    parent = _row(membership_basis="DERIVED_PARENT_MEMBERSHIP", membership_quality="DERIVED_PARENT_DIAGNOSTIC")
+    replay = classify_replay_rows([raw, parent], "2026-09-29")
+    assert replay[0]["membership_basis"] == "CURRENT_MEMBERSHIP_REPLAY"
+    assert replay[1]["membership_basis"] == "DERIVED_PARENT_MEMBERSHIP"
+    assert validate_snapshot_basis([replay[0]], "CURRENT_MEMBERSHIP_REPLAY")["status"] == "PASS"
+    assert validate_snapshot_basis(replay, "CURRENT_MEMBERSHIP_REPLAY")["basis_mismatch_count"] == 1
+
+
+def test_same_bytes_with_new_temporal_evidence_creates_new_append_only_revision_identity():
+    source_bytes = "a" * 64
+    earlier = build_source_revision_identity(source_bytes, {
+        "provider_available_at": "2026-09-30T00:45:21.889920Z",
+        "membership_asof_date": "2026-09-30",
+    })
+    later = build_source_revision_identity(source_bytes, {
+        "provider_available_at": "2026-09-30T00:45:21.889920Z",
+        "membership_asof_date": "2026-09-30",
+        "external_policy_review_id": "POLICY-R2-REVIEW-2",
+    })
+    assert earlier["source_bytes_digest"] == later["source_bytes_digest"]
+    assert earlier["temporal_evidence_digest"] != later["temporal_evidence_digest"]
+    assert earlier["source_revision_id"] != later["source_revision_id"]
+
+
+def test_revision_identity_rejects_invalid_source_bytes_digest():
+    with pytest.raises(ValueError, match="source_bytes_digest"):
+        build_source_revision_identity("not-a-digest", {"observed_at": "2026-09-30T00:00:00Z"})
+
+
 def test_parent_derivation_rejects_impossible_cross_industry_identity():
     with pytest.raises(ValueError, match="cross-industry"):
         derive_parent_membership([_row(sector_code="802011")], parent_code="80101", child_code_to_parent={"802011": "80201"})
+
+
+def test_derived_parent_is_diagnostic_until_independently_accepted():
+    parent = _row(membership_basis="DERIVED_PARENT_MEMBERSHIP", membership_quality="DERIVED_PARENT_DIAGNOSTIC")
+    assert not formal_membership_eligible(parent)
 
 
 def test_snapshot_hash_is_deterministic_under_row_order():

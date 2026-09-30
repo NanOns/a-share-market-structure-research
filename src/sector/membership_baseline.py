@@ -9,6 +9,8 @@ from typing import Any, Iterable, Mapping, Sequence
 
 
 FORMAL_SECTOR_TYPES = frozenset({"INDUSTRY", "THEME"})
+FORMAL_REQUIRED_BOARDS = frozenset({"SH_MAIN", "SZ_MAIN", "CHINEXT", "STAR"})
+FORMAL_IDENTITY_BLOCKERS = frozenset({"TRUE_IDENTITY_GAP", "AMBIGUOUS_IDENTITY"})
 ALL_SECTOR_TYPES = frozenset({"INDUSTRY", "THEME", "STYLE", "UNKNOWN"})
 MEMBERSHIP_BASES = frozenset({
     "PIT_OBSERVED", "CURRENT_TDX_MEMBERSHIP", "CURRENT_MEMBERSHIP_REPLAY", "DERIVED_PARENT_MEMBERSHIP"
@@ -78,14 +80,76 @@ def formal_membership_eligible(row: Mapping[str, Any]) -> bool:
         row.get("sector_type") in FORMAL_SECTOR_TYPES
         and row.get("membership_basis") == "PIT_OBSERVED"
         and row.get("membership_quality") == "PIT_OBSERVED_ACCEPTED"
+        and row.get("snapshot_membership_quality") == "PIT_OBSERVED_ACCEPTED"
+        and row.get("source_revision_quality") == "PIT_OBSERVED_ACCEPTED"
         and row.get("pit_observed") is True
         and row.get("historical_backtest_safe") is True
-        and row.get("identity_status", "MAPPED") == "MAPPED"
+        and row.get("identity_status") == "MAPPED"
         and bool(row.get("security_id"))
+        and row.get("source_revision_chain_valid") is True
         and provider_available <= cutoff
         and system_available <= cutoff
-        and asof_date <= target_date
+        and asof_date == target_date
     )
+
+
+def build_source_revision_identity(source_bytes_digest: str, temporal_evidence: Mapping[str, Any]) -> dict[str, str]:
+    """Bind immutable source bytes and a separately versionable temporal evidence record."""
+    if len(source_bytes_digest) != 64 or any(ch not in "0123456789abcdef" for ch in source_bytes_digest):
+        raise ValueError("source_bytes_digest must be lowercase SHA-256")
+    evidence_digest = sha256_json(temporal_evidence)
+    revision_digest = sha256_json({
+        "source_bytes_digest": source_bytes_digest,
+        "temporal_evidence_digest": evidence_digest,
+    })
+    return {
+        "source_bytes_digest": source_bytes_digest,
+        "temporal_evidence_digest": evidence_digest,
+        "source_revision_id": f"sha256:{revision_digest}",
+    }
+
+
+def validate_snapshot_basis(rows: Sequence[Mapping[str, Any]], membership_basis: str) -> dict[str, Any]:
+    """A snapshot header owns exactly one membership basis; rows may not override it."""
+    mismatches = [
+        {"sector_id": row.get("sector_id"), "source_security_key": row.get("source_security_key"),
+         "row_basis": row.get("membership_basis")}
+        for row in rows if row.get("membership_basis") != membership_basis
+    ]
+    return {
+        "status": "PASS" if not mismatches else "BLOCKED",
+        "snapshot_membership_basis": membership_basis,
+        "row_count": len(rows),
+        "basis_mismatch_count": len(mismatches),
+        "basis_mismatches": mismatches,
+    }
+
+
+def formal_identity_scope_gate(classifications: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+    """Only unresolved identities in required four-board scope block that scope."""
+    blockers = [row for row in classifications
+                if row.get("classification") in FORMAL_IDENTITY_BLOCKERS
+                and row.get("formal_board_candidate") in FORMAL_REQUIRED_BOARDS]
+    by_board = {board: sum(row.get("formal_board_candidate") == board for row in blockers)
+                for board in sorted(FORMAL_REQUIRED_BOARDS)}
+    return {
+        "status": "BLOCKED" if blockers else "PASS",
+        "blocking_key_count": len(blockers),
+        "blocking_keys_by_board": by_board,
+        "non_core_or_optional_keys_do_not_block": True,
+    }
+
+
+def validate_forward_target_date(target_trade_date: str, first_complete_observation_at: str | datetime) -> dict[str, Any]:
+    """Never let a forward candidate date precede the first complete observed source bundle."""
+    observation_date = parse_timestamp(first_complete_observation_at).date()
+    target = date.fromisoformat(target_trade_date)
+    return {
+        "status": "PASS" if target >= observation_date else "BLOCKED",
+        "target_trade_date": target.isoformat(),
+        "first_complete_observation_date": observation_date.isoformat(),
+        "reason": None if target >= observation_date else "TARGET_PRECEDES_FIRST_COMPLETE_SOURCE_OBSERVATION",
+    }
 
 
 def select_available_revisions(revisions: Sequence[Mapping[str, Any]], cutoff: str | datetime) -> list[Mapping[str, Any]]:
@@ -142,6 +206,7 @@ def snapshot_payload(
     *, target_trade_date: str | date, cutoff: str | datetime, sector_type_registry_digest: str,
     source_revision_ids: Iterable[str], source_digest: str, source_file_digests: Mapping[str, str],
     rows: Sequence[Mapping[str, Any]], membership_basis: str, membership_quality: str,
+    parent_snapshot_id: str | None = None,
 ) -> dict[str, Any]:
     if membership_basis not in MEMBERSHIP_BASES:
         raise ValueError(f"unsupported membership basis: {membership_basis}")
@@ -150,7 +215,8 @@ def snapshot_payload(
         stable_rows.append({key: row.get(key) for key in (
             "sector_id", "sector_code", "sector_name", "sector_type", "security_id", "source_security_key",
             "source_sector_type", "membership_basis", "membership_quality", "pit_observed",
-            "historical_backtest_safe", "identity_status", "child_sector_ids"
+            "historical_backtest_safe", "identity_status", "child_sector_ids",
+            "source_snapshot_id", "parent_snapshot_id", "parent_source_revision_id",
         ) if key in row})
     stable_rows.sort(key=lambda row: (
         str(row.get("sector_type", "")), str(row.get("sector_id", "")),
@@ -166,6 +232,7 @@ def snapshot_payload(
         "membership_rows": stable_rows,
         "membership_basis": membership_basis,
         "membership_quality": membership_quality,
+        "parent_snapshot_id": parent_snapshot_id,
     }
 
 
@@ -176,15 +243,16 @@ def snapshot_digest(**kwargs: Any) -> str:
 def classify_replay_rows(rows: Sequence[Mapping[str, Any]], target_trade_date: str) -> list[dict[str, Any]]:
     replayed = []
     for row in rows:
+        is_parent = row.get("membership_basis") == "DERIVED_PARENT_MEMBERSHIP"
         replayed.append({
             **row,
             "target_trade_date": target_trade_date,
             "membership_asof_date": None,
-            "membership_basis": "CURRENT_MEMBERSHIP_REPLAY",
-            "membership_quality": "CURRENT_REPLAY_DIAGNOSTIC",
+            "membership_basis": "DERIVED_PARENT_MEMBERSHIP" if is_parent else "CURRENT_MEMBERSHIP_REPLAY",
+            "membership_quality": "DERIVED_PARENT_DIAGNOSTIC" if is_parent else "CURRENT_REPLAY_DIAGNOSTIC",
             "pit_observed": False,
             "historical_backtest_safe": False,
-            "membership_asof_reason": "CURRENT_SOURCE_EFFECTIVE_DATE_UNVERIFIED",
+            "membership_asof_reason": "DERIVED_PARENT_REPLAY_RETAINS_PARENT_PROVENANCE" if is_parent else "CURRENT_SOURCE_EFFECTIVE_DATE_UNVERIFIED",
         })
     return replayed
 

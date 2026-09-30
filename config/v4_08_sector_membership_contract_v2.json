@@ -1,0 +1,36 @@
+{
+  "contract_id": "V4_08_SECTOR_MEMBERSHIP_V2",
+  "version": "2.0.0",
+  "status": "R2_ENGINEERING_CANDIDATE_PENDING_EXTERNAL_PIT_ACCEPTANCE",
+  "supersedes_engineering_contract": "V4_08_SECTOR_MEMBERSHIP_V1",
+  "snapshot_identity": {
+    "one_basis_per_snapshot": true,
+    "raw_basis": "CURRENT_TDX_MEMBERSHIP",
+    "parent_basis": "DERIVED_PARENT_MEMBERSHIP",
+    "parent_snapshot_of": "raw membership snapshot and source revision",
+    "digest_binds_parent_snapshot_id": true
+  },
+  "effective_date": {
+    "mode": "DAILY_EXACT_SNAPSHOT",
+    "rule": "membership_asof_date == target_trade_date",
+    "carry_forward": false
+  },
+  "historical_backtest_safe": {
+    "meaning": "A stricter capability flag; PIT_OBSERVED alone does not imply history safety.",
+    "necessary_conditions": ["PIT_OBSERVED basis", "PIT_OBSERVED_ACCEPTED fact and snapshot quality", "PIT_OBSERVED_ACCEPTED source revision quality", "accepted temporal evidence", "mapped identity", "valid non-forking revision chain", "exact target date"]
+  },
+  "source_revision_identity": {
+    "algorithm": "SHA256 canonical JSON",
+    "identity_fields": ["source_bytes_digest", "temporal_evidence_digest"],
+    "same_bytes_new_temporal_evidence": "new source_revision_id; append-only; supersedes prior revision",
+    "required_metadata": ["source_bytes_digest", "temporal_evidence_digest", "temporal_evidence", "provider_available_at_basis", "membership_asof_basis", "revision_quality"]
+  },
+  "formal_sql_view_gates": ["allowed INDUSTRY/THEME type", "fact and snapshot basis PIT_OBSERVED", "fact/snapshot/source revision accepted quality", "pit_observed", "historical_backtest_safe", "mapped identity and non-null security_id", "exact membership_asof_date", "provider and system availability no later than cutoff"],
+  "derived_parent": {"formal_consumer_allowed": false, "independent_acceptance_required": true, "replay_preserves_parent_basis": true},
+  "source_availability": {
+    "source_specific_amendment_candidate": "config/v4_08_tdx_source_availability_policy_candidate_v1.json",
+    "filesystem_mtime_is_provider_availability": false,
+    "external_review_required": true
+  },
+  "scope": {"formal_consumer_enabled": false, "full_market_production_enabled": false}
+}

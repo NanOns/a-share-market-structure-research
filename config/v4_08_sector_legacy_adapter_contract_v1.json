@@ -1,0 +1,20 @@
+{
+  "contract_id": "V4_08_SECTOR_LEGACY_ADAPTER_B2_V1",
+  "version": "1.0.0",
+  "owner_stage": "V4-08",
+  "status": "FROZEN_ENGINEERING_CANDIDATE",
+  "authority": {"governing_contract": "DA-MSR-V4.2.2-CODEX-REV2", "sections": ["17", "21A.4", "78"]},
+  "purpose": "Expose the exact pure-Core legacy sector qualification as a B2 adapter after its AST and golden samples are independently bound.",
+  "input_boundary": {
+    "allowed": ["B0 native facts", "accepted Core facts", "accepted Base Seed facts", "accepted PIT membership"],
+    "forbidden": ["same-day final stock PREWATCH", "Focus", "Radar", "V4-06 turnover", "future outcomes", "STYLE", "UNKNOWN"],
+    "rotation_effect": "explanation and D ordering only; never changes B0 or raw B2 qualification"
+  },
+  "legacy_extraction": {
+    "status": "NOT_IMPLEMENTED_PENDING_EXACT_SOURCE_AST_AND_GOLDEN_SAMPLES",
+    "rule": "Do not infer WARM/CONFIRMED qualification from legacy display labels or current output states.",
+    "amount_a": "Any Amount A-dependent path remains separately tracked and diagnostic until its own audit acceptance."
+  },
+  "quality": "Three-valued; preserve UNKNOWN. Seed-dependent values remain UNKNOWN while accepted Prior-RPS repair is open.",
+  "formal_consumer_enabled": false
+}

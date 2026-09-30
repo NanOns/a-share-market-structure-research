@@ -1,0 +1,26 @@
+{
+  "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_V1",
+  "version": "1.0.0",
+  "owner_stage": "V4-08",
+  "status": "FROZEN_ENGINEERING_CANDIDATE",
+  "claims": "REV2 candidate thresholds only; no optimization, expected-return, probability, or production-validity claim.",
+  "parameters": [
+    {"parameter_id":"V4_08_SECTOR_MIN_MEMBERS","value":5,"unit":"members","comparison":"GTE","authority":"REV2 §15","status":"FROZEN_CANDIDATE"},
+    {"parameter_id":"V4_08_SECTOR_MIN_QUOTE_COVERAGE","value":0.8,"unit":"ratio","comparison":"GTE","authority":"REV2 §15","status":"FROZEN_CANDIDATE"},
+    {"parameter_id":"V4_08_SEED_WILSON_Z","value":1.96,"unit":"dimensionless","comparison":"Wilson lower-bound constant","authority":"REV2 §16","status":"FROZEN_CANDIDATE; not a probability claim"},
+    {"parameter_id":"V4_08_PREWATCH_DQ5_MIN","value":3,"unit":"RPS percentile points","comparison":"GTE","authority":"REV2 §17","status":"FROZEN_CANDIDATE"},
+    {"parameter_id":"V4_08_PREWATCH_SEED_WIDTH_MIN","value":0.05,"unit":"ratio","comparison":"GTE","authority":"REV2 §17","status":"FROZEN_CANDIDATE"},
+    {"parameter_id":"V4_08_EMERGENCE_HIGH_DQ5_MIN","value":10,"unit":"RPS percentile points","comparison":"GTE","authority":"REV2 §18","status":"FROZEN_CANDIDATE"},
+    {"parameter_id":"V4_08_EMERGENCE_HIGH_BREADTH_DELTA3_MIN","value":0.05,"unit":"ratio","comparison":"GTE","authority":"REV2 §18","status":"FROZEN_CANDIDATE"},
+    {"parameter_id":"V4_08_EMERGENCE_HIGH_SEED_WIDTH_MIN","value":0.1,"unit":"ratio","comparison":"GTE","authority":"REV2 §18","status":"FROZEN_CANDIDATE"},
+    {"parameter_id":"V4_08_ROTATION_PULSE_DQ5_MIN","value":10,"unit":"RPS percentile points","comparison":"GTE","authority":"REV2 §21A.4","status":"FROZEN_CANDIDATE"},
+    {"parameter_id":"V4_08_ROTATION_PULSE_BREADTH_DELTA1_MIN","value":0.05,"unit":"ratio","comparison":"GTE","authority":"REV2 §21A.4","status":"FROZEN_CANDIDATE"},
+    {"parameter_id":"V4_08_ROTATION_DIFFUSION_TOP1_MAX","value":0.5,"unit":"ratio","comparison":"LTE","authority":"REV2 §21A.4 diffusion predicate only","status":"FROZEN_CANDIDATE"},
+    {"parameter_id":"V4_08_EARLY_SEED_RETENTION_MIN","value":null,"unit":"ratio","authority":"REV2 §72; V4-00G registration required","status":"PENDING_V4_00G; blocks affected formal qualification"},
+    {"parameter_id":"V4_08_EARLY_BREADTH_RETENTION_MIN","value":null,"unit":"ratio","authority":"REV2 §72; V4-00G registration required","status":"PENDING_V4_00G; blocks affected formal qualification"},
+    {"parameter_id":"V4_08_EARLY_BREADTH_DELTA_MIN","value":null,"unit":"ratio","authority":"REV2 §72; V4-00G registration required","status":"PENDING_V4_00G; blocks affected formal qualification"},
+    {"parameter_id":"V4_08_EARLY_TOP1_CONCENTRATION_MAX","value":null,"unit":"ratio","authority":"REV2 §72; V4-00G registration required; do not substitute 0.5","status":"PENDING_V4_00G; blocks affected formal qualification"},
+    {"parameter_id":"V4_08_MATURE_STRONG_RETENTION_MIN","value":null,"unit":"ratio","authority":"REV2 §72; V4-00G registration required","status":"PENDING_V4_00G; blocks mature qualification"}
+  ],
+  "formal_consumer_enabled": false
+}

@@ -4,6 +4,7 @@ import re
 from pathlib import Path
 
 from tdx.security_master import classify_security, current_a_stock_ids, read_industry_assignments
+from common.market_reference import market_session_reference_file_parts
 
 
 ASSET_TYPES = ("A_STOCK", "INDEX", "ETF_LOF", "BOND_CONVERTIBLE", "REPO", "OTHER")
@@ -56,7 +57,7 @@ def research_a_stock_ids(metadata_root: Path) -> set[str]:
 
 def sessions_from_index_chains(package_root: Path, count: int) -> list[int]:
     sessions: set[int] = set()
-    for market, code in (("sh", "000001"), ("sz", "399001")):
+    for market, code in market_session_reference_file_parts():
         path = package_root / market / "lday" / f"{market}{code}.day"
         if not path.is_file() or path.stat().st_size % 32:
             raise ValueError(f"INDEX_CHAIN_MISSING_OR_MALFORMED:{path.name}")

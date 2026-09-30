@@ -11,7 +11,10 @@ sys.path.insert(0,str(ROOT/'scripts'))
 from build_v4_08_r2_membership_evidence import atomic_bytes,atomic_json,sha
 
 def main():
-    contract=json.loads((ROOT/'config/v4_08_r3_lifecycle_source_contract_v1.json').read_text(encoding='utf-8'))
+    manifest=json.loads((ROOT/'reports/v4_08/audit_inputs/V4_08_R3_LIFECYCLE_CAPTURE_MANIFEST.json').read_text(encoding='utf-8'))
+    if manifest.get('runtime_authorized') is not False or manifest.get('scope')!='R3_IDENTITY_AUDIT_ONLY':
+        raise ValueError('LIFECYCLE_CAPTURE_MANIFEST_NOT_AUDIT_ONLY')
+    contract=manifest['source_contract']
     capture=json.loads((ROOT/'reports/v4_08/V4_08_R3_OFFICIAL_LIFECYCLE_SOURCE_CAPTURE.json').read_text(encoding='utf-8'))
     first=next(x for x in capture['sources'] if x['id']=='SZSE_stock_list')
     raw=(ROOT/first['path']).read_bytes();metadata=json.loads(raw)[0]['metadata']
@@ -45,7 +48,7 @@ def main():
     records=[row for _,rows in results for row in rows]
     codes=[row['agdm'] for row in records]
     if len(codes)!=total or len(set(codes))!=total:raise ValueError('official catalogue is incomplete or duplicate across pages')
-    report={'contract_id':'V4_08_R3_TARGET_ACTIVE_EXCHANGE_CATALOGUE_V1','status':'PASS_COMPLETE_TARGET_DAY_SZSE_CATALOGUE','target_trade_date':target,'complete_observed_at':max(x['observed_at'] for x,_ in results),'official_record_count':total,'page_count':pages,'network_request_count':pages-1,'maximum_allowed_pages':contract['maximum_catalogue_pages'],'pages':[x for x,_ in results],'records':records,'source_contract_sha256':sha((ROOT/'config/v4_08_r3_lifecycle_source_contract_v1.json').read_bytes())}
+    report={'contract_id':'V4_08_R3_TARGET_ACTIVE_EXCHANGE_CATALOGUE_V1','status':'PASS_COMPLETE_TARGET_DAY_SZSE_CATALOGUE','target_trade_date':target,'complete_observed_at':max(x['observed_at'] for x,_ in results),'official_record_count':total,'page_count':pages,'network_request_count':pages-1,'maximum_allowed_pages':contract['maximum_catalogue_pages'],'pages':[x for x,_ in results],'records':records,'source_contract_sha256':manifest['source_contract_sha256'],'audit_manifest_sha256':sha((ROOT/'reports/v4_08/audit_inputs/V4_08_R3_LIFECYCLE_CAPTURE_MANIFEST.json').read_bytes())}
     atomic_json(ROOT/'reports/v4_08/V4_08_R3_TARGET_ACTIVE_EXCHANGE_CATALOGUE.json',report)
     print(json.dumps({'status':report['status'],'record_count':total,'page_count':pages,'complete_observed_at':report['complete_observed_at']}))
 

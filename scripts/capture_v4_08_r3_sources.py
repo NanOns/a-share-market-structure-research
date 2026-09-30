@@ -20,7 +20,17 @@ def now():return datetime.now(timezone.utc).isoformat(timespec='microseconds').r
 def normalized(text):return ''.join(unicodedata.normalize('NFKC',text).split())
 
 def capture():
-    config=json.loads((ROOT/'config/v4_08_r3_lifecycle_source_contract_v1.json').read_text(encoding='utf-8'))
+    manifest_path=ROOT/'reports/v4_08/audit_inputs/V4_08_R3_LIFECYCLE_CAPTURE_MANIFEST.json'
+    manifest=json.loads(manifest_path.read_text(encoding='utf-8'))
+    if manifest.get('runtime_authorized') is not False or manifest.get('scope')!='R3_IDENTITY_AUDIT_ONLY':
+        raise ValueError('LIFECYCLE_CAPTURE_MANIFEST_NOT_AUDIT_ONLY')
+    frozen_path=manifest.get('source_contract_path','')
+    if not frozen_path.startswith('reports/v4_08/audit_inputs/'):
+        raise ValueError('LIFECYCLE_SOURCE_CONTRACT_NOT_AUDIT_ONLY')
+    frozen_bytes=(ROOT/frozen_path).read_bytes()
+    if sha(frozen_bytes)!=manifest.get('source_contract_sha256') or json.loads(frozen_bytes)!=manifest.get('source_contract'):
+        raise ValueError('LIFECYCLE_SOURCE_CONTRACT_BYTES_MISMATCH')
+    config=manifest['source_contract']
     capture_id=datetime.now(timezone.utc).strftime('capture_%Y%m%dT%H%M%SZ')
     directory=ROOT/config['raw_evidence_root']/capture_id
     directory.mkdir(parents=True,exist_ok=False)

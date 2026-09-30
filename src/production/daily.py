@@ -6,6 +6,7 @@ import pandas as pd
 import pyarrow.parquet as pq
 from tdx.gbbq_reader import file_sha256
 from common.identity import source_identity,computation_identity,render_identity
+from common.market_reference import market_session_reference_file_parts,market_session_reference_identifiers
 from common.input_snapshot import (archive_source_revision,build_input_snapshot_manifest,
                                    next_source_revision_id,validate_input_snapshot_manifest,
                                    write_immutable_manifest)
@@ -56,7 +57,7 @@ def _latest_day_records(tdx):
 
 def _index_date_evidence(tdx):
     result={}
-    for market,code in (('sh','000001'),('sz','399001')):
+    for market,code in market_session_reference_file_parts():
         p=tdx/f'vipdoc/{market}/lday/{market}{code}.day'
         try:
             with p.open('rb') as fh:fh.seek(-32,2);result[f'{market.upper()}.{code}']=struct.unpack('<I',fh.read(4))[0]
@@ -67,7 +68,7 @@ def _local_index_sessions(tdx, after, through):
     """Collect locally observed index dates; index prices are never consumed."""
     calendars=[]
     if tdx is None:return []
-    for market,code in (('sh','000001'),('sz','399001')):
+    for market,code in market_session_reference_file_parts():
         p=Path(tdx)/f'vipdoc/{market}/lday/{market}{code}.day'
         try:
             raw=p.read_bytes();values=[struct.unpack_from('<I',raw,n)[0] for n in range(0,len(raw)-31,32)]
@@ -90,7 +91,7 @@ def _calendar_snapshot(root, cutoff, tdx=None):
         frame.loc[closed_target,'is_market_open']=True
         frame.loc[closed_target,'source_basis']='LOCAL_PRIMARY_INDEX_DATE_CONFIRMATION'
         frame.loc[closed_target,'index_confirmation_count']=2
-        frame.loc[closed_target,'confirming_indices']='SH.000001,SZ.399001'
+        frame.loc[closed_target,'confirming_indices']=','.join(market_session_reference_identifiers())
     if int(cutoff) not in existing and int(cutoff) not in additions:additions.append(int(cutoff))
     rows=[{'calendar_date':value,'is_market_open':True,'source_basis':'LOCAL_AUDITED_TRADING_DAY_EVIDENCE','confirmation_count':0,'index_confirmation_count':0,'confirming_indices':'','a_stock_confirmation_count':0,'eligible_a_stock_count':0,'a_stock_confirmation_ratio':0.0} for value in sorted(set(additions)-existing)]
     if rows:frame=pd.concat([frame,pd.DataFrame(rows)],ignore_index=True)

@@ -16,15 +16,34 @@ from sector.membership_baseline import canonical_json_bytes,build_source_revisio
 from workbench_analysis.security_entity_identity import stable_security_id
 from bs4 import BeautifulSoup
 
-TARGET='2026-09-30'
-KEYS=['SH.601206','SH.603302','SH.603361','SH.688688','SZ.001235','SZ.001246','SZ.300728','SZ.301569','SZ.301660','SZ.301716','SZ.301718']
 def read(path):return json.loads((ROOT/path).read_text(encoding='utf-8'))
+def audit_contract():
+    manifest=read('reports/v4_08/audit_inputs/V4_08_R3_LIFECYCLE_CAPTURE_MANIFEST.json')
+    contract=manifest['source_contract']
+    scope=manifest['scope_binding']
+    if manifest.get('runtime_authorized') is not False or manifest.get('scope')!='R3_IDENTITY_AUDIT_ONLY' or manifest.get('target_specific') is not True:
+        raise ValueError('R3 capture contract is not explicitly audit-only')
+    frozen_path=manifest.get('source_contract_path','')
+    if not frozen_path.startswith('reports/v4_08/audit_inputs/'):
+        raise ValueError('R3 original source contract must remain in the audit-only evidence area')
+    frozen_bytes=(ROOT/frozen_path).read_bytes()
+    if sha(frozen_bytes)!=manifest.get('source_contract_sha256') or json.loads(frozen_bytes)!=contract:
+        raise ValueError('R3 original source contract bytes do not match the audit-only manifest')
+    path=scope['classification_path']
+    if sha((ROOT/path).read_bytes())!=scope['classification_sha256']:
+        raise ValueError('R2 frozen audit scope digest mismatch')
+    detail=read(path)['classification_detail']
+    keys=sorted(x['source_security_key'] for x in detail if x['classification']=='AMBIGUOUS_IDENTITY' and x.get('formal_board_candidate') in ['SH_MAIN','SZ_MAIN','CHINEXT','STAR'])
+    if len(keys)!=scope['expected_key_count'] or set(keys)!={x['key'] for x in contract['sources'] if x.get('key')}:
+        raise ValueError('R2 unresolved identity scope does not match audit request catalogue')
+    return scope['target_trade_date'],keys,contract
 def binding(path):
     data=(ROOT/path).read_bytes();return {'path':path,'sha256':sha(data),'byte_count':len(data)}
 def now():return datetime.now(timezone.utc).isoformat(timespec='microseconds').replace('+00:00','Z')
 def write(name,value):atomic_json(ROOT/'reports/v4_08'/name,value)
 
 def main():
+    TARGET,KEYS,contract=audit_contract()
     capture=read('reports/v4_08/V4_08_R3_OFFICIAL_LIFECYCLE_SOURCE_CAPTURE.json')
     by_id={x['id']:x for x in capture['sources']}
     for source in capture['sources']:
@@ -67,7 +86,7 @@ def main():
             item.update(classification='NOT_LISTED_AT_TARGET',listing_date=None,board=None,evidence=[binding(x['path']) for x in sh_sources] if key.startswith('SH.') else [binding(sz[key]['source']['path'])],active_catalogue_absence_verified=True)
             related=[x for x in capture['sources'] if x.get('key')==key and ('suspension' in x['id'] or 'issuance' in x['id'])]
             item['dated_lifecycle_evidence']=[{**binding(x['path']),'source_published_date':x['published_date'],'capture_status':x['status']} for x in related]
-            item['reason']='ISSUANCE_PRE_LIST_AND_ABSENT_FROM_TARGET_ACTIVE_CATALOGUE' if key in ['SZ.301569','SZ.301660','SZ.301718'] else 'HISTORICAL_IPO_OBJECT_ABSENT_FROM_TARGET_ACTIVE_CATALOGUE; no claim of legal termination'
+            item['reason']='NOT_PRESENT_IN_TARGET_ACTIVE_EXCHANGE_CATALOGUE; available dated issuance or lifecycle evidence is attached without inferring legal termination'
         classifications.append(item)
     computed=now()
     identity_path='data/v4/artifact_store/v4_01/security_entity_map_GO_FORWARD_20260930_R1.json'

@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 import pytest
 from sector.membership_admission_r3 import basis_chain_valid,basis_quality_compatible,active_identity_reason,formal_membership_eligible_r3
-from sector.machine_ast_r3 import validate_ast,evaluate_ast,ast_digest
+from sector.machine_ast_r3 import validate_ast,evaluate_ast,evaluate_ast_explain,ast_digest,NOT_APPLICABLE
 from sector.v4_08_rotation_vectors import evaluate_rotation_vector
 ROOT=Path(__file__).resolve().parents[2]
 
@@ -59,7 +59,8 @@ def test_ast_unknown_quality_and_unfrozen_parameters_remain_unknown():
     assert evaluate_ast('early_retained',rules,facts,params) is None
     assert len([k for k,v in params.items() if v is None])==5
     facts['strong_prev']['value']=0
-    assert evaluate_ast('mature_retained',rules,facts,params) is False
+    assert evaluate_ast('mature_retained',rules,facts,params)==NOT_APPLICABLE
+    assert evaluate_ast_explain('mature_retained',rules,facts,params).reason_code=='STRONG_PREV_EMPTY'
 
 def test_boolean_AST_preserves_valid_OR_and_unknown_AND():
     leaf={'field_id':'x','operator':'GTE','constant':1,'producer':'Core','time_role':'TARGET_CUTOFF','quality_requirement':['ACCEPTED'],'unknown_behavior':'UNKNOWN'}
@@ -88,7 +89,10 @@ def test_canonical_AST_state_qualifications_with_frozen_synthetic_predicate_prem
     facts={k:{'value':v,'producer':fields[k]['producer'],'time_role':fields[k]['time_role'],'quality':'ACCEPTED'} for k,v in values.items()}
     params={x['parameter_id']:x['value'] for x in read('config/v4_08_algorithm_parameter_set_v1.json')['parameters']}
     mapping={'rotation_in_possible':'ROTATION_IN','rotation_accepted_possible':'ROTATION_ACCEPTED','rotation_expanding_allowed':'ROTATION_EXPANDING','rotation_reaccelerating_allowed':'ROTATION_REACCELERATING'}
-    for output,rule in mapping.items():assert evaluate_ast(rule,rules,facts,params)==vector['expected'][output]
+    for output,rule in mapping.items():
+        actual=evaluate_ast(rule,rules,facts,params)
+        if vector['expected'][output] is False:assert actual is not True
+        else:assert actual is vector['expected'][output]
 
 @pytest.mark.parametrize('rule,values,expected',[
     ('ROTATION_FAILED',{'membership_ready':True,'sector_member_count':8,'sector_quote_coverage':0.9,'pulse_active':True,'pulse_age_sessions':2,'basket_cumulative_return':-0.01,'breadth_delta1':-0.06},True),
@@ -104,3 +108,63 @@ def test_terminal_and_fallback_machine_predicates(rule,values,expected):
     facts={k:{'value':v,'producer':fields[k]['producer'],'time_role':fields[k]['time_role'],'quality':'ACCEPTED'} for k,v in values.items()}
     params={x['parameter_id']:x['value'] for x in read('config/v4_08_algorithm_parameter_set_v1.json')['parameters']}
     assert evaluate_ast(rule,doc['rules'],facts,params)==expected
+
+@pytest.mark.parametrize('left,right,expected,reason',[
+    (True,NOT_APPLICABLE,True,None),
+    (NOT_APPLICABLE,True,True,None),
+    (False,NOT_APPLICABLE,False,'NOT_APPLICABLE_BRANCH_SKIPPED'),
+    (NOT_APPLICABLE,False,False,'NOT_APPLICABLE_BRANCH_SKIPPED'),
+    (NOT_APPLICABLE,NOT_APPLICABLE,None,'NO_USABLE_RETENTION_BRANCH'),
+    (None,NOT_APPLICABLE,None,'REQUIRED_VALUE_UNKNOWN'),
+    (False,None,None,'REQUIRED_VALUE_UNKNOWN'),
+])
+def test_four_state_OR_retention_branch_truth_table(left,right,expected,reason):
+    leaf=lambda name:{'operator':'EQ','field_id':name,'constant':True,'producer':'Core','time_role':'TARGET_CUTOFF','quality_requirement':['ACCEPTED'],'unknown_behavior':'UNKNOWN'}
+    rules={'either':{'operator':'OR','children':[leaf('left'),leaf('right')]}}
+    facts={}
+    for name,value in [('left',left),('right',right)]:
+        facts[name]={'value':value,'quality':NOT_APPLICABLE if value==NOT_APPLICABLE else 'ACCEPTED','producer':'Core','time_role':'TARGET_CUTOFF','reason_code':'UNKNOWN_INPUT' if value is None else None}
+    evaluation=evaluate_ast_explain('either',rules,facts,{})
+    assert evaluation.state is expected
+    assert evaluation.reason_code==reason
+
+@pytest.mark.parametrize('left,right,expected',[
+    (False,NOT_APPLICABLE,False),(True,NOT_APPLICABLE,True),
+    (NOT_APPLICABLE,True,True),(NOT_APPLICABLE,NOT_APPLICABLE,NOT_APPLICABLE),
+    (None,NOT_APPLICABLE,None),(False,None,False),
+])
+def test_four_state_AND_branch_truth_table(left,right,expected):
+    leaf=lambda name:{'operator':'EQ','field_id':name,'constant':True,'producer':'Core','time_role':'TARGET_CUTOFF','quality_requirement':['ACCEPTED'],'unknown_behavior':'UNKNOWN'}
+    rules={'both':{'operator':'AND','children':[leaf('left'),leaf('right')]}}
+    facts={name:{'value':value,'quality':NOT_APPLICABLE if value==NOT_APPLICABLE else 'ACCEPTED','producer':'Core','time_role':'TARGET_CUTOFF'} for name,value in [('left',left),('right',right)]}
+    assert evaluate_ast('both',rules,facts,{}) is expected
+
+@pytest.mark.parametrize('left,right,expected',[
+    (True,NOT_APPLICABLE,True),(NOT_APPLICABLE,True,True),
+    (False,NOT_APPLICABLE,False),(NOT_APPLICABLE,False,False),
+    (NOT_APPLICABLE,NOT_APPLICABLE,None),
+])
+def test_canonical_early_retention_OR_has_explicit_na_behavior(left,right,expected):
+    doc=read('config/v4_08_rotation_core_contract_v2.json');fields={x['field_id']:x for x in read(doc['field_registry_path'])['fields']}
+    canonical_or=doc['rules']['early_retained']['children'][1]
+    assert canonical_or['operator']=='OR'
+    rules={'canonical_early_retention_or':canonical_or}
+    facts={}
+    for name,value in [('base_seed_retention',left),('breadth_retention',right)]:
+        facts[name]={'value':value,'quality':NOT_APPLICABLE if value==NOT_APPLICABLE else 'ACCEPTED','producer':fields[name]['producer'],'time_role':fields[name]['time_role']}
+    frozen={x['parameter_id']:x['value'] for x in read('config/v4_08_algorithm_parameter_set_v1.json')['parameters']}
+    assert sum(value is None for key,value in frozen.items() if key.startswith('V4_08_EARLY_'))==4
+    # Test-only boundary inputs let the canonical GTE nodes run through the real
+    # evaluator. These values are not persisted to the production parameter set.
+    params={**frozen,'V4_08_EARLY_SEED_RETENTION_MIN':0.5,'V4_08_EARLY_BREADTH_RETENTION_MIN':0.5}
+    assert evaluate_ast('canonical_early_retention_or',rules,facts,params) is expected
+
+def test_strong_prev_zero_is_na_for_mature_and_cannot_qualify_expanding_or_reacceleration():
+    doc=read('config/v4_08_rotation_core_contract_v2.json');fields={x['field_id']:x for x in read(doc['field_registry_path'])['fields']}
+    facts={k:{'value':v,'quality':'ACCEPTED','producer':fields[k]['producer'],'time_role':fields[k]['time_role']} for k,v in {'strong_prev':0,'membership_ready':True,'sector_member_count':8,'sector_quote_coverage':0.9,'prior_rotation_state':'ROTATION_ACCEPTED','pulse_active':True,'pulse_age_sessions':3,'dq5':12,'breadth_delta1':0.1,'yesterday_dq5':-1,'early_retained':True,'mature_retained':True,'net_entered_count':1,'top1_concentration':0.2}.items()}
+    mature=evaluate_ast_explain('mature_retained',doc['rules'],facts,{})
+    assert mature.state==NOT_APPLICABLE and mature.reason_code=='STRONG_PREV_EMPTY'
+    assert mature.reason_code!='MATURE_RETENTION_FAILED'
+    # The output guards preserve N/A even if every other promotion premise is true.
+    for rule in ['ROTATION_EXPANDING','ROTATION_REACCELERATING']:
+        assert evaluate_ast(rule,doc['rules'],facts,{}) is NOT_APPLICABLE

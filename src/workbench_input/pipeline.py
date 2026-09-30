@@ -10,6 +10,7 @@ import json, os, shutil, stat, subprocess, time, uuid, zipfile
 from tdx.block_reader import build_industry_memberships, read_industry_names, read_infoharbor_memberships
 from tdx.security_master import read_industry_assignments, read_tnf, classify_security, current_a_stock_ids
 from tdx.day_reader import validate_day_file
+from common.market_reference import market_index_identifiers
 
 OFFICIAL_HOST = "data.tdx.com.cn"
 OFFICIAL_PATH = "/vipdoc/hsjday.zip"
@@ -231,7 +232,7 @@ def validate_extracted_day_data(root: Path, target_trade_date: int | None=None, 
         if current_security_ids is not None and x["security_id"] not in current_security_ids: continue
         if kind=="A_STOCK" and not x["valid"]: normal.append(x)
     counts={m:latest_counts.get((m,target_trade_date),0) for m in ("sh","sz","bj")}
-    major={"SH.000001","SZ.399001","SZ.399006"}
+    major=set(market_index_identifiers())
     present={x["security_id"] for x in rows if x.get("last_date")==target_trade_date}
     result={"file_count":len(rows),"record_count":records,"target_trade_date":target_trade_date,"target_counts":counts,"major_indices_present":major<=present,"normal_a_share_invalid_count":len(normal),"normal_a_share_invalid_samples":[x["security_id"] for x in normal[:30]]}
     result["status"]="PASS" if all(counts.values()) and result["major_indices_present"] and not normal else "FAIL"

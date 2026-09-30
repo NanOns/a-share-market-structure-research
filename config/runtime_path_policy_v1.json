@@ -1,0 +1,45 @@
+{
+  "policy_id": "NO_SYMBOL_SPECIFIC_RUNTIME_LOGIC",
+  "version": "1.0.0",
+  "status": "HARD_GATE",
+  "scan_roots": ["src", "scripts", "tests", "config", "run_daily.py", "run_workbench_service.py"],
+  "production_runtime_globs": [
+    "run_daily.py",
+    "run_workbench_service.py",
+    "src/production/**/*.py",
+    "src/workbench_input/**/*.py",
+    "src/workbench_service/**/*.py",
+    "src/workbench_analysis/**/*.py",
+    "src/sector/**/*.py",
+    "src/v4/**/*.py",
+    "src/workbench_db/**/*.py",
+    "src/workbench_db/**/*.sql",
+    "src/**/*.py"
+  ],
+  "audit_only_globs": [
+    "src/phase*_runner.py",
+    "src/phase0_1_status.py",
+    "src/phase1_qa.py",
+    "src/upgrade_m*.py",
+    "src/tdx/tdx_audit.py",
+    "scripts/**/*.py"
+  ],
+  "test_only_globs": ["tests/**/*.py", "tests/fixtures/**"],
+  "evidence_only_globs": ["docs/evidence/*", "reports/v4_08/audit_inputs/*"],
+  "runtime_configuration_paths": [
+    "config/runtime_path_policy_v1.json",
+    "config/v4_market_reference_instruments_v1.json",
+    "config/v4_08_tdx_source_availability_policy_v2.json",
+    "config/v4_08_sector_type_registry_v1.json",
+    "config/v4_08_sector_field_registry_v2.json",
+    "config/v4_08_sector_prewatch_contract_v2.json",
+    "config/v4_08_rotation_core_contract_v2.json",
+    "config/v4_08_algorithm_parameter_set_v1.json"
+  ],
+  "contract_configuration_globs": ["config/**/*.json"],
+  "reference_data_paths": ["config/v4_market_reference_instruments_v1.json"],
+  "audit_evidence_paths": ["reports/v4_08/audit_inputs/**", "data/v4/source_evidence/**"],
+  "allowed_non_stock_roles": ["MARKET_INDEX"],
+  "allowed_reference_meaning": "Typed market benchmark reference-data rows may carry instrument identifiers. Application code must obtain them from this registry, and may not branch on a named equity.",
+  "unclassified_path_behavior": "FAIL_CLOSED"
+}

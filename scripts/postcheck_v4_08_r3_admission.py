@@ -40,7 +40,18 @@ def main():
         doc=read(entry['path'])
         assert doc['isPagination']=='false' and len(doc['result'])<doc['pageHelp']['pageSize']
         active.update('SH.'+x['A_STOCK_CODE'] for x in doc['result'])
-    keys={'SH.601206','SH.603302','SH.603361','SH.688688','SZ.001235','SZ.001246','SZ.300728','SZ.301569','SZ.301660','SZ.301716','SZ.301718'}
+    manifest=read('reports/v4_08/audit_inputs/V4_08_R3_LIFECYCLE_CAPTURE_MANIFEST.json')
+    scope=manifest['scope_binding']
+    assert manifest['runtime_authorized'] is False and manifest['scope']=='R3_IDENTITY_AUDIT_ONLY'
+    frozen_path=manifest['source_contract_path']
+    assert frozen_path.startswith('reports/v4_08/audit_inputs/')
+    frozen_contract=(ROOT/frozen_path).read_bytes()
+    assert hashlib.sha256(frozen_contract).hexdigest()==manifest['source_contract_sha256']
+    assert json.loads(frozen_contract)==manifest['source_contract']
+    assert digest(scope['classification_path'])==scope['classification_sha256']
+    r2=read(scope['classification_path'])
+    keys={x['source_security_key'] for x in r2['classification_detail'] if x['classification']=='AMBIGUOUS_IDENTITY' and x.get('formal_board_candidate') in ['SH_MAIN','SZ_MAIN','CHINEXT','STAR']}
+    assert len(keys)==scope['expected_key_count']
     dispositions={x['source_security_key']:x for x in identity['dispositions']}
     assert set(dispositions)==keys
     for key,item in dispositions.items():

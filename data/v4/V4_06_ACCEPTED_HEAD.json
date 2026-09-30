@@ -1,0 +1,98 @@
+{
+  "accepted_at_date": "2026-09-30",
+  "accepted_input": {
+    "core_logical_digest": "d195518796acc64015174eac8f9bb8721a27095311ece00baedf8c12b0633e74",
+    "identity_count": 5222,
+    "publication_id": "PUB-3c03e227-c60a-4d8c-86ae-2861507c257b",
+    "trade_date": "2026-09-28"
+  },
+  "candidate": {
+    "implementation_commit": "4c6051586a617d01f2ebbe142ea4ded05660fec7",
+    "manifest": {
+      "byte_count": 5400,
+      "path": "reports/v4_06/V4_06_R2_STAGE_CANDIDATE_MANIFEST.json",
+      "sha256": "5d9297b324c57d66228f66b5e291b4cca2b8ca4325d92759676401b1f6352b14"
+    },
+    "manifest_file_count": 22
+  },
+  "capabilities": {
+    "BAOSTOCK_LIVE_STRICT_BINDING": "BLOCKED_DEGRADED",
+    "V4_06_ENGINEERING": "EXTERNALLY_ACCEPTED"
+  },
+  "contract_id": "V4_06_ACCEPTED_HEAD_V1",
+  "evidence_bindings": {
+    "candidate_manifest": {
+      "byte_count": 5400,
+      "path": "reports/v4_06/V4_06_R2_STAGE_CANDIDATE_MANIFEST.json",
+      "sha256": "5d9297b324c57d66228f66b5e291b4cca2b8ca4325d92759676401b1f6352b14"
+    },
+    "clean_checkout": {
+      "byte_count": 1902,
+      "path": "reports/v4_06/V4_06_R2_CLEAN_CHECKOUT_RECEIPT.json",
+      "sha256": "f76109f2f4deaf0541afe12cae947443d44fc036b798b75d36cb9147cb65763e"
+    },
+    "contract_semantics": {
+      "byte_count": 3028,
+      "path": "reports/v4_06/V4_06_R2_CONTRACT_SEMANTICS_ACCEPTANCE.json",
+      "sha256": "224a346d2655d61e9b15abadd9cc34321ffcaaa74cc2122bb6b83e25d03c0a27"
+    },
+    "core_isolation": {
+      "byte_count": 8378,
+      "path": "reports/v4_06/V4_06_R2_CORE_ISOLATION_ACCEPTANCE.json",
+      "sha256": "4f0d6ec02e34aeca6e5b92aec7403e8cc0bfd3578c06ec5f67afd04cf05ded1a"
+    },
+    "determinism": {
+      "byte_count": 461,
+      "path": "reports/v4_06/V4_06_R2_DETERMINISM.json",
+      "sha256": "e0cf5a9bcabc451fce937aa9d343db6dc020ed3cb283b3cf9aa71249637bd9e7"
+    },
+    "migration": {
+      "byte_count": 5310,
+      "path": "reports/v4_06/V4_06_R2_SCHEMA_MIGRATION_RECEIPT.json",
+      "sha256": "91c6b1d2834c4554b8ab8c99545110210e4494e5586ee90f162e18395132d8cf"
+    },
+    "open_tolerance_audit": {
+      "byte_count": 4436,
+      "path": "docs/audits/V4_06_BAOSTOCK_BINDING_TOLERANCE_AUDIT_R1_20260929.md",
+      "sha256": "a43a449c06324c6b775f3e02702ed7008aed30b11adf31e71b39493bd74b1f13"
+    },
+    "runtime": {
+      "byte_count": 615,
+      "path": "reports/v4_06/V4_06_R2_RUNTIME_TEST_RECEIPT.json",
+      "sha256": "e669ec69a8970fd7664cabbf91d3e012824d2996a4efac1cef88d9887c354777"
+    },
+    "tolerance_schema": {
+      "byte_count": 1869,
+      "path": "reports/v4_06/V4_06_R2_TOLERANCE_SCHEMA_ACCEPTANCE.json",
+      "sha256": "a152f04555a5acb07a34cbb9911f389a59453ebfc14d2a27b6a65375979e0979"
+    }
+  },
+  "external_acceptance": "EXTERNALLY_ACCEPTED",
+  "external_acceptance_decision": "V4_06_EXTERNAL_ACCEPTANCE_PASS_R2_SCOPED_DEGRADED",
+  "external_decision_source": {
+    "basis": "The latest independent V4-07 audit records the unchanged V4-06 R2 scoped-degraded external decision.",
+    "document": "V4_07_R2_INDEPENDENT_EXTERNAL_ACCEPTANCE_20260930.md",
+    "sha256": "082ebdecc7efd45a643a6b887250436c0bcac796c59178de4a8d19e37191296c"
+  },
+  "open_audits": [
+    {
+      "audit_id": "V4-06-BAOSTOCK-BINDING-TOLERANCE-01",
+      "binding": {
+        "byte_count": 4436,
+        "path": "docs/audits/V4_06_BAOSTOCK_BINDING_TOLERANCE_AUDIT_R1_20260929.md",
+        "sha256": "a43a449c06324c6b775f3e02702ed7008aed30b11adf31e71b39493bd74b1f13"
+      },
+      "scope": "BaoStock live strict-binding tolerance and denominator semantics",
+      "status": "OPEN"
+    }
+  ],
+  "stage": "V4-06",
+  "stage_record": {
+    "acceptance_result": "V4_06_EXTERNAL_ACCEPTANCE_PASS_R2_SCOPED_DEGRADED / DEGRADED_PASS",
+    "evidence": "R2 candidate manifest, clean-checkout, contract semantics, Core isolation, determinism, runtime and isolated migration receipts; independent audit accepted engineering within scoped degradation.",
+    "next_stage": "V4_07_R2_ACCEPTED_HEAD_PROMOTION_R1",
+    "stage_contract": "V4_06_R2_ACCEPTED_HEAD_PROMOTION_TASK_20260930"
+  },
+  "status": "DEGRADED_PASS",
+  "version": "1.0.0"
+}

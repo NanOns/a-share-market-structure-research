@@ -1,0 +1,289 @@
+{
+  "accepted_head": {
+    "byte_count": 4106,
+    "path": "data/v4/V4_06_ACCEPTED_HEAD.json",
+    "sha256": "5aec962703aed40cab809e798edc5bfbe50c416809984db40bb679a172782f8e"
+  },
+  "candidate": {
+    "candidate_manifest_sha256": "5d9297b324c57d66228f66b5e291b4cca2b8ca4325d92759676401b1f6352b14",
+    "implementation_commit": "4c6051586a617d01f2ebbe142ea4ded05660fec7"
+  },
+  "checks": {
+    "accepted_input_matches_v4_05": true,
+    "all_candidate_manifest_files_match": true,
+    "global_v4_05_binding_preserved": true,
+    "implementation_commit_is_ancestor": true,
+    "live_binding_remains_blocked": true,
+    "manifest_identity": true,
+    "migration_013_identity_preserved": true,
+    "migration_014_applied_and_rollback_isolated": true,
+    "migration_014_identity": true,
+    "required_receipts_pass": true,
+    "tolerance_audit_remains_open": true,
+    "v4_05_head_identity_preserved": true,
+    "v4_07_not_yet_promoted": true
+  },
+  "contract_id": "V4_06_ACCEPTED_HEAD_PROMOTION_VALIDATION_R1",
+  "external_acceptance_decision": "V4_06_EXTERNAL_ACCEPTANCE_PASS_R2_SCOPED_DEGRADED",
+  "global_pointer_advanced_when_validation_issued": false,
+  "manifest": {
+    "declared_file_count": 22,
+    "entries": [
+      {
+        "actual_byte_count": 1353,
+        "actual_sha256": "6b13c9eca852b582cd23103d9391d5c195e700c4bde0881db3737eaa4206ac5f",
+        "expected_byte_count": 1353,
+        "expected_sha256": "6b13c9eca852b582cd23103d9391d5c195e700c4bde0881db3737eaa4206ac5f",
+        "matches_manifest": true,
+        "path": "config/baostock_turnover_binding_tolerance_v1.json"
+      },
+      {
+        "actual_byte_count": 836,
+        "actual_sha256": "21bfe98395b848e187da380f42061a65c9482c28afd38ff3f0b9f5e4d583ab4b",
+        "expected_byte_count": 836,
+        "expected_sha256": "21bfe98395b848e187da380f42061a65c9482c28afd38ff3f0b9f5e4d583ab4b",
+        "matches_manifest": true,
+        "path": "config/supplemental_extension_note_contract_v1.json"
+      },
+      {
+        "actual_byte_count": 2764,
+        "actual_sha256": "762de1b841e61c0085c0efadc3959af4ed3ac36d1c0101ffbb101846a305f22f",
+        "expected_byte_count": 2764,
+        "expected_sha256": "762de1b841e61c0085c0efadc3959af4ed3ac36d1c0101ffbb101846a305f22f",
+        "matches_manifest": true,
+        "path": "config/turnover_context_contract_v2.json"
+      },
+      {
+        "actual_byte_count": 1256,
+        "actual_sha256": "26b50f8fed092fd9cbdfca95611a89cabc6dae28e78a527edc5c28f30e156605",
+        "expected_byte_count": 1256,
+        "expected_sha256": "26b50f8fed092fd9cbdfca95611a89cabc6dae28e78a527edc5c28f30e156605",
+        "matches_manifest": true,
+        "path": "config/v4_06_turnover_reason_state_map_v1.json"
+      },
+      {
+        "actual_byte_count": 8456,
+        "actual_sha256": "fc929d85553a900a6479ac9f50291d50cf750ad0e6c21fc58e4e05e92189f5cb",
+        "expected_byte_count": 8456,
+        "expected_sha256": "fc929d85553a900a6479ac9f50291d50cf750ad0e6c21fc58e4e05e92189f5cb",
+        "matches_manifest": true,
+        "path": "data/v4/V4_05_ACCEPTED_HEAD.json"
+      },
+      {
+        "actual_byte_count": 1902,
+        "actual_sha256": "f76109f2f4deaf0541afe12cae947443d44fc036b798b75d36cb9147cb65763e",
+        "expected_byte_count": 1902,
+        "expected_sha256": "f76109f2f4deaf0541afe12cae947443d44fc036b798b75d36cb9147cb65763e",
+        "matches_manifest": true,
+        "path": "reports/v4_06/V4_06_R2_CLEAN_CHECKOUT_RECEIPT.json"
+      },
+      {
+        "actual_byte_count": 3758,
+        "actual_sha256": "1e1e29ef4c6d7cd273cbb9247dd201abd90b98ec08f84e99783c66a87021ba1e",
+        "expected_byte_count": 3758,
+        "expected_sha256": "1e1e29ef4c6d7cd273cbb9247dd201abd90b98ec08f84e99783c66a87021ba1e",
+        "matches_manifest": true,
+        "path": "reports/v4_06/V4_06_R2_CLOSURE.md"
+      },
+      {
+        "actual_byte_count": 3028,
+        "actual_sha256": "224a346d2655d61e9b15abadd9cc34321ffcaaa74cc2122bb6b83e25d03c0a27",
+        "expected_byte_count": 3028,
+        "expected_sha256": "224a346d2655d61e9b15abadd9cc34321ffcaaa74cc2122bb6b83e25d03c0a27",
+        "matches_manifest": true,
+        "path": "reports/v4_06/V4_06_R2_CONTRACT_SEMANTICS_ACCEPTANCE.json"
+      },
+      {
+        "actual_byte_count": 8378,
+        "actual_sha256": "4f0d6ec02e34aeca6e5b92aec7403e8cc0bfd3578c06ec5f67afd04cf05ded1a",
+        "expected_byte_count": 8378,
+        "expected_sha256": "4f0d6ec02e34aeca6e5b92aec7403e8cc0bfd3578c06ec5f67afd04cf05ded1a",
+        "matches_manifest": true,
+        "path": "reports/v4_06/V4_06_R2_CORE_ISOLATION_ACCEPTANCE.json"
+      },
+      {
+        "actual_byte_count": 461,
+        "actual_sha256": "e0cf5a9bcabc451fce937aa9d343db6dc020ed3cb283b3cf9aa71249637bd9e7",
+        "expected_byte_count": 461,
+        "expected_sha256": "e0cf5a9bcabc451fce937aa9d343db6dc020ed3cb283b3cf9aa71249637bd9e7",
+        "matches_manifest": true,
+        "path": "reports/v4_06/V4_06_R2_DETERMINISM.json"
+      },
+      {
+        "actual_byte_count": 615,
+        "actual_sha256": "e669ec69a8970fd7664cabbf91d3e012824d2996a4efac1cef88d9887c354777",
+        "expected_byte_count": 615,
+        "expected_sha256": "e669ec69a8970fd7664cabbf91d3e012824d2996a4efac1cef88d9887c354777",
+        "matches_manifest": true,
+        "path": "reports/v4_06/V4_06_R2_RUNTIME_TEST_RECEIPT.json"
+      },
+      {
+        "actual_byte_count": 5310,
+        "actual_sha256": "91c6b1d2834c4554b8ab8c99545110210e4494e5586ee90f162e18395132d8cf",
+        "expected_byte_count": 5310,
+        "expected_sha256": "91c6b1d2834c4554b8ab8c99545110210e4494e5586ee90f162e18395132d8cf",
+        "matches_manifest": true,
+        "path": "reports/v4_06/V4_06_R2_SCHEMA_MIGRATION_RECEIPT.json"
+      },
+      {
+        "actual_byte_count": 3387,
+        "actual_sha256": "d32cc2b960818f4d208d850450771a70d4d39c164ed20d64612a023a45f2ac02",
+        "expected_byte_count": 3387,
+        "expected_sha256": "d32cc2b960818f4d208d850450771a70d4d39c164ed20d64612a023a45f2ac02",
+        "matches_manifest": true,
+        "path": "reports/v4_06/V4_06_R2_STAGE_ENTRY.md"
+      },
+      {
+        "actual_byte_count": 1869,
+        "actual_sha256": "a152f04555a5acb07a34cbb9911f389a59453ebfc14d2a27b6a65375979e0979",
+        "expected_byte_count": 1869,
+        "expected_sha256": "a152f04555a5acb07a34cbb9911f389a59453ebfc14d2a27b6a65375979e0979",
+        "matches_manifest": true,
+        "path": "reports/v4_06/V4_06_R2_TOLERANCE_SCHEMA_ACCEPTANCE.json"
+      },
+      {
+        "actual_byte_count": 16788,
+        "actual_sha256": "6f7612ad930a66e4d67bb243e60239d7c853df7bb6239506021a6b1ec0be680e",
+        "expected_byte_count": 16788,
+        "expected_sha256": "6f7612ad930a66e4d67bb243e60239d7c853df7bb6239506021a6b1ec0be680e",
+        "matches_manifest": true,
+        "path": "scripts/build_v4_06_r2_candidate_evidence.py"
+      },
+      {
+        "actual_byte_count": 13639,
+        "actual_sha256": "f6e5a0457c03ac223b9fb1fb8ff7b71c4c4226e9564d5efd2f13939d9cd6d3ae",
+        "expected_byte_count": 13639,
+        "expected_sha256": "f6e5a0457c03ac223b9fb1fb8ff7b71c4c4226e9564d5efd2f13939d9cd6d3ae",
+        "matches_manifest": true,
+        "path": "scripts/run_v4_06_r2_migration_acceptance.py"
+      },
+      {
+        "actual_byte_count": 52957,
+        "actual_sha256": "491151b8ccdd4cf2c71168d074ced81aa25b990819d94fdd62023cdb804241fa",
+        "expected_byte_count": 52957,
+        "expected_sha256": "491151b8ccdd4cf2c71168d074ced81aa25b990819d94fdd62023cdb804241fa",
+        "matches_manifest": true,
+        "path": "src/workbench_analysis/v4_06_supplemental.py"
+      },
+      {
+        "actual_byte_count": 4248,
+        "actual_sha256": "6aa326f725ad98179b112be6b6f34346c5fbc70d69c4798d2259f01d3c3337e1",
+        "expected_byte_count": 4248,
+        "expected_sha256": "6aa326f725ad98179b112be6b6f34346c5fbc70d69c4798d2259f01d3c3337e1",
+        "matches_manifest": true,
+        "path": "src/workbench_db/migrations/v4_postgres/013_v4_06_stock_profile_enrichments.sql"
+      },
+      {
+        "actual_byte_count": 2465,
+        "actual_sha256": "fff140f483738b6fb8e94e06a4e2c681111de94ceb1c415d18c188a9d95977e3",
+        "expected_byte_count": 2465,
+        "expected_sha256": "fff140f483738b6fb8e94e06a4e2c681111de94ceb1c415d18c188a9d95977e3",
+        "matches_manifest": true,
+        "path": "src/workbench_db/migrations/v4_postgres/014_v4_06_turnover_contract_semantics_r2.sql"
+      },
+      {
+        "actual_byte_count": 250,
+        "actual_sha256": "356fb067112737bcc1297e03f2317bf95b158963533cbe1f9decdc06aa3def57",
+        "expected_byte_count": 250,
+        "expected_sha256": "356fb067112737bcc1297e03f2317bf95b158963533cbe1f9decdc06aa3def57",
+        "matches_manifest": true,
+        "path": "src/workbench_db/migrations/v4_postgres/rollback/013_v4_06_stock_profile_enrichments.sql"
+      },
+      {
+        "actual_byte_count": 1253,
+        "actual_sha256": "3c940adf7b21f5e40d77a23d7f859e50b4b13699f7c251185b26dfdf0c98d054",
+        "expected_byte_count": 1253,
+        "expected_sha256": "3c940adf7b21f5e40d77a23d7f859e50b4b13699f7c251185b26dfdf0c98d054",
+        "matches_manifest": true,
+        "path": "src/workbench_db/migrations/v4_postgres/rollback/014_v4_06_turnover_contract_semantics_r2.sql"
+      },
+      {
+        "actual_byte_count": 33072,
+        "actual_sha256": "78eeb8a3542540357f6a826c05ffac8b2db05b909a221d9c703c559cfe64b1bd",
+        "expected_byte_count": 33072,
+        "expected_sha256": "78eeb8a3542540357f6a826c05ffac8b2db05b909a221d9c703c559cfe64b1bd",
+        "matches_manifest": true,
+        "path": "tests/v4_06/test_v4_06_supplemental.py"
+      }
+    ],
+    "expected_sha256": "5d9297b324c57d66228f66b5e291b4cca2b8ca4325d92759676401b1f6352b14",
+    "manifest_sha256_matches": true,
+    "mismatch_paths_match_declared_tolerance": true,
+    "mismatches": [],
+    "path": "reports/v4_06/V4_06_R2_STAGE_CANDIDATE_MANIFEST.json",
+    "sha256": "5d9297b324c57d66228f66b5e291b4cca2b8ca4325d92759676401b1f6352b14",
+    "verified_file_count": 22
+  },
+  "open_audit": {
+    "audit_contains_open": true,
+    "audit_id": "V4-06-BAOSTOCK-BINDING-TOLERANCE-01",
+    "blocker_status": "STRICT_BINDING_BLOCKED_DIAGNOSTIC_ONLY",
+    "evidence": {
+      "byte_count": 4436,
+      "path": "docs/audits/V4_06_BAOSTOCK_BINDING_TOLERANCE_AUDIT_R1_20260929.md",
+      "sha256": "a43a449c06324c6b775f3e02702ed7008aed30b11adf31e71b39493bd74b1f13"
+    },
+    "live_binding_blocker": {
+      "byte_count": 1724,
+      "path": "reports/v4_06/V4_06_LIVE_BINDING_BLOCKER.json",
+      "sha256": "5ec653cc883af1bba42ed93b9698bc800123fce393fe97d6e5524debc547dfc9"
+    },
+    "status": "OPEN"
+  },
+  "preserved_v4_05_head": {
+    "byte_count": 8456,
+    "path": "data/v4/V4_05_ACCEPTED_HEAD.json",
+    "sha256": "fc929d85553a900a6479ac9f50291d50cf750ad0e6c21fc58e4e05e92189f5cb"
+  },
+  "previous_global_head": {
+    "byte_count": 3990,
+    "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+    "sha256": "6fd6e16b3769726f14e44b1d2062d087fd40ec1ede51956a5353631896547043"
+  },
+  "receipts": {
+    "clean_checkout": {
+      "passed": true,
+      "path": "reports/v4_06/V4_06_R2_CLEAN_CHECKOUT_RECEIPT.json",
+      "sha256": "f76109f2f4deaf0541afe12cae947443d44fc036b798b75d36cb9147cb65763e",
+      "status": "PASS"
+    },
+    "contract_semantics": {
+      "passed": true,
+      "path": "reports/v4_06/V4_06_R2_CONTRACT_SEMANTICS_ACCEPTANCE.json",
+      "sha256": "224a346d2655d61e9b15abadd9cc34321ffcaaa74cc2122bb6b83e25d03c0a27",
+      "status": "PASS"
+    },
+    "core_isolation": {
+      "passed": true,
+      "path": "reports/v4_06/V4_06_R2_CORE_ISOLATION_ACCEPTANCE.json",
+      "sha256": "4f0d6ec02e34aeca6e5b92aec7403e8cc0bfd3578c06ec5f67afd04cf05ded1a",
+      "status": "PASS"
+    },
+    "determinism": {
+      "passed": true,
+      "path": "reports/v4_06/V4_06_R2_DETERMINISM.json",
+      "sha256": "e0cf5a9bcabc451fce937aa9d343db6dc020ed3cb283b3cf9aa71249637bd9e7",
+      "status": "PASS"
+    },
+    "migration": {
+      "passed": true,
+      "path": "reports/v4_06/V4_06_R2_SCHEMA_MIGRATION_RECEIPT.json",
+      "sha256": "91c6b1d2834c4554b8ab8c99545110210e4494e5586ee90f162e18395132d8cf",
+      "status": "PASS"
+    },
+    "runtime": {
+      "passed": true,
+      "path": "reports/v4_06/V4_06_R2_RUNTIME_TEST_RECEIPT.json",
+      "sha256": "e669ec69a8970fd7664cabbf91d3e012824d2996a4efac1cef88d9887c354777",
+      "status": "PASS"
+    },
+    "tolerance_schema": {
+      "passed": true,
+      "path": "reports/v4_06/V4_06_R2_TOLERANCE_SCHEMA_ACCEPTANCE.json",
+      "sha256": "a152f04555a5acb07a34cbb9911f389a59453ebfc14d2a27b6a65375979e0979",
+      "status": "PASS"
+    }
+  },
+  "status": "PASS",
+  "validated_at_date": "2026-09-30"
+}

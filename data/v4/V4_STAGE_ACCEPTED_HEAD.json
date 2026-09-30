@@ -1,5 +1,5 @@
 {
-  "accepted_stage_range": "V4_00_TO_V4_05_ACCEPTED",
+  "accepted_stage_range": "V4_00_TO_V4_06_ACCEPTED",
   "bindings": {
     "phase0": {
       "path": "reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json",
@@ -83,9 +83,30 @@
   "v4_05_entry": "COMPLETED_EXTERNALLY_ACCEPTED",
   "v4_05_external_acceptance": "EXTERNALLY_ACCEPTED",
   "v4_05_status": "DATA_FACTOR_REPLAY_DEGRADED_PASS",
+  "v4_06_binding": {
+    "byte_count": 4106,
+    "path": "data/v4/V4_06_ACCEPTED_HEAD.json",
+    "sha256": "5aec962703aed40cab809e798edc5bfbe50c416809984db40bb679a172782f8e"
+  },
   "v4_06_entry": "AUTHORIZED_SUPPLEMENTAL_ENRICHMENT",
-  "v4_06_status": "NOT_STARTED",
-  "v4_07_entry": "NOT_STARTED",
+  "v4_06_external_acceptance": "V4_06_EXTERNAL_ACCEPTANCE_PASS_R2_SCOPED_DEGRADED",
+  "v4_06_live_strict_binding": "BLOCKED_DEGRADED",
+  "v4_06_open_audits": [
+    "V4-06-BAOSTOCK-BINDING-TOLERANCE-01"
+  ],
+  "v4_06_promotion_receipt": {
+    "byte_count": 641,
+    "path": "reports/v4_joint/V4_06_ACCEPTED_HEAD_PROMOTION_RECEIPT_R1.json",
+    "sha256": "f2c88c1917b0b53d317ceebbc13ae10112f68d96e5b83c560009219efffff380"
+  },
+  "v4_06_promotion_validation": {
+    "byte_count": 12695,
+    "path": "reports/v4_joint/V4_06_ACCEPTED_HEAD_PROMOTION_VALIDATION_R1.json",
+    "sha256": "f3c3779c19a0964d00d6197fadf2b33febd12e37b973ef2ea7096ac6ab2e8595"
+  },
+  "v4_06_status": "DEGRADED_PASS",
+  "v4_07_entry": "AUTHORIZED_AFTER_V4_06_PROMOTION_VALIDATION",
+  "v4_07_status": "NOT_PROMOTED",
   "v4_08_sector_entry": "BLOCKED_UNTIL_ACCEPTED_PIT_MEMBERSHIP_BASELINE_AND_RECONSTRUCTION",
   "version": "2.3.0"
 }

@@ -1,24 +1,24 @@
 {
   "artifacts": {
     "B0": {
-      "byte_count": 7110,
-      "path": "data/v4/artifact_store/v4_08/V4_08_R5_B0_20260930_f5fb952409aaeae88929.jsonl.gz",
-      "sha256": "a0990a741b0574b0ca688585272019e6ead91cd5b8ce90586746d1d3f005360e"
+      "byte_count": 10445,
+      "path": "data/v4/artifact_store/v4_08/V4_08_R5_B0_20260930_75392db3cf036a9498b1.jsonl.gz",
+      "sha256": "cce499eaf4448f0c7e1440939c65a647d741fa97c2639d9493d393bfdd2cd35e"
     },
     "B2": {
-      "byte_count": 8524,
-      "path": "data/v4/artifact_store/v4_08/V4_08_R5_B2_20260930_f5fb952409aaeae88929.jsonl.gz",
-      "sha256": "92fa74d31c0d17b7c279fec708f93af0d2a163230cb31f72389f2f99990eb7e0"
+      "byte_count": 11469,
+      "path": "data/v4/artifact_store/v4_08/V4_08_R5_B2_20260930_75392db3cf036a9498b1.jsonl.gz",
+      "sha256": "cf24de8ecd62f6b20eceef0110489b5f9c8830ac618402e1780e114a496913af"
     },
     "ROTATION": {
-      "byte_count": 865497,
-      "path": "data/v4/artifact_store/v4_08/V4_08_R5_ROTATION_20260930_f5fb952409aaeae88929.jsonl.gz",
-      "sha256": "742dd7c55143c9ca6dff28d93e78610080c1c81d218e3bd21f39e13f677bf060"
+      "byte_count": 1153253,
+      "path": "data/v4/artifact_store/v4_08/V4_08_R5_ROTATION_20260930_75392db3cf036a9498b1.jsonl.gz",
+      "sha256": "d60bac5f4df929168fe51110f87f5b21ec1d7c7c350c04f97186b2d7f93d1a3a"
     },
     "SECTOR_NATIVE": {
-      "byte_count": 1483784,
-      "path": "data/v4/artifact_store/v4_08/V4_08_R5_SECTOR_NATIVE_20260930_f5fb952409aaeae88929.jsonl.gz",
-      "sha256": "297f049096e68ca0c334c1d1083128dabecb4f0d61c2dbc138f661702df645dc"
+      "byte_count": 1635614,
+      "path": "data/v4/artifact_store/v4_08/V4_08_R5_SECTOR_NATIVE_20260930_75392db3cf036a9498b1.jsonl.gz",
+      "sha256": "aa3398771c70f618043355f27d98cd44ab489db72d84becea2f6b8f3385380a8"
     }
   },
   "capabilities": {
@@ -36,6 +36,11 @@
     "V4-01 listing-anchor"
   ],
   "input_bindings": {
+    "b0_contract": {
+      "byte_count": 4025,
+      "path": "config/v4_08_sector_prewatch_contract_r5.json",
+      "sha256": "e71a66757ae664bf6f65b8c5a030caf4e35b70921925fc9e83953fa2ba71a737"
+    },
     "b2_ast": {
       "byte_count": 26820,
       "path": "config/v4_08_b2_machine_ast_r5.json",
@@ -51,15 +56,35 @@
       "path": "data/v4/V4_02_GO_FORWARD_CALENDAR_EXTENSION_ACCEPTED_HEAD_R1.json",
       "sha256": "d0d453689261603a6ccd773f6383781178cb74d388087b72c652dc8afcb309f6"
     },
+    "core_factors": {
+      "byte_count": 32316843,
+      "path": "reports/v4_05/staging/V4_05_R4_1_FULL_SCOPE_FACTORS.jsonl.gz",
+      "sha256": "17ae571629b76399e32d9e8a243268ea1fac619e1c5168d307bfd8ebf1494c48"
+    },
     "core_head": {
       "byte_count": 8456,
       "path": "data/v4/V4_05_ACCEPTED_HEAD.json",
       "sha256": "fc929d85553a900a6479ac9f50291d50cf750ad0e6c21fc58e4e05e92189f5cb"
     },
+    "core_profile": {
+      "byte_count": 48848465,
+      "path": "reports/v4_05/staging/V4_05_R4_1_FULL_MARKET_CORE_PROFILE.jsonl.gz",
+      "sha256": "9a6ebedc715bc4b310ecf76c77e01cb6dfe9dadc17d335b5fc9afbcc2f6f3fa0"
+    },
+    "field_registry": {
+      "byte_count": 13560,
+      "path": "config/v4_08_sector_field_registry_r5.json",
+      "sha256": "3bfd5077f53b8af1639080ffa6e2a065d6585f7edcdd6e668adda6583586d7c4"
+    },
     "membership_head": {
       "byte_count": 2151,
       "path": "data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json",
       "sha256": "d6374a73b8084ccd383cbb4f75428ed91176e91cc09d87c3329041d57c5bd9ed"
+    },
+    "native_contract": {
+      "byte_count": 3246,
+      "path": "config/v4_08_sector_native_contract_r5.json",
+      "sha256": "235df806e1671ab00e234f4d93834570c797314244c42753e2e58e1c60a21386"
     },
     "native_producer": {
       "byte_count": 11299,
@@ -71,10 +96,20 @@
       "path": "config/v4_08_algorithm_parameter_set_r5.json",
       "sha256": "0204d7c4fadf86871b6a079f755593b1a3f8ad18bb718f73ba33db0b70f67548"
     },
+    "rotation_contract": {
+      "byte_count": 21093,
+      "path": "config/v4_08_rotation_core_contract_r5.json",
+      "sha256": "2fee45359815fd70f489e0c24c29b49eac114628332b77399d6d2f14ea018330"
+    },
     "rotation_producer": {
-      "byte_count": 10284,
+      "byte_count": 10714,
       "path": "src/sector/rotation_r5.py",
-      "sha256": "cd2796b3b45e4b54103f65aac872293678546678893533e753904f57aa745881"
+      "sha256": "240cd32ee9c5d95e45ec1af64cd6101d97bd562219f32645cc81851c564bfa05"
+    },
+    "seed_artifact": {
+      "byte_count": 614146,
+      "path": "reports/v4_07/staging/V4_07_BASE_SEED_CANDIDATE_R2.jsonl.gz",
+      "sha256": "bb9992c581092f91ba69ad8390daf522d3441951f5bc61437ff0e4653ed74e72"
     },
     "seed_head": {
       "byte_count": 6362,
@@ -82,6 +117,6 @@
       "sha256": "b22117b0d14c35167cba86cb7398d878d7112f9cf17c1a427fa92766e78f880f"
     }
   },
-  "publication_id": "V4_08_R5_ENGINEERING_20260930_f5fb952409aaeae88929",
+  "publication_id": "V4_08_R5_ENGINEERING_20260930_75392db3cf036a9498b1",
   "status": "R5_ENGINEERING_CANDIDATE_PENDING_VERIFICATION"
 }

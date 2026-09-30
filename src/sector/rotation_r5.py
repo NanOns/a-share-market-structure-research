@@ -74,6 +74,9 @@ def advance_rotation(native, current, *, prior_publication, prior_members, prior
         now=observed(current.get(member),'close',target)
         base=episode['pulse_baseline'].get(member)
         pulse=episode['pulse_closes'].get(member)
+        frozen_basis=episode.get('price_basis_ids',{}).get(member)
+        if frozen_basis is None or (current.get(member) or {}).get('price_basis_id')!=frozen_basis:
+            now=None
         if now is not None and base is not None and base>0:ratios.append(now/base-1)
         price_truth[member]=None if now is None or pulse is None else now>=pulse
     cumulative=sum(ratios)/len(basket) if basket and len(ratios)==len(basket) else None
@@ -120,14 +123,16 @@ def advance_rotation(native, current, *, prior_publication, prior_members, prior
         basket=sorted(set(prior_members or ()))
         baseline={m:observed((prior_core or {}).get(m),'close',prior_date) for m in basket}
         pulse_closes={m:observed(current.get(m),'close',target) for m in basket}
-        if not basket or any(v is None or v<=0 for v in baseline.values()) or any(v is None for v in pulse_closes.values()):
+        basis={m:(prior_core or {}).get(m,{}).get('price_basis_id') for m in basket}
+        basis_ready=all(basis[m] is not None and basis[m]==current.get(m,{}).get('price_basis_id') for m in basket)
+        if not basket or not basis_ready or any(v is None or v<=0 for v in baseline.values()) or any(v is None for v in pulse_closes.values()):
             output='UNKNOWN';reasons=['PULSE_BASELINE_UNAVAILABLE']
         else:
             seed_set=None if not seed_capability or any((seed_truth or {}).get(m) is None for m in basket) else sorted(m for m in basket if seed_truth[m] is True)
             positive=None if any(observed(current.get(m),'ret1',target) is None for m in basket) else sorted(m for m in basket if observed(current[m],'ret1',target)>0)
             episode=dict(rotation_episode_id=ast_digest({'sector_id':sid,'pulse_date':target,'basket':basket,'membership_snapshot_id':prior['membership_snapshot_id']}),
                 pulse_date=target,frozen_basket=basket,base_seed_set=seed_set,breadth_positive_set=positive,
-                pulse_baseline=baseline,pulse_closes=pulse_closes,pulse_basket_return=sum(pulse_closes[m]/baseline[m]-1 for m in basket)/len(basket),accepted=False,terminated=False)
+                pulse_baseline=baseline,pulse_closes=pulse_closes,price_basis_ids=basis,pulse_basket_return=sum(pulse_closes[m]/baseline[m]-1 for m in basket)/len(basket),accepted=False,terminated=False)
     if episode:
         if output in {'ROTATION_ACCEPTED','ROTATION_EXPANDING','ROTATION_REACCELERATING'}:episode['accepted']=True
         if output in {'ROTATION_OUT','ROTATION_FAILED'}:episode['terminated']=True

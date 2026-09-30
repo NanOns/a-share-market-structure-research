@@ -51,6 +51,7 @@ def main():
     registry=read('config/v4_08_sector_field_registry_r5.json');b0contract=read('config/v4_08_sector_prewatch_contract_r5.json');b1contract=read('config/v4_08_rotation_core_contract_r5.json')
     values,_=resolve_package(b0contract,params,parameter_bytes,registry);resolve_package(b1contract,params,parameter_bytes,registry)
     source_bindings={k:bind(p) for k,p in [('membership_head',destination.relative_to(ROOT).as_posix()),('core_head','data/v4/V4_05_ACCEPTED_HEAD.json'),('seed_head','data/v4/V4_07_ACCEPTED_HEAD.json'),('calendar_head',candidate['calendar_head']['path']),('parameter_set',params_path),('native_producer','src/sector/native_r5.py'),('rotation_producer','src/sector/rotation_r5.py'),('b2_producer','src/sector/legacy_b2_r5.py'),('b2_ast','config/v4_08_b2_machine_ast_r5.json')]}
+    for key,path in [('field_registry','config/v4_08_sector_field_registry_r5.json'),('native_contract','config/v4_08_sector_native_contract_r5.json'),('b0_contract','config/v4_08_sector_prewatch_contract_r5.json'),('rotation_contract','config/v4_08_rotation_core_contract_r5.json'),('core_factors',corehead['accepted_artifacts']['full_scope_factors']['path']),('core_profile',corehead['accepted_artifact']['path']),('seed_artifact',seedhead['evidence_bindings']['candidate_artifact']['path'])]:source_bindings[key]=bind(path)
     publication='V4_08_R5_ENGINEERING_20260930_'+hashlib.sha256(json.dumps(source_bindings,sort_keys=True).encode()).hexdigest()[:20]
     if current:
         for row in rows(corehead['accepted_artifact']):

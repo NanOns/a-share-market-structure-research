@@ -46,6 +46,7 @@ def main():
         contract=read(source);contract.update(parameter_set_id=params['parameter_set_id'],parameter_set_sha256=binding,pending_parameter_ids=[],runtime_implementation='src/sector/rotation_r5.py',field_registry_digest=digest(registry),field_registry_path='config/v4_08_sector_field_registry_r5.json')
         atomic_json(ROOT/out,contract)
     native=read('config/v4_08_sector_native_contract_v1.json');native.update(parameters='config/v4_08_algorithm_parameter_set_r5.json',runtime_implementation='src/sector/native_r5.py',full_market_materialization_enabled=True,field_registry='config/v4_08_sector_field_registry_r5.json')
+    native['scope']['full_market_materialization']='ENGINEERING_CANDIDATE_ONLY'
     atomic_json(ROOT/'config/v4_08_sector_native_contract_r5.json',native)
     legacy='src/workbench_analysis/sector_attention.py';legacy_params='config/research_attention_v3.yaml'
     cfg=read(legacy_params)['thresholds'];rules={};fields={}

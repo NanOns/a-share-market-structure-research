@@ -67,7 +67,7 @@ def test_pulse_then_in_with_empty_prior_strong_cohort_and_degraded_seed():
     target='2026-09-30';old='2026-09-29';members=['A','B','C','D','E']
     raw={'membership_ready':True,'sector_member_count':5,'sector_quote_coverage':1,'dq5':12,'breadth_delta1':.1,'top1_concentration':.2,'net_entered_count':1}
     native={'target_trade_date':target,'sector_id':'TEST','membership_snapshot_id':'S','member_ids':members,'fields':{f:{**fields[f],'value':v,'quality':'ACCEPTED'} for f,v in raw.items()}}
-    def core(date,close):return {m:{'trade_date':date,'fields':{f:{**fact(v),'max_source_date':date} for f,v in {'close':close,'ret1':.1,'rps20':20}.items()}} for m in members}
+    def core(date,close):return {m:{'trade_date':date,'price_basis_id':'ACCEPTED_SYNTHETIC_COMMON_COORDINATE','fields':{f:{**fact(v),'max_source_date':date} for f,v in {'close':close,'ret1':.1,'rps20':20}.items()}} for m in members}
     prior={'acceptance':'ACCEPTED','target_trade_date':old,'membership_snapshot_id':'PREV','output_state':'NONE','native_fields':{'dq5':{'value':0}},'episode':None}
     pulse=advance_rotation(native,core(target,11),prior_publication=prior,prior_members=members,prior_core=core(old,10),calendar_sessions=[old,target,'2026-10-01'],contract=contract,registry=registry,parameters=values,prior_maturity='NONE')
     assert pulse['output_state']=='ROTATION_PULSE'
@@ -79,6 +79,9 @@ def test_pulse_then_in_with_empty_prior_strong_cohort_and_degraded_seed():
     assert result['predicates']['mature_retained']['state']=='NOT_APPLICABLE'
     assert result['fields']['base_seed_retention']['quality']=='UNKNOWN'
     assert result['fields']['breadth_retention']['value']==1
+    changed=core('2026-10-01',12);changed['A']['price_basis_id']='DIFFERENT_COORDINATE'
+    invalid=advance_rotation(nxt,changed,prior_publication=accepted_prior,prior_members=members,prior_core=core(target,11),calendar_sessions=[old,target,'2026-10-01'],contract=contract,registry=registry,parameters=values,prior_maturity='NONE')
+    assert invalid['fields']['basket_cumulative_return']['value'] is None
 
 def b2(values):
     ast=read('config/v4_08_b2_machine_ast_r5.json')

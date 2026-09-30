@@ -39,7 +39,10 @@ def main():
         (guard/'sitecustomize.py').write_text('''import sys, os\ndef forbid_config_env(event,args):\n if event == 'open' and isinstance(args[0],(str,bytes,os.PathLike)):\n  path=os.fsdecode(args[0]).replace('\\\\','/').lower()\n  if path.endswith('/config/.env'): raise RuntimeError('CONFIG_DOT_ENV_READ_FORBIDDEN_IN_R4_REGRESSION')\nsys.addaudithook(forbid_config_env)\n''',encoding='utf-8')
         env=os.environ.copy();env['WORKBENCH_PG_DSN']=dsn;env['PYTHONPATH']=str(guard)+os.pathsep+str(ROOT)+os.pathsep+env.get('PYTHONPATH','')
         for key in ['PGPASSWORD','PGSERVICE','PGSERVICEFILE']:env.pop(key,None)
-        junit=temp/'junit.xml';families=[*REQUIRED_FAMILIES,'tests/governance/test_no_symbol_specific_runtime_logic.py']
+        junit=temp/'junit.xml';families=[*REQUIRED_FAMILIES,
+            'tests/test_fixed_qfq_samples.py','tests/test_phase0_2a_gate.py',
+            'tests/test_phase1_qa_sample_selector.py',
+            'tests/governance/test_no_symbol_specific_runtime_logic.py']
         proc=subprocess.run([sys.executable,'-m','pytest','-q',*families,f'--junitxml={junit}'],cwd=ROOT,env=env,text=True,capture_output=True,encoding='utf-8',errors='replace',timeout=900)
         suites=list(ET.parse(junit).getroot().iter('testsuite')) if junit.exists() else []
         summary={key:sum(int(node.attrib.get(key,0)) for node in suites) for key in ['tests','failures','errors','skipped']}

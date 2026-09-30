@@ -65,7 +65,7 @@ def code_scan() -> dict:
     files = list((ROOT / "src/workbench_analysis").rglob("*.py"))
     files += list((ROOT / "scripts").glob("build_v4_02*.py"))
     files.append(ROOT / "scripts/capture_special_phase_sources.py")
-    forbidden = re.compile(r"(?:SZ|SH)\.\d{6}|SEC-EDEDE35FE66896ACCA0AC85EEB2F133B|SEC-B2F87F189D1D143B67730E3640E617CA")
+    forbidden = re.compile(r"(?:SZ|SH)\.\d{6}|SEC-[A-F0-9]{16,}")
     hits = []
     for path in sorted(set(files)):
         source = path.read_text(encoding="utf-8")

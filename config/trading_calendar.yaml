@@ -1,8 +1,8 @@
 trading_calendar:
   version: "master-trading-calendar-v0.1"
-  primary_indices:
-    - "SH.000001"
-    - "SZ.399001"
+  primary_index_roles:
+    - "SSE_SESSION_REFERENCE"
+    - "SZSE_SESSION_REFERENCE"
   minimum_a_stock_confirmation_count: 20
   minimum_a_stock_confirmation_ratio: 0.50
   index_data_contract_pending: true

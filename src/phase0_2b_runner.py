@@ -9,7 +9,7 @@ import json
 from pathlib import Path
 
 from adjustment.tdx_adjustment import build_affine_factors, xrxd_from_gbbq
-from phase0_2_runner import _day_path, _read_day_rows, MANUAL_TARGETS
+from phase0_2_runner import _day_path, _read_day_rows, select_phase0_manual_targets
 from tdx.gbbq_reader import read_gbbq, file_sha256, audit_gbbq
 from validation.external_qfq import (EASTMONEY_ENDPOINT, TENCENT_ENDPOINT, TENCENT_RAW_ENDPOINT,
     eastmoney_secid, tencent_symbol, parse_eastmoney_payload, parse_tencent_payload)
@@ -66,23 +66,32 @@ def run(root, tdx, network=False):
     base = root / 'reports/phase0_2b'
     evidence = FrozenRun(base, tdx)
     paths = [tdx / 'T0002/hq_cache/gbbq', tdx / 'T0002/hq_cache/gbbq.map']
-    paths += [_day_path(tdx, sid) for sid in sorted({v[0] for v in MANUAL_TARGETS})]
+    records = read_gbbq(paths[0])
+    by_security = {}
+    for record in records:
+        if record.category == 1:
+            by_security.setdefault(record.security_id, []).append(xrxd_from_gbbq(record))
+    for events in by_security.values():
+        events.sort(key=lambda event: (event.ex_day, event.source_record_index))
+    targets = select_phase0_manual_targets(by_security, tdx, ANCHOR)
+    if not targets:
+        raise RuntimeError('GENERIC_QFQ_SAMPLE_SELECTION_EMPTY')
+    gate_target = targets[0]
+    paths += [_day_path(tdx, sid) for sid in sorted({item['security_id'] for item in targets})]
     core = [root / 'src/tdx/gbbq_reader.py', root / 'src/adjustment/tdx_adjustment.py']
     before = {str(p): file_sha256(p) for p in paths + core}
-    records = read_gbbq(paths[0])
     audit = audit_gbbq(paths[0], paths[1], decoded_records=records)
-    events = {}
     originals = {}
     for record in records:
-        if record.category == 1 and record.security_id in {v[0] for v in MANUAL_TARGETS}:
-            events.setdefault(record.security_id, []).append(xrxd_from_gbbq(record))
+        if record.category == 1 and record.security_id in {item['security_id'] for item in targets}:
             originals[record.source_record_index] = record
     local, chains = [], []
-    for sid, date, _, _ in MANUAL_TARGETS:
+    for target in targets:
+        sid, date = target['security_id'], target['date']
         rows = [r for r in _read_day_rows(_day_path(tdx, sid)) if r['trade_date'] <= ANCHOR]
         raw = next(r for r in rows if r['trade_date'] == date)
-        factor = build_affine_factors([r['trade_date'] for r in rows], events[sid])[date]
-        chain = sorted((e for e in events[sid] if date < e.ex_day <= rows[-1]['trade_date']),
+        factor = build_affine_factors([r['trade_date'] for r in rows], by_security[sid])[date]
+        chain = sorted((e for e in by_security[sid] if date < e.ex_day <= rows[-1]['trade_date']),
                        key=lambda e: (e.ex_day, e.source_record_index))
         a, b = Decimal(1), Decimal(0)
         with localcontext() as ctx:
@@ -90,24 +99,25 @@ def run(root, tdx, network=False):
             for event in chain:
                 m, c = event.mc()
                 a, b = a / m, (b - c) / m
-                if (sid, date) in {('SH.600519', 20250625), ('SZ.000651', 20150702)}:
-                    original = originals[event.source_record_index]
-                    chains.append({**event.as_dict(), 'sample_date': date, 'm': m, 'c': c,
-                                   'cumulative_A': a, 'cumulative_B': b,
-                                   'local_cash': event.cash_dividend_per_10,
-                                   'local_rights_price': event.rights_price,
-                                   'local_bonus': event.bonus_transfer_per_10,
-                                   'local_rights_ratio': event.rights_ratio_per_10,
-                                   'decoded_float_cash': original.c1,
-                                   'external_source': None, 'external_cash': None,
-                                   'external_rights_price': None, 'external_bonus': None,
-                                   'external_rights_ratio': None, 'field_match': None,
-                                   'notes': 'External event evidence not yet available; amounts per 10 shares'})
+                original = originals[event.source_record_index]
+                chains.append({**event.as_dict(), 'sample_date': date, 'm': m, 'c': c,
+                               'cumulative_A': a, 'cumulative_B': b,
+                               'local_cash': event.cash_dividend_per_10,
+                               'local_rights_price': event.rights_price,
+                               'local_bonus': event.bonus_transfer_per_10,
+                               'local_rights_ratio': event.rights_ratio_per_10,
+                               'decoded_float_cash': original.c1,
+                               'external_source': None, 'external_cash': None,
+                               'external_rights_price': None, 'external_bonus': None,
+                               'external_rights_ratio': None, 'field_match': None,
+                               'notes': 'External event evidence not yet available; amounts per 10 shares'})
         local.append({'security_id': sid, 'date': date, 'anchor': rows[-1]['trade_date'],
                       'local_A': factor.qfq_mul, 'local_B': factor.qfq_add,
                       'raw': raw, 'qfq': {f: factor.qfq_price(raw[f]) for f in FIELDS},
                       'chronological_A': a, 'chronological_B': b,
-                      'chain_reproducible': abs(a-factor.qfq_mul) < Decimal('1e-30') and abs(b-factor.qfq_add) < Decimal('1e-30')})
+                      'chain_reproducible': abs(a-factor.qfq_mul) < Decimal('1e-30') and abs(b-factor.qfq_add) < Decimal('1e-30'),
+                      'selection_contract_id': 'PHASE0_QFQ_EVENT_SAMPLE_SELECTION_V1',
+                      'selection_reason': target['selection_reason']})
     evidence.put('local.json', local)
     evidence.put('decode_audit.json', audit)
     evidence.put('chains.json', chains)
@@ -121,19 +131,20 @@ def run(root, tdx, network=False):
     external = []
     gate_bars = {}
     if network:
-        # Alternate RAW/QFQ for the single permitted Gate A security. At most 3 attempts per mode.
+        # Alternate RAW/QFQ for the contract-selected Gate A sample. At most 3 attempts per mode.
         for attempt in range(3):
             for mode in (0, 1):
                 if gate_bars.get(mode) is None:
-                    gate_bars[mode] = fetch_bar(client, 'EASTMONEY', 'SH.600519', 20250625, mode, True)
+                    gate_bars[mode] = fetch_bar(client, 'EASTMONEY', gate_target['security_id'], gate_target['date'], mode, True)
             if all(gate_bars.get(m) is not None for m in (0, 1)) or 'EASTMONEY' in client.budget.stopped:
                 break
         print('Gate A complete', dict(client.budget.count), flush=True)
-        for sid, date, _, _ in MANUAL_TARGETS:
+        for target in targets:
+            sid, date = target['security_id'], target['date']
             for provider in ('EASTMONEY', 'TENCENT'):
                 pair = {}
                 for mode in (0, 1):
-                    if provider == 'EASTMONEY' and (sid, date) == ('SH.600519', 20250625):
+                    if provider == 'EASTMONEY' and (sid, date) == (gate_target['security_id'], gate_target['date']):
                         pair[str(mode)] = gate_bars.get(mode)
                     elif provider == 'EASTMONEY' and not all(gate_bars.get(m) is not None for m in (0, 1)):
                         pair[str(mode)] = None
@@ -142,7 +153,8 @@ def run(root, tdx, network=False):
                 external.append({'security_id': sid, 'date': date, 'external_source': provider, **pair})
             print('Sample complete', sid, date, dict(client.budget.count), flush=True)
     else:
-        for sid, date, _, _ in MANUAL_TARGETS:
+        for target in targets:
+            sid, date = target['security_id'], target['date']
             for provider in ('EASTMONEY', 'TENCENT'):
                 external.append({'security_id': sid, 'date': date, 'external_source': provider, '0': None, '1': None})
     evidence.put('external.json', external)
@@ -188,7 +200,8 @@ def summarize(root, tdx, run_path):
                        'classification': classify(sample['local_A'], sample['local_B'], fit, gate) if qfq else 'EXTERNAL_QFQ_UNAVAILABLE',
                        'notes': 'A compatibility uses 0.02/raw_range uncertainty; B classification is a hypothesis pending event evidence'})
     east = [r for r in requests if r['source'] == 'EASTMONEY']
-    first = next(v for v in external if v['security_id'] == 'SH.600519' and v['date'] == 20250625 and v['external_source'] == 'EASTMONEY')
+    gate_identity = local[0]
+    first = next(v for v in external if v['security_id'] == gate_identity['security_id'] and v['date'] == gate_identity['date'] and v['external_source'] == 'EASTMONEY')
     connectivity = {'request_count': len(east), 'success_count': sum(r['success'] for r in east),
         'failure_count': sum(not r['success'] for r in east),
         'dns_status': dict(Counter(r['dns_status'] for r in east)),
@@ -200,7 +213,9 @@ def summarize(root, tdx, run_path):
         'raw_query_status': 'PASS' if first['0'] else 'UNAVAILABLE',
         'qfq_query_status': 'PASS' if first['1'] else 'UNAVAILABLE',
         'final_connectivity_status': connectivity_status(east, bool(first['0']), bool(first['1'])),
-        'frozen_run': str(run_path), 'gate_a_request_count': sum(r.get('gate_a', i < 2) for i, r in enumerate(east))}
+        'frozen_run': str(run_path), 'gate_a_identity': {'security_id': gate_identity['security_id'], 'date': gate_identity['date'],
+            'selection_contract_id': gate_identity['selection_contract_id']},
+        'gate_a_request_count': sum(r.get('gate_a', i < 2) for i, r in enumerate(east))}
     status = root_gate()
     cause = {'root_cause': 'ROOT_CAUSE_UNRESOLVED', 'confidence': 'INSUFFICIENT_CAUSAL_EVIDENCE',
         'affected_samples': [dict(security_id=r['security_id'], date=r['date'], classification=r['classification']) for r in ab_rows if r['classification'] != 'AFFINE_COMPATIBLE'],

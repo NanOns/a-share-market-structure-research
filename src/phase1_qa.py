@@ -37,7 +37,7 @@ def reference(w,rule):
     raise ValueError(k)
 
 
-def audit_outputs(root,tdx,frame,contexts,cutoff,metadata):
+def audit_outputs(root,tdx,frame,contexts,cutoff,metadata,sample_selection):
     latest=frame[frame.date==frame.date.max()]
     normal=latest[latest.universe_status=='IN_NORMAL_UNIVERSE']
     distributions=[]
@@ -53,7 +53,7 @@ def audit_outputs(root,tdx,frame,contexts,cutoff,metadata):
             missing_data_count=int(flags.str.contains('MISSING_DATA').sum()),formula_hash=rule['formula_hash']))
     output=root/'reports/phase1'
     atomic(output/'FACTOR_DISTRIBUTION.csv',pd.DataFrame(distributions).to_csv(index=False).encode('utf-8-sig'),tdx)
-    sample_rows=[]; pass_all=True; rs_pass=True
+    sample_rows=[]; pass_all=bool(contexts); rs_pass=True
     for sid,context in contexts.items():
         row=latest[latest.security_id==sid].iloc[0]
         atomic(output/f'SAMPLE_WINDOW_{sid}.csv',context.tail(121).to_csv(index=False).encode('utf-8-sig'),tdx)
@@ -74,13 +74,16 @@ def audit_outputs(root,tdx,frame,contexts,cutoff,metadata):
         if expected_count>=100:
             mask=latest[f'RET{n}'].notna()
             rs_pass=rs_pass and np.allclose(latest.loc[mask,f'RS{n}'],latest.loc[mask,f'RET{n}']-st.median(v),atol=1e-12)
-    assert len(contexts)==5 and len(sample_rows)==145 and pass_all and rs_pass
-    lines=['# Factor sample calculations',f'\nCutoff {cutoff}; independent math/statistics recomputation. 145/145 checks PASS.',
+    expected_checks=len(contexts)*len(REGISTRY)
+    pass_all=pass_all and len(contexts)==sample_selection.get('selected_count')==5 and len(sample_rows)==expected_checks
+    lines=['# Factor sample calculations',f'\nCutoff {cutoff}; independent math/statistics recomputation. {sum(bool(row["match"]) for row in sample_rows)}/{expected_checks} checks PASS.',
            '\nInput windows: SAMPLE_WINDOW_<security_id>.csv (121 market sessions, sufficient for the longest 120-session factor). Close/amount are aligned; high/low NULL on suspension. RS additionally uses the same-day NORMAL_UNIVERSE returns.',
            '\n| Security | Factor | Formula | Reference | Output | Match |','|---|---|---|---:|---:|---|']
     for r in sample_rows: lines.append(f"| {r['security_id']} | {r['factor']} | {r['formula']} | {r['reference']:.12g} | {r['calculated']:.12g} | {r['match']} |")
     atomic(output/'FACTOR_SAMPLE_CALC.md','\n'.join(lines).encode('utf8'),tdx)
+    sample_selection={**sample_selection,'sample_checks':expected_checks,'sample_pass':pass_all,'rs_pass':bool(rs_pass)}
+    atomic(output/'PHASE1_QA_SAMPLE_SELECTOR.json',encoded(sample_selection),tdx)
     atomic(output/'FACTOR_AUDIT.json',encoded({'cutoff_date':cutoff,'scope':'LATEST_NORMAL_UNIVERSE','factor_count':29,
-        'factors':distributions,'sample_checks':145,'sample_pass':pass_all,'rs_pass':bool(rs_pass),
+        'factors':distributions,'sample_count':len(contexts),'sample_checks':expected_checks,'sample_pass':pass_all,'rs_pass':bool(rs_pass),
         'rs_benchmark':'NORMAL_UNIVERSE_MEDIAN','index_ohlc_used':False}),tdx)
-    return {'sample_pass':pass_all,'rs_pass':bool(rs_pass)}
+    return {'sample_pass':pass_all,'rs_pass':bool(rs_pass),'sample_count':len(contexts),'sample_checks':expected_checks}

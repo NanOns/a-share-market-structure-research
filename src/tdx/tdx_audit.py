@@ -20,9 +20,17 @@ from .block_reader import (
 from .day_reader import DAY_RECORD_LENGTH, PRICE_DIVISOR, read_edge_records, record_as_dict, validate_day_file
 from .security_master import current_a_stock_ids as select_current_a_stock_ids
 from .security_master import read_industry_assignments, read_tnf, summarize_types
+from common.market_reference import market_session_reference_identifiers
 
 
 MARKETS = ("sh", "sz", "bj")
+EDGE_SAMPLE_CONTRACT = {
+    "selection_contract_id": "PHASE0_TDX_EDGE_SAMPLE_SELECTION_V1",
+    "version": "1.0.0",
+    "seed": "PHASE0_TDX_EDGE_SAMPLE_SEED_V1",
+    "sample_count": 5,
+    "minimum_history_records": 120,
+}
 
 
 def _is_relative_to(path: Path, parent: Path) -> bool:
@@ -31,6 +39,46 @@ def _is_relative_to(path: Path, parent: Path) -> bool:
         return True
     except ValueError:
         return False
+
+
+def _sample_board(security_id: str) -> str:
+    exchange, code = security_id.split(".", 1)
+    if exchange == "BJ": return "BEIJING"
+    if exchange == "SH" and code.startswith(("688", "689")): return "STAR"
+    if exchange == "SZ" and code.startswith(("300", "301")): return "CHINEXT"
+    if exchange == "SH": return "MAIN_SH"
+    if exchange == "SZ": return "MAIN_SZ"
+    return "OTHER"
+
+
+def select_edge_samples(valid_results, current_universe, selected_date):
+    current = set(map(str, current_universe))
+    eligible = [item for item in valid_results if item["security_id"] in current
+                and item.get("last_date") == selected_date
+                and item.get("record_count", 0) >= EDGE_SAMPLE_CONTRACT["minimum_history_records"]]
+    ranked = [{"item": item, "board": _sample_board(item["security_id"]),
+               "stable_hash": sha256(f"{item['security_id']}|{EDGE_SAMPLE_CONTRACT['seed']}".encode("utf-8")).hexdigest()}
+              for item in eligible]
+    by_board = {}
+    for row in ranked:
+        by_board.setdefault(row["board"], []).append(row)
+    for rows in by_board.values():
+        rows.sort(key=lambda row: (row["stable_hash"], row["item"]["security_id"]))
+    selected = [rows[0] for _, rows in sorted(by_board.items()) if rows][:EDGE_SAMPLE_CONTRACT["sample_count"]]
+    selected_ids = {row["item"]["security_id"] for row in selected}
+    for row in sorted(ranked, key=lambda item: (item["stable_hash"], item["item"]["security_id"])):
+        if len(selected) >= EDGE_SAMPLE_CONTRACT["sample_count"]:
+            break
+        if row["item"]["security_id"] not in selected_ids:
+            selected.append(row)
+            selected_ids.add(row["item"]["security_id"])
+    payload = [{"security_id": row["item"]["security_id"], "board": row["board"],
+                "stable_hash_sha256": row["stable_hash"],
+                "selection_reason": "CURRENT_UNIVERSE_VALID_ACTUAL_BAR_AND_HISTORY"} for row in selected]
+    receipt = {**EDGE_SAMPLE_CONTRACT, "eligible_count": len(eligible), "selected_count": len(payload),
+               "selected": payload, "selection_digest_sha256": sha256(
+                   json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")).hexdigest()}
+    return [row["item"] for row in selected], receipt
 
 
 def atomic_write_json(path: Path, payload: dict, forbidden_root: Path) -> None:
@@ -180,7 +228,7 @@ def run_audit(tdx_root: Path, output: Path, requested_root: str | None = None) -
     latest = determine_latest_trade_date(valid_results, expected_ids)
     selected_date = latest["selected_date"]
     index_dates = {}
-    for index_id in ("SH.000001", "SZ.399001"):
+    for index_id in market_session_reference_identifiers():
         item = day_by_id.get(index_id)
         if item and item.get("last_date"):
             index_dates[index_id] = item["last_date"]
@@ -239,11 +287,10 @@ def run_audit(tdx_root: Path, output: Path, requested_root: str | None = None) -
             )
     adjustment_map = parse_gbbq_map(cache / "gbbq.map") if (cache / "gbbq.map").is_file() else None
 
+    edge_sample_items, edge_sample_selection = select_edge_samples(valid_results, expected_ids, selected_date)
     samples = []
-    for security_id in ("SH.600000", "SZ.000001", "SZ.300750", "SH.688001"):
-        item = day_by_id.get(security_id)
-        if not item:
-            continue
+    for item in edge_sample_items:
+        security_id = item["security_id"]
         path = Path(item["path"])
         first, last = read_edge_records(path)
         samples.append(
@@ -254,18 +301,6 @@ def run_audit(tdx_root: Path, output: Path, requested_root: str | None = None) -
                 "last": record_as_dict(last),
             }
         )
-    bj_sample = next((item for item in valid_results if item["market"] == "BJ" and item["security_id"] in expected_ids), None)
-    if bj_sample:
-        first, last = read_edge_records(Path(bj_sample["path"]))
-        samples.append(
-            {
-                "security_id": bj_sample["security_id"],
-                "name": tnf_names.get(bj_sample["security_id"]),
-                "first": record_as_dict(first),
-                "last": record_as_dict(last),
-            }
-        )
-
     if not day_paths:
         errors.append("No .day files found in sh/sz/bj lday directories.")
     if invalid_results:
@@ -349,6 +384,7 @@ def run_audit(tdx_root: Path, output: Path, requested_root: str | None = None) -
             "invalid_file_samples": invalid_results[:50],
             "raw_source_manifest_sha256": raw_manifest_fingerprint(day_paths),
             "edge_record_samples": samples,
+            "edge_record_sample_selection": edge_sample_selection,
         },
         "latest_trade_date_contract": latest,
         "security_master": {

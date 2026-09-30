@@ -52,7 +52,7 @@ def atomic_json(path: Path, value: dict) -> None:
 def code_scan() -> dict:
     files = list((ROOT / "src/workbench_analysis").rglob("*.py"))
     files += list((ROOT / "scripts").glob("build_v4_02*.py"))
-    forbidden = re.compile(r"(?:SZ|SH)\.\d{6}|SEC-EDEDE35FE66896ACCA0AC85EEB2F133B|SEC-B2F87F189D1D143B67730E3640E617CA")
+    forbidden = re.compile(r"(?:SZ|SH)\.\d{6}|SEC-[A-F0-9]{16,}")
     hits = [rel(path) for path in files if forbidden.search(path.read_text(encoding="utf-8"))]
     return {"scanned_files": len(files), "identifier_hits": hits, "status": "PASS" if not hits else "FAIL"}
 

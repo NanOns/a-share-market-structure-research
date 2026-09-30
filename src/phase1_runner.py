@@ -15,6 +15,7 @@ import pyarrow as pa
 import pyarrow.parquet as pq
 
 from adjustment.tdx_adjustment import xrxd_from_gbbq
+from common.market_reference import market_session_reference_file_parts
 from tdx.gbbq_reader import read_gbbq, file_sha256
 from tdx.security_master import read_industry_assignments, current_a_stock_ids, classify_security
 from normalize.phase1 import normalize, DAY_DTYPE
@@ -23,7 +24,79 @@ from factors.registry import REGISTRY, NAMES, VERSION
 from factors.engine import calculate, add_rs
 from validation.phase0_2b import atomic, encoded
 
-SAMPLES=('SH.600519','SZ.000001','SZ.000651','SZ.300750','SH.688001')
+QA_SAMPLE_CONTRACT = {
+    'selection_contract_id': 'PHASE1_QA_SAMPLE_SELECTION_V1',
+    'version': '1.0.0',
+    'seed': 'V0.3_PHASE1_QA_SAMPLE_SEED_V1',
+    'sample_count': 5,
+    'minimum_history_bars': 121,
+    'minimum_recent_bar_coverage': 0.75,
+}
+
+
+def _qa_board(security_id):
+    exchange, code = str(security_id).split('.', 1)
+    if exchange == 'BJ': return 'BEIJING'
+    if exchange == 'SH' and code.startswith(('688', '689')): return 'STAR'
+    if exchange == 'SZ' and code.startswith(('300', '301')): return 'CHINEXT'
+    if exchange == 'SH': return 'MAIN_SH'
+    if exchange == 'SZ': return 'MAIN_SZ'
+    return 'OTHER'
+
+
+def select_qa_samples(metadata, current_universe, cutoff):
+    """Pick deterministic QA reproductions from eligible current-universe bars."""
+    current = set(map(str, current_universe))
+    eligible = []
+    for item in metadata:
+        sid = str(item.get('security_id', ''))
+        recent_count = int(item.get('recent_valid_bar_count', 0))
+        recent_window = max(1, min(20, int(item.get('aligned_rows', 0))))
+        if (sid in current and item.get('normal') is True and item.get('anchor') == int(cutoff)
+                and int(item.get('input_bar_count', 0)) >= QA_SAMPLE_CONTRACT['minimum_history_bars']
+                and recent_count / recent_window >= QA_SAMPLE_CONTRACT['minimum_recent_bar_coverage']):
+            board = _qa_board(sid)
+            rank = hashlib.sha256(f"{sid}|{QA_SAMPLE_CONTRACT['seed']}".encode('utf-8')).hexdigest()
+            eligible.append({'security_id': sid, 'board': board, 'stable_rank_sha256': rank,
+                             'selection_reason': 'CURRENT_UNIVERSE_ACTUAL_CUTOFF_BAR_HISTORY_QUALITY'})
+    by_board = defaultdict(list)
+    for item in eligible:
+        by_board[item['board']].append(item)
+    for rows in by_board.values():
+        rows.sort(key=lambda item: (item['stable_rank_sha256'], item['security_id']))
+    selected = []
+    for board in ('MAIN_SH', 'MAIN_SZ', 'STAR', 'CHINEXT', 'BEIJING', 'OTHER'):
+        if by_board.get(board):
+            selected.append(by_board[board][0])
+    already = {item['security_id'] for item in selected}
+    ranked = sorted(eligible, key=lambda item: (item['stable_rank_sha256'], item['security_id']))
+    for item in ranked:
+        if len(selected) >= QA_SAMPLE_CONTRACT['sample_count']:
+            break
+        if item['security_id'] not in already:
+            selected.append(item)
+            already.add(item['security_id'])
+    selected = selected[:QA_SAMPLE_CONTRACT['sample_count']]
+    payload = encoded({'selection_contract_id': QA_SAMPLE_CONTRACT['selection_contract_id'],
+                       'version': QA_SAMPLE_CONTRACT['version'], 'seed': QA_SAMPLE_CONTRACT['seed'],
+                       'cutoff_date': int(cutoff), 'eligible_count': len(eligible),
+                       'selected': selected})
+    return {
+        'selection_contract_id': QA_SAMPLE_CONTRACT['selection_contract_id'],
+        'version': QA_SAMPLE_CONTRACT['version'], 'seed': QA_SAMPLE_CONTRACT['seed'],
+        'cutoff_date': int(cutoff), 'eligible_count': len(eligible),
+        'selected_count': len(selected), 'selected': selected,
+        'selection_digest_sha256': hashlib.sha256(payload).hexdigest(),
+        'eligibility': ['IN_CURRENT_ACCEPTED_UNIVERSE', 'ACTUAL_BAR_AT_CUTOFF',
+                        'AT_LEAST_121_ACTUAL_HISTORY_BARS', 'AT_LEAST_75_PERCENT_VALID_BARS_IN_RECENT_20_SESSIONS'],
+        'selection': 'BOARD_STRATIFIED_THEN_LOWEST_STABLE_SHA256(security_id + contract_seed)',
+    }
+
+
+def factor_frame_digest(frame):
+    canonical = frame.sort_values(['security_id', 'date']).to_json(
+        orient='records', date_format='iso', double_precision=15, force_ascii=False)
+    return hashlib.sha256(canonical.encode('utf-8')).hexdigest()
 
 
 def write_parquet(path,table,tdx):
@@ -111,7 +184,7 @@ def run(root,tdx,requested='latest',resolved_cutoff_date=None):
     # Future daily extension uses local index DATES only, never index prices.
     if cutoff>sessions[-1] and resolved_cutoff_date is None:
         extra=set()
-        for market,code in [('sh','000001'),('sz','399001')]:
+        for market,code in market_session_reference_file_parts():
             p=tdx/'vipdoc'/market/'lday'/f'{market}{code}.day'
             raw=p.read_bytes(); sources[str(p)]=hashlib.sha256(raw).hexdigest()
             ds=np.frombuffer(raw,dtype=DAY_DTYPE)['date']
@@ -165,13 +238,23 @@ def run(root,tdx,requested='latest',resolved_cutoff_date=None):
         values,_=calculate(context,cutoff=cutoff)
         latest.append({'security_id':sid,'date':cutoff,'universe_status':'IN_NORMAL_UNIVERSE' if stats['normal'] else 'OUTSIDE_NORMAL_UNIVERSE',**values})
         metadata.append(stats)
-        if sid in SAMPLES: contexts[sid]=context
         if (i+1)%250==0: print(f'Normalized {i+1}/{len(paths)}; cached={reused}',flush=True)
     writer.close()
     frame=add_rs(pd.DataFrame(latest))
     frame['price_basis']='TDX_NATIVE_QFQ'; frame['project_price_basis']='FORWARD_ADJUSTED'
     frame['adjustment_identity']='TDX_NATIVE_AFFINE_QFQ'
     frame['date']=pd.to_datetime(frame.date.astype(str),format='%Y%m%d').dt.date
+    factor_digest_before_sample_selection=factor_frame_digest(frame)
+    sample_selection=select_qa_samples(metadata,current,cutoff)
+    factor_digest_after_selector=factor_frame_digest(frame)
+    if factor_digest_before_sample_selection!=factor_digest_after_selector:
+        raise ValueError('PHASE1_QA_SAMPLE_SELECTOR_MUTATED_FACTOR_FRAME')
+    sample_selection['factor_outputs_before_selector_sha256']=factor_digest_before_sample_selection
+    sample_selection['factor_outputs_after_selector_sha256']=factor_digest_after_selector
+    sample_selection['factor_outputs_unchanged']=factor_digest_before_sample_selection==factor_digest_after_selector
+    for sample in sample_selection['selected']:
+        context_path=cache/f"{sample['security_id']}.context.parquet"
+        contexts[sample['security_id']]=pq.read_table(context_path).to_pandas()
     factors.parent.mkdir(parents=True,exist_ok=True)
     factor_staged=factors.with_name(f'.factors_daily.{generation}.tmp')
     # Preserve previously sealed daily snapshots, never synthesize historical membership.
@@ -192,13 +275,18 @@ def run(root,tdx,requested='latest',resolved_cutoff_date=None):
     assert all(not np.isinf(actual[n].to_numpy(dtype=float)).any() for n in NAMES)
     assert actual[NAMES].equals(frame[NAMES])
     from phase1_qa import audit_outputs
-    qa=audit_outputs(root,tdx,frame,contexts,cutoff,metadata)
+    qa=audit_outputs(root,tdx,frame,contexts,cutoff,metadata,sample_selection)
+    factor_digest_after_qa=factor_frame_digest(frame)
+    if factor_digest_before_sample_selection!=factor_digest_after_qa:
+        raise ValueError('PHASE1_QA_SAMPLE_SELECTION_CHANGED_FACTOR_OUTPUTS')
     tests=subprocess.run([sys.executable,'-m','pytest','-q','tests/phase1'],cwd=root,capture_output=True,text=True)
     if tests.returncode: raise RuntimeError(tests.stdout+tests.stderr)
     for tmp in (staged,factor_staged):
         with tmp.open('r+b') as f: os.fsync(f.fileno())
     adjusted_hash=file_sha256(staged); factor_hash=file_sha256(factor_staged)
     normal=sum(m['normal'] for m in metadata)
+    sample_selection['factor_outputs_after_qa_sha256']=factor_digest_after_qa
+    sample_selection['factor_outputs_unchanged']=factor_digest_before_sample_selection==factor_digest_after_qa
     norm_audit={'cutoff_date':cutoff,'calendar_version':'master-trading-calendar-v0.1','calendar_hash':calendar_hash,
         'input_security_count':len(paths),'normal_universe_count':normal,'input_bar_count':sum(m['input_bar_count'] for m in metadata),
         'output_aligned_row_count':sum(m['aligned_rows'] for m in metadata),'qfq_status':'VERIFIED_REPRODUCIBLE_TDX_NATIVE',
@@ -223,6 +311,7 @@ def run(root,tdx,requested='latest',resolved_cutoff_date=None):
         'nonpositive_qfq_rows':norm_audit['nonpositive_qfq_row_count'],'synthetic_fill_rows':norm_audit['synthetic_fill_count'],
         'rs_benchmark':'NORMAL_UNIVERSE_MEDIAN','index_ohlc_used':False,'tests_passed':int(tests.stdout.split(' passed')[0].split()[-1]),'tests_failed':0,
         'test_output':tests.stdout,'tdx_source_unchanged':unchanged,'network_requests':0,'release_checks':checks,
+        'qa_sample_selection':sample_selection,
         'warnings':['Initial factor dataset contains latest cutoff only; no historical PIT membership inferred',
                     'High/low factors are NULL in windows containing synthetic suspension rows',
                     'Single-file daily publication may rewrite Parquet bytes; cache avoids unchanged-symbol adjustment work at unchanged cutoff'],
@@ -235,7 +324,7 @@ Status: {status}. Cutoff: {cutoff}. TDX_NATIVE_QFQ / FORWARD_ADJUSTED.
 
 Normalized {norm_audit['input_bar_count']} actual bars for {len(paths)} A-share identities into {norm_audit['output_aligned_row_count']} calendar-aligned rows. Latest NORMAL_UNIVERSE={normal}. Synthetic suspension rows={norm_audit['synthetic_fill_count']}; raw OHLC/volume/amount are NULL on derived rows and untouched on actual rows. Nonpositive actual QFQ closes={norm_audit['nonpositive_qfq_row_count']}; these only null relevant ratio/log windows, not the entire security.
 
-Implemented all 29 contracted fields, including baseline AMOUNT_RATIO20 and RETURN_CONCENTRATION_20. Pending factors=0. RS uses each horizon's valid same-date NORMAL_UNIVERSE median (threshold100), never index prices. Every factor emits valid count and quality flags. Distribution CSV includes latest normal counts/null ratios/quantiles; sample calculations independently reproduce five required securities.
+Implemented all 29 contracted fields, including baseline AMOUNT_RATIO20 and RETURN_CONCENTRATION_20. Pending factors=0. RS uses each horizon's valid same-date NORMAL_UNIVERSE median (threshold100), never index prices. Every factor emits valid count and quality flags. Distribution CSV includes latest normal counts/null ratios/quantiles; sample calculations use the versioned, deterministic board-stratified Phase1 QA selector.
 
 The first factors_daily build intentionally publishes only {cutoff}, with CALCULATED and IN/OUTSIDE_NORMAL_UNIVERSE separated. Normalized historical QFQ uses the cutoff snapshot; it is not historical point-in-time information. Current membership is used only at output t. Daily snapshots can append; historical --date is prohibited. This prevents retrospective membership or future-event leakage into historical factor rows.
 

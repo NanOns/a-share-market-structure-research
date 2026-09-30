@@ -32,14 +32,66 @@ from tdx.tdx_audit import raw_manifest_fingerprint, snapshot_day_files
 REFERENCE_REPOSITORY = "https://github.com/injoyai/tdx"
 CONTRACT_VERSION = "adjustment-contract-v0.2"
 BASELINE_VERSION = "V0.3_FINAL_IMPLEMENTATION_BASELINE"
-REQUIRED_SECURITIES = ("SH.600519", "SZ.000651", "SZ.000001")
-MANUAL_TARGETS = (
-    ("SH.600519", 20250625, "CASH_DIVIDEND", "event 20250626 cash 276.73/10"),
-    ("SZ.000651", 20150702, "BONUS_TRANSFER_AND_CASH", "event 20150703 transfer 10 + cash 30/10"),
-    ("SZ.000651", 20000803, "RIGHTS_ISSUE", "event 20000804 rights 3/10 at CNY 14"),
-    ("SH.600519", 20060425, "COMPOUND_SUSPENSION", "events 20060519 and 20060524 in one gap"),
-    ("SZ.000001", 20260611, "RECENT_ORDINARY", "event 20260612 cash 3.60/10"),
-)
+PHASE0_SAMPLE_CONTRACT = {
+    "selection_contract_id": "PHASE0_QFQ_EVENT_SAMPLE_SELECTION_V1",
+    "version": "1.0.0",
+    "seed": "PHASE0_QFQ_EVENT_SAMPLE_SEED_V1",
+    "sample_count": 5,
+}
+
+
+def _event_sample_type(event):
+    if event.rights_ratio_per_10 > 0 and event.rights_price > 0:
+        return "RIGHTS_ISSUE"
+    if event.bonus_transfer_per_10 > 0 and event.cash_dividend_per_10 > 0:
+        return "BONUS_TRANSFER_AND_CASH"
+    if event.bonus_transfer_per_10 > 0:
+        return "BONUS_TRANSFER"
+    if event.cash_dividend_per_10 > 0:
+        return "CASH_DIVIDEND"
+    return "OTHER_XRXD"
+
+
+def select_phase0_manual_targets(by_security, tdx_root, latest_date):
+    """Choose reproducible pre-event rows from available local lifecycle facts."""
+    ranked = []
+    for security_id, events in by_security.items():
+        day_path = _day_path(tdx_root, security_id)
+        if not day_path.is_file():
+            continue
+        for event in events:
+            if event.ex_day > int(latest_date):
+                continue
+            kind = _event_sample_type(event)
+            rank = sha256(f"{security_id}|{event.ex_day}|{event.source_record_index}|{PHASE0_SAMPLE_CONTRACT['seed']}".encode()).hexdigest()
+            ranked.append((rank, security_id, event, kind, day_path))
+    preferred = ("RIGHTS_ISSUE", "BONUS_TRANSFER_AND_CASH", "BONUS_TRANSFER", "CASH_DIVIDEND", "OTHER_XRXD")
+    selected = []
+    seen = set()
+    for kind in preferred:
+        candidates = sorted((item for item in ranked if item[3] == kind), key=lambda item: (item[0], item[1], item[2].ex_day))
+        for _, security_id, event, _, path in candidates:
+            if len(selected) >= PHASE0_SAMPLE_CONTRACT["sample_count"]:
+                break
+            rows = _read_day_rows(path)
+            previous = [row["trade_date"] for row in rows if row["trade_date"] < event.ex_day]
+            if not previous:
+                continue
+            trade_date = previous[-1]
+            key = (security_id, trade_date)
+            if key in seen:
+                continue
+            selected.append({"security_id": security_id, "date": trade_date, "sample_type": kind,
+                             "event_ex_day": event.ex_day, "source_record_index": event.source_record_index,
+                             "event_context": f"local lifecycle event effective {event.ex_day}",
+                             "selection_rank_sha256": sha256(f"{security_id}|{trade_date}|{PHASE0_SAMPLE_CONTRACT['seed']}".encode()).hexdigest(),
+                             "selection_reason": "ELIGIBLE_LOCAL_EVENT_AND_PRE_EVENT_ACTUAL_BAR"})
+            seen.add(key)
+            break
+        if len(selected) >= PHASE0_SAMPLE_CONTRACT["sample_count"]:
+            break
+    selected.sort(key=lambda item: (item["selection_rank_sha256"], item["security_id"], item["date"]))
+    return selected
 
 
 def _day_path(tdx_root: Path, security_id: str) -> Path:
@@ -146,32 +198,27 @@ def _series_validation(security_id: str, rows: list[dict], events) -> tuple[dict
     return checks, adjusted_by_date
 
 
-def _selected_event_samples(by_security: dict[str, list], records: list[GbbqRecord], latest_date: int) -> dict:
-    required: dict[str, dict] = {}
-    selectors = {
-        "SH.600519": {20060519, 20060524, 20250626, 20260626},
-        "SZ.000651": {19980421, 20000804, 20150703, 20260827},
-        "SZ.000001": {19900301, 20250612, 20260612},
-    }
-    for security_id in REQUIRED_SECURITIES:
-        events = by_security[security_id]
-        required[security_id] = {
-            "total_xrxd_event_count": len(events),
-            "selected_events": [event.as_dict() for event in events if event.ex_day in selectors[security_id]],
-        }
+def _selected_event_samples(by_security: dict[str, list], records: list[GbbqRecord], latest_date: int, targets: list[dict]) -> dict:
+    selected = {}
+    for target in targets:
+        security_id = target["security_id"]
+        events = by_security.get(security_id, [])
+        selected.setdefault(security_id, {"total_xrxd_event_count": len(events), "selected_events": []})
+        event = next((item for item in events if item.ex_day == target["event_ex_day"]
+                      and item.source_record_index == target["source_record_index"]), None)
+        if event is not None and event.as_dict() not in selected[security_id]["selected_events"]:
+            selected[security_id]["selected_events"].append(event.as_dict())
 
-    recent_candidates = []
-    for security_id, events in by_security.items():
-        effective = [event for event in events if event.ex_day <= latest_date]
-        if security_id not in REQUIRED_SECURITIES and effective:
-            recent_candidates.append(effective[-1])
-    recent_candidates.sort(key=lambda event: (event.ex_day, event.security_id), reverse=True)
-    additional = [event.as_dict() for event in recent_candidates[:5]]
+    recent_candidates = [event for events in by_security.values() for event in events if event.ex_day <= latest_date]
+    recent_candidates.sort(key=lambda event: (sha256(f"{event.security_id}|{event.ex_day}|{PHASE0_SAMPLE_CONTRACT['seed']}".encode()).hexdigest(), event.security_id))
+    additional = [event.as_dict() for event in recent_candidates[:PHASE0_SAMPLE_CONTRACT["sample_count"]]]
     category_15 = [record.as_dict(explicit_xrxd=False) for record in records if record.category == 15][:10]
     return {
-        "schema_version": "gbbq-event-samples-v0.2",
+        "schema_version": "gbbq-event-samples-v0.3",
+        "selection_contract_id": PHASE0_SAMPLE_CONTRACT["selection_contract_id"],
+        "selection_seed": PHASE0_SAMPLE_CONTRACT["seed"],
         "source": "LOCAL_TDX_GBBQ_ONLY",
-        "required_securities": required,
+        "selected_securities": selected,
         "additional_recent_effective_xrxd_samples": additional,
         "unknown_category_15_sample_count": len(category_15),
         "unknown_category_15_samples": category_15,
@@ -321,10 +368,12 @@ def run_phase0_2(project_root: Path, tdx_root: Path) -> dict:
         events.sort(key=lambda event: (event.ex_day, event.source_record_index))
 
     latest_date = phase0["daily_data"]["latest_trade_date"]
-    event_samples = _selected_event_samples(by_security, records, latest_date)
+    manual_targets = select_phase0_manual_targets(by_security, tdx_root, latest_date)
+    event_samples = _selected_event_samples(by_security, records, latest_date, manual_targets)
     validations = []
     adjusted_maps: dict[str, dict[int, dict]] = {}
-    for security_id in REQUIRED_SECURITIES:
+    selected_security_ids = sorted({item["security_id"] for item in manual_targets})
+    for security_id in selected_security_ids:
         path = _day_path(tdx_root, security_id)
         rows = _read_day_rows(path)
         validation, adjusted = _series_validation(security_id, rows, by_security[security_id])
@@ -333,21 +382,22 @@ def run_phase0_2(project_root: Path, tdx_root: Path) -> dict:
         adjusted_maps[security_id] = adjusted
 
     manual_samples = []
-    for security_id, trade_date, sample_type, context in MANUAL_TARGETS:
-        sample = dict(adjusted_maps[security_id][trade_date])
-        sample.update({"sample_type": sample_type, "event_context": context})
+    for target in manual_targets:
+        sample = dict(adjusted_maps[target["security_id"]][target["date"]])
+        sample.update({"sample_type": target["sample_type"], "event_context": target["event_context"]})
         manual_samples.append(sample)
 
     cash_samples = [event.as_dict() for events in by_security.values() for event in events if event.cash_dividend_per_10 > 0 and event.bonus_transfer_per_10 == 0 and event.rights_ratio_per_10 == 0][:5]
     bonus_samples = [event.as_dict() for events in by_security.values() for event in events if event.bonus_transfer_per_10 > 0][:5]
     rights_samples = [event.as_dict() for events in by_security.values() for event in events if event.rights_ratio_per_10 > 0 and event.rights_price > 0][:5]
     future_samples = [event.as_dict() for events in by_security.values() for event in events if event.ex_day > latest_date][:5]
-    compound_samples = [
-        event.as_dict()
-        for event in by_security["SH.600519"]
-        if event.ex_day in {20060519, 20060524}
-    ]
-    local_pass = all(item["status"] == "PASS" for item in validations)
+    compound_samples = []
+    for events in by_security.values():
+        for left, right in zip(events, events[1:]):
+            if 0 < right.ex_day - left.ex_day <= 5:
+                compound_samples.extend((left.as_dict(), right.as_dict()))
+    compound_samples = compound_samples[:10]
+    local_pass = bool(validations) and all(item["status"] == "PASS" for item in validations)
 
     tests = subprocess.run(
         [sys.executable, "-m", "pytest", "-q"],
@@ -365,7 +415,15 @@ def run_phase0_2(project_root: Path, tdx_root: Path) -> dict:
     tests_failed = int(failed_match.group(1)) if failed_match else (0 if tests.returncode == 0 else 1)
 
     qfq_validation = {
-        "schema_version": "qfq-validation-v0.2",
+        "schema_version": "qfq-validation-v0.3",
+        "sample_selection": {
+            **PHASE0_SAMPLE_CONTRACT,
+            "eligible_event_count": sum(len(events) for events in by_security.values()),
+            "selected_count": len(manual_targets),
+            "selected": manual_targets,
+            "selection_digest_sha256": sha256(json.dumps(manual_targets, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")).hexdigest(),
+            "selection": "event-type-stratified with stable SHA256(security_id + event_date + source_record_index + seed)",
+        },
         "sample_count": len(manual_samples),
         "cash_dividend_samples": cash_samples,
         "bonus_transfer_samples": bonus_samples,
@@ -379,18 +437,12 @@ def run_phase0_2(project_root: Path, tdx_root: Path) -> dict:
         "manual_ui_failed": False,
         "manual_samples": manual_samples,
         "local_security_validations": validations,
-        "known_exceptions": [
-            {
-                "security_id": "SH.600519",
-                "date": 20060526,
-                "field": "open",
-                "reference_algorithm": -260.97,
-                "reference_tdx_ui": -260.98,
-                "difference": 0.01,
-                "policy": "RECORDED_NO_HARDCODE_PATCH",
-                "source": "audited reference commit",
-            }
-        ],
+        "known_exception_evidence": {
+            "path": "docs/evidence/PHASE0_QFQ_KNOWN_EXCEPTION_V1.json",
+            "sha256": sha256((project_root / "docs/evidence/PHASE0_QFQ_KNOWN_EXCEPTION_V1.json").read_bytes()).hexdigest(),
+            "runtime_authorized": False,
+            "used_by_acceptance_gate": False,
+        },
         "amount_basis": "RAW_AMOUNT",
         "volume_basis": "RAW_VOLUME",
         "adjusted_dataset_emitted": False,
@@ -416,13 +468,16 @@ def run_phase0_2(project_root: Path, tdx_root: Path) -> dict:
     )
 
     decoder_pass = decode_audit["gbbq_parse_status"] == "PASS"
-    automated_pass = decoder_pass and local_pass and tests.returncode == 0 and source_unchanged
+    sample_selection_complete = len(manual_targets) == PHASE0_SAMPLE_CONTRACT["sample_count"]
+    automated_pass = decoder_pass and local_pass and sample_selection_complete and tests.returncode == 0 and source_unchanged
     final_status = "DEGRADED_PASS" if automated_pass else "BLOCKED_FOR_FORMAL_ADJUSTMENT"
     errors = []
     if not decoder_pass:
         errors.append("LOCAL_GBBQ_DECODE_FAILED")
     if not local_pass:
         errors.append("LOCAL_QFQ_VALIDATION_FAILED")
+    if not sample_selection_complete:
+        errors.append("GENERIC_QFQ_SAMPLE_SELECTION_INCOMPLETE")
     if tests.returncode:
         errors.append("PROJECT_TESTS_FAILED")
     if not source_unchanged:
@@ -430,7 +485,7 @@ def run_phase0_2(project_root: Path, tdx_root: Path) -> dict:
     warnings = [
         "Manual TongdaXin QFQ UI validation is NOT_CHECKED; formal adjusted prices remain disabled.",
         f"{decode_audit['unknown_category_count']} category=15 records are structurally valid but semantically undefined by the locked reference; retained and excluded from QFQ.",
-        "The upstream-documented isolated SH.600519 2006-05-26 open difference is recorded without a hard-coded patch.",
+        "A previously documented isolated 0.01 open-price difference remains in evidence only; no code patch is applied.",
     ]
     receipt = {
         "phase": "PHASE0.2",
@@ -558,7 +613,7 @@ This is the single-file audit handoff requested by the user. It summarizes the i
 
 These whole-file statistics, the coherent market byte, and exact known first record establish that the local decryption is functioning. No `gbbq.map` fallback was needed for identity because the decoded market byte is available.
 
-The first local record independently resolves to `SZ.000001 / 19900301 / category=1 / C2≈3.56 / C4=1.0`; this is asserted directly against the real encrypted bytes in `tests/test_gbbq_local_decode.py`.
+The first local record is independently decoded from the real encrypted bytes and checked in `tests/test_gbbq_local_decode.py`.
 
 ## Real decoded XRXD samples
 
@@ -566,7 +621,7 @@ The first local record independently resolves to `SZ.000001 / 19900301 / categor
 |---|---:|---:|---:|---:|---:|---:|
 {chr(10).join(event_rows)}
 
-The required SH.600519, SZ.000651, and SZ.000001 records plus five deterministic recent effective events are included. Full record indices and the ten-row category-15 sample are embedded in `GBBQ_EVENT_SAMPLES.json` below.
+The deterministic event-type-stratified sample and recent effective events are included. Full record indices and the ten-row category-15 sample are embedded in `GBBQ_EVENT_SAMPLES.json` below.
 
 ## XRXD and affine QFQ evidence
 
@@ -590,7 +645,7 @@ walk backward; while d < ex_day <= latest_trade_date:
 qfq_price = ROUND_HALF_UP(A * raw_price + B, 0.01)
 ```
 
-Reference-style regression coverage includes SH.600519's two-event 2006 suspension gap (including locked expected QFQ values), SZ.000651 rights/large-transfer cases, future-ex-day filtering, half-up boundaries, and HFQ derivation. Tests: **{tests_passed} passed, {tests_failed} failed**.
+Reference-style regression coverage includes compound event sequences, rights and transfer cases, future-ex-day filtering, half-up boundaries, and HFQ derivation. Tests: **{tests_passed} passed, {tests_failed} failed**.
 
 ```text
 {tests.stdout.strip()}

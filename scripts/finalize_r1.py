@@ -50,14 +50,14 @@ def run_tests():
         'stdout':result.stdout.strip(),'stderr':result.stderr.strip(),'junit_xml':'reports/r1/R1_FOCUSED_TESTS.xml'}
 
 
-def gap_audit():
+def gap_audit(security_id):
     rows=np.zeros(2,dtype=DAY_DTYPE);rows['date']=[20260901,20260903]
     for field in ('open','high','low','close'):rows[field]=[1000,1100]
     rows['volume']=[100,120];rows['amount']=[1000,1320]
     sessions=np.array([20260901,20260902,20260903])
-    inferred,ctx,stats=normalize('SH.600001',rows,sessions,[])
+    inferred,ctx,stats=normalize(security_id,rows,sessions,[])
     inferred_row=inferred.to_pandas().iloc[1]
-    confirmed,confirmed_ctx,confirmed_stats=normalize('SH.600001',rows,sessions,[],confirmed_suspension_dates={20260902})
+    confirmed,confirmed_ctx,confirmed_stats=normalize(security_id,rows,sessions,[],confirmed_suspension_dates={20260902})
     confirmed_row=confirmed.to_pandas().iloc[1]
     raw_fields=['raw_open','raw_high','raw_low','raw_close','raw_volume','raw_amount','adj_open','adj_high','adj_low','adj_close']
     inferred_pass=(inferred_row.missing_state=='INFERRED_GAP' and not inferred_row.is_synthetic_fill and
@@ -169,7 +169,10 @@ def main():
     spec_after={path:sha(ROOT/path) for path in protected}
     tests=run_tests();comp=computation_identity(ROOT);render=render_identity(ROOT)
     inputs=input_audit(source_before,comp,render,cutoff);revisions=revision_audit(inputs['sample_manifest'])
-    gaps=gap_audit();future=future_guard_audit()
+    fixture=json.loads((ROOT/'tests/fixtures/r1_gap_semantics_security_id.json').read_text(encoding='utf-8'))
+    if fixture.get('classification')!='TEST_ONLY' or fixture.get('runtime_authorized') is not False:
+        raise RuntimeError('R1_TEST_SECURITY_ID_FIXTURE_INVALID')
+    gaps=gap_audit(fixture['security_id']);future=future_guard_audit()
     source_after=source_fingerprint(ROOT,TDX,cutoff);material_after=tdx_hashes(TDX)
     before_id=source_identity(source_before);after_id=source_identity(source_after)
     stability_ok=assert_source_stable(before_id,after_id)

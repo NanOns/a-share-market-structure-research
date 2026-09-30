@@ -318,9 +318,10 @@ def compare_ohlc(local: dict, external: ExternalBar | None, tolerance: Decimal =
 
 def decide_phase0_2a_gate(
     *,
-    fixed_passed: int,
-    fixed_failed: int,
-    fixed_unverifiable: int,
+    sample_passed: int,
+    sample_failed: int,
+    sample_unverifiable: int,
+    sample_count: int,
     security_count: int,
     verified_points: int,
     match_ratio: float,
@@ -328,12 +329,13 @@ def decide_phase0_2a_gate(
     systematic_mismatch: bool,
     external_disagreement_count: int,
 ) -> str:
-    if fixed_failed or systematic_mismatch:
+    if sample_failed or systematic_mismatch:
         return "BLOCKED_FOR_FORMAL_ADJUSTMENT"
     if (
-        fixed_passed == 5
-        and fixed_failed == 0
-        and fixed_unverifiable == 0
+        sample_count == 5
+        and sample_passed == sample_count
+        and sample_failed == 0
+        and sample_unverifiable == 0
         and security_count >= 20
         and verified_points >= 50
         and match_ratio >= 0.95

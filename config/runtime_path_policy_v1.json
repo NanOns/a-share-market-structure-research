@@ -1,8 +1,45 @@
 {
   "policy_id": "NO_SYMBOL_SPECIFIC_RUNTIME_LOGIC",
-  "version": "1.0.0",
+  "version": "1.2.1",
   "status": "HARD_GATE",
-  "scan_roots": ["src", "scripts", "tests", "config", "run_daily.py", "run_workbench_service.py"],
+  "scan_roots": [
+    "src",
+    "scripts",
+    "tests",
+    "config",
+    "docs/evidence",
+    "reports/v4_08",
+    "reports/phase0",
+    "reports/phase0_1",
+    "reports/phase0_2",
+    "reports/phase0_2a",
+    "reports/phase0_2b",
+    "reports/phase0_2c",
+    "run_daily.py",
+    "run_workbench_service.py"
+  ],
+  "scan_globs": [
+    "data/focus/**/*.json",
+    "data/user/**/*.json",
+    "data/v4/V4_01_GO_FORWARD_IDENTITY_ACCEPTED_HEAD_R1.json",
+    "data/v4/V4_01_GO_FORWARD_IDENTITY_CANDIDATE_HEAD_R1.json",
+    "data/v4/artifact_store/v4_01/security_entity_map_GO_FORWARD_20260930_ACCEPTED_R1.json",
+    "data/v4/artifact_store/v4_01/security_entity_map_GO_FORWARD_20260930_R1.json",
+    "data/v4/artifact_store/v4_01/security_entity_map_R7_20260927.json",
+    "data/v4/source_evidence/v4_01/security_alias_board_repair_r7_contract_v1.json"
+  ],
+  "production_entrypoints": [
+    "src/production/daily.py",
+    "run_daily.py"
+  ],
+  "production_required_modules": [
+    "src/phase1_runner.py",
+    "src/phase1_qa.py",
+    "src/phase2_runner.py",
+    "src/phase3_runner.py",
+    "src/phase4_runner.py",
+    "src/phase5_runner.py"
+  ],
   "production_runtime_globs": [
     "run_daily.py",
     "run_workbench_service.py",
@@ -13,19 +50,37 @@
     "src/sector/**/*.py",
     "src/v4/**/*.py",
     "src/workbench_db/**/*.py",
-    "src/workbench_db/**/*.sql",
-    "src/**/*.py"
+    "src/workbench_db/**/*.sql"
   ],
-  "audit_only_globs": [
-    "src/phase*_runner.py",
-    "src/phase0_1_status.py",
-    "src/phase1_qa.py",
-    "src/upgrade_m*.py",
-    "src/tdx/tdx_audit.py",
-    "scripts/**/*.py"
+  "system_pipeline_globs": [
+    "src/*.py",
+    "src/**/*.py",
+    "src/**/*.sql",
+    "scripts/**/*.py",
+    "scripts/**/*.sql"
   ],
-  "test_only_globs": ["tests/**/*.py", "tests/fixtures/**"],
-  "evidence_only_globs": ["docs/evidence/*", "reports/v4_08/audit_inputs/*"],
+  "governance_mutation_globs": [
+    "scripts/promote_*.py",
+    "scripts/accept_*.py",
+    "scripts/materialize_*.py",
+    "scripts/apply_*.py",
+    "scripts/*accepted_head*.py",
+    "scripts/*publication*.py"
+  ],
+  "test_only_globs": [
+    "tests/**/*.py",
+    "tests/fixtures/**"
+  ],
+  "evidence_only_globs": [
+    "docs/evidence/**",
+    "reports/v4_08/**",
+    "reports/phase0/**",
+    "reports/phase0_1/**",
+    "reports/phase0_2/**",
+    "reports/phase0_2a/**",
+    "reports/phase0_2b/**",
+    "reports/phase0_2c/**"
+  ],
   "runtime_configuration_paths": [
     "config/runtime_path_policy_v1.json",
     "config/v4_market_reference_instruments_v1.json",
@@ -36,10 +91,381 @@
     "config/v4_08_rotation_core_contract_v2.json",
     "config/v4_08_algorithm_parameter_set_v1.json"
   ],
-  "contract_configuration_globs": ["config/**/*.json"],
-  "reference_data_paths": ["config/v4_market_reference_instruments_v1.json"],
-  "audit_evidence_paths": ["reports/v4_08/audit_inputs/**", "data/v4/source_evidence/**"],
-  "allowed_non_stock_roles": ["MARKET_INDEX"],
+  "contract_configuration_globs": [
+    "config/**/*.json"
+  ],
+  "reference_data_paths": [
+    "config/v4_market_reference_instruments_v1.json"
+  ],
+  "immutable_fact_globs": [
+    "data/v4/*.json",
+    "data/v4/artifact_store/**/*.json",
+    "data/v4/accepted/**/*.json"
+  ],
+  "user_data_globs": [
+    "data/user/**/*.json",
+    "data/focus/**/*.json"
+  ],
+  "path_roles": {
+    "config/v4_01_source_fingerprint_blind_labels_v1.json": {
+      "category": "AUDIT_INPUT_ONLY",
+      "runtime_authorized": false,
+      "purpose": "Frozen external-label input for bounded historical blind validation; not a trading or admission rule."
+    },
+    "scripts/audit_m13_reference_ladder_reconciliation.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Reviewed source and write destinations show this is a historical audit/probe that emits reports or external-evidence receipts; it is not called by production and does not write accepted heads or runtime artifacts.",
+      "reviewed_source_sha256": "06be7b25cd56b70996d4ddebc8692abb64ff8a8056e1387baf44ac43b79d7aa4",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/audit_v4_02_adjustment_real_samples.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Reviewed source and write destinations show this is a historical audit/probe that emits reports or external-evidence receipts; it is not called by production and does not write accepted heads or runtime artifacts.",
+      "reviewed_source_sha256": "b485f928684b8c5bcbc2408d35ac9f73a576377700059bb7f0f1611b50816004",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/audit_v4_02_temporal_leakage_replay.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Reviewed source and write destinations show this is a historical audit/probe that emits reports or external-evidence receipts; it is not called by production and does not write accepted heads or runtime artifacts.",
+      "reviewed_source_sha256": "3bb153034778a811751b793599d1b9c3b3baf4d4d90ba5c2579c70b7cc7089a2",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/build_v4_06_r2_candidate_evidence.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Reviewed source and write destinations show this is a historical audit/probe that emits reports or external-evidence receipts; it is not called by production and does not write accepted heads or runtime artifacts.",
+      "reviewed_source_sha256": "6f7612ad930a66e4d67bb243e60239d7c853df7bb6239506021a6b1ec0be680e",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/capture_v4_02_r4_official_sources.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Reviewed source and write destinations show this is a historical audit/probe that emits reports or external-evidence receipts; it is not called by production and does not write accepted heads or runtime artifacts.",
+      "reviewed_source_sha256": "18b1588e82b522a76eb546bb3dd3ca6f0ced62bba802623bbf2f48527a6c824e",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/finalize_r0.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Reviewed source and write destinations show this is a historical audit/probe that emits reports or external-evidence receipts; it is not called by production and does not write accepted heads or runtime artifacts.",
+      "reviewed_source_sha256": "b90c5d73ef1cc3b6a070e52c510dae550fbd9725bcd644d8ff45ae7f979102f2",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/freeze_v4_05_replay_matrix.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Reviewed source and write destinations show this is a historical audit/probe that emits reports or external-evidence receipts; it is not called by production and does not write accepted heads or runtime artifacts.",
+      "reviewed_source_sha256": "76ccd06afa9ce23490386ce339715340e3dbbc332bfd146c62e8c57117114955",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/independent_v4_01_r8_3_postcheck.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Reviewed source and write destinations show this is a historical audit/probe that emits reports or external-evidence receipts; it is not called by production and does not write accepted heads or runtime artifacts.",
+      "reviewed_source_sha256": "580c8491f69c548fd8278f9b809773ee3dda65040f65a85a21fae2a2e8a4520c",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/independent_v4_02_r3_postcheck.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Reviewed source and write destinations show this is a historical audit/probe that emits reports or external-evidence receipts; it is not called by production and does not write accepted heads or runtime artifacts.",
+      "reviewed_source_sha256": "b474cda12a4c3ab6c741a56c38c3dc626f60683cb1d416877a602b0ec94357f4",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/independent_v4_02_r4_postcheck.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Reviewed source and write destinations show this is a historical audit/probe that emits reports or external-evidence receipts; it is not called by production and does not write accepted heads or runtime artifacts.",
+      "reviewed_source_sha256": "f03bf63e2793daf6d1a9850d4770d90089a98f5aa797ed2b1e2b925eebb13ca9",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/p12_02_historical_input_pilot.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Reviewed source and write destinations show this is a historical audit/probe that emits reports or external-evidence receipts; it is not called by production and does not write accepted heads or runtime artifacts.",
+      "reviewed_source_sha256": "320973092b0888068f6d5db03605315384ffcbea11c34006a0fde471f7e26f38",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/p12_02_reanchor_pilot.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Reviewed source and write destinations show this is a historical audit/probe that emits reports or external-evidence receipts; it is not called by production and does not write accepted heads or runtime artifacts.",
+      "reviewed_source_sha256": "78a78b85756f7e59fbfb2d3d0e7e16d356dee3932c87a6b7e2ff688bbfe9daa7",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/p12_02_rps_population_pilot.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Reviewed source and write destinations show this is a historical audit/probe that emits reports or external-evidence receipts; it is not called by production and does not write accepted heads or runtime artifacts.",
+      "reviewed_source_sha256": "8714b80ce9741373f76c63693b4a7122822304f094849dbe45a99f3df2e6e668",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/pg_online_time_contract_rehearsal.py": {
+      "category": "TEST_ONLY",
+      "attestation_basis": "Reviewed source shows the only equity identifiers are isolated synthetic test inputs; no production entrypoint calls this test script.",
+      "reviewed_source_sha256": "c112e2dd3276dd693f91e688e6aa689ace29e67aa5b6c4dfe0b06ea0231fb06d"
+    },
+    "scripts/phase0_2b_event_probes.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Reviewed source and write destinations show this is a historical audit/probe that emits reports or external-evidence receipts; it is not called by production and does not write accepted heads or runtime artifacts.",
+      "reviewed_source_sha256": "77c032ddb71d709a5e636998f61ae8dc176d1fef571d99c0ede357929aa28b7f",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/postcheck_v4_02_go_forward_r2.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Reviewed source and write destinations show this is a historical audit/probe that emits reports or external-evidence receipts; it is not called by production and does not write accepted heads or runtime artifacts.",
+      "reviewed_source_sha256": "18395b0126f80f45550e151c569d98a8f72d6540cd6bdf74d6a8bda86cb5f1af",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/probe_focus_read_api.py": {
+      "category": "TEST_ONLY",
+      "attestation_basis": "Reviewed source shows the only equity identifiers are isolated synthetic test inputs; no production entrypoint calls this test script.",
+      "reviewed_source_sha256": "631bb9e2343a00c5eea375f005ae5a0049b1827939e00716fc769c7d73338808"
+    },
+    "scripts/probe_focus_source_model_boundary_e2e.py": {
+      "category": "TEST_ONLY",
+      "attestation_basis": "Reviewed source shows the only equity identifiers are isolated synthetic test inputs; no production entrypoint calls this test script.",
+      "reviewed_source_sha256": "28a9c8c53dbdece8bad7776dbd035f5549b230c400e3fc15089627a7c238fa41"
+    },
+    "scripts/probe_p09_01_b_ext11.py": {
+      "category": "TEST_ONLY",
+      "attestation_basis": "Reviewed source shows the only equity identifiers are isolated synthetic test inputs; no production entrypoint calls this test script.",
+      "reviewed_source_sha256": "d169286fbaaa4f4532b6113527af6377d71357f4645418ffc6c1a8b05551a6da"
+    },
+    "scripts/run_p12_15_source_retest.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Reviewed source and write destinations show this is a historical audit/probe that emits reports or external-evidence receipts; it is not called by production and does not write accepted heads or runtime artifacts.",
+      "reviewed_source_sha256": "022a7471081ae3d901e0a91f3b05a49c146731e5d875c34f0d6552de5dd932f8",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/run_p12_15_source_tests.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Reviewed source and write destinations show this is a historical audit/probe that emits reports or external-evidence receipts; it is not called by production and does not write accepted heads or runtime artifacts.",
+      "reviewed_source_sha256": "a3a5cb80027790af86f78b90bd9ba889ba9b694692e397f83ee377107f2e752a",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/run_v4_03_real_sample.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Reviewed source and write destinations show this is a historical audit/probe that emits reports or external-evidence receipts; it is not called by production and does not write accepted heads or runtime artifacts.",
+      "reviewed_source_sha256": "1c657936ece60296f5038efe0b98c2db7d056c113810a515485fb49ac3184ebd",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/run_v4_06_live_binding_probe.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Reviewed source and write destinations show this is a historical audit/probe that emits reports or external-evidence receipts; it is not called by production and does not write accepted heads or runtime artifacts.",
+      "reviewed_source_sha256": "faf3880f8affb387b5dcc67b17afa34fbead350ca013375e0bf082170ca2f7f0",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/run_v4_06_migration_acceptance.py": {
+      "category": "TEST_ONLY",
+      "attestation_basis": "Reviewed source shows the only equity identifiers are isolated synthetic test inputs; no production entrypoint calls this test script.",
+      "reviewed_source_sha256": "4a184b534835a1ef122234a9051408cf03b15a912a367fafbb875a81b1478528"
+    },
+    "scripts/run_v4_06_r2_migration_acceptance.py": {
+      "category": "TEST_ONLY",
+      "attestation_basis": "Reviewed source shows the only equity identifiers are isolated synthetic test inputs; no production entrypoint calls this test script.",
+      "reviewed_source_sha256": "f6e5a0457c03ac223b9fb1fb8ff7b71c4c4226e9564d5efd2f13939d9cd6d3ae"
+    },
+    "scripts/run_v4_08_r3_isolated_verification.py": {
+      "category": "TEST_ONLY",
+      "attestation_basis": "Reviewed source shows the only equity identifiers are isolated synthetic test inputs; no production entrypoint calls this test script.",
+      "reviewed_source_sha256": "2035c36403397e0c92c57c71864390c742051ca618311200a98dfa2bdec9e87c"
+    },
+    "scripts/seal_phase0_2a_offline.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Reviewed source and write destinations show this is a historical audit/probe that emits reports or external-evidence receipts; it is not called by production and does not write accepted heads or runtime artifacts.",
+      "reviewed_source_sha256": "f20389abb38e23a20b3a7db173163b560eee2be2286d5135821a6ff60020cea4",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/seal_phase0_2b.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Reviewed source and write destinations show this is a historical audit/probe that emits reports or external-evidence receipts; it is not called by production and does not write accepted heads or runtime artifacts.",
+      "reviewed_source_sha256": "bc4e05b7bda9824900bd1c65c93e06371b6e10f3cef2b0baa0ef49ff16462944",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/seal_v4_08_r3_stage.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Reviewed source and write destinations show this is a historical audit/probe that emits reports or external-evidence receipts; it is not called by production and does not write accepted heads or runtime artifacts.",
+      "reviewed_source_sha256": "d286d9614f2b307ecdbb00a1d6937cf16ecd10da474396ef99a31225930ba535",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/v4_baostock_b3_field_smoke.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Reviewed source and write destinations show this is a historical audit/probe that emits reports or external-evidence receipts; it is not called by production and does not write accepted heads or runtime artifacts.",
+      "reviewed_source_sha256": "8648f7f75b96339db38a023dbf267fbc3984b591359e8a2255b809ea934f6f33",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/v4_baostock_b4_runtime_measure.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Reviewed source and write destinations show this is a historical audit/probe that emits reports or external-evidence receipts; it is not called by production and does not write accepted heads or runtime artifacts.",
+      "reviewed_source_sha256": "54ba78403f611101e4f4a80193830e45f5f1ef3149d830e712233c443b98c634",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/v4_baostock_b5_supplement_bootstrap.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Reviewed source and write destinations show this is a historical audit/probe that emits reports or external-evidence receipts; it is not called by production and does not write accepted heads or runtime artifacts.",
+      "reviewed_source_sha256": "ecf268b366de5b5a0a28346abd17eaa3ce7200cc37c0c4311c37e13628749729",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/v4_baostock_b6_fingerprint_sample.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Reviewed source and write destinations show this is a historical audit/probe that emits reports or external-evidence receipts; it is not called by production and does not write accepted heads or runtime artifacts.",
+      "reviewed_source_sha256": "9f2eeb05a704d20bb5023521ebf30080809d13a72fbf176a7610d09d40567faf",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/v4_baostock_live_smoke.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Reviewed source and write destinations show this is a historical audit/probe that emits reports or external-evidence receipts; it is not called by production and does not write accepted heads or runtime artifacts.",
+      "reviewed_source_sha256": "dcf9cd07e943e675faeabc86b055319ac85eb898466b618ded68e1d1228c5fe2",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/v4_baostock_public_b0_093_probe.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Reviewed source and write destinations show this is a historical audit/probe that emits reports or external-evidence receipts; it is not called by production and does not write accepted heads or runtime artifacts.",
+      "reviewed_source_sha256": "9dbb417f2e3dff497f07da1f647cbe1ef7193e6f52974426e1a64ee0f003a0aa",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/v4_baostock_public_b1_093_probe.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Reviewed source and write destinations show this is a historical audit/probe that emits reports or external-evidence receipts; it is not called by production and does not write accepted heads or runtime artifacts.",
+      "reviewed_source_sha256": "0ea08cf5dc391e3f7f038d41350e16be85da684dba7835d6c09d6efcbf5c6f1c",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/v4_baostock_public_route_smoke.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Reviewed source and write destinations show this is a historical audit/probe that emits reports or external-evidence receipts; it is not called by production and does not write accepted heads or runtime artifacts.",
+      "reviewed_source_sha256": "ed634289958571b083a21deaf54d4a521c4bae5608472d8162029d12df383989",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/v4_baostock_r4_edge_case_probe.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Reviewed source and write destinations show this is a historical audit/probe that emits reports or external-evidence receipts; it is not called by production and does not write accepted heads or runtime artifacts.",
+      "reviewed_source_sha256": "aa0f73be5caa13f097b6bef2f317a460305ef5cca22800c0ba2870e57625c051",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/verify_p09_02_a_ext01_event_dto.py": {
+      "category": "TEST_ONLY",
+      "attestation_basis": "Reviewed source shows the only equity identifiers are isolated synthetic test inputs; no production entrypoint calls this test script.",
+      "reviewed_source_sha256": "46a04bbbc5138804e2262087e29d950884921e11774bbb91993fd9cfcbfa785e"
+    },
+    "scripts/verify_p09_03_ext01_ladder_evidence.py": {
+      "category": "TEST_ONLY",
+      "attestation_basis": "Reviewed source shows the only equity identifiers are isolated synthetic test inputs; no production entrypoint calls this test script.",
+      "reviewed_source_sha256": "39cf9d49c85efd8710c92c22657a4c54509dc7fe08a957e3b117e8d6bde058e4"
+    },
+    "scripts/verify_p11_01_final_acceptance.py": {
+      "category": "AUDIT_ONLY",
+      "attestation_basis": "Reviewed source and write destinations show this is a historical audit/probe that emits reports or external-evidence receipts; it is not called by production and does not write accepted heads or runtime artifacts.",
+      "reviewed_source_sha256": "7cdf62e411acdd8e6b315b503598cde7fd2167cf768f51843142b71c7e0d3898",
+      "runtime_authorized": false,
+      "does_not_write_accepted_heads": true,
+      "does_not_write_runtime_artifacts": true,
+      "not_called_by_production": true
+    },
+    "scripts/verify_v4_07_migration.py": {
+      "category": "TEST_ONLY",
+      "attestation_basis": "Reviewed source shows the only equity identifiers are isolated synthetic test inputs; no production entrypoint calls this test script.",
+      "reviewed_source_sha256": "c62e2308fa5e036c82d74e1906717c0c5a069be069201b6b1a93ecb7aab6f8bd"
+    },
+    "scripts/verify_v4_08_membership_migration.py": {
+      "category": "TEST_ONLY",
+      "attestation_basis": "Reviewed source shows the only equity identifiers are isolated synthetic test inputs; no production entrypoint calls this test script.",
+      "reviewed_source_sha256": "c36ac26d8e0f1c481b0459f0ffff17b28425a5f115d662bea40f0d1b77a319db"
+    }
+  },
+  "audit_evidence_paths": [
+    "reports/v4_08/audit_inputs/**",
+    "data/v4/source_evidence/**"
+  ],
+  "allowed_non_stock_roles": [
+    "MARKET_INDEX"
+  ],
   "allowed_reference_meaning": "Typed market benchmark reference-data rows may carry instrument identifiers. Application code must obtain them from this registry, and may not branch on a named equity.",
-  "unclassified_path_behavior": "FAIL_CLOSED"
+  "unclassified_path_behavior": "FAIL_CLOSED",
+  "scan_exclude_paths": [
+    "reports/v4_08/V4_08_R4_1_NO_SYMBOL_SPECIFIC_SYSTEM_LOGIC_SCAN.json"
+  ]
 }

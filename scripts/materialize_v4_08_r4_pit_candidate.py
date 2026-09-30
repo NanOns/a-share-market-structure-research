@@ -7,6 +7,7 @@ import hashlib
 import json
 from pathlib import Path
 import sys
+import argparse
 from zoneinfo import ZoneInfo
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'src'));sys.path.insert(0,str(ROOT/'scripts'))
@@ -34,11 +35,18 @@ def write_immutable(path,data):
     if full.exists():
         if full.read_bytes()!=data:raise ValueError('APPEND_ONLY_R4_ARTIFACT_ALREADY_EXISTS_WITH_DIFFERENT_BYTES:'+path)
     else:atomic_bytes(full,data)
-def accepted_identity_lookup():
+def accepted_identity_lookup(identity_input=None):
     head=read('data/v4/V4_01_GO_FORWARD_IDENTITY_ACCEPTED_HEAD_R1.json')
-    revision=read(head['identity_revision']['path'])
+    input_path=identity_input or head['identity_revision']['path']
+    revision=read(input_path)
     if head['status']!='ACCEPTED' or sha((ROOT/head['identity_revision']['path']).read_bytes())!=head['identity_revision']['sha256']:
         raise ValueError('ACCEPTED_IDENTITY_HEAD_INVALID')
+    if identity_input:
+        equivalence=read('reports/v4_08/V4_08_R4_1_GENERIC_IDENTITY_PROMOTION_EQUIVALENCE.json')
+        if equivalence.get('status')!='PASS_CURRENT_IDENTITY_PROMOTION_DATA_SALVAGED':
+            raise ValueError('GENERIC_IDENTITY_PROMOTION_EQUIVALENCE_NOT_PASSED')
+        if sha((ROOT/input_path).read_bytes())!=head['identity_revision']['sha256'] or equivalence.get('generic_accepted_identity_sha256')!=sha((ROOT/input_path).read_bytes()):
+            raise ValueError('GENERIC_IDENTITY_REPLAY_DIFFERS_FROM_ACCEPTED_IDENTITY')
     records={}
     parent_count=len(read(revision['parent_identity']['path'])['records'])
     for index,record in enumerate(revision['records']):
@@ -46,15 +54,15 @@ def accepted_identity_lookup():
         if index<parent_count:item['acceptance']='ACCEPTED'
         if item['source_security_key'] in records:raise ValueError('DUPLICATE_ACCEPTED_IDENTITY_KEY')
         records[item['source_security_key']]=item
-    return head,revision,records
+    return head,revision,records,{'path':input_path,'sha256':sha((ROOT/input_path).read_bytes()),'generic_replay':bool(identity_input)}
 
-def admitted_rows():
-    p0=read('reports/v4_08/V4_08_R4_P0_NO_SYMBOL_SPECIFIC_RUNTIME_SCAN.json')
-    if p0['status']!='PASS' or p0['production_runtime_hits']!=0:raise ValueError('P0_SYMBOL_RUNTIME_HARD_GATE_FAILED')
+def admitted_rows(identity_input=None):
+    p0=read('reports/v4_08/V4_08_R4_1_NO_SYMBOL_SPECIFIC_SYSTEM_LOGIC_SCAN.json')
+    if p0['status']!='PASS' or p0['hard_gated_equity_symbol_hits']!=0 or p0['unclassified_paths']:raise ValueError('P0_SYMBOL_RUNTIME_HARD_GATE_FAILED')
     promotion=read('reports/v4_01/V4_01_GO_FORWARD_IDENTITY_PROMOTION_POSTCHECK_R1.json')
     calendar_check=read('reports/v4_02/V4_02_GO_FORWARD_CALENDAR_EXTENSION_PROMOTION_POSTCHECK_R1.json')
     if promotion['status']!='PASS' or calendar_check['status']!='PASS':raise ValueError('INPUT_PROMOTION_POSTCHECK_FAILED')
-    identity_head,identity,identities=accepted_identity_lookup()
+    identity_head,identity,identities,identity_binding=accepted_identity_lookup(identity_input)
     calendar_head=read('data/v4/V4_02_GO_FORWARD_CALENDAR_EXTENSION_ACCEPTED_HEAD_R1.json')
     calendar=read(calendar_head['accepted_extension']['path'])
     if calendar_head['status']!='ACCEPTED' or not any(x['market']=='SSE' and x['trade_date']==TARGET for x in calendar['sessions']) or not any(x['market']=='SZSE' and x['trade_date']==TARGET for x in calendar['sessions']):
@@ -113,10 +121,10 @@ def admitted_rows():
     formal.sort(key=lambda x:(x['sector_type'],x['sector_id'],x['security_id'],x['source_security_key']))
     excluded_total=sum(exclusions.values())
     if len(formal)+excluded_total!=len(raw):raise ValueError('SOURCE_ROW_CONSERVATION_FAILED')
-    return {'formal_rows':formal,'raw_count':len(raw),'exclusions':dict(sorted(exclusions.items())),'identity_head':identity_head,'identity_revision':identity,'calendar_head':calendar_head,'calendar_extension':calendar,'timing':timing,'cutoff':cutoff,'registry_sha256':registry_sha,'source_file_digests':provider_files,'unresolved':sorted(unresolved),'active_catalogue_key_count':len(active)}
+    return {'formal_rows':formal,'raw_count':len(raw),'exclusions':dict(sorted(exclusions.items())),'identity_head':identity_head,'identity_revision':identity,'identity_input':identity_binding,'calendar_head':calendar_head,'calendar_extension':calendar,'timing':timing,'cutoff':cutoff,'registry_sha256':registry_sha,'source_file_digests':provider_files,'unresolved':sorted(unresolved),'active_catalogue_key_count':len(active)}
 
-def build():
-    result=admitted_rows();facts=result['formal_rows']
+def build(identity_input=None):
+    result=admitted_rows(identity_input);facts=result['formal_rows']
     temporal={'contract_id':'V4_08_R4_PIT_TEMPORAL_EVIDENCE_V1','revision_chain_valid':True,'supersedes_revision_id':None,'target_trade_date':TARGET,'membership_asof_date':TARGET,'observed_at':result['timing']['complete_observed_at'],'system_available_at':result['timing']['system_available_at'],'provider_available_at':result['timing']['complete_observed_at'],'cutoff':result['cutoff'],'provider_available_at_basis':'PROJECT_FIRST_OBSERVED_PROVIDER_BYTES','membership_asof_basis':'PROJECT_FIRST_OBSERVED_SOURCE_STATE','source_capture':bind('reports/v4_08/V4_08_R3_FORWARD_PIT_SOURCE_CAPTURE.json'),'raw_membership_diagnostic':bind('reports/v4_08/staging/V4_08_R3_EXACT_DAY_RAW_MEMBERSHIP_DIAGNOSTIC.jsonl.gz'),'accepted_identity_head':bind('data/v4/V4_01_GO_FORWARD_IDENTITY_ACCEPTED_HEAD_R1.json'),'accepted_calendar_head':bind('data/v4/V4_02_GO_FORWARD_CALENDAR_EXTENSION_ACCEPTED_HEAD_R1.json'),'sector_type_registry':bind('config/v4_08_sector_type_registry_v1.json'),'no_filesystem_mtime_no_backdating_no_carry_forward':True,'membership_replay_historical':True}
     revision_identity=build_source_revision_identity(result['timing']['source_bytes_digest'],temporal)
     revision={**revision_identity,'source_contract_id':'V4_08_SECTOR_MEMBERSHIP_SOURCE_V1','source_digest':result['timing']['source_bytes_digest'],'source_bytes_digest':result['timing']['source_bytes_digest'],'source_file_digests':result['source_file_digests'],'observed_at':result['timing']['complete_observed_at'],'ingested_at':result['timing']['system_available_at'],'system_available_at':result['timing']['system_available_at'],'provider_available_at':result['timing']['complete_observed_at'],'provider_available_at_basis':'PROJECT_FIRST_OBSERVED_PROVIDER_BYTES','membership_asof_basis':'PROJECT_FIRST_OBSERVED_SOURCE_STATE','membership_asof_date':TARGET,'membership_basis':'PIT_OBSERVED','revision_quality':'PIT_OBSERVED_ACCEPTED','temporal_evidence_digest':revision_identity['temporal_evidence_digest'],'temporal_evidence':temporal,'supersedes_revision_id':None,'revision_chain_valid':True}
@@ -143,10 +151,13 @@ def build():
     write_immutable(REVISION,revision_bytes);write_immutable(SNAPSHOT,snapshot_bytes)
     candidate_head={'head_id':'V4_08_PIT_MEMBERSHIP_CANDIDATE_HEAD_R1','status':'V4_08_R4_PIT_MEMBERSHIP_CANDIDATE_READY_FOR_FINAL_EXTERNAL_ACCEPTANCE','snapshot':bind(SNAPSHOT),'source_revision':bind(REVISION),'facts':bind(FACTS),'identity_head':bind('data/v4/V4_01_GO_FORWARD_IDENTITY_ACCEPTED_HEAD_R1.json'),'calendar_head':bind('data/v4/V4_02_GO_FORWARD_CALENDAR_EXTENSION_ACCEPTED_HEAD_R1.json'),'source_capture':bind('reports/v4_08/V4_08_R3_FORWARD_PIT_SOURCE_CAPTURE.json'),'formal_consumers_enabled':False,'first_accepted_pit_date_pending_external_acceptance':True}
     headbytes=json.dumps(candidate_head,ensure_ascii=False,sort_keys=True,indent=2).encode()+b'\n';write_immutable(HEAD,headbytes)
-    return {'revision':revision,'snapshot':snapshot,'facts':bound,'facts_bytes':fact_bytes,'fact_digest':fact_digest,'fact_count':fact_count,'exclusion':exclusion,'candidate_head':candidate_head,'raw_count':result['raw_count'],'cutoff':result['cutoff'],'identity_head':result['identity_head'],'calendar_head':result['calendar_head'],'timing':result['timing']}
+    return {'revision':revision,'snapshot':snapshot,'facts':bound,'facts_bytes':fact_bytes,'fact_digest':fact_digest,'fact_count':fact_count,'exclusion':exclusion,'candidate_head':candidate_head,'raw_count':result['raw_count'],'cutoff':result['cutoff'],'identity_head':result['identity_head'],'identity_input':result['identity_input'],'calendar_head':result['calendar_head'],'timing':result['timing']}
 
 def main():
-    first=build();second=build()
+    parser=argparse.ArgumentParser()
+    parser.add_argument('--identity-replay',help='Use the independently verified generic identity promotion replay as the PIT input')
+    args=parser.parse_args()
+    first=build(args.identity_replay);second=build(args.identity_replay)
     checks={'source_revision_identity_equal':first['revision']['source_revision_id']==second['revision']['source_revision_id'],'snapshot_id_equal':first['snapshot']['snapshot_id']==second['snapshot']['snapshot_id'],'fact_logical_digest_equal':first['fact_digest']==second['fact_digest'],'fact_bytes_equal':first['facts_bytes']==second['facts_bytes'],'sector_and_member_sets_equal':[(x['sector_id'],x['security_id']) for x in first['facts']]==[(x['sector_id'],x['security_id']) for x in second['facts']],'exclusions_equal':first['exclusion']==second['exclusion']}
     if not all(checks.values()):raise ValueError('R4_DETERMINISM_FAILED')
     atomic_json(ROOT/'reports/v4_08/V4_08_R4_PIT_SOURCE_REVISION.json',first['revision'])
@@ -156,6 +167,6 @@ def main():
     atomic_json(ROOT/'reports/v4_08/V4_08_R4_PIT_DETERMINISM.json',{'status':'PASS_TWO_IDENTICAL_MATERIALIZATIONS','checks':checks,'source_revision_id':first['revision']['source_revision_id'],'snapshot_id':first['snapshot']['snapshot_id'],'facts_logical_digest':first['fact_digest'],'facts_byte_sha256':sha(first['facts_bytes']),'row_count':len(first['facts'])})
     obs=datetime.fromisoformat(first['timing']['complete_observed_at'].replace('Z','+00:00')).astimezone(ZoneInfo('Asia/Shanghai')).date().isoformat()
     atomic_json(ROOT/'reports/v4_08/V4_08_R4_PIT_TEMPORAL_LEAKAGE.json',{'status':'PASS_NO_BACKDATING_NO_CARRY_FORWARD','target_date':TARGET,'complete_source_observation_at':first['timing']['complete_observed_at'],'source_observation_local_date':obs,'cutoff':first['cutoff'],'source_available_at_or_before_cutoff':first['timing']['system_available_at']<=first['cutoff'],'provider_available_at_basis':first['revision']['provider_available_at_basis'],'membership_asof_basis':first['revision']['membership_asof_basis'],'mtime_used':False,'prior_days_reconstructed':False,'pre_first_accepted_history':'CURRENT_MEMBERSHIP_REPLAY / DIAGNOSTIC_ONLY'})
-    print(json.dumps({'status':first['candidate_head']['status'],'source_revision_id':first['revision']['source_revision_id'],'snapshot_id':first['snapshot']['snapshot_id'],'rows':first['fact_count']['row_count'],'counts':first['fact_count']['formal_rows_by_type'],'exclusions':first['exclusion']['exclusions_by_reason'],'snapshot_created':True,'accepted_head_created':False},ensure_ascii=False))
+    print(json.dumps({'status':first['candidate_head']['status'],'source_revision_id':first['revision']['source_revision_id'],'snapshot_id':first['snapshot']['snapshot_id'],'rows':first['fact_count']['row_count'],'counts':first['fact_count']['formal_rows_by_type'],'exclusions':first['exclusion']['exclusions_by_reason'],'identity_input':first['identity_input'],'snapshot_created':True,'accepted_head_created':False},ensure_ascii=False))
 
 if __name__=='__main__':main()

@@ -16,9 +16,7 @@ import sys
 sys.path.insert(0, str(ROOT / "src"))
 from workbench_analysis.dated_security_alias import DatedSecurityAliasResolver
 
-TARGET_CURRENT_ID = "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B"
-TARGET_PREDECESSOR_ID = "SEC-B2F87F189D1D143B67730E3640E617CA"
-TARGET_KEYS = {"SZ.300114", "SZ.302132"}
+REPAIR_CONTRACT = Path("data/v4/source_evidence/v4_01/security_alias_board_repair_r7_contract_v1.json")
 
 
 def sha(path: Path) -> str:
@@ -49,12 +47,21 @@ def signature(row: dict, ignored: set[str]) -> dict:
 
 
 def main() -> int:
+    repair_contract = json.loads((ROOT / REPAIR_CONTRACT).read_text(encoding="utf-8"))
+    target_current_id = repair_contract["stable_security_id"]
+    superseded_identity_ids = set(repair_contract["superseded_identity_ids"])
+    target_identity_ids = superseded_identity_ids | {target_current_id}
+    alias_specs = repair_contract["aliases"]
+    aliases_by_key = {item["source_security_key"]: item for item in alias_specs}
+    target_keys = set(aliases_by_key)
+    current_key = next(item["source_security_key"] for item in alias_specs if item["alias_role"] == "CURRENT")
     store = ROOT / "data/v4/artifact_store"
     input_universe = store / "v4_01/v4_01_historical_universe_required_R6_2_20260926.jsonl.gz"
     input_status = store / "v4_02/V4_02_DATED_TRADING_STATUS_R6_2_20260926.jsonl.gz"
     input_isst = store / "v4_02/V4_02_DATED_ST_STATUS_V1_R6_2_20260926_RECOVERED_R1.jsonl.gz"
     identity_path = store / "v4_01/security_entity_map_R5_20260925.json"
-    evidence_path = ROOT / "data/v4/source_evidence/v4_02_r3/szse_2025_028_code_change_302132.pdf"
+    evidence_ref = repair_contract["official_evidence"]
+    evidence_path = ROOT / evidence_ref["capture_path"]
     out_universe = store / "v4_01/v4_01_historical_universe_required_R7_20260927.jsonl.gz"
     out_status = store / "v4_02/V4_02_DATED_TRADING_STATUS_R7_20260927.jsonl.gz"
     out_isst = store / "v4_02/V4_02_DATED_ST_STATUS_R7_20260927.jsonl.gz"
@@ -62,46 +69,46 @@ def main() -> int:
 
     identity = json.loads(identity_path.read_text(encoding="utf-8"))
     records = identity["records"]
-    selected = [row for row in records if row.get("security_id") in {TARGET_CURRENT_ID, TARGET_PREDECESSOR_ID}]
-    if {row.get("source_security_key") for row in selected} != TARGET_KEYS:
+    selected = [row for row in records if row.get("security_id") in target_identity_ids]
+    if {row.get("source_security_key") for row in selected} != target_keys:
         raise SystemExit("R7_TARGET_IDENTITY_INPUT_SET_MISMATCH")
-    if sha(evidence_path) != "dd68049c48df826848f361fd9e7b23dd20b6805144a2e5bc36e54db638611488":
+    if sha(evidence_path) != evidence_ref["capture_sha256"]:
         raise SystemExit("R7_OFFICIAL_IDENTITY_EVIDENCE_HASH_MISMATCH")
 
     # Keep the identity already assigned to the replacement code as the one
     # stable ID, and express both exchange aliases as dated records.
     repaired_records = [row for row in records if row not in selected]
     source_revision = "sha256:" + sha(evidence_path)
-    alias_template = dict(selected[0])
-    for key, start, end in (("SZ.300114", "2010-08-27", "2025-02-16"),
-                             ("SZ.302132", "2025-02-17", None)):
+    alias_template = dict(next(row for row in selected if row.get("security_id") == target_current_id))
+    for alias_spec in alias_specs:
+        key = alias_spec["source_security_key"]
         repaired = dict(alias_template)
         repaired.update({
-            "security_id": TARGET_CURRENT_ID,
-            "lifecycle_entity_id": TARGET_CURRENT_ID,
+            "security_id": target_current_id,
+            "lifecycle_entity_id": target_current_id,
             "source_security_key": key,
             "symbol": key,
-            "exchange": "SZ",
-            "board": "CHINEXT",
-            "list_date": "2010-08-27",
-            "delist_date": None,
-            "symbol_effective_from": start,
-            "symbol_effective_to": end,
+            "exchange": alias_spec["exchange"],
+            "board": alias_spec["board"],
+            "list_date": alias_spec["list_date"],
+            "delist_date": alias_spec.get("delist_date"),
+            "symbol_effective_from": alias_spec["symbol_effective_from"],
+            "symbol_effective_to": alias_spec.get("symbol_effective_to"),
             "identity_quality": "OFFICIAL_DATED_CODE_CHANGE_REPAIR_R7",
-            "alias_role": "PREDECESSOR" if key == "SZ.300114" else "CURRENT",
+            "alias_role": alias_spec["alias_role"],
             "source_contract_id": "V4_01_SECURITY_ALIAS_BOARD_REPAIR_R7",
             "source_revision_id": source_revision,
-            "evidence_source": "SZSE_2025_028_IMPLEMENTATION_ANNOUNCEMENT",
+            "evidence_source": evidence_ref["source_revision_label"],
         })
         repaired_records.append(repaired)
-    alias_evidence_ref = "https://disc.static.szse.cn/disc/disk03/finalpage/2025-02-15/cedb693a-f5ee-4463-9682-ea33d406b569.PDF"
+    alias_evidence_ref = evidence_ref["source_ref"]
     alias_facts = [{
         "security_id": row["security_id"], "source_security_key": row["source_security_key"],
         "effective_from": row["symbol_effective_from"], "effective_to": row.get("symbol_effective_to"),
         "exchange": row["exchange"], "board": row["board"], "alias_role": row["alias_role"],
         "source_revision": source_revision, "evidence_ref": alias_evidence_ref,
         "evidence_hash": sha(evidence_path),
-    } for row in repaired_records if row.get("security_id") == TARGET_CURRENT_ID]
+    } for row in repaired_records if row.get("security_id") == target_current_id]
     alias_resolver = DatedSecurityAliasResolver(alias_facts)
     identity_r7 = dict(identity)
     identity_r7.update({"contract_id": "V4_01_SECURITY_ENTITY_MAP_R7", "version": "7.0.0",
@@ -137,8 +144,8 @@ def main() -> int:
                 for ur, sr, ir in group:
                     sid = ur.get("security_id")
                     key = ur.get("source_security_key")
-                    if sid in {TARGET_CURRENT_ID, TARGET_PREDECESSOR_ID} or key in TARGET_KEYS:
-                        if key not in TARGET_KEYS or sid not in {TARGET_CURRENT_ID, TARGET_PREDECESSOR_ID}:
+                    if sid in target_identity_ids or key in target_keys:
+                        if key not in target_keys or sid not in target_identity_ids:
                             raise RuntimeError("R7_TARGET_ALIAS_IDENTITY_BINDING_INVALID")
                         target_id_key_history[sid].add(key)
                         by_key[key] = (ur, sr, ir)
@@ -151,13 +158,11 @@ def main() -> int:
                     output_rows += 1
                 if not by_key:
                     return
-                if not set(by_key).issubset(TARGET_KEYS):
+                if not set(by_key).issubset(target_keys):
                     raise RuntimeError("R7_TARGET_ALIAS_SET_INVALID")
                 target_days.add(str(group[0][0]["trade_date"]).replace("-", ""))
                 duplicate_rows_removed += max(0, len(by_key) - 1)
-                old = by_key.get("SZ.300114")
-                new = by_key.get("SZ.302132")
-                chosen = new or old
+                chosen = by_key.get(current_key) or next(iter(by_key.values()))
                 bar_present = any(pair[0].get("source_bar_present") is True for pair in by_key.values())
                 status_values = {pair[1].get("status") for pair in by_key.values()}
                 if len(status_values) > 1 and status_values != {"ACTUAL_TRADED", "SUSPENDED"}:
@@ -166,8 +171,8 @@ def main() -> int:
                 if len(isst_values) > 1:
                     raise RuntimeError(f"R7_DUPLICATE_TARGET_ISST_CONFLICT:{group[0][0].get('trade_date')}:{sorted(map(str, isst_values))}")
                 date_value = str(chosen[0]["trade_date"]).replace("-", "")
-                alias = alias_resolver.resolve_alias(TARGET_CURRENT_ID, date_value)
-                board_scope = alias_resolver.resolve_board(TARGET_CURRENT_ID, date_value)
+                alias = alias_resolver.resolve_alias(target_current_id, date_value)
+                board_scope = alias_resolver.resolve_board(target_current_id, date_value)
                 if alias is None or board_scope is None:
                     raise RuntimeError("R7_DATED_ALIAS_RESOLUTION_MISSING")
                 ur, sr, ir = by_key.get(alias, chosen)
@@ -178,10 +183,10 @@ def main() -> int:
                     sr["status"] = "ACTUAL_TRADED" if bar_present else "SUSPENDED"
                     sr["status_source"] = "LOCAL_TDX_BAR_PRESENCE_MERGED_ACROSS_DATED_ALIASES"
                 for row in (ur, sr, ir):
-                    row["security_id"] = TARGET_CURRENT_ID
+                    row["security_id"] = target_current_id
                     row["source_security_key"] = alias
                     row["historical_exchange_symbol"] = alias
-                    row["provider_roster_code"] = "SZ.302132"
+                    row["provider_roster_code"] = current_key
                     row["code_change_source_revision"] = source_revision
                 ur["board_scope"] = board_scope
                 ur["membership_basis"] = "R7_OFFICIAL_DATED_ALIAS_AND_BOARD_REPAIR"
@@ -230,14 +235,18 @@ def main() -> int:
         "version": "7.0.0",
         "status": "PASS_WITH_BOUNDED_ALIAS_REPAIR" if not prior_multi_key else "BLOCKED_UNRESOLVED_CODE_CHANGE_IDENTITIES",
         "required_scope": ["SH_MAIN", "SZ_MAIN", "CHINEXT", "STAR"],
-        "target": {"security_id": TARGET_CURRENT_ID, "predecessor_identity_id": TARGET_PREDECESSOR_ID,
-                   "aliases": [{"historical_alias": "SZ.300114", "effective_from": "2010-08-27", "effective_to": "2025-02-16"},
-                               {"historical_alias": "SZ.302132", "effective_from": "2025-02-17", "effective_to": None}],
-                   "exchange": "SZ", "board": "CHINEXT", "board_effective_from": "2010-08-27", "board_effective_to": None},
+        "target": {"security_id": target_current_id,
+                   "predecessor_identity_ids": sorted(superseded_identity_ids),
+                   "aliases": [{"historical_alias": item["source_security_key"],
+                                "effective_from": item["symbol_effective_from"],
+                                "effective_to": item.get("symbol_effective_to"),
+                                "alias_role": item["alias_role"]} for item in alias_specs],
+                   "board_effective_from": repair_contract["board_effective_from"],
+                   "board_effective_to": repair_contract.get("board_effective_to")},
         "evidence": {"source_ref": alias_evidence_ref,
-                     "source_capture_path": "data/v4/source_evidence/v4_02_r3/szse_2025_028_code_change_302132.pdf",
+                     "source_capture_path": evidence_ref["capture_path"],
                      "source_capture_sha256": sha(evidence_path),
-                     "source_revision": "公告2025-028; 代码变更启用日2025-02-17"},
+                     "source_revision": evidence_ref["source_revision_label"]},
         "scan": {"input_membership_rows": input_rows, "output_membership_rows": output_rows,
                  "target_identity_session_rows_emitted": target_sessions_emitted,
                  "duplicate_membership_rows_removed": duplicate_rows_removed,

@@ -3,6 +3,7 @@ from __future__ import annotations
 from collections import Counter, defaultdict
 from datetime import datetime
 from decimal import Decimal
+import hashlib
 import csv
 import io
 import json
@@ -15,28 +16,20 @@ from adjustment.tdx_adjustment import adjust_ohlc, build_affine_factors, xrxd_fr
 from phase0_1_runner import atomic_json, atomic_text
 from phase0_2_runner import _day_path, _read_day_rows
 from tdx.gbbq_reader import file_sha256, read_gbbq
+from tdx.security_master import current_a_stock_ids, read_industry_assignments
 from tdx.tdx_audit import raw_manifest_fingerprint, snapshot_day_files
 from validation.external_qfq import PublicQfqClients, compare_ohlc, decide_phase0_2a_gate
 
 
 BASELINE_VERSION = "V0.3_FINAL_IMPLEMENTATION_BASELINE"
 TOLERANCE = Decimal("0.01")
-FIXED_SAMPLES = [
-    {"security_id": "SH.600519", "date": 20250625, "sample_type": "CASH_DIVIDEND", "notes": "fixed Phase 0.2 sample; ex-day 20250626"},
-    {"security_id": "SZ.000651", "date": 20150702, "sample_type": "BONUS_TRANSFER_AND_CASH", "notes": "fixed Phase 0.2 sample; ex-day 20150703"},
-    {"security_id": "SZ.000651", "date": 20000803, "sample_type": "RIGHTS_ISSUE", "notes": "fixed Phase 0.2 sample; ex-day 20000804"},
-    {"security_id": "SH.600519", "date": 20060425, "sample_type": "COMPOUND_SUSPENSION", "notes": "fixed Phase 0.2 sample; ex-days 20060519 and 20060524"},
-    {"security_id": "SZ.000001", "date": 20260611, "sample_type": "RECENT_CASH_DIVIDEND", "notes": "fixed Phase 0.2 sample; ex-day 20260612"},
-]
-CANDIDATE_SECURITIES = [
-    "SH.600000", "SH.600036", "SH.600276", "SH.600309", "SH.600519", "SH.600887",
-    "SH.601012", "SH.601318", "SH.601398", "SH.601857", "SH.603259",
-    "SZ.000001", "SZ.000002", "SZ.000333", "SZ.000651", "SZ.000858", "SZ.002415",
-    "SZ.002475", "SZ.002594", "SZ.002714", "SZ.003816",
-    "SZ.300059", "SZ.300122", "SZ.300274", "SZ.300750", "SZ.300760",
-    "SH.688001", "SH.688008", "SH.688111", "SH.688981",
-    "BJ.920000", "BJ.920099",
-]
+SAMPLE_SELECTOR_CONTRACT = {
+    "selection_contract_id": "PHASE0_2A_QFQ_SAMPLE_SELECTION_V1",
+    "version": "1.0.0",
+    "seed": "PHASE0_2A_QFQ_SAMPLE_SEED_V1",
+    "sample_security_count": 32,
+    "minimum_history_bars": 120,
+}
 WINDOWS = {
     "RECENT_2024_2026": (20240101, 20261231),
     "MID_2010_2023": (20100101, 20231231),
@@ -80,15 +73,76 @@ def _previous_trade_date(dates: list[int], ex_day: int) -> int | None:
     return previous
 
 
-def build_sample_plan(tdx_root: Path, by_security: dict[str, list]) -> tuple[list[dict], dict[str, list[dict]]]:
-    selected: dict[tuple[str, int], dict] = {
-        (item["security_id"], item["date"]): {**item, "fixed_sample": True, "period": _period(item["date"])}
-        for item in FIXED_SAMPLES
+def _board_for_security(security_id: str) -> str:
+    exchange, code = security_id.split(".", 1)
+    if exchange == "BJ": return "BEIJING"
+    if exchange == "SH" and code.startswith(("688", "689")): return "STAR"
+    if exchange == "SZ" and code.startswith(("300", "301")): return "CHINEXT"
+    if exchange == "SH": return "MAIN_SH"
+    if exchange == "SZ": return "MAIN_SZ"
+    return "OTHER"
+
+
+def select_sample_securities(current_universe, actual_day_files):
+    current_ids = set(map(str, current_universe))
+    actual_ids = set(map(str, actual_day_files))
+    eligible_ids = sorted(current_ids & actual_ids)
+    candidates = []
+    for security_id in eligible_ids:
+        board = _board_for_security(security_id)
+        stable_hash = hashlib.sha256(f"{security_id}|{SAMPLE_SELECTOR_CONTRACT['seed']}".encode("utf-8")).hexdigest()
+        candidates.append({"security_id": security_id, "board": board, "stable_hash": stable_hash})
+    by_board = defaultdict(list)
+    for candidate in candidates:
+        by_board[candidate["board"]].append(candidate)
+    for items in by_board.values():
+        items.sort(key=lambda item: (item["stable_hash"], item["security_id"]))
+    chosen = []
+    for board in sorted(by_board):
+        if by_board[board] and len(chosen) < SAMPLE_SELECTOR_CONTRACT["sample_security_count"]:
+            chosen.append(by_board[board][0])
+    selected_ids = {item["security_id"] for item in chosen}
+    for item in sorted(candidates, key=lambda row: (row["stable_hash"], row["security_id"])):
+        if len(chosen) >= SAMPLE_SELECTOR_CONTRACT["sample_security_count"]:
+            break
+        if item["security_id"] not in selected_ids:
+            chosen.append(item)
+            selected_ids.add(item["security_id"])
+    receipt = {
+        **SAMPLE_SELECTOR_CONTRACT,
+        "current_universe_count": len(current_ids),
+        "eligible_count": len(candidates),
+        "selected_count": len(chosen),
+        "selected": [{"security_id": item["security_id"], "board": item["board"],
+                      "stable_hash_sha256": item["stable_hash"],
+                      "selection_reason": "CURRENT_UNIVERSE_ACTUAL_DAY_FILE_MINIMUM_HISTORY"} for item in chosen],
+        "selection": "board-stratified then lowest stable SHA256(security_id + contract_seed)",
     }
+    receipt["selection_digest_sha256"] = hashlib.sha256(
+        json.dumps(receipt["selected"], ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    ).hexdigest()
+    return chosen, receipt
+
+
+def build_sample_plan(tdx_root: Path, by_security: dict[str, list]) -> tuple[list[dict], dict[str, list[dict]], dict]:
+    cfg = tdx_root / "T0002/hq_cache/tdxhy.cfg"
+    current_ids = set(current_a_stock_ids(read_industry_assignments(cfg))) if cfg.is_file() else set()
+    day_paths = {}
+    for market in ("sh", "sz", "bj"):
+        for path in sorted((tdx_root / "vipdoc" / market / "lday").glob("*.day")):
+            security_id = market.upper() + "." + path.stem[-6:]
+            if security_id in current_ids and path.stat().st_size >= 32 * SAMPLE_SELECTOR_CONTRACT["minimum_history_bars"]:
+                day_paths[security_id] = path
+    chosen, selector_receipt = select_sample_securities(current_ids, day_paths)
+    for item in chosen:
+        item["path"] = day_paths[item["security_id"]]
+    selected: dict[tuple[str, int], dict] = {}
     day_rows: dict[str, list[dict]] = {}
-    available = [sid for sid in CANDIDATE_SECURITIES if _day_path(tdx_root, sid).is_file()]
-    for security_id in available:
-        rows = _read_day_rows(_day_path(tdx_root, security_id))
+    for candidate in chosen:
+        security_id = candidate["security_id"]
+        rows = _read_day_rows(candidate["path"])
+        if len(rows) < SAMPLE_SELECTOR_CONTRACT["minimum_history_bars"]:
+            continue
         day_rows[security_id] = rows
         dates = [row["trade_date"] for row in rows]
         effective = [event for event in by_security.get(security_id, []) if event.ex_day <= dates[-1]]
@@ -113,12 +167,33 @@ def build_sample_plan(tdx_root: Path, by_security: dict[str, list]) -> tuple[lis
                 "date": trade_date,
                 "sample_type": _event_type(event),
                 "period": window_name,
-                "fixed_sample": False,
+                "contract_sample": False,
+                "board": candidate["board"],
+                "selection_contract_id": SAMPLE_SELECTOR_CONTRACT["selection_contract_id"],
                 "notes": f"local trade day before ex-day {event.ex_day}",
             }
             per_security.append((security_id, trade_date))
             if len(per_security) >= 3:
                 break
+
+        for left, right in zip(effective, effective[1:]):
+            if not 1 <= right.ex_day - left.ex_day <= 5:
+                continue
+            if any(left.ex_day <= row["trade_date"] < right.ex_day for row in rows):
+                continue
+            trade_date = _previous_trade_date(dates, left.ex_day)
+            if trade_date is None or (security_id, trade_date) in selected:
+                continue
+            selected[(security_id, trade_date)] = {
+                "security_id": security_id,
+                "date": trade_date,
+                "sample_type": "COMPOUND_SUSPENSION",
+                "period": _period(trade_date),
+                "contract_sample": False,
+                "board": candidate["board"],
+                "selection_contract_id": SAMPLE_SELECTOR_CONTRACT["selection_contract_id"],
+                "notes": f"local bar gap spans events effective {left.ex_day} and {right.ex_day}",
+            }
 
         # The latest bar is a no-new-action anchor and validates current QFQ anchoring.
         latest = dates[-1]
@@ -129,7 +204,9 @@ def build_sample_plan(tdx_root: Path, by_security: dict[str, list]) -> tuple[lis
                 "date": latest,
                 "sample_type": "NO_ACTION_ANCHOR_CONTROL",
                 "period": "RECENT_2024_2026",
-                "fixed_sample": False,
+                "contract_sample": False,
+                "board": candidate["board"],
+                "selection_contract_id": SAMPLE_SELECTOR_CONTRACT["selection_contract_id"],
                 "notes": "latest local trade-date identity anchor",
             },
         )
@@ -147,13 +224,36 @@ def build_sample_plan(tdx_root: Path, by_security: dict[str, list]) -> tuple[lis
                 "date": row["trade_date"],
                 "sample_type": "STRATIFIED_NO_EVENT_CONTROL",
                 "period": _period(row["trade_date"]),
-                "fixed_sample": False,
+                "contract_sample": False,
+                "board": candidate["board"],
+                "selection_contract_id": SAMPLE_SELECTOR_CONTRACT["selection_contract_id"],
                 "notes": "deterministic history control point",
             }
             existing.append(key)
 
     plan = sorted(selected.values(), key=lambda item: (item["security_id"], item["date"]))
-    return plan, day_rows
+    contract_candidates = [item for item in plan if item["sample_type"] not in {"NO_ACTION_ANCHOR_CONTROL", "STRATIFIED_NO_EVENT_CONTROL"}]
+    contract_candidates.sort(key=lambda item: (hashlib.sha256(
+        f"{item['security_id']}|{item['date']}|{SAMPLE_SELECTOR_CONTRACT['seed']}".encode("utf-8")).hexdigest(),
+        item["security_id"], item["date"]))
+    contract_rows = []
+    contract_seen = set()
+    for item in contract_candidates:
+        if item["security_id"] in contract_seen:
+            continue
+        item["contract_sample"] = True
+        contract_seen.add(item["security_id"])
+        contract_rows.append({"security_id": item["security_id"], "date": item["date"],
+                              "sample_type": item["sample_type"], "board": item["board"],
+                              "selection_reason": "STABLE_HASHED_EVENT_SAMPLE"})
+        if len(contract_rows) >= 5:
+            break
+    selector_receipt["contract_sample_count"] = len(contract_rows)
+    selector_receipt["contract_samples"] = contract_rows
+    selector_receipt["contract_sample_digest_sha256"] = hashlib.sha256(
+        json.dumps(contract_rows, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    ).hexdigest()
+    return plan, day_rows, selector_receipt
 
 
 def _local_values(plan: list[dict], day_rows: dict[str, list[dict]], by_security: dict[str, list]) -> list[dict]:
@@ -262,7 +362,7 @@ def _external_crosscheck(local_samples: list[dict], clients: PublicQfqClients) -
                     **comparison,
                     "notes": notes,
                     "period": sample["period"],
-                    "fixed_sample": sample["fixed_sample"],
+                    "contract_sample": sample["contract_sample"],
                     "external_usage": "VALIDATION_REFERENCE_ONLY",
                     "external_raw_basis_matches_local": raw_basis_match,
                     "external_raw_basis_diffs": raw_basis_diffs,
@@ -309,17 +409,17 @@ def run_phase0_2a(project_root: Path, tdx_root: Path) -> dict:
     for events in by_security.values():
         events.sort(key=lambda item: (item.ex_day, item.source_record_index))
 
-    plan, day_rows = build_sample_plan(tdx_root, by_security)
+    plan, day_rows, sample_selection = build_sample_plan(tdx_root, by_security)
     local_samples = _local_values(plan, day_rows, by_security)
     clients = PublicQfqClients(min_interval_seconds=0.45)
     rows = _external_crosscheck(local_samples, clients)
 
     status_counts = Counter(row["status"] for row in rows)
-    fixed = [row for row in rows if row["fixed_sample"]]
-    fixed_passed = sum(row["status"] == "LOCAL_MATCHES_EXTERNAL" for row in fixed)
-    fixed_failed = sum(row["status"] == "LOCAL_MISMATCH_REQUIRES_REVIEW" for row in fixed)
-    fixed_disagreement = sum(row["status"] == "EXTERNAL_SOURCE_DISAGREEMENT" for row in fixed)
-    fixed_unverifiable = len(fixed) - fixed_passed - fixed_failed
+    contract_samples = [row for row in rows if row["contract_sample"]]
+    contract_passed = sum(row["status"] == "LOCAL_MATCHES_EXTERNAL" for row in contract_samples)
+    contract_failed = sum(row["status"] == "LOCAL_MISMATCH_REQUIRES_REVIEW" for row in contract_samples)
+    contract_disagreement = sum(row["status"] == "EXTERNAL_SOURCE_DISAGREEMENT" for row in contract_samples)
+    contract_unverifiable = len(contract_samples) - contract_passed - contract_failed
     matching = status_counts["LOCAL_MATCHES_EXTERNAL"]
     mismatches = status_counts["LOCAL_MISMATCH_REQUIRES_REVIEW"]
     unverifiable = status_counts["UNVERIFIABLE_EXTERNAL"]
@@ -339,9 +439,10 @@ def run_phase0_2a(project_root: Path, tdx_root: Path) -> dict:
     )
     security_count = len({row["security_id"] for row in rows})
     final_status = decide_phase0_2a_gate(
-        fixed_passed=fixed_passed,
-        fixed_failed=fixed_failed,
-        fixed_unverifiable=fixed_unverifiable,
+        sample_passed=contract_passed,
+        sample_failed=contract_failed,
+        sample_unverifiable=contract_unverifiable,
+        sample_count=len(contract_samples),
         security_count=security_count,
         verified_points=verified,
         match_ratio=match_ratio,
@@ -399,11 +500,12 @@ def run_phase0_2a(project_root: Path, tdx_root: Path) -> dict:
         "status_distribution": dict(status_counts),
         "period_distribution": dict(Counter(row["period"] for row in rows)),
         "sample_type_distribution": dict(Counter(row["sample_type"] for row in rows)),
-        "fixed_sample_count": len(fixed),
-        "fixed_sample_passed": fixed_passed,
-        "fixed_sample_failed": fixed_failed,
-        "fixed_sample_external_disagreement": fixed_disagreement,
-        "fixed_sample_unverifiable": fixed_unverifiable,
+        "contract_sample_count": len(contract_samples),
+        "contract_sample_passed": contract_passed,
+        "contract_sample_failed": contract_failed,
+        "contract_sample_external_disagreement": contract_disagreement,
+        "contract_sample_unverifiable": contract_unverifiable,
+        "sample_selection": sample_selection,
         "verified_point_count": verified,
         "matching_point_count": matching,
         "mismatch_point_count": mismatches,
@@ -436,11 +538,12 @@ def run_phase0_2a(project_root: Path, tdx_root: Path) -> dict:
         "run_time": datetime.now().astimezone().isoformat(),
         "external_validation_enabled": True,
         "external_sources_used": [item["source_name"] for item in clients.audits() if item["success_count"]],
-        "fixed_sample_count": len(fixed),
-        "fixed_sample_passed": fixed_passed,
-        "fixed_sample_failed": fixed_failed,
-        "fixed_sample_external_disagreement": fixed_disagreement,
-        "fixed_sample_unverifiable": fixed_unverifiable,
+        "contract_sample_count": len(contract_samples),
+        "contract_sample_passed": contract_passed,
+        "contract_sample_failed": contract_failed,
+        "contract_sample_external_disagreement": contract_disagreement,
+        "contract_sample_unverifiable": contract_unverifiable,
+        "sample_selection": sample_selection,
         "batch_security_count": security_count,
         "batch_date_point_count": len(rows),
         "batch_ohlc_value_count": len(rows) * 4,
@@ -454,7 +557,7 @@ def run_phase0_2a(project_root: Path, tdx_root: Path) -> dict:
         "systematic_mismatch_detected": systematic,
         "manual_ui_gate": "WAIVED_BY_AUTOMATED_MULTI_LAYER_VALIDATION" if full else "NOT_WAIVED",
         "manual_ui_waiver_reason": (
-            "Fixed 5/5, >=95% batch match, all complex action types, no systematic mismatch"
+            "Deterministic contract sample 5/5, >=95% batch match, all complex action types, no systematic mismatch"
             if full else "AUTOMATED_EXTERNAL_ACCEPTANCE_CRITERIA_NOT_FULLY_SATISFIED"
         ),
         "project_data_source": "LOCAL_TDX_ONLY",
@@ -497,7 +600,7 @@ External observations are validation references only. Production remains `LOCAL_
 
 ## Acceptance summary
 
-- Fixed samples: `{fixed_passed}/5` matched; local mismatches `{fixed_failed}`; source disagreements `{fixed_disagreement}`; unavailable `{fixed_unverifiable - fixed_disagreement}`.
+- Deterministic contract samples: `{contract_passed}/{len(contract_samples)}` matched; local mismatches `{contract_failed}`; source disagreements `{contract_disagreement}`; unavailable `{contract_unverifiable - contract_disagreement}`.
 - Batch: `{security_count}` securities, `{len(rows)}` dates, `{len(rows) * 4}` OHLC values.
 - Verified unambiguous points: `{verified}`; matches `{matching}`; mismatches `{mismatches}`; match ratio `{match_ratio:.4%}`.
 - External-source disagreements: `{disagreements}`; unavailable: `{unverifiable}`.

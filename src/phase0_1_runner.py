@@ -14,6 +14,7 @@ import tempfile
 
 import numpy as np
 
+from common.market_reference import market_session_reference_identifiers
 from market_calendar.trading_calendar import StockTimeline, build_master_calendar, read_day_dates
 from normalize.universe_recent import qualifies_normal_universe, recent_window_evidence
 from phase0_1_status import decide_status
@@ -213,13 +214,14 @@ No `FORWARD_ADJUSTED` dataset may be emitted under this status.
 
 
 def calendar_contract_markdown() -> str:
+    reference_ids = ", ".join(f"`{item}`" for item in market_session_reference_identifiers())
     return f"""# Master Trading Calendar Contract
 
 Version: `{CALENDAR_VERSION}`
 
 ## Local source and fields
 
-The calendar uses the union of local `SH.000001` and `SZ.399001` date records plus current A-stock date evidence. Every civil date in the observed range is stored with:
+The calendar uses the union of registered local market-index session-reference date records ({reference_ids}) plus current A-stock date evidence. Every civil date in the observed range is stored with:
 
 ```text
 calendar_date
@@ -265,8 +267,8 @@ def run_phase0_1(project_root: Path, tdx_root: Path) -> dict:
     selected_date = phase0["daily_data"]["latest_trade_date"]
 
     primary_indices = {
-        "SH.000001": set(read_day_dates(_day_path(tdx_root, "SH.000001"))),
-        "SZ.399001": set(read_day_dates(_day_path(tdx_root, "SZ.399001"))),
+        index_id: set(read_day_dates(_day_path(tdx_root, index_id)))
+        for index_id in market_session_reference_identifiers()
     }
     intervals = [
         # These are current master members.  A trailing data gap must remain in

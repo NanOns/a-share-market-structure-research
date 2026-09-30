@@ -45,6 +45,7 @@ OFFICIAL_COVERAGE = Path("data/v4/source_evidence/official_code_change_event_ind
 REPORTS_V401 = Path("reports/v4_01")
 BLIND_RECEIPT = Path("reports/v4_01/V4_01_SOURCE_FINGERPRINT_CANDIDATE_BLIND_VALIDATION_R1.json")
 BLIND_LABELS = Path("config/v4_01_source_fingerprint_blind_labels_v1.json")
+BLIND_CASE_EXPECTATIONS = Path("reports/v4_08/audit_inputs/V4_08_R4_1_V4_01_BLIND_CASE_EXPECTATIONS.json")
 EXTERNAL_CODE_REVIEW = Path("docs/evidence/V4_01_CODE_CHANGE_SOURCE_FINGERPRINT_EXTERNAL_ACCEPTANCE_20260929.md")
 EXTERNAL_BLIND_REVIEW = Path("docs/evidence/V4_01_SOURCE_FINGERPRINT_BLIND_STUDY_EXTERNAL_ACCEPTANCE_R1_20260929.md")
 EXTERNAL_AUDIT = Path("docs/evidence/V4_00_01_02_03_FOUNDATION_CANDIDATE_EXTERNAL_AUDIT_R1_20260929.md")
@@ -451,6 +452,7 @@ def main() -> int:
     r83_check = load_json(R83_POSTCHECK)
     blind_receipt = load_json(BLIND_RECEIPT)
     labels = load_json(BLIND_LABELS)
+    blind_case_expectations = load_json(BLIND_CASE_EXPECTATIONS)
     coverage_receipt = load_json(OFFICIAL_COVERAGE)
 
     independent = independent_boundary_scan()
@@ -561,22 +563,35 @@ def main() -> int:
                 and expected.get("old", {}).get("sha256") == replay.get("old", {}).get("sha256")
                 and expected.get("new", {}).get("sha256") == replay.get("new", {}).get("sha256")
             )
-    # Fixed blind labels stay inside known_bounded_validation_crosschecks and
-    # never contribute keys to the Required Scope candidate union.
-    blind_case_pairs = {
-        "BLIND-01": ("SZ.300114", "SZ.302132", "CONFIRMED_SAME_ENTITY_CODE_CHANGE"),
-        "BLIND-02": ("SZ.000022", "SZ.001872", "CONFIRMED_SAME_ENTITY_CODE_CHANGE"),
-        "BLIND-03": ("SZ.000024", "SZ.001979", "CONFIRMED_DISTINCT_MERGER_SUCCESSOR"),
-        "BLIND-04": ("SZ.000562", "SZ.000166", "CONFIRMED_DISTINCT_MERGER_SUCCESSOR"),
-    }
+    # Frozen blind-case identities are audit input data, not gate logic. They
+    # remain bounded crosschecks and never contribute to the Required Scope union.
     blind_results = {item["case_id"]: item for item in blind_receipt.get("cases", [])}
     blind_labels = {item["case_id"]: item for item in labels.get("labels", [])}
+    blind_case_pairs = {item["case_id"]: item for item in blind_case_expectations.get("cases", [])}
+    first_benchmark_case_id = min(blind_case_pairs) if blind_case_pairs else None
     benchmark_resolutions = []
-    benchmark_evidence_ok = True
-    for case_id, (old_code, new_code, disposition) in blind_case_pairs.items():
+    benchmark_evidence_ok = (
+        blind_case_expectations.get("source_receipt", {}).get("sha256") == file_sha(BLIND_RECEIPT)
+        and blind_case_expectations.get("source_labels", {}).get("sha256") == file_sha(BLIND_LABELS)
+        and set(blind_case_pairs) == set(blind_results) == set(blind_labels)
+    )
+    for case_id, expected_case in sorted(blind_case_pairs.items()):
+        old_code = expected_case.get("old_code")
+        new_code = expected_case.get("new_code")
+        disposition = expected_case.get("disposition")
         result = blind_results.get(case_id, {})
         label = blind_labels.get(case_id, {})
         expected_positive = disposition == "CONFIRMED_SAME_ENTITY_CODE_CHANGE"
+        expected_case_sha = hashlib.sha256(
+            json.dumps(result, sort_keys=True, separators=(",", ":")).encode("utf-8")
+        ).hexdigest()
+        expected_disposition = (
+            "CONFIRMED_SAME_ENTITY_CODE_CHANGE"
+            if label.get("expected_outcome") == "PURE_CODE_RENUMBERING"
+            else "CONFIRMED_DISTINCT_MERGER_SUCCESSOR"
+            if label.get("expected_outcome") == "MERGER_SUCCESSOR_DISTINCT_ISSUER"
+            else None
+        )
         source_evidence = []
         for source in label.get("source_evidence", []):
             path = Path(source["repository_capture_path"])
@@ -587,6 +602,8 @@ def main() -> int:
         case_valid = (
             result.get("old_code") == old_code
             and result.get("new_code") == new_code
+            and expected_case.get("source_receipt_case_sha256") == expected_case_sha
+            and disposition == expected_disposition
             and result.get("predicted_positive") == expected_positive
             and result.get("evaluation_match") is True
             and result.get("candidate_auto_link_allowed") is False
@@ -600,7 +617,7 @@ def main() -> int:
             "old_source_security_key": old_code,
             "new_source_security_key": new_code,
             "resolution": disposition,
-            "required_scope_scan_window": case_id == "BLIND-01",
+            "required_scope_scan_window": case_id == first_benchmark_case_id,
             "independent_official_evidence": source_evidence,
             "candidate_evaluation_matches_label_without_auto_link": case_valid,
             "canonical_identity_changed": False,
@@ -670,7 +687,7 @@ def main() -> int:
             path.as_posix(): file_identity(path)
             for path in (
                 SCAN, DISCOVERY, IDENTITY, OFFICIAL_INDEX, OFFICIAL_COVERAGE,
-                BLIND_RECEIPT, BLIND_LABELS, EXTERNAL_CODE_REVIEW, EXTERNAL_BLIND_REVIEW,
+                BLIND_RECEIPT, BLIND_LABELS, BLIND_CASE_EXPECTATIONS, EXTERNAL_CODE_REVIEW, EXTERNAL_BLIND_REVIEW,
                 EXTERNAL_AUDIT, REPAIR_TASK, CALIBRATION_AUDIT,
             )
         },
@@ -720,7 +737,7 @@ def main() -> int:
         },
         "inputs": {
             path.as_posix(): file_identity(path)
-            for path in (UNIVERSE, IDENTITY, GLOBAL_HEAD, ARCHIVE, DISCOVERY, R8_POSTCHECK, R83_POSTCHECK, SCAN, BLIND_RECEIPT, BLIND_LABELS, OFFICIAL_INDEX, OFFICIAL_COVERAGE, EXTERNAL_AUDIT, REPAIR_TASK, CALIBRATION_AUDIT)
+            for path in (UNIVERSE, IDENTITY, GLOBAL_HEAD, ARCHIVE, DISCOVERY, R8_POSTCHECK, R83_POSTCHECK, SCAN, BLIND_RECEIPT, BLIND_LABELS, BLIND_CASE_EXPECTATIONS, OFFICIAL_INDEX, OFFICIAL_COVERAGE, EXTERNAL_AUDIT, REPAIR_TASK, CALIBRATION_AUDIT)
         },
         "recomputed_scope": {
             "rows_scanned": independent["rows_scanned"],

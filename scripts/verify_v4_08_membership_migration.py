@@ -52,8 +52,14 @@ def main() -> int:
     for executable in (initdb, pg_ctl, psql, postgres):
         if not executable.is_file():
             raise FileNotFoundError(f"PostgreSQL executable is missing: {executable}")
-    migration = ROOT / "src/workbench_db/migrations/v4_postgres/016_v4_08_sector_membership.sql"
-    rollback = ROOT / "src/workbench_db/migrations/v4_postgres/rollback/016_v4_08_sector_membership.sql"
+    migrations = [
+        ROOT / "src/workbench_db/migrations/v4_postgres/016_v4_08_sector_membership.sql",
+        ROOT / "src/workbench_db/migrations/v4_postgres/017_v4_08_membership_fact_evidence_view.sql",
+    ]
+    rollbacks = [
+        ROOT / "src/workbench_db/migrations/v4_postgres/rollback/017_v4_08_membership_fact_evidence_view.sql",
+        ROOT / "src/workbench_db/migrations/v4_postgres/rollback/016_v4_08_sector_membership.sql",
+    ]
     version = run([str(postgres), "--version"]).stdout.strip()
     checks: dict[str, bool] = {}
     with tempfile.TemporaryDirectory(prefix="v4_08_membership_pg_") as temp:
@@ -85,9 +91,16 @@ CREATE OR REPLACE FUNCTION v4.reject_append_only_mutation() RETURNS trigger LANG
 BEGIN RAISE EXCEPTION 'append-only guard rejected %', TG_OP; END;
 $$;
 """, "prerequisites.sql")
-            sql_file_result = run([str(psql), "-X", "-v", "ON_ERROR_STOP=1", "-h", "127.0.0.1", "-p", str(port), "-U", "postgres", "-d", "postgres", "-f", str(migration)])
-            checks["migration_applied"] = sql_file_result.returncode == 0
-            checkpoint("migration applied")
+            for index, migration in enumerate(migrations, 1):
+                run([str(psql), "-X", "-v", "ON_ERROR_STOP=1", "-h", "127.0.0.1", "-p", str(port), "-U", "postgres", "-d", "postgres", "-f", str(migration)])
+                checkpoint(f"migration {index}/{len(migrations)} applied")
+            checks["migration_applied"] = True
+            columns = sql("""SELECT column_name FROM information_schema.columns
+WHERE table_schema='v4' AND table_name='sector_membership_fact_evidence';
+""", "fact_evidence_columns.sql")
+            evidence_columns = {line.strip() for line in columns.stdout.splitlines() if line.strip()}
+            required_evidence_columns = {"observed_at", "ingested_at", "system_available_at", "provider_available_at", "source_digest", "source_file_digests", "target_trade_date", "membership_asof_date"}
+            checks["fact_evidence_view_exposes_contract_timestamps_and_digests"] = required_evidence_columns <= evidence_columns
             policy = sql("""SELECT sector_type || ':' || formal_radar_allowed::text || ':' || formal_sector_qualification_allowed::text || ':' || formal_rotation_qualification_allowed::text
 FROM v4.sector_membership_type_policy WHERE registry_digest = '__REGISTRY_DIGEST__' ORDER BY sector_type;
 """.replace("__REGISTRY_DIGEST__", REGISTRY_DIGEST), "policy.sql")
@@ -138,8 +151,9 @@ INSERT INTO v4.sector_membership_facts VALUES
             mutation = sql("DELETE FROM v4.sector_membership_source_revisions WHERE source_revision_id='rev-1';", "delete_rejected.sql", check=False)
             checks["delete_rejected"] = mutation.returncode != 0 and "append-only guard rejected DELETE" in mutation.stderr
             checkpoint("append-only checks complete")
-            run([str(psql), "-X", "-v", "ON_ERROR_STOP=1", "-h", "127.0.0.1", "-p", str(port), "-U", "postgres", "-d", "postgres", "-f", str(rollback)])
-            checkpoint("rollback applied")
+            for index, rollback in enumerate(rollbacks, 1):
+                run([str(psql), "-X", "-v", "ON_ERROR_STOP=1", "-h", "127.0.0.1", "-p", str(port), "-U", "postgres", "-d", "postgres", "-f", str(rollback)])
+                checkpoint(f"rollback {index}/{len(rollbacks)} applied")
             sentinel = sql("SELECT count(*) FROM v4.preserved_sentinel;", "rollback_scope.sql")
             checks["rollback_removed_only_stage_schema"] = "1" in [x.strip() for x in sentinel.stdout.splitlines()] and "v4.sector_membership_facts" not in sql("SELECT coalesce(to_regclass('v4.sector_membership_facts')::text,'NULL');", "rollback_check.sql").stdout
         finally:
@@ -156,15 +170,22 @@ INSERT INTO v4.sector_membership_facts VALUES
         "status": "PASS_ISOLATED_MIGRATION_AND_ROLLBACK" if passed else "FAIL",
         "database_scope": "disposable localhost PostgreSQL cluster initialized by this verifier; config/.env and configured databases were not read",
         "postgres_version": version,
-        "migration_sha256": sha(migration),
-        "rollback_sha256": sha(rollback),
+        "migrations": [{"path": path.relative_to(ROOT).as_posix(), "sha256": sha(path)} for path in migrations],
+        "rollbacks": [{"path": path.relative_to(ROOT).as_posix(), "sha256": sha(path)} for path in rollbacks],
+        "migration_sha256": sha(migrations[0]),
+        "rollback_sha256": sha(rollbacks[-1]),
         "sector_type_registry_digest": REGISTRY_DIGEST,
         "checks": checks,
         "created_at_utc": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
     }
     dest = args.evidence if args.evidence.is_absolute() else ROOT / args.evidence
     dest.parent.mkdir(parents=True, exist_ok=True)
-    dest.write_text(json.dumps(evidence, ensure_ascii=False, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+    with tempfile.NamedTemporaryFile(prefix=f".{dest.name}.", suffix=".tmp", dir=dest.parent, delete=False, mode="w", encoding="utf-8", newline="\n") as stream:
+        temp_path = Path(stream.name)
+        stream.write(json.dumps(evidence, ensure_ascii=False, sort_keys=True, indent=2) + "\n")
+        stream.flush()
+        os.fsync(stream.fileno())
+    os.replace(temp_path, dest)
     print(json.dumps(evidence, ensure_ascii=False, sort_keys=True, indent=2))
     return 0 if passed else 1
 

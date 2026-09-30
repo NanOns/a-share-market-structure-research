@@ -1,0 +1,20 @@
+{
+  "accepted_revision_created": false,
+  "append_only_model": "A correction creates a new source_revision_id and points supersedes_revision_id to the prior revision.",
+  "contract_id": "V4_08_MEMBERSHIP_REVISION_TEST_V1",
+  "fork_rejected": true,
+  "forked_chain": {
+    "errors": [
+      "REVISION_FORK"
+    ],
+    "revision_count": 3,
+    "status": "BLOCKED"
+  },
+  "same_day_revision_policy": "single non-forking supersession chain",
+  "status": "PASS_APPEND_ONLY_CHAIN_AND_FORK_REJECTION",
+  "valid_chain": {
+    "errors": [],
+    "revision_count": 2,
+    "status": "PASS"
+  }
+}

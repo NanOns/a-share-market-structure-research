@@ -1,0 +1,38 @@
+{
+  "contract_id": "V4_08_SECTOR_TYPE_REGISTRY_V1",
+  "industry_parent_contract": {
+    "map_id": "TDX_INDUSTRY_PREFIX_PARENT_MAP_V1",
+    "path": "config/v4_08_industry_parent_membership_contract_v1.json",
+    "sha256": "5c73bd90719d93c6912b0385fba5a3fbeb08aab89586781b182a1a6cf9630551"
+  },
+  "industry_parent_map_digest": "b99caa32b2060f440f84f7e450a4852c05770c8696baa250e95d92e57d6c5bda",
+  "industry_parent_sector_count": 22,
+  "observed_replay_row_counts_by_formal_type": {
+    "INDUSTRY": 8484,
+    "STYLE": 20223,
+    "THEME": 46591,
+    "UNKNOWN": 12639
+  },
+  "observed_source_row_counts_by_raw_type": {
+    "concept": 46591,
+    "index_group": 12639,
+    "industry": 5585,
+    "style": 20223
+  },
+  "raw_rows_discarded_for_type": 0,
+  "registry_sha256": "4a8d1c8e6574bfa9985e7980ca83337b7a14bed54bfbbace9e817d44b2076743",
+  "source_type_to_formal_type": {
+    "all_unregistered_source_types": "UNKNOWN",
+    "concept": "THEME",
+    "industry": "INDUSTRY",
+    "style": "STYLE"
+  },
+  "status": "PASS_VERSIONED_MAPPING_AND_PRESERVATION",
+  "style_formal_consumer_allowed": false,
+  "unknown_formal_consumer_allowed": false,
+  "unknown_rows_retained": true,
+  "unknown_source_type_fact_counts": {
+    "index_group": 12639
+  },
+  "version": "1.0.0"
+}

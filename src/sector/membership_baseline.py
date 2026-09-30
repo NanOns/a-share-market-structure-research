@@ -66,6 +66,14 @@ def map_source_sector_type(source_type: str, registry: Mapping[str, str]) -> str
 
 
 def formal_membership_eligible(row: Mapping[str, Any]) -> bool:
+    try:
+        cutoff = parse_timestamp(row.get("cutoff"))
+        provider_available = parse_timestamp(row.get("provider_available_at"))
+        system_available = parse_timestamp(row.get("system_available_at"))
+        target_date = date.fromisoformat(str(row.get("target_trade_date")))
+        asof_date = date.fromisoformat(str(row.get("membership_asof_date")))
+    except (TypeError, ValueError):
+        return False
     return (
         row.get("sector_type") in FORMAL_SECTOR_TYPES
         and row.get("membership_basis") == "PIT_OBSERVED"
@@ -73,6 +81,10 @@ def formal_membership_eligible(row: Mapping[str, Any]) -> bool:
         and row.get("pit_observed") is True
         and row.get("historical_backtest_safe") is True
         and row.get("identity_status", "MAPPED") == "MAPPED"
+        and bool(row.get("security_id"))
+        and provider_available <= cutoff
+        and system_available <= cutoff
+        and asof_date <= target_date
     )
 
 

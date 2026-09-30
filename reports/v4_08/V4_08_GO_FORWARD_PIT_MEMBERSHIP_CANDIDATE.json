@@ -1,0 +1,20 @@
+{
+  "candidate_snapshot_digest": "4b8779edd4ea4da31105a8debdf0e8e5c3e16d2e5fbcc3ce88a9fb4c8e07ad00",
+  "candidate_source_revision_id": "sha256:bf617d0982e20d0cd0bba0726f1a9e310e9b367f735d4404695dd242fab14a03",
+  "contract_id": "V4_08_GO_FORWARD_PIT_MEMBERSHIP_CANDIDATE_V1",
+  "first_go_forward_pit_baseline_trade_date": null,
+  "historical_backtest_safe": false,
+  "latest_accepted_market_session": "2026-09-28",
+  "latest_accepted_market_session_source": {
+    "path": "data/v4/V4_05_ACCEPTED_HEAD.json",
+    "sha256": "fc929d85553a900a6479ac9f50291d50cf750ad0e6c21fc58e4e05e92189f5cb"
+  },
+  "membership_asof_date": null,
+  "pit_observed": false,
+  "proposed_baseline_trade_date": null,
+  "provider_available_at": null,
+  "reason": "The source bytes are hash-frozen and observed by this run, but local mtime and current capture do not establish provider availability or which market session the source membership describes. No PIT date is assigned.",
+  "source_ingested_at": "2026-09-30T00:45:22.133876Z",
+  "source_observed_at": "2026-09-30T00:45:21.889920Z",
+  "status": "BLOCKED_NO_PROVIDER_AVAILABILITY_OR_ACCEPTED_CUTOFF_BINDING"
+}

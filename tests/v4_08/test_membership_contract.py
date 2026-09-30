@@ -26,6 +26,9 @@ def _row(**overrides):
         "source_sector_type": "industry", "membership_basis": "PIT_OBSERVED",
         "membership_quality": "PIT_OBSERVED_ACCEPTED", "pit_observed": True,
         "historical_backtest_safe": True, "identity_status": "MAPPED",
+        "target_trade_date": "2026-09-30", "membership_asof_date": "2026-09-30",
+        "cutoff": "2026-09-30T08:00:00Z", "provider_available_at": "2026-09-30T07:59:00Z",
+        "system_available_at": "2026-09-30T08:00:00Z",
     }
     base.update(overrides)
     return base
@@ -55,11 +58,22 @@ def test_historical_replay_is_diagnostic_only():
     assert not formal_membership_eligible(row)
 
 
+def test_formal_membership_requires_provider_and_system_availability_within_cutoff():
+    assert formal_membership_eligible(_row())
+    assert not formal_membership_eligible(_row(provider_available_at="2026-09-30T08:00:01Z"))
+    assert not formal_membership_eligible(_row(system_available_at="2026-09-30T08:00:01Z"))
+    assert not formal_membership_eligible(_row(membership_asof_date="2026-10-01"))
+
+
 def test_t_snapshot_is_unchanged_by_t_plus_1_correction():
+    current = {"source_revision_id": "rev-t", "system_available_at": "2026-09-30T08:00:00Z"}
+    later = {"source_revision_id": "rev-t1", "system_available_at": "2026-10-01T08:00:00Z", "supersedes_revision_id": "rev-t"}
     before = _snapshot([_row()])
-    _t1_correction = {"source_revision_id": "rev-t1", "system_available_at": "2026-10-01T08:00:00Z", "supersedes_revision_id": "rev-t"}
+    selected_before = select_available_revisions([current, later], "2026-09-30T08:00:00Z")
     after = _snapshot([_row()])
+    selected_after = select_available_revisions([current, later], "2026-09-30T08:00:00Z")
     assert before == after
+    assert selected_before == selected_after == [current]
 
 
 def test_late_correction_is_a_new_revision():

@@ -1,0 +1,56 @@
+{
+  "contract_id": "V4_08_SECTOR_MEMBERSHIP_SOURCE_V1",
+  "filesystem_mtime_is_provider_availability": false,
+  "identity_map": {
+    "ambiguous_key_count": 0,
+    "byte_count": 5528197,
+    "global_head_path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+    "global_head_sha256": "74b0fdd3358ab0da95ffa0522a5cf9a34bb168cb0bfb0a8adfbfc32d5578ef71",
+    "non_core_key_count": 3357,
+    "path": "data/v4/artifact_store/v4_01/security_entity_map_R7_20260927.json",
+    "records_key_count": 6053,
+    "resolved_key_count": 6053,
+    "sha256": "e33294fb8d1d71732fdc3df903258b5617345811ecbdb649af8056ccd91427e0",
+    "unresolved_key_count": 3098
+  },
+  "parser_version": "v4-08-tdx-membership-capture-r1",
+  "pit_snapshot_formal_acceptance": "BLOCKED_PROVIDER_AVAILABILITY_AND_MEMBERSHIP_EFFECTIVE_DATE_UNVERIFIED",
+  "provider_available_at": null,
+  "source_digest": "bf617d0982e20d0cd0bba0726f1a9e310e9b367f735d4404695dd242fab14a03",
+  "source_file_digests": {
+    "T0002/hq_cache/infoharbor_block.dat": "025d9ae0c50d0cbf64fa3ba06c419681d7a931a9192b1c7841b14382b53b7595",
+    "T0002/hq_cache/tdxhy.cfg": "f0861020e5d9fde9f10ab0374da6b887f3a5f681cfa00bb7dc6776ee4703c735",
+    "T0002/hq_cache/tdxzs.cfg": "a33983fc8bb15c97db93fe9b60394b326b71a91e99e33b8b54700415442074da",
+    "data/v4/artifact_store/v4_01/security_entity_map_R7_20260927.json": "e33294fb8d1d71732fdc3df903258b5617345811ecbdb649af8056ccd91427e0"
+  },
+  "source_paths": {
+    "T0002/hq_cache/infoharbor_block.dat": {
+      "byte_count": 741500,
+      "filesystem_mtime_local": "2026-09-28T22:28:34.808829+08:00",
+      "filesystem_mtime_ns": 1790605714808828800,
+      "observed_at": "2026-09-30T00:45:21.890265Z",
+      "sha256": "025d9ae0c50d0cbf64fa3ba06c419681d7a931a9192b1c7841b14382b53b7595",
+      "source_root_relative_path": "T0002/hq_cache/infoharbor_block.dat"
+    },
+    "T0002/hq_cache/tdxhy.cfg": {
+      "byte_count": 150522,
+      "filesystem_mtime_local": "2026-09-28T22:28:35.142383+08:00",
+      "filesystem_mtime_ns": 1790605715142382900,
+      "observed_at": "2026-09-30T00:45:21.889920Z",
+      "sha256": "f0861020e5d9fde9f10ab0374da6b887f3a5f681cfa00bb7dc6776ee4703c735",
+      "source_root_relative_path": "T0002/hq_cache/tdxhy.cfg"
+    },
+    "T0002/hq_cache/tdxzs.cfg": {
+      "byte_count": 18272,
+      "filesystem_mtime_local": "2026-09-24T17:53:12+08:00",
+      "filesystem_mtime_ns": 1790243592000000000,
+      "observed_at": "2026-09-30T00:45:21.890157Z",
+      "sha256": "a33983fc8bb15c97db93fe9b60394b326b71a91e99e33b8b54700415442074da",
+      "source_root_relative_path": "T0002/hq_cache/tdxzs.cfg"
+    }
+  },
+  "status": "PASS_CAPTURE_AND_HASH_BINDING; PIT_PROVIDER_AVAILABILITY_UNVERIFIED",
+  "tdx_root_read_only": true,
+  "tdx_root_write_count": 0,
+  "version": "1.0.0"
+}

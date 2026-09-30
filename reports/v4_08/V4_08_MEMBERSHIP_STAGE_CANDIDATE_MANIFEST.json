@@ -1,0 +1,164 @@
+{
+  "contract_id": "V4_08_MEMBERSHIP_STAGE_CANDIDATE_MANIFEST_V1",
+  "file_count": 30,
+  "files": [
+    {
+      "byte_count": 4813,
+      "path": "config/v4_08_sector_membership_contract_v1.json",
+      "sha256": "23707b2c99fd9d4f5b13f05bcbf6e140e90ad99eb1ae23c00bca47a5c91d1a24"
+    },
+    {
+      "byte_count": 1305,
+      "path": "config/v4_08_sector_type_registry_v1.json",
+      "sha256": "4a8d1c8e6574bfa9985e7980ca83337b7a14bed54bfbbace9e817d44b2076743"
+    },
+    {
+      "byte_count": 1814,
+      "path": "config/v4_08_sector_membership_quality_v1.json",
+      "sha256": "65b1e19c1a7973156e3cd1af2240eb29369d452975ede11e6781dc2211a650bd"
+    },
+    {
+      "byte_count": 1499,
+      "path": "config/v4_08_industry_parent_membership_contract_v1.json",
+      "sha256": "5c73bd90719d93c6912b0385fba5a3fbeb08aab89586781b182a1a6cf9630551"
+    },
+    {
+      "byte_count": 10559,
+      "path": "src/sector/membership_baseline.py",
+      "sha256": "0a1bb5be1e438ddaec2202b7d7c8d658d204ecd55defe33508fefd55ade75936"
+    },
+    {
+      "byte_count": 9268,
+      "path": "src/workbench_db/migrations/v4_postgres/016_v4_08_sector_membership.sql",
+      "sha256": "45db743c2d223308d8b95a1dbe4cb7548f3ff553c04a021058be1ed7d34cb6e5"
+    },
+    {
+      "byte_count": 1074,
+      "path": "src/workbench_db/migrations/v4_postgres/017_v4_08_membership_fact_evidence_view.sql",
+      "sha256": "633998684434e06b089f622c7c2a8bc37743ab945e53f94b06ca496de8ee77fc"
+    },
+    {
+      "byte_count": 405,
+      "path": "src/workbench_db/migrations/v4_postgres/rollback/016_v4_08_sector_membership.sql",
+      "sha256": "1c9c0b1c2d7b157fd228cd29f3426cd5e75f1c6431ca44da0b68257d0539f258"
+    },
+    {
+      "byte_count": 56,
+      "path": "src/workbench_db/migrations/v4_postgres/rollback/017_v4_08_membership_fact_evidence_view.sql",
+      "sha256": "80b22cac9f34ce64c17a22777f1638d9df85e536ccd78b8b610716bcf44a9047"
+    },
+    {
+      "byte_count": 36654,
+      "path": "scripts/build_v4_08_membership_prerequisite.py",
+      "sha256": "ba7dd7af226207d2034bc8db43322b6f2b1ff2f1a0419a2f89aee741f2709f12"
+    },
+    {
+      "byte_count": 13456,
+      "path": "scripts/verify_v4_08_membership_migration.py",
+      "sha256": "e3eb7d4a7c1c15b8b70e62c48f7befbea13531f72157c9e1abf4412dc19489df"
+    },
+    {
+      "byte_count": 8080,
+      "path": "tests/v4_08/test_membership_contract.py",
+      "sha256": "52dc2119c98bcbf2164d21ac2664b2bc78365e094b7b02d2019af961ae9559a5"
+    },
+    {
+      "byte_count": 1815,
+      "path": "tests/v4_08/test_membership_source_parser.py",
+      "sha256": "b7f43b6453c27965d3bd787d6f80f799109d25a4a61287d3a4e9e5d13bdee4e3"
+    },
+    {
+      "byte_count": 2631,
+      "path": "reports/v4_08/V4_08_MEMBERSHIP_STAGE_ENTRY.md",
+      "sha256": "b34957bf2e49baa268fc14d9018f03e250be2f6c136671aa0850c0153a67907e"
+    },
+    {
+      "byte_count": 3100,
+      "path": "docs/audits/V4_03_SECTOR_OWNERSHIP_AMENDMENT_V1_20260929.md",
+      "sha256": "e09394498c836f11ca33b7b1f3fde73b588b0cd9cd8a91321eae30cbfeca966c"
+    },
+    {
+      "byte_count": 181127,
+      "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV2_20260925.md",
+      "sha256": "744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd"
+    },
+    {
+      "byte_count": 5999,
+      "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+      "sha256": "74b0fdd3358ab0da95ffa0522a5cf9a34bb168cb0bfb0a8adfbfc32d5578ef71"
+    },
+    {
+      "byte_count": 8456,
+      "path": "data/v4/V4_05_ACCEPTED_HEAD.json",
+      "sha256": "fc929d85553a900a6479ac9f50291d50cf750ad0e6c21fc58e4e05e92189f5cb"
+    },
+    {
+      "byte_count": 5528197,
+      "path": "data/v4/artifact_store/v4_01/security_entity_map_R7_20260927.json",
+      "sha256": "e33294fb8d1d71732fdc3df903258b5617345811ecbdb649af8056ccd91427e0"
+    },
+    {
+      "byte_count": 2053,
+      "path": "reports/v4_08/V4_08_MEMBERSHIP_SCHEMA_MIGRATION_RECEIPT.json",
+      "sha256": "6db4199d2d7db504b1d417e4cd3a4584cbe1d20f97fe55218b6fccaf6002654d"
+    },
+    {
+      "byte_count": 3000754,
+      "path": "reports/v4_08/staging/V4_08_CURRENT_TDX_MEMBERSHIP_R1.jsonl.gz",
+      "sha256": "0dc51851c44a1a2e7bbbd760001f5647dbab6ebefa5d45e94c715b575b4ddff7"
+    },
+    {
+      "byte_count": 3018146,
+      "path": "reports/v4_08/staging/V4_08_CURRENT_MEMBERSHIP_REPLAY_20260928_R1.jsonl.gz",
+      "sha256": "babd763fdff3656ef501b3706dc7a310ba22fbf6df8a7875d82d7b19410a0e3d"
+    },
+    {
+      "byte_count": 2766,
+      "path": "reports/v4_08/V4_08_SECTOR_MEMBERSHIP_SOURCE_CONTRACT_ACCEPTANCE.json",
+      "sha256": "a5d2928426fdb40d6dbfde951c6d2bd1385c2a7e79074f8c1ec647cf6df02c60"
+    },
+    {
+      "byte_count": 1259,
+      "path": "reports/v4_08/V4_08_SECTOR_TYPE_REGISTRY_ACCEPTANCE.json",
+      "sha256": "758e817f217b6c7cb5160d345101ec9e2c4190104be344d55d1e341b43b58916"
+    },
+    {
+      "byte_count": 1140,
+      "path": "reports/v4_08/V4_08_GO_FORWARD_PIT_MEMBERSHIP_CANDIDATE.json",
+      "sha256": "2e5020028ae235f788d6889c2e89803e6aca7ab23f68aafd5636444980bd8fbc"
+    },
+    {
+      "byte_count": 4677,
+      "path": "reports/v4_08/V4_08_CURRENT_MEMBERSHIP_REPLAY_DIAGNOSTIC.json",
+      "sha256": "a5738f7754ddf65a6fae9688a39c0ee5b604bccd4be694b167d8b845b91017bf"
+    },
+    {
+      "byte_count": 9456,
+      "path": "reports/v4_08/V4_08_MEMBERSHIP_IDENTITY_POSTCHECK.json",
+      "sha256": "f63466b340cf76efa29356510d15f94169c4b6bbd5d8dd381579e1842bef86ec"
+    },
+    {
+      "byte_count": 678,
+      "path": "reports/v4_08/V4_08_MEMBERSHIP_TEMPORAL_LEAKAGE_TEST.json",
+      "sha256": "ffd4629f6b10414fde1d236c27fecea0f70915ab900ada268925acf59e7209d4"
+    },
+    {
+      "byte_count": 584,
+      "path": "reports/v4_08/V4_08_MEMBERSHIP_REVISION_TEST.json",
+      "sha256": "aabbd69f22c4f510b402d5108b55453851aa766a7412a06fa83ff5f37de0e913"
+    },
+    {
+      "byte_count": 1062,
+      "path": "reports/v4_08/V4_08_MEMBERSHIP_DETERMINISM.json",
+      "sha256": "d63334061b2b032260000095e7b152ae94153878be2ce9f3574bc2a1849576af"
+    }
+  ],
+  "generated_at_utc": "2026-09-30T00:45:22.133876Z",
+  "membership_snapshot_digests": {
+    "current_tdx": "4b8779edd4ea4da31105a8debdf0e8e5c3e16d2e5fbcc3ce88a9fb4c8e07ad00",
+    "historical_replay": "6b6663cb853be75ae269c4b11629abca72fbb4bac8adeff3439255c5ef2e640e"
+  },
+  "source_head_at_generation": "ae27c3bdd170024eff3841a147fcce257d57b038",
+  "status": "CANDIDATE_BLOCKED_FOR_PIT_ACCEPTANCE; DIAGNOSTIC_REPLAY_EVIDENCE_BOUND",
+  "target_trade_date": "2026-09-28"
+}

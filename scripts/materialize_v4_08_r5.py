@@ -7,6 +7,7 @@ sys.path.insert(0,str(ROOT/'src'));sys.path.insert(0,str(ROOT/'scripts'))
 from build_v4_08_r2_membership_evidence import atomic_json,atomic_bytes
 from sector.native_r5 import build_native
 from sector.accepted_input_r5_1 import load_accepted_current
+from sector.accepted_context_r5_2 import resolve_daily_context
 from sector.semantic_input_r5_1 import bind_semantic
 from sector.rotation_r5 import resolve_package,evaluate_b0,advance_rotation
 from sector.legacy_b2_r5 import evaluate_b2,build_b2_inputs
@@ -43,15 +44,17 @@ def main():
     target=snapshot['target_trade_date'];factors=rows(corehead['accepted_artifacts']['full_scope_factors']);seed_rows=rows(seedhead['evidence_bindings']['candidate_artifact'])
     dates=Counter(r['trade_date'] for r in factors);seed_dates=Counter(r['trade_date'] for r in seed_rows)
     if any(date>target for date in [*dates,*seed_dates]):raise ValueError('FUTURE_ACCEPTED_INPUT_NOT_ALLOWED_AT_TARGET')
-    current,adapter_binding=load_accepted_current(ROOT,corehead,target=target,cutoff=target+'T23:59:59+08:00')
+    daily_context=resolve_daily_context(ROOT,target=target)
+    current,adapter_binding=load_accepted_current(ROOT,corehead,target=target,cutoff=target+'T23:59:59+08:00',accepted_input_context=daily_context)
     params_path='config/v4_08_algorithm_parameter_set_r5.json';params=read(params_path);parameter_bytes=(ROOT/params_path).read_bytes()
     registry=read('config/v4_08_sector_field_registry_r5.json');b0contract=read('config/v4_08_sector_prewatch_contract_r5.json');b1contract=read('config/v4_08_rotation_core_contract_r5.json')
     values,_=resolve_package(b0contract,params,parameter_bytes,registry);resolve_package(b1contract,params,parameter_bytes,registry)
     source_bindings={k:bind(p) for k,p in [('membership_head',destination.relative_to(ROOT).as_posix()),('core_head','data/v4/V4_05_ACCEPTED_HEAD.json'),('seed_head','data/v4/V4_07_ACCEPTED_HEAD.json'),('calendar_head',candidate['calendar_head']['path']),('parameter_set',params_path),('native_producer','src/sector/native_r5.py'),('rotation_producer','src/sector/rotation_r5.py'),('b2_producer','src/sector/legacy_b2_r5.py'),('b2_ast','config/v4_08_b2_machine_ast_r5.json')]}
     for key,path in [('field_registry','config/v4_08_sector_field_registry_r5.json'),('native_contract','config/v4_08_sector_native_contract_r5.json'),('b0_contract','config/v4_08_sector_prewatch_contract_r5.json'),('rotation_contract','config/v4_08_rotation_core_contract_r5.json'),('core_factors',corehead['accepted_artifacts']['full_scope_factors']['path']),('core_profile',corehead['accepted_artifact']['path']),('seed_artifact',seedhead['evidence_bindings']['candidate_artifact']['path'])]:source_bindings[key]=bind(path)
     source_bindings['accepted_input_adapter']=bind('src/sector/accepted_input_r5_1.py')
+    source_bindings['accepted_context_resolver']=bind('src/sector/accepted_context_r5_2.py')
     source_bindings['semantic_adapter']=bind('src/sector/semantic_input_r5_1.py')
-    source_bindings['accepted_input_contract']=bind('config/v4_08_accepted_input_contract_r5_1.json')
+    source_bindings['accepted_input_contract']=bind('config/v4_08_accepted_context_contract_r5_2.json')
     source_bindings['canonical_hash_producer']=bind('src/v4/canonical_governance_hash.py')
     source_bindings['canonical_input_binding']=adapter_binding
     ast_binding=read('config/v4_08_b2_machine_ast_r5.json')
@@ -86,7 +89,7 @@ def main():
     for kind,source,contract in [('SECTOR_NATIVE','src/sector/native_r5.py','config/v4_08_sector_native_contract_r5.json'),('B0','src/sector/rotation_r5.py','config/v4_08_sector_prewatch_contract_r5.json'),('ROTATION','src/sector/rotation_r5.py','config/v4_08_rotation_core_contract_r5.json')]:
         report(kind+'_IMPLEMENTATION',dict(status='IMPLEMENTED_ENGINEERING_CANDIDATE',producer=bind(source),contract=bind(contract),parameter_set=bind(params_path),full_market_artifact=paths[kind],real_same_day_signal_available=False,reason='ACCEPTED_CORE_TARGET_DATE_20260928_NOT_20260930',external_acceptance_pending=True))
     report('STAGE_CANDIDATE_MANIFEST',dict(status='R5_ENGINEERING_CANDIDATE_PENDING_VERIFICATION',publication_id=publication,artifacts=paths,input_bindings=source_bindings,
-        capabilities={'SECTOR_NATIVE_NON_SEED':'IMPLEMENTED_TARGET_CORE_UNAVAILABLE','B0_SEED_DEPENDENT':'DEGRADED_UNKNOWN','ROTATION_HISTORY_DEPENDENT':'SHADOW_UNKNOWN','B2_NON_AMOUNT_A':'IMPLEMENTED_TARGET_CORE_UNAVAILABLE','B2_AMOUNT_A':'DIAGNOSTIC'},
+        capabilities={'SECTOR_NATIVE_NON_SEED':'IMPLEMENTED_TARGET_CORE_UNAVAILABLE','B0_SEED_DEPENDENT':'DEGRADED_UNKNOWN','ROTATION_HISTORY_DEPENDENT':'SHADOW_UNKNOWN','B2_NON_AMOUNT_A':'NOT_IMPLEMENTED_LEGACY_VALID_MEMBER_PROVENANCE','B2_AMOUNT_A':'DIAGNOSTIC_AUDIT_OPEN'},
         final_v4_08_accepted_head_written=False,global_acceptance_unchanged='V4_00_TO_V4_07_ACCEPTED',independent_audits=['Prior-RPS','AUD-AMOUNT-A-06','V4-01 listing-anchor']))
     print(json.dumps({'status':'MATERIALIZED_ENGINEERING_CANDIDATE','publication_id':publication,'row_counts':{k:len(v) for k,v in output.items()},'target_accepted_core_count':len(current)}))
 

@@ -19,8 +19,8 @@ def main():
     gold=[]
     for name,patch,expected in vectors:
         result=b2({**base,**patch})
-        if result['confirmed_raw']!=expected or result['warm_raw']!='UNKNOWN':raise ValueError('INDEPENDENT_B2_EXPECTATION_FAILED:'+name)
-        gold.append(dict(case=name,inputs={**base,**patch},expected_confirmed_raw=expected,actual_confirmed_raw=result['confirmed_raw'],warm_raw=result['warm_raw'],warm_reason=result['warm_reason'],predicates=result['predicates']))
+        if result['confirmed_diagnostic']!=expected or result['warm_raw']!='UNKNOWN':raise ValueError('INDEPENDENT_B2_EXPECTATION_FAILED:'+name)
+        gold.append(dict(case=name,inputs={**base,**patch},expected_confirmed_diagnostic=expected,actual_confirmed_diagnostic=result['confirmed_diagnostic'],warm_raw=result['warm_raw'],warm_reason=result['warm_reason'],predicates=result['predicates']))
     warm={**base,'current':False,'weak':False,'m1':-.005,'b1':.5,'ma20_width':.6,'extended_share':.1,'risk_coverage':1,'dq5_3':.2,'b_delta3':.2,'ma20_delta3':.1,'early_width':.2,'early_count':3,'q20':.6,'setup_count':3,'setup_evaluable_count':10,'prior_current_within10':True}
     for amount,expected in [(1.1,'TRUE'),(None,'UNKNOWN'),(.1,'FALSE')]:
         inputs={**warm,'amount_A':amount};result=b2(inputs)
@@ -52,6 +52,6 @@ def main():
         if not all(checks.values()):raise ValueError('FEEDBACK_LEAK')
         feedback.append(dict(mutated_input=key,checks=checks))
     report('FEEDBACK_ISOLATION',dict(status='PASS',same_day_final_outputs_and_future_facts_excluded=True,cases=feedback))
-    report('B2_INDEPENDENT_POSTCHECK',dict(status='PASS_ENGINEERING_EXPECTATIONS',source_binding_verified=hashlib.sha256((ROOT/ast['source_path']).read_bytes()).hexdigest()==ast['source_sha256'],golden_vector_count=len(gold),formal_non_amount_a_branch='confirmed_raw',all_three_warm_branches='DIAGNOSTIC_AMOUNT_A_OPEN',external_acceptance_pending=True))
+    report('B2_INDEPENDENT_POSTCHECK',dict(status='PASS_ENGINEERING_EXPECTATIONS',source_binding_verified=hashlib.sha256((ROOT/ast['source_path']).read_bytes()).hexdigest()==ast['source_sha256'],golden_vector_count=len(gold),formal_non_amount_a_branch='NOT_IMPLEMENTED_LEGACY_VALID_MEMBER_PROVENANCE',all_three_warm_branches='DIAGNOSTIC_AMOUNT_A_OPEN',external_acceptance_pending=True))
     print(json.dumps({'status':'PASS','golden_vectors':len(gold),'parameter_perturbations':len(perturb),'feedback_mutations':len(feedback)}))
 if __name__=='__main__':main()

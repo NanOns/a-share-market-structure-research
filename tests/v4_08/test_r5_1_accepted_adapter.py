@@ -13,6 +13,7 @@ import pytest
 from sector.accepted_input_r5_1 import load_accepted_current
 from sector.semantic_input_r5_1 import bind_semantic
 from sector.phase2 import VERSION
+from v4.canonical_governance_hash import canonical_json_file_sha256
 from sector.native_r5 import build_native
 from sector.legacy_b2_r5 import build_b2_inputs, evaluate_b2
 from sector.rotation_r5 import advance_rotation, evaluate_b0, resolve_package
@@ -39,8 +40,6 @@ def fixture(root, *, date=TARGET, amounts=None, snapshot='sha256-fixture-adjustm
     factors=[];profiles=[];daily=[];prices=[]
     for i,sid in enumerate(ids):
         factors.append(dict(security_id=sid,trade_date=date,fields={k:dict(value=v,quality_state='OBSERVED',source_asof=date) for k,v in dict(ret1=ret1,ret5=.1,ret20=.1,ret60=.1,rps20=20,amount_ratio20=99).items()}))
-        if not unknown_valid:
-            factors[-1]['legacy_valid_member']=dict(value=valid,quality='ACCEPTED',producer_contract=VERSION,max_source_date=date)
         profiles.append(dict(security_id=sid,trade_date=date,states={'trend_state':{'evidence':dict(close=11,ma20=10)}}))
         daily.append(dict(canonical_security_id=sid,trade_date=int(date.replace('-','')),amount=amounts[i],trading_status='ACTUAL_TRADED',adjustment_source_revision='fixture-source-revision',adjusted_quality='READY',price_basis='TDX_NATIVE_AFFINE_QFQ'))
         prices.append(dict(security_id=sid,target_trade_date=int(date.replace('-','')),max_source_trade_date=int(date.replace('-','')),coordinate_basis='T0_CURRENT_COORDINATE',adjustment_snapshot_id=snapshot,adjustment_snapshot_digest='fixture-revision',adjusted_quality='ADJUSTED_READY',qfq_ohlc=['11']*4,formal_publication_at=timestamp,system_available_at=timestamp,adjustment_source_available_at=timestamp,adjustment_system_available_at=timestamp))
@@ -53,11 +52,15 @@ def fixture(root, *, date=TARGET, amounts=None, snapshot='sha256-fixture-adjustm
     logical=hashlib.sha256(gzip.decompress((root/price_binding['path']).read_bytes())).hexdigest()
     save('data/v4/V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD.json',dict(external_acceptance='EXTERNALLY_ACCEPTED',accepted_candidate=price_binding,logical_digest=logical))
     core=dict(external_acceptance='EXTERNALLY_ACCEPTED',accepted_artifacts={'full_scope_factors':save('data/test_only/factors.jsonl.gz',factors,True)},accepted_artifact=save('data/test_only/profile.jsonl.gz',profiles,True))
+    core['accepted_input_context']=dict(contract_id='V4_08_ACCEPTED_INPUT_CONTEXT_R5_2',context_id='TEST_ONLY_ENGINEERING_CONTEXT',accepted_trade_date=date,scope='ENGINEERING_REPLAY_ONLY',daily_production_authority=False,
+        raw_daily=dict(**daily_binding,source_digest=daily_binding['sha256'],available_at=timestamp,capability='FULL_PASS',revision_semantics='PER_ROW_adjustment_source_revision'),
+        adjusted_price=dict(**price_binding,source_digest=logical,logical_digest=logical,available_at=timestamp,capability='FULL_PASS',revision_semantics='adjustment_snapshot_digest',coordinate_identity='coordinate_basis:adjustment_snapshot_id'),
+        governance=dict(source_head_path='data/v4/V4_02_ACCEPTED_HEAD.json',source_head_digest=canonical_json_file_sha256(root/'data/v4/V4_02_ACCEPTED_HEAD.json'),parent_identity=None))
     return core, ids
 
 
 def adapt(root,core,target=TARGET):
-    return load_accepted_current(root,core,target=target,cutoff=target+'T23:59:59+08:00')[0]
+    return load_accepted_current(root,core,target=target,cutoff=target+'T23:59:59+08:00',accepted_input_context=core['accepted_input_context'])[0]
 
 
 def native(current,ids,target=TARGET):
@@ -108,7 +111,7 @@ def test_digest_mismatch_rejected(tmp_path):
 def test_price_logical_digest_mismatch_rejected(tmp_path):
     core,_=fixture(tmp_path)
     path=tmp_path/'data/v4/V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD.json'
-    head=json.loads(path.read_text());head['logical_digest']='invalid';path.write_text(json.dumps(head))
+    head=json.loads(path.read_text());core['accepted_input_context']['adjusted_price']['logical_digest']='invalid'
     with pytest.raises(ValueError,match='LOGICAL_DIGEST'):adapt(tmp_path,core)
 
 
@@ -129,12 +132,12 @@ def test_missing_source_payload_degrades_unknown(tmp_path):
 
 def test_accepted_head_newline_identity_uses_existing_canonical_policy(tmp_path):
     core,_=fixture(tmp_path)
-    before=load_accepted_current(tmp_path,core,target=TARGET,cutoff=TARGET+'T23:59:59+08:00')
+    before=load_accepted_current(tmp_path,core,target=TARGET,cutoff=TARGET+'T23:59:59+08:00',accepted_input_context=core['accepted_input_context'])
     for name in ('V4_02_ACCEPTED_HEAD.json','V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD.json'):
         path=tmp_path/'data/v4'/name
         text=json.dumps(json.loads(path.read_text(encoding='utf8')),indent=2)+'\n'
         path.write_bytes(text.replace('\n','\r\n').encode('utf8'))
-    after=load_accepted_current(tmp_path,core,target=TARGET,cutoff=TARGET+'T23:59:59+08:00')
+    after=load_accepted_current(tmp_path,core,target=TARGET,cutoff=TARGET+'T23:59:59+08:00',accepted_input_context=core['accepted_input_context'])
     assert before==after
 
 
@@ -165,12 +168,12 @@ def test_future_adjustment_revision_rejected(tmp_path):
     headpath=tmp_path/'data/v4/V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD.json';head=json.loads(headpath.read_text());path=tmp_path/head['accepted_candidate']['path']
     rows=[json.loads(line) for line in gzip.decompress(path.read_bytes()).splitlines()]
     rows[0]['adjustment_source_available_at']='2026-10-01T08:00:00+08:00'
-    payload=b''.join(json.dumps(r).encode()+b'\n' for r in rows);path.write_bytes(gzip.compress(payload,mtime=0));head['accepted_candidate']['sha256']=hashlib.sha256(path.read_bytes()).hexdigest();head['logical_digest']=hashlib.sha256(payload).hexdigest();headpath.write_text(json.dumps(head))
+    payload=b''.join(json.dumps(r).encode()+b'\n' for r in rows);path.write_bytes(gzip.compress(payload,mtime=0));head['accepted_candidate']['sha256']=hashlib.sha256(path.read_bytes()).hexdigest();head['logical_digest']=hashlib.sha256(payload).hexdigest();headpath.write_text(json.dumps(head));core['accepted_input_context']['adjusted_price'].update(sha256=head['accepted_candidate']['sha256'],logical_digest=head['logical_digest'])
     with pytest.raises(ValueError,match='FUTURE_ACCEPTED_PRICE_REVISION'):adapt(tmp_path,core)
 
 
-@pytest.mark.parametrize('unknown,valid,expected',[(False,True,True),(False,False,False),(True,True,None)])
-def test_semantic_mapping_adapter(tmp_path,unknown,valid,expected):
+@pytest.mark.parametrize('unknown,valid,expected',[(False,True,None),(False,False,None),(True,True,None)])
+def test_semantic_mapping_formal_producer_unavailable(tmp_path,unknown,valid,expected):
     core,ids=fixture(tmp_path,unknown_valid=unknown,valid=valid);current=adapt(tmp_path,core);members,rows=native(current,ids)
     sem=bind_semantic(members,current,TARGET)
     facts=build_b2_inputs(rows,current,TARGET,read('config/research_attention_v3.yaml'),sem)['TEST_ONLY_SECTOR']
@@ -200,8 +203,10 @@ def test_actual_legacy_current_function_against_pit_adapter(tmp_path,normal_coun
         current.update(adapted)
         sector=f'TEST_ONLY_SECTOR_{index}'
         membership=[dict(sector_id=sector,sector_type='THEME',sector_name=name,semantic_bucket=bucket,security_id=m,snapshot_id='TEST_ONLY',target_trade_date=TARGET) for m in ids]
-        semantic.update(bind_semantic(membership,current,TARGET))
-        sem={k:semantic[sector][k] for k in ('sector_id','sector_type','sector_name','semantic_bucket','sector_valid')}
+        # Pure algorithm golden: explicit legacy semantic records are unit
+        # inputs, not a claim that the accepted producer is implemented.
+        semantic[sector]=dict(sector_id=sector,sector_type='THEME',sector_name=name,semantic_bucket=bucket,sector_valid=valid)
+        sem=semantic[sector]
         legacy_members.extend(dict(**q,**sem) for q in quotes[-len(ids):])
         native_rows.extend(build_native(membership,current,target=TARGET,snapshot_id='TEST_ONLY',publication_id='TEST_ONLY',parameter_set=read('config/v4_08_algorithm_parameter_set_r5.json'),source_bindings={}))
     inputs=build_b2_inputs(native_rows,current,TARGET,cfg,semantic)
@@ -212,7 +217,7 @@ def test_actual_legacy_current_function_against_pit_adapter(tmp_path,normal_coun
         assert facts['type_cross_section_coverage']['value']==row['type_cross_section_coverage']
         value=facts['p1']['value'];assert (value is None and pd.isna(row['p1'])) or value==row['p1']
         expected='TRUE' if row['current'] is True else 'FALSE' if row['current'] is False else 'UNKNOWN'
-        assert eval_b2(facts)['confirmed_raw']==expected
+        assert eval_b2(facts)['confirmed_diagnostic']==expected
     excluded=f'TEST_ONLY_SECTOR_{normal_count}'
     assert inputs[excluded]['p1']['value'] is None
     without=build_b2_inputs([r for r in native_rows if r['sector_id']!=excluded],current,TARGET,cfg,semantic)

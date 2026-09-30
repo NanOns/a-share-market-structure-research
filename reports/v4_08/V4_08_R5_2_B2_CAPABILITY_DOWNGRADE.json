@@ -1,0 +1,42 @@
+{
+  "B2_AMOUNT_A": "DIAGNOSTIC_AUDIT_OPEN",
+  "B2_NON_AMOUNT_A": "NOT_IMPLEMENTED_LEGACY_VALID_MEMBER_PROVENANCE",
+  "ENABLED_ENGINEERING_claim_removed": true,
+  "adapter": {
+    "path": "src/sector/accepted_input_r5_1.py",
+    "sha256": "f6d5e47742bfe984e7ffab273d48703047724111d26b8ecd9bc0afc0552fcf94"
+  },
+  "cases": [
+    {
+      "name": "test_b05_capability_downgrade_ignores_final_boolean_injection",
+      "status": "PASS"
+    },
+    {
+      "name": "test_semantic_mapping_formal_producer_unavailable[False-True-None]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_semantic_mapping_formal_producer_unavailable[False-False-None]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_semantic_mapping_formal_producer_unavailable[True-True-None]",
+      "status": "PASS"
+    }
+  ],
+  "confirmed_diagnostic": "PURE_ALGORITHM_ONLY_NO_FORMAL_PERMISSION",
+  "confirmed_raw": "UNKNOWN",
+  "decision": "B",
+  "fixture_entered_formal_head": false,
+  "resolver": {
+    "path": "src/sector/accepted_context_r5_2.py",
+    "sha256": "f66cc7dbe0bca2a2df27c338eb2d4db024706a50e8bb5bd70702e91622cd7da9"
+  },
+  "status": "PASS",
+  "test_only": true,
+  "test_source": {
+    "path": "tests/v4_08/test_r5_2_context_authority.py",
+    "sha256": "33c86b6ce621c7d611afcd668d1bf2cddb32fdbd06ff0dd924aa923326bf8a9e"
+  },
+  "warm_raw": "UNKNOWN"
+}

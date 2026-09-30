@@ -1,4 +1,4 @@
-"""V4_08_ACCEPTED_INPUT_ADAPTER_R5_1: accepted bytes only, no fallback IO."""
+"""V4_08_ACCEPTED_INPUT_ADAPTER_R5_2: context-bound bytes, no fallback IO."""
 from datetime import datetime
 import gzip
 import hashlib
@@ -7,7 +7,7 @@ import math
 from pathlib import Path
 from v4.canonical_governance_hash import canonical_json_file_sha256
 
-CONTRACT_ID = 'V4_08_ACCEPTED_INPUT_ADAPTER_R5_1'
+CONTRACT_ID = 'V4_08_ACCEPTED_INPUT_ADAPTER_R5_2'
 
 
 def day(value):
@@ -33,7 +33,8 @@ def load_rows(root, binding, target=None):
         table = pq.read_table(path, columns=['canonical_security_id','trade_date','amount','trading_status','adjustment_source_revision'])
         if target is not None:
             date = int(target.replace('-', ''))
-            if pc.max(table['trade_date']).as_py() > date:
+            maximum=pc.max(table['trade_date']).as_py()
+            if maximum is not None and maximum > date:
                 raise ValueError('FUTURE_CANONICAL_DAILY_DATE')
             table = table.filter(pc.equal(table['trade_date'], date))
         return table.to_pylist()
@@ -51,8 +52,8 @@ def finite(value):
 def build_current(factors, profiles, daily, prices, *, target, cutoff, binding):
     """All rows originate from the loader's verified accepted artifacts.
 
-    Raw amount uses V4-02 DAILY_R7; adjusted close and identity use the
-    V4-02 GO_FORWARD accepted coordinate, never a generic coordinate label.
+    Raw amount and adjusted close use the caller's accepted context pair.
+    Close and identity share an accepted coordinate and source revision.
     The source digest and revision are retained separately from amount.
     """
     limit = datetime.fromisoformat(cutoff.replace('Z', '+00:00'))
@@ -75,11 +76,7 @@ def build_current(factors, profiles, daily, prices, *, target, cutoff, binding):
         for name in ('amount', 'close'):
             fields.pop(name, None)
         current[row['security_id']] = dict(trade_date=target, fields=fields, price_basis_id=None)
-        exact = row.get('legacy_valid_member')
-        if exact is not None:
-            if exact.get('max_source_date', target) > target:
-                raise ValueError('FUTURE_LEGACY_VALID_MEMBER')
-            current[row['security_id']]['legacy_valid_member'] = dict(exact)
+        current[row['security_id']]['legacy_valid_member'] = dict(value=None, quality='UNKNOWN', reason='NOT_IMPLEMENTED_LEGACY_VALID_MEMBER_PROVENANCE', producer_contract='NOT_IMPLEMENTED_LEGACY_VALID_MEMBER_PROVENANCE', max_source_date=target)
     def fact(value, reason=None, **extra):
         return dict(value=value, quality='ACCEPTED' if value is not None else 'UNKNOWN', reason_code=reason, max_source_date=target, **extra)
     for record in current.values():
@@ -135,40 +132,54 @@ def build_current(factors, profiles, daily, prices, *, target, cutoff, binding):
     return current
 
 
-def load_accepted_current(root, core_head, *, target, cutoff):
-    """Production authority is resolved from accepted heads, never caller paths."""
-    root = Path(root)
-    head_path = 'data/v4/V4_02_ACCEPTED_HEAD.json'
-    head = json.loads((root / head_path).read_text(encoding='utf8'))
-    price_head_path = 'data/v4/V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD.json'
-    price_head = json.loads((root / price_head_path).read_text(encoding='utf8'))
-    if any(h.get('external_acceptance') != 'EXTERNALLY_ACCEPTED' for h in (head, price_head, core_head)):
+def load_accepted_current(root, core_head, *, target, cutoff, accepted_input_context):
+    """Context-driven source loader; no stage-head fallback or fixed session."""
+    from sector.accepted_context_r5_2 import validate_context, PERMITTED
+    from v4.canonical_governance_hash import canonical_json_sha256
+    if core_head.get('external_acceptance') != 'EXTERNALLY_ACCEPTED':
         raise ValueError('UNACCEPTED_INPUT_AUTHORITY')
-    manifest_binding = dict(path=head['manifest_path'], sha256=head['manifest_sha256'])
-    manifest = json.loads(bound_file(root, manifest_binding).read_text(encoding='utf8'))
-    daily_binding = manifest['components']['DAILY_R7']
-    def bind(path):
-        return dict(path=path, sha256=canonical_json_file_sha256(root/path), sha256_algorithm='CANONICAL_JSON_SHA256_V1')
-    binding = dict(contract_id=CONTRACT_ID, canonical_daily_head=bind(head_path), canonical_daily=daily_binding,
-                   canonical_daily_manifest=manifest_binding, canonical_daily_source_digest=daily_binding['sha256'],
-                   target_trade_date=target, daily_available_at=head['accepted_at_utc'],
-                   price_head=bind(price_head_path), price_artifact=price_head['accepted_candidate'], price_logical_digest=price_head['logical_digest'],
-                   amount_source_revision='PER_ROW_adjustment_source_revision', price_identity_authority='coordinate_basis:adjustment_snapshot_id; adjustment_snapshot_digest retained', cutoff=cutoff)
-    try:
-        price_path = bound_file(root, price_head['accepted_candidate'])
-        if hashlib.sha256(gzip.decompress(price_path.read_bytes())).hexdigest() != price_head['logical_digest']:
-            raise ValueError('ACCEPTED_PRICE_LOGICAL_DIGEST_MISMATCH')
-        prices = load_rows(root, price_head['accepted_candidate'])
-        binding['price_source_capability'] = 'AVAILABLE_VERIFIED'
-    except FileNotFoundError:
-        prices = []
-        binding['price_source_capability'] = 'UNAVAILABLE_UNKNOWN'
-    try:
-        daily = load_rows(root, daily_binding, target)
-        binding['amount_source_capability'] = 'AVAILABLE_VERIFIED'
-    except FileNotFoundError:
-        daily = []
-        binding['amount_source_capability'] = 'UNAVAILABLE_UNKNOWN'
-    current = build_current(load_rows(root, core_head['accepted_artifacts']['full_scope_factors']), load_rows(root, core_head['accepted_artifact']),
-                            daily, prices, target=target, cutoff=cutoff, binding=binding)
-    return current, binding
+    context = validate_context(root, accepted_input_context, target=target, cutoff=cutoff)
+    available = context['availability'] == 'TARGET_ACCEPTED_DATA_CONTEXT'
+    binding = dict(contract_id='V4_08_ACCEPTED_INPUT_ADAPTER_R5_2', accepted_input_context=context,
+                   context_digest=canonical_json_sha256(context), target_trade_date=target,
+                   authority_scope=context['scope'], daily_production_authority=context['daily_production_authority'],
+                   availability=context['availability'], cutoff=cutoff,
+                   canonical_daily=context.get('raw_daily',{}), daily_available_at=context.get('raw_daily',{}).get('available_at'),
+                   canonical_daily_source_digest=context.get('raw_daily',{}).get('source_digest'))
+    daily=[];prices=[]
+    raw=context['raw_daily'];price=context['adjusted_price']
+    binding['amount_source_capability']='UNAVAILABLE_UNKNOWN'
+    binding['price_source_capability']='UNAVAILABLE_UNKNOWN'
+    if available and raw['capability'] in PERMITTED:
+        try:
+            daily=load_rows(root,raw,target)
+            if raw.get('source_digest_algorithm','ARTIFACT_SHA256') == 'ARTIFACT_SHA256' and raw['source_digest'] != raw['sha256']:
+                raise ValueError('ACCEPTED_RAW_SOURCE_DIGEST_MISMATCH')
+            if raw.get('logical_digest') and raw.get('logical_digest_algorithm') == 'JSONL_BYTES_SHA256':
+                path=bound_file(root,raw)
+                if hashlib.sha256(gzip.decompress(path.read_bytes())).hexdigest()!=raw['logical_digest']:
+                    raise ValueError('ACCEPTED_RAW_LOGICAL_DIGEST_MISMATCH')
+            binding['amount_source_capability']='AVAILABLE_VERIFIED'
+        except FileNotFoundError:
+            pass
+    if available and price['capability'] in PERMITTED:
+        try:
+            price_path=bound_file(root,price)
+            if hashlib.sha256(gzip.decompress(price_path.read_bytes())).hexdigest()!=price['logical_digest']:
+                raise ValueError('ACCEPTED_PRICE_LOGICAL_DIGEST_MISMATCH')
+            prices=load_rows(root,price)
+            binding['price_source_capability']='AVAILABLE_VERIFIED'
+        except FileNotFoundError:
+            pass
+    # Stale or blocked context availability must not poison the independent
+    # Core path with old metadata, while its affected amount/price stay UNKNOWN.
+    if not available or raw['capability'] not in PERMITTED:
+        binding['daily_available_at']=None
+    current=build_current(load_rows(root,core_head['accepted_artifacts']['full_scope_factors']),load_rows(root,core_head['accepted_artifact']),
+                          daily,prices,target=target,cutoff=cutoff,binding=binding)
+    for record in current.values():
+        if not available:
+            for name in ('amount','close'):
+                record['fields'][name]['reason_code']='TARGET_ACCEPTED_DATA_UNAVAILABLE'
+        record['accepted_context_digest']=binding['context_digest']
+    return current,binding

@@ -95,6 +95,9 @@ def evaluate_b2(values, ast, *, source_sha256, source_parameter_sha256, paramete
     facts['current']={**facts['current'],'value':current,'quality':'ACCEPTED' if current is not None else 'UNKNOWN'}
     weak=run('weak');facts['weak']={**facts['weak'],'value':weak,'quality':'ACCEPTED' if weak is not None else 'UNKNOWN'}
     for rule in ('BREADTH_BUILD','BASE_BUILD','RECOVERY_BUILD','warm_diagnostic'):run(rule)
-    return dict(model_contract_id=ast['model_contract_id'],confirmed_raw=table['confirmed_raw']['state'],warm_raw='UNKNOWN',
+    diagnostic=table['confirmed_raw']['state']
+    table['confirmed_raw']={'state':'UNKNOWN','reason_code':'NOT_IMPLEMENTED_LEGACY_VALID_MEMBER_PROVENANCE'}
+    return dict(model_contract_id=ast['model_contract_id'],confirmed_raw='UNKNOWN',confirmed_diagnostic=diagnostic,warm_raw='UNKNOWN',
+        confirmed_reason='NOT_IMPLEMENTED_LEGACY_VALID_MEMBER_PROVENANCE',
         warm_reason='AUD_AMOUNT_A_06_OPEN',warm_diagnostic=table['warm_diagnostic']['state'],predicates=table,
-        capabilities={'B2_NON_AMOUNT_A':'ENABLED_ENGINEERING','B2_AMOUNT_A':'DIAGNOSTIC'},ast_digest=ast['ast_digest'])
+        capabilities={'B2_NON_AMOUNT_A':'NOT_IMPLEMENTED_LEGACY_VALID_MEMBER_PROVENANCE','B2_AMOUNT_A':'DIAGNOSTIC_AUDIT_OPEN'},ast_digest=ast['ast_digest'])

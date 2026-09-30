@@ -1,0 +1,359 @@
+{
+  "adapter": {
+    "path": "src/sector/accepted_input_r5_1.py",
+    "sha256": "f6d5e47742bfe984e7ffab273d48703047724111d26b8ecd9bc0afc0552fcf94"
+  },
+  "cases": [
+    {
+      "name": "test_multi_context_without_source_or_fixed_heads_edits",
+      "status": "PASS"
+    },
+    {
+      "name": "test_frozen_t_result_and_digest_survive_t_plus_one_change",
+      "status": "PASS"
+    },
+    {
+      "name": "test_daily_moving_head_routes_both_sessions",
+      "status": "PASS"
+    },
+    {
+      "name": "test_daily_stale_head_no_static_fallback",
+      "status": "PASS"
+    },
+    {
+      "name": "test_context_negative_vectors[future_date-FUTURE_ACCEPTED_CONTEXT_DATE]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_context_negative_vectors[sha-DIGEST]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_context_negative_vectors[raw_logical-LOGICAL_DIGEST]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_context_negative_vectors[price_logical-LOGICAL_DIGEST]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_context_negative_vectors[future_revision-FUTURE_ACCEPTED_CONTEXT_REVISION]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_blocked_component_preserves_independent_core[raw_daily-amount]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_blocked_component_preserves_independent_core[adjusted_price-close]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_daily_context_cannot_override_manifest_bindings",
+      "status": "PASS"
+    },
+    {
+      "name": "test_b05_capability_downgrade_ignores_final_boolean_injection",
+      "status": "PASS"
+    },
+    {
+      "name": "test_raw_amount_adapter_concentration[amounts0-0.125-0.375-ACCEPTED-None]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_raw_amount_adapter_concentration[amounts1-0.14285714285714285-0.42857142857142855-ACCEPTED-None]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_raw_amount_adapter_concentration[amounts2-None-None-UNKNOWN-ZERO_OR_UNKNOWN_AMOUNT_DENOMINATOR]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_raw_amount_adapter_concentration[amounts3-0.14285714285714285-0.42857142857142855-ACCEPTED-None]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_raw_amount_adapter_concentration[amounts4-0.14285714285714285-0.42857142857142855-ACCEPTED-None]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_target_date_mismatch_unknown",
+      "status": "PASS"
+    },
+    {
+      "name": "test_future_source_rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "test_digest_mismatch_rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "test_price_logical_digest_mismatch_rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "test_unaccepted_source_rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "test_missing_source_payload_degrades_unknown",
+      "status": "PASS"
+    },
+    {
+      "name": "test_accepted_head_newline_identity_uses_existing_canonical_policy",
+      "status": "PASS"
+    },
+    {
+      "name": "test_price_basis_pulse_adapter[sha256-fixture-adjustment-ROTATION_PULSE]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_price_basis_pulse_adapter[sha256-new-corporate-action-UNKNOWN]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_price_basis_pulse_adapter[None-UNKNOWN]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_future_adjustment_revision_rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "test_semantic_mapping_formal_producer_unavailable[False-True-None]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_semantic_mapping_formal_producer_unavailable[False-False-None]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_semantic_mapping_formal_producer_unavailable[True-True-None]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_actual_legacy_current_function_against_pit_adapter[4]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_actual_legacy_current_function_against_pit_adapter[5]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_common_member_does_not_count_membership_changes",
+      "status": "PASS"
+    },
+    {
+      "name": "test_missing_history_not_current_membership_replay",
+      "status": "PASS"
+    },
+    {
+      "name": "test_absent_target_publication_does_not_create_zero_quote_coverage",
+      "status": "PASS"
+    },
+    {
+      "name": "test_native_midrank_is_section_10a0_not_legacy_display_percentile",
+      "status": "PASS"
+    },
+    {
+      "name": "test_frozen_denominator[old0-now0-NOT_APPLICABLE]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_frozen_denominator[old1-now1-UNKNOWN]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_frozen_denominator[old2-now2-ACCEPTED]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_parameter_instance_digest_rejects_unbound_mutation",
+      "status": "PASS"
+    },
+    {
+      "name": "test_all_five_parameters_change_runtime_predicates[V4_08_EARLY_SEED_RETENTION_MIN-base_seed_retention-early_retained]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_all_five_parameters_change_runtime_predicates[V4_08_EARLY_BREADTH_RETENTION_MIN-breadth_retention-early_retained]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_all_five_parameters_change_runtime_predicates[V4_08_EARLY_BREADTH_DELTA_MIN-breadth_delta1-early_retained]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_all_five_parameters_change_runtime_predicates[V4_08_EARLY_TOP1_CONCENTRATION_MAX-top1_concentration-early_retained]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_all_five_parameters_change_runtime_predicates[V4_08_MATURE_STRONG_RETENTION_MIN-strong_member_retention_1-mature_retained]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_b0_missing_seed_is_unknown_even_when_safety_false",
+      "status": "PASS"
+    },
+    {
+      "name": "test_first_pit_rotation_unknown",
+      "status": "PASS"
+    },
+    {
+      "name": "test_pulse_then_in_with_empty_prior_strong_cohort_and_degraded_seed",
+      "status": "PASS"
+    },
+    {
+      "name": "test_independent_b2_golden_current[patch0-TRUE]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_independent_b2_golden_current[patch1-FALSE]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_independent_b2_golden_current[patch2-TRUE]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_independent_b2_golden_current[patch3-UNKNOWN]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_independent_b2_golden_current[patch4-FALSE]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_b2_unknown_not_false",
+      "status": "PASS"
+    },
+    {
+      "name": "test_actual_legacy_homogeneous_current_baseline",
+      "status": "PASS"
+    },
+    {
+      "name": "test_all_actual_legacy_potential_branches_keep_amount_a_diagnostic[1.1-TRUE]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_all_actual_legacy_potential_branches_keep_amount_a_diagnostic[None-UNKNOWN]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_all_actual_legacy_potential_branches_keep_amount_a_diagnostic[0.1-FALSE]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_b2_feedback_isolation[PREWATCH]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_b2_feedback_isolation[Focus]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_b2_feedback_isolation[Radar]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_b2_feedback_isolation[Support]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_b2_feedback_isolation[turnover]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_b2_feedback_isolation[future_confirmation]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_b2_feedback_isolation[future_outcome]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_full_market_exact_scoped_membership",
+      "status": "PASS"
+    }
+  ],
+  "contract": {
+    "B2_AMOUNT_A": "DIAGNOSTIC_AUDIT_OPEN",
+    "B2_NON_AMOUNT_A": "NOT_IMPLEMENTED_LEGACY_VALID_MEMBER_PROVENANCE",
+    "adapter_contract_id": "V4_08_ACCEPTED_INPUT_ADAPTER_R5_2",
+    "adjusted_price_extra_fields": [
+      "logical_digest",
+      "coordinate_identity"
+    ],
+    "artifact_digest_algorithm": "SHA256_RAW_BYTES",
+    "b05_decision": "B",
+    "blocked_component": "Affected fields UNKNOWN; independent Core factors preserved",
+    "confirmed_diagnostic": "Retained pure legacy algorithm result, not a formal capability",
+    "contract_id": "V4_08_ACCEPTED_INPUT_CONTEXT_R5_2",
+    "daily_authority": "Existing V4_DATA_ACCEPTED_HEAD_V1 -> SHA-bound immutable manifest.accepted_input_context",
+    "digest_mismatch": "REJECT",
+    "engineering_scope_excludes": [
+      "legacy B2 confirmed",
+      "legacy B2 warm"
+    ],
+    "factor_injected_legacy_valid_member": "Ignored; not an accepted producer",
+    "formal_confirmed_raw": "UNKNOWN",
+    "fourth_daily_head_created": false,
+    "future_context_or_revision": "REJECT",
+    "global_accepted_head_modified": false,
+    "governance_digest_algorithm": "CANONICAL_JSON_SHA256_V1",
+    "governance_fields": [
+      "source_head_path",
+      "source_head_digest",
+      "parent_identity",
+      "manifest_binding",
+      "source_revision",
+      "canonical_data_revision"
+    ],
+    "interface": "load_accepted_current(root, core_binding, target, cutoff, accepted_input_context)",
+    "price_logical_digest_algorithm": "JSONL_BYTES_SHA256",
+    "production_permission": false,
+    "raw_source_digest_default": "ARTIFACT_SHA256",
+    "required_context_fields": [
+      "context_id",
+      "accepted_trade_date",
+      "raw_daily",
+      "adjusted_price",
+      "governance",
+      "scope",
+      "daily_production_authority"
+    ],
+    "required_source_fields": [
+      "path",
+      "sha256",
+      "source_digest",
+      "available_at",
+      "capability",
+      "revision_semantics"
+    ],
+    "scopes": [
+      "DAILY_ACCEPTED_DATA",
+      "ENGINEERING_REPLAY_ONLY"
+    ],
+    "stale_context": "TARGET_ACCEPTED_DATA_UNAVAILABLE; no static fallback; amount and price UNKNOWN",
+    "static_context": "Explicit caller-only STATIC_ENGINEERING_BASELINE_CONTEXT; scope ENGINEERING_REPLAY_ONLY; daily_production_authority false",
+    "status": "ENGINEERING_CANDIDATE_EXTERNAL_REAUDIT_PENDING",
+    "version": "1.0.0"
+  },
+  "contract_binding": {
+    "path": "config/v4_08_accepted_context_contract_r5_2.json",
+    "sha256": "491e5e0808dee92daf8122923784d87e19fee2222a60bfcf103a39b2ac8e702a"
+  },
+  "fixture_entered_formal_head": false,
+  "resolver": {
+    "path": "src/sector/accepted_context_r5_2.py",
+    "sha256": "f66cc7dbe0bca2a2df27c338eb2d4db024706a50e8bb5bd70702e91622cd7da9"
+  },
+  "status": "PASS",
+  "test_count": 68,
+  "test_only": true,
+  "test_source": {
+    "path": "tests/v4_08/test_r5_2_context_authority.py",
+    "sha256": "33c86b6ce621c7d611afcd668d1bf2cddb32fdbd06ff0dd924aa923326bf8a9e"
+  }
+}

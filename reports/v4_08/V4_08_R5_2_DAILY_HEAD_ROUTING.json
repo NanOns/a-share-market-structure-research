@@ -1,0 +1,163 @@
+{
+  "adapter": {
+    "path": "src/sector/accepted_input_r5_1.py",
+    "sha256": "f6d5e47742bfe984e7ffab273d48703047724111d26b8ecd9bc0afc0552fcf94"
+  },
+  "cases": [
+    {
+      "name": "test_daily_moving_head_routes_both_sessions",
+      "status": "PASS"
+    },
+    {
+      "name": "test_daily_stale_head_no_static_fallback",
+      "status": "PASS"
+    },
+    {
+      "name": "test_context_negative_vectors[future_date-FUTURE_ACCEPTED_CONTEXT_DATE]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_context_negative_vectors[sha-DIGEST]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_context_negative_vectors[raw_logical-LOGICAL_DIGEST]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_context_negative_vectors[price_logical-LOGICAL_DIGEST]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_context_negative_vectors[future_revision-FUTURE_ACCEPTED_CONTEXT_REVISION]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_daily_context_cannot_override_manifest_bindings",
+      "status": "PASS"
+    }
+  ],
+  "fixture_entered_formal_head": false,
+  "fourth_daily_authority_created": false,
+  "real_binding": {
+    "accepted_input_context": {
+      "accepted_trade_date": "2026-09-24",
+      "adjusted_price": {
+        "capability": "BLOCKED",
+        "reason": "TARGET_ACCEPTED_DATA_UNAVAILABLE"
+      },
+      "availability": "TARGET_ACCEPTED_DATA_UNAVAILABLE",
+      "context_id": "DAILY_DATA_CONTEXT:da62e53a6c9bdb021d97866c6986a1dd5bb1e7fca2c474e8fa0d87c79d1ab145",
+      "contract_id": "V4_08_ACCEPTED_INPUT_CONTEXT_R5_2",
+      "daily_production_authority": true,
+      "governance": {
+        "canonical_data_revision": "0e2e2204b32bb8b9fad379bcb0c4ef3a785ac983c11721bbe96c8e294c41e717",
+        "manifest_binding": {
+          "path": "data/v4/bootstrap/V4_DM01_BOOTSTRAP_MANIFEST_R1.json",
+          "sha256": "80553233c9fce4194bfa3b5256570be9e9a03822460755bcbcfa390eb0b95a9e"
+        },
+        "parent_identity": null,
+        "source_head_digest": "da62e53a6c9bdb021d97866c6986a1dd5bb1e7fca2c474e8fa0d87c79d1ab145",
+        "source_head_path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "source_revision": "0e2e2204b32bb8b9fad379bcb0c4ef3a785ac983c11721bbe96c8e294c41e717"
+      },
+      "raw_daily": {
+        "capability": "BLOCKED",
+        "reason": "TARGET_ACCEPTED_DATA_UNAVAILABLE"
+      },
+      "scope": "DAILY_ACCEPTED_DATA"
+    },
+    "amount_source_capability": "UNAVAILABLE_UNKNOWN",
+    "authority_scope": "DAILY_ACCEPTED_DATA",
+    "availability": "TARGET_ACCEPTED_DATA_UNAVAILABLE",
+    "canonical_daily": {
+      "capability": "BLOCKED",
+      "reason": "TARGET_ACCEPTED_DATA_UNAVAILABLE"
+    },
+    "canonical_daily_source_digest": null,
+    "context_digest": "d407bf85719726345c227b9dda69d24f8cc0f6a5d26a91647928a199f635706e",
+    "contract_id": "V4_08_ACCEPTED_INPUT_ADAPTER_R5_2",
+    "cutoff": "2026-09-30T23:59:59+08:00",
+    "daily_available_at": null,
+    "daily_production_authority": true,
+    "price_source_capability": "UNAVAILABLE_UNKNOWN",
+    "target_trade_date": "2026-09-30"
+  },
+  "real_context": {
+    "accepted_trade_date": "2026-09-24",
+    "adjusted_price": {
+      "capability": "BLOCKED",
+      "reason": "TARGET_ACCEPTED_DATA_UNAVAILABLE"
+    },
+    "context_id": "DAILY_DATA_CONTEXT:da62e53a6c9bdb021d97866c6986a1dd5bb1e7fca2c474e8fa0d87c79d1ab145",
+    "contract_id": "V4_08_ACCEPTED_INPUT_CONTEXT_R5_2",
+    "daily_production_authority": true,
+    "governance": {
+      "canonical_data_revision": "0e2e2204b32bb8b9fad379bcb0c4ef3a785ac983c11721bbe96c8e294c41e717",
+      "manifest_binding": {
+        "path": "data/v4/bootstrap/V4_DM01_BOOTSTRAP_MANIFEST_R1.json",
+        "sha256": "80553233c9fce4194bfa3b5256570be9e9a03822460755bcbcfa390eb0b95a9e"
+      },
+      "parent_identity": null,
+      "source_head_digest": "da62e53a6c9bdb021d97866c6986a1dd5bb1e7fca2c474e8fa0d87c79d1ab145",
+      "source_head_path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "source_revision": "0e2e2204b32bb8b9fad379bcb0c4ef3a785ac983c11721bbe96c8e294c41e717"
+    },
+    "raw_daily": {
+      "capability": "BLOCKED",
+      "reason": "TARGET_ACCEPTED_DATA_UNAVAILABLE"
+    },
+    "scope": "DAILY_ACCEPTED_DATA"
+  },
+  "real_target_core_count": 0,
+  "resolver": {
+    "path": "src/sector/accepted_context_r5_2.py",
+    "sha256": "f66cc7dbe0bca2a2df27c338eb2d4db024706a50e8bb5bd70702e91622cd7da9"
+  },
+  "route": "V4_DATA_ACCEPTED_HEAD -> immutable manifest.accepted_input_context",
+  "static_fallback_used": false,
+  "static_replay_context": {
+    "accepted_trade_date": "2026-09-24",
+    "adjusted_price": {
+      "available_at": "2026-09-27T22:28:03+08:00",
+      "byte_count": 944823,
+      "capability": "DEGRADED_PASS",
+      "coordinate_identity": "coordinate_basis:adjustment_snapshot_id",
+      "logical_digest": "a5600d7f1416434bd54e778c2e7e847e309de1c21d71df5677f92daee1791400",
+      "path": "reports/v4_02/staging/V4_02_GO_FORWARD_ADJUSTED_T0_CANDIDATE_R3.jsonl.gz",
+      "revision_semantics": "adjustment_snapshot_digest",
+      "sha256": "7d87f5164c11f791ad24ad7c05139dca949f1c891523616ece907cd0f28fd8c8",
+      "source_digest": "a5600d7f1416434bd54e778c2e7e847e309de1c21d71df5677f92daee1791400"
+    },
+    "context_id": "STATIC_ENGINEERING_BASELINE_CONTEXT",
+    "contract_id": "V4_08_ACCEPTED_INPUT_CONTEXT_R5_2",
+    "daily_production_authority": false,
+    "governance": {
+      "manifest_binding": {
+        "path": "reports/v4_02/V4_02_FINAL_STAGING_MANIFEST_R6.json",
+        "sha256": "a83f90a0d1acc08e32db5dab049f3bf16a9284e5bf6785cd8f3a2b52aed31678"
+      },
+      "parent_identity": null,
+      "price_head_digest": "206581adca674841a21a7497a3f73ce22dbedd0f18f2ce38bed003df8f42dac9",
+      "price_head_path": "data/v4/V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD.json",
+      "source_head_digest": "a9784d4bcdec9d62f2e74945e6d26ec20f7af1c19440bf7dec46583932d9f653",
+      "source_head_path": "data/v4/V4_02_ACCEPTED_HEAD.json"
+    },
+    "raw_daily": {
+      "available_at": "2026-09-27T22:28:03+08:00",
+      "bytes": 112302935,
+      "capability": "FULL_PASS",
+      "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet",
+      "revision_semantics": "PER_ROW_adjustment_source_revision",
+      "sha256": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90",
+      "source_digest": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90"
+    },
+    "scope": "ENGINEERING_REPLAY_ONLY"
+  },
+  "status": "PASS",
+  "test_only": true,
+  "test_source": {
+    "path": "tests/v4_08/test_r5_2_context_authority.py",
+    "sha256": "33c86b6ce621c7d611afcd668d1bf2cddb32fdbd06ff0dd924aa923326bf8a9e"
+  }
+}

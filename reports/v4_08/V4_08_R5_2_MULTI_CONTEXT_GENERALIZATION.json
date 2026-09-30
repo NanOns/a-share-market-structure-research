@@ -1,0 +1,60 @@
+{
+  "adapter": {
+    "path": "src/sector/accepted_input_r5_1.py",
+    "sha256": "f6d5e47742bfe984e7ffab273d48703047724111d26b8ecd9bc0afc0552fcf94"
+  },
+  "bindings_change": [
+    "target",
+    "artifact path",
+    "SHA",
+    "amount",
+    "price snapshot"
+  ],
+  "cases": [
+    {
+      "name": "test_multi_context_without_source_or_fixed_heads_edits",
+      "status": "PASS"
+    },
+    {
+      "name": "test_context_negative_vectors[future_date-FUTURE_ACCEPTED_CONTEXT_DATE]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_context_negative_vectors[sha-DIGEST]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_context_negative_vectors[raw_logical-LOGICAL_DIGEST]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_context_negative_vectors[price_logical-LOGICAL_DIGEST]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_context_negative_vectors[future_revision-FUTURE_ACCEPTED_CONTEXT_REVISION]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_blocked_component_preserves_independent_core[raw_daily-amount]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_blocked_component_preserves_independent_core[adjusted_price-close]",
+      "status": "PASS"
+    }
+  ],
+  "fixture_entered_formal_head": false,
+  "resolver": {
+    "path": "src/sector/accepted_context_r5_2.py",
+    "sha256": "f66cc7dbe0bca2a2df27c338eb2d4db024706a50e8bb5bd70702e91622cd7da9"
+  },
+  "same_source": true,
+  "static_v4_02_heads_written": false,
+  "status": "PASS",
+  "test_only": true,
+  "test_source": {
+    "path": "tests/v4_08/test_r5_2_context_authority.py",
+    "sha256": "33c86b6ce621c7d611afcd668d1bf2cddb32fdbd06ff0dd924aa923326bf8a9e"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "adapter": {
+    "path": "src/sector/accepted_input_r5_1.py",
+    "sha256": "f6d5e47742bfe984e7ffab273d48703047724111d26b8ecd9bc0afc0552fcf94"
+  },
+  "cases": [
+    {
+      "name": "test_frozen_t_result_and_digest_survive_t_plus_one_change",
+      "status": "PASS"
+    }
+  ],
+  "fixture_entered_formal_head": false,
+  "frozen_t_digest_unchanged": true,
+  "frozen_t_result_unchanged": true,
+  "resolver": {
+    "path": "src/sector/accepted_context_r5_2.py",
+    "sha256": "f66cc7dbe0bca2a2df27c338eb2d4db024706a50e8bb5bd70702e91622cd7da9"
+  },
+  "status": "PASS",
+  "t_can_be_replayed": true,
+  "test_only": true,
+  "test_source": {
+    "path": "tests/v4_08/test_r5_2_context_authority.py",
+    "sha256": "33c86b6ce621c7d611afcd668d1bf2cddb32fdbd06ff0dd924aa923326bf8a9e"
+  }
+}

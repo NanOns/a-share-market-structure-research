@@ -21,6 +21,7 @@
       "sha256": "707a21982a8b26b688e3416388c73e64bfbb4d7bf2e04b7bc9df7297c979f53f"
     }
   },
+  "b05_decision": "B",
   "capabilities": {
     "B0_SEED_DEPENDENT": "DEGRADED_UNKNOWN",
     "B2_AMOUNT_A": "DIAGNOSTIC_AUDIT_OPEN",
@@ -28,13 +29,12 @@
     "ROTATION_HISTORY_DEPENDENT": "SHADOW_UNKNOWN",
     "SECTOR_NATIVE_NON_SEED": "IMPLEMENTED_TARGET_CORE_UNAVAILABLE"
   },
-  "final_v4_08_accepted_head_written": false,
-  "global_acceptance_unchanged": "V4_00_TO_V4_07_ACCEPTED",
-  "independent_audits": [
-    "Prior-RPS",
-    "AUD-AMOUNT-A-06",
-    "V4-01 listing-anchor"
+  "engineering_scope_excludes": [
+    "legacy B2 confirmed",
+    "legacy B2 warm"
   ],
+  "final_v4_08_accepted_head_written": false,
+  "global_stage_range": "V4_00_TO_V4_07_ACCEPTED",
   "input_bindings": {
     "accepted_context_resolver": {
       "byte_count": 8448,
@@ -230,6 +230,26 @@
       "sha256": "f8760dd0420e803ff28915afd43a9ff54635dde6a16f1fa515a05c7b0193cde4"
     }
   },
-  "publication_id": "V4_08_R5_ENGINEERING_20260930_bb8d0c0929f531e8cddf",
-  "status": "R5_ENGINEERING_CANDIDATE_PENDING_VERIFICATION"
+  "next_stage": "INDEPENDENT_EXTERNAL_REAUDIT",
+  "production_permission": false,
+  "protected_head_bindings": [
+    {
+      "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+      "sha256": "74b0fdd3358ab0da95ffa0522a5cf9a34bb168cb0bfb0a8adfbfc32d5578ef71"
+    },
+    {
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0"
+    },
+    {
+      "path": "data/v4/V4_DEV_BASELINE_HEAD.json",
+      "sha256": "45695460b0147c6ada12e0ebd8e5070ac0a45eebea26603ff5a3daddc4dd5094"
+    },
+    {
+      "path": "data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json",
+      "sha256": "d6374a73b8084ccd383cbb4f75428ed91176e91cc09d87c3329041d57c5bd9ed"
+    }
+  ],
+  "status": "R5_2_CANDIDATE_PENDING_CLEAN_VERIFICATION",
+  "target_trade_date": "2026-09-30"
 }

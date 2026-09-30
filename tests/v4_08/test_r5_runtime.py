@@ -121,12 +121,12 @@ def positive():return dict(allowed_sector_type=True,normal_rank_eligible=True,to
 @pytest.mark.parametrize('patch,expected',[({},'TRUE'),({'m1':-.01},'FALSE'),({'b1':.6,'p1':.8,'rel1':.003,'positive_count':3,'top1_positive_share':.5},'TRUE'),({'market_ok':False,'m1':-.01},'UNKNOWN'),({'top1_positive_share':.50001},'FALSE')])
 def test_independent_b2_golden_current(patch,expected):
     result=b2({**positive(),**patch})
-    assert result['confirmed_raw']==expected
+    assert result['confirmed_diagnostic']==expected
     assert result['warm_raw']=='UNKNOWN'
 
 def test_b2_unknown_not_false():
     values=positive();values.pop('b1')
-    assert b2(values)['confirmed_raw']=='UNKNOWN'
+    assert b2(values)['confirmed_diagnostic']=='UNKNOWN'
 
 def test_actual_legacy_homogeneous_current_baseline():
     import pandas as pd
@@ -147,7 +147,7 @@ def test_actual_legacy_homogeneous_current_baseline():
     for sid,facts in inputs.items():
         values={k:v['value'] for k,v in facts.items()}
         expected='TRUE' if actual[sid] is True else 'FALSE' if actual[sid] is False else 'UNKNOWN'
-        assert b2(values)['confirmed_raw']==expected
+        assert b2(values)['confirmed_diagnostic']==expected
 
 @pytest.mark.parametrize('amount,expected',[(1.1,'TRUE'),(None,'UNKNOWN'),(.1,'FALSE')])
 def test_all_actual_legacy_potential_branches_keep_amount_a_diagnostic(amount,expected):

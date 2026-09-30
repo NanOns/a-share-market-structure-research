@@ -1,0 +1,275 @@
+{
+  "axes": {
+    "health": [
+      "DAMAGED",
+      "EXHAUSTED",
+      "IMPROVING",
+      "STABLE",
+      "UNKNOWN",
+      "WEAKENING"
+    ],
+    "maturity": [
+      "CONFIRMED",
+      "NONE",
+      "PREWATCH",
+      "SEED",
+      "WARM"
+    ],
+    "scenario": [
+      "BASE_BUILD",
+      "BREADTH_BUILD",
+      "BROADENING",
+      "LAUNCH_CONFIRM",
+      "NONE",
+      "REACCELERATING",
+      "RECOVERY_BUILD",
+      "RECOVERY_TURN",
+      "SETUP",
+      "STRONG_PULLBACK",
+      "SUSTAINED",
+      "TREND_CONTINUE"
+    ],
+    "tracking": [
+      "ACTIVE",
+      "CLOSED",
+      "FOLLOWUP"
+    ],
+    "validity": [
+      "INVALIDATED",
+      "UNKNOWN",
+      "VALID"
+    ]
+  },
+  "contract_id": "V4_10_MACHINE_VECTOR_COVERAGE_V1",
+  "coverage": {
+    "CONFIRMED_GT_PREWATCH": [
+      "confirmed_over_prewatch"
+    ],
+    "PREWATCH_GT_SEED": [
+      "prewatch_over_seed"
+    ],
+    "all_maturity_preserved": [
+      "last_known_NONE",
+      "last_known_SEED",
+      "last_known_PREWATCH",
+      "last_known_WARM",
+      "last_known_CONFIRMED"
+    ],
+    "all_tracking_preserved": [
+      "tracking_unknown_ACTIVE",
+      "tracking_unknown_FOLLOWUP",
+      "tracking_unknown_CLOSED"
+    ],
+    "axes": [
+      "STOCK_NONE",
+      "STOCK_SEED",
+      "STOCK_PREWATCH",
+      "STOCK_CONFIRMED",
+      "SECTOR_NONE",
+      "SECTOR_SEED",
+      "SECTOR_PREWATCH",
+      "SECTOR_CONFIRMED",
+      "SECTOR_WARM"
+    ],
+    "downgrade_day1": [
+      "downgrade_NONE_day1",
+      "downgrade_SEED_day1"
+    ],
+    "downgrade_day2": [
+      "downgrade_NONE_day2",
+      "downgrade_SEED_day2"
+    ],
+    "episode_invalidation_scope": [
+      "unrelated_anchor_fail_closed"
+    ],
+    "expiry_baseline_frozen": [
+      "expiry_improvement_2.99",
+      "expiry_improvement_3",
+      "expiry_improvement_3.01"
+    ],
+    "expiry_boundary": [
+      "expiry_9",
+      "expiry_10"
+    ],
+    "expiry_not_applicable": [
+      "expiry_na_STOCKCONFIRMED",
+      "expiry_na_SECTORCONFIRMED",
+      "expiry_na_SECTORWARM"
+    ],
+    "expiry_unknown_pause": [
+      "expiry_pause_UNKNOWN",
+      "expiry_pause_SUSPENSION",
+      "expiry_pause_HEALTH_HISTORY"
+    ],
+    "hard_over_confirmation": [
+      "hard_core_price_damage",
+      "hard_frozen_invalidation"
+    ],
+    "hard_over_unknown": [
+      "hard_core_price_damage",
+      "hard_frozen_invalidation"
+    ],
+    "health_boundaries": [
+      "STOCK_health_-3.01",
+      "STOCK_health_-3",
+      "STOCK_health_-2.99",
+      "STOCK_health_0",
+      "STOCK_health_2.99",
+      "STOCK_health_3",
+      "STOCK_health_3.01",
+      "STOCK_health_None",
+      "SECTOR_health_-3.01",
+      "SECTOR_health_-3",
+      "SECTOR_health_-2.99",
+      "SECTOR_health_0",
+      "SECTOR_health_2.99",
+      "SECTOR_health_3",
+      "SECTOR_health_3.01",
+      "SECTOR_health_None"
+    ],
+    "health_unknown": [
+      "STOCK_health_-3.01",
+      "STOCK_health_-3",
+      "STOCK_health_-2.99",
+      "STOCK_health_0",
+      "STOCK_health_2.99",
+      "STOCK_health_3",
+      "STOCK_health_3.01",
+      "STOCK_health_None",
+      "SECTOR_health_-3.01",
+      "SECTOR_health_-3",
+      "SECTOR_health_-2.99",
+      "SECTOR_health_0",
+      "SECTOR_health_2.99",
+      "SECTOR_health_3",
+      "SECTOR_health_3.01",
+      "SECTOR_health_None"
+    ],
+    "hysteresis_break": [
+      "break_UNKNOWN",
+      "break_SUSPENSION",
+      "break_SESSION_GAP"
+    ],
+    "market_age": [
+      "expiry_pause_UNKNOWN",
+      "expiry_pause_SUSPENSION",
+      "expiry_pause_HEALTH_HISTORY"
+    ],
+    "maturity_unknown_preservation": [
+      "unknown_SEED",
+      "unknown_PREWATCH",
+      "unknown_CONFIRMED",
+      "unknown_core_price_damage",
+      "unknown_frozen_invalidation"
+    ],
+    "model_boundary_lineage": [
+      "unmarked_boundary_reject"
+    ],
+    "model_boundary_not_reentry": [
+      "model_boundary"
+    ],
+    "next_session_reentry": [
+      "reentry_session_21",
+      "reentry_session_22"
+    ],
+    "no_episode_for_stage_change": [
+      "upgrade_immediate"
+    ],
+    "no_fake_detector": [
+      "synthetic_in_real_input_reject"
+    ],
+    "no_unknown_to_false": [
+      "unknown_false_coercion_reject"
+    ],
+    "not_implemented_inputs": [
+      "missing_CONFIRMED",
+      "missing_WARM"
+    ],
+    "prior_binding": [
+      "prior_digest_reject"
+    ],
+    "producer_lineage_gate": [
+      "producer_wrong_contract_id",
+      "producer_wrong_parameter_set_id",
+      "producer_wrong_publication_id"
+    ],
+    "required_unknown": [
+      "unknown_SEED",
+      "unknown_PREWATCH",
+      "unknown_CONFIRMED",
+      "unknown_core_price_damage",
+      "unknown_frozen_invalidation"
+    ],
+    "revision_no_counter_advance": [
+      "downgrade_same_session_revision",
+      "expiry_same_session_revision"
+    ],
+    "risk_extreme": [
+      "STOCK_extreme",
+      "SECTOR_extreme"
+    ],
+    "same_day_reentry_forbidden": [
+      "reentry_session_20"
+    ],
+    "scenario_axis": [
+      "STOCK_scenario_SETUP",
+      "STOCK_scenario_LAUNCH_CONFIRM",
+      "STOCK_scenario_RECOVERY_TURN",
+      "STOCK_scenario_STRONG_PULLBACK",
+      "STOCK_scenario_TREND_CONTINUE",
+      "STOCK_scenario_NONE",
+      "SECTOR_scenario_BASE_BUILD",
+      "SECTOR_scenario_BREADTH_BUILD",
+      "SECTOR_scenario_RECOVERY_BUILD",
+      "SECTOR_scenario_BROADENING",
+      "SECTOR_scenario_REACCELERATING",
+      "SECTOR_scenario_SUSTAINED",
+      "SECTOR_scenario_NONE"
+    ],
+    "scenario_unknown": [
+      "scenario_unknown"
+    ],
+    "stage_selection": [
+      "STOCK_NONE",
+      "STOCK_SEED",
+      "STOCK_PREWATCH",
+      "STOCK_CONFIRMED",
+      "SECTOR_NONE",
+      "SECTOR_SEED",
+      "SECTOR_PREWATCH",
+      "SECTOR_CONFIRMED",
+      "SECTOR_WARM"
+    ],
+    "stock_warm_na": [
+      "stock_warm_illegal_TRUE",
+      "stock_warm_illegal_FALSE",
+      "stock_prior_warm_reject"
+    ],
+    "tracking": [
+      "tracking_complete_False",
+      "tracking_complete_True"
+    ],
+    "tracking_unknown_preservation": [
+      "unknown_SEED",
+      "unknown_PREWATCH",
+      "unknown_CONFIRMED",
+      "unknown_core_price_damage",
+      "unknown_frozen_invalidation"
+    ],
+    "upgrade_immediate": [
+      "upgrade_immediate"
+    ]
+  },
+  "missing_required_tags": [],
+  "status": "PASS",
+  "unknown_semantics": {
+    "eligibility": "UNKNOWN",
+    "health": "UNKNOWN",
+    "maturity": "last_known enum retained",
+    "scenario": "value retained + UNKNOWN status",
+    "state_freshness": "STALE",
+    "tracking": "last_known enum retained",
+    "validity": "UNKNOWN"
+  },
+  "vector_count": 98
+}

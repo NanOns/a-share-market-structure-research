@@ -1,0 +1,149 @@
+{
+  "authority": {
+    "master": {
+      "byte_count": 224998,
+      "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+      "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+    },
+    "sections": [
+      "30",
+      "31",
+      "32",
+      "33",
+      "78"
+    ],
+    "task": {
+      "byte_count": 10958,
+      "path": "docs/evidence/V4_09_ACCEPTED_HEAD_PROMOTION_AND_V4_10_STATE_REDUCER_ENTRY_TASK_20260930.md",
+      "sha256": "e2641232650218d4fa6e9977c10ab1f5461d72943d82b2024ea93ece46dcfbbd"
+    }
+  },
+  "axes": {
+    "health": [
+      "IMPROVING",
+      "STABLE",
+      "WEAKENING",
+      "DAMAGED",
+      "EXHAUSTED",
+      "UNKNOWN"
+    ],
+    "maturity": [
+      "NONE",
+      "SEED",
+      "PREWATCH",
+      "WARM",
+      "CONFIRMED"
+    ],
+    "scenario": {
+      "SECTOR": [
+        "BASE_BUILD",
+        "BREADTH_BUILD",
+        "RECOVERY_BUILD",
+        "BROADENING",
+        "REACCELERATING",
+        "SUSTAINED",
+        "NONE"
+      ],
+      "STOCK": [
+        "SETUP",
+        "LAUNCH_CONFIRM",
+        "RECOVERY_TURN",
+        "STRONG_PULLBACK",
+        "TREND_CONTINUE",
+        "NONE"
+      ]
+    },
+    "tracking": [
+      "ACTIVE",
+      "FOLLOWUP",
+      "CLOSED"
+    ],
+    "validity": [
+      "VALID",
+      "INVALIDATED",
+      "UNKNOWN"
+    ]
+  },
+  "contract_id": "RESEARCH_STATE_V1",
+  "expiry_semantics": {
+    "applicable": [
+      "SEED",
+      "PREWATCH"
+    ],
+    "first_qualifying_session_count": 1,
+    "improvement_baseline": "freeze until >=3pp cumulative improvement or stage upgrade",
+    "same_session_revision": "does not advance counters",
+    "stage_upgrade": "reset count to 1",
+    "unknown_suspension": "pause count; market_age advances"
+  },
+  "hard_invalidation_scope": "associated episode and frozen creation contract only",
+  "input_required_fields": [
+    "entity_id",
+    "entity_type",
+    "trade_date",
+    "session_index",
+    "calendar_publication_id",
+    "mode",
+    "input_publication_ids",
+    "prior_state",
+    "prior_state_binding",
+    "model_boundary",
+    "suspended",
+    "followup_complete",
+    "detectors",
+    "core_price_damage",
+    "frozen_invalidation",
+    "episode_invalidation_contract_id",
+    "delta3",
+    "dq5",
+    "risk",
+    "scenario"
+  ],
+  "lineage": "exact prior payload digest, prior publication ID, entity/type, monotone bound market-calendar session index",
+  "missing_inputs": {
+    "confirmation": "NOT_IMPLEMENTED_V4_11",
+    "frozen_episode_invalidation": "NOT_IMPLEMENTED_V4_12",
+    "sector_legacy_warm": "NOT_IMPLEMENTED_UNACCEPTED_EXTRACTION",
+    "stock_warm": "NOT_APPLICABLE",
+    "structure_anchor_support": "NOT_IMPLEMENTED_V4_12"
+  },
+  "next_stage": "INDEPENDENT_EXTERNAL_REAUDIT",
+  "permissions": {
+    "focus_cutover": false,
+    "production": false,
+    "shadow": false
+  },
+  "producer_contracts": {
+    "PREWATCH": "STOCK_PREWATCH_V1",
+    "SEED": "BASE_SEED_V1"
+  },
+  "producer_parameters": {
+    "PREWATCH": "V4_09_STOCK_PREWATCH_PARAMETER_SET_V1",
+    "SEED": "V4_07_BASE_SEED_PARAMETER_SET_V1"
+  },
+  "risk_domain": [
+    "LOW",
+    "MEDIUM",
+    "HIGH",
+    "EXTREME",
+    "UNKNOWN"
+  ],
+  "rule_order": [
+    "R1_MODEL_BOUNDARY",
+    "R2_HARD_INVALIDATION",
+    "R3_REQUIRED_UNKNOWN",
+    "R4_STAGE_SELECTION",
+    "R5_HYSTERESIS",
+    "R6_HEALTH",
+    "R7_TRACKING",
+    "R8_EXPIRY",
+    "R9_REENTRY"
+  ],
+  "scope": "INTERFACE_AND_INDEPENDENT_SYNTHETIC_VECTORS_ONLY",
+  "unknown_semantics": {
+    "health_history": "health UNKNOWN only; expiry cannot increment without improvement history",
+    "required": "preserve last-known maturity/tracking/scenario; STALE; health/validity/eligibility UNKNOWN; no enrollment/exit",
+    "scenario": "preserve prior axis value with scenario_status UNKNOWN"
+  },
+  "version": "1.0.0"
+}

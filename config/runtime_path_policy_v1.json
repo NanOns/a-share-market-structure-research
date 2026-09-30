@@ -1,6 +1,6 @@
 {
   "policy_id": "NO_SYMBOL_SPECIFIC_RUNTIME_LOGIC",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "status": "HARD_GATE",
   "scan_roots": [
     "src",
@@ -16,7 +16,9 @@
     "reports/phase0_2b",
     "reports/phase0_2c",
     "run_daily.py",
-    "run_workbench_service.py"
+    "run_workbench_service.py",
+    "reports/v4_09",
+    "reports/v4_joint"
   ],
   "scan_globs": [
     "data/focus/**/*.json",
@@ -79,7 +81,9 @@
     "reports/phase0_2/**",
     "reports/phase0_2a/**",
     "reports/phase0_2b/**",
-    "reports/phase0_2c/**"
+    "reports/phase0_2c/**",
+    "reports/v4_09/**",
+    "reports/v4_joint/**"
   ],
   "runtime_configuration_paths": [
     "config/runtime_path_policy_v1.json",

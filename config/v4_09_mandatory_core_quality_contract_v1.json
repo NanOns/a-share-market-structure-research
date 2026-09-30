@@ -1,0 +1,66 @@
+{
+  "authority": {
+    "master": {
+      "byte_count": 224998,
+      "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+      "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+    },
+    "sections": [
+      "22",
+      "23",
+      "24",
+      "78"
+    ],
+    "task": {
+      "byte_count": 12598,
+      "path": "docs/evidence/V4_08_ACCEPTED_HEAD_PROMOTION_AND_V4_09_STOCK_PREWATCH_ENTRY_TASK_20260930.md",
+      "sha256": "611e120cc9bce1c4fcfea5bd8f41e305beaaee11204f0174b749cc7920b3ed66"
+    }
+  },
+  "contextual_requirements": [
+    "exact accepted identity/universe membership",
+    "same security and trade_date across Core/factors/Seed",
+    "Seed source publication and Core logical digest exact",
+    "accepted source availability <= knowledge_cutoff",
+    "max_source_trade_date <= target trade_date",
+    "Core and factors T0_CURRENT_COORDINATE"
+  ],
+  "contract_id": "MANDATORY_CORE_QUALITY_V1",
+  "excluded": [
+    "all other Profile fields",
+    "Supplemental",
+    "turnover",
+    "Sector",
+    "priority axes"
+  ],
+  "false_quality_rule": null,
+  "price_basis": "T0_CURRENT_COORDINATE engineering replay, no historical as-recorded claim",
+  "priority_quality_independent": true,
+  "required_fields": [
+    {
+      "field": "base_seed_state",
+      "producer": "accepted V4-07 BASE_SEED_V1",
+      "quality_allowlist": [
+        "READY",
+        "PARTIAL_UNKNOWN"
+      ],
+      "reason": "Resolved accepted Seed state carries its existing safety predicates; UNKNOWN state propagates.",
+      "value_allowlist": [
+        "TRUE",
+        "FALSE"
+      ]
+    },
+    {
+      "field": "core_price_damage",
+      "producer": "accepted V4-05 CORE_FACTOR_V1",
+      "quality_allowlist": [
+        "OBSERVED"
+      ],
+      "reason": "PASS C Core damage observability; value is not a new damage eligibility veto.",
+      "value_type": "boolean"
+    }
+  ],
+  "status": "FROZEN_CANDIDATE",
+  "unknown_rule": "Any unavailable required value or provenance yields UNKNOWN, including FALSE Seed with UNKNOWN damage.",
+  "version": "1.0.0"
+}

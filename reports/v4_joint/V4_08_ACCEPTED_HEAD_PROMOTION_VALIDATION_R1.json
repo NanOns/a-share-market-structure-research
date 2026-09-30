@@ -1,0 +1,51 @@
+{
+  "accepted_head": {
+    "byte_count": 20553,
+    "path": "data/v4/V4_08_ACCEPTED_HEAD.json",
+    "sha256": "b9ba34374ce35eefab705469de1e005758b90fa1f58ea5bba96fac08571073bc"
+  },
+  "checks": {
+    "accepted_head_evidence_exact": true,
+    "accepted_no_symbol_pass": true,
+    "audited_commit_is_ancestor": true,
+    "candidate_and_evidence_sha_exact": true,
+    "capabilities_not_overclaimed": true,
+    "data_dev_membership_byte_unchanged": true,
+    "external_acceptance_exact_decision_and_commits": true,
+    "external_binding_exact": true,
+    "global_head_parent_archive_exact": true,
+    "global_head_parent_exact": true,
+    "global_range_and_binding_exact": true,
+    "membership_binding_exact": true,
+    "parameter_sha_exact": true,
+    "permissions_false": true,
+    "prior_clean_regression_schema_pass": true,
+    "promotion_idempotent": true,
+    "v4_09_entry_authorized": true,
+    "v4_09_not_accepted": true
+  },
+  "contract_id": "V4_08_ACCEPTED_HEAD_PROMOTION_VALIDATION_R1",
+  "global_head": {
+    "byte_count": 6587,
+    "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+    "sha256": "3a8a3b01d3e556b86934139dacc58c941727060ac72f11f9a60de229f58ffcd2"
+  },
+  "protected_head_bindings": [
+    {
+      "byte_count": 2478,
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0"
+    },
+    {
+      "byte_count": 602,
+      "path": "data/v4/V4_DEV_BASELINE_HEAD.json",
+      "sha256": "45695460b0147c6ada12e0ebd8e5070ac0a45eebea26603ff5a3daddc4dd5094"
+    },
+    {
+      "byte_count": 2151,
+      "path": "data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json",
+      "sha256": "d6374a73b8084ccd383cbb4f75428ed91176e91cc09d87c3329041d57c5bd9ed"
+    }
+  ],
+  "status": "PASS"
+}

@@ -1,5 +1,5 @@
 {
-  "accepted_stage_range": "V4_00_TO_V4_08_ACCEPTED",
+  "accepted_stage_range": "V4_00_TO_V4_07_ACCEPTED",
   "bindings": {
     "phase0": {
       "path": "reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json",
@@ -129,18 +129,7 @@
   },
   "v4_07_real_signal_capability": "DEGRADED_BY_ACCEPTED_PRIOR_RPS_BOOTSTRAP_UNKNOWN",
   "v4_07_status": "ENGINEERING_PASS",
-  "v4_08_b2_capability": "NOT_IMPLEMENTED_LEGACY_VALID_MEMBER_PROVENANCE",
-  "v4_08_binding": {
-    "byte_count": 20553,
-    "path": "data/v4/V4_08_ACCEPTED_HEAD.json",
-    "sha256": "b9ba34374ce35eefab705469de1e005758b90fa1f58ea5bba96fac08571073bc"
-  },
-  "v4_08_external_acceptance": "V4_08_EXTERNAL_ACCEPTANCE_PASS_R5_2_ENGINEERING_SCOPE",
-  "v4_08_production_permission": false,
-  "v4_08_production_status": "NOT_AUTHORIZED_CAPABILITY_SCOPED_ENGINEERING_ONLY",
-  "v4_08_real_signal_capability": "DEGRADED_BY_TARGET_CORE_DATA_HEAD_PRIOR_RPS_AND_FORWARD_PIT_HISTORY",
-  "v4_08_sector_entry": "COMPLETED_EXTERNALLY_ACCEPTED_ENGINEERING_SCOPE",
-  "v4_08_status": "ENGINEERING_PASS_CAPABILITY_SCOPED",
-  "v4_09_entry": "AUTHORIZED_AFTER_V4_08_PROMOTION_VALIDATION",
+  "v4_08_production_status": "BLOCKED_UNTIL_ACCEPTED_PIT_MEMBERSHIP_BASELINE_AND_RECONSTRUCTION",
+  "v4_08_sector_entry": "AUTHORIZED_FOR_MEMBERSHIP_BASELINE_ENGINEERING_ONLY",
   "version": "2.3.0"
 }

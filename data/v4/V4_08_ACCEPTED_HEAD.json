@@ -1,0 +1,510 @@
+{
+  "accepted_at": "2026-09-30",
+  "accepted_context_contract": {
+    "byte_count": 2134,
+    "path": "config/v4_08_accepted_context_contract_r5_2.json",
+    "sha256": "491e5e0808dee92daf8122923784d87e19fee2222a60bfcf103a39b2ac8e702a"
+  },
+  "accepted_input_lineage": {
+    "accepted_context_resolver": {
+      "byte_count": 8448,
+      "path": "src/sector/accepted_context_r5_2.py",
+      "sha256": "f66cc7dbe0bca2a2df27c338eb2d4db024706a50e8bb5bd70702e91622cd7da9"
+    },
+    "accepted_input_adapter": {
+      "byte_count": 10442,
+      "path": "src/sector/accepted_input_r5_1.py",
+      "sha256": "f6d5e47742bfe984e7ffab273d48703047724111d26b8ecd9bc0afc0552fcf94"
+    },
+    "accepted_input_contract": {
+      "byte_count": 2134,
+      "path": "config/v4_08_accepted_context_contract_r5_2.json",
+      "sha256": "491e5e0808dee92daf8122923784d87e19fee2222a60bfcf103a39b2ac8e702a"
+    },
+    "b0_contract": {
+      "byte_count": 4025,
+      "path": "config/v4_08_sector_prewatch_contract_r5.json",
+      "sha256": "e71a66757ae664bf6f65b8c5a030caf4e35b70921925fc9e83953fa2ba71a737"
+    },
+    "b2_ast": {
+      "byte_count": 28799,
+      "path": "config/v4_08_b2_machine_ast_r5.json",
+      "sha256": "838f167f0eb7ec3797240cc7488e8121901b7bb4f8d926d3cb4e378adc4b1155"
+    },
+    "b2_producer": {
+      "byte_count": 7670,
+      "path": "src/sector/legacy_b2_r5.py",
+      "sha256": "4f744a6ad2c754b20ea870665031ab2182819781b09ad22680394c2904699cd8"
+    },
+    "b2_semantic_dependencies": [
+      {
+        "path": "config/sector_semantics.yaml",
+        "role": "declaration; exact legacy resolver uses explicit fields, empty override registry",
+        "sha256": "e0b133f2ff37c5480d3683ee283ccb976d8da69d1eca886ca8a4e9daf0f77303",
+        "version": "workbench-semantic-v2.1"
+      },
+      {
+        "path": "config/sector_roles.yaml",
+        "role": "declaration of excluded theme names",
+        "sha256": "98cb07c5b2ec0e22f2ff5e788d8130319f672ef89df7fdef6f7614aa92ed2975",
+        "version": "sector-role-v0.1"
+      },
+      {
+        "path": "src/workbench_service/semantic.py",
+        "role": "exact resolve_semantics",
+        "sha256": "116e91557d403c37512d153506d40b6b0aedb9dca594769720345f7a87821cb0",
+        "version": "workbench-semantic-v2.1"
+      },
+      {
+        "path": "src/sector/roles.py",
+        "role": "exact name/type role producer",
+        "sha256": "fd361e8b2410871505a5e48db250e9c0c31343b7c14ca34667d246d4d874b17a",
+        "version": "sector-role-v0.1"
+      },
+      {
+        "path": "src/sector/phase2.py",
+        "role": "prepare valid_member and validity sector_valid producer",
+        "sha256": "9455bae1578c4a785e034eb0ff852dcd98d7218a66027e0ea3f11489fd3727a1",
+        "version": "sector-factor-contract-v1.1-correctness"
+      },
+      {
+        "path": "src/workbench_service/strength_association.py",
+        "role": "EXCLUDED_ROLES and keyword hint sets",
+        "sha256": "f9a39a9bc100e932fa04f32c46bf3aa62287b6a358382d4f6b01e4b02084be29",
+        "version": "semantic-keyword-dependency-r5.1"
+      },
+      {
+        "path": "src/sector/semantic_input_r5_1.py",
+        "role": "accepted mapping and fail-closed semantics",
+        "sha256": "f8760dd0420e803ff28915afd43a9ff54635dde6a16f1fa515a05c7b0193cde4",
+        "version": "V4_08_B2_SEMANTIC_MAPPING_R5_1"
+      }
+    ],
+    "calendar_head": {
+      "byte_count": 1176,
+      "path": "data/v4/V4_02_GO_FORWARD_CALENDAR_EXTENSION_ACCEPTED_HEAD_R1.json",
+      "sha256": "d0d453689261603a6ccd773f6383781178cb74d388087b72c652dc8afcb309f6"
+    },
+    "canonical_hash_producer": {
+      "byte_count": 1443,
+      "path": "src/v4/canonical_governance_hash.py",
+      "sha256": "378929ad066d4b9408af36026cdd1e812e41375b30fafcc03987c8065a8385f3"
+    },
+    "canonical_input_binding": {
+      "accepted_input_context": {
+        "accepted_trade_date": "2026-09-24",
+        "adjusted_price": {
+          "capability": "BLOCKED",
+          "reason": "TARGET_ACCEPTED_DATA_UNAVAILABLE"
+        },
+        "availability": "TARGET_ACCEPTED_DATA_UNAVAILABLE",
+        "context_id": "DAILY_DATA_CONTEXT:da62e53a6c9bdb021d97866c6986a1dd5bb1e7fca2c474e8fa0d87c79d1ab145",
+        "contract_id": "V4_08_ACCEPTED_INPUT_CONTEXT_R5_2",
+        "daily_production_authority": true,
+        "governance": {
+          "canonical_data_revision": "0e2e2204b32bb8b9fad379bcb0c4ef3a785ac983c11721bbe96c8e294c41e717",
+          "manifest_binding": {
+            "path": "data/v4/bootstrap/V4_DM01_BOOTSTRAP_MANIFEST_R1.json",
+            "sha256": "80553233c9fce4194bfa3b5256570be9e9a03822460755bcbcfa390eb0b95a9e"
+          },
+          "parent_identity": null,
+          "source_head_digest": "da62e53a6c9bdb021d97866c6986a1dd5bb1e7fca2c474e8fa0d87c79d1ab145",
+          "source_head_path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+          "source_revision": "0e2e2204b32bb8b9fad379bcb0c4ef3a785ac983c11721bbe96c8e294c41e717"
+        },
+        "raw_daily": {
+          "capability": "BLOCKED",
+          "reason": "TARGET_ACCEPTED_DATA_UNAVAILABLE"
+        },
+        "scope": "DAILY_ACCEPTED_DATA"
+      },
+      "amount_source_capability": "UNAVAILABLE_UNKNOWN",
+      "authority_scope": "DAILY_ACCEPTED_DATA",
+      "availability": "TARGET_ACCEPTED_DATA_UNAVAILABLE",
+      "canonical_daily": {
+        "capability": "BLOCKED",
+        "reason": "TARGET_ACCEPTED_DATA_UNAVAILABLE"
+      },
+      "canonical_daily_source_digest": null,
+      "context_digest": "d407bf85719726345c227b9dda69d24f8cc0f6a5d26a91647928a199f635706e",
+      "contract_id": "V4_08_ACCEPTED_INPUT_ADAPTER_R5_2",
+      "cutoff": "2026-09-30T23:59:59+08:00",
+      "daily_available_at": null,
+      "daily_production_authority": true,
+      "price_source_capability": "UNAVAILABLE_UNKNOWN",
+      "target_trade_date": "2026-09-30"
+    },
+    "core_factors": {
+      "byte_count": 32316843,
+      "path": "reports/v4_05/staging/V4_05_R4_1_FULL_SCOPE_FACTORS.jsonl.gz",
+      "sha256": "17ae571629b76399e32d9e8a243268ea1fac619e1c5168d307bfd8ebf1494c48"
+    },
+    "core_head": {
+      "byte_count": 8456,
+      "path": "data/v4/V4_05_ACCEPTED_HEAD.json",
+      "sha256": "fc929d85553a900a6479ac9f50291d50cf750ad0e6c21fc58e4e05e92189f5cb"
+    },
+    "core_profile": {
+      "byte_count": 48848465,
+      "path": "reports/v4_05/staging/V4_05_R4_1_FULL_MARKET_CORE_PROFILE.jsonl.gz",
+      "sha256": "9a6ebedc715bc4b310ecf76c77e01cb6dfe9dadc17d335b5fc9afbcc2f6f3fa0"
+    },
+    "field_registry": {
+      "byte_count": 13560,
+      "path": "config/v4_08_sector_field_registry_r5.json",
+      "sha256": "3bfd5077f53b8af1639080ffa6e2a065d6585f7edcdd6e668adda6583586d7c4"
+    },
+    "membership_head": {
+      "byte_count": 2151,
+      "path": "data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json",
+      "sha256": "d6374a73b8084ccd383cbb4f75428ed91176e91cc09d87c3329041d57c5bd9ed"
+    },
+    "native_contract": {
+      "byte_count": 3246,
+      "path": "config/v4_08_sector_native_contract_r5.json",
+      "sha256": "235df806e1671ab00e234f4d93834570c797314244c42753e2e58e1c60a21386"
+    },
+    "native_producer": {
+      "byte_count": 11591,
+      "path": "src/sector/native_r5.py",
+      "sha256": "280f5315fbaef91cd8411924ad39d0436684380aec6d484619dbefc9238e9b01"
+    },
+    "parameter_set": {
+      "byte_count": 4045,
+      "path": "config/v4_08_algorithm_parameter_set_r5.json",
+      "sha256": "0204d7c4fadf86871b6a079f755593b1a3f8ad18bb718f73ba33db0b70f67548"
+    },
+    "rotation_contract": {
+      "byte_count": 21093,
+      "path": "config/v4_08_rotation_core_contract_r5.json",
+      "sha256": "2fee45359815fd70f489e0c24c29b49eac114628332b77399d6d2f14ea018330"
+    },
+    "rotation_producer": {
+      "byte_count": 10781,
+      "path": "src/sector/rotation_r5.py",
+      "sha256": "93c73b431a0fa8af1cf2e0c65a706dc78e390b1d5a2cd821f85e89ec5323968b"
+    },
+    "seed_artifact": {
+      "byte_count": 614146,
+      "path": "reports/v4_07/staging/V4_07_BASE_SEED_CANDIDATE_R2.jsonl.gz",
+      "sha256": "bb9992c581092f91ba69ad8390daf522d3441951f5bc61437ff0e4653ed74e72"
+    },
+    "seed_head": {
+      "byte_count": 6362,
+      "path": "data/v4/V4_07_ACCEPTED_HEAD.json",
+      "sha256": "b22117b0d14c35167cba86cb7398d878d7112f9cf17c1a427fa92766e78f880f"
+    },
+    "semantic_adapter": {
+      "byte_count": 2653,
+      "path": "src/sector/semantic_input_r5_1.py",
+      "sha256": "f8760dd0420e803ff28915afd43a9ff54635dde6a16f1fa515a05c7b0193cde4"
+    }
+  },
+  "b0_contract": {
+    "byte_count": 4025,
+    "path": "config/v4_08_sector_prewatch_contract_r5.json",
+    "sha256": "e71a66757ae664bf6f65b8c5a030caf4e35b70921925fc9e83953fa2ba71a737"
+  },
+  "b0_producer": {
+    "byte_count": 11591,
+    "path": "src/sector/native_r5.py",
+    "sha256": "280f5315fbaef91cd8411924ad39d0436684380aec6d484619dbefc9238e9b01"
+  },
+  "b2_contract": {
+    "byte_count": 28799,
+    "path": "config/v4_08_b2_machine_ast_r5.json",
+    "sha256": "838f167f0eb7ec3797240cc7488e8121901b7bb4f8d926d3cb4e378adc4b1155"
+  },
+  "b2_producer": {
+    "byte_count": 7670,
+    "path": "src/sector/legacy_b2_r5.py",
+    "sha256": "4f744a6ad2c754b20ea870665031ab2182819781b09ad22680394c2904699cd8"
+  },
+  "capabilities": {
+    "ACCEPTED_CONTEXT_ROUTING": "ENGINEERING_ACCEPTED",
+    "B0_SECTOR_PREWATCH_RAW": "ENGINEERING_ACCEPTED",
+    "B1_ROTATION_CORE": "ENGINEERING_ACCEPTED",
+    "B2_AMOUNT_A": "DIAGNOSTIC_AUDIT_OPEN",
+    "B2_LEGACY_CONFIRMED_WARM": "NOT_IMPLEMENTED_LEGACY_VALID_MEMBER_PROVENANCE",
+    "REAL_SIGNAL_CAPABILITY": "DEGRADED_BY_TARGET_CORE_DATA_HEAD_PRIOR_RPS_AND_FORWARD_PIT_HISTORY",
+    "SECTOR_NATIVE_CORE": "ENGINEERING_ACCEPTED"
+  },
+  "clean_checkout": {
+    "byte_count": 9608,
+    "path": "reports/v4_08/V4_08_R5_2_CLEAN_CHECKOUT_RECEIPT.json",
+    "sha256": "5707420dcc6287715537e480bb721470390d131c865070a04f5ca6558336b6ab"
+  },
+  "contract_id": "V4_08_ACCEPTED_HEAD_V1",
+  "evidence_bindings": {
+    "accepted_context_resolver": {
+      "byte_count": 8448,
+      "path": "src/sector/accepted_context_r5_2.py",
+      "sha256": "f66cc7dbe0bca2a2df27c338eb2d4db024706a50e8bb5bd70702e91622cd7da9"
+    },
+    "accepted_input_adapter": {
+      "byte_count": 10442,
+      "path": "src/sector/accepted_input_r5_1.py",
+      "sha256": "f6d5e47742bfe984e7ffab273d48703047724111d26b8ecd9bc0afc0552fcf94"
+    },
+    "accepted_input_contract": {
+      "byte_count": 2134,
+      "path": "config/v4_08_accepted_context_contract_r5_2.json",
+      "sha256": "491e5e0808dee92daf8122923784d87e19fee2222a60bfcf103a39b2ac8e702a"
+    },
+    "b0_contract": {
+      "byte_count": 4025,
+      "path": "config/v4_08_sector_prewatch_contract_r5.json",
+      "sha256": "e71a66757ae664bf6f65b8c5a030caf4e35b70921925fc9e83953fa2ba71a737"
+    },
+    "b0_producer": {
+      "byte_count": 11591,
+      "path": "src/sector/native_r5.py",
+      "sha256": "280f5315fbaef91cd8411924ad39d0436684380aec6d484619dbefc9238e9b01"
+    },
+    "b2_ast": {
+      "byte_count": 28799,
+      "path": "config/v4_08_b2_machine_ast_r5.json",
+      "sha256": "838f167f0eb7ec3797240cc7488e8121901b7bb4f8d926d3cb4e378adc4b1155"
+    },
+    "b2_contract": {
+      "byte_count": 28799,
+      "path": "config/v4_08_b2_machine_ast_r5.json",
+      "sha256": "838f167f0eb7ec3797240cc7488e8121901b7bb4f8d926d3cb4e378adc4b1155"
+    },
+    "b2_producer": {
+      "byte_count": 7670,
+      "path": "src/sector/legacy_b2_r5.py",
+      "sha256": "4f744a6ad2c754b20ea870665031ab2182819781b09ad22680394c2904699cd8"
+    },
+    "calendar_head": {
+      "byte_count": 1176,
+      "path": "data/v4/V4_02_GO_FORWARD_CALENDAR_EXTENSION_ACCEPTED_HEAD_R1.json",
+      "sha256": "d0d453689261603a6ccd773f6383781178cb74d388087b72c652dc8afcb309f6"
+    },
+    "canonical_hash_producer": {
+      "byte_count": 1443,
+      "path": "src/v4/canonical_governance_hash.py",
+      "sha256": "378929ad066d4b9408af36026cdd1e812e41375b30fafcc03987c8065a8385f3"
+    },
+    "clean_checkout": {
+      "byte_count": 9608,
+      "path": "reports/v4_08/V4_08_R5_2_CLEAN_CHECKOUT_RECEIPT.json",
+      "sha256": "5707420dcc6287715537e480bb721470390d131c865070a04f5ca6558336b6ab"
+    },
+    "core_factors": {
+      "byte_count": 32316843,
+      "path": "reports/v4_05/staging/V4_05_R4_1_FULL_SCOPE_FACTORS.jsonl.gz",
+      "sha256": "17ae571629b76399e32d9e8a243268ea1fac619e1c5168d307bfd8ebf1494c48"
+    },
+    "core_head": {
+      "byte_count": 8456,
+      "path": "data/v4/V4_05_ACCEPTED_HEAD.json",
+      "sha256": "fc929d85553a900a6479ac9f50291d50cf750ad0e6c21fc58e4e05e92189f5cb"
+    },
+    "core_profile": {
+      "byte_count": 48848465,
+      "path": "reports/v4_05/staging/V4_05_R4_1_FULL_MARKET_CORE_PROFILE.jsonl.gz",
+      "sha256": "9a6ebedc715bc4b310ecf76c77e01cb6dfe9dadc17d335b5fc9afbcc2f6f3fa0"
+    },
+    "external_acceptance_document": {
+      "audited_head": "8200a775d9c4115f479ee60b4c11a16579e86723",
+      "byte_count": 10961,
+      "decision": "V4_08_EXTERNAL_ACCEPTANCE_PASS_R5_2_ENGINEERING_SCOPE",
+      "implementation_commit": "b7d904cbff4f1c4b877838bd129f3925f968d858",
+      "path": "docs/evidence/V4_08_R5_2_INDEPENDENT_EXTERNAL_ACCEPTANCE_FINAL_20260930.md",
+      "sha256": "90c3d7cfded9c649e1b4f9aa9c35a7dce91d17af0dd89a8daa97185ab1c6b966"
+    },
+    "field_registry": {
+      "byte_count": 13560,
+      "path": "config/v4_08_sector_field_registry_r5.json",
+      "sha256": "3bfd5077f53b8af1639080ffa6e2a065d6585f7edcdd6e668adda6583586d7c4"
+    },
+    "isolated_regression": {
+      "byte_count": 1752,
+      "path": "reports/v4_08/V4_08_R5_2_ISOLATED_REGRESSION.json",
+      "sha256": "74d7a002084b77feb0df190027a13c8ea7ee0edf9f4a7169a8550883b2044a86"
+    },
+    "membership_head": {
+      "byte_count": 2151,
+      "path": "data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json",
+      "sha256": "d6374a73b8084ccd383cbb4f75428ed91176e91cc09d87c3329041d57c5bd9ed"
+    },
+    "native_contract": {
+      "byte_count": 3246,
+      "path": "config/v4_08_sector_native_contract_r5.json",
+      "sha256": "235df806e1671ab00e234f4d93834570c797314244c42753e2e58e1c60a21386"
+    },
+    "native_producer": {
+      "byte_count": 11591,
+      "path": "src/sector/native_r5.py",
+      "sha256": "280f5315fbaef91cd8411924ad39d0436684380aec6d484619dbefc9238e9b01"
+    },
+    "no_symbol_scan": {
+      "byte_count": 681874,
+      "path": "reports/v4_08/V4_08_R5_2_NO_SYMBOL_SPECIFIC_SYSTEM_LOGIC_SCAN.json",
+      "sha256": "576c68c36c408b827075c7345837231e3db33ad88022815ef2156bfab7a668de"
+    },
+    "parameter_set": {
+      "byte_count": 4045,
+      "path": "config/v4_08_algorithm_parameter_set_r5.json",
+      "sha256": "0204d7c4fadf86871b6a079f755593b1a3f8ad18bb718f73ba33db0b70f67548"
+    },
+    "r5_2_candidate_manifest": {
+      "byte_count": 12772,
+      "path": "reports/v4_08/V4_08_R5_2_STAGE_CANDIDATE_MANIFEST.json",
+      "sha256": "2188fe22a7992642f3fe872a66e7a4c0235e4d29d3411604fdf8ecb2321ab319"
+    },
+    "rotation_contract": {
+      "byte_count": 21093,
+      "path": "config/v4_08_rotation_core_contract_r5.json",
+      "sha256": "2fee45359815fd70f489e0c24c29b49eac114628332b77399d6d2f14ea018330"
+    },
+    "rotation_producer": {
+      "byte_count": 10781,
+      "path": "src/sector/rotation_r5.py",
+      "sha256": "93c73b431a0fa8af1cf2e0c65a706dc78e390b1d5a2cd821f85e89ec5323968b"
+    },
+    "schema_readback": {
+      "byte_count": 6700,
+      "path": "reports/v4_08/V4_08_R5_2_SCHEMA_MIGRATION_RECEIPT.json",
+      "sha256": "b976c45cf6873e1645b05a8c3b80ef6266f53bb367a235ec779c8cba3e6dfa69"
+    },
+    "seed_artifact": {
+      "byte_count": 614146,
+      "path": "reports/v4_07/staging/V4_07_BASE_SEED_CANDIDATE_R2.jsonl.gz",
+      "sha256": "bb9992c581092f91ba69ad8390daf522d3441951f5bc61437ff0e4653ed74e72"
+    },
+    "seed_head": {
+      "byte_count": 6362,
+      "path": "data/v4/V4_07_ACCEPTED_HEAD.json",
+      "sha256": "b22117b0d14c35167cba86cb7398d878d7112f9cf17c1a427fa92766e78f880f"
+    },
+    "semantic_adapter": {
+      "byte_count": 2653,
+      "path": "src/sector/semantic_input_r5_1.py",
+      "sha256": "f8760dd0420e803ff28915afd43a9ff54635dde6a16f1fa515a05c7b0193cde4"
+    }
+  },
+  "external_acceptance": "EXTERNALLY_ACCEPTED",
+  "external_acceptance_decision": "V4_08_EXTERNAL_ACCEPTANCE_PASS_R5_2_ENGINEERING_SCOPE",
+  "external_acceptance_document": {
+    "audited_head": "8200a775d9c4115f479ee60b4c11a16579e86723",
+    "byte_count": 10961,
+    "decision": "V4_08_EXTERNAL_ACCEPTANCE_PASS_R5_2_ENGINEERING_SCOPE",
+    "implementation_commit": "b7d904cbff4f1c4b877838bd129f3925f968d858",
+    "path": "docs/evidence/V4_08_R5_2_INDEPENDENT_EXTERNAL_ACCEPTANCE_FINAL_20260930.md",
+    "sha256": "90c3d7cfded9c649e1b4f9aa9c35a7dce91d17af0dd89a8daa97185ab1c6b966"
+  },
+  "field_registry": {
+    "byte_count": 13560,
+    "path": "config/v4_08_sector_field_registry_r5.json",
+    "sha256": "3bfd5077f53b8af1639080ffa6e2a065d6585f7edcdd6e668adda6583586d7c4"
+  },
+  "focus_cutover_permission": false,
+  "global_head_parent": {
+    "byte_count": 5999,
+    "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+    "sha256": "74b0fdd3358ab0da95ffa0522a5cf9a34bb168cb0bfb0a8adfbfc32d5578ef71"
+  },
+  "global_head_parent_archive": {
+    "byte_count": 5999,
+    "path": "reports/v4_joint/V4_08_PROMOTION_PARENT_STAGE_HEAD.json",
+    "sha256": "74b0fdd3358ab0da95ffa0522a5cf9a34bb168cb0bfb0a8adfbfc32d5578ef71"
+  },
+  "implementation_commit": "b7d904cbff4f1c4b877838bd129f3925f968d858",
+  "input_head": "8200a775d9c4115f479ee60b4c11a16579e86723",
+  "isolated_regression": {
+    "byte_count": 1752,
+    "path": "reports/v4_08/V4_08_R5_2_ISOLATED_REGRESSION.json",
+    "sha256": "74d7a002084b77feb0df190027a13c8ea7ee0edf9f4a7169a8550883b2044a86"
+  },
+  "membership_binding": {
+    "byte_count": 2151,
+    "path": "data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json",
+    "sha256": "d6374a73b8084ccd383cbb4f75428ed91176e91cc09d87c3329041d57c5bd9ed"
+  },
+  "native_contract": {
+    "byte_count": 3246,
+    "path": "config/v4_08_sector_native_contract_r5.json",
+    "sha256": "235df806e1671ab00e234f4d93834570c797314244c42753e2e58e1c60a21386"
+  },
+  "native_producer": {
+    "byte_count": 11591,
+    "path": "src/sector/native_r5.py",
+    "sha256": "280f5315fbaef91cd8411924ad39d0436684380aec6d484619dbefc9238e9b01"
+  },
+  "next_stage": "V4-09 Stock PREWATCH engineering candidate",
+  "no_symbol_scan": {
+    "byte_count": 681874,
+    "path": "reports/v4_08/V4_08_R5_2_NO_SYMBOL_SPECIFIC_SYSTEM_LOGIC_SCAN.json",
+    "sha256": "576c68c36c408b827075c7345837231e3db33ad88022815ef2156bfab7a668de"
+  },
+  "open_audits": [
+    {
+      "audit_id": "V4_07_PRIOR_RPS_ACCEPTED_INPUT_BOOTSTRAP_01",
+      "status": "OPEN"
+    },
+    {
+      "audit_id": "AUD-AMOUNT-A-06",
+      "status": "OPEN"
+    },
+    {
+      "audit_id": "DM01_REAL_INCREMENTAL_BUILDERS",
+      "status": "OPEN"
+    },
+    {
+      "audit_id": "LEGACY_VALID_MEMBER_EXACT_PRODUCER",
+      "status": "OPEN"
+    },
+    {
+      "audit_id": "FORWARD_PIT_HISTORY_ACCUMULATION",
+      "status": "OPEN"
+    }
+  ],
+  "parameter_set": {
+    "byte_count": 4045,
+    "path": "config/v4_08_algorithm_parameter_set_r5.json",
+    "sha256": "0204d7c4fadf86871b6a079f755593b1a3f8ad18bb718f73ba33db0b70f67548"
+  },
+  "production_permission": false,
+  "protected_head_bindings": [
+    {
+      "byte_count": 2478,
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0"
+    },
+    {
+      "byte_count": 602,
+      "path": "data/v4/V4_DEV_BASELINE_HEAD.json",
+      "sha256": "45695460b0147c6ada12e0ebd8e5070ac0a45eebea26603ff5a3daddc4dd5094"
+    },
+    {
+      "byte_count": 2151,
+      "path": "data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json",
+      "sha256": "d6374a73b8084ccd383cbb4f75428ed91176e91cc09d87c3329041d57c5bd9ed"
+    }
+  ],
+  "r5_2_candidate_manifest": {
+    "byte_count": 12772,
+    "path": "reports/v4_08/V4_08_R5_2_STAGE_CANDIDATE_MANIFEST.json",
+    "sha256": "2188fe22a7992642f3fe872a66e7a4c0235e4d29d3411604fdf8ecb2321ab319"
+  },
+  "rotation_contract": {
+    "byte_count": 21093,
+    "path": "config/v4_08_rotation_core_contract_r5.json",
+    "sha256": "2fee45359815fd70f489e0c24c29b49eac114628332b77399d6d2f14ea018330"
+  },
+  "rotation_producer": {
+    "byte_count": 10781,
+    "path": "src/sector/rotation_r5.py",
+    "sha256": "93c73b431a0fa8af1cf2e0c65a706dc78e390b1d5a2cd821f85e89ec5323968b"
+  },
+  "schema_readback": {
+    "byte_count": 6700,
+    "path": "reports/v4_08/V4_08_R5_2_SCHEMA_MIGRATION_RECEIPT.json",
+    "sha256": "b976c45cf6873e1645b05a8c3b80ef6266f53bb367a235ec779c8cba3e6dfa69"
+  },
+  "shadow_production_permission": false,
+  "stage": "V4-08",
+  "status": "ENGINEERING_PASS_CAPABILITY_SCOPED"
+}

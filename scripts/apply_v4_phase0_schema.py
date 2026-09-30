@@ -11,6 +11,7 @@ import psycopg
 ROOT=Path(__file__).resolve().parents[1]
 MIGRATIONS=ROOT/"src/workbench_db/migrations/v4_postgres"
 VERSIONS={
+    "021_v4_09_stock_prewatch.sql":"V4_09_STOCK_PREWATCH_V1",
     "001_v4_phase0_foundation.sql":"V4_PHASE0_FOUNDATION_V1",
     "002_namespace_integrity.sql":"V4_PHASE0_NAMESPACE_INTEGRITY_V1",
     "003_phase0_contract_alignment.sql":"V4_PHASE0_CONTRACT_ALIGNMENT_R2",

@@ -1,0 +1,46 @@
+{
+  "contract_id": "V4_08_PROMOTION_OPEN_CAPABILITY_AUDITS_R1",
+  "items": [
+    {
+      "audit_id": "V4_07_PRIOR_RPS_ACCEPTED_INPUT_BOOTSTRAP_01",
+      "current_stage_gate_impact": "Does not reverse V4-08 engineering acceptance or change V4-09 raw qualification.",
+      "evidence": "reports/audits/V4_07_PRIOR_RPS_ACCEPTED_INPUT_BOOTSTRAP_AUDIT_20260930.md",
+      "independent_acceptance_requirement": "Accepted prior-session factors with exact dates, knowledge time, revision and independent arithmetic.",
+      "scope": "Accepted prior RPS availability; no old R3 fallback.",
+      "status": "OPEN"
+    },
+    {
+      "audit_id": "AUD-AMOUNT-A-06",
+      "current_stage_gate_impact": "Does not reverse V4-08 engineering acceptance or change V4-09 raw qualification.",
+      "evidence": "reports/audits/AUD-AMOUNT-A-06_TRACKER_20260930_R1.json",
+      "independent_acceptance_requirement": "Independent unit, denominator, coverage, concentration and consumer audit with external acceptance.",
+      "scope": "Cross-cutting Amount A validity and all formal consumers.",
+      "status": "OPEN"
+    },
+    {
+      "audit_id": "DM01_REAL_INCREMENTAL_BUILDERS",
+      "current_stage_gate_impact": "Does not reverse V4-08 engineering acceptance or change V4-09 raw qualification.",
+      "evidence": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "independent_acceptance_requirement": "Versioned incremental publication chain, overlap/source validation and independently accepted daily target.",
+      "scope": "Real daily builders and accepted target Core/Data authority.",
+      "status": "OPEN"
+    },
+    {
+      "audit_id": "LEGACY_VALID_MEMBER_EXACT_PRODUCER",
+      "current_stage_gate_impact": "Does not reverse V4-08 engineering acceptance or change V4-09 raw qualification.",
+      "evidence": "reports/v4_08/V4_08_R5_2_LEGACY_VALID_MEMBER_SOURCE_DECISION.json",
+      "independent_acceptance_requirement": "Real exact producer contract, quality and golden examples independently accepted before B2 formal use.",
+      "scope": "Exact legacy valid-member Core producer and provenance.",
+      "status": "OPEN"
+    },
+    {
+      "audit_id": "FORWARD_PIT_HISTORY_ACCUMULATION",
+      "current_stage_gate_impact": "Does not reverse V4-08 engineering acceptance or change V4-09 raw qualification.",
+      "evidence": "data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json",
+      "independent_acceptance_requirement": "Dated immutable source observations and complete required forward sessions independently verified.",
+      "scope": "Forward-only accepted PIT history sufficient for temporal consumers.",
+      "status": "OPEN"
+    }
+  ],
+  "stage_gate_independent": true
+}

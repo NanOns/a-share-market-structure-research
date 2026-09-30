@@ -1,24 +1,24 @@
 {
   "artifacts": {
     "B0": {
-      "byte_count": 20967,
-      "path": "data/v4/artifact_store/v4_08/V4_08_R5_B0_20260930_17fe0b83a55f52d66016.jsonl.gz",
-      "sha256": "e9562dde16125fcaab99c44e3ee30e28512222de1dc3705e9e90820cdb9695eb"
+      "byte_count": 21682,
+      "path": "data/v4/artifact_store/v4_08/V4_08_R5_B0_20260930_ce3b9ede6ec4d0e94ed6.jsonl.gz",
+      "sha256": "468105502df5dc26fc11b920647276b852c6852a8693e3b8a81e7bc6d43586ea"
     },
     "B2": {
-      "byte_count": 22531,
-      "path": "data/v4/artifact_store/v4_08/V4_08_R5_B2_20260930_17fe0b83a55f52d66016.jsonl.gz",
-      "sha256": "78c65ab85d8cd6380fd1d01bf1bd84101823b539d9db15828aa5dbcd425df9b9"
+      "byte_count": 23245,
+      "path": "data/v4/artifact_store/v4_08/V4_08_R5_B2_20260930_ce3b9ede6ec4d0e94ed6.jsonl.gz",
+      "sha256": "4901b0027d75b849139efeb95c075b53490e8abe0b8c433e4d840f19130b5085"
     },
     "ROTATION": {
-      "byte_count": 1879386,
-      "path": "data/v4/artifact_store/v4_08/V4_08_R5_ROTATION_20260930_17fe0b83a55f52d66016.jsonl.gz",
-      "sha256": "92480f0496ead8a507a24fc066d1b19f9d6f9e3bbf13dc391cc670931ce2459e"
+      "byte_count": 1925403,
+      "path": "data/v4/artifact_store/v4_08/V4_08_R5_ROTATION_20260930_ce3b9ede6ec4d0e94ed6.jsonl.gz",
+      "sha256": "9492efc7e77c56ccc2e6b0d32b0eb63fbfee65b63595a967477d8ad4497039bf"
     },
     "SECTOR_NATIVE": {
-      "byte_count": 2072857,
-      "path": "data/v4/artifact_store/v4_08/V4_08_R5_SECTOR_NATIVE_20260930_17fe0b83a55f52d66016.jsonl.gz",
-      "sha256": "06db0ee2d1e65ffdcefa88426d8a5c0e640db662a9f66df2cb011710d57db64b"
+      "byte_count": 2095242,
+      "path": "data/v4/artifact_store/v4_08/V4_08_R5_SECTOR_NATIVE_20260930_ce3b9ede6ec4d0e94ed6.jsonl.gz",
+      "sha256": "65b9e1fd0c269b609514918ddc768e11ff910ca7ec362e4887ac4910e111888c"
     }
   },
   "capabilities": {
@@ -37,14 +37,14 @@
   ],
   "input_bindings": {
     "accepted_input_adapter": {
-      "byte_count": 9583,
+      "byte_count": 9681,
       "path": "src/sector/accepted_input_r5_1.py",
-      "sha256": "0f48cb964ae5f469c5f81d45cd9cb4a017b073721c8c55ed82bc18e05399fa9d"
+      "sha256": "661c94b1761dab6d295856e8b77473fcb4f09ad82056e7f7738b16a0c0533c59"
     },
     "accepted_input_contract": {
-      "byte_count": 2091,
+      "byte_count": 2237,
       "path": "config/v4_08_accepted_input_contract_r5_1.json",
-      "sha256": "6885bd9058bcbfbf6b10700a17ceeacb1124c1d6006c7c4a8ec5ffdc5b6f4082"
+      "sha256": "a8d193aea1fc4e47bafcac5ee2f846943336cc7ccd4f30131361d064adba20df"
     },
     "b0_contract": {
       "byte_count": 4025,
@@ -110,6 +110,11 @@
       "path": "data/v4/V4_02_GO_FORWARD_CALENDAR_EXTENSION_ACCEPTED_HEAD_R1.json",
       "sha256": "d0d453689261603a6ccd773f6383781178cb74d388087b72c652dc8afcb309f6"
     },
+    "canonical_hash_producer": {
+      "byte_count": 1443,
+      "path": "src/v4/canonical_governance_hash.py",
+      "sha256": "378929ad066d4b9408af36026cdd1e812e41375b30fafcc03987c8065a8385f3"
+    },
     "canonical_input_binding": {
       "amount_source_capability": "AVAILABLE_VERIFIED",
       "amount_source_revision": "PER_ROW_adjustment_source_revision",
@@ -120,7 +125,8 @@
       },
       "canonical_daily_head": {
         "path": "data/v4/V4_02_ACCEPTED_HEAD.json",
-        "sha256": "da318a1f82a03f13930af7858ca1640fadbdaedbee85e27d47f9c869c2d6b595"
+        "sha256": "a9784d4bcdec9d62f2e74945e6d26ec20f7af1c19440bf7dec46583932d9f653",
+        "sha256_algorithm": "CANONICAL_JSON_SHA256_V1"
       },
       "canonical_daily_manifest": {
         "path": "reports/v4_02/V4_02_FINAL_STAGING_MANIFEST_R6.json",
@@ -137,7 +143,8 @@
       },
       "price_head": {
         "path": "data/v4/V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD.json",
-        "sha256": "83fa37ded40337d69ff0e447a0b6a3bc293d2ca95ea9c8aa009f0f104776c4be"
+        "sha256": "206581adca674841a21a7497a3f73ce22dbedd0f18f2ce38bed003df8f42dac9",
+        "sha256_algorithm": "CANONICAL_JSON_SHA256_V1"
       },
       "price_identity_authority": "coordinate_basis:adjustment_snapshot_id; adjustment_snapshot_digest retained",
       "price_logical_digest": "a5600d7f1416434bd54e778c2e7e847e309de1c21d71df5677f92daee1791400",
@@ -210,6 +217,6 @@
       "sha256": "f8760dd0420e803ff28915afd43a9ff54635dde6a16f1fa515a05c7b0193cde4"
     }
   },
-  "publication_id": "V4_08_R5_ENGINEERING_20260930_17fe0b83a55f52d66016",
+  "publication_id": "V4_08_R5_ENGINEERING_20260930_ce3b9ede6ec4d0e94ed6",
   "status": "R5_ENGINEERING_CANDIDATE_PENDING_VERIFICATION"
 }

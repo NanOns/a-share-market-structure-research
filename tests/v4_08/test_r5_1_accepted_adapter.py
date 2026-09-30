@@ -127,6 +127,17 @@ def test_missing_source_payload_degrades_unknown(tmp_path):
     assert rows[0]['fields']['top1_concentration']['value'] is None
 
 
+def test_accepted_head_newline_identity_uses_existing_canonical_policy(tmp_path):
+    core,_=fixture(tmp_path)
+    before=load_accepted_current(tmp_path,core,target=TARGET,cutoff=TARGET+'T23:59:59+08:00')
+    for name in ('V4_02_ACCEPTED_HEAD.json','V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD.json'):
+        path=tmp_path/'data/v4'/name
+        text=json.dumps(json.loads(path.read_text(encoding='utf8')),indent=2)+'\n'
+        path.write_bytes(text.replace('\n','\r\n').encode('utf8'))
+    after=load_accepted_current(tmp_path,core,target=TARGET,cutoff=TARGET+'T23:59:59+08:00')
+    assert before==after
+
+
 @pytest.mark.parametrize('snapshot,expected', [('sha256-fixture-adjustment','ROTATION_PULSE'),('sha256-new-corporate-action','UNKNOWN'),(None,'UNKNOWN')])
 def test_price_basis_pulse_adapter(tmp_path,snapshot,expected):
     old='2026-09-29';oldroot=tmp_path/'old';newroot=tmp_path/'new'

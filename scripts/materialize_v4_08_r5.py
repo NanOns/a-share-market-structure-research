@@ -52,6 +52,7 @@ def main():
     source_bindings['accepted_input_adapter']=bind('src/sector/accepted_input_r5_1.py')
     source_bindings['semantic_adapter']=bind('src/sector/semantic_input_r5_1.py')
     source_bindings['accepted_input_contract']=bind('config/v4_08_accepted_input_contract_r5_1.json')
+    source_bindings['canonical_hash_producer']=bind('src/v4/canonical_governance_hash.py')
     source_bindings['canonical_input_binding']=adapter_binding
     ast_binding=read('config/v4_08_b2_machine_ast_r5.json')
     source_bindings['b2_semantic_dependencies']=ast_binding['semantic_dependencies']

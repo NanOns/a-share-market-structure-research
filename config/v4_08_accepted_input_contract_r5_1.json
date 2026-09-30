@@ -17,6 +17,7 @@
   "price_time_gate": "formal_publication_at, system_available_at, adjustment_source_available_at and adjustment_system_available_at <= evaluation cutoff",
   "corporate_action_conversion": "No accepted affine conversion applied; identity mismatch remains UNKNOWN",
   "binding_gate": "artifact SHA256, accepted manifest SHA256 and price logical digest verified before use",
+  "governance_head_identity": "existing V4_05_R4_1_CANONICAL_HASH_POLICY_V1 / CANONICAL_JSON_SHA256_V1; binary artifacts retain raw byte SHA256",
   "date_gate": "prior date ignored as unavailable; future date rejected",
   "semantic_contract_id": "V4_08_B2_SEMANTIC_MAPPING_R5_1",
   "sector_valid_authority": "phase2.prepare valid_member -> phase2.validity(total, valid, role)",

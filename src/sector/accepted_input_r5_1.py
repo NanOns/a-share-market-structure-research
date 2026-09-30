@@ -5,6 +5,7 @@ import hashlib
 import json
 import math
 from pathlib import Path
+from v4.canonical_governance_hash import canonical_json_file_sha256
 
 CONTRACT_ID = 'V4_08_ACCEPTED_INPUT_ADAPTER_R5_1'
 
@@ -147,7 +148,7 @@ def load_accepted_current(root, core_head, *, target, cutoff):
     manifest = json.loads(bound_file(root, manifest_binding).read_text(encoding='utf8'))
     daily_binding = manifest['components']['DAILY_R7']
     def bind(path):
-        return dict(path=path, sha256=hashlib.sha256((root/path).read_bytes()).hexdigest())
+        return dict(path=path, sha256=canonical_json_file_sha256(root/path), sha256_algorithm='CANONICAL_JSON_SHA256_V1')
     binding = dict(contract_id=CONTRACT_ID, canonical_daily_head=bind(head_path), canonical_daily=daily_binding,
                    canonical_daily_manifest=manifest_binding, canonical_daily_source_digest=daily_binding['sha256'],
                    target_trade_date=target, daily_available_at=head['accepted_at_utc'],

@@ -96827,6 +96827,30 @@
       "expected_rejected": true,
       "id": "direct_sql_calendar_binding_mismatch",
       "kind": "SQL"
+    },
+    {
+      "coverage": [
+        "db_payload_identity_guard"
+      ],
+      "expected_rejected": true,
+      "id": "direct_sql_boundary_manifest_field_mismatch",
+      "kind": "SQL"
+    },
+    {
+      "coverage": [
+        "db_payload_identity_guard"
+      ],
+      "expected_rejected": true,
+      "id": "direct_sql_unpublished_extra_input",
+      "kind": "SQL"
+    },
+    {
+      "coverage": [
+        "db_payload_identity_guard"
+      ],
+      "expected_rejected": true,
+      "id": "direct_sql_null_cutoff",
+      "kind": "SQL"
     }
   ]
 }

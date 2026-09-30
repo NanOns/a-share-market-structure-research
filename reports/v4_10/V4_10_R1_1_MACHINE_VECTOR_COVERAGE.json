@@ -80,7 +80,10 @@
       "direct_sql_forged_payload_digest",
       "direct_sql_forged_state_publication_id",
       "direct_sql_producer_lineage_mismatch",
-      "direct_sql_calendar_binding_mismatch"
+      "direct_sql_calendar_binding_mismatch",
+      "direct_sql_boundary_manifest_field_mismatch",
+      "direct_sql_unpublished_extra_input",
+      "direct_sql_null_cutoff"
     ],
     "downgrade_day1": [
       "downgrade_NONE_day1",
@@ -473,5 +476,5 @@
     "tracking": "last-known enum retained",
     "validity": "UNKNOWN"
   },
-  "vector_count": 146
+  "vector_count": 149
 }

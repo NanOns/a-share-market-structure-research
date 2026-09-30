@@ -871,6 +871,21 @@
       "error": "STATE_CALENDAR_LINEAGE_MISMATCH",
       "id": "direct_sql_calendar_binding_mismatch",
       "passed": true
+    },
+    {
+      "error": "STATE_BOUNDARY_AUTHORIZATION_MISMATCH",
+      "id": "direct_sql_boundary_manifest_field_mismatch",
+      "passed": true
+    },
+    {
+      "error": "STATE_INPUT_PUBLICATION_NOT_IN_TRUSTED_LEDGER",
+      "id": "direct_sql_unpublished_extra_input",
+      "passed": true
+    },
+    {
+      "error": "STATE_CUTOFF_REQUIRED",
+      "id": "direct_sql_null_cutoff",
+      "passed": true
     }
   ],
   "contract_id": "V4_10_R1_1_INDEPENDENT_POSTCHECK",
@@ -17977,16 +17992,19 @@
     "db_payload_identity_guard"
   ],
   "source_vectors": {
-    "byte_count": 3852095,
+    "byte_count": 3852635,
     "path": "config/v4_10_machine_vectors_r1_1.json",
-    "sha256": "552c00d3163001597c29b181b4c397095db0079393b93ad588dbff16af843f41"
+    "sha256": "50284831a4b3ff9abffdcb0fc63cb125b183be1de7312d0a31b32acbb2f7e4eb"
   },
   "sql_probes": {
+    "direct_sql_boundary_manifest_field_mismatch": true,
     "direct_sql_calendar_binding_mismatch": true,
     "direct_sql_forged_payload_digest": true,
     "direct_sql_forged_state_publication_id": true,
-    "direct_sql_producer_lineage_mismatch": true
+    "direct_sql_null_cutoff": true,
+    "direct_sql_producer_lineage_mismatch": true,
+    "direct_sql_unpublished_extra_input": true
   },
   "status": "PASS",
-  "vector_count": 146
+  "vector_count": 149
 }

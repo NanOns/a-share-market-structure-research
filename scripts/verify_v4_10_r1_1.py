@@ -9,7 +9,7 @@ ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
 from src.v4.research_state import reduce_state
 from src.v4.state_provenance import PostgresEngineeringLedger
-from scripts.v4_10_r1_1_fixtures import publish_setup,accepted_bundle
+from scripts.v4_10_r1_1_fixtures import publish_setup,accepted_bundle,accepted_prior_fixture,boundary_descriptor
 from scripts.build_v4_08_r2_membership_evidence import atomic_json
 from scripts.promote_v4_09_accepted_head import bind
 
@@ -109,34 +109,47 @@ def direct_sql_probes(pg):
     from src.v4.research_state_persistence import persist
     x,manifests=accepted_bundle();publish_setup(pg,manifests)
     row=reduce_state(x,ledger=PostgresEngineeringLedger(pg));persist(pg,[row],'R1_1_SQL_PROBE_BASE')
+    prior,prior_manifests=accepted_prior_fixture();bx,bms=accepted_bundle(prior=prior)
+    bx['model_boundary'],bm=boundary_descriptor(prior,bx['trade_date'],False)
+    publish_setup(pg,prior_manifests+bms+[bm],prior)
+    boundary_row=reduce_state(bx,ledger=PostgresEngineeringLedger(pg));persist(pg,[boundary_row],'R1_1_SQL_BOUNDARY_BASE')
     columns=[r[0] for r in pg.execute("SELECT column_name FROM information_schema.columns WHERE table_schema='v4' AND table_name='research_state_engineering_results' ORDER BY ordinal_position").fetchall()]
     errors={};checks={}
-    for name in ['direct_sql_forged_payload_digest','direct_sql_forged_state_publication_id','direct_sql_producer_lineage_mismatch','direct_sql_calendar_binding_mismatch']:
-        attacked=deepcopy(row)
+    for name in ['direct_sql_forged_payload_digest','direct_sql_forged_state_publication_id','direct_sql_producer_lineage_mismatch','direct_sql_calendar_binding_mismatch',
+        'direct_sql_boundary_manifest_field_mismatch','direct_sql_unpublished_extra_input','direct_sql_null_cutoff']:
+        is_boundary=name=='direct_sql_boundary_manifest_field_mismatch'
+        attacked=deepcopy(boundary_row if is_boundary else row)
         if name=='direct_sql_producer_lineage_mismatch':
             attacked['input_provenance']['risk']['producer_contract_id']='CALLER_FORGED_PRODUCER'
             attacked['input_publication_manifest_digest']=sql_digest(pg,dict(input_publication_ids=attacked['input_publication_ids'],fields=attacked['input_provenance']))
         if name=='direct_sql_calendar_binding_mismatch':attacked['calendar_binding']['lineage_id']='CALLER_FORGED_CALENDAR'
+        if is_boundary:attacked['boundary_event']['authorized_manifest']['migration_manifest_id']='CALLER_FORGED_MIGRATION'
+        if name=='direct_sql_unpublished_extra_input':
+            attacked['input_publication_ids']=sorted(attacked['input_publication_ids']+['UNPUBLISHED_EXTRA_INPUT'])
+            attacked['input_publication_manifest_digest']=sql_digest(pg,dict(input_publication_ids=attacked['input_publication_ids'],fields=attacked['input_provenance']))
+        if name=='direct_sql_null_cutoff':attacked['cutoff']=None
         attacked['publication_id']='V4_10:'+sql_digest(pg,{k:v for k,v in attacked.items() if k!='publication_id'})
         if name=='direct_sql_forged_state_publication_id':attacked['publication_id']='V4_10:'+'f'*64
         checksum=sql_digest(pg,attacked)
         if name=='direct_sql_forged_payload_digest':checksum='f'*64
         overrides=dict(publication_id='R1_1_ATTACK:'+name,state_publication_id=attacked['publication_id'],payload=Jsonb(attacked),payload_digest=checksum,
             input_provenance=Jsonb(attacked['input_provenance']),input_publication_manifest_digest=attacked['input_publication_manifest_digest'],
-            calendar_lineage_id=attacked['calendar_binding']['lineage_id'])
+            calendar_lineage_id=attacked['calendar_binding']['lineage_id'],boundary_event=Jsonb(attacked['boundary_event']),input_publication_ids=Jsonb(attacked['input_publication_ids']))
         select=[];params=[]
         for column in columns:
             if column in overrides:select.append('%s');params.append(overrides[column])
             else:select.append('r."'+column+'"')
         expected={'direct_sql_forged_payload_digest':'STATE_PAYLOAD_DIGEST_MISMATCH','direct_sql_forged_state_publication_id':'STATE_CONTENT_ADDRESS_IDENTITY_MISMATCH',
-            'direct_sql_producer_lineage_mismatch':'STATE_FIELD_PRODUCER_LINEAGE_MISMATCH','direct_sql_calendar_binding_mismatch':'STATE_CALENDAR_LINEAGE_MISMATCH'}[name]
+            'direct_sql_producer_lineage_mismatch':'STATE_FIELD_PRODUCER_LINEAGE_MISMATCH','direct_sql_calendar_binding_mismatch':'STATE_CALENDAR_LINEAGE_MISMATCH',
+            'direct_sql_boundary_manifest_field_mismatch':'STATE_BOUNDARY_AUTHORIZATION_MISMATCH','direct_sql_unpublished_extra_input':'STATE_INPUT_PUBLICATION_NOT_IN_TRUSTED_LEDGER',
+            'direct_sql_null_cutoff':'STATE_CUTOFF_REQUIRED'}[name]
         try:
             with pg.transaction():
                 pg.execute('''INSERT INTO v4.research_state_engineering_publications(publication_id,model_contract_id,consumer_contract_id,parameter_set_id,publication_digest,row_count,acceptance_scope)
                     VALUES (%s,'RESEARCH_STATE_V1','V4_10_REDUCER_INTERFACE_V1','V4_10_STATE_REDUCER_PARAMETER_SET_V1',%s,1,'ENGINEERING_INTERFACE_ONLY')''',
                     (overrides['publication_id'],sql_digest(pg,[attacked])))
                 pg.execute('INSERT INTO v4.research_state_engineering_results('+','.join('"'+c+'"' for c in columns)+') SELECT '+','.join(select)+
-                    " FROM v4.research_state_engineering_results r WHERE r.publication_id='R1_1_SQL_PROBE_BASE'",params)
+                    " FROM v4.research_state_engineering_results r WHERE r.publication_id=%s",params+['R1_1_SQL_BOUNDARY_BASE' if is_boundary else 'R1_1_SQL_PROBE_BASE'])
         except psycopg.Error as e:checks[name]=expected in str(e);errors[name]=str(e).split('\n')[0]
         else:checks[name]=False
     return checks,errors

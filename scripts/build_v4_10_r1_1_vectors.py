@@ -107,6 +107,7 @@ def build_vectors():
     add('exact_publication_membership_no_substring_match',refresh(x),'input_publication_manifest_shape','FIELD_PRODUCER_LINEAGE_MISMATCH',setup=setup)
     x=synthetic_input();x['input_publication_manifest_digest']='wrong'
     add('input_manifest_digest_wrong_rejected',x,'input_publication_manifest_shape','INPUT_PUBLICATION_MANIFEST_DIGEST_MISMATCH')
-    for name in ['direct_sql_forged_payload_digest','direct_sql_forged_state_publication_id','direct_sql_producer_lineage_mismatch','direct_sql_calendar_binding_mismatch']:
+    for name in ['direct_sql_forged_payload_digest','direct_sql_forged_state_publication_id','direct_sql_producer_lineage_mismatch','direct_sql_calendar_binding_mismatch',
+        'direct_sql_boundary_manifest_field_mismatch','direct_sql_unpublished_extra_input','direct_sql_null_cutoff']:
         rows.append(dict(id=name,kind='SQL',coverage=['db_payload_identity_guard'],expected_rejected=True))
     return rows

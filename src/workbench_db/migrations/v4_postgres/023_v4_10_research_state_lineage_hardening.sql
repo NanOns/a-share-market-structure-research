@@ -126,6 +126,15 @@ BEGIN
         RAISE EXCEPTION 'STATE_FIELD_MANIFEST_INCOMPLETE';
     END IF;
     IF NEW.payload->>'mode'='ACCEPTED_FACT_INTERFACE' THEN
+        IF EXISTS (SELECT 1 FROM jsonb_array_elements_text(NEW.input_publication_ids) id
+                   WHERE NOT EXISTS (SELECT 1 FROM v4.research_state_input_manifests m WHERE m.publication_id=id AND m.manifest_kind='FACT_PUBLICATION')) THEN
+            RAISE EXCEPTION 'STATE_INPUT_PUBLICATION_NOT_IN_TRUSTED_LEDGER';
+        END IF;
+        IF jsonb_typeof(NEW.payload->'cutoff') IS DISTINCT FROM 'string' OR
+           NEW.payload->>'cutoff' !~ '(Z|[+-][0-9]{2}:[0-9]{2})$' OR
+           left(NEW.payload->>'cutoff',10) IS DISTINCT FROM NEW.trade_date::text THEN
+            RAISE EXCEPTION 'STATE_CUTOFF_REQUIRED';
+        END IF;
         SELECT manifest INTO cal FROM v4.research_state_input_manifests WHERE publication_id=NEW.calendar_publication_id AND manifest_kind='MARKET_CALENDAR';
     END IF;
     FOR policy IN SELECT * FROM v4.research_state_field_policy_r1_1 LOOP
@@ -195,6 +204,9 @@ BEGIN
             SELECT manifest INTO source_manifest FROM v4.research_state_input_manifests WHERE publication_id=boundary->>'publication_id' AND manifest_kind='MODEL_BOUNDARY';
             IF source_manifest IS NULL OR source_manifest->>'authorization'<>'AUTHORIZED_ENGINEERING_INTERFACE' OR
                v4.state_digest_r1_1(source_manifest) IS DISTINCT FROM boundary->>'migration_manifest_sha256' OR
+               boundary->>'boundary_contract_id' IS DISTINCT FROM 'V4_10_MODEL_BOUNDARY_V1' OR
+               EXISTS (SELECT 1 FROM unnest(ARRAY['boundary_contract_id','migration_manifest_id','from_model_contract_id','from_parameter_set_id','to_model_contract_id','to_parameter_set_id','effective_trade_date']) k
+                       WHERE source_manifest->k IS DISTINCT FROM boundary->k) OR
                boundary->>'status'<>'AUTHORIZED' OR boundary->>'from_model_contract_id' IS DISTINCT FROM prior_row->>'model_contract_id' OR
                boundary->>'from_parameter_set_id' IS DISTINCT FROM prior_row->>'parameter_set_id' OR
                boundary->>'to_model_contract_id' IS DISTINCT FROM NEW.model_contract_id OR boundary->>'to_parameter_set_id' IS DISTINCT FROM NEW.parameter_set_id OR

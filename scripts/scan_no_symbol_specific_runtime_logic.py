@@ -489,9 +489,15 @@ def run(root: Path):
 
 
 def main():
+    import argparse
+    parser=argparse.ArgumentParser()
+    parser.add_argument('--output',default='reports/v4_08/V4_08_R4_1_NO_SYMBOL_SPECIFIC_SYSTEM_LOGIC_SCAN.json')
+    args=parser.parse_args()
     root = Path(__file__).resolve().parents[1]
     result = run(root)
-    path = root / "reports/v4_08/V4_08_R4_1_NO_SYMBOL_SPECIFIC_SYSTEM_LOGIC_SCAN.json"
+    path = (root / args.output).resolve()
+    if not path.is_relative_to(root/'reports/v4_08'):
+        raise ValueError('GOVERNANCE_SCAN_OUTPUT_OUTSIDE_STAGE_REPORTS')
     from build_v4_08_r2_membership_evidence import atomic_json
     atomic_json(path, result)
     print(json.dumps({key: result[key] for key in ("status", "hard_gated_equity_symbol_hits", "specific_stock_literal_hits", "unclassified_paths")}, ensure_ascii=False))

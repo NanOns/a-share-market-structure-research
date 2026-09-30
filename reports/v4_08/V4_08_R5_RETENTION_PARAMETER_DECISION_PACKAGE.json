@@ -1,0 +1,427 @@
+{
+  "decisions": [
+    {
+      "affected_rules": [
+        "early_retained"
+      ],
+      "affected_states": [
+        "ROTATION_IN",
+        "ROTATION_ACCEPTED",
+        "ROTATION_EXPANDING",
+        "ROTATION_REACCELERATING"
+      ],
+      "candidate_range": [
+        0.5,
+        0.8
+      ],
+      "future_outcome_data_used": false,
+      "market_candidate_counts_used_for_selection": false,
+      "monotonicity": "Increasing threshold tightens qualification",
+      "parameter_id": "V4_08_EARLY_SEED_RETENTION_MIN",
+      "probability_claim": false,
+      "probes": [
+        0,
+        0.5,
+        0.5833333333333333,
+        0.6666666666666666,
+        0.7333333333333334,
+        0.8,
+        1
+      ],
+      "rejected_alternatives": [
+        {
+          "reason": "Looser admits excessive attrition/concentration",
+          "value": 0.5
+        },
+        {
+          "reason": "Stricter excludes the intended semantic boundary",
+          "value": 0.8
+        }
+      ],
+      "selected": 0.6666666666666666,
+      "selection_reason": "Require two thirds of the frozen seed cohort; tolerates one third attrition without accepting a bare half.",
+      "semantic_meaning": "Require two thirds of the frozen seed cohort; tolerates one third attrition without accepting a bare half.",
+      "sensitivity": [
+        {
+          "probe_truth": [
+            false,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "threshold": 0.5
+        },
+        {
+          "probe_truth": [
+            false,
+            false,
+            false,
+            true,
+            true,
+            true,
+            true
+          ],
+          "threshold": 0.6666666666666666
+        },
+        {
+          "probe_truth": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            true,
+            true
+          ],
+          "threshold": 0.8
+        }
+      ],
+      "tested_values": [
+        0.5,
+        0.6666666666666666,
+        0.8
+      ]
+    },
+    {
+      "affected_rules": [
+        "early_retained"
+      ],
+      "affected_states": [
+        "ROTATION_IN",
+        "ROTATION_ACCEPTED",
+        "ROTATION_EXPANDING",
+        "ROTATION_REACCELERATING"
+      ],
+      "candidate_range": [
+        0.5,
+        0.75
+      ],
+      "future_outcome_data_used": false,
+      "market_candidate_counts_used_for_selection": false,
+      "monotonicity": "Increasing threshold tightens qualification",
+      "parameter_id": "V4_08_EARLY_BREADTH_RETENTION_MIN",
+      "probability_claim": false,
+      "probes": [
+        0,
+        0.5,
+        0.55,
+        0.6,
+        0.675,
+        0.75,
+        1
+      ],
+      "rejected_alternatives": [
+        {
+          "reason": "Looser admits excessive attrition/concentration",
+          "value": 0.5
+        },
+        {
+          "reason": "Stricter excludes the intended semantic boundary",
+          "value": 0.75
+        }
+      ],
+      "selected": 0.6,
+      "selection_reason": "Require a strict majority with a ten point margin of the frozen positive cohort.",
+      "semantic_meaning": "Require a strict majority with a ten point margin of the frozen positive cohort.",
+      "sensitivity": [
+        {
+          "probe_truth": [
+            false,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "threshold": 0.5
+        },
+        {
+          "probe_truth": [
+            false,
+            false,
+            false,
+            true,
+            true,
+            true,
+            true
+          ],
+          "threshold": 0.6
+        },
+        {
+          "probe_truth": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            true,
+            true
+          ],
+          "threshold": 0.75
+        }
+      ],
+      "tested_values": [
+        0.5,
+        0.6,
+        0.75
+      ]
+    },
+    {
+      "affected_rules": [
+        "early_retained"
+      ],
+      "affected_states": [
+        "ROTATION_IN",
+        "ROTATION_ACCEPTED",
+        "ROTATION_EXPANDING",
+        "ROTATION_REACCELERATING"
+      ],
+      "candidate_range": [
+        -0.05,
+        0.05
+      ],
+      "future_outcome_data_used": false,
+      "market_candidate_counts_used_for_selection": false,
+      "monotonicity": "Increasing threshold tightens qualification",
+      "parameter_id": "V4_08_EARLY_BREADTH_DELTA_MIN",
+      "probability_claim": false,
+      "probes": [
+        -0.05,
+        -0.025,
+        0,
+        0.025,
+        0.05,
+        1
+      ],
+      "rejected_alternatives": [
+        {
+          "reason": "Looser admits excessive attrition/concentration",
+          "value": -0.05
+        },
+        {
+          "reason": "Stricter excludes the intended semantic boundary",
+          "value": 0.05
+        }
+      ],
+      "selected": 0,
+      "selection_reason": "Acceptance requires nondecreasing common-member breadth; pulse separately requires positive expansion.",
+      "semantic_meaning": "Acceptance requires nondecreasing common-member breadth; pulse separately requires positive expansion.",
+      "sensitivity": [
+        {
+          "probe_truth": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "threshold": -0.05
+        },
+        {
+          "probe_truth": [
+            false,
+            false,
+            true,
+            true,
+            true,
+            true
+          ],
+          "threshold": 0
+        },
+        {
+          "probe_truth": [
+            false,
+            false,
+            false,
+            false,
+            true,
+            true
+          ],
+          "threshold": 0.05
+        }
+      ],
+      "tested_values": [
+        -0.05,
+        0,
+        0.05
+      ]
+    },
+    {
+      "affected_rules": [
+        "early_retained"
+      ],
+      "affected_states": [
+        "ROTATION_IN",
+        "ROTATION_ACCEPTED",
+        "ROTATION_EXPANDING",
+        "ROTATION_REACCELERATING"
+      ],
+      "candidate_range": [
+        0.25,
+        0.5
+      ],
+      "future_outcome_data_used": false,
+      "market_candidate_counts_used_for_selection": false,
+      "monotonicity": "Increasing ceiling loosens qualification",
+      "parameter_id": "V4_08_EARLY_TOP1_CONCENTRATION_MAX",
+      "probability_claim": false,
+      "probes": [
+        0,
+        0.25,
+        0.29166666666666663,
+        0.3333333333333333,
+        0.41666666666666663,
+        0.5,
+        1
+      ],
+      "rejected_alternatives": [
+        {
+          "reason": "Stricter excludes the intended semantic boundary",
+          "value": 0.25
+        },
+        {
+          "reason": "Looser admits excessive attrition/concentration",
+          "value": 0.5
+        }
+      ],
+      "selected": 0.3333333333333333,
+      "selection_reason": "One member cannot exceed one third of observed amount, stricter than the one half diffusion ceiling.",
+      "semantic_meaning": "One member cannot exceed one third of observed amount, stricter than the one half diffusion ceiling.",
+      "sensitivity": [
+        {
+          "probe_truth": [
+            true,
+            true,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "threshold": 0.25
+        },
+        {
+          "probe_truth": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            false,
+            false
+          ],
+          "threshold": 0.3333333333333333
+        },
+        {
+          "probe_truth": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "threshold": 0.5
+        }
+      ],
+      "tested_values": [
+        0.25,
+        0.3333333333333333,
+        0.5
+      ]
+    },
+    {
+      "affected_rules": [
+        "mature_retained"
+      ],
+      "affected_states": [
+        "ROTATION_EXPANDING",
+        "ROTATION_REACCELERATING"
+      ],
+      "candidate_range": [
+        0.6,
+        0.9
+      ],
+      "future_outcome_data_used": false,
+      "market_candidate_counts_used_for_selection": false,
+      "monotonicity": "Increasing threshold tightens qualification",
+      "parameter_id": "V4_08_MATURE_STRONG_RETENTION_MIN",
+      "probability_claim": false,
+      "probes": [
+        0,
+        0.6,
+        0.675,
+        0.75,
+        0.825,
+        0.9,
+        1
+      ],
+      "rejected_alternatives": [
+        {
+          "reason": "Looser admits excessive attrition/concentration",
+          "value": 0.6
+        },
+        {
+          "reason": "Stricter excludes the intended semantic boundary",
+          "value": 0.9
+        }
+      ],
+      "selected": 0.75,
+      "selection_reason": "Mature extension preserves three quarters of the prior strong cohort; stronger than early breadth preservation.",
+      "semantic_meaning": "Mature extension preserves three quarters of the prior strong cohort; stronger than early breadth preservation.",
+      "sensitivity": [
+        {
+          "probe_truth": [
+            false,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "threshold": 0.6
+        },
+        {
+          "probe_truth": [
+            false,
+            false,
+            false,
+            true,
+            true,
+            true,
+            true
+          ],
+          "threshold": 0.75
+        },
+        {
+          "probe_truth": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            true,
+            true
+          ],
+          "threshold": 0.9
+        }
+      ],
+      "tested_values": [
+        0.6,
+        0.75,
+        0.9
+      ]
+    }
+  ],
+  "external_acceptance_pending": true,
+  "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+  "parameter_set_sha256": "0204d7c4fadf86871b6a079f755593b1a3f8ad18bb718f73ba33db0b70f67548",
+  "status": "FROZEN_ENGINEERING_CANDIDATE"
+}

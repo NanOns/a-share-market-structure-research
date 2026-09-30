@@ -1,0 +1,480 @@
+{
+  "field_registry_id": "V4_08_SECTOR_FIELD_REGISTRY_R5",
+  "fields": [
+    {
+      "availability": "accepted PIT membership",
+      "field_id": "sector_member_count",
+      "producer": "V4_08_SECTOR_NATIVE_V1",
+      "quality_requirement": [
+        "ACCEPTED"
+      ],
+      "time_role": "TARGET_CUTOFF",
+      "unit": "members",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "availability": "Core quote facts",
+      "field_id": "sector_quote_coverage",
+      "producer": "V4_08_SECTOR_NATIVE_V1",
+      "quality_requirement": [
+        "ACCEPTED"
+      ],
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "availability": "Core ret5",
+      "field_id": "sector_rs5",
+      "producer": "V4_08_SECTOR_NATIVE_V1",
+      "quality_requirement": [
+        "ACCEPTED"
+      ],
+      "time_role": "TARGET_CUTOFF",
+      "unit": "return ratio median",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "availability": "Core ret20",
+      "field_id": "sector_rs20",
+      "producer": "V4_08_SECTOR_NATIVE_V1",
+      "quality_requirement": [
+        "ACCEPTED"
+      ],
+      "time_role": "TARGET_CUTOFF",
+      "unit": "return ratio median",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "availability": "qualified same-day sector cross-section",
+      "field_id": "sector_rs5_pct",
+      "producer": "V4_08_SECTOR_NATIVE_V1",
+      "quality_requirement": [
+        "ACCEPTED"
+      ],
+      "time_role": "TARGET_CUTOFF",
+      "unit": "percentile points",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "availability": "two frozen qualified sector snapshots",
+      "field_id": "rank_velocity3",
+      "producer": "V4_08_SECTOR_NATIVE_V1",
+      "quality_requirement": [
+        "ACCEPTED"
+      ],
+      "time_role": "TARGET_CUTOFF",
+      "unit": "percentile points",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "availability": "sector_rs5_pct at t and t-3",
+      "field_id": "dq5",
+      "producer": "V4_08_SECTOR_NATIVE_V1",
+      "quality_requirement": [
+        "ACCEPTED"
+      ],
+      "time_role": "TARGET_CUTOFF",
+      "unit": "percentile points",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "availability": "known Core ret1 members",
+      "field_id": "breadth_ret1",
+      "producer": "V4_08_SECTOR_NATIVE_V1",
+      "quality_requirement": [
+        "ACCEPTED"
+      ],
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "availability": "common evaluable member set",
+      "field_id": "breadth_delta1",
+      "producer": "V4_08_SECTOR_NATIVE_V1",
+      "quality_requirement": [
+        "ACCEPTED"
+      ],
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "availability": "common evaluable member set",
+      "field_id": "breadth_delta3",
+      "producer": "V4_08_SECTOR_NATIVE_V1",
+      "quality_requirement": [
+        "ACCEPTED"
+      ],
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "availability": "known Core MA20 members",
+      "field_id": "ma20_width",
+      "producer": "V4_08_SECTOR_NATIVE_V1",
+      "quality_requirement": [
+        "ACCEPTED"
+      ],
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "availability": "common evaluable member set",
+      "field_id": "ma20_delta3",
+      "producer": "V4_08_SECTOR_NATIVE_V1",
+      "quality_requirement": [
+        "ACCEPTED"
+      ],
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "availability": "accepted Base Seed; UNKNOWN while Prior-RPS degraded",
+      "field_id": "base_seed_width_raw",
+      "producer": "V4_08_SECTOR_NATIVE_V1",
+      "quality_requirement": [
+        "ACCEPTED"
+      ],
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "availability": "accepted Base Seed; UNKNOWN while Prior-RPS degraded",
+      "field_id": "base_seed_width_adjusted",
+      "producer": "V4_08_SECTOR_NATIVE_V1",
+      "quality_requirement": [
+        "ACCEPTED"
+      ],
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "availability": "frozen pulse seed set",
+      "field_id": "base_seed_retention",
+      "producer": "ROTATION_CORE_V1",
+      "quality_requirement": [
+        "ACCEPTED"
+      ],
+      "time_role": "PULSE_FROZEN_PATH",
+      "unit": "ratio",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "availability": "frozen pulse positive set and same-basis close",
+      "field_id": "breadth_retention",
+      "producer": "ROTATION_CORE_V1",
+      "quality_requirement": [
+        "ACCEPTED"
+      ],
+      "time_role": "PULSE_FROZEN_PATH",
+      "unit": "ratio",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "availability": "same-cutoff member amount; zero denominator UNKNOWN",
+      "field_id": "top1_concentration",
+      "producer": "V4_08_SECTOR_NATIVE_V1",
+      "quality_requirement": [
+        "ACCEPTED"
+      ],
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "availability": "accepted PIT membership plus frozen history",
+      "field_id": "rotation_core_state",
+      "producer": "ROTATION_CORE_V1",
+      "quality_requirement": [
+        "ACCEPTED"
+      ],
+      "time_role": "TARGET_CUTOFF",
+      "unit": "enum",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "field_id": "membership_ready",
+      "producer": "V4_08_PIT_MEMBERSHIP",
+      "quality_requirement": [
+        "ACCEPTED"
+      ],
+      "time_role": "TARGET_CUTOFF",
+      "unit": "bool",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "field_id": "basket_cumulative_return",
+      "producer": "ROTATION_CORE_V1",
+      "quality_requirement": [
+        "ACCEPTED"
+      ],
+      "time_role": "PULSE_FROZEN_PATH",
+      "unit": "ratio",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "field_id": "strong_prev",
+      "producer": "ROTATION_CORE_V1",
+      "quality_requirement": [
+        "ACCEPTED"
+      ],
+      "time_role": "PRIOR_FROZEN_SESSION",
+      "unit": "members",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "field_id": "strong_member_retention_1",
+      "producer": "ROTATION_CORE_V1",
+      "quality_requirement": [
+        "ACCEPTED"
+      ],
+      "time_role": "PULSE_FROZEN_PATH",
+      "unit": "ratio",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "field_id": "pulse_age_sessions",
+      "producer": "ROTATION_CORE_V1",
+      "quality_requirement": [
+        "ACCEPTED"
+      ],
+      "time_role": "ACCEPTED_CALENDAR_SESSION_DISTANCE",
+      "unit": "sessions",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "field_id": "pulse_active",
+      "producer": "ROTATION_CORE_V1",
+      "quality_requirement": [
+        "ACCEPTED"
+      ],
+      "time_role": "PULSE_FROZEN_EPISODE",
+      "unit": "bool",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "field_id": "prior_rotation_state",
+      "producer": "ROTATION_CORE_V1",
+      "quality_requirement": [
+        "ACCEPTED"
+      ],
+      "time_role": "PRIOR_FROZEN_SESSION",
+      "unit": "enum",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "field_id": "entered_count",
+      "producer": "V4_08_SECTOR_NATIVE_V1",
+      "quality_requirement": [
+        "ACCEPTED"
+      ],
+      "time_role": "COMMON_EVALUABLE_MEMBER_SET",
+      "unit": "members",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "field_id": "net_entered_count",
+      "producer": "V4_08_SECTOR_NATIVE_V1",
+      "quality_requirement": [
+        "ACCEPTED"
+      ],
+      "time_role": "COMMON_EVALUABLE_MEMBER_SET",
+      "unit": "members",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "field_id": "yesterday_dq5",
+      "producer": "V4_08_SECTOR_NATIVE_V1",
+      "quality_requirement": [
+        "ACCEPTED"
+      ],
+      "time_role": "PRIOR_FROZEN_SESSION",
+      "unit": "points",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "field_id": "early_retained",
+      "producer": "ROTATION_CORE_V1",
+      "quality_requirement": [
+        "ACCEPTED"
+      ],
+      "time_role": "PULSE_FROZEN_PATH",
+      "unit": "bool",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "field_id": "mature_retained",
+      "producer": "ROTATION_CORE_V1",
+      "quality_requirement": [
+        "ACCEPTED"
+      ],
+      "time_role": "PULSE_FROZEN_PATH",
+      "unit": "bool",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "field_id": "prior_maturity_state",
+      "producer": "ROTATION_CORE_V1",
+      "quality_requirement": [
+        "ACCEPTED"
+      ],
+      "time_role": "PRIOR_FROZEN_SESSION",
+      "unit": "enum",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "field_id": "negative_out_consecutive_evaluable_sessions",
+      "producer": "ROTATION_CORE_V1",
+      "quality_requirement": [
+        "ACCEPTED"
+      ],
+      "time_role": "ACCEPTED_CALENDAR_EVALUABLE_SESSION_SEQUENCE",
+      "unit": "sessions",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "field_id": "episode_accepted",
+      "producer": "ROTATION_CORE_V1",
+      "quality_requirement": [
+        "ACCEPTED"
+      ],
+      "time_role": "PULSE_FROZEN_EPISODE",
+      "unit": "bool",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "field_id": "episode_terminated",
+      "producer": "ROTATION_CORE_V1",
+      "quality_requirement": [
+        "ACCEPTED"
+      ],
+      "time_role": "PULSE_FROZEN_EPISODE",
+      "unit": "bool",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "field_id": "sector_rs1",
+      "producer": "V4_08_SECTOR_NATIVE_V1",
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio_or_percentile_points_as_field_contract",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "field_id": "sector_rs60",
+      "producer": "V4_08_SECTOR_NATIVE_V1",
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio_or_percentile_points_as_field_contract",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "field_id": "sector_rs20_pct",
+      "producer": "V4_08_SECTOR_NATIVE_V1",
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio_or_percentile_points_as_field_contract",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "field_id": "sector_rs60_pct",
+      "producer": "V4_08_SECTOR_NATIVE_V1",
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio_or_percentile_points_as_field_contract",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "field_id": "breadth_ret5",
+      "producer": "V4_08_SECTOR_NATIVE_V1",
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio_or_percentile_points_as_field_contract",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "field_id": "breadth_ret20",
+      "producer": "V4_08_SECTOR_NATIVE_V1",
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio_or_percentile_points_as_field_contract",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "field_id": "ma20_delta1",
+      "producer": "V4_08_SECTOR_NATIVE_V1",
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio_or_percentile_points_as_field_contract",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "field_id": "strong_member",
+      "producer": "V4_08_SECTOR_NATIVE_V1",
+      "time_role": "TARGET_CUTOFF",
+      "unit": "member_set",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "field_id": "strong_member_retention",
+      "producer": "V4_08_SECTOR_NATIVE_V1",
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio_or_percentile_points_as_field_contract",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "field_id": "seed_width",
+      "producer": "V4_08_SECTOR_NATIVE_V1",
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio_or_percentile_points_as_field_contract",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "field_id": "seed_retention",
+      "producer": "V4_08_SECTOR_NATIVE_V1",
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio_or_percentile_points_as_field_contract",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "field_id": "participation_proxy",
+      "producer": "V4_08_SECTOR_NATIVE_V1",
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio_or_percentile_points_as_field_contract",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "field_id": "pos60",
+      "producer": "V4_08_SECTOR_NATIVE_V1",
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio_or_percentile_points_as_field_contract",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "field_id": "mdd20",
+      "producer": "V4_08_SECTOR_NATIVE_V1",
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio_or_percentile_points_as_field_contract",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "field_id": "top3_concentration",
+      "producer": "V4_08_SECTOR_NATIVE_V1",
+      "time_role": "TARGET_CUTOFF",
+      "unit": "ratio_or_percentile_points_as_field_contract",
+      "unknown_behavior": "UNKNOWN"
+    },
+    {
+      "field_id": "sector_price_retention_core",
+      "producer": "ROTATION_CORE_V1",
+      "time_role": "PULSE_FROZEN_PATH",
+      "unit": "ratio_or_percentile_points_as_field_contract",
+      "unknown_behavior": "UNKNOWN"
+    }
+  ],
+  "formal_consumer_enabled": false,
+  "owner_stage": "V4-08",
+  "status": "FROZEN_ENGINEERING_CANDIDATE",
+  "unknown_policy": "Missing, invalid, partial, or upstream-degraded facts remain UNKNOWN with reason; no zero coercion.",
+  "version": "5.0.0"
+}

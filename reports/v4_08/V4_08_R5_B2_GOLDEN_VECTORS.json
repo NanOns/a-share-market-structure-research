@@ -1,0 +1,521 @@
+{
+  "ast_digest": "503ce6e3145f94caeebfddfc3235f9deb59ab4ff32b641408738c6eb97495818",
+  "expected_origin": "HAND_AUTHORED_SOURCE_SEMANTICS_NOT_PRODUCER_OUTPUT",
+  "source_sha256": "e4e39f51abb64d4e3359451e794842c1da06f641d1598d2aac5a6477fc89916a",
+  "status": "PASS",
+  "vectors": [
+    {
+      "actual_confirmed_raw": "TRUE",
+      "case": "positive",
+      "expected_confirmed_raw": "TRUE",
+      "inputs": {
+        "allowed_sector_type": true,
+        "b1": 0.8,
+        "m1": 0.02,
+        "market_ok": true,
+        "normal_rank_eligible": true,
+        "p1": 0.9,
+        "positive_count": 8,
+        "quote_coverage": 1,
+        "rel1": 0.01,
+        "top1_positive_share": 0.2,
+        "total_member_count": 10,
+        "type_cross_section_coverage": 1
+      },
+      "predicates": {
+        "BASE_BUILD": {
+          "reason_code": "REQUIRED_BRANCH_FALSE",
+          "state": "FALSE"
+        },
+        "BREADTH_BUILD": {
+          "reason_code": "REQUIRED_BRANCH_FALSE",
+          "state": "FALSE"
+        },
+        "RECOVERY_BUILD": {
+          "reason_code": "REQUIRED_BRANCH_FALSE",
+          "state": "FALSE"
+        },
+        "confirmed_raw": {
+          "reason_code": null,
+          "state": "TRUE"
+        },
+        "warm_diagnostic": {
+          "reason_code": null,
+          "state": "FALSE"
+        },
+        "weak": {
+          "reason_code": null,
+          "state": "FALSE"
+        }
+      },
+      "warm_raw": "UNKNOWN",
+      "warm_reason": "AUD_AMOUNT_A_06_OPEN"
+    },
+    {
+      "actual_confirmed_raw": "FALSE",
+      "case": "negative_return",
+      "expected_confirmed_raw": "FALSE",
+      "inputs": {
+        "allowed_sector_type": true,
+        "b1": 0.8,
+        "m1": -0.01,
+        "market_ok": true,
+        "normal_rank_eligible": true,
+        "p1": 0.9,
+        "positive_count": 8,
+        "quote_coverage": 1,
+        "rel1": 0.01,
+        "top1_positive_share": 0.2,
+        "total_member_count": 10,
+        "type_cross_section_coverage": 1
+      },
+      "predicates": {
+        "BASE_BUILD": {
+          "reason_code": "REQUIRED_QUALITY_UNAVAILABLE",
+          "state": "UNKNOWN"
+        },
+        "BREADTH_BUILD": {
+          "reason_code": "REQUIRED_QUALITY_UNAVAILABLE",
+          "state": "UNKNOWN"
+        },
+        "RECOVERY_BUILD": {
+          "reason_code": "REQUIRED_QUALITY_UNAVAILABLE",
+          "state": "UNKNOWN"
+        },
+        "confirmed_raw": {
+          "reason_code": "REQUIRED_BRANCH_FALSE",
+          "state": "FALSE"
+        },
+        "warm_diagnostic": {
+          "reason_code": "REQUIRED_QUALITY_UNAVAILABLE",
+          "state": "UNKNOWN"
+        },
+        "weak": {
+          "reason_code": "REQUIRED_QUALITY_UNAVAILABLE",
+          "state": "UNKNOWN"
+        }
+      },
+      "warm_raw": "UNKNOWN",
+      "warm_reason": "AUD_AMOUNT_A_06_OPEN"
+    },
+    {
+      "actual_confirmed_raw": "UNKNOWN",
+      "case": "unknown_breadth",
+      "expected_confirmed_raw": "UNKNOWN",
+      "inputs": {
+        "allowed_sector_type": true,
+        "b1": null,
+        "m1": 0.02,
+        "market_ok": true,
+        "normal_rank_eligible": true,
+        "p1": 0.9,
+        "positive_count": 8,
+        "quote_coverage": 1,
+        "rel1": 0.01,
+        "top1_positive_share": 0.2,
+        "total_member_count": 10,
+        "type_cross_section_coverage": 1
+      },
+      "predicates": {
+        "BASE_BUILD": {
+          "reason_code": "REQUIRED_QUALITY_UNAVAILABLE",
+          "state": "UNKNOWN"
+        },
+        "BREADTH_BUILD": {
+          "reason_code": "REQUIRED_QUALITY_UNAVAILABLE",
+          "state": "UNKNOWN"
+        },
+        "RECOVERY_BUILD": {
+          "reason_code": "REQUIRED_QUALITY_UNAVAILABLE",
+          "state": "UNKNOWN"
+        },
+        "confirmed_raw": {
+          "reason_code": "REQUIRED_VALUE_UNKNOWN",
+          "state": "UNKNOWN"
+        },
+        "warm_diagnostic": {
+          "reason_code": "REQUIRED_QUALITY_UNAVAILABLE",
+          "state": "UNKNOWN"
+        },
+        "weak": {
+          "reason_code": null,
+          "state": "FALSE"
+        }
+      },
+      "warm_raw": "UNKNOWN",
+      "warm_reason": "AUD_AMOUNT_A_06_OPEN"
+    },
+    {
+      "actual_confirmed_raw": "TRUE",
+      "case": "inclusive_boundary",
+      "expected_confirmed_raw": "TRUE",
+      "inputs": {
+        "allowed_sector_type": true,
+        "b1": 0.6,
+        "m1": 0.02,
+        "market_ok": true,
+        "normal_rank_eligible": true,
+        "p1": 0.8,
+        "positive_count": 3,
+        "quote_coverage": 1,
+        "rel1": 0.003,
+        "top1_positive_share": 0.5,
+        "total_member_count": 10,
+        "type_cross_section_coverage": 1
+      },
+      "predicates": {
+        "BASE_BUILD": {
+          "reason_code": "REQUIRED_BRANCH_FALSE",
+          "state": "FALSE"
+        },
+        "BREADTH_BUILD": {
+          "reason_code": "REQUIRED_BRANCH_FALSE",
+          "state": "FALSE"
+        },
+        "RECOVERY_BUILD": {
+          "reason_code": "REQUIRED_BRANCH_FALSE",
+          "state": "FALSE"
+        },
+        "confirmed_raw": {
+          "reason_code": null,
+          "state": "TRUE"
+        },
+        "warm_diagnostic": {
+          "reason_code": null,
+          "state": "FALSE"
+        },
+        "weak": {
+          "reason_code": null,
+          "state": "FALSE"
+        }
+      },
+      "warm_raw": "UNKNOWN",
+      "warm_reason": "AUD_AMOUNT_A_06_OPEN"
+    },
+    {
+      "actual_confirmed_raw": "FALSE",
+      "case": "same_shape_concentration",
+      "expected_confirmed_raw": "FALSE",
+      "inputs": {
+        "allowed_sector_type": true,
+        "b1": 0.8,
+        "m1": 0.02,
+        "market_ok": true,
+        "normal_rank_eligible": true,
+        "p1": 0.9,
+        "positive_count": 8,
+        "quote_coverage": 1,
+        "rel1": 0.01,
+        "top1_positive_share": 0.7,
+        "total_member_count": 10,
+        "type_cross_section_coverage": 1
+      },
+      "predicates": {
+        "BASE_BUILD": {
+          "reason_code": "REQUIRED_QUALITY_UNAVAILABLE",
+          "state": "UNKNOWN"
+        },
+        "BREADTH_BUILD": {
+          "reason_code": "REQUIRED_QUALITY_UNAVAILABLE",
+          "state": "UNKNOWN"
+        },
+        "RECOVERY_BUILD": {
+          "reason_code": "REQUIRED_QUALITY_UNAVAILABLE",
+          "state": "UNKNOWN"
+        },
+        "confirmed_raw": {
+          "reason_code": "REQUIRED_BRANCH_FALSE",
+          "state": "FALSE"
+        },
+        "warm_diagnostic": {
+          "reason_code": "REQUIRED_QUALITY_UNAVAILABLE",
+          "state": "UNKNOWN"
+        },
+        "weak": {
+          "reason_code": null,
+          "state": "FALSE"
+        }
+      },
+      "warm_raw": "UNKNOWN",
+      "warm_reason": "AUD_AMOUNT_A_06_OPEN"
+    },
+    {
+      "actual_confirmed_raw": "UNKNOWN",
+      "case": "market_gate_dominates_false",
+      "expected_confirmed_raw": "UNKNOWN",
+      "inputs": {
+        "allowed_sector_type": true,
+        "b1": 0.8,
+        "m1": -0.01,
+        "market_ok": false,
+        "normal_rank_eligible": true,
+        "p1": 0.9,
+        "positive_count": 8,
+        "quote_coverage": 1,
+        "rel1": 0.01,
+        "top1_positive_share": 0.2,
+        "total_member_count": 10,
+        "type_cross_section_coverage": 1
+      },
+      "predicates": {
+        "BASE_BUILD": {
+          "reason_code": "REQUIRED_QUALITY_UNAVAILABLE",
+          "state": "UNKNOWN"
+        },
+        "BREADTH_BUILD": {
+          "reason_code": "REQUIRED_QUALITY_UNAVAILABLE",
+          "state": "UNKNOWN"
+        },
+        "RECOVERY_BUILD": {
+          "reason_code": "REQUIRED_QUALITY_UNAVAILABLE",
+          "state": "UNKNOWN"
+        },
+        "confirmed_raw": {
+          "reason_code": "UNKNOWN_MARKET_COVERAGE",
+          "state": "UNKNOWN"
+        },
+        "warm_diagnostic": {
+          "reason_code": "REQUIRED_QUALITY_UNAVAILABLE",
+          "state": "UNKNOWN"
+        },
+        "weak": {
+          "reason_code": "REQUIRED_QUALITY_UNAVAILABLE",
+          "state": "UNKNOWN"
+        }
+      },
+      "warm_raw": "UNKNOWN",
+      "warm_reason": "AUD_AMOUNT_A_06_OPEN"
+    },
+    {
+      "actual_confirmed_raw": "TRUE",
+      "case": "amount_a_affected",
+      "expected_confirmed_raw": "TRUE",
+      "inputs": {
+        "allowed_sector_type": true,
+        "amount_A": 2,
+        "b1": 0.8,
+        "m1": 0.02,
+        "market_ok": true,
+        "normal_rank_eligible": true,
+        "p1": 0.9,
+        "positive_count": 8,
+        "quote_coverage": 1,
+        "rel1": 0.01,
+        "top1_positive_share": 0.2,
+        "total_member_count": 10,
+        "type_cross_section_coverage": 1
+      },
+      "predicates": {
+        "BASE_BUILD": {
+          "reason_code": "REQUIRED_BRANCH_FALSE",
+          "state": "FALSE"
+        },
+        "BREADTH_BUILD": {
+          "reason_code": "REQUIRED_BRANCH_FALSE",
+          "state": "FALSE"
+        },
+        "RECOVERY_BUILD": {
+          "reason_code": "REQUIRED_BRANCH_FALSE",
+          "state": "FALSE"
+        },
+        "confirmed_raw": {
+          "reason_code": null,
+          "state": "TRUE"
+        },
+        "warm_diagnostic": {
+          "reason_code": null,
+          "state": "FALSE"
+        },
+        "weak": {
+          "reason_code": null,
+          "state": "FALSE"
+        }
+      },
+      "warm_raw": "UNKNOWN",
+      "warm_reason": "AUD_AMOUNT_A_06_OPEN"
+    },
+    {
+      "actual_warm_diagnostic": "TRUE",
+      "case": "amount_a_branch_TRUE",
+      "expected_warm_diagnostic": "TRUE",
+      "formal_warm_raw": "UNKNOWN",
+      "inputs": {
+        "allowed_sector_type": true,
+        "amount_A": 1.1,
+        "b1": 0.5,
+        "b_delta3": 0.2,
+        "current": false,
+        "dq5_3": 0.2,
+        "early_count": 3,
+        "early_width": 0.2,
+        "extended_share": 0.1,
+        "m1": -0.005,
+        "ma20_delta3": 0.1,
+        "ma20_width": 0.6,
+        "market_ok": true,
+        "normal_rank_eligible": true,
+        "p1": 0.9,
+        "positive_count": 8,
+        "prior_current_within10": true,
+        "q20": 0.6,
+        "quote_coverage": 1,
+        "rel1": 0.01,
+        "risk_coverage": 1,
+        "setup_count": 3,
+        "setup_evaluable_count": 10,
+        "top1_positive_share": 0.2,
+        "total_member_count": 10,
+        "type_cross_section_coverage": 1,
+        "weak": false
+      },
+      "predicates": {
+        "BASE_BUILD": {
+          "reason_code": null,
+          "state": "TRUE"
+        },
+        "BREADTH_BUILD": {
+          "reason_code": null,
+          "state": "TRUE"
+        },
+        "RECOVERY_BUILD": {
+          "reason_code": null,
+          "state": "TRUE"
+        },
+        "confirmed_raw": {
+          "reason_code": "REQUIRED_BRANCH_FALSE",
+          "state": "FALSE"
+        },
+        "warm_diagnostic": {
+          "reason_code": null,
+          "state": "TRUE"
+        },
+        "weak": {
+          "reason_code": null,
+          "state": "FALSE"
+        }
+      }
+    },
+    {
+      "actual_warm_diagnostic": "UNKNOWN",
+      "case": "amount_a_branch_UNKNOWN",
+      "expected_warm_diagnostic": "UNKNOWN",
+      "formal_warm_raw": "UNKNOWN",
+      "inputs": {
+        "allowed_sector_type": true,
+        "amount_A": null,
+        "b1": 0.5,
+        "b_delta3": 0.2,
+        "current": false,
+        "dq5_3": 0.2,
+        "early_count": 3,
+        "early_width": 0.2,
+        "extended_share": 0.1,
+        "m1": -0.005,
+        "ma20_delta3": 0.1,
+        "ma20_width": 0.6,
+        "market_ok": true,
+        "normal_rank_eligible": true,
+        "p1": 0.9,
+        "positive_count": 8,
+        "prior_current_within10": true,
+        "q20": 0.6,
+        "quote_coverage": 1,
+        "rel1": 0.01,
+        "risk_coverage": 1,
+        "setup_count": 3,
+        "setup_evaluable_count": 10,
+        "top1_positive_share": 0.2,
+        "total_member_count": 10,
+        "type_cross_section_coverage": 1,
+        "weak": false
+      },
+      "predicates": {
+        "BASE_BUILD": {
+          "reason_code": "REQUIRED_VALUE_UNKNOWN",
+          "state": "UNKNOWN"
+        },
+        "BREADTH_BUILD": {
+          "reason_code": "REQUIRED_VALUE_UNKNOWN",
+          "state": "UNKNOWN"
+        },
+        "RECOVERY_BUILD": {
+          "reason_code": "REQUIRED_VALUE_UNKNOWN",
+          "state": "UNKNOWN"
+        },
+        "confirmed_raw": {
+          "reason_code": "REQUIRED_BRANCH_FALSE",
+          "state": "FALSE"
+        },
+        "warm_diagnostic": {
+          "reason_code": "REQUIRED_VALUE_UNKNOWN",
+          "state": "UNKNOWN"
+        },
+        "weak": {
+          "reason_code": null,
+          "state": "FALSE"
+        }
+      }
+    },
+    {
+      "actual_warm_diagnostic": "FALSE",
+      "case": "amount_a_branch_FALSE",
+      "expected_warm_diagnostic": "FALSE",
+      "formal_warm_raw": "UNKNOWN",
+      "inputs": {
+        "allowed_sector_type": true,
+        "amount_A": 0.1,
+        "b1": 0.5,
+        "b_delta3": 0.2,
+        "current": false,
+        "dq5_3": 0.2,
+        "early_count": 3,
+        "early_width": 0.2,
+        "extended_share": 0.1,
+        "m1": -0.005,
+        "ma20_delta3": 0.1,
+        "ma20_width": 0.6,
+        "market_ok": true,
+        "normal_rank_eligible": true,
+        "p1": 0.9,
+        "positive_count": 8,
+        "prior_current_within10": true,
+        "q20": 0.6,
+        "quote_coverage": 1,
+        "rel1": 0.01,
+        "risk_coverage": 1,
+        "setup_count": 3,
+        "setup_evaluable_count": 10,
+        "top1_positive_share": 0.2,
+        "total_member_count": 10,
+        "type_cross_section_coverage": 1,
+        "weak": false
+      },
+      "predicates": {
+        "BASE_BUILD": {
+          "reason_code": "REQUIRED_BRANCH_FALSE",
+          "state": "FALSE"
+        },
+        "BREADTH_BUILD": {
+          "reason_code": "REQUIRED_BRANCH_FALSE",
+          "state": "FALSE"
+        },
+        "RECOVERY_BUILD": {
+          "reason_code": "REQUIRED_BRANCH_FALSE",
+          "state": "FALSE"
+        },
+        "confirmed_raw": {
+          "reason_code": "REQUIRED_BRANCH_FALSE",
+          "state": "FALSE"
+        },
+        "warm_diagnostic": {
+          "reason_code": null,
+          "state": "FALSE"
+        },
+        "weak": {
+          "reason_code": null,
+          "state": "FALSE"
+        }
+      }
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "policy_id": "NO_SYMBOL_SPECIFIC_RUNTIME_LOGIC",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "status": "HARD_GATE",
   "scan_roots": [
     "src",
@@ -466,6 +466,7 @@
   "allowed_reference_meaning": "Typed market benchmark reference-data rows may carry instrument identifiers. Application code must obtain them from this registry, and may not branch on a named equity.",
   "unclassified_path_behavior": "FAIL_CLOSED",
   "scan_exclude_paths": [
-    "reports/v4_08/V4_08_R4_1_NO_SYMBOL_SPECIFIC_SYSTEM_LOGIC_SCAN.json"
+    "reports/v4_08/V4_08_R4_1_NO_SYMBOL_SPECIFIC_SYSTEM_LOGIC_SCAN.json",
+    "reports/v4_08/V4_08_R5_NO_SYMBOL_SPECIFIC_SYSTEM_LOGIC_SCAN.json"
   ]
 }

@@ -92,7 +92,8 @@ def test_pulse_then_in_with_empty_prior_strong_cohort_and_degraded_seed():
 
 def b2(values):
     ast=read('config/v4_08_b2_machine_ast_r5.json')
-    return evaluate_b2({k:fact(v) for k,v in values.items()},ast,source_sha256=ast['source_sha256'],source_parameter_sha256=ast['source_parameter_sha256'],parameter_set_sha256=ast['parameter_set_sha256'])
+    def sha(path):return hashlib.sha256((ROOT/path).read_bytes()).hexdigest()
+    return evaluate_b2({k:fact(v) for k,v in values.items()},ast,source_sha256=sha(ast['source_path']),source_parameter_sha256=sha(ast['source_parameter_path']),parameter_set_sha256=sha('config/v4_08_algorithm_parameter_set_r5.json'))
 
 def positive():return dict(allowed_sector_type=True,normal_rank_eligible=True,total_member_count=10,quote_coverage=1,market_ok=True,type_cross_section_coverage=1,m1=.02,b1=.8,rel1=.01,p1=.9,positive_count=8,top1_positive_share=.2)
 

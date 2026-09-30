@@ -12,7 +12,8 @@ def read(path):return json.loads((ROOT/path).read_text(encoding='utf8'))
 def report(name,value):atomic_json(ROOT/f'reports/v4_08/V4_08_R5_{name}.json',value)
 def main():
     ast=read('config/v4_08_b2_machine_ast_r5.json')
-    def b2(raw):return evaluate_b2({k:dict(value=v,quality='ACCEPTED') for k,v in raw.items()},ast,source_sha256=ast['source_sha256'],source_parameter_sha256=ast['source_parameter_sha256'],parameter_set_sha256=ast['parameter_set_sha256'])
+    def actual_sha(path):return hashlib.sha256((ROOT/path).read_bytes()).hexdigest()
+    def b2(raw):return evaluate_b2({k:dict(value=v,quality='ACCEPTED') for k,v in raw.items()},ast,source_sha256=actual_sha(ast['source_path']),source_parameter_sha256=actual_sha(ast['source_parameter_path']),parameter_set_sha256=actual_sha('config/v4_08_algorithm_parameter_set_r5.json'))
     base=dict(allowed_sector_type=True,normal_rank_eligible=True,total_member_count=10,quote_coverage=1,market_ok=True,type_cross_section_coverage=1,m1=.02,b1=.8,rel1=.01,p1=.9,positive_count=8,top1_positive_share=.2)
     vectors=[('positive',{},'TRUE'),('negative_return',{'m1':-.01},'FALSE'),('unknown_breadth',{'b1':None},'UNKNOWN'),('inclusive_boundary',{'b1':.6,'p1':.8,'rel1':.003,'positive_count':3,'top1_positive_share':.5},'TRUE'),('same_shape_concentration',{'top1_positive_share':.7},'FALSE'),('market_gate_dominates_false',{'market_ok':False,'m1':-.01},'UNKNOWN'),('amount_a_affected',{'amount_A':2},'TRUE')]
     gold=[]

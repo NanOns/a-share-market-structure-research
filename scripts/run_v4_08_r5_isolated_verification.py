@@ -30,6 +30,8 @@ def main():
     before=git('status','--porcelain=v1')
     if before:raise RuntimeError('R5 checkout must be clean before verification')
     head=git('rev-parse','HEAD');started=time.monotonic();schema_receipt=None;regression=None
+    reproduced=subprocess.run([sys.executable,str(ROOT/'scripts/materialize_v4_08_r5.py')],cwd=ROOT,text=True,capture_output=True,encoding='utf8',errors='replace',check=True)
+    if git('status','--porcelain=v1'):raise RuntimeError('R5_CLEAN_REPRODUCTION_CHANGED_TRACKED_CANDIDATE')
     with disposable_cluster(args.postgres_bin) as (dsn,temp):
         import psycopg
         with psycopg.connect(dsn) as pg:
@@ -74,7 +76,7 @@ def main():
     governance['tested_commit']=head
     if governance['status']!='PASS':raise RuntimeError('R5_NO_SYMBOL_HARD_GATE_FAILED')
     after=git('status','--porcelain=v1')
-    clean={'contract_id':'V4_08_R5_CLEAN_CHECKOUT_RECEIPT_V1','status':'PASS_CLEAN_DETACHED_CHECKOUT' if not before and not after and git('branch','--show-current')=='' else 'FAIL','tested_commit':head,'detached_head':git('branch','--show-current')=='','git_status_before':before,'git_status_after':after,'config_dot_env_present':(ROOT/'config/.env').exists(),'schema_migration_receipt':schema_receipt,'isolated_regression_receipt':regression,'temporary_cluster_destroyed':True,'elapsed_seconds':round(time.monotonic()-started,3),'created_at_utc':datetime.now(timezone.utc).isoformat()}
+    clean={'contract_id':'V4_08_R5_CLEAN_CHECKOUT_RECEIPT_V1','status':'PASS_CLEAN_DETACHED_CHECKOUT' if not before and not after and git('branch','--show-current')=='' else 'FAIL','tested_commit':head,'detached_head':git('branch','--show-current')=='','git_status_before':before,'git_status_after':after,'config_dot_env_present':(ROOT/'config/.env').exists(),'schema_migration_receipt':schema_receipt,'isolated_regression_receipt':regression,'candidate_reproduction_stdout':reproduced.stdout,'reproduction_changed_tracked_files':False,'temporary_cluster_destroyed':True,'elapsed_seconds':round(time.monotonic()-started,3),'created_at_utc':datetime.now(timezone.utc).isoformat()}
     clean['status']='PASS_CLEAN_DETACHED_CHECKOUT' if clean['status']=='PASS_CLEAN_DETACHED_CHECKOUT' and schema_receipt['status']=='PASS' and regression['status']=='PASS' else 'FAIL'
     out=ROOT/'reports/v4_08';atomic_json(out/'V4_08_R5_SCHEMA_MIGRATION_RECEIPT.json',schema_receipt);atomic_json(out/'V4_08_R5_ISOLATED_REGRESSION.json',regression);atomic_json(out/'V4_08_R5_CLEAN_CHECKOUT_RECEIPT.json',clean);atomic_json(out/'V4_08_R5_NO_SYMBOL_SPECIFIC_SYSTEM_LOGIC_SCAN.json',governance)
     print(json.dumps({'status':clean['status'],'tested_commit':head,'database_identity':schema_receipt['database_identity'],'regression':summary,'git_clean_before_after':not before and not after,'temporary_cluster_destroyed':True}))

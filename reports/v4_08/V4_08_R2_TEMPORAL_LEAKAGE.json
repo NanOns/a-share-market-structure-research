@@ -1,0 +1,16 @@
+{
+  "asof_exact_day": "enforced; stale day negative vector rejects",
+  "contract_id": "V4_08_R2_TEMPORAL_LEAKAGE_V1",
+  "current_bytes_as_pit_before_observation": {
+    "first_complete_observation_date": "2026-09-30",
+    "reason": "TARGET_PRECEDES_FIRST_COMPLETE_SOURCE_OBSERVATION",
+    "status": "BLOCKED",
+    "target_trade_date": "2026-09-28"
+  },
+  "formal_pit_claim_allowed": false,
+  "future_correction_changes_prior_publication": false,
+  "future_revision_visibility": "system_available_at must be <= requested publication cutoff; SQL migration receipt tests cutoff exclusion",
+  "historical_replay_basis": "CURRENT_MEMBERSHIP_REPLAY",
+  "replay_formal_eligible_row_count": 0,
+  "status": "PASS_NO_BACKDATING; PIT_BASELINE_BLOCKED_PENDING_ACCEPTED_EVIDENCE"
+}

@@ -1,0 +1,23 @@
+{
+  "accepted_factor_publication_created": false,
+  "accepted_prior_rps_values_created": false,
+  "audit_id": "V4_07_PRIOR_RPS_ACCEPTED_INPUT_BOOTSTRAP_01",
+  "contract_id": "V4_07_PRIOR_RPS_BOOTSTRAP_GAP_ASSESSMENT_R2",
+  "impact": "Blocks only consumers requiring true Base Seed/Seed Width; Sector native non-seed contract engineering remains open.",
+  "required_next_inputs": [
+    "accepted dated universe snapshots for T-1/T-3",
+    "accepted session calendar",
+    "accepted adjustment basis and source identities",
+    "independent RPS cross-section recomputation",
+    "first-available/warm-up reconciliation",
+    "new append-only accepted factor publication/revision"
+  ],
+  "starting_evidence": {
+    "path": "reports/audits/V4_07_PRIOR_RPS_BOOTSTRAP_GAP_ASSESSMENT_R1.json",
+    "sha256": "cb8c70dac419a916ae9e3ce1a98e894824e4110d7488d5a9c2de3efce7107c86"
+  },
+  "status": "OPEN_REPAIR_CONTINUES_INDEPENDENTLY",
+  "thresholds_changed": false,
+  "v4_03_r3_staging_values_copied": false,
+  "v4_05_accepted_artifacts_modified": false
+}

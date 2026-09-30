@@ -1,0 +1,93 @@
+{
+  "base_seed_dependent_fields": "UNKNOWN / DEGRADED_BY_UPSTREAM_BASE_SEED_SIGNAL",
+  "contract_id": "V4_08_R2_ALGORITHM_CONTRACT_VECTOR_RECEIPT_V1",
+  "contracts_frozen": [
+    "config/v4_08_sector_native_contract_v1.json",
+    "config/v4_08_sector_prewatch_contract_v1.json",
+    "config/v4_08_rotation_core_contract_v1.json",
+    "config/v4_08_sector_legacy_adapter_contract_v1.json",
+    "config/v4_08_sector_field_registry_v1.json"
+  ],
+  "formal_production_authorized": false,
+  "full_market_materialization": "NOT_RUN",
+  "parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_V1",
+  "parameter_set_sha256": "c2506f2644c35fcfb603e49c2e29a3ead3e20852b5a2ab8a270d0de86fc4e4b6",
+  "pending_v4_00g_parameter_ids": [
+    "V4_08_EARLY_SEED_RETENTION_MIN",
+    "V4_08_EARLY_BREADTH_RETENTION_MIN",
+    "V4_08_EARLY_BREADTH_DELTA_MIN",
+    "V4_08_EARLY_TOP1_CONCENTRATION_MAX",
+    "V4_08_MATURE_STRONG_RETENTION_MIN"
+  ],
+  "status": "PASS_CONTRACT_VECTOR_ENGINEERING_ONLY",
+  "vector_count": 3,
+  "vector_results": [
+    {
+      "independent_expected": {
+        "allowed_states": [
+          "ROTATION_IN",
+          "ROTATION_ACCEPTED"
+        ],
+        "production_authorized": false,
+        "strong_prev_zero_blocks_early": false
+      },
+      "result": {
+        "early_retained": true,
+        "early_retention_or": true,
+        "mature_retained": "NOT_APPLICABLE",
+        "mature_strong_retention": "NOT_APPLICABLE",
+        "production_authorized": false,
+        "rotation_accepted_possible": false,
+        "rotation_expanding_allowed": false,
+        "rotation_in_possible": true,
+        "rotation_reaccelerating_allowed": false
+      },
+      "status": "PASS",
+      "vector_id": "R1_STRONG_PREV_ZERO_EARLY_PATH"
+    },
+    {
+      "independent_expected": {
+        "forbidden_states": [
+          "ROTATION_EXPANDING",
+          "ROTATION_REACCELERATING"
+        ],
+        "production_authorized": false
+      },
+      "result": {
+        "early_retained": false,
+        "early_retention_or": false,
+        "mature_retained": false,
+        "mature_strong_retention": false,
+        "production_authorized": false,
+        "rotation_accepted_possible": false,
+        "rotation_expanding_allowed": false,
+        "rotation_in_possible": false,
+        "rotation_reaccelerating_allowed": false
+      },
+      "status": "PASS",
+      "vector_id": "R2_WEAKENING_OLD_STRONG_SECTOR"
+    },
+    {
+      "independent_expected": {
+        "forbidden_states": [
+          "ROTATION_ACCEPTED",
+          "ROTATION_EXPANDING"
+        ],
+        "production_authorized": false
+      },
+      "result": {
+        "early_retained": false,
+        "early_retention_or": true,
+        "mature_retained": false,
+        "mature_strong_retention": true,
+        "production_authorized": false,
+        "rotation_accepted_possible": false,
+        "rotation_expanding_allowed": false,
+        "rotation_in_possible": false,
+        "rotation_reaccelerating_allowed": false
+      },
+      "status": "PASS",
+      "vector_id": "R3_SINGLE_LEADER_NO_DIFFUSION"
+    }
+  ]
+}

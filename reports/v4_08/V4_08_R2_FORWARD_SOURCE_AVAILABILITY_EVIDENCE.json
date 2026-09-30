@@ -1,0 +1,45 @@
+{
+  "complete_exact_byte_set_observed_at": "2026-09-30T00:45:21.890265Z",
+  "contract_id": "V4_08_R2_FORWARD_SOURCE_AVAILABILITY_EVIDENCE_V1",
+  "external_review_required": true,
+  "filesystem_mtime_used_as_provider_time": false,
+  "first_component_observed_at": "2026-09-30T00:45:21.889920Z",
+  "frozen_source_paths": {
+    "T0002/hq_cache/infoharbor_block.dat": {
+      "byte_count": 741500,
+      "filesystem_mtime_local": "2026-09-28T22:28:34.808829+08:00",
+      "filesystem_mtime_ns": 1790605714808828800,
+      "observed_at": "2026-09-30T00:45:21.890265Z",
+      "sha256": "025d9ae0c50d0cbf64fa3ba06c419681d7a931a9192b1c7841b14382b53b7595",
+      "source_root_relative_path": "T0002/hq_cache/infoharbor_block.dat"
+    },
+    "T0002/hq_cache/tdxhy.cfg": {
+      "byte_count": 150522,
+      "filesystem_mtime_local": "2026-09-28T22:28:35.142383+08:00",
+      "filesystem_mtime_ns": 1790605715142382900,
+      "observed_at": "2026-09-30T00:45:21.889920Z",
+      "sha256": "f0861020e5d9fde9f10ab0374da6b887f3a5f681cfa00bb7dc6776ee4703c735",
+      "source_root_relative_path": "T0002/hq_cache/tdxhy.cfg"
+    },
+    "T0002/hq_cache/tdxzs.cfg": {
+      "byte_count": 18272,
+      "filesystem_mtime_local": "2026-09-24T17:53:12+08:00",
+      "filesystem_mtime_ns": 1790243592000000000,
+      "observed_at": "2026-09-30T00:45:21.890157Z",
+      "sha256": "a33983fc8bb15c97db93fe9b60394b326b71a91e99e33b8b54700415442074da",
+      "source_root_relative_path": "T0002/hq_cache/tdxzs.cfg"
+    }
+  },
+  "interpretation": "Conservative project evidence that all exact local TDX bytes had been observed by this time; not provider's original publish time.",
+  "policy_candidate_sha256": "39e65a8ccd94d2749a8aa04c008147dc00015f169063d3b7ce589f1417b84cb4",
+  "provider_timestamp_found": false,
+  "source_availability_policy_candidate": "config/v4_08_tdx_source_availability_policy_candidate_v1.json",
+  "source_hashes": {
+    "T0002/hq_cache/infoharbor_block.dat": "025d9ae0c50d0cbf64fa3ba06c419681d7a931a9192b1c7841b14382b53b7595",
+    "T0002/hq_cache/tdxhy.cfg": "f0861020e5d9fde9f10ab0374da6b887f3a5f681cfa00bb7dc6776ee4703c735",
+    "T0002/hq_cache/tdxzs.cfg": "a33983fc8bb15c97db93fe9b60394b326b71a91e99e33b8b54700415442074da",
+    "data/v4/artifact_store/v4_01/security_entity_map_R7_20260927.json": "e33294fb8d1d71732fdc3df903258b5617345811ecbdb649af8056ccd91427e0"
+  },
+  "status": "EVIDENCE_PASS_POLICY_ACCEPTANCE_PENDING",
+  "system_available_at": "2026-09-30T00:45:22.133876Z"
+}

@@ -1,0 +1,15 @@
+{
+  "candidate_source_asof_date": "2026-09-30",
+  "contract_id": "V4_08_R2_EFFECTIVE_DATE_VERIFICATION_V1",
+  "formal_pit_date_assigned": false,
+  "isolated_sql_gate": "PASS_STALE_ASOF_REJECTED",
+  "python_gate": "PASS_EXACT_DATE",
+  "r2_rule": "membership_asof_date == target_trade_date; no carry-forward",
+  "source_effective_date_evidence": "NOT_AVAILABLE; project capture date is only a versioned candidate basis",
+  "stale_asof_negative_vector": {
+    "expected": "REJECT",
+    "membership_asof_date": "2026-09-29",
+    "target_trade_date": "2026-09-30"
+  },
+  "status": "CONTRACT_PASS_SOURCE_ASOF_UNVERIFIED"
+}

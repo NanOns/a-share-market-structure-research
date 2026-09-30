@@ -1,0 +1,34 @@
+{
+  "ambiguous_keys_by_board": {
+    "CHINEXT": 5,
+    "SH_MAIN": 3,
+    "STAR": 1,
+    "SZ_MAIN": 2
+  },
+  "ambiguous_required_fact_count": 20,
+  "ambiguous_required_key_count": 11,
+  "bse_optional_policy": "DEGRADED_OPTIONAL_EXCLUDED_FROM_REQUIRED_GATE",
+  "contract_id": "V4_08_R2_FORMAL_UNIVERSE_IDENTITY_GATE_V1",
+  "formal_eligible_membership_row_count": 0,
+  "identity_scope_gate": {
+    "blocking_key_count": 11,
+    "blocking_keys_by_board": {
+      "CHINEXT": 5,
+      "SH_MAIN": 3,
+      "STAR": 1,
+      "SZ_MAIN": 2
+    },
+    "non_core_or_optional_keys_do_not_block": true,
+    "status": "BLOCKED"
+  },
+  "next_action": "Create and externally accept versioned V4-01 identity/lifecycle revision; preserve accepted R7 artifact.",
+  "non_core_unresolved_does_not_block_formal_scope": 486,
+  "reason": "Ambiguous required-board keys block affected formal scope; non-core and BSE unresolved keys are retained but do not block the four-board gate.",
+  "required_boards": [
+    "SH_MAIN",
+    "SZ_MAIN",
+    "CHINEXT",
+    "STAR"
+  ],
+  "status": "BLOCKED_AMBIGUOUS_REQUIRED_BOARD_IDENTITIES"
+}

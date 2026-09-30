@@ -1,0 +1,40 @@
+{
+  "accepted_market_calendar": {
+    "accepted_coverage_end": "2026-09-24",
+    "formal_calendar_covers_candidate_not_before_date": false,
+    "path": "reports/v4_02/V4_02_FORMAL_MARKET_CALENDAR_ACCEPTANCE_V2.json",
+    "sha256": "374bce8b108afbcd476d4136176b6468168a8ea0ed34ab710386d0552f14c9e9",
+    "status": "FORMAL_MARKET_CALENDAR_PASS"
+  },
+  "candidate_membership_asof_date": "2026-09-30",
+  "candidate_not_before_date": "2026-09-30",
+  "candidate_trade_date": null,
+  "contract_id": "V4_08_R2_GO_FORWARD_PIT_CANDIDATE_V1",
+  "filesystem_mtime_used": false,
+  "first_go_forward_pit_baseline_trade_date": null,
+  "historical_backtest_safe": false,
+  "identity_gate_status": "BLOCKED_AMBIGUOUS_REQUIRED_BOARD_IDENTITIES",
+  "membership_asof_basis": "PROJECT_FIRST_OBSERVED_SOURCE_STATE_CANDIDATE_PENDING_EXTERNAL_REVIEW",
+  "pit_observed": false,
+  "provider_available_at_basis": "PROJECT_FIRST_OBSERVED_PROVIDER_BYTES",
+  "provider_available_at_candidate": "2026-09-30T00:45:21.890265Z",
+  "real_production_authorized": false,
+  "reason": "R1 bytes were first completely observed on 2026-09-30; accepted V4-02 calendar coverage ends 2026-09-24 and required-board identity candidates remain ambiguous. No earlier target can use these bytes.",
+  "requirements_before_formal_pit": [
+    "accepted market session and publication cutoff",
+    "external review of source-specific availability/asof amendment",
+    "accepted V4-01 identity revision with zero required-scope gaps",
+    "exact-day membership_asof equals target session",
+    "accepted revision/source quality"
+  ],
+  "source_observed_at_complete_byte_set": "2026-09-30T00:45:21.890265Z",
+  "source_observed_at_first_component": "2026-09-30T00:45:21.889920Z",
+  "source_revision_identity_candidate": {
+    "source_bytes_digest": "2a66a6ce398ce64da48f6fd67ea9afd4fa8c7e7f7ce893a74c21b4ec6ec92508",
+    "source_revision_id": "sha256:c5060f4896efd631847670c40dcb1808b1528dec9bd99400c1a784f48e92bfd4",
+    "temporal_evidence_digest": "81ddce5c09c6f240fb46ef2e5dedd4762d9a6068bf88cbf0a7e0cca55c19a91f"
+  },
+  "source_snapshot_persisted_as_pit": false,
+  "status": "BLOCKED_ACCEPTED_CALENDAR_EXTENSION_SOURCE_POLICY_AND_REQUIRED_IDENTITY_UPDATE",
+  "system_available_at": "2026-09-30T00:45:22.133876Z"
+}

@@ -1,0 +1,60 @@
+{
+  "checks": {
+    "cutoff_excludes_later_revision": true,
+    "delete_rejected": true,
+    "derived_parent_snapshot_references_raw_source_snapshot": true,
+    "duplicate_canonical_fact_rejected": true,
+    "fact_evidence_view_exposes_contract_timestamps_and_digests": true,
+    "formal_view_contains_industry_and_theme_only": true,
+    "formal_view_rejects_pit_with_unaccepted_quality": true,
+    "migration_applied": true,
+    "pit_observed_degraded_history_unsafe_is_allowed": true,
+    "raw_snapshot_rejects_parent_basis_fact": true,
+    "revision_fork_rejected": true,
+    "rollback_removed_only_stage_schema": true,
+    "same_bytes_new_temporal_evidence_is_a_new_revision": true,
+    "stale_membership_asof_rejected": true,
+    "style_and_unknown_excluded_by_policy": true,
+    "temporal_evidence_revision_is_append_only": true,
+    "temporal_leakage_rejected": true,
+    "unknown_identity_row_retained": true,
+    "update_rejected": true,
+    "versioned_type_registry_seeded": true
+  },
+  "contract_id": "V4_08_R2_SCHEMA_MIGRATION_RECEIPT_V1",
+  "created_at_utc": "2026-09-30T01:33:32Z",
+  "database_scope": "disposable localhost PostgreSQL cluster initialized by this verifier; config/.env and configured databases were not read",
+  "migration_sha256": "abaf9fa2ce432deca155292de9e6bb574ba7f1e4de7d5611ac56cc0106e3eb51",
+  "migrations": [
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/016_v4_08_sector_membership.sql",
+      "sha256": "45db743c2d223308d8b95a1dbe4cb7548f3ff553c04a021058be1ed7d34cb6e5"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/017_v4_08_membership_fact_evidence_view.sql",
+      "sha256": "633998684434e06b089f622c7c2a8bc37743ab945e53f94b06ca496de8ee77fc"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/018_v4_08_membership_contract_repair_r2.sql",
+      "sha256": "abaf9fa2ce432deca155292de9e6bb574ba7f1e4de7d5611ac56cc0106e3eb51"
+    }
+  ],
+  "postgres_version": "postgres (PostgreSQL) 18.6",
+  "rollback_sha256": "0e2123e5d6c96f4a7e19cfcb88c83b71ded3bf6a93b35701308a3003e9dfd85a",
+  "rollbacks": [
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/rollback/018_v4_08_membership_contract_repair_r2.sql",
+      "sha256": "0e2123e5d6c96f4a7e19cfcb88c83b71ded3bf6a93b35701308a3003e9dfd85a"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/rollback/017_v4_08_membership_fact_evidence_view.sql",
+      "sha256": "80b22cac9f34ce64c17a22777f1638d9df85e536ccd78b8b610716bcf44a9047"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/rollback/016_v4_08_sector_membership.sql",
+      "sha256": "1c9c0b1c2d7b157fd228cd29f3426cd5e75f1c6431ca44da0b68257d0539f258"
+    }
+  ],
+  "sector_type_registry_digest": "4a8d1c8e6574bfa9985e7980ca83337b7a14bed54bfbbace9e817d44b2076743",
+  "status": "PASS_ISOLATED_MIGRATION_AND_ROLLBACK"
+}

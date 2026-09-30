@@ -32,6 +32,10 @@ def test_absent_target_publication_does_not_create_zero_quote_coverage():
     row=build_native(members,{},target='2026-09-30',snapshot_id='SNAPSHOT',publication_id='FIXTURE',parameter_set=params,source_bindings={})[0]
     assert row['fields']['sector_quote_coverage']['value'] is None
     assert row['fields']['sector_quote_coverage']['quality']=='UNKNOWN'
+    registry={f['field_id']:f for f in read('config/v4_08_sector_field_registry_r5.json')['fields']}
+    for field,item in row['fields'].items():
+        assert registry[field]['producer']==item['producer']
+        assert registry[field]['time_role']==item['time_role']
 
 @pytest.mark.parametrize('old,now,expected',[([],{},'NOT_APPLICABLE'),(['A'],{},'UNKNOWN'),(['A','B'],{'A':True,'B':False},'ACCEPTED')])
 def test_frozen_denominator(old,now,expected):assert retention(old,now)[1]==expected

@@ -83,7 +83,7 @@ def build_native(memberships, current, *, target, snapshot_id, publication_id, p
         def put(field, value, reason=None, quality=None, **extra):
             row['fields'][field]=dict(value=value, quality=quality or ('ACCEPTED' if value is not None else 'UNKNOWN'),
                 reason_code=reason, producer='V4_08_PIT_MEMBERSHIP' if field=='membership_ready' else PRODUCER,
-                time_role='TARGET_CUTOFF', target_trade_date=target, max_source_date=target if field in {'membership_ready','sector_member_count'} else max_source_date or target,
+                time_role='COMMON_EVALUABLE_MEMBER_SET' if field in {'entered_count','net_entered_count'} else 'TARGET_CUTOFF', target_trade_date=target, max_source_date=target if field in {'membership_ready','sector_member_count'} else max_source_date or target,
                 source_publications=source_bindings, membership_snapshot_id=snapshot_id,
                 model_contract_id=PRODUCER, parameter_set_id=parameter_set['parameter_set_id'], **extra)
         valid=sum(observed(current.get(m),'ret1',target) is not None for m in members)
@@ -141,8 +141,7 @@ def build_native(memberships, current, *, target, snapshot_id, publication_id, p
         frozen=None if entry is None or prior_truth is None or any(prior_truth.get(m) is None for m in common) else {m for m in common if prior_truth[m] is True}
         value,quality,reason=retention(frozen,truths)
         if not seed_capability:value,quality,reason=None,'UNKNOWN',SEED_DEGRADED
-        for field in ('seed_retention','base_seed_retention'):
-            put(field,value,reason,quality)
+        put('seed_retention',value,reason,quality)
         rows.append(row)
     for typ in ('INDUSTRY','THEME'):
         for n in (5,20,60):

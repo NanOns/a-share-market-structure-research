@@ -176,9 +176,9 @@ def main() -> int:
     doc_path = ROOT / "reports/audits/V4_07_PRIOR_RPS_ACCEPTED_INPUT_BOOTSTRAP_AUDIT_ADDENDUM_20260930.md"
     doc = f"""# Prior-RPS Bootstrap Repair Audit Addendum — 2026-09-30
 
-**Audit item:** `V4_07_PRIOR_RPS_ACCEPTED_INPUT_BOOTSTRAP_01`  
-**Status:** `OPEN`  
-**Assessment evidence:** `{json_path.relative_to(ROOT).as_posix()}`  
+**Audit item:** `V4_07_PRIOR_RPS_ACCEPTED_INPUT_BOOTSTRAP_01`
+**Status:** `OPEN`
+**Assessment evidence:** `{json_path.relative_to(ROOT).as_posix()}`
 **Assessment SHA-256:** `{sha(json_path)}`
 
 ## Finding

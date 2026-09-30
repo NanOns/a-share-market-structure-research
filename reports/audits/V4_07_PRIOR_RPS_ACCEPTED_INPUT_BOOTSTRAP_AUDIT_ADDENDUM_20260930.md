@@ -1,9 +1,9 @@
 # Prior-RPS Bootstrap Repair Audit Addendum — 2026-09-30
 
-**Audit item:** `V4_07_PRIOR_RPS_ACCEPTED_INPUT_BOOTSTRAP_01`  
-**Status:** `OPEN`  
-**Assessment evidence:** `reports/audits/V4_07_PRIOR_RPS_BOOTSTRAP_GAP_ASSESSMENT_R1.json`  
-**Assessment SHA-256:** `ed02df4eb1e3faf9e809e2a890ea47d1a709130c626ac4443a9c2c1c631e7f57`
+**Audit item:** `V4_07_PRIOR_RPS_ACCEPTED_INPUT_BOOTSTRAP_01`
+**Status:** `OPEN`
+**Assessment evidence:** `reports/audits/V4_07_PRIOR_RPS_BOOTSTRAP_GAP_ASSESSMENT_R1.json`
+**Assessment SHA-256:** `cb8c70dac419a916ae9e3ce1a98e894824e4110d7488d5a9c2de3efce7107c86`
 
 ## Finding
 

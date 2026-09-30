@@ -17,7 +17,7 @@ def fixture_context(date='2030-01-02', count=2):
         meta=dict(security_id=security,trade_date=date,formal_publication_at=date+'T08:00:00+08:00',
                   coordinate_basis='T0_CURRENT_COORDINATE',historical_as_recorded_claim=False,max_source_trade_date=date)
         cores.append(dict(meta,board='SYNTHETIC_BOARD',publication_id=context['profile_row_publication_id'],
-            states={k:dict(value=v,unknown_reason=None) for k,v in dict(compression_state='COMPRESSING_STRONG',
+            states={k:dict(value=v,unknown_reason=None,**PACKAGE['priority_provenance_contract']['states'][k]) for k,v in dict(compression_state='COMPRESSING_STRONG',
                 ma_structure_state='BULL_ALIGNED',core_extension_risk='LOW').items()}))
         factors.append(dict(meta,fields={k:dict(value=v,quality_state='OBSERVED',unknown_reason=None,
             target_trade_date=date,source_asof=date,max_source_trade_date=date,available_at=date+'T08:00:00+08:00',

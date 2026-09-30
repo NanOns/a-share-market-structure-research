@@ -1,5 +1,8 @@
 """Promote externally accepted V4-08 engineering scope; validate without mutation."""
 from pathlib import Path
+from copy import deepcopy
+import ast
+import importlib.util
 import argparse
 import hashlib
 import json
@@ -19,6 +22,10 @@ MANIFEST = 'reports/v4_08/V4_08_R5_2_STAGE_CANDIDATE_MANIFEST.json'
 AUDIT = 'docs/evidence/V4_08_R5_2_INDEPENDENT_EXTERNAL_ACCEPTANCE_FINAL_20260930.md'
 VALIDATION = 'reports/v4_joint/V4_08_ACCEPTED_HEAD_PROMOTION_VALIDATION_R1.json'
 RECEIPT = 'reports/v4_joint/V4_08_ACCEPTED_HEAD_PROMOTION_RECEIPT_R1.json'
+AMENDED = 'data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json'
+B0_IMPLEMENTATION = 'reports/v4_08/V4_08_R5_B0_IMPLEMENTATION.json'
+AMEND_RECEIPT = 'reports/v4_joint/V4_08_ACCEPTED_HEAD_AMENDMENT_R1_RECEIPT.json'
+AMEND_VALIDATION = 'reports/v4_joint/V4_08_ACCEPTED_HEAD_AMENDMENT_R1_VALIDATION.json'
 PROTECTED = ['data/v4/V4_DATA_ACCEPTED_HEAD.json', 'data/v4/V4_DEV_BASELINE_HEAD.json',
              'data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json']
 CAPABILITIES = {
@@ -42,6 +49,21 @@ def exact(binding):
     return all(bind(binding['path'])[key] == value for key, value in binding.items()
                if key in ('sha256', 'byte_count'))
 
+def b0_semantic_checks(head):
+    authority = read(B0_IMPLEMENTATION)
+    producer = authority['producer']
+    path = ROOT / producer['path']
+    tree = ast.parse(path.read_text(encoding='utf8'))
+    exports_symbol = any(isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef)) and n.name == 'evaluate_b0' for n in tree.body)
+    spec = importlib.util.spec_from_file_location('v4_08_b0_lineage_check', path)
+    module = importlib.util.module_from_spec(spec)
+    sys.path.insert(0, str(ROOT/'src'))
+    spec.loader.exec_module(module)
+    return dict(b0_contract_matches_implementation=head['b0_contract'] == authority['contract'] and exact(authority['contract']),
+                b0_producer_matches_implementation=head['b0_producer'] == producer and exact(producer),
+                b0_producer_exports_evaluate_b0=exports_symbol and callable(getattr(module, 'evaluate_b0', None)),
+                b0_evidence_binding_matches_implementation=head['evidence_bindings']['b0_producer'] == producer)
+
 def source_checks():
     manifest = read(MANIFEST)
     audit = (ROOT / AUDIT).read_text(encoding='utf8')
@@ -60,8 +82,10 @@ def source_checks():
     }
 
 def validate():
+    if (ROOT/AMENDED).exists(): return validate_amendment()
     head, global_head, receipt = read(HEAD), read(GLOBAL), read(RECEIPT)
     checks = source_checks()
+    checks.update(b0_semantic_checks(head))
     checks.update({
         'accepted_head_evidence_exact': all(exact(b) for b in head['evidence_bindings'].values()),
         'external_binding_exact': exact(head['external_acceptance_document']),
@@ -94,7 +118,7 @@ def promote():
     inputs = manifest['input_bindings']
     paths = {k: b['path'] for k, b in inputs.items() if isinstance(b, dict) and 'path' in b}
     paths.update(r5_2_candidate_manifest=MANIFEST, external_acceptance_document=AUDIT,
-                 b0_producer='src/sector/native_r5.py', b2_contract='config/v4_08_b2_machine_ast_r5.json')
+                 b0_producer=read(B0_IMPLEMENTATION)['producer']['path'], b2_contract='config/v4_08_b2_machine_ast_r5.json')
     for name, suffix in [('clean_checkout','CLEAN_CHECKOUT_RECEIPT'), ('isolated_regression','ISOLATED_REGRESSION'),
                          ('schema_readback','SCHEMA_MIGRATION_RECEIPT'), ('no_symbol_scan','NO_SYMBOL_SPECIFIC_SYSTEM_LOGIC_SCAN')]:
         paths[name] = f'reports/v4_08/V4_08_R5_2_{suffix}.json'
@@ -132,7 +156,61 @@ def promote():
     if result['status'] != 'PASS': raise ValueError(result)
     return result
 
+def validate_amendment():
+    head, old, global_head, receipt = read(AMENDED), read(HEAD), read(GLOBAL), read(AMEND_RECEIPT)
+    checks = source_checks()
+    checks.update(b0_semantic_checks(head))
+    checks.update(dict(
+        old_head_preserved=exact(head['supersedes']) and head['supersedes']==read(RECEIPT)['accepted_head'],
+        amended_identity=head['contract_id']=='V4_08_ACCEPTED_HEAD_AMENDED_R1' and head['amendment_reason']=='B0_PRODUCER_LINEAGE_BINDING_CORRECTION',
+        amended_evidence_exact=all(exact(b) for b in head['evidence_bindings'].values()),
+        global_points_to_amended=global_head['v4_08_binding']==bind(AMENDED),
+        superseded_binding_exact=global_head['v4_08_superseded_binding']==bind(HEAD)==head['supersedes'],
+        global_range_preserved=global_head['accepted_stage_range']=='V4_00_TO_V4_08_ACCEPTED',
+        amendment_parent_exact=exact(head['amendment_parent_archive']) and head['amendment_parent_archive']['sha256']==head['amendment_global_head_parent']['sha256'],
+        data_dev_pit_unchanged=all(exact(b) for b in old['protected_head_bindings']),
+        capability_unchanged=head['capabilities']==old['capabilities']==CAPABILITIES,
+        permissions_false=all(head[k] is False for k in ['production_permission','shadow_production_permission','focus_cutover_permission']),
+        audits_preserved=head['open_audits']==old['open_audits'],
+        amendment_idempotent=receipt['amended_head']==bind(AMENDED) and receipt['global_head_after']==bind(GLOBAL),
+        v4_09_not_accepted=not (ROOT/'data/v4/V4_09_ACCEPTED_HEAD.json').exists(),
+    ))
+    return dict(contract_id='V4_08_ACCEPTED_HEAD_AMENDMENT_R1_VALIDATION',status='PASS' if all(checks.values()) else 'FAIL',
+        checks=checks,superseded_head=bind(HEAD),accepted_head=bind(AMENDED),global_head=bind(GLOBAL),
+        b0_implementation=bind(B0_IMPLEMENTATION),protected_head_bindings=old['protected_head_bindings'])
+
+def amend():
+    if (ROOT/AMENDED).exists():
+        result=validate_amendment()
+        if result['status']!='PASS': raise ValueError(result)
+        return result
+    old,global_head=read(HEAD),read(GLOBAL)
+    if global_head['v4_08_binding']!=bind(HEAD) or global_head['accepted_stage_range']!='V4_00_TO_V4_08_ACCEPTED':
+        raise ValueError('AMENDMENT_PARENT_MISMATCH')
+    if not all(source_checks().values()) or not all(exact(b) for b in old['protected_head_bindings']):
+        raise ValueError('AMENDMENT_SOURCE_OR_PROTECTED_HEAD_MISMATCH')
+    head=deepcopy(old);authority=read(B0_IMPLEMENTATION)
+    parent=bind(GLOBAL);archive='reports/v4_joint/V4_08_AMENDMENT_R1_PARENT_STAGE_HEAD.json'
+    atomic_bytes(ROOT/archive,(ROOT/GLOBAL).read_bytes())
+    head.update(contract_id='V4_08_ACCEPTED_HEAD_AMENDED_R1',supersedes=bind(HEAD),
+        amendment_reason='B0_PRODUCER_LINEAGE_BINDING_CORRECTION',amended_at='2026-09-30',
+        amendment_global_head_parent=parent,amendment_parent_archive=bind(archive),
+        b0_contract=authority['contract'],b0_producer=authority['producer'],b0_callable_symbol='evaluate_b0')
+    head['evidence_bindings'].update(b0_contract=authority['contract'],b0_producer=authority['producer'],b0_implementation=bind(B0_IMPLEMENTATION))
+    if not all(b0_semantic_checks(head).values()): raise ValueError('B0_SEMANTIC_BINDING_FAILED')
+    atomic_json(ROOT/AMENDED,head)
+    global_head.update(v4_08_binding=bind(AMENDED),v4_08_superseded_binding=bind(HEAD))
+    atomic_json(ROOT/GLOBAL,global_head)
+    atomic_json(ROOT/AMEND_RECEIPT,dict(contract_id='V4_08_ACCEPTED_HEAD_AMENDMENT_R1_RECEIPT',status='PASS',
+        superseded_head=bind(HEAD),amended_head=bind(AMENDED),global_head_parent=parent,global_head_after=bind(GLOBAL),
+        b0_contract=authority['contract'],b0_producer=authority['producer'],b0_callable_symbol='evaluate_b0',
+        protected_head_bindings=old['protected_head_bindings']))
+    result=validate_amendment()
+    atomic_json(ROOT/AMEND_VALIDATION,result)
+    if result['status']!='PASS': raise ValueError(result)
+    return result
+
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(); parser.add_argument('--promote', action='store_true'); args = parser.parse_args()
-    result = promote() if args.promote else validate()
+    parser = argparse.ArgumentParser(); parser.add_argument('--promote', action='store_true'); parser.add_argument('--amend', action='store_true'); args = parser.parse_args()
+    result = amend() if args.amend else promote() if args.promote else validate()
     print(json.dumps(result, ensure_ascii=False)); sys.exit(0 if result['status'] == 'PASS' else 1)

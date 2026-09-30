@@ -1,0 +1,160 @@
+{
+  "different_immutable_paths": true,
+  "idempotent_retry": true,
+  "materializer": "src.v4.stock_prewatch.materialize_records",
+  "same_day_revision_1_preserved": true,
+  "scope": "SYNTHETIC_CONTRACT_VECTORS_REAL_FILESYSTEM_NOT_ACCEPTED_MARKET_REVISIONS",
+  "status": "PASS",
+  "t": {
+    "artifact": {
+      "byte_count": 619,
+      "logical_digest": "ddb29bd91d0d0fe044c5b8f2d1aab3ce14749d0018653cd79e8315c32c75d67c",
+      "path": "data/v4/artifact_store/v4_09/r1_1_contract_vectors/V4_09_STOCK_PREWATCH_2030-01-02_ddb29bd91d0d0fe044c5b8f2d1aab3ce14749d0018653cd79e8315c32c75d67c.jsonl.gz",
+      "publication_id": "V4_09:8dba300c4f03d87bca79e92891c061674b3da477fbca2c2eebf68effb1c1550a",
+      "sha256": "2746f7c90ec625efe8c29bad58bddfc9b9bd22668a59bf5de2b1aff5ebfb211f",
+      "trade_date": "2030-01-02"
+    },
+    "board_counts": {
+      "SYNTHETIC_BOARD": 2
+    },
+    "bucket_counts": {
+      "A": 2,
+      "B": 0,
+      "C": 0,
+      "D": 0,
+      "NOT_ELIGIBLE": 0,
+      "UNKNOWN_BUCKET": 0
+    },
+    "consumer_contract_id": "V4_09_PRIORITY_PROVENANCE_AND_IMMUTABILITY_R1_1",
+    "contract_id": "V4_09_R1_1_FULL_MARKET_CANDIDATE",
+    "production_permission": false,
+    "raw_counts": {
+      "FALSE": 0,
+      "TRUE": 2,
+      "UNKNOWN": 0
+    },
+    "row_count": 2,
+    "run_context": {
+      "context_id": "SYNTHETIC_CONTRACT_VECTOR:2030-01-02",
+      "core_logical_digest": "a5572c4e89e77799f211c01b016e20a5f11b87f3e7e674e6f65f879ccbe0c266",
+      "expected_board_counts": {
+        "SYNTHETIC_BOARD": 2
+      },
+      "expected_identity_count": 2,
+      "identity_ids": [
+        "SYNTHETIC-ENTITY-0",
+        "SYNTHETIC-ENTITY-1"
+      ],
+      "knowledge_cutoff": "2030-01-02T23:59:59+08:00",
+      "profile_row_publication_id": "synthetic-profile:2030-01-02",
+      "source_bindings": {
+        "synthetic_input_revision": "a5572c4e89e77799f211c01b016e20a5f11b87f3e7e674e6f65f879ccbe0c266"
+      },
+      "source_publication_id": "synthetic-source:2030-01-02",
+      "trade_date": "2030-01-02"
+    },
+    "status": "ENGINEERING_CANDIDATE"
+  },
+  "t_path_sha_bytes_unchanged": true,
+  "t_plus_1": {
+    "artifact": {
+      "byte_count": 677,
+      "logical_digest": "65c0a99a0e0ae828e2f0a1a67564bcba4c0922a79382b35ce6aa8ba1b963b490",
+      "path": "data/v4/artifact_store/v4_09/r1_1_contract_vectors/V4_09_STOCK_PREWATCH_2030-01-03_65c0a99a0e0ae828e2f0a1a67564bcba4c0922a79382b35ce6aa8ba1b963b490.jsonl.gz",
+      "publication_id": "V4_09:8730b879ec9f2c57a424639d2de7d975d0ed6431da265980763dcd055ed65717",
+      "sha256": "fbcbd662fcde2ef91382917f68710f7ec213fef47815b960a479a00c366bc5a8",
+      "trade_date": "2030-01-03"
+    },
+    "board_counts": {
+      "SYNTHETIC_BOARD": 3
+    },
+    "bucket_counts": {
+      "A": 3,
+      "B": 0,
+      "C": 0,
+      "D": 0,
+      "NOT_ELIGIBLE": 0,
+      "UNKNOWN_BUCKET": 0
+    },
+    "consumer_contract_id": "V4_09_PRIORITY_PROVENANCE_AND_IMMUTABILITY_R1_1",
+    "contract_id": "V4_09_R1_1_FULL_MARKET_CANDIDATE",
+    "production_permission": false,
+    "raw_counts": {
+      "FALSE": 0,
+      "TRUE": 3,
+      "UNKNOWN": 0
+    },
+    "row_count": 3,
+    "run_context": {
+      "context_id": "SYNTHETIC_CONTRACT_VECTOR:2030-01-03",
+      "core_logical_digest": "58deab6d436a491e69d4fc4fe8732e2f5ebcc613aa69b4c76160d0da8f0a59f7",
+      "expected_board_counts": {
+        "SYNTHETIC_BOARD": 3
+      },
+      "expected_identity_count": 3,
+      "identity_ids": [
+        "SYNTHETIC-ENTITY-0",
+        "SYNTHETIC-ENTITY-1",
+        "SYNTHETIC-ENTITY-2"
+      ],
+      "knowledge_cutoff": "2030-01-03T23:59:59+08:00",
+      "profile_row_publication_id": "synthetic-profile:2030-01-03",
+      "source_bindings": {
+        "synthetic_input_revision": "58deab6d436a491e69d4fc4fe8732e2f5ebcc613aa69b4c76160d0da8f0a59f7"
+      },
+      "source_publication_id": "synthetic-source:2030-01-03",
+      "trade_date": "2030-01-03"
+    },
+    "status": "ENGINEERING_CANDIDATE"
+  },
+  "t_revision_2": {
+    "artifact": {
+      "byte_count": 619,
+      "logical_digest": "2ec5e20e049287d5bfeaad6ab837ac03a17014d43421b3b9737faf242173b35d",
+      "path": "data/v4/artifact_store/v4_09/r1_1_contract_vectors/V4_09_STOCK_PREWATCH_2030-01-02_2ec5e20e049287d5bfeaad6ab837ac03a17014d43421b3b9737faf242173b35d.jsonl.gz",
+      "publication_id": "V4_09:5476ed4f413abeb43a1ee1d11e9716c725acbd67ec201150feb8d8214d125e31",
+      "sha256": "1097af77c04e7e851ba8a788df032f0e360f99dd606a872bb03d1e09147cf7dc",
+      "trade_date": "2030-01-02"
+    },
+    "board_counts": {
+      "SYNTHETIC_BOARD": 2
+    },
+    "bucket_counts": {
+      "A": 2,
+      "B": 0,
+      "C": 0,
+      "D": 0,
+      "NOT_ELIGIBLE": 0,
+      "UNKNOWN_BUCKET": 0
+    },
+    "consumer_contract_id": "V4_09_PRIORITY_PROVENANCE_AND_IMMUTABILITY_R1_1",
+    "contract_id": "V4_09_R1_1_FULL_MARKET_CANDIDATE",
+    "production_permission": false,
+    "raw_counts": {
+      "FALSE": 0,
+      "TRUE": 2,
+      "UNKNOWN": 0
+    },
+    "row_count": 2,
+    "run_context": {
+      "context_id": "SYNTHETIC_CONTRACT_VECTOR:2030-01-02:source-revision-2",
+      "core_logical_digest": "a5572c4e89e77799f211c01b016e20a5f11b87f3e7e674e6f65f879ccbe0c266",
+      "expected_board_counts": {
+        "SYNTHETIC_BOARD": 2
+      },
+      "expected_identity_count": 2,
+      "identity_ids": [
+        "SYNTHETIC-ENTITY-0",
+        "SYNTHETIC-ENTITY-1"
+      ],
+      "knowledge_cutoff": "2030-01-02T23:59:59+08:00",
+      "profile_row_publication_id": "synthetic-profile:2030-01-02",
+      "source_bindings": {
+        "synthetic_input_revision": "ee018f0cecd4104dc2f2858df5e54182caac6177247ecf144b9644b17a1b39cc"
+      },
+      "source_publication_id": "synthetic-source:2030-01-02",
+      "trade_date": "2030-01-02"
+    },
+    "status": "ENGINEERING_CANDIDATE"
+  }
+}

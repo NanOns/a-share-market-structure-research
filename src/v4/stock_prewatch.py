@@ -7,13 +7,17 @@ import gzip
 import hashlib
 import json
 import math
+import io
+import os
+import tempfile
 from pathlib import Path
 
 from .base_seed import (_load_accepted_source_context, _verify_file_binding, _logical_digest,
-                        canonical_json, sha256_file, atomic_write_gzip_jsonl)
+                        canonical_json, sha256_file)
 
 MODEL = 'STOCK_PREWATCH_V1'
 PARAMETER_SET = 'V4_09_STOCK_PREWATCH_PARAMETER_SET_V1'
+CONSUMER_CONTRACT = 'V4_09_PRIORITY_PROVENANCE_AND_IMMUTABILITY_R1_1'
 
 def digest(value):
     return hashlib.sha256(canonical_json(value)).hexdigest()
@@ -27,6 +31,11 @@ def load_package(root):
         package[path.name.removeprefix('v4_09_').removesuffix('_v1.json')] = json.loads(path.read_text(encoding='utf8'))
     for binding in freeze['authority'].values():
         if isinstance(binding, dict) and 'path' in binding: _verify_file_binding(root, binding, 'V4-09 authority')
+    repair = json.loads((root/'reports/v4_09/V4_09_R1_1_REPAIR_CONTRACT_FREEZE.json').read_text(encoding='utf8'))
+    for binding in repair['new_bindings']:
+        path, _ = _verify_file_binding(root, binding, 'V4-09 R1.1 frozen repair contract')
+        if path.name == 'v4_09_priority_provenance_contract_r1_1.json':
+            package['priority_provenance_contract'] = json.loads(path.read_text(encoding='utf8'))
     return package
 
 def parameter_values(params):
@@ -66,6 +75,9 @@ def evaluate(facts, package):
         if value == rule['equals']:
             structure = rule['result']; break
     else: structure = 'LOW'
+    # An invalid producer is a provenance failure, separate from a valid producer's UNKNOWN value.
+    if any(p['field_id'] in ['compression_state','ma_structure_state'] for p in facts.get('priority_lineage_failures', [])):
+        structure = 'UNKNOWN'
     risk = facts.get('core_extension_risk')
     if risk not in ast['enum_order']['risk_axis']: risk = 'UNKNOWN'
     axes = dict(emergence_axis=emergence,structure_quality_axis=structure,risk_axis=risk)
@@ -133,17 +145,32 @@ def project(core, factor, seed, context, package):
         reasons.append('base_seed_state:ACCEPTED_SEED_UNKNOWN')
         state = 'UNKNOWN'
     delta_item, delta = number_field('rps5_delta3')
+    priority_failures = []
+    state_identities = {}
+    provenance_contract = package['priority_provenance_contract']
     def state_field(name):
         item = core.get('states',{}).get(name,{})
+        expected = provenance_contract['states'][name]
+        state_identities[name] = dict(contract_id=item.get('contract_id'), parameter_set_id=item.get('parameter_set_id'))
+        reason = None
+        if item.get('contract_id') != expected['contract_id']:
+            reason = provenance_contract['contract_mismatch_reason']
+        elif item.get('parameter_set_id') != expected['parameter_set_id']:
+            reason = provenance_contract['parameter_mismatch_reason']
+        if reason:
+            priority_failures.append(dict(field_id=name, reason=reason))
+            return 'UNKNOWN'
         return item.get('value','UNKNOWN') if item.get('unknown_reason') is None and item.get('value') is not None else 'UNKNOWN'
     facts = dict(base_seed_state=state, mandatory_core_quality_ready='UNKNOWN' if reasons else 'TRUE', delta3=delta,
                  compression_state=state_field('compression_state'), ma_structure_state=state_field('ma_structure_state'),
                  core_extension_risk=state_field('core_extension_risk'))
+    facts['priority_lineage_failures'] = priority_failures
     # Digests consume the same whitelist as the formula; forbidden inputs do not alter bytes.
     provenance = dict(security_id=security,trade_date=date,profile_publication=core.get('publication_id'),
         seed_publication=seed.get('publication_id'),source_core_logical_digest=seed.get('source_core_logical_digest'),
         coordinate_basis=core.get('coordinate_basis'),factor_coordinate_basis=factor.get('coordinate_basis'),
-        core_price_damage=damage,damage_quality=damage_item.get('quality_state'),delta_quality=delta_item.get('quality_state'))
+        core_price_damage=damage,damage_quality=damage_item.get('quality_state'),delta_quality=delta_item.get('quality_state'),
+        priority_state_identities=state_identities)
     return facts, sorted(set(reasons)), provenance
 
 def build(core_rows, factor_rows, seed_rows, context, package):
@@ -157,7 +184,7 @@ def build(core_rows, factor_rows, seed_rows, context, package):
     boards = Counter(row['board'] for row in core_rows)
     if dict(boards)!=context['expected_board_counts']: raise ValueError('BOARD_SCOPE_CONTEXT_MISMATCH')
     bindings = context['source_bindings']
-    publication = 'V4_09:'+digest(dict(context_id=context['context_id'],source_bindings=bindings,package_digest=digest(package)))
+    publication = 'V4_09:'+digest(dict(context_id=context['context_id'],source_bindings=bindings,package_digest=digest(package),consumer_contract_id=CONSUMER_CONTRACT))
     results=[]
     for security in sorted(expected):
         core,factor,seed = [index[security] for index in indexes]
@@ -165,6 +192,7 @@ def build(core_rows, factor_rows, seed_rows, context, package):
         evaluated = evaluate(facts,package)
         waiting = [{'field_id':p['predicate'], 'reason':'UPSTREAM_PRIORITY_OR_REQUIRED_UNKNOWN'} for p in evaluated['unknown_predicates']]
         waiting += [{'field_id':'mandatory_core_quality_ready','reason':r} for r in reasons]
+        waiting += facts['priority_lineage_failures']
         results.append(dict(security_id=security,trade_date=context['trade_date'],publication_id=publication,
             base_seed_state=facts['base_seed_state'],mandatory_core_quality_ready=facts['mandatory_core_quality_ready'],
             **evaluated,waiting_for=waiting,quality='PARTIAL_UNKNOWN' if waiting else 'READY',
@@ -212,13 +240,50 @@ def load_accepted(root):
         capability=seed_head['capabilities']['REAL_BASE_SEED_SIGNAL'])
     return context,core_rows,factor_rows,seeds,package
 
-def materialize(root, output):
-    context,cores,factors,seeds,package=load_accepted(root)
+def immutable_gzip_bytes(rows):
+    stream = io.BytesIO()
+    with gzip.GzipFile(fileobj=stream, mode='wb', filename='', mtime=0) as compressed:
+        for row in rows: compressed.write(canonical_json(row) + b'\n')
+    return stream.getvalue()
+
+def write_immutable_gzip_jsonl(path, rows):
+    """Publish complete bytes exclusively; conflicting paths never replace history."""
+    payload = immutable_gzip_bytes(rows)
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    if path.exists():
+        if path.read_bytes() != payload: raise ValueError('APPEND_ONLY_ARTIFACT_CONFLICT')
+        return 'IDEMPOTENT_PASS'
+    fd, name = tempfile.mkstemp(prefix=path.name+'.',suffix='.tmp',dir=path.parent)
+    temporary = Path(name)
+    try:
+        with os.fdopen(fd,'wb') as stream:
+            stream.write(payload); stream.flush(); os.fsync(stream.fileno())
+        try:
+            os.link(temporary, path)  # Atomic create-if-absent, never os.replace.
+        except FileExistsError:
+            if path.read_bytes() != payload: raise ValueError('APPEND_ONLY_ARTIFACT_CONFLICT')
+            return 'IDEMPOTENT_PASS'
+        return 'CREATED'
+    finally:
+        temporary.unlink(missing_ok=True)
+
+def materialize_records(root, context, cores, factors, seeds, package, artifact_directory=None):
     rows=build(cores,factors,seeds,context,package)
-    atomic_write_gzip_jsonl(output,rows)
-    return dict(contract_id='V4_09_FULL_MARKET_CANDIDATE_V1',status='ENGINEERING_CANDIDATE',
-        run_context=context, artifact=dict(path=output.relative_to(root).as_posix(),sha256=sha256_file(output),
-        byte_count=output.stat().st_size,logical_digest=digest(rows)),row_count=len(rows),
-        raw_counts={k:sum(r['raw_qualification']==k for r in rows) for k in ['TRUE','FALSE','UNKNOWN']},
+    logical=digest(rows)
+    directory=artifact_directory or root/'data/v4/artifact_store/v4_09'
+    output=Path(directory)/f"V4_09_STOCK_PREWATCH_{context['trade_date']}_{logical}.jsonl.gz"
+    write_immutable_gzip_jsonl(output,rows)
+    return dict(contract_id='V4_09_R1_1_FULL_MARKET_CANDIDATE',status='ENGINEERING_CANDIDATE',
+        consumer_contract_id=CONSUMER_CONTRACT,run_context=context,
+        artifact=dict(path=output.relative_to(root).as_posix(),sha256=sha256_file(output),byte_count=output.stat().st_size,
+                      logical_digest=logical,publication_id=rows[0]['publication_id'],trade_date=context['trade_date']),
+        row_count=len(rows),raw_counts={k:sum(r['raw_qualification']==k for r in rows) for k in ['TRUE','FALSE','UNKNOWN']},
         bucket_counts={k:sum(r['priority_bucket']==k for r in rows) for k in ['A','B','C','D','UNKNOWN_BUCKET','NOT_ELIGIBLE']},
         board_counts=context['expected_board_counts'],production_permission=False)
+
+def materialize(root, artifact_directory=None):
+    if artifact_directory is not None and Path(artifact_directory).suffix:
+        raise ValueError('FIXED_ARTIFACT_FILENAME_NOT_ALLOWED')
+    context,cores,factors,seeds,package=load_accepted(root)
+    return materialize_records(root,context,cores,factors,seeds,package,artifact_directory)

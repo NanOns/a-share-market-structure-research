@@ -35,7 +35,7 @@ def main():
         p=subprocess.run([sys.executable,str(ROOT/'scripts'/script)],cwd=ROOT,capture_output=True,text=True,encoding='utf8',errors='replace',check=True)
         reproduction.append(dict(script=script,stdout=p.stdout))
     if git('status','--porcelain=v1'): raise ValueError('CANDIDATE_REPRODUCTION_CHANGED_TRACKED_BYTES')
-    receipt=json.loads((ROOT/'reports/v4_09/V4_09_FULL_MARKET_CANDIDATE.json').read_text(encoding='utf8'))
+    receipt=json.loads((ROOT/'reports/v4_09/V4_09_R1_1_FULL_MARKET_CANDIDATE.json').read_text(encoding='utf8'))
     with gzip.open(ROOT/receipt['artifact']['path'],'rt',encoding='utf8') as stream: records=[json.loads(line) for line in stream]
     with disposable_cluster(args.postgres_bin) as (dsn,temp):
         import psycopg
@@ -72,7 +72,7 @@ def main():
                 checks['V4_09_rollback_only_021_objects']=before_tables-after_tables=={'stock_prewatch_results','stock_prewatch_publications'} and before_functions-after_functions=={'v4.guard_stock_prewatch_binding()'}
                 pg.execute('ROLLBACK TO SAVEPOINT rollback_021_probe')
             checks['V4_09_rollback_probe_restored_exact_rows']=persist(pg,records)==readback and persist(pg,revised)==second
-            schema=dict(contract_id='V4_09_SCHEMA_MIGRATION_RECEIPT_V1',status='PASS' if all(checks.values()) else 'FAIL',tested_commit=head,
+            schema=dict(contract_id='V4_09_R1_1_SCHEMA_MIGRATION_RECEIPT',status='PASS' if all(checks.values()) else 'FAIL',tested_commit=head,
                 database_identity=dict(zip(['database','owner','server_address','server_port','version','datcollate','datctype'],identity)),
                 migrations=migrations,checks=checks,full_market_readback=readback,revision_readback=second,
                 config_dot_env_read=False,configured_or_production_database_used=False,credentials_persisted=False,temporary_cluster_destroyed=True)
@@ -87,19 +87,19 @@ def main():
         suites=list(ET.parse(junit).getroot().iter('testsuite')) if junit.exists() else []
         summary={k:sum(int(s.attrib.get(k,0)) for s in suites) for k in ['tests','failures','errors','skipped']}
         summary['passed']=summary['tests']-summary['failures']-summary['errors']-summary['skipped']
-        regression=dict(contract_id='V4_09_ISOLATED_REGRESSION_V1',status='PASS' if p.returncode==0 and suites else 'FAIL',tested_commit=head,
+        regression=dict(contract_id='V4_09_R1_1_ISOLATED_REGRESSION',status='PASS' if p.returncode==0 and suites else 'FAIL',tested_commit=head,
             summary=summary,required_families=families,stdout=p.stdout,stderr=p.stderr,config_dot_env_read=False,
             dsn_source='PROCESS_ENVIRONMENT_DISPOSABLE_CLUSTER',configured_or_production_database_used=False)
     from scripts.scan_no_symbol_specific_runtime_logic import run as scan
     governance=scan(ROOT);governance['tested_commit']=head
     after=git('status','--porcelain=v1')
-    clean=dict(contract_id='V4_09_CLEAN_CHECKOUT_RECEIPT_V1',status='PASS_CLEAN_DETACHED_CHECKOUT' if not after and schema['status']=='PASS' and regression['status']=='PASS' and governance['status']=='PASS' else 'FAIL',
+    clean=dict(contract_id='V4_09_R1_1_CLEAN_CHECKOUT_RECEIPT',status='PASS_CLEAN_DETACHED_CHECKOUT' if not after and schema['status']=='PASS' and regression['status']=='PASS' and governance['status']=='PASS' else 'FAIL',
         tested_commit=head,detached_head=True,git_status_before=before,git_status_after=after,config_dot_env_present=False,
         temporary_cluster_destroyed=True,promotion_validation=promotion,reproduction=reproduction,
         elapsed_seconds=round(time.monotonic()-started,3),created_at_utc=datetime.now(timezone.utc).isoformat())
     out=ROOT/'reports/v4_09'
     for name,value in [('SCHEMA_MIGRATION_RECEIPT',schema),('ISOLATED_REGRESSION',regression),('CLEAN_CHECKOUT_RECEIPT',clean),('NO_SYMBOL_SPECIFIC_SYSTEM_LOGIC_SCAN',compact_scan(governance))]:
-        atomic_json(out/f'V4_09_{name}.json',value)
+        atomic_json(out/f'V4_09_R1_1_{name}.json',value)
     print(json.dumps(dict(status=clean['status'],tested_commit=head,regression=summary,no_symbol_status=governance['status'],checks=checks)))
     return 0 if clean['status'].startswith('PASS') else 1
 

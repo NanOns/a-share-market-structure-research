@@ -1,0 +1,293 @@
+{
+  "checks": [
+    {
+      "bucket": "A",
+      "expected": {
+        "emergence_axis": "HIGH",
+        "priority_bucket": "A",
+        "raw_qualification": "TRUE",
+        "risk_axis": "LOW",
+        "structure_quality_axis": "HIGH"
+      },
+      "id": "compression_state_correct",
+      "passed": true,
+      "producer_failures": [],
+      "raw": "TRUE",
+      "required_quality_unchanged": true
+    },
+    {
+      "bucket": "UNKNOWN_BUCKET",
+      "expected": {
+        "emergence_axis": "HIGH",
+        "priority_bucket": "UNKNOWN_BUCKET",
+        "raw_qualification": "TRUE",
+        "risk_axis": "LOW",
+        "structure_quality_axis": "UNKNOWN"
+      },
+      "id": "compression_state_wrong_contract",
+      "passed": true,
+      "producer_failures": [
+        {
+          "field_id": "compression_state",
+          "reason": "STATE_PRODUCER_CONTRACT_MISMATCH"
+        }
+      ],
+      "raw": "TRUE",
+      "required_quality_unchanged": true
+    },
+    {
+      "bucket": "UNKNOWN_BUCKET",
+      "expected": {
+        "emergence_axis": "HIGH",
+        "priority_bucket": "UNKNOWN_BUCKET",
+        "raw_qualification": "TRUE",
+        "risk_axis": "LOW",
+        "structure_quality_axis": "UNKNOWN"
+      },
+      "id": "compression_state_missing_contract",
+      "passed": true,
+      "producer_failures": [
+        {
+          "field_id": "compression_state",
+          "reason": "STATE_PRODUCER_CONTRACT_MISMATCH"
+        }
+      ],
+      "raw": "TRUE",
+      "required_quality_unchanged": true
+    },
+    {
+      "bucket": "UNKNOWN_BUCKET",
+      "expected": {
+        "emergence_axis": "HIGH",
+        "priority_bucket": "UNKNOWN_BUCKET",
+        "raw_qualification": "TRUE",
+        "risk_axis": "LOW",
+        "structure_quality_axis": "UNKNOWN"
+      },
+      "id": "compression_state_wrong_parameter",
+      "passed": true,
+      "producer_failures": [
+        {
+          "field_id": "compression_state",
+          "reason": "STATE_PARAMETER_SET_MISMATCH"
+        }
+      ],
+      "raw": "TRUE",
+      "required_quality_unchanged": true
+    },
+    {
+      "bucket": "UNKNOWN_BUCKET",
+      "expected": {
+        "emergence_axis": "HIGH",
+        "priority_bucket": "UNKNOWN_BUCKET",
+        "raw_qualification": "TRUE",
+        "risk_axis": "LOW",
+        "structure_quality_axis": "UNKNOWN"
+      },
+      "id": "compression_state_missing_parameter",
+      "passed": true,
+      "producer_failures": [
+        {
+          "field_id": "compression_state",
+          "reason": "STATE_PARAMETER_SET_MISMATCH"
+        }
+      ],
+      "raw": "TRUE",
+      "required_quality_unchanged": true
+    },
+    {
+      "bucket": "A",
+      "expected": {
+        "emergence_axis": "HIGH",
+        "priority_bucket": "A",
+        "raw_qualification": "TRUE",
+        "risk_axis": "LOW",
+        "structure_quality_axis": "HIGH"
+      },
+      "id": "ma_structure_state_correct",
+      "passed": true,
+      "producer_failures": [],
+      "raw": "TRUE",
+      "required_quality_unchanged": true
+    },
+    {
+      "bucket": "UNKNOWN_BUCKET",
+      "expected": {
+        "emergence_axis": "HIGH",
+        "priority_bucket": "UNKNOWN_BUCKET",
+        "raw_qualification": "TRUE",
+        "risk_axis": "LOW",
+        "structure_quality_axis": "UNKNOWN"
+      },
+      "id": "ma_structure_state_wrong_contract",
+      "passed": true,
+      "producer_failures": [
+        {
+          "field_id": "ma_structure_state",
+          "reason": "STATE_PRODUCER_CONTRACT_MISMATCH"
+        }
+      ],
+      "raw": "TRUE",
+      "required_quality_unchanged": true
+    },
+    {
+      "bucket": "UNKNOWN_BUCKET",
+      "expected": {
+        "emergence_axis": "HIGH",
+        "priority_bucket": "UNKNOWN_BUCKET",
+        "raw_qualification": "TRUE",
+        "risk_axis": "LOW",
+        "structure_quality_axis": "UNKNOWN"
+      },
+      "id": "ma_structure_state_missing_contract",
+      "passed": true,
+      "producer_failures": [
+        {
+          "field_id": "ma_structure_state",
+          "reason": "STATE_PRODUCER_CONTRACT_MISMATCH"
+        }
+      ],
+      "raw": "TRUE",
+      "required_quality_unchanged": true
+    },
+    {
+      "bucket": "UNKNOWN_BUCKET",
+      "expected": {
+        "emergence_axis": "HIGH",
+        "priority_bucket": "UNKNOWN_BUCKET",
+        "raw_qualification": "TRUE",
+        "risk_axis": "LOW",
+        "structure_quality_axis": "UNKNOWN"
+      },
+      "id": "ma_structure_state_wrong_parameter",
+      "passed": true,
+      "producer_failures": [
+        {
+          "field_id": "ma_structure_state",
+          "reason": "STATE_PARAMETER_SET_MISMATCH"
+        }
+      ],
+      "raw": "TRUE",
+      "required_quality_unchanged": true
+    },
+    {
+      "bucket": "UNKNOWN_BUCKET",
+      "expected": {
+        "emergence_axis": "HIGH",
+        "priority_bucket": "UNKNOWN_BUCKET",
+        "raw_qualification": "TRUE",
+        "risk_axis": "LOW",
+        "structure_quality_axis": "UNKNOWN"
+      },
+      "id": "ma_structure_state_missing_parameter",
+      "passed": true,
+      "producer_failures": [
+        {
+          "field_id": "ma_structure_state",
+          "reason": "STATE_PARAMETER_SET_MISMATCH"
+        }
+      ],
+      "raw": "TRUE",
+      "required_quality_unchanged": true
+    },
+    {
+      "bucket": "A",
+      "expected": {
+        "emergence_axis": "HIGH",
+        "priority_bucket": "A",
+        "raw_qualification": "TRUE",
+        "risk_axis": "LOW",
+        "structure_quality_axis": "HIGH"
+      },
+      "id": "core_extension_risk_correct",
+      "passed": true,
+      "producer_failures": [],
+      "raw": "TRUE",
+      "required_quality_unchanged": true
+    },
+    {
+      "bucket": "UNKNOWN_BUCKET",
+      "expected": {
+        "emergence_axis": "HIGH",
+        "priority_bucket": "UNKNOWN_BUCKET",
+        "raw_qualification": "TRUE",
+        "risk_axis": "UNKNOWN",
+        "structure_quality_axis": "HIGH"
+      },
+      "id": "core_extension_risk_wrong_contract",
+      "passed": true,
+      "producer_failures": [
+        {
+          "field_id": "core_extension_risk",
+          "reason": "STATE_PRODUCER_CONTRACT_MISMATCH"
+        }
+      ],
+      "raw": "TRUE",
+      "required_quality_unchanged": true
+    },
+    {
+      "bucket": "UNKNOWN_BUCKET",
+      "expected": {
+        "emergence_axis": "HIGH",
+        "priority_bucket": "UNKNOWN_BUCKET",
+        "raw_qualification": "TRUE",
+        "risk_axis": "UNKNOWN",
+        "structure_quality_axis": "HIGH"
+      },
+      "id": "core_extension_risk_missing_contract",
+      "passed": true,
+      "producer_failures": [
+        {
+          "field_id": "core_extension_risk",
+          "reason": "STATE_PRODUCER_CONTRACT_MISMATCH"
+        }
+      ],
+      "raw": "TRUE",
+      "required_quality_unchanged": true
+    },
+    {
+      "bucket": "UNKNOWN_BUCKET",
+      "expected": {
+        "emergence_axis": "HIGH",
+        "priority_bucket": "UNKNOWN_BUCKET",
+        "raw_qualification": "TRUE",
+        "risk_axis": "UNKNOWN",
+        "structure_quality_axis": "HIGH"
+      },
+      "id": "core_extension_risk_wrong_parameter",
+      "passed": true,
+      "producer_failures": [
+        {
+          "field_id": "core_extension_risk",
+          "reason": "STATE_PARAMETER_SET_MISMATCH"
+        }
+      ],
+      "raw": "TRUE",
+      "required_quality_unchanged": true
+    },
+    {
+      "bucket": "UNKNOWN_BUCKET",
+      "expected": {
+        "emergence_axis": "HIGH",
+        "priority_bucket": "UNKNOWN_BUCKET",
+        "raw_qualification": "TRUE",
+        "risk_axis": "UNKNOWN",
+        "structure_quality_axis": "HIGH"
+      },
+      "id": "core_extension_risk_missing_parameter",
+      "passed": true,
+      "producer_failures": [
+        {
+          "field_id": "core_extension_risk",
+          "reason": "STATE_PARAMETER_SET_MISMATCH"
+        }
+      ],
+      "raw": "TRUE",
+      "required_quality_unchanged": true
+    }
+  ],
+  "independent_reader_used": true,
+  "raw_formula_unchanged": true,
+  "status": "PASS",
+  "vector_count": 15
+}

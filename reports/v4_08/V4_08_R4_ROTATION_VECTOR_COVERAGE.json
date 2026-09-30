@@ -1,0 +1,97 @@
+{
+  "canonical_contract": {
+    "byte_count": 21237,
+    "path": "config/v4_08_rotation_core_contract_v2.json",
+    "sha256": "05973a6a2896b80824b436499c413134d04b0d5a9538ad3264788ec51f52a37a"
+  },
+  "contract_id": "V4_08_R4_ROTATION_VECTOR_COVERAGE_V1",
+  "evaluator": {
+    "byte_count": 5351,
+    "path": "src/sector/machine_ast_r3.py",
+    "sha256": "a0966730bcd580a249be212474e4da61d55950398fff873f21df4c0dbcda0a87"
+  },
+  "formal_consumer_enabled": false,
+  "pending_parameter_ids": [
+    "V4_08_EARLY_BREADTH_DELTA_MIN",
+    "V4_08_EARLY_BREADTH_RETENTION_MIN",
+    "V4_08_EARLY_SEED_RETENTION_MIN",
+    "V4_08_EARLY_TOP1_CONCENTRATION_MAX",
+    "V4_08_MATURE_STRONG_RETENTION_MIN"
+  ],
+  "status": "PASS",
+  "vector_set": {
+    "byte_count": 2915,
+    "path": "config/v4_08_rotation_machine_vectors_v2.json",
+    "sha256": "912d2a9089ae843e955f4c6b30c30516bf71a7c36e176cb8aefb94684880e906"
+  },
+  "vectors": [
+    {
+      "actual_canonical_ast": {
+        "rotation_accepted_possible": false,
+        "rotation_expanding_allowed": "NOT_APPLICABLE",
+        "rotation_in_possible": true,
+        "rotation_reaccelerating_allowed": "NOT_APPLICABLE"
+      },
+      "expected": {
+        "rotation_accepted_possible": false,
+        "rotation_expanding_allowed": false,
+        "rotation_in_possible": true,
+        "rotation_reaccelerating_allowed": false
+      },
+      "passed": true,
+      "premises_are_synthetic": true,
+      "vector_id": "R1A"
+    },
+    {
+      "actual_canonical_ast": {
+        "rotation_accepted_possible": true,
+        "rotation_expanding_allowed": "NOT_APPLICABLE",
+        "rotation_in_possible": true,
+        "rotation_reaccelerating_allowed": "NOT_APPLICABLE"
+      },
+      "expected": {
+        "rotation_accepted_possible": true,
+        "rotation_expanding_allowed": false,
+        "rotation_in_possible": true,
+        "rotation_reaccelerating_allowed": false
+      },
+      "passed": true,
+      "premises_are_synthetic": true,
+      "vector_id": "R1B"
+    },
+    {
+      "actual_canonical_ast": {
+        "rotation_accepted_possible": false,
+        "rotation_expanding_allowed": false,
+        "rotation_in_possible": false,
+        "rotation_reaccelerating_allowed": false
+      },
+      "expected": {
+        "rotation_accepted_possible": false,
+        "rotation_expanding_allowed": false,
+        "rotation_in_possible": false,
+        "rotation_reaccelerating_allowed": false
+      },
+      "passed": true,
+      "premises_are_synthetic": true,
+      "vector_id": "R2"
+    },
+    {
+      "actual_canonical_ast": {
+        "rotation_accepted_possible": false,
+        "rotation_expanding_allowed": false,
+        "rotation_in_possible": false,
+        "rotation_reaccelerating_allowed": false
+      },
+      "expected": {
+        "rotation_accepted_possible": false,
+        "rotation_expanding_allowed": false,
+        "rotation_in_possible": false,
+        "rotation_reaccelerating_allowed": false
+      },
+      "passed": true,
+      "premises_are_synthetic": true,
+      "vector_id": "R3"
+    }
+  ]
+}

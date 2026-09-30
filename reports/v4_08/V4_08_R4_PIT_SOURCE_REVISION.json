@@ -1,0 +1,63 @@
+{
+  "ingested_at": "2026-09-30T06:32:59.708931Z",
+  "membership_asof_basis": "PROJECT_FIRST_OBSERVED_SOURCE_STATE",
+  "membership_asof_date": "2026-09-30",
+  "membership_basis": "PIT_OBSERVED",
+  "observed_at": "2026-09-30T06:32:59.707313Z",
+  "provider_available_at": "2026-09-30T06:32:59.707313Z",
+  "provider_available_at_basis": "PROJECT_FIRST_OBSERVED_PROVIDER_BYTES",
+  "revision_chain_valid": true,
+  "revision_quality": "PIT_OBSERVED_ACCEPTED",
+  "source_bytes_digest": "2a66a6ce398ce64da48f6fd67ea9afd4fa8c7e7f7ce893a74c21b4ec6ec92508",
+  "source_contract_id": "V4_08_SECTOR_MEMBERSHIP_SOURCE_V1",
+  "source_digest": "2a66a6ce398ce64da48f6fd67ea9afd4fa8c7e7f7ce893a74c21b4ec6ec92508",
+  "source_file_digests": {
+    "T0002/hq_cache/infoharbor_block.dat": "025d9ae0c50d0cbf64fa3ba06c419681d7a931a9192b1c7841b14382b53b7595",
+    "T0002/hq_cache/tdxhy.cfg": "f0861020e5d9fde9f10ab0374da6b887f3a5f681cfa00bb7dc6776ee4703c735",
+    "T0002/hq_cache/tdxzs.cfg": "a33983fc8bb15c97db93fe9b60394b326b71a91e99e33b8b54700415442074da"
+  },
+  "source_revision_id": "sha256:190f9647cb8b6b610dd5336a76dc8b483e3a31439bdb0140bd95523c45905386",
+  "supersedes_revision_id": null,
+  "system_available_at": "2026-09-30T06:32:59.708931Z",
+  "temporal_evidence": {
+    "accepted_calendar_head": {
+      "byte_count": 1176,
+      "path": "data/v4/V4_02_GO_FORWARD_CALENDAR_EXTENSION_ACCEPTED_HEAD_R1.json",
+      "sha256": "d0d453689261603a6ccd773f6383781178cb74d388087b72c652dc8afcb309f6"
+    },
+    "accepted_identity_head": {
+      "byte_count": 1099,
+      "path": "data/v4/V4_01_GO_FORWARD_IDENTITY_ACCEPTED_HEAD_R1.json",
+      "sha256": "496d537f7c6b9c78cac3a084330f09132814165d2967e8991ffa1d6319092214"
+    },
+    "contract_id": "V4_08_R4_PIT_TEMPORAL_EVIDENCE_V1",
+    "cutoff": "2026-09-30T06:37:57.511101Z",
+    "membership_asof_basis": "PROJECT_FIRST_OBSERVED_SOURCE_STATE",
+    "membership_asof_date": "2026-09-30",
+    "membership_replay_historical": true,
+    "no_filesystem_mtime_no_backdating_no_carry_forward": true,
+    "observed_at": "2026-09-30T06:32:59.707313Z",
+    "provider_available_at": "2026-09-30T06:32:59.707313Z",
+    "provider_available_at_basis": "PROJECT_FIRST_OBSERVED_PROVIDER_BYTES",
+    "raw_membership_diagnostic": {
+      "byte_count": 2560943,
+      "path": "reports/v4_08/staging/V4_08_R3_EXACT_DAY_RAW_MEMBERSHIP_DIAGNOSTIC.jsonl.gz",
+      "sha256": "6a614dec90be8f332358c19579c5edac3f6114509901d394487d6c1f19229c15"
+    },
+    "revision_chain_valid": true,
+    "sector_type_registry": {
+      "byte_count": 1305,
+      "path": "config/v4_08_sector_type_registry_v1.json",
+      "sha256": "4a8d1c8e6574bfa9985e7980ca83337b7a14bed54bfbbace9e817d44b2076743"
+    },
+    "source_capture": {
+      "byte_count": 2269,
+      "path": "reports/v4_08/V4_08_R3_FORWARD_PIT_SOURCE_CAPTURE.json",
+      "sha256": "75794ba275fd97a2cc156ac3cddda84f349d61ee921561804b7c222633dfb2b6"
+    },
+    "supersedes_revision_id": null,
+    "system_available_at": "2026-09-30T06:32:59.708931Z",
+    "target_trade_date": "2026-09-30"
+  },
+  "temporal_evidence_digest": "b69b37c4a3c64b3796a16a1d03865a6bb222a8cf9d28dfcddd232f2a9e42d17c"
+}

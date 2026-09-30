@@ -1,0 +1,29 @@
+{
+  "acceptance_owner": "Separate cross-cutting audit; acceptance evidence and scope independent from V4-08 R4.",
+  "audit_item_id": "AUD-AMOUNT-A-06",
+  "current_disposition": "OPEN; diagnostic use only; no formal consumer authorization is implied.",
+  "evidence_required": [
+    "Independent source and unit validation for Amount A inputs.",
+    "Recompute the common-member set and 20-session denominator from frozen dated facts.",
+    "Validate coverage, missingness and concentration calculations against independent examples.",
+    "Trace every consumer and prove Amount-A-dependent qualification, ranking and Focus paths remain diagnostic while this item is open.",
+    "External audit acceptance tied to exact contract and implementation digests."
+  ],
+  "formal_consumer_gate": "Amount-A-dependent formal qualification, ranking and Focus use stay disabled until this item has independent acceptance.",
+  "governing_contract": {
+    "byte_count": 224998,
+    "path": "reports/v4_08/source_contracts/REV4_FEP_R2_20260930.md",
+    "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+  },
+  "governing_contract_sections": [
+    "34",
+    "52B",
+    "72",
+    "78"
+  ],
+  "opened_by": "V4-08 R4 stage closeout per repository AGENTS.md cross-cutting audit guardrail",
+  "r4_stage_gate_impact": "Does not change the authorized 2026-09-30 membership candidate, its source lineage, or the exact identity/calendar promotions. No Amount A claim is made by the R4 PIT membership candidate.",
+  "record_id": "AUD-AMOUNT-A-06_TRACKER_20260930_R1",
+  "scope": "Cross-cutting M10 Amount A validity, units, shared-member denominator, 20-session availability and coverage, concentration arithmetic, and downstream references. The review is independent from V4-08 R4 membership input promotion and PIT candidate acceptance.",
+  "status": "OPEN_EVIDENCE_REQUIRED"
+}

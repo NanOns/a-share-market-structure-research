@@ -1,0 +1,414 @@
+{
+  "binary_truth_table": [
+    {
+      "actual_reason_code": null,
+      "actual_state": true,
+      "expected_reason_code": null,
+      "expected_state": true,
+      "left": true,
+      "operator": "AND",
+      "passed": true,
+      "right": true
+    },
+    {
+      "actual_reason_code": "REQUIRED_BRANCH_FALSE",
+      "actual_state": false,
+      "expected_reason_code": "REQUIRED_BRANCH_FALSE",
+      "expected_state": false,
+      "left": true,
+      "operator": "AND",
+      "passed": true,
+      "right": false
+    },
+    {
+      "actual_reason_code": "REQUIRED_VALUE_UNKNOWN",
+      "actual_state": null,
+      "expected_reason_code": "REQUIRED_VALUE_UNKNOWN",
+      "expected_state": null,
+      "left": true,
+      "operator": "AND",
+      "passed": true,
+      "right": null
+    },
+    {
+      "actual_reason_code": "NOT_APPLICABLE_BRANCH_SKIPPED",
+      "actual_state": true,
+      "expected_reason_code": "NOT_APPLICABLE_BRANCH_SKIPPED",
+      "expected_state": true,
+      "left": true,
+      "operator": "AND",
+      "passed": true,
+      "right": "NOT_APPLICABLE"
+    },
+    {
+      "actual_reason_code": "REQUIRED_BRANCH_FALSE",
+      "actual_state": false,
+      "expected_reason_code": "REQUIRED_BRANCH_FALSE",
+      "expected_state": false,
+      "left": false,
+      "operator": "AND",
+      "passed": true,
+      "right": true
+    },
+    {
+      "actual_reason_code": "REQUIRED_BRANCH_FALSE",
+      "actual_state": false,
+      "expected_reason_code": "REQUIRED_BRANCH_FALSE",
+      "expected_state": false,
+      "left": false,
+      "operator": "AND",
+      "passed": true,
+      "right": false
+    },
+    {
+      "actual_reason_code": "REQUIRED_BRANCH_FALSE",
+      "actual_state": false,
+      "expected_reason_code": "REQUIRED_BRANCH_FALSE",
+      "expected_state": false,
+      "left": false,
+      "operator": "AND",
+      "passed": true,
+      "right": null
+    },
+    {
+      "actual_reason_code": "REQUIRED_BRANCH_FALSE",
+      "actual_state": false,
+      "expected_reason_code": "REQUIRED_BRANCH_FALSE",
+      "expected_state": false,
+      "left": false,
+      "operator": "AND",
+      "passed": true,
+      "right": "NOT_APPLICABLE"
+    },
+    {
+      "actual_reason_code": "REQUIRED_VALUE_UNKNOWN",
+      "actual_state": null,
+      "expected_reason_code": "REQUIRED_VALUE_UNKNOWN",
+      "expected_state": null,
+      "left": null,
+      "operator": "AND",
+      "passed": true,
+      "right": true
+    },
+    {
+      "actual_reason_code": "REQUIRED_BRANCH_FALSE",
+      "actual_state": false,
+      "expected_reason_code": "REQUIRED_BRANCH_FALSE",
+      "expected_state": false,
+      "left": null,
+      "operator": "AND",
+      "passed": true,
+      "right": false
+    },
+    {
+      "actual_reason_code": "REQUIRED_VALUE_UNKNOWN",
+      "actual_state": null,
+      "expected_reason_code": "REQUIRED_VALUE_UNKNOWN",
+      "expected_state": null,
+      "left": null,
+      "operator": "AND",
+      "passed": true,
+      "right": null
+    },
+    {
+      "actual_reason_code": "REQUIRED_VALUE_UNKNOWN",
+      "actual_state": null,
+      "expected_reason_code": "REQUIRED_VALUE_UNKNOWN",
+      "expected_state": null,
+      "left": null,
+      "operator": "AND",
+      "passed": true,
+      "right": "NOT_APPLICABLE"
+    },
+    {
+      "actual_reason_code": "NOT_APPLICABLE_BRANCH_SKIPPED",
+      "actual_state": true,
+      "expected_reason_code": "NOT_APPLICABLE_BRANCH_SKIPPED",
+      "expected_state": true,
+      "left": "NOT_APPLICABLE",
+      "operator": "AND",
+      "passed": true,
+      "right": true
+    },
+    {
+      "actual_reason_code": "REQUIRED_BRANCH_FALSE",
+      "actual_state": false,
+      "expected_reason_code": "REQUIRED_BRANCH_FALSE",
+      "expected_state": false,
+      "left": "NOT_APPLICABLE",
+      "operator": "AND",
+      "passed": true,
+      "right": false
+    },
+    {
+      "actual_reason_code": "REQUIRED_VALUE_UNKNOWN",
+      "actual_state": null,
+      "expected_reason_code": "REQUIRED_VALUE_UNKNOWN",
+      "expected_state": null,
+      "left": "NOT_APPLICABLE",
+      "operator": "AND",
+      "passed": true,
+      "right": null
+    },
+    {
+      "actual_reason_code": "ALL_REQUIRED_BRANCHES_NOT_APPLICABLE",
+      "actual_state": "NOT_APPLICABLE",
+      "expected_reason_code": "ALL_REQUIRED_BRANCHES_NOT_APPLICABLE",
+      "expected_state": "NOT_APPLICABLE",
+      "left": "NOT_APPLICABLE",
+      "operator": "AND",
+      "passed": true,
+      "right": "NOT_APPLICABLE"
+    },
+    {
+      "actual_reason_code": null,
+      "actual_state": true,
+      "expected_reason_code": null,
+      "expected_state": true,
+      "left": true,
+      "operator": "OR",
+      "passed": true,
+      "right": true
+    },
+    {
+      "actual_reason_code": null,
+      "actual_state": true,
+      "expected_reason_code": null,
+      "expected_state": true,
+      "left": true,
+      "operator": "OR",
+      "passed": true,
+      "right": false
+    },
+    {
+      "actual_reason_code": null,
+      "actual_state": true,
+      "expected_reason_code": null,
+      "expected_state": true,
+      "left": true,
+      "operator": "OR",
+      "passed": true,
+      "right": null
+    },
+    {
+      "actual_reason_code": null,
+      "actual_state": true,
+      "expected_reason_code": null,
+      "expected_state": true,
+      "left": true,
+      "operator": "OR",
+      "passed": true,
+      "right": "NOT_APPLICABLE"
+    },
+    {
+      "actual_reason_code": null,
+      "actual_state": true,
+      "expected_reason_code": null,
+      "expected_state": true,
+      "left": false,
+      "operator": "OR",
+      "passed": true,
+      "right": true
+    },
+    {
+      "actual_reason_code": null,
+      "actual_state": false,
+      "expected_reason_code": null,
+      "expected_state": false,
+      "left": false,
+      "operator": "OR",
+      "passed": true,
+      "right": false
+    },
+    {
+      "actual_reason_code": "REQUIRED_VALUE_UNKNOWN",
+      "actual_state": null,
+      "expected_reason_code": "REQUIRED_VALUE_UNKNOWN",
+      "expected_state": null,
+      "left": false,
+      "operator": "OR",
+      "passed": true,
+      "right": null
+    },
+    {
+      "actual_reason_code": "NOT_APPLICABLE_BRANCH_SKIPPED",
+      "actual_state": false,
+      "expected_reason_code": "NOT_APPLICABLE_BRANCH_SKIPPED",
+      "expected_state": false,
+      "left": false,
+      "operator": "OR",
+      "passed": true,
+      "right": "NOT_APPLICABLE"
+    },
+    {
+      "actual_reason_code": null,
+      "actual_state": true,
+      "expected_reason_code": null,
+      "expected_state": true,
+      "left": null,
+      "operator": "OR",
+      "passed": true,
+      "right": true
+    },
+    {
+      "actual_reason_code": "REQUIRED_VALUE_UNKNOWN",
+      "actual_state": null,
+      "expected_reason_code": "REQUIRED_VALUE_UNKNOWN",
+      "expected_state": null,
+      "left": null,
+      "operator": "OR",
+      "passed": true,
+      "right": false
+    },
+    {
+      "actual_reason_code": "REQUIRED_VALUE_UNKNOWN",
+      "actual_state": null,
+      "expected_reason_code": "REQUIRED_VALUE_UNKNOWN",
+      "expected_state": null,
+      "left": null,
+      "operator": "OR",
+      "passed": true,
+      "right": null
+    },
+    {
+      "actual_reason_code": "REQUIRED_VALUE_UNKNOWN",
+      "actual_state": null,
+      "expected_reason_code": "REQUIRED_VALUE_UNKNOWN",
+      "expected_state": null,
+      "left": null,
+      "operator": "OR",
+      "passed": true,
+      "right": "NOT_APPLICABLE"
+    },
+    {
+      "actual_reason_code": null,
+      "actual_state": true,
+      "expected_reason_code": null,
+      "expected_state": true,
+      "left": "NOT_APPLICABLE",
+      "operator": "OR",
+      "passed": true,
+      "right": true
+    },
+    {
+      "actual_reason_code": "NOT_APPLICABLE_BRANCH_SKIPPED",
+      "actual_state": false,
+      "expected_reason_code": "NOT_APPLICABLE_BRANCH_SKIPPED",
+      "expected_state": false,
+      "left": "NOT_APPLICABLE",
+      "operator": "OR",
+      "passed": true,
+      "right": false
+    },
+    {
+      "actual_reason_code": "REQUIRED_VALUE_UNKNOWN",
+      "actual_state": null,
+      "expected_reason_code": "REQUIRED_VALUE_UNKNOWN",
+      "expected_state": null,
+      "left": "NOT_APPLICABLE",
+      "operator": "OR",
+      "passed": true,
+      "right": null
+    },
+    {
+      "actual_reason_code": "NO_USABLE_RETENTION_BRANCH",
+      "actual_state": null,
+      "expected_reason_code": "NO_USABLE_RETENTION_BRANCH",
+      "expected_state": null,
+      "left": "NOT_APPLICABLE",
+      "operator": "OR",
+      "passed": true,
+      "right": "NOT_APPLICABLE"
+    }
+  ],
+  "canonical_early_retention_or": {
+    "ast_digest": "28f7a4bc75e671090e30e2901d923bae431da60c73951655da660b64e3f81bda",
+    "persisted_parameter_values_unchanged": true,
+    "rev4_fep_r2_source": {
+      "byte_count": 224998,
+      "path": "reports/v4_08/source_contracts/REV4_FEP_R2_20260930.md",
+      "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+    },
+    "test_only_threshold_values": {
+      "V4_08_EARLY_BREADTH_RETENTION_MIN": 0.5,
+      "V4_08_EARLY_SEED_RETENTION_MIN": 0.5
+    },
+    "vectors": [
+      {
+        "actual_reason_code": null,
+        "actual_state": true,
+        "expected_reason_code": null,
+        "expected_state": true,
+        "left_test_premise": true,
+        "passed": true,
+        "right_test_premise": "NOT_APPLICABLE"
+      },
+      {
+        "actual_reason_code": null,
+        "actual_state": true,
+        "expected_reason_code": null,
+        "expected_state": true,
+        "left_test_premise": "NOT_APPLICABLE",
+        "passed": true,
+        "right_test_premise": true
+      },
+      {
+        "actual_reason_code": "NOT_APPLICABLE_BRANCH_SKIPPED",
+        "actual_state": false,
+        "expected_reason_code": "NOT_APPLICABLE_BRANCH_SKIPPED",
+        "expected_state": false,
+        "left_test_premise": false,
+        "passed": true,
+        "right_test_premise": "NOT_APPLICABLE"
+      },
+      {
+        "actual_reason_code": "NOT_APPLICABLE_BRANCH_SKIPPED",
+        "actual_state": false,
+        "expected_reason_code": "NOT_APPLICABLE_BRANCH_SKIPPED",
+        "expected_state": false,
+        "left_test_premise": "NOT_APPLICABLE",
+        "passed": true,
+        "right_test_premise": false
+      },
+      {
+        "actual_reason_code": "NO_USABLE_RETENTION_BRANCH",
+        "actual_state": null,
+        "expected_reason_code": "NO_USABLE_RETENTION_BRANCH",
+        "expected_state": null,
+        "left_test_premise": "NOT_APPLICABLE",
+        "passed": true,
+        "right_test_premise": "NOT_APPLICABLE"
+      },
+      {
+        "actual_reason_code": "REQUIRED_VALUE_UNKNOWN",
+        "actual_state": null,
+        "expected_reason_code": "REQUIRED_VALUE_UNKNOWN",
+        "expected_state": null,
+        "left_test_premise": null,
+        "passed": true,
+        "right_test_premise": "NOT_APPLICABLE"
+      },
+      {
+        "actual_reason_code": "REQUIRED_VALUE_UNKNOWN",
+        "actual_state": null,
+        "expected_reason_code": "REQUIRED_VALUE_UNKNOWN",
+        "expected_state": null,
+        "left_test_premise": false,
+        "passed": true,
+        "right_test_premise": null
+      }
+    ]
+  },
+  "contract_id": "V4_08_R4_AST_FOUR_STATE_TRUTH_TABLE_V1",
+  "operators": {
+    "AND": "FALSE dominates; else UNKNOWN propagates; N/A is skipped; all N/A remains N/A.",
+    "OR": "TRUE dominates; else UNKNOWN propagates; N/A is skipped; all N/A is UNKNOWN / NO_USABLE_RETENTION_BRANCH."
+  },
+  "states": [
+    "TRUE",
+    "FALSE",
+    "UNKNOWN",
+    "NOT_APPLICABLE"
+  ],
+  "status": "PASS"
+}

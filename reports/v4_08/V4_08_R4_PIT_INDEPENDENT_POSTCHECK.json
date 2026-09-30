@@ -1,0 +1,44 @@
+{
+  "artifact_rows": 50162,
+  "calendar_head": {
+    "byte_count": 1176,
+    "path": "data/v4/V4_02_GO_FORWARD_CALENDAR_EXTENSION_ACCEPTED_HEAD_R1.json",
+    "sha256": "d0d453689261603a6ccd773f6383781178cb74d388087b72c652dc8afcb309f6"
+  },
+  "candidate_fact_artifact": {
+    "byte_count": 4004928,
+    "path": "data/v4/artifact_store/v4_08/V4_08_PIT_MEMBERSHIP_FACTS_20260930_R1.jsonl.gz",
+    "sha256": "164142652bf5b3032f4e1a8ee54fe2817a3f3b5130635cf04fb641a6e819211d"
+  },
+  "checks": {
+    "P0_gate_and_both_external_promotions_accepted": true,
+    "all_logical_fact_fields_match": true,
+    "all_snapshot_facts_are_target_day_accepted_raw_only": true,
+    "independent_row_membership_set_matches": true,
+    "member_sector_and_exclusion_counts_recomputed": true,
+    "no_final_v4_08_accepted_head": true,
+    "snapshot_fact_and_revision_bindings_consistent": true,
+    "snapshot_id_recomputed": true,
+    "source_revision_id_recomputed": true,
+    "source_time_policy_and_no_backfill": true
+  },
+  "formal_fact_set_digest": "1956968c82fe7f3efe48e99a81815ee7aa56d40ea9d44910d2d941e7f0cb6cc5",
+  "identity_head": {
+    "byte_count": 1099,
+    "path": "data/v4/V4_01_GO_FORWARD_IDENTITY_ACCEPTED_HEAD_R1.json",
+    "sha256": "496d537f7c6b9c78cac3a084330f09132814165d2967e8991ffa1d6319092214"
+  },
+  "independent_verifier": "scripts/verify_v4_08_r4_pit_independent.py",
+  "independently_admitted_rows": 50162,
+  "independently_recomputed_exclusions": {
+    "BSE_OPTIONAL": 438,
+    "NON_FORMAL_SECTOR_TYPE": 32862,
+    "NOT_LISTED_AT_TARGET": 11,
+    "OPTIONAL_BOARD_OUTSIDE_REQUIRED_SCOPE": 1565
+  },
+  "logical_mismatch_count": 0,
+  "logical_mismatch_sample": [],
+  "producer_admission_and_snapshot_functions_imported": false,
+  "raw_source_rows": 85038,
+  "status": "PASS"
+}

@@ -1,0 +1,46 @@
+{
+  "accepted_artifact": {
+    "path": "data/v4/artifact_store/v4_01/security_entity_map_GO_FORWARD_20260930_ACCEPTED_R1.json",
+    "sha256": "4c3445f7b1337fee09e942ac854d0cefcecfc8c90c0b7432d991cadc58818ecd"
+  },
+  "accepted_head": {
+    "path": "data/v4/V4_01_GO_FORWARD_IDENTITY_ACCEPTED_HEAD_R1.json",
+    "sha256": "496d537f7c6b9c78cac3a084330f09132814165d2967e8991ffa1d6319092214"
+  },
+  "active_acceptance_count": 2,
+  "audit_authority": {
+    "path": "docs/evidence/V4_08_R3_INDEPENDENT_EXTERNAL_AUDIT_20260930.md",
+    "sha256": "61890d7c6ac8fcf9a4790aea710bdc2f2e6e6882a3caf128c50a0837eafc8832"
+  },
+  "candidate_artifact_sha256": "98c0d0c828c18d2dd012f5f2de27d420da49183c20116a790af91a33b7d12603",
+  "candidate_head": {
+    "path": "data/v4/V4_01_GO_FORWARD_IDENTITY_CANDIDATE_HEAD_R1.json",
+    "sha256": "9ef49acc749daeb954cce0433363d0f28e54720db58c92fc20da77080049bb2c"
+  },
+  "logical_diff": [
+    {
+      "changes": {
+        "acceptance": {
+          "after": "ACCEPTED",
+          "before": "CANDIDATE_PENDING_EXTERNAL_PROMOTION"
+        }
+      },
+      "source_security_key": "SZ.001246"
+    },
+    {
+      "changes": {
+        "acceptance": {
+          "after": "ACCEPTED",
+          "before": "CANDIDATE_PENDING_EXTERNAL_PROMOTION"
+        }
+      },
+      "source_security_key": "SZ.301716"
+    }
+  ],
+  "p0_gate": {
+    "path": "reports/v4_08/V4_08_R4_P0_NO_SYMBOL_SPECIFIC_RUNTIME_SCAN.json",
+    "sha256": "994977720d7867f78e08a0794d1838b477bfb781cc56182d5f0c1f72e87b77de"
+  },
+  "parent_records_exactly_preserved": true,
+  "status": "PASS_EXACT_EXTERNAL_PROMOTION"
+}

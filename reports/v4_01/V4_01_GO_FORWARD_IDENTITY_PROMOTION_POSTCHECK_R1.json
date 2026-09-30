@@ -1,0 +1,49 @@
+{
+  "authority": {
+    "path": "docs/evidence/V4_08_R3_INDEPENDENT_EXTERNAL_AUDIT_20260930.md",
+    "sha256": "61890d7c6ac8fcf9a4790aea710bdc2f2e6e6882a3caf128c50a0837eafc8832"
+  },
+  "calendar_accepted_head": {
+    "path": "data/v4/V4_02_GO_FORWARD_CALENDAR_EXTENSION_ACCEPTED_HEAD_R1.json",
+    "sha256": "d0d453689261603a6ccd773f6383781178cb74d388087b72c652dc8afcb309f6"
+  },
+  "calendar_artifact": {
+    "path": "data/v4/artifact_store/v4_02/market_calendar_GO_FORWARD_20260930_R1.json",
+    "sha256": "abb832c49e447996b33d7ebf4f233ccfbd4d7f4abc0722caa164d8e25a9ecfc3"
+  },
+  "calendar_candidate_head": {
+    "path": "data/v4/V4_02_GO_FORWARD_CALENDAR_EXTENSION_CANDIDATE_HEAD_R1.json",
+    "sha256": "800a32d26b8a6089f67eda77e84c2364d4d0fd8a9879ed1b5c620be71202631b"
+  },
+  "checks": {
+    "accepted_heads_are_append_only_and_scoped": true,
+    "all_R7_records_exactly_preserved": true,
+    "all_nine_not_listed_dispositions_stay_outside_identity": true,
+    "audit_digest_matches_authorized_copy": true,
+    "calendar_candidate_and_artifact_exact_audited_digests": true,
+    "calendar_parent_and_closure_chain_valid": true,
+    "candidate_heads_match_exact_external_digests": true,
+    "identity_candidate_is_unchanged_and_accepted_head_binds_new_artifact": true,
+    "identity_logical_diff_only_two_acceptance_fields": true,
+    "only_two_target_active_additions_accepted": true,
+    "p0_hard_gate_passed": true
+  },
+  "identity_accepted_artifact": {
+    "path": "data/v4/artifact_store/v4_01/security_entity_map_GO_FORWARD_20260930_ACCEPTED_R1.json",
+    "sha256": "4c3445f7b1337fee09e942ac854d0cefcecfc8c90c0b7432d991cadc58818ecd"
+  },
+  "identity_accepted_head": {
+    "path": "data/v4/V4_01_GO_FORWARD_IDENTITY_ACCEPTED_HEAD_R1.json",
+    "sha256": "496d537f7c6b9c78cac3a084330f09132814165d2967e8991ffa1d6319092214"
+  },
+  "identity_candidate_artifact_sha256": "98c0d0c828c18d2dd012f5f2de27d420da49183c20116a790af91a33b7d12603",
+  "identity_candidate_head": {
+    "path": "data/v4/V4_01_GO_FORWARD_IDENTITY_CANDIDATE_HEAD_R1.json",
+    "sha256": "9ef49acc749daeb954cce0433363d0f28e54720db58c92fc20da77080049bb2c"
+  },
+  "p0_gate": {
+    "path": "reports/v4_08/V4_08_R4_P0_NO_SYMBOL_SPECIFIC_RUNTIME_SCAN.json",
+    "sha256": "591a37b647e73e02327b761f99719ba23018110b3a473daea79d5ee8f4ade9e3"
+  },
+  "status": "PASS"
+}

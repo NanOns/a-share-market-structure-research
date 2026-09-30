@@ -1,0 +1,1113 @@
+{
+  "cache_metadata": {
+    "eligible_source_count": 5464,
+    "entry_count": 6188,
+    "path": "data/.phase1_cache/*.json",
+    "sha256_set": "c2ac8d6516b82dfa64816888c79fe81c5e1efef23ee577ef7c53fbb78656f2e5"
+  },
+  "current_universe_source": {
+    "path": "D:/new_tdx/T0002/hq_cache/tdxhy.cfg",
+    "read_only": true,
+    "security_count": 5588,
+    "sha256": "f0861020e5d9fde9f10ab0374da6b887f3a5f681cfa00bb7dc6776ee4703c735"
+  },
+  "cutoff_date": 20260924,
+  "eligibility": [
+    "IN_CURRENT_ACCEPTED_UNIVERSE",
+    "ACTUAL_BAR_AT_CUTOFF",
+    "AT_LEAST_121_ACTUAL_HISTORY_BARS",
+    "AT_LEAST_75_PERCENT_VALID_BARS_IN_RECENT_20_SESSIONS"
+  ],
+  "eligible_count": 5464,
+  "execution_mode": "READ_ONLY_REPLAY_OF_LAST_SUCCESSFUL_PHASE1_INPUTS",
+  "factor_artifact": {
+    "cutoff_rows": 6188,
+    "path": "data/factors/factors_daily.parquet",
+    "sha256": "e5c1a5771aad89b87168c966b7c498cd22cb54bee8326d8077ff7278541a0572"
+  },
+  "factor_artifact_unchanged_from_last_successful_phase1": true,
+  "factor_outputs_after_qa_sha256": "4921c2b94f08572316bcfba4bde9f09176a3e16cc597ef65fce4ec074e025af2",
+  "factor_outputs_after_selector_sha256": "4921c2b94f08572316bcfba4bde9f09176a3e16cc597ef65fce4ec074e025af2",
+  "factor_outputs_before_selector_sha256": "4921c2b94f08572316bcfba4bde9f09176a3e16cc597ef65fce4ec074e025af2",
+  "factor_outputs_unchanged": true,
+  "phase1_final_receipt": {
+    "cutoff_date": 20260924,
+    "factor_dataset_sha256": "e5c1a5771aad89b87168c966b7c498cd22cb54bee8326d8077ff7278541a0572",
+    "path": "reports/phase1/PHASE1_FINAL_RECEIPT.json",
+    "sha256": "8c8a7efb087bb5f5ff8d137b0053322eef553ec381d44baa45b71d4c0952f9f5",
+    "status": "PASS"
+  },
+  "qa_replay": {
+    "checks_passed": 145,
+    "checks_total": 145,
+    "context_source": "read-only per-security Phase1 cache",
+    "contract_factor_count": 29,
+    "rs_pass": true,
+    "sample_count": 5,
+    "status": "PASS"
+  },
+  "rs_pass": true,
+  "sample_checks": 145,
+  "sample_factor_checks": [
+    {
+      "board": "MAIN_SH",
+      "factor": "RET5",
+      "matches": true,
+      "security_id": "SH.600130",
+      "window": 5
+    },
+    {
+      "board": "MAIN_SH",
+      "factor": "RET10",
+      "matches": true,
+      "security_id": "SH.600130",
+      "window": 10
+    },
+    {
+      "board": "MAIN_SH",
+      "factor": "RET20",
+      "matches": true,
+      "security_id": "SH.600130",
+      "window": 20
+    },
+    {
+      "board": "MAIN_SH",
+      "factor": "RET60",
+      "matches": true,
+      "security_id": "SH.600130",
+      "window": 60
+    },
+    {
+      "board": "MAIN_SH",
+      "factor": "MA5",
+      "matches": true,
+      "security_id": "SH.600130",
+      "window": 5
+    },
+    {
+      "board": "MAIN_SH",
+      "factor": "MA10",
+      "matches": true,
+      "security_id": "SH.600130",
+      "window": 10
+    },
+    {
+      "board": "MAIN_SH",
+      "factor": "MA20",
+      "matches": true,
+      "security_id": "SH.600130",
+      "window": 20
+    },
+    {
+      "board": "MAIN_SH",
+      "factor": "MA60",
+      "matches": true,
+      "security_id": "SH.600130",
+      "window": 60
+    },
+    {
+      "board": "MAIN_SH",
+      "factor": "TREND_SLOPE_20",
+      "matches": true,
+      "security_id": "SH.600130",
+      "window": 20
+    },
+    {
+      "board": "MAIN_SH",
+      "factor": "TREND_R2_20",
+      "matches": true,
+      "security_id": "SH.600130",
+      "window": 20
+    },
+    {
+      "board": "MAIN_SH",
+      "factor": "TREND_SLOPE_60",
+      "matches": true,
+      "security_id": "SH.600130",
+      "window": 60
+    },
+    {
+      "board": "MAIN_SH",
+      "factor": "TREND_R2_60",
+      "matches": true,
+      "security_id": "SH.600130",
+      "window": 60
+    },
+    {
+      "board": "MAIN_SH",
+      "factor": "POS20",
+      "matches": true,
+      "security_id": "SH.600130",
+      "window": 20
+    },
+    {
+      "board": "MAIN_SH",
+      "factor": "POS60",
+      "matches": true,
+      "security_id": "SH.600130",
+      "window": 60
+    },
+    {
+      "board": "MAIN_SH",
+      "factor": "POS120",
+      "matches": true,
+      "security_id": "SH.600130",
+      "window": 120
+    },
+    {
+      "board": "MAIN_SH",
+      "factor": "DIST_HIGH20",
+      "matches": true,
+      "security_id": "SH.600130",
+      "window": 20
+    },
+    {
+      "board": "MAIN_SH",
+      "factor": "DIST_HIGH60",
+      "matches": true,
+      "security_id": "SH.600130",
+      "window": 60
+    },
+    {
+      "board": "MAIN_SH",
+      "factor": "MDD20",
+      "matches": true,
+      "security_id": "SH.600130",
+      "window": 20
+    },
+    {
+      "board": "MAIN_SH",
+      "factor": "MDD60",
+      "matches": true,
+      "security_id": "SH.600130",
+      "window": 60
+    },
+    {
+      "board": "MAIN_SH",
+      "factor": "VOLATILITY20",
+      "matches": true,
+      "security_id": "SH.600130",
+      "window": 20
+    },
+    {
+      "board": "MAIN_SH",
+      "factor": "RS5",
+      "matches": true,
+      "security_id": "SH.600130",
+      "window": 5
+    },
+    {
+      "board": "MAIN_SH",
+      "factor": "RS10",
+      "matches": true,
+      "security_id": "SH.600130",
+      "window": 10
+    },
+    {
+      "board": "MAIN_SH",
+      "factor": "RS20",
+      "matches": true,
+      "security_id": "SH.600130",
+      "window": 20
+    },
+    {
+      "board": "MAIN_SH",
+      "factor": "RS60",
+      "matches": true,
+      "security_id": "SH.600130",
+      "window": 60
+    },
+    {
+      "board": "MAIN_SH",
+      "factor": "AMOUNT_MA5",
+      "matches": true,
+      "security_id": "SH.600130",
+      "window": 5
+    },
+    {
+      "board": "MAIN_SH",
+      "factor": "AMOUNT_MA10",
+      "matches": true,
+      "security_id": "SH.600130",
+      "window": 10
+    },
+    {
+      "board": "MAIN_SH",
+      "factor": "AMOUNT_MA20",
+      "matches": true,
+      "security_id": "SH.600130",
+      "window": 20
+    },
+    {
+      "board": "MAIN_SH",
+      "factor": "AMOUNT_RATIO20",
+      "matches": true,
+      "security_id": "SH.600130",
+      "window": 20
+    },
+    {
+      "board": "MAIN_SH",
+      "factor": "RETURN_CONCENTRATION_20",
+      "matches": true,
+      "security_id": "SH.600130",
+      "window": 20
+    },
+    {
+      "board": "MAIN_SZ",
+      "factor": "RET5",
+      "matches": true,
+      "security_id": "SZ.002598",
+      "window": 5
+    },
+    {
+      "board": "MAIN_SZ",
+      "factor": "RET10",
+      "matches": true,
+      "security_id": "SZ.002598",
+      "window": 10
+    },
+    {
+      "board": "MAIN_SZ",
+      "factor": "RET20",
+      "matches": true,
+      "security_id": "SZ.002598",
+      "window": 20
+    },
+    {
+      "board": "MAIN_SZ",
+      "factor": "RET60",
+      "matches": true,
+      "security_id": "SZ.002598",
+      "window": 60
+    },
+    {
+      "board": "MAIN_SZ",
+      "factor": "MA5",
+      "matches": true,
+      "security_id": "SZ.002598",
+      "window": 5
+    },
+    {
+      "board": "MAIN_SZ",
+      "factor": "MA10",
+      "matches": true,
+      "security_id": "SZ.002598",
+      "window": 10
+    },
+    {
+      "board": "MAIN_SZ",
+      "factor": "MA20",
+      "matches": true,
+      "security_id": "SZ.002598",
+      "window": 20
+    },
+    {
+      "board": "MAIN_SZ",
+      "factor": "MA60",
+      "matches": true,
+      "security_id": "SZ.002598",
+      "window": 60
+    },
+    {
+      "board": "MAIN_SZ",
+      "factor": "TREND_SLOPE_20",
+      "matches": true,
+      "security_id": "SZ.002598",
+      "window": 20
+    },
+    {
+      "board": "MAIN_SZ",
+      "factor": "TREND_R2_20",
+      "matches": true,
+      "security_id": "SZ.002598",
+      "window": 20
+    },
+    {
+      "board": "MAIN_SZ",
+      "factor": "TREND_SLOPE_60",
+      "matches": true,
+      "security_id": "SZ.002598",
+      "window": 60
+    },
+    {
+      "board": "MAIN_SZ",
+      "factor": "TREND_R2_60",
+      "matches": true,
+      "security_id": "SZ.002598",
+      "window": 60
+    },
+    {
+      "board": "MAIN_SZ",
+      "factor": "POS20",
+      "matches": true,
+      "security_id": "SZ.002598",
+      "window": 20
+    },
+    {
+      "board": "MAIN_SZ",
+      "factor": "POS60",
+      "matches": true,
+      "security_id": "SZ.002598",
+      "window": 60
+    },
+    {
+      "board": "MAIN_SZ",
+      "factor": "POS120",
+      "matches": true,
+      "security_id": "SZ.002598",
+      "window": 120
+    },
+    {
+      "board": "MAIN_SZ",
+      "factor": "DIST_HIGH20",
+      "matches": true,
+      "security_id": "SZ.002598",
+      "window": 20
+    },
+    {
+      "board": "MAIN_SZ",
+      "factor": "DIST_HIGH60",
+      "matches": true,
+      "security_id": "SZ.002598",
+      "window": 60
+    },
+    {
+      "board": "MAIN_SZ",
+      "factor": "MDD20",
+      "matches": true,
+      "security_id": "SZ.002598",
+      "window": 20
+    },
+    {
+      "board": "MAIN_SZ",
+      "factor": "MDD60",
+      "matches": true,
+      "security_id": "SZ.002598",
+      "window": 60
+    },
+    {
+      "board": "MAIN_SZ",
+      "factor": "VOLATILITY20",
+      "matches": true,
+      "security_id": "SZ.002598",
+      "window": 20
+    },
+    {
+      "board": "MAIN_SZ",
+      "factor": "RS5",
+      "matches": true,
+      "security_id": "SZ.002598",
+      "window": 5
+    },
+    {
+      "board": "MAIN_SZ",
+      "factor": "RS10",
+      "matches": true,
+      "security_id": "SZ.002598",
+      "window": 10
+    },
+    {
+      "board": "MAIN_SZ",
+      "factor": "RS20",
+      "matches": true,
+      "security_id": "SZ.002598",
+      "window": 20
+    },
+    {
+      "board": "MAIN_SZ",
+      "factor": "RS60",
+      "matches": true,
+      "security_id": "SZ.002598",
+      "window": 60
+    },
+    {
+      "board": "MAIN_SZ",
+      "factor": "AMOUNT_MA5",
+      "matches": true,
+      "security_id": "SZ.002598",
+      "window": 5
+    },
+    {
+      "board": "MAIN_SZ",
+      "factor": "AMOUNT_MA10",
+      "matches": true,
+      "security_id": "SZ.002598",
+      "window": 10
+    },
+    {
+      "board": "MAIN_SZ",
+      "factor": "AMOUNT_MA20",
+      "matches": true,
+      "security_id": "SZ.002598",
+      "window": 20
+    },
+    {
+      "board": "MAIN_SZ",
+      "factor": "AMOUNT_RATIO20",
+      "matches": true,
+      "security_id": "SZ.002598",
+      "window": 20
+    },
+    {
+      "board": "MAIN_SZ",
+      "factor": "RETURN_CONCENTRATION_20",
+      "matches": true,
+      "security_id": "SZ.002598",
+      "window": 20
+    },
+    {
+      "board": "STAR",
+      "factor": "RET5",
+      "matches": true,
+      "security_id": "SH.688602",
+      "window": 5
+    },
+    {
+      "board": "STAR",
+      "factor": "RET10",
+      "matches": true,
+      "security_id": "SH.688602",
+      "window": 10
+    },
+    {
+      "board": "STAR",
+      "factor": "RET20",
+      "matches": true,
+      "security_id": "SH.688602",
+      "window": 20
+    },
+    {
+      "board": "STAR",
+      "factor": "RET60",
+      "matches": true,
+      "security_id": "SH.688602",
+      "window": 60
+    },
+    {
+      "board": "STAR",
+      "factor": "MA5",
+      "matches": true,
+      "security_id": "SH.688602",
+      "window": 5
+    },
+    {
+      "board": "STAR",
+      "factor": "MA10",
+      "matches": true,
+      "security_id": "SH.688602",
+      "window": 10
+    },
+    {
+      "board": "STAR",
+      "factor": "MA20",
+      "matches": true,
+      "security_id": "SH.688602",
+      "window": 20
+    },
+    {
+      "board": "STAR",
+      "factor": "MA60",
+      "matches": true,
+      "security_id": "SH.688602",
+      "window": 60
+    },
+    {
+      "board": "STAR",
+      "factor": "TREND_SLOPE_20",
+      "matches": true,
+      "security_id": "SH.688602",
+      "window": 20
+    },
+    {
+      "board": "STAR",
+      "factor": "TREND_R2_20",
+      "matches": true,
+      "security_id": "SH.688602",
+      "window": 20
+    },
+    {
+      "board": "STAR",
+      "factor": "TREND_SLOPE_60",
+      "matches": true,
+      "security_id": "SH.688602",
+      "window": 60
+    },
+    {
+      "board": "STAR",
+      "factor": "TREND_R2_60",
+      "matches": true,
+      "security_id": "SH.688602",
+      "window": 60
+    },
+    {
+      "board": "STAR",
+      "factor": "POS20",
+      "matches": true,
+      "security_id": "SH.688602",
+      "window": 20
+    },
+    {
+      "board": "STAR",
+      "factor": "POS60",
+      "matches": true,
+      "security_id": "SH.688602",
+      "window": 60
+    },
+    {
+      "board": "STAR",
+      "factor": "POS120",
+      "matches": true,
+      "security_id": "SH.688602",
+      "window": 120
+    },
+    {
+      "board": "STAR",
+      "factor": "DIST_HIGH20",
+      "matches": true,
+      "security_id": "SH.688602",
+      "window": 20
+    },
+    {
+      "board": "STAR",
+      "factor": "DIST_HIGH60",
+      "matches": true,
+      "security_id": "SH.688602",
+      "window": 60
+    },
+    {
+      "board": "STAR",
+      "factor": "MDD20",
+      "matches": true,
+      "security_id": "SH.688602",
+      "window": 20
+    },
+    {
+      "board": "STAR",
+      "factor": "MDD60",
+      "matches": true,
+      "security_id": "SH.688602",
+      "window": 60
+    },
+    {
+      "board": "STAR",
+      "factor": "VOLATILITY20",
+      "matches": true,
+      "security_id": "SH.688602",
+      "window": 20
+    },
+    {
+      "board": "STAR",
+      "factor": "RS5",
+      "matches": true,
+      "security_id": "SH.688602",
+      "window": 5
+    },
+    {
+      "board": "STAR",
+      "factor": "RS10",
+      "matches": true,
+      "security_id": "SH.688602",
+      "window": 10
+    },
+    {
+      "board": "STAR",
+      "factor": "RS20",
+      "matches": true,
+      "security_id": "SH.688602",
+      "window": 20
+    },
+    {
+      "board": "STAR",
+      "factor": "RS60",
+      "matches": true,
+      "security_id": "SH.688602",
+      "window": 60
+    },
+    {
+      "board": "STAR",
+      "factor": "AMOUNT_MA5",
+      "matches": true,
+      "security_id": "SH.688602",
+      "window": 5
+    },
+    {
+      "board": "STAR",
+      "factor": "AMOUNT_MA10",
+      "matches": true,
+      "security_id": "SH.688602",
+      "window": 10
+    },
+    {
+      "board": "STAR",
+      "factor": "AMOUNT_MA20",
+      "matches": true,
+      "security_id": "SH.688602",
+      "window": 20
+    },
+    {
+      "board": "STAR",
+      "factor": "AMOUNT_RATIO20",
+      "matches": true,
+      "security_id": "SH.688602",
+      "window": 20
+    },
+    {
+      "board": "STAR",
+      "factor": "RETURN_CONCENTRATION_20",
+      "matches": true,
+      "security_id": "SH.688602",
+      "window": 20
+    },
+    {
+      "board": "CHINEXT",
+      "factor": "RET5",
+      "matches": true,
+      "security_id": "SZ.300147",
+      "window": 5
+    },
+    {
+      "board": "CHINEXT",
+      "factor": "RET10",
+      "matches": true,
+      "security_id": "SZ.300147",
+      "window": 10
+    },
+    {
+      "board": "CHINEXT",
+      "factor": "RET20",
+      "matches": true,
+      "security_id": "SZ.300147",
+      "window": 20
+    },
+    {
+      "board": "CHINEXT",
+      "factor": "RET60",
+      "matches": true,
+      "security_id": "SZ.300147",
+      "window": 60
+    },
+    {
+      "board": "CHINEXT",
+      "factor": "MA5",
+      "matches": true,
+      "security_id": "SZ.300147",
+      "window": 5
+    },
+    {
+      "board": "CHINEXT",
+      "factor": "MA10",
+      "matches": true,
+      "security_id": "SZ.300147",
+      "window": 10
+    },
+    {
+      "board": "CHINEXT",
+      "factor": "MA20",
+      "matches": true,
+      "security_id": "SZ.300147",
+      "window": 20
+    },
+    {
+      "board": "CHINEXT",
+      "factor": "MA60",
+      "matches": true,
+      "security_id": "SZ.300147",
+      "window": 60
+    },
+    {
+      "board": "CHINEXT",
+      "factor": "TREND_SLOPE_20",
+      "matches": true,
+      "security_id": "SZ.300147",
+      "window": 20
+    },
+    {
+      "board": "CHINEXT",
+      "factor": "TREND_R2_20",
+      "matches": true,
+      "security_id": "SZ.300147",
+      "window": 20
+    },
+    {
+      "board": "CHINEXT",
+      "factor": "TREND_SLOPE_60",
+      "matches": true,
+      "security_id": "SZ.300147",
+      "window": 60
+    },
+    {
+      "board": "CHINEXT",
+      "factor": "TREND_R2_60",
+      "matches": true,
+      "security_id": "SZ.300147",
+      "window": 60
+    },
+    {
+      "board": "CHINEXT",
+      "factor": "POS20",
+      "matches": true,
+      "security_id": "SZ.300147",
+      "window": 20
+    },
+    {
+      "board": "CHINEXT",
+      "factor": "POS60",
+      "matches": true,
+      "security_id": "SZ.300147",
+      "window": 60
+    },
+    {
+      "board": "CHINEXT",
+      "factor": "POS120",
+      "matches": true,
+      "security_id": "SZ.300147",
+      "window": 120
+    },
+    {
+      "board": "CHINEXT",
+      "factor": "DIST_HIGH20",
+      "matches": true,
+      "security_id": "SZ.300147",
+      "window": 20
+    },
+    {
+      "board": "CHINEXT",
+      "factor": "DIST_HIGH60",
+      "matches": true,
+      "security_id": "SZ.300147",
+      "window": 60
+    },
+    {
+      "board": "CHINEXT",
+      "factor": "MDD20",
+      "matches": true,
+      "security_id": "SZ.300147",
+      "window": 20
+    },
+    {
+      "board": "CHINEXT",
+      "factor": "MDD60",
+      "matches": true,
+      "security_id": "SZ.300147",
+      "window": 60
+    },
+    {
+      "board": "CHINEXT",
+      "factor": "VOLATILITY20",
+      "matches": true,
+      "security_id": "SZ.300147",
+      "window": 20
+    },
+    {
+      "board": "CHINEXT",
+      "factor": "RS5",
+      "matches": true,
+      "security_id": "SZ.300147",
+      "window": 5
+    },
+    {
+      "board": "CHINEXT",
+      "factor": "RS10",
+      "matches": true,
+      "security_id": "SZ.300147",
+      "window": 10
+    },
+    {
+      "board": "CHINEXT",
+      "factor": "RS20",
+      "matches": true,
+      "security_id": "SZ.300147",
+      "window": 20
+    },
+    {
+      "board": "CHINEXT",
+      "factor": "RS60",
+      "matches": true,
+      "security_id": "SZ.300147",
+      "window": 60
+    },
+    {
+      "board": "CHINEXT",
+      "factor": "AMOUNT_MA5",
+      "matches": true,
+      "security_id": "SZ.300147",
+      "window": 5
+    },
+    {
+      "board": "CHINEXT",
+      "factor": "AMOUNT_MA10",
+      "matches": true,
+      "security_id": "SZ.300147",
+      "window": 10
+    },
+    {
+      "board": "CHINEXT",
+      "factor": "AMOUNT_MA20",
+      "matches": true,
+      "security_id": "SZ.300147",
+      "window": 20
+    },
+    {
+      "board": "CHINEXT",
+      "factor": "AMOUNT_RATIO20",
+      "matches": true,
+      "security_id": "SZ.300147",
+      "window": 20
+    },
+    {
+      "board": "CHINEXT",
+      "factor": "RETURN_CONCENTRATION_20",
+      "matches": true,
+      "security_id": "SZ.300147",
+      "window": 20
+    },
+    {
+      "board": "BEIJING",
+      "factor": "RET5",
+      "matches": true,
+      "security_id": "BJ.920082",
+      "window": 5
+    },
+    {
+      "board": "BEIJING",
+      "factor": "RET10",
+      "matches": true,
+      "security_id": "BJ.920082",
+      "window": 10
+    },
+    {
+      "board": "BEIJING",
+      "factor": "RET20",
+      "matches": true,
+      "security_id": "BJ.920082",
+      "window": 20
+    },
+    {
+      "board": "BEIJING",
+      "factor": "RET60",
+      "matches": true,
+      "security_id": "BJ.920082",
+      "window": 60
+    },
+    {
+      "board": "BEIJING",
+      "factor": "MA5",
+      "matches": true,
+      "security_id": "BJ.920082",
+      "window": 5
+    },
+    {
+      "board": "BEIJING",
+      "factor": "MA10",
+      "matches": true,
+      "security_id": "BJ.920082",
+      "window": 10
+    },
+    {
+      "board": "BEIJING",
+      "factor": "MA20",
+      "matches": true,
+      "security_id": "BJ.920082",
+      "window": 20
+    },
+    {
+      "board": "BEIJING",
+      "factor": "MA60",
+      "matches": true,
+      "security_id": "BJ.920082",
+      "window": 60
+    },
+    {
+      "board": "BEIJING",
+      "factor": "TREND_SLOPE_20",
+      "matches": true,
+      "security_id": "BJ.920082",
+      "window": 20
+    },
+    {
+      "board": "BEIJING",
+      "factor": "TREND_R2_20",
+      "matches": true,
+      "security_id": "BJ.920082",
+      "window": 20
+    },
+    {
+      "board": "BEIJING",
+      "factor": "TREND_SLOPE_60",
+      "matches": true,
+      "security_id": "BJ.920082",
+      "window": 60
+    },
+    {
+      "board": "BEIJING",
+      "factor": "TREND_R2_60",
+      "matches": true,
+      "security_id": "BJ.920082",
+      "window": 60
+    },
+    {
+      "board": "BEIJING",
+      "factor": "POS20",
+      "matches": true,
+      "security_id": "BJ.920082",
+      "window": 20
+    },
+    {
+      "board": "BEIJING",
+      "factor": "POS60",
+      "matches": true,
+      "security_id": "BJ.920082",
+      "window": 60
+    },
+    {
+      "board": "BEIJING",
+      "factor": "POS120",
+      "matches": true,
+      "security_id": "BJ.920082",
+      "window": 120
+    },
+    {
+      "board": "BEIJING",
+      "factor": "DIST_HIGH20",
+      "matches": true,
+      "security_id": "BJ.920082",
+      "window": 20
+    },
+    {
+      "board": "BEIJING",
+      "factor": "DIST_HIGH60",
+      "matches": true,
+      "security_id": "BJ.920082",
+      "window": 60
+    },
+    {
+      "board": "BEIJING",
+      "factor": "MDD20",
+      "matches": true,
+      "security_id": "BJ.920082",
+      "window": 20
+    },
+    {
+      "board": "BEIJING",
+      "factor": "MDD60",
+      "matches": true,
+      "security_id": "BJ.920082",
+      "window": 60
+    },
+    {
+      "board": "BEIJING",
+      "factor": "VOLATILITY20",
+      "matches": true,
+      "security_id": "BJ.920082",
+      "window": 20
+    },
+    {
+      "board": "BEIJING",
+      "factor": "RS5",
+      "matches": true,
+      "security_id": "BJ.920082",
+      "window": 5
+    },
+    {
+      "board": "BEIJING",
+      "factor": "RS10",
+      "matches": true,
+      "security_id": "BJ.920082",
+      "window": 10
+    },
+    {
+      "board": "BEIJING",
+      "factor": "RS20",
+      "matches": true,
+      "security_id": "BJ.920082",
+      "window": 20
+    },
+    {
+      "board": "BEIJING",
+      "factor": "RS60",
+      "matches": true,
+      "security_id": "BJ.920082",
+      "window": 60
+    },
+    {
+      "board": "BEIJING",
+      "factor": "AMOUNT_MA5",
+      "matches": true,
+      "security_id": "BJ.920082",
+      "window": 5
+    },
+    {
+      "board": "BEIJING",
+      "factor": "AMOUNT_MA10",
+      "matches": true,
+      "security_id": "BJ.920082",
+      "window": 10
+    },
+    {
+      "board": "BEIJING",
+      "factor": "AMOUNT_MA20",
+      "matches": true,
+      "security_id": "BJ.920082",
+      "window": 20
+    },
+    {
+      "board": "BEIJING",
+      "factor": "AMOUNT_RATIO20",
+      "matches": true,
+      "security_id": "BJ.920082",
+      "window": 20
+    },
+    {
+      "board": "BEIJING",
+      "factor": "RETURN_CONCENTRATION_20",
+      "matches": true,
+      "security_id": "BJ.920082",
+      "window": 20
+    }
+  ],
+  "sample_pass": true,
+  "seed": "V0.3_PHASE1_QA_SAMPLE_SEED_V1",
+  "selected": [
+    {
+      "board": "MAIN_SH",
+      "security_id": "SH.600130",
+      "selection_reason": "CURRENT_UNIVERSE_ACTUAL_CUTOFF_BAR_HISTORY_QUALITY",
+      "stable_rank_sha256": "001183de37330097329535ed63820dc3e5032c36f4ba24709cc1112ef42c975b"
+    },
+    {
+      "board": "MAIN_SZ",
+      "security_id": "SZ.002598",
+      "selection_reason": "CURRENT_UNIVERSE_ACTUAL_CUTOFF_BAR_HISTORY_QUALITY",
+      "stable_rank_sha256": "000b514c46d55028d52f3c0ad1e1ecf0542cb8a57b5474587fe7a0843e606cdd"
+    },
+    {
+      "board": "STAR",
+      "security_id": "SH.688602",
+      "selection_reason": "CURRENT_UNIVERSE_ACTUAL_CUTOFF_BAR_HISTORY_QUALITY",
+      "stable_rank_sha256": "01c6f48cb8f394e65c8f7144450f01ac11a59e266e22c1584cff5fc8e8c31ecb"
+    },
+    {
+      "board": "CHINEXT",
+      "security_id": "SZ.300147",
+      "selection_reason": "CURRENT_UNIVERSE_ACTUAL_CUTOFF_BAR_HISTORY_QUALITY",
+      "stable_rank_sha256": "000b40a249bf97d13bf30c386f823beae032bebf834f55a4bd4bcc8b86fa2efa"
+    },
+    {
+      "board": "BEIJING",
+      "security_id": "BJ.920082",
+      "selection_reason": "CURRENT_UNIVERSE_ACTUAL_CUTOFF_BAR_HISTORY_QUALITY",
+      "stable_rank_sha256": "008ece696665e1b013b03875cfb6ae8dc2f737cb71f03347d6cc1880daaebf96"
+    }
+  ],
+  "selected_count": 5,
+  "selection": "BOARD_STRATIFIED_THEN_LOWEST_STABLE_SHA256(security_id + contract_seed)",
+  "selection_contract_id": "PHASE1_QA_SAMPLE_SELECTION_V1",
+  "selection_digest_sha256": "a2a0cbda754b23d82484a977c8d2e783b487946097a8b03ec8411ce3bcb24239",
+  "selector_contract": {
+    "contract_id": "PHASE1_QA_SAMPLE_SELECTION_V1",
+    "seed": "V0.3_PHASE1_QA_SAMPLE_SEED_V1",
+    "version": "1.0.0"
+  },
+  "status": "PASS",
+  "version": "1.0.0"
+}

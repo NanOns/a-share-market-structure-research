@@ -1,0 +1,126 @@
+{
+  "checks": {
+    "B07_fact_trigger_rejects_mixed_source_basis": true,
+    "B07_formal_view_rejects_corrupt_mixed_basis": true,
+    "B07_revision_insert_rejects_current_with_pit_quality": true,
+    "B07_snapshot_trigger_rejects_mixed_source_basis": true,
+    "basis_quality_cross_pairs_rejected": true,
+    "basis_quality_four_pairs": true,
+    "positive_pit_formal_fact_visible": true,
+    "rollback_removes_only_r3": true
+  },
+  "config_dot_env_read": false,
+  "configured_or_production_database_used": false,
+  "contract_id": "V4_08_R4_1_SCHEMA_MIGRATION_RECEIPT_V1",
+  "credentials_persisted": false,
+  "database_identity": {
+    "database": "market_research",
+    "datcollate": "Chinese (Simplified)_China.936",
+    "datctype": "Chinese (Simplified)_China.936",
+    "owner": "postgres",
+    "server_address": "127.0.0.1/32",
+    "server_port": 9171,
+    "version": "PostgreSQL 18.6 on x86_64-windows, compiled by msvc-19.44.35228, 64-bit"
+  },
+  "dsn_source": "PROCESS_ENVIRONMENT_DISPOSABLE_CLUSTER",
+  "migrations": [
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/001_v4_phase0_foundation.sql",
+      "sha256": "391bf52595fc9da86bbce175b667a5b15c18684c4fbfb8e54cdcf65872dff260",
+      "version": "V4_PHASE0_FOUNDATION_V1"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/002_namespace_integrity.sql",
+      "sha256": "d8dcc13609ea73923dd68ad21d9c91eed69128047203a481764edeb72ea45dac",
+      "version": "V4_PHASE0_NAMESPACE_INTEGRITY_V1"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/003_phase0_contract_alignment.sql",
+      "sha256": "e1e2886c04c45121530e1fcf506297921c9cca2eecec3ee06be77e2520887d77",
+      "version": "V4_PHASE0_CONTRACT_ALIGNMENT_R2"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/004_publication_head_revision_identity.sql",
+      "sha256": "905af9323f613d3ae917000859f2306ce3d2a2ec6be43431233c5f4ce0e8a1b3",
+      "version": "V4_PUBLICATION_HEAD_REVISION_IDENTITY_R2"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/005_market_session_publication_chain.sql",
+      "sha256": "54d32de8e20afc773638b38aa555c47a5c5e8cb9b0bba82bb60fbd820a2d3b66",
+      "version": "V4_MARKET_SESSION_PUBLICATION_CHAIN_R2"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/006_fact_source_guard_table_specific_fields.sql",
+      "sha256": "d6ccd5dae3900fa07134a18e2f4f41ed2fbc3dde2fa4d5be79958d82d616a949",
+      "version": "V4_FACT_SOURCE_GUARD_TABLE_SPECIFIC_FIELDS_R2"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/007_state_and_namespace_publication_identity.sql",
+      "sha256": "f7df9d66c6edb13e948cbd92888af140ad335cb2984b9b0078e5498eee1cb4a0",
+      "version": "V4_STATE_AND_NAMESPACE_PUBLICATION_IDENTITY_R2"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/008_prior_session_state_freeze_integrity.sql",
+      "sha256": "3d541d9540d64463068907d20062403d7ee41373c42afa5c34c7e0d7117b338b",
+      "version": "V4_PRIOR_SESSION_STATE_FREEZE_INTEGRITY_R3"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/009_publication_head_guard_sql_alias_fix.sql",
+      "sha256": "ae4a7043367a490483618944b8efaf473062f82371e500ab60e5a79a4d55d2e8",
+      "version": "V4_PUBLICATION_HEAD_GUARD_SQL_ALIAS_FIX_R3"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/010_security_lifecycle_history_r5.sql",
+      "sha256": "a7f9bc76db45b4f6297ed299be2576d299d243daa45b3b13a5f9e42dccf7b87f",
+      "version": "V4_SECURITY_LIFECYCLE_HISTORY_R5_V1"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/011_security_membership_interval_r6_2.sql",
+      "sha256": "a562a409a012c32ce7ce879b6377704079e47289de2db0a24c589070e06957e1",
+      "version": "V4_SECURITY_MEMBERSHIP_INTERVAL_R6_2_V1"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/012_provider_lifecycle_fact_r6_2.sql",
+      "sha256": "3e206b8c20959f862f9d293a42a215af624416905f23083c17ca6e2ec22f9b70",
+      "version": "V4_PROVIDER_LIFECYCLE_FACT_R6_2_V1"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/013_v4_06_stock_profile_enrichments.sql",
+      "sha256": "6aa326f725ad98179b112be6b6f34346c5fbc70d69c4798d2259f01d3c3337e1",
+      "version": "V4_06_STOCK_PROFILE_ENRICHMENTS_V1"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/014_v4_06_turnover_contract_semantics_r2.sql",
+      "sha256": "fff140f483738b6fb8e94e06a4e2c681111de94ceb1c415d18c188a9d95977e3",
+      "version": "V4_STAGE_014_V4_06_TURNOVER_CONTRACT_SEMANTICS_R2"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/015_v4_07_base_seed_results.sql",
+      "sha256": "ebab277fe04a9bb1567d6c7b7ed8a306bbe8e6a5f083e84f8ab5d213e4a131b3",
+      "version": "V4_STAGE_015_V4_07_BASE_SEED_RESULTS"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/016_v4_08_sector_membership.sql",
+      "sha256": "45db743c2d223308d8b95a1dbe4cb7548f3ff553c04a021058be1ed7d34cb6e5",
+      "version": "V4_STAGE_016_V4_08_SECTOR_MEMBERSHIP"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/017_v4_08_membership_fact_evidence_view.sql",
+      "sha256": "633998684434e06b089f622c7c2a8bc37743ab945e53f94b06ca496de8ee77fc",
+      "version": "V4_STAGE_017_V4_08_MEMBERSHIP_FACT_EVIDENCE_VIEW"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/018_v4_08_membership_contract_repair_r2.sql",
+      "sha256": "abaf9fa2ce432deca155292de9e6bb574ba7f1e4de7d5611ac56cc0106e3eb51",
+      "version": "V4_STAGE_018_V4_08_MEMBERSHIP_CONTRACT_REPAIR_R2"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/019_v4_08_membership_source_basis_guard_r3.sql",
+      "sha256": "ec1fd08c6fef018ba0f92131e0e37de376372946ed935d9e5b2602ba024e6975",
+      "version": "V4_STAGE_019_V4_08_MEMBERSHIP_SOURCE_BASIS_GUARD_R3"
+    }
+  ],
+  "status": "PASS",
+  "temporary_cluster_destroyed": true,
+  "tested_commit": "60a18f9ce265a36547217c48dca3f3c0b2cd50a7"
+}

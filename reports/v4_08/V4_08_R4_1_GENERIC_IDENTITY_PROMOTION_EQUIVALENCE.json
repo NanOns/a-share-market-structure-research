@@ -1,0 +1,89 @@
+{
+  "candidate_addition_count": 2,
+  "candidate_artifact": {
+    "byte_count": 4327219,
+    "path": "data/v4/artifact_store/v4_01/security_entity_map_GO_FORWARD_20260930_R1.json",
+    "sha256": "98c0d0c828c18d2dd012f5f2de27d420da49183c20116a790af91a33b7d12603"
+  },
+  "candidate_head": {
+    "byte_count": 665,
+    "path": "data/v4/V4_01_GO_FORWARD_IDENTITY_CANDIDATE_HEAD_R1.json",
+    "sha256": "9ef49acc749daeb954cce0433363d0f28e54720db58c92fc20da77080049bb2c"
+  },
+  "candidate_parent_artifact": {
+    "byte_count": 5528197,
+    "path": "data/v4/artifact_store/v4_01/security_entity_map_R7_20260927.json",
+    "sha256": "e33294fb8d1d71732fdc3df903258b5617345811ecbdb649af8056ccd91427e0"
+  },
+  "checks": {
+    "all_new_records_promoted": true,
+    "candidate_artifact_digest_authorized": true,
+    "candidate_head_binds_candidate_artifact": true,
+    "candidate_head_digest_authorized": true,
+    "candidate_parent_artifact_digest_matches": true,
+    "candidate_records_append_parent_unchanged": true,
+    "external_authority_digest_matches": true,
+    "generic_replay_digest_matches_current_accepted_digest": true,
+    "generic_replay_equals_independent_reconstruction": true,
+    "generic_replay_matches_current_accepted_artifact": true,
+    "new_records_equal_authorized_lifecycle_event_set": true,
+    "no_unauthorized_identity_added": true,
+    "only_acceptance_changed_on_pending_lifecycle_events": true,
+    "only_acceptance_changed_on_promoted_records": true,
+    "parent_rows_unchanged_after_promotion": true
+  },
+  "contract_id": "V4_08_R4_1_GENERIC_IDENTITY_PROMOTION_EQUIVALENCE_V1",
+  "current_accepted_artifact": {
+    "byte_count": 4327394,
+    "path": "data/v4/artifact_store/v4_01/security_entity_map_GO_FORWARD_20260930_ACCEPTED_R1.json",
+    "sha256": "4c3445f7b1337fee09e942ac854d0cefcecfc8c90c0b7432d991cadc58818ecd"
+  },
+  "current_accepted_identity_sha256": "4c3445f7b1337fee09e942ac854d0cefcecfc8c90c0b7432d991cadc58818ecd",
+  "external_authority": {
+    "byte_count": 18120,
+    "path": "docs/evidence/V4_08_R3_INDEPENDENT_EXTERNAL_AUDIT_20260930.md",
+    "sha256": "61890d7c6ac8fcf9a4790aea710bdc2f2e6e6882a3caf128c50a0837eafc8832"
+  },
+  "generic_accepted_identity_sha256": "4c3445f7b1337fee09e942ac854d0cefcecfc8c90c0b7432d991cadc58818ecd",
+  "generic_replay_artifact": {
+    "byte_count": 4327394,
+    "path": "reports/v4_08/V4_08_R4_1_GENERIC_IDENTITY_PROMOTION.json",
+    "sha256": "4c3445f7b1337fee09e942ac854d0cefcecfc8c90c0b7432d991cadc58818ecd"
+  },
+  "lifecycle_event_logical_diff": [
+    {
+      "changed_fields": [
+        "acceptance"
+      ],
+      "security_id": "SEC-9A2222852908DCC43E96059AFF5737DD"
+    },
+    {
+      "changed_fields": [
+        "acceptance"
+      ],
+      "security_id": "SEC-C7353CA6F8DE4D5EA38AC49E4AAC9CF3"
+    }
+  ],
+  "parent_record_count": 6053,
+  "producer_expectation_set_imported": false,
+  "promoted_identity_count": 2,
+  "promoted_security_ids": [
+    "SEC-9A2222852908DCC43E96059AFF5737DD",
+    "SEC-C7353CA6F8DE4D5EA38AC49E4AAC9CF3"
+  ],
+  "record_logical_diff": [
+    {
+      "changed_fields": [
+        "acceptance"
+      ],
+      "security_id": "SEC-9A2222852908DCC43E96059AFF5737DD"
+    },
+    {
+      "changed_fields": [
+        "acceptance"
+      ],
+      "security_id": "SEC-C7353CA6F8DE4D5EA38AC49E4AAC9CF3"
+    }
+  ],
+  "status": "PASS_CURRENT_IDENTITY_PROMOTION_DATA_SALVAGED"
+}

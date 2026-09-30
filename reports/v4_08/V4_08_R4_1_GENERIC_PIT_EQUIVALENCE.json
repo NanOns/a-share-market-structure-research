@@ -1,0 +1,58 @@
+{
+  "checks": {
+    "exclusion_inventory_independently_recomputed": true,
+    "fact_artifact_hash_matches_R4_expectation": true,
+    "generic_identity_equivalence_pass": true,
+    "independent_pit_postcheck_pass": true,
+    "independent_row_set_and_all_logical_fields_match": true,
+    "no_final_v4_08_accepted_head": true,
+    "row_count_matches_R4_expectation": true,
+    "snapshot_matches_R4_expectation": true,
+    "source_revision_matches_R4_expectation": true,
+    "two_materializations_identical": true
+  },
+  "contract_id": "V4_08_R4_1_GENERIC_PIT_EQUIVALENCE_V1",
+  "expected": {
+    "fact_artifact_sha256": "164142652bf5b3032f4e1a8ee54fe2817a3f3b5130635cf04fb641a6e819211d",
+    "row_count": 50162,
+    "snapshot_id": "3dd77c68f3f29601b59d09853a70977bfab15f3fba3edeca6737f75ef9d7bcc0",
+    "source_revision_id": "sha256:190f9647cb8b6b610dd5336a76dc8b483e3a31439bdb0140bd95523c45905386"
+  },
+  "expected_values_are_acceptance_expectations_only": true,
+  "fact_artifact": {
+    "bytes": 4004928,
+    "path": "data/v4/artifact_store/v4_08/V4_08_PIT_MEMBERSHIP_FACTS_20260930_R1.jsonl.gz",
+    "sha256": "164142652bf5b3032f4e1a8ee54fe2817a3f3b5130635cf04fb641a6e819211d"
+  },
+  "final_v4_08_accepted_head_created": false,
+  "identity_promotion_equivalence": {
+    "path": "reports/v4_08/V4_08_R4_1_GENERIC_IDENTITY_PROMOTION_EQUIVALENCE.json",
+    "sha256": "e60c69eccba752b88debf37880bb81b95592415e7308ad340ec08175ab43fe6a"
+  },
+  "independent_postcheck": {
+    "path": "reports/v4_08/V4_08_R4_PIT_INDEPENDENT_POSTCHECK.json",
+    "sha256": "a7db1336ae714c962e7250830e8c8fe26b9110dac68e33e5f4802c08d7c10941"
+  },
+  "materialization_determinism": {
+    "path": "reports/v4_08/V4_08_R4_PIT_DETERMINISM.json",
+    "sha256": "1f47ba4a6697f44731b1823aa279231b795eb717dbe22caaaaeb1cc067e5e7e8"
+  },
+  "observed": {
+    "exclusions_by_reason": {
+      "BSE_OPTIONAL": 438,
+      "NON_FORMAL_SECTOR_TYPE": 32862,
+      "NOT_LISTED_AT_TARGET": 11,
+      "OPTIONAL_BOARD_OUTSIDE_REQUIRED_SCOPE": 1565
+    },
+    "fact_artifact_sha256": "164142652bf5b3032f4e1a8ee54fe2817a3f3b5130635cf04fb641a6e819211d",
+    "fact_logical_digest": "f29596cd59d401fc4fe8d728b3bd32324a46cc116020d64ffb70609f03a9fbc6",
+    "formal_rows_by_type": {
+      "INDUSTRY": 5224,
+      "THEME": 44938
+    },
+    "row_count": 50162,
+    "snapshot_id": "3dd77c68f3f29601b59d09853a70977bfab15f3fba3edeca6737f75ef9d7bcc0",
+    "source_revision_id": "sha256:190f9647cb8b6b610dd5336a76dc8b483e3a31439bdb0140bd95523c45905386"
+  },
+  "status": "PASS_GENERIC_PIT_EQUIVALENCE_REPLAY"
+}

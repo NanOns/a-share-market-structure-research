@@ -1,0 +1,427 @@
+{
+  "category_per_required_path": {
+    "src/phase1_qa.py": "PRODUCTION_RUNTIME",
+    "src/phase1_runner.py": "PRODUCTION_RUNTIME",
+    "src/phase2_runner.py": "PRODUCTION_RUNTIME",
+    "src/phase3_runner.py": "PRODUCTION_RUNTIME",
+    "src/phase4_runner.py": "PRODUCTION_RUNTIME",
+    "src/phase5_runner.py": "PRODUCTION_RUNTIME"
+  },
+  "contract_id": "V4_08_R4_1_PRODUCTION_CALL_GRAPH_CLASSIFICATION_V1",
+  "edge_count": 56,
+  "entrypoints": [
+    "src/production/daily.py",
+    "run_daily.py"
+  ],
+  "graph": {
+    "edges": [
+      {
+        "from": "adjustment.tdx_adjustment",
+        "to": "tdx.gbbq_reader"
+      },
+      {
+        "from": "common.input_snapshot",
+        "to": "production.release"
+      },
+      {
+        "from": "factors.engine",
+        "to": "factors.registry"
+      },
+      {
+        "from": "normalize.phase1",
+        "to": "adjustment.tdx_adjustment"
+      },
+      {
+        "from": "phase1_qa",
+        "to": "factors.registry"
+      },
+      {
+        "from": "phase1_qa",
+        "to": "validation.phase0_2b"
+      },
+      {
+        "from": "phase1_runner",
+        "to": "adjustment.tdx_adjustment"
+      },
+      {
+        "from": "phase1_runner",
+        "to": "common.market_reference"
+      },
+      {
+        "from": "phase1_runner",
+        "to": "common.snapshot_reader"
+      },
+      {
+        "from": "phase1_runner",
+        "to": "factors.engine"
+      },
+      {
+        "from": "phase1_runner",
+        "to": "factors.registry"
+      },
+      {
+        "from": "phase1_runner",
+        "to": "normalize.phase1"
+      },
+      {
+        "from": "phase1_runner",
+        "to": "phase1_qa"
+      },
+      {
+        "from": "phase1_runner",
+        "to": "tdx.gbbq_reader"
+      },
+      {
+        "from": "phase1_runner",
+        "to": "tdx.security_master"
+      },
+      {
+        "from": "phase1_runner",
+        "to": "validation.phase0_2b"
+      },
+      {
+        "from": "phase2_runner",
+        "to": "sector.membership_snapshot"
+      },
+      {
+        "from": "phase2_runner",
+        "to": "sector.phase2"
+      },
+      {
+        "from": "phase2_runner",
+        "to": "tdx.block_reader"
+      },
+      {
+        "from": "phase2_runner",
+        "to": "tdx.gbbq_reader"
+      },
+      {
+        "from": "phase2_runner",
+        "to": "tdx.security_master"
+      },
+      {
+        "from": "phase2_runner",
+        "to": "validation.phase0_2b"
+      },
+      {
+        "from": "phase3_runner",
+        "to": "common.snapshot_reader"
+      },
+      {
+        "from": "phase3_runner",
+        "to": "scanner.sector_scanner"
+      },
+      {
+        "from": "phase3_runner",
+        "to": "tdx.gbbq_reader"
+      },
+      {
+        "from": "phase3_runner",
+        "to": "validation.phase0_2b"
+      },
+      {
+        "from": "phase4_runner",
+        "to": "scanner.stock_scanner"
+      },
+      {
+        "from": "phase4_runner",
+        "to": "tdx.block_reader"
+      },
+      {
+        "from": "phase4_runner",
+        "to": "tdx.gbbq_reader"
+      },
+      {
+        "from": "phase4_runner",
+        "to": "tdx.security_master"
+      },
+      {
+        "from": "phase4_runner",
+        "to": "validation.phase0_2b"
+      },
+      {
+        "from": "phase5_runner",
+        "to": "candidates.research_priority"
+      },
+      {
+        "from": "phase5_runner",
+        "to": "tdx.gbbq_reader"
+      },
+      {
+        "from": "phase5_runner",
+        "to": "validation.phase0_2b"
+      },
+      {
+        "from": "production.daily",
+        "to": "common.identity"
+      },
+      {
+        "from": "production.daily",
+        "to": "common.input_snapshot"
+      },
+      {
+        "from": "production.daily",
+        "to": "common.market_reference"
+      },
+      {
+        "from": "production.daily",
+        "to": "common.run_lock"
+      },
+      {
+        "from": "production.daily",
+        "to": "common.snapshot_reader"
+      },
+      {
+        "from": "production.daily",
+        "to": "phase1_runner"
+      },
+      {
+        "from": "production.daily",
+        "to": "phase2_runner"
+      },
+      {
+        "from": "production.daily",
+        "to": "phase3_runner"
+      },
+      {
+        "from": "production.daily",
+        "to": "phase4_runner"
+      },
+      {
+        "from": "production.daily",
+        "to": "phase5_runner"
+      },
+      {
+        "from": "production.daily",
+        "to": "production.dashboard"
+      },
+      {
+        "from": "production.daily",
+        "to": "production.release"
+      },
+      {
+        "from": "production.daily",
+        "to": "tdx.gbbq_reader"
+      },
+      {
+        "from": "run_daily",
+        "to": "common.paths"
+      },
+      {
+        "from": "run_daily",
+        "to": "production.daily"
+      },
+      {
+        "from": "sector.membership_snapshot",
+        "to": "sector.roles"
+      },
+      {
+        "from": "sector.membership_snapshot",
+        "to": "tdx.block_reader"
+      },
+      {
+        "from": "sector.membership_snapshot",
+        "to": "tdx.gbbq_reader"
+      },
+      {
+        "from": "sector.membership_snapshot",
+        "to": "tdx.security_master"
+      },
+      {
+        "from": "sector.phase2",
+        "to": "sector.roles"
+      },
+      {
+        "from": "tdx.block_reader",
+        "to": "tdx.security_master"
+      },
+      {
+        "from": "tdx.gbbq_reader",
+        "to": "tdx._gbbq_key"
+      }
+    ],
+    "entrypoints": [
+      "src/production/daily.py",
+      "run_daily.py"
+    ],
+    "nodes": [
+      {
+        "category": "PRODUCTION_RUNTIME",
+        "module": "adjustment.tdx_adjustment",
+        "path": "src/adjustment/tdx_adjustment.py"
+      },
+      {
+        "category": "PRODUCTION_RUNTIME",
+        "module": "candidates.research_priority",
+        "path": "src/candidates/research_priority.py"
+      },
+      {
+        "category": "PRODUCTION_RUNTIME",
+        "module": "common.identity",
+        "path": "src/common/identity.py"
+      },
+      {
+        "category": "PRODUCTION_RUNTIME",
+        "module": "common.input_snapshot",
+        "path": "src/common/input_snapshot.py"
+      },
+      {
+        "category": "PRODUCTION_RUNTIME",
+        "module": "common.market_reference",
+        "path": "src/common/market_reference.py"
+      },
+      {
+        "category": "PRODUCTION_RUNTIME",
+        "module": "common.paths",
+        "path": "src/common/paths.py"
+      },
+      {
+        "category": "PRODUCTION_RUNTIME",
+        "module": "common.run_lock",
+        "path": "src/common/run_lock.py"
+      },
+      {
+        "category": "PRODUCTION_RUNTIME",
+        "module": "common.snapshot_reader",
+        "path": "src/common/snapshot_reader.py"
+      },
+      {
+        "category": "PRODUCTION_RUNTIME",
+        "module": "factors.engine",
+        "path": "src/factors/engine.py"
+      },
+      {
+        "category": "PRODUCTION_RUNTIME",
+        "module": "factors.registry",
+        "path": "src/factors/registry.py"
+      },
+      {
+        "category": "PRODUCTION_RUNTIME",
+        "module": "normalize.phase1",
+        "path": "src/normalize/phase1.py"
+      },
+      {
+        "category": "PRODUCTION_RUNTIME",
+        "module": "phase1_qa",
+        "path": "src/phase1_qa.py"
+      },
+      {
+        "category": "PRODUCTION_RUNTIME",
+        "module": "phase1_runner",
+        "path": "src/phase1_runner.py"
+      },
+      {
+        "category": "PRODUCTION_RUNTIME",
+        "module": "phase2_runner",
+        "path": "src/phase2_runner.py"
+      },
+      {
+        "category": "PRODUCTION_RUNTIME",
+        "module": "phase3_runner",
+        "path": "src/phase3_runner.py"
+      },
+      {
+        "category": "PRODUCTION_RUNTIME",
+        "module": "phase4_runner",
+        "path": "src/phase4_runner.py"
+      },
+      {
+        "category": "PRODUCTION_RUNTIME",
+        "module": "phase5_runner",
+        "path": "src/phase5_runner.py"
+      },
+      {
+        "category": "PRODUCTION_RUNTIME",
+        "module": "production.daily",
+        "path": "src/production/daily.py"
+      },
+      {
+        "category": "PRODUCTION_RUNTIME",
+        "module": "production.dashboard",
+        "path": "src/production/dashboard.py"
+      },
+      {
+        "category": "PRODUCTION_RUNTIME",
+        "module": "production.release",
+        "path": "src/production/release.py"
+      },
+      {
+        "category": "PRODUCTION_RUNTIME",
+        "module": "run_daily",
+        "path": "run_daily.py"
+      },
+      {
+        "category": "PRODUCTION_RUNTIME",
+        "module": "scanner.sector_scanner",
+        "path": "src/scanner/sector_scanner.py"
+      },
+      {
+        "category": "PRODUCTION_RUNTIME",
+        "module": "scanner.stock_scanner",
+        "path": "src/scanner/stock_scanner.py"
+      },
+      {
+        "category": "PRODUCTION_RUNTIME",
+        "module": "sector.membership_snapshot",
+        "path": "src/sector/membership_snapshot.py"
+      },
+      {
+        "category": "PRODUCTION_RUNTIME",
+        "module": "sector.phase2",
+        "path": "src/sector/phase2.py"
+      },
+      {
+        "category": "PRODUCTION_RUNTIME",
+        "module": "sector.roles",
+        "path": "src/sector/roles.py"
+      },
+      {
+        "category": "PRODUCTION_RUNTIME",
+        "module": "tdx._gbbq_key",
+        "path": "src/tdx/_gbbq_key.py"
+      },
+      {
+        "category": "PRODUCTION_RUNTIME",
+        "module": "tdx.block_reader",
+        "path": "src/tdx/block_reader.py"
+      },
+      {
+        "category": "PRODUCTION_RUNTIME",
+        "module": "tdx.gbbq_reader",
+        "path": "src/tdx/gbbq_reader.py"
+      },
+      {
+        "category": "PRODUCTION_RUNTIME",
+        "module": "tdx.security_master",
+        "path": "src/tdx/security_master.py"
+      },
+      {
+        "category": "PRODUCTION_RUNTIME",
+        "module": "validation.phase0_2b",
+        "path": "src/validation/phase0_2b.py"
+      }
+    ],
+    "required_paths": [
+      "src/phase1_runner.py",
+      "src/phase1_qa.py",
+      "src/phase2_runner.py",
+      "src/phase3_runner.py",
+      "src/phase4_runner.py",
+      "src/phase5_runner.py"
+    ],
+    "unresolved_required_paths": []
+  },
+  "missing_required_modules": [],
+  "reachable_node_count": 31,
+  "required_production_runtime_paths": [
+    "src/phase1_runner.py",
+    "src/phase1_qa.py",
+    "src/phase2_runner.py",
+    "src/phase3_runner.py",
+    "src/phase4_runner.py",
+    "src/phase5_runner.py"
+  ],
+  "status": "PASS",
+  "tested_commit": "60a18f9ce265a36547217c48dca3f3c0b2cd50a7",
+  "unresolved_required_paths": []
+}

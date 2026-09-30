@@ -1,0 +1,193 @@
+{
+  "accepted_v405": {
+    "accepted_artifact_keys": [
+      "core_profile",
+      "full_scope_factors",
+      "period_asof"
+    ],
+    "accepted_head_path": "data/v4/V4_05_ACCEPTED_HEAD.json",
+    "accepted_head_sha256": "fc929d85553a900a6479ac9f50291d50cf750ad0e6c21fc58e4e05e92189f5cb",
+    "core_logical_digest": "d195518796acc64015174eac8f9bb8721a27095311ece00baedf8c12b0633e74",
+    "factor_artifact_logical_digest": "0cfe708567935726f0ad51ae4bb47237ec7aee556db3437c12f21f0c623bd0d2",
+    "factor_artifact_path": "reports/v4_05/staging/V4_05_R4_1_FULL_SCOPE_FACTORS.jsonl.gz",
+    "factor_artifact_sha256": "17ae571629b76399e32d9e8a243268ea1fac619e1c5168d307bfd8ebf1494c48",
+    "formal_publication_at": "2026-09-29T06:53:52Z",
+    "null_output_digests_by_field": {
+      "rps20_delta3": 5222,
+      "rps5_delta1": 5222,
+      "rps5_delta3": 5222
+    },
+    "null_values_by_field": {
+      "rps20_delta3": 5222,
+      "rps5_delta1": 5222,
+      "rps5_delta3": 5222
+    },
+    "prior_rps_quality_counts": {
+      "rps20_delta3:UNKNOWN": 5222,
+      "rps5_delta1:UNKNOWN": 5222,
+      "rps5_delta3:UNKNOWN": 5222
+    },
+    "prior_rps_unknown_reason_counts": {
+      "rps20_delta3:BOOTSTRAP_INSUFFICIENT_FORWARD_HISTORY": 5222,
+      "rps5_delta1:BOOTSTRAP_INSUFFICIENT_FORWARD_HISTORY": 5222,
+      "rps5_delta3:BOOTSTRAP_INSUFFICIENT_FORWARD_HISTORY": 5222
+    },
+    "row_count": 5222,
+    "target_trade_date": "2026-09-28"
+  },
+  "audit_item": "V4_07_PRIOR_RPS_ACCEPTED_INPUT_BOOTSTRAP_01",
+  "audit_status": "OPEN",
+  "checks": {
+    "accepted_delta_output_digests_absent": true,
+    "accepted_factor_artifact_hash_matches_head": true,
+    "accepted_factor_row_count_matches_head": true,
+    "accepted_prior_rps_delta_fields_all_unknown": true,
+    "accepted_prior_rps_unknown_reason_is_bootstrap": true,
+    "accepted_v405_head_has_no_prior_rps_artifact_binding": true,
+    "r3_candidate_not_stage_accepted": true,
+    "r3_full_scope_hash_matches_receipt": true,
+    "r3_postcheck_passes_for_same_prior_artifact": true,
+    "r3_prior_artifact_hash_matches_receipt": true,
+    "r3_prior_receipt_is_not_acceptance": true
+  },
+  "checks_pass": true,
+  "contract_id": "V4_07_PRIOR_RPS_BOOTSTRAP_GAP_ASSESSMENT_R1",
+  "created_at_utc": "2026-09-30T00:41:00Z",
+  "exact_requirement": {
+    "code_guard": "src/v4/factors/relative.py requires prior artifact digest and prior universe snapshot id; missing either raises ValueError. It does not synthesize prior scores from raw history.",
+    "contract_sections": [
+      "REV2 §10.0 CORE_FACTOR_V1",
+      "REV2 §10.0 RELATIVE_CHANGE"
+    ],
+    "delta_offsets": {
+      "rps20_delta3": {
+        "current_field": "rps20[t]",
+        "prior_field": "rps20[t-3]"
+      },
+      "rps5_delta1": {
+        "current_field": "rps5[t]",
+        "prior_field": "rps5[t-1]"
+      },
+      "rps5_delta3": {
+        "current_field": "rps5[t]",
+        "prior_field": "rps5[t-3]"
+      }
+    },
+    "required_identity_per_prior_score": [
+      "market_calendar_id",
+      "prior_trade_date",
+      "prior RPS contract/version",
+      "prior accepted artifact digest",
+      "prior universe snapshot id",
+      "adjustment basis id",
+      "source digest"
+    ],
+    "rps_formula": "RPS_N is a same-session cross-sectional midrank of retN over that date's evaluable universe; retN uses the frozen N-session window; n<2 is UNKNOWN.",
+    "warmup": "300 market days is a planning target only; each factor's first available date must be measured and reported independently. A delta is not available until both the current RPS and each required accepted prior-session RPS are available with matching calendar/universe/adjustment identities."
+  },
+  "new_accepted_factor_publication_created": false,
+  "new_rps_candidate_created": false,
+  "prohibited_changes_preserved": [
+    "V4-07 thresholds unchanged",
+    "UNKNOWN not coerced to FALSE",
+    "V4-05 accepted artifacts not rewritten",
+    "V4-03 staging values not consumed",
+    "raw history not reconstructed inside V4-07"
+  ],
+  "real_base_seed_signal_capability": "DEGRADED_BY_ACCEPTED_PRIOR_RPS_BOOTSTRAP_UNKNOWN",
+  "repair_blocker": "No new independently accepted point-in-time prior-RPS publication chain is present. Building one requires accepted session calendars and dated start-universe snapshots at each prior session, prior RPS cross-sections, same adjustment/source identities, first-available/warm-up reconciliation, independent recomputation, and a new accepted V4-05 factor publication. The current audit has no authority to promote such a candidate.",
+  "source_bindings": {
+    "data/v4/V4_05_ACCEPTED_HEAD.json": {
+      "byte_count": 8456,
+      "sha256": "fc929d85553a900a6479ac9f50291d50cf750ad0e6c21fc58e4e05e92189f5cb"
+    },
+    "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV2_20260925.md": {
+      "byte_count": 181127,
+      "sha256": "744b75906d932d6b11e01a1cd90f6a8de082cc23b673e876e219642620dd30fd"
+    },
+    "reports/audits/V4_07_PRIOR_RPS_ACCEPTED_INPUT_BOOTSTRAP_AUDIT_20260930.md": {
+      "byte_count": 2548,
+      "sha256": "6acc784240ce61f9e49690f1805b12e558097f37c5b22451605adba6187d95f0"
+    },
+    "reports/v4_03/V4_03_FULL_SCOPE_CANDIDATE_RECEIPT_R3.json": {
+      "byte_count": 5069,
+      "sha256": "fa0f47f949b30b1ef36ffe4bb72e216df1613fc98ee20224da9eedbeab6b4c50"
+    },
+    "reports/v4_03/V4_03_INDEPENDENT_POSTCHECK_R3.json": {
+      "byte_count": 7647,
+      "sha256": "7a1a0be8ab6f7ca5a5bc3ed7e27ed7b2998c884e9f20a4ed4e07514a0cd476c1"
+    },
+    "reports/v4_03/V4_03_PRIOR_RPS_STAGING_RECEIPT_R3.json": {
+      "byte_count": 728,
+      "sha256": "9d22947349ee02a32e1e2b7dda84c053aa6b43ddf6bcd4229b4772570bdfd878"
+    },
+    "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz": {
+      "byte_count": 24462765,
+      "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+    },
+    "reports/v4_03/staging/V4_03_PRIOR_RPS_STAGING_R3.json": {
+      "byte_count": 921179,
+      "sha256": "90d5998ba93b60f8061c759952a0f635e4e44fb0cd12fce73331e40d95ff7041"
+    },
+    "reports/v4_05/staging/V4_05_R4_1_FULL_SCOPE_FACTORS.jsonl.gz": {
+      "byte_count": 32316843,
+      "sha256": "17ae571629b76399e32d9e8a243268ea1fac619e1c5168d307bfd8ebf1494c48"
+    },
+    "src/v4/factors/relative.py": {
+      "byte_count": 10710,
+      "sha256": "74034b819cd845e8177eee24b30cd441e94b1619f393b67c24c5397076af82ab"
+    }
+  },
+  "status": "INVESTIGATION_COMPLETE_REPAIR_AND_NEW_ACCEPTED_PUBLICATION_OPEN",
+  "v403_r3_staging": {
+    "full_scope_candidate_path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+    "full_scope_candidate_rows": 5222,
+    "full_scope_candidate_sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e",
+    "full_scope_candidate_status": "FULL_47_FIELD_CANDIDATE_NOT_STAGE_ACCEPTANCE",
+    "independent_postcheck_rows": 5222,
+    "independent_postcheck_status": "PASS",
+    "prior_rps_artifact_path": "reports/v4_03/staging/V4_03_PRIOR_RPS_STAGING_R3.json",
+    "prior_rps_artifact_sha256": "90d5998ba93b60f8061c759952a0f635e4e44fb0cd12fce73331e40d95ff7041",
+    "prior_rps_coordinates": [
+      [
+        "2026-09-23",
+        "rps5"
+      ],
+      [
+        "2026-09-21",
+        "rps5"
+      ],
+      [
+        "2026-09-21",
+        "rps20"
+      ]
+    ],
+    "prior_rps_receipt_status": "STAGING_NOT_STAGE_ACCEPTANCE",
+    "prior_rps_source_digest": "f712a3377afa8f4b797a29e7e8fead41847452b52382d9c8a809e41f8f698177",
+    "rps_delta_quality_counts": {
+      "rps20_delta3:OBSERVED": 5016,
+      "rps20_delta3:UNKNOWN": 206,
+      "rps5_delta1:OBSERVED": 5026,
+      "rps5_delta1:UNKNOWN": 196,
+      "rps5_delta3:OBSERVED": 5023,
+      "rps5_delta3:UNKNOWN": 199
+    },
+    "sample_observed_value": {
+      "adjustment_basis_id": "7f1ccb5ea0b74e5550f072290c6ce1c6e7ade11ae28d553fb3204d103e3232a2",
+      "end_session": "2026-09-24",
+      "field": "rps5_delta3",
+      "output_digest": "dabd167488fa3068eb2ac2e6f77a492a7764f8715ef15300fe0520f25c05d4d4",
+      "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+      "start_session": "2026-09-21",
+      "start_universe_snapshot_id": "11973aa1ff9b447613e5cede583077caa953d6d98e8e37856020a65c47cc8f1c",
+      "universe_snapshot_id": "9ae340caf36a3d25dae3b4f9925a7fbe0687b021a3ab855b264d61427b4c6fbf",
+      "value": 9.992463694647483
+    }
+  },
+  "why_r3_values_cannot_be_copied": [
+    "V4-03 R3 computed prior scores from a stage-owned historical staging artifact and produced independently recomputed candidate deltas.",
+    "Its source receipt explicitly says STAGING_NOT_STAGE_ACCEPTANCE and the 47-field artifact says FULL_47_FIELD_CANDIDATE_NOT_STAGE_ACCEPTANCE.",
+    "V4-05's accepted R4.1 factor publication independently records all three delta fields as UNKNOWN with BOOTSTRAP_INSUFFICIENT_FORWARD_HISTORY, null value and null output_digest for all 5,222 identities.",
+    "The R3 prior artifact digest/universe binding was not included among V4-05 accepted artifact bindings, so copying R3 values would splice an unaccepted source into an accepted publication."
+  ]
+}

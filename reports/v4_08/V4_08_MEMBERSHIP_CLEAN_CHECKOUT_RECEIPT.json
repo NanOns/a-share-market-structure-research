@@ -1,0 +1,40 @@
+{
+  "branch_under_test": "DETACHED_AT_PUSHED_BRANCH_COMMIT",
+  "checkout_path": "C:\\Users\\lps\\.codex\\worktrees\\v4-07-r2-producer\\大A交易",
+  "contract_id": "V4_08_MEMBERSHIP_CLEAN_CHECKOUT_RECEIPT_V1",
+  "created_at_utc": "2026-09-30T00:53:30Z",
+  "full_regression_status": "PASS_ISOLATED_FULL_REGRESSION",
+  "main_checkout_head_at_seal": "47e0d72343594c697ff1a73c4daed853ea21e830",
+  "post_test_git_status_porcelain": "",
+  "receipt_sha256": "a08a3fd2e4faa6edfbc13efc19ad73ea22f2768f427324a5875b0f3789ac7c2a",
+  "remote_branch": "codex/v4-system-reform",
+  "schema_migration_status": "PASS_ISOLATED_MIGRATION_AND_ROLLBACK",
+  "schema_migrations": [
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/016_v4_08_sector_membership.sql",
+      "sha256": "45db743c2d223308d8b95a1dbe4cb7548f3ff553c04a021058be1ed7d34cb6e5"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/017_v4_08_membership_fact_evidence_view.sql",
+      "sha256": "633998684434e06b089f622c7c2a8bc37743ab945e53f94b06ca496de8ee77fc"
+    }
+  ],
+  "schema_rollbacks": [
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/rollback/017_v4_08_membership_fact_evidence_view.sql",
+      "sha256": "80b22cac9f34ce64c17a22777f1638d9df85e536ccd78b8b610716bcf44a9047"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/rollback/016_v4_08_sector_membership.sql",
+      "sha256": "1c9c0b1c2d7b157fd228cd29f3426cd5e75f1c6431ca44da0b68257d0539f258"
+    }
+  ],
+  "status": "PASS_CLEAN_CHECKOUT_TESTS_AND_ISOLATED_SCHEMA_MIGRATION",
+  "tested_commit": "47e0d72343594c697ff1a73c4daed853ea21e830",
+  "v4_08_test_count": 21,
+  "v4_08_test_errors": 0,
+  "v4_08_test_failures": 0,
+  "v4_08_test_skipped": 0,
+  "working_tree_clean_after_tests": true,
+  "working_tree_clean_before_tests": true
+}

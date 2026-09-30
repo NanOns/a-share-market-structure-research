@@ -1,18 +1,17 @@
-# V4-08 PIT Sector Membership Baseline R1 — Candidate Closure
+# V4-08 PIT Sector Membership Baseline R1 — Final Candidate Closure
 
 - Stage contract: `V4_08_PIT_SECTOR_MEMBERSHIP_BASELINE_R1`.
-- Candidate result: `DIAGNOSTIC_RECONSTRUCTION_PASS; PIT_BASELINE_BLOCKED`.
-- Starting branch and accepted range: `V4_00_TO_V4_07_ACCEPTED`; source HEAD at candidate generation: `ae27c3bdd170024eff3841a147fcce257d57b038`.
-- Latest accepted market session available from V4-05: `2026-09-28`.
-- Source capture is hash-bound and observed at `2026-09-30T00:45:21.889920Z`; candidate ingestion/system availability is `2026-09-30T00:45:22.133876Z`. Provider availability and source membership effective date are unknown.
-- Current replay digest: `6b6663cb853be75ae269c4b11629abca72fbb4bac8adeff3439255c5ef2e640e`; row count: `87,937`; raw source facts: `85,038`; derived parent facts: `2,899`.
-- Formal sector types and rows: `{"INDUSTRY": 8484, "STYLE": 20223, "THEME": 46591, "UNKNOWN": 12639}`. Unmapped source identities: `497` unique keys / `1,176` facts; they are retained with UNKNOWN identity.
-- Sector counts by formal type: `{"INDUSTRY": 133, "STYLE": 152, "THEME": 268, "UNKNOWN": 109}`. Unique mapped security identities: `5,468`. Membership quality distribution: `{"CURRENT_REPLAY_DIAGNOSTIC": 87937}`.
-- Derived-parent semantics use `TDX_INDUSTRY_PREFIX_PARENT_MAP_V1`; exact child-to-parent map digest: `b99caa32b2060f440f84f7e450a4852c05770c8696baa250e95d92e57d6c5bda` over `76` child codes. Parent membership remains diagnostic-only.
-- The candidate cannot claim PIT for `2026-09-28` or any historical date. No go-forward PIT trade date is assigned because the source provider availability and effective date are not evidenced. The current file system mtimes are metadata only.
-- Membership basis for historical replay: `CURRENT_MEMBERSHIP_REPLAY`; `pit_observed=false`; `historical_backtest_safe=false`. Style and unknown types remain diagnostic-only. Parent-industry union remains diagnostic-only pending acceptance.
-- V4-07 real Base Seed capability remains `DEGRADED_BY_ACCEPTED_PRIOR_RPS_BOOTSTRAP_UNKNOWN`; dependent fields remain UNKNOWN. The separate audit item remains OPEN.
-- PostgreSQL migration evidence: `reports/v4_08/V4_08_MEMBERSHIP_SCHEMA_MIGRATION_RECEIPT.json`.
-- Candidate manifest: `reports/v4_08/V4_08_MEMBERSHIP_STAGE_CANDIDATE_MANIFEST.json`; SHA-256 `f967159c16a04d5d292e1b521abab3bdcb70e8b23771e1ad0567f926dd2be088`.
-- Acceptance result: `BLOCKED_FOR_INDEPENDENT_PIT_BASELINE_ACCEPTANCE` because there is no source provider-availability/effective-date receipt and the accepted identity map leaves unresolved keys. Diagnostic replay and contract/schema engineering are ready for independent audit; no V4-08 formal production is authorized.
-- Next stage: independent external review of this candidate and the open source-time/identity limitations. After external review, obtain a separately evidenced dated source capture before requesting a PIT baseline acceptance.
+- Candidate result: `DIAGNOSTIC_RECONSTRUCTION_PASS; PIT_BASELINE_BLOCKED_PENDING_EXTERNAL_ACCEPTANCE`.
+- Accepted range: `V4_00_TO_V4_07_ACCEPTED`; no later stage was promoted.
+- Candidate generation HEAD: `ae27c3bdd170024eff3841a147fcce257d57b038`; clean-checkout tested/pushed commit: `47e0d72343594c697ff1a73c4daed853ea21e830`.
+- Latest accepted market session available from V4-05: `2026-09-28`. First go-forward PIT baseline date: `null` because the TDX source has no evidenced provider-available timestamp or membership effective date.
+- TDX source observed at `2026-09-30T00:45:21.889920Z`; candidate ingestion/system availability was recorded in source artifacts. Hashes: `{"T0002/hq_cache/infoharbor_block.dat": "025d9ae0c50d0cbf64fa3ba06c419681d7a931a9192b1c7841b14382b53b7595", "T0002/hq_cache/tdxhy.cfg": "f0861020e5d9fde9f10ab0374da6b887f3a5f681cfa00bb7dc6776ee4703c735", "T0002/hq_cache/tdxzs.cfg": "a33983fc8bb15c97db93fe9b60394b326b71a91e99e33b8b54700415442074da"}`.
+- Full diagnostic replay: `87,937` rows; current snapshot digest `4b8779edd4ea4da31105a8debdf0e8e5c3e16d2e5fbcc3ce88a9fb4c8e07ad00`; replay digest `6b6663cb853be75ae269c4b11629abca72fbb4bac8adeff3439255c5ef2e640e`. Bases are `CURRENT_TDX_MEMBERSHIP` and `CURRENT_MEMBERSHIP_REPLAY`; all replay rows have `pit_observed=false` and `historical_backtest_safe=false`.
+- Raw captured rows: `85,038`; derived parent rows: `2,899`. Formal-type membership row counts: `{"INDUSTRY": 8484, "STYLE": 20223, "THEME": 46591, "UNKNOWN": 12639}`; sector counts: `{"INDUSTRY": 133, "STYLE": 152, "THEME": 268, "UNKNOWN": 109}`; unique mapped security identities: `5,468`.
+- Retained diagnostic limitations: `{'index_group': 12639}` unknown-type facts and `497` unresolved source keys across `1,176` facts; no rows were silently dropped. Parent map `TDX_INDUSTRY_PREFIX_PARENT_MAP_V1` digest `b99caa32b2060f440f84f7e450a4852c05770c8696baa250e95d92e57d6c5bda` remains diagnostic-only.
+- Membership quality distribution: `{"CURRENT_REPLAY_DIAGNOSTIC": 87937}`. Temporal leakage gate: `PASS_DIAGNOSTIC_CUTOFF_GATES`; revision/fork gate: `reports/v4_08/V4_08_MEMBERSHIP_REVISION_TEST.json`; deterministic fixed-context hashes: `reports/v4_08/V4_08_MEMBERSHIP_DETERMINISM.json`.
+- PostgreSQL migrations `016_v4_08_sector_membership.sql, 017_v4_08_membership_fact_evidence_view.sql` and reverse rollbacks passed on isolated PostgreSQL `postgres (PostgreSQL) 18.6`. No configured database or `config/.env` was read.
+- Clean checkout `47e0d72343594c697ff1a73c4daed853ea21e830` passed the established V4 matrix (`538 passed, 2 skipped in 30.15s`) plus V4-08 focused suite (`21 passed, 0 skipped`). Combined: `559 passed, 2 skipped, 0 failed. The checkout was clean before and after.
+- V4-07 real Base Seed capability remains `DEGRADED_BY_ACCEPTED_PRIOR_RPS_BOOTSTRAP_UNKNOWN`; the separate audit remains OPEN at `reports/audits/V4_07_PRIOR_RPS_BOOTSTRAP_GAP_ASSESSMENT_R1.json` (SHA-256 `cb8c70dac419a916ae9e3ce1a98e894824e4110d7488d5a9c2de3efce7107c86`).
+- Stage acceptance: `BLOCKED_FOR_EXTERNAL_PIT_BASELINE_ACCEPTANCE`. Current TDX bytes and filesystem mtimes do not prove source availability/effective date. The accepted identity map also leaves unresolved keys. No formal V4-08 sector/rotation production is authorized; no current membership was relabeled as PIT.
+- Stage candidate manifest: `reports/v4_08/V4_08_MEMBERSHIP_STAGE_CANDIDATE_MANIFEST.json`; SHA-256 `48f8455d49fca0eb06fdf6293b1b8486d7adc57be3db39d82e8bfee7ccc9f05d`. Next stage: independent external review of this candidate and the source-time/identity blockers.

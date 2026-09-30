@@ -1,0 +1,105 @@
+{
+  "B04": "PASS_ENGINEERING_CONTEXT_ROUTING",
+  "B05": "OPTION_B_CAPABILITY_DOWNGRADE",
+  "accepted_context_contract": {
+    "path": "config/v4_08_accepted_context_contract_r5_2.json",
+    "sha256": "491e5e0808dee92daf8122923784d87e19fee2222a60bfcf103a39b2ac8e702a"
+  },
+  "capability_downgrade": {
+    "path": "reports/v4_08/V4_08_R5_2_B2_CAPABILITY_DOWNGRADE.json",
+    "sha256": "5a87124964c4ddb0184dbfb9a2d39e18066944963ca619e05d8128fed5b59c57"
+  },
+  "changed_paths": [
+    "config/v4_08_accepted_context_contract_r5_2.json",
+    "data/v4/artifact_store/v4_08/V4_08_R5_B0_20260930_bb8d0c0929f531e8cddf.jsonl.gz",
+    "data/v4/artifact_store/v4_08/V4_08_R5_B2_20260930_bb8d0c0929f531e8cddf.jsonl.gz",
+    "data/v4/artifact_store/v4_08/V4_08_R5_ROTATION_20260930_bb8d0c0929f531e8cddf.jsonl.gz",
+    "data/v4/artifact_store/v4_08/V4_08_R5_SECTOR_NATIVE_20260930_bb8d0c0929f531e8cddf.jsonl.gz",
+    "docs/evidence/V4_08_R5_1_INDEPENDENT_EXTERNAL_REAUDIT_R2_20260930.md",
+    "docs/evidence/V4_08_R5_2_FINAL_INPUT_AUTHORITY_AND_LEGACY_VALID_MEMBER_REPAIR_TASK_20260930.md",
+    "reports/v4_08/V4_08_R5_2_ACCEPTED_CONTEXT_CONTRACT.json",
+    "reports/v4_08/V4_08_R5_2_B2_CAPABILITY_DOWNGRADE.json",
+    "reports/v4_08/V4_08_R5_2_DAILY_HEAD_ROUTING.json",
+    "reports/v4_08/V4_08_R5_2_FROZEN_CONTEXT_IMMUTABILITY.json",
+    "reports/v4_08/V4_08_R5_2_LEGACY_VALID_MEMBER_SOURCE_DECISION.json",
+    "reports/v4_08/V4_08_R5_2_MULTI_CONTEXT_GENERALIZATION.json",
+    "reports/v4_08/V4_08_R5_2_STAGE_CANDIDATE_MANIFEST.json",
+    "reports/v4_08/V4_08_R5_2_STAGE_ENTRY.md",
+    "reports/v4_08/V4_08_R5_B0_FULL_MARKET.json",
+    "reports/v4_08/V4_08_R5_B0_IMPLEMENTATION.json",
+    "reports/v4_08/V4_08_R5_B2_FULL_MARKET.json",
+    "reports/v4_08/V4_08_R5_ROTATION_FULL_MARKET.json",
+    "reports/v4_08/V4_08_R5_ROTATION_IMPLEMENTATION.json",
+    "reports/v4_08/V4_08_R5_SECTOR_NATIVE_FULL_MARKET.json",
+    "reports/v4_08/V4_08_R5_SECTOR_NATIVE_IMPLEMENTATION.json",
+    "reports/v4_08/V4_08_R5_STAGE_CANDIDATE_MANIFEST.json",
+    "scripts/materialize_v4_08_r5.py",
+    "scripts/run_v4_08_r5_2_isolated_verification.py",
+    "scripts/verify_v4_08_r5_2.py",
+    "scripts/verify_v4_08_r5_algorithms.py",
+    "src/sector/accepted_context_r5_2.py",
+    "src/sector/accepted_input_r5_1.py",
+    "src/sector/legacy_b2_r5.py",
+    "tests/v4_08/test_r5_1_accepted_adapter.py",
+    "tests/v4_08/test_r5_2_context_authority.py",
+    "tests/v4_08/test_r5_runtime.py"
+  ],
+  "closure": {
+    "path": "reports/v4_08/V4_08_R5_2_CLOSURE.md",
+    "sha256": "7c6db2e06e28962376964ab31d3c5032272cc5fe7bd4c6d6e5fb722ba15880b1"
+  },
+  "daily_route": "V4_DATA_ACCEPTED_HEAD -> immutable manifest.accepted_input_context",
+  "engineering_scope_excludes": [
+    "legacy B2 confirmed",
+    "legacy B2 warm"
+  ],
+  "external_acceptance_pending": true,
+  "global_heads_unchanged": true,
+  "global_stage_range": "V4_00_TO_V4_07_ACCEPTED",
+  "immutability": {
+    "path": "reports/v4_08/V4_08_R5_2_FROZEN_CONTEXT_IMMUTABILITY.json",
+    "sha256": "a858fa1bcec76674265e57beb394cfa11ca687d1bf684637153276e5d6ee1683"
+  },
+  "multi_context": {
+    "path": "reports/v4_08/V4_08_R5_2_MULTI_CONTEXT_GENERALIZATION.json",
+    "sha256": "d93cca79a0ad5546ed3a0e8bdf68719615a281f71b211486f7b9981b1cb9daad"
+  },
+  "next_stage": "INDEPENDENT_EXTERNAL_REAUDIT",
+  "no_symbol": {
+    "hard_gated_equity_symbol_hits": 0,
+    "status": "PASS",
+    "unclassified_paths": []
+  },
+  "production_permission": false,
+  "real_context_availability": "TARGET_ACCEPTED_DATA_UNAVAILABLE",
+  "real_distribution": {
+    "B0": {
+      "UNKNOWN": 378
+    },
+    "B2": {
+      "UNKNOWN": 378
+    },
+    "ROTATION": {
+      "UNKNOWN": 378
+    }
+  },
+  "regression": {
+    "errors": 0,
+    "failures": 0,
+    "passed": 709,
+    "skipped": 2,
+    "tests": 711
+  },
+  "source_decision": {
+    "path": "reports/v4_08/V4_08_R5_2_LEGACY_VALID_MEMBER_SOURCE_DECISION.json",
+    "sha256": "c32d929b0b76a557d441c81ba3698e101257984117036e14d97a578220b588af"
+  },
+  "stage_manifest": {
+    "path": "reports/v4_08/V4_08_R5_2_STAGE_CANDIDATE_MANIFEST.json",
+    "sha256": "2188fe22a7992642f3fe872a66e7a4c0235e4d29d3411604fdf8ecb2321ab319"
+  },
+  "starting_head": "c853f0ce1980d338d67fe0afb29d4ccaa95db648",
+  "status": "V4_08_R5_2_READY_FOR_EXTERNAL_REAUDIT",
+  "target_accepted_core_count": 0,
+  "tested_implementation_commit": "b7d904cbff4f1c4b877838bd129f3925f968d858"
+}

@@ -1,0 +1,235 @@
+{
+  "adapter": {
+    "path": "src/sector/accepted_input_r5_1.py",
+    "sha256": "64ac41ab060ddedf1f8a61eceed44f70f0039287b24a377f70dc02904a58d3f9"
+  },
+  "cases": [
+    {
+      "name": "test_raw_amount_adapter_concentration[amounts0-0.125-0.375-ACCEPTED-None]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_raw_amount_adapter_concentration[amounts1-0.14285714285714285-0.42857142857142855-ACCEPTED-None]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_raw_amount_adapter_concentration[amounts2-None-None-UNKNOWN-ZERO_OR_UNKNOWN_AMOUNT_DENOMINATOR]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_raw_amount_adapter_concentration[amounts3-0.14285714285714285-0.42857142857142855-ACCEPTED-None]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_raw_amount_adapter_concentration[amounts4-0.14285714285714285-0.42857142857142855-ACCEPTED-None]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_target_date_mismatch_unknown",
+      "status": "PASS"
+    },
+    {
+      "name": "test_future_source_rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "test_digest_mismatch_rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "test_price_logical_digest_mismatch_rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "test_unaccepted_source_rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "test_missing_source_payload_degrades_unknown",
+      "status": "PASS"
+    },
+    {
+      "name": "test_price_basis_pulse_adapter[sha256-fixture-adjustment-ROTATION_PULSE]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_price_basis_pulse_adapter[sha256-new-corporate-action-UNKNOWN]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_price_basis_pulse_adapter[None-UNKNOWN]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_future_adjustment_revision_rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "test_semantic_mapping_adapter[False-True-True]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_semantic_mapping_adapter[False-False-False]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_semantic_mapping_adapter[True-True-None]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_actual_legacy_current_function_against_pit_adapter[4]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_actual_legacy_current_function_against_pit_adapter[5]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_common_member_does_not_count_membership_changes",
+      "status": "PASS"
+    },
+    {
+      "name": "test_missing_history_not_current_membership_replay",
+      "status": "PASS"
+    },
+    {
+      "name": "test_absent_target_publication_does_not_create_zero_quote_coverage",
+      "status": "PASS"
+    },
+    {
+      "name": "test_native_midrank_is_section_10a0_not_legacy_display_percentile",
+      "status": "PASS"
+    },
+    {
+      "name": "test_frozen_denominator[old0-now0-NOT_APPLICABLE]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_frozen_denominator[old1-now1-UNKNOWN]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_frozen_denominator[old2-now2-ACCEPTED]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_parameter_instance_digest_rejects_unbound_mutation",
+      "status": "PASS"
+    },
+    {
+      "name": "test_all_five_parameters_change_runtime_predicates[V4_08_EARLY_SEED_RETENTION_MIN-base_seed_retention-early_retained]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_all_five_parameters_change_runtime_predicates[V4_08_EARLY_BREADTH_RETENTION_MIN-breadth_retention-early_retained]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_all_five_parameters_change_runtime_predicates[V4_08_EARLY_BREADTH_DELTA_MIN-breadth_delta1-early_retained]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_all_five_parameters_change_runtime_predicates[V4_08_EARLY_TOP1_CONCENTRATION_MAX-top1_concentration-early_retained]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_all_five_parameters_change_runtime_predicates[V4_08_MATURE_STRONG_RETENTION_MIN-strong_member_retention_1-mature_retained]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_b0_missing_seed_is_unknown_even_when_safety_false",
+      "status": "PASS"
+    },
+    {
+      "name": "test_first_pit_rotation_unknown",
+      "status": "PASS"
+    },
+    {
+      "name": "test_pulse_then_in_with_empty_prior_strong_cohort_and_degraded_seed",
+      "status": "PASS"
+    },
+    {
+      "name": "test_independent_b2_golden_current[patch0-TRUE]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_independent_b2_golden_current[patch1-FALSE]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_independent_b2_golden_current[patch2-TRUE]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_independent_b2_golden_current[patch3-UNKNOWN]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_independent_b2_golden_current[patch4-FALSE]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_b2_unknown_not_false",
+      "status": "PASS"
+    },
+    {
+      "name": "test_actual_legacy_homogeneous_current_baseline",
+      "status": "PASS"
+    },
+    {
+      "name": "test_all_actual_legacy_potential_branches_keep_amount_a_diagnostic[1.1-TRUE]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_all_actual_legacy_potential_branches_keep_amount_a_diagnostic[None-UNKNOWN]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_all_actual_legacy_potential_branches_keep_amount_a_diagnostic[0.1-FALSE]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_b2_feedback_isolation[PREWATCH]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_b2_feedback_isolation[Focus]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_b2_feedback_isolation[Radar]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_b2_feedback_isolation[Support]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_b2_feedback_isolation[turnover]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_b2_feedback_isolation[future_confirmation]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_b2_feedback_isolation[future_outcome]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_full_market_exact_scoped_membership",
+      "status": "PASS"
+    }
+  ],
+  "contract": "V4_08_R5_1_THREE_BLOCKER_TARGETED_REPAIR",
+  "fixture_entered_formal_head": false,
+  "route": "accepted heads + SHA-bound canonical artifacts -> load_accepted_current -> current -> Native / B0 / Rotation / B2",
+  "status": "PASS",
+  "test_count": 54,
+  "test_only_fixture": true,
+  "test_source": {
+    "path": "tests/v4_08/test_r5_1_accepted_adapter.py",
+    "sha256": "231ee2433303a22610317fdc4325b3e7e464b2598d83083e1f5fc355c71424d0"
+  },
+  "unknown_semantic_provenance_is_distinct_from_explicit_unknown_tag": true
+}

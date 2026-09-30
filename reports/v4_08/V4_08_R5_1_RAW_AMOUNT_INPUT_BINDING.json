@@ -1,0 +1,42 @@
+{
+  "amount_field": "canonical_daily.amount",
+  "amount_ratio20_substituted": false,
+  "amount_source_capability": "AVAILABLE_VERIFIED",
+  "amount_source_revision": "PER_ROW_adjustment_source_revision",
+  "amount_unit": "CNY",
+  "canonical_daily": {
+    "bytes": 112302935,
+    "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet",
+    "sha256": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90"
+  },
+  "canonical_daily_head": {
+    "path": "data/v4/V4_02_ACCEPTED_HEAD.json",
+    "sha256": "da318a1f82a03f13930af7858ca1640fadbdaedbee85e27d47f9c869c2d6b595"
+  },
+  "canonical_daily_manifest": {
+    "path": "reports/v4_02/V4_02_FINAL_STAGING_MANIFEST_R6.json",
+    "sha256": "a83f90a0d1acc08e32db5dab049f3bf16a9284e5bf6785cd8f3a2b52aed31678"
+  },
+  "canonical_daily_source_digest": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90",
+  "contract_id": "V4_08_ACCEPTED_INPUT_ADAPTER_R5_1",
+  "cutoff": "2026-09-30T23:59:59+08:00",
+  "daily_available_at": "2026-09-27T22:28:03+08:00",
+  "date_mismatch": "UNKNOWN",
+  "digest_mismatch": "REJECT",
+  "future_source": "REJECT",
+  "missing_coerced_to_zero": false,
+  "price_artifact": {
+    "byte_count": 944823,
+    "path": "reports/v4_02/staging/V4_02_GO_FORWARD_ADJUSTED_T0_CANDIDATE_R3.jsonl.gz",
+    "sha256": "7d87f5164c11f791ad24ad7c05139dca949f1c891523616ece907cd0f28fd8c8"
+  },
+  "price_head": {
+    "path": "data/v4/V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD.json",
+    "sha256": "83fa37ded40337d69ff0e447a0b6a3bc293d2ca95ea9c8aa009f0f104776c4be"
+  },
+  "price_identity_authority": "coordinate_basis:adjustment_snapshot_id; adjustment_snapshot_digest retained",
+  "price_logical_digest": "a5600d7f1416434bd54e778c2e7e847e309de1c21d71df5677f92daee1791400",
+  "price_source_capability": "AVAILABLE_VERIFIED",
+  "status": "PASS_ACCEPTED_AUTHORITY_WIRED_TARGET_SOURCE_UNAVAILABLE",
+  "target_trade_date": "2026-09-30"
+}

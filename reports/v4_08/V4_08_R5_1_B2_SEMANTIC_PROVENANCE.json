@@ -1,0 +1,62 @@
+{
+  "adapter_model_digest": "bb0ef9611c01db2cfd493a82037fb20f64aad15fba0c7e8e7433a0f5d28f11da",
+  "contract_id": "V4_08_B2_SEMANTIC_MAPPING_R5_1",
+  "dependencies": [
+    {
+      "path": "config/sector_semantics.yaml",
+      "role": "declaration; exact legacy resolver uses explicit fields, empty override registry",
+      "sha256": "e0b133f2ff37c5480d3683ee283ccb976d8da69d1eca886ca8a4e9daf0f77303",
+      "version": "workbench-semantic-v2.1"
+    },
+    {
+      "path": "config/sector_roles.yaml",
+      "role": "declaration of excluded theme names",
+      "sha256": "98cb07c5b2ec0e22f2ff5e788d8130319f672ef89df7fdef6f7614aa92ed2975",
+      "version": "sector-role-v0.1"
+    },
+    {
+      "path": "src/workbench_service/semantic.py",
+      "role": "exact resolve_semantics",
+      "sha256": "116e91557d403c37512d153506d40b6b0aedb9dca594769720345f7a87821cb0",
+      "version": "workbench-semantic-v2.1"
+    },
+    {
+      "path": "src/sector/roles.py",
+      "role": "exact name/type role producer",
+      "sha256": "fd361e8b2410871505a5e48db250e9c0c31343b7c14ca34667d246d4d874b17a",
+      "version": "sector-role-v0.1"
+    },
+    {
+      "path": "src/sector/phase2.py",
+      "role": "prepare valid_member and validity sector_valid producer",
+      "sha256": "9455bae1578c4a785e034eb0ff852dcd98d7218a66027e0ea3f11489fd3727a1",
+      "version": "sector-factor-contract-v1.1-correctness"
+    },
+    {
+      "path": "src/workbench_service/strength_association.py",
+      "role": "EXCLUDED_ROLES and keyword hint sets",
+      "sha256": "f9a39a9bc100e932fa04f32c46bf3aa62287b6a358382d4f6b01e4b02084be29",
+      "version": "semantic-keyword-dependency-r5.1"
+    },
+    {
+      "path": "src/sector/semantic_input_r5_1.py",
+      "role": "accepted mapping and fail-closed semantics",
+      "sha256": "f8760dd0420e803ff28915afd43a9ff54635dde6a16f1fa515a05c7b0193cde4",
+      "version": "V4_08_B2_SEMANTIC_MAPPING_R5_1"
+    }
+  ],
+  "exact_inputs": [
+    "identity valid_member regex",
+    "missing_state present",
+    "not FILE_MISSING/DELISTED_OR_INACTIVE",
+    "distinct member count",
+    "sector role"
+  ],
+  "mapping": "Accepted exact legacy_valid_member producer observations -> same validity rule; absent producer observations -> UNKNOWN. EXCLUDED_ROLE proves sector_valid false independently.",
+  "pit_membership_implies_legacy_valid_true": false,
+  "sector_valid_producer": "src/sector/phase2.py:prepare -> sectors -> validity",
+  "semantic_dependency_digest": "722bda6bfb247f7d7b4a0ce5de3928d2b3458393ff96e77fd8cedee53f37d828",
+  "semantic_registry": "Exact legacy resolve_semantics(record), no new override behavior",
+  "status": "PASS",
+  "unknown_rank_pool": "If any eligibility is unknown, entire affected type rank pool remains UNKNOWN"
+}

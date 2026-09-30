@@ -127,6 +127,7 @@ def advance_rotation(native, current, *, prior_publication, prior_members, prior
         basis_ready=all(basis[m] is not None and basis[m]==current.get(m,{}).get('price_basis_id') for m in basket)
         if not basket or not basis_ready or any(v is None or v<=0 for v in baseline.values()) or any(v is None for v in pulse_closes.values()):
             output='UNKNOWN';reasons=['PULSE_BASELINE_UNAVAILABLE']
+            if not basis_ready:reasons.append('MIXED_PRICE_BASIS')
         else:
             seed_set=None if not seed_capability or any((seed_truth or {}).get(m) is None for m in basket) else sorted(m for m in basket if seed_truth[m] is True)
             positive=None if any(observed(current.get(m),'ret1',target) is None for m in basket) else sorted(m for m in basket if observed(current[m],'ret1',target)>0)

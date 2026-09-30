@@ -6,6 +6,8 @@ ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'src'));sys.path.insert(0,str(ROOT/'scripts'))
 from build_v4_08_r2_membership_evidence import atomic_json,atomic_bytes
 from sector.native_r5 import build_native
+from sector.accepted_input_r5_1 import load_accepted_current
+from sector.semantic_input_r5_1 import bind_semantic
 from sector.rotation_r5 import resolve_package,evaluate_b0,advance_rotation
 from sector.legacy_b2_r5 import evaluate_b2,build_b2_inputs
 
@@ -41,32 +43,25 @@ def main():
     target=snapshot['target_trade_date'];factors=rows(corehead['accepted_artifacts']['full_scope_factors']);seed_rows=rows(seedhead['evidence_bindings']['candidate_artifact'])
     dates=Counter(r['trade_date'] for r in factors);seed_dates=Counter(r['trade_date'] for r in seed_rows)
     if any(date>target for date in [*dates,*seed_dates]):raise ValueError('FUTURE_ACCEPTED_INPUT_NOT_ALLOWED_AT_TARGET')
-    current={}
-    for row in factors:
-        if row['trade_date']!=target:continue
-        fields={}
-        for key,item in row['fields'].items():
-            fields[key]=dict(value=item.get('value'),quality='ACCEPTED' if item.get('quality_state')=='OBSERVED' else 'UNKNOWN',max_source_date=item.get('source_asof'))
-        current[row['security_id']]=dict(trade_date=target,fields=fields)
+    current,adapter_binding=load_accepted_current(ROOT,corehead,target=target,cutoff=target+'T23:59:59+08:00')
     params_path='config/v4_08_algorithm_parameter_set_r5.json';params=read(params_path);parameter_bytes=(ROOT/params_path).read_bytes()
     registry=read('config/v4_08_sector_field_registry_r5.json');b0contract=read('config/v4_08_sector_prewatch_contract_r5.json');b1contract=read('config/v4_08_rotation_core_contract_r5.json')
     values,_=resolve_package(b0contract,params,parameter_bytes,registry);resolve_package(b1contract,params,parameter_bytes,registry)
     source_bindings={k:bind(p) for k,p in [('membership_head',destination.relative_to(ROOT).as_posix()),('core_head','data/v4/V4_05_ACCEPTED_HEAD.json'),('seed_head','data/v4/V4_07_ACCEPTED_HEAD.json'),('calendar_head',candidate['calendar_head']['path']),('parameter_set',params_path),('native_producer','src/sector/native_r5.py'),('rotation_producer','src/sector/rotation_r5.py'),('b2_producer','src/sector/legacy_b2_r5.py'),('b2_ast','config/v4_08_b2_machine_ast_r5.json')]}
     for key,path in [('field_registry','config/v4_08_sector_field_registry_r5.json'),('native_contract','config/v4_08_sector_native_contract_r5.json'),('b0_contract','config/v4_08_sector_prewatch_contract_r5.json'),('rotation_contract','config/v4_08_rotation_core_contract_r5.json'),('core_factors',corehead['accepted_artifacts']['full_scope_factors']['path']),('core_profile',corehead['accepted_artifact']['path']),('seed_artifact',seedhead['evidence_bindings']['candidate_artifact']['path'])]:source_bindings[key]=bind(path)
+    source_bindings['accepted_input_adapter']=bind('src/sector/accepted_input_r5_1.py')
+    source_bindings['semantic_adapter']=bind('src/sector/semantic_input_r5_1.py')
+    source_bindings['accepted_input_contract']=bind('config/v4_08_accepted_input_contract_r5_1.json')
+    source_bindings['canonical_input_binding']=adapter_binding
+    ast_binding=read('config/v4_08_b2_machine_ast_r5.json')
+    source_bindings['b2_semantic_dependencies']=ast_binding['semantic_dependencies']
     publication='V4_08_R5_ENGINEERING_20260930_'+hashlib.sha256(json.dumps(source_bindings,sort_keys=True).encode()).hexdigest()[:20]
-    if current:
-        for row in rows(corehead['accepted_artifact']):
-            if row['trade_date']!=target or row['security_id'] not in current:continue
-            evidence=row.get('states',{}).get('trend_state',{}).get('evidence',{})
-            close=evidence.get('close');ma20=evidence.get('ma20')
-            current[row['security_id']]['fields']['close']={'value':close,'quality':'ACCEPTED' if close is not None else 'UNKNOWN','max_source_date':target}
-            current[row['security_id']]['fields']['close_minus_ma20']={'value':close-ma20 if close is not None and ma20 is not None else None,'quality':'ACCEPTED' if close is not None and ma20 is not None else 'UNKNOWN','max_source_date':target}
     seed_capability=seedhead['capabilities']['REAL_BASE_SEED_SIGNAL'] in {'FULL_PASS','EXTERNALLY_ACCEPTED'}
     seed_truth={r['security_id']:True if r['base_seed_state']=='TRUE' else False if r['base_seed_state']=='FALSE' else None for r in seed_rows if r['trade_date']==target}
     native=build_native(membership,current,target=target,snapshot_id=snapshot['snapshot_id'],publication_id=publication,parameter_set=params,source_bindings=source_bindings,seed=seed_truth,seed_capability=seed_capability,max_source_date=max(dates))
     ast=read('config/v4_08_b2_machine_ast_r5.json');calendarhead=read(candidate['calendar_head']['path']);calendar=read(calendarhead['accepted_extension']['path'])
     sessions=[r['trade_date'] for r in calendar['sessions']]
-    b2_inputs=build_b2_inputs(native,current,target,read(ast['source_parameter_path']))
+    b2_inputs=build_b2_inputs(native,current,target,read(ast['source_parameter_path']),bind_semantic(membership,current,target))
     output={k:[] for k in ('SECTOR_NATIVE','B0','ROTATION','B2')}
     for row in native:
         common=dict(publication_id=publication,sector_id=row['sector_id'],sector_type=row['sector_type'],target_trade_date=target,membership_snapshot_id=snapshot['snapshot_id'],parameter_set_id=params['parameter_set_id'],input_digests=source_bindings,max_source_date=max(target,max(dates)),acceptance='CANDIDATE')

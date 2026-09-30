@@ -70,6 +70,17 @@ def main():
         setup_count_gate=dict(formula='setup_count >= max(setup_count_min, ceil(setup_count_ratio * setup_evaluable_count))',parameters=branches['BASE_BUILD']),
         source_units={'returns':'decimal','p1/q20/dq5_3':'ratio; V4 percentile points require division by 100','amount_A':'actual sector_amount_vs_prior20 only; no participation proxy'},
         source_time='accepted target cutoff; history accepted prior publications only',unknown_behavior='preserve source three-valued logic; no unavailable inputs coerced to bool or integer')
+    semantic_sources=[
+        ('config/sector_semantics.yaml','workbench-semantic-v2.1','declaration; exact legacy resolver uses explicit fields, empty override registry'),
+        ('config/sector_roles.yaml','sector-role-v0.1','declaration of excluded theme names'),
+        ('src/workbench_service/semantic.py','workbench-semantic-v2.1','exact resolve_semantics'),
+        ('src/sector/roles.py','sector-role-v0.1','exact name/type role producer'),
+        ('src/sector/phase2.py','sector-factor-contract-v1.1-correctness','prepare valid_member and validity sector_valid producer'),
+        ('src/workbench_service/strength_association.py','semantic-keyword-dependency-r5.1','EXCLUDED_ROLES and keyword hint sets'),
+        ('src/sector/semantic_input_r5_1.py','V4_08_B2_SEMANTIC_MAPPING_R5_1','accepted mapping and fail-closed semantics')]
+    ast['semantic_dependencies']=[dict(path=p,sha256=sha(p),version=v,role=r) for p,v,r in semantic_sources]
+    ast['semantic_dependency_digest']=digest(ast['semantic_dependencies'])
+    ast['adapter_model_digest']=digest(dict(ast_digest=ast['ast_digest'],semantic_dependency_digest=ast['semantic_dependency_digest'],mapping_contract='V4_08_B2_SEMANTIC_MAPPING_R5_1'))
     atomic_json(ROOT/'config/v4_08_b2_machine_ast_r5.json',ast)
     atomic_json(ROOT/'reports/v4_08/V4_08_R5_B2_MACHINE_AST.json',ast)
     extraction=dict(status='EXACT_SOURCE_AST_EXTRACTED_ENGINEERING_CANDIDATE',source_path=legacy,source_sha256=sha(legacy),symbols=['build_sector_current','build_sector_potential','_tri_all','_truth'],
@@ -80,7 +91,7 @@ def main():
         excluded_source_side_effects=['display sorting by amount_A','progress_potential_episode','final stock signals'],
         source_units=ast['source_units'],source_time=ast['source_time'],unknown_behavior=ast['unknown_behavior'],
         early_width_scope='UNAVAILABLE_UNTIL_EXACT_PURE_CORE_SETUP_RECOVERY_PRODUCERS_ACCEPTED; BASE_SEED_NOT_SUBSTITUTED',
-        setup_count_gate=ast['setup_count_gate'])
+        setup_count_gate=ast['setup_count_gate'],semantic_dependencies=ast['semantic_dependencies'],semantic_dependency_digest=ast['semantic_dependency_digest'],adapter_model_digest=ast['adapter_model_digest'])
     atomic_json(ROOT/'reports/v4_08/V4_08_R5_B2_LEGACY_SOURCE_EXTRACTION.json',extraction)
     print(json.dumps({'status':'FROZEN','parameter_sha256':binding,'b2_ast_digest':ast['ast_digest']}))
 

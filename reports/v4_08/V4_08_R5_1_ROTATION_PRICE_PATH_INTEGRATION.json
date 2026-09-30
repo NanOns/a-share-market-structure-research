@@ -1,0 +1,44 @@
+{
+  "adapter": {
+    "path": "src/sector/accepted_input_r5_1.py",
+    "sha256": "64ac41ab060ddedf1f8a61eceed44f70f0039287b24a377f70dc02904a58d3f9"
+  },
+  "contract": "V4_08_R5_1_THREE_BLOCKER_TARGETED_REPAIR",
+  "fixture_entered_formal_head": false,
+  "status": "PASS",
+  "test_cases": [
+    {
+      "name": "test_target_date_mismatch_unknown",
+      "status": "PASS"
+    },
+    {
+      "name": "test_price_logical_digest_mismatch_rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "test_missing_source_payload_degrades_unknown",
+      "status": "PASS"
+    },
+    {
+      "name": "test_price_basis_pulse_adapter[sha256-fixture-adjustment-ROTATION_PULSE]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_price_basis_pulse_adapter[sha256-new-corporate-action-UNKNOWN]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_price_basis_pulse_adapter[None-UNKNOWN]",
+      "status": "PASS"
+    },
+    {
+      "name": "test_future_adjustment_revision_rejected",
+      "status": "PASS"
+    }
+  ],
+  "test_only_fixture": true,
+  "test_source": {
+    "path": "tests/v4_08/test_r5_1_accepted_adapter.py",
+    "sha256": "231ee2433303a22610317fdc4325b3e7e464b2598d83083e1f5fc355c71424d0"
+  }
+}

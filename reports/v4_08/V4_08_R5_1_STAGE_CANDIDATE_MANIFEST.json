@@ -21,19 +21,13 @@
       "sha256": "b735ef2dba9d769fe21d295cae1ca6540465a1a84af9b27c0849bbf8f015c470"
     }
   },
-  "capabilities": {
-    "B0_SEED_DEPENDENT": "DEGRADED_UNKNOWN",
-    "B2_AMOUNT_A": "DIAGNOSTIC",
-    "B2_NON_AMOUNT_A": "IMPLEMENTED_TARGET_CORE_UNAVAILABLE",
-    "ROTATION_HISTORY_DEPENDENT": "SHADOW_UNKNOWN",
-    "SECTOR_NATIVE_NON_SEED": "IMPLEMENTED_TARGET_CORE_UNAVAILABLE"
-  },
+  "b2_adapter_model_digest": "bb0ef9611c01db2cfd493a82037fb20f64aad15fba0c7e8e7433a0f5d28f11da",
   "final_v4_08_accepted_head_written": false,
-  "global_acceptance_unchanged": "V4_00_TO_V4_07_ACCEPTED",
-  "independent_audits": [
+  "independent_open_audits": [
     "Prior-RPS",
     "AUD-AMOUNT-A-06",
-    "V4-01 listing-anchor"
+    "target accepted Core availability",
+    "V4-01 dated roster"
   ],
   "input_bindings": {
     "accepted_input_adapter": {
@@ -210,6 +204,8 @@
       "sha256": "f8760dd0420e803ff28915afd43a9ff54635dde6a16f1fa515a05c7b0193cde4"
     }
   },
-  "publication_id": "V4_08_R5_ENGINEERING_20260930_87447ccd136d152b8372",
-  "status": "R5_ENGINEERING_CANDIDATE_PENDING_VERIFICATION"
+  "next_stage": "INDEPENDENT_EXTERNAL_REAUDIT",
+  "parameter_sha256": "0204d7c4fadf86871b6a079f755593b1a3f8ad18bb718f73ba33db0b70f67548",
+  "production_permission": false,
+  "status": "R5_1_ENGINEERING_CANDIDATE_PENDING_CLEAN_VERIFICATION"
 }

@@ -128,7 +128,7 @@ def test_b2_unknown_not_false():
     values=positive();values.pop('b1')
     assert b2(values)['confirmed_raw']=='UNKNOWN'
 
-def test_actual_legacy_current_function_against_pit_adapter():
+def test_actual_legacy_homogeneous_current_baseline():
     import pandas as pd
     from workbench_analysis.sector_attention import build_sector_current
     cfg=read('config/research_attention_v3.yaml');native=[];current={};members=[]
@@ -139,7 +139,7 @@ def test_actual_legacy_current_function_against_pit_adapter():
             current[member]=record(value)
             members.append(dict(sector_id=f'SECTOR_{sector}',security_id=member,trade_date='2026-09-30',ret1=value,sector_type='INDUSTRY',sector_name='GENERIC INDUSTRY',semantic_bucket='NORMAL_ATTRIBUTE',sector_valid=True))
         native.append(dict(sector_id=f'SECTOR_{sector}',sector_type='INDUSTRY',member_ids=ids,fields={f:{'value':None} for f in ('ma20_width','breadth_delta3','ma20_delta3','dq5','sector_rs20_pct')}))
-    inputs=build_b2_inputs(native,current,'2026-09-30',cfg)
+    inputs=build_b2_inputs(native,current,'2026-09-30',cfg,{r['sector_id']:dict(sector_id=r['sector_id'],sector_type=r['sector_type'],sector_name='GENERIC INDUSTRY',semantic_bucket='NORMAL_ATTRIBUTE',sector_valid=True) for r in native})
     assert all(f['q20']['value'] is None and f['dq5_3']['value'] is None for f in inputs.values())
     source=build_sector_current(pd.DataFrame(members),pd.DataFrame(members)[['security_id','trade_date','ret1']],cfg)
     actual={row['sector_id']:row['current'] for row in source.to_dict('records')}

@@ -34,6 +34,8 @@ def freeze():
     extraction=json.loads((ROOT/'config/dm01_domain_extraction_r1.json').read_text(encoding='utf8'))
     assert all(bind(r['path'])['sha256']==r['sha256'] for r in extraction['sources'])
     manifest=json.loads((ROOT/'reports/v4_02/V4_02_FINAL_STAGING_MANIFEST_R6.json').read_text(encoding='utf8'))['components']
+    for name in ('R6_EVENTS','R6_POLICY','STANDARD_RULES'):
+        assert bind(manifest[name]['path'])['sha256']==manifest[name]['sha256'], 'ACCEPTED_PHASE_SOURCE_BYTES_CHANGED:'+name
     contract=dict(contract_id='DM01_A01_INCREMENTAL_BUILDERS_R1',version='1.0.0',
         status='ENGINEERING_IMPLEMENTATION_CANDIDATE_EXTERNAL_ACCEPTANCE_PENDING',
         task=bind('docs/evidence/WP_A01_DM01_INCREMENTAL_BUILDERS_IMPLEMENTATION_TASK_R1_20261001.md'),

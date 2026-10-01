@@ -1,0 +1,75 @@
+{
+  "AS_RECORDED": false,
+  "OHLC_authority": false,
+  "accepted_at": "2026-10-01T10:00:25.362643+00:00",
+  "accepted_input_policy": "EXACT_INSTANCE_BINDING_TO_FIXED_ACCEPTED_HEAD_NAMESPACES; INPUT_HEAD_REVISION_IS_NOT_PRODUCER_SEMANTICS_CHANGE",
+  "adjustment_authority": false,
+  "allowed_consumers": [
+    "ISST",
+    "PRICE_LIMIT",
+    "DM01_FINAL_ALL_NINE"
+  ],
+  "calendar_head_path": "data/v4/V4_02_GO_FORWARD_CALENDAR_EXTENSION_ACCEPTED_HEAD_R1.json",
+  "contract_id": "BAOSTOCK_DATED_ISST_PROVIDER_AUTHORITY_V4",
+  "empty_malformed": "UNKNOWN_BLOCK",
+  "external_acceptance": "EXTERNALLY_ACCEPTED",
+  "external_authority": {
+    "audited_head": "d85f815097a09ca2dceda00d0e29d6ff4fe331d4",
+    "authority_kind": "INDEPENDENT_EXTERNAL_ACCEPTANCE",
+    "document": {
+      "bytes": 10868,
+      "path": "docs/evidence/source_authority/V4_A10_A12_R3_AND_A13_INDEPENDENT_EXTERNAL_ACCEPTANCE_20261001.md",
+      "sha256": "a23789d9de4eb48831125cbb9165964a8dacacb33e9dd30dba0f3bfced681d3a"
+    },
+    "recorded_at": "2026-10-01T10:00:25.362643+00:00",
+    "scope": "HISTORICAL_RECONSTRUCTED_AND_DAILY_PRODUCER_SEMANTIC_AUTHORITY"
+  },
+  "field_id": "ISST",
+  "first_available_at_target_proven": false,
+  "formal_consumer_authorization": true,
+  "historical_modes": [
+    "TARGET_DATE_QUERYABLE_FACT"
+  ],
+  "identity_head_path": "data/v4/V4_01_GO_FORWARD_IDENTITY_ACCEPTED_HEAD_R1.json",
+  "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+  "local_TDX_actual_precedence": true,
+  "role_binding": {
+    "allowed_consumers": [
+      "ISST",
+      "PRICE_LIMIT",
+      "DM01_FINAL_ALL_NINE"
+    ],
+    "authority_status": "EXTERNALLY_ACCEPTED",
+    "enabled": true,
+    "enabled_for_formal_consumer": true,
+    "field_id": "ISST",
+    "historical_retrieval_mode": "TARGET_DATE_QUERYABLE_FACT",
+    "may_block_core": true,
+    "may_change_core_quality": false,
+    "may_change_core_value": true,
+    "owner_contract_id": "BAOSTOCK_DATED_ISST_PROVIDER_AUTHORITY_V4",
+    "pit_requirement": "EXPLICIT_OBSERVATION_NO_INFERRED_FIRST_AVAILABILITY",
+    "role": "FIELD_AUTHORITY",
+    "role_binding_id": "SOURCE_AUTHORITY_ROLE_R3:ISST",
+    "source_family": "BAOSTOCK_DATED_FIELD_PROVIDER",
+    "source_instance_policy_id": "SOURCE_AUTHORITY_SOURCE_INSTANCE_POLICY_V1"
+  },
+  "routine_daily_revision_requires_human_acceptance": false,
+  "schema_contract": {
+    "bytes": 513,
+    "path": "config/source_authority_daily_schema_r3.json",
+    "sha256": "c8cda72cd810736f5d9810cba8b8c009d8b10dd6a76b669fc7bcd394dab6725f"
+  },
+  "source_instance_policy_id": "SOURCE_AUTHORITY_SOURCE_INSTANCE_POLICY_V1",
+  "substantive_change_requires_new_acceptance": true,
+  "supersedes": {
+    "bytes": 2150,
+    "path": "reports/audits/A10_A12_R3_PRODUCER_ISST_CANDIDATE_R1.json",
+    "sha256": "7fccd198acd5bd96c59a04b67c6001ed6ce7f139b8602b6060249d00aeeee6dc"
+  },
+  "universe_exchanges": [
+    "SH",
+    "SZ"
+  ],
+  "universe_policy": "COMPLETE_ACCEPTED_DATED_CORE_IDENTITY_NOT_RESPONSE_DERIVED_SUBSET"
+}

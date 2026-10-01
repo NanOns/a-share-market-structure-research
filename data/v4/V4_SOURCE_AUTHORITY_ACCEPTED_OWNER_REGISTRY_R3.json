@@ -1,0 +1,251 @@
+{
+  "contract_id": "SOURCE_AUTHORITY_ACCEPTED_OWNER_REGISTRY_V3",
+  "external_authority": {
+    "audited_head": "d85f815097a09ca2dceda00d0e29d6ff4fe331d4",
+    "authority_kind": "INDEPENDENT_EXTERNAL_ACCEPTANCE",
+    "document": {
+      "bytes": 10868,
+      "path": "docs/evidence/source_authority/V4_A10_A12_R3_AND_A13_INDEPENDENT_EXTERNAL_ACCEPTANCE_20261001.md",
+      "sha256": "a23789d9de4eb48831125cbb9165964a8dacacb33e9dd30dba0f3bfced681d3a"
+    },
+    "recorded_at": "2026-10-01T10:00:25.362643+00:00",
+    "scope": "HISTORICAL_RECONSTRUCTED_AND_DAILY_PRODUCER_SEMANTIC_AUTHORITY"
+  },
+  "historical_invalid_authority_preserved": true,
+  "owners": [
+    {
+      "accepted_at": "2026-10-01T10:00:25.362643+00:00",
+      "allowed_consumers": [
+        "TRADING_STATUS",
+        "PERIOD_RAW",
+        "PERIOD_ADJUSTED",
+        "DM01_FINAL_ALL_NINE"
+      ],
+      "effective_scope": {
+        "end_date": "2026-09-24",
+        "start_date": "2023-07-04"
+      },
+      "external_acceptance": "EXTERNALLY_ACCEPTED",
+      "external_authority": {
+        "audited_head": "d85f815097a09ca2dceda00d0e29d6ff4fe331d4",
+        "authority_kind": "INDEPENDENT_EXTERNAL_ACCEPTANCE",
+        "document": {
+          "bytes": 10868,
+          "path": "docs/evidence/source_authority/V4_A10_A12_R3_AND_A13_INDEPENDENT_EXTERNAL_ACCEPTANCE_20261001.md",
+          "sha256": "a23789d9de4eb48831125cbb9165964a8dacacb33e9dd30dba0f3bfced681d3a"
+        },
+        "recorded_at": "2026-10-01T10:00:25.362643+00:00",
+        "scope": "HISTORICAL_RECONSTRUCTED_AND_DAILY_PRODUCER_SEMANTIC_AUTHORITY"
+      },
+      "field_id": "TRADING_STATUS",
+      "formal_consumer_authorization": true,
+      "historical_modes": [
+        "TARGET_DATE_QUERYABLE_FACT"
+      ],
+      "owner_contract_id": "BAOSTOCK_DATED_TRADING_STATUS_RECONSTRUCTED_V3",
+      "producer_contract": {
+        "bytes": 5340,
+        "path": "reports/audits/A10_A12_R3_HISTORICAL_TRADING_STATUS_ACCEPTED_FORMAL_R2.json",
+        "sha256": "bdcbdfd44cdb2011d5708850d6032354a2b83ea8afe82508511569565096c0a3"
+      },
+      "registration_scope": "HISTORICAL_PATH_B_ONLY",
+      "role_binding": {
+        "allowed_consumers": [
+          "TRADING_STATUS",
+          "PERIOD_RAW",
+          "PERIOD_ADJUSTED",
+          "DM01_FINAL_ALL_NINE"
+        ],
+        "authority_status": "EXTERNALLY_ACCEPTED",
+        "enabled": true,
+        "enabled_for_formal_consumer": true,
+        "field_id": "TRADING_STATUS",
+        "historical_retrieval_mode": "TARGET_DATE_QUERYABLE_FACT",
+        "may_block_core": true,
+        "may_change_core_quality": false,
+        "may_change_core_value": true,
+        "owner_contract_id": "BAOSTOCK_DATED_TRADING_STATUS_RECONSTRUCTED_V3",
+        "pit_requirement": "EXPLICIT_OBSERVATION_NO_INFERRED_FIRST_AVAILABILITY",
+        "role": "FIELD_AUTHORITY",
+        "role_binding_id": "A12_R2_CANDIDATE_ROLE:TRADING_STATUS",
+        "source_family": "BAOSTOCK_DATED_RECONSTRUCTED_PROVIDER",
+        "source_instance_policy_id": "SOURCE_AUTHORITY_SOURCE_INSTANCE_POLICY_V1"
+      },
+      "source_instance_policy_id": "SOURCE_AUTHORITY_SOURCE_INSTANCE_POLICY_V1"
+    },
+    {
+      "accepted_at": "2026-10-01T10:00:25.362643+00:00",
+      "allowed_consumers": [
+        "ISST",
+        "PRICE_LIMIT",
+        "DM01_FINAL_ALL_NINE"
+      ],
+      "effective_scope": {
+        "end_date": "2026-09-24",
+        "start_date": "2023-07-04"
+      },
+      "external_acceptance": "EXTERNALLY_ACCEPTED",
+      "external_authority": {
+        "audited_head": "d85f815097a09ca2dceda00d0e29d6ff4fe331d4",
+        "authority_kind": "INDEPENDENT_EXTERNAL_ACCEPTANCE",
+        "document": {
+          "bytes": 10868,
+          "path": "docs/evidence/source_authority/V4_A10_A12_R3_AND_A13_INDEPENDENT_EXTERNAL_ACCEPTANCE_20261001.md",
+          "sha256": "a23789d9de4eb48831125cbb9165964a8dacacb33e9dd30dba0f3bfced681d3a"
+        },
+        "recorded_at": "2026-10-01T10:00:25.362643+00:00",
+        "scope": "HISTORICAL_RECONSTRUCTED_AND_DAILY_PRODUCER_SEMANTIC_AUTHORITY"
+      },
+      "field_id": "ISST",
+      "formal_consumer_authorization": true,
+      "historical_modes": [
+        "TARGET_DATE_QUERYABLE_FACT"
+      ],
+      "owner_contract_id": "BAOSTOCK_DATED_ST_STATUS_RECONSTRUCTED_V3",
+      "producer_contract": {
+        "bytes": 5204,
+        "path": "reports/audits/A10_A12_R3_HISTORICAL_ISST_ACCEPTED_FORMAL_R2.json",
+        "sha256": "338bb5f8a06bbd268329b9d7705802b34d24faebf14b87cd646686ca318f190d"
+      },
+      "registration_scope": "HISTORICAL_PATH_B_ONLY",
+      "role_binding": {
+        "allowed_consumers": [
+          "ISST",
+          "PRICE_LIMIT",
+          "DM01_FINAL_ALL_NINE"
+        ],
+        "authority_status": "EXTERNALLY_ACCEPTED",
+        "enabled": true,
+        "enabled_for_formal_consumer": true,
+        "field_id": "ISST",
+        "historical_retrieval_mode": "TARGET_DATE_QUERYABLE_FACT",
+        "may_block_core": true,
+        "may_change_core_quality": false,
+        "may_change_core_value": true,
+        "owner_contract_id": "BAOSTOCK_DATED_ST_STATUS_RECONSTRUCTED_V3",
+        "pit_requirement": "EXPLICIT_OBSERVATION_NO_INFERRED_FIRST_AVAILABILITY",
+        "role": "FIELD_AUTHORITY",
+        "role_binding_id": "A12_R2_CANDIDATE_ROLE:ISST",
+        "source_family": "BAOSTOCK_DATED_RECONSTRUCTED_PROVIDER",
+        "source_instance_policy_id": "SOURCE_AUTHORITY_SOURCE_INSTANCE_POLICY_V1"
+      },
+      "source_instance_policy_id": "SOURCE_AUTHORITY_SOURCE_INSTANCE_POLICY_V1"
+    },
+    {
+      "accepted_at": "2026-10-01T10:00:25.362643+00:00",
+      "allowed_consumers": [
+        "TRADING_STATUS",
+        "PERIOD_RAW",
+        "PERIOD_ADJUSTED",
+        "DM01_FINAL_ALL_NINE"
+      ],
+      "external_acceptance": "EXTERNALLY_ACCEPTED",
+      "external_authority": {
+        "audited_head": "d85f815097a09ca2dceda00d0e29d6ff4fe331d4",
+        "authority_kind": "INDEPENDENT_EXTERNAL_ACCEPTANCE",
+        "document": {
+          "bytes": 10868,
+          "path": "docs/evidence/source_authority/V4_A10_A12_R3_AND_A13_INDEPENDENT_EXTERNAL_ACCEPTANCE_20261001.md",
+          "sha256": "a23789d9de4eb48831125cbb9165964a8dacacb33e9dd30dba0f3bfced681d3a"
+        },
+        "recorded_at": "2026-10-01T10:00:25.362643+00:00",
+        "scope": "HISTORICAL_RECONSTRUCTED_AND_DAILY_PRODUCER_SEMANTIC_AUTHORITY"
+      },
+      "field_id": "TRADING_STATUS",
+      "formal_consumer_authorization": true,
+      "historical_modes": [
+        "TARGET_DATE_QUERYABLE_FACT"
+      ],
+      "owner_contract_id": "BAOSTOCK_DATED_TRADING_STATUS_PROVIDER_AUTHORITY_V4",
+      "producer_contract": {
+        "bytes": 3107,
+        "path": "reports/audits/A10_A12_R3_PRODUCER_TRADING_STATUS_ACCEPTED_R1.json",
+        "sha256": "2931bfd41375c29fef56fb527d13345c7f38c01edc9b8e46dc6c74b4765cd181"
+      },
+      "registration_scope": "PRODUCER_SEMANTIC_AUTHORITY",
+      "role_binding": {
+        "allowed_consumers": [
+          "TRADING_STATUS",
+          "PERIOD_RAW",
+          "PERIOD_ADJUSTED",
+          "DM01_FINAL_ALL_NINE"
+        ],
+        "authority_status": "EXTERNALLY_ACCEPTED",
+        "enabled": true,
+        "enabled_for_formal_consumer": true,
+        "field_id": "TRADING_STATUS",
+        "historical_retrieval_mode": "TARGET_DATE_QUERYABLE_FACT",
+        "may_block_core": true,
+        "may_change_core_quality": false,
+        "may_change_core_value": true,
+        "owner_contract_id": "BAOSTOCK_DATED_TRADING_STATUS_PROVIDER_AUTHORITY_V4",
+        "pit_requirement": "EXPLICIT_OBSERVATION_NO_INFERRED_FIRST_AVAILABILITY",
+        "role": "FIELD_AUTHORITY",
+        "role_binding_id": "SOURCE_AUTHORITY_ROLE_R3:TRADING_STATUS",
+        "source_family": "BAOSTOCK_DATED_FIELD_PROVIDER",
+        "source_instance_policy_id": "SOURCE_AUTHORITY_SOURCE_INSTANCE_POLICY_V1"
+      },
+      "source_instance_policy_id": "SOURCE_AUTHORITY_SOURCE_INSTANCE_POLICY_V1"
+    },
+    {
+      "accepted_at": "2026-10-01T10:00:25.362643+00:00",
+      "allowed_consumers": [
+        "ISST",
+        "PRICE_LIMIT",
+        "DM01_FINAL_ALL_NINE"
+      ],
+      "external_acceptance": "EXTERNALLY_ACCEPTED",
+      "external_authority": {
+        "audited_head": "d85f815097a09ca2dceda00d0e29d6ff4fe331d4",
+        "authority_kind": "INDEPENDENT_EXTERNAL_ACCEPTANCE",
+        "document": {
+          "bytes": 10868,
+          "path": "docs/evidence/source_authority/V4_A10_A12_R3_AND_A13_INDEPENDENT_EXTERNAL_ACCEPTANCE_20261001.md",
+          "sha256": "a23789d9de4eb48831125cbb9165964a8dacacb33e9dd30dba0f3bfced681d3a"
+        },
+        "recorded_at": "2026-10-01T10:00:25.362643+00:00",
+        "scope": "HISTORICAL_RECONSTRUCTED_AND_DAILY_PRODUCER_SEMANTIC_AUTHORITY"
+      },
+      "field_id": "ISST",
+      "formal_consumer_authorization": true,
+      "historical_modes": [
+        "TARGET_DATE_QUERYABLE_FACT"
+      ],
+      "owner_contract_id": "BAOSTOCK_DATED_ISST_PROVIDER_AUTHORITY_V4",
+      "producer_contract": {
+        "bytes": 2981,
+        "path": "reports/audits/A10_A12_R3_PRODUCER_ISST_ACCEPTED_R1.json",
+        "sha256": "6f2cc0b1398077216e1da71c92db9c6e26913de5806aadeaaec624178215c56d"
+      },
+      "registration_scope": "PRODUCER_SEMANTIC_AUTHORITY",
+      "role_binding": {
+        "allowed_consumers": [
+          "ISST",
+          "PRICE_LIMIT",
+          "DM01_FINAL_ALL_NINE"
+        ],
+        "authority_status": "EXTERNALLY_ACCEPTED",
+        "enabled": true,
+        "enabled_for_formal_consumer": true,
+        "field_id": "ISST",
+        "historical_retrieval_mode": "TARGET_DATE_QUERYABLE_FACT",
+        "may_block_core": true,
+        "may_change_core_quality": false,
+        "may_change_core_value": true,
+        "owner_contract_id": "BAOSTOCK_DATED_ISST_PROVIDER_AUTHORITY_V4",
+        "pit_requirement": "EXPLICIT_OBSERVATION_NO_INFERRED_FIRST_AVAILABILITY",
+        "role": "FIELD_AUTHORITY",
+        "role_binding_id": "SOURCE_AUTHORITY_ROLE_R3:ISST",
+        "source_family": "BAOSTOCK_DATED_FIELD_PROVIDER",
+        "source_instance_policy_id": "SOURCE_AUTHORITY_SOURCE_INSTANCE_POLICY_V1"
+      },
+      "source_instance_policy_id": "SOURCE_AUTHORITY_SOURCE_INSTANCE_POLICY_V1"
+    }
+  ],
+  "supersedes": {
+    "bytes": 4888,
+    "path": "data/v4/V4_SOURCE_AUTHORITY_ACCEPTED_OWNER_REGISTRY_R2.json",
+    "sha256": "6ff317e00eeeec6485bf92218e22d62873f7ddf0f451c0a4f7ef0eab5d0a8f85"
+  },
+  "version": 3
+}

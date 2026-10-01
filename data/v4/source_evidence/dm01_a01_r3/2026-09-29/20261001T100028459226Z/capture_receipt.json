@@ -1,0 +1,71 @@
+{
+  "AS_RECORDED": false,
+  "OHLC_authority": false,
+  "adjustment_authority": false,
+  "contract_id": "DM01_A01_R3_ACTUAL_BOUNDED_SOURCE_CAPTURE_V1",
+  "endpoint": {
+    "configured_host": "public-api.baostock.com",
+    "configured_port": 10030,
+    "connected_peer_ip": "114.94.20.42",
+    "connected_peer_port": 10030
+  },
+  "first_available_at_target_proven": false,
+  "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+  "origin": "DELAYED_HISTORICAL_RETRIEVAL",
+  "request_ledger": {
+    "bytes": 265,
+    "path": "data/v4/source_evidence/dm01_a01_r3/2026-09-29/20261001T100028459226Z/request_ledger.json",
+    "sha256": "cffb80205caedb70203cb718b9acabfc15df6921929c71768be879f37d5796d5"
+  },
+  "responses": {
+    "query_daily_history_k_AStock": {
+      "error_code": "0",
+      "fields": [
+        "date",
+        "code",
+        "open",
+        "high",
+        "low",
+        "close",
+        "preclose",
+        "volume",
+        "amount",
+        "adjustflag",
+        "turn",
+        "tradestatus",
+        "pctChg",
+        "peTTM",
+        "pbMRQ",
+        "psTTM",
+        "pcfNcfTTM",
+        "isST"
+      ],
+      "max_pages": 1,
+      "max_rows": 20000,
+      "method": "query_daily_history_k_AStock",
+      "observed_at": "2026-10-01T10:00:28.459684+00:00",
+      "page_count": 1,
+      "provider_date": "2026-09-29",
+      "provider_date_basis": "EVERY_RESPONSE_ROW_EXACT_DATE_NOT_INFERRED_FROM_REQUEST",
+      "raw_response_binding": {
+        "bytes": 2586263,
+        "path": "data/v4/source_evidence/dm01_a01_r3/2026-09-29/20261001T100028459226Z/daily_response.json",
+        "sha256": "2302544479b5db8408dd40461685602d4a72f6b3cb32e1ebcba09bed854bcbb0"
+      },
+      "received_at": "2026-10-01T10:01:06.639745+00:00",
+      "request_count": 1,
+      "row_count": 5223,
+      "target_trade_date": "2026-09-29"
+    }
+  },
+  "sdk": {
+    "adjustflag": "3",
+    "default_auth_mode": "PUBLIC_ANONYMOUS",
+    "default_runtime_pin": "0.9.3",
+    "fields": "date,code,close,volume,amount,turn,tradestatus,isST",
+    "installed_python_sources_sha256": "32bd19deb872561c8f9c40063de38df4fe4ab0f1073685538f627a9238686bfe",
+    "package": "baostock",
+    "supported_auth_modes": "PUBLIC_ACCOUNT,PUBLIC_ANONYMOUS,VIP_API_KEY",
+    "version": "0.9.3"
+  }
+}

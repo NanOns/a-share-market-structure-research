@@ -1,0 +1,74 @@
+{
+  "AS_RECORDED": false,
+  "actual_global_gate_readback": {
+    "ISST": {
+      "AS_RECORDED": false,
+      "field_id": "ISST",
+      "first_available_at_target_proven": false,
+      "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+      "row_count": 5223,
+      "source_instance": {
+        "bytes": 1759,
+        "path": "data/v4/source_evidence/dm01_a01_r3/2026-09-29/20261001T100028459226Z/instance_ISST.json",
+        "sha256": "322f1ee5c0fa5775e794ad4deea37a27477b5449fa667258f3963afdb0327dfa"
+      },
+      "status": "PASS_EXACT_SOURCE_INSTANCE",
+      "target_trade_date": "2026-09-29"
+    },
+    "TRADING_STATUS": {
+      "AS_RECORDED": false,
+      "field_id": "TRADING_STATUS",
+      "first_available_at_target_proven": false,
+      "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+      "row_count": 5223,
+      "source_instance": {
+        "bytes": 1769,
+        "path": "data/v4/source_evidence/dm01_a01_r3/2026-09-29/20261001T100028459226Z/instance_TRADING_STATUS.json",
+        "sha256": "8be3c8f1145e98f30294498d202ba1fd3f8ed68764e1cc9364acc3b10cd3cc6e"
+      },
+      "status": "PASS_EXACT_SOURCE_INSTANCE",
+      "target_trade_date": "2026-09-29"
+    }
+  },
+  "capture_receipt": {
+    "bytes": 2263,
+    "path": "data/v4/source_evidence/dm01_a01_r3/2026-09-29/20261001T100028459226Z/capture_receipt.json",
+    "sha256": "9cbf5e64cc3cfad99613d7de0a6b0f7ab7e9436ef4ca09cf0cc8e2a025c0c15f"
+  },
+  "first_available_at_target_proven": false,
+  "human_producer_reacceptance_required": false,
+  "instances": {
+    "ISST": {
+      "bytes": 1759,
+      "path": "data/v4/source_evidence/dm01_a01_r3/2026-09-29/20261001T100028459226Z/instance_ISST.json",
+      "sha256": "322f1ee5c0fa5775e794ad4deea37a27477b5449fa667258f3963afdb0327dfa"
+    },
+    "TRADING_STATUS": {
+      "bytes": 1769,
+      "path": "data/v4/source_evidence/dm01_a01_r3/2026-09-29/20261001T100028459226Z/instance_TRADING_STATUS.json",
+      "sha256": "8be3c8f1145e98f30294498d202ba1fd3f8ed68764e1cc9364acc3b10cd3cc6e"
+    }
+  },
+  "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+  "origin": "DELAYED_HISTORICAL_RETRIEVAL",
+  "producer_registry_after": {
+    "bytes": 10364,
+    "path": "data/v4/V4_SOURCE_AUTHORITY_ACCEPTED_OWNER_REGISTRY_R3.json",
+    "sha256": "3bc3d013ceebeb7dcf01f95f9a446ff2f65f03a1b6c602144cb54f490b7b18ec"
+  },
+  "producer_registry_before": {
+    "bytes": 10364,
+    "path": "data/v4/V4_SOURCE_AUTHORITY_ACCEPTED_OWNER_REGISTRY_R3.json",
+    "sha256": "3bc3d013ceebeb7dcf01f95f9a446ff2f65f03a1b6c602144cb54f490b7b18ec"
+  },
+  "raw_response": {
+    "bytes": 2586263,
+    "path": "data/v4/source_evidence/dm01_a01_r3/2026-09-29/20261001T100028459226Z/daily_response.json",
+    "sha256": "2302544479b5db8408dd40461685602d4a72f6b3cb32e1ebcba09bed854bcbb0"
+  },
+  "request_count": 3,
+  "row_count": 5223,
+  "same_accepted_producer_and_registry_unchanged": true,
+  "status": "PASS",
+  "target_trade_date": "2026-09-29"
+}

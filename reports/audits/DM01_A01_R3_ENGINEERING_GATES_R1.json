@@ -1,0 +1,59 @@
+{
+  "allowed_candidate_status": "READY_FOR_EXTERNAL_REAUDIT",
+  "evidence": [
+    {
+      "bytes": 988,
+      "path": "reports/audits/DM01_A01_R3_SESSION_RESOLUTION_R1.json",
+      "sha256": "6821bd1ed8bb3e171292174cbb7ef308df3d467a6fecccbf5edbc1bdd538806e"
+    },
+    {
+      "bytes": 59732,
+      "path": "reports/audits/DM01_A01_R3_20260928_CANDIDATE_R1.json",
+      "sha256": "e55cc1e2d92525d411f28eb17b76702ddc3ad08377b6134aa12611894c06f47d"
+    },
+    {
+      "bytes": 2918,
+      "path": "reports/audits/DM01_A01_R3_20260929_SOURCE_CAPTURE_R1.json",
+      "sha256": "56e0b4ae696c0c4b99731d3d65f42d0d0b11a5965ce01fe1289a6cfae443ca2d"
+    },
+    {
+      "bytes": 58400,
+      "path": "reports/audits/DM01_A01_R3_20260929_CANDIDATE_R1.json",
+      "sha256": "537897dbbac7ce5ab4b7a18b2ed33a568d86788ade7adf35f780c990f808b303"
+    },
+    {
+      "bytes": 58450,
+      "path": "reports/audits/DM01_A01_R3_20260930_CANDIDATE_R1.json",
+      "sha256": "713a290396f454dbf3768f727e51b2318bc0aa4b44700897b98a02aaeb274794"
+    },
+    {
+      "bytes": 1430,
+      "path": "reports/audits/DM01_A01_R3_CONTINUOUS_CHAIN_POSTCHECK_R1.json",
+      "sha256": "c7f269c19ca358feb896c3738dafa660dbb041bd766dc6a65bb4a9f07f1156fc"
+    },
+    {
+      "bytes": 828,
+      "path": "reports/audits/DM01_A01_R3_ATOMIC_FAILURE_PROBES_R1.json",
+      "sha256": "394deb77446ca438400f0a6696b215b5c1f4b31b3874b2ee62ca29d0e068d150"
+    },
+    {
+      "bytes": 2066,
+      "path": "reports/audits/DM01_A01_R3_DETERMINISM_R1.json",
+      "sha256": "0f2ccf3bbf12e3fd6f38858b933ca8de3cce9363b16ff3b56300b5aa8a110eb1"
+    },
+    {
+      "bytes": 1303,
+      "path": "reports/audits/DM01_A01_R3_EXTERNAL_REAUDIT_HANDOFF_R1.json",
+      "sha256": "b43b1c5b2872f00abc006e89135d46840141ea8d33803380b680ac9b5ba8e6ae"
+    }
+  ],
+  "gates": {
+    "ATOMICITY_AND_DETERMINISM": "PASS_ENGINEERING",
+    "CLEAN_REGRESSION": "PENDING_CLEAN_DETACHED",
+    "DM01_EXTERNAL_ACCEPTANCE": "PENDING_INDEPENDENT_EXTERNAL_AUDIT",
+    "FORMAL_AUTHORITY": "PASS_ENGINEERING",
+    "REAL_CONTINUOUS_ALL_NINE": "PASS_ENGINEERING"
+  },
+  "next_stage": "INDEPENDENT_EXTERNAL_REAUDIT_ONLY; DATA/STAGE_HEADS_KEEP",
+  "phase_A": "PASS"
+}

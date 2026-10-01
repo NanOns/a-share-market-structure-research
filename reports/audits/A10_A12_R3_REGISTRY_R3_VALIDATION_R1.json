@@ -1,0 +1,40 @@
+{
+  "Registry_R2_active_trust_root": false,
+  "authority_count": 4,
+  "business_promotion": false,
+  "external_authority": {
+    "audited_head": "d85f815097a09ca2dceda00d0e29d6ff4fe331d4",
+    "authority_kind": "INDEPENDENT_EXTERNAL_ACCEPTANCE",
+    "document": {
+      "bytes": 10868,
+      "path": "docs/evidence/source_authority/V4_A10_A12_R3_AND_A13_INDEPENDENT_EXTERNAL_ACCEPTANCE_20261001.md",
+      "sha256": "a23789d9de4eb48831125cbb9165964a8dacacb33e9dd30dba0f3bfced681d3a"
+    },
+    "recorded_at": "2026-10-01T10:00:25.362643+00:00",
+    "scope": "HISTORICAL_RECONSTRUCTED_AND_DAILY_PRODUCER_SEMANTIC_AUTHORITY"
+  },
+  "head": {
+    "bytes": 1053,
+    "path": "data/v4/V4_SOURCE_AUTHORITY_GOVERNANCE_HEAD_R3.json",
+    "sha256": "75aa5376f556df03be14875c18e78f3441c85fac9d2ebcceee6907051e3f73d5"
+  },
+  "head_exact_registry_R3": true,
+  "negative_probes": [
+    {
+      "probe": "TASK_CARD",
+      "reason": "INVALID_EXTERNAL_AUTHORITY_BINDING",
+      "status": "PASS_REJECTED"
+    },
+    {
+      "probe": "WRONG_AUDIT_SHA",
+      "reason": "INVALID_EXTERNAL_AUTHORITY_BINDING",
+      "status": "PASS_REJECTED"
+    }
+  ],
+  "registry": {
+    "bytes": 10364,
+    "path": "data/v4/V4_SOURCE_AUTHORITY_ACCEPTED_OWNER_REGISTRY_R3.json",
+    "sha256": "3bc3d013ceebeb7dcf01f95f9a446ff2f65f03a1b6c602144cb54f490b7b18ec"
+  },
+  "status": "PASS"
+}

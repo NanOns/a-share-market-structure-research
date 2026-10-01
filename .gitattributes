@@ -57,3 +57,10 @@ reports/audits/a12_r2/source_text/** -text
 data/v4/artifact_store/v4_02/V4_02_DATED_ST_STATUS_V1_R6_2_20260926_RECOVERED_R1.jsonl.gz filter=lfs diff=lfs merge=lfs -text
 data/v4/artifact_store/v4_02/V4_02_DATED_TRADING_STATUS_R6_2_20260926.jsonl.gz filter=lfs diff=lfs merge=lfs -text
 reports/audits/a13_counterfactual_r1/*.json.gz -text
+
+reports/audits/a13_formalization_counterfactual_r1/*.json.gz -text
+reports/audits/A13_FORMALIZATION_*.xml -text
+reports/audits/DM01_A01_R3_*.xml -text
+data/v4/dm01_candidate_staging_r3/** -text
+data/v4/source_evidence/dm01_a01_r3/** -text
+data/v4/source_evidence/dm01_a01_r3/**/*.zip filter=lfs diff=lfs merge=lfs -text

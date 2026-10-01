@@ -1,0 +1,81 @@
+{
+  "AS_RECORDED": false,
+  "attempts": [
+    {
+      "ZIP_valid": false,
+      "attempt": 0,
+      "bytes": 989,
+      "headers": {
+        "Content-Length": "989",
+        "Content-Type": "text/html",
+        "ETag": null,
+        "Last-Modified": null
+      },
+      "observed_at": "2026-10-01T10:02:02.672589+00:00",
+      "received_at": "2026-10-01T10:02:02.832769+00:00",
+      "rejected_response_binding": {
+        "bytes": 989,
+        "path": "data/v4/source_evidence/dm01_a01_r3/tdx/20261001T100202286790Z/NON_ZIP_RESPONSE_0.html",
+        "sha256": "340b41a4b551f05ed6c6a27b54e0afc074092c36b8635d1d84d7a88f78457118"
+      },
+      "retry_reason": "PUBLIC_DOWNLOAD_STATIC_COOKIE_CHALLENGE",
+      "sha256": "340b41a4b551f05ed6c6a27b54e0afc074092c36b8635d1d84d7a88f78457118",
+      "url": "https://data.tdx.com.cn/vipdoc/hsjday.zip"
+    },
+    {
+      "ZIP_valid": true,
+      "attempt": 1,
+      "bytes": 551362764,
+      "headers": {
+        "Content-Length": "551362764",
+        "Content-Type": "application/zip",
+        "ETag": "\"6abe12c1-20dd20cc\"",
+        "Last-Modified": "Thu, 01 Oct 2026 07:58:57 GMT"
+      },
+      "observed_at": "2026-10-01T10:02:02.834776+00:00",
+      "package_binding": {
+        "bytes": 551362764,
+        "path": "data/v4/source_evidence/dm01_a01_r3/tdx/20261001T100202286790Z/sha256-d87d490151ffb45ff63c500f925be8acb7de992de693eb871029211d7ed87655/hsjday.zip",
+        "sha256": "d87d490151ffb45ff63c500f925be8acb7de992de693eb871029211d7ed87655"
+      },
+      "received_at": "2026-10-01T10:02:13.949658+00:00",
+      "sha256": "d87d490151ffb45ff63c500f925be8acb7de992de693eb871029211d7ed87655",
+      "url": "https://data.tdx.com.cn/vipdoc/hsjday.zip",
+      "zip_validation": {
+        "crc_integrity": "PASS",
+        "day_entry_markets": [
+          "bj",
+          "sh",
+          "sz"
+        ],
+        "entry_count": 12449,
+        "status": "PASS",
+        "uncompressed_bytes": 953518304
+      }
+    }
+  ],
+  "first_available_at_target_proven": false,
+  "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+  "observed_at": "2026-10-01T10:02:02.287240+00:00",
+  "official_publication_date": "2026-10-01",
+  "official_publication_time": "15:58:57",
+  "package": {
+    "bytes": 551362764,
+    "path": "data/v4/source_evidence/dm01_a01_r3/tdx/20261001T100202286790Z/sha256-d87d490151ffb45ff63c500f925be8acb7de992de693eb871029211d7ed87655/hsjday.zip",
+    "sha256": "d87d490151ffb45ff63c500f925be8acb7de992de693eb871029211d7ed87655"
+  },
+  "page": {
+    "bytes": 25376,
+    "path": "data/v4/source_evidence/dm01_a01_r3/tdx/20261001T100202286790Z/page.html",
+    "sha256": "92b455e0e5eb03637eb55c98514a3f392e071bb1bab1d7b639d9ca9919de0c61"
+  },
+  "request_count": 4,
+  "request_limit": 5,
+  "status": "PASS_OFFICIAL_ZIP",
+  "tdx_root_write_count": 0,
+  "update_info": {
+    "bytes": 120,
+    "path": "data/v4/source_evidence/dm01_a01_r3/tdx/20261001T100202286790Z/update_info.js",
+    "sha256": "2bf4fb871f5ff554dbdc10ca917b54c6a2a13b0426c04a1292f144daa16c48ed"
+  }
+}

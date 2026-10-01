@@ -1,0 +1,81 @@
+{
+  "AS_RECORDED": false,
+  "OHLC_authority": false,
+  "adjustment_authority": false,
+  "contract_id": "DM01_A01_R3_ACTUAL_BOUNDED_SOURCE_CAPTURE_V1",
+  "endpoint": {
+    "configured_host": "public-api.baostock.com",
+    "configured_port": 10030,
+    "connected_peer_ip": "114.94.20.42",
+    "connected_peer_port": 10030
+  },
+  "executed_source": {
+    "bytes": 7273,
+    "path": "scripts/capture_dm01_a01_r3_source.py",
+    "sha256": "37205de4a9fd5d8d1ab9a5b1fd2d2b6a1e89fd7345d0a37d60d95d06413af45c"
+  },
+  "first_available_at_target_proven": false,
+  "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+  "origin": "DELAYED_HISTORICAL_RETRIEVAL",
+  "request_ledger": {
+    "bytes": 265,
+    "path": "data/v4/source_evidence/dm01_a01_r3/2026-09-28/20261001T102338620115Z/request_ledger.json",
+    "sha256": "7de4e97dd613e632f94ca87dbca0c6ba9791411b7a18fa4b8d197f9c4076f72b"
+  },
+  "responses": {
+    "query_daily_history_k_AStock": {
+      "error_code": "0",
+      "fields": [
+        "date",
+        "code",
+        "open",
+        "high",
+        "low",
+        "close",
+        "preclose",
+        "volume",
+        "amount",
+        "adjustflag",
+        "turn",
+        "tradestatus",
+        "pctChg",
+        "peTTM",
+        "pbMRQ",
+        "psTTM",
+        "pcfNcfTTM",
+        "isST"
+      ],
+      "max_pages": 1,
+      "max_rows": 20000,
+      "method": "query_daily_history_k_AStock",
+      "observed_at": "2026-10-01T10:23:38.633380+00:00",
+      "page_count": 1,
+      "provider_date": "2026-09-28",
+      "provider_date_basis": "EVERY_RESPONSE_ROW_EXACT_DATE_NOT_INFERRED_FROM_REQUEST",
+      "raw_response_binding": {
+        "bytes": 2589389,
+        "path": "data/v4/source_evidence/dm01_a01_r3/2026-09-28/20261001T102338620115Z/daily_response.json",
+        "sha256": "bf0bae6fd7dfc7859e12f9c021f37791884e6002f7e476ce21c3e3400444d4de"
+      },
+      "received_at": "2026-10-01T10:23:56.354396+00:00",
+      "request_count": 1,
+      "row_count": 5222,
+      "target_trade_date": "2026-09-28"
+    }
+  },
+  "runtime_capability": {
+    "bytes": 1743,
+    "path": "reports/dm01/a01_r2/20261001T033251758661Z/normalized_schema_v2_1/runtime_capability_v2.json",
+    "sha256": "93e36854ce79f1b168c871d6fb6c3f6f9ed7ba635cac0e6dd6b591819027a14e"
+  },
+  "sdk": {
+    "adjustflag": "3",
+    "default_auth_mode": "PUBLIC_ANONYMOUS",
+    "default_runtime_pin": "0.9.3",
+    "fields": "date,code,close,volume,amount,turn,tradestatus,isST",
+    "installed_python_sources_sha256": "32bd19deb872561c8f9c40063de38df4fe4ab0f1073685538f627a9238686bfe",
+    "package": "baostock",
+    "supported_auth_modes": "PUBLIC_ACCOUNT,PUBLIC_ANONYMOUS,VIP_API_KEY",
+    "version": "0.9.3"
+  }
+}

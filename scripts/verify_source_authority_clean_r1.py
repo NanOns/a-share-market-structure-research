@@ -29,15 +29,16 @@ def git(*args):
     return subprocess.run(['git',*args],cwd=ROOT,check=True,capture_output=True,text=True).stdout.strip()
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--work-package',choices=['A10','A11','A12','A01_R2','A08','A09','R3','R4','A10_R2','A12_R2','A10_A12_R3','A13'],default='A10');parser.add_argument('--family',action='append',default=['tests/v4_a10']);args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--work-package',choices=['A10','A11','A12','A01_R2','A08','A09','R3','R4','A10_R2','A12_R2','A10_A12_R3','A13','A13_FORMALIZATION','DM01_A01_R3'],default='A10');parser.add_argument('--family',action='append',default=['tests/v4_a10']);parser.add_argument('--also-package',action='append',choices=['A13_FORMALIZATION','DM01_A01_R3'],default=[]);args=parser.parse_args()
     prefix=args.work_package+'_'
     families=list(dict.fromkeys([*FAMILIES,*args.family]))
     before=git('status','--porcelain=v1');head=git('rev-parse','HEAD')
     if before or (ROOT/'config/.env').exists():raise RuntimeError('CLEAN_CHECKOUT_WITHOUT_CONFIG_ENV_REQUIRED')
     protected={r['path']:hashlib.sha256((ROOT/r['path']).read_bytes()).hexdigest() for r in
         json.loads((ROOT/'config/source_authority_governance_r1.json').read_text(encoding='utf8'))['protected_bindings']}
-    stage_entry=ROOT/f'reports/audits/{args.work_package}_STAGE_ENTRY_R1.json'
-    if args.work_package in ('R3','R4','A10_R2','A12_R2','A10_A12_R3','A13'):
+    for package in dict.fromkeys([args.work_package,*args.also_package]):
+        if package not in ('R3','R4','A10_R2','A12_R2','A10_A12_R3','A13','A13_FORMALIZATION','DM01_A01_R3'):continue
+        stage_entry=ROOT/f'reports/audits/{package}_STAGE_ENTRY_R1.json'
         entry=json.loads(stage_entry.read_text(encoding='utf8'))
         for binding in entry['protected_bindings']:
             actual=hashlib.sha256((ROOT/binding['path']).read_bytes()).hexdigest()
@@ -80,6 +81,15 @@ def main():
         elapsed_seconds=round(time.monotonic()-started,3),created_at_utc=datetime.now(timezone.utc).isoformat(),
         acceptance_scope='ENGINEERING_REGRESSION_ONLY_REAL_MARKET_SOURCE_GATE_SEPARATE',external_acceptance='PENDING')
     atomic_json(BASE/(prefix+'CLEAN_CHECKOUT_R1.json'),receipt)
+    # One actual joint run, with both protected namespaces checked. No fabricated second execution.
+    for package in dict.fromkeys(args.also_package):
+        other=package+'_'
+        atomic_bytes(BASE/(other+'CLEAN_REGRESSION_R1.xml'),junit_bytes)
+        atomic_bytes(BASE/(other+'CLEAN_REGRESSION_R1.log'),(proc.stdout+'\n'+proc.stderr).encode('utf8'))
+        atomic_json(BASE/(other+'NO_SYMBOL_SCAN_R1.json'),compact_scan(governance))
+        atomic_json(BASE/(other+'CLEAN_CHECKOUT_R1.json'),dict(receipt,contract_id=other+'CLEAN_CHECKOUT_R1',
+            shared_actual_execution_with=args.work_package,shared_junit_sha256=receipt['junit_sha256'],
+            all_work_package_protected_namespaces_checked=True))
     print(json.dumps(dict(status=receipt['status'],summary=summary,no_symbol=governance['status'])))
     return 0 if ok else 1
 

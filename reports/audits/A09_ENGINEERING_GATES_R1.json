@@ -1,0 +1,29 @@
+{
+  "allowed_candidate_status": "V4_09_N02_CONSUMER_IDENTITY_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
+  "evidence": {
+    "bytes": 7886,
+    "path": "reports/audits/A09_SCHEMA_LEGACY_READBACK_AND_ROLLBACK_R1.json",
+    "sha256": "bc223984ae9d862af1fb0f36c09a8bcde6ae3e984a000cfccd58305b449e1a05"
+  },
+  "gates": {
+    "clean": "PENDING_CLEAN_DETACHED",
+    "db_foreign_key_rejects_cross_consumer_result": "PASS_ENGINEERING",
+    "db_payload_consumer_mismatch_rejected": "PASS_ENGINEERING",
+    "distinct_consumer_publication_and_exact_payload_readback": "PASS_ENGINEERING",
+    "exact_legacy_payload_rollback": "PASS_ENGINEERING",
+    "exact_legacy_publication_rollback": "PASS_ENGINEERING",
+    "exact_schema_migration_ledger_rollback": "PASS_ENGINEERING",
+    "external": "PENDING_INDEPENDENT_EXTERNAL_AUDIT",
+    "legacy_payloads_and_digests_unchanged": "PASS_ENGINEERING",
+    "legacy_retry_idempotent": "PASS_ENGINEERING",
+    "mixed_row_consumer_rejected": "PASS_ENGINEERING",
+    "publication_consumer_update_rejected": "PASS_ENGINEERING",
+    "result_consumer_update_rejected": "PASS_ENGINEERING",
+    "rollback_rejects_loss_of_nonlegacy_consumer": "PASS_ENGINEERING",
+    "same_publication_changed_payload_rejected": "PASS_ENGINEERING",
+    "same_publication_other_consumer_rejected": "PASS_ENGINEERING"
+  },
+  "next_stage": "Independent external A09 consumer identity audit; accepted heads unchanged",
+  "status": "PENDING_CLEAN_DETACHED",
+  "work_package": "WP-A09-V4-09-N02"
+}

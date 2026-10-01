@@ -1,0 +1,40 @@
+{
+  "accepted_head_bytes_unchanged": true,
+  "determinism": {
+    "bytes": 2088,
+    "path": "reports/audits/DM01_A01_R3_DETERMINISM_R2.json",
+    "sha256": "a8f13ce9a4a189b32c786921a7051f11b054c233dff9c051ea3ea9bae5b36720"
+  },
+  "durable_chain": {
+    "bytes": 1463,
+    "path": "reports/audits/DM01_A01_R3_CONTINUOUS_CHAIN_POSTCHECK_R2.json",
+    "sha256": "53fb1e6e932e90210045f69c032b3ac56f3e7d282102f7f00b03961746d0c121"
+  },
+  "durable_contract": {
+    "bytes": 30587,
+    "path": "config/dm01_incremental_builders_contract_r3_2.json",
+    "sha256": "80f3d40cfb57cf63e6d07b5463d1d3406ad24b59cc8bc52409d361bff84fac89"
+  },
+  "exact_original_byte_archive": {
+    "bytes": 4142,
+    "path": "data/v4/source_evidence/dm01_a01_r3/accepted_metadata_bytes/V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD_ORIGINAL_BYTES_R1.json",
+    "sha256": "83fa37ded40337d69ff0e447a0b6a3bc293d2ca95ea9c8aa009f0f104776c4be"
+  },
+  "external_acceptance": "PENDING_INDEPENDENT_EXTERNAL_REAUDIT",
+  "hash_gate_weakened": false,
+  "initial_candidates_immutable": true,
+  "original_business_head": {
+    "bytes": 4142,
+    "git_sha256": "613a2e46876aeb3283fa268f717134347f4df236e0d935b47b3a770eb0d1afbf",
+    "path": "data/v4/V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD.json",
+    "representation": "PRE_EXISTING_CRLF_LF_ONLY",
+    "sha256": "83fa37ded40337d69ff0e447a0b6a3bc293d2ca95ea9c8aa009f0f104776c4be"
+  },
+  "original_contract": {
+    "bytes": 23151,
+    "path": "config/dm01_incremental_builders_contract_r3.json",
+    "sha256": "40c87d82aabb1cadb58119f9909b16cbc5669f751cae5f0c72836dde43788995"
+  },
+  "scope": "EXACT_ORIGINAL_BYTE_INPUT_ARCHIVE_AND_PREDECLARED_GIT_NAMESPACE_REPRESENTATION; NO_BUSINESS_HEAD_REWRITE",
+  "status": "PASS_ENGINEERING"
+}

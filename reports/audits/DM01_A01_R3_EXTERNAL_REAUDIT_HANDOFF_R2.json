@@ -1,0 +1,39 @@
+{
+  "atomicity": {
+    "bytes": 839,
+    "path": "reports/audits/DM01_A01_R3_ATOMIC_FAILURE_PROBES_R2.json",
+    "sha256": "b7b222038a293a095b2817406af3d8c8fc86cb47a5ded797cfe40d91ec7f64f3"
+  },
+  "chain_postcheck": {
+    "bytes": 1463,
+    "path": "reports/audits/DM01_A01_R3_CONTINUOUS_CHAIN_POSTCHECK_R2.json",
+    "sha256": "53fb1e6e932e90210045f69c032b3ac56f3e7d282102f7f00b03961746d0c121"
+  },
+  "clean_regression": "PENDING_CLEAN_DETACHED",
+  "contract": {
+    "bytes": 30763,
+    "path": "config/dm01_incremental_builders_contract_r3_2.json",
+    "sha256": "2739d4159144d954e7544b9b19248e1228dda89a191ecc57155f3c1f2558c9fd"
+  },
+  "data_head_moved": false,
+  "determinism": {
+    "bytes": 2088,
+    "path": "reports/audits/DM01_A01_R3_DETERMINISM_R2.json",
+    "sha256": "a8f13ce9a4a189b32c786921a7051f11b054c233dff9c051ea3ea9bae5b36720"
+  },
+  "external_acceptance": "PENDING",
+  "handoff_index_correction": "R2 execution metadata finalized against its R2 receipts; original R1 handoff preserved",
+  "metadata_durability": {
+    "bytes": 1721,
+    "path": "reports/audits/DM01_A01_R3_METADATA_DURABILITY_REPAIR_R1.json",
+    "sha256": "f8947863e8a314a660cd8027ccb4f02d24e5f1819528339d57afdf569b1d0382"
+  },
+  "permitted_next_stage": "INDEPENDENT_EXTERNAL_REAUDIT_ONLY",
+  "phase_A": "PASS",
+  "source_context": {
+    "bytes": 4040131,
+    "path": "data/v4/source_evidence/dm01_a01_r3/chain_inputs_r1/chain_execution_context_1084a9fdc5a0da4bf96bd5a3e83cf46364119accd01748c1a27aaaba11119991.json",
+    "sha256": "abfff410a87dfb0d4a1d4ef8d2717428709a87c9e36006d3199b66aced46f730"
+  },
+  "status": "READY_FOR_EXTERNAL_REAUDIT"
+}

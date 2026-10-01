@@ -105,23 +105,70 @@
           "bytes": 1303,
           "path": "reports/audits/DM01_A01_R3_EXTERNAL_REAUDIT_HANDOFF_R1.json",
           "sha256": "b43b1c5b2872f00abc006e89135d46840141ea8d33803380b680ac9b5ba8e6ae"
+        },
+        {
+          "bytes": 59878,
+          "path": "reports/audits/DM01_A01_R3_20260928_CANDIDATE_R2.json",
+          "sha256": "d484013455310cc3468b915b68c420b2dde4bd1a302670dbc10131899a9ff77b"
+        },
+        {
+          "bytes": 59448,
+          "path": "reports/audits/DM01_A01_R3_20260929_CANDIDATE_R2.json",
+          "sha256": "c69409f9f78b0fde00bed2ac8489a8f8acbc8606b5088ce8f9c33ac3c35789b9"
+        },
+        {
+          "bytes": 59498,
+          "path": "reports/audits/DM01_A01_R3_20260930_CANDIDATE_R2.json",
+          "sha256": "547f8a4eb1c3ffe4f8261bf1797cb5fe182a314d57a63b1f5dbf719d230563d5"
+        },
+        {
+          "bytes": 1463,
+          "path": "reports/audits/DM01_A01_R3_CONTINUOUS_CHAIN_POSTCHECK_R2.json",
+          "sha256": "53fb1e6e932e90210045f69c032b3ac56f3e7d282102f7f00b03961746d0c121"
+        },
+        {
+          "bytes": 839,
+          "path": "reports/audits/DM01_A01_R3_ATOMIC_FAILURE_PROBES_R2.json",
+          "sha256": "b7b222038a293a095b2817406af3d8c8fc86cb47a5ded797cfe40d91ec7f64f3"
+        },
+        {
+          "bytes": 2088,
+          "path": "reports/audits/DM01_A01_R3_DETERMINISM_R2.json",
+          "sha256": "a8f13ce9a4a189b32c786921a7051f11b054c233dff9c051ea3ea9bae5b36720"
+        },
+        {
+          "bytes": 1721,
+          "path": "reports/audits/DM01_A01_R3_METADATA_DURABILITY_REPAIR_R1.json",
+          "sha256": "f8947863e8a314a660cd8027ccb4f02d24e5f1819528339d57afdf569b1d0382"
+        },
+        {
+          "bytes": 1634,
+          "path": "reports/audits/DM01_A01_R3_EXTERNAL_REAUDIT_HANDOFF_R2.json",
+          "sha256": "87c10ad8d039e625b0c89ae1dcbdabedb033aea0abf585ad576a23c01dbe1b80"
         }
       ],
       "external_acceptance": "PENDING",
+      "final_contract": {
+        "bytes": 30763,
+        "path": "config/dm01_incremental_builders_contract_r3_2.json",
+        "sha256": "2739d4159144d954e7544b9b19248e1228dda89a191ecc57155f3c1f2558c9fd"
+      },
       "formal_consumer_authorization": false,
       "history_reconstruction_prohibited": true,
       "implementation_status": "READY_FOR_EXTERNAL_REAUDIT",
       "latest_task": {
-        "bytes": 6453,
-        "path": "docs/evidence/source_authority/DM01_A01_R2_BAOSTOCK_CATCHUP_SUPPLEMENTAL_GATE_REPAIR_TASK_20261001.md",
-        "sha256": "343b904b3b204c2aa3b931e976c13e6f90c5eba6cf125591b9e985db293ead95"
+        "bytes": 7616,
+        "path": "docs/evidence/source_authority/V4_A10_A12_R3_ACCEPTANCE_FORMALIZATION_AND_DM01_A01_R3_ENTRY_TASK_20261001.md",
+        "sha256": "605421450dd0f1f549c977f4837c5dbe170ce93627b0fc2474f55b8cc1575bf6"
       },
       "latest_work_package": "WP-A10-A12-R3-FORMALIZE-AND-DM01-A01-R3",
       "next_step": "Independent full real-chain reaudit; no business head promotion",
       "owner_module": "src/workbench_analysis/dm01_accepted_builder_registry.py",
       "priority": "P0",
       "production_gate": true,
+      "remaining_external_gate": "DM01_INDEPENDENT_EXTERNAL_REAUDIT",
       "requires_real_observation_accumulation": false,
+      "source_authority_dependency_disposition": "FULFILLED_BY_ACTUAL_INDEPENDENT_A10_A12_R3_ACCEPTANCE_AND_PHASE_A_FORMAL_REGISTRATION",
       "status": "OPEN",
       "status_path": "reports/audits/work_packages/WP-A01-DM01/STATUS_R2_RUNTIME_CAPTURE_ENGINEERING_PASS_FINAL_BLOCKED.json",
       "task": {
@@ -1172,6 +1219,25 @@
       "next_step": "DM01 continuous candidates; external reaudit required",
       "status": "ACCEPTED_SOURCE_AUTHORITY_SCOPE",
       "work_package": "WP-A10-A12-R3-PRODUCER-SOURCE-INSTANCE"
+    },
+    {
+      "acceptance_independent_from_dm01": true,
+      "audit_id": "DM01_R3_ACCEPTED_METADATA_GIT_REPRESENTATION",
+      "business_heads_unchanged": true,
+      "evidence": [
+        {
+          "bytes": 1721,
+          "path": "reports/audits/DM01_A01_R3_METADATA_DURABILITY_REPAIR_R1.json",
+          "sha256": "f8947863e8a314a660cd8027ccb4f02d24e5f1819528339d57afdf569b1d0382"
+        }
+      ],
+      "external_acceptance": "PENDING",
+      "formal_consumer_authorization": false,
+      "implementation_status": "PASS_ENGINEERING_PENDING_CLEAN_AND_EXTERNAL_REAUDIT",
+      "next_step": "Independent review of exact original-byte archive and predeclared namespace hashes",
+      "priority": "P1",
+      "scope": "Accepted metadata input byte durability across original CRLF and committed LF representations",
+      "status": "OPEN"
     }
   ],
   "extends": {

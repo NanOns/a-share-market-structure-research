@@ -19,3 +19,5 @@ TDX本地目录未更新到目标日，官网已滚到10/1。保留页面与初�
 Data Head仍2026-09-24；Data/Stage及所有既有业务Accepted Heads exact保持，TDX目录写入次数0，production/shadow/focus均false。A13为独立P1证据治理，DM01只消费structured dated field instances。Cross-stage Registry R8记录A12 authority scope accepted、DM01 ready且未accepted；R9追加A13 formal disposition。
 
 代码与真实源/候选/evidence经过 clean detached regression（隔离PostgreSQL、无config/.env、global NoSymbol），实际tested commit和数量记录于 CLEAN_CHECKOUT_R1。提交push只代表阶段交付，不代表DM01 external acceptance或新的gated stage准入。下一阶段仅独立外部复审。
+
+Git 字节耐久复核发现既有 GO-FORWARD PIT Head 的本地 CRLF 原字节与 Git LF 表示差异。业务 Head 未改写；将原字节冻结至独立 accepted_metadata_bytes 输入，新增 R3_2 / 3.1.0 契约和独立运行时，使用同一真实源重新完成连续九组件链。最终候选、postcheck、atomicity、determinism、handoff 采用 R2 receipt；原 R3 契约、运行时、三日 R1 候选及所有 R1 proof 原样保留。该问题单独登记为 DM01_R3_ACCEPTED_METADATA_GIT_REPRESENTATION，engineering PASS 不视为外部验收。

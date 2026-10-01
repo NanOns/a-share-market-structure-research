@@ -1,0 +1,414 @@
+{
+  "acceptance_scope": "CLEAN_POST_PROMOTION_REGRESSION_AND_SOURCE_BINDING_READBACK",
+  "authorized_deselects": [
+    "tests/v4_09/test_stock_prewatch.py::test_production_and_v4_09_acceptance_stay_disabled"
+  ],
+  "config_dot_env_present": false,
+  "config_dot_env_read": false,
+  "configured_or_production_database_used": false,
+  "contract_id": "DM01_A01_R3_PROMOTION_CLEAN_CHECKOUT_R1",
+  "created_at_utc": "2026-10-01T12:55:03.550554+00:00",
+  "data_head": {
+    "bytes": 16890,
+    "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+    "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+  },
+  "database_identity": {
+    "database": "market_research",
+    "owner": "postgres",
+    "server_address": "127.0.0.1/32",
+    "server_port": 14369
+  },
+  "elapsed_seconds": 279.667,
+  "external_acceptance": "EXTERNALLY_ACCEPTED_REAL_CONTINUOUS_CHAIN",
+  "focus": false,
+  "git_status_after": "",
+  "git_status_before": "",
+  "historical_publications": {
+    "V4_09": {
+      "accepted_head": {
+        "byte_count": 11474,
+        "path": "data/v4/V4_09_ACCEPTED_HEAD.json",
+        "sha256": "641ef9e2e6fe8f461a9b765262e739791a6d3fdd220b0eff7947e2690de3a87d"
+      },
+      "business_reacceptance_performed": false,
+      "checks": {
+        "accepted_child_stage_exact": true,
+        "accepted_evidence_exact": true,
+        "accepted_identity": true,
+        "all_candidate_bindings_exact": true,
+        "amended_upstream_exact": true,
+        "artifact_exact": true,
+        "artifact_exact_binding": true,
+        "audited_ancestor": true,
+        "audits_preserved": true,
+        "canonical_evidence_set": true,
+        "capabilities_exact": true,
+        "evidence_pass": true,
+        "external_exact": true,
+        "global_binding": true,
+        "implementation_exact": true,
+        "no_symbol_pass": true,
+        "parent_exact": true,
+        "permissions_false": true,
+        "promotion_idempotent": true,
+        "protected_unchanged": true,
+        "runtime_contracts_match_audited_commit": true,
+        "upstream_exact": true
+      },
+      "contract_id": "V4_09_ACCEPTED_HEAD_PROMOTION_VALIDATION_R1",
+      "current_data_head": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "current_data_head_date": "2026-09-30",
+      "current_runtime_external_acceptance": "PENDING_INDEPENDENT_EXTERNAL_AUDIT",
+      "current_runtime_matches_accepted_implementation": false,
+      "global_head": {
+        "byte_count": 8574,
+        "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+        "sha256": "529c532bd5553ace00fa4813aef07979cfce4e1f18fa5ea66f38fcddd8ed16cb"
+      },
+      "historical_data_head_resolution": "EXPLICIT_EXACT_20260924_ORIGINAL_BYTE_ARCHIVE",
+      "production_authorization": false,
+      "protected_head_bindings": [
+        {
+          "byte_count": 2478,
+          "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+          "sha256": "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0"
+        },
+        {
+          "byte_count": 602,
+          "path": "data/v4/V4_DEV_BASELINE_HEAD.json",
+          "sha256": "45695460b0147c6ada12e0ebd8e5070ac0a45eebea26603ff5a3daddc4dd5094"
+        },
+        {
+          "byte_count": 2151,
+          "path": "data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json",
+          "sha256": "d6374a73b8084ccd383cbb4f75428ed91176e91cc09d87c3329041d57c5bd9ed"
+        }
+      ],
+      "status": "PASS",
+      "validation_scope": "ACCEPTED_PUBLICATION_HISTORY_ONLY"
+    },
+    "V4_10": {
+      "business_reacceptance_performed": false,
+      "candidate_sha256": "ad9fc4643652feb3684223817f2e9c300167d128e2e8a07179e86f65094fd1e1",
+      "checks": {
+        "P01_schema": "PASS",
+        "P02_parent_exact": "PASS",
+        "P03_implementation_exact": "PASS",
+        "P04_seal_descendant": "PASS",
+        "P05_external_exact": "PASS",
+        "P06_CONTRACT_FREEZE": "PASS",
+        "P07_manifest_exact": "PASS",
+        "P08_INDEPENDENT_POSTCHECK": "PASS",
+        "P09_MODEL_BOUNDARY_ACCEPTANCE": "PASS",
+        "P10_INPUT_PROVENANCE_ACCEPTANCE": "PASS",
+        "P11_CONTROLLED_PUBLISHER_ACCEPTANCE": "PASS",
+        "P12_SCHEMA_MIGRATION_RECEIPT": "PASS",
+        "P13_clean_regression_exact": "PASS",
+        "P14_no_symbol_exact": "PASS",
+        "P15_migration_22": "PASS",
+        "P16_migration_23": "PASS",
+        "P17_migration_24": "PASS",
+        "P18_thresholds": "PASS",
+        "P19_protected": "PASS",
+        "P20_protected": "PASS",
+        "P21_protected": "PASS",
+        "P22_audits_open": "PASS",
+        "P23_permissions_false": "PASS",
+        "P24_idempotent_and_global_lineage": "PASS",
+        "P25_clean_detached": "PASS"
+      },
+      "contract_id": "V4_10_PROMOTION_VALIDATOR_R1",
+      "current_data_head": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "current_data_head_date": "2026-09-30",
+      "historical_data_head_resolution": "EXPLICIT_EXACT_20260924_ORIGINAL_BYTE_ARCHIVE",
+      "production_authorization": false,
+      "status": "PASS",
+      "validation_scope": "ACCEPTED_PUBLICATION_HISTORY_ONLY",
+      "validator_bindings": [
+        {
+          "byte_count": 9147,
+          "path": "scripts/validate_v4_10_promotion_r1.py",
+          "sha256": "ff5514a357d55662ef89a83b5234d4b9feee8b81d629b884c1d452c7966a26cd"
+        },
+        {
+          "byte_count": 2966,
+          "path": "scripts/promote_v4_10_accepted_head_r1.py",
+          "sha256": "a1b8b439ed469d92e26cd7fd49ea7dfa6673ad9f7b87caead41ba423ec206ef4"
+        }
+      ]
+    }
+  },
+  "historical_reader": {
+    "bytes": 2138,
+    "path": "src/workbench_analysis/dm01_publication_history_reader_v1.py",
+    "sha256": "51729be1ad211080a73f9c071a9142370e3ba281eadc3c1eb4d7969a7cd7572d"
+  },
+  "junit_sha256": "b0baee6a7edd4d2c27526bf5090e3b4822dd69feb334bc7a5a7cc131575c9113",
+  "migrations": [
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/001_v4_phase0_foundation.sql",
+      "sha256": "391bf52595fc9da86bbce175b667a5b15c18684c4fbfb8e54cdcf65872dff260",
+      "version": "V4_PHASE0_FOUNDATION_V1"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/002_namespace_integrity.sql",
+      "sha256": "d8dcc13609ea73923dd68ad21d9c91eed69128047203a481764edeb72ea45dac",
+      "version": "V4_PHASE0_NAMESPACE_INTEGRITY_V1"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/003_phase0_contract_alignment.sql",
+      "sha256": "e1e2886c04c45121530e1fcf506297921c9cca2eecec3ee06be77e2520887d77",
+      "version": "V4_PHASE0_CONTRACT_ALIGNMENT_R2"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/004_publication_head_revision_identity.sql",
+      "sha256": "905af9323f613d3ae917000859f2306ce3d2a2ec6be43431233c5f4ce0e8a1b3",
+      "version": "V4_PUBLICATION_HEAD_REVISION_IDENTITY_R2"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/005_market_session_publication_chain.sql",
+      "sha256": "54d32de8e20afc773638b38aa555c47a5c5e8cb9b0bba82bb60fbd820a2d3b66",
+      "version": "V4_MARKET_SESSION_PUBLICATION_CHAIN_R2"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/006_fact_source_guard_table_specific_fields.sql",
+      "sha256": "d6ccd5dae3900fa07134a18e2f4f41ed2fbc3dde2fa4d5be79958d82d616a949",
+      "version": "V4_FACT_SOURCE_GUARD_TABLE_SPECIFIC_FIELDS_R2"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/007_state_and_namespace_publication_identity.sql",
+      "sha256": "f7df9d66c6edb13e948cbd92888af140ad335cb2984b9b0078e5498eee1cb4a0",
+      "version": "V4_STATE_AND_NAMESPACE_PUBLICATION_IDENTITY_R2"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/008_prior_session_state_freeze_integrity.sql",
+      "sha256": "3d541d9540d64463068907d20062403d7ee41373c42afa5c34c7e0d7117b338b",
+      "version": "V4_PRIOR_SESSION_STATE_FREEZE_INTEGRITY_R3"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/009_publication_head_guard_sql_alias_fix.sql",
+      "sha256": "ae4a7043367a490483618944b8efaf473062f82371e500ab60e5a79a4d55d2e8",
+      "version": "V4_PUBLICATION_HEAD_GUARD_SQL_ALIAS_FIX_R3"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/010_security_lifecycle_history_r5.sql",
+      "sha256": "a7f9bc76db45b4f6297ed299be2576d299d243daa45b3b13a5f9e42dccf7b87f",
+      "version": "V4_SECURITY_LIFECYCLE_HISTORY_R5_V1"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/011_security_membership_interval_r6_2.sql",
+      "sha256": "a562a409a012c32ce7ce879b6377704079e47289de2db0a24c589070e06957e1",
+      "version": "V4_SECURITY_MEMBERSHIP_INTERVAL_R6_2_V1"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/012_provider_lifecycle_fact_r6_2.sql",
+      "sha256": "3e206b8c20959f862f9d293a42a215af624416905f23083c17ca6e2ec22f9b70",
+      "version": "V4_PROVIDER_LIFECYCLE_FACT_R6_2_V1"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/013_v4_06_stock_profile_enrichments.sql",
+      "sha256": "6aa326f725ad98179b112be6b6f34346c5fbc70d69c4798d2259f01d3c3337e1",
+      "version": "V4_06_STOCK_PROFILE_ENRICHMENTS_V1"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/014_v4_06_turnover_contract_semantics_r2.sql",
+      "sha256": "fff140f483738b6fb8e94e06a4e2c681111de94ceb1c415d18c188a9d95977e3",
+      "version": "V4_STAGE_014_V4_06_TURNOVER_CONTRACT_SEMANTICS_R2"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/015_v4_07_base_seed_results.sql",
+      "sha256": "ebab277fe04a9bb1567d6c7b7ed8a306bbe8e6a5f083e84f8ab5d213e4a131b3",
+      "version": "V4_STAGE_015_V4_07_BASE_SEED_RESULTS"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/016_v4_08_sector_membership.sql",
+      "sha256": "45db743c2d223308d8b95a1dbe4cb7548f3ff553c04a021058be1ed7d34cb6e5",
+      "version": "V4_STAGE_016_V4_08_SECTOR_MEMBERSHIP"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/017_v4_08_membership_fact_evidence_view.sql",
+      "sha256": "633998684434e06b089f622c7c2a8bc37743ab945e53f94b06ca496de8ee77fc",
+      "version": "V4_STAGE_017_V4_08_MEMBERSHIP_FACT_EVIDENCE_VIEW"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/018_v4_08_membership_contract_repair_r2.sql",
+      "sha256": "abaf9fa2ce432deca155292de9e6bb574ba7f1e4de7d5611ac56cc0106e3eb51",
+      "version": "V4_STAGE_018_V4_08_MEMBERSHIP_CONTRACT_REPAIR_R2"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/019_v4_08_membership_source_basis_guard_r3.sql",
+      "sha256": "ec1fd08c6fef018ba0f92131e0e37de376372946ed935d9e5b2602ba024e6975",
+      "version": "V4_STAGE_019_V4_08_MEMBERSHIP_SOURCE_BASIS_GUARD_R3"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/020_v4_08_sector_rotation_r5.sql",
+      "sha256": "3e7a877c73976f6665b053d6eab1da03bd232a77e8145b07ac7c34124d78c9a1",
+      "version": "V4_STAGE_020_V4_08_SECTOR_ROTATION_R5"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/021_v4_09_stock_prewatch.sql",
+      "sha256": "dcbcd468b7651c233a636c81e81bdbd1dc5b7ca85c42d4769c52b42ef5b7dc1c",
+      "version": "V4_09_STOCK_PREWATCH_V1"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/022_v4_10_research_state_interface.sql",
+      "sha256": "cfa37902a75b100e05813e3fb0b63e3884bf369d4c1913067e5714eb9004a732",
+      "version": "V4_STAGE_022_V4_10_RESEARCH_STATE_INTERFACE"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/023_v4_10_research_state_lineage_hardening.sql",
+      "sha256": "e308a42738d32a8a02dd4c1859a1e5de3d561044ca148bd13949932113a3a97b",
+      "version": "V4_STAGE_023_V4_10_RESEARCH_STATE_LINEAGE_HARDENING"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/024_v4_10_research_state_authority_hardening.sql",
+      "sha256": "08058023f24231bd313523e860e2d6262c9035b395e5e27045fb754dcad69624",
+      "version": "V4_STAGE_024_V4_10_RESEARCH_STATE_AUTHORITY_HARDENING"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/025_v4_09_consumer_identity_hardening.sql",
+      "sha256": "b27f960eba2353f09447d21b00a3e669398ff2b71a0158b5d4ace4a666da6374",
+      "version": "V4_STAGE_025_V4_09_CONSUMER_IDENTITY_HARDENING"
+    }
+  ],
+  "new_deselects": [],
+  "no_symbol_status": "PASS",
+  "password_persisted": false,
+  "production": false,
+  "promotion_source_readback": {
+    "accepted_trade_date": "2026-09-30",
+    "nodes": [
+      {
+        "candidate": {
+          "bytes": 51305,
+          "path": "data/v4/dm01_candidate_staging_r3/durable_r3/01cc90422d57e166392ff251ec990f4ad286504c27d29cbba2fb499c9b615060/PROMOTION_CANDIDATE.json",
+          "sha256": "b338caaea8f9e41228a62add7e987d946f4dc9a5a5297dbe02e9ee73df525313"
+        },
+        "components": 9,
+        "source_readback": true,
+        "status": "PASS",
+        "trade_date": "2026-09-28"
+      },
+      {
+        "candidate": {
+          "bytes": 50834,
+          "path": "data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/PROMOTION_CANDIDATE.json",
+          "sha256": "0a67e7211572a7057c50ab27e397c3e093f88c24732e8c7be7bdda92952ca1bf"
+        },
+        "components": 9,
+        "source_readback": true,
+        "status": "PASS",
+        "trade_date": "2026-09-29"
+      },
+      {
+        "candidate": {
+          "bytes": 50811,
+          "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/PROMOTION_CANDIDATE.json",
+          "sha256": "e4ba1fb6d4690b869f98ffc45a8d576a641ef2e9a852a9db97aedd19e043bc81"
+        },
+        "components": 9,
+        "source_readback": true,
+        "status": "PASS",
+        "trade_date": "2026-09-30"
+      }
+    ],
+    "permissions": {
+      "focus": false,
+      "production": false,
+      "shadow": false
+    },
+    "status": "PASS"
+  },
+  "protected_heads": {
+    "data/v4/OFFICIAL_EVENT_SEMANTICS_ACCEPTED_HEAD_R1.json": "c283bb515c0733d8e5f797a6796fa63c575d211d3b9a468c566dc05395a062b8",
+    "data/v4/V4_01_ACCEPTED_HEAD.json": "b8ea5b8091629d116c860f9bf6a1a398301d75be16af7b08ff526fba9329bf6b",
+    "data/v4/V4_01_ACCEPTED_HEAD_CANDIDATE.json": "6f84145fa0e2ef2427ec85349dfd4385fb31936e87a03b06a552ec81afb03ad9",
+    "data/v4/V4_01_GO_FORWARD_IDENTITY_ACCEPTED_HEAD_R1.json": "496d537f7c6b9c78cac3a084330f09132814165d2967e8991ffa1d6319092214",
+    "data/v4/V4_02_ACCEPTED_HEAD.json": "da318a1f82a03f13930af7858ca1640fadbdaedbee85e27d47f9c869c2d6b595",
+    "data/v4/V4_02_GO_FORWARD_CALENDAR_EXTENSION_ACCEPTED_HEAD_R1.json": "d0d453689261603a6ccd773f6383781178cb74d388087b72c652dc8afcb309f6",
+    "data/v4/V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD.json": "613a2e46876aeb3283fa268f717134347f4df236e0d935b47b3a770eb0d1afbf",
+    "data/v4/V4_03_ACCEPTED_HEAD.json": "57013bc0f7dcd966c94fb985e5a0d2cc8c77669aebee15cb02a6acd5f0923147",
+    "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035",
+    "data/v4/V4_04_ACCEPTED_HEAD.json": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a",
+    "data/v4/V4_05_ACCEPTED_HEAD.json": "fc929d85553a900a6479ac9f50291d50cf750ad0e6c21fc58e4e05e92189f5cb",
+    "data/v4/V4_06_ACCEPTED_HEAD.json": "5aec962703aed40cab809e798edc5bfbe50c416809984db40bb679a172782f8e",
+    "data/v4/V4_07_ACCEPTED_HEAD.json": "b22117b0d14c35167cba86cb7398d878d7112f9cf17c1a427fa92766e78f880f",
+    "data/v4/V4_08_ACCEPTED_HEAD.json": "b9ba34374ce35eefab705469de1e005758b90fa1f58ea5bba96fac08571073bc",
+    "data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json": "f2a35cebd18e8caf723e7900133333ce4b8df1a8314cb190dade7b0ea7624a3f",
+    "data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json": "d6374a73b8084ccd383cbb4f75428ed91176e91cc09d87c3329041d57c5bd9ed",
+    "data/v4/V4_09_ACCEPTED_HEAD.json": "641ef9e2e6fe8f461a9b765262e739791a6d3fdd220b0eff7947e2690de3a87d",
+    "data/v4/V4_10_ACCEPTED_HEAD.json": "ad9fc4643652feb3684223817f2e9c300167d128e2e8a07179e86f65094fd1e1",
+    "data/v4/V4_DATA_ACCEPTED_HEAD.json": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+    "data/v4/V4_DEV_BASELINE_HEAD.json": "45695460b0147c6ada12e0ebd8e5070ac0a45eebea26603ff5a3daddc4dd5094",
+    "data/v4/V4_SOURCE_AUTHORITY_ACCEPTED_OWNER_REGISTRY_R3.json": "3bc3d013ceebeb7dcf01f95f9a446ff2f65f03a1b6c602144cb54f490b7b18ec",
+    "data/v4/V4_SOURCE_AUTHORITY_GOVERNANCE_HEAD_R3.json": "75aa5376f556df03be14875c18e78f3441c85fac9d2ebcceee6907051e3f73d5",
+    "data/v4/V4_STAGE_ACCEPTED_HEAD.json": "529c532bd5553ace00fa4813aef07979cfce4e1f18fa5ea66f38fcddd8ed16cb",
+    "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json": "c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3",
+    "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R9.json": "3a12c2b22ded78269361947878eac0f65959f008fafbea233de6222e4cc37d8b"
+  },
+  "protected_heads_unchanged": true,
+  "pytest_return_code": 0,
+  "registry": {
+    "callable_count": 9,
+    "candidate_only": true,
+    "contract_id": "DM01_A01_INCREMENTAL_REGISTRY_VALIDATION_R1",
+    "data_head_promotion_permitted": false,
+    "errors": [],
+    "external_acceptance": "PENDING",
+    "registry_path": "config/dm01_incremental_builders_contract_r1.json",
+    "status": "PASS_ENGINEERING_EXPORTS"
+  },
+  "required_families": [
+    "tests/v4_01",
+    "tests/v4_02",
+    "tests/v4_03",
+    "tests/v4_04",
+    "tests/v4_05",
+    "tests/v4_06",
+    "tests/v4_07",
+    "tests/v4_08",
+    "tests/v4_joint",
+    "tests/v4_phase0",
+    "tests/v4_09",
+    "tests/v4_10",
+    "tests/v4_dm01",
+    "tests/test_fixed_qfq_samples.py",
+    "tests/test_phase0_2a_gate.py",
+    "tests/test_phase1_qa_sample_selector.py",
+    "tests/governance/test_no_symbol_specific_runtime_logic.py",
+    "tests/v4_a10",
+    "tests/v4_a10_r2",
+    "tests/v4_a11",
+    "tests/v4_a12",
+    "tests/v4_a12_r2",
+    "tests/v4_a08",
+    "tests/v4_a09",
+    "tests/v4_registry_r3",
+    "tests/v4_registry_r4",
+    "tests/v4_dm01_r2",
+    "tests/v4_a10_a12_r3",
+    "tests/v4_a13",
+    "tests/v4_dm01_r3",
+    "tests/v4_dm01_promotion"
+  ],
+  "shadow": false,
+  "status": "PASS",
+  "summary": {
+    "errors": 0,
+    "failures": 0,
+    "passed": 1521,
+    "skipped": 2,
+    "tests": 1523
+  },
+  "temporary_cluster_cleaned_up": true,
+  "tested_commit": "708c0228fbe47b4d86408568bfcfad829040e512"
+}

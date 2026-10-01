@@ -1,0 +1,91 @@
+{
+  "controls": {
+    "DM01_OLD_SAME_DAY_RUNTIME_GATE_NEGATIVE_CONTROL": {
+      "assertion": true,
+      "binding": {
+        "bytes": 7515,
+        "path": "scripts/accept_v4_dm01_baostock_runtime.py",
+        "sha256": "a715d1f1697ebc2c957a5ca4e65c4a5b4493071450c07433dd0c2c3e00b7eec8"
+      },
+      "status": "PASS"
+    },
+    "V4_01_HISTORICAL_ROSTER_REQUERY": {
+      "assertion": true,
+      "binding": {
+        "bytes": 49552,
+        "path": "reports/v4_01/V4_01_MISSING_DAY_REQUERY_R6_1.json",
+        "sha256": "7d7a89fad2314c55a5947111417cf8429d73bd33bfc1285b9a7c12d7ce18703d"
+      },
+      "historical_targets": [
+        "2025-05-22",
+        "2025-05-27",
+        "2025-05-29",
+        "2025-06-27",
+        "2025-07-03",
+        "2025-07-04",
+        "2025-07-11",
+        "2025-07-16",
+        "2025-07-21",
+        "2025-07-25",
+        "2025-09-05",
+        "2025-09-30",
+        "2025-10-14",
+        "2025-11-11",
+        "2025-12-05",
+        "2025-12-31",
+        "2026-01-22",
+        "2026-03-27",
+        "2026-03-31",
+        "2026-04-13",
+        "2026-04-22",
+        "2026-04-27",
+        "2026-06-03",
+        "2026-06-10",
+        "2026-06-26",
+        "2026-06-29",
+        "2026-07-03",
+        "2026-07-06",
+        "2026-07-10",
+        "2026-07-14",
+        "2026-07-17"
+      ],
+      "observed_at": "2026-09-26T02:38:38+00:00",
+      "status": "PASS"
+    },
+    "V4_05_UNPROVEN_AS_RECORDED_REMAINS_BLOCKED": {
+      "assertion": true,
+      "binding": {
+        "bytes": 8456,
+        "path": "data/v4/V4_05_ACCEPTED_HEAD.json",
+        "sha256": "fc929d85553a900a6479ac9f50291d50cf750ad0e6c21fc58e4e05e92189f5cb"
+      },
+      "status": "PASS"
+    },
+    "V4_06_HISTORICAL_TARGET_PROVIDER_QUERY": {
+      "assertion": true,
+      "binding": {
+        "bytes": 30136,
+        "path": "reports/v4_06/V4_06_LIVE_PROBE_RECEIPT.json",
+        "sha256": "1aadf41ed50414dea3c6920232c0a6d13de092c8a3dcdab8dfc009b9db58cd32"
+      },
+      "observed_at": "2026-09-29T14:49:10+00:00",
+      "request_count": 6,
+      "status": "PASS",
+      "target_date": "2026-09-28"
+    },
+    "V4_08_FIRST_OBSERVED_CURRENT_MEMBERSHIP_NOT_BACKDATED": {
+      "assertion": true,
+      "binding": {
+        "bytes": 2151,
+        "path": "data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json",
+        "sha256": "d6374a73b8084ccd383cbb4f75428ed91176e91cc09d87c3329041d57c5bd9ed"
+      },
+      "first_observed_owner": "PROJECT_FIRST_OBSERVED_PROVIDER_BYTES",
+      "full_temporal_vectors": "tests/v4_08",
+      "status": "PASS"
+    }
+  },
+  "external_acceptance": null,
+  "source_values_not_rewritten": true,
+  "status": "PASS"
+}

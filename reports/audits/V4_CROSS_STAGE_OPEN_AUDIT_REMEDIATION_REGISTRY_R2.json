@@ -1,0 +1,360 @@
+{
+  "accepted_head_rebinding_authorized": false,
+  "all_capabilities_remain_unaccepted": true,
+  "audit_count": 12,
+  "authority": {
+    "bytes": 7876,
+    "path": "docs/evidence/source_authority/V4_CROSS_STAGE_REMEDIATION_MASTER_AMENDMENT_R2_20261001.md",
+    "sha256": "4703962e099f8a2ddf2c0a3006a84b884b3546b4e3810be457ed303d8c13700e"
+  },
+  "baseline_commit": "4e5284f74c5275e28d75985d1c3e60eaf96e4103",
+  "contract_id": "V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R2",
+  "data_head": {
+    "byte_count": 2478,
+    "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+    "sha256": "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0"
+  },
+  "dependency_graph": {
+    "WP-A01-DM01": [
+      "A10_SCHEMA_FREEZE",
+      "A12_PRODUCER_CONTRACT_FREEZE"
+    ],
+    "WP-A02-PRIOR-RPS": [
+      "A01"
+    ],
+    "WP-A03-FORWARD-PIT": [],
+    "WP-A04-AMOUNT-A": [],
+    "WP-A05-LEGACY-VALID-MEMBER": [],
+    "WP-A06-BAOSTOCK": [],
+    "WP-A07-HIST-AS-RECORDED": [],
+    "WP-A08-V4-09-N01": [],
+    "WP-A09-V4-09-N02": [],
+    "WP-A10-SOURCE-AUTHORITY-GOVERNANCE": [],
+    "WP-A11-V4-01-IDENTITY-AUTHORITY": [
+      "A10_SCHEMA_FREEZE"
+    ],
+    "WP-A12-V4-02-STATUS-ST-AUTHORITY": [
+      "A10_SCHEMA_FREEZE"
+    ]
+  },
+  "entries": [
+    {
+      "audit_id": "DM01_REAL_INCREMENTAL_BUILDERS",
+      "depends_on": [
+        "A10_SCHEMA_FREEZE",
+        "A12_PRODUCER_CONTRACT_FREEZE"
+      ],
+      "does_not_block_engineering_stage": true,
+      "engineering_can_proceed_immediately": true,
+      "evidence": [],
+      "external_acceptance": null,
+      "formal_consumer_authorization": false,
+      "history_reconstruction_prohibited": true,
+      "implementation_status": "KEEP_PASS_ENGINEERING_SCOPE_REAL_SOURCE_R2_REPAIR_REQUIRED",
+      "latest_task": {
+        "bytes": 6453,
+        "path": "docs/evidence/source_authority/DM01_A01_R2_BAOSTOCK_CATCHUP_SUPPLEMENTAL_GATE_REPAIR_TASK_20261001.md",
+        "sha256": "343b904b3b204c2aa3b931e976c13e6f90c5eba6cf125591b9e985db293ead95"
+      },
+      "next_step": "Export nine target-date adapters around pinned accepted domain runtimes; target-only staging, parent/source/calendar binding, independent postcheck and atomic rollback. Real next completed-session candidate must pass independent external acceptance before Data Head promotion.",
+      "owner_module": "src/workbench_analysis/dm01_accepted_builder_registry.py",
+      "priority": "P0",
+      "production_gate": true,
+      "requires_real_observation_accumulation": false,
+      "status": "OPEN",
+      "status_path": "reports/audits/work_packages/WP-A01-DM01/STATUS_R2.json",
+      "task": {
+        "byte_count": 1164,
+        "path": "docs/evidence/cross_stage/WP-A01-DM01/TASK_R1.md",
+        "sha256": "17a787d72aef97417d899f8c1745e49e4cb467cbcf8f2035f3885b5d6a6bf980"
+      },
+      "work_package": "WP-A01-DM01"
+    },
+    {
+      "audit_id": "V4_07_PRIOR_RPS_ACCEPTED_INPUT_BOOTSTRAP_01",
+      "depends_on": [
+        "A01"
+      ],
+      "does_not_block_engineering_stage": true,
+      "engineering_can_proceed_immediately": true,
+      "evidence": [],
+      "external_acceptance": null,
+      "formal_consumer_authorization": false,
+      "history_reconstruction_prohibited": true,
+      "implementation_status": "QUEUED_FORMAL_WORK_PACKAGE",
+      "next_step": "Immutable accepted RPS history T/T-1/T-3 chain, declared revision/universe/calendar/cutoff; independently recompute deltas and warm-up; then rerun unchanged V4-07.",
+      "owner_module": "V4_RPS_PIT_HISTORY_V1",
+      "priority": "P0",
+      "production_gate": true,
+      "requires_real_observation_accumulation": true,
+      "status": "OPEN",
+      "status_path": "reports/audits/work_packages/WP-A02-PRIOR-RPS/STATUS_R1.json",
+      "task": {
+        "byte_count": 1014,
+        "path": "docs/evidence/cross_stage/WP-A02-PRIOR-RPS/TASK_R1.md",
+        "sha256": "5e24a94a7aa7798df21666fbd5e42f9f5f47be1f3926ee74fe83c7dcdb2549df"
+      },
+      "work_package": "WP-A02-PRIOR-RPS"
+    },
+    {
+      "audit_id": "FORWARD_PIT_HISTORY_ACCUMULATION",
+      "depends_on": [],
+      "does_not_block_engineering_stage": true,
+      "engineering_can_proceed_immediately": true,
+      "evidence": [],
+      "external_acceptance": null,
+      "formal_consumer_authorization": false,
+      "history_reconstruction_prohibited": true,
+      "implementation_status": "QUEUED_FORMAL_WORK_PACKAGE",
+      "next_step": "Daily builder, gap/revision/late-source detectors and immutable append from the first accepted PIT date. Implement automation in this WP; future observations accumulate naturally, never retrospectively invent availability.",
+      "owner_module": "forward_pit_daily_builder",
+      "priority": "P1",
+      "production_gate": true,
+      "requires_real_observation_accumulation": true,
+      "status": "OPEN",
+      "status_path": "reports/audits/work_packages/WP-A03-FORWARD-PIT/STATUS_R1.json",
+      "task": {
+        "byte_count": 1087,
+        "path": "docs/evidence/cross_stage/WP-A03-FORWARD-PIT/TASK_R1.md",
+        "sha256": "e39d957db043bfebd123f91d120415c02cace508b20331f9d01df94e2f9c4b33"
+      },
+      "work_package": "WP-A03-FORWARD-PIT"
+    },
+    {
+      "audit_id": "AUD-AMOUNT-A-06",
+      "depends_on": [],
+      "does_not_block_engineering_stage": true,
+      "engineering_can_proceed_immediately": true,
+      "evidence": [],
+      "external_acceptance": null,
+      "formal_consumer_authorization": false,
+      "history_reconstruction_prohibited": true,
+      "implementation_status": "QUEUED_FORMAL_WORK_PACKAGE",
+      "next_step": "Freeze source/unit/20-session denominator/coverage/concentration with independent arithmetic and repo-wide consumer inventory; dependent formal paths stay disabled.",
+      "owner_module": "independent_amount_a_contract",
+      "priority": "P1",
+      "production_gate": true,
+      "requires_real_observation_accumulation": false,
+      "status": "OPEN",
+      "status_path": "reports/audits/work_packages/WP-A04-AMOUNT-A/STATUS_R1.json",
+      "task": {
+        "byte_count": 1014,
+        "path": "docs/evidence/cross_stage/WP-A04-AMOUNT-A/TASK_R1.md",
+        "sha256": "c37c5eaa02b54d2eb7b8ea68eaecc4c41343673ec56fbb6a23f25c42e9b65ecb"
+      },
+      "work_package": "WP-A04-AMOUNT-A"
+    },
+    {
+      "audit_id": "LEGACY_VALID_MEMBER_EXACT_PRODUCER",
+      "depends_on": [],
+      "does_not_block_engineering_stage": true,
+      "engineering_can_proceed_immediately": true,
+      "evidence": [],
+      "external_acceptance": null,
+      "formal_consumer_authorization": false,
+      "history_reconstruction_prohibited": true,
+      "implementation_status": "QUEUED_FORMAL_WORK_PACKAGE",
+      "next_step": "Archaeology first. Recover exact missing_state/validity and golden examples or publish an explicitly non-equivalent replacement with B2 retirement/migration.",
+      "owner_module": "legacy_missing_state_source_archaeology",
+      "priority": "P1",
+      "production_gate": true,
+      "requires_real_observation_accumulation": false,
+      "status": "OPEN",
+      "status_path": "reports/audits/work_packages/WP-A05-LEGACY-VALID-MEMBER/STATUS_R1.json",
+      "task": {
+        "byte_count": 1047,
+        "path": "docs/evidence/cross_stage/WP-A05-LEGACY-VALID-MEMBER/TASK_R1.md",
+        "sha256": "8f8c1b934d891b5892e58a8de85752be0bcbb18239bca4045187adef933c429e"
+      },
+      "work_package": "WP-A05-LEGACY-VALID-MEMBER"
+    },
+    {
+      "audit_id": "V4-06-BAOSTOCK-BINDING-TOLERANCE-01",
+      "depends_on": [],
+      "does_not_block_engineering_stage": true,
+      "engineering_can_proceed_immediately": true,
+      "evidence": [],
+      "external_acceptance": null,
+      "formal_consumer_authorization": false,
+      "history_reconstruction_prohibited": true,
+      "implementation_status": "QUEUED_FORMAL_WORK_PACKAGE",
+      "next_step": "Representative board/date matrix and official unit/denominator evidence; derive tolerance from generation/rounding mechanism, never fit arbitrary percentages.",
+      "owner_module": "baostock_strict_binding_matrix",
+      "priority": "P2",
+      "production_gate": true,
+      "requires_real_observation_accumulation": false,
+      "status": "OPEN",
+      "status_path": "reports/audits/work_packages/WP-A06-BAOSTOCK/STATUS_R1.json",
+      "task": {
+        "byte_count": 1029,
+        "path": "docs/evidence/cross_stage/WP-A06-BAOSTOCK/TASK_R1.md",
+        "sha256": "64158527d2e90a3476550c598d9adecf8c16ded1c811d7b9c1d5df97e409a702"
+      },
+      "work_package": "WP-A06-BAOSTOCK"
+    },
+    {
+      "audit_id": "HISTORICAL_AS_RECORDED_ADJUSTED_PRICE",
+      "depends_on": [],
+      "does_not_block_engineering_stage": true,
+      "engineering_can_proceed_immediately": true,
+      "evidence": [],
+      "external_acceptance": null,
+      "formal_consumer_authorization": false,
+      "history_reconstruction_prohibited": true,
+      "implementation_status": "QUEUED_FORMAL_WORK_PACKAGE",
+      "next_step": "Capture first_available_at/source_revision/knowledge_time for GBBQ/provider/manual records; unverifiable pre-capture history remains permanently capability-blocked.",
+      "owner_module": "first_availability_lineage",
+      "priority": "P2",
+      "production_gate": true,
+      "requires_real_observation_accumulation": true,
+      "status": "OPEN",
+      "status_path": "reports/audits/work_packages/WP-A07-HIST-AS-RECORDED/STATUS_R1.json",
+      "task": {
+        "byte_count": 1040,
+        "path": "docs/evidence/cross_stage/WP-A07-HIST-AS-RECORDED/TASK_R1.md",
+        "sha256": "185312dd668ae05663a2ae85136d95f786f51622ac47200959f45db9b469c463"
+      },
+      "work_package": "WP-A07-HIST-AS-RECORDED"
+    },
+    {
+      "audit_id": "AUD-V4-09-REPAIR-FREEZE-SELF-VALIDATION-N01",
+      "depends_on": [],
+      "does_not_block_engineering_stage": true,
+      "engineering_can_proceed_immediately": true,
+      "evidence": [],
+      "external_acceptance": null,
+      "formal_consumer_authorization": false,
+      "history_reconstruction_prohibited": true,
+      "implementation_status": "IMPLEMENTATION_ENTRY_AUTHORIZED",
+      "next_step": "Independent wrong-status/authority/binding-set/file/consumer/parent negative vectors; accepted replay bytes/logical digest unchanged; hardening only.",
+      "owner_module": "src/v4/stock_prewatch.py",
+      "priority": "P2",
+      "production_gate": true,
+      "requires_real_observation_accumulation": false,
+      "status": "OPEN",
+      "status_path": "reports/audits/work_packages/WP-A08-V4-09-N01/STATUS_R1.json",
+      "task": {
+        "byte_count": 1023,
+        "path": "docs/evidence/cross_stage/WP-A08-V4-09-N01/TASK_R1.md",
+        "sha256": "8c93ef95fe5e9e82906e52c967990955d76f9ece17dea07727d2880cb57eeac6"
+      },
+      "work_package": "WP-A08-V4-09-N01"
+    },
+    {
+      "audit_id": "AUD-V4-09-DB-CONSUMER-IDENTITY-N02",
+      "depends_on": [],
+      "does_not_block_engineering_stage": true,
+      "engineering_can_proceed_immediately": true,
+      "evidence": [],
+      "external_acceptance": null,
+      "formal_consumer_authorization": false,
+      "history_reconstruction_prohibited": true,
+      "implementation_status": "IMPLEMENTATION_ENTRY_AUTHORIZED",
+      "next_step": "New unused migration (024 reserved for V4-10 R1.2); old rows/readback, immutable consumer identity, collision/revision rejection and exact rollback. Preserve historical 021.",
+      "owner_module": "src/v4/stock_prewatch_persistence.py",
+      "priority": "P2",
+      "production_gate": true,
+      "requires_real_observation_accumulation": false,
+      "status": "OPEN",
+      "status_path": "reports/audits/work_packages/WP-A09-V4-09-N02/STATUS_R1.json",
+      "task": {
+        "byte_count": 1050,
+        "path": "docs/evidence/cross_stage/WP-A09-V4-09-N02/TASK_R1.md",
+        "sha256": "3379f2e8e5a2bf649a340cf357c70d933646292a357e3265ef4fb945cffc1313"
+      },
+      "work_package": "WP-A09-V4-09-N02"
+    },
+    {
+      "audit_id": "SOURCE_AUTHORITY_AVAILABILITY_SEMANTICS_GOVERNANCE",
+      "depends_on": [],
+      "does_not_block_engineering_stage": true,
+      "evidence": [],
+      "external_acceptance": null,
+      "formal_consumer_authorization": false,
+      "implementation_status": "IMPLEMENTATION_ENTRY_AUTHORIZED",
+      "next_step": "Versioned candidate, independent evidence, clean regression and external reaudit; no accepted-head overwrite.",
+      "priority": "P0",
+      "production_gate": true,
+      "status": "OPEN",
+      "status_path": "reports/audits/work_packages/WP-A10-SOURCE-AUTHORITY-GOVERNANCE/STATUS_R1.json",
+      "task": {
+        "bytes": 6513,
+        "path": "docs/evidence/source_authority/V4_A10_SOURCE_AUTHORITY_AVAILABILITY_GOVERNANCE_TASK_R1_20261001.md",
+        "sha256": "bba1c64f60d47887049065bc33edfc632e399ab774581b95e18bc957dc8d90f7"
+      },
+      "work_package": "WP-A10-SOURCE-AUTHORITY-GOVERNANCE"
+    },
+    {
+      "audit_id": "V4_01_IDENTITY_SOURCE_AUTHORITY_RECONCILIATION",
+      "depends_on": [
+        "A10_SCHEMA_FREEZE"
+      ],
+      "does_not_block_engineering_stage": true,
+      "evidence": [],
+      "external_acceptance": null,
+      "formal_consumer_authorization": false,
+      "implementation_status": "IMPLEMENTATION_ENTRY_AUTHORIZED",
+      "next_step": "Versioned candidate, independent evidence, clean regression and external reaudit; no accepted-head overwrite.",
+      "priority": "P1",
+      "production_gate": true,
+      "status": "OPEN",
+      "status_path": "reports/audits/work_packages/WP-A11-V4-01-IDENTITY-AUTHORITY/STATUS_R1.json",
+      "task": {
+        "bytes": 6861,
+        "path": "docs/evidence/source_authority/V4_A11_V4_01_IDENTITY_SOURCE_AUTHORITY_RECONCILIATION_TASK_R1_20261001.md",
+        "sha256": "debb4c77e8476891eac5012284de223bcbf174a41ed6dde4277e3ec3fa55acce"
+      },
+      "work_package": "WP-A11-V4-01-IDENTITY-AUTHORITY"
+    },
+    {
+      "audit_id": "V4_02_STATUS_ST_SOURCE_AUTHORITY_DIVERGENCE",
+      "depends_on": [
+        "A10_SCHEMA_FREEZE"
+      ],
+      "does_not_block_engineering_stage": true,
+      "evidence": [],
+      "external_acceptance": null,
+      "formal_consumer_authorization": false,
+      "implementation_status": "IMPLEMENTATION_ENTRY_AUTHORIZED",
+      "next_step": "Versioned candidate, independent evidence, clean regression and external reaudit; no accepted-head overwrite.",
+      "priority": "P0",
+      "production_gate": true,
+      "status": "OPEN",
+      "status_path": "reports/audits/work_packages/WP-A12-V4-02-STATUS-ST-AUTHORITY/STATUS_R1.json",
+      "task": {
+        "bytes": 9262,
+        "path": "docs/evidence/source_authority/V4_A12_V4_02_STATUS_ST_AUTHORITY_AND_CASCADE_REPAIR_TASK_R1_20261001.md",
+        "sha256": "7a2aa855bf108f8d9e7c5d36aaafcea8ae2304818c002a616bb4035b1169c0e5"
+      },
+      "work_package": "WP-A12-V4-02-STATUS-ST-AUTHORITY"
+    }
+  ],
+  "execution_scope": [
+    "A10",
+    "A11",
+    "A12",
+    "A01_R2"
+  ],
+  "extends": {
+    "bytes": 11877,
+    "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json",
+    "sha256": "c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3"
+  },
+  "external_acceptance": null,
+  "first_work_package": "WP-A01-DM01",
+  "governance_only": true,
+  "main_engineering_lane": "V4-10 R1.2 independent; V4-11 blocked until its external acceptance/promotion entry",
+  "next_stage": "WP-A01 implementation; A08/A09 entries ready; each WP commits/pushes and stops independently for external acceptance",
+  "other_work_packages_preserved_open": true,
+  "permissions": {
+    "focus_cutover": false,
+    "production": false,
+    "shadow": false
+  },
+  "stage_head": {
+    "byte_count": 7562,
+    "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+    "sha256": "f7607601de402f2b2bdada84dffdefbacad7f9f66e252c57dfdf045060e90e99"
+  },
+  "status": "OPEN_IMPLEMENTATION_BATCH_0_1_AUTHORIZED"
+}

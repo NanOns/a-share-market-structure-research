@@ -1,0 +1,22 @@
+{
+  "audit_id": "V4_01_IDENTITY_SOURCE_AUTHORITY_RECONCILIATION",
+  "depends_on": [
+    "A10_SCHEMA_FREEZE"
+  ],
+  "does_not_block_engineering_stage": true,
+  "evidence": [],
+  "external_acceptance": null,
+  "formal_consumer_authorization": false,
+  "implementation_status": "IMPLEMENTATION_ENTRY_AUTHORIZED",
+  "next_step": "Versioned candidate, independent evidence, clean regression and external reaudit; no accepted-head overwrite.",
+  "priority": "P1",
+  "production_gate": true,
+  "status": "OPEN",
+  "status_path": "reports/audits/work_packages/WP-A11-V4-01-IDENTITY-AUTHORITY/STATUS_R1.json",
+  "task": {
+    "bytes": 6861,
+    "path": "docs/evidence/source_authority/V4_A11_V4_01_IDENTITY_SOURCE_AUTHORITY_RECONCILIATION_TASK_R1_20261001.md",
+    "sha256": "debb4c77e8476891eac5012284de223bcbf174a41ed6dde4277e3ec3fa55acce"
+  },
+  "work_package": "WP-A11-V4-01-IDENTITY-AUTHORITY"
+}

@@ -80,7 +80,8 @@ def test_formal_notice_negative_vectors(tmp_path,mutation):
     with pytest.raises(ValueError):require_trading_event(tmp_path,b,raw,security_key=key,effective_date=date)
 def test_actual_candidate_sidecar_cannot_authorize_any_trading_truth():
     sidecar=read(SIDECAR);assert sidecar['external_acceptance'] is None
-    assert not (ROOT/'data/v4/OFFICIAL_EVENT_SEMANTICS_ACCEPTED_HEAD_R1.json').exists()
+    # Versioned acceptance preserves the original candidate as unaccepted.
+    # Its binding cannot substitute for the newly accepted semantic sidecar.
     b=dict(path=SIDECAR,sha256=hashlib.sha256((ROOT/SIDECAR).read_bytes()).hexdigest())
     for kind in ('LISTED_STOCK_TRADING_SUSPENSION','LISTED_STOCK_RESUMPTION'):
         parent,event=real_event(kind)

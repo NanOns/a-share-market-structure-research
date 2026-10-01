@@ -1,0 +1,788 @@
+{
+  "AS_RECORDED": false,
+  "BUSINESS_REBUILD_REQUIRED": false,
+  "EVIDENCE_SEMANTICS_AMENDMENT_REQUIRED": true,
+  "V4_08_ACCEPTED_HEAD": "KEEP",
+  "accepted_business_baseline_checks": {
+    "V4_07": {
+      "field_change_counts": {},
+      "new_business_digest": "ce0602fd5b7b6fea8410763301b0f50c21af212ea2f96a3a898698294e0a1a8c",
+      "old_business_digest": "ce0602fd5b7b6fea8410763301b0f50c21af212ea2f96a3a898698294e0a1a8c",
+      "rows": 5222,
+      "samples": [],
+      "security_rows_changed": 0,
+      "state_transition_counts": {
+        "base_seed_state:FALSE -> FALSE": 2443,
+        "base_seed_state:UNKNOWN -> UNKNOWN": 2779
+      }
+    },
+    "V4_09": {
+      "field_change_counts": {},
+      "new_business_digest": "de764c0e3b1ebfb7b241ca7c9c5056189b23d93fd2061e5a6d1d4cb477044535",
+      "old_business_digest": "de764c0e3b1ebfb7b241ca7c9c5056189b23d93fd2061e5a6d1d4cb477044535",
+      "rows": 5222,
+      "samples": [],
+      "security_rows_changed": 0,
+      "state_transition_counts": {
+        "base_seed_state:FALSE -> FALSE": 2443,
+        "base_seed_state:UNKNOWN -> UNKNOWN": 2779,
+        "priority_bucket:NOT_ELIGIBLE -> NOT_ELIGIBLE": 2443,
+        "priority_bucket:UNKNOWN_BUCKET -> UNKNOWN_BUCKET": 2779,
+        "raw_qualification:FALSE -> FALSE": 2443,
+        "raw_qualification:UNKNOWN -> UNKNOWN": 2779
+      }
+    }
+  },
+  "audit_observed_at": "2026-10-01T10:03:33.241664+00:00",
+  "external_acceptance": "EXTERNAL_ACCEPTANCE_PASS_EVIDENCE_GOVERNANCE_NO_BUSINESS_IMPACT",
+  "external_authority": {
+    "audited_head": "d85f815097a09ca2dceda00d0e29d6ff4fe331d4",
+    "bytes": 10868,
+    "document_role": "INDEPENDENT_EXTERNAL_ACCEPTANCE",
+    "path": "docs/evidence/source_authority/V4_A10_A12_R3_AND_A13_INDEPENDENT_EXTERNAL_ACCEPTANCE_20261001.md",
+    "sha256": "a23789d9de4eb48831125cbb9165964a8dacacb33e9dd30dba0f3bfced681d3a"
+  },
+  "full_PIT_equal_to_accepted": true,
+  "full_PIT_fact_count": 50162,
+  "full_PIT_fact_sha256": "164142652bf5b3032f4e1a8ee54fe2817a3f3b5130635cf04fb641a6e819211d",
+  "full_admission_business_digests": {
+    "OLD": "0203a4578a12fb8453b35f7ee0e17739e088ff27989f21219a1852720d37266e",
+    "WITHOUT_MISNAMED_NOTICES": "0203a4578a12fb8453b35f7ee0e17739e088ff27989f21219a1852720d37266e"
+  },
+  "full_downstream_business_diff": {
+    "V4_07_BASE_SEED": {
+      "field_change_counts": {},
+      "new_business_digest": "ce0602fd5b7b6fea8410763301b0f50c21af212ea2f96a3a898698294e0a1a8c",
+      "old_business_digest": "ce0602fd5b7b6fea8410763301b0f50c21af212ea2f96a3a898698294e0a1a8c",
+      "rows": 5222,
+      "samples": [],
+      "security_rows_changed": 0,
+      "state_transition_counts": {
+        "base_seed_state:FALSE -> FALSE": 2443,
+        "base_seed_state:UNKNOWN -> UNKNOWN": 2779
+      }
+    },
+    "V4_08_B0_AUTHORITY_R2": {
+      "field_change_counts": {},
+      "new_business_digest": "1e59ea12e80106c0cee5f0910403be768a9048c30bfe5589d4cc39cf4bc1c3fb",
+      "old_business_digest": "1e59ea12e80106c0cee5f0910403be768a9048c30bfe5589d4cc39cf4bc1c3fb",
+      "rows": 378,
+      "samples": [],
+      "security_rows_changed": 0,
+      "state_transition_counts": {}
+    },
+    "V4_08_B2_AUTHORITY_R2": {
+      "field_change_counts": {},
+      "new_business_digest": "127a0b1ec019ac105294c71c4ba4863cc5dba4bf5ff0129e11792265d55fb8e5",
+      "old_business_digest": "127a0b1ec019ac105294c71c4ba4863cc5dba4bf5ff0129e11792265d55fb8e5",
+      "rows": 378,
+      "samples": [],
+      "security_rows_changed": 0,
+      "state_transition_counts": {}
+    },
+    "V4_08_ROTATION_AUTHORITY_R2": {
+      "field_change_counts": {},
+      "new_business_digest": "d880ab10df30b37beebb38860cccdd8364ce4b71ec2b6df08caa2ec04f49a230",
+      "old_business_digest": "d880ab10df30b37beebb38860cccdd8364ce4b71ec2b6df08caa2ec04f49a230",
+      "rows": 378,
+      "samples": [],
+      "security_rows_changed": 0,
+      "state_transition_counts": {}
+    },
+    "V4_08_SECTOR_NATIVE_AUTHORITY_R2": {
+      "field_change_counts": {},
+      "new_business_digest": "584d7b18fd3bd8269de8281895684f2aaa05d89af6687c04a9ccf1bfd828c26c",
+      "old_business_digest": "584d7b18fd3bd8269de8281895684f2aaa05d89af6687c04a9ccf1bfd828c26c",
+      "rows": 378,
+      "samples": [],
+      "security_rows_changed": 0,
+      "state_transition_counts": {}
+    },
+    "V4_09_STOCK_PREWATCH": {
+      "field_change_counts": {},
+      "new_business_digest": "de764c0e3b1ebfb7b241ca7c9c5056189b23d93fd2061e5a6d1d4cb477044535",
+      "old_business_digest": "de764c0e3b1ebfb7b241ca7c9c5056189b23d93fd2061e5a6d1d4cb477044535",
+      "rows": 5222,
+      "samples": [],
+      "security_rows_changed": 0,
+      "state_transition_counts": {
+        "base_seed_state:FALSE -> FALSE": 2443,
+        "base_seed_state:UNKNOWN -> UNKNOWN": 2779,
+        "priority_bucket:NOT_ELIGIBLE -> NOT_ELIGIBLE": 2443,
+        "priority_bucket:UNKNOWN_BUCKET -> UNKNOWN_BUCKET": 2779,
+        "raw_qualification:FALSE -> FALSE": 2443,
+        "raw_qualification:UNKNOWN -> UNKNOWN": 2779
+      }
+    }
+  },
+  "known_case_keys": [
+    "SH.603302",
+    "SH.688688",
+    "SZ.300728"
+  ],
+  "logs": {
+    "OLD": "{\"status\": \"V4_08_R3_BLOCKED_IDENTITY_AND_CALENDAR_EXTERNAL_PROMOTION\", \"identity_counts\": {\"NOT_LISTED_AT_TARGET\": 9, \"FORMAL_IN_SCOPE_A_STOCK\": 2}, \"prospective_member_counts\": {\"INDUSTRY\": 5224, \"THEME\": 44938}, \"excluded\": {\"NOT_LISTED_AT_TARGET\": 11, \"BSE_OPTIONAL\": 438, \"OPTIONAL_BOARD_OUTSIDE_REQUIRED_SCOPE\": 1565, \"NON_FORMAL_SECTOR_TYPE\": 32862}, \"additional_required_keys\": [], \"deterministic\": true}\n",
+    "WITHOUT_MISNAMED_NOTICES": "{\"status\": \"V4_08_R3_BLOCKED_IDENTITY_AND_CALENDAR_EXTERNAL_PROMOTION\", \"identity_counts\": {\"NOT_LISTED_AT_TARGET\": 9, \"FORMAL_IN_SCOPE_A_STOCK\": 2}, \"prospective_member_counts\": {\"INDUSTRY\": 5224, \"THEME\": 44938}, \"excluded\": {\"NOT_LISTED_AT_TARGET\": 11, \"BSE_OPTIONAL\": 438, \"OPTIONAL_BOARD_OUTSIDE_REQUIRED_SCOPE\": 1565, \"NON_FORMAL_SECTOR_TYPE\": 32862}, \"additional_required_keys\": [], \"deterministic\": true}\n"
+  },
+  "network_calls": 0,
+  "raw_source_modified": false,
+  "removed_sources": [
+    {
+      "byte_count": 501937,
+      "expected": [
+        "鑫广绿环",
+        "暂缓"
+      ],
+      "expected_phrase_checks": {
+        "暂缓": true,
+        "鑫广绿环": true
+      },
+      "extracted_text_path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SH_603302_suspension.txt",
+      "extracted_text_sha256": "7783e63a44c19cedb14f702bf316449b7565dbb96240310158cf2742f92e75f0",
+      "http_status": 200,
+      "id": "SH_603302_suspension",
+      "key": "SH.603302",
+      "observed_at": "2026-09-30T06:32:55.653244Z",
+      "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SH_603302_suspension.pdf",
+      "published_date": "2017-12-14",
+      "request_started_at": "2026-09-30T06:32:55.455228Z",
+      "sha256": "36ca1b50986728fc2dfc5c1eef51b0b5c2dfcc45a0475b320d5c531c87eebdd5",
+      "status": "PASS_CAPTURE",
+      "url": "https://epaper.cs.com.cn/zgzqb/images/2017-12/14/A14/AGG0141214C.pdf"
+    },
+    {
+      "byte_count": 28477,
+      "expected": [
+        "蚂蚁",
+        "暂缓上市"
+      ],
+      "expected_phrase_checks": {
+        "暂缓上市": true,
+        "蚂蚁": true
+      },
+      "extracted_text_path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SH_688688_suspension.txt",
+      "extracted_text_sha256": "10833fc573e4d187dd91e33062901728a0a483a3e8d7f4bc47958690212c6be6",
+      "http_status": 200,
+      "id": "SH_688688_suspension",
+      "key": "SH.688688",
+      "observed_at": "2026-09-30T06:32:56.368810Z",
+      "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SH_688688_suspension.html",
+      "published_date": "2020-11-03",
+      "request_started_at": "2026-09-30T06:32:55.946461Z",
+      "sha256": "ee5e483ad9fe4b8d64fe679ac1b7d525a4adf925cdd0862e818db140f4d39cc6",
+      "status": "PASS_CAPTURE",
+      "url": "https://www.sse.com.cn/disclosure/announcement/general/c/c_20201103_5253315.shtml"
+    },
+    {
+      "byte_count": 420126,
+      "expected": [
+        "天常",
+        "暂缓"
+      ],
+      "expected_phrase_checks": {
+        "天常": true,
+        "暂缓": true
+      },
+      "extracted_text_path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_300728_suspension.txt",
+      "extracted_text_sha256": "253a2e337aa8a84ddc1c8b94ef887f933c420f26bfe38cf40a1eccb14ccd765b",
+      "http_status": 200,
+      "id": "SZ_300728_suspension",
+      "key": "SZ.300728",
+      "observed_at": "2026-09-30T06:32:56.591432Z",
+      "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_300728_suspension.pdf",
+      "published_date": "2017-11-13",
+      "request_started_at": "2026-09-30T06:32:56.135586Z",
+      "sha256": "48ee4325eb44d8bfa224aae3b519e7d22491d661c94f845b197b441063375e4e",
+      "status": "PASS_CAPTURE",
+      "url": "https://static.cninfo.com.cn/finalpage/2017-11-13/1204137963.PDF"
+    }
+  ],
+  "replay_cutoff": "ORIGINAL_FROZEN_INPUT_SCENARIO_TIME_ONLY_NOT_CORRECTED_FIRST_AVAILABILITY",
+  "replay_outputs": {
+    "bytes": 6617327,
+    "path": "reports/audits/a13_formalization_counterfactual_r1/FULL_DOWNSTREAM_REPLAY_OUTPUTS_R1.json.gz",
+    "sha256": "2ad6314c48d35f958e89695d83234e4e2113654ecd6871e76df34441554afff2"
+  },
+  "replay_scope": "ALL_11_ADMISSION_KEYS_ALL_RAW_AND_FORMAL_MEMBERSHIP_ROWS_ALL_SECTOR_ROWS_ALL_BASE_SEED_AND_PREWATCH_ROWS",
+  "rerun_builders": [
+    {
+      "bytes": 23305,
+      "path": "scripts/build_v4_08_r3_admission_evidence.py",
+      "sha256": "2167816e98d2ebb21a827edfc789182890524e17b83d40d264ddc4d8af18d9fa"
+    },
+    {
+      "bytes": 18719,
+      "path": "scripts/materialize_v4_08_r4_pit_candidate.py",
+      "sha256": "c93245036bf769f78bad5ef5dc7633a49b839542f642e26495f67895158e2312"
+    },
+    {
+      "bytes": 12921,
+      "path": "scripts/complete_a12_cascade_r2.py",
+      "sha256": "5bc2370784c083e5b36c68c6bc05d51dacc830be74bd3a961179eb500329ed6d"
+    }
+  ],
+  "scenarios": {
+    "OLD": [
+      {
+        "active_catalogue_absence_verified": true,
+        "board": null,
+        "board_for_code_used_as_lifecycle_truth": false,
+        "classification": "NOT_LISTED_AT_TARGET",
+        "dated_lifecycle_evidence": [
+          {
+            "byte_count": 236552,
+            "capture_status": "PASS_CAPTURE",
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SH_601206_suspension.pdf",
+            "sha256": "60b9836e3f921febeafe26227b1232f605d9dfef3fc5ac4c41d7383260b9a29b",
+            "source_published_date": "2016-08-17"
+          }
+        ],
+        "evidence": [
+          {
+            "byte_count": 1027830,
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SSE_stock_list.html",
+            "sha256": "56ba02b369553d55b92686cd1b5d5b8e6570f454d19054cf5467176746064719"
+          },
+          {
+            "byte_count": 352211,
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SSE_STAR_stock_list.html",
+            "sha256": "ef501d54f0ac0ceb24d487f38d3b0a4e4ce4559cca0df691be4c6092fb6229e7"
+          }
+        ],
+        "listing_date": null,
+        "reason": "NOT_PRESENT_IN_TARGET_ACTIVE_EXCHANGE_CATALOGUE; available dated issuance or lifecycle evidence is attached without inferring legal termination",
+        "source_security_key": "SH.601206",
+        "target_trade_date": "2026-09-30"
+      },
+      {
+        "active_catalogue_absence_verified": true,
+        "board": null,
+        "board_for_code_used_as_lifecycle_truth": false,
+        "classification": "NOT_LISTED_AT_TARGET",
+        "dated_lifecycle_evidence": [
+          {
+            "byte_count": 501937,
+            "capture_status": "PASS_CAPTURE",
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SH_603302_suspension.pdf",
+            "sha256": "36ca1b50986728fc2dfc5c1eef51b0b5c2dfcc45a0475b320d5c531c87eebdd5",
+            "source_published_date": "2017-12-14"
+          }
+        ],
+        "evidence": [
+          {
+            "byte_count": 1027830,
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SSE_stock_list.html",
+            "sha256": "56ba02b369553d55b92686cd1b5d5b8e6570f454d19054cf5467176746064719"
+          },
+          {
+            "byte_count": 352211,
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SSE_STAR_stock_list.html",
+            "sha256": "ef501d54f0ac0ceb24d487f38d3b0a4e4ce4559cca0df691be4c6092fb6229e7"
+          }
+        ],
+        "listing_date": null,
+        "reason": "NOT_PRESENT_IN_TARGET_ACTIVE_EXCHANGE_CATALOGUE; available dated issuance or lifecycle evidence is attached without inferring legal termination",
+        "source_security_key": "SH.603302",
+        "target_trade_date": "2026-09-30"
+      },
+      {
+        "active_catalogue_absence_verified": true,
+        "board": null,
+        "board_for_code_used_as_lifecycle_truth": false,
+        "classification": "NOT_LISTED_AT_TARGET",
+        "dated_lifecycle_evidence": [
+          {
+            "byte_count": 549909,
+            "capture_status": "PASS_CAPTURE",
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SH_603361_suspension.pdf",
+            "sha256": "6e55b486500f56e89718fbd6627e8563060b0437d43ee5c7ca5efb136dc49aa2",
+            "source_published_date": "2023-10-09"
+          }
+        ],
+        "evidence": [
+          {
+            "byte_count": 1027830,
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SSE_stock_list.html",
+            "sha256": "56ba02b369553d55b92686cd1b5d5b8e6570f454d19054cf5467176746064719"
+          },
+          {
+            "byte_count": 352211,
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SSE_STAR_stock_list.html",
+            "sha256": "ef501d54f0ac0ceb24d487f38d3b0a4e4ce4559cca0df691be4c6092fb6229e7"
+          }
+        ],
+        "listing_date": null,
+        "reason": "NOT_PRESENT_IN_TARGET_ACTIVE_EXCHANGE_CATALOGUE; available dated issuance or lifecycle evidence is attached without inferring legal termination",
+        "source_security_key": "SH.603361",
+        "target_trade_date": "2026-09-30"
+      },
+      {
+        "active_catalogue_absence_verified": true,
+        "board": null,
+        "board_for_code_used_as_lifecycle_truth": false,
+        "classification": "NOT_LISTED_AT_TARGET",
+        "dated_lifecycle_evidence": [
+          {
+            "byte_count": 28477,
+            "capture_status": "PASS_CAPTURE",
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SH_688688_suspension.html",
+            "sha256": "ee5e483ad9fe4b8d64fe679ac1b7d525a4adf925cdd0862e818db140f4d39cc6",
+            "source_published_date": "2020-11-03"
+          }
+        ],
+        "evidence": [
+          {
+            "byte_count": 1027830,
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SSE_stock_list.html",
+            "sha256": "56ba02b369553d55b92686cd1b5d5b8e6570f454d19054cf5467176746064719"
+          },
+          {
+            "byte_count": 352211,
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SSE_STAR_stock_list.html",
+            "sha256": "ef501d54f0ac0ceb24d487f38d3b0a4e4ce4559cca0df691be4c6092fb6229e7"
+          }
+        ],
+        "listing_date": null,
+        "reason": "NOT_PRESENT_IN_TARGET_ACTIVE_EXCHANGE_CATALOGUE; available dated issuance or lifecycle evidence is attached without inferring legal termination",
+        "source_security_key": "SH.688688",
+        "target_trade_date": "2026-09-30"
+      },
+      {
+        "active_catalogue_absence_verified": true,
+        "board": null,
+        "board_for_code_used_as_lifecycle_truth": false,
+        "classification": "NOT_LISTED_AT_TARGET",
+        "dated_lifecycle_evidence": [],
+        "evidence": [
+          {
+            "byte_count": 15989,
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_001235_exchange_query.html",
+            "sha256": "f5d3b831f1e4488631954ef2abdd35964690ef193cf68bdc59a907872d3aff22"
+          }
+        ],
+        "listing_date": null,
+        "reason": "NOT_PRESENT_IN_TARGET_ACTIVE_EXCHANGE_CATALOGUE; available dated issuance or lifecycle evidence is attached without inferring legal termination",
+        "source_security_key": "SZ.001235",
+        "target_trade_date": "2026-09-30"
+      },
+      {
+        "board": "SZ_MAIN",
+        "board_for_code_used_as_lifecycle_truth": false,
+        "classification": "FORMAL_IN_SCOPE_A_STOCK",
+        "evidence": [
+          {
+            "byte_count": 16281,
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_001246_exchange_query.html",
+            "sha256": "9c3e88c36f212214e77aab8b34092894b18f6be1169e5e83643334e7bfc7fa7d"
+          },
+          {
+            "byte_count": 36281,
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_001246_listing.html",
+            "sha256": "1f7e39647a3c46041d8e1cb501e9814673b07b98ecc6f3ee4a119c6e1797dfaf"
+          }
+        ],
+        "listing_date": "2026-09-30",
+        "security_id": "SEC-9A2222852908DCC43E96059AFF5737DD",
+        "source_security_key": "SZ.001246",
+        "target_trade_date": "2026-09-30"
+      },
+      {
+        "active_catalogue_absence_verified": true,
+        "board": null,
+        "board_for_code_used_as_lifecycle_truth": false,
+        "classification": "NOT_LISTED_AT_TARGET",
+        "dated_lifecycle_evidence": [
+          {
+            "byte_count": 420126,
+            "capture_status": "PASS_CAPTURE",
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_300728_suspension.pdf",
+            "sha256": "48ee4325eb44d8bfa224aae3b519e7d22491d661c94f845b197b441063375e4e",
+            "source_published_date": "2017-11-13"
+          }
+        ],
+        "evidence": [
+          {
+            "byte_count": 15989,
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_300728_exchange_query.html",
+            "sha256": "2de11340ba60827b5cf18ea2fd5bf541e34d5d2c55f85bf0960157ae0a3c5d14"
+          }
+        ],
+        "listing_date": null,
+        "reason": "NOT_PRESENT_IN_TARGET_ACTIVE_EXCHANGE_CATALOGUE; available dated issuance or lifecycle evidence is attached without inferring legal termination",
+        "source_security_key": "SZ.300728",
+        "target_trade_date": "2026-09-30"
+      },
+      {
+        "active_catalogue_absence_verified": true,
+        "board": null,
+        "board_for_code_used_as_lifecycle_truth": false,
+        "classification": "NOT_LISTED_AT_TARGET",
+        "dated_lifecycle_evidence": [
+          {
+            "byte_count": 6866256,
+            "capture_status": "PASS_CAPTURE",
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301569_issuance.pdf",
+            "sha256": "441f3c012a164baea04baa510431e2fdafefa8541b0e654c65ffcdf851bfd96a",
+            "source_published_date": "2026-09-24"
+          }
+        ],
+        "evidence": [
+          {
+            "byte_count": 15989,
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301569_exchange_query.html",
+            "sha256": "fb8add56d691281fad25aa532f6ca1c5cc42de8e987cf44294aeea21ac89f7d5"
+          }
+        ],
+        "listing_date": null,
+        "reason": "NOT_PRESENT_IN_TARGET_ACTIVE_EXCHANGE_CATALOGUE; available dated issuance or lifecycle evidence is attached without inferring legal termination",
+        "source_security_key": "SZ.301569",
+        "target_trade_date": "2026-09-30"
+      },
+      {
+        "active_catalogue_absence_verified": true,
+        "board": null,
+        "board_for_code_used_as_lifecycle_truth": false,
+        "classification": "NOT_LISTED_AT_TARGET",
+        "dated_lifecycle_evidence": [
+          {
+            "byte_count": 78563,
+            "capture_status": "CAPTURED_EXPECTED_PHRASE_MISSING",
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301660_issuance.html",
+            "sha256": "10820f31b6bcc1d5042763d45757aa0d284b9dc5bd19a2253b21344c0ce7c3ca",
+            "source_published_date": "2026-09-23"
+          }
+        ],
+        "evidence": [
+          {
+            "byte_count": 15989,
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301660_exchange_query.html",
+            "sha256": "d5001563e778cb013158d1d467adbdbe7226bdf98cff00883f2b2673ffaf6f18"
+          }
+        ],
+        "listing_date": null,
+        "reason": "NOT_PRESENT_IN_TARGET_ACTIVE_EXCHANGE_CATALOGUE; available dated issuance or lifecycle evidence is attached without inferring legal termination",
+        "source_security_key": "SZ.301660",
+        "target_trade_date": "2026-09-30"
+      },
+      {
+        "board": "CHINEXT",
+        "board_for_code_used_as_lifecycle_truth": false,
+        "classification": "FORMAL_IN_SCOPE_A_STOCK",
+        "evidence": [
+          {
+            "byte_count": 16280,
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301716_exchange_query.html",
+            "sha256": "38d05965e5f224e1cbd299324670affe7308e7ee70ac640518003603fffa9b97"
+          },
+          {
+            "byte_count": 12792,
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301716_listing.html",
+            "sha256": "4ab8ce7a6a948ab48c6ef190641078a77914977b1b46adfbf19f0ac608831c62"
+          }
+        ],
+        "listing_date": "2026-09-29",
+        "security_id": "SEC-C7353CA6F8DE4D5EA38AC49E4AAC9CF3",
+        "source_security_key": "SZ.301716",
+        "target_trade_date": "2026-09-30"
+      },
+      {
+        "active_catalogue_absence_verified": true,
+        "board": null,
+        "board_for_code_used_as_lifecycle_truth": false,
+        "classification": "NOT_LISTED_AT_TARGET",
+        "dated_lifecycle_evidence": [
+          {
+            "byte_count": 48336,
+            "capture_status": "PASS_CAPTURE",
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301718_issuance.html",
+            "sha256": "0f7f448b907118f232a0001244f2d4a3960b3020c98aa7758eaeb8d8c7968f23",
+            "source_published_date": "2026-09-23"
+          }
+        ],
+        "evidence": [
+          {
+            "byte_count": 15989,
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301718_exchange_query.html",
+            "sha256": "987965b23ae099ed4e096603bfbfcac7684ab32fb9c45d2ca526b25f06a84013"
+          }
+        ],
+        "listing_date": null,
+        "reason": "NOT_PRESENT_IN_TARGET_ACTIVE_EXCHANGE_CATALOGUE; available dated issuance or lifecycle evidence is attached without inferring legal termination",
+        "source_security_key": "SZ.301718",
+        "target_trade_date": "2026-09-30"
+      }
+    ],
+    "WITHOUT_MISNAMED_NOTICES": [
+      {
+        "active_catalogue_absence_verified": true,
+        "board": null,
+        "board_for_code_used_as_lifecycle_truth": false,
+        "classification": "NOT_LISTED_AT_TARGET",
+        "dated_lifecycle_evidence": [
+          {
+            "byte_count": 236552,
+            "capture_status": "PASS_CAPTURE",
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SH_601206_suspension.pdf",
+            "sha256": "60b9836e3f921febeafe26227b1232f605d9dfef3fc5ac4c41d7383260b9a29b",
+            "source_published_date": "2016-08-17"
+          }
+        ],
+        "evidence": [
+          {
+            "byte_count": 1027830,
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SSE_stock_list.html",
+            "sha256": "56ba02b369553d55b92686cd1b5d5b8e6570f454d19054cf5467176746064719"
+          },
+          {
+            "byte_count": 352211,
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SSE_STAR_stock_list.html",
+            "sha256": "ef501d54f0ac0ceb24d487f38d3b0a4e4ce4559cca0df691be4c6092fb6229e7"
+          }
+        ],
+        "listing_date": null,
+        "reason": "NOT_PRESENT_IN_TARGET_ACTIVE_EXCHANGE_CATALOGUE; available dated issuance or lifecycle evidence is attached without inferring legal termination",
+        "source_security_key": "SH.601206",
+        "target_trade_date": "2026-09-30"
+      },
+      {
+        "active_catalogue_absence_verified": true,
+        "board": null,
+        "board_for_code_used_as_lifecycle_truth": false,
+        "classification": "NOT_LISTED_AT_TARGET",
+        "dated_lifecycle_evidence": [],
+        "evidence": [
+          {
+            "byte_count": 1027830,
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SSE_stock_list.html",
+            "sha256": "56ba02b369553d55b92686cd1b5d5b8e6570f454d19054cf5467176746064719"
+          },
+          {
+            "byte_count": 352211,
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SSE_STAR_stock_list.html",
+            "sha256": "ef501d54f0ac0ceb24d487f38d3b0a4e4ce4559cca0df691be4c6092fb6229e7"
+          }
+        ],
+        "listing_date": null,
+        "reason": "NOT_PRESENT_IN_TARGET_ACTIVE_EXCHANGE_CATALOGUE; available dated issuance or lifecycle evidence is attached without inferring legal termination",
+        "source_security_key": "SH.603302",
+        "target_trade_date": "2026-09-30"
+      },
+      {
+        "active_catalogue_absence_verified": true,
+        "board": null,
+        "board_for_code_used_as_lifecycle_truth": false,
+        "classification": "NOT_LISTED_AT_TARGET",
+        "dated_lifecycle_evidence": [
+          {
+            "byte_count": 549909,
+            "capture_status": "PASS_CAPTURE",
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SH_603361_suspension.pdf",
+            "sha256": "6e55b486500f56e89718fbd6627e8563060b0437d43ee5c7ca5efb136dc49aa2",
+            "source_published_date": "2023-10-09"
+          }
+        ],
+        "evidence": [
+          {
+            "byte_count": 1027830,
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SSE_stock_list.html",
+            "sha256": "56ba02b369553d55b92686cd1b5d5b8e6570f454d19054cf5467176746064719"
+          },
+          {
+            "byte_count": 352211,
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SSE_STAR_stock_list.html",
+            "sha256": "ef501d54f0ac0ceb24d487f38d3b0a4e4ce4559cca0df691be4c6092fb6229e7"
+          }
+        ],
+        "listing_date": null,
+        "reason": "NOT_PRESENT_IN_TARGET_ACTIVE_EXCHANGE_CATALOGUE; available dated issuance or lifecycle evidence is attached without inferring legal termination",
+        "source_security_key": "SH.603361",
+        "target_trade_date": "2026-09-30"
+      },
+      {
+        "active_catalogue_absence_verified": true,
+        "board": null,
+        "board_for_code_used_as_lifecycle_truth": false,
+        "classification": "NOT_LISTED_AT_TARGET",
+        "dated_lifecycle_evidence": [],
+        "evidence": [
+          {
+            "byte_count": 1027830,
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SSE_stock_list.html",
+            "sha256": "56ba02b369553d55b92686cd1b5d5b8e6570f454d19054cf5467176746064719"
+          },
+          {
+            "byte_count": 352211,
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SSE_STAR_stock_list.html",
+            "sha256": "ef501d54f0ac0ceb24d487f38d3b0a4e4ce4559cca0df691be4c6092fb6229e7"
+          }
+        ],
+        "listing_date": null,
+        "reason": "NOT_PRESENT_IN_TARGET_ACTIVE_EXCHANGE_CATALOGUE; available dated issuance or lifecycle evidence is attached without inferring legal termination",
+        "source_security_key": "SH.688688",
+        "target_trade_date": "2026-09-30"
+      },
+      {
+        "active_catalogue_absence_verified": true,
+        "board": null,
+        "board_for_code_used_as_lifecycle_truth": false,
+        "classification": "NOT_LISTED_AT_TARGET",
+        "dated_lifecycle_evidence": [],
+        "evidence": [
+          {
+            "byte_count": 15989,
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_001235_exchange_query.html",
+            "sha256": "f5d3b831f1e4488631954ef2abdd35964690ef193cf68bdc59a907872d3aff22"
+          }
+        ],
+        "listing_date": null,
+        "reason": "NOT_PRESENT_IN_TARGET_ACTIVE_EXCHANGE_CATALOGUE; available dated issuance or lifecycle evidence is attached without inferring legal termination",
+        "source_security_key": "SZ.001235",
+        "target_trade_date": "2026-09-30"
+      },
+      {
+        "board": "SZ_MAIN",
+        "board_for_code_used_as_lifecycle_truth": false,
+        "classification": "FORMAL_IN_SCOPE_A_STOCK",
+        "evidence": [
+          {
+            "byte_count": 16281,
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_001246_exchange_query.html",
+            "sha256": "9c3e88c36f212214e77aab8b34092894b18f6be1169e5e83643334e7bfc7fa7d"
+          },
+          {
+            "byte_count": 36281,
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_001246_listing.html",
+            "sha256": "1f7e39647a3c46041d8e1cb501e9814673b07b98ecc6f3ee4a119c6e1797dfaf"
+          }
+        ],
+        "listing_date": "2026-09-30",
+        "security_id": "SEC-9A2222852908DCC43E96059AFF5737DD",
+        "source_security_key": "SZ.001246",
+        "target_trade_date": "2026-09-30"
+      },
+      {
+        "active_catalogue_absence_verified": true,
+        "board": null,
+        "board_for_code_used_as_lifecycle_truth": false,
+        "classification": "NOT_LISTED_AT_TARGET",
+        "dated_lifecycle_evidence": [],
+        "evidence": [
+          {
+            "byte_count": 15989,
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_300728_exchange_query.html",
+            "sha256": "2de11340ba60827b5cf18ea2fd5bf541e34d5d2c55f85bf0960157ae0a3c5d14"
+          }
+        ],
+        "listing_date": null,
+        "reason": "NOT_PRESENT_IN_TARGET_ACTIVE_EXCHANGE_CATALOGUE; available dated issuance or lifecycle evidence is attached without inferring legal termination",
+        "source_security_key": "SZ.300728",
+        "target_trade_date": "2026-09-30"
+      },
+      {
+        "active_catalogue_absence_verified": true,
+        "board": null,
+        "board_for_code_used_as_lifecycle_truth": false,
+        "classification": "NOT_LISTED_AT_TARGET",
+        "dated_lifecycle_evidence": [
+          {
+            "byte_count": 6866256,
+            "capture_status": "PASS_CAPTURE",
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301569_issuance.pdf",
+            "sha256": "441f3c012a164baea04baa510431e2fdafefa8541b0e654c65ffcdf851bfd96a",
+            "source_published_date": "2026-09-24"
+          }
+        ],
+        "evidence": [
+          {
+            "byte_count": 15989,
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301569_exchange_query.html",
+            "sha256": "fb8add56d691281fad25aa532f6ca1c5cc42de8e987cf44294aeea21ac89f7d5"
+          }
+        ],
+        "listing_date": null,
+        "reason": "NOT_PRESENT_IN_TARGET_ACTIVE_EXCHANGE_CATALOGUE; available dated issuance or lifecycle evidence is attached without inferring legal termination",
+        "source_security_key": "SZ.301569",
+        "target_trade_date": "2026-09-30"
+      },
+      {
+        "active_catalogue_absence_verified": true,
+        "board": null,
+        "board_for_code_used_as_lifecycle_truth": false,
+        "classification": "NOT_LISTED_AT_TARGET",
+        "dated_lifecycle_evidence": [
+          {
+            "byte_count": 78563,
+            "capture_status": "CAPTURED_EXPECTED_PHRASE_MISSING",
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301660_issuance.html",
+            "sha256": "10820f31b6bcc1d5042763d45757aa0d284b9dc5bd19a2253b21344c0ce7c3ca",
+            "source_published_date": "2026-09-23"
+          }
+        ],
+        "evidence": [
+          {
+            "byte_count": 15989,
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301660_exchange_query.html",
+            "sha256": "d5001563e778cb013158d1d467adbdbe7226bdf98cff00883f2b2673ffaf6f18"
+          }
+        ],
+        "listing_date": null,
+        "reason": "NOT_PRESENT_IN_TARGET_ACTIVE_EXCHANGE_CATALOGUE; available dated issuance or lifecycle evidence is attached without inferring legal termination",
+        "source_security_key": "SZ.301660",
+        "target_trade_date": "2026-09-30"
+      },
+      {
+        "board": "CHINEXT",
+        "board_for_code_used_as_lifecycle_truth": false,
+        "classification": "FORMAL_IN_SCOPE_A_STOCK",
+        "evidence": [
+          {
+            "byte_count": 16280,
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301716_exchange_query.html",
+            "sha256": "38d05965e5f224e1cbd299324670affe7308e7ee70ac640518003603fffa9b97"
+          },
+          {
+            "byte_count": 12792,
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301716_listing.html",
+            "sha256": "4ab8ce7a6a948ab48c6ef190641078a77914977b1b46adfbf19f0ac608831c62"
+          }
+        ],
+        "listing_date": "2026-09-29",
+        "security_id": "SEC-C7353CA6F8DE4D5EA38AC49E4AAC9CF3",
+        "source_security_key": "SZ.301716",
+        "target_trade_date": "2026-09-30"
+      },
+      {
+        "active_catalogue_absence_verified": true,
+        "board": null,
+        "board_for_code_used_as_lifecycle_truth": false,
+        "classification": "NOT_LISTED_AT_TARGET",
+        "dated_lifecycle_evidence": [
+          {
+            "byte_count": 48336,
+            "capture_status": "PASS_CAPTURE",
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301718_issuance.html",
+            "sha256": "0f7f448b907118f232a0001244f2d4a3960b3020c98aa7758eaeb8d8c7968f23",
+            "source_published_date": "2026-09-23"
+          }
+        ],
+        "evidence": [
+          {
+            "byte_count": 15989,
+            "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301718_exchange_query.html",
+            "sha256": "987965b23ae099ed4e096603bfbfcac7684ab32fb9c45d2ca526b25f06a84013"
+          }
+        ],
+        "listing_date": null,
+        "reason": "NOT_PRESENT_IN_TARGET_ACTIVE_EXCHANGE_CATALOGUE; available dated issuance or lifecycle evidence is attached without inferring legal termination",
+        "source_security_key": "SZ.301718",
+        "target_trade_date": "2026-09-30"
+      }
+    ]
+  },
+  "source_capture": {
+    "bytes": 20063,
+    "path": "reports/v4_08/V4_08_R3_OFFICIAL_LIFECYCLE_SOURCE_CAPTURE.json",
+    "sha256": "8a036342ab8f616530851c715d0f26eeb3bb8b02c38ff3819b41e648b73431ff"
+  },
+  "status": "PASS_NO_BUSINESS_IMPACT_FORMALIZATION"
+}

@@ -1,0 +1,41 @@
+{
+  "A13_EXTERNAL_ACCEPTANCE_FORMALIZATION": "PASS",
+  "V4_08_ACCEPTED_HEAD": "KEEP",
+  "allowed_candidate_status": "READY_FOR_EXTERNAL_REAUDIT",
+  "contract_id": "WP-A13-EXTERNAL-ACCEPTANCE-FORMALIZATION",
+  "evidence_bindings": [
+    {
+      "bytes": 38030,
+      "path": "reports/audits/A13_FORMALIZATION_REAL_HEAD_RUNTIME_READBACK_R1.json",
+      "sha256": "c2039970e8916ec7030f335d737418bff0a684c04255b32b3d542bcf28bccc4c"
+    },
+    {
+      "bytes": 35103,
+      "path": "reports/audits/A13_FORMALIZATION_COUNTERFACTUAL_REVALIDATION_R1.json",
+      "sha256": "d9602a0fbbf293dbb68fbe59032952bebc8d8d478371dbbf047133befb8aad39"
+    },
+    {
+      "bytes": 114558,
+      "path": "reports/audits/A13_FORMALIZATION_RAW_AND_BUSINESS_IMMUTABILITY_R1.json",
+      "sha256": "b4b985e709f905fd64bf6367b4a88d05492e33d2efda44a8dd1cfb1b468ebb8b"
+    }
+  ],
+  "external_authority": {
+    "audited_head": "d85f815097a09ca2dceda00d0e29d6ff4fe331d4",
+    "bytes": 10868,
+    "document_role": "INDEPENDENT_EXTERNAL_ACCEPTANCE",
+    "path": "docs/evidence/source_authority/V4_A10_A12_R3_AND_A13_INDEPENDENT_EXTERNAL_ACCEPTANCE_20261001.md",
+    "sha256": "a23789d9de4eb48831125cbb9165964a8dacacb33e9dd30dba0f3bfced681d3a"
+  },
+  "focus_permission": false,
+  "gates": {
+    "CLEAN_REGRESSION": "PENDING_CLEAN_DETACHED",
+    "EXACT_EXTERNAL_AUDIT": "PASS_ENGINEERING",
+    "FULL_COUNTERFACTUAL_REVALIDATION": "PASS_ENGINEERING",
+    "RAW_AND_BUSINESS_IMMUTABILITY": "PASS_ENGINEERING",
+    "REAL_ACCEPTED_HEAD_READBACK": "PASS_ENGINEERING"
+  },
+  "next_stage": "Independent external reaudit of formalization; no business head movement",
+  "production_permission": false,
+  "shadow_permission": false
+}

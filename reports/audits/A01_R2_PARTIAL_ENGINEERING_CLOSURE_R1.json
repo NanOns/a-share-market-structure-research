@@ -1,0 +1,38 @@
+{
+  "accepted_heads_unchanged": true,
+  "all_nine_final_execution_performed": false,
+  "blocker": {
+    "bytes": 1322,
+    "path": "reports/audits/A01_R2_DEPENDENCY_BLOCKER_R1.json",
+    "sha256": "4c5911c5df3a5554c425b0dafef9167dbbd5c16d889421b32912bee3d3a54197"
+  },
+  "clean_regression": {
+    "bytes": 10960,
+    "path": "reports/audits/A01_R2_CLEAN_CHECKOUT_R1.json",
+    "sha256": "6d131abe502b418441a327aa4ba2596279b0e8067cf2102ce8d24dd3d3379b58"
+  },
+  "external_acceptance": null,
+  "focus_cutover_permission": false,
+  "independent_source_checks": {
+    "bytes": 5695,
+    "path": "reports/audits/A01_R2_INDEPENDENT_CAPTURE_AND_SOURCE_PREFLIGHT_R1.json",
+    "sha256": "2ab41ffc93bca14a100df8dbcf4f0cabc7ed48a43cada78379763ccc6277b4bc"
+  },
+  "next_stage": "Independent A12 external owner acceptance before final all-nine runtime integration and real candidate",
+  "normalization_storage_repair": {
+    "bytes": 939,
+    "path": "reports/audits/A01_R2_NORMALIZATION_PATH_COLLISION_REPAIR_R1.json",
+    "sha256": "38e4e80bb1e11600d0b706a8ac13f67cd04380a25abdae25a109662ef2fde986"
+  },
+  "production_permission": false,
+  "runtime_capture": {
+    "bytes": 1652,
+    "path": "reports/audits/A01_R2_NORMALIZED_RUNTIME_AND_TARGET_CAPTURE_R2.json",
+    "sha256": "b85b565636c7005797ff45e6f4f259aa532fedaee5d9a70ed819c63efe1a25db"
+  },
+  "shadow_production_permission": false,
+  "stage_completed": false,
+  "status": "INDEPENDENT_R2_RUNTIME_CAPTURE_AND_PREFLIGHT_ENGINEERING_PASS_FINAL_ALL_NINE_BLOCKED",
+  "tested_commit": "517f0da553c3abb002e9617753910195042d94d4",
+  "work_package": "WP-A01-DM01"
+}

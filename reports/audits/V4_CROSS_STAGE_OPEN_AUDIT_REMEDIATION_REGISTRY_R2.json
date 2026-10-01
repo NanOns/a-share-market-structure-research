@@ -46,23 +46,34 @@
       ],
       "does_not_block_engineering_stage": true,
       "engineering_can_proceed_immediately": true,
-      "evidence": [],
+      "evidence": [
+        {
+          "bytes": 1605,
+          "path": "reports/audits/A01_R2_PARTIAL_ENGINEERING_CLOSURE_R1.json",
+          "sha256": "e00266e9e68bc651f78b76a1d15a0e283032de7ac788aad3a6471d01e1d0f9d8"
+        },
+        {
+          "bytes": 1322,
+          "path": "reports/audits/A01_R2_DEPENDENCY_BLOCKER_R1.json",
+          "sha256": "4c5911c5df3a5554c425b0dafef9167dbbd5c16d889421b32912bee3d3a54197"
+        }
+      ],
       "external_acceptance": null,
       "formal_consumer_authorization": false,
       "history_reconstruction_prohibited": true,
-      "implementation_status": "KEEP_PASS_ENGINEERING_SCOPE_REAL_SOURCE_R2_REPAIR_REQUIRED",
+      "implementation_status": "INDEPENDENT_R2_RUNTIME_CAPTURE_AND_PREFLIGHT_ENGINEERING_PASS_FINAL_ALL_NINE_BLOCKED",
       "latest_task": {
         "bytes": 6453,
         "path": "docs/evidence/source_authority/DM01_A01_R2_BAOSTOCK_CATCHUP_SUPPLEMENTAL_GATE_REPAIR_TASK_20261001.md",
         "sha256": "343b904b3b204c2aa3b931e976c13e6f90c5eba6cf125591b9e985db293ead95"
       },
-      "next_step": "Export nine target-date adapters around pinned accepted domain runtimes; target-only staging, parent/source/calendar binding, independent postcheck and atomic rollback. Real next completed-session candidate must pass independent external acceptance before Data Head promotion.",
+      "next_step": "Independent A12 external owner acceptance before final all-nine runtime integration and real candidate",
       "owner_module": "src/workbench_analysis/dm01_accepted_builder_registry.py",
       "priority": "P0",
       "production_gate": true,
       "requires_real_observation_accumulation": false,
       "status": "OPEN",
-      "status_path": "reports/audits/work_packages/WP-A01-DM01/STATUS_R2.json",
+      "status_path": "reports/audits/work_packages/WP-A01-DM01/STATUS_R2_RUNTIME_CAPTURE_ENGINEERING_PASS_FINAL_BLOCKED.json",
       "task": {
         "byte_count": 1164,
         "path": "docs/evidence/cross_stage/WP-A01-DM01/TASK_R1.md",

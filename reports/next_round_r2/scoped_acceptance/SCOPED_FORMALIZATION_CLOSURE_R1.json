@@ -1,0 +1,128 @@
+{
+  "accepted_history_only_reader": {
+    "bytes": 1534,
+    "path": "config/historical_publication_reader_accepted_history_only_r1.json",
+    "sha256": "c49d5b2b3eafb308c54ef5b68cc527a30c7b053b1e5061c464be4b25e50d411f"
+  },
+  "active_registry_r3_replaced": false,
+  "batch_entry": {
+    "bytes": 448828,
+    "path": "reports/next_round_r2/BATCH_STAGE_ENTRY_R1.json",
+    "sha256": "f2464de6eeddfd187707c4a496c8ed32ad1ede58582264c5b8bd69a019c10879"
+  },
+  "clean_joint_validation": "PARENT_BATCH_OWNS_FRESH_CHECKOUT_JOINT_AND_NO_SYMBOL; TARGETED_TESTS_DO_NOT_ESTABLISH_RELEASE_READINESS",
+  "completed_dispositions": {
+    "A03": "A03_SCOPED_ACCEPTANCE_FORMALIZED",
+    "A06": "A06_FAIL_CLOSED_ACCEPTANCE_FORMALIZED",
+    "A07": "A07_LINEAGE_ACCEPTANCE_FORMALIZED",
+    "OWNER": "OWNER_BOOTSTRAP_SCOPED_ACCEPTANCE_FORMALIZED",
+    "READER": "HISTORICAL_READER_DI_ACCEPTANCE_FORMALIZED"
+  },
+  "contract_id": "PARALLEL_SCOPED_ACCEPTANCE_FORMALIZATION_CLOSURE_R1",
+  "engineering_future_observation_blocker": false,
+  "external_authority": {
+    "audited_head": "66ef2e342dd339cc9795c2d1fd774b8edec4c345",
+    "authority_kind": "INDEPENDENT_EXTERNAL_ACCEPTANCE",
+    "document": {
+      "bytes": 8244,
+      "path": "docs/evidence/next_round_r2/V4_NEXT_ROUND_10_CARD_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R1_20261001.md",
+      "sha256": "7d6c8d3faf64a948d206a318d122d41baf757613d0beb88e6d5bd54fcff96bb3"
+    }
+  },
+  "head_action": {
+    "data": "KEEP",
+    "stage": "KEEP",
+    "v4_06": "KEEP",
+    "v4_09": "KEEP",
+    "v4_10": "KEEP"
+  },
+  "independent_readback": {
+    "bytes": 15601,
+    "path": "reports/next_round_r2/scoped_acceptance/INDEPENDENT_READBACK_R2.json",
+    "sha256": "d9a1092d16dc91556a58d510cf3bf19ffde455575d6c5a03e76118ac48e98a68"
+  },
+  "migration_required": false,
+  "new_formal_consumer_enabled": false,
+  "next_stage": "UNIFIED_BATCH_COMMIT_PUSH_AND_STOP; INDEPENDENT_EXTERNAL_REAUDIT_OF_NEW_FORMALIZATION",
+  "owner_metadata": {
+    "bytes": 24174,
+    "path": "data/v4/SCOPED_ACCEPTED_OWNER_BOOTSTRAP_R1.json",
+    "sha256": "cddddba2e60abb9121f827c2ef2fc1cf3a240e8d10e2cd7b1b5dc51aab3a18ee"
+  },
+  "permissions": {
+    "focus": false,
+    "formal_consumer_cutover": false,
+    "global_mandatory_adoption": false,
+    "production": false,
+    "shadow": false
+  },
+  "production_authorization": false,
+  "records": {
+    "A03": {
+      "bytes": 8074,
+      "path": "reports/next_round_r2/scoped_acceptance/A03_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+      "sha256": "ab8b504a46c032767e7d68032472b225898239622e93bae1da3f514903ae826a"
+    },
+    "A06": {
+      "bytes": 7892,
+      "path": "reports/next_round_r2/scoped_acceptance/A06_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+      "sha256": "c029fb1d769e080ae5d753fc11b043f1c0ff5cf40b86c31f9af830647035a12b"
+    },
+    "A07": {
+      "bytes": 7943,
+      "path": "reports/next_round_r2/scoped_acceptance/A07_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+      "sha256": "6bc18870beb8460bb5ce7f078c2a39e8d289614f8aef5d9248cdff254e475a55"
+    },
+    "OWNER": {
+      "bytes": 7533,
+      "path": "reports/next_round_r2/scoped_acceptance/OWNER_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+      "sha256": "5930e82aff6cdc58cfac7d66bb3da8e3b7223a4d94755fb6c08c5ded19db37ab"
+    },
+    "READER": {
+      "bytes": 8015,
+      "path": "reports/next_round_r2/scoped_acceptance/READER_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+      "sha256": "a9b57ce16609bc86bf40b5e9fb8542802a57f1f777b636029129479f4f931123"
+    }
+  },
+  "runtime_bindings": [
+    {
+      "bytes": 7378,
+      "path": "src/workbench_analysis/parallel_scoped_acceptance_r1.py",
+      "sha256": "f41aa07670b6a3c5d8012aab49f9b5dd402e9873d2f01e29bff5eb58ff2cd99a"
+    },
+    {
+      "bytes": 11377,
+      "path": "scripts/formalize_parallel_scoped_acceptance_r1.py",
+      "sha256": "a3c5f39912412e790d892d99d9dbcb91be1959cd2f2168ac534c5c4a6418c79f"
+    },
+    {
+      "bytes": 7197,
+      "path": "tests/v4_parallel_scoped_formalization_r1/test_scoped_acceptance.py",
+      "sha256": "11526b0b4c84d308d90adfa638ad34fe19ffdfa14dba1e72d05bbe087453cf82"
+    }
+  ],
+  "scoped_current_states": {
+    "A03": "ACCUMULATION_CONTINUES",
+    "A06": "ACCEPTED_SCOPED",
+    "A07": "PERMANENT_CAPABILITY_BLOCK",
+    "OWNER": "INACTIVE_ACCEPTED_METADATA",
+    "READER": "ACCEPTED_SCOPED"
+  },
+  "stage_contract": {
+    "bytes": 2518,
+    "path": "docs/evidence/next_round_r2/V4_PARALLEL_SCOPED_ACCEPTANCE_FORMALIZATION_A03_A06_A07_OWNER_READER_TASK_R1_20261001.md",
+    "sha256": "126bc952586a886ec57b3fd6ab439371cb2a812140d63bd204bdf7b414810ccd"
+  },
+  "status": "PASS_SCOPED_FORMALIZATION",
+  "targeted_tests": {
+    "errors": 0,
+    "failures": 0,
+    "receipt": {
+      "bytes": 25104,
+      "path": "reports/next_round_r2/scoped_acceptance/TARGETED_TESTS_R2.xml",
+      "sha256": "f0e9e76af0f181aa24551403fbb829298dcd927c75b219388558679bb64fc99b"
+    },
+    "skipped": 0,
+    "tests": 164
+  }
+}

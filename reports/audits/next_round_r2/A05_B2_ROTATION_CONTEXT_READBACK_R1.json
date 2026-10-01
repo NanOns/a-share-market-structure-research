@@ -1,0 +1,29 @@
+{
+  "accepted_A05_snapshot_target": "2026-09-24",
+  "accepted_artifacts": {
+    "B0": {
+      "byte_count": 22216,
+      "path": "data/v4/artifact_store/v4_08/V4_08_R5_B0_20260930_bb8d0c0929f531e8cddf.jsonl.gz",
+      "sha256": "3244b70c9a81912ebff6bf0a93639059649d7dc4673d85c918caa865263b01c0"
+    },
+    "ROTATION": {
+      "byte_count": 1948501,
+      "path": "data/v4/artifact_store/v4_08/V4_08_R5_ROTATION_20260930_bb8d0c0929f531e8cddf.jsonl.gz",
+      "sha256": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667"
+    },
+    "SECTOR_NATIVE": {
+      "byte_count": 2108127,
+      "path": "data/v4/artifact_store/v4_08/V4_08_R5_SECTOR_NATIVE_20260930_bb8d0c0929f531e8cddf.jsonl.gz",
+      "sha256": "707a21982a8b26b688e3416388c73e64bfbb4d7bf2e04b7bc9df7297c979f53f"
+    }
+  },
+  "causal_proof": "Original frozen B0/rotation input consumer graph has no B2 qualification dependency; dated A05 snapshot cannot be relabelled. Candidate-only B2 replay never overwrites existing Context/Rotation artifacts.",
+  "context_business_changed": 0,
+  "contract_id": "A05_B2_ROTATION_CONTEXT_NON_ADOPTION_V1",
+  "old_accepted_target": "2026-09-30",
+  "reason": "A05_CURRENT_SNAPSHOT_TARGET_NOT_ACCEPTED",
+  "rotation_business_changed": 0,
+  "rotation_rows": 378,
+  "same_session_current_snapshot_injection": "REJECTED",
+  "status": "PASS"
+}

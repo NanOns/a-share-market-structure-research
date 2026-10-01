@@ -1,0 +1,48 @@
+{
+  "archives": [
+    {
+      "original_binding": {
+        "bytes": 11102,
+        "path": "src/v4/confirmation.py",
+        "sha256": "e4f6e100289ef064bf25babb1643769011b2b63d302492d994b758a2ee936ffa"
+      },
+      "original_bytes_archive": {
+        "bytes": 11102,
+        "path": "data/v4/source_evidence/next_round_r2_baseline/src/v4/confirmation.py",
+        "sha256": "e4f6e100289ef064bf25babb1643769011b2b63d302492d994b758a2ee936ffa"
+      }
+    },
+    {
+      "original_binding": {
+        "bytes": 9783,
+        "path": "tests/v4_11/test_confirmation.py",
+        "sha256": "a6e240d7b7e74ada0315ce410dcb4a084851432ffdfa592f16ccdeb7f0735dac"
+      },
+      "original_bytes_archive": {
+        "bytes": 9783,
+        "path": "data/v4/source_evidence/next_round_r2_baseline/tests/v4_11/test_confirmation.py",
+        "sha256": "a6e240d7b7e74ada0315ce410dcb4a084851432ffdfa592f16ccdeb7f0735dac"
+      }
+    },
+    {
+      "original_binding": {
+        "bytes": 4580,
+        "path": "tests/v4_11/test_persistence.py",
+        "sha256": "9878bbf999d0056358fd728ea8c7ad9c26935684971a32fed00fd58b29592b9e"
+      },
+      "original_bytes_archive": {
+        "bytes": 4580,
+        "path": "data/v4/source_evidence/next_round_r2_baseline/tests/v4_11/test_persistence.py",
+        "sha256": "9878bbf999d0056358fd728ea8c7ad9c26935684971a32fed00fd58b29592b9e"
+      }
+    }
+  ],
+  "baseline_commit": "66ef2e342dd339cc9795c2d1fd774b8edec4c345",
+  "interpretation": "R1 historical runtime and vectors resolve to baseline original byte archives; current runtime is independently bound by R2.",
+  "old_r1_evidence_and_contracts_preserved": true,
+  "unchanged_migration_026": {
+    "bytes": 8181,
+    "path": "src/workbench_db/migrations/v4_postgres/026_confirmation_events_candidate_r1.sql",
+    "sha256": "5c2499ed7b606fdb72cc52db0e5af3bd67ed672480ee37840297a448323ea8e4"
+  }
+}

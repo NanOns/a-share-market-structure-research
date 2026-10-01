@@ -1,0 +1,71 @@
+{
+  "AS_RECORDED": false,
+  "accepted_AMR20_input_digest": null,
+  "accepted_calendar": {
+    "bytes": 10739,
+    "path": "data/v4/source_evidence/dm01_a01_r3/chain_inputs_r1/calendar_union_2e0938120e3b371aa9c84422c06b4c14de0f8894cc8f3caa9dd9c61299239e74.json",
+    "sha256": "629242b5074002dd8e889fdca5da9e1c05f9ae35357662d5c76a554117fc17f5"
+  },
+  "accepted_source_chain": {
+    "bytes": 182128,
+    "path": "data/v4/DM01_A01_R3_ACCEPTED_CHAIN_20260924_20260930_R1.json",
+    "sha256": "4d66105d7a5e759d8273a00a64d2ea80e1851090eeedde0c64c9c0d455d7e881"
+  },
+  "actual_source_input_digest": "8406bee7d60435e7d2532df7ab7fea81149f100883f243236ee68877888f71b1",
+  "contract_id": "STOCK_AMR20_TARGET_SOURCE_AVAILABILITY_R2",
+  "derived_target_AMR20_accepted": false,
+  "field": "amr20_mean_prior",
+  "native_accepted_head": {
+    "bytes": 1568,
+    "path": "data/v4/V4_03_ACCEPTED_HEAD.json",
+    "sha256": "57013bc0f7dcd966c94fb985e5a0d2cc8c77669aebee15cb02a6acd5f0923147"
+  },
+  "native_accepted_head_target": "2026-09-24",
+  "native_amount_ratio20_prior_window_contract": {
+    "bytes": 238576,
+    "path": "config/v4_03_algorithm_contracts_v1.json",
+    "sha256": "b36d3058ae9e557642389ef264f8451076a0b9876ec423299d64d1a890e054d2"
+  },
+  "native_family": "STOCK_AMOUNT_VOLUME_STATE_V1",
+  "native_head_does_not_accept_20260930_AMR20": true,
+  "native_original_bytes_representation": {
+    "git_representation": {
+      "bytes": 1568,
+      "path": "data/v4/V4_03_ACCEPTED_HEAD.json",
+      "sha256": "57013bc0f7dcd966c94fb985e5a0d2cc8c77669aebee15cb02a6acd5f0923147"
+    },
+    "original_binding": {
+      "bytes": 1607,
+      "path": "data/v4/V4_03_ACCEPTED_HEAD.json",
+      "sha256": "734bd27a5d53b2f18e3d62aa96ac63c91ccc6d9f848e942bc1efc410c88d4370"
+    },
+    "original_bytes_archive": {
+      "bytes": 1607,
+      "path": "data/v4/source_evidence/next_round_r1_original_bytes/V4_03_ACCEPTED_HEAD.json",
+      "sha256": "734bd27a5d53b2f18e3d62aa96ac63c91ccc6d9f848e942bc1efc410c88d4370"
+    },
+    "verification": "EXACT_CRLF_TO_LF_ONLY_WITH_ORIGINAL_BYTES_RETAINED"
+  },
+  "numerator_field": "RAW_DAILY.amount",
+  "numerator_unit": "raw_CNY",
+  "output_unit": "dimensionless_ratio",
+  "prior_window_end": "2026-09-29",
+  "prior_window_master_sessions": 20,
+  "producer": "TODAY_RESEARCH_FACTOR_V3_3_CANDIDATE_01",
+  "raw_source_accepted": true,
+  "reason": "STOCK_AMR20_TARGET_ACCEPTED_PRODUCER_PUBLICATION_UNAVAILABLE",
+  "source_formula": {
+    "bytes": 14709,
+    "path": "src/workbench_analysis/today_research_factors_v3_3.py",
+    "sha256": "1f466ff5db7251d4e99221046602b9550fa60012e50acc7bac74efd41b35dbb5"
+  },
+  "target_AMR20_accepted_publication": null,
+  "target_accepted_raw_source": {
+    "bytes": 4710499,
+    "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/RAW_DAILY/artifact.json",
+    "sha256": "8406bee7d60435e7d2532df7ab7fea81149f100883f243236ee68877888f71b1"
+  },
+  "target_in_denominator": false,
+  "target_trade_date": "2026-09-30",
+  "wire_unit": "fraction"
+}

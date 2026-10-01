@@ -1,0 +1,190 @@
+{
+  "active_golden": {
+    "AMR20_KNOWN_FALSE": "PASS",
+    "AMR20_KNOWN_TRUE": "PASS",
+    "AMR20_UNKNOWN": "PASS",
+    "SECTOR_AMOUNT_A_STATUS_IRRELEVANT": "PASS"
+  },
+  "external_acceptance": false,
+  "factor_source": {
+    "bytes": 14709,
+    "path": "src/workbench_analysis/today_research_factors_v3_3.py",
+    "sha256": "1f466ff5db7251d4e99221046602b9550fa60012e50acc7bac74efd41b35dbb5"
+  },
+  "missing_window_propagates_UNKNOWN": true,
+  "prior_window_excludes_target": true,
+  "probes": [
+    {
+      "actual": true,
+      "branch": "launch",
+      "expected": true,
+      "probe": "positive"
+    },
+    {
+      "actual": false,
+      "branch": "launch",
+      "expected": false,
+      "probe": "negative"
+    },
+    {
+      "actual": true,
+      "branch": "launch",
+      "expected": true,
+      "probe": "boundary"
+    },
+    {
+      "actual": null,
+      "branch": "launch",
+      "expected": null,
+      "probe": "UNKNOWN"
+    },
+    {
+      "actual": true,
+      "branch": "pullback",
+      "expected": true,
+      "probe": "positive"
+    },
+    {
+      "actual": false,
+      "branch": "pullback",
+      "expected": false,
+      "probe": "negative"
+    },
+    {
+      "actual": true,
+      "branch": "pullback",
+      "expected": true,
+      "probe": "boundary"
+    },
+    {
+      "actual": null,
+      "branch": "pullback",
+      "expected": null,
+      "probe": "UNKNOWN"
+    },
+    {
+      "actual": true,
+      "branch": "recovery_turn",
+      "expected": true,
+      "probe": "positive"
+    },
+    {
+      "actual": false,
+      "branch": "recovery_turn",
+      "expected": false,
+      "probe": "negative"
+    },
+    {
+      "actual": true,
+      "branch": "recovery_turn",
+      "expected": true,
+      "probe": "boundary"
+    },
+    {
+      "actual": null,
+      "branch": "recovery_turn",
+      "expected": null,
+      "probe": "UNKNOWN"
+    },
+    {
+      "actual": true,
+      "branch": "trend_continue",
+      "expected": true,
+      "probe": "positive"
+    },
+    {
+      "actual": false,
+      "branch": "trend_continue",
+      "expected": false,
+      "probe": "negative"
+    },
+    {
+      "actual": true,
+      "branch": "trend_continue",
+      "expected": true,
+      "probe": "boundary"
+    },
+    {
+      "actual": null,
+      "branch": "trend_continue",
+      "expected": null,
+      "probe": "UNKNOWN"
+    },
+    {
+      "branch": "launch",
+      "expected": true,
+      "probe": "STOCK_AMR20",
+      "value": 1.2
+    },
+    {
+      "branch": "launch",
+      "expected": false,
+      "probe": "STOCK_AMR20",
+      "value": 1.1999
+    },
+    {
+      "branch": "launch",
+      "expected": null,
+      "probe": "STOCK_AMR20",
+      "value": null
+    },
+    {
+      "branch": "recovery_turn",
+      "expected": true,
+      "probe": "STOCK_AMR20",
+      "value": 1.05
+    },
+    {
+      "branch": "recovery_turn",
+      "expected": false,
+      "probe": "STOCK_AMR20",
+      "value": 1.0499
+    },
+    {
+      "branch": "recovery_turn",
+      "expected": null,
+      "probe": "STOCK_AMR20",
+      "value": null
+    },
+    {
+      "branch": "trend_continue",
+      "expected": true,
+      "probe": "STOCK_AMR20",
+      "value": 0.8
+    },
+    {
+      "branch": "trend_continue",
+      "expected": true,
+      "probe": "STOCK_AMR20",
+      "value": 2.5
+    },
+    {
+      "branch": "trend_continue",
+      "expected": false,
+      "probe": "STOCK_AMR20",
+      "value": 0.7999
+    },
+    {
+      "branch": "trend_continue",
+      "expected": false,
+      "probe": "STOCK_AMR20",
+      "value": 2.5001
+    },
+    {
+      "branch": "trend_continue",
+      "expected": null,
+      "probe": "STOCK_AMR20",
+      "value": null
+    }
+  ],
+  "retired_golden": "AMOUNT_A_DISABLED",
+  "sector_amount_A_status_irrelevant": true,
+  "source": {
+    "bytes": 7011,
+    "path": "src/workbench_analysis/today_research_scanner_v3_3.py",
+    "sha256": "0cf65de4f926f43cce5fcac60f16e2e047b4c5f0f4cc497e1f832f6e3bdc3379"
+  },
+  "status": "PASS_ENGINEERING",
+  "stock_formula_ratio": 2.5,
+  "threshold_changes": false
+}

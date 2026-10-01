@@ -76,11 +76,12 @@ def test_required_fact_unknown(positive):
     assert row['confirmation_status']==EXPECTED['REQUIRED_FACT_UNKNOWN'] and not row['matched_scenarios']
     assert row['raw_predicates']['STRONG_PULLBACK']['NORMAL_UNIVERSE'] is None
 
-def test_amount_disabled_and_multiscenario_dedup(positive):
+def test_stock_amr20_and_multiscenario_dedup(positive):
     output=detect_confirmation(positive);r=output['rows'][0]
-    assert len(output['rows'])==1 and r['matched_scenarios']==['STRONG_PULLBACK']
+    assert len(output['rows'])==1 and r['matched_scenarios']==['LAUNCH_CONFIRM','STRONG_PULLBACK','RECOVERY_TURN']
     assert r['diagnostic_legacy_matches']==['LAUNCH_CONFIRM','STRONG_PULLBACK','RECOVERY_TURN']
-    assert all(e['status']==EXPECTED['AMOUNT_A_DISABLED'] for e in r['scenario_evidence'] if e['scenario'] in AMOUNT_BRANCHES)
+    assert all(e['status']=='TRUE' for e in r['scenario_evidence'] if e['scenario']!='TREND_CONTINUE')
+    assert 'amount_A_formal_branch' not in r
     assert not {'maturity','validity','tracking'}&set(r)
     d2=engineering_d2_publication([from_confirmation(r)])
     assert d2['rows'][0]['maturity']=='CONFIRMED'
@@ -102,7 +103,7 @@ def test_provenance_rejected(positive,mutation,message):
     if mutation=='feedback':f['time_role']='FINAL_STATE'
     if mutation=='role':f['time_role']='PRIOR_SESSION_WINDOW'
     if mutation=='unit':f['unit']='percent'
-    if mutation=='prior':x['rows'][0]['facts']['amr20_mean_prior']['trade_date']='2026-09-30'
+    if mutation=='prior':x['rows'][0]['facts']['prior5_below_ma20_count']['trade_date']='2026-09-30'
     if mutation=='hash':x['source_bindings'][0]['sha256']='a'*64;x['source_publication_ids'][0]='a'*64
     if mutation=='head':x['accepted_data_head']['sha256']='a'*64
     with pytest.raises(ConfirmationError,match=message):detect_confirmation(seal(x))

@@ -1,0 +1,63 @@
+{
+  "active_expected": {
+    "AMR20_KNOWN_FALSE": "FALSE",
+    "AMR20_KNOWN_TRUE": "TRUE",
+    "AMR20_UNKNOWN": "UNKNOWN",
+    "CONFIRMATION_WEAKENED": "CONFIRMATION_WEAKENED",
+    "FUTURE_TIMESTAMP_REJECTED": "FUTURE_TIMESTAMP_REJECTED",
+    "HARD_INVALIDATION_WINS": "CONFIRMATION_INVALIDATED",
+    "MULTI_SCENARIO_DEDUP": "ONE_CANONICAL_ROW_ALL_LEGACY_MATCHES_RETAINED",
+    "NONE_TO_CONFIRMED": "NEW_CONFIRMED",
+    "NO_SYMBOL": "PASS",
+    "PARAMETER_MISMATCH": "PARAMETER_MISMATCH",
+    "PERSISTENT_CONFIRMED": "PERSISTENT_CONFIRMED",
+    "PREWATCH_TO_CONFIRMED": "NEW_CONFIRMED",
+    "PRODUCER_MISMATCH": "PRODUCER_MISMATCH",
+    "PUBLICATION_MISMATCH": "PUBLICATION_MISMATCH",
+    "RECONFIRMED": "RECONFIRMED",
+    "REQUIRED_FACT_UNKNOWN": "UNKNOWN",
+    "SAME_DAY_FEEDBACK_REJECTED": "SAME_DAY_FEEDBACK_REJECTED",
+    "SAME_DAY_R1_R2_R3_NEW_CONFIRMED": "NEW_CONFIRMED",
+    "SCENARIO_CHANGED_NOT_UPGRADED": "SCENARIO_CHANGED",
+    "SCENARIO_UPGRADED": "SCENARIO_UPGRADED",
+    "SECTOR_AMOUNT_A_STATUS_IRRELEVANT_TO_STOCK_CONFIRMATION": "UNCHANGED",
+    "SEED_TO_CONFIRMED": "NEW_CONFIRMED"
+  },
+  "active_tests": [
+    {
+      "bytes": 9840,
+      "path": "tests/v4_11/test_confirmation.py",
+      "sha256": "2db7c3b67f0a03e65a1c31fc890a8b7000747e48b79776dae86c21be5b67df1c"
+    },
+    {
+      "bytes": 1288,
+      "path": "tests/v4_11/test_semantic_r2.py",
+      "sha256": "e331edee02e6a5e19f7b0229d0d5ffbaf76c20a3e729b017fb365f79163f0872"
+    },
+    {
+      "bytes": 5388,
+      "path": "tests/v4_11/test_persistence.py",
+      "sha256": "c659f7983adc43ddd202d941e2152a2a874e813bf2544306b17be37901130798"
+    },
+    {
+      "bytes": 2890,
+      "path": "tests/v4_a04_r3/test_stock_confirmation_independence.py",
+      "sha256": "93881907da303a433b5b239cb3515c6fd0272c4763ebf92e339dd55398741bcb"
+    }
+  ],
+  "old_inventory_preserved": {
+    "bytes": 1439,
+    "path": "reports/v4_11/candidate_r1/INDEPENDENT_GOLDEN_EXPECTATIONS_R1.json",
+    "sha256": "4821a2796d654b4a5449c26d14620de8d099e3979bf56deb68968c06d9d06501"
+  },
+  "retired": {
+    "AMOUNT_A_DISABLED": "UNKNOWN"
+  },
+  "retirement_authority": {
+    "bytes": 8244,
+    "path": "docs/evidence/next_round_r2/V4_NEXT_ROUND_10_CARD_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R1_20261001.md",
+    "sha256": "7d6c8d3faf64a948d206a318d122d41baf757613d0beb88e6d5bd54fcff96bb3"
+  },
+  "semantic_vector_scope": "AMR20_PREDICATES; OTHER_SCENARIOS_KEEP_THEIR_OWN_REQUIRED_FACTS",
+  "source": "LITERAL_INDEPENDENT_EXPECTATIONS"
+}

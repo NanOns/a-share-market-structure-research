@@ -1,0 +1,163 @@
+{
+  "accepted_parent_registry": {
+    "bytes": 93135,
+    "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json",
+    "sha256": "14002b12e89920ee2d57fe1328a53c03f21ebb99842acfcb5c53b44d3f402174"
+  },
+  "active_registry_changed": false,
+  "baseline_commit": "66ef2e342dd339cc9795c2d1fd774b8edec4c345",
+  "candidate_parent_registry": {
+    "bytes": 5081,
+    "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R11_CANDIDATE.json",
+    "sha256": "b37a28713003e3b7e22110879a635c8a36b172eb15ea3404d3eb56a588fd9208"
+  },
+  "contract_id": "V4_CROSS_STAGE_SCOPED_FORMALIZATION_AND_CANDIDATE_REGISTRY_R12",
+  "data_head_action": "KEEP",
+  "entries": {
+    "A02": {
+      "acceptance": "INDEPENDENT_EXTERNAL_ACCEPTANCE_FORMALIZED_SCOPED",
+      "acceptance_record": {
+        "bytes": 8102,
+        "path": "reports/audits/next_round_r2/A02_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+        "sha256": "c75e59f99fa34bac2ecb7357e36368265e0fbd3eeed261d372751eff263477b7"
+      },
+      "business_amendments": "CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
+      "current_state": "ACCEPTED_SCOPED",
+      "handoff": {
+        "bytes": 10141,
+        "path": "reports/audits/next_round_r2/A02_A05_FORMAL_HANDOFF_R1.json",
+        "sha256": "c0f78a15a29e7fdb4d8433ec8f80f6e42885f90ef67ab1f48bb8cccce4e56747"
+      }
+    },
+    "A03": {
+      "acceptance": "INDEPENDENT_EXTERNAL_ACCEPTANCE_FORMALIZED_SCOPED",
+      "acceptance_record": {
+        "bytes": 8074,
+        "path": "reports/next_round_r2/scoped_acceptance/A03_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+        "sha256": "ab8b504a46c032767e7d68032472b225898239622e93bae1da3f514903ae826a"
+      },
+      "current_state": "ACCUMULATION_CONTINUES",
+      "handoff": {
+        "bytes": 6050,
+        "path": "reports/next_round_r2/scoped_acceptance/SCOPED_FORMALIZATION_CLOSURE_R2.json",
+        "sha256": "36631f9fe7a5a56bda1c327c0c15f48548d64e941c26aaa98b350048718e8d4e"
+      }
+    },
+    "A04": {
+      "acceptance": "PENDING_INDEPENDENT_EXTERNAL_REAUDIT",
+      "consumer_adoption": false,
+      "current_real_known_amount_a_rows": 0,
+      "current_real_sector_rows": 378,
+      "current_state": "GO_FORWARD_CANDIDATE_WARMUP",
+      "handoff": {
+        "bytes": 5995,
+        "path": "reports/audits/a04_r3/A04_R3_1_EXTERNAL_REAUDIT_HANDOFF_R1.json",
+        "sha256": "8e7d36ad4da94d810da04d9351d17629b0a58a9617391d182c717b3fb920fc5d"
+      },
+      "historical_formal_capability": "BLOCKED",
+      "missing_H21_sessions": 20
+    },
+    "A05": {
+      "acceptance": "INDEPENDENT_EXTERNAL_ACCEPTANCE_FORMALIZED_SCOPED",
+      "acceptance_record": {
+        "bytes": 2023,
+        "path": "reports/audits/next_round_r2/A05_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+        "sha256": "56e9d6b8e4b0ea41a98a650c6b87bd3f6fcd3e54a72c2c6af7c8010d1d48e765"
+      },
+      "business_amendments": "CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
+      "current_state": "ACCEPTED_SCOPED",
+      "handoff": {
+        "bytes": 10141,
+        "path": "reports/audits/next_round_r2/A02_A05_FORMAL_HANDOFF_R1.json",
+        "sha256": "c0f78a15a29e7fdb4d8433ec8f80f6e42885f90ef67ab1f48bb8cccce4e56747"
+      }
+    },
+    "A06": {
+      "acceptance": "INDEPENDENT_EXTERNAL_ACCEPTANCE_FORMALIZED_SCOPED",
+      "acceptance_record": {
+        "bytes": 7892,
+        "path": "reports/next_round_r2/scoped_acceptance/A06_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+        "sha256": "c029fb1d769e080ae5d753fc11b043f1c0ff5cf40b86c31f9af830647035a12b"
+      },
+      "current_state": "ACCEPTED_SCOPED",
+      "handoff": {
+        "bytes": 6050,
+        "path": "reports/next_round_r2/scoped_acceptance/SCOPED_FORMALIZATION_CLOSURE_R2.json",
+        "sha256": "36631f9fe7a5a56bda1c327c0c15f48548d64e941c26aaa98b350048718e8d4e"
+      }
+    },
+    "A07": {
+      "acceptance": "INDEPENDENT_EXTERNAL_ACCEPTANCE_FORMALIZED_SCOPED",
+      "acceptance_record": {
+        "bytes": 7943,
+        "path": "reports/next_round_r2/scoped_acceptance/A07_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+        "sha256": "6bc18870beb8460bb5ce7f078c2a39e8d289614f8aef5d9248cdff254e475a55"
+      },
+      "current_state": "PERMANENT_CAPABILITY_BLOCK",
+      "handoff": {
+        "bytes": 6050,
+        "path": "reports/next_round_r2/scoped_acceptance/SCOPED_FORMALIZATION_CLOSURE_R2.json",
+        "sha256": "36631f9fe7a5a56bda1c327c0c15f48548d64e941c26aaa98b350048718e8d4e"
+      }
+    },
+    "OWNER": {
+      "acceptance": "INDEPENDENT_EXTERNAL_ACCEPTANCE_FORMALIZED_SCOPED",
+      "acceptance_record": {
+        "bytes": 7533,
+        "path": "reports/next_round_r2/scoped_acceptance/OWNER_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+        "sha256": "5930e82aff6cdc58cfac7d66bb3da8e3b7223a4d94755fb6c08c5ded19db37ab"
+      },
+      "current_state": "INACTIVE_ACCEPTED_METADATA",
+      "handoff": {
+        "bytes": 6050,
+        "path": "reports/next_round_r2/scoped_acceptance/SCOPED_FORMALIZATION_CLOSURE_R2.json",
+        "sha256": "36631f9fe7a5a56bda1c327c0c15f48548d64e941c26aaa98b350048718e8d4e"
+      }
+    },
+    "READER": {
+      "acceptance": "INDEPENDENT_EXTERNAL_ACCEPTANCE_FORMALIZED_SCOPED",
+      "acceptance_record": {
+        "bytes": 8015,
+        "path": "reports/next_round_r2/scoped_acceptance/READER_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+        "sha256": "a9b57ce16609bc86bf40b5e9fb8542802a57f1f777b636029129479f4f931123"
+      },
+      "current_state": "ACCEPTED_SCOPED",
+      "handoff": {
+        "bytes": 6050,
+        "path": "reports/next_round_r2/scoped_acceptance/SCOPED_FORMALIZATION_CLOSURE_R2.json",
+        "sha256": "36631f9fe7a5a56bda1c327c0c15f48548d64e941c26aaa98b350048718e8d4e"
+      }
+    },
+    "V4-11": {
+      "acceptance": "PENDING_INDEPENDENT_EXTERNAL_REAUDIT",
+      "current_state": "SEMANTIC_REPAIR_CANDIDATE",
+      "handoff": {
+        "bytes": 5085,
+        "path": "reports/v4_11/candidate_r2/V4_11_SEMANTIC_REPAIR_EXTERNAL_REAUDIT_HANDOFF_R2.json",
+        "sha256": "fba98e5c6bde44ac1156e9a65dc42cdd1903d472dfaab4651f9d97e2515bf943"
+      },
+      "real_AMR20_target_accepted_producer": "UNAVAILABLE",
+      "sector_amount_A_gate_removed": true,
+      "status": "V4_11_R2_SEMANTIC_REPAIR_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT"
+    }
+  },
+  "external_authority": {
+    "bytes": 8244,
+    "path": "docs/evidence/next_round_r2/V4_NEXT_ROUND_10_CARD_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R1_20261001.md",
+    "sha256": "7d6c8d3faf64a948d206a318d122d41baf757613d0beb88e6d5bd54fcff96bb3"
+  },
+  "master": {
+    "bytes": 1694,
+    "path": "docs/evidence/next_round_r2/V4_NEXT_ROUND_EXECUTION_MASTER_R2_20261001.md",
+    "sha256": "6db6e658a807f92ccced84e9a81e4c6ddcaed438527c90386a9501278eaea622"
+  },
+  "new_repairs_external_acceptance": false,
+  "permissions": {
+    "focus": false,
+    "global_mandatory_adoption": false,
+    "production": false,
+    "shadow": false
+  },
+  "stage_head_action": "KEEP",
+  "status": "FORMALIZATION_COMPLETE_AND_CANDIDATES_READY_FOR_EXTERNAL_REAUDIT"
+}

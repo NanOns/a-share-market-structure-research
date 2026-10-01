@@ -40,7 +40,17 @@ def test_migration_rollback(pg):
         pg.execute((root/'src/workbench_db/migrations/v4_postgres_rollbacks/026_confirmation_events_candidate_r1.sql').read_text())
         assert pg.execute("SELECT to_regclass('v4.confirmation_candidate_facts_r1')").fetchone()[0] is None
         pg.execute((root/'src/workbench_db/migrations/v4_postgres/026_confirmation_events_candidate_r1.sql').read_text())
+        pg.execute((root/'src/workbench_db/migrations/v4_postgres/027_confirmation_stock_amr20_semantic_r2.sql').read_text())
         publish(pg,projection(positive_values()))
+
+def test_semantic_migration_rollback_and_reapply(pg):
+    root=Path(__file__).resolve().parents[2]
+    publish(pg,projection(positive_values()))
+    before=pg.execute('SELECT count(*) FROM v4.confirmation_candidate_facts_r1').fetchone()[0]
+    pg.execute((root/'src/workbench_db/migrations/v4_postgres_rollbacks/027_confirmation_stock_amr20_semantic_r2.sql').read_text())
+    assert pg.execute('SELECT count(*) FROM v4.confirmation_candidate_facts_r1').fetchone()[0]==before
+    pg.execute((root/'src/workbench_db/migrations/v4_postgres/027_confirmation_stock_amr20_semantic_r2.sql').read_text())
+    assert publish(pg,projection(positive_values()))['confirmation_publication_id']
 
 def test_direct_ordinary_writer_and_consumer_bypass_rejected(pg):
     x=projection(positive_values());facts=detect_confirmation(x)

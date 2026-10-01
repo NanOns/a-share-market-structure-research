@@ -1,0 +1,51 @@
+{
+  "AS_RECORDED": false,
+  "V4_08_business_head_amendment_accepted": false,
+  "accepted_snapshot_trade_date": "2026-09-24",
+  "accepted_time_role": "CURRENT_SNAPSHOT_ONLY",
+  "audited_head": "66ef2e342dd339cc9795c2d1fd774b8edec4c345",
+  "contract": {
+    "bytes": 2017,
+    "path": "config/a05_legacy_valid_member_exact_v1.json",
+    "sha256": "894b7a0730c327356724154703bf7daa0f6bdf66780e2816b5970c9c71dac97b"
+  },
+  "contract_id": "A05_EXTERNAL_ACCEPTANCE_RECORD_V1",
+  "exact_AST_digest": "22ab9ce395588edb77cd21670bfd3e72e03b7189d671c574ec1e7e6d243ad49a",
+  "external_authority": {
+    "bytes": 8244,
+    "path": "docs/evidence/next_round_r2/V4_NEXT_ROUND_10_CARD_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R1_20261001.md",
+    "sha256": "7d6c8d3faf64a948d206a318d122d41baf757613d0beb88e6d5bd54fcff96bb3"
+  },
+  "focus": false,
+  "formalized_at": "2026-10-01T15:11:36.671496+00:00",
+  "global_mandatory_adoption": false,
+  "historical_PIT_equivalent": false,
+  "historical_membership_acceptance": false,
+  "legacy_sector_count": 541,
+  "producer": {
+    "bytes": 1536,
+    "path": "src/sector/legacy_valid_member_a05_v1.py",
+    "sha256": "09712dda807800477245d546b340a6034a2673d0ad395917c1876cf5bdf31505"
+  },
+  "producer_evidence": {
+    "bytes": 374122,
+    "path": "reports/audits/A05_EXACT_RECOVERY_EVIDENCE_R2.json",
+    "sha256": "a0e618960c4ecec9d24b42e47607f87172c699ee2f2144c7b68ef4099dc7ff16"
+  },
+  "production": false,
+  "real_mismatch_count": 0,
+  "real_observation_count": 6188,
+  "real_observations": {
+    "bytes": 9303642,
+    "path": "data/v4/a05_legacy_exact_r1/REAL_LEGACY_INPUT_288e3fd7a3ad8c8ea1737046fbbc4611f3c26b81920a3819a5e232ac87cf776a.json",
+    "sha256": "09f2bf492c16c0c594fa7e5658b9b7bf44279ba045b6507faf2e1395306ab65d"
+  },
+  "shadow": false,
+  "source": {
+    "bytes": 8217,
+    "path": "src/sector/phase2.py",
+    "sha256": "9455bae1578c4a785e034eb0ff852dcd98d7218a66027e0ea3f11489fd3727a1"
+  },
+  "status": "PASS_EXACT_CURRENT_SNAPSHOT_PRODUCER_SCOPE",
+  "symbol": "sector.phase2.prepare"
+}

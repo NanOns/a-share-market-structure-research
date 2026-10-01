@@ -1,0 +1,559 @@
+{
+  "acceptance_record": {
+    "bytes": 7533,
+    "path": "reports/next_round_r2/scoped_acceptance/OWNER_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+    "sha256": "5930e82aff6cdc58cfac7d66bb3da8e3b7223a4d94755fb6c08c5ded19db37ab"
+  },
+  "accepted_candidate": {
+    "bytes": 22814,
+    "path": "data/v4/V4_SOURCE_AUTHORITY_ACCEPTED_OWNER_REGISTRY_R4_CANDIDATE.json",
+    "sha256": "f3bec8e735b5ebd39305f9827cf52c2f7d3afd3d2f9424dec549f59e9d4ff73b"
+  },
+  "active_global_trust_root": false,
+  "active_registry": {
+    "bytes": 10364,
+    "path": "data/v4/V4_SOURCE_AUTHORITY_ACCEPTED_OWNER_REGISTRY_R3.json",
+    "sha256": "3bc3d013ceebeb7dcf01f95f9a446ff2f65f03a1b6c602144cb54f490b7b18ec"
+  },
+  "contract_id": "SCOPED_ACCEPTED_OWNER_BOOTSTRAP_R1",
+  "external_authority": {
+    "audited_head": "66ef2e342dd339cc9795c2d1fd774b8edec4c345",
+    "authority_kind": "INDEPENDENT_EXTERNAL_ACCEPTANCE",
+    "document": {
+      "bytes": 8244,
+      "path": "docs/evidence/next_round_r2/V4_NEXT_ROUND_10_CARD_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R1_20261001.md",
+      "sha256": "7d6c8d3faf64a948d206a318d122d41baf757613d0beb88e6d5bd54fcff96bb3"
+    }
+  },
+  "field_external_dispositions": {
+    "AMOUNT": "EXTERNALLY_ACCEPTED_SCOPED_INACTIVE_METADATA",
+    "OHLC": "EXTERNALLY_ACCEPTED_SCOPED_INACTIVE_METADATA",
+    "QFQ": "EXTERNALLY_ACCEPTED_SCOPED_INACTIVE_METADATA",
+    "SECTOR_MEMBERSHIP": "EXTERNALLY_ACCEPTED_SCOPED_INACTIVE_METADATA",
+    "SECURITY_IDENTITY": "EXTERNALLY_ACCEPTED_SCOPED_INACTIVE_METADATA",
+    "SPECIAL_PHASE": "EXTERNALLY_ACCEPTED_SCOPED_INACTIVE_METADATA",
+    "VOLUME": "EXTERNALLY_ACCEPTED_SCOPED_INACTIVE_METADATA"
+  },
+  "inherited_pending_fields_preserved_as_historical_candidate_declarations": true,
+  "owners": [
+    {
+      "accepted_algorithm_contract": "V4_02_RAW_CANONICAL_FORMAL_ACCEPTANCE_V1",
+      "accepted_head": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "actual_bar_semantics": "Native TDX daily price in CNY/share, cumulative native volume/amount; amount is not Amount-A",
+      "allowed_consumers": [
+        "RAW_DAILY",
+        "PERIOD_RAW"
+      ],
+      "artifact": {
+        "bytes": 4710499,
+        "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/RAW_DAILY/artifact.json",
+        "sha256": "8406bee7d60435e7d2532df7ab7fea81149f100883f243236ee68877888f71b1"
+      },
+      "current_accepted_contract": {
+        "bytes": 23358,
+        "path": "config/dm01_incremental_builders_contract_r3_3.json",
+        "sha256": "44f42e22f51a13ed36177da2c0a1228996020e795a17f0f41597a4c17d2f9178"
+      },
+      "degraded_capability": {
+        "status": "FULL_PASS",
+        "unknown_reason_counts": {}
+      },
+      "effective_scope": {
+        "end_date": "2026-09-30",
+        "start_date": "2026-09-30"
+      },
+      "external_acceptance": "PENDING_INDEPENDENT_EXTERNAL_REAUDIT",
+      "external_acceptance_evidence": [
+        {
+          "bytes": 10761,
+          "path": "docs/evidence/source_authority/V4_DM01_A01_R3_AND_A13_FORMALIZATION_INDEPENDENT_EXTERNAL_ACCEPTANCE_20261001.md",
+          "sha256": "03fd49c643d21304d2e8460cebbeec4b6b3f794ffd28562fdebf3f1ec38f79ef"
+        }
+      ],
+      "field_id": "OHLC",
+      "focus_cutover": false,
+      "formal_consumer_authorization": false,
+      "global_mandatory_adoption": false,
+      "go_forward_scope": "Exact externally accepted 2026-09-30 artifact only; new dates require their own accepted publication",
+      "historical_mode": "RECONSTRUCTED_CORRECTED",
+      "historical_scope": "Inherited frozen accepted publications only; no backfilled knowledge-time claim",
+      "inherited_acceptance_is_not_owner_registry_external_acceptance": true,
+      "known_limitations": [],
+      "market_board_coverage": [
+        "SH_MAIN",
+        "SZ_MAIN",
+        "STAR",
+        "CHINEXT"
+      ],
+      "owner_contract_id": "OWNER_SCOPE_BOOTSTRAP_OHLC_R1",
+      "production": false,
+      "shadow": false,
+      "source_bindings": [
+        {
+          "bytes": 896654,
+          "path": "data/v4/source_evidence/dm01_a01_r3/chain_inputs_r1/2026-09-30/tdx_target_delta_ffd8e2f0b1bfdc7a69e46f750456f892c306d57017754e6320f0fec32ff4004d.json",
+          "sha256": "c05d4f6363fd1fad45b4ab3c35a14c10974016293651e5d071549966e4c85faf"
+        }
+      ],
+      "source_family": "TDX_OFFICIAL_PACKAGE",
+      "source_role": "CORE_AUTHORITY"
+    },
+    {
+      "accepted_algorithm_contract": "V4_02_RAW_CANONICAL_FORMAL_ACCEPTANCE_V1",
+      "accepted_head": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "actual_bar_semantics": "Native TDX daily price in CNY/share, cumulative native volume/amount; amount is not Amount-A",
+      "allowed_consumers": [
+        "RAW_DAILY",
+        "PERIOD_RAW"
+      ],
+      "artifact": {
+        "bytes": 4710499,
+        "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/RAW_DAILY/artifact.json",
+        "sha256": "8406bee7d60435e7d2532df7ab7fea81149f100883f243236ee68877888f71b1"
+      },
+      "current_accepted_contract": {
+        "bytes": 23358,
+        "path": "config/dm01_incremental_builders_contract_r3_3.json",
+        "sha256": "44f42e22f51a13ed36177da2c0a1228996020e795a17f0f41597a4c17d2f9178"
+      },
+      "degraded_capability": {
+        "status": "FULL_PASS",
+        "unknown_reason_counts": {}
+      },
+      "effective_scope": {
+        "end_date": "2026-09-30",
+        "start_date": "2026-09-30"
+      },
+      "external_acceptance": "PENDING_INDEPENDENT_EXTERNAL_REAUDIT",
+      "external_acceptance_evidence": [
+        {
+          "bytes": 10761,
+          "path": "docs/evidence/source_authority/V4_DM01_A01_R3_AND_A13_FORMALIZATION_INDEPENDENT_EXTERNAL_ACCEPTANCE_20261001.md",
+          "sha256": "03fd49c643d21304d2e8460cebbeec4b6b3f794ffd28562fdebf3f1ec38f79ef"
+        }
+      ],
+      "field_id": "VOLUME",
+      "focus_cutover": false,
+      "formal_consumer_authorization": false,
+      "global_mandatory_adoption": false,
+      "go_forward_scope": "Exact externally accepted 2026-09-30 artifact only; new dates require their own accepted publication",
+      "historical_mode": "RECONSTRUCTED_CORRECTED",
+      "historical_scope": "Inherited frozen accepted publications only; no backfilled knowledge-time claim",
+      "inherited_acceptance_is_not_owner_registry_external_acceptance": true,
+      "known_limitations": [],
+      "market_board_coverage": [
+        "SH_MAIN",
+        "SZ_MAIN",
+        "STAR",
+        "CHINEXT"
+      ],
+      "owner_contract_id": "OWNER_SCOPE_BOOTSTRAP_VOLUME_R1",
+      "production": false,
+      "shadow": false,
+      "source_bindings": [
+        {
+          "bytes": 896654,
+          "path": "data/v4/source_evidence/dm01_a01_r3/chain_inputs_r1/2026-09-30/tdx_target_delta_ffd8e2f0b1bfdc7a69e46f750456f892c306d57017754e6320f0fec32ff4004d.json",
+          "sha256": "c05d4f6363fd1fad45b4ab3c35a14c10974016293651e5d071549966e4c85faf"
+        }
+      ],
+      "source_family": "TDX_OFFICIAL_PACKAGE",
+      "source_role": "CORE_AUTHORITY"
+    },
+    {
+      "accepted_algorithm_contract": "V4_02_RAW_CANONICAL_FORMAL_ACCEPTANCE_V1",
+      "accepted_head": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "actual_bar_semantics": "Native TDX daily price in CNY/share, cumulative native volume/amount; amount is not Amount-A",
+      "allowed_consumers": [
+        "RAW_DAILY",
+        "PERIOD_RAW"
+      ],
+      "amount_a_formal_authority": false,
+      "artifact": {
+        "bytes": 4710499,
+        "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/RAW_DAILY/artifact.json",
+        "sha256": "8406bee7d60435e7d2532df7ab7fea81149f100883f243236ee68877888f71b1"
+      },
+      "current_accepted_contract": {
+        "bytes": 23358,
+        "path": "config/dm01_incremental_builders_contract_r3_3.json",
+        "sha256": "44f42e22f51a13ed36177da2c0a1228996020e795a17f0f41597a4c17d2f9178"
+      },
+      "degraded_capability": {
+        "status": "FULL_PASS",
+        "unknown_reason_counts": {}
+      },
+      "effective_scope": {
+        "end_date": "2026-09-30",
+        "start_date": "2026-09-30"
+      },
+      "external_acceptance": "PENDING_INDEPENDENT_EXTERNAL_REAUDIT",
+      "external_acceptance_evidence": [
+        {
+          "bytes": 10761,
+          "path": "docs/evidence/source_authority/V4_DM01_A01_R3_AND_A13_FORMALIZATION_INDEPENDENT_EXTERNAL_ACCEPTANCE_20261001.md",
+          "sha256": "03fd49c643d21304d2e8460cebbeec4b6b3f794ffd28562fdebf3f1ec38f79ef"
+        }
+      ],
+      "field_id": "AMOUNT",
+      "focus_cutover": false,
+      "formal_consumer_authorization": false,
+      "global_mandatory_adoption": false,
+      "go_forward_scope": "Exact externally accepted 2026-09-30 artifact only; new dates require their own accepted publication",
+      "historical_mode": "RECONSTRUCTED_CORRECTED",
+      "historical_scope": "Inherited frozen accepted publications only; no backfilled knowledge-time claim",
+      "inherited_acceptance_is_not_owner_registry_external_acceptance": true,
+      "known_limitations": [
+        "AMOUNT_A_FORMAL_BRANCH_REQUIRES_SEPARATE_A04_EXTERNAL_ACCEPTANCE"
+      ],
+      "market_board_coverage": [
+        "SH_MAIN",
+        "SZ_MAIN",
+        "STAR",
+        "CHINEXT"
+      ],
+      "owner_contract_id": "OWNER_SCOPE_BOOTSTRAP_AMOUNT_R1",
+      "production": false,
+      "shadow": false,
+      "source_bindings": [
+        {
+          "bytes": 896654,
+          "path": "data/v4/source_evidence/dm01_a01_r3/chain_inputs_r1/2026-09-30/tdx_target_delta_ffd8e2f0b1bfdc7a69e46f750456f892c306d57017754e6320f0fec32ff4004d.json",
+          "sha256": "c05d4f6363fd1fad45b4ab3c35a14c10974016293651e5d071549966e4c85faf"
+        }
+      ],
+      "source_family": "TDX_OFFICIAL_PACKAGE",
+      "source_role": "CORE_AUTHORITY"
+    },
+    {
+      "accepted_algorithm_contract": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+      "accepted_head": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "actual_bar_semantics": "Native TDX daily price in CNY/share, cumulative native volume/amount; amount is not Amount-A",
+      "allowed_consumers": [
+        "ADJUSTED_DAILY",
+        "PERIOD_ADJUSTED"
+      ],
+      "artifact": {
+        "bytes": 6218836,
+        "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/ADJUSTED_DAILY/artifact.json",
+        "sha256": "a28b3a912e44a8cc6e3e7e43f37038b64e1f7b62024ec4887b5320ffd33d2e17"
+      },
+      "canonical_adjustment": "GBBQ_CANONICAL",
+      "current_accepted_contract": {
+        "bytes": 23358,
+        "path": "config/dm01_incremental_builders_contract_r3_3.json",
+        "sha256": "44f42e22f51a13ed36177da2c0a1228996020e795a17f0f41597a4c17d2f9178"
+      },
+      "degraded_capability": {
+        "status": "DEGRADED_PASS",
+        "unknown_reason_counts": {
+          "UNSUPPORTED_OR_UNPROVED_ADJUSTMENT": 176
+        }
+      },
+      "effective_scope": {
+        "end_date": "2026-09-30",
+        "start_date": "2026-09-30"
+      },
+      "external_acceptance": "PENDING_INDEPENDENT_EXTERNAL_REAUDIT",
+      "external_acceptance_evidence": [
+        {
+          "bytes": 10761,
+          "path": "docs/evidence/source_authority/V4_DM01_A01_R3_AND_A13_FORMALIZATION_INDEPENDENT_EXTERNAL_ACCEPTANCE_20261001.md",
+          "sha256": "03fd49c643d21304d2e8460cebbeec4b6b3f794ffd28562fdebf3f1ec38f79ef"
+        }
+      ],
+      "field_id": "QFQ",
+      "focus_cutover": false,
+      "formal_consumer_authorization": false,
+      "global_mandatory_adoption": false,
+      "go_forward_scope": "Exact externally accepted 2026-09-30 artifact only; new dates require their own accepted publication",
+      "historical_as_recorded_proven": false,
+      "historical_mode": "RECONSTRUCTED_CORRECTED",
+      "historical_scope": "Inherited frozen accepted publications only; no backfilled knowledge-time claim",
+      "inherited_acceptance_is_not_owner_registry_external_acceptance": true,
+      "known_limitations": [
+        "AS_RECORDED_ADJUSTED_HISTORY_NOT_PROVEN",
+        "UNSUPPORTED_OR_UNPROVED_ADJUSTMENT_REMAINS_UNKNOWN",
+        "BAOSTOCK_ADJUSTMENT_FACTOR_SUPPLEMENTAL_ONLY"
+      ],
+      "market_board_coverage": [
+        "SH_MAIN",
+        "SZ_MAIN",
+        "STAR",
+        "CHINEXT"
+      ],
+      "owner_contract_id": "OWNER_SCOPE_BOOTSTRAP_QFQ_R1",
+      "production": false,
+      "shadow": false,
+      "source_bindings": [
+        {
+          "bytes": 5607212,
+          "path": "data/v4/source_snapshot_store/gbbq/sha256-775d82c58b5b46ec1d21478f86ba8ef90302691982e68d5c4cfcd51fddda666e/gbbq",
+          "sha256": "f8c6a60e052a3fd7f8c3a043dbc9c53311a7599e1b36bb6cc140058f56269ef1"
+        },
+        {
+          "bytes": 418837,
+          "path": "data/v4/source_evidence/dm01_a01_r3/chain_inputs_r1/2026-09-30/gbbq_dispositions_75b4297f6d0e8d7392f960e7aac02d4920250972995771dd3bb63991403b7eee.json",
+          "sha256": "2a84c5388bafa64c229d060987d12d44cb97bdc9f61dad21b826ea94ea3e2b42"
+        },
+        {
+          "bytes": 896654,
+          "path": "data/v4/source_evidence/dm01_a01_r3/chain_inputs_r1/2026-09-30/tdx_target_delta_ffd8e2f0b1bfdc7a69e46f750456f892c306d57017754e6320f0fec32ff4004d.json",
+          "sha256": "c05d4f6363fd1fad45b4ab3c35a14c10974016293651e5d071549966e4c85faf"
+        }
+      ],
+      "source_family": "GBBQ_CANONICAL",
+      "source_role": "CORE_AUTHORITY"
+    },
+    {
+      "accepted_algorithm_contract": "SECURITY_IDENTITY_EVENT_DISCOVERY_V1",
+      "accepted_head": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "actual_bar_semantics": "Native TDX daily price in CNY/share, cumulative native volume/amount; amount is not Amount-A",
+      "allowed_consumers": [
+        "IDENTITY_UNIVERSE"
+      ],
+      "artifact": {
+        "bytes": 3112040,
+        "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/IDENTITY_UNIVERSE/artifact.json",
+        "sha256": "926e6f7fe28447d418072b8701bfb9a379f2cd23eda58b4863d3b5535539ddbf"
+      },
+      "current_accepted_contract": {
+        "bytes": 23358,
+        "path": "config/dm01_incremental_builders_contract_r3_3.json",
+        "sha256": "44f42e22f51a13ed36177da2c0a1228996020e795a17f0f41597a4c17d2f9178"
+      },
+      "degraded_capability": {
+        "status": "FULL_PASS",
+        "unknown_reason_counts": {}
+      },
+      "effective_scope": {
+        "end_date": "2026-09-30",
+        "start_date": "2026-09-30"
+      },
+      "external_acceptance": "PENDING_INDEPENDENT_EXTERNAL_REAUDIT",
+      "external_acceptance_evidence": [
+        {
+          "bytes": 10761,
+          "path": "docs/evidence/source_authority/V4_DM01_A01_R3_AND_A13_FORMALIZATION_INDEPENDENT_EXTERNAL_ACCEPTANCE_20261001.md",
+          "sha256": "03fd49c643d21304d2e8460cebbeec4b6b3f794ffd28562fdebf3f1ec38f79ef"
+        }
+      ],
+      "field_id": "SECURITY_IDENTITY",
+      "focus_cutover": false,
+      "formal_consumer_authorization": false,
+      "global_mandatory_adoption": false,
+      "go_forward_scope": "Exact externally accepted 2026-09-30 artifact only; new dates require their own accepted publication",
+      "historical_mode": "RECONSTRUCTED_CORRECTED",
+      "historical_scope": "Inherited frozen accepted publications only; no backfilled knowledge-time claim",
+      "inherited_acceptance_is_not_owner_registry_external_acceptance": true,
+      "known_limitations": [
+        "HISTORICAL_LEGAL_LIFECYCLE_AND_TYPE_NOT_LOCAL_TDX_CONFIRMED",
+        "FIRST_AVAILABLE_AT_TARGET_NOT_PROVEN"
+      ],
+      "market_board_coverage": [
+        "SH_MAIN",
+        "SZ_MAIN",
+        "STAR",
+        "CHINEXT"
+      ],
+      "owner_contract_id": "OWNER_SCOPE_BOOTSTRAP_SECURITY_IDENTITY_R1",
+      "production": false,
+      "shadow": false,
+      "source_bindings": [
+        {
+          "bytes": 204576,
+          "path": "data/v4/source_evidence/dm01_a01_r3/chain_inputs_r1/2026-09-30/lifecycle_125bd066c95b7f0d38182d5d55b62e2f33a1080d1073d5eb2845cc19c8b2f073.json",
+          "sha256": "1262afd02f461b5c7cb33a6c64d4b46e20577b9d830d825f1410810fb10f5182",
+          "source_revision": "sha256:1262afd02f461b5c7cb33a6c64d4b46e20577b9d830d825f1410810fb10f5182"
+        },
+        {
+          "bytes": 4008726,
+          "path": "data/v4/source_evidence/dm01_a01_r3/chain_inputs_r1/identity_projection_dc4b72168585944ca0925e806ebaff0a7785d180a85802e320c4973c1cc898f8.json",
+          "sha256": "3bb5124bb7ee5c7ca50ca7491ebc290ab5523065eb181b447757fe65279162ea"
+        },
+        {
+          "bytes": 4303,
+          "path": "reports/audits/A11_STAGE_CLOSURE_R1.json",
+          "sha256": "df0d8ec9ba5c310484810e2ff7ad1b523a037c8df101dd22fd2b446da8f31e88"
+        }
+      ],
+      "source_family": "VERSIONED_IDENTITY_LIFECYCLE_WITH_PROVIDER_RECONSTRUCTION",
+      "source_role": "FIELD_AUTHORITY"
+    },
+    {
+      "accepted_algorithm_contract": "SPECIAL_PHASE_SOURCE_MANIFEST_V1 + SPECIAL_PRICE_PHASE_EVENT_V1 + SPECIAL_PRICE_PHASE_POLICY_V2",
+      "accepted_head": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "actual_bar_semantics": "Native TDX daily price in CNY/share, cumulative native volume/amount; amount is not Amount-A",
+      "allowed_consumers": [
+        "SPECIAL_PHASE",
+        "PRICE_LIMIT"
+      ],
+      "artifact": {
+        "bytes": 4166984,
+        "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/SPECIAL_PHASE/artifact.json",
+        "sha256": "7d79ac8a2c7e2c0d7ad4d32193ea8189767212dfd327170333f5291b99628df7"
+      },
+      "current_accepted_contract": {
+        "bytes": 23358,
+        "path": "config/dm01_incremental_builders_contract_r3_3.json",
+        "sha256": "44f42e22f51a13ed36177da2c0a1228996020e795a17f0f41597a4c17d2f9178"
+      },
+      "degraded_capability": {
+        "status": "FULL_PASS",
+        "unknown_reason_counts": {}
+      },
+      "effective_scope": {
+        "end_date": "2026-09-30",
+        "start_date": "2026-09-30"
+      },
+      "external_acceptance": "PENDING_INDEPENDENT_EXTERNAL_REAUDIT",
+      "external_acceptance_evidence": [
+        {
+          "bytes": 10761,
+          "path": "docs/evidence/source_authority/V4_DM01_A01_R3_AND_A13_FORMALIZATION_INDEPENDENT_EXTERNAL_ACCEPTANCE_20261001.md",
+          "sha256": "03fd49c643d21304d2e8460cebbeec4b6b3f794ffd28562fdebf3f1ec38f79ef"
+        }
+      ],
+      "field_id": "SPECIAL_PHASE",
+      "focus_cutover": false,
+      "formal_consumer_authorization": false,
+      "global_mandatory_adoption": false,
+      "go_forward_scope": "Exact externally accepted 2026-09-30 artifact only; new dates require their own accepted publication",
+      "historical_mode": "RECONSTRUCTED_CORRECTED",
+      "historical_scope": "Inherited frozen accepted publications only; no backfilled knowledge-time claim",
+      "inherited_acceptance_is_not_owner_registry_external_acceptance": true,
+      "known_limitations": [
+        "UNKNOWN_EVENT_OR_RULE_CAPABILITY_RETAINED",
+        "NO_FILENAME_EVENT_SEMANTIC_UPGRADE"
+      ],
+      "market_board_coverage": [
+        "SH_MAIN",
+        "SZ_MAIN",
+        "STAR",
+        "CHINEXT"
+      ],
+      "owner_contract_id": "OWNER_SCOPE_BOOTSTRAP_SPECIAL_PHASE_R1",
+      "production": false,
+      "shadow": false,
+      "source_bindings": [
+        {
+          "bytes": 204450,
+          "path": "data/v4/source_evidence/dm01_a01_r3/chain_inputs_r1/2026-09-30/special_phase_bfae50b431823732260299d563f7992c2bf97ce229a03e6b2969701a95f23183.json",
+          "sha256": "9ef5ef6ddb7ae781c4598c717415d283af016f3b5b7b0b19f05c84329fe1fb4c"
+        },
+        {
+          "byte_count": 15757,
+          "path": "config/v4_02_price_limit_rules_r3.json",
+          "sha256": "68679333821c50cc8cbed5ff4cd001447cc6571d79b0d074a60b6bb81bdb01e0"
+        }
+      ],
+      "source_family": "ACCEPTED_SPECIAL_PHASE_EVENT_POLICY",
+      "source_role": "FIELD_AUTHORITY"
+    },
+    {
+      "accepted_head": {
+        "bytes": 2151,
+        "path": "data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json",
+        "sha256": "d6374a73b8084ccd383cbb4f75428ed91176e91cc09d87c3329041d57c5bd9ed"
+      },
+      "allowed_consumers": [
+        "V4_08_PIT_MEMBERSHIP_HISTORY_ONLY"
+      ],
+      "artifact": {
+        "byte_count": 4004928,
+        "path": "data/v4/artifact_store/v4_08/V4_08_PIT_MEMBERSHIP_FACTS_20260930_R1.jsonl.gz",
+        "sha256": "164142652bf5b3032f4e1a8ee54fe2817a3f3b5130635cf04fb641a6e819211d"
+      },
+      "current_accepted_contract": {
+        "bytes": 2134,
+        "path": "config/v4_08_accepted_context_contract_r5_2.json",
+        "sha256": "491e5e0808dee92daf8122923784d87e19fee2222a60bfcf103a39b2ac8e702a"
+      },
+      "degraded_capability": {
+        "status": "FIRST_OBSERVED_PIT_ONLY",
+        "unknown_reason_counts": {}
+      },
+      "effective_scope": {
+        "end_date": "2026-09-30",
+        "start_date": "2026-09-30"
+      },
+      "external_acceptance": "PENDING_INDEPENDENT_EXTERNAL_REAUDIT",
+      "external_acceptance_evidence": [
+        {
+          "byte_count": 18054,
+          "path": "docs/evidence/V4_08_R4_1_FINAL_EXTERNAL_AUDIT_AND_PIT_MEMBERSHIP_ACCEPTANCE_20260930.md",
+          "sha256": "4fd4938bbfdc7dde9aa2bf6193efc16621156bcc1abf04d8ccf241ece19c7d2b"
+        }
+      ],
+      "field_id": "SECTOR_MEMBERSHIP",
+      "focus_cutover": false,
+      "formal_consumer_authorization": false,
+      "global_mandatory_adoption": false,
+      "go_forward_scope": "Exact externally accepted 2026-09-30 artifact only; new dates require their own accepted publication",
+      "historical_mode": "AS_RECORDED_FIRST_OBSERVED_PIT",
+      "historical_scope": "Inherited frozen accepted publications only; no backfilled knowledge-time claim",
+      "inherited_acceptance_is_not_owner_registry_external_acceptance": true,
+      "known_limitations": [
+        "NO_HISTORICAL_BACKFILL",
+        "FORMAL_CONSUMERS_STILL_DISABLED"
+      ],
+      "mutable_current_snapshot_is_historical_authority": false,
+      "owner_contract_id": "OWNER_SCOPE_BOOTSTRAP_SECTOR_MEMBERSHIP_R1",
+      "production": false,
+      "provider_snapshot_scope": "Current mutable snapshot separately captured; accepted membership facts begin at first observation 2026-09-30",
+      "shadow": false,
+      "source_bindings": [
+        {
+          "byte_count": 3139,
+          "path": "data/v4/artifact_store/v4_08/V4_08_PIT_SOURCE_REVISION_20260930_R1.json",
+          "sha256": "bbc1089d86c1a191a902af3145068a8409604a7e1181f8e864cb12db35854eee"
+        },
+        {
+          "byte_count": 1410,
+          "path": "data/v4/artifact_store/v4_08/V4_08_PIT_SNAPSHOT_20260930_R1.json",
+          "sha256": "ff28518c4f530d39574258131436c92970ebf7761fd979e932fbb6499f435bf1"
+        },
+        {
+          "byte_count": 2269,
+          "path": "reports/v4_08/V4_08_R3_FORWARD_PIT_SOURCE_CAPTURE.json",
+          "sha256": "75794ba275fd97a2cc156ac3cddda84f349d61ee921561804b7c222633dfb2b6"
+        }
+      ],
+      "source_family": "ACCEPTED_V4_08_FORWARD_PIT_MEMBERSHIP",
+      "source_role": "FIELD_AUTHORITY"
+    }
+  ],
+  "permissions": {
+    "focus": false,
+    "formal_consumer_cutover": false,
+    "global_mandatory_adoption": false,
+    "production": false,
+    "shadow": false
+  },
+  "registration_status": "ACCEPTED_SCOPED_INACTIVE_METADATA",
+  "version": 1
+}

@@ -1,0 +1,66 @@
+{
+  "accepted_rps_head": {
+    "bytes": 2776,
+    "path": "data/v4/V4_RPS_PIT_HISTORY_ACCEPTED_HEAD_R1.json",
+    "sha256": "4025dd5d3eb27c9086bca8e4861ad33842db8938dda370fb3d7f78b8d783398b"
+  },
+  "artifact": {
+    "bytes": 382808,
+    "path": "data/v4/a02_accepted_amendments_r1/V4_09_STOCK_AMENDMENT_CANDIDATE_R1.jsonl.gz",
+    "sha256": "5023aed48ccac1d136f6ae7531173d46228279f37a8cba8b904c9a6d28a28103"
+  },
+  "audited_head": "66ef2e342dd339cc9795c2d1fd774b8edec4c345",
+  "contract_id": "V4_09_ACCEPTED_HEAD_AMENDMENT_A02_CANDIDATE",
+  "external_authority": {
+    "bytes": 8244,
+    "path": "docs/evidence/next_round_r2/V4_NEXT_ROUND_10_CARD_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R1_20261001.md",
+    "sha256": "7d6c8d3faf64a948d206a318d122d41baf757613d0beb88e6d5bd54fcff96bb3"
+  },
+  "focus": false,
+  "full_business_diff": {
+    "bytes": 23666786,
+    "path": "data/v4/a02_accepted_amendments_r1/FULL_BUSINESS_DIFF_R1.jsonl.gz",
+    "sha256": "c426c1e9de64a97dd8b2352d061ac47c7b81bf8ffb36cb9f1aaafc8e9753c3f3"
+  },
+  "global_mandatory_adoption": false,
+  "old_accepted_head": {
+    "bytes": 11474,
+    "path": "data/v4/V4_09_ACCEPTED_HEAD.json",
+    "sha256": "641ef9e2e6fe8f461a9b765262e739791a6d3fdd220b0eff7947e2690de3a87d"
+  },
+  "old_head_replaced": false,
+  "production": false,
+  "real_replay_at": "2026-10-01T15:11:36.671496+00:00",
+  "row_count": 5222,
+  "rows_changed": 2811,
+  "shadow": false,
+  "status": "CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
+  "trade_date": "2026-09-28",
+  "unchanged_algorithms_parameters": [
+    {
+      "bytes": 37887,
+      "path": "src/v4/base_seed.py",
+      "sha256": "0fa1b11f0d342731cf3658379f6ae14982b3861509daf2e949e197a722aac1d7"
+    },
+    {
+      "bytes": 22817,
+      "path": "src/v4/stock_prewatch.py",
+      "sha256": "a57a4413b56cd81f43a06611f4dec328ef6ac35486f4a4b56e5b5938e2db60ce"
+    },
+    {
+      "bytes": 7662,
+      "path": "config/v4_07_base_seed_contract_v1.json",
+      "sha256": "73e686fb3bd15ef8afa893efc804d14cb2339f76975a40b5649d5265d327122f"
+    },
+    {
+      "bytes": 1252,
+      "path": "config/v4_07_parameter_set_v1.json",
+      "sha256": "241785e1a97dd2283eb8b361eb791f4e5c8f6ca67579a06f2a2d38c0c7586a1a"
+    },
+    {
+      "bytes": 1179,
+      "path": "config/v4_09_parameter_set_v1.json",
+      "sha256": "3c9b0d658c6e8212c5a6239eecdeece99d54791b97cee45fe4df98de71086c24"
+    }
+  ]
+}

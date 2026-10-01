@@ -1,0 +1,43 @@
+{
+  "acceptance_record": {
+    "bytes": 8015,
+    "path": "reports/next_round_r2/scoped_acceptance/READER_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+    "sha256": "a9b57ce16609bc86bf40b5e9fb8542802a57f1f777b636029129479f4f931123"
+  },
+  "accepted_reader_version": "v2",
+  "business_reacceptance": false,
+  "contract_id": "ACCEPTED_HISTORY_ONLY_PUBLICATION_READER_R1",
+  "current_business_gate": "DIRECT_ORIGINAL_VALIDATOR_REMAINS_FAIL_ON_MOVED_DATA_HEAD",
+  "permissions": {
+    "focus": false,
+    "formal_consumer_cutover": false,
+    "global_mandatory_adoption": false,
+    "production": false,
+    "shadow": false
+  },
+  "reader_and_preserved_validator_bindings": [
+    {
+      "bytes": 4693,
+      "path": "src/workbench_analysis/dm01_publication_history_reader_v2.py",
+      "sha256": "8c4c74c3fa61d1f6c4664fc143afcae07a803345ae5be3536af39b8188ac828c"
+    },
+    {
+      "bytes": 2138,
+      "path": "src/workbench_analysis/dm01_publication_history_reader_v1.py",
+      "sha256": "51729be1ad211080a73f9c071a9142370e3ba281eadc3c1eb4d7969a7cd7572d"
+    },
+    {
+      "bytes": 10649,
+      "path": "scripts/promote_v4_09_accepted_head.py",
+      "sha256": "f3275aa4d8056a15db51a081980e629e166a2f582b3627457ee6df4cabcf664b"
+    },
+    {
+      "bytes": 9147,
+      "path": "scripts/validate_v4_10_promotion_r1.py",
+      "sha256": "ff5514a357d55662ef89a83b5234d4b9feee8b81d629b884c1d452c7966a26cd"
+    }
+  ],
+  "v1_preservation": "IMMUTABLE_HISTORICAL_VERSION",
+  "validation_scope": "ACCEPTED_PUBLICATION_HISTORY_ONLY",
+  "version": 1
+}

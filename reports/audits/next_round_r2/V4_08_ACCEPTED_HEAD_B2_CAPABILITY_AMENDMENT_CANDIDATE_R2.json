@@ -1,0 +1,132 @@
+{
+  "A05_EXTERNAL_ACCEPTANCE_FORMALIZED": "PASS",
+  "A05_acceptance_record": {
+    "bytes": 2023,
+    "path": "reports/audits/next_round_r2/A05_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+    "sha256": "56e9d6b8e4b0ea41a98a650c6b87bd3f6fcd3e54a72c2c6af7c8010d1d48e765"
+  },
+  "AS_RECORDED": false,
+  "accepted_B2_sector_count": 378,
+  "accepted_snapshot_trade_date": "2026-09-24",
+  "audited_head": "66ef2e342dd339cc9795c2d1fd774b8edec4c345",
+  "contract_id": "V4_08_ACCEPTED_HEAD_B2_CAPABILITY_AMENDMENT_CANDIDATE",
+  "current_snapshot_replay": {
+    "bytes": 74443,
+    "path": "data/v4/a05_b2_amendment_r2/B2_CURRENT_SNAPSHOT_OLD_NEW_REPLAY_R1.jsonl.gz",
+    "sha256": "4e152273cdd55c2a04b9f9a17a8b49a34b131fe6e1f7ce96a30d5442b7800470"
+  },
+  "external_authority": {
+    "bytes": 8244,
+    "path": "docs/evidence/next_round_r2/V4_NEXT_ROUND_10_CARD_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R1_20261001.md",
+    "sha256": "7d6c8d3faf64a948d206a318d122d41baf757613d0beb88e6d5bd54fcff96bb3"
+  },
+  "focus": false,
+  "full_accepted_artifact_diff": {
+    "bytes": 36146,
+    "path": "data/v4/a05_b2_amendment_r2/FULL_ACCEPTED_HEAD_VS_SNAPSHOT_B2_DIFF_R1.jsonl.gz",
+    "sha256": "dca20f2b61f3edaea2783286c26b7d33baf963dadeb5f6429689a5e996eae8bd"
+  },
+  "global_mandatory_adoption": false,
+  "historical_PIT_equivalent": false,
+  "limitations": [
+    "Original dated normalized source observations remain current snapshot corrected, not historical first-available PIT.",
+    "Current snapshot B2 capability is restored only at accepted A05 9/24 scope; later 9/30 same-session producer observations remain unavailable and are not synthesized.",
+    "B2 Amount-A warm branch remains UNKNOWN/DIAGNOSTIC_AUDIT_OPEN; A05 does not accept Amount-A.",
+    "Legacy q20/dq5 and prior breadth/MA change facts remain UNKNOWN without exact accepted producer."
+  ],
+  "market_universe_count": 5464,
+  "market_universe_policy": "Exact observed same-day IN_NORMAL_UNIVERSE all-A quote universe. Inactive/delisted/not-yet-listed inventory rows are not market reference denominator; full legacy observation inventory remains intact for exact validity.",
+  "matched_sector_ids": 378,
+  "new_scope_adapter": {
+    "bytes": 1530,
+    "path": "src/sector/a05_b2_scoped_amendment_r1.py",
+    "sha256": "31f9f30190499aac03fa1db42a367dde5b2d96809737c046789781b6adfd999a"
+  },
+  "new_snapshot_states": {
+    "FALSE": 525,
+    "TRUE": 2,
+    "UNKNOWN": 4
+  },
+  "old_accepted_artifacts": {
+    "B0": {
+      "byte_count": 22216,
+      "path": "data/v4/artifact_store/v4_08/V4_08_R5_B0_20260930_bb8d0c0929f531e8cddf.jsonl.gz",
+      "sha256": "3244b70c9a81912ebff6bf0a93639059649d7dc4673d85c918caa865263b01c0"
+    },
+    "B2": {
+      "byte_count": 23882,
+      "path": "data/v4/artifact_store/v4_08/V4_08_R5_B2_20260930_bb8d0c0929f531e8cddf.jsonl.gz",
+      "sha256": "bb2943c9a229b8588a2bfefa8a4fa06137c88321c1a9eca6f28914336e96e4ee"
+    },
+    "ROTATION": {
+      "byte_count": 1948501,
+      "path": "data/v4/artifact_store/v4_08/V4_08_R5_ROTATION_20260930_bb8d0c0929f531e8cddf.jsonl.gz",
+      "sha256": "4344f0434efc19ebc9cdeafd4e704915d068075f7963e76825ac41d6bf706667"
+    },
+    "SECTOR_NATIVE": {
+      "byte_count": 2108127,
+      "path": "data/v4/artifact_store/v4_08/V4_08_R5_SECTOR_NATIVE_20260930_bb8d0c0929f531e8cddf.jsonl.gz",
+      "sha256": "707a21982a8b26b688e3416388c73e64bfbb4d7bf2e04b7bc9df7297c979f53f"
+    }
+  },
+  "old_accepted_head": {
+    "bytes": 20553,
+    "path": "data/v4/V4_08_ACCEPTED_HEAD.json",
+    "sha256": "b9ba34374ce35eefab705469de1e005758b90fa1f58ea5bba96fac08571073bc"
+  },
+  "old_head_replaced": false,
+  "old_snapshot_states": {
+    "UNKNOWN": 531
+  },
+  "original_normalized_source": {
+    "bytes": 879063855,
+    "path": "data/normalized/adjusted_daily.parquet",
+    "sha256": "c6fc7b5455355390b0740b46e4bf24a2c5f458084cd6155478eae6c0be75c05a"
+  },
+  "production": false,
+  "real_snapshot_sector_count": 531,
+  "real_source_capture": {
+    "bytes": 75738,
+    "path": "data/v4/a05_b2_amendment_r2/REAL_CURRENT_SNAPSHOT_RET1_INPUT_R1.jsonl.gz",
+    "sha256": "2acbe79e46cb5b6eb9c3da514f55f7a6a07ad2197594d8ad9d504809916ffcb1"
+  },
+  "restored_semantic_known": 527,
+  "revision_explanation": "Initial R1 incorrectly passed 6188 inventory identities as all-A quote universe and hit 0.9 market coverage. R2 uses the source current normal market universe of 5464 rows; exact B2 algorithm/thresholds unchanged. No old evidence overwritten.",
+  "rotation_context_readback": {
+    "bytes": 1346,
+    "path": "reports/audits/next_round_r2/A05_B2_ROTATION_CONTEXT_READBACK_R2.json",
+    "sha256": "6e6e826df212f83f8c7c4d3e46fb4bfdaa561cedb503e371a592e12cd7ad5d45"
+  },
+  "scope": "CURRENT_SNAPSHOT_ONLY",
+  "shadow": false,
+  "snapshot_qualification_changed": 527,
+  "status": "V4_08_B2_AMENDMENT_READY_FOR_EXTERNAL_REAUDIT",
+  "supersedes": {
+    "bytes": 4999,
+    "path": "reports/audits/next_round_r2/V4_08_ACCEPTED_HEAD_B2_CAPABILITY_AMENDMENT_CANDIDATE_R1.json",
+    "sha256": "4f1e02bc48abd8c285c4edd3d4bd39f205032ca8c3a12dacf91818d8a40907a6"
+  },
+  "unchanged_algorithm_parameters": [
+    {
+      "bytes": 29860,
+      "path": "src/workbench_analysis/sector_attention.py",
+      "sha256": "e4e39f51abb64d4e3359451e794842c1da06f641d1598d2aac5a6477fc89916a"
+    },
+    {
+      "bytes": 6277,
+      "path": "config/research_attention_v3.yaml",
+      "sha256": "559e026897c5fd03d451af409438e90d1c535b69aecb1c2b336209e3ac9c96ec"
+    },
+    {
+      "bytes": 28799,
+      "path": "config/v4_08_b2_machine_ast_r5.json",
+      "sha256": "838f167f0eb7ec3797240cc7488e8121901b7bb4f8d926d3cb4e378adc4b1155"
+    },
+    {
+      "bytes": 4045,
+      "path": "config/v4_08_algorithm_parameter_set_r5.json",
+      "sha256": "0204d7c4fadf86871b6a079f755593b1a3f8ad18bb718f73ba33db0b70f67548"
+    }
+  ],
+  "unknown_reason_removed": 527
+}

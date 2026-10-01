@@ -78,3 +78,22 @@ reports/audits/OWNER_A06_READER_DI_*.xml -text
 reports/audits/A03_A04_A07_*.xml -text
 data/v4/a05_legacy_exact_r1/** -text
 reports/audits/A02_A05*.xml -text
+
+# R2 scoped formalization and semantic repair exact-byte artifacts
+data/v4/a02_accepted_amendments_r1/** -text
+data/v4/a02_accepted_amendments_r1/*.gz filter=lfs diff=lfs merge=lfs -text
+data/v4/a03_scoped_acceptance_r1/** -text
+data/v4/a04_go_forward_r3/** -text
+data/v4/a05_b2_amendment_r1/** -text
+data/v4/a05_b2_amendment_r2/** -text
+data/v4/a05_b2_amendment_r3/** -text
+data/v4/confirmation_candidates_r2/** -text
+data/v4/source_evidence/a04_r3/** -text
+data/v4/source_evidence/next_round_r2_baseline/** -text
+docs/evidence/next_round_r2/** -text
+reports/audits/a04_r3/** -text
+reports/audits/next_round_r2/** -text
+reports/next_round_r2/** -text
+reports/v4_11/candidate_r2/** -text
+scripts/replay_a05_b2_current_snapshot_amendment_r2.py -text
+scripts/replay_a05_b2_current_snapshot_amendment_r3.py -text

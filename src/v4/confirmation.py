@@ -6,9 +6,8 @@ from pathlib import Path
 import ast,hashlib,json,math
 ROOT=Path(__file__).resolve().parents[2]
 MODEL='CONFIRMATION_DETECTOR_V1';PARAMETERS='V4_11_CONFIRMATION_PARAMETER_SET_V1'
-CONTRACT='config/v4_11_confirmation_detector_contract_r1.json'
+CONTRACT='config/v4_11_confirmation_detector_contract_r2.json'
 SCENARIO_KEYS={'LAUNCH_CONFIRM':'launch','STRONG_PULLBACK':'pullback','RECOVERY_TURN':'recovery_turn','TREND_CONTINUE':'trend_continue'}
-AMOUNT_BRANCHES={'LAUNCH_CONFIRM','RECOVERY_TURN','TREND_CONTINUE'}
 FORBIDDEN_ROLES={'FINAL_STATE','FOCUS','SAME_DAY_DOWNSTREAM','ONLINE_SUPPLEMENTAL','FUTURE_OUTCOME'}
 class ConfirmationError(ValueError):pass
 def digest(value):
@@ -29,7 +28,10 @@ def package():
     if functions!=manifest['exact_function_AST'] or manifest['legacy_source']!=legacy:raise ConfirmationError('EXACT_LEGACY_AST_REQUIRED')
     from workbench_analysis.today_research_scanner_v3_3 import PARAMETER_CONTRACT,SCENARIOS,scan_today_research
     if parameters['values']!=PARAMETER_CONTRACT or machine['scenario_priority']!=[manifest['scenario_mapping'][s] for s in SCENARIOS]:raise ConfirmationError('LEGACY_PARAMETER_OR_PRIORITY_CHANGED')
-    if c['amount_A']['formal_branch']!='DISABLED' or c['permissions']!=dict(production=False,shadow=False,focus=False):raise ConfirmationError('CANDIDATE_PERMISSION_OVERCLAIM')
+    erratum=bound(c['semantic_erratum'])
+    if erratum['field_family']!='STOCK_AMOUNT_VOLUME_STATE_V1' or erratum['sector_amount_A_status_affects_confirmation'] is not False:raise ConfirmationError('STOCK_AMR20_NAMESPACE_REQUIRED')
+    exact(erratum['source'])
+    if c['permissions']!=dict(production=False,shadow=False,focus=False):raise ConfirmationError('CANDIDATE_PERMISSION_OVERCLAIM')
     exact(c['v4_10_head']);exact(c['executable_authority'])
     return c,manifest,parameters,machine,scan_today_research
 def _timestamp(value):
@@ -98,7 +100,8 @@ def detect_confirmation(publication):
         for scenario in a['scenario_priority']:
             branch=legacy[SCENARIO_KEYS[scenario]];checks=branch['checks'];raw[scenario]=deepcopy(checks)
             reasons=[k+':UNKNOWN' for k,v in checks.items() if v is None]
-            if scenario in AMOUNT_BRANCHES:reasons.append('AUD-AMOUNT-A-06:FORMAL_BRANCH_DISABLED')
+            if any(k.startswith('AMR20_') and v is None for k,v in checks.items()) and 'amr20_mean_prior' in unavailable:
+                reasons.append('STOCK_AMR20:'+unavailable['amr20_mean_prior'])
             if scenario=='TREND_CONTINUE':reasons.append('CURRENT_WITH_LOO_BREADTH_SUPPORT:SAME_DAY_DOWNSTREAM_DIAGNOSTIC_ONLY')
             # Legacy tri_and stays exact; the required-fact governance wrapper is UNKNOWN dominant.
             status='UNKNOWN' if reasons else 'TRUE' if branch['eligible'] is True else 'FALSE'
@@ -114,8 +117,9 @@ def detect_confirmation(publication):
             diagnostic_legacy_matches=[s for s in a['scenario_priority'] if legacy[SCENARIO_KEYS[s]]['eligible'] is True],
             producer_contract_id=MODEL,parameter_set_id=PARAMETERS,source_publication_ids=publication['source_publication_ids'],
             input_digest=publication['input_digest'],input_publication_id=publication['publication_id'],mode=publication['mode'],
-            amount_A_formal_branch='DISABLED',knowledge_lineage='SYNTHETIC_ENGINEERING_VECTOR' if publication['mode']=='SYNTHETIC_ENGINEERING_VECTOR' else 'RECONSTRUCTED_CORRECTED',AS_RECORDED=False))
+            semantic_erratum_id='V4_11_STOCK_AMR20_SEMANTIC_ERRATUM_R2',stock_amount_field_family='STOCK_AMOUNT_VOLUME_STATE_V1',
+            sector_amount_A_status_affects_confirmation=False,knowledge_lineage='SYNTHETIC_ENGINEERING_VECTOR' if publication['mode']=='SYNTHETIC_ENGINEERING_VECTOR' else 'RECONSTRUCTED_CORRECTED',AS_RECORDED=False))
     checksum=digest(results);pid='V4_11_CONFIRMATION:'+checksum
     return dict(contract_id='CONFIRMATION_FACT_V1',publication_id=pid,logical_digest=checksum,rows=[dict(r,publication_id=pid) for r in results],
         input_publication_id=publication['publication_id'],input_digest=publication['input_digest'],accepted=False,
-        status='V4_11_CONFIRMATION_EVENTS_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT',permissions=c['permissions'])
+        status='V4_11_R2_SEMANTIC_REPAIR_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT',permissions=c['permissions'])

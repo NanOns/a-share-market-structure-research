@@ -75,7 +75,7 @@ def test_missing_interior_day_global_gate_alone_blocks(fixture):
     with pytest.raises(OwnerAcceptanceError,match='SOURCE_INSTANCE_MISSING_FOR_TARGET_DATE'):
         require_a12_producer_instances_for_candidate(root,{},target_trade_date='2026-09-29')
 @pytest.mark.parametrize('mutation',['provider_date','target','raw_sha','schema','received','naive_time',
-    'revision','identity','calendar','empty','ambiguous','row_date','unbounded','malformed_bit','as_recorded','wrong_field'])
+    'revision','identity','calendar','empty','ambiguous','row_date','unbounded','malformed_bit','as_recorded','wrong_field','partial_roster'])
 def test_source_negative_vectors(fixture,mutation):
     root,config,manifest=fixture;target='2026-09-28'
     rule=next(r for r in config['field_rules'] if r['field_id']=='TRADING_STATUS')
@@ -99,12 +99,30 @@ def test_source_negative_vectors(fixture,mutation):
         elif mutation=='row_date':raw['rows'][0]['date']='2026-09-29'
         elif mutation=='malformed_bit':raw['rows'][0]['tradestatus']=''
         elif mutation=='unbounded':raw['provider_metadata']['page_count']=2
+        elif mutation=='partial_roster':raw['rows'].pop()
         instance['raw_artifact']=write(root,instance['raw_artifact']['path'],raw)
         instance['source_revision']='sha256:'+instance['raw_artifact']['sha256']
         receipt=read(root,instance['capture_receipt']['path']);receipt['responses']['query_daily_history_k_AStock']['raw_response_binding']=instance['raw_artifact']
+        if mutation=='partial_roster':
+            receipt['responses']['query_daily_history_k_AStock']['row_count']=len(raw['rows'])
+            identity=read(root,instance['identity_binding']['path']);identity['members'].pop()
+            instance['identity_binding']=write(root,instance['identity_binding']['path'],identity)
         instance['capture_receipt']=write(root,instance['capture_receipt']['path'],receipt)
     b=write(root,b['path'],instance)
     with pytest.raises(OwnerAcceptanceError):require_formal_source(root,rule,consumer_contract_id=CONSUMER,target_trade_date=target,instance_binding=b)
+
+def test_accepted_input_revision_does_not_require_new_producer_acceptance(fixture):
+    root,config,manifest=fixture;target='2026-09-28'
+    rule=next(r for r in config['field_rules'] if r['field_id']=='ISST')
+    producer_before=read(root,REGISTRY_PATH)['owners'][1]['producer_contract']
+    b=manifest['instances'][target]['ISST'];instance=read(root,b['path'])
+    identity=read(root,instance['identity_binding']['path'])
+    head=read(root,identity['accepted_head']['path']);head['fixture_input_revision']='NEW_MACHINE_VERIFIED_INPUT_REVISION'
+    identity['accepted_head']=write(root,identity['accepted_head']['path'],head)
+    instance['identity_binding']=write(root,instance['identity_binding']['path'],identity)
+    b=write(root,b['path'],instance)
+    assert require_formal_source(root,rule,consumer_contract_id=CONSUMER,target_trade_date=target,instance_binding=b)['status']=='PASS_PRODUCER_AND_SOURCE_INSTANCE'
+    assert producer_before==read(root,REGISTRY_PATH)['owners'][1]['producer_contract']
 @pytest.mark.parametrize('change',['consumer','AS_RECORDED','OHLC','owner_hash','role'])
 def test_producer_scope_fail_closed(fixture,change):
     root,config,manifest=fixture;rule=deepcopy(next(r for r in config['field_rules'] if r['field_id']=='ISST'))

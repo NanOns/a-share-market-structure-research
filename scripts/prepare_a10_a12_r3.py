@@ -47,7 +47,9 @@ def main():
         write(path,dict(contract_id=rule['owner_contract_id'],field_id=field,external_acceptance=None,
             formal_consumer_authorization=False,allowed_consumers=rule['allowed_consumers'],historical_modes=[MODE],
             source_instance_policy_id=POLICY,role_binding=rule,accepted_at=None,schema_contract=bind(schema_path),
-            identity_head=identity_head,calendar_head=calendar_head,knowledge_lineage='RECONSTRUCTED_CORRECTED',
+            identity_head_path=identity_head['path'],calendar_head_path=calendar_head['path'],knowledge_lineage='RECONSTRUCTED_CORRECTED',
+            accepted_input_policy='EXACT_INSTANCE_BINDING_TO_FIXED_ACCEPTED_HEAD_NAMESPACES; INPUT_HEAD_REVISION_IS_NOT_PRODUCER_SEMANTICS_CHANGE',
+            universe_exchanges=['SH','SZ'],universe_policy='COMPLETE_ACCEPTED_DATED_CORE_IDENTITY_NOT_RESPONSE_DERIVED_SUBSET',
             local_TDX_actual_precedence=True,empty_malformed='UNKNOWN_BLOCK',substantive_change_requires_new_acceptance=True,
             routine_daily_revision_requires_human_acceptance=False,OHLC_authority=False,adjustment_authority=False))
     write('config/source_authority_governance_r3.json',config)

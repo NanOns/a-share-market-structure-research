@@ -1,6 +1,7 @@
 {
   "OHLC_authority": false,
   "accepted_at": null,
+  "accepted_input_policy": "EXACT_INSTANCE_BINDING_TO_FIXED_ACCEPTED_HEAD_NAMESPACES; INPUT_HEAD_REVISION_IS_NOT_PRODUCER_SEMANTICS_CHANGE",
   "adjustment_authority": false,
   "allowed_consumers": [
     "TRADING_STATUS",
@@ -8,11 +9,7 @@
     "PERIOD_ADJUSTED",
     "DM01_FINAL_ALL_NINE"
   ],
-  "calendar_head": {
-    "bytes": 1176,
-    "path": "data/v4/V4_02_GO_FORWARD_CALENDAR_EXTENSION_ACCEPTED_HEAD_R1.json",
-    "sha256": "d0d453689261603a6ccd773f6383781178cb74d388087b72c652dc8afcb309f6"
-  },
+  "calendar_head_path": "data/v4/V4_02_GO_FORWARD_CALENDAR_EXTENSION_ACCEPTED_HEAD_R1.json",
   "contract_id": "BAOSTOCK_DATED_TRADING_STATUS_PROVIDER_AUTHORITY_V4",
   "empty_malformed": "UNKNOWN_BLOCK",
   "external_acceptance": null,
@@ -21,11 +18,7 @@
   "historical_modes": [
     "TARGET_DATE_QUERYABLE_FACT"
   ],
-  "identity_head": {
-    "bytes": 1099,
-    "path": "data/v4/V4_01_GO_FORWARD_IDENTITY_ACCEPTED_HEAD_R1.json",
-    "sha256": "496d537f7c6b9c78cac3a084330f09132814165d2967e8991ffa1d6319092214"
-  },
+  "identity_head_path": "data/v4/V4_01_GO_FORWARD_IDENTITY_ACCEPTED_HEAD_R1.json",
   "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
   "local_TDX_actual_precedence": true,
   "role_binding": {
@@ -57,5 +50,10 @@
     "sha256": "c8cda72cd810736f5d9810cba8b8c009d8b10dd6a76b669fc7bcd394dab6725f"
   },
   "source_instance_policy_id": "SOURCE_AUTHORITY_SOURCE_INSTANCE_POLICY_V1",
-  "substantive_change_requires_new_acceptance": true
+  "substantive_change_requires_new_acceptance": true,
+  "universe_exchanges": [
+    "SH",
+    "SZ"
+  ],
+  "universe_policy": "COMPLETE_ACCEPTED_DATED_CORE_IDENTITY_NOT_RESPONSE_DERIVED_SUBSET"
 }

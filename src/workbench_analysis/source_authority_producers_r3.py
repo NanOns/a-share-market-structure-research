@@ -121,18 +121,23 @@ def require_source_instance_for_target(root, producer_proof, instance_binding, *
         if identity['target_trade_date'] != target.isoformat() or calendar['target_trade_date'] != target.isoformat():
             reject('SOURCE_INSTANCE_UNIVERSE_CALENDAR_TARGET_MISMATCH')
         # Anchors belong to the producer policy, not caller-selected evidence.
-        if identity['accepted_head'] != owner['identity_head'] or calendar['accepted_head'] != owner['calendar_head']:
+        if identity['accepted_head']['path'] != owner['identity_head_path'] or calendar['accepted_head']['path'] != owner['calendar_head_path']:
             reject('SOURCE_INSTANCE_ACCEPTED_ANCHOR_MISMATCH')
-        identity_head = exact_json(root, owner['identity_head'])
+        identity_head = exact_json(root, identity['accepted_head'])
+        if identity_head.get('status') != 'ACCEPTED':
+            reject('SOURCE_INSTANCE_ACCEPTED_ANCHOR_MISMATCH')
         accepted_identity = exact_json(root, identity_head['identity_revision'])
         eligible = {r['source_security_key']: r['security_id'] for r in accepted_identity['records']
-                    if r['list_date'] <= target.isoformat() and (not r.get('delist_date') or r['delist_date'] >= target.isoformat())
+                    if r['source_security_key'].split('.')[0] in owner['universe_exchanges']
+                    and r['list_date'] <= target.isoformat() and (not r.get('delist_date') or r['delist_date'] >= target.isoformat())
                     and r.get('symbol_effective_from', r['list_date']) <= target.isoformat()
                     and (not r.get('symbol_effective_to') or r['symbol_effective_to'] >= target.isoformat())}
         universe = {r['source_security_key']: r['security_id'] for r in identity['members']}
-        if len(universe) != len(identity['members']) or set(universe) != set(keys) or any(eligible.get(k) != v for k, v in universe.items()):
+        if len(universe) != len(identity['members']) or set(universe) != set(keys) or universe != eligible:
             reject('SOURCE_INSTANCE_IDENTITY_UNIVERSE_MISMATCH')
-        calendar_head = exact_json(root, owner['calendar_head'])
+        calendar_head = exact_json(root, calendar['accepted_head'])
+        if calendar_head.get('status') != 'ACCEPTED':
+            reject('SOURCE_INSTANCE_ACCEPTED_ANCHOR_MISMATCH')
         extension = exact_json(root, calendar_head['accepted_extension'])
         sessions = [r for r in extension['sessions'] if r['trade_date'] == target.isoformat()]
         if calendar['sessions'] != sessions or {r['market'] for r in sessions} != {'SSE', 'SZSE'}:

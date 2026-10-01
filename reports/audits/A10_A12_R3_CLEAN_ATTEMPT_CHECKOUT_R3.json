@@ -1,0 +1,292 @@
+{
+  "acceptance_scope": "ENGINEERING_REGRESSION_ONLY_REAL_MARKET_SOURCE_GATE_SEPARATE",
+  "authorized_deselects": [
+    "tests/v4_09/test_stock_prewatch.py::test_production_and_v4_09_acceptance_stay_disabled"
+  ],
+  "config_dot_env_present": false,
+  "config_dot_env_read": false,
+  "configured_or_production_database_used": false,
+  "contract_id": "A10_A12_R3_CLEAN_CHECKOUT_R1",
+  "created_at_utc": "2026-10-01T08:10:07.925204+00:00",
+  "database_identity": {
+    "database": "market_research",
+    "owner": "postgres",
+    "server_address": "127.0.0.1/32",
+    "server_port": 5452
+  },
+  "elapsed_seconds": 231.535,
+  "external_acceptance": "PENDING",
+  "git_status_after": "",
+  "git_status_before": "",
+  "junit_sha256": "7cc0bbd53b6b61850c5611477a9a945d414edf82298834d6ba6203cd6748374c",
+  "migrations": [
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/001_v4_phase0_foundation.sql",
+      "sha256": "391bf52595fc9da86bbce175b667a5b15c18684c4fbfb8e54cdcf65872dff260",
+      "version": "V4_PHASE0_FOUNDATION_V1"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/002_namespace_integrity.sql",
+      "sha256": "d8dcc13609ea73923dd68ad21d9c91eed69128047203a481764edeb72ea45dac",
+      "version": "V4_PHASE0_NAMESPACE_INTEGRITY_V1"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/003_phase0_contract_alignment.sql",
+      "sha256": "e1e2886c04c45121530e1fcf506297921c9cca2eecec3ee06be77e2520887d77",
+      "version": "V4_PHASE0_CONTRACT_ALIGNMENT_R2"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/004_publication_head_revision_identity.sql",
+      "sha256": "905af9323f613d3ae917000859f2306ce3d2a2ec6be43431233c5f4ce0e8a1b3",
+      "version": "V4_PUBLICATION_HEAD_REVISION_IDENTITY_R2"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/005_market_session_publication_chain.sql",
+      "sha256": "54d32de8e20afc773638b38aa555c47a5c5e8cb9b0bba82bb60fbd820a2d3b66",
+      "version": "V4_MARKET_SESSION_PUBLICATION_CHAIN_R2"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/006_fact_source_guard_table_specific_fields.sql",
+      "sha256": "d6ccd5dae3900fa07134a18e2f4f41ed2fbc3dde2fa4d5be79958d82d616a949",
+      "version": "V4_FACT_SOURCE_GUARD_TABLE_SPECIFIC_FIELDS_R2"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/007_state_and_namespace_publication_identity.sql",
+      "sha256": "f7df9d66c6edb13e948cbd92888af140ad335cb2984b9b0078e5498eee1cb4a0",
+      "version": "V4_STATE_AND_NAMESPACE_PUBLICATION_IDENTITY_R2"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/008_prior_session_state_freeze_integrity.sql",
+      "sha256": "3d541d9540d64463068907d20062403d7ee41373c42afa5c34c7e0d7117b338b",
+      "version": "V4_PRIOR_SESSION_STATE_FREEZE_INTEGRITY_R3"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/009_publication_head_guard_sql_alias_fix.sql",
+      "sha256": "ae4a7043367a490483618944b8efaf473062f82371e500ab60e5a79a4d55d2e8",
+      "version": "V4_PUBLICATION_HEAD_GUARD_SQL_ALIAS_FIX_R3"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/010_security_lifecycle_history_r5.sql",
+      "sha256": "a7f9bc76db45b4f6297ed299be2576d299d243daa45b3b13a5f9e42dccf7b87f",
+      "version": "V4_SECURITY_LIFECYCLE_HISTORY_R5_V1"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/011_security_membership_interval_r6_2.sql",
+      "sha256": "a562a409a012c32ce7ce879b6377704079e47289de2db0a24c589070e06957e1",
+      "version": "V4_SECURITY_MEMBERSHIP_INTERVAL_R6_2_V1"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/012_provider_lifecycle_fact_r6_2.sql",
+      "sha256": "3e206b8c20959f862f9d293a42a215af624416905f23083c17ca6e2ec22f9b70",
+      "version": "V4_PROVIDER_LIFECYCLE_FACT_R6_2_V1"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/013_v4_06_stock_profile_enrichments.sql",
+      "sha256": "6aa326f725ad98179b112be6b6f34346c5fbc70d69c4798d2259f01d3c3337e1",
+      "version": "V4_06_STOCK_PROFILE_ENRICHMENTS_V1"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/014_v4_06_turnover_contract_semantics_r2.sql",
+      "sha256": "fff140f483738b6fb8e94e06a4e2c681111de94ceb1c415d18c188a9d95977e3",
+      "version": "V4_STAGE_014_V4_06_TURNOVER_CONTRACT_SEMANTICS_R2"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/015_v4_07_base_seed_results.sql",
+      "sha256": "ebab277fe04a9bb1567d6c7b7ed8a306bbe8e6a5f083e84f8ab5d213e4a131b3",
+      "version": "V4_STAGE_015_V4_07_BASE_SEED_RESULTS"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/016_v4_08_sector_membership.sql",
+      "sha256": "45db743c2d223308d8b95a1dbe4cb7548f3ff553c04a021058be1ed7d34cb6e5",
+      "version": "V4_STAGE_016_V4_08_SECTOR_MEMBERSHIP"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/017_v4_08_membership_fact_evidence_view.sql",
+      "sha256": "633998684434e06b089f622c7c2a8bc37743ab945e53f94b06ca496de8ee77fc",
+      "version": "V4_STAGE_017_V4_08_MEMBERSHIP_FACT_EVIDENCE_VIEW"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/018_v4_08_membership_contract_repair_r2.sql",
+      "sha256": "abaf9fa2ce432deca155292de9e6bb574ba7f1e4de7d5611ac56cc0106e3eb51",
+      "version": "V4_STAGE_018_V4_08_MEMBERSHIP_CONTRACT_REPAIR_R2"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/019_v4_08_membership_source_basis_guard_r3.sql",
+      "sha256": "ec1fd08c6fef018ba0f92131e0e37de376372946ed935d9e5b2602ba024e6975",
+      "version": "V4_STAGE_019_V4_08_MEMBERSHIP_SOURCE_BASIS_GUARD_R3"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/020_v4_08_sector_rotation_r5.sql",
+      "sha256": "3e7a877c73976f6665b053d6eab1da03bd232a77e8145b07ac7c34124d78c9a1",
+      "version": "V4_STAGE_020_V4_08_SECTOR_ROTATION_R5"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/021_v4_09_stock_prewatch.sql",
+      "sha256": "dcbcd468b7651c233a636c81e81bdbd1dc5b7ca85c42d4769c52b42ef5b7dc1c",
+      "version": "V4_09_STOCK_PREWATCH_V1"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/022_v4_10_research_state_interface.sql",
+      "sha256": "cfa37902a75b100e05813e3fb0b63e3884bf369d4c1913067e5714eb9004a732",
+      "version": "V4_STAGE_022_V4_10_RESEARCH_STATE_INTERFACE"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/023_v4_10_research_state_lineage_hardening.sql",
+      "sha256": "e308a42738d32a8a02dd4c1859a1e5de3d561044ca148bd13949932113a3a97b",
+      "version": "V4_STAGE_023_V4_10_RESEARCH_STATE_LINEAGE_HARDENING"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/024_v4_10_research_state_authority_hardening.sql",
+      "sha256": "08058023f24231bd313523e860e2d6262c9035b395e5e27045fb754dcad69624",
+      "version": "V4_STAGE_024_V4_10_RESEARCH_STATE_AUTHORITY_HARDENING"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/025_v4_09_consumer_identity_hardening.sql",
+      "sha256": "b27f960eba2353f09447d21b00a3e669398ff2b71a0158b5d4ace4a666da6374",
+      "version": "V4_STAGE_025_V4_09_CONSUMER_IDENTITY_HARDENING"
+    }
+  ],
+  "new_deselects": [],
+  "no_symbol_status": "PASS",
+  "password_persisted": false,
+  "protected_heads": {
+    "config/source_authority_governance_r2.json": "da97ad81868f8001f6e46ed2f8bab5993d230de1a4f75d727f25d4fb30f1bf42",
+    "data/v4/V4_01_ACCEPTED_HEAD.json": "b8ea5b8091629d116c860f9bf6a1a398301d75be16af7b08ff526fba9329bf6b",
+    "data/v4/V4_01_ACCEPTED_HEAD_CANDIDATE.json": "6f84145fa0e2ef2427ec85349dfd4385fb31936e87a03b06a552ec81afb03ad9",
+    "data/v4/V4_01_GO_FORWARD_IDENTITY_ACCEPTED_HEAD_R1.json": "496d537f7c6b9c78cac3a084330f09132814165d2967e8991ffa1d6319092214",
+    "data/v4/V4_02_ACCEPTED_HEAD.json": "da318a1f82a03f13930af7858ca1640fadbdaedbee85e27d47f9c869c2d6b595",
+    "data/v4/V4_02_GO_FORWARD_CALENDAR_EXTENSION_ACCEPTED_HEAD_R1.json": "d0d453689261603a6ccd773f6383781178cb74d388087b72c652dc8afcb309f6",
+    "data/v4/V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD.json": "613a2e46876aeb3283fa268f717134347f4df236e0d935b47b3a770eb0d1afbf",
+    "data/v4/V4_03_ACCEPTED_HEAD.json": "57013bc0f7dcd966c94fb985e5a0d2cc8c77669aebee15cb02a6acd5f0923147",
+    "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035",
+    "data/v4/V4_04_ACCEPTED_HEAD.json": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a",
+    "data/v4/V4_05_ACCEPTED_HEAD.json": "fc929d85553a900a6479ac9f50291d50cf750ad0e6c21fc58e4e05e92189f5cb",
+    "data/v4/V4_06_ACCEPTED_HEAD.json": "5aec962703aed40cab809e798edc5bfbe50c416809984db40bb679a172782f8e",
+    "data/v4/V4_07_ACCEPTED_HEAD.json": "b22117b0d14c35167cba86cb7398d878d7112f9cf17c1a427fa92766e78f880f",
+    "data/v4/V4_08_ACCEPTED_HEAD.json": "b9ba34374ce35eefab705469de1e005758b90fa1f58ea5bba96fac08571073bc",
+    "data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json": "f2a35cebd18e8caf723e7900133333ce4b8df1a8314cb190dade7b0ea7624a3f",
+    "data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json": "d6374a73b8084ccd383cbb4f75428ed91176e91cc09d87c3329041d57c5bd9ed",
+    "data/v4/V4_09_ACCEPTED_HEAD.json": "641ef9e2e6fe8f461a9b765262e739791a6d3fdd220b0eff7947e2690de3a87d",
+    "data/v4/V4_10_ACCEPTED_HEAD.json": "ad9fc4643652feb3684223817f2e9c300167d128e2e8a07179e86f65094fd1e1",
+    "data/v4/V4_DATA_ACCEPTED_HEAD.json": "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0",
+    "data/v4/V4_DEV_BASELINE_HEAD.json": "45695460b0147c6ada12e0ebd8e5070ac0a45eebea26603ff5a3daddc4dd5094",
+    "data/v4/V4_SOURCE_AUTHORITY_ACCEPTED_OWNER_REGISTRY.json": "a18f2afb27d1464d171fe1e5d2007c7fb51102cf4d9c5e94a2b36de3204c0a3b",
+    "data/v4/V4_SOURCE_AUTHORITY_GOVERNANCE_HEAD_R1.json": "0c7237194362961d6534ca947e931d40facb28199e6001551eb608482d8b8500",
+    "data/v4/V4_STAGE_ACCEPTED_HEAD.json": "529c532bd5553ace00fa4813aef07979cfce4e1f18fa5ea66f38fcddd8ed16cb",
+    "reports/audits/A10_R2_EXTERNAL_ACCEPTANCE_RECORD_R1.json": "38bdb6c056ed16a072f17269f3cdbf3d0cad563241fd82c98e5300956757c154",
+    "reports/audits/A12_CLEAN_CHECKOUT_R1.json": "b43b0b101cf46925f6b10f4b166deab8ee97618c50d0626fb4acc88104a4214d",
+    "reports/audits/A12_DOWNSTREAM_CASCADE_AND_FULL_BUSINESS_DIFF_R1.json": "2a53f236cb1711d005c701c37a5875d070a36a75d9d4f4823e0548432064efb9",
+    "reports/audits/A12_ENGINEERING_GATES_R1.json": "84309e458e7c2a913dc35778ed053a9c2e7d86a33cfb02cd37698fcf0b7d1319",
+    "reports/audits/A12_FORMAL_PERIOD_AUTHORITY_REBIND_R1.json": "538809b9c77e75052a3657349e09501b5e82e26bfd0bdf36672dbeb393937202",
+    "reports/audits/A12_INDEPENDENT_FULL_ROW_ORACLE_R1.json": "75616b6fbcd7fa5768905fea0d5bcd3db435ebd740c68883972a55025681f599",
+    "reports/audits/A12_NO_SYMBOL_SCAN_R1.json": "40b55ee9b77f432997b5ba540c7938b1284d03a0b2397e40e89b310a0748aee4",
+    "reports/audits/A12_PRODUCER_CONTRACT_FREEZE_R1.json": "82190c4269ab6671af8664a9ea0a24fffc90c90ef6f369af830c4552b5fc4ec9",
+    "reports/audits/A12_R2_CANDIDATE_EVIDENCE_MANIFEST_R1.json": "71ece6439f1ddcb3853aa3bb33cf0e7ff3ed21e0eb3f318170710396ccbe185e",
+    "reports/audits/A12_R2_CLEAN_ATTEMPT_CHECKOUT_R1.json": "3418bdcb47523a4ad33c7fe32951abed140e47d2ec91dab679b8378547a383f5",
+    "reports/audits/A12_R2_CLEAN_ATTEMPT_NO_SYMBOL_SCAN_R1.json": "9130bb94b445cff19bd572e88b98034fadc2f517594108babdcb23a65b3a758c",
+    "reports/audits/A12_R2_CLEAN_CHECKOUT_R1.json": "4f449027c3c040505d0859e939614ce09659b19b1445584b63b86dadf0df81f9",
+    "reports/audits/A12_R2_DOWNSTREAM_CASCADE_AND_FULL_BUSINESS_DIFF_R1.json": "428872f4cde2141c78ba25d61988d1d068abe40947e1b7cf6ff3e470ed0f4e23",
+    "reports/audits/A12_R2_ENGINEERING_GATES_R1.json": "f95c775af0188011c0485a62c2e77fe7a7ddda7728a5cc3462d9de975dddc71a",
+    "reports/audits/A12_R2_FORMAL_PERIOD_AUTHORITY_REBIND_R1.json": "6368016f0dc2bd8e64052a90dd4d800f1a82df59ba9e6234eaacf60d1f63d5fa",
+    "reports/audits/A12_R2_GO_FORWARD_EXISTING_CAPTURE_BOUNDARY_R1.json": "326d2c6e55adf34c728c889b80e846d0fa4121fdef99dc7d3d445887ba94d427",
+    "reports/audits/A12_R2_INDEPENDENT_REAL_SOURCE_ORACLE_R1.json": "3baae8ed4c04b1da30d6b16719260f67f1baae73345023d50aeb2a4da5ed6e80",
+    "reports/audits/A12_R2_INTERIOR_DATA_GAP_SCOPE_AUDIT_R1.json": "8caab9ba9a7cd7682ea33d725cbba57144f5799b21d156bb807fdb4782f3ce03",
+    "reports/audits/A12_R2_MASTER_SOURCE_AUTHORITY_AMENDMENT_CANDIDATE_R1.json": "e64d9555ab5c59b8d6b710ba9545b4a95acafd6facdbf1fac37d00f9ba0167be",
+    "reports/audits/A12_R2_MASTER_SOURCE_AUTHORITY_AMENDMENT_CANDIDATE_R2.json": "ff1c2b7e2df4ae438671fa6d6e5629eab9d69692d3befdf75e9d3117a8a81f58",
+    "reports/audits/A12_R2_NOSYMBOL_REPAIR_DISPOSITION_R1.json": "fd63bf23c0e87cd69d206df7d20bcd48b2c4b2d588c1ce4fa2acfe369c468070",
+    "reports/audits/A12_R2_NO_SYMBOL_SCAN_R1.json": "b79e361020137a71987300512c69306f9175667e7a98028aa30523f4ae75fd6e",
+    "reports/audits/A12_R2_OBSERVED_DAILY_AUTHORITY_PROPOSAL_R1.json": "7f17c2d66e8a825200215ff5017e8649a21d44ac313461bb6cb7cb607ed1050f",
+    "reports/audits/A12_R2_OBSERVED_DAILY_OWNER_ISST_CANDIDATE_R1.json": "6f9070ef1d739a060e73dc1b39cce2c2706b79d27ca96cb570478fb559a74889",
+    "reports/audits/A12_R2_OBSERVED_DAILY_OWNER_TRADING_STATUS_CANDIDATE_R1.json": "add0eff01bd21b1321491588dd580e56f90c4ef22e3cd9d26ae9fb30bfcffa8e",
+    "reports/audits/A12_R2_OWNER_ISST_CANDIDATE_R1.json": "d7bbf14717c9aee18f42e4387f8b8afa4ea5736817b41cacba35ff8ac44837cb",
+    "reports/audits/A12_R2_OWNER_TRADING_STATUS_CANDIDATE_R1.json": "16b1ac7dfa43aaa09879b74ca55f969807a6acc19957446c492f7231d2c5470a",
+    "reports/audits/A12_R2_PRICE_AND_REMAINING_QUALITY_PROOF_R1.json": "918be8cf91b19ca0d63302429975fd2b99ac408c2418261faafb8726e2a1270e",
+    "reports/audits/A12_R2_PROVIDER_SEMANTICS_AND_REVISION_R1.json": "535046780fb2f8058c28c47f63ed7ee070f5a507321f1ff8b9b62e585218bc7b",
+    "reports/audits/A12_R2_REAL_DATA_GAP_MATRIX_R1.json": "31bb6d8d29b4252361cd510f4e844056d7a067e647dd6393e709f53cf30c7e98",
+    "reports/audits/A12_R2_REAL_SAMPLE_MATRIX_R1.json": "c7519805a182db17057c5c44e6480d88d91b99e0f397e7a8d6d42201a2ee2ce9",
+    "reports/audits/A12_R2_REAL_SAMPLE_MATRIX_R2.json": "2664d2be94433d9cfd4f887e5621cf00efd330156dfe0ebd70e3c9b630854b8c",
+    "reports/audits/A12_R2_REMAINING_QUALITY_REASON_SUPPLEMENT_R1.json": "9c4eee13af89491b4166770d17b5088f82f1d23680b85fb0294f8e280b9c20e0",
+    "reports/audits/A12_R2_SOURCE_ARCHAEOLOGY_R1.json": "b4224dfc2209deb34b4f2177487c378af865bdcce6280c394d82d3c3ca7cd286",
+    "reports/audits/A12_R2_SOURCE_ARCHAEOLOGY_R2.json": "73a0ad05618ed8cad65e586031fc9c5209ddd1947dbb0804320571fe8110f6c3",
+    "reports/audits/A12_R2_SOURCE_NOTICE_SEMANTIC_AUDIT_R1.json": "c6a76b2f640098eee9a29d4151bb1a41e1fef3c4ee9aa006bb78d0db12cf55e9",
+    "reports/audits/A12_R2_SOURCE_REVISION_RECOVERY_BINDING_R1.json": "645d72d0669b90636500fe82eb9420ca53b1843de59304912dc4bd8b7b27b76b",
+    "reports/audits/A12_R2_STAGE_CLOSURE_R1.json": "63b02d6d02cbf80b549459a662ce8e2c2594d50314db3073128f66173f74dde3",
+    "reports/audits/A12_R2_STAGE_ENTRY_R1.json": "3a7e365dd2b6677314f7d900de707bcdff430c507a09a78528f56005c5b0eaf0",
+    "reports/audits/A12_R2_ST_CODE_CHANGE_SCOPE_AUDIT_R1.json": "acea41b9925130113b22bbc8c6fddcd4ef823aa92ae927ae953ea3190f916eba",
+    "reports/audits/A12_R2_TEMPORAL_AND_R1_RESTORATION_PROOF_R1.json": "2677d7d0807261157f61fb72fb34623ab1ba0dbc38d53d8f91f8ce372033cdab",
+    "reports/audits/A12_R2_TRUE_REPLAY_ENVIRONMENT_FAILURE_R1.json": "ad18a80c393b3336884a8074967941afd05f722b2abd1ce2e9ade200558aa844",
+    "reports/audits/A12_R2_TRUE_REPLAY_EXECUTION_R1.json": "639462e39f25054b8b3c95681c049378a874c611b444ee186efca900554a713b",
+    "reports/audits/A12_R2_UNCHANGED_PRICE_RUNTIME_R1.json": "10181e84b7c5e29d690e910509cc41251a098f6df206d561db7a226ac5d43834",
+    "reports/audits/A12_R2_UNCHANGED_REPLAY_SOURCE_PROOFS_R1.json": "88b0edd673f2577dacc48fe57824e68b1b26cd3d41f7b502ba20641546ded873",
+    "reports/audits/A12_R2_V4_02_FULL_HISTORICAL_REPAIR_AND_DIFF_R1.json": "15be4d3184583c9c417ada42819f612ad7b22083185fc3795eb6dda044bb8865",
+    "reports/audits/A12_R2_V4_04_TRUE_REPLAY_R1.json": "b2dc54084d22fb5aa818322e420a6e82da07423210a59d5c762cfb1900ba9302",
+    "reports/audits/A12_STAGE_CLOSURE_R1.json": "c8ad2b1fc4b46bb66720ab2ca87c7094ad773af07b3b9ba0bcc0a8ed2ef514f3",
+    "reports/audits/A12_STAGE_ENTRY_R1.json": "d058916b61ed6d7ea285234392bfcd090884833cb3da1b425738f2131f764a4a",
+    "reports/audits/A12_UNCHANGED_REPLAY_SOURCE_PROOFS_R1.json": "16cd64d254b37be3e76613d294293d4b02b458203140b42f8c4453d9f77be45c",
+    "reports/audits/A12_V4_02_FULL_HISTORICAL_REPAIR_AND_DIFF_R1.json": "ff6854311981817d4a0ce9165b68763e979a79d4870d897effa61d008e37a6d0",
+    "reports/audits/A12_V4_04_TRUE_REPLAY_R1.json": "38751ecab85d28a428bc12200509255d468d8ca32c2708e4ae75b927c09fde11",
+    "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json": "c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3",
+    "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R2.json": "83e2959a26dc3e1e5a64f14c56f3ef428d5b1b6d0d249311bea13cc73e87586e",
+    "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R3.json": "4e224ae63cac14ac85a2b47b29ed4566f55565912b155fd7f940b281fdf6e6d6",
+    "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R4.json": "d641583242ddb30ece8d2811f0b222eb9bbbbdce1bd3f7d9d63575e9d7bc29a7",
+    "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R5.json": "0109d018fedeb8176dd904039d56e0af040c4533443a194e3bc598c9c31019eb",
+    "src/workbench_analysis/status_st_authority_r1.py": "9687b6308751eebf0b86d614cede3436f4a49d66b6f3675577ea407125ea8125",
+    "src/workbench_db/migrations/v4_postgres/021_v4_09_stock_prewatch.sql": "dcbcd468b7651c233a636c81e81bdbd1dc5b7ca85c42d4769c52b42ef5b7dc1c",
+    "src/workbench_db/migrations/v4_postgres/022_v4_10_research_state_interface.sql": "cfa37902a75b100e05813e3fb0b63e3884bf369d4c1913067e5714eb9004a732",
+    "src/workbench_db/migrations/v4_postgres/023_v4_10_research_state_lineage_hardening.sql": "e308a42738d32a8a02dd4c1859a1e5de3d561044ca148bd13949932113a3a97b",
+    "src/workbench_db/migrations/v4_postgres/024_v4_10_research_state_authority_hardening.sql": "08058023f24231bd313523e860e2d6262c9035b395e5e27045fb754dcad69624",
+    "src/workbench_db/migrations/v4_postgres/025_v4_09_consumer_identity_hardening.sql": "b27f960eba2353f09447d21b00a3e669398ff2b71a0158b5d4ace4a666da6374"
+  },
+  "protected_heads_unchanged": true,
+  "pytest_return_code": 0,
+  "registry": {
+    "callable_count": 9,
+    "candidate_only": true,
+    "contract_id": "DM01_A01_INCREMENTAL_REGISTRY_VALIDATION_R1",
+    "data_head_promotion_permitted": false,
+    "errors": [],
+    "external_acceptance": "PENDING",
+    "registry_path": "config/dm01_incremental_builders_contract_r1.json",
+    "status": "PASS_ENGINEERING_EXPORTS"
+  },
+  "required_families": [
+    "tests/v4_01",
+    "tests/v4_02",
+    "tests/v4_03",
+    "tests/v4_04",
+    "tests/v4_05",
+    "tests/v4_06",
+    "tests/v4_07",
+    "tests/v4_08",
+    "tests/v4_joint",
+    "tests/v4_phase0",
+    "tests/v4_09",
+    "tests/v4_10",
+    "tests/v4_dm01",
+    "tests/test_fixed_qfq_samples.py",
+    "tests/test_phase0_2a_gate.py",
+    "tests/test_phase1_qa_sample_selector.py",
+    "tests/governance/test_no_symbol_specific_runtime_logic.py",
+    "tests/v4_a10",
+    "tests/v4_a10_r2",
+    "tests/v4_a11",
+    "tests/v4_a12",
+    "tests/v4_a12_r2",
+    "tests/v4_a08",
+    "tests/v4_a09",
+    "tests/v4_registry_r3",
+    "tests/v4_registry_r4",
+    "tests/v4_dm01_r2",
+    "tests/v4_a10_a12_r3"
+  ],
+  "status": "PASS",
+  "summary": {
+    "errors": 0,
+    "failures": 0,
+    "passed": 1420,
+    "skipped": 2,
+    "tests": 1422
+  },
+  "temporary_cluster_cleaned_up": true,
+  "tested_commit": "347860a89cc6e6b8c67b28caae29f22cf385d24e"
+}

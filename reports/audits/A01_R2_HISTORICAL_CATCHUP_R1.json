@@ -1,0 +1,38 @@
+{
+  "contract_id": "DM01_A01_R2_BOUNDED_HISTORICAL_CATCHUP_R1",
+  "endpoint": {
+    "configured_host": "public-api.baostock.com",
+    "configured_port": 10030,
+    "connected_peer_ip": "114.94.20.42",
+    "connected_peer_port": 10030
+  },
+  "external_acceptance": null,
+  "first_availability_at_target_proven": false,
+  "local_missing_does_not_prove_provider_empty": true,
+  "login_error": null,
+  "observations": {
+    "CAPABILITY_SMOKE": {
+      "bytes": 3357,
+      "path": "reports/dm01/a01_r2/20261001T033251758661Z/CAPABILITY_SMOKE_receipt.json",
+      "sha256": "f973b4f6b05390f77db63262b938bd317be8160ff535263c106e0cb601edb944"
+    },
+    "TARGET_DATE_CAPTURE": {
+      "bytes": 3532,
+      "path": "reports/dm01/a01_r2/20261001T033251758661Z/TARGET_DATE_CAPTURE_receipt.json",
+      "sha256": "4c5ac5187807f54e1468b78091714adff7b70ccd2cec7ddcbb437fdf85953509"
+    },
+    "capability_failure": "RUNTIME_CAPABILITY_SMOKE_FAILED:PROVIDER_SCHEMA_MISMATCH"
+  },
+  "request_count": 6,
+  "request_ledger": {
+    "bytes": 491,
+    "path": "reports/dm01/a01_r2/20261001T033251758661Z/request_ledger.json",
+    "sha256": "6df544324492a3e3ffae3eb8165f3cd59789304424fd615718f6a5082f8af29a"
+  },
+  "requests_attempted": true,
+  "run_id": "20261001T033251758661Z",
+  "runtime_capability": null,
+  "smoke_date": "2026-09-30",
+  "source_role": "SUPPLEMENTAL_CROSSCHECK",
+  "target_trade_date": "2026-09-28"
+}

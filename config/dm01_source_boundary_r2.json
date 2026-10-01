@@ -1,0 +1,23 @@
+{
+  "contract_id":"DM01_SOURCE_AUTHORITY_AND_SUPPLEMENTAL_GATE_R2",
+  "version":"2.0.0",
+  "status":"ENGINEERING_SOURCE_BOUNDARY_ONLY_A12_EXTERNAL_OWNER_PENDING",
+  "required_source_families":["TDX_ACCEPTED_FROZEN_PACKAGE","GBBQ_ACCEPTED_TARGET_ELIGIBLE","ACCEPTED_LOCAL_DATED_IDENTITY","ACCEPTED_CALENDAR","ACCEPTED_PARENT_DATA_HEAD","ACCEPTED_SPECIAL_PHASE_CONTRACT"],
+  "supplemental_source_families":["BAOSTOCK_DAILY_TARGET_CAPTURE_V2","BAOSTOCK_ADJUST_FACTOR_TARGET_CAPTURE_V2"],
+  "supplemental_roles":{"BAOSTOCK_DAILY_TARGET_CAPTURE_V2":"SUPPLEMENTAL_CROSSCHECK","BAOSTOCK_ADJUST_FACTOR_TARGET_CAPTURE_V2":"AUDIT_FACT_NOT_CANONICAL_QFQ_AUTHORITY"},
+  "supplemental_missing_blocks_core":false,
+  "provider_presence_defines_identity":false,
+  "provider_conflict_overwrites_local_fact":false,
+  "status_st_owner":"A12_EXTERNALLY_ACCEPTED_PRODUCER_REQUIRED_FOR_FINAL_ALL_NINE",
+  "required_owner_contracts":["LOCAL_DATED_TRADING_STATUS_V2","LOCAL_DATED_ST_IDENTITY_V2"],
+  "failure_taxonomy":["LOCAL_ACCEPTED_FREEZE_MISSING","HISTORICAL_CATCHUP_NOT_AUTHORIZED","HISTORICAL_CATCHUP_QUERY_FAILED","PROVIDER_TARGET_DATE_EMPTY","SUPPLEMENTAL_SOURCE_UNAVAILABLE","CORE_REQUIRED_SOURCE_UNAVAILABLE","A12_EXTERNAL_OWNER_ACCEPTANCE_REQUIRED"],
+  "capture_contract":"BAOSTOCK_DM01_TARGET_DATE_CAPTURE_V2",
+  "capture_lineage":"RECONSTRUCTED_CORRECTED",
+  "origin":"DELAYED_HISTORICAL_RETRIEVAL",
+  "first_availability_at_target_proven":false,
+  "engineering_r1_adapters_rewritten":false,
+  "final_all_nine_runtime_integration":"BLOCKED_A12_EXTERNAL_OWNER_ACCEPTANCE",
+  "formal_consumer_authorization":false,
+  "data_head_promotion_permitted":false,
+  "external_acceptance":null
+}

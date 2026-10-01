@@ -1,0 +1,31 @@
+{
+  "a12_source_contract": {
+    "bytes": 1237,
+    "path": "config/v4_02_status_st_authority_r1.json",
+    "sha256": "d926bb00abe97be5a485c519b9a4f7bf4b647c380c8edd812bb8674b273d2291"
+  },
+  "completed_independent_scope": [
+    "Runtime capability/date decoupling",
+    "Actual bounded 9/28 delayed catch-up",
+    "Exact SDK hash schema adapter",
+    "Required versus supplemental preflight",
+    "Independent real TDX/BaoStock capture checks"
+  ],
+  "data_head_promoted": false,
+  "engineering_evidence": {
+    "bytes": 5695,
+    "path": "reports/audits/A01_R2_INDEPENDENT_CAPTURE_AND_SOURCE_PREFLIGHT_R1.json",
+    "sha256": "2ab41ffc93bca14a100df8dbcf4f0cabc7ed48a43cada78379763ccc6277b4bc"
+  },
+  "external_acceptance": null,
+  "next_stage": "Independent A12 external owner acceptance before final all-nine runtime integration and real candidate",
+  "pending_required_scope": [
+    "Final R2 runtime integration around accepted A12 producers",
+    "Real all-nine target candidate",
+    "Independent all-nine parent/source/calendar and arithmetic postcheck",
+    "Real candidate idempotency and delayed-revision checks"
+  ],
+  "status": "BLOCKED_A12_EXTERNAL_OWNER_ACCEPTANCE",
+  "unique_completion_status_not_claimed": "DM01_A01_R2_REAL_TARGET_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
+  "work_package": "WP-A01-DM01"
+}

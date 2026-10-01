@@ -1,0 +1,133 @@
+{
+  "accepted_heads_unchanged": true,
+  "all_nine_final_execution_performed": false,
+  "all_nine_period_price_special_phase_postcheck_performed": false,
+  "canonical_qfq_authority": "GBBQ_ONLY",
+  "capture": {
+    "bytes": 5099,
+    "path": "reports/dm01/a01_r2/20261001T033251758661Z/normalized_schema_v2_1/TARGET_DATE_CAPTURE_normalized_receipt.json",
+    "sha256": "0c5da7a7c331199abc53f54f5c8cfd526e1c76aee068da1599531b0c178af7e8"
+  },
+  "engineering_r1_adapters_preserved": true,
+  "external_acceptance": null,
+  "final_candidate_blocker": "A12_EXTERNAL_OWNER_ACCEPTANCE_REQUIRED",
+  "first_availability_at_target_proven": false,
+  "gbbq_files": [
+    {
+      "bytes": 5607212,
+      "path": "data/v4/source_snapshot_store/gbbq/sha256-775d82c58b5b46ec1d21478f86ba8ef90302691982e68d5c4cfcd51fddda666e/gbbq",
+      "sha256": "f8c6a60e052a3fd7f8c3a043dbc9c53311a7599e1b36bb6cc140058f56269ef1"
+    },
+    {
+      "bytes": 96585,
+      "path": "data/v4/source_snapshot_store/gbbq/sha256-775d82c58b5b46ec1d21478f86ba8ef90302691982e68d5c4cfcd51fddda666e/gbbq.map",
+      "sha256": "f874e09444c03077b1d9e465a6efe56beb6678c0e71c98d118516ad24efe51c8"
+    }
+  ],
+  "observed_at": "2026-10-01T04:23:55.172145+00:00",
+  "provider_conflicts": [],
+  "request_count": 6,
+  "required_next_input": "Independent external acceptance of the A12 owner contract, followed by separately authorized owner promotion/binding",
+  "required_source_bindings": {
+    "ACCEPTED_CALENDAR": {
+      "byte_count": 1176,
+      "path": "data/v4/V4_02_GO_FORWARD_CALENDAR_EXTENSION_ACCEPTED_HEAD_R1.json",
+      "sha256": "d0d453689261603a6ccd773f6383781178cb74d388087b72c652dc8afcb309f6"
+    },
+    "ACCEPTED_LOCAL_DATED_IDENTITY": {
+      "byte_count": 5528197,
+      "path": "data/v4/artifact_store/v4_01/security_entity_map_R7_20260927.json",
+      "sha256": "e33294fb8d1d71732fdc3df903258b5617345811ecbdb649af8056ccd91427e0"
+    },
+    "ACCEPTED_PARENT_DATA_HEAD": {
+      "bytes": 2478,
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0"
+    },
+    "ACCEPTED_SPECIAL_PHASE_CONTRACT": {
+      "byte_count": 4532,
+      "path": "config/special_price_phase_policy_r6.json",
+      "sha256": "cffd66e633ee2a34c712ee628dcace2026b49764bc9f593dacd90fe39e183c79"
+    },
+    "GBBQ_ACCEPTED_TARGET_ELIGIBLE": {
+      "byte_count": 1333,
+      "path": "data/v4/source_snapshot_store/gbbq/sha256-775d82c58b5b46ec1d21478f86ba8ef90302691982e68d5c4cfcd51fddda666e/manifest.json",
+      "sha256": "f8c799f999482f385a4b1d6153ae9dafe7794aff5ddabee6e718e7fd119bad32"
+    },
+    "TDX_ACCEPTED_FROZEN_PACKAGE": {
+      "byte_count": 551001603,
+      "path": "data/v4/source_snapshots/tdx/20260928/sha256-70b79898325ef6c67ea697f922d38fa3fd523e2ad62879b1b9fcb59fce52bf0c/hsjday.zip",
+      "sha256": "70b79898325ef6c67ea697f922d38fa3fd523e2ad62879b1b9fcb59fce52bf0c"
+    }
+  },
+  "response_checks": {
+    "query_daily_adjust_factor": {
+      "normalization_independently_equal": true,
+      "observed_at": "2026-10-01T03:33:23.798038+00:00",
+      "original_bytes_bound": true,
+      "provider_date": "2026-09-28",
+      "received_at": "2026-10-01T03:33:23.838298+00:00",
+      "rows": 16
+    },
+    "query_daily_history_k_AStock": {
+      "normalization_independently_equal": true,
+      "observed_at": "2026-10-01T03:33:08.197373+00:00",
+      "original_bytes_bound": true,
+      "provider_date": "2026-09-28",
+      "received_at": "2026-10-01T03:33:23.769854+00:00",
+      "rows": 5222
+    }
+  },
+  "runtime_capability": {
+    "bytes": 1743,
+    "path": "reports/dm01/a01_r2/20261001T033251758661Z/normalized_schema_v2_1/runtime_capability_v2.json",
+    "sha256": "93e36854ce79f1b168c871d6fb6c3f6f9ed7ba635cac0e6dd6b591819027a14e"
+  },
+  "source_gate_with_provider": {
+    "canonical_adjustment_authority": "GBBQ",
+    "contract_id": "DM01_SOURCE_AUTHORITY_AND_SUPPLEMENTAL_GATE_R2",
+    "core_source_gate": "PASS",
+    "required": {
+      "ACCEPTED_CALENDAR": "AVAILABLE",
+      "ACCEPTED_LOCAL_DATED_IDENTITY": "AVAILABLE",
+      "ACCEPTED_PARENT_DATA_HEAD": "AVAILABLE",
+      "ACCEPTED_SPECIAL_PHASE_CONTRACT": "AVAILABLE",
+      "GBBQ_ACCEPTED_TARGET_ELIGIBLE": "AVAILABLE",
+      "TDX_ACCEPTED_FROZEN_PACKAGE": "AVAILABLE"
+    },
+    "scope": "SOURCE_FREEZE_PREFLIGHT_ONLY_NOT_ALL_NINE_ADAPTER_EXECUTION",
+    "supplemental": {
+      "BAOSTOCK_ADJUST_FACTOR_TARGET_CAPTURE_V2": "AVAILABLE",
+      "BAOSTOCK_DAILY_TARGET_CAPTURE_V2": "AVAILABLE"
+    },
+    "supplemental_can_overwrite_core": false
+  },
+  "source_gate_without_provider": {
+    "canonical_adjustment_authority": "GBBQ",
+    "contract_id": "DM01_SOURCE_AUTHORITY_AND_SUPPLEMENTAL_GATE_R2",
+    "core_source_gate": "PASS",
+    "required": {
+      "ACCEPTED_CALENDAR": "AVAILABLE",
+      "ACCEPTED_LOCAL_DATED_IDENTITY": "AVAILABLE",
+      "ACCEPTED_PARENT_DATA_HEAD": "AVAILABLE",
+      "ACCEPTED_SPECIAL_PHASE_CONTRACT": "AVAILABLE",
+      "GBBQ_ACCEPTED_TARGET_ELIGIBLE": "AVAILABLE",
+      "TDX_ACCEPTED_FROZEN_PACKAGE": "AVAILABLE"
+    },
+    "scope": "SOURCE_FREEZE_PREFLIGHT_ONLY_NOT_ALL_NINE_ADAPTER_EXECUTION",
+    "supplemental": {
+      "BAOSTOCK_ADJUST_FACTOR_TARGET_CAPTURE_V2": "SUPPLEMENTAL_SOURCE_UNAVAILABLE",
+      "BAOSTOCK_DAILY_TARGET_CAPTURE_V2": "SUPPLEMENTAL_SOURCE_UNAVAILABLE"
+    },
+    "supplemental_can_overwrite_core": false
+  },
+  "st_or_suspension_not_inferred_from_provider": true,
+  "status": "PASS_REAL_CAPTURE_AND_REQUIRED_SOURCE_PREFLIGHT_FINAL_ALL_NINE_BLOCKED",
+  "tdx_independent_raw_checks": {
+    "close_exact_match": 5210,
+    "local_actual": 5210,
+    "local_bar_missing": 12,
+    "provider_crosscheck_rows": 5210,
+    "target_members": 5222
+  }
+}

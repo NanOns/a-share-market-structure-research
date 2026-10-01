@@ -1,0 +1,18 @@
+{
+  "additional_network_requests": 0,
+  "corrected_report": {
+    "bytes": 1652,
+    "path": "reports/audits/A01_R2_NORMALIZED_RUNTIME_AND_TARGET_CAPTURE_R2.json",
+    "sha256": "b85b565636c7005797ff45e6f4f259aa532fedaee5d9a70ed819c63efe1a25db"
+  },
+  "correction": "New V2_1 directory, purpose-scoped response files, immutable equality retries, complete nested smoke/target postcheck.",
+  "external_acceptance": null,
+  "initial_error": "Smoke and target normalization used the same response path; the target overwrote the derived smoke response, breaking its nested binding. Raw captures and original times were preserved.",
+  "prior_diagnostic_artifacts_retained": true,
+  "prior_report": {
+    "bytes": 1316,
+    "path": "reports/audits/A01_R2_NORMALIZED_RUNTIME_AND_TARGET_CAPTURE_R1.json",
+    "sha256": "052243b4d18cd1d356c0e814b50eb5b9e0ecf5f9658a31bb06e9c15d5680a351"
+  },
+  "status": "PASS_VERSIONED_NORMALIZED_STORAGE_REPAIR"
+}

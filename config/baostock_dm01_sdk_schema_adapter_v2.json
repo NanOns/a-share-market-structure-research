@@ -1,0 +1,16 @@
+{
+  "contract_id":"BAOSTOCK_DM01_SDK_SCHEMA_ADAPTER_V2",
+  "version":"2.0.0",
+  "sdk_version":"0.9.3",
+  "sdk_python_sources_sha256":"32bd19deb872561c8f9c40063de38df4fe4ab0f1073685538f627a9238686bfe",
+  "daily_provider_date_basis":"ALL_NONEMPTY_RESPONSE_ROW_DATE_VALUES_EXACT_QUERY_DATE; NEVER_REQUEST_DATE_ONLY",
+  "factor_provider_date_basis":"ALL_NONEMPTY_RESPONSE_EFFECTIVE_DATES_EXACT_QUERY_DATE; SDK_DATE_ATTRIBUTE_IS_REQUEST_ECHO",
+  "factor_raw_schema":["code","dividOperateDate","foreAdjustFactor","backAdjustFactor","adjustFacto"],
+  "factor_header_alias":{"adjustFacto":"adjustFactor"},
+  "alias_scope":"EXACT_HASH_BOUND_0_9_3_QUERY_DAILY_ADJUST_FACTOR_PARSER; ALL_OTHER_SCHEMA_DRIFT_FAILS_CLOSED",
+  "parser_evidence":"Installed function slices receive_data ending at -1 before taking the final field header; frozen function source and request/response bytes bound in the audit receipt.",
+  "source_role":"SUPPLEMENTAL_CROSSCHECK",
+  "canonical_qfq_authority":false,
+  "status":"CANDIDATE_SCHEMA_ADAPTER_PENDING_EXTERNAL_REVIEW",
+  "external_acceptance":null
+}

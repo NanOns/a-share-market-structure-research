@@ -1,0 +1,38 @@
+{
+  "additional_network_requests": 0,
+  "canonical_qfq_authority": false,
+  "external_acceptance": null,
+  "first_availability_at_target_proven": false,
+  "normalized": {
+    "CAPABILITY_SMOKE": {
+      "bytes": 4844,
+      "path": "reports/dm01/a01_r2/20261001T033251758661Z/normalized_schema_v2_1/CAPABILITY_SMOKE_normalized_receipt.json",
+      "sha256": "38a52a1840960d8348ac4e8d8b36c50903e8e75cde4e0af63d7d0b5139248f33"
+    },
+    "TARGET_DATE_CAPTURE": {
+      "bytes": 5099,
+      "path": "reports/dm01/a01_r2/20261001T033251758661Z/normalized_schema_v2_1/TARGET_DATE_CAPTURE_normalized_receipt.json",
+      "sha256": "0c5da7a7c331199abc53f54f5c8cfd526e1c76aee068da1599531b0c178af7e8"
+    },
+    "runtime_capability": {
+      "bytes": 1743,
+      "path": "reports/dm01/a01_r2/20261001T033251758661Z/normalized_schema_v2_1/runtime_capability_v2.json",
+      "sha256": "93e36854ce79f1b168c871d6fb6c3f6f9ed7ba635cac0e6dd6b591819027a14e"
+    }
+  },
+  "normalized_capture_storage_revision": "V2_1_PURPOSE_SCOPED_IMMUTABLE_FILES",
+  "observed_and_received_times_preserved": true,
+  "original_request_receipt": {
+    "bytes": 1402,
+    "path": "reports/audits/A01_R2_HISTORICAL_CATCHUP_R1.json",
+    "sha256": "7b6a236b1e3a16a3bc90192e07177f6aec72b6bde03b06560f5ed93ce57621d2"
+  },
+  "raw_bytes_preserved": true,
+  "request_count": 6,
+  "status": "PASS_BOUNDED_REAL_SMOKE_AND_DELAYED_TARGET_CAPTURE",
+  "supersedes_unaccepted_engineering_normalization_report": {
+    "bytes": 1316,
+    "path": "reports/audits/A01_R2_NORMALIZED_RUNTIME_AND_TARGET_CAPTURE_R1.json",
+    "sha256": "052243b4d18cd1d356c0e814b50eb5b9e0ecf5f9658a31bb06e9c15d5680a351"
+  }
+}

@@ -20,6 +20,7 @@ def main():
     assert bind(repair['original_business_head']['path'])['sha256']==repair['original_business_head']['sha256']
     assert bind(repair['exact_original_byte_archive']['path'])==repair['exact_original_byte_archive']
     repair.update(status='PASS_ENGINEERING',external_acceptance='PENDING_INDEPENDENT_EXTERNAL_REAUDIT',
+        durable_contract=bind('config/dm01_incremental_builders_contract_r3_2.json'),
         durable_chain=bind(P+'CONTINUOUS_CHAIN_POSTCHECK_R2.json'),determinism=bind(P+'DETERMINISM_R2.json'),
         scope='EXACT_ORIGINAL_BYTE_INPUT_ARCHIVE_AND_PREDECLARED_GIT_NAMESPACE_REPRESENTATION; NO_BUSINESS_HEAD_REWRITE')
     atomic_json(ROOT/(P+'METADATA_DURABILITY_REPAIR_R1.json'),repair)

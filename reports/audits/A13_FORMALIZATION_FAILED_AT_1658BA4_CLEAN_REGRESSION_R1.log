@@ -1,0 +1,143 @@
+........................................................................ [  4%]
+........................................................................ [  9%]
+........................................................................ [ 14%]
+........................................................................ [ 19%]
+........................................................................ [ 24%]
+........................................................................ [ 28%]
+........................................................................ [ 33%]
+........................................................................ [ 38%]
+........................................................................ [ 43%]
+..s..........s.......................................................... [ 48%]
+........................................................................ [ 52%]
+........................................................................ [ 57%]
+........................................................................ [ 62%]
+........................................................................ [ 67%]
+........................................................................ [ 72%]
+........................................................................ [ 76%]
+........................................................................ [ 81%]
+........................................................................ [ 86%]
+........................................................................ [ 91%]
+........................................................................ [ 96%]
+..............................FFFF.......................                [100%]
+================================== FAILURES ===================================
+_ test_actual_final_contract_context_has_no_checkout_binding_failure[RAW_DAILY] _
+
+cap = 'RAW_DAILY'
+
+    @pytest.mark.parametrize('cap',['RAW_DAILY','TRADING_STATUS','ISST'])
+    def test_actual_final_contract_context_has_no_checkout_binding_failure(cap):
+        _,ctx,target,freeze=context()
+>       result=validate_context(cap,target,ctx['parent'],freeze,ctx['calendar'],ctx['identity'],
+            ROOT/'data/v4/dm01_candidate_staging_r3/durability_context_probe')
+
+tests\v4_dm01_r3\test_metadata_durability.py:34: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\dm01_chain_contract_r3_2.py:63: in validate_context
+    validate_parent(parent,contract)
+src\workbench_analysis\dm01_chain_contract_r3_2.py:17: in validate_parent
+    for source in manifest['accepted_source_bindings']:load_bytes(source)
+                                                       ^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_chain_contract_r3_2.py:55: in load_bytes
+    return bound_path(ref)
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ref = {'bytes': 99012112, 'path': 'data/v4/artifact_store/v4_02/V4_02_DATED_ST_STATUS_R7_20260927.jsonl.gz', 'sha256': 'ffac24e09d02a53ffb48dbc24449d95f5ab20d8934c6401588a73c8673dbb8f4'}
+
+    def bound_path(ref):
+        path=Path(ref['path'])
+        if not path.is_absolute():path=ROOT/path
+        if not path.is_file() or sha(path)!=ref.get('sha256'):
+>           raise ComponentBuildError('INPUT_PUBLICATION_DIGEST_MISMATCH:'+str(ref.get('path')))
+E           workbench_analysis.dm01_incremental_component_builders_r3_2.ComponentBuildError: INPUT_PUBLICATION_DIGEST_MISMATCH:data/v4/artifact_store/v4_02/V4_02_DATED_ST_STATUS_R7_20260927.jsonl.gz
+
+src\workbench_analysis\dm01_incremental_component_builders_r3_2.py:61: ComponentBuildError
+_ test_actual_final_contract_context_has_no_checkout_binding_failure[TRADING_STATUS] _
+
+cap = 'TRADING_STATUS'
+
+    @pytest.mark.parametrize('cap',['RAW_DAILY','TRADING_STATUS','ISST'])
+    def test_actual_final_contract_context_has_no_checkout_binding_failure(cap):
+        _,ctx,target,freeze=context()
+>       result=validate_context(cap,target,ctx['parent'],freeze,ctx['calendar'],ctx['identity'],
+            ROOT/'data/v4/dm01_candidate_staging_r3/durability_context_probe')
+
+tests\v4_dm01_r3\test_metadata_durability.py:34: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\dm01_chain_contract_r3_2.py:63: in validate_context
+    validate_parent(parent,contract)
+src\workbench_analysis\dm01_chain_contract_r3_2.py:17: in validate_parent
+    for source in manifest['accepted_source_bindings']:load_bytes(source)
+                                                       ^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_chain_contract_r3_2.py:55: in load_bytes
+    return bound_path(ref)
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ref = {'bytes': 99012112, 'path': 'data/v4/artifact_store/v4_02/V4_02_DATED_ST_STATUS_R7_20260927.jsonl.gz', 'sha256': 'ffac24e09d02a53ffb48dbc24449d95f5ab20d8934c6401588a73c8673dbb8f4'}
+
+    def bound_path(ref):
+        path=Path(ref['path'])
+        if not path.is_absolute():path=ROOT/path
+        if not path.is_file() or sha(path)!=ref.get('sha256'):
+>           raise ComponentBuildError('INPUT_PUBLICATION_DIGEST_MISMATCH:'+str(ref.get('path')))
+E           workbench_analysis.dm01_incremental_component_builders_r3_2.ComponentBuildError: INPUT_PUBLICATION_DIGEST_MISMATCH:data/v4/artifact_store/v4_02/V4_02_DATED_ST_STATUS_R7_20260927.jsonl.gz
+
+src\workbench_analysis\dm01_incremental_component_builders_r3_2.py:61: ComponentBuildError
+__ test_actual_final_contract_context_has_no_checkout_binding_failure[ISST] ___
+
+cap = 'ISST'
+
+    @pytest.mark.parametrize('cap',['RAW_DAILY','TRADING_STATUS','ISST'])
+    def test_actual_final_contract_context_has_no_checkout_binding_failure(cap):
+        _,ctx,target,freeze=context()
+>       result=validate_context(cap,target,ctx['parent'],freeze,ctx['calendar'],ctx['identity'],
+            ROOT/'data/v4/dm01_candidate_staging_r3/durability_context_probe')
+
+tests\v4_dm01_r3\test_metadata_durability.py:34: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\dm01_chain_contract_r3_2.py:63: in validate_context
+    validate_parent(parent,contract)
+src\workbench_analysis\dm01_chain_contract_r3_2.py:17: in validate_parent
+    for source in manifest['accepted_source_bindings']:load_bytes(source)
+                                                       ^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_chain_contract_r3_2.py:55: in load_bytes
+    return bound_path(ref)
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ref = {'bytes': 99012112, 'path': 'data/v4/artifact_store/v4_02/V4_02_DATED_ST_STATUS_R7_20260927.jsonl.gz', 'sha256': 'ffac24e09d02a53ffb48dbc24449d95f5ab20d8934c6401588a73c8673dbb8f4'}
+
+    def bound_path(ref):
+        path=Path(ref['path'])
+        if not path.is_absolute():path=ROOT/path
+        if not path.is_file() or sha(path)!=ref.get('sha256'):
+>           raise ComponentBuildError('INPUT_PUBLICATION_DIGEST_MISMATCH:'+str(ref.get('path')))
+E           workbench_analysis.dm01_incremental_component_builders_r3_2.ComponentBuildError: INPUT_PUBLICATION_DIGEST_MISMATCH:data/v4/artifact_store/v4_02/V4_02_DATED_ST_STATUS_R7_20260927.jsonl.gz
+
+src\workbench_analysis\dm01_incremental_component_builders_r3_2.py:61: ComponentBuildError
+_______ test_archive_does_not_authorize_changed_business_head_namespace _______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000024ABEB9F620>
+
+    def test_archive_does_not_authorize_changed_business_head_namespace(monkeypatch):
+        config,ctx,target,freeze=context();original=b.load
+        changed=deepcopy(config);changed['accepted_go_forward_head_namespace']['sha256']='0'*64
+        changed['accepted_go_forward_head_namespace']['git_sha256']='1'*64
+        def altered(ref):
+            return changed if ref['path']==b.CONTRACT_PATH else original(ref)
+        monkeypatch.setattr(b,'load',altered)
+>       with pytest.raises(b.ComponentBuildError,match='GO_FORWARD_BUSINESS_HEAD_NAMESPACE_CHANGED'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'GO_FORWARD_BUSINESS_HEAD_NAMESPACE_CHANGED'
+E         Actual message: 'INPUT_PUBLICATION_DIGEST_MISMATCH:data/v4/artifact_store/v4_02/V4_02_DATED_ST_STATUS_R7_20260927.jsonl.gz'
+
+tests\v4_dm01_r3\test_metadata_durability.py:45: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/v4_dm01_r3/test_metadata_durability.py::test_actual_final_contract_context_has_no_checkout_binding_failure[RAW_DAILY]
+FAILED tests/v4_dm01_r3/test_metadata_durability.py::test_actual_final_contract_context_has_no_checkout_binding_failure[TRADING_STATUS]
+FAILED tests/v4_dm01_r3/test_metadata_durability.py::test_actual_final_contract_context_has_no_checkout_binding_failure[ISST]
+FAILED tests/v4_dm01_r3/test_metadata_durability.py::test_archive_does_not_authorize_changed_business_head_namespace
+4 failed, 1491 passed, 2 skipped, 1 deselected in 163.98s (0:02:43)
+

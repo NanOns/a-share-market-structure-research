@@ -1,0 +1,123 @@
+{
+  "D2": {
+    "bytes": 2635,
+    "path": "reports/v4_11_r3/V4_11_R3_D2_READBACK.json",
+    "sha256": "c2fce6f621390c38fb526530f20c5d2cd4310c749289b94d7222bd1098170387"
+  },
+  "DataHead": "KEEP_2026-09-30",
+  "StageHead": "KEEP_V4_00_TO_V4_10_ACCEPTED",
+  "V4_12_runtime": false,
+  "audit_overlay_revision": "R15_BATCH_R3_FINAL",
+  "authorized_deselects": [
+    "tests/v4_09/test_stock_prewatch.py::test_production_and_v4_09_acceptance_stay_disabled"
+  ],
+  "clean_checkout": {
+    "bytes": 1004847,
+    "path": "reports/v4_11_r3/V4_11_R3_CLEAN_CHECKOUT.json",
+    "sha256": "86b7c732efc833798dbfff91e9d12f14a597a56177ca9fd9052c3e3608880165"
+  },
+  "contract_id": "V4_R3_FINAL_SEVEN_TASK_EXTERNAL_HANDOFF_V1",
+  "delivery_manifest_path": "reports/next_round_r3/BATCH_DELIVERY_ARTIFACT_MANIFEST_R1.json",
+  "events": {
+    "bytes": 1919,
+    "path": "reports/v4_11_r3/V4_11_R3_EVENT_REPLAY.json",
+    "sha256": "8b17cd9e948593f545e6fc1fb22ba6ed641c727157a4d78098b783b46af90285"
+  },
+  "external_acceptance": false,
+  "formal_V4_11_head_created": false,
+  "human_handoff": {
+    "bytes": 2929,
+    "path": "docs/audits/V4_R3_SEVEN_TASK_HANDOFF_20261002.md",
+    "sha256": "4757a2ee5e744b9caf0934692aea3fcf215e96e48dc330c1d8b3e4ffc8e4b865"
+  },
+  "independent_audit_registry": {
+    "bytes": 25810,
+    "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R15_BATCH_R3_FINAL.json",
+    "sha256": "7eb26d6d0a9ce3789161185b087c3e6c15f6f4f8d22867a1dba392a77b071473"
+  },
+  "inherited_registry_schema_version": 13,
+  "new_deselects": [],
+  "next_stage": "UNIFIED_COMMIT_PUSH_STOP_WAIT_INDEPENDENT_EXTERNAL_ACCEPTANCE",
+  "oracle": {
+    "bytes": 15925,
+    "path": "reports/v4_11_r3/V4_11_R3_INDEPENDENT_ORACLE.json",
+    "sha256": "6904e528275ef8fb1f91ab93be4fa6cabcd70f9b3be6e558ce7a268f31496762"
+  },
+  "permissions": {
+    "focus": false,
+    "global_mandatory_adoption": false,
+    "production": false,
+    "shadow": false
+  },
+  "regression_summary": {
+    "errors": 0,
+    "failures": 0,
+    "passed": 2005,
+    "skipped": 2,
+    "tests": 2007
+  },
+  "seven_task_closure": {
+    "bytes": 7432,
+    "path": "reports/next_round_r3/BATCH_SEVEN_TASK_CLOSURE_R2.json",
+    "sha256": "eb3d65d6fe3798e29e629b79f43ad46e03cb3fc9ee0e3592c5cf75e982d4b25a"
+  },
+  "skip_dispositions": [
+    {
+      "name": "test_symlink_input_is_rejected",
+      "reason": "symlink creation unavailable"
+    },
+    {
+      "name": "test_extracted_symlink_is_rejected",
+      "reason": "symlink creation is unavailable on this runner"
+    }
+  ],
+  "source_artifact_manifest": {
+    "bytes": 32956,
+    "path": "reports/next_round_r3/BATCH_ARTIFACT_MANIFEST.json",
+    "sha256": "0453950919edc9858872b81cf33c119e3a80fbf28882bf2b8b547b58ac834425"
+  },
+  "stage_evidence": {
+    "A02/A05/A04": {
+      "bytes": 6398,
+      "path": "reports/audits/next_round_r3/scoped_promotions/HANDOFF_R2.json",
+      "sha256": "22c392af23bba4339094e8e617651067b973abec5ed97881c73def50ebcc25d3"
+    },
+    "Parallel Consolidation": {
+      "bytes": 4222,
+      "path": "reports/next_round_r3/scoped_consolidation/STAGE_CLOSURE_R4.json",
+      "sha256": "f95ac80ba56a6aead6da35c407796fa625a4863e496eebb878f4957c1075dc37"
+    },
+    "R3A": {
+      "bytes": 2023,
+      "path": "reports/v4_11_r3a/R3A_STAGE_CLOSURE.json",
+      "sha256": "8ca41d0a8a99259cbe005716476f09d50931fb9d06663d37b52470a888645e62"
+    },
+    "R3B": {
+      "bytes": 2217,
+      "path": "reports/v4_11_r3b/R3B_SEALED_PRODUCER_SET.json",
+      "sha256": "4ccaba49200174c6d38138dcae8c093c16264f69bc2e19f24b507d05472144ec"
+    },
+    "R3C": {
+      "bytes": 2291,
+      "path": "reports/v4_11_r3/V4_11_R3_EXTERNAL_REAUDIT_HANDOFF.json",
+      "sha256": "a88ab5691ddedbc0439c2fa8f90cb9ad501e1368f6006042131086bde8030336"
+    }
+  },
+  "status": "SEVEN_TASKS_COMPLETED_CLEAN_ENGINEERING_REGRESSION_PASS_EXTERNAL_ACCEPTANCE_PENDING",
+  "summary": {
+    "bytes": 3327,
+    "path": "reports/v4_11_r3/V4_11_R3_FULL_MARKET_SUMMARY.json",
+    "sha256": "8ae2612b655c1cbd15dfd1ab0228fa7eb3a85f87c1cfe90c619a54e5f1296f12"
+  },
+  "task_statuses": {
+    "A02": "A02_DOWNSTREAM_AMENDMENTS_PROMOTED_SCOPED",
+    "A04": "A04_GO_FORWARD_PRODUCER_SCOPED_ACCEPTED",
+    "A04_accumulation": "ACCUMULATION_CONTINUES",
+    "A05": "V4_08_B2_CURRENT_SNAPSHOT_SCOPED_AMENDMENT_PROMOTED",
+    "Parallel_Consolidation": "PARALLEL_SCOPED_FORMALIZATION_CONSOLIDATED",
+    "R3A": "V4_11_R3A_TARGET_FACT_PRODUCERS_CANDIDATE_READY",
+    "R3B": "V4_11_R3B_EPISODE_SAFETY_LOO_CANDIDATE_READY",
+    "R3C": "V4_11_R3_REAL_DAG_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT"
+  },
+  "tested_source_commit": "d1d87cabf7276bcac0a1c3f4b2ef08ac16d43649"
+}

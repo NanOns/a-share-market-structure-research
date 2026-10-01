@@ -1,0 +1,48 @@
+{
+  "audit_id": "V4_02_STATUS_ST_SOURCE_AUTHORITY_DIVERGENCE",
+  "depends_on": [
+    "A10_SCHEMA_FREEZE"
+  ],
+  "does_not_block_engineering_stage": true,
+  "evidence": [
+    {
+      "bytes": 3379,
+      "path": "reports/audits/A12_ENGINEERING_GATES_R1.json",
+      "sha256": "84309e458e7c2a913dc35778ed053a9c2e7d86a33cfb02cd37698fcf0b7d1319"
+    },
+    {
+      "bytes": 10632,
+      "path": "reports/audits/A12_CLEAN_CHECKOUT_R1.json",
+      "sha256": "b43b0b101cf46925f6b10f4b166deab8ee97618c50d0626fb4acc88104a4214d"
+    },
+    {
+      "bytes": 180817,
+      "path": "reports/audits/A12_CLEAN_REGRESSION_R1.xml",
+      "sha256": "8a08729c346521f2527a60339f9108855f0c9c10c11bdb87ed07782cbc55e437"
+    },
+    {
+      "bytes": 1579,
+      "path": "reports/audits/A12_CLEAN_REGRESSION_R1.log",
+      "sha256": "25460fa3b31724521f120fe39ceb19a059ed2640fd78111c7f93b83faaab99c7"
+    },
+    {
+      "bytes": 775737,
+      "path": "reports/audits/A12_NO_SYMBOL_SCAN_R1.json",
+      "sha256": "40b55ee9b77f432997b5ba540c7938b1284d03a0b2397e40e89b310a0748aee4"
+    }
+  ],
+  "external_acceptance": null,
+  "formal_consumer_authorization": false,
+  "implementation_status": "V4_02_STATUS_ST_AUTHORITY_REPAIR_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
+  "next_step": "Independent external reaudit; audit remains OPEN, accepted heads and formal permissions unchanged.",
+  "priority": "P0",
+  "production_gate": true,
+  "status": "OPEN",
+  "status_path": "reports/audits/work_packages/WP-A12-V4-02-STATUS-ST-AUTHORITY/STATUS_R1.json",
+  "task": {
+    "bytes": 9262,
+    "path": "docs/evidence/source_authority/V4_A12_V4_02_STATUS_ST_AUTHORITY_AND_CASCADE_REPAIR_TASK_R1_20261001.md",
+    "sha256": "7a2aa855bf108f8d9e7c5d36aaafcea8ae2304818c002a616bb4035b1169c0e5"
+  },
+  "work_package": "WP-A12-V4-02-STATUS-ST-AUTHORITY"
+}

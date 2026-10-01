@@ -1,6 +1,11 @@
 {
   "accepted_heads_unchanged": true,
   "allowed_candidate_status": "V4_02_STATUS_ST_AUTHORITY_REPAIR_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
+  "clean_regression": {
+    "bytes": 10632,
+    "path": "reports/audits/A12_CLEAN_CHECKOUT_R1.json",
+    "sha256": "b43b0b101cf46925f6b10f4b166deab8ee97618c50d0626fb4acc88104a4214d"
+  },
   "evidence": [
     {
       "bytes": 5732,
@@ -64,7 +69,7 @@
     "A12-G11": "PASS_ENGINEERING",
     "A12-G12": "PASS_ENGINEERING",
     "A12-G13": "PASS_ENGINEERING",
-    "A12-G14": "PENDING_CLEAN_DETACHED",
+    "A12-G14": "PASS_ENGINEERING",
     "A12-G15": "PENDING_INDEPENDENT_EXTERNAL_AUDIT"
   },
   "historical_dated_st_or_suspension_source_recovered": false,
@@ -72,6 +77,6 @@
   "next_stage": "Independent external A12 source semantics acceptance; DM01 final real-source candidate must bind that accepted producer before promotion.",
   "real_samples": "All accepted local bars independently checked over 4,035,729 memberships; unproven ST/suspension remains UNKNOWN. Dated owner transition vectors are explicit synthetic contract fixtures, not real official acceptance.",
   "source_authority_path": "PATH_A_CURRENT_MASTER_CONTRACT",
-  "status": "PENDING_CLEAN_DETACHED",
+  "status": "V4_02_STATUS_ST_AUTHORITY_REPAIR_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
   "work_package": "WP-A12-V4-02-STATUS-ST-AUTHORITY"
 }

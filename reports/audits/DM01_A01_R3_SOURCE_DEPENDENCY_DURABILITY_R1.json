@@ -1,6 +1,10 @@
 {
   "accepted_business_heads_unchanged": true,
-  "clean_regression": "PENDING_RETRY",
+  "clean_regression": {
+    "bytes": 91522,
+    "path": "reports/audits/DM01_A01_R3_CLEAN_CHECKOUT_R1.json",
+    "sha256": "9c875f79f16718fec7f636618cffd3083df532a85dca460af1304a0c5bf0dcc8"
+  },
   "existing_candidate_bindings_unchanged": true,
   "external_acceptance": "PENDING",
   "missing_from_previous_git_checkout": [
@@ -12,5 +16,6 @@
   ],
   "original_source_bytes_unchanged": true,
   "repair": "Publish original accepted source artifact using LFS; no source reconstruction or hash gate weakening",
-  "status": "PASS_ENGINEERING"
+  "status": "PASS_ENGINEERING",
+  "tested_commit": "7ad623e2f4c845c76b8fb9de3ad752087426ebb7"
 }

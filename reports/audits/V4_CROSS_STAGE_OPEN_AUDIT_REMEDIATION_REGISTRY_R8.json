@@ -43,6 +43,11 @@
       "capability_limitations": [
         "EXTERNAL_REPAIR_ACCEPTANCE_REQUIRED"
       ],
+      "clean_regression": {
+        "bytes": 91522,
+        "path": "reports/audits/DM01_A01_R3_CLEAN_CHECKOUT_R1.json",
+        "sha256": "9c875f79f16718fec7f636618cffd3083df532a85dca460af1304a0c5bf0dcc8"
+      },
       "depends_on": [
         "A12-R2_EXTERNAL_ACCEPTANCE",
         "A12_ACCEPTED_OWNER_REGISTRATION"
@@ -145,13 +150,58 @@
           "bytes": 1634,
           "path": "reports/audits/DM01_A01_R3_EXTERNAL_REAUDIT_HANDOFF_R2.json",
           "sha256": "484b11735add453ac810cc0fd38ea93777ae8d5425c353bbebf82eda8ee04656"
+        },
+        {
+          "bytes": 59878,
+          "path": "reports/audits/DM01_A01_R3_20260928_CANDIDATE_R3.json",
+          "sha256": "01298534173408c84fceeb93909755d3f9598597eb238dab89731de5cd2af059"
+        },
+        {
+          "bytes": 59448,
+          "path": "reports/audits/DM01_A01_R3_20260929_CANDIDATE_R3.json",
+          "sha256": "552e40b98ee6ddd77cd93c61b2b58fbca999123363c4ef93228f609309a04aa1"
+        },
+        {
+          "bytes": 59498,
+          "path": "reports/audits/DM01_A01_R3_20260930_CANDIDATE_R3.json",
+          "sha256": "a4cac992a731668d3b26e802e48c29a1f4c0b6e1c81d93468bb56330c62570c3"
+        },
+        {
+          "bytes": 1463,
+          "path": "reports/audits/DM01_A01_R3_CONTINUOUS_CHAIN_POSTCHECK_R3.json",
+          "sha256": "6afa572995ce8ad67f77e7398b902a5b32a584289d1ab4607bb55792f9f3a33b"
+        },
+        {
+          "bytes": 839,
+          "path": "reports/audits/DM01_A01_R3_ATOMIC_FAILURE_PROBES_R3.json",
+          "sha256": "fb5fdb15db01e8137697d6c8a8616f3758fbbb7a797f990b410bf25631fee6d4"
+        },
+        {
+          "bytes": 2088,
+          "path": "reports/audits/DM01_A01_R3_DETERMINISM_R3.json",
+          "sha256": "daa4c4c207e2a6f542f86682d9d029a4bc9e4467e86db90437dc3c1670f7e6aa"
+        },
+        {
+          "bytes": 1829,
+          "path": "reports/audits/DM01_A01_R3_METADATA_DURABILITY_REPAIR_R2.json",
+          "sha256": "be438b8ced4fca2fcb793a86e031afe94dcaf98c4cb60cb06d54979da79062f5"
+        },
+        {
+          "bytes": 2055,
+          "path": "reports/audits/DM01_A01_R3_EXTERNAL_REAUDIT_HANDOFF_R3.json",
+          "sha256": "ee3720126b2a55a01f6ad39f9e1b56a5f4c1c1c5c06d566935d9bcde431567a5"
         }
       ],
       "external_acceptance": "PENDING",
       "final_contract": {
-        "bytes": 30763,
-        "path": "config/dm01_incremental_builders_contract_r3_2.json",
-        "sha256": "2739d4159144d954e7544b9b19248e1228dda89a191ecc57155f3c1f2558c9fd"
+        "bytes": 23358,
+        "path": "config/dm01_incremental_builders_contract_r3_3.json",
+        "sha256": "44f42e22f51a13ed36177da2c0a1228996020e795a17f0f41597a4c17d2f9178"
+      },
+      "final_handoff": {
+        "bytes": 2055,
+        "path": "reports/audits/DM01_A01_R3_EXTERNAL_REAUDIT_HANDOFF_R3.json",
+        "sha256": "ee3720126b2a55a01f6ad39f9e1b56a5f4c1c1c5c06d566935d9bcde431567a5"
       },
       "formal_consumer_authorization": false,
       "history_reconstruction_prohibited": true,
@@ -1222,18 +1272,29 @@
     },
     {
       "acceptance_independent_from_dm01": true,
+      "additional_scope": "Exact previously untracked accepted source artifact publication",
       "audit_id": "DM01_R3_ACCEPTED_METADATA_GIT_REPRESENTATION",
       "business_heads_unchanged": true,
+      "clean_regression": {
+        "bytes": 91522,
+        "path": "reports/audits/DM01_A01_R3_CLEAN_CHECKOUT_R1.json",
+        "sha256": "9c875f79f16718fec7f636618cffd3083df532a85dca460af1304a0c5bf0dcc8"
+      },
       "evidence": [
         {
-          "bytes": 1721,
-          "path": "reports/audits/DM01_A01_R3_METADATA_DURABILITY_REPAIR_R1.json",
-          "sha256": "7dce4929fbc2e8d91130aa5496790c6603eab4ad60d8ff0e270e624642f5ed56"
+          "bytes": 1829,
+          "path": "reports/audits/DM01_A01_R3_METADATA_DURABILITY_REPAIR_R2.json",
+          "sha256": "be438b8ced4fca2fcb793a86e031afe94dcaf98c4cb60cb06d54979da79062f5"
+        },
+        {
+          "bytes": 838,
+          "path": "reports/audits/DM01_A01_R3_SOURCE_DEPENDENCY_DURABILITY_R1.json",
+          "sha256": "dba435e7aecbbb1fb47fd410057d371942832b990f437f54022c5be66938ee5a"
         }
       ],
       "external_acceptance": "PENDING",
       "formal_consumer_authorization": false,
-      "implementation_status": "PASS_ENGINEERING_PENDING_CLEAN_AND_EXTERNAL_REAUDIT",
+      "implementation_status": "PASS_ENGINEERING_PENDING_EXTERNAL_REAUDIT",
       "next_step": "Independent review of exact original-byte archive and predeclared namespace hashes",
       "priority": "P1",
       "scope": "Accepted metadata input byte durability across original CRLF and committed LF representations",

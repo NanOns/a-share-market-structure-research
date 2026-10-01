@@ -20,4 +20,6 @@ Data Head仍2026-09-24；Data/Stage及所有既有业务Accepted Heads exact保�
 
 代码与真实源/候选/evidence经过 clean detached regression（隔离PostgreSQL、无config/.env、global NoSymbol），实际tested commit和数量记录于 CLEAN_CHECKOUT_R1。提交push只代表阶段交付，不代表DM01 external acceptance或新的gated stage准入。下一阶段仅独立外部复审。
 
+最终联合 clean checkout 实测 commit `7ad623e2f4c845c76b8fb9de3ad752087426ebb7`：1496 passed、2 skipped、0 failures、0 errors，global NoSymbol PASS；沿用唯一既有授权 deselect。P0 与 A13 P1 共享同一次实际执行及 exact JUnit digest，未声称重复执行两次。
+
 Git 字节耐久复核发现既有 GO-FORWARD PIT Head 和 9/28 TDX capture receipt 的本地 CRLF 原字节与 Git LF 表示差异。业务 Head 和原 receipt 均未改写；将两份原字节冻结至独立 accepted_metadata_bytes 输入。首轮 R3_2 / 3.1.0 的完整候选链及失败 clean 记录保留；最终新增 R3_3 / 3.2.0 契约和独立运行时，同一真实源重新完成连续九组件链，最终候选、postcheck、atomicity、determinism、handoff 采用 R3 receipt。既有 ST R7 源产物原字节原 hash 纳入 LFS，以满足 clean checkout 的完整依赖。原 R3/R3_2 契约、运行时、三日 R1/R2 候选及原 proof 均保留。该问题单独登记为 DM01_R3_ACCEPTED_METADATA_GIT_REPRESENTATION，engineering PASS 不视为外部验收。

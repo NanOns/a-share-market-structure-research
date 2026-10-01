@@ -1,17 +1,38 @@
 {
-  "logical_digests": [
-    "021686a84336d97b2e2037942485717c5983b96789e5bd8307d8107a95d9617d",
-    "71819df2882cd74a9212115d0aa67e2d89ddad74fd7d3fe41dd553d90a5a7b41",
-    "03f581799a194ba56577748da598a821d4839cf269a690928884f3bdd22bae08"
-  ],
-  "old_candidates_immutable": true,
-  "revised_source_candidate": {
-    "bytes": 51305,
-    "path": "data/v4/dm01_candidate_staging_r3/durable_r3/c57466e5a60ebc51fd9b33bfc79471129af8d4497fdea42c83614d8405843f4d/PROMOTION_CANDIDATE.json",
-    "sha256": "b30b3c3e455aa826dd019c4a934ba3177df4e5488619ce213fdd820b90cc615f"
+  "fresh_namespace_candidate": {
+    "bytes": 51536,
+    "path": "data/v4/dm01_candidate_staging_r3/durable_r3/fresh_determinism_r3/01cc90422d57e166392ff251ec990f4ad286504c27d29cbba2fb499c9b615060/PROMOTION_CANDIDATE.json",
+    "sha256": "741ce58da07df92fe6459cd118ca1aeefeca47b2b88fbda9542546ef62c87461"
   },
-  "revision_scope": "NEW_SOURCE_VERIFICATION_RECEIPT_IDENTITY_NOT_FABRICATED_PRICE_OR_STATUS",
+  "fresh_namespace_exact_component_logical_digests": true,
+  "fresh_namespace_logical_digest": "021686a84336d97b2e2037942485717c5983b96789e5bd8307d8107a95d9617d",
+  "genuine_recapture": {
+    "bytes": 2683,
+    "path": "data/v4/source_evidence/dm01_a01_r3/2026-09-28/20261001T102338620115Z/capture_receipt.json",
+    "sha256": "616a91d0639425eb1300dee8fda5ec3eed1985e3589a0132ff116ce1b11bd502"
+  },
+  "old_candidates_immutable": true,
+  "original_logical_digest": "021686a84336d97b2e2037942485717c5983b96789e5bd8307d8107a95d9617d",
+  "producer_registry_after": {
+    "bytes": 10364,
+    "path": "data/v4/V4_SOURCE_AUTHORITY_ACCEPTED_OWNER_REGISTRY_R3.json",
+    "sha256": "3bc3d013ceebeb7dcf01f95f9a446ff2f65f03a1b6c602144cb54f490b7b18ec"
+  },
+  "producer_registry_before": {
+    "bytes": 10364,
+    "path": "data/v4/V4_SOURCE_AUTHORITY_ACCEPTED_OWNER_REGISTRY_R3.json",
+    "sha256": "3bc3d013ceebeb7dcf01f95f9a446ff2f65f03a1b6c602144cb54f490b7b18ec"
+  },
+  "provider_row_values_changed": false,
+  "revised_source_candidate": {
+    "bytes": 51662,
+    "path": "data/v4/dm01_candidate_staging_r3/durable_r3/genuine_source_revision_r3/0364da5409c7194d9e1c6bd93fabe25acfee9c0b52ec596e3bd2bca153a91c0b/PROMOTION_CANDIDATE.json",
+    "sha256": "ad8cb92373b641faeac759a1d6f7c1b95411fb13c84f8aca31396d59248f1858"
+  },
+  "revision_scope": "ACTUAL_NEW_DATED_SDK_CAPTURE_PLUS_ACTUAL_CAPTURE_ENVELOPE; NO_FABRICATED_PRICE_OR_STATUS",
   "same_source_same_parent_reruns": "NOOP_IDENTICAL_CANDIDATE",
   "source_binding_revision_changes_candidate_revision": true,
+  "source_revision_after": "sha256:bf0bae6fd7dfc7859e12f9c021f37791884e6002f7e476ce21c3e3400444d4de",
+  "source_revision_before": "sha256:f72073ca13a36af1a65604a2ebd82981000a0c0c5694b34c035c40d764aed7b2",
   "status": "PASS"
 }

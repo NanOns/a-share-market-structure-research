@@ -4,12 +4,21 @@
     "path": "reports/audits/DM01_A01_R3_ATOMIC_FAILURE_PROBES_R3.json",
     "sha256": "fb5fdb15db01e8137697d6c8a8616f3758fbbb7a797f990b410bf25631fee6d4"
   },
+  "business_value_parity": {
+    "bytes": 14888,
+    "path": "reports/audits/DM01_A01_R3_FINAL_VERSION_BUSINESS_PARITY_R1.json",
+    "sha256": "5c168cc736f45e87ff4215a34bb3b29108d19dc4f10d280a49afb810f18f39c2"
+  },
   "chain_postcheck": {
     "bytes": 1463,
     "path": "reports/audits/DM01_A01_R3_CONTINUOUS_CHAIN_POSTCHECK_R3.json",
     "sha256": "6afa572995ce8ad67f77e7398b902a5b32a584289d1ab4607bb55792f9f3a33b"
   },
-  "clean_regression": "PENDING_CLEAN_DETACHED",
+  "clean_regression": {
+    "bytes": 91522,
+    "path": "reports/audits/DM01_A01_R3_CLEAN_CHECKOUT_R1.json",
+    "sha256": "9c875f79f16718fec7f636618cffd3083df532a85dca460af1304a0c5bf0dcc8"
+  },
   "contract": {
     "bytes": 23358,
     "path": "config/dm01_incremental_builders_contract_r3_3.json",
@@ -17,11 +26,17 @@
   },
   "data_head_moved": false,
   "determinism": {
-    "bytes": 811,
+    "bytes": 2088,
     "path": "reports/audits/DM01_A01_R3_DETERMINISM_R3.json",
-    "sha256": "a1477e18bf0c9e867b7b8d4c5c94b9a5ae193f5086fdd76f1b547c6ba9eb1467"
+    "sha256": "daa4c4c207e2a6f542f86682d9d029a4bc9e4467e86db90437dc3c1670f7e6aa"
   },
   "external_acceptance": "PENDING",
+  "handoff_index_correction": "R3 execution metadata binds R3 receipts; original R1/R2 handoffs preserved",
+  "metadata_durability": {
+    "bytes": 1829,
+    "path": "reports/audits/DM01_A01_R3_METADATA_DURABILITY_REPAIR_R2.json",
+    "sha256": "be438b8ced4fca2fcb793a86e031afe94dcaf98c4cb60cb06d54979da79062f5"
+  },
   "permitted_next_stage": "INDEPENDENT_EXTERNAL_REAUDIT_ONLY",
   "phase_A": "PASS",
   "source_context": {
@@ -29,5 +44,6 @@
     "path": "data/v4/source_evidence/dm01_a01_r3/durable_chain_inputs_r2/chain_execution_context_f9d30ce43e29d7414832a2e43a41fc83cd1b9e5a1d073390fc2275abd61064c5.json",
     "sha256": "3ceca57357891ab6e9e5a56062c9831e6b39c03a66dd757558af1357f7816a4e"
   },
-  "status": "READY_FOR_EXTERNAL_REAUDIT"
+  "status": "READY_FOR_EXTERNAL_REAUDIT",
+  "tested_commit": "7ad623e2f4c845c76b8fb9de3ad752087426ebb7"
 }

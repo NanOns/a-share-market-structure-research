@@ -1,5 +1,15 @@
 {
   "accepted_head_bytes_unchanged": true,
+  "determinism": {
+    "bytes": 2088,
+    "path": "reports/audits/DM01_A01_R3_DETERMINISM_R3.json",
+    "sha256": "daa4c4c207e2a6f542f86682d9d029a4bc9e4467e86db90437dc3c1670f7e6aa"
+  },
+  "durable_chain": {
+    "bytes": 1463,
+    "path": "reports/audits/DM01_A01_R3_CONTINUOUS_CHAIN_POSTCHECK_R3.json",
+    "sha256": "6afa572995ce8ad67f77e7398b902a5b32a584289d1ab4607bb55792f9f3a33b"
+  },
   "durable_contract": {
     "bytes": 23358,
     "path": "config/dm01_incremental_builders_contract_r3_3.json",
@@ -10,6 +20,7 @@
     "path": "data/v4/source_evidence/dm01_a01_r3/accepted_metadata_bytes/TDX_20260928_CAPTURE_RECEIPT_ORIGINAL_BYTES_R1.json",
     "sha256": "74f80d950b38e57d4a9024d19ac787750a2b286236bc409138792c427d6116f4"
   },
+  "external_acceptance": "PENDING_INDEPENDENT_EXTERNAL_REAUDIT",
   "hash_gate_weakened": false,
   "initial_candidates_immutable": true,
   "original_capture_receipt": {
@@ -20,8 +31,8 @@
     "sha256": "74f80d950b38e57d4a9024d19ac787750a2b286236bc409138792c427d6116f4"
   },
   "original_sources_unchanged": true,
-  "scope": "Original TDX capture receipt archived as exact frozen input; original receipt namespace preserved",
-  "status": "PENDING_REAL_CHAIN_REPLAY",
+  "scope": "EXACT_ORIGINAL_TDX_CAPTURE_RECEIPT_BYTES; ALL_ORIGINAL_SOURCES_AND_BUSINESS_HEADS_PRESERVED",
+  "status": "PASS_ENGINEERING",
   "supersedes": {
     "bytes": 1721,
     "path": "reports/audits/DM01_A01_R3_METADATA_DURABILITY_REPAIR_R1.json",

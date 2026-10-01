@@ -1,11 +1,16 @@
 {
   "allowed_candidate_status": "A10_R2_EXTERNAL_ACCEPTANCE_FORMALIZED_A12_R2_IMPLEMENTATION_ENTRY_AUTHORIZED",
+  "clean_regression": {
+    "bytes": 12365,
+    "path": "reports/audits/R4_CLEAN_CHECKOUT_R1.json",
+    "sha256": "903acebc1f9675558893a823a981879ad826e44075d2c262c621feaa08194110"
+  },
   "gates": {
-    "clean": "PENDING_CLEAN_DETACHED",
+    "clean": "PASS_ENGINEERING",
     "historical_protection": "PASS_ENGINEERING",
     "owners_empty": "PASS_ENGINEERING",
     "scope": "PASS_ENGINEERING"
   },
   "next_stage": "STOP this entry card; separately execute supplied A12 R2 main task. DM01 and owner registration remain prohibited.",
-  "status": "PENDING_CLEAN_DETACHED"
+  "status": "A10_R2_EXTERNAL_ACCEPTANCE_FORMALIZED_A12_R2_IMPLEMENTATION_ENTRY_AUTHORIZED"
 }

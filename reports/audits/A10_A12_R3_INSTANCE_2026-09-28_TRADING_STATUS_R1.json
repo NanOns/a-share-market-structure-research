@@ -1,0 +1,39 @@
+{
+  "AS_RECORDED": false,
+  "calendar_binding": {
+    "bytes": 1421,
+    "path": "reports/audits/A10_A12_R3_CALENDAR_INSTANCE_2026-09-28_R1.json",
+    "sha256": "33795f651376f1cba980b0431c9c4f58ba8b87aaecc23e205edc20e1aadbc642"
+  },
+  "capture_receipt": {
+    "bytes": 5099,
+    "path": "reports/dm01/a01_r2/20261001T033251758661Z/normalized_schema_v2_1/TARGET_DATE_CAPTURE_normalized_receipt.json",
+    "sha256": "0c5da7a7c331199abc53f54f5c8cfd526e1c76aee068da1599531b0c178af7e8"
+  },
+  "contract_id": "SOURCE_AUTHORITY_SOURCE_INSTANCE_POLICY_V1",
+  "field_id": "TRADING_STATUS",
+  "first_available_at_target_proven": false,
+  "identity_binding": {
+    "bytes": 600937,
+    "path": "reports/audits/A10_A12_R3_IDENTITY_INSTANCE_2026-09-28_R1.json",
+    "sha256": "08f93c8eef49dcc42ffe52f67053372c0a724e72694b4ad44835e32ff277ead8"
+  },
+  "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+  "observed_at": "2026-10-01T03:33:08.197373+00:00",
+  "provider_date": "2026-09-28",
+  "query_status": "PASS_NONEMPTY_BOUNDED_EXACT_DATE",
+  "raw_artifact": {
+    "bytes": 2589159,
+    "path": "reports/dm01/a01_r2/20261001T033251758661Z/TARGET_DATE_CAPTURE_query_daily_history_k_AStock_response.json",
+    "sha256": "f72073ca13a36af1a65604a2ebd82981000a0c0c5694b34c035c40d764aed7b2"
+  },
+  "received_at": "2026-10-01T03:33:23.769854+00:00",
+  "schema_contract": {
+    "bytes": 513,
+    "path": "config/source_authority_daily_schema_r3.json",
+    "sha256": "c8cda72cd810736f5d9810cba8b8c009d8b10dd6a76b669fc7bcd394dab6725f"
+  },
+  "source_family": "BAOSTOCK_DATED_FIELD_PROVIDER",
+  "source_revision": "sha256:f72073ca13a36af1a65604a2ebd82981000a0c0c5694b34c035c40d764aed7b2",
+  "target_trade_date": "2026-09-28"
+}

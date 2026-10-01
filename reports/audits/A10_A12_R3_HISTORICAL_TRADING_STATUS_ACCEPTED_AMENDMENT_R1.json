@@ -1,0 +1,135 @@
+{
+  "AS_RECORDED": false,
+  "accepted_at": "2026-10-01T07:42:00.030557+00:00",
+  "allowed_consumers": [
+    "TRADING_STATUS",
+    "PERIOD_RAW",
+    "PERIOD_ADJUSTED",
+    "DM01_FINAL_ALL_NINE"
+  ],
+  "contract_id": "BAOSTOCK_DATED_TRADING_STATUS_RECONSTRUCTED_V3",
+  "effective_scope": {
+    "end_date": "2026-09-24",
+    "start_date": "2023-07-04"
+  },
+  "external_acceptance": "EXTERNALLY_ACCEPTED",
+  "external_authority": {
+    "document": {
+      "bytes": 7235,
+      "path": "docs/evidence/source_authority/V4_A10_A12_R3_PRODUCER_SOURCE_INSTANCE_SCOPE_REPAIR_TASK_20261001.md",
+      "sha256": "4f6663d56925a0ad1125c805ab6e26b77b4dd98488360ab72223a6d4727848af"
+    },
+    "recorded_at": "2026-10-01T07:42:00.030557+00:00",
+    "scope": "HISTORICAL_PATH_B_AND_NEGATIVE_SCOPE_CENSUS_ONLY",
+    "section": "1 / 9 / 10"
+  },
+  "field_id": "TRADING_STATUS",
+  "first_availability_at_target_proven": false,
+  "first_available_at_target_proven": false,
+  "forbidden_lineages": [
+    "AS_RECORDED",
+    "FIRST_AVAILABLE_AT_TARGET",
+    "LOCAL_TDX_AUTHORITY"
+  ],
+  "formal_consumer_authorization": true,
+  "historical_mode": "TARGET_DATE_QUERYABLE_FACT",
+  "historical_modes": [
+    "TARGET_DATE_QUERYABLE_FACT"
+  ],
+  "historical_source_instance_archive": {
+    "bytes": 74182,
+    "path": "reports/audits/A10_A12_R3_HISTORICAL_TRADING_STATUS_SOURCE_INSTANCE_ARCHIVE_R1.json",
+    "sha256": "622da1ff6cc3ece299ac7e6e8f2e45967622ed35d4bce3b6d76caa9d4785412f"
+  },
+  "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+  "local_actual_precedence": true,
+  "role_binding": {
+    "allowed_consumers": [
+      "TRADING_STATUS",
+      "PERIOD_RAW",
+      "PERIOD_ADJUSTED",
+      "DM01_FINAL_ALL_NINE"
+    ],
+    "authority_status": "EXTERNALLY_ACCEPTED",
+    "enabled": true,
+    "enabled_for_formal_consumer": true,
+    "field_id": "TRADING_STATUS",
+    "historical_retrieval_mode": "TARGET_DATE_QUERYABLE_FACT",
+    "may_block_core": true,
+    "may_change_core_quality": false,
+    "may_change_core_value": true,
+    "owner_contract_id": "BAOSTOCK_DATED_TRADING_STATUS_RECONSTRUCTED_V3",
+    "pit_requirement": "EXPLICIT_OBSERVATION_NO_INFERRED_FIRST_AVAILABILITY",
+    "role": "FIELD_AUTHORITY",
+    "role_binding_id": "A12_R2_CANDIDATE_ROLE:TRADING_STATUS",
+    "source_family": "BAOSTOCK_DATED_RECONSTRUCTED_PROVIDER",
+    "source_instance_policy_id": "SOURCE_AUTHORITY_SOURCE_INSTANCE_POLICY_V1"
+  },
+  "role_binding_id": "A12_R2_CANDIDATE_ROLE:TRADING_STATUS",
+  "source_bindings": [
+    {
+      "bytes": 801,
+      "path": "data/v4/source_evidence/a12_r2/PROVIDER_DOCUMENTATION_CAPTURE_R1.json",
+      "sha256": "7f811d4816a2114efcec3cb85429faac311b61ae27ab5ded33ad6f37e8b0dd82"
+    },
+    {
+      "bytes": 12485,
+      "path": "data/v4/source_evidence/a12_r2/stockKData.md",
+      "sha256": "2a6db3b24ab21a199aa17bd949dfbe545d3279007bea1664854f9b7c20542aac"
+    },
+    {
+      "bytes": 15120,
+      "path": "data/v4/source_evidence/a12_r2/DailyUpdates.md",
+      "sha256": "ddb5f1e153c44ab0e76cebd4506ff0075def6d8884c7fd1d2cd523e2f75a70c8"
+    },
+    {
+      "bytes": 383680,
+      "path": "reports/v4_02/V4_02_DATED_TRADING_STATUS_R6_2_20260926.json",
+      "sha256": "a80b23f6fca49350eb25161e14b2ec9fc552003e94e89c4c624ed23e1b649e55"
+    },
+    {
+      "bytes": 335513,
+      "path": "reports/v4_02/V4_02_DATED_ST_STATUS_V1_R6_2_20260926.json",
+      "sha256": "a5f84c388a7482df83f0998c39dbe737587cc4c4c89a5fb524459e311baea97f"
+    },
+    {
+      "bytes": 5690,
+      "path": "reports/v4_02/V4_02_DATED_ST_STATUS_BOUNDED_RECOVERY_R1_20260926.json",
+      "sha256": "de69b6c5e6e27e25e46c8011090e6b414fce96e8ad0f0c3419184defd67d19f1"
+    },
+    {
+      "bytes": 98865938,
+      "path": "data/v4/artifact_store/v4_02/V4_02_DATED_ST_STATUS_V1_R6_2_20260926_RECOVERED_R1.jsonl.gz",
+      "sha256": "40c64982b5b98f2cb36f13a4b65fa84ecdbc6de319f4d084f81d9d287528ce79"
+    },
+    {
+      "bytes": 80968,
+      "path": "reports/audits/A12_R2_INDEPENDENT_REAL_SOURCE_ORACLE_R1.json",
+      "sha256": "3baae8ed4c04b1da30d6b16719260f67f1baae73345023d50aeb2a4da5ed6e80"
+    },
+    {
+      "bytes": 566,
+      "path": "reports/audits/A12_R2_SOURCE_REVISION_RECOVERY_BINDING_R1.json",
+      "sha256": "645d72d0669b90636500fe82eb9420ca53b1843de59304912dc4bd8b7b27b76b"
+    },
+    {
+      "bytes": 98147204,
+      "path": "data/v4/artifact_store/v4_02/V4_02_DATED_TRADING_STATUS_R6_2_20260926.jsonl.gz",
+      "sha256": "bb75f6cb9187616a272ff493b3fedfeaf9d0b2ac6c2a4aef4d3d74c550921119"
+    }
+  ],
+  "source_instance_policy_id": "SOURCE_AUTHORITY_SOURCE_INSTANCE_POLICY_V1",
+  "source_instance_representation": "HISTORICAL_NORMALIZED_ARCHIVE",
+  "source_observed_at": "2026-09-26T12:09:31+00:00",
+  "source_role": "FIELD_AUTHORITY",
+  "source_semantics": {
+    "bytes": 9881,
+    "path": "reports/audits/A12_R2_PROVIDER_SEMANTICS_AND_REVISION_R1.json",
+    "sha256": "535046780fb2f8058c28c47f63ed7ee070f5a507321f1ff8b9b62e585218bc7b"
+  },
+  "supersedes": {
+    "bytes": 2257,
+    "path": "reports/audits/A12_R2_OWNER_TRADING_STATUS_CANDIDATE_R1.json",
+    "sha256": "16b1ac7dfa43aaa09879b74ca55f969807a6acc19957446c492f7231d2c5470a"
+  }
+}

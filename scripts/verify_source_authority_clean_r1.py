@@ -29,7 +29,7 @@ def git(*args):
     return subprocess.run(['git',*args],cwd=ROOT,check=True,capture_output=True,text=True).stdout.strip()
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--work-package',choices=['A10','A11','A12','A01_R2','A08','A09','R3','R4','A10_R2','A12_R2'],default='A10');parser.add_argument('--family',action='append',default=['tests/v4_a10']);args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--work-package',choices=['A10','A11','A12','A01_R2','A08','A09','R3','R4','A10_R2','A12_R2','A10_A12_R3','A13'],default='A10');parser.add_argument('--family',action='append',default=['tests/v4_a10']);args=parser.parse_args()
     prefix=args.work_package+'_'
     families=list(dict.fromkeys([*FAMILIES,*args.family]))
     before=git('status','--porcelain=v1');head=git('rev-parse','HEAD')
@@ -37,7 +37,7 @@ def main():
     protected={r['path']:hashlib.sha256((ROOT/r['path']).read_bytes()).hexdigest() for r in
         json.loads((ROOT/'config/source_authority_governance_r1.json').read_text(encoding='utf8'))['protected_bindings']}
     stage_entry=ROOT/f'reports/audits/{args.work_package}_STAGE_ENTRY_R1.json'
-    if args.work_package in ('R3','R4','A10_R2','A12_R2'):
+    if args.work_package in ('R3','R4','A10_R2','A12_R2','A10_A12_R3','A13'):
         entry=json.loads(stage_entry.read_text(encoding='utf8'))
         for binding in entry['protected_bindings']:
             actual=hashlib.sha256((ROOT/binding['path']).read_bytes()).hexdigest()

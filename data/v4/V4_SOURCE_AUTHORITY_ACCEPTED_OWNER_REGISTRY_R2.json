@@ -1,0 +1,129 @@
+{
+  "contract_id": "SOURCE_AUTHORITY_ACCEPTED_OWNER_REGISTRY_V2",
+  "external_authority": {
+    "document": {
+      "bytes": 7235,
+      "path": "docs/evidence/source_authority/V4_A10_A12_R3_PRODUCER_SOURCE_INSTANCE_SCOPE_REPAIR_TASK_20261001.md",
+      "sha256": "4f6663d56925a0ad1125c805ab6e26b77b4dd98488360ab72223a6d4727848af"
+    },
+    "recorded_at": "2026-10-01T07:42:00.030557+00:00",
+    "scope": "HISTORICAL_PATH_B_AND_NEGATIVE_SCOPE_CENSUS_ONLY",
+    "section": "1 / 9 / 10"
+  },
+  "owners": [
+    {
+      "accepted_at": "2026-10-01T07:42:00.030557+00:00",
+      "allowed_consumers": [
+        "TRADING_STATUS",
+        "PERIOD_RAW",
+        "PERIOD_ADJUSTED",
+        "DM01_FINAL_ALL_NINE"
+      ],
+      "effective_scope": {
+        "end_date": "2026-09-24",
+        "start_date": "2023-07-04"
+      },
+      "external_acceptance": "EXTERNALLY_ACCEPTED",
+      "field_id": "TRADING_STATUS",
+      "formal_consumer_authorization": true,
+      "historical_modes": [
+        "TARGET_DATE_QUERYABLE_FACT"
+      ],
+      "owner_contract_id": "BAOSTOCK_DATED_TRADING_STATUS_RECONSTRUCTED_V3",
+      "producer_contract": {
+        "bytes": 5122,
+        "path": "reports/audits/A10_A12_R3_HISTORICAL_TRADING_STATUS_ACCEPTED_AMENDMENT_R1.json",
+        "sha256": "5e8515d744fda264c9dde8722157f676869e1df290be6352d1dc1c8b1cafea3b"
+      },
+      "registration_scope": "HISTORICAL_PATH_B_ONLY",
+      "role_binding": {
+        "allowed_consumers": [
+          "TRADING_STATUS",
+          "PERIOD_RAW",
+          "PERIOD_ADJUSTED",
+          "DM01_FINAL_ALL_NINE"
+        ],
+        "authority_status": "EXTERNALLY_ACCEPTED",
+        "enabled": true,
+        "enabled_for_formal_consumer": true,
+        "field_id": "TRADING_STATUS",
+        "historical_retrieval_mode": "TARGET_DATE_QUERYABLE_FACT",
+        "may_block_core": true,
+        "may_change_core_quality": false,
+        "may_change_core_value": true,
+        "owner_contract_id": "BAOSTOCK_DATED_TRADING_STATUS_RECONSTRUCTED_V3",
+        "pit_requirement": "EXPLICIT_OBSERVATION_NO_INFERRED_FIRST_AVAILABILITY",
+        "role": "FIELD_AUTHORITY",
+        "role_binding_id": "A12_R2_CANDIDATE_ROLE:TRADING_STATUS",
+        "source_family": "BAOSTOCK_DATED_RECONSTRUCTED_PROVIDER",
+        "source_instance_policy_id": "SOURCE_AUTHORITY_SOURCE_INSTANCE_POLICY_V1"
+      },
+      "source_instance_policy_id": "SOURCE_AUTHORITY_SOURCE_INSTANCE_POLICY_V1"
+    },
+    {
+      "accepted_at": "2026-10-01T07:42:00.030557+00:00",
+      "allowed_consumers": [
+        "ISST",
+        "PRICE_LIMIT",
+        "DM01_FINAL_ALL_NINE"
+      ],
+      "effective_scope": {
+        "end_date": "2026-09-24",
+        "start_date": "2023-07-04"
+      },
+      "external_acceptance": "EXTERNALLY_ACCEPTED",
+      "field_id": "ISST",
+      "formal_consumer_authorization": true,
+      "historical_modes": [
+        "TARGET_DATE_QUERYABLE_FACT"
+      ],
+      "owner_contract_id": "BAOSTOCK_DATED_ST_STATUS_RECONSTRUCTED_V3",
+      "producer_contract": {
+        "bytes": 4986,
+        "path": "reports/audits/A10_A12_R3_HISTORICAL_ISST_ACCEPTED_AMENDMENT_R1.json",
+        "sha256": "f5434e908121321a52dbb632958e24873c9551e33296a53cd7008992d109398b"
+      },
+      "registration_scope": "HISTORICAL_PATH_B_ONLY",
+      "role_binding": {
+        "allowed_consumers": [
+          "ISST",
+          "PRICE_LIMIT",
+          "DM01_FINAL_ALL_NINE"
+        ],
+        "authority_status": "EXTERNALLY_ACCEPTED",
+        "enabled": true,
+        "enabled_for_formal_consumer": true,
+        "field_id": "ISST",
+        "historical_retrieval_mode": "TARGET_DATE_QUERYABLE_FACT",
+        "may_block_core": true,
+        "may_change_core_quality": false,
+        "may_change_core_value": true,
+        "owner_contract_id": "BAOSTOCK_DATED_ST_STATUS_RECONSTRUCTED_V3",
+        "pit_requirement": "EXPLICIT_OBSERVATION_NO_INFERRED_FIRST_AVAILABILITY",
+        "role": "FIELD_AUTHORITY",
+        "role_binding_id": "A12_R2_CANDIDATE_ROLE:ISST",
+        "source_family": "BAOSTOCK_DATED_RECONSTRUCTED_PROVIDER",
+        "source_instance_policy_id": "SOURCE_AUTHORITY_SOURCE_INSTANCE_POLICY_V1"
+      },
+      "source_instance_policy_id": "SOURCE_AUTHORITY_SOURCE_INSTANCE_POLICY_V1"
+    }
+  ],
+  "pending_daily_producers": {
+    "ISST": {
+      "bytes": 2097,
+      "path": "reports/audits/A10_A12_R3_PRODUCER_ISST_CANDIDATE_R1.json",
+      "sha256": "765cd5fd35883f38e750c9609a7d15f693fa94484b0a3b57d2bbef2216a0208a"
+    },
+    "TRADING_STATUS": {
+      "bytes": 2213,
+      "path": "reports/audits/A10_A12_R3_PRODUCER_TRADING_STATUS_CANDIDATE_R1.json",
+      "sha256": "6b569f81b7e5fe26e0b348a7c55ff45890783a0716f424810891333732b066c6"
+    }
+  },
+  "supersedes": {
+    "bytes": 2884,
+    "path": "data/v4/V4_SOURCE_AUTHORITY_ACCEPTED_OWNER_REGISTRY.json",
+    "sha256": "a18f2afb27d1464d171fe1e5d2007c7fb51102cf4d9c5e94a2b36de3204c0a3b"
+  },
+  "version": 2
+}

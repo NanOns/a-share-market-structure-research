@@ -58,3 +58,15 @@ def require_external_a12_owner_for_final_candidate(root,owner_contract_binding,g
         return result
     except (OwnerAcceptanceError,OSError,ValueError,KeyError,TypeError,StopIteration) as exc:
         raise ValueError('A12_EXTERNAL_OWNER_ACCEPTANCE_REQUIRED:AUTHORITY_OWNER_NOT_EXTERNALLY_ACCEPTED') from exc
+
+def require_a12_producer_instances_for_candidate(root,source_instances,*,target_trade_date,
+        consumer_contract_id='DM01_FINAL_ALL_NINE',historical_mode='TARGET_DATE_QUERYABLE_FACT'):
+    """R3 field preflight; passing this gate never establishes all-nine acceptance."""
+    from .source_authority_producers_r3 import require_accepted_producer,require_source_instance_for_target
+    contract=json.loads((Path(root)/'config/source_authority_governance_r3.json').read_text(encoding='utf8'))
+    result={}
+    for field in ('TRADING_STATUS','ISST'):
+        rule=next(r for r in contract['field_rules'] if r['field_id']==field)
+        producer=require_accepted_producer(root,rule,consumer_contract_id=consumer_contract_id,historical_mode=historical_mode)
+        result[field]=require_source_instance_for_target(root,producer,source_instances.get(field),target_trade_date=target_trade_date)
+    return dict(fields=result,scope='FIELD_SOURCE_PREFLIGHT_ONLY',all_nine_accepted=False)

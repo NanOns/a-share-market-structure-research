@@ -101,7 +101,8 @@ def validate_temporal_lineage(fact:Mapping,mode:HistoricalMode|str):
 
 def evaluate_consumer_gate(rule:Mapping,*,consumer_contract_id,availability,target_trade_date,
                            core_value=None,supplemental_value=None,request_receipt=None,required=False,
-                           project_root=None,formal_use=True,historical_mode=None,owner_contract_binding=None):
+                           project_root=None,formal_use=True,historical_mode=None,owner_contract_binding=None,
+                           source_instance_binding=None):
     validate_role_contract(rule)
     state=validate_availability(availability,target_trade_date,request_receipt)
     if rule.get('enabled') is False:state=Availability.CAPABILITY_DISABLED_BY_CONTRACT.value
@@ -115,9 +116,15 @@ def evaluate_consumer_gate(rule:Mapping,*,consumer_contract_id,availability,targ
         owner_reason='CONSUMER_NOT_DECLARED_FOR_THIS_FIELD'
     if authority and declared and formal_use:
         try:
-            owner_proof=require_accepted_owner(project_root,rule,consumer_contract_id=consumer_contract_id,
-                target_trade_date=target_trade_date,historical_mode=historical_mode or rule['historical_retrieval_mode'],
-                expected_owner_binding=owner_contract_binding)
+            if rule.get('source_instance_policy_id'):
+                from .source_authority_producers_r3 import require_formal_source
+                owner_proof=require_formal_source(project_root,rule,consumer_contract_id=consumer_contract_id,
+                    target_trade_date=target_trade_date,historical_mode=historical_mode or rule['historical_retrieval_mode'],
+                    instance_binding=source_instance_binding)
+            else:
+                owner_proof=require_accepted_owner(project_root,rule,consumer_contract_id=consumer_contract_id,
+                    target_trade_date=target_trade_date,historical_mode=historical_mode or rule['historical_retrieval_mode'],
+                    expected_owner_binding=owner_contract_binding)
         except OwnerAcceptanceError as exc:owner_reason=exc.reason
     owner_blocked=owner_reason is not None
     status=('AUTHORITY_OWNER_NOT_EXTERNALLY_ACCEPTED' if owner_blocked else

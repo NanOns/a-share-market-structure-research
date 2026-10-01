@@ -1,0 +1,60 @@
+{
+  "acceptance_scope": "ACCEPTED_FUTURE_SCHEMA_HARDENING",
+  "business_accepted_heads_modified": false,
+  "contract_id": "V4_09_N02_CONSUMER_IDENTITY_HARDENING_ACCEPTED_RECORD_R1",
+  "deployment_gate": "SEPARATE_DEPLOYMENT_AUTHORIZATION_REQUIRED",
+  "evidence_bindings": [
+    {
+      "bytes": 7886,
+      "path": "reports/audits/A09_SCHEMA_LEGACY_READBACK_AND_ROLLBACK_R1.json",
+      "sha256": "bc223984ae9d862af1fb0f36c09a8bcde6ae3e984a000cfccd58305b449e1a05"
+    },
+    {
+      "bytes": 10933,
+      "path": "reports/audits/A09_CLEAN_CHECKOUT_R1.json",
+      "sha256": "39294bb29887f31d7b97be1c0d22cd11d36b1db788e9ad31c0ab29d206553284"
+    }
+  ],
+  "external_acceptance": "PASS",
+  "external_authority": {
+    "audited_head": "1655f84d1a47faca43c281d66e7704f2fa56b1b8",
+    "document": {
+      "bytes": 17949,
+      "path": "docs/evidence/source_authority/V4_SOURCE_AUTHORITY_8_CARD_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R1_20261001.md",
+      "sha256": "4d8ccf020f7de496c95be25ff88aa1e6341902523c41ef61fd2da872d0e19e76"
+    },
+    "verdict": "PARTIAL_PASS_WITH_BLOCKERS"
+  },
+  "legacy_exact_readback_and_rollback": {
+    "db_foreign_key_rejects_cross_consumer_result": true,
+    "db_payload_consumer_mismatch_rejected": true,
+    "distinct_consumer_publication_and_exact_payload_readback": true,
+    "exact_legacy_payload_rollback": true,
+    "exact_legacy_publication_rollback": true,
+    "exact_schema_migration_ledger_rollback": true,
+    "legacy_payloads_and_digests_unchanged": true,
+    "legacy_retry_idempotent": true,
+    "mixed_row_consumer_rejected": true,
+    "publication_consumer_update_rejected": true,
+    "result_consumer_update_rejected": true,
+    "rollback_rejects_loss_of_nonlegacy_consumer": true,
+    "same_publication_changed_payload_rejected": true,
+    "same_publication_other_consumer_rejected": true
+  },
+  "migration": {
+    "bytes": 1310,
+    "path": "src/workbench_db/migrations/v4_postgres/025_v4_09_consumer_identity_hardening.sql",
+    "sha256": "b27f960eba2353f09447d21b00a3e669398ff2b71a0158b5d4ace4a666da6374"
+  },
+  "permissions": {
+    "focus_cutover": false,
+    "production": false,
+    "shadow": false
+  },
+  "production_database_deployed": false,
+  "rollback": {
+    "bytes": 950,
+    "path": "src/workbench_db/migrations/v4_postgres/rollback/025_v4_09_consumer_identity_hardening.sql",
+    "sha256": "9f73a816468220d874cebf0a4e01e7900034449ad26281b7c62715bcab382849"
+  }
+}

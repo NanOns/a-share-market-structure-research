@@ -38,6 +38,7 @@ reports/dm01/DM01_A01_*.xml -text
 docs/evidence/source_authority/** -text
 reports/audits/A*_CLEAN_REGRESSION_*.xml -text
 reports/audits/A*_CLEAN_ATTEMPT_*.xml -text
+reports/audits/R3_CLEAN_REGRESSION_*.xml -text
 data/v4/artifact_store/a12_authority_candidate_r1/*.jsonl.gz filter=lfs diff=lfs merge=lfs -text
 reports/audits/a12_candidate_r1/*.jsonl.gz filter=lfs diff=lfs merge=lfs -text
 reports/audits/a12_v4_03_r1/**/*.jsonl.gz filter=lfs diff=lfs merge=lfs -text

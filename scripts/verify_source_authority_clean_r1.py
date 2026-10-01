@@ -29,13 +29,20 @@ def git(*args):
     return subprocess.run(['git',*args],cwd=ROOT,check=True,capture_output=True,text=True).stdout.strip()
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--work-package',choices=['A10','A11','A12','A01_R2','A08','A09'],default='A10');parser.add_argument('--family',action='append',default=['tests/v4_a10']);args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--work-package',choices=['A10','A11','A12','A01_R2','A08','A09','R3','A10_R2'],default='A10');parser.add_argument('--family',action='append',default=['tests/v4_a10']);args=parser.parse_args()
     prefix=args.work_package+'_'
     families=list(dict.fromkeys([*FAMILIES,*args.family]))
     before=git('status','--porcelain=v1');head=git('rev-parse','HEAD')
     if before or (ROOT/'config/.env').exists():raise RuntimeError('CLEAN_CHECKOUT_WITHOUT_CONFIG_ENV_REQUIRED')
     protected={r['path']:hashlib.sha256((ROOT/r['path']).read_bytes()).hexdigest() for r in
         json.loads((ROOT/'config/source_authority_governance_r1.json').read_text(encoding='utf8'))['protected_bindings']}
+    stage_entry=ROOT/f'reports/audits/{args.work_package}_STAGE_ENTRY_R1.json'
+    if args.work_package in ('R3','A10_R2'):
+        entry=json.loads(stage_entry.read_text(encoding='utf8'))
+        for binding in entry['protected_bindings']:
+            actual=hashlib.sha256((ROOT/binding['path']).read_bytes()).hexdigest()
+            if actual!=binding['sha256']:raise RuntimeError('STAGE_ENTRY_PROTECTED_BINDING_MISMATCH')
+            protected[binding['path']]=actual
     registry=validate_incremental_registry(project_root=ROOT)
     started=time.monotonic()
     with disposable_cluster(Path(r'E:\Postgres\bin')) as (dsn,temp):

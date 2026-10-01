@@ -1,0 +1,796 @@
+{
+  "accepted_source_authority_owners": [],
+  "audit_count": 12,
+  "authority": {
+    "bytes": 6088,
+    "path": "docs/evidence/source_authority/V4_SOURCE_AUTHORITY_PASS_ITEMS_PROMOTION_AND_REGISTRY_R3_TASK_20261001.md",
+    "sha256": "4c66c7656c641be1e66b49c6d69567f6186b2337ea7f4688d9ebf1ae1f35669b"
+  },
+  "baseline_commit": "1655f84d1a47faca43c281d66e7704f2fa56b1b8",
+  "business_accepted_heads_modified": false,
+  "contract_id": "V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R3",
+  "dependency_graph": {
+    "WP-A01-DM01": [
+      "A10-R2_EXTERNAL_ACCEPTANCE",
+      "A12-R2_EXTERNAL_ACCEPTANCE"
+    ],
+    "WP-A02-PRIOR-RPS": [
+      "A01"
+    ],
+    "WP-A03-FORWARD-PIT": [],
+    "WP-A04-AMOUNT-A": [],
+    "WP-A05-LEGACY-VALID-MEMBER": [],
+    "WP-A06-BAOSTOCK": [],
+    "WP-A07-HIST-AS-RECORDED": [],
+    "WP-A08-V4-09-N01": [],
+    "WP-A09-V4-09-N02": [],
+    "WP-A10-SOURCE-AUTHORITY-GOVERNANCE": [],
+    "WP-A11-V4-01-IDENTITY-AUTHORITY": [
+      "A10_SCHEMA_FREEZE"
+    ],
+    "WP-A12-V4-02-STATUS-ST-AUTHORITY": []
+  },
+  "entries": [
+    {
+      "acceptance_scope": "NO_FUNCTIONAL_CLOSURE",
+      "audit_id": "DM01_REAL_INCREMENTAL_BUILDERS",
+      "capability_limitations": [
+        "EXTERNAL_REPAIR_ACCEPTANCE_REQUIRED"
+      ],
+      "depends_on": [
+        "A10-R2_EXTERNAL_ACCEPTANCE",
+        "A12-R2_EXTERNAL_ACCEPTANCE"
+      ],
+      "does_not_block_engineering_stage": true,
+      "engineering_can_proceed_immediately": true,
+      "evidence": [
+        {
+          "bytes": 1605,
+          "path": "reports/audits/A01_R2_PARTIAL_ENGINEERING_CLOSURE_R1.json",
+          "sha256": "e00266e9e68bc651f78b76a1d15a0e283032de7ac788aad3a6471d01e1d0f9d8"
+        },
+        {
+          "bytes": 1322,
+          "path": "reports/audits/A01_R2_DEPENDENCY_BLOCKER_R1.json",
+          "sha256": "4c5911c5df3a5554c425b0dafef9167dbbd5c16d889421b32912bee3d3a54197"
+        }
+      ],
+      "external_acceptance": "BLOCKED",
+      "formal_consumer_authorization": false,
+      "history_reconstruction_prohibited": true,
+      "implementation_status": "PARTIAL_ENGINEERING_PASS_FINAL_ALL_NINE_BLOCKED",
+      "latest_task": {
+        "bytes": 6453,
+        "path": "docs/evidence/source_authority/DM01_A01_R2_BAOSTOCK_CATCHUP_SUPPLEMENTAL_GATE_REPAIR_TASK_20261001.md",
+        "sha256": "343b904b3b204c2aa3b931e976c13e6f90c5eba6cf125591b9e985db293ead95"
+      },
+      "next_step": "Independent A12 external owner acceptance before final all-nine runtime integration and real candidate",
+      "owner_module": "src/workbench_analysis/dm01_accepted_builder_registry.py",
+      "priority": "P0",
+      "production_gate": true,
+      "requires_real_observation_accumulation": false,
+      "status": "OPEN",
+      "status_path": "reports/audits/work_packages/WP-A01-DM01/STATUS_R2_RUNTIME_CAPTURE_ENGINEERING_PASS_FINAL_BLOCKED.json",
+      "task": {
+        "byte_count": 1164,
+        "path": "docs/evidence/cross_stage/WP-A01-DM01/TASK_R1.md",
+        "sha256": "17a787d72aef97417d899f8c1745e49e4cb467cbcf8f2035f3885b5d6a6bf980"
+      },
+      "transition": {
+        "acceptance_scope": "NO_FUNCTIONAL_CLOSURE",
+        "capability_limitations": [
+          "EXTERNAL_REPAIR_ACCEPTANCE_REQUIRED"
+        ],
+        "evidence_bindings": [
+          {
+            "bytes": 1605,
+            "path": "reports/audits/A01_R2_PARTIAL_ENGINEERING_CLOSURE_R1.json",
+            "sha256": "e00266e9e68bc651f78b76a1d15a0e283032de7ac788aad3a6471d01e1d0f9d8"
+          },
+          {
+            "bytes": 1322,
+            "path": "reports/audits/A01_R2_DEPENDENCY_BLOCKER_R1.json",
+            "sha256": "4c5911c5df3a5554c425b0dafef9167dbbd5c16d889421b32912bee3d3a54197"
+          }
+        ],
+        "external_authority": {
+          "audited_head": "1655f84d1a47faca43c281d66e7704f2fa56b1b8",
+          "document": {
+            "bytes": 17949,
+            "path": "docs/evidence/source_authority/V4_SOURCE_AUTHORITY_8_CARD_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R1_20261001.md",
+            "sha256": "4d8ccf020f7de496c95be25ff88aa1e6341902523c41ef61fd2da872d0e19e76"
+          },
+          "verdict": "PARTIAL_PASS_WITH_BLOCKERS"
+        },
+        "new_status": "OPEN",
+        "previous_status": "OPEN",
+        "remaining_dependencies": [
+          "A10-R2_EXTERNAL_ACCEPTANCE",
+          "A12-R2_EXTERNAL_ACCEPTANCE"
+        ]
+      },
+      "work_package": "WP-A01-DM01"
+    },
+    {
+      "audit_id": "V4_07_PRIOR_RPS_ACCEPTED_INPUT_BOOTSTRAP_01",
+      "depends_on": [
+        "A01"
+      ],
+      "does_not_block_engineering_stage": true,
+      "engineering_can_proceed_immediately": true,
+      "evidence": [],
+      "external_acceptance": null,
+      "formal_consumer_authorization": false,
+      "history_reconstruction_prohibited": true,
+      "implementation_status": "QUEUED_FORMAL_WORK_PACKAGE",
+      "next_step": "Immutable accepted RPS history T/T-1/T-3 chain, declared revision/universe/calendar/cutoff; independently recompute deltas and warm-up; then rerun unchanged V4-07.",
+      "owner_module": "V4_RPS_PIT_HISTORY_V1",
+      "priority": "P0",
+      "production_gate": true,
+      "requires_real_observation_accumulation": true,
+      "status": "OPEN",
+      "status_path": "reports/audits/work_packages/WP-A02-PRIOR-RPS/STATUS_R1.json",
+      "task": {
+        "byte_count": 1014,
+        "path": "docs/evidence/cross_stage/WP-A02-PRIOR-RPS/TASK_R1.md",
+        "sha256": "5e24a94a7aa7798df21666fbd5e42f9f5f47be1f3926ee74fe83c7dcdb2549df"
+      },
+      "work_package": "WP-A02-PRIOR-RPS"
+    },
+    {
+      "audit_id": "FORWARD_PIT_HISTORY_ACCUMULATION",
+      "depends_on": [],
+      "does_not_block_engineering_stage": true,
+      "engineering_can_proceed_immediately": true,
+      "evidence": [],
+      "external_acceptance": null,
+      "formal_consumer_authorization": false,
+      "history_reconstruction_prohibited": true,
+      "implementation_status": "QUEUED_FORMAL_WORK_PACKAGE",
+      "next_step": "Daily builder, gap/revision/late-source detectors and immutable append from the first accepted PIT date. Implement automation in this WP; future observations accumulate naturally, never retrospectively invent availability.",
+      "owner_module": "forward_pit_daily_builder",
+      "priority": "P1",
+      "production_gate": true,
+      "requires_real_observation_accumulation": true,
+      "status": "OPEN",
+      "status_path": "reports/audits/work_packages/WP-A03-FORWARD-PIT/STATUS_R1.json",
+      "task": {
+        "byte_count": 1087,
+        "path": "docs/evidence/cross_stage/WP-A03-FORWARD-PIT/TASK_R1.md",
+        "sha256": "e39d957db043bfebd123f91d120415c02cace508b20331f9d01df94e2f9c4b33"
+      },
+      "work_package": "WP-A03-FORWARD-PIT"
+    },
+    {
+      "audit_id": "AUD-AMOUNT-A-06",
+      "depends_on": [],
+      "does_not_block_engineering_stage": true,
+      "engineering_can_proceed_immediately": true,
+      "evidence": [],
+      "external_acceptance": null,
+      "formal_consumer_authorization": false,
+      "history_reconstruction_prohibited": true,
+      "implementation_status": "QUEUED_FORMAL_WORK_PACKAGE",
+      "next_step": "Freeze source/unit/20-session denominator/coverage/concentration with independent arithmetic and repo-wide consumer inventory; dependent formal paths stay disabled.",
+      "owner_module": "independent_amount_a_contract",
+      "priority": "P1",
+      "production_gate": true,
+      "requires_real_observation_accumulation": false,
+      "status": "OPEN",
+      "status_path": "reports/audits/work_packages/WP-A04-AMOUNT-A/STATUS_R1.json",
+      "task": {
+        "byte_count": 1014,
+        "path": "docs/evidence/cross_stage/WP-A04-AMOUNT-A/TASK_R1.md",
+        "sha256": "c37c5eaa02b54d2eb7b8ea68eaecc4c41343673ec56fbb6a23f25c42e9b65ecb"
+      },
+      "work_package": "WP-A04-AMOUNT-A"
+    },
+    {
+      "audit_id": "LEGACY_VALID_MEMBER_EXACT_PRODUCER",
+      "depends_on": [],
+      "does_not_block_engineering_stage": true,
+      "engineering_can_proceed_immediately": true,
+      "evidence": [],
+      "external_acceptance": null,
+      "formal_consumer_authorization": false,
+      "history_reconstruction_prohibited": true,
+      "implementation_status": "QUEUED_FORMAL_WORK_PACKAGE",
+      "next_step": "Archaeology first. Recover exact missing_state/validity and golden examples or publish an explicitly non-equivalent replacement with B2 retirement/migration.",
+      "owner_module": "legacy_missing_state_source_archaeology",
+      "priority": "P1",
+      "production_gate": true,
+      "requires_real_observation_accumulation": false,
+      "status": "OPEN",
+      "status_path": "reports/audits/work_packages/WP-A05-LEGACY-VALID-MEMBER/STATUS_R1.json",
+      "task": {
+        "byte_count": 1047,
+        "path": "docs/evidence/cross_stage/WP-A05-LEGACY-VALID-MEMBER/TASK_R1.md",
+        "sha256": "8f8c1b934d891b5892e58a8de85752be0bcbb18239bca4045187adef933c429e"
+      },
+      "work_package": "WP-A05-LEGACY-VALID-MEMBER"
+    },
+    {
+      "audit_id": "V4-06-BAOSTOCK-BINDING-TOLERANCE-01",
+      "depends_on": [],
+      "does_not_block_engineering_stage": true,
+      "engineering_can_proceed_immediately": true,
+      "evidence": [],
+      "external_acceptance": null,
+      "formal_consumer_authorization": false,
+      "history_reconstruction_prohibited": true,
+      "implementation_status": "QUEUED_FORMAL_WORK_PACKAGE",
+      "next_step": "Representative board/date matrix and official unit/denominator evidence; derive tolerance from generation/rounding mechanism, never fit arbitrary percentages.",
+      "owner_module": "baostock_strict_binding_matrix",
+      "priority": "P2",
+      "production_gate": true,
+      "requires_real_observation_accumulation": false,
+      "status": "OPEN",
+      "status_path": "reports/audits/work_packages/WP-A06-BAOSTOCK/STATUS_R1.json",
+      "task": {
+        "byte_count": 1029,
+        "path": "docs/evidence/cross_stage/WP-A06-BAOSTOCK/TASK_R1.md",
+        "sha256": "64158527d2e90a3476550c598d9adecf8c16ded1c811d7b9c1d5df97e409a702"
+      },
+      "work_package": "WP-A06-BAOSTOCK"
+    },
+    {
+      "audit_id": "HISTORICAL_AS_RECORDED_ADJUSTED_PRICE",
+      "depends_on": [],
+      "does_not_block_engineering_stage": true,
+      "engineering_can_proceed_immediately": true,
+      "evidence": [],
+      "external_acceptance": null,
+      "formal_consumer_authorization": false,
+      "history_reconstruction_prohibited": true,
+      "implementation_status": "QUEUED_FORMAL_WORK_PACKAGE",
+      "next_step": "Capture first_available_at/source_revision/knowledge_time for GBBQ/provider/manual records; unverifiable pre-capture history remains permanently capability-blocked.",
+      "owner_module": "first_availability_lineage",
+      "priority": "P2",
+      "production_gate": true,
+      "requires_real_observation_accumulation": true,
+      "status": "OPEN",
+      "status_path": "reports/audits/work_packages/WP-A07-HIST-AS-RECORDED/STATUS_R1.json",
+      "task": {
+        "byte_count": 1040,
+        "path": "docs/evidence/cross_stage/WP-A07-HIST-AS-RECORDED/TASK_R1.md",
+        "sha256": "185312dd668ae05663a2ae85136d95f786f51622ac47200959f45db9b469c463"
+      },
+      "work_package": "WP-A07-HIST-AS-RECORDED"
+    },
+    {
+      "acceptance_scope": "REPAIR_FREEZE_AUTHORITY_HARDENING_AUDIT_ONLY",
+      "audit_id": "AUD-V4-09-REPAIR-FREEZE-SELF-VALIDATION-N01",
+      "capability_limitations": [
+        "CURRENT_RUNTIME_NOT_AUTO_ACCEPTED"
+      ],
+      "depends_on": [],
+      "does_not_block_engineering_stage": true,
+      "engineering_can_proceed_immediately": true,
+      "evidence": [
+        {
+          "bytes": 2172,
+          "path": "reports/audits/V4_09_N01_HARDENING_ACCEPTED_RECORD_R1.json",
+          "sha256": "4b4377ff88405af89969a6bbe9b2416594f47859ff9436349bd78025ee1515f6"
+        },
+        {
+          "bytes": 1425,
+          "path": "reports/audits/A08_ENGINEERING_GATES_R1.json",
+          "sha256": "5fcadad29a1e258c747895cd7102bb02531e3b756cf61e285762d7ccf6302d1c"
+        },
+        {
+          "bytes": 10651,
+          "path": "reports/audits/A08_CLEAN_CHECKOUT_R1.json",
+          "sha256": "4fb3e1bd1074128f91427d6a3c7e2b0a3f241e244eaa3eae7cbaca27f8dd3d87"
+        },
+        {
+          "bytes": 182687,
+          "path": "reports/audits/A08_CLEAN_REGRESSION_R1.xml",
+          "sha256": "2eb91b9550e793a365a9274bde12d14aef5379541f0a0a53b6286a5b740b676d"
+        },
+        {
+          "bytes": 1579,
+          "path": "reports/audits/A08_CLEAN_REGRESSION_R1.log",
+          "sha256": "088a944c2ec57a2d42f90b0a816c2d25e3e733a7468722db5f2c9b3b2e915816"
+        },
+        {
+          "bytes": 777564,
+          "path": "reports/audits/A08_NO_SYMBOL_SCAN_R1.json",
+          "sha256": "269ab01c5aaf7ba75640db367171979f441ebf7938e96a86c6e3a237ac9add29"
+        }
+      ],
+      "external_acceptance": "PASS",
+      "formal_consumer_authorization": false,
+      "history_reconstruction_prohibited": true,
+      "implementation_status": "EXTERNAL_AUDIT_DISPOSITION_FORMALIZED",
+      "next_step": "Preserve scope and capability limitations; no business promotion or deployment authorized",
+      "owner_module": "src/v4/stock_prewatch.py",
+      "priority": "P2",
+      "production_gate": true,
+      "requires_real_observation_accumulation": false,
+      "status": "ACCEPTED",
+      "status_path": "reports/audits/V4_09_N01_HARDENING_ACCEPTED_RECORD_R1.json",
+      "task": {
+        "byte_count": 1023,
+        "path": "docs/evidence/cross_stage/WP-A08-V4-09-N01/TASK_R1.md",
+        "sha256": "8c93ef95fe5e9e82906e52c967990955d76f9ece17dea07727d2880cb57eeac6"
+      },
+      "transition": {
+        "acceptance_scope": "REPAIR_FREEZE_AUTHORITY_HARDENING_AUDIT_ONLY",
+        "capability_limitations": [
+          "CURRENT_RUNTIME_NOT_AUTO_ACCEPTED"
+        ],
+        "evidence_bindings": [
+          {
+            "bytes": 2172,
+            "path": "reports/audits/V4_09_N01_HARDENING_ACCEPTED_RECORD_R1.json",
+            "sha256": "4b4377ff88405af89969a6bbe9b2416594f47859ff9436349bd78025ee1515f6"
+          },
+          {
+            "bytes": 1425,
+            "path": "reports/audits/A08_ENGINEERING_GATES_R1.json",
+            "sha256": "5fcadad29a1e258c747895cd7102bb02531e3b756cf61e285762d7ccf6302d1c"
+          },
+          {
+            "bytes": 10651,
+            "path": "reports/audits/A08_CLEAN_CHECKOUT_R1.json",
+            "sha256": "4fb3e1bd1074128f91427d6a3c7e2b0a3f241e244eaa3eae7cbaca27f8dd3d87"
+          },
+          {
+            "bytes": 182687,
+            "path": "reports/audits/A08_CLEAN_REGRESSION_R1.xml",
+            "sha256": "2eb91b9550e793a365a9274bde12d14aef5379541f0a0a53b6286a5b740b676d"
+          },
+          {
+            "bytes": 1579,
+            "path": "reports/audits/A08_CLEAN_REGRESSION_R1.log",
+            "sha256": "088a944c2ec57a2d42f90b0a816c2d25e3e733a7468722db5f2c9b3b2e915816"
+          },
+          {
+            "bytes": 777564,
+            "path": "reports/audits/A08_NO_SYMBOL_SCAN_R1.json",
+            "sha256": "269ab01c5aaf7ba75640db367171979f441ebf7938e96a86c6e3a237ac9add29"
+          }
+        ],
+        "external_authority": {
+          "audited_head": "1655f84d1a47faca43c281d66e7704f2fa56b1b8",
+          "document": {
+            "bytes": 17949,
+            "path": "docs/evidence/source_authority/V4_SOURCE_AUTHORITY_8_CARD_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R1_20261001.md",
+            "sha256": "4d8ccf020f7de496c95be25ff88aa1e6341902523c41ef61fd2da872d0e19e76"
+          },
+          "verdict": "PARTIAL_PASS_WITH_BLOCKERS"
+        },
+        "new_status": "ACCEPTED",
+        "previous_status": "OPEN",
+        "remaining_dependencies": []
+      },
+      "work_package": "WP-A08-V4-09-N01"
+    },
+    {
+      "acceptance_scope": "ACCEPTED_FUTURE_SCHEMA_HARDENING",
+      "audit_id": "AUD-V4-09-DB-CONSUMER-IDENTITY-N02",
+      "capability_limitations": [
+        "PRODUCTION_DEPLOYMENT_NOT_AUTHORIZED"
+      ],
+      "depends_on": [],
+      "does_not_block_engineering_stage": true,
+      "engineering_can_proceed_immediately": true,
+      "evidence": [
+        {
+          "bytes": 2418,
+          "path": "reports/audits/V4_09_N02_CONSUMER_IDENTITY_HARDENING_ACCEPTED_RECORD_R1.json",
+          "sha256": "7f8d61ac36cc8b9ce69f190c53e551342135c5c1a56060ccfdc5887cbf0a66b3"
+        },
+        {
+          "bytes": 1710,
+          "path": "reports/audits/A09_ENGINEERING_GATES_R1.json",
+          "sha256": "e28464bbb706750708f518d767e42e8dc65caa4360c15953861b6d140afe6efc"
+        },
+        {
+          "bytes": 10933,
+          "path": "reports/audits/A09_CLEAN_CHECKOUT_R1.json",
+          "sha256": "39294bb29887f31d7b97be1c0d22cd11d36b1db788e9ad31c0ab29d206553284"
+        },
+        {
+          "bytes": 182840,
+          "path": "reports/audits/A09_CLEAN_REGRESSION_R1.xml",
+          "sha256": "efd5a7b2de1d2cc825eed37f2dfe6fbd1f983c90f3fb8c1cac79957b358341f3"
+        },
+        {
+          "bytes": 1579,
+          "path": "reports/audits/A09_CLEAN_REGRESSION_R1.log",
+          "sha256": "73a01406b3d36f67cb55c6aa10e00a894f951dea9807502f35a4805df9982481"
+        },
+        {
+          "bytes": 779175,
+          "path": "reports/audits/A09_NO_SYMBOL_SCAN_R1.json",
+          "sha256": "e6135d7aab5d730afb20fc09c3165bddac79b4e0086bbbffade880fb8ce52018"
+        }
+      ],
+      "external_acceptance": "PASS",
+      "formal_consumer_authorization": false,
+      "history_reconstruction_prohibited": true,
+      "implementation_status": "EXTERNAL_AUDIT_DISPOSITION_FORMALIZED",
+      "next_step": "Preserve scope and capability limitations; no business promotion or deployment authorized",
+      "owner_module": "src/v4/stock_prewatch_persistence.py",
+      "priority": "P2",
+      "production_gate": true,
+      "requires_real_observation_accumulation": false,
+      "status": "ACCEPTED",
+      "status_path": "reports/audits/V4_09_N02_CONSUMER_IDENTITY_HARDENING_ACCEPTED_RECORD_R1.json",
+      "task": {
+        "byte_count": 1050,
+        "path": "docs/evidence/cross_stage/WP-A09-V4-09-N02/TASK_R1.md",
+        "sha256": "3379f2e8e5a2bf649a340cf357c70d933646292a357e3265ef4fb945cffc1313"
+      },
+      "transition": {
+        "acceptance_scope": "ACCEPTED_FUTURE_SCHEMA_HARDENING",
+        "capability_limitations": [
+          "PRODUCTION_DEPLOYMENT_NOT_AUTHORIZED"
+        ],
+        "evidence_bindings": [
+          {
+            "bytes": 2418,
+            "path": "reports/audits/V4_09_N02_CONSUMER_IDENTITY_HARDENING_ACCEPTED_RECORD_R1.json",
+            "sha256": "7f8d61ac36cc8b9ce69f190c53e551342135c5c1a56060ccfdc5887cbf0a66b3"
+          },
+          {
+            "bytes": 1710,
+            "path": "reports/audits/A09_ENGINEERING_GATES_R1.json",
+            "sha256": "e28464bbb706750708f518d767e42e8dc65caa4360c15953861b6d140afe6efc"
+          },
+          {
+            "bytes": 10933,
+            "path": "reports/audits/A09_CLEAN_CHECKOUT_R1.json",
+            "sha256": "39294bb29887f31d7b97be1c0d22cd11d36b1db788e9ad31c0ab29d206553284"
+          },
+          {
+            "bytes": 182840,
+            "path": "reports/audits/A09_CLEAN_REGRESSION_R1.xml",
+            "sha256": "efd5a7b2de1d2cc825eed37f2dfe6fbd1f983c90f3fb8c1cac79957b358341f3"
+          },
+          {
+            "bytes": 1579,
+            "path": "reports/audits/A09_CLEAN_REGRESSION_R1.log",
+            "sha256": "73a01406b3d36f67cb55c6aa10e00a894f951dea9807502f35a4805df9982481"
+          },
+          {
+            "bytes": 779175,
+            "path": "reports/audits/A09_NO_SYMBOL_SCAN_R1.json",
+            "sha256": "e6135d7aab5d730afb20fc09c3165bddac79b4e0086bbbffade880fb8ce52018"
+          }
+        ],
+        "external_authority": {
+          "audited_head": "1655f84d1a47faca43c281d66e7704f2fa56b1b8",
+          "document": {
+            "bytes": 17949,
+            "path": "docs/evidence/source_authority/V4_SOURCE_AUTHORITY_8_CARD_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R1_20261001.md",
+            "sha256": "4d8ccf020f7de496c95be25ff88aa1e6341902523c41ef61fd2da872d0e19e76"
+          },
+          "verdict": "PARTIAL_PASS_WITH_BLOCKERS"
+        },
+        "new_status": "ACCEPTED",
+        "previous_status": "OPEN",
+        "remaining_dependencies": []
+      },
+      "work_package": "WP-A09-V4-09-N02"
+    },
+    {
+      "acceptance_scope": "NO_FUNCTIONAL_CLOSURE",
+      "audit_id": "SOURCE_AUTHORITY_AVAILABILITY_SEMANTICS_GOVERNANCE",
+      "capability_limitations": [
+        "EXTERNAL_REPAIR_ACCEPTANCE_REQUIRED"
+      ],
+      "depends_on": [],
+      "does_not_block_engineering_stage": true,
+      "evidence": [
+        {
+          "bytes": 1489,
+          "path": "reports/audits/A10_ENGINEERING_GATES_R1.json",
+          "sha256": "ca7f90be282bb27305d8adb84eff4a12b8a741dd42aef2f13a363af7939c8640"
+        },
+        {
+          "bytes": 10591,
+          "path": "reports/audits/A10_CLEAN_CHECKOUT_R1.json",
+          "sha256": "fd4ef7bd58ab8ab92e62195e340a27f59c1f2c0bae1bcacc93d69bd1f34aea8e"
+        },
+        {
+          "bytes": 177305,
+          "path": "reports/audits/A10_CLEAN_REGRESSION_R1.xml",
+          "sha256": "fdb4b4723080cc568f44a624f899bca9483e7853b736a48688c8242352d4cc63"
+        },
+        {
+          "bytes": 1499,
+          "path": "reports/audits/A10_CLEAN_REGRESSION_R1.log",
+          "sha256": "6d83c3432ea96db9d532cdab4e8d976c53a8570c3c1f9fb38c5a2575316003c7"
+        },
+        {
+          "bytes": 765778,
+          "path": "reports/audits/A10_NO_SYMBOL_SCAN_R1.json",
+          "sha256": "5e6ff920bc70cbf48ff11ad9db219693d47c3f10940ef90bdb62afdd48857285"
+        }
+      ],
+      "external_acceptance": "BLOCKED",
+      "formal_consumer_authorization": false,
+      "implementation_status": "BLOCKED_R2_OWNER_ACCEPTANCE_GATE",
+      "next_step": "Versioned candidate, independent evidence, clean regression and external reaudit; no accepted-head overwrite.",
+      "priority": "P0",
+      "production_gate": true,
+      "status": "OPEN",
+      "status_path": "reports/audits/work_packages/WP-A10-SOURCE-AUTHORITY-GOVERNANCE/STATUS_R2.json",
+      "task": {
+        "bytes": 6513,
+        "path": "docs/evidence/source_authority/V4_A10_SOURCE_AUTHORITY_AVAILABILITY_GOVERNANCE_TASK_R1_20261001.md",
+        "sha256": "bba1c64f60d47887049065bc33edfc632e399ab774581b95e18bc957dc8d90f7"
+      },
+      "transition": {
+        "acceptance_scope": "NO_FUNCTIONAL_CLOSURE",
+        "capability_limitations": [
+          "EXTERNAL_REPAIR_ACCEPTANCE_REQUIRED"
+        ],
+        "evidence_bindings": [
+          {
+            "bytes": 1489,
+            "path": "reports/audits/A10_ENGINEERING_GATES_R1.json",
+            "sha256": "ca7f90be282bb27305d8adb84eff4a12b8a741dd42aef2f13a363af7939c8640"
+          },
+          {
+            "bytes": 10591,
+            "path": "reports/audits/A10_CLEAN_CHECKOUT_R1.json",
+            "sha256": "fd4ef7bd58ab8ab92e62195e340a27f59c1f2c0bae1bcacc93d69bd1f34aea8e"
+          },
+          {
+            "bytes": 177305,
+            "path": "reports/audits/A10_CLEAN_REGRESSION_R1.xml",
+            "sha256": "fdb4b4723080cc568f44a624f899bca9483e7853b736a48688c8242352d4cc63"
+          },
+          {
+            "bytes": 1499,
+            "path": "reports/audits/A10_CLEAN_REGRESSION_R1.log",
+            "sha256": "6d83c3432ea96db9d532cdab4e8d976c53a8570c3c1f9fb38c5a2575316003c7"
+          },
+          {
+            "bytes": 765778,
+            "path": "reports/audits/A10_NO_SYMBOL_SCAN_R1.json",
+            "sha256": "5e6ff920bc70cbf48ff11ad9db219693d47c3f10940ef90bdb62afdd48857285"
+          }
+        ],
+        "external_authority": {
+          "audited_head": "1655f84d1a47faca43c281d66e7704f2fa56b1b8",
+          "document": {
+            "bytes": 17949,
+            "path": "docs/evidence/source_authority/V4_SOURCE_AUTHORITY_8_CARD_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R1_20261001.md",
+            "sha256": "4d8ccf020f7de496c95be25ff88aa1e6341902523c41ef61fd2da872d0e19e76"
+          },
+          "verdict": "PARTIAL_PASS_WITH_BLOCKERS"
+        },
+        "new_status": "OPEN",
+        "previous_status": "OPEN",
+        "remaining_dependencies": []
+      },
+      "work_package": "WP-A10-SOURCE-AUTHORITY-GOVERNANCE"
+    },
+    {
+      "acceptance_scope": "RESULT_C_AUDIT_AND_CAPABILITY_DOWNGRADE_ONLY",
+      "audit_id": "V4_01_IDENTITY_SOURCE_AUTHORITY_RECONCILIATION",
+      "capability_limitations": [
+        "HISTORICAL_LEGAL_LIFECYCLE_AND_TYPE_NOT_LOCAL_TDX_CONFIRMED"
+      ],
+      "depends_on": [
+        "A10_SCHEMA_FREEZE"
+      ],
+      "does_not_block_engineering_stage": true,
+      "evidence": [
+        {
+          "bytes": 2302,
+          "path": "config/V4_01_HISTORICAL_IDENTITY_AUTHORITY_AMENDMENT_R1.json",
+          "sha256": "a7abf008c5ef5cb0a660bb7c007481c4c0f89e168feb3dc4b2b5f8ae81d79b50"
+        },
+        {
+          "bytes": 2092,
+          "path": "reports/audits/A11_ENGINEERING_GATES_R1.json",
+          "sha256": "0648104fe8fbef24566add0024b978239eb13aa39c20839480bb0aa5aef3b844"
+        },
+        {
+          "bytes": 10612,
+          "path": "reports/audits/A11_CLEAN_CHECKOUT_R1.json",
+          "sha256": "6aec243f181f4c8ec55a3d93f418decfc604160a18924c9a58377d5d3eb677bc"
+        },
+        {
+          "bytes": 177904,
+          "path": "reports/audits/A11_CLEAN_REGRESSION_R1.xml",
+          "sha256": "e56df945852f87569a9613db238a5017d42c8d766519ae3c3d54413f98c89769"
+        },
+        {
+          "bytes": 1499,
+          "path": "reports/audits/A11_CLEAN_REGRESSION_R1.log",
+          "sha256": "31fa3cf375cf2df86eeaa71c5271fc786f21a2a9fe030094d6f84978d86209f3"
+        },
+        {
+          "bytes": 768278,
+          "path": "reports/audits/A11_NO_SYMBOL_SCAN_R1.json",
+          "sha256": "22ab191282c67b82516dda0f3fca4c7c6200f3596f53cb2fcc88fce4cd963bbf"
+        }
+      ],
+      "external_acceptance": "PASS_RESULT_C_WITH_CAPABILITY_DOWNGRADE",
+      "formal_consumer_authorization": false,
+      "implementation_status": "EXTERNAL_AUDIT_DISPOSITION_FORMALIZED",
+      "next_step": "Preserve scope and capability limitations; no business promotion or deployment authorized",
+      "priority": "P1",
+      "production_gate": true,
+      "status": "ACCEPTED",
+      "status_path": "config/V4_01_HISTORICAL_IDENTITY_AUTHORITY_AMENDMENT_R1.json",
+      "task": {
+        "bytes": 6861,
+        "path": "docs/evidence/source_authority/V4_A11_V4_01_IDENTITY_SOURCE_AUTHORITY_RECONCILIATION_TASK_R1_20261001.md",
+        "sha256": "debb4c77e8476891eac5012284de223bcbf174a41ed6dde4277e3ec3fa55acce"
+      },
+      "transition": {
+        "acceptance_scope": "RESULT_C_AUDIT_AND_CAPABILITY_DOWNGRADE_ONLY",
+        "capability_limitations": [
+          "HISTORICAL_LEGAL_LIFECYCLE_AND_TYPE_NOT_LOCAL_TDX_CONFIRMED"
+        ],
+        "evidence_bindings": [
+          {
+            "bytes": 2302,
+            "path": "config/V4_01_HISTORICAL_IDENTITY_AUTHORITY_AMENDMENT_R1.json",
+            "sha256": "a7abf008c5ef5cb0a660bb7c007481c4c0f89e168feb3dc4b2b5f8ae81d79b50"
+          },
+          {
+            "bytes": 2092,
+            "path": "reports/audits/A11_ENGINEERING_GATES_R1.json",
+            "sha256": "0648104fe8fbef24566add0024b978239eb13aa39c20839480bb0aa5aef3b844"
+          },
+          {
+            "bytes": 10612,
+            "path": "reports/audits/A11_CLEAN_CHECKOUT_R1.json",
+            "sha256": "6aec243f181f4c8ec55a3d93f418decfc604160a18924c9a58377d5d3eb677bc"
+          },
+          {
+            "bytes": 177904,
+            "path": "reports/audits/A11_CLEAN_REGRESSION_R1.xml",
+            "sha256": "e56df945852f87569a9613db238a5017d42c8d766519ae3c3d54413f98c89769"
+          },
+          {
+            "bytes": 1499,
+            "path": "reports/audits/A11_CLEAN_REGRESSION_R1.log",
+            "sha256": "31fa3cf375cf2df86eeaa71c5271fc786f21a2a9fe030094d6f84978d86209f3"
+          },
+          {
+            "bytes": 768278,
+            "path": "reports/audits/A11_NO_SYMBOL_SCAN_R1.json",
+            "sha256": "22ab191282c67b82516dda0f3fca4c7c6200f3596f53cb2fcc88fce4cd963bbf"
+          }
+        ],
+        "external_authority": {
+          "audited_head": "1655f84d1a47faca43c281d66e7704f2fa56b1b8",
+          "document": {
+            "bytes": 17949,
+            "path": "docs/evidence/source_authority/V4_SOURCE_AUTHORITY_8_CARD_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R1_20261001.md",
+            "sha256": "4d8ccf020f7de496c95be25ff88aa1e6341902523c41ef61fd2da872d0e19e76"
+          },
+          "verdict": "PARTIAL_PASS_WITH_BLOCKERS"
+        },
+        "new_status": "ACCEPTED",
+        "previous_status": "OPEN",
+        "remaining_dependencies": []
+      },
+      "work_package": "WP-A11-V4-01-IDENTITY-AUTHORITY"
+    },
+    {
+      "acceptance_scope": "NO_FUNCTIONAL_CLOSURE",
+      "audit_id": "V4_02_STATUS_ST_SOURCE_AUTHORITY_DIVERGENCE",
+      "capability_limitations": [
+        "EXTERNAL_REPAIR_ACCEPTANCE_REQUIRED"
+      ],
+      "depends_on": [],
+      "does_not_block_engineering_stage": true,
+      "evidence": [
+        {
+          "bytes": 3379,
+          "path": "reports/audits/A12_ENGINEERING_GATES_R1.json",
+          "sha256": "84309e458e7c2a913dc35778ed053a9c2e7d86a33cfb02cd37698fcf0b7d1319"
+        },
+        {
+          "bytes": 10632,
+          "path": "reports/audits/A12_CLEAN_CHECKOUT_R1.json",
+          "sha256": "b43b0b101cf46925f6b10f4b166deab8ee97618c50d0626fb4acc88104a4214d"
+        },
+        {
+          "bytes": 180817,
+          "path": "reports/audits/A12_CLEAN_REGRESSION_R1.xml",
+          "sha256": "8a08729c346521f2527a60339f9108855f0c9c10c11bdb87ed07782cbc55e437"
+        },
+        {
+          "bytes": 1579,
+          "path": "reports/audits/A12_CLEAN_REGRESSION_R1.log",
+          "sha256": "25460fa3b31724521f120fe39ceb19a059ed2640fd78111c7f93b83faaab99c7"
+        },
+        {
+          "bytes": 775737,
+          "path": "reports/audits/A12_NO_SYMBOL_SCAN_R1.json",
+          "sha256": "40b55ee9b77f432997b5ba540c7938b1284d03a0b2397e40e89b310a0748aee4"
+        }
+      ],
+      "external_acceptance": "BLOCKED",
+      "formal_consumer_authorization": false,
+      "implementation_status": "BLOCKED_R2_REAL_DATED_OWNER_SEMANTICS",
+      "next_step": "Versioned candidate, independent evidence, clean regression and external reaudit; no accepted-head overwrite.",
+      "priority": "P0",
+      "production_gate": true,
+      "status": "OPEN",
+      "status_path": "reports/audits/work_packages/WP-A12-V4-02-STATUS-ST-AUTHORITY/STATUS_ENGINEERING_CANDIDATE_R1.json",
+      "task": {
+        "bytes": 9262,
+        "path": "docs/evidence/source_authority/V4_A12_V4_02_STATUS_ST_AUTHORITY_AND_CASCADE_REPAIR_TASK_R1_20261001.md",
+        "sha256": "7a2aa855bf108f8d9e7c5d36aaafcea8ae2304818c002a616bb4035b1169c0e5"
+      },
+      "transition": {
+        "acceptance_scope": "NO_FUNCTIONAL_CLOSURE",
+        "capability_limitations": [
+          "EXTERNAL_REPAIR_ACCEPTANCE_REQUIRED"
+        ],
+        "evidence_bindings": [
+          {
+            "bytes": 3379,
+            "path": "reports/audits/A12_ENGINEERING_GATES_R1.json",
+            "sha256": "84309e458e7c2a913dc35778ed053a9c2e7d86a33cfb02cd37698fcf0b7d1319"
+          },
+          {
+            "bytes": 10632,
+            "path": "reports/audits/A12_CLEAN_CHECKOUT_R1.json",
+            "sha256": "b43b0b101cf46925f6b10f4b166deab8ee97618c50d0626fb4acc88104a4214d"
+          },
+          {
+            "bytes": 180817,
+            "path": "reports/audits/A12_CLEAN_REGRESSION_R1.xml",
+            "sha256": "8a08729c346521f2527a60339f9108855f0c9c10c11bdb87ed07782cbc55e437"
+          },
+          {
+            "bytes": 1579,
+            "path": "reports/audits/A12_CLEAN_REGRESSION_R1.log",
+            "sha256": "25460fa3b31724521f120fe39ceb19a059ed2640fd78111c7f93b83faaab99c7"
+          },
+          {
+            "bytes": 775737,
+            "path": "reports/audits/A12_NO_SYMBOL_SCAN_R1.json",
+            "sha256": "40b55ee9b77f432997b5ba540c7938b1284d03a0b2397e40e89b310a0748aee4"
+          }
+        ],
+        "external_authority": {
+          "audited_head": "1655f84d1a47faca43c281d66e7704f2fa56b1b8",
+          "document": {
+            "bytes": 17949,
+            "path": "docs/evidence/source_authority/V4_SOURCE_AUTHORITY_8_CARD_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R1_20261001.md",
+            "sha256": "4d8ccf020f7de496c95be25ff88aa1e6341902523c41ef61fd2da872d0e19e76"
+          },
+          "verdict": "PARTIAL_PASS_WITH_BLOCKERS"
+        },
+        "new_status": "OPEN",
+        "previous_status": "OPEN",
+        "remaining_dependencies": []
+      },
+      "work_package": "WP-A12-V4-02-STATUS-ST-AUTHORITY"
+    }
+  ],
+  "extends": {
+    "bytes": 21515,
+    "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R2.json",
+    "sha256": "83e2959a26dc3e1e5a64f14c56f3ef428d5b1b6d0d249311bea13cc73e87586e"
+  },
+  "external_authority": {
+    "audited_head": "1655f84d1a47faca43c281d66e7704f2fa56b1b8",
+    "document": {
+      "bytes": 17949,
+      "path": "docs/evidence/source_authority/V4_SOURCE_AUTHORITY_8_CARD_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R1_20261001.md",
+      "sha256": "4d8ccf020f7de496c95be25ff88aa1e6341902523c41ef61fd2da872d0e19e76"
+    },
+    "verdict": "PARTIAL_PASS_WITH_BLOCKERS"
+  },
+  "permissions": {
+    "focus_cutover": false,
+    "production": false,
+    "shadow": false
+  },
+  "status": "EXTERNAL_DISPOSITIONS_FORMALIZED_ENGINEERING_CONFIRMATION_PENDING"
+}

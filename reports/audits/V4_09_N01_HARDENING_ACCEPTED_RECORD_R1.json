@@ -1,0 +1,53 @@
+{
+  "acceptance_scope": "REPAIR_FREEZE_AUTHORITY_HARDENING_AUDIT_ONLY",
+  "accepted_artifact": {
+    "byte_count": 377494,
+    "logical_digest": "edb35a7b7aa382add631d80d105575c00274b638cef112b58e7e2687510e9a6e",
+    "path": "data/v4/artifact_store/v4_09/V4_09_STOCK_PREWATCH_2026-09-28_edb35a7b7aa382add631d80d105575c00274b638cef112b58e7e2687510e9a6e.jsonl.gz",
+    "publication_id": "V4_09:e38b5feb1696e283334692f21d7e99b1869a22552a50e0144b71c07acf4386c1",
+    "sha256": "8b92cbd96a8145005bad89374349582c075cf367722b956a75243d59aa64d18d",
+    "trade_date": "2026-09-28"
+  },
+  "accepted_head": {
+    "bytes": 11474,
+    "path": "data/v4/V4_09_ACCEPTED_HEAD.json",
+    "sha256": "641ef9e2e6fe8f461a9b765262e739791a6d3fdd220b0eff7947e2690de3a87d"
+  },
+  "business_accepted_heads_modified": false,
+  "contract_id": "V4_09_N01_HARDENING_ACCEPTED_RECORD_R1",
+  "current_runtime_accepted": false,
+  "current_runtime_external_acceptance": "PENDING_INDEPENDENT_EXTERNAL_AUDIT",
+  "evidence_bindings": [
+    {
+      "bytes": 3949,
+      "path": "reports/audits/A08_ACCEPTED_REPLAY_AND_AUTHORITY_EVIDENCE_R1.json",
+      "sha256": "0c0b910a1749dfb72c1ea1913e4d34a8f99cc694c0b8907a2ee5b8f77f717dab"
+    },
+    {
+      "bytes": 10651,
+      "path": "reports/audits/A08_CLEAN_CHECKOUT_R1.json",
+      "sha256": "4fb3e1bd1074128f91427d6a3c7e2b0a3f241e244eaa3eae7cbaca27f8dd3d87"
+    }
+  ],
+  "external_acceptance": "PASS",
+  "external_authority": {
+    "audited_head": "1655f84d1a47faca43c281d66e7704f2fa56b1b8",
+    "document": {
+      "bytes": 17949,
+      "path": "docs/evidence/source_authority/V4_SOURCE_AUTHORITY_8_CARD_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R1_20261001.md",
+      "sha256": "4d8ccf020f7de496c95be25ff88aa1e6341902523c41ef61fd2da872d0e19e76"
+    },
+    "verdict": "PARTIAL_PASS_WITH_BLOCKERS"
+  },
+  "historical_implementation": {
+    "bytes": 1275,
+    "path": "config/v4_09_historical_runtime_archive_r1.json",
+    "sha256": "e105c9f934785569306fc479f4a10cceacf1770abc617aa77cd8d051cce2e84c"
+  },
+  "historical_validation_scope": "ACCEPTED_PUBLICATION_HISTORY_ONLY",
+  "permissions": {
+    "focus_cutover": false,
+    "production": false,
+    "shadow": false
+  }
+}

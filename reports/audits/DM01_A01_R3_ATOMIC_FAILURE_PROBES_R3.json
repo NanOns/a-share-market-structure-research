@@ -1,0 +1,29 @@
+{
+  "failure_bindings": [
+    {
+      "bytes": 341,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/d7d08ef8a00fe45b471cda64dfa9b7fd19207bb09746bd9f719205d9ab50285e/failure.json",
+      "sha256": "bd741d8c9d16d585d2167c57e9867af5191dfd232c128cdcf655e841762e9074"
+    }
+  ],
+  "heads_unchanged": true,
+  "partial_candidates_visible": false,
+  "real_source_late_component_failure": {
+    "accepted_namespace_visible": false,
+    "completed_components": [
+      "IDENTITY_UNIVERSE",
+      "RAW_DAILY",
+      "TRADING_STATUS",
+      "ISST",
+      "ADJUSTED_DAILY",
+      "PERIOD_RAW",
+      "PERIOD_ADJUSTED"
+    ],
+    "data_head_moved": false,
+    "protected_heads_unchanged": true,
+    "reason": "PRICE_RULES_NOT_ACCEPTED",
+    "status": "BLOCKED"
+  },
+  "status": "PASS",
+  "subsequent_session_dispatch_after_failure": false
+}

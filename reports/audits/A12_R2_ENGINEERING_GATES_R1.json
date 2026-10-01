@@ -1,5 +1,10 @@
 {
   "allowed_candidate_status": "A12_R2_REAL_DATED_OWNER_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
+  "clean_regression": {
+    "bytes": 14423,
+    "path": "reports/audits/A12_R2_CLEAN_CHECKOUT_R1.json",
+    "sha256": "4f449027c3c040505d0859e939614ce09659b19b1445584b63b86dadf0df81f9"
+  },
   "evidence_manifest": {
     "bytes": 5513,
     "path": "reports/audits/A12_R2_CANDIDATE_EVIDENCE_MANIFEST_R1.json",
@@ -29,9 +34,9 @@
     "A12R2-G13": "PASS_ENGINEERING",
     "A12R2-G14": "PASS_ENGINEERING",
     "A12R2-G15": "PASS_ENGINEERING",
-    "A12R2-G16": "PENDING_CLEAN_DETACHED",
+    "A12R2-G16": "PASS_ENGINEERING",
     "A12R2-G17": "PENDING_INDEPENDENT_EXTERNAL_AUDIT"
   },
   "next_stage": "Independent A12 R2 source semantics/amendment reaudit, including positive ST code-change scope disposition. Only a later explicit promotion card may register accepted owners or amend business heads. DM01 final all-nine remains BLOCKED.",
-  "status": "PENDING_CLEAN_DETACHED"
+  "status": "A12_R2_REAL_DATED_OWNER_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT"
 }

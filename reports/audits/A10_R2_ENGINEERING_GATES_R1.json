@@ -1,5 +1,10 @@
 {
   "allowed_candidate_status": "A10_R2_OWNER_ACCEPTANCE_BINDING_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
+  "clean_regression": {
+    "bytes": 12899,
+    "path": "reports/audits/A10_R2_CLEAN_CHECKOUT_R1.json",
+    "sha256": "7d164c220a4dc9e59275fa4ed84a9f2de8633d153d6136b5f15340f07d88ef41"
+  },
   "evidence": {
     "bytes": 7197,
     "path": "reports/audits/A10_R2_OWNER_GATE_AND_PENDING_SOURCE_EVIDENCE_R1.json",
@@ -34,9 +39,9 @@
     "A10R2-G10": "PASS_ENGINEERING",
     "A10R2-G11": "PASS_ENGINEERING",
     "A10R2-G12": "PASS_ENGINEERING",
-    "A10R2-G13": "PENDING_CLEAN_DETACHED",
+    "A10R2-G13": "PASS_ENGINEERING",
     "A10R2-G14": "PENDING_INDEPENDENT_EXTERNAL_AUDIT"
   },
   "next_stage": "Independent A10 R2 external reaudit; A12 R2 owner semantics require their own task; DM01 final all-nine remains gated by both acceptances",
-  "status": "PENDING_CLEAN_DETACHED"
+  "status": "A10_R2_OWNER_ACCEPTANCE_BINDING_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT"
 }

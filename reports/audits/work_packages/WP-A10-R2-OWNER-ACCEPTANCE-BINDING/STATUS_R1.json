@@ -1,0 +1,34 @@
+{
+  "a12_owner_accepted": false,
+  "accepted_owner_count": 0,
+  "audit_still_open": true,
+  "dm01_final_all_nine_executed": false,
+  "engineering_stage_completed": true,
+  "evidence": [
+    {
+      "bytes": 8260,
+      "path": "reports/audits/A10_R2_STAGE_CLOSURE_R1.json",
+      "sha256": "4613997e9e702f1fbb14102f5480662cdcde3ec12506df07e12c2410e952ab92"
+    },
+    {
+      "bytes": 7197,
+      "path": "reports/audits/A10_R2_OWNER_GATE_AND_PENDING_SOURCE_EVIDENCE_R1.json",
+      "sha256": "2c3ec566a4f8c2a9e548cdd4a27c981a12aa88ce84bf854a750d6f6c7f55722a"
+    }
+  ],
+  "external_acceptance": "PENDING_INDEPENDENT_EXTERNAL_REAUDIT",
+  "implementation_status": "A10_R2_OWNER_ACCEPTANCE_BINDING_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
+  "next_step": "Independent A10 R2 external reaudit. Owner registration and DM01 final execution require A10 R2 plus A12 R2 external acceptance and a new authorized task.",
+  "permissions": {
+    "focus_cutover": false,
+    "production": false,
+    "shadow": false
+  },
+  "prior_external_disposition": "BLOCKED_R2_OWNER_ACCEPTANCE_GATE",
+  "prior_registry": {
+    "bytes": 33283,
+    "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R3.json",
+    "sha256": "4e224ae63cac14ac85a2b47b29ed4566f55565912b155fd7f940b281fdf6e6d6"
+  },
+  "work_package": "WP-A10-R2-OWNER-ACCEPTANCE-BINDING"
+}

@@ -1,0 +1,80 @@
+{
+  "DataHead": "2026-09-30",
+  "StageHead": "V4_00_TO_V4_10_ACCEPTED",
+  "all_active_runtime_and_artifact_bindings_exact": true,
+  "amount_A_formal_branch": "DISABLED",
+  "authorized_historical_deselects": [
+    "tests/v4_09/test_stock_prewatch.py::test_production_and_v4_09_acceptance_stay_disabled"
+  ],
+  "baseline_commit": "bc3e398efb4f4a05c20973ff3cb335a6b101ac87",
+  "candidate_artifact_manifest": {
+    "bytes": 48858,
+    "path": "reports/next_round_r1/BATCH_CANDIDATE_ARTIFACT_MANIFEST_R1.json",
+    "sha256": "e9d4aa541e28c8b7a02771fb2b5f2d9b6ad127ba174b06673b9f5fb1a790c655"
+  },
+  "candidate_handoff": {
+    "bytes": 11847,
+    "path": "reports/next_round_r1/BATCH_CANDIDATE_HANDOFF_R1.json",
+    "sha256": "7029a829a1c1d89f040526e1064dd442f3f2bccd1f2deff4a2c63a58ff611883"
+  },
+  "candidate_registry": {
+    "bytes": 5081,
+    "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R11_CANDIDATE.json",
+    "sha256": "b37a28713003e3b7e22110879a635c8a36b172eb15ea3404d3eb56a588fd9208"
+  },
+  "clean_checkout": {
+    "bytes": 912170,
+    "path": "reports/next_round_r1/BATCH_CLEAN_CHECKOUT_R1.json",
+    "sha256": "80ee5c3c5d04f39f01bb596bc0f246a89cda9226501da2af6129f74711263ea8"
+  },
+  "completed_at_utc": "2026-10-01T14:36:35.395729+00:00",
+  "contract_id": "V4_NEXT_ROUND_FINAL_SUBMISSION_V1",
+  "engineering_validation": "PASS_ENGINEERING_REGRESSION",
+  "external_acceptance": false,
+  "external_conditions": {
+    "A03": "PARTIAL_FUTURE_NATURAL_ACCUMULATION",
+    "A04": "BLOCKED_FORMAL_THRESHOLD_AND_H21_AUTHORITY",
+    "A06": "PARTIAL_OFFICIAL_GENERATION_ROUNDING_AND_PROVIDER_DENOMINATOR_AUTHORITY",
+    "A07": "PERMANENTLY_BLOCKED_PRE_CAPTURE_AS_RECORDED"
+  },
+  "final_commit_scope": "CLEAN_AND_SUBMISSION_EVIDENCE_ONLY_NO_BUSINESS_RUNTIME_CHANGES",
+  "migration_execution": {
+    "bytes": 1077,
+    "path": "config/v4_migration_execution_receipt_r2.json",
+    "sha256": "674d6f1c872ea5cf6d2f1cbf446b762577da666682fb3a5debeecc9d97c5255b"
+  },
+  "new_deselects": [],
+  "next_stage": "STOP_WAIT_FOR_INDEPENDENT_EXTERNAL_REAUDIT",
+  "no_symbol": "PASS",
+  "old_source_evidence_and_accepted_heads_retained": true,
+  "owner_registry_active_root_changed": false,
+  "owner_registry_bulk_accept": false,
+  "permissions": {
+    "focus": false,
+    "global_mandatory_adoption": false,
+    "production": false,
+    "shadow": false
+  },
+  "protected_heads_unchanged": true,
+  "push_required_before_turn_completion": true,
+  "real_20260930_confirmation": {
+    "UNKNOWN": 5224,
+    "confirmation_rows": 5224,
+    "reason": "TARGET_COMMON_SAFETY_EPISODE_FACT_PUBLICATIONS_NOT_EXTERNALLY_ACCEPTED",
+    "universe": 5224
+  },
+  "real_20260930_state_events": "UNKNOWN_UNAVAILABLE_ACCEPTED_REAL_D2_AND_FROZEN_PRIOR_SESSION",
+  "status": "CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
+  "summary": {
+    "errors": 0,
+    "failures": 0,
+    "passed": 1692,
+    "skipped": 2,
+    "tests": 1694
+  },
+  "task_document_count": 10,
+  "tested_code_and_candidate_commit": "de93779891f68cfdb4f16c5fcf180257c19dc212",
+  "unrelated_worktree_changes_preserved": true,
+  "v4_12_implemented": false,
+  "work_package_count": 9
+}

@@ -1,0 +1,52 @@
+........................................................................ [  4%]
+........................................................................ [  9%]
+........................................................................ [ 14%]
+........................................................................ [ 19%]
+........................................................................ [ 24%]
+........................................................................ [ 29%]
+........................................................................ [ 34%]
+........................................................................ [ 39%]
+........................................................................ [ 44%]
+..s..........s.......................................................... [ 49%]
+........................................................................ [ 54%]
+........................................................................ [ 59%]
+........................................................................ [ 64%]
+........................................................................ [ 69%]
+........................................................................ [ 74%]
+........................................................................ [ 79%]
+........................................................................ [ 84%]
+........................................................................ [ 89%]
+........................................................................ [ 94%]
+................................................................F....... [ 99%]
+......                                                                   [100%]
+================================== FAILURES ===================================
+_ test_accepted_fixture_requires_real_raw_and_dated_document_statement[LISTED_STOCK_TRADING_SUSPENSION] _
+
+tmp_path = WindowsPath('C:/Users/lps/AppData/Local/Temp/pytest-of-lps/pytest-3122/test_accepted_fixture_requires0')
+kind = 'LISTED_STOCK_TRADING_SUSPENSION'
+
+    @pytest.mark.parametrize('kind',['LISTED_STOCK_TRADING_SUSPENSION','LISTED_STOCK_RESUMPTION'])
+    def test_accepted_fixture_requires_real_raw_and_dated_document_statement(tmp_path,kind):
+        _,b,event=install(tmp_path,kind)
+>       assert require_trading_event(tmp_path,b,event['raw_artifact'],security_key=event['security_key'],
+            effective_date=event['event_effective_date'])['actual_event_type']==kind
+
+tests\v4_a13\test_event_semantics.py:60: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\official_event_semantics_v1.py:85: in require_trading_event
+    binding_bytes(root,event['identity_evidence'])
+src\workbench_analysis\source_authority_producers_r3.py:25: in binding_bytes
+    reject('SOURCE_ARTIFACT_HASH_MISMATCH')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+reason = 'SOURCE_ARTIFACT_HASH_MISMATCH'
+
+    def reject(reason):
+>       raise OwnerAcceptanceError(reason)
+E       workbench_analysis.source_authority_accepted_owners_v1.OwnerAcceptanceError: AUTHORITY_OWNER_NOT_EXTERNALLY_ACCEPTED:SOURCE_ARTIFACT_HASH_MISMATCH
+
+src\workbench_analysis\source_authority_accepted_owners_v1.py:28: OwnerAcceptanceError
+=========================== short test summary info ===========================
+FAILED tests/v4_a13/test_event_semantics.py::test_accepted_fixture_requires_real_raw_and_dated_document_statement[LISTED_STOCK_TRADING_SUSPENSION]
+1 failed, 1443 passed, 2 skipped, 1 deselected in 158.66s (0:02:38)
+

@@ -118,6 +118,12 @@ def main():
             assert date_adjudication['semantic_phrase'] in re.sub(r'\s+','',text)
             effective=date_adjudication['event_effective_date']
         capture_ids=sorted({r['old_capture_id'] for r in refs if isinstance(r.get('old_capture_id'),str)})
+        original_text_path=textpath
+        original_text_sha=bind(textpath)['sha256'] if textpath else None
+        if textpath and textpath.startswith('reports/'):
+            archived='data/v4/source_evidence/a13/text_archives/'+original_text_sha+'.txt'
+            atomic_bytes(ROOT/archived,(ROOT/textpath).read_bytes())
+            textpath=archived
         usages={stage:'NOT_CONSUMED' for stage in ['V4_01_IDENTITY_LIFECYCLE','V4_02_TRADING_STATUS','V4_02_ST','V4_02_SPECIAL_PHASE','V4_08_IDENTITY_ADMISSION','V4_08_PIT_MEMBERSHIP','A12_SAMPLE_MATRIX','DM01']}
         if path in lifecycle_paths:
             usages.update(V4_01_IDENTITY_LIFECYCLE='SUPPORTING_EVIDENCE',V4_08_IDENTITY_ADMISSION='SUPPORTING_EVIDENCE',V4_08_PIT_MEMBERSHIP='SUPPORTING_EVIDENCE')
@@ -135,6 +141,7 @@ def main():
             actual_event_type=event,security_key=key,event_effective_date=effective,source_published_date=published,
             temporal_limit='NULL_DATE_IS_UNPROVEN_NEVER_INFER_FROM_FILE_NAME',semantic_evidence=semantics['semantic_evidence'],
             semantic_text_binding=bind(textpath) if textpath else None,extraction=extraction,
+            original_semantic_text_path=original_text_path,original_semantic_text_observed_sha256=original_text_sha,
             dated_trading_statements=semantics.get('dated_trading_statements',[]),
             event_date_adjudication=date_adjudication,
             identity_evidence=bind('data/v4/bootstrap/special_price_phase_events_r4.jsonl') if phase else None,

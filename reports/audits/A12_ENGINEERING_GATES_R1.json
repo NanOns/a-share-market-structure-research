@@ -1,0 +1,77 @@
+{
+  "accepted_heads_unchanged": true,
+  "allowed_candidate_status": "V4_02_STATUS_ST_AUTHORITY_REPAIR_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
+  "evidence": [
+    {
+      "bytes": 5732,
+      "path": "reports/audits/A12_STAGE_ENTRY_R1.json",
+      "sha256": "d058916b61ed6d7ea285234392bfcd090884833cb3da1b425738f2131f764a4a"
+    },
+    {
+      "bytes": 52514,
+      "path": "reports/audits/V4_02_STATUS_ST_AUTHORITY_INVENTORY_R1.json",
+      "sha256": "2a78be842249496147774990d6118fb2093d4690528aab43ed94232b2ab95eb4"
+    },
+    {
+      "bytes": 1507,
+      "path": "reports/audits/A12_PRODUCER_CONTRACT_FREEZE_R1.json",
+      "sha256": "82190c4269ab6671af8664a9ea0a24fffc90c90ef6f369af830c4552b5fc4ec9"
+    },
+    {
+      "bytes": 11693,
+      "path": "reports/audits/A12_V4_02_FULL_HISTORICAL_REPAIR_AND_DIFF_R1.json",
+      "sha256": "ff6854311981817d4a0ce9165b68763e979a79d4870d897effa61d008e37a6d0"
+    },
+    {
+      "bytes": 3584,
+      "path": "reports/audits/A12_FORMAL_PERIOD_AUTHORITY_REBIND_R1.json",
+      "sha256": "538809b9c77e75052a3657349e09501b5e82e26bfd0bdf36672dbeb393937202"
+    },
+    {
+      "bytes": 3270,
+      "path": "reports/audits/A12_INDEPENDENT_FULL_ROW_ORACLE_R1.json",
+      "sha256": "75616b6fbcd7fa5768905fea0d5bcd3db435ebd740c68883972a55025681f599"
+    },
+    {
+      "bytes": 19342,
+      "path": "reports/audits/A12_UNCHANGED_REPLAY_SOURCE_PROOFS_R1.json",
+      "sha256": "16cd64d254b37be3e76613d294293d4b02b458203140b42f8c4453d9f77be45c"
+    },
+    {
+      "bytes": 3450,
+      "path": "reports/audits/A12_V4_04_TRUE_REPLAY_R1.json",
+      "sha256": "38751ecab85d28a428bc12200509255d468d8ca32c2708e4ae75b927c09fde11"
+    },
+    {
+      "bytes": 136538,
+      "path": "reports/audits/A12_DOWNSTREAM_CASCADE_AND_FULL_BUSINESS_DIFF_R1.json",
+      "sha256": "2a53f236cb1711d005c701c37a5875d070a36a75d9d4f4823e0548432064efb9"
+    }
+  ],
+  "external_acceptance": null,
+  "formal_publication": false,
+  "gates": {
+    "A12-G01": "PASS_ENGINEERING",
+    "A12-G02": "PASS_ENGINEERING",
+    "A12-G03": "PASS_ENGINEERING",
+    "A12-G04": "PASS_ENGINEERING",
+    "A12-G05": "PASS_ENGINEERING",
+    "A12-G06": "PASS_ENGINEERING",
+    "A12-G07": "PASS_ENGINEERING",
+    "A12-G08": "PASS_ENGINEERING",
+    "A12-G09": "PASS_ENGINEERING",
+    "A12-G10": "PASS_ENGINEERING",
+    "A12-G11": "PASS_ENGINEERING",
+    "A12-G12": "PASS_ENGINEERING",
+    "A12-G13": "PASS_ENGINEERING",
+    "A12-G14": "PENDING_CLEAN_DETACHED",
+    "A12-G15": "PENDING_INDEPENDENT_EXTERNAL_AUDIT"
+  },
+  "historical_dated_st_or_suspension_source_recovered": false,
+  "known_st_output_permission": false,
+  "next_stage": "Independent external A12 source semantics acceptance; DM01 final real-source candidate must bind that accepted producer before promotion.",
+  "real_samples": "All accepted local bars independently checked over 4,035,729 memberships; unproven ST/suspension remains UNKNOWN. Dated owner transition vectors are explicit synthetic contract fixtures, not real official acceptance.",
+  "source_authority_path": "PATH_A_CURRENT_MASTER_CONTRACT",
+  "status": "PENDING_CLEAN_DETACHED",
+  "work_package": "WP-A12-V4-02-STATUS-ST-AUTHORITY"
+}

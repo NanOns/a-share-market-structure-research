@@ -1,0 +1,299 @@
+{
+  "accepted_heads_unchanged": true,
+  "arithmetic_policy": "UNCHANGED_ACCEPTED_KERNEL; UNKNOWN_FORMAL_ST_FAILS_BEFORE_RATIO_EVALUATION",
+  "artifacts": {
+    "price": {
+      "bytes": 134653312,
+      "logical_digest": "d53842de9cc8e11b9d1fc96740a971ebbff90351e69c0fb4554d464f17652d9e",
+      "path": "data/v4/artifact_store/a12_authority_candidate_r1/V4_02_PRICE_LIMIT_AUTHORITY_R1.jsonl.gz",
+      "sha256": "6599abe8e00b25cd79e312ec3bbdfcd063d3c9968017828c6f4057eafd03e267"
+    },
+    "st": {
+      "bytes": 120022170,
+      "logical_digest": "2196709750a87a4177ce5409d48f1c473fcfe845fea2fa40da30997daba70279",
+      "path": "data/v4/artifact_store/a12_authority_candidate_r1/V4_02_DATED_ST_STATUS_AUTHORITY_R1.jsonl.gz",
+      "sha256": "0a5b67ee608e39ada522bb32b0ca8aa52366bfef84586b4e9b5cfa8c202b3a57"
+    },
+    "status": {
+      "bytes": 122923453,
+      "logical_digest": "14c0a4f9f6404e7bafd90069a3c85f5844f91ec2e64870ce84f0331cff771b71",
+      "path": "data/v4/artifact_store/a12_authority_candidate_r1/V4_02_DATED_TRADING_STATUS_AUTHORITY_R1.jsonl.gz",
+      "sha256": "97b7c84dc6385b86aead6842a1231d9780c513b7ca5093e4b73be84ad4cfafed"
+    }
+  },
+  "contract_id": "A12_V4_02_FULL_HISTORICAL_REPAIR_AND_DIFF_R1",
+  "counts": {
+    "new_st_None": 4035729,
+    "new_status_ACTUAL_TRADED": 4026611,
+    "new_status_UNKNOWN": 9118,
+    "price_business_rows_changed": 4035729,
+    "rows": 4035729
+  },
+  "external_acceptance": null,
+  "formal_publication": false,
+  "inputs": {
+    "daily": {
+      "bytes": 112302935,
+      "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet",
+      "sha256": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90"
+    },
+    "price": {
+      "bytes": 157153754,
+      "path": "data/v4/artifact_store/v4_02/V4_02_PRICE_LIMIT_R6_20260927.jsonl.gz",
+      "sha256": "6f40d6b92e78e8de6f2cc17c867d902e06e56d82d0b7f45c8715469704b4e6af"
+    },
+    "producer": {
+      "bytes": 1237,
+      "path": "config/v4_02_status_st_authority_r1.json",
+      "sha256": "d926bb00abe97be5a485c519b9a4f7bf4b647c380c8edd812bb8674b273d2291"
+    },
+    "st": {
+      "bytes": 99012112,
+      "path": "data/v4/artifact_store/v4_02/V4_02_DATED_ST_STATUS_R7_20260927.jsonl.gz",
+      "sha256": "ffac24e09d02a53ffb48dbc24449d95f5ab20d8934c6401588a73c8673dbb8f4"
+    },
+    "status": {
+      "bytes": 100075252,
+      "path": "data/v4/artifact_store/v4_02/V4_02_DATED_TRADING_STATUS_R7_20260927.jsonl.gz",
+      "sha256": "ad65d2e1b3ca835a310cfa2a35f7bfd417a42020e27f2e77d4a79597aa018de9"
+    },
+    "universe": {
+      "bytes": 239298684,
+      "path": "data/v4/artifact_store/v4_01/v4_01_historical_universe_required_R7_20260927.jsonl.gz",
+      "sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b"
+    }
+  },
+  "new_price_business_digest": "f8f7ac5b491aaeb1a34e002094a5b2a529f1f625196452dd4c54c0fd5e0e8679",
+  "next_stage": "V4_03 exact consumed-field gate; V4_04 real replay; conditional cascade",
+  "observation_at": "2026-10-01T03:27:40.089421+00:00",
+  "old_price_business_digest": "5d212ffbf0f3769ee6c2560872a1a3f84ac68190041c486dd34837de7d35593e",
+  "samples": {
+    "ACTUAL_TRADED -> ACTUAL_TRADED": {
+      "new": {
+        "authority_binding": null,
+        "contract_id": "LOCAL_DATED_TRADING_STATUS_V2",
+        "first_availability_at_target_proven": false,
+        "lineage": "RECONSTRUCTED_CORRECTED",
+        "provider_conflict": false,
+        "provider_role": "SUPPLEMENTAL_CROSSCHECK",
+        "provider_tradestatus": null,
+        "security_id": "SEC-62C40F6EEABB12A3B3F00D4FB0B61ED0",
+        "source_security_key": "SH.600000",
+        "status": "ACTUAL_TRADED",
+        "status_source": "LOCAL_TDX_ACTUAL_BAR",
+        "trade_date": "2023-07-04"
+      },
+      "new_price": {
+        "is_st": null,
+        "limit_down_price": null,
+        "limit_status": "UNKNOWN",
+        "limit_up_price": null,
+        "reason": "RISK_STATUS_UNKNOWN",
+        "reference_basis": "UNKNOWN",
+        "reference_price": null,
+        "risk_status": null,
+        "rule_id": null,
+        "security_id": "SEC-62C40F6EEABB12A3B3F00D4FB0B61ED0",
+        "source_security_key": "SH.600000",
+        "special_price_phase": "REGULAR",
+        "trade_date": "2023-07-04",
+        "trading_status": "ACTUAL_TRADED"
+      },
+      "new_st": {
+        "authority_binding": null,
+        "contract_id": "LOCAL_DATED_ST_IDENTITY_V2",
+        "first_availability_at_target_proven": false,
+        "is_st": null,
+        "lineage": "RECONSTRUCTED_CORRECTED",
+        "provider_conflict": false,
+        "provider_is_st": "0",
+        "provider_role": "SUPPLEMENTAL_CROSSCHECK",
+        "risk_status": "UNKNOWN",
+        "security_id": "SEC-62C40F6EEABB12A3B3F00D4FB0B61ED0",
+        "source_owner": "NO_ACCEPTED_DATED_FORMAL_AUTHORITY",
+        "source_security_key": "SH.600000",
+        "st_state": "UNKNOWN",
+        "trade_date": "2023-07-04"
+      },
+      "old": {
+        "is_st": null,
+        "provider_tradestatus": null,
+        "security_id": "SEC-62C40F6EEABB12A3B3F00D4FB0B61ED0",
+        "source_security_key": "SH.600000",
+        "status": "ACTUAL_TRADED",
+        "status_source": "LOCAL_TDX_BAR_PRESENCE",
+        "trade_date": "2023-07-04"
+      },
+      "old_price": {
+        "is_st": "0",
+        "limit_down_price": "6.59",
+        "limit_status": "NOT_LIMIT",
+        "limit_up_price": "8.05",
+        "reason": null,
+        "reference_basis": "PREVIOUS_OFFICIAL_CLOSE_STATE",
+        "reference_price": "7.32",
+        "risk_status": "NORMAL",
+        "rule_id": "SSE_MAIN_NORMAL_20230704_V1",
+        "security_id": "SEC-62C40F6EEABB12A3B3F00D4FB0B61ED0",
+        "source_security_key": "SH.600000",
+        "special_price_phase": "REGULAR",
+        "trade_date": "2023-07-04",
+        "trading_status": "ACTUAL_TRADED"
+      },
+      "old_st": {
+        "binding_quality": "DIRECT_CODE_DATE",
+        "is_st": "0",
+        "security_id": "SEC-62C40F6EEABB12A3B3F00D4FB0B61ED0",
+        "source_provider": "BAOSTOCK_PUBLIC_ANONYMOUS_QUERY_DAILY_HISTORY_K_ASTOCK",
+        "source_revision": "sha256:36c7c226ed02689c35e5ee1ca2cfb54bdf115b19fd36300e3c701973c442ca3f",
+        "source_security_key": "SH.600000",
+        "trade_date": "2023-07-04"
+      }
+    },
+    "SUSPENDED -> UNKNOWN": {
+      "new": {
+        "authority_binding": null,
+        "contract_id": "LOCAL_DATED_TRADING_STATUS_V2",
+        "first_availability_at_target_proven": false,
+        "lineage": "RECONSTRUCTED_CORRECTED",
+        "provider_conflict": false,
+        "provider_role": "SUPPLEMENTAL_CROSSCHECK",
+        "provider_tradestatus": "0",
+        "security_id": "SEC-0E7C0DBB305A863EB616468C3EB35837",
+        "source_security_key": "SH.600077",
+        "status": "UNKNOWN",
+        "status_source": "NO_ACCEPTED_DATED_FORMAL_AUTHORITY",
+        "trade_date": "2023-07-04"
+      },
+      "new_price": {
+        "is_st": null,
+        "limit_down_price": null,
+        "limit_status": "UNKNOWN",
+        "limit_up_price": null,
+        "reason": "TRADING_STATUS_UNKNOWN",
+        "reference_basis": "UNKNOWN",
+        "reference_price": null,
+        "risk_status": null,
+        "rule_id": null,
+        "security_id": "SEC-0E7C0DBB305A863EB616468C3EB35837",
+        "source_security_key": "SH.600077",
+        "special_price_phase": "REGULAR",
+        "trade_date": "2023-07-04",
+        "trading_status": "UNKNOWN"
+      },
+      "new_st": {
+        "authority_binding": null,
+        "contract_id": "LOCAL_DATED_ST_IDENTITY_V2",
+        "first_availability_at_target_proven": false,
+        "is_st": null,
+        "lineage": "RECONSTRUCTED_CORRECTED",
+        "provider_conflict": false,
+        "provider_is_st": "1",
+        "provider_role": "SUPPLEMENTAL_CROSSCHECK",
+        "risk_status": "UNKNOWN",
+        "security_id": "SEC-0E7C0DBB305A863EB616468C3EB35837",
+        "source_owner": "NO_ACCEPTED_DATED_FORMAL_AUTHORITY",
+        "source_security_key": "SH.600077",
+        "st_state": "UNKNOWN",
+        "trade_date": "2023-07-04"
+      },
+      "old": {
+        "is_st": "1",
+        "provider_tradestatus": "0",
+        "security_id": "SEC-0E7C0DBB305A863EB616468C3EB35837",
+        "source_security_key": "SH.600077",
+        "status": "SUSPENDED",
+        "status_source": "BAOSTOCK_PUBLIC_STATUS_FACT",
+        "trade_date": "2023-07-04"
+      },
+      "old_price": {
+        "is_st": "1",
+        "limit_down_price": null,
+        "limit_status": "SUSPENDED",
+        "limit_up_price": null,
+        "reason": "SUSPENDED",
+        "reference_basis": "SUSPENSION_FACT",
+        "reference_price": null,
+        "risk_status": null,
+        "rule_id": null,
+        "security_id": "SEC-0E7C0DBB305A863EB616468C3EB35837",
+        "source_security_key": "SH.600077",
+        "special_price_phase": "REGULAR",
+        "trade_date": "2023-07-04",
+        "trading_status": "SUSPENDED"
+      },
+      "old_st": {
+        "binding_quality": "DIRECT_CODE_DATE",
+        "is_st": "1",
+        "security_id": "SEC-0E7C0DBB305A863EB616468C3EB35837",
+        "source_provider": "BAOSTOCK_PUBLIC_ANONYMOUS_QUERY_DAILY_HISTORY_K_ASTOCK",
+        "source_revision": "sha256:36c7c226ed02689c35e5ee1ca2cfb54bdf115b19fd36300e3c701973c442ca3f",
+        "source_security_key": "SH.600077",
+        "trade_date": "2023-07-04"
+      }
+    }
+  },
+  "special_phase_metadata": "PRESERVED_ACCEPTED_PHASE_CLASSIFICATION; UNACCEPTED_ST_CANNOT_AUTHORIZE_KNOWN_PRICE_RESULT",
+  "status": "PASS_APPEND_ONLY_ENGINEERING_SOURCE_BOUNDARY_REPAIR",
+  "transitions": {
+    "price_reason": {
+      "CORPORATE_ACTION_REFERENCE_UNSUPPORTED -> RISK_STATUS_UNKNOWN": 38,
+      "DELISTING_FIRST_DAY_NO_LIMIT -> RISK_STATUS_UNKNOWN": 22,
+      "IPO_FIRST_5_TRADING_DAYS -> RISK_STATUS_UNKNOWN": 1648,
+      "None -> RISK_STATUS_UNKNOWN": 4024864,
+      "REFERENCE_CHAIN_BLOCKED_BY_UNSUPPORTED_ACTION -> RISK_STATUS_UNKNOWN": 1,
+      "REFERENCE_STATE_UNAVAILABLE -> RISK_STATUS_UNKNOWN": 7,
+      "SPECIAL_PHASE_EVIDENCE_UNAVAILABLE -> RISK_STATUS_UNKNOWN": 21,
+      "SPECIAL_REFERENCE_PRICE_UNAVAILABLE -> RISK_STATUS_UNKNOWN": 10,
+      "SUSPENDED -> TRADING_STATUS_UNKNOWN": 9118
+    },
+    "price_status": {
+      "LIMIT_DOWN -> UNKNOWN": 24377,
+      "LIMIT_UP -> UNKNOWN": 59550,
+      "NOT_LIMIT -> UNKNOWN": 3940937,
+      "NO_LIMIT -> UNKNOWN": 1670,
+      "SUSPENDED -> UNKNOWN": 9118,
+      "UNKNOWN -> UNKNOWN": 77
+    },
+    "st": {
+      "0 -> None": 3913800,
+      "1 -> None": 121929
+    },
+    "status": {
+      "ACTUAL_TRADED -> ACTUAL_TRADED": 4026611,
+      "SUSPENDED -> UNKNOWN": 9118
+    }
+  },
+  "unchanged_kernel_bindings": [
+    {
+      "bytes": 4106,
+      "path": "src/workbench_analysis/status_st_authority_r1.py",
+      "sha256": "9687b6308751eebf0b86d614cede3436f4a49d66b6f3675577ea407125ea8125"
+    },
+    {
+      "bytes": 8287,
+      "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+      "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+    },
+    {
+      "bytes": 11701,
+      "path": "src/workbench_analysis/limit_rules.py",
+      "sha256": "c39b23628fc9258c42b8c7a529fe7d5f6fd58576dbbbc6699f0767371dc6fbcd"
+    },
+    {
+      "bytes": 15757,
+      "path": "config/v4_02_price_limit_rules_r3.json",
+      "sha256": "68679333821c50cc8cbed5ff4cd001447cc6571d79b0d074a60b6bb81bdb01e0"
+    },
+    {
+      "bytes": 4532,
+      "path": "config/special_price_phase_policy_r6.json",
+      "sha256": "cffd66e633ee2a34c712ee628dcace2026b49764bc9f593dacd90fe39e183c79"
+    },
+    {
+      "bytes": 15441,
+      "path": "scripts/build_v4_02_price_limits_generic.py",
+      "sha256": "e39405d604299a610b11ac8b0672a2bb63c943d49c6dc267555bf3138230ba28"
+    }
+  ]
+}

@@ -1,0 +1,123 @@
+{
+  "external_acceptance": null,
+  "formal_publication": false,
+  "reports": [
+    {
+      "arithmetic_rows_changed": 0,
+      "candidate": {
+        "bytes": 81010994,
+        "path": "data/v4/artifact_store/a12_authority_candidate_r1/V4_02_FORMAL_WEEKLY_RAW_QFQ_AUTHORITY_R1.parquet",
+        "sha256": "e4108aafe0e6b6a837d5b937eb35070a0f34b30d3eb665218e8fcd9f31937fd9"
+      },
+      "old": {
+        "bytes": 81005147,
+        "path": "data/v4/artifact_store/v4_02/V4_02_FORMAL_WEEKLY_RAW_QFQ_R7_20260927.parquet",
+        "sha256": "8eda09c0ca55b986cbebe0aa32454a22835492a6286c1237473c729ea2af0294"
+      },
+      "original_quality_precedence": "DATA_GAP > UNKNOWN > INVALID_ACTUAL; QFQ_ADJUSTMENT_OVERRIDE_PRESERVED",
+      "source_boundary": "ALL_OLD_SUSPENDED_DAYS_NOW_UNKNOWN_PER_A12; UNKNOWN_COUNT_GROWS_BY_OLD_SUSPENDED_COUNT",
+      "status_count_transitions": [
+        [
+          "AS_OF_PARTIAL_READY",
+          "BLOCKED_BY_UNKNOWN_STATUS",
+          8
+        ],
+        [
+          "NO_ACTUAL_BARS",
+          "NO_ACTUAL_BARS",
+          2575
+        ],
+        [
+          "BLOCKED_BY_ADJUSTMENT",
+          "BLOCKED_BY_ADJUSTMENT",
+          206
+        ],
+        [
+          "CLOSED_ONLY_READY",
+          "BLOCKED_BY_UNKNOWN_STATUS",
+          3185
+        ]
+      ],
+      "unchanged_arithmetic_fields": [
+        "canonical_security_id",
+        "source_security_key",
+        "period_type",
+        "period_start_date",
+        "period_end_date",
+        "period_last_session",
+        "asof_trade_date",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "amount",
+        "price_basis",
+        "period_view",
+        "calendar_count",
+        "actual_count",
+        "source_daily_digest",
+        "adjusted_quality"
+      ]
+    },
+    {
+      "arithmetic_rows_changed": 0,
+      "candidate": {
+        "bytes": 19633277,
+        "path": "data/v4/artifact_store/a12_authority_candidate_r1/V4_02_FORMAL_MONTHLY_RAW_QFQ_AUTHORITY_R1.parquet",
+        "sha256": "da562f8da97d81b22701c0b41899b44b36c9f977e32841d3dc0a43de79038408"
+      },
+      "old": {
+        "bytes": 19627759,
+        "path": "data/v4/artifact_store/v4_02/V4_02_FORMAL_MONTHLY_RAW_QFQ_R7_20260927.parquet",
+        "sha256": "790ae9dd13bc363c431b2a7d02e3c6db868bc5d0b3d85a8c9a2acbd5dfd90ff3"
+      },
+      "original_quality_precedence": "DATA_GAP > UNKNOWN > INVALID_ACTUAL; QFQ_ADJUSTMENT_OVERRIDE_PRESERVED",
+      "source_boundary": "ALL_OLD_SUSPENDED_DAYS_NOW_UNKNOWN_PER_A12; UNKNOWN_COUNT_GROWS_BY_OLD_SUSPENDED_COUNT",
+      "status_count_transitions": [
+        [
+          "NO_ACTUAL_BARS",
+          "NO_ACTUAL_BARS",
+          325
+        ],
+        [
+          "BLOCKED_BY_ADJUSTMENT",
+          "BLOCKED_BY_ADJUSTMENT",
+          181
+        ],
+        [
+          "AS_OF_PARTIAL_READY",
+          "BLOCKED_BY_UNKNOWN_STATUS",
+          52
+        ],
+        [
+          "CLOSED_ONLY_READY",
+          "BLOCKED_BY_UNKNOWN_STATUS",
+          3132
+        ]
+      ],
+      "unchanged_arithmetic_fields": [
+        "canonical_security_id",
+        "source_security_key",
+        "period_type",
+        "period_start_date",
+        "period_end_date",
+        "period_last_session",
+        "asof_trade_date",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "amount",
+        "price_basis",
+        "period_view",
+        "calendar_count",
+        "actual_count",
+        "source_daily_digest",
+        "adjusted_quality"
+      ]
+    }
+  ],
+  "status": "PASS_BOUNDARY_ONLY_PERIOD_QUALITY_REPLAY"
+}

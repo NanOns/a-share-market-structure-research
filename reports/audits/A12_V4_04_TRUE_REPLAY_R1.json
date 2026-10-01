@@ -1,0 +1,67 @@
+{
+  "algorithm": {
+    "bytes": 15008,
+    "path": "scripts/run_v4_04_full_market_candidate_r4.py",
+    "sha256": "263e1c54aed59026cef97061ef3f74bb184634d3589d2438a84a11baa71ab816"
+  },
+  "artifact": {
+    "bytes": 49038589,
+    "path": "reports/audits/a12_candidate_r1/V4_04_FULL_MARKET_CORE_PROFILE_AUTHORITY_R1.jsonl.gz",
+    "sha256": "a82ec159f88a3d1a5b34b83a3c7d0e574263edb0fc9f28d17eb8e78751285fec"
+  },
+  "contract_bindings": {
+    "config/v4_04_algorithm_contracts_v3.json": "0b144bd2a9f033336da338d5b71649f8e20ebafe65095efcd5c4a7d8663db970",
+    "config/v4_04_field_registry_v2.json": "aceed3d159cf3c7beb3306fb2b90eb22af935bb7f27ebeb29a9e8abc5653f9c1",
+    "config/v4_04_field_window_mapping_v1.json": "0ee0312b48ace787c85890e60afb4a15a6c64d98d7956636c06e5bd87e09de4d",
+    "config/v4_04_output_schema_v2.json": "71f34fd701e61eb463666fc811fbb97dc7092a8f512d34c26b17888207bc78ee",
+    "config/v4_04_parameter_set_v1.json": "5b19a23dfbf6b214f5ee7c7cce5df5674db69d099386038c082317819812ced5"
+  },
+  "contract_digest": "50e33a407c935f58da7ab06bb571b9e009d0303f795e3381134e80df5246ce69",
+  "counts": {
+    "PARTIAL_UNKNOWN": 5222,
+    "rows": 5222
+  },
+  "external_acceptance": null,
+  "formal_publication": false,
+  "logical_digest": "58d1d1e31d030e64f41dc2ef8c709a72c77d1bfefdbbdfcdb080d8995a9e6fb6",
+  "source_digest": "010a44ba170ebcc3fb244e1e3e2d03b09508e27e61dbf8d41c609e353afda700",
+  "sources": {
+    "calendar": {
+      "path": "data/v4/candidate_calendars/V4_02_MARKET_CALENDAR_20230704_20260924_V2/calendar_sse_20230704_20260924.json",
+      "sha256": "09285bb116db5e7ab644e4942c331ceb9bc715b47f0369b9f228ef9d17df2d53"
+    },
+    "calendar_szse": {
+      "path": "data/v4/candidate_calendars/V4_02_MARKET_CALENDAR_20230704_20260924_V2/calendar_szse_20230704_20260924.json",
+      "sha256": "9c56dcf2077a19d303f504fcf22f962d9d71ed626030b61ad2aa77a201897900"
+    },
+    "daily": {
+      "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet",
+      "sha256": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90"
+    },
+    "factors": {
+      "path": "reports/audits/a12_v4_03_r1/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+      "sha256": "dd78c14b22e502c5b00fb706270577dca096abbff8a00a0a7dd1f57ced8d529f"
+    },
+    "market_regime": {
+      "path": "reports/audits/a12_v4_03_r1/staging/V4_03_MARKET_REGIME_NATIVE_CANDIDATE_R3.jsonl.gz",
+      "sha256": "59a34c836eb576c01fb47974f587159b4664109c7f169814cf66a4626908e819"
+    },
+    "monthly": {
+      "path": "data/v4/artifact_store/a12_authority_candidate_r1/V4_02_FORMAL_MONTHLY_RAW_QFQ_AUTHORITY_R1.parquet",
+      "sha256": "da562f8da97d81b22701c0b41899b44b36c9f977e32841d3dc0a43de79038408"
+    },
+    "trading_status": {
+      "path": "data/v4/artifact_store/a12_authority_candidate_r1/V4_02_DATED_TRADING_STATUS_AUTHORITY_R1.jsonl.gz",
+      "sha256": "97b7c84dc6385b86aead6842a1231d9780c513b7ca5093e4b73be84ad4cfafed"
+    },
+    "universe": {
+      "path": "data/v4/artifact_store/v4_01/v4_01_historical_universe_required_R7_20260927.jsonl.gz",
+      "sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b"
+    },
+    "weekly": {
+      "path": "data/v4/artifact_store/a12_authority_candidate_r1/V4_02_FORMAL_WEEKLY_RAW_QFQ_AUTHORITY_R1.parquet",
+      "sha256": "e4108aafe0e6b6a837d5b937eb35070a0f34b30d3eb665218e8fcd9f31937fd9"
+    }
+  },
+  "status": "PASS_TRUE_FULL_SCOPE_UNCHANGED_ALGORITHM_REPLAY"
+}

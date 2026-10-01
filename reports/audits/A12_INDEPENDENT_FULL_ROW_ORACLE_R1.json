@@ -1,0 +1,80 @@
+{
+  "counts": {
+    "ACTUAL_TRADED": 4026611,
+    "UNKNOWN": 9118,
+    "rows": 4035729
+  },
+  "external_acceptance": null,
+  "formal_publication": false,
+  "inputs": {
+    "daily": {
+      "bytes": 112302935,
+      "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet",
+      "sha256": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90"
+    },
+    "price": {
+      "bytes": 157153754,
+      "path": "data/v4/artifact_store/v4_02/V4_02_PRICE_LIMIT_R6_20260927.jsonl.gz",
+      "sha256": "6f40d6b92e78e8de6f2cc17c867d902e06e56d82d0b7f45c8715469704b4e6af"
+    },
+    "producer": {
+      "bytes": 1237,
+      "path": "config/v4_02_status_st_authority_r1.json",
+      "sha256": "d926bb00abe97be5a485c519b9a4f7bf4b647c380c8edd812bb8674b273d2291"
+    },
+    "st": {
+      "bytes": 99012112,
+      "path": "data/v4/artifact_store/v4_02/V4_02_DATED_ST_STATUS_R7_20260927.jsonl.gz",
+      "sha256": "ffac24e09d02a53ffb48dbc24449d95f5ab20d8934c6401588a73c8673dbb8f4"
+    },
+    "status": {
+      "bytes": 100075252,
+      "path": "data/v4/artifact_store/v4_02/V4_02_DATED_TRADING_STATUS_R7_20260927.jsonl.gz",
+      "sha256": "ad65d2e1b3ca835a310cfa2a35f7bfd417a42020e27f2e77d4a79597aa018de9"
+    },
+    "universe": {
+      "bytes": 239298684,
+      "path": "data/v4/artifact_store/v4_01/v4_01_historical_universe_required_R7_20260927.jsonl.gz",
+      "sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b"
+    }
+  },
+  "oracle": "Direct SQL accepted canonical local-bar date membership; empty frozen dated authority pool; no status/ST/price producer helper imported",
+  "oracle_business_digest": "b52d908e5a6dfa2f2a21f7957044cb0e888714429e62099f982c085c365f73bf",
+  "outputs": {
+    "price": {
+      "bytes": 134653312,
+      "logical_digest": "d53842de9cc8e11b9d1fc96740a971ebbff90351e69c0fb4554d464f17652d9e",
+      "path": "data/v4/artifact_store/a12_authority_candidate_r1/V4_02_PRICE_LIMIT_AUTHORITY_R1.jsonl.gz",
+      "sha256": "6599abe8e00b25cd79e312ec3bbdfcd063d3c9968017828c6f4057eafd03e267"
+    },
+    "st": {
+      "bytes": 120022170,
+      "logical_digest": "2196709750a87a4177ce5409d48f1c473fcfe845fea2fa40da30997daba70279",
+      "path": "data/v4/artifact_store/a12_authority_candidate_r1/V4_02_DATED_ST_STATUS_AUTHORITY_R1.jsonl.gz",
+      "sha256": "0a5b67ee608e39ada522bb32b0ca8aa52366bfef84586b4e9b5cfa8c202b3a57"
+    },
+    "status": {
+      "bytes": 122923453,
+      "logical_digest": "14c0a4f9f6404e7bafd90069a3c85f5844f91ec2e64870ce84f0331cff771b71",
+      "path": "data/v4/artifact_store/a12_authority_candidate_r1/V4_02_DATED_TRADING_STATUS_AUTHORITY_R1.jsonl.gz",
+      "sha256": "97b7c84dc6385b86aead6842a1231d9780c513b7ca5093e4b73be84ad4cfafed"
+    }
+  },
+  "samples": {
+    "ACTUAL_TRADED -> ACTUAL_TRADED": {
+      "local_bar_present": true,
+      "security_id": "SEC-62C40F6EEABB12A3B3F00D4FB0B61ED0",
+      "trade_date": "20230704"
+    },
+    "SUSPENDED -> UNKNOWN": {
+      "local_bar_present": false,
+      "security_id": "SEC-0E7C0DBB305A863EB616468C3EB35837",
+      "trade_date": "20230704"
+    }
+  },
+  "status": "PASS_FULL_UNIVERSE_INDEPENDENT_LOCAL_BAR_ORACLE",
+  "transitions": {
+    "ACTUAL_TRADED -> ACTUAL_TRADED": 4026611,
+    "SUSPENDED -> UNKNOWN": 9118
+  }
+}

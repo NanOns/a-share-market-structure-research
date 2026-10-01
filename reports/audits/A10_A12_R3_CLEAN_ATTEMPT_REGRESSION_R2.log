@@ -1,0 +1,61 @@
+........................................................................ [  5%]
+........................................................................ [ 10%]
+........................................................................ [ 15%]
+........................................................................ [ 20%]
+........................................................................ [ 25%]
+........................................................................ [ 30%]
+........................................................................ [ 35%]
+........................................................................ [ 40%]
+........................................................................ [ 45%]
+..s..........s.......................................................... [ 50%]
+........................................................................ [ 55%]
+........................................................................ [ 60%]
+........................................................................ [ 65%]
+........................................................................ [ 70%]
+........................................................................ [ 75%]
+........................................................................ [ 81%]
+........................................................................ [ 86%]
+........................................................................ [ 91%]
+........................................................................ [ 96%]
+.....................................................F                   [100%]
+================================== FAILURES ===================================
+_______ test_real_registry_historical_only_and_old_namespace_preserved ________
+
+    def test_real_registry_historical_only_and_old_namespace_preserved():
+        registry=read(ROOT,REGISTRY_PATH);assert len(registry['owners'])==2
+        assert all(e['registration_scope']=='HISTORICAL_PATH_B_ONLY' for e in registry['owners'])
+        assert read(ROOT,'data/v4/V4_SOURCE_AUTHORITY_ACCEPTED_OWNER_REGISTRY.json')['owners']==[]
+        config=read(ROOT,'config/source_authority_governance_r3.json')
+        for rule in config['field_rules']:
+            if rule['field_id'] in ('TRADING_STATUS','ISST'):
+                with pytest.raises(OwnerAcceptanceError):require_accepted_producer(ROOT,rule,consumer_contract_id=CONSUMER)
+        for rule in config['historical_field_rules']:
+            proof=require_accepted_producer(ROOT,rule,consumer_contract_id=rule['allowed_consumers'][0])
+>           result=require_formal_source(ROOT,rule,consumer_contract_id=rule['allowed_consumers'][0],target_trade_date='2026-09-24',instance_binding=proof['owner']['historical_source_instance_archive'])
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_a10_a12_r3\test_producer_instances.py:130: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\source_authority_producers_r3.py:182: in require_formal_source
+    instance = require_source_instance_for_target(root, producer, instance_binding, target_trade_date=target_trade_date)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\source_authority_producers_r3.py:75: in require_source_instance_for_target
+    return require_historical_instance(root, producer_proof, instance_binding, target_trade_date=target_trade_date)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\source_authority_producers_r3.py:164: in require_historical_instance
+    binding_bytes(root, binding)
+src\workbench_analysis\source_authority_producers_r3.py:22: in binding_bytes
+    reject('SOURCE_ARTIFACT_PATH_INVALID')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+reason = 'SOURCE_ARTIFACT_PATH_INVALID'
+
+    def reject(reason):
+>       raise OwnerAcceptanceError(reason)
+E       workbench_analysis.source_authority_accepted_owners_v1.OwnerAcceptanceError: AUTHORITY_OWNER_NOT_EXTERNALLY_ACCEPTED:SOURCE_ARTIFACT_PATH_INVALID
+
+src\workbench_analysis\source_authority_accepted_owners_v1.py:28: OwnerAcceptanceError
+=========================== short test summary info ===========================
+FAILED tests/v4_a10_a12_r3/test_producer_instances.py::test_real_registry_historical_only_and_old_namespace_preserved
+1 failed, 1419 passed, 2 skipped, 1 deselected in 160.87s (0:02:40)
+

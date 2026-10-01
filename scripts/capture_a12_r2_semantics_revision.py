@@ -6,7 +6,7 @@ ROOT=Path(__file__).resolve().parents[1];sys.path[:0]=[str(ROOT),str(ROOT/'src')
 from scripts.build_v4_08_r2_membership_evidence import atomic_json
 from scripts.enter_source_authority_remediation_r2 import bind
 from workbench_analysis.baostock_supplemental import BaoStockClient,RequestBudget,package_metadata
-WINDOWS=[('sh.600518','2024-07-01','2024-07-05'),('sh.600387','2024-04-19','2024-04-25'),('sz.000972','2025-03-27','2025-04-02'),('sz.300114','2025-02-14','2025-02-18'),('sz.302132','2025-02-14','2025-02-18'),('sh.600225','2025-02-05','2025-02-10'),('sh.688981','2023-07-04','2023-07-05'),('sz.301611','2026-09-24','2026-09-24')]
+WINDOWS=json.loads((ROOT/'data/v4/source_evidence/a12_r2/PROVIDER_SEMANTICS_REVISION_CONTRACT_R1.json').read_text(encoding='utf8'))['windows']
 def now():return datetime.now(timezone.utc).isoformat()
 def main():
     out=ROOT/'data/v4/source_evidence/a12_r2';receipt=out/'PROVIDER_SEMANTICS_REVISION_CAPTURE_R1.json'

@@ -1,5 +1,5 @@
 """Three bounded real empty-return cases, distinct from frozen historical replay scope."""
-import sys
+import sys,json
 from pathlib import Path
 from datetime import datetime,timezone
 ROOT=Path(__file__).resolve().parents[1];sys.path[:0]=[str(ROOT),str(ROOT/'src')]
@@ -9,7 +9,7 @@ from workbench_analysis.baostock_supplemental import BaoStockClient,RequestBudge
 def main():
     p=ROOT/'data/v4/source_evidence/a12_r2';target=p/'PROVIDER_EMPTY_RETURN_CAPTURE_R1.json'
     if target.exists():raise ValueError('IMMUTABLE_CAPTURE_ALREADY_EXISTS')
-    windows=[dict(code='sz.000972',start='2025-04-05',end='2025-04-06',category='NON_SESSION'),dict(code='sz.301611',start='2024-08-15',end='2024-08-15',category='PRE_LISTING'),dict(code='sh.600225',start='2025-04-01',end='2025-04-02',category='POST_DELISTING')]
+    windows=json.loads((p/'PROVIDER_EMPTY_RETURN_CONTRACT_R1.json').read_text(encoding='utf8'))['windows']
     contract=p/'PROVIDER_EMPTY_RETURN_CONTRACT_R1.json';atomic_json(contract,dict(contract_id='A12_R2_EMPTY_RETURN_SEMANTICS_V1',windows=windows,fields=['date','code','tradestatus','isST'],max_requests=5,max_rows_each=8,max_pages=1,timeout=35,auth_mode='PUBLIC_ANONYMOUS',purpose='Real empty return semantics validation after archaeology; no repeated DM01 target capture',sdk=package_metadata(),formal_authorization=False))
     budget=RequestBudget(p/'provider_empty_request_ledger_r1.json',hard_limit=5,soft_limit=4);results=[]
     with BaoStockClient(budget,timeout=35,auth_mode='PUBLIC_ANONYMOUS',allow_unaccepted_runtime_smoke=True) as client:

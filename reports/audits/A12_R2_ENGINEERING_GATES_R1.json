@@ -1,13 +1,13 @@
 {
   "allowed_candidate_status": "A12_R2_REAL_DATED_OWNER_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
   "evidence_manifest": {
-    "bytes": 5120,
+    "bytes": 5513,
     "path": "reports/audits/A12_R2_CANDIDATE_EVIDENCE_MANIFEST_R1.json",
-    "sha256": "b42777fc54973c795e5eb1df5ad60abed7a858281325b46ad598e0d5a3b5b623"
+    "sha256": "71ece6439f1ddcb3853aa3bb33cf0e7ff3ed21e0eb3f318170710396ccbe185e"
   },
   "external_acceptance": null,
   "gate_notes": {
-    "A12R2-G01": "Real required history cases plus independently verified delayed 9/28 DATA_GAP source bytes; no future row appended to historical rebuild",
+    "A12R2-G01": "PENDING external scope disposition: real capture-lag gap on 9/30 compared to frozen 9/28 local input, no positive same-cutoff interior history gap in required history. Twelve 9/28 local missing bars are provider=0 suspension and are not relabelled.",
     "A12R2-G02": "Real ST changes/removal/suspended/new listing and code-change non-ST census supplied. Positive ST code-change case is not present in required scope: external disposition required, not an engineering PASS claim. Delisting-board vs isST taxonomy conflict is explicit, not a fabricated numeric provider disagreement.",
     "A12R2-G09": "Actual registry unchanged and pending owners rejected. Exact externally accepted prospective fixtures pass A10 proof only inside pytest temporary roots.",
     "A12R2-G10": "Full status/ST producer rebuild. Every original price-base dependency equal on 4,035,729 rows; original generic R6 price kernel rerun, not a fitted count.",

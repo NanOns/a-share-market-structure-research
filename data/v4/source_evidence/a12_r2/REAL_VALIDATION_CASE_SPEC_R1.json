@@ -1,0 +1,337 @@
+{
+  "alias_source_keys": [
+    "SZ.302132",
+    "SZ.300114"
+  ],
+  "cases": [
+    {
+      "day": "2023-07-04",
+      "disposition": "AGREES_WITH_LOCAL_OR_OFFICIAL",
+      "expected": {
+        "is_st": "0",
+        "status": "ACTUAL_TRADED"
+      },
+      "key": "SH.600000",
+      "official": [
+        "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet"
+      ],
+      "tags": [
+        "NORMAL_DAY",
+        "SH_MAIN",
+        "NON_ST"
+      ]
+    },
+    {
+      "day": "2023-07-04",
+      "disposition": "AGREES_WITH_LOCAL_OR_OFFICIAL",
+      "expected": {
+        "is_st": "0",
+        "status": "ACTUAL_TRADED"
+      },
+      "key": "SZ.000001",
+      "official": [
+        "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet"
+      ],
+      "tags": [
+        "NORMAL_DAY",
+        "SZ_MAIN",
+        "NON_ST"
+      ]
+    },
+    {
+      "day": "2023-07-04",
+      "disposition": "AGREES_WITH_LOCAL_OR_OFFICIAL",
+      "expected": {
+        "is_st": "0",
+        "status": "ACTUAL_TRADED"
+      },
+      "key": "SH.688981",
+      "official": [
+        "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet"
+      ],
+      "tags": [
+        "NORMAL_DAY",
+        "STAR",
+        "NON_ST"
+      ]
+    },
+    {
+      "day": "2024-07-02",
+      "disposition": "AGREES_WITH_LOCAL_OR_OFFICIAL",
+      "expected": {
+        "is_st": "1",
+        "status": "ACTUAL_TRADED"
+      },
+      "key": "SH.600518",
+      "official": [
+        "data/v4/source_evidence/a12_r2/600518_st_removal_mirror.pdf",
+        "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet"
+      ],
+      "tags": [
+        "ST_REMOVAL",
+        "ST_DURING_SUSPENSION",
+        "SUSPEND_RESUME"
+      ]
+    },
+    {
+      "day": "2024-07-03",
+      "disposition": "AGREES_WITH_LOCAL_OR_OFFICIAL",
+      "expected": {
+        "is_st": "1",
+        "status": "SUSPENDED"
+      },
+      "key": "SH.600518",
+      "official": [
+        "data/v4/source_evidence/a12_r2/600518_st_removal_mirror.pdf",
+        "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet"
+      ],
+      "tags": [
+        "ST_REMOVAL",
+        "ST_DURING_SUSPENSION",
+        "SUSPEND_RESUME"
+      ]
+    },
+    {
+      "day": "2024-07-04",
+      "disposition": "AGREES_WITH_LOCAL_OR_OFFICIAL",
+      "expected": {
+        "is_st": "0",
+        "status": "ACTUAL_TRADED"
+      },
+      "key": "SH.600518",
+      "official": [
+        "data/v4/source_evidence/a12_r2/600518_st_removal_mirror.pdf",
+        "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet"
+      ],
+      "tags": [
+        "ST_REMOVAL",
+        "ST_DURING_SUSPENSION",
+        "SUSPEND_RESUME"
+      ]
+    },
+    {
+      "day": "2025-03-28",
+      "disposition": "AGREES_WITH_LOCAL_OR_OFFICIAL",
+      "expected": {
+        "is_st": "0",
+        "status": "ACTUAL_TRADED"
+      },
+      "key": "SZ.000972",
+      "official": [
+        "data/v4/source_evidence/a12_r2/000972_risk_transition.pdf",
+        "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet"
+      ],
+      "tags": [
+        "NORMAL_TO_ST_RISK_WARNING"
+      ]
+    },
+    {
+      "day": "2025-03-31",
+      "disposition": "AGREES_WITH_LOCAL_OR_OFFICIAL",
+      "expected": {
+        "is_st": "0",
+        "status": "SUSPENDED"
+      },
+      "key": "SZ.000972",
+      "official": [
+        "data/v4/source_evidence/a12_r2/000972_risk_transition.pdf",
+        "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet"
+      ],
+      "tags": [
+        "NORMAL_TO_ST_RISK_WARNING"
+      ]
+    },
+    {
+      "day": "2025-04-01",
+      "disposition": "AGREES_WITH_LOCAL_OR_OFFICIAL",
+      "expected": {
+        "is_st": "1",
+        "status": "ACTUAL_TRADED"
+      },
+      "key": "SZ.000972",
+      "official": [
+        "data/v4/source_evidence/a12_r2/000972_risk_transition.pdf",
+        "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet"
+      ],
+      "tags": [
+        "NORMAL_TO_ST_RISK_WARNING"
+      ]
+    },
+    {
+      "day": "2024-04-19",
+      "disposition": "BINARY_ST_UNCHANGED; OFFICIAL_RISK_SUBTYPE_CHANGES_TO_STAR_ST",
+      "expected": {
+        "is_st": "1",
+        "status": "ACTUAL_TRADED"
+      },
+      "key": "SH.600387",
+      "official": [
+        "data/v4/source_evidence/a12_r2/600387_risk_transition.pdf",
+        "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet"
+      ],
+      "tags": [
+        "ST_TO_STAR_ST",
+        "ST_DURING_SUSPENSION"
+      ]
+    },
+    {
+      "day": "2024-04-22",
+      "disposition": "BINARY_ST_UNCHANGED; OFFICIAL_RISK_SUBTYPE_CHANGES_TO_STAR_ST",
+      "expected": {
+        "is_st": "1",
+        "status": "SUSPENDED"
+      },
+      "key": "SH.600387",
+      "official": [
+        "data/v4/source_evidence/a12_r2/600387_risk_transition.pdf",
+        "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet"
+      ],
+      "tags": [
+        "ST_TO_STAR_ST",
+        "ST_DURING_SUSPENSION"
+      ]
+    },
+    {
+      "day": "2024-04-23",
+      "disposition": "BINARY_ST_UNCHANGED; OFFICIAL_RISK_SUBTYPE_CHANGES_TO_STAR_ST",
+      "expected": {
+        "is_st": "1",
+        "status": "ACTUAL_TRADED"
+      },
+      "key": "SH.600387",
+      "official": [
+        "data/v4/source_evidence/a12_r2/600387_risk_transition.pdf",
+        "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet"
+      ],
+      "tags": [
+        "ST_TO_STAR_ST",
+        "ST_DURING_SUSPENSION"
+      ]
+    },
+    {
+      "day": "2025-02-14",
+      "disposition": "AGREES_WITH_LOCAL_OR_OFFICIAL",
+      "expected": {
+        "is_st": "0",
+        "status": "ACTUAL_TRADED"
+      },
+      "key": "SZ.300114",
+      "official": [
+        "data/v4/source_evidence/v4_02_r3/szse_2025_028_code_change_302132.pdf",
+        "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet"
+      ],
+      "tags": [
+        "CODE_CHANGE_BOUNDARY",
+        "ST_CODE_CHANGE_NEGATIVE_SCOPE"
+      ]
+    },
+    {
+      "day": "2025-02-17",
+      "disposition": "OLD_CODE_SUSPENDED_PLACEHOLDER_REJECTED; DATED_SUCCESSOR_USED",
+      "expected": {
+        "is_st": "0",
+        "status": "ACTUAL_TRADED"
+      },
+      "key": "SZ.302132",
+      "official": [
+        "data/v4/source_evidence/v4_02_r3/szse_2025_028_code_change_302132.pdf",
+        "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet"
+      ],
+      "tags": [
+        "CODE_CHANGE_BOUNDARY",
+        "ST_CODE_CHANGE_NEGATIVE_SCOPE",
+        "CHINEXT"
+      ]
+    },
+    {
+      "day": "2024-08-16",
+      "disposition": "AGREES_WITH_LOCAL_OR_OFFICIAL",
+      "expected": {
+        "is_st": "0",
+        "status": "ACTUAL_TRADED"
+      },
+      "key": "SZ.301611",
+      "official": [
+        "data/v4/V4_01_ACCEPTED_HEAD.json",
+        "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet"
+      ],
+      "tags": [
+        "NEW_LISTING",
+        "CHINEXT"
+      ]
+    },
+    {
+      "day": "2025-02-06",
+      "disposition": "AGREES_WITH_LOCAL_OR_OFFICIAL",
+      "expected": {
+        "is_st": "1",
+        "status": "SUSPENDED"
+      },
+      "key": "SH.600225",
+      "official": [
+        "data/v4/source_evidence/v4_02_r4/SH_600225_2025-02-07_delisting_phase.pdf",
+        "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet"
+      ],
+      "tags": [
+        "LONG_SUSPENSION",
+        "ST_DURING_SUSPENSION"
+      ]
+    },
+    {
+      "day": "2025-02-07",
+      "disposition": "OFFICIAL_RISK_WARNING_DELISTING_BOARD_IS_NOT_BINARY_ST; SPECIAL_PHASE_RETAINED",
+      "expected": {
+        "is_st": "0",
+        "status": "ACTUAL_TRADED"
+      },
+      "key": "SH.600225",
+      "official": [
+        "data/v4/source_evidence/v4_02_r4/SH_600225_2025-02-07_delisting_phase.pdf",
+        "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet"
+      ],
+      "tags": [
+        "DELISTING_RESUME",
+        "OFFICIAL_PROVIDER_RISK_TAXONOMY_CONFLICT"
+      ]
+    }
+  ],
+  "contract_id": "A12_R2_REAL_SOURCE_AUDIT_CASE_SPEC_V1",
+  "formal_authority": false,
+  "ipo_misbinding_examples": {
+    "SH.603302": "2017-12-13 IPO postponed",
+    "SH.688688": "2020-11-03 listing postponed, not trading halt",
+    "SZ.300728": "2017-11-14 IPO issuance postponement, not a listed-stock halt"
+  },
+  "oracle_strata": [
+    [
+      "NORMAL",
+      "status='ACTUAL_TRADED' and is_st='0'"
+    ],
+    [
+      "SUSPENDED",
+      "status='SUSPENDED'"
+    ],
+    [
+      "ST",
+      "is_st='1'"
+    ],
+    [
+      "NON_ST",
+      "is_st='0'"
+    ],
+    [
+      "ALIAS",
+      "source_security_key in ('SZ.300114','SZ.302132')"
+    ],
+    [
+      "NEW_LISTING",
+      "source_security_key='SZ.301611' and trade_date between '2024-08-16' and '2024-08-23'"
+    ],
+    [
+      "DELISTING",
+      "source_security_key='SH.600225' and trade_date between '2025-02-05' and '2025-02-17'"
+    ]
+  ],
+  "scope": "Real observations for independent audit and diagnostic bounded capture; no symbol-specific runtime branching",
+  "source_role": "AUDIT_INPUT_ONLY"
+}

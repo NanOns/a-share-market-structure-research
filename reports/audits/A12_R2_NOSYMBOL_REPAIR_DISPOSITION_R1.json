@@ -1,0 +1,24 @@
+{
+  "additional_network_requests": 0,
+  "case_spec": {
+    "bytes": 9249,
+    "path": "data/v4/source_evidence/a12_r2/REAL_VALIDATION_CASE_SPEC_R1.json",
+    "sha256": "ca65e36358bd69c8574e482cc12598dc819fe4fe5a09087dab880d9c39d18043"
+  },
+  "contract_id": "A12_R2_NOSYMBOL_EVIDENCE_DATA_REPAIR_V1",
+  "external_acceptance": null,
+  "failed_clean": {
+    "bytes": 14398,
+    "path": "reports/audits/A12_R2_CLEAN_ATTEMPT_CHECKOUT_R1.json",
+    "sha256": "3418bdcb47523a4ad33c7fe32951abed140e47d2ec91dab679b8378547a383f5"
+  },
+  "failed_scan": {
+    "bytes": 804414,
+    "path": "reports/audits/A12_R2_CLEAN_ATTEMPT_NO_SYMBOL_SCAN_R1.json",
+    "sha256": "9130bb94b445cff19bd572e88b98034fadc2f517594108babdcb23a65b3a758c"
+  },
+  "preserved_sample_definition": "17 historical official/local cases; same numeric alias census and oracle strata; four conflict cases remain dynamically discovered from full source bytes",
+  "production_runtime_modified": false,
+  "repair": "Move real diagnostic probe/matrix/oracle sample selectors from pipeline code into frozen evidence data. Keep scanner policy and source authority algorithms unchanged; no new requests or whole-history value changes.",
+  "scanner_policy_modified": false
+}

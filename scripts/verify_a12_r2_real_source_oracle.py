@@ -38,7 +38,8 @@ def main():
     revisions=c.execute('select distinct trade_date,source_revision from source_st').fetchall();assert len(revisions)==786
     for day,digest in revisions:assert digest=='sha256:'+byday[str(day)]
     pools={}
-    for tag,where in [('NORMAL',"status='ACTUAL_TRADED' and is_st='0'"),('SUSPENDED',"status='SUSPENDED'"),('ST',"is_st='1'"),('NON_ST',"is_st='0'"),('ALIAS',"source_security_key in ('SZ.300114','SZ.302132')"),('NEW_LISTING',"source_security_key='SZ.301611' and trade_date between '2024-08-16' and '2024-08-23'"),('DELISTING',"source_security_key='SH.600225' and trade_date between '2025-02-05' and '2025-02-17'")]:
+    case_spec=read('data/v4/source_evidence/a12_r2/REAL_VALIDATION_CASE_SPEC_R1.json')
+    for tag,where in case_spec['oracle_strata']:
         # Hash-based deterministic random selection independent of producer order.
         pools[tag]=c.execute('select security_id,source_security_key,trade_date,status,is_st,source_bar_present from expected_status join source_st using('+key+') join u using('+key+') where '+where+' order by hash(security_id,trade_date,12345) limit 40').fetchall()
         assert pools[tag]

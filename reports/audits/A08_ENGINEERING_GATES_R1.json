@@ -1,5 +1,10 @@
 {
   "allowed_candidate_status": "V4_09_N01_HARDENING_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
+  "clean_regression": {
+    "bytes": 10651,
+    "path": "reports/audits/A08_CLEAN_CHECKOUT_R1.json",
+    "sha256": "4fb3e1bd1074128f91427d6a3c7e2b0a3f241e244eaa3eae7cbaca27f8dd3d87"
+  },
   "evidence": {
     "bytes": 3949,
     "path": "reports/audits/A08_ACCEPTED_REPLAY_AND_AUTHORITY_EVIDENCE_R1.json",
@@ -10,12 +15,18 @@
     "amended_parent": "PASS_ENGINEERING",
     "authority": "PASS_ENGINEERING",
     "binding_set": "PASS_ENGINEERING",
-    "clean": "PENDING_CLEAN_DETACHED",
+    "clean": "PASS_ENGINEERING",
     "consumer": "PASS_ENGINEERING",
     "external": "PENDING_INDEPENDENT_EXTERNAL_AUDIT",
     "identity": "PASS_ENGINEERING"
   },
+  "initial_clean_attempt": {
+    "bytes": 10651,
+    "path": "reports/audits/A08_CLEAN_ATTEMPT_1_R1.json",
+    "sha256": "7aab774d39315e1847f9413c1951353475b5e2024b31c6411df6b38966bf6551"
+  },
+  "initial_failure_and_repair": "Historical promotion check rejected changed current source; exact Git-anchored accepted runtime archives now preserve historical acceptance while strict new promotion remains fail-closed.",
   "next_stage": "Independent external A08 N01 audit; accepted heads unchanged",
-  "status": "PENDING_CLEAN_DETACHED",
+  "status": "V4_09_N01_HARDENING_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
   "work_package": "WP-A08-V4-09-N01"
 }

@@ -221,18 +221,44 @@
       "depends_on": [],
       "does_not_block_engineering_stage": true,
       "engineering_can_proceed_immediately": true,
-      "evidence": [],
+      "evidence": [
+        {
+          "bytes": 1425,
+          "path": "reports/audits/A08_ENGINEERING_GATES_R1.json",
+          "sha256": "5fcadad29a1e258c747895cd7102bb02531e3b756cf61e285762d7ccf6302d1c"
+        },
+        {
+          "bytes": 10651,
+          "path": "reports/audits/A08_CLEAN_CHECKOUT_R1.json",
+          "sha256": "4fb3e1bd1074128f91427d6a3c7e2b0a3f241e244eaa3eae7cbaca27f8dd3d87"
+        },
+        {
+          "bytes": 182687,
+          "path": "reports/audits/A08_CLEAN_REGRESSION_R1.xml",
+          "sha256": "2eb91b9550e793a365a9274bde12d14aef5379541f0a0a53b6286a5b740b676d"
+        },
+        {
+          "bytes": 1579,
+          "path": "reports/audits/A08_CLEAN_REGRESSION_R1.log",
+          "sha256": "088a944c2ec57a2d42f90b0a816c2d25e3e733a7468722db5f2c9b3b2e915816"
+        },
+        {
+          "bytes": 777564,
+          "path": "reports/audits/A08_NO_SYMBOL_SCAN_R1.json",
+          "sha256": "269ab01c5aaf7ba75640db367171979f441ebf7938e96a86c6e3a237ac9add29"
+        }
+      ],
       "external_acceptance": null,
       "formal_consumer_authorization": false,
       "history_reconstruction_prohibited": true,
-      "implementation_status": "IMPLEMENTATION_ENTRY_AUTHORIZED",
+      "implementation_status": "V4_09_N01_HARDENING_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
       "next_step": "Independent wrong-status/authority/binding-set/file/consumer/parent negative vectors; accepted replay bytes/logical digest unchanged; hardening only.",
       "owner_module": "src/v4/stock_prewatch.py",
       "priority": "P2",
       "production_gate": true,
       "requires_real_observation_accumulation": false,
       "status": "OPEN",
-      "status_path": "reports/audits/work_packages/WP-A08-V4-09-N01/STATUS_R1.json",
+      "status_path": "reports/audits/work_packages/WP-A08-V4-09-N01/STATUS_ENGINEERING_CANDIDATE_R1.json",
       "task": {
         "byte_count": 1023,
         "path": "docs/evidence/cross_stage/WP-A08-V4-09-N01/TASK_R1.md",

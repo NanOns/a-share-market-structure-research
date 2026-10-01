@@ -44,3 +44,20 @@ def test_accepted_full_market_replay_has_identical_bytes_and_logical_digest():
     assert len(records)==5222
     assert immutable_gzip_bytes(records)==(ROOT/binding['path']).read_bytes()
     assert digest(records)==binding['logical_digest']
+
+def test_historical_archive_does_not_accept_current_runtime_for_new_promotion():
+    from scripts.promote_v4_09_accepted_head import source_checks,validate
+    result=validate()
+    assert result['status']=='PASS' and result['validation_scope']=='ACCEPTED_PUBLICATION_HISTORY_ONLY'
+    assert result['current_runtime_matches_accepted_implementation'] is False
+    assert result['current_runtime_external_acceptance']=='PENDING_INDEPENDENT_EXTERNAL_AUDIT'
+    assert not all(source_checks().values())
+
+def test_self_consistent_wrong_archive_cannot_replace_accepted_source(monkeypatch):
+    from scripts import promote_v4_09_accepted_head as validator
+    original_read=validator.read
+    archive=copy.deepcopy(original_read('config/v4_09_historical_runtime_archive_r1.json'))
+    current=validator.bind('src/v4/stock_prewatch.py')
+    archive['bindings']['src/v4/stock_prewatch.py'].update(accepted_source=current,archive=current)
+    monkeypatch.setattr(validator,'read',lambda p:archive if p=='config/v4_09_historical_runtime_archive_r1.json' else original_read(p))
+    assert validator.validate()['status']=='FAIL'

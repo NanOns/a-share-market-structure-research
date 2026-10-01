@@ -35,7 +35,20 @@ def bind(path):
 def exact(b):
     return all(bind(b['path'])[k] == b[k] for k in ('sha256', 'byte_count') if k in b)
 
-def source_checks():
+def historical_exact(b):
+    """Validate an old accepted source against archived, Git-anchored bytes only."""
+    if exact(b): return True
+    if b.get('path') not in {'src/v4/stock_prewatch.py','src/v4/stock_prewatch_persistence.py'}: return False
+    try:
+        archive=read('config/v4_09_historical_runtime_archive_r1.json')
+        if archive.get('audited_commit')!=AUDITED or archive.get('scope')!='ACCEPTED_PUBLICATION_HISTORY_ONLY':return False
+        entry=archive['bindings'][b['path']]
+        if entry['accepted_source']!=b or not exact(entry['archive']):return False
+        data=subprocess.run(['git','show',AUDITED+':'+b['path']],cwd=ROOT,capture_output=True,check=True).stdout
+        return hashlib.sha256(data).hexdigest()==b['sha256']==entry['archive']['sha256'] and data==(ROOT/entry['archive']['path']).read_bytes()
+    except (KeyError,ValueError,OSError,subprocess.CalledProcessError):return False
+
+def source_checks(*, historical=False):
     m = read(MANIFEST)
     audit = (ROOT / AUDIT).read_text(encoding='utf8')
     bindings = [*m['contracts'].values(), *m['evidence_bindings'].values(), *m['source_implementation_bindings'],
@@ -48,12 +61,13 @@ def source_checks():
               'config/v4_09_parameter_set_v1.json','src/v4/stock_prewatch.py']
     def git_exact(path):
         data = subprocess.run(['git', 'show', AUDITED + ':' + path], cwd=ROOT, capture_output=True, check=True).stdout
-        return hashlib.sha256(data).hexdigest() == bind(path)['sha256']
+        expected=next(b for b in bindings if b['path']==path)
+        return hashlib.sha256(data).hexdigest()==expected['sha256'] and (historical_exact(expected) if historical else exact(expected))
     return dict(
         external_exact=all(x in audit for x in [DECISION, AUDITED, IMPLEMENTATION]),
         implementation_exact=m['tested_implementation_commit'] == IMPLEMENTATION,
         audited_ancestor=subprocess.run(['git','merge-base','--is-ancestor',AUDITED,'HEAD'], cwd=ROOT).returncode == 0,
-        all_candidate_bindings_exact=all(exact(b) for b in bindings),
+        all_candidate_bindings_exact=all((historical_exact if historical else exact)(b) for b in bindings),
         runtime_contracts_match_audited_commit=all(git_exact(p) for p in pinned),
         amended_upstream_exact=m['amended_v4_08_head']['path']=='data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json' and
             bind(m['amended_v4_08_head']['path'])['sha256']=='f2a35cebd18e8caf723e7900133333ce4b8df1a8314cb190dade7b0ea7624a3f',
@@ -66,7 +80,7 @@ def source_checks():
         no_symbol_pass=scan['status']=='PASS' and scan['hard_gated_equity_symbol_hits']==0 and not scan['unclassified_paths'])
 
 def validate_head(h, g, receipt):
-    checks = source_checks()
+    checks = source_checks(historical=True)
     effective_global = bind(GLOBAL)
     if g.get('accepted_stage_range') == 'V4_00_TO_V4_10_ACCEPTED':
         # A later, independently accepted stage keeps the exact V4-09 promotion parent.
@@ -79,7 +93,7 @@ def validate_head(h, g, receipt):
     checks.update(
         accepted_identity=h['status']=='ENGINEERING_PASS_CAPABILITY_SCOPED' and h['external_acceptance']=='EXTERNALLY_ACCEPTED' and
             h['external_acceptance_decision']==DECISION and h['audited_head']==AUDITED and h['implementation_commit']==IMPLEMENTATION,
-        accepted_evidence_exact=all(exact(b) for b in h['evidence_bindings'].values()),
+        accepted_evidence_exact=all(historical_exact(b) for b in h['evidence_bindings'].values()),
         canonical_evidence_set=h['evidence_bindings']==expected_evidence(),
         upstream_exact=h['upstream_binding']==m['amended_v4_08_head'],
         artifact_exact_binding=h['artifact']==m['artifact'],
@@ -91,7 +105,9 @@ def validate_head(h, g, receipt):
         audits_preserved=h['open_audits']==read(m['amended_v4_08_head']['path'])['open_audits'],
         parent_exact=exact(h['global_head_parent_archive']) and h['global_head_parent_archive']['sha256']==h['global_head_parent']['sha256'],
         promotion_idempotent=receipt['accepted_head']==bind(HEAD) and receipt['global_head_after']==effective_global)
+    current_runtime_exact=all(exact(b) for b in m['source_implementation_bindings'])
     return dict(contract_id='V4_09_ACCEPTED_HEAD_PROMOTION_VALIDATION_R1', status='PASS' if all(checks.values()) else 'FAIL', checks=checks,
+                validation_scope='ACCEPTED_PUBLICATION_HISTORY_ONLY',current_runtime_matches_accepted_implementation=current_runtime_exact,current_runtime_external_acceptance='UNCHANGED_ACCEPTED_BYTES' if current_runtime_exact else 'PENDING_INDEPENDENT_EXTERNAL_AUDIT',
                 accepted_head=bind(HEAD), global_head=bind(GLOBAL), protected_head_bindings=h['protected_head_bindings'])
 
 def expected_evidence():

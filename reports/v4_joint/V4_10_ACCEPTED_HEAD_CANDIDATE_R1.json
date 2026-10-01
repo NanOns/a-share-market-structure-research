@@ -1,0 +1,122 @@
+{
+  "accepted_at": "2026-10-01",
+  "audited_sealed_head": "f0c6eb57f7c0c8fc2d0d6875d73295e349e7d315",
+  "capabilities": {
+    "FULL_D0_D1_D2_DAG": "NOT_IMPLEMENTED",
+    "STATE_REDUCER_AUTHORITY": "ENGINEERING_ACCEPTED",
+    "STATE_REDUCER_INTERFACE": "ENGINEERING_ACCEPTED",
+    "STATE_REDUCER_MACHINE_VECTORS": "ENGINEERING_ACCEPTED",
+    "STATE_REDUCER_PERSISTENCE": "ENGINEERING_ACCEPTED",
+    "V4_11_CONFIRMATION": "NOT_IMPLEMENTED",
+    "V4_12_STRUCTURE_SUPPORT": "NOT_IMPLEMENTED"
+  },
+  "contract_id": "V4_10_ACCEPTED_HEAD_V1",
+  "evidence_bindings": {
+    "CLEAN_CHECKOUT_RECEIPT": {
+      "byte_count": 2288,
+      "path": "reports/v4_10/V4_10_R1_2_CLEAN_CHECKOUT_RECEIPT.json",
+      "sha256": "dbac00687f49c54aaeac2dfb386573292df72277ac4e4091f97f4022c44b3dda"
+    },
+    "CONTRACT_FREEZE": {
+      "byte_count": 3552,
+      "path": "reports/v4_10/V4_10_R1_2_CONTRACT_FREEZE.json",
+      "sha256": "35b7edd498088a94e8e25a3234fd794afce03569689e06d7d71900b3d1f812f8"
+    },
+    "CONTROLLED_PUBLISHER_ACCEPTANCE": {
+      "byte_count": 1351,
+      "path": "reports/v4_10/V4_10_R1_2_CONTROLLED_PUBLISHER_ACCEPTANCE.json",
+      "sha256": "cfab2b0d6942eb030b8af4b21fd08dae10376e5ad19ab1ad53dbe9b28a284560"
+    },
+    "EXTERNAL_ACCEPTANCE": {
+      "byte_count": 6183,
+      "path": "docs/evidence/V4_10_R1_2_INDEPENDENT_EXTERNAL_ACCEPTANCE_FINAL_20261001.md",
+      "sha256": "61a40e57f6dd1e03bee6334c9b18a833b051050784b5c8ade64f40077e565ce0"
+    },
+    "INDEPENDENT_POSTCHECK": {
+      "byte_count": 724597,
+      "path": "reports/v4_10/V4_10_R1_2_INDEPENDENT_POSTCHECK.json",
+      "sha256": "b198c8719f51605365e9f4525b9ae8f1b02bf8b8ef24e269d76b9e4ff5a0317a"
+    },
+    "INPUT_MANIFEST_SHAPE_ACCEPTANCE": {
+      "byte_count": 34502,
+      "path": "reports/v4_10/V4_10_R1_2_INPUT_MANIFEST_SHAPE_ACCEPTANCE.json",
+      "sha256": "cb1d3f5c8cb1a088b0b8ec346386ddf50d4643d7c300f0ce4d5ee53b1552d963"
+    },
+    "INPUT_PROVENANCE_ACCEPTANCE": {
+      "byte_count": 140356,
+      "path": "reports/v4_10/V4_10_R1_2_INPUT_PROVENANCE_ACCEPTANCE.json",
+      "sha256": "f14ef2f973c5e5f9d45ea7522b39e44021e5bc1bb890241f3bc748171de9f57e"
+    },
+    "ISOLATED_REGRESSION": {
+      "byte_count": 2461,
+      "path": "reports/v4_10/V4_10_R1_2_ISOLATED_REGRESSION.json",
+      "sha256": "052436a06dba48e42add9e6e5dbf8b263cf62c6a74c2d5b0bc4e39aad958bb9b"
+    },
+    "MODEL_BOUNDARY_ACCEPTANCE": {
+      "byte_count": 88263,
+      "path": "reports/v4_10/V4_10_R1_2_MODEL_BOUNDARY_ACCEPTANCE.json",
+      "sha256": "702d1a41e9a1926a68cc6440ac4428cc573fcf3de43dfd9c652507045d73a7a9"
+    },
+    "NO_SYMBOL_SPECIFIC_SYSTEM_LOGIC_SCAN": {
+      "byte_count": 747928,
+      "path": "reports/v4_10/V4_10_R1_2_NO_SYMBOL_SPECIFIC_SYSTEM_LOGIC_SCAN.json",
+      "sha256": "170a6ec0bf2cd82a49a1d513bc684d0ff1e9615bdf9c9d3b31ce962adbe44627"
+    },
+    "SCHEMA_MIGRATION_RECEIPT": {
+      "byte_count": 9225,
+      "path": "reports/v4_10/V4_10_R1_2_SCHEMA_MIGRATION_RECEIPT.json",
+      "sha256": "27b843f7245dcde88e90487e69766c82574e352a36ca7a09d2b48968d7acfc0e"
+    },
+    "STAGE_CANDIDATE_MANIFEST": {
+      "byte_count": 82777,
+      "path": "reports/v4_10/V4_10_R1_2_STAGE_CANDIDATE_MANIFEST.json",
+      "sha256": "ae0ef71211d91c0a8fa672705603280a9b87079a75d7df84d83fbaf862dbb59d"
+    }
+  },
+  "external_acceptance": "EXTERNALLY_ACCEPTED",
+  "external_acceptance_decision": "V4_10_EXTERNAL_ACCEPTANCE_PASS_R1_2_ENGINEERING_SCOPE",
+  "focus_cutover_permission": false,
+  "global_head_parent": {
+    "byte_count": 7562,
+    "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+    "sha256": "f7607601de402f2b2bdada84dffdefbacad7f9f66e252c57dfdf045060e90e99"
+  },
+  "global_head_parent_archive": {
+    "byte_count": 7562,
+    "path": "reports/v4_joint/V4_10_PROMOTION_PARENT_STAGE_HEAD_R1.json",
+    "sha256": "f7607601de402f2b2bdada84dffdefbacad7f9f66e252c57dfdf045060e90e99"
+  },
+  "implementation_commit": "6a339e71d38ced6e97c077fddef8dc7a8dfbd104",
+  "next_stage": "V4_11_CONFIRMATION_EVENTS_ENTRY_ONLY",
+  "open_audit_registry": {
+    "byte_count": 11877,
+    "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json",
+    "sha256": "c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3"
+  },
+  "parent_binding": {
+    "byte_count": 11474,
+    "path": "data/v4/V4_09_ACCEPTED_HEAD.json",
+    "sha256": "641ef9e2e6fe8f461a9b765262e739791a6d3fdd220b0eff7947e2690de3a87d"
+  },
+  "production_permission": false,
+  "protected_head_bindings": [
+    {
+      "byte_count": 2478,
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0"
+    },
+    {
+      "byte_count": 602,
+      "path": "data/v4/V4_DEV_BASELINE_HEAD.json",
+      "sha256": "45695460b0147c6ada12e0ebd8e5070ac0a45eebea26603ff5a3daddc4dd5094"
+    },
+    {
+      "byte_count": 2151,
+      "path": "data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json",
+      "sha256": "d6374a73b8084ccd383cbb4f75428ed91176e91cc09d87c3329041d57c5bd9ed"
+    }
+  ],
+  "shadow_production_permission": false,
+  "stage": "V4-10",
+  "status": "ENGINEERING_PASS_INTERFACE_SCOPE"
+}

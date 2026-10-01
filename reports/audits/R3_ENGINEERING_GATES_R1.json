@@ -1,5 +1,10 @@
 {
   "allowed_candidate_status": "SOURCE_AUTHORITY_REGISTRY_R3_FORMALIZATION_CANDIDATE_READY_FOR_EXTERNAL_CONFIRMATION",
+  "clean_regression": {
+    "bytes": 11910,
+    "path": "reports/audits/R3_CLEAN_CHECKOUT_R1.json",
+    "sha256": "dabed49fd7e36bc5e6c65e8b4f1ef89616f2b5fb105c3dd2db0564dcfda22ab5"
+  },
   "gates": {
     "R3-G01": "PASS_ENGINEERING",
     "R3-G02": "PASS_ENGINEERING",
@@ -13,7 +18,7 @@
     "R3-G10": "PASS_ENGINEERING",
     "R3-G11": "PASS_ENGINEERING",
     "R3-G12": "PASS_ENGINEERING",
-    "R3-G13": "PENDING_CLEAN_DETACHED"
+    "R3-G13": "PASS_ENGINEERING"
   },
   "next_stage": "A10 R2 governance repair; external confirmation of formalization remains pending",
   "registry": {
@@ -21,5 +26,5 @@
     "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R3.json",
     "sha256": "4e224ae63cac14ac85a2b47b29ed4566f55565912b155fd7f940b281fdf6e6d6"
   },
-  "status": "PENDING_CLEAN_DETACHED"
+  "status": "SOURCE_AUTHORITY_REGISTRY_R3_FORMALIZATION_CANDIDATE_READY_FOR_EXTERNAL_CONFIRMATION"
 }

@@ -1,5 +1,10 @@
 {
   "accepted_heads_unchanged": true,
+  "clean_regression": {
+    "bytes": 10591,
+    "path": "reports/audits/A10_CLEAN_CHECKOUT_R1.json",
+    "sha256": "fd4ef7bd58ab8ab92e62195e340a27f59c1f2c0bae1bcacc93d69bd1f34aea8e"
+  },
   "contract_id": "A10_ENGINEERING_GATES_R1",
   "external_acceptance": null,
   "findings_do_not_grant_source_authority": true,
@@ -14,7 +19,7 @@
     "A10-G08": "PASS_ENGINEERING",
     "A10-G09": "PASS_ENGINEERING",
     "A10-G10": "PASS_ENGINEERING",
-    "A10-G11": "PENDING_CLEAN_DETACHED",
+    "A10-G11": "PASS_ENGINEERING",
     "A10-G12": "PENDING_INDEPENDENT_EXTERNAL_AUDIT"
   },
   "open_findings": 49,
@@ -33,5 +38,5 @@
     "path": "config/source_authority_governance_r1.json",
     "sha256": "49318a8d738e5ee055199494c1b6617333cc974ad27c8cb6851bddda01c29de0"
   },
-  "status": "PENDING_CLEAN_DETACHED"
+  "status": "SOURCE_AUTHORITY_GOVERNANCE_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT"
 }

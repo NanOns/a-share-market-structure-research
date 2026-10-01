@@ -1,0 +1,751 @@
+{
+  "actual_local_provider_conflict_count": 4,
+  "alias_st_scope_census": [
+    [
+      "SZ.302132",
+      395,
+      "0",
+      "0"
+    ],
+    [
+      "SZ.300114",
+      391,
+      "0",
+      "0"
+    ]
+  ],
+  "contract_id": "A12_R2_REAL_DATED_MATRIX_V1",
+  "external_acceptance": null,
+  "official_provider_risk_conflict": "EXPLICIT_FIELD_TAXONOMY_DISPOSITION_NOT_SILENT_OVERRIDE",
+  "positive_st_during_numeric_code_change": "NOT_OBSERVED_IN_REQUIRED_SCOPE; THE ONLY OFFICIAL_NUMERIC_ALIAS_HAS_786_NON_ST_ROWS",
+  "real_data_gap_source": "A01_R2 frozen 9/28 raw oracle; see separate dated gap matrix supplement",
+  "required_boards": [
+    "CHINEXT",
+    "SH_MAIN",
+    "STAR",
+    "SZ_MAIN"
+  ],
+  "samples": [
+    {
+      "board_scope": "SH_MAIN",
+      "candidate_only": true,
+      "categories": [
+        "NORMAL_DAY",
+        "SH_MAIN",
+        "NON_ST"
+      ],
+      "conflict_disposition": "AGREES_WITH_LOCAL_OR_OFFICIAL",
+      "effective_date": "2023-07-04",
+      "expected_interpretation": {
+        "is_st": "0",
+        "status": "ACTUAL_TRADED"
+      },
+      "local_actual": true,
+      "official_local_evidence": [
+        {
+          "bytes": 112302935,
+          "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet",
+          "sha256": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90"
+        }
+      ],
+      "provider_value": {
+        "isST": "0",
+        "source_revision": "sha256:36c7c226ed02689c35e5ee1ca2cfb54bdf115b19fd36300e3c701973c442ca3f",
+        "tradestatus": null
+      },
+      "scope": "HISTORICAL_REQUIRED",
+      "security_id": "SEC-62C40F6EEABB12A3B3F00D4FB0B61ED0",
+      "source_security_key": "SH.600000"
+    },
+    {
+      "board_scope": "SZ_MAIN",
+      "candidate_only": true,
+      "categories": [
+        "NORMAL_DAY",
+        "SZ_MAIN",
+        "NON_ST"
+      ],
+      "conflict_disposition": "AGREES_WITH_LOCAL_OR_OFFICIAL",
+      "effective_date": "2023-07-04",
+      "expected_interpretation": {
+        "is_st": "0",
+        "status": "ACTUAL_TRADED"
+      },
+      "local_actual": true,
+      "official_local_evidence": [
+        {
+          "bytes": 112302935,
+          "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet",
+          "sha256": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90"
+        }
+      ],
+      "provider_value": {
+        "isST": "0",
+        "source_revision": "sha256:36c7c226ed02689c35e5ee1ca2cfb54bdf115b19fd36300e3c701973c442ca3f",
+        "tradestatus": null
+      },
+      "scope": "HISTORICAL_REQUIRED",
+      "security_id": "SEC-2E53B479D272684BB4C98C1AC64D6D9C",
+      "source_security_key": "SZ.000001"
+    },
+    {
+      "board_scope": "STAR",
+      "candidate_only": true,
+      "categories": [
+        "NORMAL_DAY",
+        "STAR",
+        "NON_ST"
+      ],
+      "conflict_disposition": "AGREES_WITH_LOCAL_OR_OFFICIAL",
+      "effective_date": "2023-07-04",
+      "expected_interpretation": {
+        "is_st": "0",
+        "status": "ACTUAL_TRADED"
+      },
+      "local_actual": true,
+      "official_local_evidence": [
+        {
+          "bytes": 112302935,
+          "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet",
+          "sha256": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90"
+        }
+      ],
+      "provider_value": {
+        "isST": "0",
+        "source_revision": "sha256:36c7c226ed02689c35e5ee1ca2cfb54bdf115b19fd36300e3c701973c442ca3f",
+        "tradestatus": null
+      },
+      "scope": "HISTORICAL_REQUIRED",
+      "security_id": "SEC-770B682FF3330DE26BC99C35D51359FA",
+      "source_security_key": "SH.688981"
+    },
+    {
+      "board_scope": "SH_MAIN",
+      "candidate_only": true,
+      "categories": [
+        "ST_REMOVAL",
+        "ST_DURING_SUSPENSION",
+        "SUSPEND_RESUME"
+      ],
+      "conflict_disposition": "AGREES_WITH_LOCAL_OR_OFFICIAL",
+      "effective_date": "2024-07-02",
+      "expected_interpretation": {
+        "is_st": "1",
+        "status": "ACTUAL_TRADED"
+      },
+      "local_actual": true,
+      "official_local_evidence": [
+        {
+          "bytes": 549711,
+          "path": "data/v4/source_evidence/a12_r2/600518_st_removal_mirror.pdf",
+          "sha256": "a8e43c796ca7946c224ba1f2d07271dea0b669c9d7dce5d50e9641f39f12b31e"
+        },
+        {
+          "bytes": 112302935,
+          "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet",
+          "sha256": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90"
+        }
+      ],
+      "provider_value": {
+        "isST": "1",
+        "source_revision": "sha256:bbb44af6cb82011c9fab5b5d32f3bfadbcdd1697592d4856fe3bb251a0fe34b3",
+        "tradestatus": null
+      },
+      "scope": "HISTORICAL_REQUIRED",
+      "security_id": "SEC-56810448CF2F6FC4CB0D129FAD066CE2",
+      "source_security_key": "SH.600518"
+    },
+    {
+      "board_scope": "SH_MAIN",
+      "candidate_only": true,
+      "categories": [
+        "ST_REMOVAL",
+        "ST_DURING_SUSPENSION",
+        "SUSPEND_RESUME"
+      ],
+      "conflict_disposition": "AGREES_WITH_LOCAL_OR_OFFICIAL",
+      "effective_date": "2024-07-03",
+      "expected_interpretation": {
+        "is_st": "1",
+        "status": "SUSPENDED"
+      },
+      "local_actual": false,
+      "official_local_evidence": [
+        {
+          "bytes": 549711,
+          "path": "data/v4/source_evidence/a12_r2/600518_st_removal_mirror.pdf",
+          "sha256": "a8e43c796ca7946c224ba1f2d07271dea0b669c9d7dce5d50e9641f39f12b31e"
+        },
+        {
+          "bytes": 112302935,
+          "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet",
+          "sha256": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90"
+        }
+      ],
+      "provider_value": {
+        "isST": "1",
+        "source_revision": "sha256:56663692c65d202b098ab4285a4e28bc564be05340240afbafcb0040d3b1bdfb",
+        "tradestatus": "0"
+      },
+      "scope": "HISTORICAL_REQUIRED",
+      "security_id": "SEC-56810448CF2F6FC4CB0D129FAD066CE2",
+      "source_security_key": "SH.600518"
+    },
+    {
+      "board_scope": "SH_MAIN",
+      "candidate_only": true,
+      "categories": [
+        "ST_REMOVAL",
+        "ST_DURING_SUSPENSION",
+        "SUSPEND_RESUME"
+      ],
+      "conflict_disposition": "AGREES_WITH_LOCAL_OR_OFFICIAL",
+      "effective_date": "2024-07-04",
+      "expected_interpretation": {
+        "is_st": "0",
+        "status": "ACTUAL_TRADED"
+      },
+      "local_actual": true,
+      "official_local_evidence": [
+        {
+          "bytes": 549711,
+          "path": "data/v4/source_evidence/a12_r2/600518_st_removal_mirror.pdf",
+          "sha256": "a8e43c796ca7946c224ba1f2d07271dea0b669c9d7dce5d50e9641f39f12b31e"
+        },
+        {
+          "bytes": 112302935,
+          "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet",
+          "sha256": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90"
+        }
+      ],
+      "provider_value": {
+        "isST": "0",
+        "source_revision": "sha256:cf09da9931824d737865d07927e856320da853e4bf23173e2f32b6f8a9dad953",
+        "tradestatus": null
+      },
+      "scope": "HISTORICAL_REQUIRED",
+      "security_id": "SEC-56810448CF2F6FC4CB0D129FAD066CE2",
+      "source_security_key": "SH.600518"
+    },
+    {
+      "board_scope": "SZ_MAIN",
+      "candidate_only": true,
+      "categories": [
+        "NORMAL_TO_ST_RISK_WARNING"
+      ],
+      "conflict_disposition": "AGREES_WITH_LOCAL_OR_OFFICIAL",
+      "effective_date": "2025-03-28",
+      "expected_interpretation": {
+        "is_st": "0",
+        "status": "ACTUAL_TRADED"
+      },
+      "local_actual": true,
+      "official_local_evidence": [
+        {
+          "bytes": 153472,
+          "path": "data/v4/source_evidence/a12_r2/000972_risk_transition.pdf",
+          "sha256": "34397a8939519973d2854e966321d4522725381bfd0313a2c3ef2ee9bb16ec52"
+        },
+        {
+          "bytes": 112302935,
+          "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet",
+          "sha256": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90"
+        }
+      ],
+      "provider_value": {
+        "isST": "0",
+        "source_revision": "sha256:dada10917280f2ae9900f0ea582023e506a305f544e1676b8b4012222efdc97c",
+        "tradestatus": "1"
+      },
+      "scope": "HISTORICAL_REQUIRED",
+      "security_id": "SEC-1225E4AE5523DC0BCDCDE764184DB7B5",
+      "source_security_key": "SZ.000972"
+    },
+    {
+      "board_scope": "SZ_MAIN",
+      "candidate_only": true,
+      "categories": [
+        "NORMAL_TO_ST_RISK_WARNING"
+      ],
+      "conflict_disposition": "AGREES_WITH_LOCAL_OR_OFFICIAL",
+      "effective_date": "2025-03-31",
+      "expected_interpretation": {
+        "is_st": "0",
+        "status": "SUSPENDED"
+      },
+      "local_actual": false,
+      "official_local_evidence": [
+        {
+          "bytes": 153472,
+          "path": "data/v4/source_evidence/a12_r2/000972_risk_transition.pdf",
+          "sha256": "34397a8939519973d2854e966321d4522725381bfd0313a2c3ef2ee9bb16ec52"
+        },
+        {
+          "bytes": 112302935,
+          "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet",
+          "sha256": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90"
+        }
+      ],
+      "provider_value": {
+        "isST": "0",
+        "source_revision": "sha256:afd6aff8eb869f55a2fa52b788961161741f9bab4ec5cdf1bee52c7016407d7f",
+        "tradestatus": "0"
+      },
+      "scope": "HISTORICAL_REQUIRED",
+      "security_id": "SEC-1225E4AE5523DC0BCDCDE764184DB7B5",
+      "source_security_key": "SZ.000972"
+    },
+    {
+      "board_scope": "SZ_MAIN",
+      "candidate_only": true,
+      "categories": [
+        "NORMAL_TO_ST_RISK_WARNING"
+      ],
+      "conflict_disposition": "AGREES_WITH_LOCAL_OR_OFFICIAL",
+      "effective_date": "2025-04-01",
+      "expected_interpretation": {
+        "is_st": "1",
+        "status": "ACTUAL_TRADED"
+      },
+      "local_actual": true,
+      "official_local_evidence": [
+        {
+          "bytes": 153472,
+          "path": "data/v4/source_evidence/a12_r2/000972_risk_transition.pdf",
+          "sha256": "34397a8939519973d2854e966321d4522725381bfd0313a2c3ef2ee9bb16ec52"
+        },
+        {
+          "bytes": 112302935,
+          "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet",
+          "sha256": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90"
+        }
+      ],
+      "provider_value": {
+        "isST": "1",
+        "source_revision": "sha256:a238d526f5c78f79e8d8ed126b44c3f96bae590775107d25c474794e98ffeafa",
+        "tradestatus": "1"
+      },
+      "scope": "HISTORICAL_REQUIRED",
+      "security_id": "SEC-1225E4AE5523DC0BCDCDE764184DB7B5",
+      "source_security_key": "SZ.000972"
+    },
+    {
+      "board_scope": "SH_MAIN",
+      "candidate_only": true,
+      "categories": [
+        "ST_TO_STAR_ST",
+        "ST_DURING_SUSPENSION"
+      ],
+      "conflict_disposition": "BINARY_ST_UNCHANGED; OFFICIAL_RISK_SUBTYPE_CHANGES_TO_STAR_ST",
+      "effective_date": "2024-04-19",
+      "expected_interpretation": {
+        "is_st": "1",
+        "status": "ACTUAL_TRADED"
+      },
+      "local_actual": true,
+      "official_local_evidence": [
+        {
+          "bytes": 164513,
+          "path": "data/v4/source_evidence/a12_r2/600387_risk_transition.pdf",
+          "sha256": "cb09070205330871503f8e866c5dcc8818840b5964820da4a78d27c9f8c4f852"
+        },
+        {
+          "bytes": 112302935,
+          "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet",
+          "sha256": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90"
+        }
+      ],
+      "provider_value": {
+        "isST": "1",
+        "source_revision": "sha256:b2c1b848612c73675c1d548d43ddba8907da8c882fe6cd1ddd449fd0d1333a16",
+        "tradestatus": null
+      },
+      "scope": "HISTORICAL_REQUIRED",
+      "security_id": "SEC-5A6647D52DC702B1685A98D6021E215E",
+      "source_security_key": "SH.600387"
+    },
+    {
+      "board_scope": "SH_MAIN",
+      "candidate_only": true,
+      "categories": [
+        "ST_TO_STAR_ST",
+        "ST_DURING_SUSPENSION"
+      ],
+      "conflict_disposition": "BINARY_ST_UNCHANGED; OFFICIAL_RISK_SUBTYPE_CHANGES_TO_STAR_ST",
+      "effective_date": "2024-04-22",
+      "expected_interpretation": {
+        "is_st": "1",
+        "status": "SUSPENDED"
+      },
+      "local_actual": false,
+      "official_local_evidence": [
+        {
+          "bytes": 164513,
+          "path": "data/v4/source_evidence/a12_r2/600387_risk_transition.pdf",
+          "sha256": "cb09070205330871503f8e866c5dcc8818840b5964820da4a78d27c9f8c4f852"
+        },
+        {
+          "bytes": 112302935,
+          "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet",
+          "sha256": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90"
+        }
+      ],
+      "provider_value": {
+        "isST": "1",
+        "source_revision": "sha256:294f49a9713ead69cc4e460df788cfc30348625b41fa57c08fbdf62699c33c20",
+        "tradestatus": "0"
+      },
+      "scope": "HISTORICAL_REQUIRED",
+      "security_id": "SEC-5A6647D52DC702B1685A98D6021E215E",
+      "source_security_key": "SH.600387"
+    },
+    {
+      "board_scope": "SH_MAIN",
+      "candidate_only": true,
+      "categories": [
+        "ST_TO_STAR_ST",
+        "ST_DURING_SUSPENSION"
+      ],
+      "conflict_disposition": "BINARY_ST_UNCHANGED; OFFICIAL_RISK_SUBTYPE_CHANGES_TO_STAR_ST",
+      "effective_date": "2024-04-23",
+      "expected_interpretation": {
+        "is_st": "1",
+        "status": "ACTUAL_TRADED"
+      },
+      "local_actual": true,
+      "official_local_evidence": [
+        {
+          "bytes": 164513,
+          "path": "data/v4/source_evidence/a12_r2/600387_risk_transition.pdf",
+          "sha256": "cb09070205330871503f8e866c5dcc8818840b5964820da4a78d27c9f8c4f852"
+        },
+        {
+          "bytes": 112302935,
+          "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet",
+          "sha256": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90"
+        }
+      ],
+      "provider_value": {
+        "isST": "1",
+        "source_revision": "sha256:ac2c968d62c1bb126fb6ec2b0d3a18b08e72a698af6daaf28720067cf0029d50",
+        "tradestatus": "1"
+      },
+      "scope": "HISTORICAL_REQUIRED",
+      "security_id": "SEC-5A6647D52DC702B1685A98D6021E215E",
+      "source_security_key": "SH.600387"
+    },
+    {
+      "board_scope": "CHINEXT",
+      "candidate_only": true,
+      "categories": [
+        "CODE_CHANGE_BOUNDARY",
+        "ST_CODE_CHANGE_NEGATIVE_SCOPE"
+      ],
+      "conflict_disposition": "AGREES_WITH_LOCAL_OR_OFFICIAL",
+      "effective_date": "2025-02-14",
+      "expected_interpretation": {
+        "is_st": "0",
+        "status": "ACTUAL_TRADED"
+      },
+      "local_actual": true,
+      "official_local_evidence": [
+        {
+          "bytes": 370156,
+          "path": "data/v4/source_evidence/v4_02_r3/szse_2025_028_code_change_302132.pdf",
+          "sha256": "dd68049c48df826848f361fd9e7b23dd20b6805144a2e5bc36e54db638611488"
+        },
+        {
+          "bytes": 112302935,
+          "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet",
+          "sha256": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90"
+        }
+      ],
+      "provider_value": {
+        "isST": "0",
+        "source_revision": "sha256:eb8114dd84e18319293f98fdb4e1d17f9aca3061536643feb50d7c6f923f47a3",
+        "tradestatus": null
+      },
+      "scope": "HISTORICAL_REQUIRED",
+      "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+      "source_security_key": "SZ.300114"
+    },
+    {
+      "board_scope": "CHINEXT",
+      "candidate_only": true,
+      "categories": [
+        "CODE_CHANGE_BOUNDARY",
+        "ST_CODE_CHANGE_NEGATIVE_SCOPE",
+        "CHINEXT"
+      ],
+      "conflict_disposition": "OLD_CODE_SUSPENDED_PLACEHOLDER_REJECTED; DATED_SUCCESSOR_USED",
+      "effective_date": "2025-02-17",
+      "expected_interpretation": {
+        "is_st": "0",
+        "status": "ACTUAL_TRADED"
+      },
+      "local_actual": true,
+      "official_local_evidence": [
+        {
+          "bytes": 370156,
+          "path": "data/v4/source_evidence/v4_02_r3/szse_2025_028_code_change_302132.pdf",
+          "sha256": "dd68049c48df826848f361fd9e7b23dd20b6805144a2e5bc36e54db638611488"
+        },
+        {
+          "bytes": 112302935,
+          "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet",
+          "sha256": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90"
+        }
+      ],
+      "provider_value": {
+        "isST": "0",
+        "source_revision": "sha256:16120c46791d4c72550d2a5ea8defe22deca9894fb24ed3eb305e69c81af8b86",
+        "tradestatus": null
+      },
+      "scope": "HISTORICAL_REQUIRED",
+      "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+      "source_security_key": "SZ.302132"
+    },
+    {
+      "board_scope": "CHINEXT",
+      "candidate_only": true,
+      "categories": [
+        "NEW_LISTING",
+        "CHINEXT"
+      ],
+      "conflict_disposition": "AGREES_WITH_LOCAL_OR_OFFICIAL",
+      "effective_date": "2024-08-16",
+      "expected_interpretation": {
+        "is_st": "0",
+        "status": "ACTUAL_TRADED"
+      },
+      "local_actual": true,
+      "official_local_evidence": [
+        {
+          "bytes": 4564,
+          "path": "data/v4/V4_01_ACCEPTED_HEAD.json",
+          "sha256": "b8ea5b8091629d116c860f9bf6a1a398301d75be16af7b08ff526fba9329bf6b"
+        },
+        {
+          "bytes": 112302935,
+          "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet",
+          "sha256": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90"
+        }
+      ],
+      "provider_value": {
+        "isST": "0",
+        "source_revision": "sha256:a447e3b31f4063db4aa7a46418561c3eb85fee051828d23d721eae1da97f4276",
+        "tradestatus": null
+      },
+      "scope": "HISTORICAL_REQUIRED",
+      "security_id": "SEC-2F8645A4AFF9D0C3E6277180AA257226",
+      "source_security_key": "SZ.301611"
+    },
+    {
+      "board_scope": "SH_MAIN",
+      "candidate_only": true,
+      "categories": [
+        "LONG_SUSPENSION",
+        "ST_DURING_SUSPENSION"
+      ],
+      "conflict_disposition": "AGREES_WITH_LOCAL_OR_OFFICIAL",
+      "effective_date": "2025-02-06",
+      "expected_interpretation": {
+        "is_st": "1",
+        "status": "SUSPENDED"
+      },
+      "local_actual": false,
+      "official_local_evidence": [
+        {
+          "bytes": 425639,
+          "path": "data/v4/source_evidence/v4_02_r4/SH_600225_2025-02-07_delisting_phase.pdf",
+          "sha256": "9b05d41a0c32731e547d629af91418ba2e1ec6b69f1f95171ede4965d116db48"
+        },
+        {
+          "bytes": 112302935,
+          "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet",
+          "sha256": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90"
+        }
+      ],
+      "provider_value": {
+        "isST": "1",
+        "source_revision": "sha256:82d1a596dbfff676c74962e29ef2c18641c4ead5728d886ca89c253f56f59e96",
+        "tradestatus": "0"
+      },
+      "scope": "HISTORICAL_REQUIRED",
+      "security_id": "SEC-18585F80D22E31B21FCD599064BA30EA",
+      "source_security_key": "SH.600225"
+    },
+    {
+      "board_scope": "SH_MAIN",
+      "candidate_only": true,
+      "categories": [
+        "DELISTING_RESUME",
+        "OFFICIAL_PROVIDER_RISK_TAXONOMY_CONFLICT"
+      ],
+      "conflict_disposition": "OFFICIAL_RISK_WARNING_DELISTING_BOARD_IS_NOT_BINARY_ST; SPECIAL_PHASE_RETAINED",
+      "effective_date": "2025-02-07",
+      "expected_interpretation": {
+        "is_st": "0",
+        "status": "ACTUAL_TRADED"
+      },
+      "local_actual": true,
+      "official_local_evidence": [
+        {
+          "bytes": 425639,
+          "path": "data/v4/source_evidence/v4_02_r4/SH_600225_2025-02-07_delisting_phase.pdf",
+          "sha256": "9b05d41a0c32731e547d629af91418ba2e1ec6b69f1f95171ede4965d116db48"
+        },
+        {
+          "bytes": 112302935,
+          "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet",
+          "sha256": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90"
+        }
+      ],
+      "provider_value": {
+        "isST": "0",
+        "source_revision": "sha256:2280bdbb9f70ff174ef5e6275ad3f7fa31a3e959547fdbf2de4bd8fcb72df6d1",
+        "tradestatus": "1"
+      },
+      "scope": "HISTORICAL_REQUIRED",
+      "security_id": "SEC-18585F80D22E31B21FCD599064BA30EA",
+      "source_security_key": "SH.600225"
+    },
+    {
+      "board_scope": "SH_MAIN",
+      "candidate_only": true,
+      "categories": [
+        "PROVIDER_LOCAL_ACTUAL_CONFLICT"
+      ],
+      "conflict_disposition": "LOCAL_ACTUAL_OVERRIDES_PROVIDER_0; CONFLICT_RETAINED",
+      "effective_date": "2024-06-13",
+      "expected_interpretation": {
+        "is_st": "0",
+        "status": "ACTUAL_TRADED"
+      },
+      "local_actual": true,
+      "official_local_evidence": [
+        {
+          "bytes": 112302935,
+          "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet",
+          "sha256": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90"
+        },
+        {
+          "bytes": 100075252,
+          "path": "data/v4/artifact_store/v4_02/V4_02_DATED_TRADING_STATUS_R7_20260927.jsonl.gz",
+          "sha256": "ad65d2e1b3ca835a310cfa2a35f7bfd417a42020e27f2e77d4a79597aa018de9"
+        }
+      ],
+      "provider_value": {
+        "isST": "0",
+        "source_revision": "sha256:c6f34b2180c41b8e70fcf8ce050cea0f282a2294b2b18a6db8f2d6a69c116ed6",
+        "tradestatus": "0"
+      },
+      "scope": "HISTORICAL_REQUIRED",
+      "security_id": "SEC-3AD696DD556CF135DA7AF82E748B37BF",
+      "source_security_key": "SH.600647"
+    },
+    {
+      "board_scope": "SH_MAIN",
+      "candidate_only": true,
+      "categories": [
+        "PROVIDER_LOCAL_ACTUAL_CONFLICT"
+      ],
+      "conflict_disposition": "LOCAL_ACTUAL_OVERRIDES_PROVIDER_0; CONFLICT_RETAINED",
+      "effective_date": "2024-06-13",
+      "expected_interpretation": {
+        "is_st": "0",
+        "status": "ACTUAL_TRADED"
+      },
+      "local_actual": true,
+      "official_local_evidence": [
+        {
+          "bytes": 112302935,
+          "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet",
+          "sha256": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90"
+        },
+        {
+          "bytes": 100075252,
+          "path": "data/v4/artifact_store/v4_02/V4_02_DATED_TRADING_STATUS_R7_20260927.jsonl.gz",
+          "sha256": "ad65d2e1b3ca835a310cfa2a35f7bfd417a42020e27f2e77d4a79597aa018de9"
+        }
+      ],
+      "provider_value": {
+        "isST": "0",
+        "source_revision": "sha256:c6f34b2180c41b8e70fcf8ce050cea0f282a2294b2b18a6db8f2d6a69c116ed6",
+        "tradestatus": "0"
+      },
+      "scope": "HISTORICAL_REQUIRED",
+      "security_id": "SEC-EBD426D928907EA6C4C2D25223F25368",
+      "source_security_key": "SH.600766"
+    },
+    {
+      "board_scope": "SH_MAIN",
+      "candidate_only": true,
+      "categories": [
+        "PROVIDER_LOCAL_ACTUAL_CONFLICT"
+      ],
+      "conflict_disposition": "LOCAL_ACTUAL_OVERRIDES_PROVIDER_0; CONFLICT_RETAINED",
+      "effective_date": "2024-06-13",
+      "expected_interpretation": {
+        "is_st": "0",
+        "status": "ACTUAL_TRADED"
+      },
+      "local_actual": true,
+      "official_local_evidence": [
+        {
+          "bytes": 112302935,
+          "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet",
+          "sha256": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90"
+        },
+        {
+          "bytes": 100075252,
+          "path": "data/v4/artifact_store/v4_02/V4_02_DATED_TRADING_STATUS_R7_20260927.jsonl.gz",
+          "sha256": "ad65d2e1b3ca835a310cfa2a35f7bfd417a42020e27f2e77d4a79597aa018de9"
+        }
+      ],
+      "provider_value": {
+        "isST": "0",
+        "source_revision": "sha256:c6f34b2180c41b8e70fcf8ce050cea0f282a2294b2b18a6db8f2d6a69c116ed6",
+        "tradestatus": "0"
+      },
+      "scope": "HISTORICAL_REQUIRED",
+      "security_id": "SEC-CB22BA16F08FEB4508DAC6EAF2283AFD",
+      "source_security_key": "SH.603133"
+    },
+    {
+      "board_scope": "SZ_MAIN",
+      "candidate_only": true,
+      "categories": [
+        "PROVIDER_LOCAL_ACTUAL_CONFLICT"
+      ],
+      "conflict_disposition": "LOCAL_ACTUAL_OVERRIDES_PROVIDER_0; CONFLICT_RETAINED",
+      "effective_date": "2024-06-13",
+      "expected_interpretation": {
+        "is_st": "0",
+        "status": "ACTUAL_TRADED"
+      },
+      "local_actual": true,
+      "official_local_evidence": [
+        {
+          "bytes": 112302935,
+          "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet",
+          "sha256": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90"
+        },
+        {
+          "bytes": 100075252,
+          "path": "data/v4/artifact_store/v4_02/V4_02_DATED_TRADING_STATUS_R7_20260927.jsonl.gz",
+          "sha256": "ad65d2e1b3ca835a310cfa2a35f7bfd417a42020e27f2e77d4a79597aa018de9"
+        }
+      ],
+      "provider_value": {
+        "isST": "0",
+        "source_revision": "sha256:c6f34b2180c41b8e70fcf8ce050cea0f282a2294b2b18a6db8f2d6a69c116ed6",
+        "tradestatus": "0"
+      },
+      "scope": "HISTORICAL_REQUIRED",
+      "security_id": "SEC-3932CEC951E17C49F41079C6311EA1D4",
+      "source_security_key": "SZ.002087"
+    }
+  ],
+  "synthetic_samples_used": false
+}

@@ -1,0 +1,618 @@
+{
+  "additional_boundary_injections": [],
+  "external_acceptance": null,
+  "generated_execution_order": [
+    "scripts/a12_r2_run_v4_03_core_frozen_diagnostic.py",
+    "scripts/a12_r2_build_v4_03_prior_rps_staging.py",
+    "scripts/a12_r2_run_v4_03_market_path_candidate.py",
+    "scripts/a12_r2_run_v4_03_market_regime_native_r3.py",
+    "scripts/a12_r2_run_v4_03_full_scope_candidate.py",
+    "scripts/a12_r2_build_v4_05_r3_factors.py",
+    "scripts/a12_r2_enrich_v4_05_r3_relative.py",
+    "scripts/a12_r2_build_v4_05_r4_full_scope_factors.py",
+    "scripts/a12_r2_build_v4_05_r4_market_regime.py",
+    "scripts/a12_r2_build_v4_05_r4_core_profile.py",
+    "scripts/replay_a12_v4_04_r2.py",
+    "scripts/complete_a12_cascade_r2.py"
+  ],
+  "proofs": [
+    {
+      "algorithm_ast_exact_after_reversing_paths": true,
+      "algorithm_parameters_changed": false,
+      "generated": {
+        "bytes": 10943,
+        "path": "scripts/a12_r2_run_v4_03_core_frozen_diagnostic.py",
+        "sha256": "1338eb4e542c2f3c66f8a6b9ba1fdfc7a779f260ed1c32f88adca493e9a455a2"
+      },
+      "source": {
+        "bytes": 10970,
+        "path": "scripts/a12_run_v4_03_core_frozen_diagnostic_r1.py",
+        "sha256": "f246bf459111c55ac628b938faa59941f6804893ffe07847d7d7e8578b7d321c"
+      },
+      "substitutions": [
+        {
+          "line": 24,
+          "new": "reports/audits/a12_v4_03_r2/staging/V4_03_CORE_REQUIRED_SCOPE_DIAGNOSTIC_R1.jsonl.gz",
+          "old": "reports/audits/a12_v4_03_r1/staging/V4_03_CORE_REQUIRED_SCOPE_DIAGNOSTIC_R1.jsonl.gz"
+        },
+        {
+          "line": 25,
+          "new": "reports/audits/a12_v4_03_r2/V4_03_CORE_REQUIRED_SCOPE_DIAGNOSTIC_RECEIPT_R1.json",
+          "old": "reports/audits/a12_v4_03_r1/V4_03_CORE_REQUIRED_SCOPE_DIAGNOSTIC_RECEIPT_R1.json"
+        },
+        {
+          "line": 45,
+          "new": "reports/audits/a12_v4_03_r2/staging/V4_03_CORE_FULL_HISTORY_CANDIDATE_R2.jsonl.gz",
+          "old": "reports/audits/a12_v4_03_r1/staging/V4_03_CORE_FULL_HISTORY_CANDIDATE_R2.jsonl.gz"
+        },
+        {
+          "line": 46,
+          "new": "reports/audits/a12_v4_03_r2/V4_03_CORE_FULL_HISTORY_CANDIDATE_RECEIPT_R2.json",
+          "old": "reports/audits/a12_v4_03_r1/V4_03_CORE_FULL_HISTORY_CANDIDATE_RECEIPT_R2.json"
+        },
+        {
+          "line": 115,
+          "new": "data/v4/artifact_store/a12_authority_candidate_r2/V4_02_DATED_TRADING_STATUS_AUTHORITY_R2.jsonl.gz",
+          "old": "data/v4/artifact_store/a12_authority_candidate_r1/V4_02_DATED_TRADING_STATUS_AUTHORITY_R1.jsonl.gz"
+        }
+      ]
+    },
+    {
+      "algorithm_ast_exact_after_reversing_paths": true,
+      "algorithm_parameters_changed": false,
+      "generated": {
+        "bytes": 8243,
+        "path": "scripts/a12_r2_build_v4_03_prior_rps_staging.py",
+        "sha256": "9bd27788ad976584d444f6d53d27d5c978f022573afcebaa5db3ad77e07ec33e"
+      },
+      "source": {
+        "bytes": 8270,
+        "path": "scripts/a12_build_v4_03_prior_rps_staging_r1.py",
+        "sha256": "72232344984c79eac213433896e826d722960a363b49c815ee0e3162065a1219"
+      },
+      "substitutions": [
+        {
+          "line": 12,
+          "new": "reports/audits/a12_v4_03_r2/staging/V4_03_PRIOR_RPS_STAGING_R3.json",
+          "old": "reports/audits/a12_v4_03_r1/staging/V4_03_PRIOR_RPS_STAGING_R3.json"
+        },
+        {
+          "line": 13,
+          "new": "reports/audits/a12_v4_03_r2/V4_03_PRIOR_RPS_STAGING_RECEIPT_R3.json",
+          "old": "reports/audits/a12_v4_03_r1/V4_03_PRIOR_RPS_STAGING_RECEIPT_R3.json"
+        },
+        {
+          "line": 54,
+          "new": "data/v4/artifact_store/a12_authority_candidate_r2/V4_02_DATED_TRADING_STATUS_AUTHORITY_R2.jsonl.gz",
+          "old": "data/v4/artifact_store/a12_authority_candidate_r1/V4_02_DATED_TRADING_STATUS_AUTHORITY_R1.jsonl.gz"
+        }
+      ]
+    },
+    {
+      "algorithm_ast_exact_after_reversing_paths": true,
+      "algorithm_parameters_changed": false,
+      "generated": {
+        "bytes": 14706,
+        "path": "scripts/a12_r2_run_v4_03_market_path_candidate.py",
+        "sha256": "06551625d8e28425a12be3e773e3b36bb0894b963292cc9757ecbb59ee233fdd"
+      },
+      "source": {
+        "bytes": 14733,
+        "path": "scripts/a12_run_v4_03_market_path_candidate_r1.py",
+        "sha256": "a2b7ba30243e87a471168572f24c580d83145e4044a81c86f7ec5bd189120bbe"
+      },
+      "substitutions": [
+        {
+          "line": 17,
+          "new": "reports/audits/a12_v4_03_r2/staging/V4_03_MARKET_REFERENCE_PATH_CANDIDATE_R1.jsonl.gz",
+          "old": "reports/audits/a12_v4_03_r1/staging/V4_03_MARKET_REFERENCE_PATH_CANDIDATE_R1.jsonl.gz"
+        },
+        {
+          "line": 18,
+          "new": "reports/audits/a12_v4_03_r2/V4_03_MARKET_PATH_CANDIDATE_RECEIPT_R1.json",
+          "old": "reports/audits/a12_v4_03_r1/V4_03_MARKET_PATH_CANDIDATE_RECEIPT_R1.json"
+        },
+        {
+          "line": 41,
+          "new": "reports/audits/a12_v4_03_r2/staging/V4_03_MARKET_REFERENCE_PATH_CANDIDATE_R3.jsonl.gz",
+          "old": "reports/audits/a12_v4_03_r1/staging/V4_03_MARKET_REFERENCE_PATH_CANDIDATE_R3.jsonl.gz"
+        },
+        {
+          "line": 41,
+          "new": "reports/audits/a12_v4_03_r2/staging/V4_03_MARKET_REFERENCE_PATH_CANDIDATE_R1.jsonl.gz",
+          "old": "reports/audits/a12_v4_03_r1/staging/V4_03_MARKET_REFERENCE_PATH_CANDIDATE_R1.jsonl.gz"
+        },
+        {
+          "line": 42,
+          "new": "reports/audits/a12_v4_03_r2/V4_03_MARKET_REFERENCE_PATH_RECEIPT_R3.json",
+          "old": "reports/audits/a12_v4_03_r1/V4_03_MARKET_REFERENCE_PATH_RECEIPT_R3.json"
+        },
+        {
+          "line": 42,
+          "new": "reports/audits/a12_v4_03_r2/V4_03_MARKET_PATH_CANDIDATE_RECEIPT_R1.json",
+          "old": "reports/audits/a12_v4_03_r1/V4_03_MARKET_PATH_CANDIDATE_RECEIPT_R1.json"
+        },
+        {
+          "line": 105,
+          "new": "data/v4/artifact_store/a12_authority_candidate_r2/V4_02_DATED_TRADING_STATUS_AUTHORITY_R2.jsonl.gz",
+          "old": "data/v4/artifact_store/a12_authority_candidate_r1/V4_02_DATED_TRADING_STATUS_AUTHORITY_R1.jsonl.gz"
+        }
+      ]
+    },
+    {
+      "algorithm_ast_exact_after_reversing_paths": true,
+      "algorithm_parameters_changed": false,
+      "generated": {
+        "bytes": 13511,
+        "path": "scripts/a12_r2_run_v4_03_market_regime_native_r3.py",
+        "sha256": "8faf1e386dd95aecc6a758bd59b57e1276bf28834aa56baa62761be9f8189b75"
+      },
+      "source": {
+        "bytes": 13535,
+        "path": "scripts/a12_run_v4_03_market_regime_native_r3_r1.py",
+        "sha256": "fcb94bfef2aa2724d38f34de4062f0679966ca5f4d1f2ec21086d0899455764c"
+      },
+      "substitutions": [
+        {
+          "line": 15,
+          "new": "reports/audits/a12_v4_03_r2/staging/V4_03_MARKET_REGIME_NATIVE_CANDIDATE_R3.jsonl.gz",
+          "old": "reports/audits/a12_v4_03_r1/staging/V4_03_MARKET_REGIME_NATIVE_CANDIDATE_R3.jsonl.gz"
+        },
+        {
+          "line": 16,
+          "new": "reports/audits/a12_v4_03_r2/V4_03_MARKET_REGIME_NATIVE_RECEIPT_R3.json",
+          "old": "reports/audits/a12_v4_03_r1/V4_03_MARKET_REGIME_NATIVE_RECEIPT_R3.json"
+        },
+        {
+          "line": 17,
+          "new": "reports/audits/a12_v4_03_r2/staging/V4_03_MARKET_REFERENCE_PATH_CANDIDATE_R3.jsonl.gz",
+          "old": "reports/audits/a12_v4_03_r1/staging/V4_03_MARKET_REFERENCE_PATH_CANDIDATE_R3.jsonl.gz"
+        },
+        {
+          "line": 42,
+          "new": "reports/audits/A12_R2_V4_02_FULL_HISTORICAL_REPAIR_AND_DIFF_R1.json",
+          "old": "reports/audits/A12_V4_02_FULL_HISTORICAL_REPAIR_AND_DIFF_R1.json"
+        },
+        {
+          "line": 46,
+          "new": "reports/audits/a12_v4_03_r2/V4_03_MARKET_REFERENCE_PATH_RECEIPT_R3.json",
+          "old": "reports/audits/a12_v4_03_r1/V4_03_MARKET_REFERENCE_PATH_RECEIPT_R3.json"
+        },
+        {
+          "line": 71,
+          "new": "data/v4/artifact_store/a12_authority_candidate_r2/V4_02_DATED_TRADING_STATUS_AUTHORITY_R2.jsonl.gz",
+          "old": "data/v4/artifact_store/a12_authority_candidate_r1/V4_02_DATED_TRADING_STATUS_AUTHORITY_R1.jsonl.gz"
+        }
+      ]
+    },
+    {
+      "algorithm_ast_exact_after_reversing_paths": true,
+      "algorithm_parameters_changed": false,
+      "generated": {
+        "bytes": 20022,
+        "path": "scripts/a12_r2_run_v4_03_full_scope_candidate.py",
+        "sha256": "0972d04b489be71c3b29d7525b8210019b2ed4c19aa9209ba0d7bb8a3450649d"
+      },
+      "source": {
+        "bytes": 20049,
+        "path": "scripts/a12_run_v4_03_full_scope_candidate_r1.py",
+        "sha256": "9423e74e165130ba6a25c6c222bca9a52aec9e32df3329827a9bed635c331d66"
+      },
+      "substitutions": [
+        {
+          "line": 25,
+          "new": "reports/audits/a12_v4_03_r2/V4_03_CORE_REQUIRED_SCOPE_DIAGNOSTIC_RECEIPT_R1.json",
+          "old": "reports/audits/a12_v4_03_r1/V4_03_CORE_REQUIRED_SCOPE_DIAGNOSTIC_RECEIPT_R1.json"
+        },
+        {
+          "line": 26,
+          "new": "reports/audits/a12_v4_03_r2/staging/V4_03_CORE_REQUIRED_SCOPE_DIAGNOSTIC_R1.jsonl.gz",
+          "old": "reports/audits/a12_v4_03_r1/staging/V4_03_CORE_REQUIRED_SCOPE_DIAGNOSTIC_R1.jsonl.gz"
+        },
+        {
+          "line": 27,
+          "new": "reports/audits/a12_v4_03_r2/staging/V4_03_FULL_SCOPE_CANDIDATE_R1.jsonl.gz",
+          "old": "reports/audits/a12_v4_03_r1/staging/V4_03_FULL_SCOPE_CANDIDATE_R1.jsonl.gz"
+        },
+        {
+          "line": 28,
+          "new": "reports/audits/a12_v4_03_r2/V4_03_MARKET_REFERENCE_CANDIDATE_R1.json",
+          "old": "reports/audits/a12_v4_03_r1/V4_03_MARKET_REFERENCE_CANDIDATE_R1.json"
+        },
+        {
+          "line": 29,
+          "new": "reports/audits/a12_v4_03_r2/V4_03_FULL_SCOPE_CANDIDATE_RECEIPT_R1.json",
+          "old": "reports/audits/a12_v4_03_r1/V4_03_FULL_SCOPE_CANDIDATE_RECEIPT_R1.json"
+        },
+        {
+          "line": 30,
+          "new": "reports/audits/a12_v4_03_r2/staging/V4_03_MARKET_REFERENCE_PATH_CANDIDATE_R1.jsonl.gz",
+          "old": "reports/audits/a12_v4_03_r1/staging/V4_03_MARKET_REFERENCE_PATH_CANDIDATE_R1.jsonl.gz"
+        },
+        {
+          "line": 31,
+          "new": "reports/audits/a12_v4_03_r2/V4_03_MARKET_PATH_CANDIDATE_RECEIPT_R1.json",
+          "old": "reports/audits/a12_v4_03_r1/V4_03_MARKET_PATH_CANDIDATE_RECEIPT_R1.json"
+        },
+        {
+          "line": 57,
+          "new": "reports/audits/a12_v4_03_r2/V4_03_CORE_FULL_HISTORY_CANDIDATE_RECEIPT_R2.json",
+          "old": "reports/audits/a12_v4_03_r1/V4_03_CORE_FULL_HISTORY_CANDIDATE_RECEIPT_R2.json"
+        },
+        {
+          "line": 57,
+          "new": "reports/audits/a12_v4_03_r2/V4_03_CORE_REQUIRED_SCOPE_DIAGNOSTIC_RECEIPT_R1.json",
+          "old": "reports/audits/a12_v4_03_r1/V4_03_CORE_REQUIRED_SCOPE_DIAGNOSTIC_RECEIPT_R1.json"
+        },
+        {
+          "line": 58,
+          "new": "reports/audits/a12_v4_03_r2/staging/V4_03_CORE_FULL_HISTORY_CANDIDATE_R2.jsonl.gz",
+          "old": "reports/audits/a12_v4_03_r1/staging/V4_03_CORE_FULL_HISTORY_CANDIDATE_R2.jsonl.gz"
+        },
+        {
+          "line": 58,
+          "new": "reports/audits/a12_v4_03_r2/staging/V4_03_CORE_REQUIRED_SCOPE_DIAGNOSTIC_R1.jsonl.gz",
+          "old": "reports/audits/a12_v4_03_r1/staging/V4_03_CORE_REQUIRED_SCOPE_DIAGNOSTIC_R1.jsonl.gz"
+        },
+        {
+          "line": 59,
+          "new": "reports/audits/a12_v4_03_r2/staging/V4_03_FULL_SCOPE_CANDIDATE_",
+          "old": "reports/audits/a12_v4_03_r1/staging/V4_03_FULL_SCOPE_CANDIDATE_"
+        },
+        {
+          "line": 60,
+          "new": "reports/audits/a12_v4_03_r2/V4_03_MARKET_REFERENCE_CANDIDATE_",
+          "old": "reports/audits/a12_v4_03_r1/V4_03_MARKET_REFERENCE_CANDIDATE_"
+        },
+        {
+          "line": 61,
+          "new": "reports/audits/a12_v4_03_r2/V4_03_FULL_SCOPE_CANDIDATE_RECEIPT_",
+          "old": "reports/audits/a12_v4_03_r1/V4_03_FULL_SCOPE_CANDIDATE_RECEIPT_"
+        },
+        {
+          "line": 62,
+          "new": "reports/audits/a12_v4_03_r2/staging/V4_03_MARKET_REFERENCE_PATH_CANDIDATE_",
+          "old": "reports/audits/a12_v4_03_r1/staging/V4_03_MARKET_REFERENCE_PATH_CANDIDATE_"
+        },
+        {
+          "line": 63,
+          "new": "reports/audits/a12_v4_03_r2/V4_03_MARKET_REFERENCE_PATH_RECEIPT_R3.json",
+          "old": "reports/audits/a12_v4_03_r1/V4_03_MARKET_REFERENCE_PATH_RECEIPT_R3.json"
+        },
+        {
+          "line": 63,
+          "new": "reports/audits/a12_v4_03_r2/V4_03_MARKET_PATH_CANDIDATE_RECEIPT_",
+          "old": "reports/audits/a12_v4_03_r1/V4_03_MARKET_PATH_CANDIDATE_RECEIPT_"
+        },
+        {
+          "line": 99,
+          "new": "data/v4/artifact_store/a12_authority_candidate_r2/V4_02_DATED_TRADING_STATUS_AUTHORITY_R2.jsonl.gz",
+          "old": "data/v4/artifact_store/a12_authority_candidate_r1/V4_02_DATED_TRADING_STATUS_AUTHORITY_R1.jsonl.gz"
+        },
+        {
+          "line": 186,
+          "new": "reports/audits/a12_v4_03_r2/staging/V4_03_PRIOR_RPS_STAGING_R3.json",
+          "old": "reports/audits/a12_v4_03_r1/staging/V4_03_PRIOR_RPS_STAGING_R3.json"
+        },
+        {
+          "line": 187,
+          "new": "reports/audits/a12_v4_03_r2/V4_03_PRIOR_RPS_STAGING_RECEIPT_R3.json",
+          "old": "reports/audits/a12_v4_03_r1/V4_03_PRIOR_RPS_STAGING_RECEIPT_R3.json"
+        }
+      ]
+    },
+    {
+      "algorithm_ast_exact_after_reversing_paths": true,
+      "algorithm_parameters_changed": false,
+      "generated": {
+        "bytes": 7122,
+        "path": "scripts/a12_r2_build_v4_05_r3_factors.py",
+        "sha256": "97bd24c450477b8d8a50e5dbbe9758c7ff8ea5f80c7124de301e20f8da5d7b8f"
+      },
+      "source": {
+        "bytes": 7149,
+        "path": "scripts/a12_build_v4_05_r3_factors_r1.py",
+        "sha256": "3cc4291ac72feed2c88946efc06537da943058de8db8bad4dbb7922829bac516"
+      },
+      "substitutions": [
+        {
+          "line": 15,
+          "new": "reports/audits/a12_v4_05_r2/staging/V4_05_R3_PURE_CORE_FACTORS.jsonl.gz",
+          "old": "reports/audits/a12_v4_05_r1/staging/V4_05_R3_PURE_CORE_FACTORS.jsonl.gz"
+        },
+        {
+          "line": 16,
+          "new": "reports/audits/a12_v4_05_r2/V4_05_R3_FACTOR_SOURCE_TIME.json",
+          "old": "reports/audits/a12_v4_05_r1/V4_05_R3_FACTOR_SOURCE_TIME.json"
+        },
+        {
+          "line": 38,
+          "new": "data/v4/artifact_store/a12_authority_candidate_r2/V4_02_DATED_TRADING_STATUS_AUTHORITY_R2.jsonl.gz",
+          "old": "data/v4/artifact_store/a12_authority_candidate_r1/V4_02_DATED_TRADING_STATUS_AUTHORITY_R1.jsonl.gz"
+        }
+      ]
+    },
+    {
+      "algorithm_ast_exact_after_reversing_paths": true,
+      "algorithm_parameters_changed": false,
+      "generated": {
+        "bytes": 4844,
+        "path": "scripts/a12_r2_enrich_v4_05_r3_relative.py",
+        "sha256": "c438f37558cdfab2f1a326dba74bb116024eb24cda631db716cbe07ffa7da240"
+      },
+      "source": {
+        "bytes": 4871,
+        "path": "scripts/a12_enrich_v4_05_r3_relative_r1.py",
+        "sha256": "ee06f10238712cd8686dab19147186700b00ed7cd6aa1993d0cc2c2f18074a3a"
+      },
+      "substitutions": [
+        {
+          "line": 14,
+          "new": "reports/audits/a12_v4_05_r2/staging/V4_05_R3_FULL_SCOPE_FACTORS.jsonl.gz",
+          "old": "reports/audits/a12_v4_05_r1/staging/V4_05_R3_FULL_SCOPE_FACTORS.jsonl.gz"
+        },
+        {
+          "line": 15,
+          "new": "reports/audits/a12_v4_05_r2/V4_05_R3_FULL_SCOPE_FACTORS_RECEIPT.json",
+          "old": "reports/audits/a12_v4_05_r1/V4_05_R3_FULL_SCOPE_FACTORS_RECEIPT.json"
+        },
+        {
+          "line": 29,
+          "new": "reports/audits/a12_v4_05_r2/V4_05_R3_FACTOR_SOURCE_TIME.json",
+          "old": "reports/audits/a12_v4_05_r1/V4_05_R3_FACTOR_SOURCE_TIME.json"
+        }
+      ]
+    },
+    {
+      "algorithm_ast_exact_after_reversing_paths": true,
+      "algorithm_parameters_changed": false,
+      "generated": {
+        "bytes": 4441,
+        "path": "scripts/a12_r2_build_v4_05_r4_full_scope_factors.py",
+        "sha256": "f3d79f1c21699c99eab1b5b019d10a005a95fcdce867cfd44173fa5754ea19d8"
+      },
+      "source": {
+        "bytes": 4468,
+        "path": "scripts/a12_build_v4_05_r4_full_scope_factors_r1.py",
+        "sha256": "6af2076d543dd3d874fb412f626e5b259403f645258c32161404ca98963220ac"
+      },
+      "substitutions": [
+        {
+          "line": 15,
+          "new": "reports/audits/a12_v4_05_r2/staging/V4_05_R3_FULL_SCOPE_FACTORS.jsonl.gz",
+          "old": "reports/audits/a12_v4_05_r1/staging/V4_05_R3_FULL_SCOPE_FACTORS.jsonl.gz"
+        },
+        {
+          "line": 17,
+          "new": "reports/audits/a12_v4_05_r2/staging/V4_05_R4_FULL_SCOPE_FACTORS.jsonl.gz",
+          "old": "reports/audits/a12_v4_05_r1/staging/V4_05_R4_FULL_SCOPE_FACTORS.jsonl.gz"
+        },
+        {
+          "line": 18,
+          "new": "reports/audits/a12_v4_05_r2/V4_05_R4_FULL_SCOPE_FACTORS_RECEIPT.json",
+          "old": "reports/audits/a12_v4_05_r1/V4_05_R4_FULL_SCOPE_FACTORS_RECEIPT.json"
+        }
+      ]
+    },
+    {
+      "algorithm_ast_exact_after_reversing_paths": true,
+      "algorithm_parameters_changed": false,
+      "generated": {
+        "bytes": 5543,
+        "path": "scripts/a12_r2_build_v4_05_r4_market_regime.py",
+        "sha256": "bdd3a65ea231872110fcbaa67632e821b1059ab8efac4dcb0d5a9e22ae5eddec"
+      },
+      "source": {
+        "bytes": 5570,
+        "path": "scripts/a12_build_v4_05_r4_market_regime_r1.py",
+        "sha256": "f828c1ace16fcb6b44d07b88a02ae61c24a1adc2a9c8c13eecb11dda1a29f09a"
+      },
+      "substitutions": [
+        {
+          "line": 19,
+          "new": "reports/audits/a12_v4_05_r2/V4_05_R4_MARKET_REGIME.json",
+          "old": "reports/audits/a12_v4_05_r1/V4_05_R4_MARKET_REGIME.json"
+        },
+        {
+          "line": 28,
+          "new": "reports/audits/a12_v4_05_r2/V4_05_R4_FULL_SCOPE_FACTORS_RECEIPT.json",
+          "old": "reports/audits/a12_v4_05_r1/V4_05_R4_FULL_SCOPE_FACTORS_RECEIPT.json"
+        },
+        {
+          "line": 47,
+          "new": "reports/audits/a12_v4_03_r2/staging/V4_03_MARKET_REGIME_NATIVE_CANDIDATE_R3.jsonl.gz",
+          "old": "reports/audits/a12_v4_03_r1/staging/V4_03_MARKET_REGIME_NATIVE_CANDIDATE_R3.jsonl.gz"
+        }
+      ]
+    },
+    {
+      "algorithm_ast_exact_after_reversing_paths": true,
+      "algorithm_parameters_changed": false,
+      "generated": {
+        "bytes": 8592,
+        "path": "scripts/a12_r2_build_v4_05_r4_core_profile.py",
+        "sha256": "c0c14b47ca03cff9bfcfd30942565559c5cae9ddb37261cbc30e41742c506992"
+      },
+      "source": {
+        "bytes": 8619,
+        "path": "scripts/a12_build_v4_05_r4_core_profile_r1.py",
+        "sha256": "5c712dc6a6883bed7ef66193587332ace5209f20cae7cf4090bb097882657525"
+      },
+      "substitutions": [
+        {
+          "line": 19,
+          "new": "reports/audits/a12_v4_05_r2/staging/V4_05_R4_FULL_MARKET_CORE_PROFILE.jsonl.gz",
+          "old": "reports/audits/a12_v4_05_r1/staging/V4_05_R4_FULL_MARKET_CORE_PROFILE.jsonl.gz"
+        },
+        {
+          "line": 20,
+          "new": "reports/audits/a12_v4_05_r2/V4_05_R4_CORE_PROFILE_REPLAY.json",
+          "old": "reports/audits/a12_v4_05_r1/V4_05_R4_CORE_PROFILE_REPLAY.json"
+        },
+        {
+          "line": 50,
+          "new": "reports/audits/a12_v4_05_r2/V4_05_R4_FULL_SCOPE_FACTORS_RECEIPT.json",
+          "old": "reports/audits/a12_v4_05_r1/V4_05_R4_FULL_SCOPE_FACTORS_RECEIPT.json"
+        },
+        {
+          "line": 51,
+          "new": "reports/audits/a12_v4_05_r2/V4_05_R4_MARKET_REGIME.json",
+          "old": "reports/audits/a12_v4_05_r1/V4_05_R4_MARKET_REGIME.json"
+        },
+        {
+          "line": 59,
+          "new": "data/v4/artifact_store/a12_authority_candidate_r2/V4_02_DATED_TRADING_STATUS_AUTHORITY_R2.jsonl.gz",
+          "old": "data/v4/artifact_store/a12_authority_candidate_r1/V4_02_DATED_TRADING_STATUS_AUTHORITY_R1.jsonl.gz"
+        }
+      ]
+    },
+    {
+      "algorithm_ast_exact_after_reversing_paths": true,
+      "algorithm_parameters_changed": false,
+      "generated": {
+        "bytes": 4654,
+        "path": "scripts/replay_a12_v4_04_r2.py",
+        "sha256": "c135defc4b4718eabb999c92b94c1fda6876de4ef654405b5f1e9dd0a66f02e6"
+      },
+      "source": {
+        "bytes": 4293,
+        "path": "scripts/replay_a12_v4_04_r1.py",
+        "sha256": "7e3fb6fedc46eac824b76dc7ead061e2a0020a01750b83808095b9be3ba95a35"
+      },
+      "substitutions": [
+        {
+          "line": 15,
+          "new": "reports/audits/A12_R2_V4_02_FULL_HISTORICAL_REPAIR_AND_DIFF_R1.json",
+          "old": "reports/audits/A12_V4_02_FULL_HISTORICAL_REPAIR_AND_DIFF_R1.json"
+        },
+        {
+          "line": 16,
+          "new": "reports/audits/A12_R2_FORMAL_PERIOD_AUTHORITY_REBIND_R1.json",
+          "old": "reports/audits/A12_FORMAL_PERIOD_AUTHORITY_REBIND_R1.json"
+        },
+        {
+          "line": 18,
+          "new": "reports/audits/a12_v4_03_r2/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+          "old": "reports/audits/a12_v4_03_r1/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz"
+        },
+        {
+          "line": 19,
+          "new": "reports/audits/a12_v4_03_r2/staging/V4_03_MARKET_REGIME_NATIVE_CANDIDATE_R3.jsonl.gz",
+          "old": "reports/audits/a12_v4_03_r1/staging/V4_03_MARKET_REGIME_NATIVE_CANDIDATE_R3.jsonl.gz"
+        },
+        {
+          "line": 31,
+          "new": "reports/audits/a12_candidate_r2/V4_04_FULL_MARKET_CORE_PROFILE_AUTHORITY_R2.jsonl.gz",
+          "old": "reports/audits/a12_candidate_r1/V4_04_FULL_MARKET_CORE_PROFILE_AUTHORITY_R1.jsonl.gz"
+        },
+        {
+          "line": 42,
+          "new": "reports/audits/A12_R2_V4_04_TRUE_REPLAY_R1.json",
+          "old": "reports/audits/A12_V4_04_TRUE_REPLAY_R1.json"
+        }
+      ]
+    },
+    {
+      "algorithm_ast_exact_after_reversing_paths": true,
+      "algorithm_parameters_changed": false,
+      "generated": {
+        "bytes": 12921,
+        "path": "scripts/complete_a12_cascade_r2.py",
+        "sha256": "5bc2370784c083e5b36c68c6bc05d51dacc830be74bd3a961179eb500329ed6d"
+      },
+      "source": {
+        "bytes": 12129,
+        "path": "scripts/complete_a12_cascade_r1.py",
+        "sha256": "6d40aaebc74ffd49818797f62538bdb79be0f4375b53b5b29e606f5203b8a226"
+      },
+      "substitutions": [
+        {
+          "line": 44,
+          "new": "reports/audits/a12_candidate_r2/",
+          "old": "reports/audits/a12_candidate_r1/"
+        },
+        {
+          "line": 79,
+          "new": "_AUTHORITY_R2",
+          "old": "_AUTHORITY_R1"
+        },
+        {
+          "line": 84,
+          "new": "reports/audits/A12_R2_DOWNSTREAM_CASCADE_AND_FULL_BUSINESS_DIFF_R1.json",
+          "old": "reports/audits/A12_DOWNSTREAM_CASCADE_AND_FULL_BUSINESS_DIFF_R1.json"
+        },
+        {
+          "line": 87,
+          "new": "reports/audits/a12_v4_05_r2/staging/V4_05_R4_FULL_MARKET_CORE_PROFILE.jsonl.gz",
+          "old": "reports/audits/a12_v4_05_r1/staging/V4_05_R4_FULL_MARKET_CORE_PROFILE.jsonl.gz"
+        },
+        {
+          "line": 88,
+          "new": "reports/audits/a12_v4_05_r2/staging/V4_05_R4_FULL_SCOPE_FACTORS.jsonl.gz",
+          "old": "reports/audits/a12_v4_05_r1/staging/V4_05_R4_FULL_SCOPE_FACTORS.jsonl.gz"
+        },
+        {
+          "line": 90,
+          "new": "reports/audits/a12_candidate_r2/V4_05_CORE_PROFILE_AUTHORITY_AVAILABLE_R2.jsonl.gz",
+          "old": "reports/audits/a12_candidate_r1/V4_05_CORE_PROFILE_AUTHORITY_AVAILABLE_R1.jsonl.gz"
+        },
+        {
+          "line": 93,
+          "new": "V4_05_CORE_PROFILE_AUTHORITY_AVAILABLE_R2",
+          "old": "V4_05_CORE_PROFILE_AUTHORITY_AVAILABLE_R1"
+        },
+        {
+          "line": 93,
+          "new": "V4_05_FACTORS_AUTHORITY_AVAILABLE_R2",
+          "old": "V4_05_FACTORS_AUTHORITY_AVAILABLE_R1"
+        },
+        {
+          "line": 97,
+          "new": "reports/audits/a12_v4_05_r2/V4_05_R4_CORE_PROFILE_REPLAY.json",
+          "old": "reports/audits/a12_v4_05_r1/V4_05_R4_CORE_PROFILE_REPLAY.json"
+        },
+        {
+          "line": 97,
+          "new": "reports/audits/a12_v4_05_r2/V4_05_R4_FULL_SCOPE_FACTORS_RECEIPT.json",
+          "old": "reports/audits/a12_v4_05_r1/V4_05_R4_FULL_SCOPE_FACTORS_RECEIPT.json"
+        },
+        {
+          "line": 98,
+          "new": "V4_07_BASE_SEED_AUTHORITY_R2",
+          "old": "V4_07_BASE_SEED_AUTHORITY_R1"
+        },
+        {
+          "line": 102,
+          "new": "V4_09_STOCK_PREWATCH_AUTHORITY_R2",
+          "old": "V4_09_STOCK_PREWATCH_AUTHORITY_R1"
+        },
+        {
+          "line": 103,
+          "new": "reports/audits/A12_R2_V4_04_TRUE_REPLAY_R1.json",
+          "old": "reports/audits/A12_V4_04_TRUE_REPLAY_R1.json"
+        },
+        {
+          "line": 104,
+          "new": "reports/audits/a12_v4_03_r2/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+          "old": "reports/audits/a12_v4_03_r1/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz"
+        },
+        {
+          "line": 108,
+          "new": "reports/audits/A12_R2_DOWNSTREAM_CASCADE_AND_FULL_BUSINESS_DIFF_R1.json",
+          "old": "reports/audits/A12_DOWNSTREAM_CASCADE_AND_FULL_BUSINESS_DIFF_R1.json"
+        },
+        {
+          "line": 108,
+          "new": "reports/audits/A12_R2_UNCHANGED_REPLAY_SOURCE_PROOFS_R1.json",
+          "old": "reports/audits/A12_UNCHANGED_REPLAY_SOURCE_PROOFS_R1.json"
+        }
+      ]
+    }
+  ],
+  "r1_original_algorithm_proof": {
+    "bytes": 19342,
+    "path": "reports/audits/A12_UNCHANGED_REPLAY_SOURCE_PROOFS_R1.json",
+    "sha256": "16cd64d254b37be3e76613d294293d4b02b458203140b42f8c4453d9f77be45c"
+  },
+  "status": "PASS_EXACT_ALGORITHM_AST"
+}

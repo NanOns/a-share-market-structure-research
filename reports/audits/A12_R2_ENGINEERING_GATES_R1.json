@@ -1,0 +1,37 @@
+{
+  "allowed_candidate_status": "A12_R2_REAL_DATED_OWNER_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
+  "evidence_manifest": {
+    "bytes": 5120,
+    "path": "reports/audits/A12_R2_CANDIDATE_EVIDENCE_MANIFEST_R1.json",
+    "sha256": "b42777fc54973c795e5eb1df5ad60abed7a858281325b46ad598e0d5a3b5b623"
+  },
+  "external_acceptance": null,
+  "gate_notes": {
+    "A12R2-G01": "Real required history cases plus independently verified delayed 9/28 DATA_GAP source bytes; no future row appended to historical rebuild",
+    "A12R2-G02": "Real ST changes/removal/suspended/new listing and code-change non-ST census supplied. Positive ST code-change case is not present in required scope: external disposition required, not an engineering PASS claim. Delisting-board vs isST taxonomy conflict is explicit, not a fabricated numeric provider disagreement.",
+    "A12R2-G09": "Actual registry unchanged and pending owners rejected. Exact externally accepted prospective fixtures pass A10 proof only inside pytest temporary roots.",
+    "A12R2-G10": "Full status/ST producer rebuild. Every original price-base dependency equal on 4,035,729 rows; original generic R6 price kernel rerun, not a fitted count.",
+    "A12R2-G12": "True V4-04 replay; remaining quality unknowns separately proven. Core Profile business completion is not asserted."
+  },
+  "gates": {
+    "A12R2-G01": "PENDING_INDEPENDENT_EXTERNAL_AUDIT",
+    "A12R2-G02": "PENDING_INDEPENDENT_EXTERNAL_AUDIT",
+    "A12R2-G03": "PASS_ENGINEERING",
+    "A12R2-G04": "PASS_ENGINEERING",
+    "A12R2-G05": "PASS_ENGINEERING",
+    "A12R2-G06": "PASS_ENGINEERING",
+    "A12R2-G07": "PASS_ENGINEERING",
+    "A12R2-G08": "PASS_ENGINEERING",
+    "A12R2-G09": "PASS_ENGINEERING",
+    "A12R2-G10": "PASS_ENGINEERING",
+    "A12R2-G11": "PASS_ENGINEERING",
+    "A12R2-G12": "PASS_ENGINEERING",
+    "A12R2-G13": "PASS_ENGINEERING",
+    "A12R2-G14": "PASS_ENGINEERING",
+    "A12R2-G15": "PASS_ENGINEERING",
+    "A12R2-G16": "PENDING_CLEAN_DETACHED",
+    "A12R2-G17": "PENDING_INDEPENDENT_EXTERNAL_AUDIT"
+  },
+  "next_stage": "Independent A12 R2 source semantics/amendment reaudit, including positive ST code-change scope disposition. Only a later explicit promotion card may register accepted owners or amend business heads. DM01 final all-nine remains BLOCKED.",
+  "status": "PENDING_CLEAN_DETACHED"
+}

@@ -1,0 +1,2482 @@
+{
+  "candidate_bindings": {
+    "price": {
+      "bytes": 157153755,
+      "path": "data/v4/artifact_store/a12_authority_candidate_r2/V4_02_PRICE_LIMIT_AUTHORITY_R2.jsonl.gz",
+      "sha256": "5740369d73b8935085d5c8579de5585c64629d23190f807dc28d0e4ffdae2320"
+    },
+    "st": {
+      "bytes": 133970439,
+      "logical_digest": "b6a78058c886cedb6567f6fa16968403b30c41cba403a38b4df548e56d0edab1",
+      "path": "data/v4/artifact_store/a12_authority_candidate_r2/V4_02_DATED_ST_STATUS_AUTHORITY_R2.jsonl.gz",
+      "sha256": "359ed2612d584265c447eb449e0ac89128d6b00cb29c69b3874a66ce71d34ffa"
+    },
+    "status": {
+      "bytes": 124781648,
+      "logical_digest": "c7fb16368914a78000fc00dd91995d64436fe465e051cb806883403f4468b3e2",
+      "path": "data/v4/artifact_store/a12_authority_candidate_r2/V4_02_DATED_TRADING_STATUS_AUTHORITY_R2.jsonl.gz",
+      "sha256": "7df9761894ddd234d743240ecc1656a9e4d65e0e311b69d03c035187d3366bf3"
+    }
+  },
+  "external_acceptance": null,
+  "formal_authority_asserted": false,
+  "independent_formula": "TDX source_bar_present -> actual; else captured provider status 0/1 -> suspension/gap; ST from frozen source bytes with 786 revision receipts",
+  "independent_period_counter_checks": [
+    {
+      "candidate": {
+        "bytes": 81005147,
+        "path": "data/v4/artifact_store/a12_authority_candidate_r2/V4_02_FORMAL_WEEKLY_RAW_QFQ_AUTHORITY_R2.parquet",
+        "sha256": "8eda09c0ca55b986cbebe0aa32454a22835492a6286c1237473c729ea2af0294"
+      },
+      "independent_source": "Recomputed actual/suspended/gap/unknown counters from full source bytes grouped by canonical identity and calendar period; every RAW/QFQ view checked",
+      "period_type": "week",
+      "rows_checked": 1704964,
+      "status_counter_differences": 0
+    },
+    {
+      "candidate": {
+        "bytes": 19627759,
+        "path": "data/v4/artifact_store/a12_authority_candidate_r2/V4_02_FORMAL_MONTHLY_RAW_QFQ_AUTHORITY_R2.parquet",
+        "sha256": "790ae9dd13bc363c431b2a7d02e3c6db868bc5d0b3d85a8c9a2acbd5dfd90ff3"
+      },
+      "independent_source": "Recomputed actual/suspended/gap/unknown counters from full source bytes grouped by canonical identity and calendar period; every RAW/QFQ view checked",
+      "period_type": "month",
+      "rows_checked": 400918,
+      "status_counter_differences": 0
+    }
+  ],
+  "native_tdx_byte_checks": [
+    {
+      "category": "NORMAL",
+      "date": "2024-02-22",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "0",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SH.605255",
+      "match": true,
+      "security_id": "SEC-E8564CAEA5D645EE96E249F258E61BEC"
+    },
+    {
+      "category": "NORMAL",
+      "date": "2025-04-15",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "0",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SH.603002",
+      "match": true,
+      "security_id": "SEC-4E3951C46892A6BCB3B8200C41AB337D"
+    },
+    {
+      "category": "NORMAL",
+      "date": "2023-07-13",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "0",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SH.688306",
+      "match": true,
+      "security_id": "SEC-9787F9636A44F9A90F8E0234F613E5CC"
+    },
+    {
+      "category": "NORMAL",
+      "date": "2025-11-14",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "0",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SZ.300986",
+      "match": true,
+      "security_id": "SEC-0CBC42A5ABFF3A59BC3E05AF1E9ACEF0"
+    },
+    {
+      "category": "NORMAL",
+      "date": "2026-05-12",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "0",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SZ.002862",
+      "match": true,
+      "security_id": "SEC-9B93A386EEC366955CD57F39361D2A90"
+    },
+    {
+      "category": "NORMAL",
+      "date": "2025-07-10",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "0",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SH.601126",
+      "match": true,
+      "security_id": "SEC-6DEC530E1843DAB88283960A89D5ECB8"
+    },
+    {
+      "category": "NORMAL",
+      "date": "2024-12-26",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "0",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SZ.000899",
+      "match": true,
+      "security_id": "SEC-75F13D888F72329AB0249C14FB5CDAF5"
+    },
+    {
+      "category": "NORMAL",
+      "date": "2026-05-21",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "0",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SZ.000970",
+      "match": true,
+      "security_id": "SEC-27DF2485D91D28F9FA0D5C6B5AE2DC01"
+    },
+    {
+      "category": "SUSPENDED",
+      "date": "2026-04-20",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "0",
+      "expected_status": "SUSPENDED",
+      "frozen_928_package_present": false,
+      "historical_local_present": false,
+      "key": "SH.600958",
+      "match": true,
+      "security_id": "SEC-A07F63D576F28BD19C497CD0CD09C2E6"
+    },
+    {
+      "category": "SUSPENDED",
+      "date": "2024-07-01",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "1",
+      "expected_status": "SUSPENDED",
+      "frozen_928_package_present": false,
+      "historical_local_present": false,
+      "key": "SZ.002621",
+      "match": true,
+      "security_id": "SEC-3C6DA1B329ECF8E0AA069FA45181D7E8"
+    },
+    {
+      "category": "SUSPENDED",
+      "date": "2026-08-19",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "0",
+      "expected_status": "SUSPENDED",
+      "frozen_928_package_present": false,
+      "historical_local_present": false,
+      "key": "SZ.300176",
+      "match": true,
+      "security_id": "SEC-174A84700DE32A40D92B7FE4B80CBBDE"
+    },
+    {
+      "category": "SUSPENDED",
+      "date": "2024-07-22",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "0",
+      "expected_status": "SUSPENDED",
+      "frozen_928_package_present": false,
+      "historical_local_present": false,
+      "key": "SZ.000595",
+      "match": true,
+      "security_id": "SEC-F1128559EE27068078D38B30DC507F29"
+    },
+    {
+      "category": "SUSPENDED",
+      "date": "2024-04-30",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "1",
+      "expected_status": "SUSPENDED",
+      "frozen_928_package_present": false,
+      "historical_local_present": false,
+      "key": "SZ.000996",
+      "match": true,
+      "security_id": "SEC-AC45E3508C40811A6180C987A410E535"
+    },
+    {
+      "category": "SUSPENDED",
+      "date": "2025-04-30",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "1",
+      "expected_status": "SUSPENDED",
+      "frozen_928_package_present": false,
+      "historical_local_present": false,
+      "key": "SH.603879",
+      "match": true,
+      "security_id": "SEC-5837D3F5DEA49296CE28D8847BD0D350"
+    },
+    {
+      "category": "SUSPENDED",
+      "date": "2024-04-30",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "1",
+      "expected_status": "SUSPENDED",
+      "frozen_928_package_present": false,
+      "historical_local_present": false,
+      "key": "SZ.300799",
+      "match": true,
+      "security_id": "SEC-49E1E44010C08C77710D33B56E1B01A0"
+    },
+    {
+      "category": "SUSPENDED",
+      "date": "2024-02-28",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "1",
+      "expected_status": "SUSPENDED",
+      "frozen_928_package_present": false,
+      "historical_local_present": false,
+      "key": "SH.603603",
+      "match": true,
+      "security_id": "SEC-D2A6FFE7040074531F8C01395B989168"
+    },
+    {
+      "category": "ST",
+      "date": "2026-01-12",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "1",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SZ.002808",
+      "match": true,
+      "security_id": "SEC-A7A9EC2A1585A321ADFF88626F53954D"
+    },
+    {
+      "category": "ST",
+      "date": "2024-01-03",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "1",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SH.600647",
+      "match": true,
+      "security_id": "SEC-3AD696DD556CF135DA7AF82E748B37BF"
+    },
+    {
+      "category": "ST",
+      "date": "2024-03-07",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "1",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SZ.002656",
+      "match": true,
+      "security_id": "SEC-8D4592D92C2ED899330D0C5B1BEB6D35"
+    },
+    {
+      "category": "ST",
+      "date": "2025-05-20",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "1",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SH.605081",
+      "match": true,
+      "security_id": "SEC-2B1E4799949166F821A45684596CC022"
+    },
+    {
+      "category": "ST",
+      "date": "2026-06-02",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "1",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SZ.002856",
+      "match": true,
+      "security_id": "SEC-360BF037A740F03C3EB47E48E2EC03BF"
+    },
+    {
+      "category": "ST",
+      "date": "2026-06-10",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "1",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SZ.002656",
+      "match": true,
+      "security_id": "SEC-8D4592D92C2ED899330D0C5B1BEB6D35"
+    },
+    {
+      "category": "ST",
+      "date": "2026-07-10",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "1",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SH.688022",
+      "match": true,
+      "security_id": "SEC-442F5CCE97A1C714C2316F3FE2AF6EBA"
+    },
+    {
+      "category": "ST",
+      "date": "2024-06-11",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "1",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SZ.000023",
+      "match": true,
+      "security_id": "SEC-D4B2C9DA88E160740B3FDAC553FE147F"
+    },
+    {
+      "category": "NON_ST",
+      "date": "2024-02-22",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "0",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SH.605255",
+      "match": true,
+      "security_id": "SEC-E8564CAEA5D645EE96E249F258E61BEC"
+    },
+    {
+      "category": "NON_ST",
+      "date": "2025-04-15",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "0",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SH.603002",
+      "match": true,
+      "security_id": "SEC-4E3951C46892A6BCB3B8200C41AB337D"
+    },
+    {
+      "category": "NON_ST",
+      "date": "2023-07-13",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "0",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SH.688306",
+      "match": true,
+      "security_id": "SEC-9787F9636A44F9A90F8E0234F613E5CC"
+    },
+    {
+      "category": "NON_ST",
+      "date": "2025-11-14",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "0",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SZ.300986",
+      "match": true,
+      "security_id": "SEC-0CBC42A5ABFF3A59BC3E05AF1E9ACEF0"
+    },
+    {
+      "category": "NON_ST",
+      "date": "2026-05-12",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "0",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SZ.002862",
+      "match": true,
+      "security_id": "SEC-9B93A386EEC366955CD57F39361D2A90"
+    },
+    {
+      "category": "NON_ST",
+      "date": "2025-07-10",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "0",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SH.601126",
+      "match": true,
+      "security_id": "SEC-6DEC530E1843DAB88283960A89D5ECB8"
+    },
+    {
+      "category": "NON_ST",
+      "date": "2024-12-26",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "0",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SZ.000899",
+      "match": true,
+      "security_id": "SEC-75F13D888F72329AB0249C14FB5CDAF5"
+    },
+    {
+      "category": "NON_ST",
+      "date": "2026-05-21",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "0",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SZ.000970",
+      "match": true,
+      "security_id": "SEC-27DF2485D91D28F9FA0D5C6B5AE2DC01"
+    },
+    {
+      "category": "ALIAS",
+      "date": "2025-07-21",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "0",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SZ.302132",
+      "match": true,
+      "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B"
+    },
+    {
+      "category": "ALIAS",
+      "date": "2025-11-13",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "0",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SZ.302132",
+      "match": true,
+      "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B"
+    },
+    {
+      "category": "ALIAS",
+      "date": "2024-12-02",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "0",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SZ.300114",
+      "match": true,
+      "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B"
+    },
+    {
+      "category": "ALIAS",
+      "date": "2024-08-27",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "0",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SZ.300114",
+      "match": true,
+      "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B"
+    },
+    {
+      "category": "ALIAS",
+      "date": "2024-12-13",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "0",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SZ.300114",
+      "match": true,
+      "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B"
+    },
+    {
+      "category": "ALIAS",
+      "date": "2026-09-02",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "0",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SZ.302132",
+      "match": true,
+      "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B"
+    },
+    {
+      "category": "ALIAS",
+      "date": "2023-11-22",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "0",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SZ.300114",
+      "match": true,
+      "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B"
+    },
+    {
+      "category": "ALIAS",
+      "date": "2023-10-10",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "0",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SZ.300114",
+      "match": true,
+      "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B"
+    },
+    {
+      "category": "NEW_LISTING",
+      "date": "2024-08-20",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "0",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SZ.301611",
+      "match": true,
+      "security_id": "SEC-2F8645A4AFF9D0C3E6277180AA257226"
+    },
+    {
+      "category": "NEW_LISTING",
+      "date": "2024-08-16",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "0",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SZ.301611",
+      "match": true,
+      "security_id": "SEC-2F8645A4AFF9D0C3E6277180AA257226"
+    },
+    {
+      "category": "NEW_LISTING",
+      "date": "2024-08-21",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "0",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SZ.301611",
+      "match": true,
+      "security_id": "SEC-2F8645A4AFF9D0C3E6277180AA257226"
+    },
+    {
+      "category": "NEW_LISTING",
+      "date": "2024-08-22",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "0",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SZ.301611",
+      "match": true,
+      "security_id": "SEC-2F8645A4AFF9D0C3E6277180AA257226"
+    },
+    {
+      "category": "NEW_LISTING",
+      "date": "2024-08-19",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "0",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SZ.301611",
+      "match": true,
+      "security_id": "SEC-2F8645A4AFF9D0C3E6277180AA257226"
+    },
+    {
+      "category": "NEW_LISTING",
+      "date": "2024-08-23",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "0",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SZ.301611",
+      "match": true,
+      "security_id": "SEC-2F8645A4AFF9D0C3E6277180AA257226"
+    },
+    {
+      "category": "DELISTING",
+      "date": "2025-02-14",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "0",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SH.600225",
+      "match": true,
+      "security_id": "SEC-18585F80D22E31B21FCD599064BA30EA"
+    },
+    {
+      "category": "DELISTING",
+      "date": "2025-02-11",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "0",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SH.600225",
+      "match": true,
+      "security_id": "SEC-18585F80D22E31B21FCD599064BA30EA"
+    },
+    {
+      "category": "DELISTING",
+      "date": "2025-02-07",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "0",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SH.600225",
+      "match": true,
+      "security_id": "SEC-18585F80D22E31B21FCD599064BA30EA"
+    },
+    {
+      "category": "DELISTING",
+      "date": "2025-02-06",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "1",
+      "expected_status": "SUSPENDED",
+      "frozen_928_package_present": false,
+      "historical_local_present": false,
+      "key": "SH.600225",
+      "match": true,
+      "security_id": "SEC-18585F80D22E31B21FCD599064BA30EA"
+    },
+    {
+      "category": "DELISTING",
+      "date": "2025-02-12",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "0",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SH.600225",
+      "match": true,
+      "security_id": "SEC-18585F80D22E31B21FCD599064BA30EA"
+    },
+    {
+      "category": "DELISTING",
+      "date": "2025-02-10",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "0",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SH.600225",
+      "match": true,
+      "security_id": "SEC-18585F80D22E31B21FCD599064BA30EA"
+    },
+    {
+      "category": "DELISTING",
+      "date": "2025-02-17",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "0",
+      "expected_status": "ACTUAL_TRADED",
+      "frozen_928_package_present": true,
+      "historical_local_present": true,
+      "key": "SH.600225",
+      "match": true,
+      "security_id": "SEC-18585F80D22E31B21FCD599064BA30EA"
+    },
+    {
+      "category": "DELISTING",
+      "date": "2025-02-05",
+      "disposition": "EXACT_NATIVE_TDX_DATE_RECORD",
+      "expected_st": "1",
+      "expected_status": "SUSPENDED",
+      "frozen_928_package_present": false,
+      "historical_local_present": false,
+      "key": "SH.600225",
+      "match": true,
+      "security_id": "SEC-18585F80D22E31B21FCD599064BA30EA"
+    }
+  ],
+  "producer_called": false,
+  "real_data_gap_matrix": {
+    "bytes": 20388,
+    "path": "reports/audits/A12_R2_REAL_DATA_GAP_MATRIX_R1.json",
+    "sha256": "31bb6d8d29b4252361cd510f4e844056d7a067e647dd6393e709f53cf30c7e98"
+  },
+  "revision_dates_verified": 786,
+  "rows": 4035729,
+  "source_bindings": {
+    "daily": {
+      "bytes": 112302935,
+      "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet",
+      "sha256": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90"
+    },
+    "price": {
+      "bytes": 157153754,
+      "path": "data/v4/artifact_store/v4_02/V4_02_PRICE_LIMIT_R6_20260927.jsonl.gz",
+      "sha256": "6f40d6b92e78e8de6f2cc17c867d902e06e56d82d0b7f45c8715469704b4e6af"
+    },
+    "producer": {
+      "bytes": 1237,
+      "path": "config/v4_02_status_st_authority_r1.json",
+      "sha256": "d926bb00abe97be5a485c519b9a4f7bf4b647c380c8edd812bb8674b273d2291"
+    },
+    "st": {
+      "bytes": 99012112,
+      "path": "data/v4/artifact_store/v4_02/V4_02_DATED_ST_STATUS_R7_20260927.jsonl.gz",
+      "sha256": "ffac24e09d02a53ffb48dbc24449d95f5ab20d8934c6401588a73c8673dbb8f4"
+    },
+    "status": {
+      "bytes": 100075252,
+      "path": "data/v4/artifact_store/v4_02/V4_02_DATED_TRADING_STATUS_R7_20260927.jsonl.gz",
+      "sha256": "ad65d2e1b3ca835a310cfa2a35f7bfd417a42020e27f2e77d4a79597aa018de9"
+    },
+    "universe": {
+      "bytes": 239298684,
+      "path": "data/v4/artifact_store/v4_01/v4_01_historical_universe_required_R7_20260927.jsonl.gz",
+      "sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b"
+    }
+  },
+  "source_revision_receipts_bound": {
+    "bytes": 335513,
+    "path": "reports/v4_02/V4_02_DATED_ST_STATUS_V1_R6_2_20260926.json",
+    "sha256": "a5f84c388a7482df83f0998c39dbe737587cc4c4c89a5fb524459e311baea97f"
+  },
+  "st_differences": 0,
+  "status": "PASS_FULL_ROW_REAL_SOURCE_ORACLE",
+  "status_differences": 0,
+  "stratified_random_samples": {
+    "ALIAS": [
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+        "source_security_key": "SZ.302132",
+        "trade_date": "2025-07-21"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+        "source_security_key": "SZ.302132",
+        "trade_date": "2025-11-13"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+        "source_security_key": "SZ.300114",
+        "trade_date": "2024-12-02"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+        "source_security_key": "SZ.300114",
+        "trade_date": "2024-08-27"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+        "source_security_key": "SZ.300114",
+        "trade_date": "2024-12-13"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+        "source_security_key": "SZ.302132",
+        "trade_date": "2026-09-02"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+        "source_security_key": "SZ.300114",
+        "trade_date": "2023-11-22"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+        "source_security_key": "SZ.300114",
+        "trade_date": "2023-10-10"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+        "source_security_key": "SZ.302132",
+        "trade_date": "2025-04-15"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+        "source_security_key": "SZ.300114",
+        "trade_date": "2024-06-13"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+        "source_security_key": "SZ.302132",
+        "trade_date": "2025-08-20"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+        "source_security_key": "SZ.300114",
+        "trade_date": "2024-06-07"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+        "source_security_key": "SZ.300114",
+        "trade_date": "2023-11-21"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+        "source_security_key": "SZ.302132",
+        "trade_date": "2026-04-01"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+        "source_security_key": "SZ.302132",
+        "trade_date": "2026-04-03"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+        "source_security_key": "SZ.300114",
+        "trade_date": "2024-03-11"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+        "source_security_key": "SZ.302132",
+        "trade_date": "2026-08-14"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+        "source_security_key": "SZ.302132",
+        "trade_date": "2025-05-16"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+        "source_security_key": "SZ.300114",
+        "trade_date": "2024-11-04"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+        "source_security_key": "SZ.300114",
+        "trade_date": "2023-10-12"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+        "source_security_key": "SZ.302132",
+        "trade_date": "2026-03-05"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+        "source_security_key": "SZ.300114",
+        "trade_date": "2024-08-09"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+        "source_security_key": "SZ.300114",
+        "trade_date": "2024-07-29"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+        "source_security_key": "SZ.302132",
+        "trade_date": "2025-03-17"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+        "source_security_key": "SZ.300114",
+        "trade_date": "2024-04-12"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+        "source_security_key": "SZ.302132",
+        "trade_date": "2025-07-28"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+        "source_security_key": "SZ.302132",
+        "trade_date": "2026-06-29"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+        "source_security_key": "SZ.300114",
+        "trade_date": "2024-02-02"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+        "source_security_key": "SZ.300114",
+        "trade_date": "2023-08-17"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+        "source_security_key": "SZ.302132",
+        "trade_date": "2025-11-14"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+        "source_security_key": "SZ.302132",
+        "trade_date": "2026-01-13"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+        "source_security_key": "SZ.300114",
+        "trade_date": "2023-12-13"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+        "source_security_key": "SZ.300114",
+        "trade_date": "2024-04-08"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+        "source_security_key": "SZ.300114",
+        "trade_date": "2025-01-08"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+        "source_security_key": "SZ.300114",
+        "trade_date": "2024-10-30"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+        "source_security_key": "SZ.300114",
+        "trade_date": "2024-04-23"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+        "source_security_key": "SZ.302132",
+        "trade_date": "2026-03-04"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+        "source_security_key": "SZ.302132",
+        "trade_date": "2026-06-05"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+        "source_security_key": "SZ.300114",
+        "trade_date": "2023-12-18"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-EDEDE35FE66896ACCA0AC85EEB2F133B",
+        "source_security_key": "SZ.300114",
+        "trade_date": "2024-12-05"
+      }
+    ],
+    "DELISTING": [
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-18585F80D22E31B21FCD599064BA30EA",
+        "source_security_key": "SH.600225",
+        "trade_date": "2025-02-14"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-18585F80D22E31B21FCD599064BA30EA",
+        "source_security_key": "SH.600225",
+        "trade_date": "2025-02-11"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-18585F80D22E31B21FCD599064BA30EA",
+        "source_security_key": "SH.600225",
+        "trade_date": "2025-02-07"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "SUSPENDED",
+        "local_actual": false,
+        "security_id": "SEC-18585F80D22E31B21FCD599064BA30EA",
+        "source_security_key": "SH.600225",
+        "trade_date": "2025-02-06"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-18585F80D22E31B21FCD599064BA30EA",
+        "source_security_key": "SH.600225",
+        "trade_date": "2025-02-12"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-18585F80D22E31B21FCD599064BA30EA",
+        "source_security_key": "SH.600225",
+        "trade_date": "2025-02-10"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-18585F80D22E31B21FCD599064BA30EA",
+        "source_security_key": "SH.600225",
+        "trade_date": "2025-02-17"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "SUSPENDED",
+        "local_actual": false,
+        "security_id": "SEC-18585F80D22E31B21FCD599064BA30EA",
+        "source_security_key": "SH.600225",
+        "trade_date": "2025-02-05"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-18585F80D22E31B21FCD599064BA30EA",
+        "source_security_key": "SH.600225",
+        "trade_date": "2025-02-13"
+      }
+    ],
+    "NEW_LISTING": [
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-2F8645A4AFF9D0C3E6277180AA257226",
+        "source_security_key": "SZ.301611",
+        "trade_date": "2024-08-20"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-2F8645A4AFF9D0C3E6277180AA257226",
+        "source_security_key": "SZ.301611",
+        "trade_date": "2024-08-16"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-2F8645A4AFF9D0C3E6277180AA257226",
+        "source_security_key": "SZ.301611",
+        "trade_date": "2024-08-21"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-2F8645A4AFF9D0C3E6277180AA257226",
+        "source_security_key": "SZ.301611",
+        "trade_date": "2024-08-22"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-2F8645A4AFF9D0C3E6277180AA257226",
+        "source_security_key": "SZ.301611",
+        "trade_date": "2024-08-19"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-2F8645A4AFF9D0C3E6277180AA257226",
+        "source_security_key": "SZ.301611",
+        "trade_date": "2024-08-23"
+      }
+    ],
+    "NON_ST": [
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-E8564CAEA5D645EE96E249F258E61BEC",
+        "source_security_key": "SH.605255",
+        "trade_date": "2024-02-22"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-4E3951C46892A6BCB3B8200C41AB337D",
+        "source_security_key": "SH.603002",
+        "trade_date": "2025-04-15"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-9787F9636A44F9A90F8E0234F613E5CC",
+        "source_security_key": "SH.688306",
+        "trade_date": "2023-07-13"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-0CBC42A5ABFF3A59BC3E05AF1E9ACEF0",
+        "source_security_key": "SZ.300986",
+        "trade_date": "2025-11-14"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-9B93A386EEC366955CD57F39361D2A90",
+        "source_security_key": "SZ.002862",
+        "trade_date": "2026-05-12"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-6DEC530E1843DAB88283960A89D5ECB8",
+        "source_security_key": "SH.601126",
+        "trade_date": "2025-07-10"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-75F13D888F72329AB0249C14FB5CDAF5",
+        "source_security_key": "SZ.000899",
+        "trade_date": "2024-12-26"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-27DF2485D91D28F9FA0D5C6B5AE2DC01",
+        "source_security_key": "SZ.000970",
+        "trade_date": "2026-05-21"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-50516CB92708765DD5DACCA1DF9F3ED1",
+        "source_security_key": "SH.601828",
+        "trade_date": "2026-04-27"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-86F9485449EC847B536F055ADBD030CC",
+        "source_security_key": "SZ.300250",
+        "trade_date": "2026-01-12"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-9CE843D7895C6D265FCB5CE57B9CDC19",
+        "source_security_key": "SZ.301132",
+        "trade_date": "2024-04-11"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-8A8B60881B6E0CD59D479365DA14716D",
+        "source_security_key": "SZ.300818",
+        "trade_date": "2024-12-18"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-7BDA093E9FABE168971E2AB41BA91669",
+        "source_security_key": "SH.600372",
+        "trade_date": "2023-10-12"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-64D0D2F556AACFC91F7EB02B15C804B6",
+        "source_security_key": "SH.600843",
+        "trade_date": "2026-09-17"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-4D995D10D285C8116A032E09A7DA7295",
+        "source_security_key": "SH.603310",
+        "trade_date": "2026-06-12"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-C038D4B505E8954693FBE9C66ECF0EC7",
+        "source_security_key": "SH.600531",
+        "trade_date": "2024-02-01"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-914E8475669D0C6F2BD3A04E694CD459",
+        "source_security_key": "SH.603327",
+        "trade_date": "2025-07-24"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-3FE66CF651D91B522459BE77B8A84F93",
+        "source_security_key": "SZ.000927",
+        "trade_date": "2024-09-09"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-C966510C285CC9DE0862B175FFA5EBD8",
+        "source_security_key": "SH.600499",
+        "trade_date": "2023-09-15"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-0DBECF13C4C2C5CB3DF5F36539346405",
+        "source_security_key": "SZ.002066",
+        "trade_date": "2024-09-13"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-C8C1618D1F621ECF566F05712D6D8E25",
+        "source_security_key": "SZ.002707",
+        "trade_date": "2025-05-15"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-7E92D3BC9E8044B1052BAB5B2B43416D",
+        "source_security_key": "SZ.300219",
+        "trade_date": "2025-08-18"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-2C8BDE07D4586203A877330E3422C477",
+        "source_security_key": "SH.600982",
+        "trade_date": "2023-12-20"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-9FA181A9B51505E57D7CBF083F3C11BA",
+        "source_security_key": "SZ.000089",
+        "trade_date": "2026-04-27"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-E88FADF33A6404051CB4FC2498D88052",
+        "source_security_key": "SZ.300820",
+        "trade_date": "2023-09-14"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-7BB8B0024C8EA9E1B4A525964D2FAB57",
+        "source_security_key": "SH.688163",
+        "trade_date": "2023-12-18"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-F18B55F5C0094D94DBB51D69ACEA8F68",
+        "source_security_key": "SZ.000759",
+        "trade_date": "2025-12-18"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-09958FC4E57EEBDA82BE0D36DDBCF5A8",
+        "source_security_key": "SZ.002206",
+        "trade_date": "2025-07-08"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-A3A037D37013A8C873BBB6B0D16C1F41",
+        "source_security_key": "SH.603177",
+        "trade_date": "2024-07-03"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-F46C9F17FC5A5A84FE9CED64305DE293",
+        "source_security_key": "SZ.000982",
+        "trade_date": "2023-07-17"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-4DA9ADBF77312B8AE394AEA34F5ED7AA",
+        "source_security_key": "SH.600641",
+        "trade_date": "2025-09-10"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-64F5452CAF97579BC8E3169EEF20ED63",
+        "source_security_key": "SZ.000825",
+        "trade_date": "2024-03-18"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-570D8765A105D54E512872CF0F07A7A2",
+        "source_security_key": "SH.603062",
+        "trade_date": "2026-03-26"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-5230431466D57C5958B77EED9F9504C0",
+        "source_security_key": "SZ.300577",
+        "trade_date": "2023-09-27"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-AC4841A1B8CDC03256C1EE22BE036624",
+        "source_security_key": "SH.605116",
+        "trade_date": "2023-09-06"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-00BE615596F05D4E950A4A0CF8A0DB73",
+        "source_security_key": "SH.600685",
+        "trade_date": "2024-03-07"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-244D9454AE72198535E321BFD274B958",
+        "source_security_key": "SH.600282",
+        "trade_date": "2023-09-19"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-1D8A0628BEA53134311243AAC9C4D503",
+        "source_security_key": "SZ.000633",
+        "trade_date": "2025-09-09"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-DEE7439447B256EBCE37BA4C6D7EFBEE",
+        "source_security_key": "SZ.002648",
+        "trade_date": "2026-09-17"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-29D69EDE84FCC3ACFA984765C30E668A",
+        "source_security_key": "SZ.000993",
+        "trade_date": "2023-11-21"
+      }
+    ],
+    "NORMAL": [
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-E8564CAEA5D645EE96E249F258E61BEC",
+        "source_security_key": "SH.605255",
+        "trade_date": "2024-02-22"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-4E3951C46892A6BCB3B8200C41AB337D",
+        "source_security_key": "SH.603002",
+        "trade_date": "2025-04-15"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-9787F9636A44F9A90F8E0234F613E5CC",
+        "source_security_key": "SH.688306",
+        "trade_date": "2023-07-13"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-0CBC42A5ABFF3A59BC3E05AF1E9ACEF0",
+        "source_security_key": "SZ.300986",
+        "trade_date": "2025-11-14"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-9B93A386EEC366955CD57F39361D2A90",
+        "source_security_key": "SZ.002862",
+        "trade_date": "2026-05-12"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-6DEC530E1843DAB88283960A89D5ECB8",
+        "source_security_key": "SH.601126",
+        "trade_date": "2025-07-10"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-75F13D888F72329AB0249C14FB5CDAF5",
+        "source_security_key": "SZ.000899",
+        "trade_date": "2024-12-26"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-27DF2485D91D28F9FA0D5C6B5AE2DC01",
+        "source_security_key": "SZ.000970",
+        "trade_date": "2026-05-21"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-50516CB92708765DD5DACCA1DF9F3ED1",
+        "source_security_key": "SH.601828",
+        "trade_date": "2026-04-27"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-86F9485449EC847B536F055ADBD030CC",
+        "source_security_key": "SZ.300250",
+        "trade_date": "2026-01-12"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-9CE843D7895C6D265FCB5CE57B9CDC19",
+        "source_security_key": "SZ.301132",
+        "trade_date": "2024-04-11"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-8A8B60881B6E0CD59D479365DA14716D",
+        "source_security_key": "SZ.300818",
+        "trade_date": "2024-12-18"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-7BDA093E9FABE168971E2AB41BA91669",
+        "source_security_key": "SH.600372",
+        "trade_date": "2023-10-12"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-64D0D2F556AACFC91F7EB02B15C804B6",
+        "source_security_key": "SH.600843",
+        "trade_date": "2026-09-17"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-4D995D10D285C8116A032E09A7DA7295",
+        "source_security_key": "SH.603310",
+        "trade_date": "2026-06-12"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-C038D4B505E8954693FBE9C66ECF0EC7",
+        "source_security_key": "SH.600531",
+        "trade_date": "2024-02-01"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-914E8475669D0C6F2BD3A04E694CD459",
+        "source_security_key": "SH.603327",
+        "trade_date": "2025-07-24"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-3FE66CF651D91B522459BE77B8A84F93",
+        "source_security_key": "SZ.000927",
+        "trade_date": "2024-09-09"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-C966510C285CC9DE0862B175FFA5EBD8",
+        "source_security_key": "SH.600499",
+        "trade_date": "2023-09-15"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-0DBECF13C4C2C5CB3DF5F36539346405",
+        "source_security_key": "SZ.002066",
+        "trade_date": "2024-09-13"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-C8C1618D1F621ECF566F05712D6D8E25",
+        "source_security_key": "SZ.002707",
+        "trade_date": "2025-05-15"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-7E92D3BC9E8044B1052BAB5B2B43416D",
+        "source_security_key": "SZ.300219",
+        "trade_date": "2025-08-18"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-2C8BDE07D4586203A877330E3422C477",
+        "source_security_key": "SH.600982",
+        "trade_date": "2023-12-20"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-9FA181A9B51505E57D7CBF083F3C11BA",
+        "source_security_key": "SZ.000089",
+        "trade_date": "2026-04-27"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-E88FADF33A6404051CB4FC2498D88052",
+        "source_security_key": "SZ.300820",
+        "trade_date": "2023-09-14"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-7BB8B0024C8EA9E1B4A525964D2FAB57",
+        "source_security_key": "SH.688163",
+        "trade_date": "2023-12-18"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-F18B55F5C0094D94DBB51D69ACEA8F68",
+        "source_security_key": "SZ.000759",
+        "trade_date": "2025-12-18"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-09958FC4E57EEBDA82BE0D36DDBCF5A8",
+        "source_security_key": "SZ.002206",
+        "trade_date": "2025-07-08"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-A3A037D37013A8C873BBB6B0D16C1F41",
+        "source_security_key": "SH.603177",
+        "trade_date": "2024-07-03"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-F46C9F17FC5A5A84FE9CED64305DE293",
+        "source_security_key": "SZ.000982",
+        "trade_date": "2023-07-17"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-4DA9ADBF77312B8AE394AEA34F5ED7AA",
+        "source_security_key": "SH.600641",
+        "trade_date": "2025-09-10"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-64F5452CAF97579BC8E3169EEF20ED63",
+        "source_security_key": "SZ.000825",
+        "trade_date": "2024-03-18"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-570D8765A105D54E512872CF0F07A7A2",
+        "source_security_key": "SH.603062",
+        "trade_date": "2026-03-26"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-5230431466D57C5958B77EED9F9504C0",
+        "source_security_key": "SZ.300577",
+        "trade_date": "2023-09-27"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-AC4841A1B8CDC03256C1EE22BE036624",
+        "source_security_key": "SH.605116",
+        "trade_date": "2023-09-06"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-00BE615596F05D4E950A4A0CF8A0DB73",
+        "source_security_key": "SH.600685",
+        "trade_date": "2024-03-07"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-244D9454AE72198535E321BFD274B958",
+        "source_security_key": "SH.600282",
+        "trade_date": "2023-09-19"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-1D8A0628BEA53134311243AAC9C4D503",
+        "source_security_key": "SZ.000633",
+        "trade_date": "2025-09-09"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-DEE7439447B256EBCE37BA4C6D7EFBEE",
+        "source_security_key": "SZ.002648",
+        "trade_date": "2026-09-17"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-29D69EDE84FCC3ACFA984765C30E668A",
+        "source_security_key": "SZ.000993",
+        "trade_date": "2023-11-21"
+      }
+    ],
+    "ST": [
+      {
+        "expected_st": "1",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-A7A9EC2A1585A321ADFF88626F53954D",
+        "source_security_key": "SZ.002808",
+        "trade_date": "2026-01-12"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-3AD696DD556CF135DA7AF82E748B37BF",
+        "source_security_key": "SH.600647",
+        "trade_date": "2024-01-03"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-8D4592D92C2ED899330D0C5B1BEB6D35",
+        "source_security_key": "SZ.002656",
+        "trade_date": "2024-03-07"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-2B1E4799949166F821A45684596CC022",
+        "source_security_key": "SH.605081",
+        "trade_date": "2025-05-20"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-360BF037A740F03C3EB47E48E2EC03BF",
+        "source_security_key": "SZ.002856",
+        "trade_date": "2026-06-02"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-8D4592D92C2ED899330D0C5B1BEB6D35",
+        "source_security_key": "SZ.002656",
+        "trade_date": "2026-06-10"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-442F5CCE97A1C714C2316F3FE2AF6EBA",
+        "source_security_key": "SH.688022",
+        "trade_date": "2026-07-10"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-D4B2C9DA88E160740B3FDAC553FE147F",
+        "source_security_key": "SZ.000023",
+        "trade_date": "2024-06-11"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-527C59638ECE45EB4517456A6D11A59B",
+        "source_security_key": "SZ.000525",
+        "trade_date": "2024-01-25"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-CBDB7BC91E4158FFEC158A3367765540",
+        "source_security_key": "SZ.002502",
+        "trade_date": "2024-04-09"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-2BBB8B3182FF73560F261BDAB46A78B7",
+        "source_security_key": "SZ.300108",
+        "trade_date": "2023-12-05"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-4777D5AA09A189CC7638864EB32E329D",
+        "source_security_key": "SH.688270",
+        "trade_date": "2026-05-21"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-57BFBA249A27E65A7AD249FFB3F7907D",
+        "source_security_key": "SZ.002310",
+        "trade_date": "2025-02-19"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-5DDC68BEB5685064824F1587115EA0F5",
+        "source_security_key": "SZ.000609",
+        "trade_date": "2024-11-06"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-BBD6C671EE2FB1B48682CB1147B26F88",
+        "source_security_key": "SH.600599",
+        "trade_date": "2023-12-26"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-C2594B6A4D86DF6756A7675D8DDCA819",
+        "source_security_key": "SZ.000752",
+        "trade_date": "2023-11-13"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-9D7E9CD6C8D2B0284B0F2B8A7A9F5917",
+        "source_security_key": "SH.600735",
+        "trade_date": "2025-12-26"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-F294D4F353FD19F8CF1F6B27B13D5704",
+        "source_security_key": "SH.600381",
+        "trade_date": "2025-07-25"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-0D180E2FE05DC39B7F5CB03DDAF90F71",
+        "source_security_key": "SZ.002586",
+        "trade_date": "2026-03-09"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-0D5672F2A23A9E05EA6765169491A94F",
+        "source_security_key": "SZ.300742",
+        "trade_date": "2024-03-04"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-B1DE4E4AAD66F413CCAA12E25819A5EC",
+        "source_security_key": "SH.600117",
+        "trade_date": "2023-09-05"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-818903D7198A3E5CA946D338E18BA0DA",
+        "source_security_key": "SZ.002259",
+        "trade_date": "2024-08-29"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-11904DBADD63994E6C1068C2B4AF539E",
+        "source_security_key": "SZ.300052",
+        "trade_date": "2025-11-04"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-4A43DFDB158980FE122C7EE6CA7EA24D",
+        "source_security_key": "SZ.000851",
+        "trade_date": "2025-09-11"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-82189D0141CECFA7FB0914885402A8A2",
+        "source_security_key": "SZ.300555",
+        "trade_date": "2023-09-01"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-0F761A8880400E4D64B742B34C098ECC",
+        "source_security_key": "SH.600462",
+        "trade_date": "2024-07-11"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-CB22BA16F08FEB4508DAC6EAF2283AFD",
+        "source_security_key": "SH.603133",
+        "trade_date": "2024-03-04"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-18E752D1F19BAB2316F860E36E906C67",
+        "source_security_key": "SZ.002200",
+        "trade_date": "2025-04-24"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-C2594B6A4D86DF6756A7675D8DDCA819",
+        "source_security_key": "SZ.000752",
+        "trade_date": "2026-05-19"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-F71A3828F154965BD25FC442B5039CE1",
+        "source_security_key": "SH.600889",
+        "trade_date": "2026-08-12"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-D76D67A84F52D9291E03B367FDFD76CC",
+        "source_security_key": "SZ.002592",
+        "trade_date": "2024-06-11"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-B0DE72E4D557CAB8C1EF1EC0D2DD8258",
+        "source_security_key": "SZ.002693",
+        "trade_date": "2026-03-23"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-D4C994BB8EBFBCB0574E6F4BBD183AC7",
+        "source_security_key": "SZ.002360",
+        "trade_date": "2026-09-11"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-E26A923656CDF5CF7FBD3716881F08BC",
+        "source_security_key": "SZ.300301",
+        "trade_date": "2024-07-08"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-57A4EB8BF1D4AE4D6F8D4421463EE7A4",
+        "source_security_key": "SH.603729",
+        "trade_date": "2026-06-24"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-C64CEEE60743290A61AD2855E9F75505",
+        "source_security_key": "SH.600636",
+        "trade_date": "2025-12-10"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-EDE506EF228442C308A44FBC6938E98C",
+        "source_security_key": "SH.600777",
+        "trade_date": "2026-06-17"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-9BD1CD401D6B01EA58818993311D2CF6",
+        "source_security_key": "SH.600358",
+        "trade_date": "2026-01-13"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-C1C98B8142B51CD366AADAD94621CD86",
+        "source_security_key": "SH.603398",
+        "trade_date": "2026-08-27"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "ACTUAL_TRADED",
+        "local_actual": true,
+        "security_id": "SEC-818903D7198A3E5CA946D338E18BA0DA",
+        "source_security_key": "SZ.002259",
+        "trade_date": "2024-12-27"
+      }
+    ],
+    "SUSPENDED": [
+      {
+        "expected_st": "0",
+        "expected_status": "SUSPENDED",
+        "local_actual": false,
+        "security_id": "SEC-A07F63D576F28BD19C497CD0CD09C2E6",
+        "source_security_key": "SH.600958",
+        "trade_date": "2026-04-20"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "SUSPENDED",
+        "local_actual": false,
+        "security_id": "SEC-3C6DA1B329ECF8E0AA069FA45181D7E8",
+        "source_security_key": "SZ.002621",
+        "trade_date": "2024-07-01"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "SUSPENDED",
+        "local_actual": false,
+        "security_id": "SEC-174A84700DE32A40D92B7FE4B80CBBDE",
+        "source_security_key": "SZ.300176",
+        "trade_date": "2026-08-19"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "SUSPENDED",
+        "local_actual": false,
+        "security_id": "SEC-F1128559EE27068078D38B30DC507F29",
+        "source_security_key": "SZ.000595",
+        "trade_date": "2024-07-22"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "SUSPENDED",
+        "local_actual": false,
+        "security_id": "SEC-AC45E3508C40811A6180C987A410E535",
+        "source_security_key": "SZ.000996",
+        "trade_date": "2024-04-30"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "SUSPENDED",
+        "local_actual": false,
+        "security_id": "SEC-5837D3F5DEA49296CE28D8847BD0D350",
+        "source_security_key": "SH.603879",
+        "trade_date": "2025-04-30"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "SUSPENDED",
+        "local_actual": false,
+        "security_id": "SEC-49E1E44010C08C77710D33B56E1B01A0",
+        "source_security_key": "SZ.300799",
+        "trade_date": "2024-04-30"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "SUSPENDED",
+        "local_actual": false,
+        "security_id": "SEC-D2A6FFE7040074531F8C01395B989168",
+        "source_security_key": "SH.603603",
+        "trade_date": "2024-02-28"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "SUSPENDED",
+        "local_actual": false,
+        "security_id": "SEC-297668FBEFB4FBF48EE5B3889D98F623",
+        "source_security_key": "SZ.300262",
+        "trade_date": "2024-08-08"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "SUSPENDED",
+        "local_actual": false,
+        "security_id": "SEC-CF5ADE9E38A3AE334A8D544A86AA741C",
+        "source_security_key": "SZ.000627",
+        "trade_date": "2025-09-08"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "SUSPENDED",
+        "local_actual": false,
+        "security_id": "SEC-BF185D924391E478E606954160F505AF",
+        "source_security_key": "SZ.000584",
+        "trade_date": "2025-06-03"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "SUSPENDED",
+        "local_actual": false,
+        "security_id": "SEC-D4B2C9DA88E160740B3FDAC553FE147F",
+        "source_security_key": "SZ.000023",
+        "trade_date": "2024-08-14"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "SUSPENDED",
+        "local_actual": false,
+        "security_id": "SEC-2B1E4799949166F821A45684596CC022",
+        "source_security_key": "SH.605081",
+        "trade_date": "2025-04-28"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "SUSPENDED",
+        "local_actual": false,
+        "security_id": "SEC-6E122EB40A799811BFB91D88391F26D5",
+        "source_security_key": "SZ.000616",
+        "trade_date": "2023-08-14"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "SUSPENDED",
+        "local_actual": false,
+        "security_id": "SEC-D50E6D5ADFAEBC84839D3E07CE329DD6",
+        "source_security_key": "SH.603776",
+        "trade_date": "2024-11-21"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "SUSPENDED",
+        "local_actual": false,
+        "security_id": "SEC-49E1E44010C08C77710D33B56E1B01A0",
+        "source_security_key": "SZ.300799",
+        "trade_date": "2024-05-30"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "SUSPENDED",
+        "local_actual": false,
+        "security_id": "SEC-CF5ADE9E38A3AE334A8D544A86AA741C",
+        "source_security_key": "SZ.000627",
+        "trade_date": "2025-08-18"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "SUSPENDED",
+        "local_actual": false,
+        "security_id": "SEC-5DDC6CFB546184DEBD2EE664FC5398BF",
+        "source_security_key": "SH.688165",
+        "trade_date": "2026-02-09"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "SUSPENDED",
+        "local_actual": false,
+        "security_id": "SEC-4113D766D7FBD7E96F0FD402CA36959B",
+        "source_security_key": "SZ.300672",
+        "trade_date": "2025-05-27"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "SUSPENDED",
+        "local_actual": false,
+        "security_id": "SEC-CF906A04CB486347C4A9D366589F3997",
+        "source_security_key": "SZ.301666",
+        "trade_date": "2026-05-20"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "SUSPENDED",
+        "local_actual": false,
+        "security_id": "SEC-EB68331AC3F5D297488776B586687822",
+        "source_security_key": "SZ.000918",
+        "trade_date": "2023-07-20"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "SUSPENDED",
+        "local_actual": false,
+        "security_id": "SEC-AF94DCF43E157CF7F84768188E6A3336",
+        "source_security_key": "SZ.002697",
+        "trade_date": "2023-12-20"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "SUSPENDED",
+        "local_actual": false,
+        "security_id": "SEC-5A6647D52DC702B1685A98D6021E215E",
+        "source_security_key": "SH.600387",
+        "trade_date": "2025-05-12"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "SUSPENDED",
+        "local_actual": false,
+        "security_id": "SEC-E34F1DD38E027EF2E6F732815880C2CC",
+        "source_security_key": "SH.600837",
+        "trade_date": "2025-02-17"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "SUSPENDED",
+        "local_actual": false,
+        "security_id": "SEC-87D0150F013CDB08D1658826C576F6D4",
+        "source_security_key": "SZ.002336",
+        "trade_date": "2025-05-12"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "SUSPENDED",
+        "local_actual": false,
+        "security_id": "SEC-F6FB35754E3F4927FE2E6E830E2AB521",
+        "source_security_key": "SZ.300943",
+        "trade_date": "2025-03-06"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "SUSPENDED",
+        "local_actual": false,
+        "security_id": "SEC-6D9CA49AC646D972CD81C27106570062",
+        "source_security_key": "SZ.002665",
+        "trade_date": "2024-07-10"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "SUSPENDED",
+        "local_actual": false,
+        "security_id": "SEC-6F26F9A85694A61F0E6038EFC71FE998",
+        "source_security_key": "SH.600190",
+        "trade_date": "2024-10-10"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "SUSPENDED",
+        "local_actual": false,
+        "security_id": "SEC-5E41A0F619D258EC41EE249C4B96E148",
+        "source_security_key": "SZ.002433",
+        "trade_date": "2024-04-30"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "SUSPENDED",
+        "local_actual": false,
+        "security_id": "SEC-0B753CA845D4F7C86CFBCEF8F16E8A49",
+        "source_security_key": "SZ.000671",
+        "trade_date": "2023-07-25"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "SUSPENDED",
+        "local_actual": false,
+        "security_id": "SEC-0F9C37CBBF33696F2556196D4CE4B944",
+        "source_security_key": "SZ.002002",
+        "trade_date": "2024-02-05"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "SUSPENDED",
+        "local_actual": false,
+        "security_id": "SEC-6E122EB40A799811BFB91D88391F26D5",
+        "source_security_key": "SZ.000616",
+        "trade_date": "2023-08-09"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "SUSPENDED",
+        "local_actual": false,
+        "security_id": "SEC-499FFEB125D52A2E5CA2B27B702CF3B5",
+        "source_security_key": "SZ.300333",
+        "trade_date": "2026-08-12"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "SUSPENDED",
+        "local_actual": false,
+        "security_id": "SEC-B4DCACEF74EEA28A518269B7DD85F99D",
+        "source_security_key": "SZ.002751",
+        "trade_date": "2023-07-13"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "SUSPENDED",
+        "local_actual": false,
+        "security_id": "SEC-EDE506EF228442C308A44FBC6938E98C",
+        "source_security_key": "SH.600777",
+        "trade_date": "2026-06-22"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "SUSPENDED",
+        "local_actual": false,
+        "security_id": "SEC-D61C365EB14F60F195EB802C80E6F149",
+        "source_security_key": "SZ.002503",
+        "trade_date": "2023-07-04"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "SUSPENDED",
+        "local_actual": false,
+        "security_id": "SEC-27CE5837F43A166E2BB32912C18D633E",
+        "source_security_key": "SH.600193",
+        "trade_date": "2026-05-27"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "SUSPENDED",
+        "local_actual": false,
+        "security_id": "SEC-E11DA4A25B7F65C3E8229D5A76504A94",
+        "source_security_key": "SZ.002731",
+        "trade_date": "2026-06-08"
+      },
+      {
+        "expected_st": "0",
+        "expected_status": "SUSPENDED",
+        "local_actual": false,
+        "security_id": "SEC-44B16AC1E35609866A7B34BD91AE97BA",
+        "source_security_key": "SZ.000603",
+        "trade_date": "2024-10-25"
+      },
+      {
+        "expected_st": "1",
+        "expected_status": "SUSPENDED",
+        "local_actual": false,
+        "security_id": "SEC-3AD696DD556CF135DA7AF82E748B37BF",
+        "source_security_key": "SH.600647",
+        "trade_date": "2024-04-30"
+      }
+    ]
+  }
+}

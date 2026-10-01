@@ -1,0 +1,72 @@
+{
+  "adjustflag": "3",
+  "auth_mode": "PUBLIC_ANONYMOUS",
+  "contract_id": "A12_R2_PROVIDER_SEMANTICS_REVISION_V1",
+  "fields": [
+    "date",
+    "code",
+    "tradestatus",
+    "isST"
+  ],
+  "first_availability_at_target_proven": false,
+  "formal_consumer_authorization": false,
+  "frequency": "d",
+  "max_pages": 1,
+  "max_requests": 10,
+  "max_rows_per_query": 32,
+  "reason": "Existing 9/26 reconstructed cache lacks comparative revision observation and official transition cross-validation; no DM01 target re-query",
+  "sdk": {
+    "adjustflag": "3",
+    "default_auth_mode": "PUBLIC_ANONYMOUS",
+    "default_runtime_pin": "0.9.3",
+    "fields": "date,code,close,volume,amount,turn,tradestatus,isST",
+    "installed_python_sources_sha256": "32bd19deb872561c8f9c40063de38df4fe4ab0f1073685538f627a9238686bfe",
+    "package": "baostock",
+    "supported_auth_modes": "PUBLIC_ACCOUNT,PUBLIC_ANONYMOUS,VIP_API_KEY",
+    "version": "0.9.3"
+  },
+  "source_role": "DIAGNOSTIC_REVISION_PROBE",
+  "timeout_seconds": 35,
+  "windows": [
+    [
+      "sh.600518",
+      "2024-07-01",
+      "2024-07-05"
+    ],
+    [
+      "sh.600387",
+      "2024-04-19",
+      "2024-04-25"
+    ],
+    [
+      "sz.000972",
+      "2025-03-27",
+      "2025-04-02"
+    ],
+    [
+      "sz.300114",
+      "2025-02-14",
+      "2025-02-18"
+    ],
+    [
+      "sz.302132",
+      "2025-02-14",
+      "2025-02-18"
+    ],
+    [
+      "sh.600225",
+      "2025-02-05",
+      "2025-02-10"
+    ],
+    [
+      "sh.688981",
+      "2023-07-04",
+      "2023-07-05"
+    ],
+    [
+      "sz.301611",
+      "2026-09-24",
+      "2026-09-24"
+    ]
+  ]
+}

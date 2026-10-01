@@ -1,0 +1,67 @@
+{
+  "accepted_at": null,
+  "allowed_consumers": [
+    "TRADING_STATUS",
+    "PERIOD_RAW",
+    "PERIOD_ADJUSTED",
+    "DM01_FINAL_ALL_NINE"
+  ],
+  "contract_id": "BAOSTOCK_DATED_TRADING_STATUS_RECONSTRUCTED_V3",
+  "effective_scope": {
+    "end_date": "2026-09-24",
+    "start_date": "2023-07-04"
+  },
+  "external_acceptance": null,
+  "field_id": "TRADING_STATUS",
+  "first_availability_at_target_proven": false,
+  "forbidden_lineages": [
+    "AS_RECORDED",
+    "FIRST_AVAILABLE_AT_TARGET",
+    "LOCAL_TDX_AUTHORITY"
+  ],
+  "formal_consumer_authorization": false,
+  "historical_mode": "TARGET_DATE_QUERYABLE_FACT",
+  "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+  "local_actual_precedence": true,
+  "role_binding": {
+    "allowed_consumers": [
+      "TRADING_STATUS",
+      "PERIOD_RAW",
+      "PERIOD_ADJUSTED",
+      "DM01_FINAL_ALL_NINE"
+    ],
+    "authority_status": "PENDING_EXTERNAL_ACCEPTANCE",
+    "enabled": true,
+    "enabled_for_formal_consumer": false,
+    "field_id": "TRADING_STATUS",
+    "historical_retrieval_mode": "TARGET_DATE_QUERYABLE_FACT",
+    "may_block_core": true,
+    "may_change_core_quality": false,
+    "may_change_core_value": true,
+    "owner_contract_id": "BAOSTOCK_DATED_TRADING_STATUS_RECONSTRUCTED_V3",
+    "pit_requirement": "EXPLICIT_OBSERVATION_NO_INFERRED_FIRST_AVAILABILITY",
+    "role": "FIELD_AUTHORITY",
+    "role_binding_id": "A12_R2_CANDIDATE_ROLE:TRADING_STATUS",
+    "source_family": "BAOSTOCK_DATED_RECONSTRUCTED_PROVIDER"
+  },
+  "role_binding_id": "A12_R2_CANDIDATE_ROLE:TRADING_STATUS",
+  "source_bindings": [
+    {
+      "bytes": 100075252,
+      "path": "data/v4/artifact_store/v4_02/V4_02_DATED_TRADING_STATUS_R7_20260927.jsonl.gz",
+      "sha256": "ad65d2e1b3ca835a310cfa2a35f7bfd417a42020e27f2e77d4a79597aa018de9"
+    }
+  ],
+  "source_observed_at": "2026-09-26T12:09:31+00:00",
+  "source_role": "FIELD_AUTHORITY",
+  "source_semantics": {
+    "bytes": 9881,
+    "path": "reports/audits/A12_R2_PROVIDER_SEMANTICS_AND_REVISION_R1.json",
+    "sha256": "535046780fb2f8058c28c47f63ed7ee070f5a507321f1ff8b9b62e585218bc7b"
+  },
+  "supersedes": {
+    "bytes": 1237,
+    "path": "config/v4_02_status_st_authority_r1.json",
+    "sha256": "d926bb00abe97be5a485c519b9a4f7bf4b647c380c8edd812bb8674b273d2291"
+  }
+}

@@ -1,0 +1,183 @@
+{
+  "all_price_business_differences": 0,
+  "all_price_business_fields": [
+    "security_id",
+    "source_security_key",
+    "trade_date",
+    "trading_status",
+    "special_price_phase",
+    "limit_status",
+    "reason",
+    "reference_price",
+    "limit_up_price",
+    "limit_down_price",
+    "rule_id",
+    "reference_basis",
+    "risk_status",
+    "is_st"
+  ],
+  "candidate": {
+    "bytes": 157153755,
+    "path": "data/v4/artifact_store/a12_authority_candidate_r2/V4_02_PRICE_LIMIT_AUTHORITY_R2.jsonl.gz",
+    "sha256": "5740369d73b8935085d5c8579de5585c64629d23190f807dc28d0e4ffdae2320"
+  },
+  "conclusion": "Status/ST source boundary restored in candidate. Existing unrelated unknown factors/adjustment/reference capabilities remain; no business completion claim for Core Profile and no fitted counts",
+  "external_acceptance": null,
+  "formal_publication": false,
+  "known": 4035652,
+  "old_price": {
+    "bytes": 157153754,
+    "path": "data/v4/artifact_store/v4_02/V4_02_PRICE_LIMIT_R6_20260927.jsonl.gz",
+    "sha256": "6f40d6b92e78e8de6f2cc17c867d902e06e56d82d0b7f45c8715469704b4e6af"
+  },
+  "price_status_counts": {
+    "LIMIT_DOWN": 24377,
+    "LIMIT_UP": 59550,
+    "NOT_LIMIT": 3940937,
+    "NO_LIMIT": 1670,
+    "SUSPENDED": 9118,
+    "UNKNOWN": 77
+  },
+  "profile_quality": {
+    "V4_04": {
+      "artifact": {
+        "bytes": 48978523,
+        "path": "reports/audits/a12_candidate_r2/V4_04_FULL_MARKET_CORE_PROFILE_AUTHORITY_R2.jsonl.gz",
+        "sha256": "c018ceacf7591a9add7609189f6b3bb6465a9f0208b23c65e1666df07248cd92"
+      },
+      "examples": [
+        {
+          "profile_quality": "COMPLETE",
+          "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+          "unknown_fields": []
+        },
+        {
+          "profile_quality": "COMPLETE",
+          "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+          "unknown_fields": []
+        },
+        {
+          "profile_quality": "COMPLETE",
+          "security_id": "SEC-002610CF9EBB4227722834AADA8F757E",
+          "unknown_fields": []
+        },
+        {
+          "profile_quality": "COMPLETE",
+          "security_id": "SEC-002E8949D07D2829AB967520C65C0845",
+          "unknown_fields": []
+        },
+        {
+          "profile_quality": "COMPLETE",
+          "security_id": "SEC-0051683845B17D59641B7D1DC261FE2A",
+          "unknown_fields": []
+        },
+        {
+          "profile_quality": "COMPLETE",
+          "security_id": "SEC-005EA670068174623A3C365FCA9A8B2D",
+          "unknown_fields": []
+        }
+      ],
+      "quality_counts": {
+        "COMPLETE": 4981,
+        "PARTIAL_UNKNOWN": 241
+      },
+      "unknown_field_reason_counts": {
+        "derived_fields.bias20_atr:UNKNOWN": 198,
+        "derived_fields.dist_high20_atr:UNKNOWN": 198,
+        "derived_fields.ma10:UNKNOWN": 191,
+        "derived_fields.minimum_liquidity:UNKNOWN": 198,
+        "derived_fields.pos250:UNKNOWN": 280
+      }
+    },
+    "V4_05": {
+      "artifact": {
+        "bytes": 48838856,
+        "path": "reports/audits/a12_v4_05_r2/staging/V4_05_R4_FULL_MARKET_CORE_PROFILE.jsonl.gz",
+        "sha256": "d968967787c5bd2b9bfbbefb0bd6ed6ef90ecae26e0aa0232a513172008f16bb"
+      },
+      "examples": [
+        {
+          "profile_quality": "PARTIAL_UNKNOWN",
+          "security_id": "SEC-62C40F6EEABB12A3B3F00D4FB0B61ED0",
+          "unknown_fields": []
+        },
+        {
+          "profile_quality": "PARTIAL_UNKNOWN",
+          "security_id": "SEC-4043BDB9C07B6F9E04E53BBA4D954D2C",
+          "unknown_fields": []
+        },
+        {
+          "profile_quality": "PARTIAL_UNKNOWN",
+          "security_id": "SEC-7F415A4A00D6F3B290BFC980281EDA86",
+          "unknown_fields": []
+        },
+        {
+          "profile_quality": "PARTIAL_UNKNOWN",
+          "security_id": "SEC-FA35E6264391A495020C754D6A77649D",
+          "unknown_fields": []
+        },
+        {
+          "profile_quality": "PARTIAL_UNKNOWN",
+          "security_id": "SEC-072DF92F58F6CCBF3D7DF29C27A2C2B6",
+          "unknown_fields": []
+        },
+        {
+          "profile_quality": "PARTIAL_UNKNOWN",
+          "security_id": "SEC-D8A1CCB5D5576B6F4A7D9D639E017655",
+          "unknown_fields": []
+        }
+      ],
+      "quality_counts": {
+        "PARTIAL_UNKNOWN": 5222
+      },
+      "unknown_field_reason_counts": {
+        "derived_fields.bias20_atr:UNKNOWN": 37,
+        "derived_fields.dist_high20_atr:UNKNOWN": 37,
+        "derived_fields.ma10:UNKNOWN": 30,
+        "derived_fields.minimum_liquidity:UNKNOWN": 37,
+        "derived_fields.pos250:UNKNOWN": 119
+      }
+    }
+  },
+  "r1_to_r2_price_transitions": [
+    [
+      "UNKNOWN",
+      "NOT_LIMIT",
+      3940937
+    ],
+    [
+      "UNKNOWN",
+      "LIMIT_DOWN",
+      24377
+    ],
+    [
+      "UNKNOWN",
+      "LIMIT_UP",
+      59550
+    ],
+    [
+      "UNKNOWN",
+      "NO_LIMIT",
+      1670
+    ],
+    [
+      "UNKNOWN",
+      "UNKNOWN",
+      77
+    ],
+    [
+      "UNKNOWN",
+      "SUSPENDED",
+      9118
+    ]
+  ],
+  "status": "PASS_PRICE_RUNTIME_AND_EXPLICIT_REMAINING_QUALITY",
+  "unknown": 77,
+  "unknown_reasons": {
+    "CORPORATE_ACTION_REFERENCE_UNSUPPORTED": 38,
+    "REFERENCE_CHAIN_BLOCKED_BY_UNSUPPORTED_ACTION": 1,
+    "REFERENCE_STATE_UNAVAILABLE": 7,
+    "SPECIAL_PHASE_EVIDENCE_UNAVAILABLE": 21,
+    "SPECIAL_REFERENCE_PRICE_UNAVAILABLE": 10
+  }
+}

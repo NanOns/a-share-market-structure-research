@@ -1,0 +1,106 @@
+{
+  "contract": {
+    "bytes": 1208,
+    "path": "data/v4/source_evidence/a12_r2/PROVIDER_EMPTY_RETURN_CONTRACT_R1.json",
+    "sha256": "3e343c327f7acbfebaaf7079af23c01b317a0122177ea4a0e46db04734672db4"
+  },
+  "contract_id": "A12_R2_REAL_EMPTY_RETURN_CAPTURE_V1",
+  "endpoint": {
+    "configured_host": "public-api.baostock.com",
+    "configured_port": 10030,
+    "connected_peer_ip": "114.94.20.42",
+    "connected_peer_port": 10030
+  },
+  "formal_authorization": false,
+  "ledger": {
+    "bytes": 260,
+    "path": "data/v4/source_evidence/a12_r2/provider_empty_request_ledger_r1.json",
+    "sha256": "82d505ea35af00f0e777cf9f57c98112503abd3170e0dd6df90f73db2b3ea342"
+  },
+  "login": {
+    "error_code": "0",
+    "error_msg": "success"
+  },
+  "logout": {
+    "error_code": "0",
+    "error_msg": "success"
+  },
+  "results": [
+    {
+      "category": "NON_SESSION",
+      "code": "sz.000972",
+      "end": "2025-04-06",
+      "metadata": {
+        "error_code": "0",
+        "error_msg": "success",
+        "fields": [
+          "date",
+          "code",
+          "tradestatus",
+          "isST"
+        ],
+        "page_count": 1,
+        "provider_date": null
+      },
+      "no_row_interpretation": "UNKNOWN_FIELD; NOT_NORMAL_OR_SUSPENDED",
+      "observed_at": "2026-10-01T06:20:11.510443+00:00",
+      "received_at": "2026-10-01T06:20:11.567325+00:00",
+      "rows": [],
+      "start": "2025-04-05"
+    },
+    {
+      "category": "PRE_LISTING",
+      "code": "sz.301611",
+      "end": "2024-08-15",
+      "metadata": {
+        "error_code": "0",
+        "error_msg": "success",
+        "fields": [
+          "date",
+          "code",
+          "tradestatus",
+          "isST"
+        ],
+        "page_count": 1,
+        "provider_date": null
+      },
+      "no_row_interpretation": "UNKNOWN_FIELD; NOT_NORMAL_OR_SUSPENDED",
+      "observed_at": "2026-10-01T06:20:11.567334+00:00",
+      "received_at": "2026-10-01T06:20:11.943500+00:00",
+      "rows": [],
+      "start": "2024-08-15"
+    },
+    {
+      "category": "POST_DELISTING",
+      "code": "sh.600225",
+      "end": "2025-04-02",
+      "metadata": {
+        "error_code": "0",
+        "error_msg": "success",
+        "fields": [
+          "date",
+          "code",
+          "tradestatus",
+          "isST"
+        ],
+        "page_count": 1,
+        "provider_date": null
+      },
+      "no_row_interpretation": "UNKNOWN_FIELD; NOT_NORMAL_OR_SUSPENDED",
+      "observed_at": "2026-10-01T06:20:11.943509+00:00",
+      "received_at": "2026-10-01T06:20:12.003797+00:00",
+      "rows": [],
+      "start": "2025-04-01"
+    }
+  ],
+  "sdk": {
+    "adjustflag": "3",
+    "default_auth_mode": "PUBLIC_ANONYMOUS",
+    "default_runtime_pin": "0.9.3",
+    "fields": "date,code,close,volume,amount,turn,tradestatus,isST",
+    "installed_python_sources_sha256": "32bd19deb872561c8f9c40063de38df4fe4ab0f1073685538f627a9238686bfe",
+    "package": "baostock",
+    "supported_auth_modes": "PUBLIC_ACCOUNT,PUBLIC_ANONYMOUS,VIP_API_KEY",
+    "version": "0.9.3"
+  }
+}

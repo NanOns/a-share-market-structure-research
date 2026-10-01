@@ -1,0 +1,21 @@
+{
+  "audit_id": "A12_R2_INTERIOR_DATA_GAP_SCOPE",
+  "evidence": [
+    {
+      "bytes": 20388,
+      "path": "reports/audits/A12_R2_REAL_DATA_GAP_MATRIX_R1.json",
+      "sha256": "31bb6d8d29b4252361cd510f4e844056d7a067e647dd6393e709f53cf30c7e98"
+    },
+    {
+      "bytes": 80968,
+      "path": "reports/audits/A12_R2_INDEPENDENT_REAL_SOURCE_ORACLE_R1.json",
+      "sha256": "3baae8ed4c04b1da30d6b16719260f67f1baae73345023d50aeb2a4da5ed6e80"
+    }
+  ],
+  "external_acceptance": null,
+  "finding": "Historical required missing rows and twelve 9/28 local misses are provider=0 suspension. Actual 9/30 provider=1 vs frozen 9/28 package proves capture lag only, not an interior missing history bar.",
+  "formal_consumer_authorization": false,
+  "next_step": "External disposition of capture-lag real data-gap case and negative interior-gap census; prescribe separately dated real source fixture if required",
+  "scope": "Same-cutoff interior historical missing bar with provider should-trade=1",
+  "status": "OPEN"
+}

@@ -1,0 +1,104 @@
+{
+  "accepted_heads_unchanged": true,
+  "algorithm_parameters_changed": false,
+  "artifacts": {
+    "price": {
+      "bytes": 157153755,
+      "path": "data/v4/artifact_store/a12_authority_candidate_r2/V4_02_PRICE_LIMIT_AUTHORITY_R2.jsonl.gz",
+      "sha256": "5740369d73b8935085d5c8579de5585c64629d23190f807dc28d0e4ffdae2320"
+    },
+    "st": {
+      "bytes": 133970439,
+      "logical_digest": "b6a78058c886cedb6567f6fa16968403b30c41cba403a38b4df548e56d0edab1",
+      "path": "data/v4/artifact_store/a12_authority_candidate_r2/V4_02_DATED_ST_STATUS_AUTHORITY_R2.jsonl.gz",
+      "sha256": "359ed2612d584265c447eb449e0ac89128d6b00cb29c69b3874a66ce71d34ffa"
+    },
+    "status": {
+      "bytes": 124781648,
+      "logical_digest": "c7fb16368914a78000fc00dd91995d64436fe465e051cb806883403f4468b3e2",
+      "path": "data/v4/artifact_store/a12_authority_candidate_r2/V4_02_DATED_TRADING_STATUS_AUTHORITY_R2.jsonl.gz",
+      "sha256": "7df9761894ddd234d743240ecc1656a9e4d65e0e311b69d03c035187d3366bf3"
+    }
+  },
+  "contract_id": "A12_R2_FULL_HISTORICAL_OWNER_CANDIDATE_V1",
+  "counts": {
+    "new_st_0": 3913800,
+    "new_st_1": 121929,
+    "new_status_ACTUAL_TRADED": 4026611,
+    "new_status_SUSPENDED": 9118,
+    "provider_actual_conflicts": 4,
+    "rows": 4035729
+  },
+  "dependency_equality_rows": 4035729,
+  "external_acceptance": null,
+  "formal_publication": false,
+  "inputs": {
+    "daily": {
+      "bytes": 112302935,
+      "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet",
+      "sha256": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90"
+    },
+    "price": {
+      "bytes": 157153754,
+      "path": "data/v4/artifact_store/v4_02/V4_02_PRICE_LIMIT_R6_20260927.jsonl.gz",
+      "sha256": "6f40d6b92e78e8de6f2cc17c867d902e06e56d82d0b7f45c8715469704b4e6af"
+    },
+    "producer": {
+      "bytes": 1237,
+      "path": "config/v4_02_status_st_authority_r1.json",
+      "sha256": "d926bb00abe97be5a485c519b9a4f7bf4b647c380c8edd812bb8674b273d2291"
+    },
+    "st": {
+      "bytes": 99012112,
+      "path": "data/v4/artifact_store/v4_02/V4_02_DATED_ST_STATUS_R7_20260927.jsonl.gz",
+      "sha256": "ffac24e09d02a53ffb48dbc24449d95f5ab20d8934c6401588a73c8673dbb8f4"
+    },
+    "status": {
+      "bytes": 100075252,
+      "path": "data/v4/artifact_store/v4_02/V4_02_DATED_TRADING_STATUS_R7_20260927.jsonl.gz",
+      "sha256": "ad65d2e1b3ca835a310cfa2a35f7bfd417a42020e27f2e77d4a79597aa018de9"
+    },
+    "universe": {
+      "bytes": 239298684,
+      "path": "data/v4/artifact_store/v4_01/v4_01_historical_universe_required_R7_20260927.jsonl.gz",
+      "sha256": "3c4669d3b6ba9f4017c69bfcb12256b2b64144ad816ac3e7e055a8caf37ba77b"
+    }
+  },
+  "owners": {
+    "ISST": {
+      "bytes": 2135,
+      "path": "reports/audits/A12_R2_OWNER_ISST_CANDIDATE_R1.json",
+      "sha256": "d7bbf14717c9aee18f42e4387f8b8afa4ea5736817b41cacba35ff8ac44837cb"
+    },
+    "TRADING_STATUS": {
+      "bytes": 2257,
+      "path": "reports/audits/A12_R2_OWNER_TRADING_STATUS_CANDIDATE_R1.json",
+      "sha256": "16b1ac7dfa43aaa09879b74ca55f969807a6acc19957446c492f7231d2c5470a"
+    }
+  },
+  "price_limit_counts": {
+    "LIMIT_DOWN": 24377,
+    "LIMIT_UP": 59550,
+    "NOT_LIMIT": 3940937,
+    "NO_LIMIT": 1670,
+    "SUSPENDED": 9118,
+    "UNKNOWN": 77
+  },
+  "price_runtime": {
+    "bytes": 2542,
+    "path": "reports/audits/A12_R2_UNCHANGED_PRICE_RUNTIME_R1.json",
+    "sha256": "10181e84b7c5e29d690e910509cc41251a098f6df206d561db7a226ac5d43834"
+  },
+  "source_boundary": "PENDING_PATH_B_AMENDMENT_ONLY_NOT_FORMAL_CONSUMER_AUTHORITY",
+  "status": "PASS_ENGINEERING_RECONSTRUCTED_CANDIDATE",
+  "transitions": {
+    "st": {
+      "0 -> 0": 3913800,
+      "1 -> 1": 121929
+    },
+    "status": {
+      "ACTUAL_TRADED -> ACTUAL_TRADED": 4026611,
+      "SUSPENDED -> SUSPENDED": 9118
+    }
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "accepted_at": null,
+  "allowed_consumers": [
+    "ISST",
+    "PRICE_LIMIT",
+    "DM01_FINAL_ALL_NINE"
+  ],
+  "captured_dates_only": [
+    "2026-09-28",
+    "2026-09-30"
+  ],
+  "captured_observations": [
+    {
+      "first_availability_at_target_proven": false,
+      "historical_mode": "TARGET_DATE_QUERYABLE_FACT",
+      "observed_at": "2026-10-01T03:33:08.197373+00:00",
+      "received_at": "2026-10-01T03:33:23.769854+00:00",
+      "response": {
+        "bytes": 2589159,
+        "path": "reports/dm01/a01_r2/20261001T033251758661Z/TARGET_DATE_CAPTURE_query_daily_history_k_AStock_response.json",
+        "sha256": "f72073ca13a36af1a65604a2ebd82981000a0c0c5694b34c035c40d764aed7b2"
+      },
+      "target_trade_date": "2026-09-28"
+    },
+    {
+      "first_availability_at_target_proven": false,
+      "historical_mode": "TARGET_DATE_QUERYABLE_FACT",
+      "observed_at": "2026-10-01T03:32:52.154870+00:00",
+      "received_at": "2026-10-01T03:33:08.083988+00:00",
+      "response": {
+        "bytes": 2587863,
+        "path": "reports/dm01/a01_r2/20261001T033251758661Z/CAPABILITY_SMOKE_query_daily_history_k_AStock_response.json",
+        "sha256": "ba0dcd1af10620df2d9fc838d45e9f69e44f9bc3c5fc69d2d3427abad448c3ac"
+      },
+      "target_trade_date": "2026-09-30"
+    }
+  ],
+  "contract_id": "BAOSTOCK_DATED_ST_STATUS_OBSERVED_DAILY_V3",
+  "effective_scope": {
+    "end_date": "2026-09-30",
+    "start_date": "2026-09-28"
+  },
+  "external_acceptance": null,
+  "field_id": "ISST",
+  "first_availability_at_target_proven": false,
+  "forbidden_lineages": [
+    "AS_RECORDED",
+    "FIRST_AVAILABLE_AT_TARGET",
+    "LOCAL_TDX_AUTHORITY"
+  ],
+  "formal_consumer_authorization": false,
+  "future_flow": "Capture raw source with actual receive time on every target date; accepted owner and scoped registration required before formal consumption",
+  "historical_mode": "TARGET_DATE_QUERYABLE_FACT",
+  "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+  "local_actual_precedence": true,
+  "role_binding": {
+    "allowed_consumers": [
+      "ISST",
+      "PRICE_LIMIT",
+      "DM01_FINAL_ALL_NINE"
+    ],
+    "authority_status": "PENDING_EXTERNAL_ACCEPTANCE",
+    "enabled": true,
+    "enabled_for_formal_consumer": false,
+    "field_id": "ISST",
+    "historical_retrieval_mode": "TARGET_DATE_QUERYABLE_FACT",
+    "may_block_core": true,
+    "may_change_core_quality": false,
+    "may_change_core_value": true,
+    "owner_contract_id": "BAOSTOCK_DATED_ST_STATUS_OBSERVED_DAILY_V3",
+    "pit_requirement": "EXPLICIT_OBSERVATION_NO_INFERRED_FIRST_AVAILABILITY",
+    "role": "FIELD_AUTHORITY",
+    "role_binding_id": "A12_R2_OBSERVED_CANDIDATE_ROLE:ISST",
+    "source_family": "BAOSTOCK_DATED_RECONSTRUCTED_PROVIDER"
+  },
+  "role_binding_id": "A12_R2_OBSERVED_CANDIDATE_ROLE:ISST",
+  "source_bindings": [
+    {
+      "bytes": 2589159,
+      "path": "reports/dm01/a01_r2/20261001T033251758661Z/TARGET_DATE_CAPTURE_query_daily_history_k_AStock_response.json",
+      "sha256": "f72073ca13a36af1a65604a2ebd82981000a0c0c5694b34c035c40d764aed7b2"
+    },
+    {
+      "bytes": 2587863,
+      "path": "reports/dm01/a01_r2/20261001T033251758661Z/CAPABILITY_SMOKE_query_daily_history_k_AStock_response.json",
+      "sha256": "ba0dcd1af10620df2d9fc838d45e9f69e44f9bc3c5fc69d2d3427abad448c3ac"
+    }
+  ],
+  "source_observed_at": "2026-10-01T03:32:52.154870+00:00",
+  "source_role": "FIELD_AUTHORITY",
+  "source_semantics": {
+    "bytes": 9881,
+    "path": "reports/audits/A12_R2_PROVIDER_SEMANTICS_AND_REVISION_R1.json",
+    "sha256": "535046780fb2f8058c28c47f63ed7ee070f5a507321f1ff8b9b62e585218bc7b"
+  },
+  "supersedes": {
+    "bytes": 1237,
+    "path": "config/v4_02_status_st_authority_r1.json",
+    "sha256": "d926bb00abe97be5a485c519b9a4f7bf4b647c380c8edd812bb8674b273d2291"
+  },
+  "uncaptured_date_behavior": "BLOCKED_NO_FROZEN_DATED_RESPONSE; FUTURE_DAILY_REFRESH_REQUIRES_NEW_IMMUTABLE_REVISION"
+}

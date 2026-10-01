@@ -1,0 +1,47 @@
+{
+  "actual_registry_written": false,
+  "captures": [
+    {
+      "first_availability_at_target_proven": false,
+      "historical_mode": "TARGET_DATE_QUERYABLE_FACT",
+      "observed_at": "2026-10-01T03:33:08.197373+00:00",
+      "received_at": "2026-10-01T03:33:23.769854+00:00",
+      "response": {
+        "bytes": 2589159,
+        "path": "reports/dm01/a01_r2/20261001T033251758661Z/TARGET_DATE_CAPTURE_query_daily_history_k_AStock_response.json",
+        "sha256": "f72073ca13a36af1a65604a2ebd82981000a0c0c5694b34c035c40d764aed7b2"
+      },
+      "target_trade_date": "2026-09-28"
+    },
+    {
+      "first_availability_at_target_proven": false,
+      "historical_mode": "TARGET_DATE_QUERYABLE_FACT",
+      "observed_at": "2026-10-01T03:32:52.154870+00:00",
+      "received_at": "2026-10-01T03:33:08.083988+00:00",
+      "response": {
+        "bytes": 2587863,
+        "path": "reports/dm01/a01_r2/20261001T033251758661Z/CAPABILITY_SMOKE_query_daily_history_k_AStock_response.json",
+        "sha256": "ba0dcd1af10620df2d9fc838d45e9f69e44f9bc3c5fc69d2d3427abad448c3ac"
+      },
+      "target_trade_date": "2026-09-30"
+    }
+  ],
+  "dm01_final_all_nine": "BLOCKED",
+  "first_availability_at_target_proven": false,
+  "formal_consumer_authorization": false,
+  "no_new_requests": true,
+  "owner_bindings": {
+    "ISST": {
+      "bytes": 3890,
+      "path": "reports/audits/A12_R2_OBSERVED_DAILY_OWNER_ISST_CANDIDATE_R1.json",
+      "sha256": "6f9070ef1d739a060e73dc1b39cce2c2706b79d27ca96cb570478fb559a74889"
+    },
+    "TRADING_STATUS": {
+      "bytes": 4006,
+      "path": "reports/audits/A12_R2_OBSERVED_DAILY_OWNER_TRADING_STATUS_CANDIDATE_R1.json",
+      "sha256": "add0eff01bd21b1321491588dd580e56f90c4ef22e3cd9d26ae9fb30bfcffa8e"
+    }
+  },
+  "scope": "Only 9/28 and 9/30 already captured on 10/1; no automatic authorization of 9/29 or future dates",
+  "status": "PENDING_EXTERNAL_ACCEPTANCE"
+}

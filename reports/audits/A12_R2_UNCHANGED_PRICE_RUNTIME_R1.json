@@ -1,0 +1,65 @@
+{
+  "apply_phase_event_call_counts": {
+    "DELISTING_FIRST_DAY": 22,
+    "DELISTING_PERIOD": 308,
+    "IPO_FIRST_5_TRADING_DAYS": 1648,
+    "UNKNOWN_SPECIAL_PHASE": 31
+  },
+  "artifact": {
+    "bytes": 157153755,
+    "normalized_rows_sha256": "49624773f0e652be8a188a6116d13fc67bdbcbaf381391a7d5904f4ef2fba7f3",
+    "path": "data/v4/artifact_store/a12_authority_candidate_r2/V4_02_PRICE_LIMIT_AUTHORITY_R2.jsonl.gz",
+    "sha256": "5740369d73b8935085d5c8579de5585c64629d23190f807dc28d0e4ffdae2320"
+  },
+  "business_fields": [
+    "security_id",
+    "trade_date",
+    "special_price_phase",
+    "limit_status",
+    "reason",
+    "reference_price",
+    "limit_up_price",
+    "limit_down_price",
+    "rule_id",
+    "reference_basis",
+    "risk_status",
+    "is_st"
+  ],
+  "business_payload_sha256": "6fce7a228c7c4a2148d176ae8be8c90d64788c81707ed1ac60413c8f7264650b",
+  "contract_id": "V4_02_PRICE_LIMIT_BUILD_R6",
+  "execution_commit": "a438425ded049e1d925c9ba5d43879a08624ea6d",
+  "inputs": {
+    "adjusted_daily_sha256": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90",
+    "calendar_sha256": "09285bb116db5e7ab644e4942c331ceb9bc715b47f0369b9f228ef9d17df2d53",
+    "dated_alias_facts_sha256": "115a5b611c64f30cadd8695a9a464d8243cb3afe16d642ea786ff4b7bd107c4a",
+    "event_store_sha256": "bb357ad505a6ace734b6b47f4581efa34c582d8bbf82111d933af037ae9ad522",
+    "phase_policy_sha256": "cffd66e633ee2a34c712ee628dcace2026b49764bc9f593dacd90fe39e183c79",
+    "r3_price_base_sha256": "128324b29143e3f5733e02120d1eff3902a7e6f84c4d20f5e4846e3d9b141ee9",
+    "r4_fail_closed_facts_sha256": "975f3ce59260e6a35d4c407026823b8d99c9cc65eacbc36be201f0bfbcf64292",
+    "standard_price_rules_sha256": "68679333821c50cc8cbed5ff4cd001447cc6571d79b0d074a60b6bb81bdb01e0"
+  },
+  "limit_status_counts": {
+    "LIMIT_DOWN": 24377,
+    "LIMIT_UP": 59550,
+    "NOT_LIMIT": 3940937,
+    "NO_LIMIT": 1670,
+    "SUSPENDED": 9118,
+    "UNKNOWN": 77
+  },
+  "next_stage": "INDEPENDENT_R6_BUSINESS_POSTCHECK_AND_R6_FINAL_RESEAL; V4-03_BLOCKED",
+  "observed_at_utc": "2026-10-01T06:23:19+00:00",
+  "row_count": 4035729,
+  "scanner_factor_trading_runs": 0,
+  "special_phase_counts": {
+    "DELISTING_FIRST_DAY": 22,
+    "DELISTING_PERIOD": 308,
+    "IPO_FIRST_5_TRADING_DAYS": 1648,
+    "REGULAR": 4033720,
+    "UNKNOWN_SPECIAL_PHASE": 31
+  },
+  "stage_contract": "R3_PRICE_LIMIT_BASE + SPECIAL_PRICE_PHASE_EVENT_V1 + SPECIAL_PRICE_PHASE_POLICY_V2",
+  "status": "R6_CANDIDATE_READY",
+  "tdx_root_write_count": 0,
+  "unknown_rows": 77,
+  "version": "6.0.0"
+}

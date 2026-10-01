@@ -1,0 +1,22 @@
+{
+  "acceptance_independent": true,
+  "audit_id": "A12_R2_POSITIVE_ST_CODE_CHANGE_SCOPE",
+  "evidence": [
+    {
+      "bytes": 25963,
+      "path": "reports/audits/A12_R2_REAL_SAMPLE_MATRIX_R1.json",
+      "sha256": "c7519805a182db17057c5c44e6480d88d91b99e0f397e7a8d6d42201a2ee2ce9"
+    },
+    {
+      "bytes": 1534,
+      "path": "data/v4/bootstrap/dated_security_alias_r7.jsonl",
+      "sha256": "115a5b611c64f30cadd8695a9a464d8243cb3afe16d642ea786ff4b7bd107c4a"
+    }
+  ],
+  "external_acceptance": null,
+  "finding": "The sole accepted numeric code-change identity has 391 predecessor plus 395 successor rows, all isST=0. Real boundary verification passed; a positive ST-during-code-change example does not exist in required scope.",
+  "formal_consumer_authorization": false,
+  "next_step": "External auditor must explicitly adjudicate this negative scope census or prescribe a separately bound real positive fixture; no fabricated ST state and no self-waiver",
+  "scope": "ST source semantics at actual numeric code-change boundary",
+  "status": "OPEN"
+}

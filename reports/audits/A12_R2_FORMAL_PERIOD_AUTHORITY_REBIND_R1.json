@@ -1,0 +1,41 @@
+{
+  "external_acceptance": null,
+  "formal_publication": false,
+  "reports": [
+    {
+      "all_fields_rows_changed": 0,
+      "arithmetic_rows_changed": 0,
+      "candidate": {
+        "bytes": 81005147,
+        "path": "data/v4/artifact_store/a12_authority_candidate_r2/V4_02_FORMAL_WEEKLY_RAW_QFQ_AUTHORITY_R2.parquet",
+        "sha256": "8eda09c0ca55b986cbebe0aa32454a22835492a6286c1237473c729ea2af0294"
+      },
+      "old": {
+        "bytes": 81005147,
+        "path": "data/v4/artifact_store/v4_02/V4_02_FORMAL_WEEKLY_RAW_QFQ_R7_20260927.parquet",
+        "sha256": "8eda09c0ca55b986cbebe0aa32454a22835492a6286c1237473c729ea2af0294"
+      },
+      "source_boundary": "FULL_HISTORY_STATUS_VALUES_EQUAL_SOURCE; PERIOD_ARITHMETIC_AND_QUALITY_COUNTS_EXACT",
+      "status_count_transitions": [],
+      "validation": "Bidirectional EXCEPT ALL on every column; dependency status rows independently matched"
+    },
+    {
+      "all_fields_rows_changed": 0,
+      "arithmetic_rows_changed": 0,
+      "candidate": {
+        "bytes": 19627759,
+        "path": "data/v4/artifact_store/a12_authority_candidate_r2/V4_02_FORMAL_MONTHLY_RAW_QFQ_AUTHORITY_R2.parquet",
+        "sha256": "790ae9dd13bc363c431b2a7d02e3c6db868bc5d0b3d85a8c9a2acbd5dfd90ff3"
+      },
+      "old": {
+        "bytes": 19627759,
+        "path": "data/v4/artifact_store/v4_02/V4_02_FORMAL_MONTHLY_RAW_QFQ_R7_20260927.parquet",
+        "sha256": "790ae9dd13bc363c431b2a7d02e3c6db868bc5d0b3d85a8c9a2acbd5dfd90ff3"
+      },
+      "source_boundary": "FULL_HISTORY_STATUS_VALUES_EQUAL_SOURCE; PERIOD_ARITHMETIC_AND_QUALITY_COUNTS_EXACT",
+      "status_count_transitions": [],
+      "validation": "Bidirectional EXCEPT ALL on every column; dependency status rows independently matched"
+    }
+  ],
+  "status": "PASS_EXACT_FULL_ROW_PERIOD_DEPENDENCY_REPLAY"
+}

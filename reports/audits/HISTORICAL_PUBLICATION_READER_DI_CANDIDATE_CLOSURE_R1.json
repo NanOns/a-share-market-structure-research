@@ -1,0 +1,49 @@
+{
+  "baseline_commit": "bc3e398efb4f4a05c20973ff3cb335a6b101ac87",
+  "blockers": [
+    "Independent external DI hardening review; no production adoption or history acceptance semantic change"
+  ],
+  "data_head_action": "KEEP",
+  "execution_result": "COMPLETE_HISTORY_ONLY_CANDIDATE",
+  "external_acceptance": "PENDING_INDEPENDENT_EXTERNAL_REAUDIT",
+  "focus_cutover": false,
+  "global_mandatory_adoption": false,
+  "independent_readback": {
+    "bytes": 17840,
+    "path": "reports/audits/HISTORICAL_PUBLICATION_READER_DI_READBACK_R1.json",
+    "sha256": "01cfc14d4bbb70b0d17ee47b60b11896ba6bc5ee189a20d2600d84b9fbbcc30b"
+  },
+  "migration_required": false,
+  "next_stage": "INDEPENDENT_EXTERNAL_REAUDIT",
+  "production": false,
+  "runtime_bindings": [
+    {
+      "bytes": 4693,
+      "path": "src/workbench_analysis/dm01_publication_history_reader_v2.py",
+      "sha256": "8c4c74c3fa61d1f6c4664fc143afcae07a803345ae5be3536af39b8188ac828c"
+    }
+  ],
+  "shadow": false,
+  "stage_contract": {
+    "bytes": 2027,
+    "path": "docs/evidence/next_round_r1/V4_HISTORICAL_PUBLICATION_READER_DI_HARDENING_TASK_R1_20261001.md",
+    "sha256": "cb9f8be1587a78ae332a50e08a8e058bf63a577c9162bec9c971a1ddf02be635"
+  },
+  "stage_entry": {
+    "bytes": 430435,
+    "path": "reports/next_round_r1/BATCH_STAGE_ENTRY_R1.json",
+    "sha256": "b8036e0d3cb042422ab757bf1c40945ad8a54ce45aad5e2b56e77895bbc31caa"
+  },
+  "stage_head_action": "KEEP",
+  "status": "HISTORICAL_PUBLICATION_READER_DI_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
+  "targeted_regression": {
+    "failures": 0,
+    "passed": 75,
+    "receipt": {
+      "bytes": 10804,
+      "path": "reports/audits/OWNER_A06_READER_DI_TARGETED_REGRESSION_R1.xml",
+      "sha256": "44ae93a30b48d19a937f06fe4eb10437c0dbd4391b2f2b5fb34387215371c02d"
+    },
+    "skipped": 0
+  }
+}

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="1" failures="0" skipped="0" tests="1" time="0.160" timestamp="2026-10-01T22:00:25.022977+08:00" hostname="DESKTOP-PMEP5GE"><testcase classname="" name="tests.v4_a03_a04_a07_r2.test_payload_governance_r2_1" time="0.000"><error message="collection failure">ImportError while importing test module 'E:\codex work\大A交易\tests\v4_a03_a04_a07_r2\test_payload_governance_r2_1.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+E:\python\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\v4_a03_a04_a07_r2\test_payload_governance_r2_1.py:7: in &lt;module&gt;
+    from .test_candidate_boundaries import envelope
+E   ImportError: attempted relative import with no known parent package</error></testcase></testsuite></testsuites>

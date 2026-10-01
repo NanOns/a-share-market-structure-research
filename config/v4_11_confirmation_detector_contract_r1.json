@@ -1,0 +1,70 @@
+{
+  "AS_RECORDED": false,
+  "D0_writes_final_state": false,
+  "accepted_data_head": {
+    "bytes": 16890,
+    "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+    "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+  },
+  "amount_A": {
+    "audit_id": "AUD-AMOUNT-A-06",
+    "candidate_A04_does_not_authorize": true,
+    "formal_branch": "DISABLED"
+  },
+  "candidate_confirmation_not_accepted_by_D2": true,
+  "contract_id": "CONFIRMATION_DETECTOR_V1",
+  "entry_contract": {
+    "bytes": 6909,
+    "path": "config/v4_11_entry_contracts_r1.json",
+    "sha256": "460057a74d15b127d58204639a40697d5a6048949c6eba74f2dfeb54b99e9f2f"
+  },
+  "executable_authority": {
+    "byte_count": 224998,
+    "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+    "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+  },
+  "final_state_adapter_scope": "ACCEPTED_REDUCER_SYNTHETIC_ENGINEERING_VECTORS_ONLY_UNTIL_V4_11_EXTERNAL_ACCEPTANCE",
+  "full_DAG_external_acceptance": false,
+  "input_parameter_set_id": "V4_11_INPUT_PROJECTION_PARAMETERS_V1",
+  "input_producer_contract_id": "V4_11_ACCEPTED_SOURCE_PROJECTION_V1",
+  "knowledge_cutoff": "Actual run timestamp; reconstructed source availability must precede this cutoff",
+  "legacy_manifest": {
+    "bytes": 45921,
+    "path": "config/v4_11_legacy_extraction_manifest_r1.json",
+    "sha256": "a1c48ea466d0d4853a91d0574b44aa75cf7f85ce40eb80fcd0f2d9250061e90e"
+  },
+  "machine_ast": {
+    "bytes": 921,
+    "path": "config/v4_11_confirmation_machine_ast_v1.json",
+    "sha256": "b6985ce8ff2498c115370b85690ba13538cdbb3339308fc77b6007e13c943062"
+  },
+  "migration_allocation": {
+    "allocated_at": "2026-10-01T13:34:37.336512+00:00",
+    "number": 26,
+    "requestor": "V4_11_CONFIRMATION_EVENTS_R1",
+    "status": "RESERVED_FOR_CANDIDATE_SCHEMA"
+  },
+  "parameters": {
+    "bytes": 853,
+    "path": "config/v4_11_confirmation_parameter_set_v1.json",
+    "sha256": "34d61ecb766b523e9cec1c2178be3385968e6a9fc9b273025b35c3646117b1fd"
+  },
+  "permissions": {
+    "focus": false,
+    "production": false,
+    "shadow": false
+  },
+  "stage_contract": {
+    "bytes": 6292,
+    "path": "docs/evidence/next_round_r1/V4_11_CONFIRMATION_EVENTS_IMPLEMENTATION_TASK_R1_20261001.md",
+    "sha256": "1fb4994c31cf47e99704e8166d3414cb7a3eaa9024356613e54f4ca01348b5a8"
+  },
+  "status": "CANDIDATE_IMPLEMENTATION",
+  "target_data_cutoff": "Accepted target trade date; no future trade_date",
+  "v4_10_head": {
+    "bytes": 5102,
+    "path": "data/v4/V4_10_ACCEPTED_HEAD.json",
+    "sha256": "ad9fc4643652feb3684223817f2e9c300167d128e2e8a07179e86f65094fd1e1"
+  },
+  "version": "1.0.0"
+}

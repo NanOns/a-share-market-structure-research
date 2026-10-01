@@ -1,0 +1,35 @@
+{
+  "accepted_head_mutation": false,
+  "approval_gate": "Independent external acceptance of candidate publications and all affected amendments required.",
+  "contract_id": "A02_HISTORY_PUBLICATION_READER_AND_PRODUCER_R2",
+  "focus_cutover": false,
+  "formal_consumer": false,
+  "production": false,
+  "publication_compatibility": "All six actual V1 publications exact byte-logical compatible; R2 adds explicit INSUFFICIENT_EVALUABLE_UNIVERSE reason for small-universe vectors.",
+  "publication_format": "V4_RPS_PIT_HISTORY_V1 / 1.0.0",
+  "runtime_bindings": [
+    {
+      "bytes": 6292,
+      "path": "src/v4/rps_pit_history_a02_v1.py",
+      "sha256": "052a74e16092108886dfd92bc2c47133513e7a12d53ba555087b14443b194eb6"
+    },
+    {
+      "bytes": 964,
+      "path": "src/v4/rps_history_producer_a02_r2.py",
+      "sha256": "1815d2b3a19c53edf3495f7a7bf816df20ba29eb05287192b1d310a78edc19c2"
+    },
+    {
+      "bytes": 1999,
+      "path": "src/v4/rps_history_reader_a02_v1.py",
+      "sha256": "162c1f0a049e9deefed45a8b77b168fb8052a46b33f4635e9a2f003f460bd625"
+    }
+  ],
+  "shadow": false,
+  "status": "FROZEN_CANDIDATE",
+  "supersedes": {
+    "bytes": 2301,
+    "path": "config/a02_rps_pit_history_v1.json",
+    "sha256": "44d510d458754c256c3560ff2b6e56bf0febd30464e73710e6315a440acdfbfc"
+  },
+  "version": "1.1.0"
+}

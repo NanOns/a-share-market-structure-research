@@ -1,0 +1,305 @@
+{
+  "DataHead": "2026-09-30",
+  "StageHead": "V4_00_TO_V4_10_ACCEPTED",
+  "amount_A_formal_branch": "DISABLED",
+  "baseline_commit": "bc3e398efb4f4a05c20973ff3cb335a6b101ac87",
+  "candidate_registry": {
+    "bytes": 5081,
+    "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R11_CANDIDATE.json",
+    "sha256": "b37a28713003e3b7e22110879a635c8a36b172eb15ea3404d3eb56a588fd9208"
+  },
+  "clean_joint": "reports/next_round_r1/BATCH_CLEAN_CHECKOUT_R1.json",
+  "contract_id": "V4_NEXT_ROUND_NINE_PACKAGE_HANDOFF_V1",
+  "engineering_complete": true,
+  "external_acceptance": false,
+  "master_task": {
+    "bytes": 2589,
+    "path": "docs/evidence/next_round_r1/V4_NEXT_ROUND_MASTER_EXECUTION_BUNDLE_R1_20261001.md",
+    "sha256": "760fb42c1125b8c3c5aec57b70cb3081c67464ba4cf08d0ff92352d022432c41"
+  },
+  "next_stage": "STOP_AFTER_UNIFIED_COMMIT_PUSH_WAIT_FOR_INDEPENDENT_EXTERNAL_REAUDIT",
+  "owner_registry_bulk_accept": false,
+  "packages": {
+    "A02": {
+      "execution_result": "COMPLETE_ENGINEERING_CANDIDATE",
+      "external_conditions": "RECONSTRUCTED_CORRECTED_CANDIDATE_PUBLICATIONS_NOT_ACCEPTED",
+      "handoff": {
+        "bytes": 7676,
+        "path": "reports/next_round_r1/A02_CANDIDATE_EXTERNAL_REAUDIT_HANDOFF_R1.json",
+        "sha256": "58757bbc4ea19a674dae8679aff6241b563683646335f9371dccbe7d79fd87eb"
+      },
+      "status": "CANDIDATE_READY_FOR_EXTERNAL_REAUDIT"
+    },
+    "A03": {
+      "execution_result": "ENGINEERING_AND_CURRENT_REAL_OBSERVATION_COMPLETE",
+      "external_conditions": "PARTIAL_AWAITING_FUTURE_REAL_OBSERVATIONS_NOT_A_BATCH_BLOCKER",
+      "handoff": {
+        "bytes": 3154,
+        "path": "reports/audits/A03_R2_1_CANDIDATE_EXTERNAL_REAUDIT_HANDOFF_R1.json",
+        "sha256": "4d8b01d699b6bb4f1de5ad318ed017b42a25fdc27a684da6a629cd66ac2e4e35"
+      },
+      "status": "CANDIDATE_READY_FOR_EXTERNAL_REAUDIT"
+    },
+    "A04": {
+      "execution_result": "ENGINEERING_AND_CURRENT_REAL_OBSERVATION_COMPLETE",
+      "external_conditions": "BLOCKED_FORMAL_THRESHOLD_AND_HISTORICAL_H21_MEMBERSHIP_AUTHORITY",
+      "handoff": {
+        "bytes": 2410,
+        "path": "reports/audits/A04_R2_CANDIDATE_EXTERNAL_REAUDIT_HANDOFF_R1.json",
+        "sha256": "f7a25e2b7849adaaa3994b1ca6d38fd8bf4c5696b6388b4e5c1e6e57af167124"
+      },
+      "status": "CANDIDATE_READY_FOR_EXTERNAL_REAUDIT"
+    },
+    "A05": {
+      "execution_result": "COMPLETE_ENGINEERING_CANDIDATE",
+      "external_conditions": "CURRENT_SNAPSHOT_ONLY_LEGACY_BINDING_NOT_EXTERNAL_ACCEPTED",
+      "handoff": {
+        "bytes": 7335,
+        "path": "reports/next_round_r1/A05_CANDIDATE_EXTERNAL_REAUDIT_HANDOFF_R1.json",
+        "sha256": "4fa6ae63369acb3e1513cf95dea6d777ea441455682acf03966245f82dfd9cd2"
+      },
+      "status": "CANDIDATE_READY_FOR_EXTERNAL_REAUDIT"
+    },
+    "A06": {
+      "execution_result": "PARTIAL",
+      "external_conditions": [
+        "Official precision is documented; generation rounding is not documented, so no numeric tolerance can be derived",
+        "Fresh official documentation GET returned 405; prior official exact-byte capture retained",
+        "Provider circulating-shares denominator external acceptance remains pending"
+      ],
+      "handoff": {
+        "bytes": 2686,
+        "path": "reports/audits/A06_R2_CANDIDATE_CLOSURE_R1.json",
+        "sha256": "1f6f132d133ec21c2eaa2a2595363c2dfc1881bd89bd8db1d952fa5b65e04fc4"
+      },
+      "status": "CANDIDATE_READY_FOR_EXTERNAL_REAUDIT"
+    },
+    "A07": {
+      "execution_result": "ENGINEERING_AND_CURRENT_REAL_OBSERVATION_COMPLETE",
+      "external_conditions": "PERMANENTLY_BLOCKED_PRE_CAPTURE_AS_RECORDED",
+      "handoff": {
+        "bytes": 2503,
+        "path": "reports/audits/A07_R2_CANDIDATE_EXTERNAL_REAUDIT_HANDOFF_R1.json",
+        "sha256": "87e3d121cbba2df83eef9034d0f4f8158c46bf19f02ba71d1b63643172df867b"
+      },
+      "status": "CANDIDATE_READY_FOR_EXTERNAL_REAUDIT"
+    },
+    "OWNER": {
+      "execution_result": "COMPLETE_SCOPED_CANDIDATE",
+      "external_conditions": [
+        "Independent external owner review; active global registry remains R3 and bootstrap production gate stays OPEN"
+      ],
+      "handoff": {
+        "bytes": 2260,
+        "path": "reports/audits/OWNER_REGISTRY_SCOPED_BOOTSTRAP_CANDIDATE_CLOSURE_R1.json",
+        "sha256": "f20ea2ac99c67d0521af157d2e579d367e4f445815284d3883813a7367e856a8"
+      },
+      "status": "CANDIDATE_READY_FOR_EXTERNAL_REAUDIT"
+    },
+    "READER_DI": {
+      "execution_result": "COMPLETE_HISTORY_ONLY_CANDIDATE",
+      "external_conditions": [
+        "Independent external DI hardening review; no production adoption or history acceptance semantic change"
+      ],
+      "handoff": {
+        "bytes": 1807,
+        "path": "reports/audits/HISTORICAL_PUBLICATION_READER_DI_CANDIDATE_CLOSURE_R1.json",
+        "sha256": "a53448e88f35a47ba9a28f7f5dcc991f9c4baf0d72829b2f88ee0719d9992a9f"
+      },
+      "status": "CANDIDATE_READY_FOR_EXTERNAL_REAUDIT"
+    },
+    "V4-11": {
+      "execution_result": "COMPLETE_ENGINEERING_CANDIDATE",
+      "external_conditions": [],
+      "handoff": {
+        "bytes": 5824,
+        "path": "reports/v4_11/candidate_r1/V4_11_CANDIDATE_EXTERNAL_REAUDIT_HANDOFF_R2.json",
+        "sha256": "31bf4d1a53f72b1a2bc761aa6e8a7706beca3991d889631a60dae3e829c7f356"
+      },
+      "status": "CANDIDATE_READY_FOR_EXTERNAL_REAUDIT"
+    }
+  },
+  "permissions": {
+    "focus": false,
+    "global_mandatory_adoption": false,
+    "production": false,
+    "shadow": false
+  },
+  "protected_heads": [
+    {
+      "bytes": 6909,
+      "path": "config/v4_11_entry_contracts_r1.json",
+      "sha256": "460057a74d15b127d58204639a40697d5a6048949c6eba74f2dfeb54b99e9f2f"
+    },
+    {
+      "bytes": 5595,
+      "path": "config/v4_migration_allocation_registry_r1.json",
+      "sha256": "3d35f879d8dffb50bc5ddf63f40170525184e024ea76e4c8b48ff3d14a1ff380"
+    },
+    {
+      "bytes": 1958,
+      "path": "data/v4/OFFICIAL_EVENT_SEMANTICS_ACCEPTED_HEAD_R1.json",
+      "sha256": "c283bb515c0733d8e5f797a6796fa63c575d211d3b9a468c566dc05395a062b8"
+    },
+    {
+      "bytes": 4564,
+      "path": "data/v4/V4_01_ACCEPTED_HEAD.json",
+      "sha256": "b8ea5b8091629d116c860f9bf6a1a398301d75be16af7b08ff526fba9329bf6b"
+    },
+    {
+      "bytes": 3366,
+      "path": "data/v4/V4_01_ACCEPTED_HEAD_CANDIDATE.json",
+      "sha256": "6f84145fa0e2ef2427ec85349dfd4385fb31936e87a03b06a552ec81afb03ad9"
+    },
+    {
+      "bytes": 1099,
+      "path": "data/v4/V4_01_GO_FORWARD_IDENTITY_ACCEPTED_HEAD_R1.json",
+      "sha256": "496d537f7c6b9c78cac3a084330f09132814165d2967e8991ffa1d6319092214"
+    },
+    {
+      "bytes": 665,
+      "path": "data/v4/V4_01_GO_FORWARD_IDENTITY_CANDIDATE_HEAD_R1.json",
+      "sha256": "9ef49acc749daeb954cce0433363d0f28e54720db58c92fc20da77080049bb2c"
+    },
+    {
+      "bytes": 1602,
+      "path": "data/v4/V4_02_ACCEPTED_HEAD.json",
+      "sha256": "da318a1f82a03f13930af7858ca1640fadbdaedbee85e27d47f9c869c2d6b595"
+    },
+    {
+      "bytes": 1176,
+      "path": "data/v4/V4_02_GO_FORWARD_CALENDAR_EXTENSION_ACCEPTED_HEAD_R1.json",
+      "sha256": "d0d453689261603a6ccd773f6383781178cb74d388087b72c652dc8afcb309f6"
+    },
+    {
+      "bytes": 681,
+      "path": "data/v4/V4_02_GO_FORWARD_CALENDAR_EXTENSION_CANDIDATE_HEAD_R1.json",
+      "sha256": "800a32d26b8a6089f67eda77e84c2364d4d0fd8a9879ed1b5c620be71202631b"
+    },
+    {
+      "bytes": 4142,
+      "path": "data/v4/V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD.json",
+      "sha256": "83fa37ded40337d69ff0e447a0b6a3bc293d2ca95ea9c8aa009f0f104776c4be"
+    },
+    {
+      "bytes": 1607,
+      "path": "data/v4/V4_03_ACCEPTED_HEAD.json",
+      "sha256": "734bd27a5d53b2f18e3d62aa96ac63c91ccc6d9f848e942bc1efc410c88d4370"
+    },
+    {
+      "bytes": 4924,
+      "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+      "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+    },
+    {
+      "bytes": 6837,
+      "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+      "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+    },
+    {
+      "bytes": 8456,
+      "path": "data/v4/V4_05_ACCEPTED_HEAD.json",
+      "sha256": "fc929d85553a900a6479ac9f50291d50cf750ad0e6c21fc58e4e05e92189f5cb"
+    },
+    {
+      "bytes": 4106,
+      "path": "data/v4/V4_06_ACCEPTED_HEAD.json",
+      "sha256": "5aec962703aed40cab809e798edc5bfbe50c416809984db40bb679a172782f8e"
+    },
+    {
+      "bytes": 6362,
+      "path": "data/v4/V4_07_ACCEPTED_HEAD.json",
+      "sha256": "b22117b0d14c35167cba86cb7398d878d7112f9cf17c1a427fa92766e78f880f"
+    },
+    {
+      "bytes": 20553,
+      "path": "data/v4/V4_08_ACCEPTED_HEAD.json",
+      "sha256": "b9ba34374ce35eefab705469de1e005758b90fa1f58ea5bba96fac08571073bc"
+    },
+    {
+      "bytes": 21493,
+      "path": "data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json",
+      "sha256": "f2a35cebd18e8caf723e7900133333ce4b8df1a8314cb190dade7b0ea7624a3f"
+    },
+    {
+      "bytes": 2151,
+      "path": "data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json",
+      "sha256": "d6374a73b8084ccd383cbb4f75428ed91176e91cc09d87c3329041d57c5bd9ed"
+    },
+    {
+      "bytes": 1503,
+      "path": "data/v4/V4_08_PIT_MEMBERSHIP_CANDIDATE_HEAD_R1.json",
+      "sha256": "87b198fd66d3ffded53f3c9c3780747c6a82c3235432d39361348b6ec221f594"
+    },
+    {
+      "bytes": 11474,
+      "path": "data/v4/V4_09_ACCEPTED_HEAD.json",
+      "sha256": "641ef9e2e6fe8f461a9b765262e739791a6d3fdd220b0eff7947e2690de3a87d"
+    },
+    {
+      "bytes": 5102,
+      "path": "data/v4/V4_10_ACCEPTED_HEAD.json",
+      "sha256": "ad9fc4643652feb3684223817f2e9c300167d128e2e8a07179e86f65094fd1e1"
+    },
+    {
+      "bytes": 16890,
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+    },
+    {
+      "bytes": 602,
+      "path": "data/v4/V4_DEV_BASELINE_HEAD.json",
+      "sha256": "45695460b0147c6ada12e0ebd8e5070ac0a45eebea26603ff5a3daddc4dd5094"
+    },
+    {
+      "bytes": 10364,
+      "path": "data/v4/V4_SOURCE_AUTHORITY_ACCEPTED_OWNER_REGISTRY_R3.json",
+      "sha256": "3bc3d013ceebeb7dcf01f95f9a446ff2f65f03a1b6c602144cb54f490b7b18ec"
+    },
+    {
+      "bytes": 453,
+      "path": "data/v4/V4_SOURCE_AUTHORITY_GOVERNANCE_HEAD_R1.json",
+      "sha256": "0c7237194362961d6534ca947e931d40facb28199e6001551eb608482d8b8500"
+    },
+    {
+      "bytes": 523,
+      "path": "data/v4/V4_SOURCE_AUTHORITY_GOVERNANCE_HEAD_R2.json",
+      "sha256": "6c98ee78b08d7e455579495cbe2c8c6ee8ec5ed73ac2c86ee259c520084be174"
+    },
+    {
+      "bytes": 1053,
+      "path": "data/v4/V4_SOURCE_AUTHORITY_GOVERNANCE_HEAD_R3.json",
+      "sha256": "75aa5376f556df03be14875c18e78f3441c85fac9d2ebcceee6907051e3f73d5"
+    },
+    {
+      "bytes": 8574,
+      "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+      "sha256": "529c532bd5553ace00fa4813aef07979cfce4e1f18fa5ea66f38fcddd8ed16cb"
+    },
+    {
+      "bytes": 93135,
+      "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json",
+      "sha256": "14002b12e89920ee2d57fe1328a53c03f21ebb99842acfcb5c53b44d3f402174"
+    },
+    {
+      "bytes": 7011,
+      "path": "src/workbench_analysis/today_research_scanner_v3_3.py",
+      "sha256": "0cf65de4f926f43cce5fcac60f16e2e047b4c5f0f4cc497e1f832f6e3bdc3379"
+    }
+  ],
+  "protected_representations": {
+    "bytes": 1666,
+    "path": "reports/next_round_r1/BATCH_PROTECTED_REPRESENTATIONS_R1.json",
+    "sha256": "8a3b878ef00b2540eda1f1280e7a0faf7438e699c9704beec0823c1351a9e405"
+  },
+  "real_external_conditions_do_not_block_mainline": true,
+  "stage_entry": {
+    "bytes": 430435,
+    "path": "reports/next_round_r1/BATCH_STAGE_ENTRY_R1.json",
+    "sha256": "b8036e0d3cb042422ab757bf1c40945ad8a54ce45aad5e2b56e77895bbc31caa"
+  },
+  "status": "CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
+  "task_count": 10,
+  "v4_12_implemented": false,
+  "work_package_count": 9
+}

@@ -1,0 +1,36 @@
+{
+  "amount_A_gate": "DISABLED_UNTIL_NEXT_INDEPENDENT_EXTERNAL_ACCEPTANCE",
+  "amount_dependent_branches": [
+    "LAUNCH_CONFIRM",
+    "RECOVERY_TURN",
+    "TREND_CONTINUE"
+  ],
+  "contract_id": "V4_11_CONFIRMATION_MACHINE_AST_V1",
+  "event_priority": [
+    "FIRST_OBSERVED",
+    "CONFIRMATION_INVALIDATED",
+    "RECONFIRMED",
+    "NEW_CONFIRMED",
+    "SCENARIO_UPGRADED",
+    "CONFIRMATION_WEAKENED",
+    "PERSISTENT_CONFIRMED",
+    "SCENARIO_CHANGED",
+    "NONE"
+  ],
+  "legacy_manifest": {
+    "bytes": 45921,
+    "path": "config/v4_11_legacy_extraction_manifest_r1.json",
+    "sha256": "a1c48ea466d0d4853a91d0574b44aa75cf7f85ce40eb80fcd0f2d9250061e90e"
+  },
+  "scenario_combination": "KNOWN_TRUE_OR_ELSE_UNKNOWN_OR_ELSE_FALSE",
+  "scenario_priority": [
+    "LAUNCH_CONFIRM",
+    "STRONG_PULLBACK",
+    "RECOVERY_TURN",
+    "TREND_CONTINUE"
+  ],
+  "security_dedup_key": [
+    "publication_id",
+    "security_id"
+  ]
+}

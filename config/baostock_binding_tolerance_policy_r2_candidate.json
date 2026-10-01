@@ -1,0 +1,66 @@
+{
+  "acceptance": "PENDING_INDEPENDENT_EXTERNAL_REAUDIT",
+  "canonical_authority": {
+    "OHLC": false,
+    "QFQ": false
+  },
+  "contract_id": "BAOSTOCK_BINDING_TOLERANCE_POLICY_R2_CANDIDATE",
+  "difference_categories": [
+    "ROUNDING",
+    "UNIT_CONVERSION",
+    "ADJUSTMENT_BASIS",
+    "PROVIDER_REVISION",
+    "CALENDAR_IDENTITY_MISMATCH",
+    "TRUE_DATA_CONFLICT"
+  ],
+  "documentation": {
+    "bytes": 2351,
+    "path": "reports/audits/A06_R2_DOCUMENT_FREEZE_R1.json",
+    "sha256": "c268e8311e7dffbe4d94637ed44e1f268ccaf601729cffbee24a6075bd950f45"
+  },
+  "fields": {
+    "amount": {
+      "derivation": "Precision is not a bound without generation/rounding semantics; IEEE754 storage bound is conditional and diagnostic only",
+      "documented_precision": 4,
+      "generation_rounding_proven": false,
+      "tolerance": null,
+      "unit": "CNY"
+    },
+    "close": {
+      "derivation": "Precision is not a bound without generation/rounding semantics; IEEE754 storage bound is conditional and diagnostic only",
+      "documented_precision": 4,
+      "generation_rounding_proven": false,
+      "tolerance": null,
+      "unit": "CNY/share"
+    },
+    "turn": {
+      "derivation": "Precision is not a bound without generation/rounding semantics; IEEE754 storage bound is conditional and diagnostic only",
+      "documented_precision": 6,
+      "generation_rounding_proven": false,
+      "tolerance": null,
+      "unit": "PERCENT_POINTS"
+    },
+    "volume": {
+      "derivation": "Precision is not a bound without generation/rounding semantics; IEEE754 storage bound is conditional and diagnostic only",
+      "documented_precision": null,
+      "generation_rounding_proven": false,
+      "tolerance": null,
+      "unit": "shares"
+    }
+  },
+  "forbidden_empirical_percentage_tolerance": true,
+  "may_block_tdx_core": false,
+  "prior_unaccepted_tolerance": {
+    "bytes": 1353,
+    "path": "config/baostock_turnover_binding_tolerance_v1.json",
+    "sha256": "6b13c9eca852b582cd23103d9391d5c195e700c4bde0881db3737eaa4206ac5f"
+  },
+  "source_contract": {
+    "bytes": 12177,
+    "path": "config/baostock_supplemental_contract_v1.json",
+    "sha256": "b90979d0e0c96c18c42e11de46d1940d84f3121c765870ce6997b8ce2b0c5799"
+  },
+  "strict_binding_allowed": false,
+  "turn_normalization": "exact decimal percent points / 100; denominator remains provider-defined circulating shares, not free float",
+  "version": "2.0.0"
+}

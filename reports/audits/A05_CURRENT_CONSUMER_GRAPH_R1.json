@@ -1,0 +1,87 @@
+{
+  "contract_id": "A05_CURRENT_CONSUMER_GRAPH_V1",
+  "current_business_changed": false,
+  "disposition": "EXACT_RECOVERY; no non-equivalent approximation or retirement required. Fresh formal binding needs independent external acceptance.",
+  "formal_consumer_enabled": false,
+  "retirement_or_replacement_needed": false,
+  "scoped_modules": [
+    {
+      "depends_on_legacy_valid_member": true,
+      "evidence": "Requires exact accepted legacy observation and phase2.validity; presently UNKNOWN.",
+      "source": {
+        "bytes": 2653,
+        "path": "src/sector/semantic_input_r5_1.py",
+        "sha256": "f8760dd0420e803ff28915afd43a9ff54635dde6a16f1fa515a05c7b0193cde4"
+      }
+    },
+    {
+      "depends_on_legacy_valid_member": true,
+      "evidence": "Publishes UNKNOWN missing exact legacy producer provenance.",
+      "source": {
+        "bytes": 10442,
+        "path": "src/sector/accepted_input_r5_1.py",
+        "sha256": "f6d5e47742bfe984e7ffab273d48703047724111d26b8ecd9bc0afc0552fcf94"
+      }
+    },
+    {
+      "depends_on_legacy_valid_member": true,
+      "evidence": "B2 semantic gating depends on exact valid-member; candidate recovery does not release existing gate.",
+      "source": {
+        "bytes": 7670,
+        "path": "src/sector/legacy_b2_r5.py",
+        "sha256": "4f744a6ad2c754b20ea870665031ab2182819781b09ad22680394c2904699cd8"
+      }
+    },
+    {
+      "depends_on_legacy_valid_member": true,
+      "evidence": "bind_semantic -> build_b2_inputs -> evaluate_b2; separate B0/B1 groups do not acquire B2 authority.",
+      "source": {
+        "bytes": 11325,
+        "path": "scripts/materialize_v4_08_r5.py",
+        "sha256": "68379c2b6db9c093d291af3529301cdc342008eaf4ced2a7a0592cc7202aa928"
+      }
+    },
+    {
+      "depends_on_legacy_valid_member": false,
+      "evidence": "PIT native primitives do not consume legacy valid_member.",
+      "source": {
+        "bytes": 11591,
+        "path": "src/sector/native_r5.py",
+        "sha256": "280f5315fbaef91cd8411924ad39d0436684380aec6d484619dbefc9238e9b01"
+      }
+    },
+    {
+      "depends_on_legacy_valid_member": false,
+      "evidence": "B0/B1 runtime uses native facts and frozen R3 AST, no legacy validity substitution.",
+      "source": {
+        "bytes": 10781,
+        "path": "src/sector/rotation_r5.py",
+        "sha256": "93c73b431a0fa8af1cf2e0c65a706dc78e390b1d5a2cd821f85e89ec5323968b"
+      }
+    },
+    {
+      "depends_on_legacy_valid_member": false,
+      "evidence": "V4 native sector formula is independent of legacy B2 denominator.",
+      "source": {
+        "bytes": 7820,
+        "path": "src/v4/contracts/native_rule_r3.py",
+        "sha256": "e82041b67295940e2bb407084971724327e6c4f734be0fab5de70316cd5bb06b"
+      }
+    },
+    {
+      "depends_on_legacy_valid_member": false,
+      "evidence": "Uses accepted Core/Seed and declared priority contract; no legacy valid_member dependency.",
+      "source": {
+        "bytes": 22817,
+        "path": "src/v4/stock_prewatch.py",
+        "sha256": "a57a4413b56cd81f43a06611f4dec328ef6ac35486f4a4b56e5b5938e2db60ce"
+      }
+    }
+  ],
+  "status": "CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
+  "v4_08_head": {
+    "bytes": 20553,
+    "path": "data/v4/V4_08_ACCEPTED_HEAD.json",
+    "sha256": "b9ba34374ce35eefab705469de1e005758b90fa1f58ea5bba96fac08571073bc"
+  }
+}

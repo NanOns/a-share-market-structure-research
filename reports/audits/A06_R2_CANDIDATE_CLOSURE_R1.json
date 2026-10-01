@@ -1,0 +1,73 @@
+{
+  "baseline_commit": "bc3e398efb4f4a05c20973ff3cb335a6b101ac87",
+  "blockers": [
+    "Official precision is documented; generation rounding is not documented, so no numeric tolerance can be derived",
+    "Fresh official documentation GET returned 405; prior official exact-byte capture retained",
+    "Provider circulating-shares denominator external acceptance remains pending"
+  ],
+  "candidate": {
+    "bytes": 2422,
+    "path": "config/baostock_binding_tolerance_policy_r2_candidate.json",
+    "sha256": "ff6f1d8a62a20f6e574485a6a23845e2ac2b2bb47998b1fc144c1d2de14668c9"
+  },
+  "data_head_action": "KEEP",
+  "documentation": {
+    "bytes": 2351,
+    "path": "reports/audits/A06_R2_DOCUMENT_FREEZE_R1.json",
+    "sha256": "c268e8311e7dffbe4d94637ed44e1f268ccaf601729cffbee24a6075bd950f45"
+  },
+  "execution_result": "PARTIAL",
+  "external_acceptance": "PENDING_INDEPENDENT_EXTERNAL_REAUDIT",
+  "focus_cutover": false,
+  "global_mandatory_adoption": false,
+  "matched_real_rows": 15634,
+  "matrix": {
+    "bytes": 19290287,
+    "path": "reports/audits/A06_R2_REAL_REPRESENTATIVE_MATRIX_R2.json",
+    "sha256": "4f4883868c04d866ed287861af5071ab9286e11aad3169099ae9dcb1070cd391"
+  },
+  "migration_required": false,
+  "next_stage": "INDEPENDENT_EXTERNAL_REAUDIT",
+  "production": false,
+  "runtime_bindings": [
+    {
+      "bytes": 3862,
+      "path": "src/workbench_analysis/baostock_tolerance_candidate_r2.py",
+      "sha256": "adac6349cd2ceeaf4832b1a673c0075953991e614824d0f37a8a1610bd16790d"
+    },
+    {
+      "bytes": 8662,
+      "path": "scripts/build_a06_tolerance_candidate_r2.py",
+      "sha256": "d4e5c8d82b518922602d15adb1d6736a26ea2a250793379a1398220a67b04335"
+    }
+  ],
+  "shadow": false,
+  "stage_contract": {
+    "bytes": 1602,
+    "path": "docs/evidence/next_round_r1/V4_A06_BAOSTOCK_BINDING_TOLERANCE_TASK_R2_20261001.md",
+    "sha256": "a08ba814fe070a28cbd9e247ef77bf50dd096023683fbd8544302504b8f7b918"
+  },
+  "stage_entry": {
+    "bytes": 430435,
+    "path": "reports/next_round_r1/BATCH_STAGE_ENTRY_R1.json",
+    "sha256": "b8036e0d3cb042422ab757bf1c40945ad8a54ce45aad5e2b56e77895bbc31caa"
+  },
+  "stage_head_action": "KEEP",
+  "status": "A06_BAOSTOCK_TOLERANCE_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
+  "strict_binding_allowed": false,
+  "targeted_regression": {
+    "failures": 0,
+    "passed": 75,
+    "receipt": {
+      "bytes": 10804,
+      "path": "reports/audits/OWNER_A06_READER_DI_TARGETED_REGRESSION_R1.xml",
+      "sha256": "44ae93a30b48d19a937f06fe4eb10437c0dbd4391b2f2b5fb34387215371c02d"
+    },
+    "skipped": 0
+  },
+  "tdx_core_blocked": false,
+  "validation": {
+    "status": "PASS_FAIL_CLOSED_CANDIDATE",
+    "strict_binding_allowed": false
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "current_request": {
+    "body": {
+      "bytes": 683,
+      "path": "data/v4/source_evidence/a06_r2/CURRENT_OFFICIAL_DOCUMENT_REQUEST_BODY_R1.bin",
+      "sha256": "e31cbae9fb5183792cbca3300d5b03046ec87d215daf1d1423a4bd0c83586cf8"
+    },
+    "max_bytes": 1048576,
+    "max_requests": 1,
+    "observed_at": "2026-10-01T13:39:12.723345+00:00",
+    "redirects_allowed": false,
+    "status": 405,
+    "timeout_seconds": 20,
+    "url": "https://www.baostock.com/helpdocs/api/markdown/stockKData.md"
+  },
+  "current_request_is_new_semantic_authority": false,
+  "documentation_generation_rounding": "NOT_DOCUMENTED",
+  "lineage": "OBSERVED_NOW_REFERENCE_ONLY",
+  "records": [
+    {
+      "frozen": {
+        "bytes": 12485,
+        "path": "data/v4/source_evidence/a06_r2/stockKData.md",
+        "sha256": "2a6db3b24ab21a199aa17bd949dfbe545d3279007bea1664854f9b7c20542aac"
+      },
+      "original_capture": {
+        "observed_at": "2026-10-01T06:05:58.776249+00:00",
+        "path": "data/v4/source_evidence/a12_r2/stockKData.md",
+        "sha256": "2a6db3b24ab21a199aa17bd949dfbe545d3279007bea1664854f9b7c20542aac",
+        "source_ref": "https://www.baostock.com/helpdocs/api/markdown/stockKData.md",
+        "status": 200
+      },
+      "original_capture_receipt": {
+        "bytes": 801,
+        "path": "data/v4/source_evidence/a12_r2/PROVIDER_DOCUMENTATION_CAPTURE_R1.json",
+        "sha256": "7f811d4816a2114efcec3cb85429faac311b61ae27ab5ded33ad6f37e8b0dd82"
+      }
+    },
+    {
+      "frozen": {
+        "bytes": 15120,
+        "path": "data/v4/source_evidence/a06_r2/DailyUpdates.md",
+        "sha256": "ddb5f1e153c44ab0e76cebd4506ff0075def6d8884c7fd1d2cd523e2f75a70c8"
+      },
+      "original_capture": {
+        "observed_at": "2026-10-01T06:05:59.016325+00:00",
+        "path": "data/v4/source_evidence/a12_r2/DailyUpdates.md",
+        "sha256": "ddb5f1e153c44ab0e76cebd4506ff0075def6d8884c7fd1d2cd523e2f75a70c8",
+        "source_ref": "https://www.baostock.com/helpdocs/api/markdown/DailyUpdates.md",
+        "status": 200
+      },
+      "original_capture_receipt": {
+        "bytes": 801,
+        "path": "data/v4/source_evidence/a12_r2/PROVIDER_DOCUMENTATION_CAPTURE_R1.json",
+        "sha256": "7f811d4816a2114efcec3cb85429faac311b61ae27ab5ded33ad6f37e8b0dd82"
+      }
+    }
+  ],
+  "status": "PASS_PRIOR_EXACT_OFFICIAL_DOC_FROZEN"
+}

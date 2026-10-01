@@ -1,0 +1,468 @@
+{
+  "baseline_commit": "bc3e398efb4f4a05c20973ff3cb335a6b101ac87",
+  "concurrent_outputs": [
+    {
+      "result": {
+        "accepted_head": {
+          "byte_count": 11474,
+          "path": "data/v4/V4_09_ACCEPTED_HEAD.json",
+          "sha256": "641ef9e2e6fe8f461a9b765262e739791a6d3fdd220b0eff7947e2690de3a87d"
+        },
+        "business_reacceptance_performed": false,
+        "checks": {
+          "accepted_child_stage_exact": true,
+          "accepted_evidence_exact": true,
+          "accepted_identity": true,
+          "all_candidate_bindings_exact": true,
+          "amended_upstream_exact": true,
+          "artifact_exact": true,
+          "artifact_exact_binding": true,
+          "audited_ancestor": true,
+          "audits_preserved": true,
+          "canonical_evidence_set": true,
+          "capabilities_exact": true,
+          "evidence_pass": true,
+          "external_exact": true,
+          "global_binding": true,
+          "implementation_exact": true,
+          "no_symbol_pass": true,
+          "parent_exact": true,
+          "permissions_false": true,
+          "promotion_idempotent": true,
+          "protected_unchanged": true,
+          "runtime_contracts_match_audited_commit": true,
+          "upstream_exact": true
+        },
+        "contract_id": "V4_09_ACCEPTED_HEAD_PROMOTION_VALIDATION_R1",
+        "current_data_head": {
+          "bytes": 16890,
+          "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+          "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+        },
+        "current_data_head_date": "2026-09-30",
+        "current_runtime_external_acceptance": "PENDING_INDEPENDENT_EXTERNAL_AUDIT",
+        "current_runtime_matches_accepted_implementation": false,
+        "global_head": {
+          "byte_count": 8574,
+          "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+          "sha256": "529c532bd5553ace00fa4813aef07979cfce4e1f18fa5ea66f38fcddd8ed16cb"
+        },
+        "historical_data_head_resolution": "EXPLICIT_EXACT_20260924_ORIGINAL_BYTE_ARCHIVE",
+        "production_authorization": false,
+        "protected_head_bindings": [
+          {
+            "byte_count": 2478,
+            "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+            "sha256": "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0"
+          },
+          {
+            "byte_count": 602,
+            "path": "data/v4/V4_DEV_BASELINE_HEAD.json",
+            "sha256": "45695460b0147c6ada12e0ebd8e5070ac0a45eebea26603ff5a3daddc4dd5094"
+          },
+          {
+            "byte_count": 2151,
+            "path": "data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json",
+            "sha256": "d6374a73b8084ccd383cbb4f75428ed91176e91cc09d87c3329041d57c5bd9ed"
+          }
+        ],
+        "status": "PASS",
+        "validation_scope": "ACCEPTED_PUBLICATION_HISTORY_ONLY"
+      },
+      "thread_id": 41388,
+      "which": 9
+    },
+    {
+      "result": {
+        "business_reacceptance_performed": false,
+        "candidate_sha256": "ad9fc4643652feb3684223817f2e9c300167d128e2e8a07179e86f65094fd1e1",
+        "checks": {
+          "P01_schema": "PASS",
+          "P02_parent_exact": "PASS",
+          "P03_implementation_exact": "PASS",
+          "P04_seal_descendant": "PASS",
+          "P05_external_exact": "PASS",
+          "P06_CONTRACT_FREEZE": "PASS",
+          "P07_manifest_exact": "PASS",
+          "P08_INDEPENDENT_POSTCHECK": "PASS",
+          "P09_MODEL_BOUNDARY_ACCEPTANCE": "PASS",
+          "P10_INPUT_PROVENANCE_ACCEPTANCE": "PASS",
+          "P11_CONTROLLED_PUBLISHER_ACCEPTANCE": "PASS",
+          "P12_SCHEMA_MIGRATION_RECEIPT": "PASS",
+          "P13_clean_regression_exact": "PASS",
+          "P14_no_symbol_exact": "PASS",
+          "P15_migration_22": "PASS",
+          "P16_migration_23": "PASS",
+          "P17_migration_24": "PASS",
+          "P18_thresholds": "PASS",
+          "P19_protected": "PASS",
+          "P20_protected": "PASS",
+          "P21_protected": "PASS",
+          "P22_audits_open": "PASS",
+          "P23_permissions_false": "PASS",
+          "P24_idempotent_and_global_lineage": "PASS",
+          "P25_clean_detached": "PASS"
+        },
+        "contract_id": "V4_10_PROMOTION_VALIDATOR_R1",
+        "current_data_head": {
+          "bytes": 16890,
+          "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+          "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+        },
+        "current_data_head_date": "2026-09-30",
+        "historical_data_head_resolution": "EXPLICIT_EXACT_20260924_ORIGINAL_BYTE_ARCHIVE",
+        "production_authorization": false,
+        "status": "PASS",
+        "validation_scope": "ACCEPTED_PUBLICATION_HISTORY_ONLY",
+        "validator_bindings": [
+          {
+            "byte_count": 9147,
+            "path": "scripts/validate_v4_10_promotion_r1.py",
+            "sha256": "ff5514a357d55662ef89a83b5234d4b9feee8b81d629b884c1d452c7966a26cd"
+          },
+          {
+            "byte_count": 2966,
+            "path": "scripts/promote_v4_10_accepted_head_r1.py",
+            "sha256": "a1b8b439ed469d92e26cd7fd49ea7dfa6673ad9f7b87caead41ba423ec206ef4"
+          }
+        ]
+      },
+      "thread_id": 28960,
+      "which": 10
+    },
+    {
+      "result": {
+        "candidate_sha256": "ad9fc4643652feb3684223817f2e9c300167d128e2e8a07179e86f65094fd1e1",
+        "checks": {
+          "P01_schema": "PASS",
+          "P02_parent_exact": "PASS",
+          "P03_implementation_exact": "PASS",
+          "P04_seal_descendant": "PASS",
+          "P05_external_exact": "PASS",
+          "P06_CONTRACT_FREEZE": "PASS",
+          "P07_manifest_exact": "PASS",
+          "P08_INDEPENDENT_POSTCHECK": "PASS",
+          "P09_MODEL_BOUNDARY_ACCEPTANCE": "PASS",
+          "P10_INPUT_PROVENANCE_ACCEPTANCE": "PASS",
+          "P11_CONTROLLED_PUBLISHER_ACCEPTANCE": "PASS",
+          "P12_SCHEMA_MIGRATION_RECEIPT": "PASS",
+          "P13_clean_regression_exact": "PASS",
+          "P14_no_symbol_exact": "PASS",
+          "P15_migration_22": "PASS",
+          "P16_migration_23": "PASS",
+          "P17_migration_24": "PASS",
+          "P18_thresholds": "PASS",
+          "P19_protected": "FAIL",
+          "P20_protected": "PASS",
+          "P21_protected": "PASS",
+          "P22_audits_open": "PASS",
+          "P23_permissions_false": "PASS",
+          "P24_idempotent_and_global_lineage": "PASS",
+          "P25_clean_detached": "PASS"
+        },
+        "contract_id": "V4_10_PROMOTION_VALIDATOR_R1",
+        "status": "FAIL",
+        "validator_bindings": [
+          {
+            "byte_count": 9147,
+            "path": "scripts/validate_v4_10_promotion_r1.py",
+            "sha256": "ff5514a357d55662ef89a83b5234d4b9feee8b81d629b884c1d452c7966a26cd"
+          },
+          {
+            "byte_count": 2966,
+            "path": "scripts/promote_v4_10_accepted_head_r1.py",
+            "sha256": "a1b8b439ed469d92e26cd7fd49ea7dfa6673ad9f7b87caead41ba423ec206ef4"
+          }
+        ]
+      },
+      "thread_id": 45464,
+      "which": 0
+    }
+  ],
+  "current_data_head_date": "2026-09-30",
+  "distinct_threads": 3,
+  "global_module_ROOT_unchanged": true,
+  "negative_path_proofs": [
+    {
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "reason": "PUBLICATION_ARCHIVE_HASH_MISMATCH",
+      "result": "REJECTED",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "path": "../outside.json",
+      "reason": "PUBLICATION_VIEW_PATH_INVALID",
+      "result": "REJECTED",
+      "sha256": null
+    },
+    {
+      "path": "data/v4/../../outside.json",
+      "reason": "PUBLICATION_VIEW_PATH_INVALID",
+      "result": "REJECTED",
+      "sha256": null
+    },
+    {
+      "path": "C:/outside.json",
+      "reason": "PUBLICATION_VIEW_PATH_INVALID",
+      "result": "REJECTED",
+      "sha256": null
+    }
+  ],
+  "old_outputs": {
+    "V4_09": {
+      "accepted_head": {
+        "byte_count": 11474,
+        "path": "data/v4/V4_09_ACCEPTED_HEAD.json",
+        "sha256": "641ef9e2e6fe8f461a9b765262e739791a6d3fdd220b0eff7947e2690de3a87d"
+      },
+      "business_reacceptance_performed": false,
+      "checks": {
+        "accepted_child_stage_exact": true,
+        "accepted_evidence_exact": true,
+        "accepted_identity": true,
+        "all_candidate_bindings_exact": true,
+        "amended_upstream_exact": true,
+        "artifact_exact": true,
+        "artifact_exact_binding": true,
+        "audited_ancestor": true,
+        "audits_preserved": true,
+        "canonical_evidence_set": true,
+        "capabilities_exact": true,
+        "evidence_pass": true,
+        "external_exact": true,
+        "global_binding": true,
+        "implementation_exact": true,
+        "no_symbol_pass": true,
+        "parent_exact": true,
+        "permissions_false": true,
+        "promotion_idempotent": true,
+        "protected_unchanged": true,
+        "runtime_contracts_match_audited_commit": true,
+        "upstream_exact": true
+      },
+      "contract_id": "V4_09_ACCEPTED_HEAD_PROMOTION_VALIDATION_R1",
+      "current_data_head": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "current_data_head_date": "2026-09-30",
+      "current_runtime_external_acceptance": "PENDING_INDEPENDENT_EXTERNAL_AUDIT",
+      "current_runtime_matches_accepted_implementation": false,
+      "global_head": {
+        "byte_count": 8574,
+        "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+        "sha256": "529c532bd5553ace00fa4813aef07979cfce4e1f18fa5ea66f38fcddd8ed16cb"
+      },
+      "historical_data_head_resolution": "EXPLICIT_EXACT_20260924_ORIGINAL_BYTE_ARCHIVE",
+      "production_authorization": false,
+      "protected_head_bindings": [
+        {
+          "byte_count": 2478,
+          "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+          "sha256": "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0"
+        },
+        {
+          "byte_count": 602,
+          "path": "data/v4/V4_DEV_BASELINE_HEAD.json",
+          "sha256": "45695460b0147c6ada12e0ebd8e5070ac0a45eebea26603ff5a3daddc4dd5094"
+        },
+        {
+          "byte_count": 2151,
+          "path": "data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json",
+          "sha256": "d6374a73b8084ccd383cbb4f75428ed91176e91cc09d87c3329041d57c5bd9ed"
+        }
+      ],
+      "status": "PASS",
+      "validation_scope": "ACCEPTED_PUBLICATION_HISTORY_ONLY"
+    },
+    "V4_10": {
+      "business_reacceptance_performed": false,
+      "candidate_sha256": "ad9fc4643652feb3684223817f2e9c300167d128e2e8a07179e86f65094fd1e1",
+      "checks": {
+        "P01_schema": "PASS",
+        "P02_parent_exact": "PASS",
+        "P03_implementation_exact": "PASS",
+        "P04_seal_descendant": "PASS",
+        "P05_external_exact": "PASS",
+        "P06_CONTRACT_FREEZE": "PASS",
+        "P07_manifest_exact": "PASS",
+        "P08_INDEPENDENT_POSTCHECK": "PASS",
+        "P09_MODEL_BOUNDARY_ACCEPTANCE": "PASS",
+        "P10_INPUT_PROVENANCE_ACCEPTANCE": "PASS",
+        "P11_CONTROLLED_PUBLISHER_ACCEPTANCE": "PASS",
+        "P12_SCHEMA_MIGRATION_RECEIPT": "PASS",
+        "P13_clean_regression_exact": "PASS",
+        "P14_no_symbol_exact": "PASS",
+        "P15_migration_22": "PASS",
+        "P16_migration_23": "PASS",
+        "P17_migration_24": "PASS",
+        "P18_thresholds": "PASS",
+        "P19_protected": "PASS",
+        "P20_protected": "PASS",
+        "P21_protected": "PASS",
+        "P22_audits_open": "PASS",
+        "P23_permissions_false": "PASS",
+        "P24_idempotent_and_global_lineage": "PASS",
+        "P25_clean_detached": "PASS"
+      },
+      "contract_id": "V4_10_PROMOTION_VALIDATOR_R1",
+      "current_data_head": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "current_data_head_date": "2026-09-30",
+      "historical_data_head_resolution": "EXPLICIT_EXACT_20260924_ORIGINAL_BYTE_ARCHIVE",
+      "production_authorization": false,
+      "status": "PASS",
+      "validation_scope": "ACCEPTED_PUBLICATION_HISTORY_ONLY",
+      "validator_bindings": [
+        {
+          "byte_count": 9147,
+          "path": "scripts/validate_v4_10_promotion_r1.py",
+          "sha256": "ff5514a357d55662ef89a83b5234d4b9feee8b81d629b884c1d452c7966a26cd"
+        },
+        {
+          "byte_count": 2966,
+          "path": "scripts/promote_v4_10_accepted_head_r1.py",
+          "sha256": "a1b8b439ed469d92e26cd7fd49ea7dfa6673ad9f7b87caead41ba423ec206ef4"
+        }
+      ]
+    }
+  },
+  "preserved_validator_bindings": [
+    {
+      "bytes": 10649,
+      "path": "scripts/promote_v4_09_accepted_head.py",
+      "sha256": "f3275aa4d8056a15db51a081980e629e166a2f582b3627457ee6df4cabcf664b"
+    },
+    {
+      "bytes": 9147,
+      "path": "scripts/validate_v4_10_promotion_r1.py",
+      "sha256": "ff5514a357d55662ef89a83b5234d4b9feee8b81d629b884c1d452c7966a26cd"
+    },
+    {
+      "bytes": 2138,
+      "path": "src/workbench_analysis/dm01_publication_history_reader_v1.py",
+      "sha256": "51729be1ad211080a73f9c071a9142370e3ba281eadc3c1eb4d7969a7cd7572d"
+    }
+  ],
+  "production_authorized": false,
+  "status": "PASS_HISTORY_ONLY_EXACT_PARITY",
+  "wrapper_binding": {
+    "bytes": 4693,
+    "path": "src/workbench_analysis/dm01_publication_history_reader_v2.py",
+    "sha256": "8c4c74c3fa61d1f6c4664fc143afcae07a803345ae5be3536af39b8188ac828c"
+  },
+  "wrong_hash_outputs": {
+    "new": {
+      "business_reacceptance_performed": false,
+      "candidate_sha256": "ad9fc4643652feb3684223817f2e9c300167d128e2e8a07179e86f65094fd1e1",
+      "checks": {
+        "P01_schema": "PASS",
+        "P02_parent_exact": "PASS",
+        "P03_implementation_exact": "PASS",
+        "P04_seal_descendant": "PASS",
+        "P05_external_exact": "PASS",
+        "P06_CONTRACT_FREEZE": "PASS",
+        "P07_manifest_exact": "PASS",
+        "P08_INDEPENDENT_POSTCHECK": "PASS",
+        "P09_MODEL_BOUNDARY_ACCEPTANCE": "PASS",
+        "P10_INPUT_PROVENANCE_ACCEPTANCE": "PASS",
+        "P11_CONTROLLED_PUBLISHER_ACCEPTANCE": "PASS",
+        "P12_SCHEMA_MIGRATION_RECEIPT": "PASS",
+        "P13_clean_regression_exact": "PASS",
+        "P14_no_symbol_exact": "PASS",
+        "P15_migration_22": "PASS",
+        "P16_migration_23": "PASS",
+        "P17_migration_24": "PASS",
+        "P18_thresholds": "PASS",
+        "P19_protected": "FAIL",
+        "P20_protected": "PASS",
+        "P21_protected": "PASS",
+        "P22_audits_open": "PASS",
+        "P23_permissions_false": "PASS",
+        "P24_idempotent_and_global_lineage": "FAIL",
+        "P25_clean_detached": "PASS"
+      },
+      "contract_id": "V4_10_PROMOTION_VALIDATOR_R1",
+      "current_data_head": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "current_data_head_date": "2026-09-30",
+      "historical_data_head_resolution": "EXPLICIT_EXACT_20260924_ORIGINAL_BYTE_ARCHIVE",
+      "production_authorization": false,
+      "status": "FAIL",
+      "validation_scope": "ACCEPTED_PUBLICATION_HISTORY_ONLY",
+      "validator_bindings": [
+        {
+          "byte_count": 9147,
+          "path": "scripts/validate_v4_10_promotion_r1.py",
+          "sha256": "ff5514a357d55662ef89a83b5234d4b9feee8b81d629b884c1d452c7966a26cd"
+        },
+        {
+          "byte_count": 2966,
+          "path": "scripts/promote_v4_10_accepted_head_r1.py",
+          "sha256": "a1b8b439ed469d92e26cd7fd49ea7dfa6673ad9f7b87caead41ba423ec206ef4"
+        }
+      ]
+    },
+    "old": {
+      "business_reacceptance_performed": false,
+      "candidate_sha256": "ad9fc4643652feb3684223817f2e9c300167d128e2e8a07179e86f65094fd1e1",
+      "checks": {
+        "P01_schema": "PASS",
+        "P02_parent_exact": "PASS",
+        "P03_implementation_exact": "PASS",
+        "P04_seal_descendant": "PASS",
+        "P05_external_exact": "PASS",
+        "P06_CONTRACT_FREEZE": "PASS",
+        "P07_manifest_exact": "PASS",
+        "P08_INDEPENDENT_POSTCHECK": "PASS",
+        "P09_MODEL_BOUNDARY_ACCEPTANCE": "PASS",
+        "P10_INPUT_PROVENANCE_ACCEPTANCE": "PASS",
+        "P11_CONTROLLED_PUBLISHER_ACCEPTANCE": "PASS",
+        "P12_SCHEMA_MIGRATION_RECEIPT": "PASS",
+        "P13_clean_regression_exact": "PASS",
+        "P14_no_symbol_exact": "PASS",
+        "P15_migration_22": "PASS",
+        "P16_migration_23": "PASS",
+        "P17_migration_24": "PASS",
+        "P18_thresholds": "PASS",
+        "P19_protected": "FAIL",
+        "P20_protected": "PASS",
+        "P21_protected": "PASS",
+        "P22_audits_open": "PASS",
+        "P23_permissions_false": "PASS",
+        "P24_idempotent_and_global_lineage": "FAIL",
+        "P25_clean_detached": "PASS"
+      },
+      "contract_id": "V4_10_PROMOTION_VALIDATOR_R1",
+      "current_data_head": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "current_data_head_date": "2026-09-30",
+      "historical_data_head_resolution": "EXPLICIT_EXACT_20260924_ORIGINAL_BYTE_ARCHIVE",
+      "production_authorization": false,
+      "status": "FAIL",
+      "validation_scope": "ACCEPTED_PUBLICATION_HISTORY_ONLY",
+      "validator_bindings": [
+        {
+          "byte_count": 9147,
+          "path": "scripts/validate_v4_10_promotion_r1.py",
+          "sha256": "ff5514a357d55662ef89a83b5234d4b9feee8b81d629b884c1d452c7966a26cd"
+        },
+        {
+          "byte_count": 2966,
+          "path": "scripts/promote_v4_10_accepted_head_r1.py",
+          "sha256": "a1b8b439ed469d92e26cd7fd49ea7dfa6673ad9f7b87caead41ba423ec206ef4"
+        }
+      ]
+    }
+  }
+}

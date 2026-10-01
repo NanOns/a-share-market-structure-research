@@ -1,0 +1,42 @@
+{
+  "external_acceptance": false,
+  "issues": [
+    {
+      "id": "CURRENT_FACT_DATE",
+      "remediation": "Enforce exact target trade_date for current facts"
+    },
+    {
+      "id": "WHOLE_D0_D2_BINDING",
+      "remediation": "Bind complete canonical D0 row digest plus exact primary scenario"
+    },
+    {
+      "id": "FROZEN_WRAPPER_TAMPER",
+      "remediation": "Rebuild frozen head with all original scope/calendar/row guards"
+    },
+    {
+      "id": "D2_PARENT_SPLIT",
+      "remediation": "Current reducer prior payload must equal the frozen prior-session row"
+    },
+    {
+      "id": "PUBLICATION_CUTOFF_FUTURE",
+      "remediation": "Reject cutoff later than actual current UTC"
+    },
+    {
+      "id": "CANDIDATE_DB_BOUNDARY",
+      "remediation": "Controlled publisher role; exact parent row; commit-time completeness; append-only"
+    }
+  ],
+  "old_draft_archives": {
+    "bytes": 1691,
+    "path": "reports/v4_11/candidate_r1/R1_DRAFT_BINDING_ARCHIVE_R1.json",
+    "sha256": "cd8becdc7771bc43abed377d412006f5fb224bbe79e6d6dbe63ff2cc2e186429"
+  },
+  "regression": {
+    "bytes": 4654,
+    "path": "reports/v4_11/candidate_r1/TARGETED_FINAL_R3.xml",
+    "sha256": "2ca585c589d9f243ce89d9661dac572b4baa9e3dc4943cf2cc41a3035f6bc54f"
+  },
+  "reviewer": "/root/a03_a04_a07",
+  "scope": "PEER_CODE_REVIEW_NOT_INDEPENDENT_EXTERNAL_ACCEPTANCE",
+  "status": "PASS_ENGINEERING_REMEDIATION_ONLY"
+}

@@ -1,0 +1,16 @@
+{
+  "contract_id": "A03_FORWARD_PIT_PAYLOAD_GOVERNANCE_R2_1",
+  "version": "2.1.0",
+  "storage_contract": "config/a03_forward_pit_ledger_r2.json",
+  "payload_format": "HASH_BOUND_JSON_ARTIFACT_WITH_CONTRACT_ID_ROWS_TRADE_DATE",
+  "schema_detector": "ACTUAL_BYTES_CONTRACT_ID_AND_ROW_SHAPE_CROSS_CHECK_CAPTURE_ENVELOPE_METADATA",
+  "target_detector": "ACTUAL_PAYLOAD_TRADE_DATE_AND_ROW_DATES; NEVER_TRUST_ENVELOPE_ONLY",
+  "unknown_payload": "APPEND_EXPLICIT_SCHEMA_DRIFT_PARTIAL; NO_FORMAL_READINESS",
+  "source_family_gate": "REJECT_UNDECLARED_FAMILY",
+  "daily_command": "E:/python/python.exe scripts/run_a03_forward_pit_daily_r2_1.py --capture-envelope <actual-envelope.json>",
+  "old_r2_entry": "HISTORICAL_ENGINEERING_ONLY; NOT_CURRENT_GENERIC_DAILY_ENTRY",
+  "formal_consumer_enabled": false,
+  "accepted_owner_registered": false,
+  "external_acceptance": null,
+  "head_write_permission": false
+}

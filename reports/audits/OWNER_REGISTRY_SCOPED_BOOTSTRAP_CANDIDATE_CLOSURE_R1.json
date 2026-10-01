@@ -1,0 +1,60 @@
+{
+  "acceptance_scope": "Seven fields independently bounded to exact 2026-09-30 accepted artifacts. Candidate registration is not inherited external owner acceptance.",
+  "baseline_commit": "bc3e398efb4f4a05c20973ff3cb335a6b101ac87",
+  "blockers": [
+    "Independent external owner review; active global registry remains R3 and bootstrap production gate stays OPEN"
+  ],
+  "candidate": {
+    "bytes": 22814,
+    "path": "data/v4/V4_SOURCE_AUTHORITY_ACCEPTED_OWNER_REGISTRY_R4_CANDIDATE.json",
+    "sha256": "f3bec8e735b5ebd39305f9827cf52c2f7d3afd3d2f9424dec549f59e9d4ff73b"
+  },
+  "data_head_action": "KEEP",
+  "execution_result": "COMPLETE_SCOPED_CANDIDATE",
+  "external_acceptance": "PENDING_INDEPENDENT_EXTERNAL_REAUDIT",
+  "focus_cutover": false,
+  "global_mandatory_adoption": false,
+  "migration_required": false,
+  "next_stage": "INDEPENDENT_EXTERNAL_REAUDIT",
+  "production": false,
+  "runtime_bindings": [
+    {
+      "bytes": 6288,
+      "path": "src/workbench_analysis/source_authority_owner_bootstrap_r1.py",
+      "sha256": "2dbf22cf1a456ab7ce47a8732d9bc8005650d4410d2dbc6c177051abb598db66"
+    },
+    {
+      "bytes": 6325,
+      "path": "scripts/build_owner_bootstrap_candidate_r1.py",
+      "sha256": "775d7a1d3a4ea1d1d85f86ddb93a8541abb369fa5a34ad493aeb6e0a0c93f080"
+    }
+  ],
+  "shadow": false,
+  "stage_contract": {
+    "bytes": 2553,
+    "path": "docs/evidence/next_round_r1/V4_OWNER_REGISTRY_SCOPED_BOOTSTRAP_TASK_R1_20261001.md",
+    "sha256": "c60c8d1b070d22131f8c714db19a005acb1a67ac07310105b18427772d8582de"
+  },
+  "stage_entry": {
+    "bytes": 430435,
+    "path": "reports/next_round_r1/BATCH_STAGE_ENTRY_R1.json",
+    "sha256": "b8036e0d3cb042422ab757bf1c40945ad8a54ce45aad5e2b56e77895bbc31caa"
+  },
+  "stage_head_action": "KEEP",
+  "status": "OWNER_REGISTRY_SCOPED_BOOTSTRAP_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
+  "targeted_regression": {
+    "failures": 0,
+    "passed": 75,
+    "receipt": {
+      "bytes": 10804,
+      "path": "reports/audits/OWNER_A06_READER_DI_TARGETED_REGRESSION_R1.xml",
+      "sha256": "44ae93a30b48d19a937f06fe4eb10437c0dbd4391b2f2b5fb34387215371c02d"
+    },
+    "skipped": 0
+  },
+  "validation": {
+    "active_global_trust_root": false,
+    "fields": 7,
+    "status": "PASS_SCOPED_CANDIDATE_ONLY"
+  }
+}

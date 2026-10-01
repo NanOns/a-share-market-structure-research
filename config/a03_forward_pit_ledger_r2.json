@@ -1,0 +1,20 @@
+{
+  "contract_id": "A03_FORWARD_PIT_OBSERVATION_LEDGER_R2",
+  "version": "2.0.0",
+  "candidate_only": true,
+  "starting_accepted_data_trade_date": "2026-09-30",
+  "publication_identity": "SHA256_CANONICAL_FULL_CAPTURE_ENVELOPE_AND_VERIFIED_SOURCE_BINDINGS",
+  "first_available_at": "ACTUAL_CAPTURE_RECEIVED_AT_NO_TARGET_DATE_BACKFILL",
+  "same_day_revision": "APPEND_NEW_IMMUTABLE_PUBLICATION_REBUILD_SEPARATE_LATEST_PROJECTION",
+  "retry_identity": "IMMUTABLE_CAPTURE_ID_AND_CAPTURE_ENVELOPE_DIGEST",
+  "recovery": "VALIDATE_ALL_DURABLE_PUBLICATIONS_AND_SOURCE_BYTES_REBUILD_LATEST",
+  "partial_failure": "APPEND_EXPLICIT_PARTIAL_WITH_DETECTORS_NEVER_GRANT_FORMAL_READINESS",
+  "detectors": ["MISSING_EXPECTED_SOURCE", "LATE_SOURCE", "SOURCE_REVISION", "SCHEMA_DRIFT", "DUPLICATE_CAPTURE", "TARGET_DATE_MISMATCH", "CALENDAR_GAP", "IDENTITY_GAP"],
+  "automation": "E:/python/python.exe scripts/run_a03_forward_pit_daily_r2.py --capture-envelope <actual-receipt-envelope.json>",
+  "automation_scheduling": "SOURCE_CAPTURE_COMPLETION_CALLER; NO_BACKGROUND_TASK_CREATED",
+  "accepted_consumers": [],
+  "head_write_permission": false,
+  "production": false,
+  "shadow": false,
+  "focus_cutover": false
+}

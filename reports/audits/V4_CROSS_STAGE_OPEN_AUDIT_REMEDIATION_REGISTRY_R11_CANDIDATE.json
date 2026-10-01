@@ -1,0 +1,120 @@
+{
+  "accepted_parent_registry": {
+    "bytes": 93135,
+    "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json",
+    "sha256": "14002b12e89920ee2d57fe1328a53c03f21ebb99842acfcb5c53b44d3f402174"
+  },
+  "active_registry_changed": false,
+  "baseline_commit": "bc3e398efb4f4a05c20973ff3cb335a6b101ac87",
+  "contract_id": "V4_CROSS_STAGE_CANDIDATE_REGISTRY_R11",
+  "data_head_action": "KEEP",
+  "entries": {
+    "A02": {
+      "execution_result": "COMPLETE_ENGINEERING_CANDIDATE",
+      "external_conditions": "RECONSTRUCTED_CORRECTED_CANDIDATE_PUBLICATIONS_NOT_ACCEPTED",
+      "handoff": {
+        "bytes": 7676,
+        "path": "reports/next_round_r1/A02_CANDIDATE_EXTERNAL_REAUDIT_HANDOFF_R1.json",
+        "sha256": "58757bbc4ea19a674dae8679aff6241b563683646335f9371dccbe7d79fd87eb"
+      },
+      "status": "CANDIDATE_READY_FOR_EXTERNAL_REAUDIT"
+    },
+    "A03": {
+      "execution_result": "ENGINEERING_AND_CURRENT_REAL_OBSERVATION_COMPLETE",
+      "external_conditions": "PARTIAL_AWAITING_FUTURE_REAL_OBSERVATIONS_NOT_A_BATCH_BLOCKER",
+      "handoff": {
+        "bytes": 3154,
+        "path": "reports/audits/A03_R2_1_CANDIDATE_EXTERNAL_REAUDIT_HANDOFF_R1.json",
+        "sha256": "4d8b01d699b6bb4f1de5ad318ed017b42a25fdc27a684da6a629cd66ac2e4e35"
+      },
+      "status": "CANDIDATE_READY_FOR_EXTERNAL_REAUDIT"
+    },
+    "A04": {
+      "execution_result": "ENGINEERING_AND_CURRENT_REAL_OBSERVATION_COMPLETE",
+      "external_conditions": "BLOCKED_FORMAL_THRESHOLD_AND_HISTORICAL_H21_MEMBERSHIP_AUTHORITY",
+      "handoff": {
+        "bytes": 2410,
+        "path": "reports/audits/A04_R2_CANDIDATE_EXTERNAL_REAUDIT_HANDOFF_R1.json",
+        "sha256": "f7a25e2b7849adaaa3994b1ca6d38fd8bf4c5696b6388b4e5c1e6e57af167124"
+      },
+      "status": "CANDIDATE_READY_FOR_EXTERNAL_REAUDIT"
+    },
+    "A05": {
+      "execution_result": "COMPLETE_ENGINEERING_CANDIDATE",
+      "external_conditions": "CURRENT_SNAPSHOT_ONLY_LEGACY_BINDING_NOT_EXTERNAL_ACCEPTED",
+      "handoff": {
+        "bytes": 7335,
+        "path": "reports/next_round_r1/A05_CANDIDATE_EXTERNAL_REAUDIT_HANDOFF_R1.json",
+        "sha256": "4fa6ae63369acb3e1513cf95dea6d777ea441455682acf03966245f82dfd9cd2"
+      },
+      "status": "CANDIDATE_READY_FOR_EXTERNAL_REAUDIT"
+    },
+    "A06": {
+      "execution_result": "PARTIAL",
+      "external_conditions": [
+        "Official precision is documented; generation rounding is not documented, so no numeric tolerance can be derived",
+        "Fresh official documentation GET returned 405; prior official exact-byte capture retained",
+        "Provider circulating-shares denominator external acceptance remains pending"
+      ],
+      "handoff": {
+        "bytes": 2686,
+        "path": "reports/audits/A06_R2_CANDIDATE_CLOSURE_R1.json",
+        "sha256": "1f6f132d133ec21c2eaa2a2595363c2dfc1881bd89bd8db1d952fa5b65e04fc4"
+      },
+      "status": "CANDIDATE_READY_FOR_EXTERNAL_REAUDIT"
+    },
+    "A07": {
+      "execution_result": "ENGINEERING_AND_CURRENT_REAL_OBSERVATION_COMPLETE",
+      "external_conditions": "PERMANENTLY_BLOCKED_PRE_CAPTURE_AS_RECORDED",
+      "handoff": {
+        "bytes": 2503,
+        "path": "reports/audits/A07_R2_CANDIDATE_EXTERNAL_REAUDIT_HANDOFF_R1.json",
+        "sha256": "87e3d121cbba2df83eef9034d0f4f8158c46bf19f02ba71d1b63643172df867b"
+      },
+      "status": "CANDIDATE_READY_FOR_EXTERNAL_REAUDIT"
+    },
+    "OWNER": {
+      "execution_result": "COMPLETE_SCOPED_CANDIDATE",
+      "external_conditions": [
+        "Independent external owner review; active global registry remains R3 and bootstrap production gate stays OPEN"
+      ],
+      "handoff": {
+        "bytes": 2260,
+        "path": "reports/audits/OWNER_REGISTRY_SCOPED_BOOTSTRAP_CANDIDATE_CLOSURE_R1.json",
+        "sha256": "f20ea2ac99c67d0521af157d2e579d367e4f445815284d3883813a7367e856a8"
+      },
+      "status": "CANDIDATE_READY_FOR_EXTERNAL_REAUDIT"
+    },
+    "READER_DI": {
+      "execution_result": "COMPLETE_HISTORY_ONLY_CANDIDATE",
+      "external_conditions": [
+        "Independent external DI hardening review; no production adoption or history acceptance semantic change"
+      ],
+      "handoff": {
+        "bytes": 1807,
+        "path": "reports/audits/HISTORICAL_PUBLICATION_READER_DI_CANDIDATE_CLOSURE_R1.json",
+        "sha256": "a53448e88f35a47ba9a28f7f5dcc991f9c4baf0d72829b2f88ee0719d9992a9f"
+      },
+      "status": "CANDIDATE_READY_FOR_EXTERNAL_REAUDIT"
+    },
+    "V4-11": {
+      "execution_result": "COMPLETE_ENGINEERING_CANDIDATE",
+      "external_conditions": [],
+      "handoff": {
+        "bytes": 5824,
+        "path": "reports/v4_11/candidate_r1/V4_11_CANDIDATE_EXTERNAL_REAUDIT_HANDOFF_R2.json",
+        "sha256": "31bf4d1a53f72b1a2bc761aa6e8a7706beca3991d889631a60dae3e829c7f356"
+      },
+      "status": "CANDIDATE_READY_FOR_EXTERNAL_REAUDIT"
+    }
+  },
+  "external_acceptance": false,
+  "permissions": {
+    "focus": false,
+    "global_mandatory_adoption": false,
+    "production": false,
+    "shadow": false
+  },
+  "stage_head_action": "KEEP",
+  "status": "CANDIDATE_READY_FOR_EXTERNAL_REAUDIT"
+}

@@ -1,0 +1,163 @@
+{
+  "accepted": false,
+  "authority": [
+    {
+      "bytes": 5102,
+      "path": "data/v4/V4_10_ACCEPTED_HEAD.json",
+      "sha256": "ad9fc4643652feb3684223817f2e9c300167d128e2e8a07179e86f65094fd1e1"
+    },
+    {
+      "bytes": 6909,
+      "path": "config/v4_11_entry_contracts_r1.json",
+      "sha256": "460057a74d15b127d58204639a40697d5a6048949c6eba74f2dfeb54b99e9f2f"
+    },
+    {
+      "byte_count": 224998,
+      "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+      "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+    },
+    {
+      "bytes": 16890,
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+    }
+  ],
+  "clean_joint": "reports/next_round_r1/BATCH_CLEAN_CHECKOUT_R1.json",
+  "contract_id": "V4_11_CANDIDATE_HANDOFF_V1",
+  "contracts": [
+    {
+      "bytes": 2700,
+      "path": "config/v4_11_confirmation_detector_contract_r1.json",
+      "sha256": "49bd7b353fdf8a94eaa6e3ae8ae63270f3a65a51dccf5c9b04ef3f2b292e7e3a"
+    },
+    {
+      "bytes": 45921,
+      "path": "config/v4_11_legacy_extraction_manifest_r1.json",
+      "sha256": "a1c48ea466d0d4853a91d0574b44aa75cf7f85ce40eb80fcd0f2d9250061e90e"
+    },
+    {
+      "bytes": 921,
+      "path": "config/v4_11_confirmation_machine_ast_v1.json",
+      "sha256": "b6985ce8ff2498c115370b85690ba13538cdbb3339308fc77b6007e13c943062"
+    },
+    {
+      "bytes": 853,
+      "path": "config/v4_11_confirmation_parameter_set_v1.json",
+      "sha256": "34d61ecb766b523e9cec1c2178be3385968e6a9fc9b273025b35c3646117b1fd"
+    }
+  ],
+  "data_head_promotion": false,
+  "engineering_completed": [
+    "EXACT_LEGACY_AST",
+    "D0_CANDIDATE",
+    "CONTROLLED_D2_PROOF",
+    "FROZEN_PRIOR_EVENTS",
+    "APPEND_ONLY_PERSISTENCE",
+    "RETRY_CONSUMER_ROLLBACK"
+  ],
+  "engineering_review": {
+    "bytes": 1404,
+    "path": "reports/v4_11/candidate_r1/ENGINEERING_REVIEW_REMEDIATION_R1.json",
+    "sha256": "66ebfa134972a056b535cc883ef28da980a66ed1e0353dde742620f399a79419"
+  },
+  "event_availability": {
+    "bytes": 105613,
+    "path": "data/v4/confirmation_candidates_r1/STATE_EVENT_20260930_AVAILABILITY_R1.json.gz",
+    "sha256": "cd212423945d9a2b949e742fe8669a9ccf433ea8484136102667007c13ca4bf7"
+  },
+  "external_limits": [
+    "NO_TARGET_ACCEPTED_COMMON_SAFETY_EPISODE_FACT_PRODUCERS",
+    "AMOUNT_A_DISABLED",
+    "CURRENT_LOO_DIAGNOSTIC_ONLY",
+    "REAL_D2_ADOPTION_REQUIRES_NEXT_EXTERNAL_ACCEPTANCE"
+  ],
+  "full_market": {
+    "bytes": 4896,
+    "path": "reports/v4_11/candidate_r1/FULL_MARKET_SUMMARY_R1.json",
+    "sha256": "a5046e767dbc4c132f869983a84d8a3f765cc19ef8fc4ce11cea25fe78dbb163"
+  },
+  "golden_expectations": {
+    "bytes": 1439,
+    "path": "reports/v4_11/candidate_r1/INDEPENDENT_GOLDEN_EXPECTATIONS_R2.json",
+    "sha256": "15cdde688d06b50044057df987cdd034436e67e78322e98ef179daa34338f69d"
+  },
+  "independent_oracle": {
+    "bytes": 21951,
+    "path": "reports/v4_11/candidate_r1/INDEPENDENT_SOURCE_AST_ORACLE_R1.json",
+    "sha256": "ffa63dbdbaf3e78692b5a6447ec87db450145a54fb178b31e2209bf8a50a18a7"
+  },
+  "migration": {
+    "bytes": 8181,
+    "path": "src/workbench_db/migrations/v4_postgres/026_confirmation_events_candidate_r1.sql",
+    "sha256": "5c2499ed7b606fdb72cc52db0e5af3bd67ed672480ee37840297a448323ea8e4"
+  },
+  "migration_allocator": {
+    "bytes": 5994,
+    "path": "config/v4_migration_allocation_registry_r2.json",
+    "sha256": "20f51ca7dca09f0f5be8a55968088873a98d975605bb399f01ad0faa8414efb2"
+  },
+  "next_stage": "STOP_WAIT_FOR_INDEPENDENT_EXTERNAL_REAUDIT",
+  "permissions": {
+    "focus": false,
+    "production": false,
+    "shadow": false
+  },
+  "real_full_market_readback": "PASS_EXACT_ACCEPTED_SOURCE_PROJECTION_AND_D0_RECOMPUTATION",
+  "rollback": {
+    "bytes": 518,
+    "path": "src/workbench_db/migrations/v4_postgres_rollbacks/026_confirmation_events_candidate_r1.sql",
+    "sha256": "d4c470f58edc63489a7edba8aa611f87dc85d7d05d246697c438811ef5b47178"
+  },
+  "runtime": [
+    {
+      "bytes": 11102,
+      "path": "src/v4/confirmation.py",
+      "sha256": "e4f6e100289ef064bf25babb1643769011b2b63d302492d994b758a2ee936ffa"
+    },
+    {
+      "bytes": 1526,
+      "path": "src/v4/confirmation_d2_bridge.py",
+      "sha256": "d7e10db0b315dcc832efe54c24a68b9d98f59fc557f2d6631015496a077815d7"
+    },
+    {
+      "bytes": 7567,
+      "path": "src/v4/confirmation_events.py",
+      "sha256": "a647ff5e9eaa4146ff8d08b01e9b4628f545f5485da7db86f751e6586db5b903"
+    },
+    {
+      "bytes": 4409,
+      "path": "src/v4/confirmation_persistence.py",
+      "sha256": "71a18bfbd453c1cc642759eaf88dd0a780c1d9d1292a73c52f26204038df45ad"
+    }
+  ],
+  "same_day_replay": {
+    "bytes": 190020,
+    "path": "reports/v4_11/candidate_r1/SAME_DAY_REVISION_REPLAY_R1.json",
+    "sha256": "dc231d600ae1cee3e6a752fe07ce4057b7541004046420505f1426cc0a1fec6a"
+  },
+  "stage_contract": {
+    "bytes": 6292,
+    "path": "docs/evidence/next_round_r1/V4_11_CONFIRMATION_EVENTS_IMPLEMENTATION_TASK_R1_20261001.md",
+    "sha256": "1fb4994c31cf47e99704e8166d3414cb7a3eaa9024356613e54f4ca01348b5a8"
+  },
+  "stage_head_promotion": false,
+  "status": "V4_11_CONFIRMATION_EVENTS_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
+  "superseded_draft": {
+    "bytes": 4982,
+    "path": "reports/v4_11/candidate_r1/V4_11_CANDIDATE_EXTERNAL_REAUDIT_HANDOFF_R1.json",
+    "sha256": "51b3685bf7fb944ca160c38bfcfe5eb6b71cf601fbe34f1d86b364190a135287"
+  },
+  "targeted_regression": {
+    "bytes": 4654,
+    "path": "reports/v4_11/candidate_r1/TARGETED_FINAL_R3.xml",
+    "sha256": "2ca585c589d9f243ce89d9661dac572b4baa9e3dc4943cf2cc41a3035f6bc54f"
+  },
+  "targeted_summary": {
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "tests": 38
+  },
+  "v4_12_implemented": false,
+  "version": "1.1.0"
+}

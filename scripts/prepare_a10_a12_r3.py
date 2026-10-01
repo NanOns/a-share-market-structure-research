@@ -81,6 +81,13 @@ def main():
         'data/v4/artifact_store/v4_02/V4_02_DATED_ST_STATUS_V1_R6_2_20260926_RECOVERED_R1.jsonl.gz',
         'reports/audits/A12_R2_INDEPENDENT_REAL_SOURCE_ORACLE_R1.json',
         'reports/audits/A12_R2_SOURCE_REVISION_RECOVERY_BINDING_R1.json']
+    receipt_copies={}
+    for path in list(historical_inputs):
+        if path.startswith('reports/v4_02/') and path.endswith('.json'):
+            copied='data/v4/source_evidence/a10_a12_r3/historical/'+Path(path).name
+            atomic_bytes(ROOT/copied,(ROOT/path).read_bytes())
+            receipt_copies[path]=copied
+    historical_inputs=[receipt_copies.get(p,p) for p in historical_inputs]
     # Original pre-R7 normalized status source is bound, not merely the R7 output.
     original=ROOT/'data/v4/artifact_store/v4_02/V4_02_DATED_TRADING_STATUS_R6_2_20260926.jsonl.gz'
     assert original.is_file()
@@ -94,8 +101,8 @@ def main():
             historical_modes=[MODE],source_instance_policy_id=POLICY,role_binding=rule,
             external_authority=authority,supersedes=bind(oldpath),source_bindings=[bind(p) for p in historical_inputs],
             source_instance_representation='HISTORICAL_NORMALIZED_ARCHIVE',first_available_at_target_proven=False,AS_RECORDED=False)
-        primary='reports/v4_02/V4_02_DATED_ST_STATUS_V1_R6_2_20260926.json'
-        recovery='reports/v4_02/V4_02_DATED_ST_STATUS_BOUNDED_RECOVERY_R1_20260926.json'
+        primary=receipt_copies['reports/v4_02/V4_02_DATED_ST_STATUS_V1_R6_2_20260926.json']
+        recovery=receipt_copies['reports/v4_02/V4_02_DATED_ST_STATUS_BOUNDED_RECOVERY_R1_20260926.json']
         receipts=read(primary)['query_receipts']+read(recovery)['retry_receipts']
         revisions={r['trade_date']:'sha256:'+r['normalized_full_market_status_sha256'] for r in receipts if r.get('normalized_full_market_status_sha256')}
         assert len(revisions)==786

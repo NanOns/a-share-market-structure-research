@@ -1,0 +1,36 @@
+{
+  "AS_RECORDED": false,
+  "acceptance": "REAL_SOURCE_DAG_CANDIDATE_ONLY",
+  "accepted_data_head_action": "KEEP",
+  "accepted_stage_head_action": "KEEP",
+  "authority": {
+    "bytes": 8324,
+    "path": "docs/evidence/next_round_r3/V4_R2_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R2_20261002.md",
+    "sha256": "9b630344fa2101786f294fd3234bd275cedd25c73ca380706f56128fbad06d01"
+  },
+  "contract_id": "V4_11_R3C_STAGE_CONTRACT",
+  "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+  "next_stage": "EXTERNAL_REAUDIT_AFTER_COMMIT_PUSH_STOP",
+  "permissions": {
+    "focus": false,
+    "global_mandatory_adoption": false,
+    "production": false,
+    "shadow": false
+  },
+  "r3a_seal": {
+    "bytes": 2139,
+    "path": "reports/v4_11_r3a/R3A_SEALED_PRODUCER_SET_R2.json",
+    "sha256": "8532238a53d52b975d15e0f3efa02f94e35fd60af9c7923810d045a2e09bd284"
+  },
+  "r3b_seal": {
+    "bytes": 2217,
+    "path": "reports/v4_11_r3b/R3B_SEALED_PRODUCER_SET.json",
+    "sha256": "4ccaba49200174c6d38138dcae8c093c16264f69bc2e19f24b507d05472144ec"
+  },
+  "sealed_dependency_gate": "PASS",
+  "stage_task": {
+    "bytes": 2410,
+    "path": "docs/evidence/next_round_r3/V4_11_R3C_REAL_FULL_MARKET_DAG_REPLAY_TASK_20261002.md",
+    "sha256": "3c209f009d1defd76dab77f03e6041b5fcc317930bf21d71b5596fa55e05c831"
+  }
+}

@@ -1,0 +1,158 @@
+{
+  "AS_RECORDED": false,
+  "DataHead": "KEEP",
+  "StageHead": "KEEP",
+  "V4_12_runtime": false,
+  "accepted": false,
+  "accepted_R3A_seal_modified": false,
+  "actual_price_ready_slots_checked": 258659,
+  "all_actual_adjustment_basis_digests_exact": true,
+  "all_actual_coordinate_strings_exact": true,
+  "arithmetic_and_thresholds_changed": false,
+  "audit_item": {
+    "acceptance": "ENGINEERING_ONLY_NOT_EXTERNAL_ACCEPTED",
+    "audit_id": "AUD-R3C-ADJUSTMENT-COORDINATE-EXACTNESS-R1",
+    "disposition": "ENGINEERING_REPAIRED_ACTUAL_SOURCE_IDENTITIES_EXACT_EXTERNAL_ACCEPTANCE_PENDING",
+    "scope": "Signed-zero and Decimal-context precision adjustment identity; independently tracked from current stage gate"
+  },
+  "bindings": {
+    "archive": {
+      "bytes": 4741,
+      "path": "reports/v4_11_r3/superseded/confirmation_d2_upstream_r3.py.attempt_R2",
+      "sha256": "9aa9ed9e8ac8929f2aa91ee24db0aa3cea1c6ca1f55deb8d21a6da6ee76f9bcd"
+    },
+    "final_runtime": {
+      "bytes": 4773,
+      "path": "src/v4/confirmation_d2_upstream_r3.py",
+      "sha256": "dee9ae065b9adbdfc2b6a7f47309712ef0365e7e9470dc8c23ee2de48e211ac2"
+    },
+    "tests": {
+      "bytes": 6321,
+      "path": "tests/v4_11_r3c/test_upstream_source_admission.py",
+      "sha256": "f14ecf34f2ad942cd4fca674efb3a70565db9a7ff0ed4b041475ff74cb22eab8"
+    }
+  },
+  "by_date": {
+    "2026-09-29": {
+      "coordinate_and_basis_identity_all_slots_exact": true,
+      "counts": {
+        "adjustment_basis_digest_mismatches": 0,
+        "entities": 5223,
+        "exact_coordinate_string_mismatches": 0,
+        "price_ready_slots": 129125
+      },
+      "mismatch_examples": [],
+      "per_slot_coordinate_identity_proof_digest": "c15fd063977f2275ba7040c6c374784d04ed8d9056da45f1b095ed3328c22308",
+      "source": {
+        "bytes": 10093859,
+        "path": "data/v4/confirmation_candidates_r3/CALCULATIONS_2026-09-29_R3A_R2.json.gz",
+        "sha256": "7fa6408db472c3d4afbba96b350f67f56a23dc90bd01a3a29cbefc22640c9742"
+      }
+    },
+    "2026-09-30": {
+      "coordinate_and_basis_identity_all_slots_exact": true,
+      "counts": {
+        "adjustment_basis_digest_mismatches": 0,
+        "entities": 5224,
+        "exact_coordinate_string_mismatches": 0,
+        "price_ready_slots": 129534
+      },
+      "mismatch_examples": [],
+      "per_slot_coordinate_identity_proof_digest": "66c8a4e1fbbb35bc0b01f29670c7ebc6126798c9874fe5405a650bd25fc02da9",
+      "source": {
+        "bytes": 10116415,
+        "path": "data/v4/confirmation_candidates_r3/CALCULATIONS_2026-09-30_R3A_R2.json.gz",
+        "sha256": "02ab108afe35cf262b2c892d480f6dbf6c0e9a628b21b8c5dac25b7443199f3c"
+      }
+    }
+  },
+  "captured_at_utc": "2026-10-01T17:46:32.062346+00:00",
+  "contract_id": "V4_11_R3C_COORDINATE_ACTUAL_SOURCE_EQUIVALENCE_R2",
+  "final_targeted_tests": {
+    "counts": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 11
+    },
+    "exit_code": 0,
+    "passed": 11,
+    "runtime": "FINAL_EXACT_CANONICAL_DECIMAL_RUNTIME",
+    "runtime_source": {
+      "bytes": 4773,
+      "path": "src/v4/confirmation_d2_upstream_r3.py",
+      "sha256": "dee9ae065b9adbdfc2b6a7f47309712ef0365e7e9470dc8c23ee2de48e211ac2"
+    },
+    "scope": "ENGINEERING_ONLY_NOT_MARKET_FACT_PUBLICATION_OR_EXTERNAL_ACCEPTANCE",
+    "stderr": "",
+    "stdout": "...........                                                              [100%]\n11 passed in 0.27s\n",
+    "test_source": {
+      "bytes": 6321,
+      "path": "tests/v4_11_r3c/test_upstream_source_admission.py",
+      "sha256": "f14ecf34f2ad942cd4fca674efb3a70565db9a7ff0ed4b041475ff74cb22eab8"
+    },
+    "xml": {
+      "bytes": 2176,
+      "path": "reports/v4_11_r3/V4_11_R3C_UPSTREAM_SOURCE_ADMISSION_FINAL_R2.xml",
+      "sha256": "0216f965e655373dd0049900a98a5eaed6dbb4ca26e680d2675f08175ff81713"
+    }
+  },
+  "fix": "Replace context-sensitive Decimal.normalize with exact state_identity.canonical(Decimal(str(value))) text; preserve current real source coordinate strings and digests",
+  "initial_regression_preserved": {
+    "counts": {
+      "errors": 0,
+      "failures": 2,
+      "skipped": 0,
+      "tests": 11
+    },
+    "exit_code": 1,
+    "passed": 9,
+    "runtime": "ARCHIVED_R2_PRE_REPAIR",
+    "runtime_source": {
+      "bytes": 4741,
+      "path": "reports/v4_11_r3/superseded/confirmation_d2_upstream_r3.py.attempt_R2",
+      "sha256": "9aa9ed9e8ac8929f2aa91ee24db0aa3cea1c6ca1f55deb8d21a6da6ee76f9bcd"
+    },
+    "scope": "ENGINEERING_ONLY_NOT_MARKET_FACT_PUBLICATION_OR_EXTERNAL_ACCEPTANCE",
+    "stderr": "",
+    "stdout": "..FF.......                                                              [100%]\n================================== FAILURES ===================================\n________ test_signed_zero_is_numerically_the_same_additive_coordinate _________\n\ncalculation = {'security_id': 'fixture-upstream-entity', 'trade_date': '2026-09-30', 'window': [{'date': '2026-08-24', 'has_actual_b...8-31', 'has_actual_bar': True, 'raw_actual_bar': True, 'open': 10.22, ...}, ...], 'values': {'rps5_delta3': 0.01}, ...}\n\n    def test_signed_zero_is_numerically_the_same_additive_coordinate(calculation):\n        for index,row in enumerate(calculation[\"window\"]):\n            row[\"add\"] = \"-0.0000\" if index % 2 else \"0.000\"\n        _, evidence = derive(calculation, ROOT)\n>       assert evidence[\"core_factors\"][\"ma20\"][\"unknown_reason\"] is None\nE       AssertionError: assert 'MIXED_ADJUSTMENT_IDENTITY' is None\n\ntests\\v4_11_r3c\\test_upstream_source_admission.py:51: AssertionError\n_ test_distinct_high_precision_coordinates_must_not_be_rounded_into_one_identity _\n\ncalculation = {'security_id': 'fixture-upstream-entity', 'trade_date': '2026-09-30', 'window': [{'date': '2026-08-24', 'has_actual_b...8-31', 'has_actual_bar': True, 'raw_actual_bar': True, 'open': 10.22, ...}, ...], 'values': {'rps5_delta3': 0.01}, ...}\n\n    def test_distinct_high_precision_coordinates_must_not_be_rounded_into_one_identity(calculation):\n        # Both have more than the default Decimal context's 28 significant digits;\n        # they are distinct source coordinates even if binary-float prices coincide.\n        left = \"1.00000000000000000000000000001\"\n        right = \"1.00000000000000000000000000002\"\n        assert Decimal(left) != Decimal(right)\n        for index,row in enumerate(calculation[\"window\"]):\n            row[\"mul\"] = left if index % 2 else right\n        _, evidence = derive(calculation, ROOT)\n>       assert evidence[\"core_factors\"][\"ma20\"][\"value\"] is None\nE       assert 10.825 is None\n\ntests\\v4_11_r3c\\test_upstream_source_admission.py:64: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/v4_11_r3c/test_upstream_source_admission.py::test_signed_zero_is_numerically_the_same_additive_coordinate\nFAILED tests/v4_11_r3c/test_upstream_source_admission.py::test_distinct_high_precision_coordinates_must_not_be_rounded_into_one_identity\n2 failed, 9 passed in 0.27s\n",
+    "test_source": {
+      "bytes": 6321,
+      "path": "tests/v4_11_r3c/test_upstream_source_admission.py",
+      "sha256": "f14ecf34f2ad942cd4fca674efb3a70565db9a7ff0ed4b041475ff74cb22eab8"
+    },
+    "xml": {
+      "bytes": 4075,
+      "path": "reports/v4_11_r3/V4_11_R3C_UPSTREAM_SOURCE_ADMISSION_INITIAL_R2.xml",
+      "sha256": "04ac1d74670a130c2f05d918c8cee581240d251428ea0c26adf5ea70afda9fc8"
+    }
+  },
+  "next_stage": "Final runtime-authorized candidate D2 readback in clean checkout; independent external acceptance remains pending",
+  "permissions": {
+    "focus": false,
+    "global_mandatory_adoption": false,
+    "production": false,
+    "shadow": false
+  },
+  "predecessor": {
+    "bytes": 6133,
+    "path": "reports/v4_11_r3/V4_11_R3C_COORDINATE_SOURCE_CHARACTERIZATION_R1.json",
+    "sha256": "b270cf058a60fd11fadd8ea58e7a4af23133f7082149e14cbd7eb1bdf542a215"
+  },
+  "raw_and_adjusted_source_files_modified": false,
+  "real_R2_source_manifest_payloads_need_numeric_repair": false,
+  "scope": "ENGINEERING_FIX_AND_SOURCE_IDENTITY_PROOF_ONLY",
+  "script": {
+    "bytes": 9336,
+    "path": "scripts/verify_v4_11_r3c_coordinate_identity_r2.py",
+    "sha256": "bdde7f2de2cccc242719c6c378e0fc8c147b90afd81f33ab4161e5b4ae4b91a4"
+  },
+  "sealed_source_set_reuse_requires_new_runtime_authority": true,
+  "source_arithmetic_review": {
+    "history_limit": "Only source-window-supported factors become known; insufficient 60/250-bar diagnostics stay UNKNOWN",
+    "price_unavailable": "Raw actual bar with missing adjustment remains ADJUSTMENT_UNKNOWN and cannot be inferred suspended",
+    "prior_fields": "compute_core(observations[:-1], asof=immediate prior session); immediate prior close never substituted with last observed close",
+    "rps_delta_units": "R3A fractional rps5_delta3 multiplied by100 into accepted D2 percentage points",
+    "suspension": "Only explicit accepted SUSPENDED becomes CONFIRMED_SUSPENSION; absent/MISSING/UNKNOWN remain unexplained gap"
+  }
+}

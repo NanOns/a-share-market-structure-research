@@ -1,0 +1,195 @@
+{
+  "accepted_history_reader": {
+    "bytes": 1534,
+    "path": "config/historical_publication_reader_accepted_history_only_r1.json",
+    "sha256": "c49d5b2b3eafb308c54ef5b68cc527a30c7b053b1e5061c464be4b25e50d411f"
+  },
+  "accepted_owner_metadata": {
+    "bytes": 24174,
+    "path": "data/v4/SCOPED_ACCEPTED_OWNER_BOOTSTRAP_R1.json",
+    "sha256": "cddddba2e60abb9121f827c2ef2fc1cf3a240e8d10e2cd7b1b5dc51aab3a18ee"
+  },
+  "active_global_trust_root": false,
+  "active_registry": {
+    "bytes": 10364,
+    "path": "data/v4/V4_SOURCE_AUTHORITY_ACCEPTED_OWNER_REGISTRY_R3.json",
+    "sha256": "3bc3d013ceebeb7dcf01f95f9a446ff2f65f03a1b6c602144cb54f490b7b18ec"
+  },
+  "contract_id": "V4_SOURCE_AUTHORITY_SCOPED_DISPOSITION_REGISTRY_R5_INACTIVE",
+  "permissions": {
+    "focus": false,
+    "formal_consumer_cutover": false,
+    "global_mandatory_adoption": false,
+    "production": false,
+    "shadow": false
+  },
+  "registration_status": "SCOPED_ACCEPTED_INACTIVE_METADATA",
+  "remediation_registry": {
+    "bytes": 19334,
+    "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R13_CONSOLIDATION_R3.json",
+    "sha256": "cd6d909a3a01fba8ad32cb7833de041fb4a9a775f1d3fc8f679f7929ae598856"
+  },
+  "scoped_dispositions": {
+    "A03": {
+      "blocks_v4_11_mainline": false,
+      "capability_limitations": [
+        "FORWARD_ACCUMULATION_CONTINUES",
+        "NO_RETROACTIVE_AS_RECORDED_FABRICATION",
+        "FUTURE_OBSERVATION_COUNT_IS_NOT_ENGINEERING_OPEN_BLOCKER"
+      ],
+      "disposition": "SCOPED_ACCEPTED / ACCUMULATION_CONTINUES",
+      "engineering_task": "CLOSED_SCOPED",
+      "external_authority": {
+        "audited_head": "d119c0526e44a819f85b4917159d3eeb5daadf2a",
+        "authority_kind": "INDEPENDENT_EXTERNAL_ACCEPTANCE",
+        "document": {
+          "bytes": 8324,
+          "path": "docs/evidence/next_round_r3/V4_R2_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R2_20261002.md",
+          "sha256": "9b630344fa2101786f294fd3234bd275cedd25c73ca380706f56128fbad06d01"
+        }
+      },
+      "permissions": {
+        "focus": false,
+        "formal_consumer_cutover": false,
+        "global_mandatory_adoption": false,
+        "production": false,
+        "shadow": false
+      },
+      "prior_acceptance_record": {
+        "bytes": 8074,
+        "path": "reports/next_round_r2/scoped_acceptance/A03_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+        "sha256": "ab8b504a46c032767e7d68032472b225898239622e93bae1da3f514903ae826a"
+      },
+      "reopen_each_round": false
+    },
+    "A06": {
+      "blocks_v4_11_mainline": false,
+      "capability_limitations": [
+        "ALL_UNDOCUMENTED_TOLERANCES_NULL",
+        "STRICT_BINDING_FALSE",
+        "BAOSTOCK_SUPPLEMENTAL_ONLY",
+        "TDX_CORE_NEVER_BLOCKED_BY_SUPPLEMENTAL_MISMATCH"
+      ],
+      "disposition": "SCOPED_ACCEPTED / FAIL_CLOSED_NO_TOLERANCE",
+      "engineering_task": "CLOSED_SCOPED",
+      "external_authority": {
+        "audited_head": "d119c0526e44a819f85b4917159d3eeb5daadf2a",
+        "authority_kind": "INDEPENDENT_EXTERNAL_ACCEPTANCE",
+        "document": {
+          "bytes": 8324,
+          "path": "docs/evidence/next_round_r3/V4_R2_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R2_20261002.md",
+          "sha256": "9b630344fa2101786f294fd3234bd275cedd25c73ca380706f56128fbad06d01"
+        }
+      },
+      "permissions": {
+        "focus": false,
+        "formal_consumer_cutover": false,
+        "global_mandatory_adoption": false,
+        "production": false,
+        "shadow": false
+      },
+      "prior_acceptance_record": {
+        "bytes": 7892,
+        "path": "reports/next_round_r2/scoped_acceptance/A06_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+        "sha256": "c029fb1d769e080ae5d753fc11b043f1c0ff5cf40b86c31f9af830647035a12b"
+      },
+      "reopen_each_round": false
+    },
+    "A07": {
+      "blocks_v4_11_mainline": false,
+      "capability_limitations": [
+        "PRECAPTURE_HISTORICAL_AS_RECORDED_ABSENCE_PERMANENT",
+        "GO_FORWARD_LINEAGE_BEGINS_AT_REAL_CAPTURE_TIME",
+        "FORMAL_CONSUMER_DISABLED"
+      ],
+      "disposition": "SCOPED_ACCEPTED / PERMANENT_PRECAPTURE_LIMITATION",
+      "engineering_task": "CLOSED_SCOPED",
+      "external_authority": {
+        "audited_head": "d119c0526e44a819f85b4917159d3eeb5daadf2a",
+        "authority_kind": "INDEPENDENT_EXTERNAL_ACCEPTANCE",
+        "document": {
+          "bytes": 8324,
+          "path": "docs/evidence/next_round_r3/V4_R2_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R2_20261002.md",
+          "sha256": "9b630344fa2101786f294fd3234bd275cedd25c73ca380706f56128fbad06d01"
+        }
+      },
+      "permissions": {
+        "focus": false,
+        "formal_consumer_cutover": false,
+        "global_mandatory_adoption": false,
+        "production": false,
+        "shadow": false
+      },
+      "prior_acceptance_record": {
+        "bytes": 7943,
+        "path": "reports/next_round_r2/scoped_acceptance/A07_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+        "sha256": "6bc18870beb8460bb5ce7f078c2a39e8d289614f8aef5d9248cdff254e475a55"
+      },
+      "reopen_each_round": false
+    },
+    "OWNER": {
+      "blocks_v4_11_mainline": false,
+      "capability_limitations": [
+        "INACTIVE_METADATA",
+        "NO_GLOBAL_AUTHORITY_CONSUMER",
+        "FIELD_LIMITATIONS_PRESERVED"
+      ],
+      "disposition": "SCOPED_ACCEPTED_INACTIVE_METADATA",
+      "engineering_task": "CLOSED_SCOPED",
+      "external_authority": {
+        "audited_head": "d119c0526e44a819f85b4917159d3eeb5daadf2a",
+        "authority_kind": "INDEPENDENT_EXTERNAL_ACCEPTANCE",
+        "document": {
+          "bytes": 8324,
+          "path": "docs/evidence/next_round_r3/V4_R2_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R2_20261002.md",
+          "sha256": "9b630344fa2101786f294fd3234bd275cedd25c73ca380706f56128fbad06d01"
+        }
+      },
+      "permissions": {
+        "focus": false,
+        "formal_consumer_cutover": false,
+        "global_mandatory_adoption": false,
+        "production": false,
+        "shadow": false
+      },
+      "prior_acceptance_record": {
+        "bytes": 7533,
+        "path": "reports/next_round_r2/scoped_acceptance/OWNER_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+        "sha256": "5930e82aff6cdc58cfac7d66bb3da8e3b7223a4d94755fb6c08c5ded19db37ab"
+      },
+      "reopen_each_round": false
+    },
+    "READER": {
+      "blocks_v4_11_mainline": false,
+      "capability_limitations": [
+        "ACCEPTED_HISTORY_EXPLICIT_DI_ONLY",
+        "NO_CURRENT_BUSINESS_RUNTIME_SILENT_FALLBACK"
+      ],
+      "disposition": "SCOPED_ACCEPTED_HISTORY_ONLY",
+      "engineering_task": "CLOSED_SCOPED",
+      "external_authority": {
+        "audited_head": "d119c0526e44a819f85b4917159d3eeb5daadf2a",
+        "authority_kind": "INDEPENDENT_EXTERNAL_ACCEPTANCE",
+        "document": {
+          "bytes": 8324,
+          "path": "docs/evidence/next_round_r3/V4_R2_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R2_20261002.md",
+          "sha256": "9b630344fa2101786f294fd3234bd275cedd25c73ca380706f56128fbad06d01"
+        }
+      },
+      "permissions": {
+        "focus": false,
+        "formal_consumer_cutover": false,
+        "global_mandatory_adoption": false,
+        "production": false,
+        "shadow": false
+      },
+      "prior_acceptance_record": {
+        "bytes": 8015,
+        "path": "reports/next_round_r2/scoped_acceptance/READER_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+        "sha256": "a9b57ce16609bc86bf40b5e9fb8542802a57f1f777b636029129479f4f931123"
+      },
+      "reopen_each_round": false
+    }
+  },
+  "version": 5
+}

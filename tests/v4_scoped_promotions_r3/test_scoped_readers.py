@@ -1,0 +1,155 @@
+"""Scope, source-admission, and immutable rollback protections for R3 amendments."""
+from pathlib import Path
+import json
+import pytest
+from workbench_analysis.forward_pit_ledger_r2 import atomic, bound, canonical, reference
+from v4.scoped_promotions_r3 import (
+    CONTRACT, HEADS, publish, read_payload, read_a02, read_a05, read_a04, rollback_pointer,
+    PROTECTED_REPRESENTATIONS, verify_protected_metadata,
+)
+
+ROOT = Path(__file__).resolve().parents[2]
+
+
+def scoped_copy(tmp_path, key, mutate=None):
+    _, payload = read_payload(ROOT, key)
+    refs = payload["protected_heads"] + [payload["external_authority"], payload["independent_readback"]]
+    for ref in refs:
+        atomic(tmp_path / ref["path"], (ROOT / ref["path"]).read_bytes(), immutable=True)
+    copy_representation_proof(tmp_path)
+    if mutate:
+        mutate(payload)
+    publish(tmp_path, key, payload)
+    return payload
+
+
+def copy_representation_proof(tmp_path):
+    atomic(tmp_path / PROTECTED_REPRESENTATIONS, (ROOT / PROTECTED_REPRESENTATIONS).read_bytes(), immutable=True)
+    records = json.loads((ROOT / PROTECTED_REPRESENTATIONS).read_bytes())["representations"]
+    for row in records:
+        ref = row["original_bytes_archive"]
+        atomic(tmp_path / ref["path"], (ROOT / ref["path"]).read_bytes(), immutable=True)
+    return records
+
+
+@pytest.mark.parametrize("index", [0, 1])
+def test_approved_git_lf_is_protection_only_and_business_bound_stays_strict(tmp_path, index):
+    row = copy_representation_proof(tmp_path)[index]
+    original = bound(tmp_path, row["original_bytes_archive"])
+    atomic(tmp_path / row["original_binding"]["path"], original.replace(b"\r\n", b"\n"), immutable=True)
+    verify_protected_metadata(tmp_path, row["original_binding"])
+    assert bound(tmp_path, row["git_representation"]) == original.replace(b"\r\n", b"\n")
+    with pytest.raises(ValueError, match="SOURCE_BINDING_MISMATCH"):
+        bound(tmp_path, row["original_binding"])
+
+
+def test_even_semantically_equivalent_head_whitespace_drift_is_rejected(tmp_path):
+    row = copy_representation_proof(tmp_path)[0]
+    original = bound(tmp_path, row["original_bytes_archive"])
+    changed = original.replace(b"\r\n", b"\n") + b"\n"
+    atomic(tmp_path / row["original_binding"]["path"], changed, immutable=True)
+    with pytest.raises(ValueError, match="SOURCE_BINDING_MISMATCH"):
+        verify_protected_metadata(tmp_path, row["original_binding"])
+
+
+def test_rehashed_drift_cannot_expand_approved_representation(tmp_path):
+    records = copy_representation_proof(tmp_path)
+    row = records[0]
+    original = bound(tmp_path, row["original_bytes_archive"])
+    atomic(tmp_path / row["original_binding"]["path"], original.replace(b"\r\n", b"\n") + b"\n", immutable=True)
+    row["git_representation"] = reference(tmp_path, tmp_path / row["original_binding"]["path"])
+    proof = json.loads((tmp_path / PROTECTED_REPRESENTATIONS).read_bytes())
+    proof["representations"] = records
+    atomic(tmp_path / PROTECTED_REPRESENTATIONS, canonical(proof))
+    with pytest.raises(ValueError, match="SOURCE_BINDING_MISMATCH"):
+        verify_protected_metadata(tmp_path, row["original_binding"])
+
+
+def test_unapproved_original_binding_has_no_normalization_fallback(tmp_path):
+    row = copy_representation_proof(tmp_path)[0]
+    original = bound(tmp_path, row["original_bytes_archive"])
+    atomic(tmp_path / row["original_binding"]["path"], original.replace(b"\r\n", b"\n"), immutable=True)
+    with pytest.raises(ValueError, match="NOT_APPROVED"):
+        verify_protected_metadata(tmp_path, dict(row["original_binding"], sha256="0" * 64))
+
+
+@pytest.mark.parametrize("key", list(HEADS))
+def test_missing_scoped_pointer_has_no_silent_fallback(tmp_path, key):
+    with pytest.raises(FileNotFoundError):
+        read_payload(tmp_path, key)
+
+
+@pytest.mark.parametrize("mode", ["AUTO", "", "PIT_AS_RECORDED"])
+def test_a02_requires_explicit_history_choice(mode):
+    with pytest.raises(ValueError, match="EXPLICIT_READER_MODE"):
+        read_a02(ROOT, "V4_09", mode=mode, trade_date="2026-09-28")
+
+
+@pytest.mark.parametrize("stage", ["V4_05", "V4_07", "V4_09"])
+def test_a02_cannot_expand_reconstructed_lineage(tmp_path, stage):
+    scoped_copy(tmp_path, stage, lambda p: p.update(AS_RECORDED=True))
+    with pytest.raises(ValueError, match="RECONSTRUCTED_SCOPE"):
+        read_a02(tmp_path, stage, mode="RECONSTRUCTED_CORRECTED_AMENDMENT", trade_date="2026-09-28")
+
+
+@pytest.mark.parametrize("date", ["2026-09-30", "2026-09-23", "2026-10-02"])
+def test_a05_rejects_every_other_target(date):
+    with pytest.raises(ValueError, match="EXPLICIT_CURRENT_SNAPSHOT_ONLY"):
+        read_a05(ROOT, mode="CURRENT_SNAPSHOT_20260924", trade_date=date)
+
+
+def test_a05_amount_a_warm_branch_stays_closed(tmp_path):
+    scoped_copy(tmp_path, "A05", lambda p: p.update(amount_a_warm_branch_enabled=True))
+    with pytest.raises(ValueError, match="SCOPE_EXPANSION"):
+        read_a05(tmp_path, mode="CURRENT_SNAPSHOT_20260924", trade_date="2026-09-24")
+
+
+@pytest.mark.parametrize("field,value", [
+    ("formal_consumer_enabled", True), ("historical_reconstruction_accepted", True),
+    ("H21_warmup_required", False), ("stock_amr20_dependency", True),
+])
+def test_a04_engineering_acceptance_never_opens_consumer(tmp_path, field, value):
+    scoped_copy(tmp_path, "A04", lambda p: p.update({field: value}))
+    with pytest.raises(ValueError, match="ENGINEERING_SCOPE_EXPANSION"):
+        read_a04(tmp_path, mode="GO_FORWARD_PRODUCER_ENGINEERING_ONLY")
+
+
+def test_scoped_reader_rejects_rehashed_unaudited_candidate(tmp_path):
+    scoped_copy(tmp_path, "V4_09", lambda p: p["accepted_candidate"].update(sha256="0" * 64))
+    with pytest.raises(ValueError, match="AUDITED_CANDIDATE_PIN"):
+        read_payload(tmp_path, "V4_09")
+
+
+@pytest.mark.parametrize("permission", ["production", "shadow", "focus", "global_mandatory_adoption"])
+def test_scoped_acceptance_cannot_escalate_permissions(tmp_path, permission):
+    scoped_copy(tmp_path, "A04", lambda p: p["permissions"].update({permission: True}))
+    with pytest.raises(ValueError, match="PERMISSION_EXPANSION"):
+        read_payload(tmp_path, "A04")
+
+
+def test_publication_is_idempotent_and_conflicting_revision_is_append_only(tmp_path):
+    payload = scoped_copy(tmp_path, "A04")
+    original = (tmp_path / HEADS["A04"]).read_bytes()
+    publish(tmp_path, "A04", payload)
+    assert (tmp_path / HEADS["A04"]).read_bytes() == original
+    with pytest.raises(ValueError, match="IMMUTABLE_PUBLICATION_CONFLICT"):
+        publish(tmp_path, "A04", dict(payload, status="DIFFERENT_REVISION"))
+    assert (tmp_path / HEADS["A04"]).read_bytes() == original
+
+
+def test_rollback_removes_only_exact_allowlisted_pointer(tmp_path):
+    scoped_copy(tmp_path, "A04")
+    pointer = json.loads((tmp_path / HEADS["A04"]).read_bytes())
+    artifact = tmp_path / pointer["payload"]["path"]
+    before = artifact.read_bytes()
+    ref = reference(tmp_path, tmp_path / HEADS["A04"])
+    with pytest.raises(ValueError, match="ROLLBACK_SCOPED_POINTER_ONLY"):
+        rollback_pointer(tmp_path, "A04", expected_binding=dict(ref, path="data/v4/V4_STAGE_ACCEPTED_HEAD.json"))
+    rollback_pointer(tmp_path, "A04", expected_binding=ref)
+    assert not (tmp_path / HEADS["A04"]).exists()
+    assert artifact.read_bytes() == before
+
+
+def test_main_stage_head_and_v4_11_are_never_publishable(tmp_path):
+    with pytest.raises(ValueError, match="SCOPED_HEAD_ONLY"):
+        publish(tmp_path, "V4_11", dict(contract_id=CONTRACT))

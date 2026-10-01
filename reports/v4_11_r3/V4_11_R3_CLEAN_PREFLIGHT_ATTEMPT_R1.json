@@ -1,0 +1,23 @@
+{
+  "acceptance": false,
+  "affected_heads": [
+    "data/v4/V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD.json",
+    "data/v4/V4_03_ACCEPTED_HEAD.json"
+  ],
+  "existing_approved_representation": {
+    "bytes": 1666,
+    "path": "reports/next_round_r1/BATCH_PROTECTED_REPRESENTATIONS_R1.json",
+    "sha256": "8a3b878ef00b2540eda1f1280e7a0faf7438e699c9704beec0823c1351a9e405"
+  },
+  "first_failure": "EXACT_BINDING_REQUIRED:data/v4/V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD.json",
+  "heads_modified": false,
+  "normalization": "EXACT_CRLF_TO_LF_ONLY",
+  "permissions": {
+    "focus": false,
+    "global_mandatory_adoption": false,
+    "production": false,
+    "shadow": false
+  },
+  "status": "FAIL_BEFORE_REGRESSION_EXISTING_BYTE_REPRESENTATION",
+  "tested_snapshot": "583eb2784e6b3c378d20e319cbeaa5a8832d45b0"
+}

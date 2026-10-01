@@ -1,0 +1,186 @@
+{
+  "DataHead": "KEEP_2026-09-30",
+  "StageHead": "KEEP_V4_00_TO_V4_10_ACCEPTED",
+  "V4_12_runtime": false,
+  "acceptance_result": "ENGINEERING_CANDIDATE_AND_EXPLICIT_SCOPED_ACCEPTANCE_ONLY; tests are supplementary, external R3 acceptance pending",
+  "applicable_sections": [
+    "13A source DAG",
+    "34 exact legacy adapter",
+    "34A.5 STATE_EVENT_V1",
+    "34A.2A frozen predecessor",
+    "78 stage gates"
+  ],
+  "applicable_upgrade_document": {
+    "bytes": 224998,
+    "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+    "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+  },
+  "authority": {
+    "bytes": 8324,
+    "path": "docs/evidence/next_round_r3/V4_R2_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R2_20261002.md",
+    "sha256": "9b630344fa2101786f294fd3234bd275cedd25c73ca380706f56128fbad06d01"
+  },
+  "clean_checkout_path": "reports/v4_11_r3/V4_11_R3_CLEAN_CHECKOUT.json",
+  "contract_id": "V4_NEXT_ROUND_EXECUTION_R3_SEVEN_TASK_CLOSURE_V1",
+  "diagnostic_only_scenarios": {
+    "STRONG_PULLBACK": "EXACT_ACCEPTED_FROZEN_PRIOR_SESSION_EPISODE_UNAVAILABLE",
+    "TREND_CONTINUE": "SAME_DAY_LOO_FROZEN_ROLE_NOT_ADMITTED_FOR_FORMAL_D0"
+  },
+  "formal_V4_11_head_created": false,
+  "independent_audit_registry": {
+    "bytes": 25810,
+    "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R15_BATCH_R3_FINAL.json",
+    "sha256": "7eb26d6d0a9ce3789161185b087c3e6c15f6f4f8d22867a1dba392a77b071473"
+  },
+  "independent_oracle": {
+    "bytes": 15925,
+    "path": "reports/v4_11_r3/V4_11_R3_INDEPENDENT_ORACLE.json",
+    "sha256": "6904e528275ef8fb1f91ab93be4fa6cabcd70f9b3be6e558ce7a268f31496762"
+  },
+  "master": {
+    "bytes": 2147,
+    "path": "docs/evidence/next_round_r3/V4_NEXT_ROUND_EXECUTION_MASTER_R3_20261002.md",
+    "sha256": "251c248fdc4e87d6d277ef2f0b152a22ebd10847d5d8c02b280ccd6b8461ba54"
+  },
+  "next_stage": "UNIFIED_COMMIT_PUSH_THEN_STOP_WAIT_INDEPENDENT_EXTERNAL_ACCEPTANCE",
+  "permissions": {
+    "focus": false,
+    "global_mandatory_adoption": false,
+    "production": false,
+    "shadow": false
+  },
+  "phase0": {
+    "head_validation": {
+      "accepted_trade_date": "2026-09-30",
+      "nodes": [
+        {
+          "candidate": {
+            "bytes": 51305,
+            "path": "data/v4/dm01_candidate_staging_r3/durable_r3/01cc90422d57e166392ff251ec990f4ad286504c27d29cbba2fb499c9b615060/PROMOTION_CANDIDATE.json",
+            "sha256": "b338caaea8f9e41228a62add7e987d946f4dc9a5a5297dbe02e9ee73df525313"
+          },
+          "components": 9,
+          "source_readback": false,
+          "status": "PASS",
+          "trade_date": "2026-09-28"
+        },
+        {
+          "candidate": {
+            "bytes": 50834,
+            "path": "data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/PROMOTION_CANDIDATE.json",
+            "sha256": "0a67e7211572a7057c50ab27e397c3e093f88c24732e8c7be7bdda92952ca1bf"
+          },
+          "components": 9,
+          "source_readback": false,
+          "status": "PASS",
+          "trade_date": "2026-09-29"
+        },
+        {
+          "candidate": {
+            "bytes": 50811,
+            "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/PROMOTION_CANDIDATE.json",
+            "sha256": "e4ba1fb6d4690b869f98ffc45a8d576a641ef2e9a852a9db97aedd19e043bc81"
+          },
+          "components": 9,
+          "source_readback": false,
+          "status": "PASS",
+          "trade_date": "2026-09-30"
+        }
+      ],
+      "permissions": {
+        "focus": false,
+        "production": false,
+        "shadow": false
+      },
+      "status": "PASS"
+    },
+    "scope": "ACCEPTED_DATA_INPUT_PREFLIGHT",
+    "status": "DEGRADED_PASS"
+  },
+  "precedence": "User authorization and R3 master/tasks govern this batch; no future promotion inferred from document text",
+  "real_market_counts": {
+    "FALSE": 1720,
+    "TRUE": 52,
+    "UNKNOWN": 3452
+  },
+  "stage_evidence": {
+    "A02/A05/A04": {
+      "bytes": 6398,
+      "path": "reports/audits/next_round_r3/scoped_promotions/HANDOFF_R2.json",
+      "sha256": "22c392af23bba4339094e8e617651067b973abec5ed97881c73def50ebcc25d3"
+    },
+    "Parallel Consolidation": {
+      "bytes": 4222,
+      "path": "reports/next_round_r3/scoped_consolidation/STAGE_CLOSURE_R4.json",
+      "sha256": "f95ac80ba56a6aead6da35c407796fa625a4863e496eebb878f4957c1075dc37"
+    },
+    "R3A": {
+      "bytes": 2023,
+      "path": "reports/v4_11_r3a/R3A_STAGE_CLOSURE.json",
+      "sha256": "8ca41d0a8a99259cbe005716476f09d50931fb9d06663d37b52470a888645e62"
+    },
+    "R3B": {
+      "bytes": 2217,
+      "path": "reports/v4_11_r3b/R3B_SEALED_PRODUCER_SET.json",
+      "sha256": "4ccaba49200174c6d38138dcae8c093c16264f69bc2e19f24b507d05472144ec"
+    },
+    "R3C": {
+      "bytes": 2291,
+      "path": "reports/v4_11_r3/V4_11_R3_EXTERNAL_REAUDIT_HANDOFF.json",
+      "sha256": "a88ab5691ddedbc0439c2fa8f90cb9ad501e1368f6006042131086bde8030336"
+    }
+  },
+  "status": "SEVEN_TASKS_COMPLETED_ENGINEERING_EXTERNAL_PENDING",
+  "supersedes": {
+    "bytes": 7236,
+    "path": "reports/next_round_r3/BATCH_SEVEN_TASK_CLOSURE.json",
+    "sha256": "7e0c88575fc76456c668d6a11fe67101d4ef36de98c793733b1e7464c02913eb"
+  },
+  "task_contracts": [
+    {
+      "bytes": 3202,
+      "path": "docs/evidence/next_round_r3/V4_11_R3A_TARGET_DATE_REQUIRED_FACT_PRODUCERS_TASK_20261002.md",
+      "sha256": "9dbff3c9d1b67505bc0453d4e8740d72559ab5acbb75052e57178b693f4296cb"
+    },
+    {
+      "bytes": 2215,
+      "path": "docs/evidence/next_round_r3/V4_11_R3B_EPISODE_SAFETY_LOO_INPUT_CLOSURE_TASK_20261002.md",
+      "sha256": "7f96053baf8362378bd2becff4d0c1c364251dfc6a49b6fe1762e5a91cefc5df"
+    },
+    {
+      "bytes": 2410,
+      "path": "docs/evidence/next_round_r3/V4_11_R3C_REAL_FULL_MARKET_DAG_REPLAY_TASK_20261002.md",
+      "sha256": "3c209f009d1defd76dab77f03e6041b5fcc317930bf21d71b5596fa55e05c831"
+    },
+    {
+      "bytes": 1643,
+      "path": "docs/evidence/next_round_r3/V4_A02_DOWNSTREAM_AMENDMENT_PROMOTION_TASK_20261002.md",
+      "sha256": "023e934f47226ac292d59ab258d1aaabbb7be421295359cda742cccf36b9d94e"
+    },
+    {
+      "bytes": 1206,
+      "path": "docs/evidence/next_round_r3/V4_A05_V4_08_B2_SCOPED_AMENDMENT_PROMOTION_TASK_20261002.md",
+      "sha256": "94e738229ebb9ec0c99fd46a2686a46559cff4ef96945a3e17826ea5add8db2c"
+    },
+    {
+      "bytes": 1514,
+      "path": "docs/evidence/next_round_r3/V4_A04_GO_FORWARD_PRODUCER_SCOPED_ACCEPTANCE_TASK_20261002.md",
+      "sha256": "4888910fd58c2b99dd0694687f6ed118a2d10c4846e2ac538385cc718eaf1aba"
+    },
+    {
+      "bytes": 1547,
+      "path": "docs/evidence/next_round_r3/V4_PARALLEL_SCOPED_FORMALIZATION_CONSOLIDATION_TASK_20261002.md",
+      "sha256": "bf8d5a33a006fb0eeb89aec798fb1ea5394ae9561cb1e02b29498db752be2941"
+    }
+  ],
+  "task_statuses": {
+    "A02": "A02_DOWNSTREAM_AMENDMENTS_PROMOTED_SCOPED",
+    "A04": "A04_GO_FORWARD_PRODUCER_SCOPED_ACCEPTED",
+    "A04_accumulation": "ACCUMULATION_CONTINUES",
+    "A05": "V4_08_B2_CURRENT_SNAPSHOT_SCOPED_AMENDMENT_PROMOTED",
+    "Parallel_Consolidation": "PARALLEL_SCOPED_FORMALIZATION_CONSOLIDATED",
+    "R3A": "V4_11_R3A_TARGET_FACT_PRODUCERS_CANDIDATE_READY",
+    "R3B": "V4_11_R3B_EPISODE_SAFETY_LOO_CANDIDATE_READY",
+    "R3C": "V4_11_R3_REAL_DAG_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT"
+  }
+}

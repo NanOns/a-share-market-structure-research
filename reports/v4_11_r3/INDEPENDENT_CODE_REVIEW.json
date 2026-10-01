@@ -1,0 +1,218 @@
+{
+  "acceptance": "ENGINEERING_REVIEW_ONLY",
+  "accepted_state_source_readback": {
+    "bytes": 4596,
+    "path": "reports/v4_11_r3/ACCEPTED_OBSERVATION_STATE_INDEPENDENT_READBACK_R1.json",
+    "sha256": "0961d12dabc9121e8937b0213fd4fa2c3bd94cf2360a329a50733848e987e4e4"
+  },
+  "contract_id": "V4_11_R3C_INDEPENDENT_CODE_REVIEW_V1",
+  "coordinate_change_boundary": "Adapter uses exact canonical Decimal identity. Independent actual-ready-domain partition characterization has zero current/exact differences; separate precision/signed-zero audit remains independently tracked and this code review does not grant external source or stage acceptance.",
+  "final_Event_summary_available_at_review": false,
+  "findings": [
+    {
+      "acceptance": "Require independent prior-dependent event UNKNOWN oracle; retain raw exact predicates and same-day predecessor invariant, qualify effective_event/event_quality using prior required axes.",
+      "audit_id": "AUD_R3C_EVENT_PRIOR_UNKNOWN_01",
+      "evidence": [
+        {
+          "line": 36,
+          "text": "        known=states[row['entity_id']]['state_freshness']=='FRESH'"
+        },
+        {
+          "line": 38,
+          "text": "            event_quality='KNOWN' if known else 'UNKNOWN_CURRENT_D2_REQUIRED_FACTS',"
+        },
+        {
+          "line": 39,
+          "text": "            effective_event=row['primary_event'] if known else 'UNKNOWN',knowledge_lineage='RECONSTRUCTED_CORRECTED')"
+        }
+      ],
+      "file": "src/v4/confirmation_events_candidate_r3.py",
+      "finding": "Event quality only checks current D2 freshness. A frozen prior STALE/UNKNOWN state can be treated by exact legacy Boolean predicates as was=False; a newly FRESH CONFIRMED current state can then expose KNOWN effective NEW_CONFIRMED despite an unknown predecessor.",
+      "priority": 1,
+      "resolution": "Publication-only quality admission now requires known current and frozen prior freshness/validity/eligibility; unknown predecessor remains effective UNKNOWN. Absent prior entity still permits FIRST_OBSERVED. Active prior/current scenario transition requires known scenario status. Exact raw STATE_EVENT_V1 AST and predicates remain unchanged.",
+      "resolution_evidence": [
+        {
+          "bytes": 4699,
+          "path": "src/v4/confirmation_events_candidate_r3.py",
+          "sha256": "14a680cf5feff99ce9decf8c20a173de48e17eb3f6deb228678fb0ec6a2c37d5"
+        },
+        {
+          "bytes": 4023,
+          "path": "tests/v4_11_r3c/test_event_publication_quality.py",
+          "sha256": "f994a16516be48b7bbcfe4da5303d80819579ce9d28c64b8a90b7dda34cc4fe6"
+        },
+        {
+          "bytes": 1463,
+          "path": "reports/v4_11_r3/EVENT_PUBLICATION_QUALITY_TARGETED_TESTS.xml",
+          "sha256": "be7e3d59e4b0a9e5bd7375b4448985ad8f3184c9ae9a97c4bd0382bb7e56977b"
+        }
+      ],
+      "scope": "Candidate effective event quality only; exact STATE_EVENT_V1 raw predicates remain unchanged",
+      "status": "CLOSED_ENGINEERING_FIXED_TARGETED_ORACLE_PASS",
+      "targeted_test_summary": {
+        "errors": 0,
+        "failures": 0,
+        "passed": 8,
+        "skipped": 0
+      },
+      "trigger": "Real prior D2 STALE or validity/final_eligibility UNKNOWN, current D2 FRESH and active CONFIRMED. Real target replay count was not yet available at review time."
+    },
+    {
+      "acceptance": "Root must either bind exact accepted dated status evidence and preserve the owner Observation states, or register an explicit conservative candidate-state capability limitation with evidence and truthful unknown reason. Do not infer suspension from absence.",
+      "audit_id": "AUD_R3C_ACCEPTED_SUSPENSION_STATE_ADMISSION_01",
+      "evidence": [
+        {
+          "line": 18,
+          "text": "        state='ACTUAL' if r['has_actual_bar'] else 'ADJUSTMENT_UNKNOWN' if r.get('raw_actual_bar') else 'UNKNOWN'"
+        },
+        {
+          "line": 20,
+          "text": "        observations.append(Observation(r['date'],state,bar));statuses.append((r['date'],'ACTUAL_TRADED' if state=='ACTUAL' else state))"
+        }
+      ],
+      "file": "src/v4/confirmation_d2_upstream_r3.py",
+      "finding": "All absent raw/adjusted actual master slots become UNKNOWN; accepted CONFIRMED_SUSPENSION and PRE_LISTING state evidence is not retained. Frozen CORE_FACTOR_V1._tech skips confirmed suspension but fails closed on UNKNOWN, so a genuinely known suspension inside an otherwise evaluable resumed-stock window can produce artificial UNEXPLAINED_DATA_GAP.",
+      "owner_evidence": [
+        {
+          "line": 40,
+          "text": "    state: str  # ACTUAL, CONFIRMED_SUSPENSION, UNKNOWN, PRE_LISTING, ADJUSTMENT_UNKNOWN, IDENTITY_UNKNOWN"
+        },
+        {
+          "line": 74,
+          "text": "               \"suspended_count\": sum(r.state == \"CONFIRMED_SUSPENSION\" for r in rows),"
+        },
+        {
+          "line": 125,
+          "text": "            return list(history[i:end]), \"UNEXPLAINED_DATA_GAP\" if row.state == \"UNKNOWN\" else row.state"
+        },
+        {
+          "line": 151,
+          "text": "        return rows, reason or \"UNEXPLAINED_DATA_GAP\""
+        }
+      ],
+      "priority": 2,
+      "resolution": "All 141048 actual target derivation slots independently checked against the exact accepted chain status artifacts. The 35 CONFIRMED_SUSPENSION slots each bind SUSPENDED; all 393 slots with absent accepted status remain UNKNOWN. The source admission implementation no longer infers suspension from absence; unknown historical-state capability remains explicitly conservative.",
+      "resolution_evidence": [
+        {
+          "bytes": 4596,
+          "path": "reports/v4_11_r3/ACCEPTED_OBSERVATION_STATE_INDEPENDENT_READBACK_R1.json",
+          "sha256": "0961d12dabc9121e8937b0213fd4fa2c3bd94cf2360a329a50733848e987e4e4"
+        },
+        {
+          "bytes": 4773,
+          "path": "src/v4/confirmation_d2_upstream_r3.py",
+          "sha256": "dee9ae065b9adbdfc2b6a7f47309712ef0365e7e9470dc8c23ee2de48e211ac2"
+        },
+        {
+          "bytes": 14038,
+          "path": "scripts/build_v4_11_real_dag_r3c.py",
+          "sha256": "51010c99b134d7c03ebe5c48d859389753a6969d7bb9276142f61f631d7fc5bd"
+        }
+      ],
+      "root_disposition": "Exact accepted dated status admission is implemented; historical status without accepted source stays UNKNOWN.",
+      "scope": "Separate accepted observation state admission capability audit; no legacy threshold change",
+      "status": "CLOSED_ENGINEERING_EXACT_ACCEPTED_STATUS_ADMISSION_VERIFIED"
+    }
+  ],
+  "full_replay_or_regression_executed": false,
+  "independent_external_acceptance": false,
+  "next_stage": "ROOT_COMPLETE_FINAL_EVENT_REPLAY_AND_CLEAN_REGRESSION_THEN_UNIFIED_COMMIT_PUSH_STOP; INDEPENDENT_EXTERNAL_ACCEPTANCE_REMAINS_SEPARATE",
+  "review_revision": "R3_ACCEPTED_STATE_ADMISSION_VERIFIED",
+  "reviewed_at_utc": "2026-10-01T17:46:36.774553+00:00",
+  "scope": "Read-only review of real candidate D0/D2/event orchestration, candidate source admission, frozen predecessor, unmodified accepted owner thresholds and forbidden-stage boundaries",
+  "source_bindings": [
+    {
+      "bytes": 2789,
+      "path": "src/v4/confirmation_candidate_r3.py",
+      "sha256": "d39b1c8c7b5d231e07d4743fa172039e31e98d72a28f38fe7e843d287118c9a0"
+    },
+    {
+      "bytes": 4773,
+      "path": "src/v4/confirmation_d2_upstream_r3.py",
+      "sha256": "dee9ae065b9adbdfc2b6a7f47309712ef0365e7e9470dc8c23ee2de48e211ac2"
+    },
+    {
+      "bytes": 28911,
+      "path": "src/v4/confirmation_d2_candidate_r3.py",
+      "sha256": "81fb57181e822e41b4d7392c491fc7dcb4d3af4d5d9ffea3fdd95565b180cfe2"
+    },
+    {
+      "bytes": 4699,
+      "path": "src/v4/confirmation_events_candidate_r3.py",
+      "sha256": "14a680cf5feff99ce9decf8c20a173de48e17eb3f6deb228678fb0ec6a2c37d5"
+    },
+    {
+      "bytes": 14038,
+      "path": "scripts/build_v4_11_real_dag_r3c.py",
+      "sha256": "51010c99b134d7c03ebe5c48d859389753a6969d7bb9276142f61f631d7fc5bd"
+    },
+    {
+      "bytes": 13989,
+      "path": "src/v4/research_state.py",
+      "sha256": "58fde91734f5d1192a43174052c3c10ce6a41a65facce2076b9bf0798d0e5bfb"
+    },
+    {
+      "bytes": 7567,
+      "path": "src/v4/confirmation_events.py",
+      "sha256": "a647ff5e9eaa4146ff8d08b01e9b4628f545f5485da7db86f751e6586db5b903"
+    },
+    {
+      "bytes": 16643,
+      "path": "src/v4/factors/core.py",
+      "sha256": "8986358268a5ae706c6cc46c95937ed381b65b55d3293667f840ff50008217f1"
+    },
+    {
+      "bytes": 13012,
+      "path": "tests/v4_11_r3c/test_d2_bridge.py",
+      "sha256": "06c7523c3e8d1e53199345be5534a700fc252604f13ea4be2d0ac41fabbe7dcb"
+    },
+    {
+      "bytes": 2410,
+      "path": "docs/evidence/next_round_r3/V4_11_R3C_REAL_FULL_MARKET_DAG_REPLAY_TASK_20261002.md",
+      "sha256": "3c209f009d1defd76dab77f03e6041b5fcc317930bf21d71b5596fa55e05c831"
+    },
+    {
+      "bytes": 1284,
+      "path": "reports/v4_11_r3/R3C_STAGE_CONTRACT.json",
+      "sha256": "c3e610692102179786bc9a0372f4b19857b6047205139a0bfff63b123fa959fa"
+    },
+    {
+      "bytes": 4023,
+      "path": "tests/v4_11_r3c/test_event_publication_quality.py",
+      "sha256": "f994a16516be48b7bbcfe4da5303d80819579ce9d28c64b8a90b7dda34cc4fe6"
+    },
+    {
+      "bytes": 1463,
+      "path": "reports/v4_11_r3/EVENT_PUBLICATION_QUALITY_TARGETED_TESTS.xml",
+      "sha256": "be7e3d59e4b0a9e5bd7375b4448985ad8f3184c9ae9a97c4bd0382bb7e56977b"
+    },
+    {
+      "bytes": 4596,
+      "path": "reports/v4_11_r3/ACCEPTED_OBSERVATION_STATE_INDEPENDENT_READBACK_R1.json",
+      "sha256": "0961d12dabc9121e8937b0213fd4fa2c3bd94cf2360a329a50733848e987e4e4"
+    },
+    {
+      "bytes": 6133,
+      "path": "reports/v4_11_r3/V4_11_R3C_COORDINATE_SOURCE_CHARACTERIZATION_R1.json",
+      "sha256": "b270cf058a60fd11fadd8ea58e7a4af23133f7082149e14cbd7eb1bdf542a215"
+    }
+  ],
+  "status": "PASS_ENGINEERING_CODE_REVIEW_FINDINGS_CLOSED",
+  "supersedes": {
+    "bytes": 9089,
+    "path": "reports/v4_11_r3/INDEPENDENT_CODE_REVIEW_R2_BEFORE_STATE_ADMISSION_REFRESH.json",
+    "sha256": "5292efadcdfa6e96c17b697c35835afd2dbee0a5e4ac4236626cbfc656227d8b"
+  },
+  "targeted_event_quality_tests": {
+    "full_replay_executed": false,
+    "passed": 8
+  },
+  "verified_boundaries": {
+    "D0": "Exact frozen scanner package and thresholds; only LAUNCH_CONFIRM/RECOVERY_TURN formal candidates, STRONG_PULLBACK/TREND_CONTINUE diagnostic",
+    "D2": "Out-of-band sealed source file set; candidate interface and identities, accepted=False; AST admission changes explicitly enumerated",
+    "heads": "Builder calls entry protected-head verifier before and after; KEEP Data/Stage actions declared",
+    "invalidation": "Missing V4-12 owner remains UNKNOWN, no fake FALSE or implemented authority",
+    "prior": "2026-09-29 candidate is reconstructed from real source and byte-frozen; LEFT_CENSORED_NO_PRIOR_PUBLICATION retained, no historical AS_RECORDED claim",
+    "stage": "No V4-11 Accepted Head or V4-12 runtime creation in reviewed code; production/shadow/focus/global_mandatory_adoption false at batch source-set contract"
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "acceptance_result": "ENGINEERING_CONSOLIDATION_COMPLETE_WITH_EXTERNAL_R2_SCOPED_DISPOSITIONS",
+  "applicable_upgrade_document": {
+    "bytes": 224998,
+    "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+    "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+  },
+  "authority_registry": {
+    "bytes": 7460,
+    "path": "data/v4/V4_SOURCE_AUTHORITY_SCOPED_DISPOSITION_REGISTRY_R5_INACTIVE.json",
+    "sha256": "064e5103c64848bf842d1cde9e01ec65a0ebe0b445cc18b435723dcc66e59db5"
+  },
+  "contract_id": "PARALLEL_SCOPED_CONSOLIDATION_STAGE_CLOSURE_R3",
+  "external_authority": {
+    "audited_head": "d119c0526e44a819f85b4917159d3eeb5daadf2a",
+    "authority_kind": "INDEPENDENT_EXTERNAL_ACCEPTANCE",
+    "document": {
+      "bytes": 8324,
+      "path": "docs/evidence/next_round_r3/V4_R2_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R2_20261002.md",
+      "sha256": "9b630344fa2101786f294fd3234bd275cedd25c73ca380706f56128fbad06d01"
+    }
+  },
+  "independent_readback": {
+    "bytes": 16808,
+    "path": "reports/next_round_r3/scoped_consolidation/INDEPENDENT_READBACK_R3.json",
+    "sha256": "718ee166ddaa384f504080370647027c6e1c68fee6c0c9fbd932965e520bddf7"
+  },
+  "new_consolidation_external_reaudit": "PENDING_NEXT_INDEPENDENT_EXTERNAL_ACCEPTANCE",
+  "next_stage": "UNIFIED_BATCH_COMMIT_PUSH_STOP_AND_INDEPENDENT_EXTERNAL_AUDIT",
+  "permissions": {
+    "focus": false,
+    "formal_consumer_cutover": false,
+    "global_mandatory_adoption": false,
+    "production": false,
+    "shadow": false
+  },
+  "remediation_registry": {
+    "bytes": 19334,
+    "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R13_CONSOLIDATION_R3.json",
+    "sha256": "cd6d909a3a01fba8ad32cb7833de041fb4a9a775f1d3fc8f679f7929ae598856"
+  },
+  "runtime_and_verification_bindings": [
+    {
+      "bytes": 9413,
+      "path": "src/workbench_analysis/parallel_scoped_consolidation_r3.py",
+      "sha256": "478cc403e122fc360b9d1cdd087dec3f01752f105c49f62418c2507bbad092aa"
+    },
+    {
+      "bytes": 9368,
+      "path": "scripts/consolidate_parallel_scoped_formalization_r3.py",
+      "sha256": "2bf2215f46659b5b172545c9c96eef4b761a7895aa84db543cc77761a73fd814"
+    },
+    {
+      "bytes": 6111,
+      "path": "tests/v4_parallel_scoped_consolidation_r3/test_consolidation.py",
+      "sha256": "0429a2b8fa4bd4d242feb045abcdd48763d40e497447c5db764ac77a77ae528f"
+    }
+  ],
+  "stage_contract": {
+    "bytes": 1547,
+    "path": "docs/evidence/next_round_r3/V4_PARALLEL_SCOPED_FORMALIZATION_CONSOLIDATION_TASK_20261002.md",
+    "sha256": "bf8d5a33a006fb0eeb89aec798fb1ea5394ae9561cb1e02b29498db752be2941"
+  },
+  "stage_entry": {
+    "bytes": 9329,
+    "path": "reports/next_round_r3/scoped_consolidation/STAGE_ENTRY_R3.json",
+    "sha256": "bb863acd72e4a27ec0b20adae82e230390994f64346ae891f4c8cc474b71a31b"
+  },
+  "status": "PARALLEL_SCOPED_FORMALIZATION_CONSOLIDATED",
+  "summary_head": {
+    "bytes": 1457,
+    "path": "data/v4/V4_PARALLEL_SCOPED_ACCEPTANCE_SUMMARY_HEAD_R3.json",
+    "sha256": "eb4a6b89142ee20df143f12cacd203eb79cfb4aa709cdb49db6a3c8cfb9448fb"
+  },
+  "supersession_map": {
+    "bytes": 4887,
+    "path": "reports/next_round_r3/scoped_consolidation/SUPERSESSION_MAP_R3.json",
+    "sha256": "cc8dfbdd9fe6b427c49501d7f4df5cfad5c471135ddeec352954931060c63dea"
+  },
+  "targeted_tests": {
+    "bytes": 18634,
+    "path": "reports/next_round_r3/scoped_consolidation/TARGETED_TESTS_R3.xml",
+    "sha256": "6964595f13e3d5636978586636e4fcb06d9a82974ea7a2794cdf3c7225a7e06e"
+  },
+  "tests_alone_establish_release_readiness": false
+}

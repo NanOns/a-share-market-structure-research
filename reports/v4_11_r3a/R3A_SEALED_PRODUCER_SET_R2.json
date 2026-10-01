@@ -1,0 +1,61 @@
+{
+  "accepted": false,
+  "builder": {
+    "bytes": 15365,
+    "path": "scripts/build_v4_11_target_facts_r3a.py",
+    "sha256": "a21faf66d092efbc4dd9649697e576e0429612beb95a8ca15cd281911c74067c"
+  },
+  "calculations": {
+    "2026-09-29": {
+      "bytes": 10093859,
+      "path": "data/v4/confirmation_candidates_r3/CALCULATIONS_2026-09-29_R3A_R2.json.gz",
+      "sha256": "7fa6408db472c3d4afbba96b350f67f56a23dc90bd01a3a29cbefc22640c9742"
+    },
+    "2026-09-30": {
+      "bytes": 10116415,
+      "path": "data/v4/confirmation_candidates_r3/CALCULATIONS_2026-09-30_R3A_R2.json.gz",
+      "sha256": "02ab108afe35cf262b2c892d480f6dbf6c0e9a628b21b8c5dac25b7443199f3c"
+    }
+  },
+  "contract": {
+    "bytes": 19131,
+    "path": "config/v4_11_target_fact_producers_r3a_v1.json",
+    "sha256": "52645b35e24230bd2cf05283939122d1f511eeba18c2209d69c86c28ceef69a5"
+  },
+  "coverage": {
+    "bytes": 16018,
+    "path": "reports/v4_11_r3a/TARGET_FIELD_COVERAGE_R2.json",
+    "sha256": "9c793cb59be2478d3964d188b19ba402dfb8388fb004b9e37805d22e1af7d76b"
+  },
+  "matrix": {
+    "bytes": 772631,
+    "path": "reports/v4_11_r3a/REQUIRED_FIELD_CAPABILITY_MATRIX_R2.json",
+    "sha256": "25ef70da470fe1a6b11663be92d8faa0486bdf0fbc081b7b48bb8efd4696f776"
+  },
+  "next_stage": "R3C_ONLY_AFTER_R3B_SEALED",
+  "permissions": {
+    "focus": false,
+    "global_mandatory_adoption": false,
+    "production": false,
+    "shadow": false
+  },
+  "publications": {
+    "2026-09-29": {
+      "bytes": 1959684,
+      "path": "data/v4/confirmation_candidates_r3/TARGET_FACTS_2026-09-29_R3A_R2.json.gz",
+      "sha256": "c1a8888cea468d9ad5189895eb4357a748e8c425b03f9717f8fb8614df08694a"
+    },
+    "2026-09-30": {
+      "bytes": 1952681,
+      "path": "data/v4/confirmation_candidates_r3/TARGET_FACTS_2026-09-30_R3A_R2.json.gz",
+      "sha256": "0c60cde04b6d7c590b4f532a17886fcf5c46a0ba7b20cc7fe1fb235660816e83"
+    }
+  },
+  "runtime": {
+    "bytes": 6418,
+    "path": "src/v4/target_fact_producers_r3.py",
+    "sha256": "92d9c819492ae59d3d4a028dcdee236c3f4e312bbdac9dd27c188e649052ba14"
+  },
+  "sealed": true,
+  "status": "V4_11_R3A_TARGET_FACT_PRODUCERS_CANDIDATE_READY"
+}

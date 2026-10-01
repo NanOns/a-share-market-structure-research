@@ -1,0 +1,103 @@
+{
+  "AS_RECORDED": false,
+  "D0": {
+    "2026-09-29": {
+      "bytes": 509562,
+      "path": "data/v4/confirmation_candidates_r3/D0_2026-09-29_R3.json.gz",
+      "sha256": "077817e5eaae8754e676170fd847fd3b9ce765634418338e455ed6b2da4adf5d"
+    },
+    "2026-09-30": {
+      "bytes": 510382,
+      "path": "data/v4/confirmation_candidates_r3/D0_2026-09-30_R3.json.gz",
+      "sha256": "ca7025ea3be5b65698d3890f94e3172840b8bb8ce5aa3e3b5a81218271903dd1"
+    }
+  },
+  "D2_current": {
+    "bytes": 10453156,
+    "path": "data/v4/confirmation_candidates_r3/D2_2026-09-30_CANDIDATE_R3_R2.json.gz",
+    "sha256": "cbd21cd033fd1a6794366a65724f7d68baf1c6e1fb9c8b488cd493bef3a2292e"
+  },
+  "D2_prior": {
+    "bytes": 6162208,
+    "path": "data/v4/confirmation_candidates_r3/D2_2026-09-29_CANDIDATE_R3_R2.json.gz",
+    "sha256": "c8124a3443826de7f189b34d63f814e8a01cf70264382ddf9fb2de0aaef3416b"
+  },
+  "accepted": false,
+  "confirmation_counts": {
+    "FALSE": 1720,
+    "TRUE": 52,
+    "UNKNOWN": 3452
+  },
+  "diagnostic_only_reasons": {
+    "STRONG_PULLBACK": "EXACT_ACCEPTED_FROZEN_PRIOR_SESSION_EPISODE_UNAVAILABLE",
+    "TREND_CONTINUE": "SAME_DAY_LOO_FROZEN_ROLE_NOT_ADMITTED_FOR_FORMAL_D0"
+  },
+  "eligible_universe": 5224,
+  "events": {
+    "bytes": 625897,
+    "path": "data/v4/confirmation_candidates_r3/STATE_EVENT_2026-09-30_CANDIDATE_R3_R2.json.gz",
+    "sha256": "849a04a956e29d8d4ec7b90c5e5a7fce2e3000837435c5d80515f578b845f40e"
+  },
+  "field_coverage": {
+    "bytes": 16018,
+    "path": "reports/v4_11_r3a/TARGET_FIELD_COVERAGE_R2.json",
+    "sha256": "9c793cb59be2478d3964d188b19ba402dfb8388fb004b9e37805d22e1af7d76b"
+  },
+  "multi_scenario_count": 4,
+  "permissions": {
+    "focus": false,
+    "global_mandatory_adoption": false,
+    "production": false,
+    "shadow": false
+  },
+  "scenario_counts": {
+    "LAUNCH_CONFIRM": {
+      "FALSE": 1730,
+      "TRUE": 42,
+      "UNKNOWN": 3452
+    },
+    "RECOVERY_TURN": {
+      "FALSE": 1758,
+      "TRUE": 14,
+      "UNKNOWN": 3452
+    },
+    "STRONG_PULLBACK": {
+      "UNKNOWN": 5224
+    },
+    "TREND_CONTINUE": {
+      "UNKNOWN": 5224
+    }
+  },
+  "status": "V4_11_R3_REAL_DAG_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
+  "trade_date": "2026-09-30",
+  "unknown_reasons": {
+    "AMR20_GTE_105:UNKNOWN": 45,
+    "AMR20_GTE_120:UNKNOWN": 45,
+    "AMR20_IN_080_250:UNKNOWN": 45,
+    "BREAKOUT_V3:UNKNOWN": 575,
+    "CLOSE_ABOVE_PHC20:UNKNOWN": 574,
+    "CLOSE_ABOVE_PRIOR_HIGH:UNKNOWN": 192,
+    "CLOSE_GTE_098_MA20:UNKNOWN": 565,
+    "CLOSE_GTE_MA5:UNKNOWN": 247,
+    "CLV_GTE_055:UNKNOWN": 388,
+    "CLV_GTE_060:UNKNOWN": 194,
+    "CURRENT_WITH_LOO_BREADTH_SUPPORT:UNKNOWN": 5224,
+    "EXACT_ACCEPTED_FROZEN_PRIOR_SESSION_EPISODE_UNAVAILABLE": 5224,
+    "LIQ20:UNKNOWN": 168,
+    "MA5_GTE_MA20:UNKNOWN": 565,
+    "NOT_EXTENDED:UNKNOWN": 13776,
+    "NOT_FIRST_DAY_DAMAGE:UNKNOWN": 2260,
+    "NOT_SEVERE_DROP:UNKNOWN": 2308,
+    "NOT_STRUCTURE_BREAK:UNKNOWN": 13776,
+    "NO_INTRADAY_REJECT_HIGH20:UNKNOWN": 574,
+    "POSITIVE_RET1:UNKNOWN": 576,
+    "PULLBACK_EPISODE_CONFIRMED:UNKNOWN": 5224,
+    "R5_OR_R20:UNKNOWN": 837,
+    "RPS20_GTE_070:UNKNOWN": 574,
+    "RPS5_DELTA3_POSITIVE:UNKNOWN": 367,
+    "SAME_DAY_LOO_FROZEN_ROLE_NOT_ADMITTED_FOR_FORMAL_D0": 5224,
+    "SLOPE20_POSITIVE:UNKNOWN": 565,
+    "TREND_BACKGROUND:UNKNOWN": 1428,
+    "WINDOW_VALID:UNKNOWN": 2320
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "archived_negative_and_boundary_evidence": [
+    {
+      "bytes": 8865,
+      "path": "reports/v4_11_r3a/INDEPENDENT_ORACLE_R1_DECIMAL_COORDINATE_FAILURE.json",
+      "sha256": "8f15287cdc7a3b5c75d24656350ddfdd4d1052385157e5a552eb97346cda71f6"
+    },
+    {
+      "bytes": 31377,
+      "path": "reports/v4_11_r3a/INDEPENDENT_ORACLE_R2_INITIAL_FP_BOUNDARY_FAILURE.json",
+      "sha256": "e7c268ff33b63969cd320151d1f26c7ddaa75410da361ddb1a94d8a5a8ed22c5"
+    },
+    {
+      "bytes": 32763,
+      "path": "reports/v4_11_r3a/INDEPENDENT_ORACLE_R3_PROJECTION_FP_BOUNDARY_FAILURE.json",
+      "sha256": "acd6a4af7b2cd45f054a0f8cfbf2e45266b52f616b7933f960b7f439c5e7a20a"
+    },
+    {
+      "bytes": 9127,
+      "path": "reports/v4_11_r3a/INDEPENDENT_ORACLE_FP_EXECUTION_BOUNDARIES_R2.json",
+      "sha256": "5bbdb369fdd2df7ca9f70b01ea12e15ea74b3b0f919cafc040dd3e26f4d711d0"
+    }
+  ],
+  "business_thresholds_and_ieee_operations_unchanged": true,
+  "contract_id": "V4_11_R3A_INDEPENDENT_ORACLE_CLOSURE_R1",
+  "external_acceptance": "PENDING_NEXT_INDEPENDENT_EXTERNAL_ACCEPTANCE",
+  "failures": 0,
+  "fields_checked": 36,
+  "independent_oracle": {
+    "bytes": 32678,
+    "path": "reports/v4_11_r3a/INDEPENDENT_ORACLE.json",
+    "sha256": "0ecc1a541dc7cc652617111a7915a918f0968c0f78f3a3c9320add0e397278f4"
+  },
+  "next_stage": "AUTHORIZED_R3C_ONLY_AFTER_R3A_R3B_SEALED; UNIFIED_COMMIT_PUSH_STOP",
+  "permissions": {
+    "focus": false,
+    "global_mandatory_adoption": false,
+    "production": false,
+    "shadow": false
+  },
+  "producer_changed_by_oracle": false,
+  "source_slots": 141048,
+  "stage_contract": {
+    "bytes": 3202,
+    "path": "docs/evidence/next_round_r3/V4_11_R3A_TARGET_DATE_REQUIRED_FACT_PRODUCERS_TASK_20261002.md",
+    "sha256": "9dbff3c9d1b67505bc0453d4e8740d72559ab5acbb75052e57178b693f4296cb"
+  },
+  "status": "PASS_INDEPENDENT_ACCEPTED_SOURCE_ORACLE",
+  "targeted_tests": {
+    "bytes": 7698,
+    "path": "reports/v4_11_r3a/INDEPENDENT_ORACLE_TARGETED_TESTS_R1.xml",
+    "sha256": "6c678c72be88968a73b3bb526f0628ee5f0147429be2e36a7b2db6a3fa299ddb"
+  },
+  "tests": 46,
+  "universe_coverage": 5224
+}

@@ -1,0 +1,62 @@
+{
+  "business_reader_bound_semantics_changed": false,
+  "clean_LF_scoped_reader_keys": [
+    "V4_05",
+    "V4_07",
+    "V4_09",
+    "A05",
+    "A04"
+  ],
+  "clean_consolidation_readback": "PASS_REGISTRY_AUTHORITY_SUMMARY",
+  "contract_id": "R3_SCOPED_PROTECTION_METADATA_PORTABILITY_V1",
+  "existing_authority": {
+    "bytes": 1666,
+    "path": "reports/next_round_r1/BATCH_PROTECTED_REPRESENTATIONS_R1.json",
+    "sha256": "8a3b878ef00b2540eda1f1280e7a0faf7438e699c9704beec0823c1351a9e405"
+  },
+  "external_acceptance": false,
+  "head_bytes_changed": false,
+  "permissions": {
+    "focus": false,
+    "global_mandatory_adoption": false,
+    "production": false,
+    "shadow": false
+  },
+  "source_bindings": [
+    {
+      "bytes": 3384,
+      "path": "scripts/next_round_execution_r3.py",
+      "sha256": "f8ccbb18ea3e8a1819ddbccc453e848d6ce92243d3c4a040fcfc874c1461552b"
+    },
+    {
+      "bytes": 11534,
+      "path": "src/v4/scoped_promotions_r3.py",
+      "sha256": "d9a5262acb34b8527ae96b2f2307a131a1f7f6952acbc32be13fddecf2ad94e9"
+    },
+    {
+      "bytes": 10452,
+      "path": "src/workbench_analysis/parallel_scoped_consolidation_r3.py",
+      "sha256": "421ef0b2eb564352e503e9bf0ec9f395c502c6f8b89bf3edd0eb70d67aceff31"
+    },
+    {
+      "bytes": 7493,
+      "path": "tests/v4_scoped_promotions_r3/test_scoped_readers.py",
+      "sha256": "2b5070ce1bdd96c03424e58ef9c118e0027cdaebd6652e1a2d95ef6ff5d6218b"
+    },
+    {
+      "bytes": 1781,
+      "path": "tests/v4_parallel_scoped_consolidation_r3/test_protected_portability.py",
+      "sha256": "116a04024363eab86d25dab9440db990a0627bc60a6980310e6c511fee81f173"
+    }
+  ],
+  "status": "PASS_PINNED_METADATA_ONLY_REPRESENTATION",
+  "targeted_summary": {
+    "failed": 0,
+    "passed": 202
+  },
+  "targeted_tests": {
+    "bytes": 33424,
+    "path": "reports/v4_11_r3/SCOPED_METADATA_PORTABILITY_TARGETED_R4.xml",
+    "sha256": "2b125149eea64cf00f88c74be21ee45e59470a0f2a6d617714c727ca29683de3"
+  }
+}

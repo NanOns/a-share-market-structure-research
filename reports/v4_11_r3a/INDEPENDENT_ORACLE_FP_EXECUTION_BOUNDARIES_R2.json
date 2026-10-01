@@ -1,0 +1,304 @@
+{
+  "archived_failure": {
+    "bytes": 31377,
+    "path": "reports/v4_11_r3a/INDEPENDENT_ORACLE_R2_INITIAL_FP_BOUNDARY_FAILURE.json",
+    "sha256": "e7c268ff33b63969cd320151d1f26c7ddaa75410da361ddb1a94d8a5a8ed22c5"
+  },
+  "boundaries": [
+    {
+      "accepted_ieee_factor_values": {
+        "ma20": 6.399,
+        "ma5": 6.28,
+        "reclaim_ma5": false
+      },
+      "accepted_ieee_rolling_feature_values": {
+        "ma20": null,
+        "ma20_prior5": null,
+        "ma5": null,
+        "ma5_prior1": null
+      },
+      "business_epsilon_introduced": false,
+      "close": 6.28,
+      "expected": true,
+      "field": "reclaim_ma5",
+      "observed": false,
+      "previous_close": 6.23,
+      "prior5_ma20": {
+        "binary_float_exact_sum_round_once": 6.481,
+        "ideal_decimal": "6.481",
+        "naive_binary_sum": 6.481
+      },
+      "prior_ma5": {
+        "binary_float_exact_sum_round_once": 6.294,
+        "ideal_decimal": "6.294",
+        "naive_binary_sum": 6.294
+      },
+      "security_id": "SEC-33C8A63EA065FD0E6DE434E983FB2776",
+      "target_ma20": {
+        "binary_float_exact_sum_round_once": 6.399,
+        "ideal_decimal": "6.399",
+        "naive_binary_sum": 6.399
+      },
+      "target_ma5": {
+        "binary_float_exact_sum_round_once": 6.28,
+        "ideal_decimal": "6.28",
+        "naive_binary_sum": 6.279999999999999
+      },
+      "threshold_modified": false
+    },
+    {
+      "accepted_ieee_factor_values": {
+        "ma20": 12.2155,
+        "ma5": 12.06,
+        "reclaim_ma5": false
+      },
+      "accepted_ieee_rolling_feature_values": {
+        "ma20": null,
+        "ma20_prior5": null,
+        "ma5": null,
+        "ma5_prior1": null
+      },
+      "business_epsilon_introduced": false,
+      "close": 12.06,
+      "expected": true,
+      "field": "reclaim_ma5",
+      "observed": false,
+      "previous_close": 12.08,
+      "prior5_ma20": {
+        "binary_float_exact_sum_round_once": 12.295,
+        "ideal_decimal": "12.295",
+        "naive_binary_sum": 12.295
+      },
+      "prior_ma5": {
+        "binary_float_exact_sum_round_once": 12.104,
+        "ideal_decimal": "12.104",
+        "naive_binary_sum": 12.104
+      },
+      "security_id": "SEC-5250CC71F07123B720A576F945CB2D25",
+      "target_ma20": {
+        "binary_float_exact_sum_round_once": 12.2155,
+        "ideal_decimal": "12.2155",
+        "naive_binary_sum": 12.2155
+      },
+      "target_ma5": {
+        "binary_float_exact_sum_round_once": 12.06,
+        "ideal_decimal": "12.06",
+        "naive_binary_sum": 12.059999999999999
+      },
+      "threshold_modified": false
+    },
+    {
+      "accepted_ieee_factor_values": {
+        "ma20": 3.0495,
+        "ma5": 3.074,
+        "reclaim_ma5": false
+      },
+      "accepted_ieee_rolling_feature_values": {
+        "ma20": 3.0495,
+        "ma20_prior5": 3.0494999999999997,
+        "ma5": 3.0740000000000003,
+        "ma5_prior1": 3.0740000000000003
+      },
+      "business_epsilon_introduced": false,
+      "close": 3.12,
+      "expected": false,
+      "field": "trend_background_v3",
+      "observed": true,
+      "previous_close": 3.12,
+      "prior5_ma20": {
+        "binary_float_exact_sum_round_once": 3.0495,
+        "ideal_decimal": "3.0495",
+        "naive_binary_sum": 3.0495
+      },
+      "prior_ma5": {
+        "binary_float_exact_sum_round_once": 3.074,
+        "ideal_decimal": "3.074",
+        "naive_binary_sum": 3.0740000000000003
+      },
+      "security_id": "SEC-59AB37E3288BF827C993EE85AE0F9DA5",
+      "target_ma20": {
+        "binary_float_exact_sum_round_once": 3.0495,
+        "ideal_decimal": "3.0495",
+        "naive_binary_sum": 3.0495
+      },
+      "target_ma5": {
+        "binary_float_exact_sum_round_once": 3.074,
+        "ideal_decimal": "3.074",
+        "naive_binary_sum": 3.0740000000000003
+      },
+      "threshold_modified": false
+    },
+    {
+      "accepted_ieee_factor_values": {
+        "ma20": 11.346,
+        "ma5": 11.31,
+        "reclaim_ma5": false
+      },
+      "accepted_ieee_rolling_feature_values": {
+        "ma20": null,
+        "ma20_prior5": null,
+        "ma5": null,
+        "ma5_prior1": null
+      },
+      "business_epsilon_introduced": false,
+      "close": 11.31,
+      "expected": true,
+      "field": "reclaim_ma5",
+      "observed": false,
+      "previous_close": 11.2,
+      "prior5_ma20": {
+        "binary_float_exact_sum_round_once": 11.4985,
+        "ideal_decimal": "11.4985",
+        "naive_binary_sum": 11.4985
+      },
+      "prior_ma5": {
+        "binary_float_exact_sum_round_once": 11.33,
+        "ideal_decimal": "11.33",
+        "naive_binary_sum": 11.33
+      },
+      "security_id": "SEC-66F3CF5045C479C2E335E449DC9815CD",
+      "target_ma20": {
+        "binary_float_exact_sum_round_once": 11.346,
+        "ideal_decimal": "11.346",
+        "naive_binary_sum": 11.346
+      },
+      "target_ma5": {
+        "binary_float_exact_sum_round_once": 11.31,
+        "ideal_decimal": "11.31",
+        "naive_binary_sum": 11.309999999999999
+      },
+      "threshold_modified": false
+    },
+    {
+      "accepted_ieee_factor_values": {
+        "ma20": 3.9939999999999998,
+        "ma5": 3.874,
+        "reclaim_ma5": true
+      },
+      "accepted_ieee_rolling_feature_values": {
+        "ma20": 3.9940000000000007,
+        "ma20_prior5": 4.017,
+        "ma5": 3.874,
+        "ma5_prior1": 3.8899999999999997
+      },
+      "business_epsilon_introduced": false,
+      "close": 3.88,
+      "expected": false,
+      "field": "reclaim_ma5",
+      "observed": true,
+      "previous_close": 3.89,
+      "prior5_ma20": {
+        "binary_float_exact_sum_round_once": 4.017,
+        "ideal_decimal": "4.017",
+        "naive_binary_sum": 4.017
+      },
+      "prior_ma5": {
+        "binary_float_exact_sum_round_once": 3.89,
+        "ideal_decimal": "3.89",
+        "naive_binary_sum": 3.8899999999999997
+      },
+      "security_id": "SEC-AA65C93B0106529BDBFCC0747FD78F41",
+      "target_ma20": {
+        "binary_float_exact_sum_round_once": 3.9939999999999998,
+        "ideal_decimal": "3.994",
+        "naive_binary_sum": 3.9939999999999998
+      },
+      "target_ma5": {
+        "binary_float_exact_sum_round_once": 3.874,
+        "ideal_decimal": "3.874",
+        "naive_binary_sum": 3.874
+      },
+      "threshold_modified": false
+    },
+    {
+      "accepted_ieee_factor_values": {
+        "ma20": 1.546,
+        "ma5": 1.524,
+        "reclaim_ma5": true
+      },
+      "accepted_ieee_rolling_feature_values": {
+        "ma20": 1.546,
+        "ma20_prior5": 1.543,
+        "ma5": 1.5240000000000002,
+        "ma5_prior1": 1.5299999999999998
+      },
+      "business_epsilon_introduced": false,
+      "close": 1.55,
+      "expected": true,
+      "field": "recovery_v3",
+      "observed": false,
+      "previous_close": 1.53,
+      "prior5_ma20": {
+        "binary_float_exact_sum_round_once": 1.543,
+        "ideal_decimal": "1.543",
+        "naive_binary_sum": 1.543
+      },
+      "prior_ma5": {
+        "binary_float_exact_sum_round_once": 1.53,
+        "ideal_decimal": "1.53",
+        "naive_binary_sum": 1.53
+      },
+      "security_id": "SEC-C9D8E8E729308CAB8450F695505072A1",
+      "target_ma20": {
+        "binary_float_exact_sum_round_once": 1.546,
+        "ideal_decimal": "1.546",
+        "naive_binary_sum": 1.546
+      },
+      "target_ma5": {
+        "binary_float_exact_sum_round_once": 1.524,
+        "ideal_decimal": "1.524",
+        "naive_binary_sum": 1.524
+      },
+      "threshold_modified": false
+    },
+    {
+      "accepted_ieee_factor_values": {
+        "ma20": 8.4945,
+        "ma5": 8.304,
+        "reclaim_ma5": true
+      },
+      "accepted_ieee_rolling_feature_values": {
+        "ma20": null,
+        "ma20_prior5": null,
+        "ma5": null,
+        "ma5_prior1": null
+      },
+      "business_epsilon_introduced": false,
+      "close": 8.39,
+      "expected": false,
+      "field": "reclaim_ma5",
+      "observed": true,
+      "previous_close": 8.31,
+      "prior5_ma20": {
+        "binary_float_exact_sum_round_once": 8.6,
+        "ideal_decimal": "8.60",
+        "naive_binary_sum": 8.6
+      },
+      "prior_ma5": {
+        "binary_float_exact_sum_round_once": 8.31,
+        "ideal_decimal": "8.31",
+        "naive_binary_sum": 8.309999999999999
+      },
+      "security_id": "SEC-CF7A3C1DEB1A9C26303E0B26AF614E57",
+      "target_ma20": {
+        "binary_float_exact_sum_round_once": 8.4945,
+        "ideal_decimal": "8.4945",
+        "naive_binary_sum": 8.494499999999999
+      },
+      "target_ma5": {
+        "binary_float_exact_sum_round_once": 8.304,
+        "ideal_decimal": "8.304",
+        "naive_binary_sum": 8.304
+      },
+      "threshold_modified": false
+    }
+  ],
+  "contract_id": "V4_11_R3A_FP_EXECUTION_BOUNDARY_DIAGNOSTIC_R2",
+  "repair": "ORACLE_MUST_REPRODUCE_ACCEPTED_NUMERICAL_OPERATIONS_FROM_ACCEPTED_ROWS; NO_PRODUCER_CHANGE",
+  "source_window_evidence": {
+    "bytes": 10116415,
+    "path": "data/v4/confirmation_candidates_r3/CALCULATIONS_2026-09-30_R3A_R2.json.gz",
+    "sha256": "02ab108afe35cf262b2c892d480f6dbf6c0e9a628b21b8c5dac25b7443199f3c"
+  },
+  "status": "DIAGNOSTIC_ONLY_UNCHANGED_LEGACY_OPERATORS"
+}

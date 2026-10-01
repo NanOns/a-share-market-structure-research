@@ -1,0 +1,586 @@
+{
+  "acceptance_result": "V4_11_R3B_EPISODE_SAFETY_LOO_CANDIDATE_READY",
+  "captured_at_utc": "2026-10-01T16:58:50.761958+00:00",
+  "contract": {
+    "bytes": 6896,
+    "path": "config/v4_11_r3b_input_closure_contract_v1.json",
+    "sha256": "3b79bff32500f6dd15cee57102055a90a8d2461dff905a895c21739994b7dcab"
+  },
+  "episode_capability_evidence": {
+    "accepted_legacy_episode_head_count": 0,
+    "accepted_prior_session_frozen_seed_episode_publication": null,
+    "compatible_value_fabricated": false,
+    "existing_trace_scope": "P12-02 bounded diagnostic candidate requiring caller-supplied frozen per-day strong_seed/structure_break",
+    "reason": "EXACT_ACCEPTED_FROZEN_PRIOR_SESSION_EPISODE_UNAVAILABLE",
+    "result": "STRONG_PULLBACK_DIAGNOSTIC_ONLY",
+    "same_day_final_state_used": false
+  },
+  "external_acceptance": false,
+  "loo_dependency_graph": {
+    "algorithm_consumes_Focus": false,
+    "algorithm_consumes_V4_10_D2_current": false,
+    "algorithm_consumes_V4_11_D0": false,
+    "algorithm_same_day_feedback": false,
+    "callable_algorithm_is_pure_upstream": true,
+    "does_not_depend_on_Amount_A_warmup": true,
+    "edges": [
+      [
+        "LOO",
+        "CURRENT"
+      ],
+      [
+        "LOO",
+        "MEMBERSHIP"
+      ],
+      [
+        "CURRENT",
+        "RAW_QUOTES"
+      ],
+      [
+        "CURRENT",
+        "SECTOR_METADATA"
+      ],
+      [
+        "CURRENT",
+        "PARAMETERS"
+      ]
+    ],
+    "formal_candidate_admission": false,
+    "frozen_input_time_role": "SAME_DAY_DOWNSTREAM",
+    "nodes": {
+      "CURRENT": {
+        "bytes": 29860,
+        "path": "src/workbench_analysis/sector_attention.py",
+        "sha256": "e4e39f51abb64d4e3359451e794842c1da06f641d1598d2aac5a6477fc89916a"
+      },
+      "LOO": {
+        "bytes": 5465,
+        "path": "src/workbench_analysis/full_loo_v3_3.py",
+        "sha256": "f00174db94545628e7b5f81486a9ad4b2f5b6f5cc3993747c1e94a30ba7e1033"
+      },
+      "MEMBERSHIP": "V4_08 PIT membership accepted 2026-09-30",
+      "PARAMETERS": {
+        "bytes": 6277,
+        "path": "config/research_attention_v3.yaml",
+        "sha256": "559e026897c5fd03d451af409438e90d1c535b69aecb1c2b336209e3ac9c96ec"
+      },
+      "RAW_QUOTES": "Accepted target raw + native adjustment -> R3A ret1 facts",
+      "SECTOR_METADATA": "Immutable accepted membership metadata / versioned semantic registry"
+    },
+    "note": "CURRENT selects quote/breadth/rank predicates only; Amount-A is not a CURRENT eligibility predicate.",
+    "proof_scope": "Bound source-code dependency graph, not an admitted target-date LOO publication",
+    "reason": "SAME_DAY_LOO_FROZEN_ROLE_NOT_ADMITTED_FOR_FORMAL_D0",
+    "source_imports": [
+      "__future__",
+      "collections.abc",
+      "typing",
+      "workbench_analysis.sector_attention"
+    ],
+    "target_day_LOO_publication_sealed": false,
+    "target_day_knowledge_cutoff_proven_for_LOO_publication": false
+  },
+  "negative_test_receipt": {
+    "command": [
+      "E:\\python\\python.exe",
+      "-m",
+      "pytest",
+      "tests/v4_11_r3b",
+      "-q"
+    ],
+    "required_cases": [
+      "same-day D2 feedback rejected",
+      "Focus input rejected",
+      "future episode rejected",
+      "same-day revision cannot become prior-session episode",
+      "fake episode id rejected",
+      "wrong producer rejected",
+      "wrong parameter set rejected",
+      "LOO circular dependency detected",
+      "diagnostic-only cannot enter formal D0"
+    ],
+    "returncode": 0,
+    "stderr": "",
+    "stdout": ".....................................                                    [100%]\n37 passed in 0.05s\n"
+  },
+  "next_stage": "WAIT_R3A_SEALED_PRODUCER_SET_THEN_R3C_REAL_DAG",
+  "parameters": {
+    "bytes": 862,
+    "path": "config/v4_11_r3b_episode_safety_parameters_v1.json",
+    "sha256": "ecae7c9e0e8af25861215b3c64cfd213f024dadeef2f2e2dc8dbe70afcacabfa"
+  },
+  "permissions": {
+    "focus": false,
+    "global_mandatory_adoption": false,
+    "production": false,
+    "shadow": false
+  },
+  "protected_heads_after": {
+    "V4_10_ACCEPTED_HEAD.json": {
+      "bytes": 5102,
+      "path": "data/v4/V4_10_ACCEPTED_HEAD.json",
+      "sha256": "ad9fc4643652feb3684223817f2e9c300167d128e2e8a07179e86f65094fd1e1"
+    },
+    "V4_DATA_ACCEPTED_HEAD.json": {
+      "bytes": 16890,
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+    },
+    "V4_STAGE_ACCEPTED_HEAD.json": {
+      "bytes": 8574,
+      "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+      "sha256": "529c532bd5553ace00fa4813aef07979cfce4e1f18fa5ea66f38fcddd8ed16cb"
+    }
+  },
+  "protected_heads_before": {
+    "V4_10_ACCEPTED_HEAD.json": {
+      "bytes": 5102,
+      "path": "data/v4/V4_10_ACCEPTED_HEAD.json",
+      "sha256": "ad9fc4643652feb3684223817f2e9c300167d128e2e8a07179e86f65094fd1e1"
+    },
+    "V4_DATA_ACCEPTED_HEAD.json": {
+      "bytes": 16890,
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+    },
+    "V4_STAGE_ACCEPTED_HEAD.json": {
+      "bytes": 8574,
+      "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+      "sha256": "529c532bd5553ace00fa4813aef07979cfce4e1f18fa5ea66f38fcddd8ed16cb"
+    }
+  },
+  "safety_predicate_bindings": {
+    "NOT_EXTENDED": {
+      "field": "extended_v3",
+      "formula": "tri_and(bias20 >= bias20_gte, extension_z20 >= extension_z20_gte)",
+      "function": "classify_stock_attention",
+      "parameters": [
+        "stock_signals.risk.bias20_gte",
+        "stock_signals.risk.extension_z20_gte"
+      ],
+      "producer": "STOCK_ATTENTION_PREVIEW_1"
+    },
+    "NOT_FIRST_DAY_DAMAGE": {
+      "field": "first_day_damage",
+      "formula": "close/ma20 < 0.97",
+      "function": "calculate_today_facts",
+      "parameters": {
+        "close_to_ma20_lt": 0.97
+      },
+      "producer": "TODAY_RESEARCH_FACTOR_V3_3_CANDIDATE_01"
+    },
+    "NOT_SEVERE_DROP": {
+      "field": "severe_drop",
+      "formula": "tri_or(ret1_adj <= -0.08, logret1 <= -max(-log(1-0.04), 2*sigma20_prior))",
+      "function": "calculate_today_facts",
+      "parameters": {
+        "drop_cap_pct": 0.08,
+        "drop_floor_pct": 0.04,
+        "drop_z": 2.0
+      },
+      "producer": "TODAY_RESEARCH_FACTOR_V3_3_CANDIDATE_01"
+    },
+    "NOT_STRUCTURE_BREAK": {
+      "field": "structure_break_v3",
+      "formula": "tri_and(close/ma20 < k, close_prior1/ma20_prior1 < k)",
+      "function": "classify_stock_attention",
+      "parameters": [
+        "stock_signals.STRUCTURE_BREAK.close_to_ma20_lt",
+        "stock_signals.STRUCTURE_BREAK.consecutive_valid_sessions"
+      ],
+      "producer": "STOCK_ATTENTION_PREVIEW_1"
+    }
+  },
+  "scenario_capability_matrix_before_R3A_seal": {
+    "LAUNCH_CONFIRM": {
+      "capability": "BLOCKED_UPSTREAM",
+      "reason": "WAIT_R3A_SEAL"
+    },
+    "RECOVERY_TURN": {
+      "capability": "BLOCKED_UPSTREAM",
+      "reason": "WAIT_R3A_SEAL"
+    },
+    "STRONG_PULLBACK": {
+      "capability": "DIAGNOSTIC_ONLY",
+      "reason": "EXACT_ACCEPTED_FROZEN_PRIOR_SESSION_EPISODE_UNAVAILABLE"
+    },
+    "TREND_CONTINUE": {
+      "capability": "DIAGNOSTIC_ONLY",
+      "reason": "SAME_DAY_LOO_FROZEN_ROLE_NOT_ADMITTED_FOR_FORMAL_D0"
+    }
+  },
+  "scenario_capability_matrix_when_bound_to_R3A_seal": {
+    "LAUNCH_CONFIRM": {
+      "capability": "FORMAL_CANDIDATE",
+      "reason": "R3A_SEALED_TARGET_FACT_SET"
+    },
+    "RECOVERY_TURN": {
+      "capability": "FORMAL_CANDIDATE",
+      "reason": "R3A_SEALED_TARGET_FACT_SET"
+    },
+    "STRONG_PULLBACK": {
+      "capability": "DIAGNOSTIC_ONLY",
+      "reason": "EXACT_ACCEPTED_FROZEN_PRIOR_SESSION_EPISODE_UNAVAILABLE"
+    },
+    "TREND_CONTINUE": {
+      "capability": "DIAGNOSTIC_ONLY",
+      "reason": "SAME_DAY_LOO_FROZEN_ROLE_NOT_ADMITTED_FOR_FORMAL_D0"
+    }
+  },
+  "source_inventory": [
+    {
+      "accepted_trade_date": null,
+      "binding": {
+        "bytes": 281,
+        "path": "data/v4/A04_AMOUNT_A_GO_FORWARD_PRODUCER_ACCEPTED_HEAD_R1.json",
+        "sha256": "33c8b152af664193aba101f2cf3a52746f2cfc6e135172d1c4180674a7448cbf"
+      },
+      "capabilities": {},
+      "contract_id": "A02_A05_A04_SCOPED_PROMOTIONS_R3_V1",
+      "declares_exact_legacy_episode_producer": false
+    },
+    {
+      "accepted_trade_date": null,
+      "binding": {
+        "bytes": 1958,
+        "path": "data/v4/OFFICIAL_EVENT_SEMANTICS_ACCEPTED_HEAD_R1.json",
+        "sha256": "c283bb515c0733d8e5f797a6796fa63c575d211d3b9a468c566dc05395a062b8"
+      },
+      "capabilities": {},
+      "contract_id": "OFFICIAL_EVENT_SEMANTICS_ACCEPTED_HEAD_V1",
+      "declares_exact_legacy_episode_producer": false
+    },
+    {
+      "accepted_trade_date": null,
+      "binding": {
+        "bytes": 4564,
+        "path": "data/v4/V4_01_ACCEPTED_HEAD.json",
+        "sha256": "b8ea5b8091629d116c860f9bf6a1a398301d75be16af7b08ff526fba9329bf6b"
+      },
+      "capabilities": {},
+      "contract_id": "V4_01_ACCEPTED_HEAD_V1",
+      "declares_exact_legacy_episode_producer": false
+    },
+    {
+      "accepted_trade_date": null,
+      "binding": {
+        "bytes": 3366,
+        "path": "data/v4/V4_01_ACCEPTED_HEAD_CANDIDATE.json",
+        "sha256": "6f84145fa0e2ef2427ec85349dfd4385fb31936e87a03b06a552ec81afb03ad9"
+      },
+      "capabilities": {},
+      "contract_id": "V4_01_ACCEPTED_HEAD_CANDIDATE_V1",
+      "declares_exact_legacy_episode_producer": false
+    },
+    {
+      "accepted_trade_date": null,
+      "binding": {
+        "bytes": 1099,
+        "path": "data/v4/V4_01_GO_FORWARD_IDENTITY_ACCEPTED_HEAD_R1.json",
+        "sha256": "496d537f7c6b9c78cac3a084330f09132814165d2967e8991ffa1d6319092214"
+      },
+      "capabilities": {},
+      "contract_id": "V4_01_GO_FORWARD_IDENTITY_ACCEPTED_HEAD_R1",
+      "declares_exact_legacy_episode_producer": false
+    },
+    {
+      "accepted_trade_date": null,
+      "binding": {
+        "bytes": 1602,
+        "path": "data/v4/V4_02_ACCEPTED_HEAD.json",
+        "sha256": "da318a1f82a03f13930af7858ca1640fadbdaedbee85e27d47f9c869c2d6b595"
+      },
+      "capabilities": {},
+      "contract_id": "V4_02_ACCEPTED_HEAD_V1",
+      "declares_exact_legacy_episode_producer": false
+    },
+    {
+      "accepted_trade_date": null,
+      "binding": {
+        "bytes": 1176,
+        "path": "data/v4/V4_02_GO_FORWARD_CALENDAR_EXTENSION_ACCEPTED_HEAD_R1.json",
+        "sha256": "d0d453689261603a6ccd773f6383781178cb74d388087b72c652dc8afcb309f6"
+      },
+      "capabilities": {},
+      "contract_id": "V4_02_GO_FORWARD_CALENDAR_EXTENSION_ACCEPTED_HEAD_R1",
+      "declares_exact_legacy_episode_producer": false
+    },
+    {
+      "accepted_trade_date": null,
+      "binding": {
+        "bytes": 4142,
+        "path": "data/v4/V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD.json",
+        "sha256": "83fa37ded40337d69ff0e447a0b6a3bc293d2ca95ea9c8aa009f0f104776c4be"
+      },
+      "capabilities": {},
+      "contract_id": "V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD_V1",
+      "declares_exact_legacy_episode_producer": false
+    },
+    {
+      "accepted_trade_date": null,
+      "binding": {
+        "bytes": 1607,
+        "path": "data/v4/V4_03_ACCEPTED_HEAD.json",
+        "sha256": "734bd27a5d53b2f18e3d62aa96ac63c91ccc6d9f848e942bc1efc410c88d4370"
+      },
+      "capabilities": {
+        "MARKET_REFERENCE": "PASS",
+        "MARKET_REGIME": "PASS",
+        "RELATIVE_RPS": "PASS",
+        "SECTOR_NATIVE": "BLOCKED_MISSING_ACCEPTED_PIT_MEMBERSHIP",
+        "STOCK_CORE": "PASS"
+      },
+      "contract_id": "V4_03_ACCEPTED_HEAD_V1",
+      "declares_exact_legacy_episode_producer": false
+    },
+    {
+      "accepted_trade_date": null,
+      "binding": {
+        "bytes": 4924,
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "capabilities": {
+        "MARKET_REFERENCE": "PASS",
+        "MARKET_REGIME": "PASS",
+        "RELATIVE_RPS": "PASS",
+        "SECTOR_NATIVE_CONTRACT": "PASS",
+        "SECTOR_NATIVE_FULL_MARKET": "BLOCKED_MISSING_ACCEPTED_PIT_MEMBERSHIP",
+        "STOCK_CORE": "PASS"
+      },
+      "contract_id": "V4_03_ACCEPTED_HEAD_AMENDED_V1",
+      "declares_exact_legacy_episode_producer": false
+    },
+    {
+      "accepted_trade_date": null,
+      "binding": {
+        "bytes": 6837,
+        "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+        "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+      },
+      "capabilities": {
+        "ADVANCED_STRUCTURE": "NOT_IN_V4_04_SCOPE",
+        "DATA_FACTOR_REPLAY_PASS": "PENDING_V4_05",
+        "MARKET_REGIME_UI": "PASS",
+        "PURE_CORE_COMPRESSION": "PASS",
+        "PURE_CORE_EXTENSION": "PASS",
+        "PURE_CORE_MA_STRUCTURE": "PASS",
+        "PURE_CORE_PARTICIPATION": "PASS",
+        "PURE_CORE_POSITION": "PASS",
+        "PURE_CORE_RELATIVE": "PASS",
+        "PURE_CORE_TREND": "PASS",
+        "SECTOR_ROTATION_PRODUCTION": "NOT_IN_V4_04_SCOPE",
+        "STOCK_BASE_SEED": "NOT_IN_V4_04_SCOPE",
+        "STOCK_CORE_FULL_MARKET_PROFILE": "PASS",
+        "STOCK_PREWATCH": "NOT_IN_V4_04_SCOPE",
+        "TECHNICAL_WINDOW_TRACEABILITY": "PASS",
+        "TURNOVER_CONTEXT": "NOT_IN_V4_04_SCOPE"
+      },
+      "contract_id": "V4_04_ACCEPTED_HEAD_V1",
+      "declares_exact_legacy_episode_producer": false
+    },
+    {
+      "accepted_trade_date": null,
+      "binding": {
+        "bytes": 8456,
+        "path": "data/v4/V4_05_ACCEPTED_HEAD.json",
+        "sha256": "fc929d85553a900a6479ac9f50291d50cf750ad0e6c21fc58e4e05e92189f5cb"
+      },
+      "capabilities": {
+        "CURRENT_FORWARD_ADJUSTED_PRICE": "FULL_PASS",
+        "CURRENT_FORWARD_STOCK_CORE": "DEGRADED_PASS",
+        "DATA_FACTOR_REPLAY_PASS": "DEGRADED_PASS",
+        "HISTORICAL_AS_RECORDED_ADJUSTED_PRICE": "BLOCKED_NO_FIRST_AVAILABILITY_EVIDENCE",
+        "MARKET_REFERENCE": "FULL_PASS",
+        "MARKET_REGIME": "DEGRADED_PASS",
+        "MONTHLY_PERIOD": "DEGRADED_PASS",
+        "PURE_CORE_FACTORS": "DEGRADED_PASS",
+        "WEEKLY_PERIOD": "DEGRADED_PASS"
+      },
+      "contract_id": "V4_05_ACCEPTED_HEAD_V1",
+      "declares_exact_legacy_episode_producer": false
+    },
+    {
+      "accepted_trade_date": null,
+      "binding": {
+        "bytes": 283,
+        "path": "data/v4/V4_05_ACCEPTED_HEAD_AMENDMENT_A02_R1.json",
+        "sha256": "3dd5005a089cdd9bb251508a8d29841510b08c9fdd92eee498ed6074a46483c5"
+      },
+      "capabilities": {},
+      "contract_id": "A02_A05_A04_SCOPED_PROMOTIONS_R3_V1",
+      "declares_exact_legacy_episode_producer": false
+    },
+    {
+      "accepted_trade_date": null,
+      "binding": {
+        "bytes": 4106,
+        "path": "data/v4/V4_06_ACCEPTED_HEAD.json",
+        "sha256": "5aec962703aed40cab809e798edc5bfbe50c416809984db40bb679a172782f8e"
+      },
+      "capabilities": {
+        "BAOSTOCK_LIVE_STRICT_BINDING": "BLOCKED_DEGRADED",
+        "V4_06_ENGINEERING": "EXTERNALLY_ACCEPTED"
+      },
+      "contract_id": "V4_06_ACCEPTED_HEAD_V1",
+      "declares_exact_legacy_episode_producer": false
+    },
+    {
+      "accepted_trade_date": null,
+      "binding": {
+        "bytes": 6362,
+        "path": "data/v4/V4_07_ACCEPTED_HEAD.json",
+        "sha256": "b22117b0d14c35167cba86cb7398d878d7112f9cf17c1a427fa92766e78f880f"
+      },
+      "capabilities": {
+        "REAL_BASE_SEED_SIGNAL": "DEGRADED_BY_ACCEPTED_PRIOR_RPS_BOOTSTRAP_UNKNOWN",
+        "V4_07_ENGINEERING": "EXTERNALLY_ACCEPTED"
+      },
+      "contract_id": "V4_07_ACCEPTED_HEAD_V1",
+      "declares_exact_legacy_episode_producer": false
+    },
+    {
+      "accepted_trade_date": null,
+      "binding": {
+        "bytes": 283,
+        "path": "data/v4/V4_07_ACCEPTED_HEAD_AMENDMENT_A02_R1.json",
+        "sha256": "68513bf18360bec48b59228c51d18600630d78979dbdd046691b4fc66ba8b838"
+      },
+      "capabilities": {},
+      "contract_id": "A02_A05_A04_SCOPED_PROMOTIONS_R3_V1",
+      "declares_exact_legacy_episode_producer": false
+    },
+    {
+      "accepted_trade_date": null,
+      "binding": {
+        "bytes": 20553,
+        "path": "data/v4/V4_08_ACCEPTED_HEAD.json",
+        "sha256": "b9ba34374ce35eefab705469de1e005758b90fa1f58ea5bba96fac08571073bc"
+      },
+      "capabilities": {
+        "ACCEPTED_CONTEXT_ROUTING": "ENGINEERING_ACCEPTED",
+        "B0_SECTOR_PREWATCH_RAW": "ENGINEERING_ACCEPTED",
+        "B1_ROTATION_CORE": "ENGINEERING_ACCEPTED",
+        "B2_AMOUNT_A": "DIAGNOSTIC_AUDIT_OPEN",
+        "B2_LEGACY_CONFIRMED_WARM": "NOT_IMPLEMENTED_LEGACY_VALID_MEMBER_PROVENANCE",
+        "REAL_SIGNAL_CAPABILITY": "DEGRADED_BY_TARGET_CORE_DATA_HEAD_PRIOR_RPS_AND_FORWARD_PIT_HISTORY",
+        "SECTOR_NATIVE_CORE": "ENGINEERING_ACCEPTED"
+      },
+      "contract_id": "V4_08_ACCEPTED_HEAD_V1",
+      "declares_exact_legacy_episode_producer": false
+    },
+    {
+      "accepted_trade_date": null,
+      "binding": {
+        "bytes": 21493,
+        "path": "data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json",
+        "sha256": "f2a35cebd18e8caf723e7900133333ce4b8df1a8314cb190dade7b0ea7624a3f"
+      },
+      "capabilities": {
+        "ACCEPTED_CONTEXT_ROUTING": "ENGINEERING_ACCEPTED",
+        "B0_SECTOR_PREWATCH_RAW": "ENGINEERING_ACCEPTED",
+        "B1_ROTATION_CORE": "ENGINEERING_ACCEPTED",
+        "B2_AMOUNT_A": "DIAGNOSTIC_AUDIT_OPEN",
+        "B2_LEGACY_CONFIRMED_WARM": "NOT_IMPLEMENTED_LEGACY_VALID_MEMBER_PROVENANCE",
+        "REAL_SIGNAL_CAPABILITY": "DEGRADED_BY_TARGET_CORE_DATA_HEAD_PRIOR_RPS_AND_FORWARD_PIT_HISTORY",
+        "SECTOR_NATIVE_CORE": "ENGINEERING_ACCEPTED"
+      },
+      "contract_id": "V4_08_ACCEPTED_HEAD_AMENDED_R1",
+      "declares_exact_legacy_episode_producer": false
+    },
+    {
+      "accepted_trade_date": "2026-09-30",
+      "binding": {
+        "bytes": 2151,
+        "path": "data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json",
+        "sha256": "d6374a73b8084ccd383cbb4f75428ed91176e91cc09d87c3329041d57c5bd9ed"
+      },
+      "capabilities": {},
+      "contract_id": "V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1",
+      "declares_exact_legacy_episode_producer": false
+    },
+    {
+      "accepted_trade_date": null,
+      "binding": {
+        "bytes": 11474,
+        "path": "data/v4/V4_09_ACCEPTED_HEAD.json",
+        "sha256": "641ef9e2e6fe8f461a9b765262e739791a6d3fdd220b0eff7947e2690de3a87d"
+      },
+      "capabilities": {
+        "PRIORITY_V1": "ENGINEERING_ACCEPTED",
+        "REAL_SIGNAL_CAPABILITY": "DEGRADED_BY_ACCEPTED_PRIOR_RPS_BOOTSTRAP_UNKNOWN",
+        "STOCK_PREWATCH_RAW": "ENGINEERING_ACCEPTED",
+        "V4_09_ENGINEERING": "ENGINEERING_ACCEPTED"
+      },
+      "contract_id": "V4_09_ACCEPTED_HEAD_V1",
+      "declares_exact_legacy_episode_producer": false
+    },
+    {
+      "accepted_trade_date": null,
+      "binding": {
+        "bytes": 283,
+        "path": "data/v4/V4_09_ACCEPTED_HEAD_AMENDMENT_A02_R1.json",
+        "sha256": "a467ff6a02d12052c4b8d35e0bee0cb57770743dddf3bccfccb1741653b8d5ac"
+      },
+      "capabilities": {},
+      "contract_id": "A02_A05_A04_SCOPED_PROMOTIONS_R3_V1",
+      "declares_exact_legacy_episode_producer": false
+    },
+    {
+      "accepted_trade_date": null,
+      "binding": {
+        "bytes": 5102,
+        "path": "data/v4/V4_10_ACCEPTED_HEAD.json",
+        "sha256": "ad9fc4643652feb3684223817f2e9c300167d128e2e8a07179e86f65094fd1e1"
+      },
+      "capabilities": {
+        "FULL_D0_D1_D2_DAG": "NOT_IMPLEMENTED",
+        "STATE_REDUCER_AUTHORITY": "ENGINEERING_ACCEPTED",
+        "STATE_REDUCER_INTERFACE": "ENGINEERING_ACCEPTED",
+        "STATE_REDUCER_MACHINE_VECTORS": "ENGINEERING_ACCEPTED",
+        "STATE_REDUCER_PERSISTENCE": "ENGINEERING_ACCEPTED",
+        "V4_11_CONFIRMATION": "NOT_IMPLEMENTED",
+        "V4_12_STRUCTURE_SUPPORT": "NOT_IMPLEMENTED"
+      },
+      "contract_id": "V4_10_ACCEPTED_HEAD_V1",
+      "declares_exact_legacy_episode_producer": false
+    },
+    {
+      "accepted_trade_date": "2026-09-30",
+      "binding": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "capabilities": {},
+      "contract_id": "V4_DATA_ACCEPTED_HEAD_V2",
+      "declares_exact_legacy_episode_producer": false
+    },
+    {
+      "accepted_trade_date": null,
+      "binding": {
+        "bytes": 2776,
+        "path": "data/v4/V4_RPS_PIT_HISTORY_ACCEPTED_HEAD_R1.json",
+        "sha256": "4025dd5d3eb27c9086bca8e4861ad33842db8938dda370fb3d7f78b8d783398b"
+      },
+      "capabilities": {},
+      "contract_id": "V4_RPS_PIT_HISTORY_ACCEPTED_HEAD_R1",
+      "declares_exact_legacy_episode_producer": false
+    },
+    {
+      "accepted_trade_date": null,
+      "binding": {
+        "bytes": 8574,
+        "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+        "sha256": "529c532bd5553ace00fa4813aef07979cfce4e1f18fa5ea66f38fcddd8ed16cb"
+      },
+      "capabilities": {},
+      "contract_id": "V4_STAGE_ACCEPTED_HEAD_V1",
+      "declares_exact_legacy_episode_producer": false
+    }
+  ],
+  "stage_contract": {
+    "bytes": 2215,
+    "path": "docs/evidence/next_round_r3/V4_11_R3B_EPISODE_SAFETY_LOO_INPUT_CLOSURE_TASK_20261002.md",
+    "sha256": "7f96053baf8362378bd2becff4d0c1c364251dfc6a49b6fe1762e5a91cefc5df"
+  }
+}

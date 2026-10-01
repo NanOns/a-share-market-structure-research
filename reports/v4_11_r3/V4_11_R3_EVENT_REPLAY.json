@@ -1,0 +1,54 @@
+{
+  "AS_RECORDED": false,
+  "NEW_CONFIRMED_semantics_invariant": true,
+  "accepted": false,
+  "current_d2": {
+    "bytes": 10453156,
+    "path": "data/v4/confirmation_candidates_r3/D2_2026-09-30_CANDIDATE_R3_R2.json.gz",
+    "sha256": "cbd21cd033fd1a6794366a65724f7d68baf1c6e1fb9c8b488cd493bef3a2292e"
+  },
+  "event_counts": {
+    "NEW_CONFIRMED": 26,
+    "NONE": 1316,
+    "UNKNOWN": 3882
+  },
+  "event_quality_counts": {
+    "KNOWN": 1342,
+    "UNKNOWN_CURRENT_D2_REQUIRED_FACTS": 3859,
+    "UNKNOWN_PRIOR_D2_REQUIRED_FACTS": 23
+  },
+  "events": {
+    "bytes": 625897,
+    "path": "data/v4/confirmation_candidates_r3/STATE_EVENT_2026-09-30_CANDIDATE_R3_R2.json.gz",
+    "sha256": "849a04a956e29d8d4ec7b90c5e5a7fce2e3000837435c5d80515f578b845f40e"
+  },
+  "frozen_prior": {
+    "bytes": 9551289,
+    "path": "data/v4/confirmation_candidates_r3/FROZEN_PRIOR_SESSION_STATE_CANDIDATE_R3_R2.json.gz",
+    "sha256": "896f2e4e6d5f5c9eae52313247c974c20cef651e230baa6e8f4ac8c41f86b33b"
+  },
+  "permissions": {
+    "focus": false,
+    "global_mandatory_adoption": false,
+    "production": false,
+    "shadow": false
+  },
+  "prior_d2": {
+    "bytes": 6162208,
+    "path": "data/v4/confirmation_candidates_r3/D2_2026-09-29_CANDIDATE_R3_R2.json.gz",
+    "sha256": "c8124a3443826de7f189b34d63f814e8a01cf70264382ddf9fb2de0aaef3416b"
+  },
+  "raw_exact_predicate_counts": {
+    "CONFIRMATION_WEAKENED": 74,
+    "FIRST_OBSERVED": 1,
+    "NEW_CONFIRMED": 26,
+    "NONE": 5123
+  },
+  "same_day_revision_predecessor_invariant": true,
+  "same_day_revision_trace": {
+    "event_predicate_digest": "836c145e23e19b1d9b1a79b337c58e3e5b138b6cdf1f5e00f44cdcbcf114d25b",
+    "prior_state_publication_id": "V4_11_R3C_D2:f0b999d78d94b15b567259405c651cca04627d5e15db193510f0b61aa8c27038",
+    "revision_of": "V4_11_R3C_D2:a45f9add7f4e9d0a865c5d72e4f614ea056d44edc9283970e7c15a46f3d49073"
+  },
+  "status": "PASS_REAL_CANDIDATE_FROZEN_PRIOR_SESSION"
+}

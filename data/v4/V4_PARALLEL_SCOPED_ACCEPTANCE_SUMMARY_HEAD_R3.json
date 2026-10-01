@@ -1,0 +1,39 @@
+{
+  "authority_registry": {
+    "bytes": 7460,
+    "path": "data/v4/V4_SOURCE_AUTHORITY_SCOPED_DISPOSITION_REGISTRY_R5_INACTIVE.json",
+    "sha256": "064e5103c64848bf842d1cde9e01ec65a0ebe0b445cc18b435723dcc66e59db5"
+  },
+  "business_runtime_authority": false,
+  "contract_id": "PARALLEL_SCOPED_ACCEPTANCE_SUMMARY_HEAD_R3",
+  "data_head_action": "KEEP",
+  "dispositions": {
+    "A03": "SCOPED_ACCEPTED / ACCUMULATION_CONTINUES",
+    "A06": "SCOPED_ACCEPTED / FAIL_CLOSED_NO_TOLERANCE",
+    "A07": "SCOPED_ACCEPTED / PERMANENT_PRECAPTURE_LIMITATION",
+    "OWNER": "SCOPED_ACCEPTED_INACTIVE_METADATA",
+    "READER": "SCOPED_ACCEPTED_HISTORY_ONLY"
+  },
+  "formal_v4_11_accepted_head": false,
+  "head_kind": "SCOPED_METADATA_SUMMARY_ONLY",
+  "permissions": {
+    "focus": false,
+    "formal_consumer_cutover": false,
+    "global_mandatory_adoption": false,
+    "production": false,
+    "shadow": false
+  },
+  "remediation_registry": {
+    "bytes": 19334,
+    "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R13_CONSOLIDATION_R3.json",
+    "sha256": "cd6d909a3a01fba8ad32cb7833de041fb4a9a775f1d3fc8f679f7929ae598856"
+  },
+  "stage_head_action": "KEEP",
+  "status": "PARALLEL_SCOPED_FORMALIZATION_CONSOLIDATED",
+  "supersession_map": {
+    "bytes": 4887,
+    "path": "reports/next_round_r3/scoped_consolidation/SUPERSESSION_MAP_R3.json",
+    "sha256": "cc8dfbdd9fe6b427c49501d7f4df5cfad5c471135ddeec352954931060c63dea"
+  },
+  "version": 3
+}

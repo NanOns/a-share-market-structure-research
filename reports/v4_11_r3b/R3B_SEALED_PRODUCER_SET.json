@@ -1,0 +1,66 @@
+{
+  "bindings": [
+    {
+      "bytes": 6896,
+      "path": "config/v4_11_r3b_input_closure_contract_v1.json",
+      "sha256": "3b79bff32500f6dd15cee57102055a90a8d2461dff905a895c21739994b7dcab"
+    },
+    {
+      "bytes": 862,
+      "path": "config/v4_11_r3b_episode_safety_parameters_v1.json",
+      "sha256": "ecae7c9e0e8af25861215b3c64cfd213f024dadeef2f2e2dc8dbe70afcacabfa"
+    },
+    {
+      "bytes": 21123,
+      "path": "reports/v4_11_r3b/R3B_EPISODE_SAFETY_LOO_CLOSURE_RECEIPT.json",
+      "sha256": "e52df32d7943039401b69da2305c54716de05d3c8caeb40e14f23dcffb3c5a90"
+    },
+    {
+      "bytes": 11474,
+      "path": "src/v4/confirmation_input_closure_r3b.py",
+      "sha256": "a9a12be3694bf27cb2451fc5c4973e7dbbd87577e2bcc7074a8310870b9ec245"
+    },
+    {
+      "bytes": 8978,
+      "path": "tests/v4_11_r3b/test_input_closure.py",
+      "sha256": "264552115c83687f38368313aee9b575d15adbf24f68e43fd6d20511a7726e31"
+    },
+    {
+      "bytes": 11526,
+      "path": "scripts/seal_v4_11_r3b_input_closure.py",
+      "sha256": "5ea0856d94cc3946441273353bbb7c3943a7c005412a4aea9066885b49e1193e"
+    }
+  ],
+  "contract_id": "V4_11_R3B_SEALED_PRODUCER_SET_V1",
+  "data_head_advanced": false,
+  "formal_stage_head_created": false,
+  "permissions": {
+    "focus": false,
+    "global_mandatory_adoption": false,
+    "production": false,
+    "shadow": false
+  },
+  "producer_set_digest": "b2de7edd7a0bdfb435eaef1fe393347e9899dae314489db10b66b2723003dd7c",
+  "required_external_acceptance": true,
+  "scenario_capability_matrix_when_bound_to_R3A_seal": {
+    "LAUNCH_CONFIRM": {
+      "capability": "FORMAL_CANDIDATE",
+      "reason": "R3A_SEALED_TARGET_FACT_SET"
+    },
+    "RECOVERY_TURN": {
+      "capability": "FORMAL_CANDIDATE",
+      "reason": "R3A_SEALED_TARGET_FACT_SET"
+    },
+    "STRONG_PULLBACK": {
+      "capability": "DIAGNOSTIC_ONLY",
+      "reason": "EXACT_ACCEPTED_FROZEN_PRIOR_SESSION_EPISODE_UNAVAILABLE"
+    },
+    "TREND_CONTINUE": {
+      "capability": "DIAGNOSTIC_ONLY",
+      "reason": "SAME_DAY_LOO_FROZEN_ROLE_NOT_ADMITTED_FOR_FORMAL_D0"
+    }
+  },
+  "sealed_at_utc": "2026-10-01T16:58:50.761958+00:00",
+  "stage_head_advanced": false,
+  "status": "V4_11_R3B_EPISODE_SAFETY_LOO_CANDIDATE_READY"
+}

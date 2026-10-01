@@ -1,0 +1,125 @@
+{
+  "AS_RECORDED": false,
+  "acceptance": "ENGINEERING_REVIEW_ONLY",
+  "accepted": false,
+  "audit_id": "AUD_R3C_ACCEPTED_SUSPENSION_STATE_ADMISSION_01",
+  "bounded_real_suspension_examples": [
+    {
+      "exact_accepted_source_status": "SUSPENDED",
+      "observation": {
+        "accepted_trading_status": "SUSPENDED",
+        "state": "CONFIRMED_SUSPENSION",
+        "trade_date": "2026-09-28"
+      },
+      "security_id": "SEC-11E54DE9C2693CFA40A4C091BCD5ABF9"
+    },
+    {
+      "exact_accepted_source_status": "SUSPENDED",
+      "observation": {
+        "accepted_trading_status": "SUSPENDED",
+        "state": "CONFIRMED_SUSPENSION",
+        "trade_date": "2026-09-29"
+      },
+      "security_id": "SEC-11E54DE9C2693CFA40A4C091BCD5ABF9"
+    },
+    {
+      "exact_accepted_source_status": "SUSPENDED",
+      "observation": {
+        "accepted_trading_status": "SUSPENDED",
+        "state": "CONFIRMED_SUSPENSION",
+        "trade_date": "2026-09-30"
+      },
+      "security_id": "SEC-11E54DE9C2693CFA40A4C091BCD5ABF9"
+    },
+    {
+      "exact_accepted_source_status": "SUSPENDED",
+      "observation": {
+        "accepted_trading_status": "SUSPENDED",
+        "state": "CONFIRMED_SUSPENSION",
+        "trade_date": "2026-09-28"
+      },
+      "security_id": "SEC-17E76DA217E5C1BCC40497E9331DED2E"
+    },
+    {
+      "exact_accepted_source_status": "SUSPENDED",
+      "observation": {
+        "accepted_trading_status": "SUSPENDED",
+        "state": "CONFIRMED_SUSPENSION",
+        "trade_date": "2026-09-29"
+      },
+      "security_id": "SEC-17E76DA217E5C1BCC40497E9331DED2E"
+    },
+    {
+      "exact_accepted_source_status": "SUSPENDED",
+      "observation": {
+        "accepted_trading_status": "SUSPENDED",
+        "state": "CONFIRMED_SUSPENSION",
+        "trade_date": "2026-09-28"
+      },
+      "security_id": "SEC-25106EB81E18F2C63CA4F3BD11EAD8DD"
+    }
+  ],
+  "candidate_only": true,
+  "contract_id": "V4_11_R3C_ACCEPTED_OBSERVATION_STATE_INDEPENDENT_READBACK_V1",
+  "created_at_utc": "2026-10-01T17:46:36.772876+00:00",
+  "explicit_source_suspension_count": 35,
+  "full_D2_or_Event_reexecution": false,
+  "historical_status_capability": "UNBOUND_HISTORICAL_STATUS_REMAINS_UNKNOWN; no suspension inferred from missing raw bar",
+  "inferred_suspension_from_absence_count": 0,
+  "observation_state_counts": {
+    "ACTUAL": 129534,
+    "ADJUSTMENT_UNKNOWN": 11086,
+    "CONFIRMED_SUSPENSION": 35,
+    "UNKNOWN": 393
+  },
+  "real_entities": 5224,
+  "real_observation_slots": 141048,
+  "source_bindings": {
+    "accepted_chain": {
+      "bytes": 182128,
+      "path": "data/v4/DM01_A01_R3_ACCEPTED_CHAIN_20260924_20260930_R1.json",
+      "sha256": "4d66105d7a5e759d8273a00a64d2ea80e1851090eeedde0c64c9c0d455d7e881"
+    },
+    "accepted_dated_TRADING_STATUS": [
+      {
+        "bytes": 2469877,
+        "path": "data/v4/dm01_candidate_staging_r3/durable_r3/01cc90422d57e166392ff251ec990f4ad286504c27d29cbba2fb499c9b615060/TRADING_STATUS/artifact.json",
+        "sha256": "2bc52361a02ecdae59d020fc87c30a73fd73e073c7dba95f247deb84931b25d4"
+      },
+      {
+        "bytes": 2470350,
+        "path": "data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/TRADING_STATUS/artifact.json",
+        "sha256": "1024bfcad1052635317351b9c3c730f9c09294de72b3f1358e45bbe0aac6dde4"
+      },
+      {
+        "bytes": 2470841,
+        "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/TRADING_STATUS/artifact.json",
+        "sha256": "20798999bb3309aa93f42ebd075bc53cffb5337117f6fbccd7eafd14986f51bb"
+      }
+    ],
+    "adapter": {
+      "bytes": 4773,
+      "path": "src/v4/confirmation_d2_upstream_r3.py",
+      "sha256": "dee9ae065b9adbdfc2b6a7f47309712ef0365e7e9470dc8c23ee2de48e211ac2"
+    },
+    "builder": {
+      "bytes": 14038,
+      "path": "scripts/build_v4_11_real_dag_r3c.py",
+      "sha256": "51010c99b134d7c03ebe5c48d859389753a6969d7bb9276142f61f631d7fc5bd"
+    },
+    "data_head": {
+      "bytes": 16890,
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+    },
+    "derivation": {
+      "bytes": 26180770,
+      "path": "data/v4/confirmation_candidates_r3/D2_TARGET_UPSTREAM_DERIVATIONS_2026-09-30_R3_R2.json.gz",
+      "sha256": "69033cdd212e0fcc27a27229f55b5eabac1c65235c3493571adac43b9bb2437c"
+    }
+  },
+  "source_status_mismatches": 0,
+  "status": "PASS_EXACT_ACCEPTED_STATE_ADMISSION",
+  "target_trade_date": "2026-09-30",
+  "unbound_source_unknown_slots": 393
+}

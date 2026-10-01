@@ -1,0 +1,85 @@
+{
+  "acceptance": "CANDIDATE_ONLY_NOT_EXTERNAL_ACCEPTANCE",
+  "active_seal": {
+    "bytes": 2139,
+    "path": "reports/v4_11_r3a/R3A_SEALED_PRODUCER_SET_R2.json",
+    "sha256": "8532238a53d52b975d15e0f3efa02f94e35fd60af9c7923810d045a2e09bd284"
+  },
+  "first_trial_superseded": {
+    "bytes": 8865,
+    "path": "reports/v4_11_r3a/INDEPENDENT_ORACLE_R1_DECIMAL_COORDINATE_FAILURE.json",
+    "sha256": "8f15287cdc7a3b5c75d24656350ddfdd4d1052385157e5a552eb97346cda71f6"
+  },
+  "independent_oracle": {
+    "bytes": 32678,
+    "path": "reports/v4_11_r3a/INDEPENDENT_ORACLE.json",
+    "sha256": "0ecc1a541dc7cc652617111a7915a918f0968c0f78f3a3c9320add0e397278f4"
+  },
+  "next_stage": "R3C_AFTER_R3B_SEAL",
+  "numerical_family_counts": {
+    "amr20_mean_prior": {
+      "known": 5179,
+      "unknown": 45
+    },
+    "close_above_phc20": {
+      "known": 4650,
+      "unknown": 574
+    },
+    "liq20_amount": {
+      "known": 5182,
+      "unknown": 42
+    },
+    "ma20": {
+      "known": 4659,
+      "unknown": 565
+    },
+    "ma5": {
+      "known": 4977,
+      "unknown": 247
+    },
+    "phc20": {
+      "known": 4650,
+      "unknown": 574
+    },
+    "phh20": {
+      "known": 4650,
+      "unknown": 574
+    },
+    "r20": {
+      "known": 4480,
+      "unknown": 744
+    },
+    "r5": {
+      "known": 4979,
+      "unknown": 245
+    },
+    "ret1_adj": {
+      "known": 5032,
+      "unknown": 192
+    },
+    "ret20_adj": {
+      "known": 4650,
+      "unknown": 574
+    },
+    "ret5_adj": {
+      "known": 4936,
+      "unknown": 288
+    },
+    "slope20": {
+      "known": 4659,
+      "unknown": 565
+    }
+  },
+  "numerical_family_publication": {
+    "bytes": 543347,
+    "path": "data/v4/confirmation_candidates_r3/NUMERICAL_FAMILIES_20260930_R3A.json.gz",
+    "sha256": "7fdb1857c1931e749ad85ae0c24664976075352b3e2f02716e273b0aca31e2b4"
+  },
+  "permissions": {
+    "focus": false,
+    "global_mandatory_adoption": false,
+    "production": false,
+    "shadow": false
+  },
+  "status": "V4_11_R3A_TARGET_FACT_PRODUCERS_CANDIDATE_READY"
+}

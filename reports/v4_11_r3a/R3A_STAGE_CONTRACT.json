@@ -1,0 +1,100 @@
+{
+  "acceptance": "CANDIDATE_ONLY",
+  "authority": {
+    "bytes": 8324,
+    "path": "docs/evidence/next_round_r3/V4_R2_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R2_20261002.md",
+    "sha256": "9b630344fa2101786f294fd3234bd275cedd25c73ca380706f56128fbad06d01"
+  },
+  "exact_legacy_sources": [
+    {
+      "bytes": 14709,
+      "path": "src/workbench_analysis/today_research_factors_v3_3.py",
+      "sha256": "1f466ff5db7251d4e99221046602b9550fa60012e50acc7bac74efd41b35dbb5"
+    },
+    {
+      "bytes": 11547,
+      "path": "src/workbench_analysis/research_features.py",
+      "sha256": "1393f4d33f8b6aecb2e666d57e9cd528859a21b8a7712e3749e8f7f2c59a5b20"
+    },
+    {
+      "bytes": 11157,
+      "path": "src/workbench_analysis/stock_attention.py",
+      "sha256": "9bccf4fa7c7fdcba5a9d0c7b8bf81f045e9698f9193c1811f1022ae4f76b30b8"
+    },
+    {
+      "bytes": 1392,
+      "path": "src/normalize/universe_recent.py",
+      "sha256": "cb476ea8711496dab31407377090e0b67e8cefb9401cfcd6042f5dfa91e1f6cc"
+    },
+    {
+      "bytes": 7358,
+      "path": "scripts/p12_03_current_funnel.py",
+      "sha256": "e4707909daf0cff40e6ec15e52de011ecdd030c20cdcca418eea3ff617c91ee8"
+    }
+  ],
+  "master": {
+    "bytes": 2147,
+    "path": "docs/evidence/next_round_r3/V4_NEXT_ROUND_EXECUTION_MASTER_R3_20261002.md",
+    "sha256": "251c248fdc4e87d6d277ef2f0b152a22ebd10847d5d8c02b280ccd6b8461ba54"
+  },
+  "next_stage": "SEAL_R3A_PLUS_R3B_BEFORE_R3C",
+  "permissions": {
+    "focus": false,
+    "global_mandatory_adoption": false,
+    "production": false,
+    "shadow": false
+  },
+  "phase0": {
+    "head_validation": {
+      "accepted_trade_date": "2026-09-30",
+      "nodes": [
+        {
+          "candidate": {
+            "bytes": 51305,
+            "path": "data/v4/dm01_candidate_staging_r3/durable_r3/01cc90422d57e166392ff251ec990f4ad286504c27d29cbba2fb499c9b615060/PROMOTION_CANDIDATE.json",
+            "sha256": "b338caaea8f9e41228a62add7e987d946f4dc9a5a5297dbe02e9ee73df525313"
+          },
+          "components": 9,
+          "source_readback": false,
+          "status": "PASS",
+          "trade_date": "2026-09-28"
+        },
+        {
+          "candidate": {
+            "bytes": 50834,
+            "path": "data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/PROMOTION_CANDIDATE.json",
+            "sha256": "0a67e7211572a7057c50ab27e397c3e093f88c24732e8c7be7bdda92952ca1bf"
+          },
+          "components": 9,
+          "source_readback": false,
+          "status": "PASS",
+          "trade_date": "2026-09-29"
+        },
+        {
+          "candidate": {
+            "bytes": 50811,
+            "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/PROMOTION_CANDIDATE.json",
+            "sha256": "e4ba1fb6d4690b869f98ffc45a8d576a641ef2e9a852a9db97aedd19e043bc81"
+          },
+          "components": 9,
+          "source_readback": false,
+          "status": "PASS",
+          "trade_date": "2026-09-30"
+        }
+      ],
+      "permissions": {
+        "focus": false,
+        "production": false,
+        "shadow": false
+      },
+      "status": "PASS"
+    },
+    "scope": "ACCEPTED_DATA_INPUT_PREFLIGHT",
+    "status": "DEGRADED_PASS"
+  },
+  "stage_contract": {
+    "bytes": 3202,
+    "path": "docs/evidence/next_round_r3/V4_11_R3A_TARGET_DATE_REQUIRED_FACT_PRODUCERS_TASK_20261002.md",
+    "sha256": "9dbff3c9d1b67505bc0453d4e8740d72559ab5acbb75052e57178b693f4296cb"
+  }
+}

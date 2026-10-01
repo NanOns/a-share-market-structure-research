@@ -1,0 +1,61 @@
+{
+  "accepted": false,
+  "builder": {
+    "bytes": 14947,
+    "path": "scripts/build_v4_11_target_facts_r3a.py",
+    "sha256": "c85d68830cbb61523916ebe5991ec057155e15632af90258b8d99b026c6ed2db"
+  },
+  "calculations": {
+    "2026-09-29": {
+      "bytes": 7430012,
+      "path": "data/v4/confirmation_candidates_r3/CALCULATIONS_2026-09-29_R3A.json.gz",
+      "sha256": "1c1dcd3ab955a118e5e44c8371f6ea5f6213828437f56a7962eb0b0c04dff78e"
+    },
+    "2026-09-30": {
+      "bytes": 7443699,
+      "path": "data/v4/confirmation_candidates_r3/CALCULATIONS_2026-09-30_R3A.json.gz",
+      "sha256": "b8b5eb98fc8d70628e40771c10b03c856262f6ffe0e82a5b4bd720e879ffa5bf"
+    }
+  },
+  "contract": {
+    "bytes": 19131,
+    "path": "config/v4_11_target_fact_producers_r3a_v1.json",
+    "sha256": "52645b35e24230bd2cf05283939122d1f511eeba18c2209d69c86c28ceef69a5"
+  },
+  "coverage": {
+    "bytes": 15972,
+    "path": "reports/v4_11_r3a/TARGET_FIELD_COVERAGE.json",
+    "sha256": "ad75613f1d907fa88e9581df00112f55b4c20130b229abc3803da46d368a1e84"
+  },
+  "matrix": {
+    "bytes": 772611,
+    "path": "reports/v4_11_r3a/REQUIRED_FIELD_CAPABILITY_MATRIX.json",
+    "sha256": "50cdd005772a061c28879deb4aea81d3b825c51ca3d75224b63155dcde4224e2"
+  },
+  "next_stage": "R3C_ONLY_AFTER_R3B_SEALED",
+  "permissions": {
+    "focus": false,
+    "global_mandatory_adoption": false,
+    "production": false,
+    "shadow": false
+  },
+  "publications": {
+    "2026-09-29": {
+      "bytes": 1730450,
+      "path": "data/v4/confirmation_candidates_r3/TARGET_FACTS_2026-09-29_R3A.json.gz",
+      "sha256": "9c4bc69feab7a03018e6d2a76e730694998c99b037788bf8ed9df9072f2d0fb3"
+    },
+    "2026-09-30": {
+      "bytes": 1721348,
+      "path": "data/v4/confirmation_candidates_r3/TARGET_FACTS_2026-09-30_R3A.json.gz",
+      "sha256": "95925623de7fb1e4f2492a0cccac42c3d95add44073394a49fd1078fced0fadb"
+    }
+  },
+  "runtime": {
+    "bytes": 5785,
+    "path": "src/v4/target_fact_producers_r3.py",
+    "sha256": "ac450d9e8572c64bf07ed3adfe32d00134217a7fe82e61cc5b5419113f3a8e4c"
+  },
+  "sealed": true,
+  "status": "V4_11_R3A_TARGET_FACT_PRODUCERS_CANDIDATE_READY"
+}

@@ -1,0 +1,39 @@
+{
+  "counts": {
+    "LAUNCH_CONFIRM": {
+      "FALSE": 1730,
+      "TRUE": 42,
+      "UNKNOWN": 3452
+    },
+    "RECOVERY_TURN": {
+      "FALSE": 1758,
+      "TRUE": 14,
+      "UNKNOWN": 3452
+    },
+    "STRONG_PULLBACK": {
+      "UNKNOWN": 5224
+    },
+    "TREND_CONTINUE": {
+      "UNKNOWN": 5224
+    }
+  },
+  "formal_consumer_enabled": false,
+  "scenarios": {
+    "LAUNCH_CONFIRM": {
+      "capability": "FORMAL_CANDIDATE",
+      "reason": "R3A_SEALED_TARGET_FACT_SET"
+    },
+    "RECOVERY_TURN": {
+      "capability": "FORMAL_CANDIDATE",
+      "reason": "R3A_SEALED_TARGET_FACT_SET"
+    },
+    "STRONG_PULLBACK": {
+      "capability": "DIAGNOSTIC_ONLY",
+      "reason": "EXACT_ACCEPTED_FROZEN_PRIOR_SESSION_EPISODE_UNAVAILABLE"
+    },
+    "TREND_CONTINUE": {
+      "capability": "DIAGNOSTIC_ONLY",
+      "reason": "SAME_DAY_LOO_FROZEN_ROLE_NOT_ADMITTED_FOR_FORMAL_D0"
+    }
+  }
+}

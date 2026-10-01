@@ -1,0 +1,62 @@
+{
+  "accepted_ledger_written": false,
+  "adapter_AST": {
+    "bytes": 2932,
+    "path": "reports/v4_11_r3/V4_11_R3_D2_ADAPTER_AST_EVIDENCE.json",
+    "sha256": "fb202cb2208f18d0b3b2f4a479f0c5a353b052e13629b6239502fcd7288a84a7"
+  },
+  "contract": {
+    "bytes": 11930,
+    "path": "config/v4_11_r3c_candidate_d2_contract_v2.json",
+    "sha256": "60da991072f663c613f2c11d02b0f96af709d652a6da5076a3b0150766babd48"
+  },
+  "current": {
+    "bytes": 10453156,
+    "path": "data/v4/confirmation_candidates_r3/D2_2026-09-30_CANDIDATE_R3_R2.json.gz",
+    "sha256": "cbd21cd033fd1a6794366a65724f7d68baf1c6e1fb9c8b488cd493bef3a2292e"
+  },
+  "final_eligibility_counts": {
+    "FALSE": 1195,
+    "TRUE": 170,
+    "UNKNOWN": 3859
+  },
+  "main_heads_changed": false,
+  "maturity_counts": {
+    "CONFIRMED": 100,
+    "NONE": 4647,
+    "PREWATCH": 477
+  },
+  "prior": {
+    "bytes": 6162208,
+    "path": "data/v4/confirmation_candidates_r3/D2_2026-09-29_CANDIDATE_R3_R2.json.gz",
+    "sha256": "c8124a3443826de7f189b34d63f814e8a01cf70264382ddf9fb2de0aaef3416b"
+  },
+  "prior_state_authenticity": "Re-executed immutable real 9/29 candidate, left-censored bootstrap; no AS_RECORDED historical state claim.",
+  "production_enabled": false,
+  "row_count": 5224,
+  "source_date_limit": "Old accepted V4_05/V4_07/V4_09 are 2026-09-28; new target candidate publications rerun pure owner rules, no date relabelling.",
+  "source_set": {
+    "bytes": 1265,
+    "path": "data/v4/confirmation_candidates_r3/D2_SEALED_SOURCE_SET_R3_R2.json",
+    "sha256": "79a8ce808e29043c6e0a4c7ad6fd447465ea2c9afc1b5b7c76e058a2df45ff12"
+  },
+  "state_freshness_counts": {
+    "FRESH": 1365,
+    "STALE": 3859
+  },
+  "status": "PASS_REAL_CANDIDATE_RULE_REEXECUTION",
+  "unknown_reasons": {
+    "CONFIRMED": 3452,
+    "PREWATCH": 606,
+    "SEED": 480,
+    "SUSPENSION": 11,
+    "core_price_damage": 573,
+    "delta3:OPTIONAL_INPUT_UNKNOWN": 367,
+    "dq5:OPTIONAL_INPUT_UNKNOWN": 5224,
+    "episode_invalidation_contract_id:OPTIONAL_INPUT_UNKNOWN": 5224,
+    "followup_complete:OPTIONAL_INPUT_UNKNOWN": 5224,
+    "frozen_invalidation": 407,
+    "risk:OPTIONAL_INPUT_UNKNOWN": 573,
+    "scenario:OPTIONAL_INPUT_UNKNOWN": 3452
+  }
+}

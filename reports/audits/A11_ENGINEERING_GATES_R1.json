@@ -1,5 +1,10 @@
 {
   "allowed_candidate_status": "V4_01_IDENTITY_AUTHORITY_RECONCILIATION_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
+  "clean_regression": {
+    "bytes": 10612,
+    "path": "reports/audits/A11_CLEAN_CHECKOUT_R1.json",
+    "sha256": "6aec243f181f4c8ec55a3d93f418decfc604160a18924c9a58377d5d3eb677bc"
+  },
   "contract_id": "A11_ENGINEERING_GATES_R1",
   "evidence": [
     {
@@ -39,11 +44,11 @@
     "A11-G07": "PASS_ENGINEERING",
     "A11-G08": "PASS_ENGINEERING",
     "A11-G09": "PASS_ENGINEERING",
-    "A11-G10": "PENDING_CLEAN_DETACHED",
+    "A11-G10": "PASS_ENGINEERING",
     "A11-G11": "PENDING_INDEPENDENT_EXTERNAL_AUDIT"
   },
   "next_stage": "A12 producer authority repair; external A11 amendment decision remains separate",
   "result": "RESULT_C_WIDESPREAD_AUTHORITY_UNRESOLVED",
-  "status": "PENDING_CLEAN_DETACHED",
+  "status": "V4_01_IDENTITY_AUTHORITY_RECONCILIATION_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
   "work_package": "WP-A11-V4-01-IDENTITY-AUTHORITY"
 }

@@ -1,0 +1,89 @@
+{
+  "active_runtime_bindings": [
+    {
+      "bytes": 9159,
+      "path": "src/workbench_analysis/parallel_scoped_acceptance_r1.py",
+      "sha256": "0f82caae6a24215ffbdf8e2ad3974498628290b2d793dd945dd430a37422ac69"
+    },
+    {
+      "bytes": 11698,
+      "path": "scripts/formalize_parallel_scoped_acceptance_r3.py",
+      "sha256": "e837fb65d500bed68f3c18df59379e0da54c67ba1c003d4273e7c7d2a349c0a5"
+    },
+    {
+      "bytes": 8163,
+      "path": "tests/v4_parallel_scoped_formalization_r1/test_scoped_acceptance.py",
+      "sha256": "b49ab9d6ceda5c6f40c4276862afa2e09b02711dcdead9b428c40ae48f80ec68"
+    },
+    {
+      "bytes": 4862,
+      "path": "tests/v4_parallel_scoped_formalization_r1/test_clean_representations.py",
+      "sha256": "8f26c10d72e6111d05e0d6c8781d2996ed8cf6821798f7bf6be1f3b28922354c"
+    }
+  ],
+  "actual_heads_changed": false,
+  "contract_id": "PARALLEL_SCOPED_CLEAN_REPRESENTATION_SOURCE_SUPERSESSION_R1",
+  "exact_resolution": "ONLY_PROTECTED_HEADS; PINNED_METADATA; EXACT_ORIGINAL_BINDING; EXACT_ARCHIVE; EXACT_CURRENT_GIT_REPRESENTATION; BYTE_PARITY_CRLF_TO_LF",
+  "implementation_external_acceptance": "PENDING_NEXT_INDEPENDENT_EXTERNAL_REAUDIT",
+  "nonprotected_evidence_runtime_source_hashes": "STRICT_BOUND_PATH_NO_REMAP_OR_HASH_NORMALIZATION",
+  "old_accepted_runtime_modified": false,
+  "old_scan_or_policy_modified": false,
+  "original_logical_bindings_and_exact_archives": [
+    {
+      "original_binding": {
+        "bytes": 7378,
+        "path": "src/workbench_analysis/parallel_scoped_acceptance_r1.py",
+        "sha256": "f41aa07670b6a3c5d8012aab49f9b5dd402e9873d2f01e29bff5eb58ff2cd99a"
+      },
+      "original_bytes_archive": {
+        "bytes": 7378,
+        "path": "data/v4/source_evidence/next_round_r2_clean_repair/src/workbench_analysis/parallel_scoped_acceptance_r1.py",
+        "sha256": "f41aa07670b6a3c5d8012aab49f9b5dd402e9873d2f01e29bff5eb58ff2cd99a"
+      }
+    },
+    {
+      "original_binding": {
+        "bytes": 8163,
+        "path": "tests/v4_parallel_scoped_formalization_r1/test_scoped_acceptance.py",
+        "sha256": "b49ab9d6ceda5c6f40c4276862afa2e09b02711dcdead9b428c40ae48f80ec68"
+      },
+      "original_bytes_archive": {
+        "bytes": 8163,
+        "path": "data/v4/source_evidence/next_round_r2_clean_repair/tests/v4_parallel_scoped_formalization_r1/test_scoped_acceptance.py",
+        "sha256": "b49ab9d6ceda5c6f40c4276862afa2e09b02711dcdead9b428c40ae48f80ec68"
+      }
+    },
+    {
+      "original_binding": {
+        "bytes": 11409,
+        "path": "scripts/formalize_parallel_scoped_acceptance_r2.py",
+        "sha256": "31c2f74a1de3ed1c8568d834e85620c64a2992419879f29559f5a449b1fba257"
+      },
+      "original_bytes_archive": {
+        "bytes": 11409,
+        "path": "data/v4/source_evidence/next_round_r2_clean_repair/scripts/formalize_parallel_scoped_acceptance_r2.py",
+        "sha256": "31c2f74a1de3ed1c8568d834e85620c64a2992419879f29559f5a449b1fba257"
+      }
+    }
+  ],
+  "original_source_archives": {
+    "bytes": 1619,
+    "path": "reports/next_round_r2/scoped_acceptance/CLEAN_REPAIR_ORIGINAL_SOURCE_ARCHIVES_R1.json",
+    "sha256": "4cf67774eb1f3f5e5a3f8b2eb90d346810420cbeb7c54f82d244283ec2d56be1"
+  },
+  "permitted_original_head_paths": [
+    "data/v4/V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD.json",
+    "data/v4/V4_03_ACCEPTED_HEAD.json"
+  ],
+  "prior_closure": {
+    "bytes": 6050,
+    "path": "reports/next_round_r2/scoped_acceptance/SCOPED_FORMALIZATION_CLOSURE_R2.json",
+    "sha256": "36631f9fe7a5a56bda1c327c0c15f48548d64e941c26aaa98b350048718e8d4e"
+  },
+  "protected_representation_metadata": {
+    "bytes": 1666,
+    "path": "reports/next_round_r1/BATCH_PROTECTED_REPRESENTATIONS_R1.json",
+    "sha256": "8a3b878ef00b2540eda1f1280e7a0faf7438e699c9704beec0823c1351a9e405"
+  },
+  "status": "PASS_PINNED_TWO_HEAD_REPRESENTATION_ONLY"
+}

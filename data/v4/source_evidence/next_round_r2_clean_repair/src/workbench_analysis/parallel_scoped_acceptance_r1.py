@@ -19,33 +19,6 @@ PERMISSIONS=dict(production=False,shadow=False,focus=False,global_mandatory_adop
 RECORD_ROOT='reports/next_round_r2/scoped_acceptance/'
 OWNER_PATH='data/v4/SCOPED_ACCEPTED_OWNER_BOOTSTRAP_R1.json'
 READER_PATH='config/historical_publication_reader_accepted_history_only_r1.json'
-PROTECTED_REPRESENTATIONS=dict(path='reports/next_round_r1/BATCH_PROTECTED_REPRESENTATIONS_R1.json',sha256='8a3b878ef00b2540eda1f1280e7a0faf7438e699c9704beec0823c1351a9e405',bytes=1666)
-REPRESENTABLE_HEADS=frozenset(('data/v4/V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD.json','data/v4/V4_03_ACCEPTED_HEAD.json'))
-
-
-def validate_protected_binding(root,ref):
-    """Only pinned prior metadata may explain these two historical representations.
-
-    Direct exact bytes remain the default. This never normalizes a caller hash or
-    redirects source/evidence/runtime bindings. Both original archive and current
-    Git representation must independently match the immutable registered bytes.
-    """
-    try:
-        return bound_path(root,ref)
-    except ValueError:
-        if ref.get('path') not in REPRESENTABLE_HEADS:
-            raise
-        metadata=load(root,PROTECTED_REPRESENTATIONS)
-        rows=metadata.get('representations',[])
-        matches=[row for row in rows if row.get('original_binding')==ref]
-        if len(matches)!=1:raise ValueError('PROTECTED_ORIGINAL_BINDING_NOT_REGISTERED')
-        row=matches[0]
-        original=row['original_binding'];archive=row['original_bytes_archive'];current=row['git_representation']
-        if current.get('path')!=original['path'] or archive.get('path')==original['path'] or archive.get('sha256')!=original['sha256'] or archive.get('bytes')!=original['bytes']:
-            raise ValueError('PROTECTED_REPRESENTATION_DECLARATION_INVALID')
-        archived=bound_path(root,archive);canonical=bound_path(root,current)
-        if archived.read_bytes().replace(b'\r\n',b'\n')!=canonical.read_bytes():raise ValueError('PROTECTED_EXACT_REPRESENTATION_BYTES_MISMATCH')
-        return archived
 
 
 def record_path(package):
@@ -63,8 +36,7 @@ def validate_record(root,record,package):
     if record.get('current_state')!=CURRENT_STATES[package]:raise ValueError('SCOPED_CURRENT_STATE_CONTRADICTION')
     if record.get('permissions')!=PERMISSIONS or record.get('business_reacceptance') is not False or record.get('head_action')!=dict(data='KEEP',stage='KEEP',v4_06='KEEP',v4_09='KEEP',v4_10='KEEP'):raise ValueError('SCOPED_PERMISSION_OVERCLAIM')
     if not record.get('evidence_bindings') or not record.get('runtime_bindings'):raise ValueError('SCOPED_PROOF_REQUIRED')
-    for ref in [*record['evidence_bindings'],*record['runtime_bindings']]:bound_path(root,ref)
-    for ref in record['protected_heads']:validate_protected_binding(root,ref)
+    for ref in [*record['evidence_bindings'],*record['runtime_bindings'],*record['protected_heads']]:bound_path(root,ref)
     return dict(status='PASS_EXACT_SCOPED_EXTERNAL_ACCEPTANCE',package=package,disposition=record['disposition'])
 
 

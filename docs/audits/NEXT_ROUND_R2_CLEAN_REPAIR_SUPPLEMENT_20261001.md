@@ -1,0 +1,7 @@
+# R2干净checkout表示校验修订
+
+首个真实干净checkout测试commit e853c05408b50a3fdea59ee10b7751d458a0135d，在scoped protected head校验阶段失败，尚未运行整套pytest。两份历史Head既有CRLF原字节和LF Git表示已由R1 exact mapping登记，新scoped reader原先未读取该映射。
+
+修复仅限protected_heads中这两份已登记binding；mapping固定SHA及1666bytes，original archive与live canonical bytes分别校验，并验证CRLF→LF逐字节相等。任何新hash、任意内容改变、source/evidence/runtime引用均不获豁免。旧源完整archive，旧记录不覆盖。19项新增representation负测和完整184项targeted均通过。
+
+R12 version2及batch handoff R2绑定新的closureR3，业务scope、Heads和权限保持原状。新manifestR2与clean helper R3用于再次真实干净checkout验证；此修订不构成外部验收PASS。

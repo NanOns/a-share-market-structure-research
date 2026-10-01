@@ -1,5 +1,5 @@
 {
-  "accepted_stage_range": "V4_00_TO_V4_09_ACCEPTED",
+  "accepted_stage_range": "V4_00_TO_V4_10_ACCEPTED",
   "bindings": {
     "phase0": {
       "path": "reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json",
@@ -39,6 +39,11 @@
   "foundation_external_acceptance": "EXTERNALLY_ACCEPTED",
   "historical_as_recorded_adjusted_price": "BLOCKED_NO_FIRST_AVAILABILITY_EVIDENCE",
   "incremental_update": "DEFERRED_NON_BLOCKING",
+  "open_audit_registry": {
+    "byte_count": 11877,
+    "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json",
+    "sha256": "c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3"
+  },
   "phase0_status": "FULL_PASS",
   "production_permission": false,
   "shadow_production_permission": false,
@@ -163,6 +168,23 @@
   "v4_09_entry": "AUTHORIZED_AFTER_V4_08_PROMOTION_VALIDATION",
   "v4_09_external_acceptance": "V4_09_EXTERNAL_ACCEPTANCE_PASS_R1_1_ENGINEERING_SCOPE",
   "v4_09_status": "ENGINEERING_PASS_CAPABILITY_SCOPED",
+  "v4_10_binding": {
+    "byte_count": 5102,
+    "path": "data/v4/V4_10_ACCEPTED_HEAD.json",
+    "sha256": "ad9fc4643652feb3684223817f2e9c300167d128e2e8a07179e86f65094fd1e1"
+  },
+  "v4_10_capabilities": {
+    "FULL_D0_D1_D2_DAG": "NOT_IMPLEMENTED",
+    "STATE_REDUCER_AUTHORITY": "ENGINEERING_ACCEPTED",
+    "STATE_REDUCER_INTERFACE": "ENGINEERING_ACCEPTED",
+    "STATE_REDUCER_MACHINE_VECTORS": "ENGINEERING_ACCEPTED",
+    "STATE_REDUCER_PERSISTENCE": "ENGINEERING_ACCEPTED",
+    "V4_11_CONFIRMATION": "NOT_IMPLEMENTED",
+    "V4_12_STRUCTURE_SUPPORT": "NOT_IMPLEMENTED"
+  },
   "v4_10_entry": "AUTHORIZED_FOR_STATE_REDUCER_INTERFACE_AND_INDEPENDENT_VECTORS",
-  "version": "2.3.0"
+  "v4_10_external_acceptance": "V4_10_EXTERNAL_ACCEPTANCE_PASS_R1_2_ENGINEERING_SCOPE",
+  "v4_10_status": "ENGINEERING_PASS_INTERFACE_SCOPE",
+  "v4_11_entry": "AUTHORIZED_CONFIRMATION_EVENTS_CONTRACT_ENTRY_ONLY",
+  "version": "2.4.0"
 }

@@ -67,6 +67,14 @@ def source_checks():
 
 def validate_head(h, g, receipt):
     checks = source_checks()
+    effective_global = bind(GLOBAL)
+    if g.get('accepted_stage_range') == 'V4_00_TO_V4_10_ACCEPTED':
+        # A later, independently accepted stage keeps the exact V4-09 promotion parent.
+        from scripts.validate_v4_10_promotion_r1 import validate as validate_child, ARCHIVE
+        checks['accepted_child_stage_exact'] = validate_child()['status'] == 'PASS'
+        effective_global = bind(ARCHIVE)
+        effective_global['path'] = GLOBAL
+        g = read(ARCHIVE)
     m = read(MANIFEST)
     checks.update(
         accepted_identity=h['status']=='ENGINEERING_PASS_CAPABILITY_SCOPED' and h['external_acceptance']=='EXTERNALLY_ACCEPTED' and
@@ -82,7 +90,7 @@ def validate_head(h, g, receipt):
             g['v4_08_binding']==m['amended_v4_08_head'] and g['v4_10_entry']==ENTRY,
         audits_preserved=h['open_audits']==read(m['amended_v4_08_head']['path'])['open_audits'],
         parent_exact=exact(h['global_head_parent_archive']) and h['global_head_parent_archive']['sha256']==h['global_head_parent']['sha256'],
-        promotion_idempotent=receipt['accepted_head']==bind(HEAD) and receipt['global_head_after']==bind(GLOBAL))
+        promotion_idempotent=receipt['accepted_head']==bind(HEAD) and receipt['global_head_after']==effective_global)
     return dict(contract_id='V4_09_ACCEPTED_HEAD_PROMOTION_VALIDATION_R1', status='PASS' if all(checks.values()) else 'FAIL', checks=checks,
                 accepted_head=bind(HEAD), global_head=bind(GLOBAL), protected_head_bindings=h['protected_head_bindings'])
 

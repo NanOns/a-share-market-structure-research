@@ -15,6 +15,10 @@ def main():
     assert all(bind(r['path'])['sha256']==r['sha256'] for r in entry['protected_bindings'])
     assert hashlib.sha256((clean/receipts[1]).read_bytes()).hexdigest()==proof['junit_sha256']
     for path in receipts:atomic_bytes(ROOT/path,(clean/path).read_bytes())
+    dependency=read(P+'SOURCE_DEPENDENCY_DURABILITY_R1.json')
+    assert all(bind(r['path'])==r for r in dependency['missing_from_previous_git_checkout'])
+    dependency.update(clean_regression=bind(receipts[0]),tested_commit=proof['tested_commit'])
+    atomic_json(ROOT/(P+'SOURCE_DEPENDENCY_DURABILITY_R1.json'),dependency)
     gatepath=P+'ENGINEERING_GATES_R1.json';gates=read(gatepath)
     assert read(P+'CONTINUOUS_CHAIN_POSTCHECK_R2.json')['status']=='PASS'
     assert read(P+'METADATA_DURABILITY_REPAIR_R1.json')['status']=='PASS_ENGINEERING'
@@ -22,6 +26,8 @@ def main():
         if value=='PENDING_CLEAN_DETACHED':gates['gates'][key]='PASS_ENGINEERING'
     assert all(v in ('PASS_ENGINEERING','PENDING_INDEPENDENT_EXTERNAL_AUDIT') for v in gates['gates'].values())
     gates.update(status='READY_FOR_EXTERNAL_REAUDIT',clean_regression=bind(receipts[0]))
+    if not any(r['path']==P+'SOURCE_DEPENDENCY_DURABILITY_R1.json' for r in gates['evidence']):
+        gates['evidence'].append(bind(P+'SOURCE_DEPENDENCY_DURABILITY_R1.json'))
     # The stronger determinism check may have completed after the initial engineering index was drafted.
     gates['evidence']=[bind(r['path']) for r in gates['evidence']]
     handoff=read(P+'EXTERNAL_REAUDIT_HANDOFF_R2.json');handoff.update(clean_regression=bind(receipts[0]),tested_commit=proof['tested_commit'],
@@ -47,6 +53,9 @@ def main():
                 e['final_handoff']=bind(P+'EXTERNAL_REAUDIT_HANDOFF_R2.json')
             if e.get('audit_id')=='DM01_R3_ACCEPTED_METADATA_GIT_REPRESENTATION':
                 e['clean_regression']=bind(receipts[0])
+                e['implementation_status']='PASS_ENGINEERING_PENDING_EXTERNAL_REAUDIT'
+                e['additional_scope']='Exact previously untracked accepted source artifact publication'
+                e['evidence'].append(bind(P+'SOURCE_DEPENDENCY_DURABILITY_R1.json'))
         if version==9:ledger['extends']=bind('reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R8.json')
         atomic_json(ROOT/path,ledger)
     print('READY_FOR_EXTERNAL_REAUDIT')

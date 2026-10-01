@@ -2,7 +2,23 @@
 from .research_state import digest,CONTRACT,PARAMETERS,load_package
 from .state_provenance import validate_output
 
-def persist(pg, records, publication_id, revision_of=None):
+_PUBLISH_CAPABILITY=object()
+
+def publish_state(pg,inputs,publication_id,revision_of=None):
+    """Authorized producer executes the reducer; callers cannot supply state output rows."""
+    from .research_state import reduce_state
+    from .state_provenance import PostgresEngineeringLedger
+    if pg.execute('SELECT current_user').fetchone()[0]!='v4_10_reducer_publisher_r1_2':raise ValueError('AUTHORIZED_REDUCER_PUBLISHER_ROLE_REQUIRED')
+    if type(inputs) is not list or not inputs or any(type(x) is not dict for x in inputs):raise ValueError('MISSING_STATE_INPUT_FIELDS')
+    ledger=PostgresEngineeringLedger(pg)
+    records=[reduce_state(x,ledger=ledger if x.get('mode')=='ACCEPTED_FACT_INTERFACE' else None) for x in inputs]
+    for row in records:validate_output(row)
+    attestation=dict(producer_contract_id='V4_10_CONTROLLED_STATE_PUBLISHER_R1_2',input_request_digest=digest(inputs),
+        row_publication_ids=sorted(r['publication_id'] for r in records),publication_digest=digest(sorted(records,key=lambda r:(r['entity_id'],r['entity_type'],r['episode_id'] or 'NO_EPISODE'))))
+    return persist(pg,records,publication_id,revision_of,_capability=_PUBLISH_CAPABILITY,_attestation=attestation)
+
+def persist(pg, records, publication_id, revision_of=None, *, _capability=None, _attestation=None):
+    if _capability is not _PUBLISH_CAPABILITY:raise ValueError('CONTROLLED_REDUCER_PUBLISH_PATH_REQUIRED')
     from psycopg.types.json import Jsonb
     if not records or not publication_id:raise ValueError('EMPTY_RESEARCH_STATE_PUBLICATION')
     schema=load_package()[0]
@@ -21,12 +37,12 @@ def persist(pg, records, publication_id, revision_of=None):
     checksum=digest(records)
     with pg.transaction():
         pg.execute('''INSERT INTO v4.research_state_engineering_publications
-            (publication_id,revision_of,model_contract_id,consumer_contract_id,parameter_set_id,publication_digest,row_count,acceptance_scope)
-            VALUES (%s,%s,%s,'V4_10_REDUCER_INTERFACE_V1',%s,%s,%s,'ENGINEERING_INTERFACE_ONLY') ON CONFLICT DO NOTHING''',
-            (publication_id,revision_of,CONTRACT,PARAMETERS,checksum,len(records)))
-        actual=pg.execute('''SELECT publication_digest,row_count,revision_of,model_contract_id,parameter_set_id,consumer_contract_id
+            (publication_id,revision_of,model_contract_id,consumer_contract_id,parameter_set_id,publication_digest,row_count,acceptance_scope,producer_attestation)
+            VALUES (%s,%s,%s,'V4_10_REDUCER_INTERFACE_V1',%s,%s,%s,'ENGINEERING_INTERFACE_ONLY',%s) ON CONFLICT DO NOTHING''',
+            (publication_id,revision_of,CONTRACT,PARAMETERS,checksum,len(records),Jsonb(_attestation)))
+        actual=pg.execute('''SELECT publication_digest,row_count,revision_of,model_contract_id,parameter_set_id,consumer_contract_id,producer_attestation
             FROM v4.research_state_engineering_publications WHERE publication_id=%s''',(publication_id,)).fetchone()
-        if actual!=(checksum,len(records),revision_of,CONTRACT,PARAMETERS,'V4_10_REDUCER_INTERFACE_V1'):
+        if actual!=(checksum,len(records),revision_of,CONTRACT,PARAMETERS,'V4_10_REDUCER_INTERFACE_V1',_attestation):
             raise ValueError('APPEND_ONLY_STATE_PUBLICATION_CONFLICT')
         for row in records:
             pg.execute('''INSERT INTO v4.research_state_engineering_results

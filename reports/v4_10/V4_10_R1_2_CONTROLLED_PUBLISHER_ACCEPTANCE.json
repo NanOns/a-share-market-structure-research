@@ -1,0 +1,51 @@
+{
+  "checks": [
+    {
+      "error": "permission denied for table research_state_engineering_results",
+      "id": "ordinary_semantic_forge_insert_blocked",
+      "passed": true
+    },
+    {
+      "error": "permission denied for table research_state_engineering_publications",
+      "id": "ordinary_publication_insert_blocked",
+      "passed": true
+    },
+    {
+      "error": null,
+      "id": "ordinary_select_allowed",
+      "passed": true
+    },
+    {
+      "error": null,
+      "id": "controlled_publisher_positive_path",
+      "passed": true
+    },
+    {
+      "error": null,
+      "id": "direct_sql_implemented_status_suppression",
+      "passed": true
+    },
+    {
+      "error": "MODEL_BOUNDARY_NOOP_FORBIDDEN",
+      "id": "direct_sql_noop_boundary",
+      "passed": true
+    },
+    {
+      "error": "STATE_NOT_APPLICABLE_SCOPE_MISMATCH",
+      "id": "direct_sql_not_applicable_scope",
+      "passed": true
+    }
+  ],
+  "contract_id": "V4_10_R1_2_CONTROLLED_PUBLISHER_ACCEPTANCE",
+  "independent_audits": [],
+  "postcheck": {
+    "byte_count": 724597,
+    "path": "reports/v4_10/V4_10_R1_2_INDEPENDENT_POSTCHECK.json",
+    "sha256": "b198c8719f51605365e9f4525b9ae8f1b02bf8b8ef24e269d76b9e4ff5a0317a"
+  },
+  "status": "PASS",
+  "tags": [
+    "controlled_state_publisher_authority",
+    "semantic_forge_direct_sql_blocked_by_permission"
+  ]
+}

@@ -5,15 +5,15 @@ import pytest
 from src.v4.research_state import reduce_state
 from src.v4.state_identity import digest,canonical,state_id
 from src.v4.state_provenance import PostgresEngineeringLedger,validate_output
-from scripts.v4_10_r1_1_fixtures import synthetic_input,accepted_bundle,publish_setup,refresh
-from scripts.verify_v4_10_r1_1 import direct_sql_probes,independent_input_audit,sql_digest
+from scripts.v4_10_r1_2_fixtures import synthetic_input,accepted_bundle,publish_setup,refresh,setup_vector
+from scripts.verify_v4_10_r1_2 import direct_sql_probes,independent_input_audit,sql_digest
 ROOT=Path(__file__).resolve().parents[2]
-VECTORS=json.loads((ROOT/'config/v4_10_machine_vectors_r1_1.json').read_text(encoding='utf8'))['vectors'][98:]
+VECTORS=json.loads((ROOT/'config/v4_10_machine_vectors_r1_2.json').read_text(encoding='utf8'))['vectors'][98:]
 
 @pytest.mark.parametrize('v',[v for v in VECTORS if v['kind']=='API'],ids=[v['id'] for v in VECTORS if v['kind']=='API'])
 def test_r1_1_adversarial_api_vector(v,pg):
     setup=v.get('ledger_setup')
-    if setup:publish_setup(pg,setup['manifests'],setup.get('prior'))
+    setup_vector(pg,setup)
     audit=independent_input_audit(v['input'],pg)
     if v['expected_error']:
         with pytest.raises(ValueError,match=v['expected_error']):reduce_state(v['input'],ledger=PostgresEngineeringLedger(pg))

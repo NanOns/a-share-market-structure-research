@@ -122,5 +122,5 @@ def main():
     return clean['status']=='FAIL'
 
 if __name__=='__main__':
-    from scripts.run_v4_10_r1_1_isolated_verification import main as repair_main
+    from scripts.run_v4_10_r1_2_isolated_verification import main as repair_main
     sys.exit(repair_main())

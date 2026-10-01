@@ -1,0 +1,2492 @@
+{
+  "checks": [
+    {
+      "error": "MODEL_BOUNDARY_UNAUTHORIZED",
+      "id": "bare_true_model_boundary_rejected",
+      "independent_rejection": true,
+      "passed": true
+    },
+    {
+      "differences": {},
+      "id": "authorized_boundary_pass",
+      "invariant_errors": [],
+      "passed": true
+    },
+    {
+      "error": "MODEL_BOUNDARY_MANIFEST_REQUIRED",
+      "id": "boundary_missing_manifest_rejected",
+      "independent_rejection": true,
+      "passed": true
+    },
+    {
+      "error": "MODEL_BOUNDARY_UNAUTHORIZED",
+      "id": "boundary_wrong_from_model_contract_id_rejected",
+      "independent_rejection": true,
+      "passed": true
+    },
+    {
+      "error": "MODEL_BOUNDARY_UNAUTHORIZED",
+      "id": "boundary_wrong_to_model_contract_id_rejected",
+      "independent_rejection": true,
+      "passed": true
+    },
+    {
+      "error": "MODEL_BOUNDARY_UNAUTHORIZED",
+      "id": "boundary_wrong_effective_trade_date_rejected",
+      "independent_rejection": true,
+      "passed": true
+    },
+    {
+      "error": "BOUNDARY_MANIFEST_DIGEST_MISMATCH",
+      "id": "boundary_manifest_digest_mismatch_rejected",
+      "independent_rejection": true,
+      "passed": true
+    },
+    {
+      "error": "INPUT_PUBLICATION_NOT_IN_TRUSTED_LEDGER",
+      "id": "boundary_unpublished_manifest_rejected",
+      "independent_rejection": true,
+      "passed": true
+    },
+    {
+      "differences": {},
+      "id": "real_old_to_current_preserves_followup",
+      "invariant_errors": [],
+      "passed": true
+    },
+    {
+      "differences": {},
+      "id": "real_boundary_current_episode_namespace_separate",
+      "invariant_errors": [],
+      "passed": true
+    },
+    {
+      "error": "MODEL_BOUNDARY_REQUIRED",
+      "id": "old_model_prior_without_boundary_rejected",
+      "independent_rejection": true,
+      "passed": true
+    },
+    {
+      "error": "BOUNDARY_FROM_MODEL_MISMATCH",
+      "id": "wrong_real_from_model",
+      "independent_rejection": true,
+      "passed": true
+    },
+    {
+      "error": "BOUNDARY_FROM_MODEL_MISMATCH",
+      "id": "wrong_real_from_parameter",
+      "independent_rejection": true,
+      "passed": true
+    },
+    {
+      "error": "BOUNDARY_TO_MODEL_MISMATCH",
+      "id": "wrong_real_to_model",
+      "independent_rejection": true,
+      "passed": true
+    },
+    {
+      "error": "BOUNDARY_EFFECTIVE_DATE_MISMATCH",
+      "id": "wrong_real_effective_date",
+      "independent_rejection": true,
+      "passed": true
+    },
+    {
+      "error": "BOUNDARY_PRIOR_NOT_IN_IMMUTABLE_AUTHORITY",
+      "id": "missing_old_source_publication",
+      "independent_rejection": true,
+      "passed": true
+    },
+    {
+      "error": "BOUNDARY_PRIOR_NOT_IN_IMMUTABLE_AUTHORITY",
+      "id": "old_payload_digest_mismatch",
+      "independent_rejection": true,
+      "passed": true
+    },
+    {
+      "error": "BOUNDARY_PRIOR_NOT_IN_IMMUTABLE_AUTHORITY",
+      "id": "old_source_authority_digest_mismatch",
+      "independent_rejection": true,
+      "passed": true
+    },
+    {
+      "error": "MODEL_BOUNDARY_NOOP_FORBIDDEN",
+      "id": "noop_model_boundary_rejected",
+      "independent_rejection": true,
+      "passed": true
+    }
+  ],
+  "contract_id": "V4_10_R1_2_MODEL_BOUNDARY_ACCEPTANCE",
+  "independent_audits": [
+    {
+      "checks": {
+        "boundary_manifest": false,
+        "calendar_identity": true,
+        "current_session_mapping": true,
+        "field:CONFIRMED": true,
+        "field:PREWATCH": true,
+        "field:SEED": true,
+        "field:WARM": true,
+        "field:core_price_damage": true,
+        "field:delta3": true,
+        "field:dq5": true,
+        "field:episode_invalidation_contract_id": true,
+        "field:followup_complete": true,
+        "field:frozen_invalidation": true,
+        "field:risk": true,
+        "field:scenario": true,
+        "field:suspended": true,
+        "manifest_digest": true,
+        "manifest_shape": true
+      },
+      "fields": {
+        "CONFIRMED": {
+          "parameters": "SYNTHETIC_PARAMETERS_V1",
+          "producer": "SYNTHETIC_CONFIRMED",
+          "publication": "SYNTHETIC_FACTS:FIXTURE_FACTS",
+          "status": "SYNTHETIC",
+          "time_role": "T"
+        },
+        "PREWATCH": {
+          "parameters": "SYNTHETIC_PARAMETERS_V1",
+          "producer": "SYNTHETIC_PREWATCH",
+          "publication": "SYNTHETIC_FACTS:FIXTURE_FACTS",
+          "status": "SYNTHETIC",
+          "time_role": "T"
+        },
+        "SEED": {
+          "parameters": "SYNTHETIC_PARAMETERS_V1",
+          "producer": "SYNTHETIC_SEED",
+          "publication": "SYNTHETIC_FACTS:FIXTURE_FACTS",
+          "status": "SYNTHETIC",
+          "time_role": "T"
+        },
+        "WARM": {
+          "parameters": null,
+          "producer": "LEGACY_WARM_EXTRACTION_NOT_ACCEPTED",
+          "publication": null,
+          "status": "NOT_APPLICABLE",
+          "time_role": "T"
+        },
+        "core_price_damage": {
+          "parameters": "SYNTHETIC_PARAMETERS_V1",
+          "producer": "SYNTHETIC_core_price_damage",
+          "publication": "SYNTHETIC_FACTS:FIXTURE_FACTS",
+          "status": "SYNTHETIC",
+          "time_role": "T"
+        },
+        "delta3": {
+          "parameters": "SYNTHETIC_PARAMETERS_V1",
+          "producer": "SYNTHETIC_delta3",
+          "publication": "SYNTHETIC_FACTS:FIXTURE_FACTS",
+          "status": "SYNTHETIC",
+          "time_role": "T"
+        },
+        "dq5": {
+          "parameters": "SYNTHETIC_PARAMETERS_V1",
+          "producer": "SYNTHETIC_dq5",
+          "publication": "SYNTHETIC_FACTS:FIXTURE_FACTS",
+          "status": "SYNTHETIC",
+          "time_role": "T"
+        },
+        "episode_invalidation_contract_id": {
+          "parameters": "SYNTHETIC_PARAMETERS_V1",
+          "producer": "SYNTHETIC_episode_invalidation_contract_id",
+          "publication": "SYNTHETIC_FACTS:FIXTURE_FACTS",
+          "status": "SYNTHETIC",
+          "time_role": "T-1"
+        },
+        "followup_complete": {
+          "parameters": "SYNTHETIC_PARAMETERS_V1",
+          "producer": "SYNTHETIC_followup_complete",
+          "publication": "SYNTHETIC_FACTS:FIXTURE_FACTS",
+          "status": "SYNTHETIC",
+          "time_role": "T"
+        },
+        "frozen_invalidation": {
+          "parameters": "SYNTHETIC_PARAMETERS_V1",
+          "producer": "SYNTHETIC_frozen_invalidation",
+          "publication": "SYNTHETIC_FACTS:FIXTURE_FACTS",
+          "status": "SYNTHETIC",
+          "time_role": "T-1"
+        },
+        "risk": {
+          "parameters": "SYNTHETIC_PARAMETERS_V1",
+          "producer": "SYNTHETIC_risk",
+          "publication": "SYNTHETIC_FACTS:FIXTURE_FACTS",
+          "status": "SYNTHETIC",
+          "time_role": "T"
+        },
+        "scenario": {
+          "parameters": "SYNTHETIC_PARAMETERS_V1",
+          "producer": "SYNTHETIC_scenario",
+          "publication": "SYNTHETIC_FACTS:FIXTURE_FACTS",
+          "status": "SYNTHETIC",
+          "time_role": "T"
+        },
+        "suspended": {
+          "parameters": "SYNTHETIC_PARAMETERS_V1",
+          "producer": "SYNTHETIC_suspended",
+          "publication": "SYNTHETIC_FACTS:FIXTURE_FACTS",
+          "status": "SYNTHETIC",
+          "time_role": "T"
+        }
+      },
+      "id": "bare_true_model_boundary_rejected",
+      "valid": false
+    },
+    {
+      "checks": {
+        "all_input_publications_exist": true,
+        "boundary_manifest": true,
+        "boundary_source_binding": true,
+        "calendar_identity": true,
+        "current_session_mapping": true,
+        "field:CONFIRMED": true,
+        "field:PREWATCH": true,
+        "field:SEED": true,
+        "field:WARM": true,
+        "field:core_price_damage": true,
+        "field:delta3": true,
+        "field:dq5": true,
+        "field:episode_invalidation_contract_id": true,
+        "field:followup_complete": true,
+        "field:frozen_invalidation": true,
+        "field:risk": true,
+        "field:scenario": true,
+        "field:suspended": true,
+        "manifest_digest": true,
+        "manifest_shape": true,
+        "prior_binding": true,
+        "prior_calendar": true,
+        "prior_full_schema": true,
+        "prior_identity": true,
+        "prior_model": true,
+        "prior_publication_exists": true
+      },
+      "fields": {
+        "CONFIRMED": {
+          "parameters": null,
+          "producer": "V4_11_CONFIRMATION_DETECTOR_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "PREWATCH": {
+          "parameters": "V4_09_STOCK_PREWATCH_PARAMETER_SET_V1",
+          "producer": "STOCK_PREWATCH_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "SEED": {
+          "parameters": "V4_07_BASE_SEED_PARAMETER_SET_V1",
+          "producer": "BASE_SEED_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "WARM": {
+          "parameters": null,
+          "producer": "LEGACY_WARM_EXTRACTION_NOT_ACCEPTED",
+          "publication": null,
+          "status": "NOT_APPLICABLE",
+          "time_role": "T"
+        },
+        "core_price_damage": {
+          "parameters": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+          "producer": "CORE_FACTOR_V1.CORE_PRICE_DAMAGE",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "delta3": {
+          "parameters": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+          "producer": "RPS_DELTA_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "dq5": {
+          "parameters": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "producer": "V4_08_SECTOR_NATIVE_V1",
+          "publication": null,
+          "status": "NOT_APPLICABLE",
+          "time_role": "T"
+        },
+        "episode_invalidation_contract_id": {
+          "parameters": null,
+          "producer": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T-1"
+        },
+        "followup_complete": {
+          "parameters": null,
+          "producer": "SETTLEMENT_DUE_OWNER_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "frozen_invalidation": {
+          "parameters": null,
+          "producer": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T-1"
+        },
+        "risk": {
+          "parameters": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+          "producer": "EXTENSION_RISK_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "scenario": {
+          "parameters": null,
+          "producer": "V4_11_V4_12_SCENARIO_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "suspended": {
+          "parameters": null,
+          "producer": "V4_02_DATED_TRADING_STATUS_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        }
+      },
+      "id": "authorized_boundary_pass",
+      "valid": true
+    },
+    {
+      "checks": {
+        "all_input_publications_exist": true,
+        "boundary_manifest": false,
+        "calendar_identity": true,
+        "current_session_mapping": true,
+        "field:CONFIRMED": true,
+        "field:PREWATCH": true,
+        "field:SEED": true,
+        "field:WARM": true,
+        "field:core_price_damage": true,
+        "field:delta3": true,
+        "field:dq5": true,
+        "field:episode_invalidation_contract_id": true,
+        "field:followup_complete": true,
+        "field:frozen_invalidation": true,
+        "field:risk": true,
+        "field:scenario": true,
+        "field:suspended": true,
+        "manifest_digest": true,
+        "manifest_shape": true,
+        "prior_binding": true,
+        "prior_calendar": true,
+        "prior_full_schema": true,
+        "prior_identity": true,
+        "prior_model": true,
+        "prior_publication_exists": true
+      },
+      "fields": {
+        "CONFIRMED": {
+          "parameters": null,
+          "producer": "V4_11_CONFIRMATION_DETECTOR_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "PREWATCH": {
+          "parameters": "V4_09_STOCK_PREWATCH_PARAMETER_SET_V1",
+          "producer": "STOCK_PREWATCH_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "SEED": {
+          "parameters": "V4_07_BASE_SEED_PARAMETER_SET_V1",
+          "producer": "BASE_SEED_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "WARM": {
+          "parameters": null,
+          "producer": "LEGACY_WARM_EXTRACTION_NOT_ACCEPTED",
+          "publication": null,
+          "status": "NOT_APPLICABLE",
+          "time_role": "T"
+        },
+        "core_price_damage": {
+          "parameters": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+          "producer": "CORE_FACTOR_V1.CORE_PRICE_DAMAGE",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "delta3": {
+          "parameters": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+          "producer": "RPS_DELTA_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "dq5": {
+          "parameters": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "producer": "V4_08_SECTOR_NATIVE_V1",
+          "publication": null,
+          "status": "NOT_APPLICABLE",
+          "time_role": "T"
+        },
+        "episode_invalidation_contract_id": {
+          "parameters": null,
+          "producer": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T-1"
+        },
+        "followup_complete": {
+          "parameters": null,
+          "producer": "SETTLEMENT_DUE_OWNER_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "frozen_invalidation": {
+          "parameters": null,
+          "producer": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T-1"
+        },
+        "risk": {
+          "parameters": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+          "producer": "EXTENSION_RISK_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "scenario": {
+          "parameters": null,
+          "producer": "V4_11_V4_12_SCENARIO_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "suspended": {
+          "parameters": null,
+          "producer": "V4_02_DATED_TRADING_STATUS_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        }
+      },
+      "id": "boundary_missing_manifest_rejected",
+      "valid": false
+    },
+    {
+      "checks": {
+        "all_input_publications_exist": true,
+        "boundary_manifest": false,
+        "calendar_identity": true,
+        "current_session_mapping": true,
+        "field:CONFIRMED": true,
+        "field:PREWATCH": true,
+        "field:SEED": true,
+        "field:WARM": true,
+        "field:core_price_damage": true,
+        "field:delta3": true,
+        "field:dq5": true,
+        "field:episode_invalidation_contract_id": true,
+        "field:followup_complete": true,
+        "field:frozen_invalidation": true,
+        "field:risk": true,
+        "field:scenario": true,
+        "field:suspended": true,
+        "manifest_digest": true,
+        "manifest_shape": true,
+        "prior_binding": true,
+        "prior_calendar": true,
+        "prior_full_schema": true,
+        "prior_identity": true,
+        "prior_model": true,
+        "prior_publication_exists": true
+      },
+      "fields": {
+        "CONFIRMED": {
+          "parameters": null,
+          "producer": "V4_11_CONFIRMATION_DETECTOR_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "PREWATCH": {
+          "parameters": "V4_09_STOCK_PREWATCH_PARAMETER_SET_V1",
+          "producer": "STOCK_PREWATCH_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "SEED": {
+          "parameters": "V4_07_BASE_SEED_PARAMETER_SET_V1",
+          "producer": "BASE_SEED_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "WARM": {
+          "parameters": null,
+          "producer": "LEGACY_WARM_EXTRACTION_NOT_ACCEPTED",
+          "publication": null,
+          "status": "NOT_APPLICABLE",
+          "time_role": "T"
+        },
+        "core_price_damage": {
+          "parameters": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+          "producer": "CORE_FACTOR_V1.CORE_PRICE_DAMAGE",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "delta3": {
+          "parameters": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+          "producer": "RPS_DELTA_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "dq5": {
+          "parameters": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "producer": "V4_08_SECTOR_NATIVE_V1",
+          "publication": null,
+          "status": "NOT_APPLICABLE",
+          "time_role": "T"
+        },
+        "episode_invalidation_contract_id": {
+          "parameters": null,
+          "producer": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T-1"
+        },
+        "followup_complete": {
+          "parameters": null,
+          "producer": "SETTLEMENT_DUE_OWNER_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "frozen_invalidation": {
+          "parameters": null,
+          "producer": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T-1"
+        },
+        "risk": {
+          "parameters": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+          "producer": "EXTENSION_RISK_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "scenario": {
+          "parameters": null,
+          "producer": "V4_11_V4_12_SCENARIO_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "suspended": {
+          "parameters": null,
+          "producer": "V4_02_DATED_TRADING_STATUS_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        }
+      },
+      "id": "boundary_wrong_from_model_contract_id_rejected",
+      "valid": false
+    },
+    {
+      "checks": {
+        "all_input_publications_exist": true,
+        "boundary_manifest": false,
+        "calendar_identity": true,
+        "current_session_mapping": true,
+        "field:CONFIRMED": true,
+        "field:PREWATCH": true,
+        "field:SEED": true,
+        "field:WARM": true,
+        "field:core_price_damage": true,
+        "field:delta3": true,
+        "field:dq5": true,
+        "field:episode_invalidation_contract_id": true,
+        "field:followup_complete": true,
+        "field:frozen_invalidation": true,
+        "field:risk": true,
+        "field:scenario": true,
+        "field:suspended": true,
+        "manifest_digest": true,
+        "manifest_shape": true,
+        "prior_binding": true,
+        "prior_calendar": true,
+        "prior_full_schema": true,
+        "prior_identity": true,
+        "prior_model": true,
+        "prior_publication_exists": true
+      },
+      "fields": {
+        "CONFIRMED": {
+          "parameters": null,
+          "producer": "V4_11_CONFIRMATION_DETECTOR_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "PREWATCH": {
+          "parameters": "V4_09_STOCK_PREWATCH_PARAMETER_SET_V1",
+          "producer": "STOCK_PREWATCH_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "SEED": {
+          "parameters": "V4_07_BASE_SEED_PARAMETER_SET_V1",
+          "producer": "BASE_SEED_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "WARM": {
+          "parameters": null,
+          "producer": "LEGACY_WARM_EXTRACTION_NOT_ACCEPTED",
+          "publication": null,
+          "status": "NOT_APPLICABLE",
+          "time_role": "T"
+        },
+        "core_price_damage": {
+          "parameters": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+          "producer": "CORE_FACTOR_V1.CORE_PRICE_DAMAGE",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "delta3": {
+          "parameters": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+          "producer": "RPS_DELTA_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "dq5": {
+          "parameters": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "producer": "V4_08_SECTOR_NATIVE_V1",
+          "publication": null,
+          "status": "NOT_APPLICABLE",
+          "time_role": "T"
+        },
+        "episode_invalidation_contract_id": {
+          "parameters": null,
+          "producer": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T-1"
+        },
+        "followup_complete": {
+          "parameters": null,
+          "producer": "SETTLEMENT_DUE_OWNER_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "frozen_invalidation": {
+          "parameters": null,
+          "producer": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T-1"
+        },
+        "risk": {
+          "parameters": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+          "producer": "EXTENSION_RISK_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "scenario": {
+          "parameters": null,
+          "producer": "V4_11_V4_12_SCENARIO_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "suspended": {
+          "parameters": null,
+          "producer": "V4_02_DATED_TRADING_STATUS_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        }
+      },
+      "id": "boundary_wrong_to_model_contract_id_rejected",
+      "valid": false
+    },
+    {
+      "checks": {
+        "all_input_publications_exist": true,
+        "boundary_manifest": false,
+        "calendar_identity": true,
+        "current_session_mapping": true,
+        "field:CONFIRMED": true,
+        "field:PREWATCH": true,
+        "field:SEED": true,
+        "field:WARM": true,
+        "field:core_price_damage": true,
+        "field:delta3": true,
+        "field:dq5": true,
+        "field:episode_invalidation_contract_id": true,
+        "field:followup_complete": true,
+        "field:frozen_invalidation": true,
+        "field:risk": true,
+        "field:scenario": true,
+        "field:suspended": true,
+        "manifest_digest": true,
+        "manifest_shape": true,
+        "prior_binding": true,
+        "prior_calendar": true,
+        "prior_full_schema": true,
+        "prior_identity": true,
+        "prior_model": true,
+        "prior_publication_exists": true
+      },
+      "fields": {
+        "CONFIRMED": {
+          "parameters": null,
+          "producer": "V4_11_CONFIRMATION_DETECTOR_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "PREWATCH": {
+          "parameters": "V4_09_STOCK_PREWATCH_PARAMETER_SET_V1",
+          "producer": "STOCK_PREWATCH_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "SEED": {
+          "parameters": "V4_07_BASE_SEED_PARAMETER_SET_V1",
+          "producer": "BASE_SEED_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "WARM": {
+          "parameters": null,
+          "producer": "LEGACY_WARM_EXTRACTION_NOT_ACCEPTED",
+          "publication": null,
+          "status": "NOT_APPLICABLE",
+          "time_role": "T"
+        },
+        "core_price_damage": {
+          "parameters": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+          "producer": "CORE_FACTOR_V1.CORE_PRICE_DAMAGE",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "delta3": {
+          "parameters": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+          "producer": "RPS_DELTA_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "dq5": {
+          "parameters": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "producer": "V4_08_SECTOR_NATIVE_V1",
+          "publication": null,
+          "status": "NOT_APPLICABLE",
+          "time_role": "T"
+        },
+        "episode_invalidation_contract_id": {
+          "parameters": null,
+          "producer": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T-1"
+        },
+        "followup_complete": {
+          "parameters": null,
+          "producer": "SETTLEMENT_DUE_OWNER_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "frozen_invalidation": {
+          "parameters": null,
+          "producer": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T-1"
+        },
+        "risk": {
+          "parameters": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+          "producer": "EXTENSION_RISK_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "scenario": {
+          "parameters": null,
+          "producer": "V4_11_V4_12_SCENARIO_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "suspended": {
+          "parameters": null,
+          "producer": "V4_02_DATED_TRADING_STATUS_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        }
+      },
+      "id": "boundary_wrong_effective_trade_date_rejected",
+      "valid": false
+    },
+    {
+      "checks": {
+        "all_input_publications_exist": true,
+        "boundary_manifest": false,
+        "calendar_identity": true,
+        "current_session_mapping": true,
+        "field:CONFIRMED": true,
+        "field:PREWATCH": true,
+        "field:SEED": true,
+        "field:WARM": true,
+        "field:core_price_damage": true,
+        "field:delta3": true,
+        "field:dq5": true,
+        "field:episode_invalidation_contract_id": true,
+        "field:followup_complete": true,
+        "field:frozen_invalidation": true,
+        "field:risk": true,
+        "field:scenario": true,
+        "field:suspended": true,
+        "manifest_digest": true,
+        "manifest_shape": true,
+        "prior_binding": true,
+        "prior_calendar": true,
+        "prior_full_schema": true,
+        "prior_identity": true,
+        "prior_model": true,
+        "prior_publication_exists": true
+      },
+      "fields": {
+        "CONFIRMED": {
+          "parameters": null,
+          "producer": "V4_11_CONFIRMATION_DETECTOR_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "PREWATCH": {
+          "parameters": "V4_09_STOCK_PREWATCH_PARAMETER_SET_V1",
+          "producer": "STOCK_PREWATCH_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "SEED": {
+          "parameters": "V4_07_BASE_SEED_PARAMETER_SET_V1",
+          "producer": "BASE_SEED_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "WARM": {
+          "parameters": null,
+          "producer": "LEGACY_WARM_EXTRACTION_NOT_ACCEPTED",
+          "publication": null,
+          "status": "NOT_APPLICABLE",
+          "time_role": "T"
+        },
+        "core_price_damage": {
+          "parameters": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+          "producer": "CORE_FACTOR_V1.CORE_PRICE_DAMAGE",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "delta3": {
+          "parameters": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+          "producer": "RPS_DELTA_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "dq5": {
+          "parameters": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "producer": "V4_08_SECTOR_NATIVE_V1",
+          "publication": null,
+          "status": "NOT_APPLICABLE",
+          "time_role": "T"
+        },
+        "episode_invalidation_contract_id": {
+          "parameters": null,
+          "producer": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T-1"
+        },
+        "followup_complete": {
+          "parameters": null,
+          "producer": "SETTLEMENT_DUE_OWNER_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "frozen_invalidation": {
+          "parameters": null,
+          "producer": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T-1"
+        },
+        "risk": {
+          "parameters": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+          "producer": "EXTENSION_RISK_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "scenario": {
+          "parameters": null,
+          "producer": "V4_11_V4_12_SCENARIO_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "suspended": {
+          "parameters": null,
+          "producer": "V4_02_DATED_TRADING_STATUS_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        }
+      },
+      "id": "boundary_manifest_digest_mismatch_rejected",
+      "valid": false
+    },
+    {
+      "checks": {
+        "all_input_publications_exist": true,
+        "boundary_manifest": false,
+        "calendar_identity": true,
+        "current_session_mapping": true,
+        "field:CONFIRMED": true,
+        "field:PREWATCH": true,
+        "field:SEED": true,
+        "field:WARM": true,
+        "field:core_price_damage": true,
+        "field:delta3": true,
+        "field:dq5": true,
+        "field:episode_invalidation_contract_id": true,
+        "field:followup_complete": true,
+        "field:frozen_invalidation": true,
+        "field:risk": true,
+        "field:scenario": true,
+        "field:suspended": true,
+        "manifest_digest": true,
+        "manifest_shape": true,
+        "prior_binding": true,
+        "prior_calendar": true,
+        "prior_full_schema": true,
+        "prior_identity": true,
+        "prior_model": true,
+        "prior_publication_exists": true
+      },
+      "fields": {
+        "CONFIRMED": {
+          "parameters": null,
+          "producer": "V4_11_CONFIRMATION_DETECTOR_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "PREWATCH": {
+          "parameters": "V4_09_STOCK_PREWATCH_PARAMETER_SET_V1",
+          "producer": "STOCK_PREWATCH_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "SEED": {
+          "parameters": "V4_07_BASE_SEED_PARAMETER_SET_V1",
+          "producer": "BASE_SEED_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "WARM": {
+          "parameters": null,
+          "producer": "LEGACY_WARM_EXTRACTION_NOT_ACCEPTED",
+          "publication": null,
+          "status": "NOT_APPLICABLE",
+          "time_role": "T"
+        },
+        "core_price_damage": {
+          "parameters": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+          "producer": "CORE_FACTOR_V1.CORE_PRICE_DAMAGE",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "delta3": {
+          "parameters": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+          "producer": "RPS_DELTA_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "dq5": {
+          "parameters": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "producer": "V4_08_SECTOR_NATIVE_V1",
+          "publication": null,
+          "status": "NOT_APPLICABLE",
+          "time_role": "T"
+        },
+        "episode_invalidation_contract_id": {
+          "parameters": null,
+          "producer": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T-1"
+        },
+        "followup_complete": {
+          "parameters": null,
+          "producer": "SETTLEMENT_DUE_OWNER_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "frozen_invalidation": {
+          "parameters": null,
+          "producer": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T-1"
+        },
+        "risk": {
+          "parameters": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+          "producer": "EXTENSION_RISK_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "scenario": {
+          "parameters": null,
+          "producer": "V4_11_V4_12_SCENARIO_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "suspended": {
+          "parameters": null,
+          "producer": "V4_02_DATED_TRADING_STATUS_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        }
+      },
+      "id": "boundary_unpublished_manifest_rejected",
+      "valid": false
+    },
+    {
+      "checks": {
+        "all_input_publications_exist": true,
+        "boundary_manifest": true,
+        "boundary_source_binding": true,
+        "calendar_identity": true,
+        "current_session_mapping": true,
+        "field:CONFIRMED": true,
+        "field:PREWATCH": true,
+        "field:SEED": true,
+        "field:WARM": true,
+        "field:core_price_damage": true,
+        "field:delta3": true,
+        "field:dq5": true,
+        "field:episode_invalidation_contract_id": true,
+        "field:followup_complete": true,
+        "field:frozen_invalidation": true,
+        "field:risk": true,
+        "field:scenario": true,
+        "field:suspended": true,
+        "manifest_digest": true,
+        "manifest_shape": true,
+        "prior_binding": true,
+        "prior_calendar": true,
+        "prior_full_schema": true,
+        "prior_identity": true,
+        "prior_model": true,
+        "prior_publication_exists": true
+      },
+      "fields": {
+        "CONFIRMED": {
+          "parameters": null,
+          "producer": "V4_11_CONFIRMATION_DETECTOR_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "PREWATCH": {
+          "parameters": "V4_09_STOCK_PREWATCH_PARAMETER_SET_V1",
+          "producer": "STOCK_PREWATCH_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "SEED": {
+          "parameters": "V4_07_BASE_SEED_PARAMETER_SET_V1",
+          "producer": "BASE_SEED_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "WARM": {
+          "parameters": null,
+          "producer": "LEGACY_WARM_EXTRACTION_NOT_ACCEPTED",
+          "publication": null,
+          "status": "NOT_APPLICABLE",
+          "time_role": "T"
+        },
+        "core_price_damage": {
+          "parameters": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+          "producer": "CORE_FACTOR_V1.CORE_PRICE_DAMAGE",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "delta3": {
+          "parameters": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+          "producer": "RPS_DELTA_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "dq5": {
+          "parameters": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "producer": "V4_08_SECTOR_NATIVE_V1",
+          "publication": null,
+          "status": "NOT_APPLICABLE",
+          "time_role": "T"
+        },
+        "episode_invalidation_contract_id": {
+          "parameters": null,
+          "producer": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T-1"
+        },
+        "followup_complete": {
+          "parameters": null,
+          "producer": "SETTLEMENT_DUE_OWNER_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "frozen_invalidation": {
+          "parameters": null,
+          "producer": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T-1"
+        },
+        "risk": {
+          "parameters": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+          "producer": "EXTENSION_RISK_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "scenario": {
+          "parameters": null,
+          "producer": "V4_11_V4_12_SCENARIO_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "suspended": {
+          "parameters": null,
+          "producer": "V4_02_DATED_TRADING_STATUS_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        }
+      },
+      "id": "real_old_to_current_preserves_followup",
+      "valid": true
+    },
+    {
+      "checks": {
+        "all_input_publications_exist": true,
+        "boundary_manifest": true,
+        "boundary_source_binding": true,
+        "calendar_identity": true,
+        "current_session_mapping": true,
+        "field:CONFIRMED": true,
+        "field:PREWATCH": true,
+        "field:SEED": true,
+        "field:WARM": true,
+        "field:core_price_damage": true,
+        "field:delta3": true,
+        "field:dq5": true,
+        "field:episode_invalidation_contract_id": true,
+        "field:followup_complete": true,
+        "field:frozen_invalidation": true,
+        "field:risk": true,
+        "field:scenario": true,
+        "field:suspended": true,
+        "manifest_digest": true,
+        "manifest_shape": true,
+        "prior_binding": true,
+        "prior_calendar": true,
+        "prior_full_schema": true,
+        "prior_identity": true,
+        "prior_model": true,
+        "prior_publication_exists": true
+      },
+      "fields": {
+        "CONFIRMED": {
+          "parameters": null,
+          "producer": "V4_11_CONFIRMATION_DETECTOR_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "PREWATCH": {
+          "parameters": "V4_09_STOCK_PREWATCH_PARAMETER_SET_V1",
+          "producer": "STOCK_PREWATCH_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "SEED": {
+          "parameters": "V4_07_BASE_SEED_PARAMETER_SET_V1",
+          "producer": "BASE_SEED_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "WARM": {
+          "parameters": null,
+          "producer": "LEGACY_WARM_EXTRACTION_NOT_ACCEPTED",
+          "publication": null,
+          "status": "NOT_APPLICABLE",
+          "time_role": "T"
+        },
+        "core_price_damage": {
+          "parameters": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+          "producer": "CORE_FACTOR_V1.CORE_PRICE_DAMAGE",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "delta3": {
+          "parameters": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+          "producer": "RPS_DELTA_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "dq5": {
+          "parameters": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "producer": "V4_08_SECTOR_NATIVE_V1",
+          "publication": null,
+          "status": "NOT_APPLICABLE",
+          "time_role": "T"
+        },
+        "episode_invalidation_contract_id": {
+          "parameters": null,
+          "producer": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T-1"
+        },
+        "followup_complete": {
+          "parameters": null,
+          "producer": "SETTLEMENT_DUE_OWNER_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "frozen_invalidation": {
+          "parameters": null,
+          "producer": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T-1"
+        },
+        "risk": {
+          "parameters": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+          "producer": "EXTENSION_RISK_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "scenario": {
+          "parameters": null,
+          "producer": "V4_11_V4_12_SCENARIO_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "suspended": {
+          "parameters": null,
+          "producer": "V4_02_DATED_TRADING_STATUS_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        }
+      },
+      "id": "real_boundary_current_episode_namespace_separate",
+      "valid": true
+    },
+    {
+      "checks": {
+        "all_input_publications_exist": true,
+        "boundary_manifest": true,
+        "boundary_source_binding": false,
+        "calendar_identity": true,
+        "current_session_mapping": true,
+        "field:CONFIRMED": true,
+        "field:PREWATCH": true,
+        "field:SEED": true,
+        "field:WARM": true,
+        "field:core_price_damage": true,
+        "field:delta3": true,
+        "field:dq5": true,
+        "field:episode_invalidation_contract_id": true,
+        "field:followup_complete": true,
+        "field:frozen_invalidation": true,
+        "field:risk": true,
+        "field:scenario": true,
+        "field:suspended": true,
+        "manifest_digest": true,
+        "manifest_shape": true,
+        "prior_binding": true,
+        "prior_calendar": true,
+        "prior_full_schema": true,
+        "prior_identity": true,
+        "prior_model": false,
+        "prior_publication_exists": true
+      },
+      "fields": {
+        "CONFIRMED": {
+          "parameters": null,
+          "producer": "V4_11_CONFIRMATION_DETECTOR_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "PREWATCH": {
+          "parameters": "V4_09_STOCK_PREWATCH_PARAMETER_SET_V1",
+          "producer": "STOCK_PREWATCH_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "SEED": {
+          "parameters": "V4_07_BASE_SEED_PARAMETER_SET_V1",
+          "producer": "BASE_SEED_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "WARM": {
+          "parameters": null,
+          "producer": "LEGACY_WARM_EXTRACTION_NOT_ACCEPTED",
+          "publication": null,
+          "status": "NOT_APPLICABLE",
+          "time_role": "T"
+        },
+        "core_price_damage": {
+          "parameters": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+          "producer": "CORE_FACTOR_V1.CORE_PRICE_DAMAGE",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "delta3": {
+          "parameters": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+          "producer": "RPS_DELTA_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "dq5": {
+          "parameters": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "producer": "V4_08_SECTOR_NATIVE_V1",
+          "publication": null,
+          "status": "NOT_APPLICABLE",
+          "time_role": "T"
+        },
+        "episode_invalidation_contract_id": {
+          "parameters": null,
+          "producer": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T-1"
+        },
+        "followup_complete": {
+          "parameters": null,
+          "producer": "SETTLEMENT_DUE_OWNER_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "frozen_invalidation": {
+          "parameters": null,
+          "producer": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T-1"
+        },
+        "risk": {
+          "parameters": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+          "producer": "EXTENSION_RISK_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "scenario": {
+          "parameters": null,
+          "producer": "V4_11_V4_12_SCENARIO_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "suspended": {
+          "parameters": null,
+          "producer": "V4_02_DATED_TRADING_STATUS_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        }
+      },
+      "id": "old_model_prior_without_boundary_rejected",
+      "valid": false
+    },
+    {
+      "checks": {
+        "all_input_publications_exist": true,
+        "boundary_manifest": false,
+        "boundary_source_binding": false,
+        "calendar_identity": true,
+        "current_session_mapping": true,
+        "field:CONFIRMED": true,
+        "field:PREWATCH": true,
+        "field:SEED": true,
+        "field:WARM": true,
+        "field:core_price_damage": true,
+        "field:delta3": true,
+        "field:dq5": true,
+        "field:episode_invalidation_contract_id": true,
+        "field:followup_complete": true,
+        "field:frozen_invalidation": true,
+        "field:risk": true,
+        "field:scenario": true,
+        "field:suspended": true,
+        "manifest_digest": true,
+        "manifest_shape": true,
+        "prior_binding": true,
+        "prior_calendar": true,
+        "prior_full_schema": true,
+        "prior_identity": true,
+        "prior_model": false,
+        "prior_publication_exists": true
+      },
+      "fields": {
+        "CONFIRMED": {
+          "parameters": null,
+          "producer": "V4_11_CONFIRMATION_DETECTOR_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "PREWATCH": {
+          "parameters": "V4_09_STOCK_PREWATCH_PARAMETER_SET_V1",
+          "producer": "STOCK_PREWATCH_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "SEED": {
+          "parameters": "V4_07_BASE_SEED_PARAMETER_SET_V1",
+          "producer": "BASE_SEED_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "WARM": {
+          "parameters": null,
+          "producer": "LEGACY_WARM_EXTRACTION_NOT_ACCEPTED",
+          "publication": null,
+          "status": "NOT_APPLICABLE",
+          "time_role": "T"
+        },
+        "core_price_damage": {
+          "parameters": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+          "producer": "CORE_FACTOR_V1.CORE_PRICE_DAMAGE",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "delta3": {
+          "parameters": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+          "producer": "RPS_DELTA_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "dq5": {
+          "parameters": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "producer": "V4_08_SECTOR_NATIVE_V1",
+          "publication": null,
+          "status": "NOT_APPLICABLE",
+          "time_role": "T"
+        },
+        "episode_invalidation_contract_id": {
+          "parameters": null,
+          "producer": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T-1"
+        },
+        "followup_complete": {
+          "parameters": null,
+          "producer": "SETTLEMENT_DUE_OWNER_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "frozen_invalidation": {
+          "parameters": null,
+          "producer": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T-1"
+        },
+        "risk": {
+          "parameters": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+          "producer": "EXTENSION_RISK_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "scenario": {
+          "parameters": null,
+          "producer": "V4_11_V4_12_SCENARIO_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "suspended": {
+          "parameters": null,
+          "producer": "V4_02_DATED_TRADING_STATUS_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        }
+      },
+      "id": "wrong_real_from_model",
+      "valid": false
+    },
+    {
+      "checks": {
+        "all_input_publications_exist": true,
+        "boundary_manifest": false,
+        "boundary_source_binding": false,
+        "calendar_identity": true,
+        "current_session_mapping": true,
+        "field:CONFIRMED": true,
+        "field:PREWATCH": true,
+        "field:SEED": true,
+        "field:WARM": true,
+        "field:core_price_damage": true,
+        "field:delta3": true,
+        "field:dq5": true,
+        "field:episode_invalidation_contract_id": true,
+        "field:followup_complete": true,
+        "field:frozen_invalidation": true,
+        "field:risk": true,
+        "field:scenario": true,
+        "field:suspended": true,
+        "manifest_digest": true,
+        "manifest_shape": true,
+        "prior_binding": true,
+        "prior_calendar": true,
+        "prior_full_schema": true,
+        "prior_identity": true,
+        "prior_model": false,
+        "prior_publication_exists": true
+      },
+      "fields": {
+        "CONFIRMED": {
+          "parameters": null,
+          "producer": "V4_11_CONFIRMATION_DETECTOR_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "PREWATCH": {
+          "parameters": "V4_09_STOCK_PREWATCH_PARAMETER_SET_V1",
+          "producer": "STOCK_PREWATCH_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "SEED": {
+          "parameters": "V4_07_BASE_SEED_PARAMETER_SET_V1",
+          "producer": "BASE_SEED_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "WARM": {
+          "parameters": null,
+          "producer": "LEGACY_WARM_EXTRACTION_NOT_ACCEPTED",
+          "publication": null,
+          "status": "NOT_APPLICABLE",
+          "time_role": "T"
+        },
+        "core_price_damage": {
+          "parameters": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+          "producer": "CORE_FACTOR_V1.CORE_PRICE_DAMAGE",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "delta3": {
+          "parameters": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+          "producer": "RPS_DELTA_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "dq5": {
+          "parameters": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "producer": "V4_08_SECTOR_NATIVE_V1",
+          "publication": null,
+          "status": "NOT_APPLICABLE",
+          "time_role": "T"
+        },
+        "episode_invalidation_contract_id": {
+          "parameters": null,
+          "producer": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T-1"
+        },
+        "followup_complete": {
+          "parameters": null,
+          "producer": "SETTLEMENT_DUE_OWNER_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "frozen_invalidation": {
+          "parameters": null,
+          "producer": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T-1"
+        },
+        "risk": {
+          "parameters": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+          "producer": "EXTENSION_RISK_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "scenario": {
+          "parameters": null,
+          "producer": "V4_11_V4_12_SCENARIO_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "suspended": {
+          "parameters": null,
+          "producer": "V4_02_DATED_TRADING_STATUS_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        }
+      },
+      "id": "wrong_real_from_parameter",
+      "valid": false
+    },
+    {
+      "checks": {
+        "all_input_publications_exist": true,
+        "boundary_manifest": false,
+        "boundary_source_binding": false,
+        "calendar_identity": true,
+        "current_session_mapping": true,
+        "field:CONFIRMED": true,
+        "field:PREWATCH": true,
+        "field:SEED": true,
+        "field:WARM": true,
+        "field:core_price_damage": true,
+        "field:delta3": true,
+        "field:dq5": true,
+        "field:episode_invalidation_contract_id": true,
+        "field:followup_complete": true,
+        "field:frozen_invalidation": true,
+        "field:risk": true,
+        "field:scenario": true,
+        "field:suspended": true,
+        "manifest_digest": true,
+        "manifest_shape": true,
+        "prior_binding": true,
+        "prior_calendar": true,
+        "prior_full_schema": true,
+        "prior_identity": true,
+        "prior_model": false,
+        "prior_publication_exists": true
+      },
+      "fields": {
+        "CONFIRMED": {
+          "parameters": null,
+          "producer": "V4_11_CONFIRMATION_DETECTOR_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "PREWATCH": {
+          "parameters": "V4_09_STOCK_PREWATCH_PARAMETER_SET_V1",
+          "producer": "STOCK_PREWATCH_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "SEED": {
+          "parameters": "V4_07_BASE_SEED_PARAMETER_SET_V1",
+          "producer": "BASE_SEED_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "WARM": {
+          "parameters": null,
+          "producer": "LEGACY_WARM_EXTRACTION_NOT_ACCEPTED",
+          "publication": null,
+          "status": "NOT_APPLICABLE",
+          "time_role": "T"
+        },
+        "core_price_damage": {
+          "parameters": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+          "producer": "CORE_FACTOR_V1.CORE_PRICE_DAMAGE",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "delta3": {
+          "parameters": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+          "producer": "RPS_DELTA_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "dq5": {
+          "parameters": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "producer": "V4_08_SECTOR_NATIVE_V1",
+          "publication": null,
+          "status": "NOT_APPLICABLE",
+          "time_role": "T"
+        },
+        "episode_invalidation_contract_id": {
+          "parameters": null,
+          "producer": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T-1"
+        },
+        "followup_complete": {
+          "parameters": null,
+          "producer": "SETTLEMENT_DUE_OWNER_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "frozen_invalidation": {
+          "parameters": null,
+          "producer": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T-1"
+        },
+        "risk": {
+          "parameters": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+          "producer": "EXTENSION_RISK_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "scenario": {
+          "parameters": null,
+          "producer": "V4_11_V4_12_SCENARIO_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "suspended": {
+          "parameters": null,
+          "producer": "V4_02_DATED_TRADING_STATUS_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        }
+      },
+      "id": "wrong_real_to_model",
+      "valid": false
+    },
+    {
+      "checks": {
+        "all_input_publications_exist": true,
+        "boundary_manifest": false,
+        "boundary_source_binding": false,
+        "calendar_identity": true,
+        "current_session_mapping": true,
+        "field:CONFIRMED": true,
+        "field:PREWATCH": true,
+        "field:SEED": true,
+        "field:WARM": true,
+        "field:core_price_damage": true,
+        "field:delta3": true,
+        "field:dq5": true,
+        "field:episode_invalidation_contract_id": true,
+        "field:followup_complete": true,
+        "field:frozen_invalidation": true,
+        "field:risk": true,
+        "field:scenario": true,
+        "field:suspended": true,
+        "manifest_digest": true,
+        "manifest_shape": true,
+        "prior_binding": true,
+        "prior_calendar": true,
+        "prior_full_schema": true,
+        "prior_identity": true,
+        "prior_model": false,
+        "prior_publication_exists": true
+      },
+      "fields": {
+        "CONFIRMED": {
+          "parameters": null,
+          "producer": "V4_11_CONFIRMATION_DETECTOR_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "PREWATCH": {
+          "parameters": "V4_09_STOCK_PREWATCH_PARAMETER_SET_V1",
+          "producer": "STOCK_PREWATCH_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "SEED": {
+          "parameters": "V4_07_BASE_SEED_PARAMETER_SET_V1",
+          "producer": "BASE_SEED_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "WARM": {
+          "parameters": null,
+          "producer": "LEGACY_WARM_EXTRACTION_NOT_ACCEPTED",
+          "publication": null,
+          "status": "NOT_APPLICABLE",
+          "time_role": "T"
+        },
+        "core_price_damage": {
+          "parameters": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+          "producer": "CORE_FACTOR_V1.CORE_PRICE_DAMAGE",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "delta3": {
+          "parameters": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+          "producer": "RPS_DELTA_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "dq5": {
+          "parameters": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "producer": "V4_08_SECTOR_NATIVE_V1",
+          "publication": null,
+          "status": "NOT_APPLICABLE",
+          "time_role": "T"
+        },
+        "episode_invalidation_contract_id": {
+          "parameters": null,
+          "producer": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T-1"
+        },
+        "followup_complete": {
+          "parameters": null,
+          "producer": "SETTLEMENT_DUE_OWNER_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "frozen_invalidation": {
+          "parameters": null,
+          "producer": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T-1"
+        },
+        "risk": {
+          "parameters": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+          "producer": "EXTENSION_RISK_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "scenario": {
+          "parameters": null,
+          "producer": "V4_11_V4_12_SCENARIO_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "suspended": {
+          "parameters": null,
+          "producer": "V4_02_DATED_TRADING_STATUS_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        }
+      },
+      "id": "wrong_real_effective_date",
+      "valid": false
+    },
+    {
+      "checks": {
+        "all_input_publications_exist": true,
+        "boundary_manifest": true,
+        "boundary_source_binding": true,
+        "calendar_identity": true,
+        "current_session_mapping": true,
+        "field:CONFIRMED": true,
+        "field:PREWATCH": true,
+        "field:SEED": true,
+        "field:WARM": true,
+        "field:core_price_damage": true,
+        "field:delta3": true,
+        "field:dq5": true,
+        "field:episode_invalidation_contract_id": true,
+        "field:followup_complete": true,
+        "field:frozen_invalidation": true,
+        "field:risk": true,
+        "field:scenario": true,
+        "field:suspended": true,
+        "manifest_digest": true,
+        "manifest_shape": true,
+        "prior_binding": true,
+        "prior_calendar": true,
+        "prior_full_schema": true,
+        "prior_identity": true,
+        "prior_model": true,
+        "prior_publication_exists": false
+      },
+      "fields": {
+        "CONFIRMED": {
+          "parameters": null,
+          "producer": "V4_11_CONFIRMATION_DETECTOR_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "PREWATCH": {
+          "parameters": "V4_09_STOCK_PREWATCH_PARAMETER_SET_V1",
+          "producer": "STOCK_PREWATCH_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "SEED": {
+          "parameters": "V4_07_BASE_SEED_PARAMETER_SET_V1",
+          "producer": "BASE_SEED_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "WARM": {
+          "parameters": null,
+          "producer": "LEGACY_WARM_EXTRACTION_NOT_ACCEPTED",
+          "publication": null,
+          "status": "NOT_APPLICABLE",
+          "time_role": "T"
+        },
+        "core_price_damage": {
+          "parameters": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+          "producer": "CORE_FACTOR_V1.CORE_PRICE_DAMAGE",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "delta3": {
+          "parameters": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+          "producer": "RPS_DELTA_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "dq5": {
+          "parameters": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "producer": "V4_08_SECTOR_NATIVE_V1",
+          "publication": null,
+          "status": "NOT_APPLICABLE",
+          "time_role": "T"
+        },
+        "episode_invalidation_contract_id": {
+          "parameters": null,
+          "producer": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T-1"
+        },
+        "followup_complete": {
+          "parameters": null,
+          "producer": "SETTLEMENT_DUE_OWNER_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "frozen_invalidation": {
+          "parameters": null,
+          "producer": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T-1"
+        },
+        "risk": {
+          "parameters": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+          "producer": "EXTENSION_RISK_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "scenario": {
+          "parameters": null,
+          "producer": "V4_11_V4_12_SCENARIO_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "suspended": {
+          "parameters": null,
+          "producer": "V4_02_DATED_TRADING_STATUS_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        }
+      },
+      "id": "missing_old_source_publication",
+      "valid": false
+    },
+    {
+      "checks": {
+        "all_input_publications_exist": true,
+        "boundary_manifest": true,
+        "boundary_source_binding": true,
+        "calendar_identity": true,
+        "current_session_mapping": true,
+        "field:CONFIRMED": true,
+        "field:PREWATCH": true,
+        "field:SEED": true,
+        "field:WARM": true,
+        "field:core_price_damage": true,
+        "field:delta3": true,
+        "field:dq5": true,
+        "field:episode_invalidation_contract_id": true,
+        "field:followup_complete": true,
+        "field:frozen_invalidation": true,
+        "field:risk": true,
+        "field:scenario": true,
+        "field:suspended": true,
+        "manifest_digest": true,
+        "manifest_shape": true,
+        "prior_binding": true,
+        "prior_calendar": true,
+        "prior_full_schema": true,
+        "prior_identity": true,
+        "prior_model": true,
+        "prior_publication_exists": false
+      },
+      "fields": {
+        "CONFIRMED": {
+          "parameters": null,
+          "producer": "V4_11_CONFIRMATION_DETECTOR_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "PREWATCH": {
+          "parameters": "V4_09_STOCK_PREWATCH_PARAMETER_SET_V1",
+          "producer": "STOCK_PREWATCH_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "SEED": {
+          "parameters": "V4_07_BASE_SEED_PARAMETER_SET_V1",
+          "producer": "BASE_SEED_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "WARM": {
+          "parameters": null,
+          "producer": "LEGACY_WARM_EXTRACTION_NOT_ACCEPTED",
+          "publication": null,
+          "status": "NOT_APPLICABLE",
+          "time_role": "T"
+        },
+        "core_price_damage": {
+          "parameters": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+          "producer": "CORE_FACTOR_V1.CORE_PRICE_DAMAGE",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "delta3": {
+          "parameters": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+          "producer": "RPS_DELTA_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "dq5": {
+          "parameters": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "producer": "V4_08_SECTOR_NATIVE_V1",
+          "publication": null,
+          "status": "NOT_APPLICABLE",
+          "time_role": "T"
+        },
+        "episode_invalidation_contract_id": {
+          "parameters": null,
+          "producer": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T-1"
+        },
+        "followup_complete": {
+          "parameters": null,
+          "producer": "SETTLEMENT_DUE_OWNER_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "frozen_invalidation": {
+          "parameters": null,
+          "producer": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T-1"
+        },
+        "risk": {
+          "parameters": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+          "producer": "EXTENSION_RISK_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "scenario": {
+          "parameters": null,
+          "producer": "V4_11_V4_12_SCENARIO_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "suspended": {
+          "parameters": null,
+          "producer": "V4_02_DATED_TRADING_STATUS_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        }
+      },
+      "id": "old_payload_digest_mismatch",
+      "valid": false
+    },
+    {
+      "checks": {
+        "all_input_publications_exist": true,
+        "boundary_manifest": true,
+        "boundary_source_binding": true,
+        "calendar_identity": true,
+        "current_session_mapping": true,
+        "field:CONFIRMED": true,
+        "field:PREWATCH": true,
+        "field:SEED": true,
+        "field:WARM": true,
+        "field:core_price_damage": true,
+        "field:delta3": true,
+        "field:dq5": true,
+        "field:episode_invalidation_contract_id": true,
+        "field:followup_complete": true,
+        "field:frozen_invalidation": true,
+        "field:risk": true,
+        "field:scenario": true,
+        "field:suspended": true,
+        "manifest_digest": true,
+        "manifest_shape": true,
+        "prior_binding": true,
+        "prior_calendar": true,
+        "prior_full_schema": true,
+        "prior_identity": true,
+        "prior_model": true,
+        "prior_publication_exists": false
+      },
+      "fields": {
+        "CONFIRMED": {
+          "parameters": null,
+          "producer": "V4_11_CONFIRMATION_DETECTOR_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "PREWATCH": {
+          "parameters": "V4_09_STOCK_PREWATCH_PARAMETER_SET_V1",
+          "producer": "STOCK_PREWATCH_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "SEED": {
+          "parameters": "V4_07_BASE_SEED_PARAMETER_SET_V1",
+          "producer": "BASE_SEED_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "WARM": {
+          "parameters": null,
+          "producer": "LEGACY_WARM_EXTRACTION_NOT_ACCEPTED",
+          "publication": null,
+          "status": "NOT_APPLICABLE",
+          "time_role": "T"
+        },
+        "core_price_damage": {
+          "parameters": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+          "producer": "CORE_FACTOR_V1.CORE_PRICE_DAMAGE",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "delta3": {
+          "parameters": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+          "producer": "RPS_DELTA_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "dq5": {
+          "parameters": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "producer": "V4_08_SECTOR_NATIVE_V1",
+          "publication": null,
+          "status": "NOT_APPLICABLE",
+          "time_role": "T"
+        },
+        "episode_invalidation_contract_id": {
+          "parameters": null,
+          "producer": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T-1"
+        },
+        "followup_complete": {
+          "parameters": null,
+          "producer": "SETTLEMENT_DUE_OWNER_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "frozen_invalidation": {
+          "parameters": null,
+          "producer": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T-1"
+        },
+        "risk": {
+          "parameters": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+          "producer": "EXTENSION_RISK_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "scenario": {
+          "parameters": null,
+          "producer": "V4_11_V4_12_SCENARIO_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "suspended": {
+          "parameters": null,
+          "producer": "V4_02_DATED_TRADING_STATUS_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        }
+      },
+      "id": "old_source_authority_digest_mismatch",
+      "valid": false
+    },
+    {
+      "checks": {
+        "all_input_publications_exist": true,
+        "boundary_manifest": false,
+        "calendar_identity": true,
+        "current_session_mapping": true,
+        "field:CONFIRMED": true,
+        "field:PREWATCH": true,
+        "field:SEED": true,
+        "field:WARM": true,
+        "field:core_price_damage": true,
+        "field:delta3": true,
+        "field:dq5": true,
+        "field:episode_invalidation_contract_id": true,
+        "field:followup_complete": true,
+        "field:frozen_invalidation": true,
+        "field:risk": true,
+        "field:scenario": true,
+        "field:suspended": true,
+        "manifest_digest": true,
+        "manifest_shape": true,
+        "prior_binding": true,
+        "prior_calendar": true,
+        "prior_full_schema": true,
+        "prior_identity": true,
+        "prior_model": true,
+        "prior_publication_exists": true
+      },
+      "fields": {
+        "CONFIRMED": {
+          "parameters": null,
+          "producer": "V4_11_CONFIRMATION_DETECTOR_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "PREWATCH": {
+          "parameters": "V4_09_STOCK_PREWATCH_PARAMETER_SET_V1",
+          "producer": "STOCK_PREWATCH_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "SEED": {
+          "parameters": "V4_07_BASE_SEED_PARAMETER_SET_V1",
+          "producer": "BASE_SEED_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "WARM": {
+          "parameters": null,
+          "producer": "LEGACY_WARM_EXTRACTION_NOT_ACCEPTED",
+          "publication": null,
+          "status": "NOT_APPLICABLE",
+          "time_role": "T"
+        },
+        "core_price_damage": {
+          "parameters": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+          "producer": "CORE_FACTOR_V1.CORE_PRICE_DAMAGE",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "delta3": {
+          "parameters": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+          "producer": "RPS_DELTA_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "dq5": {
+          "parameters": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+          "producer": "V4_08_SECTOR_NATIVE_V1",
+          "publication": null,
+          "status": "NOT_APPLICABLE",
+          "time_role": "T"
+        },
+        "episode_invalidation_contract_id": {
+          "parameters": null,
+          "producer": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T-1"
+        },
+        "followup_complete": {
+          "parameters": null,
+          "producer": "SETTLEMENT_DUE_OWNER_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "frozen_invalidation": {
+          "parameters": null,
+          "producer": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T-1"
+        },
+        "risk": {
+          "parameters": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+          "producer": "EXTENSION_RISK_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        },
+        "scenario": {
+          "parameters": null,
+          "producer": "V4_11_V4_12_SCENARIO_NOT_IMPLEMENTED",
+          "publication": null,
+          "status": "NOT_IMPLEMENTED",
+          "time_role": "T"
+        },
+        "suspended": {
+          "parameters": null,
+          "producer": "V4_02_DATED_TRADING_STATUS_V1",
+          "publication": "V4_10_INPUT:ce21413bed0298a3741876aed9366f8dd35241c5290178600598cfc95e2b5949",
+          "status": "IMPLEMENTED",
+          "time_role": "T"
+        }
+      },
+      "id": "noop_model_boundary_rejected",
+      "valid": false
+    }
+  ],
+  "postcheck": {
+    "byte_count": 724597,
+    "path": "reports/v4_10/V4_10_R1_2_INDEPENDENT_POSTCHECK.json",
+    "sha256": "b198c8719f51605365e9f4525b9ae8f1b02bf8b8ef24e269d76b9e4ff5a0317a"
+  },
+  "status": "PASS",
+  "tags": [
+    "model_boundary_authorization",
+    "real_model_boundary_transition",
+    "noop_model_boundary_rejected"
+  ]
+}

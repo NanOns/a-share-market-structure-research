@@ -4,13 +4,13 @@ from pathlib import Path
 import pytest
 from src.v4.research_state import reduce_state as reduce_current, digest
 from scripts.freeze_v4_10_contract import fixture, prior, with_prior
-from scripts.verify_v4_10_r1_1 import check_vectors
-from scripts.v4_10_r1_1_fixtures import adapt_r1_input,accepted_bundle,publish_setup
+from scripts.verify_v4_10_r1_2 import check_vectors
+from scripts.v4_10_r1_2_fixtures import adapt_r1_2_input,accepted_bundle,publish_setup
 from src.v4.state_provenance import PostgresEngineeringLedger
 
 def reduce_state(old):
     # Explicit synthetic adapter retains the original static business oracle.
-    return reduce_current(adapt_r1_input(old))
+    return reduce_current(adapt_r1_2_input(old))
 
 ROOT=Path(__file__).resolve().parents[2]
 VECTORS=json.loads((ROOT/'config/v4_10_machine_vectors_v1.json').read_text(encoding='utf8'))['vectors']

@@ -20,14 +20,14 @@ UNKNOWN='UNKNOWN'
 PUBLICATION_ID=re.compile(r'^[A-Za-z0-9][A-Za-z0-9_.:\-/]{0,511}$')
 
 def _read(name):
-    return json.loads((ROOT/f'config/v4_10_{name}_r1_1.json').read_text(encoding='utf8'))
+    return json.loads((ROOT/f'config/v4_10_{name}_r1_2.json').read_text(encoding='utf8'))
 
 def publication_ids(ids):
     if type(ids) is not list or not ids or any(type(v) is not str or not PUBLICATION_ID.fullmatch(v) for v in ids) or len(set(ids))!=len(ids):
         raise ValueError('INPUT_PUBLICATION_MANIFEST_SHAPE_INVALID')
     return sorted(ids)
 
-def validate_output(row, *, permit_other_model=False):
+def validate_output(row, *, permit_other_model=False, boundary_source=False):
     schema=_read('output_schema')
     if type(row) is not dict or set(schema['required'])-set(row):raise ValueError('PRIOR_FULL_SCHEMA_REQUIRED')
     for name in schema['string_fields']:
@@ -59,7 +59,7 @@ def validate_output(row, *, permit_other_model=False):
     if row['entity_type']=='STOCK' and row['maturity']=='WARM':raise ValueError('ILLEGAL_STOCK_WARM_PRIOR')
     if row['mode'] not in ('SYNTHETIC_CONTRACT_VECTOR','ACCEPTED_FACT_INTERFACE') or row['state_freshness'] not in ('FRESH','STALE') or row['final_eligibility'] not in ('TRUE','FALSE','UNKNOWN') or row['scenario_status'] not in ('KNOWN','UNKNOWN'):
         raise ValueError('PRIOR_ENUM_INVALID')
-    if row['interface_contract_id']!=INTERFACE or row['canonicalization_contract_id']!=CANONICALIZATION:
+    if (not boundary_source and row['interface_contract_id']!=INTERFACE) or row['canonicalization_contract_id']!=CANONICALIZATION:
         raise ValueError('PRIOR_INTERFACE_IDENTITY_INVALID')
     if not permit_other_model and (row['model_contract_id']!=CONTRACT or row['parameter_set_id']!=PARAMETERS):raise ValueError('MODEL_BOUNDARY_REQUIRED')
     date.fromisoformat(row['trade_date'])
@@ -69,7 +69,8 @@ def validate_output(row, *, permit_other_model=False):
     publication_ids(row['input_publication_ids'])
     if row['input_publication_manifest_digest']!=digest(dict(input_publication_ids=row['input_publication_ids'],fields=row['input_provenance'])):
         raise ValueError('PRIOR_INPUT_MANIFEST_DIGEST_MISMATCH')
-    if row['publication_id']!=state_id(row):raise ValueError('PRIOR_CONTENT_ADDRESS_IDENTITY_MISMATCH')
+    expected_id=('OLD_STATE:'+digest({k:v for k,v in row.items() if k!='publication_id'})) if boundary_source else state_id(row)
+    if row['publication_id']!=expected_id:raise ValueError('PRIOR_CONTENT_ADDRESS_IDENTITY_MISMATCH')
     if row['state_freshness']=='STALE' and row['final_eligibility']!='UNKNOWN':raise ValueError('PRIOR_STALE_ELIGIBILITY_INVALID')
     if row['mode']=='ACCEPTED_FACT_INTERFACE' and row['state_freshness']=='STALE' and (row['validity']!='UNKNOWN' or row['health']!='UNKNOWN'):
         raise ValueError('PRIOR_STALE_AXES_INVALID')
@@ -101,6 +102,16 @@ class PostgresEngineeringLedger:
                 tuple(binding[k] for k in ['consumer_contract_id','model_contract_id','parameter_set_id'])!=actual[2:]):
             raise ValueError('PRIOR_NOT_IN_TRUSTED_ENGINEERING_PUBLICATION')
         if row['mode']!='ACCEPTED_FACT_INTERFACE':raise ValueError('SYNTHETIC_PRIOR_IN_ACCEPTED_MODE')
+        attestation=self.pg.execute('SELECT producer_attestation FROM v4.research_state_engineering_publications WHERE publication_id=%s',(binding['engineering_publication_id'],)).fetchone()[0]
+        if not attestation or attestation.get('producer_contract_id')!='V4_10_CONTROLLED_STATE_PUBLISHER_R1_2':raise ValueError('PRIOR_CONTROLLED_PUBLISHER_ATTESTATION_REQUIRED')
+
+    def boundary_prior(self,binding,row):
+        if type(binding) is not dict or binding.get('ledger_id')!='V4_10_BOUNDARY_PRIOR_LEDGER_R1_2':raise ValueError('BOUNDARY_PRIOR_AUTHORITY_REQUIRED')
+        actual=self.pg.execute('SELECT source_payload,source_payload_digest,source_authority_digest,source_interface_contract_id FROM v4.research_state_boundary_prior_publications WHERE source_publication_id=%s',(binding.get('source_publication_id'),)).fetchone()
+        if not actual or actual[0]!=row or actual[1]!=digest(row) or binding.get('source_payload_digest')!=actual[1] or binding.get('payload_digest')!=actual[1] or binding.get('source_authority_digest')!=actual[2] or binding.get('publication_id')!=row['publication_id']:
+            raise ValueError('BOUNDARY_PRIOR_NOT_IN_IMMUTABLE_AUTHORITY')
+        validate_output(row,permit_other_model=True,boundary_source=True)
+        if (row['model_contract_id'],row['parameter_set_id'])==(CONTRACT,PARAMETERS):raise ValueError('BOUNDARY_PRIOR_OLD_IDENTITY_REQUIRED')
 
 def _ledger(ledger):
     if type(ledger) is not PostgresEngineeringLedger:raise ValueError('TRUSTED_ENGINEERING_LEDGER_REQUIRED')
@@ -161,6 +172,11 @@ def _boundary(x,ledger):
     if (b['from_model_contract_id'],b['from_parameter_set_id'])!=(prior['model_contract_id'],prior['parameter_set_id']):raise ValueError('BOUNDARY_FROM_MODEL_MISMATCH')
     if (b['to_model_contract_id'],b['to_parameter_set_id'])!=(CONTRACT,PARAMETERS):raise ValueError('BOUNDARY_TO_MODEL_MISMATCH')
     if b['effective_trade_date']!=x['trade_date']:raise ValueError('BOUNDARY_EFFECTIVE_DATE_MISMATCH')
+    if (b['from_model_contract_id'],b['from_parameter_set_id'])==(b['to_model_contract_id'],b['to_parameter_set_id']):raise ValueError('MODEL_BOUNDARY_NOOP_FORBIDDEN')
+    if x['mode']=='ACCEPTED_FACT_INTERFACE':
+        binding=x['prior_state_binding'] or {}
+        for key in ['source_publication_id','source_payload_digest','source_authority_digest']:
+            if b.get(key)!=binding.get(key) or manifest.get(key)!=binding.get(key) or binding.get(key) is None:raise ValueError('BOUNDARY_SOURCE_BINDING_MISMATCH')
     return True
 
 def validate_inputs(inputs,ledger=None):
@@ -184,14 +200,17 @@ def validate_inputs(inputs,ledger=None):
     boundary=_boundary(x,ledger)
     prior=x['prior_state']
     if prior is not None:
-        validate_output(prior,permit_other_model=boundary)
+        if x['mode']=='ACCEPTED_FACT_INTERFACE' and not boundary and (prior['model_contract_id'],prior['parameter_set_id'])!=(CONTRACT,PARAMETERS):raise ValueError('MODEL_BOUNDARY_REQUIRED')
+        is_old=x['mode']=='ACCEPTED_FACT_INTERFACE' and boundary and (prior['model_contract_id'],prior['parameter_set_id'])!=(CONTRACT,PARAMETERS)
+        if is_old:_ledger(ledger).boundary_prior(x['prior_state_binding'],prior)
+        else:validate_output(prior,permit_other_model=boundary)
         if x['mode']=='ACCEPTED_FACT_INTERFACE' and prior['mode']!='ACCEPTED_FACT_INTERFACE':
             raise ValueError('SYNTHETIC_PRIOR_IN_ACCEPTED_MODE')
         if prior['entity_id']!=x['entity_id'] or prior['entity_type']!=x['entity_type']:raise ValueError('ILLEGAL_PRIOR_STATE_LINEAGE')
         binding=x['prior_state_binding']
         if type(binding) is not dict or binding.get('publication_id')!=prior['publication_id'] or binding.get('payload_digest')!=digest(prior):raise ValueError('PRIOR_STATE_BINDING_MISMATCH')
-        if x['mode']=='ACCEPTED_FACT_INTERFACE':_ledger(ledger).prior(binding,prior)
-        elif prior['mode']!='SYNTHETIC_CONTRACT_VECTOR' or binding.get('ledger_id')!='SYNTHETIC_ENGINEERING_LEDGER':raise ValueError('SYNTHETIC_PRIOR_NAMESPACE_REQUIRED')
+        if x['mode']=='ACCEPTED_FACT_INTERFACE' and not is_old:_ledger(ledger).prior(binding,prior)
+        elif x['mode']=='SYNTHETIC_CONTRACT_VECTOR' and (prior['mode']!='SYNTHETIC_CONTRACT_VECTOR' or binding.get('ledger_id')!='SYNTHETIC_ENGINEERING_LEDGER'):raise ValueError('SYNTHETIC_PRIOR_NAMESPACE_REQUIRED')
     elif x['prior_state_binding'] is not None:raise ValueError('ORPHAN_PRIOR_STATE_BINDING')
     mapping=_calendar(x,ledger)
     values={}; normalized=deepcopy(x); lineage_unknown=[]
@@ -202,18 +221,16 @@ def validate_inputs(inputs,ledger=None):
             raise ValueError('FIELD_PROVENANCE_POLICY_MISMATCH:'+field)
         status=f['status'];value=f['value']
         if status not in ('IMPLEMENTED','SYNTHETIC','NOT_IMPLEMENTED','NOT_APPLICABLE'):raise ValueError('FIELD_STATUS_INVALID:'+field)
+        if x['mode']=='ACCEPTED_FACT_INTERFACE' and definition['implemented'] and status=='NOT_IMPLEMENTED':
+            raise ValueError('STATE_IMPLEMENTED_FIELD_CANNOT_BE_NOT_IMPLEMENTED:'+field)
         if status in ('NOT_IMPLEMENTED','NOT_APPLICABLE'):
             if (f['producer_contract_id'],f['producer_parameter_set_id'])!=(definition['producer_contract_id'],definition['producer_parameter_set_id']):
                 raise ValueError('FIELD_PRODUCER_LINEAGE_MISMATCH:'+field)
             if value!='UNKNOWN' or f['quality']!='UNKNOWN' or f['publication_id'] is not None or f['source_output_digest'] is not None:
                 raise ValueError('NOT_IMPLEMENTED_FACT_MUST_REMAIN_UNKNOWN:'+field)
-            if status=='NOT_APPLICABLE' and not ((field=='WARM' and x['entity_type']=='STOCK') or
-                (field in ('delta3','dq5') and field!=('delta3' if x['entity_type']=='STOCK' else 'dq5')) or
+            if status=='NOT_APPLICABLE' and not ((x['entity_type'] in definition.get('not_applicable_entity_types',[])) or
                 (field in ('frozen_invalidation','episode_invalidation_contract_id') and prior is None)):
                 raise ValueError('FIELD_NOT_APPLICABLE_UNAUTHORIZED:'+field)
-            if definition['implemented'] and status=='NOT_IMPLEMENTED':
-                # Explicitly unavailable fact remains UNKNOWN, never an implicit false.
-                pass
         else:
             if value=='UNKNOWN' and f['quality']!='UNKNOWN':raise ValueError('FIELD_QUALITY_VALUE_MISMATCH:'+field)
             if f['quality'] not in ('KNOWN','UNKNOWN'):raise ValueError('FIELD_QUALITY_INVALID:'+field)
@@ -227,7 +244,7 @@ def validate_inputs(inputs,ledger=None):
                 if not definition['implemented']:raise ValueError('OWNER_PRODUCER_NOT_IMPLEMENTED:'+field)
                 if x['entity_type'] not in definition['accepted_entity_types']:raise ValueError('FIELD_PRODUCER_ENTITY_SCOPE_MISMATCH:'+field)
                 mismatch=(f['producer_contract_id']!=definition['producer_contract_id'] or f['producer_parameter_set_id']!=definition['producer_parameter_set_id'] or f['publication_id'] not in x['input_publication_ids'])
-                if mismatch and field in ('SEED','PREWATCH'):
+                if mismatch and field in ('SEED','PREWATCH') and x['mode']=='SYNTHETIC_CONTRACT_VECTOR':
                     values[field]='UNKNOWN';lineage_unknown.append(field+':PRODUCER_LINEAGE_MISMATCH');continue
                 if mismatch:raise ValueError('FIELD_PRODUCER_LINEAGE_MISMATCH:'+field)
                 manifest,_=_ledger(ledger).manifest(f['publication_id'],'FACT_PUBLICATION')

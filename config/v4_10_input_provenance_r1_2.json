@@ -1,0 +1,235 @@
+{
+  "authority_boundary": "DB ledger owner is trusted publication issuer. API callers and ordinary result writers cannot manufacture an input publication.",
+  "boundary_prior_ledger": "V4_10_BOUNDARY_PRIOR_LEDGER_R1_2",
+  "calendar_contract": "MARKET_CALENDAR_V1",
+  "consumer_contract_id": "V4_10_REDUCER_INTERFACE_V1",
+  "contract_id": "V4_10_STATE_INPUT_PROVENANCE_V1",
+  "controlled_publisher_role": "v4_10_reducer_publisher_r1_2",
+  "engineering_revision": "R1.2",
+  "entity_scope": "Accepted stock producers cannot be relabelled as sector inputs. Sector dq5 is admitted from accepted native owner; other sector adapters require their own future extraction/entry contract.",
+  "envelope_required": [
+    "field",
+    "value",
+    "quality",
+    "status",
+    "producer_contract_id",
+    "producer_parameter_set_id",
+    "publication_id",
+    "source_output_digest",
+    "source_field_payload",
+    "time_role",
+    "required",
+    "system_available_at"
+  ],
+  "fields": {
+    "CONFIRMED": {
+      "accepted_entity_types": [
+        "STOCK",
+        "SECTOR"
+      ],
+      "domain": "TRI",
+      "implemented": false,
+      "not_applicable_entity_types": [],
+      "producer_contract_id": "V4_11_CONFIRMATION_DETECTOR_NOT_IMPLEMENTED",
+      "producer_parameter_set_id": null,
+      "required": true,
+      "time_role": "T"
+    },
+    "PREWATCH": {
+      "accepted_entity_types": [
+        "STOCK"
+      ],
+      "domain": "TRI",
+      "implemented": true,
+      "not_applicable_entity_types": [
+        "SECTOR"
+      ],
+      "producer_contract_id": "STOCK_PREWATCH_V1",
+      "producer_parameter_set_id": "V4_09_STOCK_PREWATCH_PARAMETER_SET_V1",
+      "required": true,
+      "time_role": "T"
+    },
+    "SEED": {
+      "accepted_entity_types": [
+        "STOCK"
+      ],
+      "domain": "TRI",
+      "implemented": true,
+      "not_applicable_entity_types": [
+        "SECTOR"
+      ],
+      "producer_contract_id": "BASE_SEED_V1",
+      "producer_parameter_set_id": "V4_07_BASE_SEED_PARAMETER_SET_V1",
+      "required": true,
+      "time_role": "T"
+    },
+    "WARM": {
+      "accepted_entity_types": [
+        "STOCK",
+        "SECTOR"
+      ],
+      "domain": "TRI",
+      "implemented": false,
+      "not_applicable_entity_types": [
+        "STOCK"
+      ],
+      "producer_contract_id": "LEGACY_WARM_EXTRACTION_NOT_ACCEPTED",
+      "producer_parameter_set_id": null,
+      "required": true,
+      "time_role": "T"
+    },
+    "core_price_damage": {
+      "accepted_entity_types": [
+        "STOCK"
+      ],
+      "domain": "TRI",
+      "implemented": true,
+      "not_applicable_entity_types": [
+        "SECTOR"
+      ],
+      "producer_contract_id": "CORE_FACTOR_V1.CORE_PRICE_DAMAGE",
+      "producer_parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+      "required": true,
+      "time_role": "T"
+    },
+    "delta3": {
+      "accepted_entity_types": [
+        "STOCK"
+      ],
+      "domain": "NUMBER",
+      "implemented": true,
+      "not_applicable_entity_types": [
+        "SECTOR"
+      ],
+      "producer_contract_id": "RPS_DELTA_V1",
+      "producer_parameter_set_id": "V4_03_CORE_FACTOR_PARAMETER_SET_V1",
+      "required": false,
+      "time_role": "T"
+    },
+    "dq5": {
+      "accepted_entity_types": [
+        "SECTOR"
+      ],
+      "domain": "NUMBER",
+      "implemented": true,
+      "not_applicable_entity_types": [
+        "STOCK"
+      ],
+      "producer_contract_id": "V4_08_SECTOR_NATIVE_V1",
+      "producer_parameter_set_id": "V4_08_ALGORITHM_PARAMETER_SET_R5",
+      "required": false,
+      "time_role": "T"
+    },
+    "episode_invalidation_contract_id": {
+      "accepted_entity_types": [
+        "STOCK",
+        "SECTOR"
+      ],
+      "domain": "CONTRACT_ID",
+      "implemented": false,
+      "not_applicable_entity_types": [],
+      "producer_contract_id": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+      "producer_parameter_set_id": null,
+      "required": false,
+      "time_role": "T-1"
+    },
+    "followup_complete": {
+      "accepted_entity_types": [
+        "STOCK",
+        "SECTOR"
+      ],
+      "domain": "TRI",
+      "implemented": false,
+      "not_applicable_entity_types": [],
+      "producer_contract_id": "SETTLEMENT_DUE_OWNER_NOT_IMPLEMENTED",
+      "producer_parameter_set_id": null,
+      "required": false,
+      "time_role": "T"
+    },
+    "frozen_invalidation": {
+      "accepted_entity_types": [
+        "STOCK",
+        "SECTOR"
+      ],
+      "domain": "TRI",
+      "implemented": false,
+      "not_applicable_entity_types": [],
+      "producer_contract_id": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+      "producer_parameter_set_id": null,
+      "required": true,
+      "time_role": "T-1"
+    },
+    "risk": {
+      "accepted_entity_types": [
+        "STOCK"
+      ],
+      "domain": "RISK",
+      "implemented": true,
+      "not_applicable_entity_types": [
+        "SECTOR"
+      ],
+      "producer_contract_id": "EXTENSION_RISK_V1",
+      "producer_parameter_set_id": "V4_04_CORE_PROFILE_PARAMETER_SET_V1",
+      "required": false,
+      "time_role": "T"
+    },
+    "scenario": {
+      "accepted_entity_types": [
+        "STOCK",
+        "SECTOR"
+      ],
+      "domain": "SCENARIO",
+      "implemented": false,
+      "not_applicable_entity_types": [],
+      "producer_contract_id": "V4_11_V4_12_SCENARIO_NOT_IMPLEMENTED",
+      "producer_parameter_set_id": null,
+      "required": false,
+      "time_role": "T"
+    },
+    "suspended": {
+      "accepted_entity_types": [
+        "STOCK"
+      ],
+      "domain": "TRI",
+      "implemented": true,
+      "not_applicable_entity_types": [
+        "SECTOR"
+      ],
+      "producer_contract_id": "V4_02_DATED_TRADING_STATUS_V1",
+      "producer_parameter_set_id": null,
+      "required": true,
+      "time_role": "T"
+    }
+  },
+  "implemented_status_authority": "IMPLEMENTED only for an applicable implemented owner; UNKNOWN still binds its producer publication",
+  "policy_authority": [
+    {
+      "byte_count": 40715,
+      "path": "config/v4_03_field_registry_v1.json",
+      "sha256": "17cfd98c0b1e52525aa0462d16b10557283cdf42468db38fca725e7641228285"
+    },
+    {
+      "byte_count": 17586,
+      "path": "config/v4_04_parameter_set_v1.json",
+      "sha256": "5b19a23dfbf6b214f5ee7c7cce5df5674db69d099386038c082317819812ced5"
+    },
+    {
+      "byte_count": 3246,
+      "path": "config/v4_08_sector_native_contract_r5.json",
+      "sha256": "235df806e1671ab00e234f4d93834570c797314244c42753e2e58e1c60a21386"
+    },
+    {
+      "byte_count": 4045,
+      "path": "config/v4_08_algorithm_parameter_set_r5.json",
+      "sha256": "0204d7c4fadf86871b6a079f755593b1a3f8ad18bb718f73ba33db0b70f67548"
+    },
+    {
+      "byte_count": 1553,
+      "path": "config/v4_02_dated_trading_status_v1.json",
+      "sha256": "e3e28aed34e72a62160ddd32cdfa1b502f701cb859e1ba69585e5d4c648a1485"
+    }
+  ],
+  "prior_ledger_id": "V4_10_ENGINEERING_LEDGER_R1_1",
+  "publication_manifest_shape": "exact nonempty unique stable ID array; canonical field map digest; never substring membership",
+  "unknown": "NOT_IMPLEMENTED -> value UNKNOWN + quality UNKNOWN; no FALSE default"
+}

@@ -231,5 +231,5 @@ Production, shadow production and Focus/UI cutover permissions remain false. TDX
     print('frozen vectors:',len(files['machine_vectors']['vectors']))
 
 if __name__=='__main__':
-    from scripts.freeze_v4_10_r1_1_contract import main as repair_main
+    from scripts.freeze_v4_10_r1_2_contract import main as repair_main
     repair_main()

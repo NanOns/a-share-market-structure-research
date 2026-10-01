@@ -58,5 +58,5 @@ def main():
     return result['status']!='PASS'
 
 if __name__=='__main__':
-    from scripts.verify_v4_10_r1_1 import main as repair_main
+    from scripts.verify_v4_10_r1_2 import main as repair_main
     sys.exit(repair_main())

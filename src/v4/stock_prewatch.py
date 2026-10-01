@@ -22,7 +22,48 @@ CONSUMER_CONTRACT = 'V4_09_PRIORITY_PROVENANCE_AND_IMMUTABILITY_R1_1'
 def digest(value):
     return hashlib.sha256(canonical_json(value)).hexdigest()
 
+def _validate_repair_freeze(root, freeze, repair):
+    """Anchor repair identity to the accepted publication, independently of its contents."""
+    if repair.get('contract_id') != 'V4_09_R1_1_REPAIR_CONTRACT_FREEZE' or repair.get('status') != 'PASS_REPAIR_SCOPE_FREEZE':
+        raise ValueError('REPAIR_FREEZE_IDENTITY_OR_STATUS_INVALID')
+    authority = repair.get('authority', {})
+    if authority.get('path') != 'docs/evidence/V4_08_PROMOTION_LINEAGE_REPAIR_AND_V4_09_R1_1_PROVENANCE_IMMUTABILITY_TASK_20260930.md' or authority.get('sha256') != '4486530930527e7956bfbb1b133cc1d7ab96b744de519be621de064d7549b48a':
+        raise ValueError('REPAIR_AUTHORITY_INVALID')
+    _verify_file_binding(root, authority, 'accepted repair authority')
+    if repair.get('immutable_writer_contract', {}).get('consumer_contract_id') != CONSUMER_CONTRACT:
+        raise ValueError('REPAIR_CONSUMER_IDENTITY_INVALID')
+    expected = {'config/v4_09_priority_provenance_contract_r1_1.json', 'config/v4_09_priority_producer_vectors_r1_1.json'}
+    bindings = repair.get('new_bindings', [])
+    if len(bindings) != len(expected) or {b.get('path') for b in bindings} != expected:
+        raise ValueError('REPAIR_BINDING_SET_INVALID')
+    if repair.get('original_frozen_bindings') != freeze.get('frozen_bindings'):
+        raise ValueError('REPAIR_ORIGINAL_FREEZE_MISMATCH')
+    for b in bindings:
+        _verify_file_binding(root, b, 'accepted repair binding')
+    for field in ['migration_semantics_preserved', 'protected_original_artifact']:
+        _verify_file_binding(root, repair[field], field)
+    global_head = json.loads((root/'data/v4/V4_STAGE_ACCEPTED_HEAD.json').read_text(encoding='utf8'))
+    head_path, _ = _verify_file_binding(root, global_head['v4_09_binding'], 'accepted V4-09 head')
+    if head_path != (root/'data/v4/V4_09_ACCEPTED_HEAD.json').resolve():
+        raise ValueError('REPAIR_ACCEPTED_HEAD_PATH_INVALID')
+    head = json.loads(head_path.read_text(encoding='utf8'))
+    if head.get('stage') != 'V4-09' or head.get('external_acceptance') != 'EXTERNALLY_ACCEPTED':
+        raise ValueError('REPAIR_ACCEPTED_HEAD_REQUIRED')
+    evidence = head['evidence_bindings']
+    parent = evidence['amended_v4_08_head']
+    if parent != global_head['v4_08_binding'] or parent.get('path') != 'data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json':
+        raise ValueError('REPAIR_AMENDED_PARENT_MISMATCH')
+    parent_path, _ = _verify_file_binding(root, parent, 'accepted amended V4-08 parent')
+    parent_head = json.loads(parent_path.read_text(encoding='utf8'))
+    if parent_head.get('stage') != 'V4-08' or parent_head.get('external_acceptance') != 'EXTERNALLY_ACCEPTED':
+        raise ValueError('REPAIR_AMENDED_PARENT_NOT_ACCEPTED')
+    repair_binding = evidence['V4_09_R1_1_REPAIR_CONTRACT_FREEZE.json']
+    if repair_binding.get('path') != 'reports/v4_09/V4_09_R1_1_REPAIR_CONTRACT_FREEZE.json':
+        raise ValueError('REPAIR_ACCEPTED_RECEIPT_PATH_INVALID')
+    _verify_file_binding(root, repair_binding, 'accepted repair freeze receipt')
+
 def load_package(root):
+    root = Path(root).resolve()
     freeze = json.loads((root/'reports/v4_09/V4_09_CONTRACT_FREEZE.json').read_text(encoding='utf8'))
     if freeze['status'] != 'PASS_CONTRACT_FREEZE_CANDIDATE': raise ValueError('CONTRACT_NOT_FROZEN')
     package = {}
@@ -32,6 +73,7 @@ def load_package(root):
     for binding in freeze['authority'].values():
         if isinstance(binding, dict) and 'path' in binding: _verify_file_binding(root, binding, 'V4-09 authority')
     repair = json.loads((root/'reports/v4_09/V4_09_R1_1_REPAIR_CONTRACT_FREEZE.json').read_text(encoding='utf8'))
+    _validate_repair_freeze(root, freeze, repair)
     for binding in repair['new_bindings']:
         path, _ = _verify_file_binding(root, binding, 'V4-09 R1.1 frozen repair contract')
         if path.name == 'v4_09_priority_provenance_contract_r1_1.json':

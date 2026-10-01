@@ -1,0 +1,21 @@
+{
+  "allowed_candidate_status": "V4_09_N01_HARDENING_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
+  "evidence": {
+    "bytes": 1356,
+    "path": "reports/audits/A08_ACCEPTED_REPLAY_AND_AUTHORITY_EVIDENCE_R1.json",
+    "sha256": "8031e82e366420d45c438080ec18c98a2bd511c071b8c8dd248a72775837c3cc"
+  },
+  "gates": {
+    "accepted_replay": "PASS_ENGINEERING",
+    "amended_parent": "PASS_ENGINEERING",
+    "authority": "PASS_ENGINEERING",
+    "binding_set": "PASS_ENGINEERING",
+    "clean": "PENDING_CLEAN_DETACHED",
+    "consumer": "PASS_ENGINEERING",
+    "external": "PENDING_INDEPENDENT_EXTERNAL_AUDIT",
+    "identity": "PASS_ENGINEERING"
+  },
+  "next_stage": "Independent external A08 N01 audit; accepted heads unchanged",
+  "status": "PENDING_CLEAN_DETACHED",
+  "work_package": "WP-A08-V4-09-N01"
+}

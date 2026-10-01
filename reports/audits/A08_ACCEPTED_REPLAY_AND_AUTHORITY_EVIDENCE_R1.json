@@ -1,0 +1,37 @@
+{
+  "accepted_artifact": {
+    "byte_count": 377494,
+    "logical_digest": "edb35a7b7aa382add631d80d105575c00274b638cef112b58e7e2687510e9a6e",
+    "path": "data/v4/artifact_store/v4_09/V4_09_STOCK_PREWATCH_2026-09-28_edb35a7b7aa382add631d80d105575c00274b638cef112b58e7e2687510e9a6e.jsonl.gz",
+    "publication_id": "V4_09:e38b5feb1696e283334692f21d7e99b1869a22552a50e0144b71c07acf4386c1",
+    "sha256": "8b92cbd96a8145005bad89374349582c075cf367722b956a75243d59aa64d18d",
+    "trade_date": "2026-09-28"
+  },
+  "all_algorithm_function_asts_unchanged": true,
+  "external_acceptance": null,
+  "negative_vectors": [
+    "wrong_status",
+    "wrong_identity",
+    "self_consistent_wrong_authority",
+    "missing_binding",
+    "extra_binding",
+    "wrong_file_hash",
+    "wrong_consumer",
+    "wrong_original_parent",
+    "hash_valid_wrong_amended_parent",
+    "changed_unaccepted_receipt"
+  ],
+  "producer": {
+    "bytes": 22817,
+    "path": "src/v4/stock_prewatch.py",
+    "sha256": "a57a4413b56cd81f43a06611f4dec328ef6ac35486f4a4b56e5b5938e2db60ce"
+  },
+  "protected_heads_unchanged": true,
+  "rows": 5222,
+  "status": "PASS_ACCEPTED_BYTES_LOGICAL_IDENTITY_AND_UNCHANGED_RULE_AST",
+  "tests": {
+    "bytes": 3442,
+    "path": "tests/v4_a08/test_repair_freeze_authority.py",
+    "sha256": "eaa2148f503daf94204a7b06d15d35f76cb43b048d52596f51482bac880751b6"
+  }
+}

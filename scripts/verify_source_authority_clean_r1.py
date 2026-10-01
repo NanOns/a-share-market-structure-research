@@ -29,7 +29,7 @@ def git(*args):
     return subprocess.run(['git',*args],cwd=ROOT,check=True,capture_output=True,text=True).stdout.strip()
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--work-package',choices=['A10','A11','A12','A01_R2'],default='A10');parser.add_argument('--family',action='append',default=['tests/v4_a10']);args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--work-package',choices=['A10','A11','A12','A01_R2','A08','A09'],default='A10');parser.add_argument('--family',action='append',default=['tests/v4_a10']);args=parser.parse_args()
     prefix=args.work_package+'_'
     families=list(dict.fromkeys([*FAMILIES,*args.family]))
     before=git('status','--porcelain=v1');head=git('rev-parse','HEAD')
@@ -42,7 +42,8 @@ def main():
         with psycopg.connect(dsn) as pg:
             migrations=apply_migrations(pg)
             identity=pg.execute('SELECT current_database(),current_user,inet_server_addr()::text,inet_server_port()').fetchone()
-        if len(migrations)!=24:raise RuntimeError('MIGRATION_ALLOCATION_NOT_001_TO_024')
+        allocation=sorted(int(p.name[:3]) for p in (ROOT/'src/workbench_db/migrations/v4_postgres').glob('[0-9][0-9][0-9]_*.sql'))
+        if allocation!=list(range(1,len(allocation)+1)) or len(migrations)!=len(allocation):raise RuntimeError('MIGRATION_ALLOCATION_NOT_CONTIGUOUS')
         guard=temp/'guard';guard.mkdir()
         (guard/'sitecustomize.py').write_text("import sys,os\ndef forbid(event,args):\n if event=='open' and isinstance(args[0],(str,bytes,os.PathLike)):\n  path=os.fsdecode(args[0]).replace('\\\\','/').lower()\n  if path.endswith('/config/.env'):raise RuntimeError('CONFIG_ENV_READ_FORBIDDEN')\nsys.addaudithook(forbid)\n",encoding='utf8')
         env=os.environ.copy();env.update(WORKBENCH_PG_DSN=dsn,V4_10_DISPOSABLE_TEST_DSN=dsn,

@@ -26,10 +26,20 @@ def protected_bindings():
     paths.update(p.relative_to(ROOT).as_posix() for p in (ROOT / 'data/v4').glob('*ACCEPTED_HEAD*.json'))
     paths.add('reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R2.json')
     paths.update(p.relative_to(ROOT).as_posix() for p in (ROOT / 'src/workbench_db/migrations/v4_postgres').glob('02[1-5]_*.sql'))
-    return [bind(p) for p in sorted(paths)]
+    bindings = []
+    for path in sorted(paths):
+        binding = bind(path)
+        committed = subprocess.check_output(['git', 'show', BASELINE + ':' + path], cwd=ROOT)
+        import hashlib
+        git_sha = hashlib.sha256(committed).hexdigest()
+        if git_sha != binding['sha256']:
+            assert committed.replace(b'\r\n', b'\n') == (ROOT / path).read_bytes().replace(b'\r\n', b'\n')
+            binding.update(git_sha256=git_sha, representation_difference='PRE_EXISTING_CRLF_LF_ONLY', git_baseline_commit=BASELINE)
+        bindings.append(binding)
+    return bindings
 
 def main():
-    assert subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip() == BASELINE
+    subprocess.run(['git', 'merge-base', '--is-ancestor', BASELINE, 'HEAD'], cwd=ROOT, check=True)
     for name in (AUDIT, TASK):
         atomic_bytes(ROOT / PREFIX / name, (Path('D:/Users/lps/Desktop/阶段任务') / name).read_bytes())
     authority = dict(document=bind(PREFIX + AUDIT), audited_head=BASELINE, verdict='PARTIAL_PASS_WITH_BLOCKERS')

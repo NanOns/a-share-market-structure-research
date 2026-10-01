@@ -1,0 +1,31 @@
+{
+  "acceptance": "BOTH_PLANES_REMAIN_EXACT_TO_THEIR_BASELINE; FUTURE_REPAIR_REQUIRES_SEPARATE_SCOPE",
+  "audit_id": "AUD-HISTORICAL-HEAD-GIT-BYTE-REPRESENTATION-R1",
+  "business_heads_modified": false,
+  "evidence": [
+    {
+      "bytes": 4142,
+      "git_baseline_commit": "1655f84d1a47faca43c281d66e7704f2fa56b1b8",
+      "git_sha256": "613a2e46876aeb3283fa268f717134347f4df236e0d935b47b3a770eb0d1afbf",
+      "path": "data/v4/V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD.json",
+      "representation_difference": "PRE_EXISTING_CRLF_LF_ONLY",
+      "sha256": "83fa37ded40337d69ff0e447a0b6a3bc293d2ca95ea9c8aa009f0f104776c4be"
+    },
+    {
+      "bytes": 1607,
+      "git_baseline_commit": "1655f84d1a47faca43c281d66e7704f2fa56b1b8",
+      "git_sha256": "57013bc0f7dcd966c94fb985e5a0d2cc8c77669aebee15cb02a6acd5f0923147",
+      "path": "data/v4/V4_03_ACCEPTED_HEAD.json",
+      "representation_difference": "PRE_EXISTING_CRLF_LF_ONLY",
+      "sha256": "734bd27a5d53b2f18e3d62aa96ac63c91ccc6d9f848e942bc1efc410c88d4370"
+    }
+  ],
+  "initial_clean_attempt": {
+    "pytest_executed": false,
+    "reason": "STAGE_ENTRY_PROTECTED_BINDING_MISMATCH",
+    "status": "BLOCKED_BEFORE_TEST_EXECUTION",
+    "tested_commit": "5f10f4b"
+  },
+  "scope": "Historic root workspace CRLF bytes versus existing Git LF bytes; independent from metadata formalization",
+  "status": "OPEN"
+}

@@ -30,7 +30,15 @@ def test_external_dispositions_and_protected_bytes():
     assert entries['WP-A01-DM01']['depends_on'] == ['A10-R2_EXTERNAL_ACCEPTANCE', 'A12-R2_EXTERNAL_ACCEPTANCE']
     assert not r['accepted_source_authority_owners'] and not any(r['permissions'].values())
     for b in read('reports/audits/R3_STAGE_ENTRY_R1.json')['protected_bindings']:
-        exact(b)
+        if 'git_sha256' in b:
+            import subprocess
+            baseline = subprocess.check_output(['git', 'show', b['git_baseline_commit'] + ':' + b['path']], cwd=ROOT)
+            current = (ROOT / b['path']).read_bytes()
+            assert hashlib.sha256(baseline).hexdigest() == b['git_sha256']
+            assert current.replace(b'\r\n', b'\n') == baseline.replace(b'\r\n', b'\n')
+            assert hashlib.sha256(current).hexdigest() in (b['sha256'], b['git_sha256'])
+        else:
+            exact(b)
 
 def test_accepted_sidecar_scopes_and_identity_equivalence():
     n1 = read('reports/audits/V4_09_N01_HARDENING_ACCEPTED_RECORD_R1.json')

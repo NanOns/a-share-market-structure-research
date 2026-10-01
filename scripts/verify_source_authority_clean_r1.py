@@ -41,7 +41,7 @@ def main():
         entry=json.loads(stage_entry.read_text(encoding='utf8'))
         for binding in entry['protected_bindings']:
             actual=hashlib.sha256((ROOT/binding['path']).read_bytes()).hexdigest()
-            if actual!=binding['sha256']:raise RuntimeError('STAGE_ENTRY_PROTECTED_BINDING_MISMATCH')
+            if actual!=binding.get('git_sha256',binding['sha256']):raise RuntimeError('STAGE_ENTRY_PROTECTED_BINDING_MISMATCH')
             protected[binding['path']]=actual
     registry=validate_incremental_registry(project_root=ROOT)
     started=time.monotonic()

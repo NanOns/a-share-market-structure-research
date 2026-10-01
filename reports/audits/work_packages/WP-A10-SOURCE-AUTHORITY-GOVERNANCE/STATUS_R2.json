@@ -1,0 +1,46 @@
+{
+  "audit_id": "SOURCE_AUTHORITY_AVAILABILITY_SEMANTICS_GOVERNANCE",
+  "depends_on": [],
+  "does_not_block_engineering_stage": true,
+  "evidence": [
+    {
+      "bytes": 1489,
+      "path": "reports/audits/A10_ENGINEERING_GATES_R1.json",
+      "sha256": "ca7f90be282bb27305d8adb84eff4a12b8a741dd42aef2f13a363af7939c8640"
+    },
+    {
+      "bytes": 10591,
+      "path": "reports/audits/A10_CLEAN_CHECKOUT_R1.json",
+      "sha256": "fd4ef7bd58ab8ab92e62195e340a27f59c1f2c0bae1bcacc93d69bd1f34aea8e"
+    },
+    {
+      "bytes": 177305,
+      "path": "reports/audits/A10_CLEAN_REGRESSION_R1.xml",
+      "sha256": "fdb4b4723080cc568f44a624f899bca9483e7853b736a48688c8242352d4cc63"
+    },
+    {
+      "bytes": 1499,
+      "path": "reports/audits/A10_CLEAN_REGRESSION_R1.log",
+      "sha256": "6d83c3432ea96db9d532cdab4e8d976c53a8570c3c1f9fb38c5a2575316003c7"
+    },
+    {
+      "bytes": 765778,
+      "path": "reports/audits/A10_NO_SYMBOL_SCAN_R1.json",
+      "sha256": "5e6ff920bc70cbf48ff11ad9db219693d47c3f10940ef90bdb62afdd48857285"
+    }
+  ],
+  "external_acceptance": null,
+  "formal_consumer_authorization": false,
+  "implementation_status": "SOURCE_AUTHORITY_GOVERNANCE_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
+  "next_step": "Independent external A10 audit; A11/A12/DM01 candidate engineering authorized, no formal consumer or accepted-head promotion.",
+  "priority": "P0",
+  "production_gate": true,
+  "status": "OPEN",
+  "status_path": "reports/audits/work_packages/WP-A10-SOURCE-AUTHORITY-GOVERNANCE/STATUS_R1.json",
+  "task": {
+    "bytes": 6513,
+    "path": "docs/evidence/source_authority/V4_A10_SOURCE_AUTHORITY_AVAILABILITY_GOVERNANCE_TASK_R1_20261001.md",
+    "sha256": "bba1c64f60d47887049065bc33edfc632e399ab774581b95e18bc957dc8d90f7"
+  },
+  "work_package": "WP-A10-SOURCE-AUTHORITY-GOVERNANCE"
+}

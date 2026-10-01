@@ -1,0 +1,757 @@
+{
+  "accepted_price_rules_byte_restoration": {
+    "accepted_sha256": "68679333821c50cc8cbed5ff4cd001447cc6571d79b0d074a60b6bb81bdb01e0",
+    "git_index_renormalized": true,
+    "gitattributes": "-text",
+    "json_semantics_unchanged": true
+  },
+  "all_nine_cross_stage_audits_remain_open": true,
+  "all_nine_persisted_artifacts_replayed_in_clean_checkout": true,
+  "audit_id": "DM01_REAL_INCREMENTAL_BUILDERS",
+  "audit_status": "OPEN",
+  "authorized_deselects": [
+    "tests/v4_09/test_stock_prewatch.py::test_production_and_v4_09_acceptance_stay_disabled"
+  ],
+  "capabilities": {
+    "ADJUSTED_DAILY": {
+      "builder_contract": {
+        "accepted_algorithm_contract": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+        "builder_callable": "build_adjusted_daily",
+        "incremental_input_contract": [
+          "RAW_DAILY_INCREMENT_V1",
+          "accepted GBBQ snapshot and per-security dispositions",
+          "target-date cutoff"
+        ],
+        "output_contract": {
+          "adjustment_readiness_explicit": true,
+          "format": "jsonl",
+          "id": "V4_DM01_ADJUSTED_DAILY_INCREMENT_V1",
+          "key": [
+            "security_id|source_security_key",
+            "trade_date"
+          ]
+        },
+        "owner_stage": "V4-02",
+        "runtime_bindings": [
+          {
+            "callables": [
+              "build_affine_factors",
+              "adjust_ohlc"
+            ],
+            "path": "src/adjustment/tdx_adjustment.py",
+            "sha256": "de8ce814dbdfc2fad7b16f619e1f1085a4dc539591d2bfe6dff876d805e8f6e0"
+          },
+          {
+            "callables": [
+              "read_gbbq"
+            ],
+            "path": "src/tdx/gbbq_reader.py",
+            "sha256": "8b2b4736bfcec6bed5ae62c58b777c8306792aefd82b362970886c354672d03b"
+          },
+          {
+            "byte_count": 38305,
+            "path": "src/workbench_analysis/dm01_incremental_component_builders.py",
+            "sha256": "e378605fafae7a1a733360bd4de94cd695fdc361569f72d10f2306f65419734b"
+          },
+          {
+            "byte_count": 8287,
+            "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+            "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+          }
+        ],
+        "signature": [
+          "target_trade_date",
+          "parent_data_head",
+          "source_freeze",
+          "calendar_binding",
+          "identity_binding",
+          "staging_root"
+        ],
+        "target_date_artifact_builder_exported": true,
+        "unknown_policy": "Explicit UNKNOWN with reason; unsupported scope never widened; no fallback 0/FALSE"
+      },
+      "engineering_status": "PASS",
+      "real_market_status": "BLOCKED",
+      "real_reason": "Complete exact target source/identity/normalized parent context not available; atomic real build not run",
+      "row_count": 1,
+      "unknown_reason_counts": {}
+    },
+    "IDENTITY_UNIVERSE": {
+      "builder_contract": {
+        "accepted_algorithm_contract": "SECURITY_IDENTITY_EVENT_DISCOVERY_V1",
+        "builder_callable": "build_identity_universe",
+        "incremental_input_contract": [
+          "accepted V4_DATA_ACCEPTED_HEAD.IDENTITY_UNIVERSE",
+          "BAOSTOCK_DAILY_UPDATE_V1.roster",
+          "official_session_bridge",
+          "dated_identity_records"
+        ],
+        "output_contract": {
+          "absence_is_delisting_evidence": false,
+          "format": "jsonl",
+          "id": "CURRENT_LIFECYCLE_SNAPSHOT_V1",
+          "key": [
+            "security_id|source_security_key",
+            "trade_date"
+          ]
+        },
+        "owner_stage": "V4-01 R8.1 baseline + DM-01 daily lifecycle adapter",
+        "runtime_bindings": [
+          {
+            "callables": [
+              "discover_identity_events"
+            ],
+            "path": "src/workbench_analysis/security_identity_event_discovery.py",
+            "sha256": "a647c85cdb8e2fe1051a7242f6e56e974b501f7186bff2666da265905d38a6fb"
+          },
+          {
+            "callables": [
+              "build_current_lifecycle_snapshot"
+            ],
+            "path": "src/workbench_analysis/daily_source_manifests.py",
+            "sha256": "652ad628cfa7e65df3c941e46333d066be9eee7440442787c988bd9c93d613c0"
+          },
+          {
+            "byte_count": 38305,
+            "path": "src/workbench_analysis/dm01_incremental_component_builders.py",
+            "sha256": "e378605fafae7a1a733360bd4de94cd695fdc361569f72d10f2306f65419734b"
+          },
+          {
+            "byte_count": 8287,
+            "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+            "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+          }
+        ],
+        "signature": [
+          "target_trade_date",
+          "parent_data_head",
+          "source_freeze",
+          "calendar_binding",
+          "identity_binding",
+          "staging_root"
+        ],
+        "target_date_artifact_builder_exported": true,
+        "unknown_policy": "Explicit UNKNOWN with reason; unsupported scope never widened; no fallback 0/FALSE"
+      },
+      "engineering_status": "PASS",
+      "real_market_status": "BLOCKED",
+      "real_reason": "Complete exact target source/identity/normalized parent context not available; atomic real build not run",
+      "row_count": 1,
+      "unknown_reason_counts": {}
+    },
+    "ISST": {
+      "builder_contract": {
+        "accepted_algorithm_contract": "V4_02_FULL_MARKET_DATED_ISST_V1",
+        "builder_callable": "build_isst",
+        "incremental_input_contract": [
+          "IDENTITY_UNIVERSE_INCREMENT_V1",
+          "BAOSTOCK_DAILY_UPDATE_V1.isST"
+        ],
+        "output_contract": {
+          "format": "jsonl",
+          "id": "V4_DM01_ISST_INCREMENT_V1",
+          "key": [
+            "security_id|source_security_key",
+            "trade_date"
+          ],
+          "unknown_is_explicit": true
+        },
+        "owner_stage": "V4-02",
+        "runtime_bindings": [
+          {
+            "callables": [
+              "main"
+            ],
+            "path": "scripts/build_v4_02_full_market_isst.py",
+            "sha256": "093887b52748ff9965fcfb73e312b0791d32baedf9a53740bc08156d31ba84cf"
+          },
+          {
+            "byte_count": 38305,
+            "path": "src/workbench_analysis/dm01_incremental_component_builders.py",
+            "sha256": "e378605fafae7a1a733360bd4de94cd695fdc361569f72d10f2306f65419734b"
+          },
+          {
+            "byte_count": 8287,
+            "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+            "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+          }
+        ],
+        "signature": [
+          "target_trade_date",
+          "parent_data_head",
+          "source_freeze",
+          "calendar_binding",
+          "identity_binding",
+          "staging_root"
+        ],
+        "target_date_artifact_builder_exported": true,
+        "unknown_policy": "Explicit UNKNOWN with reason; unsupported scope never widened; no fallback 0/FALSE"
+      },
+      "engineering_status": "PASS",
+      "real_market_status": "BLOCKED",
+      "real_reason": "Complete exact target source/identity/normalized parent context not available; atomic real build not run",
+      "row_count": 1,
+      "unknown_reason_counts": {}
+    },
+    "PERIOD_ADJUSTED": {
+      "builder_contract": {
+        "accepted_algorithm_contract": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+        "builder_callable": "build_period_adjusted",
+        "incremental_input_contract": [
+          "parent adjusted weekly/monthly aggregate",
+          "ADJUSTED_DAILY_INCREMENT_V1",
+          "accepted exchange calendar",
+          "TRADING_STATUS_INCREMENT_V1"
+        ],
+        "output_contract": {
+          "as_of_only": true,
+          "format": "jsonl",
+          "id": "V4_DM01_PERIOD_ADJUSTED_INCREMENT_V1",
+          "key": [
+            "security_id",
+            "period_type",
+            "period_end_date",
+            "as_of_date"
+          ]
+        },
+        "owner_stage": "V4-02",
+        "runtime_bindings": [
+          {
+            "callables": [
+              "period_key",
+              "natural_period_end",
+              "schemas",
+              "main"
+            ],
+            "path": "scripts/build_v4_02_formal_periods.py",
+            "sha256": "afa3a28729ebd27c050fb65e3a1f453599fdb2f111dff63478e2dab57c28b26e"
+          },
+          {
+            "callables": [
+              "build_affine_factors",
+              "adjust_ohlc"
+            ],
+            "path": "src/adjustment/tdx_adjustment.py",
+            "sha256": "de8ce814dbdfc2fad7b16f619e1f1085a4dc539591d2bfe6dff876d805e8f6e0"
+          },
+          {
+            "byte_count": 38305,
+            "path": "src/workbench_analysis/dm01_incremental_component_builders.py",
+            "sha256": "e378605fafae7a1a733360bd4de94cd695fdc361569f72d10f2306f65419734b"
+          },
+          {
+            "byte_count": 8287,
+            "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+            "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+          }
+        ],
+        "signature": [
+          "target_trade_date",
+          "parent_data_head",
+          "source_freeze",
+          "calendar_binding",
+          "identity_binding",
+          "staging_root"
+        ],
+        "target_date_artifact_builder_exported": true,
+        "unknown_policy": "Explicit UNKNOWN with reason; unsupported scope never widened; no fallback 0/FALSE"
+      },
+      "engineering_status": "PASS",
+      "real_market_status": "BLOCKED",
+      "real_reason": "Complete exact target source/identity/normalized parent context not available; atomic real build not run",
+      "row_count": 3,
+      "unknown_reason_counts": {}
+    },
+    "PERIOD_RAW": {
+      "builder_contract": {
+        "accepted_algorithm_contract": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+        "builder_callable": "build_period_raw",
+        "incremental_input_contract": [
+          "parent raw weekly/monthly aggregate",
+          "RAW_DAILY_INCREMENT_V1",
+          "accepted exchange calendar",
+          "TRADING_STATUS_INCREMENT_V1"
+        ],
+        "output_contract": {
+          "as_of_only": true,
+          "format": "jsonl",
+          "id": "V4_DM01_PERIOD_RAW_INCREMENT_V1",
+          "key": [
+            "security_id",
+            "period_type",
+            "period_end_date",
+            "as_of_date"
+          ]
+        },
+        "owner_stage": "V4-02",
+        "runtime_bindings": [
+          {
+            "callables": [
+              "period_key",
+              "natural_period_end",
+              "schemas",
+              "main"
+            ],
+            "path": "scripts/build_v4_02_formal_periods.py",
+            "sha256": "afa3a28729ebd27c050fb65e3a1f453599fdb2f111dff63478e2dab57c28b26e"
+          },
+          {
+            "byte_count": 38305,
+            "path": "src/workbench_analysis/dm01_incremental_component_builders.py",
+            "sha256": "e378605fafae7a1a733360bd4de94cd695fdc361569f72d10f2306f65419734b"
+          },
+          {
+            "byte_count": 8287,
+            "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+            "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+          }
+        ],
+        "signature": [
+          "target_trade_date",
+          "parent_data_head",
+          "source_freeze",
+          "calendar_binding",
+          "identity_binding",
+          "staging_root"
+        ],
+        "target_date_artifact_builder_exported": true,
+        "unknown_policy": "Explicit UNKNOWN with reason; unsupported scope never widened; no fallback 0/FALSE"
+      },
+      "engineering_status": "PASS",
+      "real_market_status": "BLOCKED",
+      "real_reason": "Complete exact target source/identity/normalized parent context not available; atomic real build not run",
+      "row_count": 3,
+      "unknown_reason_counts": {}
+    },
+    "PRICE_LIMIT": {
+      "builder_contract": {
+        "accepted_algorithm_contract": "R3_PRICE_LIMIT_BASE + SPECIAL_PRICE_PHASE_EVENT_V1 + SPECIAL_PRICE_PHASE_POLICY_V2",
+        "builder_callable": "build_price_limit",
+        "incremental_input_contract": [
+          "target-date canonical daily",
+          "target-date dated aliases",
+          "accepted rules and policy",
+          "fail-closed facts"
+        ],
+        "output_contract": {
+          "format": "jsonl",
+          "id": "V4_DM01_PRICE_LIMIT_INCREMENT_V1",
+          "key": [
+            "security_id",
+            "trade_date"
+          ],
+          "unknown_is_explicit": true
+        },
+        "owner_stage": "V4-02 R6 externally accepted",
+        "runtime_bindings": [
+          {
+            "callables": [
+              "run_builder",
+              "apply_row_runtime"
+            ],
+            "path": "scripts/build_v4_02_price_limits_generic.py",
+            "sha256": "e39405d604299a610b11ac8b0672a2bb63c943d49c6dc267555bf3138230ba28"
+          },
+          {
+            "callables": [
+              "SpecialPhaseEventStore",
+              "PhasePolicyRegistry",
+              "apply_phase_event"
+            ],
+            "path": "src/workbench_analysis/special_price_phases.py",
+            "sha256": "7e64ca1acd9d1d7c9138915cf3f82ffedb40ea6b3b99349c0857458a09f0db93"
+          },
+          {
+            "byte_count": 38305,
+            "path": "src/workbench_analysis/dm01_incremental_component_builders.py",
+            "sha256": "e378605fafae7a1a733360bd4de94cd695fdc361569f72d10f2306f65419734b"
+          },
+          {
+            "byte_count": 8287,
+            "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+            "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+          }
+        ],
+        "signature": [
+          "target_trade_date",
+          "parent_data_head",
+          "source_freeze",
+          "calendar_binding",
+          "identity_binding",
+          "staging_root"
+        ],
+        "target_date_artifact_builder_exported": true,
+        "unknown_policy": "Explicit UNKNOWN with reason; unsupported scope never widened; no fallback 0/FALSE"
+      },
+      "engineering_status": "PASS",
+      "real_market_status": "BLOCKED",
+      "real_reason": "Complete exact target source/identity/normalized parent context not available; atomic real build not run",
+      "row_count": 1,
+      "unknown_reason_counts": {}
+    },
+    "RAW_DAILY": {
+      "builder_contract": {
+        "accepted_algorithm_contract": "V4_02_RAW_CANONICAL_FORMAL_ACCEPTANCE_V1",
+        "builder_callable": "build_raw_daily",
+        "incremental_input_contract": [
+          "TDX_PACKAGE_DELTA_V1.target_bars",
+          "CURRENT_LIFECYCLE_SNAPSHOT_V1.source_rows"
+        ],
+        "output_contract": {
+          "authority": "TDX_OFFICIAL_PACKAGE",
+          "format": "jsonl",
+          "id": "V4_DM01_RAW_DAILY_INCREMENT_V1",
+          "key": [
+            "security_id|source_security_key",
+            "trade_date"
+          ]
+        },
+        "owner_stage": "V4-02",
+        "runtime_bindings": [
+          {
+            "callables": [
+              "date_identity",
+              "check_raw_quality"
+            ],
+            "path": "scripts/v4_02_build_raw_selected_v2.py",
+            "sha256": "128325a48c818378d78116f9785f50bedba348f401ce164802a81e0e7ab88cf6"
+          },
+          {
+            "byte_count": 38305,
+            "path": "src/workbench_analysis/dm01_incremental_component_builders.py",
+            "sha256": "e378605fafae7a1a733360bd4de94cd695fdc361569f72d10f2306f65419734b"
+          },
+          {
+            "byte_count": 8287,
+            "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+            "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+          }
+        ],
+        "signature": [
+          "target_trade_date",
+          "parent_data_head",
+          "source_freeze",
+          "calendar_binding",
+          "identity_binding",
+          "staging_root"
+        ],
+        "target_date_artifact_builder_exported": true,
+        "unknown_policy": "Explicit UNKNOWN with reason; unsupported scope never widened; no fallback 0/FALSE"
+      },
+      "engineering_status": "PASS",
+      "real_market_status": "BLOCKED",
+      "real_reason": "Complete exact target source/identity/normalized parent context not available; atomic real build not run",
+      "row_count": 1,
+      "unknown_reason_counts": {}
+    },
+    "SPECIAL_PHASE": {
+      "builder_contract": {
+        "accepted_algorithm_contract": "SPECIAL_PHASE_SOURCE_MANIFEST_V1 + SPECIAL_PRICE_PHASE_EVENT_V1 + SPECIAL_PRICE_PHASE_POLICY_V2",
+        "builder_callable": "build_special_phase",
+        "incremental_input_contract": [
+          "CURRENT_LIFECYCLE_SNAPSHOT_V1",
+          "SPECIAL_PHASE_SOURCE_MANIFEST_V1",
+          "accepted event store",
+          "accepted policy"
+        ],
+        "output_contract": {
+          "format": "jsonl",
+          "id": "V4_DM01_SPECIAL_PHASE_INCREMENT_V1",
+          "key": [
+            "security_id",
+            "trade_date"
+          ],
+          "no_event_manifest_is_valid": true
+        },
+        "owner_stage": "V4-02 R6 externally accepted",
+        "runtime_bindings": [
+          {
+            "callables": [
+              "compile_event_phase_index",
+              "apply_row_runtime"
+            ],
+            "path": "scripts/build_v4_02_price_limits_generic.py",
+            "sha256": "e39405d604299a610b11ac8b0672a2bb63c943d49c6dc267555bf3138230ba28"
+          },
+          {
+            "callables": [
+              "SpecialPhaseEventStore",
+              "PhasePolicyRegistry",
+              "resolve_event_phase"
+            ],
+            "path": "src/workbench_analysis/special_price_phases.py",
+            "sha256": "7e64ca1acd9d1d7c9138915cf3f82ffedb40ea6b3b99349c0857458a09f0db93"
+          },
+          {
+            "callables": [
+              "build_special_phase_source_manifest"
+            ],
+            "path": "src/workbench_analysis/daily_source_manifests.py",
+            "sha256": "652ad628cfa7e65df3c941e46333d066be9eee7440442787c988bd9c93d613c0"
+          },
+          {
+            "byte_count": 38305,
+            "path": "src/workbench_analysis/dm01_incremental_component_builders.py",
+            "sha256": "e378605fafae7a1a733360bd4de94cd695fdc361569f72d10f2306f65419734b"
+          },
+          {
+            "byte_count": 8287,
+            "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+            "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+          }
+        ],
+        "signature": [
+          "target_trade_date",
+          "parent_data_head",
+          "source_freeze",
+          "calendar_binding",
+          "identity_binding",
+          "staging_root"
+        ],
+        "target_date_artifact_builder_exported": true,
+        "unknown_policy": "Explicit UNKNOWN with reason; unsupported scope never widened; no fallback 0/FALSE"
+      },
+      "engineering_status": "PASS",
+      "real_market_status": "BLOCKED",
+      "real_reason": "Complete exact target source/identity/normalized parent context not available; atomic real build not run",
+      "row_count": 1,
+      "unknown_reason_counts": {}
+    },
+    "TRADING_STATUS": {
+      "builder_contract": {
+        "accepted_algorithm_contract": "V4_02_DATED_TRADING_STATUS_V1",
+        "builder_callable": "build_trading_status",
+        "incremental_input_contract": [
+          "RAW_DAILY_INCREMENT_V1",
+          "IDENTITY_UNIVERSE_INCREMENT_V1",
+          "BAOSTOCK_DAILY_UPDATE_V1.tradestatus"
+        ],
+        "output_contract": {
+          "format": "jsonl",
+          "id": "V4_DM01_TRADING_STATUS_INCREMENT_V1",
+          "key": [
+            "security_id|source_security_key",
+            "trade_date"
+          ],
+          "local_tdx_bar_precedence": true
+        },
+        "owner_stage": "V4-02",
+        "runtime_bindings": [
+          {
+            "callables": [
+              "main"
+            ],
+            "path": "scripts/build_v4_02_dated_trading_status.py",
+            "sha256": "e4e9fbf6722affdfc999b29a670bb03a8a6421882df821ad73c638831ba089cf"
+          },
+          {
+            "byte_count": 38305,
+            "path": "src/workbench_analysis/dm01_incremental_component_builders.py",
+            "sha256": "e378605fafae7a1a733360bd4de94cd695fdc361569f72d10f2306f65419734b"
+          },
+          {
+            "byte_count": 8287,
+            "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+            "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+          }
+        ],
+        "signature": [
+          "target_trade_date",
+          "parent_data_head",
+          "source_freeze",
+          "calendar_binding",
+          "identity_binding",
+          "staging_root"
+        ],
+        "target_date_artifact_builder_exported": true,
+        "unknown_policy": "Explicit UNKNOWN with reason; unsupported scope never widened; no fallback 0/FALSE"
+      },
+      "engineering_status": "PASS",
+      "real_market_status": "BLOCKED",
+      "real_reason": "Complete exact target source/identity/normalized parent context not available; atomic real build not run",
+      "row_count": 1,
+      "unknown_reason_counts": {}
+    }
+  },
+  "contract": {
+    "bytes": 27431,
+    "path": "config/dm01_incremental_builders_contract_r1.json",
+    "sha256": "3d2ebfec6bec4633792b8ad3621c361516999684bb5b108ae9cd4e4052614272"
+  },
+  "contract_id": "DM01_A01_EXTERNAL_REAUDIT_HANDOFF_R1",
+  "data_head_promoted": false,
+  "dev_head_mutated": false,
+  "engineering_candidate_status": "DM01_A01_INCREMENTAL_BUILDERS_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
+  "engineering_evidence_scope": "EXPLICIT_SYNTHETIC_INPUTS_REAL_NINE_STATIC_ADAPTERS",
+  "evidence": [
+    {
+      "bytes": 1630,
+      "path": "reports/dm01/DM01_A01_CONTRACT_FREEZE_R1.json",
+      "sha256": "9057a6c5ff1d71e7cd9b9200b5de24cd5b556908afc8159d455ed14c1ef31d5d"
+    },
+    {
+      "bytes": 1290,
+      "path": "reports/dm01/DM01_A01_BUILDER_EXPORTS_R1.json",
+      "sha256": "a9cf359beedd3b457bd7f1feb296a9de49513db2429007c806196bc9333802fd"
+    },
+    {
+      "bytes": 1065,
+      "path": "reports/dm01/DM01_A01_TARGET_SESSION_RESOLUTION_R1.json",
+      "sha256": "3dfde0cd145d90d1289d58a5af481f78e14c7e843ac7224c4b9de926fc26d48f"
+    },
+    {
+      "bytes": 57357,
+      "path": "reports/dm01/DM01_A01_COMPONENT_POSTCHECK_R1.json",
+      "sha256": "be47da7762623c83176b6fb6699df88eea3eab3cd7dbb1cac8898baf8e2ffebb"
+    },
+    {
+      "bytes": 3916,
+      "path": "reports/dm01/DM01_A01_CROSS_COMPONENT_POSTCHECK_R1.json",
+      "sha256": "c80cb9bd2a519cb22524a2881d084f35baee3f9eeb690933d1d694b8e94d17c6"
+    },
+    {
+      "bytes": 1445,
+      "path": "reports/dm01/DM01_A01_ATOMIC_FAILURE_PROBES_R1.json",
+      "sha256": "df0963773a3b5c4716f0d13f3934c74b12b61ef88cca28864e3090a309db7faf"
+    },
+    {
+      "bytes": 942,
+      "path": "reports/dm01/DM01_A01_DETERMINISM_R1.json",
+      "sha256": "5b90b37cb583bf6cded330481ae2c02a9320d98160642b96fa988682af85bf81"
+    },
+    {
+      "bytes": 3323,
+      "path": "reports/dm01/DM01_A01_REAL_NEXT_SESSION_CANDIDATE_R1.json",
+      "sha256": "645b179c0b612887a0f063e05a91a7da2ec5c58e3210a976d09633e23d0e06bb"
+    },
+    {
+      "bytes": 8690,
+      "path": "reports/dm01/DM01_A01_CLEAN_CHECKOUT_R1.json",
+      "sha256": "b9b97eed701946e011f62bcaac1c127bbbd663816aed1549743f6dc3423bf86c"
+    },
+    {
+      "bytes": 172850,
+      "path": "reports/dm01/DM01_A01_CLEAN_REGRESSION_R1.xml",
+      "sha256": "5f4b869d6c8b932de86e053e65e475a69e60f6556e2ea29f30a1672a4c4b8375"
+    },
+    {
+      "bytes": 1499,
+      "path": "reports/dm01/DM01_A01_CLEAN_REGRESSION_R1.log",
+      "sha256": "c6cea0fcd7b6a5309399d35e3f6fa1e25f78f29be04bd092ee8ce45544d3f464"
+    },
+    {
+      "bytes": 758926,
+      "path": "reports/dm01/DM01_A01_NO_SYMBOL_SCAN_R1.json",
+      "sha256": "0e987063f3c045c0bbcfaf01c274e51e0b7f5b577d8404cd3378825fad9e95a3"
+    },
+    {
+      "bytes": 724,
+      "path": "reports/dm01/DM01_A01_PERSISTED_EVIDENCE_REPLAY_R1.json",
+      "sha256": "53dc84492962da240a4ad2da33f1d799c057e80e7d73927a29171dd71d1f315a"
+    },
+    {
+      "bytes": 8690,
+      "path": "reports/dm01/DM01_A01_INITIAL_CLEAN_CHECKOUT_FAILURE_R1.json",
+      "sha256": "bf0b04ac4d4ae2977a2d7d3668dce7236f1399dd3476ac67e25b802cff1bb68b"
+    },
+    {
+      "bytes": 16858,
+      "path": "reports/dm01/DM01_A01_INITIAL_CLEAN_REGRESSION_FAILURE_R1.log",
+      "sha256": "4a83c449a91c4a2c6f35b70b02ac23c5f39cb4e0cd61c3f24fbd49a64e75458e"
+    },
+    {
+      "bytes": 8690,
+      "path": "reports/dm01/DM01_A01_SECOND_CLEAN_CHECKOUT_FAILURE_R1.json",
+      "sha256": "aec34db7858631f6ef9c0c868e070d799094334a34100d1f4125b0a22e8b0e88"
+    },
+    {
+      "bytes": 17237,
+      "path": "reports/dm01/DM01_A01_SECOND_CLEAN_REGRESSION_FAILURE_R1.log",
+      "sha256": "14fa50d149714bb3d536ad2fe4772dbc4f2d15961c411840ce539b1df8b98e7d"
+    },
+    {
+      "bytes": 3585,
+      "path": "docs/evidence/DM01_A01_IMPLEMENTATION_DISPOSITIONS_R1_20261001.md",
+      "sha256": "c8b6c4fc7acc0662f94df03314a6a92b84885c534575b2c392a1970e2c33f1f7"
+    },
+    {
+      "bytes": 2732,
+      "path": "reports/audits/work_packages/WP-A01-DM01/STATUS_R2.json",
+      "sha256": "80f2cbcab79ba67c74bc8da242b352263c0378a69034830effb5bba1c0abb826"
+    }
+  ],
+  "external_acceptance": null,
+  "full_D0_D1_D2_DAG_accepted": false,
+  "implementation_commit": "60e5c5eecbf0ef311397bff1ac6e7b6086bd4a77",
+  "independent_postcheck_adapter_used_as_oracle": false,
+  "market_acceptance_claim": false,
+  "new_deselects": [],
+  "next_stage": "Independent external review of nine engineering adapters and parent projections; supply exact dated accepted BaoStock source freeze or a separately authorized source remediation contract. Then build and independently audit the first missing real target. No Data Head promotion in this WP.",
+  "original_accepted_domain_runtimes_unchanged": true,
+  "phase0": {
+    "binding": {
+      "path": "reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json",
+      "sha256": "313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59"
+    },
+    "status": "FULL_PASS"
+  },
+  "production_permission": false,
+  "protected_heads": [
+    {
+      "byte_count": 2478,
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0"
+    },
+    {
+      "byte_count": 8574,
+      "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+      "sha256": "529c532bd5553ace00fa4813aef07979cfce4e1f18fa5ea66f38fcddd8ed16cb"
+    },
+    {
+      "byte_count": 602,
+      "path": "data/v4/V4_DEV_BASELINE_HEAD.json",
+      "sha256": "45695460b0147c6ada12e0ebd8e5070ac0a45eebea26603ff5a3daddc4dd5094"
+    },
+    {
+      "byte_count": 11474,
+      "path": "data/v4/V4_09_ACCEPTED_HEAD.json",
+      "sha256": "641ef9e2e6fe8f461a9b765262e739791a6d3fdd220b0eff7947e2690de3a87d"
+    },
+    {
+      "byte_count": 5102,
+      "path": "data/v4/V4_10_ACCEPTED_HEAD.json",
+      "sha256": "ad9fc4643652feb3684223817f2e9c300167d128e2e8a07179e86f65094fd1e1"
+    }
+  ],
+  "protected_heads_unchanged": true,
+  "real_market_candidate_status": "BLOCKED_MISSING_INTERMEDIATE_SESSION",
+  "real_target_trade_date": "2026-09-28",
+  "regression": {
+    "errors": 0,
+    "failures": 0,
+    "passed": 1247,
+    "skipped": 2,
+    "tests": 1249
+  },
+  "sealed_snapshot_commit": "Commit containing this evidence; distinct from tested implementation commit",
+  "skipped_tests": [
+    {
+      "classname": "tests.v4_phase0.test_tdx_local_snapshot",
+      "name": "test_symlink_input_is_rejected",
+      "reason": "symlink creation unavailable"
+    },
+    {
+      "classname": "tests.v4_phase0.test_tdx_snapshot",
+      "name": "test_extracted_symlink_is_rejected",
+      "reason": "symlink creation is unavailable on this runner"
+    }
+  ],
+  "source_problems": [
+    "BAOSTOCK_EXACT_TARGET_RUNTIME_ACCEPTANCE_MISSING:RUNTIME_ACCEPTANCE_MANIFEST_UNREADABLE",
+    "BAOSTOCK_TARGET_DAILY_ROSTER_STATUS_ST_AND_FACTOR_FREEZE_MISSING"
+  ],
+  "stage_head_mutated_by_A01": false,
+  "status": "ENGINEERING_PASS_REAL_NEXT_SESSION_BLOCKED",
+  "tested_commit": "60e5c5eecbf0ef311397bff1ac6e7b6086bd4a77",
+  "v4_11_scope": "ENTRY_ONLY_STOP_PENDING_NEXT_INDEPENDENT_AUDIT"
+}

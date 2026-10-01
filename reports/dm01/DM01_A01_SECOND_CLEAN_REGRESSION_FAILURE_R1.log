@@ -1,0 +1,215 @@
+........................................................................ [  5%]
+........................................................................ [ 11%]
+........................................................................ [ 17%]
+........................................................................ [ 23%]
+........................................................................ [ 28%]
+........................................................................ [ 34%]
+........................................................................ [ 40%]
+........................................................................ [ 46%]
+........................................................................ [ 51%]
+..s..........s.......................................................... [ 57%]
+........................................................................ [ 63%]
+........................................................................ [ 69%]
+........................................................................ [ 74%]
+........................................................................ [ 80%]
+........................................................................ [ 86%]
+...........................F....................FFF..F.FF.FF............ [ 92%]
+........................................................................ [ 97%]
+.........................                                                [100%]
+================================== FAILURES ===================================
+_______ test_nine_actual_adapters_independent_candidate_and_idempotence _______
+
+tmp_path = WindowsPath('C:/Users/lps/AppData/Local/Temp/pytest-of-lps/pytest-3079/test_nine_actual_adapters_inde0')
+
+    def test_nine_actual_adapters_independent_candidate_and_idempotence(tmp_path):
+        env=make_inputs(tmp_path);before={str(p):sha(p) for p in HEADS};first=run(env)
+>       assert first['status']=='DM01_A01_INCREMENTAL_BUILDERS_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT',first
+E       AssertionError: {'contract_id': 'DM01_ATOMIC_FAILURE_R1', 'status': 'BLOCKED', 'reason': 'INPUT_PUBLICATION_DIGEST_MISMATCH:config/v4_...ed_components': ['IDENTITY_UNIVERSE', 'RAW_DAILY', 'TRADING_STATUS', 'ISST', 'ADJUSTED_DAILY', 'PERIOD_RAW', ...], ...}
+E       assert 'BLOCKED' == 'DM01_A01_INC...ERNAL_REAUDIT'
+E         
+E         - DM01_A01_INCREMENTAL_BUILDERS_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT
+E         + BLOCKED
+
+tests\v4_dm01\test_a01_incremental_builders_r1.py:24: AssertionError
+____________ test_unsupported_adjustment_per_security_fail_closed _____________
+
+tmp_path = WindowsPath('C:/Users/lps/AppData/Local/Temp/pytest-of-lps/pytest-3079/test_unsupported_adjustment_pe0')
+
+    def test_unsupported_adjustment_per_security_fail_closed(tmp_path):
+        env=make_inputs(tmp_path);v=json.loads(Path(env['freeze']['inputs']['GBBQ_DISPOSITIONS']['path']).read_text(encoding='utf8'))
+        v['rows'][0]['blocking_categories']=[11];replace_input(env,'GBBQ_DISPOSITIONS',v)
+>       receipts=components(env);adjusted=json.loads(Path(receipts['ADJUSTED_DAILY']['artifact_path']).read_text(encoding='utf8'))['rows'][0]
+                 ^^^^^^^^^^^^^^^
+
+tests\v4_dm01\test_a01_incremental_builders_r1.py:91: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\v4_dm01\test_a01_incremental_builders_r1.py:19: in components
+    for cap in BUILD_ORDER:r[cap]=BUILDERS[cap](TARGET,env['parent'],env['freeze'],env['calendar'],env['identity'],env['staging'])
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_incremental_component_builders.py:478: in build_price_limit
+    prior,_=_parent_component(c,'PRICE_LIMIT');store,policies=_phase_inputs(c);rules=_input(c,'PRICE_RULES')['rules']
+                                                                                     ^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_incremental_component_builders.py:153: in _input
+    return load(ref)
+           ^^^^^^^^^
+src\workbench_analysis\dm01_incremental_component_builders.py:65: in load
+    return json.loads(bound_path(ref).read_text(encoding='utf8'))
+                      ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ref = {'byte_count': 15757, 'path': 'config/v4_02_price_limit_rules_r3.json', 'sha256': '68679333821c50cc8cbed5ff4cd001447cc6571d79b0d074a60b6bb81bdb01e0'}
+
+    def bound_path(ref):
+        path=Path(ref['path'])
+        if not path.is_absolute():path=ROOT/path
+        if not path.is_file() or sha(path)!=ref.get('sha256'):
+>           raise ComponentBuildError('INPUT_PUBLICATION_DIGEST_MISMATCH:'+str(ref.get('path')))
+E           workbench_analysis.dm01_incremental_component_builders.ComponentBuildError: INPUT_PUBLICATION_DIGEST_MISMATCH:config/v4_02_price_limit_rules_r3.json
+
+src\workbench_analysis\dm01_incremental_component_builders.py:61: ComponentBuildError
+__ test_independent_postcheck_rejects_raw_adjusted_or_period_or_price_tamper __
+
+tmp_path = WindowsPath('C:/Users/lps/AppData/Local/Temp/pytest-of-lps/pytest-3079/test_independent_postcheck_rej0')
+
+    def test_independent_postcheck_rejects_raw_adjusted_or_period_or_price_tamper(tmp_path):
+>       env=make_inputs(tmp_path);receipts=components(env)
+                                           ^^^^^^^^^^^^^^^
+
+tests\v4_dm01\test_a01_incremental_builders_r1.py:97: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\v4_dm01\test_a01_incremental_builders_r1.py:19: in components
+    for cap in BUILD_ORDER:r[cap]=BUILDERS[cap](TARGET,env['parent'],env['freeze'],env['calendar'],env['identity'],env['staging'])
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_incremental_component_builders.py:478: in build_price_limit
+    prior,_=_parent_component(c,'PRICE_LIMIT');store,policies=_phase_inputs(c);rules=_input(c,'PRICE_RULES')['rules']
+                                                                                     ^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_incremental_component_builders.py:153: in _input
+    return load(ref)
+           ^^^^^^^^^
+src\workbench_analysis\dm01_incremental_component_builders.py:65: in load
+    return json.loads(bound_path(ref).read_text(encoding='utf8'))
+                      ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ref = {'byte_count': 15757, 'path': 'config/v4_02_price_limit_rules_r3.json', 'sha256': '68679333821c50cc8cbed5ff4cd001447cc6571d79b0d074a60b6bb81bdb01e0'}
+
+    def bound_path(ref):
+        path=Path(ref['path'])
+        if not path.is_absolute():path=ROOT/path
+        if not path.is_file() or sha(path)!=ref.get('sha256'):
+>           raise ComponentBuildError('INPUT_PUBLICATION_DIGEST_MISMATCH:'+str(ref.get('path')))
+E           workbench_analysis.dm01_incremental_component_builders.ComponentBuildError: INPUT_PUBLICATION_DIGEST_MISMATCH:config/v4_02_price_limit_rules_r3.json
+
+src\workbench_analysis\dm01_incremental_component_builders.py:61: ComponentBuildError
+_____________ test_source_revision_is_new_candidate_not_overwrite _____________
+
+tmp_path = WindowsPath('C:/Users/lps/AppData/Local/Temp/pytest-of-lps/pytest-3079/test_source_revision_is_new_ca0')
+
+    def test_source_revision_is_new_candidate_not_overwrite(tmp_path):
+>       env=make_inputs(tmp_path);first=run(env);assert first['status'].endswith('EXTERNAL_REAUDIT'),first
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: {'contract_id': 'DM01_ATOMIC_FAILURE_R1', 'status': 'BLOCKED', 'reason': 'INPUT_PUBLICATION_DIGEST_MISMATCH:config/v4_...ed_components': ['IDENTITY_UNIVERSE', 'RAW_DAILY', 'TRADING_STATUS', 'ISST', 'ADJUSTED_DAILY', 'PERIOD_RAW', ...], ...}
+E       assert False
+E        +  where False = <built-in method endswith of str object at 0x0000023EB7B85C80>('EXTERNAL_REAUDIT')
+E        +    where <built-in method endswith of str object at 0x0000023EB7B85C80> = 'BLOCKED'.endswith
+
+tests\v4_dm01\test_a01_incremental_builders_r1.py:107: AssertionError
+_____ test_same_day_parent_is_frozen_and_candidate_digest_tamper_rejected _____
+
+tmp_path = WindowsPath('C:/Users/lps/AppData/Local/Temp/pytest-of-lps/pytest-3079/test_same_day_parent_is_frozen0')
+
+    def test_same_day_parent_is_frozen_and_candidate_digest_tamper_rejected(tmp_path):
+>       env=make_inputs(tmp_path);first=run(env);assert first['status'].endswith('EXTERNAL_REAUDIT')
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: assert False
+E        +  where False = <built-in method endswith of str object at 0x0000023EB7B85C80>('EXTERNAL_REAUDIT')
+E        +    where <built-in method endswith of str object at 0x0000023EB7B85C80> = 'BLOCKED'.endswith
+
+tests\v4_dm01\test_a01_incremental_builders_r1.py:129: AssertionError
+__________ test_week_month_boundary_and_holiday_close_parent_periods __________
+
+tmp_path = WindowsPath('C:/Users/lps/AppData/Local/Temp/pytest-of-lps/pytest-3079/test_week_month_boundary_and_h0')
+
+    def test_week_month_boundary_and_holiday_close_parent_periods(tmp_path):
+        from .a01_fixture_inputs import advance_engineering_inputs_to_month_boundary
+        env=make_inputs(tmp_path);advance_engineering_inputs_to_month_boundary(env)
+>       first=run(env);assert first['status'].endswith('EXTERNAL_REAUDIT'),first
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: {'contract_id': 'DM01_ATOMIC_FAILURE_R1', 'status': 'BLOCKED', 'reason': 'INPUT_PUBLICATION_DIGEST_MISMATCH:config/v4_...ed_components': ['IDENTITY_UNIVERSE', 'RAW_DAILY', 'TRADING_STATUS', 'ISST', 'ADJUSTED_DAILY', 'PERIOD_RAW', ...], ...}
+E       assert False
+E        +  where False = <built-in method endswith of str object at 0x0000023EB7B85C80>('EXTERNAL_REAUDIT')
+E        +    where <built-in method endswith of str object at 0x0000023EB7B85C80> = 'BLOCKED'.endswith
+
+tests\v4_dm01\test_a01_incremental_builders_r1.py:143: AssertionError
+_________________ test_closed_parent_period_exactly_preserved _________________
+
+tmp_path = WindowsPath('C:/Users/lps/AppData/Local/Temp/pytest-of-lps/pytest-3079/test_closed_parent_period_exac0')
+
+    def test_closed_parent_period_exactly_preserved(tmp_path):
+        env=make_inputs(tmp_path);p=env['parent']
+        for cap in ('PERIOD_RAW','PERIOD_ADJUSTED'):
+            value=json.loads(Path(p['components'][cap]['path']).read_text(encoding='utf8'))
+            closed=deepcopy(value['rows'][0]);closed.update(period_key='2026-W38',period_end_date='2026-09-18',period_view='CLOSED_ONLY',as_of_date='2026-09-18')
+            value['rows'].append(closed);p['components'][cap]=save(tmp_path,cap+'_with_closed.json',value)
+        p['component_manifest_binding']=save(tmp_path,'parent_closed_components.json',dict(parent_data_head_digest=p['binding']['sha256'],components=p['components']))
+>       result=run(env);assert result['status'].endswith('EXTERNAL_REAUDIT'),result
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: {'contract_id': 'DM01_ATOMIC_FAILURE_R1', 'status': 'BLOCKED', 'reason': 'INPUT_PUBLICATION_DIGEST_MISMATCH:config/v4_...ed_components': ['IDENTITY_UNIVERSE', 'RAW_DAILY', 'TRADING_STATUS', 'ISST', 'ADJUSTED_DAILY', 'PERIOD_RAW', ...], ...}
+E       assert False
+E        +  where False = <built-in method endswith of str object at 0x0000023EB7B85C80>('EXTERNAL_REAUDIT')
+E        +    where <built-in method endswith of str object at 0x0000023EB7B85C80> = 'BLOCKED'.endswith
+
+tests\v4_dm01\test_a01_incremental_builders_r1.py:159: AssertionError
+_ test_suspended_member_generates_no_synthetic_daily_and_null_no_actual_period _
+
+tmp_path = WindowsPath('C:/Users/lps/AppData/Local/Temp/pytest-of-lps/pytest-3079/test_suspended_member_generate0')
+
+    def test_suspended_member_generates_no_synthetic_daily_and_null_no_actual_period(tmp_path):
+        env=make_inputs(tmp_path);p=env['parent'];f=env['freeze'];records=env['identity']['records']
+        second=deepcopy(records[0]);second.update(source_security_key='SZ.000002',symbol='SZ.000002',security_id='DM01-ENGINEERING-INPUT-B',board='SZ_MAIN',board_scope='SZ_MAIN')
+        records.append(second);ref=save(tmp_path,'suspended_identity.json',dict(records=records));env['identity'].update(binding=ref,publication_id=ref['sha256'])
+        prior=json.loads(Path(p['components']['IDENTITY_UNIVERSE']['path']).read_text(encoding='utf8'));prior['rows'].append(dict(security_id=second['security_id'],source_security_key=second['source_security_key'],trade_date='2026-09-24'))
+        p['components']['IDENTITY_UNIVERSE']=save(tmp_path,'prior_suspended_identity.json',prior)
+        p['component_manifest_binding']=save(tmp_path,'parent_suspended_components.json',dict(parent_data_head_digest=p['binding']['sha256'],components=p['components']))
+        bao=json.loads(Path(f['inputs']['BAOSTOCK_DAILY_UPDATE']['path']).read_text(encoding='utf8'));bao['daily_rows'].append(dict(date=TARGET,code='sz.000002',tradestatus='0',isST='0'));replace_input(env,'BAOSTOCK_DAILY_UPDATE',bao)
+        phase=json.loads(Path(f['inputs']['SPECIAL_PRICE_PHASE']['path']).read_text(encoding='utf8'));phase['active_security_ids'].append(second['security_id'])
+        life=json.loads(Path(f['source_families']['IDENTITY_LIFECYCLE']['path']).read_text(encoding='utf8'));life['active_security_ids'].append(second['security_id'])
+        life_ref=save(tmp_path,'suspended_lifecycle.json',life);phase['lifecycle_snapshot']=life_ref
+        f['source_families']['IDENTITY_LIFECYCLE'].update(life_ref,source_revision=life_ref['sha256'])
+        replace_input(env,'SPECIAL_PRICE_PHASE',phase)
+        f['identity_publication_id']=ref['sha256'];rehash(f);result=run(env)
+>       assert result['status'].endswith('EXTERNAL_REAUDIT'),result
+E       AssertionError: {'contract_id': 'DM01_ATOMIC_FAILURE_R1', 'status': 'BLOCKED', 'reason': 'INPUT_PUBLICATION_DIGEST_MISMATCH:config/v4_...ed_components': ['IDENTITY_UNIVERSE', 'RAW_DAILY', 'TRADING_STATUS', 'ISST', 'ADJUSTED_DAILY', 'PERIOD_RAW', ...], ...}
+E       assert False
+E        +  where False = <built-in method endswith of str object at 0x0000023EB7B85C80>('EXTERNAL_REAUDIT')
+E        +    where <built-in method endswith of str object at 0x0000023EB7B85C80> = 'BLOCKED'.endswith
+
+tests\v4_dm01\test_a01_incremental_builders_r1.py:189: AssertionError
+____________ test_new_listing_target_period_and_IPO_price_runtime _____________
+
+tmp_path = WindowsPath('C:/Users/lps/AppData/Local/Temp/pytest-of-lps/pytest-3079/test_new_listing_target_period0')
+
+    def test_new_listing_target_period_and_IPO_price_runtime(tmp_path):
+        env=make_inputs(tmp_path);records=env['identity']['records'];records[0]['list_date']=TARGET
+        ref=save(tmp_path,'listing_target_identity.json',dict(records=records));env['identity'].update(binding=ref,publication_id=ref['sha256'])
+        env['freeze']['identity_publication_id']=ref['sha256'];rehash(env['freeze'])
+>       result=run(env);assert result['status'].endswith('EXTERNAL_REAUDIT'),result
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: {'contract_id': 'DM01_ATOMIC_FAILURE_R1', 'status': 'BLOCKED', 'reason': 'INPUT_PUBLICATION_DIGEST_MISMATCH:config/v4_...ed_components': ['IDENTITY_UNIVERSE', 'RAW_DAILY', 'TRADING_STATUS', 'ISST', 'ADJUSTED_DAILY', 'PERIOD_RAW', ...], ...}
+E       assert False
+E        +  where False = <built-in method endswith of str object at 0x0000023EB7B85C80>('EXTERNAL_REAUDIT')
+E        +    where <built-in method endswith of str object at 0x0000023EB7B85C80> = 'BLOCKED'.endswith
+
+tests\v4_dm01\test_a01_incremental_builders_r1.py:199: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/v4_dm01/test_a01_incremental_builders_r1.py::test_nine_actual_adapters_independent_candidate_and_idempotence
+FAILED tests/v4_dm01/test_a01_incremental_builders_r1.py::test_unsupported_adjustment_per_security_fail_closed
+FAILED tests/v4_dm01/test_a01_incremental_builders_r1.py::test_independent_postcheck_rejects_raw_adjusted_or_period_or_price_tamper
+FAILED tests/v4_dm01/test_a01_incremental_builders_r1.py::test_source_revision_is_new_candidate_not_overwrite
+FAILED tests/v4_dm01/test_a01_incremental_builders_r1.py::test_same_day_parent_is_frozen_and_candidate_digest_tamper_rejected
+FAILED tests/v4_dm01/test_a01_incremental_builders_r1.py::test_week_month_boundary_and_holiday_close_parent_periods
+FAILED tests/v4_dm01/test_a01_incremental_builders_r1.py::test_closed_parent_period_exactly_preserved
+FAILED tests/v4_dm01/test_a01_incremental_builders_r1.py::test_suspended_member_generates_no_synthetic_daily_and_null_no_actual_period
+FAILED tests/v4_dm01/test_a01_incremental_builders_r1.py::test_new_listing_target_period_and_IPO_price_runtime
+9 failed, 1238 passed, 2 skipped, 1 deselected in 145.91s (0:02:25)
+

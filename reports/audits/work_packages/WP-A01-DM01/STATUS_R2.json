@@ -1,0 +1,63 @@
+{
+  "audit_id": "DM01_REAL_INCREMENTAL_BUILDERS",
+  "data_head_promoted": false,
+  "depends_on": [],
+  "does_not_block_engineering_stage": true,
+  "engineering_can_proceed_immediately": true,
+  "engineering_candidate_only": true,
+  "evidence": [
+    {
+      "bytes": 1630,
+      "path": "reports/dm01/DM01_A01_CONTRACT_FREEZE_R1.json",
+      "sha256": "9057a6c5ff1d71e7cd9b9200b5de24cd5b556908afc8159d455ed14c1ef31d5d"
+    },
+    {
+      "bytes": 57357,
+      "path": "reports/dm01/DM01_A01_COMPONENT_POSTCHECK_R1.json",
+      "sha256": "be47da7762623c83176b6fb6699df88eea3eab3cd7dbb1cac8898baf8e2ffebb"
+    },
+    {
+      "bytes": 8690,
+      "path": "reports/dm01/DM01_A01_CLEAN_CHECKOUT_R1.json",
+      "sha256": "b9b97eed701946e011f62bcaac1c127bbbd663816aed1549743f6dc3423bf86c"
+    },
+    {
+      "bytes": 3323,
+      "path": "reports/dm01/DM01_A01_REAL_NEXT_SESSION_CANDIDATE_R1.json",
+      "sha256": "645b179c0b612887a0f063e05a91a7da2ec5c58e3210a976d09633e23d0e06bb"
+    }
+  ],
+  "external_acceptance": null,
+  "formal_consumer_authorization": false,
+  "history_reconstruction_prohibited": true,
+  "immutable_master_registry": {
+    "bytes": 11877,
+    "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json",
+    "sha256": "c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3"
+  },
+  "implementation_status": "ENGINEERING_IMPLEMENTED_CLEAN_PASS_REAL_NEXT_SESSION_BLOCKED",
+  "implementation_tested_commit": "60e5c5eecbf0ef311397bff1ac6e7b6086bd4a77",
+  "next_step": "Independent external review of nine engineering adapters and parent projections; supply exact dated accepted BaoStock source freeze or a separately authorized source remediation contract. Then build and independently audit the first missing real target. No Data Head promotion in this WP.",
+  "owner_module": "src/workbench_analysis/dm01_accepted_builder_registry.py",
+  "priority": "P0",
+  "production_gate": true,
+  "real_next_session_status": "BLOCKED_MISSING_INTERMEDIATE_SESSION",
+  "requires_real_observation_accumulation": false,
+  "source_readiness_problems": [
+    "BAOSTOCK_EXACT_TARGET_RUNTIME_ACCEPTANCE_MISSING:RUNTIME_ACCEPTANCE_MANIFEST_UNREADABLE",
+    "BAOSTOCK_TARGET_DAILY_ROSTER_STATUS_ST_AND_FACTOR_FREEZE_MISSING"
+  ],
+  "status": "OPEN",
+  "supersedes_status": {
+    "bytes": 1070,
+    "path": "reports/audits/work_packages/WP-A01-DM01/STATUS_R1.json",
+    "sha256": "a6c08283f644574e6c1d44cabbe1e90cca2b760e595ba01a42830a827df46851"
+  },
+  "target_trade_date": "2026-09-28",
+  "task": {
+    "byte_count": 1164,
+    "path": "docs/evidence/cross_stage/WP-A01-DM01/TASK_R1.md",
+    "sha256": "17a787d72aef97417d899f8c1745e49e4cb467cbcf8f2035f3885b5d6a6bf980"
+  },
+  "work_package": "WP-A01-DM01"
+}

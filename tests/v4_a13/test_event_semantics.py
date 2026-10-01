@@ -89,7 +89,7 @@ def test_actual_candidate_sidecar_cannot_authorize_any_trading_truth():
 def test_inventory_and_full_counterfactual_proofs():
     inventory=read('reports/audits/A13_FULL_NOTICE_AND_CAPTURE_MANIFEST_INVENTORY_R1.json')
     assert inventory['named_or_capture_id_object_count']==len(read(SIDECAR)['entries'])
-    assert inventory['capture_manifest_count']>=197 and not inventory['parse_errors']
+    assert inventory['examined_manifest_candidate_file_count']>=197 and inventory['capture_manifest_count']>0 and not inventory['parse_errors']
     result=read('reports/audits/A13_NOTICE_REMOVAL_ADMISSION_COUNTERFACTUAL_R1.json')
     assert result['full_PIT_fact_count']==50162 and result['full_PIT_equal_to_accepted']
     assert len(set(result['full_admission_business_digests'].values()))==1

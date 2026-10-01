@@ -1,0 +1,524 @@
+{
+  "contract_id": "A12_R2_REAL_SOURCE_ARCHAEOLOGY_V1",
+  "default_network_refresh": false,
+  "path_a_rejection": "Existing dated official notices are sparse and current TNF cannot fill historical intervals",
+  "path_a_whole_history_coverage": false,
+  "reused_source_capture": true,
+  "sources": [
+    {
+      "can_prove": "Actual bar presence / raw OHLC",
+      "cannot_prove": "Missing bar does not prove suspension or ST",
+      "dated": true,
+      "historical_queryable": false,
+      "knowledge_time_semantics": "Captured snapshot; no historical first availability inference",
+      "mutable_current": false,
+      "revision_semantics": "Accepted frozen snapshot hash",
+      "source_class": "LOCAL",
+      "source_family": "ACCEPTED_TDX_DAILY",
+      "sources": [
+        {
+          "bytes": 112302935,
+          "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet",
+          "sha256": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90"
+        }
+      ]
+    },
+    {
+      "can_prove": "Stable security ID and effective code interval",
+      "cannot_prove": "ST or trading state",
+      "dated": true,
+      "historical_queryable": false,
+      "knowledge_time_semantics": "Official event effective date distinct from capture 2026-09-25",
+      "mutable_current": false,
+      "revision_semantics": "Dated alias R7 immutable bytes",
+      "source_class": "LOCAL_AND_OFFICIAL",
+      "source_family": "DATED_IDENTITY_ALIAS",
+      "sources": [
+        {
+          "bytes": 4564,
+          "path": "data/v4/V4_01_ACCEPTED_HEAD.json",
+          "sha256": "b8ea5b8091629d116c860f9bf6a1a398301d75be16af7b08ff526fba9329bf6b"
+        },
+        {
+          "bytes": 1534,
+          "path": "data/v4/bootstrap/dated_security_alias_r7.jsonl",
+          "sha256": "115a5b611c64f30cadd8695a9a464d8243cb3afe16d642ea786ff4b7bd107c4a"
+        },
+        {
+          "bytes": 370156,
+          "path": "data/v4/source_evidence/v4_02_r3/szse_2025_028_code_change_302132.pdf",
+          "sha256": "dd68049c48df826848f361fd9e7b23dd20b6805144a2e5bc36e54db638611488"
+        }
+      ]
+    },
+    {
+      "can_prove": "Bounded delisting dates / resumes / explicit risk-warning dates",
+      "cannot_prove": "Whole-market status/ST coverage; generic delisting risk board is not isST=1",
+      "dated": true,
+      "historical_queryable": false,
+      "knowledge_time_semantics": "Effective dates from body; observed 2026-09-27 not at-target available",
+      "mutable_current": false,
+      "revision_semantics": "Captured official notice revision hashes",
+      "source_class": "OFFICIAL",
+      "source_family": "OFFICIAL_SPECIAL_PHASE_NOTICES",
+      "sources": [
+        {
+          "bytes": 20336,
+          "path": "data/v4/bootstrap/special_price_phase_events_r4.jsonl",
+          "sha256": "bb357ad505a6ace734b6b47f4581efa34c582d8bbf82111d933af037ae9ad522"
+        },
+        {
+          "bytes": 141151,
+          "path": "data/v4/source_evidence/v4_02_r4/SH_600190_2025-06-30_delisting_phase.pdf",
+          "sha256": "199ab459e1595601375686fc62a5643187498101d66d14b5734509622d4a79bf"
+        },
+        {
+          "bytes": 425639,
+          "path": "data/v4/source_evidence/v4_02_r4/SH_600225_2025-02-07_delisting_phase.pdf",
+          "sha256": "9b05d41a0c32731e547d629af91418ba2e1ec6b69f1f95171ede4965d116db48"
+        },
+        {
+          "bytes": 536623,
+          "path": "data/v4/source_evidence/v4_02_r4/SH_600306_2024-05-29_delisting_phase.pdf",
+          "sha256": "4af97dc44168e16151ab8226f124f0a128813464838efdca326cae2ff0d094f9"
+        },
+        {
+          "bytes": 110440,
+          "path": "data/v4/source_evidence/v4_02_r4/SH_600387_2025-06-16_delisting_phase.pdf",
+          "sha256": "caaba28964c005c8824b7f41415a9890705e94f3400d584908cc0618d4de42c6"
+        },
+        {
+          "bytes": 99386,
+          "path": "data/v4/source_evidence/v4_02_r4/SH_600462_2025-06-24_delisting_phase.pdf",
+          "sha256": "9dc8ed69034d7f1f1d5e9295f38becf665160b930a2d6ffc3e1d111fafa41c11"
+        },
+        {
+          "bytes": 135893,
+          "path": "data/v4/source_evidence/v4_02_r4/SH_600696_2026-06-01_delisting_phase.pdf",
+          "sha256": "23f665b06b1159ed1c7cf71683421f3fee38916a8c82a44934ed123dcacc7053"
+        },
+        {
+          "bytes": 183567,
+          "path": "data/v4/source_evidence/v4_02_r4/SH_600804_2025-06-10_delisting_phase.pdf",
+          "sha256": "a98075bfd54bc3b2f2b0c3a15aa5f7fbd03ebbbb3115fc1e75c3ddf877520f81"
+        },
+        {
+          "bytes": 253646,
+          "path": "data/v4/source_evidence/v4_02_r4/SZ_000622_2025-06-25_delisting_phase.pdf",
+          "sha256": "1c7c155a7a18ee9a027056cf09fd69cc67453eddb41878ef13b1435754c45791"
+        },
+        {
+          "bytes": 181816,
+          "path": "data/v4/source_evidence/v4_02_r4/SZ_000996_2024-06-06_delisting_phase.pdf",
+          "sha256": "19b20052f4e489c16788ddb791f8e4a48c130265e18a1804be9acba98a31c69b"
+        },
+        {
+          "bytes": 314822,
+          "path": "data/v4/source_evidence/v4_02_r4/SZ_002087_2024-06-06_delisting_phase.pdf",
+          "sha256": "08516ba86f6ae127494bd8210440a58403ea5e18ff3a5275f435231078637029"
+        },
+        {
+          "bytes": 273470,
+          "path": "data/v4/source_evidence/v4_02_r4/SZ_002089_2024-03-26_delisting_phase.pdf",
+          "sha256": "3c1d1cfd97670484680b343622d22eab9d83910fb7adc9aaffdf542651feb1e1"
+        },
+        {
+          "bytes": 396319,
+          "path": "data/v4/source_evidence/v4_02_r4/SZ_002336_2025-06-13_delisting_phase.pdf",
+          "sha256": "daeeb4974c56292691069a83eee21aed2657620c73b1e8707512afb41c0d2ba3"
+        },
+        {
+          "bytes": 196232,
+          "path": "data/v4/source_evidence/v4_02_r4/SZ_002433_2024-06-14_delisting_phase.pdf",
+          "sha256": "1bfa9dfcf67069e3fa6cb236d137193b534a45771a8fdc241ef73724bac30aeb"
+        },
+        {
+          "bytes": 235223,
+          "path": "data/v4/source_evidence/v4_02_r4/SZ_002750_2025-06-06_delisting_phase.pdf",
+          "sha256": "9c5b93af940cbc8a0450cca8c3f3b6aabe8593382cd1820fbd8adcc237784867"
+        },
+        {
+          "bytes": 104337,
+          "path": "data/v4/source_evidence/v4_02_r4/SZ_002808_2026-06-23_delisting_phase.pdf",
+          "sha256": "6d459c764686f58781317d0c2e461ae89f766ef6e16c43f706bbcd4c50010d7e"
+        },
+        {
+          "bytes": 255552,
+          "path": "data/v4/source_evidence/v4_02_r4/SZ_300208_2025-06-30_delisting_phase.pdf",
+          "sha256": "dc2be1ca2147b0898fe6fef7e25e41b10355378845d9a1fdccc57f94b332e87a"
+        },
+        {
+          "bytes": 149168,
+          "path": "data/v4/source_evidence/v4_02_r4/SZ_300280_2025-09-15_delisting_phase.pdf",
+          "sha256": "2dccc4fca0e8218d7ac1a07056b631acf4d0e0e848f4345d8201c8c9c352820c"
+        },
+        {
+          "bytes": 90730,
+          "path": "data/v4/source_evidence/v4_02_r4/SZ_300282_2024-06-27_delisting_phase.pdf",
+          "sha256": "1b25dc74f7835421746c13cba973aa1a2d1abb9bbe5630e1beab6374363f004a"
+        },
+        {
+          "bytes": 124426,
+          "path": "data/v4/source_evidence/v4_02_r4/SZ_300379_2025-12-30_delisting_phase.pdf",
+          "sha256": "f9e4bf711592363d15cf5549f6f0313fac98759099a9673b405af13554bd1cf5"
+        },
+        {
+          "bytes": 72283,
+          "path": "data/v4/source_evidence/v4_02_r4/SZ_300391_2026-03-20_delisting_phase.pdf",
+          "sha256": "ecea3b49f1d7bda0553629ac4c124fb5423e02842e21025b0f2d62166c30514e"
+        },
+        {
+          "bytes": 168262,
+          "path": "data/v4/source_evidence/v4_02_r4/SZ_300742_2024-07-01_delisting_phase.pdf",
+          "sha256": "dae9d74cbcdc7d3ff2e0e36e8eafe0417d6ad04b7011435804ac65835600f11f"
+        },
+        {
+          "bytes": 119735,
+          "path": "data/v4/source_evidence/v4_02_r4/SZ_300799_2024-07-08_delisting_phase.pdf",
+          "sha256": "383df33a19c532c73e5a3b2a66340262dd34a2b9f53e63fe01baa949e94e47a2"
+        }
+      ]
+    },
+    {
+      "can_prove": "Exact ST removal, ST to *ST, normal to risk-warning dates",
+      "cannot_prove": "Other issuers or dates outside notice scope",
+      "dated": true,
+      "historical_queryable": false,
+      "knowledge_time_semantics": "Captured 2026-10-01; reconstructed only",
+      "mutable_current": false,
+      "revision_semantics": "PDF hash with bounded capture receipts",
+      "source_class": "OFFICIAL",
+      "source_family": "OFFICIAL_ST_BOUNDARIES",
+      "sources": [
+        {
+          "bytes": 549711,
+          "path": "data/v4/source_evidence/a12_r2/600518_st_removal_mirror.pdf",
+          "sha256": "a8e43c796ca7946c224ba1f2d07271dea0b669c9d7dce5d50e9641f39f12b31e"
+        },
+        {
+          "bytes": 164513,
+          "path": "data/v4/source_evidence/a12_r2/600387_risk_transition.pdf",
+          "sha256": "cb09070205330871503f8e866c5dcc8818840b5964820da4a78d27c9f8c4f852"
+        },
+        {
+          "bytes": 153472,
+          "path": "data/v4/source_evidence/a12_r2/000972_risk_transition.pdf",
+          "sha256": "34397a8939519973d2854e966321d4522725381bfd0313a2c3ef2ee9bb16ec52"
+        }
+      ]
+    },
+    {
+      "can_prove": "Dated binary ST flag; normal and suspended daily field semantics",
+      "cannot_prove": "AS_RECORDED / legal full risk taxonomy / local TDX authority",
+      "dated": true,
+      "historical_queryable": true,
+      "knowledge_time_semantics": "Received 2026-09-26, query date is effective trade date not knowledge time",
+      "mutable_current": false,
+      "revision_semantics": "Per-date normalized full-market tuple digest frozen on 2026-09-26; query can revise",
+      "source_class": "PROVIDER",
+      "source_family": "BAOSTOCK_HISTORICAL_DAILY_UPDATES",
+      "sources": [
+        {
+          "bytes": 99012112,
+          "path": "data/v4/artifact_store/v4_02/V4_02_DATED_ST_STATUS_R7_20260927.jsonl.gz",
+          "sha256": "ffac24e09d02a53ffb48dbc24449d95f5ab20d8934c6401588a73c8673dbb8f4"
+        },
+        {
+          "bytes": 335513,
+          "path": "reports/v4_02/V4_02_DATED_ST_STATUS_V1_R6_2_20260926.json",
+          "sha256": "a5f84c388a7482df83f0998c39dbe737587cc4c4c89a5fb524459e311baea97f"
+        },
+        {
+          "bytes": 10668,
+          "path": "scripts/build_v4_02_isst_worker.py",
+          "sha256": "8a9ee528139debfca19862b9bbb537cf3f86a84811b6cc7aeacd86b8c0f1ba30"
+        },
+        {
+          "bytes": 15120,
+          "path": "data/v4/source_evidence/a12_r2/DailyUpdates.md",
+          "sha256": "ddb5f1e153c44ab0e76cebd4506ff0075def6d8884c7fd1d2cd523e2f75a70c8"
+        },
+        {
+          "bytes": 12485,
+          "path": "data/v4/source_evidence/a12_r2/stockKData.md",
+          "sha256": "2a6db3b24ab21a199aa17bd949dfbe545d3279007bea1664854f9b7c20542aac"
+        }
+      ]
+    },
+    {
+      "can_prove": "0 suspension / 1 should trade on queried gap dates; 4 actual conflicts",
+      "cannot_prove": "Unqueried provider flags; raw payload not retained",
+      "dated": true,
+      "historical_queryable": true,
+      "knowledge_time_semantics": "Observed 2026-09-26T12:09:31Z; reconstruction only",
+      "mutable_current": false,
+      "revision_semantics": "982 bounded date-range queries; normalized tuples retained in status file",
+      "source_class": "PROVIDER",
+      "source_family": "BAOSTOCK_CAPTURED_GAP_FACTS",
+      "sources": [
+        {
+          "bytes": 100075252,
+          "path": "data/v4/artifact_store/v4_02/V4_02_DATED_TRADING_STATUS_R7_20260927.jsonl.gz",
+          "sha256": "ad65d2e1b3ca835a310cfa2a35f7bfd417a42020e27f2e77d4a79597aa018de9"
+        },
+        {
+          "bytes": 383680,
+          "path": "reports/v4_02/V4_02_DATED_TRADING_STATUS_R6_2_20260926.json",
+          "sha256": "a80b23f6fca49350eb25161e14b2ec9fc552003e94e89c4c624ed23e1b649e55"
+        },
+        {
+          "bytes": 15102,
+          "path": "scripts/build_v4_02_dated_trading_status.py",
+          "sha256": "e4e9fbf6722affdfc999b29a670bb03a8a6421882df821ad73c638831ba089cf"
+        }
+      ]
+    },
+    {
+      "can_prove": "Captured current names/types",
+      "cannot_prove": "Dated historical ST or suspension",
+      "dated": false,
+      "historical_queryable": false,
+      "knowledge_time_semantics": "Current capture time only",
+      "mutable_current": true,
+      "revision_semantics": "Frozen current snapshot; future mutable refresh separate",
+      "source_class": "LOCAL",
+      "source_family": "TDX_CURRENT_TNF",
+      "sources": [
+        {
+          "bytes": 139010,
+          "path": "data/v4/source_evidence/a11_authority_r1/tnf/bjs.tnf",
+          "sha256": "09ac22c9ebe183faa551af3a7838aac67ad9f3f704191f012535e1fca1a16ee1"
+        },
+        {
+          "bytes": 9889610,
+          "path": "data/v4/source_evidence/a11_authority_r1/tnf/shs.tnf",
+          "sha256": "28a598eb55c224f8f57499af3ea108817253864ddc728199cc3857176b430c12"
+        },
+        {
+          "bytes": 8741210,
+          "path": "data/v4/source_evidence/a11_authority_r1/tnf/szs.tnf",
+          "sha256": "b40bec69401d22db4ebe39045a81fb7143e7fe69d7849adebcd70f6a750a7d3f"
+        }
+      ]
+    },
+    {
+      "can_prove": "Observed dated status/ST on 9/28 and 9/30; actual local missing should-trade case",
+      "cannot_prove": "At-target recorded owner acceptance; not part of 9/24 historical rebuild",
+      "dated": true,
+      "historical_queryable": true,
+      "knowledge_time_semantics": "Captured 10/1 actual timestamps; do not backdate to 9/28",
+      "mutable_current": false,
+      "revision_semantics": "Raw responses immutable; purpose-scoped V2_1 receipt",
+      "source_class": "PROVIDER",
+      "source_family": "DM01_EXISTING_DELAYED_TARGET_AND_SMOKE",
+      "sources": [
+        {
+          "bytes": 2589159,
+          "path": "reports/dm01/a01_r2/20261001T033251758661Z/TARGET_DATE_CAPTURE_query_daily_history_k_AStock_response.json",
+          "sha256": "f72073ca13a36af1a65604a2ebd82981000a0c0c5694b34c035c40d764aed7b2"
+        },
+        {
+          "bytes": 2587863,
+          "path": "reports/dm01/a01_r2/20261001T033251758661Z/CAPABILITY_SMOKE_query_daily_history_k_AStock_response.json",
+          "sha256": "ba0dcd1af10620df2d9fc838d45e9f69e44f9bc3c5fc69d2d3427abad448c3ac"
+        },
+        {
+          "bytes": 1652,
+          "path": "reports/audits/A01_R2_NORMALIZED_RUNTIME_AND_TARGET_CAPTURE_R2.json",
+          "sha256": "b85b565636c7005797ff45e6f4f259aa532fedaee5d9a70ed819c63efe1a25db"
+        }
+      ]
+    },
+    {
+      "can_prove": "Independent real official-boundary comparisons and alias anomaly",
+      "cannot_prove": "Universal no-revision guarantee",
+      "dated": true,
+      "historical_queryable": true,
+      "knowledge_time_semantics": "Actual observed/received timestamps on 10/1",
+      "mutable_current": false,
+      "revision_semantics": "Freeze observed response; sampled equality does not prove unrevisability",
+      "source_class": "PROVIDER",
+      "source_family": "BOUNDED_REVISION_PROBE",
+      "sources": [
+        {
+          "bytes": 1601,
+          "path": "data/v4/source_evidence/a12_r2/PROVIDER_SEMANTICS_REVISION_CONTRACT_R1.json",
+          "sha256": "9c37a671bff00834c0d85e182a98467910233d66d234c189c5ccebf0efa1c235"
+        },
+        {
+          "bytes": 8905,
+          "path": "data/v4/source_evidence/a12_r2/PROVIDER_SEMANTICS_REVISION_CAPTURE_R1.json",
+          "sha256": "f2028481a7c820737a433c73c77780a9469e664620697cb46d26c47d6a9208bb"
+        },
+        {
+          "bytes": 801,
+          "path": "data/v4/source_evidence/a12_r2/PROVIDER_DOCUMENTATION_CAPTURE_R1.json",
+          "sha256": "7f811d4816a2114efcec3cb85429faac311b61ae27ab5ded33ad6f37e8b0dd82"
+        }
+      ]
+    },
+    {
+      "can_prove": "Only IPO/listing deferment where body says so",
+      "cannot_prove": "Listed-security market suspension",
+      "dated": true,
+      "historical_queryable": false,
+      "knowledge_time_semantics": "Observed/captured time separate from original notice",
+      "mutable_current": false,
+      "revision_semantics": "Filename not authority; verify body code/effective dates",
+      "source_class": "OFFICIAL",
+      "source_family": "IPO_DEFERMENT_FILES",
+      "sources": [
+        {
+          "bytes": 236552,
+          "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T061552Z/SH_601206_suspension.pdf",
+          "sha256": "60b9836e3f921febeafe26227b1232f605d9dfef3fc5ac4c41d7383260b9a29b"
+        },
+        {
+          "bytes": 1896,
+          "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T061552Z/SH_601206_suspension.txt",
+          "sha256": "560347b71f0e5369f6f9d62ddd4594a309f31401d32b62aa5d4c119d39ad2e0e"
+        },
+        {
+          "bytes": 501937,
+          "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T061552Z/SH_603302_suspension.pdf",
+          "sha256": "36ca1b50986728fc2dfc5c1eef51b0b5c2dfcc45a0475b320d5c531c87eebdd5"
+        },
+        {
+          "bytes": 43863,
+          "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T061552Z/SH_603302_suspension.txt",
+          "sha256": "7783e63a44c19cedb14f702bf316449b7565dbb96240310158cf2742f92e75f0"
+        },
+        {
+          "bytes": 549909,
+          "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T061552Z/SH_603361_suspension.pdf",
+          "sha256": "6e55b486500f56e89718fbd6627e8563060b0437d43ee5c7ca5efb136dc49aa2"
+        },
+        {
+          "bytes": 20333,
+          "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T061552Z/SH_603361_suspension.txt",
+          "sha256": "1658c1037b985b7fb0824f95d59eeed92cfabb757960841771c477832e8378db"
+        },
+        {
+          "bytes": 28477,
+          "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T061552Z/SH_688688_suspension.html",
+          "sha256": "ee5e483ad9fe4b8d64fe679ac1b7d525a4adf925cdd0862e818db140f4d39cc6"
+        },
+        {
+          "bytes": 3279,
+          "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T061552Z/SH_688688_suspension.txt",
+          "sha256": "10833fc573e4d187dd91e33062901728a0a483a3e8d7f4bc47958690212c6be6"
+        },
+        {
+          "bytes": 420126,
+          "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T061552Z/SZ_300728_suspension.pdf",
+          "sha256": "48ee4325eb44d8bfa224aae3b519e7d22491d661c94f845b197b441063375e4e"
+        },
+        {
+          "bytes": 1523,
+          "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T061552Z/SZ_300728_suspension.txt",
+          "sha256": "253a2e337aa8a84ddc1c8b94ef887f933c420f26bfe38cf40a1eccb14ccd765b"
+        },
+        {
+          "bytes": 236552,
+          "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T061923Z/SH_601206_suspension.pdf",
+          "sha256": "60b9836e3f921febeafe26227b1232f605d9dfef3fc5ac4c41d7383260b9a29b"
+        },
+        {
+          "bytes": 1896,
+          "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T061923Z/SH_601206_suspension.txt",
+          "sha256": "560347b71f0e5369f6f9d62ddd4594a309f31401d32b62aa5d4c119d39ad2e0e"
+        },
+        {
+          "bytes": 501937,
+          "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T061923Z/SH_603302_suspension.pdf",
+          "sha256": "36ca1b50986728fc2dfc5c1eef51b0b5c2dfcc45a0475b320d5c531c87eebdd5"
+        },
+        {
+          "bytes": 43863,
+          "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T061923Z/SH_603302_suspension.txt",
+          "sha256": "7783e63a44c19cedb14f702bf316449b7565dbb96240310158cf2742f92e75f0"
+        },
+        {
+          "bytes": 549909,
+          "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T061923Z/SH_603361_suspension.pdf",
+          "sha256": "6e55b486500f56e89718fbd6627e8563060b0437d43ee5c7ca5efb136dc49aa2"
+        },
+        {
+          "bytes": 20333,
+          "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T061923Z/SH_603361_suspension.txt",
+          "sha256": "1658c1037b985b7fb0824f95d59eeed92cfabb757960841771c477832e8378db"
+        },
+        {
+          "bytes": 28477,
+          "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T061923Z/SH_688688_suspension.html",
+          "sha256": "ee5e483ad9fe4b8d64fe679ac1b7d525a4adf925cdd0862e818db140f4d39cc6"
+        },
+        {
+          "bytes": 3279,
+          "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T061923Z/SH_688688_suspension.txt",
+          "sha256": "10833fc573e4d187dd91e33062901728a0a483a3e8d7f4bc47958690212c6be6"
+        },
+        {
+          "bytes": 420126,
+          "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T061923Z/SZ_300728_suspension.pdf",
+          "sha256": "48ee4325eb44d8bfa224aae3b519e7d22491d661c94f845b197b441063375e4e"
+        },
+        {
+          "bytes": 1523,
+          "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T061923Z/SZ_300728_suspension.txt",
+          "sha256": "253a2e337aa8a84ddc1c8b94ef887f933c420f26bfe38cf40a1eccb14ccd765b"
+        },
+        {
+          "bytes": 236552,
+          "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SH_601206_suspension.pdf",
+          "sha256": "60b9836e3f921febeafe26227b1232f605d9dfef3fc5ac4c41d7383260b9a29b"
+        },
+        {
+          "bytes": 1896,
+          "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SH_601206_suspension.txt",
+          "sha256": "560347b71f0e5369f6f9d62ddd4594a309f31401d32b62aa5d4c119d39ad2e0e"
+        },
+        {
+          "bytes": 501937,
+          "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SH_603302_suspension.pdf",
+          "sha256": "36ca1b50986728fc2dfc5c1eef51b0b5c2dfcc45a0475b320d5c531c87eebdd5"
+        },
+        {
+          "bytes": 43863,
+          "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SH_603302_suspension.txt",
+          "sha256": "7783e63a44c19cedb14f702bf316449b7565dbb96240310158cf2742f92e75f0"
+        },
+        {
+          "bytes": 549909,
+          "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SH_603361_suspension.pdf",
+          "sha256": "6e55b486500f56e89718fbd6627e8563060b0437d43ee5c7ca5efb136dc49aa2"
+        },
+        {
+          "bytes": 20333,
+          "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SH_603361_suspension.txt",
+          "sha256": "1658c1037b985b7fb0824f95d59eeed92cfabb757960841771c477832e8378db"
+        },
+        {
+          "bytes": 28477,
+          "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SH_688688_suspension.html",
+          "sha256": "ee5e483ad9fe4b8d64fe679ac1b7d525a4adf925cdd0862e818db140f4d39cc6"
+        },
+        {
+          "bytes": 3279,
+          "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SH_688688_suspension.txt",
+          "sha256": "10833fc573e4d187dd91e33062901728a0a483a3e8d7f4bc47958690212c6be6"
+        },
+        {
+          "bytes": 420126,
+          "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_300728_suspension.pdf",
+          "sha256": "48ee4325eb44d8bfa224aae3b519e7d22491d661c94f845b197b441063375e4e"
+        },
+        {
+          "bytes": 1523,
+          "path": "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_300728_suspension.txt",
+          "sha256": "253a2e337aa8a84ddc1c8b94ef887f933c420f26bfe38cf40a1eccb14ccd765b"
+        }
+      ]
+    }
+  ]
+}

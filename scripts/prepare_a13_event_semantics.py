@@ -64,6 +64,16 @@ def main():
     # Include named objects referenced by capture IDs even if their file name is neutral.
     relevant=[p for p in sourcefiles if TERMS.search(p.relative_to(ROOT).as_posix())
               or any(TERMS.search(str(r.get('old_capture_id',''))) for r in capture_refs.get(p.relative_to(ROOT).as_posix(),[]))]
+    notice_manifest_paths={ref['manifest'] for p in relevant for ref in capture_refs.get(p.relative_to(ROOT).as_posix(),[])}
+    manifest_archives={}
+    for path in sorted(notice_manifest_paths):
+        original=bind(path)
+        archived='data/v4/source_evidence/a13/manifest_archives/'+original['sha256']+'.json'
+        atomic_bytes(ROOT/archived,(ROOT/path).read_bytes())
+        manifest_archives[path]=bind(archived)
+    for refs in capture_refs.values():
+        for ref in refs:
+            if ref['manifest'] in manifest_archives:ref['manifest_artifact']=manifest_archives[ref['manifest']]
     entries=[]
     identity=read(read('data/v4/V4_01_GO_FORWARD_IDENTITY_ACCEPTED_HEAD_R1.json')['identity_revision']['path'])
     lifecycle_paths={b['path'] for row in identity['dispositions'] for b in row.get('dated_lifecycle_evidence',[])}
@@ -145,8 +155,10 @@ def main():
         existing_business_inputs_preserved=True))
     write(P+'FULL_NOTICE_AND_CAPTURE_MANIFEST_INVENTORY_R1.json',dict(status='PASS_FULL_INVENTORY',
         source_root_file_count=len(sourcefiles),named_or_capture_id_object_count=len(entries),
-        capture_manifest_count=len(manifests),capture_reference_object_count=manifest_objects,parse_errors=parse_errors,
-        scanned_capture_manifests=manifests,source_inventory=[bind(p.relative_to(ROOT).as_posix()) for p in sourcefiles],
+        examined_manifest_candidate_file_count=len(manifests),capture_manifest_count=len(manifest_archives),capture_reference_object_count=manifest_objects,parse_errors=parse_errors,
+        scanned_capture_manifests=[dict(original_path=p,artifact=b) for p,b in manifest_archives.items()],
+        examined_manifest_census=[dict(source_path=b['path'],source_sha256=b['sha256'],scope='NOTICE_REFERENCES_ARCHIVED' if b['path'] in notice_manifest_paths else 'NON_NOTICE_MANIFEST_NAME_CENSUS_ONLY') for b in manifests],
+        source_inventory=[bind(p.relative_to(ROOT).as_posix()) for p in sourcefiles],
         sidecar=bind(sidecar),event_counts=dict(Counter(e['actual_event_type'] for e in entries)),
         mismatches=[e['raw_artifact'] for e in entries if e['semantic_mismatch']],network_calls=0,
         unknown_objects_fail_closed=True))

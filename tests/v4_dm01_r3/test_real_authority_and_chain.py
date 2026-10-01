@@ -121,6 +121,9 @@ def test_atomic_failure_determinism_and_heads_preserved():
         assert not (ROOT/binding['path']).parent.joinpath('PROMOTION_CANDIDATE.json').exists()
     assert det['status']=='PASS' and det['old_candidates_immutable']
     for binding in read(P+'STAGE_ENTRY_R1.json')['protected_bindings']:
-        actual=hashlib.sha256((ROOT/binding['path']).read_bytes()).hexdigest()
+        from workbench_analysis.dm01_accepted_chain_v1 import resolve_frozen_binding, HEAD_PATH, ANCHOR_SHA
+        path=resolve_frozen_binding(ROOT,binding) if binding['path']==HEAD_PATH else ROOT/binding['path']
+        actual=hashlib.sha256(path.read_bytes()).hexdigest()
         assert actual in (binding['sha256'],binding.get('git_sha256'))
-    assert read('data/v4/V4_DATA_ACCEPTED_HEAD.json')['accepted_trade_date']=='2026-09-24'
+    anchor=resolve_frozen_binding(ROOT,dict(path=HEAD_PATH,sha256=ANCHOR_SHA))
+    assert json.loads(anchor.read_bytes())['accepted_trade_date']=='2026-09-24'

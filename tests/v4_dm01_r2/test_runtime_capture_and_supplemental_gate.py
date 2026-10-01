@@ -98,4 +98,5 @@ def test_provider_revision_identity_changes_without_moving_data_head():
     assert digest(revised)!=digest(material)
     governed=read(ROOT/'config/source_authority_governance_r1.json')
     headbinding=next(b for b in governed['protected_bindings'] if b['path']=='data/v4/V4_DATA_ACCEPTED_HEAD.json')
-    assert hashlib.sha256((ROOT/headbinding['path']).read_bytes()).hexdigest()==headbinding['sha256']
+    from workbench_analysis.dm01_accepted_chain_v1 import resolve_frozen_binding
+    assert hashlib.sha256(resolve_frozen_binding(ROOT,headbinding).read_bytes()).hexdigest()==headbinding['sha256']

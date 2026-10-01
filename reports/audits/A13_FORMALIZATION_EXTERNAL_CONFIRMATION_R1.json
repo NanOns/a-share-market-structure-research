@@ -1,0 +1,56 @@
+{
+  "acceptance_scope": "EVIDENCE_GOVERNANCE_NO_BUSINESS_IMPACT",
+  "business_rebuild_required": false,
+  "evidence_bindings": [
+    {
+      "bytes": 1958,
+      "path": "data/v4/OFFICIAL_EVENT_SEMANTICS_ACCEPTED_HEAD_R1.json",
+      "sha256": "c283bb515c0733d8e5f797a6796fa63c575d211d3b9a468c566dc05395a062b8"
+    },
+    {
+      "bytes": 529614,
+      "path": "data/v4/OFFICIAL_EVENT_SEMANTICS_ACCEPTED_SIDECAR_R1.json",
+      "sha256": "89916c039a72f39624769974a0e915c26ab7412ea933be1e88ef4b0f4cac43fe"
+    },
+    {
+      "bytes": 38030,
+      "path": "reports/audits/A13_FORMALIZATION_REAL_HEAD_RUNTIME_READBACK_R1.json",
+      "sha256": "c2039970e8916ec7030f335d737418bff0a684c04255b32b3d542bcf28bccc4c"
+    },
+    {
+      "bytes": 35103,
+      "path": "reports/audits/A13_FORMALIZATION_COUNTERFACTUAL_REVALIDATION_R1.json",
+      "sha256": "d9602a0fbbf293dbb68fbe59032952bebc8d8d478371dbbf047133befb8aad39"
+    },
+    {
+      "bytes": 91727,
+      "path": "reports/audits/A13_FORMALIZATION_CLEAN_CHECKOUT_R1.json",
+      "sha256": "7944b7bf50f57ab9ae8bb447849e3352ee00a779a5274c217035cfc520632c50"
+    },
+    {
+      "bytes": 819209,
+      "path": "reports/audits/A13_FORMALIZATION_NO_SYMBOL_SCAN_R1.json",
+      "sha256": "07db9586dd6d404800b4cdc3fa3032a6df9b083a24c5622fbbd4b19c749775c0"
+    },
+    {
+      "bytes": 115736,
+      "path": "reports/audits/A13_FORMALIZATION_STAGE_CLOSURE_R1.json",
+      "sha256": "a5c13467b47e559516a5285175f3b13cacdfdaf837ecb1a14e5aa40403a58aaf"
+    }
+  ],
+  "external_acceptance": "PASS_EVIDENCE_GOVERNANCE_NO_BUSINESS_IMPACT",
+  "external_authority": {
+    "audited_head": "ac811e210c66b7ee9446086659dee169ee0f81a8",
+    "authority_kind": "INDEPENDENT_EXTERNAL_ACCEPTANCE",
+    "document": {
+      "bytes": 10761,
+      "path": "docs/evidence/source_authority/V4_DM01_A01_R3_AND_A13_FORMALIZATION_INDEPENDENT_EXTERNAL_ACCEPTANCE_20261001.md",
+      "sha256": "03fd49c643d21304d2e8460cebbeec4b6b3f794ffd28562fdebf3f1ec38f79ef"
+    }
+  },
+  "formal_consumer_authorization": false,
+  "formalization_external_reaudit": "PASS",
+  "positive_trading_event_authority_consumed": false,
+  "status": "EXTERNALLY_CONFIRMED",
+  "v4_08_head_action": "KEEP"
+}

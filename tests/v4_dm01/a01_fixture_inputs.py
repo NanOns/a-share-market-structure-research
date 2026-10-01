@@ -6,6 +6,7 @@ import struct
 import zipfile
 from workbench_analysis.dm01_incremental_component_builders import ROOT,canonical,digest,sha,artifact_reference_path
 from workbench_analysis.daily_source_freeze import build_source_freeze_manifest_v2
+from workbench_analysis.dm01_accepted_chain_v1 import resolve_frozen_binding, HEAD_PATH, ANCHOR_SHA
 
 TARGET='2026-09-28'
 SID='DM01-ENGINEERING-INPUT-A'
@@ -20,7 +21,8 @@ def repo_ref(path):
 
 def make_inputs(root):
     root=Path(root);root.mkdir(parents=True,exist_ok=True)
-    parent_ref=repo_ref('data/v4/V4_DATA_ACCEPTED_HEAD.json');head=json.loads(Path(parent_ref['path']).read_text(encoding='utf8'))
+    archived_parent=resolve_frozen_binding(ROOT,dict(path=HEAD_PATH,sha256=ANCHOR_SHA))
+    parent_ref=repo_ref(archived_parent.relative_to(ROOT).as_posix());head=json.loads(Path(parent_ref['path']).read_text(encoding='utf8'))
     record=dict(security_id=SID,source_security_key=SOURCE_KEY,symbol=SOURCE_KEY,board_scope='SH_MAIN',board='SH_MAIN',security_type='A_SHARE',
         list_date='2020-01-02',symbol_effective_from='2020-01-02',symbol_effective_to=None,system_available_at='2026-09-24T08:00:00+00:00')
     identity_ref=save(root,'identity.json',dict(records=[record],fixture_scope='ENGINEERING_INPUT_ONLY'))

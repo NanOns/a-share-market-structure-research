@@ -1,5 +1,6 @@
 import hashlib,json
 from pathlib import Path
+from workbench_analysis.dm01_accepted_chain_v1 import resolve_frozen_binding, HEAD_PATH
 ROOT=Path(__file__).resolve().parents[2]
 def read(p):return json.loads((ROOT/p).read_text(encoding='utf8'))
 
@@ -27,4 +28,5 @@ def test_independent_acceptance_exact_evidence():
         for b in [record['external_authority']['document'],*record['evidence_bindings']]:
             assert hashlib.sha256((ROOT/b['path']).read_bytes()).hexdigest()==b['sha256']
     for b in read('reports/audits/R4_STAGE_ENTRY_R1.json')['protected_bindings']:
-        assert hashlib.sha256((ROOT/b['path']).read_bytes()).hexdigest() in (b['sha256'],b.get('git_sha256'))
+        p=resolve_frozen_binding(ROOT,b) if b['path']==HEAD_PATH else ROOT/b['path']
+        assert hashlib.sha256(p.read_bytes()).hexdigest() in (b['sha256'],b.get('git_sha256'))

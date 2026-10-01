@@ -1,6 +1,7 @@
 import hashlib
 import json
 from pathlib import Path
+from workbench_analysis.dm01_accepted_chain_v1 import resolve_frozen_binding
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -8,7 +9,7 @@ def read(path):
     return json.loads((ROOT / path).read_text(encoding='utf8'))
 
 def exact(binding):
-    assert hashlib.sha256((ROOT / binding['path']).read_bytes()).hexdigest() == binding['sha256']
+    assert hashlib.sha256(resolve_frozen_binding(ROOT,binding).read_bytes()).hexdigest() == binding['sha256']
 
 def test_external_dispositions_and_protected_bytes():
     r = read('reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R3.json')

@@ -1,0 +1,1479 @@
+{
+  "acceptance_gates": {
+    "G01_V4_09_unchanged": "PASS",
+    "G02_prior_content_identity": "PASS",
+    "G03_calendar_lineage": "PASS",
+    "G04_input_manifest_shape": "PASS",
+    "G05_real_old_current_boundary": "PASS",
+    "G06_noop_rejected": "PASS",
+    "G07_implemented_status_authority": "PASS",
+    "G08_implemented_unknown_publication": "PASS",
+    "G09_true_not_suppressed": "PASS",
+    "G10_not_implemented_missing_owner_only": "PASS",
+    "G11_not_applicable_scope": "PASS",
+    "G12_ordinary_direct_insert_denied": "PASS",
+    "G13_controlled_publisher_positive": "PASS",
+    "G14_DB_identity_lineage": "PASS",
+    "G15_022_023_unchanged": "PASS",
+    "G16_024_exact_rollback": "PASS",
+    "G17_original_149_expectations": "PASS",
+    "G18_new_negative_vectors": "PASS",
+    "G19_clean_detached_regression": "PASS",
+    "G20_no_new_deselect": "PASS",
+    "G21_permissions_false": "PASS",
+    "G22_accepted_head_absent": "PASS",
+    "NO_SYMBOL": "PASS"
+  },
+  "accepted_fixture_scope": "Disposable engineering gate fixtures only; no actual market signal acceptance, production credentials or future detector integration",
+  "accepted_head_written": false,
+  "authority": {
+    "byte_count": 224998,
+    "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+    "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+  },
+  "baseline_commit": "db6319856468c6788c9dd656da3992e569a64572",
+  "business_contract": "RESEARCH_STATE_V1",
+  "business_thresholds": {
+    "downgrade_sessions": 2,
+    "expiry_improvement_pp": 3,
+    "expiry_sessions": 10,
+    "health_deadband_pp": 3
+  },
+  "contract_id": "V4_10_R1_2_STAGE_CANDIDATE_MANIFEST",
+  "contracts": {
+    "boundary_old_source_fixture": {
+      "byte_count": 20747,
+      "path": "config/v4_10_boundary_old_source_fixture_r1_2.json",
+      "sha256": "898dd936c170e1ee5094bf18659dffc50b41cde1eeb320283b6326d5bcc5255e"
+    },
+    "input_provenance": {
+      "byte_count": 7099,
+      "path": "config/v4_10_input_provenance_r1_2.json",
+      "sha256": "e7e6cf40ffc7159d4777a01e21f475af08884146291cdb124f277e19be29ce93"
+    },
+    "input_schema": {
+      "byte_count": 951,
+      "path": "config/v4_10_input_schema_r1_2.json",
+      "sha256": "1339e21332e407a0d7bb2117b735a8b19756b838b0495623508b0782cc872a85"
+    },
+    "machine_ast": {
+      "byte_count": 3709,
+      "path": "config/v4_10_machine_ast_r1_2.json",
+      "sha256": "de127c9566c840a75e7ab5fb1c033f8bbfa04dd88983e88360e94f12b2d99589"
+    },
+    "machine_vectors": {
+      "byte_count": 4509500,
+      "path": "config/v4_10_machine_vectors_r1_2.json",
+      "sha256": "fba82cb73df551833f1a12f3d5d0e30255b4dcff512e87c8e98de6b4b0617c7a"
+    },
+    "output_schema": {
+      "byte_count": 2743,
+      "path": "config/v4_10_output_schema_r1_2.json",
+      "sha256": "165b6e8776e5fe54cbcf5766e4623b96439b9485c84ebcf7524b8fb3599bb823"
+    },
+    "parameter_set": {
+      "byte_count": 435,
+      "path": "config/v4_10_parameter_set_r1_2.json",
+      "sha256": "20b66f9f2d2d4fe6ba8c3dd0583d6fa3d5408daebda09fae7ff27548e800ffd7"
+    },
+    "research_state_contract": {
+      "byte_count": 4926,
+      "path": "config/v4_10_research_state_contract_r1_2.json",
+      "sha256": "33d50256635161f425f4f34ac805ea2f511362be7d71d35b3a62478de5a59127"
+    }
+  },
+  "controlled_publisher": "NOLOGIN authorized producer role; publish_state accepts inputs, executes reducer/validation and emits attestation; DB independently guards identity/lineage",
+  "created_at_utc": "2026-10-01T00:45:16.242472+00:00",
+  "cross_stage_registry": {
+    "byte_count": 11877,
+    "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json",
+    "sha256": "c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3"
+  },
+  "disposition": {
+    "byte_count": 3244,
+    "path": "docs/evidence/V4_10_R1_2_REPAIR_DISPOSITION_20261001.md",
+    "sha256": "64644c3d968bd67b52eab3ed6f93259ecb6b981747ef2fa58b71ddd873d7690e"
+  },
+  "evidence_bindings": {
+    "CLEAN_CHECKOUT_RECEIPT": {
+      "byte_count": 2288,
+      "path": "reports/v4_10/V4_10_R1_2_CLEAN_CHECKOUT_RECEIPT.json",
+      "sha256": "dbac00687f49c54aaeac2dfb386573292df72277ac4e4091f97f4022c44b3dda"
+    },
+    "CONTRACT_FREEZE": {
+      "byte_count": 3552,
+      "path": "reports/v4_10/V4_10_R1_2_CONTRACT_FREEZE.json",
+      "sha256": "35b7edd498088a94e8e25a3234fd794afce03569689e06d7d71900b3d1f812f8"
+    },
+    "CONTROLLED_PUBLISHER_ACCEPTANCE": {
+      "byte_count": 1351,
+      "path": "reports/v4_10/V4_10_R1_2_CONTROLLED_PUBLISHER_ACCEPTANCE.json",
+      "sha256": "cfab2b0d6942eb030b8af4b21fd08dae10376e5ad19ab1ad53dbe9b28a284560"
+    },
+    "INDEPENDENT_POSTCHECK": {
+      "byte_count": 724597,
+      "path": "reports/v4_10/V4_10_R1_2_INDEPENDENT_POSTCHECK.json",
+      "sha256": "b198c8719f51605365e9f4525b9ae8f1b02bf8b8ef24e269d76b9e4ff5a0317a"
+    },
+    "INPUT_MANIFEST_SHAPE_ACCEPTANCE": {
+      "byte_count": 34502,
+      "path": "reports/v4_10/V4_10_R1_2_INPUT_MANIFEST_SHAPE_ACCEPTANCE.json",
+      "sha256": "cb1d3f5c8cb1a088b0b8ec346386ddf50d4643d7c300f0ce4d5ee53b1552d963"
+    },
+    "INPUT_PROVENANCE_ACCEPTANCE": {
+      "byte_count": 140356,
+      "path": "reports/v4_10/V4_10_R1_2_INPUT_PROVENANCE_ACCEPTANCE.json",
+      "sha256": "f14ef2f973c5e5f9d45ea7522b39e44021e5bc1bb890241f3bc748171de9f57e"
+    },
+    "ISOLATED_REGRESSION": {
+      "byte_count": 2461,
+      "path": "reports/v4_10/V4_10_R1_2_ISOLATED_REGRESSION.json",
+      "sha256": "052436a06dba48e42add9e6e5dbf8b263cf62c6a74c2d5b0bc4e39aad958bb9b"
+    },
+    "MACHINE_VECTOR_COVERAGE": {
+      "byte_count": 15724,
+      "path": "reports/v4_10/V4_10_R1_2_MACHINE_VECTOR_COVERAGE.json",
+      "sha256": "88b6daf49f6c62ee992ce3a788f1e75c48e0aaece690fdfb606bab49e63c9be4"
+    },
+    "MODEL_BOUNDARY_ACCEPTANCE": {
+      "byte_count": 88263,
+      "path": "reports/v4_10/V4_10_R1_2_MODEL_BOUNDARY_ACCEPTANCE.json",
+      "sha256": "702d1a41e9a1926a68cc6440ac4428cc573fcf3de43dfd9c652507045d73a7a9"
+    },
+    "NO_SYMBOL_SPECIFIC_SYSTEM_LOGIC_SCAN": {
+      "byte_count": 747928,
+      "path": "reports/v4_10/V4_10_R1_2_NO_SYMBOL_SPECIFIC_SYSTEM_LOGIC_SCAN.json",
+      "sha256": "170a6ec0bf2cd82a49a1d513bc684d0ff1e9615bdf9c9d3b31ce962adbe44627"
+    },
+    "PRIOR_LINEAGE_ACCEPTANCE": {
+      "byte_count": 46886,
+      "path": "reports/v4_10/V4_10_R1_2_PRIOR_LINEAGE_ACCEPTANCE.json",
+      "sha256": "dffb100e892d001a3ac21d65741b672963e11850fb4f63817ba153eb5178f447"
+    },
+    "SCHEMA_MIGRATION_RECEIPT": {
+      "byte_count": 9225,
+      "path": "reports/v4_10/V4_10_R1_2_SCHEMA_MIGRATION_RECEIPT.json",
+      "sha256": "27b843f7245dcde88e90487e69766c82574e352a36ca7a09d2b48968d7acfc0e"
+    }
+  },
+  "external_acceptance": "PENDING_INDEPENDENT_EXTERNAL_REAUDIT",
+  "fixture_supersession": "Original 149 expectations unchanged; two no-op positive inputs become authentic OLD fixtures under R1.2. No-op itself is now rejected.",
+  "focus_cutover_permission": false,
+  "historical_test_supersession": {
+    "deselected_exact_node": "tests/v4_09/test_stock_prewatch.py::test_production_and_v4_09_acceptance_stay_disabled",
+    "new_deselects": []
+  },
+  "known_missing_inputs": {
+    "CONFIRMED": {
+      "owner": "V4_11_CONFIRMATION_DETECTOR_NOT_IMPLEMENTED",
+      "value": "UNKNOWN"
+    },
+    "WARM": {
+      "owner": "LEGACY_WARM_EXTRACTION_NOT_ACCEPTED",
+      "value": "UNKNOWN"
+    },
+    "episode_invalidation_contract_id": {
+      "owner": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+      "value": "UNKNOWN"
+    },
+    "followup_complete": {
+      "owner": "SETTLEMENT_DUE_OWNER_NOT_IMPLEMENTED",
+      "value": "UNKNOWN"
+    },
+    "frozen_invalidation": {
+      "owner": "V4_12_EPISODE_INVALIDATION_NOT_IMPLEMENTED",
+      "value": "UNKNOWN"
+    },
+    "scenario": {
+      "owner": "V4_11_V4_12_SCENARIO_NOT_IMPLEMENTED",
+      "value": "UNKNOWN"
+    }
+  },
+  "next_stage": "STOP for independent R1.2 external reaudit; V4-11 remains BLOCKED. Cross-stage work packages have independent entries/gates.",
+  "old_source_authority": "Independent V0 frozen golden producer + immutable DB owner import; not a caller-relabeled current output",
+  "open_audits": [
+    {
+      "audit_id": "DM01_REAL_INCREMENTAL_BUILDERS",
+      "status": "OPEN"
+    },
+    {
+      "audit_id": "V4_07_PRIOR_RPS_ACCEPTED_INPUT_BOOTSTRAP_01",
+      "status": "OPEN"
+    },
+    {
+      "audit_id": "FORWARD_PIT_HISTORY_ACCUMULATION",
+      "status": "OPEN"
+    },
+    {
+      "audit_id": "AUD-AMOUNT-A-06",
+      "status": "OPEN"
+    },
+    {
+      "audit_id": "LEGACY_VALID_MEMBER_EXACT_PRODUCER",
+      "status": "OPEN"
+    },
+    {
+      "audit_id": "V4-06-BAOSTOCK-BINDING-TOLERANCE-01",
+      "status": "OPEN"
+    },
+    {
+      "audit_id": "HISTORICAL_AS_RECORDED_ADJUSTED_PRICE",
+      "status": "OPEN"
+    },
+    {
+      "audit_id": "AUD-V4-09-REPAIR-FREEZE-SELF-VALIDATION-N01",
+      "status": "OPEN"
+    },
+    {
+      "audit_id": "AUD-V4-09-DB-CONSUMER-IDENTITY-N02",
+      "status": "OPEN"
+    }
+  ],
+  "original_protected_bindings": [
+    {
+      "byte_count": 3403,
+      "path": "config/v4_09_field_registry_v1.json",
+      "sha256": "b6208b883ad5cf2e5b33a13cb56dc614177e2443434d93878c003c99240a6229"
+    },
+    {
+      "byte_count": 2751,
+      "path": "config/v4_09_machine_ast_v1.json",
+      "sha256": "9035548e8e33ea66e1c448b63b017cfa9b1ab2bcf7c08ef0568063a2eac954c6"
+    },
+    {
+      "byte_count": 76855,
+      "path": "config/v4_09_machine_vectors_v1.json",
+      "sha256": "73f92db43bc3c5660122fd37dfc29d4c3bd2dfb22aef0dbbd236452083cb2f19"
+    },
+    {
+      "byte_count": 2122,
+      "path": "config/v4_09_mandatory_core_quality_contract_v1.json",
+      "sha256": "2a50c8276eb439e52567d152a008984d9185f51ed107855519b819fab3f0289a"
+    },
+    {
+      "byte_count": 1179,
+      "path": "config/v4_09_parameter_set_v1.json",
+      "sha256": "3c9b0d658c6e8212c5a6239eecdeece99d54791b97cee45fe4df98de71086c24"
+    },
+    {
+      "byte_count": 3774,
+      "path": "config/v4_09_priority_producer_vectors_r1_1.json",
+      "sha256": "71d14a606dcba4b62db0015feea1ed89ff78688d6d9a85d55966d1c803803486"
+    },
+    {
+      "byte_count": 1152,
+      "path": "config/v4_09_priority_provenance_contract_r1_1.json",
+      "sha256": "807114a3572a062557c265fea3a939971936a88e1662ad6ff7c0f56c9e0b6e99"
+    },
+    {
+      "byte_count": 1702,
+      "path": "config/v4_09_stock_prewatch_contract_v1.json",
+      "sha256": "6c090ee9cbc5a7e3c5c86ca9023aa983db41d447388ea1776308a69ecbefadc8"
+    },
+    {
+      "byte_count": 6114,
+      "path": "config/v4_10_input_provenance_r1_1.json",
+      "sha256": "e8f137b918b2d70bf0df3053200ef691971cd8adcb5d271d6e923174ad0f9b3b"
+    },
+    {
+      "byte_count": 917,
+      "path": "config/v4_10_input_schema_r1_1.json",
+      "sha256": "a45e2fd32009b725ed452393c0603d5fe6d41d403fb261ecc03c8dc7c9306ae3"
+    },
+    {
+      "byte_count": 956,
+      "path": "config/v4_10_input_schema_v1.json",
+      "sha256": "6e9c65f80e18e5f0ec4b2b75f1c75a73ddbbf989bf84b3b17cb7cbac3a6a8668"
+    },
+    {
+      "byte_count": 3709,
+      "path": "config/v4_10_machine_ast_r1_1.json",
+      "sha256": "056ace8f427bab62312f35cb61f187a34a40f9b5ddb5dd6f57d620246ff52ac1"
+    },
+    {
+      "byte_count": 3414,
+      "path": "config/v4_10_machine_ast_v1.json",
+      "sha256": "194d8b7e9733816e1048b6e08d29e18ea092641f8ab5281558562b41051d3ebc"
+    },
+    {
+      "byte_count": 3852635,
+      "path": "config/v4_10_machine_vectors_r1_1.json",
+      "sha256": "50284831a4b3ff9abffdcb0fc63cb125b183be1de7312d0a31b32acbb2f7e4eb"
+    },
+    {
+      "byte_count": 270568,
+      "path": "config/v4_10_machine_vectors_v1.json",
+      "sha256": "79d1ee4048f7bc032273760402f051706917b75d3012fcf09894563a65dd0266"
+    },
+    {
+      "byte_count": 2709,
+      "path": "config/v4_10_output_schema_r1_1.json",
+      "sha256": "3d503e904c0c815ad2c6af4d0f52e300ff55745c4ef4febc8bfb7f210872b63c"
+    },
+    {
+      "byte_count": 1881,
+      "path": "config/v4_10_output_schema_v1.json",
+      "sha256": "5199b07beb81d417fbcb86c8961162ce6ac5ad79cc0bceb6d164286096be02b2"
+    },
+    {
+      "byte_count": 435,
+      "path": "config/v4_10_parameter_set_r1_1.json",
+      "sha256": "20b66f9f2d2d4fe6ba8c3dd0583d6fa3d5408daebda09fae7ff27548e800ffd7"
+    },
+    {
+      "byte_count": 435,
+      "path": "config/v4_10_parameter_set_v1.json",
+      "sha256": "20b66f9f2d2d4fe6ba8c3dd0583d6fa3d5408daebda09fae7ff27548e800ffd7"
+    },
+    {
+      "byte_count": 4859,
+      "path": "config/v4_10_research_state_contract_r1_1.json",
+      "sha256": "1a772f0f117f2de7aab71cab3bdfd1405ea23ca5a83acdd692361398cc0b369a"
+    },
+    {
+      "byte_count": 3832,
+      "path": "config/v4_10_research_state_contract_v1.json",
+      "sha256": "bf0ba733785b5fe0e481b2abc7df1323d0ed05276fa4dad3751942df67c4c0ae"
+    },
+    {
+      "byte_count": 3158,
+      "path": "reports/v4_09/V4_09_CLEAN_CHECKOUT_RECEIPT.json",
+      "sha256": "9fa2702f77912f1f0be89389fbc09dc209f96e23fbc07a9db5900c6154fc5f76"
+    },
+    {
+      "byte_count": 3823,
+      "path": "reports/v4_09/V4_09_CLOSURE.md",
+      "sha256": "d87728e935d6f5c79287205a1fc9811f20ab9bdb701ec3e0b203f576ec548505"
+    },
+    {
+      "byte_count": 1838,
+      "path": "reports/v4_09/V4_09_CONTRACT_FREEZE.json",
+      "sha256": "d546c645e57baf5cb76b98dfb1de69ed2e967ecb704147823d97141dd4dcb85f"
+    },
+    {
+      "byte_count": 187,
+      "path": "reports/v4_09/V4_09_DETERMINISM.json",
+      "sha256": "d89692ff6865e913f89f320efe2a99b869751cbee2d8c1cb8c525568834585d9"
+    },
+    {
+      "byte_count": 3811,
+      "path": "reports/v4_09/V4_09_EXTERNAL_REAUDIT_HANDOFF.json",
+      "sha256": "06eaa54d49c417d954b8c5bbfa71e3eabed7da9af1b3d79fb6b41727c1057007"
+    },
+    {
+      "byte_count": 571,
+      "path": "reports/v4_09/V4_09_FEEDBACK_ISOLATION.json",
+      "sha256": "3a6132fb10e017d089d939d532a002f8e1a6a0f7f6e3ec03c1534e39ba51d9cc"
+    },
+    {
+      "byte_count": 243342,
+      "path": "reports/v4_09/V4_09_FULL_MARKET_CANDIDATE.json",
+      "sha256": "f1910612e7e43fa7e603012e9cf006277af0c065f72198876a462c40387add6e"
+    },
+    {
+      "byte_count": 473,
+      "path": "reports/v4_09/V4_09_INDEPENDENT_POSTCHECK.json",
+      "sha256": "3371418f8645450b86b22602aedfe0f6d74341a120d669ecd4d5fddaf21529e2"
+    },
+    {
+      "byte_count": 1947,
+      "path": "reports/v4_09/V4_09_ISOLATED_REGRESSION.json",
+      "sha256": "869b864220f84e7c89a93fbe821e2d5e9822850763e0c783005d73261376d969"
+    },
+    {
+      "byte_count": 248,
+      "path": "reports/v4_09/V4_09_MACHINE_VECTOR_COVERAGE.json",
+      "sha256": "76f8beebf15b10c449a1548122daf2d9add6ef4bc8bfed270f05dc5df98aa98f"
+    },
+    {
+      "byte_count": 1349,
+      "path": "reports/v4_09/V4_09_MULTI_CONTEXT_GENERALIZATION.json",
+      "sha256": "ddfd8f0a7479993aff46d168d7025c9baf3841580de5b555dd53efa21bcf702e"
+    },
+    {
+      "byte_count": 705883,
+      "path": "reports/v4_09/V4_09_NO_SYMBOL_SPECIFIC_SYSTEM_LOGIC_SCAN.json",
+      "sha256": "778e76d0e4f839c8af832d2d1a846b492a4615eebd9827c8e99139f6af6cbf04"
+    },
+    {
+      "byte_count": 3673,
+      "path": "reports/v4_09/V4_09_PARAMETER_BINDING.json",
+      "sha256": "4b8c4b675db6df70e74e32bf213c38ac09686d38a3f6dd4695025a83ac671133"
+    },
+    {
+      "byte_count": 810,
+      "path": "reports/v4_09/V4_09_R1_1_ARTIFACT_IMMUTABILITY.json",
+      "sha256": "493e8d094ff441775b51e485df198a6cbf3ba7582fde9d581ffe00fe738afc96"
+    },
+    {
+      "byte_count": 3985,
+      "path": "reports/v4_09/V4_09_R1_1_CLEAN_CHECKOUT_RECEIPT.json",
+      "sha256": "98791bcd724b2f96545ae74a166eddb09b755204b7f2325a9ae8fa125a588978"
+    },
+    {
+      "byte_count": 4834,
+      "path": "reports/v4_09/V4_09_R1_1_CLOSURE.md",
+      "sha256": "4f92570a49053c6b2b30a2f3081b7d2b628be2faa7dcd9c640b03f856561962e"
+    },
+    {
+      "byte_count": 187,
+      "path": "reports/v4_09/V4_09_R1_1_DETERMINISM.json",
+      "sha256": "2c94d03233a9a73eb6000637fac1c380815cadfe9fc8973f670fc078be7361dd"
+    },
+    {
+      "byte_count": 5695,
+      "path": "reports/v4_09/V4_09_R1_1_EXTERNAL_REAUDIT_HANDOFF.json",
+      "sha256": "7aa8051a8fe6ac28b8c4b6a445a154f87930288fb6cb0e3e1f8408c0c65c9232"
+    },
+    {
+      "byte_count": 571,
+      "path": "reports/v4_09/V4_09_R1_1_FEEDBACK_ISOLATION.json",
+      "sha256": "a37b1a141cec115a412797024c5478d16ee292bc603f2433847ef008e15ec91d"
+    },
+    {
+      "byte_count": 243615,
+      "path": "reports/v4_09/V4_09_R1_1_FULL_MARKET_CANDIDATE.json",
+      "sha256": "a9b74b90b12ea62837e9a229b5bee186dafeb10a6225162f46da8d8d1c484f3b"
+    },
+    {
+      "byte_count": 473,
+      "path": "reports/v4_09/V4_09_R1_1_INDEPENDENT_POSTCHECK.json",
+      "sha256": "b924145040be6b7572018d6a3fd87af5251f81785ff540f9e4aea6032f2ff52a"
+    },
+    {
+      "byte_count": 1949,
+      "path": "reports/v4_09/V4_09_R1_1_ISOLATED_REGRESSION.json",
+      "sha256": "f03cbd8ccf815726bece88a25c59e2815c087ecac9bd085438533e6d858c019e"
+    },
+    {
+      "byte_count": 248,
+      "path": "reports/v4_09/V4_09_R1_1_MACHINE_VECTOR_COVERAGE.json",
+      "sha256": "76f8beebf15b10c449a1548122daf2d9add6ef4bc8bfed270f05dc5df98aa98f"
+    },
+    {
+      "byte_count": 5747,
+      "path": "reports/v4_09/V4_09_R1_1_MATERIALIZED_MULTI_CONTEXT.json",
+      "sha256": "826ac3c3dbae521ae89acf35d9245eeffb6ec6defc799bdfef99caab36d91fa2"
+    },
+    {
+      "byte_count": 1349,
+      "path": "reports/v4_09/V4_09_R1_1_MULTI_CONTEXT_GENERALIZATION.json",
+      "sha256": "d6e729b688eda811fd4e9cbe1ddd1d82f856b09a30a6f424444170c18d3d8fbf"
+    },
+    {
+      "byte_count": 716361,
+      "path": "reports/v4_09/V4_09_R1_1_NO_SYMBOL_SPECIFIC_SYSTEM_LOGIC_SCAN.json",
+      "sha256": "98e78ee7c1cadd7691833f6058f8570e5414d04318b077d73a8185867cc13e66"
+    },
+    {
+      "byte_count": 3673,
+      "path": "reports/v4_09/V4_09_R1_1_PARAMETER_BINDING.json",
+      "sha256": "4b8c4b675db6df70e74e32bf213c38ac09686d38a3f6dd4695025a83ac671133"
+    },
+    {
+      "byte_count": 7953,
+      "path": "reports/v4_09/V4_09_R1_1_PRIORITY_PRODUCER_CONTRACT_GATE.json",
+      "sha256": "06c1fd9646a9fac68db7be08694b165bbf806dd7746b80afab37e38bc5490b40"
+    },
+    {
+      "byte_count": 2683,
+      "path": "reports/v4_09/V4_09_R1_1_REPAIR_CONTRACT_FREEZE.json",
+      "sha256": "baabb97bae5973eaa88f215a37d79fa58a20fc6a4147f218a4288bab08775fdc"
+    },
+    {
+      "byte_count": 7438,
+      "path": "reports/v4_09/V4_09_R1_1_SCHEMA_MIGRATION_RECEIPT.json",
+      "sha256": "9eb44326f4126b3b959c57abed23a9e72693784db5e735d6af33703c57fcea05"
+    },
+    {
+      "byte_count": 15176,
+      "path": "reports/v4_09/V4_09_R1_1_STAGE_CANDIDATE_MANIFEST.json",
+      "sha256": "3e9e2a95dd29bddcbd2d2d5b5197f8833a2ecf0d0c1e440ed9af7054d2b23cfa"
+    },
+    {
+      "byte_count": 503,
+      "path": "reports/v4_09/V4_09_R1_1_STAGE_ENTRY.md",
+      "sha256": "ddb159c6e764219d29a9992c024f8aed3f164a4941dcde753c3a2b1363b0ea3f"
+    },
+    {
+      "byte_count": 7437,
+      "path": "reports/v4_09/V4_09_SCHEMA_MIGRATION_RECEIPT.json",
+      "sha256": "5e165b9002f6390ea24355dd68888e4daf0b721794cd284feddaf4b7e22c2021"
+    },
+    {
+      "byte_count": 11583,
+      "path": "reports/v4_09/V4_09_STAGE_CANDIDATE_MANIFEST.json",
+      "sha256": "0517eb2fca2e659de07dfee5d0850fbffc78d8614db11bf35b0e4272fa129ec8"
+    },
+    {
+      "byte_count": 482,
+      "path": "reports/v4_09/V4_09_STAGE_ENTRY.md",
+      "sha256": "3fb6682232e3bfb9a91a9066d6aa392284fc79cb6b19568d776fb4d74be5c7b7"
+    },
+    {
+      "byte_count": 2321,
+      "path": "reports/v4_10/V4_10_CLEAN_CHECKOUT_RECEIPT.json",
+      "sha256": "36fcae7f0beec0352ee7109be5eacb5245ccad248146e80e017f23abf30cf21f"
+    },
+    {
+      "byte_count": 5472,
+      "path": "reports/v4_10/V4_10_CLOSURE.md",
+      "sha256": "3bdfad55f608ba5439c139c7812e0c2958c6d5e84f77352ea579533e342ea5c8"
+    },
+    {
+      "byte_count": 1996,
+      "path": "reports/v4_10/V4_10_CONTRACT_FREEZE.json",
+      "sha256": "2e331489a9540f776c108f3498daa2725a83136774e819b6ef0c50565f6d49fd"
+    },
+    {
+      "byte_count": 2759,
+      "path": "reports/v4_10/V4_10_EXTERNAL_REAUDIT_HANDOFF.json",
+      "sha256": "29d46ea492393b331294094576a5182473681b98e56fc00519deb870bf559c2a"
+    },
+    {
+      "byte_count": 12669,
+      "path": "reports/v4_10/V4_10_INDEPENDENT_POSTCHECK.json",
+      "sha256": "c04a332bef2298ed6696bb4b77a33f7c750461c9eba65ca4f3a09d7724eb3648"
+    },
+    {
+      "byte_count": 2604,
+      "path": "reports/v4_10/V4_10_ISOLATED_REGRESSION.json",
+      "sha256": "efcdb01584487bafa561fd5b8c77c836fefd2effe096fd0db2e482c6c1334f02"
+    },
+    {
+      "byte_count": 6503,
+      "path": "reports/v4_10/V4_10_MACHINE_VECTOR_COVERAGE.json",
+      "sha256": "7a4f0bc2e47e97611f52d0e2dfa7765f073e102d09cd830b86f7730e0033ecbc"
+    },
+    {
+      "byte_count": 726710,
+      "path": "reports/v4_10/V4_10_NO_SYMBOL_SPECIFIC_SYSTEM_LOGIC_SCAN.json",
+      "sha256": "89153aaa57d0286014a6556b93f95ed0a37f30f21802792fd2d5a0d2ddd2c696"
+    },
+    {
+      "byte_count": 2287,
+      "path": "reports/v4_10/V4_10_R1_1_CLEAN_CHECKOUT_RECEIPT.json",
+      "sha256": "f28eeb700fda732bd2e18b34afe05e0ca126957f77913a95258adcc306f71863"
+    },
+    {
+      "byte_count": 3343,
+      "path": "reports/v4_10/V4_10_R1_1_CLOSURE.md",
+      "sha256": "2723786b325f446885d3efddbf94bb34c96da6ac750d51ad6bafc757ce5b7067"
+    },
+    {
+      "byte_count": 3506,
+      "path": "reports/v4_10/V4_10_R1_1_CONTRACT_FREEZE.json",
+      "sha256": "21c1c57b4e8ae5d6f8739af9bc6cf09c2b3c9f91b61d70c4869dbf85d2a84d97"
+    },
+    {
+      "byte_count": 1838,
+      "path": "reports/v4_10/V4_10_R1_1_EXTERNAL_REAUDIT_HANDOFF.json",
+      "sha256": "b5367766d849d897ae6738e62e15ec14effefa30f3e85ce70222814b2bd03adb"
+    },
+    {
+      "byte_count": 615365,
+      "path": "reports/v4_10/V4_10_R1_1_INDEPENDENT_POSTCHECK.json",
+      "sha256": "4c49779b060dd2c5f4443e4cab6e93cfa0b0554a1927c4c946cfa1a2aaaed717"
+    },
+    {
+      "byte_count": 34502,
+      "path": "reports/v4_10/V4_10_R1_1_INPUT_MANIFEST_SHAPE_ACCEPTANCE.json",
+      "sha256": "8f3a9a99271e0330643d1bf618563376010a39d7240d7492e215b8a8fdc1f6ea"
+    },
+    {
+      "byte_count": 83745,
+      "path": "reports/v4_10/V4_10_R1_1_INPUT_PROVENANCE_ACCEPTANCE.json",
+      "sha256": "86b2695996c69929161b1f879bec336ee5b01934345353bde1053e4f41ed8ed3"
+    },
+    {
+      "byte_count": 2461,
+      "path": "reports/v4_10/V4_10_R1_1_ISOLATED_REGRESSION.json",
+      "sha256": "057bca5211d7049b0de6758ddfc4a6eb840ae5f4356d36b3e4ed0f16a4f9e71f"
+    },
+    {
+      "byte_count": 13455,
+      "path": "reports/v4_10/V4_10_R1_1_MACHINE_VECTOR_COVERAGE.json",
+      "sha256": "4e889e853db49ed02e635803ad2a55052b02b3dfbbbf6b6796a0629ced0f89d8"
+    },
+    {
+      "byte_count": 36973,
+      "path": "reports/v4_10/V4_10_R1_1_MODEL_BOUNDARY_ACCEPTANCE.json",
+      "sha256": "e0c982556d8e895982d13f1a29f216bcb99d46b5d9b6209cf8f62c46aa46b8e5"
+    },
+    {
+      "byte_count": 734564,
+      "path": "reports/v4_10/V4_10_R1_1_NO_SYMBOL_SPECIFIC_SYSTEM_LOGIC_SCAN.json",
+      "sha256": "03ddeb5765c996299fecac4bca2934844cf72aee712ee59dfa070ff5782dccbf"
+    },
+    {
+      "byte_count": 46886,
+      "path": "reports/v4_10/V4_10_R1_1_PRIOR_LINEAGE_ACCEPTANCE.json",
+      "sha256": "1e4bbbab6c50c9279bddadc6cdfd363f998c534724bb6fdb8dd4095d3bd10731"
+    },
+    {
+      "byte_count": 10223,
+      "path": "reports/v4_10/V4_10_R1_1_SCHEMA_MIGRATION_RECEIPT.json",
+      "sha256": "b03d8ca695b1f72d792b0c64d4bb362ec5ce42eaaa25b8bbbdf004538b3e8b0d"
+    },
+    {
+      "byte_count": 76278,
+      "path": "reports/v4_10/V4_10_R1_1_STAGE_CANDIDATE_MANIFEST.json",
+      "sha256": "58951545202c0f0eab9bf573f726f48cb5e9c51ee6326b37cdaec9cc9912b01a"
+    },
+    {
+      "byte_count": 7856,
+      "path": "reports/v4_10/V4_10_SCHEMA_MIGRATION_RECEIPT.json",
+      "sha256": "84ee78323cf348cdc3cf70e3a7442ae28df28032853d29a80c03419a6c850396"
+    },
+    {
+      "byte_count": 11810,
+      "path": "reports/v4_10/V4_10_STAGE_CANDIDATE_MANIFEST.json",
+      "sha256": "e2a255120f0bf10e3c584ed35ac5189fcbf425d1f9e45ba40d3edc2219580b56"
+    },
+    {
+      "byte_count": 1236,
+      "path": "reports/v4_10/V4_10_STAGE_ENTRY.md",
+      "sha256": "e10853b1991f2c04877fd6b3cb07f2f06d359da1a9eced4c8e9336043ee0e2ef"
+    },
+    {
+      "byte_count": 19695,
+      "path": "src/v4/stock_prewatch.py",
+      "sha256": "9c8a5d11219199e1b93ab5efccc34b1b586624aadd3b58348fd48274aa7f84a4"
+    },
+    {
+      "byte_count": 5849,
+      "path": "src/workbench_db/migrations/v4_postgres/022_v4_10_research_state_interface.sql",
+      "sha256": "cfa37902a75b100e05813e3fb0b63e3884bf369d4c1913067e5714eb9004a732"
+    },
+    {
+      "byte_count": 19217,
+      "path": "src/workbench_db/migrations/v4_postgres/023_v4_10_research_state_lineage_hardening.sql",
+      "sha256": "e308a42738d32a8a02dd4c1859a1e5de3d561044ca148bd13949932113a3a97b"
+    },
+    {
+      "byte_count": 166,
+      "path": "src/workbench_db/migrations/v4_postgres/rollback/022_v4_10_research_state_interface.sql",
+      "sha256": "3e1a8c934c57f34d159110bde5555759ad6fa852847529981d8df4687c920823"
+    },
+    {
+      "byte_count": 1060,
+      "path": "src/workbench_db/migrations/v4_postgres/rollback/023_v4_10_research_state_lineage_hardening.sql",
+      "sha256": "f688d9c408a6a6fe272124a48987a8dbb8d23f2f6b74d1d1b500d42a226a5190"
+    }
+  ],
+  "production_permission": false,
+  "protected_head_bindings": [
+    {
+      "byte_count": 11474,
+      "path": "data/v4/V4_09_ACCEPTED_HEAD.json",
+      "sha256": "641ef9e2e6fe8f461a9b765262e739791a6d3fdd220b0eff7947e2690de3a87d"
+    },
+    {
+      "byte_count": 7562,
+      "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+      "sha256": "f7607601de402f2b2bdada84dffdefbacad7f9f66e252c57dfdf045060e90e99"
+    },
+    {
+      "byte_count": 2478,
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0"
+    },
+    {
+      "byte_count": 602,
+      "path": "data/v4/V4_DEV_BASELINE_HEAD.json",
+      "sha256": "45695460b0147c6ada12e0ebd8e5070ac0a45eebea26603ff5a3daddc4dd5094"
+    },
+    {
+      "byte_count": 2151,
+      "path": "data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json",
+      "sha256": "d6374a73b8084ccd383cbb4f75428ed91176e91cc09d87c3329041d57c5bd9ed"
+    }
+  ],
+  "protected_original_git_tree": {
+    "baseline_commit": "db6319856468c6788c9dd656da3992e569a64572",
+    "changed_paths": [],
+    "paths": [
+      "config/v4_09_field_registry_v1.json",
+      "config/v4_09_machine_ast_v1.json",
+      "config/v4_09_machine_vectors_v1.json",
+      "config/v4_09_mandatory_core_quality_contract_v1.json",
+      "config/v4_09_parameter_set_v1.json",
+      "config/v4_09_priority_producer_vectors_r1_1.json",
+      "config/v4_09_priority_provenance_contract_r1_1.json",
+      "config/v4_09_stock_prewatch_contract_v1.json",
+      "config/v4_10_input_provenance_r1_1.json",
+      "config/v4_10_input_schema_r1_1.json",
+      "config/v4_10_input_schema_v1.json",
+      "config/v4_10_machine_ast_r1_1.json",
+      "config/v4_10_machine_ast_v1.json",
+      "config/v4_10_machine_vectors_r1_1.json",
+      "config/v4_10_machine_vectors_v1.json",
+      "config/v4_10_output_schema_r1_1.json",
+      "config/v4_10_output_schema_v1.json",
+      "config/v4_10_parameter_set_r1_1.json",
+      "config/v4_10_parameter_set_v1.json",
+      "config/v4_10_research_state_contract_r1_1.json",
+      "config/v4_10_research_state_contract_v1.json",
+      "data/v4/V4_01_ACCEPTED_HEAD.json",
+      "data/v4/V4_01_ACCEPTED_HEAD_CANDIDATE.json",
+      "data/v4/V4_01_GO_FORWARD_IDENTITY_ACCEPTED_HEAD_R1.json",
+      "data/v4/V4_01_GO_FORWARD_IDENTITY_CANDIDATE_HEAD_R1.json",
+      "data/v4/V4_02_ACCEPTED_HEAD.json",
+      "data/v4/V4_02_GO_FORWARD_CALENDAR_EXTENSION_ACCEPTED_HEAD_R1.json",
+      "data/v4/V4_02_GO_FORWARD_CALENDAR_EXTENSION_CANDIDATE_HEAD_R1.json",
+      "data/v4/V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD.json",
+      "data/v4/V4_03_ACCEPTED_HEAD.json",
+      "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+      "data/v4/V4_04_ACCEPTED_HEAD.json",
+      "data/v4/V4_05_ACCEPTED_HEAD.json",
+      "data/v4/V4_06_ACCEPTED_HEAD.json",
+      "data/v4/V4_07_ACCEPTED_HEAD.json",
+      "data/v4/V4_08_ACCEPTED_HEAD.json",
+      "data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json",
+      "data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json",
+      "data/v4/V4_08_PIT_MEMBERSHIP_CANDIDATE_HEAD_R1.json",
+      "data/v4/V4_09_ACCEPTED_HEAD.json",
+      "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "data/v4/V4_DEV_BASELINE_HEAD.json",
+      "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+      "data/v4/artifact_store/v4_01/security_entity_map_GO_FORWARD_20260930_ACCEPTED_R1.json",
+      "data/v4/artifact_store/v4_01/security_entity_map_GO_FORWARD_20260930_R1.json",
+      "data/v4/artifact_store/v4_01/security_entity_map_R5_20260925.json",
+      "data/v4/artifact_store/v4_01/security_entity_map_R7_20260927.json",
+      "data/v4/artifact_store/v4_01/v4_01_historical_universe_required_R7_20260927.jsonl.gz",
+      "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet",
+      "data/v4/artifact_store/v4_02/V4_02_DATED_TRADING_STATUS_R7_20260927.jsonl.gz",
+      "data/v4/artifact_store/v4_02/V4_02_FORMAL_MONTHLY_RAW_QFQ_R7_20260927.parquet",
+      "data/v4/artifact_store/v4_02/V4_02_FORMAL_WEEKLY_RAW_QFQ_R7_20260927.parquet",
+      "data/v4/artifact_store/v4_02/V4_02_PRICE_LIMIT_R4_20260927.jsonl.gz",
+      "data/v4/artifact_store/v4_02/V4_02_PRICE_LIMIT_R5_20260927.jsonl.gz",
+      "data/v4/artifact_store/v4_02/V4_02_PRICE_LIMIT_R6_20260927.jsonl.gz",
+      "data/v4/artifact_store/v4_02/market_calendar_GO_FORWARD_20260930_R1.json",
+      "data/v4/artifact_store/v4_08/V4_08_PIT_MEMBERSHIP_FACTS_20260930_R1.jsonl.gz",
+      "data/v4/artifact_store/v4_08/V4_08_PIT_SNAPSHOT_20260930_R1.json",
+      "data/v4/artifact_store/v4_08/V4_08_PIT_SOURCE_REVISION_20260930_R1.json",
+      "data/v4/artifact_store/v4_08/V4_08_R5_B0_20260930_17fe0b83a55f52d66016.jsonl.gz",
+      "data/v4/artifact_store/v4_08/V4_08_R5_B0_20260930_3c722da3453a5350930e.jsonl.gz",
+      "data/v4/artifact_store/v4_08/V4_08_R5_B0_20260930_61de700ad555b4ef9c62.jsonl.gz",
+      "data/v4/artifact_store/v4_08/V4_08_R5_B0_20260930_75392db3cf036a9498b1.jsonl.gz",
+      "data/v4/artifact_store/v4_08/V4_08_R5_B0_20260930_87447ccd136d152b8372.jsonl.gz",
+      "data/v4/artifact_store/v4_08/V4_08_R5_B0_20260930_9235367ceea9bd5f4c62.jsonl.gz",
+      "data/v4/artifact_store/v4_08/V4_08_R5_B0_20260930_bb8d0c0929f531e8cddf.jsonl.gz",
+      "data/v4/artifact_store/v4_08/V4_08_R5_B0_20260930_ce3b9ede6ec4d0e94ed6.jsonl.gz",
+      "data/v4/artifact_store/v4_08/V4_08_R5_B0_20260930_dbd6affe7d50614f2445.jsonl.gz",
+      "data/v4/artifact_store/v4_08/V4_08_R5_B0_20260930_f5fb952409aaeae88929.jsonl.gz",
+      "data/v4/artifact_store/v4_08/V4_08_R5_B2_20260930_17fe0b83a55f52d66016.jsonl.gz",
+      "data/v4/artifact_store/v4_08/V4_08_R5_B2_20260930_3c722da3453a5350930e.jsonl.gz",
+      "data/v4/artifact_store/v4_08/V4_08_R5_B2_20260930_61de700ad555b4ef9c62.jsonl.gz",
+      "data/v4/artifact_store/v4_08/V4_08_R5_B2_20260930_75392db3cf036a9498b1.jsonl.gz",
+      "data/v4/artifact_store/v4_08/V4_08_R5_B2_20260930_87447ccd136d152b8372.jsonl.gz",
+      "data/v4/artifact_store/v4_08/V4_08_R5_B2_20260930_9235367ceea9bd5f4c62.jsonl.gz",
+      "data/v4/artifact_store/v4_08/V4_08_R5_B2_20260930_bb8d0c0929f531e8cddf.jsonl.gz",
+      "data/v4/artifact_store/v4_08/V4_08_R5_B2_20260930_ce3b9ede6ec4d0e94ed6.jsonl.gz",
+      "data/v4/artifact_store/v4_08/V4_08_R5_B2_20260930_dbd6affe7d50614f2445.jsonl.gz",
+      "data/v4/artifact_store/v4_08/V4_08_R5_B2_20260930_f5fb952409aaeae88929.jsonl.gz",
+      "data/v4/artifact_store/v4_08/V4_08_R5_ROTATION_20260930_17fe0b83a55f52d66016.jsonl.gz",
+      "data/v4/artifact_store/v4_08/V4_08_R5_ROTATION_20260930_3c722da3453a5350930e.jsonl.gz",
+      "data/v4/artifact_store/v4_08/V4_08_R5_ROTATION_20260930_61de700ad555b4ef9c62.jsonl.gz",
+      "data/v4/artifact_store/v4_08/V4_08_R5_ROTATION_20260930_75392db3cf036a9498b1.jsonl.gz",
+      "data/v4/artifact_store/v4_08/V4_08_R5_ROTATION_20260930_87447ccd136d152b8372.jsonl.gz",
+      "data/v4/artifact_store/v4_08/V4_08_R5_ROTATION_20260930_9235367ceea9bd5f4c62.jsonl.gz",
+      "data/v4/artifact_store/v4_08/V4_08_R5_ROTATION_20260930_bb8d0c0929f531e8cddf.jsonl.gz",
+      "data/v4/artifact_store/v4_08/V4_08_R5_ROTATION_20260930_ce3b9ede6ec4d0e94ed6.jsonl.gz",
+      "data/v4/artifact_store/v4_08/V4_08_R5_ROTATION_20260930_dbd6affe7d50614f2445.jsonl.gz",
+      "data/v4/artifact_store/v4_08/V4_08_R5_ROTATION_20260930_f5fb952409aaeae88929.jsonl.gz",
+      "data/v4/artifact_store/v4_08/V4_08_R5_SECTOR_NATIVE_20260930_17fe0b83a55f52d66016.jsonl.gz",
+      "data/v4/artifact_store/v4_08/V4_08_R5_SECTOR_NATIVE_20260930_3c722da3453a5350930e.jsonl.gz",
+      "data/v4/artifact_store/v4_08/V4_08_R5_SECTOR_NATIVE_20260930_61de700ad555b4ef9c62.jsonl.gz",
+      "data/v4/artifact_store/v4_08/V4_08_R5_SECTOR_NATIVE_20260930_75392db3cf036a9498b1.jsonl.gz",
+      "data/v4/artifact_store/v4_08/V4_08_R5_SECTOR_NATIVE_20260930_87447ccd136d152b8372.jsonl.gz",
+      "data/v4/artifact_store/v4_08/V4_08_R5_SECTOR_NATIVE_20260930_9235367ceea9bd5f4c62.jsonl.gz",
+      "data/v4/artifact_store/v4_08/V4_08_R5_SECTOR_NATIVE_20260930_bb8d0c0929f531e8cddf.jsonl.gz",
+      "data/v4/artifact_store/v4_08/V4_08_R5_SECTOR_NATIVE_20260930_ce3b9ede6ec4d0e94ed6.jsonl.gz",
+      "data/v4/artifact_store/v4_08/V4_08_R5_SECTOR_NATIVE_20260930_dbd6affe7d50614f2445.jsonl.gz",
+      "data/v4/artifact_store/v4_08/V4_08_R5_SECTOR_NATIVE_20260930_f5fb952409aaeae88929.jsonl.gz",
+      "data/v4/artifact_store/v4_09/V4_09_STOCK_PREWATCH_2026-09-28_edb35a7b7aa382add631d80d105575c00274b638cef112b58e7e2687510e9a6e.jsonl.gz",
+      "data/v4/artifact_store/v4_09/V4_09_STOCK_PREWATCH_CANDIDATE.jsonl.gz",
+      "data/v4/artifact_store/v4_09/r1_1_contract_vectors/V4_09_STOCK_PREWATCH_2030-01-02_2ec5e20e049287d5bfeaad6ab837ac03a17014d43421b3b9737faf242173b35d.jsonl.gz",
+      "data/v4/artifact_store/v4_09/r1_1_contract_vectors/V4_09_STOCK_PREWATCH_2030-01-02_ddb29bd91d0d0fe044c5b8f2d1aab3ce14749d0018653cd79e8315c32c75d67c.jsonl.gz",
+      "data/v4/artifact_store/v4_09/r1_1_contract_vectors/V4_09_STOCK_PREWATCH_2030-01-03_65c0a99a0e0ae828e2f0a1a67564bcba4c0922a79382b35ce6aa8ba1b963b490.jsonl.gz",
+      "data/v4/bootstrap/V4_DM01_BOOTSTRAP_MANIFEST_R1.json",
+      "data/v4/bootstrap/dated_security_alias_r7.jsonl",
+      "data/v4/bootstrap/special_phase_source_requests_r4.jsonl",
+      "data/v4/bootstrap/special_price_phase_events_r4.jsonl",
+      "data/v4/candidate_calendars/V4_02_MARKET_CALENDAR_20230704_20260924_V2/build_receipt.json",
+      "data/v4/candidate_calendars/V4_02_MARKET_CALENDAR_20230704_20260924_V2/calendar_sse_20230704_20260924.json",
+      "data/v4/candidate_calendars/V4_02_MARKET_CALENDAR_20230704_20260924_V2/calendar_szse_20230704_20260924.json",
+      "data/v4/candidate_calendars/capture_20260926T064500Z/build_receipt.json",
+      "data/v4/candidate_calendars/capture_20260926T064500Z/calendar_sse_2024_2026.json",
+      "data/v4/candidate_calendars/capture_20260926T064500Z/calendar_szse_2024_2026.json",
+      "data/v4/canonical/V4_02_RAW_SELECTED_20260924_062040Z/source_manifest.json",
+      "data/v4/canonical/V4_02_RAW_SELECTED_20260924_062040Z/stage_receipt.json",
+      "data/v4/local_tdx_snapshots/1644752b002fdeb4f3d3a2968b9c77729f27efcdae8923ad14d814abe5c78c70/snapshot_manifest.json",
+      "data/v4/source_evidence/calendar_amendments_2026/capture_20260926T071911Z/capture_manifest.json",
+      "data/v4/source_evidence/calendar_amendments_2026/capture_20260926T071911Z/sse_2026_dragon_boat.html",
+      "data/v4/source_evidence/calendar_amendments_2026/capture_20260926T071911Z/sse_2026_labor_day.html",
+      "data/v4/source_evidence/calendar_amendments_2026/capture_20260926T071911Z/sse_2026_mid_autumn_national_day.html",
+      "data/v4/source_evidence/calendar_amendments_2026/capture_20260926T071911Z/sse_2026_qingming.html",
+      "data/v4/source_evidence/calendar_amendments_2026/capture_20260926T071911Z/sse_2026_spring_festival.html",
+      "data/v4/source_evidence/calendar_amendments_2026/capture_20260926T071911Z/szse_2026_labor_day.html",
+      "data/v4/source_evidence/calendar_amendments_2026/capture_20260926T071911Z/szse_2026_mid_autumn_national_day.html",
+      "data/v4/source_evidence/calendar_amendments_2026/capture_20260926T071911Z/szse_2026_spring_festival.html",
+      "data/v4/source_evidence/official_calendar_v1/capture_20260926T064500Z/closures_sse_2024.html",
+      "data/v4/source_evidence/official_calendar_v1/capture_20260926T064500Z/closures_sse_2025.html",
+      "data/v4/source_evidence/official_calendar_v1/capture_20260926T064500Z/closures_sse_2026.html",
+      "data/v4/source_evidence/official_calendar_v1/capture_20260926T064500Z/closures_szse_2024.html",
+      "data/v4/source_evidence/official_calendar_v1/capture_20260926T064500Z/closures_szse_2025.html",
+      "data/v4/source_evidence/official_calendar_v1/capture_20260926T064500Z/closures_szse_2026.html",
+      "data/v4/source_evidence/official_calendar_v1/capture_20260926T064500Z/rule_sse_2024-01-01_1.html",
+      "data/v4/source_evidence/official_calendar_v1/capture_20260926T064500Z/rule_sse_2026-07-06_2.html",
+      "data/v4/source_evidence/official_calendar_v1/capture_20260926T064500Z/rule_szse_2024-01-01_3.html",
+      "data/v4/source_evidence/official_calendar_v1/capture_20260926T064500Z/rule_szse_2026-07-06_4.html",
+      "data/v4/source_evidence/official_calendar_v1/capture_20260926T064500Z/source_capture_manifest.json",
+      "data/v4/source_evidence/official_calendar_v2_2023_h2/capture_20260926T094807Z/capture_manifest.json",
+      "data/v4/source_evidence/official_calendar_v2_2023_h2/capture_20260926T094807Z/closures_sse_2023.html",
+      "data/v4/source_evidence/official_calendar_v2_2023_h2/capture_20260926T094807Z/closures_szse_2023.html",
+      "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T020810Z/query_manifest.json",
+      "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T020810Z/sh_01_page_01.json",
+      "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T020810Z/sh_02_page_01.json",
+      "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T020810Z/sh_03_page_01.json",
+      "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T020810Z/sh_04_page_01.json",
+      "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T020810Z/sh_05_page_01.json",
+      "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T020810Z/sh_06_page_01.json",
+      "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T020810Z/sz_07_page_01.json",
+      "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T020810Z/sz_08_page_01.json",
+      "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T020810Z/sz_09_page_01.json",
+      "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T020810Z/sz_10_page_01.json",
+      "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T020810Z/sz_11_page_01.json",
+      "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T020810Z/sz_12_page_01.json",
+      "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T020810Z/warmup_response.bin",
+      "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T020843Z/query_manifest.json",
+      "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T020843Z/sh_01_page_01.json",
+      "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T020843Z/sh_02_page_01.json",
+      "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T020843Z/sh_03_page_01.json",
+      "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T020843Z/sh_04_page_01.json",
+      "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T020843Z/sh_05_page_01.json",
+      "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T020843Z/sh_06_page_01.json",
+      "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T020843Z/sz_07_page_01.json",
+      "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T020843Z/sz_08_page_01.json",
+      "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T020843Z/sz_09_page_01.json",
+      "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T020843Z/sz_10_page_01.json",
+      "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T020843Z/sz_11_page_01.json",
+      "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T020843Z/sz_12_page_01.json",
+      "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T020843Z/warmup_response.bin",
+      "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T022044Z/query_manifest.json",
+      "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T022044Z/sh_01_page_01.json",
+      "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T022044Z/sh_02_page_01.json",
+      "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T022044Z/sh_03_page_01.json",
+      "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T022044Z/sh_04_page_01.json",
+      "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T022044Z/sh_05_page_01.json",
+      "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T022044Z/sh_06_page_01.json",
+      "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T022044Z/sz_07_page_01.json",
+      "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T022044Z/sz_08_page_01.json",
+      "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T022044Z/sz_09_page_01.json",
+      "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T022044Z/sz_10_page_01.json",
+      "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T022044Z/sz_11_page_01.json",
+      "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T022044Z/sz_12_page_01.json",
+      "data/v4/source_evidence/official_code_change_event_index/cninfo_search/20260928T022044Z/warmup_response.bin",
+      "data/v4/source_evidence/official_code_change_event_index/coverage_receipt_v1.json",
+      "data/v4/source_evidence/official_code_change_event_index/official_security_code_change_events_v1.jsonl",
+      "data/v4/source_evidence/v4_01/security_alias_board_repair_r7_contract_v1.json",
+      "data/v4/source_evidence/v4_01_source_fingerprint_validation_20260929/cninfo_2015_01_26_000562_absorption_000166.pdf",
+      "data/v4/source_evidence/v4_01_source_fingerprint_validation_20260929/cninfo_2015_annual_001979_absorption_000024.pdf",
+      "data/v4/source_evidence/v4_01_source_fingerprint_validation_20260929/szse_2018_12_26_000022_to_001872.pdf",
+      "data/v4/source_evidence/v4_02_r3/sse_2023_trade_rule.html",
+      "data/v4/source_evidence/v4_02_r3/sse_2026_rule.html",
+      "data/v4/source_evidence/v4_02_r3/sse_star_2019_qa.html",
+      "data/v4/source_evidence/v4_02_r3/sse_star_2026_notice.html",
+      "data/v4/source_evidence/v4_02_r3/szse_2023_trade_rule_notice.html",
+      "data/v4/source_evidence/v4_02_r3/szse_2025_028_code_change_302132.pdf",
+      "data/v4/source_evidence/v4_02_r3/szse_2026_st_notice.html",
+      "data/v4/source_evidence/v4_02_r3/szse_2026_trade_rule.pdf",
+      "data/v4/source_evidence/v4_02_r4/SH_600190_2025-06-30_delisting_phase.pdf",
+      "data/v4/source_evidence/v4_02_r4/SH_600225_2025-02-07_delisting_phase.pdf",
+      "data/v4/source_evidence/v4_02_r4/SH_600306_2024-05-29_delisting_phase.pdf",
+      "data/v4/source_evidence/v4_02_r4/SH_600387_2025-06-16_delisting_phase.pdf",
+      "data/v4/source_evidence/v4_02_r4/SH_600462_2025-06-24_delisting_phase.pdf",
+      "data/v4/source_evidence/v4_02_r4/SH_600696_2026-06-01_delisting_phase.pdf",
+      "data/v4/source_evidence/v4_02_r4/SH_600804_2025-06-10_delisting_phase.pdf",
+      "data/v4/source_evidence/v4_02_r4/SZ_000622_2025-06-25_delisting_phase.pdf",
+      "data/v4/source_evidence/v4_02_r4/SZ_000996_2024-06-06_delisting_phase.pdf",
+      "data/v4/source_evidence/v4_02_r4/SZ_002087_2024-06-06_delisting_phase.pdf",
+      "data/v4/source_evidence/v4_02_r4/SZ_002089_2024-03-26_delisting_phase.pdf",
+      "data/v4/source_evidence/v4_02_r4/SZ_002336_2025-06-13_delisting_phase.pdf",
+      "data/v4/source_evidence/v4_02_r4/SZ_002433_2024-06-14_delisting_phase.pdf",
+      "data/v4/source_evidence/v4_02_r4/SZ_002750_2025-06-06_delisting_phase.pdf",
+      "data/v4/source_evidence/v4_02_r4/SZ_002808_2026-06-23_delisting_phase.pdf",
+      "data/v4/source_evidence/v4_02_r4/SZ_300208_2025-06-30_delisting_phase.pdf",
+      "data/v4/source_evidence/v4_02_r4/SZ_300280_2025-09-15_delisting_phase.pdf",
+      "data/v4/source_evidence/v4_02_r4/SZ_300282_2024-06-27_delisting_phase.pdf",
+      "data/v4/source_evidence/v4_02_r4/SZ_300379_2025-12-30_delisting_phase.pdf",
+      "data/v4/source_evidence/v4_02_r4/SZ_300391_2026-03-20_delisting_phase.pdf",
+      "data/v4/source_evidence/v4_02_r4/SZ_300742_2024-07-01_delisting_phase.pdf",
+      "data/v4/source_evidence/v4_02_r4/SZ_300799_2024-07-08_delisting_phase.pdf",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SH_601206_suspension.pdf",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SH_601206_suspension.txt",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SH_603302_suspension.pdf",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SH_603302_suspension.txt",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SH_603361_suspension.pdf",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SH_603361_suspension.txt",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SH_688688_suspension.html",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SH_688688_suspension.txt",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SSE_STAR_stock_list.html",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SSE_STAR_stock_list.txt",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SSE_stock_list.html",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SSE_stock_list.txt",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZSE_complete_stock_list_xlsx.txt",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZSE_complete_stock_list_xlsx.xlsx",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZSE_stock_list.html",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZSE_stock_list.txt",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_001235_exchange_query.html",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_001235_exchange_query.txt",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_001246_exchange_query.html",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_001246_exchange_query.txt",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_001246_listing.html",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_001246_listing.txt",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_300728_exchange_query.html",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_300728_exchange_query.txt",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_300728_suspension.pdf",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_300728_suspension.txt",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301569_exchange_query.html",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301569_exchange_query.txt",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301569_issuance.pdf",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301569_issuance.txt",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301660_exchange_query.html",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301660_exchange_query.txt",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301660_issuance.html",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301660_issuance.txt",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301716_exchange_query.html",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301716_exchange_query.txt",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301716_listing.html",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301716_listing.txt",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301718_exchange_query.html",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301718_exchange_query.txt",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301718_issuance.html",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/SZ_301718_issuance.txt",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_001.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_002.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_003.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_004.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_005.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_006.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_007.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_008.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_009.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_010.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_011.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_012.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_013.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_014.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_015.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_016.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_017.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_018.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_019.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_020.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_021.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_022.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_023.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_024.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_025.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_026.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_027.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_028.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_029.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_030.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_031.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_032.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_033.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_034.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_035.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_036.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_037.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_038.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_039.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_040.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_041.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_042.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_043.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_044.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_045.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_046.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_047.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_048.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_049.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_050.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_051.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_052.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_053.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_054.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_055.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_056.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_057.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_058.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_059.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_060.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_061.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_062.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_063.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_064.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_065.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_066.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_067.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_068.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_069.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_070.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_071.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_072.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_073.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_074.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_075.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_076.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_077.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_078.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_079.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_080.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_081.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_082.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_083.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_084.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_085.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_086.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_087.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_088.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_089.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_090.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_091.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_092.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_093.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_094.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_095.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_096.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_097.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_098.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_099.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_100.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_101.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_102.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_103.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_104.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_105.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_106.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_107.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_108.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_109.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_110.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_111.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_112.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_113.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_114.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_115.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_116.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_117.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_118.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_119.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_120.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_121.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_122.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_123.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_124.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_125.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_126.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_127.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_128.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_129.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_130.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_131.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_132.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_133.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_134.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_135.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_136.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_137.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_138.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_139.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_140.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_141.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_142.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_143.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_144.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_145.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/szse_catalogue/page_146.json",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/tdx/T0002/hq_cache/infoharbor_block.dat",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/tdx/T0002/hq_cache/tdxhy.cfg",
+      "data/v4/source_evidence/v4_08_r3/capture_20260930T063255Z/tdx/T0002/hq_cache/tdxzs.cfg",
+      "data/v4/source_snapshot_store/gbbq/sha256-775d82c58b5b46ec1d21478f86ba8ef90302691982e68d5c4cfcd51fddda666e/gbbq",
+      "data/v4/source_snapshot_store/gbbq/sha256-775d82c58b5b46ec1d21478f86ba8ef90302691982e68d5c4cfcd51fddda666e/gbbq.map",
+      "data/v4/source_snapshot_store/gbbq/sha256-775d82c58b5b46ec1d21478f86ba8ef90302691982e68d5c4cfcd51fddda666e/manifest.json",
+      "data/v4/source_snapshot_store/gbbq_later_diagnostic/sha256-ac1966229c18013445ee1d7afc1a779554d9346f19b285d32cb03763b3a7c601/gbbq",
+      "data/v4/source_snapshot_store/gbbq_later_diagnostic/sha256-ac1966229c18013445ee1d7afc1a779554d9346f19b285d32cb03763b3a7c601/gbbq.map",
+      "data/v4/source_snapshot_store/gbbq_later_diagnostic/sha256-ac1966229c18013445ee1d7afc1a779554d9346f19b285d32cb03763b3a7c601/manifest.json",
+      "data/v4/source_snapshots/tdx/20260928/capture-20260928T074809411699Z-edfcd8cd3b926ba9/capture_receipt.json",
+      "data/v4/source_snapshots/tdx/20260928/capture-20260928T074809411699Z-edfcd8cd3b926ba9/page.html",
+      "data/v4/source_snapshots/tdx/20260928/capture-20260928T074809411699Z-edfcd8cd3b926ba9/update_info.js",
+      "data/v4/source_snapshots/tdx/20260928/capture-20260929T063807222649Z-1914aeec4ff7a23e/page.html",
+      "data/v4/source_snapshots/tdx/20260928/capture-20260929T063807222649Z-1914aeec4ff7a23e/update_info.js",
+      "data/v4/source_snapshots/tdx/20260928/r2-metadata-20260929T065338Z/page.html",
+      "data/v4/source_snapshots/tdx/20260928/r2-metadata-20260929T065338Z/update_info.js",
+      "data/v4/source_snapshots/tdx/20260928/sha256-70b79898325ef6c67ea697f922d38fa3fd523e2ad62879b1b9fcb59fce52bf0c/capture_receipt.json",
+      "data/v4/source_snapshots/tdx/20260928/sha256-70b79898325ef6c67ea697f922d38fa3fd523e2ad62879b1b9fcb59fce52bf0c/hsjday.zip",
+      "data/v4/source_snapshots/tdx/20260928/sha256-70b79898325ef6c67ea697f922d38fa3fd523e2ad62879b1b9fcb59fce52bf0c/package_manifest.json",
+      "data/v4/source_snapshots/tdx/20260928/sha256-70b79898325ef6c67ea697f922d38fa3fd523e2ad62879b1b9fcb59fce52bf0c/page.html",
+      "data/v4/source_snapshots/tdx/20260928/sha256-70b79898325ef6c67ea697f922d38fa3fd523e2ad62879b1b9fcb59fce52bf0c/update_info.js",
+      "docs/audits/FOCUS_HISTORICAL_SOURCE_IDENTITY_MIGRATION_GAP_20260924.md",
+      "docs/audits/FOCUS_PATH_CAPABILITY_PROVIDER_GAP_20260924.md",
+      "docs/audits/FOCUS_RECOVERY_TURN_RPS_PROVIDER_GAP_20260924.md",
+      "docs/audits/FOCUS_REENTRY_OVERLAP_AUDIT_20260924.md",
+      "docs/audits/FOCUS_SAME_DAY_REVISION_ORDERED_REPLAY_GAP_20260924.md",
+      "docs/audits/FOCUS_SOURCE_MODEL_BOUNDARY_WRITER_READBACK_GAP_20260924.md",
+      "docs/audits/FOCUS_SUSPENSION_PATH_GAP_20260924.md",
+      "docs/audits/FOCUS_TRACKER_INDEPENDENT_AUDIT_20260923.md",
+      "docs/audits/FOCUS_V33_MISSING_INVALIDATION_OPERANDS_20260924.md",
+      "docs/audits/FOCUS_VALIDITY_UNKNOWN_AMBIGUITY_20260924.md",
+      "docs/audits/TDX_ZIP_CACHE_AND_NORMALIZED_CATALOG_DRIFT_20260924.md",
+      "docs/audits/TECHNICAL_RESULT_HASH_RECONCILIATION_20260923.md",
+      "docs/audits/V4_00A_DATABASE_RESET_AUDIT_20260925.md",
+      "docs/audits/V4_00A_PG_RECOVERY_AUDIT_20260925.md",
+      "docs/audits/V4_00D_OVERLAP_GATE_AUDIT_20260925.md",
+      "docs/audits/V4_00E_ADJUSTMENT_ACCEPTANCE_AUDIT_20260925.md",
+      "docs/audits/V4_00F_BAOSTOCK_GATE_AUDIT_20260925.md",
+      "docs/audits/V4_00G_ALGORITHM_FRAMEWORK_ACCEPTANCE_20260925.md",
+      "docs/audits/V4_00H_PHASE0_FINAL_GATE_AUDIT_20260925.md",
+      "docs/audits/V4_01_02_COMPLETE_REPAIR_STATUS_R2_20260925.md",
+      "docs/audits/V4_01_02_R3_BAOSTOCK_PUBLIC_ROUTE_REAUDIT_20260925.md",
+      "docs/audits/V4_01_02_R4_EXECUTION_EVIDENCE_20260925.md",
+      "docs/audits/V4_01_CODE_CHANGE_SOURCE_FINGERPRINT_300114_302132_R1.md",
+      "docs/audits/V4_01_CODE_CHANGE_SOURCE_FINGERPRINT_EXTERNAL_ACCEPTANCE_CORRECTION_R2_20260929.md",
+      "docs/audits/V4_01_IDENTITY_COMPLETENESS_GATE_V2_AMENDMENT_20260929.md",
+      "docs/audits/V4_01_R5_EXECUTION_EVIDENCE_20260925.md",
+      "docs/audits/V4_01_R6_REQUIRED_SCOPE_EXECUTION_20260926.md",
+      "docs/audits/V4_01_SOURCE_FINGERPRINT_BLIND_STUDY_EXTERNAL_ACCEPTANCE_R1_DISPOSITION_20260929.md",
+      "docs/audits/V4_01_SOURCE_FINGERPRINT_CALIBRATION_AUDIT_ITEM_R1_20260929.md",
+      "docs/audits/V4_01_SOURCE_FINGERPRINT_CANDIDATE_BLIND_VALIDATION_R1.md",
+      "docs/audits/V4_02_BAOSTOCK_TDX_STATUS_CONFLICT_AUDIT_20260926.md",
+      "docs/audits/V4_02_ENTRY_ARTIFACT_GOVERNANCE_20260926.md",
+      "docs/audits/V4_02_PRICE_LIMIT_RANGE_EXCEPTION_AUDIT_20260926.md",
+      "docs/audits/V4_02_PRICE_LIMIT_RANGE_EXCEPTION_AUDIT_R3_20260927.md",
+      "docs/audits/V4_03_ALGORITHM_AST_EXPRESSIVENESS_AUDIT_R1.md",
+      "docs/audits/V4_03_BENCHMARK_SCOPE_DECISION_V1.md",
+      "docs/audits/V4_03_FINAL_SEAL_AND_V4_04_ENTRY_TASK_20260928.md",
+      "docs/audits/V4_03_IMPLEMENTATION_PROGRESS_R1_20260928.md",
+      "docs/audits/V4_03_LEGACY_FACTOR_DIFFERENCE_REGISTER_V1.md",
+      "docs/audits/V4_03_MARKET_REGIME_TREND_WEAK_AST_AUDIT_R1.md",
+      "docs/audits/V4_03_NATIVE_RULE_SCHEMA_AMENDMENT_R3.md",
+      "docs/audits/V4_03_PURE_CORE_FACTORS_IMPLEMENTATION_TASK_20260927.md",
+      "docs/audits/V4_03_R3_EXTERNAL_BLOCKER_CLOSURE_TASK_20260928.md",
+      "docs/audits/V4_03_R3_INDEPENDENT_EXTERNAL_ACCEPTANCE_20260928.md",
+      "docs/audits/V4_03_SECTOR_OWNERSHIP_AMENDMENT_V1_20260929.md",
+      "docs/audits/V4_04_CORE_PROFILE_EXECUTION_R1_20260929.md",
+      "docs/audits/V4_04_PROMOTION_STAGE_RECORD_R1_20260929.md",
+      "docs/audits/V4_04_R2_FULL_MARKET_CORE_PROFILE_CANDIDATE_AUDIT_20260929.md",
+      "docs/audits/V4_04_R3_REPAIR_CLOSURE_R2_20260929.md",
+      "docs/audits/V4_04_R3_REPAIR_STAGE_ENTRY_20260929.md",
+      "docs/audits/V4_04_R4_FINAL_REPAIR_CLOSURE_R3_20260929.md",
+      "docs/audits/V4_04_R4_REPAIR_STAGE_ENTRY_20260929.md",
+      "docs/audits/V4_04_R5_CONTRACT_SEMANTICS_CLOSURE_R4_20260929.md",
+      "docs/audits/V4_04_R5_REPAIR_STAGE_ENTRY_20260929.md",
+      "docs/audits/V4_06_BAOSTOCK_BINDING_TOLERANCE_AUDIT_R1_20260929.md",
+      "docs/audits/V4_08_R5_TARGET_CORE_INPUT_AVAILABILITY_20260930.md",
+      "docs/audits/V4_09_EXTERNAL_NONBLOCKING_HARDENING_ITEMS_20261001.md",
+      "docs/audits/V4_10_HISTORICAL_CANDIDATE_TEST_SUPERSESSION_20261001.md",
+      "docs/audits/V4_2_1_CONTRACT_REAUDIT_20260925.md",
+      "docs/audits/V4_2_2_CONTRACT_REAUDIT_20260925.md",
+      "docs/audits/V4_GLOBAL_PYTEST_COLLECTION_AUDIT_ITEM_R1_20260929.md",
+      "docs/audits/V4_PHASE0_EXTERNAL_ACCEPTANCE_R4_RESEAL_20260925.md",
+      "docs/audits/V4_PHASE0_FINAL_REPAIR_R2_EXECUTION_20260925.md",
+      "docs/audits/V4_PHASE0_FINAL_REPAIR_R3_EXECUTION_20260925.md",
+      "reports/v4_09/V4_09_CLEAN_CHECKOUT_RECEIPT.json",
+      "reports/v4_09/V4_09_CLOSURE.md",
+      "reports/v4_09/V4_09_CONTRACT_FREEZE.json",
+      "reports/v4_09/V4_09_DETERMINISM.json",
+      "reports/v4_09/V4_09_EXTERNAL_REAUDIT_HANDOFF.json",
+      "reports/v4_09/V4_09_FEEDBACK_ISOLATION.json",
+      "reports/v4_09/V4_09_FULL_MARKET_CANDIDATE.json",
+      "reports/v4_09/V4_09_INDEPENDENT_POSTCHECK.json",
+      "reports/v4_09/V4_09_ISOLATED_REGRESSION.json",
+      "reports/v4_09/V4_09_MACHINE_VECTOR_COVERAGE.json",
+      "reports/v4_09/V4_09_MULTI_CONTEXT_GENERALIZATION.json",
+      "reports/v4_09/V4_09_NO_SYMBOL_SPECIFIC_SYSTEM_LOGIC_SCAN.json",
+      "reports/v4_09/V4_09_PARAMETER_BINDING.json",
+      "reports/v4_09/V4_09_R1_1_ARTIFACT_IMMUTABILITY.json",
+      "reports/v4_09/V4_09_R1_1_CLEAN_CHECKOUT_RECEIPT.json",
+      "reports/v4_09/V4_09_R1_1_CLOSURE.md",
+      "reports/v4_09/V4_09_R1_1_DETERMINISM.json",
+      "reports/v4_09/V4_09_R1_1_EXTERNAL_REAUDIT_HANDOFF.json",
+      "reports/v4_09/V4_09_R1_1_FEEDBACK_ISOLATION.json",
+      "reports/v4_09/V4_09_R1_1_FULL_MARKET_CANDIDATE.json",
+      "reports/v4_09/V4_09_R1_1_INDEPENDENT_POSTCHECK.json",
+      "reports/v4_09/V4_09_R1_1_ISOLATED_REGRESSION.json",
+      "reports/v4_09/V4_09_R1_1_MACHINE_VECTOR_COVERAGE.json",
+      "reports/v4_09/V4_09_R1_1_MATERIALIZED_MULTI_CONTEXT.json",
+      "reports/v4_09/V4_09_R1_1_MULTI_CONTEXT_GENERALIZATION.json",
+      "reports/v4_09/V4_09_R1_1_NO_SYMBOL_SPECIFIC_SYSTEM_LOGIC_SCAN.json",
+      "reports/v4_09/V4_09_R1_1_PARAMETER_BINDING.json",
+      "reports/v4_09/V4_09_R1_1_PRIORITY_PRODUCER_CONTRACT_GATE.json",
+      "reports/v4_09/V4_09_R1_1_REPAIR_CONTRACT_FREEZE.json",
+      "reports/v4_09/V4_09_R1_1_SCHEMA_MIGRATION_RECEIPT.json",
+      "reports/v4_09/V4_09_R1_1_STAGE_CANDIDATE_MANIFEST.json",
+      "reports/v4_09/V4_09_R1_1_STAGE_ENTRY.md",
+      "reports/v4_09/V4_09_SCHEMA_MIGRATION_RECEIPT.json",
+      "reports/v4_09/V4_09_STAGE_CANDIDATE_MANIFEST.json",
+      "reports/v4_09/V4_09_STAGE_ENTRY.md",
+      "reports/v4_10/V4_10_CLEAN_CHECKOUT_RECEIPT.json",
+      "reports/v4_10/V4_10_CLOSURE.md",
+      "reports/v4_10/V4_10_CONTRACT_FREEZE.json",
+      "reports/v4_10/V4_10_EXTERNAL_REAUDIT_HANDOFF.json",
+      "reports/v4_10/V4_10_INDEPENDENT_POSTCHECK.json",
+      "reports/v4_10/V4_10_ISOLATED_REGRESSION.json",
+      "reports/v4_10/V4_10_MACHINE_VECTOR_COVERAGE.json",
+      "reports/v4_10/V4_10_NO_SYMBOL_SPECIFIC_SYSTEM_LOGIC_SCAN.json",
+      "reports/v4_10/V4_10_R1_1_CLEAN_CHECKOUT_RECEIPT.json",
+      "reports/v4_10/V4_10_R1_1_CLOSURE.md",
+      "reports/v4_10/V4_10_R1_1_CONTRACT_FREEZE.json",
+      "reports/v4_10/V4_10_R1_1_EXTERNAL_REAUDIT_HANDOFF.json",
+      "reports/v4_10/V4_10_R1_1_INDEPENDENT_POSTCHECK.json",
+      "reports/v4_10/V4_10_R1_1_INPUT_MANIFEST_SHAPE_ACCEPTANCE.json",
+      "reports/v4_10/V4_10_R1_1_INPUT_PROVENANCE_ACCEPTANCE.json",
+      "reports/v4_10/V4_10_R1_1_ISOLATED_REGRESSION.json",
+      "reports/v4_10/V4_10_R1_1_MACHINE_VECTOR_COVERAGE.json",
+      "reports/v4_10/V4_10_R1_1_MODEL_BOUNDARY_ACCEPTANCE.json",
+      "reports/v4_10/V4_10_R1_1_NO_SYMBOL_SPECIFIC_SYSTEM_LOGIC_SCAN.json",
+      "reports/v4_10/V4_10_R1_1_PRIOR_LINEAGE_ACCEPTANCE.json",
+      "reports/v4_10/V4_10_R1_1_SCHEMA_MIGRATION_RECEIPT.json",
+      "reports/v4_10/V4_10_R1_1_STAGE_CANDIDATE_MANIFEST.json",
+      "reports/v4_10/V4_10_SCHEMA_MIGRATION_RECEIPT.json",
+      "reports/v4_10/V4_10_STAGE_CANDIDATE_MANIFEST.json",
+      "reports/v4_10/V4_10_STAGE_ENTRY.md",
+      "src/v4/stock_prewatch.py",
+      "src/workbench_db/migrations/v4_postgres/022_v4_10_research_state_interface.sql",
+      "src/workbench_db/migrations/v4_postgres/023_v4_10_research_state_lineage_hardening.sql",
+      "src/workbench_db/migrations/v4_postgres/rollback/022_v4_10_research_state_interface.sql",
+      "src/workbench_db/migrations/v4_postgres/rollback/023_v4_10_research_state_lineage_hardening.sql"
+    ],
+    "strategy": "Historical data/audits retain Git identity with existing LFS/newline filters; scoped heads/runtime/contracts/reports/migrations additionally exact-byte verified"
+  },
+  "regression_summary": {
+    "errors": 0,
+    "failures": 0,
+    "passed": 1116,
+    "skipped": 2,
+    "tests": 1118
+  },
+  "repair_task": {
+    "byte_count": 17930,
+    "path": "docs/evidence/V4_10_R1_2_EXTERNAL_REAUDIT_REPAIR_TASK_20261001.md",
+    "sha256": "cc5e2ade7b7435a6b8982802a73421aefe87e8a59bce1dc1092fb569d5ea3868"
+  },
+  "shadow_production_permission": false,
+  "source_implementation_bindings": [
+    {
+      "byte_count": 20747,
+      "path": "config/v4_10_boundary_old_source_fixture_r1_2.json",
+      "sha256": "898dd936c170e1ee5094bf18659dffc50b41cde1eeb320283b6326d5bcc5255e"
+    },
+    {
+      "byte_count": 7099,
+      "path": "config/v4_10_input_provenance_r1_2.json",
+      "sha256": "e7e6cf40ffc7159d4777a01e21f475af08884146291cdb124f277e19be29ce93"
+    },
+    {
+      "byte_count": 951,
+      "path": "config/v4_10_input_schema_r1_2.json",
+      "sha256": "1339e21332e407a0d7bb2117b735a8b19756b838b0495623508b0782cc872a85"
+    },
+    {
+      "byte_count": 3709,
+      "path": "config/v4_10_machine_ast_r1_2.json",
+      "sha256": "de127c9566c840a75e7ab5fb1c033f8bbfa04dd88983e88360e94f12b2d99589"
+    },
+    {
+      "byte_count": 4509500,
+      "path": "config/v4_10_machine_vectors_r1_2.json",
+      "sha256": "fba82cb73df551833f1a12f3d5d0e30255b4dcff512e87c8e98de6b4b0617c7a"
+    },
+    {
+      "byte_count": 2743,
+      "path": "config/v4_10_output_schema_r1_2.json",
+      "sha256": "165b6e8776e5fe54cbcf5766e4623b96439b9485c84ebcf7524b8fb3599bb823"
+    },
+    {
+      "byte_count": 435,
+      "path": "config/v4_10_parameter_set_r1_2.json",
+      "sha256": "20b66f9f2d2d4fe6ba8c3dd0583d6fa3d5408daebda09fae7ff27548e800ffd7"
+    },
+    {
+      "byte_count": 4926,
+      "path": "config/v4_10_research_state_contract_r1_2.json",
+      "sha256": "33d50256635161f425f4f34ac805ea2f511362be7d71d35b3a62478de5a59127"
+    },
+    {
+      "byte_count": 9928,
+      "path": "scripts/build_v4_10_r1_2_vectors.py",
+      "sha256": "80fce0bb16fa54fae87af4ba97881f6d45759d79a8963093f4b5da4c97098c90"
+    },
+    {
+      "byte_count": 8156,
+      "path": "scripts/enter_v4_cross_stage_remediation_r1.py",
+      "sha256": "68921aee24a6e159e04ee05592806091c433b9b334155bf2aeaca0227741d1fe"
+    },
+    {
+      "byte_count": 21113,
+      "path": "scripts/freeze_v4_10_contract.py",
+      "sha256": "5980d775bb5a3479933c39a540d26e4752319b7e4410e8c02296747ce723eed1"
+    },
+    {
+      "byte_count": 4156,
+      "path": "scripts/freeze_v4_10_r1_2_contract.py",
+      "sha256": "4ce9651c2f3f1487ca8c535d58cd35f22017b6783476161f0fe6c7107536fbc5"
+    },
+    {
+      "byte_count": 10741,
+      "path": "scripts/run_v4_10_isolated_verification.py",
+      "sha256": "a05fd2f4ab713c81aaf7904f4ce0140d89827f9cc624f13de9e38e4ad57bc4b9"
+    },
+    {
+      "byte_count": 8613,
+      "path": "scripts/run_v4_10_r1_2_isolated_verification.py",
+      "sha256": "d237426bc37604be6eae89e0ab2a57e6baa219c05b8f2513cd605c935a1197b7"
+    },
+    {
+      "byte_count": 8163,
+      "path": "scripts/schema_v4_10_r1_2.py",
+      "sha256": "b716c75e24d4e17e21f64132ee0df796e857d23dd6c3ab35fe4ddfa50ff693c0"
+    },
+    {
+      "byte_count": 11629,
+      "path": "scripts/seal_v4_10_r1_2_candidate.py",
+      "sha256": "59c30ff37a02807a6f07c826bad082d27e8b2317f0677c77d0005577ea2d5fb8"
+    },
+    {
+      "byte_count": 3229,
+      "path": "scripts/v4_10_old_state_fixture_producer.py",
+      "sha256": "6a369a6a2714cd9e7d867e36ad8107750c3b54ea654b74bf0b683023f36b4484"
+    },
+    {
+      "byte_count": 5058,
+      "path": "scripts/v4_10_r1_2_fixtures.py",
+      "sha256": "6e53becd0ef8e7c3d45fe1fe5359a9f7988b8a58d24f85906756cdc1cee45689"
+    },
+    {
+      "byte_count": 31418,
+      "path": "scripts/verify_v4_10_r1_2.py",
+      "sha256": "6b69d9834f51e7595f614eb6c313204f08622e0a60c793f0fe62fee4d0a8211b"
+    },
+    {
+      "byte_count": 4714,
+      "path": "scripts/verify_v4_10_state_reducer.py",
+      "sha256": "844157eb297d0398a11d10a01e3267d3661f0b9fb73d48f02becc60899f3a83f"
+    },
+    {
+      "byte_count": 13989,
+      "path": "src/v4/research_state.py",
+      "sha256": "58fde91734f5d1192a43174052c3c10ce6a41a65facce2076b9bf0798d0e5bfb"
+    },
+    {
+      "byte_count": 6329,
+      "path": "src/v4/research_state_persistence.py",
+      "sha256": "7765ee59ac351e2ce1ceb3ee76bc53a9d56e0f8fe93573ea8457bea53928480a"
+    },
+    {
+      "byte_count": 24944,
+      "path": "src/v4/state_provenance.py",
+      "sha256": "f4a5f0683a2735488d285f74f91d1c0dc3ff25112060c485debf22615f811a77"
+    },
+    {
+      "byte_count": 19815,
+      "path": "src/workbench_db/migrations/v4_postgres/024_v4_10_research_state_authority_hardening.sql",
+      "sha256": "08058023f24231bd313523e860e2d6262c9035b395e5e27045fb754dcad69624"
+    },
+    {
+      "byte_count": 13058,
+      "path": "src/workbench_db/migrations/v4_postgres/rollback/024_v4_10_research_state_authority_hardening.sql",
+      "sha256": "f92a06d8d1dd8f8dbf77c0b31c354e51326b13698d30e8397f424b58f6651ff7"
+    },
+    {
+      "byte_count": 3425,
+      "path": "tests/v4_10/test_r1_1_lineage.py",
+      "sha256": "a9d4f9cb5cbb669a96b13ae0201dbf3e0ce6faa4e7b918d1fcaed993591eb799"
+    },
+    {
+      "byte_count": 748,
+      "path": "tests/v4_10/test_r1_2_publisher.py",
+      "sha256": "1e1e6439dd2f56bb696478094f3dd2906214332a055f9c2b281cff10e77ec34e"
+    },
+    {
+      "byte_count": 3680,
+      "path": "tests/v4_10/test_research_state.py",
+      "sha256": "dc569420d0ef7ba9459198fa818899ded13bf3f806d661a3c092348d25aaa6fa"
+    }
+  ],
+  "stage_entry": {
+    "byte_count": 1989,
+    "path": "docs/evidence/V4_10_R1_2_STAGE_ENTRY_20261001.md",
+    "sha256": "6be7706a5c33d1db4c8fbb87f6e3c9cb160ace944221d0349a579b2f0e3eec8a"
+  },
+  "status": "V4_10_R1_2_REPAIR_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
+  "stop_here": true,
+  "supersedes_business_contract": false,
+  "supersedes_candidate": {
+    "byte_count": 76278,
+    "path": "reports/v4_10/V4_10_R1_1_STAGE_CANDIDATE_MANIFEST.json",
+    "sha256": "58951545202c0f0eab9bf573f726f48cb5e9c51ee6326b37cdaec9cc9912b01a"
+  },
+  "tested_implementation_commit": "6a339e71d38ced6e97c077fddef8dc7a8dfbd104",
+  "v4_09_keep_accepted": {
+    "accepted_head": {
+      "byte_count": 11474,
+      "path": "data/v4/V4_09_ACCEPTED_HEAD.json",
+      "sha256": "641ef9e2e6fe8f461a9b765262e739791a6d3fdd220b0eff7947e2690de3a87d"
+    },
+    "checks": {
+      "accepted_evidence_exact": true,
+      "accepted_identity": true,
+      "all_candidate_bindings_exact": true,
+      "amended_upstream_exact": true,
+      "artifact_exact": true,
+      "artifact_exact_binding": true,
+      "audited_ancestor": true,
+      "audits_preserved": true,
+      "canonical_evidence_set": true,
+      "capabilities_exact": true,
+      "evidence_pass": true,
+      "external_exact": true,
+      "global_binding": true,
+      "implementation_exact": true,
+      "no_symbol_pass": true,
+      "parent_exact": true,
+      "permissions_false": true,
+      "promotion_idempotent": true,
+      "protected_unchanged": true,
+      "runtime_contracts_match_audited_commit": true,
+      "upstream_exact": true
+    },
+    "contract_id": "V4_09_ACCEPTED_HEAD_PROMOTION_VALIDATION_R1",
+    "global_head": {
+      "byte_count": 7562,
+      "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+      "sha256": "f7607601de402f2b2bdada84dffdefbacad7f9f66e252c57dfdf045060e90e99"
+    },
+    "protected_head_bindings": [
+      {
+        "byte_count": 2478,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0"
+      },
+      {
+        "byte_count": 602,
+        "path": "data/v4/V4_DEV_BASELINE_HEAD.json",
+        "sha256": "45695460b0147c6ada12e0ebd8e5070ac0a45eebea26603ff5a3daddc4dd5094"
+      },
+      {
+        "byte_count": 2151,
+        "path": "data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json",
+        "sha256": "d6374a73b8084ccd383cbb4f75428ed91176e91cc09d87c3329041d57c5bd9ed"
+      }
+    ],
+    "status": "PASS"
+  },
+  "vector_count": 180
+}

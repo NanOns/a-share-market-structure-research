@@ -1,5 +1,10 @@
 {
   "allowed_candidate_status": "A13_OFFICIAL_NOTICE_EVENT_SEMANTICS_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
+  "clean_regression": {
+    "bytes": 83930,
+    "path": "reports/audits/A13_CLEAN_CHECKOUT_R1.json",
+    "sha256": "48ef69a1c6af17cbd828a070369a2e93083a1b2754b29e4e1e1ea14bcb30897b"
+  },
   "evidence_bindings": [
     {
       "bytes": 147537,
@@ -26,8 +31,9 @@
     "EXTERNAL_NOTICE_ACCEPTANCE": "PENDING_INDEPENDENT_EXTERNAL_AUDIT",
     "FULL_DOWNSTREAM_BUSINESS_DIGEST": "PASS_ENGINEERING",
     "FULL_NOTICE_INVENTORY": "PASS_ENGINEERING",
-    "RUNTIME_SEMANTIC_NEGATIVES": "PENDING_CLEAN_DETACHED",
+    "RUNTIME_SEMANTIC_NEGATIVES": "PASS_ENGINEERING",
     "UNCHANGED_ADMISSION_COUNTERFACTUAL": "PASS_ENGINEERING"
   },
-  "next_stage": "Independent A13 external reaudit; audit remains OPEN; no business head movement"
+  "next_stage": "Independent A13 external reaudit; audit remains OPEN; no business head movement",
+  "status": "A13_OFFICIAL_NOTICE_EVENT_SEMANTICS_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT"
 }

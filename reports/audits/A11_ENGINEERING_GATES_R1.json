@@ -1,0 +1,49 @@
+{
+  "allowed_candidate_status": "V4_01_IDENTITY_AUTHORITY_RECONCILIATION_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
+  "contract_id": "A11_ENGINEERING_GATES_R1",
+  "evidence": [
+    {
+      "bytes": 21007516,
+      "path": "reports/audits/V4_01_IDENTITY_FIELD_AUTHORITY_MATRIX_R1.json",
+      "sha256": "7ff163a3b0233e3bf6f82fbcc2f9fa43cac5e08e8c7e250212ad36f5c4a129f5"
+    },
+    {
+      "bytes": 2485,
+      "path": "reports/audits/A11_OFFICIAL_ANCHOR_ADJUDICATION_R1.json",
+      "sha256": "fa3ad51c99d2d9fb9eeb96e001b3122a08ceb17a748ac588a4b494e72765d140"
+    },
+    {
+      "bytes": 2689,
+      "path": "reports/audits/A11_OFFICIAL_CASE_CAPTURE_R1.json",
+      "sha256": "443dde35079893781780d5356a8eeaf6b5540df198cbf0b8a2192dc98374b1ea"
+    },
+    {
+      "bytes": 252577,
+      "path": "reports/audits/A11_DOWNSTREAM_CONSUMER_GRAPH_AND_BUSINESS_DIFF_R1.json",
+      "sha256": "7685306c33a0ece456d65ccc7637444d21e9f55013d07a9538e0b8dd3ab31771"
+    },
+    {
+      "bytes": 1040,
+      "path": "reports/audits/A11_MASTER_AUTHORITY_AMENDMENT_PROPOSAL_R1.json",
+      "sha256": "01ec6c886ccf18e429ad4f5d39c4870ed2c853f0645dc03f44abedfb6558519b"
+    }
+  ],
+  "external_acceptance": null,
+  "gates": {
+    "A11-G01": "PASS_ENGINEERING",
+    "A11-G02": "PASS_ENGINEERING",
+    "A11-G03": "PASS_ENGINEERING",
+    "A11-G04": "PASS_ENGINEERING",
+    "A11-G05": "PASS_ENGINEERING",
+    "A11-G06": "PASS_ENGINEERING",
+    "A11-G07": "PASS_ENGINEERING",
+    "A11-G08": "PASS_ENGINEERING",
+    "A11-G09": "PASS_ENGINEERING",
+    "A11-G10": "PENDING_CLEAN_DETACHED",
+    "A11-G11": "PENDING_INDEPENDENT_EXTERNAL_AUDIT"
+  },
+  "next_stage": "A12 producer authority repair; external A11 amendment decision remains separate",
+  "result": "RESULT_C_WIDESPREAD_AUTHORITY_UNRESOLVED",
+  "status": "PENDING_CLEAN_DETACHED",
+  "work_package": "WP-A11-V4-01-IDENTITY-AUTHORITY"
+}

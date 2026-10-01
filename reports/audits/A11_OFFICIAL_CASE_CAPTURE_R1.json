@@ -1,0 +1,68 @@
+{
+  "contract_id": "A11_OFFICIAL_CASE_CAPTURE_R1",
+  "external_acceptance": null,
+  "first_availability_at_target_proven": false,
+  "origin": "DELAYED_HISTORICAL_RETRIEVAL",
+  "plan": {
+    "bytes": 681,
+    "path": "docs/evidence/source_authority/A11_OFFICIAL_CASE_CAPTURE_PLAN_R1.json",
+    "sha256": "aa8cc44732d496a66b16e9cd8b8a61e3e536b7214672225cdf6656b92b3ae6a6"
+  },
+  "request_count": 3,
+  "sources": [
+    {
+      "content_type": "application/pdf",
+      "final_url": "https://www.sse.com.cn/disclosure/bond/c/2011-04-07/122065_20110407_1.pdf",
+      "format": "pdf",
+      "http_status": 200,
+      "id": "SSE_ISSUER_PROSPECTUS_2011",
+      "lineage": "RECONSTRUCTED_CORRECTED",
+      "observed_at": "2026-10-01T03:12:31.038853+00:00",
+      "received_at": "2026-10-01T03:12:32.219275+00:00",
+      "request_count": 1,
+      "response": {
+        "bytes": 389613,
+        "path": "docs/evidence/source_authority/a11_case/SSE_ISSUER_PROSPECTUS_2011.pdf",
+        "sha256": "46ac60600282e2aa8cd45387c271c1a9f70793d64996180abe3388fe74e64dfe"
+      },
+      "status": "CAPTURED",
+      "url": "https://www.sse.com.cn/disclosure/bond/c/2011-04-07/122065_20110407_1.pdf"
+    },
+    {
+      "content_type": "text/html",
+      "final_url": "https://www.sse.com.cn/market/sseindex/diclosure/c/c_20150911_3984896.shtml",
+      "format": "html",
+      "http_status": 200,
+      "id": "SSE_PREDECESSOR_INDEX_2005",
+      "lineage": "RECONSTRUCTED_CORRECTED",
+      "observed_at": "2026-10-01T03:12:32.220181+00:00",
+      "received_at": "2026-10-01T03:12:33.121403+00:00",
+      "request_count": 1,
+      "response": {
+        "bytes": 324886,
+        "path": "docs/evidence/source_authority/a11_case/SSE_PREDECESSOR_INDEX_2005.html",
+        "sha256": "0bf07a393d7515bd055103384c000c3028e752a8afc94fb0a3afa2ea64380f26"
+      },
+      "status": "CAPTURED",
+      "url": "https://www.sse.com.cn/market/sseindex/diclosure/c/c_20150911_3984896.shtml"
+    },
+    {
+      "content_type": "text/html;charset=UTF-8",
+      "final_url": "https://en.portshanghai.com.cn/AboutUs/index.jhtml",
+      "format": "html",
+      "http_status": 200,
+      "id": "ISSUER_CORPORATE_HISTORY",
+      "lineage": "RECONSTRUCTED_CORRECTED",
+      "observed_at": "2026-10-01T03:12:33.122213+00:00",
+      "received_at": "2026-10-01T03:12:33.718394+00:00",
+      "request_count": 1,
+      "response": {
+        "bytes": 37359,
+        "path": "docs/evidence/source_authority/a11_case/ISSUER_CORPORATE_HISTORY.html",
+        "sha256": "3374cf459f2de3230607e7fbbafd2bef3548b515a7b4d95c6a8c3fa55f705fa1"
+      },
+      "status": "CAPTURED",
+      "url": "https://en.portshanghai.com.cn/AboutUs/index.jhtml"
+    }
+  ]
+}

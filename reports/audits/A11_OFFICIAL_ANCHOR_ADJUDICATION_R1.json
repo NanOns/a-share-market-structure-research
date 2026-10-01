@@ -1,0 +1,24 @@
+{
+  "contract_id":"A11_OFFICIAL_ANCHOR_ADJUDICATION_R1",
+  "audit_id":"V4_01_OFFICIAL_LIST_DATE_ANCHOR_RECONCILIATION_01",
+  "source_security_key":"SH.600018",
+  "security_id":"SEC-E43BA734DCB6989B5F29F4E5CFE2F752",
+  "accepted_anchor":"2006-10-26",
+  "catalogue_code_first_listing_date":"2000-07-19",
+  "decision":"CORPORATE_REORGANIZATION_ENTITY_ANCHOR_SEMANTICS_SUPPORTED",
+  "independent_evidence":[
+    {"path":"docs/evidence/source_authority/a11_case/SSE_ISSUER_PROSPECTUS_2011.pdf","sha256":"46ac60600282e2aa8cd45387c271c1a9f70793d64996180abe3388fe74e64dfe","pdf_page_one_based":5,"printed_page":4,"facts":"Issuer was established as a joint stock company in 2005; regulator approved IPO through share exchange and absorption of the predecessor in 2006; issuer shares first traded on 2006-10-26 under SSE approval number 687. The document distinguishes the issuer and absorbed predecessor."},
+    {"path":"docs/evidence/source_authority/a11_case/SSE_PREDECESSOR_INDEX_2005.html","sha256":"0bf07a393d7515bd055103384c000c3028e752a8afc94fb0a3afa2ea64380f26","facts":"SSE index list effective 2005-07-01 independently identifies code 600018 with predecessor name 上港集箱, before the group issuer listing."},
+    {"path":"docs/evidence/source_authority/a11_case/ISSUER_CORPORATE_HISTORY.html","sha256":"3374cf459f2de3230607e7fbbafd2bef3548b515a7b4d95c6a8c3fa55f705fa1","facts":"Issuer history corroborates shareholding conversion in 2005 and listing on 2006-10-26."}
+  ],
+  "inference":"A code-continuity first-listing date and a post-reorganization issuer anchor describe different events. The independent primary documents support retaining the existing post-reorganization anchor for the required 2023-2026 scope. They do not independently establish every predecessor lifecycle date.",
+  "original_catalogue_receipt":"reports/audits/V4_01_OFFICIAL_LIST_DATE_ANCHOR_RECONCILIATION_20260930.json",
+  "capture_receipt":"reports/audits/A11_OFFICIAL_CASE_CAPTURE_R1.json",
+  "visual_check":"PDF page 5 rendered and inspected; corporate history and listing paragraphs legible",
+  "proposed_amendment":"Clarify entity anchor versus first listing of reused source code; preserve stable ID; no blanket alias union and no mass rekey.",
+  "canonical_value_change_proposed":false,
+  "knowledge_lineage":"RECONSTRUCTED_CORRECTED_OBSERVED_2026_10_01",
+  "first_available_at_target_proven":false,
+  "status":"ENGINEERING_ADJUDICATION_PENDING_EXTERNAL_REVIEW",
+  "external_acceptance":null
+}

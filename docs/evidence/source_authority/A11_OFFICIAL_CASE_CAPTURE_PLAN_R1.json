@@ -1,0 +1,14 @@
+{
+  "contract_id": "A11_OFFICIAL_CASE_CAPTURE_PLAN_R1",
+  "source_security_key": "SH.600018",
+  "maximum_requests": 3,
+  "timeout_seconds": 30,
+  "maximum_response_bytes": 12582912,
+  "sources": [
+    {"id":"SSE_ISSUER_PROSPECTUS_2011","url":"https://www.sse.com.cn/disclosure/bond/c/2011-04-07/122065_20110407_1.pdf","format":"pdf"},
+    {"id":"SSE_PREDECESSOR_INDEX_2005","url":"https://www.sse.com.cn/market/sseindex/diclosure/c/c_20150911_3984896.shtml","format":"html"},
+    {"id":"ISSUER_CORPORATE_HISTORY","url":"https://en.portshanghai.com.cn/AboutUs/index.jhtml","format":"html"}
+  ],
+  "lineage":"RECONSTRUCTED_CORRECTED",
+  "first_availability_at_target_proven":false
+}

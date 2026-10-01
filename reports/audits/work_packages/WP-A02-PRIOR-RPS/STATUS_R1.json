@@ -1,0 +1,25 @@
+{
+  "audit_id": "V4_07_PRIOR_RPS_ACCEPTED_INPUT_BOOTSTRAP_01",
+  "depends_on": [
+    "A01"
+  ],
+  "does_not_block_engineering_stage": true,
+  "engineering_can_proceed_immediately": true,
+  "evidence": [],
+  "external_acceptance": null,
+  "formal_consumer_authorization": false,
+  "history_reconstruction_prohibited": true,
+  "implementation_status": "QUEUED_FORMAL_WORK_PACKAGE",
+  "next_step": "Immutable accepted RPS history T/T-1/T-3 chain, declared revision/universe/calendar/cutoff; independently recompute deltas and warm-up; then rerun unchanged V4-07.",
+  "owner_module": "V4_RPS_PIT_HISTORY_V1",
+  "priority": "P0",
+  "production_gate": true,
+  "requires_real_observation_accumulation": true,
+  "status": "OPEN",
+  "task": {
+    "byte_count": 1014,
+    "path": "docs/evidence/cross_stage/WP-A02-PRIOR-RPS/TASK_R1.md",
+    "sha256": "5e24a94a7aa7798df21666fbd5e42f9f5f47be1f3926ee74fe83c7dcdb2549df"
+  },
+  "work_package": "WP-A02-PRIOR-RPS"
+}

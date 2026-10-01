@@ -1,0 +1,50 @@
+{
+  "accepted_runtime_registry": {
+    "byte_count": 15176,
+    "path": "reports/v4_09/V4_09_R1_1_STAGE_CANDIDATE_MANIFEST.json",
+    "sha256": "3e9e2a95dd29bddcbd2d2d5b5197f8833a2ecf0d0c1e440ed9af7054d2b23cfa"
+  },
+  "authority": {
+    "byte_count": 20657,
+    "path": "docs/evidence/V4_CROSS_STAGE_INDEPENDENT_AUDIT_REMEDIATION_MASTER_TASK_R1_20261001.md",
+    "sha256": "41331ed2f77aa8a837d7235dae6be40d3feec8fd12572f5a1f9f69d173eb2e9d"
+  },
+  "capability_implemented": false,
+  "data_head": {
+    "byte_count": 2478,
+    "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+    "sha256": "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0"
+  },
+  "external_acceptance": null,
+  "next_stage": "Independent wrong-status/authority/binding-set/file/consumer/parent negative vectors; accepted replay bytes/logical digest unchanged; hardening only.",
+  "stage_head": {
+    "byte_count": 7562,
+    "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+    "sha256": "f7607601de402f2b2bdada84dffdefbacad7f9f66e252c57dfdf045060e90e99"
+  },
+  "status": "PASS_IMPLEMENTATION_ENTRY_ONLY",
+  "work_package": {
+    "audit_id": "AUD-V4-09-REPAIR-FREEZE-SELF-VALIDATION-N01",
+    "depends_on": [],
+    "does_not_block_engineering_stage": true,
+    "engineering_can_proceed_immediately": true,
+    "evidence": [],
+    "external_acceptance": null,
+    "formal_consumer_authorization": false,
+    "history_reconstruction_prohibited": true,
+    "implementation_status": "IMPLEMENTATION_ENTRY_AUTHORIZED",
+    "next_step": "Independent wrong-status/authority/binding-set/file/consumer/parent negative vectors; accepted replay bytes/logical digest unchanged; hardening only.",
+    "owner_module": "src/v4/stock_prewatch.py",
+    "priority": "P2",
+    "production_gate": true,
+    "requires_real_observation_accumulation": false,
+    "status": "OPEN",
+    "status_path": "reports/audits/work_packages/WP-A08-V4-09-N01/STATUS_R1.json",
+    "task": {
+      "byte_count": 1023,
+      "path": "docs/evidence/cross_stage/WP-A08-V4-09-N01/TASK_R1.md",
+      "sha256": "8c93ef95fe5e9e82906e52c967990955d76f9ece17dea07727d2880cb57eeac6"
+    },
+    "work_package": "WP-A08-V4-09-N01"
+  }
+}

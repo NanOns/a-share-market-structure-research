@@ -1,0 +1,23 @@
+{
+  "audit_id": "FORWARD_PIT_HISTORY_ACCUMULATION",
+  "depends_on": [],
+  "does_not_block_engineering_stage": true,
+  "engineering_can_proceed_immediately": true,
+  "evidence": [],
+  "external_acceptance": null,
+  "formal_consumer_authorization": false,
+  "history_reconstruction_prohibited": true,
+  "implementation_status": "QUEUED_FORMAL_WORK_PACKAGE",
+  "next_step": "Daily builder, gap/revision/late-source detectors and immutable append from the first accepted PIT date. Implement automation in this WP; future observations accumulate naturally, never retrospectively invent availability.",
+  "owner_module": "forward_pit_daily_builder",
+  "priority": "P1",
+  "production_gate": true,
+  "requires_real_observation_accumulation": true,
+  "status": "OPEN",
+  "task": {
+    "byte_count": 1087,
+    "path": "docs/evidence/cross_stage/WP-A03-FORWARD-PIT/TASK_R1.md",
+    "sha256": "e39d957db043bfebd123f91d120415c02cace508b20331f9d01df94e2f9c4b33"
+  },
+  "work_package": "WP-A03-FORWARD-PIT"
+}

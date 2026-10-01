@@ -1,0 +1,23 @@
+{
+  "audit_id": "AUD-V4-09-DB-CONSUMER-IDENTITY-N02",
+  "depends_on": [],
+  "does_not_block_engineering_stage": true,
+  "engineering_can_proceed_immediately": true,
+  "evidence": [],
+  "external_acceptance": null,
+  "formal_consumer_authorization": false,
+  "history_reconstruction_prohibited": true,
+  "implementation_status": "IMPLEMENTATION_ENTRY_AUTHORIZED",
+  "next_step": "New unused migration (024 reserved for V4-10 R1.2); old rows/readback, immutable consumer identity, collision/revision rejection and exact rollback. Preserve historical 021.",
+  "owner_module": "src/v4/stock_prewatch_persistence.py",
+  "priority": "P2",
+  "production_gate": true,
+  "requires_real_observation_accumulation": false,
+  "status": "OPEN",
+  "task": {
+    "byte_count": 1050,
+    "path": "docs/evidence/cross_stage/WP-A09-V4-09-N02/TASK_R1.md",
+    "sha256": "3379f2e8e5a2bf649a340cf357c70d933646292a357e3265ef4fb945cffc1313"
+  },
+  "work_package": "WP-A09-V4-09-N02"
+}

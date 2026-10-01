@@ -1,0 +1,50 @@
+{
+  "accepted_runtime_registry": {
+    "byte_count": 16525,
+    "path": "config/v4_dm01_accepted_builder_registry_v1.json",
+    "sha256": "bf87637de82eb7704d9c8f27842880ee9ba6db5315a2b65edd461a31007ddb61"
+  },
+  "authority": {
+    "byte_count": 20657,
+    "path": "docs/evidence/V4_CROSS_STAGE_INDEPENDENT_AUDIT_REMEDIATION_MASTER_TASK_R1_20261001.md",
+    "sha256": "41331ed2f77aa8a837d7235dae6be40d3feec8fd12572f5a1f9f69d173eb2e9d"
+  },
+  "capability_implemented": false,
+  "data_head": {
+    "byte_count": 2478,
+    "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+    "sha256": "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0"
+  },
+  "external_acceptance": null,
+  "next_stage": "Export nine target-date adapters around pinned accepted domain runtimes; target-only staging, parent/source/calendar binding, independent postcheck and atomic rollback. Real next completed-session candidate must pass independent external acceptance before Data Head promotion.",
+  "stage_head": {
+    "byte_count": 7562,
+    "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+    "sha256": "f7607601de402f2b2bdada84dffdefbacad7f9f66e252c57dfdf045060e90e99"
+  },
+  "status": "PASS_IMPLEMENTATION_ENTRY_ONLY",
+  "work_package": {
+    "audit_id": "DM01_REAL_INCREMENTAL_BUILDERS",
+    "depends_on": [],
+    "does_not_block_engineering_stage": true,
+    "engineering_can_proceed_immediately": true,
+    "evidence": [],
+    "external_acceptance": null,
+    "formal_consumer_authorization": false,
+    "history_reconstruction_prohibited": true,
+    "implementation_status": "IMPLEMENTATION_ENTRY_AUTHORIZED",
+    "next_step": "Export nine target-date adapters around pinned accepted domain runtimes; target-only staging, parent/source/calendar binding, independent postcheck and atomic rollback. Real next completed-session candidate must pass independent external acceptance before Data Head promotion.",
+    "owner_module": "src/workbench_analysis/dm01_accepted_builder_registry.py",
+    "priority": "P0",
+    "production_gate": true,
+    "requires_real_observation_accumulation": false,
+    "status": "OPEN",
+    "status_path": "reports/audits/work_packages/WP-A01-DM01/STATUS_R1.json",
+    "task": {
+      "byte_count": 1164,
+      "path": "docs/evidence/cross_stage/WP-A01-DM01/TASK_R1.md",
+      "sha256": "17a787d72aef97417d899f8c1745e49e4cb467cbcf8f2035f3885b5d6a6bf980"
+    },
+    "work_package": "WP-A01-DM01"
+  }
+}

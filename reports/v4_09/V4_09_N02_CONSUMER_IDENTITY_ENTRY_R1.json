@@ -1,0 +1,50 @@
+{
+  "accepted_runtime_registry": {
+    "byte_count": 15176,
+    "path": "reports/v4_09/V4_09_R1_1_STAGE_CANDIDATE_MANIFEST.json",
+    "sha256": "3e9e2a95dd29bddcbd2d2d5b5197f8833a2ecf0d0c1e440ed9af7054d2b23cfa"
+  },
+  "authority": {
+    "byte_count": 20657,
+    "path": "docs/evidence/V4_CROSS_STAGE_INDEPENDENT_AUDIT_REMEDIATION_MASTER_TASK_R1_20261001.md",
+    "sha256": "41331ed2f77aa8a837d7235dae6be40d3feec8fd12572f5a1f9f69d173eb2e9d"
+  },
+  "capability_implemented": false,
+  "data_head": {
+    "byte_count": 2478,
+    "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+    "sha256": "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0"
+  },
+  "external_acceptance": null,
+  "next_stage": "New unused migration (024 reserved for V4-10 R1.2); old rows/readback, immutable consumer identity, collision/revision rejection and exact rollback. Preserve historical 021.",
+  "stage_head": {
+    "byte_count": 7562,
+    "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+    "sha256": "f7607601de402f2b2bdada84dffdefbacad7f9f66e252c57dfdf045060e90e99"
+  },
+  "status": "PASS_IMPLEMENTATION_ENTRY_ONLY",
+  "work_package": {
+    "audit_id": "AUD-V4-09-DB-CONSUMER-IDENTITY-N02",
+    "depends_on": [],
+    "does_not_block_engineering_stage": true,
+    "engineering_can_proceed_immediately": true,
+    "evidence": [],
+    "external_acceptance": null,
+    "formal_consumer_authorization": false,
+    "history_reconstruction_prohibited": true,
+    "implementation_status": "IMPLEMENTATION_ENTRY_AUTHORIZED",
+    "next_step": "New unused migration (024 reserved for V4-10 R1.2); old rows/readback, immutable consumer identity, collision/revision rejection and exact rollback. Preserve historical 021.",
+    "owner_module": "src/v4/stock_prewatch_persistence.py",
+    "priority": "P2",
+    "production_gate": true,
+    "requires_real_observation_accumulation": false,
+    "status": "OPEN",
+    "status_path": "reports/audits/work_packages/WP-A09-V4-09-N02/STATUS_R1.json",
+    "task": {
+      "byte_count": 1050,
+      "path": "docs/evidence/cross_stage/WP-A09-V4-09-N02/TASK_R1.md",
+      "sha256": "3379f2e8e5a2bf649a340cf357c70d933646292a357e3265ef4fb945cffc1313"
+    },
+    "work_package": "WP-A09-V4-09-N02"
+  }
+}

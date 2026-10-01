@@ -1,0 +1,44 @@
+{
+  "contemporaneous_original_capture_claim": false,
+  "contract_id": "SCOPED_TEST_R1_EXACT_RECOVERY_R1",
+  "current_runtime_or_tests_modified": false,
+  "exact_reconstructed_recovery": true,
+  "historical_binding_exact_match": true,
+  "historical_closure": {
+    "bytes": 4884,
+    "path": "reports/next_round_r2/scoped_acceptance/SCOPED_FORMALIZATION_CLOSURE_R1.json",
+    "sha256": "ed9e3799849c12be35c67136e48c699107efea99b7a35fac5f155cf1bdaeaecb"
+  },
+  "old_closure_modified": false,
+  "old_evidence_preserved": true,
+  "original_logical_binding": {
+    "bytes": 7197,
+    "path": "tests/v4_parallel_scoped_formalization_r1/test_scoped_acceptance.py",
+    "sha256": "11526b0b4c84d308d90adfa638ad34fe19ffdfa14dba1e72d05bbe087453cf82"
+  },
+  "recovered_bytes": 7197,
+  "recovered_original_bytes_archive": {
+    "bytes": 7197,
+    "path": "data/v4/source_evidence/next_round_r2_clean_repair/historical_scoped_test_R1.py",
+    "sha256": "11526b0b4c84d308d90adfa638ad34fe19ffdfa14dba1e72d05bbe087453cf82"
+  },
+  "recovered_sha256": "11526b0b4c84d308d90adfa638ad34fe19ffdfa14dba1e72d05bbe087453cf82",
+  "recovery_input": {
+    "bytes": 8163,
+    "path": "tests/v4_parallel_scoped_formalization_r1/test_scoped_acceptance.py",
+    "sha256": "b49ab9d6ceda5c6f40c4276862afa2e09b02711dcdead9b428c40ae48f80ec68"
+  },
+  "recovery_input_archived_bytes": {
+    "bytes": 8163,
+    "path": "data/v4/source_evidence/next_round_r2_clean_repair/tests/v4_parallel_scoped_formalization_r1/test_scoped_acceptance.py",
+    "sha256": "b49ab9d6ceda5c6f40c4276862afa2e09b02711dcdead9b428c40ae48f80ec68"
+  },
+  "recovery_method": "Remove only the later-added test_generic_vector_repair_preserves_exact_original_source_and_scope function block through the following first decorator; preserve every other byte",
+  "removed_byte_range": {
+    "bytes": 966,
+    "end_exclusive": 1471,
+    "start_inclusive": 505
+  },
+  "status": "PASS_EXACT_RECONSTRUCTED_RECOVERY",
+  "tests_rerun": false
+}

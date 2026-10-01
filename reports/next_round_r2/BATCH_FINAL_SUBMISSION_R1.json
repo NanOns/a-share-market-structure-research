@@ -1,0 +1,112 @@
+{
+  "DataHead": "KEEP_2026-09-30",
+  "StageHead": "KEEP_V4_00_TO_V4_10_ACCEPTED",
+  "V4_12_implemented": false,
+  "actual_clean_receipt": {
+    "bytes": 936758,
+    "path": "reports/next_round_r2/BATCH_CLEAN_CHECKOUT_R1.json",
+    "sha256": "902df9f9abde3c61ef0e977806d55cd1a72ea43a0d86371a30fcd3e6440ea8f3"
+  },
+  "actual_test_summary": {
+    "errors": 0,
+    "failures": 0,
+    "passed": 1803,
+    "skipped": 2,
+    "tests": 1805
+  },
+  "amendment_heads_promoted": false,
+  "baseline_commit": "66ef2e342dd339cc9795c2d1fd774b8edec4c345",
+  "batch_handoff": {
+    "bytes": 8745,
+    "path": "reports/next_round_r2/BATCH_CANDIDATE_HANDOFF_R2.json",
+    "sha256": "54cd77995fc946868d3782e13f53f9216cb9c607eb8d76f4cb6af6988768cb7b"
+  },
+  "candidate_artifact_manifest": {
+    "bytes": 34677,
+    "path": "reports/next_round_r2/BATCH_CANDIDATE_ARTIFACT_MANIFEST_R2.json",
+    "sha256": "55f75f19c5c3be46fc29071c98376e255854c4b8998634bd6c5e27f001a1e383"
+  },
+  "completed_at_utc": "2026-10-01T16:30:21.273419+00:00",
+  "contract_id": "V4_NEXT_ROUND_R2_FINAL_SUBMISSION",
+  "current_package_states": {
+    "A02": "ACCEPTED_SCOPED",
+    "A03": "ACCUMULATION_CONTINUES",
+    "A04": "GO_FORWARD_CANDIDATE_WARMUP",
+    "A05": "ACCEPTED_SCOPED",
+    "A06": "ACCEPTED_SCOPED",
+    "A07": "PERMANENT_CAPABILITY_BLOCK",
+    "OWNER": "INACTIVE_ACCEPTED_METADATA",
+    "READER": "ACCEPTED_SCOPED",
+    "V4-11": "SEMANTIC_REPAIR_CANDIDATE"
+  },
+  "current_registry": {
+    "bytes": 7414,
+    "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R12_FORMALIZATION_R2.json",
+    "sha256": "63f43a506cebd315c244cbe821af05effc4eda8e7b81a17ad88c288ef8246e85"
+  },
+  "external_acceptance_of_new_repairs": false,
+  "final_commit_scope": "EVIDENCE_ONLY_AFTER_TESTED_IMPLEMENTATION_COMMIT",
+  "formal_V4_11_head_created": false,
+  "historical_scoped_test_source_recovery": {
+    "bytes": 1965,
+    "path": "reports/next_round_r2/scoped_acceptance/SCOPED_TEST_R1_EXACT_RECOVERY_R1.json",
+    "sha256": "a49b6949626728bc34db643ae44c7402dee40631ad49738e4812e8ad5ab9d1bc"
+  },
+  "mainline_real_market": {
+    "AUD_AMOUNT_A_06_UNKNOWN_count": 0,
+    "UNKNOWN": 5224,
+    "rows": 5224,
+    "scenario_status_counts": {
+      "LAUNCH_CONFIRM": {
+        "FALSE": 0,
+        "TRUE": 0,
+        "UNKNOWN": 5224
+      },
+      "RECOVERY_TURN": {
+        "FALSE": 0,
+        "TRUE": 0,
+        "UNKNOWN": 5224
+      },
+      "STRONG_PULLBACK": {
+        "FALSE": 0,
+        "TRUE": 0,
+        "UNKNOWN": 5224
+      },
+      "TREND_CONTINUE": {
+        "FALSE": 0,
+        "TRUE": 0,
+        "UNKNOWN": 5224
+      }
+    }
+  },
+  "mainline_status": "V4_11_R2_SEMANTIC_REPAIR_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
+  "migration_026_unchanged": true,
+  "migrations_applied": 27,
+  "new_deselects": [],
+  "next_stage": "COMMIT_PUSH_THEN_STOP_WAIT_FOR_INDEPENDENT_EXTERNAL_REAUDIT",
+  "permissions": {
+    "focus": false,
+    "global_mandatory_adoption": false,
+    "production": false,
+    "shadow": false
+  },
+  "scope_acceptance_authority": {
+    "bytes": 8244,
+    "path": "docs/evidence/next_round_r2/V4_NEXT_ROUND_10_CARD_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R1_20261001.md",
+    "sha256": "7d6c8d3faf64a948d206a318d122d41baf757613d0beb88e6d5bd54fcff96bb3"
+  },
+  "skips": [
+    "WINDOWS_SYMLINK_CREATION_UNAVAILABLE:tests.v4_phase0.test_tdx_local_snapshot::test_symlink_input_is_rejected",
+    "WINDOWS_SYMLINK_CREATION_UNAVAILABLE:tests.v4_phase0.test_tdx_snapshot::test_extracted_symlink_is_rejected"
+  ],
+  "source_limitations": [
+    "STOCK_AMR20_TARGET_ACCEPTED_PRODUCER_PUBLICATION_UNAVAILABLE",
+    "COMMON_SAFETY_EPISODE_TARGET_ACCEPTED_PRODUCERS_UNAVAILABLE",
+    "TREND_CURRENT_LOO_DIAGNOSTIC_ONLY",
+    "A04_H21_MEMBERSHIP_MISSING_20_SESSIONS_AND_HISTORICAL_FORMAL_BLOCKED"
+  ],
+  "status": "CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
+  "tdx_source_writes": false,
+  "tested_implementation_commit": "d119c0526e44a819f85b4917159d3eeb5daadf2a",
+  "unrelated_worktree_changes_preserved": true
+}

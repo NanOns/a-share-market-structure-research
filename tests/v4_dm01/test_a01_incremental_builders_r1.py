@@ -95,7 +95,8 @@ def test_unsupported_adjustment_per_security_fail_closed(tmp_path):
 
 def test_independent_postcheck_rejects_raw_adjusted_or_period_or_price_tamper(tmp_path):
     env=make_inputs(tmp_path);receipts=components(env)
-    for cap,field,value in [('ADJUSTED_DAILY','close','99.00'),('PERIOD_RAW','volume',999999),('PRICE_LIMIT','limit_up_price','999.00')]:
+    for cap,field,value in [('ADJUSTED_DAILY','close','99.00'),('PERIOD_RAW','volume',999999),('PRICE_LIMIT','limit_up_price','999.00'),
+                            ('SPECIAL_PHASE','special_price_phase','RELISTING_FIRST_DAY')]:
         original=Path(receipts[cap]['artifact_path']).read_bytes();v=json.loads(original);v['rows'][-1][field]=value
         path=Path(receipts[cap]['artifact_path']);path.write_text(json.dumps(v),encoding='utf8')
         changed=deepcopy(receipts);changed[cap].update(artifact_sha256=sha(path),logical_digest=digest(v['rows']))
@@ -179,7 +180,11 @@ def test_suspended_member_generates_no_synthetic_daily_and_null_no_actual_period
     p['components']['IDENTITY_UNIVERSE']=save(tmp_path,'prior_suspended_identity.json',prior)
     p['component_manifest_binding']=save(tmp_path,'parent_suspended_components.json',dict(parent_data_head_digest=p['binding']['sha256'],components=p['components']))
     bao=json.loads(Path(f['inputs']['BAOSTOCK_DAILY_UPDATE']['path']).read_text(encoding='utf8'));bao['daily_rows'].append(dict(date=TARGET,code='sz.000002',tradestatus='0',isST='0'));replace_input(env,'BAOSTOCK_DAILY_UPDATE',bao)
-    phase=json.loads(Path(f['inputs']['SPECIAL_PRICE_PHASE']['path']).read_text(encoding='utf8'));phase['active_security_ids'].append(second['security_id']);replace_input(env,'SPECIAL_PRICE_PHASE',phase)
+    phase=json.loads(Path(f['inputs']['SPECIAL_PRICE_PHASE']['path']).read_text(encoding='utf8'));phase['active_security_ids'].append(second['security_id'])
+    life=json.loads(Path(f['source_families']['IDENTITY_LIFECYCLE']['path']).read_text(encoding='utf8'));life['active_security_ids'].append(second['security_id'])
+    life_ref=save(tmp_path,'suspended_lifecycle.json',life);phase['lifecycle_snapshot']=life_ref
+    f['source_families']['IDENTITY_LIFECYCLE'].update(life_ref,source_revision=life_ref['sha256'])
+    replace_input(env,'SPECIAL_PRICE_PHASE',phase)
     f['identity_publication_id']=ref['sha256'];rehash(f);result=run(env)
     assert result['status'].endswith('EXTERNAL_REAUDIT'),result
     raw=json.loads(Path(result['components']['RAW_DAILY']['artifact_path']).read_text(encoding='utf8'))['rows'];assert len(raw)==1

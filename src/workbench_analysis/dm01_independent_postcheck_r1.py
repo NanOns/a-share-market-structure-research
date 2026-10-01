@@ -1,6 +1,7 @@
 from __future__ import annotations
 """Independent artifact/source comparisons; never calls a candidate builder as oracle."""
 from collections import Counter
+from datetime import datetime
 from decimal import Decimal,ROUND_HALF_UP
 import hashlib
 import json
@@ -105,6 +106,33 @@ def check_component(receipt,payload,freeze,parent,calendar,identity):
         present={(r['security_id'],r['period_type'],r['period_key']):r for r in rows}
         check('closed_parent_rows_byte_logical_identity',all(present.get(k)==v for k,v in closed.items()))
         check('period_parent_exact',payload['parent_period_publication']==parent['components'][cap])
+    if cap=='SPECIAL_PHASE':
+        manifest=_read(freeze['inputs']['SPECIAL_PRICE_PHASE'])
+        lifecycle=_read(manifest['lifecycle_snapshot'])
+        policy=_read(manifest['policy'])
+        event_path=Path(manifest['event_store']['path'])
+        if not event_path.is_absolute():event_path=Path(__file__).resolve().parents[2]/event_path
+        event_bytes=event_path.read_bytes()
+        check('special_event_store_digest',hashlib.sha256(event_bytes).hexdigest()==manifest['event_store']['sha256'])
+        events=[json.loads(line) for line in event_bytes.decode('utf8').splitlines() if line.strip()]
+        check('special_lifecycle_publication',manifest['lifecycle_snapshot']['sha256']==freeze['source_families']['IDENTITY_LIFECYCLE']['sha256'])
+        check('special_active_identity_exact',{r['security_id'] for r in rows if r.get('security_id')}==set(manifest['active_security_ids'])==set(lifecycle['active_security_ids']))
+        for r in rows:
+            check('special_manifest_publication',r['event_manifest_digest']==freeze['inputs']['SPECIAL_PRICE_PHASE']['sha256'])
+            matches=[e for e in events if e['security_id']==r.get('security_id')]
+            if not matches:
+                check('special_valid_no_event_regular',r['special_price_phase']=='REGULAR')
+            else:
+                provenance=[e for e in matches if e['source_capture_sha256']==r.get('special_phase_source_capture_sha256')
+                    and e['source_ref']==r.get('special_phase_source_ref') and e['phase_effective_from']==r.get('special_phase_effective_date')]
+                if r['special_price_phase'] not in ('REGULAR','UNKNOWN_SPECIAL_PHASE'):
+                    check('special_event_provenance_exact',bool(provenance))
+                    check('special_event_knowledge_cutoff',all(datetime.fromisoformat(e['system_available_at'].replace('Z','+00:00'))<=
+                        datetime.fromisoformat(freeze['system_available_at'].replace('Z','+00:00')) for e in provenance))
+            applicable=[p for p in policy['policies'] if p['phase']==r['special_price_phase'] and p.get('valid_from','0001-01-01')<=target
+                and (not p.get('valid_to') or target<=p['valid_to']) and (not p.get('board_scope') or p['board_scope']==r['board_scope'])]
+            if len(applicable)==1 and applicable[0]['action']=='NO_LIMIT':
+                check('special_no_limit_null_boundaries',r['limit_status']=='NO_LIMIT' and r['limit_up_price'] is None and r['limit_down_price'] is None)
     return dict(contract_id='DM01_INDEPENDENT_COMPONENT_POSTCHECK_R1',component_id=cap,status='PASS' if not errors else 'FAIL',
         errors=sorted(set(errors)),row_count=len(rows),logical_digest=receipt['logical_digest'],
         independently_read_sources=True,adapter_used_as_oracle=False)

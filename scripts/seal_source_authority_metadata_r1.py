@@ -12,7 +12,7 @@ from scripts.enter_source_authority_remediation_r2 import bind
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--package', choices=['R3', 'A10_R2'], required=True)
+    parser.add_argument('--package', choices=['R3', 'R4', 'A10_R2', 'A12_R2'], required=True)
     parser.add_argument('--clean-root', required=True)
     args = parser.parse_args()
     wp = args.package

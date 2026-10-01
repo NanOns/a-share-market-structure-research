@@ -1,0 +1,66 @@
+{
+  "accepted": [
+    "owner registry schema",
+    "governance trust root",
+    "exact owner hash verification",
+    "external acceptance verification",
+    "formal consumer authorization verification",
+    "consumer scope verification",
+    "historical mode verification",
+    "effective target scope verification",
+    "supplemental promotion guard",
+    "pending owner rejection",
+    "DM01/global gate consistency"
+  ],
+  "contract_id": "A10_R2_EXTERNAL_ACCEPTANCE_RECORD_R1",
+  "evidence_bindings": [
+    {
+      "bytes": 7197,
+      "path": "reports/audits/A10_R2_OWNER_GATE_AND_PENDING_SOURCE_EVIDENCE_R1.json",
+      "sha256": "2c3ec566a4f8c2a9e548cdd4a27c981a12aa88ce84bf854a750d6f6c7f55722a"
+    },
+    {
+      "bytes": 12899,
+      "path": "reports/audits/A10_R2_CLEAN_CHECKOUT_R1.json",
+      "sha256": "7d164c220a4dc9e59275fa4ed84a9f2de8633d153d6136b5f15340f07d88ef41"
+    },
+    {
+      "bytes": 16797,
+      "path": "reports/audits/A10_R2_TARGETED_REGRESSION_R1.xml",
+      "sha256": "818c11e33afc18f50cb1c7f15129e36c8b746c239b077692d01dd7899a4b0b58"
+    },
+    {
+      "bytes": 787689,
+      "path": "reports/audits/A10_R2_NO_SYMBOL_SCAN_R1.json",
+      "sha256": "c829a1bd04284221df1cc2dbb432437e9b07ff5714670e484e390fceec8f6a42"
+    },
+    {
+      "bytes": 8260,
+      "path": "reports/audits/A10_R2_STAGE_CLOSURE_R1.json",
+      "sha256": "4613997e9e702f1fbb14102f5480662cdcde3ec12506df07e12c2410e952ab92"
+    }
+  ],
+  "external_acceptance": "PASS_INFRASTRUCTURE_SCOPE",
+  "external_authority": {
+    "audited_head": "699d3503d2d8ddbd37997441eec59308aec1990f",
+    "document": {
+      "bytes": 9645,
+      "path": "docs/evidence/source_authority/V4_FIRST_BATCH_REGISTRY_R3_A10_R2_INDEPENDENT_EXTERNAL_ACCEPTANCE_20261001.md",
+      "sha256": "563d8364099326858fd1d3fef653d09b9bf72af54c4e65c2d7863a1a2ace1c2c"
+    }
+  },
+  "formal_consumer_authorization": false,
+  "not_accepted": [
+    "no real source owner was authorized by A10-R2",
+    "existing formal owners have not been globally migrated",
+    "A12 owner is not accepted",
+    "DM01 all-nine is not accepted",
+    "production/shadow/focus remain false"
+  ],
+  "permissions": {
+    "focus_cutover": false,
+    "production": false,
+    "shadow": false
+  },
+  "scope": "INFRASTRUCTURE_ONLY"
+}

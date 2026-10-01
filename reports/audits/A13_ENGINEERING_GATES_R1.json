@@ -1,0 +1,33 @@
+{
+  "allowed_candidate_status": "A13_OFFICIAL_NOTICE_EVENT_SEMANTICS_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
+  "evidence_bindings": [
+    {
+      "bytes": 134813,
+      "path": "reports/audits/A13_FULL_NOTICE_AND_CAPTURE_MANIFEST_INVENTORY_R1.json",
+      "sha256": "d9cef45c6b26c095806ef58db79bd9d0d8689ceeddacbb26284373a9f97af5ed"
+    },
+    {
+      "bytes": 96903,
+      "path": "reports/audits/A13_CONSUMER_INVENTORY_R1.json",
+      "sha256": "d8e9351c8c1a0f6b824e792dba2b71dd0218b61b030ac1d45f3adcbdd7cf5e9d"
+    },
+    {
+      "bytes": 34665,
+      "path": "reports/audits/A13_NOTICE_REMOVAL_ADMISSION_COUNTERFACTUAL_R1.json",
+      "sha256": "800565d7382fa6eb93b7798e249ef03934242eb24ed9ef42076f38ecdcafe6e8"
+    },
+    {
+      "bytes": 425353,
+      "path": "data/v4/source_evidence/a13/OFFICIAL_NOTICE_EVENT_SEMANTICS_AMENDMENT_R1.json",
+      "sha256": "5bfd3885466eb33a37e1be3f18c291b0f53b20cc4935a43367417477f2b6036d"
+    }
+  ],
+  "gates": {
+    "EXTERNAL_NOTICE_ACCEPTANCE": "PENDING_INDEPENDENT_EXTERNAL_AUDIT",
+    "FULL_DOWNSTREAM_BUSINESS_DIGEST": "PASS_ENGINEERING",
+    "FULL_NOTICE_INVENTORY": "PASS_ENGINEERING",
+    "RUNTIME_SEMANTIC_NEGATIVES": "PENDING_CLEAN_DETACHED",
+    "UNCHANGED_ADMISSION_COUNTERFACTUAL": "PASS_ENGINEERING"
+  },
+  "next_stage": "Independent A13 external reaudit; audit remains OPEN; no business head movement"
+}

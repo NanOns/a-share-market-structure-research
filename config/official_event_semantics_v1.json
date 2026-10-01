@@ -1,0 +1,31 @@
+{
+  "candidate_sidecar": {
+    "bytes": 425353,
+    "path": "data/v4/source_evidence/a13/OFFICIAL_NOTICE_EVENT_SEMANTICS_AMENDMENT_R1.json",
+    "sha256": "5bfd3885466eb33a37e1be3f18c291b0f53b20cc4935a43367417477f2b6036d"
+  },
+  "contract_id": "OFFICIAL_EVENT_SEMANTICS_V1",
+  "event_types": [
+    "CODE_CHANGE",
+    "DELISTING_PHASE",
+    "IPO_ISSUANCE_POSTPONEMENT",
+    "IPO_LISTING_POSTPONEMENT",
+    "IPO_TERMINATION",
+    "LISTED_STOCK_RESUMPTION",
+    "LISTED_STOCK_TRADING_SUSPENSION",
+    "LISTING",
+    "OTHER_OFFICIAL_NOTICE",
+    "RISK_WARNING_CHANGE",
+    "UNKNOWN_EVENT_SEMANTICS"
+  ],
+  "existing_business_inputs_preserved": true,
+  "filename_or_capture_id_grants_trading_authority": false,
+  "formal_event_truth_requires": "EXACT_ACCEPTED_SIDECAR_RAW_TEXT_IDENTITY_AND_EFFECTIVE_DATE",
+  "runtime": {
+    "bytes": 6197,
+    "path": "src/workbench_analysis/official_event_semantics_v1.py",
+    "sha256": "d26519e469b765c240ec997bbd6679eefe626453805bc69eec885e4b0b487c65"
+  },
+  "unknown_event_may_enter_trading_status": false,
+  "version": "1.0.0"
+}

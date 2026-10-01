@@ -1,0 +1,192 @@
+{
+  "accepted_business_heads_unchanged": true,
+  "actual_accepted_owner_count": 0,
+  "actual_pending_field_gates": {
+    "AS_RECORDED_PRICE": {
+      "availability": "CAPABILITY_DISABLED_BY_CONTRACT",
+      "capability_blocked": true,
+      "consumer_contract_id": "HISTORICAL_AS_RECORDED_VARIANT",
+      "contract_id": "SOURCE_AUTHORITY_CONSUMER_GATE_R2",
+      "core_quality_changed": false,
+      "core_value": "PRESERVED",
+      "crosscheck": "UNKNOWN",
+      "field_id": "AS_RECORDED_PRICE",
+      "formal_authority_authorized": false,
+      "global_core_blocked": false,
+      "owner_acceptance_reason": "PENDING_OWNER",
+      "source_role": "FIELD_AUTHORITY",
+      "status": "AUTHORITY_OWNER_NOT_EXTERNALLY_ACCEPTED",
+      "supplement_quality": "UNAVAILABLE"
+    },
+    "ISST": {
+      "availability": "AVAILABLE",
+      "capability_blocked": true,
+      "consumer_contract_id": "ISST",
+      "contract_id": "SOURCE_AUTHORITY_CONSUMER_GATE_R2",
+      "core_quality_changed": false,
+      "core_value": "PRESERVED",
+      "crosscheck": "CONFLICT",
+      "field_id": "ISST",
+      "formal_authority_authorized": false,
+      "global_core_blocked": false,
+      "owner_acceptance_reason": "PENDING_OWNER",
+      "source_role": "FIELD_AUTHORITY",
+      "status": "AUTHORITY_OWNER_NOT_EXTERNALLY_ACCEPTED",
+      "supplement_quality": "AVAILABLE"
+    },
+    "OHLC_VOLUME_AMOUNT": {
+      "availability": "AVAILABLE",
+      "capability_blocked": true,
+      "consumer_contract_id": "RAW_DAILY",
+      "contract_id": "SOURCE_AUTHORITY_CONSUMER_GATE_R2",
+      "core_quality_changed": false,
+      "core_value": "PRESERVED",
+      "crosscheck": "CONFLICT",
+      "field_id": "OHLC_VOLUME_AMOUNT",
+      "formal_authority_authorized": false,
+      "global_core_blocked": false,
+      "owner_acceptance_reason": "PENDING_OWNER",
+      "source_role": "CORE_AUTHORITY",
+      "status": "AUTHORITY_OWNER_NOT_EXTERNALLY_ACCEPTED",
+      "supplement_quality": "AVAILABLE"
+    },
+    "QFQ": {
+      "availability": "AVAILABLE",
+      "capability_blocked": true,
+      "consumer_contract_id": "ADJUSTED_DAILY",
+      "contract_id": "SOURCE_AUTHORITY_CONSUMER_GATE_R2",
+      "core_quality_changed": false,
+      "core_value": "PRESERVED",
+      "crosscheck": "CONFLICT",
+      "field_id": "QFQ",
+      "formal_authority_authorized": false,
+      "global_core_blocked": false,
+      "owner_acceptance_reason": "PENDING_OWNER",
+      "source_role": "CORE_AUTHORITY",
+      "status": "AUTHORITY_OWNER_NOT_EXTERNALLY_ACCEPTED",
+      "supplement_quality": "AVAILABLE"
+    },
+    "SECTOR_MEMBERSHIP": {
+      "availability": "AVAILABLE",
+      "capability_blocked": true,
+      "consumer_contract_id": "SECTOR_CURRENT_PIT",
+      "contract_id": "SOURCE_AUTHORITY_CONSUMER_GATE_R2",
+      "core_quality_changed": false,
+      "core_value": "PRESERVED",
+      "crosscheck": "CONFLICT",
+      "field_id": "SECTOR_MEMBERSHIP",
+      "formal_authority_authorized": false,
+      "global_core_blocked": false,
+      "owner_acceptance_reason": "PENDING_OWNER",
+      "source_role": "FIELD_AUTHORITY",
+      "status": "AUTHORITY_OWNER_NOT_EXTERNALLY_ACCEPTED",
+      "supplement_quality": "AVAILABLE"
+    },
+    "SECURITY_IDENTITY": {
+      "availability": "AVAILABLE",
+      "capability_blocked": true,
+      "consumer_contract_id": "IDENTITY_UNIVERSE",
+      "contract_id": "SOURCE_AUTHORITY_CONSUMER_GATE_R2",
+      "core_quality_changed": false,
+      "core_value": "PRESERVED",
+      "crosscheck": "CONFLICT",
+      "field_id": "SECURITY_IDENTITY",
+      "formal_authority_authorized": false,
+      "global_core_blocked": false,
+      "owner_acceptance_reason": "PENDING_OWNER",
+      "source_role": "FIELD_AUTHORITY",
+      "status": "AUTHORITY_OWNER_NOT_EXTERNALLY_ACCEPTED",
+      "supplement_quality": "AVAILABLE"
+    },
+    "SPECIAL_PHASE": {
+      "availability": "AVAILABLE",
+      "capability_blocked": true,
+      "consumer_contract_id": "SPECIAL_PHASE",
+      "contract_id": "SOURCE_AUTHORITY_CONSUMER_GATE_R2",
+      "core_quality_changed": false,
+      "core_value": "PRESERVED",
+      "crosscheck": "CONFLICT",
+      "field_id": "SPECIAL_PHASE",
+      "formal_authority_authorized": false,
+      "global_core_blocked": false,
+      "owner_acceptance_reason": "PENDING_OWNER",
+      "source_role": "FIELD_AUTHORITY",
+      "status": "AUTHORITY_OWNER_NOT_EXTERNALLY_ACCEPTED",
+      "supplement_quality": "AVAILABLE"
+    },
+    "TRADING_STATUS": {
+      "availability": "AVAILABLE",
+      "capability_blocked": true,
+      "consumer_contract_id": "TRADING_STATUS",
+      "contract_id": "SOURCE_AUTHORITY_CONSUMER_GATE_R2",
+      "core_quality_changed": false,
+      "core_value": "PRESERVED",
+      "crosscheck": "CONFLICT",
+      "field_id": "TRADING_STATUS",
+      "formal_authority_authorized": false,
+      "global_core_blocked": false,
+      "owner_acceptance_reason": "PENDING_OWNER",
+      "source_role": "FIELD_AUTHORITY",
+      "status": "AUTHORITY_OWNER_NOT_EXTERNALLY_ACCEPTED",
+      "supplement_quality": "AVAILABLE"
+    },
+    "TURNOVER": {
+      "availability": "CAPABILITY_DISABLED_BY_CONTRACT",
+      "capability_blocked": true,
+      "consumer_contract_id": "SUPPLEMENTAL_TURNOVER_VARIANT",
+      "contract_id": "SOURCE_AUTHORITY_CONSUMER_GATE_R2",
+      "core_quality_changed": false,
+      "core_value": "PRESERVED",
+      "crosscheck": "UNKNOWN",
+      "field_id": "TURNOVER",
+      "formal_authority_authorized": false,
+      "global_core_blocked": false,
+      "owner_acceptance_reason": "PENDING_OWNER",
+      "source_role": "FIELD_AUTHORITY",
+      "status": "AUTHORITY_OWNER_NOT_EXTERNALLY_ACCEPTED",
+      "supplement_quality": "UNAVAILABLE"
+    }
+  },
+  "all_nine_final_execution_performed": false,
+  "dm01_private_gate": "A12_EXTERNAL_OWNER_ACCEPTANCE_REQUIRED:AUTHORITY_OWNER_NOT_EXTERNALLY_ACCEPTED",
+  "external_acceptance": null,
+  "global_authority_head": {
+    "bytes": 453,
+    "path": "data/v4/V4_SOURCE_AUTHORITY_GOVERNANCE_HEAD_R1.json",
+    "sha256": "0c7237194362961d6534ca947e931d40facb28199e6001551eb608482d8b8500"
+  },
+  "historical_helpers_ast_unchanged": true,
+  "permissions": {
+    "focus_cutover": false,
+    "production": false,
+    "shadow": false
+  },
+  "positive_authorization_scope": "SYNTHETIC_FIXTURE_ONLY_NO_REAL_OWNER_ACCEPTANCE",
+  "registry": {
+    "bytes": 2884,
+    "path": "data/v4/V4_SOURCE_AUTHORITY_ACCEPTED_OWNER_REGISTRY.json",
+    "sha256": "a18f2afb27d1464d171fe1e5d2007c7fb51102cf4d9c5e94a2b36de3204c0a3b"
+  },
+  "scanner": {
+    "bytes": 240177,
+    "path": "reports/audits/V4_SOURCE_AUTHORITY_GOVERNANCE_SCAN_R2.json",
+    "sha256": "d0ad747bb724f33a3e9b24bce52d3842bac2f3cc28825aa4bc3ba45f3aa891b3"
+  },
+  "status": "PASS_ENGINEERING_PENDING_EXTERNAL_REAUDIT",
+  "targeted_summary": {
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "tests": 107
+  },
+  "targeted_tests": {
+    "bytes": 16797,
+    "path": "reports/audits/A10_R2_TARGETED_REGRESSION_R1.xml",
+    "sha256": "818c11e33afc18f50cb1c7f15129e36c8b746c239b077692d01dd7899a4b0b58"
+  },
+  "tests": {
+    "bytes": 12527,
+    "path": "tests/v4_a10_r2/test_owner_acceptance.py",
+    "sha256": "eb0307e1834537c4749661fe31d9edb47115d04cb36e2508e1ff73f484d2c6e7"
+  }
+}

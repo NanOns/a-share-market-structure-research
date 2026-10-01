@@ -1,7 +1,7 @@
 """R2 preflight separating local authority from supplemental availability.
 
 This is an additive source gate, not a replacement or acceptance of nine R1
-adapters. Final runtime integration must follow external A12 owner acceptance.
+adapters. Final runtime integration requires both external A10/A12 acceptance.
 """
 from __future__ import annotations
 import hashlib,json
@@ -36,11 +36,25 @@ def source_freeze_complete_v2(root,contract,required_bindings,supplemental_bindi
         supplemental_can_overwrite_core=False,canonical_adjustment_authority='GBBQ',
         scope='SOURCE_FREEZE_PREFLIGHT_ONLY_NOT_ALL_NINE_ADAPTER_EXECUTION')
 
-def require_external_a12_owner_for_final_candidate(root,owner_contract_binding,global_head):
-    path=verify_binding(root,owner_contract_binding);owner=json.loads(path.read_text(encoding='utf8'))
-    accepted=global_head.get('accepted_source_authority_owners',{}).get('V4_02_STATUS_ST')
-    if owner.get('external_acceptance')!='EXTERNALLY_ACCEPTED' or owner.get('formal_consumer_authorization') is not True or accepted!=owner_contract_binding:
-        raise ValueError('A12_EXTERNAL_OWNER_ACCEPTANCE_REQUIRED')
-    if owner.get('trading_status_contract')!='LOCAL_DATED_TRADING_STATUS_V2' or owner.get('st_contract')!='LOCAL_DATED_ST_IDENTITY_V2':
-        raise ValueError('A12_OWNER_CONTRACT_IDENTITY_MISMATCH')
-    return owner
+def require_external_a12_owner_for_final_candidate(root,owner_contract_binding,global_head=None,*,
+        consumer_contract_id='DM01_FINAL_ALL_NINE',target_trade_date=None,
+        historical_mode='TARGET_DATE_QUERYABLE_FACT'):
+    """Use the same proof as A10 for both required fields, with exact input bindings.
+
+    The legacy global_head argument is retained for callers but is not a trust
+    root. Only the independently stored authority governance head can register
+    owners. A candidate bundle cannot substitute for two field owner bindings.
+    """
+    from .source_authority_accepted_owners_v1 import require_accepted_owner, OwnerAcceptanceError
+    try:
+        contract=json.loads((Path(root)/'config/source_authority_governance_r2.json').read_text(encoding='utf8'))
+        result={}
+        for field in ('TRADING_STATUS','ISST'):
+            rule=next(r for r in contract['field_rules'] if r['field_id']==field)
+            binding=(owner_contract_binding.get(field,owner_contract_binding)
+                if isinstance(owner_contract_binding,dict) else owner_contract_binding)
+            result[field]=require_accepted_owner(root,rule,consumer_contract_id=consumer_contract_id,
+                target_trade_date=target_trade_date,historical_mode=historical_mode,expected_owner_binding=binding)
+        return result
+    except (OwnerAcceptanceError,OSError,ValueError,KeyError,TypeError,StopIteration) as exc:
+        raise ValueError('A12_EXTERNAL_OWNER_ACCEPTANCE_REQUIRED:AUTHORITY_OWNER_NOT_EXTERNALLY_ACCEPTED') from exc

@@ -1,0 +1,42 @@
+{
+  "allowed_candidate_status": "A10_R2_OWNER_ACCEPTANCE_BINDING_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
+  "evidence": {
+    "bytes": 7197,
+    "path": "reports/audits/A10_R2_OWNER_GATE_AND_PENDING_SOURCE_EVIDENCE_R1.json",
+    "sha256": "2c3ec566a4f8c2a9e548cdd4a27c981a12aa88ce84bf854a750d6f6c7f55722a"
+  },
+  "gate_labels": {
+    "A10R2-G01": "registry_schema",
+    "A10R2-G02": "owner_hash",
+    "A10R2-G03": "external_acceptance",
+    "A10R2-G04": "formal_authorization",
+    "A10R2-G05": "scope",
+    "A10R2-G06": "supplemental_promotion",
+    "A10R2-G07": "actual_a12_pending",
+    "A10R2-G08": "synthetic_positive",
+    "A10R2-G09": "dm01_consistency",
+    "A10R2-G10": "historical_mode_preserved",
+    "A10R2-G11": "scanner",
+    "A10R2-G12": "accepted_heads_unchanged",
+    "A10R2-G13": "clean_detached",
+    "A10R2-G14": "external_reaudit"
+  },
+  "gates": {
+    "A10R2-G01": "PASS_ENGINEERING",
+    "A10R2-G02": "PASS_ENGINEERING",
+    "A10R2-G03": "PASS_ENGINEERING",
+    "A10R2-G04": "PASS_ENGINEERING",
+    "A10R2-G05": "PASS_ENGINEERING",
+    "A10R2-G06": "PASS_ENGINEERING",
+    "A10R2-G07": "PASS_ENGINEERING",
+    "A10R2-G08": "PASS_ENGINEERING",
+    "A10R2-G09": "PASS_ENGINEERING",
+    "A10R2-G10": "PASS_ENGINEERING",
+    "A10R2-G11": "PASS_ENGINEERING",
+    "A10R2-G12": "PASS_ENGINEERING",
+    "A10R2-G13": "PENDING_CLEAN_DETACHED",
+    "A10R2-G14": "PENDING_INDEPENDENT_EXTERNAL_AUDIT"
+  },
+  "next_stage": "Independent A10 R2 external reaudit; A12 R2 owner semantics require their own task; DM01 final all-nine remains gated by both acceptances",
+  "status": "PENDING_CLEAN_DETACHED"
+}

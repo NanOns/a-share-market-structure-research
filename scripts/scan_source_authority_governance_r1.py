@@ -14,7 +14,7 @@ def flattened(value,prefix=''):
         for i,v in enumerate(value):yield from flattened(v,prefix+f'[{i}]')
     else:yield prefix,value
 
-def inspect_file(relative,data):
+def inspect_file(relative,data,root=ROOT):
     findings=[]
     def add(category,line,evidence,owner,confidence='STRUCTURAL_REVIEW_REQUIRED'):
         f=dict(category=category,path=relative,line=line,evidence=evidence,remediation_owner=owner,
@@ -60,6 +60,25 @@ def inspect_file(relative,data):
                 add('C2_DECLARED_PROVIDER_FORMAL_OWNER_REVIEW',None,key,'A11' if 'LIFECYCLE' in v else 'A12')
         def visit(v,p=''):
             if isinstance(v,dict):
+                if v.get('role') in ('CORE_AUTHORITY','FIELD_AUTHORITY') and v.get('owner_contract_id') and v.get('field_id'):
+                    from workbench_analysis.source_authority_accepted_owners_v1 import load_registered_owners,exact_json,OwnerAcceptanceError
+                    registered=False
+                    try:
+                        owners=load_registered_owners(root)['owners']
+                        for owner in owners:
+                            if (owner['owner_contract_id']==v['owner_contract_id'] and owner['field_id']==v['field_id']
+                                and owner['external_acceptance']=='EXTERNALLY_ACCEPTED' and owner['formal_consumer_authorization'] is True
+                                and owner['role_binding_id']==v.get('role_binding_id')):
+                                artifact=exact_json(root,owner['artifact'])
+                                registered=artifact.get('role_binding')==v and artifact.get('external_acceptance')=='EXTERNALLY_ACCEPTED'
+                    except (OwnerAcceptanceError,OSError,KeyError,ValueError):pass
+                    if not registered:
+                        category='FIELD_AUTHORITY_WITHOUT_ACCEPTED_OWNER_BINDING'
+                        add(category,None,p+':'+v['field_id'],'A10_R2','PENDING_OWNER')
+                        if v.get('enabled') is True and v.get('enabled_for_formal_consumer') is not False:
+                            add('FORMAL_CONSUMER_USING_PENDING_OWNER',None,p+': declaration requires runtime rejection','A10_R2')
+                        if v.get('source_family')=='BAOSTOCK' or v['owner_contract_id'].startswith('BAOSTOCK_SUPPLEMENTAL'):
+                            add('SUPPLEMENTAL_ROLE_PROMOTED_WITHOUT_ACCEPTED_OWNER',None,p,'A10_R2','HIGH')
                 if v.get('role')=='SUPPLEMENTAL_CROSSCHECK' and (v.get('required') or v.get('may_block_core') or v.get('may_change_core_value')):
                     add('C2_SUPPLEMENTAL_PERMISSION_ESCALATION',None,p,'A10','HIGH')
                 if v.get('request_count')==0 and v.get('availability')=='PROVIDER_TARGET_DATE_EMPTY_CONFIRMED':
@@ -78,11 +97,11 @@ def run(root=ROOT):
     receipts=[];findings=[];errors=[]
     for p in paths:
         data=(root/p).read_bytes();receipts.append(dict(path=p,sha256=hashlib.sha256(data).hexdigest(),bytes=len(data)))
-        try:findings.extend(inspect_file(p,data))
+        try:findings.extend(inspect_file(p,data,root))
         except (UnicodeError,ValueError,SyntaxError) as exc:errors.append(dict(path=p,error=type(exc).__name__))
     groups={}
     for f in findings:groups[f['category']]=groups.get(f['category'],0)+1
-    return dict(contract_id='V4_SOURCE_AUTHORITY_GOVERNANCE_SCAN_R1',status='PASS_SCAN_COMPLETE_FINDINGS_OPEN' if not errors else 'FAIL_SCAN_INCOMPLETE',
+    return dict(contract_id='V4_SOURCE_AUTHORITY_GOVERNANCE_SCAN_R2',status='PASS_SCAN_COMPLETE_FINDINGS_OPEN' if not errors else 'FAIL_SCAN_INCOMPLETE',
         scanned_file_count=len(receipts),file_receipts=receipts,findings=findings,finding_counts=groups,parse_errors=errors,
         scanner_limitations=['Structural findings require field-level semantic review; absence of a finding is not source acceptance.',
             'Legacy immutable files remain visible after corrected candidate runtimes are added.'],

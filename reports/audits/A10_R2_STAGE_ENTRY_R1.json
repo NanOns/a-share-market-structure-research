@@ -1,0 +1,214 @@
+{
+  "baseline_commit": "ddeaee236e006a88daa34c83fa6789e056d06e12",
+  "contract": {
+    "bytes": 15604,
+    "path": "config/source_authority_governance_r2.json",
+    "sha256": "da97ad81868f8001f6e46ed2f8bab5993d230de1a4f75d727f25d4fb30f1bf42"
+  },
+  "contract_id": "WP-A10-R2-OWNER-ACCEPTANCE-BINDING",
+  "global_authority_head": {
+    "bytes": 453,
+    "path": "data/v4/V4_SOURCE_AUTHORITY_GOVERNANCE_HEAD_R1.json",
+    "sha256": "0c7237194362961d6534ca947e931d40facb28199e6001551eb608482d8b8500"
+  },
+  "next_stage": "Independent A10 R2 reaudit; A12 R2 not authorized by this task; DM01 final remains blocked",
+  "permissions": {
+    "focus_cutover": false,
+    "production": false,
+    "shadow": false
+  },
+  "phase0_evidence": {
+    "bytes": 11209,
+    "path": "reports/v4_phase0/V4_PHASE0_STAGE_RECEIPTS_R5_20260928.json",
+    "sha256": "fb15e8131405921375c93f277ebdcc1d39ea518399e03f6e55d18bba0003e583"
+  },
+  "phase0_status": "FULL_PASS",
+  "protected_bindings": [
+    {
+      "bytes": 4564,
+      "path": "data/v4/V4_01_ACCEPTED_HEAD.json",
+      "sha256": "b8ea5b8091629d116c860f9bf6a1a398301d75be16af7b08ff526fba9329bf6b"
+    },
+    {
+      "bytes": 3366,
+      "path": "data/v4/V4_01_ACCEPTED_HEAD_CANDIDATE.json",
+      "sha256": "6f84145fa0e2ef2427ec85349dfd4385fb31936e87a03b06a552ec81afb03ad9"
+    },
+    {
+      "bytes": 1099,
+      "path": "data/v4/V4_01_GO_FORWARD_IDENTITY_ACCEPTED_HEAD_R1.json",
+      "sha256": "496d537f7c6b9c78cac3a084330f09132814165d2967e8991ffa1d6319092214"
+    },
+    {
+      "bytes": 1602,
+      "path": "data/v4/V4_02_ACCEPTED_HEAD.json",
+      "sha256": "da318a1f82a03f13930af7858ca1640fadbdaedbee85e27d47f9c869c2d6b595"
+    },
+    {
+      "bytes": 1176,
+      "path": "data/v4/V4_02_GO_FORWARD_CALENDAR_EXTENSION_ACCEPTED_HEAD_R1.json",
+      "sha256": "d0d453689261603a6ccd773f6383781178cb74d388087b72c652dc8afcb309f6"
+    },
+    {
+      "bytes": 4142,
+      "git_baseline_commit": "1655f84d1a47faca43c281d66e7704f2fa56b1b8",
+      "git_sha256": "613a2e46876aeb3283fa268f717134347f4df236e0d935b47b3a770eb0d1afbf",
+      "path": "data/v4/V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD.json",
+      "representation_difference": "PRE_EXISTING_CRLF_LF_ONLY",
+      "sha256": "83fa37ded40337d69ff0e447a0b6a3bc293d2ca95ea9c8aa009f0f104776c4be"
+    },
+    {
+      "bytes": 1607,
+      "git_baseline_commit": "1655f84d1a47faca43c281d66e7704f2fa56b1b8",
+      "git_sha256": "57013bc0f7dcd966c94fb985e5a0d2cc8c77669aebee15cb02a6acd5f0923147",
+      "path": "data/v4/V4_03_ACCEPTED_HEAD.json",
+      "representation_difference": "PRE_EXISTING_CRLF_LF_ONLY",
+      "sha256": "734bd27a5d53b2f18e3d62aa96ac63c91ccc6d9f848e942bc1efc410c88d4370"
+    },
+    {
+      "bytes": 4924,
+      "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+      "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+    },
+    {
+      "bytes": 6837,
+      "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+      "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+    },
+    {
+      "bytes": 8456,
+      "path": "data/v4/V4_05_ACCEPTED_HEAD.json",
+      "sha256": "fc929d85553a900a6479ac9f50291d50cf750ad0e6c21fc58e4e05e92189f5cb"
+    },
+    {
+      "bytes": 4106,
+      "path": "data/v4/V4_06_ACCEPTED_HEAD.json",
+      "sha256": "5aec962703aed40cab809e798edc5bfbe50c416809984db40bb679a172782f8e"
+    },
+    {
+      "bytes": 6362,
+      "path": "data/v4/V4_07_ACCEPTED_HEAD.json",
+      "sha256": "b22117b0d14c35167cba86cb7398d878d7112f9cf17c1a427fa92766e78f880f"
+    },
+    {
+      "bytes": 20553,
+      "path": "data/v4/V4_08_ACCEPTED_HEAD.json",
+      "sha256": "b9ba34374ce35eefab705469de1e005758b90fa1f58ea5bba96fac08571073bc"
+    },
+    {
+      "bytes": 21493,
+      "path": "data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json",
+      "sha256": "f2a35cebd18e8caf723e7900133333ce4b8df1a8314cb190dade7b0ea7624a3f"
+    },
+    {
+      "bytes": 2151,
+      "path": "data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json",
+      "sha256": "d6374a73b8084ccd383cbb4f75428ed91176e91cc09d87c3329041d57c5bd9ed"
+    },
+    {
+      "bytes": 11474,
+      "path": "data/v4/V4_09_ACCEPTED_HEAD.json",
+      "sha256": "641ef9e2e6fe8f461a9b765262e739791a6d3fdd220b0eff7947e2690de3a87d"
+    },
+    {
+      "bytes": 5102,
+      "path": "data/v4/V4_10_ACCEPTED_HEAD.json",
+      "sha256": "ad9fc4643652feb3684223817f2e9c300167d128e2e8a07179e86f65094fd1e1"
+    },
+    {
+      "bytes": 2478,
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0"
+    },
+    {
+      "bytes": 602,
+      "path": "data/v4/V4_DEV_BASELINE_HEAD.json",
+      "sha256": "45695460b0147c6ada12e0ebd8e5070ac0a45eebea26603ff5a3daddc4dd5094"
+    },
+    {
+      "bytes": 8574,
+      "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+      "sha256": "529c532bd5553ace00fa4813aef07979cfce4e1f18fa5ea66f38fcddd8ed16cb"
+    },
+    {
+      "bytes": 11877,
+      "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json",
+      "sha256": "c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3"
+    },
+    {
+      "bytes": 21515,
+      "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R2.json",
+      "sha256": "83e2959a26dc3e1e5a64f14c56f3ef428d5b1b6d0d249311bea13cc73e87586e"
+    },
+    {
+      "bytes": 4305,
+      "path": "src/workbench_db/migrations/v4_postgres/021_v4_09_stock_prewatch.sql",
+      "sha256": "dcbcd468b7651c233a636c81e81bdbd1dc5b7ca85c42d4769c52b42ef5b7dc1c"
+    },
+    {
+      "bytes": 5849,
+      "path": "src/workbench_db/migrations/v4_postgres/022_v4_10_research_state_interface.sql",
+      "sha256": "cfa37902a75b100e05813e3fb0b63e3884bf369d4c1913067e5714eb9004a732"
+    },
+    {
+      "bytes": 19217,
+      "path": "src/workbench_db/migrations/v4_postgres/023_v4_10_research_state_lineage_hardening.sql",
+      "sha256": "e308a42738d32a8a02dd4c1859a1e5de3d561044ca148bd13949932113a3a97b"
+    },
+    {
+      "bytes": 19815,
+      "path": "src/workbench_db/migrations/v4_postgres/024_v4_10_research_state_authority_hardening.sql",
+      "sha256": "08058023f24231bd313523e860e2d6262c9035b395e5e27045fb754dcad69624"
+    },
+    {
+      "bytes": 1310,
+      "path": "src/workbench_db/migrations/v4_postgres/025_v4_09_consumer_identity_hardening.sql",
+      "sha256": "b27f960eba2353f09447d21b00a3e669398ff2b71a0158b5d4ace4a666da6374"
+    },
+    {
+      "bytes": 33283,
+      "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R3.json",
+      "sha256": "4e224ae63cac14ac85a2b47b29ed4566f55565912b155fd7f940b281fdf6e6d6"
+    },
+    {
+      "bytes": 2302,
+      "path": "config/V4_01_HISTORICAL_IDENTITY_AUTHORITY_AMENDMENT_R1.json",
+      "sha256": "a7abf008c5ef5cb0a660bb7c007481c4c0f89e168feb3dc4b2b5f8ae81d79b50"
+    },
+    {
+      "bytes": 2172,
+      "path": "reports/audits/V4_09_N01_HARDENING_ACCEPTED_RECORD_R1.json",
+      "sha256": "4b4377ff88405af89969a6bbe9b2416594f47859ff9436349bd78025ee1515f6"
+    },
+    {
+      "bytes": 2418,
+      "path": "reports/audits/V4_09_N02_CONSUMER_IDENTITY_HARDENING_ACCEPTED_RECORD_R1.json",
+      "sha256": "7f8d61ac36cc8b9ce69f190c53e551342135c5c1a56060ccfdc5887cbf0a66b3"
+    },
+    {
+      "bytes": 27431,
+      "path": "config/dm01_incremental_builders_contract_r1.json",
+      "sha256": "3d2ebfec6bec4633792b8ad3621c361516999684bb5b108ae9cd4e4052614272"
+    },
+    {
+      "bytes": 38305,
+      "path": "src/workbench_analysis/dm01_incremental_component_builders.py",
+      "sha256": "e378605fafae7a1a733360bd4de94cd695fdc361569f72d10f2306f65419734b"
+    },
+    {
+      "bytes": 15358,
+      "path": "src/workbench_analysis/dm01_accepted_builder_registry.py",
+      "sha256": "5e3b461544ff1a6bd2fe0e169b63a3d7fb57f264f4d71971a79ad23ac9832166"
+    }
+  ],
+  "registry": {
+    "bytes": 2884,
+    "path": "data/v4/V4_SOURCE_AUTHORITY_ACCEPTED_OWNER_REGISTRY.json",
+    "sha256": "a18f2afb27d1464d171fe1e5d2007c7fb51102cf4d9c5e94a2b36de3204c0a3b"
+  },
+  "task": {
+    "bytes": 5895,
+    "path": "docs/evidence/source_authority/V4_A10_R2_OWNER_ACCEPTANCE_BINDING_HARDENING_TASK_20261001.md",
+    "sha256": "f4724a87d7d41d2fe4928d85e66dea335510b1c0cb33043726c312bbdab19f02"
+  }
+}

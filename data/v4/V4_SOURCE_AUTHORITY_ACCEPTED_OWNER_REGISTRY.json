@@ -1,0 +1,78 @@
+{
+  "contract_id": "SOURCE_AUTHORITY_ACCEPTED_OWNER_REGISTRY_V1",
+  "external_acceptance": null,
+  "next_registration_gate": "A10-R2_AND_A12-R2_EXTERNAL_ACCEPTANCE_AND_NEW_AUTHORIZED_TASK",
+  "owners": [],
+  "pending_owners": [
+    {
+      "authority_status": "PENDING_EXTERNAL_ACCEPTANCE",
+      "field_id": "OHLC_VOLUME_AMOUNT",
+      "formal_consumer_authorization": false,
+      "owner_contract_id": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+      "reason": "NO_OWNER_REGISTRATION_AUTHORIZED_BY_THIS_TASK"
+    },
+    {
+      "authority_status": "PENDING_EXTERNAL_ACCEPTANCE",
+      "field_id": "SECURITY_IDENTITY",
+      "formal_consumer_authorization": false,
+      "owner_contract_id": "SECURITY_ENTITY_IDENTITY_V1",
+      "reason": "NO_OWNER_REGISTRATION_AUTHORIZED_BY_THIS_TASK"
+    },
+    {
+      "authority_status": "PENDING_EXTERNAL_ACCEPTANCE",
+      "field_id": "TRADING_STATUS",
+      "formal_consumer_authorization": false,
+      "owner_contract_id": "LOCAL_DATED_TRADING_STATUS_V2",
+      "reason": "NO_OWNER_REGISTRATION_AUTHORIZED_BY_THIS_TASK"
+    },
+    {
+      "authority_status": "PENDING_EXTERNAL_ACCEPTANCE",
+      "field_id": "ISST",
+      "formal_consumer_authorization": false,
+      "owner_contract_id": "LOCAL_DATED_ST_IDENTITY_V2",
+      "reason": "NO_OWNER_REGISTRATION_AUTHORIZED_BY_THIS_TASK"
+    },
+    {
+      "authority_status": "PENDING_EXTERNAL_ACCEPTANCE",
+      "field_id": "QFQ",
+      "formal_consumer_authorization": false,
+      "owner_contract_id": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+      "reason": "NO_OWNER_REGISTRATION_AUTHORIZED_BY_THIS_TASK"
+    },
+    {
+      "authority_status": "PENDING_EXTERNAL_ACCEPTANCE",
+      "field_id": "SPECIAL_PHASE",
+      "formal_consumer_authorization": false,
+      "owner_contract_id": "SPECIAL_PRICE_PHASE_POLICY_V2",
+      "reason": "NO_OWNER_REGISTRATION_AUTHORIZED_BY_THIS_TASK"
+    },
+    {
+      "authority_status": "PENDING_EXTERNAL_ACCEPTANCE",
+      "field_id": "TURNOVER",
+      "formal_consumer_authorization": false,
+      "owner_contract_id": "TURNOVER_CONTEXT_V1",
+      "reason": "NO_OWNER_REGISTRATION_AUTHORIZED_BY_THIS_TASK"
+    },
+    {
+      "authority_status": "PENDING_EXTERNAL_ACCEPTANCE",
+      "field_id": "SECTOR_MEMBERSHIP",
+      "formal_consumer_authorization": false,
+      "owner_contract_id": "V4_08_SECTOR_MEMBERSHIP_SOURCE_V1",
+      "reason": "NO_OWNER_REGISTRATION_AUTHORIZED_BY_THIS_TASK"
+    },
+    {
+      "authority_status": "PENDING_EXTERNAL_ACCEPTANCE",
+      "field_id": "AS_RECORDED_PRICE",
+      "formal_consumer_authorization": false,
+      "owner_contract_id": "HISTORICAL_AS_RECORDED_PRICE",
+      "reason": "NO_OWNER_REGISTRATION_AUTHORIZED_BY_THIS_TASK"
+    }
+  ],
+  "permissions": {
+    "focus_cutover": false,
+    "production": false,
+    "shadow": false
+  },
+  "scope": "OWNER_REGISTRATION_INFRASTRUCTURE_ONLY_NO_REAL_OWNER_PROMOTION",
+  "version": 1
+}

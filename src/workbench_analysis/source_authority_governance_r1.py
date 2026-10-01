@@ -3,6 +3,7 @@ from __future__ import annotations
 from datetime import date, datetime
 from enum import Enum
 from typing import Mapping
+from .source_authority_accepted_owners_v1 import require_accepted_owner, OwnerAcceptanceError
 
 class SourceRole(str, Enum):
     CORE_AUTHORITY='CORE_AUTHORITY'
@@ -99,7 +100,8 @@ def validate_temporal_lineage(fact:Mapping,mode:HistoricalMode|str):
     return True
 
 def evaluate_consumer_gate(rule:Mapping,*,consumer_contract_id,availability,target_trade_date,
-                           core_value=None,supplemental_value=None,request_receipt=None,required=False):
+                           core_value=None,supplemental_value=None,request_receipt=None,required=False,
+                           project_root=None,formal_use=True,historical_mode=None,owner_contract_binding=None):
     validate_role_contract(rule)
     state=validate_availability(availability,target_trade_date,request_receipt)
     if rule.get('enabled') is False:state=Availability.CAPABILITY_DISABLED_BY_CONTRACT.value
@@ -108,10 +110,23 @@ def evaluate_consumer_gate(rule:Mapping,*,consumer_contract_id,availability,targ
     if required and not authority:raise AuthorityError('SUPPLEMENTAL_MAY_NOT_BLOCK_CORE')
     if required and not declared:raise AuthorityError('UNDECLARED_CONSUMER_DEPENDENCY')
     missing=state!=Availability.AVAILABLE
-    return dict(contract_id='SOURCE_AUTHORITY_CONSUMER_GATE_R1',field_id=rule['field_id'],consumer_contract_id=consumer_contract_id,
-        status='BLOCKED_DECLARED_CAPABILITY' if required and missing and rule['may_block_core'] else 'PASS_CORE_SCOPE',
-        capability_blocked=bool(required and missing and rule['may_block_core']),availability=state,
-        core_value=(supplemental_value if authority and declared and rule['may_change_core_value'] and not missing else core_value),
+    owner_proof=None;owner_reason=None
+    if authority and formal_use and not declared:
+        owner_reason='CONSUMER_NOT_DECLARED_FOR_THIS_FIELD'
+    if authority and declared and formal_use:
+        try:
+            owner_proof=require_accepted_owner(project_root,rule,consumer_contract_id=consumer_contract_id,
+                target_trade_date=target_trade_date,historical_mode=historical_mode or rule['historical_retrieval_mode'],
+                expected_owner_binding=owner_contract_binding)
+        except OwnerAcceptanceError as exc:owner_reason=exc.reason
+    owner_blocked=owner_reason is not None
+    status=('AUTHORITY_OWNER_NOT_EXTERNALLY_ACCEPTED' if owner_blocked else
+        'BLOCKED_DECLARED_CAPABILITY' if required and missing and rule['may_block_core'] else
+        'PASS_DIAGNOSTIC_SCOPE' if not formal_use else 'PASS_CORE_SCOPE')
+    return dict(contract_id='SOURCE_AUTHORITY_CONSUMER_GATE_R2',field_id=rule['field_id'],consumer_contract_id=consumer_contract_id,
+        status=status,owner_acceptance_reason=owner_reason,formal_authority_authorized=owner_proof is not None,
+        capability_blocked=bool(owner_blocked and declared or required and missing and rule['may_block_core']),availability=state,
+        core_value=(supplemental_value if owner_proof is not None and rule['may_change_core_value'] and not missing else core_value),
         core_quality_changed=False,supplement_quality='AVAILABLE' if not missing else 'UNAVAILABLE',
         crosscheck=('UNKNOWN' if missing else 'MATCH' if supplemental_value==core_value else 'CONFLICT'),
         source_role=rule['role'],global_core_blocked=False)

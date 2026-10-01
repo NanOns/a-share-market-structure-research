@@ -46,7 +46,8 @@ def test_accepted_full_market_replay_has_identical_bytes_and_logical_digest():
     assert digest(records)==binding['logical_digest']
 
 def test_historical_archive_does_not_accept_current_runtime_for_new_promotion():
-    from scripts.promote_v4_09_accepted_head import source_checks,validate
+    from scripts.promote_v4_09_accepted_head import source_checks
+    from workbench_analysis.dm01_publication_history_reader_v1 import validate_v4_09_history as validate
     result=validate()
     assert result['status']=='PASS' and result['validation_scope']=='ACCEPTED_PUBLICATION_HISTORY_ONLY'
     assert result['current_runtime_matches_accepted_implementation'] is False

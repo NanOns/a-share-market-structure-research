@@ -1,0 +1,62 @@
+........................................................................ [  4%]
+........................................................................ [  9%]
+........................................................................ [ 14%]
+........................................................................ [ 18%]
+........................................................................ [ 23%]
+........................................................................ [ 28%]
+........................................................................ [ 33%]
+........................................................................ [ 37%]
+........................................................................ [ 42%]
+..s..........s.......................................................... [ 47%]
+........................................................................ [ 52%]
+........................................................................ [ 56%]
+...........................F........F................................... [ 61%]
+........................................................................ [ 66%]
+........................................................................ [ 70%]
+........................................................................ [ 75%]
+........................................................................ [ 80%]
+........................................................................ [ 85%]
+........................................................................ [ 89%]
+.F...................................................................... [ 94%]
+........................................................................ [ 99%]
+..........                                                               [100%]
+================================== FAILURES ===================================
+________________ test_promotion_and_all_25_independent_checks _________________
+
+    def test_promotion_and_all_25_independent_checks():
+        result=validate()
+>       assert result['status']=='PASS'
+E       AssertionError: assert 'FAIL' == 'PASS'
+E         
+E         - PASS
+E         + FAIL
+
+tests\v4_10\test_accepted_head_r1.py:7: AssertionError
+_____________________________ test_promoted_exact _____________________________
+
+    def test_promoted_exact():
+>       assert validate()['status'] == 'PASS'
+E       AssertionError: assert 'FAIL' == 'PASS'
+E         
+E         - PASS
+E         + FAIL
+
+tests\v4_10\test_promotion.py:6: AssertionError
+__ test_historical_archive_does_not_accept_current_runtime_for_new_promotion __
+
+    def test_historical_archive_does_not_accept_current_runtime_for_new_promotion():
+        from scripts.promote_v4_09_accepted_head import source_checks,validate
+        result=validate()
+>       assert result['status']=='PASS' and result['validation_scope']=='ACCEPTED_PUBLICATION_HISTORY_ONLY'
+E       AssertionError: assert ('FAIL' == 'PASS'
+E         
+E         - PASS
+E         + FAIL)
+
+tests\v4_a08\test_repair_freeze_authority.py:51: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/v4_10/test_accepted_head_r1.py::test_promotion_and_all_25_independent_checks
+FAILED tests/v4_10/test_promotion.py::test_promoted_exact - AssertionError: a...
+FAILED tests/v4_a08/test_repair_freeze_authority.py::test_historical_archive_does_not_accept_current_runtime_for_new_promotion
+3 failed, 1517 passed, 2 skipped, 1 deselected in 180.28s (0:03:00)
+

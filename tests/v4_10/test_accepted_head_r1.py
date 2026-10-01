@@ -1,6 +1,7 @@
 from copy import deepcopy
 import pytest
-from scripts.validate_v4_10_promotion_r1 import read,validate,CANDIDATE
+from scripts.validate_v4_10_promotion_r1 import read,CANDIDATE
+from workbench_analysis.dm01_publication_history_reader_v1 import validate_v4_10_history as validate
 
 def test_promotion_and_all_25_independent_checks():
     result=validate()

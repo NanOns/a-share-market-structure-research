@@ -19,6 +19,7 @@ from scripts.build_v4_08_r2_membership_evidence import atomic_json, atomic_bytes
 from scripts.scan_no_symbol_specific_runtime_logic import run as scan
 from scripts.verify_v4_08_r5_1 import compact_scan
 from workbench_analysis.dm01_accepted_chain_v1 import validate_historical_incremental_registry,validate_head_v2,HEAD_PATH,binding,load
+from workbench_analysis.dm01_publication_history_reader_v1 import validate_v4_09_history,validate_v4_10_history
 
 BASE=ROOT/'reports/audits'
 DESELECT='tests/v4_09/test_stock_prewatch.py::test_production_and_v4_09_acceptance_stay_disabled'
@@ -47,6 +48,8 @@ def main():
     registry=validate_historical_incremental_registry(ROOT)
     accepted_head=binding(ROOT,HEAD_PATH)
     readback=validate_head_v2(ROOT,load(ROOT,accepted_head),source_readback=True)
+    historical_publications=dict(V4_09=validate_v4_09_history(),V4_10=validate_v4_10_history())
+    if any(r['status']!='PASS' for r in historical_publications.values()):raise RuntimeError('HISTORICAL_PUBLICATION_ARCHIVE_NOT_EXACT')
     promotion_receipt=load(ROOT,binding(ROOT,'reports/v4_joint/DM01_A01_R3_DATA_HEAD_PROMOTION_RECEIPT_R1.json'))
     if promotion_receipt['new_data_head']!=accepted_head:raise RuntimeError('PROMOTION_RECEIPT_HEAD_MISMATCH')
     if promotion_receipt['stage_head_before']!=promotion_receipt['stage_head_after']:raise RuntimeError('STAGE_HEAD_MOVED')
@@ -87,13 +90,15 @@ def main():
         protected_heads=protected,protected_heads_unchanged=unchanged,registry=registry,no_symbol_status=governance['status'],
         elapsed_seconds=round(time.monotonic()-started,3),created_at_utc=datetime.now(timezone.utc).isoformat(),
         acceptance_scope='CLEAN_POST_PROMOTION_REGRESSION_AND_SOURCE_BINDING_READBACK',external_acceptance='EXTERNALLY_ACCEPTED_REAL_CONTINUOUS_CHAIN',
-        data_head=accepted_head,promotion_source_readback=readback,production=False,shadow=False,focus=False)
+        data_head=accepted_head,promotion_source_readback=readback,historical_publications=historical_publications,
+        historical_reader=binding(ROOT,'src/workbench_analysis/dm01_publication_history_reader_v1.py'),production=False,shadow=False,focus=False)
     atomic_json(BASE/(prefix+'CLEAN_CHECKOUT_R1.json'),receipt)
     atomic_json(BASE/(prefix+'INDEPENDENT_READBACK_R1.json'),dict(status='PASS' if ok else 'FAIL',tested_commit=head,
         data_head=accepted_head,promotion_receipt=binding(ROOT,'reports/v4_joint/DM01_A01_R3_DATA_HEAD_PROMOTION_RECEIPT_R1.json'),
         accepted_chain=promotion_receipt['accepted_chain'],final_candidate=load(ROOT,accepted_head)['final_candidate'],
         old_parent_archive=promotion_receipt['old_data_head_archive'],stage_head=promotion_receipt['stage_head_after'],
-        stage_head_unchanged=True,source_binding_readback=readback,all_final_nine=True,config_dot_env_read=False,
+        stage_head_unchanged=True,source_binding_readback=readback,historical_publications=historical_publications,
+        historical_reader=receipt['historical_reader'],all_final_nine=True,config_dot_env_read=False,
         production=False,shadow=False,focus=False))
     # One actual joint run, with both protected namespaces checked. No fabricated second execution.
     for package in dict.fromkeys(args.also_package):

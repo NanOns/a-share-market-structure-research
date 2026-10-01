@@ -1,6 +1,7 @@
 from copy import deepcopy
 import pytest
-from scripts.promote_v4_09_accepted_head import read, validate, validate_head, HEAD, GLOBAL, RECEIPT
+from scripts.promote_v4_09_accepted_head import read, HEAD, GLOBAL, RECEIPT
+from workbench_analysis.dm01_publication_history_reader_v1 import validate_v4_09_history as validate,validate_v4_09_history_head as validate_head
 
 def test_promoted_exact():
     assert validate()['status'] == 'PASS'

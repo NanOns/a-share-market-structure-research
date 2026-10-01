@@ -94,3 +94,15 @@ def test_current_pointer_is_audited_anchor_or_exact_promoted_v2(head):
         assert receipt['new_data_head']==binding(ROOT,HEAD_PATH)
         assert receipt['stage_head_before']==receipt['stage_head_after']==head['stage_head']
         assert not receipt['stage_head_moved'] and not any(receipt['permissions_after'].values())
+
+def test_business_publication_history_has_explicit_archive_scope(head):
+    from workbench_analysis.dm01_publication_history_reader_v1 import validate_v4_09_history,validate_v4_10_history
+    from scripts import validate_v4_10_promotion_r1 as original
+    saved_root=original.ROOT
+    for reader in (validate_v4_09_history,validate_v4_10_history):
+        result=reader()
+        assert result['status']=='PASS' and result['validation_scope']=='ACCEPTED_PUBLICATION_HISTORY_ONLY'
+        assert not result['business_reacceptance_performed'] and not result['production_authorization']
+    assert original.ROOT is saved_root
+    if read(HEAD_PATH)['accepted_trade_date']=='2026-09-30':
+        assert original.validate()['checks']['P19_protected']=='FAIL'

@@ -40,10 +40,10 @@ def main():
         if package!='DM01_A01_R3_PROMOTION':continue
         stage_entry=ROOT/f'reports/audits/{package}_STAGE_ENTRY_R1.json'
         entry=json.loads(stage_entry.read_text(encoding='utf8'))
-        for binding in entry['protected_bindings']:
-            actual=hashlib.sha256((ROOT/binding['path']).read_bytes()).hexdigest()
-            if actual!=binding.get('git_sha256',binding['sha256']):raise RuntimeError('STAGE_ENTRY_PROTECTED_BINDING_MISMATCH')
-            protected[binding['path']]=actual
+        for protected_binding in entry['protected_bindings']:
+            actual=hashlib.sha256((ROOT/protected_binding['path']).read_bytes()).hexdigest()
+            if actual!=protected_binding.get('git_sha256',protected_binding['sha256']):raise RuntimeError('STAGE_ENTRY_PROTECTED_BINDING_MISMATCH')
+            protected[protected_binding['path']]=actual
     registry=validate_historical_incremental_registry(ROOT)
     accepted_head=binding(ROOT,HEAD_PATH)
     readback=validate_head_v2(ROOT,load(ROOT,accepted_head),source_readback=True)

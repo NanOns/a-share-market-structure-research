@@ -29,6 +29,39 @@ EXPECTED_CALLABLES = {
 }
 
 
+def validate_incremental_registry(*, project_root: Path) -> dict[str, Any]:
+    """R1 engineering exports; the immutable V1 missing-API assessment remains historical evidence."""
+    root = project_root.resolve()
+    contract_path = root / 'config/dm01_incremental_builders_contract_r1.json'
+    errors = []
+    try:
+        contract = json.loads(contract_path.read_text(encoding='utf8'))
+        from workbench_analysis.dm01_incremental_component_builders import BUILDERS
+        if set(contract['capabilities']) != set(CAPABILITIES) or set(BUILDERS) != set(CAPABILITIES):
+            errors.append('NINE_CAPABILITY_SET_MISMATCH')
+        for cap, name in EXPECTED_CALLABLES.items():
+            fn = BUILDERS.get(cap)
+            if not callable(fn) or fn.__name__ != name or fn.__module__ != ADAPTER_MODULE:
+                errors.append('STATIC_CALLABLE_MISMATCH:' + cap)
+            if contract['capabilities'][cap]['builder_callable'] != name:
+                errors.append('CONTRACT_EXPORT_MISMATCH:' + cap)
+        for ref in contract['runtime_bindings']:
+            if sha256_file(root / ref['path']) != ref['sha256']:
+                errors.append('RUNTIME_DIGEST_MISMATCH:' + ref['path'])
+        # Historical Data Head retains its publication-time Stage Head. A later engineering
+        # promotion does not justify rebinding or mutating that Data Head.
+        for ref in contract['stage_entry_protected_heads']:
+            if sha256_file(root / ref['path']) != ref['sha256']:
+                errors.append('STAGE_ENTRY_HEAD_CHANGED:' + ref['path'])
+    except (OSError,KeyError,TypeError,ValueError) as exc:
+        errors.append('INCREMENTAL_REGISTRY_UNREADABLE:' + type(exc).__name__)
+    return dict(contract_id='DM01_A01_INCREMENTAL_REGISTRY_VALIDATION_R1',
+        status='PASS_ENGINEERING_EXPORTS' if not errors else 'BLOCKED', errors=errors,
+        registry_path='config/dm01_incremental_builders_contract_r1.json',
+        callable_count=9 if not errors else 0, candidate_only=True,
+        external_acceptance='PENDING', data_head_promotion_permitted=False)
+
+
 def sha256_file(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as stream:

@@ -1,0 +1,1097 @@
+{
+  "adapter_used_as_oracle": false,
+  "candidate": {
+    "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/staging/f1c0c9febcbd6efb6edcd54ae6ed88cb90f126889b3638852d9907f0f5936ab2/PROMOTION_CANDIDATE.json",
+    "sha256": "be88094d973bd2deed3b090634e76d7a9b01a70429ec8d6362e11ace280d603f"
+  },
+  "components": {
+    "ADJUSTED_DAILY": {
+      "accepted_algorithm_contract": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+      "accepted_owner_stage": "V4-02",
+      "artifact_path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/staging/f1c0c9febcbd6efb6edcd54ae6ed88cb90f126889b3638852d9907f0f5936ab2/ADJUSTED_DAILY/artifact.json",
+      "artifact_sha256": "d1a4cbaa026f759dbd07008e5c638c25671900b23af29dc4e11968437272e4e7",
+      "calendar_publication_id": "ceb06fb603cd28832c8857feed1022bf51f5b5138a598712ca228a041ab0cb45",
+      "candidate_only": true,
+      "component_id": "ADJUSTED_DAILY",
+      "contract_id": "DM01_ADJUSTED_DAILY_INCREMENT_R1",
+      "fixture_scope": "ENGINEERING_INPUT_ONLY_NOT_REAL_MARKET",
+      "identity_publication_id": "5bc5d0993c7284dc9418dfae69de61eb2e5c945a59c0c5d0dcf47be80b8c827f",
+      "input_publication_ids": [
+        "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0",
+        "5bc5d0993c7284dc9418dfae69de61eb2e5c945a59c0c5d0dcf47be80b8c827f",
+        "68679333821c50cc8cbed5ff4cd001447cc6571d79b0d074a60b6bb81bdb01e0",
+        "713cdccabe7f57e9fe2f40bc6949bf8b2c56bb18160935e61ab1197050a8df95",
+        "743e88a968fe7646a7674fc34a855f50d7979b388d033ae8ff13113dea8a8e81",
+        "78a7d7d6243bd45506dd7f2321e2d7c08b90516461179aa3a3a1199126837b29",
+        "7a11b4ce4a39259620298a79770f5445352d24474c9a42f04df104508adc5648",
+        "ce777f8926b3a67fba96d7cdfbddc1f99328b2d39a5885db856b246879545bc2",
+        "ceb06fb603cd28832c8857feed1022bf51f5b5138a598712ca228a041ab0cb45",
+        "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+      ],
+      "logical_digest": "de9c6609ea25bdf9c4803cc44a099e53ad48562afd89465f226a94b9f39b04f0",
+      "market_acceptance_claim": false,
+      "parent_component_bindings": {
+        "ADJUSTED_DAILY": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_ADJUSTED_DAILY.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "IDENTITY_UNIVERSE": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_IDENTITY_UNIVERSE.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "ISST": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_ISST.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "PERIOD_ADJUSTED": {
+          "bytes": 1292,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_PERIOD_ADJUSTED.json",
+          "sha256": "beae4f25141700cbe532f20bc1d779159eb12935ed0a211acba52bbecc795dc0"
+        },
+        "PERIOD_RAW": {
+          "bytes": 1292,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_PERIOD_RAW.json",
+          "sha256": "1bab92cb7fe213cd187393a1030badafe694324535e81cf93fba4405908e3cb2"
+        },
+        "PRICE_LIMIT": {
+          "bytes": 269,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_PRICE_LIMIT.json",
+          "sha256": "fc5c450d384ac6783c9bdc63a9032d85e8d5e3fe47e568a6f912092a5ef02c88"
+        },
+        "RAW_DAILY": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_RAW_DAILY.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "SPECIAL_PHASE": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_SPECIAL_PHASE.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "TRADING_STATUS": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_TRADING_STATUS.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        }
+      },
+      "parent_data_head_digest": "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0",
+      "postcheck_digest": "e9f10abe55fdc12edc7a74648ac3cf0ef277d6ff90fd33246062b10c21c7ab8b",
+      "quality_counts": {
+        "READY": 1
+      },
+      "row_count": 1,
+      "runtime_bindings": [
+        {
+          "callables": [
+            "build_affine_factors",
+            "adjust_ohlc"
+          ],
+          "path": "src/adjustment/tdx_adjustment.py",
+          "sha256": "de8ce814dbdfc2fad7b16f619e1f1085a4dc539591d2bfe6dff876d805e8f6e0"
+        },
+        {
+          "callables": [
+            "read_gbbq"
+          ],
+          "path": "src/tdx/gbbq_reader.py",
+          "sha256": "8b2b4736bfcec6bed5ae62c58b777c8306792aefd82b362970886c354672d03b"
+        },
+        {
+          "byte_count": 38305,
+          "path": "src/workbench_analysis/dm01_incremental_component_builders.py",
+          "sha256": "e378605fafae7a1a733360bd4de94cd695fdc361569f72d10f2306f65419734b"
+        },
+        {
+          "byte_count": 8287,
+          "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+          "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+        }
+      ],
+      "source_revision": "713cdccabe7f57e9fe2f40bc6949bf8b2c56bb18160935e61ab1197050a8df95",
+      "status": "FULL_PASS",
+      "target_trade_date": "2026-09-28",
+      "trade_date": "2026-09-28",
+      "unknown_reason_counts": {},
+      "version": "1.0.0"
+    },
+    "IDENTITY_UNIVERSE": {
+      "accepted_algorithm_contract": "SECURITY_IDENTITY_EVENT_DISCOVERY_V1",
+      "accepted_owner_stage": "V4-01 R8.1 baseline + DM-01 daily lifecycle adapter",
+      "artifact_path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/staging/f1c0c9febcbd6efb6edcd54ae6ed88cb90f126889b3638852d9907f0f5936ab2/IDENTITY_UNIVERSE/artifact.json",
+      "artifact_sha256": "da54bd1bb6d584d97db986b272ca469d1f04747214bafec40d5acea4b90c3ba3",
+      "calendar_publication_id": "ceb06fb603cd28832c8857feed1022bf51f5b5138a598712ca228a041ab0cb45",
+      "candidate_only": true,
+      "component_id": "IDENTITY_UNIVERSE",
+      "contract_id": "DM01_IDENTITY_UNIVERSE_INCREMENT_R1",
+      "fixture_scope": "ENGINEERING_INPUT_ONLY_NOT_REAL_MARKET",
+      "identity_publication_id": "5bc5d0993c7284dc9418dfae69de61eb2e5c945a59c0c5d0dcf47be80b8c827f",
+      "input_publication_ids": [
+        "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0",
+        "5bc5d0993c7284dc9418dfae69de61eb2e5c945a59c0c5d0dcf47be80b8c827f",
+        "68679333821c50cc8cbed5ff4cd001447cc6571d79b0d074a60b6bb81bdb01e0",
+        "713cdccabe7f57e9fe2f40bc6949bf8b2c56bb18160935e61ab1197050a8df95",
+        "743e88a968fe7646a7674fc34a855f50d7979b388d033ae8ff13113dea8a8e81",
+        "78a7d7d6243bd45506dd7f2321e2d7c08b90516461179aa3a3a1199126837b29",
+        "7a11b4ce4a39259620298a79770f5445352d24474c9a42f04df104508adc5648",
+        "ce777f8926b3a67fba96d7cdfbddc1f99328b2d39a5885db856b246879545bc2",
+        "ceb06fb603cd28832c8857feed1022bf51f5b5138a598712ca228a041ab0cb45",
+        "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+      ],
+      "logical_digest": "15ac882116abd18ac3fa3f191945383cf41ab3ce1cb275a8f3bd97003c23a257",
+      "market_acceptance_claim": false,
+      "parent_component_bindings": {
+        "ADJUSTED_DAILY": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_ADJUSTED_DAILY.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "IDENTITY_UNIVERSE": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_IDENTITY_UNIVERSE.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "ISST": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_ISST.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "PERIOD_ADJUSTED": {
+          "bytes": 1292,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_PERIOD_ADJUSTED.json",
+          "sha256": "beae4f25141700cbe532f20bc1d779159eb12935ed0a211acba52bbecc795dc0"
+        },
+        "PERIOD_RAW": {
+          "bytes": 1292,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_PERIOD_RAW.json",
+          "sha256": "1bab92cb7fe213cd187393a1030badafe694324535e81cf93fba4405908e3cb2"
+        },
+        "PRICE_LIMIT": {
+          "bytes": 269,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_PRICE_LIMIT.json",
+          "sha256": "fc5c450d384ac6783c9bdc63a9032d85e8d5e3fe47e568a6f912092a5ef02c88"
+        },
+        "RAW_DAILY": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_RAW_DAILY.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "SPECIAL_PHASE": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_SPECIAL_PHASE.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "TRADING_STATUS": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_TRADING_STATUS.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        }
+      },
+      "parent_data_head_digest": "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0",
+      "postcheck_digest": "dd65a86e151e5ef642ada1c788fcf5918541b0ad41576f85aa7f0ca8132d6e9f",
+      "quality_counts": {
+        "READY": 1
+      },
+      "row_count": 1,
+      "runtime_bindings": [
+        {
+          "callables": [
+            "discover_identity_events"
+          ],
+          "path": "src/workbench_analysis/security_identity_event_discovery.py",
+          "sha256": "a647c85cdb8e2fe1051a7242f6e56e974b501f7186bff2666da265905d38a6fb"
+        },
+        {
+          "callables": [
+            "build_current_lifecycle_snapshot"
+          ],
+          "path": "src/workbench_analysis/daily_source_manifests.py",
+          "sha256": "652ad628cfa7e65df3c941e46333d066be9eee7440442787c988bd9c93d613c0"
+        },
+        {
+          "byte_count": 38305,
+          "path": "src/workbench_analysis/dm01_incremental_component_builders.py",
+          "sha256": "e378605fafae7a1a733360bd4de94cd695fdc361569f72d10f2306f65419734b"
+        },
+        {
+          "byte_count": 8287,
+          "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+          "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+        }
+      ],
+      "source_revision": "713cdccabe7f57e9fe2f40bc6949bf8b2c56bb18160935e61ab1197050a8df95",
+      "status": "FULL_PASS",
+      "target_trade_date": "2026-09-28",
+      "trade_date": "2026-09-28",
+      "unknown_reason_counts": {},
+      "version": "1.0.0"
+    },
+    "ISST": {
+      "accepted_algorithm_contract": "V4_02_FULL_MARKET_DATED_ISST_V1",
+      "accepted_owner_stage": "V4-02",
+      "artifact_path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/staging/f1c0c9febcbd6efb6edcd54ae6ed88cb90f126889b3638852d9907f0f5936ab2/ISST/artifact.json",
+      "artifact_sha256": "5aebc6654e77f89c83ad397d86cfbc44faad5fc177dae4acd79caddecf55c49a",
+      "calendar_publication_id": "ceb06fb603cd28832c8857feed1022bf51f5b5138a598712ca228a041ab0cb45",
+      "candidate_only": true,
+      "component_id": "ISST",
+      "contract_id": "DM01_ISST_INCREMENT_R1",
+      "fixture_scope": "ENGINEERING_INPUT_ONLY_NOT_REAL_MARKET",
+      "identity_publication_id": "5bc5d0993c7284dc9418dfae69de61eb2e5c945a59c0c5d0dcf47be80b8c827f",
+      "input_publication_ids": [
+        "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0",
+        "5bc5d0993c7284dc9418dfae69de61eb2e5c945a59c0c5d0dcf47be80b8c827f",
+        "68679333821c50cc8cbed5ff4cd001447cc6571d79b0d074a60b6bb81bdb01e0",
+        "713cdccabe7f57e9fe2f40bc6949bf8b2c56bb18160935e61ab1197050a8df95",
+        "743e88a968fe7646a7674fc34a855f50d7979b388d033ae8ff13113dea8a8e81",
+        "78a7d7d6243bd45506dd7f2321e2d7c08b90516461179aa3a3a1199126837b29",
+        "7a11b4ce4a39259620298a79770f5445352d24474c9a42f04df104508adc5648",
+        "ce777f8926b3a67fba96d7cdfbddc1f99328b2d39a5885db856b246879545bc2",
+        "ceb06fb603cd28832c8857feed1022bf51f5b5138a598712ca228a041ab0cb45",
+        "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+      ],
+      "logical_digest": "76145af2f723f29747ea3e7f339a393f210a8cc4af8ee193393c1b4f33e024ee",
+      "market_acceptance_claim": false,
+      "parent_component_bindings": {
+        "ADJUSTED_DAILY": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_ADJUSTED_DAILY.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "IDENTITY_UNIVERSE": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_IDENTITY_UNIVERSE.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "ISST": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_ISST.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "PERIOD_ADJUSTED": {
+          "bytes": 1292,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_PERIOD_ADJUSTED.json",
+          "sha256": "beae4f25141700cbe532f20bc1d779159eb12935ed0a211acba52bbecc795dc0"
+        },
+        "PERIOD_RAW": {
+          "bytes": 1292,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_PERIOD_RAW.json",
+          "sha256": "1bab92cb7fe213cd187393a1030badafe694324535e81cf93fba4405908e3cb2"
+        },
+        "PRICE_LIMIT": {
+          "bytes": 269,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_PRICE_LIMIT.json",
+          "sha256": "fc5c450d384ac6783c9bdc63a9032d85e8d5e3fe47e568a6f912092a5ef02c88"
+        },
+        "RAW_DAILY": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_RAW_DAILY.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "SPECIAL_PHASE": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_SPECIAL_PHASE.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "TRADING_STATUS": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_TRADING_STATUS.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        }
+      },
+      "parent_data_head_digest": "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0",
+      "postcheck_digest": "50d8fca448667ff400c1c293254ba887358e5d923f84d4dcb4859ceb8b1d5b05",
+      "quality_counts": {
+        "READY": 1
+      },
+      "row_count": 1,
+      "runtime_bindings": [
+        {
+          "callables": [
+            "main"
+          ],
+          "path": "scripts/build_v4_02_full_market_isst.py",
+          "sha256": "093887b52748ff9965fcfb73e312b0791d32baedf9a53740bc08156d31ba84cf"
+        },
+        {
+          "byte_count": 38305,
+          "path": "src/workbench_analysis/dm01_incremental_component_builders.py",
+          "sha256": "e378605fafae7a1a733360bd4de94cd695fdc361569f72d10f2306f65419734b"
+        },
+        {
+          "byte_count": 8287,
+          "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+          "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+        }
+      ],
+      "source_revision": "713cdccabe7f57e9fe2f40bc6949bf8b2c56bb18160935e61ab1197050a8df95",
+      "status": "FULL_PASS",
+      "target_trade_date": "2026-09-28",
+      "trade_date": "2026-09-28",
+      "unknown_reason_counts": {},
+      "version": "1.0.0"
+    },
+    "PERIOD_ADJUSTED": {
+      "accepted_algorithm_contract": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+      "accepted_owner_stage": "V4-02",
+      "artifact_path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/staging/f1c0c9febcbd6efb6edcd54ae6ed88cb90f126889b3638852d9907f0f5936ab2/PERIOD_ADJUSTED/artifact.json",
+      "artifact_sha256": "c3716a571b9fc309e705390f836a1865ddc7d54d3071550e51d330d30eceb9d2",
+      "calendar_publication_id": "ceb06fb603cd28832c8857feed1022bf51f5b5138a598712ca228a041ab0cb45",
+      "candidate_only": true,
+      "component_id": "PERIOD_ADJUSTED",
+      "contract_id": "DM01_PERIOD_ADJUSTED_INCREMENT_R1",
+      "fixture_scope": "ENGINEERING_INPUT_ONLY_NOT_REAL_MARKET",
+      "identity_publication_id": "5bc5d0993c7284dc9418dfae69de61eb2e5c945a59c0c5d0dcf47be80b8c827f",
+      "input_publication_ids": [
+        "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0",
+        "5bc5d0993c7284dc9418dfae69de61eb2e5c945a59c0c5d0dcf47be80b8c827f",
+        "68679333821c50cc8cbed5ff4cd001447cc6571d79b0d074a60b6bb81bdb01e0",
+        "713cdccabe7f57e9fe2f40bc6949bf8b2c56bb18160935e61ab1197050a8df95",
+        "743e88a968fe7646a7674fc34a855f50d7979b388d033ae8ff13113dea8a8e81",
+        "78a7d7d6243bd45506dd7f2321e2d7c08b90516461179aa3a3a1199126837b29",
+        "7a11b4ce4a39259620298a79770f5445352d24474c9a42f04df104508adc5648",
+        "ce777f8926b3a67fba96d7cdfbddc1f99328b2d39a5885db856b246879545bc2",
+        "ceb06fb603cd28832c8857feed1022bf51f5b5138a598712ca228a041ab0cb45",
+        "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+      ],
+      "logical_digest": "109682f6999f0a41fff4e5517431103cd5fa4f2081fd2c17d04ec3728609f906",
+      "market_acceptance_claim": false,
+      "parent_component_bindings": {
+        "ADJUSTED_DAILY": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_ADJUSTED_DAILY.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "IDENTITY_UNIVERSE": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_IDENTITY_UNIVERSE.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "ISST": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_ISST.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "PERIOD_ADJUSTED": {
+          "bytes": 1292,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_PERIOD_ADJUSTED.json",
+          "sha256": "beae4f25141700cbe532f20bc1d779159eb12935ed0a211acba52bbecc795dc0"
+        },
+        "PERIOD_RAW": {
+          "bytes": 1292,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_PERIOD_RAW.json",
+          "sha256": "1bab92cb7fe213cd187393a1030badafe694324535e81cf93fba4405908e3cb2"
+        },
+        "PRICE_LIMIT": {
+          "bytes": 269,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_PRICE_LIMIT.json",
+          "sha256": "fc5c450d384ac6783c9bdc63a9032d85e8d5e3fe47e568a6f912092a5ef02c88"
+        },
+        "RAW_DAILY": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_RAW_DAILY.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "SPECIAL_PHASE": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_SPECIAL_PHASE.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "TRADING_STATUS": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_TRADING_STATUS.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        }
+      },
+      "parent_data_head_digest": "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0",
+      "postcheck_digest": "73ed954b613f53a02411c363d410bf7ddf1a986be22bf43156608de3c5cb2a4e",
+      "quality_counts": {
+        "READY": 3
+      },
+      "row_count": 3,
+      "runtime_bindings": [
+        {
+          "callables": [
+            "period_key",
+            "natural_period_end",
+            "schemas",
+            "main"
+          ],
+          "path": "scripts/build_v4_02_formal_periods.py",
+          "sha256": "afa3a28729ebd27c050fb65e3a1f453599fdb2f111dff63478e2dab57c28b26e"
+        },
+        {
+          "callables": [
+            "build_affine_factors",
+            "adjust_ohlc"
+          ],
+          "path": "src/adjustment/tdx_adjustment.py",
+          "sha256": "de8ce814dbdfc2fad7b16f619e1f1085a4dc539591d2bfe6dff876d805e8f6e0"
+        },
+        {
+          "byte_count": 38305,
+          "path": "src/workbench_analysis/dm01_incremental_component_builders.py",
+          "sha256": "e378605fafae7a1a733360bd4de94cd695fdc361569f72d10f2306f65419734b"
+        },
+        {
+          "byte_count": 8287,
+          "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+          "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+        }
+      ],
+      "source_revision": "713cdccabe7f57e9fe2f40bc6949bf8b2c56bb18160935e61ab1197050a8df95",
+      "status": "FULL_PASS",
+      "target_trade_date": "2026-09-28",
+      "trade_date": "2026-09-28",
+      "unknown_reason_counts": {},
+      "version": "1.0.0"
+    },
+    "PERIOD_RAW": {
+      "accepted_algorithm_contract": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+      "accepted_owner_stage": "V4-02",
+      "artifact_path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/staging/f1c0c9febcbd6efb6edcd54ae6ed88cb90f126889b3638852d9907f0f5936ab2/PERIOD_RAW/artifact.json",
+      "artifact_sha256": "3a80948991a024551f35fba57bc76d938cbcfff07256d4eed5243b1e228c78f8",
+      "calendar_publication_id": "ceb06fb603cd28832c8857feed1022bf51f5b5138a598712ca228a041ab0cb45",
+      "candidate_only": true,
+      "component_id": "PERIOD_RAW",
+      "contract_id": "DM01_PERIOD_RAW_INCREMENT_R1",
+      "fixture_scope": "ENGINEERING_INPUT_ONLY_NOT_REAL_MARKET",
+      "identity_publication_id": "5bc5d0993c7284dc9418dfae69de61eb2e5c945a59c0c5d0dcf47be80b8c827f",
+      "input_publication_ids": [
+        "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0",
+        "5bc5d0993c7284dc9418dfae69de61eb2e5c945a59c0c5d0dcf47be80b8c827f",
+        "68679333821c50cc8cbed5ff4cd001447cc6571d79b0d074a60b6bb81bdb01e0",
+        "713cdccabe7f57e9fe2f40bc6949bf8b2c56bb18160935e61ab1197050a8df95",
+        "743e88a968fe7646a7674fc34a855f50d7979b388d033ae8ff13113dea8a8e81",
+        "78a7d7d6243bd45506dd7f2321e2d7c08b90516461179aa3a3a1199126837b29",
+        "7a11b4ce4a39259620298a79770f5445352d24474c9a42f04df104508adc5648",
+        "ce777f8926b3a67fba96d7cdfbddc1f99328b2d39a5885db856b246879545bc2",
+        "ceb06fb603cd28832c8857feed1022bf51f5b5138a598712ca228a041ab0cb45",
+        "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+      ],
+      "logical_digest": "e62abb3d2e9662174cf59f8f9201e9ff01409d8629b4e11bc9da3cfd704bbdee",
+      "market_acceptance_claim": false,
+      "parent_component_bindings": {
+        "ADJUSTED_DAILY": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_ADJUSTED_DAILY.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "IDENTITY_UNIVERSE": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_IDENTITY_UNIVERSE.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "ISST": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_ISST.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "PERIOD_ADJUSTED": {
+          "bytes": 1292,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_PERIOD_ADJUSTED.json",
+          "sha256": "beae4f25141700cbe532f20bc1d779159eb12935ed0a211acba52bbecc795dc0"
+        },
+        "PERIOD_RAW": {
+          "bytes": 1292,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_PERIOD_RAW.json",
+          "sha256": "1bab92cb7fe213cd187393a1030badafe694324535e81cf93fba4405908e3cb2"
+        },
+        "PRICE_LIMIT": {
+          "bytes": 269,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_PRICE_LIMIT.json",
+          "sha256": "fc5c450d384ac6783c9bdc63a9032d85e8d5e3fe47e568a6f912092a5ef02c88"
+        },
+        "RAW_DAILY": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_RAW_DAILY.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "SPECIAL_PHASE": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_SPECIAL_PHASE.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "TRADING_STATUS": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_TRADING_STATUS.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        }
+      },
+      "parent_data_head_digest": "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0",
+      "postcheck_digest": "7fe43a73cebc2d601f728e4a9c01a2e945870646b134b1d99dd7722b9c9efd11",
+      "quality_counts": {
+        "READY": 3
+      },
+      "row_count": 3,
+      "runtime_bindings": [
+        {
+          "callables": [
+            "period_key",
+            "natural_period_end",
+            "schemas",
+            "main"
+          ],
+          "path": "scripts/build_v4_02_formal_periods.py",
+          "sha256": "afa3a28729ebd27c050fb65e3a1f453599fdb2f111dff63478e2dab57c28b26e"
+        },
+        {
+          "byte_count": 38305,
+          "path": "src/workbench_analysis/dm01_incremental_component_builders.py",
+          "sha256": "e378605fafae7a1a733360bd4de94cd695fdc361569f72d10f2306f65419734b"
+        },
+        {
+          "byte_count": 8287,
+          "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+          "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+        }
+      ],
+      "source_revision": "713cdccabe7f57e9fe2f40bc6949bf8b2c56bb18160935e61ab1197050a8df95",
+      "status": "FULL_PASS",
+      "target_trade_date": "2026-09-28",
+      "trade_date": "2026-09-28",
+      "unknown_reason_counts": {},
+      "version": "1.0.0"
+    },
+    "PRICE_LIMIT": {
+      "accepted_algorithm_contract": "R3_PRICE_LIMIT_BASE + SPECIAL_PRICE_PHASE_EVENT_V1 + SPECIAL_PRICE_PHASE_POLICY_V2",
+      "accepted_owner_stage": "V4-02 R6 externally accepted",
+      "artifact_path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/staging/f1c0c9febcbd6efb6edcd54ae6ed88cb90f126889b3638852d9907f0f5936ab2/PRICE_LIMIT/artifact.json",
+      "artifact_sha256": "63235559eb3cf186999d595be25744e6843e914e0b2125a6a47b4b0c37c30133",
+      "calendar_publication_id": "ceb06fb603cd28832c8857feed1022bf51f5b5138a598712ca228a041ab0cb45",
+      "candidate_only": true,
+      "component_id": "PRICE_LIMIT",
+      "contract_id": "DM01_PRICE_LIMIT_INCREMENT_R1",
+      "fixture_scope": "ENGINEERING_INPUT_ONLY_NOT_REAL_MARKET",
+      "identity_publication_id": "5bc5d0993c7284dc9418dfae69de61eb2e5c945a59c0c5d0dcf47be80b8c827f",
+      "input_publication_ids": [
+        "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0",
+        "5bc5d0993c7284dc9418dfae69de61eb2e5c945a59c0c5d0dcf47be80b8c827f",
+        "68679333821c50cc8cbed5ff4cd001447cc6571d79b0d074a60b6bb81bdb01e0",
+        "713cdccabe7f57e9fe2f40bc6949bf8b2c56bb18160935e61ab1197050a8df95",
+        "743e88a968fe7646a7674fc34a855f50d7979b388d033ae8ff13113dea8a8e81",
+        "78a7d7d6243bd45506dd7f2321e2d7c08b90516461179aa3a3a1199126837b29",
+        "7a11b4ce4a39259620298a79770f5445352d24474c9a42f04df104508adc5648",
+        "ce777f8926b3a67fba96d7cdfbddc1f99328b2d39a5885db856b246879545bc2",
+        "ceb06fb603cd28832c8857feed1022bf51f5b5138a598712ca228a041ab0cb45",
+        "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+      ],
+      "logical_digest": "8454704927a3f14db5fe164120092f26cd928bd8b2a0e80dfa14ade1efe060a5",
+      "market_acceptance_claim": false,
+      "parent_component_bindings": {
+        "ADJUSTED_DAILY": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_ADJUSTED_DAILY.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "IDENTITY_UNIVERSE": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_IDENTITY_UNIVERSE.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "ISST": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_ISST.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "PERIOD_ADJUSTED": {
+          "bytes": 1292,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_PERIOD_ADJUSTED.json",
+          "sha256": "beae4f25141700cbe532f20bc1d779159eb12935ed0a211acba52bbecc795dc0"
+        },
+        "PERIOD_RAW": {
+          "bytes": 1292,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_PERIOD_RAW.json",
+          "sha256": "1bab92cb7fe213cd187393a1030badafe694324535e81cf93fba4405908e3cb2"
+        },
+        "PRICE_LIMIT": {
+          "bytes": 269,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_PRICE_LIMIT.json",
+          "sha256": "fc5c450d384ac6783c9bdc63a9032d85e8d5e3fe47e568a6f912092a5ef02c88"
+        },
+        "RAW_DAILY": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_RAW_DAILY.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "SPECIAL_PHASE": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_SPECIAL_PHASE.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "TRADING_STATUS": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_TRADING_STATUS.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        }
+      },
+      "parent_data_head_digest": "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0",
+      "postcheck_digest": "b9f90d922b7da9e903b0db5154addd69e71be4e59cc4ba3648fa495b00a6e63c",
+      "quality_counts": {
+        "READY": 1
+      },
+      "row_count": 1,
+      "runtime_bindings": [
+        {
+          "callables": [
+            "run_builder",
+            "apply_row_runtime"
+          ],
+          "path": "scripts/build_v4_02_price_limits_generic.py",
+          "sha256": "e39405d604299a610b11ac8b0672a2bb63c943d49c6dc267555bf3138230ba28"
+        },
+        {
+          "callables": [
+            "SpecialPhaseEventStore",
+            "PhasePolicyRegistry",
+            "apply_phase_event"
+          ],
+          "path": "src/workbench_analysis/special_price_phases.py",
+          "sha256": "7e64ca1acd9d1d7c9138915cf3f82ffedb40ea6b3b99349c0857458a09f0db93"
+        },
+        {
+          "byte_count": 38305,
+          "path": "src/workbench_analysis/dm01_incremental_component_builders.py",
+          "sha256": "e378605fafae7a1a733360bd4de94cd695fdc361569f72d10f2306f65419734b"
+        },
+        {
+          "byte_count": 8287,
+          "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+          "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+        }
+      ],
+      "source_revision": "713cdccabe7f57e9fe2f40bc6949bf8b2c56bb18160935e61ab1197050a8df95",
+      "status": "FULL_PASS",
+      "target_trade_date": "2026-09-28",
+      "trade_date": "2026-09-28",
+      "unknown_reason_counts": {},
+      "version": "1.0.0"
+    },
+    "RAW_DAILY": {
+      "accepted_algorithm_contract": "V4_02_RAW_CANONICAL_FORMAL_ACCEPTANCE_V1",
+      "accepted_owner_stage": "V4-02",
+      "artifact_path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/staging/f1c0c9febcbd6efb6edcd54ae6ed88cb90f126889b3638852d9907f0f5936ab2/RAW_DAILY/artifact.json",
+      "artifact_sha256": "2bbcb7fa28f381bfa2bb2d3356e7a9cb6e4c39c66a8e49bffa906bdf96382f4e",
+      "calendar_publication_id": "ceb06fb603cd28832c8857feed1022bf51f5b5138a598712ca228a041ab0cb45",
+      "candidate_only": true,
+      "component_id": "RAW_DAILY",
+      "contract_id": "DM01_RAW_DAILY_INCREMENT_R1",
+      "fixture_scope": "ENGINEERING_INPUT_ONLY_NOT_REAL_MARKET",
+      "identity_publication_id": "5bc5d0993c7284dc9418dfae69de61eb2e5c945a59c0c5d0dcf47be80b8c827f",
+      "input_publication_ids": [
+        "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0",
+        "5bc5d0993c7284dc9418dfae69de61eb2e5c945a59c0c5d0dcf47be80b8c827f",
+        "68679333821c50cc8cbed5ff4cd001447cc6571d79b0d074a60b6bb81bdb01e0",
+        "713cdccabe7f57e9fe2f40bc6949bf8b2c56bb18160935e61ab1197050a8df95",
+        "743e88a968fe7646a7674fc34a855f50d7979b388d033ae8ff13113dea8a8e81",
+        "78a7d7d6243bd45506dd7f2321e2d7c08b90516461179aa3a3a1199126837b29",
+        "7a11b4ce4a39259620298a79770f5445352d24474c9a42f04df104508adc5648",
+        "ce777f8926b3a67fba96d7cdfbddc1f99328b2d39a5885db856b246879545bc2",
+        "ceb06fb603cd28832c8857feed1022bf51f5b5138a598712ca228a041ab0cb45",
+        "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+      ],
+      "logical_digest": "473e6932b92d2c141a4ae7ff7048166288b8aab97818ed83a5dc5d9dd4ff9f33",
+      "market_acceptance_claim": false,
+      "parent_component_bindings": {
+        "ADJUSTED_DAILY": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_ADJUSTED_DAILY.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "IDENTITY_UNIVERSE": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_IDENTITY_UNIVERSE.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "ISST": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_ISST.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "PERIOD_ADJUSTED": {
+          "bytes": 1292,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_PERIOD_ADJUSTED.json",
+          "sha256": "beae4f25141700cbe532f20bc1d779159eb12935ed0a211acba52bbecc795dc0"
+        },
+        "PERIOD_RAW": {
+          "bytes": 1292,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_PERIOD_RAW.json",
+          "sha256": "1bab92cb7fe213cd187393a1030badafe694324535e81cf93fba4405908e3cb2"
+        },
+        "PRICE_LIMIT": {
+          "bytes": 269,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_PRICE_LIMIT.json",
+          "sha256": "fc5c450d384ac6783c9bdc63a9032d85e8d5e3fe47e568a6f912092a5ef02c88"
+        },
+        "RAW_DAILY": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_RAW_DAILY.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "SPECIAL_PHASE": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_SPECIAL_PHASE.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "TRADING_STATUS": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_TRADING_STATUS.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        }
+      },
+      "parent_data_head_digest": "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0",
+      "postcheck_digest": "fb3ac79d0f62654419fb31d9a068e2bb1f1fd34c1c1734c79f0cd71173363009",
+      "quality_counts": {
+        "READY": 1
+      },
+      "row_count": 1,
+      "runtime_bindings": [
+        {
+          "callables": [
+            "date_identity",
+            "check_raw_quality"
+          ],
+          "path": "scripts/v4_02_build_raw_selected_v2.py",
+          "sha256": "128325a48c818378d78116f9785f50bedba348f401ce164802a81e0e7ab88cf6"
+        },
+        {
+          "byte_count": 38305,
+          "path": "src/workbench_analysis/dm01_incremental_component_builders.py",
+          "sha256": "e378605fafae7a1a733360bd4de94cd695fdc361569f72d10f2306f65419734b"
+        },
+        {
+          "byte_count": 8287,
+          "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+          "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+        }
+      ],
+      "source_revision": "713cdccabe7f57e9fe2f40bc6949bf8b2c56bb18160935e61ab1197050a8df95",
+      "status": "FULL_PASS",
+      "target_trade_date": "2026-09-28",
+      "trade_date": "2026-09-28",
+      "unknown_reason_counts": {},
+      "version": "1.0.0"
+    },
+    "SPECIAL_PHASE": {
+      "accepted_algorithm_contract": "SPECIAL_PHASE_SOURCE_MANIFEST_V1 + SPECIAL_PRICE_PHASE_EVENT_V1 + SPECIAL_PRICE_PHASE_POLICY_V2",
+      "accepted_owner_stage": "V4-02 R6 externally accepted",
+      "artifact_path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/staging/f1c0c9febcbd6efb6edcd54ae6ed88cb90f126889b3638852d9907f0f5936ab2/SPECIAL_PHASE/artifact.json",
+      "artifact_sha256": "102e8747378ddf516777457ca3a89d162b8571b776a6da09826ebf13f6cf3c15",
+      "calendar_publication_id": "ceb06fb603cd28832c8857feed1022bf51f5b5138a598712ca228a041ab0cb45",
+      "candidate_only": true,
+      "component_id": "SPECIAL_PHASE",
+      "contract_id": "DM01_SPECIAL_PHASE_INCREMENT_R1",
+      "fixture_scope": "ENGINEERING_INPUT_ONLY_NOT_REAL_MARKET",
+      "identity_publication_id": "5bc5d0993c7284dc9418dfae69de61eb2e5c945a59c0c5d0dcf47be80b8c827f",
+      "input_publication_ids": [
+        "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0",
+        "5bc5d0993c7284dc9418dfae69de61eb2e5c945a59c0c5d0dcf47be80b8c827f",
+        "68679333821c50cc8cbed5ff4cd001447cc6571d79b0d074a60b6bb81bdb01e0",
+        "713cdccabe7f57e9fe2f40bc6949bf8b2c56bb18160935e61ab1197050a8df95",
+        "743e88a968fe7646a7674fc34a855f50d7979b388d033ae8ff13113dea8a8e81",
+        "78a7d7d6243bd45506dd7f2321e2d7c08b90516461179aa3a3a1199126837b29",
+        "7a11b4ce4a39259620298a79770f5445352d24474c9a42f04df104508adc5648",
+        "ce777f8926b3a67fba96d7cdfbddc1f99328b2d39a5885db856b246879545bc2",
+        "ceb06fb603cd28832c8857feed1022bf51f5b5138a598712ca228a041ab0cb45",
+        "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+      ],
+      "logical_digest": "00640253553f6caf688e3ce9e76be2f3e260dcf42b5680de06d118c5a7b1a5d7",
+      "market_acceptance_claim": false,
+      "parent_component_bindings": {
+        "ADJUSTED_DAILY": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_ADJUSTED_DAILY.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "IDENTITY_UNIVERSE": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_IDENTITY_UNIVERSE.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "ISST": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_ISST.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "PERIOD_ADJUSTED": {
+          "bytes": 1292,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_PERIOD_ADJUSTED.json",
+          "sha256": "beae4f25141700cbe532f20bc1d779159eb12935ed0a211acba52bbecc795dc0"
+        },
+        "PERIOD_RAW": {
+          "bytes": 1292,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_PERIOD_RAW.json",
+          "sha256": "1bab92cb7fe213cd187393a1030badafe694324535e81cf93fba4405908e3cb2"
+        },
+        "PRICE_LIMIT": {
+          "bytes": 269,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_PRICE_LIMIT.json",
+          "sha256": "fc5c450d384ac6783c9bdc63a9032d85e8d5e3fe47e568a6f912092a5ef02c88"
+        },
+        "RAW_DAILY": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_RAW_DAILY.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "SPECIAL_PHASE": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_SPECIAL_PHASE.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "TRADING_STATUS": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_TRADING_STATUS.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        }
+      },
+      "parent_data_head_digest": "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0",
+      "postcheck_digest": "e110bd1a86299887420afb3a832e4ccba424f41cfdf85e7ddd18699c64bf6056",
+      "quality_counts": {
+        "READY": 1
+      },
+      "row_count": 1,
+      "runtime_bindings": [
+        {
+          "callables": [
+            "compile_event_phase_index",
+            "apply_row_runtime"
+          ],
+          "path": "scripts/build_v4_02_price_limits_generic.py",
+          "sha256": "e39405d604299a610b11ac8b0672a2bb63c943d49c6dc267555bf3138230ba28"
+        },
+        {
+          "callables": [
+            "SpecialPhaseEventStore",
+            "PhasePolicyRegistry",
+            "resolve_event_phase"
+          ],
+          "path": "src/workbench_analysis/special_price_phases.py",
+          "sha256": "7e64ca1acd9d1d7c9138915cf3f82ffedb40ea6b3b99349c0857458a09f0db93"
+        },
+        {
+          "callables": [
+            "build_special_phase_source_manifest"
+          ],
+          "path": "src/workbench_analysis/daily_source_manifests.py",
+          "sha256": "652ad628cfa7e65df3c941e46333d066be9eee7440442787c988bd9c93d613c0"
+        },
+        {
+          "byte_count": 38305,
+          "path": "src/workbench_analysis/dm01_incremental_component_builders.py",
+          "sha256": "e378605fafae7a1a733360bd4de94cd695fdc361569f72d10f2306f65419734b"
+        },
+        {
+          "byte_count": 8287,
+          "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+          "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+        }
+      ],
+      "source_revision": "713cdccabe7f57e9fe2f40bc6949bf8b2c56bb18160935e61ab1197050a8df95",
+      "status": "FULL_PASS",
+      "target_trade_date": "2026-09-28",
+      "trade_date": "2026-09-28",
+      "unknown_reason_counts": {},
+      "version": "1.0.0"
+    },
+    "TRADING_STATUS": {
+      "accepted_algorithm_contract": "V4_02_DATED_TRADING_STATUS_V1",
+      "accepted_owner_stage": "V4-02",
+      "artifact_path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/staging/f1c0c9febcbd6efb6edcd54ae6ed88cb90f126889b3638852d9907f0f5936ab2/TRADING_STATUS/artifact.json",
+      "artifact_sha256": "ac9f296669cd29244444322313c89d9619958837eaa0da0301f02f98155a6ead",
+      "calendar_publication_id": "ceb06fb603cd28832c8857feed1022bf51f5b5138a598712ca228a041ab0cb45",
+      "candidate_only": true,
+      "component_id": "TRADING_STATUS",
+      "contract_id": "DM01_TRADING_STATUS_INCREMENT_R1",
+      "fixture_scope": "ENGINEERING_INPUT_ONLY_NOT_REAL_MARKET",
+      "identity_publication_id": "5bc5d0993c7284dc9418dfae69de61eb2e5c945a59c0c5d0dcf47be80b8c827f",
+      "input_publication_ids": [
+        "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0",
+        "5bc5d0993c7284dc9418dfae69de61eb2e5c945a59c0c5d0dcf47be80b8c827f",
+        "68679333821c50cc8cbed5ff4cd001447cc6571d79b0d074a60b6bb81bdb01e0",
+        "713cdccabe7f57e9fe2f40bc6949bf8b2c56bb18160935e61ab1197050a8df95",
+        "743e88a968fe7646a7674fc34a855f50d7979b388d033ae8ff13113dea8a8e81",
+        "78a7d7d6243bd45506dd7f2321e2d7c08b90516461179aa3a3a1199126837b29",
+        "7a11b4ce4a39259620298a79770f5445352d24474c9a42f04df104508adc5648",
+        "ce777f8926b3a67fba96d7cdfbddc1f99328b2d39a5885db856b246879545bc2",
+        "ceb06fb603cd28832c8857feed1022bf51f5b5138a598712ca228a041ab0cb45",
+        "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+      ],
+      "logical_digest": "b34bb51631109c3529a8c82fb742295ba591c1ff9b6898fe9fec41e72cd5d803",
+      "market_acceptance_claim": false,
+      "parent_component_bindings": {
+        "ADJUSTED_DAILY": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_ADJUSTED_DAILY.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "IDENTITY_UNIVERSE": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_IDENTITY_UNIVERSE.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "ISST": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_ISST.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "PERIOD_ADJUSTED": {
+          "bytes": 1292,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_PERIOD_ADJUSTED.json",
+          "sha256": "beae4f25141700cbe532f20bc1d779159eb12935ed0a211acba52bbecc795dc0"
+        },
+        "PERIOD_RAW": {
+          "bytes": 1292,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_PERIOD_RAW.json",
+          "sha256": "1bab92cb7fe213cd187393a1030badafe694324535e81cf93fba4405908e3cb2"
+        },
+        "PRICE_LIMIT": {
+          "bytes": 269,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_PRICE_LIMIT.json",
+          "sha256": "fc5c450d384ac6783c9bdc63a9032d85e8d5e3fe47e568a6f912092a5ef02c88"
+        },
+        "RAW_DAILY": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_RAW_DAILY.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "SPECIAL_PHASE": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_SPECIAL_PHASE.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        },
+        "TRADING_STATUS": {
+          "bytes": 205,
+          "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/parent_TRADING_STATUS.json",
+          "sha256": "aedd6e5abe5a0bf3ceaed9f147ec5d7b902e48551567957a2bc8fc784d9d5934"
+        }
+      },
+      "parent_data_head_digest": "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0",
+      "postcheck_digest": "191737e80777cf9d5301585e8d9e6be793b5940ecc8b650546f07cedad396f68",
+      "quality_counts": {
+        "ACTUAL_TRADED": 1
+      },
+      "row_count": 1,
+      "runtime_bindings": [
+        {
+          "callables": [
+            "main"
+          ],
+          "path": "scripts/build_v4_02_dated_trading_status.py",
+          "sha256": "e4e9fbf6722affdfc999b29a670bb03a8a6421882df821ad73c638831ba089cf"
+        },
+        {
+          "byte_count": 38305,
+          "path": "src/workbench_analysis/dm01_incremental_component_builders.py",
+          "sha256": "e378605fafae7a1a733360bd4de94cd695fdc361569f72d10f2306f65419734b"
+        },
+        {
+          "byte_count": 8287,
+          "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+          "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+        }
+      ],
+      "source_revision": "713cdccabe7f57e9fe2f40bc6949bf8b2c56bb18160935e61ab1197050a8df95",
+      "status": "FULL_PASS",
+      "target_trade_date": "2026-09-28",
+      "trade_date": "2026-09-28",
+      "unknown_reason_counts": {},
+      "version": "1.0.0"
+    }
+  },
+  "evidence_scope": "SYNTHETIC_INPUTS_REAL_NINE_ADAPTERS_ENGINEERING_ONLY",
+  "market_acceptance_claim": false,
+  "postchecks": {
+    "ADJUSTED_DAILY": {
+      "adapter_used_as_oracle": false,
+      "component_id": "ADJUSTED_DAILY",
+      "contract_id": "DM01_INDEPENDENT_COMPONENT_POSTCHECK_R1",
+      "errors": [],
+      "independently_read_sources": true,
+      "logical_digest": "de9c6609ea25bdf9c4803cc44a099e53ad48562afd89465f226a94b9f39b04f0",
+      "row_count": 1,
+      "status": "PASS"
+    },
+    "IDENTITY_UNIVERSE": {
+      "adapter_used_as_oracle": false,
+      "component_id": "IDENTITY_UNIVERSE",
+      "contract_id": "DM01_INDEPENDENT_COMPONENT_POSTCHECK_R1",
+      "errors": [],
+      "independently_read_sources": true,
+      "logical_digest": "15ac882116abd18ac3fa3f191945383cf41ab3ce1cb275a8f3bd97003c23a257",
+      "row_count": 1,
+      "status": "PASS"
+    },
+    "ISST": {
+      "adapter_used_as_oracle": false,
+      "component_id": "ISST",
+      "contract_id": "DM01_INDEPENDENT_COMPONENT_POSTCHECK_R1",
+      "errors": [],
+      "independently_read_sources": true,
+      "logical_digest": "76145af2f723f29747ea3e7f339a393f210a8cc4af8ee193393c1b4f33e024ee",
+      "row_count": 1,
+      "status": "PASS"
+    },
+    "PERIOD_ADJUSTED": {
+      "adapter_used_as_oracle": false,
+      "component_id": "PERIOD_ADJUSTED",
+      "contract_id": "DM01_INDEPENDENT_COMPONENT_POSTCHECK_R1",
+      "errors": [],
+      "independently_read_sources": true,
+      "logical_digest": "109682f6999f0a41fff4e5517431103cd5fa4f2081fd2c17d04ec3728609f906",
+      "row_count": 3,
+      "status": "PASS"
+    },
+    "PERIOD_RAW": {
+      "adapter_used_as_oracle": false,
+      "component_id": "PERIOD_RAW",
+      "contract_id": "DM01_INDEPENDENT_COMPONENT_POSTCHECK_R1",
+      "errors": [],
+      "independently_read_sources": true,
+      "logical_digest": "e62abb3d2e9662174cf59f8f9201e9ff01409d8629b4e11bc9da3cfd704bbdee",
+      "row_count": 3,
+      "status": "PASS"
+    },
+    "PRICE_LIMIT": {
+      "adapter_used_as_oracle": false,
+      "component_id": "PRICE_LIMIT",
+      "contract_id": "DM01_INDEPENDENT_COMPONENT_POSTCHECK_R1",
+      "errors": [],
+      "independently_read_sources": true,
+      "logical_digest": "8454704927a3f14db5fe164120092f26cd928bd8b2a0e80dfa14ade1efe060a5",
+      "row_count": 1,
+      "status": "PASS"
+    },
+    "RAW_DAILY": {
+      "adapter_used_as_oracle": false,
+      "component_id": "RAW_DAILY",
+      "contract_id": "DM01_INDEPENDENT_COMPONENT_POSTCHECK_R1",
+      "errors": [],
+      "independently_read_sources": true,
+      "logical_digest": "473e6932b92d2c141a4ae7ff7048166288b8aab97818ed83a5dc5d9dd4ff9f33",
+      "row_count": 1,
+      "status": "PASS"
+    },
+    "SPECIAL_PHASE": {
+      "adapter_used_as_oracle": false,
+      "component_id": "SPECIAL_PHASE",
+      "contract_id": "DM01_INDEPENDENT_COMPONENT_POSTCHECK_R1",
+      "errors": [],
+      "independently_read_sources": true,
+      "logical_digest": "00640253553f6caf688e3ce9e76be2f3e260dcf42b5680de06d118c5a7b1a5d7",
+      "row_count": 1,
+      "status": "PASS"
+    },
+    "TRADING_STATUS": {
+      "adapter_used_as_oracle": false,
+      "component_id": "TRADING_STATUS",
+      "contract_id": "DM01_INDEPENDENT_COMPONENT_POSTCHECK_R1",
+      "errors": [],
+      "independently_read_sources": true,
+      "logical_digest": "b34bb51631109c3529a8c82fb742295ba591c1ff9b6898fe9fec41e72cd5d803",
+      "row_count": 1,
+      "status": "PASS"
+    }
+  },
+  "status": "PASS"
+}

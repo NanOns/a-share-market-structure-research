@@ -1,0 +1,29 @@
+{
+  "accepted_calendar_extension": {
+    "path": "data/v4/artifact_store/v4_02/market_calendar_GO_FORWARD_20260930_R1.json",
+    "sha256": "abb832c49e447996b33d7ebf4f233ccfbd4d7f4abc0722caa164d8e25a9ecfc3"
+  },
+  "accepted_calendar_head": {
+    "bytes": 1176,
+    "path": "data/v4/V4_02_GO_FORWARD_CALENDAR_EXTENSION_ACCEPTED_HEAD_R1.json",
+    "sha256": "d0d453689261603a6ccd773f6383781178cb74d388087b72c652dc8afcb309f6"
+  },
+  "candidate_sessions": [
+    "2026-09-28",
+    "2026-09-29",
+    "2026-09-30"
+  ],
+  "contract_id": "DM01_A01_TARGET_SESSION_RESOLUTION_R1",
+  "later_sessions_cannot_leap_over_missing_target": true,
+  "next_completed_required_session": "2026-09-28",
+  "no_hardcoded_target_date": true,
+  "observed_at": "2026-10-01T01:53:49.391670+00:00",
+  "parent_data_head": {
+    "bytes": 2478,
+    "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+    "sha256": "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0"
+  },
+  "parent_trade_date": "2026-09-24",
+  "selection": "MIN_ACCEPTED_SESSION_STRICTLY_AFTER_PARENT",
+  "status": "PASS"
+}

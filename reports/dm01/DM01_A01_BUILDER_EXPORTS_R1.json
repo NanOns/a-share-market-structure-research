@@ -1,0 +1,41 @@
+{
+  "builder_count": 9,
+  "contract": {
+    "byte_count": 27431,
+    "path": "config/dm01_incremental_builders_contract_r1.json",
+    "sha256": "1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9"
+  },
+  "domain_extraction": {
+    "byte_count": 1789,
+    "path": "config/dm01_domain_extraction_r1.json",
+    "sha256": "5d50e51a56e3f9eab736280351f5e612e06582e77e0f52c9b7e25e50013b4974"
+  },
+  "dynamic_discovery": false,
+  "exports": {
+    "ADJUSTED_DAILY": "build_adjusted_daily",
+    "IDENTITY_UNIVERSE": "build_identity_universe",
+    "ISST": "build_isst",
+    "PERIOD_ADJUSTED": "build_period_adjusted",
+    "PERIOD_RAW": "build_period_raw",
+    "PRICE_LIMIT": "build_price_limit",
+    "RAW_DAILY": "build_raw_daily",
+    "SPECIAL_PHASE": "build_special_phase",
+    "TRADING_STATUS": "build_trading_status"
+  },
+  "external_acceptance": "PENDING",
+  "frozen_historical_CLI_invoked": false,
+  "runtime": {
+    "byte_count": 38305,
+    "path": "src/workbench_analysis/dm01_incremental_component_builders.py",
+    "sha256": "e378605fafae7a1a733360bd4de94cd695fdc361569f72d10f2306f65419734b"
+  },
+  "signature": [
+    "target_trade_date",
+    "parent_data_head",
+    "source_freeze",
+    "calendar_binding",
+    "identity_binding",
+    "staging_root"
+  ],
+  "status": "PASS"
+}

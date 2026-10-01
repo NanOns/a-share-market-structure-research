@@ -1,0 +1,36 @@
+{
+  "accepted_namespace_visible": false,
+  "additional_negative_vectors": "tests/v4_dm01/test_a01_incremental_builders_r1.py",
+  "evidence_scope": "SYNTHETIC_INPUTS_REAL_NINE_ADAPTERS_ENGINEERING_ONLY",
+  "late_price_source_failure": {
+    "accepted_namespace_visible": false,
+    "completed_components": [
+      "IDENTITY_UNIVERSE",
+      "RAW_DAILY",
+      "TRADING_STATUS",
+      "ISST",
+      "ADJUSTED_DAILY",
+      "PERIOD_RAW",
+      "PERIOD_ADJUSTED"
+    ],
+    "contract_id": "DM01_ATOMIC_FAILURE_R1",
+    "data_head_moved": false,
+    "protected_heads_unchanged": true,
+    "reason": "PRICE_RULES_NOT_ACCEPTED",
+    "status": "BLOCKED"
+  },
+  "market_acceptance_claim": false,
+  "protected_heads_before": {
+    "data/v4/V4_DATA_ACCEPTED_HEAD.json": "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0",
+    "data/v4/V4_DEV_BASELINE_HEAD.json": "45695460b0147c6ada12e0ebd8e5070ac0a45eebea26603ff5a3daddc4dd5094",
+    "data/v4/V4_STAGE_ACCEPTED_HEAD.json": "529c532bd5553ace00fa4813aef07979cfce4e1f18fa5ea66f38fcddd8ed16cb"
+  },
+  "protected_heads_unchanged": true,
+  "retained_failure_evidence": [
+    {
+      "path": "reports/dm01/engineering_inputs_r1/1d9e2ffb5f2a61d4566c4b1e495196511866018d1d9025e05db745368f9e41d9/staging/7dd007d7f93a351a0ea600d7eb56fafb2435e013883a7ce81d73af28a6d66256/failure.json",
+      "sha256": "23808bdaa4ee475c178e2a7a270244b0c19d4a12a04104c0528b226092e33a02"
+    }
+  ],
+  "status": "PASS"
+}

@@ -1,0 +1,45 @@
+{
+  "contract_id": "DM01_DOMAIN_EXTRACTION_R1",
+  "domain_formulas_changed": false,
+  "original_historical_files_modified": false,
+  "output": {
+    "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+    "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+  },
+  "sources": [
+    {
+      "end_line": 221,
+      "extracted_statements_sha256": "9a87a7a206dc916cff3f49c1cfe21e0b7fa79cca5b6a97b8e4ef5eaedbe0f725",
+      "path": "scripts/build_v4_02_dated_trading_status.py",
+      "sha256": "e4e9fbf6722affdfc999b29a670bb03a8a6421882df821ad73c638831ba089cf",
+      "start_line": 195
+    },
+    {
+      "end_line": 146,
+      "extracted_statements_sha256": "2218d53eb63480053926bb62b46eb7e36489e5b2c2004f79b78c36d5f31af1de",
+      "path": "scripts/build_v4_02_full_market_isst.py",
+      "sha256": "093887b52748ff9965fcfb73e312b0791d32baedf9a53740bc08156d31ba84cf",
+      "start_line": 138
+    },
+    {
+      "end_line": 327,
+      "extracted_statements_sha256": "d6f357d005372d748d1e51c2487fa538d35d7bee242c840d42bbaafc180d11c7",
+      "path": "scripts/build_v4_02_formal_periods.py",
+      "sha256": "afa3a28729ebd27c050fb65e3a1f453599fdb2f111dff63478e2dab57c28b26e",
+      "start_line": 311
+    },
+    {
+      "end_line": 298,
+      "extracted_statements_sha256": "2bb63f9bb01f176b08e2c3a0d4e9301daa4798a12fdc8edf332df5aafe315a13",
+      "path": "scripts/build_v4_02_price_limits.py",
+      "sha256": "5425106e729a3f6ecc7d103512fed7e296482c52a56168b27a98b766a534302d",
+      "start_line": 232
+    }
+  ],
+  "status": "EXACT_SOURCE_STATEMENTS_EXTRACTED_IO_CONTROL_ONLY_TRANSFORMED",
+  "transformations": [
+    "dedent into pure callable",
+    "supply original locals as parameters",
+    "listing branch CLI write/count/continue becomes return result"
+  ]
+}

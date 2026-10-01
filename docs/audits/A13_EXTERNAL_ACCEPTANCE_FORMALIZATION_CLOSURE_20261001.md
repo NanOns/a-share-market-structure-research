@@ -13,3 +13,5 @@
 新证据位于 `reports/audits/A13_FORMALIZATION_*`；fresh full replay 位于 `reports/audits/a13_formalization_counterfactual_r1/`。Cross-stage registry 更新裁决单独输出供合并，审计项为 ACCEPTED / PASS_EVIDENCE_GOVERNANCE_NO_BUSINESS_IMPACT，并继续保留 accepted semantic truth guard 与 filename/capture-id 推断禁令。
 
 回归范围 A13、V4-01、V4-02、V4-08、V4-09、DM01、NoSymbol，由 clean detached stage receipt 记录实际测试 commit 与结果。正式化元数据完成后提交外部复审，禁止 business head promotion，production/shadow/focus 继续 false。
+
+最终与 P0 共享的一次实际 clean checkout 联合回归：tested commit `7ad623e2f4c845c76b8fb9de3ad752087426ebb7`，1496 passed、2 skipped、0 failures、0 errors，global NoSymbol PASS。正式化最终提交状态为 `READY_FOR_EXTERNAL_REAUDIT`，独立外部验收的既有 evidence-governance 裁决与本轮 metadata 复审边界分别保留。

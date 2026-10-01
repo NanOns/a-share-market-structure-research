@@ -2,6 +2,11 @@
   "A13_EXTERNAL_ACCEPTANCE_FORMALIZATION": "PASS",
   "V4_08_ACCEPTED_HEAD": "KEEP",
   "allowed_candidate_status": "READY_FOR_EXTERNAL_REAUDIT",
+  "clean_regression": {
+    "bytes": 91727,
+    "path": "reports/audits/A13_FORMALIZATION_CLEAN_CHECKOUT_R1.json",
+    "sha256": "7944b7bf50f57ab9ae8bb447849e3352ee00a779a5274c217035cfc520632c50"
+  },
   "contract_id": "WP-A13-EXTERNAL-ACCEPTANCE-FORMALIZATION",
   "evidence_bindings": [
     {
@@ -29,7 +34,7 @@
   },
   "focus_permission": false,
   "gates": {
-    "CLEAN_REGRESSION": "PENDING_CLEAN_DETACHED",
+    "CLEAN_REGRESSION": "PASS_ENGINEERING",
     "EXACT_EXTERNAL_AUDIT": "PASS_ENGINEERING",
     "FULL_COUNTERFACTUAL_REVALIDATION": "PASS_ENGINEERING",
     "RAW_AND_BUSINESS_IMMUTABILITY": "PASS_ENGINEERING",
@@ -37,5 +42,6 @@
   },
   "next_stage": "Independent external reaudit of formalization; no business head movement",
   "production_permission": false,
-  "shadow_permission": false
+  "shadow_permission": false,
+  "status": "READY_FOR_EXTERNAL_REAUDIT"
 }

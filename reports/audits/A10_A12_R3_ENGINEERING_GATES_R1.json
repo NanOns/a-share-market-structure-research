@@ -1,10 +1,16 @@
 {
   "allowed_candidate_status": "A10_A12_R3_PRODUCER_SOURCE_INSTANCE_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
+  "clean_regression": {
+    "bytes": 19790,
+    "path": "reports/audits/A10_A12_R3_CLEAN_CHECKOUT_R1.json",
+    "sha256": "8bb9d89567fa53cca31e966f7233fc4f22c71b74f09a4ebd99a3bd48370d2543"
+  },
   "gates": {
     "EXTERNAL_DAILY_PRODUCER_ACCEPTANCE": "PENDING_INDEPENDENT_EXTERNAL_AUDIT",
-    "GLOBAL_INSTANCE_GATE": "PENDING_CLEAN_DETACHED",
+    "GLOBAL_INSTANCE_GATE": "PASS_ENGINEERING",
     "HISTORICAL_LINEAGE": "PASS_ENGINEERING",
-    "REAL_SOURCE_VECTORS": "PENDING_CLEAN_DETACHED"
+    "REAL_SOURCE_VECTORS": "PASS_ENGINEERING"
   },
-  "next_stage": "Independent R3 reaudit; A13 authorized; no DM01 all-nine or business head promotion"
+  "next_stage": "Independent R3 reaudit; A13 authorized; no DM01 all-nine or business head promotion",
+  "status": "A10_A12_R3_PRODUCER_SOURCE_INSTANCE_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT"
 }

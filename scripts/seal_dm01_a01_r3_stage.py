@@ -20,8 +20,8 @@ def main():
     dependency.update(clean_regression=bind(receipts[0]),tested_commit=proof['tested_commit'])
     atomic_json(ROOT/(P+'SOURCE_DEPENDENCY_DURABILITY_R1.json'),dependency)
     gatepath=P+'ENGINEERING_GATES_R1.json';gates=read(gatepath)
-    assert read(P+'CONTINUOUS_CHAIN_POSTCHECK_R2.json')['status']=='PASS'
-    assert read(P+'METADATA_DURABILITY_REPAIR_R1.json')['status']=='PASS_ENGINEERING'
+    assert read(P+'CONTINUOUS_CHAIN_POSTCHECK_R3.json')['status']=='PASS'
+    assert read(P+'METADATA_DURABILITY_REPAIR_R2.json')['status']=='PASS_ENGINEERING'
     for key,value in gates['gates'].items():
         if value=='PENDING_CLEAN_DETACHED':gates['gates'][key]='PASS_ENGINEERING'
     assert all(v in ('PASS_ENGINEERING','PENDING_INDEPENDENT_EXTERNAL_AUDIT') for v in gates['gates'].values())
@@ -30,17 +30,17 @@ def main():
         gates['evidence'].append(bind(P+'SOURCE_DEPENDENCY_DURABILITY_R1.json'))
     # The stronger determinism check may have completed after the initial engineering index was drafted.
     gates['evidence']=[bind(r['path']) for r in gates['evidence']]
-    handoff=read(P+'EXTERNAL_REAUDIT_HANDOFF_R2.json');handoff.update(clean_regression=bind(receipts[0]),tested_commit=proof['tested_commit'],
-        chain_postcheck=bind(P+'CONTINUOUS_CHAIN_POSTCHECK_R2.json'),determinism=bind(P+'DETERMINISM_R2.json'),
-        atomicity=bind(P+'ATOMIC_FAILURE_PROBES_R2.json'),metadata_durability=bind(P+'METADATA_DURABILITY_REPAIR_R1.json'),
-        contract=bind('config/dm01_incremental_builders_contract_r3_2.json'))
-    atomic_json(ROOT/(P+'EXTERNAL_REAUDIT_HANDOFF_R2.json'),handoff)
+    handoff=read(P+'EXTERNAL_REAUDIT_HANDOFF_R3.json');handoff.update(clean_regression=bind(receipts[0]),tested_commit=proof['tested_commit'],
+        chain_postcheck=bind(P+'CONTINUOUS_CHAIN_POSTCHECK_R3.json'),determinism=bind(P+'DETERMINISM_R3.json'),
+        atomicity=bind(P+'ATOMIC_FAILURE_PROBES_R3.json'),metadata_durability=bind(P+'METADATA_DURABILITY_REPAIR_R2.json'),
+        contract=bind('config/dm01_incremental_builders_contract_r3_3.json'))
+    atomic_json(ROOT/(P+'EXTERNAL_REAUDIT_HANDOFF_R3.json'),handoff)
     gates['evidence']=[bind(r['path']) for r in gates['evidence']]
     atomic_json(ROOT/gatepath,gates)
     atomic_json(ROOT/(P+'STAGE_CLOSURE_R1.json'),dict(status='READY_FOR_EXTERNAL_REAUDIT',stage_completed=True,
         phase_A_acceptance_formalization='PASS',phase_B_continuous_chain='READY_FOR_EXTERNAL_REAUDIT',
         external_acceptance='PENDING_DM01_EXTERNAL_REAUDIT',tested_commit=proof['tested_commit'],gates=bind(gatepath),
-        evidence_bindings=[bind(p) for p in receipts],final_handoff=bind(P+'EXTERNAL_REAUDIT_HANDOFF_R2.json'),protected_bindings=entry['protected_bindings'],
+        evidence_bindings=[bind(p) for p in receipts],final_handoff=bind(P+'EXTERNAL_REAUDIT_HANDOFF_R3.json'),protected_bindings=entry['protected_bindings'],
         accepted_business_heads_unchanged=True,data_head_moved=False,stage_head_moved=False,
         permissions=dict(production=False,shadow=False,focus_cutover=False),next_stage='INDEPENDENT_EXTERNAL_REAUDIT_ONLY'))
     # Append-only registry versions were introduced by this work package; older versions remain untouched.
@@ -50,7 +50,7 @@ def main():
             if e.get('audit_id')=='DM01_REAL_INCREMENTAL_BUILDERS':
                 e['evidence']=[bind(r['path']) if r.get('path','').startswith(P) else r for r in e['evidence']]
                 e['clean_regression']=bind(receipts[0])
-                e['final_handoff']=bind(P+'EXTERNAL_REAUDIT_HANDOFF_R2.json')
+                e['final_handoff']=bind(P+'EXTERNAL_REAUDIT_HANDOFF_R3.json')
             if e.get('audit_id')=='DM01_R3_ACCEPTED_METADATA_GIT_REPRESENTATION':
                 e['clean_regression']=bind(receipts[0])
                 e['implementation_status']='PASS_ENGINEERING_PENDING_EXTERNAL_REAUDIT'

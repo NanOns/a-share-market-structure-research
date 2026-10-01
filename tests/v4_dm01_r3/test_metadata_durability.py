@@ -4,8 +4,8 @@ import hashlib
 import json
 from pathlib import Path
 import pytest
-from workbench_analysis.dm01_chain_contract_r3_2 import validate_context
-from workbench_analysis import dm01_incremental_component_builders_r3_2 as b
+from workbench_analysis.dm01_chain_contract_r3_3 import validate_context
+from workbench_analysis import dm01_incremental_component_builders_r3_3 as b
 from workbench_analysis.daily_source_freeze import build_source_freeze_manifest_v2
 ROOT=Path(__file__).resolve().parents[2]
 
@@ -28,12 +28,22 @@ def test_original_byte_archive_exact_with_declared_Git_plane():
     assert json.loads(actual)==json.loads(archived)
     assert ref['path']!=namespace['path']
 
+def test_original_tdx_capture_receipt_is_an_exact_archived_input():
+    config,ctx,target,_=context()
+    page=b.load(ctx['inputs'][target]['families']['TDX_PAGE_CAPTURE'])
+    repair=json.loads((ROOT/'reports/audits/DM01_A01_R3_METADATA_DURABILITY_REPAIR_R2.json').read_text(encoding='utf8'))
+    archived=repair['exact_original_byte_archive'];original=repair['original_capture_receipt']
+    assert page['actual_capture_receipt']==archived
+    assert b.sha(ROOT/archived['path'])==archived['sha256']==original['sha256']
+    assert b.sha(ROOT/original['path']) in (original['sha256'],original['git_sha256'])
+    assert json.loads((ROOT/original['path']).read_bytes())==b.load(archived)
+
 @pytest.mark.parametrize('cap',['RAW_DAILY','TRADING_STATUS','ISST'])
 def test_actual_final_contract_context_has_no_checkout_binding_failure(cap):
     _,ctx,target,freeze=context()
     result=validate_context(cap,target,ctx['parent'],freeze,ctx['calendar'],ctx['identity'],
         ROOT/'data/v4/dm01_candidate_staging_r3/durability_context_probe')
-    assert result['target']==target and result['contract']['version']=='3.1.0'
+    assert result['target']==target and result['contract']['version']=='3.2.0'
 
 def test_archive_does_not_authorize_changed_business_head_namespace(monkeypatch):
     config,ctx,target,freeze=context();original=b.load
@@ -46,15 +56,18 @@ def test_archive_does_not_authorize_changed_business_head_namespace(monkeypatch)
         validate_context('RAW_DAILY',target,ctx['parent'],freeze,ctx['calendar'],ctx['identity'],ROOT/'data/v4/dm01_candidate_staging_r3/probe')
 
 def test_final_durable_continuous_chain_preserves_initial_candidates():
-    final=json.loads((ROOT/'reports/audits/DM01_A01_R3_CONTINUOUS_CHAIN_POSTCHECK_R2.json').read_text(encoding='utf8'))
+    final=json.loads((ROOT/'reports/audits/DM01_A01_R3_CONTINUOUS_CHAIN_POSTCHECK_R3.json').read_text(encoding='utf8'))
     initial=json.loads((ROOT/'reports/audits/DM01_A01_R3_CONTINUOUS_CHAIN_POSTCHECK_R1.json').read_text(encoding='utf8'))
     assert final['status']=='PASS' and final['sessions']==initial['sessions']
     parent=final['accepted_anchor']['sha256']
     for ref in final['candidates']:
         marker=b.load(ref)
-        assert marker['contract_id']=='DM01_ATOMIC_CONTINUOUS_CANDIDATE_R3_2'
+        assert marker['contract_id']=='DM01_ATOMIC_CONTINUOUS_CANDIDATE_R3_3'
         assert marker['parent_data_head_digest']==parent and len(marker['components'])==9
         assert b.load(marker['cross_postcheck_binding'])['status']=='PASS'
         parent=ref['sha256']
     for ref in initial['candidates']:
+        assert hashlib.sha256((ROOT/ref['path']).read_bytes()).hexdigest()==ref['sha256']
+    prior=json.loads((ROOT/'reports/audits/DM01_A01_R3_CONTINUOUS_CHAIN_POSTCHECK_R2.json').read_text(encoding='utf8'))
+    for ref in prior['candidates']:
         assert hashlib.sha256((ROOT/ref['path']).read_bytes()).hexdigest()==ref['sha256']

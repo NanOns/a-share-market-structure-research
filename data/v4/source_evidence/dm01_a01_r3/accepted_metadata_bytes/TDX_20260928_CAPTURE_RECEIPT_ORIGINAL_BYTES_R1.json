@@ -1,0 +1,133 @@
+{
+  "attempts": [
+    {
+      "actual_byte_count": 986,
+      "attempt_id": "python-1",
+      "elapsed_seconds": 0.056,
+      "failure_reason": "ValueError:TDX_ZIP_INVALID",
+      "final_url": "https://data.tdx.com.cn/vipdoc/hsjday.zip",
+      "finished_at": "2026-09-29T06:53:38+00:00",
+      "first_64_bytes_hex": "3c7363726970743e66756e6374696f6e20612861297b66756e6374696f6e206e28297b666f722876617220613d7b77517a4f563a5f3078363439612822307834",
+      "http_headers": {
+        "Content-Disposition": null,
+        "Content-Length": "986",
+        "Content-Type": "text/html",
+        "ETag": null,
+        "Last-Modified": null
+      },
+      "http_status": 200,
+      "last_128_bytes_hex": "3b646f63756d656e745b5f307836343961282230783922295d3d225f5f7473745f7374617475733d222b612830292b22233b222c646f63756d656e745b5f307836343961282230783922295d3d612831292b223b222c73657454696d656f7574285f307836343961282230786122292c3078346230293b3c2f7363726970743e",
+      "method": "PYTHON_URLLIB",
+      "requested_url": "https://data.tdx.com.cn/vipdoc/hsjday.zip",
+      "sha256_if_complete": "e0b14dd2c03800944aadfaeb09f81ed866efffb18d651f4f5f5436a2127e3d1b",
+      "started_at": "2026-09-29T06:53:38+00:00",
+      "zip_is_zipfile": false,
+      "zip_magic_check": false
+    },
+    {
+      "actual_byte_count": 987,
+      "attempt_id": "python-2",
+      "elapsed_seconds": 0.122,
+      "failure_reason": "ValueError:TDX_ZIP_INVALID",
+      "final_url": "https://data.tdx.com.cn/vipdoc/hsjday.zip",
+      "finished_at": "2026-09-29T06:53:39+00:00",
+      "first_64_bytes_hex": "3c7363726970743e66756e6374696f6e20612861297b66756e6374696f6e206e28297b666f722876617220613d7b77517a4f563a5f3078363439612822307834",
+      "http_headers": {
+        "Content-Disposition": null,
+        "Content-Length": "987",
+        "Content-Type": "text/html",
+        "ETag": null,
+        "Last-Modified": null
+      },
+      "http_status": 200,
+      "last_128_bytes_hex": "3b646f63756d656e745b5f307836343961282230783922295d3d225f5f7473745f7374617475733d222b612830292b22233b222c646f63756d656e745b5f307836343961282230783922295d3d612831292b223b222c73657454696d656f7574285f307836343961282230786122292c3078346230293b3c2f7363726970743e",
+      "method": "PYTHON_URLLIB",
+      "requested_url": "https://data.tdx.com.cn/vipdoc/hsjday.zip",
+      "sha256_if_complete": "184f7ae75652393ffa489c9de37e9734b130bf09d111398b808dc40d35efc02d",
+      "started_at": "2026-09-29T06:53:39+00:00",
+      "zip_is_zipfile": false,
+      "zip_magic_check": false
+    },
+    {
+      "actual_byte_count": 551001603,
+      "attempt_id": "curl-1",
+      "elapsed_seconds": 10.847,
+      "exact_command": [
+        "curl.exe",
+        "--fail",
+        "--show-error",
+        "--silent",
+        "--retry",
+        "5",
+        "--retry-all-errors",
+        "--retry-delay",
+        "2",
+        "--connect-timeout",
+        "30",
+        "--max-time",
+        "1800",
+        "--max-redirs",
+        "0",
+        "--proto",
+        "=https",
+        "--referer",
+        "https://www.tdx.com.cn/article/vipdata.html",
+        "--user-agent",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0 Safari/537.36",
+        "--dump-header",
+        "E:\\codex work\\大A交易\\data\\v4\\source_snapshots\\tdx\\20260928\\r2-metadata-20260929T065338Z\\curl-1.headers",
+        "--output",
+        "E:\\codex work\\大A交易\\data\\v4\\source_snapshots\\tdx\\20260928\\r2-metadata-20260929T065338Z\\curl-1.part",
+        "--write-out",
+        "%{http_code} %{url_effective}",
+        "https://data.tdx.com.cn/vipdoc/hsjday.zip"
+      ],
+      "failure_reason": null,
+      "final_url": "https://data.tdx.com.cn/vipdoc/hsjday.zip",
+      "finished_at": "2026-09-29T06:53:52+00:00",
+      "first_64_bytes_hex": "504b0304140002000800a77c3c5dfa4d319d022f0300c04304001400000073685c6c6461795c73683030303030312e6461794c9d057454c9d2806b26ee814008",
+      "http_headers": {
+        "Content-Disposition": null,
+        "Content-Length": "551001603",
+        "Content-Type": "application/zip",
+        "ETag": "\"6aba1e0d-20d79e03\"",
+        "Last-Modified": "Mon, 28 Sep 2026 07:58:05 GMT"
+      },
+      "http_status": "200",
+      "last_128_bytes_hex": "00001400000000000000000020000000408fca20626a5c6c6461795c626a3932303938352e646179504b01020000140002000800d87c3c5d5e8dbddd604200000078000014000000000000000000200000002bd4ca20626a5c6c6461795c626a3932303939322e646179504b0506000000009830983030870c00bd16cb200000",
+      "method": "WINDOWS_CURL",
+      "requested_url": "https://data.tdx.com.cn/vipdoc/hsjday.zip",
+      "sha256_if_complete": "70b79898325ef6c67ea697f922d38fa3fd523e2ad62879b1b9fcb59fce52bf0c",
+      "started_at": "2026-09-29T06:53:41+00:00",
+      "zip_is_zipfile": true,
+      "zip_magic_check": true,
+      "zip_validation": {
+        "crc_integrity": "PASS",
+        "day_entry_markets": [
+          "bj",
+          "sh",
+          "sz"
+        ],
+        "entry_count": 12440,
+        "status": "PASS",
+        "uncompressed_bytes": 952897792
+      }
+    }
+  ],
+  "contract_id": "V4_02_GO_FORWARD_TDX_CAPTURE_R2",
+  "metadata_paths": [
+    "data/v4/source_snapshots/tdx/20260928/r2-metadata-20260929T065338Z/page.html",
+    "data/v4/source_snapshots/tdx/20260928/r2-metadata-20260929T065338Z/update_info.js"
+  ],
+  "metadata_sha256": {
+    "page.html": "92b455e0e5eb03637eb55c98514a3f392e071bb1bab1d7b639d9ca9919de0c61",
+    "update_info.js": "0dd81fec5f68b94dcb09a9e73c1a985d947da3508256d126468a8157c0529dc8"
+  },
+  "official_publication_time": "2026-09-28 15:58:05",
+  "package_path": "data/v4/source_snapshots/tdx/20260928/sha256-70b79898325ef6c67ea697f922d38fa3fd523e2ad62879b1b9fcb59fce52bf0c/hsjday.zip",
+  "package_sha256": "70b79898325ef6c67ea697f922d38fa3fd523e2ad62879b1b9fcb59fce52bf0c",
+  "requested_url": "https://data.tdx.com.cn/vipdoc/hsjday.zip",
+  "status": "TDX_PACKAGE_READY",
+  "target_trade_date": "2026-09-28",
+  "tdx_root_write_count": 0
+}

@@ -1,12 +1,17 @@
 {
   "allowed_candidate_status": "V4_09_N02_CONSUMER_IDENTITY_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
+  "clean_regression": {
+    "bytes": 10933,
+    "path": "reports/audits/A09_CLEAN_CHECKOUT_R1.json",
+    "sha256": "39294bb29887f31d7b97be1c0d22cd11d36b1db788e9ad31c0ab29d206553284"
+  },
   "evidence": {
     "bytes": 7886,
     "path": "reports/audits/A09_SCHEMA_LEGACY_READBACK_AND_ROLLBACK_R1.json",
     "sha256": "bc223984ae9d862af1fb0f36c09a8bcde6ae3e984a000cfccd58305b449e1a05"
   },
   "gates": {
-    "clean": "PENDING_CLEAN_DETACHED",
+    "clean": "PASS_ENGINEERING",
     "db_foreign_key_rejects_cross_consumer_result": "PASS_ENGINEERING",
     "db_payload_consumer_mismatch_rejected": "PASS_ENGINEERING",
     "distinct_consumer_publication_and_exact_payload_readback": "PASS_ENGINEERING",
@@ -24,6 +29,6 @@
     "same_publication_other_consumer_rejected": "PASS_ENGINEERING"
   },
   "next_stage": "Independent external A09 consumer identity audit; accepted heads unchanged",
-  "status": "PENDING_CLEAN_DETACHED",
+  "status": "V4_09_N02_CONSUMER_IDENTITY_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
   "work_package": "WP-A09-V4-09-N02"
 }

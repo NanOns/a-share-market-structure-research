@@ -1,0 +1,49 @@
+{
+  "audit_id": "AUD-V4-09-DB-CONSUMER-IDENTITY-N02",
+  "depends_on": [],
+  "does_not_block_engineering_stage": true,
+  "engineering_can_proceed_immediately": true,
+  "evidence": [
+    {
+      "bytes": 1710,
+      "path": "reports/audits/A09_ENGINEERING_GATES_R1.json",
+      "sha256": "e28464bbb706750708f518d767e42e8dc65caa4360c15953861b6d140afe6efc"
+    },
+    {
+      "bytes": 10933,
+      "path": "reports/audits/A09_CLEAN_CHECKOUT_R1.json",
+      "sha256": "39294bb29887f31d7b97be1c0d22cd11d36b1db788e9ad31c0ab29d206553284"
+    },
+    {
+      "bytes": 182840,
+      "path": "reports/audits/A09_CLEAN_REGRESSION_R1.xml",
+      "sha256": "efd5a7b2de1d2cc825eed37f2dfe6fbd1f983c90f3fb8c1cac79957b358341f3"
+    },
+    {
+      "bytes": 1579,
+      "path": "reports/audits/A09_CLEAN_REGRESSION_R1.log",
+      "sha256": "73a01406b3d36f67cb55c6aa10e00a894f951dea9807502f35a4805df9982481"
+    },
+    {
+      "bytes": 779175,
+      "path": "reports/audits/A09_NO_SYMBOL_SCAN_R1.json",
+      "sha256": "e6135d7aab5d730afb20fc09c3165bddac79b4e0086bbbffade880fb8ce52018"
+    }
+  ],
+  "external_acceptance": null,
+  "formal_consumer_authorization": false,
+  "history_reconstruction_prohibited": true,
+  "implementation_status": "V4_09_N02_CONSUMER_IDENTITY_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
+  "next_step": "Independent external reaudit; audit remains OPEN, accepted heads and formal permissions unchanged.",
+  "owner_module": "src/v4/stock_prewatch_persistence.py",
+  "priority": "P2",
+  "production_gate": true,
+  "requires_real_observation_accumulation": false,
+  "status": "OPEN",
+  "task": {
+    "byte_count": 1050,
+    "path": "docs/evidence/cross_stage/WP-A09-V4-09-N02/TASK_R1.md",
+    "sha256": "3379f2e8e5a2bf649a340cf357c70d933646292a357e3265ef4fb945cffc1313"
+  },
+  "work_package": "WP-A09-V4-09-N02"
+}

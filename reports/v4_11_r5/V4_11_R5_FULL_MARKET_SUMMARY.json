@@ -1,0 +1,64 @@
+{
+  "D0": {
+    "2026-09-29": {
+      "bytes": 409222,
+      "path": "data/v4/confirmation_candidates_r4/D0_2026-09-29_R4.json.gz",
+      "sha256": "ff53ca271f13d64ed06fa8f18bbaa714928333711511c2d4036919058f5a757d"
+    },
+    "2026-09-30": {
+      "bytes": 409886,
+      "path": "data/v4/confirmation_candidates_r4/D0_2026-09-30_R4.json.gz",
+      "sha256": "c6056a733268957acd513e5f5770a691e4c3cd5d83e9caf55723077596e46797"
+    }
+  },
+  "D0_business_frozen": true,
+  "D2": {
+    "bytes": 1603,
+    "path": "reports/v4_11_r5/V4_11_R5_D2_READBACK.json",
+    "sha256": "d5fcdd0a43310a7b3e4aa3e75bb6527e9fa87db75cb192d8c815c748bc3a0d15"
+  },
+  "Event": {
+    "bytes": 1614,
+    "path": "reports/v4_11_r5/V4_11_R5_EVENT_REPLAY.json",
+    "sha256": "dd3cabc73897a29e3a71eb292d4de82d104027ee510787127459f0133728d13b"
+  },
+  "accepted": false,
+  "confirmation_counts": {
+    "FALSE": 4671,
+    "TRUE": 166,
+    "UNKNOWN": 387
+  },
+  "eligible_universe": 5224,
+  "multi_scenario_count": 21,
+  "permissions": {
+    "focus": false,
+    "global_mandatory_adoption": false,
+    "production": false,
+    "shadow": false
+  },
+  "scenario_counts": {
+    "LAUNCH_CONFIRM": {
+      "FALSE": 4872,
+      "TRUE": 124,
+      "UNKNOWN": 228
+    },
+    "RECOVERY_TURN": {
+      "FALSE": 4769,
+      "TRUE": 63,
+      "UNKNOWN": 392
+    },
+    "STRONG_PULLBACK": {
+      "UNKNOWN": 5224
+    },
+    "TREND_CONTINUE": {
+      "UNKNOWN": 5224
+    }
+  },
+  "scenario_matrix": {
+    "bytes": 2459,
+    "path": "reports/v4_11_r5/V4_11_R5_SCENARIO_CAPABILITY_MATRIX.json",
+    "sha256": "8f87fe8a515259858b14f89dcf9ccba8ff7032a85c5b7fb90b179dee374a2d26"
+  },
+  "status": "V4_11_R5_REAL_DAG_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
+  "trade_date": "2026-09-30"
+}

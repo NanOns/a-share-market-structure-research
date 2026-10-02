@@ -1,0 +1,350 @@
+{
+  "contract_id": "V4_11_R5A_OWNER_INPUT_AUTHORITY_MATRIX_V1",
+  "fields": [
+    {
+      "accepted_owner": "BASE_SEED_V1 projection",
+      "accepted_source_field_rule": "accepted dated status",
+      "field": "actual_bar",
+      "formal_in_R5": true,
+      "quality_semantics": "KNOWN iff exact owner projection accepts source; otherwise UNKNOWN",
+      "reconstruction_allowed": false,
+      "target_date_source_binding": {
+        "2026-09-29": {
+          "bytes": 882246,
+          "path": "data/v4/confirmation_candidates_r5/SEALED_OWNER_PUBLICATION_2026-09-29_R5.json.gz",
+          "sha256": "8430d41465f1f16195e5793bf6f5eb6998e81a4cbc66cc94a979247468589c79"
+        },
+        "2026-09-30": {
+          "bytes": 880494,
+          "path": "data/v4/confirmation_candidates_r5/SEALED_OWNER_PUBLICATION_2026-09-30_R5.json.gz",
+          "sha256": "bc06ff1e449925ef52da7fbce883314e77908cbbd00a06331734109a20905a58"
+        }
+      },
+      "time_role": "T",
+      "tri_state_semantics": "EXACT_ACCEPTED_KLEENE",
+      "unknown_reason": "EXACT_SOURCE_OWNER_REASON"
+    },
+    {
+      "accepted_owner": "accepted Core Profile owner",
+      "accepted_source_field_rule": "accepted Core projection: bias20_atr",
+      "field": "bias20_atr",
+      "formal_in_R5": true,
+      "quality_semantics": "KNOWN iff exact owner projection accepts source; otherwise UNKNOWN",
+      "reconstruction_allowed": true,
+      "target_date_source_binding": {
+        "2026-09-29": {
+          "bytes": 882246,
+          "path": "data/v4/confirmation_candidates_r5/SEALED_OWNER_PUBLICATION_2026-09-29_R5.json.gz",
+          "sha256": "8430d41465f1f16195e5793bf6f5eb6998e81a4cbc66cc94a979247468589c79"
+        },
+        "2026-09-30": {
+          "bytes": 880494,
+          "path": "data/v4/confirmation_candidates_r5/SEALED_OWNER_PUBLICATION_2026-09-30_R5.json.gz",
+          "sha256": "bc06ff1e449925ef52da7fbce883314e77908cbbd00a06331734109a20905a58"
+        }
+      },
+      "time_role": "T",
+      "tri_state_semantics": "EXACT_ACCEPTED_KLEENE",
+      "unknown_reason": "EXACT_SOURCE_OWNER_REASON"
+    },
+    {
+      "accepted_owner": "accepted Core Profile owner",
+      "accepted_source_field_rule": "accepted Core projection: close_t",
+      "field": "close_t",
+      "formal_in_R5": true,
+      "quality_semantics": "KNOWN iff exact owner projection accepts source; otherwise UNKNOWN",
+      "reconstruction_allowed": true,
+      "target_date_source_binding": {
+        "2026-09-29": {
+          "bytes": 882246,
+          "path": "data/v4/confirmation_candidates_r5/SEALED_OWNER_PUBLICATION_2026-09-29_R5.json.gz",
+          "sha256": "8430d41465f1f16195e5793bf6f5eb6998e81a4cbc66cc94a979247468589c79"
+        },
+        "2026-09-30": {
+          "bytes": 880494,
+          "path": "data/v4/confirmation_candidates_r5/SEALED_OWNER_PUBLICATION_2026-09-30_R5.json.gz",
+          "sha256": "bc06ff1e449925ef52da7fbce883314e77908cbbd00a06331734109a20905a58"
+        }
+      },
+      "time_role": "T",
+      "tri_state_semantics": "EXACT_ACCEPTED_KLEENE",
+      "unknown_reason": "EXACT_SOURCE_OWNER_REASON"
+    },
+    {
+      "accepted_owner": "BASE_SEED_V1 projection",
+      "accepted_source_field_rule": "ACCEPTED_T_MINUS_1_CORE_FIELD_UNAVAILABLE",
+      "field": "close_t_minus_1",
+      "formal_in_R5": false,
+      "quality_semantics": "KNOWN iff exact owner projection accepts source; otherwise UNKNOWN",
+      "reconstruction_allowed": false,
+      "target_date_source_binding": {
+        "2026-09-29": {
+          "bytes": 882246,
+          "path": "data/v4/confirmation_candidates_r5/SEALED_OWNER_PUBLICATION_2026-09-29_R5.json.gz",
+          "sha256": "8430d41465f1f16195e5793bf6f5eb6998e81a4cbc66cc94a979247468589c79"
+        },
+        "2026-09-30": {
+          "bytes": 880494,
+          "path": "data/v4/confirmation_candidates_r5/SEALED_OWNER_PUBLICATION_2026-09-30_R5.json.gz",
+          "sha256": "bc06ff1e449925ef52da7fbce883314e77908cbbd00a06331734109a20905a58"
+        }
+      },
+      "time_role": "T_MINUS_1_UNAVAILABLE",
+      "tri_state_semantics": "EXACT_ACCEPTED_KLEENE",
+      "unknown_reason": "ACCEPTED_T_MINUS_1_CORE_FIELD_UNAVAILABLE"
+    },
+    {
+      "accepted_owner": "accepted Core Profile owner",
+      "accepted_source_field_rule": "accepted Core projection: compression_state",
+      "field": "compression_state",
+      "formal_in_R5": true,
+      "quality_semantics": "KNOWN iff exact owner projection accepts source; otherwise UNKNOWN",
+      "reconstruction_allowed": true,
+      "target_date_source_binding": {
+        "2026-09-29": {
+          "bytes": 882246,
+          "path": "data/v4/confirmation_candidates_r5/SEALED_OWNER_PUBLICATION_2026-09-29_R5.json.gz",
+          "sha256": "8430d41465f1f16195e5793bf6f5eb6998e81a4cbc66cc94a979247468589c79"
+        },
+        "2026-09-30": {
+          "bytes": 880494,
+          "path": "data/v4/confirmation_candidates_r5/SEALED_OWNER_PUBLICATION_2026-09-30_R5.json.gz",
+          "sha256": "bc06ff1e449925ef52da7fbce883314e77908cbbd00a06331734109a20905a58"
+        }
+      },
+      "time_role": "T",
+      "tri_state_semantics": "EXACT_ACCEPTED_KLEENE",
+      "unknown_reason": "EXACT_SOURCE_OWNER_REASON"
+    },
+    {
+      "accepted_owner": "accepted Core Profile owner",
+      "accepted_source_field_rule": "accepted Core projection: core_participation_result",
+      "field": "core_participation_result",
+      "formal_in_R5": true,
+      "quality_semantics": "KNOWN iff exact owner projection accepts source; otherwise UNKNOWN",
+      "reconstruction_allowed": true,
+      "target_date_source_binding": {
+        "2026-09-29": {
+          "bytes": 882246,
+          "path": "data/v4/confirmation_candidates_r5/SEALED_OWNER_PUBLICATION_2026-09-29_R5.json.gz",
+          "sha256": "8430d41465f1f16195e5793bf6f5eb6998e81a4cbc66cc94a979247468589c79"
+        },
+        "2026-09-30": {
+          "bytes": 880494,
+          "path": "data/v4/confirmation_candidates_r5/SEALED_OWNER_PUBLICATION_2026-09-30_R5.json.gz",
+          "sha256": "bc06ff1e449925ef52da7fbce883314e77908cbbd00a06331734109a20905a58"
+        }
+      },
+      "time_role": "T",
+      "tri_state_semantics": "EXACT_ACCEPTED_KLEENE",
+      "unknown_reason": "EXACT_SOURCE_OWNER_REASON"
+    },
+    {
+      "accepted_owner": "accepted Core Profile owner",
+      "accepted_source_field_rule": "accepted Core projection: core_price_damage",
+      "field": "core_price_damage",
+      "formal_in_R5": true,
+      "quality_semantics": "KNOWN iff exact owner projection accepts source; otherwise UNKNOWN",
+      "reconstruction_allowed": true,
+      "target_date_source_binding": {
+        "2026-09-29": {
+          "bytes": 882246,
+          "path": "data/v4/confirmation_candidates_r5/SEALED_OWNER_PUBLICATION_2026-09-29_R5.json.gz",
+          "sha256": "8430d41465f1f16195e5793bf6f5eb6998e81a4cbc66cc94a979247468589c79"
+        },
+        "2026-09-30": {
+          "bytes": 880494,
+          "path": "data/v4/confirmation_candidates_r5/SEALED_OWNER_PUBLICATION_2026-09-30_R5.json.gz",
+          "sha256": "bc06ff1e449925ef52da7fbce883314e77908cbbd00a06331734109a20905a58"
+        }
+      },
+      "time_role": "T",
+      "tri_state_semantics": "EXACT_ACCEPTED_KLEENE",
+      "unknown_reason": "EXACT_SOURCE_OWNER_REASON"
+    },
+    {
+      "accepted_owner": "BASE_SEED_V1 projection",
+      "accepted_source_field_rule": "accepted RPS history rps5_delta3",
+      "field": "delta3",
+      "formal_in_R5": true,
+      "quality_semantics": "KNOWN iff exact owner projection accepts source; otherwise UNKNOWN",
+      "reconstruction_allowed": false,
+      "target_date_source_binding": {
+        "2026-09-29": {
+          "bytes": 882246,
+          "path": "data/v4/confirmation_candidates_r5/SEALED_OWNER_PUBLICATION_2026-09-29_R5.json.gz",
+          "sha256": "8430d41465f1f16195e5793bf6f5eb6998e81a4cbc66cc94a979247468589c79"
+        },
+        "2026-09-30": {
+          "bytes": 880494,
+          "path": "data/v4/confirmation_candidates_r5/SEALED_OWNER_PUBLICATION_2026-09-30_R5.json.gz",
+          "sha256": "bc06ff1e449925ef52da7fbce883314e77908cbbd00a06331734109a20905a58"
+        }
+      },
+      "time_role": "T",
+      "tri_state_semantics": "EXACT_ACCEPTED_KLEENE",
+      "unknown_reason": "EXACT_SOURCE_OWNER_REASON"
+    },
+    {
+      "accepted_owner": "accepted Core Profile owner",
+      "accepted_source_field_rule": "accepted Core projection: ma20_t",
+      "field": "ma20_t",
+      "formal_in_R5": true,
+      "quality_semantics": "KNOWN iff exact owner projection accepts source; otherwise UNKNOWN",
+      "reconstruction_allowed": true,
+      "target_date_source_binding": {
+        "2026-09-29": {
+          "bytes": 882246,
+          "path": "data/v4/confirmation_candidates_r5/SEALED_OWNER_PUBLICATION_2026-09-29_R5.json.gz",
+          "sha256": "8430d41465f1f16195e5793bf6f5eb6998e81a4cbc66cc94a979247468589c79"
+        },
+        "2026-09-30": {
+          "bytes": 880494,
+          "path": "data/v4/confirmation_candidates_r5/SEALED_OWNER_PUBLICATION_2026-09-30_R5.json.gz",
+          "sha256": "bc06ff1e449925ef52da7fbce883314e77908cbbd00a06331734109a20905a58"
+        }
+      },
+      "time_role": "T",
+      "tri_state_semantics": "EXACT_ACCEPTED_KLEENE",
+      "unknown_reason": "EXACT_SOURCE_OWNER_REASON"
+    },
+    {
+      "accepted_owner": "BASE_SEED_V1 projection",
+      "accepted_source_field_rule": "ACCEPTED_T_MINUS_1_CORE_FIELD_UNAVAILABLE",
+      "field": "ma20_t_minus_1",
+      "formal_in_R5": false,
+      "quality_semantics": "KNOWN iff exact owner projection accepts source; otherwise UNKNOWN",
+      "reconstruction_allowed": false,
+      "target_date_source_binding": {
+        "2026-09-29": {
+          "bytes": 882246,
+          "path": "data/v4/confirmation_candidates_r5/SEALED_OWNER_PUBLICATION_2026-09-29_R5.json.gz",
+          "sha256": "8430d41465f1f16195e5793bf6f5eb6998e81a4cbc66cc94a979247468589c79"
+        },
+        "2026-09-30": {
+          "bytes": 880494,
+          "path": "data/v4/confirmation_candidates_r5/SEALED_OWNER_PUBLICATION_2026-09-30_R5.json.gz",
+          "sha256": "bc06ff1e449925ef52da7fbce883314e77908cbbd00a06331734109a20905a58"
+        }
+      },
+      "time_role": "T_MINUS_1_UNAVAILABLE",
+      "tri_state_semantics": "EXACT_ACCEPTED_KLEENE",
+      "unknown_reason": "ACCEPTED_T_MINUS_1_CORE_FIELD_UNAVAILABLE"
+    },
+    {
+      "accepted_owner": "accepted Core Profile owner",
+      "accepted_source_field_rule": "accepted Core projection: ma_structure_state",
+      "field": "ma_structure_state",
+      "formal_in_R5": true,
+      "quality_semantics": "KNOWN iff exact owner projection accepts source; otherwise UNKNOWN",
+      "reconstruction_allowed": true,
+      "target_date_source_binding": {
+        "2026-09-29": {
+          "bytes": 882246,
+          "path": "data/v4/confirmation_candidates_r5/SEALED_OWNER_PUBLICATION_2026-09-29_R5.json.gz",
+          "sha256": "8430d41465f1f16195e5793bf6f5eb6998e81a4cbc66cc94a979247468589c79"
+        },
+        "2026-09-30": {
+          "bytes": 880494,
+          "path": "data/v4/confirmation_candidates_r5/SEALED_OWNER_PUBLICATION_2026-09-30_R5.json.gz",
+          "sha256": "bc06ff1e449925ef52da7fbce883314e77908cbbd00a06331734109a20905a58"
+        }
+      },
+      "time_role": "T",
+      "tri_state_semantics": "EXACT_ACCEPTED_KLEENE",
+      "unknown_reason": "EXACT_SOURCE_OWNER_REASON"
+    },
+    {
+      "accepted_owner": "accepted Core Profile owner",
+      "accepted_source_field_rule": "accepted Core projection: minimum_liquidity",
+      "field": "minimum_liquidity",
+      "formal_in_R5": true,
+      "quality_semantics": "KNOWN iff exact owner projection accepts source; otherwise UNKNOWN",
+      "reconstruction_allowed": true,
+      "target_date_source_binding": {
+        "2026-09-29": {
+          "bytes": 882246,
+          "path": "data/v4/confirmation_candidates_r5/SEALED_OWNER_PUBLICATION_2026-09-29_R5.json.gz",
+          "sha256": "8430d41465f1f16195e5793bf6f5eb6998e81a4cbc66cc94a979247468589c79"
+        },
+        "2026-09-30": {
+          "bytes": 880494,
+          "path": "data/v4/confirmation_candidates_r5/SEALED_OWNER_PUBLICATION_2026-09-30_R5.json.gz",
+          "sha256": "bc06ff1e449925ef52da7fbce883314e77908cbbd00a06331734109a20905a58"
+        }
+      },
+      "time_role": "T",
+      "tri_state_semantics": "EXACT_ACCEPTED_KLEENE",
+      "unknown_reason": "EXACT_SOURCE_OWNER_REASON"
+    },
+    {
+      "accepted_owner": "BASE_SEED_V1 projection",
+      "accepted_source_field_rule": "target identity publication security/symbol/board/date/profile identity",
+      "field": "price_identity_READY",
+      "formal_in_R5": true,
+      "quality_semantics": "KNOWN iff exact owner projection accepts source; otherwise UNKNOWN",
+      "reconstruction_allowed": false,
+      "target_date_source_binding": {
+        "2026-09-29": {
+          "bytes": 882246,
+          "path": "data/v4/confirmation_candidates_r5/SEALED_OWNER_PUBLICATION_2026-09-29_R5.json.gz",
+          "sha256": "8430d41465f1f16195e5793bf6f5eb6998e81a4cbc66cc94a979247468589c79"
+        },
+        "2026-09-30": {
+          "bytes": 880494,
+          "path": "data/v4/confirmation_candidates_r5/SEALED_OWNER_PUBLICATION_2026-09-30_R5.json.gz",
+          "sha256": "bc06ff1e449925ef52da7fbce883314e77908cbbd00a06331734109a20905a58"
+        }
+      },
+      "time_role": "T",
+      "tri_state_semantics": "EXACT_ACCEPTED_KLEENE",
+      "unknown_reason": "EXACT_SOURCE_OWNER_REASON"
+    },
+    {
+      "accepted_owner": "BASE_SEED_V1 projection",
+      "accepted_source_field_rule": "sealed target identity membership",
+      "field": "research_universe",
+      "formal_in_R5": true,
+      "quality_semantics": "KNOWN iff exact owner projection accepts source; otherwise UNKNOWN",
+      "reconstruction_allowed": false,
+      "target_date_source_binding": {
+        "2026-09-29": {
+          "bytes": 882246,
+          "path": "data/v4/confirmation_candidates_r5/SEALED_OWNER_PUBLICATION_2026-09-29_R5.json.gz",
+          "sha256": "8430d41465f1f16195e5793bf6f5eb6998e81a4cbc66cc94a979247468589c79"
+        },
+        "2026-09-30": {
+          "bytes": 880494,
+          "path": "data/v4/confirmation_candidates_r5/SEALED_OWNER_PUBLICATION_2026-09-30_R5.json.gz",
+          "sha256": "bc06ff1e449925ef52da7fbce883314e77908cbbd00a06331734109a20905a58"
+        }
+      },
+      "time_role": "T",
+      "tri_state_semantics": "EXACT_ACCEPTED_KLEENE",
+      "unknown_reason": "EXACT_SOURCE_OWNER_REASON"
+    },
+    {
+      "accepted_owner": "accepted Core Profile owner",
+      "accepted_source_field_rule": "accepted Core projection: severe_extension",
+      "field": "severe_extension",
+      "formal_in_R5": true,
+      "quality_semantics": "KNOWN iff exact owner projection accepts source; otherwise UNKNOWN",
+      "reconstruction_allowed": true,
+      "target_date_source_binding": {
+        "2026-09-29": {
+          "bytes": 882246,
+          "path": "data/v4/confirmation_candidates_r5/SEALED_OWNER_PUBLICATION_2026-09-29_R5.json.gz",
+          "sha256": "8430d41465f1f16195e5793bf6f5eb6998e81a4cbc66cc94a979247468589c79"
+        },
+        "2026-09-30": {
+          "bytes": 880494,
+          "path": "data/v4/confirmation_candidates_r5/SEALED_OWNER_PUBLICATION_2026-09-30_R5.json.gz",
+          "sha256": "bc06ff1e449925ef52da7fbce883314e77908cbbd00a06331734109a20905a58"
+        }
+      },
+      "time_role": "T",
+      "tri_state_semantics": "EXACT_ACCEPTED_KLEENE",
+      "unknown_reason": "EXACT_SOURCE_OWNER_REASON"
+    }
+  ]
+}

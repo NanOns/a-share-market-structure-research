@@ -1,0 +1,80 @@
+{
+  "accepted_owner_algorithms": true,
+  "adapter_helpers_called_for_expected": false,
+  "contract_id": "V4_11_R5A_INDEPENDENT_OWNER_ORACLE_V1",
+  "dates": [
+    {
+      "adapter_helpers_called_for_expected": false,
+      "counts": {
+        "formal_t_minus_1_unknown": 10446,
+        "owner_rows": 5223
+      },
+      "independent_proof": {
+        "bytes": 153993,
+        "path": "data/v4/confirmation_candidates_r5/INDEPENDENT_OWNER_ORACLE_2026-09-29_R5.json.gz",
+        "sha256": "6fadfaa17be45788a6cc0e5dc8d50e5f9170516e7d278c9a5d832ce81eca2ff9"
+      },
+      "publication": {
+        "bytes": 882246,
+        "path": "data/v4/confirmation_candidates_r5/SEALED_OWNER_PUBLICATION_2026-09-29_R5.json.gz",
+        "sha256": "8430d41465f1f16195e5793bf6f5eb6998e81a4cbc66cc94a979247468589c79"
+      },
+      "source_profile": {
+        "bytes": 32270163,
+        "path": "data/v4/confirmation_candidates_r5/TARGET_CORE_OWNER_RECORDS_2026-09-29_R5.json.gz",
+        "sha256": "3e3de59ced851112855ae6b1a22bb6294fd8ca452773a12f42a49906c540bd6b"
+      },
+      "status": "PASS",
+      "trade_date": "2026-09-29"
+    },
+    {
+      "adapter_helpers_called_for_expected": false,
+      "counts": {
+        "formal_t_minus_1_unknown": 10448,
+        "owner_rows": 5224
+      },
+      "independent_proof": {
+        "bytes": 153490,
+        "path": "data/v4/confirmation_candidates_r5/INDEPENDENT_OWNER_ORACLE_2026-09-30_R5.json.gz",
+        "sha256": "d79d6a5af9c6d8236e67855647611acfaa3ed8bd36a8d30a89b2cd84ac744e16"
+      },
+      "publication": {
+        "bytes": 880494,
+        "path": "data/v4/confirmation_candidates_r5/SEALED_OWNER_PUBLICATION_2026-09-30_R5.json.gz",
+        "sha256": "bc06ff1e449925ef52da7fbce883314e77908cbbd00a06331734109a20905a58"
+      },
+      "source_profile": {
+        "bytes": 32275532,
+        "path": "data/v4/confirmation_candidates_r5/TARGET_CORE_OWNER_RECORDS_2026-09-30_R5.json.gz",
+        "sha256": "6fe25d6c5faa20cd54061c58cf57d4c57cc28956f30ebed69fe416f133dc8d97"
+      },
+      "status": "PASS",
+      "trade_date": "2026-09-30"
+    }
+  ],
+  "formal_t_minus_1_known_count": 0,
+  "parameter_bindings": [
+    {
+      "bytes": 1252,
+      "path": "config/v4_07_parameter_set_v1.json",
+      "sha256": "241785e1a97dd2283eb8b361eb791f4e5c8f6ca67579a06f2a2d38c0c7586a1a"
+    },
+    {
+      "bytes": 1179,
+      "path": "config/v4_09_parameter_set_v1.json",
+      "sha256": "3c9b0d658c6e8212c5a6239eecdeece99d54791b97cee45fe4df98de71086c24"
+    }
+  ],
+  "permissions": {
+    "focus": false,
+    "global_mandatory_adoption": false,
+    "production": false,
+    "shadow": false
+  },
+  "status": "PASS",
+  "verifier": {
+    "bytes": 7270,
+    "path": "scripts/verify_v4_11_owner_inputs_r5a.py",
+    "sha256": "ebc530688b51b45de58ef0ffdb77caee3518a7ffa8fa53d297b71899513836d5"
+  }
+}

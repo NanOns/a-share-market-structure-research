@@ -1,0 +1,95 @@
+{
+  "AS_RECORDED": false,
+  "accepted": false,
+  "authority_matrix": {
+    "bytes": 15510,
+    "path": "reports/v4_11_r5a/OWNER_INPUT_AUTHORITY_MATRIX.json",
+    "sha256": "bf8f0d3878fc6c265d10c5acc32cbea13dd58370695c4ef18e1f055c87b59215"
+  },
+  "boundary_tests": {
+    "bytes": 837,
+    "path": "reports/v4_11_r5a/OWNER_BOUNDARY_TEST_RECEIPT.json",
+    "sha256": "66fff18456316b47fdc8ab9db2cc4278694c2be0ef4652addeb5d94a48adc22f"
+  },
+  "contract": {
+    "bytes": 3186,
+    "path": "config/v4_11_r5a_owner_input_contract_v1.json",
+    "sha256": "d9ee59c67d67ae3cbc3dd07fa3aac9349c01c07867cb21afd9eca5894f2f2423"
+  },
+  "contract_id": "V4_11_R5A_SEALED_OWNER_PRODUCER_SET_V1",
+  "coverage": {
+    "2026-09-29": {
+      "PREWATCH": {
+        "FALSE": 942,
+        "TRUE": 119,
+        "UNKNOWN": 4162
+      },
+      "SEED": {
+        "FALSE": 3629,
+        "TRUE": 969,
+        "UNKNOWN": 625
+      },
+      "formal_t_minus_1_known_count": 0,
+      "rows": 5223
+    },
+    "2026-09-30": {
+      "PREWATCH": {
+        "FALSE": 965,
+        "TRUE": 91,
+        "UNKNOWN": 4168
+      },
+      "SEED": {
+        "FALSE": 3633,
+        "TRUE": 872,
+        "UNKNOWN": 719
+      },
+      "formal_t_minus_1_known_count": 0,
+      "rows": 5224
+    }
+  },
+  "formal_consumer_enabled": false,
+  "independent_oracle": {
+    "bytes": 2814,
+    "path": "reports/v4_11_r5a/INDEPENDENT_OWNER_INPUT_ORACLE.json",
+    "sha256": "d6b9b61fab7ed2269fea7ab1b1e553c0d96e4291c62e2a5aed4869795c758a86"
+  },
+  "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+  "next_stage": "R5B_SEALED_OWNER_INPUTS_ONLY",
+  "parity": {
+    "bytes": 2021,
+    "path": "reports/v4_11_r5a/V4_07_V4_09_EXACT_OWNER_PARITY.json",
+    "sha256": "9a2c7c99ff7f491a76e79627d582f6262627bcdc3db0d1ca23567f02f99ffca5"
+  },
+  "permissions": {
+    "focus": false,
+    "global_mandatory_adoption": false,
+    "production": false,
+    "shadow": false
+  },
+  "profiles": {
+    "2026-09-29": {
+      "bytes": 32270163,
+      "path": "data/v4/confirmation_candidates_r5/TARGET_CORE_OWNER_RECORDS_2026-09-29_R5.json.gz",
+      "sha256": "3e3de59ced851112855ae6b1a22bb6294fd8ca452773a12f42a49906c540bd6b"
+    },
+    "2026-09-30": {
+      "bytes": 32275532,
+      "path": "data/v4/confirmation_candidates_r5/TARGET_CORE_OWNER_RECORDS_2026-09-30_R5.json.gz",
+      "sha256": "6fe25d6c5faa20cd54061c58cf57d4c57cc28956f30ebed69fe416f133dc8d97"
+    }
+  },
+  "publications": {
+    "2026-09-29": {
+      "bytes": 882246,
+      "path": "data/v4/confirmation_candidates_r5/SEALED_OWNER_PUBLICATION_2026-09-29_R5.json.gz",
+      "sha256": "8430d41465f1f16195e5793bf6f5eb6998e81a4cbc66cc94a979247468589c79"
+    },
+    "2026-09-30": {
+      "bytes": 880494,
+      "path": "data/v4/confirmation_candidates_r5/SEALED_OWNER_PUBLICATION_2026-09-30_R5.json.gz",
+      "sha256": "bc06ff1e449925ef52da7fbce883314e77908cbbd00a06331734109a20905a58"
+    }
+  },
+  "sealed": true,
+  "status": "V4_11_R5A_OWNER_INPUT_AUTHORITY_PARITY_CANDIDATE_READY"
+}

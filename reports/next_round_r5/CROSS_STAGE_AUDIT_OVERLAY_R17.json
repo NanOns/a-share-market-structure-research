@@ -1,0 +1,47 @@
+{
+  "authority": {
+    "bytes": 10214,
+    "path": "docs/evidence/next_round_r5/V4_R4_INDEPENDENT_EXTERNAL_AUDIT_R1_20261002.md",
+    "sha256": "2dc03631919001220fdb3bfdb8dab22e21ab30fc34ef7fb15fe3087d2a05f559"
+  },
+  "contract_id": "V4_R5_CROSS_STAGE_AUDIT_OVERLAY_R17",
+  "items": [
+    {
+      "accepted_owner_algorithms_changed": false,
+      "engineering_status": "R5A_PASS_SEALED_R5B_IN_PROGRESS",
+      "external_status": "PENDING_EXTERNAL_REAUDIT",
+      "id": "R5_OWNER_INPUT_AUTHORITY_DRIFT",
+      "scope": "BASE_SEED t-1 capability, dated-status, target identity and authoritative D2 inputs"
+    },
+    {
+      "engineering_status": "R5B_IN_PROGRESS",
+      "external_status": "PENDING_EXTERNAL_REAUDIT",
+      "id": "R5_SCENARIO_PARENT_LINEAGE",
+      "scope": "Metadata parent R4A seal, frozen D0 business preserved"
+    },
+    {
+      "classification": "PREEXISTING_NON_MAINLINE",
+      "id": "R5_FULL_REPOSITORY_PREEXISTING_M14_COLLECTION",
+      "resolution_claim": false,
+      "scope": "Legacy import of removed persistence API"
+    },
+    {
+      "classification": "PREEXISTING_NON_MAINLINE",
+      "id": "R5_FULL_REPOSITORY_PREEXISTING_M2_UNTRACKED_PUBLICATION_DEPENDENCY",
+      "resolution_claim": false,
+      "scope": "Legacy collection depends on ignored local DuckDB publication"
+    }
+  ],
+  "main_stage_promotion": false,
+  "parent": {
+    "bytes": 28981,
+    "path": "reports/next_round_r4/CROSS_STAGE_AUDIT_OVERLAY_R16.json",
+    "sha256": "90dce800d1ed7467f2356539a46b3227c0a3275fad454dbe9907b6458ded1c96"
+  },
+  "permissions": {
+    "focus": false,
+    "global_mandatory_adoption": false,
+    "production": false,
+    "shadow": false
+  }
+}

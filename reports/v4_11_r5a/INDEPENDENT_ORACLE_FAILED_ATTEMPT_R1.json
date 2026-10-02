@@ -1,0 +1,18 @@
+{
+  "formal_seal_created": false,
+  "next_stage": "REEXECUTE_INDEPENDENT_ORACLE",
+  "publication_bindings": {
+    "2026-09-29": {
+      "bytes": 882246,
+      "path": "data/v4/confirmation_candidates_r5/SEALED_OWNER_PUBLICATION_2026-09-29_R5.json.gz",
+      "sha256": "8430d41465f1f16195e5793bf6f5eb6998e81a4cbc66cc94a979247468589c79"
+    },
+    "2026-09-30": {
+      "bytes": 880494,
+      "path": "data/v4/confirmation_candidates_r5/SEALED_OWNER_PUBLICATION_2026-09-30_R5.json.gz",
+      "sha256": "bc06ff1e449925ef52da7fbce883314e77908cbbd00a06331734109a20905a58"
+    }
+  },
+  "reason": "Verifier incorrectly assumed all accepted universe rows have valid identity; candidate correctly retained UNKNOWN identity where source binding invalid. Expected validity predicate corrected without changing publications or adapter.",
+  "status": "FAIL_PRE_SEAL"
+}

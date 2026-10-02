@@ -1,0 +1,73 @@
+{
+  "counts": {
+    "LAUNCH_CONFIRM": {
+      "FALSE": 4872,
+      "TRUE": 124,
+      "UNKNOWN": 228
+    },
+    "RECOVERY_TURN": {
+      "FALSE": 4769,
+      "TRUE": 63,
+      "UNKNOWN": 392
+    },
+    "STRONG_PULLBACK": {
+      "UNKNOWN": 5224
+    },
+    "TREND_CONTINUE": {
+      "UNKNOWN": 5224
+    }
+  },
+  "formal_consumer_enabled": false,
+  "scenarios": {
+    "LAUNCH_CONFIRM": {
+      "capability": "FORMAL_CANDIDATE",
+      "diagnostic_capability_seal": {
+        "bytes": 2217,
+        "path": "reports/v4_11_r3b/R3B_SEALED_PRODUCER_SET.json",
+        "sha256": "4ccaba49200174c6d38138dcae8c093c16264f69bc2e19f24b507d05472144ec"
+      },
+      "parent_producer_set": {
+        "bytes": 1902,
+        "contract_id": "V4_11_TARGET_FACT_PRODUCERS_R4A_V1",
+        "path": "reports/v4_11_r4a/R4A_SEALED_PRODUCER_SET.json",
+        "sha256": "9dbce1b7dff7ddf18acd766787068137f10839c9cfd5af9fec6e94f1dc3192d1",
+        "status": "V4_11_R4A_ADJUSTMENT_BASIS_REPAIR_CANDIDATE_READY"
+      },
+      "reason": "R4A_SEALED_TARGET_FACT_SET"
+    },
+    "RECOVERY_TURN": {
+      "capability": "FORMAL_CANDIDATE",
+      "diagnostic_capability_seal": {
+        "bytes": 2217,
+        "path": "reports/v4_11_r3b/R3B_SEALED_PRODUCER_SET.json",
+        "sha256": "4ccaba49200174c6d38138dcae8c093c16264f69bc2e19f24b507d05472144ec"
+      },
+      "parent_producer_set": {
+        "bytes": 1902,
+        "contract_id": "V4_11_TARGET_FACT_PRODUCERS_R4A_V1",
+        "path": "reports/v4_11_r4a/R4A_SEALED_PRODUCER_SET.json",
+        "sha256": "9dbce1b7dff7ddf18acd766787068137f10839c9cfd5af9fec6e94f1dc3192d1",
+        "status": "V4_11_R4A_ADJUSTMENT_BASIS_REPAIR_CANDIDATE_READY"
+      },
+      "reason": "R4A_SEALED_TARGET_FACT_SET"
+    },
+    "STRONG_PULLBACK": {
+      "capability": "DIAGNOSTIC_ONLY",
+      "diagnostic_capability_seal": {
+        "bytes": 2217,
+        "path": "reports/v4_11_r3b/R3B_SEALED_PRODUCER_SET.json",
+        "sha256": "4ccaba49200174c6d38138dcae8c093c16264f69bc2e19f24b507d05472144ec"
+      },
+      "reason": "EXACT_ACCEPTED_FROZEN_PRIOR_SESSION_EPISODE_UNAVAILABLE"
+    },
+    "TREND_CONTINUE": {
+      "capability": "DIAGNOSTIC_ONLY",
+      "diagnostic_capability_seal": {
+        "bytes": 2217,
+        "path": "reports/v4_11_r3b/R3B_SEALED_PRODUCER_SET.json",
+        "sha256": "4ccaba49200174c6d38138dcae8c093c16264f69bc2e19f24b507d05472144ec"
+      },
+      "reason": "SAME_DAY_LOO_FROZEN_ROLE_NOT_ADMITTED_FOR_FORMAL_D0"
+    }
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "DataHead": "KEEP_2026-09-30",
+  "R5A": {
+    "bytes": 2964,
+    "path": "reports/v4_11_r5a/R5A_SEALED_OWNER_PRODUCER_SET.json",
+    "sha256": "5baddc4a3ff00545c7ae89bf166639d07383727f38cef84bd7899531256fbecb"
+  },
+  "R5B": {
+    "bytes": 2103,
+    "path": "reports/v4_11_r5/V4_11_ACCEPTANCE_CANDIDATE.json",
+    "sha256": "9abbb54e83f14efc1f3dab20e872bc17bbbbbd36234b0bdb9dee742ddcbc9be9"
+  },
+  "StageHead": "KEEP_V4_00_TO_V4_10_ACCEPTED",
+  "V4_11_head_created": false,
+  "V4_12_executed": false,
+  "audit_items": [
+    {
+      "engineering_status": "PASS_PARITY_SEALED_OWNER_D2_ORACLE_CLEAN",
+      "external_status": "PENDING_EXTERNAL_REAUDIT",
+      "id": "R5_OWNER_INPUT_AUTHORITY_DRIFT"
+    },
+    {
+      "engineering_status": "PASS_BOUND_R4A_PARENT_METADATA",
+      "external_status": "PENDING_EXTERNAL_REAUDIT",
+      "id": "R5_SCENARIO_PARENT_LINEAGE"
+    }
+  ],
+  "clean_status": "PASS_REQUIRED_ENGINEERING_REGRESSION_WITH_PREEXISTING_REPO_COLLECTION_BLOCKER",
+  "clean_validation": {
+    "bytes": 1026825,
+    "path": "reports/v4_11_r5/V4_11_R5_CLEAN_CHECKOUT.json",
+    "sha256": "3e31ec228fe6bab3c5416ef8940e366b5c09d3101d43ec403b72f6820d99276d"
+  },
+  "contract_id": "V4_R5_TWO_TASK_FINAL_HANDOFF_R1",
+  "external_acceptance": false,
+  "full_repository_collection": {
+    "bytes": 1732,
+    "path": "reports/v4_11_r5/FULL_REPOSITORY_COLLECTION.json",
+    "sha256": "882ad44115ee7e91c17156eaecc4d226c8aafa1eace7fe6e0327f35478acd329"
+  },
+  "full_repository_runtime_pass": false,
+  "human_handoff": {
+    "bytes": 4730,
+    "path": "docs/audits/V4_R5_TWO_TASK_HANDOFF_20261002.md",
+    "sha256": "6a920dbc0f4cc0bb5082a593c339136cb356bac6047d2e859d324c5d5b886dd7"
+  },
+  "next_stage": "STOP_WAIT_FOR_INDEPENDENT_EXTERNAL_ACCEPTANCE",
+  "permissions": {
+    "focus": false,
+    "global_mandatory_adoption": false,
+    "production": false,
+    "shadow": false
+  },
+  "preexisting_audits": [
+    "PREEXISTING_NON_MAINLINE_M14",
+    "PREEXISTING_NON_MAINLINE_M2"
+  ],
+  "source_manifest": {
+    "bytes": 12416,
+    "path": "reports/next_round_r5/BATCH_SOURCE_MANIFEST.json",
+    "sha256": "6e5330a6ef65935e6e2f7878f416a18fadcc5e66daac7aee652e796201291e80"
+  },
+  "status": "V4_11_R5_REAL_DAG_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
+  "test_summary": {
+    "errors": 0,
+    "failures": 0,
+    "passed": 2067,
+    "skipped": 2,
+    "tests": 2069
+  },
+  "tested_source_commit": "a8635c6802dc31e3c879207cd470bd63021e35ca"
+}

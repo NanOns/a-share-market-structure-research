@@ -43,6 +43,15 @@
       "external_status": "PENDING_EXTERNAL_REAUDIT",
       "id": "R4_PROTECTED_CONFIG_BYTE_PORTABILITY",
       "scope": "Three pre-existing CRLF V4-03 contracts; accepted contract contents and bytes left untouched in original workspace"
+    },
+    {
+      "action": "Record clean failure without fabricating or initializing any production publication",
+      "blocks_V4_11_source_semantic_gate": false,
+      "engineering_status": "BLOCKED_PREEXISTING_FIXTURE_DEPENDENCY",
+      "external_status": "OPEN_SEPARATE_AUDIT",
+      "full_repository_test_PASS_claim": false,
+      "id": "R4_FULL_REPOSITORY_PREEXISTING_M2_UNTRACKED_PUBLICATION_DEPENDENCY",
+      "scope": "Legacy upgrade_m2 collection opens clean checkout local DuckDB, then indexes missing publication_heads data; tests and service unchanged from audited baseline"
     }
   ],
   "active_business_authority_registry_changed": false,

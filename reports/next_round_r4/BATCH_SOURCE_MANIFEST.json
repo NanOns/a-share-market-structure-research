@@ -152,9 +152,9 @@
       "sha256": "4906ff43dc215e88c0f6f71481e470544b9c06d87790e669d569b879c373825a"
     },
     {
-      "bytes": 28391,
+      "bytes": 28981,
       "path": "reports/next_round_r4/CROSS_STAGE_AUDIT_OVERLAY_R16.json",
-      "sha256": "4f56ac399fc600308e400321187df8964086b2490895035d7c97666d9ad788e0"
+      "sha256": "90dce800d1ed7467f2356539a46b3227c0a3275fad454dbe9907b6458ded1c96"
     },
     {
       "bytes": 2328,
@@ -190,6 +190,16 @@
       "bytes": 808,
       "path": "reports/v4_11_r4/FAILED_ATTEMPT_R1.json",
       "sha256": "24b923402b7c541a97a7ee61833b459a22089bb922e3ed22d886f54ad8f27e19"
+    },
+    {
+      "bytes": 676,
+      "path": "reports/v4_11_r4/FAILED_CLEAN_PREFLIGHT_R1.json",
+      "sha256": "ceec1bd93d7867f1b474647be5967afbe0af7756c7efaa5fab8d1a4ef3b9ff14"
+    },
+    {
+      "bytes": 340257,
+      "path": "reports/v4_11_r4/FAILED_CLEAN_PREFLIGHT_R1_FULL_COLLECTION.log",
+      "sha256": "97d3c87b0087e83425aff4a390ac3a7d96633bd18a5f67e6af8c1bedbbe50c48"
     },
     {
       "bytes": 9980,
@@ -417,9 +427,9 @@
       "sha256": "763002dc98c9b58502abe1346ec754c96ad2cc6287f6784d69ccbe1d8a33e1d6"
     },
     {
-      "bytes": 5481,
+      "bytes": 6025,
       "path": "scripts/verify_v4_11_r4_clean_readback.py",
-      "sha256": "1f4bce0614f16ac0745e98622092fc6bb9dcaa5ae2f96cd6aa27ce1131e0f44a"
+      "sha256": "d830072dd23ba0713dcf160bd908276f86b4e4f12adac692f76186f4db3183f6"
     },
     {
       "bytes": 1772,
@@ -473,7 +483,7 @@
     },
     {
       "bytes": 13014,
-      "path": "tests/v4_11_r4/test_d2_bridge.py",
+      "path": "tests/v4_11_r4/test_d2_bridge_r4.py",
       "sha256": "7eddda120a87497e28598ee38302d832cc9a94afbf470236ec7d1350a44fc019"
     },
     {
@@ -499,5 +509,6 @@
     "production": false,
     "shadow": false
   },
+  "preflight_repair": "Unique R4 pytest basename; no assertion/deselection changes. Separate M14 and M2 baseline collection limits.",
   "superseded_role": "Retained initial trial metadata and failed/interrupted execution evidence; mutable-path refs in old trial metadata do not authorize any active producer."
 }

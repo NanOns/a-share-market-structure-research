@@ -45,12 +45,13 @@ def full_repository_collection():
     prefix='reports/v4_11_r4/FULL_REPOSITORY_COLLECTION'
     atomic_bytes(prefix+'.log',text.encode('utf8'))
     unchanged=[]
-    for path in ('tests/upgrade_m14/test_online_batches.py','src/workbench_online/collector.py'):
+    for path in ('tests/upgrade_m14/test_online_batches.py','src/workbench_online/collector.py','tests/upgrade_m2/test_api.py','src/workbench_service/app.py'):
         baseline=subprocess.check_output(['git','show','65774de:'+path],cwd=ROOT)
         if baseline.replace(b'\r\n',b'\n')!=(ROOT/path).read_bytes().replace(b'\r\n',b'\n'):raise ValueError('UNRELATED_M14_CHANGED')
         unchanged.append(bind(path))
     error_paths=re.findall(r'^ERROR (tests/\S+)',text,re.MULTILINE)
-    known=(r.returncode!=0 and "cannot import name '_commit_raw_and_batch'" in text and error_paths==['tests/upgrade_m14/test_online_batches.py'])
+    expected_errors={'tests/upgrade_m14/test_online_batches.py','tests/upgrade_m2/test_api.py'}
+    known=(r.returncode!=0 and "cannot import name '_commit_raw_and_batch'" in text and 'tests/upgrade_m14/test_online_batches.py' in error_paths and set(error_paths)<=expected_errors)
     if r.returncode and not known:raise ValueError('NEW_FULL_REPOSITORY_COLLECTION_ERROR:'+text[-5000:])
-    result=dict(status='BLOCKED_PREEXISTING_M14_COLLECTION' if known else 'PASS',exit_code=r.returncode,log=bind(prefix+'.log'),baseline='65774de20108beafaa15c0b557b4cd2ee58edb29',unchanged_baseline_sources=unchanged,reason='Existing upgrade_m14 test imports removed persistence API; no runtime executed during collection; no new deselection',separate_audit_item='R4_FULL_REPOSITORY_PREEXISTING_M14_COLLECTION',full_repository_runtime_pass_claim=False if known else None)
+    result=dict(status='BLOCKED_PREEXISTING_M14_M2_COLLECTION' if known else 'PASS',exit_code=r.returncode,collection_error_paths=error_paths,log=bind(prefix+'.log'),baseline='65774de20108beafaa15c0b557b4cd2ee58edb29',unchanged_baseline_sources=unchanged,reason='Existing M14 test imports removed persistence API; existing M2 test indexes an empty clean-repository publication_heads table in ignored local DuckDB. No missing data fabricated or production publication initialized; no new deselection.',separate_audit_items=['R4_FULL_REPOSITORY_PREEXISTING_M14_COLLECTION','R4_FULL_REPOSITORY_PREEXISTING_M2_UNTRACKED_PUBLICATION_DEPENDENCY'],full_repository_runtime_pass_claim=False if known else None,configured_or_production_database_used=False,legacy_duckdb_scope='EMPTY_IGNORED_DB_IN_DISPOSABLE_CLEAN_CHECKOUT_ONLY')
     write(prefix+'.json',result);return result

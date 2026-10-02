@@ -21,8 +21,12 @@
       "status": "BLOCKED_WITH_EXPLICIT_REASON"
     }
   ],
-  "clean_checkout": "PENDING_SOURCE_COMMIT_DETACHED_REPLAY",
-  "clean_receipt": null,
+  "clean_checkout": "PASS",
+  "clean_receipt": {
+    "bytes": 5704,
+    "path": "reports/v4_12_r1/R7_CLEAN_DETACHED_REPLAY.json",
+    "sha256": "ad7a265e741d61a136c098bba88ab7378fb4c9f86fd87acc299ceb061e8d9049"
+  },
   "completeness_matrix": "reports/v4_12_r1/V4_12_R1_CONTRACT_COMPLETENESS_MATRIX.json",
   "contract_config_files": [
     "config/v4_12_structure_event_contract_v1.json",
@@ -53,9 +57,9 @@
     "total": 69
   },
   "manifest": {
-    "bytes": 8882,
+    "bytes": 9063,
     "path": "reports/v4_12_r1/R7_SOURCE_EVIDENCE_MANIFEST.json",
-    "sha256": "ef7bfe9f10cfbf7ff6e17fc09326144dc40295fb5501f67db83bf715b245ebdb"
+    "sha256": "a288ca87b3acaeb1be5363b53a59f4aa5ac1127eb72b0daf6028a8dbaba13833"
   },
   "next_stage": "STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT; NO_V4_12_RUNTIME_AUTHORIZATION",
   "parameter_literal_audit": {
@@ -151,11 +155,11 @@
   },
   "starting_remote_head": "2e3e811eb08d7e350e27c4c1e2767ba91160ef98",
   "test_report": {
-    "bytes": 14059,
+    "bytes": 14060,
     "path": "reports/v4_12_r1/R7_TARGETED_TESTS.xml",
-    "sha256": "be80d9dc84f573673e4c96680091ff1adaee819b916996940171ca14d4c80d03"
+    "sha256": "6978e80fef8d20bfcdcbacc63970551ce2e7626b7d2f06ed6fac02ccd49e2a4e"
   },
-  "tested_source_commit": null,
+  "tested_source_commit": "e8fa4f6cce76f09d79abf79656fc952b99cfb01d",
   "tests": {
     "deselected": 0,
     "errors": 0,

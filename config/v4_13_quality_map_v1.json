@@ -1,0 +1,36 @@
+{
+  "contract_id": "V4_13_QUALITY_DEGRADATION_V1",
+  "map": {
+    "BLOCKED_WITH_EXPLICIT_REASON": {
+      "reason": "ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "value": "UNKNOWN"
+    },
+    "CURRENT_MEMBERSHIP_REPLAY": {
+      "formal_context_eligible": false,
+      "origin": "CURRENT_MEMBERSHIP_REPLAY",
+      "pit": false,
+      "value": "DEGRADED"
+    },
+    "NOT_APPLICABLE": {
+      "condition": "KNOWN_COMPLETE_NO_ELIGIBLE_SECTOR",
+      "value": null
+    },
+    "NOT_IMPLEMENTED": {
+      "reason": "V4_13_RUNTIME_NOT_IMPLEMENTED",
+      "value": null
+    },
+    "READY": {
+      "eligibility": "CONTEXT_ONLY",
+      "value": "KNOWN"
+    },
+    "UNKNOWN": {
+      "missing_is_false": false,
+      "value": "UNKNOWN",
+      "weak_sector": false
+    }
+  },
+  "runtime_implemented": false,
+  "status": "CONTRACT_FREEZE_ONLY",
+  "upstream_degradation": "LOSSLESS_PRESERVE_NO_UPGRADE",
+  "version": "1.0.0"
+}

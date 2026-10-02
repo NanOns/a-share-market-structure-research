@@ -1,0 +1,59 @@
+{
+  "contract_id": "PROFILE_ADVANCED_PROJECTION_V1",
+  "fields": [
+    "active_anchor_id",
+    "anchor_view_asof_t",
+    "basic_breakout_state",
+    "basic_pullback_state",
+    "basic_recovery_state",
+    "support_state",
+    "acceptance_state",
+    "retest_count",
+    "structure_events",
+    "structure_health"
+  ],
+  "missing_component": "NOT_IMPLEMENTED_COMPONENT_ONLY",
+  "mode": "COPY_VALUE_QUALITY_REASON_PRODUCER_IDENTITY_SOURCE_REF_NO_RECOMPUTATION",
+  "preserve": [
+    "UNKNOWN",
+    "NOT_APPLICABLE",
+    "DEGRADED",
+    "RECONSTRUCTED_CORRECTED",
+    "AS_RECORDED_FALSE"
+  ],
+  "qualified_publication": "SHA_BOUND_PUBLICATION_AUTHORIZED_BY_V4_12_ACCEPTED_HEAD",
+  "recompute": [
+    "FORBIDDEN_ANCHOR",
+    "FORBIDDEN_BREAKOUT",
+    "FORBIDDEN_SUPPORT",
+    "FORBIDDEN_ACCEPTANCE"
+  ],
+  "rotation": {
+    "core_mutation": false,
+    "core_owner": "V4_08_rotation_core_state",
+    "destination": "D3_CONTEXT_ENRICHMENT_ONLY"
+  },
+  "runtime_implemented": false,
+  "source": {
+    "bytes": 796484,
+    "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+    "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+  },
+  "source_field_paths": {
+    "acceptance_state": "active_projection.acceptance_state",
+    "active_anchor_id": "active_selection.active_anchor_id",
+    "anchor_view_asof_t": "selected_anchor_state.output_envelope.anchor_view_asof_t",
+    "basic_breakout_state": "basic_breakout_state",
+    "basic_pullback_state": "active_projection.basic_pullback_state",
+    "basic_recovery_state": "active_projection.basic_recovery_state",
+    "retest_count": "active_projection.retest_count",
+    "structure_events": "events",
+    "structure_health": "selected_anchor_state.output_envelope.structure_health",
+    "support_state": "active_projection.support_state"
+  },
+  "source_publication_contract": "V4_12_R13_RUNTIME_CANDIDATE_MANIFEST",
+  "status": "CONTRACT_FREEZE_ONLY",
+  "stock_raw_qualification_mutation": false,
+  "unsupported_authority": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+  "version": "1.0.0"
+}

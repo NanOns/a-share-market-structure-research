@@ -1,0 +1,271 @@
+{
+  "contract_id": "V4_13_INDEPENDENT_MACHINE_VECTORS_V1",
+  "oracle": "HAND_WRITTEN_INDEPENDENT_CONTRACT_WITNESSES_NOT_RUNTIME_OUTPUTS",
+  "runtime_implemented": false,
+  "status": "CONTRACT_FREEZE_ONLY",
+  "vectors": [
+    {
+      "expected": {
+        "excluded": "s",
+        "loo_median": 3,
+        "member_n": 5,
+        "seed_k": 0
+      },
+      "id": "L01",
+      "input": {
+        "returns": {
+          "a": 1,
+          "b": 2,
+          "c": 3,
+          "d": 4,
+          "e": 5,
+          "s": 100
+        },
+        "seeds": {
+          "a": false,
+          "b": false,
+          "c": false,
+          "d": false,
+          "e": false,
+          "s": true
+        },
+        "target": "s"
+      }
+    },
+    {
+      "expected": {
+        "quality": "UNKNOWN_INSUFFICIENT_LOO_MEMBERS",
+        "remaining": 4
+      },
+      "id": "L02",
+      "input": {
+        "members": [
+          "s",
+          "a",
+          "b",
+          "c",
+          "d"
+        ],
+        "target": "s"
+      }
+    },
+    {
+      "expected": {
+        "concepts": [
+          "C01",
+          "C02",
+          "C03",
+          "C04",
+          "C05",
+          "C06",
+          "C07",
+          "C08",
+          "C09",
+          "C10"
+        ],
+        "display": [
+          "C01",
+          "C02",
+          "C03",
+          "C04",
+          "C05",
+          "C06",
+          "C07",
+          "C08"
+        ],
+        "primary": "I1"
+      },
+      "id": "L03",
+      "input": {
+        "concepts": [
+          "C10",
+          "C09",
+          "C08",
+          "C07",
+          "C06",
+          "C05",
+          "C04",
+          "C03",
+          "C02",
+          "C01"
+        ],
+        "industries": [
+          {
+            "depth": 2,
+            "id": "I2",
+            "priority": 1
+          },
+          {
+            "depth": 2,
+            "id": "I1",
+            "priority": 1
+          }
+        ]
+      }
+    },
+    {
+      "expected": {
+        "missing_is_false": false,
+        "value": "UNKNOWN"
+      },
+      "id": "L04",
+      "input": {
+        "membership": null
+      }
+    },
+    {
+      "expected": {
+        "quality": "NOT_APPLICABLE",
+        "value": null
+      },
+      "id": "L05",
+      "input": {
+        "candidates": [],
+        "complete": true
+      }
+    },
+    {
+      "expected": {
+        "formal_context_eligible": false,
+        "pit": false,
+        "value": "DEGRADED"
+      },
+      "id": "L06",
+      "input": {
+        "basis": "CURRENT_MEMBERSHIP_REPLAY",
+        "historical": true
+      }
+    },
+    {
+      "expected": {
+        "owner_contract": "RELATIVE_STATE_V1",
+        "relative_sector_state": "PASSIVE_RESILIENCE"
+      },
+      "id": "L07",
+      "input": {
+        "compression_state": "NORMAL",
+        "ma_structure_state": "OTHER",
+        "rel_market_1": -2,
+        "rel_market_5": -2,
+        "rel_sector_1": 2,
+        "rel_sector_5": 2,
+        "rps20": 60,
+        "rps20_delta3": 0,
+        "rps5": 60
+      }
+    },
+    {
+      "expected": {
+        "raw_A": true,
+        "raw_C": false
+      },
+      "id": "L08",
+      "input": {
+        "context_after": "STRONG",
+        "context_before": "WEAK",
+        "raw_A": true,
+        "raw_C": false
+      }
+    },
+    {
+      "expected": {
+        "B0": "WARM",
+        "B1": "STABLE",
+        "B2": "UNKNOWN"
+      },
+      "id": "L09",
+      "input": {
+        "B0": "WARM",
+        "B1": "STABLE",
+        "B2": "UNKNOWN",
+        "structure_after": "HELD_CONFIRMED",
+        "structure_before": "IDLE"
+      }
+    },
+    {
+      "expected": {
+        "projected_after": {
+          "active_anchor_id": "B",
+          "basic_breakout_state": "TESTING"
+        },
+        "projected_before": {
+          "active_anchor_id": "A",
+          "basic_breakout_state": "TESTING"
+        },
+        "recompute": false
+      },
+      "id": "L10",
+      "input": {
+        "source_after": {
+          "active_anchor_id": "B",
+          "basic_breakout_state": "TESTING"
+        },
+        "source_before": {
+          "active_anchor_id": "A",
+          "basic_breakout_state": "TESTING"
+        }
+      }
+    },
+    {
+      "expected": {
+        "predecessors": [
+          "2026-09-29",
+          "2026-09-29",
+          "2026-09-29"
+        ]
+      },
+      "id": "L11",
+      "input": {
+        "calendar": [
+          "2026-09-24",
+          "2026-09-28",
+          "2026-09-29",
+          "2026-09-30"
+        ],
+        "date": "2026-09-30",
+        "revisions": [
+          "r1",
+          "r2",
+          "r3"
+        ]
+      }
+    },
+    {
+      "expected": {
+        "append_only": true,
+        "new": {
+          "members": [
+            "a",
+            "c"
+          ],
+          "revision": "r2"
+        },
+        "old": {
+          "members": [
+            "a",
+            "b"
+          ],
+          "revision": "r1"
+        }
+      },
+      "id": "L12",
+      "input": {
+        "correction": {
+          "members": [
+            "a",
+            "c"
+          ],
+          "revision": "r2"
+        },
+        "old": {
+          "members": [
+            "a",
+            "b"
+          ],
+          "revision": "r1"
+        }
+      }
+    }
+  ],
+  "version": "1.0.0"
+}

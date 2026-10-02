@@ -1,0 +1,40 @@
+{
+  "accepted_only": true,
+  "contract_id": "V4_13_INPUT_SCHEMA_V1",
+  "membership_required": [
+    "sector_id",
+    "security_id",
+    "membership_asof_date",
+    "membership_basis",
+    "provider_available_at",
+    "source_revision",
+    "quality"
+  ],
+  "missing_authority": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+  "raw_fallback": false,
+  "reference_required": [
+    "path",
+    "sha256",
+    "bytes",
+    "producer_contract_id",
+    "trade_date",
+    "available_at",
+    "source_revision",
+    "quality"
+  ],
+  "required": [
+    "security_id",
+    "trade_date",
+    "revision",
+    "cutoff",
+    "accepted_source_refs",
+    "membership_snapshot",
+    "non_target_member_facts",
+    "loo_history",
+    "stock_core_facts",
+    "v4_12_publication"
+  ],
+  "runtime_implemented": false,
+  "status": "CONTRACT_FREEZE_ONLY",
+  "version": "1.0.0"
+}

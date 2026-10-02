@@ -1,0 +1,203 @@
+{
+  "contract_id": "V4_13_TIME_ROLE_REGISTRY_V1",
+  "fields": [
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "primary_industry",
+      "prior": "EXACT_PREVIOUS_ACCEPTED_MARKET_SESSION_NOT_SAME_DAY_REVISION",
+      "role": "T_WITH_EXACT_T_MINUS_1_LOO_HISTORY"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "supporting_concepts",
+      "prior": "EXACT_PREVIOUS_ACCEPTED_MARKET_SESSION_NOT_SAME_DAY_REVISION",
+      "role": "T_WITH_EXACT_T_MINUS_1_LOO_HISTORY"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "algorithmic_support_sector",
+      "prior": "EXACT_PREVIOUS_ACCEPTED_MARKET_SESSION_NOT_SAME_DAY_REVISION",
+      "role": "T_WITH_EXACT_T_MINUS_1_LOO_HISTORY"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "relative_sector_state",
+      "prior": "EXACT_PREVIOUS_ACCEPTED_MARKET_SESSION_NOT_SAME_DAY_REVISION",
+      "role": "T_WITH_EXACT_T_MINUS_1_LOO_HISTORY"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "sector_context_state",
+      "prior": "EXACT_PREVIOUS_ACCEPTED_MARKET_SESSION_NOT_SAME_DAY_REVISION",
+      "role": "T_WITH_EXACT_T_MINUS_1_LOO_HISTORY"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "sector_context_quality",
+      "prior": "EXACT_PREVIOUS_ACCEPTED_MARKET_SESSION_NOT_SAME_DAY_REVISION",
+      "role": "T_WITH_EXACT_T_MINUS_1_LOO_HISTORY"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "rotation_structure_enrichment",
+      "prior": "EXACT_PREVIOUS_ACCEPTED_MARKET_SESSION_NOT_SAME_DAY_REVISION",
+      "role": "T_WITH_EXACT_T_MINUS_1_LOO_HISTORY"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "active_anchor_id",
+      "prior": "EXACT_PREVIOUS_ACCEPTED_MARKET_SESSION_NOT_SAME_DAY_REVISION",
+      "role": "T_READ_ONLY_ACCEPTED_D1"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "anchor_view_asof_t",
+      "prior": "EXACT_PREVIOUS_ACCEPTED_MARKET_SESSION_NOT_SAME_DAY_REVISION",
+      "role": "T_READ_ONLY_ACCEPTED_D1"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "basic_breakout_state",
+      "prior": "EXACT_PREVIOUS_ACCEPTED_MARKET_SESSION_NOT_SAME_DAY_REVISION",
+      "role": "T_READ_ONLY_ACCEPTED_D1"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "basic_pullback_state",
+      "prior": "EXACT_PREVIOUS_ACCEPTED_MARKET_SESSION_NOT_SAME_DAY_REVISION",
+      "role": "T_READ_ONLY_ACCEPTED_D1"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "basic_recovery_state",
+      "prior": "EXACT_PREVIOUS_ACCEPTED_MARKET_SESSION_NOT_SAME_DAY_REVISION",
+      "role": "T_READ_ONLY_ACCEPTED_D1"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "support_state",
+      "prior": "EXACT_PREVIOUS_ACCEPTED_MARKET_SESSION_NOT_SAME_DAY_REVISION",
+      "role": "T_READ_ONLY_ACCEPTED_D1"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "acceptance_state",
+      "prior": "EXACT_PREVIOUS_ACCEPTED_MARKET_SESSION_NOT_SAME_DAY_REVISION",
+      "role": "T_READ_ONLY_ACCEPTED_D1"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "retest_count",
+      "prior": "EXACT_PREVIOUS_ACCEPTED_MARKET_SESSION_NOT_SAME_DAY_REVISION",
+      "role": "T_READ_ONLY_ACCEPTED_D1"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "structure_events",
+      "prior": "EXACT_PREVIOUS_ACCEPTED_MARKET_SESSION_NOT_SAME_DAY_REVISION",
+      "role": "T_READ_ONLY_ACCEPTED_D1"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "structure_health",
+      "prior": "EXACT_PREVIOUS_ACCEPTED_MARKET_SESSION_NOT_SAME_DAY_REVISION",
+      "role": "T_READ_ONLY_ACCEPTED_D1"
+    }
+  ],
+  "future_outcome_allowed": false,
+  "input_fields": [
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "membership_snapshot",
+      "role": "T_CUTOFF"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "member_ret1",
+      "role": "T_CUTOFF"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "member_ret5",
+      "role": "T_CUTOFF"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "member_ret20",
+      "role": "T_CUTOFF"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "member_amount",
+      "role": "T_CUTOFF"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "member_amount_ratio20",
+      "role": "T_CUTOFF"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "member_close",
+      "role": "T_CUTOFF"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "member_ma20",
+      "role": "T_CUTOFF"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "member_base_seed_raw",
+      "role": "T_CUTOFF"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "member_quality",
+      "role": "T_CUTOFF"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "rps5",
+      "role": "T_CUTOFF"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "rps20",
+      "role": "T_CUTOFF"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "rps20_delta3",
+      "role": "T_CUTOFF"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "stock_ret1",
+      "role": "T_CUTOFF"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "stock_ret5",
+      "role": "T_CUTOFF"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "compression_state",
+      "role": "T_CUTOFF"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "ma_structure_state",
+      "role": "T_CUTOFF"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "loo_history",
+      "role": "T_MINUS_K_EXACT_SOURCE"
+    }
+  ],
+  "runtime_implemented": false,
+  "status": "CONTRACT_FREEZE_ONLY",
+  "version": "1.0.0"
+}

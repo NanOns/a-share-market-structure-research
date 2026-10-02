@@ -1,0 +1,619 @@
+{
+  "contract_id": "V4_13_FIELD_REGISTRY_V1",
+  "fields": [
+    {
+      "blocked_reason": "V4_13_RUNTIME_NOT_AUTHORIZED",
+      "data_type": "enum_or_identity",
+      "field": "primary_industry",
+      "missing": "UNKNOWN_NOT_FALSE",
+      "owner_stage": "V4-13",
+      "producer_contract_id": "LOO_CONTEXT_V1",
+      "publication_namespace": "CONTEXT_LOO",
+      "raw_reconstruction": false,
+      "required": true,
+      "runtime_capability": "NOT_IMPLEMENTED",
+      "source_binding": {
+        "bytes": 21493,
+        "path": "data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json",
+        "sha256": "f2a35cebd18e8caf723e7900133333ce4b8df1a8314cb190dade7b0ea7624a3f"
+      },
+      "source_field": "date_valid_industry_relations",
+      "source_owner": "V4_08_ACCEPTED_MEMBERSHIP_AND_LOO_CONTEXT_V1",
+      "time_role": "T_WITH_EXACT_T_MINUS_1_LOO_HISTORY",
+      "unit": "NOT_APPLICABLE_TYPED_VALUE"
+    },
+    {
+      "blocked_reason": "V4_13_RUNTIME_NOT_AUTHORIZED",
+      "data_type": "array",
+      "field": "supporting_concepts",
+      "missing": "UNKNOWN_NOT_FALSE",
+      "owner_stage": "V4-13",
+      "producer_contract_id": "LOO_CONTEXT_V1",
+      "publication_namespace": "CONTEXT_LOO",
+      "raw_reconstruction": false,
+      "required": true,
+      "runtime_capability": "NOT_IMPLEMENTED",
+      "source_binding": {
+        "bytes": 21493,
+        "path": "data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json",
+        "sha256": "f2a35cebd18e8caf723e7900133333ce4b8df1a8314cb190dade7b0ea7624a3f"
+      },
+      "source_field": "date_valid_theme_relations",
+      "source_owner": "V4_08_ACCEPTED_MEMBERSHIP_AND_LOO_CONTEXT_V1",
+      "time_role": "T_WITH_EXACT_T_MINUS_1_LOO_HISTORY",
+      "unit": "NOT_APPLICABLE_TYPED_VALUE"
+    },
+    {
+      "blocked_reason": "V4_13_RUNTIME_NOT_AUTHORIZED",
+      "data_type": "enum_or_identity",
+      "field": "algorithmic_support_sector",
+      "missing": "UNKNOWN_NOT_FALSE",
+      "owner_stage": "V4-13",
+      "producer_contract_id": "LOO_CONTEXT_V1",
+      "publication_namespace": "CONTEXT_LOO",
+      "raw_reconstruction": false,
+      "required": true,
+      "runtime_capability": "NOT_IMPLEMENTED",
+      "source_binding": {
+        "bytes": 21493,
+        "path": "data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json",
+        "sha256": "f2a35cebd18e8caf723e7900133333ce4b8df1a8314cb190dade7b0ea7624a3f"
+      },
+      "source_field": "loo_candidate_set",
+      "source_owner": "V4_08_ACCEPTED_MEMBERSHIP_AND_LOO_CONTEXT_V1",
+      "time_role": "T_WITH_EXACT_T_MINUS_1_LOO_HISTORY",
+      "unit": "NOT_APPLICABLE_TYPED_VALUE"
+    },
+    {
+      "blocked_reason": "V4_13_RUNTIME_NOT_AUTHORIZED",
+      "data_type": "enum_or_identity",
+      "field": "relative_sector_state",
+      "missing": "UNKNOWN_NOT_FALSE",
+      "owner_stage": "V4-13",
+      "producer_contract_id": "LOO_CONTEXT_V1",
+      "publication_namespace": "CONTEXT_LOO",
+      "raw_reconstruction": false,
+      "required": true,
+      "runtime_capability": "NOT_IMPLEMENTED",
+      "source_binding": {
+        "bytes": 21493,
+        "path": "data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json",
+        "sha256": "f2a35cebd18e8caf723e7900133333ce4b8df1a8314cb190dade7b0ea7624a3f"
+      },
+      "source_field": "RELATIVE_STATE_V1_WITH_LOO_SUBSTITUTION",
+      "source_owner": "V4_08_ACCEPTED_MEMBERSHIP_AND_LOO_CONTEXT_V1",
+      "time_role": "T_WITH_EXACT_T_MINUS_1_LOO_HISTORY",
+      "unit": "NOT_APPLICABLE_TYPED_VALUE"
+    },
+    {
+      "blocked_reason": "V4_13_RUNTIME_NOT_AUTHORIZED",
+      "data_type": "enum_or_identity",
+      "field": "sector_context_state",
+      "missing": "UNKNOWN_NOT_FALSE",
+      "owner_stage": "V4-13",
+      "producer_contract_id": "LOO_CONTEXT_V1",
+      "publication_namespace": "CONTEXT_LOO",
+      "raw_reconstruction": false,
+      "required": true,
+      "runtime_capability": "NOT_IMPLEMENTED",
+      "source_binding": {
+        "bytes": 21493,
+        "path": "data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json",
+        "sha256": "f2a35cebd18e8caf723e7900133333ce4b8df1a8314cb190dade7b0ea7624a3f"
+      },
+      "source_field": "loo_raw_context_state",
+      "source_owner": "V4_08_ACCEPTED_MEMBERSHIP_AND_LOO_CONTEXT_V1",
+      "time_role": "T_WITH_EXACT_T_MINUS_1_LOO_HISTORY",
+      "unit": "NOT_APPLICABLE_TYPED_VALUE"
+    },
+    {
+      "blocked_reason": "V4_13_RUNTIME_NOT_AUTHORIZED",
+      "data_type": "enum_or_identity",
+      "field": "sector_context_quality",
+      "missing": "UNKNOWN_NOT_FALSE",
+      "owner_stage": "V4-13",
+      "producer_contract_id": "LOO_CONTEXT_V1",
+      "publication_namespace": "CONTEXT_LOO",
+      "raw_reconstruction": false,
+      "required": true,
+      "runtime_capability": "NOT_IMPLEMENTED",
+      "source_binding": {
+        "bytes": 21493,
+        "path": "data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json",
+        "sha256": "f2a35cebd18e8caf723e7900133333ce4b8df1a8314cb190dade7b0ea7624a3f"
+      },
+      "source_field": "loo_quality_and_membership_basis",
+      "source_owner": "V4_08_ACCEPTED_MEMBERSHIP_AND_LOO_CONTEXT_V1",
+      "time_role": "T_WITH_EXACT_T_MINUS_1_LOO_HISTORY",
+      "unit": "NOT_APPLICABLE_TYPED_VALUE"
+    },
+    {
+      "blocked_reason": "V4_13_RUNTIME_NOT_AUTHORIZED",
+      "data_type": "object",
+      "field": "rotation_structure_enrichment",
+      "missing": "UNKNOWN_NOT_FALSE",
+      "owner_stage": "V4-13",
+      "producer_contract_id": "LOO_CONTEXT_V1",
+      "publication_namespace": "CONTEXT_LOO",
+      "raw_reconstruction": false,
+      "required": true,
+      "runtime_capability": "NOT_IMPLEMENTED",
+      "source_binding": {
+        "bytes": 21493,
+        "path": "data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json",
+        "sha256": "f2a35cebd18e8caf723e7900133333ce4b8df1a8314cb190dade7b0ea7624a3f"
+      },
+      "source_field": "rotation_core_state_PLUS_READ_ONLY_D1",
+      "source_owner": "V4_08_ACCEPTED_MEMBERSHIP_AND_LOO_CONTEXT_V1",
+      "time_role": "T_WITH_EXACT_T_MINUS_1_LOO_HISTORY",
+      "unit": "NOT_APPLICABLE_TYPED_VALUE"
+    },
+    {
+      "blocked_reason": "V4_13_RUNTIME_NOT_AUTHORIZED",
+      "data_type": "enum_or_identity",
+      "field": "active_anchor_id",
+      "missing": "UNKNOWN_NOT_FALSE",
+      "owner_stage": "V4-13",
+      "producer_contract_id": "PROFILE_ADVANCED_PROJECTION_V1",
+      "publication_namespace": "ADVANCED_PROFILE_PROJECTION",
+      "raw_reconstruction": false,
+      "required": true,
+      "runtime_capability": "NOT_IMPLEMENTED",
+      "source_binding": {
+        "bytes": 796484,
+        "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+        "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+      },
+      "source_field": "active_selection.active_anchor_id",
+      "source_owner": "V4_12_ACCEPTED_HEAD_V1",
+      "time_role": "T_READ_ONLY_ACCEPTED_D1",
+      "unit": "NOT_APPLICABLE_TYPED_VALUE"
+    },
+    {
+      "blocked_reason": "V4_13_RUNTIME_NOT_AUTHORIZED",
+      "data_type": "object",
+      "field": "anchor_view_asof_t",
+      "missing": "UNKNOWN_NOT_FALSE",
+      "owner_stage": "V4-13",
+      "producer_contract_id": "PROFILE_ADVANCED_PROJECTION_V1",
+      "publication_namespace": "ADVANCED_PROFILE_PROJECTION",
+      "raw_reconstruction": false,
+      "required": true,
+      "runtime_capability": "NOT_IMPLEMENTED",
+      "source_binding": {
+        "bytes": 796484,
+        "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+        "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+      },
+      "source_field": "selected_anchor_state.output_envelope.anchor_view_asof_t",
+      "source_owner": "V4_12_ACCEPTED_HEAD_V1",
+      "time_role": "T_READ_ONLY_ACCEPTED_D1",
+      "unit": "NOT_APPLICABLE_TYPED_VALUE"
+    },
+    {
+      "blocked_reason": "V4_13_RUNTIME_NOT_AUTHORIZED",
+      "data_type": "enum_or_identity",
+      "field": "basic_breakout_state",
+      "missing": "UNKNOWN_NOT_FALSE",
+      "owner_stage": "V4-13",
+      "producer_contract_id": "PROFILE_ADVANCED_PROJECTION_V1",
+      "publication_namespace": "ADVANCED_PROFILE_PROJECTION",
+      "raw_reconstruction": false,
+      "required": true,
+      "runtime_capability": "NOT_IMPLEMENTED",
+      "source_binding": {
+        "bytes": 796484,
+        "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+        "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+      },
+      "source_field": "basic_breakout_state",
+      "source_owner": "V4_12_ACCEPTED_HEAD_V1",
+      "time_role": "T_READ_ONLY_ACCEPTED_D1",
+      "unit": "NOT_APPLICABLE_TYPED_VALUE"
+    },
+    {
+      "blocked_reason": "V4_13_RUNTIME_NOT_AUTHORIZED",
+      "data_type": "enum_or_identity",
+      "field": "basic_pullback_state",
+      "missing": "UNKNOWN_NOT_FALSE",
+      "owner_stage": "V4-13",
+      "producer_contract_id": "PROFILE_ADVANCED_PROJECTION_V1",
+      "publication_namespace": "ADVANCED_PROFILE_PROJECTION",
+      "raw_reconstruction": false,
+      "required": true,
+      "runtime_capability": "NOT_IMPLEMENTED",
+      "source_binding": {
+        "bytes": 796484,
+        "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+        "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+      },
+      "source_field": "active_projection.basic_pullback_state",
+      "source_owner": "V4_12_ACCEPTED_HEAD_V1",
+      "time_role": "T_READ_ONLY_ACCEPTED_D1",
+      "unit": "NOT_APPLICABLE_TYPED_VALUE"
+    },
+    {
+      "blocked_reason": "V4_13_RUNTIME_NOT_AUTHORIZED",
+      "data_type": "enum_or_identity",
+      "field": "basic_recovery_state",
+      "missing": "UNKNOWN_NOT_FALSE",
+      "owner_stage": "V4-13",
+      "producer_contract_id": "PROFILE_ADVANCED_PROJECTION_V1",
+      "publication_namespace": "ADVANCED_PROFILE_PROJECTION",
+      "raw_reconstruction": false,
+      "required": true,
+      "runtime_capability": "NOT_IMPLEMENTED",
+      "source_binding": {
+        "bytes": 796484,
+        "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+        "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+      },
+      "source_field": "active_projection.basic_recovery_state",
+      "source_owner": "V4_12_ACCEPTED_HEAD_V1",
+      "time_role": "T_READ_ONLY_ACCEPTED_D1",
+      "unit": "NOT_APPLICABLE_TYPED_VALUE"
+    },
+    {
+      "blocked_reason": "V4_13_RUNTIME_NOT_AUTHORIZED",
+      "data_type": "enum_or_identity",
+      "field": "support_state",
+      "missing": "UNKNOWN_NOT_FALSE",
+      "owner_stage": "V4-13",
+      "producer_contract_id": "PROFILE_ADVANCED_PROJECTION_V1",
+      "publication_namespace": "ADVANCED_PROFILE_PROJECTION",
+      "raw_reconstruction": false,
+      "required": true,
+      "runtime_capability": "NOT_IMPLEMENTED",
+      "source_binding": {
+        "bytes": 796484,
+        "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+        "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+      },
+      "source_field": "active_projection.support_state",
+      "source_owner": "V4_12_ACCEPTED_HEAD_V1",
+      "time_role": "T_READ_ONLY_ACCEPTED_D1",
+      "unit": "NOT_APPLICABLE_TYPED_VALUE"
+    },
+    {
+      "blocked_reason": "V4_13_RUNTIME_NOT_AUTHORIZED",
+      "data_type": "enum_or_identity",
+      "field": "acceptance_state",
+      "missing": "UNKNOWN_NOT_FALSE",
+      "owner_stage": "V4-13",
+      "producer_contract_id": "PROFILE_ADVANCED_PROJECTION_V1",
+      "publication_namespace": "ADVANCED_PROFILE_PROJECTION",
+      "raw_reconstruction": false,
+      "required": true,
+      "runtime_capability": "NOT_IMPLEMENTED",
+      "source_binding": {
+        "bytes": 796484,
+        "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+        "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+      },
+      "source_field": "active_projection.acceptance_state",
+      "source_owner": "V4_12_ACCEPTED_HEAD_V1",
+      "time_role": "T_READ_ONLY_ACCEPTED_D1",
+      "unit": "NOT_APPLICABLE_TYPED_VALUE"
+    },
+    {
+      "blocked_reason": "V4_13_RUNTIME_NOT_AUTHORIZED",
+      "data_type": "integer",
+      "field": "retest_count",
+      "missing": "UNKNOWN_NOT_FALSE",
+      "owner_stage": "V4-13",
+      "producer_contract_id": "PROFILE_ADVANCED_PROJECTION_V1",
+      "publication_namespace": "ADVANCED_PROFILE_PROJECTION",
+      "raw_reconstruction": false,
+      "required": true,
+      "runtime_capability": "NOT_IMPLEMENTED",
+      "source_binding": {
+        "bytes": 796484,
+        "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+        "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+      },
+      "source_field": "active_projection.retest_count",
+      "source_owner": "V4_12_ACCEPTED_HEAD_V1",
+      "time_role": "T_READ_ONLY_ACCEPTED_D1",
+      "unit": "count"
+    },
+    {
+      "blocked_reason": "V4_13_RUNTIME_NOT_AUTHORIZED",
+      "data_type": "array",
+      "field": "structure_events",
+      "missing": "UNKNOWN_NOT_FALSE",
+      "owner_stage": "V4-13",
+      "producer_contract_id": "PROFILE_ADVANCED_PROJECTION_V1",
+      "publication_namespace": "ADVANCED_PROFILE_PROJECTION",
+      "raw_reconstruction": false,
+      "required": true,
+      "runtime_capability": "NOT_IMPLEMENTED",
+      "source_binding": {
+        "bytes": 796484,
+        "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+        "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+      },
+      "source_field": "events",
+      "source_owner": "V4_12_ACCEPTED_HEAD_V1",
+      "time_role": "T_READ_ONLY_ACCEPTED_D1",
+      "unit": "NOT_APPLICABLE_TYPED_VALUE"
+    },
+    {
+      "blocked_reason": "V4_13_RUNTIME_NOT_AUTHORIZED",
+      "data_type": "enum_or_identity",
+      "field": "structure_health",
+      "missing": "UNKNOWN_NOT_FALSE",
+      "owner_stage": "V4-13",
+      "producer_contract_id": "PROFILE_ADVANCED_PROJECTION_V1",
+      "publication_namespace": "ADVANCED_PROFILE_PROJECTION",
+      "raw_reconstruction": false,
+      "required": true,
+      "runtime_capability": "NOT_IMPLEMENTED",
+      "source_binding": {
+        "bytes": 796484,
+        "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+        "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+      },
+      "source_field": "selected_anchor_state.output_envelope.structure_health",
+      "source_owner": "V4_12_ACCEPTED_HEAD_V1",
+      "time_role": "T_READ_ONLY_ACCEPTED_D1",
+      "unit": "NOT_APPLICABLE_TYPED_VALUE"
+    }
+  ],
+  "input_fields": [
+    {
+      "accepted_owner": "V4_08",
+      "field": "membership_snapshot",
+      "missing": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "owner_binding": {
+        "bytes": 21493,
+        "path": "data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json",
+        "sha256": "f2a35cebd18e8caf723e7900133333ce4b8df1a8314cb190dade7b0ea7624a3f"
+      },
+      "reconstruction": false,
+      "required": true,
+      "time_role": "T_CUTOFF",
+      "unit": "date_valid_relation"
+    },
+    {
+      "accepted_owner": "V4_04",
+      "field": "member_ret1",
+      "missing": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "owner_binding": {
+        "bytes": 6837,
+        "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+        "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+      },
+      "reconstruction": false,
+      "required": true,
+      "time_role": "T_CUTOFF",
+      "unit": "percent"
+    },
+    {
+      "accepted_owner": "V4_04",
+      "field": "member_ret5",
+      "missing": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "owner_binding": {
+        "bytes": 6837,
+        "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+        "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+      },
+      "reconstruction": false,
+      "required": true,
+      "time_role": "T_CUTOFF",
+      "unit": "percent"
+    },
+    {
+      "accepted_owner": "V4_04",
+      "field": "member_ret20",
+      "missing": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "owner_binding": {
+        "bytes": 6837,
+        "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+        "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+      },
+      "reconstruction": false,
+      "required": true,
+      "time_role": "T_CUTOFF",
+      "unit": "percent"
+    },
+    {
+      "accepted_owner": "V4_04",
+      "field": "member_amount",
+      "missing": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "owner_binding": {
+        "bytes": 6837,
+        "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+        "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+      },
+      "reconstruction": false,
+      "required": true,
+      "time_role": "T_CUTOFF",
+      "unit": "CNY"
+    },
+    {
+      "accepted_owner": "V4_04",
+      "field": "member_amount_ratio20",
+      "missing": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "owner_binding": {
+        "bytes": 6837,
+        "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+        "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+      },
+      "reconstruction": false,
+      "required": true,
+      "time_role": "T_CUTOFF",
+      "unit": "ratio"
+    },
+    {
+      "accepted_owner": "V4_04",
+      "field": "member_close",
+      "missing": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "owner_binding": {
+        "bytes": 6837,
+        "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+        "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+      },
+      "reconstruction": false,
+      "required": true,
+      "time_role": "T_CUTOFF",
+      "unit": "price_basis_units"
+    },
+    {
+      "accepted_owner": "V4_04",
+      "field": "member_ma20",
+      "missing": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "owner_binding": {
+        "bytes": 6837,
+        "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+        "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+      },
+      "reconstruction": false,
+      "required": true,
+      "time_role": "T_CUTOFF",
+      "unit": "price_basis_units"
+    },
+    {
+      "accepted_owner": "V4_05",
+      "field": "member_base_seed_raw",
+      "missing": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "owner_binding": {
+        "bytes": 8456,
+        "path": "data/v4/V4_05_ACCEPTED_HEAD.json",
+        "sha256": "fc929d85553a900a6479ac9f50291d50cf750ad0e6c21fc58e4e05e92189f5cb"
+      },
+      "reconstruction": false,
+      "required": true,
+      "time_role": "T_CUTOFF",
+      "unit": "boolean"
+    },
+    {
+      "accepted_owner": "V4_04",
+      "field": "member_quality",
+      "missing": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "owner_binding": {
+        "bytes": 6837,
+        "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+        "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+      },
+      "reconstruction": false,
+      "required": true,
+      "time_role": "T_CUTOFF",
+      "unit": "quality_enum"
+    },
+    {
+      "accepted_owner": "V4_04",
+      "field": "rps5",
+      "missing": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "owner_binding": {
+        "bytes": 6837,
+        "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+        "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+      },
+      "reconstruction": false,
+      "required": true,
+      "time_role": "T_CUTOFF",
+      "unit": "percentile_points"
+    },
+    {
+      "accepted_owner": "V4_04",
+      "field": "rps20",
+      "missing": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "owner_binding": {
+        "bytes": 6837,
+        "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+        "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+      },
+      "reconstruction": false,
+      "required": true,
+      "time_role": "T_CUTOFF",
+      "unit": "percentile_points"
+    },
+    {
+      "accepted_owner": "V4_04",
+      "field": "rps20_delta3",
+      "missing": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "owner_binding": {
+        "bytes": 6837,
+        "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+        "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+      },
+      "reconstruction": false,
+      "required": true,
+      "time_role": "T_CUTOFF",
+      "unit": "percentile_point_delta"
+    },
+    {
+      "accepted_owner": "V4_04",
+      "field": "stock_ret1",
+      "missing": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "owner_binding": {
+        "bytes": 6837,
+        "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+        "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+      },
+      "reconstruction": false,
+      "required": true,
+      "time_role": "T_CUTOFF",
+      "unit": "percent"
+    },
+    {
+      "accepted_owner": "V4_04",
+      "field": "stock_ret5",
+      "missing": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "owner_binding": {
+        "bytes": 6837,
+        "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+        "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+      },
+      "reconstruction": false,
+      "required": true,
+      "time_role": "T_CUTOFF",
+      "unit": "percent"
+    },
+    {
+      "accepted_owner": "V4_04",
+      "field": "compression_state",
+      "missing": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "owner_binding": {
+        "bytes": 6837,
+        "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+        "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+      },
+      "reconstruction": false,
+      "required": true,
+      "time_role": "T_CUTOFF",
+      "unit": "enum"
+    },
+    {
+      "accepted_owner": "V4_04",
+      "field": "ma_structure_state",
+      "missing": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "owner_binding": {
+        "bytes": 6837,
+        "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+        "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+      },
+      "reconstruction": false,
+      "required": true,
+      "time_role": "T_CUTOFF",
+      "unit": "enum"
+    },
+    {
+      "accepted_owner": "V4_08",
+      "field": "loo_history",
+      "missing": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "owner_binding": {
+        "bytes": 21493,
+        "path": "data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json",
+        "sha256": "f2a35cebd18e8caf723e7900133333ce4b8df1a8314cb190dade7b0ea7624a3f"
+      },
+      "reconstruction": false,
+      "required": true,
+      "time_role": "T_MINUS_K_EXACT_SOURCE",
+      "unit": "immutable_revision_lineage"
+    }
+  ],
+  "runtime_implemented": false,
+  "status": "CONTRACT_FREEZE_ONLY",
+  "version": "1.0.0"
+}

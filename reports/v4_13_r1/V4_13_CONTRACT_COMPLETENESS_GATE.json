@@ -1,0 +1,353 @@
+{
+  "NEXT": "V4_13_RUNTIME_IMPLEMENTATION_TASKS_AFTER_EXTERNAL_AUDIT",
+  "V4_13_R1_PROFILE_ADVANCED_PROJECTION_CONTRACT_FREEZE": "PASS",
+  "V4_13_RUNTIME": "NOT_IMPLEMENTED",
+  "blocked_capabilities": [
+    {
+      "capability": "V4_13_LOO_CONTEXT_PRODUCER",
+      "reason": "V4_13_RUNTIME_NOT_AUTHORIZED",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "HISTORICAL_PIT_LOO_CONTEXT",
+      "reason": "NO_DATE_VALID_ACCEPTED_MEMBERSHIP_OR_COMPLETE_LOO_HISTORY_WHEN_UNAVAILABLE",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "structure_health_projection_when_not_published",
+      "reason": "NO_ACCEPTED_OWNER_FIELD_PUBLICATION_DO_NOT_DERIVE_FROM_SUPPORT",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    }
+  ],
+  "completeness_matrix": [
+    {
+      "binding": {
+        "bytes": 22494,
+        "path": "config/v4_13_field_registry_v1.json",
+        "sha256": "7ccad1897bd0ac9efdabfea7a30f73a93228e0843306e57e92b49e33f0967cb9"
+      },
+      "component": "field_registry",
+      "status": "PASS"
+    },
+    {
+      "binding": {
+        "bytes": 1968,
+        "path": "config/v4_13_producer_registry_v1.json",
+        "sha256": "2e104b0cb2ca4a36a57110cfc0bf16a2488882001707552a86d08ccce78689dd"
+      },
+      "component": "producer_registry",
+      "status": "PASS"
+    },
+    {
+      "binding": {
+        "bytes": 6378,
+        "path": "config/v4_13_time_role_registry_v1.json",
+        "sha256": "fa40a1da756f57bec90b228976de99cc5e40102b7b0593e15737042ee55c6291"
+      },
+      "component": "time_role_registry",
+      "status": "PASS"
+    },
+    {
+      "binding": {
+        "bytes": 851,
+        "path": "config/v4_13_input_schema_v1.json",
+        "sha256": "80fd3ef1f9eb1ec78795681717dc6edba1926992caf0fa1759003bb13333c704"
+      },
+      "component": "input_schema",
+      "status": "PASS"
+    },
+    {
+      "binding": {
+        "bytes": 1114,
+        "path": "config/v4_13_output_schema_v1.json",
+        "sha256": "ad9beffacbe216ed324409288d550af1c59172a7d81832ab40981ddd0d2b4717"
+      },
+      "component": "output_schema",
+      "status": "PASS"
+    },
+    {
+      "binding": {
+        "bytes": 6150,
+        "path": "config/v4_13_loo_context_v1.json",
+        "sha256": "382892e5daae579e83343a2e8cf80cfb2942cab0e77a2d1e09cdce546cc93806"
+      },
+      "component": "loo_context",
+      "status": "PASS"
+    },
+    {
+      "binding": {
+        "bytes": 2048,
+        "path": "config/v4_13_projection_v1.json",
+        "sha256": "bd792cc6dfd0781e6b919b0d5cf39021167d82112b922b621f9de6d006f9043a"
+      },
+      "component": "projection",
+      "status": "PASS"
+    },
+    {
+      "binding": {
+        "bytes": 17111,
+        "path": "config/v4_13_dag_edge_registry_v1.json",
+        "sha256": "f92cc86a5f2356cf6a0f384e811b9af9961f51d76a8253b123cce4fba567c3a5"
+      },
+      "component": "dag_edge_registry",
+      "status": "PASS"
+    },
+    {
+      "binding": {
+        "bytes": 909,
+        "path": "config/v4_13_quality_map_v1.json",
+        "sha256": "0324ecbd6e37e5814d943b42e85911e62881eefe0d891b0768da54c5ba7c572f"
+      },
+      "component": "quality_map",
+      "status": "PASS"
+    },
+    {
+      "binding": {
+        "bytes": 5203,
+        "path": "config/v4_13_machine_vectors_v1.json",
+        "sha256": "d07eff297634e09b3c33efeca63698619d9b02604e3b4b50287ed1306c09df74"
+      },
+      "component": "machine_vectors",
+      "status": "PASS"
+    },
+    {
+      "binding": {
+        "bytes": 615,
+        "path": "config/v4_13_parameter_set_v1.json",
+        "sha256": "86f68f80e5a14ae398588c7e0d9995ff29edd06ec63426673723ec82e0076723"
+      },
+      "component": "parameter_set",
+      "status": "PASS"
+    }
+  ],
+  "contracts": [
+    {
+      "bytes": 17111,
+      "path": "config/v4_13_dag_edge_registry_v1.json",
+      "sha256": "f92cc86a5f2356cf6a0f384e811b9af9961f51d76a8253b123cce4fba567c3a5"
+    },
+    {
+      "bytes": 22494,
+      "path": "config/v4_13_field_registry_v1.json",
+      "sha256": "7ccad1897bd0ac9efdabfea7a30f73a93228e0843306e57e92b49e33f0967cb9"
+    },
+    {
+      "bytes": 851,
+      "path": "config/v4_13_input_schema_v1.json",
+      "sha256": "80fd3ef1f9eb1ec78795681717dc6edba1926992caf0fa1759003bb13333c704"
+    },
+    {
+      "bytes": 6150,
+      "path": "config/v4_13_loo_context_v1.json",
+      "sha256": "382892e5daae579e83343a2e8cf80cfb2942cab0e77a2d1e09cdce546cc93806"
+    },
+    {
+      "bytes": 5203,
+      "path": "config/v4_13_machine_vectors_v1.json",
+      "sha256": "d07eff297634e09b3c33efeca63698619d9b02604e3b4b50287ed1306c09df74"
+    },
+    {
+      "bytes": 1114,
+      "path": "config/v4_13_output_schema_v1.json",
+      "sha256": "ad9beffacbe216ed324409288d550af1c59172a7d81832ab40981ddd0d2b4717"
+    },
+    {
+      "bytes": 615,
+      "path": "config/v4_13_parameter_set_v1.json",
+      "sha256": "86f68f80e5a14ae398588c7e0d9995ff29edd06ec63426673723ec82e0076723"
+    },
+    {
+      "bytes": 1968,
+      "path": "config/v4_13_producer_registry_v1.json",
+      "sha256": "2e104b0cb2ca4a36a57110cfc0bf16a2488882001707552a86d08ccce78689dd"
+    },
+    {
+      "bytes": 2048,
+      "path": "config/v4_13_projection_v1.json",
+      "sha256": "bd792cc6dfd0781e6b919b0d5cf39021167d82112b922b621f9de6d006f9043a"
+    },
+    {
+      "bytes": 909,
+      "path": "config/v4_13_quality_map_v1.json",
+      "sha256": "0324ecbd6e37e5814d943b42e85911e62881eefe0d891b0768da54c5ba7c572f"
+    },
+    {
+      "bytes": 6378,
+      "path": "config/v4_13_time_role_registry_v1.json",
+      "sha256": "fa40a1da756f57bec90b228976de99cc5e40102b7b0593e15737042ee55c6291"
+    }
+  ],
+  "dag_edges": 20,
+  "dag_isolation": "PASS",
+  "focus": false,
+  "global_mandatory_adoption": false,
+  "independent_vectors": [
+    {
+      "actual": {
+        "excluded": "s",
+        "loo_median": 3,
+        "member_n": 5,
+        "seed_k": 0
+      },
+      "id": "L01",
+      "status": "PASS"
+    },
+    {
+      "actual": {
+        "quality": "UNKNOWN_INSUFFICIENT_LOO_MEMBERS",
+        "remaining": 4
+      },
+      "id": "L02",
+      "status": "PASS"
+    },
+    {
+      "actual": {
+        "concepts": [
+          "C01",
+          "C02",
+          "C03",
+          "C04",
+          "C05",
+          "C06",
+          "C07",
+          "C08",
+          "C09",
+          "C10"
+        ],
+        "display": [
+          "C01",
+          "C02",
+          "C03",
+          "C04",
+          "C05",
+          "C06",
+          "C07",
+          "C08"
+        ],
+        "primary": "I1"
+      },
+      "id": "L03",
+      "status": "PASS"
+    },
+    {
+      "actual": {
+        "missing_is_false": false,
+        "value": "UNKNOWN"
+      },
+      "id": "L04",
+      "status": "PASS"
+    },
+    {
+      "actual": {
+        "quality": "NOT_APPLICABLE",
+        "value": null
+      },
+      "id": "L05",
+      "status": "PASS"
+    },
+    {
+      "actual": {
+        "formal_context_eligible": false,
+        "pit": false,
+        "value": "DEGRADED"
+      },
+      "id": "L06",
+      "status": "PASS"
+    },
+    {
+      "actual": {
+        "owner_contract": "RELATIVE_STATE_V1",
+        "relative_sector_state": "PASSIVE_RESILIENCE"
+      },
+      "id": "L07",
+      "status": "PASS"
+    },
+    {
+      "actual": {
+        "raw_A": true,
+        "raw_C": false
+      },
+      "id": "L08",
+      "status": "PASS"
+    },
+    {
+      "actual": {
+        "B0": "WARM",
+        "B1": "STABLE",
+        "B2": "UNKNOWN"
+      },
+      "id": "L09",
+      "status": "PASS"
+    },
+    {
+      "actual": {
+        "projected_after": {
+          "active_anchor_id": "B",
+          "basic_breakout_state": "TESTING"
+        },
+        "projected_before": {
+          "active_anchor_id": "A",
+          "basic_breakout_state": "TESTING"
+        },
+        "recompute": false
+      },
+      "id": "L10",
+      "status": "PASS"
+    },
+    {
+      "actual": {
+        "predecessors": [
+          "2026-09-29",
+          "2026-09-29",
+          "2026-09-29"
+        ]
+      },
+      "id": "L11",
+      "status": "PASS"
+    },
+    {
+      "actual": {
+        "append_only": true,
+        "new": {
+          "members": [
+            "a",
+            "c"
+          ],
+          "revision": "r2"
+        },
+        "old": {
+          "members": [
+            "a",
+            "b"
+          ],
+          "revision": "r1"
+        }
+      },
+      "id": "L12",
+      "status": "PASS"
+    }
+  ],
+  "negative_gate_rejections": 10,
+  "production": false,
+  "required_fields": [
+    "acceptance_state",
+    "active_anchor_id",
+    "algorithmic_support_sector",
+    "anchor_view_asof_t",
+    "basic_breakout_state",
+    "basic_pullback_state",
+    "basic_recovery_state",
+    "primary_industry",
+    "relative_sector_state",
+    "retest_count",
+    "rotation_structure_enrichment",
+    "sector_context_quality",
+    "sector_context_state",
+    "structure_events",
+    "structure_health",
+    "support_state",
+    "supporting_concepts"
+  ],
+  "shadow": false,
+  "status": "PASS"
+}

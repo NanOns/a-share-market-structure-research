@@ -1,0 +1,499 @@
+{
+  "LOO_B_stage_outputs": "CONTEXT_ONLY_RECOMPUTED_LINEAGE_NOT_THE_SELF_INCLUDING_CORE_PUBLICATION",
+  "V4_14_acceptance": "NOT_YET_ACCEPTED_V4_14",
+  "accepted_execution": false,
+  "algorithm_state_replay_pass": false,
+  "contract_id": "V4_13_DAG_INTEGRATION_INTERFACE_V1",
+  "edges": [
+    {
+      "consumer": "A",
+      "contract_binding": {
+        "bytes": 8456,
+        "path": "data/v4/V4_05_ACCEPTED_HEAD.json",
+        "sha256": "fc929d85553a900a6479ac9f50291d50cf750ad0e6c21fc58e4e05e92189f5cb"
+      },
+      "contract_id": "V4_05_ACCEPTED_HEAD_V1",
+      "field": "base_seed_primitives",
+      "namespace": "READ_ONLY_ACCEPTED_OWNER",
+      "producer": "F0",
+      "quality_propagation": "UNKNOWN_NEVER_FALSE; capability-scoped degradation preserved",
+      "required": true,
+      "runtime_implemented": false,
+      "source_owner_binding": {
+        "bytes": 6837,
+        "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+        "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+      },
+      "time_role": "T",
+      "version": "fc929d85553a900a6479ac9f50291d50cf750ad0e6c21fc58e4e05e92189f5cb"
+    },
+    {
+      "consumer": "B0",
+      "contract_binding": {
+        "bytes": 4025,
+        "path": "config/v4_08_sector_prewatch_contract_r5.json",
+        "sha256": "e71a66757ae664bf6f65b8c5a030caf4e35b70921925fc9e83953fa2ba71a737"
+      },
+      "contract_id": "V4_08_SECTOR_PREWATCH_B0_V2",
+      "field": "sector_native",
+      "namespace": "READ_ONLY_ACCEPTED_OWNER",
+      "producer": "F0",
+      "quality_propagation": "UNKNOWN_NEVER_FALSE; capability-scoped degradation preserved",
+      "required": true,
+      "runtime_implemented": false,
+      "source_owner_binding": {
+        "bytes": 6837,
+        "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+        "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+      },
+      "time_role": "T",
+      "version": "2.0.0"
+    },
+    {
+      "consumer": "B0",
+      "contract_binding": {
+        "bytes": 4025,
+        "path": "config/v4_08_sector_prewatch_contract_r5.json",
+        "sha256": "e71a66757ae664bf6f65b8c5a030caf4e35b70921925fc9e83953fa2ba71a737"
+      },
+      "contract_id": "V4_08_SECTOR_PREWATCH_B0_V2",
+      "field": "base_seed_aggregates",
+      "namespace": "READ_ONLY_ACCEPTED_OWNER",
+      "producer": "A",
+      "quality_propagation": "UNKNOWN_NEVER_FALSE; capability-scoped degradation preserved",
+      "required": true,
+      "runtime_implemented": false,
+      "source_owner_binding": {
+        "bytes": 8456,
+        "path": "data/v4/V4_05_ACCEPTED_HEAD.json",
+        "sha256": "fc929d85553a900a6479ac9f50291d50cf750ad0e6c21fc58e4e05e92189f5cb"
+      },
+      "time_role": "T",
+      "version": "2.0.0"
+    },
+    {
+      "consumer": "B1",
+      "contract_binding": {
+        "bytes": 21093,
+        "path": "config/v4_08_rotation_core_contract_r5.json",
+        "sha256": "2fee45359815fd70f489e0c24c29b49eac114628332b77399d6d2f14ea018330"
+      },
+      "contract_id": "ROTATION_CORE_V1_R3",
+      "field": "rotation_core_state",
+      "namespace": "READ_ONLY_ACCEPTED_OWNER",
+      "producer": "B0",
+      "quality_propagation": "UNKNOWN_NEVER_FALSE; capability-scoped degradation preserved",
+      "required": true,
+      "runtime_implemented": false,
+      "source_owner_binding": {
+        "bytes": 21493,
+        "path": "data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json",
+        "sha256": "f2a35cebd18e8caf723e7900133333ce4b8df1a8314cb190dade7b0ea7624a3f"
+      },
+      "time_role": "T",
+      "version": "2.0.0"
+    },
+    {
+      "consumer": "B2",
+      "contract_binding": {
+        "bytes": 28799,
+        "path": "config/v4_08_b2_machine_ast_r5.json",
+        "sha256": "838f167f0eb7ec3797240cc7488e8121901b7bb4f8d926d3cb4e378adc4b1155"
+      },
+      "contract_id": "V4_08_SECTOR_LEGACY_ADAPTER_B2_R5",
+      "field": "sector_raw_qualification",
+      "namespace": "READ_ONLY_ACCEPTED_OWNER",
+      "producer": "B0",
+      "quality_propagation": "UNKNOWN_NEVER_FALSE; capability-scoped degradation preserved",
+      "required": true,
+      "runtime_implemented": false,
+      "source_owner_binding": {
+        "bytes": 21493,
+        "path": "data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json",
+        "sha256": "f2a35cebd18e8caf723e7900133333ce4b8df1a8314cb190dade7b0ea7624a3f"
+      },
+      "time_role": "T",
+      "version": "838f167f0eb7ec3797240cc7488e8121901b7bb4f8d926d3cb4e378adc4b1155"
+    },
+    {
+      "consumer": "C",
+      "contract_binding": {
+        "bytes": 1702,
+        "path": "config/v4_09_stock_prewatch_contract_v1.json",
+        "sha256": "6c090ee9cbc5a7e3c5c86ca9023aa983db41d447388ea1776308a69ecbefadc8"
+      },
+      "contract_id": "STOCK_PREWATCH_V1",
+      "field": "stock_core",
+      "namespace": "READ_ONLY_ACCEPTED_OWNER",
+      "producer": "F0",
+      "quality_propagation": "UNKNOWN_NEVER_FALSE; capability-scoped degradation preserved",
+      "required": true,
+      "runtime_implemented": false,
+      "source_owner_binding": {
+        "bytes": 6837,
+        "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+        "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+      },
+      "time_role": "T",
+      "version": "1.0.0"
+    },
+    {
+      "consumer": "C",
+      "contract_binding": {
+        "bytes": 1702,
+        "path": "config/v4_09_stock_prewatch_contract_v1.json",
+        "sha256": "6c090ee9cbc5a7e3c5c86ca9023aa983db41d447388ea1776308a69ecbefadc8"
+      },
+      "contract_id": "STOCK_PREWATCH_V1",
+      "field": "base_seed_raw",
+      "namespace": "READ_ONLY_ACCEPTED_OWNER",
+      "producer": "A",
+      "quality_propagation": "UNKNOWN_NEVER_FALSE; capability-scoped degradation preserved",
+      "required": true,
+      "runtime_implemented": false,
+      "source_owner_binding": {
+        "bytes": 8456,
+        "path": "data/v4/V4_05_ACCEPTED_HEAD.json",
+        "sha256": "fc929d85553a900a6479ac9f50291d50cf750ad0e6c21fc58e4e05e92189f5cb"
+      },
+      "time_role": "T",
+      "version": "1.0.0"
+    },
+    {
+      "consumer": "D0",
+      "contract_binding": {
+        "bytes": 9716,
+        "path": "config/v4_11_confirmation_detector_contract_r2.json",
+        "sha256": "3c245fbbc0e67c9562c0a0af8622f362817aa158bc4ef6ae4e5cf80b2511e427"
+      },
+      "contract_id": "CONFIRMATION_DETECTOR_V1",
+      "field": "stock_prewatch_raw",
+      "namespace": "READ_ONLY_ACCEPTED_OWNER",
+      "producer": "C",
+      "quality_propagation": "UNKNOWN_NEVER_FALSE; capability-scoped degradation preserved",
+      "required": true,
+      "runtime_implemented": false,
+      "source_owner_binding": {
+        "bytes": 11474,
+        "path": "data/v4/V4_09_ACCEPTED_HEAD.json",
+        "sha256": "641ef9e2e6fe8f461a9b765262e739791a6d3fdd220b0eff7947e2690de3a87d"
+      },
+      "time_role": "T",
+      "version": "2.0.0"
+    },
+    {
+      "consumer": "D1",
+      "contract_binding": {
+        "bytes": 2214,
+        "path": "config/v4_12_structure_event_contract_v1.json",
+        "sha256": "b36a6e39a43665d5c07e52ad23fc3226d92cc73df6330a06606758cc38d1d99f"
+      },
+      "contract_id": "STRUCTURE_EVENT_V1",
+      "field": "core_facts",
+      "namespace": "READ_ONLY_ACCEPTED_OWNER",
+      "producer": "F0",
+      "quality_propagation": "UNKNOWN_NEVER_FALSE; capability-scoped degradation preserved",
+      "required": true,
+      "runtime_implemented": false,
+      "source_owner_binding": {
+        "bytes": 6837,
+        "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+        "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+      },
+      "time_role": "T",
+      "version": "1.0.0"
+    },
+    {
+      "consumer": "D1",
+      "contract_binding": {
+        "bytes": 2214,
+        "path": "config/v4_12_structure_event_contract_v1.json",
+        "sha256": "b36a6e39a43665d5c07e52ad23fc3226d92cc73df6330a06606758cc38d1d99f"
+      },
+      "contract_id": "STRUCTURE_EVENT_V1",
+      "field": "frozen_anchor_event",
+      "namespace": "READ_ONLY_ACCEPTED_OWNER",
+      "producer": "D1",
+      "quality_propagation": "UNKNOWN_NEVER_FALSE; capability-scoped degradation preserved",
+      "required": true,
+      "runtime_implemented": false,
+      "source_owner_binding": {
+        "bytes": 796484,
+        "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+        "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+      },
+      "time_role": "T_MINUS_1",
+      "version": "1.0.0"
+    },
+    {
+      "consumer": "D2",
+      "contract_binding": {
+        "bytes": 4926,
+        "path": "config/v4_10_research_state_contract_r1_2.json",
+        "sha256": "33d50256635161f425f4f34ac805ea2f511362be7d71d35b3a62478de5a59127"
+      },
+      "contract_id": "RESEARCH_STATE_V1",
+      "field": "confirmation",
+      "namespace": "READ_ONLY_ACCEPTED_OWNER",
+      "producer": "D0",
+      "quality_propagation": "UNKNOWN_NEVER_FALSE; capability-scoped degradation preserved",
+      "required": true,
+      "runtime_implemented": false,
+      "source_owner_binding": {
+        "bytes": 14090,
+        "path": "data/v4/V4_11_ACCEPTED_HEAD.json",
+        "sha256": "d8d96dce559eb968e6446f0626766980f6fb045fca1219e3e01fcd0a980b9928"
+      },
+      "time_role": "T",
+      "version": "1.0.0"
+    },
+    {
+      "consumer": "D2",
+      "contract_binding": {
+        "bytes": 4926,
+        "path": "config/v4_10_research_state_contract_r1_2.json",
+        "sha256": "33d50256635161f425f4f34ac805ea2f511362be7d71d35b3a62478de5a59127"
+      },
+      "contract_id": "RESEARCH_STATE_V1",
+      "field": "structure",
+      "namespace": "READ_ONLY_ACCEPTED_OWNER",
+      "producer": "D1",
+      "quality_propagation": "UNKNOWN_NEVER_FALSE; capability-scoped degradation preserved",
+      "required": true,
+      "runtime_implemented": false,
+      "source_owner_binding": {
+        "bytes": 796484,
+        "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+        "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+      },
+      "time_role": "T",
+      "version": "1.0.0"
+    },
+    {
+      "consumer": "D2",
+      "contract_binding": {
+        "bytes": 4926,
+        "path": "config/v4_10_research_state_contract_r1_2.json",
+        "sha256": "33d50256635161f425f4f34ac805ea2f511362be7d71d35b3a62478de5a59127"
+      },
+      "contract_id": "RESEARCH_STATE_V1",
+      "field": "stock_raw",
+      "namespace": "READ_ONLY_ACCEPTED_OWNER",
+      "producer": "C",
+      "quality_propagation": "UNKNOWN_NEVER_FALSE; capability-scoped degradation preserved",
+      "required": true,
+      "runtime_implemented": false,
+      "source_owner_binding": {
+        "bytes": 11474,
+        "path": "data/v4/V4_09_ACCEPTED_HEAD.json",
+        "sha256": "641ef9e2e6fe8f461a9b765262e739791a6d3fdd220b0eff7947e2690de3a87d"
+      },
+      "time_role": "T",
+      "version": "1.0.0"
+    },
+    {
+      "consumer": "CONTEXT",
+      "contract_binding": {
+        "bytes": 6150,
+        "path": "config/v4_13_loo_context_v1.json",
+        "sha256": "382892e5daae579e83343a2e8cf80cfb2942cab0e77a2d1e09cdce546cc93806"
+      },
+      "contract_id": "LOO_CONTEXT_V1",
+      "field": "non_target_sector_raw",
+      "namespace": "LOO_RECOMPUTED_OWNER_LINEAGE",
+      "producer": "B0",
+      "quality_propagation": "UNKNOWN_NEVER_FALSE; capability-scoped degradation preserved",
+      "required": true,
+      "runtime_implemented": false,
+      "source_owner_binding": {
+        "bytes": 21493,
+        "path": "data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json",
+        "sha256": "f2a35cebd18e8caf723e7900133333ce4b8df1a8314cb190dade7b0ea7624a3f"
+      },
+      "time_role": "T",
+      "version": "1.0.0"
+    },
+    {
+      "consumer": "CONTEXT",
+      "contract_binding": {
+        "bytes": 6150,
+        "path": "config/v4_13_loo_context_v1.json",
+        "sha256": "382892e5daae579e83343a2e8cf80cfb2942cab0e77a2d1e09cdce546cc93806"
+      },
+      "contract_id": "LOO_CONTEXT_V1",
+      "field": "loo_rotation_history",
+      "namespace": "LOO_RECOMPUTED_OWNER_LINEAGE",
+      "producer": "B1",
+      "quality_propagation": "UNKNOWN_NEVER_FALSE; capability-scoped degradation preserved",
+      "required": true,
+      "runtime_implemented": false,
+      "source_owner_binding": {
+        "bytes": 21493,
+        "path": "data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json",
+        "sha256": "f2a35cebd18e8caf723e7900133333ce4b8df1a8314cb190dade7b0ea7624a3f"
+      },
+      "time_role": "T_MINUS_1",
+      "version": "1.0.0"
+    },
+    {
+      "consumer": "CONTEXT",
+      "contract_binding": {
+        "bytes": 6150,
+        "path": "config/v4_13_loo_context_v1.json",
+        "sha256": "382892e5daae579e83343a2e8cf80cfb2942cab0e77a2d1e09cdce546cc93806"
+      },
+      "contract_id": "LOO_CONTEXT_V1",
+      "field": "non_target_sector_raw",
+      "namespace": "LOO_RECOMPUTED_OWNER_LINEAGE",
+      "producer": "B2",
+      "quality_propagation": "UNKNOWN_NEVER_FALSE; capability-scoped degradation preserved",
+      "required": true,
+      "runtime_implemented": false,
+      "source_owner_binding": {
+        "bytes": 21493,
+        "path": "data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json",
+        "sha256": "f2a35cebd18e8caf723e7900133333ce4b8df1a8314cb190dade7b0ea7624a3f"
+      },
+      "time_role": "T",
+      "version": "1.0.0"
+    },
+    {
+      "consumer": "CONTEXT",
+      "contract_binding": {
+        "bytes": 6150,
+        "path": "config/v4_13_loo_context_v1.json",
+        "sha256": "382892e5daae579e83343a2e8cf80cfb2942cab0e77a2d1e09cdce546cc93806"
+      },
+      "contract_id": "LOO_CONTEXT_V1",
+      "field": "accepted_membership_and_non_target_primitives",
+      "namespace": "LOO_RECOMPUTED_OWNER_LINEAGE",
+      "producer": "F0",
+      "quality_propagation": "UNKNOWN_NEVER_FALSE; capability-scoped degradation preserved",
+      "required": true,
+      "runtime_implemented": false,
+      "source_owner_binding": {
+        "bytes": 6837,
+        "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+        "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+      },
+      "time_role": "T",
+      "version": "1.0.0"
+    },
+    {
+      "consumer": "PROFILE",
+      "contract_binding": {
+        "bytes": 2048,
+        "path": "config/v4_13_projection_v1.json",
+        "sha256": "bd792cc6dfd0781e6b919b0d5cf39021167d82112b922b621f9de6d006f9043a"
+      },
+      "contract_id": "PROFILE_ADVANCED_PROJECTION_V1",
+      "field": "structure_projection",
+      "namespace": "READ_ONLY_ACCEPTED_OWNER",
+      "producer": "D1",
+      "quality_propagation": "UNKNOWN_NEVER_FALSE; capability-scoped degradation preserved",
+      "required": true,
+      "runtime_implemented": false,
+      "source_owner_binding": {
+        "bytes": 796484,
+        "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+        "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+      },
+      "time_role": "T",
+      "version": "1.0.0"
+    },
+    {
+      "consumer": "PROFILE",
+      "contract_binding": {
+        "bytes": 6150,
+        "path": "config/v4_13_loo_context_v1.json",
+        "sha256": "382892e5daae579e83343a2e8cf80cfb2942cab0e77a2d1e09cdce546cc93806"
+      },
+      "contract_id": "LOO_CONTEXT_V1",
+      "field": "context_fields",
+      "namespace": "READ_ONLY_ACCEPTED_OWNER",
+      "producer": "CONTEXT",
+      "quality_propagation": "UNKNOWN_NEVER_FALSE; capability-scoped degradation preserved",
+      "required": true,
+      "runtime_implemented": false,
+      "source_owner_binding": {
+        "bytes": 6837,
+        "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+        "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+      },
+      "time_role": "T",
+      "version": "1.0.0"
+    },
+    {
+      "consumer": "D3",
+      "contract_binding": {
+        "bytes": 2048,
+        "path": "config/v4_13_projection_v1.json",
+        "sha256": "bd792cc6dfd0781e6b919b0d5cf39021167d82112b922b621f9de6d006f9043a"
+      },
+      "contract_id": "PROFILE_ADVANCED_PROJECTION_V1",
+      "field": "rotation_structure_enrichment",
+      "namespace": "READ_ONLY_ACCEPTED_OWNER",
+      "producer": "D1",
+      "quality_propagation": "UNKNOWN_NEVER_FALSE; capability-scoped degradation preserved",
+      "required": false,
+      "runtime_implemented": false,
+      "source_owner_binding": {
+        "bytes": 796484,
+        "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+        "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+      },
+      "time_role": "T",
+      "version": "1.0.0"
+    }
+  ],
+  "forbidden_edges": [
+    [
+      "D2",
+      "D1",
+      "T"
+    ],
+    [
+      "D1",
+      "B0",
+      "T"
+    ],
+    [
+      "D1",
+      "B1",
+      "T"
+    ],
+    [
+      "D1",
+      "B2",
+      "T"
+    ],
+    [
+      "CONTEXT",
+      "A",
+      "T"
+    ],
+    [
+      "CONTEXT",
+      "C",
+      "T"
+    ],
+    [
+      "Focus/UI",
+      "QUALIFICATION",
+      "ANY"
+    ],
+    [
+      "Supplemental",
+      "Core",
+      "ANY"
+    ],
+    [
+      "FUTURE_OUTCOME",
+      "SAME_DAY_STATE",
+      "ANY"
+    ]
+  ],
+  "runtime_implemented": false,
+  "status": "CONTRACT_FREEZE_ONLY",
+  "version": "1.0.0"
+}

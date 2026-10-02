@@ -1,5 +1,5 @@
 {
-  "accepted_stage_range": "V4_00_TO_V4_10_ACCEPTED",
+  "accepted_stage_range": "V4_00_TO_V4_11_ACCEPTED",
   "bindings": {
     "phase0": {
       "path": "reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json",
@@ -37,6 +37,7 @@
   "dev_baseline_input_head": "8941119dba4fb8c75d98699f8fa92c3406de9811",
   "focus_cutover_permission": false,
   "foundation_external_acceptance": "EXTERNALLY_ACCEPTED",
+  "global_mandatory_adoption": false,
   "historical_as_recorded_adjusted_price": "BLOCKED_NO_FIRST_AVAILABILITY_EVIDENCE",
   "incremental_update": "DEFERRED_NON_BLOCKING",
   "open_audit_registry": {
@@ -185,6 +186,32 @@
   "v4_10_entry": "AUTHORIZED_FOR_STATE_REDUCER_INTERFACE_AND_INDEPENDENT_VECTORS",
   "v4_10_external_acceptance": "V4_10_EXTERNAL_ACCEPTANCE_PASS_R1_2_ENGINEERING_SCOPE",
   "v4_10_status": "ENGINEERING_PASS_INTERFACE_SCOPE",
+  "v4_11_binding": {
+    "bytes": 14090,
+    "path": "data/v4/V4_11_ACCEPTED_HEAD.json",
+    "sha256": "d8d96dce559eb968e6446f0626766980f6fb045fca1219e3e01fcd0a980b9928"
+  },
+  "v4_11_capabilities": {
+    "CONFIRMATION_LAUNCH_CONFIRM": "ENGINEERING_ACCEPTED_FORMAL_D0_CAPABILITY",
+    "CONFIRMATION_RECOVERY_TURN": "ENGINEERING_ACCEPTED_FORMAL_D0_CAPABILITY",
+    "CONFIRMATION_STRONG_PULLBACK": "DIAGNOSTIC_ONLY_NOT_FORMAL",
+    "CONFIRMATION_TREND_CONTINUE": "DIAGNOSTIC_ONLY_NOT_FORMAL",
+    "D2_SEALED_OWNER_BRIDGE": "ENGINEERING_ACCEPTED",
+    "FULL_D0_D1_D2_DAG": "NOT_IMPLEMENTED",
+    "HISTORICAL_AS_RECORDED_EVENT": "NOT_PROVEN",
+    "STATE_EVENT_V1": "ENGINEERING_ACCEPTED_RECONSTRUCTED_LEFT_CENSORED_SCOPE",
+    "V4_12_STRUCTURE_SUPPORT": "NOT_IMPLEMENTED"
+  },
   "v4_11_entry": "AUTHORIZED_CONFIRMATION_EVENTS_CONTRACT_ENTRY_ONLY",
-  "version": "2.4.0"
+  "v4_11_external_acceptance": "V4_11_EXTERNAL_ACCEPTANCE_PASS_R5_CAPABILITY_SCOPED_ENGINEERING",
+  "v4_11_status": "ENGINEERING_PASS_CAPABILITY_SCOPED",
+  "v4_12_entry": {
+    "binding": {
+      "bytes": 1330,
+      "path": "reports/v4_12/V4_12_STRUCTURE_ANCHOR_SUPPORT_STAGE_ENTRY_R1.json",
+      "sha256": "ceec544a9d4c9878ad752c51275902c5916cb451a593a3f55ec176fd52b4b796"
+    },
+    "status": "AUTHORIZED_STRUCTURE_ANCHOR_SUPPORT_STAGE_ENTRY_ONLY"
+  },
+  "version": "2.5.0"
 }

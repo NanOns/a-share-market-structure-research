@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="22" skipped="0" tests="22" time="58.493" timestamp="2026-10-03T01:01:22.184593+08:00" hostname="DESKTOP-PMEP5GE"><testcase classname="tests.v4_09.test_stock_prewatch" name="test_production_and_v4_09_acceptance_stay_disabled" time="0.535"><failure message="AssertionError: assert 'FAIL' == 'PASS'&#10;  &#10;  - PASS&#10;  + FAIL">tests\v4_09\test_stock_prewatch.py:98: in test_production_and_v4_09_acceptance_stay_disabled
+    assert validate()['status']=='PASS'
+E   AssertionError: assert 'FAIL' == 'PASS'
+E     
+E     - PASS
+E     + FAIL</failure></testcase><testcase classname="tests.v4_10.test_accepted_head_r1" name="test_promotion_and_all_25_independent_checks" time="2.448"><failure message="workbench_analysis.dm01_accepted_chain_v1.AcceptedChainError: EXACT_BINDING_INVALID:data/v4/V4_STAGE_ACCEPTED_HEAD.json">tests\v4_10\test_accepted_head_r1.py:7: in test_promotion_and_all_25_independent_checks
+    result=validate()
+           ^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:40: in validate_v4_10_history
+    with _frozen_readers() as (root,v9,v10,current):
+         ^^^^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:24: in _frozen_readers
+    if current.get('contract_id')==HEAD_CONTRACT:validate_head_v2(root,current)
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_accepted_chain_v1.py:159: in validate_head_v2
+    for key in ('source_authority_governance','source_authority_registry','stage_head','dev_baseline'):bound_path(root,head[key])
+                                                                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_accepted_chain_v1.py:24: in bound_path
+    raise AcceptedChainError('EXACT_BINDING_INVALID:'+str(ref.get('path')))
+E   workbench_analysis.dm01_accepted_chain_v1.AcceptedChainError: EXACT_BINDING_INVALID:data/v4/V4_STAGE_ACCEPTED_HEAD.json</failure></testcase><testcase classname="tests.v4_10.test_accepted_head_r1" name="test_changed_authority_or_overclaim_rejected[implementation_commit-wrong]" time="1.639"><failure message="workbench_analysis.dm01_accepted_chain_v1.AcceptedChainError: EXACT_BINDING_INVALID:data/v4/V4_STAGE_ACCEPTED_HEAD.json">tests\v4_10\test_accepted_head_r1.py:18: in test_changed_authority_or_overclaim_rejected
+    assert validate(h)['status']=='FAIL'
+           ^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:40: in validate_v4_10_history
+    with _frozen_readers() as (root,v9,v10,current):
+         ^^^^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:24: in _frozen_readers
+    if current.get('contract_id')==HEAD_CONTRACT:validate_head_v2(root,current)
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_accepted_chain_v1.py:159: in validate_head_v2
+    for key in ('source_authority_governance','source_authority_registry','stage_head','dev_baseline'):bound_path(root,head[key])
+                                                                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_accepted_chain_v1.py:24: in bound_path
+    raise AcceptedChainError('EXACT_BINDING_INVALID:'+str(ref.get('path')))
+E   workbench_analysis.dm01_accepted_chain_v1.AcceptedChainError: EXACT_BINDING_INVALID:data/v4/V4_STAGE_ACCEPTED_HEAD.json</failure></testcase><testcase classname="tests.v4_10.test_accepted_head_r1" name="test_changed_authority_or_overclaim_rejected[audited_sealed_head-wrong]" time="1.613"><failure message="workbench_analysis.dm01_accepted_chain_v1.AcceptedChainError: EXACT_BINDING_INVALID:data/v4/V4_STAGE_ACCEPTED_HEAD.json">tests\v4_10\test_accepted_head_r1.py:18: in test_changed_authority_or_overclaim_rejected
+    assert validate(h)['status']=='FAIL'
+           ^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:40: in validate_v4_10_history
+    with _frozen_readers() as (root,v9,v10,current):
+         ^^^^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:24: in _frozen_readers
+    if current.get('contract_id')==HEAD_CONTRACT:validate_head_v2(root,current)
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_accepted_chain_v1.py:159: in validate_head_v2
+    for key in ('source_authority_governance','source_authority_registry','stage_head','dev_baseline'):bound_path(root,head[key])
+                                                                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_accepted_chain_v1.py:24: in bound_path
+    raise AcceptedChainError('EXACT_BINDING_INVALID:'+str(ref.get('path')))
+E   workbench_analysis.dm01_accepted_chain_v1.AcceptedChainError: EXACT_BINDING_INVALID:data/v4/V4_STAGE_ACCEPTED_HEAD.json</failure></testcase><testcase classname="tests.v4_10.test_accepted_head_r1" name="test_changed_authority_or_overclaim_rejected[external_acceptance_decision-wrong]" time="1.608"><failure message="workbench_analysis.dm01_accepted_chain_v1.AcceptedChainError: EXACT_BINDING_INVALID:data/v4/V4_STAGE_ACCEPTED_HEAD.json">tests\v4_10\test_accepted_head_r1.py:18: in test_changed_authority_or_overclaim_rejected
+    assert validate(h)['status']=='FAIL'
+           ^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:40: in validate_v4_10_history
+    with _frozen_readers() as (root,v9,v10,current):
+         ^^^^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:24: in _frozen_readers
+    if current.get('contract_id')==HEAD_CONTRACT:validate_head_v2(root,current)
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_accepted_chain_v1.py:159: in validate_head_v2
+    for key in ('source_authority_governance','source_authority_registry','stage_head','dev_baseline'):bound_path(root,head[key])
+                                                                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_accepted_chain_v1.py:24: in bound_path
+    raise AcceptedChainError('EXACT_BINDING_INVALID:'+str(ref.get('path')))
+E   workbench_analysis.dm01_accepted_chain_v1.AcceptedChainError: EXACT_BINDING_INVALID:data/v4/V4_STAGE_ACCEPTED_HEAD.json</failure></testcase><testcase classname="tests.v4_10.test_accepted_head_r1" name="test_changed_authority_or_overclaim_rejected[production_permission-True]" time="1.602"><failure message="workbench_analysis.dm01_accepted_chain_v1.AcceptedChainError: EXACT_BINDING_INVALID:data/v4/V4_STAGE_ACCEPTED_HEAD.json">tests\v4_10\test_accepted_head_r1.py:18: in test_changed_authority_or_overclaim_rejected
+    assert validate(h)['status']=='FAIL'
+           ^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:40: in validate_v4_10_history
+    with _frozen_readers() as (root,v9,v10,current):
+         ^^^^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:24: in _frozen_readers
+    if current.get('contract_id')==HEAD_CONTRACT:validate_head_v2(root,current)
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_accepted_chain_v1.py:159: in validate_head_v2
+    for key in ('source_authority_governance','source_authority_registry','stage_head','dev_baseline'):bound_path(root,head[key])
+                                                                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_accepted_chain_v1.py:24: in bound_path
+    raise AcceptedChainError('EXACT_BINDING_INVALID:'+str(ref.get('path')))
+E   workbench_analysis.dm01_accepted_chain_v1.AcceptedChainError: EXACT_BINDING_INVALID:data/v4/V4_STAGE_ACCEPTED_HEAD.json</failure></testcase><testcase classname="tests.v4_10.test_accepted_head_r1" name="test_changed_authority_or_overclaim_rejected[parent_binding-value4]" time="1.598"><failure message="workbench_analysis.dm01_accepted_chain_v1.AcceptedChainError: EXACT_BINDING_INVALID:data/v4/V4_STAGE_ACCEPTED_HEAD.json">tests\v4_10\test_accepted_head_r1.py:18: in test_changed_authority_or_overclaim_rejected
+    assert validate(h)['status']=='FAIL'
+           ^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:40: in validate_v4_10_history
+    with _frozen_readers() as (root,v9,v10,current):
+         ^^^^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:24: in _frozen_readers
+    if current.get('contract_id')==HEAD_CONTRACT:validate_head_v2(root,current)
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_accepted_chain_v1.py:159: in validate_head_v2
+    for key in ('source_authority_governance','source_authority_registry','stage_head','dev_baseline'):bound_path(root,head[key])
+                                                                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_accepted_chain_v1.py:24: in bound_path
+    raise AcceptedChainError('EXACT_BINDING_INVALID:'+str(ref.get('path')))
+E   workbench_analysis.dm01_accepted_chain_v1.AcceptedChainError: EXACT_BINDING_INVALID:data/v4/V4_STAGE_ACCEPTED_HEAD.json</failure></testcase><testcase classname="tests.v4_10.test_accepted_head_r1" name="test_changed_authority_or_overclaim_rejected[capabilities-value5]" time="1.603"><failure message="workbench_analysis.dm01_accepted_chain_v1.AcceptedChainError: EXACT_BINDING_INVALID:data/v4/V4_STAGE_ACCEPTED_HEAD.json">tests\v4_10\test_accepted_head_r1.py:18: in test_changed_authority_or_overclaim_rejected
+    assert validate(h)['status']=='FAIL'
+           ^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:40: in validate_v4_10_history
+    with _frozen_readers() as (root,v9,v10,current):
+         ^^^^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:24: in _frozen_readers
+    if current.get('contract_id')==HEAD_CONTRACT:validate_head_v2(root,current)
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_accepted_chain_v1.py:159: in validate_head_v2
+    for key in ('source_authority_governance','source_authority_registry','stage_head','dev_baseline'):bound_path(root,head[key])
+                                                                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_accepted_chain_v1.py:24: in bound_path
+    raise AcceptedChainError('EXACT_BINDING_INVALID:'+str(ref.get('path')))
+E   workbench_analysis.dm01_accepted_chain_v1.AcceptedChainError: EXACT_BINDING_INVALID:data/v4/V4_STAGE_ACCEPTED_HEAD.json</failure></testcase><testcase classname="tests.v4_10.test_accepted_head_r1" name="test_changed_authority_or_overclaim_rejected[open_audit_registry-value6]" time="1.582"><failure message="workbench_analysis.dm01_accepted_chain_v1.AcceptedChainError: EXACT_BINDING_INVALID:data/v4/V4_STAGE_ACCEPTED_HEAD.json">tests\v4_10\test_accepted_head_r1.py:18: in test_changed_authority_or_overclaim_rejected
+    assert validate(h)['status']=='FAIL'
+           ^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:40: in validate_v4_10_history
+    with _frozen_readers() as (root,v9,v10,current):
+         ^^^^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:24: in _frozen_readers
+    if current.get('contract_id')==HEAD_CONTRACT:validate_head_v2(root,current)
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_accepted_chain_v1.py:159: in validate_head_v2
+    for key in ('source_authority_governance','source_authority_registry','stage_head','dev_baseline'):bound_path(root,head[key])
+                                                                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_accepted_chain_v1.py:24: in bound_path
+    raise AcceptedChainError('EXACT_BINDING_INVALID:'+str(ref.get('path')))
+E   workbench_analysis.dm01_accepted_chain_v1.AcceptedChainError: EXACT_BINDING_INVALID:data/v4/V4_STAGE_ACCEPTED_HEAD.json</failure></testcase><testcase classname="tests.v4_10.test_accepted_head_r1" name="test_changed_authority_or_overclaim_rejected[global_head_parent_archive-value7]" time="1.610"><failure message="workbench_analysis.dm01_accepted_chain_v1.AcceptedChainError: EXACT_BINDING_INVALID:data/v4/V4_STAGE_ACCEPTED_HEAD.json">tests\v4_10\test_accepted_head_r1.py:18: in test_changed_authority_or_overclaim_rejected
+    assert validate(h)['status']=='FAIL'
+           ^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:40: in validate_v4_10_history
+    with _frozen_readers() as (root,v9,v10,current):
+         ^^^^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:24: in _frozen_readers
+    if current.get('contract_id')==HEAD_CONTRACT:validate_head_v2(root,current)
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_accepted_chain_v1.py:159: in validate_head_v2
+    for key in ('source_authority_governance','source_authority_registry','stage_head','dev_baseline'):bound_path(root,head[key])
+                                                                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_accepted_chain_v1.py:24: in bound_path
+    raise AcceptedChainError('EXACT_BINDING_INVALID:'+str(ref.get('path')))
+E   workbench_analysis.dm01_accepted_chain_v1.AcceptedChainError: EXACT_BINDING_INVALID:data/v4/V4_STAGE_ACCEPTED_HEAD.json</failure></testcase><testcase classname="tests.v4_10.test_promotion" name="test_promoted_exact" time="1.596"><failure message="workbench_analysis.dm01_accepted_chain_v1.AcceptedChainError: EXACT_BINDING_INVALID:data/v4/V4_STAGE_ACCEPTED_HEAD.json">tests\v4_10\test_promotion.py:7: in test_promoted_exact
+    assert validate()['status'] == 'PASS'
+           ^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:44: in validate_v4_09_history
+    with _frozen_readers() as (root,v9,v10,current):
+         ^^^^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:24: in _frozen_readers
+    if current.get('contract_id')==HEAD_CONTRACT:validate_head_v2(root,current)
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_accepted_chain_v1.py:159: in validate_head_v2
+    for key in ('source_authority_governance','source_authority_registry','stage_head','dev_baseline'):bound_path(root,head[key])
+                                                                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_accepted_chain_v1.py:24: in bound_path
+    raise AcceptedChainError('EXACT_BINDING_INVALID:'+str(ref.get('path')))
+E   workbench_analysis.dm01_accepted_chain_v1.AcceptedChainError: EXACT_BINDING_INVALID:data/v4/V4_STAGE_ACCEPTED_HEAD.json</failure></testcase><testcase classname="tests.v4_10.test_promotion" name="test_overclaim_or_wrong_authority_rejected[capabilities-value0]" time="1.618"><failure message="workbench_analysis.dm01_accepted_chain_v1.AcceptedChainError: EXACT_BINDING_INVALID:data/v4/V4_STAGE_ACCEPTED_HEAD.json">tests\v4_10\test_promotion.py:14: in test_overclaim_or_wrong_authority_rejected
+    assert validate_head(h, read(GLOBAL), read(RECEIPT))['status']=='FAIL'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:48: in validate_v4_09_history_head
+    with _frozen_readers() as (root,v9,v10,current):
+         ^^^^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:24: in _frozen_readers
+    if current.get('contract_id')==HEAD_CONTRACT:validate_head_v2(root,current)
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_accepted_chain_v1.py:159: in validate_head_v2
+    for key in ('source_authority_governance','source_authority_registry','stage_head','dev_baseline'):bound_path(root,head[key])
+                                                                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_accepted_chain_v1.py:24: in bound_path
+    raise AcceptedChainError('EXACT_BINDING_INVALID:'+str(ref.get('path')))
+E   workbench_analysis.dm01_accepted_chain_v1.AcceptedChainError: EXACT_BINDING_INVALID:data/v4/V4_STAGE_ACCEPTED_HEAD.json</failure></testcase><testcase classname="tests.v4_10.test_promotion" name="test_overclaim_or_wrong_authority_rejected[implementation_commit-wrong]" time="1.594"><failure message="workbench_analysis.dm01_accepted_chain_v1.AcceptedChainError: EXACT_BINDING_INVALID:data/v4/V4_STAGE_ACCEPTED_HEAD.json">tests\v4_10\test_promotion.py:14: in test_overclaim_or_wrong_authority_rejected
+    assert validate_head(h, read(GLOBAL), read(RECEIPT))['status']=='FAIL'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:48: in validate_v4_09_history_head
+    with _frozen_readers() as (root,v9,v10,current):
+         ^^^^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:24: in _frozen_readers
+    if current.get('contract_id')==HEAD_CONTRACT:validate_head_v2(root,current)
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_accepted_chain_v1.py:159: in validate_head_v2
+    for key in ('source_authority_governance','source_authority_registry','stage_head','dev_baseline'):bound_path(root,head[key])
+                                                                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_accepted_chain_v1.py:24: in bound_path
+    raise AcceptedChainError('EXACT_BINDING_INVALID:'+str(ref.get('path')))
+E   workbench_analysis.dm01_accepted_chain_v1.AcceptedChainError: EXACT_BINDING_INVALID:data/v4/V4_STAGE_ACCEPTED_HEAD.json</failure></testcase><testcase classname="tests.v4_10.test_promotion" name="test_overclaim_or_wrong_authority_rejected[external_acceptance_decision-wrong]" time="1.578"><failure message="workbench_analysis.dm01_accepted_chain_v1.AcceptedChainError: EXACT_BINDING_INVALID:data/v4/V4_STAGE_ACCEPTED_HEAD.json">tests\v4_10\test_promotion.py:14: in test_overclaim_or_wrong_authority_rejected
+    assert validate_head(h, read(GLOBAL), read(RECEIPT))['status']=='FAIL'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:48: in validate_v4_09_history_head
+    with _frozen_readers() as (root,v9,v10,current):
+         ^^^^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:24: in _frozen_readers
+    if current.get('contract_id')==HEAD_CONTRACT:validate_head_v2(root,current)
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_accepted_chain_v1.py:159: in validate_head_v2
+    for key in ('source_authority_governance','source_authority_registry','stage_head','dev_baseline'):bound_path(root,head[key])
+                                                                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_accepted_chain_v1.py:24: in bound_path
+    raise AcceptedChainError('EXACT_BINDING_INVALID:'+str(ref.get('path')))
+E   workbench_analysis.dm01_accepted_chain_v1.AcceptedChainError: EXACT_BINDING_INVALID:data/v4/V4_STAGE_ACCEPTED_HEAD.json</failure></testcase><testcase classname="tests.v4_10.test_promotion" name="test_overclaim_or_wrong_authority_rejected[production_permission-True]" time="1.573"><failure message="workbench_analysis.dm01_accepted_chain_v1.AcceptedChainError: EXACT_BINDING_INVALID:data/v4/V4_STAGE_ACCEPTED_HEAD.json">tests\v4_10\test_promotion.py:14: in test_overclaim_or_wrong_authority_rejected
+    assert validate_head(h, read(GLOBAL), read(RECEIPT))['status']=='FAIL'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:48: in validate_v4_09_history_head
+    with _frozen_readers() as (root,v9,v10,current):
+         ^^^^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:24: in _frozen_readers
+    if current.get('contract_id')==HEAD_CONTRACT:validate_head_v2(root,current)
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_accepted_chain_v1.py:159: in validate_head_v2
+    for key in ('source_authority_governance','source_authority_registry','stage_head','dev_baseline'):bound_path(root,head[key])
+                                                                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_accepted_chain_v1.py:24: in bound_path
+    raise AcceptedChainError('EXACT_BINDING_INVALID:'+str(ref.get('path')))
+E   workbench_analysis.dm01_accepted_chain_v1.AcceptedChainError: EXACT_BINDING_INVALID:data/v4/V4_STAGE_ACCEPTED_HEAD.json</failure></testcase><testcase classname="tests.v4_10.test_promotion" name="test_overclaim_or_wrong_authority_rejected[upstream_binding-value4]" time="1.573"><failure message="workbench_analysis.dm01_accepted_chain_v1.AcceptedChainError: EXACT_BINDING_INVALID:data/v4/V4_STAGE_ACCEPTED_HEAD.json">tests\v4_10\test_promotion.py:14: in test_overclaim_or_wrong_authority_rejected
+    assert validate_head(h, read(GLOBAL), read(RECEIPT))['status']=='FAIL'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:48: in validate_v4_09_history_head
+    with _frozen_readers() as (root,v9,v10,current):
+         ^^^^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:24: in _frozen_readers
+    if current.get('contract_id')==HEAD_CONTRACT:validate_head_v2(root,current)
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_accepted_chain_v1.py:159: in validate_head_v2
+    for key in ('source_authority_governance','source_authority_registry','stage_head','dev_baseline'):bound_path(root,head[key])
+                                                                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_accepted_chain_v1.py:24: in bound_path
+    raise AcceptedChainError('EXACT_BINDING_INVALID:'+str(ref.get('path')))
+E   workbench_analysis.dm01_accepted_chain_v1.AcceptedChainError: EXACT_BINDING_INVALID:data/v4/V4_STAGE_ACCEPTED_HEAD.json</failure></testcase><testcase classname="tests.v4_10.test_promotion" name="test_overclaim_or_wrong_authority_rejected[artifact-value5]" time="1.585"><failure message="workbench_analysis.dm01_accepted_chain_v1.AcceptedChainError: EXACT_BINDING_INVALID:data/v4/V4_STAGE_ACCEPTED_HEAD.json">tests\v4_10\test_promotion.py:14: in test_overclaim_or_wrong_authority_rejected
+    assert validate_head(h, read(GLOBAL), read(RECEIPT))['status']=='FAIL'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:48: in validate_v4_09_history_head
+    with _frozen_readers() as (root,v9,v10,current):
+         ^^^^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:24: in _frozen_readers
+    if current.get('contract_id')==HEAD_CONTRACT:validate_head_v2(root,current)
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_accepted_chain_v1.py:159: in validate_head_v2
+    for key in ('source_authority_governance','source_authority_registry','stage_head','dev_baseline'):bound_path(root,head[key])
+                                                                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_accepted_chain_v1.py:24: in bound_path
+    raise AcceptedChainError('EXACT_BINDING_INVALID:'+str(ref.get('path')))
+E   workbench_analysis.dm01_accepted_chain_v1.AcceptedChainError: EXACT_BINDING_INVALID:data/v4/V4_STAGE_ACCEPTED_HEAD.json</failure></testcase><testcase classname="tests.test_v4_12_runtime_r1" name="test_real_candidate_unknown_readback" time="0.092"><failure message="AssertionError">tests\test_v4_12_runtime_r1.py:133: in test_real_candidate_unknown_readback
+    r=validate();assert r['status']=='PASS' and r['universe_count']==5224 and r['raw_fallback_count']==0
+      ^^^^^^^^^^
+scripts\validate_v4_12_runtime_r1.py:32: in validate
+    entry_result=entry_validate();entry=read(ENTRY);contract_digest=sha(entry['frozen_contracts'])
+                 ^^^^^^^^^^^^^^^^
+scripts\validate_v4_12_runtime_entry_r1.py:26: in validate
+    assert [r['path'] for r in accepted['frozen_contracts']]==expected and entry['frozen_contracts']==accepted['frozen_contracts']
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError</failure></testcase><testcase classname="tests.test_v4_12_multi_anchor_r12" name="test_contract_local_gate_and_negative_vectors" time="0.014"><failure message="AssertionError">tests\test_v4_12_multi_anchor_r12.py:22: in test_contract_local_gate_and_negative_vectors
+    def test_contract_local_gate_and_negative_vectors():assert len(gate()['negative_vectors'])==8
+                                                                   ^^^^^^
+scripts\validate_v4_12_snapshot_v2_contract.py:56: in gate
+    for p,h in before.items():assert hashlib.sha256((ROOT/p).read_bytes()).hexdigest()==h
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError</failure></testcase><testcase classname="tests.test_v4_12_multi_anchor_r12" name="test_full_independent_persisted_multi_anchor_oracle" time="12.338"><failure message="AssertionError">tests\test_v4_12_multi_anchor_r12.py:71: in test_full_independent_persisted_multi_anchor_oracle
+    assert validate()['status']=='PASS'
+           ^^^^^^^^^^
+scripts\validate_v4_12_r12_runtime.py:122: in validate
+    for p,h in protected.items():assert hashlib.sha256((ROOT/p).read_bytes()).hexdigest()==h
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError</failure></testcase><testcase classname="tests.test_v4_12_persisted_r11" name="test_persisted_independent_a_oracle" time="9.090"><failure message="AssertionError">tests\test_v4_12_persisted_r11.py:58: in test_persisted_independent_a_oracle
+    assert validate('a')['status']=='PASS'
+           ^^^^^^^^^^^^^
+scripts\validate_v4_12_r11_chain.py:96: in validate
+    for path,sha_before in protected.items():assert hashlib.sha256((ROOT/path).read_bytes()).hexdigest()==sha_before
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError</failure></testcase><testcase classname="tests.test_v4_12_persisted_r11" name="test_persisted_independent_b_oracle" time="9.083"><failure message="AssertionError">tests\test_v4_12_persisted_r11.py:62: in test_persisted_independent_b_oracle
+    assert validate('b')['status']=='PASS'
+           ^^^^^^^^^^^^^
+scripts\validate_v4_12_r11_chain.py:96: in validate
+    for path,sha_before in protected.items():assert hashlib.sha256((ROOT/path).read_bytes()).hexdigest()==sha_before
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError</failure></testcase></testsuite></testsuites>

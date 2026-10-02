@@ -17,7 +17,7 @@ def test_negative_contracts():
     assert len(negatives(B))==15
     assert all(p['result']=='REJECTED' for p in negatives(B))
 def test_full_contract_completeness_and_protected_artifacts():
-    result=validate()
+    result=validate(checkout=True)
     assert len(result['completeness_matrix'])==17
     assert all(p['unchanged'] for p in result['protected'])
     assert result['V4_13_RUNTIME']=='NOT_IMPLEMENTED'

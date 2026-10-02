@@ -134,7 +134,14 @@ def validate(checkout=False):
    if 'object_schema' in row:exact(row['object_schema'])
   matrix.append(dict(field=row['field'],semantic_definition='FROZEN',data_type_and_schema='FROZEN',producer='FROZEN',source_bindings='FROZEN',time_role='FROZEN',quality_propagation='FROZEN',unknown_not_applicable='FROZEN',consumer_scope='FROZEN',runtime_capability='BLOCKED_WITH_EXPLICIT_REASON',reason='V4_13_RUNTIME_NOT_AUTHORIZED'))
  protected=[]
- for r in read(OUT+'R15_STAGE_CONTRACT.json')['protected']:exact(r);protected.append(dict(path=r['path'],before=r['sha256'],after=ref(r['path'])['sha256'],unchanged=True))
+ for r in read(OUT+'R15_STAGE_CONTRACT.json')['protected']:
+  actual=ref(r['path'])
+  if checkout and r['path'].startswith('src/') and actual['sha256']!=r['sha256']:
+   baseline=subprocess.check_output(['git','show',BASE+':'+r['path']],cwd=ROOT)
+   assert (ROOT/r['path']).read_bytes()==baseline
+   protected.append(dict(path=r['path'],before=r['sha256'],after=actual['sha256'],unchanged=True,comparison='EXACT_GIT_BASELINE_BLOB',main_checkout_line_endings='RECORDED_SEPARATELY_NO_SOURCE_EDIT'))
+  else:
+   exact(r);protected.append(dict(path=r['path'],before=r['sha256'],after=actual['sha256'],unchanged=True,comparison='EXACT_BYTES'))
  assert read('data/v4/V4_STAGE_ACCEPTED_HEAD.json')['accepted_stage_range']=='V4_00_TO_V4_12_ACCEPTED' and read('data/v4/V4_DATA_ACCEPTED_HEAD.json')['accepted_trade_date']=='2026-09-30'
  assert not (ROOT/'data/v4/V4_13_ACCEPTED_HEAD.json').exists()
  changed=subprocess.check_output(['git','diff',BASE,'--name-only'],cwd=ROOT,text=True).splitlines();assert not any(p.startswith(('src/','migrations/','data/')) for p in changed)

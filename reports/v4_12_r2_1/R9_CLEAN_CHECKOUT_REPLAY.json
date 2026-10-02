@@ -1,112 +1,91 @@
 {
-  "D2_integration": false,
-  "amended_prior_vectors": {
-    "B03_missing": "PENDING",
-    "PASS": 69,
-    "total": 69,
-    "unaffected_expected": 68
-  },
   "authority_keep": {
     "parameter_values_unchanged": 24,
     "status": "PASS_KEEP",
     "unchanged_authority_rows": 64
   },
-  "authority_vectors": {
-    "PASS": 12,
-    "total": 12
-  },
-  "clean_checkout": "PASS",
-  "contract_files": [
-    {
-      "bytes": 4211,
-      "path": "config/v4_12_anchor_coordinate_contract_v1.json",
-      "sha256": "b0c1ca843c1b8e57212bef05e3f3d2613b8413a6042925dc31257cfe3f46cd9e"
+  "clean_detached_checkout": true,
+  "promotion_read_only": {
+    "R5_hard_gates": {
+      "P01_parity_scope": "PASS",
+      "P02_business_mismatch": "PASS",
+      "P03_quality_mismatch": "PASS",
+      "P04_UNKNOWN_reason_mismatch": "PASS",
+      "P05_t_minus_1_known": "PASS",
+      "P06_owner_oracle": "PASS",
+      "P07_owner_publications": "PASS",
+      "P08_D2_oracle": "PASS",
+      "P09_owner_field_counts": "PASS",
+      "P10_raw_fallback": "PASS",
+      "P11_unsealed_helper": "PASS",
+      "P12_wiring_missing": "PASS",
+      "P13_coefficient_gate": "PASS",
+      "P14_frozen_D0": "PASS",
+      "P15_formal_scope": "PASS",
+      "P16_diagnostic_scope": "PASS",
+      "P17_normalized_AST": "PASS",
+      "P18_threshold_order": "PASS",
+      "P19_event_UNKNOWN": "PASS",
+      "P20_reconstructed_scope": "PASS"
     },
-    {
-      "bytes": 13266,
-      "path": "config/v4_12_anchor_schema_v1.json",
-      "sha256": "c984a9be4e20eeee717b7c874f97f1caa2998e7a93d6fa5126ebf6c3acfacb39"
+    "V4_12_runtime_executed": false,
+    "candidate_sha256": "d8d96dce559eb968e6446f0626766980f6fb045fca1219e3e01fcd0a980b9928",
+    "checks": {
+      "P01_schema_stage_external_decision": "PASS",
+      "P02_parent_V4_10_exact": "PASS",
+      "P03_implementation_commit_exact": "PASS",
+      "P04_audited_seal_descendant": "PASS",
+      "P05_external_acceptance_document_exact": "PASS",
+      "P06_R4A_seal_exact": "PASS",
+      "P07_R5A_parity_exact": "PASS",
+      "P08_owner_oracle_exact": "PASS",
+      "P09_R5A_seal_exact": "PASS",
+      "P10_D2_AST_exact": "PASS",
+      "P11_D2_owner_oracle_exact": "PASS",
+      "P12_residual_attribution_exact": "PASS",
+      "P13_business_diff_exact": "PASS",
+      "P14_D2_readback_exact": "PASS",
+      "P15_Event_replay_exact": "PASS",
+      "P16_capability_matrix_exact": "PASS",
+      "P17_clean_checkout_exact": "PASS",
+      "P18_Data_Head_unchanged": "PASS",
+      "P19_Dev_Baseline_unchanged": "PASS",
+      "P20_PIT_membership_unchanged": "PASS",
+      "P21_all_scoped_heads_unchanged": "PASS",
+      "P22_permissions_false": "PASS",
+      "P23_capability_map_exact": "PASS",
+      "P24_historical_AS_RECORDED_not_overclaimed": "PASS",
+      "P25_diagnostic_not_promoted": "PASS",
+      "P26_M14_M2_separate_unresolved": "PASS",
+      "P27_idempotent_promotion_parent_preserved": "PASS",
+      "P28_clean_detached_validation": "PASS",
+      "P29_exact_evidence_set": "PASS",
+      "P30_expected_V4_10_fail_closed_boundary": "PASS",
+      "P31_validator_hash_bound": "PASS",
+      "P32_entry_surface_no_runtime": "PASS",
+      "P33_post_entry_exact": "PASS"
     },
-    {
-      "bytes": 324329,
-      "path": "config/v4_12_field_registry_v1.json",
-      "sha256": "5f8653eacd456f1244c68349af31fb4731cc1d804d41495909da0eb3072be0f5"
-    },
-    {
-      "bytes": 33919,
-      "path": "config/v4_12_input_schema_v1.json",
-      "sha256": "98742097b6613b78f4d464d3ecaf34edbd37af4a3a054cd85b96636f110dff87"
-    },
-    {
-      "bytes": 41434,
-      "path": "config/v4_12_machine_ast_v1.json",
-      "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
-    },
-    {
-      "bytes": 31822,
-      "path": "config/v4_12_machine_vectors_v1.json",
-      "sha256": "42cb39050efcf47f76d27edff0eb3efbd964bf07ea02b8d16e010e2ebb36dd47"
-    },
-    {
-      "bytes": 5027,
-      "path": "config/v4_12_output_schema_v1.json",
-      "sha256": "d851adbca80d91ad6d88194104e5c258efbf6a8618484754b248b939f051b9fa"
-    },
-    {
-      "bytes": 14895,
-      "path": "config/v4_12_parameter_set_v1.json",
-      "sha256": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024"
-    },
-    {
-      "bytes": 37224,
-      "path": "config/v4_12_producer_registry_v1.json",
-      "sha256": "d6b689adb89f75122e3084402fd50bfbc2e22e9c8334dad0939b94576c7daf8c"
-    },
-    {
-      "bytes": 1434,
-      "path": "config/v4_12_retention_contract_v1.json",
-      "sha256": "b76e1c07b07b251bd12a7a7898af2858101bc66dfc9946a12a4a334c813e51c9"
-    },
-    {
-      "bytes": 6799,
-      "path": "config/v4_12_source_derivations_r2.json",
-      "sha256": "dab5cd0024bdac7e1893bfc107323aa29c46e54bb7402b85836ce6f53cf37fe4"
-    },
-    {
-      "bytes": 2214,
-      "path": "config/v4_12_structure_event_contract_v1.json",
-      "sha256": "b36a6e39a43665d5c07e52ad23fc3226d92cc73df6330a06606758cc38d1d99f"
-    },
-    {
-      "bytes": 1909,
-      "path": "config/v4_12_support_state_contract_v1.json",
-      "sha256": "6f9f0ef21b1d911820fc985d905d7878eaf9a87c94e87460327464d68035d594"
-    },
-    {
-      "bytes": 3390,
-      "path": "config/v4_12_time_counter_contract_v2.json",
-      "sha256": "9fcd2c0b62a890f3d2288d9080a96a8e2d85b3aa47688f22e5276da894fc02e9"
-    },
-    {
-      "bytes": 17242,
-      "path": "config/v4_12_time_counter_vectors_r2_1.json",
-      "sha256": "0035935fd0582d9936f762ae1e15d16406f7efb32ee235f457162dc5d482fe6f"
-    },
-    {
-      "bytes": 62693,
-      "path": "config/v4_12_time_role_registry_v1.json",
-      "sha256": "83e0b860d3dc28b5e44fbfd577ad776b7e6a36a6d13947c9bcd19c48c400490b"
-    }
-  ],
-  "data_head": "2026-09-30",
-  "external_acceptance": false,
-  "incompatible_edges": 0,
-  "next_stage": "STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT",
-  "permissions": {
-    "focus_cutover_permission": false,
-    "global_mandatory_adoption": false,
-    "production_permission": false,
-    "shadow_production_permission": false
+    "contract_id": "V4_11_PROMOTION_READ_ONLY_VALIDATOR_R1",
+    "external_stage_acceptance": "V4_11_EXTERNAL_ACCEPTANCE_PASS_R5_CAPABILITY_SCOPED_ENGINEERING",
+    "post_promotion": true,
+    "status": "PASS",
+    "validator_bindings": [
+      {
+        "bytes": 3763,
+        "path": "scripts/v4_11_promotion_contract_r1.py",
+        "sha256": "b05a45c55309332f5371cec04c41e371464b0c0d7b85e4ffb46dff522fa7a1d4"
+      },
+      {
+        "bytes": 15029,
+        "path": "scripts/validate_v4_11_promotion_r1.py",
+        "sha256": "c85c7096e23efda1180cd43978631cfc78eecac73d4e42425481abcf42070556"
+      },
+      {
+        "bytes": 2625,
+        "path": "scripts/promote_v4_11_accepted_head_r1.py",
+        "sha256": "9ddda5010cecd87b25a9d0964323293441b38fd9c227720bde42dff072769dbf"
+      }
+    ]
   },
   "protected_and_keep_proof": [
     {
@@ -278,26 +257,124 @@
       "path": "reports/v4_12_r2/V4_12_R2_UNIT_PARITY.json"
     }
   ],
-  "runtime_implemented": false,
-  "schema_migration": false,
-  "sequence_steps": {
-    "PASS": 33,
-    "total": 33
-  },
-  "stage_head": "V4_00_TO_V4_11_ACCEPTED",
-  "starting_remote_head": "5267c9e482268dfaaf06d1c752e1bb3d09e33b6f",
-  "status": "V4_12_R2_1_TIME_COUNTER_SEMANTICS_CANDIDATE_READY_FOR_EXTERNAL_AUDIT",
+  "source_manifest": [
+    {
+      "bytes": 324329,
+      "path": "config/v4_12_field_registry_v1.json",
+      "sha256": "5f8653eacd456f1244c68349af31fb4731cc1d804d41495909da0eb3072be0f5"
+    },
+    {
+      "bytes": 33919,
+      "path": "config/v4_12_input_schema_v1.json",
+      "sha256": "98742097b6613b78f4d464d3ecaf34edbd37af4a3a054cd85b96636f110dff87"
+    },
+    {
+      "bytes": 41434,
+      "path": "config/v4_12_machine_ast_v1.json",
+      "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
+    },
+    {
+      "bytes": 31822,
+      "path": "config/v4_12_machine_vectors_v1.json",
+      "sha256": "42cb39050efcf47f76d27edff0eb3efbd964bf07ea02b8d16e010e2ebb36dd47"
+    },
+    {
+      "bytes": 14895,
+      "path": "config/v4_12_parameter_set_v1.json",
+      "sha256": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024"
+    },
+    {
+      "bytes": 37224,
+      "path": "config/v4_12_producer_registry_v1.json",
+      "sha256": "d6b689adb89f75122e3084402fd50bfbc2e22e9c8334dad0939b94576c7daf8c"
+    },
+    {
+      "bytes": 1434,
+      "path": "config/v4_12_retention_contract_v1.json",
+      "sha256": "b76e1c07b07b251bd12a7a7898af2858101bc66dfc9946a12a4a334c813e51c9"
+    },
+    {
+      "bytes": 6799,
+      "path": "config/v4_12_source_derivations_r2.json",
+      "sha256": "dab5cd0024bdac7e1893bfc107323aa29c46e54bb7402b85836ce6f53cf37fe4"
+    },
+    {
+      "bytes": 1909,
+      "path": "config/v4_12_support_state_contract_v1.json",
+      "sha256": "6f9f0ef21b1d911820fc985d905d7878eaf9a87c94e87460327464d68035d594"
+    },
+    {
+      "bytes": 3390,
+      "path": "config/v4_12_time_counter_contract_v2.json",
+      "sha256": "9fcd2c0b62a890f3d2288d9080a96a8e2d85b3aa47688f22e5276da894fc02e9"
+    },
+    {
+      "bytes": 17242,
+      "path": "config/v4_12_time_counter_vectors_r2_1.json",
+      "sha256": "0035935fd0582d9936f762ae1e15d16406f7efb32ee235f457162dc5d482fe6f"
+    },
+    {
+      "bytes": 62693,
+      "path": "config/v4_12_time_role_registry_v1.json",
+      "sha256": "83e0b860d3dc28b5e44fbfd577ad776b7e6a36a6d13947c9bcd19c48c400490b"
+    },
+    {
+      "bytes": 399,
+      "path": "scripts/freeze_v4_12_contracts_r1.py",
+      "sha256": "c721574dc18adf77ad556e072d0ed67e0814444626d5737196ea6c5bf24c05ae"
+    },
+    {
+      "bytes": 11836,
+      "path": "scripts/repair_v4_12_time_counter_r2_1.py",
+      "sha256": "2e93e3b2c4b63653913ac543aaebe6366bda67ee82e0f38ab4c7a64deb973614"
+    },
+    {
+      "bytes": 3649,
+      "path": "scripts/seal_v4_12_time_counter_r2_1.py",
+      "sha256": "c95d36c3749db34258e295f2ece9942ec4854e19edc67b986f76f1bd177e717e"
+    },
+    {
+      "bytes": 6481,
+      "path": "scripts/v4_12_time_counter_oracle_r2_1.py",
+      "sha256": "a3a39a5ce5b7e6e197efe893572929428a1c29cb85695c66e4cf035774aef4ba"
+    },
+    {
+      "bytes": 16808,
+      "path": "scripts/validate_v4_12_authority_r2.py",
+      "sha256": "5649c8d381ab24a320fe9f3a7a2e0781eb214a6781b640036f0037345c1b870c"
+    },
+    {
+      "bytes": 21978,
+      "path": "scripts/validate_v4_12_contract_freeze_r1.py",
+      "sha256": "a6886620a616383c12b77645dc3fd1121a4fed983cc8935bf9354d64d811dc40"
+    },
+    {
+      "bytes": 15595,
+      "path": "scripts/validate_v4_12_time_counter_r2_1.py",
+      "sha256": "a1a5bff7789056f993f7456591907c9f9d17828db2c7cd2f3dea018d285304af"
+    },
+    {
+      "bytes": 1964,
+      "path": "scripts/verify_v4_r9_clean_checkout.py",
+      "sha256": "8783111f890256e95376c8fce3021caf924c69375e7df930c246f68ccea8ff89"
+    },
+    {
+      "bytes": 6383,
+      "path": "tests/test_v4_12_authority_r2.py",
+      "sha256": "a29fada836491c92091d7ce645e631971551825d155388f1dff4bcd1766f47c5"
+    },
+    {
+      "bytes": 7820,
+      "path": "tests/test_v4_12_contract_freeze_r1.py",
+      "sha256": "3ad1d05ee33e4c994135d9a8e56e87f968c4fdee0959c312a2614aee0862cf04"
+    },
+    {
+      "bytes": 3098,
+      "path": "tests/test_v4_12_time_counter_r2_1.py",
+      "sha256": "aa26eacf89686156607055628502c608e209a5ba1575c559c3d818cd983385a9"
+    }
+  ],
+  "status": "PASS",
   "tested_source_sha": "11d8015d608670572bd57fc50fb6327e2b693a73",
-  "tests": {
-    "Deselect": 0,
-    "ERROR": 0,
-    "FAIL": 0,
-    "PASS": 156,
-    "SKIP": 0,
-    "total": 156
-  },
-  "time_domain_vectors": {
-    "PASS": 10,
-    "total": 10
-  }
+  "time_domain_incompatible_edges": 0
 }

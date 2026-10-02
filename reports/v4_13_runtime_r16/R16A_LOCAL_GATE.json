@@ -1,0 +1,34 @@
+{
+  "NEXT": "R16B",
+  "V4_13_R16A_LOO_CONTEXT_RUNTIME": "PASS_SCOPED_ENGINEERING_LOCAL",
+  "V4_13_RUNTIME": "PARTIAL_IMPLEMENTED_R16A",
+  "final_regression": {
+    "bytes": 42501,
+    "path": "reports/v4_13_runtime_r16/R16_FINAL_TEST_RESULTS.xml",
+    "sha256": "c9a71bc263fa8c6c0b4b9f66c3283b802abe33504dfab581f9aebd5f09de09d2"
+  },
+  "revalidated_for_final_source": true,
+  "sources": [
+    {
+      "bytes": 3483,
+      "path": "src/workbench_analysis/v4_13_io.py",
+      "sha256": "ddb0eb496b00942b9eacc0e24dccbc96d05f8207b3daf6322e66f2a7b7850e28"
+    },
+    {
+      "bytes": 8657,
+      "path": "src/workbench_analysis/v4_13_input_binder.py",
+      "sha256": "ea05ec1281e5917a177662390fee103f867085742a774569961dc1e27e18dee3"
+    },
+    {
+      "bytes": 8152,
+      "path": "src/workbench_analysis/v4_13_loo_runtime.py",
+      "sha256": "8b619f07760bab2e32d443d36a42fbcfd51a6e02d2f9dbcb251262139d79b4a6"
+    }
+  ],
+  "tests": {
+    "FAIL": 0,
+    "PASS": 16,
+    "SKIP": 0,
+    "total": 16
+  }
+}

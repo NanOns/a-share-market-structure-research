@@ -159,7 +159,18 @@ def validate(checkout=False):
    exact(r);protected.append(dict(path=r['path'],before=r['sha256'],after=actual['sha256'],unchanged=True,comparison='EXACT_BYTES'))
  assert read('data/v4/V4_STAGE_ACCEPTED_HEAD.json')['accepted_stage_range']=='V4_00_TO_V4_12_ACCEPTED' and read('data/v4/V4_DATA_ACCEPTED_HEAD.json')['accepted_trade_date']=='2026-09-30'
  assert not (ROOT/'data/v4/V4_13_ACCEPTED_HEAD.json').exists()
- changed=subprocess.check_output(['git','diff',BASE,'--name-only'],cwd=ROOT,text=True).splitlines();assert not any(p.startswith(('src/','migrations/','data/')) for p in changed)
+ changed=subprocess.check_output(['git','diff',BASE,'--name-only'],cwd=ROOT,text=True).splitlines()
+ # R16 external acceptance authorizes only new scoped runtime files; frozen contracts stay design-authoritative.
+ authorized=[]
+ entry=ROOT/'reports/v4_13_runtime_r16/STAGE_CONTRACT.json'
+ if entry.exists():
+  stage=read('reports/v4_13_runtime_r16/STAGE_CONTRACT.json');authority=exact(stage['authority'])
+  assert b'PASS_FULL_CONTRACT_FREEZE' in authority and b'AUTHORIZED_NEXT_SCOPED_ENGINEERING' in authority
+  authorized=stage['runtime_files']
+  assert all(p.startswith('src/workbench_analysis/v4_13_') for p in authorized)
+  for p in authorized:
+   assert subprocess.run(['git','cat-file','-e',stage['baseline']+':'+p],cwd=ROOT,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL).returncode!=0
+ assert not any(p.startswith(('src/','migrations/','data/')) and p not in authorized for p in changed)
  return dict(V4_13_R1_1_CONTRACT_SEMANTIC_AUTHORITY_REPAIR='PASS',V4_13_CONTRACT_COMPLETENESS='PASS_READY_FOR_EXTERNAL_AUDIT',V4_13_RUNTIME='NOT_IMPLEMENTED',membership_consumer_scope=prove_membership_scope(bundle['membership_consumer_route']),vectors=proofs,negative_gates=rejection,component_quality_matrix_cases=25,completeness_matrix=matrix,protected=protected,production=False,shadow=False,focus=False,global_mandatory_adoption=False,NEXT='STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT')
 if __name__=='__main__':
  result=validate();write(OUT+'R15_LOCAL_INDEPENDENT_CONTRACT_GATE.json',result);print('V4_13_CONTRACT_COMPLETENESS=PASS_READY_FOR_EXTERNAL_AUDIT')

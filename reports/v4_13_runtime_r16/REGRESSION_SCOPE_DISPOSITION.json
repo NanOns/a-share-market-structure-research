@@ -1,0 +1,11 @@
+{
+  "initial_attempt": {
+    "FAIL": 1,
+    "PASS": 317,
+    "SKIP": 1
+  },
+  "protected_baseline": "dcbfe610b5cb0a8d94dc743963a1fa80f7f71f32",
+  "reason": "Requires Stage <= V4_08 and V4_09 not accepted; baseline has externally accepted Stage through V4_12. Raw V4_09 contract vectors and all computational tests remain selected; no old promotion is rerun or changed.",
+  "result": "DESELECTED_AS_OBSOLETE_PROMOTION_GATE",
+  "test": "tests/v4_09/test_stock_prewatch.py::test_production_and_v4_09_acceptance_stay_disabled"
+}

@@ -1,0 +1,350 @@
+{
+  "anchor_state_required": [
+    "anchor_id",
+    "anchor",
+    "event",
+    "facts",
+    "counter_state",
+    "counter_state_digest",
+    "state_observations",
+    "last_known_support_state",
+    "invalidation_facts",
+    "validity",
+    "stale",
+    "created_this_session",
+    "owning_episode_id",
+    "owning_anchor_id",
+    "counter_contract_id",
+    "output_envelope",
+    "overlay_digest"
+  ],
+  "common_F0_bind_count": 1,
+  "contract_id": "V4_12_FROZEN_D1_CANDIDATE_SNAPSHOT_V2",
+  "counter_fields": [
+    "post_creation_market_sessions",
+    "post_creation_evaluable_sessions",
+    "held_count",
+    "breach_count",
+    "recovery_held_count",
+    "test_count",
+    "separated_sessions"
+  ],
+  "fact_projections": [
+    {
+      "field": "anchor_original_atr",
+      "kind": "runtime",
+      "source": "atr_prior_view"
+    },
+    {
+      "field": "anchor_original_price",
+      "kind": "runtime",
+      "source": "C"
+    },
+    {
+      "field": "anchor_type",
+      "kind": "anchor",
+      "source": "anchor_type"
+    },
+    {
+      "field": "episode_owns_anchor",
+      "kind": "event",
+      "source": "event"
+    },
+    {
+      "field": "prior_adjacent_evaluable",
+      "kind": "runtime",
+      "source": "evaluable"
+    },
+    {
+      "field": "prior_breach_count",
+      "kind": "counter",
+      "source": "breach_count"
+    },
+    {
+      "field": "prior_breakout_exists",
+      "kind": "machine_flag",
+      "source": "breakout",
+      "states": [
+        "BREAKOUT_TENTATIVE",
+        "TESTING",
+        "BREAKOUT_ACCEPTED"
+      ]
+    },
+    {
+      "field": "prior_hard_invalidated",
+      "kind": "runtime",
+      "source": "hard_invalidated"
+    },
+    {
+      "field": "prior_held_count",
+      "kind": "counter",
+      "source": "held_count"
+    },
+    {
+      "field": "prior_recovery_exists",
+      "kind": "machine_flag",
+      "source": "recovery",
+      "states": [
+        "ANCHOR_RECLAIM",
+        "MA20_RECLAIM",
+        "RELATIVE_RECOVERY",
+        "RECOVERY_CONFIRMED"
+      ]
+    },
+    {
+      "field": "prior_recovery_failed",
+      "kind": "machine_flag",
+      "source": "recovery",
+      "states": [
+        "RECOVERY_FAILED"
+      ]
+    },
+    {
+      "field": "prior_recovery_held_count",
+      "kind": "counter",
+      "source": "recovery_held_count"
+    },
+    {
+      "field": "prior_retest_qualified",
+      "kind": "runtime",
+      "source": "eod_reclaim"
+    },
+    {
+      "field": "prior_separated_sessions",
+      "kind": "counter",
+      "source": "separated_sessions"
+    },
+    {
+      "field": "prior_support_state",
+      "kind": "support",
+      "source": "support"
+    },
+    {
+      "field": "prior_test_count",
+      "kind": "counter",
+      "source": "test_count"
+    },
+    {
+      "field": "prior_valid_event",
+      "kind": "event",
+      "source": "event"
+    },
+    {
+      "field": "anchor_id",
+      "kind": "anchor",
+      "source": "anchor_id"
+    },
+    {
+      "field": "security_id",
+      "kind": "anchor",
+      "source": "security_id"
+    },
+    {
+      "field": "anchor_trade_date",
+      "kind": "anchor",
+      "source": "anchor_trade_date"
+    },
+    {
+      "field": "available_date",
+      "kind": "anchor",
+      "source": "available_date"
+    },
+    {
+      "field": "available_at",
+      "kind": "anchor",
+      "source": "available_at"
+    },
+    {
+      "field": "anchor_raw_lower",
+      "kind": "anchor",
+      "source": "anchor_raw_lower"
+    },
+    {
+      "field": "anchor_raw_upper",
+      "kind": "anchor",
+      "source": "anchor_raw_upper"
+    },
+    {
+      "field": "anchor_price_basis",
+      "kind": "anchor",
+      "source": "anchor_price_basis"
+    },
+    {
+      "field": "adjustment_contract_id",
+      "kind": "anchor",
+      "source": "adjustment_contract_id"
+    },
+    {
+      "field": "adjustment_source_identity",
+      "kind": "anchor",
+      "source": "adjustment_source_identity"
+    },
+    {
+      "field": "anchor_adjustment_source_revision",
+      "kind": "anchor",
+      "source": "adjustment_source_revision"
+    },
+    {
+      "field": "adjustment_asof",
+      "kind": "anchor",
+      "source": "adjustment_asof"
+    },
+    {
+      "field": "anchor_basis_trade_date",
+      "kind": "anchor",
+      "source": "anchor_basis_trade_date"
+    },
+    {
+      "field": "frozen_transform_coefficients",
+      "kind": "anchor",
+      "source": "frozen_transform_coefficients"
+    },
+    {
+      "field": "source_event_id",
+      "kind": "anchor",
+      "source": "source_event_id"
+    },
+    {
+      "field": "source_fact_digest",
+      "kind": "anchor",
+      "source": "source_fact_digest"
+    },
+    {
+      "field": "creation_coordinate",
+      "kind": "anchor",
+      "source": "creation_coordinate"
+    },
+    {
+      "field": "current_comparison_coordinate",
+      "kind": "anchor",
+      "source": "current_comparison_coordinate"
+    },
+    {
+      "field": "rebase_lineage",
+      "kind": "anchor",
+      "source": "rebase_lineage"
+    },
+    {
+      "field": "corporate_action_transition",
+      "kind": "anchor",
+      "source": "corporate_action_transition"
+    }
+  ],
+  "formal_accepted": false,
+  "global_machines": [
+    "breakout",
+    "same_day_creation"
+  ],
+  "manifest_contract": "V4_12_FROZEN_D1_CANDIDATE_MANIFEST_V2",
+  "merge_policy": "ALL_PRIOR_STATES_UNION_ALL_NEW_ANCHOR_IDS_APPEND_ONLY_IMMUTABLE_ID",
+  "namespace": "Frozen D1[t]",
+  "new_anchor": {
+    "all_counters": 0,
+    "created_this_session": true,
+    "earliest_test": "FIRST_MARKET_SESSION_AFTER_AVAILABLE_DATE",
+    "invalidation_facts": [],
+    "state_observations": {
+      "acceptance": "PENDING",
+      "pullback": "NOT_PULLBACK",
+      "recovery": "NONE",
+      "support": "IDLE"
+    },
+    "validity": "VALID"
+  },
+  "owning_policy": "EVENT_ANCHOR_ID_AND_OWNING_ANCHOR_ID_IMMUTABLE_INDEPENDENT_OF_ACTIVE",
+  "per_anchor_machines": [
+    "pullback",
+    "recovery",
+    "support",
+    "acceptance",
+    "retention"
+  ],
+  "permissions": {
+    "D2": false,
+    "V4_13": false,
+    "focus": false,
+    "global_mandatory_adoption": false,
+    "migration": false,
+    "production": false,
+    "shadow": false
+  },
+  "prior_policy": "EXACT_PREVIOUS_MARKET_SESSION_V2_ONLY_NO_LATEST_GUESS",
+  "required_fields": [
+    "snapshot_id",
+    "security_id",
+    "trade_date",
+    "revision",
+    "available_at",
+    "common_facts",
+    "global_state_observations",
+    "anchor_states",
+    "active_anchor_id",
+    "active_anchor_selection_quality",
+    "active_anchor_selection_reason",
+    "knowledge_lineage",
+    "AS_RECORDED",
+    "formal_accepted",
+    "contract_digest",
+    "entry_digest",
+    "source_runtime_manifest_digest"
+  ],
+  "retention_is_transition": false,
+  "security_projection": [
+    "active_anchor_id",
+    "anchor_view_asof_t",
+    "support_state",
+    "acceptance_state",
+    "retest_count",
+    "last_known_support_state",
+    "invalidation_facts",
+    "basic_pullback_state",
+    "basic_recovery_state"
+  ],
+  "selector": {
+    "ATR_source": "atr_prior_view_IN_COMMON_COMPARISON_COORDINATE",
+    "active_anchor_sort": [
+      "not invalidated",
+      "distance_to_C / ATR ascending",
+      "anchor_date descending",
+      "anchor_id ascending"
+    ],
+    "distance_formula": "max(lower-C,C-upper,0)/ATR",
+    "eligible": "VALID_NON_TERMINAL",
+    "first_item_fallback": false,
+    "many": "REQUIRE_ALL_COORDINATES_AND_POSITIVE_ATR_COMPARABLE",
+    "one": "SELECT_DIRECTLY_NO_RANK_COMPARISON",
+    "sort_authority": "config/v4_12_output_schema_v1.json",
+    "unknown": {
+      "active_anchor_id": null,
+      "quality": "UNKNOWN",
+      "reason": "ACTIVE_ANCHOR_SELECTION_UNKNOWN"
+    },
+    "unknown_validity": "FAIL_CLOSED_ACTIVE_ANCHOR_SELECTION_UNKNOWN",
+    "zero": {
+      "active_anchor_id": null,
+      "quality": "KNOWN",
+      "reason": "NO_ACTIVE_ANCHOR"
+    }
+  },
+  "source_reconstruction": false,
+  "source_runtime_contract": "V4_12_R12_RUNTIME_CANDIDATE_MANIFEST",
+  "terminal_lifecycle": "NO_HISTORICAL_CLOSURE_AUTHORIZED_ALL_STATES_PERSIST",
+  "transition_identity": [
+    "security_id",
+    "anchor_id",
+    "machine",
+    "trade_date"
+  ],
+  "transition_predicate": "PRIOR_KNOWN_AND_CURRENT_KNOWN_AND_ACTUAL_CHANGE",
+  "transition_required": [
+    "security_id",
+    "anchor_id",
+    "event_id",
+    "machine",
+    "trade_date",
+    "revision",
+    "from_state",
+    "to_state"
+  ],
+  "version": "2.0.0"
+}

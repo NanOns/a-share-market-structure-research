@@ -1,0 +1,694 @@
+{
+  "contract_id": "V4_12_ACTIVE_SELECTOR_INDEPENDENT_VECTORS_R12",
+  "oracle": "HAND_WRITTEN_LITERAL_EXPECTATIONS_NOT_RUNTIME_HELPER",
+  "scope": "SYNTHETIC_TEST_ONLY",
+  "vectors": [
+    {
+      "common": {
+        "C": {
+          "quality": "KNOWN",
+          "value": 11
+        },
+        "adjustment_source_revision": {
+          "quality": "KNOWN",
+          "value": "SYNTHETIC_REV"
+        },
+        "atr_prior_view": {
+          "quality": "KNOWN",
+          "value": 1
+        },
+        "price_basis": {
+          "quality": "KNOWN",
+          "value": "SYNTHETIC_QFQ"
+        }
+      },
+      "expected": {
+        "active_anchor_id": null,
+        "quality": "KNOWN",
+        "reason": "NO_ACTIVE_ANCHOR"
+      },
+      "id": "ZERO",
+      "states": []
+    },
+    {
+      "common": {
+        "C": {
+          "quality": "KNOWN",
+          "value": 11
+        },
+        "adjustment_source_revision": {
+          "quality": "KNOWN",
+          "value": "SYNTHETIC_REV"
+        },
+        "atr_prior_view": {
+          "quality": "UNKNOWN",
+          "value": null
+        },
+        "price_basis": {
+          "quality": "KNOWN",
+          "value": "SYNTHETIC_QFQ"
+        }
+      },
+      "expected": {
+        "active_anchor_id": "A",
+        "quality": "KNOWN",
+        "reason": null
+      },
+      "id": "SOLE_BAD_COORDINATE",
+      "states": [
+        {
+          "anchor": {
+            "adjustment_source_revision": "SYNTHETIC_REV",
+            "anchor_id": "A",
+            "anchor_price_basis": "OTHER",
+            "anchor_raw_lower": 11,
+            "anchor_raw_upper": 11,
+            "anchor_trade_date": "2026-09-23",
+            "creation_coordinate": {
+              "adjustment_source_revision": "SYNTHETIC_REV",
+              "price_basis": "OTHER"
+            },
+            "frozen_transform_coefficients": {
+              "add": "0",
+              "mul": "1"
+            }
+          },
+          "anchor_id": "A",
+          "validity": "VALID"
+        }
+      ]
+    },
+    {
+      "common": {
+        "C": {
+          "quality": "KNOWN",
+          "value": 11
+        },
+        "adjustment_source_revision": {
+          "quality": "KNOWN",
+          "value": "SYNTHETIC_REV"
+        },
+        "atr_prior_view": {
+          "quality": "KNOWN",
+          "value": 1
+        },
+        "price_basis": {
+          "quality": "KNOWN",
+          "value": "SYNTHETIC_QFQ"
+        }
+      },
+      "expected": {
+        "active_anchor_id": "B",
+        "quality": "KNOWN",
+        "reason": null
+      },
+      "id": "DISTANCE",
+      "states": [
+        {
+          "anchor": {
+            "adjustment_source_revision": "SYNTHETIC_REV",
+            "anchor_id": "A",
+            "anchor_price_basis": "SYNTHETIC_QFQ",
+            "anchor_raw_lower": 10,
+            "anchor_raw_upper": 10,
+            "anchor_trade_date": "2026-09-23",
+            "creation_coordinate": {
+              "adjustment_source_revision": "SYNTHETIC_REV",
+              "price_basis": "SYNTHETIC_QFQ"
+            },
+            "frozen_transform_coefficients": {
+              "add": "0",
+              "mul": "1"
+            }
+          },
+          "anchor_id": "A",
+          "validity": "VALID"
+        },
+        {
+          "anchor": {
+            "adjustment_source_revision": "SYNTHETIC_REV",
+            "anchor_id": "B",
+            "anchor_price_basis": "SYNTHETIC_QFQ",
+            "anchor_raw_lower": 11,
+            "anchor_raw_upper": 11,
+            "anchor_trade_date": "2026-09-23",
+            "creation_coordinate": {
+              "adjustment_source_revision": "SYNTHETIC_REV",
+              "price_basis": "SYNTHETIC_QFQ"
+            },
+            "frozen_transform_coefficients": {
+              "add": "0",
+              "mul": "1"
+            }
+          },
+          "anchor_id": "B",
+          "validity": "VALID"
+        }
+      ]
+    },
+    {
+      "common": {
+        "C": {
+          "quality": "KNOWN",
+          "value": 11
+        },
+        "adjustment_source_revision": {
+          "quality": "KNOWN",
+          "value": "SYNTHETIC_REV"
+        },
+        "atr_prior_view": {
+          "quality": "KNOWN",
+          "value": 1
+        },
+        "price_basis": {
+          "quality": "KNOWN",
+          "value": "SYNTHETIC_QFQ"
+        }
+      },
+      "expected": {
+        "active_anchor_id": "B",
+        "quality": "KNOWN",
+        "reason": null
+      },
+      "id": "DATE_TIE",
+      "states": [
+        {
+          "anchor": {
+            "adjustment_source_revision": "SYNTHETIC_REV",
+            "anchor_id": "A",
+            "anchor_price_basis": "SYNTHETIC_QFQ",
+            "anchor_raw_lower": 11,
+            "anchor_raw_upper": 11,
+            "anchor_trade_date": "2026-09-23",
+            "creation_coordinate": {
+              "adjustment_source_revision": "SYNTHETIC_REV",
+              "price_basis": "SYNTHETIC_QFQ"
+            },
+            "frozen_transform_coefficients": {
+              "add": "0",
+              "mul": "1"
+            }
+          },
+          "anchor_id": "A",
+          "validity": "VALID"
+        },
+        {
+          "anchor": {
+            "adjustment_source_revision": "SYNTHETIC_REV",
+            "anchor_id": "B",
+            "anchor_price_basis": "SYNTHETIC_QFQ",
+            "anchor_raw_lower": 11,
+            "anchor_raw_upper": 11,
+            "anchor_trade_date": "2026-09-24",
+            "creation_coordinate": {
+              "adjustment_source_revision": "SYNTHETIC_REV",
+              "price_basis": "SYNTHETIC_QFQ"
+            },
+            "frozen_transform_coefficients": {
+              "add": "0",
+              "mul": "1"
+            }
+          },
+          "anchor_id": "B",
+          "validity": "VALID"
+        }
+      ]
+    },
+    {
+      "common": {
+        "C": {
+          "quality": "KNOWN",
+          "value": 11
+        },
+        "adjustment_source_revision": {
+          "quality": "KNOWN",
+          "value": "SYNTHETIC_REV"
+        },
+        "atr_prior_view": {
+          "quality": "KNOWN",
+          "value": 1
+        },
+        "price_basis": {
+          "quality": "KNOWN",
+          "value": "SYNTHETIC_QFQ"
+        }
+      },
+      "expected": {
+        "active_anchor_id": "A",
+        "quality": "KNOWN",
+        "reason": null
+      },
+      "id": "ID_TIE",
+      "states": [
+        {
+          "anchor": {
+            "adjustment_source_revision": "SYNTHETIC_REV",
+            "anchor_id": "B",
+            "anchor_price_basis": "SYNTHETIC_QFQ",
+            "anchor_raw_lower": 11,
+            "anchor_raw_upper": 11,
+            "anchor_trade_date": "2026-09-23",
+            "creation_coordinate": {
+              "adjustment_source_revision": "SYNTHETIC_REV",
+              "price_basis": "SYNTHETIC_QFQ"
+            },
+            "frozen_transform_coefficients": {
+              "add": "0",
+              "mul": "1"
+            }
+          },
+          "anchor_id": "B",
+          "validity": "VALID"
+        },
+        {
+          "anchor": {
+            "adjustment_source_revision": "SYNTHETIC_REV",
+            "anchor_id": "A",
+            "anchor_price_basis": "SYNTHETIC_QFQ",
+            "anchor_raw_lower": 11,
+            "anchor_raw_upper": 11,
+            "anchor_trade_date": "2026-09-23",
+            "creation_coordinate": {
+              "adjustment_source_revision": "SYNTHETIC_REV",
+              "price_basis": "SYNTHETIC_QFQ"
+            },
+            "frozen_transform_coefficients": {
+              "add": "0",
+              "mul": "1"
+            }
+          },
+          "anchor_id": "A",
+          "validity": "VALID"
+        }
+      ]
+    },
+    {
+      "common": {
+        "C": {
+          "quality": "KNOWN",
+          "value": 11
+        },
+        "adjustment_source_revision": {
+          "quality": "KNOWN",
+          "value": "SYNTHETIC_REV"
+        },
+        "atr_prior_view": {
+          "quality": "KNOWN",
+          "value": 1
+        },
+        "price_basis": {
+          "quality": "KNOWN",
+          "value": "SYNTHETIC_QFQ"
+        }
+      },
+      "expected": {
+        "active_anchor_id": "B",
+        "quality": "KNOWN",
+        "reason": null
+      },
+      "id": "TERMINAL_EXCLUDED",
+      "states": [
+        {
+          "anchor": {
+            "adjustment_source_revision": "SYNTHETIC_REV",
+            "anchor_id": "A",
+            "anchor_price_basis": "SYNTHETIC_QFQ",
+            "anchor_raw_lower": 11,
+            "anchor_raw_upper": 11,
+            "anchor_trade_date": "2026-09-23",
+            "creation_coordinate": {
+              "adjustment_source_revision": "SYNTHETIC_REV",
+              "price_basis": "SYNTHETIC_QFQ"
+            },
+            "frozen_transform_coefficients": {
+              "add": "0",
+              "mul": "1"
+            }
+          },
+          "anchor_id": "A",
+          "validity": "INVALIDATED"
+        },
+        {
+          "anchor": {
+            "adjustment_source_revision": "SYNTHETIC_REV",
+            "anchor_id": "B",
+            "anchor_price_basis": "SYNTHETIC_QFQ",
+            "anchor_raw_lower": 10,
+            "anchor_raw_upper": 10,
+            "anchor_trade_date": "2026-09-23",
+            "creation_coordinate": {
+              "adjustment_source_revision": "SYNTHETIC_REV",
+              "price_basis": "SYNTHETIC_QFQ"
+            },
+            "frozen_transform_coefficients": {
+              "add": "0",
+              "mul": "1"
+            }
+          },
+          "anchor_id": "B",
+          "validity": "VALID"
+        }
+      ]
+    },
+    {
+      "common": {
+        "C": {
+          "quality": "KNOWN",
+          "value": 11
+        },
+        "adjustment_source_revision": {
+          "quality": "KNOWN",
+          "value": "SYNTHETIC_REV"
+        },
+        "atr_prior_view": {
+          "quality": "KNOWN",
+          "value": 1
+        },
+        "price_basis": {
+          "quality": "KNOWN",
+          "value": "SYNTHETIC_QFQ"
+        }
+      },
+      "expected": {
+        "active_anchor_id": null,
+        "quality": "UNKNOWN",
+        "reason": "ACTIVE_ANCHOR_SELECTION_UNKNOWN"
+      },
+      "id": "UNKNOWN_COORDINATE",
+      "states": [
+        {
+          "anchor": {
+            "adjustment_source_revision": "SYNTHETIC_REV",
+            "anchor_id": "A",
+            "anchor_price_basis": "OTHER",
+            "anchor_raw_lower": 11,
+            "anchor_raw_upper": 11,
+            "anchor_trade_date": "2026-09-23",
+            "creation_coordinate": {
+              "adjustment_source_revision": "SYNTHETIC_REV",
+              "price_basis": "OTHER"
+            },
+            "frozen_transform_coefficients": {
+              "add": "0",
+              "mul": "1"
+            }
+          },
+          "anchor_id": "A",
+          "validity": "VALID"
+        },
+        {
+          "anchor": {
+            "adjustment_source_revision": "SYNTHETIC_REV",
+            "anchor_id": "B",
+            "anchor_price_basis": "SYNTHETIC_QFQ",
+            "anchor_raw_lower": 11,
+            "anchor_raw_upper": 11,
+            "anchor_trade_date": "2026-09-23",
+            "creation_coordinate": {
+              "adjustment_source_revision": "SYNTHETIC_REV",
+              "price_basis": "SYNTHETIC_QFQ"
+            },
+            "frozen_transform_coefficients": {
+              "add": "0",
+              "mul": "1"
+            }
+          },
+          "anchor_id": "B",
+          "validity": "VALID"
+        }
+      ]
+    },
+    {
+      "common": {
+        "C": {
+          "quality": "KNOWN",
+          "value": 11
+        },
+        "adjustment_source_revision": {
+          "quality": "KNOWN",
+          "value": "SYNTHETIC_REV"
+        },
+        "atr_prior_view": {
+          "quality": "UNKNOWN",
+          "value": null
+        },
+        "price_basis": {
+          "quality": "KNOWN",
+          "value": "SYNTHETIC_QFQ"
+        }
+      },
+      "expected": {
+        "active_anchor_id": null,
+        "quality": "UNKNOWN",
+        "reason": "ACTIVE_ANCHOR_SELECTION_UNKNOWN"
+      },
+      "id": "UNKNOWN_ATR",
+      "states": [
+        {
+          "anchor": {
+            "adjustment_source_revision": "SYNTHETIC_REV",
+            "anchor_id": "A",
+            "anchor_price_basis": "SYNTHETIC_QFQ",
+            "anchor_raw_lower": 11,
+            "anchor_raw_upper": 11,
+            "anchor_trade_date": "2026-09-23",
+            "creation_coordinate": {
+              "adjustment_source_revision": "SYNTHETIC_REV",
+              "price_basis": "SYNTHETIC_QFQ"
+            },
+            "frozen_transform_coefficients": {
+              "add": "0",
+              "mul": "1"
+            }
+          },
+          "anchor_id": "A",
+          "validity": "VALID"
+        },
+        {
+          "anchor": {
+            "adjustment_source_revision": "SYNTHETIC_REV",
+            "anchor_id": "B",
+            "anchor_price_basis": "SYNTHETIC_QFQ",
+            "anchor_raw_lower": 11,
+            "anchor_raw_upper": 11,
+            "anchor_trade_date": "2026-09-23",
+            "creation_coordinate": {
+              "adjustment_source_revision": "SYNTHETIC_REV",
+              "price_basis": "SYNTHETIC_QFQ"
+            },
+            "frozen_transform_coefficients": {
+              "add": "0",
+              "mul": "1"
+            }
+          },
+          "anchor_id": "B",
+          "validity": "VALID"
+        }
+      ]
+    },
+    {
+      "common": {
+        "C": {
+          "quality": "KNOWN",
+          "value": 11
+        },
+        "adjustment_source_revision": {
+          "quality": "KNOWN",
+          "value": "SYNTHETIC_REV"
+        },
+        "atr_prior_view": {
+          "quality": "KNOWN",
+          "value": 0
+        },
+        "price_basis": {
+          "quality": "KNOWN",
+          "value": "SYNTHETIC_QFQ"
+        }
+      },
+      "expected": {
+        "active_anchor_id": null,
+        "quality": "UNKNOWN",
+        "reason": "ACTIVE_ANCHOR_SELECTION_UNKNOWN"
+      },
+      "id": "ZERO_ATR",
+      "states": [
+        {
+          "anchor": {
+            "adjustment_source_revision": "SYNTHETIC_REV",
+            "anchor_id": "A",
+            "anchor_price_basis": "SYNTHETIC_QFQ",
+            "anchor_raw_lower": 11,
+            "anchor_raw_upper": 11,
+            "anchor_trade_date": "2026-09-23",
+            "creation_coordinate": {
+              "adjustment_source_revision": "SYNTHETIC_REV",
+              "price_basis": "SYNTHETIC_QFQ"
+            },
+            "frozen_transform_coefficients": {
+              "add": "0",
+              "mul": "1"
+            }
+          },
+          "anchor_id": "A",
+          "validity": "VALID"
+        },
+        {
+          "anchor": {
+            "adjustment_source_revision": "SYNTHETIC_REV",
+            "anchor_id": "B",
+            "anchor_price_basis": "SYNTHETIC_QFQ",
+            "anchor_raw_lower": 11,
+            "anchor_raw_upper": 11,
+            "anchor_trade_date": "2026-09-23",
+            "creation_coordinate": {
+              "adjustment_source_revision": "SYNTHETIC_REV",
+              "price_basis": "SYNTHETIC_QFQ"
+            },
+            "frozen_transform_coefficients": {
+              "add": "0",
+              "mul": "1"
+            }
+          },
+          "anchor_id": "B",
+          "validity": "VALID"
+        }
+      ]
+    },
+    {
+      "common": {
+        "C": {
+          "quality": "KNOWN",
+          "value": 11
+        },
+        "adjustment_source_revision": {
+          "quality": "KNOWN",
+          "value": "SYNTHETIC_REV"
+        },
+        "atr_prior_view": {
+          "quality": "KNOWN",
+          "value": 1
+        },
+        "price_basis": {
+          "quality": "KNOWN",
+          "value": "SYNTHETIC_QFQ"
+        }
+      },
+      "expected": {
+        "active_anchor_id": null,
+        "quality": "UNKNOWN",
+        "reason": "ACTIVE_ANCHOR_SELECTION_UNKNOWN"
+      },
+      "id": "UNKNOWN_ELIGIBILITY",
+      "states": [
+        {
+          "anchor": {
+            "adjustment_source_revision": "SYNTHETIC_REV",
+            "anchor_id": "A",
+            "anchor_price_basis": "SYNTHETIC_QFQ",
+            "anchor_raw_lower": 11,
+            "anchor_raw_upper": 11,
+            "anchor_trade_date": "2026-09-23",
+            "creation_coordinate": {
+              "adjustment_source_revision": "SYNTHETIC_REV",
+              "price_basis": "SYNTHETIC_QFQ"
+            },
+            "frozen_transform_coefficients": {
+              "add": "0",
+              "mul": "1"
+            }
+          },
+          "anchor_id": "A",
+          "validity": "UNKNOWN"
+        },
+        {
+          "anchor": {
+            "adjustment_source_revision": "SYNTHETIC_REV",
+            "anchor_id": "B",
+            "anchor_price_basis": "SYNTHETIC_QFQ",
+            "anchor_raw_lower": 11,
+            "anchor_raw_upper": 11,
+            "anchor_trade_date": "2026-09-23",
+            "creation_coordinate": {
+              "adjustment_source_revision": "SYNTHETIC_REV",
+              "price_basis": "SYNTHETIC_QFQ"
+            },
+            "frozen_transform_coefficients": {
+              "add": "0",
+              "mul": "1"
+            }
+          },
+          "anchor_id": "B",
+          "validity": "VALID"
+        }
+      ]
+    },
+    {
+      "common": {
+        "C": {
+          "quality": "KNOWN",
+          "value": 11
+        },
+        "adjustment_source_revision": {
+          "quality": "KNOWN",
+          "value": "SYNTHETIC_REV"
+        },
+        "atr_prior_view": {
+          "quality": "KNOWN",
+          "value": 1
+        },
+        "price_basis": {
+          "quality": "KNOWN",
+          "value": "SYNTHETIC_QFQ"
+        }
+      },
+      "expected": {
+        "active_anchor_id": "A",
+        "quality": "KNOWN",
+        "reason": null
+      },
+      "id": "REVERSED_ARRAY",
+      "states": [
+        {
+          "anchor": {
+            "adjustment_source_revision": "SYNTHETIC_REV",
+            "anchor_id": "A",
+            "anchor_price_basis": "SYNTHETIC_QFQ",
+            "anchor_raw_lower": 11,
+            "anchor_raw_upper": 11,
+            "anchor_trade_date": "2026-09-23",
+            "creation_coordinate": {
+              "adjustment_source_revision": "SYNTHETIC_REV",
+              "price_basis": "SYNTHETIC_QFQ"
+            },
+            "frozen_transform_coefficients": {
+              "add": "0",
+              "mul": "1"
+            }
+          },
+          "anchor_id": "A",
+          "validity": "VALID"
+        },
+        {
+          "anchor": {
+            "adjustment_source_revision": "SYNTHETIC_REV",
+            "anchor_id": "B",
+            "anchor_price_basis": "SYNTHETIC_QFQ",
+            "anchor_raw_lower": 11,
+            "anchor_raw_upper": 11,
+            "anchor_trade_date": "2026-09-23",
+            "creation_coordinate": {
+              "adjustment_source_revision": "SYNTHETIC_REV",
+              "price_basis": "SYNTHETIC_QFQ"
+            },
+            "frozen_transform_coefficients": {
+              "add": "0",
+              "mul": "1"
+            }
+          },
+          "anchor_id": "B",
+          "validity": "VALID"
+        }
+      ]
+    }
+  ]
+}

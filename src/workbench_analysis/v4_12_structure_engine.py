@@ -48,9 +48,12 @@ class StructureEngine:
         self.binder=InputBinder(contracts,trade_date,cutoff)
     def evaluate(self,security_id,prior_snapshot=None,extra_namespaces=None):
         facts=self.binder.bind(security_id,prior_snapshot,extra_namespaces)
+        return self.evaluate_context(security_id,facts,self.binder.bound_prior,create=True)
+    def evaluate_context(self,security_id,facts,bound_prior=None,create=False):
+        """One owning episode overlay; caller owns cardinality and active projection."""
         ast=ASTEngine(self.contracts.config,facts);input_digest=digest(facts)
-        prior_ref=self.binder.bound_prior[1] if self.binder.bound_prior else None
-        bound=self.binder.bound_prior[0] if self.binder.bound_prior else None
+        prior_ref=bound_prior[1] if bound_prior else None
+        bound=bound_prior[0] if bound_prior else None
         bound_anchor=bound.get('anchor') if bound else None
         anchor_ref=dict(anchor_id=bound_anchor['anchor_id'],artifact=prior_ref) if bound_anchor else None
         event_ref=dict(event_id=bound_anchor['source_event_id'],artifact=prior_ref) if bound_anchor else None
@@ -70,7 +73,7 @@ class StructureEngine:
             if row['field_role']=='D1_LOCAL_DERIVATION' and row['field'] in self.contracts.config['machine_ast']['definitions']:
                 result=ast.target(row['field']);derived[row['field']]=result.record()
         anchors=[];events=[];construction=[]
-        for spec in self.contracts.config['anchor_schema']['types']:
+        for spec in self.contracts.config['anchor_schema']['types'] if create else []:
             if spec.get('blocked_reason'):
                 construction.append(dict(anchor_type=spec['anchor_type'],quality='UNKNOWN',reason=spec['blocked_reason']));continue
             qualified=ast.target(spec['creation_rule'])

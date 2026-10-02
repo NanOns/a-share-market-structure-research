@@ -48,6 +48,13 @@ class InputBinder:
             source_digest=pub['sha256'] if pub else None,trade_date=date or (self.previous if row['time_role']=='T_MINUS_1' else self.date),time_role=row['time_role'])
     def prior(self,snapshot,security_id):
         if snapshot is None:return None
+        if 'frozen_manifest' in snapshot:
+            from .v4_12_frozen_snapshot import FrozenSnapshotLoader
+            ref=snapshot['frozen_manifest']
+            if not hasattr(self,'frozen_loaders'):self.frozen_loaders={}
+            key=ref['sha256']
+            if key not in self.frozen_loaders:self.frozen_loaders[key]=FrozenSnapshotLoader(self.contracts,ref,self.cutoff.isoformat())
+            return self.frozen_loaders[key].read(security_id,self.previous)
         ref=snapshot['artifact'];payload=exact_json(self.root,ref)
         if payload['trade_date']!=self.previous or payload['security_id']!=security_id:raise ValueError('SAME_DAY_OR_FOREIGN_PRIOR_D1')
         if payload['contract_digest']!=self.contracts.digest or payload['namespace']!='Frozen D1[t-1]':raise ValueError('PRIOR_D1_AUTHORITY_MISMATCH')

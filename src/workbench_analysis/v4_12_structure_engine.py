@@ -49,7 +49,7 @@ class StructureEngine:
     def evaluate(self,security_id,prior_snapshot=None,extra_namespaces=None):
         facts=self.binder.bind(security_id,prior_snapshot,extra_namespaces)
         ast=ASTEngine(self.contracts.config,facts);input_digest=digest(facts)
-        prior_ref=prior_snapshot['artifact'] if prior_snapshot else None
+        prior_ref=self.binder.bound_prior[1] if self.binder.bound_prior else None
         bound=self.binder.bound_prior[0] if self.binder.bound_prior else None
         bound_anchor=bound.get('anchor') if bound else None
         anchor_ref=dict(anchor_id=bound_anchor['anchor_id'],artifact=prior_ref) if bound_anchor else None
@@ -107,6 +107,23 @@ class StructureEngine:
             for label,param in [('impulse_retention_1','retention_horizon_one'),('impulse_retention_3','retention_horizon_three')]:
                 target=next(r['value'] for r in self.contracts.config['parameter_set']['parameters'] if r['parameter_id']==param)
                 if age==target:envelope[label]=float(retention.value)
+        test=ast.target('next_test_count')
+        if not bound_anchor and anchors:
+            # Initial counter state belongs to a newly created Anchor, with no
+            # post-creation test sessions. It cannot inherit a synthetic/display test.
+            test=known(0);derived['next_test_count']=test.record()
+        envelope['retest_count']=int(test.value) if test.quality=='KNOWN' else None
+        support=machines['support']
+        prior_last=bound.get('last_known_support_state') if bound else facts.get('prior_support_state',{}).get('value')
+        envelope['last_known_support_state']=support['value'] if support['quality']=='KNOWN' else prior_last
+        hard=ast.target('hard_invalidated');episode=ast.target('episode_invalidated')
+        if hard.value is True or episode.value is True:
+            envelope['invalidation_facts']=[dict(episode_owns_anchor=facts['episode_owns_anchor'],deep_breach=ast.target('deep_breach').record(),
+                breach_count=ast.target('breach_count').record(),threshold=dict(parameter_id='support_break_consecutive_sessions',value=str(ast.parameters['support_break_consecutive_sessions'].value),parameter_set_digest=self.contracts.refs['parameter_set']['sha256']),
+                threshold_result=ast.evaluate({'op':'ge','args':[{'field':'breach_count'},{'parameter_id':'support_break_consecutive_sessions'}]},'invalidation_projection').record(),
+                prior_hard_invalidated=facts['prior_hard_invalidated'],hard_invalidated=hard.record(),episode_invalidated=episode.record(),anchor_ref=anchor_ref,event_ref=event_ref)]
+        elif hard.quality==episode.quality=='KNOWN':envelope['invalidation_facts']=[]
+        else:envelope['invalidation_facts']=None
         envelope['output_digest']=digest({k:v for k,v in envelope.items() if k!='output_digest'})
         from jsonschema import Draft202012Validator
         Draft202012Validator(self.contracts.config['output_schema']['schema']).validate(envelope)
@@ -115,6 +132,18 @@ class StructureEngine:
             contract_digest=self.contracts.digest,entry_digest=self.contracts.entry_ref['sha256'],input_digest=input_digest,
             outputs=machines,derived=derived,anchor_construction=construction,prior_state_ref=prior_ref,stale=any(r['quality']=='UNKNOWN' for r in machines.values()))
         row['frozen_output_envelope']=envelope
-        transitions=[dict(identity={**identity,'machine':name},state=r['state'],quality=r['quality'],reason=r['reason'],prior_state_ref=prior_ref,
-            same_day_revision_is_prior=False,anchor_ref=r['anchor_ref'],contract_digest=self.contracts.digest) for name,r in machines.items()]
-        return dict(observation=row,bindings=dict(identity=identity,fields=facts),anchors=anchors,events=events,transitions=transitions)
+        projection_quality=dict(retest_count=test.record(),invalidation_facts=dict(quality='KNOWN' if envelope['invalidation_facts'] is not None else 'UNKNOWN',reason=sorted(set(hard.reasons+episode.reasons)) if envelope['invalidation_facts'] is None else []),
+            last_known_support_state=dict(quality='KNOWN' if envelope['last_known_support_state'] not in [None,'UNKNOWN'] else 'UNKNOWN',reason=[] if envelope['last_known_support_state'] not in [None,'UNKNOWN'] else ['NO_KNOWN_SUPPORT_HISTORY']))
+        row['projection_quality']=projection_quality
+        observation_ref=dict(observation_digest=digest(row),identity=identity)
+        state_observations=[dict(identity={**identity,'machine':name},contract_id='V4_12_STATE_OBSERVATION_CANDIDATE',security_id=security_id,trade_date=self.trade_date,revision=self.revision,machine=name,
+            observation_ref=observation_ref,**r) for name,r in machines.items()]
+        transitions=[]
+        for name,r in machines.items():
+            previous=bound.get('state_observations',{}).get(name) if bound else None
+            if name=='retention' or not previous or previous['quality']!='KNOWN' or r['quality']!='KNOWN' or previous['value']==r['value']:continue
+            transitions.append(dict(identity={**identity,'machine':name},logical_transition_id=digest(dict(security_id=security_id,machine=name,trade_date=self.trade_date,prior_snapshot_id=bound['snapshot_id'])),
+                security_id=security_id,machine=name,trade_date=self.trade_date,revision=self.revision,from_state=previous['value'],to_state=r['value'],
+                prior_session_state_ref=prior_ref,current_observation_ref=observation_ref,transition_kind='KNOWN_STATE_CHANGE',quality='KNOWN',reason=r['reason'],
+                same_day_revision_is_prior=False,anchor_ref=r['anchor_ref'],event_ref=r['source_event_ref'],contract_digest=self.contracts.digest,input_digest=input_digest))
+        return dict(observation=row,bindings=dict(identity=identity,fields=facts),anchors=anchors,events=events,transitions=transitions,state_observations=state_observations,bound_prior=bound)

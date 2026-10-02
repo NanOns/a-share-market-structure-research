@@ -1,0 +1,256 @@
+{
+  "bundle_format": "CANONICAL_JSONL_GZIP_MTIME_ZERO",
+  "consumer_namespace": "Frozen D1[t-1]",
+  "contract_id": "V4_12_FROZEN_D1_CANDIDATE_SNAPSHOT_V1",
+  "counter_fields": [
+    "post_creation_evaluable_sessions",
+    "held_count",
+    "breach_count",
+    "recovery_held_count",
+    "separated_sessions"
+  ],
+  "fact_projections": [
+    {
+      "field": "anchor_original_atr",
+      "kind": "runtime",
+      "source": "atr_prior_view"
+    },
+    {
+      "field": "anchor_original_price",
+      "kind": "runtime",
+      "source": "C"
+    },
+    {
+      "field": "anchor_type",
+      "kind": "anchor",
+      "source": "anchor_type"
+    },
+    {
+      "field": "episode_owns_anchor",
+      "kind": "event",
+      "source": "event"
+    },
+    {
+      "field": "prior_adjacent_evaluable",
+      "kind": "runtime",
+      "source": "evaluable"
+    },
+    {
+      "field": "prior_breach_count",
+      "kind": "counter",
+      "source": "breach_count"
+    },
+    {
+      "field": "prior_breakout_exists",
+      "kind": "machine_flag",
+      "source": "breakout",
+      "states": [
+        "BREAKOUT_TENTATIVE",
+        "TESTING",
+        "BREAKOUT_ACCEPTED"
+      ]
+    },
+    {
+      "field": "prior_hard_invalidated",
+      "kind": "runtime",
+      "source": "hard_invalidated"
+    },
+    {
+      "field": "prior_held_count",
+      "kind": "counter",
+      "source": "held_count"
+    },
+    {
+      "field": "prior_recovery_exists",
+      "kind": "machine_flag",
+      "source": "recovery",
+      "states": [
+        "ANCHOR_RECLAIM",
+        "MA20_RECLAIM",
+        "RELATIVE_RECOVERY",
+        "RECOVERY_CONFIRMED"
+      ]
+    },
+    {
+      "field": "prior_recovery_failed",
+      "kind": "machine_flag",
+      "source": "recovery",
+      "states": [
+        "RECOVERY_FAILED"
+      ]
+    },
+    {
+      "field": "prior_recovery_held_count",
+      "kind": "counter",
+      "source": "recovery_held_count"
+    },
+    {
+      "field": "prior_retest_qualified",
+      "kind": "runtime",
+      "source": "eod_reclaim"
+    },
+    {
+      "field": "prior_separated_sessions",
+      "kind": "counter",
+      "source": "separated_sessions"
+    },
+    {
+      "field": "prior_support_state",
+      "kind": "support",
+      "source": "support"
+    },
+    {
+      "field": "prior_test_count",
+      "kind": "counter",
+      "source": "test_count"
+    },
+    {
+      "field": "prior_valid_event",
+      "kind": "event",
+      "source": "event"
+    },
+    {
+      "field": "anchor_id",
+      "kind": "anchor",
+      "source": "anchor_id"
+    },
+    {
+      "field": "security_id",
+      "kind": "anchor",
+      "source": "security_id"
+    },
+    {
+      "field": "anchor_trade_date",
+      "kind": "anchor",
+      "source": "anchor_trade_date"
+    },
+    {
+      "field": "available_date",
+      "kind": "anchor",
+      "source": "available_date"
+    },
+    {
+      "field": "available_at",
+      "kind": "anchor",
+      "source": "available_at"
+    },
+    {
+      "field": "anchor_raw_lower",
+      "kind": "anchor",
+      "source": "anchor_raw_lower"
+    },
+    {
+      "field": "anchor_raw_upper",
+      "kind": "anchor",
+      "source": "anchor_raw_upper"
+    },
+    {
+      "field": "anchor_price_basis",
+      "kind": "anchor",
+      "source": "anchor_price_basis"
+    },
+    {
+      "field": "adjustment_contract_id",
+      "kind": "anchor",
+      "source": "adjustment_contract_id"
+    },
+    {
+      "field": "adjustment_source_identity",
+      "kind": "anchor",
+      "source": "adjustment_source_identity"
+    },
+    {
+      "field": "anchor_adjustment_source_revision",
+      "kind": "anchor",
+      "source": "adjustment_source_revision"
+    },
+    {
+      "field": "adjustment_asof",
+      "kind": "anchor",
+      "source": "adjustment_asof"
+    },
+    {
+      "field": "anchor_basis_trade_date",
+      "kind": "anchor",
+      "source": "anchor_basis_trade_date"
+    },
+    {
+      "field": "frozen_transform_coefficients",
+      "kind": "anchor",
+      "source": "frozen_transform_coefficients"
+    },
+    {
+      "field": "source_event_id",
+      "kind": "anchor",
+      "source": "source_event_id"
+    },
+    {
+      "field": "source_fact_digest",
+      "kind": "anchor",
+      "source": "source_fact_digest"
+    },
+    {
+      "field": "creation_coordinate",
+      "kind": "anchor",
+      "source": "creation_coordinate"
+    },
+    {
+      "field": "current_comparison_coordinate",
+      "kind": "anchor",
+      "source": "current_comparison_coordinate"
+    },
+    {
+      "field": "rebase_lineage",
+      "kind": "anchor",
+      "source": "rebase_lineage"
+    },
+    {
+      "field": "corporate_action_transition",
+      "kind": "anchor",
+      "source": "corporate_action_transition"
+    }
+  ],
+  "formal_accepted": false,
+  "manifest_contract": "V4_12_FROZEN_D1_CANDIDATE_MANIFEST_V1",
+  "namespace": "Frozen D1[t]",
+  "new_anchor_counter_policy": "ZERO_POST_CREATION_OBSERVATIONS_NOT_SELF_CONFIRMATION",
+  "permissions": {
+    "D2": false,
+    "focus": false,
+    "global_mandatory_adoption": false,
+    "migration": false,
+    "production": false,
+    "shadow": false
+  },
+  "required_fields": [
+    "snapshot_id",
+    "security_id",
+    "trade_date",
+    "revision",
+    "available_at",
+    "namespace",
+    "contract_digest",
+    "entry_digest",
+    "input_digest",
+    "observation_digest",
+    "source_candidate_manifest_digest",
+    "facts",
+    "anchor",
+    "event",
+    "counter_state",
+    "counter_contract_id",
+    "counter_state_digest",
+    "support_state",
+    "acceptance_state",
+    "breakout_state",
+    "pullback_state",
+    "recovery_state",
+    "knowledge_lineage",
+    "AS_RECORDED",
+    "formal_accepted"
+  ],
+  "row_digest": "SHA256_CANONICAL_ROW",
+  "source_policy": "COMPLETED_RUNTIME_ONLY_NO_RECONSTRUCTION",
+  "test_count_source": "next_test_count",
+  "version": "1.0.0"
+}

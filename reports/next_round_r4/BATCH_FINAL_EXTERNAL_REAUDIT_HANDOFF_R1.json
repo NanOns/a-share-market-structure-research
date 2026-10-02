@@ -1,0 +1,61 @@
+{
+  "DataHead": "KEEP_2026-09-30",
+  "StageHead": "KEEP_V4_00_TO_V4_10_ACCEPTED",
+  "V4_12_executed": false,
+  "clean_status": "PASS_REQUIRED_ENGINEERING_REGRESSION_WITH_PREEXISTING_REPO_COLLECTION_BLOCKER",
+  "clean_validation": {
+    "bytes": 1018959,
+    "path": "reports/v4_11_r4/V4_11_R4_CLEAN_CHECKOUT.json",
+    "sha256": "cc687ecaf9b62f105b5b64fa8e40e9509bc65c083403be73445eb7d0685acf53"
+  },
+  "contract_id": "V4_R4_TWO_TASK_FINAL_HANDOFF_R1",
+  "external_acceptance": false,
+  "formal_V4_11_head_created": false,
+  "full_repository_all_tests_pass": false,
+  "full_repository_collection": {
+    "bytes": 1727,
+    "path": "reports/v4_11_r4/FULL_REPOSITORY_COLLECTION.json",
+    "sha256": "8fc0a26d121b63bac38ea1886a26a0ee5087aa6fb8bd04393571e472f350ce31"
+  },
+  "human_handoff": {
+    "bytes": 3959,
+    "path": "docs/audits/V4_R4_TWO_TASK_HANDOFF_20261002.md",
+    "sha256": "26515818dde0a074476307d14348bfcea8924c18109e6ffa00a7adab63c4eae4"
+  },
+  "next_stage": "STOP_WAIT_FOR_INDEPENDENT_EXTERNAL_ACCEPTANCE",
+  "permissions": {
+    "focus": false,
+    "global_mandatory_adoption": false,
+    "production": false,
+    "shadow": false
+  },
+  "receipt_only_final_commit_required": true,
+  "separate_audits": {
+    "bytes": 28981,
+    "path": "reports/next_round_r4/CROSS_STAGE_AUDIT_OVERLAY_R16.json",
+    "sha256": "90dce800d1ed7467f2356539a46b3227c0a3275fad454dbe9907b6458ded1c96"
+  },
+  "source_closure": {
+    "bytes": 2265,
+    "path": "reports/next_round_r4/TWO_TASK_SOURCE_CLOSURE.json",
+    "sha256": "e53993a8b7fe299f2124f894ff45cdc446ed8909d73bcbf9770341e66997174d"
+  },
+  "source_manifest": {
+    "bytes": 19564,
+    "path": "reports/next_round_r4/BATCH_SOURCE_MANIFEST.json",
+    "sha256": "ffcd3affb2c1baae5f481abe0b506509eb2c70a9297af39ea699b7b93911d465"
+  },
+  "status": "ENGINEERING_COMPLETE_STOP_WAIT_EXTERNAL_REAUDIT",
+  "tasks": {
+    "R4A": "PASS_ENGINEERING_PARITY_AND_SEALED",
+    "R4B": "PASS_ENGINEERING_REAL_DAG_CAPABILITY_CLOSURE"
+  },
+  "test_summary": {
+    "errors": 0,
+    "failures": 0,
+    "passed": 2043,
+    "skipped": 2,
+    "tests": 2045
+  },
+  "tested_source_commit": "fc4d204012bca642d1b0beed7f2f098d6efea86c"
+}

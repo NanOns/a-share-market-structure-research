@@ -1,0 +1,44 @@
+{
+  "baseline": "65774de20108beafaa15c0b557b4cd2ee58edb29",
+  "collection_error_paths": [
+    "tests/upgrade_m14/test_online_batches.py",
+    "tests/upgrade_m2/test_api.py"
+  ],
+  "configured_or_production_database_used": false,
+  "exit_code": 2,
+  "full_repository_runtime_pass_claim": false,
+  "legacy_duckdb_scope": "EMPTY_IGNORED_DB_IN_DISPOSABLE_CLEAN_CHECKOUT_ONLY",
+  "log": {
+    "bytes": 341796,
+    "path": "reports/v4_11_r4/FULL_REPOSITORY_COLLECTION.log",
+    "sha256": "6b4c68780ea89fff794bc2f194d6a5644a873c0e760b1b24bd110fbf0e074d8b"
+  },
+  "reason": "Existing M14 test imports removed persistence API; existing M2 test indexes an empty clean-repository publication_heads table in ignored local DuckDB. No missing data fabricated or production publication initialized; no new deselection.",
+  "separate_audit_items": [
+    "R4_FULL_REPOSITORY_PREEXISTING_M14_COLLECTION",
+    "R4_FULL_REPOSITORY_PREEXISTING_M2_UNTRACKED_PUBLICATION_DEPENDENCY"
+  ],
+  "status": "BLOCKED_PREEXISTING_M14_M2_COLLECTION",
+  "unchanged_baseline_sources": [
+    {
+      "bytes": 3299,
+      "path": "tests/upgrade_m14/test_online_batches.py",
+      "sha256": "c968870fd15f189b829201c97fdd325ba8d23f307f41d209dc26fd39fd15079c"
+    },
+    {
+      "bytes": 741,
+      "path": "src/workbench_online/collector.py",
+      "sha256": "9bb7f4d0953a09585e39538e4292b91340404f4be98ea0d8ecdf2c8b1941b131"
+    },
+    {
+      "bytes": 8366,
+      "path": "tests/upgrade_m2/test_api.py",
+      "sha256": "1a24bbee1534722d0e498cb45c30ca3f69d9da513cabebae1672ad79399491dc"
+    },
+    {
+      "bytes": 243566,
+      "path": "src/workbench_service/app.py",
+      "sha256": "c40d81548bcb297b2c48abbbf297740a9376d2682266598bc555953f8c6cb11a"
+    }
+  ]
+}

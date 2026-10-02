@@ -1,149 +1,88 @@
 {
-  "D2_integration": false,
-  "R10A_contract_acceptance": {
-    "bytes": 5739,
-    "path": "reports/v4_12/V4_12_CONTRACT_FREEZE_EXTERNAL_ACCEPTANCE_R1.json",
-    "sha256": "0c457decd961820ce7487d5c90407c947efefb403ad8492fbd390573eec00e65"
+  "clean_detached_checkout": true,
+  "idempotency": "PASS",
+  "promotion_read_only": {
+    "R5_hard_gates": {
+      "P01_parity_scope": "PASS",
+      "P02_business_mismatch": "PASS",
+      "P03_quality_mismatch": "PASS",
+      "P04_UNKNOWN_reason_mismatch": "PASS",
+      "P05_t_minus_1_known": "PASS",
+      "P06_owner_oracle": "PASS",
+      "P07_owner_publications": "PASS",
+      "P08_D2_oracle": "PASS",
+      "P09_owner_field_counts": "PASS",
+      "P10_raw_fallback": "PASS",
+      "P11_unsealed_helper": "PASS",
+      "P12_wiring_missing": "PASS",
+      "P13_coefficient_gate": "PASS",
+      "P14_frozen_D0": "PASS",
+      "P15_formal_scope": "PASS",
+      "P16_diagnostic_scope": "PASS",
+      "P17_normalized_AST": "PASS",
+      "P18_threshold_order": "PASS",
+      "P19_event_UNKNOWN": "PASS",
+      "P20_reconstructed_scope": "PASS"
+    },
+    "V4_12_runtime_executed": false,
+    "candidate_sha256": "d8d96dce559eb968e6446f0626766980f6fb045fca1219e3e01fcd0a980b9928",
+    "checks": {
+      "P01_schema_stage_external_decision": "PASS",
+      "P02_parent_V4_10_exact": "PASS",
+      "P03_implementation_commit_exact": "PASS",
+      "P04_audited_seal_descendant": "PASS",
+      "P05_external_acceptance_document_exact": "PASS",
+      "P06_R4A_seal_exact": "PASS",
+      "P07_R5A_parity_exact": "PASS",
+      "P08_owner_oracle_exact": "PASS",
+      "P09_R5A_seal_exact": "PASS",
+      "P10_D2_AST_exact": "PASS",
+      "P11_D2_owner_oracle_exact": "PASS",
+      "P12_residual_attribution_exact": "PASS",
+      "P13_business_diff_exact": "PASS",
+      "P14_D2_readback_exact": "PASS",
+      "P15_Event_replay_exact": "PASS",
+      "P16_capability_matrix_exact": "PASS",
+      "P17_clean_checkout_exact": "PASS",
+      "P18_Data_Head_unchanged": "PASS",
+      "P19_Dev_Baseline_unchanged": "PASS",
+      "P20_PIT_membership_unchanged": "PASS",
+      "P21_all_scoped_heads_unchanged": "PASS",
+      "P22_permissions_false": "PASS",
+      "P23_capability_map_exact": "PASS",
+      "P24_historical_AS_RECORDED_not_overclaimed": "PASS",
+      "P25_diagnostic_not_promoted": "PASS",
+      "P26_M14_M2_separate_unresolved": "PASS",
+      "P27_idempotent_promotion_parent_preserved": "PASS",
+      "P28_clean_detached_validation": "PASS",
+      "P29_exact_evidence_set": "PASS",
+      "P30_expected_V4_10_fail_closed_boundary": "PASS",
+      "P31_validator_hash_bound": "PASS",
+      "P32_entry_surface_no_runtime": "PASS",
+      "P33_post_entry_exact": "PASS"
+    },
+    "contract_id": "V4_11_PROMOTION_READ_ONLY_VALIDATOR_R1",
+    "external_stage_acceptance": "V4_11_EXTERNAL_ACCEPTANCE_PASS_R5_CAPABILITY_SCOPED_ENGINEERING",
+    "post_promotion": true,
+    "status": "PASS",
+    "validator_bindings": [
+      {
+        "bytes": 3763,
+        "path": "scripts/v4_11_promotion_contract_r1.py",
+        "sha256": "b05a45c55309332f5371cec04c41e371464b0c0d7b85e4ffb46dff522fa7a1d4"
+      },
+      {
+        "bytes": 15029,
+        "path": "scripts/validate_v4_11_promotion_r1.py",
+        "sha256": "c85c7096e23efda1180cd43978631cfc78eecac73d4e42425481abcf42070556"
+      },
+      {
+        "bytes": 2625,
+        "path": "scripts/promote_v4_11_accepted_head_r1.py",
+        "sha256": "9ddda5010cecd87b25a9d0964323293441b38fd9c227720bde42dff072769dbf"
+      }
+    ]
   },
-  "R10A_readback": {
-    "bytes": 10761,
-    "path": "reports/v4_12_runtime_r1/R10A_LOCAL_READBACK.json",
-    "sha256": "ef2ccf83872f2d9007a3809b1040ac79aa891af90858b52150de7d44d3fbdbcd"
-  },
-  "R10A_runtime_entry": {
-    "bytes": 16930,
-    "path": "reports/v4_12/V4_12_RUNTIME_ENGINEERING_ENTRY_R1.json",
-    "sha256": "0a28f975ecf85394b61edd185bc04389dc301668b9358c8fe612a6c2d362d215"
-  },
-  "V4_11_candidate_substitution_count": 0,
-  "base_candidate_manifest": {
-    "bytes": 3704,
-    "path": "reports/v4_12_runtime_r1/V4_12_RUNTIME_MANIFEST.json",
-    "sha256": "2302529d272784238443ec662cd439113a271ddc10674fc8fb493fa7ce0934d6"
-  },
-  "binding_fields": 111,
-  "capability_matrix": {
-    "bytes": 29396,
-    "path": "reports/v4_12_runtime_r1/V4_12_RUNTIME_CAPABILITY_MATRIX.json",
-    "sha256": "079a9a2e9c71915afa56f46b13b2956ce5f8944f98af72d1a263fd9db58c4594"
-  },
-  "clean_checkout": "PASS",
-  "constructor_diagnostic_disposition": "Initial synthetic lifecycle receipt retained as diagnostic; authoritative schema readback is V4_12_SYNTHETIC_CANDIDATE_LIFECYCLE_R1_SCHEMA_VALID.json. No real Anchor existed in the initial replay.",
-  "data_head": "2026-09-30",
-  "deselected_tests": {
-    "names": [
-      "test_candidate_only_scope_and_protected_heads",
-      "test_completeness_requires_authority_parity_not_file_presence",
-      "test_r6r1_and_r1_ast_vectors_preserved",
-      "test_full_contract_time_gate"
-    ],
-    "reason": "Historical R9 CONTRACT_DESIGN_ONLY gates prohibit all src changes; R10 explicitly authorizes scoped runtime. Their business/source/counter/protected checks are covered independently by R10."
-  },
-  "external_runtime_acceptance": false,
-  "formal_V4_12_head_created": false,
-  "frozen_contracts": [
-    {
-      "bytes": 4211,
-      "path": "config/v4_12_anchor_coordinate_contract_v1.json",
-      "sha256": "b0c1ca843c1b8e57212bef05e3f3d2613b8413a6042925dc31257cfe3f46cd9e"
-    },
-    {
-      "bytes": 13266,
-      "path": "config/v4_12_anchor_schema_v1.json",
-      "sha256": "c984a9be4e20eeee717b7c874f97f1caa2998e7a93d6fa5126ebf6c3acfacb39"
-    },
-    {
-      "bytes": 324329,
-      "path": "config/v4_12_field_registry_v1.json",
-      "sha256": "5f8653eacd456f1244c68349af31fb4731cc1d804d41495909da0eb3072be0f5"
-    },
-    {
-      "bytes": 33919,
-      "path": "config/v4_12_input_schema_v1.json",
-      "sha256": "98742097b6613b78f4d464d3ecaf34edbd37af4a3a054cd85b96636f110dff87"
-    },
-    {
-      "bytes": 41434,
-      "path": "config/v4_12_machine_ast_v1.json",
-      "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
-    },
-    {
-      "bytes": 31822,
-      "path": "config/v4_12_machine_vectors_v1.json",
-      "sha256": "42cb39050efcf47f76d27edff0eb3efbd964bf07ea02b8d16e010e2ebb36dd47"
-    },
-    {
-      "bytes": 5027,
-      "path": "config/v4_12_output_schema_v1.json",
-      "sha256": "d851adbca80d91ad6d88194104e5c258efbf6a8618484754b248b939f051b9fa"
-    },
-    {
-      "bytes": 14895,
-      "path": "config/v4_12_parameter_set_v1.json",
-      "sha256": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024"
-    },
-    {
-      "bytes": 37224,
-      "path": "config/v4_12_producer_registry_v1.json",
-      "sha256": "d6b689adb89f75122e3084402fd50bfbc2e22e9c8334dad0939b94576c7daf8c"
-    },
-    {
-      "bytes": 1434,
-      "path": "config/v4_12_retention_contract_v1.json",
-      "sha256": "b76e1c07b07b251bd12a7a7898af2858101bc66dfc9946a12a4a334c813e51c9"
-    },
-    {
-      "bytes": 6799,
-      "path": "config/v4_12_source_derivations_r2.json",
-      "sha256": "dab5cd0024bdac7e1893bfc107323aa29c46e54bb7402b85836ce6f53cf37fe4"
-    },
-    {
-      "bytes": 2214,
-      "path": "config/v4_12_structure_event_contract_v1.json",
-      "sha256": "b36a6e39a43665d5c07e52ad23fc3226d92cc73df6330a06606758cc38d1d99f"
-    },
-    {
-      "bytes": 1909,
-      "path": "config/v4_12_support_state_contract_v1.json",
-      "sha256": "6f9f0ef21b1d911820fc985d905d7878eaf9a87c94e87460327464d68035d594"
-    },
-    {
-      "bytes": 3390,
-      "path": "config/v4_12_time_counter_contract_v2.json",
-      "sha256": "9fcd2c0b62a890f3d2288d9080a96a8e2d85b3aa47688f22e5276da894fc02e9"
-    },
-    {
-      "bytes": 17242,
-      "path": "config/v4_12_time_counter_vectors_r2_1.json",
-      "sha256": "0035935fd0582d9936f762ae1e15d16406f7efb32ee235f457162dc5d482fe6f"
-    },
-    {
-      "bytes": 62693,
-      "path": "config/v4_12_time_role_registry_v1.json",
-      "sha256": "83e0b860d3dc28b5e44fbfd577ad776b7e6a36a6d13947c9bcd19c48c400490b"
-    }
-  ],
-  "next_stage": "STOP_AFTER_UNIFIED_COMMIT_PUSH_WAIT_INDEPENDENT_EXTERNAL_AUDIT",
-  "parity": {
-    "DAG_and_coordinate_negative": "PASS",
-    "R2_authority_vectors": 12,
-    "amended_business_vectors": 69,
-    "quality_correction": "PASS_1_0_1",
-    "sequence_steps": 33,
-    "time_domain_vectors": 10
-  },
-  "performance": {
-    "bytes": 249,
-    "path": "reports/v4_12_runtime_r1/V4_12_RUNTIME_PERFORMANCE.json",
-    "sha256": "c827510805fc118b6ce978681c7c368a02c086f339b7fbfb9baa610391e03233"
-  },
-  "permissions": {
-    "focus_cutover_permission": false,
-    "global_mandatory_adoption": false,
-    "production_permission": false,
-    "shadow_production_permission": false
-  },
-  "prior_D1_history_status": "NO_ACCEPTED_PRIOR_D1_PUBLICATION",
   "protected_artifacts": [
     {
       "after_sha256": "fe3ca08043743023f23d5767bf8d3570e2dc4a72c7215056a2daba53a0ea7a77",
@@ -356,14 +295,55 @@
       "path": "reports/v4_12_r2_1/V4_12_R2_AUTHORITY_VECTORS_KEEP.json"
     }
   ],
-  "provider_replacement_count": 0,
   "raw_fallback_count": 0,
-  "real_scoped_replay": {
-    "bytes": 19360,
-    "path": "reports/v4_12_runtime_r1/V4_12_REAL_SCOPED_REPLAY.json",
-    "sha256": "5b9ec33a2330380eca1f2238e10215c736feaf7276a86d531edce22a7b90f7a2"
-  },
-  "runtime_source_manifest": [
+  "runtime_readback_status": "PASS",
+  "same_day_prior_isolation": "PASS",
+  "source_manifest": [
+    {
+      "bytes": 4369,
+      "path": "scripts/prepare_v4_12_runtime_entry_r1.py",
+      "sha256": "a980890a660182526570b70f60cab029faccaa2db94632d859ec285003e404a4"
+    },
+    {
+      "bytes": 13735,
+      "path": "scripts/replay_v4_12_runtime_r1.py",
+      "sha256": "8b2858b38a585e6ed699dcd92bfe842d2f59f2d4004d9e29efd4f267d19da92b"
+    },
+    {
+      "bytes": 4252,
+      "path": "scripts/seal_v4_12_runtime_handoff_r1.py",
+      "sha256": "8a50f70cd02e938a9f652fc345711f2b738f6e88ea71e2efc79d075518379030"
+    },
+    {
+      "bytes": 4170,
+      "path": "scripts/validate_v4_12_runtime_entry_r1.py",
+      "sha256": "adb3ac9bf48a977cecfbd2895b2ccc17ec8048ac9a0aa7e0ccfee77b77f23449"
+    },
+    {
+      "bytes": 15330,
+      "path": "scripts/validate_v4_12_runtime_r1.py",
+      "sha256": "84a1d87b92eed1db714119dc27a7837abd55b349d169980082baa4b9f7b44354"
+    },
+    {
+      "bytes": 3127,
+      "path": "scripts/verify_v4_12_candidate_lifecycle_r1.py",
+      "sha256": "79dd9626bbf907fdf1851fb33c2f94f54431bef37b3f53c3c02d7f4efcdde1a3"
+    },
+    {
+      "bytes": 1380,
+      "path": "scripts/verify_v4_12_runtime_rerun_r1.py",
+      "sha256": "42cd263ada9d395300af2999f5923889f4f7d9097cd7ff0fbf512b09f7065fd2"
+    },
+    {
+      "bytes": 5103,
+      "path": "scripts/verify_v4_12_runtime_supplemental_parity_r1.py",
+      "sha256": "b68db7f8d0a38c941902e025bb230ed9ea4ffdc6a04bb222bbfe293b89985c27"
+    },
+    {
+      "bytes": 2059,
+      "path": "scripts/verify_v4_r10_clean_checkout.py",
+      "sha256": "7994d9aecfce2fec9452f57456997693ce687e8a97a8da892803fbb7c20f12a8"
+    },
     {
       "bytes": 4762,
       "path": "src/workbench_analysis/v4_12_anchor_runtime.py",
@@ -388,48 +368,14 @@
       "bytes": 3971,
       "path": "src/workbench_analysis/v4_12_structure_io.py",
       "sha256": "f19e019a0cbde2bf34863d6700a0bb353159176f85982cc909cdec906b4401b3"
+    },
+    {
+      "bytes": 8782,
+      "path": "tests/test_v4_12_runtime_r1.py",
+      "sha256": "7832bfbd4b8b846a84f8bc165d9d904101a7925c933a997b1edf227e2ca5ea2c"
     }
   ],
-  "schema_migration": false,
-  "stage_accepted": false,
-  "stage_head": "V4_00_TO_V4_11_ACCEPTED",
-  "starting_remote_head": "d99c242ff90180372df1055d5fff266a48f38102",
-  "status": "V4_12_D1_RUNTIME_ENGINE_R1_CANDIDATE_READY_FOR_EXTERNAL_AUDIT",
-  "supplemental_evidence": [
-    {
-      "bytes": 3007,
-      "path": "reports/v4_12_runtime_r1/V4_12_RUNTIME_R2_AUTHORITY_PARITY.json",
-      "sha256": "3a8068d760c7083e7219a75b816c9a680aa2970d2a71c4b47eaee08641802f3c"
-    },
-    {
-      "bytes": 2291,
-      "path": "reports/v4_12_runtime_r1/V4_12_RUNTIME_TIME_DOMAIN_NEGATIVE_PARITY.json",
-      "sha256": "c8bb97710250f4c09f6d613abef943d41ba19a4e3288c3abe8c29c576085fc95"
-    },
-    {
-      "bytes": 5876,
-      "path": "reports/v4_12_runtime_r1/V4_12_SYNTHETIC_CANDIDATE_LIFECYCLE_R1_SCHEMA_VALID.json",
-      "sha256": "8e8fee726adc22dbef44d7d6915822ad7f9df80d0ca189199889a7a681be6610"
-    },
-    {
-      "bytes": 5613,
-      "path": "reports/v4_12_runtime_r1/V4_12_FRESH_RUNTIME_RERUN_DIGEST_EQUALITY.json",
-      "sha256": "23c09f132fb730fdc9e42fe9a0f351c1f398bbe610335b776aaee914bd663b50"
-    },
-    {
-      "bytes": 12261,
-      "path": "reports/v4_12_runtime_r1/V4_12_RUNTIME_READBACK.json",
-      "sha256": "055a8ca15ce05c68d9506427631c40646668399aa5bb5ab35b06fddc90eb403b"
-    }
-  ],
+  "status": "PASS",
   "tested_source_sha": "4a23d2847ea415cb50d03c76ab4c45c0cc5ab25a",
-  "tests": {
-    "Deselect": 4,
-    "ERROR": 0,
-    "FAIL": 0,
-    "PASS": 275,
-    "SKIP": 0,
-    "total": 275
-  },
   "universe_count": 5224
 }

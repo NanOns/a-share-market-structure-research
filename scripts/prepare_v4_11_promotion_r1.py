@@ -3,11 +3,60 @@ from scripts.v4_11_promotion_contract_r1 import *
 import subprocess
 from datetime import datetime,timezone
 
-def prepare():
+EXPECTED_BUNDLE = {
+    AUDIT: ('0ae15dfddd4673e05eeb9a33a8b1679a0ba0680a18e3640a520ac9aaa5bfd590', 10061),
+    MASTER: ('1585f9d0e69df5f2bb55ce2f0961830593a8c90391aa7fd89e4a380eafc39cc0', 2512),
+    TASK: ('e291b27e86383c374bfcfed6da8fc3d185d8d615e03b8aa8c657cc8f6582aa26', 10383),
+}
+
+def ensure_bundle(root=ROOT, bundle_dir=None):
+    """Validate repo bytes first. Bootstrap only missing, explicitly supplied files."""
+    root = Path(root).resolve()
+    missing = [p for p in EXPECTED_BUNDLE if not (root / p).is_file()]
+    if missing and bundle_dir is None:
+        raise ValueError('R6_EXTERNAL_BUNDLE_SOURCE_REQUIRED')
+    plans = []
+    for path, expected in EXPECTED_BUNDLE.items():
+        source = root / path if path not in missing else Path(bundle_dir).resolve() / Path(path).name
+        raw = source.read_bytes()
+        if (hashlib.sha256(raw).hexdigest(), len(raw)) != expected:
+            raise ValueError('R6_EXTERNAL_BUNDLE_EXACT_MISMATCH:' + path)
+        if path in missing:
+            plans.append((path, raw, dict(source_path=str(source), source_sha256=expected[0],
+                                        source_bytes=expected[1], destination=path)))
+    # Persist the complete validated source plan before any destination write.
+    def put(path, raw):
+        destination = root / path
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        fd, temporary = tempfile.mkstemp(dir=destination.parent, prefix=destination.name + '.')
+        try:
+            with os.fdopen(fd, 'wb') as stream:
+                stream.write(raw); stream.flush(); os.fsync(stream.fileno())
+            os.replace(temporary, destination)
+        finally:
+            if os.path.exists(temporary): os.unlink(temporary)
+    if plans:
+        receipt = dict(contract_id='R6_EXPLICIT_BUNDLE_BOOTSTRAP_V1', sources=[p[2] for p in plans])
+        put('reports/next_round_r6r1/R6_EXPLICIT_BUNDLE_SOURCE_PLAN.json',
+            (json.dumps(receipt, ensure_ascii=False, indent=2)+'\n').encode('utf8'))
+        for path, raw, _ in plans:
+            if (root / path).exists():
+                raise ValueError('R6_BUNDLE_DESTINATION_APPEARED:' + path)
+            put(path, raw)
+    return dict(status='PASS', mode='REPO_FIRST_EXACT_VALIDATION' if not plans else 'EXPLICIT_BOOTSTRAP',
+                copied_files=[p[0] for p in plans])
+
+def prepare(bundle_dir=None):
+    result = ensure_bundle(ROOT, bundle_dir)
+    if (ROOT / HEAD).is_file():
+        print(json.dumps(result, sort_keys=True))
+        return result
+    return _prepare_initial_promotion()
+
+def _prepare_initial_promotion():
     assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()==SEALED
     from scripts.next_round_execution_r5 import verify_protected
     verify_protected()
-    for path in (AUDIT,MASTER,TASK):atomic(path,(Path('D:/Users/lps/Desktop/阶段任务/新建文件夹')/Path(path).name).read_bytes())
     for folder in (P,DOC,'reports/v4_12/') :atomic(folder+'.gitattributes',b'* -text\n')
     atomic(ARCHIVE,(ROOT/GLOBAL).read_bytes());parent=read(ARCHIVE)
     assert parent['accepted_stage_range']=='V4_00_TO_V4_10_ACCEPTED'
@@ -22,4 +71,8 @@ def prepare():
     candidate=dict(contract_id='V4_11_ACCEPTED_HEAD_V1',stage='V4-11',status='ENGINEERING_PASS_CAPABILITY_SCOPED',external_acceptance='EXTERNALLY_ACCEPTED',external_acceptance_decision=DECISION,implementation_commit=IMPLEMENTATION,audited_sealed_head=SEALED,parent_binding=bind(PARENT),global_head_parent=bind(ARCHIVE),evidence_bindings={p:bind(p) for p in EVIDENCE},capabilities=CAPABILITIES,protected_head_bindings=protected,promotion_stage_contract=entry,entry_contract_surface=surface,validator_bindings=[bind(p) for p in VALIDATORS],knowledge_lineage='RECONSTRUCTED_CORRECTED',AS_RECORDED=False,historical_as_recorded_event_proven=False,event_evidence='RECONSTRUCTED_LEFT_CENSORED',full_repository_runtime_pass_claim=False,non_mainline_audits=[dict(id=n,classification='PREEXISTING_NON_MAINLINE',resolution_claim=False) for n in ('R5_FULL_REPOSITORY_PREEXISTING_M14_COLLECTION','R5_FULL_REPOSITORY_PREEXISTING_M2_UNTRACKED_PUBLICATION_DEPENDENCY')],**PERMISSIONS)
     write(CANDIDATE,candidate);print('R6_CANDIDATE_READY_NO_HEAD_MUTATION')
 
-if __name__=='__main__':prepare()
+if __name__=='__main__':
+    import argparse
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--bundle-dir', type=Path)
+    prepare(parser.parse_args().bundle_dir)

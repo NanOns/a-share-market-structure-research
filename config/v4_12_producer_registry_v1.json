@@ -1,0 +1,230 @@
+{
+  "capabilities": [
+    {
+      "capability": "FORMAL_BLOCKED_INPUT_CAPABILITY",
+      "fields": [
+        "close_t_minus_1",
+        "ma20_t_minus_1"
+      ],
+      "policy": "DO_NOT_RECONSTRUCT_FROM_RAW_BARS",
+      "reason": "Accepted owner lacks close_t_minus_1 and ma20_t_minus_1",
+      "result": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "t-1 frozen Anchor/event"
+      ],
+      "reason": "D1 publication producer is contract design only; no accepted Anchor/event runtime publication",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "UNBOUND_REQUIRED_F0_INPUT",
+      "fields": [
+        "atr_prior_view",
+        "prior_high_view",
+        "prior_delta3",
+        "pivot_low_strict"
+      ],
+      "reason": "Historical field authority must be explicitly published in F0[t]; this design does not grant new accepted producer capability",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    }
+  ],
+  "contract_id": "V4_12_PRODUCER_REGISTRY_V1",
+  "derived_input_bindings": {
+    "alpha/beta": "Accepted historical adjustment source-bound transform; positive alpha; coefficients are not identity",
+    "distance_zone": "max(lo-C, C-hi, mathematical_zero) in observation coordinate",
+    "evaluable": "Accepted actual bar AND valid source/basis AND positive converted prior ATR; missing required source is UNKNOWN",
+    "post_creation_sessions": "Accepted market calendar session distance from Anchor available_date; zero on creation day; revision is not session",
+    "prior_adjacent_evaluable": "Previous observation matches immediately preceding market session and was evaluable; false after missing/suspension",
+    "prior_event_peak_view": "Frozen event path peak through previous session, rebased as view; never today/future peak",
+    "prior_retest_qualified": "Frozen retest evidence records prior separated actual session; no raw bar reconstruction",
+    "recovery_line_view": "Creation-bound prior recovery line in current comparison coordinate"
+  },
+  "freeze_scope": "CONTRACT_DESIGN_ONLY",
+  "owner_parity_authority": {
+    "bytes": 15510,
+    "path": "reports/v4_11_r5a/OWNER_INPUT_AUTHORITY_MATRIX.json",
+    "sha256": "bf8f0d3878fc6c265d10c5acc32cbea13dd58370695c4ef18e1f055c87b59215"
+  },
+  "parameter_set_id": "V4_12_ENGINEERING_CANDIDATE_R1",
+  "permissions": {
+    "focus_cutover_permission": false,
+    "global_mandatory_adoption": false,
+    "production_permission": false,
+    "shadow_production_permission": false
+  },
+  "producers": [
+    {
+      "authority": {
+        "bytes": 1602,
+        "path": "data/v4/V4_02_ACCEPTED_HEAD.json",
+        "sha256": "da318a1f82a03f13930af7858ca1640fadbdaedbee85e27d47f9c869c2d6b595"
+      },
+      "contract": {
+        "bytes": 9318,
+        "path": "config/v4_02_canonical_daily_pit_contract_v3.json",
+        "sha256": "6b61e97ace1d497299222ed12eac78d5736f2c5abe2d8cb45dbc8cc65cb11f35"
+      },
+      "current_data_authority": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "field_aliases": {
+        "C": "close",
+        "H": "high",
+        "L": "low",
+        "O": "open"
+      },
+      "namespace": "F0_ACCEPTED",
+      "price_rule": "OHLC must use same accepted adjusted observation basis; alias never changes owner quality/source digest",
+      "producer_contract_id": "V4_CANONICAL_DAILY_PIT_PERIODS_V3",
+      "status": "ACCEPTED_NATIVE_OHLC_AND_ADJUSTMENT_BINDING_REQUIRED"
+    },
+    {
+      "authority": {
+        "bytes": 1607,
+        "path": "data/v4/V4_03_ACCEPTED_HEAD.json",
+        "sha256": "734bd27a5d53b2f18e3d62aa96ac63c91ccc6d9f848e942bc1efc410c88d4370"
+      },
+      "missing": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "namespace": "F0_ACCEPTED",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "rule": "Consume exact accepted field publication; daily t availability does not authorize reconstructing missing t-1 field",
+      "status": "ACCEPTED_OWNER_AUTHORITY_REQUIRED"
+    },
+    {
+      "fields": [
+        "pivot_left_count",
+        "pivot_right_count",
+        "post_creation_sessions"
+      ],
+      "namespace": "F0_ACCEPTED",
+      "producer_contract_id": "CROSS_SECTION_SESSION_WINDOW_V1",
+      "status": "ACCEPTED_CALENDAR_AND_EXPLICIT_WINDOW_BINDING_REQUIRED"
+    },
+    {
+      "fields": [
+        "anchor_original_atr",
+        "anchor_original_price",
+        "anchor_type",
+        "base_view",
+        "episode_owns_anchor",
+        "event_close_view",
+        "hi",
+        "lo",
+        "prior_adjacent_evaluable",
+        "prior_breach_count",
+        "prior_breakout_exists",
+        "prior_event_peak_view",
+        "prior_hard_invalidated",
+        "prior_held_count",
+        "prior_recovery_exists",
+        "prior_recovery_failed",
+        "prior_recovery_held_count",
+        "prior_retest_qualified",
+        "prior_separated_sessions",
+        "prior_support_state",
+        "prior_test_count",
+        "prior_valid_event",
+        "recovery_line_view",
+        "anchor_id",
+        "security_id",
+        "anchor_trade_date",
+        "available_date",
+        "available_at",
+        "anchor_raw_lower",
+        "anchor_raw_upper",
+        "anchor_price_basis",
+        "adjustment_contract_id",
+        "adjustment_source_identity",
+        "anchor_adjustment_source_revision",
+        "adjustment_asof",
+        "anchor_basis_trade_date",
+        "frozen_transform_coefficients",
+        "source_event_id",
+        "source_fact_digest",
+        "creation_coordinate",
+        "current_comparison_coordinate",
+        "rebase_lineage",
+        "corporate_action_transition",
+        "active_anchor_id",
+        "anchor_view_asof_t",
+        "basic_breakout_state",
+        "basic_pullback_state",
+        "basic_recovery_state",
+        "structure_health",
+        "structure_events",
+        "unknown_reasons",
+        "stale",
+        "invalidation_facts"
+      ],
+      "namespace": "D1_CONTRACT_DESIGN_ONLY",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "status": "CONTRACT_FROZEN_RUNTIME_NOT_AUTHORIZED"
+    },
+    {
+      "fields": [
+        "support_today",
+        "support_state",
+        "retest_count",
+        "last_known_support_state"
+      ],
+      "namespace": "D1_CONTRACT_DESIGN_ONLY",
+      "producer_contract_id": "SUPPORT_STATE_V1",
+      "status": "CONTRACT_FROZEN_RUNTIME_NOT_AUTHORIZED"
+    },
+    {
+      "fields": [
+        "acceptance_state",
+        "impulse_retention_1",
+        "impulse_retention_3"
+      ],
+      "namespace": "D1_CONTRACT_DESIGN_ONLY",
+      "producer_contract_id": "RETENTION_V1",
+      "status": "CONTRACT_FROZEN_RUNTIME_NOT_AUTHORIZED"
+    },
+    {
+      "fields": [
+        "old_anchor",
+        "touch",
+        "close_breach",
+        "deep_breach",
+        "eod_reclaim",
+        "breach_count",
+        "separated_retest",
+        "fully_outside_test_band",
+        "next_test_count",
+        "separated_sessions",
+        "held_count",
+        "recovery_held_count",
+        "post_peak_drawdown",
+        "body",
+        "body_mid",
+        "body_atr",
+        "range_atr",
+        "impulse",
+        "breakout_trigger",
+        "ma20_reclaim",
+        "relative_recovery",
+        "retention_denominator",
+        "retention_value",
+        "range_anchor_qualified",
+        "gap_qualified",
+        "pivot_available",
+        "anchor_price_view",
+        "anchor_atr_view",
+        "common_coordinate_return",
+        "episode_invalidated",
+        "hard_invalidated"
+      ],
+      "namespace": "D1_CONTRACT_DESIGN_ONLY",
+      "producer_contract_id": "V4_12_MACHINE_AST_V1",
+      "status": "CONTRACT_FROZEN_RUNTIME_NOT_AUTHORIZED"
+    }
+  ],
+  "runtime_implemented": false,
+  "version": "1.0.0"
+}

@@ -1,0 +1,1016 @@
+{
+  "contract_id": "V4_12_MACHINE_VECTORS_V1",
+  "defaults": {
+    "ATR20": 1,
+    "C": 11,
+    "CLV": 0.7,
+    "H": 12,
+    "L": 11,
+    "MA20": 12,
+    "O": 10,
+    "anchor_type": "PRIOR_HIGH",
+    "atr_prior_view": 1,
+    "close_t_minus_1": null,
+    "delta3": 0,
+    "distance_zone": 1,
+    "episode_owns_anchor": true,
+    "evaluable": true,
+    "hi": 10,
+    "lo": 10,
+    "ma20_t_minus_1": null,
+    "near_high20_state": "OTHER",
+    "post_creation_sessions": 1,
+    "prior_adjacent_evaluable": false,
+    "prior_breach_count": 0,
+    "prior_breakout_exists": false,
+    "prior_delta3": 1,
+    "prior_event_peak_view": 10,
+    "prior_hard_invalidated": false,
+    "prior_held_count": 0,
+    "prior_high20": 100,
+    "prior_recovery_exists": false,
+    "prior_recovery_failed": false,
+    "prior_recovery_held_count": 0,
+    "prior_retest_qualified": false,
+    "prior_separated_sessions": 0,
+    "prior_support_state": "IDLE",
+    "prior_test_count": 0,
+    "prior_valid_event": false,
+    "recovery_line_view": 10,
+    "rel_market_1": 0,
+    "ret1": 0,
+    "support_today": "IDLE"
+  },
+  "expected_generation": "HAND_AUTHORED_REV4_RULE_BOOK_AND_INDEPENDENT_DECIMAL_ARITHMETIC; no AST helper imports",
+  "independent_oracle_source": {
+    "bytes": 13226,
+    "path": "scripts/v4_12_independent_vector_oracle_r1.py",
+    "sha256": "b42d705ae67ab753421890bc154bdc9534be1af74d1d346817b4a4f0178b0776"
+  },
+  "scope": "CONTRACT_ONLY_INDEPENDENT_ORACLE",
+  "vectors": [
+    {
+      "expected": "NO_BREAKOUT",
+      "independent_oracle_proof": "10J: strict C>10.2, CLV>=.7; independently calculated Decimal threshold=10.2",
+      "inputs": {
+        "ATR20": 2,
+        "C": "10.199999",
+        "CLV": 0.7,
+        "prior_high20": 10
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "breakout",
+      "vector_id": "B01_minus"
+    },
+    {
+      "expected": "NO_BREAKOUT",
+      "independent_oracle_proof": "10J: strict C>10.2, CLV>=.7; independently calculated Decimal threshold=10.2",
+      "inputs": {
+        "ATR20": 2,
+        "C": "10.2",
+        "CLV": 0.7,
+        "prior_high20": 10
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "breakout",
+      "vector_id": "B01_exact"
+    },
+    {
+      "expected": "BREAKOUT_TENTATIVE",
+      "independent_oracle_proof": "10J: strict C>10.2, CLV>=.7; independently calculated Decimal threshold=10.2",
+      "inputs": {
+        "ATR20": 2,
+        "C": "10.200001",
+        "CLV": 0.7,
+        "prior_high20": 10
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "breakout",
+      "vector_id": "B01_plus"
+    },
+    {
+      "expected": "NO_BREAKOUT",
+      "independent_oracle_proof": "10J: CLV below .7 defeats conjunction",
+      "inputs": {
+        "C": 11,
+        "CLV": ".699999"
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "breakout",
+      "vector_id": "B01_clv_below"
+    },
+    {
+      "expected": "BREAKOUT_TENTATIVE",
+      "independent_oracle_proof": "13A/10J: creation day age=0; acceptance forbidden even bogus held count",
+      "inputs": {
+        "post_creation_sessions": 0,
+        "prior_adjacent_evaluable": true,
+        "prior_breakout_exists": true,
+        "prior_held_count": 8
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "breakout",
+      "vector_id": "B02"
+    },
+    {
+      "expected": "PENDING",
+      "independent_oracle_proof": "41D: only one post-event evaluable close at upper",
+      "inputs": {
+        "C": 10,
+        "hi": 10,
+        "post_creation_sessions": 1,
+        "prior_held_count": 0
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "acceptance",
+      "vector_id": "B03_t1"
+    },
+    {
+      "expected": "ACCEPTED",
+      "independent_oracle_proof": "41D: two adjacent post-event evaluable closes >= upper; equality qualifies",
+      "inputs": {
+        "C": 10,
+        "hi": 10,
+        "post_creation_sessions": 2,
+        "prior_adjacent_evaluable": true,
+        "prior_held_count": 1
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "acceptance",
+      "vector_id": "B03_t2"
+    },
+    {
+      "expected": "NOT_ACCEPTED",
+      "independent_oracle_proof": "41D: missing intervening session resets count; calendar age alone insufficient",
+      "inputs": {
+        "C": 10,
+        "hi": 10,
+        "post_creation_sessions": 3,
+        "prior_adjacent_evaluable": false,
+        "prior_held_count": 1
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "acceptance",
+      "vector_id": "B03_missing"
+    },
+    {
+      "expected": "NOT_PULLBACK",
+      "independent_oracle_proof": "10K: known no prior valid event",
+      "inputs": {
+        "prior_valid_event": false
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "pullback",
+      "vector_id": "P01"
+    },
+    {
+      "expected": "PULLBACK_FAILED",
+      "independent_oracle_proof": "10K: broken prior Anchor",
+      "inputs": {
+        "prior_support_state": "BROKEN",
+        "prior_valid_event": true
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "pullback",
+      "vector_id": "P02"
+    },
+    {
+      "expected": "PULLBACK_HELD",
+      "independent_oracle_proof": "10K: held confirmed prior path evidence",
+      "inputs": {
+        "prior_valid_event": true,
+        "support_today": "HELD_CONFIRMED"
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "pullback",
+      "vector_id": "P03"
+    },
+    {
+      "expected": "UNKNOWN",
+      "independent_oracle_proof": "10K: absent prior publication is UNKNOWN; not known absence",
+      "inputs": {
+        "prior_valid_event": null
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "pullback",
+      "vector_id": "P04"
+    },
+    {
+      "expected": "PULLBACK_TO_MA",
+      "independent_oracle_proof": "10K: touched anchor type routing after higher states false",
+      "inputs": {
+        "H": 11,
+        "L": 10,
+        "anchor_type": "MA20_DYNAMIC",
+        "prior_valid_event": true
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "pullback",
+      "vector_id": "P_touch_ma"
+    },
+    {
+      "expected": "PULLBACK_TO_IMPULSE",
+      "independent_oracle_proof": "10K: touched anchor type routing after higher states false",
+      "inputs": {
+        "H": 11,
+        "L": 10,
+        "anchor_type": "BULLISH_IMPULSE_LOW",
+        "prior_valid_event": true
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "pullback",
+      "vector_id": "P_touch_impulse"
+    },
+    {
+      "expected": "PULLBACK_TO_BREAKOUT",
+      "independent_oracle_proof": "10K: touched anchor type routing after higher states false",
+      "inputs": {
+        "H": 11,
+        "L": 10,
+        "anchor_type": "PRIOR_HIGH",
+        "prior_valid_event": true
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "pullback",
+      "vector_id": "P_touch_breakout"
+    },
+    {
+      "expected": "UNKNOWN",
+      "independent_oracle_proof": "10L/R7 owner authority: unresolved MA20 reclaim preempts lower branch; UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "inputs": {
+        "C": 11,
+        "MA20": 10,
+        "close_t_minus_1": null,
+        "ma20_t_minus_1": null
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "recovery",
+      "vector_id": "R01"
+    },
+    {
+      "expected": "UNKNOWN",
+      "independent_oracle_proof": "R7: MA20_RECLAIM capability guard precedes predicate; absent owner fields remain UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE even when current C<=MA20",
+      "inputs": {
+        "C": 9,
+        "MA20": 10,
+        "close_t_minus_1": null,
+        "ma20_t_minus_1": null,
+        "ret1": 0
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "recovery",
+      "vector_id": "R01_current_false"
+    },
+    {
+      "expected": false,
+      "independent_oracle_proof": "10L: branch-only mathematical oracle; current strictly >3, previous <=0; not a grant of overall Recovery capability",
+      "inputs": {
+        "delta3": "2.999999",
+        "prior_delta3": 0,
+        "rel_market_1": 0.01
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "relative_recovery",
+      "vector_id": "R02_minus"
+    },
+    {
+      "expected": false,
+      "independent_oracle_proof": "10L: branch-only mathematical oracle; current strictly >3, previous <=0; not a grant of overall Recovery capability",
+      "inputs": {
+        "delta3": "3",
+        "prior_delta3": 0,
+        "rel_market_1": 0.01
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "relative_recovery",
+      "vector_id": "R02_exact"
+    },
+    {
+      "expected": true,
+      "independent_oracle_proof": "10L: branch-only mathematical oracle; current strictly >3, previous <=0; not a grant of overall Recovery capability",
+      "inputs": {
+        "delta3": "3.000001",
+        "prior_delta3": 0,
+        "rel_market_1": 0.01
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "relative_recovery",
+      "vector_id": "R02_plus"
+    },
+    {
+      "expected": "UNKNOWN",
+      "independent_oracle_proof": "10L: new recovery line cannot self-confirm; missing higher-priority MA owner prevents lower claim",
+      "inputs": {
+        "C": 11,
+        "MA20": 10,
+        "close_t_minus_1": null,
+        "ma20_t_minus_1": null,
+        "post_creation_sessions": 0,
+        "prior_recovery_exists": true,
+        "prior_recovery_held_count": 9
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "recovery",
+      "vector_id": "R03"
+    },
+    {
+      "expected": "RECOVERY_CONFIRMED",
+      "independent_oracle_proof": "10L: frozen prior recovery line, two held post-event sessions",
+      "inputs": {
+        "C": 11,
+        "post_creation_sessions": 2,
+        "prior_adjacent_evaluable": true,
+        "prior_recovery_exists": true,
+        "prior_recovery_held_count": 1,
+        "recovery_line_view": 10
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "recovery",
+      "vector_id": "R_confirmed"
+    },
+    {
+      "expected": "RECOVERY_FAILED",
+      "independent_oracle_proof": "10L: failure precedes all confirmation predicates",
+      "inputs": {
+        "prior_recovery_failed": true
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "recovery",
+      "vector_id": "R_failed"
+    },
+    {
+      "expected": "RECLAIMED",
+      "independent_oracle_proof": "41C rule5: first touch with C>=hi and CLV>=.5; test_count first=1",
+      "inputs": {
+        "C": 10,
+        "CLV": 0.5,
+        "H": 11,
+        "L": 10
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "support",
+      "vector_id": "S01"
+    },
+    {
+      "expected": "BREACHED_SHALLOW",
+      "independent_oracle_proof": "41C rule3: C<9.5, C>=8.5, first close breach",
+      "inputs": {
+        "C": 9.49,
+        "H": 10,
+        "L": 8
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "support",
+      "vector_id": "S02"
+    },
+    {
+      "expected": "BROKEN",
+      "independent_oracle_proof": "41C rule2: two adjacent evaluable close breaches",
+      "inputs": {
+        "C": 9.4,
+        "H": 10,
+        "L": 8,
+        "prior_adjacent_evaluable": true,
+        "prior_breach_count": 1
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "support",
+      "vector_id": "S03"
+    },
+    {
+      "expected": "UNKNOWN",
+      "independent_oracle_proof": "41C: missing session observation unknown, preserved prior state; stale true; counts reset",
+      "inputs": {
+        "evaluable": false,
+        "prior_breach_count": 1,
+        "prior_support_state": "BREACHED_SHALLOW"
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "support",
+      "vector_id": "S04_missing"
+    },
+    {
+      "expected": 0,
+      "independent_oracle_proof": "41C: missing session breaks breach counter",
+      "inputs": {
+        "evaluable": false,
+        "prior_breach_count": 1
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "breach_count",
+      "vector_id": "S04_count"
+    },
+    {
+      "expected": "BREACHED_SHALLOW",
+      "independent_oracle_proof": "41C: first breach after missing day; no unknown counted as recovery or breach",
+      "inputs": {
+        "C": 9.4,
+        "H": 10,
+        "L": 8,
+        "prior_adjacent_evaluable": false,
+        "prior_breach_count": 1
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "support",
+      "vector_id": "S04_resume"
+    },
+    {
+      "expected": "RECLAIMED",
+      "independent_oracle_proof": "41C: first reclaim only",
+      "inputs": {
+        "C": 10.2,
+        "CLV": 0.7,
+        "H": 11,
+        "L": 10
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "support",
+      "vector_id": "S05_reclaim"
+    },
+    {
+      "expected": "HELD_TENTATIVE",
+      "independent_oracle_proof": "41C rule6: actual post-reclaim held session wholly away from test band",
+      "inputs": {
+        "C": 11.5,
+        "H": 12,
+        "L": 11,
+        "prior_support_state": "RECLAIMED",
+        "prior_test_count": 1
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "support",
+      "vector_id": "S05_hold"
+    },
+    {
+      "expected": "RETESTING",
+      "independent_oracle_proof": "41C rule7: prior held re-touch, no reclaim",
+      "inputs": {
+        "C": 10.1,
+        "CLV": 0.4,
+        "H": 11,
+        "L": 10,
+        "prior_separated_sessions": 1,
+        "prior_support_state": "HELD_TENTATIVE",
+        "prior_test_count": 1
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "support",
+      "vector_id": "S05_retest"
+    },
+    {
+      "expected": "HELD_CONFIRMED",
+      "independent_oracle_proof": "41C rule4: prior test + at least one fully separated actual session + second touch/reclaim",
+      "inputs": {
+        "C": 10.2,
+        "CLV": 0.7,
+        "H": 11,
+        "L": 10,
+        "prior_separated_sessions": 1,
+        "prior_support_state": "HELD_TENTATIVE",
+        "prior_test_count": 1
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "support",
+      "vector_id": "S05_confirm"
+    },
+    {
+      "expected": "HELD_CONFIRMED",
+      "independent_oracle_proof": "41C: qualified retest episode retains separation evidence through adjacent touch session until reclaim",
+      "inputs": {
+        "C": 10.2,
+        "CLV": 0.7,
+        "H": 11,
+        "L": 10,
+        "prior_adjacent_evaluable": true,
+        "prior_retest_qualified": true,
+        "prior_support_state": "RETESTING",
+        "prior_test_count": 1
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "support",
+      "vector_id": "S05_after_retesting"
+    },
+    {
+      "expected": "TESTING",
+      "independent_oracle_proof": "41C: repeated adjacent touch cannot count as confirmed retest",
+      "inputs": {
+        "C": 10.2,
+        "CLV": 0.7,
+        "H": 11,
+        "L": 10,
+        "prior_separated_sessions": 0,
+        "prior_support_state": "HELD_TENTATIVE",
+        "prior_test_count": 1
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "support",
+      "vector_id": "S05_no_separation"
+    },
+    {
+      "expected": 2,
+      "independent_oracle_proof": "41C: independently qualified second test increments once",
+      "inputs": {
+        "C": 10.2,
+        "CLV": 0.7,
+        "H": 11,
+        "L": 10,
+        "prior_separated_sessions": 1,
+        "prior_test_count": 1
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "next_test_count",
+      "vector_id": "S05_test_count"
+    },
+    {
+      "expected": "BROKEN",
+      "independent_oracle_proof": "41C rule1: terminal price-path state cannot revive",
+      "inputs": {
+        "C": 100,
+        "H": 101,
+        "L": 99,
+        "prior_support_state": "BROKEN"
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "support",
+      "vector_id": "S06"
+    },
+    {
+      "expected": "INVALIDATED",
+      "independent_oracle_proof": "41C rule1: terminal administrative state preserved; independent unknown observation metadata still stale",
+      "inputs": {
+        "evaluable": false,
+        "prior_support_state": "INVALIDATED"
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "support",
+      "vector_id": "S06_admin"
+    },
+    {
+      "expected": "BROKEN",
+      "independent_oracle_proof": "41C rule2: deep strict C<8.5",
+      "inputs": {
+        "C": 8.49,
+        "H": 9,
+        "L": 7
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "support",
+      "vector_id": "S_deep"
+    },
+    {
+      "expected": false,
+      "independent_oracle_proof": "41C strict <; exact .5ATR lower boundary not breached",
+      "inputs": {
+        "C": 9.5
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "close_breach",
+      "vector_id": "S_breach_exact"
+    },
+    {
+      "expected": true,
+      "independent_oracle_proof": "41C touch L<=10.25 inclusive boundary",
+      "inputs": {
+        "H": 11,
+        "L": 10.25
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "touch",
+      "vector_id": "S_touch_exact"
+    },
+    {
+      "expected": 9,
+      "independent_oracle_proof": "41A0 cash dividend: 1*10-1=9; hypothetical authenticated transform, not corporate action rate inference",
+      "inputs": {
+        "alpha": 1,
+        "anchor_original_price": 10,
+        "beta": -1
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "anchor_price_view",
+      "vector_id": "A01"
+    },
+    {
+      "expected": 5,
+      "independent_oracle_proof": "41A0 bonus shares: .5*10=5; hypothetical authenticated transform, not corporate action rate inference",
+      "inputs": {
+        "alpha": 0.5,
+        "anchor_original_price": 10,
+        "beta": 0
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "anchor_price_view",
+      "vector_id": "A02"
+    },
+    {
+      "expected": 8.4,
+      "independent_oracle_proof": "41A0 rights issue source-bound affine example: .8*10+.4=8.4; hypothetical authenticated transform, not corporate action rate inference",
+      "inputs": {
+        "alpha": 0.8,
+        "anchor_original_price": 10,
+        "beta": 0.4
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "anchor_price_view",
+      "vector_id": "A03"
+    },
+    {
+      "expected": 8,
+      "independent_oracle_proof": "41A0 same-day new accepted source revision: 1*10-2=8; original remains 10; hypothetical authenticated transform, not corporate action rate inference",
+      "inputs": {
+        "alpha": 1,
+        "anchor_original_price": 10,
+        "beta": -2
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "anchor_price_view",
+      "vector_id": "A06"
+    },
+    {
+      "expected": 2,
+      "independent_oracle_proof": "ATR is difference; dividend beta excluded",
+      "inputs": {
+        "alpha": 1,
+        "anchor_original_atr": 2,
+        "beta": -1
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "anchor_atr_view",
+      "vector_id": "A01_ATR"
+    },
+    {
+      "expected": 1,
+      "independent_oracle_proof": "ATR .5*2=1; no additive shift",
+      "inputs": {
+        "alpha": 0.5,
+        "anchor_original_atr": 2
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "anchor_atr_view",
+      "vector_id": "A02_ATR"
+    },
+    {
+      "expected": "UNKNOWN:PRICE_BASIS_MISMATCH",
+      "independent_oracle_proof": "41A0 no deterministic source-bound conversion",
+      "inputs": {
+        "convertible": false
+      },
+      "kind": "GATE",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "coordinate_gate",
+      "vector_id": "A04"
+    },
+    {
+      "expected": true,
+      "independent_oracle_proof": "41A0 original bytes immutable under observation rebase",
+      "inputs": {
+        "alpha": 0.5,
+        "beta": 0,
+        "original": {
+          "price": 10,
+          "revision": "r1"
+        }
+      },
+      "kind": "GATE",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "immutable_anchor",
+      "vector_id": "A05"
+    },
+    {
+      "expected": false,
+      "independent_oracle_proof": "41A0 coefficient equality never proves revision identity",
+      "inputs": {
+        "left": [
+          "QFQ",
+          "r1"
+        ],
+        "right": [
+          "QFQ",
+          "r2"
+        ],
+        "same_coefficients": true
+      },
+      "kind": "GATE",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "basis_identity",
+      "vector_id": "A06_identity"
+    },
+    {
+      "expected": "RECLAIMED",
+      "independent_oracle_proof": "Cross corporate action: original 10 -> observation9, all price/ATR in same view; first reclaim",
+      "inputs": {
+        "C": 9.5,
+        "CLV": 0.7,
+        "H": 10,
+        "L": 9,
+        "atr_prior_view": 1,
+        "hi": 9,
+        "lo": 9
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "support",
+      "vector_id": "A_cross_support"
+    },
+    {
+      "expected": "0.111111111111111111111111111",
+      "independent_oracle_proof": "Independent Decimal: common-coordinate endpoint/base minus unit; no raw old-basis return",
+      "inputs": {
+        "endpoint_price_view": 10,
+        "start_price_view": 9
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "common_coordinate_return",
+      "vector_id": "A_return"
+    },
+    {
+      "expected": false,
+      "independent_oracle_proof": "41A: two actual right sessions; available date is t2 confirmation, no backfill",
+      "inputs": {
+        "pivot_left_count": 2,
+        "pivot_low_strict": true,
+        "pivot_right_count": 0
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "pivot_available",
+      "vector_id": "T01_t0"
+    },
+    {
+      "expected": false,
+      "independent_oracle_proof": "41A: two actual right sessions; available date is t2 confirmation, no backfill",
+      "inputs": {
+        "pivot_left_count": 2,
+        "pivot_low_strict": true,
+        "pivot_right_count": 1
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "pivot_available",
+      "vector_id": "T01_t1"
+    },
+    {
+      "expected": true,
+      "independent_oracle_proof": "41A: two actual right sessions; available date is t2 confirmation, no backfill",
+      "inputs": {
+        "pivot_left_count": 2,
+        "pivot_low_strict": true,
+        "pivot_right_count": 2
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "pivot_available",
+      "vector_id": "T01_t2"
+    },
+    {
+      "expected": "IDLE",
+      "independent_oracle_proof": "41A: gap registration day cannot test itself",
+      "inputs": {
+        "anchor_type": "GAP_ZONE",
+        "post_creation_sessions": 0
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "support",
+      "vector_id": "T02"
+    },
+    {
+      "expected": true,
+      "independent_oracle_proof": "41A gap L>previous high",
+      "inputs": {
+        "L": 11,
+        "prior_high_view": 10
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "gap_qualified",
+      "vector_id": "T02_gap"
+    },
+    {
+      "expected": "IDLE",
+      "independent_oracle_proof": "41B impulse same-day no test",
+      "inputs": {
+        "anchor_type": "BULLISH_IMPULSE_BODY",
+        "post_creation_sessions": 0
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "support",
+      "vector_id": "T03_today"
+    },
+    {
+      "expected": "RECLAIMED",
+      "independent_oracle_proof": "41B next market session earliest test",
+      "inputs": {
+        "C": 10.5,
+        "H": 11,
+        "L": 10,
+        "anchor_type": "BULLISH_IMPULSE_BODY",
+        "post_creation_sessions": 1
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "support",
+      "vector_id": "T03_next"
+    },
+    {
+      "expected": true,
+      "independent_oracle_proof": "41B exact inclusive body/range/CLV/amount; relative strict positive",
+      "inputs": {
+        "C": 11,
+        "CLV": 0.7,
+        "H": 11,
+        "L": 10,
+        "O": 10,
+        "amount_ratio20": 1.2,
+        "atr_prior_view": 1,
+        "rel_market_1": 0.01
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "impulse",
+      "vector_id": "I_exact"
+    },
+    {
+      "expected": "UNKNOWN",
+      "independent_oracle_proof": "41B missing/flat-limit CLV cannot make impulse TRUE",
+      "inputs": {
+        "C": 11,
+        "CLV": null,
+        "H": 11,
+        "L": 10,
+        "O": 10,
+        "amount_ratio20": 1.2,
+        "atr_prior_view": 1,
+        "rel_market_1": 0.01
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "impulse",
+      "vector_id": "I_flat"
+    },
+    {
+      "expected": "BREAKOUT_TENTATIVE",
+      "independent_oracle_proof": "13A: D2 is not an AST input; perturbation discarded by dependency projection",
+      "inputs": {
+        "ATR20": 2,
+        "C": 11,
+        "CLV": 0.7,
+        "D2": {
+          "eligibility": "TRUE"
+        },
+        "prior_high20": 10
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "breakout",
+      "vector_id": "D01"
+    },
+    {
+      "expected": "BREAKOUT_TENTATIVE",
+      "independent_oracle_proof": "13A: Focus/UI not an AST dependency",
+      "inputs": {
+        "ATR20": 2,
+        "C": 11,
+        "CLV": 0.7,
+        "Focus": {
+          "active": true
+        },
+        "UI": {
+          "state": "CONFIRMED"
+        },
+        "prior_high20": 10
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "breakout",
+      "vector_id": "D02"
+    },
+    {
+      "expected": "REJECT:FUTURE_SOURCE",
+      "independent_oracle_proof": "13A source available after cutoff rejected, not treated as valid today",
+      "inputs": {
+        "cutoff": "2026-10-02T15:00:00Z",
+        "source_available": "2026-10-03T00:00:00Z"
+      },
+      "kind": "GATE",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "future_source",
+      "vector_id": "D03"
+    },
+    {
+      "expected": "IDLE",
+      "independent_oracle_proof": "13A new Anchor cannot self-support regardless historical-looking supplied counts",
+      "inputs": {
+        "post_creation_sessions": 0,
+        "prior_separated_sessions": 10,
+        "prior_test_count": 10
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "support",
+      "vector_id": "D04"
+    },
+    {
+      "expected": 1.5,
+      "independent_oracle_proof": "41D (13-10)/(12-10)=1.5; not probability",
+      "inputs": {
+        "base_view": 10,
+        "event_close_view": 12,
+        "observation_close_view": 13
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "retention_value",
+      "vector_id": "RET_positive"
+    },
+    {
+      "expected": "NOT_APPLICABLE",
+      "independent_oracle_proof": "41D zero denominator; no epsilon",
+      "inputs": {
+        "base_view": 10,
+        "event_close_view": 10,
+        "observation_close_view": 13
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "retention_value",
+      "vector_id": "RET_zero"
+    },
+    {
+      "expected": "NOT_APPLICABLE",
+      "independent_oracle_proof": "41D negative denominator",
+      "inputs": {
+        "base_view": 10,
+        "event_close_view": 9,
+        "observation_close_view": 13
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "retention_value",
+      "vector_id": "RET_negative"
+    },
+    {
+      "expected": "UNKNOWN",
+      "independent_oracle_proof": "41D missing event price",
+      "inputs": {
+        "base_view": 10,
+        "event_close_view": null,
+        "observation_close_view": 13
+      },
+      "kind": "AST",
+      "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "target": "retention_value",
+      "vector_id": "RET_missing"
+    }
+  ],
+  "version": "1.0.0"
+}

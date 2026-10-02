@@ -1,0 +1,1885 @@
+{
+  "contract_id": "V4_12_MACHINE_AST_V1",
+  "definitions": {
+    "anchor_atr_view": {
+      "args": [
+        {
+          "field": "alpha"
+        },
+        {
+          "field": "anchor_original_atr"
+        }
+      ],
+      "op": "mul"
+    },
+    "anchor_price_view": {
+      "args": [
+        {
+          "args": [
+            {
+              "field": "alpha"
+            },
+            {
+              "field": "anchor_original_price"
+            }
+          ],
+          "op": "mul"
+        },
+        {
+          "field": "beta"
+        }
+      ],
+      "op": "add"
+    },
+    "body": {
+      "args": [
+        {
+          "field": "C"
+        },
+        {
+          "field": "O"
+        }
+      ],
+      "op": "sub"
+    },
+    "body_atr": {
+      "args": [
+        {
+          "field": "body"
+        },
+        {
+          "field": "atr_prior_view"
+        }
+      ],
+      "op": "div"
+    },
+    "body_mid": {
+      "args": [
+        {
+          "args": [
+            {
+              "field": "O"
+            },
+            {
+              "field": "C"
+            }
+          ],
+          "op": "add"
+        },
+        {
+          "math_constant": "TWO"
+        }
+      ],
+      "op": "div"
+    },
+    "breach_count": {
+      "op": "ordered_select",
+      "otherwise": {
+        "math_constant": "ZERO"
+      },
+      "rules": [
+        {
+          "then": {
+            "math_constant": "ZERO"
+          },
+          "when": {
+            "args": [
+              {
+                "field": "evaluable"
+              }
+            ],
+            "op": "not"
+          }
+        },
+        {
+          "then": {
+            "args": [
+              {
+                "op": "ordered_select",
+                "otherwise": {
+                  "math_constant": "ZERO"
+                },
+                "rules": [
+                  {
+                    "then": {
+                      "field": "prior_breach_count"
+                    },
+                    "when": {
+                      "field": "prior_adjacent_evaluable"
+                    }
+                  }
+                ],
+                "unknown": "STOP_WITH_UNKNOWN_BEFORE_LOWER_PRIORITY"
+              },
+              {
+                "math_constant": "ONE"
+              }
+            ],
+            "op": "add"
+          },
+          "when": {
+            "field": "close_breach"
+          }
+        }
+      ],
+      "unknown": "STOP_WITH_UNKNOWN_BEFORE_LOWER_PRIORITY"
+    },
+    "breakout_trigger": {
+      "args": [
+        {
+          "args": [
+            {
+              "field": "C"
+            },
+            {
+              "args": [
+                {
+                  "field": "prior_high20"
+                },
+                {
+                  "args": [
+                    {
+                      "parameter_id": "breakout_atr_buffer"
+                    },
+                    {
+                      "field": "ATR20"
+                    }
+                  ],
+                  "op": "mul"
+                }
+              ],
+              "op": "add"
+            }
+          ],
+          "op": "gt"
+        },
+        {
+          "args": [
+            {
+              "field": "CLV"
+            },
+            {
+              "parameter_id": "breakout_clv_min"
+            }
+          ],
+          "op": "ge"
+        }
+      ],
+      "op": "and"
+    },
+    "close_breach": {
+      "args": [
+        {
+          "field": "C"
+        },
+        {
+          "args": [
+            {
+              "field": "lo"
+            },
+            {
+              "args": [
+                {
+                  "parameter_id": "support_close_breach_atr"
+                },
+                {
+                  "field": "atr_prior_view"
+                }
+              ],
+              "op": "mul"
+            }
+          ],
+          "op": "sub"
+        }
+      ],
+      "op": "lt"
+    },
+    "common_coordinate_return": {
+      "args": [
+        {
+          "args": [
+            {
+              "field": "endpoint_price_view"
+            },
+            {
+              "field": "start_price_view"
+            }
+          ],
+          "op": "div"
+        },
+        {
+          "math_constant": "ONE"
+        }
+      ],
+      "op": "sub"
+    },
+    "deep_breach": {
+      "args": [
+        {
+          "field": "C"
+        },
+        {
+          "args": [
+            {
+              "field": "lo"
+            },
+            {
+              "args": [
+                {
+                  "parameter_id": "support_deep_breach_atr"
+                },
+                {
+                  "field": "atr_prior_view"
+                }
+              ],
+              "op": "mul"
+            }
+          ],
+          "op": "sub"
+        }
+      ],
+      "op": "lt"
+    },
+    "eod_reclaim": {
+      "args": [
+        {
+          "field": "touch"
+        },
+        {
+          "args": [
+            {
+              "field": "C"
+            },
+            {
+              "field": "hi"
+            }
+          ],
+          "op": "ge"
+        },
+        {
+          "args": [
+            {
+              "field": "CLV"
+            },
+            {
+              "parameter_id": "support_reclaim_clv_min"
+            }
+          ],
+          "op": "ge"
+        }
+      ],
+      "op": "and"
+    },
+    "episode_invalidated": {
+      "args": [
+        {
+          "field": "episode_owns_anchor"
+        },
+        {
+          "args": [
+            {
+              "field": "deep_breach"
+            },
+            {
+              "args": [
+                {
+                  "field": "breach_count"
+                },
+                {
+                  "parameter_id": "support_break_consecutive_sessions"
+                }
+              ],
+              "op": "ge"
+            }
+          ],
+          "op": "or"
+        }
+      ],
+      "op": "and"
+    },
+    "fully_outside_test_band": {
+      "args": [
+        {
+          "field": "touch"
+        }
+      ],
+      "op": "not"
+    },
+    "gap_qualified": {
+      "args": [
+        {
+          "field": "L"
+        },
+        {
+          "field": "prior_high_view"
+        }
+      ],
+      "op": "gt"
+    },
+    "hard_invalidated": {
+      "args": [
+        {
+          "field": "prior_hard_invalidated"
+        },
+        {
+          "field": "episode_invalidated"
+        }
+      ],
+      "op": "or"
+    },
+    "held_count": {
+      "op": "ordered_select",
+      "otherwise": {
+        "math_constant": "ZERO"
+      },
+      "rules": [
+        {
+          "then": {
+            "args": [
+              {
+                "op": "ordered_select",
+                "otherwise": {
+                  "math_constant": "ZERO"
+                },
+                "rules": [
+                  {
+                    "then": {
+                      "field": "prior_held_count"
+                    },
+                    "when": {
+                      "field": "prior_adjacent_evaluable"
+                    }
+                  }
+                ],
+                "unknown": "STOP_WITH_UNKNOWN_BEFORE_LOWER_PRIORITY"
+              },
+              {
+                "math_constant": "ONE"
+              }
+            ],
+            "op": "add"
+          },
+          "when": {
+            "args": [
+              {
+                "field": "evaluable"
+              },
+              {
+                "field": "old_anchor"
+              },
+              {
+                "args": [
+                  {
+                    "field": "C"
+                  },
+                  {
+                    "field": "hi"
+                  }
+                ],
+                "op": "ge"
+              }
+            ],
+            "op": "and"
+          }
+        }
+      ],
+      "unknown": "STOP_WITH_UNKNOWN_BEFORE_LOWER_PRIORITY"
+    },
+    "impulse": {
+      "args": [
+        {
+          "args": [
+            {
+              "field": "body_atr"
+            },
+            {
+              "parameter_id": "impulse_body_atr_min"
+            }
+          ],
+          "op": "ge"
+        },
+        {
+          "args": [
+            {
+              "field": "range_atr"
+            },
+            {
+              "parameter_id": "impulse_range_atr_min"
+            }
+          ],
+          "op": "ge"
+        },
+        {
+          "args": [
+            {
+              "field": "CLV"
+            },
+            {
+              "parameter_id": "impulse_clv_min"
+            }
+          ],
+          "op": "ge"
+        },
+        {
+          "args": [
+            {
+              "field": "amount_ratio20"
+            },
+            {
+              "parameter_id": "impulse_amount_ratio20_min"
+            }
+          ],
+          "op": "ge"
+        },
+        {
+          "args": [
+            {
+              "field": "rel_market_1"
+            },
+            {
+              "math_constant": "ZERO"
+            }
+          ],
+          "op": "gt"
+        }
+      ],
+      "op": "and"
+    },
+    "ma20_reclaim": {
+      "args": [
+        {
+          "field": "close_t_minus_1"
+        },
+        {
+          "field": "ma20_t_minus_1"
+        },
+        {
+          "args": [
+            {
+              "args": [
+                {
+                  "field": "close_t_minus_1"
+                },
+                {
+                  "field": "ma20_t_minus_1"
+                }
+              ],
+              "op": "le"
+            },
+            {
+              "args": [
+                {
+                  "field": "C"
+                },
+                {
+                  "field": "MA20"
+                }
+              ],
+              "op": "gt"
+            }
+          ],
+          "op": "and"
+        }
+      ],
+      "op": "require_known"
+    },
+    "next_test_count": {
+      "op": "ordered_select",
+      "otherwise": {
+        "field": "prior_test_count"
+      },
+      "rules": [
+        {
+          "then": {
+            "args": [
+              {
+                "field": "prior_test_count"
+              },
+              {
+                "math_constant": "ONE"
+              }
+            ],
+            "op": "add"
+          },
+          "when": {
+            "args": [
+              {
+                "field": "evaluable"
+              },
+              {
+                "field": "eod_reclaim"
+              },
+              {
+                "args": [
+                  {
+                    "args": [
+                      {
+                        "field": "prior_test_count"
+                      },
+                      {
+                        "math_constant": "ZERO"
+                      }
+                    ],
+                    "op": "eq"
+                  },
+                  {
+                    "field": "separated_retest"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          }
+        }
+      ],
+      "unknown": "STOP_WITH_UNKNOWN_BEFORE_LOWER_PRIORITY"
+    },
+    "old_anchor": {
+      "args": [
+        {
+          "field": "post_creation_sessions"
+        },
+        {
+          "parameter_id": "earliest_anchor_test_sessions"
+        }
+      ],
+      "op": "ge"
+    },
+    "pivot_available": {
+      "args": [
+        {
+          "args": [
+            {
+              "field": "pivot_left_count"
+            },
+            {
+              "parameter_id": "pivot_left_sessions"
+            }
+          ],
+          "op": "ge"
+        },
+        {
+          "args": [
+            {
+              "field": "pivot_right_count"
+            },
+            {
+              "parameter_id": "pivot_right_sessions"
+            }
+          ],
+          "op": "ge"
+        },
+        {
+          "field": "pivot_low_strict"
+        }
+      ],
+      "op": "and"
+    },
+    "post_peak_drawdown": {
+      "args": [
+        {
+          "field": "C"
+        },
+        {
+          "field": "prior_event_peak_view"
+        }
+      ],
+      "op": "lt"
+    },
+    "range_anchor_qualified": {
+      "args": [
+        {
+          "args": [
+            {
+              "field": "prior_range20_atr"
+            },
+            {
+              "parameter_id": "range_anchor_range_atr_max"
+            }
+          ],
+          "op": "le"
+        },
+        {
+          "args": [
+            {
+              "args": [
+                {
+                  "field": "slope20"
+                }
+              ],
+              "op": "abs"
+            },
+            {
+              "parameter_id": "range_anchor_abs_slope20_max"
+            }
+          ],
+          "op": "le"
+        }
+      ],
+      "op": "and"
+    },
+    "range_atr": {
+      "args": [
+        {
+          "args": [
+            {
+              "field": "H"
+            },
+            {
+              "field": "L"
+            }
+          ],
+          "op": "sub"
+        },
+        {
+          "field": "atr_prior_view"
+        }
+      ],
+      "op": "div"
+    },
+    "recovery_held_count": {
+      "op": "ordered_select",
+      "otherwise": {
+        "math_constant": "ZERO"
+      },
+      "rules": [
+        {
+          "then": {
+            "args": [
+              {
+                "op": "ordered_select",
+                "otherwise": {
+                  "math_constant": "ZERO"
+                },
+                "rules": [
+                  {
+                    "then": {
+                      "field": "prior_recovery_held_count"
+                    },
+                    "when": {
+                      "field": "prior_adjacent_evaluable"
+                    }
+                  }
+                ],
+                "unknown": "STOP_WITH_UNKNOWN_BEFORE_LOWER_PRIORITY"
+              },
+              {
+                "math_constant": "ONE"
+              }
+            ],
+            "op": "add"
+          },
+          "when": {
+            "args": [
+              {
+                "field": "evaluable"
+              },
+              {
+                "field": "old_anchor"
+              },
+              {
+                "args": [
+                  {
+                    "field": "C"
+                  },
+                  {
+                    "field": "recovery_line_view"
+                  }
+                ],
+                "op": "ge"
+              }
+            ],
+            "op": "and"
+          }
+        }
+      ],
+      "unknown": "STOP_WITH_UNKNOWN_BEFORE_LOWER_PRIORITY"
+    },
+    "relative_recovery": {
+      "args": [
+        {
+          "args": [
+            {
+              "field": "prior_delta3"
+            },
+            {
+              "math_constant": "ZERO"
+            }
+          ],
+          "op": "le"
+        },
+        {
+          "args": [
+            {
+              "field": "delta3"
+            },
+            {
+              "parameter_id": "recovery_delta3_threshold"
+            }
+          ],
+          "op": "gt"
+        },
+        {
+          "args": [
+            {
+              "field": "rel_market_1"
+            },
+            {
+              "math_constant": "ZERO"
+            }
+          ],
+          "op": "gt"
+        }
+      ],
+      "op": "and"
+    },
+    "retention_denominator": {
+      "args": [
+        {
+          "field": "event_close_view"
+        },
+        {
+          "field": "base_view"
+        }
+      ],
+      "op": "sub"
+    },
+    "retention_value": {
+      "op": "ordered_select",
+      "otherwise": {
+        "args": [
+          {
+            "args": [
+              {
+                "field": "observation_close_view"
+              },
+              {
+                "field": "base_view"
+              }
+            ],
+            "op": "sub"
+          },
+          {
+            "field": "retention_denominator"
+          }
+        ],
+        "op": "div"
+      },
+      "rules": [
+        {
+          "then": {
+            "enum": "NOT_APPLICABLE"
+          },
+          "when": {
+            "args": [
+              {
+                "field": "retention_denominator"
+              },
+              {
+                "math_constant": "ZERO"
+              }
+            ],
+            "op": "le"
+          }
+        }
+      ],
+      "unknown": "STOP_WITH_UNKNOWN_BEFORE_LOWER_PRIORITY"
+    },
+    "separated_retest": {
+      "args": [
+        {
+          "args": [
+            {
+              "field": "prior_test_count"
+            },
+            {
+              "math_constant": "ZERO"
+            }
+          ],
+          "op": "gt"
+        },
+        {
+          "args": [
+            {
+              "args": [
+                {
+                  "field": "prior_separated_sessions"
+                },
+                {
+                  "parameter_id": "support_separated_retest_sessions"
+                }
+              ],
+              "op": "ge"
+            },
+            {
+              "args": [
+                {
+                  "args": [
+                    {
+                      "field": "prior_support_state"
+                    },
+                    {
+                      "enum": "RETESTING"
+                    }
+                  ],
+                  "op": "eq"
+                },
+                {
+                  "field": "prior_retest_qualified"
+                },
+                {
+                  "field": "prior_adjacent_evaluable"
+                }
+              ],
+              "op": "and"
+            }
+          ],
+          "op": "or"
+        },
+        {
+          "field": "touch"
+        }
+      ],
+      "op": "and"
+    },
+    "separated_sessions": {
+      "op": "ordered_select",
+      "otherwise": {
+        "math_constant": "ZERO"
+      },
+      "rules": [
+        {
+          "then": {
+            "math_constant": "ZERO"
+          },
+          "when": {
+            "args": [
+              {
+                "field": "evaluable"
+              }
+            ],
+            "op": "not"
+          }
+        },
+        {
+          "then": {
+            "math_constant": "ZERO"
+          },
+          "when": {
+            "field": "touch"
+          }
+        },
+        {
+          "then": {
+            "args": [
+              {
+                "field": "prior_separated_sessions"
+              },
+              {
+                "math_constant": "ONE"
+              }
+            ],
+            "op": "add"
+          },
+          "when": {
+            "args": [
+              {
+                "field": "prior_test_count"
+              },
+              {
+                "math_constant": "ZERO"
+              }
+            ],
+            "op": "gt"
+          }
+        }
+      ],
+      "unknown": "STOP_WITH_UNKNOWN_BEFORE_LOWER_PRIORITY"
+    },
+    "touch": {
+      "args": [
+        {
+          "args": [
+            {
+              "field": "L"
+            },
+            {
+              "args": [
+                {
+                  "field": "hi"
+                },
+                {
+                  "args": [
+                    {
+                      "parameter_id": "support_touch_atr_buffer"
+                    },
+                    {
+                      "field": "atr_prior_view"
+                    }
+                  ],
+                  "op": "mul"
+                }
+              ],
+              "op": "add"
+            }
+          ],
+          "op": "le"
+        },
+        {
+          "args": [
+            {
+              "field": "H"
+            },
+            {
+              "args": [
+                {
+                  "field": "lo"
+                },
+                {
+                  "args": [
+                    {
+                      "parameter_id": "support_touch_atr_buffer"
+                    },
+                    {
+                      "field": "atr_prior_view"
+                    }
+                  ],
+                  "op": "mul"
+                }
+              ],
+              "op": "sub"
+            }
+          ],
+          "op": "ge"
+        }
+      ],
+      "op": "and"
+    }
+  },
+  "freeze_scope": "CONTRACT_DESIGN_ONLY",
+  "grammar": {
+    "leaf": [
+      "field",
+      "parameter_id",
+      "math_constant",
+      "enum"
+    ],
+    "operations": [
+      "and",
+      "or",
+      "not",
+      "eq",
+      "ge",
+      "gt",
+      "lt",
+      "le",
+      "add",
+      "sub",
+      "mul",
+      "div",
+      "abs",
+      "require_known",
+      "ordered_select"
+    ]
+  },
+  "machines": {
+    "acceptance": {
+      "op": "ordered_select",
+      "otherwise": {
+        "enum": "NOT_ACCEPTED"
+      },
+      "rules": [
+        {
+          "then": {
+            "enum": "BROKEN"
+          },
+          "when": {
+            "field": "hard_invalidated"
+          }
+        },
+        {
+          "then": {
+            "enum": "UNKNOWN"
+          },
+          "when": {
+            "args": [
+              {
+                "field": "evaluable"
+              }
+            ],
+            "op": "not"
+          }
+        },
+        {
+          "then": {
+            "enum": "ACCEPTED"
+          },
+          "when": {
+            "args": [
+              {
+                "args": [
+                  {
+                    "field": "post_creation_sessions"
+                  },
+                  {
+                    "parameter_id": "earliest_anchor_test_sessions"
+                  }
+                ],
+                "op": "ge"
+              },
+              {
+                "args": [
+                  {
+                    "field": "held_count"
+                  },
+                  {
+                    "parameter_id": "acceptance_consecutive_sessions"
+                  }
+                ],
+                "op": "ge"
+              }
+            ],
+            "op": "and"
+          }
+        },
+        {
+          "then": {
+            "enum": "PENDING"
+          },
+          "when": {
+            "args": [
+              {
+                "field": "post_creation_sessions"
+              },
+              {
+                "parameter_id": "acceptance_consecutive_sessions"
+              }
+            ],
+            "op": "lt"
+          }
+        }
+      ],
+      "unknown": "STOP_WITH_UNKNOWN_BEFORE_LOWER_PRIORITY"
+    },
+    "breakout": {
+      "op": "ordered_select",
+      "otherwise": {
+        "enum": "NO_BREAKOUT"
+      },
+      "rules": [
+        {
+          "then": {
+            "enum": "UNKNOWN"
+          },
+          "when": {
+            "args": [
+              {
+                "field": "evaluable"
+              }
+            ],
+            "op": "not"
+          }
+        },
+        {
+          "then": {
+            "enum": "FAILED_BREAKOUT"
+          },
+          "when": {
+            "args": [
+              {
+                "field": "prior_breakout_exists"
+              },
+              {
+                "args": [
+                  {
+                    "args": [
+                      {
+                        "field": "prior_support_state"
+                      },
+                      {
+                        "enum": "BROKEN"
+                      }
+                    ],
+                    "op": "eq"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "prior_support_state"
+                      },
+                      {
+                        "enum": "INVALIDATED"
+                      }
+                    ],
+                    "op": "eq"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          }
+        },
+        {
+          "then": {
+            "enum": "BREAKOUT_ACCEPTED"
+          },
+          "when": {
+            "args": [
+              {
+                "field": "prior_breakout_exists"
+              },
+              {
+                "args": [
+                  {
+                    "field": "post_creation_sessions"
+                  },
+                  {
+                    "parameter_id": "earliest_anchor_test_sessions"
+                  }
+                ],
+                "op": "ge"
+              },
+              {
+                "args": [
+                  {
+                    "args": [
+                      {
+                        "field": "support_today"
+                      },
+                      {
+                        "enum": "HELD_CONFIRMED"
+                      }
+                    ],
+                    "op": "eq"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "held_count"
+                      },
+                      {
+                        "parameter_id": "acceptance_consecutive_sessions"
+                      }
+                    ],
+                    "op": "ge"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          }
+        },
+        {
+          "then": {
+            "enum": "TESTING"
+          },
+          "when": {
+            "args": [
+              {
+                "field": "prior_breakout_exists"
+              },
+              {
+                "args": [
+                  {
+                    "field": "post_creation_sessions"
+                  },
+                  {
+                    "parameter_id": "earliest_anchor_test_sessions"
+                  }
+                ],
+                "op": "ge"
+              },
+              {
+                "field": "touch"
+              }
+            ],
+            "op": "and"
+          }
+        },
+        {
+          "then": {
+            "enum": "BREAKOUT_TENTATIVE"
+          },
+          "when": {
+            "field": "prior_breakout_exists"
+          }
+        },
+        {
+          "then": {
+            "enum": "BREAKOUT_TENTATIVE"
+          },
+          "when": {
+            "field": "breakout_trigger"
+          }
+        },
+        {
+          "then": {
+            "enum": "APPROACHING"
+          },
+          "when": {
+            "args": [
+              {
+                "field": "near_high20_state"
+              },
+              {
+                "enum": "NEAR"
+              }
+            ],
+            "op": "eq"
+          }
+        }
+      ],
+      "unknown": "STOP_WITH_UNKNOWN_BEFORE_LOWER_PRIORITY"
+    },
+    "pullback": {
+      "op": "ordered_select",
+      "otherwise": {
+        "enum": "NOT_PULLBACK"
+      },
+      "rules": [
+        {
+          "then": {
+            "enum": "NOT_PULLBACK"
+          },
+          "when": {
+            "args": [
+              {
+                "field": "prior_valid_event"
+              }
+            ],
+            "op": "not"
+          }
+        },
+        {
+          "then": {
+            "enum": "PULLBACK_FAILED"
+          },
+          "when": {
+            "args": [
+              {
+                "args": [
+                  {
+                    "field": "prior_support_state"
+                  },
+                  {
+                    "enum": "BROKEN"
+                  }
+                ],
+                "op": "eq"
+              },
+              {
+                "args": [
+                  {
+                    "field": "prior_support_state"
+                  },
+                  {
+                    "enum": "INVALIDATED"
+                  }
+                ],
+                "op": "eq"
+              }
+            ],
+            "op": "or"
+          }
+        },
+        {
+          "then": {
+            "enum": "UNKNOWN"
+          },
+          "when": {
+            "args": [
+              {
+                "field": "evaluable"
+              }
+            ],
+            "op": "not"
+          }
+        },
+        {
+          "then": {
+            "enum": "PULLBACK_HELD"
+          },
+          "when": {
+            "args": [
+              {
+                "field": "support_today"
+              },
+              {
+                "enum": "HELD_CONFIRMED"
+              }
+            ],
+            "op": "eq"
+          }
+        },
+        {
+          "then": {
+            "enum": "PULLBACK_RECLAIMED"
+          },
+          "when": {
+            "args": [
+              {
+                "args": [
+                  {
+                    "field": "support_today"
+                  },
+                  {
+                    "enum": "RECLAIMED"
+                  }
+                ],
+                "op": "eq"
+              },
+              {
+                "args": [
+                  {
+                    "field": "support_today"
+                  },
+                  {
+                    "enum": "HELD_TENTATIVE"
+                  }
+                ],
+                "op": "eq"
+              }
+            ],
+            "op": "or"
+          }
+        },
+        {
+          "then": {
+            "enum": "PULLBACK_TO_MA"
+          },
+          "when": {
+            "args": [
+              {
+                "field": "touch"
+              },
+              {
+                "args": [
+                  {
+                    "args": [
+                      {
+                        "field": "anchor_type"
+                      },
+                      {
+                        "enum": "MA20_DYNAMIC"
+                      }
+                    ],
+                    "op": "eq"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "anchor_type"
+                      },
+                      {
+                        "enum": "MA60_DYNAMIC"
+                      }
+                    ],
+                    "op": "eq"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          }
+        },
+        {
+          "then": {
+            "enum": "PULLBACK_TO_IMPULSE"
+          },
+          "when": {
+            "args": [
+              {
+                "field": "touch"
+              },
+              {
+                "args": [
+                  {
+                    "args": [
+                      {
+                        "field": "anchor_type"
+                      },
+                      {
+                        "enum": "BULLISH_IMPULSE_BODY"
+                      }
+                    ],
+                    "op": "eq"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "anchor_type"
+                      },
+                      {
+                        "enum": "BULLISH_IMPULSE_LOW"
+                      }
+                    ],
+                    "op": "eq"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          }
+        },
+        {
+          "then": {
+            "enum": "PULLBACK_TO_BREAKOUT"
+          },
+          "when": {
+            "field": "touch"
+          }
+        },
+        {
+          "then": {
+            "enum": "PULLBACK_IN_PROGRESS"
+          },
+          "when": {
+            "field": "post_peak_drawdown"
+          }
+        }
+      ],
+      "unknown": "STOP_WITH_UNKNOWN_BEFORE_LOWER_PRIORITY"
+    },
+    "recovery": {
+      "op": "ordered_select",
+      "otherwise": {
+        "enum": "NONE"
+      },
+      "rules": [
+        {
+          "then": {
+            "enum": "RECOVERY_FAILED"
+          },
+          "when": {
+            "field": "prior_recovery_failed"
+          }
+        },
+        {
+          "then": {
+            "enum": "RECOVERY_CONFIRMED"
+          },
+          "when": {
+            "args": [
+              {
+                "field": "prior_recovery_exists"
+              },
+              {
+                "args": [
+                  {
+                    "field": "post_creation_sessions"
+                  },
+                  {
+                    "parameter_id": "earliest_anchor_test_sessions"
+                  }
+                ],
+                "op": "ge"
+              },
+              {
+                "args": [
+                  {
+                    "field": "recovery_held_count"
+                  },
+                  {
+                    "parameter_id": "acceptance_consecutive_sessions"
+                  }
+                ],
+                "op": "ge"
+              }
+            ],
+            "op": "and"
+          }
+        },
+        {
+          "then": {
+            "enum": "ANCHOR_RECLAIM"
+          },
+          "when": {
+            "args": [
+              {
+                "field": "prior_valid_event"
+              },
+              {
+                "args": [
+                  {
+                    "field": "post_creation_sessions"
+                  },
+                  {
+                    "parameter_id": "earliest_anchor_test_sessions"
+                  }
+                ],
+                "op": "ge"
+              },
+              {
+                "field": "eod_reclaim"
+              }
+            ],
+            "op": "and"
+          }
+        },
+        {
+          "then": {
+            "enum": "MA20_RECLAIM"
+          },
+          "when": {
+            "field": "ma20_reclaim"
+          }
+        },
+        {
+          "then": {
+            "enum": "RELATIVE_RECOVERY"
+          },
+          "when": {
+            "field": "relative_recovery"
+          }
+        },
+        {
+          "then": {
+            "enum": "BOUNCE_ONLY"
+          },
+          "when": {
+            "args": [
+              {
+                "field": "ret1"
+              },
+              {
+                "math_constant": "ZERO"
+              }
+            ],
+            "op": "gt"
+          }
+        }
+      ],
+      "unknown": "STOP_WITH_UNKNOWN_BEFORE_LOWER_PRIORITY"
+    },
+    "support": {
+      "op": "ordered_select",
+      "otherwise": {
+        "field": "prior_support_state"
+      },
+      "rules": [
+        {
+          "then": {
+            "field": "prior_support_state"
+          },
+          "when": {
+            "args": [
+              {
+                "args": [
+                  {
+                    "field": "prior_support_state"
+                  },
+                  {
+                    "enum": "BROKEN"
+                  }
+                ],
+                "op": "eq"
+              },
+              {
+                "args": [
+                  {
+                    "field": "prior_support_state"
+                  },
+                  {
+                    "enum": "INVALIDATED"
+                  }
+                ],
+                "op": "eq"
+              }
+            ],
+            "op": "or"
+          }
+        },
+        {
+          "then": {
+            "enum": "IDLE"
+          },
+          "when": {
+            "args": [
+              {
+                "args": [
+                  {
+                    "field": "post_creation_sessions"
+                  },
+                  {
+                    "parameter_id": "earliest_anchor_test_sessions"
+                  }
+                ],
+                "op": "ge"
+              }
+            ],
+            "op": "not"
+          }
+        },
+        {
+          "then": {
+            "enum": "UNKNOWN"
+          },
+          "when": {
+            "args": [
+              {
+                "field": "evaluable"
+              }
+            ],
+            "op": "not"
+          }
+        },
+        {
+          "then": {
+            "enum": "BROKEN"
+          },
+          "when": {
+            "args": [
+              {
+                "field": "deep_breach"
+              },
+              {
+                "args": [
+                  {
+                    "field": "breach_count"
+                  },
+                  {
+                    "parameter_id": "support_break_consecutive_sessions"
+                  }
+                ],
+                "op": "ge"
+              }
+            ],
+            "op": "or"
+          }
+        },
+        {
+          "then": {
+            "enum": "BREACHED_SHALLOW"
+          },
+          "when": {
+            "field": "close_breach"
+          }
+        },
+        {
+          "then": {
+            "enum": "HELD_CONFIRMED"
+          },
+          "when": {
+            "args": [
+              {
+                "field": "separated_retest"
+              },
+              {
+                "field": "eod_reclaim"
+              }
+            ],
+            "op": "and"
+          }
+        },
+        {
+          "then": {
+            "enum": "RECLAIMED"
+          },
+          "when": {
+            "args": [
+              {
+                "field": "eod_reclaim"
+              },
+              {
+                "args": [
+                  {
+                    "args": [
+                      {
+                        "args": [
+                          {
+                            "field": "prior_support_state"
+                          },
+                          {
+                            "enum": "TESTING"
+                          }
+                        ],
+                        "op": "eq"
+                      },
+                      {
+                        "args": [
+                          {
+                            "field": "prior_support_state"
+                          },
+                          {
+                            "enum": "BREACHED_SHALLOW"
+                          }
+                        ],
+                        "op": "eq"
+                      }
+                    ],
+                    "op": "or"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "prior_test_count"
+                      },
+                      {
+                        "math_constant": "ZERO"
+                      }
+                    ],
+                    "op": "eq"
+                  }
+                ],
+                "op": "or"
+              }
+            ],
+            "op": "and"
+          }
+        },
+        {
+          "then": {
+            "enum": "HELD_TENTATIVE"
+          },
+          "when": {
+            "args": [
+              {
+                "args": [
+                  {
+                    "field": "prior_support_state"
+                  },
+                  {
+                    "enum": "RECLAIMED"
+                  }
+                ],
+                "op": "eq"
+              },
+              {
+                "args": [
+                  {
+                    "field": "held_count"
+                  },
+                  {
+                    "parameter_id": "support_tentative_hold_sessions"
+                  }
+                ],
+                "op": "ge"
+              },
+              {
+                "args": [
+                  {
+                    "field": "close_breach"
+                  }
+                ],
+                "op": "not"
+              }
+            ],
+            "op": "and"
+          }
+        },
+        {
+          "then": {
+            "enum": "RETESTING"
+          },
+          "when": {
+            "args": [
+              {
+                "args": [
+                  {
+                    "args": [
+                      {
+                        "field": "prior_support_state"
+                      },
+                      {
+                        "enum": "HELD_TENTATIVE"
+                      }
+                    ],
+                    "op": "eq"
+                  },
+                  {
+                    "args": [
+                      {
+                        "field": "prior_support_state"
+                      },
+                      {
+                        "enum": "HELD_CONFIRMED"
+                      }
+                    ],
+                    "op": "eq"
+                  }
+                ],
+                "op": "or"
+              },
+              {
+                "field": "touch"
+              },
+              {
+                "args": [
+                  {
+                    "field": "eod_reclaim"
+                  }
+                ],
+                "op": "not"
+              }
+            ],
+            "op": "and"
+          }
+        },
+        {
+          "then": {
+            "enum": "TESTING"
+          },
+          "when": {
+            "field": "touch"
+          }
+        },
+        {
+          "then": {
+            "enum": "APPROACHING"
+          },
+          "when": {
+            "args": [
+              {
+                "field": "distance_zone"
+              },
+              {
+                "args": [
+                  {
+                    "parameter_id": "support_approach_atr"
+                  },
+                  {
+                    "field": "atr_prior_view"
+                  }
+                ],
+                "op": "mul"
+              }
+            ],
+            "op": "le"
+          }
+        }
+      ],
+      "unknown": "STOP_WITH_UNKNOWN_BEFORE_LOWER_PRIORITY"
+    }
+  },
+  "math_constants": {
+    "ONE": {
+      "reason": "unit count increment / multiplicative identity",
+      "value": 1
+    },
+    "TWO": {
+      "reason": "arithmetic midpoint divisor",
+      "value": 2
+    },
+    "ZERO": {
+      "reason": "additive identity / zero comparison / empty count",
+      "value": 0
+    }
+  },
+  "parameter_set_id": "V4_12_ENGINEERING_CANDIDATE_R1",
+  "permissions": {
+    "focus_cutover_permission": false,
+    "global_mandatory_adoption": false,
+    "production_permission": false,
+    "shadow_production_permission": false
+  },
+  "runtime_implemented": false,
+  "tooling_only": true,
+  "unknown_reason": "EXACT_SOURCE_REASON_OR_UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+  "unknown_semantics": "KLEENE; ordered UNKNOWN stops before lower priority; missing numerator/denominator stays UNKNOWN; division <=0 UNKNOWN except retention NOT_APPLICABLE",
+  "version": "1.0.0"
+}

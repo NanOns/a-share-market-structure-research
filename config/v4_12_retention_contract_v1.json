@@ -1,0 +1,27 @@
+{
+  "acceptance_ast_ref": "config/v4_12_machine_ast_v1.json#/machines/acceptance",
+  "acceptance_support_distinct": true,
+  "availability": "Append observation only when target market session arrived and source cutoff visible",
+  "contract_id": "RETENTION_V1",
+  "coordinate": "All event close, base and observation close transformed to same observation identity",
+  "denominator_nonpositive": "NOT_APPLICABLE",
+  "epsilon_allowed": false,
+  "event_facts_immutable": true,
+  "formula_ast_ref": "config/v4_12_machine_ast_v1.json#/definitions/retention_value",
+  "freeze_scope": "CONTRACT_DESIGN_ONLY",
+  "horizons": [
+    "retention_horizon_one",
+    "retention_horizon_three"
+  ],
+  "missing": "UNKNOWN",
+  "parameter_set_id": "V4_12_ENGINEERING_CANDIDATE_R1",
+  "permissions": {
+    "focus_cutover_permission": false,
+    "global_mandatory_adoption": false,
+    "production_permission": false,
+    "shadow_production_permission": false
+  },
+  "runtime_implemented": false,
+  "value_range": "UNBOUNDED_REAL_NOT_PROBABILITY",
+  "version": "1.0.0"
+}

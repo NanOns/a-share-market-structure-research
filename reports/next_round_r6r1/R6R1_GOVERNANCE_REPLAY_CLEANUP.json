@@ -1,0 +1,144 @@
+{
+  "G01": "PASS",
+  "G02": "PASS",
+  "agents": {
+    "baseline": "1c46d6681ba1d0540551bcc0f75b35c545ff2769",
+    "bytes": 1616,
+    "exact_bytes": true,
+    "path": "AGENTS.md",
+    "sha256": "fe3ca08043743023f23d5767bf8d3570e2dc4a72c7215056a2daba53a0ea7a77"
+  },
+  "contract_id": "R6R1_GOVERNANCE_REPLAY_CLEANUP_V1",
+  "external_acceptance_claim": false,
+  "next_stage": "V4_12A_CONTRACT_DESIGN_FREEZE_ONLY",
+  "permissions": {
+    "focus_cutover_permission": false,
+    "global_mandatory_adoption": false,
+    "production_permission": false,
+    "shadow_production_permission": false
+  },
+  "prepare": {
+    "bytes": 10478,
+    "path": "scripts/prepare_v4_11_promotion_r1.py",
+    "sha256": "82f36cfbbc3c1c014a8820601db73603a2bde41b61e5804320178b3c7304ebf6"
+  },
+  "promotion_post_validator": {
+    "R5_hard_gates": {
+      "P01_parity_scope": "PASS",
+      "P02_business_mismatch": "PASS",
+      "P03_quality_mismatch": "PASS",
+      "P04_UNKNOWN_reason_mismatch": "PASS",
+      "P05_t_minus_1_known": "PASS",
+      "P06_owner_oracle": "PASS",
+      "P07_owner_publications": "PASS",
+      "P08_D2_oracle": "PASS",
+      "P09_owner_field_counts": "PASS",
+      "P10_raw_fallback": "PASS",
+      "P11_unsealed_helper": "PASS",
+      "P12_wiring_missing": "PASS",
+      "P13_coefficient_gate": "PASS",
+      "P14_frozen_D0": "PASS",
+      "P15_formal_scope": "PASS",
+      "P16_diagnostic_scope": "PASS",
+      "P17_normalized_AST": "PASS",
+      "P18_threshold_order": "PASS",
+      "P19_event_UNKNOWN": "PASS",
+      "P20_reconstructed_scope": "PASS"
+    },
+    "V4_12_runtime_executed": false,
+    "candidate_sha256": "d8d96dce559eb968e6446f0626766980f6fb045fca1219e3e01fcd0a980b9928",
+    "checks": {
+      "P01_schema_stage_external_decision": "PASS",
+      "P02_parent_V4_10_exact": "PASS",
+      "P03_implementation_commit_exact": "PASS",
+      "P04_audited_seal_descendant": "PASS",
+      "P05_external_acceptance_document_exact": "PASS",
+      "P06_R4A_seal_exact": "PASS",
+      "P07_R5A_parity_exact": "PASS",
+      "P08_owner_oracle_exact": "PASS",
+      "P09_R5A_seal_exact": "PASS",
+      "P10_D2_AST_exact": "PASS",
+      "P11_D2_owner_oracle_exact": "PASS",
+      "P12_residual_attribution_exact": "PASS",
+      "P13_business_diff_exact": "PASS",
+      "P14_D2_readback_exact": "PASS",
+      "P15_Event_replay_exact": "PASS",
+      "P16_capability_matrix_exact": "PASS",
+      "P17_clean_checkout_exact": "PASS",
+      "P18_Data_Head_unchanged": "PASS",
+      "P19_Dev_Baseline_unchanged": "PASS",
+      "P20_PIT_membership_unchanged": "PASS",
+      "P21_all_scoped_heads_unchanged": "PASS",
+      "P22_permissions_false": "PASS",
+      "P23_capability_map_exact": "PASS",
+      "P24_historical_AS_RECORDED_not_overclaimed": "PASS",
+      "P25_diagnostic_not_promoted": "PASS",
+      "P26_M14_M2_separate_unresolved": "PASS",
+      "P27_idempotent_promotion_parent_preserved": "PASS",
+      "P28_clean_detached_validation": "PASS",
+      "P29_exact_evidence_set": "PASS",
+      "P30_expected_V4_10_fail_closed_boundary": "PASS",
+      "P31_validator_hash_bound": "PASS",
+      "P32_entry_surface_no_runtime": "PASS",
+      "P33_post_entry_exact": "PASS"
+    },
+    "contract_id": "V4_11_PROMOTION_READ_ONLY_VALIDATOR_R1",
+    "external_stage_acceptance": "V4_11_EXTERNAL_ACCEPTANCE_PASS_R5_CAPABILITY_SCOPED_ENGINEERING",
+    "post_promotion": true,
+    "status": "PASS",
+    "validator_bindings": [
+      {
+        "bytes": 3763,
+        "path": "scripts/v4_11_promotion_contract_r1.py",
+        "sha256": "b05a45c55309332f5371cec04c41e371464b0c0d7b85e4ffb46dff522fa7a1d4"
+      },
+      {
+        "bytes": 15029,
+        "path": "scripts/validate_v4_11_promotion_r1.py",
+        "sha256": "c85c7096e23efda1180cd43978631cfc78eecac73d4e42425481abcf42070556"
+      },
+      {
+        "bytes": 2625,
+        "path": "scripts/promote_v4_11_accepted_head_r1.py",
+        "sha256": "9ddda5010cecd87b25a9d0964323293441b38fd9c227720bde42dff072769dbf"
+      }
+    ]
+  },
+  "protected_artifacts": [
+    {
+      "after_sha256": "d8d96dce559eb968e6446f0626766980f6fb045fca1219e3e01fcd0a980b9928",
+      "before_sha256": "d8d96dce559eb968e6446f0626766980f6fb045fca1219e3e01fcd0a980b9928",
+      "byte_identical": true,
+      "bytes": 14090,
+      "path": "data/v4/V4_11_ACCEPTED_HEAD.json"
+    },
+    {
+      "after_sha256": "80c58f2f4ed35baa1fd2b27e6af8b400fadfbefe4ed5d85819d9349c3315e2ac",
+      "before_sha256": "80c58f2f4ed35baa1fd2b27e6af8b400fadfbefe4ed5d85819d9349c3315e2ac",
+      "byte_identical": true,
+      "bytes": 9842,
+      "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json"
+    },
+    {
+      "after_sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+      "before_sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+      "byte_identical": true,
+      "bytes": 16890,
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json"
+    },
+    {
+      "after_sha256": "ceec544a9d4c9878ad752c51275902c5916cb451a593a3f55ec176fd52b4b796",
+      "before_sha256": "ceec544a9d4c9878ad752c51275902c5916cb451a593a3f55ec176fd52b4b796",
+      "byte_identical": true,
+      "bytes": 1330,
+      "path": "reports/v4_12/V4_12_STRUCTURE_ANCHOR_SUPPORT_STAGE_ENTRY_R1.json"
+    }
+  ],
+  "repo_first": {
+    "copied_files": [],
+    "mode": "REPO_FIRST_EXACT_VALIDATION",
+    "status": "PASS"
+  },
+  "starting_remote_head": "2e3e811eb08d7e350e27c4c1e2767ba91160ef98",
+  "status": "R6R1_GOVERNANCE_REPLAY_CLEANUP_CANDIDATE_READY_FOR_EXTERNAL_AUDIT"
+}

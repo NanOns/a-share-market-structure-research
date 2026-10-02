@@ -1,0 +1,311 @@
+{
+  "contract_id": "V4_12_ANCHOR_SCHEMA_V1",
+  "dynamic_view": "new view per observation date; preserve original event/formula and old values",
+  "event_identity": "Immutable source event ID plus contract/parameter/source digest; same-day revision keeps previous_session predecessor, no backdating",
+  "freeze_scope": "CONTRACT_DESIGN_ONLY",
+  "historical_high_storage": "Inverse accepted affine transform to anchor_basis_trade_date raw; not highest historical raw number",
+  "identity": "SHA256(contract_id, security_id, source_event_id, anchor_type, anchor_trade_date, source_fact_digest, price_basis, adjustment_source_revision)",
+  "observation_view_storage": "Separate immutable view record per observation/revision; never update original Anchor current_comparison_coordinate/rebase_lineage; original stores creation identity only",
+  "original_immutable": true,
+  "parameter_set_id": "V4_12_ENGINEERING_CANDIDATE_R1",
+  "permissions": {
+    "focus_cutover_permission": false,
+    "global_mandatory_adoption": false,
+    "production_permission": false,
+    "shadow_production_permission": false
+  },
+  "pivot_ties": "Strictly lower than left/right actual-session lows; equal lows do not qualify",
+  "required_fields": [
+    "anchor_id",
+    "security_id",
+    "anchor_trade_date",
+    "available_date",
+    "available_at",
+    "anchor_type",
+    "anchor_raw_lower",
+    "anchor_raw_upper",
+    "anchor_price_basis",
+    "adjustment_contract_id",
+    "adjustment_source_identity",
+    "adjustment_source_revision",
+    "adjustment_asof",
+    "anchor_basis_trade_date",
+    "frozen_transform_coefficients",
+    "source_event_id",
+    "source_fact_digest",
+    "creation_coordinate",
+    "current_comparison_coordinate",
+    "rebase_lineage",
+    "corporate_action_transition"
+  ],
+  "runtime_implemented": false,
+  "schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+      "adjustment_asof": {
+        "type": "string"
+      },
+      "adjustment_contract_id": {
+        "type": "string"
+      },
+      "adjustment_source_identity": {
+        "type": "string"
+      },
+      "adjustment_source_revision": {
+        "type": "string"
+      },
+      "anchor_basis_trade_date": {
+        "type": "string"
+      },
+      "anchor_id": {
+        "type": "string"
+      },
+      "anchor_price_basis": {
+        "type": "string"
+      },
+      "anchor_raw_lower": {
+        "type": "number"
+      },
+      "anchor_raw_upper": {
+        "type": "number"
+      },
+      "anchor_trade_date": {
+        "type": "string"
+      },
+      "anchor_type": {
+        "type": "string"
+      },
+      "available_at": {
+        "type": "string"
+      },
+      "available_date": {
+        "type": "string"
+      },
+      "corporate_action_transition": {
+        "type": "array"
+      },
+      "creation_coordinate": {
+        "type": "object"
+      },
+      "current_comparison_coordinate": {
+        "type": "object"
+      },
+      "frozen_transform_coefficients": {
+        "type": "object"
+      },
+      "rebase_lineage": {
+        "type": "array"
+      },
+      "security_id": {
+        "type": "string"
+      },
+      "source_event_id": {
+        "type": "string"
+      },
+      "source_fact_digest": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "anchor_id",
+      "security_id",
+      "anchor_trade_date",
+      "available_date",
+      "available_at",
+      "anchor_type",
+      "anchor_raw_lower",
+      "anchor_raw_upper",
+      "anchor_price_basis",
+      "adjustment_contract_id",
+      "adjustment_source_identity",
+      "adjustment_source_revision",
+      "adjustment_asof",
+      "anchor_basis_trade_date",
+      "frozen_transform_coefficients",
+      "source_event_id",
+      "source_fact_digest",
+      "creation_coordinate",
+      "current_comparison_coordinate",
+      "rebase_lineage",
+      "corporate_action_transition"
+    ],
+    "type": "object"
+  },
+  "types": [
+    {
+      "anchor_type": "PRIOR_HIGH",
+      "available_date": "creation_date",
+      "available_time": "source publication available_at no later than cutoff",
+      "creation_rule": "breakout_trigger",
+      "earliest_test_date": "first market session AFTER available_date",
+      "fixed_or_dynamic": "fixed",
+      "invalidation_relation": "own frozen episode invalid_if only; never another Anchor",
+      "lower": "prior_high20",
+      "price_basis": "price_basis + adjustment_source_revision",
+      "required_fields": [
+        "prior_high20"
+      ],
+      "source_event": "BREAKOUT",
+      "unknown": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE_OR_EXACT_SOURCE_REASON",
+      "upper": "prior_high20"
+    },
+    {
+      "anchor_type": "BREAKOUT_LEVEL",
+      "available_date": "creation_date",
+      "available_time": "source publication available_at no later than cutoff",
+      "creation_rule": "breakout_trigger",
+      "earliest_test_date": "first market session AFTER available_date",
+      "fixed_or_dynamic": "fixed",
+      "invalidation_relation": "own frozen episode invalid_if only; never another Anchor",
+      "lower": "prior_high20",
+      "price_basis": "price_basis + adjustment_source_revision",
+      "required_fields": [
+        "prior_high20"
+      ],
+      "source_event": "BREAKOUT",
+      "unknown": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE_OR_EXACT_SOURCE_REASON",
+      "upper": "prior_high20"
+    },
+    {
+      "anchor_type": "RANGE_UPPER",
+      "available_date": "creation_date",
+      "available_time": "source publication available_at no later than cutoff",
+      "creation_rule": "range_anchor_qualified AND breakout_trigger",
+      "earliest_test_date": "first market session AFTER available_date",
+      "fixed_or_dynamic": "fixed",
+      "invalidation_relation": "own frozen episode invalid_if only; never another Anchor",
+      "lower": "prior_high20",
+      "price_basis": "price_basis + adjustment_source_revision",
+      "required_fields": [
+        "prior_high20",
+        "prior_range20_atr",
+        "slope20"
+      ],
+      "source_event": "RANGE_BREAKOUT",
+      "unknown": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE_OR_EXACT_SOURCE_REASON",
+      "upper": "prior_high20"
+    },
+    {
+      "anchor_type": "BULLISH_IMPULSE_BODY",
+      "available_date": "creation_date",
+      "available_time": "source publication available_at no later than cutoff",
+      "creation_rule": "impulse",
+      "earliest_test_date": "first market session AFTER available_date",
+      "fixed_or_dynamic": "fixed",
+      "invalidation_relation": "own frozen episode invalid_if only; never another Anchor",
+      "lower": "O",
+      "price_basis": "price_basis + adjustment_source_revision",
+      "required_fields": [
+        "O",
+        "C",
+        "H",
+        "L",
+        "CLV",
+        "atr_prior_view",
+        "amount_ratio20",
+        "rel_market_1"
+      ],
+      "source_event": "BULLISH_IMPULSE",
+      "unknown": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE_OR_EXACT_SOURCE_REASON",
+      "upper": "body_mid"
+    },
+    {
+      "anchor_type": "BULLISH_IMPULSE_LOW",
+      "available_date": "creation_date",
+      "available_time": "source publication available_at no later than cutoff",
+      "creation_rule": "impulse",
+      "earliest_test_date": "first market session AFTER available_date",
+      "fixed_or_dynamic": "fixed",
+      "invalidation_relation": "own frozen episode invalid_if only; never another Anchor",
+      "lower": "L",
+      "price_basis": "price_basis + adjustment_source_revision",
+      "required_fields": [
+        "O",
+        "C",
+        "H",
+        "L",
+        "CLV",
+        "atr_prior_view",
+        "amount_ratio20",
+        "rel_market_1"
+      ],
+      "source_event": "BULLISH_IMPULSE",
+      "unknown": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE_OR_EXACT_SOURCE_REASON",
+      "upper": "L"
+    },
+    {
+      "anchor_type": "MA20_DYNAMIC",
+      "available_date": "creation_date",
+      "available_time": "source publication available_at no later than cutoff",
+      "creation_rule": "prior registered rise event; accepted MA20 current view",
+      "earliest_test_date": "first market session AFTER available_date",
+      "fixed_or_dynamic": "dynamic",
+      "invalidation_relation": "own frozen episode invalid_if only; never another Anchor",
+      "lower": "MA20",
+      "price_basis": "price_basis + adjustment_source_revision",
+      "required_fields": [
+        "MA20"
+      ],
+      "source_event": "FROZEN_REGISTERED_RISE",
+      "unknown": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE_OR_EXACT_SOURCE_REASON",
+      "upper": "MA20"
+    },
+    {
+      "anchor_type": "MA60_DYNAMIC",
+      "available_date": "creation_date",
+      "available_time": "source publication available_at no later than cutoff",
+      "creation_rule": "prior registered rise event; accepted MA60 current view",
+      "earliest_test_date": "first market session AFTER available_date",
+      "fixed_or_dynamic": "dynamic",
+      "invalidation_relation": "own frozen episode invalid_if only; never another Anchor",
+      "lower": "MA60",
+      "price_basis": "price_basis + adjustment_source_revision",
+      "required_fields": [
+        "MA60"
+      ],
+      "source_event": "FROZEN_REGISTERED_RISE",
+      "unknown": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE_OR_EXACT_SOURCE_REASON",
+      "upper": "MA60"
+    },
+    {
+      "anchor_type": "PIVOT_LOW",
+      "available_date": "confirmation_date",
+      "available_time": "source publication available_at no later than cutoff",
+      "creation_rule": "pivot_available; pivot low strictly below all left/right actual low bars",
+      "earliest_test_date": "first market session AFTER available_date",
+      "fixed_or_dynamic": "fixed",
+      "invalidation_relation": "own frozen episode invalid_if only; never another Anchor",
+      "lower": "pivot_low",
+      "price_basis": "price_basis + adjustment_source_revision",
+      "required_fields": [
+        "pivot_left_count",
+        "pivot_right_count",
+        "pivot_low_strict",
+        "pivot_low"
+      ],
+      "source_event": "PIVOT_CONFIRMED",
+      "unknown": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE_OR_EXACT_SOURCE_REASON",
+      "upper": "pivot_low"
+    },
+    {
+      "anchor_type": "GAP_ZONE",
+      "available_date": "creation_date",
+      "available_time": "source publication available_at no later than cutoff",
+      "creation_rule": "gap_qualified",
+      "earliest_test_date": "first market session AFTER available_date",
+      "fixed_or_dynamic": "fixed",
+      "invalidation_relation": "own frozen episode invalid_if only; never another Anchor",
+      "lower": "prior_high_view",
+      "price_basis": "price_basis + adjustment_source_revision",
+      "required_fields": [
+        "prior_high_view",
+        "L"
+      ],
+      "source_event": "GAP_REGISTERED",
+      "unknown": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE_OR_EXACT_SOURCE_REASON",
+      "upper": "L"
+    }
+  ],
+  "version": "1.0.0"
+}

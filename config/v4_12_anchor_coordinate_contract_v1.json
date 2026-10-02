@@ -1,0 +1,58 @@
+{
+  "accepted_authority": {
+    "bytes": 1607,
+    "path": "data/v4/V4_03_ACCEPTED_HEAD.json",
+    "sha256": "734bd27a5d53b2f18e3d62aa96ac63c91ccc6d9f848e942bc1efc410c88d4370"
+  },
+  "basis_identity": [
+    "price_basis",
+    "adjustment_source_revision"
+  ],
+  "coefficient_equality_is_identity": false,
+  "compare_fields": [
+    "anchor",
+    "current_price",
+    "ATR",
+    "return",
+    "breach_depth",
+    "support_zone"
+  ],
+  "contract_id": "V4_12_ANCHOR_COORDINATE_V1",
+  "corporate_action_cases": [
+    "cash_dividend",
+    "bonus_shares",
+    "rights_issue",
+    "same_day_revision",
+    "cross_corporate_action_support"
+  ],
+  "difference_transform": "alpha * difference; no beta for ATR",
+  "failed_conversion": {
+    "preserve_prior_state": true,
+    "reason": "PRICE_BASIS_MISMATCH",
+    "stale": true,
+    "state": "UNKNOWN"
+  },
+  "freeze_scope": "CONTRACT_DESIGN_ONLY",
+  "level_transform": "alpha * original + beta; alpha>0; source-bound deterministic accepted historical adjustment",
+  "lineage_required": [
+    "from_basis_identity",
+    "to_basis_identity",
+    "adjustment_source_digest",
+    "asof",
+    "alpha",
+    "beta",
+    "corporate_action_transition"
+  ],
+  "original_anchor_immutable": true,
+  "parameter_set_id": "V4_12_ENGINEERING_CANDIDATE_R1",
+  "permissions": {
+    "focus_cutover_permission": false,
+    "global_mandatory_adoption": false,
+    "production_permission": false,
+    "shadow_production_permission": false
+  },
+  "return_transform": "endpoint_view/start_view - 1; start_view>0",
+  "runtime_implemented": false,
+  "same_day_revision": "New observation view/output revision against t-1 frozen event; never overwrite original or count revision as new session",
+  "version": "1.0.0"
+}

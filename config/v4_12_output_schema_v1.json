@@ -1,0 +1,239 @@
+{
+  "active_anchor_sort": [
+    "not invalidated",
+    "distance_to_C / ATR ascending",
+    "anchor_date descending",
+    "anchor_id ascending"
+  ],
+  "contract_id": "V4_12_OUTPUT_SCHEMA_V1",
+  "freeze_scope": "CONTRACT_DESIGN_ONLY",
+  "metadata_required": [
+    "contract_id",
+    "parameter_set_digest",
+    "source_publication_bindings",
+    "output_digest",
+    "observation_date",
+    "cutoff",
+    "price_basis",
+    "adjustment_source_revision"
+  ],
+  "null_value": "Only with explicit UNKNOWN/NOT_APPLICABLE quality and reason",
+  "parameter_set_id": "V4_12_ENGINEERING_CANDIDATE_R1",
+  "permissions": {
+    "focus_cutover_permission": false,
+    "global_mandatory_adoption": false,
+    "production_permission": false,
+    "shadow_production_permission": false
+  },
+  "publication_policy": "No publishing authorized; immutable revision/output digest contract only",
+  "runtime_implemented": false,
+  "schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+      "acceptance_state": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "active_anchor_id": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "adjustment_source_revision": {
+        "type": "string"
+      },
+      "anchor_view_asof_t": {
+        "type": [
+          "object",
+          "null"
+        ]
+      },
+      "basic_breakout_state": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "basic_pullback_state": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "basic_recovery_state": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "contract_id": {
+        "type": "string"
+      },
+      "cutoff": {
+        "type": "string"
+      },
+      "impulse_retention_1": {
+        "type": [
+          "number",
+          "null"
+        ]
+      },
+      "impulse_retention_3": {
+        "type": [
+          "number",
+          "null"
+        ]
+      },
+      "invalidation_facts": {
+        "type": [
+          "array",
+          "null"
+        ]
+      },
+      "last_known_support_state": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "observation_date": {
+        "type": "string"
+      },
+      "output_digest": {
+        "type": "string"
+      },
+      "parameter_set_digest": {
+        "type": "string"
+      },
+      "price_basis": {
+        "type": "string"
+      },
+      "retest_count": {
+        "type": [
+          "integer",
+          "null"
+        ]
+      },
+      "source_publication_bindings": {
+        "type": "array"
+      },
+      "stale": {
+        "type": [
+          "boolean",
+          "null"
+        ]
+      },
+      "structure_events": {
+        "type": [
+          "array",
+          "null"
+        ]
+      },
+      "structure_health": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "support_state": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "unknown_reasons": {
+        "type": [
+          "array",
+          "null"
+        ]
+      }
+    },
+    "required": [
+      "active_anchor_id",
+      "anchor_view_asof_t",
+      "basic_breakout_state",
+      "basic_pullback_state",
+      "basic_recovery_state",
+      "structure_health",
+      "structure_events",
+      "support_state",
+      "acceptance_state",
+      "impulse_retention_1",
+      "impulse_retention_3",
+      "retest_count",
+      "unknown_reasons",
+      "stale",
+      "last_known_support_state",
+      "invalidation_facts",
+      "contract_id",
+      "parameter_set_digest",
+      "source_publication_bindings",
+      "output_digest",
+      "observation_date",
+      "cutoff",
+      "price_basis",
+      "adjustment_source_revision"
+    ],
+    "type": "object"
+  },
+  "state_enum_registry": [
+    "ACCEPTED",
+    "ANCHOR_RECLAIM",
+    "APPROACHING",
+    "BOUNCE_ONLY",
+    "BREACHED_SHALLOW",
+    "BREAKOUT_ACCEPTED",
+    "BREAKOUT_TENTATIVE",
+    "BROKEN",
+    "BULLISH_IMPULSE_BODY",
+    "BULLISH_IMPULSE_LOW",
+    "FAILED_BREAKOUT",
+    "HELD_CONFIRMED",
+    "HELD_TENTATIVE",
+    "IDLE",
+    "INVALIDATED",
+    "MA20_DYNAMIC",
+    "MA20_RECLAIM",
+    "MA60_DYNAMIC",
+    "NEAR",
+    "NONE",
+    "NOT_ACCEPTED",
+    "NOT_APPLICABLE",
+    "NOT_PULLBACK",
+    "NO_BREAKOUT",
+    "PENDING",
+    "PULLBACK_FAILED",
+    "PULLBACK_HELD",
+    "PULLBACK_IN_PROGRESS",
+    "PULLBACK_RECLAIMED",
+    "PULLBACK_TO_BREAKOUT",
+    "PULLBACK_TO_IMPULSE",
+    "PULLBACK_TO_MA",
+    "RECLAIMED",
+    "RECOVERY_CONFIRMED",
+    "RECOVERY_FAILED",
+    "RELATIVE_RECOVERY",
+    "RETESTING",
+    "TESTING",
+    "UNKNOWN",
+    "UNKNOWN",
+    "INVALIDATED",
+    "RETESTING",
+    "HELD_TENTATIVE",
+    "HELD_CONFIRMED"
+  ],
+  "structure_health_mapping": {
+    "BREACHED_SHALLOW": "WEAKENING",
+    "BROKEN": "DAMAGED",
+    "HELD_CONFIRMED": "STABLE",
+    "INVALIDATED": "DAMAGED",
+    "RECLAIMED": "IMPROVING",
+    "UNKNOWN": "UNKNOWN",
+    "default": "STABLE"
+  },
+  "version": "1.0.0"
+}

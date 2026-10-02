@@ -1,0 +1,155 @@
+{
+  "all_rows_explicit": true,
+  "allowed_statuses": [
+    "FROZEN",
+    "BLOCKED_WITH_EXPLICIT_REASON"
+  ],
+  "contract_id": "V4_12_CONTRACT_COMPLETENESS_MATRIX_V1",
+  "items": [
+    {
+      "item": "structure_event_contract",
+      "path": "config/v4_12_structure_event_contract_v1.json",
+      "status": "FROZEN"
+    },
+    {
+      "item": "anchor_schema",
+      "path": "config/v4_12_anchor_schema_v1.json",
+      "status": "FROZEN"
+    },
+    {
+      "item": "anchor_coordinate_contract",
+      "path": "config/v4_12_anchor_coordinate_contract_v1.json",
+      "status": "FROZEN"
+    },
+    {
+      "item": "support_state_contract",
+      "path": "config/v4_12_support_state_contract_v1.json",
+      "status": "FROZEN"
+    },
+    {
+      "item": "retention_contract",
+      "path": "config/v4_12_retention_contract_v1.json",
+      "status": "FROZEN"
+    },
+    {
+      "item": "field_registry",
+      "path": "config/v4_12_field_registry_v1.json",
+      "status": "FROZEN"
+    },
+    {
+      "item": "producer_registry",
+      "path": "config/v4_12_producer_registry_v1.json",
+      "status": "FROZEN"
+    },
+    {
+      "item": "time_role_registry",
+      "path": "config/v4_12_time_role_registry_v1.json",
+      "status": "FROZEN"
+    },
+    {
+      "item": "input_schema",
+      "path": "config/v4_12_input_schema_v1.json",
+      "status": "FROZEN"
+    },
+    {
+      "item": "output_schema",
+      "path": "config/v4_12_output_schema_v1.json",
+      "status": "FROZEN"
+    },
+    {
+      "item": "parameter_set",
+      "path": "config/v4_12_parameter_set_v1.json",
+      "status": "FROZEN"
+    },
+    {
+      "item": "machine_ast",
+      "path": "config/v4_12_machine_ast_v1.json",
+      "status": "FROZEN"
+    },
+    {
+      "item": "machine_vectors",
+      "path": "config/v4_12_machine_vectors_v1.json",
+      "status": "FROZEN"
+    },
+    {
+      "item": "STRUCTURE_EVENT_V1",
+      "path": "config/v4_12_structure_event_contract_v1.json",
+      "status": "FROZEN"
+    },
+    {
+      "item": "Anchor identity / immutability / availability",
+      "path": "config/v4_12_anchor_schema_v1.json",
+      "status": "FROZEN"
+    },
+    {
+      "item": "Anchor coordinate / rebase lineage",
+      "path": "config/v4_12_anchor_coordinate_contract_v1.json",
+      "status": "FROZEN"
+    },
+    {
+      "item": "Support / separated retest / counter rules",
+      "path": "config/v4_12_support_state_contract_v1.json",
+      "status": "FROZEN"
+    },
+    {
+      "item": "Breakout AST",
+      "path": "config/v4_12_machine_ast_v1.json#/machines/breakout",
+      "status": "FROZEN"
+    },
+    {
+      "item": "Pullback AST",
+      "path": "config/v4_12_machine_ast_v1.json#/machines/pullback",
+      "status": "FROZEN"
+    },
+    {
+      "item": "Recovery AST / ordered UNKNOWN semantics",
+      "path": "config/v4_12_machine_ast_v1.json#/machines/recovery",
+      "status": "FROZEN"
+    },
+    {
+      "item": "Bullish Impulse AST",
+      "path": "config/v4_12_machine_ast_v1.json#/definitions/impulse",
+      "status": "FROZEN"
+    },
+    {
+      "item": "Creation-bound episode invalidation AST",
+      "path": "config/v4_12_machine_ast_v1.json#/definitions/episode_invalidated",
+      "status": "FROZEN"
+    },
+    {
+      "item": "Retention / Acceptance",
+      "path": "config/v4_12_retention_contract_v1.json",
+      "status": "FROZEN"
+    },
+    {
+      "item": "Required facts / source capability / UNKNOWN",
+      "path": "config/v4_12_producer_registry_v1.json",
+      "status": "FROZEN"
+    },
+    {
+      "item": "Independent vectors / oracle book",
+      "path": "config/v4_12_machine_vectors_v1.json",
+      "status": "FROZEN"
+    },
+    {
+      "capability": "FORMAL_BLOCKED_INPUT_CAPABILITY",
+      "item": "CAPABILITY:close_t_minus_1,ma20_t_minus_1",
+      "reason": "Accepted owner lacks close_t_minus_1 and ma20_t_minus_1",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "item": "CAPABILITY:t-1 frozen Anchor/event",
+      "reason": "D1 publication producer is contract design only; no accepted Anchor/event runtime publication",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "UNBOUND_REQUIRED_F0_INPUT",
+      "item": "CAPABILITY:atr_prior_view,prior_high_view,prior_delta3,pivot_low_strict",
+      "reason": "Historical field authority must be explicitly published in F0[t]; this design does not grant new accepted producer capability",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    }
+  ],
+  "runtime_permission_granted": false,
+  "status": "PASS"
+}

@@ -1,0 +1,63 @@
+{
+  "authority_sections": [
+    "10J",
+    "10K",
+    "10L",
+    "13A",
+    "31",
+    "34A",
+    "41A0",
+    "41A",
+    "41B",
+    "41C",
+    "41D",
+    "87A"
+  ],
+  "contract_id": "STRUCTURE_EVENT_V1",
+  "current_ma20_branch_capability": "FORMAL_BLOCKED_INPUT_CAPABILITY",
+  "downstream_interface": "D1 invalidation facts available as design output to RESEARCH_STATE_V1; no D2 implementation/integration",
+  "event_required_fields": [
+    "event_id",
+    "security_id",
+    "event_type",
+    "created_trade_date",
+    "available_at",
+    "contract_id",
+    "parameter_set_digest",
+    "source_fact_digest",
+    "anchor_id",
+    "prior_session_event_id",
+    "frozen_invalidation_ast"
+  ],
+  "freeze_scope": "CONTRACT_DESIGN_ONLY",
+  "impulse_ast_ref": "config/v4_12_machine_ast_v1.json#/definitions/impulse",
+  "impulse_saved_fields": [
+    "open",
+    "body_mid",
+    "close",
+    "low",
+    "high"
+  ],
+  "invalidation_ast_ref": "config/v4_12_machine_ast_v1.json#/definitions/episode_invalidated",
+  "machines": {
+    "breakout": "config/v4_12_machine_ast_v1.json#/machines/breakout",
+    "pullback": "config/v4_12_machine_ast_v1.json#/machines/pullback",
+    "recovery": "config/v4_12_machine_ast_v1.json#/machines/recovery"
+  },
+  "new_anchor_same_day": "Can emit event; cannot self support/accept/confirm",
+  "no_prior_event": "Known absence is distinct from missing prior publication",
+  "parameter_set_id": "V4_12_ENGINEERING_CANDIDATE_R1",
+  "permissions": {
+    "focus_cutover_permission": false,
+    "global_mandatory_adoption": false,
+    "production_permission": false,
+    "shadow_production_permission": false
+  },
+  "recovery_missing_prior_policy": "DO_NOT_RECONSTRUCT_FROM_RAW_BARS",
+  "recovery_missing_reason": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+  "runtime_implemented": false,
+  "structure_events": "Append immutable per-anchor event/revision; prior_session predecessor, not same_day_revision parent",
+  "supplemental_turnover_formal_input": false,
+  "unknown_priority": "Earlier UNKNOWN prevents claiming later rule; MA20_RECLAIM requires prior owner fields known before evaluating Kleene predicate; missing authority cannot be defeated by current-price FALSE",
+  "version": "1.0.0"
+}

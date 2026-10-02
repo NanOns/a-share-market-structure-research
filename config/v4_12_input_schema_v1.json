@@ -1,0 +1,372 @@
+{
+  "contract_id": "V4_12_INPUT_SCHEMA_V1",
+  "cross_field_rules": [
+    "Missing required field -> UNKNOWN, not FALSE",
+    "KNOWN requires correct registered type, digest and accepted capability",
+    "Foreign namespace/time role/late source rejected",
+    "Price/ATR/breach/support share observation basis identity",
+    "atr_prior_view > 0; H >= L; CLV UNKNOWN if H=L",
+    "support_today is computed internally; external input forbidden",
+    "post_creation_sessions computed from available_date and market calendar; cannot be supplied without lineage"
+  ],
+  "freeze_scope": "CONTRACT_DESIGN_ONLY",
+  "parameter_set_id": "V4_12_ENGINEERING_CANDIDATE_R1",
+  "permissions": {
+    "focus_cutover_permission": false,
+    "global_mandatory_adoption": false,
+    "production_permission": false,
+    "shadow_production_permission": false
+  },
+  "runtime_implemented": false,
+  "schema": {
+    "$defs": {
+      "fact": {
+        "additionalProperties": false,
+        "properties": {
+          "adjustment_source_revision": {
+            "type": "string"
+          },
+          "available_at": {
+            "type": "string"
+          },
+          "output_digest": {
+            "type": "string"
+          },
+          "price_basis": {
+            "type": "string"
+          },
+          "producer_contract_id": {
+            "type": "string"
+          },
+          "publication_digest": {
+            "type": "string"
+          },
+          "publication_id": {
+            "type": "string"
+          },
+          "quality": {
+            "enum": [
+              "KNOWN",
+              "UNKNOWN",
+              "STALE",
+              "NOT_APPLICABLE"
+            ]
+          },
+          "source_namespace": {
+            "type": "string"
+          },
+          "time_role": {
+            "type": "string"
+          },
+          "trade_date": {
+            "type": "string"
+          },
+          "unknown_reason": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "value": {
+            "type": [
+              "number",
+              "string",
+              "boolean",
+              "object",
+              "array",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "value",
+          "quality",
+          "unknown_reason",
+          "producer_contract_id",
+          "publication_id",
+          "publication_digest",
+          "trade_date",
+          "available_at",
+          "source_namespace",
+          "time_role",
+          "output_digest",
+          "price_basis",
+          "adjustment_source_revision"
+        ],
+        "type": "object"
+      }
+    },
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+      "contract_id": {
+        "const": "V4_12_INPUT_V1"
+      },
+      "cutoff": {
+        "format": "date-time",
+        "type": "string"
+      },
+      "inputs": {
+        "additionalProperties": false,
+        "properties": {
+          "ATR20": {
+            "$ref": "#/$defs/fact"
+          },
+          "C": {
+            "$ref": "#/$defs/fact"
+          },
+          "CLV": {
+            "$ref": "#/$defs/fact"
+          },
+          "H": {
+            "$ref": "#/$defs/fact"
+          },
+          "L": {
+            "$ref": "#/$defs/fact"
+          },
+          "MA20": {
+            "$ref": "#/$defs/fact"
+          },
+          "MA60": {
+            "$ref": "#/$defs/fact"
+          },
+          "O": {
+            "$ref": "#/$defs/fact"
+          },
+          "adjustment_asof": {
+            "$ref": "#/$defs/fact"
+          },
+          "adjustment_contract_id": {
+            "$ref": "#/$defs/fact"
+          },
+          "adjustment_source_identity": {
+            "$ref": "#/$defs/fact"
+          },
+          "adjustment_source_revision": {
+            "$ref": "#/$defs/fact"
+          },
+          "alpha": {
+            "$ref": "#/$defs/fact"
+          },
+          "amount_ratio20": {
+            "$ref": "#/$defs/fact"
+          },
+          "anchor_adjustment_source_revision": {
+            "$ref": "#/$defs/fact"
+          },
+          "anchor_basis_trade_date": {
+            "$ref": "#/$defs/fact"
+          },
+          "anchor_id": {
+            "$ref": "#/$defs/fact"
+          },
+          "anchor_original_atr": {
+            "$ref": "#/$defs/fact"
+          },
+          "anchor_original_price": {
+            "$ref": "#/$defs/fact"
+          },
+          "anchor_price_basis": {
+            "$ref": "#/$defs/fact"
+          },
+          "anchor_raw_lower": {
+            "$ref": "#/$defs/fact"
+          },
+          "anchor_raw_upper": {
+            "$ref": "#/$defs/fact"
+          },
+          "anchor_trade_date": {
+            "$ref": "#/$defs/fact"
+          },
+          "anchor_type": {
+            "$ref": "#/$defs/fact"
+          },
+          "atr_prior_view": {
+            "$ref": "#/$defs/fact"
+          },
+          "available_at": {
+            "$ref": "#/$defs/fact"
+          },
+          "available_date": {
+            "$ref": "#/$defs/fact"
+          },
+          "base_view": {
+            "$ref": "#/$defs/fact"
+          },
+          "beta": {
+            "$ref": "#/$defs/fact"
+          },
+          "close_t_minus_1": {
+            "$ref": "#/$defs/fact"
+          },
+          "corporate_action_transition": {
+            "$ref": "#/$defs/fact"
+          },
+          "creation_coordinate": {
+            "$ref": "#/$defs/fact"
+          },
+          "current_comparison_coordinate": {
+            "$ref": "#/$defs/fact"
+          },
+          "delta3": {
+            "$ref": "#/$defs/fact"
+          },
+          "distance_zone": {
+            "$ref": "#/$defs/fact"
+          },
+          "endpoint_price_view": {
+            "$ref": "#/$defs/fact"
+          },
+          "episode_owns_anchor": {
+            "$ref": "#/$defs/fact"
+          },
+          "evaluable": {
+            "$ref": "#/$defs/fact"
+          },
+          "event_close_view": {
+            "$ref": "#/$defs/fact"
+          },
+          "frozen_transform_coefficients": {
+            "$ref": "#/$defs/fact"
+          },
+          "hi": {
+            "$ref": "#/$defs/fact"
+          },
+          "lo": {
+            "$ref": "#/$defs/fact"
+          },
+          "ma20_t_minus_1": {
+            "$ref": "#/$defs/fact"
+          },
+          "near_high20_state": {
+            "$ref": "#/$defs/fact"
+          },
+          "observation_close_view": {
+            "$ref": "#/$defs/fact"
+          },
+          "pivot_left_count": {
+            "$ref": "#/$defs/fact"
+          },
+          "pivot_low": {
+            "$ref": "#/$defs/fact"
+          },
+          "pivot_low_strict": {
+            "$ref": "#/$defs/fact"
+          },
+          "pivot_right_count": {
+            "$ref": "#/$defs/fact"
+          },
+          "post_creation_sessions": {
+            "$ref": "#/$defs/fact"
+          },
+          "price_basis": {
+            "$ref": "#/$defs/fact"
+          },
+          "prior_adjacent_evaluable": {
+            "$ref": "#/$defs/fact"
+          },
+          "prior_breach_count": {
+            "$ref": "#/$defs/fact"
+          },
+          "prior_breakout_exists": {
+            "$ref": "#/$defs/fact"
+          },
+          "prior_delta3": {
+            "$ref": "#/$defs/fact"
+          },
+          "prior_event_peak_view": {
+            "$ref": "#/$defs/fact"
+          },
+          "prior_hard_invalidated": {
+            "$ref": "#/$defs/fact"
+          },
+          "prior_held_count": {
+            "$ref": "#/$defs/fact"
+          },
+          "prior_high20": {
+            "$ref": "#/$defs/fact"
+          },
+          "prior_high_view": {
+            "$ref": "#/$defs/fact"
+          },
+          "prior_range20_atr": {
+            "$ref": "#/$defs/fact"
+          },
+          "prior_recovery_exists": {
+            "$ref": "#/$defs/fact"
+          },
+          "prior_recovery_failed": {
+            "$ref": "#/$defs/fact"
+          },
+          "prior_recovery_held_count": {
+            "$ref": "#/$defs/fact"
+          },
+          "prior_retest_qualified": {
+            "$ref": "#/$defs/fact"
+          },
+          "prior_separated_sessions": {
+            "$ref": "#/$defs/fact"
+          },
+          "prior_support_state": {
+            "$ref": "#/$defs/fact"
+          },
+          "prior_test_count": {
+            "$ref": "#/$defs/fact"
+          },
+          "prior_valid_event": {
+            "$ref": "#/$defs/fact"
+          },
+          "rebase_lineage": {
+            "$ref": "#/$defs/fact"
+          },
+          "recovery_line_view": {
+            "$ref": "#/$defs/fact"
+          },
+          "rel_market_1": {
+            "$ref": "#/$defs/fact"
+          },
+          "ret1": {
+            "$ref": "#/$defs/fact"
+          },
+          "security_id": {
+            "$ref": "#/$defs/fact"
+          },
+          "slope20": {
+            "$ref": "#/$defs/fact"
+          },
+          "source_event_id": {
+            "$ref": "#/$defs/fact"
+          },
+          "source_fact_digest": {
+            "$ref": "#/$defs/fact"
+          },
+          "start_price_view": {
+            "$ref": "#/$defs/fact"
+          }
+        },
+        "type": "object"
+      },
+      "observation_trade_date": {
+        "format": "date",
+        "type": "string"
+      },
+      "parameter_set_digest": {
+        "pattern": "^[0-9a-f]{64}$",
+        "type": "string"
+      },
+      "security_id": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "contract_id",
+      "parameter_set_digest",
+      "observation_trade_date",
+      "cutoff",
+      "security_id",
+      "inputs"
+    ],
+    "type": "object"
+  },
+  "version": "1.0.0"
+}

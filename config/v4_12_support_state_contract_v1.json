@@ -1,0 +1,44 @@
+{
+  "contract_id": "SUPPORT_STATE_V1",
+  "counter_ast_refs": [
+    "breach_count",
+    "held_count",
+    "next_test_count",
+    "separated_sessions"
+  ],
+  "counter_rules": {
+    "first_test": "first EOD reclaim increments test_count=1; later qualified separated retest increments once",
+    "missing": "Reset consecutive breach/held/separation counters; preserve prior state/test_count; stale true; does not restore",
+    "same_day_revision": "Replace observation view against same t-1 counter baseline; no increment of market-session counts",
+    "separation": "At least one actual fully non-touch session after prior test; UNKNOWN cannot qualify; consume separation when touch; qualified RETESTING episode may reclaim on next adjacent evaluable touch session",
+    "terminal": "BROKEN/INVALIDATED retained; new recovery requires new event; no resurrection"
+  },
+  "definitions": [
+    "touch",
+    "close_breach",
+    "deep_breach",
+    "eod_reclaim",
+    "breach_count",
+    "separated_retest"
+  ],
+  "episode_binding": "creation-bound anchor; never switch with active_anchor display selection",
+  "freeze_scope": "CONTRACT_DESIGN_ONLY",
+  "intraday_order_claim": false,
+  "invalidation": "BROKEN price-path state; INVALIDATED administrative terminal of owning episode; distinct meanings",
+  "machine": "support",
+  "missing": {
+    "observation_state": "UNKNOWN",
+    "preserve_prior_state": true,
+    "stale": true
+  },
+  "ordered_ast_ref": "config/v4_12_machine_ast_v1.json#/machines/support",
+  "parameter_set_id": "V4_12_ENGINEERING_CANDIDATE_R1",
+  "permissions": {
+    "focus_cutover_permission": false,
+    "global_mandatory_adoption": false,
+    "production_permission": false,
+    "shadow_production_permission": false
+  },
+  "runtime_implemented": false,
+  "version": "1.0.0"
+}

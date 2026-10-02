@@ -1,0 +1,145 @@
+{
+  "acceptance": "CANDIDATE_ONLY_EXTERNAL_AUDIT_PENDING",
+  "authority": {
+    "bytes": 7517,
+    "path": "docs/evidence/next_round_v4_12/V4_R6_PROMOTION_STAGE_ENTRY_INDEPENDENT_EXTERNAL_AUDIT_R1_20261002.md",
+    "sha256": "0e2ce2f5fff6dc1b562ede32880796a933e13f63523a1ac03d0ca08327bd4fa4"
+  },
+  "contract_id": "V4_R7_STAGE_CONTRACT_V1",
+  "master": {
+    "bytes": 1845,
+    "path": "docs/evidence/next_round_v4_12/V4_NEXT_ROUND_EXECUTION_MASTER_R7_20261002.md",
+    "sha256": "f790cc4f93774e20f5898d47b5cff2753effe0a1589ab8f315fe438fd89343a8"
+  },
+  "next_stage": "UNIFIED_COMMIT_PUSH_STOP_EXTERNAL_AUDIT",
+  "permissions": {
+    "focus_cutover_permission": false,
+    "global_mandatory_adoption": false,
+    "production_permission": false,
+    "shadow_production_permission": false
+  },
+  "phase0": {
+    "data_gate": {
+      "accepted_trade_date": "2026-09-30",
+      "current_stage_gate": "R6_PROMOTION_POST_VALIDATOR_PASS",
+      "data_head_repinned": false,
+      "nodes": [
+        {
+          "candidate": {
+            "bytes": 51305,
+            "path": "data/v4/dm01_candidate_staging_r3/durable_r3/01cc90422d57e166392ff251ec990f4ad286504c27d29cbba2fb499c9b615060/PROMOTION_CANDIDATE.json",
+            "sha256": "b338caaea8f9e41228a62add7e987d946f4dc9a5a5297dbe02e9ee73df525313"
+          },
+          "components": 9,
+          "source_readback": false,
+          "status": "PASS",
+          "trade_date": "2026-09-28"
+        },
+        {
+          "candidate": {
+            "bytes": 50834,
+            "path": "data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/PROMOTION_CANDIDATE.json",
+            "sha256": "0a67e7211572a7057c50ab27e397c3e093f88c24732e8c7be7bdda92952ca1bf"
+          },
+          "components": 9,
+          "source_readback": false,
+          "status": "PASS",
+          "trade_date": "2026-09-29"
+        },
+        {
+          "candidate": {
+            "bytes": 50811,
+            "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/PROMOTION_CANDIDATE.json",
+            "sha256": "e4ba1fb6d4690b869f98ffc45a8d576a641ef2e9a852a9db97aedd19e043bc81"
+          },
+          "components": 9,
+          "source_readback": false,
+          "status": "PASS",
+          "trade_date": "2026-09-30"
+        }
+      ],
+      "permissions": {
+        "focus": false,
+        "production": false,
+        "shadow": false
+      },
+      "scope": "READ_ONLY_DATA_CHAIN_WITH_EXACT_HISTORICAL_STAGE_ARCHIVE",
+      "status": "PASS"
+    },
+    "scope": "ACCEPTED_INPUT_PREFLIGHT_NO_SCANNER",
+    "status": "DEGRADED_PASS"
+  },
+  "prior_governance_gate": {
+    "bytes": 5490,
+    "path": "reports/next_round_r6r1/R6R1_GOVERNANCE_REPLAY_CLEANUP.json",
+    "sha256": "1cac643248dcc4c520fb4321e6430be83e21847b03e3878cc00f6e7b9433dada"
+  },
+  "protected_artifacts": [
+    {
+      "after_sha256": "d8d96dce559eb968e6446f0626766980f6fb045fca1219e3e01fcd0a980b9928",
+      "before_sha256": "d8d96dce559eb968e6446f0626766980f6fb045fca1219e3e01fcd0a980b9928",
+      "byte_identical": true,
+      "bytes": 14090,
+      "path": "data/v4/V4_11_ACCEPTED_HEAD.json"
+    },
+    {
+      "after_sha256": "80c58f2f4ed35baa1fd2b27e6af8b400fadfbefe4ed5d85819d9349c3315e2ac",
+      "before_sha256": "80c58f2f4ed35baa1fd2b27e6af8b400fadfbefe4ed5d85819d9349c3315e2ac",
+      "byte_identical": true,
+      "bytes": 9842,
+      "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json"
+    },
+    {
+      "after_sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+      "before_sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+      "byte_identical": true,
+      "bytes": 16890,
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json"
+    },
+    {
+      "after_sha256": "ceec544a9d4c9878ad752c51275902c5916cb451a593a3f55ec176fd52b4b796",
+      "before_sha256": "ceec544a9d4c9878ad752c51275902c5916cb451a593a3f55ec176fd52b4b796",
+      "byte_identical": true,
+      "bytes": 1330,
+      "path": "reports/v4_12/V4_12_STRUCTURE_ANCHOR_SUPPORT_STAGE_ENTRY_R1.json"
+    }
+  ],
+  "runtime_authorized": false,
+  "scope": "CONTRACT_DESIGN_FREEZE_ONLY",
+  "sections": [
+    "10J",
+    "10K",
+    "10L",
+    "13A",
+    "31",
+    "34A",
+    "41A0",
+    "41A",
+    "41B",
+    "41C",
+    "41D",
+    "49A",
+    "72",
+    "78",
+    "81.4",
+    "87A"
+  ],
+  "starting_remote_head": "2e3e811eb08d7e350e27c4c1e2767ba91160ef98",
+  "tasks": [
+    {
+      "bytes": 2796,
+      "path": "docs/evidence/next_round_v4_12/R6R1_PROMOTION_GOVERNANCE_REPLAY_CLEANUP_TASK_20261002.md",
+      "sha256": "767ad92e6ae85e47633bcf97bd1d60e160465b822c7afb99ad03d2a965e4b878"
+    },
+    {
+      "bytes": 10555,
+      "path": "docs/evidence/next_round_v4_12/V4_12_R1_STRUCTURE_ANCHOR_SUPPORT_CONTRACT_FREEZE_TASK_20261002.md",
+      "sha256": "e8580bca5a209dcad01df104b3aea170c7b97a2f85529ec370d79cbd8980eacf"
+    }
+  ],
+  "upgrade": {
+    "bytes": 224998,
+    "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+    "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+  }
+}

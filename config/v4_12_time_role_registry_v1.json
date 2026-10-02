@@ -1,0 +1,914 @@
+{
+  "allowed_external_edges": [
+    "F0[t] -> D1[t]",
+    "Frozen Anchor/event[t-1] -> D1[t]"
+  ],
+  "allowed_internal_edge": "SUPPORT_STATE_V1[t] -> STRUCTURE_EVENT_V1[t]",
+  "contract_id": "V4_12_TIME_ROLE_REGISTRY_V1",
+  "cutoff": "ALL external source available_at <= observation cutoff; prior Anchor/event available_date <= previous_market_session",
+  "fields": [
+    {
+      "field": "ATR20",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "source_namespace": "F0_ACCEPTED",
+      "time_role": "T",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "C",
+      "producer_contract_id": "V4_CANONICAL_DAILY_PIT_PERIODS_V3",
+      "source_namespace": "F0_ACCEPTED",
+      "time_role": "T",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "CLV",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "source_namespace": "F0_ACCEPTED",
+      "time_role": "T",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "H",
+      "producer_contract_id": "V4_CANONICAL_DAILY_PIT_PERIODS_V3",
+      "source_namespace": "F0_ACCEPTED",
+      "time_role": "T",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "L",
+      "producer_contract_id": "V4_CANONICAL_DAILY_PIT_PERIODS_V3",
+      "source_namespace": "F0_ACCEPTED",
+      "time_role": "T",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "MA20",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "source_namespace": "F0_ACCEPTED",
+      "time_role": "T",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "MA60",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "source_namespace": "F0_ACCEPTED",
+      "time_role": "T",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "O",
+      "producer_contract_id": "V4_CANONICAL_DAILY_PIT_PERIODS_V3",
+      "source_namespace": "F0_ACCEPTED",
+      "time_role": "T",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "adjustment_source_revision",
+      "producer_contract_id": "V4_CANONICAL_DAILY_PIT_PERIODS_V3",
+      "source_namespace": "F0_ACCEPTED",
+      "time_role": "T",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "alpha",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "source_namespace": "F0_ACCEPTED",
+      "time_role": "T",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "amount_ratio20",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "source_namespace": "F0_ACCEPTED",
+      "time_role": "T",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "anchor_original_atr",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "FROZEN_ANCHOR_EVENT",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "anchor_original_price",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "FROZEN_ANCHOR_EVENT",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "anchor_type",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "FROZEN_ANCHOR_EVENT",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "atr_prior_view",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "source_namespace": "F0_ACCEPTED",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "base_view",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "FROZEN_ANCHOR_EVENT",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "beta",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "source_namespace": "F0_ACCEPTED",
+      "time_role": "T",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "close_t_minus_1",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "source_namespace": "F0_ACCEPTED",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "delta3",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "source_namespace": "F0_ACCEPTED",
+      "time_role": "T",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "distance_zone",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "source_namespace": "F0_ACCEPTED",
+      "time_role": "T",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "endpoint_price_view",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "source_namespace": "F0_ACCEPTED",
+      "time_role": "T",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "episode_owns_anchor",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "FROZEN_ANCHOR_EVENT",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "evaluable",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "source_namespace": "F0_ACCEPTED",
+      "time_role": "T",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "event_close_view",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "FROZEN_ANCHOR_EVENT",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "hi",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "FROZEN_ANCHOR_EVENT",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "lo",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "FROZEN_ANCHOR_EVENT",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "ma20_t_minus_1",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "source_namespace": "F0_ACCEPTED",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "near_high20_state",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "source_namespace": "F0_ACCEPTED",
+      "time_role": "T",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "observation_close_view",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "source_namespace": "F0_ACCEPTED",
+      "time_role": "T",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "pivot_left_count",
+      "producer_contract_id": "CROSS_SECTION_SESSION_WINDOW_V1",
+      "source_namespace": "F0_ACCEPTED",
+      "time_role": "T",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "pivot_low",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "source_namespace": "F0_ACCEPTED",
+      "time_role": "T",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "pivot_low_strict",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "source_namespace": "F0_ACCEPTED",
+      "time_role": "T",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "pivot_right_count",
+      "producer_contract_id": "CROSS_SECTION_SESSION_WINDOW_V1",
+      "source_namespace": "F0_ACCEPTED",
+      "time_role": "T",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "post_creation_sessions",
+      "producer_contract_id": "CROSS_SECTION_SESSION_WINDOW_V1",
+      "source_namespace": "F0_ACCEPTED",
+      "time_role": "T",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "price_basis",
+      "producer_contract_id": "V4_CANONICAL_DAILY_PIT_PERIODS_V3",
+      "source_namespace": "F0_ACCEPTED",
+      "time_role": "T",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "prior_adjacent_evaluable",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "FROZEN_ANCHOR_EVENT",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "prior_breach_count",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "FROZEN_ANCHOR_EVENT",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "prior_breakout_exists",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "FROZEN_ANCHOR_EVENT",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "prior_delta3",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "source_namespace": "F0_ACCEPTED",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "prior_event_peak_view",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "FROZEN_ANCHOR_EVENT",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "prior_hard_invalidated",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "FROZEN_ANCHOR_EVENT",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "prior_held_count",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "FROZEN_ANCHOR_EVENT",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "prior_high20",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "source_namespace": "F0_ACCEPTED",
+      "time_role": "T",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "prior_high_view",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "source_namespace": "F0_ACCEPTED",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "prior_range20_atr",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "source_namespace": "F0_ACCEPTED",
+      "time_role": "T",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "prior_recovery_exists",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "FROZEN_ANCHOR_EVENT",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "prior_recovery_failed",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "FROZEN_ANCHOR_EVENT",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "prior_recovery_held_count",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "FROZEN_ANCHOR_EVENT",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "prior_retest_qualified",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "FROZEN_ANCHOR_EVENT",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "prior_separated_sessions",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "FROZEN_ANCHOR_EVENT",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "prior_support_state",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "FROZEN_ANCHOR_EVENT",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "prior_test_count",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "FROZEN_ANCHOR_EVENT",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "prior_valid_event",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "FROZEN_ANCHOR_EVENT",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "recovery_line_view",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "FROZEN_ANCHOR_EVENT",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "rel_market_1",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "source_namespace": "F0_ACCEPTED",
+      "time_role": "T",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "ret1",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "source_namespace": "F0_ACCEPTED",
+      "time_role": "T",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "slope20",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "source_namespace": "F0_ACCEPTED",
+      "time_role": "T",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "start_price_view",
+      "producer_contract_id": "CORE_FACTOR_V1",
+      "source_namespace": "F0_ACCEPTED",
+      "time_role": "T",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "support_today",
+      "producer_contract_id": "SUPPORT_STATE_V1",
+      "source_namespace": "D1_LOCAL_DERIVATION",
+      "time_role": "T_INTERNAL_D1",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "anchor_id",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "FROZEN_ANCHOR_EVENT",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "security_id",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "FROZEN_ANCHOR_EVENT",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "anchor_trade_date",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "FROZEN_ANCHOR_EVENT",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "available_date",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "FROZEN_ANCHOR_EVENT",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "available_at",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "FROZEN_ANCHOR_EVENT",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "anchor_raw_lower",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "FROZEN_ANCHOR_EVENT",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "anchor_raw_upper",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "FROZEN_ANCHOR_EVENT",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "anchor_price_basis",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "FROZEN_ANCHOR_EVENT",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "adjustment_contract_id",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "FROZEN_ANCHOR_EVENT",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "adjustment_source_identity",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "FROZEN_ANCHOR_EVENT",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "anchor_adjustment_source_revision",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "FROZEN_ANCHOR_EVENT",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "adjustment_asof",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "FROZEN_ANCHOR_EVENT",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "anchor_basis_trade_date",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "FROZEN_ANCHOR_EVENT",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "frozen_transform_coefficients",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "FROZEN_ANCHOR_EVENT",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "source_event_id",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "FROZEN_ANCHOR_EVENT",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "source_fact_digest",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "FROZEN_ANCHOR_EVENT",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "creation_coordinate",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "FROZEN_ANCHOR_EVENT",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "current_comparison_coordinate",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "FROZEN_ANCHOR_EVENT",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "rebase_lineage",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "FROZEN_ANCHOR_EVENT",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "corporate_action_transition",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "FROZEN_ANCHOR_EVENT",
+      "time_role": "T_MINUS_1",
+      "trade_date": "previous_market_session"
+    },
+    {
+      "field": "old_anchor",
+      "producer_contract_id": "V4_12_MACHINE_AST_V1",
+      "source_namespace": "D1_LOCAL_DERIVATION",
+      "time_role": "T_INTERNAL_D1",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "touch",
+      "producer_contract_id": "V4_12_MACHINE_AST_V1",
+      "source_namespace": "D1_LOCAL_DERIVATION",
+      "time_role": "T_INTERNAL_D1",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "close_breach",
+      "producer_contract_id": "V4_12_MACHINE_AST_V1",
+      "source_namespace": "D1_LOCAL_DERIVATION",
+      "time_role": "T_INTERNAL_D1",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "deep_breach",
+      "producer_contract_id": "V4_12_MACHINE_AST_V1",
+      "source_namespace": "D1_LOCAL_DERIVATION",
+      "time_role": "T_INTERNAL_D1",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "eod_reclaim",
+      "producer_contract_id": "V4_12_MACHINE_AST_V1",
+      "source_namespace": "D1_LOCAL_DERIVATION",
+      "time_role": "T_INTERNAL_D1",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "breach_count",
+      "producer_contract_id": "V4_12_MACHINE_AST_V1",
+      "source_namespace": "D1_LOCAL_DERIVATION",
+      "time_role": "T_INTERNAL_D1",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "separated_retest",
+      "producer_contract_id": "V4_12_MACHINE_AST_V1",
+      "source_namespace": "D1_LOCAL_DERIVATION",
+      "time_role": "T_INTERNAL_D1",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "fully_outside_test_band",
+      "producer_contract_id": "V4_12_MACHINE_AST_V1",
+      "source_namespace": "D1_LOCAL_DERIVATION",
+      "time_role": "T_INTERNAL_D1",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "next_test_count",
+      "producer_contract_id": "V4_12_MACHINE_AST_V1",
+      "source_namespace": "D1_LOCAL_DERIVATION",
+      "time_role": "T_INTERNAL_D1",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "separated_sessions",
+      "producer_contract_id": "V4_12_MACHINE_AST_V1",
+      "source_namespace": "D1_LOCAL_DERIVATION",
+      "time_role": "T_INTERNAL_D1",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "held_count",
+      "producer_contract_id": "V4_12_MACHINE_AST_V1",
+      "source_namespace": "D1_LOCAL_DERIVATION",
+      "time_role": "T_INTERNAL_D1",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "recovery_held_count",
+      "producer_contract_id": "V4_12_MACHINE_AST_V1",
+      "source_namespace": "D1_LOCAL_DERIVATION",
+      "time_role": "T_INTERNAL_D1",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "post_peak_drawdown",
+      "producer_contract_id": "V4_12_MACHINE_AST_V1",
+      "source_namespace": "D1_LOCAL_DERIVATION",
+      "time_role": "T_INTERNAL_D1",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "body",
+      "producer_contract_id": "V4_12_MACHINE_AST_V1",
+      "source_namespace": "D1_LOCAL_DERIVATION",
+      "time_role": "T_INTERNAL_D1",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "body_mid",
+      "producer_contract_id": "V4_12_MACHINE_AST_V1",
+      "source_namespace": "D1_LOCAL_DERIVATION",
+      "time_role": "T_INTERNAL_D1",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "body_atr",
+      "producer_contract_id": "V4_12_MACHINE_AST_V1",
+      "source_namespace": "D1_LOCAL_DERIVATION",
+      "time_role": "T_INTERNAL_D1",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "range_atr",
+      "producer_contract_id": "V4_12_MACHINE_AST_V1",
+      "source_namespace": "D1_LOCAL_DERIVATION",
+      "time_role": "T_INTERNAL_D1",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "impulse",
+      "producer_contract_id": "V4_12_MACHINE_AST_V1",
+      "source_namespace": "D1_LOCAL_DERIVATION",
+      "time_role": "T_INTERNAL_D1",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "breakout_trigger",
+      "producer_contract_id": "V4_12_MACHINE_AST_V1",
+      "source_namespace": "D1_LOCAL_DERIVATION",
+      "time_role": "T_INTERNAL_D1",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "ma20_reclaim",
+      "producer_contract_id": "V4_12_MACHINE_AST_V1",
+      "source_namespace": "D1_LOCAL_DERIVATION",
+      "time_role": "T_INTERNAL_D1",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "relative_recovery",
+      "producer_contract_id": "V4_12_MACHINE_AST_V1",
+      "source_namespace": "D1_LOCAL_DERIVATION",
+      "time_role": "T_INTERNAL_D1",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "retention_denominator",
+      "producer_contract_id": "V4_12_MACHINE_AST_V1",
+      "source_namespace": "D1_LOCAL_DERIVATION",
+      "time_role": "T_INTERNAL_D1",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "retention_value",
+      "producer_contract_id": "V4_12_MACHINE_AST_V1",
+      "source_namespace": "D1_LOCAL_DERIVATION",
+      "time_role": "T_INTERNAL_D1",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "range_anchor_qualified",
+      "producer_contract_id": "V4_12_MACHINE_AST_V1",
+      "source_namespace": "D1_LOCAL_DERIVATION",
+      "time_role": "T_INTERNAL_D1",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "gap_qualified",
+      "producer_contract_id": "V4_12_MACHINE_AST_V1",
+      "source_namespace": "D1_LOCAL_DERIVATION",
+      "time_role": "T_INTERNAL_D1",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "pivot_available",
+      "producer_contract_id": "V4_12_MACHINE_AST_V1",
+      "source_namespace": "D1_LOCAL_DERIVATION",
+      "time_role": "T_INTERNAL_D1",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "anchor_price_view",
+      "producer_contract_id": "V4_12_MACHINE_AST_V1",
+      "source_namespace": "D1_LOCAL_DERIVATION",
+      "time_role": "T_INTERNAL_D1",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "anchor_atr_view",
+      "producer_contract_id": "V4_12_MACHINE_AST_V1",
+      "source_namespace": "D1_LOCAL_DERIVATION",
+      "time_role": "T_INTERNAL_D1",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "common_coordinate_return",
+      "producer_contract_id": "V4_12_MACHINE_AST_V1",
+      "source_namespace": "D1_LOCAL_DERIVATION",
+      "time_role": "T_INTERNAL_D1",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "episode_invalidated",
+      "producer_contract_id": "V4_12_MACHINE_AST_V1",
+      "source_namespace": "D1_LOCAL_DERIVATION",
+      "time_role": "T_INTERNAL_D1",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "hard_invalidated",
+      "producer_contract_id": "V4_12_MACHINE_AST_V1",
+      "source_namespace": "D1_LOCAL_DERIVATION",
+      "time_role": "T_INTERNAL_D1",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "active_anchor_id",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "D1_CONTRACT_OUTPUT",
+      "time_role": "T_OUTPUT",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "anchor_view_asof_t",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "D1_CONTRACT_OUTPUT",
+      "time_role": "T_OUTPUT",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "basic_breakout_state",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "D1_CONTRACT_OUTPUT",
+      "time_role": "T_OUTPUT",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "basic_pullback_state",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "D1_CONTRACT_OUTPUT",
+      "time_role": "T_OUTPUT",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "basic_recovery_state",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "D1_CONTRACT_OUTPUT",
+      "time_role": "T_OUTPUT",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "structure_health",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "D1_CONTRACT_OUTPUT",
+      "time_role": "T_OUTPUT",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "structure_events",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "D1_CONTRACT_OUTPUT",
+      "time_role": "T_OUTPUT",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "support_state",
+      "producer_contract_id": "SUPPORT_STATE_V1",
+      "source_namespace": "D1_CONTRACT_OUTPUT",
+      "time_role": "T_OUTPUT",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "acceptance_state",
+      "producer_contract_id": "RETENTION_V1",
+      "source_namespace": "D1_CONTRACT_OUTPUT",
+      "time_role": "T_OUTPUT",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "impulse_retention_1",
+      "producer_contract_id": "RETENTION_V1",
+      "source_namespace": "D1_CONTRACT_OUTPUT",
+      "time_role": "T_OUTPUT",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "impulse_retention_3",
+      "producer_contract_id": "RETENTION_V1",
+      "source_namespace": "D1_CONTRACT_OUTPUT",
+      "time_role": "T_OUTPUT",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "retest_count",
+      "producer_contract_id": "SUPPORT_STATE_V1",
+      "source_namespace": "D1_CONTRACT_OUTPUT",
+      "time_role": "T_OUTPUT",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "unknown_reasons",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "D1_CONTRACT_OUTPUT",
+      "time_role": "T_OUTPUT",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "stale",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "D1_CONTRACT_OUTPUT",
+      "time_role": "T_OUTPUT",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "last_known_support_state",
+      "producer_contract_id": "SUPPORT_STATE_V1",
+      "source_namespace": "D1_CONTRACT_OUTPUT",
+      "time_role": "T_OUTPUT",
+      "trade_date": "observation_t"
+    },
+    {
+      "field": "invalidation_facts",
+      "producer_contract_id": "STRUCTURE_EVENT_V1",
+      "source_namespace": "D1_CONTRACT_OUTPUT",
+      "time_role": "T_OUTPUT",
+      "trade_date": "observation_t"
+    }
+  ],
+  "forbidden_edges": [
+    "D2[t] -> D1[t]",
+    "Final State[t] -> D1[t]",
+    "Event[t] -> D1[t]",
+    "Focus -> D1[t]",
+    "UI -> D1[t]",
+    "Supplemental feedback -> D1[t]",
+    "future outcome -> D1[t]"
+  ],
+  "freeze_scope": "CONTRACT_DESIGN_ONLY",
+  "historical_F0": "Previous-session factor/price must be explicitly published as an accepted F0[t] field with frozen lineage; never infer availability from local raw bars",
+  "new_anchor_rule": "EMIT_NEW_EVENT_ONLY; NO_SELF_SUPPORT_ACCEPTANCE_CONFIRMATION; earliest available_date+1 market session",
+  "parameter_set_id": "V4_12_ENGINEERING_CANDIDATE_R1",
+  "permissions": {
+    "focus_cutover_permission": false,
+    "global_mandatory_adoption": false,
+    "production_permission": false,
+    "shadow_production_permission": false
+  },
+  "runtime_implemented": false,
+  "version": "1.0.0"
+}

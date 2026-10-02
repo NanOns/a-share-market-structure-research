@@ -1,0 +1,179 @@
+{
+  "acceptance": "EXTERNAL_AUDIT_PENDING",
+  "blocked_capabilities": [
+    {
+      "capability": "FORMAL_BLOCKED_INPUT_CAPABILITY",
+      "item": "CAPABILITY:close_t_minus_1,ma20_t_minus_1",
+      "reason": "Accepted owner lacks close_t_minus_1 and ma20_t_minus_1",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "item": "CAPABILITY:t-1 frozen Anchor/event",
+      "reason": "D1 publication producer is contract design only; no accepted Anchor/event runtime publication",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "UNBOUND_REQUIRED_F0_INPUT",
+      "item": "CAPABILITY:atr_prior_view,prior_high_view,prior_delta3,pivot_low_strict",
+      "reason": "Historical field authority must be explicitly published in F0[t]; this design does not grant new accepted producer capability",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    }
+  ],
+  "completeness": "ALL_DESIGN_ROWS_FROZEN_OR_EXPLICITLY_BLOCKED",
+  "contract_id": "V4_12_R1_CONTRACT_FREEZE_V1",
+  "contracts": [
+    {
+      "bytes": 2214,
+      "path": "config/v4_12_structure_event_contract_v1.json",
+      "sha256": "b36a6e39a43665d5c07e52ad23fc3226d92cc73df6330a06606758cc38d1d99f"
+    },
+    {
+      "bytes": 10928,
+      "path": "config/v4_12_anchor_schema_v1.json",
+      "sha256": "1e4aca076463c69c2680ec2b6fc222d6e8ccc865cf84047b9d4068cb1fe37aef"
+    },
+    {
+      "bytes": 1731,
+      "path": "config/v4_12_anchor_coordinate_contract_v1.json",
+      "sha256": "c50bfbb5f7346935748196d440c5a03467a9d8ab7b17b0bbcd404fd923c3ded5"
+    },
+    {
+      "bytes": 1793,
+      "path": "config/v4_12_support_state_contract_v1.json",
+      "sha256": "37b59623cba59cb178f02ea91a79bed46718bf20b348f4e960f6fb0fc325defd"
+    },
+    {
+      "bytes": 1048,
+      "path": "config/v4_12_retention_contract_v1.json",
+      "sha256": "463abbd5bb97647ff15afad1b2a7e0cc36ca9b7f3d241e8e2d028948f3ebad66"
+    },
+    {
+      "bytes": 130124,
+      "path": "config/v4_12_field_registry_v1.json",
+      "sha256": "26c14398a0d92866b40bcd0c54b1fbd62f46e934190370741aeda8ecbc4f913d"
+    },
+    {
+      "bytes": 7919,
+      "path": "config/v4_12_producer_registry_v1.json",
+      "sha256": "9a8b9fdf84fe807121347d854bfed02f8e3901548226e8626f335082aa0cbf12"
+    },
+    {
+      "bytes": 28554,
+      "path": "config/v4_12_time_role_registry_v1.json",
+      "sha256": "128d1ea3deea35b6fb2aebc8d489827c1c106478c5b220831f3653821d3334f3"
+    },
+    {
+      "bytes": 9683,
+      "path": "config/v4_12_input_schema_v1.json",
+      "sha256": "668c5184bbc39fbd18632d89c1a49686cd548425df71b931d2c36ff85133696a"
+    },
+    {
+      "bytes": 5071,
+      "path": "config/v4_12_output_schema_v1.json",
+      "sha256": "1661b786e34148b5daeae3def428fe212c384ee92b1ea5f206eada656f1bc18d"
+    },
+    {
+      "bytes": 13671,
+      "path": "config/v4_12_parameter_set_v1.json",
+      "sha256": "95cde7edc327160d9528b89ee9849f1099ed66d72b6ea30f38bfd51547162abe"
+    },
+    {
+      "bytes": 41301,
+      "path": "config/v4_12_machine_ast_v1.json",
+      "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+    },
+    {
+      "bytes": 31018,
+      "path": "config/v4_12_machine_vectors_v1.json",
+      "sha256": "f1809f89fb640c01fdacad3d4cf20a9f310983952b9d788c4504d766ea6eb83d"
+    }
+  ],
+  "dag_audit_status": "PASS",
+  "external_acceptance_claim": false,
+  "full_D0_D1_D2_pass_claim": false,
+  "independent_vector_oracle": {
+    "failed": 0,
+    "passed": 69,
+    "status": "PASS",
+    "total": 69
+  },
+  "literal_audit_summary": {
+    "ast_leaf_count": 293,
+    "parameters": 24,
+    "status": "PASS",
+    "unbound_literal_count": 0
+  },
+  "next_stage": "STOP_AFTER_UNIFIED_COMMIT_PUSH; INDEPENDENT_EXTERNAL_AUDIT_REQUIRED",
+  "permissions": {
+    "focus_cutover_permission": false,
+    "global_mandatory_adoption": false,
+    "production_permission": false,
+    "shadow_production_permission": false
+  },
+  "registries": {
+    "field_registry": "config/v4_12_field_registry_v1.json",
+    "producer_registry": "config/v4_12_producer_registry_v1.json",
+    "time_role_registry": "config/v4_12_time_role_registry_v1.json"
+  },
+  "runtime_authorized": false,
+  "runtime_implemented": false,
+  "schema_registry_audit": {
+    "anchor_types": 9,
+    "json_schema_draft": "2020-12",
+    "registered_fields": 126,
+    "status": "PASS"
+  },
+  "scope": "CONTRACT_DESIGN_FREEZE_ONLY",
+  "scope_proof": {
+    "data_head": "2026-09-30",
+    "forbidden_changes": [],
+    "no_schema_migration": true,
+    "no_src_v4_runtime_change": true,
+    "permissions": {
+      "focus_cutover_permission": false,
+      "global_mandatory_adoption": false,
+      "production_permission": false,
+      "shadow_production_permission": false
+    },
+    "protected_artifacts": [
+      {
+        "after_sha256": "d8d96dce559eb968e6446f0626766980f6fb045fca1219e3e01fcd0a980b9928",
+        "before_sha256": "d8d96dce559eb968e6446f0626766980f6fb045fca1219e3e01fcd0a980b9928",
+        "byte_identical": true,
+        "bytes": 14090,
+        "path": "data/v4/V4_11_ACCEPTED_HEAD.json"
+      },
+      {
+        "after_sha256": "80c58f2f4ed35baa1fd2b27e6af8b400fadfbefe4ed5d85819d9349c3315e2ac",
+        "before_sha256": "80c58f2f4ed35baa1fd2b27e6af8b400fadfbefe4ed5d85819d9349c3315e2ac",
+        "byte_identical": true,
+        "bytes": 9842,
+        "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json"
+      },
+      {
+        "after_sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+        "before_sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+        "byte_identical": true,
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json"
+      },
+      {
+        "after_sha256": "ceec544a9d4c9878ad752c51275902c5916cb451a593a3f55ec176fd52b4b796",
+        "before_sha256": "ceec544a9d4c9878ad752c51275902c5916cb451a593a3f55ec176fd52b4b796",
+        "byte_identical": true,
+        "bytes": 1330,
+        "path": "reports/v4_12/V4_12_STRUCTURE_ANCHOR_SUPPORT_STAGE_ENTRY_R1.json"
+      }
+    ],
+    "stage_head": "V4_00_TO_V4_11_ACCEPTED",
+    "status": "PASS"
+  },
+  "stage_contract": {
+    "bytes": 5178,
+    "path": "reports/v4_12_r1/R7_STAGE_CONTRACT.json",
+    "sha256": "fc7bcd6b586e408c8dc1a75279c1124881ad7ea94c458d0b5d3e36be2cb9a5c2"
+  },
+  "starting_remote_head": "2e3e811eb08d7e350e27c4c1e2767ba91160ef98",
+  "status": "V4_12_R1_CONTRACT_FREEZE_CANDIDATE_READY_FOR_EXTERNAL_AUDIT"
+}

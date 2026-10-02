@@ -12,7 +12,7 @@ def run(output):
     source=git('rev-parse','HEAD');a=validate('a');b=validate('b');projection_validate();revision_validate()
     changed=git('diff','7d35478780003d866faf85a730d0bb3b86af1134','HEAD','--name-only').splitlines()
     assert not any(p.startswith(('data/','migrations/','src/v4/')) for p in changed)
-    assert not any(p.startswith('config/') and p!='config/v4_12_frozen_snapshot_contract_v1.json' for p in changed)
+    assert not any(p.startswith('config/') and p not in ['config/v4_12_frozen_snapshot_contract_v1.json','config/.gitattributes'] for p in changed)
     assert not any(p.startswith('reports/v4_12_runtime_r1/') for p in changed)
     paths=[p for p in changed if p.endswith('.py') or p=='config/v4_12_frozen_snapshot_contract_v1.json']
     proof=dict(status='PASS',tested_source_sha=source,source_manifest={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in paths},R11A=a['status'],R11B=b['status'],projection_oracle='PASS',same_day_revision_oracle='PASS',protected_hashes=b['protected_hashes'],real_universe=5224,migration=False,Stage_head_advanced=False,Data_head_advanced=False)

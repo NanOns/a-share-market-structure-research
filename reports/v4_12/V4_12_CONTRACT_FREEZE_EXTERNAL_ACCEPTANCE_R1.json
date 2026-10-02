@@ -1,0 +1,156 @@
+{
+  "accepted_parent": {
+    "bytes": 14090,
+    "path": "data/v4/V4_11_ACCEPTED_HEAD.json",
+    "sha256": "d8d96dce559eb968e6446f0626766980f6fb045fca1219e3e01fcd0a980b9928"
+  },
+  "audited_remote_head": "d99c242ff90180372df1055d5fff266a48f38102",
+  "contract_id": "V4_12_CONTRACT_FREEZE_EXTERNAL_ACCEPTANCE_R1",
+  "evidence": [
+    {
+      "bytes": 35206,
+      "path": "reports/v4_12_r2/R8_AUTHORITY_REPAIR_HANDOFF.json",
+      "sha256": "077b518f946b1abb6b9546e54693dd272e8ab60cebca4475e0f6261fa221ee58"
+    },
+    {
+      "bytes": 22437,
+      "path": "reports/v4_12_r2/V4_12_R2_PRODUCER_AUTHORITY_PARITY.json",
+      "sha256": "446998780a41452391b85352c6bda893bf7235d165e70a8f073fe8f76f4ea1ec"
+    },
+    {
+      "bytes": 1590,
+      "path": "reports/v4_12_r2/V4_12_R2_COORDINATE_AUTHORITY_AUDIT.json",
+      "sha256": "d333d7940412789fdce5aa6e90f1d23b138f4caf91162c6e1b26de63ebec5ffb"
+    },
+    {
+      "bytes": 12122,
+      "path": "reports/v4_12_r2_1/R9_TIME_COUNTER_HANDOFF.json",
+      "sha256": "5854b07c165bfaf03096dbf7e7ce97e3ab31e7456ef836d4fa1e44da9e185cc7"
+    },
+    {
+      "bytes": 147194,
+      "path": "reports/v4_12_r2_1/V4_12_R2_1_TIME_COUNTER_SEMANTICS.json",
+      "sha256": "6be2ffb8aab74f6265cd91baabde2bac780089c23920375ecc68ae35ac7ecd94"
+    },
+    {
+      "bytes": 56445,
+      "path": "reports/v4_12_r2_1/V4_12_R2_1_TIME_DOMAIN_COMPATIBILITY_AUDIT.json",
+      "sha256": "6e71bef1211e6075fd1766ca17a31e37a2018a3c1326f65b8f7b31985c5b5952"
+    }
+  ],
+  "external_audit_status": "PASS_V4_12_CONTRACT_FREEZE",
+  "external_authority": {
+    "bytes": 9235,
+    "path": "docs/evidence/next_round_v4_12_r10/V4_R9_INDEPENDENT_EXTERNAL_AUDIT_R1_20261002.md",
+    "sha256": "1861fbb40fdfd908fe95347dfaca894b2d1f94002abdf57fb64d0efcf9ba2899"
+  },
+  "focus_cutover_permission": false,
+  "frozen_contracts": [
+    {
+      "bytes": 4211,
+      "path": "config/v4_12_anchor_coordinate_contract_v1.json",
+      "sha256": "b0c1ca843c1b8e57212bef05e3f3d2613b8413a6042925dc31257cfe3f46cd9e"
+    },
+    {
+      "bytes": 13266,
+      "path": "config/v4_12_anchor_schema_v1.json",
+      "sha256": "c984a9be4e20eeee717b7c874f97f1caa2998e7a93d6fa5126ebf6c3acfacb39"
+    },
+    {
+      "bytes": 324329,
+      "path": "config/v4_12_field_registry_v1.json",
+      "sha256": "5f8653eacd456f1244c68349af31fb4731cc1d804d41495909da0eb3072be0f5"
+    },
+    {
+      "bytes": 33919,
+      "path": "config/v4_12_input_schema_v1.json",
+      "sha256": "98742097b6613b78f4d464d3ecaf34edbd37af4a3a054cd85b96636f110dff87"
+    },
+    {
+      "bytes": 41434,
+      "path": "config/v4_12_machine_ast_v1.json",
+      "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
+    },
+    {
+      "bytes": 31822,
+      "path": "config/v4_12_machine_vectors_v1.json",
+      "sha256": "42cb39050efcf47f76d27edff0eb3efbd964bf07ea02b8d16e010e2ebb36dd47"
+    },
+    {
+      "bytes": 5027,
+      "path": "config/v4_12_output_schema_v1.json",
+      "sha256": "d851adbca80d91ad6d88194104e5c258efbf6a8618484754b248b939f051b9fa"
+    },
+    {
+      "bytes": 14895,
+      "path": "config/v4_12_parameter_set_v1.json",
+      "sha256": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024"
+    },
+    {
+      "bytes": 37224,
+      "path": "config/v4_12_producer_registry_v1.json",
+      "sha256": "d6b689adb89f75122e3084402fd50bfbc2e22e9c8334dad0939b94576c7daf8c"
+    },
+    {
+      "bytes": 1434,
+      "path": "config/v4_12_retention_contract_v1.json",
+      "sha256": "b76e1c07b07b251bd12a7a7898af2858101bc66dfc9946a12a4a334c813e51c9"
+    },
+    {
+      "bytes": 6799,
+      "path": "config/v4_12_source_derivations_r2.json",
+      "sha256": "dab5cd0024bdac7e1893bfc107323aa29c46e54bb7402b85836ce6f53cf37fe4"
+    },
+    {
+      "bytes": 2214,
+      "path": "config/v4_12_structure_event_contract_v1.json",
+      "sha256": "b36a6e39a43665d5c07e52ad23fc3226d92cc73df6330a06606758cc38d1d99f"
+    },
+    {
+      "bytes": 1909,
+      "path": "config/v4_12_support_state_contract_v1.json",
+      "sha256": "6f9f0ef21b1d911820fc985d905d7878eaf9a87c94e87460327464d68035d594"
+    },
+    {
+      "bytes": 3390,
+      "path": "config/v4_12_time_counter_contract_v2.json",
+      "sha256": "9fcd2c0b62a890f3d2288d9080a96a8e2d85b3aa47688f22e5276da894fc02e9"
+    },
+    {
+      "bytes": 17242,
+      "path": "config/v4_12_time_counter_vectors_r2_1.json",
+      "sha256": "0035935fd0582d9936f762ae1e15d16406f7efb32ee235f457162dc5d482fe6f"
+    },
+    {
+      "bytes": 62693,
+      "path": "config/v4_12_time_role_registry_v1.json",
+      "sha256": "83e0b860d3dc28b5e44fbfd577ad776b7e6a36a6d13947c9bcd19c48c400490b"
+    }
+  ],
+  "global_mandatory_adoption": false,
+  "master": {
+    "bytes": 2349,
+    "path": "docs/evidence/next_round_v4_12_r10/V4_NEXT_ROUND_EXECUTION_MASTER_R10_20261002.md",
+    "sha256": "8f633ebc9cb157f0d9438a450f6e1797b38b54a2eb2909bb14bb5214d5010fbf"
+  },
+  "production_permission": false,
+  "shadow_production_permission": false,
+  "stage_accepted": false,
+  "stage_entry": {
+    "bytes": 1330,
+    "path": "reports/v4_12/V4_12_STRUCTURE_ANCHOR_SUPPORT_STAGE_ENTRY_R1.json",
+    "sha256": "ceec544a9d4c9878ad752c51275902c5916cb451a593a3f55ec176fd52b4b796"
+  },
+  "status": "EXTERNAL_PASS",
+  "task": {
+    "bytes": 4245,
+    "path": "docs/evidence/next_round_v4_12_r10/V4_12_R10A_CONTRACT_FREEZE_PROMOTION_RUNTIME_ENTRY_TASK_20261002.md",
+    "sha256": "1770f749770723acaf877aa540c7bd06078196ef1bb5dc9937f514cd924a9eb5"
+  },
+  "tested_source_sha": "11d8015d608670572bd57fc50fb6327e2b693a73",
+  "upgrade": {
+    "bytes": 224998,
+    "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+    "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+  }
+}

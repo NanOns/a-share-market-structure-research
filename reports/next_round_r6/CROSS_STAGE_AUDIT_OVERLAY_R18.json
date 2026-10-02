@@ -1,0 +1,48 @@
+{
+  "R5_external_acceptance": {
+    "bytes": 10061,
+    "path": "docs/evidence/next_round_r6/V4_11_R5_INDEPENDENT_EXTERNAL_ACCEPTANCE_R1_20261002.md",
+    "sha256": "0ae15dfddd4673e05eeb9a33a8b1679a0ba0680a18e3640a520ac9aaa5bfd590"
+  },
+  "contract_id": "V4_R6_CROSS_STAGE_AUDIT_OVERLAY_R18",
+  "items": [
+    {
+      "engineering_status": "PENDING_DETACHED_VALIDATOR",
+      "external_status": "PENDING_PROMOTION_EXTERNAL_REAUDIT",
+      "id": "R6_PROMOTION_CAPABILITY_SCOPE",
+      "scope": "Exact R5 accepted engineering capability; no FULL_DAG/AS_RECORDED expansion"
+    },
+    {
+      "evidence": {
+        "bytes": 661,
+        "path": "reports/next_round_r6/M14_COLLECTOR_BYTE_REPRESENTATION.json",
+        "sha256": "f73ff3b1a93b3bbf5d5e93167e7c0d4a7bc0a92f72263929109c42434fc2fc0f"
+      },
+      "id": "R6_M14_EXISTING_BYTE_REPRESENTATION",
+      "scope": "Preservation-only exact original CRLF and Git LF representations",
+      "source_changed": false
+    },
+    {
+      "classification": "PREEXISTING_NON_MAINLINE",
+      "id": "R5_FULL_REPOSITORY_PREEXISTING_M14_COLLECTION",
+      "resolution_claim": false
+    },
+    {
+      "classification": "PREEXISTING_NON_MAINLINE",
+      "id": "R5_FULL_REPOSITORY_PREEXISTING_M2_UNTRACKED_PUBLICATION_DEPENDENCY",
+      "resolution_claim": false
+    }
+  ],
+  "parent": {
+    "bytes": 1673,
+    "path": "reports/next_round_r5/CROSS_STAGE_AUDIT_OVERLAY_R17.json",
+    "sha256": "fb24667b5144e83deefeefae229c29fd84ef7477bc421c4909fff566e4f83097"
+  },
+  "permissions": {
+    "focus_cutover_permission": false,
+    "global_mandatory_adoption": false,
+    "production_permission": false,
+    "shadow_production_permission": false
+  },
+  "runtime_implementation_authorized": false
+}

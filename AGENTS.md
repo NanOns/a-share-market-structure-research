@@ -9,3 +9,4 @@
 7. Before executing each stage, consult the latest applicable upgrade document and record the stage contract, evidence, acceptance result, and next stage; tests alone do not establish release readiness.
 8. Cross-cutting or comprehensive audit issues (for example, M10 Amount A, but not limited to it) must be opened and tracked as separate audit items, with scope, evidence, and acceptance independent from the current stage gate.
 9. After each authorized stage task completes, commit and push the relevant code and evidence artifacts to Git. Preserve unrelated worktree changes; do not treat a push as external acceptance or permission to enter the next gated stage.
+10. When the user supplies this project's external audit, execution master, and task-card bundle, execute the master directly even if the message's `My request` section is blank. Do not request a second confirmation. Respect the bundle's gates, scope, and STOP boundary.

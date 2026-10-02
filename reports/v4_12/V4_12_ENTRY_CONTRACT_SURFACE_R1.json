@@ -1,0 +1,304 @@
+{
+  "anchor_required_fields": [
+    "anchor_id",
+    "security_id",
+    "anchor_trade_date",
+    "anchor_raw_lower",
+    "anchor_raw_upper",
+    "anchor_price_basis",
+    "adjustment_contract_id",
+    "adjustment_source_identity",
+    "adjustment_source_revision",
+    "adjustment_asof",
+    "anchor_basis_trade_date",
+    "creation_coordinate",
+    "current_comparison_coordinate",
+    "frozen_transform_coefficients",
+    "source_event_id",
+    "source_fact_digest",
+    "rebase_lineage",
+    "corporate_action_transition"
+  ],
+  "breakout": {
+    "active_event_order": [
+      [
+        "BROKEN/INVALIDATED",
+        "FAILED_BREAKOUT"
+      ],
+      [
+        "HELD_CONFIRMED OR at least 2 consecutive evaluable post-creation sessions C >= anchor_upper",
+        "BREAKOUT_ACCEPTED"
+      ],
+      [
+        "today touches anchor",
+        "TESTING"
+      ],
+      [
+        "otherwise evaluable",
+        "BREAKOUT_TENTATIVE"
+      ]
+    ],
+    "creation_day_accepted": false,
+    "no_active_event": [
+      {
+        "emit_anchor": "PRIOR_HIGH",
+        "state": "BREAKOUT_TENTATIVE",
+        "when": "C > prior_high20 + 0.1 * ATR20 AND CLV >= 0.7"
+      },
+      {
+        "state": "APPROACHING",
+        "when": "near_high20 == NEAR"
+      },
+      {
+        "state": "NO_BREAKOUT",
+        "when": "otherwise evaluable"
+      }
+    ],
+    "unknown": "UNKNOWN"
+  },
+  "contract_completeness": "CONTRACT_INCOMPLETE_UNTIL_VERSIONED_REGISTRIES_AST_PARAMETERS_CAPABILITY_AND_INDEPENDENT_VECTORS_ARE_FROZEN",
+  "contract_id": "V4_12_STRUCTURE_ANCHOR_SUPPORT_ENTRY_SURFACE_V1",
+  "contract_registry": [
+    {
+      "authority_section": "10J/10K/10L",
+      "name": "STRUCTURE_EVENT_V1",
+      "status": "REQUIRED_BEFORE_IMPLEMENTATION"
+    },
+    {
+      "authority_section": "41A",
+      "name": "Anchor schema/identity",
+      "status": "REQUIRED_BEFORE_IMPLEMENTATION"
+    },
+    {
+      "authority_section": "41A0",
+      "name": "Anchor coordinate identity",
+      "status": "REQUIRED_BEFORE_IMPLEMENTATION"
+    },
+    {
+      "authority_section": "41A0",
+      "name": "Anchor rebasing rules",
+      "status": "REQUIRED_BEFORE_IMPLEMENTATION"
+    },
+    {
+      "authority_section": "41A",
+      "name": "Anchor lifecycle",
+      "status": "REQUIRED_BEFORE_IMPLEMENTATION"
+    },
+    {
+      "authority_section": "31/41A",
+      "name": "invalidation AST",
+      "status": "REQUIRED_BEFORE_IMPLEMENTATION"
+    },
+    {
+      "authority_section": "10J",
+      "name": "breakout AST",
+      "status": "REQUIRED_BEFORE_IMPLEMENTATION"
+    },
+    {
+      "authority_section": "10K",
+      "name": "pullback AST",
+      "status": "REQUIRED_BEFORE_IMPLEMENTATION"
+    },
+    {
+      "authority_section": "10L",
+      "name": "recovery AST",
+      "status": "REQUIRED_BEFORE_IMPLEMENTATION"
+    },
+    {
+      "authority_section": "13A/81.4",
+      "name": "producer registry",
+      "status": "REQUIRED_BEFORE_IMPLEMENTATION"
+    },
+    {
+      "authority_section": "81.4",
+      "name": "field registry",
+      "status": "REQUIRED_BEFORE_IMPLEMENTATION"
+    },
+    {
+      "authority_section": "72",
+      "name": "parameter registry",
+      "status": "REQUIRED_BEFORE_IMPLEMENTATION"
+    },
+    {
+      "authority_section": "81.4",
+      "name": "machine AST",
+      "status": "REQUIRED_BEFORE_IMPLEMENTATION"
+    },
+    {
+      "authority_section": "10J/10K/10L",
+      "name": "UNKNOWN semantics",
+      "status": "REQUIRED_BEFORE_IMPLEMENTATION"
+    },
+    {
+      "authority_section": "13A",
+      "name": "time roles",
+      "status": "REQUIRED_BEFORE_IMPLEMENTATION"
+    },
+    {
+      "authority_section": "81.4",
+      "name": "input schema",
+      "status": "REQUIRED_BEFORE_IMPLEMENTATION"
+    },
+    {
+      "authority_section": "81.4",
+      "name": "output schema",
+      "status": "REQUIRED_BEFORE_IMPLEMENTATION"
+    },
+    {
+      "authority_section": "81.4",
+      "name": "machine vectors",
+      "status": "REQUIRED_BEFORE_IMPLEMENTATION"
+    }
+  ],
+  "coordinate": {
+    "ATR_differences_positive_scale_only": true,
+    "anchor_original_immutable": true,
+    "basis_identity": "price_basis + adjustment_source_revision",
+    "observation_view": "alpha * original_anchor + beta",
+    "price_levels_add_beta": true,
+    "qfq_coefficient_equality_is_identity": false,
+    "reference_only_legacy_focus_path": true,
+    "returns": "RECOMPUTE_IN_COMMON_COORDINATE",
+    "unsupported_conversion": {
+      "reason": "PRICE_BASIS_MISMATCH",
+      "state": "UNKNOWN"
+    }
+  },
+  "dag": {
+    "allowed_inputs": [
+      "F0[t]",
+      "t-1 frozen Anchor/event"
+    ],
+    "earliest_support_path_test": "t+1",
+    "forbidden_inputs": [
+      "D2[t]",
+      "same-day Final State",
+      "same-day Event diff",
+      "Focus",
+      "UI",
+      "future outcome",
+      "same-day newly-created Anchor as confirmation evidence"
+    ],
+    "new_anchor_can_emit_D1_event": true,
+    "new_anchor_self_confirmation_allowed": false
+  },
+  "independent_vectors_status": "REQUIRED_NOT_EXECUTED",
+  "parameter_seeds": [
+    {
+      "name": "breakout_ATR_buffer",
+      "source": "10J",
+      "status": "ENTRY_REFERENCE_REQUIRES_VERSIONED_PARAMETER_INSTANCE",
+      "value": 0.1
+    },
+    {
+      "name": "breakout_CLV_min",
+      "source": "10J",
+      "status": "ENTRY_REFERENCE_REQUIRES_VERSIONED_PARAMETER_INSTANCE",
+      "value": 0.7
+    },
+    {
+      "name": "consecutive_evaluable_sessions",
+      "source": "10J/10L",
+      "status": "ENTRY_REFERENCE_REQUIRES_VERSIONED_PARAMETER_INSTANCE",
+      "value": 2
+    }
+  ],
+  "permissions": {
+    "focus_cutover_permission": false,
+    "global_mandatory_adoption": false,
+    "production_permission": false,
+    "shadow_production_permission": false
+  },
+  "pullback": {
+    "ordered_rules": [
+      [
+        "no prior valid event",
+        "NOT_PULLBACK"
+      ],
+      [
+        "BROKEN/INVALIDATED",
+        "PULLBACK_FAILED"
+      ],
+      [
+        "HELD_CONFIRMED",
+        "PULLBACK_HELD"
+      ],
+      [
+        "RECLAIMED/HELD_TENTATIVE",
+        "PULLBACK_RECLAIMED"
+      ],
+      [
+        "touch by anchor type",
+        "PULLBACK_TO_MA/BREAKOUT/IMPULSE"
+      ],
+      [
+        "post-event peak drawdown without touch",
+        "PULLBACK_IN_PROGRESS"
+      ],
+      [
+        "otherwise evaluable",
+        "NOT_PULLBACK"
+      ]
+    ],
+    "prior_source": "t-1 frozen valid rise/breakout/impulse event and Anchor",
+    "unknown": "UNKNOWN_NEVER_FALSE"
+  },
+  "recovery": {
+    "bounce": "ret1 >0",
+    "confirmed_rule": "At least 2 consecutive evaluable sessions after frozen recovery line creation held",
+    "creation_day_confirmed": false,
+    "ma20_reclaim": "C[t-1] <= MA20[t-1] AND C[t] > MA20[t]",
+    "missing_prior_core_fields": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+    "relative_recovery": "delta3 changes from <=0 to >3 AND rel_market_1 >0",
+    "rule_order": [
+      "RECOVERY_FAILED",
+      "RECOVERY_CONFIRMED",
+      "ANCHOR_RECLAIM",
+      "MA20_RECLAIM",
+      "RELATIVE_RECOVERY",
+      "BOUNCE_ONLY",
+      "NONE"
+    ]
+  },
+  "required_independent_vectors": [
+    "same-day new Anchor cannot self-confirm",
+    "earliest support t+1",
+    "unknown/stale prior is not false",
+    "cash dividend",
+    "bonus shares",
+    "rights issue",
+    "same-day revision",
+    "cross-corporate-action support test",
+    "missing source capability",
+    "D2/Focus/UI/future perturbations cannot affect D1"
+  ],
+  "runtime_implementation_authorized": false,
+  "runtime_implemented": false,
+  "sections": [
+    "10J",
+    "10K",
+    "10L",
+    "13A",
+    "31",
+    "34A",
+    "41A0",
+    "41A",
+    "49A",
+    "72",
+    "78",
+    "81.4"
+  ],
+  "source_capability": {
+    "F0": "VERSIONED_ACCEPTED_PUBLICATION_BINDING_REQUIRED",
+    "current_local_absence_is_provider_evidence": false,
+    "missing_required_fact": "UNKNOWN_NEVER_FALSE",
+    "prior_anchor_event": "FROZEN_PREVIOUS_SESSION_PUBLICATION_REQUIRED",
+    "t_minus_1_core_close_ma20": "ACCEPTED_UNAVAILABLE; DO_NOT_RECONSTRUCT"
+  },
+  "status": "ENTRY_SURFACE_REGISTERED_CONTRACT_COMPLETENESS_PENDING",
+  "upgrade": {
+    "bytes": 224998,
+    "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+    "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+  }
+}

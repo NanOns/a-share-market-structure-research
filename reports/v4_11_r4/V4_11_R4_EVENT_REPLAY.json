@@ -1,0 +1,56 @@
+{
+  "AS_RECORDED": false,
+  "NEW_CONFIRMED_semantics_invariant": true,
+  "accepted": false,
+  "current_d2": {
+    "bytes": 10494468,
+    "path": "data/v4/confirmation_candidates_r4/D2_2026-09-30_CANDIDATE_R4_R1.json.gz",
+    "sha256": "3d9f6876f3a683cd552a793bb103709b2190f769e773785287a82ece1d1dc06f"
+  },
+  "event_counts": {
+    "CONFIRMATION_INVALIDATED": 1,
+    "NEW_CONFIRMED": 88,
+    "NONE": 3498,
+    "UNKNOWN": 1637
+  },
+  "event_quality_counts": {
+    "KNOWN": 3587,
+    "UNKNOWN_CURRENT_D2_REQUIRED_FACTS": 1610,
+    "UNKNOWN_PRIOR_D2_REQUIRED_FACTS": 27
+  },
+  "events": {
+    "bytes": 678945,
+    "path": "data/v4/confirmation_candidates_r4/STATE_EVENT_2026-09-30_CANDIDATE_R4_R1.json.gz",
+    "sha256": "4f6c7e2c15dd12b0586d5f04de8d5a3107bc9a7742f8910e2b7baaa57db4e350"
+  },
+  "frozen_prior": {
+    "bytes": 9586310,
+    "path": "data/v4/confirmation_candidates_r4/FROZEN_PRIOR_SESSION_STATE_CANDIDATE_R4_R1.json.gz",
+    "sha256": "53c569c1c6c9f7411ce605fe61fc8da3b2688235a0cd9333baafa48b4e67ce53"
+  },
+  "permissions": {
+    "focus": false,
+    "global_mandatory_adoption": false,
+    "production": false,
+    "shadow": false
+  },
+  "prior_d2": {
+    "bytes": 6170790,
+    "path": "data/v4/confirmation_candidates_r4/D2_2026-09-29_CANDIDATE_R4_R1.json.gz",
+    "sha256": "6e7f21f305631a146a76e1b8c6c6a3ba6f11a46902faa5704cd1e0ee6978ecaf"
+  },
+  "raw_exact_predicate_counts": {
+    "CONFIRMATION_INVALIDATED": 1,
+    "CONFIRMATION_WEAKENED": 180,
+    "FIRST_OBSERVED": 1,
+    "NEW_CONFIRMED": 89,
+    "NONE": 4953
+  },
+  "same_day_revision_predecessor_invariant": true,
+  "same_day_revision_trace": {
+    "event_predicate_digest": "132c826f502aaa0b1f138f9a0213794e40fca5f2740f9d4dd18989cc49742b59",
+    "prior_state_publication_id": "V4_11_R4B_D2:ffedf82301099f7e16a9117ce67148b2be18557bc2f1268d87fcef9c526f8f0e",
+    "revision_of": "V4_11_R4B_D2:075f68898024c8656162f7870a67a244b3052eb6d02411a61f5f6ac8b5a55a21"
+  },
+  "status": "PASS_REAL_CANDIDATE_FROZEN_PRIOR_SESSION"
+}

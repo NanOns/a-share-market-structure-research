@@ -1,0 +1,227 @@
+{
+  "D0_transition_counts": {
+    "FALSE->FALSE": 1720,
+    "TRUE->TRUE": 52,
+    "UNKNOWN->FALSE": 2951,
+    "UNKNOWN->TRUE": 114,
+    "UNKNOWN->UNKNOWN": 387
+  },
+  "D2": {
+    "after": {
+      "final_eligibility_counts": {
+        "FALSE": 3113,
+        "TRUE": 501,
+        "UNKNOWN": 1610
+      },
+      "maturity_counts": {
+        "CONFIRMED": 269,
+        "NONE": 3503,
+        "PREWATCH": 1452
+      },
+      "state_freshness_counts": {
+        "FRESH": 3614,
+        "STALE": 1610
+      }
+    },
+    "before": {
+      "final_eligibility_counts": {
+        "FALSE": 1195,
+        "TRUE": 170,
+        "UNKNOWN": 3859
+      },
+      "maturity_counts": {
+        "CONFIRMED": 100,
+        "NONE": 4647,
+        "PREWATCH": 477
+      },
+      "state_freshness_counts": {
+        "FRESH": 1365,
+        "STALE": 3859
+      }
+    }
+  },
+  "Event": {
+    "after": {
+      "CONFIRMATION_INVALIDATED": 1,
+      "NEW_CONFIRMED": 88,
+      "NONE": 3498,
+      "UNKNOWN": 1637
+    },
+    "before": {
+      "NEW_CONFIRMED": 26,
+      "NONE": 1316,
+      "UNKNOWN": 3882
+    }
+  },
+  "additional_source_window_correction": "R3 serialized only 27 slots to D2 although accepted Core requires MA60, prior60 and slope60+10; R4 passes the complete 129/130 source window already used by legacy features. No producer date relabel or invented fact.",
+  "facts": {
+    "2026-09-29": {
+      "explanation": "Changed coefficient-only exclusions admitted using accepted basis/revision; target/stated historical suspension, missing raw master slots, adjustment support, accepted RPS and explicit diagnostic limits remain. No missing-to-FALSE change; legacy thresholds unchanged.",
+      "transitions": {
+        "amr20_mean_prior:UNKNOWN->UNKNOWN": 32,
+        "break_high20:UNKNOWN->KNOWN": 356,
+        "break_high20:UNKNOWN->UNKNOWN": 32,
+        "break_margin_close20:UNKNOWN->KNOWN": 356,
+        "break_margin_close20:UNKNOWN->UNKNOWN": 33,
+        "breakout_v3:UNKNOWN->KNOWN": 380,
+        "breakout_v3:UNKNOWN->UNKNOWN": 30,
+        "close_above_prior_high:UNKNOWN->UNKNOWN": 4,
+        "close_to_ma20:UNKNOWN->KNOWN": 353,
+        "close_to_ma20:UNKNOWN->UNKNOWN": 30,
+        "close_to_ma5:UNKNOWN->KNOWN": 89,
+        "close_to_ma5:UNKNOWN->UNKNOWN": 7,
+        "clv:UNKNOWN->UNKNOWN": 9,
+        "extended_v3:UNKNOWN->KNOWN": 3246,
+        "extended_v3:UNKNOWN->UNKNOWN": 29,
+        "first_day_damage:UNKNOWN->KNOWN": 353,
+        "first_day_damage:UNKNOWN->UNKNOWN": 30,
+        "intraday_reject_high20:UNKNOWN->KNOWN": 356,
+        "intraday_reject_high20:UNKNOWN->UNKNOWN": 33,
+        "liq20:UNKNOWN->UNKNOWN": 32,
+        "ma20_nondeclining_3:UNKNOWN->KNOWN": 3246,
+        "ma20_nondeclining_3:UNKNOWN->UNKNOWN": 34,
+        "ma5_to_ma20:UNKNOWN->KNOWN": 353,
+        "ma5_to_ma20:UNKNOWN->UNKNOWN": 30,
+        "prior5_below_ma20_count:UNKNOWN->KNOWN": 386,
+        "prior5_below_ma20_count:UNKNOWN->UNKNOWN": 37,
+        "reclaim_ma20:UNKNOWN->KNOWN": 356,
+        "reclaim_ma20:UNKNOWN->UNKNOWN": 33,
+        "reclaim_ma5:UNKNOWN->KNOWN": 119,
+        "reclaim_ma5:UNKNOWN->UNKNOWN": 9,
+        "recovery_v3:UNKNOWN->KNOWN": 383,
+        "recovery_v3:UNKNOWN->UNKNOWN": 56,
+        "ret1_adj:UNKNOWN->UNKNOWN": 5,
+        "setup_v3:UNKNOWN->KNOWN": 1524,
+        "setup_v3:UNKNOWN->UNKNOWN": 221,
+        "severe_drop:UNKNOWN->KNOWN": 358,
+        "severe_drop:UNKNOWN->UNKNOWN": 31,
+        "slope20:UNKNOWN->KNOWN": 353,
+        "slope20:UNKNOWN->UNKNOWN": 30,
+        "structure_break_v3:UNKNOWN->KNOWN": 3246,
+        "structure_break_v3:UNKNOWN->UNKNOWN": 30,
+        "trend_background_v3:UNKNOWN->KNOWN": 1110,
+        "trend_background_v3:UNKNOWN->UNKNOWN": 302,
+        "window_valid:UNKNOWN->KNOWN": 360,
+        "window_valid:UNKNOWN->UNKNOWN": 34
+      },
+      "unknown_reasons_after": {
+        "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN": 176,
+        "ACCEPTED_RPS_UNAVAILABLE:MISSING_OR_SUSPENDED_ENDPOINT": 26,
+        "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY": 84,
+        "ACCEPTED_RPS_UNAVAILABLE:PRIOR_UNIVERSE_MEMBER_MISSING": 2,
+        "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN": 271,
+        "ACCEPTED_RPS_UNAVAILABLE:UNEXPLAINED_DATA_GAP": 16,
+        "ADJUSTMENT_UNKNOWN": 3521,
+        "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 393,
+        "CURRENT_BAR_SUSPENDED": 261,
+        "EXACT_FROZEN_PRIOR_EPISODE_SOURCE_UNAVAILABLE": 5223,
+        "MISSING_OR_SUSPENDED_ENDPOINT": 28,
+        "MIXED_ADJUSTMENT_IDENTITY": 356,
+        "PRIOR_UNIVERSE_MEMBER_MISSING": 1,
+        "RPS_ENDPOINT_UNKNOWN": 388,
+        "UNEXPLAINED_DATA_GAP": 193,
+        "VERSIONED_TARGET_LOO_ADMISSION_NOT_SEALED": 5223,
+        "ZERO_DENOMINATOR": 8
+      },
+      "unknown_reasons_before": {
+        "ADJUSTMENT_UNKNOWN": 3908,
+        "CURRENT_BAR_SUSPENDED": 297,
+        "EXACT_FROZEN_PRIOR_EPISODE_SOURCE_UNAVAILABLE": 5223,
+        "MISSING_OR_MIXED_COORDINATE_MASTER_SESSION": 18013,
+        "MISSING_OR_SUSPENDED_ENDPOINT": 28,
+        "MIXED_ADJUSTMENT_IDENTITY": 356,
+        "PRIOR_UNIVERSE_MEMBER_MISSING": 1,
+        "RPS_ENDPOINT_UNKNOWN": 388,
+        "UNEXPLAINED_DATA_GAP": 16,
+        "VERSIONED_TARGET_LOO_ADMISSION_NOT_SEALED": 5223
+      }
+    },
+    "2026-09-30": {
+      "explanation": "Changed coefficient-only exclusions admitted using accepted basis/revision; target/stated historical suspension, missing raw master slots, adjustment support, accepted RPS and explicit diagnostic limits remain. No missing-to-FALSE change; legacy thresholds unchanged.",
+      "transitions": {
+        "amr20_mean_prior:UNKNOWN->UNKNOWN": 34,
+        "break_high20:UNKNOWN->KNOWN": 353,
+        "break_high20:UNKNOWN->UNKNOWN": 34,
+        "break_margin_close20:UNKNOWN->KNOWN": 353,
+        "break_margin_close20:UNKNOWN->UNKNOWN": 34,
+        "breakout_v3:UNKNOWN->KNOWN": 505,
+        "breakout_v3:UNKNOWN->UNKNOWN": 32,
+        "close_above_prior_high:UNKNOWN->UNKNOWN": 5,
+        "close_to_ma20:UNKNOWN->KNOWN": 346,
+        "close_to_ma20:UNKNOWN->UNKNOWN": 32,
+        "close_to_ma5:UNKNOWN->KNOWN": 49,
+        "close_to_ma5:UNKNOWN->UNKNOWN": 11,
+        "clv:UNKNOWN->UNKNOWN": 7,
+        "extended_v3:UNKNOWN->KNOWN": 3225,
+        "extended_v3:UNKNOWN->UNKNOWN": 32,
+        "first_day_damage:UNKNOWN->KNOWN": 346,
+        "first_day_damage:UNKNOWN->UNKNOWN": 32,
+        "intraday_reject_high20:UNKNOWN->KNOWN": 353,
+        "intraday_reject_high20:UNKNOWN->UNKNOWN": 34,
+        "liq20:UNKNOWN->UNKNOWN": 34,
+        "ma20_nondeclining_3:UNKNOWN->KNOWN": 3224,
+        "ma20_nondeclining_3:UNKNOWN->UNKNOWN": 38,
+        "ma5_to_ma20:UNKNOWN->KNOWN": 346,
+        "ma5_to_ma20:UNKNOWN->UNKNOWN": 32,
+        "prior5_below_ma20_count:UNKNOWN->KNOWN": 377,
+        "prior5_below_ma20_count:UNKNOWN->UNKNOWN": 40,
+        "reclaim_ma20:UNKNOWN->KNOWN": 353,
+        "reclaim_ma20:UNKNOWN->UNKNOWN": 34,
+        "reclaim_ma5:UNKNOWN->KNOWN": 89,
+        "reclaim_ma5:UNKNOWN->UNKNOWN": 12,
+        "recovery_v3:UNKNOWN->KNOWN": 471,
+        "recovery_v3:UNKNOWN->UNKNOWN": 66,
+        "ret1_adj:UNKNOWN->UNKNOWN": 5,
+        "setup_v3:UNKNOWN->KNOWN": 1564,
+        "setup_v3:UNKNOWN->UNKNOWN": 222,
+        "severe_drop:UNKNOWN->KNOWN": 355,
+        "severe_drop:UNKNOWN->UNKNOWN": 35,
+        "slope20:UNKNOWN->KNOWN": 346,
+        "slope20:UNKNOWN->UNKNOWN": 32,
+        "structure_break_v3:UNKNOWN->KNOWN": 3224,
+        "structure_break_v3:UNKNOWN->UNKNOWN": 33,
+        "trend_background_v3:UNKNOWN->KNOWN": 1119,
+        "trend_background_v3:UNKNOWN->UNKNOWN": 309,
+        "window_valid:UNKNOWN->KNOWN": 356,
+        "window_valid:UNKNOWN->UNKNOWN": 37
+      },
+      "unknown_reasons_after": {
+        "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN": 176,
+        "ACCEPTED_RPS_UNAVAILABLE:MISSING_OR_SUSPENDED_ENDPOINT": 25,
+        "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY": 89,
+        "ACCEPTED_RPS_UNAVAILABLE:PRIOR_UNIVERSE_MEMBER_MISSING": 4,
+        "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN": 278,
+        "ACCEPTED_RPS_UNAVAILABLE:UNEXPLAINED_DATA_GAP": 18,
+        "ADJUSTMENT_UNKNOWN": 3547,
+        "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 444,
+        "CURRENT_BAR_SUSPENDED": 239,
+        "EXACT_FROZEN_PRIOR_EPISODE_SOURCE_UNAVAILABLE": 5224,
+        "MISSING_OR_SUSPENDED_ENDPOINT": 27,
+        "MIXED_ADJUSTMENT_IDENTITY": 353,
+        "PRIOR_UNIVERSE_MEMBER_MISSING": 2,
+        "RPS_ENDPOINT_UNKNOWN": 365,
+        "UNEXPLAINED_DATA_GAP": 193,
+        "VERSIONED_TARGET_LOO_ADMISSION_NOT_SEALED": 5224,
+        "ZERO_DENOMINATOR": 7
+      },
+      "unknown_reasons_before": {
+        "ADJUSTMENT_UNKNOWN": 3928,
+        "CURRENT_BAR_SUSPENDED": 272,
+        "EXACT_FROZEN_PRIOR_EPISODE_SOURCE_UNAVAILABLE": 5224,
+        "MISSING_OR_MIXED_COORDINATE_MASTER_SESSION": 18156,
+        "MISSING_OR_SUSPENDED_ENDPOINT": 27,
+        "MIXED_ADJUSTMENT_IDENTITY": 353,
+        "PRIOR_UNIVERSE_MEMBER_MISSING": 2,
+        "RPS_ENDPOINT_UNKNOWN": 365,
+        "UNEXPLAINED_DATA_GAP": 18,
+        "VERSIONED_TARGET_LOO_ADMISSION_NOT_SEALED": 5224
+      }
+    }
+  },
+  "residual": {
+    "bytes": 16531655,
+    "path": "reports/v4_11_r4/RESIDUAL_UNKNOWN_ATTRIBUTION.json",
+    "sha256": "f0b41abfc38be72c0500f9431db6079132a7bc8ffa17c010c66c794c9fe2875f"
+  },
+  "status": "PASS_CONTRACT_CORRECTNESS_NOT_UNKNOWN_MINIMIZATION"
+}

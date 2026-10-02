@@ -1,0 +1,866 @@
+{
+  "AS_RECORDED": false,
+  "accepted_source_bindings": [
+    {
+      "bytes": 16890,
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+    },
+    {
+      "bytes": 182128,
+      "path": "data/v4/DM01_A01_R3_ACCEPTED_CHAIN_20260924_20260930_R1.json",
+      "sha256": "4d66105d7a5e759d8273a00a64d2ea80e1851090eeedde0c64c9c0d455d7e881"
+    },
+    {
+      "bytes": 4040129,
+      "path": "data/v4/source_evidence/dm01_a01_r3/durable_chain_inputs_r2/chain_execution_context_f9d30ce43e29d7414832a2e43a41fc83cd1b9e5a1d073390fc2275abd61064c5.json",
+      "sha256": "3ceca57357891ab6e9e5a56062c9831e6b39c03a66dd757558af1357f7816a4e"
+    },
+    {
+      "bytes": 112302935,
+      "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet",
+      "sha256": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90"
+    },
+    {
+      "bytes": 4708369,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/01cc90422d57e166392ff251ec990f4ad286504c27d29cbba2fb499c9b615060/RAW_DAILY/artifact.json",
+      "sha256": "b332846bdb00d5b412eb161ab4ec4e48f0602857d771755ce2bb9eca77ac58ac"
+    },
+    {
+      "bytes": 6215962,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/01cc90422d57e166392ff251ec990f4ad286504c27d29cbba2fb499c9b615060/ADJUSTED_DAILY/artifact.json",
+      "sha256": "bb6d4051d882210bf960389d4e6244bd6f61c4e6ab841fbf4523e0e7a37bc3b8"
+    },
+    {
+      "bytes": 3110619,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/01cc90422d57e166392ff251ec990f4ad286504c27d29cbba2fb499c9b615060/IDENTITY_UNIVERSE/artifact.json",
+      "sha256": "ac6cc9e6deb739efa2139d1b92f203feab5cc849603159740826c8aeb8c8c2e5"
+    },
+    {
+      "bytes": 2469877,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/01cc90422d57e166392ff251ec990f4ad286504c27d29cbba2fb499c9b615060/TRADING_STATUS/artifact.json",
+      "sha256": "2bc52361a02ecdae59d020fc87c30a73fd73e073c7dba95f247deb84931b25d4"
+    },
+    {
+      "bytes": 4708451,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/RAW_DAILY/artifact.json",
+      "sha256": "16e4daab101f671d894fbacbb37361c6bf8286e68e7170877aaec8d17f84dddf"
+    },
+    {
+      "bytes": 6216265,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/ADJUSTED_DAILY/artifact.json",
+      "sha256": "e19ab5ef92b34935ba3a8635488110621814be3755d896ec11015840d87e9174"
+    },
+    {
+      "bytes": 3111444,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/IDENTITY_UNIVERSE/artifact.json",
+      "sha256": "a12628bcfab921ba518e28054507dd9465afdb027c26a482bd1d810301a6487f"
+    },
+    {
+      "bytes": 2470350,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/TRADING_STATUS/artifact.json",
+      "sha256": "1024bfcad1052635317351b9c3c730f9c09294de72b3f1358e45bbe0aac6dde4"
+    }
+  ],
+  "arithmetic_execution": {
+    "factor_mean": "INDEPENDENT_FRACTION_FROM_BINARY_FLOAT_EXACT_SUM_ROUND_ONCE",
+    "feature_mean": "INDEPENDENT_ACCEPTED_SOURCE_ARRAY_PANDAS_ROLLING_IEEE_PRIMITIVE",
+    "prior5_count_mean": "FROZEN_P12_03_LEFT_TO_RIGHT_SUM_DIVIDED_BY_20",
+    "strict_business_predicates": "LEGACY_OPERATORS_UNCHANGED; NO_EPSILON_OR_THRESHOLD_TUNING"
+  },
+  "calculation_payload_role": "WINDOW_EXHIBIT_ONLY; ALL_SLOTS_REOPENED_FROM_ACCEPTED_ROWS",
+  "calculation_window_evidence": {
+    "bytes": 42056826,
+    "path": "data/v4/confirmation_candidates_r4/CALCULATIONS_2026-09-29_R4A.json.gz",
+    "sha256": "a5300dab5159cf159111b9d6cd31cf6fd1619eb3a06f25d3c262d14192ce5e48"
+  },
+  "contract_id": "V4_11_R4A_INDEPENDENT_ACCEPTED_SOURCE_ARITHMETIC_ORACLE_V1",
+  "fields_checked": {
+    "actual_bar": 5223,
+    "amr20_mean_prior": 5223,
+    "break_high20": 5223,
+    "break_margin_close20": 5223,
+    "breakout_v3": 5223,
+    "close_above_prior_high": 5223,
+    "close_to_ma20": 5223,
+    "close_to_ma5": 5223,
+    "clv": 5223,
+    "extended_v3": 5223,
+    "first_day_damage": 5223,
+    "intraday_reject_high20": 5223,
+    "liq20": 5223,
+    "liq20_amount": 5223,
+    "ma20": 5223,
+    "ma20_nondeclining_3": 5223,
+    "ma5": 5223,
+    "ma5_to_ma20": 5223,
+    "normal_universe": 5223,
+    "phc20": 5223,
+    "phh20": 5223,
+    "prior5_below_ma20_count": 5223,
+    "reclaim_ma20": 5223,
+    "reclaim_ma5": 5223,
+    "recovery_v3": 5223,
+    "ret1_adj": 5223,
+    "ret20_adj": 5223,
+    "ret5_adj": 5223,
+    "rps20": 5223,
+    "rps5_delta3": 5223,
+    "setup_v3": 5223,
+    "severe_drop": 5223,
+    "slope20": 5223,
+    "structure_break_v3": 5223,
+    "trend_background_v3": 5223,
+    "window_valid": 5223
+  },
+  "independent_verifier_source": {
+    "bytes": 25385,
+    "path": "scripts/verify_v4_11_target_facts_r4a.py",
+    "sha256": "3dd164b241c6815e27835e49792493d89f7a95441663b354f099b81144c3747a"
+  },
+  "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+  "meaningful_tests_source": {
+    "bytes": 14018,
+    "path": "tests/v4_11_r3a/test_target_fact_oracle.py",
+    "sha256": "f7b9c59b2d9b67eac53f499887dfd63204ca57dbee7268921bd311c98192c64f"
+  },
+  "mismatches": [],
+  "permissions": {
+    "focus": false,
+    "global_mandatory_adoption": false,
+    "production": false,
+    "shadow": false
+  },
+  "producer_invoked_for_arithmetic": false,
+  "publication": {
+    "bytes": 1904843,
+    "path": "data/v4/confirmation_candidates_r4/TARGET_FACTS_2026-09-29_R4A.json.gz",
+    "sha256": "34da8c9db04121abf11746186f42b24c57aa7ae6af0452e9ca7448fdc6ed585a"
+  },
+  "publication_digest": "2b3730c90d10f756bd3dbf2fa97d4ea3e6a411c9dde161dea4c3a069eacac45c",
+  "rps_current_binding": {
+    "bytes": 1977514,
+    "path": "data/v4/a02_rps_history_r1/PUBLICATION_2026-09-29_6bbdbcbb1b08ab5e02f9bd136bcd7c7c6c9fe3fce55f4b926208f9db07113d6d.json",
+    "sha256": "5dfedb04e32d0e07dd3deeefe9c0b216a29868cb4c525f766e97af48dfaf55c1"
+  },
+  "rps_exact_prior_binding": {
+    "bytes": 1977065,
+    "path": "data/v4/a02_rps_history_r1/PUBLICATION_2026-09-23_03b7191b754c22965732a2a4f8475dfa33f5dc5d8c98699d022ca504e3f7e6e0.json",
+    "sha256": "2f23aa9f4c795cd5aa94add6d6ae37b66b4b0d2cf3dd0f333f96c14c5e981639"
+  },
+  "sample_arithmetic": {
+    "actual_bar": [
+      {
+        "independently_calculated": true,
+        "published": true,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "e6d8ace56d9c788324cdc16ad2ee82c70421cdabdbc3597ac1e8c147aeedbf13"
+      },
+      {
+        "independently_calculated": true,
+        "published": true,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "7a6dcbb5fb5aeed5d6089abe80ea15a29093c4ba3ccf1147de74aceeea45e85a"
+      }
+    ],
+    "amr20_mean_prior": [
+      {
+        "independently_calculated": 1.1011986774836124,
+        "prior20_amounts_cny": [
+          139587984.0,
+          137012832.0,
+          86894088.0,
+          133177400.0,
+          109907456.0,
+          76049760.0,
+          82791048.0,
+          73941400.0,
+          83061240.0,
+          87012832.0,
+          65300260.0,
+          168723872.0,
+          115362360.0,
+          127311288.0,
+          120563352.0,
+          116546560.0,
+          98570976.0,
+          81877632.0,
+          100066552.0,
+          96476104.0
+        ],
+        "prior20_master_dates": [
+          "2026-08-31",
+          "2026-09-01",
+          "2026-09-02",
+          "2026-09-03",
+          "2026-09-04",
+          "2026-09-07",
+          "2026-09-08",
+          "2026-09-09",
+          "2026-09-10",
+          "2026-09-11",
+          "2026-09-14",
+          "2026-09-15",
+          "2026-09-16",
+          "2026-09-17",
+          "2026-09-18",
+          "2026-09-21",
+          "2026-09-22",
+          "2026-09-23",
+          "2026-09-24",
+          "2026-09-28"
+        ],
+        "published": 1.1011986774836124,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "e6d8ace56d9c788324cdc16ad2ee82c70421cdabdbc3597ac1e8c147aeedbf13",
+        "target_amount_cny": 115638800.0,
+        "target_date": "2026-09-29",
+        "target_excluded_from_denominator": true
+      },
+      {
+        "independently_calculated": 0.5115106328159583,
+        "prior20_amounts_cny": [
+          1100111104.0,
+          959829248.0,
+          892859584.0,
+          3458214400.0,
+          3661856256.0,
+          1682270976.0,
+          1413449728.0,
+          1154668672.0,
+          911385664.0,
+          1110646016.0,
+          1021640128.0,
+          740043264.0,
+          1121484160.0,
+          1279804160.0,
+          1358052352.0,
+          1256419200.0,
+          1342996352.0,
+          879309056.0,
+          816692352.0,
+          1506690176.0
+        ],
+        "prior20_master_dates": [
+          "2026-08-31",
+          "2026-09-01",
+          "2026-09-02",
+          "2026-09-03",
+          "2026-09-04",
+          "2026-09-07",
+          "2026-09-08",
+          "2026-09-09",
+          "2026-09-10",
+          "2026-09-11",
+          "2026-09-14",
+          "2026-09-15",
+          "2026-09-16",
+          "2026-09-17",
+          "2026-09-18",
+          "2026-09-21",
+          "2026-09-22",
+          "2026-09-23",
+          "2026-09-24",
+          "2026-09-28"
+        ],
+        "published": 0.5115106328159583,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "7a6dcbb5fb5aeed5d6089abe80ea15a29093c4ba3ccf1147de74aceeea45e85a",
+        "target_amount_cny": 707634624.0,
+        "target_date": "2026-09-29",
+        "target_excluded_from_denominator": true
+      }
+    ],
+    "break_high20": [
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "e6d8ace56d9c788324cdc16ad2ee82c70421cdabdbc3597ac1e8c147aeedbf13"
+      },
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "7a6dcbb5fb5aeed5d6089abe80ea15a29093c4ba3ccf1147de74aceeea45e85a"
+      }
+    ],
+    "break_margin_close20": [
+      {
+        "independently_calculated": -0.017215568862275377,
+        "published": -0.017215568862275377,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "e6d8ace56d9c788324cdc16ad2ee82c70421cdabdbc3597ac1e8c147aeedbf13"
+      },
+      {
+        "independently_calculated": -0.17854571634269256,
+        "published": -0.17854571634269256,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "7a6dcbb5fb5aeed5d6089abe80ea15a29093c4ba3ccf1147de74aceeea45e85a"
+      }
+    ],
+    "breakout_v3": [
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "e6d8ace56d9c788324cdc16ad2ee82c70421cdabdbc3597ac1e8c147aeedbf13"
+      },
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "7a6dcbb5fb5aeed5d6089abe80ea15a29093c4ba3ccf1147de74aceeea45e85a"
+      }
+    ],
+    "close_above_prior_high": [
+      {
+        "independently_calculated": true,
+        "published": true,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "e6d8ace56d9c788324cdc16ad2ee82c70421cdabdbc3597ac1e8c147aeedbf13"
+      },
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "7a6dcbb5fb5aeed5d6089abe80ea15a29093c4ba3ccf1147de74aceeea45e85a"
+      }
+    ],
+    "close_to_ma20": [
+      {
+        "independently_calculated": 1.006786029214431,
+        "published": 1.006786029214431,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "e6d8ace56d9c788324cdc16ad2ee82c70421cdabdbc3597ac1e8c147aeedbf13"
+      },
+      {
+        "independently_calculated": 0.8974006056077707,
+        "published": 0.8974006056077707,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "7a6dcbb5fb5aeed5d6089abe80ea15a29093c4ba3ccf1147de74aceeea45e85a"
+      }
+    ],
+    "close_to_ma5": [
+      {
+        "independently_calculated": 1.0064387551739997,
+        "published": 1.0064387551739997,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "e6d8ace56d9c788324cdc16ad2ee82c70421cdabdbc3597ac1e8c147aeedbf13"
+      },
+      {
+        "independently_calculated": 0.9326467222494687,
+        "published": 0.9326467222494687,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "7a6dcbb5fb5aeed5d6089abe80ea15a29093c4ba3ccf1147de74aceeea45e85a"
+      }
+    ],
+    "clv": [
+      {
+        "independently_calculated": 0.7727272727272742,
+        "published": 0.7727272727272742,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "e6d8ace56d9c788324cdc16ad2ee82c70421cdabdbc3597ac1e8c147aeedbf13"
+      },
+      {
+        "independently_calculated": 0.25000000000000183,
+        "published": 0.25000000000000183,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "7a6dcbb5fb5aeed5d6089abe80ea15a29093c4ba3ccf1147de74aceeea45e85a"
+      }
+    ],
+    "extended_v3": [
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "e6d8ace56d9c788324cdc16ad2ee82c70421cdabdbc3597ac1e8c147aeedbf13"
+      },
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "7a6dcbb5fb5aeed5d6089abe80ea15a29093c4ba3ccf1147de74aceeea45e85a"
+      }
+    ],
+    "first_day_damage": [
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "e6d8ace56d9c788324cdc16ad2ee82c70421cdabdbc3597ac1e8c147aeedbf13"
+      },
+      {
+        "independently_calculated": true,
+        "published": true,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "7a6dcbb5fb5aeed5d6089abe80ea15a29093c4ba3ccf1147de74aceeea45e85a"
+      }
+    ],
+    "intraday_reject_high20": [
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "e6d8ace56d9c788324cdc16ad2ee82c70421cdabdbc3597ac1e8c147aeedbf13"
+      },
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "7a6dcbb5fb5aeed5d6089abe80ea15a29093c4ba3ccf1147de74aceeea45e85a"
+      }
+    ],
+    "liq20": [
+      {
+        "independently_calculated": true,
+        "published": true,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "e6d8ace56d9c788324cdc16ad2ee82c70421cdabdbc3597ac1e8c147aeedbf13"
+      },
+      {
+        "independently_calculated": true,
+        "published": true,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "7a6dcbb5fb5aeed5d6089abe80ea15a29093c4ba3ccf1147de74aceeea45e85a"
+      }
+    ],
+    "liq20_amount": [
+      {
+        "independently_calculated": 99318764.0,
+        "prior20_amounts_cny": [
+          139587984.0,
+          137012832.0,
+          86894088.0,
+          133177400.0,
+          109907456.0,
+          76049760.0,
+          82791048.0,
+          73941400.0,
+          83061240.0,
+          87012832.0,
+          65300260.0,
+          168723872.0,
+          115362360.0,
+          127311288.0,
+          120563352.0,
+          116546560.0,
+          98570976.0,
+          81877632.0,
+          100066552.0,
+          96476104.0
+        ],
+        "prior20_master_dates": [
+          "2026-08-31",
+          "2026-09-01",
+          "2026-09-02",
+          "2026-09-03",
+          "2026-09-04",
+          "2026-09-07",
+          "2026-09-08",
+          "2026-09-09",
+          "2026-09-10",
+          "2026-09-11",
+          "2026-09-14",
+          "2026-09-15",
+          "2026-09-16",
+          "2026-09-17",
+          "2026-09-18",
+          "2026-09-21",
+          "2026-09-22",
+          "2026-09-23",
+          "2026-09-24",
+          "2026-09-28"
+        ],
+        "published": 99318764.0,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "e6d8ace56d9c788324cdc16ad2ee82c70421cdabdbc3597ac1e8c147aeedbf13",
+        "target_amount_cny": 115638800.0,
+        "target_date": "2026-09-29",
+        "target_excluded_from_denominator": true
+      },
+      {
+        "independently_calculated": 1138076416.0,
+        "prior20_amounts_cny": [
+          1100111104.0,
+          959829248.0,
+          892859584.0,
+          3458214400.0,
+          3661856256.0,
+          1682270976.0,
+          1413449728.0,
+          1154668672.0,
+          911385664.0,
+          1110646016.0,
+          1021640128.0,
+          740043264.0,
+          1121484160.0,
+          1279804160.0,
+          1358052352.0,
+          1256419200.0,
+          1342996352.0,
+          879309056.0,
+          816692352.0,
+          1506690176.0
+        ],
+        "prior20_master_dates": [
+          "2026-08-31",
+          "2026-09-01",
+          "2026-09-02",
+          "2026-09-03",
+          "2026-09-04",
+          "2026-09-07",
+          "2026-09-08",
+          "2026-09-09",
+          "2026-09-10",
+          "2026-09-11",
+          "2026-09-14",
+          "2026-09-15",
+          "2026-09-16",
+          "2026-09-17",
+          "2026-09-18",
+          "2026-09-21",
+          "2026-09-22",
+          "2026-09-23",
+          "2026-09-24",
+          "2026-09-28"
+        ],
+        "published": 1138076416.0,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "7a6dcbb5fb5aeed5d6089abe80ea15a29093c4ba3ccf1147de74aceeea45e85a",
+        "target_amount_cny": 707634624.0,
+        "target_date": "2026-09-29",
+        "target_excluded_from_denominator": true
+      }
+    ],
+    "ma20": [
+      {
+        "independently_calculated": 13.0415,
+        "published": 13.0415,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "e6d8ace56d9c788324cdc16ad2ee82c70421cdabdbc3597ac1e8c147aeedbf13"
+      },
+      {
+        "independently_calculated": 12.7145,
+        "published": 12.7145,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "7a6dcbb5fb5aeed5d6089abe80ea15a29093c4ba3ccf1147de74aceeea45e85a"
+      }
+    ],
+    "ma20_nondeclining_3": [
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "e6d8ace56d9c788324cdc16ad2ee82c70421cdabdbc3597ac1e8c147aeedbf13"
+      },
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "7a6dcbb5fb5aeed5d6089abe80ea15a29093c4ba3ccf1147de74aceeea45e85a"
+      }
+    ],
+    "ma5": [
+      {
+        "independently_calculated": 13.046,
+        "published": 13.046,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "e6d8ace56d9c788324cdc16ad2ee82c70421cdabdbc3597ac1e8c147aeedbf13"
+      },
+      {
+        "independently_calculated": 12.234,
+        "published": 12.234,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "7a6dcbb5fb5aeed5d6089abe80ea15a29093c4ba3ccf1147de74aceeea45e85a"
+      }
+    ],
+    "ma5_to_ma20": [
+      {
+        "independently_calculated": 1.0003450523329371,
+        "published": 1.0003450523329371,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "e6d8ace56d9c788324cdc16ad2ee82c70421cdabdbc3597ac1e8c147aeedbf13"
+      },
+      {
+        "independently_calculated": 0.9622085021038972,
+        "published": 0.9622085021038972,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "7a6dcbb5fb5aeed5d6089abe80ea15a29093c4ba3ccf1147de74aceeea45e85a"
+      }
+    ],
+    "normal_universe": [
+      {
+        "independently_calculated": true,
+        "published": true,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "e6d8ace56d9c788324cdc16ad2ee82c70421cdabdbc3597ac1e8c147aeedbf13"
+      },
+      {
+        "independently_calculated": true,
+        "published": true,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "7a6dcbb5fb5aeed5d6089abe80ea15a29093c4ba3ccf1147de74aceeea45e85a"
+      }
+    ],
+    "phc20": [
+      {
+        "independently_calculated": 13.36,
+        "published": 13.36,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "e6d8ace56d9c788324cdc16ad2ee82c70421cdabdbc3597ac1e8c147aeedbf13"
+      },
+      {
+        "independently_calculated": 13.89,
+        "published": 13.89,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "7a6dcbb5fb5aeed5d6089abe80ea15a29093c4ba3ccf1147de74aceeea45e85a"
+      }
+    ],
+    "phh20": [
+      {
+        "independently_calculated": 13.74,
+        "published": 13.74,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "e6d8ace56d9c788324cdc16ad2ee82c70421cdabdbc3597ac1e8c147aeedbf13"
+      },
+      {
+        "independently_calculated": 13.89,
+        "published": 13.89,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "7a6dcbb5fb5aeed5d6089abe80ea15a29093c4ba3ccf1147de74aceeea45e85a"
+      }
+    ],
+    "prior5_below_ma20_count": [
+      {
+        "independently_calculated": 4,
+        "published": 4,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "e6d8ace56d9c788324cdc16ad2ee82c70421cdabdbc3597ac1e8c147aeedbf13"
+      },
+      {
+        "independently_calculated": 4,
+        "published": 4,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "7a6dcbb5fb5aeed5d6089abe80ea15a29093c4ba3ccf1147de74aceeea45e85a"
+      }
+    ],
+    "reclaim_ma20": [
+      {
+        "independently_calculated": true,
+        "published": true,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "e6d8ace56d9c788324cdc16ad2ee82c70421cdabdbc3597ac1e8c147aeedbf13"
+      },
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "7a6dcbb5fb5aeed5d6089abe80ea15a29093c4ba3ccf1147de74aceeea45e85a"
+      }
+    ],
+    "reclaim_ma5": [
+      {
+        "independently_calculated": true,
+        "published": true,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "e6d8ace56d9c788324cdc16ad2ee82c70421cdabdbc3597ac1e8c147aeedbf13"
+      },
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "7a6dcbb5fb5aeed5d6089abe80ea15a29093c4ba3ccf1147de74aceeea45e85a"
+      }
+    ],
+    "recovery_v3": [
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "e6d8ace56d9c788324cdc16ad2ee82c70421cdabdbc3597ac1e8c147aeedbf13"
+      },
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "7a6dcbb5fb5aeed5d6089abe80ea15a29093c4ba3ccf1147de74aceeea45e85a"
+      }
+    ],
+    "ret1_adj": [
+      {
+        "independently_calculated": 0.021789883268482635,
+        "published": 0.021789883268482635,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "e6d8ace56d9c788324cdc16ad2ee82c70421cdabdbc3597ac1e8c147aeedbf13"
+      },
+      {
+        "independently_calculated": -0.015530629853321765,
+        "published": -0.015530629853321765,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "7a6dcbb5fb5aeed5d6089abe80ea15a29093c4ba3ccf1147de74aceeea45e85a"
+      }
+    ],
+    "ret20_adj": [
+      {
+        "independently_calculated": -0.017215568862275377,
+        "published": -0.017215568862275377,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "e6d8ace56d9c788324cdc16ad2ee82c70421cdabdbc3597ac1e8c147aeedbf13"
+      },
+      {
+        "independently_calculated": -0.12834224598930477,
+        "published": -0.12834224598930477,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "7a6dcbb5fb5aeed5d6089abe80ea15a29093c4ba3ccf1147de74aceeea45e85a"
+      }
+    ],
+    "ret5_adj": [
+      {
+        "independently_calculated": -0.003793626707131903,
+        "published": -0.003793626707131903,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "e6d8ace56d9c788324cdc16ad2ee82c70421cdabdbc3597ac1e8c147aeedbf13"
+      },
+      {
+        "independently_calculated": -0.12095531587057018,
+        "published": -0.12095531587057018,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "7a6dcbb5fb5aeed5d6089abe80ea15a29093c4ba3ccf1147de74aceeea45e85a"
+      }
+    ],
+    "rps20": [
+      {
+        "independently_calculated": 0.5837279380111924,
+        "published": 0.5837279380111924,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "e6d8ace56d9c788324cdc16ad2ee82c70421cdabdbc3597ac1e8c147aeedbf13"
+      },
+      {
+        "independently_calculated": 0.09190701678863539,
+        "published": 0.09190701678863539,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "7a6dcbb5fb5aeed5d6089abe80ea15a29093c4ba3ccf1147de74aceeea45e85a"
+      }
+    ],
+    "rps5_delta3": [
+      {
+        "independently_calculated": 0.24540004551196135,
+        "published": 0.24540004551196135,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "e6d8ace56d9c788324cdc16ad2ee82c70421cdabdbc3597ac1e8c147aeedbf13"
+      },
+      {
+        "independently_calculated": -0.2580120380263822,
+        "published": -0.2580120380263822,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "7a6dcbb5fb5aeed5d6089abe80ea15a29093c4ba3ccf1147de74aceeea45e85a"
+      }
+    ],
+    "setup_v3": [
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "e6d8ace56d9c788324cdc16ad2ee82c70421cdabdbc3597ac1e8c147aeedbf13"
+      },
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "7a6dcbb5fb5aeed5d6089abe80ea15a29093c4ba3ccf1147de74aceeea45e85a"
+      }
+    ],
+    "severe_drop": [
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "e6d8ace56d9c788324cdc16ad2ee82c70421cdabdbc3597ac1e8c147aeedbf13"
+      },
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "7a6dcbb5fb5aeed5d6089abe80ea15a29093c4ba3ccf1147de74aceeea45e85a"
+      }
+    ],
+    "slope20": [
+      {
+        "independently_calculated": -0.00011368440787641379,
+        "published": -0.0001136844078764168,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "e6d8ace56d9c788324cdc16ad2ee82c70421cdabdbc3597ac1e8c147aeedbf13"
+      },
+      {
+        "independently_calculated": -0.004291043532622662,
+        "published": -0.004291043532622664,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "7a6dcbb5fb5aeed5d6089abe80ea15a29093c4ba3ccf1147de74aceeea45e85a"
+      }
+    ],
+    "structure_break_v3": [
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "e6d8ace56d9c788324cdc16ad2ee82c70421cdabdbc3597ac1e8c147aeedbf13"
+      },
+      {
+        "independently_calculated": true,
+        "published": true,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "7a6dcbb5fb5aeed5d6089abe80ea15a29093c4ba3ccf1147de74aceeea45e85a"
+      }
+    ],
+    "trend_background_v3": [
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "e6d8ace56d9c788324cdc16ad2ee82c70421cdabdbc3597ac1e8c147aeedbf13"
+      },
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "7a6dcbb5fb5aeed5d6089abe80ea15a29093c4ba3ccf1147de74aceeea45e85a"
+      }
+    ],
+    "window_valid": [
+      {
+        "independently_calculated": true,
+        "published": true,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "e6d8ace56d9c788324cdc16ad2ee82c70421cdabdbc3597ac1e8c147aeedbf13"
+      },
+      {
+        "independently_calculated": true,
+        "published": true,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "7a6dcbb5fb5aeed5d6089abe80ea15a29093c4ba3ccf1147de74aceeea45e85a"
+      }
+    ]
+  },
+  "source_digest": "37704309365ff908f746dc184a20d3b22fcc19c32691b28757d249007e2d5f07",
+  "source_slot_checks": 141021,
+  "status": "PASS",
+  "synthetic_vector_scope": "ORACLE_ONLY; NO_REAL_TRUE_CLAIM",
+  "trade_date": "2026-09-29",
+  "universe_coverage": 5223,
+  "universe_source_class_audit": {
+    "accepted_suspended_no_raw_rows": 12,
+    "complete_accepted_identity_universe": 5223,
+    "contract_id": "V4_11_R4A_UNIVERSE_SOURCE_CLASS_AUDIT_V1",
+    "current_local_file_absence_used_as_provider_evidence": false,
+    "missing_fact_cast_to_false": false,
+    "provider_unavailable_claim": false,
+    "qualification_false_reasons": {
+      "historical_observed_sessions_gte_120": 44,
+      "latest_raw_bar_observed": 12,
+      "recent120_coverage_gte_075": 31
+    },
+    "short_history_full_source_reopens": 81,
+    "source_class": "ACCEPTED_RAW_AND_DATED_STATUS; PROVIDER_NOT_QUERIED"
+  }
+}

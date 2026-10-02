@@ -1,0 +1,75 @@
+{
+  "accepted": false,
+  "accepted_source_bindings": {
+    "output_admission": {
+      "bytes": 24944,
+      "path": "src/v4/state_provenance.py",
+      "sha256": "f4a5f0683a2735488d285f74f91d1c0dc3ff25112060c485debf22615f811a77"
+    },
+    "reducer": {
+      "bytes": 13989,
+      "path": "src/v4/research_state.py",
+      "sha256": "58fde91734f5d1192a43174052c3c10ce6a41a65facce2076b9bf0798d0e5bfb"
+    }
+  },
+  "admission_functions": "New sealed-file candidate validate_inputs + candidate validate_output; old accepted ledger unchanged",
+  "business_AST_comparisons": {
+    "output_admission": {
+      "candidate_AST_sha256": "e933181733f89afd11f659de5fbeff37e0aad417f88000ea9957e46866ae6498",
+      "normalized_business_AST_exact": true,
+      "normalized_business_AST_sha256": "4c798d952fc399071a5e44e00fc9dc3c17438fa5e1269c3a7efadc5cdc8d90d2",
+      "source_AST_sha256": "e973873cff65cfbd0954c4dcd649e461313a7c872774bd552bc4923d5ff7bd0a"
+    },
+    "reducer": {
+      "candidate_AST_sha256": "26c26754404f2e24e1eb0137b7b445e2259b4eaa8edec12c30a6690cf7739e3d",
+      "normalized_business_AST_exact": true,
+      "normalized_business_AST_sha256": "e67e6323fd4ed2911b85b762ebe9cb3b38d3233130bafb180fb87aa1a388f9b0",
+      "source_AST_sha256": "3ca6734ba18eb974f29857443f2297bef560ad06e39c3d124b19c63df5a46f6a"
+    }
+  },
+  "candidate_business_consumer_external_acceptance": false,
+  "candidate_namespace": "V4_11_R4B_CANDIDATE_D2_INTERFACE_V1",
+  "capability_addition": "CONFIRMATION_DETECTOR_V1 candidate producer identity, not acceptance",
+  "contract_id": "V4_11_R4B_CANDIDATE_ADMISSION_AST_EVIDENCE_V1",
+  "exact_business_thresholds": true,
+  "exact_rule_order": true,
+  "mechanical_whitelist_changes": {
+    "episode_namespace_changes": 1,
+    "output_allowed_mode_tuple_changes": 1,
+    "output_reconstructed_cutoff_admission_changes": 1,
+    "reducer_allowed_mode_tuple_changes": 1,
+    "removed_unaccepted_D0_D1_admission_gate": 1,
+    "row_namespace_changes": 1
+  },
+  "permissions": {
+    "focus": false,
+    "global_mandatory_adoption": false,
+    "production": false,
+    "shadow": false
+  },
+  "reconstructed_cutoff_scope": "Actual knowledge timestamp; never historical first availability or AS_RECORDED",
+  "rule_order": [
+    "R1_MODEL_BOUNDARY",
+    "R2_HARD_INVALIDATION",
+    "R3_REQUIRED_UNKNOWN",
+    "R4_STAGE_SELECTION",
+    "R5_HYSTERESIS",
+    "R6_HEALTH",
+    "R7_TRACKING",
+    "R8_EXPIRY",
+    "R9_REENTRY"
+  ],
+  "unchanged_parameter_set": {
+    "authority": {
+      "byte_count": 224998,
+      "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+      "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+    },
+    "downgrade_sessions": 2,
+    "expiry_improvement_pp": 3,
+    "expiry_sessions": 10,
+    "health_deadband_pp": 3,
+    "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+    "version": "1.0.0"
+  }
+}

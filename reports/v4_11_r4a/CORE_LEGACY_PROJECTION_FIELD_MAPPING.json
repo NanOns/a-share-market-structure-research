@@ -1,0 +1,27 @@
+{
+  "accepted_core_replay": "All 39 CORE_FACTOR_V1 fields use identity field mapping in exact parity gate.",
+  "basis": "price_basis + adjustment_source_revision",
+  "legacy_projection": {
+    "amr20_mean_prior": "CORE.amount_ratio20 mathematical ratio; legacy raw amount projection retains source policy",
+    "break_high20": "Legacy close(t)>prior20 high; Core same adjusted source basis",
+    "clv": "CORE.clv, same adjusted OHLC",
+    "ma20": "CORE.ma20, same adjusted values; legacy master-session policy remains exact",
+    "ma20_nondeclining_3": "Legacy MA20(t)>=feature MA20(t-3); no threshold substitution",
+    "ma5": "CORE.ma5, same adjusted values; legacy master-session policy remains exact",
+    "phh20": "CORE.prior_high20, same adjusted high input",
+    "ret1_adj": "CORE.ret1, explicit master endpoints",
+    "ret20_adj": "CORE.ret20, explicit master endpoints",
+    "ret5_adj": "CORE.ret5, explicit master endpoints"
+  },
+  "legacy_thresholds_changed": false,
+  "non_equivalences": [
+    "Core technical windows skip confirmed suspensions; legacy strict master-slot windows are preserved, not forced to parity",
+    "Core slope20 is MA20 offset/ATR, legacy slope20 is OLS log slope; names do not imply formula equivalence",
+    "Core amount_ratio20 and legacy AMR are independent accepted window policies; sector Amount-A remains unrelated"
+  ],
+  "parity": {
+    "bytes": 34334,
+    "path": "reports/v4_11_r4a/V4_03_EXACT_PARITY_R1.json",
+    "sha256": "133f950358a1142119fd8d9cb38d2c736ac199ed48860c56b49bda93c7be1483"
+  }
+}

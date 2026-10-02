@@ -1,0 +1,36 @@
+{
+  "AS_RECORDED": false,
+  "acceptance": "REAL_SOURCE_DAG_CANDIDATE_ONLY",
+  "accepted_data_head_action": "KEEP",
+  "accepted_stage_head_action": "KEEP",
+  "authority": {
+    "bytes": 9057,
+    "path": "docs/evidence/next_round_r4/V4_R3_INDEPENDENT_EXTERNAL_AUDIT_R1_20261002.md",
+    "sha256": "b36e0f42e05090495e86bafb28d330a6b4a31a828de4f34a3abeaa4c7ca53413"
+  },
+  "contract_id": "V4_11_R4B_STAGE_CONTRACT",
+  "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+  "next_stage": "EXTERNAL_REAUDIT_AFTER_COMMIT_PUSH_STOP",
+  "permissions": {
+    "focus": false,
+    "global_mandatory_adoption": false,
+    "production": false,
+    "shadow": false
+  },
+  "r3b_seal": {
+    "bytes": 2217,
+    "path": "reports/v4_11_r3b/R3B_SEALED_PRODUCER_SET.json",
+    "sha256": "4ccaba49200174c6d38138dcae8c093c16264f69bc2e19f24b507d05472144ec"
+  },
+  "r4a_seal": {
+    "bytes": 1902,
+    "path": "reports/v4_11_r4a/R4A_SEALED_PRODUCER_SET.json",
+    "sha256": "9dbce1b7dff7ddf18acd766787068137f10839c9cfd5af9fec6e94f1dc3192d1"
+  },
+  "sealed_dependency_gate": "PASS",
+  "stage_task": {
+    "bytes": 3169,
+    "path": "docs/evidence/next_round_r4/V4_11_R4B_REAL_DAG_REBUILD_CAPABILITY_CLOSURE_TASK_20261002.md",
+    "sha256": "b503c3fd92ec32738529bdcf2c45030ccffe3fc68bb47b879c6a991944d6f03b"
+  }
+}

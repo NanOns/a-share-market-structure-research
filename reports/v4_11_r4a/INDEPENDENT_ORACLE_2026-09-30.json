@@ -1,0 +1,3906 @@
+{
+  "AS_RECORDED": false,
+  "accepted_source_bindings": [
+    {
+      "bytes": 16890,
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+    },
+    {
+      "bytes": 182128,
+      "path": "data/v4/DM01_A01_R3_ACCEPTED_CHAIN_20260924_20260930_R1.json",
+      "sha256": "4d66105d7a5e759d8273a00a64d2ea80e1851090eeedde0c64c9c0d455d7e881"
+    },
+    {
+      "bytes": 4040129,
+      "path": "data/v4/source_evidence/dm01_a01_r3/durable_chain_inputs_r2/chain_execution_context_f9d30ce43e29d7414832a2e43a41fc83cd1b9e5a1d073390fc2275abd61064c5.json",
+      "sha256": "3ceca57357891ab6e9e5a56062c9831e6b39c03a66dd757558af1357f7816a4e"
+    },
+    {
+      "bytes": 112302935,
+      "path": "data/v4/artifact_store/v4_02/V4_02_ADJUSTED_CANONICAL_DAILY_R7_20260927.parquet",
+      "sha256": "d8e2202f00909ade115315aefe92c810ba5e96f0520472e799da21390ea0ad90"
+    },
+    {
+      "bytes": 4708369,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/01cc90422d57e166392ff251ec990f4ad286504c27d29cbba2fb499c9b615060/RAW_DAILY/artifact.json",
+      "sha256": "b332846bdb00d5b412eb161ab4ec4e48f0602857d771755ce2bb9eca77ac58ac"
+    },
+    {
+      "bytes": 6215962,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/01cc90422d57e166392ff251ec990f4ad286504c27d29cbba2fb499c9b615060/ADJUSTED_DAILY/artifact.json",
+      "sha256": "bb6d4051d882210bf960389d4e6244bd6f61c4e6ab841fbf4523e0e7a37bc3b8"
+    },
+    {
+      "bytes": 3110619,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/01cc90422d57e166392ff251ec990f4ad286504c27d29cbba2fb499c9b615060/IDENTITY_UNIVERSE/artifact.json",
+      "sha256": "ac6cc9e6deb739efa2139d1b92f203feab5cc849603159740826c8aeb8c8c2e5"
+    },
+    {
+      "bytes": 2469877,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/01cc90422d57e166392ff251ec990f4ad286504c27d29cbba2fb499c9b615060/TRADING_STATUS/artifact.json",
+      "sha256": "2bc52361a02ecdae59d020fc87c30a73fd73e073c7dba95f247deb84931b25d4"
+    },
+    {
+      "bytes": 4708451,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/RAW_DAILY/artifact.json",
+      "sha256": "16e4daab101f671d894fbacbb37361c6bf8286e68e7170877aaec8d17f84dddf"
+    },
+    {
+      "bytes": 6216265,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/ADJUSTED_DAILY/artifact.json",
+      "sha256": "e19ab5ef92b34935ba3a8635488110621814be3755d896ec11015840d87e9174"
+    },
+    {
+      "bytes": 3111444,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/IDENTITY_UNIVERSE/artifact.json",
+      "sha256": "a12628bcfab921ba518e28054507dd9465afdb027c26a482bd1d810301a6487f"
+    },
+    {
+      "bytes": 2470350,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/TRADING_STATUS/artifact.json",
+      "sha256": "1024bfcad1052635317351b9c3c730f9c09294de72b3f1358e45bbe0aac6dde4"
+    },
+    {
+      "bytes": 4710499,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/RAW_DAILY/artifact.json",
+      "sha256": "8406bee7d60435e7d2532df7ab7fea81149f100883f243236ee68877888f71b1"
+    },
+    {
+      "bytes": 6218836,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/ADJUSTED_DAILY/artifact.json",
+      "sha256": "a28b3a912e44a8cc6e3e7e43f37038b64e1f7b62024ec4887b5320ffd33d2e17"
+    },
+    {
+      "bytes": 3112040,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/IDENTITY_UNIVERSE/artifact.json",
+      "sha256": "926e6f7fe28447d418072b8701bfb9a379f2cd23eda58b4863d3b5535539ddbf"
+    },
+    {
+      "bytes": 2470841,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/TRADING_STATUS/artifact.json",
+      "sha256": "20798999bb3309aa93f42ebd075bc53cffb5337117f6fbccd7eafd14986f51bb"
+    }
+  ],
+  "arithmetic_execution": {
+    "factor_mean": "INDEPENDENT_FRACTION_FROM_BINARY_FLOAT_EXACT_SUM_ROUND_ONCE",
+    "feature_mean": "INDEPENDENT_ACCEPTED_SOURCE_ARRAY_PANDAS_ROLLING_IEEE_PRIMITIVE",
+    "prior5_count_mean": "FROZEN_P12_03_LEFT_TO_RIGHT_SUM_DIVIDED_BY_20",
+    "strict_business_predicates": "LEGACY_OPERATORS_UNCHANGED; NO_EPSILON_OR_THRESHOLD_TUNING"
+  },
+  "binding_verifier_source": {
+    "bytes": 3268,
+    "path": "scripts/seal_v4_11_r4_oracle.py",
+    "sha256": "20cb760ab164b9e3ac9094d099a7fafca50d38d9958bbff1bdb6ec4eea64e2f2"
+  },
+  "calculation_payload_role": "WINDOW_EXHIBIT_ONLY; ALL_SLOTS_REOPENED_FROM_ACCEPTED_ROWS",
+  "calculation_window_evidence": {
+    "bytes": 42296134,
+    "path": "data/v4/confirmation_candidates_r4/CALCULATIONS_2026-09-30_R4A.json.gz",
+    "sha256": "419f0e35c9e17b26f117a6bbefb2048c9c864ea5ce6c85cf19479f86e8bf07ae"
+  },
+  "contract_id": "V4_11_R4A_INDEPENDENT_ACCEPTED_SOURCE_ARITHMETIC_ORACLE_V1",
+  "fields_checked": {
+    "actual_bar": 5224,
+    "amr20_mean_prior": 5224,
+    "break_high20": 5224,
+    "break_margin_close20": 5224,
+    "breakout_v3": 5224,
+    "close_above_prior_high": 5224,
+    "close_to_ma20": 5224,
+    "close_to_ma5": 5224,
+    "clv": 5224,
+    "extended_v3": 5224,
+    "first_day_damage": 5224,
+    "intraday_reject_high20": 5224,
+    "liq20": 5224,
+    "liq20_amount": 5224,
+    "ma20": 5224,
+    "ma20_nondeclining_3": 5224,
+    "ma5": 5224,
+    "ma5_to_ma20": 5224,
+    "normal_universe": 5224,
+    "phc20": 5224,
+    "phh20": 5224,
+    "prior5_below_ma20_count": 5224,
+    "reclaim_ma20": 5224,
+    "reclaim_ma5": 5224,
+    "recovery_v3": 5224,
+    "ret1_adj": 5224,
+    "ret20_adj": 5224,
+    "ret5_adj": 5224,
+    "rps20": 5224,
+    "rps5_delta3": 5224,
+    "setup_v3": 5224,
+    "severe_drop": 5224,
+    "slope20": 5224,
+    "structure_break_v3": 5224,
+    "trend_background_v3": 5224,
+    "window_valid": 5224
+  },
+  "independent_verifier_source": {
+    "bytes": 25385,
+    "path": "scripts/verify_v4_11_target_facts_r4a.py",
+    "sha256": "3dd164b241c6815e27835e49792493d89f7a95441663b354f099b81144c3747a"
+  },
+  "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+  "meaningful_tests_source": {
+    "bytes": 14018,
+    "path": "tests/v4_11_r3a/test_target_fact_oracle.py",
+    "sha256": "f7b9c59b2d9b67eac53f499887dfd63204ca57dbee7268921bd311c98192c64f"
+  },
+  "mismatches": [],
+  "permissions": {
+    "focus": false,
+    "global_mandatory_adoption": false,
+    "production": false,
+    "shadow": false
+  },
+  "producer_invoked_for_arithmetic": false,
+  "publication": {
+    "bytes": 1896259,
+    "path": "data/v4/confirmation_candidates_r4/TARGET_FACTS_2026-09-30_R4A.json.gz",
+    "sha256": "5a0c2f2f97fa4e09ad1c617409ffc08ef83891772e8010986b7ac606d8303dea"
+  },
+  "publication_digest": "e92e4f09e18244a356d30b415e9139b025ae7b30db0af7051c30feca7a91929e",
+  "reason_only_correction": {
+    "all_non_reason_fact_keys_exact": true,
+    "independent_source_dependency_checks": [
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-0157C18162F1E5F08F5949B6EA4A7514",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-0157C18162F1E5F08F5949B6EA4A7514",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-01759C0DD3567723A74069E26F961A95",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-01759C0DD3567723A74069E26F961A95",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-01AEABA52190D2FADA47F333541450C9",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:UNEXPLAINED_DATA_GAP"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-01CA1B1B92F68D1C3E383F8E3E6C5203",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-01CA1B1B92F68D1C3E383F8E3E6C5203",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-02BCD7EB5E4853D88C92AB29C86F3EBD",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-02BCD7EB5E4853D88C92AB29C86F3EBD",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-036FB19523E78B83C4349B32DC05E633",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-036FB19523E78B83C4349B32DC05E633",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-036FB19523E78B83C4349B32DC05E633",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-03A4A417056213FF049A297CF526F4A5",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-0629E3092BDED3381FF76D691EEFA8E3",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-0629E3092BDED3381FF76D691EEFA8E3",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-06B265774D1097539C6752C646E0EB5C",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-06B265774D1097539C6752C646E0EB5C",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-072DF92F58F6CCBF3D7DF29C27A2C2B6",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-072DF92F58F6CCBF3D7DF29C27A2C2B6",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-085ECE3E690CE40EBBAD3C3A7DFC59B7",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-085ECE3E690CE40EBBAD3C3A7DFC59B7",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-085ECE3E690CE40EBBAD3C3A7DFC59B7",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-09A49B69E80FED7933BCE3C84BA58AAB",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-09A49B69E80FED7933BCE3C84BA58AAB",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-0A3E8A5EC0314C33C5459CACC7DF374E",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-0A3E8A5EC0314C33C5459CACC7DF374E",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-0B39C06B70C1DAB53E051334E2FA0530",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-0B39C06B70C1DAB53E051334E2FA0530",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-0B602B556016FE7235FF4486BF139B6D",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-0B602B556016FE7235FF4486BF139B6D",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-0B916B8795C677FA2A399214463DFBE6",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-0CED9C98A4AD950694769189292E64E4",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MISSING_OR_SUSPENDED_ENDPOINT"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-10123CAFD684130652B5947125FEEA1F",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-10123CAFD684130652B5947125FEEA1F",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-104601CE87D096403BF0066BCC1DD92D",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-104601CE87D096403BF0066BCC1DD92D",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-104601CE87D096403BF0066BCC1DD92D",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-106EAEA5B3561129D341199157AB49E1",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-10CE9349EB239F6113D69FCB285D4CFF",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-10CE9349EB239F6113D69FCB285D4CFF",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-11792EE8133025DEC2B9E31B57E85AA4",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-11792EE8133025DEC2B9E31B57E85AA4",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-11E54DE9C2693CFA40A4C091BCD5ABF9",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-11E54DE9C2693CFA40A4C091BCD5ABF9",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-11E54DE9C2693CFA40A4C091BCD5ABF9",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MISSING_OR_SUSPENDED_ENDPOINT"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-11E8DE874972A565C6913FA9B0EA55E3",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-1225E4AE5523DC0BCDCDE764184DB7B5",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-1225E4AE5523DC0BCDCDE764184DB7B5",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-12686C9D1571B7C45AF85390B3683657",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-13893A28A8807423ED10E949AFFF7645",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-13893A28A8807423ED10E949AFFF7645",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-13893A28A8807423ED10E949AFFF7645",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-142D4C5EDBC67DC057B51BC41DBACEFE",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MISSING_OR_SUSPENDED_ENDPOINT"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-14EFB77ACC4FDEFD153059BEF4254600",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-14EFB77ACC4FDEFD153059BEF4254600",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-1687B2C7769920CD46EE65B844E0C20C",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-1687B2C7769920CD46EE65B844E0C20C",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-173614A8E503E256565DF444A99C6852",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-179EF2E8D881021644265684E438A139",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-179EF2E8D881021644265684E438A139",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:UNEXPLAINED_DATA_GAP"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-17E76DA217E5C1BCC40497E9331DED2E",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-17E76DA217E5C1BCC40497E9331DED2E",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-17E76DA217E5C1BCC40497E9331DED2E",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MISSING_OR_SUSPENDED_ENDPOINT"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-18E752D1F19BAB2316F860E36E906C67",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-18E752D1F19BAB2316F860E36E906C67",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-19F4A14B2BB2FDC982BE28EC554FD835",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-19F4A14B2BB2FDC982BE28EC554FD835",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-19F4A14B2BB2FDC982BE28EC554FD835",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "clv",
+        "security_id": "SEC-1DF472F8D2BDA9F4213B11FCA17A8D40",
+        "source_reason": "ZERO_DENOMINATOR"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-1E2582ACBAF8B93358A92D8F1FB15FBB",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-1E2582ACBAF8B93358A92D8F1FB15FBB",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-1FDD692678AEFAD68B8D7A25F613CCB9",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-202D5F48AE335762B26702DE085741B8",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-203C8141729337D56D00B37C2586D0E6",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-21445793F4781575E4AEFCB94CC2F985",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-2158C9D64CB95665817BD3419575EDA7",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-2158C9D64CB95665817BD3419575EDA7",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-215980AAE897ACCC8D657DB0717A9896",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-215980AAE897ACCC8D657DB0717A9896",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-21AB60C4B62E97DE484338DBE7507AAD",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-21AB60C4B62E97DE484338DBE7507AAD",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-25106EB81E18F2C63CA4F3BD11EAD8DD",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-25106EB81E18F2C63CA4F3BD11EAD8DD",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-25106EB81E18F2C63CA4F3BD11EAD8DD",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MISSING_OR_SUSPENDED_ENDPOINT"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-256A3FA23334E7E2A607542269A1B28E",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-256A3FA23334E7E2A607542269A1B28E",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-259BED3A73D994985445DB76F726FD71",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-29992AE457D945FF85DE8AF194677354",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-29A0AB2A20D7EC0A61E54265BBDD0A5A",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-2A85E738DC98A007A61CC0431BEB11BA",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-2C36110670416E60D0575ACA548229B5",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:UNEXPLAINED_DATA_GAP"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-2DAC1026C59FB362988632DF26864E12",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-2DAC1026C59FB362988632DF26864E12",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-2EA13CD9CD4C2CE5B9381B74B71EC2BA",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-2EA13CD9CD4C2CE5B9381B74B71EC2BA",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-2EA13CD9CD4C2CE5B9381B74B71EC2BA",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-2EB46CD2FFE0E6DE5E6570A172198027",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-30D1A45742773639EB00C70A711E4C04",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-30D1A45742773639EB00C70A711E4C04",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-30EAD73C8C1BA2FD7BC9853FF7571E52",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MISSING_OR_SUSPENDED_ENDPOINT"
+      },
+      {
+        "field": "clv",
+        "security_id": "SEC-340382159F3CB4C7713AEC707561055E",
+        "source_reason": "ZERO_DENOMINATOR"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-340382159F3CB4C7713AEC707561055E",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-340382159F3CB4C7713AEC707561055E",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-340382159F3CB4C7713AEC707561055E",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:UNEXPLAINED_DATA_GAP"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-35775DA77A69E8EB5ABF64E685EF19FC",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-35775DA77A69E8EB5ABF64E685EF19FC",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-35CFD3F3FC189F8E2E8D860FFCEBD290",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-35CFD3F3FC189F8E2E8D860FFCEBD290",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "clv",
+        "security_id": "SEC-3670A70A78CABB45CE6DA6DA42302AA1",
+        "source_reason": "ZERO_DENOMINATOR"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-369B96532D70A6BEFD4B9F81861A3AAF",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-3ACE76B18D011AEC6CA16333F702DF42",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-3ACE76B18D011AEC6CA16333F702DF42",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-3AF86E6FE8E230C902EDEBCF49B8FB9B",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-3AF86E6FE8E230C902EDEBCF49B8FB9B",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-3AF86E6FE8E230C902EDEBCF49B8FB9B",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:UNEXPLAINED_DATA_GAP"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-3B250E05288F7B765AF6A9A0629661B4",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-3B250E05288F7B765AF6A9A0629661B4",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-3BB83B6C1300DDF1AF5633BDD7BF35FA",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-3BB83B6C1300DDF1AF5633BDD7BF35FA",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-3C6DBDA5C5E202860941072035911720",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-3D25A51A95DD340DE751046A88FB07E4",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-3D4AEEEF0794F962F1007B8420DBA43D",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-3E27A5EA85AC05C936424505D1EFB100",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-3E27A5EA85AC05C936424505D1EFB100",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-3E6E470C803D07EABDCD265C81867B45",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-3F0D0DBBD9B2F1CE7412CE3625F7D88C",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-403C9F3E76FA9724FE02F465BFCAF0DC",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-403C9F3E76FA9724FE02F465BFCAF0DC",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-4043BDB9C07B6F9E04E53BBA4D954D2C",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-4043BDB9C07B6F9E04E53BBA4D954D2C",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-4043BDB9C07B6F9E04E53BBA4D954D2C",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-413AF144BAF0DA2D11616E14806EEF42",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-413AF144BAF0DA2D11616E14806EEF42",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-4230FC0E6D8521AE74FF5C1B255E1362",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-4230FC0E6D8521AE74FF5C1B255E1362",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-4230FC0E6D8521AE74FF5C1B255E1362",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-4334FE80B5A21FF9E592B692A38BE733",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-4334FE80B5A21FF9E592B692A38BE733",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-4334FE80B5A21FF9E592B692A38BE733",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-436C4B8698CD3F693C1E3035864DE128",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-436C4B8698CD3F693C1E3035864DE128",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-4415245F5ACB0AE9A2AED688BCCDB98F",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-4415245F5ACB0AE9A2AED688BCCDB98F",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-458E42ED72931A453BF5E0ADC0E3376D",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-458E42ED72931A453BF5E0ADC0E3376D",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-45FF65036F9C400D751B3BB568B1F13B",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-46D38DFF8485384501B27698370AEBC1",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-46E0C592A244A2396F3738D7CDF2FE95",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-46E0C592A244A2396F3738D7CDF2FE95",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-4802BF975066BBEF6A5A2C60C582A946",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-48D09B43FB78D6CEE88BE69149253883",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-496564F857AF4D18533647146AE2C094",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-4A13EFBB58559DB639A0A59BDA02C367",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-4A5B5DF33FDC4B2AEFD8DAA0F6C23084",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-4A5B5DF33FDC4B2AEFD8DAA0F6C23084",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-4A975B3AC347CE0857E7E14E5038C7DE",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-4A975B3AC347CE0857E7E14E5038C7DE",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-4B54B6CE8238BD6B1E6C9843592A07DE",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-4B54B6CE8238BD6B1E6C9843592A07DE",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-4C07B0520C332692E0D04C86F8E72A9C",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-4DA9ADBF77312B8AE394AEA34F5ED7AA",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-4DA9ADBF77312B8AE394AEA34F5ED7AA",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-4DA9ADBF77312B8AE394AEA34F5ED7AA",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-4E2C29959F5DB6260FE2CA2B61995F56",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-4EBD02787ED6E06583AD1FF72FBD0CB5",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-4EBD02787ED6E06583AD1FF72FBD0CB5",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-4EBD02787ED6E06583AD1FF72FBD0CB5",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-4F9559FC0ACD59AA3FAB2D6919D2CE04",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-4F9559FC0ACD59AA3FAB2D6919D2CE04",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-505EE5E71B20C4E20C702384A8486CD3",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-505EE5E71B20C4E20C702384A8486CD3",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-509AAE6E978C108A3C04074CAA20A1FD",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-509AAE6E978C108A3C04074CAA20A1FD",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-520384D3E6CB3A3EDD3012E94789FCAC",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-52BB765425FAC02F25AB6435735C59D9",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-52BB765425FAC02F25AB6435735C59D9",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-52F252007B34C0BEAA365CEE5D59A347",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-52F252007B34C0BEAA365CEE5D59A347",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-52F252007B34C0BEAA365CEE5D59A347",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-557ED50E8FC3CBDEB5D4B84C7A7FE14A",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:UNEXPLAINED_DATA_GAP"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-558A56EDF12F0497AB6DFDA8099D2DC7",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-55D0EE507F97A877879ACD1142CBEA16",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-55D0EE507F97A877879ACD1142CBEA16",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-55D0EE507F97A877879ACD1142CBEA16",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-564BCA529A99312043ABBC02F63F6D35",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-564BCA529A99312043ABBC02F63F6D35",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-5656C247F8152173D94758EDF79AAAE2",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-56810448CF2F6FC4CB0D129FAD066CE2",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-56810448CF2F6FC4CB0D129FAD066CE2",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-57BFBA249A27E65A7AD249FFB3F7907D",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-57BFBA249A27E65A7AD249FFB3F7907D",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-581D10525B31F1CDBDAD427938A5E4F8",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-581D10525B31F1CDBDAD427938A5E4F8",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-5B590C9442FD526BE2E08E3000AB382F",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-5B590C9442FD526BE2E08E3000AB382F",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-5C8F30C6B57ED88350D2015F1CE8F3AC",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-5CFA7CDB76A729D378E47E5F875A0ABF",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-5CFA7CDB76A729D378E47E5F875A0ABF",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-5D0534E1B2B4F6D722FC7FDB33EAE1AE",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-5E1FB39278F400FB4FE566532A2C6D07",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-5E1FB39278F400FB4FE566532A2C6D07",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-5E2BB82CAB36DB385F00C6EA1DE6A5F5",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-5E2BB82CAB36DB385F00C6EA1DE6A5F5",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-5E2BB82CAB36DB385F00C6EA1DE6A5F5",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-5E5109D5190CF9999EE0FBCFD5DE959B",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-5E5109D5190CF9999EE0FBCFD5DE959B",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-5EAE61565EEB44E2E7C42221CC162DD2",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-6054AE867A60481EDA16B0E02AF1DB09",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-6054AE867A60481EDA16B0E02AF1DB09",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-6054AE867A60481EDA16B0E02AF1DB09",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MISSING_OR_SUSPENDED_ENDPOINT"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-60FCC9B399F4B0093B2C1853EEFAC9D2",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-60FCC9B399F4B0093B2C1853EEFAC9D2",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-62C40F6EEABB12A3B3F00D4FB0B61ED0",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-62C40F6EEABB12A3B3F00D4FB0B61ED0",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-62C40F6EEABB12A3B3F00D4FB0B61ED0",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-63FD3C0974681E00F1C3A1D87C75D09B",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-63FD3C0974681E00F1C3A1D87C75D09B",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "clv",
+        "security_id": "SEC-6580BED23EA47DBD58F0E9EAC7F94992",
+        "source_reason": "ZERO_DENOMINATOR"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-65818034643947EDC8AE6FC16F515822",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-6765D553384B9E7BB7848090E693D277",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-6765D553384B9E7BB7848090E693D277",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-67CBEE0CDF1D71445641D98875D2E238",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-67CBEE0CDF1D71445641D98875D2E238",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-67CBEE0CDF1D71445641D98875D2E238",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-684CC8E923234B4B24F740A20AB309F9",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-684CC8E923234B4B24F740A20AB309F9",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-68C34AE5D919831F1EB932A399762FCC",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-698DA67CE7DDD1D5B0A73A7DB8D1107D",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-6A3D8F121720DEC4403BCAA7F3C75C6E",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-6A3D8F121720DEC4403BCAA7F3C75C6E",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-6BF06788496FED7C56E98AACED3536E3",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-6C3A0D3DF2356C7C08617EB9FA22373E",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-6C3A0D3DF2356C7C08617EB9FA22373E",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-6C3A0D3DF2356C7C08617EB9FA22373E",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-6D84A4C76A0CC2B3A7FA63D68C75A433",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-6D84A4C76A0CC2B3A7FA63D68C75A433",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-6D84A4C76A0CC2B3A7FA63D68C75A433",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MISSING_OR_SUSPENDED_ENDPOINT"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-6D96953C4813650A2F06DF53EE7D3FC8",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-6D96953C4813650A2F06DF53EE7D3FC8",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-6E5A7E8842DFFFE1CB910FFA75084631",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-6E5A7E8842DFFFE1CB910FFA75084631",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-7012622B5071D958D32F72C4C2B3780E",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-718127D14513F4AA2BCB5A6F6BE4391A",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-727B4462EB615309F3CF61974E3EF7FC",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-727B4462EB615309F3CF61974E3EF7FC",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-727B4462EB615309F3CF61974E3EF7FC",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MISSING_OR_SUSPENDED_ENDPOINT"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-73515875328B6CE9AE4857BEE4A851DB",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "clv",
+        "security_id": "SEC-76945889C91C79DB4799AAE298DF6ECB",
+        "source_reason": "ZERO_DENOMINATOR"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-793384D2A43865CEC95DF7A34E324933",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-793384D2A43865CEC95DF7A34E324933",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-793384D2A43865CEC95DF7A34E324933",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-79DA87AB15C8B695B574E1818CF11786",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-79DA87AB15C8B695B574E1818CF11786",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-7A1F28C9234719290BCA8EEC1F18AFAD",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-7A1F28C9234719290BCA8EEC1F18AFAD",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-7A1F28C9234719290BCA8EEC1F18AFAD",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:UNEXPLAINED_DATA_GAP"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-7A69B56937CEF89A370966B1216DF226",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-7A69B56937CEF89A370966B1216DF226",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-7BB8B0024C8EA9E1B4A525964D2FAB57",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-7CFC00CB41F8756199C07C904D57B70B",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-7D00F4C18778D179CFB91FB2CEB2DF92",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-7D00F4C18778D179CFB91FB2CEB2DF92",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-7D00F4C18778D179CFB91FB2CEB2DF92",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-7DB55820493702D1226CB35EF623F722",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-7DECE2CC07C61E5469B5726443DA3A3F",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-7DECE2CC07C61E5469B5726443DA3A3F",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-7F9F5B612586D38EE9395AAACBC91DAA",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-7F9F5B612586D38EE9395AAACBC91DAA",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-83265BED29820C88FB43EF86B0A2DA1D",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-838FFAD295BAA7817AD03607F2310D2C",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-838FFAD295BAA7817AD03607F2310D2C",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-842AD2566EC149CA40DADD50B4AEF6A2",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-842AD2566EC149CA40DADD50B4AEF6A2",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-84A99002CAFEAAF0D85654FDAC12C5E4",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-84EF3192D89C089EB8ED4A02823977BA",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-867DE2A8481569EC670458D4B5725C02",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-86B52E880E4D734DE7116D78FD84C415",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-86B52E880E4D734DE7116D78FD84C415",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-87B79996D81FFB2B6AF2BD725CF56B1C",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-87B79996D81FFB2B6AF2BD725CF56B1C",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-88051D6D9CE3B2111F4577AD6C81940D",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-8846699F149D866751E5B694A2DCAAF3",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-8846699F149D866751E5B694A2DCAAF3",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-88A30018EC950E51C1A4DFAE1A170D2A",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-88A30018EC950E51C1A4DFAE1A170D2A",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-88C3BA6DBAEB723A0AF0CC4EC44B6434",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-88C3BA6DBAEB723A0AF0CC4EC44B6434",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-8943D855D94C3B3063EFED90D40F7CAA",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-8943D855D94C3B3063EFED90D40F7CAA",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-8A47636032C3650935607E15AD1C72C8",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-8A47636032C3650935607E15AD1C72C8",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-8A47636032C3650935607E15AD1C72C8",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:UNEXPLAINED_DATA_GAP"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-8ABF23B1B506CF21B31B77B88A5AD035",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-8ABF23B1B506CF21B31B77B88A5AD035",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-8BEF56AE112AA814CEDCDC90039545C1",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-8BEF56AE112AA814CEDCDC90039545C1",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-8C61371DAF1F15B8DAAECB9651D3A7D6",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-8C61371DAF1F15B8DAAECB9651D3A7D6",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-8C7B0104BCBBE198B25C7A447C445233",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-8C7B0104BCBBE198B25C7A447C445233",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-8CD1C1092B2BE63AA044245B9BCBF1DB",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-8CD1C1092B2BE63AA044245B9BCBF1DB",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-8CD1C1092B2BE63AA044245B9BCBF1DB",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-8CEBC4E7F06A6E43A7728C08F6D5911D",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MISSING_OR_SUSPENDED_ENDPOINT"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-8E19FCC9E263B459975F22EE65BD4925",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-8E19FCC9E263B459975F22EE65BD4925",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MISSING_OR_SUSPENDED_ENDPOINT"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-8E4E669DF71257C27C224A5D3C07F4CB",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-8F5A2AC49C96965FFEF9DB8F03E9F09A",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-8F5A2AC49C96965FFEF9DB8F03E9F09A",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-936DF6465B8603EE0B71C15F93E06F3B",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-936DF6465B8603EE0B71C15F93E06F3B",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-936DF6465B8603EE0B71C15F93E06F3B",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:UNEXPLAINED_DATA_GAP"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-956E4474160B17BD28418080FB481219",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-956E4474160B17BD28418080FB481219",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-956E4474160B17BD28418080FB481219",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-95A0F0B7513C325600EC236C70C0DA54",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-96A18FEE5BEAE71DF37BD26B9E71A54C",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-98E560847D910685FC67D1377ACA180C",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-98E560847D910685FC67D1377ACA180C",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-98E560847D910685FC67D1377ACA180C",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-9925579346C943AD778D53C381063EF1",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-9925579346C943AD778D53C381063EF1",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-997943F899ECF567CB30E853E0FEC131",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-997943F899ECF567CB30E853E0FEC131",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-9A109B99F6722ABD0E9CE4DC7A891079",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-9A109B99F6722ABD0E9CE4DC7A891079",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-9A109B99F6722ABD0E9CE4DC7A891079",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-9A2222852908DCC43E96059AFF5737DD",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:PRIOR_UNIVERSE_MEMBER_MISSING"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-9A2222852908DCC43E96059AFF5737DD",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:PRIOR_UNIVERSE_MEMBER_MISSING"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-9A2222852908DCC43E96059AFF5737DD",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MISSING_OR_SUSPENDED_ENDPOINT"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-9C848466DF5BD7B5AEB7C75C5B4BE694",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-9C973B4FDFA9C42E9574D1446FF54034",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-9C973B4FDFA9C42E9574D1446FF54034",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-9C973B4FDFA9C42E9574D1446FF54034",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MISSING_OR_SUSPENDED_ENDPOINT"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-9C9E8D2D8E5770EEA9928DA6C3F621BD",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-9C9E8D2D8E5770EEA9928DA6C3F621BD",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:UNEXPLAINED_DATA_GAP"
+      },
+      {
+        "field": "clv",
+        "security_id": "SEC-9D607E340AD822943D95F679042F2D7A",
+        "source_reason": "ZERO_DENOMINATOR"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-9D607E340AD822943D95F679042F2D7A",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-9D607E340AD822943D95F679042F2D7A",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:UNEXPLAINED_DATA_GAP"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-9D8A5E0D60FA682C7D0D31822E769952",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-9D8A5E0D60FA682C7D0D31822E769952",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-9DEA6A61473005AA1961E9C7F7C534ED",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-9DEA6A61473005AA1961E9C7F7C534ED",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-A0DE4D3F804A6BBEE74327947B9BFDC3",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-A0DE4D3F804A6BBEE74327947B9BFDC3",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-A1540CCB379A42A0957560F3D44208A8",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-A15426238891AF44A04C9ECD042CC2E5",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-A15426238891AF44A04C9ECD042CC2E5",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-A17F411A81787AFD319B23D4882D926A",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-A17F411A81787AFD319B23D4882D926A",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-A17F411A81787AFD319B23D4882D926A",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MISSING_OR_SUSPENDED_ENDPOINT"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-A19788F5438D07A52DB2041EB8FC184F",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-A19788F5438D07A52DB2041EB8FC184F",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-A1D8B6546D6E53D19A1FD449F05ADDF1",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-A1D8B6546D6E53D19A1FD449F05ADDF1",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-A2C722CC24AB42725263ABB5BAF49968",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-A2C722CC24AB42725263ABB5BAF49968",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-A2C722CC24AB42725263ABB5BAF49968",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-A302DA326602B813CBFDEF035402AD60",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-A40EBF8310B209CE65C64D01B50CFEF4",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-A40EBF8310B209CE65C64D01B50CFEF4",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-A482162EA9F8F52E445B925F38509EDA",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-A482162EA9F8F52E445B925F38509EDA",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-A71EE768008A73C938A7069D83C431FD",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-A71EE768008A73C938A7069D83C431FD",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-A71EE768008A73C938A7069D83C431FD",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-A94CC314405C8437CE79555A7DC05B82",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-A94CC314405C8437CE79555A7DC05B82",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-A94CC314405C8437CE79555A7DC05B82",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MISSING_OR_SUSPENDED_ENDPOINT"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-A9BF888F82257E7E3A137360E82547D7",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-A9BF888F82257E7E3A137360E82547D7",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-A9C18A851E4D913AD4E7048F7550F059",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-A9C18A851E4D913AD4E7048F7550F059",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-ABF1160A946C4F1321503DF093C24A0F",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-ABF1160A946C4F1321503DF093C24A0F",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-AC08013664C6EE8A51147B45617A314F",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:UNEXPLAINED_DATA_GAP"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-AC5774FE8FB6378E725ED306FE5F53A8",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-AC5774FE8FB6378E725ED306FE5F53A8",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-AD5A64E7BF51F8494C1BEE20F7D879BB",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-AD5A64E7BF51F8494C1BEE20F7D879BB",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-AD5A64E7BF51F8494C1BEE20F7D879BB",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-B00BAAABA48CD0818B171D63E1096089",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-B0558329F4B0DB87F6730BF7F26C5EFF",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-B0558329F4B0DB87F6730BF7F26C5EFF",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-B06A8B54D5EA70744E8142FEF09ACEE4",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-B06A8B54D5EA70744E8142FEF09ACEE4",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-B06A8B54D5EA70744E8142FEF09ACEE4",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-B161522F533B555D28566A4F53B0BF7D",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-B161522F533B555D28566A4F53B0BF7D",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-B161522F533B555D28566A4F53B0BF7D",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-B17169139D0E3492B2CA012774B6B125",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-B17169139D0E3492B2CA012774B6B125",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-B17169139D0E3492B2CA012774B6B125",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MISSING_OR_SUSPENDED_ENDPOINT"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-B1DE4E4AAD66F413CCAA12E25819A5EC",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-B1DE4E4AAD66F413CCAA12E25819A5EC",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-B35BFC1CA53C4D03FA74AF6002F66628",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-B35BFC1CA53C4D03FA74AF6002F66628",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-B35BFC1CA53C4D03FA74AF6002F66628",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-B369CA5F72A0B06C54D8C971B9075917",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-B369CA5F72A0B06C54D8C971B9075917",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-B39006974E603AB79833A7E36829C0C5",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-B39006974E603AB79833A7E36829C0C5",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-B4CE8054B52B7A3C93C5D2D7C2D88D33",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-B4CE8054B52B7A3C93C5D2D7C2D88D33",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-B4ECF00CC8C17798682E0D5E8C05C8F1",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-B4ECF00CC8C17798682E0D5E8C05C8F1",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-B4ECF00CC8C17798682E0D5E8C05C8F1",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-B60899F589C7A04A916A653B1AEBAA1A",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-B60899F589C7A04A916A653B1AEBAA1A",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-B6BDB1469638AFCF96401F7F202DB018",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-B7ACBA548745A5926830CC4130BEDF0E",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-B9C067D55D40072526A8182B0E6333E4",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-B9C067D55D40072526A8182B0E6333E4",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-B9C067D55D40072526A8182B0E6333E4",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-B9FCBA3896CC48C09B01286A0B75A11F",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-B9FCBA3896CC48C09B01286A0B75A11F",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MISSING_OR_SUSPENDED_ENDPOINT"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-BB4F63E486204294EF742DD60CD3D978",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-BB4F63E486204294EF742DD60CD3D978",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-BD0139597A7CFBE24B243401212761E5",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-BD14D7ED210A8151B67E0A89D57974A3",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-BD374663A76BCEC0004BB57C7A664C48",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MISSING_OR_SUSPENDED_ENDPOINT"
+      },
+      {
+        "field": "clv",
+        "security_id": "SEC-BD56D2178EF33FD038FB5A12E09D445B",
+        "source_reason": "ZERO_DENOMINATOR"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-BD56D2178EF33FD038FB5A12E09D445B",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-BD56D2178EF33FD038FB5A12E09D445B",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-BD56D2178EF33FD038FB5A12E09D445B",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:UNEXPLAINED_DATA_GAP"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-BEC87A73DBE4C74B14B709CFA120D075",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-BEC87A73DBE4C74B14B709CFA120D075",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-C030240E8A9AD7DF0B2E47EA189DECD4",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-C030240E8A9AD7DF0B2E47EA189DECD4",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-C122CA5E22AEBF5068E1A17EF3266901",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-C122CA5E22AEBF5068E1A17EF3266901",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-C122CA5E22AEBF5068E1A17EF3266901",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-C14D2721DBC73D92D0E75FF889340F67",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-C2645C450DC2D3BBAEDE52ED5391E180",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-C3C8EEBF0D0896A34E69D08F9629F586",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-C3C8EEBF0D0896A34E69D08F9629F586",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-C48260AD8F1986EE8362B0791D4889D6",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-C48260AD8F1986EE8362B0791D4889D6",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-C48260AD8F1986EE8362B0791D4889D6",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-C48D57E0B3B6808E50EE082A71E31F04",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:UNEXPLAINED_DATA_GAP"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-C51B13C61C4B22DEB861326BFAF8B985",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-C51B13C61C4B22DEB861326BFAF8B985",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-C6D81D46F7DB0E37FFB773D935009B5B",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-C6D81D46F7DB0E37FFB773D935009B5B",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-C7353CA6F8DE4D5EA38AC49E4AAC9CF3",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:PRIOR_UNIVERSE_MEMBER_MISSING"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-C7353CA6F8DE4D5EA38AC49E4AAC9CF3",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:PRIOR_UNIVERSE_MEMBER_MISSING"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-C7353CA6F8DE4D5EA38AC49E4AAC9CF3",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MISSING_OR_SUSPENDED_ENDPOINT"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-C794DF5A4489054F2E3EB5D32853E0E7",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-C794DF5A4489054F2E3EB5D32853E0E7",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-C81D396F54785E353029B7739525F865",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-C81D396F54785E353029B7739525F865",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-C81D396F54785E353029B7739525F865",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-C851A9954DAA1E99F9F6D1BDA2F8BDF4",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-C851A9954DAA1E99F9F6D1BDA2F8BDF4",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-C8C8C7ED81D35F1E9CC7FF2D2D9D44AA",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-C8C8C7ED81D35F1E9CC7FF2D2D9D44AA",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-CA0E279AC9FDC0936370751D335AA5C4",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-CA7C653ECF2DBAB6CFCA702D48AF13FF",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-CA7C653ECF2DBAB6CFCA702D48AF13FF",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-CAFBE206FEA136BCF9C5923BDC15586A",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-CAFBE206FEA136BCF9C5923BDC15586A",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-CAFBE206FEA136BCF9C5923BDC15586A",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:UNEXPLAINED_DATA_GAP"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-CD1BE8D9644A7555D86EC8BA7191EC8B",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-CD1BE8D9644A7555D86EC8BA7191EC8B",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-CEF69B3292E2AE319FC46216AAAB86DA",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-CEF69B3292E2AE319FC46216AAAB86DA",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-CEF6DB23042CFA7E242BD62A2C05D8A0",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-CEF6DB23042CFA7E242BD62A2C05D8A0",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-CF1302989D3556131C131254BC499F0F",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-CF1302989D3556131C131254BC499F0F",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-D041DB297109CEAEAF23245CE014FC3F",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-D041DB297109CEAEAF23245CE014FC3F",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-D0F0DDAC64451CA20CC62383CF08A9E4",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-D0F0DDAC64451CA20CC62383CF08A9E4",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-D11220120A954D8B9F03A9BB7C31C107",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-D11220120A954D8B9F03A9BB7C31C107",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-D16F1FD665551F1D98304EB41D5AB79E",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-D16F1FD665551F1D98304EB41D5AB79E",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-D18D365C502C84A88C8597579D53D9E4",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-D1EA533A0A967AFAC405470570CEF52C",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-D25CD1867AE8B886A6DCF8D273DF1E1D",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-D25CD1867AE8B886A6DCF8D273DF1E1D",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-D3A27051D9812A037CF36EC227427543",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-D3A27051D9812A037CF36EC227427543",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-D40EA8919BEAA129E7715249D07585A2",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-D4117F6E88EBA6031A6B8BAD0C37CA19",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-D4117F6E88EBA6031A6B8BAD0C37CA19",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-D67D92B148C0663898C1E52A55B49380",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-D67D92B148C0663898C1E52A55B49380",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-D6B5B35C9CE83961AB9208FA6E1A4B9E",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-D7686A4DD9712DEDBD8048E9EADACE11",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-D83A4116BFAF204B3E5FEDC5F3D3BC2C",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-D83A4116BFAF204B3E5FEDC5F3D3BC2C",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-D86248C5EE87D92007ABD479CA70FA25",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-D8A112523AD5D0CAA23F11CC38276761",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-D8A112523AD5D0CAA23F11CC38276761",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-D8A1CCB5D5576B6F4A7D9D639E017655",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-D8A1CCB5D5576B6F4A7D9D639E017655",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-D8C9B37E10006189EF0101637CE93AA8",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-D8C9B37E10006189EF0101637CE93AA8",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-D8CBF449D722752AD1C93D73B5919275",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-D8CBF449D722752AD1C93D73B5919275",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-D8EA95D3A7A05ADCFA61EE632B464804",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MISSING_OR_SUSPENDED_ENDPOINT"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-DBEBB3D68120FAE92D7D0A04088AE1A7",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-DBEBB3D68120FAE92D7D0A04088AE1A7",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-DD31D8CAF1CF04404E91F12B636DFE6C",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-DD31D8CAF1CF04404E91F12B636DFE6C",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-DD31D8CAF1CF04404E91F12B636DFE6C",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MISSING_OR_SUSPENDED_ENDPOINT"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-DF0D224E61A34DFC844FC9FCD5AB27EF",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-DF0D224E61A34DFC844FC9FCD5AB27EF",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-DF5278E90BD6CD1A569323E49A2705C6",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-DF5278E90BD6CD1A569323E49A2705C6",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-DFADF94E4E2879E1A7D5F0B3CF5CAE67",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MISSING_OR_SUSPENDED_ENDPOINT"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-E048437282D893B88DD3824A723937D9",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MISSING_OR_SUSPENDED_ENDPOINT"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-E0A79DA222310313C07F68A6D1B90A4B",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:UNEXPLAINED_DATA_GAP"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-E11DA4A25B7F65C3E8229D5A76504A94",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-E11DA4A25B7F65C3E8229D5A76504A94",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-E11DA4A25B7F65C3E8229D5A76504A94",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MISSING_OR_SUSPENDED_ENDPOINT"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-E176F9C4F9E68C3EE6815CACE8BA0967",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-E176F9C4F9E68C3EE6815CACE8BA0967",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-E318598F58CBFEA1AEBF7DE6B8887D90",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-E318598F58CBFEA1AEBF7DE6B8887D90",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-E4A78A1FA6729F84C9A00EDAF032BB2D",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-E4A78A1FA6729F84C9A00EDAF032BB2D",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-E4A78A1FA6729F84C9A00EDAF032BB2D",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-E4D13AA4878803234FA7CB84F8207F06",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-E4D13AA4878803234FA7CB84F8207F06",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-E61AC412252F032E8DBD3D474702A506",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-E61AC412252F032E8DBD3D474702A506",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-E61AC412252F032E8DBD3D474702A506",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:UNEXPLAINED_DATA_GAP"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-E6E4BB0505A8AF8DDC6A0CF698128D6B",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-E6E4BB0505A8AF8DDC6A0CF698128D6B",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-E809344F6A592F0C78236F40763F7B2A",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-E809344F6A592F0C78236F40763F7B2A",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-E89088E6DA03AFCB6435780B04729A71",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-E89088E6DA03AFCB6435780B04729A71",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-E8BA8EDD87D8FB1925382B1899F3E548",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-E8BA8EDD87D8FB1925382B1899F3E548",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-E8F172CA42780258DBEEDB78A0E4A75C",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-E8F172CA42780258DBEEDB78A0E4A75C",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-E97827449341A20F047D18001BC41D12",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-E97827449341A20F047D18001BC41D12",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-EA10622D071183775DA6750F1790A5C9",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-EA10622D071183775DA6750F1790A5C9",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-EAAED161AB96DB0E51965A654D1B6038",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-EAAED161AB96DB0E51965A654D1B6038",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-EE81568DB513EA34C6F04CA6D96D1343",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-EE81568DB513EA34C6F04CA6D96D1343",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-EEA0398C2948E9836A79F02EC1F4ACCE",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-EEA0398C2948E9836A79F02EC1F4ACCE",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-EFAABB52A512633A96C69AE43384C128",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-EFAABB52A512633A96C69AE43384C128",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-EFAABB52A512633A96C69AE43384C128",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-F0544A859F44FA1C85000F4EA34E0596",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-F0544A859F44FA1C85000F4EA34E0596",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-F0544A859F44FA1C85000F4EA34E0596",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-F1128559EE27068078D38B30DC507F29",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-F1128559EE27068078D38B30DC507F29",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-F144D89626D4B4AFF34E28B3449D0A08",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-F16A803819DE430E7243D31B0B8336EF",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-F16A803819DE430E7243D31B0B8336EF",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-F1A528D8F00171FE4EA38F75750C72B3",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MISSING_OR_SUSPENDED_ENDPOINT"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-F1BFF442844BD2AC79F63E27F7AF829A",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-F1BFF442844BD2AC79F63E27F7AF829A",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-F1E598256EF480E50EC0288E97A331EF",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:UNEXPLAINED_DATA_GAP"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-F294D4F353FD19F8CF1F6B27B13D5704",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-F294D4F353FD19F8CF1F6B27B13D5704",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-F2F5C53740F6B019812080985C3CEADF",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-F2F5C53740F6B019812080985C3CEADF",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-F37DB3AB528245787D1A0104B83E67BE",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-F37DB3AB528245787D1A0104B83E67BE",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-F5C37FC84C5F243E4899F2520237134D",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-F5C37FC84C5F243E4899F2520237134D",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-F65C0BE13CD364992F31EEB8344DED1B",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-F65C0BE13CD364992F31EEB8344DED1B",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-F677AC55B0AE04E5E007768259083811",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-F677AC55B0AE04E5E007768259083811",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-F7CCCEA12356A689F3994F07FE9E913B",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-F8746011C899252271AD601EF8110877",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-F8746011C899252271AD601EF8110877",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-F8746011C899252271AD601EF8110877",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-FA381BEC862EB4FDA9E0BFD9D391D6D9",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-FA90B895A5252212F26602D52FB16642",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-FAA2AF960B1FFF5621F947C264FC75BE",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-FAA2AF960B1FFF5621F947C264FC75BE",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-FAF38FC141808694D399467F32502028",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-FB0F4C7656EB8F83398D53487ADD0301",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-FB0F4C7656EB8F83398D53487ADD0301",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-FB63D033043DEEE1BD663E71DD710790",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-FB63D033043DEEE1BD663E71DD710790",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "recovery_v3",
+        "security_id": "SEC-FBF7B93F7C2482E8DD518677440E7858",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-FBF7B93F7C2482E8DD518677440E7858",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-FBF7B93F7C2482E8DD518677440E7858",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-FCDCA25B7A72D32E046721AD88ACBB36",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-FCDCA25B7A72D32E046721AD88ACBB36",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY"
+      },
+      {
+        "field": "setup_v3",
+        "security_id": "SEC-FF545EE1B3721B2E75E525BB96E49C98",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN"
+      },
+      {
+        "field": "trend_background_v3",
+        "security_id": "SEC-FF545EE1B3721B2E75E525BB96E49C98",
+        "source_reason": "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN"
+      }
+    ],
+    "new_publication": {
+      "bytes": 1896259,
+      "path": "data/v4/confirmation_candidates_r4/TARGET_FACTS_2026-09-30_R4A.json.gz",
+      "sha256": "5a0c2f2f97fa4e09ad1c617409ffc08ef83891772e8010986b7ac606d8303dea"
+    },
+    "original_oracle": {
+      "bytes": 32674,
+      "path": "reports/v4_11_r4/superseded/INITIAL_2026-09-30_INDEPENDENT_ORACLE.json",
+      "sha256": "f5c145ac140dff41a7c7ef1a0327756b00008a247a6ec95422dbd55cb2310dec"
+    },
+    "original_publication": {
+      "bytes": 1892247,
+      "path": "reports/v4_11_r4/superseded/TARGET_FACTS_2026-09-30_INITIAL_R4A.json.gz",
+      "sha256": "f0a2eb7aa86849ca8398dedded9b38ed8f54483be5c5f1b17327b42a0e03fae1"
+    },
+    "reason_counts": {
+      "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN": 176,
+      "ACCEPTED_RPS_UNAVAILABLE:MISSING_OR_SUSPENDED_ENDPOINT": 25,
+      "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY": 89,
+      "ACCEPTED_RPS_UNAVAILABLE:PRIOR_UNIVERSE_MEMBER_MISSING": 4,
+      "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN": 278,
+      "ACCEPTED_RPS_UNAVAILABLE:UNEXPLAINED_DATA_GAP": 18,
+      "ZERO_DENOMINATOR": 7
+    },
+    "source_digest_exact": true
+  },
+  "rps_current_binding": {
+    "bytes": 1977575,
+    "path": "data/v4/a02_rps_history_r1/PUBLICATION_2026-09-30_022a6088023084b3f576e7bb460aad2e7e62e6fc55f1c4edbaef334f1facd940.json",
+    "sha256": "17cd8b4c1c39d80a709334555368f2ceed550fd3c71f776699123f9643c86d00"
+  },
+  "rps_exact_prior_binding": {
+    "bytes": 1977569,
+    "path": "data/v4/a02_rps_history_r1/PUBLICATION_2026-09-24_a922ee6c3207f6e50a9d54812d8275a5131925eb524f020e87b0f03173550412.json",
+    "sha256": "a8a181227221358fc110882e78430c13354ca156e190919e244123a4133315b7"
+  },
+  "sample_arithmetic": {
+    "actual_bar": [
+      {
+        "independently_calculated": true,
+        "published": true,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "1b78143e9bf1864493d026358d76de3aa42d4c46b78bf9658314a02464a77188"
+      },
+      {
+        "independently_calculated": true,
+        "published": true,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "123cbfa50b07c2f2ef51a71649717295776689f3762da917e343be48935ad031"
+      }
+    ],
+    "amr20_mean_prior": [
+      {
+        "independently_calculated": 0.7926788453149629,
+        "prior20_amounts_cny": [
+          137012832.0,
+          86894088.0,
+          133177400.0,
+          109907456.0,
+          76049760.0,
+          82791048.0,
+          73941400.0,
+          83061240.0,
+          87012832.0,
+          65300260.0,
+          168723872.0,
+          115362360.0,
+          127311288.0,
+          120563352.0,
+          116546560.0,
+          98570976.0,
+          81877632.0,
+          100066552.0,
+          96476104.0,
+          115638800.0
+        ],
+        "prior20_master_dates": [
+          "2026-09-01",
+          "2026-09-02",
+          "2026-09-03",
+          "2026-09-04",
+          "2026-09-07",
+          "2026-09-08",
+          "2026-09-09",
+          "2026-09-10",
+          "2026-09-11",
+          "2026-09-14",
+          "2026-09-15",
+          "2026-09-16",
+          "2026-09-17",
+          "2026-09-18",
+          "2026-09-21",
+          "2026-09-22",
+          "2026-09-23",
+          "2026-09-24",
+          "2026-09-28",
+          "2026-09-29"
+        ],
+        "published": 0.7926788453149629,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "1b78143e9bf1864493d026358d76de3aa42d4c46b78bf9658314a02464a77188",
+        "target_amount_cny": 82291392.0,
+        "target_date": "2026-09-30",
+        "target_excluded_from_denominator": true
+      },
+      {
+        "independently_calculated": 0.46347555569442006,
+        "prior20_amounts_cny": [
+          959829248.0,
+          892859584.0,
+          3458214400.0,
+          3661856256.0,
+          1682270976.0,
+          1413449728.0,
+          1154668672.0,
+          911385664.0,
+          1110646016.0,
+          1021640128.0,
+          740043264.0,
+          1121484160.0,
+          1279804160.0,
+          1358052352.0,
+          1256419200.0,
+          1342996352.0,
+          879309056.0,
+          816692352.0,
+          1506690176.0,
+          707634624.0
+        ],
+        "prior20_master_dates": [
+          "2026-09-01",
+          "2026-09-02",
+          "2026-09-03",
+          "2026-09-04",
+          "2026-09-07",
+          "2026-09-08",
+          "2026-09-09",
+          "2026-09-10",
+          "2026-09-11",
+          "2026-09-14",
+          "2026-09-15",
+          "2026-09-16",
+          "2026-09-17",
+          "2026-09-18",
+          "2026-09-21",
+          "2026-09-22",
+          "2026-09-23",
+          "2026-09-24",
+          "2026-09-28",
+          "2026-09-29"
+        ],
+        "published": 0.46347555569442006,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "123cbfa50b07c2f2ef51a71649717295776689f3762da917e343be48935ad031",
+        "target_amount_cny": 632086720.0,
+        "target_date": "2026-09-30",
+        "target_excluded_from_denominator": true
+      }
+    ],
+    "break_high20": [
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "1b78143e9bf1864493d026358d76de3aa42d4c46b78bf9658314a02464a77188"
+      },
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "123cbfa50b07c2f2ef51a71649717295776689f3762da917e343be48935ad031"
+      }
+    ],
+    "break_margin_close20": [
+      {
+        "independently_calculated": -0.003762227238525151,
+        "published": -0.003762227238525151,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "1b78143e9bf1864493d026358d76de3aa42d4c46b78bf9658314a02464a77188"
+      },
+      {
+        "independently_calculated": -0.17350611951043915,
+        "published": -0.17350611951043915,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "123cbfa50b07c2f2ef51a71649717295776689f3762da917e343be48935ad031"
+      }
+    ],
+    "breakout_v3": [
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "1b78143e9bf1864493d026358d76de3aa42d4c46b78bf9658314a02464a77188"
+      },
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "123cbfa50b07c2f2ef51a71649717295776689f3762da917e343be48935ad031"
+      }
+    ],
+    "close_above_prior_high": [
+      {
+        "independently_calculated": true,
+        "published": true,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "1b78143e9bf1864493d026358d76de3aa42d4c46b78bf9658314a02464a77188"
+      },
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "123cbfa50b07c2f2ef51a71649717295776689f3762da917e343be48935ad031"
+      }
+    ],
+    "close_to_ma20": [
+      {
+        "independently_calculated": 1.0154152925837872,
+        "published": 1.0154152925837872,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "1b78143e9bf1864493d026358d76de3aa42d4c46b78bf9658314a02464a77188"
+      },
+      {
+        "independently_calculated": 0.9081200806866274,
+        "published": 0.9081200806866274,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "123cbfa50b07c2f2ef51a71649717295776689f3762da917e343be48935ad031"
+      }
+    ],
+    "close_to_ma5": [
+      {
+        "independently_calculated": 1.0128518971848226,
+        "published": 1.0128518971848226,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "1b78143e9bf1864493d026358d76de3aa42d4c46b78bf9658314a02464a77188"
+      },
+      {
+        "independently_calculated": 0.9601873536299766,
+        "published": 0.9601873536299766,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "123cbfa50b07c2f2ef51a71649717295776689f3762da917e343be48935ad031"
+      }
+    ],
+    "clv": [
+      {
+        "independently_calculated": 0.5833333333333351,
+        "published": 0.5833333333333351,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "1b78143e9bf1864493d026358d76de3aa42d4c46b78bf9658314a02464a77188"
+      },
+      {
+        "independently_calculated": 0.3200000000000003,
+        "published": 0.3200000000000003,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "123cbfa50b07c2f2ef51a71649717295776689f3762da917e343be48935ad031"
+      }
+    ],
+    "extended_v3": [
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "1b78143e9bf1864493d026358d76de3aa42d4c46b78bf9658314a02464a77188"
+      },
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "123cbfa50b07c2f2ef51a71649717295776689f3762da917e343be48935ad031"
+      }
+    ],
+    "first_day_damage": [
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "1b78143e9bf1864493d026358d76de3aa42d4c46b78bf9658314a02464a77188"
+      },
+      {
+        "independently_calculated": true,
+        "published": true,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "123cbfa50b07c2f2ef51a71649717295776689f3762da917e343be48935ad031"
+      }
+    ],
+    "intraday_reject_high20": [
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "1b78143e9bf1864493d026358d76de3aa42d4c46b78bf9658314a02464a77188"
+      },
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "123cbfa50b07c2f2ef51a71649717295776689f3762da917e343be48935ad031"
+      }
+    ],
+    "liq20": [
+      {
+        "independently_calculated": true,
+        "published": true,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "1b78143e9bf1864493d026358d76de3aa42d4c46b78bf9658314a02464a77188"
+      },
+      {
+        "independently_calculated": true,
+        "published": true,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "123cbfa50b07c2f2ef51a71649717295776689f3762da917e343be48935ad031"
+      }
+    ],
+    "liq20_amount": [
+      {
+        "independently_calculated": 99318764.0,
+        "prior20_amounts_cny": [
+          137012832.0,
+          86894088.0,
+          133177400.0,
+          109907456.0,
+          76049760.0,
+          82791048.0,
+          73941400.0,
+          83061240.0,
+          87012832.0,
+          65300260.0,
+          168723872.0,
+          115362360.0,
+          127311288.0,
+          120563352.0,
+          116546560.0,
+          98570976.0,
+          81877632.0,
+          100066552.0,
+          96476104.0,
+          115638800.0
+        ],
+        "prior20_master_dates": [
+          "2026-09-01",
+          "2026-09-02",
+          "2026-09-03",
+          "2026-09-04",
+          "2026-09-07",
+          "2026-09-08",
+          "2026-09-09",
+          "2026-09-10",
+          "2026-09-11",
+          "2026-09-14",
+          "2026-09-15",
+          "2026-09-16",
+          "2026-09-17",
+          "2026-09-18",
+          "2026-09-21",
+          "2026-09-22",
+          "2026-09-23",
+          "2026-09-24",
+          "2026-09-28",
+          "2026-09-29"
+        ],
+        "published": 99318764.0,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "1b78143e9bf1864493d026358d76de3aa42d4c46b78bf9658314a02464a77188",
+        "target_amount_cny": 82291392.0,
+        "target_date": "2026-09-30",
+        "target_excluded_from_denominator": true
+      },
+      {
+        "independently_calculated": 1138076416.0,
+        "prior20_amounts_cny": [
+          959829248.0,
+          892859584.0,
+          3458214400.0,
+          3661856256.0,
+          1682270976.0,
+          1413449728.0,
+          1154668672.0,
+          911385664.0,
+          1110646016.0,
+          1021640128.0,
+          740043264.0,
+          1121484160.0,
+          1279804160.0,
+          1358052352.0,
+          1256419200.0,
+          1342996352.0,
+          879309056.0,
+          816692352.0,
+          1506690176.0,
+          707634624.0
+        ],
+        "prior20_master_dates": [
+          "2026-09-01",
+          "2026-09-02",
+          "2026-09-03",
+          "2026-09-04",
+          "2026-09-07",
+          "2026-09-08",
+          "2026-09-09",
+          "2026-09-10",
+          "2026-09-11",
+          "2026-09-14",
+          "2026-09-15",
+          "2026-09-16",
+          "2026-09-17",
+          "2026-09-18",
+          "2026-09-21",
+          "2026-09-22",
+          "2026-09-23",
+          "2026-09-24",
+          "2026-09-28",
+          "2026-09-29"
+        ],
+        "published": 1138076416.0,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "123cbfa50b07c2f2ef51a71649717295776689f3762da917e343be48935ad031",
+        "target_amount_cny": 632086720.0,
+        "target_date": "2026-09-30",
+        "target_excluded_from_denominator": true
+      }
+    ],
+    "ma20": [
+      {
+        "independently_calculated": 13.039,
+        "published": 13.039,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "1b78143e9bf1864493d026358d76de3aa42d4c46b78bf9658314a02464a77188"
+      },
+      {
+        "independently_calculated": 12.6415,
+        "published": 12.6415,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "123cbfa50b07c2f2ef51a71649717295776689f3762da917e343be48935ad031"
+      }
+    ],
+    "ma20_nondeclining_3": [
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "1b78143e9bf1864493d026358d76de3aa42d4c46b78bf9658314a02464a77188"
+      },
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "123cbfa50b07c2f2ef51a71649717295776689f3762da917e343be48935ad031"
+      }
+    ],
+    "ma5": [
+      {
+        "independently_calculated": 13.072,
+        "published": 13.072,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "1b78143e9bf1864493d026358d76de3aa42d4c46b78bf9658314a02464a77188"
+      },
+      {
+        "independently_calculated": 11.956,
+        "published": 11.956,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "123cbfa50b07c2f2ef51a71649717295776689f3762da917e343be48935ad031"
+      }
+    ],
+    "ma5_to_ma20": [
+      {
+        "independently_calculated": 1.0025308689316665,
+        "published": 1.0025308689316665,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "1b78143e9bf1864493d026358d76de3aa42d4c46b78bf9658314a02464a77188"
+      },
+      {
+        "independently_calculated": 0.9457738401297313,
+        "published": 0.9457738401297313,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "123cbfa50b07c2f2ef51a71649717295776689f3762da917e343be48935ad031"
+      }
+    ],
+    "normal_universe": [
+      {
+        "independently_calculated": true,
+        "published": true,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "1b78143e9bf1864493d026358d76de3aa42d4c46b78bf9658314a02464a77188"
+      },
+      {
+        "independently_calculated": true,
+        "published": true,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "123cbfa50b07c2f2ef51a71649717295776689f3762da917e343be48935ad031"
+      }
+    ],
+    "phc20": [
+      {
+        "independently_calculated": 13.29,
+        "published": 13.29,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "1b78143e9bf1864493d026358d76de3aa42d4c46b78bf9658314a02464a77188"
+      },
+      {
+        "independently_calculated": 13.89,
+        "published": 13.89,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "123cbfa50b07c2f2ef51a71649717295776689f3762da917e343be48935ad031"
+      }
+    ],
+    "phh20": [
+      {
+        "independently_calculated": 13.56,
+        "published": 13.56,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "1b78143e9bf1864493d026358d76de3aa42d4c46b78bf9658314a02464a77188"
+      },
+      {
+        "independently_calculated": 13.89,
+        "published": 13.89,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "123cbfa50b07c2f2ef51a71649717295776689f3762da917e343be48935ad031"
+      }
+    ],
+    "prior5_below_ma20_count": [
+      {
+        "independently_calculated": 3,
+        "published": 3,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "1b78143e9bf1864493d026358d76de3aa42d4c46b78bf9658314a02464a77188"
+      },
+      {
+        "independently_calculated": 5,
+        "published": 5,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "123cbfa50b07c2f2ef51a71649717295776689f3762da917e343be48935ad031"
+      }
+    ],
+    "reclaim_ma20": [
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "1b78143e9bf1864493d026358d76de3aa42d4c46b78bf9658314a02464a77188"
+      },
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "123cbfa50b07c2f2ef51a71649717295776689f3762da917e343be48935ad031"
+      }
+    ],
+    "reclaim_ma5": [
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "1b78143e9bf1864493d026358d76de3aa42d4c46b78bf9658314a02464a77188"
+      },
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "123cbfa50b07c2f2ef51a71649717295776689f3762da917e343be48935ad031"
+      }
+    ],
+    "recovery_v3": [
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "1b78143e9bf1864493d026358d76de3aa42d4c46b78bf9658314a02464a77188"
+      },
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "123cbfa50b07c2f2ef51a71649717295776689f3762da917e343be48935ad031"
+      }
+    ],
+    "ret1_adj": [
+      {
+        "independently_calculated": 0.008377760853008231,
+        "published": 0.008377760853008231,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "1b78143e9bf1864493d026358d76de3aa42d4c46b78bf9658314a02464a77188"
+      },
+      {
+        "independently_calculated": 0.006134969325153339,
+        "published": 0.006134969325153339,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "123cbfa50b07c2f2ef51a71649717295776689f3762da917e343be48935ad031"
+      }
+    ],
+    "ret20_adj": [
+      {
+        "independently_calculated": -0.003762227238525151,
+        "published": -0.003762227238525151,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "1b78143e9bf1864493d026358d76de3aa42d4c46b78bf9658314a02464a77188"
+      },
+      {
+        "independently_calculated": -0.1128284389489953,
+        "published": -0.1128284389489953,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "123cbfa50b07c2f2ef51a71649717295776689f3762da917e343be48935ad031"
+      }
+    ],
+    "ret5_adj": [
+      {
+        "independently_calculated": 0.009916094584286883,
+        "published": 0.009916094584286883,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "1b78143e9bf1864493d026358d76de3aa42d4c46b78bf9658314a02464a77188"
+      },
+      {
+        "independently_calculated": -0.10800310800310786,
+        "published": -0.10800310800310786,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "123cbfa50b07c2f2ef51a71649717295776689f3762da917e343be48935ad031"
+      }
+    ],
+    "rps20": [
+      {
+        "independently_calculated": 0.7066035706603571,
+        "published": 0.7066035706603571,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "1b78143e9bf1864493d026358d76de3aa42d4c46b78bf9658314a02464a77188"
+      },
+      {
+        "independently_calculated": 0.1309959130995913,
+        "published": 0.1309959130995913,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "123cbfa50b07c2f2ef51a71649717295776689f3762da917e343be48935ad031"
+      }
+    ],
+    "rps5_delta3": [
+      {
+        "independently_calculated": 0.35305035792258016,
+        "published": 0.35305035792258016,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "1b78143e9bf1864493d026358d76de3aa42d4c46b78bf9658314a02464a77188"
+      },
+      {
+        "independently_calculated": -0.026794722509214493,
+        "published": -0.026794722509214493,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "123cbfa50b07c2f2ef51a71649717295776689f3762da917e343be48935ad031"
+      }
+    ],
+    "setup_v3": [
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "1b78143e9bf1864493d026358d76de3aa42d4c46b78bf9658314a02464a77188"
+      },
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "123cbfa50b07c2f2ef51a71649717295776689f3762da917e343be48935ad031"
+      }
+    ],
+    "severe_drop": [
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "1b78143e9bf1864493d026358d76de3aa42d4c46b78bf9658314a02464a77188"
+      },
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "123cbfa50b07c2f2ef51a71649717295776689f3762da917e343be48935ad031"
+      }
+    ],
+    "slope20": [
+      {
+        "independently_calculated": 0.0004018126236722878,
+        "published": 0.0004018126236722958,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "1b78143e9bf1864493d026358d76de3aa42d4c46b78bf9658314a02464a77188"
+      },
+      {
+        "independently_calculated": -0.005447525624466067,
+        "published": -0.005447525624466061,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "123cbfa50b07c2f2ef51a71649717295776689f3762da917e343be48935ad031"
+      }
+    ],
+    "structure_break_v3": [
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "1b78143e9bf1864493d026358d76de3aa42d4c46b78bf9658314a02464a77188"
+      },
+      {
+        "independently_calculated": true,
+        "published": true,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "123cbfa50b07c2f2ef51a71649717295776689f3762da917e343be48935ad031"
+      }
+    ],
+    "trend_background_v3": [
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "1b78143e9bf1864493d026358d76de3aa42d4c46b78bf9658314a02464a77188"
+      },
+      {
+        "independently_calculated": false,
+        "published": false,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "123cbfa50b07c2f2ef51a71649717295776689f3762da917e343be48935ad031"
+      }
+    ],
+    "window_valid": [
+      {
+        "independently_calculated": true,
+        "published": true,
+        "security_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "source_window_digest": "1b78143e9bf1864493d026358d76de3aa42d4c46b78bf9658314a02464a77188"
+      },
+      {
+        "independently_calculated": true,
+        "published": true,
+        "security_id": "SEC-000A3F9053A2AA6112AAF248CBBD5912",
+        "source_window_digest": "123cbfa50b07c2f2ef51a71649717295776689f3762da917e343be48935ad031"
+      }
+    ]
+  },
+  "source_digest": "af19e06b2ae1609e13fa94f13ac14455670943b0deb17af2e99eccde118c2b3a",
+  "source_slot_checks": 141048,
+  "status": "PASS",
+  "synthetic_vector_scope": "ORACLE_ONLY; NO_REAL_TRUE_CLAIM",
+  "trade_date": "2026-09-30",
+  "universe_coverage": 5224,
+  "universe_source_class_audit": {
+    "accepted_suspended_no_raw_rows": 11,
+    "complete_accepted_identity_universe": 5224,
+    "contract_id": "V4_11_R4A_UNIVERSE_SOURCE_CLASS_AUDIT_V1",
+    "current_local_file_absence_used_as_provider_evidence": false,
+    "missing_fact_cast_to_false": false,
+    "provider_unavailable_claim": false,
+    "qualification_false_reasons": {
+      "historical_observed_sessions_gte_120": 45,
+      "latest_raw_bar_observed": 11,
+      "recent120_coverage_gte_075": 32
+    },
+    "short_history_full_source_reopens": 55,
+    "source_class": "ACCEPTED_RAW_AND_DATED_STATUS; PROVIDER_NOT_QUERIED"
+  }
+}

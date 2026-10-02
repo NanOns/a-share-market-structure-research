@@ -1,0 +1,607 @@
+{
+  "by_date": {
+    "2026-09-29": {
+      "actual_bar": {
+        "known": 5223,
+        "unknown": 0,
+        "unknown_reasons": {}
+      },
+      "amr20_mean_prior": {
+        "known": 5179,
+        "unknown": 44,
+        "unknown_reasons": {
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 21,
+          "CURRENT_BAR_SUSPENDED": 12,
+          "UNEXPLAINED_DATA_GAP": 11
+        }
+      },
+      "break_high20": {
+        "known": 5003,
+        "unknown": 220,
+        "unknown_reasons": {
+          "ADJUSTMENT_UNKNOWN": 176,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 21,
+          "CURRENT_BAR_SUSPENDED": 12,
+          "UNEXPLAINED_DATA_GAP": 11
+        }
+      },
+      "break_margin_close20": {
+        "known": 5003,
+        "unknown": 220,
+        "unknown_reasons": {
+          "ADJUSTMENT_UNKNOWN": 175,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 22,
+          "CURRENT_BAR_SUSPENDED": 12,
+          "UNEXPLAINED_DATA_GAP": 11
+        }
+      },
+      "breakout_v3": {
+        "known": 5167,
+        "unknown": 56,
+        "unknown_reasons": {
+          "ADJUSTMENT_UNKNOWN": 14,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 21,
+          "CURRENT_BAR_SUSPENDED": 12,
+          "UNEXPLAINED_DATA_GAP": 9
+        }
+      },
+      "close_above_prior_high": {
+        "known": 5031,
+        "unknown": 192,
+        "unknown_reasons": {
+          "ADJUSTMENT_UNKNOWN": 176,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 3,
+          "CURRENT_BAR_SUSPENDED": 12,
+          "UNEXPLAINED_DATA_GAP": 1
+        }
+      },
+      "close_to_ma20": {
+        "known": 5006,
+        "unknown": 217,
+        "unknown_reasons": {
+          "ADJUSTMENT_UNKNOWN": 175,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 21,
+          "CURRENT_BAR_SUSPENDED": 12,
+          "UNEXPLAINED_DATA_GAP": 9
+        }
+      },
+      "close_to_ma5": {
+        "known": 5028,
+        "unknown": 195,
+        "unknown_reasons": {
+          "ADJUSTMENT_UNKNOWN": 176,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 6,
+          "CURRENT_BAR_SUSPENDED": 12,
+          "UNEXPLAINED_DATA_GAP": 1
+        }
+      },
+      "clv": {
+        "known": 5027,
+        "unknown": 196,
+        "unknown_reasons": {
+          "ADJUSTMENT_UNKNOWN": 175,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 1,
+          "CURRENT_BAR_SUSPENDED": 12,
+          "ZERO_DENOMINATOR": 8
+        }
+      },
+      "current_with_loo_breadth_support": {
+        "known": 0,
+        "unknown": 5223,
+        "unknown_reasons": {
+          "VERSIONED_TARGET_LOO_ADMISSION_NOT_SEALED": 5223
+        }
+      },
+      "extended_v3": {
+        "known": 5006,
+        "unknown": 217,
+        "unknown_reasons": {
+          "ADJUSTMENT_UNKNOWN": 176,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 20,
+          "CURRENT_BAR_SUSPENDED": 12,
+          "UNEXPLAINED_DATA_GAP": 9
+        }
+      },
+      "first_day_damage": {
+        "known": 5006,
+        "unknown": 217,
+        "unknown_reasons": {
+          "ADJUSTMENT_UNKNOWN": 175,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 21,
+          "CURRENT_BAR_SUSPENDED": 12,
+          "UNEXPLAINED_DATA_GAP": 9
+        }
+      },
+      "input_identity_compatible": {
+        "known": 5223,
+        "unknown": 0,
+        "unknown_reasons": {}
+      },
+      "intraday_reject_high20": {
+        "known": 5003,
+        "unknown": 220,
+        "unknown_reasons": {
+          "ADJUSTMENT_UNKNOWN": 175,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 22,
+          "CURRENT_BAR_SUSPENDED": 12,
+          "UNEXPLAINED_DATA_GAP": 11
+        }
+      },
+      "liq20": {
+        "known": 5182,
+        "unknown": 41,
+        "unknown_reasons": {
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 21,
+          "CURRENT_BAR_SUSPENDED": 9,
+          "UNEXPLAINED_DATA_GAP": 11
+        }
+      },
+      "ma20_nondeclining_3": {
+        "known": 5001,
+        "unknown": 222,
+        "unknown_reasons": {
+          "ADJUSTMENT_UNKNOWN": 176,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 23,
+          "CURRENT_BAR_SUSPENDED": 12,
+          "UNEXPLAINED_DATA_GAP": 11
+        }
+      },
+      "ma5_to_ma20": {
+        "known": 5006,
+        "unknown": 217,
+        "unknown_reasons": {
+          "ADJUSTMENT_UNKNOWN": 175,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 21,
+          "CURRENT_BAR_SUSPENDED": 12,
+          "UNEXPLAINED_DATA_GAP": 9
+        }
+      },
+      "normal_universe": {
+        "known": 5223,
+        "unknown": 0,
+        "unknown_reasons": {}
+      },
+      "prior5_below_ma20_count": {
+        "known": 4999,
+        "unknown": 224,
+        "unknown_reasons": {
+          "ADJUSTMENT_UNKNOWN": 175,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 26,
+          "CURRENT_BAR_SUSPENDED": 12,
+          "UNEXPLAINED_DATA_GAP": 11
+        }
+      },
+      "pullback_episode_confirmed": {
+        "known": 0,
+        "unknown": 5223,
+        "unknown_reasons": {
+          "EXACT_FROZEN_PRIOR_EPISODE_SOURCE_UNAVAILABLE": 5223
+        }
+      },
+      "reclaim_ma20": {
+        "known": 5003,
+        "unknown": 220,
+        "unknown_reasons": {
+          "ADJUSTMENT_UNKNOWN": 175,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 22,
+          "CURRENT_BAR_SUSPENDED": 12,
+          "UNEXPLAINED_DATA_GAP": 11
+        }
+      },
+      "reclaim_ma5": {
+        "known": 5027,
+        "unknown": 196,
+        "unknown_reasons": {
+          "ADJUSTMENT_UNKNOWN": 175,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 7,
+          "CURRENT_BAR_SUSPENDED": 12,
+          "UNEXPLAINED_DATA_GAP": 2
+        }
+      },
+      "recovery_v3": {
+        "known": 5167,
+        "unknown": 56,
+        "unknown_reasons": {
+          "ACCEPTED_RPS_UNAVAILABLE:PRIOR_UNIVERSE_MEMBER_MISSING": 1,
+          "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN": 54,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 1
+        }
+      },
+      "ret1_adj": {
+        "known": 5031,
+        "unknown": 192,
+        "unknown_reasons": {
+          "ADJUSTMENT_UNKNOWN": 175,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 4,
+          "CURRENT_BAR_SUSPENDED": 12,
+          "UNEXPLAINED_DATA_GAP": 1
+        }
+      },
+      "rps20": {
+        "known": 4647,
+        "unknown": 576,
+        "unknown_reasons": {
+          "ADJUSTMENT_UNKNOWN": 176,
+          "MISSING_OR_SUSPENDED_ENDPOINT": 28,
+          "MIXED_ADJUSTMENT_IDENTITY": 356,
+          "UNEXPLAINED_DATA_GAP": 16
+        }
+      },
+      "rps5_delta3": {
+        "known": 4834,
+        "unknown": 389,
+        "unknown_reasons": {
+          "PRIOR_UNIVERSE_MEMBER_MISSING": 1,
+          "RPS_ENDPOINT_UNKNOWN": 388
+        }
+      },
+      "setup_v3": {
+        "known": 5002,
+        "unknown": 221,
+        "unknown_reasons": {
+          "ACCEPTED_RPS_UNAVAILABLE:PRIOR_UNIVERSE_MEMBER_MISSING": 1,
+          "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN": 217,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 2,
+          "UNEXPLAINED_DATA_GAP": 1
+        }
+      },
+      "severe_drop": {
+        "known": 5005,
+        "unknown": 218,
+        "unknown_reasons": {
+          "ADJUSTMENT_UNKNOWN": 175,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 23,
+          "CURRENT_BAR_SUSPENDED": 12,
+          "UNEXPLAINED_DATA_GAP": 8
+        }
+      },
+      "slope20": {
+        "known": 5006,
+        "unknown": 217,
+        "unknown_reasons": {
+          "ADJUSTMENT_UNKNOWN": 175,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 21,
+          "CURRENT_BAR_SUSPENDED": 12,
+          "UNEXPLAINED_DATA_GAP": 9
+        }
+      },
+      "structure_break_v3": {
+        "known": 5005,
+        "unknown": 218,
+        "unknown_reasons": {
+          "ADJUSTMENT_UNKNOWN": 176,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 20,
+          "CURRENT_BAR_SUSPENDED": 12,
+          "UNEXPLAINED_DATA_GAP": 10
+        }
+      },
+      "trend_background_v3": {
+        "known": 4921,
+        "unknown": 302,
+        "unknown_reasons": {
+          "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN": 176,
+          "ACCEPTED_RPS_UNAVAILABLE:MISSING_OR_SUSPENDED_ENDPOINT": 26,
+          "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY": 84,
+          "ACCEPTED_RPS_UNAVAILABLE:UNEXPLAINED_DATA_GAP": 16
+        }
+      },
+      "window_valid": {
+        "known": 5002,
+        "unknown": 221,
+        "unknown_reasons": {
+          "ADJUSTMENT_UNKNOWN": 175,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 23,
+          "CURRENT_BAR_SUSPENDED": 12,
+          "UNEXPLAINED_DATA_GAP": 11
+        }
+      }
+    },
+    "2026-09-30": {
+      "actual_bar": {
+        "known": 5224,
+        "unknown": 0,
+        "unknown_reasons": {}
+      },
+      "amr20_mean_prior": {
+        "known": 5179,
+        "unknown": 45,
+        "unknown_reasons": {
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 24,
+          "CURRENT_BAR_SUSPENDED": 11,
+          "UNEXPLAINED_DATA_GAP": 10
+        }
+      },
+      "break_high20": {
+        "known": 5003,
+        "unknown": 221,
+        "unknown_reasons": {
+          "ADJUSTMENT_UNKNOWN": 176,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 24,
+          "CURRENT_BAR_SUSPENDED": 11,
+          "UNEXPLAINED_DATA_GAP": 10
+        }
+      },
+      "break_margin_close20": {
+        "known": 5003,
+        "unknown": 221,
+        "unknown_reasons": {
+          "ADJUSTMENT_UNKNOWN": 176,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 24,
+          "CURRENT_BAR_SUSPENDED": 11,
+          "UNEXPLAINED_DATA_GAP": 10
+        }
+      },
+      "breakout_v3": {
+        "known": 5154,
+        "unknown": 70,
+        "unknown_reasons": {
+          "ADJUSTMENT_UNKNOWN": 27,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 23,
+          "CURRENT_BAR_SUSPENDED": 11,
+          "UNEXPLAINED_DATA_GAP": 9
+        }
+      },
+      "close_above_prior_high": {
+        "known": 5032,
+        "unknown": 192,
+        "unknown_reasons": {
+          "ADJUSTMENT_UNKNOWN": 176,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 4,
+          "CURRENT_BAR_SUSPENDED": 11,
+          "UNEXPLAINED_DATA_GAP": 1
+        }
+      },
+      "close_to_ma20": {
+        "known": 5005,
+        "unknown": 219,
+        "unknown_reasons": {
+          "ADJUSTMENT_UNKNOWN": 176,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 23,
+          "CURRENT_BAR_SUSPENDED": 11,
+          "UNEXPLAINED_DATA_GAP": 9
+        }
+      },
+      "close_to_ma5": {
+        "known": 5026,
+        "unknown": 198,
+        "unknown_reasons": {
+          "ADJUSTMENT_UNKNOWN": 176,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 9,
+          "CURRENT_BAR_SUSPENDED": 11,
+          "UNEXPLAINED_DATA_GAP": 2
+        }
+      },
+      "clv": {
+        "known": 5030,
+        "unknown": 194,
+        "unknown_reasons": {
+          "ADJUSTMENT_UNKNOWN": 176,
+          "CURRENT_BAR_SUSPENDED": 11,
+          "ZERO_DENOMINATOR": 7
+        }
+      },
+      "current_with_loo_breadth_support": {
+        "known": 0,
+        "unknown": 5224,
+        "unknown_reasons": {
+          "VERSIONED_TARGET_LOO_ADMISSION_NOT_SEALED": 5224
+        }
+      },
+      "extended_v3": {
+        "known": 5005,
+        "unknown": 219,
+        "unknown_reasons": {
+          "ADJUSTMENT_UNKNOWN": 176,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 23,
+          "CURRENT_BAR_SUSPENDED": 11,
+          "UNEXPLAINED_DATA_GAP": 9
+        }
+      },
+      "first_day_damage": {
+        "known": 5005,
+        "unknown": 219,
+        "unknown_reasons": {
+          "ADJUSTMENT_UNKNOWN": 176,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 23,
+          "CURRENT_BAR_SUSPENDED": 11,
+          "UNEXPLAINED_DATA_GAP": 9
+        }
+      },
+      "input_identity_compatible": {
+        "known": 5224,
+        "unknown": 0,
+        "unknown_reasons": {}
+      },
+      "intraday_reject_high20": {
+        "known": 5003,
+        "unknown": 221,
+        "unknown_reasons": {
+          "ADJUSTMENT_UNKNOWN": 176,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 24,
+          "CURRENT_BAR_SUSPENDED": 11,
+          "UNEXPLAINED_DATA_GAP": 10
+        }
+      },
+      "liq20": {
+        "known": 5182,
+        "unknown": 42,
+        "unknown_reasons": {
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 24,
+          "CURRENT_BAR_SUSPENDED": 8,
+          "UNEXPLAINED_DATA_GAP": 10
+        }
+      },
+      "ma20_nondeclining_3": {
+        "known": 4999,
+        "unknown": 225,
+        "unknown_reasons": {
+          "ADJUSTMENT_UNKNOWN": 176,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 26,
+          "CURRENT_BAR_SUSPENDED": 11,
+          "UNEXPLAINED_DATA_GAP": 12
+        }
+      },
+      "ma5_to_ma20": {
+        "known": 5005,
+        "unknown": 219,
+        "unknown_reasons": {
+          "ADJUSTMENT_UNKNOWN": 176,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 23,
+          "CURRENT_BAR_SUSPENDED": 11,
+          "UNEXPLAINED_DATA_GAP": 9
+        }
+      },
+      "normal_universe": {
+        "known": 5224,
+        "unknown": 0,
+        "unknown_reasons": {}
+      },
+      "prior5_below_ma20_count": {
+        "known": 4997,
+        "unknown": 227,
+        "unknown_reasons": {
+          "ADJUSTMENT_UNKNOWN": 176,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 28,
+          "CURRENT_BAR_SUSPENDED": 11,
+          "UNEXPLAINED_DATA_GAP": 12
+        }
+      },
+      "pullback_episode_confirmed": {
+        "known": 0,
+        "unknown": 5224,
+        "unknown_reasons": {
+          "EXACT_FROZEN_PRIOR_EPISODE_SOURCE_UNAVAILABLE": 5224
+        }
+      },
+      "reclaim_ma20": {
+        "known": 5003,
+        "unknown": 221,
+        "unknown_reasons": {
+          "ADJUSTMENT_UNKNOWN": 176,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 24,
+          "CURRENT_BAR_SUSPENDED": 11,
+          "UNEXPLAINED_DATA_GAP": 10
+        }
+      },
+      "reclaim_ma5": {
+        "known": 5025,
+        "unknown": 199,
+        "unknown_reasons": {
+          "ADJUSTMENT_UNKNOWN": 176,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 10,
+          "CURRENT_BAR_SUSPENDED": 11,
+          "UNEXPLAINED_DATA_GAP": 2
+        }
+      },
+      "recovery_v3": {
+        "known": 5158,
+        "unknown": 66,
+        "unknown_reasons": {
+          "ACCEPTED_RPS_UNAVAILABLE:PRIOR_UNIVERSE_MEMBER_MISSING": 2,
+          "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN": 63,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 1
+        }
+      },
+      "ret1_adj": {
+        "known": 5032,
+        "unknown": 192,
+        "unknown_reasons": {
+          "ADJUSTMENT_UNKNOWN": 176,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 4,
+          "CURRENT_BAR_SUSPENDED": 11,
+          "UNEXPLAINED_DATA_GAP": 1
+        }
+      },
+      "rps20": {
+        "known": 4650,
+        "unknown": 574,
+        "unknown_reasons": {
+          "ADJUSTMENT_UNKNOWN": 176,
+          "MISSING_OR_SUSPENDED_ENDPOINT": 27,
+          "MIXED_ADJUSTMENT_IDENTITY": 353,
+          "UNEXPLAINED_DATA_GAP": 18
+        }
+      },
+      "rps5_delta3": {
+        "known": 4857,
+        "unknown": 367,
+        "unknown_reasons": {
+          "PRIOR_UNIVERSE_MEMBER_MISSING": 2,
+          "RPS_ENDPOINT_UNKNOWN": 365
+        }
+      },
+      "setup_v3": {
+        "known": 5002,
+        "unknown": 222,
+        "unknown_reasons": {
+          "ACCEPTED_RPS_UNAVAILABLE:PRIOR_UNIVERSE_MEMBER_MISSING": 2,
+          "ACCEPTED_RPS_UNAVAILABLE:RPS_ENDPOINT_UNKNOWN": 215,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 5
+        }
+      },
+      "severe_drop": {
+        "known": 5002,
+        "unknown": 222,
+        "unknown_reasons": {
+          "ADJUSTMENT_UNKNOWN": 176,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 25,
+          "CURRENT_BAR_SUSPENDED": 11,
+          "UNEXPLAINED_DATA_GAP": 10
+        }
+      },
+      "slope20": {
+        "known": 5005,
+        "unknown": 219,
+        "unknown_reasons": {
+          "ADJUSTMENT_UNKNOWN": 176,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 23,
+          "CURRENT_BAR_SUSPENDED": 11,
+          "UNEXPLAINED_DATA_GAP": 9
+        }
+      },
+      "structure_break_v3": {
+        "known": 5004,
+        "unknown": 220,
+        "unknown_reasons": {
+          "ADJUSTMENT_UNKNOWN": 176,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 24,
+          "CURRENT_BAR_SUSPENDED": 11,
+          "UNEXPLAINED_DATA_GAP": 9
+        }
+      },
+      "trend_background_v3": {
+        "known": 4915,
+        "unknown": 309,
+        "unknown_reasons": {
+          "ACCEPTED_RPS_UNAVAILABLE:ADJUSTMENT_UNKNOWN": 176,
+          "ACCEPTED_RPS_UNAVAILABLE:MISSING_OR_SUSPENDED_ENDPOINT": 25,
+          "ACCEPTED_RPS_UNAVAILABLE:MIXED_ADJUSTMENT_IDENTITY": 89,
+          "ACCEPTED_RPS_UNAVAILABLE:UNEXPLAINED_DATA_GAP": 18,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 1
+        }
+      },
+      "window_valid": {
+        "known": 5000,
+        "unknown": 224,
+        "unknown_reasons": {
+          "ADJUSTMENT_UNKNOWN": 176,
+          "CONFIRMED_SUSPENSION_IN_LEGACY_MASTER_WINDOW": 25,
+          "CURRENT_BAR_SUSPENDED": 11,
+          "UNEXPLAINED_DATA_GAP": 12
+        }
+      }
+    }
+  },
+  "publications": {
+    "2026-09-29": {
+      "bytes": 1908848,
+      "path": "data/v4/confirmation_candidates_r4/TARGET_FACTS_2026-09-29_R4A.json.gz",
+      "sha256": "fec573845633fb59aa7b9e00be8a47c27ac70ba97249eaabe9478780c88bede1"
+    },
+    "2026-09-30": {
+      "bytes": 1896259,
+      "path": "data/v4/confirmation_candidates_r4/TARGET_FACTS_2026-09-30_R4A.json.gz",
+      "sha256": "5a0c2f2f97fa4e09ad1c617409ffc08ef83891772e8010986b7ac606d8303dea"
+    }
+  }
+}

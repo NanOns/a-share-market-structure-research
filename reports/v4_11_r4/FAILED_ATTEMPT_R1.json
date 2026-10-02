@@ -1,0 +1,20 @@
+{
+  "phase": "FIRST_D0_ADMISSION",
+  "prior_producer_set": {
+    "bytes": 1902,
+    "path": "reports/v4_11_r4/superseded/R4A_INITIAL_PRODUCER_SET.json",
+    "sha256": "cf6ebda80d0ea74d9e33653757ca73e4b86351758e0ee68238b6970da8ee4c14"
+  },
+  "reason": "Copied R4 validator retained R3 sealed-source namespace; corrected R4-only validator path. Accepted sources, business values, thresholds unchanged.",
+  "runtime_after": {
+    "bytes": 6426,
+    "path": "src/v4/target_fact_producers_r4.py",
+    "sha256": "e37ea78452a50c368a2b39e2d2cfe78ba1be4dda9127fef232ac871326209258"
+  },
+  "runtime_before": {
+    "bytes": 6429,
+    "path": "reports/v4_11_r4/superseded/TARGET_RUNTIME_INITIAL_R4.py",
+    "sha256": "5657efeb8d526edd4ea4b94d081a1ab3de8bc56da59d91227d2e2b540c620267"
+  },
+  "status": "FAIL_PRESERVED"
+}

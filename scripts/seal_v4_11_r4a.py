@@ -1,0 +1,11 @@
+"""R4A strict parity prerequisite, engineering seal only."""
+from scripts.next_round_execution_r4 import *
+
+def main():
+    entry=verify_protected();parity=read('reports/v4_11_r4a/V4_03_EXACT_PARITY_R1.json');tests=read('reports/v4_11_r4a/INDEPENDENT_BOUNDARY_TESTS.json')
+    if parity['status']!='PASS' or parity['row_scope']!=5222 or any(parity[k] for k in ('business_mismatches','quality_mismatches','unknown_reason_mismatches','all_identity_mismatches')) or tests['exit_code']!=0:raise ValueError('R4A_EXACT_PARITY_AND_INDEPENDENT_BOUNDARY_GATE_REQUIRED')
+    contract=write('config/v4_11_target_fact_producers_r4a_v1.json',dict(contract_id='V4_11_TARGET_FACT_PRODUCERS_R4A_V1',parameter_set_id='V4_11_TARGET_FACT_PARAMETERS_R4A_V1',stage_task=bind(DOCROOT+TASKS[0]),master=bind(MASTER),authority=bind(AUDIT),upgrade=entry['upgrade'],price_identity='price_basis + adjustment_source_revision',coefficient_role='AFFINE_CALCULATION_REPRODUCIBILITY_DIAGNOSTIC_ONLY',basis_compatible='Accepted READY price and same nonmissing basis/revision; coefficients may differ',mixed_basis_reason='MIXED_ADJUSTMENT_IDENTITY',missing_revision_reason='ADJUSTMENT_UNKNOWN',source_adapter=bind('src/v4/adjustment_basis_r4.py'),builder=bind('scripts/build_v4_11_target_facts_r4a.py'),runtime=bind('src/v4/target_fact_producers_r4.py'),parameters=bind('config/research_attention_v3.yaml'),legacy_thresholds='KEEP_EXACT',scenario_priority='KEEP_EXACT',feature_basis_projection='Accepted TDX_NATIVE_AFFINE_QFQ maps to legacy TDX_NATIVE_QFQ label only; full accepted basis id retained in adjustment_version and slot evidence',window_roles='Legacy master-session windows unchanged; accepted V4-03 Core technical windows skip confirmed suspension, unexplained gaps fail closed',permissions=PERMISSIONS,accepted=False))
+    write('reports/v4_11_r4a/R4A_SEALED_REPAIR.json',dict(status='V4_11_R4A_ADJUSTMENT_BASIS_REPAIR_CANDIDATE_READY',sealed=True,accepted=False,contract=contract,parity=bind('reports/v4_11_r4a/V4_03_EXACT_PARITY_R1.json'),boundary_tests=bind('reports/v4_11_r4a/INDEPENDENT_BOUNDARY_TESTS.json'),gate='PASS',permissions=PERMISSIONS,next_stage='R4B_REAL_TARGET_DATE_REBUILD_AUTHORIZED'))
+    print('R4A_PARITY_PASS_SEALED')
+
+if __name__=='__main__':main()

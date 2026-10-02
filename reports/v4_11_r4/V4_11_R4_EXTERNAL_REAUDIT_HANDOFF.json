@@ -1,0 +1,53 @@
+{
+  "D2_readback": {
+    "bytes": 2185,
+    "path": "reports/v4_11_r4/V4_11_R4_D2_READBACK.json",
+    "sha256": "853cd6cf7afdb708e71e48beb1545461b846e1d0b6e55ac5074bee249811041f"
+  },
+  "DataHead": "KEEP_2026-09-30",
+  "StageHead": "KEEP_V4_00_TO_V4_10_ACCEPTED",
+  "V4_12_runtime": false,
+  "accepted": false,
+  "clean_checkout_path": "reports/v4_11_r4/V4_11_R4_CLEAN_CHECKOUT.json",
+  "event_replay": {
+    "bytes": 1990,
+    "path": "reports/v4_11_r4/V4_11_R4_EVENT_REPLAY.json",
+    "sha256": "4e88c492810453e22fdcf2ef3bb54bf633f1a0c3d8c37d66932b1baf4b8903c0"
+  },
+  "independent_oracle_path": "reports/v4_11_r4/V4_11_R4_INDEPENDENT_ORACLE.json",
+  "matrix": {
+    "bytes": 883,
+    "path": "reports/v4_11_r4/V4_11_R4_SCENARIO_CAPABILITY_MATRIX.json",
+    "sha256": "13c1739c09fcacf3ba76e0aa8c0d70a0260f9194ca9d99cbbf90c851d812ab93"
+  },
+  "next_stage": "STOP_COMMIT_PUSH_WAIT_INDEPENDENT_EXTERNAL_ACCEPTANCE",
+  "permissions": {
+    "focus": false,
+    "global_mandatory_adoption": false,
+    "production": false,
+    "shadow": false
+  },
+  "producer_seals": {
+    "R3B": {
+      "bytes": 2217,
+      "path": "reports/v4_11_r3b/R3B_SEALED_PRODUCER_SET.json",
+      "sha256": "4ccaba49200174c6d38138dcae8c093c16264f69bc2e19f24b507d05472144ec"
+    },
+    "R4A": {
+      "bytes": 1902,
+      "path": "reports/v4_11_r4a/R4A_SEALED_PRODUCER_SET.json",
+      "sha256": "9dbce1b7dff7ddf18acd766787068137f10839c9cfd5af9fec6e94f1dc3192d1"
+    }
+  },
+  "stage_contract": {
+    "bytes": 1283,
+    "path": "reports/v4_11_r4/R4B_STAGE_CONTRACT.json",
+    "sha256": "8adaf51c658344812945b2ef126e5002fee6b12bf173af528f75384fe203264e"
+  },
+  "status": "V4_11_R4_REAL_DAG_CANDIDATE_READY_FOR_EXTERNAL_REAUDIT",
+  "summary": {
+    "bytes": 3315,
+    "path": "reports/v4_11_r4/V4_11_R4_FULL_MARKET_SUMMARY.json",
+    "sha256": "b8cebdae99e8b62a1b40cf1322c889b7d05aa34346af0d8bda6e62e9d1f7115f"
+  }
+}

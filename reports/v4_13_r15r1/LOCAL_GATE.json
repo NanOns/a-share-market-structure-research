@@ -1,0 +1,143 @@
+{
+  "C01_C04": "PASS_KEEP",
+  "NEXT": "STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT",
+  "R15R1_VERSION_LINEAGE_CLEANUP": "PASS",
+  "V4_13_CONTRACT_COMPLETENESS": "PASS_READY_FOR_EXTERNAL_AUDIT",
+  "V4_13_RUNTIME": "NOT_IMPLEMENTED",
+  "baseline": "c7b2cb92c5fb12127a941d5af102742fe0d5e965",
+  "clean_after": false,
+  "clean_before": false,
+  "contracts": [
+    {
+      "business_semantics": "EXACT_KEEP",
+      "contract_id": "V4_13_DAG_INTEGRATION_INTERFACE_V1",
+      "lineage": "PASS",
+      "path": "config/v4_13_dag_edge_registry_v1_1.json"
+    },
+    {
+      "business_semantics": "EXACT_KEEP",
+      "contract_id": "V4_13_FIELD_REGISTRY_V1",
+      "lineage": "PASS",
+      "path": "config/v4_13_field_registry_v1_1.json"
+    },
+    {
+      "business_semantics": "EXACT_KEEP",
+      "contract_id": "V4_13_INPUT_SCHEMA_V1",
+      "lineage": "PASS",
+      "path": "config/v4_13_input_schema_v1_1.json"
+    },
+    {
+      "business_semantics": "EXACT_KEEP",
+      "contract_id": "LOO_CONTEXT_V1",
+      "lineage": "PASS",
+      "path": "config/v4_13_loo_context_v1_1.json"
+    },
+    {
+      "business_semantics": "EXACT_KEEP",
+      "contract_id": "V4_13_INDEPENDENT_MACHINE_VECTORS_V1",
+      "lineage": "PASS",
+      "path": "config/v4_13_machine_vectors_v1_1.json"
+    },
+    {
+      "business_semantics": "EXACT_KEEP",
+      "contract_id": "V4_13_ENGINEERING_MEMBERSHIP_CONSUMER_ROUTE_V1",
+      "lineage": "PASS",
+      "path": "config/v4_13_membership_consumer_route_v1_1.json"
+    },
+    {
+      "business_semantics": "EXACT_KEEP",
+      "contract_id": "V4_13_OUTPUT_SCHEMA_V1",
+      "lineage": "PASS",
+      "path": "config/v4_13_output_schema_v1_1.json"
+    },
+    {
+      "business_semantics": "EXACT_KEEP",
+      "contract_id": "V4_13_PARAMETER_SET_V1",
+      "lineage": "PASS",
+      "path": "config/v4_13_parameter_set_v1_1.json"
+    },
+    {
+      "business_semantics": "EXACT_KEEP",
+      "contract_id": "V4_13_PRODUCER_REGISTRY_V1",
+      "lineage": "PASS",
+      "path": "config/v4_13_producer_registry_v1_1.json"
+    },
+    {
+      "business_semantics": "EXACT_KEEP",
+      "contract_id": "PROFILE_ADVANCED_PROJECTION_V1",
+      "lineage": "PASS",
+      "path": "config/v4_13_projection_v1_1.json"
+    },
+    {
+      "business_semantics": "EXACT_KEEP",
+      "contract_id": "V4_13_QUALITY_DEGRADATION_V1",
+      "lineage": "PASS",
+      "path": "config/v4_13_quality_map_v1_1.json"
+    },
+    {
+      "business_semantics": "EXACT_KEEP",
+      "contract_id": "ROTATION_STRUCTURE_ENRICHMENT_V1",
+      "lineage": "PASS",
+      "path": "config/v4_13_rotation_structure_enrichment_schema_v1_1.json"
+    },
+    {
+      "business_semantics": "EXACT_KEEP",
+      "contract_id": "SECTOR_CONTEXT_STATE_V1",
+      "lineage": "PASS",
+      "path": "config/v4_13_sector_context_state_schema_v1_1.json"
+    },
+    {
+      "business_semantics": "EXACT_KEEP",
+      "contract_id": "V4_13_TIME_ROLE_REGISTRY_V1",
+      "lineage": "PASS",
+      "path": "config/v4_13_time_role_registry_v1_1.json"
+    }
+  ],
+  "data": "2026-09-30",
+  "external_acceptance": "PENDING",
+  "focus": false,
+  "global_mandatory_adoption": false,
+  "independent_vectors": 14,
+  "migration_added": false,
+  "negative_business_gates": 15,
+  "production": false,
+  "protected": [
+    {
+      "after_sha256": "fe3ca08043743023f23d5767bf8d3570e2dc4a72c7215056a2daba53a0ea7a77",
+      "before_sha256": "fe3ca08043743023f23d5767bf8d3570e2dc4a72c7215056a2daba53a0ea7a77",
+      "bytes": 1616,
+      "exact_unchanged": true,
+      "path": "AGENTS.md",
+      "sha256": "fe3ca08043743023f23d5767bf8d3570e2dc4a72c7215056a2daba53a0ea7a77"
+    },
+    {
+      "after_sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181",
+      "before_sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181",
+      "bytes": 796484,
+      "exact_unchanged": true,
+      "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+      "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+    },
+    {
+      "after_sha256": "b0e1c2402efdd71d706a87f45280206a87fbe9e637a4168255b7ff4c036520f7",
+      "before_sha256": "b0e1c2402efdd71d706a87f45280206a87fbe9e637a4168255b7ff4c036520f7",
+      "bytes": 11381,
+      "exact_unchanged": true,
+      "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+      "sha256": "b0e1c2402efdd71d706a87f45280206a87fbe9e637a4168255b7ff4c036520f7"
+    },
+    {
+      "after_sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+      "before_sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+      "bytes": 16890,
+      "exact_unchanged": true,
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+    }
+  ],
+  "read_only": true,
+  "runtime_added": false,
+  "shadow": false,
+  "source_sha": "c7b2cb92c5fb12127a941d5af102742fe0d5e965",
+  "stage": "V4_00_TO_V4_12_ACCEPTED"
+}

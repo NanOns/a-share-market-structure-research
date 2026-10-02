@@ -1,6 +1,19 @@
 {
   "combined": "METADATA_ONLY_COMPONENT_PAIR_TABLE",
   "contract_id": "ROTATION_STRUCTURE_ENRICHMENT_V1",
+  "derived_from": [
+    {
+      "bytes": 22494,
+      "path": "config/v4_13_field_registry_v1.json",
+      "sha256": "7ccad1897bd0ac9efdabfea7a30f73a93228e0843306e57e92b49e33f0967cb9"
+    },
+    {
+      "bytes": 17111,
+      "path": "config/v4_13_dag_edge_registry_v1.json",
+      "sha256": "f92cc86a5f2356cf6a0f384e811b9af9961f51d76a8253b123cce4fba567c3a5"
+    }
+  ],
+  "introduced_in": "V4_13_R1_1_CONTRACT_REPAIR",
   "missing_rotation": "ROTATION_ONLY_UNKNOWN_OR_NOT_IMPLEMENTED; STRUCTURE_UNCHANGED",
   "missing_structure": "STRUCTURE_ONLY_UNKNOWN_OR_NOT_IMPLEMENTED; ROTATION_UNCHANGED",
   "quality_rule": {
@@ -52,11 +65,6 @@
     "bytes": 2048,
     "path": "config/v4_13_projection_v1.json",
     "sha256": "bd792cc6dfd0781e6b919b0d5cf39021167d82112b922b621f9de6d006f9043a"
-  },
-  "supersedes": {
-    "bytes": 22494,
-    "path": "config/v4_13_field_registry_v1.json",
-    "sha256": "7ccad1897bd0ac9efdabfea7a30f73a93228e0843306e57e92b49e33f0967cb9"
   },
   "type": "object",
   "version": "1.0.0",

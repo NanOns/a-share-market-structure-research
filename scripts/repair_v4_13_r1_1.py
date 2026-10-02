@@ -22,6 +22,12 @@ def write(p,v,raw=False):
 def new(name,obj):
  old=P+name+'_v1.json';obj=deepcopy(obj);obj.update(version='1.1.0',supersedes=ref(old),reason='R14_EXTERNAL_AUDIT_C01_C04_REPAIR',runtime_implemented=False)
  write(P+name+'_v1_1.json',obj)
+def introduced_lineage(obj, sources):
+ obj=deepcopy(obj);obj.pop('supersedes',None)
+ obj['introduced_in']='V4_13_R1_1_CONTRACT_REPAIR'
+ obj['derived_from']=[ref(p) for p in sources]
+ return obj
+
 def run(bundle):
  assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()==BASE
  for n in ['V4_R14_INDEPENDENT_EXTERNAL_AUDIT_R1_20261002.md','V4_NEXT_ROUND_EXECUTION_MASTER_R15_20261002.md','V4_13_R1_1_CONTRACT_SEMANTIC_AUTHORITY_REPAIR_TASK_20261002.md']:write(ARCH+n,(Path(bundle)/n).read_bytes(),True)
@@ -46,8 +52,10 @@ def run(bundle):
  schema['properties']={n:dict(type='object',required=c['required'],additionalProperties=False,properties={'value':{'type':['boolean','number','string','object','null'],'semantics':'EXACT_SOURCE_TYPE_NO_COERCION'},'quality':{'enum':Q},'reasons':{'type':'array','items':{'type':'string'}},'source_refs':{'type':'array','items':{'type':'object','required':c['source_refs_required']}}}) for n,c in schema['components'].items()}
  schema['properties'].update(selected_sector_id={'type':['string','null']},sector_type={'type':['string','null']},membership_basis={'enum':['PIT_OBSERVED','HISTORICAL_REPLAY_CURRENT_MEMBERSHIP','UNKNOWN']},context_quality={'enum':Q},reasons={'type':'array','items':{'type':'string'}},source_refs={'type':'array','items':{'type':'object','required':component['source_refs_required']}})
  schema['additionalProperties']=False
+ schema=introduced_lineage(schema,[P+'output_schema_v1.json',P+'field_registry_v1.json'])
  write(P+'sector_context_state_schema_v1_1.json',schema)
  enrichment=dict(contract_id='ROTATION_STRUCTURE_ENRICHMENT_V1',version='1.0.0',supersedes=ref(P+'field_registry_v1.json'),reason='R14_EXTERNAL_AUDIT_C04_REPAIR',runtime_implemented=False,type='object',required=['rotation_core_state','rotation_quality','rotation_source_ref','structure_component','structure_quality','structure_source_ref','combined_quality','reasons'],source_bindings=[dict(role='rotation_source',binding=owners['08'],source_field='rotation_core_state',contract_binding=ref(sector['rotation_contract']['path'])),dict(role='structure_source',binding=owners['12'],source_field='READ_ONLY_AUTHORIZED_V4_12_STRUCTURE_PUBLICATION',publication_authority_pointer='/publication_authority/authorized_manifests')],quality_rule=ref(P+'quality_map_v1_1.json'),rotation='COPY_VALUE_AND_QUALITY_AND_SOURCE_REF_UNCHANGED',structure='COPY_EXISTING_V4_12_PROJECTION_COMPONENT_NO_RECOMPUTATION',structure_schema=ref(P+'projection_v1.json'),missing_structure='STRUCTURE_ONLY_UNKNOWN_OR_NOT_IMPLEMENTED; ROTATION_UNCHANGED',missing_rotation='ROTATION_ONLY_UNKNOWN_OR_NOT_IMPLEMENTED; STRUCTURE_UNCHANGED',combined='METADATA_ONLY_COMPONENT_PAIR_TABLE',writeback_to_B1=False)
+ enrichment=introduced_lineage(enrichment,[P+'field_registry_v1.json',P+'dag_edge_registry_v1.json'])
  write(P+'rotation_structure_enrichment_schema_v1_1.json',enrichment)
  deps={
  'primary_industry':dict(time_role='T_EXACT_MEMBERSHIP_AT_CUTOFF',current=['trade_date_valid_membership','source_revision','available_at_le_cutoff','membership_quality'],history=[]),

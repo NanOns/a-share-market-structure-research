@@ -6,6 +6,21 @@ QUALITIES=['KNOWN','UNKNOWN','NOT_IMPLEMENTED','NOT_APPLICABLE','DEGRADED']
 # Independent literal oracle for metadata quality, not business state logic.
 PAIR_ROWS=[['KNOWN','DEGRADED','DEGRADED','DEGRADED','DEGRADED'],['DEGRADED','UNKNOWN','UNKNOWN','UNKNOWN','DEGRADED'],['DEGRADED','UNKNOWN','NOT_IMPLEMENTED','NOT_IMPLEMENTED','DEGRADED'],['DEGRADED','UNKNOWN','NOT_IMPLEMENTED','NOT_APPLICABLE','DEGRADED'],['DEGRADED','DEGRADED','DEGRADED','DEGRADED','DEGRADED']]
 EXPECTED_PAIRS={a+'|'+b:PAIR_ROWS[i][j] for i,a in enumerate(QUALITIES) for j,b in enumerate(QUALITIES)}
+FIRST_INTRODUCED={'SECTOR_CONTEXT_STATE_V1','ROTATION_STRUCTURE_ENRICHMENT_V1'}
+def validate_lineage(obj):
+ if obj['contract_id'] in FIRST_INTRODUCED:
+  assert 'supersedes' not in obj, 'FALSE_SUPERSEDES_FIRST_INTRODUCTION'
+  assert obj.get('introduced_in')=='V4_13_R1_1_CONTRACT_REPAIR' and obj.get('derived_from'), 'INTRODUCED_DERIVED_LINEAGE_REQUIRED'
+  for source in obj['derived_from']:exact(source)
+ elif 'supersedes' in obj:
+  predecessor=json.loads(exact(obj['supersedes']))
+  assert predecessor['contract_id']==obj['contract_id'], 'SUPERSEDES_CONTRACT_ID_MISMATCH'
+  def semver(value):
+   parts=value.split('.');assert len(parts)==3 and all(p.isdigit() for p in parts), 'SEMVER_REQUIRED'
+   return tuple(map(int,parts))
+  assert semver(obj['version'])>semver(predecessor['version']), 'VERSION_MUST_INCREASE'
+ return True
+
 def get(n):return read(P+n+'_v1_1.json')
 def prove_membership_scope(route):
  try:
@@ -118,7 +133,7 @@ def validate(checkout=False):
  for r in amendment['contracts']:exact(r)
  bundle=load_bundle();audit_bundle(bundle)
  for n,obj in bundle.items():
-  if 'supersedes' in obj:exact(obj['supersedes'])
+  validate_lineage(obj)
   assert obj['runtime_implemented'] is False
  proofs=[]
  for v in bundle['machine_vectors']['vectors']:

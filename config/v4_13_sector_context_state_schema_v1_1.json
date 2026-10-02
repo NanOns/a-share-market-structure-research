@@ -1,0 +1,673 @@
+{
+  "additionalProperties": false,
+  "component_missing": "OBJECT_REMAINS_AND_ONLY_COMPONENT_IS_UNKNOWN_OR_NOT_IMPLEMENTED",
+  "components": {
+    "adjusted_seed_width": {
+      "false_allowed": "ONLY_KNOWN_BOOLEAN_FALSE",
+      "quality": "EXACT_SOURCE_QUALITY",
+      "quality_values": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_IMPLEMENTED",
+        "NOT_APPLICABLE",
+        "DEGRADED"
+      ],
+      "reasons": "LOSSLESS_SOURCE_REASONS",
+      "required": [
+        "value",
+        "quality",
+        "reasons",
+        "source_refs"
+      ],
+      "source_refs_required": [
+        "path",
+        "sha256",
+        "bytes",
+        "producer_contract_id",
+        "trade_date",
+        "available_at",
+        "source_revision"
+      ],
+      "type": "object",
+      "value": "EXACT_SOURCE_VALUE_OR_NULL_FOR_UNAVAILABLE"
+    },
+    "emergence": {
+      "false_allowed": "ONLY_KNOWN_BOOLEAN_FALSE",
+      "quality": "EXACT_SOURCE_QUALITY",
+      "quality_values": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_IMPLEMENTED",
+        "NOT_APPLICABLE",
+        "DEGRADED"
+      ],
+      "reasons": "LOSSLESS_SOURCE_REASONS",
+      "required": [
+        "value",
+        "quality",
+        "reasons",
+        "source_refs"
+      ],
+      "source_refs_required": [
+        "path",
+        "sha256",
+        "bytes",
+        "producer_contract_id",
+        "trade_date",
+        "available_at",
+        "source_revision"
+      ],
+      "type": "object",
+      "value": "EXACT_SOURCE_VALUE_OR_NULL_FOR_UNAVAILABLE"
+    },
+    "loo_b0_raw": {
+      "false_allowed": "ONLY_KNOWN_BOOLEAN_FALSE",
+      "quality": "EXACT_SOURCE_QUALITY",
+      "quality_values": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_IMPLEMENTED",
+        "NOT_APPLICABLE",
+        "DEGRADED"
+      ],
+      "reasons": "LOSSLESS_SOURCE_REASONS",
+      "required": [
+        "value",
+        "quality",
+        "reasons",
+        "source_refs"
+      ],
+      "source_refs_required": [
+        "path",
+        "sha256",
+        "bytes",
+        "producer_contract_id",
+        "trade_date",
+        "available_at",
+        "source_revision"
+      ],
+      "type": "object",
+      "value": "EXACT_SOURCE_VALUE_OR_NULL_FOR_UNAVAILABLE"
+    },
+    "loo_confirmed_raw": {
+      "false_allowed": "ONLY_KNOWN_BOOLEAN_FALSE",
+      "quality": "EXACT_SOURCE_QUALITY",
+      "quality_values": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_IMPLEMENTED",
+        "NOT_APPLICABLE",
+        "DEGRADED"
+      ],
+      "reasons": "LOSSLESS_SOURCE_REASONS",
+      "required": [
+        "value",
+        "quality",
+        "reasons",
+        "source_refs"
+      ],
+      "source_refs_required": [
+        "path",
+        "sha256",
+        "bytes",
+        "producer_contract_id",
+        "trade_date",
+        "available_at",
+        "source_revision"
+      ],
+      "type": "object",
+      "value": "EXACT_SOURCE_VALUE_OR_NULL_FOR_UNAVAILABLE"
+    },
+    "loo_warm_raw": {
+      "false_allowed": "ONLY_KNOWN_BOOLEAN_FALSE",
+      "quality": "EXACT_SOURCE_QUALITY",
+      "quality_values": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_IMPLEMENTED",
+        "NOT_APPLICABLE",
+        "DEGRADED"
+      ],
+      "reasons": "LOSSLESS_SOURCE_REASONS",
+      "required": [
+        "value",
+        "quality",
+        "reasons",
+        "source_refs"
+      ],
+      "source_refs_required": [
+        "path",
+        "sha256",
+        "bytes",
+        "producer_contract_id",
+        "trade_date",
+        "available_at",
+        "source_revision"
+      ],
+      "type": "object",
+      "value": "EXACT_SOURCE_VALUE_OR_NULL_FOR_UNAVAILABLE"
+    },
+    "relative_sector_state": {
+      "false_allowed": "ONLY_KNOWN_BOOLEAN_FALSE",
+      "quality": "EXACT_SOURCE_QUALITY",
+      "quality_values": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_IMPLEMENTED",
+        "NOT_APPLICABLE",
+        "DEGRADED"
+      ],
+      "reasons": "LOSSLESS_SOURCE_REASONS",
+      "required": [
+        "value",
+        "quality",
+        "reasons",
+        "source_refs"
+      ],
+      "source_refs_required": [
+        "path",
+        "sha256",
+        "bytes",
+        "producer_contract_id",
+        "trade_date",
+        "available_at",
+        "source_revision"
+      ],
+      "type": "object",
+      "value": "EXACT_SOURCE_VALUE_OR_NULL_FOR_UNAVAILABLE"
+    },
+    "rotation_core_state": {
+      "false_allowed": "ONLY_KNOWN_BOOLEAN_FALSE",
+      "quality": "EXACT_SOURCE_QUALITY",
+      "quality_values": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_IMPLEMENTED",
+        "NOT_APPLICABLE",
+        "DEGRADED"
+      ],
+      "reasons": "LOSSLESS_SOURCE_REASONS",
+      "required": [
+        "value",
+        "quality",
+        "reasons",
+        "source_refs"
+      ],
+      "source_refs_required": [
+        "path",
+        "sha256",
+        "bytes",
+        "producer_contract_id",
+        "trade_date",
+        "available_at",
+        "source_revision"
+      ],
+      "type": "object",
+      "value": "EXACT_SOURCE_VALUE_OR_NULL_FOR_UNAVAILABLE"
+    }
+  },
+  "context_quality_rule": {
+    "bytes": 2735,
+    "path": "config/v4_13_quality_map_v1_1.json",
+    "sha256": "acc8e9f9c048f5097e6594cf45458022d09ee2cca0cec6af519b4d7ebbd25092"
+  },
+  "contract_id": "SECTOR_CONTEXT_STATE_V1",
+  "identity_rule": "ALL_COMPONENT_SOURCE_REFS_BELONG_TO_SAME_SELECTED_SECTOR_TARGET_DATE_AND_LOO_LINEAGE",
+  "no_eligible": "KNOWN_COMPLETE_NO_ELIGIBLE => null/NOT_APPLICABLE",
+  "properties": {
+    "adjusted_seed_width": {
+      "additionalProperties": false,
+      "properties": {
+        "quality": {
+          "enum": [
+            "KNOWN",
+            "UNKNOWN",
+            "NOT_IMPLEMENTED",
+            "NOT_APPLICABLE",
+            "DEGRADED"
+          ]
+        },
+        "reasons": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "source_refs": {
+          "items": {
+            "required": [
+              "path",
+              "sha256",
+              "bytes",
+              "producer_contract_id",
+              "trade_date",
+              "available_at",
+              "source_revision"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "value": {
+          "semantics": "EXACT_SOURCE_TYPE_NO_COERCION",
+          "type": [
+            "boolean",
+            "number",
+            "string",
+            "object",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "value",
+        "quality",
+        "reasons",
+        "source_refs"
+      ],
+      "type": "object"
+    },
+    "context_quality": {
+      "enum": [
+        "KNOWN",
+        "UNKNOWN",
+        "NOT_IMPLEMENTED",
+        "NOT_APPLICABLE",
+        "DEGRADED"
+      ]
+    },
+    "emergence": {
+      "additionalProperties": false,
+      "properties": {
+        "quality": {
+          "enum": [
+            "KNOWN",
+            "UNKNOWN",
+            "NOT_IMPLEMENTED",
+            "NOT_APPLICABLE",
+            "DEGRADED"
+          ]
+        },
+        "reasons": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "source_refs": {
+          "items": {
+            "required": [
+              "path",
+              "sha256",
+              "bytes",
+              "producer_contract_id",
+              "trade_date",
+              "available_at",
+              "source_revision"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "value": {
+          "semantics": "EXACT_SOURCE_TYPE_NO_COERCION",
+          "type": [
+            "boolean",
+            "number",
+            "string",
+            "object",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "value",
+        "quality",
+        "reasons",
+        "source_refs"
+      ],
+      "type": "object"
+    },
+    "loo_b0_raw": {
+      "additionalProperties": false,
+      "properties": {
+        "quality": {
+          "enum": [
+            "KNOWN",
+            "UNKNOWN",
+            "NOT_IMPLEMENTED",
+            "NOT_APPLICABLE",
+            "DEGRADED"
+          ]
+        },
+        "reasons": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "source_refs": {
+          "items": {
+            "required": [
+              "path",
+              "sha256",
+              "bytes",
+              "producer_contract_id",
+              "trade_date",
+              "available_at",
+              "source_revision"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "value": {
+          "semantics": "EXACT_SOURCE_TYPE_NO_COERCION",
+          "type": [
+            "boolean",
+            "number",
+            "string",
+            "object",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "value",
+        "quality",
+        "reasons",
+        "source_refs"
+      ],
+      "type": "object"
+    },
+    "loo_confirmed_raw": {
+      "additionalProperties": false,
+      "properties": {
+        "quality": {
+          "enum": [
+            "KNOWN",
+            "UNKNOWN",
+            "NOT_IMPLEMENTED",
+            "NOT_APPLICABLE",
+            "DEGRADED"
+          ]
+        },
+        "reasons": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "source_refs": {
+          "items": {
+            "required": [
+              "path",
+              "sha256",
+              "bytes",
+              "producer_contract_id",
+              "trade_date",
+              "available_at",
+              "source_revision"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "value": {
+          "semantics": "EXACT_SOURCE_TYPE_NO_COERCION",
+          "type": [
+            "boolean",
+            "number",
+            "string",
+            "object",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "value",
+        "quality",
+        "reasons",
+        "source_refs"
+      ],
+      "type": "object"
+    },
+    "loo_warm_raw": {
+      "additionalProperties": false,
+      "properties": {
+        "quality": {
+          "enum": [
+            "KNOWN",
+            "UNKNOWN",
+            "NOT_IMPLEMENTED",
+            "NOT_APPLICABLE",
+            "DEGRADED"
+          ]
+        },
+        "reasons": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "source_refs": {
+          "items": {
+            "required": [
+              "path",
+              "sha256",
+              "bytes",
+              "producer_contract_id",
+              "trade_date",
+              "available_at",
+              "source_revision"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "value": {
+          "semantics": "EXACT_SOURCE_TYPE_NO_COERCION",
+          "type": [
+            "boolean",
+            "number",
+            "string",
+            "object",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "value",
+        "quality",
+        "reasons",
+        "source_refs"
+      ],
+      "type": "object"
+    },
+    "membership_basis": {
+      "enum": [
+        "PIT_OBSERVED",
+        "HISTORICAL_REPLAY_CURRENT_MEMBERSHIP",
+        "UNKNOWN"
+      ]
+    },
+    "reasons": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "relative_sector_state": {
+      "additionalProperties": false,
+      "properties": {
+        "quality": {
+          "enum": [
+            "KNOWN",
+            "UNKNOWN",
+            "NOT_IMPLEMENTED",
+            "NOT_APPLICABLE",
+            "DEGRADED"
+          ]
+        },
+        "reasons": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "source_refs": {
+          "items": {
+            "required": [
+              "path",
+              "sha256",
+              "bytes",
+              "producer_contract_id",
+              "trade_date",
+              "available_at",
+              "source_revision"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "value": {
+          "semantics": "EXACT_SOURCE_TYPE_NO_COERCION",
+          "type": [
+            "boolean",
+            "number",
+            "string",
+            "object",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "value",
+        "quality",
+        "reasons",
+        "source_refs"
+      ],
+      "type": "object"
+    },
+    "rotation_core_state": {
+      "additionalProperties": false,
+      "properties": {
+        "quality": {
+          "enum": [
+            "KNOWN",
+            "UNKNOWN",
+            "NOT_IMPLEMENTED",
+            "NOT_APPLICABLE",
+            "DEGRADED"
+          ]
+        },
+        "reasons": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "source_refs": {
+          "items": {
+            "required": [
+              "path",
+              "sha256",
+              "bytes",
+              "producer_contract_id",
+              "trade_date",
+              "available_at",
+              "source_revision"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "value": {
+          "semantics": "EXACT_SOURCE_TYPE_NO_COERCION",
+          "type": [
+            "boolean",
+            "number",
+            "string",
+            "object",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "value",
+        "quality",
+        "reasons",
+        "source_refs"
+      ],
+      "type": "object"
+    },
+    "sector_type": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "selected_sector_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "source_refs": {
+      "items": {
+        "required": [
+          "path",
+          "sha256",
+          "bytes",
+          "producer_contract_id",
+          "trade_date",
+          "available_at",
+          "source_revision"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    }
+  },
+  "reason": "R14_EXTERNAL_AUDIT_C02_REPAIR",
+  "required": [
+    "selected_sector_id",
+    "sector_type",
+    "loo_b0_raw",
+    "loo_confirmed_raw",
+    "loo_warm_raw",
+    "emergence",
+    "adjusted_seed_width",
+    "rotation_core_state",
+    "relative_sector_state",
+    "membership_basis",
+    "context_quality",
+    "reasons",
+    "source_refs"
+  ],
+  "runtime_implemented": false,
+  "selection": "COPY_SELECTION_IDENTITY_NEVER_CHOOSE_OR_UPGRADE_ELIGIBILITY",
+  "selection_unknown": "NULL_ID_AND_UNKNOWN_UNBOUND_COMPONENTS; retain valid selected diagnostic snapshot when already published, never fabricate selection",
+  "semantic": "LOSSLESS_SELECTED_LOO_CONTEXT_SNAPSHOT_NO_NEW_SCORE_OR_STATE_MACHINE",
+  "source_mapping": {
+    "adjusted_seed_width": "selected_context.adjusted_seed_width",
+    "emergence": "selected_context.emergence",
+    "loo_b0_raw": "selected_context.b0_raw",
+    "loo_confirmed_raw": "selected_context.confirmed_raw",
+    "loo_warm_raw": "selected_context.warm_raw",
+    "membership_basis": "selected_context.membership_basis",
+    "reasons": "selected_context.reasons",
+    "relative_sector_state": "selected_context.relative_sector_state",
+    "rotation_core_state": "selected_context.rotation_core_state",
+    "sector_type": "selected_context.sector_type",
+    "selected_sector_id": "selected_context.sector_id",
+    "source_refs": "selected_context.source_refs"
+  },
+  "supersedes": {
+    "bytes": 1114,
+    "path": "config/v4_13_output_schema_v1.json",
+    "sha256": "ad9beffacbe216ed324409288d550af1c59172a7d81832ab40981ddd0d2b4717"
+  },
+  "type": "object_or_null",
+  "version": "1.0.0"
+}

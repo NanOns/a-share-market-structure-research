@@ -1,0 +1,264 @@
+{
+  "accepted_owner_bindings": {
+    "V4_04": {
+      "bytes": 6837,
+      "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+      "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+    },
+    "V4_05": {
+      "bytes": 8456,
+      "path": "data/v4/V4_05_ACCEPTED_HEAD.json",
+      "sha256": "fc929d85553a900a6479ac9f50291d50cf750ad0e6c21fc58e4e05e92189f5cb"
+    },
+    "V4_07": {
+      "bytes": 6362,
+      "path": "data/v4/V4_07_ACCEPTED_HEAD.json",
+      "sha256": "b22117b0d14c35167cba86cb7398d878d7112f9cf17c1a427fa92766e78f880f"
+    },
+    "V4_08": {
+      "bytes": 21493,
+      "path": "data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json",
+      "sha256": "f2a35cebd18e8caf723e7900133333ce4b8df1a8314cb190dade7b0ea7624a3f"
+    },
+    "V4_08_PIT_MEMBERSHIP": {
+      "bytes": 2151,
+      "path": "data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json",
+      "sha256": "d6374a73b8084ccd383cbb4f75428ed91176e91cc09d87c3329041d57c5bd9ed"
+    },
+    "V4_12": {
+      "bytes": 796484,
+      "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+      "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+    }
+  },
+  "accepted_sector_dependencies": {
+    "b0_contract": {
+      "byte_count": 4025,
+      "path": "config/v4_08_sector_prewatch_contract_r5.json",
+      "sha256": "e71a66757ae664bf6f65b8c5a030caf4e35b70921925fc9e83953fa2ba71a737"
+    },
+    "b2_contract": {
+      "byte_count": 28799,
+      "path": "config/v4_08_b2_machine_ast_r5.json",
+      "sha256": "838f167f0eb7ec3797240cc7488e8121901b7bb4f8d926d3cb4e378adc4b1155"
+    },
+    "field_registry": {
+      "byte_count": 13560,
+      "path": "config/v4_08_sector_field_registry_r5.json",
+      "sha256": "3bfd5077f53b8af1639080ffa6e2a065d6585f7edcdd6e668adda6583586d7c4"
+    },
+    "native_contract": {
+      "byte_count": 3246,
+      "path": "config/v4_08_sector_native_contract_r5.json",
+      "sha256": "235df806e1671ab00e234f4d93834570c797314244c42753e2e58e1c60a21386"
+    },
+    "parameter_set": {
+      "byte_count": 4045,
+      "path": "config/v4_08_algorithm_parameter_set_r5.json",
+      "sha256": "0204d7c4fadf86871b6a079f755593b1a3f8ad18bb718f73ba33db0b70f67548"
+    },
+    "rotation_contract": {
+      "byte_count": 21093,
+      "path": "config/v4_08_rotation_core_contract_r5.json",
+      "sha256": "2fee45359815fd70f489e0c24c29b49eac114628332b77399d6d2f14ea018330"
+    }
+  },
+  "base_seed_authority": {
+    "bytes": 6362,
+    "path": "data/v4/V4_07_ACCEPTED_HEAD.json",
+    "sha256": "b22117b0d14c35167cba86cb7398d878d7112f9cf17c1a427fa92766e78f880f"
+  },
+  "contract_id": "LOO_CONTEXT_V1",
+  "denominator": {
+    "below_minimum": "UNKNOWN_INSUFFICIENT_LOO_MEMBERS",
+    "coverage": "KNOWN_QUOTED_NON_TARGET_MEMBERS / ELIGIBLE_NON_TARGET_MEMBERS",
+    "incomplete": "UNKNOWN_NO_ZERO_IMPUTATION",
+    "minimum_coverage": "V4_08_SECTOR_MIN_QUOTE_COVERAGE",
+    "minimum_members": "V4_08_SECTOR_MIN_MEMBERS",
+    "rel_sector": "STOCK_RETURN_MINUS_LOO_SECTOR_RETURN_PERCENTAGE_POINTS",
+    "ret_sector": "MEDIAN_OF_KNOWN_ELIGIBLE_NON_TARGET_MEMBER_RETURNS",
+    "zero_members": "NOT_APPLICABLE_IF_COMPLETE_KNOWN_MEMBERSHIP_ELSE_UNKNOWN"
+  },
+  "field_dependencies": {
+    "algorithmic_support_sector": {
+      "current": [
+        "membership",
+        "loo_b0_raw",
+        "loo_confirmed_raw",
+        "loo_warm_raw",
+        "emergence",
+        "adjusted_seed_width"
+      ],
+      "history": [
+        "ACCEPTED_OWNER_REGISTERED_B0_B2_COMPARE_ENDPOINTS_AND_LOO_LINEAGE"
+      ],
+      "time_role": "T_LOO_SELECTION_WITH_REGISTERED_HISTORY"
+    },
+    "primary_industry": {
+      "current": [
+        "trade_date_valid_membership",
+        "source_revision",
+        "available_at_le_cutoff",
+        "membership_quality"
+      ],
+      "history": [],
+      "time_role": "T_EXACT_MEMBERSHIP_AT_CUTOFF"
+    },
+    "relative_sector_state": {
+      "current": [
+        "membership",
+        "non_target_ret1_ret5",
+        "accepted_stock_relative_required_fields"
+      ],
+      "history": [],
+      "time_role": "T_CURRENT_LOO_RETURNS_AND_ACCEPTED_CORE"
+    },
+    "rotation_structure_enrichment": {
+      "component_dependencies": "ROTATION_OWNER_HISTORY_AND_D1_OWNER_PREDECESSOR_STAY_IN_THEIR_OWN_LINEAGE",
+      "current": [
+        "rotation_publication",
+        "structure_publication"
+      ],
+      "history": [],
+      "time_role": "T_ROTATION_AND_READ_ONLY_D1"
+    },
+    "sector_context_quality": {
+      "current": [
+        "component_qualities",
+        "membership_basis"
+      ],
+      "history": [],
+      "time_role": "T_COMPONENT_QUALITY_METADATA"
+    },
+    "sector_context_state": {
+      "component_dependencies": "ONLY_EACH_SOURCE_COMPONENT_REGISTERED_DEPENDENCIES",
+      "current": [
+        "selected_context_publication"
+      ],
+      "history": [],
+      "time_role": "T_READ_ONLY_SELECTED_LOO_SNAPSHOT"
+    },
+    "supporting_concepts": {
+      "current": [
+        "trade_date_valid_membership",
+        "source_revision",
+        "available_at_le_cutoff",
+        "membership_quality"
+      ],
+      "history": [],
+      "time_role": "T_EXACT_MEMBERSHIP_AT_CUTOFF"
+    }
+  },
+  "forbidden": [
+    "SUBTRACT_ONLY_COUNTS",
+    "RETAIN_SELF_INCLUDING_RANK_MEDIAN_STATE",
+    "USE_SELF_INCLUDING_HISTORICAL_STATE",
+    "RAW_RECONSTRUCTION_TO_BYPASS_OWNER_AUTHORITY"
+  ],
+  "identity_fields": [
+    "target_security_id",
+    "sector_id",
+    "trade_date",
+    "revision",
+    "membership_snapshot_id",
+    "membership_source_revision",
+    "cutoff",
+    "excluded_target_id",
+    "loo_history_digest"
+  ],
+  "membership": {
+    "historical_current": "CURRENT_MEMBERSHIP_REPLAY_DIAGNOSTIC_NOT_PIT",
+    "historical_pit": "ONLY_ACCEPTED_PROVIDER_AVAILABILITY_AND_EFFECTIVE_DATE_EVIDENCE",
+    "identity": "ACCEPTED_SOURCE_BYTES_AND_REVISION",
+    "types": [
+      "INDUSTRY",
+      "THEME"
+    ],
+    "unknown": "UNKNOWN_NOT_FALSE",
+    "validity": "EXACT_TRADE_DATE_ACCEPTED_SNAPSHOT_NO_CARRY_FORWARD"
+  },
+  "membership_authority": {
+    "bytes": 2151,
+    "path": "data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json",
+    "sha256": "d6374a73b8084ccd383cbb4f75428ed91176e91cc09d87c3329041d57c5bd9ed"
+  },
+  "membership_consumer_route": {
+    "bytes": 1395,
+    "path": "config/v4_13_membership_consumer_route_v1_1.json",
+    "sha256": "5bc1e50c900bd2314a2a9ec602e3d2efc5b0f20f444a55e6500a1f0020303dfc"
+  },
+  "publication": {
+    "append_only": true,
+    "availability": "EVERY_SOURCE_AVAILABLE_AT_LE_CUTOFF",
+    "membership_correction": "NEW_REVISION_WITH_OLD_IMMUTABLE",
+    "namespace": "CONTEXT_LOO",
+    "qualification_effect": "NONE",
+    "same_day_revision": "ALL_USE_EXACT_T_MINUS_1_PREDECESSOR"
+  },
+  "reason": "R14_EXTERNAL_AUDIT_C01_C04_REPAIR",
+  "recipe": [
+    "REMOVE_TARGET_FROM_EVERY_SECTOR_BEFORE_ALL_CALCULATIONS",
+    "REBUILD_NATIVE_RET_MEDIANS_BREADTH_MA_WIDTH_AMOUNT_CONCENTRATION",
+    "REBUILD_BASE_SEED_AGGREGATES_K_N_UNKNOWN_AND_WILSON_ORDERING",
+    "REBUILD_FULL_QUALIFIED_SECTOR_UNIVERSE_RANKS_AND_MEDIANS",
+    "REBUILD_B0_B2_RAW_WITH_EXACT_ACCEPTED_CONTRACT_AST",
+    "REBUILD_EVERY_REQUIRED_HISTORICAL_ENDPOINT_AND_COMMON_MEMBER_COHORT_WITH_TARGET_REMOVED",
+    "REBUILD_ROTATION_HISTORY_FROM_INDEPENDENT_LOO_LINEAGE_OR_MARK_UNAVAILABLE"
+  ],
+  "relationship_projection": "CURRENT_MEMBERSHIP_ONLY_NOT_GATED_BY_LOO_HISTORY",
+  "relative_state": {
+    "contract_id": "RELATIVE_STATE_V1",
+    "field_substitution": {
+      "rel_market_1": "rel_sector_1",
+      "rel_market_5": "rel_sector_5"
+    },
+    "other_fields": "UNCHANGED_ACCEPTED_CORE_OWNER_FIELDS",
+    "owner": {
+      "bytes": 42408,
+      "path": "config/v4_04_algorithm_contracts_v3.json",
+      "sha256": "0b144bd2a9f033336da338d5b71649f8e20ebafe65095efcd5c4a7d8663db970"
+    },
+    "priority_and_thresholds": "EXACT_OWNER_AST_NO_SECOND_RULE_SET",
+    "required": [
+      "rps5",
+      "rps20",
+      "rps20_delta3",
+      "rel_sector_1",
+      "rel_sector_5",
+      "compression_state",
+      "ma_structure_state"
+    ],
+    "rule_pointer": "/rules/RELATIVE_STATE_V1"
+  },
+  "required_producer_capability": "NOT_IMPLEMENTED_V4_13_RUNTIME; do not alias accepted self-including sector output as LOO",
+  "runtime_implemented": false,
+  "sector_context_schema": {
+    "bytes": 15879,
+    "path": "config/v4_13_sector_context_state_schema_v1_1.json",
+    "sha256": "dbf53443e24be66f4a83cb08e26617e6274a65776290c7b0ba8fd916a921d6e1"
+  },
+  "selection": {
+    "algorithmic_support_sector_sort": [
+      "LOO_confirmed_raw_DESC",
+      "LOO_warm_raw_DESC",
+      "emergence_HIGH_MEDIUM_LOW_DESC",
+      "adjusted_seed_width_DESC",
+      "sector_id_ASC"
+    ],
+    "display_cap": "profile_concept_display_cap_ONLY_VIEW_NEVER_ALGORITHMIC_SET",
+    "eligible_quality": "READY_ONLY_ALL_REQUIRED_LOO_AUTHORITY_AVAILABLE",
+    "no_eligible": "NOT_APPLICABLE_ONLY_COMPLETE_KNOWN_SET_ELSE_UNKNOWN",
+    "primary_industry": "ACCEPTED_OFFICIAL_CLASSIFICATION_PRIORITY_ASC_TAXONOMY_DEPTH_DESC_SECTOR_ID_ASC; missing conflict metadata UNKNOWN; no membership NOT_APPLICABLE",
+    "primary_not_daily_strength": true,
+    "rotation_and_relative_evidence": "PRESERVED_EXPLANATORY_FIELDS_NOT_NEW_SORT_RULES",
+    "sector_type": "INDUSTRY_OR_THEME_ONLY",
+    "supporting_concepts": "ALL_DATE_VALID_THEME_RELATIONS; complete underlying set; membership unknown remains UNKNOWN; stable membership_quality then sector_id ASC"
+  },
+  "status": "CONTRACT_FREEZE_ONLY",
+  "supersedes": {
+    "bytes": 6150,
+    "path": "config/v4_13_loo_context_v1.json",
+    "sha256": "382892e5daae579e83343a2e8cf80cfb2942cab0e77a2d1e09cdce546cc93806"
+  },
+  "version": "1.1.0"
+}

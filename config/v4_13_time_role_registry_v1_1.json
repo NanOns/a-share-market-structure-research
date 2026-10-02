@@ -1,0 +1,261 @@
+{
+  "contract_id": "V4_13_TIME_ROLE_REGISTRY_V1",
+  "fields": [
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "current_dependencies": [
+        "trade_date_valid_membership",
+        "source_revision",
+        "available_at_le_cutoff",
+        "membership_quality"
+      ],
+      "field": "primary_industry",
+      "history_dependencies": [],
+      "missing": "DEGRADE_ONLY_DEPENDENT_FIELD_OR_COMPONENT",
+      "prior": "NOT_REQUIRED_FOR_THIS_FIELD",
+      "role": "T_EXACT_MEMBERSHIP_AT_CUTOFF"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "current_dependencies": [
+        "trade_date_valid_membership",
+        "source_revision",
+        "available_at_le_cutoff",
+        "membership_quality"
+      ],
+      "field": "supporting_concepts",
+      "history_dependencies": [],
+      "missing": "DEGRADE_ONLY_DEPENDENT_FIELD_OR_COMPONENT",
+      "prior": "NOT_REQUIRED_FOR_THIS_FIELD",
+      "role": "T_EXACT_MEMBERSHIP_AT_CUTOFF"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "current_dependencies": [
+        "membership",
+        "loo_b0_raw",
+        "loo_confirmed_raw",
+        "loo_warm_raw",
+        "emergence",
+        "adjusted_seed_width"
+      ],
+      "field": "algorithmic_support_sector",
+      "history_dependencies": [
+        "ACCEPTED_OWNER_REGISTERED_B0_B2_COMPARE_ENDPOINTS_AND_LOO_LINEAGE"
+      ],
+      "missing": "DEGRADE_ONLY_DEPENDENT_FIELD_OR_COMPONENT",
+      "prior": "EXACT_REGISTERED_PREVIOUS_SESSION_OR_K_LAG_ENDPOINT_NOT_SAME_DAY_REVISION",
+      "role": "T_LOO_SELECTION_WITH_REGISTERED_HISTORY"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "current_dependencies": [
+        "membership",
+        "non_target_ret1_ret5",
+        "accepted_stock_relative_required_fields"
+      ],
+      "field": "relative_sector_state",
+      "history_dependencies": [],
+      "missing": "DEGRADE_ONLY_DEPENDENT_FIELD_OR_COMPONENT",
+      "prior": "NOT_REQUIRED_FOR_THIS_FIELD",
+      "role": "T_CURRENT_LOO_RETURNS_AND_ACCEPTED_CORE"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "current_dependencies": [
+        "selected_context_publication"
+      ],
+      "field": "sector_context_state",
+      "history_dependencies": [],
+      "missing": "DEGRADE_ONLY_DEPENDENT_FIELD_OR_COMPONENT",
+      "prior": "NOT_REQUIRED_FOR_THIS_FIELD",
+      "role": "T_READ_ONLY_SELECTED_LOO_SNAPSHOT"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "current_dependencies": [
+        "component_qualities",
+        "membership_basis"
+      ],
+      "field": "sector_context_quality",
+      "history_dependencies": [],
+      "missing": "DEGRADE_ONLY_DEPENDENT_FIELD_OR_COMPONENT",
+      "prior": "NOT_REQUIRED_FOR_THIS_FIELD",
+      "role": "T_COMPONENT_QUALITY_METADATA"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "current_dependencies": [
+        "rotation_publication",
+        "structure_publication"
+      ],
+      "field": "rotation_structure_enrichment",
+      "history_dependencies": [],
+      "missing": "DEGRADE_ONLY_DEPENDENT_FIELD_OR_COMPONENT",
+      "prior": "NOT_REQUIRED_FOR_THIS_FIELD",
+      "role": "T_ROTATION_AND_READ_ONLY_D1"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "active_anchor_id",
+      "prior": "EXACT_PREVIOUS_ACCEPTED_MARKET_SESSION_NOT_SAME_DAY_REVISION",
+      "role": "T_READ_ONLY_ACCEPTED_D1"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "anchor_view_asof_t",
+      "prior": "EXACT_PREVIOUS_ACCEPTED_MARKET_SESSION_NOT_SAME_DAY_REVISION",
+      "role": "T_READ_ONLY_ACCEPTED_D1"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "basic_breakout_state",
+      "prior": "EXACT_PREVIOUS_ACCEPTED_MARKET_SESSION_NOT_SAME_DAY_REVISION",
+      "role": "T_READ_ONLY_ACCEPTED_D1"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "basic_pullback_state",
+      "prior": "EXACT_PREVIOUS_ACCEPTED_MARKET_SESSION_NOT_SAME_DAY_REVISION",
+      "role": "T_READ_ONLY_ACCEPTED_D1"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "basic_recovery_state",
+      "prior": "EXACT_PREVIOUS_ACCEPTED_MARKET_SESSION_NOT_SAME_DAY_REVISION",
+      "role": "T_READ_ONLY_ACCEPTED_D1"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "support_state",
+      "prior": "EXACT_PREVIOUS_ACCEPTED_MARKET_SESSION_NOT_SAME_DAY_REVISION",
+      "role": "T_READ_ONLY_ACCEPTED_D1"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "acceptance_state",
+      "prior": "EXACT_PREVIOUS_ACCEPTED_MARKET_SESSION_NOT_SAME_DAY_REVISION",
+      "role": "T_READ_ONLY_ACCEPTED_D1"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "retest_count",
+      "prior": "EXACT_PREVIOUS_ACCEPTED_MARKET_SESSION_NOT_SAME_DAY_REVISION",
+      "role": "T_READ_ONLY_ACCEPTED_D1"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "structure_events",
+      "prior": "EXACT_PREVIOUS_ACCEPTED_MARKET_SESSION_NOT_SAME_DAY_REVISION",
+      "role": "T_READ_ONLY_ACCEPTED_D1"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "structure_health",
+      "prior": "EXACT_PREVIOUS_ACCEPTED_MARKET_SESSION_NOT_SAME_DAY_REVISION",
+      "role": "T_READ_ONLY_ACCEPTED_D1"
+    }
+  ],
+  "future_outcome_allowed": false,
+  "input_fields": [
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "membership_snapshot",
+      "role": "T_EXACT_MEMBERSHIP_AT_CUTOFF"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "member_ret1",
+      "role": "T_CUTOFF"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "member_ret5",
+      "role": "T_CUTOFF"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "member_ret20",
+      "role": "T_CUTOFF"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "member_amount",
+      "role": "T_CUTOFF"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "member_amount_ratio20",
+      "role": "T_CUTOFF"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "member_close",
+      "role": "T_CUTOFF"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "member_ma20",
+      "role": "T_CUTOFF"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "member_base_seed_raw",
+      "role": "T_CUTOFF"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "member_quality",
+      "role": "T_CUTOFF"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "rps5",
+      "role": "T_CUTOFF"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "rps20",
+      "role": "T_CUTOFF"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "rps20_delta3",
+      "role": "T_CUTOFF"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "stock_ret1",
+      "role": "T_CUTOFF"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "stock_ret5",
+      "role": "T_CUTOFF"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "compression_state",
+      "role": "T_CUTOFF"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "ma_structure_state",
+      "role": "T_CUTOFF"
+    },
+    {
+      "availability": "SOURCE_AVAILABLE_AT_LE_CUTOFF",
+      "field": "loo_history",
+      "role": "T_MINUS_K_EXACT_SOURCE"
+    }
+  ],
+  "reason": "R14_EXTERNAL_AUDIT_C01_C04_REPAIR",
+  "runtime_implemented": false,
+  "status": "CONTRACT_FREEZE_ONLY",
+  "supersedes": {
+    "bytes": 6378,
+    "path": "config/v4_13_time_role_registry_v1.json",
+    "sha256": "fa40a1da756f57bec90b228976de99cc5e40102b7b0593e15737042ee55c6291"
+  },
+  "version": "1.1.0"
+}

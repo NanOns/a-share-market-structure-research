@@ -1,0 +1,134 @@
+{
+  "accepted_only": true,
+  "contract_id": "V4_13_INPUT_SCHEMA_V1",
+  "core_owner_bindings": [
+    {
+      "bytes": 6837,
+      "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+      "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+    },
+    {
+      "bytes": 8456,
+      "path": "data/v4/V4_05_ACCEPTED_HEAD.json",
+      "sha256": "fc929d85553a900a6479ac9f50291d50cf750ad0e6c21fc58e4e05e92189f5cb"
+    }
+  ],
+  "field_dependencies": {
+    "algorithmic_support_sector": {
+      "current": [
+        "membership",
+        "loo_b0_raw",
+        "loo_confirmed_raw",
+        "loo_warm_raw",
+        "emergence",
+        "adjusted_seed_width"
+      ],
+      "history": [
+        "ACCEPTED_OWNER_REGISTERED_B0_B2_COMPARE_ENDPOINTS_AND_LOO_LINEAGE"
+      ],
+      "time_role": "T_LOO_SELECTION_WITH_REGISTERED_HISTORY"
+    },
+    "primary_industry": {
+      "current": [
+        "trade_date_valid_membership",
+        "source_revision",
+        "available_at_le_cutoff",
+        "membership_quality"
+      ],
+      "history": [],
+      "time_role": "T_EXACT_MEMBERSHIP_AT_CUTOFF"
+    },
+    "relative_sector_state": {
+      "current": [
+        "membership",
+        "non_target_ret1_ret5",
+        "accepted_stock_relative_required_fields"
+      ],
+      "history": [],
+      "time_role": "T_CURRENT_LOO_RETURNS_AND_ACCEPTED_CORE"
+    },
+    "rotation_structure_enrichment": {
+      "component_dependencies": "ROTATION_OWNER_HISTORY_AND_D1_OWNER_PREDECESSOR_STAY_IN_THEIR_OWN_LINEAGE",
+      "current": [
+        "rotation_publication",
+        "structure_publication"
+      ],
+      "history": [],
+      "time_role": "T_ROTATION_AND_READ_ONLY_D1"
+    },
+    "sector_context_quality": {
+      "current": [
+        "component_qualities",
+        "membership_basis"
+      ],
+      "history": [],
+      "time_role": "T_COMPONENT_QUALITY_METADATA"
+    },
+    "sector_context_state": {
+      "component_dependencies": "ONLY_EACH_SOURCE_COMPONENT_REGISTERED_DEPENDENCIES",
+      "current": [
+        "selected_context_publication"
+      ],
+      "history": [],
+      "time_role": "T_READ_ONLY_SELECTED_LOO_SNAPSHOT"
+    },
+    "supporting_concepts": {
+      "current": [
+        "trade_date_valid_membership",
+        "source_revision",
+        "available_at_le_cutoff",
+        "membership_quality"
+      ],
+      "history": [],
+      "time_role": "T_EXACT_MEMBERSHIP_AT_CUTOFF"
+    }
+  },
+  "field_level_missing": "UNKNOWN_ONLY_WHERE_ACTUAL_REQUIRED_DEPENDENCY_MISSING",
+  "membership_consumer_route": {
+    "bytes": 1395,
+    "path": "config/v4_13_membership_consumer_route_v1_1.json",
+    "sha256": "5bc1e50c900bd2314a2a9ec602e3d2efc5b0f20f444a55e6500a1f0020303dfc"
+  },
+  "membership_required": [
+    "sector_id",
+    "security_id",
+    "membership_asof_date",
+    "membership_basis",
+    "provider_available_at",
+    "source_revision",
+    "quality"
+  ],
+  "missing_authority": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+  "raw_fallback": false,
+  "reason": "R14_EXTERNAL_AUDIT_C01_C04_REPAIR",
+  "reference_required": [
+    "path",
+    "sha256",
+    "bytes",
+    "producer_contract_id",
+    "trade_date",
+    "available_at",
+    "source_revision",
+    "quality"
+  ],
+  "required": [
+    "security_id",
+    "trade_date",
+    "revision",
+    "cutoff",
+    "accepted_source_refs"
+  ],
+  "runtime_implemented": false,
+  "seed_owner_binding": {
+    "bytes": 6362,
+    "path": "data/v4/V4_07_ACCEPTED_HEAD.json",
+    "sha256": "b22117b0d14c35167cba86cb7398d878d7112f9cf17c1a427fa92766e78f880f"
+  },
+  "status": "CONTRACT_FREEZE_ONLY",
+  "supersedes": {
+    "bytes": 851,
+    "path": "config/v4_13_input_schema_v1.json",
+    "sha256": "80fd3ef1f9eb1ec78795681717dc6edba1926992caf0fa1759003bb13333c704"
+  },
+  "version": "1.1.0"
+}

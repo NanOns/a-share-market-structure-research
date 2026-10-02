@@ -1,0 +1,131 @@
+{
+  "contract_id": "V4_13_PRODUCER_REGISTRY_V1",
+  "producers": [
+    {
+      "operation": "CURRENT_DATE_RELATION_ONLY",
+      "outputs": [
+        "primary_industry",
+        "supporting_concepts"
+      ],
+      "producer_contract_id": "MEMBERSHIP_RELATION_PROJECTION_V1",
+      "runtime": "NOT_IMPLEMENTED",
+      "source_authorities": [
+        {
+          "bytes": 21493,
+          "path": "data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json",
+          "sha256": "f2a35cebd18e8caf723e7900133333ce4b8df1a8314cb190dade7b0ea7624a3f"
+        },
+        {
+          "bytes": 2151,
+          "path": "data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json",
+          "sha256": "d6374a73b8084ccd383cbb4f75428ed91176e91cc09d87c3329041d57c5bd9ed"
+        }
+      ]
+    },
+    {
+      "operation": "EXACT_OWNER_AST_TARGET_EXCLUDED",
+      "outputs": [
+        "algorithmic_support_sector",
+        "relative_sector_state"
+      ],
+      "producer_contract_id": "LOO_CONTEXT_V1",
+      "runtime": "NOT_IMPLEMENTED",
+      "source_authorities": [
+        {
+          "bytes": 2151,
+          "path": "data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json",
+          "sha256": "d6374a73b8084ccd383cbb4f75428ed91176e91cc09d87c3329041d57c5bd9ed"
+        },
+        {
+          "bytes": 6837,
+          "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+          "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+        },
+        {
+          "bytes": 8456,
+          "path": "data/v4/V4_05_ACCEPTED_HEAD.json",
+          "sha256": "fc929d85553a900a6479ac9f50291d50cf750ad0e6c21fc58e4e05e92189f5cb"
+        },
+        {
+          "bytes": 6362,
+          "path": "data/v4/V4_07_ACCEPTED_HEAD.json",
+          "sha256": "b22117b0d14c35167cba86cb7398d878d7112f9cf17c1a427fa92766e78f880f"
+        },
+        {
+          "bytes": 21493,
+          "path": "data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json",
+          "sha256": "f2a35cebd18e8caf723e7900133333ce4b8df1a8314cb190dade7b0ea7624a3f"
+        }
+      ]
+    },
+    {
+      "operation": "LOSSLESS_CONTEXT_SNAPSHOT",
+      "outputs": [
+        "sector_context_state",
+        "sector_context_quality"
+      ],
+      "producer_contract_id": "SECTOR_CONTEXT_STATE_V1",
+      "runtime": "NOT_IMPLEMENTED",
+      "source_authorities": [
+        {
+          "bytes": 21493,
+          "path": "data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json",
+          "sha256": "f2a35cebd18e8caf723e7900133333ce4b8df1a8314cb190dade7b0ea7624a3f"
+        }
+      ]
+    },
+    {
+      "operation": "LOSSLESS_DUAL_SOURCE_COMPONENTS",
+      "outputs": [
+        "rotation_structure_enrichment"
+      ],
+      "producer_contract_id": "ROTATION_STRUCTURE_ENRICHMENT_V1",
+      "runtime": "NOT_IMPLEMENTED",
+      "source_authorities": [
+        {
+          "bytes": 21493,
+          "path": "data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json",
+          "sha256": "f2a35cebd18e8caf723e7900133333ce4b8df1a8314cb190dade7b0ea7624a3f"
+        },
+        {
+          "bytes": 796484,
+          "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+          "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+        }
+      ]
+    },
+    {
+      "operation": "LOSSLESS_READ_ONLY_STRUCTURE",
+      "outputs": [
+        "active_anchor_id",
+        "anchor_view_asof_t",
+        "basic_breakout_state",
+        "basic_pullback_state",
+        "basic_recovery_state",
+        "support_state",
+        "acceptance_state",
+        "retest_count",
+        "structure_events",
+        "structure_health"
+      ],
+      "producer_contract_id": "PROFILE_ADVANCED_PROJECTION_V1",
+      "runtime": "NOT_IMPLEMENTED",
+      "source_authorities": [
+        {
+          "bytes": 796484,
+          "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+          "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+        }
+      ]
+    }
+  ],
+  "reason": "R14_EXTERNAL_AUDIT_C01_C04_REPAIR",
+  "runtime_implemented": false,
+  "status": "CONTRACT_FREEZE_ONLY",
+  "supersedes": {
+    "bytes": 1968,
+    "path": "config/v4_13_producer_registry_v1.json",
+    "sha256": "2e104b0cb2ca4a36a57110cfc0bf16a2488882001707552a86d08ccce78689dd"
+  },
+  "version": "1.1.0"
+}

@@ -1,0 +1,81 @@
+{
+  "all_not_applicable": "NOT_APPLICABLE",
+  "combine": "COMMUTATIVE_TABLE_FOLD_OVER_DECLARED_COMPONENTS_METADATA_ONLY",
+  "component_pair_table": {
+    "DEGRADED|DEGRADED": "DEGRADED",
+    "DEGRADED|KNOWN": "DEGRADED",
+    "DEGRADED|NOT_APPLICABLE": "DEGRADED",
+    "DEGRADED|NOT_IMPLEMENTED": "DEGRADED",
+    "DEGRADED|UNKNOWN": "DEGRADED",
+    "KNOWN|DEGRADED": "DEGRADED",
+    "KNOWN|KNOWN": "KNOWN",
+    "KNOWN|NOT_APPLICABLE": "DEGRADED",
+    "KNOWN|NOT_IMPLEMENTED": "DEGRADED",
+    "KNOWN|UNKNOWN": "DEGRADED",
+    "NOT_APPLICABLE|DEGRADED": "DEGRADED",
+    "NOT_APPLICABLE|KNOWN": "DEGRADED",
+    "NOT_APPLICABLE|NOT_APPLICABLE": "NOT_APPLICABLE",
+    "NOT_APPLICABLE|NOT_IMPLEMENTED": "NOT_IMPLEMENTED",
+    "NOT_APPLICABLE|UNKNOWN": "UNKNOWN",
+    "NOT_IMPLEMENTED|DEGRADED": "DEGRADED",
+    "NOT_IMPLEMENTED|KNOWN": "DEGRADED",
+    "NOT_IMPLEMENTED|NOT_APPLICABLE": "NOT_IMPLEMENTED",
+    "NOT_IMPLEMENTED|NOT_IMPLEMENTED": "NOT_IMPLEMENTED",
+    "NOT_IMPLEMENTED|UNKNOWN": "UNKNOWN",
+    "UNKNOWN|DEGRADED": "DEGRADED",
+    "UNKNOWN|KNOWN": "DEGRADED",
+    "UNKNOWN|NOT_APPLICABLE": "UNKNOWN",
+    "UNKNOWN|NOT_IMPLEMENTED": "UNKNOWN",
+    "UNKNOWN|UNKNOWN": "UNKNOWN"
+  },
+  "component_quality_values": [
+    "KNOWN",
+    "UNKNOWN",
+    "NOT_IMPLEMENTED",
+    "NOT_APPLICABLE",
+    "DEGRADED"
+  ],
+  "component_values": "COPY_UNCHANGED_NEVER_COERCE_UNKNOWN_OR_NOT_IMPLEMENTED_TO_FALSE",
+  "contract_id": "V4_13_QUALITY_DEGRADATION_V1",
+  "degradation_scope": "ONLY_FIELD_OR_COMPONENT_WITH_ACTUAL_MISSING_DEPENDENCY",
+  "map": {
+    "BLOCKED_WITH_EXPLICIT_REASON": {
+      "reason": "ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "value": "UNKNOWN"
+    },
+    "CURRENT_MEMBERSHIP_REPLAY": {
+      "formal_context_eligible": false,
+      "origin": "CURRENT_MEMBERSHIP_REPLAY",
+      "pit": false,
+      "value": "DEGRADED"
+    },
+    "NOT_APPLICABLE": {
+      "condition": "KNOWN_COMPLETE_NO_ELIGIBLE_SECTOR",
+      "value": null
+    },
+    "NOT_IMPLEMENTED": {
+      "reason": "V4_13_RUNTIME_NOT_IMPLEMENTED",
+      "value": null
+    },
+    "READY": {
+      "eligibility": "CONTEXT_ONLY",
+      "value": "KNOWN"
+    },
+    "UNKNOWN": {
+      "missing_is_false": false,
+      "value": "UNKNOWN",
+      "weak_sector": false
+    }
+  },
+  "no_selected_sector": "KNOWN_COMPLETE_NONE => value=null quality=NOT_APPLICABLE; uncertain selection never NOT_APPLICABLE",
+  "reason": "R14_EXTERNAL_AUDIT_C01_C04_REPAIR",
+  "runtime_implemented": false,
+  "status": "CONTRACT_FREEZE_ONLY",
+  "supersedes": {
+    "bytes": 909,
+    "path": "config/v4_13_quality_map_v1.json",
+    "sha256": "0324ecbd6e37e5814d943b42e85911e62881eefe0d891b0768da54c5ba7c572f"
+  },
+  "upstream_degradation": "LOSSLESS_PRESERVE_NO_UPGRADE",
+  "version": "1.1.0"
+}

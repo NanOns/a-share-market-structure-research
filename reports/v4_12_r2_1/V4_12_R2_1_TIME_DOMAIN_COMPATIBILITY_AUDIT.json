@@ -1,0 +1,1768 @@
+{
+  "comparisons_scanned": 69,
+  "counter_definitions": {
+    "calendar_authority": {
+      "bytes": 10739,
+      "path": "data/v4/source_evidence/dm01_a01_r3/chain_inputs_r1/calendar_union_2e0938120e3b371aa9c84422c06b4c14de0f8894cc8f3caa9dd9c61299239e74.json",
+      "sha256": "629242b5074002dd8e889fdca5da9e1c05f9ae35357662d5c76a554117fc17f5"
+    },
+    "consecutive_path": {
+      "missing": "Reset held/breach/recovery held chain to zero; prior_adjacent_evaluable false",
+      "same_day_revision": "Same t-1 baseline; replace observation; held and breach never repeatedly increment"
+    },
+    "data_authority": {
+      "bytes": 16890,
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+    },
+    "missing_suspension": "Cannot increment actual evaluable count; missing history yields UNKNOWN; breaks consecutive path counters",
+    "pivot_left_count": "Actual evaluable sessions preceding pivot_date, no shortened missing window",
+    "pivot_right_count": "Actual evaluable sessions after pivot_date through confirmation_date",
+    "post_creation_evaluable_sessions": {
+      "consecutive": false,
+      "definition": "Count unique sessions after available_date with a qualifying evaluable D1 observation through observation_trade_date",
+      "increment": "One per qualifying distinct date",
+      "missing": "Suspension/missing/required coordinate unavailable adds zero; unavailable frozen count/history -> UNKNOWN",
+      "reset": "New immutable Anchor only; NOT reset by missing",
+      "same_day_revision": "Recompute date membership against same frozen t-1 baseline; never accumulate revisions; quality correction replaces membership",
+      "unit": "evaluable_sessions",
+      "uses": [
+        "acceptance.PENDING"
+      ]
+    },
+    "post_creation_market_sessions": {
+      "definition": "Count unique accepted calendar session_dates in (anchor.available_date, observation_trade_date]",
+      "increment": "Each market session including security suspension/missing",
+      "missing": "Unavailable calendar -> UNKNOWN",
+      "reset": "New immutable Anchor only",
+      "same_day_revision": "Same date, same count",
+      "unit": "market_sessions_after_available_date",
+      "uses": [
+        "old_anchor",
+        "earliest test",
+        "same-day self-confirmation prevention"
+      ]
+    },
+    "producer": "V4_12_SESSION_COUNTER_V2",
+    "same_day_revision": "Same previous-session counter baseline; not another session",
+    "source_dates": [
+      "anchor.available_date",
+      "pivot_date",
+      "confirmation_date",
+      "observation_trade_date"
+    ]
+  },
+  "edges": [
+    {
+      "AST_path": "definitions/breakout_trigger/args/0",
+      "compatible": true,
+      "field": [
+        "C",
+        "prior_high20",
+        "ATR20"
+      ],
+      "field_semantic_dimension": {
+        "ATR20": "price",
+        "C": "price",
+        "prior_high20": "price"
+      },
+      "field_unit": {
+        "ATR20": "adjusted_price",
+        "C": "adjusted_price",
+        "prior_high20": "adjusted_price"
+      },
+      "left_expression_dimension": "price",
+      "operator": "gt",
+      "parameter": [
+        "breakout_atr_buffer"
+      ],
+      "parameter_semantic_dimension": {
+        "breakout_atr_buffer": "dimensionless_ATR_multiple"
+      },
+      "parameter_unit": {
+        "breakout_atr_buffer": "dimensionless_ATR_multiple"
+      },
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "price"
+    },
+    {
+      "AST_path": "definitions/breakout_trigger/args/1",
+      "compatible": true,
+      "field": [
+        "CLV"
+      ],
+      "field_semantic_dimension": {
+        "CLV": "dimensionless_ratio"
+      },
+      "field_unit": {
+        "CLV": "ratio"
+      },
+      "left_expression_dimension": "dimensionless_ratio",
+      "operator": "ge",
+      "parameter": [
+        "breakout_clv_min"
+      ],
+      "parameter_semantic_dimension": {
+        "breakout_clv_min": "dimensionless_ratio"
+      },
+      "parameter_unit": {
+        "breakout_clv_min": "ratio"
+      },
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "dimensionless_ratio"
+    },
+    {
+      "AST_path": "definitions/close_breach",
+      "compatible": true,
+      "field": [
+        "C",
+        "lo",
+        "atr_prior_view"
+      ],
+      "field_semantic_dimension": {
+        "C": "price",
+        "atr_prior_view": "price",
+        "lo": "price"
+      },
+      "field_unit": {
+        "C": "adjusted_price",
+        "atr_prior_view": "CNY_per_share_in_declared_common_coordinate",
+        "lo": "CNY_per_share_in_declared_common_coordinate"
+      },
+      "left_expression_dimension": "price",
+      "operator": "lt",
+      "parameter": [
+        "support_close_breach_atr"
+      ],
+      "parameter_semantic_dimension": {
+        "support_close_breach_atr": "dimensionless_ATR_multiple"
+      },
+      "parameter_unit": {
+        "support_close_breach_atr": "dimensionless_ATR_multiple"
+      },
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "price"
+    },
+    {
+      "AST_path": "definitions/deep_breach",
+      "compatible": true,
+      "field": [
+        "C",
+        "lo",
+        "atr_prior_view"
+      ],
+      "field_semantic_dimension": {
+        "C": "price",
+        "atr_prior_view": "price",
+        "lo": "price"
+      },
+      "field_unit": {
+        "C": "adjusted_price",
+        "atr_prior_view": "CNY_per_share_in_declared_common_coordinate",
+        "lo": "CNY_per_share_in_declared_common_coordinate"
+      },
+      "left_expression_dimension": "price",
+      "operator": "lt",
+      "parameter": [
+        "support_deep_breach_atr"
+      ],
+      "parameter_semantic_dimension": {
+        "support_deep_breach_atr": "dimensionless_ATR_multiple"
+      },
+      "parameter_unit": {
+        "support_deep_breach_atr": "dimensionless_ATR_multiple"
+      },
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "price"
+    },
+    {
+      "AST_path": "definitions/eod_reclaim/args/1",
+      "compatible": true,
+      "field": [
+        "C",
+        "hi"
+      ],
+      "field_semantic_dimension": {
+        "C": "price",
+        "hi": "price"
+      },
+      "field_unit": {
+        "C": "adjusted_price",
+        "hi": "CNY_per_share_in_declared_common_coordinate"
+      },
+      "left_expression_dimension": "price",
+      "operator": "ge",
+      "parameter": null,
+      "parameter_semantic_dimension": {},
+      "parameter_unit": {},
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "price"
+    },
+    {
+      "AST_path": "definitions/eod_reclaim/args/2",
+      "compatible": true,
+      "field": [
+        "CLV"
+      ],
+      "field_semantic_dimension": {
+        "CLV": "dimensionless_ratio"
+      },
+      "field_unit": {
+        "CLV": "ratio"
+      },
+      "left_expression_dimension": "dimensionless_ratio",
+      "operator": "ge",
+      "parameter": [
+        "support_reclaim_clv_min"
+      ],
+      "parameter_semantic_dimension": {
+        "support_reclaim_clv_min": "dimensionless_ratio"
+      },
+      "parameter_unit": {
+        "support_reclaim_clv_min": "ratio"
+      },
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "dimensionless_ratio"
+    },
+    {
+      "AST_path": "definitions/episode_invalidated/args/1/args/1",
+      "compatible": true,
+      "field": [
+        "breach_count"
+      ],
+      "field_semantic_dimension": {
+        "breach_count": "consecutive_evaluable_count"
+      },
+      "field_unit": {
+        "breach_count": "consecutive_evaluable_sessions"
+      },
+      "left_expression_dimension": "consecutive_evaluable_count",
+      "operator": "ge",
+      "parameter": [
+        "support_break_consecutive_sessions"
+      ],
+      "parameter_semantic_dimension": {
+        "support_break_consecutive_sessions": "consecutive_evaluable_count"
+      },
+      "parameter_unit": {
+        "support_break_consecutive_sessions": "consecutive_evaluable_sessions"
+      },
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "consecutive_evaluable_count"
+    },
+    {
+      "AST_path": "definitions/gap_qualified",
+      "compatible": true,
+      "field": [
+        "L",
+        "prior_high_view"
+      ],
+      "field_semantic_dimension": {
+        "L": "price",
+        "prior_high_view": "price"
+      },
+      "field_unit": {
+        "L": "adjusted_price",
+        "prior_high_view": "CNY_per_share_in_declared_common_coordinate"
+      },
+      "left_expression_dimension": "price",
+      "operator": "gt",
+      "parameter": null,
+      "parameter_semantic_dimension": {},
+      "parameter_unit": {},
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "price"
+    },
+    {
+      "AST_path": "definitions/held_count/rules/0/when/args/2",
+      "compatible": true,
+      "field": [
+        "C",
+        "hi"
+      ],
+      "field_semantic_dimension": {
+        "C": "price",
+        "hi": "price"
+      },
+      "field_unit": {
+        "C": "adjusted_price",
+        "hi": "CNY_per_share_in_declared_common_coordinate"
+      },
+      "left_expression_dimension": "price",
+      "operator": "ge",
+      "parameter": null,
+      "parameter_semantic_dimension": {},
+      "parameter_unit": {},
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "price"
+    },
+    {
+      "AST_path": "definitions/impulse/args/0",
+      "compatible": true,
+      "field": [
+        "body_atr"
+      ],
+      "field_semantic_dimension": {
+        "body_atr": "dimensionless_ATR_multiple"
+      },
+      "field_unit": {
+        "body_atr": "dimensionless_ATR_multiple"
+      },
+      "left_expression_dimension": "dimensionless_ATR_multiple",
+      "operator": "ge",
+      "parameter": [
+        "impulse_body_atr_min"
+      ],
+      "parameter_semantic_dimension": {
+        "impulse_body_atr_min": "dimensionless_ATR_multiple"
+      },
+      "parameter_unit": {
+        "impulse_body_atr_min": "dimensionless_ATR_multiple"
+      },
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "dimensionless_ATR_multiple"
+    },
+    {
+      "AST_path": "definitions/impulse/args/1",
+      "compatible": true,
+      "field": [
+        "range_atr"
+      ],
+      "field_semantic_dimension": {
+        "range_atr": "dimensionless_ATR_multiple"
+      },
+      "field_unit": {
+        "range_atr": "dimensionless_ATR_multiple"
+      },
+      "left_expression_dimension": "dimensionless_ATR_multiple",
+      "operator": "ge",
+      "parameter": [
+        "impulse_range_atr_min"
+      ],
+      "parameter_semantic_dimension": {
+        "impulse_range_atr_min": "dimensionless_ATR_multiple"
+      },
+      "parameter_unit": {
+        "impulse_range_atr_min": "dimensionless_ATR_multiple"
+      },
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "dimensionless_ATR_multiple"
+    },
+    {
+      "AST_path": "definitions/impulse/args/2",
+      "compatible": true,
+      "field": [
+        "CLV"
+      ],
+      "field_semantic_dimension": {
+        "CLV": "dimensionless_ratio"
+      },
+      "field_unit": {
+        "CLV": "ratio"
+      },
+      "left_expression_dimension": "dimensionless_ratio",
+      "operator": "ge",
+      "parameter": [
+        "impulse_clv_min"
+      ],
+      "parameter_semantic_dimension": {
+        "impulse_clv_min": "dimensionless_ratio"
+      },
+      "parameter_unit": {
+        "impulse_clv_min": "ratio"
+      },
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "dimensionless_ratio"
+    },
+    {
+      "AST_path": "definitions/impulse/args/3",
+      "compatible": true,
+      "field": [
+        "amount_ratio20"
+      ],
+      "field_semantic_dimension": {
+        "amount_ratio20": "dimensionless_ratio"
+      },
+      "field_unit": {
+        "amount_ratio20": "ratio"
+      },
+      "left_expression_dimension": "dimensionless_ratio",
+      "operator": "ge",
+      "parameter": [
+        "impulse_amount_ratio20_min"
+      ],
+      "parameter_semantic_dimension": {
+        "impulse_amount_ratio20_min": "dimensionless_ratio"
+      },
+      "parameter_unit": {
+        "impulse_amount_ratio20_min": "ratio"
+      },
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "dimensionless_ratio"
+    },
+    {
+      "AST_path": "definitions/impulse/args/4",
+      "compatible": true,
+      "field": [
+        "rel_market_1"
+      ],
+      "field_semantic_dimension": {
+        "rel_market_1": "dimensionless_ratio"
+      },
+      "field_unit": {
+        "rel_market_1": "return_fraction"
+      },
+      "left_expression_dimension": "dimensionless_ratio",
+      "operator": "gt",
+      "parameter": null,
+      "parameter_semantic_dimension": {},
+      "parameter_unit": {},
+      "reason": "Explicit dimension-polymorphic mathematical constant, not a session threshold",
+      "right_expression_dimension": "mathematical_constant"
+    },
+    {
+      "AST_path": "definitions/ma20_reclaim/args/2/args/0",
+      "compatible": true,
+      "field": [
+        "close_t_minus_1",
+        "ma20_t_minus_1"
+      ],
+      "field_semantic_dimension": {
+        "close_t_minus_1": "price",
+        "ma20_t_minus_1": "price"
+      },
+      "field_unit": {
+        "close_t_minus_1": "CNY_per_share_in_declared_common_coordinate",
+        "ma20_t_minus_1": "CNY_per_share_in_declared_common_coordinate"
+      },
+      "left_expression_dimension": "price",
+      "operator": "le",
+      "parameter": null,
+      "parameter_semantic_dimension": {},
+      "parameter_unit": {},
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "price"
+    },
+    {
+      "AST_path": "definitions/ma20_reclaim/args/2/args/1",
+      "compatible": true,
+      "field": [
+        "C",
+        "MA20"
+      ],
+      "field_semantic_dimension": {
+        "C": "price",
+        "MA20": "price"
+      },
+      "field_unit": {
+        "C": "adjusted_price",
+        "MA20": "adjusted_price"
+      },
+      "left_expression_dimension": "price",
+      "operator": "gt",
+      "parameter": null,
+      "parameter_semantic_dimension": {},
+      "parameter_unit": {},
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "price"
+    },
+    {
+      "AST_path": "definitions/next_test_count/rules/0/when/args/2/args/0",
+      "compatible": true,
+      "field": [
+        "prior_test_count"
+      ],
+      "field_semantic_dimension": {
+        "prior_test_count": "actual_evaluable_count"
+      },
+      "field_unit": {
+        "prior_test_count": "evaluable_sessions"
+      },
+      "left_expression_dimension": "actual_evaluable_count",
+      "operator": "eq",
+      "parameter": null,
+      "parameter_semantic_dimension": {},
+      "parameter_unit": {},
+      "reason": "Explicit dimension-polymorphic mathematical constant, not a session threshold",
+      "right_expression_dimension": "mathematical_constant"
+    },
+    {
+      "AST_path": "definitions/old_anchor",
+      "compatible": true,
+      "field": [
+        "post_creation_market_sessions"
+      ],
+      "field_semantic_dimension": {
+        "post_creation_market_sessions": "market_session_age"
+      },
+      "field_unit": {
+        "post_creation_market_sessions": "market_sessions_after_available_date"
+      },
+      "left_expression_dimension": "market_session_age",
+      "operator": "ge",
+      "parameter": [
+        "earliest_anchor_test_sessions"
+      ],
+      "parameter_semantic_dimension": {
+        "earliest_anchor_test_sessions": "market_session_age"
+      },
+      "parameter_unit": {
+        "earliest_anchor_test_sessions": "market_sessions_after_available_date"
+      },
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "market_session_age"
+    },
+    {
+      "AST_path": "definitions/pivot_available/args/0",
+      "compatible": true,
+      "field": [
+        "pivot_left_count"
+      ],
+      "field_semantic_dimension": {
+        "pivot_left_count": "actual_evaluable_window_count"
+      },
+      "field_unit": {
+        "pivot_left_count": "actual_evaluable_sessions"
+      },
+      "left_expression_dimension": "actual_evaluable_window_count",
+      "operator": "ge",
+      "parameter": [
+        "pivot_left_sessions"
+      ],
+      "parameter_semantic_dimension": {
+        "pivot_left_sessions": "actual_evaluable_window_count"
+      },
+      "parameter_unit": {
+        "pivot_left_sessions": "actual_evaluable_sessions"
+      },
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "actual_evaluable_window_count"
+    },
+    {
+      "AST_path": "definitions/pivot_available/args/1",
+      "compatible": true,
+      "field": [
+        "pivot_right_count"
+      ],
+      "field_semantic_dimension": {
+        "pivot_right_count": "actual_evaluable_window_count"
+      },
+      "field_unit": {
+        "pivot_right_count": "actual_evaluable_sessions"
+      },
+      "left_expression_dimension": "actual_evaluable_window_count",
+      "operator": "ge",
+      "parameter": [
+        "pivot_right_sessions"
+      ],
+      "parameter_semantic_dimension": {
+        "pivot_right_sessions": "actual_evaluable_window_count"
+      },
+      "parameter_unit": {
+        "pivot_right_sessions": "actual_evaluable_sessions"
+      },
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "actual_evaluable_window_count"
+    },
+    {
+      "AST_path": "definitions/post_peak_drawdown",
+      "compatible": true,
+      "field": [
+        "C",
+        "prior_event_peak_view"
+      ],
+      "field_semantic_dimension": {
+        "C": "price",
+        "prior_event_peak_view": "price"
+      },
+      "field_unit": {
+        "C": "adjusted_price",
+        "prior_event_peak_view": "CNY_per_share_in_declared_common_coordinate"
+      },
+      "left_expression_dimension": "price",
+      "operator": "lt",
+      "parameter": null,
+      "parameter_semantic_dimension": {},
+      "parameter_unit": {},
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "price"
+    },
+    {
+      "AST_path": "definitions/range_anchor_qualified/args/0",
+      "compatible": true,
+      "field": [
+        "prior_range20_atr"
+      ],
+      "field_semantic_dimension": {
+        "prior_range20_atr": "dimensionless_ATR_multiple"
+      },
+      "field_unit": {
+        "prior_range20_atr": "dimensionless_ATR_multiple"
+      },
+      "left_expression_dimension": "dimensionless_ATR_multiple",
+      "operator": "le",
+      "parameter": [
+        "range_anchor_range_atr_max"
+      ],
+      "parameter_semantic_dimension": {
+        "range_anchor_range_atr_max": "dimensionless_ATR_multiple"
+      },
+      "parameter_unit": {
+        "range_anchor_range_atr_max": "dimensionless_ATR_multiple"
+      },
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "dimensionless_ATR_multiple"
+    },
+    {
+      "AST_path": "definitions/range_anchor_qualified/args/1",
+      "compatible": true,
+      "field": [
+        "slope20"
+      ],
+      "field_semantic_dimension": {
+        "slope20": "dimensionless_ratio"
+      },
+      "field_unit": {
+        "slope20": "dimensionless"
+      },
+      "left_expression_dimension": "dimensionless_ratio",
+      "operator": "le",
+      "parameter": [
+        "range_anchor_abs_slope20_max"
+      ],
+      "parameter_semantic_dimension": {
+        "range_anchor_abs_slope20_max": "dimensionless_ratio"
+      },
+      "parameter_unit": {
+        "range_anchor_abs_slope20_max": "dimensionless"
+      },
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "dimensionless_ratio"
+    },
+    {
+      "AST_path": "definitions/recovery_held_count/rules/0/when/args/2",
+      "compatible": true,
+      "field": [
+        "C",
+        "recovery_line_view"
+      ],
+      "field_semantic_dimension": {
+        "C": "price",
+        "recovery_line_view": "price"
+      },
+      "field_unit": {
+        "C": "adjusted_price",
+        "recovery_line_view": "CNY_per_share_in_declared_common_coordinate"
+      },
+      "left_expression_dimension": "price",
+      "operator": "ge",
+      "parameter": null,
+      "parameter_semantic_dimension": {},
+      "parameter_unit": {},
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "price"
+    },
+    {
+      "AST_path": "definitions/relative_recovery/args/0",
+      "compatible": true,
+      "field": [
+        "prior_delta3"
+      ],
+      "field_semantic_dimension": {
+        "prior_delta3": "percentage_points"
+      },
+      "field_unit": {
+        "prior_delta3": "percentage_points"
+      },
+      "left_expression_dimension": "percentage_points",
+      "operator": "le",
+      "parameter": null,
+      "parameter_semantic_dimension": {},
+      "parameter_unit": {},
+      "reason": "Explicit dimension-polymorphic mathematical constant, not a session threshold",
+      "right_expression_dimension": "mathematical_constant"
+    },
+    {
+      "AST_path": "definitions/relative_recovery/args/1",
+      "compatible": true,
+      "field": [
+        "delta3"
+      ],
+      "field_semantic_dimension": {
+        "delta3": "percentage_points"
+      },
+      "field_unit": {
+        "delta3": "percentage_points"
+      },
+      "left_expression_dimension": "percentage_points",
+      "operator": "gt",
+      "parameter": [
+        "recovery_delta3_threshold"
+      ],
+      "parameter_semantic_dimension": {
+        "recovery_delta3_threshold": "percentage_points"
+      },
+      "parameter_unit": {
+        "recovery_delta3_threshold": "percentage_points"
+      },
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "percentage_points"
+    },
+    {
+      "AST_path": "definitions/relative_recovery/args/2",
+      "compatible": true,
+      "field": [
+        "rel_market_1"
+      ],
+      "field_semantic_dimension": {
+        "rel_market_1": "dimensionless_ratio"
+      },
+      "field_unit": {
+        "rel_market_1": "return_fraction"
+      },
+      "left_expression_dimension": "dimensionless_ratio",
+      "operator": "gt",
+      "parameter": null,
+      "parameter_semantic_dimension": {},
+      "parameter_unit": {},
+      "reason": "Explicit dimension-polymorphic mathematical constant, not a session threshold",
+      "right_expression_dimension": "mathematical_constant"
+    },
+    {
+      "AST_path": "definitions/retention_value/rules/0/when",
+      "compatible": true,
+      "field": [
+        "retention_denominator"
+      ],
+      "field_semantic_dimension": {
+        "retention_denominator": "CNY_per_share_in_common_coordinate"
+      },
+      "field_unit": {
+        "retention_denominator": "CNY_per_share_in_common_coordinate"
+      },
+      "left_expression_dimension": "CNY_per_share_in_common_coordinate",
+      "operator": "le",
+      "parameter": null,
+      "parameter_semantic_dimension": {},
+      "parameter_unit": {},
+      "reason": "Explicit dimension-polymorphic mathematical constant, not a session threshold",
+      "right_expression_dimension": "mathematical_constant"
+    },
+    {
+      "AST_path": "definitions/separated_retest/args/0",
+      "compatible": true,
+      "field": [
+        "prior_test_count"
+      ],
+      "field_semantic_dimension": {
+        "prior_test_count": "actual_evaluable_count"
+      },
+      "field_unit": {
+        "prior_test_count": "evaluable_sessions"
+      },
+      "left_expression_dimension": "actual_evaluable_count",
+      "operator": "gt",
+      "parameter": null,
+      "parameter_semantic_dimension": {},
+      "parameter_unit": {},
+      "reason": "Explicit dimension-polymorphic mathematical constant, not a session threshold",
+      "right_expression_dimension": "mathematical_constant"
+    },
+    {
+      "AST_path": "definitions/separated_retest/args/1/args/0",
+      "compatible": true,
+      "field": [
+        "prior_separated_sessions"
+      ],
+      "field_semantic_dimension": {
+        "prior_separated_sessions": "actual_session_separation_count"
+      },
+      "field_unit": {
+        "prior_separated_sessions": "actual_session_separation_count"
+      },
+      "left_expression_dimension": "actual_session_separation_count",
+      "operator": "ge",
+      "parameter": [
+        "support_separated_retest_sessions"
+      ],
+      "parameter_semantic_dimension": {
+        "support_separated_retest_sessions": "actual_session_separation_count"
+      },
+      "parameter_unit": {
+        "support_separated_retest_sessions": "actual_session_separation_count"
+      },
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "actual_session_separation_count"
+    },
+    {
+      "AST_path": "definitions/separated_retest/args/1/args/1/args/0",
+      "compatible": true,
+      "field": [
+        "prior_support_state"
+      ],
+      "field_semantic_dimension": {
+        "prior_support_state": "enum"
+      },
+      "field_unit": {
+        "prior_support_state": "state_or_identity"
+      },
+      "left_expression_dimension": "enum",
+      "operator": "eq",
+      "parameter": null,
+      "parameter_semantic_dimension": {},
+      "parameter_unit": {},
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "enum"
+    },
+    {
+      "AST_path": "definitions/separated_sessions/rules/2/when",
+      "compatible": true,
+      "field": [
+        "prior_test_count"
+      ],
+      "field_semantic_dimension": {
+        "prior_test_count": "actual_evaluable_count"
+      },
+      "field_unit": {
+        "prior_test_count": "evaluable_sessions"
+      },
+      "left_expression_dimension": "actual_evaluable_count",
+      "operator": "gt",
+      "parameter": null,
+      "parameter_semantic_dimension": {},
+      "parameter_unit": {},
+      "reason": "Explicit dimension-polymorphic mathematical constant, not a session threshold",
+      "right_expression_dimension": "mathematical_constant"
+    },
+    {
+      "AST_path": "definitions/touch/args/0",
+      "compatible": true,
+      "field": [
+        "L",
+        "hi",
+        "atr_prior_view"
+      ],
+      "field_semantic_dimension": {
+        "L": "price",
+        "atr_prior_view": "price",
+        "hi": "price"
+      },
+      "field_unit": {
+        "L": "adjusted_price",
+        "atr_prior_view": "CNY_per_share_in_declared_common_coordinate",
+        "hi": "CNY_per_share_in_declared_common_coordinate"
+      },
+      "left_expression_dimension": "price",
+      "operator": "le",
+      "parameter": [
+        "support_touch_atr_buffer"
+      ],
+      "parameter_semantic_dimension": {
+        "support_touch_atr_buffer": "dimensionless_ATR_multiple"
+      },
+      "parameter_unit": {
+        "support_touch_atr_buffer": "dimensionless_ATR_multiple"
+      },
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "price"
+    },
+    {
+      "AST_path": "definitions/touch/args/1",
+      "compatible": true,
+      "field": [
+        "H",
+        "lo",
+        "atr_prior_view"
+      ],
+      "field_semantic_dimension": {
+        "H": "price",
+        "atr_prior_view": "price",
+        "lo": "price"
+      },
+      "field_unit": {
+        "H": "adjusted_price",
+        "atr_prior_view": "CNY_per_share_in_declared_common_coordinate",
+        "lo": "CNY_per_share_in_declared_common_coordinate"
+      },
+      "left_expression_dimension": "price",
+      "operator": "ge",
+      "parameter": [
+        "support_touch_atr_buffer"
+      ],
+      "parameter_semantic_dimension": {
+        "support_touch_atr_buffer": "dimensionless_ATR_multiple"
+      },
+      "parameter_unit": {
+        "support_touch_atr_buffer": "dimensionless_ATR_multiple"
+      },
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "price"
+    },
+    {
+      "AST_path": "machines/acceptance/rules/2/when/args/0",
+      "compatible": true,
+      "field": [
+        "post_creation_market_sessions"
+      ],
+      "field_semantic_dimension": {
+        "post_creation_market_sessions": "market_session_age"
+      },
+      "field_unit": {
+        "post_creation_market_sessions": "market_sessions_after_available_date"
+      },
+      "left_expression_dimension": "market_session_age",
+      "operator": "ge",
+      "parameter": [
+        "earliest_anchor_test_sessions"
+      ],
+      "parameter_semantic_dimension": {
+        "earliest_anchor_test_sessions": "market_session_age"
+      },
+      "parameter_unit": {
+        "earliest_anchor_test_sessions": "market_sessions_after_available_date"
+      },
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "market_session_age"
+    },
+    {
+      "AST_path": "machines/acceptance/rules/2/when/args/1",
+      "compatible": true,
+      "field": [
+        "held_count"
+      ],
+      "field_semantic_dimension": {
+        "held_count": "consecutive_evaluable_count"
+      },
+      "field_unit": {
+        "held_count": "consecutive_evaluable_sessions"
+      },
+      "left_expression_dimension": "consecutive_evaluable_count",
+      "operator": "ge",
+      "parameter": [
+        "acceptance_consecutive_sessions"
+      ],
+      "parameter_semantic_dimension": {
+        "acceptance_consecutive_sessions": "evaluable_session_threshold"
+      },
+      "parameter_unit": {
+        "acceptance_consecutive_sessions": "evaluable_sessions"
+      },
+      "reason": "Accepted threshold of two evaluable sessions supports cumulative PENDING and consecutive ACCEPTED; field definitions remain distinct",
+      "right_expression_dimension": "evaluable_session_threshold"
+    },
+    {
+      "AST_path": "machines/acceptance/rules/3/when",
+      "compatible": true,
+      "field": [
+        "post_creation_evaluable_sessions"
+      ],
+      "field_semantic_dimension": {
+        "post_creation_evaluable_sessions": "evaluable_session_count"
+      },
+      "field_unit": {
+        "post_creation_evaluable_sessions": "evaluable_sessions"
+      },
+      "left_expression_dimension": "evaluable_session_count",
+      "operator": "lt",
+      "parameter": [
+        "acceptance_consecutive_sessions"
+      ],
+      "parameter_semantic_dimension": {
+        "acceptance_consecutive_sessions": "evaluable_session_threshold"
+      },
+      "parameter_unit": {
+        "acceptance_consecutive_sessions": "evaluable_sessions"
+      },
+      "reason": "Accepted threshold of two evaluable sessions supports cumulative PENDING and consecutive ACCEPTED; field definitions remain distinct",
+      "right_expression_dimension": "evaluable_session_threshold"
+    },
+    {
+      "AST_path": "machines/breakout/rules/1/when/args/1/args/0",
+      "compatible": true,
+      "field": [
+        "prior_support_state"
+      ],
+      "field_semantic_dimension": {
+        "prior_support_state": "enum"
+      },
+      "field_unit": {
+        "prior_support_state": "state_or_identity"
+      },
+      "left_expression_dimension": "enum",
+      "operator": "eq",
+      "parameter": null,
+      "parameter_semantic_dimension": {},
+      "parameter_unit": {},
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "enum"
+    },
+    {
+      "AST_path": "machines/breakout/rules/1/when/args/1/args/1",
+      "compatible": true,
+      "field": [
+        "prior_support_state"
+      ],
+      "field_semantic_dimension": {
+        "prior_support_state": "enum"
+      },
+      "field_unit": {
+        "prior_support_state": "state_or_identity"
+      },
+      "left_expression_dimension": "enum",
+      "operator": "eq",
+      "parameter": null,
+      "parameter_semantic_dimension": {},
+      "parameter_unit": {},
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "enum"
+    },
+    {
+      "AST_path": "machines/breakout/rules/2/when/args/1",
+      "compatible": true,
+      "field": [
+        "post_creation_market_sessions"
+      ],
+      "field_semantic_dimension": {
+        "post_creation_market_sessions": "market_session_age"
+      },
+      "field_unit": {
+        "post_creation_market_sessions": "market_sessions_after_available_date"
+      },
+      "left_expression_dimension": "market_session_age",
+      "operator": "ge",
+      "parameter": [
+        "earliest_anchor_test_sessions"
+      ],
+      "parameter_semantic_dimension": {
+        "earliest_anchor_test_sessions": "market_session_age"
+      },
+      "parameter_unit": {
+        "earliest_anchor_test_sessions": "market_sessions_after_available_date"
+      },
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "market_session_age"
+    },
+    {
+      "AST_path": "machines/breakout/rules/2/when/args/2/args/0",
+      "compatible": true,
+      "field": [
+        "support_today"
+      ],
+      "field_semantic_dimension": {
+        "support_today": "enum"
+      },
+      "field_unit": {
+        "support_today": "state_or_identity"
+      },
+      "left_expression_dimension": "enum",
+      "operator": "eq",
+      "parameter": null,
+      "parameter_semantic_dimension": {},
+      "parameter_unit": {},
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "enum"
+    },
+    {
+      "AST_path": "machines/breakout/rules/2/when/args/2/args/1",
+      "compatible": true,
+      "field": [
+        "held_count"
+      ],
+      "field_semantic_dimension": {
+        "held_count": "consecutive_evaluable_count"
+      },
+      "field_unit": {
+        "held_count": "consecutive_evaluable_sessions"
+      },
+      "left_expression_dimension": "consecutive_evaluable_count",
+      "operator": "ge",
+      "parameter": [
+        "acceptance_consecutive_sessions"
+      ],
+      "parameter_semantic_dimension": {
+        "acceptance_consecutive_sessions": "evaluable_session_threshold"
+      },
+      "parameter_unit": {
+        "acceptance_consecutive_sessions": "evaluable_sessions"
+      },
+      "reason": "Accepted threshold of two evaluable sessions supports cumulative PENDING and consecutive ACCEPTED; field definitions remain distinct",
+      "right_expression_dimension": "evaluable_session_threshold"
+    },
+    {
+      "AST_path": "machines/breakout/rules/3/when/args/1",
+      "compatible": true,
+      "field": [
+        "post_creation_market_sessions"
+      ],
+      "field_semantic_dimension": {
+        "post_creation_market_sessions": "market_session_age"
+      },
+      "field_unit": {
+        "post_creation_market_sessions": "market_sessions_after_available_date"
+      },
+      "left_expression_dimension": "market_session_age",
+      "operator": "ge",
+      "parameter": [
+        "earliest_anchor_test_sessions"
+      ],
+      "parameter_semantic_dimension": {
+        "earliest_anchor_test_sessions": "market_session_age"
+      },
+      "parameter_unit": {
+        "earliest_anchor_test_sessions": "market_sessions_after_available_date"
+      },
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "market_session_age"
+    },
+    {
+      "AST_path": "machines/breakout/rules/6/when",
+      "compatible": true,
+      "field": [
+        "near_high20_state"
+      ],
+      "field_semantic_dimension": {
+        "near_high20_state": "enum"
+      },
+      "field_unit": {
+        "near_high20_state": "state"
+      },
+      "left_expression_dimension": "enum",
+      "operator": "eq",
+      "parameter": null,
+      "parameter_semantic_dimension": {},
+      "parameter_unit": {},
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "enum"
+    },
+    {
+      "AST_path": "machines/pullback/rules/1/when/args/0",
+      "compatible": true,
+      "field": [
+        "prior_support_state"
+      ],
+      "field_semantic_dimension": {
+        "prior_support_state": "enum"
+      },
+      "field_unit": {
+        "prior_support_state": "state_or_identity"
+      },
+      "left_expression_dimension": "enum",
+      "operator": "eq",
+      "parameter": null,
+      "parameter_semantic_dimension": {},
+      "parameter_unit": {},
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "enum"
+    },
+    {
+      "AST_path": "machines/pullback/rules/1/when/args/1",
+      "compatible": true,
+      "field": [
+        "prior_support_state"
+      ],
+      "field_semantic_dimension": {
+        "prior_support_state": "enum"
+      },
+      "field_unit": {
+        "prior_support_state": "state_or_identity"
+      },
+      "left_expression_dimension": "enum",
+      "operator": "eq",
+      "parameter": null,
+      "parameter_semantic_dimension": {},
+      "parameter_unit": {},
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "enum"
+    },
+    {
+      "AST_path": "machines/pullback/rules/3/when",
+      "compatible": true,
+      "field": [
+        "support_today"
+      ],
+      "field_semantic_dimension": {
+        "support_today": "enum"
+      },
+      "field_unit": {
+        "support_today": "state_or_identity"
+      },
+      "left_expression_dimension": "enum",
+      "operator": "eq",
+      "parameter": null,
+      "parameter_semantic_dimension": {},
+      "parameter_unit": {},
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "enum"
+    },
+    {
+      "AST_path": "machines/pullback/rules/4/when/args/0",
+      "compatible": true,
+      "field": [
+        "support_today"
+      ],
+      "field_semantic_dimension": {
+        "support_today": "enum"
+      },
+      "field_unit": {
+        "support_today": "state_or_identity"
+      },
+      "left_expression_dimension": "enum",
+      "operator": "eq",
+      "parameter": null,
+      "parameter_semantic_dimension": {},
+      "parameter_unit": {},
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "enum"
+    },
+    {
+      "AST_path": "machines/pullback/rules/4/when/args/1",
+      "compatible": true,
+      "field": [
+        "support_today"
+      ],
+      "field_semantic_dimension": {
+        "support_today": "enum"
+      },
+      "field_unit": {
+        "support_today": "state_or_identity"
+      },
+      "left_expression_dimension": "enum",
+      "operator": "eq",
+      "parameter": null,
+      "parameter_semantic_dimension": {},
+      "parameter_unit": {},
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "enum"
+    },
+    {
+      "AST_path": "machines/pullback/rules/5/when/args/1/args/0",
+      "compatible": true,
+      "field": [
+        "anchor_type"
+      ],
+      "field_semantic_dimension": {
+        "anchor_type": "enum"
+      },
+      "field_unit": {
+        "anchor_type": "state_or_identity"
+      },
+      "left_expression_dimension": "enum",
+      "operator": "eq",
+      "parameter": null,
+      "parameter_semantic_dimension": {},
+      "parameter_unit": {},
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "enum"
+    },
+    {
+      "AST_path": "machines/pullback/rules/5/when/args/1/args/1",
+      "compatible": true,
+      "field": [
+        "anchor_type"
+      ],
+      "field_semantic_dimension": {
+        "anchor_type": "enum"
+      },
+      "field_unit": {
+        "anchor_type": "state_or_identity"
+      },
+      "left_expression_dimension": "enum",
+      "operator": "eq",
+      "parameter": null,
+      "parameter_semantic_dimension": {},
+      "parameter_unit": {},
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "enum"
+    },
+    {
+      "AST_path": "machines/pullback/rules/6/when/args/1/args/0",
+      "compatible": true,
+      "field": [
+        "anchor_type"
+      ],
+      "field_semantic_dimension": {
+        "anchor_type": "enum"
+      },
+      "field_unit": {
+        "anchor_type": "state_or_identity"
+      },
+      "left_expression_dimension": "enum",
+      "operator": "eq",
+      "parameter": null,
+      "parameter_semantic_dimension": {},
+      "parameter_unit": {},
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "enum"
+    },
+    {
+      "AST_path": "machines/pullback/rules/6/when/args/1/args/1",
+      "compatible": true,
+      "field": [
+        "anchor_type"
+      ],
+      "field_semantic_dimension": {
+        "anchor_type": "enum"
+      },
+      "field_unit": {
+        "anchor_type": "state_or_identity"
+      },
+      "left_expression_dimension": "enum",
+      "operator": "eq",
+      "parameter": null,
+      "parameter_semantic_dimension": {},
+      "parameter_unit": {},
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "enum"
+    },
+    {
+      "AST_path": "machines/recovery/rules/1/when/args/1",
+      "compatible": true,
+      "field": [
+        "post_creation_market_sessions"
+      ],
+      "field_semantic_dimension": {
+        "post_creation_market_sessions": "market_session_age"
+      },
+      "field_unit": {
+        "post_creation_market_sessions": "market_sessions_after_available_date"
+      },
+      "left_expression_dimension": "market_session_age",
+      "operator": "ge",
+      "parameter": [
+        "earliest_anchor_test_sessions"
+      ],
+      "parameter_semantic_dimension": {
+        "earliest_anchor_test_sessions": "market_session_age"
+      },
+      "parameter_unit": {
+        "earliest_anchor_test_sessions": "market_sessions_after_available_date"
+      },
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "market_session_age"
+    },
+    {
+      "AST_path": "machines/recovery/rules/1/when/args/2",
+      "compatible": true,
+      "field": [
+        "recovery_held_count"
+      ],
+      "field_semantic_dimension": {
+        "recovery_held_count": "consecutive_evaluable_count"
+      },
+      "field_unit": {
+        "recovery_held_count": "consecutive_evaluable_sessions"
+      },
+      "left_expression_dimension": "consecutive_evaluable_count",
+      "operator": "ge",
+      "parameter": [
+        "acceptance_consecutive_sessions"
+      ],
+      "parameter_semantic_dimension": {
+        "acceptance_consecutive_sessions": "evaluable_session_threshold"
+      },
+      "parameter_unit": {
+        "acceptance_consecutive_sessions": "evaluable_sessions"
+      },
+      "reason": "Accepted threshold of two evaluable sessions supports cumulative PENDING and consecutive ACCEPTED; field definitions remain distinct",
+      "right_expression_dimension": "evaluable_session_threshold"
+    },
+    {
+      "AST_path": "machines/recovery/rules/2/when/args/1",
+      "compatible": true,
+      "field": [
+        "post_creation_market_sessions"
+      ],
+      "field_semantic_dimension": {
+        "post_creation_market_sessions": "market_session_age"
+      },
+      "field_unit": {
+        "post_creation_market_sessions": "market_sessions_after_available_date"
+      },
+      "left_expression_dimension": "market_session_age",
+      "operator": "ge",
+      "parameter": [
+        "earliest_anchor_test_sessions"
+      ],
+      "parameter_semantic_dimension": {
+        "earliest_anchor_test_sessions": "market_session_age"
+      },
+      "parameter_unit": {
+        "earliest_anchor_test_sessions": "market_sessions_after_available_date"
+      },
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "market_session_age"
+    },
+    {
+      "AST_path": "machines/recovery/rules/5/when",
+      "compatible": true,
+      "field": [
+        "ret1"
+      ],
+      "field_semantic_dimension": {
+        "ret1": "dimensionless_ratio"
+      },
+      "field_unit": {
+        "ret1": "return_fraction"
+      },
+      "left_expression_dimension": "dimensionless_ratio",
+      "operator": "gt",
+      "parameter": null,
+      "parameter_semantic_dimension": {},
+      "parameter_unit": {},
+      "reason": "Explicit dimension-polymorphic mathematical constant, not a session threshold",
+      "right_expression_dimension": "mathematical_constant"
+    },
+    {
+      "AST_path": "machines/support/rules/0/when/args/0",
+      "compatible": true,
+      "field": [
+        "prior_support_state"
+      ],
+      "field_semantic_dimension": {
+        "prior_support_state": "enum"
+      },
+      "field_unit": {
+        "prior_support_state": "state_or_identity"
+      },
+      "left_expression_dimension": "enum",
+      "operator": "eq",
+      "parameter": null,
+      "parameter_semantic_dimension": {},
+      "parameter_unit": {},
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "enum"
+    },
+    {
+      "AST_path": "machines/support/rules/0/when/args/1",
+      "compatible": true,
+      "field": [
+        "prior_support_state"
+      ],
+      "field_semantic_dimension": {
+        "prior_support_state": "enum"
+      },
+      "field_unit": {
+        "prior_support_state": "state_or_identity"
+      },
+      "left_expression_dimension": "enum",
+      "operator": "eq",
+      "parameter": null,
+      "parameter_semantic_dimension": {},
+      "parameter_unit": {},
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "enum"
+    },
+    {
+      "AST_path": "machines/support/rules/1/when/args/0",
+      "compatible": true,
+      "field": [
+        "post_creation_market_sessions"
+      ],
+      "field_semantic_dimension": {
+        "post_creation_market_sessions": "market_session_age"
+      },
+      "field_unit": {
+        "post_creation_market_sessions": "market_sessions_after_available_date"
+      },
+      "left_expression_dimension": "market_session_age",
+      "operator": "ge",
+      "parameter": [
+        "earliest_anchor_test_sessions"
+      ],
+      "parameter_semantic_dimension": {
+        "earliest_anchor_test_sessions": "market_session_age"
+      },
+      "parameter_unit": {
+        "earliest_anchor_test_sessions": "market_sessions_after_available_date"
+      },
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "market_session_age"
+    },
+    {
+      "AST_path": "machines/support/rules/3/when/args/1",
+      "compatible": true,
+      "field": [
+        "breach_count"
+      ],
+      "field_semantic_dimension": {
+        "breach_count": "consecutive_evaluable_count"
+      },
+      "field_unit": {
+        "breach_count": "consecutive_evaluable_sessions"
+      },
+      "left_expression_dimension": "consecutive_evaluable_count",
+      "operator": "ge",
+      "parameter": [
+        "support_break_consecutive_sessions"
+      ],
+      "parameter_semantic_dimension": {
+        "support_break_consecutive_sessions": "consecutive_evaluable_count"
+      },
+      "parameter_unit": {
+        "support_break_consecutive_sessions": "consecutive_evaluable_sessions"
+      },
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "consecutive_evaluable_count"
+    },
+    {
+      "AST_path": "machines/support/rules/6/when/args/1/args/0/args/0",
+      "compatible": true,
+      "field": [
+        "prior_support_state"
+      ],
+      "field_semantic_dimension": {
+        "prior_support_state": "enum"
+      },
+      "field_unit": {
+        "prior_support_state": "state_or_identity"
+      },
+      "left_expression_dimension": "enum",
+      "operator": "eq",
+      "parameter": null,
+      "parameter_semantic_dimension": {},
+      "parameter_unit": {},
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "enum"
+    },
+    {
+      "AST_path": "machines/support/rules/6/when/args/1/args/0/args/1",
+      "compatible": true,
+      "field": [
+        "prior_support_state"
+      ],
+      "field_semantic_dimension": {
+        "prior_support_state": "enum"
+      },
+      "field_unit": {
+        "prior_support_state": "state_or_identity"
+      },
+      "left_expression_dimension": "enum",
+      "operator": "eq",
+      "parameter": null,
+      "parameter_semantic_dimension": {},
+      "parameter_unit": {},
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "enum"
+    },
+    {
+      "AST_path": "machines/support/rules/6/when/args/1/args/1",
+      "compatible": true,
+      "field": [
+        "prior_test_count"
+      ],
+      "field_semantic_dimension": {
+        "prior_test_count": "actual_evaluable_count"
+      },
+      "field_unit": {
+        "prior_test_count": "evaluable_sessions"
+      },
+      "left_expression_dimension": "actual_evaluable_count",
+      "operator": "eq",
+      "parameter": null,
+      "parameter_semantic_dimension": {},
+      "parameter_unit": {},
+      "reason": "Explicit dimension-polymorphic mathematical constant, not a session threshold",
+      "right_expression_dimension": "mathematical_constant"
+    },
+    {
+      "AST_path": "machines/support/rules/7/when/args/0",
+      "compatible": true,
+      "field": [
+        "prior_support_state"
+      ],
+      "field_semantic_dimension": {
+        "prior_support_state": "enum"
+      },
+      "field_unit": {
+        "prior_support_state": "state_or_identity"
+      },
+      "left_expression_dimension": "enum",
+      "operator": "eq",
+      "parameter": null,
+      "parameter_semantic_dimension": {},
+      "parameter_unit": {},
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "enum"
+    },
+    {
+      "AST_path": "machines/support/rules/7/when/args/1",
+      "compatible": true,
+      "field": [
+        "held_count"
+      ],
+      "field_semantic_dimension": {
+        "held_count": "consecutive_evaluable_count"
+      },
+      "field_unit": {
+        "held_count": "consecutive_evaluable_sessions"
+      },
+      "left_expression_dimension": "consecutive_evaluable_count",
+      "operator": "ge",
+      "parameter": [
+        "support_tentative_hold_sessions"
+      ],
+      "parameter_semantic_dimension": {
+        "support_tentative_hold_sessions": "consecutive_evaluable_count"
+      },
+      "parameter_unit": {
+        "support_tentative_hold_sessions": "consecutive_evaluable_sessions"
+      },
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "consecutive_evaluable_count"
+    },
+    {
+      "AST_path": "machines/support/rules/8/when/args/0/args/0",
+      "compatible": true,
+      "field": [
+        "prior_support_state"
+      ],
+      "field_semantic_dimension": {
+        "prior_support_state": "enum"
+      },
+      "field_unit": {
+        "prior_support_state": "state_or_identity"
+      },
+      "left_expression_dimension": "enum",
+      "operator": "eq",
+      "parameter": null,
+      "parameter_semantic_dimension": {},
+      "parameter_unit": {},
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "enum"
+    },
+    {
+      "AST_path": "machines/support/rules/8/when/args/0/args/1",
+      "compatible": true,
+      "field": [
+        "prior_support_state"
+      ],
+      "field_semantic_dimension": {
+        "prior_support_state": "enum"
+      },
+      "field_unit": {
+        "prior_support_state": "state_or_identity"
+      },
+      "left_expression_dimension": "enum",
+      "operator": "eq",
+      "parameter": null,
+      "parameter_semantic_dimension": {},
+      "parameter_unit": {},
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "enum"
+    },
+    {
+      "AST_path": "machines/support/rules/10/when",
+      "compatible": true,
+      "field": [
+        "distance_zone",
+        "atr_prior_view"
+      ],
+      "field_semantic_dimension": {
+        "atr_prior_view": "price",
+        "distance_zone": "price"
+      },
+      "field_unit": {
+        "atr_prior_view": "CNY_per_share_in_declared_common_coordinate",
+        "distance_zone": "CNY_per_share_in_declared_common_coordinate"
+      },
+      "left_expression_dimension": "price",
+      "operator": "le",
+      "parameter": [
+        "support_approach_atr"
+      ],
+      "parameter_semantic_dimension": {
+        "support_approach_atr": "dimensionless_ATR_multiple"
+      },
+      "parameter_unit": {
+        "support_approach_atr": "dimensionless_ATR_multiple"
+      },
+      "reason": "Same semantic dimension, independently resolved from definition/role",
+      "right_expression_dimension": "price"
+    }
+  ],
+  "incompatible_edges": 0,
+  "independent_vectors": [
+    {
+      "actual": true,
+      "expected": true,
+      "field": "post_creation_market_sessions",
+      "id": "TD01",
+      "parameter": "earliest_anchor_test_sessions",
+      "status": "PASS"
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "field": "post_creation_evaluable_sessions",
+      "id": "TD02",
+      "parameter": "acceptance_consecutive_sessions",
+      "status": "PASS"
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "field": "held_count",
+      "id": "TD03",
+      "parameter": "acceptance_consecutive_sessions",
+      "status": "PASS"
+    },
+    {
+      "actual": false,
+      "expected": false,
+      "field": "post_creation_market_sessions",
+      "id": "TD04",
+      "parameter": "acceptance_consecutive_sessions",
+      "status": "PASS"
+    },
+    {
+      "actual": false,
+      "expected": false,
+      "field": "post_creation_evaluable_sessions",
+      "id": "TD05",
+      "parameter": "earliest_anchor_test_sessions",
+      "status": "PASS"
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "field": "prior_separated_sessions",
+      "id": "TD06",
+      "parameter": "support_separated_retest_sessions",
+      "status": "PASS"
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "field": "body_atr",
+      "id": "TD07",
+      "parameter": "impulse_body_atr_min",
+      "status": "PASS"
+    },
+    {
+      "actual": false,
+      "expected": false,
+      "field": "ATR20",
+      "id": "TD08",
+      "parameter": "impulse_body_atr_min",
+      "status": "PASS"
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "field": "pivot_right_count",
+      "id": "TD09",
+      "parameter": "pivot_right_sessions",
+      "status": "PASS"
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "field": "prior_delta3",
+      "id": "TD10",
+      "parameter": "recovery_delta3_threshold",
+      "status": "PASS"
+    }
+  ],
+  "method": "Definition-derived dimensions and expression algebra; never unit-string equality alone",
+  "status": "PASS"
+}

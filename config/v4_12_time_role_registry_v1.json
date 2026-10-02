@@ -387,18 +387,18 @@
         "acceptance.UNKNOWN",
         "breakout.BREAKOUT_ACCEPTED",
         "breakout.UNKNOWN",
-        "pullback.UNKNOWN",
-        "recovery.RECOVERY_CONFIRMED",
-        "support.BROKEN",
-        "support.HELD_TENTATIVE",
-        "support.UNKNOWN",
         "definition.breach_count",
         "definition.episode_invalidated",
         "definition.hard_invalidated",
         "definition.held_count",
         "definition.next_test_count",
         "definition.recovery_held_count",
-        "definition.separated_sessions"
+        "definition.separated_sessions",
+        "pullback.UNKNOWN",
+        "recovery.RECOVERY_CONFIRMED",
+        "support.BROKEN",
+        "support.HELD_TENTATIVE",
+        "support.UNKNOWN"
       ],
       "source_namespace": "D1_LOCAL_DERIVATION",
       "time_role": "T_INTERNAL_D1",
@@ -426,6 +426,13 @@
         "acceptance.ACCEPTED",
         "breakout.BREAKOUT_ACCEPTED",
         "breakout.TESTING",
+        "definition.eod_reclaim",
+        "definition.fully_outside_test_band",
+        "definition.held_count",
+        "definition.next_test_count",
+        "definition.separated_retest",
+        "definition.separated_sessions",
+        "definition.touch",
         "pullback.PULLBACK_TO_BREAKOUT",
         "pullback.PULLBACK_TO_IMPULSE",
         "pullback.PULLBACK_TO_MA",
@@ -434,14 +441,7 @@
         "support.HELD_TENTATIVE",
         "support.RECLAIMED",
         "support.RETESTING",
-        "support.TESTING",
-        "definition.eod_reclaim",
-        "definition.fully_outside_test_band",
-        "definition.held_count",
-        "definition.next_test_count",
-        "definition.separated_retest",
-        "definition.separated_sessions",
-        "definition.touch"
+        "support.TESTING"
       ],
       "source_namespace": "D1_LOCAL_DERIVATION",
       "time_role": "T_INTERNAL_D1",
@@ -455,17 +455,6 @@
       "required_by": [
         "acceptance.BROKEN",
         "breakout.TESTING",
-        "pullback.PULLBACK_TO_BREAKOUT",
-        "pullback.PULLBACK_TO_IMPULSE",
-        "pullback.PULLBACK_TO_MA",
-        "recovery.ANCHOR_RECLAIM",
-        "support.BREACHED_SHALLOW",
-        "support.BROKEN",
-        "support.HELD_CONFIRMED",
-        "support.HELD_TENTATIVE",
-        "support.RECLAIMED",
-        "support.RETESTING",
-        "support.TESTING",
         "definition.breach_count",
         "definition.close_breach",
         "definition.deep_breach",
@@ -476,7 +465,18 @@
         "definition.next_test_count",
         "definition.separated_retest",
         "definition.separated_sessions",
-        "definition.touch"
+        "definition.touch",
+        "pullback.PULLBACK_TO_BREAKOUT",
+        "pullback.PULLBACK_TO_IMPULSE",
+        "pullback.PULLBACK_TO_MA",
+        "recovery.ANCHOR_RECLAIM",
+        "support.BREACHED_SHALLOW",
+        "support.BROKEN",
+        "support.HELD_CONFIRMED",
+        "support.HELD_TENTATIVE",
+        "support.RECLAIMED",
+        "support.RETESTING",
+        "support.TESTING"
       ],
       "source_namespace": "D1_LOCAL_DERIVATION",
       "time_role": "T_INTERNAL_D1",
@@ -522,7 +522,7 @@
       "field": "pivot_left_count",
       "field_role": "D1_LOCAL_DERIVATION",
       "globally_required": false,
-      "producer_contract_id": "V4_12_SESSION_COUNTER_V1",
+      "producer_contract_id": "V4_12_SESSION_COUNTER_V2",
       "required_by": [
         "definition.pivot_available"
       ],
@@ -556,31 +556,9 @@
       "field": "pivot_right_count",
       "field_role": "D1_LOCAL_DERIVATION",
       "globally_required": false,
-      "producer_contract_id": "V4_12_SESSION_COUNTER_V1",
+      "producer_contract_id": "V4_12_SESSION_COUNTER_V2",
       "required_by": [
         "definition.pivot_available"
-      ],
-      "source_namespace": "D1_LOCAL_DERIVATION",
-      "time_role": "T_INTERNAL_D1",
-      "trade_date_semantics": "Derived/view at observation_t; any prior event source frozen at previous market session"
-    },
-    {
-      "field": "post_creation_sessions",
-      "field_role": "D1_LOCAL_DERIVATION",
-      "globally_required": false,
-      "producer_contract_id": "V4_12_SESSION_COUNTER_V1",
-      "required_by": [
-        "acceptance.ACCEPTED",
-        "acceptance.PENDING",
-        "breakout.BREAKOUT_ACCEPTED",
-        "breakout.TESTING",
-        "recovery.ANCHOR_RECLAIM",
-        "recovery.RECOVERY_CONFIRMED",
-        "support.HELD_TENTATIVE",
-        "support.IDLE",
-        "definition.held_count",
-        "definition.old_anchor",
-        "definition.recovery_held_count"
       ],
       "source_namespace": "D1_LOCAL_DERIVATION",
       "time_role": "T_INTERNAL_D1",
@@ -671,8 +649,8 @@
       "globally_required": false,
       "producer_contract_id": "V4_12_COORDINATE_VIEW_V1",
       "required_by": [
-        "pullback.PULLBACK_IN_PROGRESS",
-        "definition.post_peak_drawdown"
+        "definition.post_peak_drawdown",
+        "pullback.PULLBACK_IN_PROGRESS"
       ],
       "source_namespace": "D1_LOCAL_DERIVATION",
       "time_role": "T_INTERNAL_D1",
@@ -864,8 +842,8 @@
       "globally_required": false,
       "producer_contract_id": "V4_12_COORDINATE_VIEW_V1",
       "required_by": [
-        "recovery.RECOVERY_CONFIRMED",
-        "definition.recovery_held_count"
+        "definition.recovery_held_count",
+        "recovery.RECOVERY_CONFIRMED"
       ],
       "source_namespace": "D1_LOCAL_DERIVATION",
       "time_role": "T_INTERNAL_D1",
@@ -1183,10 +1161,10 @@
       "required_by": [
         "acceptance.ACCEPTED",
         "breakout.BREAKOUT_ACCEPTED",
-        "recovery.RECOVERY_CONFIRMED",
-        "support.HELD_TENTATIVE",
         "definition.held_count",
-        "definition.recovery_held_count"
+        "definition.recovery_held_count",
+        "recovery.RECOVERY_CONFIRMED",
+        "support.HELD_TENTATIVE"
       ],
       "source_namespace": "D1_LOCAL_DERIVATION",
       "time_role": "T_INTERNAL_D1",
@@ -1199,6 +1177,11 @@
       "producer_contract_id": "V4_12_MACHINE_AST_V1",
       "required_by": [
         "breakout.TESTING",
+        "definition.eod_reclaim",
+        "definition.fully_outside_test_band",
+        "definition.next_test_count",
+        "definition.separated_retest",
+        "definition.separated_sessions",
         "pullback.PULLBACK_TO_BREAKOUT",
         "pullback.PULLBACK_TO_IMPULSE",
         "pullback.PULLBACK_TO_MA",
@@ -1206,12 +1189,7 @@
         "support.HELD_CONFIRMED",
         "support.RECLAIMED",
         "support.RETESTING",
-        "support.TESTING",
-        "definition.eod_reclaim",
-        "definition.fully_outside_test_band",
-        "definition.next_test_count",
-        "definition.separated_retest",
-        "definition.separated_sessions"
+        "support.TESTING"
       ],
       "source_namespace": "D1_LOCAL_DERIVATION",
       "time_role": "T_INTERNAL_D1",
@@ -1224,12 +1202,12 @@
       "producer_contract_id": "V4_12_MACHINE_AST_V1",
       "required_by": [
         "acceptance.BROKEN",
-        "support.BREACHED_SHALLOW",
-        "support.BROKEN",
-        "support.HELD_TENTATIVE",
         "definition.breach_count",
         "definition.episode_invalidated",
-        "definition.hard_invalidated"
+        "definition.hard_invalidated",
+        "support.BREACHED_SHALLOW",
+        "support.BROKEN",
+        "support.HELD_TENTATIVE"
       ],
       "source_namespace": "D1_LOCAL_DERIVATION",
       "time_role": "T_INTERNAL_D1",
@@ -1242,9 +1220,9 @@
       "producer_contract_id": "V4_12_MACHINE_AST_V1",
       "required_by": [
         "acceptance.BROKEN",
-        "support.BROKEN",
         "definition.episode_invalidated",
-        "definition.hard_invalidated"
+        "definition.hard_invalidated",
+        "support.BROKEN"
       ],
       "source_namespace": "D1_LOCAL_DERIVATION",
       "time_role": "T_INTERNAL_D1",
@@ -1256,11 +1234,11 @@
       "globally_required": false,
       "producer_contract_id": "V4_12_MACHINE_AST_V1",
       "required_by": [
+        "definition.next_test_count",
         "recovery.ANCHOR_RECLAIM",
         "support.HELD_CONFIRMED",
         "support.RECLAIMED",
-        "support.RETESTING",
-        "definition.next_test_count"
+        "support.RETESTING"
       ],
       "source_namespace": "D1_LOCAL_DERIVATION",
       "time_role": "T_INTERNAL_D1",
@@ -1273,9 +1251,9 @@
       "producer_contract_id": "V4_12_MACHINE_AST_V1",
       "required_by": [
         "acceptance.BROKEN",
-        "support.BROKEN",
         "definition.episode_invalidated",
-        "definition.hard_invalidated"
+        "definition.hard_invalidated",
+        "support.BROKEN"
       ],
       "source_namespace": "D1_LOCAL_DERIVATION",
       "time_role": "T_INTERNAL_D1",
@@ -1287,8 +1265,8 @@
       "globally_required": false,
       "producer_contract_id": "V4_12_MACHINE_AST_V1",
       "required_by": [
-        "support.HELD_CONFIRMED",
-        "definition.next_test_count"
+        "definition.next_test_count",
+        "support.HELD_CONFIRMED"
       ],
       "source_namespace": "D1_LOCAL_DERIVATION",
       "time_role": "T_INTERNAL_D1",
@@ -1721,6 +1699,39 @@
       "source_namespace": "D1_CONTRACT_OUTPUT",
       "time_role": "T_OUTPUT",
       "trade_date_semantics": "observation_t"
+    },
+    {
+      "field": "post_creation_market_sessions",
+      "field_role": "D1_LOCAL_DERIVATION",
+      "globally_required": false,
+      "producer_contract_id": "V4_12_SESSION_COUNTER_V2",
+      "required_by": [
+        "acceptance.ACCEPTED",
+        "breakout.BREAKOUT_ACCEPTED",
+        "breakout.TESTING",
+        "definition.held_count",
+        "definition.old_anchor",
+        "definition.recovery_held_count",
+        "recovery.ANCHOR_RECLAIM",
+        "recovery.RECOVERY_CONFIRMED",
+        "support.HELD_TENTATIVE",
+        "support.IDLE"
+      ],
+      "source_namespace": "D1_LOCAL_DERIVATION",
+      "time_role": "T_INTERNAL_D1",
+      "trade_date_semantics": "Derived/view at observation_t; any prior event source frozen at previous market session"
+    },
+    {
+      "field": "post_creation_evaluable_sessions",
+      "field_role": "D1_LOCAL_DERIVATION",
+      "globally_required": false,
+      "producer_contract_id": "V4_12_SESSION_COUNTER_V2",
+      "required_by": [
+        "acceptance.PENDING"
+      ],
+      "source_namespace": "D1_LOCAL_DERIVATION",
+      "time_role": "T_INTERNAL_D1",
+      "trade_date_semantics": "Derived/view at observation_t; any prior event source frozen at previous market session"
     }
   ],
   "forbidden_edges": [
@@ -1743,5 +1754,6 @@
     "shadow_production_permission": false
   },
   "runtime_implemented": false,
+  "time_counter_amendment": "R2.1",
   "version": "1.1.0"
 }

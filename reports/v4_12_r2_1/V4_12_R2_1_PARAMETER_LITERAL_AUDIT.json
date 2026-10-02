@@ -1,0 +1,1479 @@
+{
+  "all_statuses": "ENGINEERING_CANDIDATE",
+  "ast_leaf_count": 293,
+  "bindings": [
+    {
+      "ast_path": "definitions/anchor_atr_view/args/0",
+      "binding": "alpha",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/anchor_atr_view/args/1",
+      "binding": "anchor_original_atr",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/anchor_price_view/args/0/args/0",
+      "binding": "alpha",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/anchor_price_view/args/0/args/1",
+      "binding": "anchor_original_price",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/anchor_price_view/args/1",
+      "binding": "beta",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/body/args/0",
+      "binding": "C",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/body/args/1",
+      "binding": "O",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/body_atr/args/0",
+      "binding": "body",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/body_atr/args/1",
+      "binding": "atr_prior_view",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/body_mid/args/0/args/0",
+      "binding": "O",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/body_mid/args/0/args/1",
+      "binding": "C",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/body_mid/args/1",
+      "binding": "TWO",
+      "kind": "math_constant"
+    },
+    {
+      "ast_path": "definitions/breach_count/rules/0/when/args/0",
+      "binding": "evaluable",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/breach_count/rules/0/then",
+      "binding": "ZERO",
+      "kind": "math_constant"
+    },
+    {
+      "ast_path": "definitions/breach_count/rules/1/when",
+      "binding": "close_breach",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/breach_count/rules/1/then/args/0/rules/0/when",
+      "binding": "prior_adjacent_evaluable",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/breach_count/rules/1/then/args/0/rules/0/then",
+      "binding": "prior_breach_count",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/breach_count/rules/1/then/args/0/otherwise",
+      "binding": "ZERO",
+      "kind": "math_constant"
+    },
+    {
+      "ast_path": "definitions/breach_count/rules/1/then/args/1",
+      "binding": "ONE",
+      "kind": "math_constant"
+    },
+    {
+      "ast_path": "definitions/breach_count/otherwise",
+      "binding": "ZERO",
+      "kind": "math_constant"
+    },
+    {
+      "ast_path": "definitions/breakout_trigger/args/0/args/0",
+      "binding": "C",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/breakout_trigger/args/0/args/1/args/0",
+      "binding": "prior_high20",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/breakout_trigger/args/0/args/1/args/1/args/0",
+      "binding": "breakout_atr_buffer",
+      "kind": "parameter_id"
+    },
+    {
+      "ast_path": "definitions/breakout_trigger/args/0/args/1/args/1/args/1",
+      "binding": "ATR20",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/breakout_trigger/args/1/args/0",
+      "binding": "CLV",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/breakout_trigger/args/1/args/1",
+      "binding": "breakout_clv_min",
+      "kind": "parameter_id"
+    },
+    {
+      "ast_path": "definitions/close_breach/args/0",
+      "binding": "C",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/close_breach/args/1/args/0",
+      "binding": "lo",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/close_breach/args/1/args/1/args/0",
+      "binding": "support_close_breach_atr",
+      "kind": "parameter_id"
+    },
+    {
+      "ast_path": "definitions/close_breach/args/1/args/1/args/1",
+      "binding": "atr_prior_view",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/common_coordinate_return/args/0/args/0",
+      "binding": "endpoint_price_view",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/common_coordinate_return/args/0/args/1",
+      "binding": "start_price_view",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/common_coordinate_return/args/1",
+      "binding": "ONE",
+      "kind": "math_constant"
+    },
+    {
+      "ast_path": "definitions/deep_breach/args/0",
+      "binding": "C",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/deep_breach/args/1/args/0",
+      "binding": "lo",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/deep_breach/args/1/args/1/args/0",
+      "binding": "support_deep_breach_atr",
+      "kind": "parameter_id"
+    },
+    {
+      "ast_path": "definitions/deep_breach/args/1/args/1/args/1",
+      "binding": "atr_prior_view",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/eod_reclaim/args/0",
+      "binding": "touch",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/eod_reclaim/args/1/args/0",
+      "binding": "C",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/eod_reclaim/args/1/args/1",
+      "binding": "hi",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/eod_reclaim/args/2/args/0",
+      "binding": "CLV",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/eod_reclaim/args/2/args/1",
+      "binding": "support_reclaim_clv_min",
+      "kind": "parameter_id"
+    },
+    {
+      "ast_path": "definitions/episode_invalidated/args/0",
+      "binding": "episode_owns_anchor",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/episode_invalidated/args/1/args/0",
+      "binding": "deep_breach",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/episode_invalidated/args/1/args/1/args/0",
+      "binding": "breach_count",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/episode_invalidated/args/1/args/1/args/1",
+      "binding": "support_break_consecutive_sessions",
+      "kind": "parameter_id"
+    },
+    {
+      "ast_path": "definitions/fully_outside_test_band/args/0",
+      "binding": "touch",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/gap_qualified/args/0",
+      "binding": "L",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/gap_qualified/args/1",
+      "binding": "prior_high_view",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/hard_invalidated/args/0",
+      "binding": "prior_hard_invalidated",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/hard_invalidated/args/1",
+      "binding": "episode_invalidated",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/held_count/rules/0/when/args/0",
+      "binding": "evaluable",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/held_count/rules/0/when/args/1",
+      "binding": "old_anchor",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/held_count/rules/0/when/args/2/args/0",
+      "binding": "C",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/held_count/rules/0/when/args/2/args/1",
+      "binding": "hi",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/held_count/rules/0/then/args/0/rules/0/when",
+      "binding": "prior_adjacent_evaluable",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/held_count/rules/0/then/args/0/rules/0/then",
+      "binding": "prior_held_count",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/held_count/rules/0/then/args/0/otherwise",
+      "binding": "ZERO",
+      "kind": "math_constant"
+    },
+    {
+      "ast_path": "definitions/held_count/rules/0/then/args/1",
+      "binding": "ONE",
+      "kind": "math_constant"
+    },
+    {
+      "ast_path": "definitions/held_count/otherwise",
+      "binding": "ZERO",
+      "kind": "math_constant"
+    },
+    {
+      "ast_path": "definitions/impulse/args/0/args/0",
+      "binding": "body_atr",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/impulse/args/0/args/1",
+      "binding": "impulse_body_atr_min",
+      "kind": "parameter_id"
+    },
+    {
+      "ast_path": "definitions/impulse/args/1/args/0",
+      "binding": "range_atr",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/impulse/args/1/args/1",
+      "binding": "impulse_range_atr_min",
+      "kind": "parameter_id"
+    },
+    {
+      "ast_path": "definitions/impulse/args/2/args/0",
+      "binding": "CLV",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/impulse/args/2/args/1",
+      "binding": "impulse_clv_min",
+      "kind": "parameter_id"
+    },
+    {
+      "ast_path": "definitions/impulse/args/3/args/0",
+      "binding": "amount_ratio20",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/impulse/args/3/args/1",
+      "binding": "impulse_amount_ratio20_min",
+      "kind": "parameter_id"
+    },
+    {
+      "ast_path": "definitions/impulse/args/4/args/0",
+      "binding": "rel_market_1",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/impulse/args/4/args/1",
+      "binding": "ZERO",
+      "kind": "math_constant"
+    },
+    {
+      "ast_path": "definitions/ma20_reclaim/args/0",
+      "binding": "close_t_minus_1",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/ma20_reclaim/args/1",
+      "binding": "ma20_t_minus_1",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/ma20_reclaim/args/2/args/0/args/0",
+      "binding": "close_t_minus_1",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/ma20_reclaim/args/2/args/0/args/1",
+      "binding": "ma20_t_minus_1",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/ma20_reclaim/args/2/args/1/args/0",
+      "binding": "C",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/ma20_reclaim/args/2/args/1/args/1",
+      "binding": "MA20",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/next_test_count/rules/0/when/args/0",
+      "binding": "evaluable",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/next_test_count/rules/0/when/args/1",
+      "binding": "eod_reclaim",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/next_test_count/rules/0/when/args/2/args/0/args/0",
+      "binding": "prior_test_count",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/next_test_count/rules/0/when/args/2/args/0/args/1",
+      "binding": "ZERO",
+      "kind": "math_constant"
+    },
+    {
+      "ast_path": "definitions/next_test_count/rules/0/when/args/2/args/1",
+      "binding": "separated_retest",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/next_test_count/rules/0/then/args/0",
+      "binding": "prior_test_count",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/next_test_count/rules/0/then/args/1",
+      "binding": "ONE",
+      "kind": "math_constant"
+    },
+    {
+      "ast_path": "definitions/next_test_count/otherwise",
+      "binding": "prior_test_count",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/old_anchor/args/0",
+      "binding": "post_creation_market_sessions",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/old_anchor/args/1",
+      "binding": "earliest_anchor_test_sessions",
+      "kind": "parameter_id"
+    },
+    {
+      "ast_path": "definitions/pivot_available/args/0/args/0",
+      "binding": "pivot_left_count",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/pivot_available/args/0/args/1",
+      "binding": "pivot_left_sessions",
+      "kind": "parameter_id"
+    },
+    {
+      "ast_path": "definitions/pivot_available/args/1/args/0",
+      "binding": "pivot_right_count",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/pivot_available/args/1/args/1",
+      "binding": "pivot_right_sessions",
+      "kind": "parameter_id"
+    },
+    {
+      "ast_path": "definitions/pivot_available/args/2",
+      "binding": "pivot_low_strict",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/post_peak_drawdown/args/0",
+      "binding": "C",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/post_peak_drawdown/args/1",
+      "binding": "prior_event_peak_view",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/range_anchor_qualified/args/0/args/0",
+      "binding": "prior_range20_atr",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/range_anchor_qualified/args/0/args/1",
+      "binding": "range_anchor_range_atr_max",
+      "kind": "parameter_id"
+    },
+    {
+      "ast_path": "definitions/range_anchor_qualified/args/1/args/0/args/0",
+      "binding": "slope20",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/range_anchor_qualified/args/1/args/1",
+      "binding": "range_anchor_abs_slope20_max",
+      "kind": "parameter_id"
+    },
+    {
+      "ast_path": "definitions/range_atr/args/0/args/0",
+      "binding": "H",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/range_atr/args/0/args/1",
+      "binding": "L",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/range_atr/args/1",
+      "binding": "atr_prior_view",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/recovery_held_count/rules/0/when/args/0",
+      "binding": "evaluable",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/recovery_held_count/rules/0/when/args/1",
+      "binding": "old_anchor",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/recovery_held_count/rules/0/when/args/2/args/0",
+      "binding": "C",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/recovery_held_count/rules/0/when/args/2/args/1",
+      "binding": "recovery_line_view",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/recovery_held_count/rules/0/then/args/0/rules/0/when",
+      "binding": "prior_adjacent_evaluable",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/recovery_held_count/rules/0/then/args/0/rules/0/then",
+      "binding": "prior_recovery_held_count",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/recovery_held_count/rules/0/then/args/0/otherwise",
+      "binding": "ZERO",
+      "kind": "math_constant"
+    },
+    {
+      "ast_path": "definitions/recovery_held_count/rules/0/then/args/1",
+      "binding": "ONE",
+      "kind": "math_constant"
+    },
+    {
+      "ast_path": "definitions/recovery_held_count/otherwise",
+      "binding": "ZERO",
+      "kind": "math_constant"
+    },
+    {
+      "ast_path": "definitions/relative_recovery/args/0/args/0",
+      "binding": "prior_delta3",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/relative_recovery/args/0/args/1",
+      "binding": "ZERO",
+      "kind": "math_constant"
+    },
+    {
+      "ast_path": "definitions/relative_recovery/args/1/args/0",
+      "binding": "delta3",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/relative_recovery/args/1/args/1",
+      "binding": "recovery_delta3_threshold",
+      "kind": "parameter_id"
+    },
+    {
+      "ast_path": "definitions/relative_recovery/args/2/args/0",
+      "binding": "rel_market_1",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/relative_recovery/args/2/args/1",
+      "binding": "ZERO",
+      "kind": "math_constant"
+    },
+    {
+      "ast_path": "definitions/retention_denominator/args/0",
+      "binding": "event_close_view",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/retention_denominator/args/1",
+      "binding": "base_view",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/retention_value/rules/0/when/args/0",
+      "binding": "retention_denominator",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/retention_value/rules/0/when/args/1",
+      "binding": "ZERO",
+      "kind": "math_constant"
+    },
+    {
+      "ast_path": "definitions/retention_value/rules/0/then",
+      "binding": "NOT_APPLICABLE",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "definitions/retention_value/otherwise/args/0/args/0",
+      "binding": "observation_close_view",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/retention_value/otherwise/args/0/args/1",
+      "binding": "base_view",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/retention_value/otherwise/args/1",
+      "binding": "retention_denominator",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/separated_retest/args/0/args/0",
+      "binding": "prior_test_count",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/separated_retest/args/0/args/1",
+      "binding": "ZERO",
+      "kind": "math_constant"
+    },
+    {
+      "ast_path": "definitions/separated_retest/args/1/args/0/args/0",
+      "binding": "prior_separated_sessions",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/separated_retest/args/1/args/0/args/1",
+      "binding": "support_separated_retest_sessions",
+      "kind": "parameter_id"
+    },
+    {
+      "ast_path": "definitions/separated_retest/args/1/args/1/args/0/args/0",
+      "binding": "prior_support_state",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/separated_retest/args/1/args/1/args/0/args/1",
+      "binding": "RETESTING",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "definitions/separated_retest/args/1/args/1/args/1",
+      "binding": "prior_retest_qualified",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/separated_retest/args/1/args/1/args/2",
+      "binding": "prior_adjacent_evaluable",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/separated_retest/args/2",
+      "binding": "touch",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/separated_sessions/rules/0/when/args/0",
+      "binding": "evaluable",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/separated_sessions/rules/0/then",
+      "binding": "ZERO",
+      "kind": "math_constant"
+    },
+    {
+      "ast_path": "definitions/separated_sessions/rules/1/when",
+      "binding": "touch",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/separated_sessions/rules/1/then",
+      "binding": "ZERO",
+      "kind": "math_constant"
+    },
+    {
+      "ast_path": "definitions/separated_sessions/rules/2/when/args/0",
+      "binding": "prior_test_count",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/separated_sessions/rules/2/when/args/1",
+      "binding": "ZERO",
+      "kind": "math_constant"
+    },
+    {
+      "ast_path": "definitions/separated_sessions/rules/2/then/args/0",
+      "binding": "prior_separated_sessions",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/separated_sessions/rules/2/then/args/1",
+      "binding": "ONE",
+      "kind": "math_constant"
+    },
+    {
+      "ast_path": "definitions/separated_sessions/otherwise",
+      "binding": "ZERO",
+      "kind": "math_constant"
+    },
+    {
+      "ast_path": "definitions/touch/args/0/args/0",
+      "binding": "L",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/touch/args/0/args/1/args/0",
+      "binding": "hi",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/touch/args/0/args/1/args/1/args/0",
+      "binding": "support_touch_atr_buffer",
+      "kind": "parameter_id"
+    },
+    {
+      "ast_path": "definitions/touch/args/0/args/1/args/1/args/1",
+      "binding": "atr_prior_view",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/touch/args/1/args/0",
+      "binding": "H",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/touch/args/1/args/1/args/0",
+      "binding": "lo",
+      "kind": "field"
+    },
+    {
+      "ast_path": "definitions/touch/args/1/args/1/args/1/args/0",
+      "binding": "support_touch_atr_buffer",
+      "kind": "parameter_id"
+    },
+    {
+      "ast_path": "definitions/touch/args/1/args/1/args/1/args/1",
+      "binding": "atr_prior_view",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/acceptance/rules/0/when",
+      "binding": "hard_invalidated",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/acceptance/rules/0/then",
+      "binding": "BROKEN",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/acceptance/rules/1/when/args/0",
+      "binding": "evaluable",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/acceptance/rules/1/then",
+      "binding": "UNKNOWN",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/acceptance/rules/2/when/args/0/args/0",
+      "binding": "post_creation_market_sessions",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/acceptance/rules/2/when/args/0/args/1",
+      "binding": "earliest_anchor_test_sessions",
+      "kind": "parameter_id"
+    },
+    {
+      "ast_path": "machines/acceptance/rules/2/when/args/1/args/0",
+      "binding": "held_count",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/acceptance/rules/2/when/args/1/args/1",
+      "binding": "acceptance_consecutive_sessions",
+      "kind": "parameter_id"
+    },
+    {
+      "ast_path": "machines/acceptance/rules/2/then",
+      "binding": "ACCEPTED",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/acceptance/rules/3/when/args/0",
+      "binding": "post_creation_evaluable_sessions",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/acceptance/rules/3/when/args/1",
+      "binding": "acceptance_consecutive_sessions",
+      "kind": "parameter_id"
+    },
+    {
+      "ast_path": "machines/acceptance/rules/3/then",
+      "binding": "PENDING",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/acceptance/otherwise",
+      "binding": "NOT_ACCEPTED",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/breakout/rules/0/when/args/0",
+      "binding": "evaluable",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/breakout/rules/0/then",
+      "binding": "UNKNOWN",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/breakout/rules/1/when/args/0",
+      "binding": "prior_breakout_exists",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/breakout/rules/1/when/args/1/args/0/args/0",
+      "binding": "prior_support_state",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/breakout/rules/1/when/args/1/args/0/args/1",
+      "binding": "BROKEN",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/breakout/rules/1/when/args/1/args/1/args/0",
+      "binding": "prior_support_state",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/breakout/rules/1/when/args/1/args/1/args/1",
+      "binding": "INVALIDATED",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/breakout/rules/1/then",
+      "binding": "FAILED_BREAKOUT",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/breakout/rules/2/when/args/0",
+      "binding": "prior_breakout_exists",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/breakout/rules/2/when/args/1/args/0",
+      "binding": "post_creation_market_sessions",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/breakout/rules/2/when/args/1/args/1",
+      "binding": "earliest_anchor_test_sessions",
+      "kind": "parameter_id"
+    },
+    {
+      "ast_path": "machines/breakout/rules/2/when/args/2/args/0/args/0",
+      "binding": "support_today",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/breakout/rules/2/when/args/2/args/0/args/1",
+      "binding": "HELD_CONFIRMED",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/breakout/rules/2/when/args/2/args/1/args/0",
+      "binding": "held_count",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/breakout/rules/2/when/args/2/args/1/args/1",
+      "binding": "acceptance_consecutive_sessions",
+      "kind": "parameter_id"
+    },
+    {
+      "ast_path": "machines/breakout/rules/2/then",
+      "binding": "BREAKOUT_ACCEPTED",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/breakout/rules/3/when/args/0",
+      "binding": "prior_breakout_exists",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/breakout/rules/3/when/args/1/args/0",
+      "binding": "post_creation_market_sessions",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/breakout/rules/3/when/args/1/args/1",
+      "binding": "earliest_anchor_test_sessions",
+      "kind": "parameter_id"
+    },
+    {
+      "ast_path": "machines/breakout/rules/3/when/args/2",
+      "binding": "touch",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/breakout/rules/3/then",
+      "binding": "TESTING",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/breakout/rules/4/when",
+      "binding": "prior_breakout_exists",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/breakout/rules/4/then",
+      "binding": "BREAKOUT_TENTATIVE",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/breakout/rules/5/when",
+      "binding": "breakout_trigger",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/breakout/rules/5/then",
+      "binding": "BREAKOUT_TENTATIVE",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/breakout/rules/6/when/args/0",
+      "binding": "near_high20_state",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/breakout/rules/6/when/args/1",
+      "binding": "NEAR",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/breakout/rules/6/then",
+      "binding": "APPROACHING",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/breakout/otherwise",
+      "binding": "NO_BREAKOUT",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/pullback/rules/0/when/args/0",
+      "binding": "prior_valid_event",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/pullback/rules/0/then",
+      "binding": "NOT_PULLBACK",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/pullback/rules/1/when/args/0/args/0",
+      "binding": "prior_support_state",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/pullback/rules/1/when/args/0/args/1",
+      "binding": "BROKEN",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/pullback/rules/1/when/args/1/args/0",
+      "binding": "prior_support_state",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/pullback/rules/1/when/args/1/args/1",
+      "binding": "INVALIDATED",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/pullback/rules/1/then",
+      "binding": "PULLBACK_FAILED",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/pullback/rules/2/when/args/0",
+      "binding": "evaluable",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/pullback/rules/2/then",
+      "binding": "UNKNOWN",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/pullback/rules/3/when/args/0",
+      "binding": "support_today",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/pullback/rules/3/when/args/1",
+      "binding": "HELD_CONFIRMED",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/pullback/rules/3/then",
+      "binding": "PULLBACK_HELD",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/pullback/rules/4/when/args/0/args/0",
+      "binding": "support_today",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/pullback/rules/4/when/args/0/args/1",
+      "binding": "RECLAIMED",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/pullback/rules/4/when/args/1/args/0",
+      "binding": "support_today",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/pullback/rules/4/when/args/1/args/1",
+      "binding": "HELD_TENTATIVE",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/pullback/rules/4/then",
+      "binding": "PULLBACK_RECLAIMED",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/pullback/rules/5/when/args/0",
+      "binding": "touch",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/pullback/rules/5/when/args/1/args/0/args/0",
+      "binding": "anchor_type",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/pullback/rules/5/when/args/1/args/0/args/1",
+      "binding": "MA20_DYNAMIC",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/pullback/rules/5/when/args/1/args/1/args/0",
+      "binding": "anchor_type",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/pullback/rules/5/when/args/1/args/1/args/1",
+      "binding": "MA60_DYNAMIC",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/pullback/rules/5/then",
+      "binding": "PULLBACK_TO_MA",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/pullback/rules/6/when/args/0",
+      "binding": "touch",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/pullback/rules/6/when/args/1/args/0/args/0",
+      "binding": "anchor_type",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/pullback/rules/6/when/args/1/args/0/args/1",
+      "binding": "BULLISH_IMPULSE_BODY",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/pullback/rules/6/when/args/1/args/1/args/0",
+      "binding": "anchor_type",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/pullback/rules/6/when/args/1/args/1/args/1",
+      "binding": "BULLISH_IMPULSE_LOW",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/pullback/rules/6/then",
+      "binding": "PULLBACK_TO_IMPULSE",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/pullback/rules/7/when",
+      "binding": "touch",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/pullback/rules/7/then",
+      "binding": "PULLBACK_TO_BREAKOUT",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/pullback/rules/8/when",
+      "binding": "post_peak_drawdown",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/pullback/rules/8/then",
+      "binding": "PULLBACK_IN_PROGRESS",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/pullback/otherwise",
+      "binding": "NOT_PULLBACK",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/recovery/rules/0/when",
+      "binding": "prior_recovery_failed",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/recovery/rules/0/then",
+      "binding": "RECOVERY_FAILED",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/recovery/rules/1/when/args/0",
+      "binding": "prior_recovery_exists",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/recovery/rules/1/when/args/1/args/0",
+      "binding": "post_creation_market_sessions",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/recovery/rules/1/when/args/1/args/1",
+      "binding": "earliest_anchor_test_sessions",
+      "kind": "parameter_id"
+    },
+    {
+      "ast_path": "machines/recovery/rules/1/when/args/2/args/0",
+      "binding": "recovery_held_count",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/recovery/rules/1/when/args/2/args/1",
+      "binding": "acceptance_consecutive_sessions",
+      "kind": "parameter_id"
+    },
+    {
+      "ast_path": "machines/recovery/rules/1/then",
+      "binding": "RECOVERY_CONFIRMED",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/recovery/rules/2/when/args/0",
+      "binding": "prior_valid_event",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/recovery/rules/2/when/args/1/args/0",
+      "binding": "post_creation_market_sessions",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/recovery/rules/2/when/args/1/args/1",
+      "binding": "earliest_anchor_test_sessions",
+      "kind": "parameter_id"
+    },
+    {
+      "ast_path": "machines/recovery/rules/2/when/args/2",
+      "binding": "eod_reclaim",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/recovery/rules/2/then",
+      "binding": "ANCHOR_RECLAIM",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/recovery/rules/3/when",
+      "binding": "ma20_reclaim",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/recovery/rules/3/then",
+      "binding": "MA20_RECLAIM",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/recovery/rules/4/when",
+      "binding": "relative_recovery",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/recovery/rules/4/then",
+      "binding": "RELATIVE_RECOVERY",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/recovery/rules/5/when/args/0",
+      "binding": "ret1",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/recovery/rules/5/when/args/1",
+      "binding": "ZERO",
+      "kind": "math_constant"
+    },
+    {
+      "ast_path": "machines/recovery/rules/5/then",
+      "binding": "BOUNCE_ONLY",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/recovery/otherwise",
+      "binding": "NONE",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/support/rules/0/when/args/0/args/0",
+      "binding": "prior_support_state",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/support/rules/0/when/args/0/args/1",
+      "binding": "BROKEN",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/support/rules/0/when/args/1/args/0",
+      "binding": "prior_support_state",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/support/rules/0/when/args/1/args/1",
+      "binding": "INVALIDATED",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/support/rules/0/then",
+      "binding": "prior_support_state",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/support/rules/1/when/args/0/args/0",
+      "binding": "post_creation_market_sessions",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/support/rules/1/when/args/0/args/1",
+      "binding": "earliest_anchor_test_sessions",
+      "kind": "parameter_id"
+    },
+    {
+      "ast_path": "machines/support/rules/1/then",
+      "binding": "IDLE",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/support/rules/2/when/args/0",
+      "binding": "evaluable",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/support/rules/2/then",
+      "binding": "UNKNOWN",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/support/rules/3/when/args/0",
+      "binding": "deep_breach",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/support/rules/3/when/args/1/args/0",
+      "binding": "breach_count",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/support/rules/3/when/args/1/args/1",
+      "binding": "support_break_consecutive_sessions",
+      "kind": "parameter_id"
+    },
+    {
+      "ast_path": "machines/support/rules/3/then",
+      "binding": "BROKEN",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/support/rules/4/when",
+      "binding": "close_breach",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/support/rules/4/then",
+      "binding": "BREACHED_SHALLOW",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/support/rules/5/when/args/0",
+      "binding": "separated_retest",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/support/rules/5/when/args/1",
+      "binding": "eod_reclaim",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/support/rules/5/then",
+      "binding": "HELD_CONFIRMED",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/support/rules/6/when/args/0",
+      "binding": "eod_reclaim",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/support/rules/6/when/args/1/args/0/args/0/args/0",
+      "binding": "prior_support_state",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/support/rules/6/when/args/1/args/0/args/0/args/1",
+      "binding": "TESTING",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/support/rules/6/when/args/1/args/0/args/1/args/0",
+      "binding": "prior_support_state",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/support/rules/6/when/args/1/args/0/args/1/args/1",
+      "binding": "BREACHED_SHALLOW",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/support/rules/6/when/args/1/args/1/args/0",
+      "binding": "prior_test_count",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/support/rules/6/when/args/1/args/1/args/1",
+      "binding": "ZERO",
+      "kind": "math_constant"
+    },
+    {
+      "ast_path": "machines/support/rules/6/then",
+      "binding": "RECLAIMED",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/support/rules/7/when/args/0/args/0",
+      "binding": "prior_support_state",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/support/rules/7/when/args/0/args/1",
+      "binding": "RECLAIMED",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/support/rules/7/when/args/1/args/0",
+      "binding": "held_count",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/support/rules/7/when/args/1/args/1",
+      "binding": "support_tentative_hold_sessions",
+      "kind": "parameter_id"
+    },
+    {
+      "ast_path": "machines/support/rules/7/when/args/2/args/0",
+      "binding": "close_breach",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/support/rules/7/then",
+      "binding": "HELD_TENTATIVE",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/support/rules/8/when/args/0/args/0/args/0",
+      "binding": "prior_support_state",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/support/rules/8/when/args/0/args/0/args/1",
+      "binding": "HELD_TENTATIVE",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/support/rules/8/when/args/0/args/1/args/0",
+      "binding": "prior_support_state",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/support/rules/8/when/args/0/args/1/args/1",
+      "binding": "HELD_CONFIRMED",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/support/rules/8/when/args/1",
+      "binding": "touch",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/support/rules/8/when/args/2/args/0",
+      "binding": "eod_reclaim",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/support/rules/8/then",
+      "binding": "RETESTING",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/support/rules/9/when",
+      "binding": "touch",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/support/rules/9/then",
+      "binding": "TESTING",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/support/rules/10/when/args/0",
+      "binding": "distance_zone",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/support/rules/10/when/args/1/args/0",
+      "binding": "support_approach_atr",
+      "kind": "parameter_id"
+    },
+    {
+      "ast_path": "machines/support/rules/10/when/args/1/args/1",
+      "binding": "atr_prior_view",
+      "kind": "field"
+    },
+    {
+      "ast_path": "machines/support/rules/10/then",
+      "binding": "APPROACHING",
+      "kind": "enum"
+    },
+    {
+      "ast_path": "machines/support/otherwise",
+      "binding": "prior_support_state",
+      "kind": "field"
+    }
+  ],
+  "metadata_parameter_uses": {
+    "range_anchor_window": "Anchor PRIOR_HIGH/RANGE_UPPER historical accepted window",
+    "retention_horizon_one": "retention observation target t0+1",
+    "retention_horizon_three": "retention observation target t0+3"
+  },
+  "parameters": 24,
+  "status": "PASS",
+  "unbound_literal_count": 0
+}

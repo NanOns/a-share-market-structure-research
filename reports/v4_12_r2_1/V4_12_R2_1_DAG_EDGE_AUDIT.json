@@ -1,0 +1,159 @@
+{
+  "definition_graph": {
+    "anchor_atr_view": [],
+    "anchor_price_view": [],
+    "body": [],
+    "body_atr": [
+      "body"
+    ],
+    "body_mid": [],
+    "breach_count": [
+      "close_breach"
+    ],
+    "breakout_trigger": [],
+    "close_breach": [],
+    "common_coordinate_return": [],
+    "deep_breach": [],
+    "eod_reclaim": [
+      "touch"
+    ],
+    "episode_invalidated": [
+      "breach_count",
+      "deep_breach"
+    ],
+    "fully_outside_test_band": [
+      "touch"
+    ],
+    "gap_qualified": [],
+    "hard_invalidated": [
+      "episode_invalidated"
+    ],
+    "held_count": [
+      "old_anchor"
+    ],
+    "impulse": [
+      "body_atr",
+      "range_atr"
+    ],
+    "ma20_reclaim": [],
+    "next_test_count": [
+      "eod_reclaim",
+      "separated_retest"
+    ],
+    "old_anchor": [],
+    "pivot_available": [],
+    "post_peak_drawdown": [],
+    "range_anchor_qualified": [],
+    "range_atr": [],
+    "recovery_held_count": [
+      "old_anchor"
+    ],
+    "relative_recovery": [],
+    "retention_denominator": [],
+    "retention_value": [
+      "retention_denominator"
+    ],
+    "separated_retest": [
+      "touch"
+    ],
+    "separated_sessions": [
+      "touch"
+    ],
+    "touch": []
+  },
+  "earliest_test": "t+1",
+  "external_edges": [
+    "F0[t] -> D1[t]",
+    "Frozen Anchor/event[t-1] -> D1[t]"
+  ],
+  "forbidden_edges": [
+    "D2[t] -> D1[t]",
+    "Final State[t] -> D1[t]",
+    "Event[t] -> D1[t]",
+    "Focus -> D1[t]",
+    "UI -> D1[t]",
+    "Supplemental feedback -> D1[t]",
+    "future outcome -> D1[t]"
+  ],
+  "forbidden_reference_count": 0,
+  "formula": "D1[t] = F0[t] + t-1 frozen Anchor/event",
+  "registered_input_refs": [
+    "ATR20",
+    "C",
+    "CLV",
+    "H",
+    "L",
+    "MA20",
+    "O",
+    "alpha",
+    "amount_ratio20",
+    "anchor_original_atr",
+    "anchor_original_price",
+    "anchor_type",
+    "atr_prior_view",
+    "base_view",
+    "beta",
+    "body",
+    "body_atr",
+    "breach_count",
+    "breakout_trigger",
+    "close_breach",
+    "close_t_minus_1",
+    "deep_breach",
+    "delta3",
+    "distance_zone",
+    "endpoint_price_view",
+    "eod_reclaim",
+    "episode_invalidated",
+    "episode_owns_anchor",
+    "evaluable",
+    "event_close_view",
+    "hard_invalidated",
+    "held_count",
+    "hi",
+    "lo",
+    "ma20_reclaim",
+    "ma20_t_minus_1",
+    "near_high20_state",
+    "observation_close_view",
+    "old_anchor",
+    "pivot_left_count",
+    "pivot_low_strict",
+    "pivot_right_count",
+    "post_creation_evaluable_sessions",
+    "post_creation_market_sessions",
+    "post_peak_drawdown",
+    "prior_adjacent_evaluable",
+    "prior_breach_count",
+    "prior_breakout_exists",
+    "prior_delta3",
+    "prior_event_peak_view",
+    "prior_hard_invalidated",
+    "prior_held_count",
+    "prior_high20",
+    "prior_high_view",
+    "prior_range20_atr",
+    "prior_recovery_exists",
+    "prior_recovery_failed",
+    "prior_recovery_held_count",
+    "prior_retest_qualified",
+    "prior_separated_sessions",
+    "prior_support_state",
+    "prior_test_count",
+    "prior_valid_event",
+    "range_atr",
+    "recovery_held_count",
+    "recovery_line_view",
+    "rel_market_1",
+    "relative_recovery",
+    "ret1",
+    "retention_denominator",
+    "separated_retest",
+    "slope20",
+    "start_price_view",
+    "support_today",
+    "touch"
+  ],
+  "same_day_new_anchor_self_support": false,
+  "status": "PASS"
+}

@@ -172,10 +172,15 @@ def gate_fixture(vector):
     raise ValueError('UNKNOWN_GATE_FIXTURE')
 
 def vector_oracle(configs):
-    from scripts.v4_12_independent_vector_oracle_r1 import vectors
+    if configs['machine_vectors'].get('time_counter_amendment'):
+        from scripts.v4_12_time_counter_oracle_r2_1 import amended_vectors as vectors
+        oracle_source='scripts/v4_12_time_counter_oracle_r2_1.py'
+    else:
+        from scripts.v4_12_independent_vector_oracle_r1 import vectors
+        oracle_source='scripts/v4_12_independent_vector_oracle_r1.py'
     golden=vectors();pack=configs['machine_vectors']
     assert pack['vectors']==golden,'INDEPENDENT_ORACLE_BOOK_MISMATCH'
-    assert pack['independent_oracle_source']==bind('scripts/v4_12_independent_vector_oracle_r1.py')
+    assert pack['independent_oracle_source']==bind(oracle_source)
     rows=[]
     for vector in golden:
         values={**pack['defaults'],**vector['inputs']}
@@ -194,7 +199,7 @@ def vector_oracle(configs):
                          status='PASS' if passed else 'FAIL',proof=vector['independent_oracle_proof']))
     return dict(status='PASS' if all(r['status']=='PASS' for r in rows) else 'FAIL',total=len(rows),
                 passed=sum(r['status']=='PASS' for r in rows),failed=sum(r['status']=='FAIL' for r in rows),
-                expected_source=bind('scripts/v4_12_independent_vector_oracle_r1.py'),actual_source=bind('scripts/validate_v4_12_contract_freeze_r1.py'),
+                expected_source=bind(oracle_source),actual_source=bind('scripts/validate_v4_12_contract_freeze_r1.py'),
                 oracle_imports_future_implementation=False,scope='SYNTHETIC_DESIGN_ONLY_NOT_RUNTIME_ACCEPTANCE',vectors=rows)
 
 def schema_registry_audit(configs):

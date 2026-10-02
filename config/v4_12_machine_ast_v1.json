@@ -538,7 +538,7 @@
     "old_anchor": {
       "args": [
         {
-          "field": "post_creation_sessions"
+          "field": "post_creation_market_sessions"
         },
         {
           "parameter_id": "earliest_anchor_test_sessions"
@@ -1020,7 +1020,7 @@
               {
                 "args": [
                   {
-                    "field": "post_creation_sessions"
+                    "field": "post_creation_market_sessions"
                   },
                   {
                     "parameter_id": "earliest_anchor_test_sessions"
@@ -1050,7 +1050,7 @@
           "when": {
             "args": [
               {
-                "field": "post_creation_sessions"
+                "field": "post_creation_evaluable_sessions"
               },
               {
                 "parameter_id": "acceptance_consecutive_sessions"
@@ -1133,7 +1133,7 @@
               {
                 "args": [
                   {
-                    "field": "post_creation_sessions"
+                    "field": "post_creation_market_sessions"
                   },
                   {
                     "parameter_id": "earliest_anchor_test_sessions"
@@ -1184,7 +1184,7 @@
               {
                 "args": [
                   {
-                    "field": "post_creation_sessions"
+                    "field": "post_creation_market_sessions"
                   },
                   {
                     "parameter_id": "earliest_anchor_test_sessions"
@@ -1471,7 +1471,7 @@
               {
                 "args": [
                   {
-                    "field": "post_creation_sessions"
+                    "field": "post_creation_market_sessions"
                   },
                   {
                     "parameter_id": "earliest_anchor_test_sessions"
@@ -1506,7 +1506,7 @@
               {
                 "args": [
                   {
-                    "field": "post_creation_sessions"
+                    "field": "post_creation_market_sessions"
                   },
                   {
                     "parameter_id": "earliest_anchor_test_sessions"
@@ -1603,7 +1603,7 @@
               {
                 "args": [
                   {
-                    "field": "post_creation_sessions"
+                    "field": "post_creation_market_sessions"
                   },
                   {
                     "parameter_id": "earliest_anchor_test_sessions"
@@ -1878,8 +1878,9 @@
     "shadow_production_permission": false
   },
   "runtime_implemented": false,
+  "semantic_amendment": "R2.1_SPLIT_MARKET_AGE_AND_EVALUABLE_COUNT_ONLY",
   "tooling_only": true,
   "unknown_reason": "EXACT_SOURCE_REASON_OR_UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
   "unknown_semantics": "KLEENE; ordered UNKNOWN stops before lower priority; missing numerator/denominator stays UNKNOWN; division <=0 UNKNOWN except retention NOT_APPLICABLE",
-  "version": "1.0.0"
+  "version": "1.1.0"
 }

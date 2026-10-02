@@ -14,7 +14,7 @@ ALIASES={'ATR20':'atr20','CLV':'clv','MA20':'ma20','MA60':'ma60','prior_high20':
          'amount_ratio20':'amount_ratio20','rel_market_1':'rel_market_1','ret1':'ret1','slope20':'slope20'}
 NATIVE={'O':'open','H':'high','L':'low','C':'close','price_basis':'price_basis','adjustment_source_revision':'adjustment_source_revision'}
 LOCAL_REQUIRED={'distance_zone','evaluable','observation_close_view','start_price_view','endpoint_price_view',
-                'post_creation_sessions','pivot_left_count','pivot_right_count'}
+                'post_creation_sessions','post_creation_market_sessions','post_creation_evaluable_sessions','pivot_left_count','pivot_right_count'}
 BLOCKED_OWNERS={'alpha':'V4_12_COORDINATE_VIEW_V1','beta':'V4_12_COORDINATE_VIEW_V1','atr_prior_view':'V4_12_COORDINATE_VIEW_V1',
     'prior_high_view':'V4_12_COORDINATE_VIEW_V1','prior_range20_atr':'V4_12_BLOCKED_RANGE_INPUT_V1',
     'pivot_low':'V4_12_PIVOT_SOURCE_DESIGN_V1','pivot_low_strict':'V4_12_PIVOT_SOURCE_DESIGN_V1',
@@ -90,7 +90,7 @@ def authority_parity(fields=None):
             assert role=='BLOCKED_CAPABILITY' and row['target_publication_available'] is False and row['blocked_reason']
         elif name in LOCAL_REQUIRED:
             assert role=='D1_LOCAL_DERIVATION' and row['source_namespace']=='D1_LOCAL_DERIVATION','LOCAL_FIELD_CANNOT_BE_F0'
-            assert row['producer_contract_id'] in {'V4_12_MACHINE_AST_V1','V4_12_COORDINATE_VIEW_V1','V4_12_SESSION_COUNTER_V1'}
+            assert row['producer_contract_id'] in {'V4_12_MACHINE_AST_V1','V4_12_COORDINATE_VIEW_V1','V4_12_SESSION_COUNTER_V1','V4_12_SESSION_COUNTER_V2'}
         elif name in BLOCKED_OWNERS:
             assert role=='BLOCKED_CAPABILITY' and row['source_namespace']=='BLOCKED_CAPABILITY'
             assert row['producer_contract_id']==BLOCKED_OWNERS[name],'BLOCKED_OWNER_IDENTITY_MISMATCH'
@@ -137,6 +137,9 @@ def unit_audit(configs):
     return dict(status='PASS',fields=results,range_anchor_abs_slope20_max=dict(value=.1,unit='dimensionless'),parameter_values_unchanged=True)
 
 def validate(emit=False):
+    if load_configs()['field_registry'].get('time_counter_amendment')=='R2.1':
+        from scripts.validate_v4_12_time_counter_r2_1 import validate as time_validate
+        return time_validate(emit)
     configs=load_configs();proof=keep_proof();parity=authority_parity();coordinate=coordinate_audit(configs);units=unit_audit(configs)
     literal=literal_audit(configs);dag=dag_audit(configs);schema=schema_registry_audit(configs);oracle=vector_oracle(configs)
     assert oracle['status']=='PASS' and oracle['total']==69

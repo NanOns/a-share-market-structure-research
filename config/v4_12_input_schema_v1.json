@@ -7,7 +7,7 @@
     "Price/ATR/breach/support share observation basis identity",
     "atr_prior_view > 0; H >= L; CLV UNKNOWN if H=L",
     "support_today is computed internally; external input forbidden",
-    "post_creation_sessions computed from available_date and market calendar; cannot be supplied without lineage"
+    "Market age and evaluable observation count are independent local counters; external input forbidden; exact calendar and frozen observation lineage required"
   ],
   "field_requirements": {
     "ATR20": {
@@ -131,6 +131,14 @@
         "definition.impulse"
       ]
     },
+    "acceptance_state": {
+      "globally_required": false,
+      "required_by": []
+    },
+    "active_anchor_id": {
+      "globally_required": false,
+      "required_by": []
+    },
     "adjustment_asof": {
       "globally_required": false,
       "required_by": [
@@ -236,6 +244,10 @@
         "pullback.PULLBACK_TO_MA"
       ]
     },
+    "anchor_view_asof_t": {
+      "globally_required": false,
+      "required_by": []
+    },
     "atr_prior_view": {
       "globally_required": false,
       "required_by": [
@@ -288,6 +300,18 @@
         "definition.retention_value"
       ]
     },
+    "basic_breakout_state": {
+      "globally_required": false,
+      "required_by": []
+    },
+    "basic_pullback_state": {
+      "globally_required": false,
+      "required_by": []
+    },
+    "basic_recovery_state": {
+      "globally_required": false,
+      "required_by": []
+    },
     "beta": {
       "globally_required": false,
       "required_by": [
@@ -315,9 +339,9 @@
       "globally_required": false,
       "required_by": [
         "acceptance.BROKEN",
-        "support.BROKEN",
         "definition.episode_invalidated",
-        "definition.hard_invalidated"
+        "definition.hard_invalidated",
+        "support.BROKEN"
       ]
     },
     "breakout_trigger": {
@@ -330,12 +354,12 @@
       "globally_required": false,
       "required_by": [
         "acceptance.BROKEN",
-        "support.BREACHED_SHALLOW",
-        "support.BROKEN",
-        "support.HELD_TENTATIVE",
         "definition.breach_count",
         "definition.episode_invalidated",
-        "definition.hard_invalidated"
+        "definition.hard_invalidated",
+        "support.BREACHED_SHALLOW",
+        "support.BROKEN",
+        "support.HELD_TENTATIVE"
       ]
     },
     "close_t_minus_1": {
@@ -370,9 +394,9 @@
       "globally_required": false,
       "required_by": [
         "acceptance.BROKEN",
-        "support.BROKEN",
         "definition.episode_invalidated",
-        "definition.hard_invalidated"
+        "definition.hard_invalidated",
+        "support.BROKEN"
       ]
     },
     "delta3": {
@@ -397,11 +421,11 @@
     "eod_reclaim": {
       "globally_required": false,
       "required_by": [
+        "definition.next_test_count",
         "recovery.ANCHOR_RECLAIM",
         "support.HELD_CONFIRMED",
         "support.RECLAIMED",
-        "support.RETESTING",
-        "definition.next_test_count"
+        "support.RETESTING"
       ]
     },
     "episode_invalidated": {
@@ -427,18 +451,18 @@
         "acceptance.UNKNOWN",
         "breakout.BREAKOUT_ACCEPTED",
         "breakout.UNKNOWN",
-        "pullback.UNKNOWN",
-        "recovery.RECOVERY_CONFIRMED",
-        "support.BROKEN",
-        "support.HELD_TENTATIVE",
-        "support.UNKNOWN",
         "definition.breach_count",
         "definition.episode_invalidated",
         "definition.hard_invalidated",
         "definition.held_count",
         "definition.next_test_count",
         "definition.recovery_held_count",
-        "definition.separated_sessions"
+        "definition.separated_sessions",
+        "pullback.UNKNOWN",
+        "recovery.RECOVERY_CONFIRMED",
+        "support.BROKEN",
+        "support.HELD_TENTATIVE",
+        "support.UNKNOWN"
       ]
     },
     "event_close_view": {
@@ -482,6 +506,13 @@
         "acceptance.ACCEPTED",
         "breakout.BREAKOUT_ACCEPTED",
         "breakout.TESTING",
+        "definition.eod_reclaim",
+        "definition.fully_outside_test_band",
+        "definition.held_count",
+        "definition.next_test_count",
+        "definition.separated_retest",
+        "definition.separated_sessions",
+        "definition.touch",
         "pullback.PULLBACK_TO_BREAKOUT",
         "pullback.PULLBACK_TO_IMPULSE",
         "pullback.PULLBACK_TO_MA",
@@ -490,17 +521,26 @@
         "support.HELD_TENTATIVE",
         "support.RECLAIMED",
         "support.RETESTING",
-        "support.TESTING",
-        "definition.eod_reclaim",
-        "definition.fully_outside_test_band",
-        "definition.held_count",
-        "definition.next_test_count",
-        "definition.separated_retest",
-        "definition.separated_sessions",
-        "definition.touch"
+        "support.TESTING"
       ]
     },
     "impulse": {
+      "globally_required": false,
+      "required_by": []
+    },
+    "impulse_retention_1": {
+      "globally_required": false,
+      "required_by": []
+    },
+    "impulse_retention_3": {
+      "globally_required": false,
+      "required_by": []
+    },
+    "invalidation_facts": {
+      "globally_required": false,
+      "required_by": []
+    },
+    "last_known_support_state": {
       "globally_required": false,
       "required_by": []
     },
@@ -509,17 +549,6 @@
       "required_by": [
         "acceptance.BROKEN",
         "breakout.TESTING",
-        "pullback.PULLBACK_TO_BREAKOUT",
-        "pullback.PULLBACK_TO_IMPULSE",
-        "pullback.PULLBACK_TO_MA",
-        "recovery.ANCHOR_RECLAIM",
-        "support.BREACHED_SHALLOW",
-        "support.BROKEN",
-        "support.HELD_CONFIRMED",
-        "support.HELD_TENTATIVE",
-        "support.RECLAIMED",
-        "support.RETESTING",
-        "support.TESTING",
         "definition.breach_count",
         "definition.close_breach",
         "definition.deep_breach",
@@ -530,7 +559,18 @@
         "definition.next_test_count",
         "definition.separated_retest",
         "definition.separated_sessions",
-        "definition.touch"
+        "definition.touch",
+        "pullback.PULLBACK_TO_BREAKOUT",
+        "pullback.PULLBACK_TO_IMPULSE",
+        "pullback.PULLBACK_TO_MA",
+        "recovery.ANCHOR_RECLAIM",
+        "support.BREACHED_SHALLOW",
+        "support.BROKEN",
+        "support.HELD_CONFIRMED",
+        "support.HELD_TENTATIVE",
+        "support.RECLAIMED",
+        "support.RETESTING",
+        "support.TESTING"
       ]
     },
     "ma20_reclaim": {
@@ -566,10 +606,10 @@
       "required_by": [
         "acceptance.ACCEPTED",
         "breakout.BREAKOUT_ACCEPTED",
-        "recovery.RECOVERY_CONFIRMED",
-        "support.HELD_TENTATIVE",
         "definition.held_count",
-        "definition.recovery_held_count"
+        "definition.recovery_held_count",
+        "recovery.RECOVERY_CONFIRMED",
+        "support.HELD_TENTATIVE"
       ]
     },
     "pivot_available": {
@@ -598,20 +638,25 @@
         "definition.pivot_available"
       ]
     },
-    "post_creation_sessions": {
+    "post_creation_evaluable_sessions": {
+      "globally_required": false,
+      "required_by": [
+        "acceptance.PENDING"
+      ]
+    },
+    "post_creation_market_sessions": {
       "globally_required": false,
       "required_by": [
         "acceptance.ACCEPTED",
-        "acceptance.PENDING",
         "breakout.BREAKOUT_ACCEPTED",
         "breakout.TESTING",
+        "definition.held_count",
+        "definition.old_anchor",
+        "definition.recovery_held_count",
         "recovery.ANCHOR_RECLAIM",
         "recovery.RECOVERY_CONFIRMED",
         "support.HELD_TENTATIVE",
-        "support.IDLE",
-        "definition.held_count",
-        "definition.old_anchor",
-        "definition.recovery_held_count"
+        "support.IDLE"
       ]
     },
     "post_peak_drawdown": {
@@ -672,8 +717,8 @@
     "prior_event_peak_view": {
       "globally_required": false,
       "required_by": [
-        "pullback.PULLBACK_IN_PROGRESS",
-        "definition.post_peak_drawdown"
+        "definition.post_peak_drawdown",
+        "pullback.PULLBACK_IN_PROGRESS"
       ]
     },
     "prior_hard_invalidated": {
@@ -803,8 +848,8 @@
     "recovery_line_view": {
       "globally_required": false,
       "required_by": [
-        "recovery.RECOVERY_CONFIRMED",
-        "definition.recovery_held_count"
+        "definition.recovery_held_count",
+        "recovery.RECOVERY_CONFIRMED"
       ]
     },
     "rel_market_1": {
@@ -837,6 +882,10 @@
       "globally_required": false,
       "required_by": []
     },
+    "retest_count": {
+      "globally_required": false,
+      "required_by": []
+    },
     "security_id": {
       "globally_required": false,
       "required_by": [
@@ -846,8 +895,8 @@
     "separated_retest": {
       "globally_required": false,
       "required_by": [
-        "support.HELD_CONFIRMED",
-        "definition.next_test_count"
+        "definition.next_test_count",
+        "support.HELD_CONFIRMED"
       ]
     },
     "separated_sessions": {
@@ -872,11 +921,27 @@
         "anchor_schema.IMMUTABLE_RECORD"
       ]
     },
+    "stale": {
+      "globally_required": false,
+      "required_by": []
+    },
     "start_price_view": {
       "globally_required": false,
       "required_by": [
         "definition.common_coordinate_return"
       ]
+    },
+    "structure_events": {
+      "globally_required": false,
+      "required_by": []
+    },
+    "structure_health": {
+      "globally_required": false,
+      "required_by": []
+    },
+    "support_state": {
+      "globally_required": false,
+      "required_by": []
     },
     "support_today": {
       "globally_required": false,
@@ -890,6 +955,11 @@
       "globally_required": false,
       "required_by": [
         "breakout.TESTING",
+        "definition.eod_reclaim",
+        "definition.fully_outside_test_band",
+        "definition.next_test_count",
+        "definition.separated_retest",
+        "definition.separated_sessions",
         "pullback.PULLBACK_TO_BREAKOUT",
         "pullback.PULLBACK_TO_IMPULSE",
         "pullback.PULLBACK_TO_MA",
@@ -897,13 +967,12 @@
         "support.HELD_CONFIRMED",
         "support.RECLAIMED",
         "support.RETESTING",
-        "support.TESTING",
-        "definition.eod_reclaim",
-        "definition.fully_outside_test_band",
-        "definition.next_test_count",
-        "definition.separated_retest",
-        "definition.separated_sessions"
+        "support.TESTING"
       ]
+    },
+    "unknown_reasons": {
+      "globally_required": false,
+      "required_by": []
     }
   },
   "freeze_scope": "CONTRACT_DESIGN_ONLY",
@@ -1226,5 +1295,6 @@
     ],
     "type": "object"
   },
+  "time_counter_amendment": "R2.1",
   "version": "1.1.0"
 }

@@ -220,7 +220,8 @@
     {
       "capability": "RUNTIME_NOT_AUTHORIZED",
       "fields": [
-        "post_creation_sessions"
+        "post_creation_market_sessions",
+        "post_creation_evaluable_sessions"
       ],
       "reason": "Design-only local derivation; runtime not authorized",
       "status": "BLOCKED_WITH_EXPLICIT_REASON"
@@ -1059,10 +1060,11 @@
       "fields": [
         "pivot_left_count",
         "pivot_right_count",
-        "post_creation_sessions"
+        "post_creation_market_sessions",
+        "post_creation_evaluable_sessions"
       ],
-      "producer_contract_id": "V4_12_SESSION_COUNTER_V1",
-      "producer_version": "1.0.0",
+      "producer_contract_id": "V4_12_SESSION_COUNTER_V2",
+      "producer_version": "2.0.0",
       "status": "NO_GENERIC_ACCEPTANCE_CLAIM_FIELD_ROWS_AUTHORITATIVE"
     },
     {
@@ -1155,5 +1157,6 @@
   ],
   "runtime_implemented": false,
   "source_authority_policy": "EXPLICIT_ACCEPTED_OWNER_TABLE_OR_BLOCK; NEVER_DEFAULT_CORE_FACTOR",
+  "time_counter_amendment": "R2.1",
   "version": "1.1.0"
 }

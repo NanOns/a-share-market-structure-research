@@ -1,0 +1,888 @@
+{
+  "sequences": [
+    {
+      "id": "creation_missing_resume_SUSPENDED",
+      "steps": [
+        {
+          "actual": {
+            "acceptance": "PENDING",
+            "breach_count": 0,
+            "evaluable_count": 0,
+            "held_count": 0,
+            "market_age": 0,
+            "stale": false,
+            "support": "IDLE"
+          },
+          "counter_baseline_date": null,
+          "date": "2026-09-24",
+          "expected": {
+            "acceptance": "PENDING",
+            "breach_count": 0,
+            "evaluable_count": 0,
+            "held_count": 0,
+            "market_age": 0,
+            "stale": false,
+            "support": "IDLE"
+          },
+          "id": "C01",
+          "preserved_support_state": "IDLE",
+          "revision": "r1",
+          "status": "PASS"
+        },
+        {
+          "actual": {
+            "acceptance": "UNKNOWN",
+            "breach_count": 0,
+            "evaluable_count": 0,
+            "held_count": 0,
+            "market_age": 1,
+            "stale": true,
+            "support": "UNKNOWN"
+          },
+          "counter_baseline_date": "2026-09-24",
+          "date": "2026-09-25",
+          "expected": {
+            "acceptance": "UNKNOWN",
+            "breach_count": 0,
+            "evaluable_count": 0,
+            "held_count": 0,
+            "market_age": 1,
+            "stale": true,
+            "support": "UNKNOWN"
+          },
+          "id": "C02",
+          "preserved_support_state": "IDLE",
+          "revision": "r1",
+          "status": "PASS"
+        },
+        {
+          "actual": {
+            "acceptance": "PENDING",
+            "breach_count": 0,
+            "evaluable_count": 1,
+            "held_count": 1,
+            "market_age": 2,
+            "stale": false,
+            "support": "RECLAIMED"
+          },
+          "counter_baseline_date": "2026-09-25",
+          "date": "2026-09-28",
+          "expected": {
+            "acceptance": "PENDING",
+            "breach_count": 0,
+            "evaluable_count": 1,
+            "held_count": 1,
+            "market_age": 2,
+            "stale": false,
+            "support": "RECLAIMED"
+          },
+          "id": "C03",
+          "preserved_support_state": "RECLAIMED",
+          "revision": "r1",
+          "status": "PASS"
+        },
+        {
+          "actual": {
+            "acceptance": "ACCEPTED",
+            "breach_count": 0,
+            "evaluable_count": 2,
+            "held_count": 2,
+            "market_age": 3,
+            "stale": false,
+            "support": "HELD_TENTATIVE"
+          },
+          "counter_baseline_date": "2026-09-28",
+          "date": "2026-09-29",
+          "expected": {
+            "acceptance": "ACCEPTED",
+            "breach_count": 0,
+            "evaluable_count": 2,
+            "held_count": 2,
+            "market_age": 3,
+            "stale": false,
+            "support": "HELD_TENTATIVE"
+          },
+          "id": "C04",
+          "preserved_support_state": "HELD_TENTATIVE",
+          "revision": "r1",
+          "status": "PASS"
+        },
+        {
+          "actual": {
+            "acceptance": "ACCEPTED",
+            "breach_count": 0,
+            "evaluable_count": 2,
+            "held_count": 2,
+            "market_age": 3,
+            "stale": false,
+            "support": "HELD_TENTATIVE"
+          },
+          "counter_baseline_date": "2026-09-28",
+          "date": "2026-09-29",
+          "expected": {
+            "acceptance": "ACCEPTED",
+            "breach_count": 0,
+            "evaluable_count": 2,
+            "held_count": 2,
+            "market_age": 3,
+            "stale": false,
+            "support": "HELD_TENTATIVE"
+          },
+          "id": "C06_hold_revision",
+          "preserved_support_state": "HELD_TENTATIVE",
+          "revision": "r2",
+          "status": "PASS"
+        },
+        {
+          "actual": {
+            "acceptance": "ACCEPTED",
+            "breach_count": 0,
+            "evaluable_count": 2,
+            "held_count": 2,
+            "market_age": 3,
+            "stale": false,
+            "support": "HELD_TENTATIVE"
+          },
+          "counter_baseline_date": "2026-09-28",
+          "date": "2026-09-29",
+          "expected": {
+            "acceptance": "ACCEPTED",
+            "breach_count": 0,
+            "evaluable_count": 2,
+            "held_count": 2,
+            "market_age": 3,
+            "stale": false,
+            "support": "HELD_TENTATIVE"
+          },
+          "id": "C06_hold_revision_r3",
+          "preserved_support_state": "HELD_TENTATIVE",
+          "revision": "r3",
+          "status": "PASS"
+        },
+        {
+          "actual": {
+            "acceptance": "NOT_ACCEPTED",
+            "breach_count": 1,
+            "evaluable_count": 3,
+            "held_count": 0,
+            "market_age": 4,
+            "stale": false,
+            "support": "BREACHED_SHALLOW"
+          },
+          "counter_baseline_date": "2026-09-29",
+          "date": "2026-09-30",
+          "expected": {
+            "acceptance": "NOT_ACCEPTED",
+            "breach_count": 1,
+            "evaluable_count": 3,
+            "held_count": 0,
+            "market_age": 4,
+            "stale": false,
+            "support": "BREACHED_SHALLOW"
+          },
+          "id": "C05",
+          "preserved_support_state": "BREACHED_SHALLOW",
+          "revision": "r1",
+          "status": "PASS"
+        },
+        {
+          "actual": {
+            "acceptance": "NOT_ACCEPTED",
+            "breach_count": 1,
+            "evaluable_count": 3,
+            "held_count": 0,
+            "market_age": 4,
+            "stale": false,
+            "support": "BREACHED_SHALLOW"
+          },
+          "counter_baseline_date": "2026-09-29",
+          "date": "2026-09-30",
+          "expected": {
+            "acceptance": "NOT_ACCEPTED",
+            "breach_count": 1,
+            "evaluable_count": 3,
+            "held_count": 0,
+            "market_age": 4,
+            "stale": false,
+            "support": "BREACHED_SHALLOW"
+          },
+          "id": "C06_breach_revision",
+          "preserved_support_state": "BREACHED_SHALLOW",
+          "revision": "r2",
+          "status": "PASS"
+        },
+        {
+          "actual": {
+            "acceptance": "NOT_ACCEPTED",
+            "breach_count": 1,
+            "evaluable_count": 3,
+            "held_count": 0,
+            "market_age": 4,
+            "stale": false,
+            "support": "BREACHED_SHALLOW"
+          },
+          "counter_baseline_date": "2026-09-29",
+          "date": "2026-09-30",
+          "expected": {
+            "acceptance": "NOT_ACCEPTED",
+            "breach_count": 1,
+            "evaluable_count": 3,
+            "held_count": 0,
+            "market_age": 4,
+            "stale": false,
+            "support": "BREACHED_SHALLOW"
+          },
+          "id": "C06_breach_revision_r3",
+          "preserved_support_state": "BREACHED_SHALLOW",
+          "revision": "r3",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "id": "creation_missing_resume_MISSING_BAR",
+      "steps": [
+        {
+          "actual": {
+            "acceptance": "PENDING",
+            "breach_count": 0,
+            "evaluable_count": 0,
+            "held_count": 0,
+            "market_age": 0,
+            "stale": false,
+            "support": "IDLE"
+          },
+          "counter_baseline_date": null,
+          "date": "2026-09-24",
+          "expected": {
+            "acceptance": "PENDING",
+            "breach_count": 0,
+            "evaluable_count": 0,
+            "held_count": 0,
+            "market_age": 0,
+            "stale": false,
+            "support": "IDLE"
+          },
+          "id": "C01",
+          "preserved_support_state": "IDLE",
+          "revision": "r1",
+          "status": "PASS"
+        },
+        {
+          "actual": {
+            "acceptance": "UNKNOWN",
+            "breach_count": 0,
+            "evaluable_count": 0,
+            "held_count": 0,
+            "market_age": 1,
+            "stale": true,
+            "support": "UNKNOWN"
+          },
+          "counter_baseline_date": "2026-09-24",
+          "date": "2026-09-25",
+          "expected": {
+            "acceptance": "UNKNOWN",
+            "breach_count": 0,
+            "evaluable_count": 0,
+            "held_count": 0,
+            "market_age": 1,
+            "stale": true,
+            "support": "UNKNOWN"
+          },
+          "id": "C02",
+          "preserved_support_state": "IDLE",
+          "revision": "r1",
+          "status": "PASS"
+        },
+        {
+          "actual": {
+            "acceptance": "PENDING",
+            "breach_count": 0,
+            "evaluable_count": 1,
+            "held_count": 1,
+            "market_age": 2,
+            "stale": false,
+            "support": "RECLAIMED"
+          },
+          "counter_baseline_date": "2026-09-25",
+          "date": "2026-09-28",
+          "expected": {
+            "acceptance": "PENDING",
+            "breach_count": 0,
+            "evaluable_count": 1,
+            "held_count": 1,
+            "market_age": 2,
+            "stale": false,
+            "support": "RECLAIMED"
+          },
+          "id": "C03",
+          "preserved_support_state": "RECLAIMED",
+          "revision": "r1",
+          "status": "PASS"
+        },
+        {
+          "actual": {
+            "acceptance": "ACCEPTED",
+            "breach_count": 0,
+            "evaluable_count": 2,
+            "held_count": 2,
+            "market_age": 3,
+            "stale": false,
+            "support": "HELD_TENTATIVE"
+          },
+          "counter_baseline_date": "2026-09-28",
+          "date": "2026-09-29",
+          "expected": {
+            "acceptance": "ACCEPTED",
+            "breach_count": 0,
+            "evaluable_count": 2,
+            "held_count": 2,
+            "market_age": 3,
+            "stale": false,
+            "support": "HELD_TENTATIVE"
+          },
+          "id": "C04",
+          "preserved_support_state": "HELD_TENTATIVE",
+          "revision": "r1",
+          "status": "PASS"
+        },
+        {
+          "actual": {
+            "acceptance": "ACCEPTED",
+            "breach_count": 0,
+            "evaluable_count": 2,
+            "held_count": 2,
+            "market_age": 3,
+            "stale": false,
+            "support": "HELD_TENTATIVE"
+          },
+          "counter_baseline_date": "2026-09-28",
+          "date": "2026-09-29",
+          "expected": {
+            "acceptance": "ACCEPTED",
+            "breach_count": 0,
+            "evaluable_count": 2,
+            "held_count": 2,
+            "market_age": 3,
+            "stale": false,
+            "support": "HELD_TENTATIVE"
+          },
+          "id": "C06_hold_revision",
+          "preserved_support_state": "HELD_TENTATIVE",
+          "revision": "r2",
+          "status": "PASS"
+        },
+        {
+          "actual": {
+            "acceptance": "ACCEPTED",
+            "breach_count": 0,
+            "evaluable_count": 2,
+            "held_count": 2,
+            "market_age": 3,
+            "stale": false,
+            "support": "HELD_TENTATIVE"
+          },
+          "counter_baseline_date": "2026-09-28",
+          "date": "2026-09-29",
+          "expected": {
+            "acceptance": "ACCEPTED",
+            "breach_count": 0,
+            "evaluable_count": 2,
+            "held_count": 2,
+            "market_age": 3,
+            "stale": false,
+            "support": "HELD_TENTATIVE"
+          },
+          "id": "C06_hold_revision_r3",
+          "preserved_support_state": "HELD_TENTATIVE",
+          "revision": "r3",
+          "status": "PASS"
+        },
+        {
+          "actual": {
+            "acceptance": "NOT_ACCEPTED",
+            "breach_count": 1,
+            "evaluable_count": 3,
+            "held_count": 0,
+            "market_age": 4,
+            "stale": false,
+            "support": "BREACHED_SHALLOW"
+          },
+          "counter_baseline_date": "2026-09-29",
+          "date": "2026-09-30",
+          "expected": {
+            "acceptance": "NOT_ACCEPTED",
+            "breach_count": 1,
+            "evaluable_count": 3,
+            "held_count": 0,
+            "market_age": 4,
+            "stale": false,
+            "support": "BREACHED_SHALLOW"
+          },
+          "id": "C05",
+          "preserved_support_state": "BREACHED_SHALLOW",
+          "revision": "r1",
+          "status": "PASS"
+        },
+        {
+          "actual": {
+            "acceptance": "NOT_ACCEPTED",
+            "breach_count": 1,
+            "evaluable_count": 3,
+            "held_count": 0,
+            "market_age": 4,
+            "stale": false,
+            "support": "BREACHED_SHALLOW"
+          },
+          "counter_baseline_date": "2026-09-29",
+          "date": "2026-09-30",
+          "expected": {
+            "acceptance": "NOT_ACCEPTED",
+            "breach_count": 1,
+            "evaluable_count": 3,
+            "held_count": 0,
+            "market_age": 4,
+            "stale": false,
+            "support": "BREACHED_SHALLOW"
+          },
+          "id": "C06_breach_revision",
+          "preserved_support_state": "BREACHED_SHALLOW",
+          "revision": "r2",
+          "status": "PASS"
+        },
+        {
+          "actual": {
+            "acceptance": "NOT_ACCEPTED",
+            "breach_count": 1,
+            "evaluable_count": 3,
+            "held_count": 0,
+            "market_age": 4,
+            "stale": false,
+            "support": "BREACHED_SHALLOW"
+          },
+          "counter_baseline_date": "2026-09-29",
+          "date": "2026-09-30",
+          "expected": {
+            "acceptance": "NOT_ACCEPTED",
+            "breach_count": 1,
+            "evaluable_count": 3,
+            "held_count": 0,
+            "market_age": 4,
+            "stale": false,
+            "support": "BREACHED_SHALLOW"
+          },
+          "id": "C06_breach_revision_r3",
+          "preserved_support_state": "BREACHED_SHALLOW",
+          "revision": "r3",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "id": "creation_missing_resume_REQUIRED_COORDINATE_UNAVAILABLE",
+      "steps": [
+        {
+          "actual": {
+            "acceptance": "PENDING",
+            "breach_count": 0,
+            "evaluable_count": 0,
+            "held_count": 0,
+            "market_age": 0,
+            "stale": false,
+            "support": "IDLE"
+          },
+          "counter_baseline_date": null,
+          "date": "2026-09-24",
+          "expected": {
+            "acceptance": "PENDING",
+            "breach_count": 0,
+            "evaluable_count": 0,
+            "held_count": 0,
+            "market_age": 0,
+            "stale": false,
+            "support": "IDLE"
+          },
+          "id": "C01",
+          "preserved_support_state": "IDLE",
+          "revision": "r1",
+          "status": "PASS"
+        },
+        {
+          "actual": {
+            "acceptance": "UNKNOWN",
+            "breach_count": 0,
+            "evaluable_count": 0,
+            "held_count": 0,
+            "market_age": 1,
+            "stale": true,
+            "support": "UNKNOWN"
+          },
+          "counter_baseline_date": "2026-09-24",
+          "date": "2026-09-25",
+          "expected": {
+            "acceptance": "UNKNOWN",
+            "breach_count": 0,
+            "evaluable_count": 0,
+            "held_count": 0,
+            "market_age": 1,
+            "stale": true,
+            "support": "UNKNOWN"
+          },
+          "id": "C02",
+          "preserved_support_state": "IDLE",
+          "revision": "r1",
+          "status": "PASS"
+        },
+        {
+          "actual": {
+            "acceptance": "PENDING",
+            "breach_count": 0,
+            "evaluable_count": 1,
+            "held_count": 1,
+            "market_age": 2,
+            "stale": false,
+            "support": "RECLAIMED"
+          },
+          "counter_baseline_date": "2026-09-25",
+          "date": "2026-09-28",
+          "expected": {
+            "acceptance": "PENDING",
+            "breach_count": 0,
+            "evaluable_count": 1,
+            "held_count": 1,
+            "market_age": 2,
+            "stale": false,
+            "support": "RECLAIMED"
+          },
+          "id": "C03",
+          "preserved_support_state": "RECLAIMED",
+          "revision": "r1",
+          "status": "PASS"
+        },
+        {
+          "actual": {
+            "acceptance": "ACCEPTED",
+            "breach_count": 0,
+            "evaluable_count": 2,
+            "held_count": 2,
+            "market_age": 3,
+            "stale": false,
+            "support": "HELD_TENTATIVE"
+          },
+          "counter_baseline_date": "2026-09-28",
+          "date": "2026-09-29",
+          "expected": {
+            "acceptance": "ACCEPTED",
+            "breach_count": 0,
+            "evaluable_count": 2,
+            "held_count": 2,
+            "market_age": 3,
+            "stale": false,
+            "support": "HELD_TENTATIVE"
+          },
+          "id": "C04",
+          "preserved_support_state": "HELD_TENTATIVE",
+          "revision": "r1",
+          "status": "PASS"
+        },
+        {
+          "actual": {
+            "acceptance": "ACCEPTED",
+            "breach_count": 0,
+            "evaluable_count": 2,
+            "held_count": 2,
+            "market_age": 3,
+            "stale": false,
+            "support": "HELD_TENTATIVE"
+          },
+          "counter_baseline_date": "2026-09-28",
+          "date": "2026-09-29",
+          "expected": {
+            "acceptance": "ACCEPTED",
+            "breach_count": 0,
+            "evaluable_count": 2,
+            "held_count": 2,
+            "market_age": 3,
+            "stale": false,
+            "support": "HELD_TENTATIVE"
+          },
+          "id": "C06_hold_revision",
+          "preserved_support_state": "HELD_TENTATIVE",
+          "revision": "r2",
+          "status": "PASS"
+        },
+        {
+          "actual": {
+            "acceptance": "ACCEPTED",
+            "breach_count": 0,
+            "evaluable_count": 2,
+            "held_count": 2,
+            "market_age": 3,
+            "stale": false,
+            "support": "HELD_TENTATIVE"
+          },
+          "counter_baseline_date": "2026-09-28",
+          "date": "2026-09-29",
+          "expected": {
+            "acceptance": "ACCEPTED",
+            "breach_count": 0,
+            "evaluable_count": 2,
+            "held_count": 2,
+            "market_age": 3,
+            "stale": false,
+            "support": "HELD_TENTATIVE"
+          },
+          "id": "C06_hold_revision_r3",
+          "preserved_support_state": "HELD_TENTATIVE",
+          "revision": "r3",
+          "status": "PASS"
+        },
+        {
+          "actual": {
+            "acceptance": "NOT_ACCEPTED",
+            "breach_count": 1,
+            "evaluable_count": 3,
+            "held_count": 0,
+            "market_age": 4,
+            "stale": false,
+            "support": "BREACHED_SHALLOW"
+          },
+          "counter_baseline_date": "2026-09-29",
+          "date": "2026-09-30",
+          "expected": {
+            "acceptance": "NOT_ACCEPTED",
+            "breach_count": 1,
+            "evaluable_count": 3,
+            "held_count": 0,
+            "market_age": 4,
+            "stale": false,
+            "support": "BREACHED_SHALLOW"
+          },
+          "id": "C05",
+          "preserved_support_state": "BREACHED_SHALLOW",
+          "revision": "r1",
+          "status": "PASS"
+        },
+        {
+          "actual": {
+            "acceptance": "NOT_ACCEPTED",
+            "breach_count": 1,
+            "evaluable_count": 3,
+            "held_count": 0,
+            "market_age": 4,
+            "stale": false,
+            "support": "BREACHED_SHALLOW"
+          },
+          "counter_baseline_date": "2026-09-29",
+          "date": "2026-09-30",
+          "expected": {
+            "acceptance": "NOT_ACCEPTED",
+            "breach_count": 1,
+            "evaluable_count": 3,
+            "held_count": 0,
+            "market_age": 4,
+            "stale": false,
+            "support": "BREACHED_SHALLOW"
+          },
+          "id": "C06_breach_revision",
+          "preserved_support_state": "BREACHED_SHALLOW",
+          "revision": "r2",
+          "status": "PASS"
+        },
+        {
+          "actual": {
+            "acceptance": "NOT_ACCEPTED",
+            "breach_count": 1,
+            "evaluable_count": 3,
+            "held_count": 0,
+            "market_age": 4,
+            "stale": false,
+            "support": "BREACHED_SHALLOW"
+          },
+          "counter_baseline_date": "2026-09-29",
+          "date": "2026-09-30",
+          "expected": {
+            "acceptance": "NOT_ACCEPTED",
+            "breach_count": 1,
+            "evaluable_count": 3,
+            "held_count": 0,
+            "market_age": 4,
+            "stale": false,
+            "support": "BREACHED_SHALLOW"
+          },
+          "id": "C06_breach_revision_r3",
+          "preserved_support_state": "BREACHED_SHALLOW",
+          "revision": "r3",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "id": "C08_hold_missing_resume_chain_reset",
+      "steps": [
+        {
+          "actual": {
+            "acceptance": "PENDING",
+            "breach_count": 0,
+            "evaluable_count": 0,
+            "held_count": 0,
+            "market_age": 0,
+            "stale": false,
+            "support": "IDLE"
+          },
+          "counter_baseline_date": null,
+          "date": "2026-09-24",
+          "expected": {
+            "acceptance": "PENDING",
+            "breach_count": 0,
+            "evaluable_count": 0,
+            "held_count": 0,
+            "market_age": 0,
+            "stale": false,
+            "support": "IDLE"
+          },
+          "id": "C01",
+          "preserved_support_state": "IDLE",
+          "revision": "r1",
+          "status": "PASS"
+        },
+        {
+          "actual": {
+            "acceptance": "PENDING",
+            "breach_count": 0,
+            "evaluable_count": 1,
+            "held_count": 1,
+            "market_age": 1,
+            "stale": false,
+            "support": "RECLAIMED"
+          },
+          "counter_baseline_date": "2026-09-24",
+          "date": "2026-09-25",
+          "expected": {
+            "acceptance": "PENDING",
+            "breach_count": 0,
+            "evaluable_count": 1,
+            "held_count": 1,
+            "market_age": 1,
+            "stale": false,
+            "support": "RECLAIMED"
+          },
+          "id": "C08_first_hold",
+          "preserved_support_state": "RECLAIMED",
+          "revision": "r1",
+          "status": "PASS"
+        },
+        {
+          "actual": {
+            "acceptance": "UNKNOWN",
+            "breach_count": 0,
+            "evaluable_count": 1,
+            "held_count": 0,
+            "market_age": 2,
+            "stale": true,
+            "support": "UNKNOWN"
+          },
+          "counter_baseline_date": "2026-09-25",
+          "date": "2026-09-28",
+          "expected": {
+            "acceptance": "UNKNOWN",
+            "breach_count": 0,
+            "evaluable_count": 1,
+            "held_count": 0,
+            "market_age": 2,
+            "stale": true,
+            "support": "UNKNOWN"
+          },
+          "id": "C08_missing",
+          "preserved_support_state": "RECLAIMED",
+          "revision": "r1",
+          "status": "PASS"
+        },
+        {
+          "actual": {
+            "acceptance": "NOT_ACCEPTED",
+            "breach_count": 0,
+            "evaluable_count": 2,
+            "held_count": 1,
+            "market_age": 3,
+            "stale": false,
+            "support": "HELD_TENTATIVE"
+          },
+          "counter_baseline_date": "2026-09-28",
+          "date": "2026-09-29",
+          "expected": {
+            "acceptance": "NOT_ACCEPTED",
+            "breach_count": 0,
+            "evaluable_count": 2,
+            "held_count": 1,
+            "market_age": 3,
+            "stale": false,
+            "support": "HELD_TENTATIVE"
+          },
+          "id": "C08_resume",
+          "preserved_support_state": "HELD_TENTATIVE",
+          "revision": "r1",
+          "status": "PASS"
+        },
+        {
+          "actual": {
+            "acceptance": "ACCEPTED",
+            "breach_count": 0,
+            "evaluable_count": 3,
+            "held_count": 2,
+            "market_age": 4,
+            "stale": false,
+            "support": "RETESTING"
+          },
+          "counter_baseline_date": "2026-09-29",
+          "date": "2026-09-30",
+          "expected": {
+            "acceptance": "ACCEPTED",
+            "breach_count": 0,
+            "evaluable_count": 3,
+            "held_count": 2,
+            "market_age": 4,
+            "stale": false,
+            "support": "RETESTING"
+          },
+          "id": "C08_second_hold",
+          "preserved_support_state": "RETESTING",
+          "revision": "r1",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "id": "C07_missing_calendar",
+      "steps": [
+        {
+          "actual": {
+            "acceptance": "UNKNOWN",
+            "breach_count": 0,
+            "evaluable_count": 1,
+            "held_count": "UNKNOWN",
+            "market_age": "UNKNOWN",
+            "stale": true,
+            "support": "UNKNOWN"
+          },
+          "counter_baseline_date": null,
+          "date": "2026-09-25",
+          "expected": {
+            "acceptance": "UNKNOWN",
+            "breach_count": 0,
+            "evaluable_count": 1,
+            "held_count": "UNKNOWN",
+            "market_age": "UNKNOWN",
+            "stale": true,
+            "support": "UNKNOWN"
+          },
+          "id": "C07",
+          "preserved_support_state": "UNKNOWN",
+          "revision": "r1",
+          "status": "PASS"
+        }
+      ]
+    }
+  ],
+  "status": "PASS"
+}

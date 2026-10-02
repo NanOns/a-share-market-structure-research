@@ -1,0 +1,87 @@
+{
+  "business_order_unchanged": true,
+  "changes": [
+    {
+      "AST_path": "/definitions/old_anchor/args/0/field",
+      "after": "post_creation_market_sessions",
+      "authority": "R9 task sections2/3; REV4 sections41C/41D",
+      "before": "post_creation_sessions",
+      "reason": "Separate market age from cumulative evaluable count",
+      "vector_impact": "B03_missing corrected; other expected results unchanged"
+    },
+    {
+      "AST_path": "/machines/acceptance/rules/2/when/args/0/args/0/field",
+      "after": "post_creation_market_sessions",
+      "authority": "R9 task sections2/3; REV4 sections41C/41D",
+      "before": "post_creation_sessions",
+      "reason": "Separate market age from cumulative evaluable count",
+      "vector_impact": "B03_missing corrected; other expected results unchanged"
+    },
+    {
+      "AST_path": "/machines/acceptance/rules/3/when/args/0/field",
+      "after": "post_creation_evaluable_sessions",
+      "authority": "R9 task sections2/3; REV4 sections41C/41D",
+      "before": "post_creation_sessions",
+      "reason": "Separate market age from cumulative evaluable count",
+      "vector_impact": "B03_missing corrected; other expected results unchanged"
+    },
+    {
+      "AST_path": "/machines/breakout/rules/2/when/args/1/args/0/field",
+      "after": "post_creation_market_sessions",
+      "authority": "R9 task sections2/3; REV4 sections41C/41D",
+      "before": "post_creation_sessions",
+      "reason": "Separate market age from cumulative evaluable count",
+      "vector_impact": "B03_missing corrected; other expected results unchanged"
+    },
+    {
+      "AST_path": "/machines/breakout/rules/3/when/args/1/args/0/field",
+      "after": "post_creation_market_sessions",
+      "authority": "R9 task sections2/3; REV4 sections41C/41D",
+      "before": "post_creation_sessions",
+      "reason": "Separate market age from cumulative evaluable count",
+      "vector_impact": "B03_missing corrected; other expected results unchanged"
+    },
+    {
+      "AST_path": "/machines/recovery/rules/1/when/args/1/args/0/field",
+      "after": "post_creation_market_sessions",
+      "authority": "R9 task sections2/3; REV4 sections41C/41D",
+      "before": "post_creation_sessions",
+      "reason": "Separate market age from cumulative evaluable count",
+      "vector_impact": "B03_missing corrected; other expected results unchanged"
+    },
+    {
+      "AST_path": "/machines/recovery/rules/2/when/args/1/args/0/field",
+      "after": "post_creation_market_sessions",
+      "authority": "R9 task sections2/3; REV4 sections41C/41D",
+      "before": "post_creation_sessions",
+      "reason": "Separate market age from cumulative evaluable count",
+      "vector_impact": "B03_missing corrected; other expected results unchanged"
+    },
+    {
+      "AST_path": "/machines/support/rules/1/when/args/0/args/0/field",
+      "after": "post_creation_market_sessions",
+      "authority": "R9 task sections2/3; REV4 sections41C/41D",
+      "before": "post_creation_sessions",
+      "reason": "Separate market age from cumulative evaluable count",
+      "vector_impact": "B03_missing corrected; other expected results unchanged"
+    },
+    {
+      "AST_path": "/semantic_amendment",
+      "after": "R2.1_SPLIT_MARKET_AGE_AND_EVALUABLE_COUNT_ONLY",
+      "authority": "R9 task sections2/3; REV4 sections41C/41D",
+      "before": null,
+      "reason": "Separate market age from cumulative evaluable count",
+      "vector_impact": "B03_missing corrected; other expected results unchanged"
+    },
+    {
+      "AST_path": "/version",
+      "after": "1.1.0",
+      "authority": "R9 task sections2/3; REV4 sections41C/41D",
+      "before": "1.0.0",
+      "reason": "Separate market age from cumulative evaluable count",
+      "vector_impact": "B03_missing corrected; other expected results unchanged"
+    }
+  ],
+  "retention_formula_unchanged": true,
+  "status": "PASS"
+}

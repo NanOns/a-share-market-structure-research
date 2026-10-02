@@ -31,7 +31,7 @@ def actual(vector):
         return [r['slope20']['unit'],param['unit'],param['value']]
     if subject=='explicit_aliases':return {n:r[n]['accepted_source_field'] for n in ['ATR20','CLV','MA20','MA60']}
     if subject=='branch_local':
-        values={**CONFIG['machine_vectors']['defaults'],'prior_recovery_exists':True,'post_creation_sessions':2,
+        values={**CONFIG['machine_vectors']['defaults'],'prior_recovery_exists':True,'post_creation_market_sessions':2,'post_creation_evaluable_sessions':2,
             'prior_recovery_held_count':1,'prior_adjacent_evaluable':True,'C':11,'recovery_line_view':10,
             'close_t_minus_1':None,'ma20_t_minus_1':None,'ret1':None}
         return FixtureExpressionVerifier(CONFIG,values).target('recovery')
@@ -91,7 +91,7 @@ def test_completeness_requires_authority_parity_not_file_presence():
     assert result['authority_parity']['unresolved_false_accepted_claims']==0
     assert result['completeness']['authority_parity']=='PASS'
     assert result['completeness']['blocked_anchor_types']
-    assert result['status']=='V4_12_R2_CONTRACT_AUTHORITY_REPAIR_CANDIDATE_READY_FOR_EXTERNAL_AUDIT'
+    assert result['status'] in ['V4_12_R2_CONTRACT_AUTHORITY_REPAIR_CANDIDATE_READY_FOR_EXTERNAL_AUDIT','V4_12_R2_1_TIME_COUNTER_SEMANTICS_CANDIDATE_READY_FOR_EXTERNAL_AUDIT']
 
 def test_r6r1_and_r1_ast_vectors_preserved():
     result=validate()

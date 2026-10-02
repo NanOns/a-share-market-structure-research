@@ -1,5 +1,12 @@
 {
   "acceptance_ast_ref": "config/v4_12_machine_ast_v1.json#/machines/acceptance",
+  "acceptance_order": [
+    "BROKEN hard invalidated",
+    "UNKNOWN current required observation unavailable",
+    "ACCEPTED old_anchor and consecutive held >= threshold",
+    "PENDING cumulative evaluable count < threshold",
+    "NOT_ACCEPTED otherwise evaluable"
+  ],
   "acceptance_support_distinct": true,
   "availability": "Append observation only when target market session arrived and source cutoff visible",
   "contract_id": "RETENTION_V1",
@@ -22,6 +29,8 @@
     "shadow_production_permission": false
   },
   "runtime_implemented": false,
+  "time_counter_amendment": "R2.1",
+  "time_counter_contract": "config/v4_12_source_derivations_r2.json#/counters",
   "value_range": "UNBOUNDED_REAL_NOT_PROBABILITY",
   "version": "1.0.0"
 }

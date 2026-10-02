@@ -1591,9 +1591,9 @@
         "definition.retention_value"
       ],
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -1894,9 +1894,9 @@
         "support.APPROACHING"
       ],
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -1957,9 +1957,9 @@
         "definition.common_coordinate_return"
       ],
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -2102,23 +2102,23 @@
         "acceptance.UNKNOWN",
         "breakout.BREAKOUT_ACCEPTED",
         "breakout.UNKNOWN",
-        "pullback.UNKNOWN",
-        "recovery.RECOVERY_CONFIRMED",
-        "support.BROKEN",
-        "support.HELD_TENTATIVE",
-        "support.UNKNOWN",
         "definition.breach_count",
         "definition.episode_invalidated",
         "definition.hard_invalidated",
         "definition.held_count",
         "definition.next_test_count",
         "definition.recovery_held_count",
-        "definition.separated_sessions"
+        "definition.separated_sessions",
+        "pullback.UNKNOWN",
+        "recovery.RECOVERY_CONFIRMED",
+        "support.BROKEN",
+        "support.HELD_TENTATIVE",
+        "support.UNKNOWN"
       ],
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -2181,9 +2181,9 @@
         "definition.retention_value"
       ],
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -2263,6 +2263,13 @@
         "acceptance.ACCEPTED",
         "breakout.BREAKOUT_ACCEPTED",
         "breakout.TESTING",
+        "definition.eod_reclaim",
+        "definition.fully_outside_test_band",
+        "definition.held_count",
+        "definition.next_test_count",
+        "definition.separated_retest",
+        "definition.separated_sessions",
+        "definition.touch",
         "pullback.PULLBACK_TO_BREAKOUT",
         "pullback.PULLBACK_TO_IMPULSE",
         "pullback.PULLBACK_TO_MA",
@@ -2271,19 +2278,12 @@
         "support.HELD_TENTATIVE",
         "support.RECLAIMED",
         "support.RETESTING",
-        "support.TESTING",
-        "definition.eod_reclaim",
-        "definition.fully_outside_test_band",
-        "definition.held_count",
-        "definition.next_test_count",
-        "definition.separated_retest",
-        "definition.separated_sessions",
-        "definition.touch"
+        "support.TESTING"
       ],
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -2367,17 +2367,6 @@
       "required_by": [
         "acceptance.BROKEN",
         "breakout.TESTING",
-        "pullback.PULLBACK_TO_BREAKOUT",
-        "pullback.PULLBACK_TO_IMPULSE",
-        "pullback.PULLBACK_TO_MA",
-        "recovery.ANCHOR_RECLAIM",
-        "support.BREACHED_SHALLOW",
-        "support.BROKEN",
-        "support.HELD_CONFIRMED",
-        "support.HELD_TENTATIVE",
-        "support.RECLAIMED",
-        "support.RETESTING",
-        "support.TESTING",
         "definition.breach_count",
         "definition.close_breach",
         "definition.deep_breach",
@@ -2388,12 +2377,23 @@
         "definition.next_test_count",
         "definition.separated_retest",
         "definition.separated_sessions",
-        "definition.touch"
+        "definition.touch",
+        "pullback.PULLBACK_TO_BREAKOUT",
+        "pullback.PULLBACK_TO_IMPULSE",
+        "pullback.PULLBACK_TO_MA",
+        "recovery.ANCHOR_RECLAIM",
+        "support.BREACHED_SHALLOW",
+        "support.BROKEN",
+        "support.HELD_CONFIRMED",
+        "support.HELD_TENTATIVE",
+        "support.RECLAIMED",
+        "support.RETESTING",
+        "support.TESTING"
       ],
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -2582,9 +2582,9 @@
         "definition.retention_value"
       ],
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -2621,8 +2621,8 @@
       "logical_field": "pivot_left_count",
       "output_digest": "SHA256_CANONICAL_FIELD_VALUE_AND_METADATA",
       "parameter_set_id": "V4_12_ENGINEERING_CANDIDATE_R1",
-      "producer_contract_id": "V4_12_SESSION_COUNTER_V1",
-      "producer_version": "1.0.0",
+      "producer_contract_id": "V4_12_SESSION_COUNTER_V2",
+      "producer_version": "2.0.0",
       "publication_identity": [
         "contract_id",
         "parameter_set_digest",
@@ -2644,10 +2644,11 @@
       "required_by": [
         "definition.pivot_available"
       ],
+      "semantic_dimension": "actual_evaluable_window_count",
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -2655,7 +2656,7 @@
       "time_role": "T_INTERNAL_D1",
       "trade_date": "observation_t",
       "trade_date_semantics": "Derived/view at observation_t; any prior event source frozen at previous market session",
-      "unit": "evaluable_sessions",
+      "unit": "actual_evaluable_sessions",
       "unknown_reason_family": [
         "MISSING_REQUIRED_FACT",
         "PRICE_BASIS_MISMATCH",
@@ -2796,8 +2797,8 @@
       "logical_field": "pivot_right_count",
       "output_digest": "SHA256_CANONICAL_FIELD_VALUE_AND_METADATA",
       "parameter_set_id": "V4_12_ENGINEERING_CANDIDATE_R1",
-      "producer_contract_id": "V4_12_SESSION_COUNTER_V1",
-      "producer_version": "1.0.0",
+      "producer_contract_id": "V4_12_SESSION_COUNTER_V2",
+      "producer_version": "2.0.0",
       "publication_identity": [
         "contract_id",
         "parameter_set_digest",
@@ -2819,10 +2820,11 @@
       "required_by": [
         "definition.pivot_available"
       ],
+      "semantic_dimension": "actual_evaluable_window_count",
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -2830,91 +2832,7 @@
       "time_role": "T_INTERNAL_D1",
       "trade_date": "observation_t",
       "trade_date_semantics": "Derived/view at observation_t; any prior event source frozen at previous market session",
-      "unit": "evaluable_sessions",
-      "unknown_reason_family": [
-        "MISSING_REQUIRED_FACT",
-        "PRICE_BASIS_MISMATCH",
-        "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE"
-      ]
-    },
-    {
-      "accepted_head_path": null,
-      "accepted_head_sha256": null,
-      "accepted_parameter_set_id": null,
-      "accepted_source_field": null,
-      "accepted_source_stage": null,
-      "authority_status": "BLOCKED_WITH_EXPLICIT_REASON",
-      "blocked_reason": "Design-only local derivation; runtime not authorized",
-      "capability": "RUNTIME_NOT_AUTHORIZED",
-      "consumer_definitions": [
-        "held_count",
-        "old_anchor",
-        "recovery_held_count"
-      ],
-      "consumer_machine_rules": [
-        "acceptance.ACCEPTED",
-        "acceptance.PENDING",
-        "breakout.BREAKOUT_ACCEPTED",
-        "breakout.TESTING",
-        "recovery.ANCHOR_RECLAIM",
-        "recovery.RECOVERY_CONFIRMED",
-        "support.HELD_TENTATIVE",
-        "support.IDLE"
-      ],
-      "data_type": "integer",
-      "field": "post_creation_sessions",
-      "field_role": "D1_LOCAL_DERIVATION",
-      "formal_or_diagnostic": "CONTRACT_DESIGN_ONLY",
-      "globally_required": false,
-      "local_derivation_contract": "config/v4_12_source_derivations_r2.json",
-      "logical_field": "post_creation_sessions",
-      "output_digest": "SHA256_CANONICAL_FIELD_VALUE_AND_METADATA",
-      "parameter_set_id": "V4_12_ENGINEERING_CANDIDATE_R1",
-      "producer_contract_id": "V4_12_SESSION_COUNTER_V1",
-      "producer_version": "1.0.0",
-      "publication_identity": [
-        "contract_id",
-        "parameter_set_digest",
-        "publication_id",
-        "publication_digest",
-        "source_revision",
-        "security_id",
-        "trade_date",
-        "available_at"
-      ],
-      "quality": [
-        "KNOWN",
-        "UNKNOWN",
-        "STALE",
-        "NOT_APPLICABLE"
-      ],
-      "quality_semantics": "UNKNOWN/STALE operands never treated as FALSE or reconstructed; exact owner reason retained",
-      "raw_reconstruction_allowed": false,
-      "required_by": [
-        "acceptance.ACCEPTED",
-        "acceptance.PENDING",
-        "breakout.BREAKOUT_ACCEPTED",
-        "breakout.TESTING",
-        "recovery.ANCHOR_RECLAIM",
-        "recovery.RECOVERY_CONFIRMED",
-        "support.HELD_TENTATIVE",
-        "support.IDLE",
-        "definition.held_count",
-        "definition.old_anchor",
-        "definition.recovery_held_count"
-      ],
-      "source_contract_binding": {
-        "bytes": 41301,
-        "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
-      },
-      "source_namespace": "D1_LOCAL_DERIVATION",
-      "target_publication_available": false,
-      "target_publications": {},
-      "time_role": "T_INTERNAL_D1",
-      "trade_date": "observation_t",
-      "trade_date_semantics": "Derived/view at observation_t; any prior event source frozen at previous market session",
-      "unit": "evaluable_sessions",
+      "unit": "actual_evaluable_sessions",
       "unknown_reason_family": [
         "MISSING_REQUIRED_FACT",
         "PRICE_BASIS_MISMATCH",
@@ -3194,6 +3112,7 @@
         "definition.episode_invalidated",
         "definition.hard_invalidated"
       ],
+      "semantic_dimension": "consecutive_evaluable_count",
       "source_contract_binding": null,
       "source_namespace": "FROZEN_ANCHOR_EVENT",
       "target_publication_available": false,
@@ -3201,7 +3120,7 @@
       "time_role": "T_MINUS_1",
       "trade_date": "previous_market_session",
       "trade_date_semantics": "Previous-market-session publication; immutable anchor/event creation date retained separately",
-      "unit": "evaluable_sessions",
+      "unit": "consecutive_evaluable_sessions",
       "unknown_reason_family": [
         "MISSING_REQUIRED_FACT",
         "PRICE_BASIS_MISMATCH",
@@ -3435,13 +3354,13 @@
       "quality_semantics": "UNKNOWN/STALE operands never treated as FALSE or reconstructed; exact owner reason retained",
       "raw_reconstruction_allowed": false,
       "required_by": [
-        "pullback.PULLBACK_IN_PROGRESS",
-        "definition.post_peak_drawdown"
+        "definition.post_peak_drawdown",
+        "pullback.PULLBACK_IN_PROGRESS"
       ],
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -3568,6 +3487,7 @@
         "support.HELD_TENTATIVE",
         "definition.held_count"
       ],
+      "semantic_dimension": "consecutive_evaluable_count",
       "source_contract_binding": null,
       "source_namespace": "FROZEN_ANCHOR_EVENT",
       "target_publication_available": false,
@@ -3575,7 +3495,7 @@
       "time_role": "T_MINUS_1",
       "trade_date": "previous_market_session",
       "trade_date_semantics": "Previous-market-session publication; immutable anchor/event creation date retained separately",
-      "unit": "evaluable_sessions",
+      "unit": "consecutive_evaluable_sessions",
       "unknown_reason_family": [
         "MISSING_REQUIRED_FACT",
         "PRICE_BASIS_MISMATCH",
@@ -3759,6 +3679,7 @@
       "required_by": [
         "definition.range_anchor_qualified"
       ],
+      "semantic_dimension": "dimensionless_ATR_multiple",
       "source_contract_binding": null,
       "source_namespace": "BLOCKED_CAPABILITY",
       "target_publication_available": false,
@@ -3766,7 +3687,7 @@
       "time_role": "T",
       "trade_date": "observation_t",
       "trade_date_semantics": "observation_t",
-      "unit": "dimensionless_ratio",
+      "unit": "dimensionless_ATR_multiple",
       "unknown_reason_family": [
         "MISSING_REQUIRED_FACT",
         "PRICE_BASIS_MISMATCH",
@@ -3936,6 +3857,7 @@
         "recovery.RECOVERY_CONFIRMED",
         "definition.recovery_held_count"
       ],
+      "semantic_dimension": "consecutive_evaluable_count",
       "source_contract_binding": null,
       "source_namespace": "FROZEN_ANCHOR_EVENT",
       "target_publication_available": false,
@@ -3943,7 +3865,7 @@
       "time_role": "T_MINUS_1",
       "trade_date": "previous_market_session",
       "trade_date_semantics": "Previous-market-session publication; immutable anchor/event creation date retained separately",
-      "unit": "evaluable_sessions",
+      "unit": "consecutive_evaluable_sessions",
       "unknown_reason_family": [
         "MISSING_REQUIRED_FACT",
         "PRICE_BASIS_MISMATCH",
@@ -4064,6 +3986,7 @@
         "definition.separated_retest",
         "definition.separated_sessions"
       ],
+      "semantic_dimension": "actual_session_separation_count",
       "source_contract_binding": null,
       "source_namespace": "FROZEN_ANCHOR_EVENT",
       "target_publication_available": false,
@@ -4071,7 +3994,7 @@
       "time_role": "T_MINUS_1",
       "trade_date": "previous_market_session",
       "trade_date_semantics": "Previous-market-session publication; immutable anchor/event creation date retained separately",
-      "unit": "evaluable_sessions",
+      "unit": "actual_session_separation_count",
       "unknown_reason_family": [
         "MISSING_REQUIRED_FACT",
         "PRICE_BASIS_MISMATCH",
@@ -4325,13 +4248,13 @@
       "quality_semantics": "UNKNOWN/STALE operands never treated as FALSE or reconstructed; exact owner reason retained",
       "raw_reconstruction_allowed": false,
       "required_by": [
-        "recovery.RECOVERY_CONFIRMED",
-        "definition.recovery_held_count"
+        "definition.recovery_held_count",
+        "recovery.RECOVERY_CONFIRMED"
       ],
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -4601,9 +4524,9 @@
         "definition.common_coordinate_return"
       ],
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -4668,9 +4591,9 @@
         "pullback.PULLBACK_RECLAIMED"
       ],
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -5729,15 +5652,15 @@
       "required_by": [
         "acceptance.ACCEPTED",
         "breakout.BREAKOUT_ACCEPTED",
-        "recovery.RECOVERY_CONFIRMED",
-        "support.HELD_TENTATIVE",
         "definition.held_count",
-        "definition.recovery_held_count"
+        "definition.recovery_held_count",
+        "recovery.RECOVERY_CONFIRMED",
+        "support.HELD_TENTATIVE"
       ],
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -5803,6 +5726,11 @@
       "raw_reconstruction_allowed": false,
       "required_by": [
         "breakout.TESTING",
+        "definition.eod_reclaim",
+        "definition.fully_outside_test_band",
+        "definition.next_test_count",
+        "definition.separated_retest",
+        "definition.separated_sessions",
         "pullback.PULLBACK_TO_BREAKOUT",
         "pullback.PULLBACK_TO_IMPULSE",
         "pullback.PULLBACK_TO_MA",
@@ -5810,17 +5738,12 @@
         "support.HELD_CONFIRMED",
         "support.RECLAIMED",
         "support.RETESTING",
-        "support.TESTING",
-        "definition.eod_reclaim",
-        "definition.fully_outside_test_band",
-        "definition.next_test_count",
-        "definition.separated_retest",
-        "definition.separated_sessions"
+        "support.TESTING"
       ],
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -5879,17 +5802,17 @@
       "raw_reconstruction_allowed": false,
       "required_by": [
         "acceptance.BROKEN",
-        "support.BREACHED_SHALLOW",
-        "support.BROKEN",
-        "support.HELD_TENTATIVE",
         "definition.breach_count",
         "definition.episode_invalidated",
-        "definition.hard_invalidated"
+        "definition.hard_invalidated",
+        "support.BREACHED_SHALLOW",
+        "support.BROKEN",
+        "support.HELD_TENTATIVE"
       ],
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -5945,14 +5868,14 @@
       "raw_reconstruction_allowed": false,
       "required_by": [
         "acceptance.BROKEN",
-        "support.BROKEN",
         "definition.episode_invalidated",
-        "definition.hard_invalidated"
+        "definition.hard_invalidated",
+        "support.BROKEN"
       ],
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -6008,16 +5931,16 @@
       "quality_semantics": "UNKNOWN/STALE operands never treated as FALSE or reconstructed; exact owner reason retained",
       "raw_reconstruction_allowed": false,
       "required_by": [
+        "definition.next_test_count",
         "recovery.ANCHOR_RECLAIM",
         "support.HELD_CONFIRMED",
         "support.RECLAIMED",
-        "support.RETESTING",
-        "definition.next_test_count"
+        "support.RETESTING"
       ],
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -6073,14 +5996,15 @@
       "raw_reconstruction_allowed": false,
       "required_by": [
         "acceptance.BROKEN",
-        "support.BROKEN",
         "definition.episode_invalidated",
-        "definition.hard_invalidated"
+        "definition.hard_invalidated",
+        "support.BROKEN"
       ],
+      "semantic_dimension": "consecutive_evaluable_count",
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -6088,7 +6012,7 @@
       "time_role": "T_INTERNAL_D1",
       "trade_date": "observation_t",
       "trade_date_semantics": "Derived/view at observation_t; any prior event source frozen at previous market session",
-      "unit": "actual_evaluable_sessions",
+      "unit": "consecutive_evaluable_sessions",
       "unknown_reason_family": [
         "EXACT_SOURCE_REASON",
         "PRICE_BASIS_MISMATCH",
@@ -6133,13 +6057,13 @@
       "quality_semantics": "UNKNOWN/STALE operands never treated as FALSE or reconstructed; exact owner reason retained",
       "raw_reconstruction_allowed": false,
       "required_by": [
-        "support.HELD_CONFIRMED",
-        "definition.next_test_count"
+        "definition.next_test_count",
+        "support.HELD_CONFIRMED"
       ],
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -6189,9 +6113,9 @@
       "raw_reconstruction_allowed": false,
       "required_by": [],
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -6241,9 +6165,9 @@
       "raw_reconstruction_allowed": false,
       "required_by": [],
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -6292,10 +6216,11 @@
       "quality_semantics": "UNKNOWN/STALE operands never treated as FALSE or reconstructed; exact owner reason retained",
       "raw_reconstruction_allowed": false,
       "required_by": [],
+      "semantic_dimension": "actual_session_separation_count",
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -6303,7 +6228,7 @@
       "time_role": "T_INTERNAL_D1",
       "trade_date": "observation_t",
       "trade_date_semantics": "Derived/view at observation_t; any prior event source frozen at previous market session",
-      "unit": "actual_evaluable_sessions",
+      "unit": "actual_session_separation_count",
       "unknown_reason_family": [
         "EXACT_SOURCE_REASON",
         "PRICE_BASIS_MISMATCH",
@@ -6352,10 +6277,11 @@
         "breakout.BREAKOUT_ACCEPTED",
         "support.HELD_TENTATIVE"
       ],
+      "semantic_dimension": "consecutive_evaluable_count",
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -6363,7 +6289,7 @@
       "time_role": "T_INTERNAL_D1",
       "trade_date": "observation_t",
       "trade_date_semantics": "Derived/view at observation_t; any prior event source frozen at previous market session",
-      "unit": "actual_evaluable_sessions",
+      "unit": "consecutive_evaluable_sessions",
       "unknown_reason_family": [
         "EXACT_SOURCE_REASON",
         "PRICE_BASIS_MISMATCH",
@@ -6408,10 +6334,11 @@
       "required_by": [
         "recovery.RECOVERY_CONFIRMED"
       ],
+      "semantic_dimension": "consecutive_evaluable_count",
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -6419,7 +6346,7 @@
       "time_role": "T_INTERNAL_D1",
       "trade_date": "observation_t",
       "trade_date_semantics": "Derived/view at observation_t; any prior event source frozen at previous market session",
-      "unit": "actual_evaluable_sessions",
+      "unit": "consecutive_evaluable_sessions",
       "unknown_reason_family": [
         "EXACT_SOURCE_REASON",
         "PRICE_BASIS_MISMATCH",
@@ -6465,9 +6392,9 @@
         "pullback.PULLBACK_IN_PROGRESS"
       ],
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -6523,9 +6450,9 @@
         "definition.impulse"
       ],
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -6575,9 +6502,9 @@
       "raw_reconstruction_allowed": false,
       "required_by": [],
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -6630,10 +6557,11 @@
       "required_by": [
         "definition.impulse"
       ],
+      "semantic_dimension": "dimensionless_ATR_multiple",
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -6641,7 +6569,7 @@
       "time_role": "T_INTERNAL_D1",
       "trade_date": "observation_t",
       "trade_date_semantics": "Derived/view at observation_t; any prior event source frozen at previous market session",
-      "unit": "dimensionless_ratio",
+      "unit": "dimensionless_ATR_multiple",
       "unknown_reason_family": [
         "EXACT_SOURCE_REASON",
         "PRICE_BASIS_MISMATCH",
@@ -6686,10 +6614,11 @@
       "required_by": [
         "definition.impulse"
       ],
+      "semantic_dimension": "dimensionless_ATR_multiple",
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -6697,7 +6626,7 @@
       "time_role": "T_INTERNAL_D1",
       "trade_date": "observation_t",
       "trade_date_semantics": "Derived/view at observation_t; any prior event source frozen at previous market session",
-      "unit": "dimensionless_ratio",
+      "unit": "dimensionless_ATR_multiple",
       "unknown_reason_family": [
         "EXACT_SOURCE_REASON",
         "PRICE_BASIS_MISMATCH",
@@ -6739,9 +6668,9 @@
       "raw_reconstruction_allowed": false,
       "required_by": [],
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -6795,9 +6724,9 @@
         "breakout.BREAKOUT_TENTATIVE"
       ],
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -6851,9 +6780,9 @@
         "recovery.MA20_RECLAIM"
       ],
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -6907,9 +6836,9 @@
         "recovery.RELATIVE_RECOVERY"
       ],
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -6963,9 +6892,9 @@
         "definition.retention_value"
       ],
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -7015,9 +6944,9 @@
       "raw_reconstruction_allowed": false,
       "required_by": [],
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -7067,9 +6996,9 @@
       "raw_reconstruction_allowed": false,
       "required_by": [],
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -7119,9 +7048,9 @@
       "raw_reconstruction_allowed": false,
       "required_by": [],
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -7171,9 +7100,9 @@
       "raw_reconstruction_allowed": false,
       "required_by": [],
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -7223,9 +7152,9 @@
       "raw_reconstruction_allowed": false,
       "required_by": [],
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -7275,9 +7204,9 @@
       "raw_reconstruction_allowed": false,
       "required_by": [],
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -7327,9 +7256,9 @@
       "raw_reconstruction_allowed": false,
       "required_by": [],
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -7386,9 +7315,9 @@
         "definition.hard_invalidated"
       ],
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -7442,9 +7371,9 @@
         "acceptance.BROKEN"
       ],
       "source_contract_binding": {
-        "bytes": 41301,
+        "bytes": 41434,
         "path": "config/v4_12_machine_ast_v1.json",
-        "sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f"
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
       },
       "source_namespace": "D1_LOCAL_DERIVATION",
       "target_publication_available": false,
@@ -8290,6 +8219,153 @@
         "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
         "PRICE_BASIS_MISMATCH"
       ]
+    },
+    {
+      "accepted_head_path": null,
+      "accepted_head_sha256": null,
+      "accepted_parameter_set_id": null,
+      "accepted_source_field": null,
+      "accepted_source_stage": null,
+      "authority_status": "BLOCKED_WITH_EXPLICIT_REASON",
+      "blocked_reason": "Design-only local derivation; runtime not authorized",
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "consumer_definitions": [
+        "held_count",
+        "old_anchor",
+        "recovery_held_count"
+      ],
+      "consumer_machine_rules": [
+        "acceptance.ACCEPTED",
+        "breakout.BREAKOUT_ACCEPTED",
+        "breakout.TESTING",
+        "recovery.ANCHOR_RECLAIM",
+        "recovery.RECOVERY_CONFIRMED",
+        "support.HELD_TENTATIVE",
+        "support.IDLE"
+      ],
+      "data_type": "integer",
+      "field": "post_creation_market_sessions",
+      "field_role": "D1_LOCAL_DERIVATION",
+      "formal_or_diagnostic": "CONTRACT_DESIGN_ONLY",
+      "globally_required": false,
+      "local_derivation_contract": "config/v4_12_source_derivations_r2.json",
+      "logical_field": "post_creation_market_sessions",
+      "output_digest": "SHA256_CANONICAL_FIELD_VALUE_AND_METADATA",
+      "parameter_set_id": "V4_12_ENGINEERING_CANDIDATE_R1",
+      "producer_contract_id": "V4_12_SESSION_COUNTER_V2",
+      "producer_version": "2.0.0",
+      "publication_identity": [
+        "contract_id",
+        "parameter_set_digest",
+        "publication_id",
+        "publication_digest",
+        "source_revision",
+        "security_id",
+        "trade_date",
+        "available_at"
+      ],
+      "quality": [
+        "KNOWN",
+        "UNKNOWN",
+        "STALE",
+        "NOT_APPLICABLE"
+      ],
+      "quality_semantics": "UNKNOWN/STALE operands never treated as FALSE or reconstructed; exact owner reason retained",
+      "raw_reconstruction_allowed": false,
+      "required_by": [
+        "acceptance.ACCEPTED",
+        "breakout.BREAKOUT_ACCEPTED",
+        "breakout.TESTING",
+        "definition.held_count",
+        "definition.old_anchor",
+        "definition.recovery_held_count",
+        "recovery.ANCHOR_RECLAIM",
+        "recovery.RECOVERY_CONFIRMED",
+        "support.HELD_TENTATIVE",
+        "support.IDLE"
+      ],
+      "semantic_dimension": "market_session_age",
+      "source_contract_binding": {
+        "bytes": 41434,
+        "path": "config/v4_12_machine_ast_v1.json",
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
+      },
+      "source_namespace": "D1_LOCAL_DERIVATION",
+      "target_publication_available": false,
+      "target_publications": {},
+      "time_role": "T_INTERNAL_D1",
+      "trade_date": "observation_t",
+      "trade_date_semantics": "Derived/view at observation_t; any prior event source frozen at previous market session",
+      "unit": "market_sessions_after_available_date",
+      "unknown_reason_family": [
+        "MISSING_REQUIRED_FACT",
+        "PRICE_BASIS_MISMATCH",
+        "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE"
+      ]
+    },
+    {
+      "accepted_head_path": null,
+      "accepted_head_sha256": null,
+      "accepted_parameter_set_id": null,
+      "accepted_source_field": null,
+      "accepted_source_stage": null,
+      "authority_status": "BLOCKED_WITH_EXPLICIT_REASON",
+      "blocked_reason": "Design-only local derivation; runtime not authorized",
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "consumer_definitions": [],
+      "consumer_machine_rules": [
+        "acceptance.PENDING"
+      ],
+      "data_type": "integer",
+      "field": "post_creation_evaluable_sessions",
+      "field_role": "D1_LOCAL_DERIVATION",
+      "formal_or_diagnostic": "CONTRACT_DESIGN_ONLY",
+      "globally_required": false,
+      "local_derivation_contract": "config/v4_12_source_derivations_r2.json",
+      "logical_field": "post_creation_evaluable_sessions",
+      "output_digest": "SHA256_CANONICAL_FIELD_VALUE_AND_METADATA",
+      "parameter_set_id": "V4_12_ENGINEERING_CANDIDATE_R1",
+      "producer_contract_id": "V4_12_SESSION_COUNTER_V2",
+      "producer_version": "2.0.0",
+      "publication_identity": [
+        "contract_id",
+        "parameter_set_digest",
+        "publication_id",
+        "publication_digest",
+        "source_revision",
+        "security_id",
+        "trade_date",
+        "available_at"
+      ],
+      "quality": [
+        "KNOWN",
+        "UNKNOWN",
+        "STALE",
+        "NOT_APPLICABLE"
+      ],
+      "quality_semantics": "UNKNOWN/STALE operands never treated as FALSE or reconstructed; exact owner reason retained",
+      "raw_reconstruction_allowed": false,
+      "required_by": [
+        "acceptance.PENDING"
+      ],
+      "semantic_dimension": "evaluable_session_count",
+      "source_contract_binding": {
+        "bytes": 41434,
+        "path": "config/v4_12_machine_ast_v1.json",
+        "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
+      },
+      "source_namespace": "D1_LOCAL_DERIVATION",
+      "target_publication_available": false,
+      "target_publications": {},
+      "time_role": "T_INTERNAL_D1",
+      "trade_date": "observation_t",
+      "trade_date_semantics": "Derived/view at observation_t; any prior event source frozen at previous market session",
+      "unit": "evaluable_sessions",
+      "unknown_reason_family": [
+        "MISSING_REQUIRED_FACT",
+        "PRICE_BASIS_MISMATCH",
+        "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE"
+      ]
     }
   ],
   "freeze_scope": "CONTRACT_DESIGN_ONLY",
@@ -8305,6 +8381,7 @@
     "2026-09-29",
     "2026-09-30"
   ],
+  "time_counter_amendment": "R2.1",
   "unit_rules": {
     "ATR": "CNY difference; positive scale only",
     "CLV": "dimensionless [0,1] or UNKNOWN when H=L",

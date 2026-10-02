@@ -19,7 +19,8 @@
     "lo": 10,
     "ma20_t_minus_1": null,
     "near_high20_state": "OTHER",
-    "post_creation_sessions": 1,
+    "post_creation_evaluable_sessions": 1,
+    "post_creation_market_sessions": 1,
     "prior_adjacent_evaluable": false,
     "prior_breach_count": 0,
     "prior_breakout_exists": false,
@@ -43,11 +44,12 @@
   },
   "expected_generation": "HAND_AUTHORED_REV4_RULE_BOOK_AND_INDEPENDENT_DECIMAL_ARITHMETIC; no AST helper imports",
   "independent_oracle_source": {
-    "bytes": 13226,
-    "path": "scripts/v4_12_independent_vector_oracle_r1.py",
-    "sha256": "b42d705ae67ab753421890bc154bdc9534be1af74d1d346817b4a4f0178b0776"
+    "bytes": 6481,
+    "path": "scripts/v4_12_time_counter_oracle_r2_1.py",
+    "sha256": "a3a39a5ce5b7e6e197efe893572929428a1c29cb85695c66e4cf035774aef4ba"
   },
   "scope": "CONTRACT_ONLY_INDEPENDENT_ORACLE",
+  "time_counter_amendment": "R2.1_B03_MISSING_NORMATIVE_CORRECTION",
   "vectors": [
     {
       "expected": "NO_BREAKOUT",
@@ -107,7 +109,8 @@
       "expected": "BREAKOUT_TENTATIVE",
       "independent_oracle_proof": "13A/10J: creation day age=0; acceptance forbidden even bogus held count",
       "inputs": {
-        "post_creation_sessions": 0,
+        "post_creation_evaluable_sessions": 0,
+        "post_creation_market_sessions": 0,
         "prior_adjacent_evaluable": true,
         "prior_breakout_exists": true,
         "prior_held_count": 8
@@ -123,7 +126,8 @@
       "inputs": {
         "C": 10,
         "hi": 10,
-        "post_creation_sessions": 1,
+        "post_creation_evaluable_sessions": 1,
+        "post_creation_market_sessions": 1,
         "prior_held_count": 0
       },
       "kind": "AST",
@@ -137,7 +141,8 @@
       "inputs": {
         "C": 10,
         "hi": 10,
-        "post_creation_sessions": 2,
+        "post_creation_evaluable_sessions": 2,
+        "post_creation_market_sessions": 2,
         "prior_adjacent_evaluable": true,
         "prior_held_count": 1
       },
@@ -147,17 +152,19 @@
       "vector_id": "B03_t2"
     },
     {
-      "expected": "NOT_ACCEPTED",
-      "independent_oracle_proof": "41D: missing intervening session resets count; calendar age alone insufficient",
+      "expected": "PENDING",
+      "independent_oracle_proof": "41D/R9: T0 created, T+1 missing, T+2 first evaluable hold; market age 2, evaluable count 1, held count 1 -> PENDING. Full independent sequence C01-C04.",
       "inputs": {
         "C": 10,
         "hi": 10,
-        "post_creation_sessions": 3,
+        "post_creation_evaluable_sessions": 1,
+        "post_creation_market_sessions": 2,
         "prior_adjacent_evaluable": false,
-        "prior_held_count": 1
+        "prior_held_count": 0
       },
       "kind": "AST",
       "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
+      "sequence_ref": "config/v4_12_time_counter_vectors_r2_1.json#/sequences/1",
       "target": "acceptance",
       "vector_id": "B03_missing"
     },
@@ -325,7 +332,8 @@
         "MA20": 10,
         "close_t_minus_1": null,
         "ma20_t_minus_1": null,
-        "post_creation_sessions": 0,
+        "post_creation_evaluable_sessions": 0,
+        "post_creation_market_sessions": 0,
         "prior_recovery_exists": true,
         "prior_recovery_held_count": 9
       },
@@ -339,7 +347,8 @@
       "independent_oracle_proof": "10L: frozen prior recovery line, two held post-event sessions",
       "inputs": {
         "C": 11,
-        "post_creation_sessions": 2,
+        "post_creation_evaluable_sessions": 2,
+        "post_creation_market_sessions": 2,
         "prior_adjacent_evaluable": true,
         "prior_recovery_exists": true,
         "prior_recovery_held_count": 1,
@@ -815,7 +824,8 @@
       "independent_oracle_proof": "41A: gap registration day cannot test itself",
       "inputs": {
         "anchor_type": "GAP_ZONE",
-        "post_creation_sessions": 0
+        "post_creation_evaluable_sessions": 0,
+        "post_creation_market_sessions": 0
       },
       "kind": "AST",
       "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
@@ -839,7 +849,8 @@
       "independent_oracle_proof": "41B impulse same-day no test",
       "inputs": {
         "anchor_type": "BULLISH_IMPULSE_BODY",
-        "post_creation_sessions": 0
+        "post_creation_evaluable_sessions": 0,
+        "post_creation_market_sessions": 0
       },
       "kind": "AST",
       "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
@@ -854,7 +865,8 @@
         "H": 11,
         "L": 10,
         "anchor_type": "BULLISH_IMPULSE_BODY",
-        "post_creation_sessions": 1
+        "post_creation_evaluable_sessions": 1,
+        "post_creation_market_sessions": 1
       },
       "kind": "AST",
       "scope": "SYNTHETIC_CONTRACT_VECTOR_NOT_ACCEPTED_PUBLICATION",
@@ -950,7 +962,8 @@
       "expected": "IDLE",
       "independent_oracle_proof": "13A new Anchor cannot self-support regardless historical-looking supplied counts",
       "inputs": {
-        "post_creation_sessions": 0,
+        "post_creation_evaluable_sessions": 0,
+        "post_creation_market_sessions": 0,
         "prior_separated_sessions": 10,
         "prior_test_count": 10
       },

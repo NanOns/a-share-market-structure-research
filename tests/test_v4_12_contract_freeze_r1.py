@@ -134,7 +134,7 @@ def test_anchor_schema_complete_machine_types():
 
 def test_candidate_only_scope_and_protected_heads():
     result=validate()
-    assert result['status'] in ['V4_12_R1_CONTRACT_FREEZE_CANDIDATE_READY_FOR_EXTERNAL_AUDIT','V4_12_R2_CONTRACT_AUTHORITY_REPAIR_CANDIDATE_READY_FOR_EXTERNAL_AUDIT']
+    assert result['status'] in ['V4_12_R1_CONTRACT_FREEZE_CANDIDATE_READY_FOR_EXTERNAL_AUDIT','V4_12_R2_CONTRACT_AUTHORITY_REPAIR_CANDIDATE_READY_FOR_EXTERNAL_AUDIT','V4_12_R2_1_TIME_COUNTER_SEMANTICS_CANDIDATE_READY_FOR_EXTERNAL_AUDIT']
     assert not result['runtime_implemented'] and not result['runtime_authorized']
     assert all(r['byte_identical'] for r in result['scope_proof']['protected_artifacts'])
     assert not any(result['permissions'].values())

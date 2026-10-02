@@ -36,12 +36,28 @@
       "status": "BLOCKED_WITH_EXPLICIT_REASON"
     }
   ],
-  "clean_after": false,
-  "clean_before": false,
+  "clean_after": true,
+  "clean_before": true,
+  "clean_detached_gate": {
+    "bytes": 5853,
+    "path": "reports/v4_13_runtime_r16/R16_CLEAN_DETACHED_GATE.json",
+    "sha256": "29c524d2da417ffaba103ae0c1289c06e70c84dfe4d31ef619485e7067d4fdf9"
+  },
+  "clean_detached_test_results": {
+    "bytes": 42501,
+    "path": "reports/v4_13_runtime_r16/R16_CLEAN_TEST_RESULTS.xml",
+    "sha256": "d49a4460a4493dfe72381d815c31a6f70d07bf8e8f00f6610440d9f64ef4b881"
+  },
+  "clean_detached_validation": "PASS",
   "current_audit_candidate": "real/2026-09-30/r5",
   "data": "2026-09-30",
   "external_acceptance": "PENDING",
   "focus": false,
+  "fresh_process_readback": {
+    "bytes": 810,
+    "path": "reports/v4_13_runtime_r16/R16_FRESH_PROCESS_READBACK.json",
+    "sha256": "0de1dcb232e697df8872f25b442d0ad7ec55d8e27c18d050b876374d06642497"
+  },
   "frozen_contracts": "EXACT_UNCHANGED",
   "global_mandatory_adoption": false,
   "independent_runtime_oracle": "PASS",
@@ -187,8 +203,9 @@
     "path": "reports/v4_13_runtime_r16/REGRESSION_SCOPE_DISPOSITION.json",
     "sha256": "23f44b2470abc9d0ad8123800b19c82693f6cc7ccd9eb3c4f3fb197b31422919"
   },
+  "seal_commit_scope": "EVIDENCE_ONLY; runtime and frozen contracts equal tested source SHA",
   "shadow": false,
-  "source_sha": "dcbfe610b5cb0a8d94dc743963a1fa80f7f71f32",
+  "source_sha": "6ae02c7d95c9c6f51666602f7444baaad3620aef",
   "stage": "V4_00_TO_V4_12_ACCEPTED",
   "start_remote_head": "dcbfe610b5cb0a8d94dc743963a1fa80f7f71f32",
   "test_results": {

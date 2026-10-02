@@ -1,0 +1,31 @@
+{
+  "R11_retained": "PASS",
+  "R12_retained": "PASS",
+  "authority_vectors": 12,
+  "breakout_cases": 12,
+  "business_vectors": 69,
+  "independent_persisted_oracle": "PASS",
+  "multi_anchor_cases": 12,
+  "real_securities": 5224,
+  "selector_vectors": 11,
+  "sequence_steps": 33,
+  "source_manifest": {
+    "config/v4_12_breakout_episode_contract_v1.json": "c959c30179e43d3b6e60cda0f55c3189c2eb87ff8df6cd3b2d4c3b312defb2a3",
+    "config/v4_12_breakout_episode_vectors_v1.json": "83061cfdc23d83a7952b855bd78a92d2394244a5feba58a63cc3c0730157235c",
+    "scripts/finalize_v4_12_r13_handoff.py": "9ba8676e692bc9056f0ccf990c6f2cb87c0e7b73dafbcbc23ab0acf6babde18c",
+    "scripts/prepare_v4_12_r13_contract.py": "c18c6e5cd6545de1443f98017fa6d20f33eaca6423302ced382d0338d17d68ac",
+    "scripts/replay_v4_12_r13_chain.py": "6a3706e0d0d08fdbafd387a12dfe9a107291be8f068285a7f5d6677daed47e77",
+    "scripts/run_v4_12_r13_day.py": "a4b0a1811e5646e055319a59fe69fcfac5ee596b3ec8663cba19c58791cd667b",
+    "scripts/seal_v4_12_r13.py": "6f4e151d00d93d9523ba5adb1964aeb5daf483dd02e190219b3cc16c358294ab",
+    "scripts/validate_v4_12_r13_contract.py": "49a538ed4fdaa2852d609c1fb263fc001e2229801900d79bcda9df2c7f5fb827",
+    "scripts/validate_v4_12_r13_runtime.py": "51cadaf587191273c20eead6771cc6356bb628b3e00ebefdf8ea52a2f9f106e8",
+    "scripts/verify_v4_r13_clean_checkout.py": "b95804baab29574955dcf66f8bd5a80d7d193b7423987ee8b640a37810bf1b49",
+    "src/workbench_analysis/v4_12_breakout_episode.py": "49d024ec70542f318f8a66e3156374766c0a23c78be9b3460294b302183b83ea",
+    "src/workbench_analysis/v4_12_breakout_snapshot.py": "5ec1d34f8f102e2d49ec2b5a396a9cd038f3a1fecd54af62629b29df9f735824",
+    "src/workbench_analysis/v4_12_structure_engine.py": "6623c8cdcf0eb8123daa88581a6e0ab1d391f1cb670d8855c728b22cc529854b",
+    "tests/test_v4_12_breakout_episode_r13.py": "2afb437034698b787d90737f94414429dd243e8cd2e74a4ec7a53bf96961fb6c"
+  },
+  "status": "PASS",
+  "tested_source_sha": "180606d6fe06f47b3639acf25e1549de1c19429f",
+  "time_vectors": 10
+}

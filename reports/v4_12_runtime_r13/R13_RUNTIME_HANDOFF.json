@@ -126,6 +126,7 @@
       "status": "BLOCKED_WITH_EXPLICIT_REASON"
     }
   ],
+  "clean_checkout": "PASS",
   "clean_checkout_gate": "scripts/verify_v4_r13_clean_checkout.py",
   "completeness_matrix": [
     {
@@ -6525,5 +6526,6 @@
     "superseded_deselection_reason": "Four pre-runtime source-scope gates plus R10 exact-source validator replaced by R13 independent gate; all business/authority/time vectors retained",
     "total": 336
   },
+  "tested_source_sha": "180606d6fe06f47b3639acf25e1549de1c19429f",
   "validator": "scripts/validate_v4_12_r13_runtime.py"
 }

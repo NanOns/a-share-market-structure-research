@@ -16,9 +16,9 @@ EXPECTED={
  'revisions':[('2026-09-23','r1','BREAKOUT_TENTATIVE',1),('2026-09-24','r1','TESTING',1),('2026-09-24','r2','UNKNOWN',1),('2026-09-24','r3','BREAKOUT_TENTATIVE',1)]}
 def sha(v):return hashlib.sha256((json.dumps(v,ensure_ascii=False,sort_keys=True,separators=(',',':'))+'\n').encode()).hexdigest()
 def read(path):return json.loads((ROOT/path).read_bytes())
-def raw(ref):
+def raw(ref,checkout=False):
  p=(ROOT/ref['path']).resolve();assert p.is_relative_to(ROOT.resolve())
- b=p.read_bytes();assert hashlib.sha256(b).hexdigest()==ref['sha256'] and len(b)==ref['bytes'];return b
+ b=p.read_bytes();expected=ref.get('checkout_sha256',ref['sha256']) if checkout else ref['sha256'];size=ref.get('checkout_bytes',ref['bytes']) if checkout else ref['bytes'];assert hashlib.sha256(b).hexdigest()==expected and len(b)==size,ref['path'];return b
 def exact(ref):return json.loads(raw(ref))
 def lines(ref):
  b=raw(ref);return [json.loads(l) for l in (gzip.decompress(b) if ref['path'].endswith('.gz') else b).splitlines()]
@@ -44,7 +44,7 @@ def load(base):
   for s in states.values():assert s['counter_state_digest']==sha(s['counter_state']) and s['owning_anchor_id']==s['anchor_id'] and s['owning_episode_id']==s['event']['event_id'] and s['output_envelope']['retest_count']==s['counter_state']['test_count']
   if run['breakout_episode_id']:assert run['breakout_owner_anchor_id']==next(e['owning_anchor_id'] for e in episodes if e['breakout_episode_id']==run['breakout_episode_id'])
  return dict(ref=ref,manifest=m,source=source,rows=rows,runs=runs,transitions=lines(art['transitions.jsonl']))
-def validate():
+def validate(checkout=False):
  proofs=[];revisions=[]
  for name,steps in EXPECTED.items():
   dates={}
@@ -95,7 +95,7 @@ def validate():
     if quality:assert Decimal(str(fact['value']))==Decimal(str(value)) if field['data_type'] in ['number','integer'] else fact['value']==value
     else:assert fact['value'] is None
   real.append(dict(date=date,securities=5224,episodes=0,state='UNKNOWN',accepted_source_parity='PASS',blocked_fields=len(blocked)));prior=loaded
- for ref in read(OUT+'R13_STAGE_CONTRACT.json')['protected']:raw(ref)
+ for ref in read(OUT+'R13_STAGE_CONTRACT.json')['protected']:raw(ref,checkout)
  out=dict(status='PASS',independent_oracle='HAND_WRITTEN_NO_RUNTIME_IMPORTS',cases=['E%02d'%i for i in range(1,13)],paths=proofs,same_day_predecessor='PASS',real=real,protected_exact='PASS',production=False,shadow=False,focus=False,global_mandatory_adoption=False)
  return out
 if __name__=='__main__':

@@ -12,7 +12,7 @@ def run(output):
  assert not git('status','--porcelain','--untracked-files=no') and not git('branch','--show-current')
  receipt=json.loads((ROOT/'reports/v4_12_runtime_r13/R13_FRESH_PROCESS_IDEMPOTENCY.json').read_bytes())
  for p,expected in receipt['source_manifest'].items():assert hashlib.sha256((ROOT/p).read_bytes()).hexdigest()==expected,p
- oracle=validate();r12();r11('a');r11('b');projection();revisions()
+ oracle=validate(checkout=True);r12();r11('a');r11('b');projection();revisions()
  changed=git('diff','a74c42671774a6df389e78c014f9218844f74539','HEAD','--name-only').splitlines()
  assert not any(p.startswith(('data/','migrations/','src/v4/','reports/v4_12_runtime_r11/','reports/v4_12_runtime_r12/','reports/v4_12/')) for p in changed)
  assert not any(p.startswith('config/') and p not in ['config/v4_12_breakout_episode_contract_v1.json','config/v4_12_breakout_episode_vectors_v1.json'] for p in changed)

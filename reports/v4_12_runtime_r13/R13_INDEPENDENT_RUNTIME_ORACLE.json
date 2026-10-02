@@ -1,0 +1,164 @@
+{
+  "cases": [
+    "E01",
+    "E02",
+    "E03",
+    "E04",
+    "E05",
+    "E06",
+    "E07",
+    "E08",
+    "E09",
+    "E10",
+    "E11",
+    "E12"
+  ],
+  "focus": false,
+  "global_mandatory_adoption": false,
+  "independent_oracle": "HAND_WRITTEN_NO_RUNTIME_IMPORTS",
+  "paths": [
+    {
+      "episodes": 0,
+      "path": "no_event/2026-09-23/r1",
+      "state": "NO_BREAKOUT",
+      "status": "PASS"
+    },
+    {
+      "episodes": 0,
+      "path": "near/2026-09-23/r1",
+      "state": "APPROACHING",
+      "status": "PASS"
+    },
+    {
+      "episodes": 0,
+      "path": "unknown_empty/2026-09-23/r1",
+      "state": "UNKNOWN",
+      "status": "PASS"
+    },
+    {
+      "episodes": 1,
+      "path": "holds/2026-09-23/r1",
+      "state": "BREAKOUT_TENTATIVE",
+      "status": "PASS"
+    },
+    {
+      "episodes": 1,
+      "path": "holds/2026-09-24/r1",
+      "state": "TESTING",
+      "status": "PASS"
+    },
+    {
+      "episodes": 1,
+      "path": "holds/2026-09-28/r1",
+      "state": "BREAKOUT_ACCEPTED",
+      "status": "PASS"
+    },
+    {
+      "episodes": 1,
+      "path": "retained/2026-09-23/r1",
+      "state": "BREAKOUT_TENTATIVE",
+      "status": "PASS"
+    },
+    {
+      "episodes": 1,
+      "path": "retained/2026-09-24/r1",
+      "state": "BREAKOUT_TENTATIVE",
+      "status": "PASS"
+    },
+    {
+      "episodes": 1,
+      "path": "duplicate/2026-09-23/r1",
+      "state": "BREAKOUT_TENTATIVE",
+      "status": "PASS"
+    },
+    {
+      "episodes": 1,
+      "path": "duplicate/2026-09-24/r1",
+      "state": "BREAKOUT_TENTATIVE",
+      "status": "PASS"
+    },
+    {
+      "episodes": 1,
+      "path": "display_switch/2026-09-23/r1",
+      "state": "BREAKOUT_TENTATIVE",
+      "status": "PASS"
+    },
+    {
+      "episodes": 1,
+      "path": "display_switch/2026-09-24/r1",
+      "state": "TESTING",
+      "status": "PASS"
+    },
+    {
+      "episodes": 1,
+      "path": "terminal/2026-09-23/r1",
+      "state": "BREAKOUT_TENTATIVE",
+      "status": "PASS"
+    },
+    {
+      "episodes": 1,
+      "path": "terminal/2026-09-24/r1",
+      "state": "BREAKOUT_TENTATIVE",
+      "status": "PASS"
+    },
+    {
+      "episodes": 1,
+      "path": "terminal/2026-09-28/r1",
+      "state": "FAILED_BREAKOUT",
+      "status": "PASS"
+    },
+    {
+      "episodes": 2,
+      "path": "terminal/2026-09-29/r1",
+      "state": "BREAKOUT_TENTATIVE",
+      "status": "PASS"
+    },
+    {
+      "episodes": 1,
+      "path": "revisions/2026-09-23/r1",
+      "state": "BREAKOUT_TENTATIVE",
+      "status": "PASS"
+    },
+    {
+      "episodes": 1,
+      "path": "revisions/2026-09-24/r1",
+      "state": "TESTING",
+      "status": "PASS"
+    },
+    {
+      "episodes": 1,
+      "path": "revisions/2026-09-24/r2",
+      "state": "UNKNOWN",
+      "status": "PASS"
+    },
+    {
+      "episodes": 1,
+      "path": "revisions/2026-09-24/r3",
+      "state": "BREAKOUT_TENTATIVE",
+      "status": "PASS"
+    }
+  ],
+  "production": false,
+  "protected_exact": "PASS",
+  "real": [
+    {
+      "accepted_source_parity": "PASS",
+      "blocked_fields": 19,
+      "date": "2026-09-29",
+      "episodes": 0,
+      "securities": 5224,
+      "state": "UNKNOWN"
+    },
+    {
+      "accepted_source_parity": "PASS",
+      "blocked_fields": 19,
+      "date": "2026-09-30",
+      "episodes": 0,
+      "securities": 5224,
+      "state": "UNKNOWN"
+    }
+  ],
+  "same_day_predecessor": "PASS",
+  "shadow": false,
+  "status": "PASS"
+}

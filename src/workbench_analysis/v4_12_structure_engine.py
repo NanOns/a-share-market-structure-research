@@ -49,7 +49,7 @@ class StructureEngine:
     def evaluate(self,security_id,prior_snapshot=None,extra_namespaces=None):
         facts=self.binder.bind(security_id,prior_snapshot,extra_namespaces)
         return self.evaluate_context(security_id,facts,self.binder.bound_prior,create=True)
-    def evaluate_context(self,security_id,facts,bound_prior=None,create=False):
+    def evaluate_context(self,security_id,facts,bound_prior=None,create=False,creation_filter=None):
         """One owning episode overlay; caller owns cardinality and active projection."""
         ast=ASTEngine(self.contracts.config,facts);input_digest=digest(facts)
         prior_ref=bound_prior[1] if bound_prior else None
@@ -74,6 +74,8 @@ class StructureEngine:
                 result=ast.target(row['field']);derived[row['field']]=result.record()
         anchors=[];events=[];construction=[]
         for spec in self.contracts.config['anchor_schema']['types'] if create else []:
+            if creation_filter is not None and not creation_filter(spec):
+                construction.append(dict(anchor_type=spec['anchor_type'],quality='KNOWN',reason='BREAKOUT_EPISODE_CREATION_GUARD'));continue
             if spec.get('blocked_reason'):
                 construction.append(dict(anchor_type=spec['anchor_type'],quality='UNKNOWN',reason=spec['blocked_reason']));continue
             qualified=ast.target(spec['creation_rule'])

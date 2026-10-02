@@ -1,0 +1,84 @@
+{
+  "V4_11_candidate_substitution": false,
+  "base_snapshot_contract": "config/v4_12_frozen_snapshot_contract_v2.json",
+  "bootstrap": "EXPLICIT_EMPTY_ENGINEERING_SEED_ONLY_OTHERWISE_UNKNOWN",
+  "business_rules": "NO_SECOND_RULE_SET",
+  "contract_id": "V4_12_BREAKOUT_EPISODE_CONTINUITY_V1",
+  "creation_allowed": "KNOWN_NO_ACTIVE_EPISODE",
+  "creation_day": "NO_TESTING_NO_ACCEPTANCE",
+  "creation_outputs": [
+    "BREAKOUT_TENTATIVE",
+    "APPROACHING",
+    "NO_BREAKOUT",
+    "UNKNOWN"
+  ],
+  "creation_rule": "FROZEN_breakout_trigger",
+  "duplicate_guard": "ACTIVE_OR_UNKNOWN_DISALLOWS_BREAKOUT_ANCHOR_CREATION",
+  "existing_outputs": [
+    "FAILED_BREAKOUT",
+    "BREAKOUT_ACCEPTED",
+    "TESTING",
+    "BREAKOUT_TENTATIVE",
+    "UNKNOWN"
+  ],
+  "existing_prior_breakout_exists": "FROZEN_ACTIVE_EPISODE_VALIDITY",
+  "existing_source": "EXACT_T_MINUS_1_FROZEN_EPISODE_OWNER_OVERLAY",
+  "failure_time_role": "FROZEN_AST_PRIOR_SUPPORT_STATE_NO_SAME_DAY_OVERRIDE",
+  "hard_vectors": [
+    "C01",
+    "C02",
+    "C03",
+    "C04",
+    "C05",
+    "C06",
+    "C07",
+    "C08",
+    "C09",
+    "C10",
+    "C11",
+    "C12"
+  ],
+  "identity_fields": [
+    "breakout_episode_id",
+    "event_id",
+    "security_id",
+    "owning_anchor_id",
+    "created_trade_date",
+    "state",
+    "validity",
+    "prior_episode_ref",
+    "last_observation_ref"
+  ],
+  "machine": "FROZEN_breakout",
+  "owner_rule": "UNIQUE_TYPE_NOT_ACTIVE_SELECTOR",
+  "owning_anchor_type": "PRIOR_HIGH",
+  "projection_fields": [
+    "basic_breakout_state",
+    "breakout_episode_id",
+    "breakout_owner_anchor_id",
+    "breakout_projection_quality",
+    "breakout_projection_reason"
+  ],
+  "provider_replacement": false,
+  "raw_fallback": false,
+  "same_day_revision": "ALL_REVISIONS_USE_EXACT_PREVIOUS_MARKET_SESSION",
+  "snapshot_extension": "V4_12_FROZEN_D1_BREAKOUT_EXTENSION_V1",
+  "status": "ENGINEERING_CANDIDATE",
+  "terminal_history": "RETAIN_IMMUTABLE_IDENTITY_ALLOW_LATER_NEW_TRIGGER",
+  "terminal_states": [
+    "FAILED_BREAKOUT"
+  ],
+  "transition_fields": [
+    "security_id",
+    "breakout_episode_id",
+    "event_id",
+    "owning_anchor_id",
+    "trade_date",
+    "revision",
+    "from_state",
+    "to_state",
+    "prior_session_state_ref"
+  ],
+  "unknown": "PRESERVE_ACTIVE_EPISODE_AND_BLOCK_CREATION",
+  "unknown_is_false": false
+}

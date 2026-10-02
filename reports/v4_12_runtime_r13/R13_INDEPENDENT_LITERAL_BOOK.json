@@ -1,0 +1,100 @@
+{
+  "cases": {
+    "E01": "no_event/2026-09-23/r1",
+    "E02": "near/2026-09-23/r1",
+    "E03": "holds/2026-09-23/r1",
+    "E04": "retained/2026-09-24/r1",
+    "E05": "holds/2026-09-24/r1",
+    "E06": "holds/2026-09-28/r1",
+    "E07": "terminal/2026-09-28/r1",
+    "E08": "terminal/2026-09-29/r1",
+    "E09": "duplicate/2026-09-24/r1",
+    "E10": "display_switch/2026-09-24/r1",
+    "E11": "revisions/2026-09-24/r3",
+    "E12": "revisions/2026-09-24/r2"
+  },
+  "expected": {
+    "display_switch/2026-09-23/r1": {
+      "episodes": 1,
+      "state": "BREAKOUT_TENTATIVE"
+    },
+    "display_switch/2026-09-24/r1": {
+      "episodes": 1,
+      "state": "TESTING"
+    },
+    "duplicate/2026-09-23/r1": {
+      "episodes": 1,
+      "state": "BREAKOUT_TENTATIVE"
+    },
+    "duplicate/2026-09-24/r1": {
+      "episodes": 1,
+      "state": "BREAKOUT_TENTATIVE"
+    },
+    "holds/2026-09-23/r1": {
+      "episodes": 1,
+      "state": "BREAKOUT_TENTATIVE"
+    },
+    "holds/2026-09-24/r1": {
+      "episodes": 1,
+      "state": "TESTING"
+    },
+    "holds/2026-09-28/r1": {
+      "episodes": 1,
+      "state": "BREAKOUT_ACCEPTED"
+    },
+    "near/2026-09-23/r1": {
+      "episodes": 0,
+      "state": "APPROACHING"
+    },
+    "no_event/2026-09-23/r1": {
+      "episodes": 0,
+      "state": "NO_BREAKOUT"
+    },
+    "retained/2026-09-23/r1": {
+      "episodes": 1,
+      "state": "BREAKOUT_TENTATIVE"
+    },
+    "retained/2026-09-24/r1": {
+      "episodes": 1,
+      "state": "BREAKOUT_TENTATIVE"
+    },
+    "revisions/2026-09-23/r1": {
+      "episodes": 1,
+      "state": "BREAKOUT_TENTATIVE"
+    },
+    "revisions/2026-09-24/r1": {
+      "episodes": 1,
+      "state": "TESTING"
+    },
+    "revisions/2026-09-24/r2": {
+      "episodes": 1,
+      "state": "UNKNOWN"
+    },
+    "revisions/2026-09-24/r3": {
+      "episodes": 1,
+      "state": "BREAKOUT_TENTATIVE"
+    },
+    "terminal/2026-09-23/r1": {
+      "episodes": 1,
+      "state": "BREAKOUT_TENTATIVE"
+    },
+    "terminal/2026-09-24/r1": {
+      "episodes": 1,
+      "state": "BREAKOUT_TENTATIVE"
+    },
+    "terminal/2026-09-28/r1": {
+      "episodes": 1,
+      "state": "FAILED_BREAKOUT"
+    },
+    "terminal/2026-09-29/r1": {
+      "episodes": 2,
+      "state": "BREAKOUT_TENTATIVE"
+    },
+    "unknown_empty/2026-09-23/r1": {
+      "episodes": 0,
+      "state": "UNKNOWN"
+    }
+  },
+  "failure_time_role": "PRIOR_SUPPORT_FROZEN_AST",
+  "oracle": "HAND_WRITTEN_NOT_RUNTIME_GENERATED"
+}

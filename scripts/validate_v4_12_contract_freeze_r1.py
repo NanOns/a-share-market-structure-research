@@ -139,7 +139,8 @@ def dag_audit(configs):
     refs=set(walk(tree,'field'));assert not refs- set(reg)
     for name in refs:
         row=reg[name]
-        assert row['source_namespace'] in ['F0_ACCEPTED','FROZEN_ANCHOR_EVENT','D1_LOCAL_DERIVATION']
+        assert row['source_namespace'] in ['F0_ACCEPTED','FROZEN_ANCHOR_EVENT','D1_LOCAL_DERIVATION','BLOCKED_CAPABILITY']
+        if row['source_namespace']=='BLOCKED_CAPABILITY':assert row.get('field_role')=='BLOCKED_CAPABILITY' and row.get('blocked_reason')
         if row['source_namespace']=='FROZEN_ANCHOR_EVENT':assert row['time_role']=='T_MINUS_1'
     # Definition graph must terminate at registered external leaves.
     dependencies={n:set(walk(v,'field')) & set(tree['definitions']) for n,v in tree['definitions'].items()}
@@ -199,7 +200,8 @@ def vector_oracle(configs):
 def schema_registry_audit(configs):
     for name in ['input_schema','output_schema','anchor_schema']:Draft202012Validator.check_schema(configs[name]['schema'])
     registry=configs['field_registry']['fields'];assert len({r['field'] for r in registry})==len(registry)
-    required={'producer_contract_id','parameter_set_id','source_namespace','trade_date','time_role','required','publication_identity','quality','unknown_reason_family','output_digest','formal_or_diagnostic'}
+    required={'producer_contract_id','parameter_set_id','source_namespace','trade_date','time_role','publication_identity','quality','unknown_reason_family','output_digest','formal_or_diagnostic'}
+    required|= {'globally_required','required_by'} if configs['producer_registry'].get('authority_repair')=='R2' else {'required'}
     for row in registry:assert required<=row.keys()
     producers={r['producer_contract_id'] for r in configs['producer_registry']['producers']}
     assert {r['producer_contract_id'] for r in registry}<=producers,'UNREGISTERED_PRODUCER'
@@ -229,7 +231,7 @@ def validate_envelope_fixture(configs,envelope):
         if datetime.fromisoformat(fact['available_at'])>cutoff:raise ValueError('FUTURE_SOURCE')
         if row['time_role']=='T_MINUS_1' and row['source_namespace']=='FROZEN_ANCHOR_EVENT' and fact['trade_date']>=envelope['observation_trade_date']:
             raise ValueError('SAME_DAY_ANCHOR_NOT_FROZEN_PREDECESSOR')
-        if fact['quality']=='KNOWN' and row['capability']=='FORMAL_BLOCKED_INPUT_CAPABILITY':
+        if fact['quality']=='KNOWN' and (row['capability']=='FORMAL_BLOCKED_INPUT_CAPABILITY' or row.get('field_role') in ['BLOCKED_CAPABILITY','FROZEN_PRIOR_D1']):
             raise ValueError('UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE')
         if fact['quality']!='KNOWN' and not fact['unknown_reason']:raise ValueError('UNKNOWN_REASON_REQUIRED')
         if fact['quality']=='KNOWN':
@@ -260,6 +262,10 @@ def scope_proof():
                 stage_head=stage['accepted_stage_range'],data_head=data['accepted_trade_date'],permissions=PERMISSIONS,protected_artifacts=proofs)
 
 def validate(emit=False):
+    if load_configs()['producer_registry'].get('authority_repair')=='R2':
+        from scripts.validate_v4_12_authority_r2 import validate as validate_authority
+        if emit:raise ValueError('R1_EVIDENCE_IMMUTABLE_USE_R2_AUTHORITY_VALIDATOR')
+        return validate_authority()
     configs=load_configs();literal=literal_audit(configs);dag=dag_audit(configs)
     schema=schema_registry_audit(configs);oracle=vector_oracle(configs);scope=scope_proof()
     assert oracle['status']=='PASS',json.dumps([r for r in oracle['vectors'] if r['status']=='FAIL'])

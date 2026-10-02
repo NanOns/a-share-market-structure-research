@@ -1,0 +1,35 @@
+{
+  "alpha_beta": "BLOCKED_WITH_EXPLICIT_REASON",
+  "authority": {
+    "bytes": 1602,
+    "path": "data/v4/V4_02_ACCEPTED_HEAD.json",
+    "sha256": "da318a1f82a03f13930af7858ca1640fadbdaedbee85e27d47f9c869c2d6b595"
+  },
+  "component_refs": {
+    "ADJUSTED_DAILY": {
+      "bytes": 6218836,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/ADJUSTED_DAILY/artifact.json",
+      "sha256": "a28b3a912e44a8cc6e3e7e43f37038b64e1f7b62024ec4887b5320ffd33d2e17"
+    },
+    "PERIOD_ADJUSTED": {
+      "bytes": 14402785,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/PERIOD_ADJUSTED/artifact.json",
+      "sha256": "b43dc8d743eb496ab20f485d10b9fc84336746d8858ee74678cfc9bb33b09290"
+    },
+    "RAW_DAILY": {
+      "bytes": 4710499,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/RAW_DAILY/artifact.json",
+      "sha256": "8406bee7d60435e7d2532df7ab7fea81149f100883f243236ee68877888f71b1"
+    }
+  },
+  "corporate_action_transition": "REQUIRES_EXACT_ACCEPTED_HISTORICAL_LINEAGE",
+  "data_authority": {
+    "bytes": 16890,
+    "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+    "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+  },
+  "pure_core_as_coordinate_authority": false,
+  "same_day_revision": "Separate immutable observation view; never another session",
+  "status": "PASS",
+  "unsupported_conversion": "UNKNOWN_PRICE_BASIS_MISMATCH"
+}

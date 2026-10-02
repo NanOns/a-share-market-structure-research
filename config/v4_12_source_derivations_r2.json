@@ -1,0 +1,115 @@
+{
+  "contract_id": "V4_12_SOURCE_DERIVATIONS_R2",
+  "counters": {
+    "calendar_authority": {
+      "bytes": 10739,
+      "path": "data/v4/source_evidence/dm01_a01_r3/chain_inputs_r1/calendar_union_2e0938120e3b371aa9c84422c06b4c14de0f8894cc8f3caa9dd9c61299239e74.json",
+      "sha256": "629242b5074002dd8e889fdca5da9e1c05f9ae35357662d5c76a554117fc17f5"
+    },
+    "data_authority": {
+      "bytes": 16890,
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+    },
+    "missing_suspension": "Cannot increment actual evaluable count; missing history yields UNKNOWN; breaks consecutive path counters",
+    "pivot_left_count": "Actual evaluable sessions preceding pivot_date, no shortened missing window",
+    "pivot_right_count": "Actual evaluable sessions after pivot_date through confirmation_date",
+    "post_creation_sessions": "Market sessions strictly after available_date; zero on available_date",
+    "producer": "V4_12_SESSION_COUNTER_V1",
+    "same_day_revision": "Same previous-session counter baseline; not another session",
+    "source_dates": [
+      "anchor.available_date",
+      "pivot_date",
+      "confirmation_date",
+      "observation_trade_date"
+    ]
+  },
+  "dependency_ledger": {
+    "distance_zone": [
+      "C",
+      "lo",
+      "hi"
+    ],
+    "evaluable": {
+      "accepted_source_fields": [
+        "actual_bar_present",
+        "status",
+        "status_conflict"
+      ],
+      "actual_bar_producer": "V4_02_DATED_TRADING_STATUS_V1",
+      "actual_bar_source": {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      "missing": "UNKNOWN with exact source reason; availability does not mean a valid observed bar",
+      "other_required_fields": [
+        "price_basis",
+        "adjustment_source_revision",
+        "atr_prior_view"
+      ],
+      "publications": {
+        "2026-09-29": {
+          "bytes": 2470350,
+          "path": "data/v4/dm01_candidate_staging_r3/durable_r3/da289f4a3177d3ca084ba3c568b5b0104d2762ae0bf2705d132fad2c410daa40/TRADING_STATUS/artifact.json",
+          "sha256": "1024bfcad1052635317351b9c3c730f9c09294de72b3f1358e45bbe0aac6dde4"
+        },
+        "2026-09-30": {
+          "bytes": 2470841,
+          "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/TRADING_STATUS/artifact.json",
+          "sha256": "20798999bb3309aa93f42ebd075bc53cffb5337117f6fbccd7eafd14986f51bb"
+        }
+      }
+    },
+    "observation_close_view": [
+      "C",
+      "price_basis",
+      "adjustment_source_revision"
+    ],
+    "post_creation_sessions/pivot_left_count/pivot_right_count": {
+      "actual_status_producer": "V4_02_DATED_TRADING_STATUS_V1",
+      "calendar": {
+        "bytes": 10739,
+        "path": "data/v4/source_evidence/dm01_a01_r3/chain_inputs_r1/calendar_union_2e0938120e3b371aa9c84422c06b4c14de0f8894cc8f3caa9dd9c61299239e74.json",
+        "sha256": "629242b5074002dd8e889fdca5da9e1c05f9ae35357662d5c76a554117fc17f5"
+      },
+      "date_field": "session_dates"
+    },
+    "start_price_view/endpoint_price_view/lo/hi/base_view/event_close_view/recovery_line_view/prior_event_peak_view": [
+      "frozen prior source value",
+      "alpha",
+      "beta",
+      "creation_coordinate",
+      "current_comparison_coordinate"
+    ]
+  },
+  "formulas": {
+    "distance_zone": "max(lo-C,C-hi,0)",
+    "endpoint_price_view": "accepted endpoint source price rebased through authenticated transform",
+    "evaluable": "accepted actual-bar quality + accepted source/basis + converted positive prior ATR; UNKNOWN stays UNKNOWN",
+    "lo/hi/base_view/event_close_view/recovery_line_view/prior_event_peak_view": "Immutable prior event/Anchor values rebased by source-bound accepted historical transform",
+    "observation_close_view": "accepted observation C in registered observation basis",
+    "start_price_view": "accepted start source price rebased through authenticated transform"
+  },
+  "pivot": {
+    "available_at": "Max input availability not later than cutoff; no backfill",
+    "available_date": "confirmation_date",
+    "capability": "BLOCKED_WITH_EXPLICIT_REASON",
+    "confirmation_date": "Second actual right-session availability date",
+    "left_parameter_id": "pivot_left_sessions",
+    "pivot_date": "Source low date",
+    "predicate": "pivot_low strictly less than each accepted actual evaluable left/right low; ties do not qualify",
+    "producer": "V4_12_PIVOT_SOURCE_DESIGN_V1",
+    "quality": "Missing accepted history -> UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+    "reason": "No accepted left/right history source publication for D1 pivot detector",
+    "right_parameter_id": "pivot_right_sessions"
+  },
+  "range": {
+    "capability": "FORMAL_BLOCKED_INPUT_CAPABILITY",
+    "option": "B_BLOCK",
+    "reason": "Absent in accepted V4-03 outputs; Option B; no raw fallback"
+  },
+  "raw_reconstruction_allowed": false,
+  "runtime_authorized": false,
+  "scope": "DESIGN_ONLY_NO_RUNTIME"
+}

@@ -1,0 +1,572 @@
+{
+  "actual_source": {
+    "bytes": 21745,
+    "path": "scripts/validate_v4_12_contract_freeze_r1.py",
+    "sha256": "8c89c2fda88ace393c8aab811a525cce427a4ee8053d0cc8226c390269ce5512"
+  },
+  "expected_source": {
+    "bytes": 13226,
+    "path": "scripts/v4_12_independent_vector_oracle_r1.py",
+    "sha256": "b42d705ae67ab753421890bc154bdc9534be1af74d1d346817b4a4f0178b0776"
+  },
+  "failed": 0,
+  "oracle_imports_future_implementation": false,
+  "passed": 69,
+  "scope": "SYNTHETIC_DESIGN_ONLY_NOT_RUNTIME_ACCEPTANCE",
+  "status": "PASS",
+  "total": 69,
+  "vectors": [
+    {
+      "actual": "NO_BREAKOUT",
+      "expected": "NO_BREAKOUT",
+      "proof": "10J: strict C>10.2, CLV>=.7; independently calculated Decimal threshold=10.2",
+      "status": "PASS",
+      "target": "breakout",
+      "vector_id": "B01_minus"
+    },
+    {
+      "actual": "NO_BREAKOUT",
+      "expected": "NO_BREAKOUT",
+      "proof": "10J: strict C>10.2, CLV>=.7; independently calculated Decimal threshold=10.2",
+      "status": "PASS",
+      "target": "breakout",
+      "vector_id": "B01_exact"
+    },
+    {
+      "actual": "BREAKOUT_TENTATIVE",
+      "expected": "BREAKOUT_TENTATIVE",
+      "proof": "10J: strict C>10.2, CLV>=.7; independently calculated Decimal threshold=10.2",
+      "status": "PASS",
+      "target": "breakout",
+      "vector_id": "B01_plus"
+    },
+    {
+      "actual": "NO_BREAKOUT",
+      "expected": "NO_BREAKOUT",
+      "proof": "10J: CLV below .7 defeats conjunction",
+      "status": "PASS",
+      "target": "breakout",
+      "vector_id": "B01_clv_below"
+    },
+    {
+      "actual": "BREAKOUT_TENTATIVE",
+      "expected": "BREAKOUT_TENTATIVE",
+      "proof": "13A/10J: creation day age=0; acceptance forbidden even bogus held count",
+      "status": "PASS",
+      "target": "breakout",
+      "vector_id": "B02"
+    },
+    {
+      "actual": "PENDING",
+      "expected": "PENDING",
+      "proof": "41D: only one post-event evaluable close at upper",
+      "status": "PASS",
+      "target": "acceptance",
+      "vector_id": "B03_t1"
+    },
+    {
+      "actual": "ACCEPTED",
+      "expected": "ACCEPTED",
+      "proof": "41D: two adjacent post-event evaluable closes >= upper; equality qualifies",
+      "status": "PASS",
+      "target": "acceptance",
+      "vector_id": "B03_t2"
+    },
+    {
+      "actual": "NOT_ACCEPTED",
+      "expected": "NOT_ACCEPTED",
+      "proof": "41D: missing intervening session resets count; calendar age alone insufficient",
+      "status": "PASS",
+      "target": "acceptance",
+      "vector_id": "B03_missing"
+    },
+    {
+      "actual": "NOT_PULLBACK",
+      "expected": "NOT_PULLBACK",
+      "proof": "10K: known no prior valid event",
+      "status": "PASS",
+      "target": "pullback",
+      "vector_id": "P01"
+    },
+    {
+      "actual": "PULLBACK_FAILED",
+      "expected": "PULLBACK_FAILED",
+      "proof": "10K: broken prior Anchor",
+      "status": "PASS",
+      "target": "pullback",
+      "vector_id": "P02"
+    },
+    {
+      "actual": "PULLBACK_HELD",
+      "expected": "PULLBACK_HELD",
+      "proof": "10K: held confirmed prior path evidence",
+      "status": "PASS",
+      "target": "pullback",
+      "vector_id": "P03"
+    },
+    {
+      "actual": "UNKNOWN",
+      "expected": "UNKNOWN",
+      "proof": "10K: absent prior publication is UNKNOWN; not known absence",
+      "status": "PASS",
+      "target": "pullback",
+      "vector_id": "P04"
+    },
+    {
+      "actual": "PULLBACK_TO_MA",
+      "expected": "PULLBACK_TO_MA",
+      "proof": "10K: touched anchor type routing after higher states false",
+      "status": "PASS",
+      "target": "pullback",
+      "vector_id": "P_touch_ma"
+    },
+    {
+      "actual": "PULLBACK_TO_IMPULSE",
+      "expected": "PULLBACK_TO_IMPULSE",
+      "proof": "10K: touched anchor type routing after higher states false",
+      "status": "PASS",
+      "target": "pullback",
+      "vector_id": "P_touch_impulse"
+    },
+    {
+      "actual": "PULLBACK_TO_BREAKOUT",
+      "expected": "PULLBACK_TO_BREAKOUT",
+      "proof": "10K: touched anchor type routing after higher states false",
+      "status": "PASS",
+      "target": "pullback",
+      "vector_id": "P_touch_breakout"
+    },
+    {
+      "actual": "UNKNOWN",
+      "expected": "UNKNOWN",
+      "proof": "10L/R7 owner authority: unresolved MA20 reclaim preempts lower branch; UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "status": "PASS",
+      "target": "recovery",
+      "vector_id": "R01"
+    },
+    {
+      "actual": "UNKNOWN",
+      "expected": "UNKNOWN",
+      "proof": "R7: MA20_RECLAIM capability guard precedes predicate; absent owner fields remain UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE even when current C<=MA20",
+      "status": "PASS",
+      "target": "recovery",
+      "vector_id": "R01_current_false"
+    },
+    {
+      "actual": false,
+      "expected": false,
+      "proof": "10L: branch-only mathematical oracle; current strictly >3, previous <=0; not a grant of overall Recovery capability",
+      "status": "PASS",
+      "target": "relative_recovery",
+      "vector_id": "R02_minus"
+    },
+    {
+      "actual": false,
+      "expected": false,
+      "proof": "10L: branch-only mathematical oracle; current strictly >3, previous <=0; not a grant of overall Recovery capability",
+      "status": "PASS",
+      "target": "relative_recovery",
+      "vector_id": "R02_exact"
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "proof": "10L: branch-only mathematical oracle; current strictly >3, previous <=0; not a grant of overall Recovery capability",
+      "status": "PASS",
+      "target": "relative_recovery",
+      "vector_id": "R02_plus"
+    },
+    {
+      "actual": "UNKNOWN",
+      "expected": "UNKNOWN",
+      "proof": "10L: new recovery line cannot self-confirm; missing higher-priority MA owner prevents lower claim",
+      "status": "PASS",
+      "target": "recovery",
+      "vector_id": "R03"
+    },
+    {
+      "actual": "RECOVERY_CONFIRMED",
+      "expected": "RECOVERY_CONFIRMED",
+      "proof": "10L: frozen prior recovery line, two held post-event sessions",
+      "status": "PASS",
+      "target": "recovery",
+      "vector_id": "R_confirmed"
+    },
+    {
+      "actual": "RECOVERY_FAILED",
+      "expected": "RECOVERY_FAILED",
+      "proof": "10L: failure precedes all confirmation predicates",
+      "status": "PASS",
+      "target": "recovery",
+      "vector_id": "R_failed"
+    },
+    {
+      "actual": "RECLAIMED",
+      "expected": "RECLAIMED",
+      "proof": "41C rule5: first touch with C>=hi and CLV>=.5; test_count first=1",
+      "status": "PASS",
+      "target": "support",
+      "vector_id": "S01"
+    },
+    {
+      "actual": "BREACHED_SHALLOW",
+      "expected": "BREACHED_SHALLOW",
+      "proof": "41C rule3: C<9.5, C>=8.5, first close breach",
+      "status": "PASS",
+      "target": "support",
+      "vector_id": "S02"
+    },
+    {
+      "actual": "BROKEN",
+      "expected": "BROKEN",
+      "proof": "41C rule2: two adjacent evaluable close breaches",
+      "status": "PASS",
+      "target": "support",
+      "vector_id": "S03"
+    },
+    {
+      "actual": "UNKNOWN",
+      "expected": "UNKNOWN",
+      "proof": "41C: missing session observation unknown, preserved prior state; stale true; counts reset",
+      "status": "PASS",
+      "target": "support",
+      "vector_id": "S04_missing"
+    },
+    {
+      "actual": "0",
+      "expected": 0,
+      "proof": "41C: missing session breaks breach counter",
+      "status": "PASS",
+      "target": "breach_count",
+      "vector_id": "S04_count"
+    },
+    {
+      "actual": "BREACHED_SHALLOW",
+      "expected": "BREACHED_SHALLOW",
+      "proof": "41C: first breach after missing day; no unknown counted as recovery or breach",
+      "status": "PASS",
+      "target": "support",
+      "vector_id": "S04_resume"
+    },
+    {
+      "actual": "RECLAIMED",
+      "expected": "RECLAIMED",
+      "proof": "41C: first reclaim only",
+      "status": "PASS",
+      "target": "support",
+      "vector_id": "S05_reclaim"
+    },
+    {
+      "actual": "HELD_TENTATIVE",
+      "expected": "HELD_TENTATIVE",
+      "proof": "41C rule6: actual post-reclaim held session wholly away from test band",
+      "status": "PASS",
+      "target": "support",
+      "vector_id": "S05_hold"
+    },
+    {
+      "actual": "RETESTING",
+      "expected": "RETESTING",
+      "proof": "41C rule7: prior held re-touch, no reclaim",
+      "status": "PASS",
+      "target": "support",
+      "vector_id": "S05_retest"
+    },
+    {
+      "actual": "HELD_CONFIRMED",
+      "expected": "HELD_CONFIRMED",
+      "proof": "41C rule4: prior test + at least one fully separated actual session + second touch/reclaim",
+      "status": "PASS",
+      "target": "support",
+      "vector_id": "S05_confirm"
+    },
+    {
+      "actual": "HELD_CONFIRMED",
+      "expected": "HELD_CONFIRMED",
+      "proof": "41C: qualified retest episode retains separation evidence through adjacent touch session until reclaim",
+      "status": "PASS",
+      "target": "support",
+      "vector_id": "S05_after_retesting"
+    },
+    {
+      "actual": "TESTING",
+      "expected": "TESTING",
+      "proof": "41C: repeated adjacent touch cannot count as confirmed retest",
+      "status": "PASS",
+      "target": "support",
+      "vector_id": "S05_no_separation"
+    },
+    {
+      "actual": "2",
+      "expected": 2,
+      "proof": "41C: independently qualified second test increments once",
+      "status": "PASS",
+      "target": "next_test_count",
+      "vector_id": "S05_test_count"
+    },
+    {
+      "actual": "BROKEN",
+      "expected": "BROKEN",
+      "proof": "41C rule1: terminal price-path state cannot revive",
+      "status": "PASS",
+      "target": "support",
+      "vector_id": "S06"
+    },
+    {
+      "actual": "INVALIDATED",
+      "expected": "INVALIDATED",
+      "proof": "41C rule1: terminal administrative state preserved; independent unknown observation metadata still stale",
+      "status": "PASS",
+      "target": "support",
+      "vector_id": "S06_admin"
+    },
+    {
+      "actual": "BROKEN",
+      "expected": "BROKEN",
+      "proof": "41C rule2: deep strict C<8.5",
+      "status": "PASS",
+      "target": "support",
+      "vector_id": "S_deep"
+    },
+    {
+      "actual": false,
+      "expected": false,
+      "proof": "41C strict <; exact .5ATR lower boundary not breached",
+      "status": "PASS",
+      "target": "close_breach",
+      "vector_id": "S_breach_exact"
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "proof": "41C touch L<=10.25 inclusive boundary",
+      "status": "PASS",
+      "target": "touch",
+      "vector_id": "S_touch_exact"
+    },
+    {
+      "actual": "9",
+      "expected": 9,
+      "proof": "41A0 cash dividend: 1*10-1=9; hypothetical authenticated transform, not corporate action rate inference",
+      "status": "PASS",
+      "target": "anchor_price_view",
+      "vector_id": "A01"
+    },
+    {
+      "actual": "5.0",
+      "expected": 5,
+      "proof": "41A0 bonus shares: .5*10=5; hypothetical authenticated transform, not corporate action rate inference",
+      "status": "PASS",
+      "target": "anchor_price_view",
+      "vector_id": "A02"
+    },
+    {
+      "actual": "8.4",
+      "expected": 8.4,
+      "proof": "41A0 rights issue source-bound affine example: .8*10+.4=8.4; hypothetical authenticated transform, not corporate action rate inference",
+      "status": "PASS",
+      "target": "anchor_price_view",
+      "vector_id": "A03"
+    },
+    {
+      "actual": "8",
+      "expected": 8,
+      "proof": "41A0 same-day new accepted source revision: 1*10-2=8; original remains 10; hypothetical authenticated transform, not corporate action rate inference",
+      "status": "PASS",
+      "target": "anchor_price_view",
+      "vector_id": "A06"
+    },
+    {
+      "actual": "2",
+      "expected": 2,
+      "proof": "ATR is difference; dividend beta excluded",
+      "status": "PASS",
+      "target": "anchor_atr_view",
+      "vector_id": "A01_ATR"
+    },
+    {
+      "actual": "1.0",
+      "expected": 1,
+      "proof": "ATR .5*2=1; no additive shift",
+      "status": "PASS",
+      "target": "anchor_atr_view",
+      "vector_id": "A02_ATR"
+    },
+    {
+      "actual": "UNKNOWN:PRICE_BASIS_MISMATCH",
+      "expected": "UNKNOWN:PRICE_BASIS_MISMATCH",
+      "proof": "41A0 no deterministic source-bound conversion",
+      "status": "PASS",
+      "target": "coordinate_gate",
+      "vector_id": "A04"
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "proof": "41A0 original bytes immutable under observation rebase",
+      "status": "PASS",
+      "target": "immutable_anchor",
+      "vector_id": "A05"
+    },
+    {
+      "actual": false,
+      "expected": false,
+      "proof": "41A0 coefficient equality never proves revision identity",
+      "status": "PASS",
+      "target": "basis_identity",
+      "vector_id": "A06_identity"
+    },
+    {
+      "actual": "RECLAIMED",
+      "expected": "RECLAIMED",
+      "proof": "Cross corporate action: original 10 -> observation9, all price/ATR in same view; first reclaim",
+      "status": "PASS",
+      "target": "support",
+      "vector_id": "A_cross_support"
+    },
+    {
+      "actual": "0.111111111111111111111111111",
+      "expected": "0.111111111111111111111111111",
+      "proof": "Independent Decimal: common-coordinate endpoint/base minus unit; no raw old-basis return",
+      "status": "PASS",
+      "target": "common_coordinate_return",
+      "vector_id": "A_return"
+    },
+    {
+      "actual": false,
+      "expected": false,
+      "proof": "41A: two actual right sessions; available date is t2 confirmation, no backfill",
+      "status": "PASS",
+      "target": "pivot_available",
+      "vector_id": "T01_t0"
+    },
+    {
+      "actual": false,
+      "expected": false,
+      "proof": "41A: two actual right sessions; available date is t2 confirmation, no backfill",
+      "status": "PASS",
+      "target": "pivot_available",
+      "vector_id": "T01_t1"
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "proof": "41A: two actual right sessions; available date is t2 confirmation, no backfill",
+      "status": "PASS",
+      "target": "pivot_available",
+      "vector_id": "T01_t2"
+    },
+    {
+      "actual": "IDLE",
+      "expected": "IDLE",
+      "proof": "41A: gap registration day cannot test itself",
+      "status": "PASS",
+      "target": "support",
+      "vector_id": "T02"
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "proof": "41A gap L>previous high",
+      "status": "PASS",
+      "target": "gap_qualified",
+      "vector_id": "T02_gap"
+    },
+    {
+      "actual": "IDLE",
+      "expected": "IDLE",
+      "proof": "41B impulse same-day no test",
+      "status": "PASS",
+      "target": "support",
+      "vector_id": "T03_today"
+    },
+    {
+      "actual": "RECLAIMED",
+      "expected": "RECLAIMED",
+      "proof": "41B next market session earliest test",
+      "status": "PASS",
+      "target": "support",
+      "vector_id": "T03_next"
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "proof": "41B exact inclusive body/range/CLV/amount; relative strict positive",
+      "status": "PASS",
+      "target": "impulse",
+      "vector_id": "I_exact"
+    },
+    {
+      "actual": "UNKNOWN",
+      "expected": "UNKNOWN",
+      "proof": "41B missing/flat-limit CLV cannot make impulse TRUE",
+      "status": "PASS",
+      "target": "impulse",
+      "vector_id": "I_flat"
+    },
+    {
+      "actual": "BREAKOUT_TENTATIVE",
+      "expected": "BREAKOUT_TENTATIVE",
+      "proof": "13A: D2 is not an AST input; perturbation discarded by dependency projection",
+      "status": "PASS",
+      "target": "breakout",
+      "vector_id": "D01"
+    },
+    {
+      "actual": "BREAKOUT_TENTATIVE",
+      "expected": "BREAKOUT_TENTATIVE",
+      "proof": "13A: Focus/UI not an AST dependency",
+      "status": "PASS",
+      "target": "breakout",
+      "vector_id": "D02"
+    },
+    {
+      "actual": "REJECT:FUTURE_SOURCE",
+      "expected": "REJECT:FUTURE_SOURCE",
+      "proof": "13A source available after cutoff rejected, not treated as valid today",
+      "status": "PASS",
+      "target": "future_source",
+      "vector_id": "D03"
+    },
+    {
+      "actual": "IDLE",
+      "expected": "IDLE",
+      "proof": "13A new Anchor cannot self-support regardless historical-looking supplied counts",
+      "status": "PASS",
+      "target": "support",
+      "vector_id": "D04"
+    },
+    {
+      "actual": "1.5",
+      "expected": 1.5,
+      "proof": "41D (13-10)/(12-10)=1.5; not probability",
+      "status": "PASS",
+      "target": "retention_value",
+      "vector_id": "RET_positive"
+    },
+    {
+      "actual": "NOT_APPLICABLE",
+      "expected": "NOT_APPLICABLE",
+      "proof": "41D zero denominator; no epsilon",
+      "status": "PASS",
+      "target": "retention_value",
+      "vector_id": "RET_zero"
+    },
+    {
+      "actual": "NOT_APPLICABLE",
+      "expected": "NOT_APPLICABLE",
+      "proof": "41D negative denominator",
+      "status": "PASS",
+      "target": "retention_value",
+      "vector_id": "RET_negative"
+    },
+    {
+      "actual": "UNKNOWN",
+      "expected": "UNKNOWN",
+      "proof": "41D missing event price",
+      "status": "PASS",
+      "target": "retention_value",
+      "vector_id": "RET_missing"
+    }
+  ]
+}

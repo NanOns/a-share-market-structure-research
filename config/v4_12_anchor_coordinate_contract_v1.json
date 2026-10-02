@@ -1,14 +1,28 @@
 {
   "accepted_authority": {
-    "bytes": 1607,
-    "path": "data/v4/V4_03_ACCEPTED_HEAD.json",
-    "sha256": "734bd27a5d53b2f18e3d62aa96ac63c91ccc6d9f848e942bc1efc410c88d4370"
+    "bytes": 1602,
+    "path": "data/v4/V4_02_ACCEPTED_HEAD.json",
+    "sha256": "da318a1f82a03f13930af7858ca1640fadbdaedbee85e27d47f9c869c2d6b595"
   },
+  "accepted_metadata_fields": [
+    "price_basis",
+    "adjustment_source_revision",
+    "qfq_mul",
+    "qfq_add",
+    "source_digest",
+    "source_snapshot_id"
+  ],
   "basis_identity": [
     "price_basis",
     "adjustment_source_revision"
   ],
+  "canonical_contract": {
+    "bytes": 9132,
+    "path": "config/v4_02_canonical_daily_pit_contract_v3.json",
+    "sha256": "b65cf191a4c78f7378fb1611a1e7a472a506a10a6e44442d06e793d9ed313218"
+  },
   "coefficient_equality_is_identity": false,
+  "coefficient_policy": "Native coefficients are source metadata only; never infer cross-Anchor transform or price identity from equality",
   "compare_fields": [
     "anchor",
     "current_price",
@@ -17,7 +31,25 @@
     "breach_depth",
     "support_zone"
   ],
+  "component_refs": {
+    "ADJUSTED_DAILY": {
+      "bytes": 6218836,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/ADJUSTED_DAILY/artifact.json",
+      "sha256": "a28b3a912e44a8cc6e3e7e43f37038b64e1f7b62024ec4887b5320ffd33d2e17"
+    },
+    "PERIOD_ADJUSTED": {
+      "bytes": 14402785,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/PERIOD_ADJUSTED/artifact.json",
+      "sha256": "b43dc8d743eb496ab20f485d10b9fc84336746d8858ee74678cfc9bb33b09290"
+    },
+    "RAW_DAILY": {
+      "bytes": 4710499,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/RAW_DAILY/artifact.json",
+      "sha256": "8406bee7d60435e7d2532df7ab7fea81149f100883f243236ee68877888f71b1"
+    }
+  },
   "contract_id": "V4_12_ANCHOR_COORDINATE_V1",
+  "corporate_action_authority": "Accepted historical adjustment lineage required for each transition; native row revision alone does not grant an Anchor rebase producer",
   "corporate_action_cases": [
     "cash_dividend",
     "bonus_shares",
@@ -25,6 +57,11 @@
     "same_day_revision",
     "cross_corporate_action_support"
   ],
+  "data_authority": {
+    "bytes": 16890,
+    "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+    "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+  },
   "difference_transform": "alpha * difference; no beta for ATR",
   "failed_conversion": {
     "preserve_prior_state": true,
@@ -32,7 +69,17 @@
     "stale": true,
     "state": "UNKNOWN"
   },
+  "formal_adjustment_contract": {
+    "bytes": 2058,
+    "path": "config/v4_02_formal_period_contract_v1.json",
+    "sha256": "f332c4013c96bd2ea02b169009d3fdb25b2a65e558ba0b0f2aa94c9911f41727"
+  },
   "freeze_scope": "CONTRACT_DESIGN_ONLY",
+  "historical_adjustment_contract": {
+    "bytes": 1260,
+    "path": "config/v4_02_go_forward_pit_adjustment_r2.json",
+    "sha256": "9bc22579ab4e7547f69ab38899d4ae6ee60b49d51dee574b50b18cbb277f1069"
+  },
   "level_transform": "alpha * original + beta; alpha>0; source-bound deterministic accepted historical adjustment",
   "lineage_required": [
     "from_basis_identity",
@@ -54,5 +101,10 @@
   "return_transform": "endpoint_view/start_view - 1; start_view>0",
   "runtime_implemented": false,
   "same_day_revision": "New observation view/output revision against t-1 frozen event; never overwrite original or count revision as new session",
-  "version": "1.0.0"
+  "transform_capability": {
+    "alpha": "BLOCKED_WITH_EXPLICIT_REASON",
+    "beta": "BLOCKED_WITH_EXPLICIT_REASON",
+    "reason": "No accepted Anchor-basis to observation-basis alpha publisher; qfq_mul is not alpha authority; No accepted Anchor-basis to observation-basis beta publisher; qfq_add is not beta authority"
+  },
+  "version": "1.1.0"
 }

@@ -1,0 +1,785 @@
+{
+  "fields": [
+    {
+      "logical_field": "ATR20",
+      "producer": "CORE_FACTOR_V1.PRICE_TECHNICAL",
+      "role": "BLOCKED_CAPABILITY",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "C",
+      "producer": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+      "role": "UPSTREAM_ACCEPTED",
+      "status": "PASS",
+      "target_publication_available": true
+    },
+    {
+      "logical_field": "CLV",
+      "producer": "CORE_FACTOR_V1.CLV",
+      "role": "BLOCKED_CAPABILITY",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "H",
+      "producer": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+      "role": "UPSTREAM_ACCEPTED",
+      "status": "PASS",
+      "target_publication_available": true
+    },
+    {
+      "logical_field": "L",
+      "producer": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+      "role": "UPSTREAM_ACCEPTED",
+      "status": "PASS",
+      "target_publication_available": true
+    },
+    {
+      "logical_field": "MA20",
+      "producer": "CORE_FACTOR_V1.PRICE_TECHNICAL",
+      "role": "BLOCKED_CAPABILITY",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "MA60",
+      "producer": "CORE_FACTOR_V1.PRICE_TECHNICAL",
+      "role": "BLOCKED_CAPABILITY",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "O",
+      "producer": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+      "role": "UPSTREAM_ACCEPTED",
+      "status": "PASS",
+      "target_publication_available": true
+    },
+    {
+      "logical_field": "adjustment_source_revision",
+      "producer": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+      "role": "UPSTREAM_ACCEPTED",
+      "status": "PASS",
+      "target_publication_available": true
+    },
+    {
+      "logical_field": "alpha",
+      "producer": "V4_12_COORDINATE_VIEW_V1",
+      "role": "BLOCKED_CAPABILITY",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "amount_ratio20",
+      "producer": "CORE_FACTOR_V1.AMOUNT_RATIO",
+      "role": "BLOCKED_CAPABILITY",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "anchor_original_atr",
+      "producer": "STRUCTURE_EVENT_V1",
+      "role": "FROZEN_PRIOR_D1",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "anchor_original_price",
+      "producer": "STRUCTURE_EVENT_V1",
+      "role": "FROZEN_PRIOR_D1",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "anchor_type",
+      "producer": "STRUCTURE_EVENT_V1",
+      "role": "FROZEN_PRIOR_D1",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "atr_prior_view",
+      "producer": "V4_12_COORDINATE_VIEW_V1",
+      "role": "BLOCKED_CAPABILITY",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "base_view",
+      "producer": "V4_12_COORDINATE_VIEW_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "beta",
+      "producer": "V4_12_COORDINATE_VIEW_V1",
+      "role": "BLOCKED_CAPABILITY",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "close_t_minus_1",
+      "producer": "V4_12_BLOCKED_PRIOR_OWNER_V1",
+      "role": "BLOCKED_CAPABILITY",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "delta3",
+      "producer": "RPS_DELTA_V1",
+      "role": "UPSTREAM_ACCEPTED",
+      "status": "PASS",
+      "target_publication_available": true
+    },
+    {
+      "logical_field": "distance_zone",
+      "producer": "V4_12_MACHINE_AST_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "endpoint_price_view",
+      "producer": "V4_12_COORDINATE_VIEW_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "episode_owns_anchor",
+      "producer": "STRUCTURE_EVENT_V1",
+      "role": "FROZEN_PRIOR_D1",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "evaluable",
+      "producer": "V4_12_MACHINE_AST_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "event_close_view",
+      "producer": "V4_12_COORDINATE_VIEW_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "hi",
+      "producer": "V4_12_COORDINATE_VIEW_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "lo",
+      "producer": "V4_12_COORDINATE_VIEW_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "ma20_t_minus_1",
+      "producer": "V4_12_BLOCKED_PRIOR_OWNER_V1",
+      "role": "BLOCKED_CAPABILITY",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "near_high20_state",
+      "producer": "POSITION_STATE_V1",
+      "role": "BLOCKED_CAPABILITY",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "observation_close_view",
+      "producer": "V4_12_COORDINATE_VIEW_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "pivot_left_count",
+      "producer": "V4_12_SESSION_COUNTER_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "pivot_low",
+      "producer": "V4_12_PIVOT_SOURCE_DESIGN_V1",
+      "role": "BLOCKED_CAPABILITY",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "pivot_low_strict",
+      "producer": "V4_12_PIVOT_SOURCE_DESIGN_V1",
+      "role": "BLOCKED_CAPABILITY",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "pivot_right_count",
+      "producer": "V4_12_SESSION_COUNTER_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "post_creation_sessions",
+      "producer": "V4_12_SESSION_COUNTER_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "price_basis",
+      "producer": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+      "role": "UPSTREAM_ACCEPTED",
+      "status": "PASS",
+      "target_publication_available": true
+    },
+    {
+      "logical_field": "prior_adjacent_evaluable",
+      "producer": "STRUCTURE_EVENT_V1",
+      "role": "FROZEN_PRIOR_D1",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "prior_breach_count",
+      "producer": "STRUCTURE_EVENT_V1",
+      "role": "FROZEN_PRIOR_D1",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "prior_breakout_exists",
+      "producer": "STRUCTURE_EVENT_V1",
+      "role": "FROZEN_PRIOR_D1",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "prior_delta3",
+      "producer": "RPS_DELTA_V1",
+      "role": "UPSTREAM_ACCEPTED",
+      "status": "PASS",
+      "target_publication_available": true
+    },
+    {
+      "logical_field": "prior_event_peak_view",
+      "producer": "V4_12_COORDINATE_VIEW_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "prior_hard_invalidated",
+      "producer": "STRUCTURE_EVENT_V1",
+      "role": "FROZEN_PRIOR_D1",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "prior_held_count",
+      "producer": "STRUCTURE_EVENT_V1",
+      "role": "FROZEN_PRIOR_D1",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "prior_high20",
+      "producer": "CORE_FACTOR_V1.PRICE_TECHNICAL",
+      "role": "BLOCKED_CAPABILITY",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "prior_high_view",
+      "producer": "V4_12_COORDINATE_VIEW_V1",
+      "role": "BLOCKED_CAPABILITY",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "prior_range20_atr",
+      "producer": "V4_12_BLOCKED_RANGE_INPUT_V1",
+      "role": "BLOCKED_CAPABILITY",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "prior_recovery_exists",
+      "producer": "STRUCTURE_EVENT_V1",
+      "role": "FROZEN_PRIOR_D1",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "prior_recovery_failed",
+      "producer": "STRUCTURE_EVENT_V1",
+      "role": "FROZEN_PRIOR_D1",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "prior_recovery_held_count",
+      "producer": "STRUCTURE_EVENT_V1",
+      "role": "FROZEN_PRIOR_D1",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "prior_retest_qualified",
+      "producer": "STRUCTURE_EVENT_V1",
+      "role": "FROZEN_PRIOR_D1",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "prior_separated_sessions",
+      "producer": "STRUCTURE_EVENT_V1",
+      "role": "FROZEN_PRIOR_D1",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "prior_support_state",
+      "producer": "STRUCTURE_EVENT_V1",
+      "role": "FROZEN_PRIOR_D1",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "prior_test_count",
+      "producer": "STRUCTURE_EVENT_V1",
+      "role": "FROZEN_PRIOR_D1",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "prior_valid_event",
+      "producer": "STRUCTURE_EVENT_V1",
+      "role": "FROZEN_PRIOR_D1",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "recovery_line_view",
+      "producer": "V4_12_COORDINATE_VIEW_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "rel_market_1",
+      "producer": "MARKET_RELATIVE_REFERENCE_V1",
+      "role": "BLOCKED_CAPABILITY",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "ret1",
+      "producer": "CORE_FACTOR_V1.RET",
+      "role": "BLOCKED_CAPABILITY",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "slope20",
+      "producer": "CORE_FACTOR_V1.SLOPE",
+      "role": "BLOCKED_CAPABILITY",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "start_price_view",
+      "producer": "V4_12_COORDINATE_VIEW_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "support_today",
+      "producer": "SUPPORT_STATE_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "anchor_id",
+      "producer": "STRUCTURE_EVENT_V1",
+      "role": "FROZEN_PRIOR_D1",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "security_id",
+      "producer": "STRUCTURE_EVENT_V1",
+      "role": "FROZEN_PRIOR_D1",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "anchor_trade_date",
+      "producer": "STRUCTURE_EVENT_V1",
+      "role": "FROZEN_PRIOR_D1",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "available_date",
+      "producer": "STRUCTURE_EVENT_V1",
+      "role": "FROZEN_PRIOR_D1",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "available_at",
+      "producer": "STRUCTURE_EVENT_V1",
+      "role": "FROZEN_PRIOR_D1",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "anchor_raw_lower",
+      "producer": "STRUCTURE_EVENT_V1",
+      "role": "FROZEN_PRIOR_D1",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "anchor_raw_upper",
+      "producer": "STRUCTURE_EVENT_V1",
+      "role": "FROZEN_PRIOR_D1",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "anchor_price_basis",
+      "producer": "STRUCTURE_EVENT_V1",
+      "role": "FROZEN_PRIOR_D1",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "adjustment_contract_id",
+      "producer": "STRUCTURE_EVENT_V1",
+      "role": "FROZEN_PRIOR_D1",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "adjustment_source_identity",
+      "producer": "STRUCTURE_EVENT_V1",
+      "role": "FROZEN_PRIOR_D1",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "anchor_adjustment_source_revision",
+      "producer": "STRUCTURE_EVENT_V1",
+      "role": "FROZEN_PRIOR_D1",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "adjustment_asof",
+      "producer": "STRUCTURE_EVENT_V1",
+      "role": "FROZEN_PRIOR_D1",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "anchor_basis_trade_date",
+      "producer": "STRUCTURE_EVENT_V1",
+      "role": "FROZEN_PRIOR_D1",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "frozen_transform_coefficients",
+      "producer": "STRUCTURE_EVENT_V1",
+      "role": "FROZEN_PRIOR_D1",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "source_event_id",
+      "producer": "STRUCTURE_EVENT_V1",
+      "role": "FROZEN_PRIOR_D1",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "source_fact_digest",
+      "producer": "STRUCTURE_EVENT_V1",
+      "role": "FROZEN_PRIOR_D1",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "creation_coordinate",
+      "producer": "STRUCTURE_EVENT_V1",
+      "role": "FROZEN_PRIOR_D1",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "current_comparison_coordinate",
+      "producer": "STRUCTURE_EVENT_V1",
+      "role": "FROZEN_PRIOR_D1",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "rebase_lineage",
+      "producer": "STRUCTURE_EVENT_V1",
+      "role": "FROZEN_PRIOR_D1",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "corporate_action_transition",
+      "producer": "STRUCTURE_EVENT_V1",
+      "role": "FROZEN_PRIOR_D1",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "old_anchor",
+      "producer": "V4_12_MACHINE_AST_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "touch",
+      "producer": "V4_12_MACHINE_AST_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "close_breach",
+      "producer": "V4_12_MACHINE_AST_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "deep_breach",
+      "producer": "V4_12_MACHINE_AST_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "eod_reclaim",
+      "producer": "V4_12_MACHINE_AST_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "breach_count",
+      "producer": "V4_12_MACHINE_AST_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "separated_retest",
+      "producer": "V4_12_MACHINE_AST_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "fully_outside_test_band",
+      "producer": "V4_12_MACHINE_AST_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "next_test_count",
+      "producer": "V4_12_MACHINE_AST_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "separated_sessions",
+      "producer": "V4_12_MACHINE_AST_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "held_count",
+      "producer": "V4_12_MACHINE_AST_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "recovery_held_count",
+      "producer": "V4_12_MACHINE_AST_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "post_peak_drawdown",
+      "producer": "V4_12_MACHINE_AST_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "body",
+      "producer": "V4_12_MACHINE_AST_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "body_mid",
+      "producer": "V4_12_MACHINE_AST_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "body_atr",
+      "producer": "V4_12_MACHINE_AST_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "range_atr",
+      "producer": "V4_12_MACHINE_AST_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "impulse",
+      "producer": "V4_12_MACHINE_AST_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "breakout_trigger",
+      "producer": "V4_12_MACHINE_AST_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "ma20_reclaim",
+      "producer": "V4_12_MACHINE_AST_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "relative_recovery",
+      "producer": "V4_12_MACHINE_AST_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "retention_denominator",
+      "producer": "V4_12_MACHINE_AST_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "retention_value",
+      "producer": "V4_12_MACHINE_AST_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "range_anchor_qualified",
+      "producer": "V4_12_MACHINE_AST_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "gap_qualified",
+      "producer": "V4_12_MACHINE_AST_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "pivot_available",
+      "producer": "V4_12_MACHINE_AST_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "anchor_price_view",
+      "producer": "V4_12_MACHINE_AST_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "anchor_atr_view",
+      "producer": "V4_12_MACHINE_AST_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "common_coordinate_return",
+      "producer": "V4_12_MACHINE_AST_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "episode_invalidated",
+      "producer": "V4_12_MACHINE_AST_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    },
+    {
+      "logical_field": "hard_invalidated",
+      "producer": "V4_12_MACHINE_AST_V1",
+      "role": "D1_LOCAL_DERIVATION",
+      "status": "PASS",
+      "target_publication_available": false
+    }
+  ],
+  "generic_CORE_FACTOR_fallback_count": 0,
+  "roles": {
+    "BLOCKED_CAPABILITY": 19,
+    "D1_LOCAL_DERIVATION": 46,
+    "D1_OUTPUT": 16,
+    "FROZEN_PRIOR_D1": 37,
+    "UPSTREAM_ACCEPTED": 8
+  },
+  "source_hashes_validated": 15,
+  "status": "PASS",
+  "unresolved_false_accepted_claims": 0
+}

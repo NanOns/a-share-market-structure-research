@@ -1,53 +1,825 @@
 {
+  "authority_repair": "R2",
   "capabilities": [
     {
       "capability": "FORMAL_BLOCKED_INPUT_CAPABILITY",
       "fields": [
-        "close_t_minus_1",
-        "ma20_t_minus_1"
+        "ATR20"
       ],
-      "policy": "DO_NOT_RECONSTRUCT_FROM_RAW_BARS",
-      "reason": "Accepted owner lacks close_t_minus_1 and ma20_t_minus_1",
-      "result": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "reason": "Exact owner/field accepted, but no target-date V4-03 accepted factor publication bound for 2026-09-29/30; V4-11 candidate computations do not grant a new D1 producer permission",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "FORMAL_BLOCKED_INPUT_CAPABILITY",
+      "fields": [
+        "CLV"
+      ],
+      "reason": "Exact owner/field accepted, but no target-date V4-03 accepted factor publication bound for 2026-09-29/30; V4-11 candidate computations do not grant a new D1 producer permission",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "FORMAL_BLOCKED_INPUT_CAPABILITY",
+      "fields": [
+        "MA20"
+      ],
+      "reason": "Exact owner/field accepted, but no target-date V4-03 accepted factor publication bound for 2026-09-29/30; V4-11 candidate computations do not grant a new D1 producer permission",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "FORMAL_BLOCKED_INPUT_CAPABILITY",
+      "fields": [
+        "MA60"
+      ],
+      "reason": "Exact owner/field accepted, but no target-date V4-03 accepted factor publication bound for 2026-09-29/30; V4-11 candidate computations do not grant a new D1 producer permission",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "FORMAL_BLOCKED_INPUT_CAPABILITY",
+      "fields": [
+        "alpha"
+      ],
+      "reason": "No accepted Anchor-basis to observation-basis alpha publisher; qfq_mul is not alpha authority",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "FORMAL_BLOCKED_INPUT_CAPABILITY",
+      "fields": [
+        "amount_ratio20"
+      ],
+      "reason": "Exact owner/field accepted, but no target-date V4-03 accepted factor publication bound for 2026-09-29/30; V4-11 candidate computations do not grant a new D1 producer permission",
       "status": "BLOCKED_WITH_EXPLICIT_REASON"
     },
     {
       "capability": "RUNTIME_NOT_AUTHORIZED",
       "fields": [
-        "t-1 frozen Anchor/event"
+        "anchor_original_atr"
       ],
-      "reason": "D1 publication producer is contract design only; no accepted Anchor/event runtime publication",
+      "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
       "status": "BLOCKED_WITH_EXPLICIT_REASON"
     },
     {
-      "capability": "UNBOUND_REQUIRED_F0_INPUT",
+      "capability": "RUNTIME_NOT_AUTHORIZED",
       "fields": [
-        "atr_prior_view",
-        "prior_high_view",
-        "prior_delta3",
+        "anchor_original_price"
+      ],
+      "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "anchor_type"
+      ],
+      "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "FORMAL_BLOCKED_INPUT_CAPABILITY",
+      "fields": [
+        "atr_prior_view"
+      ],
+      "reason": "No exact prior ATR publication plus accepted cross-basis transform",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "base_view"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "FORMAL_BLOCKED_INPUT_CAPABILITY",
+      "fields": [
+        "beta"
+      ],
+      "reason": "No accepted Anchor-basis to observation-basis beta publisher; qfq_add is not beta authority",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "FORMAL_BLOCKED_INPUT_CAPABILITY",
+      "fields": [
+        "close_t_minus_1"
+      ],
+      "reason": "Accepted owner capability unavailable; DO_NOT_RECONSTRUCT_FROM_RAW_BARS",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "distance_zone"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "endpoint_price_view"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "episode_owns_anchor"
+      ],
+      "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "evaluable"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "event_close_view"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "hi"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "lo"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "FORMAL_BLOCKED_INPUT_CAPABILITY",
+      "fields": [
+        "ma20_t_minus_1"
+      ],
+      "reason": "Accepted owner capability unavailable; DO_NOT_RECONSTRUCT_FROM_RAW_BARS",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "FORMAL_BLOCKED_INPUT_CAPABILITY",
+      "fields": [
+        "near_high20_state"
+      ],
+      "reason": "Accepted POSITION_STATE_V1 owner exists; accepted profile cutoff is 2026-09-24, no target-date V4-04 accepted publication bound",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "observation_close_view"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "pivot_left_count"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "FORMAL_BLOCKED_INPUT_CAPABILITY",
+      "fields": [
+        "pivot_low"
+      ],
+      "reason": "No accepted left/right history source publication for D1 pivot detector",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "FORMAL_BLOCKED_INPUT_CAPABILITY",
+      "fields": [
         "pivot_low_strict"
       ],
-      "reason": "Historical field authority must be explicitly published in F0[t]; this design does not grant new accepted producer capability",
+      "reason": "No accepted left/right history source publication for D1 pivot detector",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "pivot_right_count"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "post_creation_sessions"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "prior_adjacent_evaluable"
+      ],
+      "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "prior_breach_count"
+      ],
+      "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "prior_breakout_exists"
+      ],
+      "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "prior_event_peak_view"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "prior_hard_invalidated"
+      ],
+      "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "prior_held_count"
+      ],
+      "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "FORMAL_BLOCKED_INPUT_CAPABILITY",
+      "fields": [
+        "prior_high20"
+      ],
+      "reason": "Exact owner/field accepted, but no target-date V4-03 accepted factor publication bound for 2026-09-29/30; V4-11 candidate computations do not grant a new D1 producer permission",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "FORMAL_BLOCKED_INPUT_CAPABILITY",
+      "fields": [
+        "prior_high_view"
+      ],
+      "reason": "No exact previous-session high view plus accepted cross-basis transform",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "FORMAL_BLOCKED_INPUT_CAPABILITY",
+      "fields": [
+        "prior_range20_atr"
+      ],
+      "reason": "Absent in accepted V4-03 outputs; Option B; no raw fallback",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "prior_recovery_exists"
+      ],
+      "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "prior_recovery_failed"
+      ],
+      "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "prior_recovery_held_count"
+      ],
+      "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "prior_retest_qualified"
+      ],
+      "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "prior_separated_sessions"
+      ],
+      "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "prior_support_state"
+      ],
+      "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "prior_test_count"
+      ],
+      "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "prior_valid_event"
+      ],
+      "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "recovery_line_view"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "FORMAL_BLOCKED_INPUT_CAPABILITY",
+      "fields": [
+        "rel_market_1"
+      ],
+      "reason": "Exact owner/field accepted, but no target-date V4-03 accepted factor publication bound for 2026-09-29/30; V4-11 candidate computations do not grant a new D1 producer permission",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "FORMAL_BLOCKED_INPUT_CAPABILITY",
+      "fields": [
+        "ret1"
+      ],
+      "reason": "Exact owner/field accepted, but no target-date V4-03 accepted factor publication bound for 2026-09-29/30; V4-11 candidate computations do not grant a new D1 producer permission",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "FORMAL_BLOCKED_INPUT_CAPABILITY",
+      "fields": [
+        "slope20"
+      ],
+      "reason": "Exact owner/field accepted, but no target-date V4-03 accepted factor publication bound for 2026-09-29/30; V4-11 candidate computations do not grant a new D1 producer permission",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "start_price_view"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "support_today"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "anchor_id"
+      ],
+      "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "security_id"
+      ],
+      "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "anchor_trade_date"
+      ],
+      "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "available_date"
+      ],
+      "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "available_at"
+      ],
+      "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "anchor_raw_lower"
+      ],
+      "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "anchor_raw_upper"
+      ],
+      "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "anchor_price_basis"
+      ],
+      "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "adjustment_contract_id"
+      ],
+      "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "adjustment_source_identity"
+      ],
+      "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "anchor_adjustment_source_revision"
+      ],
+      "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "adjustment_asof"
+      ],
+      "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "anchor_basis_trade_date"
+      ],
+      "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "frozen_transform_coefficients"
+      ],
+      "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "source_event_id"
+      ],
+      "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "source_fact_digest"
+      ],
+      "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "creation_coordinate"
+      ],
+      "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "current_comparison_coordinate"
+      ],
+      "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "rebase_lineage"
+      ],
+      "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "corporate_action_transition"
+      ],
+      "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "old_anchor"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "touch"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "close_breach"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "deep_breach"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "eod_reclaim"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "breach_count"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "separated_retest"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "fully_outside_test_band"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "next_test_count"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "separated_sessions"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "held_count"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "recovery_held_count"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "post_peak_drawdown"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "body"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "body_mid"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "body_atr"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "range_atr"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "impulse"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "breakout_trigger"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "ma20_reclaim"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "relative_recovery"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "retention_denominator"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "retention_value"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "range_anchor_qualified"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "gap_qualified"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "pivot_available"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "anchor_price_view"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "anchor_atr_view"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "common_coordinate_return"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "episode_invalidated"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
+      "status": "BLOCKED_WITH_EXPLICIT_REASON"
+    },
+    {
+      "capability": "RUNTIME_NOT_AUTHORIZED",
+      "fields": [
+        "hard_invalidated"
+      ],
+      "reason": "Design-only local derivation; runtime not authorized",
       "status": "BLOCKED_WITH_EXPLICIT_REASON"
     }
   ],
   "contract_id": "V4_12_PRODUCER_REGISTRY_V1",
-  "derived_input_bindings": {
-    "alpha/beta": "Accepted historical adjustment source-bound transform; positive alpha; coefficients are not identity",
-    "distance_zone": "max(lo-C, C-hi, mathematical_zero) in observation coordinate",
-    "evaluable": "Accepted actual bar AND valid source/basis AND positive converted prior ATR; missing required source is UNKNOWN",
-    "post_creation_sessions": "Accepted market calendar session distance from Anchor available_date; zero on creation day; revision is not session",
-    "prior_adjacent_evaluable": "Previous observation matches immediately preceding market session and was evaluable; false after missing/suspension",
-    "prior_event_peak_view": "Frozen event path peak through previous session, rebased as view; never today/future peak",
-    "prior_retest_qualified": "Frozen retest evidence records prior separated actual session; no raw bar reconstruction",
-    "recovery_line_view": "Creation-bound prior recovery line in current comparison coordinate"
-  },
   "freeze_scope": "CONTRACT_DESIGN_ONLY",
-  "owner_parity_authority": {
-    "bytes": 15510,
-    "path": "reports/v4_11_r5a/OWNER_INPUT_AUTHORITY_MATRIX.json",
-    "sha256": "bf8f0d3878fc6c265d10c5acc32cbea13dd58370695c4ef18e1f055c87b59215"
-  },
   "parameter_set_id": "V4_12_ENGINEERING_CANDIDATE_R1",
   "permissions": {
     "focus_cutover_permission": false,
@@ -57,68 +829,104 @@
   },
   "producers": [
     {
-      "authority": {
-        "bytes": 1602,
-        "path": "data/v4/V4_02_ACCEPTED_HEAD.json",
-        "sha256": "da318a1f82a03f13930af7858ca1640fadbdaedbee85e27d47f9c869c2d6b595"
-      },
-      "contract": {
-        "bytes": 9318,
-        "path": "config/v4_02_canonical_daily_pit_contract_v3.json",
-        "sha256": "6b61e97ace1d497299222ed12eac78d5736f2c5abe2d8cb45dbc8cc65cb11f35"
-      },
-      "current_data_authority": {
-        "bytes": 16890,
-        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
-        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
-      },
-      "field_aliases": {
-        "C": "close",
-        "H": "high",
-        "L": "low",
-        "O": "open"
-      },
-      "namespace": "F0_ACCEPTED",
-      "price_rule": "OHLC must use same accepted adjusted observation basis; alias never changes owner quality/source digest",
-      "producer_contract_id": "V4_CANONICAL_DAILY_PIT_PERIODS_V3",
-      "status": "ACCEPTED_NATIVE_OHLC_AND_ADJUSTMENT_BINDING_REQUIRED"
-    },
-    {
-      "authority": {
-        "bytes": 1607,
-        "path": "data/v4/V4_03_ACCEPTED_HEAD.json",
-        "sha256": "734bd27a5d53b2f18e3d62aa96ac63c91ccc6d9f848e942bc1efc410c88d4370"
-      },
-      "missing": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
-      "namespace": "F0_ACCEPTED",
-      "producer_contract_id": "CORE_FACTOR_V1",
-      "rule": "Consume exact accepted field publication; daily t availability does not authorize reconstructing missing t-1 field",
-      "status": "ACCEPTED_OWNER_AUTHORITY_REQUIRED"
-    },
-    {
-      "fields": [
-        "pivot_left_count",
-        "pivot_right_count",
-        "post_creation_sessions"
+      "accepted_head_bindings": [
+        {
+          "bytes": 4924,
+          "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+          "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+        }
       ],
-      "namespace": "F0_ACCEPTED",
-      "producer_contract_id": "CROSS_SECTION_SESSION_WINDOW_V1",
-      "status": "ACCEPTED_CALENDAR_AND_EXPLICIT_WINDOW_BINDING_REQUIRED"
+      "fields": [
+        "ATR20",
+        "MA20",
+        "MA60",
+        "prior_high20"
+      ],
+      "producer_contract_id": "CORE_FACTOR_V1.PRICE_TECHNICAL",
+      "producer_version": "1.0.0",
+      "status": "NO_GENERIC_ACCEPTANCE_CLAIM_FIELD_ROWS_AUTHORITATIVE"
     },
     {
+      "accepted_head_bindings": [
+        {
+          "bytes": 16890,
+          "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+          "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+        }
+      ],
+      "fields": [
+        "C",
+        "H",
+        "L",
+        "O",
+        "adjustment_source_revision",
+        "price_basis"
+      ],
+      "producer_contract_id": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+      "producer_version": "1.0.0",
+      "status": "NO_GENERIC_ACCEPTANCE_CLAIM_FIELD_ROWS_AUTHORITATIVE"
+    },
+    {
+      "accepted_head_bindings": [
+        {
+          "bytes": 4924,
+          "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+          "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+        }
+      ],
+      "fields": [
+        "CLV"
+      ],
+      "producer_contract_id": "CORE_FACTOR_V1.CLV",
+      "producer_version": "1.0.0",
+      "status": "NO_GENERIC_ACCEPTANCE_CLAIM_FIELD_ROWS_AUTHORITATIVE"
+    },
+    {
+      "accepted_head_bindings": [],
+      "fields": [
+        "alpha",
+        "atr_prior_view",
+        "base_view",
+        "beta",
+        "endpoint_price_view",
+        "event_close_view",
+        "hi",
+        "lo",
+        "observation_close_view",
+        "prior_event_peak_view",
+        "prior_high_view",
+        "recovery_line_view",
+        "start_price_view"
+      ],
+      "producer_contract_id": "V4_12_COORDINATE_VIEW_V1",
+      "producer_version": "1.0.0",
+      "status": "NO_GENERIC_ACCEPTANCE_CLAIM_FIELD_ROWS_AUTHORITATIVE"
+    },
+    {
+      "accepted_head_bindings": [
+        {
+          "bytes": 4924,
+          "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+          "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+        }
+      ],
+      "fields": [
+        "amount_ratio20"
+      ],
+      "producer_contract_id": "CORE_FACTOR_V1.AMOUNT_RATIO",
+      "producer_version": "1.0.0",
+      "status": "NO_GENERIC_ACCEPTANCE_CLAIM_FIELD_ROWS_AUTHORITATIVE"
+    },
+    {
+      "accepted_head_bindings": [],
       "fields": [
         "anchor_original_atr",
         "anchor_original_price",
         "anchor_type",
-        "base_view",
         "episode_owns_anchor",
-        "event_close_view",
-        "hi",
-        "lo",
         "prior_adjacent_evaluable",
         "prior_breach_count",
         "prior_breakout_exists",
-        "prior_event_peak_view",
         "prior_hard_invalidated",
         "prior_held_count",
         "prior_recovery_exists",
@@ -129,7 +937,6 @@
         "prior_support_state",
         "prior_test_count",
         "prior_valid_event",
-        "recovery_line_view",
         "anchor_id",
         "security_id",
         "anchor_trade_date",
@@ -161,33 +968,41 @@
         "stale",
         "invalidation_facts"
       ],
-      "namespace": "D1_CONTRACT_DESIGN_ONLY",
       "producer_contract_id": "STRUCTURE_EVENT_V1",
-      "status": "CONTRACT_FROZEN_RUNTIME_NOT_AUTHORIZED"
+      "producer_version": "1.0.0",
+      "status": "NO_GENERIC_ACCEPTANCE_CLAIM_FIELD_ROWS_AUTHORITATIVE"
     },
     {
+      "accepted_head_bindings": [],
       "fields": [
-        "support_today",
-        "support_state",
-        "retest_count",
-        "last_known_support_state"
+        "close_t_minus_1",
+        "ma20_t_minus_1"
       ],
-      "namespace": "D1_CONTRACT_DESIGN_ONLY",
-      "producer_contract_id": "SUPPORT_STATE_V1",
-      "status": "CONTRACT_FROZEN_RUNTIME_NOT_AUTHORIZED"
+      "producer_contract_id": "V4_12_BLOCKED_PRIOR_OWNER_V1",
+      "producer_version": "1.0.0",
+      "status": "NO_GENERIC_ACCEPTANCE_CLAIM_FIELD_ROWS_AUTHORITATIVE"
     },
     {
-      "fields": [
-        "acceptance_state",
-        "impulse_retention_1",
-        "impulse_retention_3"
+      "accepted_head_bindings": [
+        {
+          "bytes": 2776,
+          "path": "data/v4/V4_RPS_PIT_HISTORY_ACCEPTED_HEAD_R1.json",
+          "sha256": "4025dd5d3eb27c9086bca8e4861ad33842db8938dda370fb3d7f78b8d783398b"
+        }
       ],
-      "namespace": "D1_CONTRACT_DESIGN_ONLY",
-      "producer_contract_id": "RETENTION_V1",
-      "status": "CONTRACT_FROZEN_RUNTIME_NOT_AUTHORIZED"
+      "fields": [
+        "delta3",
+        "prior_delta3"
+      ],
+      "producer_contract_id": "RPS_DELTA_V1",
+      "producer_version": "1.0.0",
+      "status": "NO_GENERIC_ACCEPTANCE_CLAIM_FIELD_ROWS_AUTHORITATIVE"
     },
     {
+      "accepted_head_bindings": [],
       "fields": [
+        "distance_zone",
+        "evaluable",
         "old_anchor",
         "touch",
         "close_breach",
@@ -220,11 +1035,125 @@
         "episode_invalidated",
         "hard_invalidated"
       ],
-      "namespace": "D1_CONTRACT_DESIGN_ONLY",
       "producer_contract_id": "V4_12_MACHINE_AST_V1",
-      "status": "CONTRACT_FROZEN_RUNTIME_NOT_AUTHORIZED"
+      "producer_version": "1.0.0",
+      "status": "NO_GENERIC_ACCEPTANCE_CLAIM_FIELD_ROWS_AUTHORITATIVE"
+    },
+    {
+      "accepted_head_bindings": [
+        {
+          "bytes": 6837,
+          "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+          "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+        }
+      ],
+      "fields": [
+        "near_high20_state"
+      ],
+      "producer_contract_id": "POSITION_STATE_V1",
+      "producer_version": "1.0.0",
+      "status": "NO_GENERIC_ACCEPTANCE_CLAIM_FIELD_ROWS_AUTHORITATIVE"
+    },
+    {
+      "accepted_head_bindings": [],
+      "fields": [
+        "pivot_left_count",
+        "pivot_right_count",
+        "post_creation_sessions"
+      ],
+      "producer_contract_id": "V4_12_SESSION_COUNTER_V1",
+      "producer_version": "1.0.0",
+      "status": "NO_GENERIC_ACCEPTANCE_CLAIM_FIELD_ROWS_AUTHORITATIVE"
+    },
+    {
+      "accepted_head_bindings": [],
+      "fields": [
+        "pivot_low",
+        "pivot_low_strict"
+      ],
+      "producer_contract_id": "V4_12_PIVOT_SOURCE_DESIGN_V1",
+      "producer_version": "1.0.0",
+      "status": "NO_GENERIC_ACCEPTANCE_CLAIM_FIELD_ROWS_AUTHORITATIVE"
+    },
+    {
+      "accepted_head_bindings": [],
+      "fields": [
+        "prior_range20_atr"
+      ],
+      "producer_contract_id": "V4_12_BLOCKED_RANGE_INPUT_V1",
+      "producer_version": "1.0.0",
+      "status": "NO_GENERIC_ACCEPTANCE_CLAIM_FIELD_ROWS_AUTHORITATIVE"
+    },
+    {
+      "accepted_head_bindings": [
+        {
+          "bytes": 4924,
+          "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+          "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+        }
+      ],
+      "fields": [
+        "rel_market_1"
+      ],
+      "producer_contract_id": "MARKET_RELATIVE_REFERENCE_V1",
+      "producer_version": "1.0.0",
+      "status": "NO_GENERIC_ACCEPTANCE_CLAIM_FIELD_ROWS_AUTHORITATIVE"
+    },
+    {
+      "accepted_head_bindings": [
+        {
+          "bytes": 4924,
+          "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+          "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+        }
+      ],
+      "fields": [
+        "ret1"
+      ],
+      "producer_contract_id": "CORE_FACTOR_V1.RET",
+      "producer_version": "1.0.0",
+      "status": "NO_GENERIC_ACCEPTANCE_CLAIM_FIELD_ROWS_AUTHORITATIVE"
+    },
+    {
+      "accepted_head_bindings": [
+        {
+          "bytes": 4924,
+          "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+          "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+        }
+      ],
+      "fields": [
+        "slope20"
+      ],
+      "producer_contract_id": "CORE_FACTOR_V1.SLOPE",
+      "producer_version": "1.0.0",
+      "status": "NO_GENERIC_ACCEPTANCE_CLAIM_FIELD_ROWS_AUTHORITATIVE"
+    },
+    {
+      "accepted_head_bindings": [],
+      "fields": [
+        "support_today",
+        "support_state",
+        "retest_count",
+        "last_known_support_state"
+      ],
+      "producer_contract_id": "SUPPORT_STATE_V1",
+      "producer_version": "1.0.0",
+      "status": "NO_GENERIC_ACCEPTANCE_CLAIM_FIELD_ROWS_AUTHORITATIVE"
+    },
+    {
+      "accepted_head_bindings": [],
+      "fields": [
+        "acceptance_state",
+        "impulse_retention_1",
+        "impulse_retention_3"
+      ],
+      "producer_contract_id": "RETENTION_V1",
+      "producer_version": "1.0.0",
+      "status": "NO_GENERIC_ACCEPTANCE_CLAIM_FIELD_ROWS_AUTHORITATIVE"
     }
   ],
   "runtime_implemented": false,
-  "version": "1.0.0"
+  "source_authority_policy": "EXPLICIT_ACCEPTED_OWNER_TABLE_OR_BLOCK; NEVER_DEFAULT_CORE_FACTOR",
+  "version": "1.1.0"
 }

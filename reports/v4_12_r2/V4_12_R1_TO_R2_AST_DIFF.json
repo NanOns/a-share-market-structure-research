@@ -1,0 +1,22 @@
+{
+  "R1_vectors_byte_identical": true,
+  "anchor_metadata_dispositions": [
+    {
+      "anchor_type": "RANGE_UPPER",
+      "authority": "REV4 section41A.2",
+      "disposition": "REMOVE_EXTRA_TRIGGER",
+      "reason": "Remove unowned extra breakout gate; actual RANGE_UPPER consumer remains blocked",
+      "vector_impact": "None: unchanged 69 rule vectors; no formal range consumer enabled"
+    },
+    {
+      "anchor_type": "MA20_DYNAMIC/MA60_DYNAMIC",
+      "disposition": "BLOCKED_WITH_EXPLICIT_REASON",
+      "reason": "No accepted source event allowlist; freeze closed entry"
+    }
+  ],
+  "business_rule_AST_byte_identical": true,
+  "parameter_values_unchanged": true,
+  "retention_formula_unchanged": true,
+  "rule_order_unchanged": true,
+  "status": "PASS"
+}

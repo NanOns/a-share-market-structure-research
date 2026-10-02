@@ -1,0 +1,2078 @@
+{
+  "R6R1": "EXTERNAL_PASS_PRESERVED_NO_REWORK",
+  "authority_parity": {
+    "fields": [
+      {
+        "logical_field": "ATR20",
+        "producer": "CORE_FACTOR_V1.PRICE_TECHNICAL",
+        "role": "BLOCKED_CAPABILITY",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "C",
+        "producer": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+        "role": "UPSTREAM_ACCEPTED",
+        "status": "PASS",
+        "target_publication_available": true
+      },
+      {
+        "logical_field": "CLV",
+        "producer": "CORE_FACTOR_V1.CLV",
+        "role": "BLOCKED_CAPABILITY",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "H",
+        "producer": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+        "role": "UPSTREAM_ACCEPTED",
+        "status": "PASS",
+        "target_publication_available": true
+      },
+      {
+        "logical_field": "L",
+        "producer": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+        "role": "UPSTREAM_ACCEPTED",
+        "status": "PASS",
+        "target_publication_available": true
+      },
+      {
+        "logical_field": "MA20",
+        "producer": "CORE_FACTOR_V1.PRICE_TECHNICAL",
+        "role": "BLOCKED_CAPABILITY",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "MA60",
+        "producer": "CORE_FACTOR_V1.PRICE_TECHNICAL",
+        "role": "BLOCKED_CAPABILITY",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "O",
+        "producer": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+        "role": "UPSTREAM_ACCEPTED",
+        "status": "PASS",
+        "target_publication_available": true
+      },
+      {
+        "logical_field": "adjustment_source_revision",
+        "producer": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+        "role": "UPSTREAM_ACCEPTED",
+        "status": "PASS",
+        "target_publication_available": true
+      },
+      {
+        "logical_field": "alpha",
+        "producer": "V4_12_COORDINATE_VIEW_V1",
+        "role": "BLOCKED_CAPABILITY",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "amount_ratio20",
+        "producer": "CORE_FACTOR_V1.AMOUNT_RATIO",
+        "role": "BLOCKED_CAPABILITY",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "anchor_original_atr",
+        "producer": "STRUCTURE_EVENT_V1",
+        "role": "FROZEN_PRIOR_D1",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "anchor_original_price",
+        "producer": "STRUCTURE_EVENT_V1",
+        "role": "FROZEN_PRIOR_D1",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "anchor_type",
+        "producer": "STRUCTURE_EVENT_V1",
+        "role": "FROZEN_PRIOR_D1",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "atr_prior_view",
+        "producer": "V4_12_COORDINATE_VIEW_V1",
+        "role": "BLOCKED_CAPABILITY",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "base_view",
+        "producer": "V4_12_COORDINATE_VIEW_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "beta",
+        "producer": "V4_12_COORDINATE_VIEW_V1",
+        "role": "BLOCKED_CAPABILITY",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "close_t_minus_1",
+        "producer": "V4_12_BLOCKED_PRIOR_OWNER_V1",
+        "role": "BLOCKED_CAPABILITY",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "delta3",
+        "producer": "RPS_DELTA_V1",
+        "role": "UPSTREAM_ACCEPTED",
+        "status": "PASS",
+        "target_publication_available": true
+      },
+      {
+        "logical_field": "distance_zone",
+        "producer": "V4_12_MACHINE_AST_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "endpoint_price_view",
+        "producer": "V4_12_COORDINATE_VIEW_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "episode_owns_anchor",
+        "producer": "STRUCTURE_EVENT_V1",
+        "role": "FROZEN_PRIOR_D1",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "evaluable",
+        "producer": "V4_12_MACHINE_AST_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "event_close_view",
+        "producer": "V4_12_COORDINATE_VIEW_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "hi",
+        "producer": "V4_12_COORDINATE_VIEW_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "lo",
+        "producer": "V4_12_COORDINATE_VIEW_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "ma20_t_minus_1",
+        "producer": "V4_12_BLOCKED_PRIOR_OWNER_V1",
+        "role": "BLOCKED_CAPABILITY",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "near_high20_state",
+        "producer": "POSITION_STATE_V1",
+        "role": "BLOCKED_CAPABILITY",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "observation_close_view",
+        "producer": "V4_12_COORDINATE_VIEW_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "pivot_left_count",
+        "producer": "V4_12_SESSION_COUNTER_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "pivot_low",
+        "producer": "V4_12_PIVOT_SOURCE_DESIGN_V1",
+        "role": "BLOCKED_CAPABILITY",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "pivot_low_strict",
+        "producer": "V4_12_PIVOT_SOURCE_DESIGN_V1",
+        "role": "BLOCKED_CAPABILITY",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "pivot_right_count",
+        "producer": "V4_12_SESSION_COUNTER_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "post_creation_sessions",
+        "producer": "V4_12_SESSION_COUNTER_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "price_basis",
+        "producer": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+        "role": "UPSTREAM_ACCEPTED",
+        "status": "PASS",
+        "target_publication_available": true
+      },
+      {
+        "logical_field": "prior_adjacent_evaluable",
+        "producer": "STRUCTURE_EVENT_V1",
+        "role": "FROZEN_PRIOR_D1",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "prior_breach_count",
+        "producer": "STRUCTURE_EVENT_V1",
+        "role": "FROZEN_PRIOR_D1",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "prior_breakout_exists",
+        "producer": "STRUCTURE_EVENT_V1",
+        "role": "FROZEN_PRIOR_D1",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "prior_delta3",
+        "producer": "RPS_DELTA_V1",
+        "role": "UPSTREAM_ACCEPTED",
+        "status": "PASS",
+        "target_publication_available": true
+      },
+      {
+        "logical_field": "prior_event_peak_view",
+        "producer": "V4_12_COORDINATE_VIEW_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "prior_hard_invalidated",
+        "producer": "STRUCTURE_EVENT_V1",
+        "role": "FROZEN_PRIOR_D1",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "prior_held_count",
+        "producer": "STRUCTURE_EVENT_V1",
+        "role": "FROZEN_PRIOR_D1",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "prior_high20",
+        "producer": "CORE_FACTOR_V1.PRICE_TECHNICAL",
+        "role": "BLOCKED_CAPABILITY",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "prior_high_view",
+        "producer": "V4_12_COORDINATE_VIEW_V1",
+        "role": "BLOCKED_CAPABILITY",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "prior_range20_atr",
+        "producer": "V4_12_BLOCKED_RANGE_INPUT_V1",
+        "role": "BLOCKED_CAPABILITY",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "prior_recovery_exists",
+        "producer": "STRUCTURE_EVENT_V1",
+        "role": "FROZEN_PRIOR_D1",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "prior_recovery_failed",
+        "producer": "STRUCTURE_EVENT_V1",
+        "role": "FROZEN_PRIOR_D1",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "prior_recovery_held_count",
+        "producer": "STRUCTURE_EVENT_V1",
+        "role": "FROZEN_PRIOR_D1",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "prior_retest_qualified",
+        "producer": "STRUCTURE_EVENT_V1",
+        "role": "FROZEN_PRIOR_D1",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "prior_separated_sessions",
+        "producer": "STRUCTURE_EVENT_V1",
+        "role": "FROZEN_PRIOR_D1",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "prior_support_state",
+        "producer": "STRUCTURE_EVENT_V1",
+        "role": "FROZEN_PRIOR_D1",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "prior_test_count",
+        "producer": "STRUCTURE_EVENT_V1",
+        "role": "FROZEN_PRIOR_D1",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "prior_valid_event",
+        "producer": "STRUCTURE_EVENT_V1",
+        "role": "FROZEN_PRIOR_D1",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "recovery_line_view",
+        "producer": "V4_12_COORDINATE_VIEW_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "rel_market_1",
+        "producer": "MARKET_RELATIVE_REFERENCE_V1",
+        "role": "BLOCKED_CAPABILITY",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "ret1",
+        "producer": "CORE_FACTOR_V1.RET",
+        "role": "BLOCKED_CAPABILITY",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "slope20",
+        "producer": "CORE_FACTOR_V1.SLOPE",
+        "role": "BLOCKED_CAPABILITY",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "start_price_view",
+        "producer": "V4_12_COORDINATE_VIEW_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "support_today",
+        "producer": "SUPPORT_STATE_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "anchor_id",
+        "producer": "STRUCTURE_EVENT_V1",
+        "role": "FROZEN_PRIOR_D1",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "security_id",
+        "producer": "STRUCTURE_EVENT_V1",
+        "role": "FROZEN_PRIOR_D1",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "anchor_trade_date",
+        "producer": "STRUCTURE_EVENT_V1",
+        "role": "FROZEN_PRIOR_D1",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "available_date",
+        "producer": "STRUCTURE_EVENT_V1",
+        "role": "FROZEN_PRIOR_D1",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "available_at",
+        "producer": "STRUCTURE_EVENT_V1",
+        "role": "FROZEN_PRIOR_D1",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "anchor_raw_lower",
+        "producer": "STRUCTURE_EVENT_V1",
+        "role": "FROZEN_PRIOR_D1",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "anchor_raw_upper",
+        "producer": "STRUCTURE_EVENT_V1",
+        "role": "FROZEN_PRIOR_D1",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "anchor_price_basis",
+        "producer": "STRUCTURE_EVENT_V1",
+        "role": "FROZEN_PRIOR_D1",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "adjustment_contract_id",
+        "producer": "STRUCTURE_EVENT_V1",
+        "role": "FROZEN_PRIOR_D1",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "adjustment_source_identity",
+        "producer": "STRUCTURE_EVENT_V1",
+        "role": "FROZEN_PRIOR_D1",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "anchor_adjustment_source_revision",
+        "producer": "STRUCTURE_EVENT_V1",
+        "role": "FROZEN_PRIOR_D1",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "adjustment_asof",
+        "producer": "STRUCTURE_EVENT_V1",
+        "role": "FROZEN_PRIOR_D1",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "anchor_basis_trade_date",
+        "producer": "STRUCTURE_EVENT_V1",
+        "role": "FROZEN_PRIOR_D1",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "frozen_transform_coefficients",
+        "producer": "STRUCTURE_EVENT_V1",
+        "role": "FROZEN_PRIOR_D1",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "source_event_id",
+        "producer": "STRUCTURE_EVENT_V1",
+        "role": "FROZEN_PRIOR_D1",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "source_fact_digest",
+        "producer": "STRUCTURE_EVENT_V1",
+        "role": "FROZEN_PRIOR_D1",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "creation_coordinate",
+        "producer": "STRUCTURE_EVENT_V1",
+        "role": "FROZEN_PRIOR_D1",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "current_comparison_coordinate",
+        "producer": "STRUCTURE_EVENT_V1",
+        "role": "FROZEN_PRIOR_D1",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "rebase_lineage",
+        "producer": "STRUCTURE_EVENT_V1",
+        "role": "FROZEN_PRIOR_D1",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "corporate_action_transition",
+        "producer": "STRUCTURE_EVENT_V1",
+        "role": "FROZEN_PRIOR_D1",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "old_anchor",
+        "producer": "V4_12_MACHINE_AST_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "touch",
+        "producer": "V4_12_MACHINE_AST_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "close_breach",
+        "producer": "V4_12_MACHINE_AST_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "deep_breach",
+        "producer": "V4_12_MACHINE_AST_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "eod_reclaim",
+        "producer": "V4_12_MACHINE_AST_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "breach_count",
+        "producer": "V4_12_MACHINE_AST_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "separated_retest",
+        "producer": "V4_12_MACHINE_AST_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "fully_outside_test_band",
+        "producer": "V4_12_MACHINE_AST_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "next_test_count",
+        "producer": "V4_12_MACHINE_AST_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "separated_sessions",
+        "producer": "V4_12_MACHINE_AST_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "held_count",
+        "producer": "V4_12_MACHINE_AST_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "recovery_held_count",
+        "producer": "V4_12_MACHINE_AST_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "post_peak_drawdown",
+        "producer": "V4_12_MACHINE_AST_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "body",
+        "producer": "V4_12_MACHINE_AST_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "body_mid",
+        "producer": "V4_12_MACHINE_AST_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "body_atr",
+        "producer": "V4_12_MACHINE_AST_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "range_atr",
+        "producer": "V4_12_MACHINE_AST_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "impulse",
+        "producer": "V4_12_MACHINE_AST_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "breakout_trigger",
+        "producer": "V4_12_MACHINE_AST_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "ma20_reclaim",
+        "producer": "V4_12_MACHINE_AST_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "relative_recovery",
+        "producer": "V4_12_MACHINE_AST_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "retention_denominator",
+        "producer": "V4_12_MACHINE_AST_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "retention_value",
+        "producer": "V4_12_MACHINE_AST_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "range_anchor_qualified",
+        "producer": "V4_12_MACHINE_AST_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "gap_qualified",
+        "producer": "V4_12_MACHINE_AST_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "pivot_available",
+        "producer": "V4_12_MACHINE_AST_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "anchor_price_view",
+        "producer": "V4_12_MACHINE_AST_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "anchor_atr_view",
+        "producer": "V4_12_MACHINE_AST_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "common_coordinate_return",
+        "producer": "V4_12_MACHINE_AST_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "episode_invalidated",
+        "producer": "V4_12_MACHINE_AST_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      },
+      {
+        "logical_field": "hard_invalidated",
+        "producer": "V4_12_MACHINE_AST_V1",
+        "role": "D1_LOCAL_DERIVATION",
+        "status": "PASS",
+        "target_publication_available": false
+      }
+    ],
+    "generic_CORE_FACTOR_fallback_count": 0,
+    "roles": {
+      "BLOCKED_CAPABILITY": 19,
+      "D1_LOCAL_DERIVATION": 46,
+      "D1_OUTPUT": 16,
+      "FROZEN_PRIOR_D1": 37,
+      "UPSTREAM_ACCEPTED": 8
+    },
+    "source_hashes_validated": 15,
+    "status": "PASS",
+    "unresolved_false_accepted_claims": 0
+  },
+  "branch_requiredness": "EXPLICIT_CONSUMER_LOCAL",
+  "completeness": {
+    "authority_parity": "PASS",
+    "blocked_anchor_types": [
+      {
+        "anchor_type": "RANGE_UPPER",
+        "reason": "Absent in accepted V4-03 outputs; Option B; no raw fallback",
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "anchor_type": "MA20_DYNAMIC",
+        "reason": "Pivot accepted history / dynamic MA registered rise source-event authority not accepted",
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "anchor_type": "MA60_DYNAMIC",
+        "reason": "Pivot accepted history / dynamic MA registered rise source-event authority not accepted",
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "anchor_type": "PIVOT_LOW",
+        "reason": "Pivot accepted history / dynamic MA registered rise source-event authority not accepted",
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      }
+    ],
+    "blocked_fields": [
+      {
+        "field": "ATR20",
+        "reason": "Exact owner/field accepted, but no target-date V4-03 accepted factor publication bound for 2026-09-29/30; V4-11 candidate computations do not grant a new D1 producer permission",
+        "required_by": [
+          "breakout.BREAKOUT_TENTATIVE",
+          "definition.breakout_trigger"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "CLV",
+        "reason": "Exact owner/field accepted, but no target-date V4-03 accepted factor publication bound for 2026-09-29/30; V4-11 candidate computations do not grant a new D1 producer permission",
+        "required_by": [
+          "breakout.BREAKOUT_TENTATIVE",
+          "recovery.ANCHOR_RECLAIM",
+          "support.HELD_CONFIRMED",
+          "support.RECLAIMED",
+          "support.RETESTING",
+          "definition.breakout_trigger",
+          "definition.eod_reclaim",
+          "definition.impulse",
+          "definition.next_test_count"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "MA20",
+        "reason": "Exact owner/field accepted, but no target-date V4-03 accepted factor publication bound for 2026-09-29/30; V4-11 candidate computations do not grant a new D1 producer permission",
+        "required_by": [
+          "recovery.MA20_RECLAIM",
+          "definition.ma20_reclaim"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "MA60",
+        "reason": "Exact owner/field accepted, but no target-date V4-03 accepted factor publication bound for 2026-09-29/30; V4-11 candidate computations do not grant a new D1 producer permission",
+        "required_by": [],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "alpha",
+        "reason": "No accepted Anchor-basis to observation-basis alpha publisher; qfq_mul is not alpha authority",
+        "required_by": [
+          "definition.anchor_atr_view",
+          "definition.anchor_price_view"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "amount_ratio20",
+        "reason": "Exact owner/field accepted, but no target-date V4-03 accepted factor publication bound for 2026-09-29/30; V4-11 candidate computations do not grant a new D1 producer permission",
+        "required_by": [
+          "definition.impulse"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "anchor_original_atr",
+        "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+        "required_by": [
+          "definition.anchor_atr_view"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "anchor_original_price",
+        "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+        "required_by": [
+          "definition.anchor_price_view"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "anchor_type",
+        "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+        "required_by": [
+          "anchor_schema.IMMUTABLE_RECORD",
+          "pullback.PULLBACK_TO_IMPULSE",
+          "pullback.PULLBACK_TO_MA"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "atr_prior_view",
+        "reason": "No exact prior ATR publication plus accepted cross-basis transform",
+        "required_by": [
+          "acceptance.BROKEN",
+          "breakout.TESTING",
+          "pullback.PULLBACK_TO_BREAKOUT",
+          "pullback.PULLBACK_TO_IMPULSE",
+          "pullback.PULLBACK_TO_MA",
+          "recovery.ANCHOR_RECLAIM",
+          "support.APPROACHING",
+          "support.BREACHED_SHALLOW",
+          "support.BROKEN",
+          "support.HELD_CONFIRMED",
+          "support.HELD_TENTATIVE",
+          "support.RECLAIMED",
+          "support.RETESTING",
+          "support.TESTING",
+          "definition.body_atr",
+          "definition.breach_count",
+          "definition.close_breach",
+          "definition.deep_breach",
+          "definition.eod_reclaim",
+          "definition.episode_invalidated",
+          "definition.fully_outside_test_band",
+          "definition.hard_invalidated",
+          "definition.impulse",
+          "definition.next_test_count",
+          "definition.range_atr",
+          "definition.separated_retest",
+          "definition.separated_sessions",
+          "definition.touch"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "base_view",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [
+          "definition.retention_denominator",
+          "definition.retention_value"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "beta",
+        "reason": "No accepted Anchor-basis to observation-basis beta publisher; qfq_add is not beta authority",
+        "required_by": [
+          "definition.anchor_price_view"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "close_t_minus_1",
+        "reason": "Accepted owner capability unavailable; DO_NOT_RECONSTRUCT_FROM_RAW_BARS",
+        "required_by": [
+          "recovery.MA20_RECLAIM"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "distance_zone",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [
+          "support.APPROACHING"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "endpoint_price_view",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [
+          "definition.common_coordinate_return"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "episode_owns_anchor",
+        "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+        "required_by": [
+          "acceptance.BROKEN",
+          "definition.episode_invalidated",
+          "definition.hard_invalidated"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "evaluable",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [
+          "acceptance.ACCEPTED",
+          "acceptance.BROKEN",
+          "acceptance.UNKNOWN",
+          "breakout.BREAKOUT_ACCEPTED",
+          "breakout.UNKNOWN",
+          "pullback.UNKNOWN",
+          "recovery.RECOVERY_CONFIRMED",
+          "support.BROKEN",
+          "support.HELD_TENTATIVE",
+          "support.UNKNOWN",
+          "definition.breach_count",
+          "definition.episode_invalidated",
+          "definition.hard_invalidated",
+          "definition.held_count",
+          "definition.next_test_count",
+          "definition.recovery_held_count",
+          "definition.separated_sessions"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "event_close_view",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [
+          "definition.retention_denominator",
+          "definition.retention_value"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "hi",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [
+          "acceptance.ACCEPTED",
+          "breakout.BREAKOUT_ACCEPTED",
+          "breakout.TESTING",
+          "pullback.PULLBACK_TO_BREAKOUT",
+          "pullback.PULLBACK_TO_IMPULSE",
+          "pullback.PULLBACK_TO_MA",
+          "recovery.ANCHOR_RECLAIM",
+          "support.HELD_CONFIRMED",
+          "support.HELD_TENTATIVE",
+          "support.RECLAIMED",
+          "support.RETESTING",
+          "support.TESTING",
+          "definition.eod_reclaim",
+          "definition.fully_outside_test_band",
+          "definition.held_count",
+          "definition.next_test_count",
+          "definition.separated_retest",
+          "definition.separated_sessions",
+          "definition.touch"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "lo",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [
+          "acceptance.BROKEN",
+          "breakout.TESTING",
+          "pullback.PULLBACK_TO_BREAKOUT",
+          "pullback.PULLBACK_TO_IMPULSE",
+          "pullback.PULLBACK_TO_MA",
+          "recovery.ANCHOR_RECLAIM",
+          "support.BREACHED_SHALLOW",
+          "support.BROKEN",
+          "support.HELD_CONFIRMED",
+          "support.HELD_TENTATIVE",
+          "support.RECLAIMED",
+          "support.RETESTING",
+          "support.TESTING",
+          "definition.breach_count",
+          "definition.close_breach",
+          "definition.deep_breach",
+          "definition.eod_reclaim",
+          "definition.episode_invalidated",
+          "definition.fully_outside_test_band",
+          "definition.hard_invalidated",
+          "definition.next_test_count",
+          "definition.separated_retest",
+          "definition.separated_sessions",
+          "definition.touch"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "ma20_t_minus_1",
+        "reason": "Accepted owner capability unavailable; DO_NOT_RECONSTRUCT_FROM_RAW_BARS",
+        "required_by": [
+          "recovery.MA20_RECLAIM"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "near_high20_state",
+        "reason": "Accepted POSITION_STATE_V1 owner exists; accepted profile cutoff is 2026-09-24, no target-date V4-04 accepted publication bound",
+        "required_by": [
+          "breakout.APPROACHING"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "observation_close_view",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [
+          "definition.retention_value"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "pivot_left_count",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [
+          "definition.pivot_available"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "pivot_low",
+        "reason": "No accepted left/right history source publication for D1 pivot detector",
+        "required_by": [],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "pivot_low_strict",
+        "reason": "No accepted left/right history source publication for D1 pivot detector",
+        "required_by": [
+          "definition.pivot_available"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "pivot_right_count",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [
+          "definition.pivot_available"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "post_creation_sessions",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [
+          "acceptance.ACCEPTED",
+          "acceptance.PENDING",
+          "breakout.BREAKOUT_ACCEPTED",
+          "breakout.TESTING",
+          "recovery.ANCHOR_RECLAIM",
+          "recovery.RECOVERY_CONFIRMED",
+          "support.HELD_TENTATIVE",
+          "support.IDLE",
+          "definition.held_count",
+          "definition.old_anchor",
+          "definition.recovery_held_count"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "prior_adjacent_evaluable",
+        "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+        "required_by": [
+          "acceptance.ACCEPTED",
+          "acceptance.BROKEN",
+          "breakout.BREAKOUT_ACCEPTED",
+          "recovery.RECOVERY_CONFIRMED",
+          "support.BROKEN",
+          "support.HELD_CONFIRMED",
+          "support.HELD_TENTATIVE",
+          "definition.breach_count",
+          "definition.episode_invalidated",
+          "definition.hard_invalidated",
+          "definition.held_count",
+          "definition.next_test_count",
+          "definition.recovery_held_count",
+          "definition.separated_retest"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "prior_breach_count",
+        "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+        "required_by": [
+          "acceptance.BROKEN",
+          "support.BROKEN",
+          "definition.breach_count",
+          "definition.episode_invalidated",
+          "definition.hard_invalidated"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "prior_breakout_exists",
+        "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+        "required_by": [
+          "breakout.BREAKOUT_ACCEPTED",
+          "breakout.FAILED_BREAKOUT",
+          "breakout.RETAIN_TENTATIVE",
+          "breakout.TESTING"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "prior_event_peak_view",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [
+          "pullback.PULLBACK_IN_PROGRESS",
+          "definition.post_peak_drawdown"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "prior_hard_invalidated",
+        "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+        "required_by": [
+          "acceptance.BROKEN",
+          "definition.hard_invalidated"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "prior_held_count",
+        "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+        "required_by": [
+          "acceptance.ACCEPTED",
+          "breakout.BREAKOUT_ACCEPTED",
+          "support.HELD_TENTATIVE",
+          "definition.held_count"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "prior_high20",
+        "reason": "Exact owner/field accepted, but no target-date V4-03 accepted factor publication bound for 2026-09-29/30; V4-11 candidate computations do not grant a new D1 producer permission",
+        "required_by": [
+          "breakout.BREAKOUT_TENTATIVE",
+          "definition.breakout_trigger"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "prior_high_view",
+        "reason": "No exact previous-session high view plus accepted cross-basis transform",
+        "required_by": [
+          "definition.gap_qualified"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "prior_range20_atr",
+        "reason": "Absent in accepted V4-03 outputs; Option B; no raw fallback",
+        "required_by": [
+          "definition.range_anchor_qualified"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "prior_recovery_exists",
+        "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+        "required_by": [
+          "recovery.RECOVERY_CONFIRMED"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "prior_recovery_failed",
+        "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+        "required_by": [
+          "recovery.RECOVERY_FAILED"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "prior_recovery_held_count",
+        "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+        "required_by": [
+          "recovery.RECOVERY_CONFIRMED",
+          "definition.recovery_held_count"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "prior_retest_qualified",
+        "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+        "required_by": [
+          "support.HELD_CONFIRMED",
+          "definition.next_test_count",
+          "definition.separated_retest"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "prior_separated_sessions",
+        "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+        "required_by": [
+          "support.HELD_CONFIRMED",
+          "definition.next_test_count",
+          "definition.separated_retest",
+          "definition.separated_sessions"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "prior_support_state",
+        "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+        "required_by": [
+          "breakout.FAILED_BREAKOUT",
+          "pullback.PULLBACK_FAILED",
+          "support.HELD_CONFIRMED",
+          "support.HELD_TENTATIVE",
+          "support.RECLAIMED",
+          "support.RETESTING",
+          "support.RULE_0",
+          "definition.next_test_count",
+          "definition.separated_retest"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "prior_test_count",
+        "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+        "required_by": [
+          "support.HELD_CONFIRMED",
+          "support.RECLAIMED",
+          "definition.next_test_count",
+          "definition.separated_retest",
+          "definition.separated_sessions"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "prior_valid_event",
+        "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+        "required_by": [
+          "pullback.NOT_PULLBACK",
+          "recovery.ANCHOR_RECLAIM"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "recovery_line_view",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [
+          "recovery.RECOVERY_CONFIRMED",
+          "definition.recovery_held_count"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "rel_market_1",
+        "reason": "Exact owner/field accepted, but no target-date V4-03 accepted factor publication bound for 2026-09-29/30; V4-11 candidate computations do not grant a new D1 producer permission",
+        "required_by": [
+          "recovery.RELATIVE_RECOVERY",
+          "definition.impulse",
+          "definition.relative_recovery"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "ret1",
+        "reason": "Exact owner/field accepted, but no target-date V4-03 accepted factor publication bound for 2026-09-29/30; V4-11 candidate computations do not grant a new D1 producer permission",
+        "required_by": [
+          "recovery.BOUNCE_ONLY"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "slope20",
+        "reason": "Exact owner/field accepted, but no target-date V4-03 accepted factor publication bound for 2026-09-29/30; V4-11 candidate computations do not grant a new D1 producer permission",
+        "required_by": [
+          "definition.range_anchor_qualified"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "start_price_view",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [
+          "definition.common_coordinate_return"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "support_today",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [
+          "breakout.BREAKOUT_ACCEPTED",
+          "pullback.PULLBACK_HELD",
+          "pullback.PULLBACK_RECLAIMED"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "anchor_id",
+        "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+        "required_by": [
+          "anchor_schema.IMMUTABLE_RECORD"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "security_id",
+        "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+        "required_by": [
+          "anchor_schema.IMMUTABLE_RECORD"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "anchor_trade_date",
+        "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+        "required_by": [
+          "anchor_schema.IMMUTABLE_RECORD"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "available_date",
+        "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+        "required_by": [
+          "anchor_schema.IMMUTABLE_RECORD"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "available_at",
+        "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+        "required_by": [
+          "anchor_schema.IMMUTABLE_RECORD"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "anchor_raw_lower",
+        "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+        "required_by": [
+          "anchor_schema.IMMUTABLE_RECORD"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "anchor_raw_upper",
+        "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+        "required_by": [
+          "anchor_schema.IMMUTABLE_RECORD"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "anchor_price_basis",
+        "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+        "required_by": [
+          "anchor_schema.IMMUTABLE_RECORD"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "adjustment_contract_id",
+        "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+        "required_by": [
+          "anchor_schema.IMMUTABLE_RECORD"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "adjustment_source_identity",
+        "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+        "required_by": [
+          "anchor_schema.IMMUTABLE_RECORD"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "anchor_adjustment_source_revision",
+        "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+        "required_by": [
+          "anchor_schema.IMMUTABLE_RECORD"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "adjustment_asof",
+        "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+        "required_by": [
+          "anchor_schema.IMMUTABLE_RECORD"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "anchor_basis_trade_date",
+        "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+        "required_by": [
+          "anchor_schema.IMMUTABLE_RECORD"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "frozen_transform_coefficients",
+        "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+        "required_by": [
+          "anchor_schema.IMMUTABLE_RECORD"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "source_event_id",
+        "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+        "required_by": [
+          "anchor_schema.IMMUTABLE_RECORD"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "source_fact_digest",
+        "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+        "required_by": [
+          "anchor_schema.IMMUTABLE_RECORD"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "creation_coordinate",
+        "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+        "required_by": [
+          "anchor_schema.IMMUTABLE_RECORD"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "current_comparison_coordinate",
+        "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+        "required_by": [
+          "anchor_schema.IMMUTABLE_RECORD"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "rebase_lineage",
+        "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+        "required_by": [
+          "anchor_schema.IMMUTABLE_RECORD"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "corporate_action_transition",
+        "reason": "No accepted previous-session D1 Anchor/event publication; immutable frozen-source schema is design only",
+        "required_by": [
+          "anchor_schema.IMMUTABLE_RECORD"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "old_anchor",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [
+          "acceptance.ACCEPTED",
+          "breakout.BREAKOUT_ACCEPTED",
+          "recovery.RECOVERY_CONFIRMED",
+          "support.HELD_TENTATIVE",
+          "definition.held_count",
+          "definition.recovery_held_count"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "touch",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [
+          "breakout.TESTING",
+          "pullback.PULLBACK_TO_BREAKOUT",
+          "pullback.PULLBACK_TO_IMPULSE",
+          "pullback.PULLBACK_TO_MA",
+          "recovery.ANCHOR_RECLAIM",
+          "support.HELD_CONFIRMED",
+          "support.RECLAIMED",
+          "support.RETESTING",
+          "support.TESTING",
+          "definition.eod_reclaim",
+          "definition.fully_outside_test_band",
+          "definition.next_test_count",
+          "definition.separated_retest",
+          "definition.separated_sessions"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "close_breach",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [
+          "acceptance.BROKEN",
+          "support.BREACHED_SHALLOW",
+          "support.BROKEN",
+          "support.HELD_TENTATIVE",
+          "definition.breach_count",
+          "definition.episode_invalidated",
+          "definition.hard_invalidated"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "deep_breach",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [
+          "acceptance.BROKEN",
+          "support.BROKEN",
+          "definition.episode_invalidated",
+          "definition.hard_invalidated"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "eod_reclaim",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [
+          "recovery.ANCHOR_RECLAIM",
+          "support.HELD_CONFIRMED",
+          "support.RECLAIMED",
+          "support.RETESTING",
+          "definition.next_test_count"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "breach_count",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [
+          "acceptance.BROKEN",
+          "support.BROKEN",
+          "definition.episode_invalidated",
+          "definition.hard_invalidated"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "separated_retest",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [
+          "support.HELD_CONFIRMED",
+          "definition.next_test_count"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "fully_outside_test_band",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "next_test_count",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "separated_sessions",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "held_count",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [
+          "acceptance.ACCEPTED",
+          "breakout.BREAKOUT_ACCEPTED",
+          "support.HELD_TENTATIVE"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "recovery_held_count",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [
+          "recovery.RECOVERY_CONFIRMED"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "post_peak_drawdown",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [
+          "pullback.PULLBACK_IN_PROGRESS"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "body",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [
+          "definition.body_atr",
+          "definition.impulse"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "body_mid",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "body_atr",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [
+          "definition.impulse"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "range_atr",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [
+          "definition.impulse"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "impulse",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "breakout_trigger",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [
+          "breakout.BREAKOUT_TENTATIVE"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "ma20_reclaim",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [
+          "recovery.MA20_RECLAIM"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "relative_recovery",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [
+          "recovery.RELATIVE_RECOVERY"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "retention_denominator",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [
+          "definition.retention_value"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "retention_value",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "range_anchor_qualified",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "gap_qualified",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "pivot_available",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "anchor_price_view",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "anchor_atr_view",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "common_coordinate_return",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "episode_invalidated",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [
+          "acceptance.BROKEN",
+          "definition.hard_invalidated"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      },
+      {
+        "field": "hard_invalidated",
+        "reason": "Design-only local derivation; runtime not authorized",
+        "required_by": [
+          "acceptance.BROKEN"
+        ],
+        "status": "BLOCKED_WITH_EXPLICIT_REASON"
+      }
+    ],
+    "completeness_basis": "VALIDATED_OWNER_AND_PUBLICATION_PARITY_NOT_FILE_EXISTENCE",
+    "coordinate_authority": "PASS",
+    "items": [
+      {
+        "condition": "Independent authority parity / coordinate / units PASS; explicit blocked fields preserved",
+        "item": "field_registry",
+        "status": "FROZEN"
+      },
+      {
+        "condition": "Independent authority parity / coordinate / units PASS; explicit blocked fields preserved",
+        "item": "producer_registry",
+        "status": "FROZEN"
+      },
+      {
+        "condition": "Independent authority parity / coordinate / units PASS; explicit blocked fields preserved",
+        "item": "time_role_registry",
+        "status": "FROZEN"
+      },
+      {
+        "condition": "Independent authority parity / coordinate / units PASS; explicit blocked fields preserved",
+        "item": "coordinate_contract",
+        "status": "FROZEN"
+      },
+      {
+        "condition": "Independent authority parity / coordinate / units PASS; explicit blocked fields preserved",
+        "item": "input_schema",
+        "status": "FROZEN"
+      },
+      {
+        "condition": "Independent authority parity / coordinate / units PASS; explicit blocked fields preserved",
+        "item": "required_source_capability",
+        "status": "FROZEN"
+      }
+    ],
+    "runtime_authorized": false,
+    "status": "PASS_AUTHORITY_POLICY_WITH_EXPLICIT_CAPABILITY_BLOCKS",
+    "unit_parity": "PASS"
+  },
+  "contract_id": "V4_12_R2_CONTRACT_AUTHORITY_REPAIR_V1",
+  "coordinate_authority": {
+    "alpha_beta": "BLOCKED_WITH_EXPLICIT_REASON",
+    "authority": {
+      "bytes": 1602,
+      "path": "data/v4/V4_02_ACCEPTED_HEAD.json",
+      "sha256": "da318a1f82a03f13930af7858ca1640fadbdaedbee85e27d47f9c869c2d6b595"
+    },
+    "component_refs": {
+      "ADJUSTED_DAILY": {
+        "bytes": 6218836,
+        "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/ADJUSTED_DAILY/artifact.json",
+        "sha256": "a28b3a912e44a8cc6e3e7e43f37038b64e1f7b62024ec4887b5320ffd33d2e17"
+      },
+      "PERIOD_ADJUSTED": {
+        "bytes": 14402785,
+        "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/PERIOD_ADJUSTED/artifact.json",
+        "sha256": "b43dc8d743eb496ab20f485d10b9fc84336746d8858ee74678cfc9bb33b09290"
+      },
+      "RAW_DAILY": {
+        "bytes": 4710499,
+        "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/RAW_DAILY/artifact.json",
+        "sha256": "8406bee7d60435e7d2532df7ab7fea81149f100883f243236ee68877888f71b1"
+      }
+    },
+    "corporate_action_transition": "REQUIRES_EXACT_ACCEPTED_HISTORICAL_LINEAGE",
+    "data_authority": {
+      "bytes": 16890,
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+    },
+    "pure_core_as_coordinate_authority": false,
+    "same_day_revision": "Separate immutable observation view; never another session",
+    "status": "PASS",
+    "unsupported_conversion": "UNKNOWN_PRICE_BASIS_MISMATCH"
+  },
+  "dag_edge_audit": "PASS",
+  "enum_uniqueness": "PASS",
+  "external_acceptance_claim": false,
+  "independent_vector_oracle": {
+    "failed": 0,
+    "passed": 69,
+    "status": "PASS",
+    "total": 69
+  },
+  "literal_audit_summary": {
+    "ast_leaf_count": 293,
+    "parameters": 24,
+    "status": "PASS",
+    "unbound_literal_count": 0
+  },
+  "next_stage": "STOP_AFTER_COMMIT_PUSH_WAIT_EXTERNAL_AUDIT",
+  "permissions": {
+    "focus_cutover_permission": false,
+    "global_mandatory_adoption": false,
+    "production_permission": false,
+    "shadow_production_permission": false
+  },
+  "protected_and_keep_proof": [
+    {
+      "after_sha256": "fe3ca08043743023f23d5767bf8d3570e2dc4a72c7215056a2daba53a0ea7a77",
+      "before_sha256": "fe3ca08043743023f23d5767bf8d3570e2dc4a72c7215056a2daba53a0ea7a77",
+      "byte_identical": true,
+      "path": "AGENTS.md"
+    },
+    {
+      "after_sha256": "82f36cfbbc3c1c014a8820601db73603a2bde41b61e5804320178b3c7304ebf6",
+      "before_sha256": "82f36cfbbc3c1c014a8820601db73603a2bde41b61e5804320178b3c7304ebf6",
+      "byte_identical": true,
+      "path": "scripts/prepare_v4_11_promotion_r1.py"
+    },
+    {
+      "after_sha256": "d8d96dce559eb968e6446f0626766980f6fb045fca1219e3e01fcd0a980b9928",
+      "before_sha256": "d8d96dce559eb968e6446f0626766980f6fb045fca1219e3e01fcd0a980b9928",
+      "byte_identical": true,
+      "path": "data/v4/V4_11_ACCEPTED_HEAD.json"
+    },
+    {
+      "after_sha256": "80c58f2f4ed35baa1fd2b27e6af8b400fadfbefe4ed5d85819d9349c3315e2ac",
+      "before_sha256": "80c58f2f4ed35baa1fd2b27e6af8b400fadfbefe4ed5d85819d9349c3315e2ac",
+      "byte_identical": true,
+      "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json"
+    },
+    {
+      "after_sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+      "before_sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+      "byte_identical": true,
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json"
+    },
+    {
+      "after_sha256": "ceec544a9d4c9878ad752c51275902c5916cb451a593a3f55ec176fd52b4b796",
+      "before_sha256": "ceec544a9d4c9878ad752c51275902c5916cb451a593a3f55ec176fd52b4b796",
+      "byte_identical": true,
+      "path": "reports/v4_12/V4_12_STRUCTURE_ANCHOR_SUPPORT_STAGE_ENTRY_R1.json"
+    },
+    {
+      "after_sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f",
+      "before_sha256": "f6552515dc280119393270b8ede1560012657950ded5acbe18236a4109cbee8f",
+      "byte_identical": true,
+      "path": "config/v4_12_machine_ast_v1.json"
+    },
+    {
+      "after_sha256": "f1809f89fb640c01fdacad3d4cf20a9f310983952b9d788c4504d766ea6eb83d",
+      "before_sha256": "f1809f89fb640c01fdacad3d4cf20a9f310983952b9d788c4504d766ea6eb83d",
+      "byte_identical": true,
+      "path": "config/v4_12_machine_vectors_v1.json"
+    },
+    {
+      "after_sha256": "b42d705ae67ab753421890bc154bdc9534be1af74d1d346817b4a4f0178b0776",
+      "before_sha256": "b42d705ae67ab753421890bc154bdc9534be1af74d1d346817b4a4f0178b0776",
+      "byte_identical": true,
+      "path": "scripts/v4_12_independent_vector_oracle_r1.py"
+    },
+    {
+      "after_sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+      "before_sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+      "byte_identical": true,
+      "path": "reports/next_round_r6r1/.gitattributes"
+    },
+    {
+      "after_sha256": "1cac643248dcc4c520fb4321e6430be83e21847b03e3878cc00f6e7b9433dada",
+      "before_sha256": "1cac643248dcc4c520fb4321e6430be83e21847b03e3878cc00f6e7b9433dada",
+      "byte_identical": true,
+      "path": "reports/next_round_r6r1/R6R1_GOVERNANCE_REPLAY_CLEANUP.json"
+    }
+  ],
+  "runtime_authorized": false,
+  "runtime_implemented": false,
+  "scope_proof": {
+    "data_head": "2026-09-30",
+    "forbidden_changes": [],
+    "no_schema_migration": true,
+    "no_src_v4_runtime_change": true,
+    "permissions": {
+      "focus_cutover_permission": false,
+      "global_mandatory_adoption": false,
+      "production_permission": false,
+      "shadow_production_permission": false
+    },
+    "protected_artifacts": [
+      {
+        "after_sha256": "d8d96dce559eb968e6446f0626766980f6fb045fca1219e3e01fcd0a980b9928",
+        "before_sha256": "d8d96dce559eb968e6446f0626766980f6fb045fca1219e3e01fcd0a980b9928",
+        "byte_identical": true,
+        "bytes": 14090,
+        "path": "data/v4/V4_11_ACCEPTED_HEAD.json"
+      },
+      {
+        "after_sha256": "80c58f2f4ed35baa1fd2b27e6af8b400fadfbefe4ed5d85819d9349c3315e2ac",
+        "before_sha256": "80c58f2f4ed35baa1fd2b27e6af8b400fadfbefe4ed5d85819d9349c3315e2ac",
+        "byte_identical": true,
+        "bytes": 9842,
+        "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json"
+      },
+      {
+        "after_sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+        "before_sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40",
+        "byte_identical": true,
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json"
+      },
+      {
+        "after_sha256": "ceec544a9d4c9878ad752c51275902c5916cb451a593a3f55ec176fd52b4b796",
+        "before_sha256": "ceec544a9d4c9878ad752c51275902c5916cb451a593a3f55ec176fd52b4b796",
+        "byte_identical": true,
+        "bytes": 1330,
+        "path": "reports/v4_12/V4_12_STRUCTURE_ANCHOR_SUPPORT_STAGE_ENTRY_R1.json"
+      }
+    ],
+    "stage_head": "V4_00_TO_V4_11_ACCEPTED",
+    "status": "PASS"
+  },
+  "status": "V4_12_R2_CONTRACT_AUTHORITY_REPAIR_CANDIDATE_READY_FOR_EXTERNAL_AUDIT",
+  "unit_parity": {
+    "fields": [
+      {
+        "accepted_source_field": "atr20",
+        "logical_field": "ATR20",
+        "status": "PASS",
+        "unit": "adjusted_price"
+      },
+      {
+        "accepted_source_field": "clv",
+        "logical_field": "CLV",
+        "status": "PASS",
+        "unit": "ratio"
+      },
+      {
+        "accepted_source_field": "ma20",
+        "logical_field": "MA20",
+        "status": "PASS",
+        "unit": "adjusted_price"
+      },
+      {
+        "accepted_source_field": "ma60",
+        "logical_field": "MA60",
+        "status": "PASS",
+        "unit": "adjusted_price"
+      },
+      {
+        "accepted_source_field": "prior_high20",
+        "logical_field": "prior_high20",
+        "status": "PASS",
+        "unit": "adjusted_price"
+      },
+      {
+        "accepted_source_field": "amount_ratio20",
+        "logical_field": "amount_ratio20",
+        "status": "PASS",
+        "unit": "ratio"
+      },
+      {
+        "accepted_source_field": "rel_market_1",
+        "logical_field": "rel_market_1",
+        "status": "PASS",
+        "unit": "return_fraction"
+      },
+      {
+        "accepted_source_field": "ret1",
+        "logical_field": "ret1",
+        "status": "PASS",
+        "unit": "return_fraction"
+      },
+      {
+        "accepted_source_field": "slope20",
+        "logical_field": "slope20",
+        "status": "PASS",
+        "unit": "dimensionless"
+      }
+    ],
+    "parameter_values_unchanged": true,
+    "range_anchor_abs_slope20_max": {
+      "unit": "dimensionless",
+      "value": 0.1
+    },
+    "status": "PASS"
+  }
+}

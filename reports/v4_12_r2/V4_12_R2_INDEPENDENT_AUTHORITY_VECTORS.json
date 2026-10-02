@@ -1,0 +1,181 @@
+{
+  "actual_source": {
+    "bytes": 6264,
+    "path": "tests/test_v4_12_authority_r2.py",
+    "sha256": "ad6050b04de16acc1e912063426b2c2a9196749d01c5a97f0f07a50ae9b4ff93"
+  },
+  "expected_method": "Handwritten independent oracle; no implementation/helper imports",
+  "expected_source": {
+    "bytes": 2328,
+    "path": "scripts/v4_12_authority_oracle_r2.py",
+    "sha256": "ae50d3b1d87d8ccf0721d311894c4e710b7e5cf1f23f7fb6975a8ceedcc7d9e6"
+  },
+  "failed": 0,
+  "passed": 12,
+  "status": "PASS",
+  "total": 12,
+  "vectors": [
+    {
+      "actual": [
+        "rps5_delta3",
+        "RPS_DELTA_V1",
+        "data/v4/V4_RPS_PIT_HISTORY_ACCEPTED_HEAD_R1.json"
+      ],
+      "expected": [
+        "rps5_delta3",
+        "RPS_DELTA_V1",
+        "data/v4/V4_RPS_PIT_HISTORY_ACCEPTED_HEAD_R1.json"
+      ],
+      "id": "A01",
+      "reason": "Task6: scoped accepted RPS delta only",
+      "status": "PASS",
+      "subject": "delta3"
+    },
+    {
+      "actual": [
+        "POSITION_STATE_V1",
+        false,
+        "BLOCKED_CAPABILITY"
+      ],
+      "expected": [
+        "POSITION_STATE_V1",
+        false,
+        "BLOCKED_CAPABILITY"
+      ],
+      "id": "A02",
+      "reason": "Task7: correct V4-04 owner; no target-date accepted profile",
+      "status": "PASS",
+      "subject": "near_high20_state"
+    },
+    {
+      "actual": "FALSE_ACCEPTED_OWNER_CLAIM",
+      "expected": "FALSE_ACCEPTED_OWNER_CLAIM",
+      "id": "A03",
+      "reason": "Task1/18: unknown F0 never defaults to any accepted Core",
+      "status": "PASS",
+      "subject": "unknown_f0"
+    },
+    {
+      "actual": [
+        "D1_LOCAL_DERIVATION",
+        "V4_12_MACHINE_AST_V1"
+      ],
+      "expected": [
+        "D1_LOCAL_DERIVATION",
+        "V4_12_MACHINE_AST_V1"
+      ],
+      "id": "A04",
+      "reason": "Task8: internal derivation, no F0 source",
+      "status": "PASS",
+      "subject": "distance_zone"
+    },
+    {
+      "actual": [
+        "V4_12_COORDINATE_VIEW_V1",
+        "BLOCKED_CAPABILITY",
+        "BLOCKED_WITH_EXPLICIT_REASON"
+      ],
+      "expected": [
+        "V4_12_COORDINATE_VIEW_V1",
+        "BLOCKED_CAPABILITY",
+        "BLOCKED_WITH_EXPLICIT_REASON"
+      ],
+      "id": "A05",
+      "reason": "Task4: historical transform authority unavailable; never Core",
+      "status": "PASS",
+      "subject": "alpha_beta"
+    },
+    {
+      "actual": [
+        "BLOCKED_CAPABILITY",
+        "FORMAL_BLOCKED_INPUT_CAPABILITY"
+      ],
+      "expected": [
+        "BLOCKED_CAPABILITY",
+        "FORMAL_BLOCKED_INPUT_CAPABILITY"
+      ],
+      "id": "A06",
+      "reason": "Task10: Option B; no accepted output and no raw fallback",
+      "status": "PASS",
+      "subject": "prior_range20_atr"
+    },
+    {
+      "actual": [
+        "BLOCKED_CAPABILITY",
+        "V4_12_PIVOT_SOURCE_DESIGN_V1"
+      ],
+      "expected": [
+        "BLOCKED_CAPABILITY",
+        "V4_12_PIVOT_SOURCE_DESIGN_V1"
+      ],
+      "id": "A07",
+      "reason": "Task11: both pivot fields blocked pending exact accepted history",
+      "status": "PASS",
+      "subject": "pivot"
+    },
+    {
+      "actual": [
+        "dimensionless",
+        "dimensionless",
+        0.1
+      ],
+      "expected": [
+        "dimensionless",
+        "dimensionless",
+        0.1
+      ],
+      "id": "A08",
+      "reason": "Task13: unit parity; numeric candidate unchanged",
+      "status": "PASS",
+      "subject": "slope_unit"
+    },
+    {
+      "actual": {
+        "ATR20": "atr20",
+        "CLV": "clv",
+        "MA20": "ma20",
+        "MA60": "ma60"
+      },
+      "expected": {
+        "ATR20": "atr20",
+        "CLV": "clv",
+        "MA20": "ma20",
+        "MA60": "ma60"
+      },
+      "id": "A09",
+      "reason": "Task5: exact aliases, no runtime casing guesses",
+      "status": "PASS",
+      "subject": "explicit_aliases"
+    },
+    {
+      "actual": "RECOVERY_CONFIRMED",
+      "expected": "RECOVERY_CONFIRMED",
+      "id": "A10",
+      "reason": "Task14: earlier resolved confirmed rule ignores missing MA/bounce branch inputs; synthetic design fixture only",
+      "status": "PASS",
+      "subject": "branch_local"
+    },
+    {
+      "actual": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "expected": "UNKNOWN_ACCEPTED_CAPABILITY_UNAVAILABLE",
+      "id": "A11",
+      "reason": "Task7/18: cannot forge known near-high output when target publication absent",
+      "status": "PASS",
+      "subject": "missing_owner"
+    },
+    {
+      "actual": [
+        "BLOCKED_CAPABILITY",
+        false
+      ],
+      "expected": [
+        "BLOCKED_CAPABILITY",
+        false
+      ],
+      "id": "A12",
+      "reason": "Task10/11: existence of raw bars cannot confer range/pivot authority",
+      "status": "PASS",
+      "subject": "raw_bars"
+    }
+  ]
+}

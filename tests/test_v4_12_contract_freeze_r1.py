@@ -103,7 +103,7 @@ def test_future_input_metadata_rejected():
     with pytest.raises(ValueError,match='FUTURE_SOURCE'):validate_envelope_fixture(CONFIG,data)
 
 def test_same_day_prior_anchor_rejected():
-    data=envelope('lo');data['inputs']['lo']['trade_date']='2026-10-02'
+    data=envelope('anchor_raw_lower');data['inputs']['anchor_raw_lower']['trade_date']='2026-10-02'
     with pytest.raises(ValueError,match='SAME_DAY_ANCHOR'):validate_envelope_fixture(CONFIG,data)
 
 def test_missing_owner_cannot_be_forged_known():
@@ -134,7 +134,7 @@ def test_anchor_schema_complete_machine_types():
 
 def test_candidate_only_scope_and_protected_heads():
     result=validate()
-    assert result['status']=='V4_12_R1_CONTRACT_FREEZE_CANDIDATE_READY_FOR_EXTERNAL_AUDIT'
+    assert result['status'] in ['V4_12_R1_CONTRACT_FREEZE_CANDIDATE_READY_FOR_EXTERNAL_AUDIT','V4_12_R2_CONTRACT_AUTHORITY_REPAIR_CANDIDATE_READY_FOR_EXTERNAL_AUDIT']
     assert not result['runtime_implemented'] and not result['runtime_authorized']
     assert all(r['byte_identical'] for r in result['scope_proof']['protected_artifacts'])
     assert not any(result['permissions'].values())

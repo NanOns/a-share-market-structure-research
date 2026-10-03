@@ -1,0 +1,59 @@
+{
+  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+  "T0_mapping": "Bind exact accepted T0 ADJUSTED_DAILY row; require frozen comparison_reference==native T0 close. Recompute a_T0,b_T0 from due accepted GBBQ with T0 as first date; reference_in_due_basis=a_T0*comparison_reference+b_T0.",
+  "accepted_affine_semantics": {
+    "bytes": 5366,
+    "path": "src/adjustment/tdx_adjustment.py",
+    "sha256": "de8ce814dbdfc2fad7b16f619e1f1085a4dc539591d2bfe6dff876d805e8f6e0"
+  },
+  "active_entry": "python -m scripts.r20r1_maturity_debt <exact_packet_list.json>",
+  "contract_id": "V4_15_ACCEPTED_FORWARD_EVALUATION_PROJECTION_V1",
+  "endpoint_basis": "EXACT_DUE_ACCEPTED_GBBQ_BINARY_AND_DISPOSITIONS;_ACCEPTED_CATEGORY_1_XRXD_EVENTS_EX_DAY<=DUE",
+  "lineage": "EXACT_CURRENT_V2_HEAD_AND_ACCEPTED_BATCH_CHAIN_WITH_EXACT_COMPONENT_RECEIPTS",
+  "native_producer": {
+    "bytes": 34138,
+    "path": "src/workbench_analysis/dm01_incremental_component_builders_r3_3.py",
+    "sha256": "3db9b445aa011889fd5df1df03f4270424bd8ffcb12f59d99b8a577f3a4caf4a"
+  },
+  "native_source": "DM01_ADJUSTED_DAILY_ARTIFACT_R3_3",
+  "raw_provider_fallback": false,
+  "receipt_binds": [
+    "source_data_head",
+    "source_adjusted_daily_artifact",
+    "source_component_receipt",
+    "source_row_identity",
+    "source_row_digest",
+    "evaluation_basis_date",
+    "accepted_adjustment_source",
+    "accepted_adjustment_disposition",
+    "freeze"
+  ],
+  "rounding": "GBBQ cash/rights/bonus parameters Decimal ROUND_HALF_UP cents per accepted xrxd_from_gbbq; coefficients Decimal precision40; projection prices remain affine evaluation values per frozen settlement evaluator",
+  "same_day_revision_admission": "EXACT_PRIOR_ACCEPTED_V2_HEAD_SNAPSHOT_IN_CURRENT_ACCEPTANCE_RECORD.evidence_bindings_AT_SAME_CUTOFF;_REVALIDATE_ITS_OWN_BATCH_CHAIN_TO_FROZEN_T0;_NO_GENERIC_ARCHIVE_OR_UNBOUND_PRIOR_SOURCE",
+  "single_target_native_basis": "ACCEPTED_BUILDER_CALLS_build_affine_factors([target]);_qfq_mul=1,qfq_add=0;_REJECT_OTHER_UNPROVEN_NATIVE_BASIS",
+  "source_fields": [
+    "security_id",
+    "source_security_key",
+    "trade_date",
+    "open",
+    "high",
+    "low",
+    "close",
+    "source_authority",
+    "source_snapshot_id",
+    "source_digest",
+    "record_quality",
+    "identity_quality",
+    "identity_source_revision",
+    "price_basis",
+    "adjustment_readiness",
+    "adjustment_source_revision",
+    "qfq_mul",
+    "qfq_add"
+  ],
+  "source_mapping": "Each native daily price is in its single-target basis. Compute date-specific accepted QFQ a_d,b_d from due accepted GBBQ using the frozen tdx-affine-qfq-v0.2 event ordering and parameter rounding; evaluated price=a_d*native_price+b_d. Native field qfq_mul/add must match the single-target accepted producer identity factors.",
+  "source_rows_immutable": true,
+  "supersession": "R20R1R1_DM01_RESOLVER_AND_NATIVE_ROW_ADMISSION_ONLY;_HORIZON_STATE_MACHINE_PASS_KEEP",
+  "unsupported": "UNKNOWN_READINESS_OR_BLOCKING_ACTION_OR_IDENTITY_AMBIGUITY_FAIL_CLOSED",
+  "version": "1.0.0"
+}

@@ -1,0 +1,153 @@
+{
+  "FIRST_OBSERVED": {
+    "bytes": 5480,
+    "path": "reports/r20r1r2/debt_revisions/0a689f8da79f91ecce53473803afff19a9e2f3cc5ceb1885a1fffaa6f7d6b813.json",
+    "sha256": "c7e495453048b81a7af72e5128996db68546c7dae4e561fc7da062ce441a9896"
+  },
+  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+  "LATEST_VALIDATED": {
+    "bytes": 5739,
+    "path": "reports/r20r1r2/debt_revisions/8ad8d2f0671ce970e0506080aad04e39249880991b7687a797925897ad63d2a6.json",
+    "sha256": "d9209bcd5c20e36d3b9bfe7e548524649419194571703fe32dd98aedf2e3bdce"
+  },
+  "REALTIME_ACCEPTED_COHORT_MATURITY": "NOT_GRANTED",
+  "REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT_RUNTIME": "NOT_GRANTED_PENDING_MATURITY_EVIDENCE",
+  "T0_OBSERVATION_SCOPE": "RECONSTRUCTED_ASOF",
+  "accepted_data_authority": {
+    "bytes": 14339,
+    "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+    "sha256": "a6de29ee3b671ff0ee334a2c824626d337d7283992802aaa9181b54e684c7fa3"
+  },
+  "aggregate_state": "PARTIAL_MATURITY_EVIDENCE",
+  "blocks_matured_real_claims": true,
+  "blocks_unqualified_matured_real_claims": true,
+  "blocks_unrelated_development": false,
+  "capability_by_horizon": {
+    "1": "PASS_CAPABILITY_SCOPED",
+    "10": "NOT_GRANTED_PENDING_MATURITY_EVIDENCE",
+    "20": "NOT_GRANTED_PENDING_MATURITY_EVIDENCE",
+    "3": "NOT_GRANTED_PENDING_MATURITY_EVIDENCE",
+    "5": "NOT_GRANTED_PENDING_MATURITY_EVIDENCE"
+  },
+  "contract_id": "R20R1R2_HORIZON_SCOPED_DEBT_V3",
+  "matured_real_horizons": [
+    1
+  ],
+  "proofs_by_enrollment_horizon": {
+    "e032f4f24019c9ebf608d81603643dd6e1b5722668d7dd68eb0fa7ee1b9a5ebc": {
+      "FIRST_OBSERVED": {
+        "bytes": 2765,
+        "path": "reports/r20r1r2/proof_receipts/02fc373f7d0677c3d50f91df0224aa3ed6e15e8ee807c62ae1fc8798951e43d3.json",
+        "sha256": "be5f5ff825734e05f5413ac8dccf88e0afcb28dcde9488d194c01e4fd325e404"
+      },
+      "LATEST_VALIDATED": {
+        "bytes": 2769,
+        "path": "reports/r20r1r2/proof_receipts/01f695bd16c0dab1e56d40992086d9a1f439fc0d8d72a744f693844056cb1679.json",
+        "sha256": "1b7ce3c1f67894a75c3883d485428b525b89333e6fbbe7f01a9b0914072a4873"
+      },
+      "due_date": "2026-10-08",
+      "enrollment_id": "89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064",
+      "horizon": 1,
+      "receipt_history": [
+        {
+          "bytes": 2765,
+          "path": "reports/r20r1r2/proof_receipts/02fc373f7d0677c3d50f91df0224aa3ed6e15e8ee807c62ae1fc8798951e43d3.json",
+          "sha256": "be5f5ff825734e05f5413ac8dccf88e0afcb28dcde9488d194c01e4fd325e404"
+        },
+        {
+          "bytes": 2769,
+          "path": "reports/r20r1r2/proof_receipts/01f695bd16c0dab1e56d40992086d9a1f439fc0d8d72a744f693844056cb1679.json",
+          "sha256": "1b7ce3c1f67894a75c3883d485428b525b89333e6fbbe7f01a9b0914072a4873"
+        }
+      ]
+    }
+  },
+  "proved_horizons": [
+    1
+  ],
+  "required_horizons": [
+    1,
+    3,
+    5,
+    10,
+    20
+  ],
+  "stage_promotion_authorized": false,
+  "status": "PARTIAL_MATURITY_EVIDENCE",
+  "unproved_horizons": [
+    3,
+    5,
+    10,
+    20
+  ],
+  "unproved_horizons_remain_restricted": true,
+  "validation_environment": "ISOLATED_ENGINEERING_REACHABILITY_ONLY",
+  "verified_maturity_receipts": [
+    {
+      "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+      "REALTIME_ACCEPTED_COHORT_MATURITY": "NOT_GRANTED",
+      "T0_OBSERVATION_SCOPE": "RECONSTRUCTED_ASOF",
+      "accepted_future_endpoint_read_count": 1,
+      "due_date": "2026-10-08",
+      "enrollment_id": "89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064",
+      "horizon": 1,
+      "packet": {
+        "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+        "REALTIME_ACCEPTED_COHORT_MATURITY": "NOT_GRANTED",
+        "accepted_endpoints": [
+          {
+            "bytes": 1635,
+            "path": "fixtures/r2/durable/2026-10-08/ADJUSTED_DAILY/artifact.json",
+            "sha256": "1ff0cd2e5f90a4ebd3a806d6c69316c0989d1afd3e0199920f0b993318094cfc"
+          }
+        ],
+        "accepted_head": {
+          "bytes": 4178,
+          "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+          "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+        },
+        "data_head": {
+          "bytes": 14339,
+          "path": "reports/r20r1r2/accepted_data_snapshots/a6de29ee3b671ff0ee334a2c824626d337d7283992802aaa9181b54e684c7fa3.json",
+          "sha256": "a6de29ee3b671ff0ee334a2c824626d337d7283992802aaa9181b54e684c7fa3"
+        },
+        "endpoint_read_receipt": {
+          "bytes": 809,
+          "path": "fixtures/r2/read_n1.json",
+          "sha256": "d6fedb30aeb5b7ee3e65a10a417090585b5c1e1be6ffd7cd4b583b7da9a02b05"
+        },
+        "enrollment": {
+          "bytes": 2736,
+          "path": "reports/v4_15_runtime_r20/e2e_r2/enrollment/89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064.json",
+          "sha256": "0417df91561388613e5df100dfe2f179898d4576ba8370cc2cf5a1c017f1954f"
+        },
+        "first_future_endpoint_open_at": "2026-10-08T16:30:00+00:00",
+        "freeze": {
+          "bytes": 4761,
+          "path": "reports/v4_15_runtime_r20/e2e_r2/t0_freezes/89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064.json",
+          "sha256": "8f676ea13fd2a2e6bda854dbfd8e1842f5dc2065488945b4d7306a6de52ca329"
+        },
+        "freeze_completed_at": "2026-10-03T10:25:33.728600+00:00",
+        "historical_prices_only": false,
+        "horizon": 1,
+        "outcome": {
+          "bytes": 2717,
+          "path": "fixtures/r2/corrected_outcome.json",
+          "sha256": "d25b3a5cc6fe2ec0c135a98a8c70e1f9516c1f3f6f3be6a0b30c5d3e642c4a98"
+        },
+        "owner_publication": {
+          "bytes": 3622812,
+          "path": "reports/v4_14_replay_r18/real/2026-09-30/r1/manifest.json",
+          "sha256": "f4c068afec2fdda754bce62a5f5773565c893be20554f871a25f11afee22e492"
+        },
+        "projection": {
+          "bytes": 5663,
+          "path": "reports/r20r1r2/projections/5515497c544a91df69f9720240e1978342acec84aff6b7cb4bb1fa03050a08a1.json",
+          "sha256": "1a1f625a1a76b7494cc9c357574e7266e8abfaa9cf5d59f51afe5d270a1c859e"
+        },
+        "raw_provider_fallback": false
+      },
+      "validation_environment": "ISOLATED_ENGINEERING_REACHABILITY_ONLY"
+    }
+  ]
+}

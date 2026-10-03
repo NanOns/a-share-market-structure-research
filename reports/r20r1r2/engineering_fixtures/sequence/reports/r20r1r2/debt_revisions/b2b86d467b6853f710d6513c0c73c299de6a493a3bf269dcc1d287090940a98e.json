@@ -1,0 +1,237 @@
+{
+  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+  "REALTIME_ACCEPTED_COHORT_MATURITY": "NOT_GRANTED",
+  "REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT_RUNTIME": "NOT_GRANTED_PENDING_MATURITY_EVIDENCE",
+  "T0_OBSERVATION_SCOPE": "RECONSTRUCTED_ASOF",
+  "accepted_data_authority": {
+    "bytes": 14411,
+    "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+    "sha256": "80e785e36026e4c3ba8fded0d1a332c7b48ec3982b0a1505709e4eee8899dac5"
+  },
+  "aggregate_state": "PARTIAL_MATURITY_EVIDENCE",
+  "blocks_matured_real_claims": true,
+  "blocks_unqualified_matured_real_claims": true,
+  "blocks_unrelated_development": false,
+  "capability_by_horizon": {
+    "1": "PASS_CAPABILITY_SCOPED",
+    "10": "NOT_GRANTED_PENDING_MATURITY_EVIDENCE",
+    "20": "NOT_GRANTED_PENDING_MATURITY_EVIDENCE",
+    "3": "PASS_CAPABILITY_SCOPED",
+    "5": "NOT_GRANTED_PENDING_MATURITY_EVIDENCE"
+  },
+  "contract_id": "R20R1R2_HORIZON_SCOPED_DEBT_V3",
+  "matured_real_horizons": [
+    1,
+    3
+  ],
+  "proofs_by_enrollment_horizon": {
+    "74175443bd85ba92dd0223b0b9a9dcb85e50969a9061ff2dd3b0c43914a4a218": {
+      "FIRST_OBSERVED": {
+        "bytes": 3175,
+        "path": "reports/r20r1r2/proof_receipts/c22b16d28c49175e832d8c34e718453a1200264cc61f27e7171aa6a9a5a4fd15.json",
+        "sha256": "ed42c3b2c234fc8c29997a198412598167490e5f06fb8009a0d915eff458183e"
+      },
+      "LATEST_VALIDATED": {
+        "bytes": 3175,
+        "path": "reports/r20r1r2/proof_receipts/c22b16d28c49175e832d8c34e718453a1200264cc61f27e7171aa6a9a5a4fd15.json",
+        "sha256": "ed42c3b2c234fc8c29997a198412598167490e5f06fb8009a0d915eff458183e"
+      },
+      "due_date": "2026-10-12",
+      "enrollment_id": "89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064",
+      "horizon": 3,
+      "receipt_history": [
+        {
+          "bytes": 3175,
+          "path": "reports/r20r1r2/proof_receipts/c22b16d28c49175e832d8c34e718453a1200264cc61f27e7171aa6a9a5a4fd15.json",
+          "sha256": "ed42c3b2c234fc8c29997a198412598167490e5f06fb8009a0d915eff458183e"
+        }
+      ]
+    },
+    "e032f4f24019c9ebf608d81603643dd6e1b5722668d7dd68eb0fa7ee1b9a5ebc": {
+      "FIRST_OBSERVED": {
+        "bytes": 2765,
+        "path": "reports/r20r1r2/proof_receipts/9145f7a459e9eb0b1b080e1927cad2b960bb191177cf59ffe2608f7eaeaf0af7.json",
+        "sha256": "ce0293826727b7b52730c0c62c37ee7fff06eedf4f055552716ffe49cbf51342"
+      },
+      "LATEST_VALIDATED": {
+        "bytes": 2765,
+        "path": "reports/r20r1r2/proof_receipts/9145f7a459e9eb0b1b080e1927cad2b960bb191177cf59ffe2608f7eaeaf0af7.json",
+        "sha256": "ce0293826727b7b52730c0c62c37ee7fff06eedf4f055552716ffe49cbf51342"
+      },
+      "due_date": "2026-10-08",
+      "enrollment_id": "89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064",
+      "horizon": 1,
+      "receipt_history": [
+        {
+          "bytes": 2765,
+          "path": "reports/r20r1r2/proof_receipts/9145f7a459e9eb0b1b080e1927cad2b960bb191177cf59ffe2608f7eaeaf0af7.json",
+          "sha256": "ce0293826727b7b52730c0c62c37ee7fff06eedf4f055552716ffe49cbf51342"
+        }
+      ]
+    }
+  },
+  "proved_horizons": [
+    1,
+    3
+  ],
+  "required_horizons": [
+    1,
+    3,
+    5,
+    10,
+    20
+  ],
+  "stage_promotion_authorized": false,
+  "status": "PARTIAL_MATURITY_EVIDENCE",
+  "unproved_horizons": [
+    5,
+    10,
+    20
+  ],
+  "unproved_horizons_remain_restricted": true,
+  "validation_environment": "ISOLATED_ENGINEERING_REACHABILITY_ONLY",
+  "verified_maturity_receipts": [
+    {
+      "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+      "REALTIME_ACCEPTED_COHORT_MATURITY": "NOT_GRANTED",
+      "T0_OBSERVATION_SCOPE": "RECONSTRUCTED_ASOF",
+      "accepted_future_endpoint_read_count": 1,
+      "due_date": "2026-10-08",
+      "enrollment_id": "89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064",
+      "horizon": 1,
+      "packet": {
+        "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+        "REALTIME_ACCEPTED_COHORT_MATURITY": "NOT_GRANTED",
+        "accepted_endpoints": [
+          {
+            "bytes": 1635,
+            "path": "fixtures/r1/durable/2026-10-08/ADJUSTED_DAILY/artifact.json",
+            "sha256": "12f95ecc532b40baa91fe5114945671642fc9b4a565fa2e52fef81da0708a9c5"
+          }
+        ],
+        "accepted_head": {
+          "bytes": 4178,
+          "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+          "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+        },
+        "data_head": {
+          "bytes": 14339,
+          "path": "reports/r20r1r2/accepted_data_snapshots/b3248053d56e4b25a64208999acea3613299376ea12a6ef25013166460eaa63c.json",
+          "sha256": "b3248053d56e4b25a64208999acea3613299376ea12a6ef25013166460eaa63c"
+        },
+        "endpoint_read_receipt": {
+          "bytes": 809,
+          "path": "fixtures/r1/read_n1.json",
+          "sha256": "8aa4398349dc7167275968f4a4ae6f6643cba06e7f7e7c9e3a9dcd97c061bef0"
+        },
+        "enrollment": {
+          "bytes": 2736,
+          "path": "reports/v4_15_runtime_r20/e2e_r2/enrollment/89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064.json",
+          "sha256": "0417df91561388613e5df100dfe2f179898d4576ba8370cc2cf5a1c017f1954f"
+        },
+        "first_future_endpoint_open_at": "2026-10-08T16:30:00+00:00",
+        "freeze": {
+          "bytes": 4761,
+          "path": "reports/v4_15_runtime_r20/e2e_r2/t0_freezes/89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064.json",
+          "sha256": "8f676ea13fd2a2e6bda854dbfd8e1842f5dc2065488945b4d7306a6de52ca329"
+        },
+        "freeze_completed_at": "2026-10-03T10:25:33.728600+00:00",
+        "historical_prices_only": false,
+        "horizon": 1,
+        "outcome": {
+          "bytes": 2570,
+          "path": "fixtures/r1/outcome_n1_r1.json",
+          "sha256": "e8af6d67f506fd2fb80bb7a23b569a98c61dd1105916f3dad8f1addb6ce18625"
+        },
+        "owner_publication": {
+          "bytes": 3622812,
+          "path": "reports/v4_14_replay_r18/real/2026-09-30/r1/manifest.json",
+          "sha256": "f4c068afec2fdda754bce62a5f5773565c893be20554f871a25f11afee22e492"
+        },
+        "projection": {
+          "bytes": 5663,
+          "path": "reports/r20r1r2/projections/36bacc2d8903ab6d75094976ddcf7dd89f5baf0b49a175f0250657d6247533dc.json",
+          "sha256": "c4052114f8ead184f44177492f8fcb4084790044a4d7e8301a92c9fad04fa36a"
+        },
+        "raw_provider_fallback": false
+      },
+      "validation_environment": "ISOLATED_ENGINEERING_REACHABILITY_ONLY"
+    },
+    {
+      "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+      "REALTIME_ACCEPTED_COHORT_MATURITY": "NOT_GRANTED",
+      "T0_OBSERVATION_SCOPE": "RECONSTRUCTED_ASOF",
+      "accepted_future_endpoint_read_count": 3,
+      "due_date": "2026-10-12",
+      "enrollment_id": "89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064",
+      "horizon": 3,
+      "packet": {
+        "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+        "REALTIME_ACCEPTED_COHORT_MATURITY": "NOT_GRANTED",
+        "accepted_endpoints": [
+          {
+            "bytes": 1635,
+            "path": "fixtures/r1/durable/2026-10-08/ADJUSTED_DAILY/artifact.json",
+            "sha256": "12f95ecc532b40baa91fe5114945671642fc9b4a565fa2e52fef81da0708a9c5"
+          },
+          {
+            "bytes": 1635,
+            "path": "fixtures/r1/durable/2026-10-09/ADJUSTED_DAILY/artifact.json",
+            "sha256": "7366386574e3ade91c48b599783f7ea26f157e863c61e0555e8cefebd5ebee13"
+          },
+          {
+            "bytes": 1635,
+            "path": "fixtures/r1/durable/2026-10-12/ADJUSTED_DAILY/artifact.json",
+            "sha256": "6c198281055a5d776f7c71f61f9c77cff5e21ddcfb2e5cd9e5eba4464e71655c"
+          }
+        ],
+        "accepted_head": {
+          "bytes": 4178,
+          "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+          "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+        },
+        "data_head": {
+          "bytes": 14408,
+          "path": "reports/r20r1r2/accepted_data_snapshots/66c4d962224888c20275d68d3e8cc11e389e824067d67dff00e151fa0720bdea.json",
+          "sha256": "66c4d962224888c20275d68d3e8cc11e389e824067d67dff00e151fa0720bdea"
+        },
+        "endpoint_read_receipt": {
+          "bytes": 1198,
+          "path": "fixtures/r1/read_n3.json",
+          "sha256": "49ef15281713f384ef4df2fc687d3cf6a22f20f02c22d610540a9c12d812d88c"
+        },
+        "enrollment": {
+          "bytes": 2736,
+          "path": "reports/v4_15_runtime_r20/e2e_r2/enrollment/89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064.json",
+          "sha256": "0417df91561388613e5df100dfe2f179898d4576ba8370cc2cf5a1c017f1954f"
+        },
+        "first_future_endpoint_open_at": "2026-10-12T16:30:00+00:00",
+        "freeze": {
+          "bytes": 4761,
+          "path": "reports/v4_15_runtime_r20/e2e_r2/t0_freezes/89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064.json",
+          "sha256": "8f676ea13fd2a2e6bda854dbfd8e1842f5dc2065488945b4d7306a6de52ca329"
+        },
+        "freeze_completed_at": "2026-10-03T10:25:33.728600+00:00",
+        "historical_prices_only": false,
+        "horizon": 3,
+        "outcome": {
+          "bytes": 5793,
+          "path": "fixtures/r1/outcome_n3_r1.json",
+          "sha256": "6f94277be87d5660a73dcc49d0095fef578f402afd913d568b9490df0f2d4a63"
+        },
+        "owner_publication": {
+          "bytes": 3622812,
+          "path": "reports/v4_14_replay_r18/real/2026-09-30/r1/manifest.json",
+          "sha256": "f4c068afec2fdda754bce62a5f5773565c893be20554f871a25f11afee22e492"
+        },
+        "projection": {
+          "bytes": 11745,
+          "path": "reports/r20r1r2/projections/fe3c5dfe637b50efe7969943437bdfd389c650639751b9e1558297f19419d78c.json",
+          "sha256": "21b5cd400c5650d0862a66cbbdeb0e4395576071ccf4f52d57d347a830c8e6d5"
+        },
+        "raw_provider_fallback": false
+      },
+      "validation_environment": "ISOLATED_ENGINEERING_REACHABILITY_ONLY"
+    }
+  ]
+}

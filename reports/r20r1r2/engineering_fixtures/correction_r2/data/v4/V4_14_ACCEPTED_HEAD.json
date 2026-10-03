@@ -1,0 +1,102 @@
+{
+  "ALGORITHM_STATE_REPLAY_PASS": "DEGRADED_PASS_CAPABILITY_SCOPED",
+  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+  "REAL_ACCEPTED_SOURCE_REPLAY": "PASS_CAPABILITY_SCOPED",
+  "V4_15_runtime": false,
+  "accepted_trade_date": "2026-09-30",
+  "audited_head": "f4ad7d632e53734798c064f011e2b53ecd99bc27",
+  "bindings": {
+    "amended_predecessor": {
+      "bytes": 11314,
+      "path": "data/v4/V4_13_ACCEPTED_HEAD_AMENDED_R1.json",
+      "sha256": "98f222ba4d62318ee900a69b8cad7c25359a30bcc7097efe0a55b8ffea09aa65"
+    },
+    "calendar": {
+      "bytes": 10739,
+      "path": "data/v4/source_evidence/dm01_a01_r3/chain_inputs_r1/calendar_union_2e0938120e3b371aa9c84422c06b4c14de0f8894cc8f3caa9dd9c61299239e74.json",
+      "sha256": "629242b5074002dd8e889fdca5da9e1c05f9ae35357662d5c76a554117fc17f5"
+    },
+    "canonical_full_dag_r5": {
+      "bytes": 306439,
+      "path": "reports/r18r1r1b/final_full_dag_gate.json",
+      "sha256": "3bab2955f781f0ac65b2be40b40a6d9490be0fed6dd7de4dec02750995be2369"
+    },
+    "consumption_oracle": {
+      "bytes": 6029,
+      "path": "reports/r18r1r1c/independent_consumption_oracle_gate.json",
+      "sha256": "29f58005a636e6a252c1aefdf1e4300752c1c70f09fb21ccb1d87f771bbce2b2"
+    },
+    "contract_package": {
+      "bytes": 17278,
+      "path": "config/v4_14_replay_gate_b_contract_v1_1.json",
+      "sha256": "f940862707f8b7a5c60d22226176acba0442ed7c380c6edf831a96725eaad9ca"
+    },
+    "data_head": {
+      "bytes": 16890,
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+    },
+    "external_audit": {
+      "bytes": 5931,
+      "path": "docs/evidence/r19/V4_R18R1R1R1_FINAL_INDEPENDENT_EXTERNAL_AUDIT_R1_20261003.md",
+      "sha256": "ba077c931b9e8c303588d1551d500c910749a40f902d87a750a9af54384747fc"
+    },
+    "membership": {
+      "bytes": 2151,
+      "path": "data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json",
+      "sha256": "d6374a73b8084ccd383cbb4f75428ed91176e91cc09d87c3329041d57c5bd9ed"
+    },
+    "parent_stage": {
+      "bytes": 11487,
+      "path": "reports/r19a/PARENT_STAGE_HEAD.json",
+      "sha256": "ec03ad9295673d5b852ea6ed07f39b59ec8c3d4069926fa2b358f9e80671072a"
+    },
+    "rollback_complete_seal": {
+      "bytes": 77078,
+      "path": "reports/r18r1r1r1b/V4_14_RUNTIME_CANDIDATE_ROLLBACK_COMPLETE_SEAL.json",
+      "sha256": "cb205e926f12fa260c72cc5583c20725b1e85e22edce3c44126bd4062731fe2c"
+    },
+    "rollback_oracle": {
+      "bytes": 721,
+      "path": "reports/r18r1r1r1b/independent_rollback_oracle_gate.json",
+      "sha256": "0a47270dd835f0c953e3c0eefd9052992a20efe7950ed70ed1bc58774e58ae89"
+    },
+    "rollback_receipt": {
+      "bytes": 170541,
+      "path": "reports/r18r1r1r1a/V4_14_ROLLBACK_RECEIPT.json",
+      "sha256": "7035c130027ecaef2f5443cea05c64f328081b01abf839ec98ed34828a43bc5c"
+    },
+    "runtime_seal": {
+      "bytes": 17581,
+      "path": "reports/r18r1r1c/V4_14_RUNTIME_CANDIDATE_R18R1R1_SEAL.json",
+      "sha256": "bb4246bb807ee5020989b5f5458d8f0c18465b6680012fc7e52ad03903230ffd"
+    }
+  },
+  "capabilities": {
+    "CROSS_PROCESS_PREVIOUS_SESSION": "PASS",
+    "DETERMINISTIC_REPLAY": "PASS",
+    "EDGE_CONSUMPTION_TRUTH": "PASS",
+    "ENGINEERING_SYNTHETIC_REPLAY": "FULL_PASS",
+    "FULL_D0_D1_D2_REPLAY": "ENGINEERING_ACCEPTED",
+    "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+    "REAL_ACCEPTED_SOURCE_REPLAY": "PASS_CAPABILITY_SCOPED",
+    "REAL_SIGNAL_CAPABILITY": "DEGRADED_BY_ACCEPTED_UPSTREAM_CAPABILITY",
+    "ROLLBACK_RECEIPT": "PASS",
+    "SAME_DAY_REVISION_ISOLATION": "PASS"
+  },
+  "contract_id": "V4_14_ACCEPTED_HEAD_V1",
+  "entry_contract": {
+    "bytes": 3741,
+    "path": "config/v4_14_accepted_entry_contract_v1.json",
+    "sha256": "0bff68b28176d7f31f6f2258356af810bc06ad607d125db5202f61b17426c791"
+  },
+  "external_acceptance": "EXTERNALLY_ACCEPTED_CAPABILITY_SCOPED",
+  "external_audit_decision": "PASS_FINAL_V4_14_RUNTIME_CAPABILITY_SCOPED",
+  "focus": false,
+  "production": false,
+  "shadow": false,
+  "stage": "V4-14",
+  "status": "ALGORITHM_STATE_REPLAY_DEGRADED_PASS",
+  "tested_source": "04b310c2b011dbeb99dd1c2430165201917dd328",
+  "version": "1.0.0"
+}

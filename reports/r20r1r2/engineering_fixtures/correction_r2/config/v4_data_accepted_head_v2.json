@@ -1,0 +1,57 @@
+{
+  "accepted_chain_required": true,
+  "contract_id": "V4_DATA_ACCEPTED_HEAD_V2",
+  "old_anchor_resolution": "EXACT_ARCHIVE_ONLY",
+  "permission_derivation": "EXACT_FINAL_COMPONENT_RECEIPTS",
+  "raw_or_adjusted_sector_context_authorization": "NOT_GRANTED; EACH_CONSUMER_REQUIRES_INDEPENDENT_VERSIONED_CONTRACT",
+  "required_fields": [
+    "contract_id",
+    "version",
+    "accepted_trade_date",
+    "source_revision",
+    "canonical_data_revision",
+    "manifest_path",
+    "manifest_sha256",
+    "parent_head_sha256",
+    "stage_accepted_head_sha256",
+    "dev_baseline_sha256",
+    "component_permissions",
+    "component_artifacts",
+    "accepted_chain",
+    "final_candidate",
+    "external_acceptance_record",
+    "source_authority_governance",
+    "source_authority_registry",
+    "calendar",
+    "identity",
+    "parent_archive",
+    "audit_registry",
+    "stage_head",
+    "dev_baseline",
+    "external_acceptance",
+    "permissions",
+    "knowledge_lineage",
+    "AS_RECORDED",
+    "first_available_at_target_proven",
+    "promoted_at_utc",
+    "contract"
+  ],
+  "runtime_bindings": [
+    {
+      "bytes": 15725,
+      "path": "src/workbench_analysis/dm01_accepted_chain_v1.py",
+      "sha256": "96db051e4d55bf09c861119eacd84f63c05328227cfaf66db8a8c89397005e60"
+    },
+    {
+      "bytes": 16362,
+      "path": "scripts/promote_dm01_a01_r3_data_head.py",
+      "sha256": "2b64cefcce61fdb7860b8cf67968fa8c5ea13c119dd79f779ba5b76f17d3033a"
+    }
+  ],
+  "supersedes": {
+    "bytes": 1267,
+    "path": "config/v4_data_accepted_head_v1.json",
+    "sha256": "d442ea422e5d2911ac39a35512d998d15dd522788b78ee96bcbf36589bea1065"
+  },
+  "version": "2.0.0"
+}

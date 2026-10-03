@@ -1,0 +1,799 @@
+{
+  "AS_RECORDED": false,
+  "accepted_calendar_head": {
+    "byte_count": 1176,
+    "path": "data/v4/V4_02_GO_FORWARD_CALENDAR_EXTENSION_ACCEPTED_HEAD_R1.json",
+    "sha256": "d0d453689261603a6ccd773f6383781178cb74d388087b72c652dc8afcb309f6"
+  },
+  "accepted_data_head": {
+    "bytes": 2478,
+    "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+    "sha256": "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0"
+  },
+  "accepted_go_forward_head": {
+    "bytes": 4142,
+    "path": "data/v4/source_evidence/dm01_a01_r3/accepted_metadata_bytes/V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD_ORIGINAL_BYTES_R1.json",
+    "sha256": "83fa37ded40337d69ff0e447a0b6a3bc293d2ca95ea9c8aa009f0f104776c4be"
+  },
+  "accepted_go_forward_head_namespace": {
+    "bytes": 4142,
+    "git_sha256": "613a2e46876aeb3283fa268f717134347f4df236e0d935b47b3a770eb0d1afbf",
+    "path": "data/v4/V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD.json",
+    "representation": "PRE_EXISTING_CRLF_LF_ONLY",
+    "sha256": "83fa37ded40337d69ff0e447a0b6a3bc293d2ca95ea9c8aa009f0f104776c4be"
+  },
+  "accepted_historical_calendar": {
+    "bytes": 17888,
+    "path": "data/v4/candidate_calendars/V4_02_MARKET_CALENDAR_20230704_20260924_V2/calendar_sse_20230704_20260924.json",
+    "sha256": "09285bb116db5e7ab644e4942c331ceb9bc715b47f0369b9f228ef9d17df2d53"
+  },
+  "accepted_identity_bindings": [
+    {
+      "byte_count": 5528197,
+      "path": "data/v4/artifact_store/v4_01/security_entity_map_R7_20260927.json",
+      "sha256": "e33294fb8d1d71732fdc3df903258b5617345811ecbdb649af8056ccd91427e0"
+    },
+    {
+      "byte_count": 4327394,
+      "path": "data/v4/artifact_store/v4_01/security_entity_map_GO_FORWARD_20260930_ACCEPTED_R1.json",
+      "sha256": "4c3445f7b1337fee09e942ac854d0cefcecfc8c90c0b7432d991cadc58818ecd"
+    }
+  ],
+  "accepted_identity_head": {
+    "bytes": 1099,
+    "path": "data/v4/V4_01_GO_FORWARD_IDENTITY_ACCEPTED_HEAD_R1.json",
+    "sha256": "496d537f7c6b9c78cac3a084330f09132814165d2967e8991ffa1d6319092214"
+  },
+  "accepted_phase_bindings": {
+    "event_store": {
+      "byte_count": 20336,
+      "path": "data/v4/bootstrap/special_price_phase_events_r4.jsonl",
+      "sha256": "bb357ad505a6ace734b6b47f4581efa34c582d8bbf82111d933af037ae9ad522"
+    },
+    "policy": {
+      "byte_count": 4532,
+      "path": "config/special_price_phase_policy_r6.json",
+      "sha256": "cffd66e633ee2a34c712ee628dcace2026b49764bc9f593dacd90fe39e183c79"
+    },
+    "rules": {
+      "byte_count": 15757,
+      "path": "config/v4_02_price_limit_rules_r3.json",
+      "sha256": "68679333821c50cc8cbed5ff4cd001447cc6571d79b0d074a60b6bb81bdb01e0"
+    }
+  },
+  "accepted_stage_bindings": {
+    "v4_01_baseline": {
+      "baseline_identity_map_path": "data/v4/artifact_store/v4_01/security_entity_map_R7_20260927.json",
+      "baseline_universe_path": "data/v4/artifact_store/v4_01/v4_01_historical_universe_required_R7_20260927.jsonl.gz",
+      "postcheck_path": "reports/v4_01/V4_01_R8_1_INDEPENDENT_POSTCHECK_R1_20260928.json",
+      "postcheck_sha256": "e0dc6113cc2e9942e78d31b6cbbb76467988bdeeb84c69c39827b4c1e6a00eab",
+      "receipt_path": "reports/v4_01/v4_01_final_stage_receipt_R8_1_20260928.json",
+      "receipt_sha256": "84db902a8f1a7d50e5b1b53b341f7c06aa8f1f0d457a2147b2c497c7a427f514"
+    },
+    "v4_02_baseline": {
+      "accepted_head_path": "data/v4/V4_02_ACCEPTED_HEAD.json",
+      "accepted_head_sha256": "da318a1f82a03f13930af7858ca1640fadbdaedbee85e27d47f9c869c2d6b595",
+      "cross_stage_postcheck_path": "reports/v4_02/V4_02_R8_CROSS_STAGE_POSTCHECK_20260928.json",
+      "cross_stage_postcheck_sha256": "e6a35495a8a2566d341da9a726e7c3f905c08135ff3fcf2b51797d40e780b626",
+      "external_acceptance_path": "reports/v4_02/V4_02_FINAL_EXTERNAL_ACCEPTANCE_R6.json",
+      "external_acceptance_sha256": "42286da4305b792f5ecdc0fcc9a9d722e8ab3c23f6b618bf1ba15bd445ca6970",
+      "final_receipt_path": "reports/v4_02/V4_02_FINAL_RECEIPT_R6.json",
+      "final_receipt_sha256": "e2dbfa55539cc89376c90627ed822e0c2b6f81938277919bd717e93dd93c411b"
+    }
+  },
+  "bootstrap_parent_manifest": {
+    "bytes": 4112,
+    "path": "data/v4/source_evidence/dm01_a01_r3/chain_inputs_r1/accepted_parent_components_reference_state_adcb55cdcb2f1f3e1fec801041705a0d699549dc0742399b9d2f52127956a4bf.json",
+    "sha256": "ee693832720a1efb2b9243451cf4030737130c9f383594f40b8875bfdbcea1d2"
+  },
+  "candidate_namespace": "STAGING_ONLY",
+  "candidate_parent_protocol": "R3_2_EXACT_ALL_NINE_READY_MARKER_CHAIN_TO_FIXED_ACCEPTED_ANCHOR",
+  "capabilities": {
+    "ADJUSTED_DAILY": {
+      "accepted_algorithm_contract": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+      "builder_callable": "build_adjusted_daily",
+      "incremental_input_contract": [
+        "RAW_DAILY_INCREMENT_V1",
+        "accepted GBBQ snapshot and per-security dispositions",
+        "target-date cutoff"
+      ],
+      "output_contract": {
+        "adjustment_readiness_explicit": true,
+        "format": "jsonl",
+        "id": "V4_DM01_ADJUSTED_DAILY_INCREMENT_V1",
+        "key": [
+          "security_id|source_security_key",
+          "trade_date"
+        ]
+      },
+      "owner_stage": "V4-02",
+      "runtime_bindings": [
+        {
+          "callables": [
+            "build_affine_factors",
+            "adjust_ohlc"
+          ],
+          "path": "src/adjustment/tdx_adjustment.py",
+          "sha256": "de8ce814dbdfc2fad7b16f619e1f1085a4dc539591d2bfe6dff876d805e8f6e0"
+        },
+        {
+          "callables": [
+            "read_gbbq"
+          ],
+          "path": "src/tdx/gbbq_reader.py",
+          "sha256": "8b2b4736bfcec6bed5ae62c58b777c8306792aefd82b362970886c354672d03b"
+        },
+        {
+          "byte_count": 8287,
+          "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+          "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+        },
+        {
+          "bytes": 34138,
+          "path": "src/workbench_analysis/dm01_incremental_component_builders_r3_3.py",
+          "sha256": "3db9b445aa011889fd5df1df03f4270424bd8ffcb12f59d99b8a577f3a4caf4a"
+        }
+      ],
+      "signature": [
+        "target_trade_date",
+        "parent_data_head",
+        "source_freeze",
+        "calendar_binding",
+        "identity_binding",
+        "staging_root"
+      ],
+      "target_date_artifact_builder_exported": true,
+      "unknown_policy": "Explicit UNKNOWN with reason; unsupported scope never widened; no fallback 0/FALSE"
+    },
+    "IDENTITY_UNIVERSE": {
+      "accepted_algorithm_contract": "SECURITY_IDENTITY_EVENT_DISCOVERY_V1",
+      "builder_callable": "build_identity_universe",
+      "incremental_input_contract": [
+        "accepted V4_DATA_ACCEPTED_HEAD.IDENTITY_UNIVERSE",
+        "BAOSTOCK_DAILY_UPDATE_V1.roster",
+        "official_session_bridge",
+        "dated_identity_records"
+      ],
+      "output_contract": {
+        "absence_is_delisting_evidence": false,
+        "format": "jsonl",
+        "id": "CURRENT_LIFECYCLE_SNAPSHOT_V1",
+        "key": [
+          "security_id|source_security_key",
+          "trade_date"
+        ]
+      },
+      "owner_stage": "V4-01 R8.1 baseline + DM-01 daily lifecycle adapter",
+      "runtime_bindings": [
+        {
+          "callables": [
+            "discover_identity_events"
+          ],
+          "path": "src/workbench_analysis/security_identity_event_discovery.py",
+          "sha256": "a647c85cdb8e2fe1051a7242f6e56e974b501f7186bff2666da265905d38a6fb"
+        },
+        {
+          "callables": [
+            "build_current_lifecycle_snapshot"
+          ],
+          "path": "src/workbench_analysis/daily_source_manifests.py",
+          "sha256": "652ad628cfa7e65df3c941e46333d066be9eee7440442787c988bd9c93d613c0"
+        },
+        {
+          "byte_count": 8287,
+          "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+          "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+        },
+        {
+          "bytes": 34138,
+          "path": "src/workbench_analysis/dm01_incremental_component_builders_r3_3.py",
+          "sha256": "3db9b445aa011889fd5df1df03f4270424bd8ffcb12f59d99b8a577f3a4caf4a"
+        }
+      ],
+      "signature": [
+        "target_trade_date",
+        "parent_data_head",
+        "source_freeze",
+        "calendar_binding",
+        "identity_binding",
+        "staging_root"
+      ],
+      "target_date_artifact_builder_exported": true,
+      "unknown_policy": "Explicit UNKNOWN with reason; unsupported scope never widened; no fallback 0/FALSE"
+    },
+    "ISST": {
+      "accepted_algorithm_contract": "V4_02_FULL_MARKET_DATED_ISST_V1",
+      "builder_callable": "build_isst",
+      "incremental_input_contract": [
+        "IDENTITY_UNIVERSE_INCREMENT_V1",
+        "BAOSTOCK_DAILY_UPDATE_V1.isST"
+      ],
+      "output_contract": {
+        "format": "jsonl",
+        "id": "V4_DM01_ISST_INCREMENT_V1",
+        "key": [
+          "security_id|source_security_key",
+          "trade_date"
+        ],
+        "unknown_is_explicit": true
+      },
+      "owner_stage": "V4-02",
+      "runtime_bindings": [
+        {
+          "callables": [
+            "main"
+          ],
+          "path": "scripts/build_v4_02_full_market_isst.py",
+          "sha256": "093887b52748ff9965fcfb73e312b0791d32baedf9a53740bc08156d31ba84cf"
+        },
+        {
+          "byte_count": 8287,
+          "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+          "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+        },
+        {
+          "bytes": 34138,
+          "path": "src/workbench_analysis/dm01_incremental_component_builders_r3_3.py",
+          "sha256": "3db9b445aa011889fd5df1df03f4270424bd8ffcb12f59d99b8a577f3a4caf4a"
+        }
+      ],
+      "signature": [
+        "target_trade_date",
+        "parent_data_head",
+        "source_freeze",
+        "calendar_binding",
+        "identity_binding",
+        "staging_root"
+      ],
+      "target_date_artifact_builder_exported": true,
+      "unknown_policy": "Explicit UNKNOWN with reason; unsupported scope never widened; no fallback 0/FALSE"
+    },
+    "PERIOD_ADJUSTED": {
+      "accepted_algorithm_contract": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+      "builder_callable": "build_period_adjusted",
+      "incremental_input_contract": [
+        "parent adjusted weekly/monthly aggregate",
+        "ADJUSTED_DAILY_INCREMENT_V1",
+        "accepted exchange calendar",
+        "TRADING_STATUS_INCREMENT_V1"
+      ],
+      "output_contract": {
+        "as_of_only": true,
+        "format": "jsonl",
+        "id": "V4_DM01_PERIOD_ADJUSTED_INCREMENT_V1",
+        "key": [
+          "security_id",
+          "period_type",
+          "period_end_date",
+          "as_of_date"
+        ]
+      },
+      "owner_stage": "V4-02",
+      "runtime_bindings": [
+        {
+          "callables": [
+            "period_key",
+            "natural_period_end",
+            "schemas",
+            "main"
+          ],
+          "path": "scripts/build_v4_02_formal_periods.py",
+          "sha256": "afa3a28729ebd27c050fb65e3a1f453599fdb2f111dff63478e2dab57c28b26e"
+        },
+        {
+          "callables": [
+            "build_affine_factors",
+            "adjust_ohlc"
+          ],
+          "path": "src/adjustment/tdx_adjustment.py",
+          "sha256": "de8ce814dbdfc2fad7b16f619e1f1085a4dc539591d2bfe6dff876d805e8f6e0"
+        },
+        {
+          "byte_count": 8287,
+          "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+          "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+        },
+        {
+          "bytes": 34138,
+          "path": "src/workbench_analysis/dm01_incremental_component_builders_r3_3.py",
+          "sha256": "3db9b445aa011889fd5df1df03f4270424bd8ffcb12f59d99b8a577f3a4caf4a"
+        }
+      ],
+      "signature": [
+        "target_trade_date",
+        "parent_data_head",
+        "source_freeze",
+        "calendar_binding",
+        "identity_binding",
+        "staging_root"
+      ],
+      "target_date_artifact_builder_exported": true,
+      "unknown_policy": "Explicit UNKNOWN with reason; unsupported scope never widened; no fallback 0/FALSE"
+    },
+    "PERIOD_RAW": {
+      "accepted_algorithm_contract": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+      "builder_callable": "build_period_raw",
+      "incremental_input_contract": [
+        "parent raw weekly/monthly aggregate",
+        "RAW_DAILY_INCREMENT_V1",
+        "accepted exchange calendar",
+        "TRADING_STATUS_INCREMENT_V1"
+      ],
+      "output_contract": {
+        "as_of_only": true,
+        "format": "jsonl",
+        "id": "V4_DM01_PERIOD_RAW_INCREMENT_V1",
+        "key": [
+          "security_id",
+          "period_type",
+          "period_end_date",
+          "as_of_date"
+        ]
+      },
+      "owner_stage": "V4-02",
+      "runtime_bindings": [
+        {
+          "callables": [
+            "period_key",
+            "natural_period_end",
+            "schemas",
+            "main"
+          ],
+          "path": "scripts/build_v4_02_formal_periods.py",
+          "sha256": "afa3a28729ebd27c050fb65e3a1f453599fdb2f111dff63478e2dab57c28b26e"
+        },
+        {
+          "byte_count": 8287,
+          "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+          "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+        },
+        {
+          "bytes": 34138,
+          "path": "src/workbench_analysis/dm01_incremental_component_builders_r3_3.py",
+          "sha256": "3db9b445aa011889fd5df1df03f4270424bd8ffcb12f59d99b8a577f3a4caf4a"
+        }
+      ],
+      "signature": [
+        "target_trade_date",
+        "parent_data_head",
+        "source_freeze",
+        "calendar_binding",
+        "identity_binding",
+        "staging_root"
+      ],
+      "target_date_artifact_builder_exported": true,
+      "unknown_policy": "Explicit UNKNOWN with reason; unsupported scope never widened; no fallback 0/FALSE"
+    },
+    "PRICE_LIMIT": {
+      "accepted_algorithm_contract": "R3_PRICE_LIMIT_BASE + SPECIAL_PRICE_PHASE_EVENT_V1 + SPECIAL_PRICE_PHASE_POLICY_V2",
+      "builder_callable": "build_price_limit",
+      "incremental_input_contract": [
+        "target-date canonical daily",
+        "target-date dated aliases",
+        "accepted rules and policy",
+        "fail-closed facts"
+      ],
+      "output_contract": {
+        "format": "jsonl",
+        "id": "V4_DM01_PRICE_LIMIT_INCREMENT_V1",
+        "key": [
+          "security_id",
+          "trade_date"
+        ],
+        "unknown_is_explicit": true
+      },
+      "owner_stage": "V4-02 R6 externally accepted",
+      "runtime_bindings": [
+        {
+          "callables": [
+            "run_builder",
+            "apply_row_runtime"
+          ],
+          "path": "scripts/build_v4_02_price_limits_generic.py",
+          "sha256": "e39405d604299a610b11ac8b0672a2bb63c943d49c6dc267555bf3138230ba28"
+        },
+        {
+          "callables": [
+            "SpecialPhaseEventStore",
+            "PhasePolicyRegistry",
+            "apply_phase_event"
+          ],
+          "path": "src/workbench_analysis/special_price_phases.py",
+          "sha256": "7e64ca1acd9d1d7c9138915cf3f82ffedb40ea6b3b99349c0857458a09f0db93"
+        },
+        {
+          "byte_count": 8287,
+          "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+          "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+        },
+        {
+          "bytes": 34138,
+          "path": "src/workbench_analysis/dm01_incremental_component_builders_r3_3.py",
+          "sha256": "3db9b445aa011889fd5df1df03f4270424bd8ffcb12f59d99b8a577f3a4caf4a"
+        }
+      ],
+      "signature": [
+        "target_trade_date",
+        "parent_data_head",
+        "source_freeze",
+        "calendar_binding",
+        "identity_binding",
+        "staging_root"
+      ],
+      "target_date_artifact_builder_exported": true,
+      "unknown_policy": "Explicit UNKNOWN with reason; unsupported scope never widened; no fallback 0/FALSE"
+    },
+    "RAW_DAILY": {
+      "accepted_algorithm_contract": "V4_02_RAW_CANONICAL_FORMAL_ACCEPTANCE_V1",
+      "builder_callable": "build_raw_daily",
+      "incremental_input_contract": [
+        "TDX_PACKAGE_DELTA_V1.target_bars",
+        "CURRENT_LIFECYCLE_SNAPSHOT_V1.source_rows"
+      ],
+      "output_contract": {
+        "authority": "TDX_OFFICIAL_PACKAGE",
+        "format": "jsonl",
+        "id": "V4_DM01_RAW_DAILY_INCREMENT_V1",
+        "key": [
+          "security_id|source_security_key",
+          "trade_date"
+        ]
+      },
+      "owner_stage": "V4-02",
+      "runtime_bindings": [
+        {
+          "callables": [
+            "date_identity",
+            "check_raw_quality"
+          ],
+          "path": "scripts/v4_02_build_raw_selected_v2.py",
+          "sha256": "128325a48c818378d78116f9785f50bedba348f401ce164802a81e0e7ab88cf6"
+        },
+        {
+          "byte_count": 8287,
+          "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+          "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+        },
+        {
+          "bytes": 34138,
+          "path": "src/workbench_analysis/dm01_incremental_component_builders_r3_3.py",
+          "sha256": "3db9b445aa011889fd5df1df03f4270424bd8ffcb12f59d99b8a577f3a4caf4a"
+        }
+      ],
+      "signature": [
+        "target_trade_date",
+        "parent_data_head",
+        "source_freeze",
+        "calendar_binding",
+        "identity_binding",
+        "staging_root"
+      ],
+      "target_date_artifact_builder_exported": true,
+      "unknown_policy": "Explicit UNKNOWN with reason; unsupported scope never widened; no fallback 0/FALSE"
+    },
+    "SPECIAL_PHASE": {
+      "accepted_algorithm_contract": "SPECIAL_PHASE_SOURCE_MANIFEST_V1 + SPECIAL_PRICE_PHASE_EVENT_V1 + SPECIAL_PRICE_PHASE_POLICY_V2",
+      "builder_callable": "build_special_phase",
+      "incremental_input_contract": [
+        "CURRENT_LIFECYCLE_SNAPSHOT_V1",
+        "SPECIAL_PHASE_SOURCE_MANIFEST_V1",
+        "accepted event store",
+        "accepted policy"
+      ],
+      "output_contract": {
+        "format": "jsonl",
+        "id": "V4_DM01_SPECIAL_PHASE_INCREMENT_V1",
+        "key": [
+          "security_id",
+          "trade_date"
+        ],
+        "no_event_manifest_is_valid": true
+      },
+      "owner_stage": "V4-02 R6 externally accepted",
+      "runtime_bindings": [
+        {
+          "callables": [
+            "compile_event_phase_index",
+            "apply_row_runtime"
+          ],
+          "path": "scripts/build_v4_02_price_limits_generic.py",
+          "sha256": "e39405d604299a610b11ac8b0672a2bb63c943d49c6dc267555bf3138230ba28"
+        },
+        {
+          "callables": [
+            "SpecialPhaseEventStore",
+            "PhasePolicyRegistry",
+            "resolve_event_phase"
+          ],
+          "path": "src/workbench_analysis/special_price_phases.py",
+          "sha256": "7e64ca1acd9d1d7c9138915cf3f82ffedb40ea6b3b99349c0857458a09f0db93"
+        },
+        {
+          "callables": [
+            "build_special_phase_source_manifest"
+          ],
+          "path": "src/workbench_analysis/daily_source_manifests.py",
+          "sha256": "652ad628cfa7e65df3c941e46333d066be9eee7440442787c988bd9c93d613c0"
+        },
+        {
+          "byte_count": 8287,
+          "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+          "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+        },
+        {
+          "bytes": 34138,
+          "path": "src/workbench_analysis/dm01_incremental_component_builders_r3_3.py",
+          "sha256": "3db9b445aa011889fd5df1df03f4270424bd8ffcb12f59d99b8a577f3a4caf4a"
+        }
+      ],
+      "signature": [
+        "target_trade_date",
+        "parent_data_head",
+        "source_freeze",
+        "calendar_binding",
+        "identity_binding",
+        "staging_root"
+      ],
+      "target_date_artifact_builder_exported": true,
+      "unknown_policy": "Explicit UNKNOWN with reason; unsupported scope never widened; no fallback 0/FALSE"
+    },
+    "TRADING_STATUS": {
+      "accepted_algorithm_contract": "V4_02_DATED_TRADING_STATUS_V1",
+      "builder_callable": "build_trading_status",
+      "incremental_input_contract": [
+        "RAW_DAILY_INCREMENT_V1",
+        "IDENTITY_UNIVERSE_INCREMENT_V1",
+        "BAOSTOCK_DAILY_UPDATE_V1.tradestatus"
+      ],
+      "output_contract": {
+        "format": "jsonl",
+        "id": "V4_DM01_TRADING_STATUS_INCREMENT_V1",
+        "key": [
+          "security_id|source_security_key",
+          "trade_date"
+        ],
+        "local_tdx_bar_precedence": true
+      },
+      "owner_stage": "V4-02",
+      "runtime_bindings": [
+        {
+          "callables": [
+            "main"
+          ],
+          "path": "scripts/build_v4_02_dated_trading_status.py",
+          "sha256": "e4e9fbf6722affdfc999b29a670bb03a8a6421882df821ad73c638831ba089cf"
+        },
+        {
+          "byte_count": 8287,
+          "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+          "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+        },
+        {
+          "bytes": 34138,
+          "path": "src/workbench_analysis/dm01_incremental_component_builders_r3_3.py",
+          "sha256": "3db9b445aa011889fd5df1df03f4270424bd8ffcb12f59d99b8a577f3a4caf4a"
+        }
+      ],
+      "signature": [
+        "target_trade_date",
+        "parent_data_head",
+        "source_freeze",
+        "calendar_binding",
+        "identity_binding",
+        "staging_root"
+      ],
+      "target_date_artifact_builder_exported": true,
+      "unknown_policy": "Explicit UNKNOWN with reason; unsupported scope never widened; no fallback 0/FALSE"
+    }
+  },
+  "contract_id": "DM01_A01_INCREMENTAL_BUILDERS_R3_3",
+  "data_head_promotion_permitted": false,
+  "domain_extraction": {
+    "byte_count": 1789,
+    "path": "config/dm01_domain_extraction_r1.json",
+    "sha256": "5d50e51a56e3f9eab736280351f5e612e06582e77e0f52c9b7e25e50013b4974"
+  },
+  "execution_context": {
+    "bytes": 2274,
+    "path": "fixtures/r1/batch_3/context.json",
+    "sha256": "6a0597963aae49c8fb1a595c8f95cc1505b6040f340610adb93cf5f48e7a156d"
+  },
+  "external_acceptance": null,
+  "focus_cutover_permission": false,
+  "gbbq_classification_binding": {
+    "byte_count": 4334,
+    "path": "config/v4_02_gbbq_price_impact_classification_v1.json",
+    "sha256": "c39ff7e14209d250139352dcf78b326c7579721681fd467bac68d21d2515681c"
+  },
+  "metadata_durability": "EXACT_ORIGINAL_BYTE_ARCHIVE_PLUS_PINNED_PRE_EXISTING_GIT_REPRESENTATION; NO_HASH_NORMALIZATION_OR_HEAD_WRITE",
+  "next_stage": "INDEPENDENT_EXTERNAL_REAUDIT_NO_DATA_HEAD_PROMOTION",
+  "period_parent_protocol": "DM01_PERIOD_PARENT_PLUS_TARGET_R1; frozen original digest + target facts; no hash-resume fiction",
+  "producer_governance": {
+    "bytes": 18060,
+    "path": "config/source_authority_governance_r4.json",
+    "sha256": "d69aa9141110b40e7790f0605b02bdc9d6b75f39c128a81a4d23c24bae9cc740"
+  },
+  "production_permission": false,
+  "publication": "ALL_NINE_PLUS_INDEPENDENT_POSTCHECK_TO_ONE_READY_MARKER",
+  "runtime_adapter_module": "workbench_analysis.dm01_incremental_component_builders",
+  "runtime_bindings": [
+    {
+      "bytes": 25823,
+      "path": "scripts/v4_02_build_raw_selected_v2.py",
+      "sha256": "128325a48c818378d78116f9785f50bedba348f401ce164802a81e0e7ab88cf6"
+    },
+    {
+      "bytes": 37946,
+      "path": "src/workbench_analysis/security_identity_event_discovery.py",
+      "sha256": "a647c85cdb8e2fe1051a7242f6e56e974b501f7186bff2666da265905d38a6fb"
+    },
+    {
+      "bytes": 16691,
+      "path": "src/workbench_analysis/daily_source_manifests.py",
+      "sha256": "652ad628cfa7e65df3c941e46333d066be9eee7440442787c988bd9c93d613c0"
+    },
+    {
+      "bytes": 15102,
+      "path": "scripts/build_v4_02_dated_trading_status.py",
+      "sha256": "e4e9fbf6722affdfc999b29a670bb03a8a6421882df821ad73c638831ba089cf"
+    },
+    {
+      "bytes": 13741,
+      "path": "scripts/build_v4_02_full_market_isst.py",
+      "sha256": "093887b52748ff9965fcfb73e312b0791d32baedf9a53740bc08156d31ba84cf"
+    },
+    {
+      "bytes": 5366,
+      "path": "src/adjustment/tdx_adjustment.py",
+      "sha256": "de8ce814dbdfc2fad7b16f619e1f1085a4dc539591d2bfe6dff876d805e8f6e0"
+    },
+    {
+      "bytes": 12869,
+      "path": "src/tdx/gbbq_reader.py",
+      "sha256": "8b2b4736bfcec6bed5ae62c58b777c8306792aefd82b362970886c354672d03b"
+    },
+    {
+      "bytes": 26773,
+      "path": "scripts/build_v4_02_formal_periods.py",
+      "sha256": "afa3a28729ebd27c050fb65e3a1f453599fdb2f111dff63478e2dab57c28b26e"
+    },
+    {
+      "bytes": 15441,
+      "path": "scripts/build_v4_02_price_limits_generic.py",
+      "sha256": "e39405d604299a610b11ac8b0672a2bb63c943d49c6dc267555bf3138230ba28"
+    },
+    {
+      "bytes": 19357,
+      "path": "src/workbench_analysis/special_price_phases.py",
+      "sha256": "7e64ca1acd9d1d7c9138915cf3f82ffedb40ea6b3b99349c0857458a09f0db93"
+    },
+    {
+      "bytes": 15441,
+      "path": "scripts/build_v4_02_price_limits_generic.py",
+      "sha256": "e39405d604299a610b11ac8b0672a2bb63c943d49c6dc267555bf3138230ba28"
+    },
+    {
+      "bytes": 19357,
+      "path": "src/workbench_analysis/special_price_phases.py",
+      "sha256": "7e64ca1acd9d1d7c9138915cf3f82ffedb40ea6b3b99349c0857458a09f0db93"
+    },
+    {
+      "bytes": 16691,
+      "path": "src/workbench_analysis/daily_source_manifests.py",
+      "sha256": "652ad628cfa7e65df3c941e46333d066be9eee7440442787c988bd9c93d613c0"
+    },
+    {
+      "bytes": 23842,
+      "path": "scripts/build_v4_02_price_limits.py",
+      "sha256": "5425106e729a3f6ecc7d103512fed7e296482c52a56168b27a98b766a534302d"
+    },
+    {
+      "bytes": 11701,
+      "path": "src/workbench_analysis/limit_rules.py",
+      "sha256": "c39b23628fc9258c42b8c7a529fe7d5f6fd58576dbbbc6699f0767371dc6fbcd"
+    },
+    {
+      "bytes": 2150,
+      "path": "src/workbench_analysis/price_reference_state.py",
+      "sha256": "9c969dab4996ab319e3c8b896e5fde53c4d528ced86ca0d63f9dfcfa4e4dd0f8"
+    },
+    {
+      "bytes": 2725,
+      "path": "src/workbench_analysis/v4_02_closure.py",
+      "sha256": "d747ba919765cc3b046715f1b72fff68ec80ea6685fe415403f16bff7d126cd6"
+    },
+    {
+      "bytes": 8287,
+      "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+      "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+    },
+    {
+      "bytes": 15358,
+      "path": "src/workbench_analysis/dm01_accepted_builder_registry.py",
+      "sha256": "5e3b461544ff1a6bd2fe0e169b63a3d7fb57f264f4d71971a79ad23ac9832166"
+    },
+    {
+      "bytes": 10078,
+      "path": "src/workbench_analysis/dm01_chain_contract_r3_3.py",
+      "sha256": "35c551ff3fd0087a89a0573924a5f30130df792be46dd9b03992575630505bd3"
+    },
+    {
+      "bytes": 34138,
+      "path": "src/workbench_analysis/dm01_incremental_component_builders_r3_3.py",
+      "sha256": "3db9b445aa011889fd5df1df03f4270424bd8ffcb12f59d99b8a577f3a4caf4a"
+    },
+    {
+      "bytes": 6382,
+      "path": "src/workbench_analysis/dm01_candidate_orchestrator_r3_3.py",
+      "sha256": "3539a88c922753258dff3bd2b705dde0699c3cf53a6e3e535087ec5f14ac7ff0"
+    },
+    {
+      "bytes": 16335,
+      "path": "src/workbench_analysis/dm01_independent_postcheck_r3_3.py",
+      "sha256": "79c71f3f72b09cf30a5745d5ba3bae52ad0b22e0422cf333c058d1b9c99d2163"
+    },
+    {
+      "bytes": 14474,
+      "path": "src/workbench_analysis/source_authority_producers_r4.py",
+      "sha256": "0d14a65ecd8c473a4a5471df2e064e7ae13f061b68e9ff7b34d6527527b28f6d"
+    },
+    {
+      "bytes": 25477,
+      "path": "scripts/run_dm01_a01_r3_chain.py",
+      "sha256": "f6a1bde29b5479e726bed25a39076470bd68ed3da7f52959114348df2fc042a2"
+    },
+    {
+      "bytes": 7878,
+      "path": "scripts/run_dm01_a01_r3_durable_receipt_chain.py",
+      "sha256": "25e7eee3bcc15757dca8aa71d9c4b5e30d73f70599d2d2967fa1be47022541a4"
+    }
+  ],
+  "same_day_revision": "Recompute from the SAME frozen previous-session accepted parent with revised source digest; immutable new candidate",
+  "shadow_production_permission": false,
+  "source_factor_policy": "SUPPLEMENTAL_OPTIONAL_WITH_EXPLICIT_AVAILABILITY_RECEIPT",
+  "stage_entry_protected_heads": [
+    {
+      "byte_count": 2478,
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "186b1c88512a5a92e7c4fbd954e5dcd005a0ad03ecbac9c334b05939d9e12de0"
+    },
+    {
+      "byte_count": 8574,
+      "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+      "sha256": "529c532bd5553ace00fa4813aef07979cfce4e1f18fa5ea66f38fcddd8ed16cb"
+    },
+    {
+      "byte_count": 602,
+      "path": "data/v4/V4_DEV_BASELINE_HEAD.json",
+      "sha256": "45695460b0147c6ada12e0ebd8e5070ac0a45eebea26603ff5a3daddc4dd5094"
+    },
+    {
+      "byte_count": 11474,
+      "path": "data/v4/V4_09_ACCEPTED_HEAD.json",
+      "sha256": "641ef9e2e6fe8f461a9b765262e739791a6d3fdd220b0eff7947e2690de3a87d"
+    },
+    {
+      "byte_count": 5102,
+      "path": "data/v4/V4_10_ACCEPTED_HEAD.json",
+      "sha256": "ad9fc4643652feb3684223817f2e9c300167d128e2e8a07179e86f65094fd1e1"
+    }
+  ],
+  "status": "CANDIDATE_CONTINUOUS_RECONSTRUCTED_ONLY",
+  "supersedes": {
+    "bytes": 30763,
+    "path": "config/dm01_incremental_builders_contract_r3_2.json",
+    "sha256": "2739d4159144d954e7544b9b19248e1228dda89a191ecc57155f3c1f2558c9fd"
+  },
+  "supersedes_assessment": {
+    "byte_count": 16525,
+    "path": "config/v4_dm01_accepted_builder_registry_v1.json",
+    "sha256": "bf87637de82eb7704d9c8f27842880ee9ba6db5315a2b65edd461a31007ddb61"
+  },
+  "task": {
+    "byte_count": 8898,
+    "path": "docs/evidence/WP_A01_DM01_INCREMENTAL_BUILDERS_IMPLEMENTATION_TASK_R1_20261001.md",
+    "sha256": "3e969d86cdfc4a6a72b43a2d55784c3b46793cd2ba7d1b9edd625b1e8c608ba8"
+  },
+  "tdx_historical_retrieval": "OFFICIAL_ZIP_EXACT_TARGET_SLICE; EXCLUDE_FUTURE_BARS; NO_BACKDATED_AVAILABILITY",
+  "version": "3.2.0"
+}

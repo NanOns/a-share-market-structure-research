@@ -1,0 +1,113 @@
+{
+  "accepted_algorithm_contract": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+  "accepted_owner_stage": "V4-02",
+  "artifact_bytes": 98,
+  "artifact_path": "fixtures/r1/durable/2026-10-14/PRICE_LIMIT/artifact.json",
+  "artifact_sha256": "eb18a13a6170540ea20f2deae743cb11910e41be41abfa546bcd2f870a594d13",
+  "calendar_publication_id": "838446155869ad2aa8534e35f8fcae1ab8e055f4c075d8b1126a96d0c837f258",
+  "candidate_only": true,
+  "component_id": "PRICE_LIMIT",
+  "contract_id": "DM01_PRICE_LIMIT_INCREMENT_R3_3",
+  "fixture_scope": "ISOLATED_ENGINEERING_REACHABILITY_ONLY",
+  "identity_publication_id": "3bb5124bb7ee5c7ca50ca7491ebc290ab5523065eb181b447757fe65279162ea",
+  "input_publication_ids": [
+    "042c75c2a7519aabb9cb728dd57df56dc5b9f3d2294984d1b153c53449fd734d",
+    "0a67e7211572a7057c50ab27e397c3e093f88c24732e8c7be7bdda92952ca1bf",
+    "2a84c5388bafa64c229d060987d12d44cb97bdc9f61dad21b826ea94ea3e2b42",
+    "3bb5124bb7ee5c7ca50ca7491ebc290ab5523065eb181b447757fe65279162ea",
+    "629242b5074002dd8e889fdca5da9e1c05f9ae35357662d5c76a554117fc17f5",
+    "68679333821c50cc8cbed5ff4cd001447cc6571d79b0d074a60b6bb81bdb01e0",
+    "7887e3a57946b4bfbd81f66b17e0763371e9f495c53de71341c292e5088679e2",
+    "9ef5ef6ddb7ae781c4598c717415d283af016f3b5b7b0b19f05c84329fe1fb4c",
+    "c05d4f6363fd1fad45b4ab3c35a14c10974016293651e5d071549966e4c85faf",
+    "f8c6a60e052a3fd7f8c3a043dbc9c53311a7599e1b36bb6cc140058f56269ef1"
+  ],
+  "logical_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+  "market_acceptance_claim": false,
+  "parent_component_bindings": {
+    "ADJUSTED_DAILY": {
+      "bytes": 1635,
+      "path": "fixtures/r1/durable/2026-10-13/ADJUSTED_DAILY/artifact.json",
+      "sha256": "6a99ec158b9878bcc25ea051652d42f943a8d5cb28635f0700bb7e03ffcae225"
+    },
+    "IDENTITY_UNIVERSE": {
+      "bytes": 104,
+      "path": "fixtures/r1/durable/2026-10-13/IDENTITY_UNIVERSE/artifact.json",
+      "sha256": "44b7177991c7f3bf9d01376a09221a4a1a3ee0f9f82a2e32f0d69e6a996a5585"
+    },
+    "ISST": {
+      "bytes": 91,
+      "path": "fixtures/r1/durable/2026-10-13/ISST/artifact.json",
+      "sha256": "660f37cbd75104c5b3548a8f4885e83b75750c25326873576b6952d405041648"
+    },
+    "PERIOD_ADJUSTED": {
+      "bytes": 102,
+      "path": "fixtures/r1/durable/2026-10-13/PERIOD_ADJUSTED/artifact.json",
+      "sha256": "4d9dbf776bf53cb6a75705c41d28e15fc34bedf31a62dd38bfdcf9f943a6da44"
+    },
+    "PERIOD_RAW": {
+      "bytes": 97,
+      "path": "fixtures/r1/durable/2026-10-13/PERIOD_RAW/artifact.json",
+      "sha256": "5c18a0546e2e5919615f14d4bf29574b28978c430d3b28984fbfebd1fdd40948"
+    },
+    "PRICE_LIMIT": {
+      "bytes": 98,
+      "path": "fixtures/r1/durable/2026-10-13/PRICE_LIMIT/artifact.json",
+      "sha256": "3b9c4c8a283778972b3c473f724b850c10072af6274f5177d17b106bb98ee2de"
+    },
+    "RAW_DAILY": {
+      "bytes": 1204,
+      "path": "fixtures/r1/durable/2026-10-13/RAW_DAILY/artifact.json",
+      "sha256": "ca567a2f4f18b25ee8b17e13ae43c777772da7535ed7d5ff9212781f9c3d8149"
+    },
+    "SPECIAL_PHASE": {
+      "bytes": 100,
+      "path": "fixtures/r1/durable/2026-10-13/SPECIAL_PHASE/artifact.json",
+      "sha256": "7136cbd6ec9955a82d3176e1947c13761aca42e2de2277e44e070c04f7bb0826"
+    },
+    "TRADING_STATUS": {
+      "bytes": 101,
+      "path": "fixtures/r1/durable/2026-10-13/TRADING_STATUS/artifact.json",
+      "sha256": "f42cb8591a86c2b26578c6d8912bad11db77c7d0efaf37367f9b1a6e52eb4f08"
+    }
+  },
+  "parent_data_head_digest": "7c003b20f8129cb8a11f6a67ef7a1894773811d0c44e7968d732484673ccdd24",
+  "postcheck_digest": "133e368428acb51ea8f50122263337880651dad84da97ef2e3b1da3a1804a5fb",
+  "quality_counts": {
+    "READY": 5213
+  },
+  "row_count": 0,
+  "runtime_bindings": [
+    {
+      "callables": [
+        "build_affine_factors",
+        "adjust_ohlc"
+      ],
+      "path": "src/adjustment/tdx_adjustment.py",
+      "sha256": "de8ce814dbdfc2fad7b16f619e1f1085a4dc539591d2bfe6dff876d805e8f6e0"
+    },
+    {
+      "callables": [
+        "read_gbbq"
+      ],
+      "path": "src/tdx/gbbq_reader.py",
+      "sha256": "8b2b4736bfcec6bed5ae62c58b777c8306792aefd82b362970886c354672d03b"
+    },
+    {
+      "byte_count": 8287,
+      "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+      "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+    },
+    {
+      "bytes": 34138,
+      "path": "src/workbench_analysis/dm01_incremental_component_builders_r3_3.py",
+      "sha256": "3db9b445aa011889fd5df1df03f4270424bd8ffcb12f59d99b8a577f3a4caf4a"
+    }
+  ],
+  "source_revision": "7887e3a57946b4bfbd81f66b17e0763371e9f495c53de71341c292e5088679e2",
+  "status": "FULL_PASS",
+  "target_trade_date": "2026-10-14",
+  "trade_date": "2026-10-14",
+  "unknown_reason_counts": {},
+  "version": "3.2.0"
+}

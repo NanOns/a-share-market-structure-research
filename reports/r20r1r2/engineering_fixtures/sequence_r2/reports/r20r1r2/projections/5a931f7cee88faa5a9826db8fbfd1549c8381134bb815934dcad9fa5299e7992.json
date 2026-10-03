@@ -1,0 +1,1581 @@
+{
+  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+  "T0_OBSERVATION_SCOPE": "RECONSTRUCTED_ASOF",
+  "T0_source_row_digest": "562a5c8fe850222a9850b216233190d618e4e492069cbfa505d0e860d029ac33",
+  "T0_transform_coefficients": {
+    "alpha": 1.0,
+    "beta": 0.0
+  },
+  "accepted_adjustment_disposition": {
+    "bytes": 418837,
+    "path": "data/v4/source_evidence/dm01_a01_r3/chain_inputs_r1/2026-09-30/gbbq_dispositions_75b4297f6d0e8d7392f960e7aac02d4920250972995771dd3bb63991403b7eee.json",
+    "sha256": "2a84c5388bafa64c229d060987d12d44cb97bdc9f61dad21b826ea94ea3e2b42"
+  },
+  "accepted_adjustment_source": {
+    "bytes": 5607212,
+    "path": "data/v4/source_snapshot_store/gbbq/sha256-775d82c58b5b46ec1d21478f86ba8ef90302691982e68d5c4cfcd51fddda666e/gbbq",
+    "sha256": "f8c6a60e052a3fd7f8c3a043dbc9c53311a7599e1b36bb6cc140058f56269ef1"
+  },
+  "contract": {
+    "bytes": 3016,
+    "path": "config/v4_15_forward_projection_r20r1r2_v1.json",
+    "sha256": "46bce4829308900c0d630732299b2280b3147be165acf80260d5f16c271d5aaa"
+  },
+  "contract_id": "V4_15_ACCEPTED_FORWARD_EVALUATION_PROJECTION_V1",
+  "evaluation_basis_date": "2026-11-04",
+  "freeze": {
+    "bytes": 4761,
+    "path": "reports/v4_15_runtime_r20/e2e_r2/t0_freezes/89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064.json",
+    "sha256": "8f676ea13fd2a2e6bda854dbfd8e1842f5dc2065488945b4d7306a6de52ca329"
+  },
+  "raw_provider_fallback": false,
+  "resolution": {
+    "T0": "2026-09-30",
+    "T0_adjusted_daily": {
+      "bytes": 6218836,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/ADJUSTED_DAILY/artifact.json",
+      "sha256": "a28b3a912e44a8cc6e3e7e43f37038b64e1f7b62024ec4887b5320ffd33d2e17"
+    },
+    "T0_component_receipt": {
+      "bytes": 4947,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/ADJUSTED_DAILY/receipt.json",
+      "sha256": "44adb831a810599ab6f3813e2c5902957e20c9ef6b1ae5b2ca8443d7dfe42cda"
+    },
+    "calendar": {
+      "bytes": 14590,
+      "path": "fixtures/calendar.json",
+      "sha256": "838446155869ad2aa8534e35f8fcae1ab8e055f4c075d8b1126a96d0c837f258"
+    },
+    "contract_id": "V4_15_ACCEPTED_DM01_PATH_RESOLUTION_V1",
+    "due_date": "2026-11-04",
+    "path": [
+      {
+        "accepted_chain": {
+          "bytes": 57845,
+          "path": "fixtures/r1/batch_1/accepted_chain.json",
+          "sha256": "59172b38dfefe1501149681d66e53f4336110ce8ca1c619b1dc34a72dd6460a0"
+        },
+        "artifact": {
+          "bytes": 1635,
+          "path": "fixtures/r1/durable/2026-10-08/ADJUSTED_DAILY/artifact.json",
+          "sha256": "12f95ecc532b40baa91fe5114945671642fc9b4a565fa2e52fef81da0708a9c5"
+        },
+        "candidate": {
+          "bytes": 52406,
+          "path": "fixtures/r1/durable/2026-10-08/PROMOTION_CANDIDATE.json",
+          "sha256": "05ae3d7927bb66b7a44d5054fda0a1fafc70c3dae939a2d394a3557156dc59d6"
+        },
+        "receipt": {
+          "bytes": 5231,
+          "path": "fixtures/r1/durable/2026-10-08/ADJUSTED_DAILY/receipt.json",
+          "sha256": "52dc3c95635b72891933bdd2afc7aeb1ad33416a8d3b0f6416e8f5ed51bb978d"
+        },
+        "source_context": {
+          "bytes": 1397,
+          "path": "fixtures/r1/batch_1/context.json",
+          "sha256": "51444839e7e19685f3f3842c50f31f431914662a26f1be376ba0f32ae081d403"
+        },
+        "source_data_head": {
+          "bytes": 14339,
+          "path": "reports/r20r1r2/accepted_data_snapshots/56cebdd6999c6d5dab69a099555dbc0c023275e6f73832335d8fc88ac5dd9f90.json",
+          "sha256": "56cebdd6999c6d5dab69a099555dbc0c023275e6f73832335d8fc88ac5dd9f90"
+        },
+        "trade_date": "2026-10-08"
+      },
+      {
+        "accepted_chain": {
+          "bytes": 100092,
+          "path": "fixtures/r1/batch_3/accepted_chain.json",
+          "sha256": "852be97bce68bd385f6d7b9eab360b84c4600e0eb8fa2e79e665f7bc4ac8a750"
+        },
+        "artifact": {
+          "bytes": 1635,
+          "path": "fixtures/r1/durable/2026-10-09/ADJUSTED_DAILY/artifact.json",
+          "sha256": "7366386574e3ade91c48b599783f7ea26f157e863c61e0555e8cefebd5ebee13"
+        },
+        "candidate": {
+          "bytes": 45724,
+          "path": "fixtures/r1/durable/2026-10-09/PROMOTION_CANDIDATE.json",
+          "sha256": "50f3c28bad280e348daeb8166a2128d631c5ceb6740686c6bb2f80a027581f3c"
+        },
+        "receipt": {
+          "bytes": 4481,
+          "path": "fixtures/r1/durable/2026-10-09/ADJUSTED_DAILY/receipt.json",
+          "sha256": "ce2a0e8f9f926e81c9062e0385935c7785f8924c2df802dfd6ee86d49776af21"
+        },
+        "source_context": {
+          "bytes": 2274,
+          "path": "fixtures/r1/batch_3/context.json",
+          "sha256": "6a0597963aae49c8fb1a595c8f95cc1505b6040f340610adb93cf5f48e7a156d"
+        },
+        "source_data_head": {
+          "bytes": 14408,
+          "path": "reports/r20r1r2/accepted_data_snapshots/fdb0d7bf21b9a4ab5ae5e04a3abbea8fc2b317595d4a02b49d1dc325b9ea6378.json",
+          "sha256": "fdb0d7bf21b9a4ab5ae5e04a3abbea8fc2b317595d4a02b49d1dc325b9ea6378"
+        },
+        "trade_date": "2026-10-09"
+      },
+      {
+        "accepted_chain": {
+          "bytes": 100092,
+          "path": "fixtures/r1/batch_3/accepted_chain.json",
+          "sha256": "852be97bce68bd385f6d7b9eab360b84c4600e0eb8fa2e79e665f7bc4ac8a750"
+        },
+        "artifact": {
+          "bytes": 1635,
+          "path": "fixtures/r1/durable/2026-10-12/ADJUSTED_DAILY/artifact.json",
+          "sha256": "6c198281055a5d776f7c71f61f9c77cff5e21ddcfb2e5cd9e5eba4464e71655c"
+        },
+        "candidate": {
+          "bytes": 45724,
+          "path": "fixtures/r1/durable/2026-10-12/PROMOTION_CANDIDATE.json",
+          "sha256": "99e62734c375b36b7407d7edd29d3bd3f644e40ee6872bbb9b8b22e0655dfe01"
+        },
+        "receipt": {
+          "bytes": 4481,
+          "path": "fixtures/r1/durable/2026-10-12/ADJUSTED_DAILY/receipt.json",
+          "sha256": "c022220db7b60a33ae837d3e6b2fdfd36028fb72ebf59756e23879524ad8c22a"
+        },
+        "source_context": {
+          "bytes": 2274,
+          "path": "fixtures/r1/batch_3/context.json",
+          "sha256": "6a0597963aae49c8fb1a595c8f95cc1505b6040f340610adb93cf5f48e7a156d"
+        },
+        "source_data_head": {
+          "bytes": 14408,
+          "path": "reports/r20r1r2/accepted_data_snapshots/fdb0d7bf21b9a4ab5ae5e04a3abbea8fc2b317595d4a02b49d1dc325b9ea6378.json",
+          "sha256": "fdb0d7bf21b9a4ab5ae5e04a3abbea8fc2b317595d4a02b49d1dc325b9ea6378"
+        },
+        "trade_date": "2026-10-12"
+      },
+      {
+        "accepted_chain": {
+          "bytes": 100092,
+          "path": "fixtures/r1/batch_5/accepted_chain.json",
+          "sha256": "26e1a297a121471eb9068c735960824f855494d6e239614ca873cd1b4d66a1fc"
+        },
+        "artifact": {
+          "bytes": 1635,
+          "path": "fixtures/r1/durable/2026-10-13/ADJUSTED_DAILY/artifact.json",
+          "sha256": "6a99ec158b9878bcc25ea051652d42f943a8d5cb28635f0700bb7e03ffcae225"
+        },
+        "candidate": {
+          "bytes": 45724,
+          "path": "fixtures/r1/durable/2026-10-13/PROMOTION_CANDIDATE.json",
+          "sha256": "b4997164662370ddd5d24e030c6e4cc9302f005783b809d591a0c4bbee3d67bf"
+        },
+        "receipt": {
+          "bytes": 4481,
+          "path": "fixtures/r1/durable/2026-10-13/ADJUSTED_DAILY/receipt.json",
+          "sha256": "58b187bd3553483560cd7a9270ecde67f8b53ae32b925b0790da0e389dee4387"
+        },
+        "source_context": {
+          "bytes": 2274,
+          "path": "fixtures/r1/batch_5/context.json",
+          "sha256": "b7c1ad7f365bb26e29953a5fa641d72475d329deb0320ffe07fb05f40d67805e"
+        },
+        "source_data_head": {
+          "bytes": 14408,
+          "path": "reports/r20r1r2/accepted_data_snapshots/98371763125f284b37b1231d5b4dfab70e918674d8a489f15d4011328c5a4634.json",
+          "sha256": "98371763125f284b37b1231d5b4dfab70e918674d8a489f15d4011328c5a4634"
+        },
+        "trade_date": "2026-10-13"
+      },
+      {
+        "accepted_chain": {
+          "bytes": 100092,
+          "path": "fixtures/r1/batch_5/accepted_chain.json",
+          "sha256": "26e1a297a121471eb9068c735960824f855494d6e239614ca873cd1b4d66a1fc"
+        },
+        "artifact": {
+          "bytes": 1635,
+          "path": "fixtures/r1/durable/2026-10-14/ADJUSTED_DAILY/artifact.json",
+          "sha256": "2b7bcb464d4c2721cd1c55853d4b3ac822f6a5d2041985233b60c8ee457385af"
+        },
+        "candidate": {
+          "bytes": 45724,
+          "path": "fixtures/r1/durable/2026-10-14/PROMOTION_CANDIDATE.json",
+          "sha256": "9c1bfafe36dbd41c43ccc1ebd367271e08dde5512fd5282b1b42a567a5398c8a"
+        },
+        "receipt": {
+          "bytes": 4481,
+          "path": "fixtures/r1/durable/2026-10-14/ADJUSTED_DAILY/receipt.json",
+          "sha256": "2218d1f19458c06db7b692062386be3335225981b43f2e265b4273fb53015db4"
+        },
+        "source_context": {
+          "bytes": 2274,
+          "path": "fixtures/r1/batch_5/context.json",
+          "sha256": "b7c1ad7f365bb26e29953a5fa641d72475d329deb0320ffe07fb05f40d67805e"
+        },
+        "source_data_head": {
+          "bytes": 14408,
+          "path": "reports/r20r1r2/accepted_data_snapshots/98371763125f284b37b1231d5b4dfab70e918674d8a489f15d4011328c5a4634.json",
+          "sha256": "98371763125f284b37b1231d5b4dfab70e918674d8a489f15d4011328c5a4634"
+        },
+        "trade_date": "2026-10-14"
+      },
+      {
+        "accepted_chain": {
+          "bytes": 246475,
+          "path": "fixtures/r1/batch_10/accepted_chain.json",
+          "sha256": "f8e615995df89d8ee6017753c758f78c1d5b6c2a5d12267ee57e80a80415667e"
+        },
+        "artifact": {
+          "bytes": 1635,
+          "path": "fixtures/r1/durable/2026-10-15/ADJUSTED_DAILY/artifact.json",
+          "sha256": "b6887252e8ee530f0d787b8e203a08404bf1eb2bb28b7719e7c6518a3765cffb"
+        },
+        "candidate": {
+          "bytes": 45724,
+          "path": "fixtures/r1/durable/2026-10-15/PROMOTION_CANDIDATE.json",
+          "sha256": "7c6535a60aefd635b24de12583f0fc69f85fe691f2e3b2f5214b9bffc7704b3c"
+        },
+        "receipt": {
+          "bytes": 4481,
+          "path": "fixtures/r1/durable/2026-10-15/ADJUSTED_DAILY/receipt.json",
+          "sha256": "11944addb92c2c6eb51d8c36780a4440011a43a0a87b2af35d9a3453a2d92065"
+        },
+        "source_context": {
+          "bytes": 4905,
+          "path": "fixtures/r1/batch_10/context.json",
+          "sha256": "91f31caeb6a6a767cb06a8419177640a13fac4b563c2f02f73985dc2b1b18ce7"
+        },
+        "source_data_head": {
+          "bytes": 14411,
+          "path": "reports/r20r1r2/accepted_data_snapshots/dc5d581036b883b8161994ec726977aa3a220780cc3e55487c6495dd006589f8.json",
+          "sha256": "dc5d581036b883b8161994ec726977aa3a220780cc3e55487c6495dd006589f8"
+        },
+        "trade_date": "2026-10-15"
+      },
+      {
+        "accepted_chain": {
+          "bytes": 246475,
+          "path": "fixtures/r1/batch_10/accepted_chain.json",
+          "sha256": "f8e615995df89d8ee6017753c758f78c1d5b6c2a5d12267ee57e80a80415667e"
+        },
+        "artifact": {
+          "bytes": 1635,
+          "path": "fixtures/r1/durable/2026-10-16/ADJUSTED_DAILY/artifact.json",
+          "sha256": "0ca223ab68ecd77a923a8504542bdac6e3380f20c32a8903a18e1aeb89f29410"
+        },
+        "candidate": {
+          "bytes": 45724,
+          "path": "fixtures/r1/durable/2026-10-16/PROMOTION_CANDIDATE.json",
+          "sha256": "6f3b44a8db7ceebb6e56ee54cdc8b7a30d37b5bd80e8bdca504b7c7d4c9ce3b9"
+        },
+        "receipt": {
+          "bytes": 4481,
+          "path": "fixtures/r1/durable/2026-10-16/ADJUSTED_DAILY/receipt.json",
+          "sha256": "d312871613b4735ef812187e131ff15f67022aacd12fbe10f3f2bcc3f58739a5"
+        },
+        "source_context": {
+          "bytes": 4905,
+          "path": "fixtures/r1/batch_10/context.json",
+          "sha256": "91f31caeb6a6a767cb06a8419177640a13fac4b563c2f02f73985dc2b1b18ce7"
+        },
+        "source_data_head": {
+          "bytes": 14411,
+          "path": "reports/r20r1r2/accepted_data_snapshots/dc5d581036b883b8161994ec726977aa3a220780cc3e55487c6495dd006589f8.json",
+          "sha256": "dc5d581036b883b8161994ec726977aa3a220780cc3e55487c6495dd006589f8"
+        },
+        "trade_date": "2026-10-16"
+      },
+      {
+        "accepted_chain": {
+          "bytes": 246475,
+          "path": "fixtures/r1/batch_10/accepted_chain.json",
+          "sha256": "f8e615995df89d8ee6017753c758f78c1d5b6c2a5d12267ee57e80a80415667e"
+        },
+        "artifact": {
+          "bytes": 1635,
+          "path": "fixtures/r1/durable/2026-10-19/ADJUSTED_DAILY/artifact.json",
+          "sha256": "51dae11aa6c829e2df19145b86952046ce86bd8e12a788288c7046c7bd75f003"
+        },
+        "candidate": {
+          "bytes": 45724,
+          "path": "fixtures/r1/durable/2026-10-19/PROMOTION_CANDIDATE.json",
+          "sha256": "fe1f98227ca8f7c19bf40784101aa2dc9ab38adfd8c2161b17fc86e459c0a9f3"
+        },
+        "receipt": {
+          "bytes": 4481,
+          "path": "fixtures/r1/durable/2026-10-19/ADJUSTED_DAILY/receipt.json",
+          "sha256": "094a11e18d5d94285dc3d9dd8e5da81e00a1c6cb9a961deed0c20f3c490ac9d9"
+        },
+        "source_context": {
+          "bytes": 4905,
+          "path": "fixtures/r1/batch_10/context.json",
+          "sha256": "91f31caeb6a6a767cb06a8419177640a13fac4b563c2f02f73985dc2b1b18ce7"
+        },
+        "source_data_head": {
+          "bytes": 14411,
+          "path": "reports/r20r1r2/accepted_data_snapshots/dc5d581036b883b8161994ec726977aa3a220780cc3e55487c6495dd006589f8.json",
+          "sha256": "dc5d581036b883b8161994ec726977aa3a220780cc3e55487c6495dd006589f8"
+        },
+        "trade_date": "2026-10-19"
+      },
+      {
+        "accepted_chain": {
+          "bytes": 246475,
+          "path": "fixtures/r1/batch_10/accepted_chain.json",
+          "sha256": "f8e615995df89d8ee6017753c758f78c1d5b6c2a5d12267ee57e80a80415667e"
+        },
+        "artifact": {
+          "bytes": 1635,
+          "path": "fixtures/r1/durable/2026-10-20/ADJUSTED_DAILY/artifact.json",
+          "sha256": "d5a9d9376ab036c8fc9248f1eba7900e832d4db8b785fc6865835ea01365bc5e"
+        },
+        "candidate": {
+          "bytes": 45724,
+          "path": "fixtures/r1/durable/2026-10-20/PROMOTION_CANDIDATE.json",
+          "sha256": "27dadf28878ce16d1da0f878bc46ef4a2b1c8a13f6d38edbe0ad2efb1ed47a87"
+        },
+        "receipt": {
+          "bytes": 4481,
+          "path": "fixtures/r1/durable/2026-10-20/ADJUSTED_DAILY/receipt.json",
+          "sha256": "93e8b2bc07bbfe2c2d7ac058ca8b170958697d5a050c89b01e1bade80fa53d56"
+        },
+        "source_context": {
+          "bytes": 4905,
+          "path": "fixtures/r1/batch_10/context.json",
+          "sha256": "91f31caeb6a6a767cb06a8419177640a13fac4b563c2f02f73985dc2b1b18ce7"
+        },
+        "source_data_head": {
+          "bytes": 14411,
+          "path": "reports/r20r1r2/accepted_data_snapshots/dc5d581036b883b8161994ec726977aa3a220780cc3e55487c6495dd006589f8.json",
+          "sha256": "dc5d581036b883b8161994ec726977aa3a220780cc3e55487c6495dd006589f8"
+        },
+        "trade_date": "2026-10-20"
+      },
+      {
+        "accepted_chain": {
+          "bytes": 246475,
+          "path": "fixtures/r1/batch_10/accepted_chain.json",
+          "sha256": "f8e615995df89d8ee6017753c758f78c1d5b6c2a5d12267ee57e80a80415667e"
+        },
+        "artifact": {
+          "bytes": 1635,
+          "path": "fixtures/r1/durable/2026-10-21/ADJUSTED_DAILY/artifact.json",
+          "sha256": "289d1486d7e5c0bedf8bc7bbdf5d59637de733289a02a1b32b6aaa3e0c0c426e"
+        },
+        "candidate": {
+          "bytes": 45724,
+          "path": "fixtures/r1/durable/2026-10-21/PROMOTION_CANDIDATE.json",
+          "sha256": "3ce027aa869d4075a3e7896cfc98e711ca5a286b2521982f3d47a5cce569365f"
+        },
+        "receipt": {
+          "bytes": 4481,
+          "path": "fixtures/r1/durable/2026-10-21/ADJUSTED_DAILY/receipt.json",
+          "sha256": "346dac318e75e8d311659701c6fff82c2e6e32a04045d3d088449a90d9f66ae8"
+        },
+        "source_context": {
+          "bytes": 4905,
+          "path": "fixtures/r1/batch_10/context.json",
+          "sha256": "91f31caeb6a6a767cb06a8419177640a13fac4b563c2f02f73985dc2b1b18ce7"
+        },
+        "source_data_head": {
+          "bytes": 14411,
+          "path": "reports/r20r1r2/accepted_data_snapshots/dc5d581036b883b8161994ec726977aa3a220780cc3e55487c6495dd006589f8.json",
+          "sha256": "dc5d581036b883b8161994ec726977aa3a220780cc3e55487c6495dd006589f8"
+        },
+        "trade_date": "2026-10-21"
+      },
+      {
+        "accepted_chain": {
+          "bytes": 490440,
+          "path": "fixtures/r1/batch_20/accepted_chain.json",
+          "sha256": "6d1054c48e459c40d1efd98dee7747e62fb7d092877c364a22294f41c2aa7a3c"
+        },
+        "artifact": {
+          "bytes": 1635,
+          "path": "fixtures/r1/durable/2026-10-22/ADJUSTED_DAILY/artifact.json",
+          "sha256": "e39088b61a46c41e499b3e5f2a695e4d946537e306db186bf20d8b260ec20559"
+        },
+        "candidate": {
+          "bytes": 45724,
+          "path": "fixtures/r1/durable/2026-10-22/PROMOTION_CANDIDATE.json",
+          "sha256": "de58f102e03b016f4b9f0dd2e1d85155ea5bc0a450ebd2267d118f71c8f0190b"
+        },
+        "receipt": {
+          "bytes": 4481,
+          "path": "fixtures/r1/durable/2026-10-22/ADJUSTED_DAILY/receipt.json",
+          "sha256": "dc04cd19fb8b0ad5a775dad0d78de55a15d9a3c8db92816e0f9d492777e8d7d0"
+        },
+        "source_context": {
+          "bytes": 9290,
+          "path": "fixtures/r1/batch_20/context.json",
+          "sha256": "9b932beee31b8eee671184fc4c6237727f69188ecc2b50ddcfbd891e6dffec8e"
+        },
+        "source_data_head": {
+          "bytes": 14411,
+          "path": "reports/r20r1r2/accepted_data_snapshots/972a1b9cc67b060545a1cd3529a4cf61384cb0ac57f17e5352e0a95361af4303.json",
+          "sha256": "972a1b9cc67b060545a1cd3529a4cf61384cb0ac57f17e5352e0a95361af4303"
+        },
+        "trade_date": "2026-10-22"
+      },
+      {
+        "accepted_chain": {
+          "bytes": 490440,
+          "path": "fixtures/r1/batch_20/accepted_chain.json",
+          "sha256": "6d1054c48e459c40d1efd98dee7747e62fb7d092877c364a22294f41c2aa7a3c"
+        },
+        "artifact": {
+          "bytes": 1635,
+          "path": "fixtures/r1/durable/2026-10-23/ADJUSTED_DAILY/artifact.json",
+          "sha256": "bbd599e1e64a49c0d52d21db78c5a27e0265e4b34119f9abb43a948988a7fca8"
+        },
+        "candidate": {
+          "bytes": 45724,
+          "path": "fixtures/r1/durable/2026-10-23/PROMOTION_CANDIDATE.json",
+          "sha256": "bb0f501a78b37106169d5f1b95a377a96a20a79de92b0146e96805cd3c2edab5"
+        },
+        "receipt": {
+          "bytes": 4481,
+          "path": "fixtures/r1/durable/2026-10-23/ADJUSTED_DAILY/receipt.json",
+          "sha256": "9d587b58775a8efee62f1c463230e68a00fada4b7fc1d7b8f970b7b2b071b1a8"
+        },
+        "source_context": {
+          "bytes": 9290,
+          "path": "fixtures/r1/batch_20/context.json",
+          "sha256": "9b932beee31b8eee671184fc4c6237727f69188ecc2b50ddcfbd891e6dffec8e"
+        },
+        "source_data_head": {
+          "bytes": 14411,
+          "path": "reports/r20r1r2/accepted_data_snapshots/972a1b9cc67b060545a1cd3529a4cf61384cb0ac57f17e5352e0a95361af4303.json",
+          "sha256": "972a1b9cc67b060545a1cd3529a4cf61384cb0ac57f17e5352e0a95361af4303"
+        },
+        "trade_date": "2026-10-23"
+      },
+      {
+        "accepted_chain": {
+          "bytes": 490440,
+          "path": "fixtures/r1/batch_20/accepted_chain.json",
+          "sha256": "6d1054c48e459c40d1efd98dee7747e62fb7d092877c364a22294f41c2aa7a3c"
+        },
+        "artifact": {
+          "bytes": 1635,
+          "path": "fixtures/r1/durable/2026-10-26/ADJUSTED_DAILY/artifact.json",
+          "sha256": "ac718d4baeeeacad64fa32450ba635fb53db1d01ea7baad628815b4037d0c850"
+        },
+        "candidate": {
+          "bytes": 45724,
+          "path": "fixtures/r1/durable/2026-10-26/PROMOTION_CANDIDATE.json",
+          "sha256": "bf37e3d80705778b64d97646e307b140d55bc3bcef597c13fe6f4c829d8c05ba"
+        },
+        "receipt": {
+          "bytes": 4481,
+          "path": "fixtures/r1/durable/2026-10-26/ADJUSTED_DAILY/receipt.json",
+          "sha256": "d0c4b6aa360ca8ce87032d62f29b2f0870d895fa25b9d7394114551b1cb22df9"
+        },
+        "source_context": {
+          "bytes": 9290,
+          "path": "fixtures/r1/batch_20/context.json",
+          "sha256": "9b932beee31b8eee671184fc4c6237727f69188ecc2b50ddcfbd891e6dffec8e"
+        },
+        "source_data_head": {
+          "bytes": 14411,
+          "path": "reports/r20r1r2/accepted_data_snapshots/972a1b9cc67b060545a1cd3529a4cf61384cb0ac57f17e5352e0a95361af4303.json",
+          "sha256": "972a1b9cc67b060545a1cd3529a4cf61384cb0ac57f17e5352e0a95361af4303"
+        },
+        "trade_date": "2026-10-26"
+      },
+      {
+        "accepted_chain": {
+          "bytes": 490440,
+          "path": "fixtures/r1/batch_20/accepted_chain.json",
+          "sha256": "6d1054c48e459c40d1efd98dee7747e62fb7d092877c364a22294f41c2aa7a3c"
+        },
+        "artifact": {
+          "bytes": 1635,
+          "path": "fixtures/r1/durable/2026-10-27/ADJUSTED_DAILY/artifact.json",
+          "sha256": "ee0374e04d663bdd49f0c6f9805ff4e879069967dc179cb1578919787108d219"
+        },
+        "candidate": {
+          "bytes": 45724,
+          "path": "fixtures/r1/durable/2026-10-27/PROMOTION_CANDIDATE.json",
+          "sha256": "7cd285a4790d42b7dd6c5179a56eb28cde879e8de80e1f88dc73b7e533212049"
+        },
+        "receipt": {
+          "bytes": 4481,
+          "path": "fixtures/r1/durable/2026-10-27/ADJUSTED_DAILY/receipt.json",
+          "sha256": "f1d5d2305826e871286e7cd8f8745f57a4f35f18370c0e015163d8294397db61"
+        },
+        "source_context": {
+          "bytes": 9290,
+          "path": "fixtures/r1/batch_20/context.json",
+          "sha256": "9b932beee31b8eee671184fc4c6237727f69188ecc2b50ddcfbd891e6dffec8e"
+        },
+        "source_data_head": {
+          "bytes": 14411,
+          "path": "reports/r20r1r2/accepted_data_snapshots/972a1b9cc67b060545a1cd3529a4cf61384cb0ac57f17e5352e0a95361af4303.json",
+          "sha256": "972a1b9cc67b060545a1cd3529a4cf61384cb0ac57f17e5352e0a95361af4303"
+        },
+        "trade_date": "2026-10-27"
+      },
+      {
+        "accepted_chain": {
+          "bytes": 490440,
+          "path": "fixtures/r1/batch_20/accepted_chain.json",
+          "sha256": "6d1054c48e459c40d1efd98dee7747e62fb7d092877c364a22294f41c2aa7a3c"
+        },
+        "artifact": {
+          "bytes": 1635,
+          "path": "fixtures/r1/durable/2026-10-28/ADJUSTED_DAILY/artifact.json",
+          "sha256": "d315a359bea7edabb93e1960e5ebe27829b1e9aebd9714d1ad5c8c540792e9bb"
+        },
+        "candidate": {
+          "bytes": 45724,
+          "path": "fixtures/r1/durable/2026-10-28/PROMOTION_CANDIDATE.json",
+          "sha256": "340989e588aedf96cc8840c668682feca48df03f6abb4f52a33eb932c8d83d48"
+        },
+        "receipt": {
+          "bytes": 4481,
+          "path": "fixtures/r1/durable/2026-10-28/ADJUSTED_DAILY/receipt.json",
+          "sha256": "92e82ccfba2a312f4e21a7066165e179e12800c0c6d4d304c6eda643f7d21aad"
+        },
+        "source_context": {
+          "bytes": 9290,
+          "path": "fixtures/r1/batch_20/context.json",
+          "sha256": "9b932beee31b8eee671184fc4c6237727f69188ecc2b50ddcfbd891e6dffec8e"
+        },
+        "source_data_head": {
+          "bytes": 14411,
+          "path": "reports/r20r1r2/accepted_data_snapshots/972a1b9cc67b060545a1cd3529a4cf61384cb0ac57f17e5352e0a95361af4303.json",
+          "sha256": "972a1b9cc67b060545a1cd3529a4cf61384cb0ac57f17e5352e0a95361af4303"
+        },
+        "trade_date": "2026-10-28"
+      },
+      {
+        "accepted_chain": {
+          "bytes": 490440,
+          "path": "fixtures/r1/batch_20/accepted_chain.json",
+          "sha256": "6d1054c48e459c40d1efd98dee7747e62fb7d092877c364a22294f41c2aa7a3c"
+        },
+        "artifact": {
+          "bytes": 1635,
+          "path": "fixtures/r1/durable/2026-10-29/ADJUSTED_DAILY/artifact.json",
+          "sha256": "385852913aa67a15abdc5db2632c5448e6e2cfea5b09bc84b726c186c1db0bc9"
+        },
+        "candidate": {
+          "bytes": 45724,
+          "path": "fixtures/r1/durable/2026-10-29/PROMOTION_CANDIDATE.json",
+          "sha256": "af4a0d8b8543974b22ad0c066ff1ce6f05f1f22d16f9c7075120d0f4eac0a327"
+        },
+        "receipt": {
+          "bytes": 4481,
+          "path": "fixtures/r1/durable/2026-10-29/ADJUSTED_DAILY/receipt.json",
+          "sha256": "bca512f61bc82e8d4313991d6787b1dfe09641000779cf52c11cd0fde473897a"
+        },
+        "source_context": {
+          "bytes": 9290,
+          "path": "fixtures/r1/batch_20/context.json",
+          "sha256": "9b932beee31b8eee671184fc4c6237727f69188ecc2b50ddcfbd891e6dffec8e"
+        },
+        "source_data_head": {
+          "bytes": 14411,
+          "path": "reports/r20r1r2/accepted_data_snapshots/972a1b9cc67b060545a1cd3529a4cf61384cb0ac57f17e5352e0a95361af4303.json",
+          "sha256": "972a1b9cc67b060545a1cd3529a4cf61384cb0ac57f17e5352e0a95361af4303"
+        },
+        "trade_date": "2026-10-29"
+      },
+      {
+        "accepted_chain": {
+          "bytes": 490440,
+          "path": "fixtures/r1/batch_20/accepted_chain.json",
+          "sha256": "6d1054c48e459c40d1efd98dee7747e62fb7d092877c364a22294f41c2aa7a3c"
+        },
+        "artifact": {
+          "bytes": 1635,
+          "path": "fixtures/r1/durable/2026-10-30/ADJUSTED_DAILY/artifact.json",
+          "sha256": "7c0289f9b9f10452cd3769a77cf261b70d3eb3f4f7ce16a4ac83ad9b13612d0a"
+        },
+        "candidate": {
+          "bytes": 45724,
+          "path": "fixtures/r1/durable/2026-10-30/PROMOTION_CANDIDATE.json",
+          "sha256": "d49c119c8d789d00391b5d05e35bdceea7edf2ad0419b5b6885debedc48e4a2c"
+        },
+        "receipt": {
+          "bytes": 4481,
+          "path": "fixtures/r1/durable/2026-10-30/ADJUSTED_DAILY/receipt.json",
+          "sha256": "fa04acc76c58f85fe792f670a6e1a071ea9ffdd658e908dff9359677db5f77a6"
+        },
+        "source_context": {
+          "bytes": 9290,
+          "path": "fixtures/r1/batch_20/context.json",
+          "sha256": "9b932beee31b8eee671184fc4c6237727f69188ecc2b50ddcfbd891e6dffec8e"
+        },
+        "source_data_head": {
+          "bytes": 14411,
+          "path": "reports/r20r1r2/accepted_data_snapshots/972a1b9cc67b060545a1cd3529a4cf61384cb0ac57f17e5352e0a95361af4303.json",
+          "sha256": "972a1b9cc67b060545a1cd3529a4cf61384cb0ac57f17e5352e0a95361af4303"
+        },
+        "trade_date": "2026-10-30"
+      },
+      {
+        "accepted_chain": {
+          "bytes": 490440,
+          "path": "fixtures/r1/batch_20/accepted_chain.json",
+          "sha256": "6d1054c48e459c40d1efd98dee7747e62fb7d092877c364a22294f41c2aa7a3c"
+        },
+        "artifact": {
+          "bytes": 1635,
+          "path": "fixtures/r1/durable/2026-11-02/ADJUSTED_DAILY/artifact.json",
+          "sha256": "9d466bdee3f4fffa69804e44960b37a0af95c2ddf1f346210fd3bd1ef6ede2c9"
+        },
+        "candidate": {
+          "bytes": 45724,
+          "path": "fixtures/r1/durable/2026-11-02/PROMOTION_CANDIDATE.json",
+          "sha256": "8633934a62c8bdb9d87415f0bd3eb521cc1f04ce774142f886340229160034de"
+        },
+        "receipt": {
+          "bytes": 4481,
+          "path": "fixtures/r1/durable/2026-11-02/ADJUSTED_DAILY/receipt.json",
+          "sha256": "265ef7080faad069cd2ddc345583f654f3d27d9a6946b05cc0254ade8c8ef454"
+        },
+        "source_context": {
+          "bytes": 9290,
+          "path": "fixtures/r1/batch_20/context.json",
+          "sha256": "9b932beee31b8eee671184fc4c6237727f69188ecc2b50ddcfbd891e6dffec8e"
+        },
+        "source_data_head": {
+          "bytes": 14411,
+          "path": "reports/r20r1r2/accepted_data_snapshots/972a1b9cc67b060545a1cd3529a4cf61384cb0ac57f17e5352e0a95361af4303.json",
+          "sha256": "972a1b9cc67b060545a1cd3529a4cf61384cb0ac57f17e5352e0a95361af4303"
+        },
+        "trade_date": "2026-11-02"
+      },
+      {
+        "accepted_chain": {
+          "bytes": 490440,
+          "path": "fixtures/r1/batch_20/accepted_chain.json",
+          "sha256": "6d1054c48e459c40d1efd98dee7747e62fb7d092877c364a22294f41c2aa7a3c"
+        },
+        "artifact": {
+          "bytes": 1635,
+          "path": "fixtures/r1/durable/2026-11-03/ADJUSTED_DAILY/artifact.json",
+          "sha256": "959f621ae9af472795322b965bb833f51d70ef6079594b0d37423400b2e553a8"
+        },
+        "candidate": {
+          "bytes": 45724,
+          "path": "fixtures/r1/durable/2026-11-03/PROMOTION_CANDIDATE.json",
+          "sha256": "d0fe254600e4790a9ab14ba677f9632ea1fb2036ec92601d5afb4d863d02f019"
+        },
+        "receipt": {
+          "bytes": 4481,
+          "path": "fixtures/r1/durable/2026-11-03/ADJUSTED_DAILY/receipt.json",
+          "sha256": "9ef56815b479e675b663fc41e2563e1e0afe7ecd6534703dcb2676dc5e691247"
+        },
+        "source_context": {
+          "bytes": 9290,
+          "path": "fixtures/r1/batch_20/context.json",
+          "sha256": "9b932beee31b8eee671184fc4c6237727f69188ecc2b50ddcfbd891e6dffec8e"
+        },
+        "source_data_head": {
+          "bytes": 14411,
+          "path": "reports/r20r1r2/accepted_data_snapshots/972a1b9cc67b060545a1cd3529a4cf61384cb0ac57f17e5352e0a95361af4303.json",
+          "sha256": "972a1b9cc67b060545a1cd3529a4cf61384cb0ac57f17e5352e0a95361af4303"
+        },
+        "trade_date": "2026-11-03"
+      },
+      {
+        "accepted_chain": {
+          "bytes": 490440,
+          "path": "fixtures/r1/batch_20/accepted_chain.json",
+          "sha256": "6d1054c48e459c40d1efd98dee7747e62fb7d092877c364a22294f41c2aa7a3c"
+        },
+        "artifact": {
+          "bytes": 1635,
+          "path": "fixtures/r1/durable/2026-11-04/ADJUSTED_DAILY/artifact.json",
+          "sha256": "17700e15881d28ca9c1fd9e6b85878e9fd39ba41c11f7681e8d238416b739169"
+        },
+        "candidate": {
+          "bytes": 45724,
+          "path": "fixtures/r1/durable/2026-11-04/PROMOTION_CANDIDATE.json",
+          "sha256": "d77917e2366cacbfe98385951f81c8f04e2fa84d027a23fc88b80061e429edeb"
+        },
+        "receipt": {
+          "bytes": 4481,
+          "path": "fixtures/r1/durable/2026-11-04/ADJUSTED_DAILY/receipt.json",
+          "sha256": "30b2ec1e141b35d4c41591b8021837cf5b612a5620b9840da2a2cb82bec2029e"
+        },
+        "source_context": {
+          "bytes": 9290,
+          "path": "fixtures/r1/batch_20/context.json",
+          "sha256": "9b932beee31b8eee671184fc4c6237727f69188ecc2b50ddcfbd891e6dffec8e"
+        },
+        "source_data_head": {
+          "bytes": 14411,
+          "path": "reports/r20r1r2/accepted_data_snapshots/972a1b9cc67b060545a1cd3529a4cf61384cb0ac57f17e5352e0a95361af4303.json",
+          "sha256": "972a1b9cc67b060545a1cd3529a4cf61384cb0ac57f17e5352e0a95361af4303"
+        },
+        "trade_date": "2026-11-04"
+      }
+    ],
+    "source_data_head": {
+      "bytes": 14411,
+      "path": "reports/r20r1r2/accepted_data_snapshots/972a1b9cc67b060545a1cd3529a4cf61384cb0ac57f17e5352e0a95361af4303.json",
+      "sha256": "972a1b9cc67b060545a1cd3529a4cf61384cb0ac57f17e5352e0a95361af4303"
+    }
+  },
+  "rows": [
+    {
+      "T0_basis_verified": true,
+      "T0_transform_coefficients": {
+        "alpha": 1.0,
+        "beta": 0.0
+      },
+      "close": "2.53",
+      "evaluation_basis_date": "2026-11-04",
+      "high": "2.58",
+      "low": "2.45",
+      "open": "2.53",
+      "security_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+      "source_adjusted_daily_artifact": {
+        "bytes": 1635,
+        "path": "fixtures/r1/durable/2026-10-08/ADJUSTED_DAILY/artifact.json",
+        "sha256": "12f95ecc532b40baa91fe5114945671642fc9b4a565fa2e52fef81da0708a9c5"
+      },
+      "source_authority": "TDX_OFFICIAL_PACKAGE",
+      "source_component_receipt": {
+        "bytes": 5231,
+        "path": "fixtures/r1/durable/2026-10-08/ADJUSTED_DAILY/receipt.json",
+        "sha256": "52dc3c95635b72891933bdd2afc7aeb1ad33416a8d3b0f6416e8f5ed51bb978d"
+      },
+      "source_data_head": {
+        "bytes": 14339,
+        "path": "reports/r20r1r2/accepted_data_snapshots/56cebdd6999c6d5dab69a099555dbc0c023275e6f73832335d8fc88ac5dd9f90.json",
+        "sha256": "56cebdd6999c6d5dab69a099555dbc0c023275e6f73832335d8fc88ac5dd9f90"
+      },
+      "source_row_digest": "689f9acc9cadc0e60630b721d6b8a8f76b3ed2b7644626fa8fbfc45c9ab50aa2",
+      "source_row_identity": {
+        "security_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+        "source_security_key": "SH.600675",
+        "trade_date": "2026-10-08"
+      },
+      "status": "ACTUAL",
+      "trade_date": "2026-10-08",
+      "transform_coefficients": {
+        "alpha": 1.0,
+        "beta": 0.0
+      },
+      "verified_adjustment": true,
+      "verified_identity": true
+    },
+    {
+      "T0_basis_verified": true,
+      "T0_transform_coefficients": {
+        "alpha": 1.0,
+        "beta": 0.0
+      },
+      "close": "2.55",
+      "evaluation_basis_date": "2026-11-04",
+      "high": "2.60",
+      "low": "2.47",
+      "open": "2.55",
+      "security_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+      "source_adjusted_daily_artifact": {
+        "bytes": 1635,
+        "path": "fixtures/r1/durable/2026-10-09/ADJUSTED_DAILY/artifact.json",
+        "sha256": "7366386574e3ade91c48b599783f7ea26f157e863c61e0555e8cefebd5ebee13"
+      },
+      "source_authority": "TDX_OFFICIAL_PACKAGE",
+      "source_component_receipt": {
+        "bytes": 4481,
+        "path": "fixtures/r1/durable/2026-10-09/ADJUSTED_DAILY/receipt.json",
+        "sha256": "ce2a0e8f9f926e81c9062e0385935c7785f8924c2df802dfd6ee86d49776af21"
+      },
+      "source_data_head": {
+        "bytes": 14408,
+        "path": "reports/r20r1r2/accepted_data_snapshots/fdb0d7bf21b9a4ab5ae5e04a3abbea8fc2b317595d4a02b49d1dc325b9ea6378.json",
+        "sha256": "fdb0d7bf21b9a4ab5ae5e04a3abbea8fc2b317595d4a02b49d1dc325b9ea6378"
+      },
+      "source_row_digest": "e6042c81cfe7da6ea9711b6a3ee5c7a736175de7a9b0dbd5b5c681e55281bd97",
+      "source_row_identity": {
+        "security_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+        "source_security_key": "SH.600675",
+        "trade_date": "2026-10-09"
+      },
+      "status": "ACTUAL",
+      "trade_date": "2026-10-09",
+      "transform_coefficients": {
+        "alpha": 1.0,
+        "beta": 0.0
+      },
+      "verified_adjustment": true,
+      "verified_identity": true
+    },
+    {
+      "T0_basis_verified": true,
+      "T0_transform_coefficients": {
+        "alpha": 1.0,
+        "beta": 0.0
+      },
+      "close": "2.60",
+      "evaluation_basis_date": "2026-11-04",
+      "high": "2.65",
+      "low": "2.52",
+      "open": "2.60",
+      "security_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+      "source_adjusted_daily_artifact": {
+        "bytes": 1635,
+        "path": "fixtures/r1/durable/2026-10-12/ADJUSTED_DAILY/artifact.json",
+        "sha256": "6c198281055a5d776f7c71f61f9c77cff5e21ddcfb2e5cd9e5eba4464e71655c"
+      },
+      "source_authority": "TDX_OFFICIAL_PACKAGE",
+      "source_component_receipt": {
+        "bytes": 4481,
+        "path": "fixtures/r1/durable/2026-10-12/ADJUSTED_DAILY/receipt.json",
+        "sha256": "c022220db7b60a33ae837d3e6b2fdfd36028fb72ebf59756e23879524ad8c22a"
+      },
+      "source_data_head": {
+        "bytes": 14408,
+        "path": "reports/r20r1r2/accepted_data_snapshots/fdb0d7bf21b9a4ab5ae5e04a3abbea8fc2b317595d4a02b49d1dc325b9ea6378.json",
+        "sha256": "fdb0d7bf21b9a4ab5ae5e04a3abbea8fc2b317595d4a02b49d1dc325b9ea6378"
+      },
+      "source_row_digest": "2d6f5d745bc051717a27b7647a02aa8c12cca765df7847e5daeeab0a432bccf6",
+      "source_row_identity": {
+        "security_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+        "source_security_key": "SH.600675",
+        "trade_date": "2026-10-12"
+      },
+      "status": "ACTUAL",
+      "trade_date": "2026-10-12",
+      "transform_coefficients": {
+        "alpha": 1.0,
+        "beta": 0.0
+      },
+      "verified_adjustment": true,
+      "verified_identity": true
+    },
+    {
+      "T0_basis_verified": true,
+      "T0_transform_coefficients": {
+        "alpha": 1.0,
+        "beta": 0.0
+      },
+      "close": "2.61",
+      "evaluation_basis_date": "2026-11-04",
+      "high": "2.66",
+      "low": "2.53",
+      "open": "2.61",
+      "security_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+      "source_adjusted_daily_artifact": {
+        "bytes": 1635,
+        "path": "fixtures/r1/durable/2026-10-13/ADJUSTED_DAILY/artifact.json",
+        "sha256": "6a99ec158b9878bcc25ea051652d42f943a8d5cb28635f0700bb7e03ffcae225"
+      },
+      "source_authority": "TDX_OFFICIAL_PACKAGE",
+      "source_component_receipt": {
+        "bytes": 4481,
+        "path": "fixtures/r1/durable/2026-10-13/ADJUSTED_DAILY/receipt.json",
+        "sha256": "58b187bd3553483560cd7a9270ecde67f8b53ae32b925b0790da0e389dee4387"
+      },
+      "source_data_head": {
+        "bytes": 14408,
+        "path": "reports/r20r1r2/accepted_data_snapshots/98371763125f284b37b1231d5b4dfab70e918674d8a489f15d4011328c5a4634.json",
+        "sha256": "98371763125f284b37b1231d5b4dfab70e918674d8a489f15d4011328c5a4634"
+      },
+      "source_row_digest": "0bfc2f68efc9a92951450cb22536d2ad8cf1de086e7e2d7de4e06fafcfe6ec57",
+      "source_row_identity": {
+        "security_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+        "source_security_key": "SH.600675",
+        "trade_date": "2026-10-13"
+      },
+      "status": "ACTUAL",
+      "trade_date": "2026-10-13",
+      "transform_coefficients": {
+        "alpha": 1.0,
+        "beta": 0.0
+      },
+      "verified_adjustment": true,
+      "verified_identity": true
+    },
+    {
+      "T0_basis_verified": true,
+      "T0_transform_coefficients": {
+        "alpha": 1.0,
+        "beta": 0.0
+      },
+      "close": "2.62",
+      "evaluation_basis_date": "2026-11-04",
+      "high": "2.67",
+      "low": "2.54",
+      "open": "2.62",
+      "security_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+      "source_adjusted_daily_artifact": {
+        "bytes": 1635,
+        "path": "fixtures/r1/durable/2026-10-14/ADJUSTED_DAILY/artifact.json",
+        "sha256": "2b7bcb464d4c2721cd1c55853d4b3ac822f6a5d2041985233b60c8ee457385af"
+      },
+      "source_authority": "TDX_OFFICIAL_PACKAGE",
+      "source_component_receipt": {
+        "bytes": 4481,
+        "path": "fixtures/r1/durable/2026-10-14/ADJUSTED_DAILY/receipt.json",
+        "sha256": "2218d1f19458c06db7b692062386be3335225981b43f2e265b4273fb53015db4"
+      },
+      "source_data_head": {
+        "bytes": 14408,
+        "path": "reports/r20r1r2/accepted_data_snapshots/98371763125f284b37b1231d5b4dfab70e918674d8a489f15d4011328c5a4634.json",
+        "sha256": "98371763125f284b37b1231d5b4dfab70e918674d8a489f15d4011328c5a4634"
+      },
+      "source_row_digest": "3c73d978fd9e3700584957bff9069dfb3a50e75fb60478b4aa11958d046022c2",
+      "source_row_identity": {
+        "security_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+        "source_security_key": "SH.600675",
+        "trade_date": "2026-10-14"
+      },
+      "status": "ACTUAL",
+      "trade_date": "2026-10-14",
+      "transform_coefficients": {
+        "alpha": 1.0,
+        "beta": 0.0
+      },
+      "verified_adjustment": true,
+      "verified_identity": true
+    },
+    {
+      "T0_basis_verified": true,
+      "T0_transform_coefficients": {
+        "alpha": 1.0,
+        "beta": 0.0
+      },
+      "close": "2.67",
+      "evaluation_basis_date": "2026-11-04",
+      "high": "2.72",
+      "low": "2.59",
+      "open": "2.67",
+      "security_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+      "source_adjusted_daily_artifact": {
+        "bytes": 1635,
+        "path": "fixtures/r1/durable/2026-10-15/ADJUSTED_DAILY/artifact.json",
+        "sha256": "b6887252e8ee530f0d787b8e203a08404bf1eb2bb28b7719e7c6518a3765cffb"
+      },
+      "source_authority": "TDX_OFFICIAL_PACKAGE",
+      "source_component_receipt": {
+        "bytes": 4481,
+        "path": "fixtures/r1/durable/2026-10-15/ADJUSTED_DAILY/receipt.json",
+        "sha256": "11944addb92c2c6eb51d8c36780a4440011a43a0a87b2af35d9a3453a2d92065"
+      },
+      "source_data_head": {
+        "bytes": 14411,
+        "path": "reports/r20r1r2/accepted_data_snapshots/dc5d581036b883b8161994ec726977aa3a220780cc3e55487c6495dd006589f8.json",
+        "sha256": "dc5d581036b883b8161994ec726977aa3a220780cc3e55487c6495dd006589f8"
+      },
+      "source_row_digest": "98da20558c37875cb8bdfb9f552fa77e6d259193635710194570e0270ee20795",
+      "source_row_identity": {
+        "security_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+        "source_security_key": "SH.600675",
+        "trade_date": "2026-10-15"
+      },
+      "status": "ACTUAL",
+      "trade_date": "2026-10-15",
+      "transform_coefficients": {
+        "alpha": 1.0,
+        "beta": 0.0
+      },
+      "verified_adjustment": true,
+      "verified_identity": true
+    },
+    {
+      "T0_basis_verified": true,
+      "T0_transform_coefficients": {
+        "alpha": 1.0,
+        "beta": 0.0
+      },
+      "close": "2.68",
+      "evaluation_basis_date": "2026-11-04",
+      "high": "2.73",
+      "low": "2.60",
+      "open": "2.68",
+      "security_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+      "source_adjusted_daily_artifact": {
+        "bytes": 1635,
+        "path": "fixtures/r1/durable/2026-10-16/ADJUSTED_DAILY/artifact.json",
+        "sha256": "0ca223ab68ecd77a923a8504542bdac6e3380f20c32a8903a18e1aeb89f29410"
+      },
+      "source_authority": "TDX_OFFICIAL_PACKAGE",
+      "source_component_receipt": {
+        "bytes": 4481,
+        "path": "fixtures/r1/durable/2026-10-16/ADJUSTED_DAILY/receipt.json",
+        "sha256": "d312871613b4735ef812187e131ff15f67022aacd12fbe10f3f2bcc3f58739a5"
+      },
+      "source_data_head": {
+        "bytes": 14411,
+        "path": "reports/r20r1r2/accepted_data_snapshots/dc5d581036b883b8161994ec726977aa3a220780cc3e55487c6495dd006589f8.json",
+        "sha256": "dc5d581036b883b8161994ec726977aa3a220780cc3e55487c6495dd006589f8"
+      },
+      "source_row_digest": "ef20477b892ab7fd4fd0ee4cd954c2f05afc82e23a1e0bda75fb17618b4a85a1",
+      "source_row_identity": {
+        "security_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+        "source_security_key": "SH.600675",
+        "trade_date": "2026-10-16"
+      },
+      "status": "ACTUAL",
+      "trade_date": "2026-10-16",
+      "transform_coefficients": {
+        "alpha": 1.0,
+        "beta": 0.0
+      },
+      "verified_adjustment": true,
+      "verified_identity": true
+    },
+    {
+      "T0_basis_verified": true,
+      "T0_transform_coefficients": {
+        "alpha": 1.0,
+        "beta": 0.0
+      },
+      "close": "2.70",
+      "evaluation_basis_date": "2026-11-04",
+      "high": "2.75",
+      "low": "2.62",
+      "open": "2.70",
+      "security_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+      "source_adjusted_daily_artifact": {
+        "bytes": 1635,
+        "path": "fixtures/r1/durable/2026-10-19/ADJUSTED_DAILY/artifact.json",
+        "sha256": "51dae11aa6c829e2df19145b86952046ce86bd8e12a788288c7046c7bd75f003"
+      },
+      "source_authority": "TDX_OFFICIAL_PACKAGE",
+      "source_component_receipt": {
+        "bytes": 4481,
+        "path": "fixtures/r1/durable/2026-10-19/ADJUSTED_DAILY/receipt.json",
+        "sha256": "094a11e18d5d94285dc3d9dd8e5da81e00a1c6cb9a961deed0c20f3c490ac9d9"
+      },
+      "source_data_head": {
+        "bytes": 14411,
+        "path": "reports/r20r1r2/accepted_data_snapshots/dc5d581036b883b8161994ec726977aa3a220780cc3e55487c6495dd006589f8.json",
+        "sha256": "dc5d581036b883b8161994ec726977aa3a220780cc3e55487c6495dd006589f8"
+      },
+      "source_row_digest": "3ea9e8df3ba5f3b827842f09c42a821f055b0c5e1e249138fab521f915143cd9",
+      "source_row_identity": {
+        "security_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+        "source_security_key": "SH.600675",
+        "trade_date": "2026-10-19"
+      },
+      "status": "ACTUAL",
+      "trade_date": "2026-10-19",
+      "transform_coefficients": {
+        "alpha": 1.0,
+        "beta": 0.0
+      },
+      "verified_adjustment": true,
+      "verified_identity": true
+    },
+    {
+      "T0_basis_verified": true,
+      "T0_transform_coefficients": {
+        "alpha": 1.0,
+        "beta": 0.0
+      },
+      "close": "2.75",
+      "evaluation_basis_date": "2026-11-04",
+      "high": "2.81",
+      "low": "2.67",
+      "open": "2.75",
+      "security_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+      "source_adjusted_daily_artifact": {
+        "bytes": 1635,
+        "path": "fixtures/r1/durable/2026-10-20/ADJUSTED_DAILY/artifact.json",
+        "sha256": "d5a9d9376ab036c8fc9248f1eba7900e832d4db8b785fc6865835ea01365bc5e"
+      },
+      "source_authority": "TDX_OFFICIAL_PACKAGE",
+      "source_component_receipt": {
+        "bytes": 4481,
+        "path": "fixtures/r1/durable/2026-10-20/ADJUSTED_DAILY/receipt.json",
+        "sha256": "93e8b2bc07bbfe2c2d7ac058ca8b170958697d5a050c89b01e1bade80fa53d56"
+      },
+      "source_data_head": {
+        "bytes": 14411,
+        "path": "reports/r20r1r2/accepted_data_snapshots/dc5d581036b883b8161994ec726977aa3a220780cc3e55487c6495dd006589f8.json",
+        "sha256": "dc5d581036b883b8161994ec726977aa3a220780cc3e55487c6495dd006589f8"
+      },
+      "source_row_digest": "9036214b49a3da8865f5003279b3d33102ed02ee859f79dd46adb1ee20e2503f",
+      "source_row_identity": {
+        "security_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+        "source_security_key": "SH.600675",
+        "trade_date": "2026-10-20"
+      },
+      "status": "ACTUAL",
+      "trade_date": "2026-10-20",
+      "transform_coefficients": {
+        "alpha": 1.0,
+        "beta": 0.0
+      },
+      "verified_adjustment": true,
+      "verified_identity": true
+    },
+    {
+      "T0_basis_verified": true,
+      "T0_transform_coefficients": {
+        "alpha": 1.0,
+        "beta": 0.0
+      },
+      "close": "2.76",
+      "evaluation_basis_date": "2026-11-04",
+      "high": "2.82",
+      "low": "2.68",
+      "open": "2.76",
+      "security_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+      "source_adjusted_daily_artifact": {
+        "bytes": 1635,
+        "path": "fixtures/r1/durable/2026-10-21/ADJUSTED_DAILY/artifact.json",
+        "sha256": "289d1486d7e5c0bedf8bc7bbdf5d59637de733289a02a1b32b6aaa3e0c0c426e"
+      },
+      "source_authority": "TDX_OFFICIAL_PACKAGE",
+      "source_component_receipt": {
+        "bytes": 4481,
+        "path": "fixtures/r1/durable/2026-10-21/ADJUSTED_DAILY/receipt.json",
+        "sha256": "346dac318e75e8d311659701c6fff82c2e6e32a04045d3d088449a90d9f66ae8"
+      },
+      "source_data_head": {
+        "bytes": 14411,
+        "path": "reports/r20r1r2/accepted_data_snapshots/dc5d581036b883b8161994ec726977aa3a220780cc3e55487c6495dd006589f8.json",
+        "sha256": "dc5d581036b883b8161994ec726977aa3a220780cc3e55487c6495dd006589f8"
+      },
+      "source_row_digest": "a18de58cf1865a8c8ae47133f337b213c20f093b62ef725e467626d940fbf1fe",
+      "source_row_identity": {
+        "security_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+        "source_security_key": "SH.600675",
+        "trade_date": "2026-10-21"
+      },
+      "status": "ACTUAL",
+      "trade_date": "2026-10-21",
+      "transform_coefficients": {
+        "alpha": 1.0,
+        "beta": 0.0
+      },
+      "verified_adjustment": true,
+      "verified_identity": true
+    },
+    {
+      "T0_basis_verified": true,
+      "T0_transform_coefficients": {
+        "alpha": 1.0,
+        "beta": 0.0
+      },
+      "close": "2.77",
+      "evaluation_basis_date": "2026-11-04",
+      "high": "2.83",
+      "low": "2.69",
+      "open": "2.77",
+      "security_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+      "source_adjusted_daily_artifact": {
+        "bytes": 1635,
+        "path": "fixtures/r1/durable/2026-10-22/ADJUSTED_DAILY/artifact.json",
+        "sha256": "e39088b61a46c41e499b3e5f2a695e4d946537e306db186bf20d8b260ec20559"
+      },
+      "source_authority": "TDX_OFFICIAL_PACKAGE",
+      "source_component_receipt": {
+        "bytes": 4481,
+        "path": "fixtures/r1/durable/2026-10-22/ADJUSTED_DAILY/receipt.json",
+        "sha256": "dc04cd19fb8b0ad5a775dad0d78de55a15d9a3c8db92816e0f9d492777e8d7d0"
+      },
+      "source_data_head": {
+        "bytes": 14411,
+        "path": "reports/r20r1r2/accepted_data_snapshots/972a1b9cc67b060545a1cd3529a4cf61384cb0ac57f17e5352e0a95361af4303.json",
+        "sha256": "972a1b9cc67b060545a1cd3529a4cf61384cb0ac57f17e5352e0a95361af4303"
+      },
+      "source_row_digest": "69423dd24ae8476aaedc957af6e61030aafa249b706e446c821862d1e52a8061",
+      "source_row_identity": {
+        "security_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+        "source_security_key": "SH.600675",
+        "trade_date": "2026-10-22"
+      },
+      "status": "ACTUAL",
+      "trade_date": "2026-10-22",
+      "transform_coefficients": {
+        "alpha": 1.0,
+        "beta": 0.0
+      },
+      "verified_adjustment": true,
+      "verified_identity": true
+    },
+    {
+      "T0_basis_verified": true,
+      "T0_transform_coefficients": {
+        "alpha": 1.0,
+        "beta": 0.0
+      },
+      "close": "2.82",
+      "evaluation_basis_date": "2026-11-04",
+      "high": "2.88",
+      "low": "2.74",
+      "open": "2.82",
+      "security_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+      "source_adjusted_daily_artifact": {
+        "bytes": 1635,
+        "path": "fixtures/r1/durable/2026-10-23/ADJUSTED_DAILY/artifact.json",
+        "sha256": "bbd599e1e64a49c0d52d21db78c5a27e0265e4b34119f9abb43a948988a7fca8"
+      },
+      "source_authority": "TDX_OFFICIAL_PACKAGE",
+      "source_component_receipt": {
+        "bytes": 4481,
+        "path": "fixtures/r1/durable/2026-10-23/ADJUSTED_DAILY/receipt.json",
+        "sha256": "9d587b58775a8efee62f1c463230e68a00fada4b7fc1d7b8f970b7b2b071b1a8"
+      },
+      "source_data_head": {
+        "bytes": 14411,
+        "path": "reports/r20r1r2/accepted_data_snapshots/972a1b9cc67b060545a1cd3529a4cf61384cb0ac57f17e5352e0a95361af4303.json",
+        "sha256": "972a1b9cc67b060545a1cd3529a4cf61384cb0ac57f17e5352e0a95361af4303"
+      },
+      "source_row_digest": "bc73cada6e0d132af6550a654b45646809358ec2fdc118b0424bc3281c2ceb0c",
+      "source_row_identity": {
+        "security_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+        "source_security_key": "SH.600675",
+        "trade_date": "2026-10-23"
+      },
+      "status": "ACTUAL",
+      "trade_date": "2026-10-23",
+      "transform_coefficients": {
+        "alpha": 1.0,
+        "beta": 0.0
+      },
+      "verified_adjustment": true,
+      "verified_identity": true
+    },
+    {
+      "T0_basis_verified": true,
+      "T0_transform_coefficients": {
+        "alpha": 1.0,
+        "beta": 0.0
+      },
+      "close": "2.84",
+      "evaluation_basis_date": "2026-11-04",
+      "high": "2.90",
+      "low": "2.75",
+      "open": "2.84",
+      "security_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+      "source_adjusted_daily_artifact": {
+        "bytes": 1635,
+        "path": "fixtures/r1/durable/2026-10-26/ADJUSTED_DAILY/artifact.json",
+        "sha256": "ac718d4baeeeacad64fa32450ba635fb53db1d01ea7baad628815b4037d0c850"
+      },
+      "source_authority": "TDX_OFFICIAL_PACKAGE",
+      "source_component_receipt": {
+        "bytes": 4481,
+        "path": "fixtures/r1/durable/2026-10-26/ADJUSTED_DAILY/receipt.json",
+        "sha256": "d0c4b6aa360ca8ce87032d62f29b2f0870d895fa25b9d7394114551b1cb22df9"
+      },
+      "source_data_head": {
+        "bytes": 14411,
+        "path": "reports/r20r1r2/accepted_data_snapshots/972a1b9cc67b060545a1cd3529a4cf61384cb0ac57f17e5352e0a95361af4303.json",
+        "sha256": "972a1b9cc67b060545a1cd3529a4cf61384cb0ac57f17e5352e0a95361af4303"
+      },
+      "source_row_digest": "319e0ebf8a0e4be34cf33dc113c8c8319f8f21984a486f12db915e3a8b284580",
+      "source_row_identity": {
+        "security_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+        "source_security_key": "SH.600675",
+        "trade_date": "2026-10-26"
+      },
+      "status": "ACTUAL",
+      "trade_date": "2026-10-26",
+      "transform_coefficients": {
+        "alpha": 1.0,
+        "beta": 0.0
+      },
+      "verified_adjustment": true,
+      "verified_identity": true
+    },
+    {
+      "T0_basis_verified": true,
+      "T0_transform_coefficients": {
+        "alpha": 1.0,
+        "beta": 0.0
+      },
+      "close": "2.85",
+      "evaluation_basis_date": "2026-11-04",
+      "high": "2.91",
+      "low": "2.76",
+      "open": "2.85",
+      "security_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+      "source_adjusted_daily_artifact": {
+        "bytes": 1635,
+        "path": "fixtures/r1/durable/2026-10-27/ADJUSTED_DAILY/artifact.json",
+        "sha256": "ee0374e04d663bdd49f0c6f9805ff4e879069967dc179cb1578919787108d219"
+      },
+      "source_authority": "TDX_OFFICIAL_PACKAGE",
+      "source_component_receipt": {
+        "bytes": 4481,
+        "path": "fixtures/r1/durable/2026-10-27/ADJUSTED_DAILY/receipt.json",
+        "sha256": "f1d5d2305826e871286e7cd8f8745f57a4f35f18370c0e015163d8294397db61"
+      },
+      "source_data_head": {
+        "bytes": 14411,
+        "path": "reports/r20r1r2/accepted_data_snapshots/972a1b9cc67b060545a1cd3529a4cf61384cb0ac57f17e5352e0a95361af4303.json",
+        "sha256": "972a1b9cc67b060545a1cd3529a4cf61384cb0ac57f17e5352e0a95361af4303"
+      },
+      "source_row_digest": "0de9a747b30e20a941176b7eac9409d90a4cde9adb42c27f4b8a8fa2baba2451",
+      "source_row_identity": {
+        "security_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+        "source_security_key": "SH.600675",
+        "trade_date": "2026-10-27"
+      },
+      "status": "ACTUAL",
+      "trade_date": "2026-10-27",
+      "transform_coefficients": {
+        "alpha": 1.0,
+        "beta": 0.0
+      },
+      "verified_adjustment": true,
+      "verified_identity": true
+    },
+    {
+      "T0_basis_verified": true,
+      "T0_transform_coefficients": {
+        "alpha": 1.0,
+        "beta": 0.0
+      },
+      "close": "2.90",
+      "evaluation_basis_date": "2026-11-04",
+      "high": "2.96",
+      "low": "2.81",
+      "open": "2.90",
+      "security_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+      "source_adjusted_daily_artifact": {
+        "bytes": 1635,
+        "path": "fixtures/r1/durable/2026-10-28/ADJUSTED_DAILY/artifact.json",
+        "sha256": "d315a359bea7edabb93e1960e5ebe27829b1e9aebd9714d1ad5c8c540792e9bb"
+      },
+      "source_authority": "TDX_OFFICIAL_PACKAGE",
+      "source_component_receipt": {
+        "bytes": 4481,
+        "path": "fixtures/r1/durable/2026-10-28/ADJUSTED_DAILY/receipt.json",
+        "sha256": "92e82ccfba2a312f4e21a7066165e179e12800c0c6d4d304c6eda643f7d21aad"
+      },
+      "source_data_head": {
+        "bytes": 14411,
+        "path": "reports/r20r1r2/accepted_data_snapshots/972a1b9cc67b060545a1cd3529a4cf61384cb0ac57f17e5352e0a95361af4303.json",
+        "sha256": "972a1b9cc67b060545a1cd3529a4cf61384cb0ac57f17e5352e0a95361af4303"
+      },
+      "source_row_digest": "13f949727f3d6ebecf36e61a811566de71f625b93878e78835971bcbb0bd0d90",
+      "source_row_identity": {
+        "security_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+        "source_security_key": "SH.600675",
+        "trade_date": "2026-10-28"
+      },
+      "status": "ACTUAL",
+      "trade_date": "2026-10-28",
+      "transform_coefficients": {
+        "alpha": 1.0,
+        "beta": 0.0
+      },
+      "verified_adjustment": true,
+      "verified_identity": true
+    },
+    {
+      "T0_basis_verified": true,
+      "T0_transform_coefficients": {
+        "alpha": 1.0,
+        "beta": 0.0
+      },
+      "close": "2.91",
+      "evaluation_basis_date": "2026-11-04",
+      "high": "2.97",
+      "low": "2.82",
+      "open": "2.91",
+      "security_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+      "source_adjusted_daily_artifact": {
+        "bytes": 1635,
+        "path": "fixtures/r1/durable/2026-10-29/ADJUSTED_DAILY/artifact.json",
+        "sha256": "385852913aa67a15abdc5db2632c5448e6e2cfea5b09bc84b726c186c1db0bc9"
+      },
+      "source_authority": "TDX_OFFICIAL_PACKAGE",
+      "source_component_receipt": {
+        "bytes": 4481,
+        "path": "fixtures/r1/durable/2026-10-29/ADJUSTED_DAILY/receipt.json",
+        "sha256": "bca512f61bc82e8d4313991d6787b1dfe09641000779cf52c11cd0fde473897a"
+      },
+      "source_data_head": {
+        "bytes": 14411,
+        "path": "reports/r20r1r2/accepted_data_snapshots/972a1b9cc67b060545a1cd3529a4cf61384cb0ac57f17e5352e0a95361af4303.json",
+        "sha256": "972a1b9cc67b060545a1cd3529a4cf61384cb0ac57f17e5352e0a95361af4303"
+      },
+      "source_row_digest": "a1edc883d8b0cdfe1ac5b135a34b75fe9b9fd43a47c35ef22e3b1193a4e039c2",
+      "source_row_identity": {
+        "security_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+        "source_security_key": "SH.600675",
+        "trade_date": "2026-10-29"
+      },
+      "status": "ACTUAL",
+      "trade_date": "2026-10-29",
+      "transform_coefficients": {
+        "alpha": 1.0,
+        "beta": 0.0
+      },
+      "verified_adjustment": true,
+      "verified_identity": true
+    },
+    {
+      "T0_basis_verified": true,
+      "T0_transform_coefficients": {
+        "alpha": 1.0,
+        "beta": 0.0
+      },
+      "close": "2.92",
+      "evaluation_basis_date": "2026-11-04",
+      "high": "2.98",
+      "low": "2.83",
+      "open": "2.92",
+      "security_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+      "source_adjusted_daily_artifact": {
+        "bytes": 1635,
+        "path": "fixtures/r1/durable/2026-10-30/ADJUSTED_DAILY/artifact.json",
+        "sha256": "7c0289f9b9f10452cd3769a77cf261b70d3eb3f4f7ce16a4ac83ad9b13612d0a"
+      },
+      "source_authority": "TDX_OFFICIAL_PACKAGE",
+      "source_component_receipt": {
+        "bytes": 4481,
+        "path": "fixtures/r1/durable/2026-10-30/ADJUSTED_DAILY/receipt.json",
+        "sha256": "fa04acc76c58f85fe792f670a6e1a071ea9ffdd658e908dff9359677db5f77a6"
+      },
+      "source_data_head": {
+        "bytes": 14411,
+        "path": "reports/r20r1r2/accepted_data_snapshots/972a1b9cc67b060545a1cd3529a4cf61384cb0ac57f17e5352e0a95361af4303.json",
+        "sha256": "972a1b9cc67b060545a1cd3529a4cf61384cb0ac57f17e5352e0a95361af4303"
+      },
+      "source_row_digest": "82ba494234ae5fc5839b59a0a1869c6d061c2ee410ba50610dbd204a11c65684",
+      "source_row_identity": {
+        "security_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+        "source_security_key": "SH.600675",
+        "trade_date": "2026-10-30"
+      },
+      "status": "ACTUAL",
+      "trade_date": "2026-10-30",
+      "transform_coefficients": {
+        "alpha": 1.0,
+        "beta": 0.0
+      },
+      "verified_adjustment": true,
+      "verified_identity": true
+    },
+    {
+      "T0_basis_verified": true,
+      "T0_transform_coefficients": {
+        "alpha": 1.0,
+        "beta": 0.0
+      },
+      "close": "2.97",
+      "evaluation_basis_date": "2026-11-04",
+      "high": "3.03",
+      "low": "2.88",
+      "open": "2.97",
+      "security_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+      "source_adjusted_daily_artifact": {
+        "bytes": 1635,
+        "path": "fixtures/r1/durable/2026-11-02/ADJUSTED_DAILY/artifact.json",
+        "sha256": "9d466bdee3f4fffa69804e44960b37a0af95c2ddf1f346210fd3bd1ef6ede2c9"
+      },
+      "source_authority": "TDX_OFFICIAL_PACKAGE",
+      "source_component_receipt": {
+        "bytes": 4481,
+        "path": "fixtures/r1/durable/2026-11-02/ADJUSTED_DAILY/receipt.json",
+        "sha256": "265ef7080faad069cd2ddc345583f654f3d27d9a6946b05cc0254ade8c8ef454"
+      },
+      "source_data_head": {
+        "bytes": 14411,
+        "path": "reports/r20r1r2/accepted_data_snapshots/972a1b9cc67b060545a1cd3529a4cf61384cb0ac57f17e5352e0a95361af4303.json",
+        "sha256": "972a1b9cc67b060545a1cd3529a4cf61384cb0ac57f17e5352e0a95361af4303"
+      },
+      "source_row_digest": "f2f6c5d439f608698a66b090babf429a41cf4ee8c90ed64c6f6a44b886f8496f",
+      "source_row_identity": {
+        "security_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+        "source_security_key": "SH.600675",
+        "trade_date": "2026-11-02"
+      },
+      "status": "ACTUAL",
+      "trade_date": "2026-11-02",
+      "transform_coefficients": {
+        "alpha": 1.0,
+        "beta": 0.0
+      },
+      "verified_adjustment": true,
+      "verified_identity": true
+    },
+    {
+      "T0_basis_verified": true,
+      "T0_transform_coefficients": {
+        "alpha": 1.0,
+        "beta": 0.0
+      },
+      "close": "2.99",
+      "evaluation_basis_date": "2026-11-04",
+      "high": "3.05",
+      "low": "2.90",
+      "open": "2.99",
+      "security_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+      "source_adjusted_daily_artifact": {
+        "bytes": 1635,
+        "path": "fixtures/r1/durable/2026-11-03/ADJUSTED_DAILY/artifact.json",
+        "sha256": "959f621ae9af472795322b965bb833f51d70ef6079594b0d37423400b2e553a8"
+      },
+      "source_authority": "TDX_OFFICIAL_PACKAGE",
+      "source_component_receipt": {
+        "bytes": 4481,
+        "path": "fixtures/r1/durable/2026-11-03/ADJUSTED_DAILY/receipt.json",
+        "sha256": "9ef56815b479e675b663fc41e2563e1e0afe7ecd6534703dcb2676dc5e691247"
+      },
+      "source_data_head": {
+        "bytes": 14411,
+        "path": "reports/r20r1r2/accepted_data_snapshots/972a1b9cc67b060545a1cd3529a4cf61384cb0ac57f17e5352e0a95361af4303.json",
+        "sha256": "972a1b9cc67b060545a1cd3529a4cf61384cb0ac57f17e5352e0a95361af4303"
+      },
+      "source_row_digest": "a38f9ec1fa7fe233668c78b0bff99a273dbf7d139b84c306bdb50c65ba014167",
+      "source_row_identity": {
+        "security_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+        "source_security_key": "SH.600675",
+        "trade_date": "2026-11-03"
+      },
+      "status": "ACTUAL",
+      "trade_date": "2026-11-03",
+      "transform_coefficients": {
+        "alpha": 1.0,
+        "beta": 0.0
+      },
+      "verified_adjustment": true,
+      "verified_identity": true
+    },
+    {
+      "T0_basis_verified": true,
+      "T0_transform_coefficients": {
+        "alpha": 1.0,
+        "beta": 0.0
+      },
+      "close": "3.00",
+      "evaluation_basis_date": "2026-11-04",
+      "high": "3.06",
+      "low": "2.91",
+      "open": "3.00",
+      "security_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+      "source_adjusted_daily_artifact": {
+        "bytes": 1635,
+        "path": "fixtures/r1/durable/2026-11-04/ADJUSTED_DAILY/artifact.json",
+        "sha256": "17700e15881d28ca9c1fd9e6b85878e9fd39ba41c11f7681e8d238416b739169"
+      },
+      "source_authority": "TDX_OFFICIAL_PACKAGE",
+      "source_component_receipt": {
+        "bytes": 4481,
+        "path": "fixtures/r1/durable/2026-11-04/ADJUSTED_DAILY/receipt.json",
+        "sha256": "30b2ec1e141b35d4c41591b8021837cf5b612a5620b9840da2a2cb82bec2029e"
+      },
+      "source_data_head": {
+        "bytes": 14411,
+        "path": "reports/r20r1r2/accepted_data_snapshots/972a1b9cc67b060545a1cd3529a4cf61384cb0ac57f17e5352e0a95361af4303.json",
+        "sha256": "972a1b9cc67b060545a1cd3529a4cf61384cb0ac57f17e5352e0a95361af4303"
+      },
+      "source_row_digest": "f13adc5582b835d854c8e8a5a2142c61bcfc0bf1d452fbf2bc3f8d3f9e8d8b9c",
+      "source_row_identity": {
+        "security_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+        "source_security_key": "SH.600675",
+        "trade_date": "2026-11-04"
+      },
+      "status": "ACTUAL",
+      "trade_date": "2026-11-04",
+      "transform_coefficients": {
+        "alpha": 1.0,
+        "beta": 0.0
+      },
+      "verified_adjustment": true,
+      "verified_identity": true
+    }
+  ]
+}

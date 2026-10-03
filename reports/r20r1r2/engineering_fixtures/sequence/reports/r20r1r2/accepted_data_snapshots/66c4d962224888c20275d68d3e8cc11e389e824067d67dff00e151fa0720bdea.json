@@ -1,0 +1,346 @@
+{
+  "AS_RECORDED": false,
+  "accepted_chain": {
+    "bytes": 105852,
+    "path": "fixtures/r1/batch_3/accepted_chain.json",
+    "sha256": "785aec46c69b724f612c5f154d38ce0799dca3c4d89a8fca8336c259ccf11ce8"
+  },
+  "accepted_trade_date": "2026-10-12",
+  "audit_registry": {
+    "bytes": 93135,
+    "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json",
+    "sha256": "14002b12e89920ee2d57fe1328a53c03f21ebb99842acfcb5c53b44d3f402174"
+  },
+  "calendar": {
+    "bytes": 14590,
+    "path": "fixtures/calendar.json",
+    "sha256": "838446155869ad2aa8534e35f8fcae1ab8e055f4c075d8b1126a96d0c837f258"
+  },
+  "canonical_data_revision": "582934ddd093aca346521dc7242622975770d35d1bff9fc446850cca29d9ed47",
+  "component_artifacts": {
+    "ADJUSTED_DAILY": {
+      "bytes": 1635,
+      "path": "fixtures/r1/durable/2026-10-12/ADJUSTED_DAILY/artifact.json",
+      "sha256": "6c198281055a5d776f7c71f61f9c77cff5e21ddcfb2e5cd9e5eba4464e71655c"
+    },
+    "IDENTITY_UNIVERSE": {
+      "bytes": 104,
+      "path": "fixtures/r1/durable/2026-10-12/IDENTITY_UNIVERSE/artifact.json",
+      "sha256": "6b9dbfd1591a69d196d19601a52bdeb3fc2a8100046b53ffc4ecabc342eaba04"
+    },
+    "ISST": {
+      "bytes": 91,
+      "path": "fixtures/r1/durable/2026-10-12/ISST/artifact.json",
+      "sha256": "03ac99def1c0b60a07c4754f3669efc90baabb9c57c8b414ffc848dedb99db47"
+    },
+    "PERIOD_ADJUSTED": {
+      "bytes": 102,
+      "path": "fixtures/r1/durable/2026-10-12/PERIOD_ADJUSTED/artifact.json",
+      "sha256": "a8d6b3a42a93e7e9625c25df8ebcf251eabd42ab8c896502bc7aae19aebf8f19"
+    },
+    "PERIOD_RAW": {
+      "bytes": 97,
+      "path": "fixtures/r1/durable/2026-10-12/PERIOD_RAW/artifact.json",
+      "sha256": "1c4edad9251d4d46905066114b15e7b04a57a3a1d644649dcff43af700ad3137"
+    },
+    "PRICE_LIMIT": {
+      "bytes": 98,
+      "path": "fixtures/r1/durable/2026-10-12/PRICE_LIMIT/artifact.json",
+      "sha256": "a03b7f773c48093dba5ea6c3f54b6af44d1cf1ad546307b3382574cac5ef889e"
+    },
+    "RAW_DAILY": {
+      "bytes": 1204,
+      "path": "fixtures/r1/durable/2026-10-12/RAW_DAILY/artifact.json",
+      "sha256": "8b3e48c1daab6fa288149e981ed206be22d7e58c277b7e1b90fd3cdcda9f37a9"
+    },
+    "SPECIAL_PHASE": {
+      "bytes": 100,
+      "path": "fixtures/r1/durable/2026-10-12/SPECIAL_PHASE/artifact.json",
+      "sha256": "440a98da2f1741e3847d9eb9f05ee169a75089ad83e3f42f003245a999300ca2"
+    },
+    "TRADING_STATUS": {
+      "bytes": 101,
+      "path": "fixtures/r1/durable/2026-10-12/TRADING_STATUS/artifact.json",
+      "sha256": "b78cc6616b84dda1f5741e40185c32e99411f6f1289c74bfbf7270a6040016e0"
+    }
+  },
+  "component_permissions": {
+    "ADJUSTED_DAILY": {
+      "accepted_algorithm_contract": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+      "accepted_owner_stage": "V4-02",
+      "artifact": {
+        "bytes": 1635,
+        "path": "fixtures/r1/durable/2026-10-12/ADJUSTED_DAILY/artifact.json",
+        "sha256": "6c198281055a5d776f7c71f61f9c77cff5e21ddcfb2e5cd9e5eba4464e71655c"
+      },
+      "capability_basis": "EXACT_EXTERNALLY_ACCEPTED_FINAL_COMPONENT_RECEIPT; ROW_READY_DOES_NOT_UPGRADE_CAPABILITY",
+      "cutoff": "2026-10-12",
+      "logical_digest": "93c927f562572d730a35da87d6d94394bb24c37f3f2cc0e29e08afc9e400e8e0",
+      "quality_counts": {
+        "READY": 5213
+      },
+      "receipt": {
+        "bytes": 4769,
+        "path": "fixtures/r1/durable/2026-10-12/ADJUSTED_DAILY/receipt.json",
+        "sha256": "9bd05184584566bfb1c624229e235a37786753873afc2d0e4586269e4010fc87"
+      },
+      "row_count": 1,
+      "status": "FULL_PASS",
+      "unknown_reason_counts": {
+        "UNSUPPORTED_OR_UNPROVED_ADJUSTMENT": 176
+      }
+    },
+    "IDENTITY_UNIVERSE": {
+      "accepted_algorithm_contract": "SECURITY_IDENTITY_EVENT_DISCOVERY_V1",
+      "accepted_owner_stage": "V4-01 R8.1 baseline + DM-01 daily lifecycle adapter",
+      "artifact": {
+        "bytes": 104,
+        "path": "fixtures/r1/durable/2026-10-12/IDENTITY_UNIVERSE/artifact.json",
+        "sha256": "6b9dbfd1591a69d196d19601a52bdeb3fc2a8100046b53ffc4ecabc342eaba04"
+      },
+      "capability_basis": "EXACT_EXTERNALLY_ACCEPTED_FINAL_COMPONENT_RECEIPT; ROW_READY_DOES_NOT_UPGRADE_CAPABILITY",
+      "cutoff": "2026-10-12",
+      "logical_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "quality_counts": {
+        "READY": 5224
+      },
+      "receipt": {
+        "bytes": 4777,
+        "path": "fixtures/r1/durable/2026-10-12/IDENTITY_UNIVERSE/receipt.json",
+        "sha256": "651351fd2c7268fa02706378ab90d48b7db6b597c599fc54211718bb8bba6e69"
+      },
+      "row_count": 0,
+      "status": "FULL_PASS",
+      "unknown_reason_counts": {}
+    },
+    "ISST": {
+      "accepted_algorithm_contract": "V4_02_FULL_MARKET_DATED_ISST_V1",
+      "accepted_owner_stage": "V4-02",
+      "artifact": {
+        "bytes": 91,
+        "path": "fixtures/r1/durable/2026-10-12/ISST/artifact.json",
+        "sha256": "03ac99def1c0b60a07c4754f3669efc90baabb9c57c8b414ffc848dedb99db47"
+      },
+      "capability_basis": "EXACT_EXTERNALLY_ACCEPTED_FINAL_COMPONENT_RECEIPT; ROW_READY_DOES_NOT_UPGRADE_CAPABILITY",
+      "cutoff": "2026-10-12",
+      "logical_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "quality_counts": {
+        "READY": 5224
+      },
+      "receipt": {
+        "bytes": 4737,
+        "path": "fixtures/r1/durable/2026-10-12/ISST/receipt.json",
+        "sha256": "09bbf0e346b78cbb76614bf9d257a2b34f5775480956df908d826e83bd7a5acd"
+      },
+      "row_count": 0,
+      "status": "FULL_PASS",
+      "unknown_reason_counts": {}
+    },
+    "PERIOD_ADJUSTED": {
+      "accepted_algorithm_contract": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+      "accepted_owner_stage": "V4-02",
+      "artifact": {
+        "bytes": 102,
+        "path": "fixtures/r1/durable/2026-10-12/PERIOD_ADJUSTED/artifact.json",
+        "sha256": "a8d6b3a42a93e7e9625c25df8ebcf251eabd42ab8c896502bc7aae19aebf8f19"
+      },
+      "capability_basis": "EXACT_EXTERNALLY_ACCEPTED_FINAL_COMPONENT_RECEIPT; ROW_READY_DOES_NOT_UPGRADE_CAPABILITY",
+      "cutoff": "2026-10-12",
+      "logical_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "quality_counts": {
+        "READY": 15670
+      },
+      "receipt": {
+        "bytes": 4771,
+        "path": "fixtures/r1/durable/2026-10-12/PERIOD_ADJUSTED/receipt.json",
+        "sha256": "7e94eaad95dd44f8b2bbbc14fdcefa096e7f6a789dedee585d3ae7a1d4b0cf3b"
+      },
+      "row_count": 0,
+      "status": "FULL_PASS",
+      "unknown_reason_counts": {
+        "ACCEPTED_PARENT_ADJUSTMENT_OR_STATUS_BLOCKED": 176,
+        "ADJUSTMENT_OR_INVALID_DAILY_UNKNOWN": 352
+      }
+    },
+    "PERIOD_RAW": {
+      "accepted_algorithm_contract": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+      "accepted_owner_stage": "V4-02",
+      "artifact": {
+        "bytes": 97,
+        "path": "fixtures/r1/durable/2026-10-12/PERIOD_RAW/artifact.json",
+        "sha256": "1c4edad9251d4d46905066114b15e7b04a57a3a1d644649dcff43af700ad3137"
+      },
+      "capability_basis": "EXACT_EXTERNALLY_ACCEPTED_FINAL_COMPONENT_RECEIPT; ROW_READY_DOES_NOT_UPGRADE_CAPABILITY",
+      "cutoff": "2026-10-12",
+      "logical_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "quality_counts": {
+        "READY": 15670
+      },
+      "receipt": {
+        "bytes": 4755,
+        "path": "fixtures/r1/durable/2026-10-12/PERIOD_RAW/receipt.json",
+        "sha256": "097b88bbaf2d3a4db9af5c4ea1a1df013cf1a7c2e49a21d16ac60ce36144aeae"
+      },
+      "row_count": 0,
+      "status": "FULL_PASS",
+      "unknown_reason_counts": {}
+    },
+    "PRICE_LIMIT": {
+      "accepted_algorithm_contract": "R3_PRICE_LIMIT_BASE + SPECIAL_PRICE_PHASE_EVENT_V1 + SPECIAL_PRICE_PHASE_POLICY_V2",
+      "accepted_owner_stage": "V4-02 R6 externally accepted",
+      "artifact": {
+        "bytes": 98,
+        "path": "fixtures/r1/durable/2026-10-12/PRICE_LIMIT/artifact.json",
+        "sha256": "a03b7f773c48093dba5ea6c3f54b6af44d1cf1ad546307b3382574cac5ef889e"
+      },
+      "capability_basis": "EXACT_EXTERNALLY_ACCEPTED_FINAL_COMPONENT_RECEIPT; ROW_READY_DOES_NOT_UPGRADE_CAPABILITY",
+      "cutoff": "2026-10-12",
+      "logical_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "quality_counts": {
+        "READY": 5224
+      },
+      "receipt": {
+        "bytes": 4758,
+        "path": "fixtures/r1/durable/2026-10-12/PRICE_LIMIT/receipt.json",
+        "sha256": "c7df479d4a9fc325ee06ced7965021b35d6da11654226c0e6ed48374592fead8"
+      },
+      "row_count": 0,
+      "status": "FULL_PASS",
+      "unknown_reason_counts": {
+        "CLOSE_OUTSIDE_LIMIT_RANGE": 1
+      }
+    },
+    "RAW_DAILY": {
+      "accepted_algorithm_contract": "V4_02_RAW_CANONICAL_FORMAL_ACCEPTANCE_V1",
+      "accepted_owner_stage": "V4-02",
+      "artifact": {
+        "bytes": 1204,
+        "path": "fixtures/r1/durable/2026-10-12/RAW_DAILY/artifact.json",
+        "sha256": "8b3e48c1daab6fa288149e981ed206be22d7e58c277b7e1b90fd3cdcda9f37a9"
+      },
+      "capability_basis": "EXACT_EXTERNALLY_ACCEPTED_FINAL_COMPONENT_RECEIPT; ROW_READY_DOES_NOT_UPGRADE_CAPABILITY",
+      "cutoff": "2026-10-12",
+      "logical_digest": "bee94825b6404165de42fe57e804fd2808187a292bb580790968120d5390230e",
+      "quality_counts": {
+        "READY": 5213
+      },
+      "receipt": {
+        "bytes": 4754,
+        "path": "fixtures/r1/durable/2026-10-12/RAW_DAILY/receipt.json",
+        "sha256": "bd1c459f1374df65b45664ed310d4606fa0d62e310f6722e9a1cdd11d5a46302"
+      },
+      "row_count": 1,
+      "status": "FULL_PASS",
+      "unknown_reason_counts": {}
+    },
+    "SPECIAL_PHASE": {
+      "accepted_algorithm_contract": "SPECIAL_PHASE_SOURCE_MANIFEST_V1 + SPECIAL_PRICE_PHASE_EVENT_V1 + SPECIAL_PRICE_PHASE_POLICY_V2",
+      "accepted_owner_stage": "V4-02 R6 externally accepted",
+      "artifact": {
+        "bytes": 100,
+        "path": "fixtures/r1/durable/2026-10-12/SPECIAL_PHASE/artifact.json",
+        "sha256": "440a98da2f1741e3847d9eb9f05ee169a75089ad83e3f42f003245a999300ca2"
+      },
+      "capability_basis": "EXACT_EXTERNALLY_ACCEPTED_FINAL_COMPONENT_RECEIPT; ROW_READY_DOES_NOT_UPGRADE_CAPABILITY",
+      "cutoff": "2026-10-12",
+      "logical_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "quality_counts": {
+        "READY": 5224
+      },
+      "receipt": {
+        "bytes": 4765,
+        "path": "fixtures/r1/durable/2026-10-12/SPECIAL_PHASE/receipt.json",
+        "sha256": "897d532360b30676ea83c3d6c952cb46fe038b0fe953e6641a65c90cf6e2cf9e"
+      },
+      "row_count": 0,
+      "status": "FULL_PASS",
+      "unknown_reason_counts": {}
+    },
+    "TRADING_STATUS": {
+      "accepted_algorithm_contract": "V4_02_DATED_TRADING_STATUS_V1",
+      "accepted_owner_stage": "V4-02",
+      "artifact": {
+        "bytes": 101,
+        "path": "fixtures/r1/durable/2026-10-12/TRADING_STATUS/artifact.json",
+        "sha256": "b78cc6616b84dda1f5741e40185c32e99411f6f1289c74bfbf7270a6040016e0"
+      },
+      "capability_basis": "EXACT_EXTERNALLY_ACCEPTED_FINAL_COMPONENT_RECEIPT; ROW_READY_DOES_NOT_UPGRADE_CAPABILITY",
+      "cutoff": "2026-10-12",
+      "logical_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "quality_counts": {
+        "ACTUAL_TRADED": 5213,
+        "SUSPENDED": 11
+      },
+      "receipt": {
+        "bytes": 4768,
+        "path": "fixtures/r1/durable/2026-10-12/TRADING_STATUS/receipt.json",
+        "sha256": "fcfcaed91d490ef658e345e9fa165c060b5b008790f20291133358a3abb00032"
+      },
+      "row_count": 0,
+      "status": "FULL_PASS",
+      "unknown_reason_counts": {}
+    }
+  },
+  "contract": {
+    "bytes": 1657,
+    "path": "config/v4_data_accepted_head_v2.json",
+    "sha256": "caa337497830a38e9ab6aadbc1eab88f74b2da8054b940d8733046e4509fa6d2"
+  },
+  "contract_id": "V4_DATA_ACCEPTED_HEAD_V2",
+  "dev_baseline": {
+    "bytes": 602,
+    "path": "data/v4/V4_DEV_BASELINE_HEAD.json",
+    "sha256": "45695460b0147c6ada12e0ebd8e5070ac0a45eebea26603ff5a3daddc4dd5094"
+  },
+  "dev_baseline_sha256": "45695460b0147c6ada12e0ebd8e5070ac0a45eebea26603ff5a3daddc4dd5094",
+  "external_acceptance": "EXTERNALLY_ACCEPTED_REAL_CONTINUOUS_CHAIN",
+  "external_acceptance_record": {
+    "bytes": 1888,
+    "path": "fixtures/r1/batch_3/acceptance.json",
+    "sha256": "295993040f40d4f6e273c6c17125dd7e69085781d7b300782ebeca2c4a35408f"
+  },
+  "final_candidate": {
+    "bytes": 48460,
+    "path": "fixtures/r1/durable/2026-10-12/PROMOTION_CANDIDATE.json",
+    "sha256": "9eb28dff33b87a1f90de3b7b353a695f9006dfd290ed1372c3e9653534081c33"
+  },
+  "first_available_at_target_proven": false,
+  "identity": {
+    "bytes": 4008726,
+    "path": "data/v4/source_evidence/dm01_a01_r3/chain_inputs_r1/identity_projection_dc4b72168585944ca0925e806ebaff0a7785d180a85802e320c4973c1cc898f8.json",
+    "sha256": "3bb5124bb7ee5c7ca50ca7491ebc290ab5523065eb181b447757fe65279162ea"
+  },
+  "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+  "manifest_path": "fixtures/r1/batch_3/accepted_chain.json",
+  "manifest_sha256": "785aec46c69b724f612c5f154d38ce0799dca3c4d89a8fca8336c259ccf11ce8",
+  "parent_archive": {
+    "bytes": 14339,
+    "path": "reports/r20r1r2/accepted_data_snapshots/b3248053d56e4b25a64208999acea3613299376ea12a6ef25013166460eaa63c.json",
+    "sha256": "b3248053d56e4b25a64208999acea3613299376ea12a6ef25013166460eaa63c"
+  },
+  "parent_head_sha256": "b3248053d56e4b25a64208999acea3613299376ea12a6ef25013166460eaa63c",
+  "permissions": {
+    "focus": false,
+    "production": false,
+    "shadow": false
+  },
+  "promoted_at_utc": "2026-10-01T12:25:10.846023+00:00",
+  "source_authority_governance": {
+    "bytes": 1053,
+    "path": "data/v4/V4_SOURCE_AUTHORITY_GOVERNANCE_HEAD_R3.json",
+    "sha256": "75aa5376f556df03be14875c18e78f3441c85fac9d2ebcceee6907051e3f73d5"
+  },
+  "source_authority_registry": {
+    "bytes": 10364,
+    "path": "data/v4/V4_SOURCE_AUTHORITY_ACCEPTED_OWNER_REGISTRY_R3.json",
+    "sha256": "3bc3d013ceebeb7dcf01f95f9a446ff2f65f03a1b6c602144cb54f490b7b18ec"
+  },
+  "source_revision": "9be77f1ebec9e30eee17efbbaf1237b5875886c3d72991f54bb301b705312dec",
+  "stage_accepted_head_sha256": "529c532bd5553ace00fa4813aef07979cfce4e1f18fa5ea66f38fcddd8ed16cb",
+  "stage_head": {
+    "bytes": 8574,
+    "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+    "sha256": "529c532bd5553ace00fa4813aef07979cfce4e1f18fa5ea66f38fcddd8ed16cb"
+  },
+  "version": "2.0.0"
+}

@@ -1,0 +1,37 @@
+{
+  "contract_id": "GBBQ_PRICE_IMPACT_CLASSIFICATION_V1",
+  "version": "1.0.0",
+  "stage": "V4-02 / PACK-A-ADJUSTMENT-CLASSIFICATION",
+  "source": {
+    "metadata_snapshot": "data/input_staging/metadata/20260924/4835127dd77534be17d8aeba65d91ebf0ec5bbf6b5348bc1aff4612272acafdc/T0002/hq_cache",
+    "cutoff": "2026-09-24",
+    "semantic_reference": "references/upstream/injoyai-tdx/docs/gbbq_除权除息与复权算法.md",
+    "local_decoder": "src/tdx/gbbq_reader.py",
+    "category_1_engine": "src/adjustment/tdx_adjustment.py",
+    "semantic_authority": "LOCAL_TDX_REFERENCE_ONLY; independent acceptance remains required"
+  },
+  "dispositions": {
+    "1": {"source_semantic": "cash dividend / rights issue / share bonus or transfer (XRXD)", "price_adjustment_impact": "PRICE_AFFECTING", "equity_only_impact": false, "supported_by_engine": true, "formal_disposition": "PRICE_AFFECTING_SUPPORTED"},
+    "2": {"source_semantic": "bonus or rights shares listed", "price_adjustment_impact": "NO_DIRECT_PRICE_ADJUSTMENT_INPUT", "equity_only_impact": true, "supported_by_engine": false, "formal_disposition": "NON_PRICE_AFFECTING"},
+    "3": {"source_semantic": "non-tradable shares listed", "price_adjustment_impact": "NO_DIRECT_PRICE_ADJUSTMENT_INPUT", "equity_only_impact": true, "supported_by_engine": false, "formal_disposition": "NON_PRICE_AFFECTING"},
+    "4": {"source_semantic": "unresolved equity change", "price_adjustment_impact": "UNKNOWN", "equity_only_impact": false, "supported_by_engine": false, "formal_disposition": "UNKNOWN_PRICE_IMPACT"},
+    "5": {"source_semantic": "equity change snapshot", "price_adjustment_impact": "NO_DIRECT_PRICE_ADJUSTMENT_INPUT", "equity_only_impact": true, "supported_by_engine": false, "formal_disposition": "NON_PRICE_AFFECTING"},
+    "6": {"source_semantic": "private placement / new share issuance", "price_adjustment_impact": "UNSUPPORTED_POSSIBLE_DILUTION", "equity_only_impact": false, "supported_by_engine": false, "formal_disposition": "PRICE_AFFECTING_UNSUPPORTED"},
+    "7": {"source_semantic": "share repurchase", "price_adjustment_impact": "NO_DIRECT_PRICE_ADJUSTMENT_INPUT", "equity_only_impact": true, "supported_by_engine": false, "formal_disposition": "NON_PRICE_AFFECTING"},
+    "8": {"source_semantic": "private placement shares listed", "price_adjustment_impact": "NO_DIRECT_PRICE_ADJUSTMENT_INPUT", "equity_only_impact": true, "supported_by_engine": false, "formal_disposition": "NON_PRICE_AFFECTING"},
+    "9": {"source_semantic": "transferred rights shares listed", "price_adjustment_impact": "NO_DIRECT_PRICE_ADJUSTMENT_INPUT", "equity_only_impact": true, "supported_by_engine": false, "formal_disposition": "NON_PRICE_AFFECTING"},
+    "10": {"source_semantic": "convertible bond listed", "price_adjustment_impact": "NO_DIRECT_PRICE_ADJUSTMENT_INPUT", "equity_only_impact": true, "supported_by_engine": false, "formal_disposition": "NON_PRICE_AFFECTING"},
+    "11": {"source_semantic": "share consolidation or split", "price_adjustment_impact": "PRICE_AFFECTING", "equity_only_impact": false, "supported_by_engine": false, "formal_disposition": "PRICE_AFFECTING_UNSUPPORTED"},
+    "12": {"source_semantic": "non-tradable share consolidation", "price_adjustment_impact": "UNKNOWN", "equity_only_impact": false, "supported_by_engine": false, "formal_disposition": "UNKNOWN_PRICE_IMPACT"},
+    "13": {"source_semantic": "call warrant distribution", "price_adjustment_impact": "POSSIBLE", "equity_only_impact": false, "supported_by_engine": false, "formal_disposition": "PRICE_AFFECTING_UNSUPPORTED"},
+    "14": {"source_semantic": "put warrant distribution", "price_adjustment_impact": "POSSIBLE", "equity_only_impact": false, "supported_by_engine": false, "formal_disposition": "PRICE_AFFECTING_UNSUPPORTED"},
+    "15": {"source_semantic": "no verified semantic in local decoder/reference", "price_adjustment_impact": "UNKNOWN", "equity_only_impact": false, "supported_by_engine": false, "formal_disposition": "UNKNOWN_PRICE_IMPACT"}
+  },
+  "acceptance": {
+    "category_1_math_samples_reused": true,
+    "category_15_review_bounded_to_observed_91_records": true,
+    "unknown_or_unsupported_effect_localized_per_security": true,
+    "local_vendor_semantics_are_not_primary_authority": true,
+    "independent_adjustment_audit_required_for_ready_quality": true
+  }
+}

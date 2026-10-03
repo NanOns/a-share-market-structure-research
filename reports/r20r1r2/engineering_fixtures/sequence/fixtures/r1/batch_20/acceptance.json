@@ -1,0 +1,104 @@
+{
+  "accepted_scope": {
+    "AS_RECORDED": false,
+    "all_nine_each_day": true,
+    "anchor": "2026-10-21",
+    "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+    "sessions": [
+      "2026-10-22",
+      "2026-10-23",
+      "2026-10-26",
+      "2026-10-27",
+      "2026-10-28",
+      "2026-10-29",
+      "2026-10-30",
+      "2026-11-02",
+      "2026-11-03",
+      "2026-11-04"
+    ]
+  },
+  "accepted_through": "2026-11-04",
+  "audited_head": "ISOLATED_ENGINEERING_ONLY",
+  "candidate_bindings": [
+    {
+      "bytes": 48460,
+      "path": "fixtures/r1/durable/2026-10-22/PROMOTION_CANDIDATE.json",
+      "sha256": "a220730e1d4e80a3dbe312b029e52cf35c764dab610a41a4db65be587ede27c5"
+    },
+    {
+      "bytes": 48460,
+      "path": "fixtures/r1/durable/2026-10-23/PROMOTION_CANDIDATE.json",
+      "sha256": "569496f5fa6d0593a1ee3a9e2db6ff74459f3f112790596a815f0eecb677769e"
+    },
+    {
+      "bytes": 48460,
+      "path": "fixtures/r1/durable/2026-10-26/PROMOTION_CANDIDATE.json",
+      "sha256": "cd69a08054ca5e580cbda3c0342625b34f068c3decede21938aadf3e569f06c5"
+    },
+    {
+      "bytes": 48460,
+      "path": "fixtures/r1/durable/2026-10-27/PROMOTION_CANDIDATE.json",
+      "sha256": "bc0a58b9fa35411c5c06347754c74006e294a28cde598d34ce15174c1fd3e15d"
+    },
+    {
+      "bytes": 48460,
+      "path": "fixtures/r1/durable/2026-10-28/PROMOTION_CANDIDATE.json",
+      "sha256": "ac2c925a4ef31980f23f218507d69a5775f9935b03061cda4fdb74d56b008159"
+    },
+    {
+      "bytes": 48460,
+      "path": "fixtures/r1/durable/2026-10-29/PROMOTION_CANDIDATE.json",
+      "sha256": "d5cb6cbdb1e26cd50dc8269c44c7f5c641eac1d1b924a465785957f38598d67e"
+    },
+    {
+      "bytes": 48460,
+      "path": "fixtures/r1/durable/2026-10-30/PROMOTION_CANDIDATE.json",
+      "sha256": "e275854812fc0e1288d91edd1804fc445f47fb76bede57b9e331639c1a0f4ec6"
+    },
+    {
+      "bytes": 48460,
+      "path": "fixtures/r1/durable/2026-11-02/PROMOTION_CANDIDATE.json",
+      "sha256": "0e4a46a0724671b3d7c72ce61be3e1913ab6d27ec75adbd05d841355f96d9f02"
+    },
+    {
+      "bytes": 48460,
+      "path": "fixtures/r1/durable/2026-11-03/PROMOTION_CANDIDATE.json",
+      "sha256": "d75bbcbff263df18c9d24e13e11cb74b2e2fa19c576c8556aef6808c4c3f8d59"
+    },
+    {
+      "bytes": 48460,
+      "path": "fixtures/r1/durable/2026-11-04/PROMOTION_CANDIDATE.json",
+      "sha256": "c10c92da9c091b33062443b1e74d30133bd7bbfe10ed15edfdef7e38ec06d222"
+    }
+  ],
+  "contract_id": "DM01_A01_R3_EXTERNAL_ACCEPTANCE_RECORD_V1",
+  "evidence_bindings": [],
+  "external_acceptance": "EXTERNALLY_ACCEPTED_REAL_CONTINUOUS_CHAIN",
+  "external_authority": {
+    "audited_head": "ISOLATED_ENGINEERING_ONLY",
+    "authority_kind": "ISOLATED_ENGINEERING_REACHABILITY_ONLY",
+    "document": {
+      "bytes": 68,
+      "path": "fixtures/r1/batch_20/engineering_authority.md",
+      "sha256": "4212dc03b042c371689f8bf8b8dd782192389904ea36cba2527f3ba287896f80"
+    }
+  },
+  "fixture_scope": "ISOLATED_ENGINEERING_REACHABILITY_ONLY",
+  "next_stage": "DATA_HEAD_PROMOTION_ONLY",
+  "permissions": {
+    "focus": false,
+    "production": false,
+    "shadow": false
+  },
+  "recorded_at_utc": "2026-10-01T12:20:48.585703+00:00",
+  "source_authority_governance": {
+    "bytes": 1053,
+    "path": "data/v4/V4_SOURCE_AUTHORITY_GOVERNANCE_HEAD_R3.json",
+    "sha256": "75aa5376f556df03be14875c18e78f3441c85fac9d2ebcceee6907051e3f73d5"
+  },
+  "source_authority_registry": {
+    "bytes": 10364,
+    "path": "data/v4/V4_SOURCE_AUTHORITY_ACCEPTED_OWNER_REGISTRY_R3.json",
+    "sha256": "3bc3d013ceebeb7dcf01f95f9a446ff2f65f03a1b6c602144cb54f490b7b18ec"
+  }
+}

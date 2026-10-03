@@ -1,0 +1,66 @@
+{
+  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+  "REALTIME_ACCEPTED_COHORT_MATURITY": "NOT_GRANTED",
+  "T0_OBSERVATION_SCOPE": "RECONSTRUCTED_ASOF",
+  "accepted_future_endpoint_read_count": 1,
+  "due_date": "2026-10-08",
+  "enrollment_id": "89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064",
+  "horizon": 1,
+  "packet": {
+    "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+    "REALTIME_ACCEPTED_COHORT_MATURITY": "NOT_GRANTED",
+    "accepted_endpoints": [
+      {
+        "bytes": 1635,
+        "path": "fixtures/r2/durable/2026-10-08/ADJUSTED_DAILY/artifact.json",
+        "sha256": "1ff0cd2e5f90a4ebd3a806d6c69316c0989d1afd3e0199920f0b993318094cfc"
+      }
+    ],
+    "accepted_head": {
+      "bytes": 4178,
+      "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+      "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+    },
+    "data_head": {
+      "bytes": 14339,
+      "path": "reports/r20r1r2/accepted_data_snapshots/8388859dbd5e12dafb54a129967c2441f236e4abcc36850aba2be91c41bf3058.json",
+      "sha256": "8388859dbd5e12dafb54a129967c2441f236e4abcc36850aba2be91c41bf3058"
+    },
+    "endpoint_read_receipt": {
+      "bytes": 809,
+      "path": "fixtures/r2/read_n1.json",
+      "sha256": "6dcefee8167743cf77531dc626c5fcf8dc8607b8287b169b5fa1f061174e0fdb"
+    },
+    "enrollment": {
+      "bytes": 2736,
+      "path": "reports/v4_15_runtime_r20/e2e_r2/enrollment/89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064.json",
+      "sha256": "0417df91561388613e5df100dfe2f179898d4576ba8370cc2cf5a1c017f1954f"
+    },
+    "first_future_endpoint_open_at": "2026-10-08T16:30:00+00:00",
+    "freeze": {
+      "bytes": 4761,
+      "path": "reports/v4_15_runtime_r20/e2e_r2/t0_freezes/89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064.json",
+      "sha256": "8f676ea13fd2a2e6bda854dbfd8e1842f5dc2065488945b4d7306a6de52ca329"
+    },
+    "freeze_completed_at": "2026-10-03T10:25:33.728600+00:00",
+    "historical_prices_only": false,
+    "horizon": 1,
+    "outcome": {
+      "bytes": 2717,
+      "path": "fixtures/r2/corrected_outcome.json",
+      "sha256": "c9e9251b50fc51a95c81b32350b0129988c0d39e6894c58ef1dd1ae8aad68e00"
+    },
+    "owner_publication": {
+      "bytes": 3622812,
+      "path": "reports/v4_14_replay_r18/real/2026-09-30/r1/manifest.json",
+      "sha256": "f4c068afec2fdda754bce62a5f5773565c893be20554f871a25f11afee22e492"
+    },
+    "projection": {
+      "bytes": 5663,
+      "path": "reports/r20r1r2/projections/3eb35f030c34a38a052afc8e7b03da7edb940d8d8f9cee98c3cabad73bbefb86.json",
+      "sha256": "e04f9a367a7c0aa3883e26708c71110bf79c3d6151ec9b47c6faa3aac7bc68a9"
+    },
+    "raw_provider_fallback": false
+  },
+  "validation_environment": "ISOLATED_ENGINEERING_REACHABILITY_ONLY"
+}

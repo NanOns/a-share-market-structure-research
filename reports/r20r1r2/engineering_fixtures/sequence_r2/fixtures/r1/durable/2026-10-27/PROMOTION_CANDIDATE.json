@@ -1,0 +1,1012 @@
+{
+  "accepted_anchor": {
+    "bytes": 14411,
+    "path": "reports/r20r1r2/accepted_data_snapshots/dc5d581036b883b8161994ec726977aa3a220780cc3e55487c6495dd006589f8.json",
+    "sha256": "dc5d581036b883b8161994ec726977aa3a220780cc3e55487c6495dd006589f8"
+  },
+  "calendar_binding": {
+    "bytes": 14590,
+    "path": "fixtures/calendar.json",
+    "sha256": "838446155869ad2aa8534e35f8fcae1ab8e055f4c075d8b1126a96d0c837f258"
+  },
+  "components": {
+    "ADJUSTED_DAILY": {
+      "accepted_algorithm_contract": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+      "accepted_owner_stage": "V4-02",
+      "artifact_bytes": 1635,
+      "artifact_path": "fixtures/r1/durable/2026-10-27/ADJUSTED_DAILY/artifact.json",
+      "artifact_sha256": "ee0374e04d663bdd49f0c6f9805ff4e879069967dc179cb1578919787108d219",
+      "calendar_publication_id": "838446155869ad2aa8534e35f8fcae1ab8e055f4c075d8b1126a96d0c837f258",
+      "candidate_only": true,
+      "component_id": "ADJUSTED_DAILY",
+      "contract_id": "DM01_ADJUSTED_DAILY_INCREMENT_R3_3",
+      "fixture_scope": "ISOLATED_ENGINEERING_REACHABILITY_ONLY",
+      "identity_publication_id": "3bb5124bb7ee5c7ca50ca7491ebc290ab5523065eb181b447757fe65279162ea",
+      "input_publication_ids": [
+        "2a84c5388bafa64c229d060987d12d44cb97bdc9f61dad21b826ea94ea3e2b42",
+        "3bb5124bb7ee5c7ca50ca7491ebc290ab5523065eb181b447757fe65279162ea",
+        "838446155869ad2aa8534e35f8fcae1ab8e055f4c075d8b1126a96d0c837f258",
+        "bf37e3d80705778b64d97646e307b140d55bc3bcef597c13fe6f4c829d8c05ba",
+        "c6f47366ad3d14343683af5388a6fdd6efeaebb9df201f5832f025c847a40647",
+        "f8c6a60e052a3fd7f8c3a043dbc9c53311a7599e1b36bb6cc140058f56269ef1"
+      ],
+      "logical_digest": "6512b0c04b100916d676e7780e36a6ab99324cab3c5f5467f205500681cf4047",
+      "market_acceptance_claim": false,
+      "parent_component_bindings": {
+        "ADJUSTED_DAILY": {
+          "bytes": 1635,
+          "path": "fixtures/r1/durable/2026-10-26/ADJUSTED_DAILY/artifact.json",
+          "sha256": "ac718d4baeeeacad64fa32450ba635fb53db1d01ea7baad628815b4037d0c850"
+        },
+        "IDENTITY_UNIVERSE": {
+          "bytes": 104,
+          "path": "fixtures/r1/durable/2026-10-26/IDENTITY_UNIVERSE/artifact.json",
+          "sha256": "8e493379d61a1468e1a965baf39ed52cf8550be846183de867642782fbc3168f"
+        },
+        "ISST": {
+          "bytes": 91,
+          "path": "fixtures/r1/durable/2026-10-26/ISST/artifact.json",
+          "sha256": "9a272cacdca86ddaa28aea45753479ed9a18ad880724a5172d0b916b5b09396e"
+        },
+        "PERIOD_ADJUSTED": {
+          "bytes": 102,
+          "path": "fixtures/r1/durable/2026-10-26/PERIOD_ADJUSTED/artifact.json",
+          "sha256": "e19327276c071ed3ea27e22e380ca96defc0301eb1dba3afdc6e8ce28a5a08c2"
+        },
+        "PERIOD_RAW": {
+          "bytes": 97,
+          "path": "fixtures/r1/durable/2026-10-26/PERIOD_RAW/artifact.json",
+          "sha256": "b935c9bdb92c1b60982051cc9cbd096e83b3c88e616937690f8f6f14d1a1529e"
+        },
+        "PRICE_LIMIT": {
+          "bytes": 98,
+          "path": "fixtures/r1/durable/2026-10-26/PRICE_LIMIT/artifact.json",
+          "sha256": "743a6a182ee59d34479200c90e43250b7f15ba7354bcbefea7466bb6fa936ed9"
+        },
+        "RAW_DAILY": {
+          "bytes": 1204,
+          "path": "fixtures/r1/durable/2026-10-26/RAW_DAILY/artifact.json",
+          "sha256": "f56a5d96fb1ff84339899934c8c5f4679ce5f297da81f90e89d7044fff58b7d9"
+        },
+        "SPECIAL_PHASE": {
+          "bytes": 100,
+          "path": "fixtures/r1/durable/2026-10-26/SPECIAL_PHASE/artifact.json",
+          "sha256": "e25e6c5a255e03bc61580ed957e082ba5bf2cfcbbdf97c127059322b8a683318"
+        },
+        "TRADING_STATUS": {
+          "bytes": 101,
+          "path": "fixtures/r1/durable/2026-10-26/TRADING_STATUS/artifact.json",
+          "sha256": "4cb83304c5fa31214ff268898b249e665308468bc3bb0df8985ea3283bc7027d"
+        }
+      },
+      "parent_data_head_digest": "bf37e3d80705778b64d97646e307b140d55bc3bcef597c13fe6f4c829d8c05ba",
+      "postcheck_digest": "133e368428acb51ea8f50122263337880651dad84da97ef2e3b1da3a1804a5fb",
+      "quality_counts": {
+        "READY": 5213
+      },
+      "row_count": 1,
+      "runtime_bindings": [
+        {
+          "callables": [
+            "build_affine_factors",
+            "adjust_ohlc"
+          ],
+          "path": "src/adjustment/tdx_adjustment.py",
+          "sha256": "de8ce814dbdfc2fad7b16f619e1f1085a4dc539591d2bfe6dff876d805e8f6e0"
+        },
+        {
+          "callables": [
+            "read_gbbq"
+          ],
+          "path": "src/tdx/gbbq_reader.py",
+          "sha256": "8b2b4736bfcec6bed5ae62c58b777c8306792aefd82b362970886c354672d03b"
+        },
+        {
+          "byte_count": 8287,
+          "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+          "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+        },
+        {
+          "bytes": 34138,
+          "path": "src/workbench_analysis/dm01_incremental_component_builders_r3_3.py",
+          "sha256": "3db9b445aa011889fd5df1df03f4270424bd8ffcb12f59d99b8a577f3a4caf4a"
+        }
+      ],
+      "source_revision": "bef09fd18d8313a4238f35af1c4c188b53d5d5970f187ea842c18680935f16e8",
+      "status": "FULL_PASS",
+      "target_trade_date": "2026-10-27",
+      "trade_date": "2026-10-27",
+      "unknown_reason_counts": {},
+      "version": "3.2.0"
+    },
+    "IDENTITY_UNIVERSE": {
+      "accepted_algorithm_contract": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+      "accepted_owner_stage": "V4-02",
+      "artifact_bytes": 104,
+      "artifact_path": "fixtures/r1/durable/2026-10-27/IDENTITY_UNIVERSE/artifact.json",
+      "artifact_sha256": "1943fbe61ad74582ce0aad6d2cc3371ef1a162006a50c50d575ee2f81e84dde4",
+      "calendar_publication_id": "838446155869ad2aa8534e35f8fcae1ab8e055f4c075d8b1126a96d0c837f258",
+      "candidate_only": true,
+      "component_id": "IDENTITY_UNIVERSE",
+      "contract_id": "DM01_IDENTITY_UNIVERSE_INCREMENT_R3_3",
+      "fixture_scope": "ISOLATED_ENGINEERING_REACHABILITY_ONLY",
+      "identity_publication_id": "3bb5124bb7ee5c7ca50ca7491ebc290ab5523065eb181b447757fe65279162ea",
+      "input_publication_ids": [
+        "2a84c5388bafa64c229d060987d12d44cb97bdc9f61dad21b826ea94ea3e2b42",
+        "3bb5124bb7ee5c7ca50ca7491ebc290ab5523065eb181b447757fe65279162ea",
+        "838446155869ad2aa8534e35f8fcae1ab8e055f4c075d8b1126a96d0c837f258",
+        "bf37e3d80705778b64d97646e307b140d55bc3bcef597c13fe6f4c829d8c05ba",
+        "c6f47366ad3d14343683af5388a6fdd6efeaebb9df201f5832f025c847a40647",
+        "f8c6a60e052a3fd7f8c3a043dbc9c53311a7599e1b36bb6cc140058f56269ef1"
+      ],
+      "logical_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "market_acceptance_claim": false,
+      "parent_component_bindings": {
+        "ADJUSTED_DAILY": {
+          "bytes": 1635,
+          "path": "fixtures/r1/durable/2026-10-26/ADJUSTED_DAILY/artifact.json",
+          "sha256": "ac718d4baeeeacad64fa32450ba635fb53db1d01ea7baad628815b4037d0c850"
+        },
+        "IDENTITY_UNIVERSE": {
+          "bytes": 104,
+          "path": "fixtures/r1/durable/2026-10-26/IDENTITY_UNIVERSE/artifact.json",
+          "sha256": "8e493379d61a1468e1a965baf39ed52cf8550be846183de867642782fbc3168f"
+        },
+        "ISST": {
+          "bytes": 91,
+          "path": "fixtures/r1/durable/2026-10-26/ISST/artifact.json",
+          "sha256": "9a272cacdca86ddaa28aea45753479ed9a18ad880724a5172d0b916b5b09396e"
+        },
+        "PERIOD_ADJUSTED": {
+          "bytes": 102,
+          "path": "fixtures/r1/durable/2026-10-26/PERIOD_ADJUSTED/artifact.json",
+          "sha256": "e19327276c071ed3ea27e22e380ca96defc0301eb1dba3afdc6e8ce28a5a08c2"
+        },
+        "PERIOD_RAW": {
+          "bytes": 97,
+          "path": "fixtures/r1/durable/2026-10-26/PERIOD_RAW/artifact.json",
+          "sha256": "b935c9bdb92c1b60982051cc9cbd096e83b3c88e616937690f8f6f14d1a1529e"
+        },
+        "PRICE_LIMIT": {
+          "bytes": 98,
+          "path": "fixtures/r1/durable/2026-10-26/PRICE_LIMIT/artifact.json",
+          "sha256": "743a6a182ee59d34479200c90e43250b7f15ba7354bcbefea7466bb6fa936ed9"
+        },
+        "RAW_DAILY": {
+          "bytes": 1204,
+          "path": "fixtures/r1/durable/2026-10-26/RAW_DAILY/artifact.json",
+          "sha256": "f56a5d96fb1ff84339899934c8c5f4679ce5f297da81f90e89d7044fff58b7d9"
+        },
+        "SPECIAL_PHASE": {
+          "bytes": 100,
+          "path": "fixtures/r1/durable/2026-10-26/SPECIAL_PHASE/artifact.json",
+          "sha256": "e25e6c5a255e03bc61580ed957e082ba5bf2cfcbbdf97c127059322b8a683318"
+        },
+        "TRADING_STATUS": {
+          "bytes": 101,
+          "path": "fixtures/r1/durable/2026-10-26/TRADING_STATUS/artifact.json",
+          "sha256": "4cb83304c5fa31214ff268898b249e665308468bc3bb0df8985ea3283bc7027d"
+        }
+      },
+      "parent_data_head_digest": "bf37e3d80705778b64d97646e307b140d55bc3bcef597c13fe6f4c829d8c05ba",
+      "postcheck_digest": "133e368428acb51ea8f50122263337880651dad84da97ef2e3b1da3a1804a5fb",
+      "quality_counts": {
+        "READY": 5213
+      },
+      "row_count": 0,
+      "runtime_bindings": [
+        {
+          "callables": [
+            "build_affine_factors",
+            "adjust_ohlc"
+          ],
+          "path": "src/adjustment/tdx_adjustment.py",
+          "sha256": "de8ce814dbdfc2fad7b16f619e1f1085a4dc539591d2bfe6dff876d805e8f6e0"
+        },
+        {
+          "callables": [
+            "read_gbbq"
+          ],
+          "path": "src/tdx/gbbq_reader.py",
+          "sha256": "8b2b4736bfcec6bed5ae62c58b777c8306792aefd82b362970886c354672d03b"
+        },
+        {
+          "byte_count": 8287,
+          "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+          "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+        },
+        {
+          "bytes": 34138,
+          "path": "src/workbench_analysis/dm01_incremental_component_builders_r3_3.py",
+          "sha256": "3db9b445aa011889fd5df1df03f4270424bd8ffcb12f59d99b8a577f3a4caf4a"
+        }
+      ],
+      "source_revision": "bef09fd18d8313a4238f35af1c4c188b53d5d5970f187ea842c18680935f16e8",
+      "status": "FULL_PASS",
+      "target_trade_date": "2026-10-27",
+      "trade_date": "2026-10-27",
+      "unknown_reason_counts": {},
+      "version": "3.2.0"
+    },
+    "ISST": {
+      "accepted_algorithm_contract": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+      "accepted_owner_stage": "V4-02",
+      "artifact_bytes": 91,
+      "artifact_path": "fixtures/r1/durable/2026-10-27/ISST/artifact.json",
+      "artifact_sha256": "7ddaafdd3644e169a9992454e1111ca352bbcd55e2f575374d7c06c948620303",
+      "calendar_publication_id": "838446155869ad2aa8534e35f8fcae1ab8e055f4c075d8b1126a96d0c837f258",
+      "candidate_only": true,
+      "component_id": "ISST",
+      "contract_id": "DM01_ISST_INCREMENT_R3_3",
+      "fixture_scope": "ISOLATED_ENGINEERING_REACHABILITY_ONLY",
+      "identity_publication_id": "3bb5124bb7ee5c7ca50ca7491ebc290ab5523065eb181b447757fe65279162ea",
+      "input_publication_ids": [
+        "2a84c5388bafa64c229d060987d12d44cb97bdc9f61dad21b826ea94ea3e2b42",
+        "3bb5124bb7ee5c7ca50ca7491ebc290ab5523065eb181b447757fe65279162ea",
+        "838446155869ad2aa8534e35f8fcae1ab8e055f4c075d8b1126a96d0c837f258",
+        "bf37e3d80705778b64d97646e307b140d55bc3bcef597c13fe6f4c829d8c05ba",
+        "c6f47366ad3d14343683af5388a6fdd6efeaebb9df201f5832f025c847a40647",
+        "f8c6a60e052a3fd7f8c3a043dbc9c53311a7599e1b36bb6cc140058f56269ef1"
+      ],
+      "logical_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "market_acceptance_claim": false,
+      "parent_component_bindings": {
+        "ADJUSTED_DAILY": {
+          "bytes": 1635,
+          "path": "fixtures/r1/durable/2026-10-26/ADJUSTED_DAILY/artifact.json",
+          "sha256": "ac718d4baeeeacad64fa32450ba635fb53db1d01ea7baad628815b4037d0c850"
+        },
+        "IDENTITY_UNIVERSE": {
+          "bytes": 104,
+          "path": "fixtures/r1/durable/2026-10-26/IDENTITY_UNIVERSE/artifact.json",
+          "sha256": "8e493379d61a1468e1a965baf39ed52cf8550be846183de867642782fbc3168f"
+        },
+        "ISST": {
+          "bytes": 91,
+          "path": "fixtures/r1/durable/2026-10-26/ISST/artifact.json",
+          "sha256": "9a272cacdca86ddaa28aea45753479ed9a18ad880724a5172d0b916b5b09396e"
+        },
+        "PERIOD_ADJUSTED": {
+          "bytes": 102,
+          "path": "fixtures/r1/durable/2026-10-26/PERIOD_ADJUSTED/artifact.json",
+          "sha256": "e19327276c071ed3ea27e22e380ca96defc0301eb1dba3afdc6e8ce28a5a08c2"
+        },
+        "PERIOD_RAW": {
+          "bytes": 97,
+          "path": "fixtures/r1/durable/2026-10-26/PERIOD_RAW/artifact.json",
+          "sha256": "b935c9bdb92c1b60982051cc9cbd096e83b3c88e616937690f8f6f14d1a1529e"
+        },
+        "PRICE_LIMIT": {
+          "bytes": 98,
+          "path": "fixtures/r1/durable/2026-10-26/PRICE_LIMIT/artifact.json",
+          "sha256": "743a6a182ee59d34479200c90e43250b7f15ba7354bcbefea7466bb6fa936ed9"
+        },
+        "RAW_DAILY": {
+          "bytes": 1204,
+          "path": "fixtures/r1/durable/2026-10-26/RAW_DAILY/artifact.json",
+          "sha256": "f56a5d96fb1ff84339899934c8c5f4679ce5f297da81f90e89d7044fff58b7d9"
+        },
+        "SPECIAL_PHASE": {
+          "bytes": 100,
+          "path": "fixtures/r1/durable/2026-10-26/SPECIAL_PHASE/artifact.json",
+          "sha256": "e25e6c5a255e03bc61580ed957e082ba5bf2cfcbbdf97c127059322b8a683318"
+        },
+        "TRADING_STATUS": {
+          "bytes": 101,
+          "path": "fixtures/r1/durable/2026-10-26/TRADING_STATUS/artifact.json",
+          "sha256": "4cb83304c5fa31214ff268898b249e665308468bc3bb0df8985ea3283bc7027d"
+        }
+      },
+      "parent_data_head_digest": "bf37e3d80705778b64d97646e307b140d55bc3bcef597c13fe6f4c829d8c05ba",
+      "postcheck_digest": "133e368428acb51ea8f50122263337880651dad84da97ef2e3b1da3a1804a5fb",
+      "quality_counts": {
+        "READY": 5213
+      },
+      "row_count": 0,
+      "runtime_bindings": [
+        {
+          "callables": [
+            "build_affine_factors",
+            "adjust_ohlc"
+          ],
+          "path": "src/adjustment/tdx_adjustment.py",
+          "sha256": "de8ce814dbdfc2fad7b16f619e1f1085a4dc539591d2bfe6dff876d805e8f6e0"
+        },
+        {
+          "callables": [
+            "read_gbbq"
+          ],
+          "path": "src/tdx/gbbq_reader.py",
+          "sha256": "8b2b4736bfcec6bed5ae62c58b777c8306792aefd82b362970886c354672d03b"
+        },
+        {
+          "byte_count": 8287,
+          "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+          "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+        },
+        {
+          "bytes": 34138,
+          "path": "src/workbench_analysis/dm01_incremental_component_builders_r3_3.py",
+          "sha256": "3db9b445aa011889fd5df1df03f4270424bd8ffcb12f59d99b8a577f3a4caf4a"
+        }
+      ],
+      "source_revision": "bef09fd18d8313a4238f35af1c4c188b53d5d5970f187ea842c18680935f16e8",
+      "status": "FULL_PASS",
+      "target_trade_date": "2026-10-27",
+      "trade_date": "2026-10-27",
+      "unknown_reason_counts": {},
+      "version": "3.2.0"
+    },
+    "PERIOD_ADJUSTED": {
+      "accepted_algorithm_contract": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+      "accepted_owner_stage": "V4-02",
+      "artifact_bytes": 102,
+      "artifact_path": "fixtures/r1/durable/2026-10-27/PERIOD_ADJUSTED/artifact.json",
+      "artifact_sha256": "38c43c02d16a92da6fc4294bcd1c1f95b6b9ed9a2f2fdfe99d9bf5e87c5018a5",
+      "calendar_publication_id": "838446155869ad2aa8534e35f8fcae1ab8e055f4c075d8b1126a96d0c837f258",
+      "candidate_only": true,
+      "component_id": "PERIOD_ADJUSTED",
+      "contract_id": "DM01_PERIOD_ADJUSTED_INCREMENT_R3_3",
+      "fixture_scope": "ISOLATED_ENGINEERING_REACHABILITY_ONLY",
+      "identity_publication_id": "3bb5124bb7ee5c7ca50ca7491ebc290ab5523065eb181b447757fe65279162ea",
+      "input_publication_ids": [
+        "2a84c5388bafa64c229d060987d12d44cb97bdc9f61dad21b826ea94ea3e2b42",
+        "3bb5124bb7ee5c7ca50ca7491ebc290ab5523065eb181b447757fe65279162ea",
+        "838446155869ad2aa8534e35f8fcae1ab8e055f4c075d8b1126a96d0c837f258",
+        "bf37e3d80705778b64d97646e307b140d55bc3bcef597c13fe6f4c829d8c05ba",
+        "c6f47366ad3d14343683af5388a6fdd6efeaebb9df201f5832f025c847a40647",
+        "f8c6a60e052a3fd7f8c3a043dbc9c53311a7599e1b36bb6cc140058f56269ef1"
+      ],
+      "logical_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "market_acceptance_claim": false,
+      "parent_component_bindings": {
+        "ADJUSTED_DAILY": {
+          "bytes": 1635,
+          "path": "fixtures/r1/durable/2026-10-26/ADJUSTED_DAILY/artifact.json",
+          "sha256": "ac718d4baeeeacad64fa32450ba635fb53db1d01ea7baad628815b4037d0c850"
+        },
+        "IDENTITY_UNIVERSE": {
+          "bytes": 104,
+          "path": "fixtures/r1/durable/2026-10-26/IDENTITY_UNIVERSE/artifact.json",
+          "sha256": "8e493379d61a1468e1a965baf39ed52cf8550be846183de867642782fbc3168f"
+        },
+        "ISST": {
+          "bytes": 91,
+          "path": "fixtures/r1/durable/2026-10-26/ISST/artifact.json",
+          "sha256": "9a272cacdca86ddaa28aea45753479ed9a18ad880724a5172d0b916b5b09396e"
+        },
+        "PERIOD_ADJUSTED": {
+          "bytes": 102,
+          "path": "fixtures/r1/durable/2026-10-26/PERIOD_ADJUSTED/artifact.json",
+          "sha256": "e19327276c071ed3ea27e22e380ca96defc0301eb1dba3afdc6e8ce28a5a08c2"
+        },
+        "PERIOD_RAW": {
+          "bytes": 97,
+          "path": "fixtures/r1/durable/2026-10-26/PERIOD_RAW/artifact.json",
+          "sha256": "b935c9bdb92c1b60982051cc9cbd096e83b3c88e616937690f8f6f14d1a1529e"
+        },
+        "PRICE_LIMIT": {
+          "bytes": 98,
+          "path": "fixtures/r1/durable/2026-10-26/PRICE_LIMIT/artifact.json",
+          "sha256": "743a6a182ee59d34479200c90e43250b7f15ba7354bcbefea7466bb6fa936ed9"
+        },
+        "RAW_DAILY": {
+          "bytes": 1204,
+          "path": "fixtures/r1/durable/2026-10-26/RAW_DAILY/artifact.json",
+          "sha256": "f56a5d96fb1ff84339899934c8c5f4679ce5f297da81f90e89d7044fff58b7d9"
+        },
+        "SPECIAL_PHASE": {
+          "bytes": 100,
+          "path": "fixtures/r1/durable/2026-10-26/SPECIAL_PHASE/artifact.json",
+          "sha256": "e25e6c5a255e03bc61580ed957e082ba5bf2cfcbbdf97c127059322b8a683318"
+        },
+        "TRADING_STATUS": {
+          "bytes": 101,
+          "path": "fixtures/r1/durable/2026-10-26/TRADING_STATUS/artifact.json",
+          "sha256": "4cb83304c5fa31214ff268898b249e665308468bc3bb0df8985ea3283bc7027d"
+        }
+      },
+      "parent_data_head_digest": "bf37e3d80705778b64d97646e307b140d55bc3bcef597c13fe6f4c829d8c05ba",
+      "postcheck_digest": "133e368428acb51ea8f50122263337880651dad84da97ef2e3b1da3a1804a5fb",
+      "quality_counts": {
+        "READY": 5213
+      },
+      "row_count": 0,
+      "runtime_bindings": [
+        {
+          "callables": [
+            "build_affine_factors",
+            "adjust_ohlc"
+          ],
+          "path": "src/adjustment/tdx_adjustment.py",
+          "sha256": "de8ce814dbdfc2fad7b16f619e1f1085a4dc539591d2bfe6dff876d805e8f6e0"
+        },
+        {
+          "callables": [
+            "read_gbbq"
+          ],
+          "path": "src/tdx/gbbq_reader.py",
+          "sha256": "8b2b4736bfcec6bed5ae62c58b777c8306792aefd82b362970886c354672d03b"
+        },
+        {
+          "byte_count": 8287,
+          "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+          "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+        },
+        {
+          "bytes": 34138,
+          "path": "src/workbench_analysis/dm01_incremental_component_builders_r3_3.py",
+          "sha256": "3db9b445aa011889fd5df1df03f4270424bd8ffcb12f59d99b8a577f3a4caf4a"
+        }
+      ],
+      "source_revision": "bef09fd18d8313a4238f35af1c4c188b53d5d5970f187ea842c18680935f16e8",
+      "status": "FULL_PASS",
+      "target_trade_date": "2026-10-27",
+      "trade_date": "2026-10-27",
+      "unknown_reason_counts": {},
+      "version": "3.2.0"
+    },
+    "PERIOD_RAW": {
+      "accepted_algorithm_contract": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+      "accepted_owner_stage": "V4-02",
+      "artifact_bytes": 97,
+      "artifact_path": "fixtures/r1/durable/2026-10-27/PERIOD_RAW/artifact.json",
+      "artifact_sha256": "5dd2d0f36e950c8a1593e5e8a40c41334e638597be1fe16c18a15472edf77b4b",
+      "calendar_publication_id": "838446155869ad2aa8534e35f8fcae1ab8e055f4c075d8b1126a96d0c837f258",
+      "candidate_only": true,
+      "component_id": "PERIOD_RAW",
+      "contract_id": "DM01_PERIOD_RAW_INCREMENT_R3_3",
+      "fixture_scope": "ISOLATED_ENGINEERING_REACHABILITY_ONLY",
+      "identity_publication_id": "3bb5124bb7ee5c7ca50ca7491ebc290ab5523065eb181b447757fe65279162ea",
+      "input_publication_ids": [
+        "2a84c5388bafa64c229d060987d12d44cb97bdc9f61dad21b826ea94ea3e2b42",
+        "3bb5124bb7ee5c7ca50ca7491ebc290ab5523065eb181b447757fe65279162ea",
+        "838446155869ad2aa8534e35f8fcae1ab8e055f4c075d8b1126a96d0c837f258",
+        "bf37e3d80705778b64d97646e307b140d55bc3bcef597c13fe6f4c829d8c05ba",
+        "c6f47366ad3d14343683af5388a6fdd6efeaebb9df201f5832f025c847a40647",
+        "f8c6a60e052a3fd7f8c3a043dbc9c53311a7599e1b36bb6cc140058f56269ef1"
+      ],
+      "logical_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "market_acceptance_claim": false,
+      "parent_component_bindings": {
+        "ADJUSTED_DAILY": {
+          "bytes": 1635,
+          "path": "fixtures/r1/durable/2026-10-26/ADJUSTED_DAILY/artifact.json",
+          "sha256": "ac718d4baeeeacad64fa32450ba635fb53db1d01ea7baad628815b4037d0c850"
+        },
+        "IDENTITY_UNIVERSE": {
+          "bytes": 104,
+          "path": "fixtures/r1/durable/2026-10-26/IDENTITY_UNIVERSE/artifact.json",
+          "sha256": "8e493379d61a1468e1a965baf39ed52cf8550be846183de867642782fbc3168f"
+        },
+        "ISST": {
+          "bytes": 91,
+          "path": "fixtures/r1/durable/2026-10-26/ISST/artifact.json",
+          "sha256": "9a272cacdca86ddaa28aea45753479ed9a18ad880724a5172d0b916b5b09396e"
+        },
+        "PERIOD_ADJUSTED": {
+          "bytes": 102,
+          "path": "fixtures/r1/durable/2026-10-26/PERIOD_ADJUSTED/artifact.json",
+          "sha256": "e19327276c071ed3ea27e22e380ca96defc0301eb1dba3afdc6e8ce28a5a08c2"
+        },
+        "PERIOD_RAW": {
+          "bytes": 97,
+          "path": "fixtures/r1/durable/2026-10-26/PERIOD_RAW/artifact.json",
+          "sha256": "b935c9bdb92c1b60982051cc9cbd096e83b3c88e616937690f8f6f14d1a1529e"
+        },
+        "PRICE_LIMIT": {
+          "bytes": 98,
+          "path": "fixtures/r1/durable/2026-10-26/PRICE_LIMIT/artifact.json",
+          "sha256": "743a6a182ee59d34479200c90e43250b7f15ba7354bcbefea7466bb6fa936ed9"
+        },
+        "RAW_DAILY": {
+          "bytes": 1204,
+          "path": "fixtures/r1/durable/2026-10-26/RAW_DAILY/artifact.json",
+          "sha256": "f56a5d96fb1ff84339899934c8c5f4679ce5f297da81f90e89d7044fff58b7d9"
+        },
+        "SPECIAL_PHASE": {
+          "bytes": 100,
+          "path": "fixtures/r1/durable/2026-10-26/SPECIAL_PHASE/artifact.json",
+          "sha256": "e25e6c5a255e03bc61580ed957e082ba5bf2cfcbbdf97c127059322b8a683318"
+        },
+        "TRADING_STATUS": {
+          "bytes": 101,
+          "path": "fixtures/r1/durable/2026-10-26/TRADING_STATUS/artifact.json",
+          "sha256": "4cb83304c5fa31214ff268898b249e665308468bc3bb0df8985ea3283bc7027d"
+        }
+      },
+      "parent_data_head_digest": "bf37e3d80705778b64d97646e307b140d55bc3bcef597c13fe6f4c829d8c05ba",
+      "postcheck_digest": "133e368428acb51ea8f50122263337880651dad84da97ef2e3b1da3a1804a5fb",
+      "quality_counts": {
+        "READY": 5213
+      },
+      "row_count": 0,
+      "runtime_bindings": [
+        {
+          "callables": [
+            "build_affine_factors",
+            "adjust_ohlc"
+          ],
+          "path": "src/adjustment/tdx_adjustment.py",
+          "sha256": "de8ce814dbdfc2fad7b16f619e1f1085a4dc539591d2bfe6dff876d805e8f6e0"
+        },
+        {
+          "callables": [
+            "read_gbbq"
+          ],
+          "path": "src/tdx/gbbq_reader.py",
+          "sha256": "8b2b4736bfcec6bed5ae62c58b777c8306792aefd82b362970886c354672d03b"
+        },
+        {
+          "byte_count": 8287,
+          "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+          "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+        },
+        {
+          "bytes": 34138,
+          "path": "src/workbench_analysis/dm01_incremental_component_builders_r3_3.py",
+          "sha256": "3db9b445aa011889fd5df1df03f4270424bd8ffcb12f59d99b8a577f3a4caf4a"
+        }
+      ],
+      "source_revision": "bef09fd18d8313a4238f35af1c4c188b53d5d5970f187ea842c18680935f16e8",
+      "status": "FULL_PASS",
+      "target_trade_date": "2026-10-27",
+      "trade_date": "2026-10-27",
+      "unknown_reason_counts": {},
+      "version": "3.2.0"
+    },
+    "PRICE_LIMIT": {
+      "accepted_algorithm_contract": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+      "accepted_owner_stage": "V4-02",
+      "artifact_bytes": 98,
+      "artifact_path": "fixtures/r1/durable/2026-10-27/PRICE_LIMIT/artifact.json",
+      "artifact_sha256": "b6c41c95b292875ecb93456a83a8c52eca4afcf8abb862bcac33572484128388",
+      "calendar_publication_id": "838446155869ad2aa8534e35f8fcae1ab8e055f4c075d8b1126a96d0c837f258",
+      "candidate_only": true,
+      "component_id": "PRICE_LIMIT",
+      "contract_id": "DM01_PRICE_LIMIT_INCREMENT_R3_3",
+      "fixture_scope": "ISOLATED_ENGINEERING_REACHABILITY_ONLY",
+      "identity_publication_id": "3bb5124bb7ee5c7ca50ca7491ebc290ab5523065eb181b447757fe65279162ea",
+      "input_publication_ids": [
+        "2a84c5388bafa64c229d060987d12d44cb97bdc9f61dad21b826ea94ea3e2b42",
+        "3bb5124bb7ee5c7ca50ca7491ebc290ab5523065eb181b447757fe65279162ea",
+        "838446155869ad2aa8534e35f8fcae1ab8e055f4c075d8b1126a96d0c837f258",
+        "bf37e3d80705778b64d97646e307b140d55bc3bcef597c13fe6f4c829d8c05ba",
+        "c6f47366ad3d14343683af5388a6fdd6efeaebb9df201f5832f025c847a40647",
+        "f8c6a60e052a3fd7f8c3a043dbc9c53311a7599e1b36bb6cc140058f56269ef1"
+      ],
+      "logical_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "market_acceptance_claim": false,
+      "parent_component_bindings": {
+        "ADJUSTED_DAILY": {
+          "bytes": 1635,
+          "path": "fixtures/r1/durable/2026-10-26/ADJUSTED_DAILY/artifact.json",
+          "sha256": "ac718d4baeeeacad64fa32450ba635fb53db1d01ea7baad628815b4037d0c850"
+        },
+        "IDENTITY_UNIVERSE": {
+          "bytes": 104,
+          "path": "fixtures/r1/durable/2026-10-26/IDENTITY_UNIVERSE/artifact.json",
+          "sha256": "8e493379d61a1468e1a965baf39ed52cf8550be846183de867642782fbc3168f"
+        },
+        "ISST": {
+          "bytes": 91,
+          "path": "fixtures/r1/durable/2026-10-26/ISST/artifact.json",
+          "sha256": "9a272cacdca86ddaa28aea45753479ed9a18ad880724a5172d0b916b5b09396e"
+        },
+        "PERIOD_ADJUSTED": {
+          "bytes": 102,
+          "path": "fixtures/r1/durable/2026-10-26/PERIOD_ADJUSTED/artifact.json",
+          "sha256": "e19327276c071ed3ea27e22e380ca96defc0301eb1dba3afdc6e8ce28a5a08c2"
+        },
+        "PERIOD_RAW": {
+          "bytes": 97,
+          "path": "fixtures/r1/durable/2026-10-26/PERIOD_RAW/artifact.json",
+          "sha256": "b935c9bdb92c1b60982051cc9cbd096e83b3c88e616937690f8f6f14d1a1529e"
+        },
+        "PRICE_LIMIT": {
+          "bytes": 98,
+          "path": "fixtures/r1/durable/2026-10-26/PRICE_LIMIT/artifact.json",
+          "sha256": "743a6a182ee59d34479200c90e43250b7f15ba7354bcbefea7466bb6fa936ed9"
+        },
+        "RAW_DAILY": {
+          "bytes": 1204,
+          "path": "fixtures/r1/durable/2026-10-26/RAW_DAILY/artifact.json",
+          "sha256": "f56a5d96fb1ff84339899934c8c5f4679ce5f297da81f90e89d7044fff58b7d9"
+        },
+        "SPECIAL_PHASE": {
+          "bytes": 100,
+          "path": "fixtures/r1/durable/2026-10-26/SPECIAL_PHASE/artifact.json",
+          "sha256": "e25e6c5a255e03bc61580ed957e082ba5bf2cfcbbdf97c127059322b8a683318"
+        },
+        "TRADING_STATUS": {
+          "bytes": 101,
+          "path": "fixtures/r1/durable/2026-10-26/TRADING_STATUS/artifact.json",
+          "sha256": "4cb83304c5fa31214ff268898b249e665308468bc3bb0df8985ea3283bc7027d"
+        }
+      },
+      "parent_data_head_digest": "bf37e3d80705778b64d97646e307b140d55bc3bcef597c13fe6f4c829d8c05ba",
+      "postcheck_digest": "133e368428acb51ea8f50122263337880651dad84da97ef2e3b1da3a1804a5fb",
+      "quality_counts": {
+        "READY": 5213
+      },
+      "row_count": 0,
+      "runtime_bindings": [
+        {
+          "callables": [
+            "build_affine_factors",
+            "adjust_ohlc"
+          ],
+          "path": "src/adjustment/tdx_adjustment.py",
+          "sha256": "de8ce814dbdfc2fad7b16f619e1f1085a4dc539591d2bfe6dff876d805e8f6e0"
+        },
+        {
+          "callables": [
+            "read_gbbq"
+          ],
+          "path": "src/tdx/gbbq_reader.py",
+          "sha256": "8b2b4736bfcec6bed5ae62c58b777c8306792aefd82b362970886c354672d03b"
+        },
+        {
+          "byte_count": 8287,
+          "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+          "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+        },
+        {
+          "bytes": 34138,
+          "path": "src/workbench_analysis/dm01_incremental_component_builders_r3_3.py",
+          "sha256": "3db9b445aa011889fd5df1df03f4270424bd8ffcb12f59d99b8a577f3a4caf4a"
+        }
+      ],
+      "source_revision": "bef09fd18d8313a4238f35af1c4c188b53d5d5970f187ea842c18680935f16e8",
+      "status": "FULL_PASS",
+      "target_trade_date": "2026-10-27",
+      "trade_date": "2026-10-27",
+      "unknown_reason_counts": {},
+      "version": "3.2.0"
+    },
+    "RAW_DAILY": {
+      "accepted_algorithm_contract": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+      "accepted_owner_stage": "V4-02",
+      "artifact_bytes": 1204,
+      "artifact_path": "fixtures/r1/durable/2026-10-27/RAW_DAILY/artifact.json",
+      "artifact_sha256": "9b4a539e26a2183dbc87ee5d09633d199eb29ea666a090feecc348d8a8728a2c",
+      "calendar_publication_id": "838446155869ad2aa8534e35f8fcae1ab8e055f4c075d8b1126a96d0c837f258",
+      "candidate_only": true,
+      "component_id": "RAW_DAILY",
+      "contract_id": "DM01_RAW_DAILY_INCREMENT_R3_3",
+      "fixture_scope": "ISOLATED_ENGINEERING_REACHABILITY_ONLY",
+      "identity_publication_id": "3bb5124bb7ee5c7ca50ca7491ebc290ab5523065eb181b447757fe65279162ea",
+      "input_publication_ids": [
+        "2a84c5388bafa64c229d060987d12d44cb97bdc9f61dad21b826ea94ea3e2b42",
+        "3bb5124bb7ee5c7ca50ca7491ebc290ab5523065eb181b447757fe65279162ea",
+        "838446155869ad2aa8534e35f8fcae1ab8e055f4c075d8b1126a96d0c837f258",
+        "bf37e3d80705778b64d97646e307b140d55bc3bcef597c13fe6f4c829d8c05ba",
+        "c6f47366ad3d14343683af5388a6fdd6efeaebb9df201f5832f025c847a40647",
+        "f8c6a60e052a3fd7f8c3a043dbc9c53311a7599e1b36bb6cc140058f56269ef1"
+      ],
+      "logical_digest": "99d379f7b6a9a4e35a36428304e30cf766f153a1b5faf65bc08ad91b467238c5",
+      "market_acceptance_claim": false,
+      "parent_component_bindings": {
+        "ADJUSTED_DAILY": {
+          "bytes": 1635,
+          "path": "fixtures/r1/durable/2026-10-26/ADJUSTED_DAILY/artifact.json",
+          "sha256": "ac718d4baeeeacad64fa32450ba635fb53db1d01ea7baad628815b4037d0c850"
+        },
+        "IDENTITY_UNIVERSE": {
+          "bytes": 104,
+          "path": "fixtures/r1/durable/2026-10-26/IDENTITY_UNIVERSE/artifact.json",
+          "sha256": "8e493379d61a1468e1a965baf39ed52cf8550be846183de867642782fbc3168f"
+        },
+        "ISST": {
+          "bytes": 91,
+          "path": "fixtures/r1/durable/2026-10-26/ISST/artifact.json",
+          "sha256": "9a272cacdca86ddaa28aea45753479ed9a18ad880724a5172d0b916b5b09396e"
+        },
+        "PERIOD_ADJUSTED": {
+          "bytes": 102,
+          "path": "fixtures/r1/durable/2026-10-26/PERIOD_ADJUSTED/artifact.json",
+          "sha256": "e19327276c071ed3ea27e22e380ca96defc0301eb1dba3afdc6e8ce28a5a08c2"
+        },
+        "PERIOD_RAW": {
+          "bytes": 97,
+          "path": "fixtures/r1/durable/2026-10-26/PERIOD_RAW/artifact.json",
+          "sha256": "b935c9bdb92c1b60982051cc9cbd096e83b3c88e616937690f8f6f14d1a1529e"
+        },
+        "PRICE_LIMIT": {
+          "bytes": 98,
+          "path": "fixtures/r1/durable/2026-10-26/PRICE_LIMIT/artifact.json",
+          "sha256": "743a6a182ee59d34479200c90e43250b7f15ba7354bcbefea7466bb6fa936ed9"
+        },
+        "RAW_DAILY": {
+          "bytes": 1204,
+          "path": "fixtures/r1/durable/2026-10-26/RAW_DAILY/artifact.json",
+          "sha256": "f56a5d96fb1ff84339899934c8c5f4679ce5f297da81f90e89d7044fff58b7d9"
+        },
+        "SPECIAL_PHASE": {
+          "bytes": 100,
+          "path": "fixtures/r1/durable/2026-10-26/SPECIAL_PHASE/artifact.json",
+          "sha256": "e25e6c5a255e03bc61580ed957e082ba5bf2cfcbbdf97c127059322b8a683318"
+        },
+        "TRADING_STATUS": {
+          "bytes": 101,
+          "path": "fixtures/r1/durable/2026-10-26/TRADING_STATUS/artifact.json",
+          "sha256": "4cb83304c5fa31214ff268898b249e665308468bc3bb0df8985ea3283bc7027d"
+        }
+      },
+      "parent_data_head_digest": "bf37e3d80705778b64d97646e307b140d55bc3bcef597c13fe6f4c829d8c05ba",
+      "postcheck_digest": "133e368428acb51ea8f50122263337880651dad84da97ef2e3b1da3a1804a5fb",
+      "quality_counts": {
+        "READY": 5213
+      },
+      "row_count": 1,
+      "runtime_bindings": [
+        {
+          "callables": [
+            "build_affine_factors",
+            "adjust_ohlc"
+          ],
+          "path": "src/adjustment/tdx_adjustment.py",
+          "sha256": "de8ce814dbdfc2fad7b16f619e1f1085a4dc539591d2bfe6dff876d805e8f6e0"
+        },
+        {
+          "callables": [
+            "read_gbbq"
+          ],
+          "path": "src/tdx/gbbq_reader.py",
+          "sha256": "8b2b4736bfcec6bed5ae62c58b777c8306792aefd82b362970886c354672d03b"
+        },
+        {
+          "byte_count": 8287,
+          "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+          "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+        },
+        {
+          "bytes": 34138,
+          "path": "src/workbench_analysis/dm01_incremental_component_builders_r3_3.py",
+          "sha256": "3db9b445aa011889fd5df1df03f4270424bd8ffcb12f59d99b8a577f3a4caf4a"
+        }
+      ],
+      "source_revision": "bef09fd18d8313a4238f35af1c4c188b53d5d5970f187ea842c18680935f16e8",
+      "status": "FULL_PASS",
+      "target_trade_date": "2026-10-27",
+      "trade_date": "2026-10-27",
+      "unknown_reason_counts": {},
+      "version": "3.2.0"
+    },
+    "SPECIAL_PHASE": {
+      "accepted_algorithm_contract": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+      "accepted_owner_stage": "V4-02",
+      "artifact_bytes": 100,
+      "artifact_path": "fixtures/r1/durable/2026-10-27/SPECIAL_PHASE/artifact.json",
+      "artifact_sha256": "71dad5fb69781b2c1d54686ed3bf07b27aaf5be5da27bc573d04a9ec92c52f96",
+      "calendar_publication_id": "838446155869ad2aa8534e35f8fcae1ab8e055f4c075d8b1126a96d0c837f258",
+      "candidate_only": true,
+      "component_id": "SPECIAL_PHASE",
+      "contract_id": "DM01_SPECIAL_PHASE_INCREMENT_R3_3",
+      "fixture_scope": "ISOLATED_ENGINEERING_REACHABILITY_ONLY",
+      "identity_publication_id": "3bb5124bb7ee5c7ca50ca7491ebc290ab5523065eb181b447757fe65279162ea",
+      "input_publication_ids": [
+        "2a84c5388bafa64c229d060987d12d44cb97bdc9f61dad21b826ea94ea3e2b42",
+        "3bb5124bb7ee5c7ca50ca7491ebc290ab5523065eb181b447757fe65279162ea",
+        "838446155869ad2aa8534e35f8fcae1ab8e055f4c075d8b1126a96d0c837f258",
+        "bf37e3d80705778b64d97646e307b140d55bc3bcef597c13fe6f4c829d8c05ba",
+        "c6f47366ad3d14343683af5388a6fdd6efeaebb9df201f5832f025c847a40647",
+        "f8c6a60e052a3fd7f8c3a043dbc9c53311a7599e1b36bb6cc140058f56269ef1"
+      ],
+      "logical_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "market_acceptance_claim": false,
+      "parent_component_bindings": {
+        "ADJUSTED_DAILY": {
+          "bytes": 1635,
+          "path": "fixtures/r1/durable/2026-10-26/ADJUSTED_DAILY/artifact.json",
+          "sha256": "ac718d4baeeeacad64fa32450ba635fb53db1d01ea7baad628815b4037d0c850"
+        },
+        "IDENTITY_UNIVERSE": {
+          "bytes": 104,
+          "path": "fixtures/r1/durable/2026-10-26/IDENTITY_UNIVERSE/artifact.json",
+          "sha256": "8e493379d61a1468e1a965baf39ed52cf8550be846183de867642782fbc3168f"
+        },
+        "ISST": {
+          "bytes": 91,
+          "path": "fixtures/r1/durable/2026-10-26/ISST/artifact.json",
+          "sha256": "9a272cacdca86ddaa28aea45753479ed9a18ad880724a5172d0b916b5b09396e"
+        },
+        "PERIOD_ADJUSTED": {
+          "bytes": 102,
+          "path": "fixtures/r1/durable/2026-10-26/PERIOD_ADJUSTED/artifact.json",
+          "sha256": "e19327276c071ed3ea27e22e380ca96defc0301eb1dba3afdc6e8ce28a5a08c2"
+        },
+        "PERIOD_RAW": {
+          "bytes": 97,
+          "path": "fixtures/r1/durable/2026-10-26/PERIOD_RAW/artifact.json",
+          "sha256": "b935c9bdb92c1b60982051cc9cbd096e83b3c88e616937690f8f6f14d1a1529e"
+        },
+        "PRICE_LIMIT": {
+          "bytes": 98,
+          "path": "fixtures/r1/durable/2026-10-26/PRICE_LIMIT/artifact.json",
+          "sha256": "743a6a182ee59d34479200c90e43250b7f15ba7354bcbefea7466bb6fa936ed9"
+        },
+        "RAW_DAILY": {
+          "bytes": 1204,
+          "path": "fixtures/r1/durable/2026-10-26/RAW_DAILY/artifact.json",
+          "sha256": "f56a5d96fb1ff84339899934c8c5f4679ce5f297da81f90e89d7044fff58b7d9"
+        },
+        "SPECIAL_PHASE": {
+          "bytes": 100,
+          "path": "fixtures/r1/durable/2026-10-26/SPECIAL_PHASE/artifact.json",
+          "sha256": "e25e6c5a255e03bc61580ed957e082ba5bf2cfcbbdf97c127059322b8a683318"
+        },
+        "TRADING_STATUS": {
+          "bytes": 101,
+          "path": "fixtures/r1/durable/2026-10-26/TRADING_STATUS/artifact.json",
+          "sha256": "4cb83304c5fa31214ff268898b249e665308468bc3bb0df8985ea3283bc7027d"
+        }
+      },
+      "parent_data_head_digest": "bf37e3d80705778b64d97646e307b140d55bc3bcef597c13fe6f4c829d8c05ba",
+      "postcheck_digest": "133e368428acb51ea8f50122263337880651dad84da97ef2e3b1da3a1804a5fb",
+      "quality_counts": {
+        "READY": 5213
+      },
+      "row_count": 0,
+      "runtime_bindings": [
+        {
+          "callables": [
+            "build_affine_factors",
+            "adjust_ohlc"
+          ],
+          "path": "src/adjustment/tdx_adjustment.py",
+          "sha256": "de8ce814dbdfc2fad7b16f619e1f1085a4dc539591d2bfe6dff876d805e8f6e0"
+        },
+        {
+          "callables": [
+            "read_gbbq"
+          ],
+          "path": "src/tdx/gbbq_reader.py",
+          "sha256": "8b2b4736bfcec6bed5ae62c58b777c8306792aefd82b362970886c354672d03b"
+        },
+        {
+          "byte_count": 8287,
+          "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+          "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+        },
+        {
+          "bytes": 34138,
+          "path": "src/workbench_analysis/dm01_incremental_component_builders_r3_3.py",
+          "sha256": "3db9b445aa011889fd5df1df03f4270424bd8ffcb12f59d99b8a577f3a4caf4a"
+        }
+      ],
+      "source_revision": "bef09fd18d8313a4238f35af1c4c188b53d5d5970f187ea842c18680935f16e8",
+      "status": "FULL_PASS",
+      "target_trade_date": "2026-10-27",
+      "trade_date": "2026-10-27",
+      "unknown_reason_counts": {},
+      "version": "3.2.0"
+    },
+    "TRADING_STATUS": {
+      "accepted_algorithm_contract": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+      "accepted_owner_stage": "V4-02",
+      "artifact_bytes": 101,
+      "artifact_path": "fixtures/r1/durable/2026-10-27/TRADING_STATUS/artifact.json",
+      "artifact_sha256": "5421df37876035800c69fe3eeaa26c0f1ac25c43878139394aa86492afb570e9",
+      "calendar_publication_id": "838446155869ad2aa8534e35f8fcae1ab8e055f4c075d8b1126a96d0c837f258",
+      "candidate_only": true,
+      "component_id": "TRADING_STATUS",
+      "contract_id": "DM01_TRADING_STATUS_INCREMENT_R3_3",
+      "fixture_scope": "ISOLATED_ENGINEERING_REACHABILITY_ONLY",
+      "identity_publication_id": "3bb5124bb7ee5c7ca50ca7491ebc290ab5523065eb181b447757fe65279162ea",
+      "input_publication_ids": [
+        "2a84c5388bafa64c229d060987d12d44cb97bdc9f61dad21b826ea94ea3e2b42",
+        "3bb5124bb7ee5c7ca50ca7491ebc290ab5523065eb181b447757fe65279162ea",
+        "838446155869ad2aa8534e35f8fcae1ab8e055f4c075d8b1126a96d0c837f258",
+        "bf37e3d80705778b64d97646e307b140d55bc3bcef597c13fe6f4c829d8c05ba",
+        "c6f47366ad3d14343683af5388a6fdd6efeaebb9df201f5832f025c847a40647",
+        "f8c6a60e052a3fd7f8c3a043dbc9c53311a7599e1b36bb6cc140058f56269ef1"
+      ],
+      "logical_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "market_acceptance_claim": false,
+      "parent_component_bindings": {
+        "ADJUSTED_DAILY": {
+          "bytes": 1635,
+          "path": "fixtures/r1/durable/2026-10-26/ADJUSTED_DAILY/artifact.json",
+          "sha256": "ac718d4baeeeacad64fa32450ba635fb53db1d01ea7baad628815b4037d0c850"
+        },
+        "IDENTITY_UNIVERSE": {
+          "bytes": 104,
+          "path": "fixtures/r1/durable/2026-10-26/IDENTITY_UNIVERSE/artifact.json",
+          "sha256": "8e493379d61a1468e1a965baf39ed52cf8550be846183de867642782fbc3168f"
+        },
+        "ISST": {
+          "bytes": 91,
+          "path": "fixtures/r1/durable/2026-10-26/ISST/artifact.json",
+          "sha256": "9a272cacdca86ddaa28aea45753479ed9a18ad880724a5172d0b916b5b09396e"
+        },
+        "PERIOD_ADJUSTED": {
+          "bytes": 102,
+          "path": "fixtures/r1/durable/2026-10-26/PERIOD_ADJUSTED/artifact.json",
+          "sha256": "e19327276c071ed3ea27e22e380ca96defc0301eb1dba3afdc6e8ce28a5a08c2"
+        },
+        "PERIOD_RAW": {
+          "bytes": 97,
+          "path": "fixtures/r1/durable/2026-10-26/PERIOD_RAW/artifact.json",
+          "sha256": "b935c9bdb92c1b60982051cc9cbd096e83b3c88e616937690f8f6f14d1a1529e"
+        },
+        "PRICE_LIMIT": {
+          "bytes": 98,
+          "path": "fixtures/r1/durable/2026-10-26/PRICE_LIMIT/artifact.json",
+          "sha256": "743a6a182ee59d34479200c90e43250b7f15ba7354bcbefea7466bb6fa936ed9"
+        },
+        "RAW_DAILY": {
+          "bytes": 1204,
+          "path": "fixtures/r1/durable/2026-10-26/RAW_DAILY/artifact.json",
+          "sha256": "f56a5d96fb1ff84339899934c8c5f4679ce5f297da81f90e89d7044fff58b7d9"
+        },
+        "SPECIAL_PHASE": {
+          "bytes": 100,
+          "path": "fixtures/r1/durable/2026-10-26/SPECIAL_PHASE/artifact.json",
+          "sha256": "e25e6c5a255e03bc61580ed957e082ba5bf2cfcbbdf97c127059322b8a683318"
+        },
+        "TRADING_STATUS": {
+          "bytes": 101,
+          "path": "fixtures/r1/durable/2026-10-26/TRADING_STATUS/artifact.json",
+          "sha256": "4cb83304c5fa31214ff268898b249e665308468bc3bb0df8985ea3283bc7027d"
+        }
+      },
+      "parent_data_head_digest": "bf37e3d80705778b64d97646e307b140d55bc3bcef597c13fe6f4c829d8c05ba",
+      "postcheck_digest": "133e368428acb51ea8f50122263337880651dad84da97ef2e3b1da3a1804a5fb",
+      "quality_counts": {
+        "READY": 5213
+      },
+      "row_count": 0,
+      "runtime_bindings": [
+        {
+          "callables": [
+            "build_affine_factors",
+            "adjust_ohlc"
+          ],
+          "path": "src/adjustment/tdx_adjustment.py",
+          "sha256": "de8ce814dbdfc2fad7b16f619e1f1085a4dc539591d2bfe6dff876d805e8f6e0"
+        },
+        {
+          "callables": [
+            "read_gbbq"
+          ],
+          "path": "src/tdx/gbbq_reader.py",
+          "sha256": "8b2b4736bfcec6bed5ae62c58b777c8306792aefd82b362970886c354672d03b"
+        },
+        {
+          "byte_count": 8287,
+          "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+          "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+        },
+        {
+          "bytes": 34138,
+          "path": "src/workbench_analysis/dm01_incremental_component_builders_r3_3.py",
+          "sha256": "3db9b445aa011889fd5df1df03f4270424bd8ffcb12f59d99b8a577f3a4caf4a"
+        }
+      ],
+      "source_revision": "bef09fd18d8313a4238f35af1c4c188b53d5d5970f187ea842c18680935f16e8",
+      "status": "FULL_PASS",
+      "target_trade_date": "2026-10-27",
+      "trade_date": "2026-10-27",
+      "unknown_reason_counts": {},
+      "version": "3.2.0"
+    }
+  },
+  "contract_id": "DM01_ATOMIC_CONTINUOUS_CANDIDATE_R3_3",
+  "identity_binding": {
+    "bytes": 4008726,
+    "path": "data/v4/source_evidence/dm01_a01_r3/chain_inputs_r1/identity_projection_dc4b72168585944ca0925e806ebaff0a7785d180a85802e320c4973c1cc898f8.json",
+    "sha256": "3bb5124bb7ee5c7ca50ca7491ebc290ab5523065eb181b447757fe65279162ea"
+  },
+  "logical_digest": "57fda7992d42515fd4462c600a246d762760bbe9ace09503530c2fd0cc191b1e",
+  "parent_context_binding": {
+    "bytes": 2349,
+    "path": "fixtures/r1/durable/2026-10-27/parent_context.json",
+    "sha256": "774521fd8921e4ee983ae74818ca3972c884e03817185c7a71bbc21bda9d5607"
+  },
+  "parent_data_head_digest": "bf37e3d80705778b64d97646e307b140d55bc3bcef597c13fe6f4c829d8c05ba",
+  "source_freeze_digest": "bef09fd18d8313a4238f35af1c4c188b53d5d5970f187ea842c18680935f16e8",
+  "source_instance_digests": {},
+  "status": "READY_FOR_EXTERNAL_REAUDIT",
+  "target_trade_date": "2026-10-27"
+}

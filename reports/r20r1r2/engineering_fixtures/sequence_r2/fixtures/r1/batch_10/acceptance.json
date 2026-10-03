@@ -1,0 +1,74 @@
+{
+  "accepted_scope": {
+    "AS_RECORDED": false,
+    "all_nine_each_day": true,
+    "anchor": "2026-10-14",
+    "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+    "sessions": [
+      "2026-10-15",
+      "2026-10-16",
+      "2026-10-19",
+      "2026-10-20",
+      "2026-10-21"
+    ]
+  },
+  "accepted_through": "2026-10-21",
+  "audited_head": "ISOLATED_ENGINEERING_ONLY",
+  "candidate_bindings": [
+    {
+      "bytes": 45724,
+      "path": "fixtures/r1/durable/2026-10-15/PROMOTION_CANDIDATE.json",
+      "sha256": "7c6535a60aefd635b24de12583f0fc69f85fe691f2e3b2f5214b9bffc7704b3c"
+    },
+    {
+      "bytes": 45724,
+      "path": "fixtures/r1/durable/2026-10-16/PROMOTION_CANDIDATE.json",
+      "sha256": "6f3b44a8db7ceebb6e56ee54cdc8b7a30d37b5bd80e8bdca504b7c7d4c9ce3b9"
+    },
+    {
+      "bytes": 45724,
+      "path": "fixtures/r1/durable/2026-10-19/PROMOTION_CANDIDATE.json",
+      "sha256": "fe1f98227ca8f7c19bf40784101aa2dc9ab38adfd8c2161b17fc86e459c0a9f3"
+    },
+    {
+      "bytes": 45724,
+      "path": "fixtures/r1/durable/2026-10-20/PROMOTION_CANDIDATE.json",
+      "sha256": "27dadf28878ce16d1da0f878bc46ef4a2b1c8a13f6d38edbe0ad2efb1ed47a87"
+    },
+    {
+      "bytes": 45724,
+      "path": "fixtures/r1/durable/2026-10-21/PROMOTION_CANDIDATE.json",
+      "sha256": "3ce027aa869d4075a3e7896cfc98e711ca5a286b2521982f3d47a5cce569365f"
+    }
+  ],
+  "contract_id": "DM01_A01_R3_EXTERNAL_ACCEPTANCE_RECORD_V1",
+  "evidence_bindings": [],
+  "external_acceptance": "EXTERNALLY_ACCEPTED_REAL_CONTINUOUS_CHAIN",
+  "external_authority": {
+    "audited_head": "ISOLATED_ENGINEERING_ONLY",
+    "authority_kind": "ISOLATED_ENGINEERING_REACHABILITY_ONLY",
+    "document": {
+      "bytes": 68,
+      "path": "fixtures/r1/batch_10/engineering_authority.md",
+      "sha256": "4212dc03b042c371689f8bf8b8dd782192389904ea36cba2527f3ba287896f80"
+    }
+  },
+  "fixture_scope": "ISOLATED_ENGINEERING_REACHABILITY_ONLY",
+  "next_stage": "DATA_HEAD_PROMOTION_ONLY",
+  "permissions": {
+    "focus": false,
+    "production": false,
+    "shadow": false
+  },
+  "recorded_at_utc": "2026-10-01T12:20:48.585703+00:00",
+  "source_authority_governance": {
+    "bytes": 1053,
+    "path": "data/v4/V4_SOURCE_AUTHORITY_GOVERNANCE_HEAD_R3.json",
+    "sha256": "75aa5376f556df03be14875c18e78f3441c85fac9d2ebcceee6907051e3f73d5"
+  },
+  "source_authority_registry": {
+    "bytes": 10364,
+    "path": "data/v4/V4_SOURCE_AUTHORITY_ACCEPTED_OWNER_REGISTRY_R3.json",
+    "sha256": "3bc3d013ceebeb7dcf01f95f9a446ff2f65f03a1b6c602144cb54f490b7b18ec"
+  }
+}

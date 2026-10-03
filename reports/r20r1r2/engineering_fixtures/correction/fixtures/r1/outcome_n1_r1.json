@@ -1,0 +1,69 @@
+{
+  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+  "MAE_N": -0.027777777777777776,
+  "MFE_N": 0.023809523809523808,
+  "PATH_MDD_CLOSE_N": 0.0,
+  "R_N": 0.003968253968253968,
+  "due_date": "2026-10-08",
+  "enrollment_id": "89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064",
+  "evidence_class": "REAL_ACCEPTED_SOURCE_CAPABILITY_SCOPED",
+  "frozen_t0": {
+    "bytes": 4761,
+    "path": "reports/v4_15_runtime_r20/e2e_r2/t0_freezes/89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064.json",
+    "sha256": "8f676ea13fd2a2e6bda854dbfd8e1842f5dc2065488945b4d7306a6de52ca329"
+  },
+  "horizon": 1,
+  "outcome_status": "OBSERVED",
+  "price_path": [
+    {
+      "T0_basis_verified": true,
+      "T0_transform_coefficients": {
+        "alpha": 1.0,
+        "beta": 0.0
+      },
+      "close": "2.53",
+      "evaluation_basis_date": "2026-10-08",
+      "high": "2.58",
+      "low": "2.45",
+      "open": "2.53",
+      "security_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+      "source_adjusted_daily_artifact": {
+        "bytes": 1635,
+        "path": "fixtures/r1/durable/2026-10-08/ADJUSTED_DAILY/artifact.json",
+        "sha256": "12f95ecc532b40baa91fe5114945671642fc9b4a565fa2e52fef81da0708a9c5"
+      },
+      "source_authority": "TDX_OFFICIAL_PACKAGE",
+      "source_component_receipt": {
+        "bytes": 5519,
+        "path": "fixtures/r1/durable/2026-10-08/ADJUSTED_DAILY/receipt.json",
+        "sha256": "16358ceb0a4b609188ce93128ff68b793684e819dad8ed545520915388e262ac"
+      },
+      "source_data_head": {
+        "bytes": 14339,
+        "path": "reports/r20r1r2/accepted_data_snapshots/b3248053d56e4b25a64208999acea3613299376ea12a6ef25013166460eaa63c.json",
+        "sha256": "b3248053d56e4b25a64208999acea3613299376ea12a6ef25013166460eaa63c"
+      },
+      "source_row_digest": "689f9acc9cadc0e60630b721d6b8a8f76b3ed2b7644626fa8fbfc45c9ab50aa2",
+      "source_row_identity": {
+        "security_id": "SEC-01EE3D5C6B1AD93BD92B5EED1D6B4319",
+        "source_security_key": "SH.600675",
+        "trade_date": "2026-10-08"
+      },
+      "status": "ACTUAL",
+      "trade_date": "2026-10-08",
+      "transform_coefficients": {
+        "alpha": 1.0,
+        "beta": 0.0
+      },
+      "verified_adjustment": true,
+      "verified_identity": true
+    }
+  ],
+  "projection": {
+    "bytes": 5663,
+    "path": "reports/r20r1r2/projections/36bacc2d8903ab6d75094976ddcf7dd89f5baf0b49a175f0250657d6247533dc.json",
+    "sha256": "c4052114f8ead184f44177492f8fcb4084790044a4d7e8301a92c9fad04fa36a"
+  },
+  "revision_sequence": 1,
+  "supersedes": null
+}

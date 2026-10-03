@@ -1,0 +1,148 @@
+{
+  "FIRST_OBSERVED": {
+    "bytes": 1367,
+    "path": "reports/r20r1r2/debt_revisions/7c2e76455d704a2547b27c4aa5dc87ddd74f9a2f4f1830bc523cee8e20c8b52f.json",
+    "sha256": "9b781fb18dd2c0602d22c9d3829050445f764b51c00d363656fe06952c62dee7"
+  },
+  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+  "LATEST_VALIDATED": {
+    "bytes": 5480,
+    "path": "reports/r20r1r2/debt_revisions/057d725d12a453a756d44bc5fc169b25765202acca390a8a59ed6ccc47ca8e4a.json",
+    "sha256": "c729fb438f1ba616d0416c51280ac87bca462659b3f6d5414c6d9b4070178cb9"
+  },
+  "REALTIME_ACCEPTED_COHORT_MATURITY": "NOT_GRANTED",
+  "REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT_RUNTIME": "NOT_GRANTED_PENDING_MATURITY_EVIDENCE",
+  "T0_OBSERVATION_SCOPE": "RECONSTRUCTED_ASOF",
+  "accepted_data_authority": {
+    "bytes": 14411,
+    "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+    "sha256": "80e785e36026e4c3ba8fded0d1a332c7b48ec3982b0a1505709e4eee8899dac5"
+  },
+  "aggregate_state": "PARTIAL_MATURITY_EVIDENCE",
+  "blocks_matured_real_claims": true,
+  "blocks_unqualified_matured_real_claims": true,
+  "blocks_unrelated_development": false,
+  "capability_by_horizon": {
+    "1": "PASS_CAPABILITY_SCOPED",
+    "10": "NOT_GRANTED_PENDING_MATURITY_EVIDENCE",
+    "20": "NOT_GRANTED_PENDING_MATURITY_EVIDENCE",
+    "3": "NOT_GRANTED_PENDING_MATURITY_EVIDENCE",
+    "5": "NOT_GRANTED_PENDING_MATURITY_EVIDENCE"
+  },
+  "contract_id": "R20R1R2_HORIZON_SCOPED_DEBT_V3",
+  "matured_real_horizons": [
+    1
+  ],
+  "proofs_by_enrollment_horizon": {
+    "e032f4f24019c9ebf608d81603643dd6e1b5722668d7dd68eb0fa7ee1b9a5ebc": {
+      "FIRST_OBSERVED": {
+        "bytes": 2765,
+        "path": "reports/r20r1r2/proof_receipts/9145f7a459e9eb0b1b080e1927cad2b960bb191177cf59ffe2608f7eaeaf0af7.json",
+        "sha256": "ce0293826727b7b52730c0c62c37ee7fff06eedf4f055552716ffe49cbf51342"
+      },
+      "LATEST_VALIDATED": {
+        "bytes": 2765,
+        "path": "reports/r20r1r2/proof_receipts/9145f7a459e9eb0b1b080e1927cad2b960bb191177cf59ffe2608f7eaeaf0af7.json",
+        "sha256": "ce0293826727b7b52730c0c62c37ee7fff06eedf4f055552716ffe49cbf51342"
+      },
+      "due_date": "2026-10-08",
+      "enrollment_id": "89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064",
+      "horizon": 1,
+      "receipt_history": [
+        {
+          "bytes": 2765,
+          "path": "reports/r20r1r2/proof_receipts/9145f7a459e9eb0b1b080e1927cad2b960bb191177cf59ffe2608f7eaeaf0af7.json",
+          "sha256": "ce0293826727b7b52730c0c62c37ee7fff06eedf4f055552716ffe49cbf51342"
+        }
+      ]
+    }
+  },
+  "proved_horizons": [
+    1
+  ],
+  "required_horizons": [
+    1,
+    3,
+    5,
+    10,
+    20
+  ],
+  "stage_promotion_authorized": false,
+  "status": "PARTIAL_MATURITY_EVIDENCE",
+  "unproved_horizons": [
+    3,
+    5,
+    10,
+    20
+  ],
+  "unproved_horizons_remain_restricted": true,
+  "validation_environment": "ISOLATED_ENGINEERING_REACHABILITY_ONLY",
+  "verified_maturity_receipts": [
+    {
+      "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+      "REALTIME_ACCEPTED_COHORT_MATURITY": "NOT_GRANTED",
+      "T0_OBSERVATION_SCOPE": "RECONSTRUCTED_ASOF",
+      "accepted_future_endpoint_read_count": 1,
+      "due_date": "2026-10-08",
+      "enrollment_id": "89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064",
+      "horizon": 1,
+      "packet": {
+        "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+        "REALTIME_ACCEPTED_COHORT_MATURITY": "NOT_GRANTED",
+        "accepted_endpoints": [
+          {
+            "bytes": 1635,
+            "path": "fixtures/r1/durable/2026-10-08/ADJUSTED_DAILY/artifact.json",
+            "sha256": "12f95ecc532b40baa91fe5114945671642fc9b4a565fa2e52fef81da0708a9c5"
+          }
+        ],
+        "accepted_head": {
+          "bytes": 4178,
+          "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+          "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+        },
+        "data_head": {
+          "bytes": 14339,
+          "path": "reports/r20r1r2/accepted_data_snapshots/b3248053d56e4b25a64208999acea3613299376ea12a6ef25013166460eaa63c.json",
+          "sha256": "b3248053d56e4b25a64208999acea3613299376ea12a6ef25013166460eaa63c"
+        },
+        "endpoint_read_receipt": {
+          "bytes": 809,
+          "path": "fixtures/r1/read_n1.json",
+          "sha256": "8aa4398349dc7167275968f4a4ae6f6643cba06e7f7e7c9e3a9dcd97c061bef0"
+        },
+        "enrollment": {
+          "bytes": 2736,
+          "path": "reports/v4_15_runtime_r20/e2e_r2/enrollment/89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064.json",
+          "sha256": "0417df91561388613e5df100dfe2f179898d4576ba8370cc2cf5a1c017f1954f"
+        },
+        "first_future_endpoint_open_at": "2026-10-08T16:30:00+00:00",
+        "freeze": {
+          "bytes": 4761,
+          "path": "reports/v4_15_runtime_r20/e2e_r2/t0_freezes/89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064.json",
+          "sha256": "8f676ea13fd2a2e6bda854dbfd8e1842f5dc2065488945b4d7306a6de52ca329"
+        },
+        "freeze_completed_at": "2026-10-03T10:25:33.728600+00:00",
+        "historical_prices_only": false,
+        "horizon": 1,
+        "outcome": {
+          "bytes": 2570,
+          "path": "fixtures/r1/outcome_n1_r1.json",
+          "sha256": "e8af6d67f506fd2fb80bb7a23b569a98c61dd1105916f3dad8f1addb6ce18625"
+        },
+        "owner_publication": {
+          "bytes": 3622812,
+          "path": "reports/v4_14_replay_r18/real/2026-09-30/r1/manifest.json",
+          "sha256": "f4c068afec2fdda754bce62a5f5773565c893be20554f871a25f11afee22e492"
+        },
+        "projection": {
+          "bytes": 5663,
+          "path": "reports/r20r1r2/projections/36bacc2d8903ab6d75094976ddcf7dd89f5baf0b49a175f0250657d6247533dc.json",
+          "sha256": "c4052114f8ead184f44177492f8fcb4084790044a4d7e8301a92c9fad04fa36a"
+        },
+        "raw_provider_fallback": false
+      },
+      "validation_environment": "ISOLATED_ENGINEERING_REACHABILITY_ONLY"
+    }
+  ]
+}

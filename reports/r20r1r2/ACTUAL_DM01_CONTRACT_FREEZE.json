@@ -1,0 +1,179 @@
+{
+  "batch_semantics": "HEAD_PARENT_ARCHIVE_ANCHOR_PLUS_ACCEPTED_CANDIDATE_CHAIN;_NO_HEAD_PER_SESSION_REQUIREMENT",
+  "bindings": {
+    "DataHead": {
+      "bytes": 16890,
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+    },
+    "DataHead_contract": {
+      "bytes": 1657,
+      "path": "config/v4_data_accepted_head_v2.json",
+      "sha256": "caa337497830a38e9ab6aadbc1eab88f74b2da8054b940d8733046e4509fa6d2"
+    },
+    "GBBQ_decoder": {
+      "bytes": 12869,
+      "path": "src/tdx/gbbq_reader.py",
+      "sha256": "8b2b4736bfcec6bed5ae62c58b777c8306792aefd82b362970886c354672d03b"
+    },
+    "accepted_chain": {
+      "bytes": 182128,
+      "path": "data/v4/DM01_A01_R3_ACCEPTED_CHAIN_20260924_20260930_R1.json",
+      "sha256": "4d66105d7a5e759d8273a00a64d2ea80e1851090eeedde0c64c9c0d455d7e881"
+    },
+    "affine_semantics": {
+      "bytes": 5366,
+      "path": "src/adjustment/tdx_adjustment.py",
+      "sha256": "de8ce814dbdfc2fad7b16f619e1f1085a4dc539591d2bfe6dff876d805e8f6e0"
+    },
+    "component_receipt": {
+      "bytes": 4947,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/ADJUSTED_DAILY/receipt.json",
+      "sha256": "44adb831a810599ab6f3813e2c5902957e20c9ef6b1ae5b2ca8443d7dfe42cda"
+    },
+    "native_ADJUSTED_DAILY": {
+      "bytes": 6218836,
+      "path": "data/v4/dm01_candidate_staging_r3/durable_r3/27af3624d3a7ec9deb7b3862ea2328918330225fe6ea15f2b5af6d4269649e84/ADJUSTED_DAILY/artifact.json",
+      "sha256": "a28b3a912e44a8cc6e3e7e43f37038b64e1f7b62024ec4887b5320ffd33d2e17"
+    },
+    "native_producer": {
+      "bytes": 34138,
+      "path": "src/workbench_analysis/dm01_incremental_component_builders_r3_3.py",
+      "sha256": "3db9b445aa011889fd5df1df03f4270424bd8ffcb12f59d99b8a577f3a4caf4a"
+    }
+  },
+  "chain_fields": [
+    "accepted_through",
+    "anchor",
+    "builder_contract",
+    "contract_id",
+    "external_acceptance_record",
+    "external_authority",
+    "focus",
+    "historical_binding_resolution",
+    "nodes",
+    "production",
+    "shadow",
+    "source_authority_governance",
+    "source_authority_governance_config",
+    "source_authority_registry",
+    "source_context",
+    "version"
+  ],
+  "component_names": [
+    "ADJUSTED_DAILY",
+    "IDENTITY_UNIVERSE",
+    "ISST",
+    "PERIOD_ADJUSTED",
+    "PERIOD_RAW",
+    "PRICE_LIMIT",
+    "RAW_DAILY",
+    "SPECIAL_PHASE",
+    "TRADING_STATUS"
+  ],
+  "contract_id": "R20R1R2_ACTUAL_DM01_SHAPE_FREEZE_V1",
+  "head_fields": [
+    "AS_RECORDED",
+    "accepted_chain",
+    "accepted_trade_date",
+    "audit_registry",
+    "calendar",
+    "canonical_data_revision",
+    "component_artifacts",
+    "component_permissions",
+    "contract",
+    "contract_id",
+    "dev_baseline",
+    "dev_baseline_sha256",
+    "external_acceptance",
+    "external_acceptance_record",
+    "final_candidate",
+    "first_available_at_target_proven",
+    "identity",
+    "knowledge_lineage",
+    "manifest_path",
+    "manifest_sha256",
+    "parent_archive",
+    "parent_head_sha256",
+    "permissions",
+    "promoted_at_utc",
+    "source_authority_governance",
+    "source_authority_registry",
+    "source_revision",
+    "stage_accepted_head_sha256",
+    "stage_head",
+    "version"
+  ],
+  "native_artifact_fields": [
+    "contract_id",
+    "raw_daily_artifact_sha256",
+    "rows",
+    "trade_date"
+  ],
+  "native_row_fields": [
+    "AS_RECORDED",
+    "adjustment_readiness",
+    "adjustment_source_revision",
+    "amount",
+    "amount_unit",
+    "bao_stock_ohlc_substitution_permitted",
+    "board_scope",
+    "close",
+    "first_available_at_target_proven",
+    "high",
+    "identity_quality",
+    "identity_source_revision",
+    "knowledge_lineage",
+    "low",
+    "membership_basis",
+    "open",
+    "price_basis",
+    "qfq_add",
+    "qfq_mul",
+    "raw_daily_digest",
+    "record_quality",
+    "security_id",
+    "source_authority",
+    "source_digest",
+    "source_security_key",
+    "source_snapshot_id",
+    "trade_date",
+    "volume",
+    "volume_unit"
+  ],
+  "node_fields": [
+    "candidate",
+    "components",
+    "parent",
+    "source_instances",
+    "trade_date"
+  ],
+  "receipt_fields": [
+    "accepted_algorithm_contract",
+    "accepted_owner_stage",
+    "artifact_bytes",
+    "artifact_path",
+    "artifact_sha256",
+    "calendar_publication_id",
+    "candidate_only",
+    "component_id",
+    "contract_id",
+    "fixture_scope",
+    "identity_publication_id",
+    "input_publication_ids",
+    "logical_digest",
+    "market_acceptance_claim",
+    "parent_component_bindings",
+    "parent_data_head_digest",
+    "postcheck_digest",
+    "quality_counts",
+    "row_count",
+    "runtime_bindings",
+    "source_revision",
+    "status",
+    "target_trade_date",
+    "trade_date",
+    "unknown_reason_counts",
+    "version"
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "accepted_scope": {
+    "AS_RECORDED": false,
+    "all_nine_each_day": true,
+    "anchor": "2026-09-30",
+    "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+    "sessions": [
+      "2026-10-08"
+    ]
+  },
+  "accepted_through": "2026-10-08",
+  "audited_head": "ISOLATED_ENGINEERING_ONLY",
+  "candidate_bindings": [
+    {
+      "bytes": 55142,
+      "path": "fixtures/r1/durable/2026-10-08/PROMOTION_CANDIDATE.json",
+      "sha256": "f1013c165d9ba31868c888ce73077404a3bea8de0d94ed32f1efd0649caace20"
+    }
+  ],
+  "contract_id": "DM01_A01_R3_EXTERNAL_ACCEPTANCE_RECORD_V1",
+  "evidence_bindings": [],
+  "external_acceptance": "EXTERNALLY_ACCEPTED_REAL_CONTINUOUS_CHAIN",
+  "external_authority": {
+    "audited_head": "ISOLATED_ENGINEERING_ONLY",
+    "authority_kind": "ISOLATED_ENGINEERING_REACHABILITY_ONLY",
+    "document": {
+      "bytes": 68,
+      "path": "fixtures/r1/batch_1/engineering_authority.md",
+      "sha256": "4212dc03b042c371689f8bf8b8dd782192389904ea36cba2527f3ba287896f80"
+    }
+  },
+  "fixture_scope": "ISOLATED_ENGINEERING_REACHABILITY_ONLY",
+  "next_stage": "DATA_HEAD_PROMOTION_ONLY",
+  "permissions": {
+    "focus": false,
+    "production": false,
+    "shadow": false
+  },
+  "recorded_at_utc": "2026-10-01T12:20:48.585703+00:00",
+  "source_authority_governance": {
+    "bytes": 1053,
+    "path": "data/v4/V4_SOURCE_AUTHORITY_GOVERNANCE_HEAD_R3.json",
+    "sha256": "75aa5376f556df03be14875c18e78f3441c85fac9d2ebcceee6907051e3f73d5"
+  },
+  "source_authority_registry": {
+    "bytes": 10364,
+    "path": "data/v4/V4_SOURCE_AUTHORITY_ACCEPTED_OWNER_REGISTRY_R3.json",
+    "sha256": "3bc3d013ceebeb7dcf01f95f9a446ff2f65f03a1b6c602144cb54f490b7b18ec"
+  }
+}

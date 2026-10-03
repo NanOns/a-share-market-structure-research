@@ -1,0 +1,53 @@
+{
+  "current_real_capability_upgrade": false,
+  "evidence_class": "ISOLATED_ENGINEERING_REACHABILITY_ONLY",
+  "transitions": [
+    {
+      "fixture_directory": "reports/r20r1r1/engineering_fixtures/sequence",
+      "proved_horizons": [],
+      "readback": {
+        "bytes": 1854,
+        "path": "reports/r20r1r1/engineering_fixtures/snapshots/open.json",
+        "sha256": "9ea08fdc7944211ebdffe9fb1c28abb63d585380879bfc827c8502409929e8bd"
+      }
+    },
+    {
+      "fixture_directory": "reports/r20r1r1/engineering_fixtures/sequence",
+      "proved_horizons": [
+        1
+      ],
+      "readback": {
+        "bytes": 5678,
+        "path": "reports/r20r1r1/engineering_fixtures/snapshots/t1.json",
+        "sha256": "f9eb11c5b10520dfa935e4728af60846ba4bd15d84bdf31a507d2283e0107570"
+      }
+    },
+    {
+      "fixture_directory": "reports/r20r1r1/engineering_fixtures/sequence",
+      "proved_horizons": [
+        1,
+        3
+      ],
+      "readback": {
+        "bytes": 9855,
+        "path": "reports/r20r1r1/engineering_fixtures/snapshots/t3.json",
+        "sha256": "8487d5727268aec30d8568b0a1a18ae4ad360fd146c05cd37e59b5270c587da1"
+      }
+    },
+    {
+      "fixture_directory": "reports/r20r1r1/engineering_fixtures/sequence",
+      "proved_horizons": [
+        1,
+        3,
+        5,
+        10,
+        20
+      ],
+      "readback": {
+        "bytes": 27668,
+        "path": "reports/r20r1r1/engineering_fixtures/snapshots/full.json",
+        "sha256": "b527509bc7cc5fd93e3fc60eaa5afd00213dafca3363b1ebc19d194f7767b56c"
+      }
+    }
+  ]
+}

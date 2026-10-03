@@ -1,0 +1,106 @@
+{
+  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+  "REALTIME_ACCEPTED_COHORT_MATURITY": "NOT_GRANTED",
+  "T0_OBSERVATION_SCOPE": "RECONSTRUCTED_ASOF",
+  "accepted_future_endpoint_read_count": 10,
+  "due_date": "2026-10-21",
+  "enrollment_id": "89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064",
+  "horizon": 10,
+  "packet": {
+    "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+    "REALTIME_ACCEPTED_COHORT_MATURITY": "NOT_GRANTED",
+    "accepted_endpoints": [
+      {
+        "bytes": 689,
+        "path": "fixtures/endpoints/n10_2026-10-08.json",
+        "sha256": "9cd5587b2c7636a5c33d76a72bfe686b871b906dafe544c8e081e2c8365a730f"
+      },
+      {
+        "bytes": 689,
+        "path": "fixtures/endpoints/n10_2026-10-09.json",
+        "sha256": "c349d6fd94387a93ed1795afc759574f25607f2558f38dcf45ab9b4e0bf87b95"
+      },
+      {
+        "bytes": 689,
+        "path": "fixtures/endpoints/n10_2026-10-12.json",
+        "sha256": "d60a66f8dd67acf5514f7f0dd5dfde7dcc901e78e9d09e5a80873683611c5df6"
+      },
+      {
+        "bytes": 689,
+        "path": "fixtures/endpoints/n10_2026-10-13.json",
+        "sha256": "0c66064d8488418e8718f4934f4f10bbe5d1bce88f383b7b9f71cff555bde124"
+      },
+      {
+        "bytes": 689,
+        "path": "fixtures/endpoints/n10_2026-10-14.json",
+        "sha256": "b8a70afafc724f147991cbef8c5a6fef738434f0aa6fead01a33fcbbd49e6b15"
+      },
+      {
+        "bytes": 689,
+        "path": "fixtures/endpoints/n10_2026-10-15.json",
+        "sha256": "62c43a1031a944f5180e0605bd2be0b5a5ba3a5aeb4fc4dce80eec44a0ab43d3"
+      },
+      {
+        "bytes": 689,
+        "path": "fixtures/endpoints/n10_2026-10-16.json",
+        "sha256": "4cfa1c4b2cd368e529610664e897a5919b113cb686b578323863a3027b8b9052"
+      },
+      {
+        "bytes": 689,
+        "path": "fixtures/endpoints/n10_2026-10-19.json",
+        "sha256": "1ad4370f55e4df7442c53a5f5e103a95eed54c9eb395cb653fc232fd54a46087"
+      },
+      {
+        "bytes": 689,
+        "path": "fixtures/endpoints/n10_2026-10-20.json",
+        "sha256": "2793ec0b70e8217ddea80f0e31d2254a16ba9b41eac11c018f8869b56bf21724"
+      },
+      {
+        "bytes": 689,
+        "path": "fixtures/endpoints/n10_2026-10-21.json",
+        "sha256": "fdba9a2436b5a26246bef882af53141485d7cf547133ed68c7386a7221c8d777"
+      }
+    ],
+    "accepted_head": {
+      "bytes": 4178,
+      "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+      "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+    },
+    "data_head": {
+      "bytes": 4017,
+      "path": "reports/r20r1r1/accepted_data_snapshots/fdb89d1f225f058ad7634c4cc3499001f6fde9e8e1b66eb459f00f04a142f885.json",
+      "sha256": "fdb89d1f225f058ad7634c4cc3499001f6fde9e8e1b66eb459f00f04a142f885"
+    },
+    "endpoint_read_receipt": {
+      "bytes": 2099,
+      "path": "fixtures/read_receipt_n10.json",
+      "sha256": "cee0ca3086d7ddaf2ab33c7559b7122bb1d003f7c052b232d702e5d114e2d362"
+    },
+    "enrollment": {
+      "bytes": 2736,
+      "path": "reports/v4_15_runtime_r20/e2e_r2/enrollment/89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064.json",
+      "sha256": "0417df91561388613e5df100dfe2f179898d4576ba8370cc2cf5a1c017f1954f"
+    },
+    "first_future_endpoint_open_at": "2026-10-21T16:30:00+00:00",
+    "freeze": {
+      "bytes": 4761,
+      "path": "reports/v4_15_runtime_r20/e2e_r2/t0_freezes/89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064.json",
+      "sha256": "8f676ea13fd2a2e6bda854dbfd8e1842f5dc2065488945b4d7306a6de52ca329"
+    },
+    "freeze_completed_at": "2026-10-03T10:25:33.728600+00:00",
+    "historical_prices_only": false,
+    "horizon": 10,
+    "outcome": {
+      "bytes": 6322,
+      "path": "fixtures/outcome_n10_r1.json",
+      "sha256": "ab8b0cd8b3354e0f5481c55246c6c8cb66538164f86acd3fa622e0123580e73d"
+    },
+    "owner_publication": {
+      "bytes": 3622812,
+      "path": "reports/v4_14_replay_r18/real/2026-09-30/r1/manifest.json",
+      "sha256": "f4c068afec2fdda754bce62a5f5773565c893be20554f871a25f11afee22e492"
+    },
+    "raw_provider_fallback": false
+  },
+  "validation_environment": "ISOLATED_ENGINEERING_REACHABILITY_ONLY"
+}

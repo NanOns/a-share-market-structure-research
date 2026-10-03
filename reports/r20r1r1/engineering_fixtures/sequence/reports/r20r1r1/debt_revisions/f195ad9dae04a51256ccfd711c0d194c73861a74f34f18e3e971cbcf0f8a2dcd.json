@@ -1,0 +1,638 @@
+{
+  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+  "REALTIME_ACCEPTED_COHORT_MATURITY": "NOT_GRANTED",
+  "REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT_RUNTIME": "NOT_GRANTED_PENDING_MATURITY_EVIDENCE",
+  "T0_OBSERVATION_SCOPE": "RECONSTRUCTED_ASOF",
+  "accepted_data_authority": {
+    "bytes": 7657,
+    "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+    "sha256": "888d57795464bea3281690e3a24d1c3f490ea74ed6dff293f53a6a90de7af85f"
+  },
+  "aggregate_state": "FULL_REQUIRED_HORIZONS_PROVEN",
+  "blocks_matured_real_claims": true,
+  "blocks_unqualified_matured_real_claims": true,
+  "blocks_unrelated_development": false,
+  "capability_by_horizon": {
+    "1": "PASS_CAPABILITY_SCOPED",
+    "10": "PASS_CAPABILITY_SCOPED",
+    "20": "PASS_CAPABILITY_SCOPED",
+    "3": "PASS_CAPABILITY_SCOPED",
+    "5": "PASS_CAPABILITY_SCOPED"
+  },
+  "contract_id": "R20R1R1_HORIZON_SCOPED_DEBT_V2",
+  "matured_real_horizons": [
+    1,
+    3,
+    5,
+    10,
+    20
+  ],
+  "proofs_by_enrollment_horizon": {
+    "179100071b38fbf0aee5bc9c301f8174c92d47cef851a21519cbc20c4f6dabfb": {
+      "FIRST_OBSERVED": {
+        "bytes": 3222,
+        "path": "reports/r20r1r1/proof_receipts/e84a007fc57f9e0c4c85626828f212d190ab7d932cad491be1b2c19903d0ee65.json",
+        "sha256": "57874ae75d4ae8df1ab4e2427ccb9a296a529e2816ccf750883bf912e6ccb60f"
+      },
+      "LATEST_VALIDATED": {
+        "bytes": 3222,
+        "path": "reports/r20r1r1/proof_receipts/e84a007fc57f9e0c4c85626828f212d190ab7d932cad491be1b2c19903d0ee65.json",
+        "sha256": "57874ae75d4ae8df1ab4e2427ccb9a296a529e2816ccf750883bf912e6ccb60f"
+      },
+      "due_date": "2026-10-14",
+      "enrollment_id": "89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064",
+      "horizon": 5,
+      "receipt_history": [
+        {
+          "bytes": 3222,
+          "path": "reports/r20r1r1/proof_receipts/e84a007fc57f9e0c4c85626828f212d190ab7d932cad491be1b2c19903d0ee65.json",
+          "sha256": "57874ae75d4ae8df1ab4e2427ccb9a296a529e2816ccf750883bf912e6ccb60f"
+        }
+      ]
+    },
+    "3bbb62d64c98f443c2fd9799ae42ccfa6883055729bc205c88966ae4327b1fa0": {
+      "FIRST_OBSERVED": {
+        "bytes": 4142,
+        "path": "reports/r20r1r1/proof_receipts/bc5699aec9a18b51bf6025dc057138c641ee6bfc3b6ec08e5cea2d933b07525b.json",
+        "sha256": "b88cc16909f7f0797f0ef25de62a6576a8fe9fb949605714eba8709f675c519e"
+      },
+      "LATEST_VALIDATED": {
+        "bytes": 4142,
+        "path": "reports/r20r1r1/proof_receipts/bc5699aec9a18b51bf6025dc057138c641ee6bfc3b6ec08e5cea2d933b07525b.json",
+        "sha256": "b88cc16909f7f0797f0ef25de62a6576a8fe9fb949605714eba8709f675c519e"
+      },
+      "due_date": "2026-10-21",
+      "enrollment_id": "89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064",
+      "horizon": 10,
+      "receipt_history": [
+        {
+          "bytes": 4142,
+          "path": "reports/r20r1r1/proof_receipts/bc5699aec9a18b51bf6025dc057138c641ee6bfc3b6ec08e5cea2d933b07525b.json",
+          "sha256": "b88cc16909f7f0797f0ef25de62a6576a8fe9fb949605714eba8709f675c519e"
+        }
+      ]
+    },
+    "74175443bd85ba92dd0223b0b9a9dcb85e50969a9061ff2dd3b0c43914a4a218": {
+      "FIRST_OBSERVED": {
+        "bytes": 2859,
+        "path": "reports/r20r1r1/proof_receipts/079145df9021399bb62d7e996067ecd0bf5404b4e07b8a3ec510ea1c757a7d74.json",
+        "sha256": "66b9b5722691cb9d1e63d2fe17358a1f5c656de7bc5f5ebb7d45f46cc51b83ed"
+      },
+      "LATEST_VALIDATED": {
+        "bytes": 2859,
+        "path": "reports/r20r1r1/proof_receipts/079145df9021399bb62d7e996067ecd0bf5404b4e07b8a3ec510ea1c757a7d74.json",
+        "sha256": "66b9b5722691cb9d1e63d2fe17358a1f5c656de7bc5f5ebb7d45f46cc51b83ed"
+      },
+      "due_date": "2026-10-12",
+      "enrollment_id": "89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064",
+      "horizon": 3,
+      "receipt_history": [
+        {
+          "bytes": 2859,
+          "path": "reports/r20r1r1/proof_receipts/079145df9021399bb62d7e996067ecd0bf5404b4e07b8a3ec510ea1c757a7d74.json",
+          "sha256": "66b9b5722691cb9d1e63d2fe17358a1f5c656de7bc5f5ebb7d45f46cc51b83ed"
+        }
+      ]
+    },
+    "84c1a0e6a78052c6585ef8a76dfa6ee1b047af489bc86ec0d77b5bd9a9ef8be4": {
+      "FIRST_OBSERVED": {
+        "bytes": 5963,
+        "path": "reports/r20r1r1/proof_receipts/fe562226a2040776c9bd94b8f4b8482ae55b0d9eff7d9faa5c386a7e8c619a1b.json",
+        "sha256": "d2efcbfd64b88d61256aa5b831e6eabbb5437c698917dedb2151c1a4ccef8b49"
+      },
+      "LATEST_VALIDATED": {
+        "bytes": 5963,
+        "path": "reports/r20r1r1/proof_receipts/fe562226a2040776c9bd94b8f4b8482ae55b0d9eff7d9faa5c386a7e8c619a1b.json",
+        "sha256": "d2efcbfd64b88d61256aa5b831e6eabbb5437c698917dedb2151c1a4ccef8b49"
+      },
+      "due_date": "2026-11-04",
+      "enrollment_id": "89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064",
+      "horizon": 20,
+      "receipt_history": [
+        {
+          "bytes": 5963,
+          "path": "reports/r20r1r1/proof_receipts/fe562226a2040776c9bd94b8f4b8482ae55b0d9eff7d9faa5c386a7e8c619a1b.json",
+          "sha256": "d2efcbfd64b88d61256aa5b831e6eabbb5437c698917dedb2151c1a4ccef8b49"
+        }
+      ]
+    },
+    "e032f4f24019c9ebf608d81603643dd6e1b5722668d7dd68eb0fa7ee1b9a5ebc": {
+      "FIRST_OBSERVED": {
+        "bytes": 2496,
+        "path": "reports/r20r1r1/proof_receipts/4edc7a4fc8ae544c9bd2e3ad769cebd8d36008ad40243d7774aecc58b4b2ec52.json",
+        "sha256": "b4cc9e3c4ab6e2e6d9e01973c23a5b7c9d0a5cdc6c26dbf33745a21ea229defc"
+      },
+      "LATEST_VALIDATED": {
+        "bytes": 2496,
+        "path": "reports/r20r1r1/proof_receipts/4edc7a4fc8ae544c9bd2e3ad769cebd8d36008ad40243d7774aecc58b4b2ec52.json",
+        "sha256": "b4cc9e3c4ab6e2e6d9e01973c23a5b7c9d0a5cdc6c26dbf33745a21ea229defc"
+      },
+      "due_date": "2026-10-08",
+      "enrollment_id": "89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064",
+      "horizon": 1,
+      "receipt_history": [
+        {
+          "bytes": 2496,
+          "path": "reports/r20r1r1/proof_receipts/4edc7a4fc8ae544c9bd2e3ad769cebd8d36008ad40243d7774aecc58b4b2ec52.json",
+          "sha256": "b4cc9e3c4ab6e2e6d9e01973c23a5b7c9d0a5cdc6c26dbf33745a21ea229defc"
+        }
+      ]
+    }
+  },
+  "proved_horizons": [
+    1,
+    3,
+    5,
+    10,
+    20
+  ],
+  "required_horizons": [
+    1,
+    3,
+    5,
+    10,
+    20
+  ],
+  "stage_promotion_authorized": false,
+  "status": "FULL_REQUIRED_HORIZONS_PROVEN",
+  "unproved_horizons": [],
+  "unproved_horizons_remain_restricted": false,
+  "validation_environment": "ISOLATED_ENGINEERING_REACHABILITY_ONLY",
+  "verified_maturity_receipts": [
+    {
+      "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+      "REALTIME_ACCEPTED_COHORT_MATURITY": "NOT_GRANTED",
+      "T0_OBSERVATION_SCOPE": "RECONSTRUCTED_ASOF",
+      "accepted_future_endpoint_read_count": 3,
+      "due_date": "2026-10-12",
+      "enrollment_id": "89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064",
+      "horizon": 3,
+      "packet": {
+        "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+        "REALTIME_ACCEPTED_COHORT_MATURITY": "NOT_GRANTED",
+        "accepted_endpoints": [
+          {
+            "bytes": 689,
+            "path": "fixtures/endpoints/n3_2026-10-08.json",
+            "sha256": "c20da5cb947cb828ac9a7311e7215e2d06cc58a9561dc72d4c69da752eeaeaa6"
+          },
+          {
+            "bytes": 689,
+            "path": "fixtures/endpoints/n3_2026-10-09.json",
+            "sha256": "512fc13eb0d34e8a6d79c6e58f93386ee653a970e832f2c9341f8366b5c34c64"
+          },
+          {
+            "bytes": 689,
+            "path": "fixtures/endpoints/n3_2026-10-12.json",
+            "sha256": "47957a1e64c1f1228357919363a09123b7d67360c1007c26359bbeefb4cd08a9"
+          }
+        ],
+        "accepted_head": {
+          "bytes": 4178,
+          "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+          "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+        },
+        "data_head": {
+          "bytes": 1291,
+          "path": "reports/r20r1r1/accepted_data_snapshots/1cee6b86e377eee76302d17305329a6e235e2919baee304abe33ba045a80dd8b.json",
+          "sha256": "1cee6b86e377eee76302d17305329a6e235e2919baee304abe33ba045a80dd8b"
+        },
+        "endpoint_read_receipt": {
+          "bytes": 892,
+          "path": "fixtures/read_receipt_n3.json",
+          "sha256": "cd4ee6dfbc11e0f0772695c51531f7c1c00daa7766fcfaf09da911ca0a2d1de8"
+        },
+        "enrollment": {
+          "bytes": 2736,
+          "path": "reports/v4_15_runtime_r20/e2e_r2/enrollment/89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064.json",
+          "sha256": "0417df91561388613e5df100dfe2f179898d4576ba8370cc2cf5a1c017f1954f"
+        },
+        "first_future_endpoint_open_at": "2026-10-12T16:30:00+00:00",
+        "freeze": {
+          "bytes": 4761,
+          "path": "reports/v4_15_runtime_r20/e2e_r2/t0_freezes/89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064.json",
+          "sha256": "8f676ea13fd2a2e6bda854dbfd8e1842f5dc2065488945b4d7306a6de52ca329"
+        },
+        "freeze_completed_at": "2026-10-03T10:25:33.728600+00:00",
+        "historical_prices_only": false,
+        "horizon": 3,
+        "outcome": {
+          "bytes": 2372,
+          "path": "fixtures/outcome_n3_r1.json",
+          "sha256": "cd84ec4c40b66795de9f0e6333e4fa7ccb2b871115c61c1276876cd00c3992c4"
+        },
+        "owner_publication": {
+          "bytes": 3622812,
+          "path": "reports/v4_14_replay_r18/real/2026-09-30/r1/manifest.json",
+          "sha256": "f4c068afec2fdda754bce62a5f5773565c893be20554f871a25f11afee22e492"
+        },
+        "raw_provider_fallback": false
+      },
+      "validation_environment": "ISOLATED_ENGINEERING_REACHABILITY_ONLY"
+    },
+    {
+      "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+      "REALTIME_ACCEPTED_COHORT_MATURITY": "NOT_GRANTED",
+      "T0_OBSERVATION_SCOPE": "RECONSTRUCTED_ASOF",
+      "accepted_future_endpoint_read_count": 1,
+      "due_date": "2026-10-08",
+      "enrollment_id": "89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064",
+      "horizon": 1,
+      "packet": {
+        "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+        "REALTIME_ACCEPTED_COHORT_MATURITY": "NOT_GRANTED",
+        "accepted_endpoints": [
+          {
+            "bytes": 689,
+            "path": "fixtures/endpoints/n1_2026-10-08.json",
+            "sha256": "18342dffd8aead1aa7503943b1387341f967b696d25cabcf6389fb4f4ec77f64"
+          }
+        ],
+        "accepted_head": {
+          "bytes": 4178,
+          "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+          "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+        },
+        "data_head": {
+          "bytes": 753,
+          "path": "reports/r20r1r1/accepted_data_snapshots/0c1b26aea86e8c1f398dafaf71dc00b56254f59ff00b74ae4e9a431dbca49a4c.json",
+          "sha256": "0c1b26aea86e8c1f398dafaf71dc00b56254f59ff00b74ae4e9a431dbca49a4c"
+        },
+        "endpoint_read_receipt": {
+          "bytes": 550,
+          "path": "fixtures/read_receipt_n1.json",
+          "sha256": "bb0264aee26eee56127b5f170a0ad33e785ec2912d37345c28b9c793aef343f8"
+        },
+        "enrollment": {
+          "bytes": 2736,
+          "path": "reports/v4_15_runtime_r20/e2e_r2/enrollment/89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064.json",
+          "sha256": "0417df91561388613e5df100dfe2f179898d4576ba8370cc2cf5a1c017f1954f"
+        },
+        "first_future_endpoint_open_at": "2026-10-08T16:30:00+00:00",
+        "freeze": {
+          "bytes": 4761,
+          "path": "reports/v4_15_runtime_r20/e2e_r2/t0_freezes/89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064.json",
+          "sha256": "8f676ea13fd2a2e6bda854dbfd8e1842f5dc2065488945b4d7306a6de52ca329"
+        },
+        "freeze_completed_at": "2026-10-03T10:25:33.728600+00:00",
+        "historical_prices_only": false,
+        "horizon": 1,
+        "outcome": {
+          "bytes": 1245,
+          "path": "fixtures/outcome_n1_r1.json",
+          "sha256": "c384d161f2bb5b54cf82f9c348c057e0c4686bb5b8da2e757c02e612ce154499"
+        },
+        "owner_publication": {
+          "bytes": 3622812,
+          "path": "reports/v4_14_replay_r18/real/2026-09-30/r1/manifest.json",
+          "sha256": "f4c068afec2fdda754bce62a5f5773565c893be20554f871a25f11afee22e492"
+        },
+        "raw_provider_fallback": false
+      },
+      "validation_environment": "ISOLATED_ENGINEERING_REACHABILITY_ONLY"
+    },
+    {
+      "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+      "REALTIME_ACCEPTED_COHORT_MATURITY": "NOT_GRANTED",
+      "T0_OBSERVATION_SCOPE": "RECONSTRUCTED_ASOF",
+      "accepted_future_endpoint_read_count": 5,
+      "due_date": "2026-10-14",
+      "enrollment_id": "89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064",
+      "horizon": 5,
+      "packet": {
+        "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+        "REALTIME_ACCEPTED_COHORT_MATURITY": "NOT_GRANTED",
+        "accepted_endpoints": [
+          {
+            "bytes": 689,
+            "path": "fixtures/endpoints/n5_2026-10-08.json",
+            "sha256": "3a7a87d5f66074446d47e9e9b6f5fa7eab1eb3e7f6c733dcdd88b71f56952355"
+          },
+          {
+            "bytes": 689,
+            "path": "fixtures/endpoints/n5_2026-10-09.json",
+            "sha256": "1137305c5233b31f842378c465db89c4ab9f1a24754543badf8c14e6eafc220d"
+          },
+          {
+            "bytes": 689,
+            "path": "fixtures/endpoints/n5_2026-10-12.json",
+            "sha256": "16f29929c56439d2a6a0f7b8c3b670a4a69b137cf6f6790d452db3be4f6eb288"
+          },
+          {
+            "bytes": 689,
+            "path": "fixtures/endpoints/n5_2026-10-13.json",
+            "sha256": "ed1321a5916974ff61db343516f18ff883742a54473ad21bbe21454dcd7b49d6"
+          },
+          {
+            "bytes": 689,
+            "path": "fixtures/endpoints/n5_2026-10-14.json",
+            "sha256": "7c8719fbe341af6787666aec6d671aad7d0ec852fa95cc107ef1e781aab24007"
+          }
+        ],
+        "accepted_head": {
+          "bytes": 4178,
+          "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+          "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+        },
+        "data_head": {
+          "bytes": 2197,
+          "path": "reports/r20r1r1/accepted_data_snapshots/afb4b4263a69fd724b1988c1499b835bed2c81ba0f1d2a819bb0d8e9a5dfbf25.json",
+          "sha256": "afb4b4263a69fd724b1988c1499b835bed2c81ba0f1d2a819bb0d8e9a5dfbf25"
+        },
+        "endpoint_read_receipt": {
+          "bytes": 1234,
+          "path": "fixtures/read_receipt_n5.json",
+          "sha256": "5d929b67559c80867397044f49e72839c48b44c2a99e1fd683c3bcaaf656b74a"
+        },
+        "enrollment": {
+          "bytes": 2736,
+          "path": "reports/v4_15_runtime_r20/e2e_r2/enrollment/89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064.json",
+          "sha256": "0417df91561388613e5df100dfe2f179898d4576ba8370cc2cf5a1c017f1954f"
+        },
+        "first_future_endpoint_open_at": "2026-10-14T16:30:00+00:00",
+        "freeze": {
+          "bytes": 4761,
+          "path": "reports/v4_15_runtime_r20/e2e_r2/t0_freezes/89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064.json",
+          "sha256": "8f676ea13fd2a2e6bda854dbfd8e1842f5dc2065488945b4d7306a6de52ca329"
+        },
+        "freeze_completed_at": "2026-10-03T10:25:33.728600+00:00",
+        "historical_prices_only": false,
+        "horizon": 5,
+        "outcome": {
+          "bytes": 3500,
+          "path": "fixtures/outcome_n5_r1.json",
+          "sha256": "30117bb54883c05de80f82193a658370070f5b28f2b04e86a38986b8cfea9da0"
+        },
+        "owner_publication": {
+          "bytes": 3622812,
+          "path": "reports/v4_14_replay_r18/real/2026-09-30/r1/manifest.json",
+          "sha256": "f4c068afec2fdda754bce62a5f5773565c893be20554f871a25f11afee22e492"
+        },
+        "raw_provider_fallback": false
+      },
+      "validation_environment": "ISOLATED_ENGINEERING_REACHABILITY_ONLY"
+    },
+    {
+      "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+      "REALTIME_ACCEPTED_COHORT_MATURITY": "NOT_GRANTED",
+      "T0_OBSERVATION_SCOPE": "RECONSTRUCTED_ASOF",
+      "accepted_future_endpoint_read_count": 10,
+      "due_date": "2026-10-21",
+      "enrollment_id": "89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064",
+      "horizon": 10,
+      "packet": {
+        "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+        "REALTIME_ACCEPTED_COHORT_MATURITY": "NOT_GRANTED",
+        "accepted_endpoints": [
+          {
+            "bytes": 689,
+            "path": "fixtures/endpoints/n10_2026-10-08.json",
+            "sha256": "9cd5587b2c7636a5c33d76a72bfe686b871b906dafe544c8e081e2c8365a730f"
+          },
+          {
+            "bytes": 689,
+            "path": "fixtures/endpoints/n10_2026-10-09.json",
+            "sha256": "c349d6fd94387a93ed1795afc759574f25607f2558f38dcf45ab9b4e0bf87b95"
+          },
+          {
+            "bytes": 689,
+            "path": "fixtures/endpoints/n10_2026-10-12.json",
+            "sha256": "d60a66f8dd67acf5514f7f0dd5dfde7dcc901e78e9d09e5a80873683611c5df6"
+          },
+          {
+            "bytes": 689,
+            "path": "fixtures/endpoints/n10_2026-10-13.json",
+            "sha256": "0c66064d8488418e8718f4934f4f10bbe5d1bce88f383b7b9f71cff555bde124"
+          },
+          {
+            "bytes": 689,
+            "path": "fixtures/endpoints/n10_2026-10-14.json",
+            "sha256": "b8a70afafc724f147991cbef8c5a6fef738434f0aa6fead01a33fcbbd49e6b15"
+          },
+          {
+            "bytes": 689,
+            "path": "fixtures/endpoints/n10_2026-10-15.json",
+            "sha256": "62c43a1031a944f5180e0605bd2be0b5a5ba3a5aeb4fc4dce80eec44a0ab43d3"
+          },
+          {
+            "bytes": 689,
+            "path": "fixtures/endpoints/n10_2026-10-16.json",
+            "sha256": "4cfa1c4b2cd368e529610664e897a5919b113cb686b578323863a3027b8b9052"
+          },
+          {
+            "bytes": 689,
+            "path": "fixtures/endpoints/n10_2026-10-19.json",
+            "sha256": "1ad4370f55e4df7442c53a5f5e103a95eed54c9eb395cb653fc232fd54a46087"
+          },
+          {
+            "bytes": 689,
+            "path": "fixtures/endpoints/n10_2026-10-20.json",
+            "sha256": "2793ec0b70e8217ddea80f0e31d2254a16ba9b41eac11c018f8869b56bf21724"
+          },
+          {
+            "bytes": 689,
+            "path": "fixtures/endpoints/n10_2026-10-21.json",
+            "sha256": "fdba9a2436b5a26246bef882af53141485d7cf547133ed68c7386a7221c8d777"
+          }
+        ],
+        "accepted_head": {
+          "bytes": 4178,
+          "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+          "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+        },
+        "data_head": {
+          "bytes": 4017,
+          "path": "reports/r20r1r1/accepted_data_snapshots/fdb89d1f225f058ad7634c4cc3499001f6fde9e8e1b66eb459f00f04a142f885.json",
+          "sha256": "fdb89d1f225f058ad7634c4cc3499001f6fde9e8e1b66eb459f00f04a142f885"
+        },
+        "endpoint_read_receipt": {
+          "bytes": 2099,
+          "path": "fixtures/read_receipt_n10.json",
+          "sha256": "cee0ca3086d7ddaf2ab33c7559b7122bb1d003f7c052b232d702e5d114e2d362"
+        },
+        "enrollment": {
+          "bytes": 2736,
+          "path": "reports/v4_15_runtime_r20/e2e_r2/enrollment/89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064.json",
+          "sha256": "0417df91561388613e5df100dfe2f179898d4576ba8370cc2cf5a1c017f1954f"
+        },
+        "first_future_endpoint_open_at": "2026-10-21T16:30:00+00:00",
+        "freeze": {
+          "bytes": 4761,
+          "path": "reports/v4_15_runtime_r20/e2e_r2/t0_freezes/89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064.json",
+          "sha256": "8f676ea13fd2a2e6bda854dbfd8e1842f5dc2065488945b4d7306a6de52ca329"
+        },
+        "freeze_completed_at": "2026-10-03T10:25:33.728600+00:00",
+        "historical_prices_only": false,
+        "horizon": 10,
+        "outcome": {
+          "bytes": 6322,
+          "path": "fixtures/outcome_n10_r1.json",
+          "sha256": "ab8b0cd8b3354e0f5481c55246c6c8cb66538164f86acd3fa622e0123580e73d"
+        },
+        "owner_publication": {
+          "bytes": 3622812,
+          "path": "reports/v4_14_replay_r18/real/2026-09-30/r1/manifest.json",
+          "sha256": "f4c068afec2fdda754bce62a5f5773565c893be20554f871a25f11afee22e492"
+        },
+        "raw_provider_fallback": false
+      },
+      "validation_environment": "ISOLATED_ENGINEERING_REACHABILITY_ONLY"
+    },
+    {
+      "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+      "REALTIME_ACCEPTED_COHORT_MATURITY": "NOT_GRANTED",
+      "T0_OBSERVATION_SCOPE": "RECONSTRUCTED_ASOF",
+      "accepted_future_endpoint_read_count": 20,
+      "due_date": "2026-11-04",
+      "enrollment_id": "89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064",
+      "horizon": 20,
+      "packet": {
+        "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+        "REALTIME_ACCEPTED_COHORT_MATURITY": "NOT_GRANTED",
+        "accepted_endpoints": [
+          {
+            "bytes": 689,
+            "path": "fixtures/endpoints/n20_2026-10-08.json",
+            "sha256": "05c803d15ed47720e83b80540c29b601e0d3076dbe16c708edb7f1df45511958"
+          },
+          {
+            "bytes": 689,
+            "path": "fixtures/endpoints/n20_2026-10-09.json",
+            "sha256": "75617ee80ed3c7a15f0c68f978e49a42e8d8616df23e324ebca20d5e8705a790"
+          },
+          {
+            "bytes": 689,
+            "path": "fixtures/endpoints/n20_2026-10-12.json",
+            "sha256": "483d832d71f4d3ccd0a5e34780cc004379ec90077e8ea887f9bd99fe1dbee6f0"
+          },
+          {
+            "bytes": 689,
+            "path": "fixtures/endpoints/n20_2026-10-13.json",
+            "sha256": "e4730432d3cc9677ccd0fc60424d4f70037641b4577844fc06a90d6e00537431"
+          },
+          {
+            "bytes": 689,
+            "path": "fixtures/endpoints/n20_2026-10-14.json",
+            "sha256": "c6b12d22d1d2636fd392ea495025439b3a38f3a57c1c07685ffdf9e7e12c87fb"
+          },
+          {
+            "bytes": 689,
+            "path": "fixtures/endpoints/n20_2026-10-15.json",
+            "sha256": "989228822aaaba6a9ae0a9f2a081e514764cb0257a4e1085389d7c5ad7a4e5f8"
+          },
+          {
+            "bytes": 689,
+            "path": "fixtures/endpoints/n20_2026-10-16.json",
+            "sha256": "e6eda44041037c32be58c4e16b4c97777e6ce7d40d7d72639d2ba1097be4727b"
+          },
+          {
+            "bytes": 689,
+            "path": "fixtures/endpoints/n20_2026-10-19.json",
+            "sha256": "0db7cea3cd3ad0c35d89c66a6f46a0f2a009a776b1c6b88922e8f224f3a74a1f"
+          },
+          {
+            "bytes": 689,
+            "path": "fixtures/endpoints/n20_2026-10-20.json",
+            "sha256": "b8eaab7611a02d1feeb05e0922408678363d74ab06d483192be80cedbb863ed4"
+          },
+          {
+            "bytes": 689,
+            "path": "fixtures/endpoints/n20_2026-10-21.json",
+            "sha256": "325a2a7d57eb57114a5d159bd5c1c15e2079356628817c1501518522c87bb054"
+          },
+          {
+            "bytes": 686,
+            "path": "fixtures/endpoints/n20_2026-10-22.json",
+            "sha256": "f0c76b8c594785a78b4fb57f194d0030e6fa684816f7db33ae59887391123757"
+          },
+          {
+            "bytes": 689,
+            "path": "fixtures/endpoints/n20_2026-10-23.json",
+            "sha256": "f1ada07cb247e90197750fa626412b23c12b9501b56ed458a984395fabd431f0"
+          },
+          {
+            "bytes": 685,
+            "path": "fixtures/endpoints/n20_2026-10-26.json",
+            "sha256": "9aa762231d28f25a3b79c81fdb00c9be6378e1be92f8f9977d16796f762ec224"
+          },
+          {
+            "bytes": 689,
+            "path": "fixtures/endpoints/n20_2026-10-27.json",
+            "sha256": "e8c5c32045382c19e087ad582c6bd9cbf72575d7ff8ef8ad57aa2b6c34ead951"
+          },
+          {
+            "bytes": 686,
+            "path": "fixtures/endpoints/n20_2026-10-28.json",
+            "sha256": "83a29882d3ea0ac97aad8f971acf3d26fc89b6261be409aeb0b98f0ac85e5d3d"
+          },
+          {
+            "bytes": 689,
+            "path": "fixtures/endpoints/n20_2026-10-29.json",
+            "sha256": "45899feb4011dff4c7b8931936fa86325fe02cfb8c1e3ec2200ac4b351bf1f3f"
+          },
+          {
+            "bytes": 689,
+            "path": "fixtures/endpoints/n20_2026-10-30.json",
+            "sha256": "7f76cb45156d4c594c60e3c443c4333ffa37f07391742c303f50ff1abf65d4e1"
+          },
+          {
+            "bytes": 689,
+            "path": "fixtures/endpoints/n20_2026-11-02.json",
+            "sha256": "4a65e439c415dc8039449c524e3af395c106b83ac182ca5f7fedf3cc7e5d624a"
+          },
+          {
+            "bytes": 689,
+            "path": "fixtures/endpoints/n20_2026-11-03.json",
+            "sha256": "786a8f16183da70b17cd1ab6294c7df0ed93cb156e29fdaee8640ceca0a4de3d"
+          },
+          {
+            "bytes": 689,
+            "path": "fixtures/endpoints/n20_2026-11-04.json",
+            "sha256": "f10a3143b72f848d8447d4c3e37f3e27745f7fd13d522a523a07f2ba9c0b1d2d"
+          }
+        ],
+        "accepted_head": {
+          "bytes": 4178,
+          "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+          "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+        },
+        "data_head": {
+          "bytes": 7657,
+          "path": "reports/r20r1r1/accepted_data_snapshots/888d57795464bea3281690e3a24d1c3f490ea74ed6dff293f53a6a90de7af85f.json",
+          "sha256": "888d57795464bea3281690e3a24d1c3f490ea74ed6dff293f53a6a90de7af85f"
+        },
+        "endpoint_read_receipt": {
+          "bytes": 3819,
+          "path": "fixtures/read_receipt_n20.json",
+          "sha256": "2bc577c0a0cf51b34a98caa7dbdd5dfa48263328d89dcf782804dca76ea07249"
+        },
+        "enrollment": {
+          "bytes": 2736,
+          "path": "reports/v4_15_runtime_r20/e2e_r2/enrollment/89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064.json",
+          "sha256": "0417df91561388613e5df100dfe2f179898d4576ba8370cc2cf5a1c017f1954f"
+        },
+        "first_future_endpoint_open_at": "2026-11-04T16:30:00+00:00",
+        "freeze": {
+          "bytes": 4761,
+          "path": "reports/v4_15_runtime_r20/e2e_r2/t0_freezes/89470b7de79ccd50150482dc472b052833b587d6ca25b765cdbe2ea9e2f59064.json",
+          "sha256": "8f676ea13fd2a2e6bda854dbfd8e1842f5dc2065488945b4d7306a6de52ca329"
+        },
+        "freeze_completed_at": "2026-10-03T10:25:33.728600+00:00",
+        "historical_prices_only": false,
+        "horizon": 20,
+        "outcome": {
+          "bytes": 11951,
+          "path": "fixtures/outcome_n20_r1.json",
+          "sha256": "eb340b6ebe337d84f288fc71d3ccd2939bbf45b61bd09e47a9fa0b822ef56713"
+        },
+        "owner_publication": {
+          "bytes": 3622812,
+          "path": "reports/v4_14_replay_r18/real/2026-09-30/r1/manifest.json",
+          "sha256": "f4c068afec2fdda754bce62a5f5773565c893be20554f871a25f11afee22e492"
+        },
+        "raw_provider_fallback": false
+      },
+      "validation_environment": "ISOLATED_ENGINEERING_REACHABILITY_ONLY"
+    }
+  ]
+}

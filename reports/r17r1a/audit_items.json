@@ -1,0 +1,44 @@
+{
+  "audit_authority": {
+    "bytes": 3442,
+    "path": "docs/evidence/r17r1/V4_R17_INDEPENDENT_EXTERNAL_AUDIT_R1_20261003.md",
+    "sha256": "43a0b9c9cc953acd07a86c1efd226c5379f14e6e809783c3d853ce2d016e6db5"
+  },
+  "items": [
+    {
+      "evidence": {
+        "bytes": 22088,
+        "path": "config/v4_13_dag_edge_registry_v1_2.json",
+        "sha256": "94a7e612711bd546ce0e638ea9e9291f664dc7e404f7597e6438405f44e1b024"
+      },
+      "external_acceptance": "PENDING_R17R1_EXTERNAL_AUDIT",
+      "id": "G01",
+      "local_acceptance": "PASS",
+      "scope": "V4-13 DAG active projection authority"
+    },
+    {
+      "evidence": {
+        "bytes": 2679,
+        "path": "config/v4_13_rotation_structure_enrichment_schema_v1_2.json",
+        "sha256": "bd53db1a842dc97cded4871f834fceec3ec85b6f97aa604937f7aa1eb879ffd9"
+      },
+      "external_acceptance": "PENDING_R17R1_EXTERNAL_AUDIT",
+      "id": "G02",
+      "local_acceptance": "PASS",
+      "scope": "V4-13 enrichment projection and transitive consumer authority"
+    },
+    {
+      "evidence": {
+        "bytes": 16193,
+        "path": "scripts/validate_r17r1_refreeze.py",
+        "sha256": "675c0bcc38060351d854f7b82ef978e28bd7d99e9cc213979e6265b56bf3950b"
+      },
+      "external_acceptance": "PENDING_R17R1_EXTERNAL_AUDIT",
+      "id": "G03",
+      "local_acceptance": "PASS_LOCAL",
+      "scope": "Recursive V4-14 active-family authority closure independent of byte integrity"
+    }
+  ],
+  "release_permission": "NOT_GRANTED",
+  "scope_separate_from_runtime_acceptance": true
+}

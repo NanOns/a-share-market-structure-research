@@ -1,0 +1,950 @@
+{
+  "ALGORITHM_STATE_REPLAY_PASS": "NOT_GRANTED",
+  "acceptance_criteria": "COMPLETE_INDEPENDENT_FROZEN_CONTRACT_BEFORE_RUNTIME; EXTERNAL_AUDIT_STILL_REQUIRED",
+  "accepted_v4_13_authority": {
+    "bytes": 11314,
+    "path": "data/v4/V4_13_ACCEPTED_HEAD_AMENDED_R1.json",
+    "sha256": "98f222ba4d62318ee900a69b8cad7c25359a30bcc7097efe0a55b8ffea09aa65"
+  },
+  "active_family_closure": {
+    "bytes": 7963,
+    "path": "config/v4_13_active_contract_family_closure_r17r1.json",
+    "sha256": "a883aeab9058c017806f62b78d6ea2eac6fab82fdbf4faaace3fdea4c967aea1"
+  },
+  "baseline_test_matrix": {
+    "a_share_rules": [
+      "ST",
+      "main_board_limit",
+      "growth_board_limit",
+      "suspension",
+      "resumption",
+      "new_listing",
+      "delisting",
+      "adjustment_identity_change"
+    ],
+    "data": [
+      "session_mismatch",
+      "publication_date_mismatch",
+      "stale_source",
+      "missing_membership",
+      "provider_budget_exhausted",
+      "turnover_soft_binding",
+      "partial_history"
+    ],
+    "forward": {
+      "cases": [
+        "right_censor",
+        "complete_controls",
+        "all_eligible_denominator",
+        "hidden_display_still_settled",
+        "reconstructed_vs_real_forward"
+      ],
+      "scope": "REFERENCE_ONLY_V4_15_NOT_AUTHORIZED"
+    },
+    "prewatch": [
+      "weak_market_emergence",
+      "passive_defense",
+      "sector_absent_stock_seed",
+      "multi_sector",
+      "old_leader_deceleration",
+      "low_volatility_defensive_bias"
+    ],
+    "sector": [
+      "small_5_member",
+      "broad_80_member",
+      "one_stock_driven",
+      "overlapping_concepts",
+      "PIT_membership_change"
+    ],
+    "state": [
+      "threshold_epsilon",
+      "flapping",
+      "data_gap",
+      "hard_damage",
+      "expiry",
+      "direct_prewatch_confirmed",
+      "reentry",
+      "model_boundary"
+    ]
+  },
+  "cases": [
+    {
+      "acceptance_scope": "CONTRACT_FROZEN_NOT_RUNTIME_PASS",
+      "case_id": "same_day_feedback",
+      "failure_scope": "AFFECTED_COMPONENT_ONLY",
+      "negative": "same_day_feedback_negative",
+      "owner_oracle_books": [
+        {
+          "bytes": 4509500,
+          "path": "config/v4_10_machine_vectors_r1_2.json",
+          "sha256": "fba82cb73df551833f1a12f3d5d0e30255b4dcff512e87c8e98de6b4b0617c7a"
+        },
+        {
+          "bytes": 31822,
+          "path": "config/v4_12_machine_vectors_v1.json",
+          "sha256": "42cb39050efcf47f76d27edff0eb3efbd964bf07ea02b8d16e010e2ebb36dd47"
+        },
+        {
+          "bytes": 17242,
+          "path": "config/v4_12_time_counter_vectors_r2_1.json",
+          "sha256": "0035935fd0582d9936f762ae1e15d16406f7efb32ee235f457162dc5d482fe6f"
+        },
+        {
+          "bytes": 2915,
+          "path": "config/v4_08_rotation_machine_vectors_v2.json",
+          "sha256": "912d2a9089ae843e955f4c6b30c30516bf71a7c36e176cb8aefb94684880e906"
+        },
+        {
+          "bytes": 36234,
+          "path": "config/v4_13_machine_vectors_v1_2.json",
+          "sha256": "a33f386974d98e72ebca471b70503101e857fc61bb471efd1924532294151790"
+        }
+      ],
+      "positive": "same_day_feedback_positive",
+      "vector_ids": [
+        "same_day_feedback_positive",
+        "same_day_feedback_negative"
+      ]
+    },
+    {
+      "acceptance_scope": "CONTRACT_FROZEN_NOT_RUNTIME_PASS",
+      "case_id": "state_transition_legality",
+      "failure_scope": "AFFECTED_COMPONENT_ONLY",
+      "negative": "state_transition_legality_negative",
+      "owner_oracle_books": [
+        {
+          "bytes": 4509500,
+          "path": "config/v4_10_machine_vectors_r1_2.json",
+          "sha256": "fba82cb73df551833f1a12f3d5d0e30255b4dcff512e87c8e98de6b4b0617c7a"
+        },
+        {
+          "bytes": 31822,
+          "path": "config/v4_12_machine_vectors_v1.json",
+          "sha256": "42cb39050efcf47f76d27edff0eb3efbd964bf07ea02b8d16e010e2ebb36dd47"
+        },
+        {
+          "bytes": 17242,
+          "path": "config/v4_12_time_counter_vectors_r2_1.json",
+          "sha256": "0035935fd0582d9936f762ae1e15d16406f7efb32ee235f457162dc5d482fe6f"
+        },
+        {
+          "bytes": 2915,
+          "path": "config/v4_08_rotation_machine_vectors_v2.json",
+          "sha256": "912d2a9089ae843e955f4c6b30c30516bf71a7c36e176cb8aefb94684880e906"
+        },
+        {
+          "bytes": 36234,
+          "path": "config/v4_13_machine_vectors_v1_2.json",
+          "sha256": "a33f386974d98e72ebca471b70503101e857fc61bb471efd1924532294151790"
+        }
+      ],
+      "positive": "state_transition_legality_positive",
+      "vector_ids": [
+        "state_transition_legality_positive",
+        "state_transition_legality_negative"
+      ]
+    },
+    {
+      "acceptance_scope": "CONTRACT_FROZEN_NOT_RUNTIME_PASS",
+      "case_id": "hysteresis",
+      "failure_scope": "AFFECTED_COMPONENT_ONLY",
+      "negative": "hysteresis_negative",
+      "owner_oracle_books": [
+        {
+          "bytes": 4509500,
+          "path": "config/v4_10_machine_vectors_r1_2.json",
+          "sha256": "fba82cb73df551833f1a12f3d5d0e30255b4dcff512e87c8e98de6b4b0617c7a"
+        },
+        {
+          "bytes": 31822,
+          "path": "config/v4_12_machine_vectors_v1.json",
+          "sha256": "42cb39050efcf47f76d27edff0eb3efbd964bf07ea02b8d16e010e2ebb36dd47"
+        },
+        {
+          "bytes": 17242,
+          "path": "config/v4_12_time_counter_vectors_r2_1.json",
+          "sha256": "0035935fd0582d9936f762ae1e15d16406f7efb32ee235f457162dc5d482fe6f"
+        },
+        {
+          "bytes": 2915,
+          "path": "config/v4_08_rotation_machine_vectors_v2.json",
+          "sha256": "912d2a9089ae843e955f4c6b30c30516bf71a7c36e176cb8aefb94684880e906"
+        },
+        {
+          "bytes": 36234,
+          "path": "config/v4_13_machine_vectors_v1_2.json",
+          "sha256": "a33f386974d98e72ebca471b70503101e857fc61bb471efd1924532294151790"
+        }
+      ],
+      "positive": "hysteresis_positive",
+      "vector_ids": [
+        "hysteresis_positive",
+        "hysteresis_negative"
+      ]
+    },
+    {
+      "acceptance_scope": "CONTRACT_FROZEN_NOT_RUNTIME_PASS",
+      "case_id": "expiry",
+      "failure_scope": "AFFECTED_COMPONENT_ONLY",
+      "negative": "expiry_negative",
+      "owner_oracle_books": [
+        {
+          "bytes": 4509500,
+          "path": "config/v4_10_machine_vectors_r1_2.json",
+          "sha256": "fba82cb73df551833f1a12f3d5d0e30255b4dcff512e87c8e98de6b4b0617c7a"
+        },
+        {
+          "bytes": 31822,
+          "path": "config/v4_12_machine_vectors_v1.json",
+          "sha256": "42cb39050efcf47f76d27edff0eb3efbd964bf07ea02b8d16e010e2ebb36dd47"
+        },
+        {
+          "bytes": 17242,
+          "path": "config/v4_12_time_counter_vectors_r2_1.json",
+          "sha256": "0035935fd0582d9936f762ae1e15d16406f7efb32ee235f457162dc5d482fe6f"
+        },
+        {
+          "bytes": 2915,
+          "path": "config/v4_08_rotation_machine_vectors_v2.json",
+          "sha256": "912d2a9089ae843e955f4c6b30c30516bf71a7c36e176cb8aefb94684880e906"
+        },
+        {
+          "bytes": 36234,
+          "path": "config/v4_13_machine_vectors_v1_2.json",
+          "sha256": "a33f386974d98e72ebca471b70503101e857fc61bb471efd1924532294151790"
+        }
+      ],
+      "positive": "expiry_positive",
+      "vector_ids": [
+        "expiry_positive",
+        "expiry_negative"
+      ]
+    },
+    {
+      "acceptance_scope": "CONTRACT_FROZEN_NOT_RUNTIME_PASS",
+      "case_id": "direct_prewatch_confirmed",
+      "failure_scope": "AFFECTED_COMPONENT_ONLY",
+      "negative": "direct_prewatch_confirmed_negative",
+      "owner_oracle_books": [
+        {
+          "bytes": 4509500,
+          "path": "config/v4_10_machine_vectors_r1_2.json",
+          "sha256": "fba82cb73df551833f1a12f3d5d0e30255b4dcff512e87c8e98de6b4b0617c7a"
+        },
+        {
+          "bytes": 31822,
+          "path": "config/v4_12_machine_vectors_v1.json",
+          "sha256": "42cb39050efcf47f76d27edff0eb3efbd964bf07ea02b8d16e010e2ebb36dd47"
+        },
+        {
+          "bytes": 17242,
+          "path": "config/v4_12_time_counter_vectors_r2_1.json",
+          "sha256": "0035935fd0582d9936f762ae1e15d16406f7efb32ee235f457162dc5d482fe6f"
+        },
+        {
+          "bytes": 2915,
+          "path": "config/v4_08_rotation_machine_vectors_v2.json",
+          "sha256": "912d2a9089ae843e955f4c6b30c30516bf71a7c36e176cb8aefb94684880e906"
+        },
+        {
+          "bytes": 36234,
+          "path": "config/v4_13_machine_vectors_v1_2.json",
+          "sha256": "a33f386974d98e72ebca471b70503101e857fc61bb471efd1924532294151790"
+        }
+      ],
+      "positive": "direct_prewatch_confirmed_positive",
+      "vector_ids": [
+        "direct_prewatch_confirmed_positive",
+        "direct_prewatch_confirmed_negative"
+      ]
+    },
+    {
+      "acceptance_scope": "CONTRACT_FROZEN_NOT_RUNTIME_PASS",
+      "case_id": "rotation_pulse_accepted_failed",
+      "failure_scope": "AFFECTED_COMPONENT_ONLY",
+      "negative": "rotation_pulse_accepted_failed_negative",
+      "owner_oracle_books": [
+        {
+          "bytes": 4509500,
+          "path": "config/v4_10_machine_vectors_r1_2.json",
+          "sha256": "fba82cb73df551833f1a12f3d5d0e30255b4dcff512e87c8e98de6b4b0617c7a"
+        },
+        {
+          "bytes": 31822,
+          "path": "config/v4_12_machine_vectors_v1.json",
+          "sha256": "42cb39050efcf47f76d27edff0eb3efbd964bf07ea02b8d16e010e2ebb36dd47"
+        },
+        {
+          "bytes": 17242,
+          "path": "config/v4_12_time_counter_vectors_r2_1.json",
+          "sha256": "0035935fd0582d9936f762ae1e15d16406f7efb32ee235f457162dc5d482fe6f"
+        },
+        {
+          "bytes": 2915,
+          "path": "config/v4_08_rotation_machine_vectors_v2.json",
+          "sha256": "912d2a9089ae843e955f4c6b30c30516bf71a7c36e176cb8aefb94684880e906"
+        },
+        {
+          "bytes": 36234,
+          "path": "config/v4_13_machine_vectors_v1_2.json",
+          "sha256": "a33f386974d98e72ebca471b70503101e857fc61bb471efd1924532294151790"
+        }
+      ],
+      "positive": "rotation_pulse_accepted_failed_positive",
+      "vector_ids": [
+        "rotation_pulse_accepted_failed_positive",
+        "rotation_pulse_accepted_failed_negative"
+      ]
+    },
+    {
+      "acceptance_scope": "CONTRACT_FROZEN_NOT_RUNTIME_PASS",
+      "case_id": "support_reclaim_retest_break",
+      "failure_scope": "AFFECTED_COMPONENT_ONLY",
+      "negative": "support_reclaim_retest_break_negative",
+      "owner_oracle_books": [
+        {
+          "bytes": 4509500,
+          "path": "config/v4_10_machine_vectors_r1_2.json",
+          "sha256": "fba82cb73df551833f1a12f3d5d0e30255b4dcff512e87c8e98de6b4b0617c7a"
+        },
+        {
+          "bytes": 31822,
+          "path": "config/v4_12_machine_vectors_v1.json",
+          "sha256": "42cb39050efcf47f76d27edff0eb3efbd964bf07ea02b8d16e010e2ebb36dd47"
+        },
+        {
+          "bytes": 17242,
+          "path": "config/v4_12_time_counter_vectors_r2_1.json",
+          "sha256": "0035935fd0582d9936f762ae1e15d16406f7efb32ee235f457162dc5d482fe6f"
+        },
+        {
+          "bytes": 2915,
+          "path": "config/v4_08_rotation_machine_vectors_v2.json",
+          "sha256": "912d2a9089ae843e955f4c6b30c30516bf71a7c36e176cb8aefb94684880e906"
+        },
+        {
+          "bytes": 36234,
+          "path": "config/v4_13_machine_vectors_v1_2.json",
+          "sha256": "a33f386974d98e72ebca471b70503101e857fc61bb471efd1924532294151790"
+        }
+      ],
+      "positive": "support_reclaim_retest_break_positive",
+      "vector_ids": [
+        "support_reclaim_retest_break_positive",
+        "support_reclaim_retest_break_negative"
+      ]
+    },
+    {
+      "acceptance_scope": "CONTRACT_FROZEN_NOT_RUNTIME_PASS",
+      "case_id": "confirmation_persistent_suppression",
+      "failure_scope": "AFFECTED_COMPONENT_ONLY",
+      "negative": "confirmation_persistent_suppression_negative",
+      "owner_oracle_books": [
+        {
+          "bytes": 4509500,
+          "path": "config/v4_10_machine_vectors_r1_2.json",
+          "sha256": "fba82cb73df551833f1a12f3d5d0e30255b4dcff512e87c8e98de6b4b0617c7a"
+        },
+        {
+          "bytes": 31822,
+          "path": "config/v4_12_machine_vectors_v1.json",
+          "sha256": "42cb39050efcf47f76d27edff0eb3efbd964bf07ea02b8d16e010e2ebb36dd47"
+        },
+        {
+          "bytes": 17242,
+          "path": "config/v4_12_time_counter_vectors_r2_1.json",
+          "sha256": "0035935fd0582d9936f762ae1e15d16406f7efb32ee235f457162dc5d482fe6f"
+        },
+        {
+          "bytes": 2915,
+          "path": "config/v4_08_rotation_machine_vectors_v2.json",
+          "sha256": "912d2a9089ae843e955f4c6b30c30516bf71a7c36e176cb8aefb94684880e906"
+        },
+        {
+          "bytes": 36234,
+          "path": "config/v4_13_machine_vectors_v1_2.json",
+          "sha256": "a33f386974d98e72ebca471b70503101e857fc61bb471efd1924532294151790"
+        }
+      ],
+      "positive": "confirmation_persistent_suppression_positive",
+      "vector_ids": [
+        "confirmation_persistent_suppression_positive",
+        "confirmation_persistent_suppression_negative"
+      ]
+    },
+    {
+      "acceptance_scope": "CONTRACT_FROZEN_NOT_RUNTIME_PASS",
+      "case_id": "multi_sector_dedup",
+      "failure_scope": "AFFECTED_COMPONENT_ONLY",
+      "negative": "multi_sector_dedup_negative",
+      "owner_oracle_books": [
+        {
+          "bytes": 4509500,
+          "path": "config/v4_10_machine_vectors_r1_2.json",
+          "sha256": "fba82cb73df551833f1a12f3d5d0e30255b4dcff512e87c8e98de6b4b0617c7a"
+        },
+        {
+          "bytes": 31822,
+          "path": "config/v4_12_machine_vectors_v1.json",
+          "sha256": "42cb39050efcf47f76d27edff0eb3efbd964bf07ea02b8d16e010e2ebb36dd47"
+        },
+        {
+          "bytes": 17242,
+          "path": "config/v4_12_time_counter_vectors_r2_1.json",
+          "sha256": "0035935fd0582d9936f762ae1e15d16406f7efb32ee235f457162dc5d482fe6f"
+        },
+        {
+          "bytes": 2915,
+          "path": "config/v4_08_rotation_machine_vectors_v2.json",
+          "sha256": "912d2a9089ae843e955f4c6b30c30516bf71a7c36e176cb8aefb94684880e906"
+        },
+        {
+          "bytes": 36234,
+          "path": "config/v4_13_machine_vectors_v1_2.json",
+          "sha256": "a33f386974d98e72ebca471b70503101e857fc61bb471efd1924532294151790"
+        }
+      ],
+      "positive": "multi_sector_dedup_positive",
+      "vector_ids": [
+        "multi_sector_dedup_positive",
+        "multi_sector_dedup_negative"
+      ]
+    },
+    {
+      "acceptance_scope": "CONTRACT_FROZEN_NOT_RUNTIME_PASS",
+      "case_id": "unknown_propagation",
+      "failure_scope": "AFFECTED_COMPONENT_ONLY",
+      "negative": "unknown_propagation_negative",
+      "owner_oracle_books": [
+        {
+          "bytes": 4509500,
+          "path": "config/v4_10_machine_vectors_r1_2.json",
+          "sha256": "fba82cb73df551833f1a12f3d5d0e30255b4dcff512e87c8e98de6b4b0617c7a"
+        },
+        {
+          "bytes": 31822,
+          "path": "config/v4_12_machine_vectors_v1.json",
+          "sha256": "42cb39050efcf47f76d27edff0eb3efbd964bf07ea02b8d16e010e2ebb36dd47"
+        },
+        {
+          "bytes": 17242,
+          "path": "config/v4_12_time_counter_vectors_r2_1.json",
+          "sha256": "0035935fd0582d9936f762ae1e15d16406f7efb32ee235f457162dc5d482fe6f"
+        },
+        {
+          "bytes": 2915,
+          "path": "config/v4_08_rotation_machine_vectors_v2.json",
+          "sha256": "912d2a9089ae843e955f4c6b30c30516bf71a7c36e176cb8aefb94684880e906"
+        },
+        {
+          "bytes": 36234,
+          "path": "config/v4_13_machine_vectors_v1_2.json",
+          "sha256": "a33f386974d98e72ebca471b70503101e857fc61bb471efd1924532294151790"
+        }
+      ],
+      "positive": "unknown_propagation_positive",
+      "vector_ids": [
+        "unknown_propagation_positive",
+        "unknown_propagation_negative",
+        "real_capability_unknown_promoted_ready_negative"
+      ]
+    },
+    {
+      "acceptance_scope": "CONTRACT_FROZEN_NOT_RUNTIME_PASS",
+      "case_id": "no_duplicate_event_episode",
+      "failure_scope": "AFFECTED_COMPONENT_ONLY",
+      "negative": "no_duplicate_event_episode_negative",
+      "owner_oracle_books": [
+        {
+          "bytes": 4509500,
+          "path": "config/v4_10_machine_vectors_r1_2.json",
+          "sha256": "fba82cb73df551833f1a12f3d5d0e30255b4dcff512e87c8e98de6b4b0617c7a"
+        },
+        {
+          "bytes": 31822,
+          "path": "config/v4_12_machine_vectors_v1.json",
+          "sha256": "42cb39050efcf47f76d27edff0eb3efbd964bf07ea02b8d16e010e2ebb36dd47"
+        },
+        {
+          "bytes": 17242,
+          "path": "config/v4_12_time_counter_vectors_r2_1.json",
+          "sha256": "0035935fd0582d9936f762ae1e15d16406f7efb32ee235f457162dc5d482fe6f"
+        },
+        {
+          "bytes": 2915,
+          "path": "config/v4_08_rotation_machine_vectors_v2.json",
+          "sha256": "912d2a9089ae843e955f4c6b30c30516bf71a7c36e176cb8aefb94684880e906"
+        },
+        {
+          "bytes": 36234,
+          "path": "config/v4_13_machine_vectors_v1_2.json",
+          "sha256": "a33f386974d98e72ebca471b70503101e857fc61bb471efd1924532294151790"
+        }
+      ],
+      "positive": "no_duplicate_event_episode_positive",
+      "vector_ids": [
+        "no_duplicate_event_episode_positive",
+        "no_duplicate_event_episode_negative"
+      ]
+    },
+    {
+      "acceptance_scope": "CONTRACT_FROZEN_NOT_RUNTIME_PASS",
+      "case_id": "same_day_revision_predecessor",
+      "failure_scope": "AFFECTED_COMPONENT_ONLY",
+      "negative": "same_day_revision_predecessor_negative",
+      "owner_oracle_books": [
+        {
+          "bytes": 4509500,
+          "path": "config/v4_10_machine_vectors_r1_2.json",
+          "sha256": "fba82cb73df551833f1a12f3d5d0e30255b4dcff512e87c8e98de6b4b0617c7a"
+        },
+        {
+          "bytes": 31822,
+          "path": "config/v4_12_machine_vectors_v1.json",
+          "sha256": "42cb39050efcf47f76d27edff0eb3efbd964bf07ea02b8d16e010e2ebb36dd47"
+        },
+        {
+          "bytes": 17242,
+          "path": "config/v4_12_time_counter_vectors_r2_1.json",
+          "sha256": "0035935fd0582d9936f762ae1e15d16406f7efb32ee235f457162dc5d482fe6f"
+        },
+        {
+          "bytes": 2915,
+          "path": "config/v4_08_rotation_machine_vectors_v2.json",
+          "sha256": "912d2a9089ae843e955f4c6b30c30516bf71a7c36e176cb8aefb94684880e906"
+        },
+        {
+          "bytes": 36234,
+          "path": "config/v4_13_machine_vectors_v1_2.json",
+          "sha256": "a33f386974d98e72ebca471b70503101e857fc61bb471efd1924532294151790"
+        }
+      ],
+      "positive": "same_day_revision_predecessor_positive",
+      "vector_ids": [
+        "same_day_revision_predecessor_positive",
+        "same_day_revision_predecessor_negative",
+        "previous_calendar_day_is_not_market_session_negative",
+        "revision_previous_manifest_diverges_negative",
+        "previous_market_session_weekend_positive"
+      ]
+    },
+    {
+      "acceptance_scope": "CONTRACT_FROZEN_NOT_RUNTIME_PASS",
+      "case_id": "cross_process_previous_session",
+      "failure_scope": "AFFECTED_COMPONENT_ONLY",
+      "negative": "cross_process_previous_session_negative",
+      "owner_oracle_books": [
+        {
+          "bytes": 4509500,
+          "path": "config/v4_10_machine_vectors_r1_2.json",
+          "sha256": "fba82cb73df551833f1a12f3d5d0e30255b4dcff512e87c8e98de6b4b0617c7a"
+        },
+        {
+          "bytes": 31822,
+          "path": "config/v4_12_machine_vectors_v1.json",
+          "sha256": "42cb39050efcf47f76d27edff0eb3efbd964bf07ea02b8d16e010e2ebb36dd47"
+        },
+        {
+          "bytes": 17242,
+          "path": "config/v4_12_time_counter_vectors_r2_1.json",
+          "sha256": "0035935fd0582d9936f762ae1e15d16406f7efb32ee235f457162dc5d482fe6f"
+        },
+        {
+          "bytes": 2915,
+          "path": "config/v4_08_rotation_machine_vectors_v2.json",
+          "sha256": "912d2a9089ae843e955f4c6b30c30516bf71a7c36e176cb8aefb94684880e906"
+        },
+        {
+          "bytes": 36234,
+          "path": "config/v4_13_machine_vectors_v1_2.json",
+          "sha256": "a33f386974d98e72ebca471b70503101e857fc61bb471efd1924532294151790"
+        }
+      ],
+      "positive": "cross_process_previous_session_positive",
+      "vector_ids": [
+        "cross_process_previous_session_positive",
+        "cross_process_previous_session_negative",
+        "readback_hash_mismatch_negative",
+        "producer_did_not_exit_negative",
+        "consumer_started_before_exit_negative",
+        "prior_readback_wrong_date_negative"
+      ]
+    },
+    {
+      "acceptance_scope": "CONTRACT_FROZEN_NOT_RUNTIME_PASS",
+      "case_id": "future_publication_leakage",
+      "failure_scope": "AFFECTED_COMPONENT_ONLY",
+      "negative": "future_publication_leakage_negative",
+      "owner_oracle_books": [
+        {
+          "bytes": 4509500,
+          "path": "config/v4_10_machine_vectors_r1_2.json",
+          "sha256": "fba82cb73df551833f1a12f3d5d0e30255b4dcff512e87c8e98de6b4b0617c7a"
+        },
+        {
+          "bytes": 31822,
+          "path": "config/v4_12_machine_vectors_v1.json",
+          "sha256": "42cb39050efcf47f76d27edff0eb3efbd964bf07ea02b8d16e010e2ebb36dd47"
+        },
+        {
+          "bytes": 17242,
+          "path": "config/v4_12_time_counter_vectors_r2_1.json",
+          "sha256": "0035935fd0582d9936f762ae1e15d16406f7efb32ee235f457162dc5d482fe6f"
+        },
+        {
+          "bytes": 2915,
+          "path": "config/v4_08_rotation_machine_vectors_v2.json",
+          "sha256": "912d2a9089ae843e955f4c6b30c30516bf71a7c36e176cb8aefb94684880e906"
+        },
+        {
+          "bytes": 36234,
+          "path": "config/v4_13_machine_vectors_v1_2.json",
+          "sha256": "a33f386974d98e72ebca471b70503101e857fc61bb471efd1924532294151790"
+        }
+      ],
+      "positive": "future_publication_leakage_positive",
+      "vector_ids": [
+        "future_publication_leakage_positive",
+        "future_publication_leakage_negative",
+        "future_price_negative",
+        "future_price_positive",
+        "future_membership_negative",
+        "future_membership_positive",
+        "membership_available_late_negative",
+        "membership_available_late_positive",
+        "future_state_negative",
+        "future_state_positive",
+        "future_focus_outcome_negative",
+        "future_focus_outcome_positive",
+        "weekly_friday_on_monday_negative",
+        "weekly_friday_on_monday_positive",
+        "month_end_on_midmonth_negative",
+        "month_end_on_midmonth_positive",
+        "future_adjustment_revision_negative",
+        "future_adjustment_revision_positive",
+        "supplemental_after_core_cutoff_negative",
+        "supplemental_after_core_cutoff_positive"
+      ]
+    },
+    {
+      "acceptance_scope": "CONTRACT_FROZEN_NOT_RUNTIME_PASS",
+      "case_id": "revision_append_only",
+      "failure_scope": "AFFECTED_COMPONENT_ONLY",
+      "negative": "revision_append_only_negative",
+      "owner_oracle_books": [
+        {
+          "bytes": 4509500,
+          "path": "config/v4_10_machine_vectors_r1_2.json",
+          "sha256": "fba82cb73df551833f1a12f3d5d0e30255b4dcff512e87c8e98de6b4b0617c7a"
+        },
+        {
+          "bytes": 31822,
+          "path": "config/v4_12_machine_vectors_v1.json",
+          "sha256": "42cb39050efcf47f76d27edff0eb3efbd964bf07ea02b8d16e010e2ebb36dd47"
+        },
+        {
+          "bytes": 17242,
+          "path": "config/v4_12_time_counter_vectors_r2_1.json",
+          "sha256": "0035935fd0582d9936f762ae1e15d16406f7efb32ee235f457162dc5d482fe6f"
+        },
+        {
+          "bytes": 2915,
+          "path": "config/v4_08_rotation_machine_vectors_v2.json",
+          "sha256": "912d2a9089ae843e955f4c6b30c30516bf71a7c36e176cb8aefb94684880e906"
+        },
+        {
+          "bytes": 36234,
+          "path": "config/v4_13_machine_vectors_v1_2.json",
+          "sha256": "a33f386974d98e72ebca471b70503101e857fc61bb471efd1924532294151790"
+        }
+      ],
+      "positive": "revision_append_only_positive",
+      "vector_ids": [
+        "revision_append_only_positive",
+        "revision_append_only_negative"
+      ]
+    },
+    {
+      "acceptance_scope": "CONTRACT_FROZEN_NOT_RUNTIME_PASS",
+      "case_id": "deterministic_replay",
+      "failure_scope": "AFFECTED_COMPONENT_ONLY",
+      "negative": "deterministic_replay_negative",
+      "owner_oracle_books": [
+        {
+          "bytes": 4509500,
+          "path": "config/v4_10_machine_vectors_r1_2.json",
+          "sha256": "fba82cb73df551833f1a12f3d5d0e30255b4dcff512e87c8e98de6b4b0617c7a"
+        },
+        {
+          "bytes": 31822,
+          "path": "config/v4_12_machine_vectors_v1.json",
+          "sha256": "42cb39050efcf47f76d27edff0eb3efbd964bf07ea02b8d16e010e2ebb36dd47"
+        },
+        {
+          "bytes": 17242,
+          "path": "config/v4_12_time_counter_vectors_r2_1.json",
+          "sha256": "0035935fd0582d9936f762ae1e15d16406f7efb32ee235f457162dc5d482fe6f"
+        },
+        {
+          "bytes": 2915,
+          "path": "config/v4_08_rotation_machine_vectors_v2.json",
+          "sha256": "912d2a9089ae843e955f4c6b30c30516bf71a7c36e176cb8aefb94684880e906"
+        },
+        {
+          "bytes": 36234,
+          "path": "config/v4_13_machine_vectors_v1_2.json",
+          "sha256": "a33f386974d98e72ebca471b70503101e857fc61bb471efd1924532294151790"
+        }
+      ],
+      "positive": "deterministic_replay_positive",
+      "vector_ids": [
+        "deterministic_replay_positive",
+        "deterministic_replay_negative"
+      ]
+    },
+    {
+      "acceptance_scope": "CONTRACT_FROZEN_NOT_RUNTIME_PASS",
+      "case_id": "historical_pit_evidence",
+      "failure_scope": "AFFECTED_COMPONENT_ONLY",
+      "negative": "historical_pit_evidence_negative",
+      "owner_oracle_books": [
+        {
+          "bytes": 4509500,
+          "path": "config/v4_10_machine_vectors_r1_2.json",
+          "sha256": "fba82cb73df551833f1a12f3d5d0e30255b4dcff512e87c8e98de6b4b0617c7a"
+        },
+        {
+          "bytes": 31822,
+          "path": "config/v4_12_machine_vectors_v1.json",
+          "sha256": "42cb39050efcf47f76d27edff0eb3efbd964bf07ea02b8d16e010e2ebb36dd47"
+        },
+        {
+          "bytes": 17242,
+          "path": "config/v4_12_time_counter_vectors_r2_1.json",
+          "sha256": "0035935fd0582d9936f762ae1e15d16406f7efb32ee235f457162dc5d482fe6f"
+        },
+        {
+          "bytes": 2915,
+          "path": "config/v4_08_rotation_machine_vectors_v2.json",
+          "sha256": "912d2a9089ae843e955f4c6b30c30516bf71a7c36e176cb8aefb94684880e906"
+        },
+        {
+          "bytes": 36234,
+          "path": "config/v4_13_machine_vectors_v1_2.json",
+          "sha256": "a33f386974d98e72ebca471b70503101e857fc61bb471efd1924532294151790"
+        }
+      ],
+      "positive": "historical_pit_evidence_positive",
+      "vector_ids": [
+        "historical_pit_evidence_positive",
+        "historical_pit_evidence_negative"
+      ]
+    }
+  ],
+  "contract_id": "V4_14_REPLAY_CASE_REGISTRY_V1",
+  "dimensions": [
+    "same_day_feedback",
+    "state_transition_legality",
+    "hysteresis",
+    "expiry",
+    "direct_prewatch_confirmed",
+    "rotation_pulse_accepted_failed",
+    "support_reclaim_retest_break",
+    "confirmation_persistent_suppression",
+    "multi_sector_dedup",
+    "unknown_propagation",
+    "no_duplicate_event_episode",
+    "same_day_revision_predecessor",
+    "cross_process_previous_session",
+    "future_publication_leakage",
+    "revision_append_only",
+    "deterministic_replay",
+    "historical_pit_evidence"
+  ],
+  "focus": false,
+  "global_mandatory_adoption": false,
+  "negative_cases": [
+    "same_day_feedback_negative",
+    "state_transition_legality_negative",
+    "hysteresis_negative",
+    "expiry_negative",
+    "direct_prewatch_confirmed_negative",
+    "rotation_pulse_accepted_failed_negative",
+    "support_reclaim_retest_break_negative",
+    "confirmation_persistent_suppression_negative",
+    "multi_sector_dedup_negative",
+    "unknown_propagation_negative",
+    "no_duplicate_event_episode_negative",
+    "same_day_revision_predecessor_negative",
+    "cross_process_previous_session_negative",
+    "future_publication_leakage_negative",
+    "revision_append_only_negative",
+    "deterministic_replay_negative",
+    "historical_pit_evidence_negative"
+  ],
+  "production": false,
+  "required_history": "OWNER_REQUIRED_WINDOWS_PLUS_EXACT_T_MINUS_1_PERSISTED_PUBLICATIONS; NO_SAME_DAY_PREDECESSOR",
+  "runtime_implemented": false,
+  "shadow": false,
+  "source_bindings": [
+    {
+      "bytes": 224998,
+      "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+      "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+    },
+    {
+      "bytes": 6837,
+      "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+      "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+    },
+    {
+      "bytes": 8456,
+      "path": "data/v4/V4_05_ACCEPTED_HEAD.json",
+      "sha256": "fc929d85553a900a6479ac9f50291d50cf750ad0e6c21fc58e4e05e92189f5cb"
+    },
+    {
+      "bytes": 6362,
+      "path": "data/v4/V4_07_ACCEPTED_HEAD.json",
+      "sha256": "b22117b0d14c35167cba86cb7398d878d7112f9cf17c1a427fa92766e78f880f"
+    },
+    {
+      "bytes": 21493,
+      "path": "data/v4/V4_08_ACCEPTED_HEAD_AMENDED_R1.json",
+      "sha256": "f2a35cebd18e8caf723e7900133333ce4b8df1a8314cb190dade7b0ea7624a3f"
+    },
+    {
+      "bytes": 2151,
+      "path": "data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json",
+      "sha256": "d6374a73b8084ccd383cbb4f75428ed91176e91cc09d87c3329041d57c5bd9ed"
+    },
+    {
+      "bytes": 11474,
+      "path": "data/v4/V4_09_ACCEPTED_HEAD.json",
+      "sha256": "641ef9e2e6fe8f461a9b765262e739791a6d3fdd220b0eff7947e2690de3a87d"
+    },
+    {
+      "bytes": 5102,
+      "path": "data/v4/V4_10_ACCEPTED_HEAD.json",
+      "sha256": "ad9fc4643652feb3684223817f2e9c300167d128e2e8a07179e86f65094fd1e1"
+    },
+    {
+      "bytes": 14090,
+      "path": "data/v4/V4_11_ACCEPTED_HEAD.json",
+      "sha256": "d8d96dce559eb968e6446f0626766980f6fb045fca1219e3e01fcd0a980b9928"
+    },
+    {
+      "bytes": 796484,
+      "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+      "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+    },
+    {
+      "bytes": 11314,
+      "path": "data/v4/V4_13_ACCEPTED_HEAD_AMENDED_R1.json",
+      "sha256": "98f222ba4d62318ee900a69b8cad7c25359a30bcc7097efe0a55b8ffea09aa65"
+    },
+    {
+      "bytes": 16890,
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+    },
+    {
+      "bytes": 4926,
+      "path": "config/v4_10_research_state_contract_r1_2.json",
+      "sha256": "33d50256635161f425f4f34ac805ea2f511362be7d71d35b3a62478de5a59127"
+    },
+    {
+      "bytes": 3709,
+      "path": "config/v4_10_machine_ast_r1_2.json",
+      "sha256": "de127c9566c840a75e7ab5fb1c033f8bbfa04dd88983e88360e94f12b2d99589"
+    },
+    {
+      "bytes": 435,
+      "path": "config/v4_10_parameter_set_r1_2.json",
+      "sha256": "20b66f9f2d2d4fe6ba8c3dd0583d6fa3d5408daebda09fae7ff27548e800ffd7"
+    },
+    {
+      "bytes": 6909,
+      "path": "config/v4_11_entry_contracts_r1.json",
+      "sha256": "460057a74d15b127d58204639a40697d5a6048949c6eba74f2dfeb54b99e9f2f"
+    },
+    {
+      "bytes": 921,
+      "path": "config/v4_11_confirmation_machine_ast_v1.json",
+      "sha256": "b6985ce8ff2498c115370b85690ba13538cdbb3339308fc77b6007e13c943062"
+    },
+    {
+      "bytes": 853,
+      "path": "config/v4_11_confirmation_parameter_set_v1.json",
+      "sha256": "34d61ecb766b523e9cec1c2178be3385968e6a9fc9b273025b35c3646117b1fd"
+    },
+    {
+      "bytes": 2214,
+      "path": "config/v4_12_structure_event_contract_v1.json",
+      "sha256": "b36a6e39a43665d5c07e52ad23fc3226d92cc73df6330a06606758cc38d1d99f"
+    },
+    {
+      "bytes": 41434,
+      "path": "config/v4_12_machine_ast_v1.json",
+      "sha256": "11d6cf124b7d8df59416a1558ba4be38a8787c4da4b613584459fe34014c6fc7"
+    },
+    {
+      "bytes": 14895,
+      "path": "config/v4_12_parameter_set_v1.json",
+      "sha256": "ac67334281235c01a99e918f67b0b643c1a6498e441583ae35f97ae08f3e6024"
+    },
+    {
+      "bytes": 21093,
+      "path": "config/v4_08_rotation_core_contract_r5.json",
+      "sha256": "2fee45359815fd70f489e0c24c29b49eac114628332b77399d6d2f14ea018330"
+    },
+    {
+      "bytes": 22088,
+      "path": "config/v4_13_dag_edge_registry_v1_2.json",
+      "sha256": "94a7e612711bd546ce0e638ea9e9291f664dc7e404f7597e6438405f44e1b024"
+    },
+    {
+      "bytes": 7715,
+      "path": "config/v4_13_projection_v1_2.json",
+      "sha256": "567b498c9e0f828dc041d56ab56e79c8a4d34877fd09eef46a9c1f504396b19c"
+    },
+    {
+      "bytes": 4509500,
+      "path": "config/v4_10_machine_vectors_r1_2.json",
+      "sha256": "fba82cb73df551833f1a12f3d5d0e30255b4dcff512e87c8e98de6b4b0617c7a"
+    },
+    {
+      "bytes": 31822,
+      "path": "config/v4_12_machine_vectors_v1.json",
+      "sha256": "42cb39050efcf47f76d27edff0eb3efbd964bf07ea02b8d16e010e2ebb36dd47"
+    },
+    {
+      "bytes": 17242,
+      "path": "config/v4_12_time_counter_vectors_r2_1.json",
+      "sha256": "0035935fd0582d9936f762ae1e15d16406f7efb32ee235f457162dc5d482fe6f"
+    },
+    {
+      "bytes": 2915,
+      "path": "config/v4_08_rotation_machine_vectors_v2.json",
+      "sha256": "912d2a9089ae843e955f4c6b30c30516bf71a7c36e176cb8aefb94684880e906"
+    },
+    {
+      "bytes": 36234,
+      "path": "config/v4_13_machine_vectors_v1_2.json",
+      "sha256": "a33f386974d98e72ebca471b70503101e857fc61bb471efd1924532294151790"
+    },
+    {
+      "bytes": 2679,
+      "path": "config/v4_13_rotation_structure_enrichment_schema_v1_2.json",
+      "sha256": "bd53db1a842dc97cded4871f834fceec3ec85b6f97aa604937f7aa1eb879ffd9"
+    }
+  ],
+  "status": "CONTRACT_FREEZE_ONLY",
+  "supersedes": {
+    "bytes": 33522,
+    "path": "config/v4_14_replay_case_registry_v1.json",
+    "sha256": "121684714762ae81153d5d3c3d2224a38b0dbbe656167015ebabd87a6a557ef7"
+  },
+  "time_role": "FROZEN_TARGET_SESSION_AND_EXACT_PREVIOUS_ACCEPTED_MARKET_SESSION",
+  "unknown_semantics": "UNKNOWN_NEVER_FALSE; COMPONENT_SCOPED_DEGRADED_OR_NOT_VERIFIABLE",
+  "version": "1.1.0"
+}

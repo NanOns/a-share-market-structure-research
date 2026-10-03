@@ -4,7 +4,7 @@ from pathlib import Path
 import json
 import pytest
 from jsonschema.exceptions import ValidationError
-from scripts import validate_r17c_contract_freeze as v
+from scripts import validate_r17r1_refreeze as v
 def test_full_contract_freeze_ready_for_external_audit_only():
     r=v.validate();assert r['V4_14_CONTRACT_COMPLETENESS']=='PASS_READY_FOR_EXTERNAL_AUDIT'
     assert r['V4_14_RUNTIME']=='NOT_IMPLEMENTED' and r['ALGORITHM_STATE_REPLAY_PASS']=='NOT_GRANTED' and r['runtime_executed'] is False

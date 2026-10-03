@@ -9,7 +9,7 @@ EXTRA=['tests/test_r17a_historical_governance.py']
 def run(output):
     output=Path(output).resolve();output.mkdir(parents=True,exist_ok=True)
     before=subprocess.check_output(['git','status','--porcelain'],cwd=ROOT)
-    args=[sys.executable,'-m','pytest',*SCOPE,*[p for p in EXTRA+['tests/test_r17b_promotion.py','tests/test_r17r1_active_closure.py'] if (ROOT/p).exists()],'-q','--junitxml='+str(output/'regression.xml')]
+    args=[sys.executable,'-m','pytest',*SCOPE,*[p for p in EXTRA+['tests/test_r17b_promotion.py','tests/test_r17r1_active_closure.py','tests/test_r17c_replay_contract.py','tests/test_r17r1_refreeze.py'] if (ROOT/p).exists()],'-q','--junitxml='+str(output/'regression.xml')]
     result=subprocess.run(args,cwd=ROOT,capture_output=True,text=True,encoding='utf8',errors='replace')
     (output/'regression.log').write_text(result.stdout+result.stderr,encoding='utf8')
     tree=ET.parse(output/'regression.xml');cases=list(tree.iter('testcase'))

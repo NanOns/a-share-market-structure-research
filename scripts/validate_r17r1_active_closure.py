@@ -26,10 +26,19 @@ def walk(value,families,root=ROOT,lineage=False,seen=None):
                 if key not in seen:seen.add(key);walk(obj,families,root,lineage,seen)
             elif path=='data/v4/V4_13_ACCEPTED_HEAD.json':
                 assert lineage,'IMMUTABLE_PREDECESSOR_IS_NOT_CURRENT_AUTHORITY';exact(value,root)
+            elif path=='data/v4/V4_STAGE_ACCEPTED_HEAD.json':
+                from src.workbench_analysis.historical_stage_governance_r17 import resolve
+                resolve(root,value)
+            elif path.startswith('SYNTHETIC_ENGINEERING_ONLY/'):
+                # Frozen literal identities in owner oracle inputs, not files
+                # or accepted authority. Contract paths never use this namespace.
+                assert value['sha256']=='0'*64 and value['bytes']==0
+            else:exact(value,root)
             return
         for k,v in value.items():walk(v,families,root,lineage or k in LINEAGE,seen)
 def validate(root=ROOT):
     root=Path(root);h=read(HEAD,root);old=read('data/v4/V4_13_ACCEPTED_HEAD.json',root)
+    assert hashlib.sha256((root/'data/v4/V4_13_ACCEPTED_HEAD.json').read_bytes()).hexdigest()=='f9d48096162d6c6de9f353251cc24715fb017243596131e45e6fcbaa5abb373c'
     stage=read('data/v4/V4_STAGE_ACCEPTED_HEAD.json',root)
     assert stage['v4_13_binding']['path']==HEAD;assert json.loads(exact(stage['v4_13_binding'],root))==h
     assert h['amendment_scope']=='FORMAL_ACTIVE_BINDING_CONSISTENCY_REPAIR'
@@ -38,7 +47,14 @@ def validate(root=ROOT):
     assert h['candidate']['sha256']=='a02e7918826627c2b496d89e546d3f5a408e4c68a1a89bc93946e152e7ca42ec';exact(h['candidate'],root)
     for k in ['amendment_authority','amendment_task','amendment_master']:exact(h[k],root)
     assert h['amendment_authority']==dict(path='docs/evidence/r17r1/V4_R17_INDEPENDENT_EXTERNAL_AUDIT_R1_20261003.md',sha256='43a0b9c9cc953acd07a86c1efd226c5379f14e6e809783c3d853ce2d016e6db5',bytes=3442)
-    for ref in read('reports/r17r1a/stage_contract.json',root)['protected']:exact(ref,root)
+    for ref in read('reports/r17r1a/stage_contract.json',root)['protected']:
+        exact(ref,root)
+        prior=subprocess.check_output(['git','show','204d799f26a7badbce3d6b09d3ceed722c522c91:'+ref['path']],cwd=root)
+        if prior.startswith(b'version https://git-lfs.github.com/spec/v1'):
+            assert ('oid sha256:'+ref['sha256']).encode() in prior and ('size '+str(ref['bytes'])).encode() in prior
+        else:assert hashlib.sha256(prior).hexdigest()==ref['sha256'] and len(prior)==ref['bytes']
+    for ref in h['runtime_source_bindings']:
+        exact(ref,root);exact(dict(ref,path=ref['original_path']),root)
     parent=json.loads(exact(h['amendment_parent_stage_archive'],root))
     assert all(stage[k]==v for k,v in parent.items() if k!='v4_13_binding')
     assert set(stage)-set(parent)=={'v4_13_package_authority'}
@@ -48,6 +64,8 @@ def validate(root=ROOT):
     assert hashlib.sha256(canon(h['contract_refs'])).hexdigest()==h['contract_digest']==entry['contract_digest']
     assert entry['active_family_closure']==h['active_family_closure']
     families=closure['families'];assert len(families)==len(h['contract_refs'])==14
+    authorized_paths={r['path'].replace('_v1_1.json','_v1_2.json') if any(r['path']=='config/v4_13_'+name+'_v1_1.json' for name in ['dag_edge_registry','rotation_structure_enrichment_schema','field_registry','output_schema','machine_vectors']) else r['path'] for r in old['contract_refs']}
+    assert {r['path'] for r in h['contract_refs']}==authorized_paths,'UNAUTHORIZED_FAMILY_SELECTION'
     assert {r['path'] for r in h['contract_refs']}=={f['active']['path'] for f in families.values()}
     for family,row in families.items():
         obj=json.loads(exact(row['active'],root));assert obj['contract_id']==family and obj['version']==row['version']

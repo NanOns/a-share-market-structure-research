@@ -1,0 +1,39 @@
+{
+  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+  "NEXT": "STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT",
+  "OPEN_VALIDATION_DEBT": "REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT",
+  "accepted_future_endpoint_read_count": 0,
+  "append_only_revision_namespace": "reports/r20r1/maturity_debt_revisions/",
+  "audit_item_id": "R20_AUDIT_P0_REAL_MATURED_SCOPE",
+  "capability": "NOT_GRANTED_PENDING_MATURITY_EVIDENCE",
+  "contract_id": "R20R1_MATURITY_VALIDATION_DEBT_V1",
+  "evidence": [
+    {
+      "bytes": 17539,
+      "path": "reports/r20r1/REAL_MATURITY_FEASIBILITY_GATE.json",
+      "sha256": "55567efe6cc0632fa9a89d9774e54cf2cf040ee2d520308e02ea77a64ce8eddb"
+    }
+  ],
+  "historical_PIT_debt_is_separate": true,
+  "matured_real_horizons": [],
+  "policy": {
+    "accumulation": "APPEND_ONLY_EXACT_INDEPENDENT_MATURITY_RECEIPTS_WITH_EXPLICIT_HORIZON_COVERAGE",
+    "blocks_dependent_claims": true,
+    "blocks_unrelated_development": false,
+    "capability": "REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT",
+    "closure": "AUTOMATIC_ONLY_AFTER_INDEPENDENT_EXACT_REAL_MATURITY_PROOF;_NO_IMPLICIT_ALL_HORIZONS_OR_PIT_GRANT",
+    "does_not_authorize_next_stage": true,
+    "incremental_evidence_command": "python -m scripts.r20r1_maturity_debt <exact_packet_list.json>",
+    "minimum_closure_scope": "ONE_OR_MORE_INDEPENDENTLY_VERIFIED_REAL_MATURED_HORIZONS;_REMAINING_HORIZONS_RESTRICTED",
+    "trigger": "ACCEPTED_FUTURE_SESSION_INCREMENT"
+  },
+  "required_horizon_namespace": [
+    1,
+    3,
+    5,
+    10,
+    20
+  ],
+  "scope": "REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT_ONLY",
+  "status": "OPEN"
+}

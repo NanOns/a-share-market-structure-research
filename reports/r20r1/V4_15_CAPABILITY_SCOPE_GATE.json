@@ -1,0 +1,77 @@
+{
+  "Focus": false,
+  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+  "NEXT": "STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT",
+  "OPEN_VALIDATION_DEBT": "REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT",
+  "Production": false,
+  "R20R1_SCOPE_CLOSURE": "PASS_LOCAL",
+  "REAL_ACCEPTED_SOURCE_PENDING_DUE_READBACK": "PASS_CAPABILITY_SCOPED",
+  "REAL_ACCEPTED_SOURCE_T0_INTEGRATION": "PASS_CAPABILITY_SCOPED",
+  "REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT": "NOT_GRANTED_PENDING_MATURITY_EVIDENCE",
+  "Shadow": false,
+  "V4_15_ACCEPTED_HEAD": "NOT_CREATED",
+  "V4_15_RUNTIME_ENGINEERING": "PASS",
+  "V4_16": false,
+  "V4_DATA_ACCEPTED_HEAD": "2026-09-30",
+  "V4_STAGE_ACCEPTED_HEAD": "V4_00_TO_V4_14_ACCEPTED",
+  "bindings": {
+    "engineering_e2e": {
+      "bytes": 688,
+      "path": "reports/r20e/INDEPENDENT_E2E_GATE.json",
+      "sha256": "2c7041274d18dac9d334a7bade15ac85b1e1e8c96b418930c8d7d6dc0bf864fb"
+    },
+    "external_audit": {
+      "bytes": 8740,
+      "path": "docs/evidence/r20r1/V4_R20_INDEPENDENT_EXTERNAL_AUDIT_R1_20261003.md",
+      "sha256": "21cab2f3fa195ada911873a05e803d32639c594c487618e3135de5e21a5817d5"
+    },
+    "feasibility": {
+      "bytes": 17539,
+      "path": "reports/r20r1/REAL_MATURITY_FEASIBILITY_GATE.json",
+      "sha256": "55567efe6cc0632fa9a89d9774e54cf2cf040ee2d520308e02ea77a64ce8eddb"
+    },
+    "historical_seal": {
+      "bytes": 5308,
+      "path": "reports/r20e/V4_15_RUNTIME_CANDIDATE_R20_SEAL.json",
+      "sha256": "74dbcbd1ffefc8dfb20090776d861c96815e6b5fa22af49c8553e414a0be7653"
+    },
+    "master": {
+      "bytes": 4493,
+      "path": "docs/evidence/r20r1/V4_NEXT_ROUND_EXECUTION_MASTER_R20R1_20261003.md",
+      "sha256": "32716c81a314f2dcb356db6fea006f37de86b47575facfd2f0677f4043b54fe3"
+    },
+    "real_settlement": {
+      "bytes": 6014,
+      "path": "reports/r20d/SETTLEMENT_GATE.json",
+      "sha256": "08fa482f46862c704bf3ada4426f69b67a896594d8d1b734c3e62eeba476010a"
+    },
+    "scope_contract": {
+      "bytes": 2232,
+      "path": "config/v4_15_capability_scope_r20r1_v1.json",
+      "sha256": "585d7730b5d58835497e57569af647be3348c25be7594c809dd7d8d12900ad82"
+    },
+    "task": {
+      "bytes": 7092,
+      "path": "docs/evidence/r20r1/V4_15_R20R1_REAL_MATURITY_SCOPE_CLOSURE_TASK_20261003.md",
+      "sha256": "ebec88dae8c79b6e83b550b4b0834231b5c9fdc23894603958e9fb3e64943fec"
+    }
+  },
+  "contract_id": "V4_15_CAPABILITY_SCOPE_GATE_R20R1_V1",
+  "execution_baseline": "7f97f4487e2c8aaccb7e7701af4ccfddfa7ddec9",
+  "supersession": {
+    "R20A_R20B_CURRENT_R20C_R20D_ENGINEERING_R20E_ENGINEERING": "PASS_KEEP",
+    "historical_files_rewritten": false,
+    "labels_superseded": [
+      "REAL_ACCEPTED_SOURCE_SETTLEMENT",
+      "REAL_ACCEPTED_SOURCE_V4_15"
+    ],
+    "replacement_capabilities": [
+      "V4_15_RUNTIME_ENGINEERING",
+      "REAL_ACCEPTED_SOURCE_T0_INTEGRATION",
+      "REAL_ACCEPTED_SOURCE_PENDING_DUE_READBACK",
+      "REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT",
+      "HISTORICAL_PIT_EFFECTIVENESS"
+    ],
+    "scope": "PROMOTION_SEMANTICS_ONLY"
+  }
+}

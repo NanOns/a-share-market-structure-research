@@ -1,0 +1,184 @@
+{
+  "CURRENT_REAL_MATURITY_EVIDENCE": "NONE",
+  "FUTURE_POSITIVE_PATH_ENGINEERING_REACHABILITY": "PASS",
+  "Focus": false,
+  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+  "NEXT": "STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT",
+  "OPEN_VALIDATION_DEBT": "REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT_RUNTIME",
+  "PROVED_HORIZONS": [],
+  "Production": false,
+  "R20R1R1_FORWARD_MATURITY_REACHABILITY": "PASS_LOCAL",
+  "R20R1R1_INDEPENDENT_ORACLE": "PASS_LOCAL",
+  "REALTIME_ACCEPTED_COHORT_MATURITY": "NOT_GRANTED",
+  "REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT_RUNTIME": "NOT_GRANTED_PENDING_MATURITY_EVIDENCE",
+  "Shadow": false,
+  "T0_OBSERVATION_SCOPE": "RECONSTRUCTED_ASOF",
+  "UNPROVED_HORIZONS": [
+    1,
+    3,
+    5,
+    10,
+    20
+  ],
+  "V4_15_ACCEPTED_HEAD": "NOT_CREATED",
+  "V4_16": false,
+  "V4_DATA_ACCEPTED_HEAD": "2026-09-30",
+  "V4_STAGE_ACCEPTED_HEAD": "V4_00_TO_V4_14_ACCEPTED",
+  "bindings": {
+    "T0_data_archive": {
+      "bytes": 16890,
+      "path": "reports/r20r1r1/T0_DATA_HEAD_ARCHIVE.json",
+      "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+    },
+    "T0_lineage_registry": {
+      "bytes": 1633,
+      "path": "config/v4_15_maturity_t0_lineage_r20r1r1_v2.json",
+      "sha256": "6137e5a7515a4d6fec2cd14d6ed2d8dabb3b2942cd787eb250c2da000ccc9d42"
+    },
+    "clean_junit": {
+      "bytes": 23869,
+      "path": "reports/r20r1r1/clean_regression/tests.xml",
+      "sha256": "e512b4327894325adfbbf8a5e3bd2fd7231c59d02bb918e6e3953969aadc12fa"
+    },
+    "clean_log": {
+      "bytes": 271,
+      "path": "reports/r20r1r1/clean_regression/runner.log",
+      "sha256": "8b503cc21ffe68b4fce2751e2b5dbec5b47b8fd0dd33cb2f99229aefdf2dc2cb"
+    },
+    "clean_regression": {
+      "bytes": 46093,
+      "path": "reports/r20r1r1/clean_regression/CLEAN_DETACHED_REGRESSION.json",
+      "sha256": "5aae0c0d8ec2b327394926435d054aa44e14109b81b63e4d1b4fcf2d57c24f04"
+    },
+    "current_V4_14_authority": {
+      "bytes": 4178,
+      "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+      "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+    },
+    "current_data_head": {
+      "bytes": 16890,
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+    },
+    "current_stage_head": {
+      "bytes": 13840,
+      "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+      "sha256": "0014134e54e84d8b1e9a78aaee9c3f01533dc57195f62ddd3342c3675af8a926"
+    },
+    "debt_readback": {
+      "bytes": 1843,
+      "path": "reports/r20r1r1/MATURITY_DEBT_READBACK.json",
+      "sha256": "9cb576f2d5d4e1d179ef5506ecb3e8294c3e54c805ddeb6632420a00944ef0f9"
+    },
+    "engineering_reachability": {
+      "bytes": 1557,
+      "path": "reports/r20r1r1/ENGINEERING_REACHABILITY.json",
+      "sha256": "57693fd8c6f7c597f21ae68150e45f7e41102eb6a6e0dad75b4fb317af05adad"
+    },
+    "external_audit": {
+      "bytes": 7027,
+      "path": "docs/evidence/r20r1r1/V4_R20R1_INDEPENDENT_EXTERNAL_AUDIT_R2_20261003.md",
+      "sha256": "d1cee3faa25b8e77d4bd578bf8b9201f9c78058599e0c1dc4282432def48810d"
+    },
+    "independent_oracle": {
+      "bytes": 1417,
+      "path": "reports/r20r1r1/R20R1R1_INDEPENDENT_ORACLE.json",
+      "sha256": "23170ccd974b74ff8b887fc4d5bc7b1b66d2d500d2d25a1a74008c42df40095f"
+    },
+    "master": {
+      "bytes": 3529,
+      "path": "docs/evidence/r20r1r1/V4_NEXT_ROUND_EXECUTION_MASTER_R20R1R1_R2_20261003.md",
+      "sha256": "ecacdfe61a8504dc5a223cb47e4dd39c61b9971671ffae554503b649bf00df4d"
+    },
+    "prior_R20R1_seal_PASS_KEEP": {
+      "bytes": 5446,
+      "path": "reports/r20r1/V4_15_R20R1_CANDIDATE_SEAL.json",
+      "sha256": "03eaea65f1d22329c5fc790c32b3b1ee7e5afe21d0504807b5d9ec9f4342ca58"
+    },
+    "prior_evidence_preservation": {
+      "bytes": 587178,
+      "path": "reports/r20r1r1/FROZEN_BASELINE_BINDINGS.json",
+      "sha256": "cad3b0332be48665ed6901363ea3dca62a932f9f7ed3347e7c78ea533f485e3f"
+    },
+    "repair_task": {
+      "bytes": 6245,
+      "path": "docs/evidence/r20r1r1/V4_15_R20R1R1_FORWARD_MATURITY_DEBT_REPAIR_TASK_R2_20261003.md",
+      "sha256": "afca7f5a4876151f0e4a58318a6535a928b1603e2c3e7277c8f1b066180b0fd5"
+    },
+    "scope_gate": {
+      "bytes": 3121,
+      "path": "reports/r20r1r1/FORWARD_MATURITY_SCOPE_GATE.json",
+      "sha256": "2acb675dd465bbdf90c4b496a67c8b42119a4f011dcd13d37a16e120dde5123a"
+    },
+    "versioned_debt_contract": {
+      "bytes": 1689,
+      "path": "config/v4_15_maturity_debt_contract_r20r1r1_v2.json",
+      "sha256": "378215431859fa5341f0ca47ad1d282e5bf3a21b3ef4f1e01a532841d40f4e37"
+    }
+  },
+  "blocks_unrelated_development": false,
+  "clean_regression_passed": 193,
+  "contract_id": "V4_15_R20R1R1_R2_FORWARD_MATURITY_CANDIDATE_SEAL",
+  "execution_baseline": "555409d79c58517761472531404f0ee5cccd81af",
+  "isolated_engineering_evidence_can_grant_current_real_capability": false,
+  "prior_R20_runtime_and_R20R1_scope": "PASS_KEEP",
+  "stage_promotion_authorized": false,
+  "status": "PASS_LOCAL",
+  "supersession_scope": "R20R1_FORWARD_MATURITY_DEBT_MECHANISM_ONLY",
+  "tested_source": "c1615c3452798d3565ebe653cb4ea5ce60e54a30",
+  "tested_source_immutable_ref": "refs/tags/codex/r20r1r1-tested-source-20261003-r2",
+  "tested_source_is_ancestor_of_final_evidence_commit": true,
+  "tested_source_remote": "https://github.com/NanOns/a-share-market-structure-research.git",
+  "transitions": [
+    {
+      "aggregate_state": "OPEN",
+      "proved_horizons": [],
+      "status": "PASS",
+      "unproved_horizons": [
+        1,
+        3,
+        5,
+        10,
+        20
+      ]
+    },
+    {
+      "aggregate_state": "PARTIAL_MATURITY_EVIDENCE",
+      "proved_horizons": [
+        1
+      ],
+      "status": "PASS",
+      "unproved_horizons": [
+        3,
+        5,
+        10,
+        20
+      ]
+    },
+    {
+      "aggregate_state": "PARTIAL_MATURITY_EVIDENCE",
+      "proved_horizons": [
+        1,
+        3
+      ],
+      "status": "PASS",
+      "unproved_horizons": [
+        5,
+        10,
+        20
+      ]
+    },
+    {
+      "aggregate_state": "FULL_REQUIRED_HORIZONS_PROVEN",
+      "proved_horizons": [
+        1,
+        3,
+        5,
+        10,
+        20
+      ],
+      "status": "PASS",
+      "unproved_horizons": []
+    }
+  ]
+}

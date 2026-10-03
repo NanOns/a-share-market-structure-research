@@ -1,0 +1,78 @@
+{
+  "KEEP_integrity": {
+    "bytes": 18140,
+    "path": "reports/r17c/KEEP_integrity.json",
+    "sha256": "4bd97c6e2b0b0821dfe5c1f4798a4299197f22de6a9220afe97e8efd81d9486b"
+  },
+  "baseline": "f12315bf8e3142aa44e9068c5895004c35c4e23c",
+  "final_state": {
+    "ALGORITHM_STATE_REPLAY_PASS": "NOT_GRANTED",
+    "NEXT": "STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT",
+    "R17A_CROSS_STAGE_GOVERNANCE_REPAIR": "PASS",
+    "R17B_V4_13_ACCEPTED_HEAD_PROMOTION": "PASS",
+    "R17C_V4_14_CONTRACT_FREEZE_ENTRY": "PASS_LOCAL",
+    "V4_13_ACCEPTED_HEAD": "CREATED_EXTERNALLY_AUTHORIZED_ENGINEERING_SCOPE",
+    "V4_14_CONTRACT_COMPLETENESS": "PASS_READY_FOR_EXTERNAL_AUDIT",
+    "V4_14_RUNTIME": "NOT_IMPLEMENTED",
+    "V4_DATA_ACCEPTED_HEAD": "2026-09-30",
+    "V4_STAGE_ACCEPTED_HEAD": "V4_00_TO_V4_13_ACCEPTED"
+  },
+  "focus": false,
+  "global_mandatory_adoption": false,
+  "heads": {
+    "data/v4/V4_12_ACCEPTED_HEAD.json": {
+      "bytes": 796484,
+      "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+      "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+    },
+    "data/v4/V4_13_ACCEPTED_HEAD.json": {
+      "bytes": 8023,
+      "path": "data/v4/V4_13_ACCEPTED_HEAD.json",
+      "sha256": "f9d48096162d6c6de9f353251cc24715fb017243596131e45e6fcbaa5abb373c"
+    },
+    "data/v4/V4_DATA_ACCEPTED_HEAD.json": {
+      "bytes": 16890,
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+    },
+    "data/v4/V4_STAGE_ACCEPTED_HEAD.json": {
+      "bytes": 11302,
+      "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+      "sha256": "87cb66c9dc90b4bb727fc69626fa22899c4e1a20c7bf2aa0d163102e0f07bf21"
+    }
+  },
+  "production": false,
+  "runtime_replay_executed": false,
+  "shadow": false,
+  "source_checkpoint_kind": "CLEAN_DETACHED_VALIDATION_SNAPSHOT; BRANCH_AND_REMOTE_ADVANCE_ONLY_AFTER_ALL_STAGES_COMPLETE",
+  "stage_gates": [
+    {
+      "bytes": 1053,
+      "path": "reports/r17a/completion_gate.json",
+      "sha256": "b6f8659f59bc480a336091efd5f6fe1ca4d698b4cedabf743a9f3b6ad4d88218"
+    },
+    {
+      "bytes": 3784,
+      "path": "reports/r17b/completion_gate.json",
+      "sha256": "79dc6a2db9f7bb81d9b0c2be49d1c19be0fb350b964b65fa436aadd5ba35ce11"
+    },
+    {
+      "bytes": 949,
+      "path": "reports/r17c/completion_gate.json",
+      "sha256": "53eed8afe83c465285231e6192f272bfcd5850c11e12c399cc727bb0b4e5f85c"
+    }
+  ],
+  "stage_order": [
+    "R17A",
+    "R17B",
+    "R17C"
+  ],
+  "test_totals": {
+    "deselected": 0,
+    "errors": 0,
+    "failed": 0,
+    "passed": 909,
+    "skipped": 0
+  },
+  "tested_source": "c221b3c8d7da7ded759406474bc875df944436fb"
+}

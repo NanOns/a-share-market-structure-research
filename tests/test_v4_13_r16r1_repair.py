@@ -4,7 +4,8 @@ from copy import deepcopy
 from pathlib import Path
 from types import SimpleNamespace
 import pytest
-from workbench_analysis.v4_13_io import FrozenContracts,revision_ordinal,atomic,canonical,file_ref,exact
+from workbench_analysis.v4_13_io import revision_ordinal,atomic,canonical,file_ref,exact
+from workbench_analysis.v4_13_accepted_contract_package import current_contracts as FrozenContracts
 from workbench_analysis.v4_13_input_binder import AcceptedInputBinder
 from workbench_analysis.v4_13_profile_runtime import copy_structure
 from workbench_analysis.v4_13_publication import publish,publish_stream

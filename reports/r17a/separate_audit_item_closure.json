@@ -1,0 +1,142 @@
+{
+  "items": [
+    {
+      "acceptance": "PASS",
+      "audit_id": "R16R1-AUD-DM01-STAGE-BINDING",
+      "independent_from_promotion": true,
+      "original_evidence": {
+        "bytes": 6586,
+        "path": "reports/v4_13_runtime_r16r1/separate_cross_stage_audit_items.json",
+        "sha256": "2eaa00b1f4ff6eca5a68d0e32612db4b9e67312d9bef0f00801ca97c8e0ac7b4"
+      },
+      "scope": "DM01 accepted chain publication-history reader: pinned Stage SHA differs from current protected Stage Head",
+      "test_results": [
+        {
+          "acceptance": "PASS",
+          "classname": "tests.v4_10.test_accepted_head_r1",
+          "name": "test_promotion_and_all_25_independent_checks"
+        },
+        {
+          "acceptance": "PASS",
+          "classname": "tests.v4_10.test_accepted_head_r1",
+          "name": "test_changed_authority_or_overclaim_rejected[implementation_commit-wrong]"
+        },
+        {
+          "acceptance": "PASS",
+          "classname": "tests.v4_10.test_accepted_head_r1",
+          "name": "test_changed_authority_or_overclaim_rejected[audited_sealed_head-wrong]"
+        },
+        {
+          "acceptance": "PASS",
+          "classname": "tests.v4_10.test_accepted_head_r1",
+          "name": "test_changed_authority_or_overclaim_rejected[external_acceptance_decision-wrong]"
+        },
+        {
+          "acceptance": "PASS",
+          "classname": "tests.v4_10.test_accepted_head_r1",
+          "name": "test_changed_authority_or_overclaim_rejected[production_permission-True]"
+        },
+        {
+          "acceptance": "PASS",
+          "classname": "tests.v4_10.test_accepted_head_r1",
+          "name": "test_changed_authority_or_overclaim_rejected[parent_binding-value4]"
+        },
+        {
+          "acceptance": "PASS",
+          "classname": "tests.v4_10.test_accepted_head_r1",
+          "name": "test_changed_authority_or_overclaim_rejected[capabilities-value5]"
+        },
+        {
+          "acceptance": "PASS",
+          "classname": "tests.v4_10.test_accepted_head_r1",
+          "name": "test_changed_authority_or_overclaim_rejected[open_audit_registry-value6]"
+        },
+        {
+          "acceptance": "PASS",
+          "classname": "tests.v4_10.test_accepted_head_r1",
+          "name": "test_changed_authority_or_overclaim_rejected[global_head_parent_archive-value7]"
+        },
+        {
+          "acceptance": "PASS",
+          "classname": "tests.v4_10.test_promotion",
+          "name": "test_promoted_exact"
+        },
+        {
+          "acceptance": "PASS",
+          "classname": "tests.v4_10.test_promotion",
+          "name": "test_overclaim_or_wrong_authority_rejected[capabilities-value0]"
+        },
+        {
+          "acceptance": "PASS",
+          "classname": "tests.v4_10.test_promotion",
+          "name": "test_overclaim_or_wrong_authority_rejected[implementation_commit-wrong]"
+        },
+        {
+          "acceptance": "PASS",
+          "classname": "tests.v4_10.test_promotion",
+          "name": "test_overclaim_or_wrong_authority_rejected[external_acceptance_decision-wrong]"
+        },
+        {
+          "acceptance": "PASS",
+          "classname": "tests.v4_10.test_promotion",
+          "name": "test_overclaim_or_wrong_authority_rejected[production_permission-True]"
+        },
+        {
+          "acceptance": "PASS",
+          "classname": "tests.v4_10.test_promotion",
+          "name": "test_overclaim_or_wrong_authority_rejected[upstream_binding-value4]"
+        },
+        {
+          "acceptance": "PASS",
+          "classname": "tests.v4_10.test_promotion",
+          "name": "test_overclaim_or_wrong_authority_rejected[artifact-value5]"
+        }
+      ]
+    },
+    {
+      "acceptance": "PASS",
+      "audit_id": "R16R1-AUD-HISTORICAL-STAGE-GATES",
+      "independent_from_promotion": true,
+      "original_evidence": {
+        "bytes": 6586,
+        "path": "reports/v4_13_runtime_r16r1/separate_cross_stage_audit_items.json",
+        "sha256": "2eaa00b1f4ff6eca5a68d0e32612db4b9e67312d9bef0f00801ca97c8e0ac7b4"
+      },
+      "scope": "Old V4-09 disabled/promotion gate and V4-12 R11/R12/entry frozen-checkout assertions",
+      "test_results": [
+        {
+          "acceptance": "PASS",
+          "classname": "tests.v4_09.test_stock_prewatch",
+          "name": "test_production_and_v4_09_acceptance_stay_disabled"
+        },
+        {
+          "acceptance": "PASS",
+          "classname": "tests.test_v4_12_runtime_r1",
+          "name": "test_real_candidate_unknown_readback"
+        },
+        {
+          "acceptance": "PASS",
+          "classname": "tests.test_v4_12_multi_anchor_r12",
+          "name": "test_contract_local_gate_and_negative_vectors"
+        },
+        {
+          "acceptance": "PASS",
+          "classname": "tests.test_v4_12_multi_anchor_r12",
+          "name": "test_full_independent_persisted_multi_anchor_oracle"
+        },
+        {
+          "acceptance": "PASS",
+          "classname": "tests.test_v4_12_persisted_r11",
+          "name": "test_persisted_independent_a_oracle"
+        },
+        {
+          "acceptance": "PASS",
+          "classname": "tests.test_v4_12_persisted_r11",
+          "name": "test_persisted_independent_b_oracle"
+        }
+      ]
+    }
+  ],
+  "status": "PASS",
+  "total_original_failures_retested": 22
+}

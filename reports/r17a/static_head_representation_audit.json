@@ -1,0 +1,18 @@
+{
+  "acceptance": "PASS_EXACT_ACCEPTED_BYTES_ARCHIVE_AND_PROVEN_GIT_CONTENT",
+  "audit_id": "R17A-AUD-STATIC-ACCEPTED-BYTE-REPRESENTATION",
+  "evidence": {
+    "bytes": 7249,
+    "path": "config/v4_historical_moving_head_registry_r17_v1.json",
+    "sha256": "e1696ce9a5b037fe3b798d069631fafb3621ffa7fa6b51e6e23d577b103c3bef"
+  },
+  "negative_cases": [
+    "missing_archive",
+    "archive_sha",
+    "current_content",
+    "binding_sha"
+  ],
+  "next": "KEEP_EXACT_ARCHIVE_NO_REBINDING",
+  "original_head_modified": false,
+  "scope": "V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD exact promotion binding versus Git LF checkout"
+}

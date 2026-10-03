@@ -6,7 +6,8 @@ import sys
 from copy import deepcopy
 from pathlib import Path
 import pytest
-from workbench_analysis.v4_13_io import digest,FrozenContracts,envelope
+from workbench_analysis.v4_13_io import digest,envelope
+from workbench_analysis.v4_13_accepted_contract_package import current_contracts as FrozenContracts
 from workbench_analysis.v4_13_publication import publish,readback
 from workbench_analysis.v4_13_loo_runtime import LOOContextRuntime
 from workbench_analysis.v4_13_profile_runtime import ProfileRuntime

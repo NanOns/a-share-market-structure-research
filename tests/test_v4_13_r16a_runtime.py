@@ -3,7 +3,8 @@ from types import SimpleNamespace
 from copy import deepcopy
 from pathlib import Path
 import pytest
-from workbench_analysis.v4_13_io import FrozenContracts,digest
+from workbench_analysis.v4_13_io import digest
+from workbench_analysis.v4_13_accepted_contract_package import current_contracts as FrozenContracts
 from workbench_analysis.v4_13_input_binder import AcceptedInputBinder
 from workbench_analysis.v4_13_loo_runtime import LOOContextRuntime,select_sector,relative_sector
 ROOT=Path(__file__).resolve().parents[1]

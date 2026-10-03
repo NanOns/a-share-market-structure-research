@@ -25,7 +25,7 @@ def validate_lineage(obj):
 def get(n):return read(P+n+'_v1_1.json')
 def prove_membership_scope(route):
  try:
-  stage=json.loads(exact(route['stage_binding']));sector=json.loads(exact(route['sector_owner']));member=json.loads(exact(route['membership_owner']))
+  stage=json.loads(historical_resolve(ROOT,route['stage_binding']).read_bytes());sector=json.loads(exact(route['sector_owner']));member=json.loads(exact(route['membership_owner']))
   assert stage['v4_08_binding']['path']==route['sector_owner']['path'] and stage['v4_08_binding']['sha256']==route['sector_owner']['sha256']
   assert sector['membership_binding']['path']==route['membership_owner']['path'] and sector['membership_binding']['sha256']==route['membership_owner']['sha256'];exact(sector['membership_binding'])
   assert sector['capabilities']['ACCEPTED_CONTEXT_ROUTING']=='ENGINEERING_ACCEPTED'

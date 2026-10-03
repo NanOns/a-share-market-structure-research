@@ -1,7 +1,8 @@
 from copy import deepcopy
 from pathlib import Path
 import pytest
-from workbench_analysis.v4_13_io import FrozenContracts,envelope
+from workbench_analysis.v4_13_io import envelope
+from workbench_analysis.v4_13_accepted_contract_package import current_contracts as FrozenContracts
 from workbench_analysis.v4_13_profile_runtime import fold_quality,copy_structure,dual_enrichment,sector_snapshot
 ROOT=Path(__file__).resolve().parents[1]
 @pytest.fixture(scope='module')

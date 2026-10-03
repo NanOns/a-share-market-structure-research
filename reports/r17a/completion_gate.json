@@ -1,0 +1,32 @@
+{
+  "DM01_HISTORICAL_STAGE_BINDING": "PASS",
+  "EXPANDED_CURRENT_REGRESSION": "PASS",
+  "HISTORICAL_STAGE_VALIDATOR_MAINTENANCE": "PASS",
+  "NEXT": "R17B_V4_13_ACCEPTED_HEAD_PROMOTION",
+  "R17A_CROSS_STAGE_GOVERNANCE_REPAIR": "PASS",
+  "audit_closure": {
+    "bytes": 5291,
+    "path": "reports/r17a/separate_audit_item_closure.json",
+    "sha256": "7b887cd961104249e18402e207cb09c37a1d8fe19b41086668746a0acd395708"
+  },
+  "baseline": "f12315bf8e3142aa44e9068c5895004c35c4e23c",
+  "clean_detached": {
+    "bytes": 1298,
+    "path": "reports/r17a/clean/clean_detached.json",
+    "sha256": "050c426d8c1e3004870405139ffaa134c68074d7efb5762f3c91cb8e25791bac"
+  },
+  "protected_byte_identical": true,
+  "regression": {
+    "bytes": 1045,
+    "path": "reports/r17a/clean/regression_gate.json",
+    "sha256": "1e4ae8470ef1d3d6eeb77f74dec1004ca6393bde427b2233ca8f6bc672526dd3"
+  },
+  "test_totals": {
+    "deselected": 0,
+    "errors": 0,
+    "failed": 0,
+    "passed": 828,
+    "skipped": 0
+  },
+  "tested_source": "5e07711cd362ea6cc81c39a45235a3add152062d"
+}

@@ -35,7 +35,15 @@ def validate(candidate=None):
         ref=h['global_head_parent_archive'];assert ref['path']=='reports/r17b/PARENT_STAGE_HEAD.json';assert exact(ref)
         return ref['sha256']==h['global_head_parent']['sha256']=='b0e1c2402efdd71d706a87f45280206a87fbe9e637a4168255b7ff4c036520f7' and ref['bytes']==h['global_head_parent']['bytes']==11381 and parent['accepted_stage_range']=='V4_00_TO_V4_12_ACCEPTED' and subprocess.check_output(['git','show',BASE+':'+STAGE],cwd=ROOT)==(ROOT/ref['path']).read_bytes()
     def stage_gate():
-        exact(s['v4_13_binding']);assert s['v4_13_binding']['path']==HEAD
+        exact(s['v4_13_binding'])
+        if s['v4_13_binding']['path']!=HEAD:
+            from scripts.validate_r17r1_active_closure import validate as current_validate
+            current_validate(ROOT)
+            assert all(s[k]==v for k,v in parent.items() if k!='accepted_stage_range')
+            assert s['accepted_stage_range']=='V4_00_TO_V4_13_ACCEPTED'
+            amended=read(s['v4_13_binding']['path']);historical=read(amended['amendment_parent_stage_archive']['path']);exact(amended['amendment_parent_stage_archive'])
+            return historical['v4_13_binding']['path']==HEAD and historical['accepted_stage_range']=='V4_00_TO_V4_13_ACCEPTED' and all(historical[k]==v for k,v in parent.items() if k!='accepted_stage_range') and historical['v4_13_capabilities']==h['capabilities']
+        assert s['v4_13_binding']['path']==HEAD
         return s['accepted_stage_range']=='V4_00_TO_V4_13_ACCEPTED' and s['v4_13_promotion_parent_archive']==h['global_head_parent_archive'] and all(s[k]==v for k,v in parent.items() if k!='accepted_stage_range') and s['v4_13_capabilities']==h['capabilities']
     def scope():
         expected=dict(V4_13_PROFILE_ADVANCED_PROJECTION='ENGINEERING_ACCEPTED',V4_13_CURRENT_MEMBERSHIP_RELATION='ENGINEERING_ACCEPTED_PIT_20260930',V4_13_TARGET_EXCLUDED_LOO_CORE='ENGINEERING_ACCEPTED_CAPABILITY_SCOPED',V4_13_STRUCTURE_READ_ONLY_PROJECTION='ENGINEERING_ACCEPTED',V4_13_COMPONENT_PROVENANCE='ENGINEERING_ACCEPTED',V4_13_REVISION_PUBLICATION='ENGINEERING_ACCEPTED',V4_13_REAL_SIGNAL_CAPABILITY='DEGRADED_BY_ACCEPTED_UPSTREAM_CAPABILITY',algorithmic_support_sector='UNKNOWN_REAL_ACCEPTED_CAPABILITY',relative_sector_state='UNKNOWN_REAL_ACCEPTED_CAPABILITY',historical_LOO='NOT_VERIFIABLE',legacy_B2='NOT_IMPLEMENTED')

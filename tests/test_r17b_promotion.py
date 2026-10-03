@@ -47,8 +47,8 @@ def test_formal_reader_does_not_consult_informal_receipt(monkeypatch):
         return original(path)
     monkeypatch.setattr(Path,'read_bytes',read)
     pkg=AcceptedContracts(ROOT)
-    assert pkg.config['projection']['version']=='1.2.0' and pkg.digest==v.read(v.HEAD)['contract_digest']
-    assert pkg.refs==v.read(v.MANIFEST)['contract_refs']
+    assert pkg.config['projection']['version']=='1.2.0' and pkg.digest==v.read('data/v4/V4_13_ACCEPTED_HEAD_AMENDED_R1.json')['contract_digest']
+    assert pkg.authority['historical_lineage']['original_publication_contract_refs']==v.read(v.MANIFEST)['contract_refs']
 def test_formal_reader_missing_or_wrong_head_fails_closed(tmp_path):
     (tmp_path/'data/v4').mkdir(parents=True)
     (tmp_path/'data/v4/V4_STAGE_ACCEPTED_HEAD.json').write_text(json.dumps(dict(accepted_stage_range='V4_00_TO_V4_13_ACCEPTED',v4_13_binding=dict(path=v.HEAD,sha256='0'*64))),encoding='utf8')

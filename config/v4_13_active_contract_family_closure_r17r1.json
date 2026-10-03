@@ -1,0 +1,242 @@
+{
+  "contract_id": "V4_13_ACTIVE_CONTRACT_FAMILY_CLOSURE_V1",
+  "families": {
+    "LOO_CONTEXT_V1": {
+      "active": {
+        "bytes": 9560,
+        "path": "config/v4_13_loo_context_v1_1.json",
+        "sha256": "4a5ea382ec04e280228f70e134a1f524576fb882ec4950ad1997fe784a08529b"
+      },
+      "lineage": {
+        "supersedes": {
+          "bytes": 6150,
+          "path": "config/v4_13_loo_context_v1.json",
+          "sha256": "382892e5daae579e83343a2e8cf80cfb2942cab0e77a2d1e09cdce546cc93806"
+        }
+      },
+      "version": "1.1.0"
+    },
+    "PROFILE_ADVANCED_PROJECTION_V1": {
+      "active": {
+        "bytes": 7715,
+        "path": "config/v4_13_projection_v1_2.json",
+        "sha256": "567b498c9e0f828dc041d56ab56e79c8a4d34877fd09eef46a9c1f504396b19c"
+      },
+      "lineage": {
+        "supersedes": {
+          "bytes": 2267,
+          "path": "config/v4_13_projection_v1_1.json",
+          "sha256": "891ee57f6ad73c2670afa01d998123586216acdf44d4dd3f4b9be77d1c246341"
+        }
+      },
+      "version": "1.2.0"
+    },
+    "ROTATION_STRUCTURE_ENRICHMENT_V1": {
+      "active": {
+        "bytes": 2679,
+        "path": "config/v4_13_rotation_structure_enrichment_schema_v1_2.json",
+        "sha256": "bd53db1a842dc97cded4871f834fceec3ec85b6f97aa604937f7aa1eb879ffd9"
+      },
+      "lineage": {
+        "derived_from": [
+          {
+            "bytes": 22494,
+            "path": "config/v4_13_field_registry_v1.json",
+            "sha256": "7ccad1897bd0ac9efdabfea7a30f73a93228e0843306e57e92b49e33f0967cb9"
+          },
+          {
+            "bytes": 17111,
+            "path": "config/v4_13_dag_edge_registry_v1.json",
+            "sha256": "f92cc86a5f2356cf6a0f384e811b9af9961f51d76a8253b123cce4fba567c3a5"
+          }
+        ],
+        "supersedes": {
+          "bytes": 2479,
+          "path": "config/v4_13_rotation_structure_enrichment_schema_v1_1.json",
+          "sha256": "8053dc2428936a6feac047d2d3a39500047b27705c009a19b69290d990267e71"
+        }
+      },
+      "version": "1.2.0"
+    },
+    "SECTOR_CONTEXT_STATE_V1": {
+      "active": {
+        "bytes": 16119,
+        "path": "config/v4_13_sector_context_state_schema_v1_1.json",
+        "sha256": "4824ac2ad267181592bdf826bc1784d3caa39cea0cf7dc822ac0a005be77bb6a"
+      },
+      "lineage": {
+        "derived_from": [
+          {
+            "bytes": 1114,
+            "path": "config/v4_13_output_schema_v1.json",
+            "sha256": "ad9beffacbe216ed324409288d550af1c59172a7d81832ab40981ddd0d2b4717"
+          },
+          {
+            "bytes": 22494,
+            "path": "config/v4_13_field_registry_v1.json",
+            "sha256": "7ccad1897bd0ac9efdabfea7a30f73a93228e0843306e57e92b49e33f0967cb9"
+          }
+        ]
+      },
+      "version": "1.0.0"
+    },
+    "V4_13_DAG_INTEGRATION_INTERFACE_V1": {
+      "active": {
+        "bytes": 22088,
+        "path": "config/v4_13_dag_edge_registry_v1_2.json",
+        "sha256": "94a7e612711bd546ce0e638ea9e9291f664dc7e404f7597e6438405f44e1b024"
+      },
+      "lineage": {
+        "supersedes": {
+          "bytes": 22084,
+          "path": "config/v4_13_dag_edge_registry_v1_1.json",
+          "sha256": "ae66a8e0cbad18389b9517578603f62961468870e02859b6812f4475e300863a"
+        }
+      },
+      "version": "1.2.0"
+    },
+    "V4_13_ENGINEERING_MEMBERSHIP_CONSUMER_ROUTE_V1": {
+      "active": {
+        "bytes": 1395,
+        "path": "config/v4_13_membership_consumer_route_v1_1.json",
+        "sha256": "5bc1e50c900bd2314a2a9ec602e3d2efc5b0f20f444a55e6500a1f0020303dfc"
+      },
+      "lineage": {},
+      "version": "1.0.0"
+    },
+    "V4_13_FIELD_REGISTRY_V1": {
+      "active": {
+        "bytes": 33353,
+        "path": "config/v4_13_field_registry_v1_2.json",
+        "sha256": "9ecbd79567113c5ac0b7b0951dd01a3a6e5f134341a93734388694b862fb8e73"
+      },
+      "lineage": {
+        "supersedes": {
+          "bytes": 33351,
+          "path": "config/v4_13_field_registry_v1_1.json",
+          "sha256": "59b9f13bd4d7c43e06dd6fda708420823bc1f20cc3ffd30e69893c64470d2d7e"
+        }
+      },
+      "version": "1.2.0"
+    },
+    "V4_13_INDEPENDENT_MACHINE_VECTORS_V1": {
+      "active": {
+        "bytes": 36234,
+        "path": "config/v4_13_machine_vectors_v1_2.json",
+        "sha256": "a33f386974d98e72ebca471b70503101e857fc61bb471efd1924532294151790"
+      },
+      "lineage": {
+        "historical_lineage": {
+          "retained_R1_vectors": {
+            "bytes": 5203,
+            "path": "config/v4_13_machine_vectors_v1.json",
+            "sha256": "d07eff297634e09b3c33efeca63698619d9b02604e3b4b50287ed1306c09df74"
+          }
+        },
+        "supersedes": {
+          "bytes": 36191,
+          "path": "config/v4_13_machine_vectors_v1_1.json",
+          "sha256": "ddadf06451bc42c9eb21976f1242567896faaaf8f0f37ed1390426b0bc519048"
+        }
+      },
+      "version": "1.2.0"
+    },
+    "V4_13_INPUT_SCHEMA_V1": {
+      "active": {
+        "bytes": 3743,
+        "path": "config/v4_13_input_schema_v1_1.json",
+        "sha256": "5f673fe05be5e377cbcd54cbe5fab17933e7bce59da544c62b8539af0973510d"
+      },
+      "lineage": {
+        "supersedes": {
+          "bytes": 851,
+          "path": "config/v4_13_input_schema_v1.json",
+          "sha256": "80fd3ef1f9eb1ec78795681717dc6edba1926992caf0fa1759003bb13333c704"
+        }
+      },
+      "version": "1.1.0"
+    },
+    "V4_13_OUTPUT_SCHEMA_V1": {
+      "active": {
+        "bytes": 3878,
+        "path": "config/v4_13_output_schema_v1_2.json",
+        "sha256": "6760d68ccc8be4c5e6333c2ce91c4dc3342dd7c15291c0e699644cf7f5879e96"
+      },
+      "lineage": {
+        "supersedes": {
+          "bytes": 3876,
+          "path": "config/v4_13_output_schema_v1_1.json",
+          "sha256": "72f5980f525ed4666234a6887ee3321a1d8b742a225c4b6681f7d877a9991427"
+        }
+      },
+      "version": "1.2.0"
+    },
+    "V4_13_PARAMETER_SET_V1": {
+      "active": {
+        "bytes": 836,
+        "path": "config/v4_13_parameter_set_v1_1.json",
+        "sha256": "76426f34be3f03dfa64e302293e1b6645ff84706bdd82ed20377ea9b47c22e76"
+      },
+      "lineage": {
+        "supersedes": {
+          "bytes": 615,
+          "path": "config/v4_13_parameter_set_v1.json",
+          "sha256": "86f68f80e5a14ae398588c7e0d9995ff29edd06ec63426673723ec82e0076723"
+        }
+      },
+      "version": "1.1.0"
+    },
+    "V4_13_PRODUCER_REGISTRY_V1": {
+      "active": {
+        "bytes": 4179,
+        "path": "config/v4_13_producer_registry_v1_1.json",
+        "sha256": "8880ac0da7967ef26bbc95aab9549e9a51fc32a546bc1e37fcd4c000d439452e"
+      },
+      "lineage": {
+        "supersedes": {
+          "bytes": 1968,
+          "path": "config/v4_13_producer_registry_v1.json",
+          "sha256": "2e104b0cb2ca4a36a57110cfc0bf16a2488882001707552a86d08ccce78689dd"
+        }
+      },
+      "version": "1.1.0"
+    },
+    "V4_13_QUALITY_DEGRADATION_V1": {
+      "active": {
+        "bytes": 2735,
+        "path": "config/v4_13_quality_map_v1_1.json",
+        "sha256": "acc8e9f9c048f5097e6594cf45458022d09ee2cca0cec6af519b4d7ebbd25092"
+      },
+      "lineage": {
+        "supersedes": {
+          "bytes": 909,
+          "path": "config/v4_13_quality_map_v1.json",
+          "sha256": "0324ecbd6e37e5814d943b42e85911e62881eefe0d891b0768da54c5ba7c572f"
+        }
+      },
+      "version": "1.1.0"
+    },
+    "V4_13_TIME_ROLE_REGISTRY_V1": {
+      "active": {
+        "bytes": 8137,
+        "path": "config/v4_13_time_role_registry_v1_1.json",
+        "sha256": "59bf8b16be96f502ed4c428d8e5476b6b60694b66099d3861b8847871ba212d1"
+      },
+      "lineage": {
+        "supersedes": {
+          "bytes": 6378,
+          "path": "config/v4_13_time_role_registry_v1.json",
+          "sha256": "fa40a1da756f57bec90b228976de99cc5e40102b7b0593e15737042ee55c6291"
+        }
+      },
+      "version": "1.1.0"
+    }
+  },
+  "lineage_roles": [
+    "supersedes",
+    "derived_from",
+    "historical_lineage"
+  ],
+  "selection": "EXPLICIT_ACCEPTED_PACKAGE_NO_DIRECTORY_LATEST_SCAN",
+  "version": "1.0.0"
+}

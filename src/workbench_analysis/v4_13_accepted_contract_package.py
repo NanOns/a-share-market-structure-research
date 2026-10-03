@@ -3,11 +3,14 @@ from pathlib import Path
 import json
 from copy import deepcopy
 from .v4_13_io import FrozenContracts,exact,digest
-HEAD='data/v4/V4_13_ACCEPTED_HEAD.json'
+HEAD='data/v4/V4_13_ACCEPTED_HEAD_AMENDED_R1.json'
 MANIFEST_SHA='a02e7918826627c2b496d89e546d3f5a408e4c68a1a89bc93946e152e7ca42ec'
 class AcceptedContracts(FrozenContracts):
     def __init__(self,root):
         self.root=Path(root)
+        from scripts.validate_r17r1_active_closure import validate
+        try: validate(self.root)
+        except (AssertionError, KeyError, TypeError) as error: raise ValueError('ACTIVE_CONTRACT_FAMILY_CLOSURE_REQUIRED') from error
         stage=json.loads((self.root/'data/v4/V4_STAGE_ACCEPTED_HEAD.json').read_bytes())
         if stage['accepted_stage_range']!='V4_00_TO_V4_13_ACCEPTED' or stage['v4_13_binding']['path']!=HEAD:raise ValueError('FORMAL_V4_13_ACCEPTED_AUTHORITY_REQUIRED')
         head=json.loads(exact(self.root,stage['v4_13_binding']))
@@ -19,9 +22,9 @@ class AcceptedContracts(FrozenContracts):
         if gate['R17A_CROSS_STAGE_GOVERNANCE_REPAIR']!='PASS' or head['ALGORITHM_STATE_REPLAY_PASS']!='NOT_GRANTED' or head['capabilities']['V4_13_REAL_SIGNAL_CAPABILITY']!='DEGRADED_BY_ACCEPTED_UPSTREAM_CAPABILITY':raise ValueError('FORMAL_ACCEPTANCE_GATE_OR_CAPABILITY_OVERCLAIM')
         candidate=json.loads(exact(self.root,head['candidate']))
         entry=json.loads(exact(self.root,head['formal_entry_contract']))
-        if entry['authority_namespace']!=HEAD or entry['amendment_receipt_presence_is_authority'] or head['contract_refs']!=candidate['contract_refs'] or entry['contract_refs']!=head['contract_refs']:raise ValueError('ACCEPTED_PACKAGE_BINDING_MISMATCH')
+        if entry['authority_namespace']!=HEAD or entry['amendment_receipt_presence_is_authority'] or head['historical_lineage']['original_publication_contract_refs']!=candidate['contract_refs'] or entry['contract_refs']!=head['contract_refs']:raise ValueError('ACCEPTED_PACKAGE_BINDING_MISMATCH')
         self.refs=head['contract_refs'];self.digest=digest(self.refs)
-        if self.digest!=head['contract_digest'] or self.digest!=candidate['contract_digest']:raise ValueError('ACCEPTED_PACKAGE_DIGEST_MISMATCH')
+        if self.digest!=head['contract_digest'] or head['historical_lineage']['original_publication_contract_digest']!=candidate['contract_digest']:raise ValueError('ACCEPTED_PACKAGE_DIGEST_MISMATCH')
         self.config={Path(r['path']).stem.removeprefix('v4_13_').rsplit('_v',1)[0]:json.loads(exact(self.root,r)) for r in self.refs}
         projection=self.config['projection']
         if projection['version']!='1.2.0' or projection['supersedes']['path']!='config/v4_13_projection_v1_1.json':raise ValueError('PROJECTION_V1_2_LINEAGE_REQUIRED')

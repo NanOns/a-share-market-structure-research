@@ -33,6 +33,9 @@ def state_input(authority,envelope,prior,values,source_outputs):
     return x
 
 def replay(authority,envelope,previous,_edge_prepared=None):
+    if envelope['owner_inputs'].get('preexec_edge_binding'):
+        from .v4_14_precall_runtime import replay as precall_replay
+        return precall_replay(authority,envelope,previous)
     if envelope['owner_inputs'].get('owner_edge_complete') and _edge_prepared is None:
         from .v4_14_owner_edge_runtime import replay as edge_replay
         return edge_replay(authority,envelope,previous)

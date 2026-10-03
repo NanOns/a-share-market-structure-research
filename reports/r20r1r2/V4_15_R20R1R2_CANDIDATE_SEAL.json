@@ -1,0 +1,201 @@
+{
+  "CURRENT_ACCEPTED_FUTURE_ENDPOINT_READ_COUNT": 0,
+  "CURRENT_REAL_MATURITY_EVIDENCE": "NONE",
+  "Focus": false,
+  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+  "HORIZON_SCOPED_DEBT": "PASS_KEEP",
+  "NEXT": "STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT",
+  "OPEN_VALIDATION_DEBT": "REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT_RUNTIME",
+  "P0_A_REAL_DM01_ACCEPTED_COMPONENT_LINEAGE": "CLOSED_LOCAL",
+  "P0_B_NATIVE_DM01_FORWARD_PROJECTION": "CLOSED_LOCAL",
+  "PRODUCTION_SHAPED_POSITIVE_PATH": "PASS",
+  "PROVED_HORIZONS": [],
+  "Production": false,
+  "R20R1R2_INDEPENDENT_ORACLE": "PASS_LOCAL",
+  "R20R1R2_REAL_DM01_DATA_HEAD_REACHABILITY": "PASS_LOCAL",
+  "R20R1R2_REAL_DM01_ROW_SCHEMA_ADMISSION": "PASS_LOCAL",
+  "REALTIME_ACCEPTED_COHORT_MATURITY": "NOT_GRANTED",
+  "REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT_RUNTIME": "NOT_GRANTED_PENDING_MATURITY_EVIDENCE",
+  "Shadow": false,
+  "T0_OBSERVATION_SCOPE": "RECONSTRUCTED_ASOF",
+  "UNPROVED_HORIZONS": [
+    1,
+    3,
+    5,
+    10,
+    20
+  ],
+  "V4_15_ACCEPTED_HEAD": "NOT_CREATED",
+  "V4_16": false,
+  "V4_DATA_ACCEPTED_HEAD": "2026-09-30",
+  "V4_STAGE_ACCEPTED_HEAD": "V4_00_TO_V4_14_ACCEPTED",
+  "active_engineering_source_binding_revision": "R2",
+  "bindings": {
+    "V4_14_authority": {
+      "bytes": 4178,
+      "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+      "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+    },
+    "baseline_immutability": {
+      "bytes": 611377,
+      "path": "reports/r20r1r2/FROZEN_BASELINE_BINDINGS.json",
+      "sha256": "5232dac05044d0b0fa745395a96f2a93d057b25db7e7df780f4439d5396e534b"
+    },
+    "clean_junit": {
+      "bytes": 28465,
+      "path": "reports/r20r1r2/clean_regression/tests.xml",
+      "sha256": "ce8c5ad0148ac0f07780126dd2a8908a6a23bf60f1f1c246d548cd151a8f2c9a"
+    },
+    "clean_log": {
+      "bytes": 352,
+      "path": "reports/r20r1r2/clean_regression/runner.log",
+      "sha256": "df2ab43c2f2de6046dd3dbceab645fee6aef417c2f41af27af886632ec231382"
+    },
+    "clean_regression": {
+      "bytes": 46178,
+      "path": "reports/r20r1r2/clean_regression/CLEAN_DETACHED_REGRESSION.json",
+      "sha256": "518788d6fa921235a1d747aa90b0a25e55da6812381aaaa30b76cafafed6e419"
+    },
+    "current_debt_readback": {
+      "bytes": 1843,
+      "path": "reports/r20r1r2/MATURITY_DEBT_READBACK.json",
+      "sha256": "e40b89ce3d90cf2ad250abe00e111ec55263b25571067c981c645a4ce99c1a52"
+    },
+    "external_audit": {
+      "bytes": 9292,
+      "path": "docs/evidence/r20r1r2/V4_R20R1R1_INDEPENDENT_EXTERNAL_AUDIT_R1_20261003.md",
+      "sha256": "63ca4d28ed245199fa27e8588a7aa7523c5a1897677f13e10984c1ee8b0eb7c9"
+    },
+    "independent_oracle": {
+      "bytes": 1502,
+      "path": "reports/r20r1r2/R20R1R2_INDEPENDENT_ORACLE.json",
+      "sha256": "4f35ad75e063710dcd64c742e2ec9f7eb2eebd44bc7a32a2bdec2108ab5f0825"
+    },
+    "master": {
+      "bytes": 3266,
+      "path": "docs/evidence/r20r1r2/V4_NEXT_ROUND_EXECUTION_MASTER_R20R1R2_20261003.md",
+      "sha256": "bd74a55f29662f964b180b9ac6c39db0f6640ff58aa46b27763e12ad4c0514fd"
+    },
+    "native_contract_freeze": {
+      "bytes": 4875,
+      "path": "reports/r20r1r2/ACTUAL_DM01_CONTRACT_FREEZE.json",
+      "sha256": "757f0d755901949341cb85f6e0ef0d0df0405664b311c8aa79d9d919b749ad64"
+    },
+    "prior_R20R1R1_seal": {
+      "bytes": 6256,
+      "path": "reports/r20r1r1/V4_15_R20R1R1_CANDIDATE_SEAL.json",
+      "sha256": "b7772187091c895b76a17c2919ed69cb1f633d3fbeab9ddb275d1a5fb258dc1c"
+    },
+    "production_correction_positive_path": {
+      "bytes": 937,
+      "path": "reports/r20r1r2/PRODUCTION_CORRECTION_REACHABILITY.json",
+      "sha256": "23f19fb7ca0cff8083ff3a989785950b68a1013bd832e470066e19d19a3a49be"
+    },
+    "production_shaped_positive_path": {
+      "bytes": 1717,
+      "path": "reports/r20r1r2/PRODUCTION_SHAPED_REACHABILITY.json",
+      "sha256": "db574d81b08a264a5aac221958dd4beb56f2d15e17802aa6534487c9d0f675ff"
+    },
+    "projection_contract": {
+      "bytes": 3016,
+      "path": "config/v4_15_forward_projection_r20r1r2_v1.json",
+      "sha256": "46bce4829308900c0d630732299b2280b3147be165acf80260d5f16c271d5aaa"
+    },
+    "protected_data_head": {
+      "bytes": 16890,
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+    },
+    "protected_stage_head": {
+      "bytes": 13840,
+      "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+      "sha256": "0014134e54e84d8b1e9a78aaee9c3f01533dc57195f62ddd3342c3675af8a926"
+    },
+    "real_T0_admission": {
+      "bytes": 1213,
+      "path": "reports/r20r1r2/CURRENT_REAL_DM01_ADMISSION.json",
+      "sha256": "4b23d84c458a75885dc041f6bca149b5018c36f503a1138c66b32bb6204740b0"
+    },
+    "repair_task": {
+      "bytes": 8177,
+      "path": "docs/evidence/r20r1r2/V4_15_R20R1R2_REAL_DM01_INTEGRATION_REPAIR_TASK_20261003.md",
+      "sha256": "f43810f4aea60499cfee16559f482ed3986140182609bc0993be8273ab71be45"
+    },
+    "scope_gate": {
+      "bytes": 3538,
+      "path": "reports/r20r1r2/REAL_DM01_INTEGRATION_SCOPE_GATE.json",
+      "sha256": "d61cb9b1449d4373d6024160f19899c5b151c33d8b35e3b2b0eb2d46a77121c7"
+    },
+    "superseded_attempt_registry": {
+      "bytes": 611,
+      "path": "reports/r20r1r2/SUPERSEDED_ATTEMPT_REGISTRY.json",
+      "sha256": "2e1d25d8b89b867a377bb670ed21277af809a942b96306f65131c9a4219d1ece"
+    }
+  },
+  "blocks_unrelated_development": false,
+  "clean_regression_passed": 231,
+  "contract_id": "V4_15_R20R1R2_REAL_DM01_INTEGRATION_CANDIDATE_SEAL_V1",
+  "execution_baseline": "0a6b8b0553ac9503b1d6a78681659b35c2ba934e",
+  "isolated_engineering_evidence_can_grant_current_real_capability": false,
+  "prior_R20_R20R1_R20R1R1_success": "PASS_KEEP",
+  "stage_promotion_authorized": false,
+  "status": "PASS_LOCAL",
+  "superseded_unpublished_fixture_attempts": "RETAINED_FOR_TRACEABILITY;_NOT_ACCEPTANCE_EVIDENCE",
+  "supersession_scope": "DM01_PRODUCTION_BATCH_COMPONENT_LINEAGE_AND_NATIVE_ROW_TO_FORWARD_PROJECTION_ONLY",
+  "tested_source": "81d989af438bdeda583a581f1ef7f311205e6139",
+  "tested_source_immutable_ref": "refs/tags/codex/r20r1r2-tested-source-20261003-r1",
+  "tested_source_is_ancestor_of_final_evidence_commit": true,
+  "tested_source_remote": "https://github.com/NanOns/a-share-market-structure-research.git",
+  "transitions": [
+    {
+      "aggregate_state": "OPEN",
+      "proved_horizons": [],
+      "status": "PASS",
+      "unproved_horizons": [
+        1,
+        3,
+        5,
+        10,
+        20
+      ]
+    },
+    {
+      "aggregate_state": "PARTIAL_MATURITY_EVIDENCE",
+      "proved_horizons": [
+        1
+      ],
+      "status": "PASS",
+      "unproved_horizons": [
+        3,
+        5,
+        10,
+        20
+      ]
+    },
+    {
+      "aggregate_state": "PARTIAL_MATURITY_EVIDENCE",
+      "proved_horizons": [
+        1,
+        3
+      ],
+      "status": "PASS",
+      "unproved_horizons": [
+        5,
+        10,
+        20
+      ]
+    },
+    {
+      "aggregate_state": "FULL_REQUIRED_HORIZONS_PROVEN",
+      "proved_horizons": [
+        1,
+        3,
+        5,
+        10,
+        20
+      ],
+      "status": "PASS",
+      "unproved_horizons": []
+    }
+  ]
+}

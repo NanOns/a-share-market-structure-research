@@ -1,0 +1,133 @@
+{
+  "Focus": false,
+  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+  "NEXT": "STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT",
+  "OPEN_VALIDATION_DEBT": "REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT",
+  "Production": false,
+  "R20A": "PASS_KEEP",
+  "R20B_CURRENT_RUNTIME_SCOPE": "PASS_KEEP",
+  "R20C": "PASS_KEEP",
+  "R20D_ENGINEERING_RUNTIME": "PASS_KEEP",
+  "R20E_ENGINEERING_E2E_ORACLE": "PASS_KEEP",
+  "R20R1_INDEPENDENT_ORACLE": "PASS_LOCAL",
+  "R20R1_SCOPE_CLOSURE": "PASS_LOCAL",
+  "REAL_ACCEPTED_SOURCE_PENDING_DUE_READBACK": "PASS_CAPABILITY_SCOPED",
+  "REAL_ACCEPTED_SOURCE_T0_INTEGRATION": "PASS_CAPABILITY_SCOPED",
+  "REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT": "NOT_GRANTED_PENDING_MATURITY_EVIDENCE",
+  "Shadow": false,
+  "V4_15_ACCEPTED_HEAD": "NOT_CREATED",
+  "V4_15_RUNTIME_ENGINEERING": "PASS",
+  "V4_16": false,
+  "V4_DATA_ACCEPTED_HEAD": "2026-09-30",
+  "V4_STAGE_ACCEPTED_HEAD": "V4_00_TO_V4_14_ACCEPTED",
+  "bindings": {
+    "audit_disposition": {
+      "bytes": 4037,
+      "path": "docs/audits/V4_R20R1_SCOPE_CLOSURE_20261003.md",
+      "sha256": "225df224c9480f5ac8099b8a4feb9001eff6c8f8a7b104ce502ea24c0f7f70cd"
+    },
+    "baseline_preservation": {
+      "bytes": 584448,
+      "path": "reports/r20r1/FROZEN_BASELINE_BINDINGS.json",
+      "sha256": "b9ed6e9c88cc709e8f95b2c537fe87b1ff0d9735d819a36a4698a4ceafd6d774"
+    },
+    "clean_log": {
+      "bytes": 271,
+      "path": "reports/r20r1/clean_regression/runner.log",
+      "sha256": "8a91c89f64bd0e98fa6c52709e5b8604cfeabfe54ae4f30bd90cc49866affca7"
+    },
+    "clean_regression": {
+      "bytes": 46325,
+      "path": "reports/r20r1/clean_regression/CLEAN_DETACHED_REGRESSION.json",
+      "sha256": "a4093351d035fda307cd70755a6cbf253fd44f4eee6b0a9559ab1933a5ce4b6b"
+    },
+    "clean_xml": {
+      "bytes": 19469,
+      "path": "reports/r20r1/clean_regression/tests.xml",
+      "sha256": "958f088ef2fa8f35c8ee003be3e9691451e0c68f0c6fe45d7a85d52d2f3c9d15"
+    },
+    "debt_initial_revision": {
+      "bytes": 220,
+      "path": "reports/r20r1/INITIAL_MATURITY_DEBT_REVISION.json",
+      "sha256": "e8f1de935040efe7c8204873708b2f5da6e1e9a00e39991e69623a64d8545ee1"
+    },
+    "debt_readback": {
+      "bytes": 642,
+      "path": "reports/r20r1/MATURITY_DEBT_READBACK.json",
+      "sha256": "e5431090ac0364b2b6a59aa75544072de3a72332ccff06a3f0a649e05d7c770b"
+    },
+    "external_audit": {
+      "bytes": 8740,
+      "path": "docs/evidence/r20r1/V4_R20_INDEPENDENT_EXTERNAL_AUDIT_R1_20261003.md",
+      "sha256": "21cab2f3fa195ada911873a05e803d32639c594c487618e3135de5e21a5817d5"
+    },
+    "feasibility": {
+      "bytes": 17539,
+      "path": "reports/r20r1/REAL_MATURITY_FEASIBILITY_GATE.json",
+      "sha256": "55567efe6cc0632fa9a89d9774e54cf2cf040ee2d520308e02ea77a64ce8eddb"
+    },
+    "historical_R20_seal": {
+      "bytes": 5308,
+      "path": "reports/r20e/V4_15_RUNTIME_CANDIDATE_R20_SEAL.json",
+      "sha256": "74dbcbd1ffefc8dfb20090776d861c96815e6b5fa22af49c8553e414a0be7653"
+    },
+    "independent_oracle": {
+      "bytes": 715,
+      "path": "reports/r20r1/R20R1_INDEPENDENT_ORACLE.json",
+      "sha256": "bf3ea8ec2485b74b5d9574999bfbc4626bcdc6b0146856be7a2facb3078ddb16"
+    },
+    "scope_contract": {
+      "bytes": 2232,
+      "path": "config/v4_15_capability_scope_r20r1_v1.json",
+      "sha256": "585d7730b5d58835497e57569af647be3348c25be7594c809dd7d8d12900ad82"
+    },
+    "scope_gate": {
+      "bytes": 3016,
+      "path": "reports/r20r1/V4_15_CAPABILITY_SCOPE_GATE.json",
+      "sha256": "e94033dba44c4ea72bd60fafd731f54c7c96edca870f71261530c8bcbf861566"
+    },
+    "tests": {
+      "bytes": 552,
+      "path": "reports/r20r1/R20R1_TESTS.json",
+      "sha256": "5545ebfdd96eac8fa103b27bb461be81d262b0bf0ce86a6c98d9a6a3d1073bb8"
+    },
+    "validation_debt": {
+      "bytes": 1585,
+      "path": "reports/r20r1/OPEN_VALIDATION_DEBT.json",
+      "sha256": "dd919378df50d02595cc46abac1b7b113aea8e6e7cf9dcfc1a42f90682c142e4"
+    }
+  },
+  "contract_id": "V4_15_R20R1_CANDIDATE_SEAL_V1",
+  "current_T0_scope": "ACCEPTED_SEPT30_RECONSTRUCTED_ASOF_NOT_HISTORICAL_PIT",
+  "engineering_maturity_scope": "ENGINEERING_VECTORS_ONLY",
+  "execution_baseline": "7f97f4487e2c8aaccb7e7701af4ccfddfa7ddec9",
+  "future_read_count": 0,
+  "real_matured_outcome_count": 0,
+  "real_maturity_feasibility": "NO_ACCEPTED_MATURED_LINEAGE_AVAILABLE",
+  "supersession": {
+    "R20A_R20B_CURRENT_R20C_R20D_ENGINEERING_R20E_ENGINEERING": "PASS_KEEP",
+    "historical_files_rewritten": false,
+    "labels_superseded": [
+      "REAL_ACCEPTED_SOURCE_SETTLEMENT",
+      "REAL_ACCEPTED_SOURCE_V4_15"
+    ],
+    "replacement_capabilities": [
+      "V4_15_RUNTIME_ENGINEERING",
+      "REAL_ACCEPTED_SOURCE_T0_INTEGRATION",
+      "REAL_ACCEPTED_SOURCE_PENDING_DUE_READBACK",
+      "REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT",
+      "HISTORICAL_PIT_EFFECTIVENESS"
+    ],
+    "scope": "PROMOTION_SEMANTICS_ONLY"
+  },
+  "tested_source": "a49b7d6695857617dcf143aabd47625e58a5c99b",
+  "tested_source_governance": {
+    "bundle_only": false,
+    "final_branch_ref": "refs/heads/codex/v4-system-reform",
+    "immutable_tag_ref": "refs/tags/codex/r20r1-tested-source-20261003-r1",
+    "mode": "IMMUTABLE_TAG_AND_FINAL_BRANCH_ANCESTRY",
+    "publication_requirement": "ATOMIC_PUSH_BRANCH_AND_IMMUTABLE_TAG;_INDEPENDENT_REMOTE_VERIFICATION_BEFORE_COMPLETION",
+    "remote_url": "https://github.com/NanOns/a-share-market-structure-research.git",
+    "tag_commit": "a49b7d6695857617dcf143aabd47625e58a5c99b"
+  }
+}

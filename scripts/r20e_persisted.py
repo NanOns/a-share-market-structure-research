@@ -3,7 +3,7 @@ import json,os,subprocess,sys,hashlib
 from pathlib import Path
 from datetime import datetime,timezone
 from scripts.r20_io import ROOT,atomic,ref,read
-NAMESPACE='reports/v4_15_runtime_r20/e2e'
+NAMESPACE='reports/v4_15_runtime_r20/e2e_r2'
 OUT='reports/r20e'
 sys.path.insert(0,str(ROOT/'src'))
 
@@ -48,9 +48,9 @@ def producer():
     adjusted=json.loads(a.read(a.data['component_artifacts']['ADJUSTED_DAILY']))
     prices={r['security_id']:r for r in adjusted['rows'] if r.get('adjustment_readiness')=='READY'}
     eligible={s.read(r)['entity_id'] for r in realm['daily_ledger'] if s.read(r)['eligibility_state']=='TRUE'}
-    real_universe=[dict(security_id=sid,close=float(p['close']),adjustment_identity=p['adjustment_source_revision'],hard_safety=True,research_eligible=True,prewatch_final_eligible=True,delta3=None,prior20_mean_amount=None,vol20=None,RPS20=None,primary_industry=None) for sid,p in prices.items() if sid in eligible]
+    real_universe=[dict(security_id=sid,close=float(p['close']),adjustment_identity=p['adjustment_source_revision'],hard_safety=False,research_eligible=None,prewatch_final_eligible=sid in eligible,delta3=None,prior20_mean_amount=None,vol20=None,RPS20=None,primary_industry=None) for sid,p in prices.items()]
     # Missing accepted matching features remain UNKNOWN, never invented to obtain controls.
-    real_snapshot=s.append('t0_snapshots','REAL_ACCEPTED_T0',dict(trade_date='2026-09-30',source_asof='2026-09-30',available_at=a.data['promoted_at_utc'],evidence_class='RECONSTRUCTED_ASOF',universe=real_universe,source=a.data['component_artifacts']['ADJUSTED_DAILY'],logical_event_refs=realm['logical_events']))
+    real_snapshot=s.append('t0_snapshots','REAL_ACCEPTED_T0',dict(trade_date='2026-09-30',source_asof='2026-09-30',available_at=a.data['promoted_at_utc'],evidence_class='RECONSTRUCTED_ASOF',research_universe_quality='UNKNOWN_ACCEPTED_RESEARCH_ELIGIBILITY_NOT_PROJECTED',hard_safety_quality='UNKNOWN_ACCEPTED_HARD_SAFETY_NOT_PROJECTED',universe=real_universe,source=a.data['component_artifacts']['ADJUSTED_DAILY'],logical_event_refs=realm['logical_events']))
     realenrollment=next((e for e in realm['enrollments'] if s.read(e)['entity_id'] in prices and s.read(e)['comparison_reference'] is not None),None)
     if realenrollment is None:raise ValueError('REAL_ACCEPTED_REFERENCE_ENROLLMENT_REQUIRED')
     real_freezes.append(d.freeze_t0(realenrollment,real_snapshot))

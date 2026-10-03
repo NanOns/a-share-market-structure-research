@@ -73,3 +73,9 @@ def test_oracle_does_not_import_evaluators_or_resolver():
     source=(ROOT/'scripts/validate_r20e_oracle.py').read_text()
     for prohibited in ['v4_15_radar_cohort','v4_15_settlement','v4_portable_exact']:
         assert prohibited not in source
+
+def test_real_quote_does_not_grant_research_universe_or_controls():
+    p,t=receipts();f=load(p['real_freezes'][0]);snapshot=load(f['snapshot'])
+    assert snapshot['research_universe_quality']=='UNKNOWN_ACCEPTED_RESEARCH_ELIGIBILITY_NOT_PROJECTED'
+    assert f['market']['quality']=='UNKNOWN_UNAVAILABLE' and not f['market']['members']
+    assert all(not f['controls'][key]['control_entity_ids'] for key in ['A','B','C'])

@@ -11,18 +11,18 @@ from scripts.validate_r20d_settlement import validate
 
 def run():
     authority=CurrentStageAuthority(ROOT)
-    store=Store(ROOT,'reports/v4_15_runtime_r20/r20d_accepted_source_r2')
+    store=Store(ROOT,'reports/v4_15_runtime_r20/r20d_accepted_source_r3')
     # This exact projection reads the accepted T0 dated artifact, not future data.
     source=AcceptedPriceSource(authority,authority.data['component_artifacts']['ADJUSTED_DAILY'])
     t0='2026-09-30';universe=[]
     for sid,dates in sorted(source.rows.items()):
         r=dates[t0]
         if r['close'] is not None and r['verified_identity']:
-            universe.append({'security_id':sid,'close':r['close'],'adjustment_identity':r['adjustment_identity'],'research_eligible':True,'hard_safety':False,'prewatch_final_eligible':False,'primary_industry':None})
+            universe.append({'security_id':sid,'close':r['close'],'adjustment_identity':r['adjustment_identity'],'research_eligible':None,'hard_safety':False,'prewatch_final_eligible':False,'primary_industry':None})
     selected=universe[0]
     enrollment={'enrollment_id':'r20d_real_reconstructed_source','entity_type':'STOCK','entity_id':selected['security_id'],'T0':t0,'cohort_namespace':'RECONSTRUCTED_ASOF','comparison_reference':selected['close'],'source_binding':source.binding,'HISTORICAL_PIT_EFFECTIVENESS':'NOT_GRANTED'}
     enref=store.append('enrollments',enrollment['enrollment_id'],enrollment)
-    snapshot=store.append('snapshots','accepted_t0',{'trade_date':t0,'source_asof':t0,'available_at':None,'available_at_unknown':True,'evidence_class':'RECONSTRUCTED_ASOF','universe':universe,'accepted_source':source.binding,'quality':'HARD_SAFETY_NOT_PROJECTED_CONTROLS_UNAVAILABLE'})
+    snapshot=store.append('snapshots','accepted_t0',{'trade_date':t0,'source_asof':t0,'available_at':None,'available_at_unknown':True,'evidence_class':'RECONSTRUCTED_ASOF','universe':universe,'accepted_source':source.binding,'quality':'RESEARCH_MEMBERSHIP_AND_HARD_SAFETY_NOT_PROJECTED_BENCHMARK_CONTROLS_UNAVAILABLE'})
     runtime=SettlementRuntime(authority,store);frozen=runtime.freeze_t0(enref,snapshot,event_count=0)
     # All accepted-calendar horizons lie beyond Data Head. No future quote opens.
     outcomes=runtime.settle(frozen,source,t0)

@@ -1,5 +1,5 @@
 """Disclosed historical and current detached regression, with registered bytes only."""
-import hashlib,json,subprocess,sys,re
+import hashlib,json,subprocess,sys,re,os,shutil
 import xml.etree.ElementTree as ET
 from pathlib import Path
 from scripts import validate_r17r1_clean_detached as checkout
@@ -44,6 +44,37 @@ def suite(directory,cmd,out):
     assert result.returncode==0,str(out/'runner.log')
     return {'command':cmd,'exit_code':0,'git_status_before':'','git_status_after':''}
 
+def unchanged_context(directory,source):
+    return directory.exists() and checkout.call(['git','rev-parse','HEAD'],cwd=directory,text=True).strip()==source and not checkout.call(['git','status','--porcelain'],cwd=directory).strip()
+
+def prepare_current(source):
+    # A separate volume avoids exhausting the repository's volume. LFS copies
+    # are independently verified; hard links are neither required nor trusted.
+    directory=Path('C:/Users/lps')/('r20-clean-'+source[:12])
+    env=dict(os.environ,GIT_LFS_SKIP_SMUDGE='1')
+    if directory.exists():
+        assert not checkout.call(['git','status','--porcelain'],cwd=directory).strip()
+        checkout.call(['git','checkout','--detach',source],cwd=directory,env=env)
+    else:checkout.call(['git','worktree','add','--detach',str(directory),source],env=env)
+    common=Path(checkout.call(['git','rev-parse','--git-common-dir'],cwd=ROOT,text=True).strip())
+    if not common.is_absolute():common=(ROOT/common).resolve()
+    names=checkout.call(['git','lfs','ls-files','--name-only'],cwd=directory,text=True,encoding='utf8').splitlines();verified=[]
+    for name in names:
+        target=directory/name;raw=target.read_bytes() if target.stat().st_size<=1024 else None
+        if raw is not None and raw.startswith(b'version https://git-lfs.github.com/spec/v1'):
+            lines=raw.decode().splitlines();oid=next(x.split('sha256:')[1] for x in lines if x.startswith('oid '));size=int(next(x.split()[1] for x in lines if x.startswith('size ')))
+            source_object=common/'lfs/objects'/oid[:2]/oid[2:4]/oid
+            assert source_object.stat().st_size==size
+            with source_object.open('rb') as stream:assert hashlib.file_digest(stream,'sha256').hexdigest()==oid
+            tmp=target.with_name(target.name+'.r20-lfs-copy.tmp');shutil.copyfile(source_object,tmp)
+            with tmp.open('rb') as stream:assert hashlib.file_digest(stream,'sha256').hexdigest()==oid
+            assert tmp.stat().st_size==size;os.replace(tmp,target)
+            verified.append(dict(path=name,sha256=oid,bytes=size,mode='EXACT_VERIFIED_CROSS_VOLUME_COPY'))
+    if names:checkout.call(['git','add','-f','--',*names],cwd=directory)
+    assert subprocess.run(['git','diff','--cached','--quiet','--exit-code'],cwd=directory).returncode==0
+    assert not checkout.call(['git','status','--porcelain'],cwd=directory).strip()
+    return directory,verified
+
 def run(source,output):
     out=Path(output).resolve();out.mkdir(parents=True,exist_ok=True)
     registry=json.loads((ROOT/'data/v4/V4_EXACT_BYTE_PORTABILITY_REGISTRY_R1.json').read_bytes())
@@ -52,25 +83,34 @@ def run(source,output):
     allowed={'src/workbench_analysis/v4_14_authority.py','src/workbench_analysis/v4_current_stage_authority.py','src/workbench_analysis/v4_portable_exact.py','src/workbench_analysis/v4_15_persistence.py','src/workbench_analysis/v4_15_radar_cohort.py','src/workbench_analysis/v4_15_settlement.py'}
     assert set(changed)<=allowed,changed
     checkout.CHECKOUT=ROOT.parent/'r20-historical-clean'
-    hydrated=checkout.prepare(HISTORICAL);historical=checkout.CHECKOUT
-    representations=historical_representations(historical,registry)
     ho=out/'historical';ho.mkdir(exist_ok=True)
-    h=suite(historical,[sys.executable,'-m','scripts.validate_r18_rollback_regression',str(ho)],ho)
-    hg=json.loads((ho/'regression_gate.json').read_bytes())
+    historical=checkout.CHECKOUT;prior=ho/'regression_gate.json'
+    if prior.exists() and unchanged_context(historical,HISTORICAL):
+        hg=json.loads(prior.read_bytes())
+        assert hg['source_sha']==HISTORICAL and hg['exit_code']==0 and hg['git_status_before']==hg['git_status_after']==''
+        h=dict(command=hg['command'],exit_code=0,git_status_before='',git_status_after='',reuse_unchanged_context_from_this_R20_run=True)
+        hydrated='VERIFIED_DURING_THIS_RUN_ORIGINAL_FULL_SCOPE';representations='REGISTERED_ONLY_ORIGINAL_FULL_SCOPE'
+    else:
+        hydrated=checkout.prepare(HISTORICAL);representations=historical_representations(historical,registry)
+        h=suite(historical,[sys.executable,'-m','scripts.validate_r18_rollback_regression',str(ho)],ho)
+        hg=json.loads(prior.read_bytes())
     assert hg['pass_count']==1168 and not hg['failures'] and not hg['errors'] and not hg['skipped'] and hg['deselected_count']==0
     h.update(source_sha=HISTORICAL,passed=1168,scope='ALL_RETAINED_OWNER_R17_R18_REPLAY_ROLLBACK_IN_EXACT_PREPROMOTION_CONTEXT',verified_lfs_objects=hydrated,registered_representations=representations)
     checkout.CHECKOUT=ROOT.parent/'r20-r19-contracts-clean'
     r19_source='2020234020e09020aca13fd84cdabde6fbb81f50'
-    r19_lfs=checkout.prepare(r19_source);r19_directory=checkout.CHECKOUT
-    r19_representations=historical_representations(r19_directory,registry)
     ro=out/'r19_contracts';ro.mkdir(exist_ok=True);r19_xml=ro/'tests.xml'
-    r19=suite(r19_directory,[sys.executable,'-m','pytest','tests/test_r19_promotion_contracts.py','-q','--junitxml='+str(r19_xml)],ro)
+    r19_directory=checkout.CHECKOUT
+    if r19_xml.exists() and (ro/'runner.log').exists() and unchanged_context(r19_directory,r19_source):
+        r19=dict(command=[sys.executable,'-m','pytest','tests/test_r19_promotion_contracts.py','-q','--junitxml='+str(r19_xml)],exit_code=0,git_status_before='',git_status_after='',reuse_unchanged_context_from_this_R20_run=True)
+        r19_lfs='VERIFIED_DURING_THIS_RUN_ORIGINAL_FULL_SCOPE';r19_representations='REGISTERED_ONLY_ORIGINAL_FULL_SCOPE'
+    else:
+        r19_lfs=checkout.prepare(r19_source);r19_representations=historical_representations(r19_directory,registry)
+        r19=suite(r19_directory,[sys.executable,'-m','pytest','tests/test_r19_promotion_contracts.py','-q','--junitxml='+str(r19_xml)],ro)
     r19_cases=list(ET.parse(r19_xml).iter('testcase'))
     assert len(r19_cases)==62 and not any(c.find(k) is not None for c in r19_cases for k in ('failure','error','skipped'))
     assert not re.search(r'\b[1-9]\d* deselected\b',(ro/'runner.log').read_text())
     r19.update(source_sha=r19_source,passed=62,scope='ALL_R19_PROMOTION_AND_FROZEN_CONTRACT_TESTS_IN_EXACT_EXTERNALLY_AUDITED_R19_CONTEXT',verified_lfs_objects=r19_lfs,registered_representations=r19_representations)
-    checkout.CHECKOUT=ROOT.parent/'r20-candidate-clean'
-    lfs=checkout.prepare(source);candidate=checkout.CHECKOUT
+    candidate,lfs=prepare_current(source)
     co=out/'candidate';co.mkdir(exist_ok=True);xml=co/'tests.xml'
     # Explicit complete R20 current suites: no tests deselected.
     tests=sorted(str(p.relative_to(candidate)).replace('\\','/') for p in (candidate/'tests').glob('test_r20*.py'))

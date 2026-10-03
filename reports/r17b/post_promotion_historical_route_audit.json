@@ -1,0 +1,16 @@
+{
+  "acceptance": "PASS_GOVERNANCE_ONLY",
+  "algorithm_changes": false,
+  "audit_id": "R17B-AUD-POST-PROMOTION-HISTORICAL-STAGE-ROUTE",
+  "evidence": {
+    "bytes": 5532,
+    "path": "reports/r17b/formal_authority_reader_receipt.json",
+    "sha256": "23f9bbeda86c5c754224606ffb60650de594a290dced8b9f84aaa4a4ef5f9c8e"
+  },
+  "independent_from_promotion": true,
+  "negative_gates": "tests/test_r17b_promotion.py",
+  "next": "KEEP_EXACT_FORMAL_AUTHORITY_AND_ARCHIVE_MAPPING",
+  "original_binder_modified": false,
+  "original_contract_modified": false,
+  "scope": "R15 membership contract historical Stage binding and current V4_13 formal package readback after authorized promotion"
+}

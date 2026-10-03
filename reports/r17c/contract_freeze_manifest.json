@@ -1,0 +1,41 @@
+{
+  "ALGORITHM_STATE_REPLAY_PASS": "NOT_GRANTED",
+  "NEXT": "STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT",
+  "V4_14_RUNTIME": "NOT_IMPLEMENTED",
+  "contract_id": "R17C_CONTRACT_FREEZE_MANIFEST_V1",
+  "contracts": [
+    {
+      "bytes": 16460,
+      "path": "config/v4_14_replay_gate_b_contract_v1.json",
+      "sha256": "9ef949b49a595c74c1897e45460c590748e9b3d98dca6e15afd9fdc00a6e4dae"
+    },
+    {
+      "bytes": 33522,
+      "path": "config/v4_14_replay_case_registry_v1.json",
+      "sha256": "121684714762ae81153d5d3c3d2224a38b0dbbe656167015ebabd87a6a557ef7"
+    },
+    {
+      "bytes": 33014,
+      "path": "config/v4_14_temporal_non_edge_registry_v1.json",
+      "sha256": "3f0a0f2620b2d7ea310e781eb2beb528b2428085de0ef2fb4e7a96e50d7852bc"
+    },
+    {
+      "bytes": 8217,
+      "path": "config/v4_14_quality_degradation_v1.json",
+      "sha256": "481998d70304b3dd9a20498050a13b80216a52198a99be48b87ef5df2b0c0b0e"
+    },
+    {
+      "bytes": 45489,
+      "path": "config/v4_14_machine_vectors_v1.json",
+      "sha256": "4db3c3d3d33049e663f9bb254b5308c3cf604b76aba1f99f63ed5059290c05ff"
+    }
+  ],
+  "dimensions": 17,
+  "expected_origin": "HAND_AUTHORED_PLUS_BOUND_PREEXISTING_INDEPENDENT_OWNER_ORACLES",
+  "stage_contract": {
+    "bytes": 4005,
+    "path": "reports/r17c/stage_contract.json",
+    "sha256": "b093d84415dee3df6e6eb33142d14e4f783cb275ef7611710eccc87aeed57543"
+  },
+  "vector_count": 60
+}

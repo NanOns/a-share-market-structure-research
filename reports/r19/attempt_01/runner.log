@@ -1,0 +1,34 @@
+..................F..........................................            [100%]
+================================== FAILURES ===================================
+______________________________ test_D_contracts _______________________________
+
+>   def test_D_contracts():assert v.check_d()['V4_15_CONTRACT_COMPLETENESS']=='PASS_READY_FOR_EXTERNAL_AUDIT'
+                                  ^^^^^^^^^^^
+
+tests\test_r19_promotion_contracts.py:30: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_r19_contracts.py:150: in check_d
+    if verify_bindings:exact_refs(package)
+                       ^^^^^^^^^^^^^^^^^^^
+scripts\validate_r19_contracts.py:143: in exact_refs
+    for item in value.values():exact_refs(item)
+                               ^^^^^^^^^^^^^^^^
+scripts\validate_r19_contracts.py:136: in exact_refs
+    for item in value:exact_refs(item)
+                      ^^^^^^^^^^^^^^^^
+scripts\validate_r19_contracts.py:141: in exact_refs
+    raw=p.read_bytes();require(len(raw)==value['bytes'] and hashlib.sha256(raw).hexdigest()==value['sha256'],'PACKAGE_EXACT_'+value['path'])
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'PACKAGE_EXACT_config/v4_capability_cutover_policy_v1.json'
+
+    def require(ok, reason):
+        if not ok:
+>           raise ValueError(reason)
+E           ValueError: PACKAGE_EXACT_config/v4_capability_cutover_policy_v1.json
+
+scripts\validate_r19a_promotion.py:31: ValueError
+=========================== short test summary info ===========================
+FAILED tests/test_r19_promotion_contracts.py::test_D_contracts - ValueError: ...
+1 failed, 60 passed in 74.20s (0:01:14)

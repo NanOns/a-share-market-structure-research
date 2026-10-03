@@ -1,0 +1,53 @@
+{
+  "acceptance": {
+    "Focus": false,
+    "NEXT": "STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT",
+    "Production": false,
+    "R19D_V4_15_CONTRACT_INTEGRATION": "PASS_LOCAL",
+    "Shadow": false,
+    "V4_15_ACCEPTED_HEAD": "NOT_CREATED",
+    "V4_15_CONTRACT_COMPLETENESS": "PASS_READY_FOR_EXTERNAL_AUDIT",
+    "V4_15_RUNTIME": "NOT_IMPLEMENTED",
+    "V4_DATA_ACCEPTED_HEAD": "2026-09-30",
+    "V4_STAGE_ACCEPTED_HEAD": "V4_00_TO_V4_14_ACCEPTED",
+    "checks": {
+      "DAG_and_forbidden_non_edges": "PASS",
+      "common_basis_horizon_formulas": "PASS",
+      "cross_family_expectations": "PASS",
+      "event_ledger_observation_enrollment_identity": "PASS",
+      "exact_accepted_sources_and_owner_heads": "PASS",
+      "exact_contract_file_set": "PASS",
+      "frozen_business_replay_consumption_rollback_unchanged": "PASS",
+      "independent_capability_degradation": "PASS",
+      "independent_required_field_schema": "PASS",
+      "marked_numeric_gates_remain_unset": "PASS",
+      "outcome_and_constituent_quality_states": "PASS",
+      "runtime_and_permission_boundary": "PASS",
+      "static_and_independent_numerical_vectors": "PASS",
+      "storage_keys_foreign_keys_immutability": "PASS",
+      "unique_field_authority": "PASS"
+    },
+    "contract_count": 26,
+    "cross_vector_count": 13,
+    "field_count": 139
+  },
+  "evidence": {
+    "bytes": 1244,
+    "path": "reports/r19d/V4_15_STAGE_ENTRY_GATE.json",
+    "sha256": "249cb6e178427ef675b00216b9456acbd5ad35fe31f5af86255f5a5e865f0c4a"
+  },
+  "input_commit": "f4ad7d632e53734798c064f011e2b53ecd99bc27",
+  "next_stage": "STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT",
+  "recorded_at": "2026-10-03T08:04:41.825926+00:00",
+  "schedule_authority": {
+    "bytes": 4505,
+    "path": "docs/evidence/r19/V4_NEXT_ROUND_EXECUTION_MASTER_R19_20261003.md",
+    "sha256": "adf99bc990689796a14fe083aeb11127b686862d316f87165b8c710ca269f4f7"
+  },
+  "stage": "R19D",
+  "stage_contract": {
+    "bytes": 9449,
+    "path": "config/v4_15_contract_package_v1.json",
+    "sha256": "d4cf16990b90f663c5ac28e2180e7062bf93386baeb66e130153227e39a4032c"
+  }
+}

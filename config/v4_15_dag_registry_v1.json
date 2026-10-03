@@ -1,0 +1,116 @@
+{
+  "accepted_owner_feedback": false,
+  "contract_id": "V4_15_DAG_V1",
+  "design_authority": {
+    "bytes": 224998,
+    "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+    "sections": [
+      "3",
+      "13",
+      "45A",
+      "46",
+      "54"
+    ],
+    "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+  },
+  "edges": [
+    {
+      "source": "Accepted V4-14 publication",
+      "target": "Radar event projection",
+      "time_rule": "ACCEPTED_AVAILABLE_AT_BEFORE_CONSUMPTION; T0_INPUTS_CUTOFF_LE_T0; FUTURE_PRICE_ONLY_IN_SETTLEMENT"
+    },
+    {
+      "source": "Radar event projection",
+      "target": "complete daily ledger",
+      "time_rule": "ACCEPTED_AVAILABLE_AT_BEFORE_CONSUMPTION; T0_INPUTS_CUTOFF_LE_T0; FUTURE_PRICE_ONLY_IN_SETTLEMENT"
+    },
+    {
+      "source": "complete daily ledger",
+      "target": "logical event / observation",
+      "time_rule": "ACCEPTED_AVAILABLE_AT_BEFORE_CONSUMPTION; T0_INPUTS_CUTOFF_LE_T0; FUTURE_PRICE_ONLY_IN_SETTLEMENT"
+    },
+    {
+      "source": "logical event / observation",
+      "target": "first ASSERTED enrollment",
+      "time_rule": "ACCEPTED_AVAILABLE_AT_BEFORE_CONSUMPTION; T0_INPUTS_CUTOFF_LE_T0; FUTURE_PRICE_ONLY_IN_SETTLEMENT"
+    },
+    {
+      "source": "first ASSERTED enrollment",
+      "target": "frozen benchmark + controls",
+      "time_rule": "ACCEPTED_AVAILABLE_AT_BEFORE_CONSUMPTION; T0_INPUTS_CUTOFF_LE_T0; FUTURE_PRICE_ONLY_IN_SETTLEMENT"
+    },
+    {
+      "source": "frozen benchmark + controls",
+      "target": "due planner",
+      "time_rule": "ACCEPTED_AVAILABLE_AT_BEFORE_CONSUMPTION; T0_INPUTS_CUTOFF_LE_T0; FUTURE_PRICE_ONLY_IN_SETTLEMENT"
+    },
+    {
+      "source": "due planner",
+      "target": "future accepted source readback",
+      "time_rule": "ACCEPTED_AVAILABLE_AT_BEFORE_CONSUMPTION; T0_INPUTS_CUTOFF_LE_T0; FUTURE_PRICE_ONLY_IN_SETTLEMENT"
+    },
+    {
+      "source": "future accepted source readback",
+      "target": "settlement / outcome revision",
+      "time_rule": "ACCEPTED_AVAILABLE_AT_BEFORE_CONSUMPTION; T0_INPUTS_CUTOFF_LE_T0; FUTURE_PRICE_ONLY_IN_SETTLEMENT"
+    },
+    {
+      "source": "settlement / outcome revision",
+      "target": "readback / statistics consumers",
+      "time_rule": "ACCEPTED_AVAILABLE_AT_BEFORE_CONSUMPTION; T0_INPUTS_CUTOFF_LE_T0; FUTURE_PRICE_ONLY_IN_SETTLEMENT"
+    }
+  ],
+  "fields": [],
+  "focus": false,
+  "input_commit": "f4ad7d632e53734798c064f011e2b53ecd99bc27",
+  "nodes": [
+    "Accepted V4-14 publication",
+    "Radar event projection",
+    "complete daily ledger",
+    "logical event / observation",
+    "first ASSERTED enrollment",
+    "frozen benchmark + controls",
+    "due planner",
+    "future accepted source readback",
+    "settlement / outcome revision",
+    "readback / statistics consumers"
+  ],
+  "non_edges": [
+    {
+      "source": "Focus",
+      "status": "FORBIDDEN",
+      "target": "enrollment"
+    },
+    {
+      "source": "UI Top-K",
+      "status": "FORBIDDEN",
+      "target": "enrollment"
+    },
+    {
+      "source": "Forward outcome",
+      "status": "FORBIDDEN",
+      "target": "T0 state"
+    },
+    {
+      "source": "FEP prediction",
+      "status": "FORBIDDEN",
+      "target": "Core/Radar"
+    },
+    {
+      "source": "Corrected outcome",
+      "status": "FORBIDDEN",
+      "target": "T0"
+    },
+    {
+      "source": "future source",
+      "status": "FORBIDDEN",
+      "target": "same-day decision"
+    }
+  ],
+  "production": false,
+  "runtime_implemented": false,
+  "shadow": false,
+  "source_temporal_rule": "max_source_trade_date<=target_trade_date AND source_asof<=cutoff AND available_at<=decision_time; membership effective_time AND available_time required; settlement source available_at<=evaluation/readback_asof",
+  "status": "CONTRACT_FROZEN_LOCAL_PENDING_EXTERNAL_AUDIT",
+  "version": "1.0.0"
+}

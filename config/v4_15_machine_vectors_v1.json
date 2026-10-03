@@ -1,0 +1,196 @@
+{
+  "contract_id": "V4_15_INTEGRATED_VECTORS_V1",
+  "cross_family_vectors": [
+    {
+      "case_id": "radar_enrollment_identity",
+      "expected": {
+        "T0": "2026-09-30",
+        "enrollment_id": "EN1",
+        "logical_event_id": "E1"
+      },
+      "input": {
+        "eligible": true,
+        "event": "FIRST_PREWATCH",
+        "first_asserted": true
+      },
+      "negative": false
+    },
+    {
+      "case_id": "persistent_no_duplicate",
+      "expected": {
+        "new_enrollment_count": 0,
+        "new_event_count": 0
+      },
+      "input": {
+        "event": "PERSISTENT"
+      },
+      "negative": false
+    },
+    {
+      "case_id": "same_day_revision",
+      "expected": {
+        "append_observation": true,
+        "episode_id": "EP1",
+        "logical_event_id": "E1"
+      },
+      "input": {
+        "event": "FIRST_PREWATCH",
+        "revision": "r2"
+      },
+      "negative": false
+    },
+    {
+      "case_id": "invalidated_forward",
+      "expected": {
+        "settle": true
+      },
+      "input": {
+        "enrollment": "EN1",
+        "state": "INVALIDATED"
+      },
+      "negative": false
+    },
+    {
+      "case_id": "focus_excluded",
+      "expected": {
+        "enroll": true,
+        "settle": true
+      },
+      "input": {
+        "eligible": true,
+        "focus": false
+      },
+      "negative": false
+    },
+    {
+      "case_id": "display_excluded",
+      "expected": {
+        "enroll": true,
+        "settle": true
+      },
+      "input": {
+        "displayed": false,
+        "eligible": true
+      },
+      "negative": false
+    },
+    {
+      "case_id": "source_correction",
+      "expected": {
+        "T0_unchanged": true,
+        "controls_unchanged": true,
+        "first_observed_preserved": true
+      },
+      "input": {
+        "source_correction": true
+      },
+      "negative": false
+    },
+    {
+      "case_id": "outcome_correction",
+      "expected": {
+        "T0_unchanged": true,
+        "append_revision": true
+      },
+      "input": {
+        "evaluation_source_changed": true
+      },
+      "negative": false
+    },
+    {
+      "case_id": "market_missing_absolute",
+      "expected": {
+        "absolute": true,
+        "market_relative": false
+      },
+      "input": {
+        "absolute_endpoint_verified": true,
+        "market_member_missing": true
+      },
+      "negative": false
+    },
+    {
+      "case_id": "sector_unavailable",
+      "expected": {
+        "absolute": true,
+        "sector_relative": false
+      },
+      "input": {
+        "absolute_endpoint_verified": true,
+        "sector_members": 1
+      },
+      "negative": false
+    },
+    {
+      "case_id": "control_A_missing",
+      "expected": {
+        "A": "NOT_AVAILABLE",
+        "B": true,
+        "C": true
+      },
+      "input": {
+        "legacy_output": null
+      },
+      "negative": false
+    },
+    {
+      "case_id": "marked_gates_unset",
+      "expected": {
+        "absolute": true,
+        "coverage_gate": null,
+        "marked_permission": false,
+        "quote_age_gate": null
+      },
+      "input": {
+        "policy_coverage": null,
+        "policy_quote_age": null
+      },
+      "negative": false
+    },
+    {
+      "case_id": "FEP_no_dependency",
+      "expected": {
+        "reject": true
+      },
+      "input": {
+        "proposed_edge": [
+          "FEP prediction",
+          "Core/Radar"
+        ]
+      },
+      "negative": true
+    }
+  ],
+  "design_authority": {
+    "bytes": 224998,
+    "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+    "sections": [
+      "45A",
+      "46",
+      "49A",
+      "54"
+    ],
+    "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+  },
+  "expected_authority": "STATIC_CONTRACT_EXPECTATIONS_NOT_RUNTIME_GENERATED",
+  "family_vectors": [
+    {
+      "bytes": 8601,
+      "path": "config/v4_15_radar_cohort_machine_vectors_v1.json",
+      "sha256": "5c30289a1aba57fa9d4928b72910c026c418e0c4b515272add417cb81be3818c"
+    },
+    {
+      "bytes": 15502,
+      "path": "config/v4_15_settlement_machine_vectors_v1.json",
+      "sha256": "9e5238fc97217e900bec4c65f58ec288f991d4d2f7e8f027b5941ddbda493577"
+    }
+  ],
+  "fields": [],
+  "focus": false,
+  "input_commit": "f4ad7d632e53734798c064f011e2b53ecd99bc27",
+  "production": false,
+  "runtime_implemented": false,
+  "shadow": false,
+  "status": "CONTRACT_FROZEN_LOCAL_PENDING_EXTERNAL_AUDIT",
+  "version": "1.0.0"
+}

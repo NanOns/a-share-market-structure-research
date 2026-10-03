@@ -1,0 +1,66 @@
+{
+  "ALGORITHM_STATE_REPLAY_PASS": "DEGRADED_PASS_CAPABILITY_SCOPED",
+  "Data_advance": false,
+  "Focus": false,
+  "NEXT": "STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT",
+  "Production": false,
+  "R19A_V4_14_PROMOTION": "PASS_LOCAL",
+  "R19B_V4_15_RADAR_COHORT_CONTRACT_FREEZE": "PASS_LOCAL",
+  "R19C_V4_15_SETTLEMENT_CONTRACT_FREEZE": "PASS_LOCAL",
+  "R19D_V4_15_CONTRACT_INTEGRATION": "PASS_LOCAL",
+  "RADAR_COHORT_CONTRACT_COMPLETENESS": "PASS_LOCAL",
+  "SETTLEMENT_CONTRACT_COMPLETENESS": "PASS_LOCAL",
+  "Shadow": false,
+  "V4_14_ACCEPTED_HEAD": "CREATED",
+  "V4_15_ACCEPTED_HEAD": "NOT_CREATED",
+  "V4_15_CONTRACT_COMPLETENESS": "PASS_READY_FOR_EXTERNAL_AUDIT",
+  "V4_15_RUNTIME": "NOT_IMPLEMENTED",
+  "V4_DATA_ACCEPTED_HEAD": "2026-09-30",
+  "V4_STAGE_ACCEPTED_HEAD": "V4_00_TO_V4_14_ACCEPTED",
+  "audit_registry": {
+    "bytes": 2555,
+    "path": "docs/audits/V4_R19_CROSS_CUTTING_AUDIT_ITEMS_20261003.md",
+    "sha256": "6bee3ee0dee18508534f6921cc1a97dae8642b701a344cf9db33b2fc398d5008"
+  },
+  "checks": {
+    "DAG_and_forbidden_non_edges": "PASS",
+    "common_basis_horizon_formulas": "PASS",
+    "cross_family_expectations": "PASS",
+    "event_ledger_observation_enrollment_identity": "PASS",
+    "exact_accepted_sources_and_owner_heads": "PASS",
+    "exact_contract_file_set": "PASS",
+    "frozen_business_replay_consumption_rollback_unchanged": "PASS",
+    "independent_capability_degradation": "PASS",
+    "independent_required_field_schema": "PASS",
+    "marked_numeric_gates_remain_unset": "PASS",
+    "outcome_and_constituent_quality_states": "PASS",
+    "runtime_and_permission_boundary": "PASS",
+    "static_and_independent_numerical_vectors": "PASS",
+    "storage_keys_foreign_keys_immutability": "PASS",
+    "unique_field_authority": "PASS"
+  },
+  "clean_regression": {
+    "bytes": 3255,
+    "path": "reports/r19/clean/CLEAN_DETACHED_REGRESSION.json",
+    "sha256": "16748c6c40dc0dd6d38f51529826e024c61edbae7126c9890d7f822a9beee7cc"
+  },
+  "contract_count": 26,
+  "cross_vector_count": 13,
+  "execution_baseline": "f4ad7d632e53734798c064f011e2b53ecd99bc27",
+  "external_V4_15_acceptance": "NOT_GRANTED",
+  "field_count": 139,
+  "formal_DB_migration": false,
+  "open_cross_cutting_audits": [
+    "R19-AUDIT-01",
+    "R19-AUDIT-02"
+  ],
+  "protected_count": 36,
+  "recorded_at": "2026-10-03T08:10:54.523280+00:00",
+  "tested_candidate_source": "3bec750b67e90a281ee70220916da9f105947066",
+  "tested_source_bundle": {
+    "bytes": 97244,
+    "path": "reports/r19/TESTED_SOURCE.bundle",
+    "sha256": "94deb76231b0014cbd79e9d7bf8d4c00476321b5b7402178f57f03b108a81cb4"
+  },
+  "vector_count": 37
+}

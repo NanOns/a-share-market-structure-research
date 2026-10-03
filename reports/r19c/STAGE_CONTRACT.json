@@ -1,0 +1,29 @@
+{
+  "acceptance": {
+    "NEXT": "R19D_AFTER_R19B_AND_R19C",
+    "R19C_V4_15_SETTLEMENT_CONTRACT_FREEZE": "PASS_LOCAL",
+    "SETTLEMENT_CONTRACT_COMPLETENESS": "PASS_LOCAL",
+    "V4_15_ACCEPTED_HEAD": "NOT_CREATED",
+    "V4_15_RUNTIME": "NOT_IMPLEMENTED",
+    "vector_count": 37
+  },
+  "evidence": {
+    "bytes": 250,
+    "path": "reports/r19c/CONTRACT_GATE.json",
+    "sha256": "ba461098e089ef0219246646d3a2b62bce3007e6b580536623e18d02fda7947a"
+  },
+  "input_commit": "f4ad7d632e53734798c064f011e2b53ecd99bc27",
+  "next_stage": "R19D_AFTER_B",
+  "recorded_at": "2026-10-03T08:04:41.823162+00:00",
+  "schedule_authority": {
+    "bytes": 4505,
+    "path": "docs/evidence/r19/V4_NEXT_ROUND_EXECUTION_MASTER_R19_20261003.md",
+    "sha256": "adf99bc990689796a14fe083aeb11127b686862d316f87165b8c710ca269f4f7"
+  },
+  "stage": "R19C",
+  "stage_contract": {
+    "bytes": 3295,
+    "path": "config/v4_15_forward_price_path_contract_v1.json",
+    "sha256": "9c39cdf980aee0c94453441557f80a874c2a847e6c58dc770b5e9d32088cc301"
+  }
+}

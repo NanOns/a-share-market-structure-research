@@ -1,0 +1,833 @@
+{
+  "contract_id": "SETTLEMENT_VECTORS_V1",
+  "design_authority": {
+    "bytes": 224998,
+    "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+    "sections": [
+      "46A",
+      "47",
+      "49A",
+      "49B"
+    ],
+    "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+  },
+  "expected_authority": "STATIC_HAND_FROZEN_NOT_RUNTIME_GENERATED",
+  "fields": [],
+  "focus": false,
+  "input_commit": "f4ad7d632e53734798c064f011e2b53ecd99bc27",
+  "production": false,
+  "runtime_implemented": false,
+  "shadow": false,
+  "status": "CONTRACT_FROZEN_LOCAL_PENDING_EXTERNAL_AUDIT",
+  "vectors": [
+    {
+      "case_id": "horizon_1",
+      "expected": {
+        "MAE_N": 0,
+        "MFE_N": 0,
+        "PATH_MDD_CLOSE_N": 0,
+        "R_N": 0,
+        "status": "OBSERVED"
+      },
+      "input": {
+        "T0_high": 900,
+        "T0_low": 1,
+        "closes": [
+          100,
+          100
+        ],
+        "highs": [
+          100
+        ],
+        "horizon": 1,
+        "lows": [
+          100
+        ]
+      },
+      "negative": false
+    },
+    {
+      "case_id": "horizon_3",
+      "expected": {
+        "MAE_N": 0,
+        "MFE_N": 0,
+        "PATH_MDD_CLOSE_N": 0,
+        "R_N": 0,
+        "status": "OBSERVED"
+      },
+      "input": {
+        "T0_high": 900,
+        "T0_low": 1,
+        "closes": [
+          100,
+          100,
+          100,
+          100
+        ],
+        "highs": [
+          100,
+          100,
+          100
+        ],
+        "horizon": 3,
+        "lows": [
+          100,
+          100,
+          100
+        ]
+      },
+      "negative": false
+    },
+    {
+      "case_id": "horizon_5",
+      "expected": {
+        "MAE_N": 0,
+        "MFE_N": 0,
+        "PATH_MDD_CLOSE_N": 0,
+        "R_N": 0,
+        "status": "OBSERVED"
+      },
+      "input": {
+        "T0_high": 900,
+        "T0_low": 1,
+        "closes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "highs": [
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "horizon": 5,
+        "lows": [
+          100,
+          100,
+          100,
+          100,
+          100
+        ]
+      },
+      "negative": false
+    },
+    {
+      "case_id": "horizon_10",
+      "expected": {
+        "MAE_N": 0,
+        "MFE_N": 0,
+        "PATH_MDD_CLOSE_N": 0,
+        "R_N": 0,
+        "status": "OBSERVED"
+      },
+      "input": {
+        "T0_high": 900,
+        "T0_low": 1,
+        "closes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "highs": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "horizon": 10,
+        "lows": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ]
+      },
+      "negative": false
+    },
+    {
+      "case_id": "horizon_20",
+      "expected": {
+        "MAE_N": 0,
+        "MFE_N": 0,
+        "PATH_MDD_CLOSE_N": 0,
+        "R_N": 0,
+        "status": "OBSERVED"
+      },
+      "input": {
+        "T0_high": 900,
+        "T0_low": 1,
+        "closes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "highs": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "horizon": 20,
+        "lows": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ]
+      },
+      "negative": false
+    },
+    {
+      "case_id": "up",
+      "expected": {
+        "MAE_N": 0,
+        "MFE_N": 0.2,
+        "PATH_MDD_CLOSE_N": 0,
+        "R_N": 0.2,
+        "status": "OBSERVED"
+      },
+      "input": {
+        "closes": [
+          100,
+          110,
+          120
+        ],
+        "formula_only": true,
+        "highs": [
+          110,
+          120
+        ],
+        "horizon": 2,
+        "lows": [
+          110,
+          120
+        ]
+      },
+      "negative": false
+    },
+    {
+      "case_id": "down_recover",
+      "expected": {
+        "MAE_N": -0.2,
+        "MFE_N": 0,
+        "PATH_MDD_CLOSE_N": -0.2,
+        "R_N": -0.1,
+        "status": "OBSERVED"
+      },
+      "input": {
+        "closes": [
+          100,
+          80,
+          90
+        ],
+        "formula_only": true,
+        "highs": [
+          80,
+          90
+        ],
+        "horizon": 2,
+        "lows": [
+          80,
+          90
+        ]
+      },
+      "negative": false
+    },
+    {
+      "case_id": "peak_drop",
+      "expected": {
+        "MAE_N": -0.1,
+        "MFE_N": 0.2,
+        "PATH_MDD_CLOSE_N": -0.25,
+        "R_N": -0.1,
+        "status": "OBSERVED"
+      },
+      "input": {
+        "closes": [
+          100,
+          120,
+          90
+        ],
+        "formula_only": true,
+        "highs": [
+          120,
+          90
+        ],
+        "horizon": 2,
+        "lows": [
+          120,
+          90
+        ]
+      },
+      "negative": false
+    },
+    {
+      "case_id": "corporate_action",
+      "expected": {
+        "MAE_N": -0.02,
+        "MFE_N": 0.12,
+        "PATH_MDD_CLOSE_N": 0,
+        "R_N": 0.1,
+        "comparison_reference": 50,
+        "status": "OBSERVED"
+      },
+      "input": {
+        "alpha": 0.5,
+        "beta": 0,
+        "closes": [
+          50,
+          55
+        ],
+        "common_basis": true,
+        "highs": [
+          56
+        ],
+        "horizon": 1,
+        "lows": [
+          49
+        ],
+        "original_P0": 100
+      },
+      "negative": false
+    },
+    {
+      "case_id": "suspension_endpoint",
+      "expected": {
+        "R_N": null,
+        "shift_horizon": false,
+        "status": "SUSPENDED_AT_HORIZON"
+      },
+      "input": {
+        "endpoint": "CONFIRMED_SUSPENSION"
+      },
+      "negative": false
+    },
+    {
+      "case_id": "suspension_interior",
+      "expected": {
+        "MAE_N": 0,
+        "MFE_N": 0.15,
+        "PATH_MDD_CLOSE_N": 0,
+        "R_N": 0.1,
+        "actual_count": 1
+      },
+      "input": {
+        "closes": [
+          100,
+          null,
+          110
+        ],
+        "highs": [
+          null,
+          115
+        ],
+        "interior": "CONFIRMED_SUSPENSION",
+        "lows": [
+          null,
+          105
+        ]
+      },
+      "negative": false
+    },
+    {
+      "case_id": "unknown_gap",
+      "expected": {
+        "MAE_N": null,
+        "MFE_N": null,
+        "PATH_MDD_CLOSE_N": null,
+        "R_N": 0.1,
+        "path_quality": "MATURED_DATA_MISSING"
+      },
+      "input": {
+        "due": true,
+        "endpoint_verified": true,
+        "interior": "DATA_MISSING"
+      },
+      "negative": false
+    },
+    {
+      "case_id": "delisted_no_terminal",
+      "expected": {
+        "R_N": null,
+        "status": "DELISTED_BEFORE_HORIZON"
+      },
+      "input": {
+        "delisted": true,
+        "terminal": null
+      },
+      "negative": false
+    },
+    {
+      "case_id": "delisted_terminal",
+      "expected": {
+        "R_N": -0.2,
+        "endpoint_quality": "OBSERVED_TERMINAL_VALUE",
+        "status": "DELISTED_BEFORE_HORIZON"
+      },
+      "input": {
+        "P0": 100,
+        "delisted": true,
+        "terminal": 80,
+        "verified": true
+      },
+      "negative": false
+    },
+    {
+      "case_id": "adjustment_mismatch",
+      "expected": {
+        "R_N": null,
+        "status": "ADJUSTMENT_UNKNOWN"
+      },
+      "input": {
+        "common_basis": false
+      },
+      "negative": false
+    },
+    {
+      "case_id": "future_leakage",
+      "expected": {
+        "reject": true
+      },
+      "input": {
+        "source_available_after_T0": true,
+        "use": "T0_DECISION"
+      },
+      "negative": true
+    },
+    {
+      "case_id": "idempotent",
+      "expected": {
+        "idempotent": true,
+        "new_revision_count": 0
+      },
+      "input": {
+        "source_digest": "same"
+      },
+      "negative": false
+    },
+    {
+      "case_id": "correction",
+      "expected": {
+        "T0_unchanged": true,
+        "append_revision": true,
+        "first_observed_preserved": true
+      },
+      "input": {
+        "source_digest": "changed"
+      },
+      "negative": false
+    },
+    {
+      "case_id": "matured_missing",
+      "expected": {
+        "R_N": null,
+        "right_censored": false,
+        "status": "MATURED_DATA_MISSING"
+      },
+      "input": {
+        "due": true,
+        "endpoint": "DATA_MISSING"
+      },
+      "negative": false
+    },
+    {
+      "case_id": "pending",
+      "expected": {
+        "status": "PENDING"
+      },
+      "input": {
+        "due": false
+      },
+      "negative": false
+    },
+    {
+      "case_id": "time_to_event_cutoff",
+      "expected": {
+        "competing_event": null,
+        "status": "RIGHT_CENSORED"
+      },
+      "input": {
+        "unfinished_time_to_event": true
+      },
+      "negative": false
+    },
+    {
+      "case_id": "competing_same_day",
+      "expected": {
+        "first_event": "INVALIDATED",
+        "price_settlement_continues": true
+      },
+      "input": {
+        "events": [
+          "CONFIRMED",
+          "INVALIDATED"
+        ]
+      },
+      "negative": false
+    },
+    {
+      "case_id": "benchmark_missing",
+      "expected": {
+        "absolute_settlement": true,
+        "benchmark_quality": "PARTIAL_UNVALUED",
+        "endpoint_coverage": 0.5,
+        "missing_weight": 0.5,
+        "observed_contribution": 0.55,
+        "relative_market_return": null,
+        "weights": [
+          0.5,
+          0.5
+        ]
+      },
+      "input": {
+        "ratios": [
+          1.1,
+          null
+        ],
+        "weights": [
+          0.5,
+          0.5
+        ]
+      },
+      "negative": false
+    },
+    {
+      "case_id": "benchmark_observed",
+      "expected": {
+        "R_B": 0,
+        "benchmark_quality": "OBSERVED",
+        "reweight": false
+      },
+      "input": {
+        "ratios": [
+          1.1,
+          0.9
+        ],
+        "weights": [
+          0.5,
+          0.5
+        ]
+      },
+      "negative": false
+    },
+    {
+      "case_id": "marked_unset",
+      "expected": {
+        "absolute_settlement": true,
+        "invented_threshold": false,
+        "marked_relative_permission": false
+      },
+      "input": {
+        "coverage_gate": null,
+        "quote_age_gate": null,
+        "verified_suspension_mark": true
+      },
+      "negative": false
+    },
+    {
+      "case_id": "sector_n1",
+      "expected": {
+        "absolute_settlement": true,
+        "quality": "UNKNOWN",
+        "relative_sector_return": null
+      },
+      "input": {
+        "sector_members_excluding_target": [
+          "C1"
+        ]
+      },
+      "negative": false
+    },
+    {
+      "case_id": "control_A_missing",
+      "expected": {
+        "A": "NOT_AVAILABLE",
+        "B": "INDEPENDENT",
+        "C": "INDEPENDENT"
+      },
+      "input": {
+        "legacy_output": null
+      },
+      "negative": false
+    },
+    {
+      "case_id": "control_B_N",
+      "expected": {
+        "controls": [
+          "S2",
+          "S1"
+        ],
+        "count": 2
+      },
+      "input": {
+        "N": 2,
+        "candidates": [
+          [
+            "S3",
+            5
+          ],
+          [
+            "S1",
+            5
+          ],
+          [
+            "S2",
+            7
+          ]
+        ]
+      },
+      "negative": false
+    },
+    {
+      "case_id": "control_C_industry",
+      "expected": {
+        "controls": [
+          "S1",
+          "S2",
+          "S3"
+        ],
+        "distances": [
+          0.1,
+          0.1,
+          1.2
+        ],
+        "scope": "MATCH_SCOPE_INDUSTRY"
+      },
+      "input": {
+        "candidates": [
+          [
+            "S2",
+            [
+              0.4,
+              0.5,
+              0.5
+            ]
+          ],
+          [
+            "S1",
+            [
+              0.4,
+              0.5,
+              0.5
+            ]
+          ],
+          [
+            "S3",
+            [
+              0.1,
+              0.1,
+              0.1
+            ]
+          ],
+          [
+            "S4",
+            [
+              0,
+              0,
+              0
+            ]
+          ]
+        ],
+        "industry_known": true,
+        "signal_ranks": [
+          0.5,
+          0.5,
+          0.5
+        ]
+      },
+      "negative": false
+    },
+    {
+      "case_id": "control_C_market",
+      "expected": {
+        "controls": [
+          "S1"
+        ],
+        "count": 1,
+        "scope": "MATCH_SCOPE_MARKET"
+      },
+      "input": {
+        "industry_known": false,
+        "pool": [
+          "S1"
+        ]
+      },
+      "negative": false
+    },
+    {
+      "case_id": "no_future_refill",
+      "expected": {
+        "controls": [
+          "S1"
+        ],
+        "refill": false
+      },
+      "input": {
+        "T0_controls": [
+          "S1"
+        ],
+        "later_pool": [
+          "S2"
+        ]
+      },
+      "negative": false
+    },
+    {
+      "case_id": "control_crosses_signal",
+      "expected": {
+        "ITT_controls": [
+          "S1"
+        ],
+        "append_crossed_signal_at": true
+      },
+      "input": {
+        "controls": [
+          "S1"
+        ],
+        "later_signal": "S1"
+      },
+      "negative": false
+    },
+    {
+      "case_id": "focus_ui_exclusion",
+      "expected": {
+        "settle": true
+      },
+      "input": {
+        "displayed": false,
+        "enrollment": "EN1",
+        "focus": false
+      },
+      "negative": false
+    },
+    {
+      "case_id": "invalidated_still_settles",
+      "expected": {
+        "settle": true
+      },
+      "input": {
+        "enrollment": "EN1",
+        "research_state": "INVALIDATED"
+      },
+      "negative": false
+    },
+    {
+      "case_id": "calendar_holiday",
+      "expected": {
+        "due": "2026-10-08"
+      },
+      "input": {
+        "N": 1,
+        "T0": "2026-09-30",
+        "sessions": [
+          "2026-09-30",
+          "2026-10-08",
+          "2026-10-09"
+        ]
+      },
+      "negative": false
+    },
+    {
+      "case_id": "outcome_correction",
+      "expected": {
+        "T0_unchanged": true,
+        "controls_unchanged": true,
+        "first_observed_preserved": true
+      },
+      "input": {
+        "revision": 2
+      },
+      "negative": false
+    },
+    {
+      "case_id": "sector_intraday",
+      "expected": {
+        "reject": true
+      },
+      "input": {
+        "member_highs": [
+          120,
+          130
+        ],
+        "use": "SYNCHRONIZED_SECTOR_HIGH"
+      },
+      "negative": true
+    }
+  ],
+  "version": "1.0.0"
+}

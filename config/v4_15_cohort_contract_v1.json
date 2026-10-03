@@ -1,0 +1,75 @@
+{
+  "contract_id": "COHORT_V1",
+  "corrected_namespace": "CORRECTED",
+  "design_authority": {
+    "bytes": 224998,
+    "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+    "sections": [
+      "43",
+      "44",
+      "45",
+      "45A",
+      "51A.1"
+    ],
+    "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+  },
+  "diagnostic_only": [
+    "SEED",
+    "NEAR_MISS"
+  ],
+  "enrollment_key": [
+    "logical_event_id",
+    "cohort_namespace"
+  ],
+  "evidence_authority": "V4_00C_ACCEPTED_DEADLINE_AND_SLOT_POLICY; UNSET_DEADLINE_BLOCKS_REALTIME_ENROLLMENT_ONLY",
+  "exited_invalidated_continue_settlement": true,
+  "fields": [
+    "enrollment_id",
+    "cohort_namespace",
+    "T0",
+    "model_contract_id",
+    "state_lineage_id",
+    "entity_type",
+    "entity_id",
+    "episode_id",
+    "signal_type",
+    "source_publication",
+    "source_digest",
+    "parameter_digest",
+    "contract_digest",
+    "signal_reference",
+    "comparison_reference",
+    "benchmark_ids",
+    "control_assignment_ids",
+    "calendar_identity",
+    "adjustment_identity",
+    "evidence_class",
+    "observation_slot",
+    "observation_deadline",
+    "accepted_at"
+  ],
+  "focus": false,
+  "freeze_trigger": "FIRST_REALTIME_ASSERTED_IN_FIRST_COMPLIANT_ACCEPTED_OBSERVATION_SLOT",
+  "ignore_selection": [
+    "Focus",
+    "UI Top-K",
+    "manual_pin",
+    "display_cap"
+  ],
+  "input_commit": "f4ad7d632e53734798c064f011e2b53ecd99bc27",
+  "late_or_missing_slot": "MISSED_OBSERVATION_SLOT_OR_RECONSTRUCTED_ASOF_NEVER_PIT_OBSERVED",
+  "population": "ALL_FINAL_ELIGIBLE_STOCK_SECTOR_PREWATCH_WARM_CONFIRMED_SUBJECT_TO_ACCEPTED_OWNER",
+  "primary_namespace": "FIRST_OBSERVED",
+  "production": false,
+  "reconstructed_namespace": "RECONSTRUCTED_ASOF",
+  "runtime_implemented": false,
+  "shadow": false,
+  "slot_key": [
+    "model_contract_id",
+    "state_lineage_id",
+    "trade_date"
+  ],
+  "status": "CONTRACT_FROZEN_LOCAL_PENDING_EXTERNAL_AUDIT",
+  "stock_warm": "NOT_APPLICABLE_NO_ACCEPTED_OWNER",
+  "version": "1.0.0"
+}

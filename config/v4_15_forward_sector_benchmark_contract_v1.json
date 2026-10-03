@@ -1,0 +1,35 @@
+{
+  "basket": "T0_FROZEN_ACCEPTED_SECTOR_MEMBERS",
+  "constituent_policy_authority": "FORWARD_MARKET_BENCHMARK_V1",
+  "contract_id": "FORWARD_SECTOR_BENCHMARK_V1",
+  "design_authority": {
+    "bytes": 224998,
+    "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+    "sections": [
+      "49A.3"
+    ],
+    "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+  },
+  "exclude_signal_stock": true,
+  "fields": [
+    "sector_benchmark_id",
+    "sector_members",
+    "relative_sector_return",
+    "relative_sector_return_marked",
+    "MFE_CLOSE",
+    "MAE_CLOSE"
+  ],
+  "focus": false,
+  "independent_absolute": true,
+  "input_commit": "f4ad7d632e53734798c064f011e2b53ecd99bc27",
+  "minimum_members": 2,
+  "n_below_2": "UNKNOWN_UNAVAILABLE",
+  "price_extrema": "CLOSE_ONLY_NO_SUM_OF_MEMBER_INTRADAY_EXTREMA",
+  "production": false,
+  "runtime_implemented": false,
+  "sector_stock_statistics": "SEPARATE",
+  "shadow": false,
+  "status": "CONTRACT_FROZEN_LOCAL_PENDING_EXTERNAL_AUDIT",
+  "version": "1.0.0",
+  "weights": "EQUAL_INITIAL_CAPITAL_FIXED_SHARES_NO_REWEIGHT"
+}

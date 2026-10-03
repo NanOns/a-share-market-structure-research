@@ -1,0 +1,66 @@
+{
+  "A": {
+    "missing": "NOT_AVAILABLE",
+    "pool": "REAL_SAME_DAY_LEGACY_ALL_ELIGIBLE",
+    "posthoc_reconstruction": false
+  },
+  "A_unavailable_blocks_B_C": false,
+  "B": {
+    "N": "SAME_DAY_STOCK_LOGICAL_EVENT_COUNT_BY_SIGNAL_EVENT_TYPE_NO_REVISION_DUPLICATES",
+    "order": [
+      "delta3 DESC",
+      "security_id ASC"
+    ],
+    "pool": "SAME_HARD_SAFETY",
+    "short_pool": "ACTUAL_COUNT_WITH_INSUFFICIENT_POOL_REASON_NO_REFILL"
+  },
+  "C": {
+    "distance": "sum(abs(pct_rank_signal_k-pct_rank_control_k) for k in frozen feature order)",
+    "features": [
+      "log(prior20_mean_amount)",
+      "vol20",
+      "RPS20"
+    ],
+    "industry": "PREFER_T0_KNOWN_PRIMARY_INDUSTRY_ELSE_MARKET",
+    "market_label": "MATCH_SCOPE_MARKET",
+    "maximum_controls": 3,
+    "percentile": "ACCEPTED_CORE_FACTOR_V1_MIDRANK_SAME_DAY_HARD_SAFETY_POOL_UNKNOWN_FEATURES_EXCLUDED_WITH_REASON",
+    "pool": "SAME_HARD_SAFETY_AND_NOT_SAME_DAY_PREWATCH_FINAL_ELIGIBLE_AND_NOT_SIGNAL_ENTITY",
+    "reuse_between_signals": true,
+    "short_pool": "ACTUAL_COUNT_NO_FUTURE_REFILL",
+    "tie_break": "security_id ASC"
+  },
+  "CLEAN_CONTROL": "POSTHOC_SENSITIVITY_ONLY_NOT_PRIMARY_OR_CUTOVER",
+  "assignments_immutable": true,
+  "contract_id": "CONTROL_ASSIGNMENT_V1",
+  "crossed_signal": "APPEND_ONLY_ITT_RETAINED",
+  "design_authority": {
+    "bytes": 224998,
+    "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+    "sections": [
+      "49",
+      "49B"
+    ],
+    "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+  },
+  "fields": [
+    "control_assignment_id",
+    "control_type",
+    "control_entity_ids",
+    "match_scope",
+    "control_feature_snapshot",
+    "assignment_digest",
+    "crossed_signal_at",
+    "control_count",
+    "control_distance"
+  ],
+  "focus": false,
+  "future_refill": false,
+  "input_commit": "f4ad7d632e53734798c064f011e2b53ecd99bc27",
+  "probability_claims": false,
+  "production": false,
+  "runtime_implemented": false,
+  "shadow": false,
+  "status": "CONTRACT_FROZEN_LOCAL_PENDING_EXTERNAL_AUDIT",
+  "version": "1.0.0"
+}

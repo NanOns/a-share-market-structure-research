@@ -1,0 +1,34 @@
+{
+  "acceptance": {
+    "ALGORITHM_STATE_REPLAY_PASS": "DEGRADED_PASS_CAPABILITY_SCOPED",
+    "Focus": false,
+    "NEXT": "R19B_R19C_V4_15_CONTRACT_FREEZE",
+    "Production": false,
+    "R19A_V4_14_PROMOTION": "PASS_LOCAL",
+    "Shadow": false,
+    "V4_14_ACCEPTED_HEAD": "CREATED",
+    "V4_15_RUNTIME": "NOT_AUTHORIZED",
+    "V4_DATA_ACCEPTED_HEAD": "2026-09-30",
+    "V4_STAGE_ACCEPTED_HEAD": "V4_00_TO_V4_14_ACCEPTED",
+    "protected_count": 36
+  },
+  "evidence": {
+    "bytes": 410,
+    "path": "reports/r19a/PROMOTION_GATE.json",
+    "sha256": "f21662f9215a04512d4db80c93a879520384d6ac4dbf7cf97d207e72c8923073"
+  },
+  "input_commit": "f4ad7d632e53734798c064f011e2b53ecd99bc27",
+  "next_stage": "R19B_R19C",
+  "recorded_at": "2026-10-03T08:04:41.818130+00:00",
+  "schedule_authority": {
+    "bytes": 4505,
+    "path": "docs/evidence/r19/V4_NEXT_ROUND_EXECUTION_MASTER_R19_20261003.md",
+    "sha256": "adf99bc990689796a14fe083aeb11127b686862d316f87165b8c710ca269f4f7"
+  },
+  "stage": "R19A",
+  "stage_contract": {
+    "bytes": 3741,
+    "path": "config/v4_14_accepted_entry_contract_v1.json",
+    "sha256": "0bff68b28176d7f31f6f2258356af810bc06ad607d125db5202f61b17426c791"
+  }
+}

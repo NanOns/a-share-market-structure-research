@@ -1,0 +1,128 @@
+{
+  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+  "capabilities": [
+    {
+      "capability": "RADAR_EVENT_PROJECTION",
+      "contract_defined": true,
+      "degradation": "ONLY_SUPPORTED_OWNER_EVENT_FAMILIES; STOCK_WARM_NOT_APPLICABLE",
+      "focus": false,
+      "production": false,
+      "required_sources": "ACCEPTED_V4_14_OWNER_PUBLICATIONS",
+      "runtime_permission": false,
+      "shadow": false
+    },
+    {
+      "capability": "VALIDATION_COHORT",
+      "contract_defined": true,
+      "degradation": "ALL_ELIGIBLE; NO_FOCUS_UI_FILTER; LATE_SLOT_RECONSTRUCTED",
+      "focus": false,
+      "production": false,
+      "required_sources": "ACCEPTED_V4_14_LOGICAL_EVENTS_AND_OBSERVATION_SLOT",
+      "runtime_permission": false,
+      "shadow": false
+    },
+    {
+      "capability": "ABSOLUTE_FORWARD_SETTLEMENT",
+      "contract_defined": true,
+      "degradation": "INDEPENDENT_FROM_BENCHMARK_CONTROLS; UNKNOWN_GAPS_DEGRADE_PATH_ONLY",
+      "focus": false,
+      "production": false,
+      "required_sources": "ACCEPTED_IDENTITY_CALENDAR_LOCAL_ADJUSTMENT_AND_ENDPOINT",
+      "runtime_permission": false,
+      "shadow": false
+    },
+    {
+      "capability": "MARKET_RELATIVE_SETTLEMENT",
+      "contract_defined": true,
+      "degradation": "OBSERVED_ONLY_IF_ALL_CONSTITUENTS_QUALIFIED; MARKED_BLOCKED_UNSET_NUMERIC_GATES",
+      "focus": false,
+      "production": false,
+      "required_sources": "T0_FIXED_MARKET_BASKET_AND_VERIFIED_ENDPOINTS",
+      "runtime_permission": false,
+      "shadow": false
+    },
+    {
+      "capability": "SECTOR_RELATIVE_SETTLEMENT",
+      "contract_defined": true,
+      "degradation": "N_LT_2_UNKNOWN; DOES_NOT_BLOCK_ABSOLUTE",
+      "focus": false,
+      "production": false,
+      "required_sources": "T0_PIT_TARGET_EXCLUDED_MEMBERS_AND_VERIFIED_ENDPOINTS",
+      "runtime_permission": false,
+      "shadow": false
+    },
+    {
+      "capability": "CONTROL_A_LEGACY",
+      "contract_defined": true,
+      "degradation": "NOT_AVAILABLE_IF_NO_OUTPUT; B_C_INDEPENDENT",
+      "focus": false,
+      "production": false,
+      "required_sources": "ACTUAL_T0_LEGACY_OUTPUT",
+      "runtime_permission": false,
+      "shadow": false
+    },
+    {
+      "capability": "CONTROL_B_DELTA3",
+      "contract_defined": true,
+      "degradation": "STABLE_SECURITY_ID; ACTUAL_SHORT_POOL_NO_FUTURE_REFILL",
+      "focus": false,
+      "production": false,
+      "required_sources": "T0_HARD_SAFETY_DELTA3_AND_EVENT_COUNTS",
+      "runtime_permission": false,
+      "shadow": false
+    },
+    {
+      "capability": "CONTROL_C_MATCHED",
+      "contract_defined": true,
+      "degradation": "MARKET_SCOPE_IF_INDUSTRY_UNAVAILABLE; ITT_FIXED",
+      "focus": false,
+      "production": false,
+      "required_sources": "T0_KNOWN_INDUSTRY_AND_HARD_SAFETY_FEATURE_RANKS",
+      "runtime_permission": false,
+      "shadow": false
+    },
+    {
+      "capability": "COMPETING_OUTCOMES",
+      "contract_defined": true,
+      "degradation": "OBSERVATION_CENSORING_SEPARATE; PRICE_COLLECTION_CONTINUES",
+      "focus": false,
+      "production": false,
+      "required_sources": "ACCEPTED_STATE_REDUCER_EPISODE_EVENT_PUBLICATIONS",
+      "runtime_permission": false,
+      "shadow": false
+    },
+    {
+      "capability": "OUTCOME_REVISION_READBACK",
+      "contract_defined": true,
+      "degradation": "FIRST_OBSERVED_LATEST_CORRECTED_SEPARATE_NO_T0_REWRITE",
+      "focus": false,
+      "production": false,
+      "required_sources": "IMMUTABLE_EVALUATION_REVISIONS_AVAILABLE_AT",
+      "runtime_permission": false,
+      "shadow": false
+    }
+  ],
+  "contract_id": "V4_15_CAPABILITIES_V1",
+  "design_authority": {
+    "bytes": 224998,
+    "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+    "sections": [
+      "52B",
+      "45",
+      "46",
+      "49A",
+      "49B"
+    ],
+    "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+  },
+  "fields": [],
+  "focus": false,
+  "independent_degradation": true,
+  "input_commit": "f4ad7d632e53734798c064f011e2b53ecd99bc27",
+  "production": false,
+  "raw_provider_fallback": false,
+  "runtime_implemented": false,
+  "shadow": false,
+  "status": "CONTRACT_FROZEN_LOCAL_PENDING_EXTERNAL_AUDIT",
+  "version": "1.0.0"
+}

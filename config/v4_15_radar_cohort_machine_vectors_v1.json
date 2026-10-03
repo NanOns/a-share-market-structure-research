@@ -1,0 +1,364 @@
+{
+  "contract_id": "RADAR_COHORT_VECTORS_V1",
+  "design_authority": {
+    "bytes": 224998,
+    "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+    "sections": [
+      "45A",
+      "58"
+    ],
+    "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+  },
+  "expected_authority": "STATIC_HAND_FROZEN_NOT_RUNTIME_GENERATED",
+  "fields": [],
+  "focus": false,
+  "input_commit": "f4ad7d632e53734798c064f011e2b53ecd99bc27",
+  "production": false,
+  "runtime_implemented": false,
+  "shadow": false,
+  "status": "CONTRACT_FROZEN_LOCAL_PENDING_EXTERNAL_AUDIT",
+  "vectors": [
+    {
+      "case_id": "FIRST_PREWATCH",
+      "expected": {
+        "enroll": true,
+        "ledger_retained": true,
+        "logical_event_count": 1,
+        "settlement_continues": true
+      },
+      "input": {
+        "eligible": true,
+        "entity_type": "STOCK",
+        "event_type": "FIRST_PREWATCH",
+        "owner_event": true
+      },
+      "negative": false
+    },
+    {
+      "case_id": "REENTRY_PREWATCH",
+      "expected": {
+        "enroll": true,
+        "ledger_retained": true,
+        "logical_event_count": 1,
+        "settlement_continues": true
+      },
+      "input": {
+        "eligible": true,
+        "entity_type": "STOCK",
+        "event_type": "REENTRY_PREWATCH",
+        "owner_event": true
+      },
+      "negative": false
+    },
+    {
+      "case_id": "UPGRADE_TO_WARM",
+      "expected": {
+        "enroll": true,
+        "ledger_retained": true,
+        "logical_event_count": 1,
+        "settlement_continues": true
+      },
+      "input": {
+        "eligible": true,
+        "entity_type": "SECTOR",
+        "event_type": "UPGRADE_TO_WARM",
+        "owner_event": true
+      },
+      "negative": false
+    },
+    {
+      "case_id": "NEW_CONFIRMED",
+      "expected": {
+        "enroll": true,
+        "ledger_retained": true,
+        "logical_event_count": 1,
+        "settlement_continues": true
+      },
+      "input": {
+        "eligible": true,
+        "entity_type": "STOCK",
+        "event_type": "NEW_CONFIRMED",
+        "owner_event": true
+      },
+      "negative": false
+    },
+    {
+      "case_id": "REACCELERATION_EVENT",
+      "expected": {
+        "enroll": true,
+        "ledger_retained": true,
+        "logical_event_count": 1,
+        "settlement_continues": true
+      },
+      "input": {
+        "eligible": true,
+        "entity_type": "STOCK",
+        "event_type": "REACCELERATION_EVENT",
+        "owner_event": true
+      },
+      "negative": false
+    },
+    {
+      "case_id": "INVALIDATION",
+      "expected": {
+        "enroll": false,
+        "ledger_retained": true,
+        "logical_event_count": 1,
+        "settlement_continues": true
+      },
+      "input": {
+        "eligible": false,
+        "entity_type": "STOCK",
+        "event_type": "INVALIDATION",
+        "owner_event": true
+      },
+      "negative": false
+    },
+    {
+      "case_id": "persistent",
+      "expected": {
+        "ledger_retained": true,
+        "logical_event_count": 0,
+        "new_enrollment_count": 0
+      },
+      "input": {
+        "eligible": true,
+        "event_type": "PERSISTENT"
+      },
+      "negative": false
+    },
+    {
+      "case_id": "stock_warm",
+      "expected": {
+        "enroll": false,
+        "logical_event_count": 0,
+        "status": "NOT_APPLICABLE"
+      },
+      "input": {
+        "entity_type": "STOCK",
+        "event_type": "UPGRADE_TO_WARM",
+        "owner_available": false
+      },
+      "negative": true
+    },
+    {
+      "case_id": "same_day_revision",
+      "expected": {
+        "T0": "2026-09-30",
+        "enroll": true,
+        "enrollment_id": "EN1",
+        "episode_id": "EP1",
+        "logical_event_id": "E1",
+        "new_logical_event_count": 0,
+        "settlement_continues": true
+      },
+      "input": {
+        "eligible": true,
+        "event_type": "FIRST_PREWATCH",
+        "revision": "r2"
+      },
+      "negative": false
+    },
+    {
+      "case_id": "multi_sector",
+      "expected": {
+        "T0": "2026-09-30",
+        "enroll": true,
+        "enrollment_id": "EN1",
+        "episode_id": "EP1",
+        "logical_event_id": "E1",
+        "new_logical_event_count": 0,
+        "settlement_continues": true
+      },
+      "input": {
+        "context_count": 5,
+        "eligible": true,
+        "event_type": "FIRST_PREWATCH"
+      },
+      "negative": false
+    },
+    {
+      "case_id": "focus_exclusion",
+      "expected": {
+        "T0": "2026-09-30",
+        "enroll": true,
+        "enrollment_id": "EN1",
+        "episode_id": "EP1",
+        "logical_event_id": "E1",
+        "new_logical_event_count": 1,
+        "settlement_continues": true
+      },
+      "input": {
+        "eligible": true,
+        "event_type": "FIRST_PREWATCH",
+        "focus": false
+      },
+      "negative": false
+    },
+    {
+      "case_id": "display_exclusion",
+      "expected": {
+        "T0": "2026-09-30",
+        "enroll": true,
+        "enrollment_id": "EN1",
+        "episode_id": "EP1",
+        "logical_event_id": "E1",
+        "new_logical_event_count": 1,
+        "settlement_continues": true
+      },
+      "input": {
+        "displayed": false,
+        "eligible": true,
+        "event_type": "FIRST_PREWATCH"
+      },
+      "negative": false
+    },
+    {
+      "case_id": "retracted",
+      "expected": {
+        "T0": "2026-09-30",
+        "append_observation": true,
+        "controls": [
+          "C1"
+        ],
+        "enrollment_id": "EN1",
+        "first_observed_preserved": true,
+        "logical_event_id": "E1",
+        "settlement_continues": true
+      },
+      "input": {
+        "observation_state": "RETRACTED",
+        "original_enrollment": "EN1",
+        "original_event": "E1"
+      },
+      "negative": false
+    },
+    {
+      "case_id": "corrected",
+      "expected": {
+        "T0": "2026-09-30",
+        "append_observation": true,
+        "controls": [
+          "C1"
+        ],
+        "enrollment_id": "EN1",
+        "first_observed_preserved": true,
+        "logical_event_id": "E1",
+        "settlement_continues": true
+      },
+      "input": {
+        "observation_state": "CORRECTED",
+        "original_enrollment": "EN1",
+        "original_event": "E1"
+      },
+      "negative": false
+    },
+    {
+      "case_id": "source_correction",
+      "expected": {
+        "T0": "2026-09-30",
+        "controls": [
+          "C1"
+        ],
+        "corrected_namespace": "CORRECTED",
+        "enrollment_id": "EN1",
+        "first_observed_preserved": true
+      },
+      "input": {
+        "original_enrollment": "EN1",
+        "source_digest": "changed"
+      },
+      "negative": false
+    },
+    {
+      "case_id": "formal_exit_reentry",
+      "expected": {
+        "enrollment_id": "EN2",
+        "episode_id": "EP2",
+        "logical_event_id": "E2",
+        "parent_episode_id": "EP1"
+      },
+      "input": {
+        "formal_exit": true,
+        "owner_new_episode": "EP2"
+      },
+      "negative": false
+    },
+    {
+      "case_id": "unknown_evidence",
+      "expected": {
+        "evidence_quality": "UNKNOWN",
+        "value": null
+      },
+      "input": {
+        "evidence_quality": "UNKNOWN"
+      },
+      "negative": true
+    },
+    {
+      "case_id": "hypothesis_incomplete",
+      "expected": {
+        "hypothesis_count": 1,
+        "status": "HYPOTHESIS_SET_INCOMPLETE"
+      },
+      "input": {
+        "evidence_backed_explanations": 1
+      },
+      "negative": false
+    },
+    {
+      "case_id": "risk_after_false",
+      "expected": {
+        "enroll_new": false,
+        "existing_settlement_continues": true,
+        "risk_stream": true
+      },
+      "input": {
+        "eligible": false,
+        "event_type": "INVALIDATION"
+      },
+      "negative": false
+    },
+    {
+      "case_id": "illegal_episode_revision",
+      "expected": {
+        "reject": true
+      },
+      "input": {
+        "same_day_revision_new_episode": true
+      },
+      "negative": true
+    },
+    {
+      "case_id": "focus_qualification",
+      "expected": {
+        "reject": true
+      },
+      "input": {
+        "qualification_source": "Focus"
+      },
+      "negative": true
+    },
+    {
+      "case_id": "fabricated_hypothesis",
+      "expected": {
+        "reject": true
+      },
+      "input": {
+        "fabricated_story": true
+      },
+      "negative": true
+    },
+    {
+      "case_id": "missing_owner_event",
+      "expected": {
+        "reject": true
+      },
+      "input": {
+        "owner_event": false
+      },
+      "negative": true
+    }
+  ],
+  "version": "1.0.0"
+}

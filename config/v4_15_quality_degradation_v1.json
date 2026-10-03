@@ -1,0 +1,112 @@
+{
+  "benchmark_states": [
+    "OBSERVED",
+    "MARKED_ESTIMATE",
+    "PARTIAL_UNVALUED"
+  ],
+  "capability_combination": "INTERSECTION_OF_AFFECTED_PERMISSIONS_NO_GLOBAL_OVERWRITE",
+  "contract_id": "V4_15_QUALITY_V1",
+  "design_authority": {
+    "bytes": 224998,
+    "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+    "sections": [
+      "8",
+      "47",
+      "49A",
+      "52B"
+    ],
+    "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+  },
+  "fields": [],
+  "focus": false,
+  "input_commit": "f4ad7d632e53734798c064f011e2b53ecd99bc27",
+  "marked_coverage_gate": null,
+  "marked_quote_age_gate": null,
+  "outcome_states": [
+    "PENDING",
+    "RIGHT_CENSORED",
+    "OBSERVED",
+    "SUSPENDED_AT_HORIZON",
+    "MATURED_DATA_MISSING",
+    "DELISTED_BEFORE_HORIZON",
+    "IDENTITY_UNKNOWN",
+    "ADJUSTMENT_UNKNOWN"
+  ],
+  "production": false,
+  "quality_states": [
+    "KNOWN",
+    "UNKNOWN",
+    "NOT_APPLICABLE",
+    "NOT_IMPLEMENTED",
+    "DEGRADED"
+  ],
+  "rules": [
+    {
+      "affected": [
+        "SECTOR_RELATIVE_SETTLEMENT"
+      ],
+      "reason": "SECTOR_BENCHMARK_UNAVAILABLE",
+      "unaffected": [
+        "ABSOLUTE_FORWARD_SETTLEMENT",
+        "MARKET_RELATIVE_SETTLEMENT"
+      ]
+    },
+    {
+      "affected": [
+        "MARKET_RELATIVE_SETTLEMENT"
+      ],
+      "reason": "MARKET_BENCHMARK_PARTIAL",
+      "unaffected": [
+        "ABSOLUTE_FORWARD_SETTLEMENT",
+        "CONTROL_B_DELTA3",
+        "CONTROL_C_MATCHED"
+      ]
+    },
+    {
+      "affected": [
+        "CONTROL_A_LEGACY"
+      ],
+      "reason": "CONTROL_A_MISSING",
+      "unaffected": [
+        "CONTROL_B_DELTA3",
+        "CONTROL_C_MATCHED"
+      ]
+    },
+    {
+      "affected": [
+        "MARKED_RELATIVE_OUTPUT"
+      ],
+      "reason": "MARKED_ESTIMATE_GATES_UNSET",
+      "unaffected": [
+        "ABSOLUTE_FORWARD_SETTLEMENT",
+        "OBSERVED_RELATIVE_OUTPUT"
+      ]
+    },
+    {
+      "affected": [
+        "STOCK_UPGRADE_TO_WARM"
+      ],
+      "reason": "STOCK_WARM_OWNER_ABSENT",
+      "unaffected": [
+        "STOCK_PREWATCH",
+        "STOCK_CONFIRMED",
+        "SECTOR_STAGE"
+      ]
+    },
+    {
+      "affected": [
+        "PATH_EXTREMA",
+        "PATH_MDD"
+      ],
+      "reason": "INTERIOR_UNKNOWN_GAP",
+      "unaffected": [
+        "VERIFIED_ENDPOINT_RETURN"
+      ]
+    }
+  ],
+  "runtime_implemented": false,
+  "shadow": false,
+  "status": "CONTRACT_FROZEN_LOCAL_PENDING_EXTERNAL_AUDIT",
+  "unknown_never_false_or_zero": true,
+  "version": "1.0.0"
+}

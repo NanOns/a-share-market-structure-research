@@ -18,9 +18,10 @@ def successor(old,new,mutate,version='1.2.0'):
 def prepare():
     assert not (ROOT/HEAD).exists()
     dest=ROOT/'docs/evidence/r17r1';dest.mkdir(parents=True,exist_ok=True)
-    (dest/'.gitattributes').write_text('* -text\n',encoding='utf8')
+    from scripts.prepare_r17_governance import atomic as artifact_atomic
+    artifact_atomic('docs/evidence/r17r1/.gitattributes',b'* -text\n')
     for name in DOCS:atomic(ROOT,'docs/evidence/r17r1/'+name,(Path('D:/Users/lps/Desktop/阶段任务')/name).read_bytes(),append_only=True)
-    out=ROOT/'reports/r17r1a';out.mkdir(parents=True,exist_ok=True);(out/'.gitattributes').write_text('* -text\n')
+    out=ROOT/'reports/r17r1a';out.mkdir(parents=True,exist_ok=True);artifact_atomic('reports/r17r1a/.gitattributes',b'* -text\n')
     old=read(OLD_HEAD); stage=read(STAGE)
     protected=[bind(p) for p in ['AGENTS.md','data/v4/V4_DATA_ACCEPTED_HEAD.json','data/v4/V4_12_ACCEPTED_HEAD.json',OLD_HEAD]]
     protected += [bind(p.relative_to(ROOT).as_posix()) for p in sorted((ROOT/'reports/v4_13_runtime_r16/real/2026-09-30/r6').rglob('*')) if p.is_file()]

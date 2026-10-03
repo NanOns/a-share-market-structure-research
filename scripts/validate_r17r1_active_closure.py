@@ -56,6 +56,8 @@ def validate(root=ROOT):
     for ref in h['runtime_source_bindings']:
         exact(ref,root);exact(dict(ref,path=ref['original_path']),root)
     parent=json.loads(exact(h['amendment_parent_stage_archive'],root))
+    assert h['amendment_parent_stage_archive']['sha256']=='87cb66c9dc90b4bb727fc69626fa22899c4e1a20c7bf2aa0d163102e0f07bf21'
+    assert stage['accepted_stage_range']=='V4_00_TO_V4_13_ACCEPTED'
     assert all(stage[k]==v for k,v in parent.items() if k!='v4_13_binding')
     assert set(stage)-set(parent)=={'v4_13_package_authority'}
     entry=json.loads(exact(h['formal_entry_contract'],root));closure=json.loads(exact(h['active_family_closure'],root))
@@ -66,6 +68,9 @@ def validate(root=ROOT):
     families=closure['families'];assert len(families)==len(h['contract_refs'])==14
     authorized_paths={r['path'].replace('_v1_1.json','_v1_2.json') if any(r['path']=='config/v4_13_'+name+'_v1_1.json' for name in ['dag_edge_registry','rotation_structure_enrichment_schema','field_registry','output_schema','machine_vectors']) else r['path'] for r in old['contract_refs']}
     assert {r['path'] for r in h['contract_refs']}==authorized_paths,'UNAUTHORIZED_FAMILY_SELECTION'
+    unchanged={r['path']:r for r in old['contract_refs'] if r['path'] in authorized_paths}
+    for ref in h['contract_refs']:
+        if ref['path'] in unchanged:assert ref==unchanged[ref['path']],'UNCHANGED_CONTRACT_IDENTITY_REQUIRED'
     assert {r['path'] for r in h['contract_refs']}=={f['active']['path'] for f in families.values()}
     for family,row in families.items():
         obj=json.loads(exact(row['active'],root));assert obj['contract_id']==family and obj['version']==row['version']

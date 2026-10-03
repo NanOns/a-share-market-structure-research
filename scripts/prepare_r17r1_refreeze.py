@@ -7,7 +7,8 @@ from scripts.validate_r17r1_active_closure import validate
 NAMES=['replay_gate_b_contract','replay_case_registry','temporal_non_edge_registry','quality_degradation','machine_vectors']
 def prepare():
     assert validate()['status']=='PASS' and read('reports/r17r1a/completion_gate.json')['R17R1A_V4_13_ACTIVE_BINDING_REPAIR']=='PASS'
-    out=ROOT/'reports/r17r1b';out.mkdir(parents=True,exist_ok=True);(out/'.gitattributes').write_text('* -text\n')
+    from scripts.prepare_r17_governance import atomic
+    out=ROOT/'reports/r17r1b';out.mkdir(parents=True,exist_ok=True);atomic('reports/r17r1b/.gitattributes',b'* -text\n')
     put('reports/r17r1b/stage_contract.json',dict(baseline='204d799f26a7badbce3d6b09d3ceed722c522c91',entry_gate=bind('reports/r17r1a/completion_gate.json'),protected={p:bind(p) for p in ['AGENTS.md','data/v4/V4_DATA_ACCEPTED_HEAD.json','data/v4/V4_12_ACCEPTED_HEAD.json','data/v4/V4_13_ACCEPTED_HEAD.json',HEAD,'data/v4/V4_STAGE_ACCEPTED_HEAD.json']},scope='CONTRACT_AUTHORITY_REFREEZE_ONLY',task=bind('docs/evidence/r17r1/V4_14_R17R1B_CONTRACT_REFREEZE_ACTIVE_AUTHORITY_TASK_20261003.md'),next='STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT'))
     h=read(HEAD);old=read('data/v4/V4_13_ACCEPTED_HEAD.json')
     mapping={a['path']:b for a,b in zip(old['contract_refs'],h['contract_refs']) if a!=b}

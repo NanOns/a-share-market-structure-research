@@ -153,7 +153,9 @@ def validate():
     for ref in stage['protected'].values():exact(ref)
     entry=json.loads(exact(stage['entry_gate']));assert entry['R17R1A_V4_13_ACTIVE_BINDING_REPAIR']=='PASS'
     assert not (ROOT/'data/v4/V4_14_ACCEPTED_HEAD.json').exists()
-    assert not list((ROOT/'src/workbench_analysis').glob('v4_14*'))
+    if (ROOT/'src/workbench_analysis/v4_14_replay_runtime.py').exists():
+        audit=dict(path='docs/evidence/r18/V4_R17R1_INDEPENDENT_EXTERNAL_AUDIT_R1_20261003.md',sha256='9a8cc8c92599d6aa843e1fdb9eefe498361ba37b55dd2091c13c6eb75f403d43',bytes=3583)
+        assert 'AUTHORIZED_NEXT_SCOPED_ENGINEERING' in exact(audit).decode('utf8')
     manifest=json.loads((ROOT/'reports/r17r1b/contract_freeze_manifest.json').read_bytes())
     for ref in manifest['contracts']:exact(ref)
     assert manifest['vector_count']==result['vectors'] and manifest['dimensions']==result['dimensions']

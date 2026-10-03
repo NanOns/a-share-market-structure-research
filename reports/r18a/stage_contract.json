@@ -1,0 +1,62 @@
+{
+  "ALGORITHM_STATE_REPLAY_PASS": "NOT_GRANTED_PENDING_EXTERNAL_AUDIT",
+  "baseline": "47b7f72f374c059f35a66bf2fe298a3ec5fe7efc",
+  "external_audit": {
+    "bytes": 3583,
+    "path": "docs/evidence/r18/V4_R17R1_INDEPENDENT_EXTERNAL_AUDIT_R1_20261003.md",
+    "sha256": "9a8cc8c92599d6aa843e1fdb9eefe498361ba37b55dd2091c13c6eb75f403d43"
+  },
+  "master": {
+    "bytes": 3143,
+    "path": "docs/evidence/r18/V4_NEXT_ROUND_EXECUTION_MASTER_R18_20261003.md",
+    "sha256": "e6f6073553b7e36564be2910a0afbdf3257d818bf51660a71538e9b81f4addb9"
+  },
+  "next": "R18B_AFTER_RUNTIME_GATE_PASS",
+  "permissions": {
+    "DB_migration": false,
+    "Data_advance": false,
+    "Stage_advance": false,
+    "focus": false,
+    "global_mandatory_adoption": false,
+    "production": false,
+    "shadow": false
+  },
+  "protected": [
+    {
+      "bytes": 1616,
+      "path": "AGENTS.md",
+      "sha256": "fe3ca08043743023f23d5767bf8d3570e2dc4a72c7215056a2daba53a0ea7a77"
+    },
+    {
+      "bytes": 16890,
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+    },
+    {
+      "bytes": 796484,
+      "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+      "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+    },
+    {
+      "bytes": 8023,
+      "path": "data/v4/V4_13_ACCEPTED_HEAD.json",
+      "sha256": "f9d48096162d6c6de9f353251cc24715fb017243596131e45e6fcbaa5abb373c"
+    },
+    {
+      "bytes": 11314,
+      "path": "data/v4/V4_13_ACCEPTED_HEAD_AMENDED_R1.json",
+      "sha256": "98f222ba4d62318ee900a69b8cad7c25359a30bcc7097efe0a55b8ffea09aa65"
+    },
+    {
+      "bytes": 11487,
+      "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+      "sha256": "ec03ad9295673d5b852ea6ed07f39b59ec8c3d4069926fa2b358f9e80671072a"
+    }
+  ],
+  "scope": "OWNER_ORCHESTRATION_AND_REPLAY_ONLY",
+  "task": {
+    "bytes": 4650,
+    "path": "docs/evidence/r18/V4_14_R18A_REPLAY_AUTHORITY_RUNTIME_HARNESS_TASK_20261003.md",
+    "sha256": "3415068215c08d5c8d72ddaeb76841702c2263b6c4b2d559bcc2464d31a44cce"
+  }
+}

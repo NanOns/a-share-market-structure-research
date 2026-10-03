@@ -60,4 +60,5 @@ def test_source_byte_gate_rejects_self_consistent_wrong_reference():
     with pytest.raises(AssertionError):v.exact(ref)
 def test_no_future_replay_runtime_or_accepted_head():
     assert not (v.ROOT/'data/v4/V4_14_ACCEPTED_HEAD.json').exists()
-    assert not list((v.ROOT/'src/workbench_analysis').glob('v4_14*'))
+    if (v.ROOT/'src/workbench_analysis/v4_14_replay_runtime.py').exists():
+        assert 'AUTHORIZED_NEXT_SCOPED_ENGINEERING' in (v.ROOT/'docs/evidence/r18/V4_R17R1_INDEPENDENT_EXTERNAL_AUDIT_R1_20261003.md').read_text(encoding='utf8')

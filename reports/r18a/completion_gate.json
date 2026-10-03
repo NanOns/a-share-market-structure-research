@@ -1,0 +1,25 @@
+{
+  "NEXT": "R18B_CROSS_PROCESS_FULL_DAG_REPLAY",
+  "R18A_V4_14_RUNTIME_HARNESS": "PASS_LOCAL",
+  "V4_14_SYNTHETIC_VECTOR_RUNTIME": "PASS_LOCAL",
+  "contract": {
+    "bytes": 1252,
+    "path": "config/v4_14_replay_input_envelope_r18_v1.json",
+    "sha256": "f2f9b02adf2814cfd9b61b264ed541ba41efbd7fa512e61dd5ef724f9103bd0a"
+  },
+  "local_tests": {
+    "deselected": 0,
+    "failed": 0,
+    "passed": 112,
+    "skipped": 0
+  },
+  "superseded_attempts": [
+    "reports/r18a/synthetic_vector_runtime.json",
+    "reports/r18a/r2/synthetic_vector_runtime.json"
+  ],
+  "synthetic_gate": {
+    "bytes": 30236,
+    "path": "reports/r18a/r3/synthetic_vector_runtime.json",
+    "sha256": "7e23a05769b4f4f9fae243a41149f935e987a90acfe3490c01821be14e077f1c"
+  }
+}

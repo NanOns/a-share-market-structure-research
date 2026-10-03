@@ -32,7 +32,10 @@ def state_input(authority,envelope,prior,values,source_outputs):
     x['input_publication_manifest_digest']=owner_digest(dict(input_publication_ids=x['input_publication_ids'],fields=x['input_provenance']))
     return x
 
-def replay(authority,envelope,previous):
+def replay(authority,envelope,previous,_edge_prepared=None):
+    if envelope['owner_inputs'].get('owner_edge_complete') and _edge_prepared is None:
+        from .v4_14_owner_edge_runtime import replay as edge_replay
+        return edge_replay(authority,envelope,previous)
     from src.v4.base_seed import evaluate_facts
     from src.v4.stock_prewatch import evaluate,load_package
     from src.v4.confirmation import detect_confirmation
@@ -56,6 +59,8 @@ def replay(authority,envelope,previous):
         # Negative/unknown facts are frozen scenario inputs, not new thresholds.
         if not choice.get('confirmation',False):row['facts']['actual_bar'].update(value=False)
         if choice.get('unknown',False):row['facts']['normal_universe'].update(value=None,quality='UNKNOWN',reason='EXPLICIT_SYNTHETIC_VECTOR')
+    if _edge_prepared is not None:
+        facts=_edge_prepared['F0']['output']['seed_facts'];seed=_edge_prepared['A']['output'];prewatch=_edge_prepared['C']['output'];cp=_edge_prepared['D0']['input']['projection'];rotation=_edge_prepared['B1']['output']
     confirmation=synthetic_confirmation(seal(cp));cr=confirmation['rows'][0]
     from .v4_12_structure_io import FrozenContracts
     from .v4_12_structure_engine import SessionLedger
@@ -80,7 +85,9 @@ def replay(authority,envelope,previous):
         events=state_events(d2,frozen)
     contracts=AcceptedContracts(root);selection=dict(quality='UNKNOWN',membership_basis='UNKNOWN')
     context=sector_snapshot(selection,None,contracts,[authority.owners['v4_08']]);copied=copy_structure(None,contracts,authority.owners['v4_12'])
+    if _edge_prepared is not None:context=_edge_prepared['D3_CONTEXT']['output']
     enrichment=dual_enrichment(field(rotation, 'KNOWN',None),field(copied,'UNKNOWN',None),contracts)
+    if _edge_prepared is not None:enrichment=dual_enrichment(field(None,'UNKNOWN',rotation.get('reason_codes')),field(copied,'UNKNOWN',None),contracts)
     trace=[dict(node='Accepted Source Binding',owner_ref=authority.data_ref,input_digest=digest(envelope['source_refs']),output_digest=digest(dict(classification='ENGINEERING_SYNTHETIC',calendar=authority.calendar_ref)),output=dict(classification='ENGINEERING_SYNTHETIC',calendar=authority.calendar_ref))]
     for node,owner,inputs,out in [('Seed','v4_07',facts,seed),('Sector/Rotation','v4_08',dict(fixture='R1B'),rotation),('PREWATCH','v4_09',seed,prewatch),('Confirmation','v4_11',seal(cp),confirmation),('Structure','v4_12',dict(frozen_vector=choice.get('structure_vector','S01')),structure),('State Reducer','v4_10',x,d2),('Event Diff','v4_11',dict(prior=envelope['previous_state_publication'],current=d2['publication_id']),events),('Profile/Context','v4_13',dict(structure=copied,rotation=rotation),dict(context=context,enrichment=enrichment))]:
         trace.append(dict(node=node,owner_ref=authority.owners[owner],input_digest=digest(inputs),output_digest=digest(out),output=out))

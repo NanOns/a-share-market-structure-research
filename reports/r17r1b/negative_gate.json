@@ -1,0 +1,943 @@
+{
+  "cases": [
+    {
+      "classname": "tests.test_v4_13_r15r1_lineage",
+      "name": "test_cross_family_first_introduction_rejected[sector_context_state_schema-output_schema]",
+      "time": "0.001"
+    },
+    {
+      "classname": "tests.test_v4_13_r15r1_lineage",
+      "name": "test_cross_family_first_introduction_rejected[rotation_structure_enrichment_schema-field_registry]",
+      "time": "0.000"
+    },
+    {
+      "classname": "tests.test_v4_13_r15r1_lineage",
+      "name": "test_exact_predecessor_hash_but_wrong_identity_rejected",
+      "time": "0.001"
+    },
+    {
+      "classname": "tests.test_v4_13_r15r1_lineage",
+      "name": "test_nonincreasing_version_rejected",
+      "time": "0.001"
+    },
+    {
+      "classname": "tests.test_v4_13_r15r1_lineage",
+      "name": "test_corrupt_hash_rejected",
+      "time": "0.002"
+    },
+    {
+      "classname": "tests.test_v4_13_r15r1_lineage",
+      "name": "test_missing_introduction_rejected",
+      "time": "0.000"
+    },
+    {
+      "classname": "tests.test_v4_13_r16r1_repair",
+      "name": "test_producer_mismatch_rejected",
+      "time": "0.000"
+    },
+    {
+      "classname": "tests.test_v4_13_r16r1_repair",
+      "name": "test_independent_oracle_rejects_each_category_mutation[1]",
+      "time": "0.040"
+    },
+    {
+      "classname": "tests.test_v4_13_r16r1_repair",
+      "name": "test_independent_oracle_rejects_each_category_mutation[2]",
+      "time": "0.015"
+    },
+    {
+      "classname": "tests.test_v4_13_r16r1_repair",
+      "name": "test_independent_oracle_rejects_each_category_mutation[3]",
+      "time": "0.023"
+    },
+    {
+      "classname": "tests.test_v4_13_r16r1_repair",
+      "name": "test_independent_oracle_rejects_each_category_mutation[4]",
+      "time": "0.015"
+    },
+    {
+      "classname": "tests.test_v4_13_r16r1_repair",
+      "name": "test_independent_oracle_rejects_each_category_mutation[5]",
+      "time": "0.015"
+    },
+    {
+      "classname": "tests.test_v4_13_r16r1_repair",
+      "name": "test_independent_oracle_rejects_each_category_mutation[6]",
+      "time": "0.016"
+    },
+    {
+      "classname": "tests.test_v4_13_r16r1_repair",
+      "name": "test_independent_oracle_rejects_each_category_mutation[7]",
+      "time": "0.016"
+    },
+    {
+      "classname": "tests.test_v4_13_r16r1_repair",
+      "name": "test_independent_oracle_rejects_each_category_mutation[8]",
+      "time": "0.078"
+    },
+    {
+      "classname": "tests.test_v4_13_r16r1_repair",
+      "name": "test_independent_oracle_rejects_each_category_mutation[9]",
+      "time": "0.079"
+    },
+    {
+      "classname": "tests.test_v4_13_r16r1_repair",
+      "name": "test_independent_oracle_rejects_each_category_mutation[10]",
+      "time": "0.081"
+    },
+    {
+      "classname": "tests.test_v4_13_r16r1_repair",
+      "name": "test_independent_provenance_mismatch_rejected[producer_contract_id-WRONG]",
+      "time": "0.079"
+    },
+    {
+      "classname": "tests.test_v4_13_r16r1_repair",
+      "name": "test_independent_provenance_mismatch_rejected[sha256-0000000000000000000000000000000000000000000000000000000000000000]",
+      "time": "0.016"
+    },
+    {
+      "classname": "tests.test_v4_13_r16r1_repair",
+      "name": "test_independent_provenance_mismatch_rejected[path-config/v4_13_projection_v1_1.json]",
+      "time": "0.016"
+    },
+    {
+      "classname": "tests.v4_08.test_r5_runtime",
+      "name": "test_parameter_instance_digest_rejects_unbound_mutation",
+      "time": "0.001"
+    },
+    {
+      "classname": "tests.v4_09.test_r1_1_lineage_immutability",
+      "name": "test_b0_validator_rejects_self_consistent_wrong_producer_or_contract[b0_contract]",
+      "time": "0.005"
+    },
+    {
+      "classname": "tests.v4_09.test_r1_1_lineage_immutability",
+      "name": "test_b0_validator_rejects_self_consistent_wrong_producer_or_contract[b0_producer]",
+      "time": "0.004"
+    },
+    {
+      "classname": "tests.v4_09.test_stock_prewatch",
+      "name": "test_duplicate_missing_and_board_scope_rejected",
+      "time": "0.000"
+    },
+    {
+      "classname": "tests.v4_10.test_accepted_head_r1",
+      "name": "test_changed_authority_or_overclaim_rejected[implementation_commit-wrong]",
+      "time": "2.160"
+    },
+    {
+      "classname": "tests.v4_10.test_accepted_head_r1",
+      "name": "test_changed_authority_or_overclaim_rejected[audited_sealed_head-wrong]",
+      "time": "2.773"
+    },
+    {
+      "classname": "tests.v4_10.test_accepted_head_r1",
+      "name": "test_changed_authority_or_overclaim_rejected[external_acceptance_decision-wrong]",
+      "time": "2.849"
+    },
+    {
+      "classname": "tests.v4_10.test_accepted_head_r1",
+      "name": "test_changed_authority_or_overclaim_rejected[production_permission-True]",
+      "time": "2.857"
+    },
+    {
+      "classname": "tests.v4_10.test_accepted_head_r1",
+      "name": "test_changed_authority_or_overclaim_rejected[parent_binding-value4]",
+      "time": "2.814"
+    },
+    {
+      "classname": "tests.v4_10.test_accepted_head_r1",
+      "name": "test_changed_authority_or_overclaim_rejected[capabilities-value5]",
+      "time": "2.862"
+    },
+    {
+      "classname": "tests.v4_10.test_accepted_head_r1",
+      "name": "test_changed_authority_or_overclaim_rejected[open_audit_registry-value6]",
+      "time": "2.833"
+    },
+    {
+      "classname": "tests.v4_10.test_accepted_head_r1",
+      "name": "test_changed_authority_or_overclaim_rejected[global_head_parent_archive-value7]",
+      "time": "2.817"
+    },
+    {
+      "classname": "tests.v4_10.test_promotion",
+      "name": "test_overclaim_or_wrong_authority_rejected[capabilities-value0]",
+      "time": "2.180"
+    },
+    {
+      "classname": "tests.v4_10.test_promotion",
+      "name": "test_overclaim_or_wrong_authority_rejected[implementation_commit-wrong]",
+      "time": "2.238"
+    },
+    {
+      "classname": "tests.v4_10.test_promotion",
+      "name": "test_overclaim_or_wrong_authority_rejected[external_acceptance_decision-wrong]",
+      "time": "2.188"
+    },
+    {
+      "classname": "tests.v4_10.test_promotion",
+      "name": "test_overclaim_or_wrong_authority_rejected[production_permission-True]",
+      "time": "2.175"
+    },
+    {
+      "classname": "tests.v4_10.test_promotion",
+      "name": "test_overclaim_or_wrong_authority_rejected[upstream_binding-value4]",
+      "time": "2.236"
+    },
+    {
+      "classname": "tests.v4_10.test_promotion",
+      "name": "test_overclaim_or_wrong_authority_rejected[artifact-value5]",
+      "time": "2.181"
+    },
+    {
+      "classname": "tests.v4_10.test_r1_1_lineage",
+      "name": "test_r1_1_adversarial_api_vector[partial_prior_payload_rejected_in_accepted_mode]",
+      "time": "5.380"
+    },
+    {
+      "classname": "tests.v4_10.test_r1_1_lineage",
+      "name": "test_r1_1_adversarial_api_vector[self_consistent_fake_prior_digest_rejected]",
+      "time": "0.077"
+    },
+    {
+      "classname": "tests.v4_10.test_r1_1_lineage",
+      "name": "test_r1_1_adversarial_api_vector[prior_content_address_publication_id_mismatch_rejected]",
+      "time": "0.080"
+    },
+    {
+      "classname": "tests.v4_10.test_r1_1_lineage",
+      "name": "test_r1_1_adversarial_api_vector[prior_missing_calendar_publication_rejected]",
+      "time": "0.085"
+    },
+    {
+      "classname": "tests.v4_10.test_r1_1_lineage",
+      "name": "test_r1_1_adversarial_api_vector[prior_calendar_identity_mismatch_rejected]",
+      "time": "0.090"
+    },
+    {
+      "classname": "tests.v4_10.test_r1_1_lineage",
+      "name": "test_r1_1_adversarial_api_vector[prior_trade_date_session_index_inconsistent_rejected]",
+      "time": "0.087"
+    },
+    {
+      "classname": "tests.v4_10.test_r1_1_lineage",
+      "name": "test_r1_1_adversarial_api_vector[wrong_prior_ledger_identity_rejected]",
+      "time": "0.088"
+    },
+    {
+      "classname": "tests.v4_10.test_r1_1_lineage",
+      "name": "test_r1_1_adversarial_api_vector[bare_true_model_boundary_rejected]",
+      "time": "0.032"
+    },
+    {
+      "classname": "tests.v4_10.test_r1_1_lineage",
+      "name": "test_r1_1_adversarial_api_vector[boundary_missing_manifest_rejected]",
+      "time": "0.195"
+    },
+    {
+      "classname": "tests.v4_10.test_r1_1_lineage",
+      "name": "test_r1_1_adversarial_api_vector[boundary_wrong_from_model_contract_id_rejected]",
+      "time": "0.079"
+    },
+    {
+      "classname": "tests.v4_10.test_r1_1_lineage",
+      "name": "test_r1_1_adversarial_api_vector[boundary_wrong_to_model_contract_id_rejected]",
+      "time": "0.080"
+    },
+    {
+      "classname": "tests.v4_10.test_r1_1_lineage",
+      "name": "test_r1_1_adversarial_api_vector[boundary_wrong_effective_trade_date_rejected]",
+      "time": "0.082"
+    },
+    {
+      "classname": "tests.v4_10.test_r1_1_lineage",
+      "name": "test_r1_1_adversarial_api_vector[boundary_manifest_digest_mismatch_rejected]",
+      "time": "0.085"
+    },
+    {
+      "classname": "tests.v4_10.test_r1_1_lineage",
+      "name": "test_r1_1_adversarial_api_vector[boundary_unpublished_manifest_rejected]",
+      "time": "0.081"
+    },
+    {
+      "classname": "tests.v4_10.test_r1_1_lineage",
+      "name": "test_r1_1_adversarial_api_vector[wrong_core_price_damage_producer_rejected]",
+      "time": "0.085"
+    },
+    {
+      "classname": "tests.v4_10.test_r1_1_lineage",
+      "name": "test_r1_1_adversarial_api_vector[frozen_invalidation_true_before_owner_producer_rejected]",
+      "time": "0.082"
+    },
+    {
+      "classname": "tests.v4_10.test_r1_1_lineage",
+      "name": "test_r1_1_adversarial_api_vector[episode_invalidation_contract_id_true_before_owner_producer_rejected]",
+      "time": "0.095"
+    },
+    {
+      "classname": "tests.v4_10.test_r1_1_lineage",
+      "name": "test_r1_1_adversarial_api_vector[followup_complete_true_before_owner_producer_rejected]",
+      "time": "0.088"
+    },
+    {
+      "classname": "tests.v4_10.test_r1_1_lineage",
+      "name": "test_r1_1_adversarial_api_vector[scenario_true_before_owner_producer_rejected]",
+      "time": "0.096"
+    },
+    {
+      "classname": "tests.v4_10.test_r1_1_lineage",
+      "name": "test_r1_1_adversarial_api_vector[invalidation_wrong_publication_rejected]",
+      "time": "0.091"
+    },
+    {
+      "classname": "tests.v4_10.test_r1_1_lineage",
+      "name": "test_r1_1_adversarial_api_vector[invalidation_contract_matches_but_unbound_rejected]",
+      "time": "0.189"
+    },
+    {
+      "classname": "tests.v4_10.test_r1_1_lineage",
+      "name": "test_r1_1_adversarial_api_vector[wrong_risk_parameter_rejected]",
+      "time": "0.098"
+    },
+    {
+      "classname": "tests.v4_10.test_r1_1_lineage",
+      "name": "test_r1_1_adversarial_api_vector[wrong_delta3_time_role_rejected]",
+      "time": "0.081"
+    },
+    {
+      "classname": "tests.v4_10.test_r1_1_lineage",
+      "name": "test_r1_1_adversarial_api_vector[future_available_fact_rejected]",
+      "time": "0.085"
+    },
+    {
+      "classname": "tests.v4_10.test_r1_1_lineage",
+      "name": "test_r1_1_adversarial_api_vector[registered_stock_producer_relabelled_sector_rejected]",
+      "time": "0.049"
+    },
+    {
+      "classname": "tests.v4_10.test_r1_1_lineage",
+      "name": "test_r1_1_adversarial_api_vector[input_publication_ids_string_rejected]",
+      "time": "0.035"
+    },
+    {
+      "classname": "tests.v4_10.test_r1_1_lineage",
+      "name": "test_r1_1_adversarial_api_vector[input_publication_ids_empty_rejected]",
+      "time": "0.030"
+    },
+    {
+      "classname": "tests.v4_10.test_r1_1_lineage",
+      "name": "test_r1_1_adversarial_api_vector[input_publication_ids_empty_id_rejected]",
+      "time": "0.029"
+    },
+    {
+      "classname": "tests.v4_10.test_r1_1_lineage",
+      "name": "test_r1_1_adversarial_api_vector[input_publication_ids_duplicate_rejected]",
+      "time": "0.033"
+    },
+    {
+      "classname": "tests.v4_10.test_r1_1_lineage",
+      "name": "test_r1_1_adversarial_api_vector[input_publication_ids_nested_rejected]",
+      "time": "0.030"
+    },
+    {
+      "classname": "tests.v4_10.test_r1_1_lineage",
+      "name": "test_r1_1_adversarial_api_vector[input_publication_ids_nonstr_rejected]",
+      "time": "0.133"
+    },
+    {
+      "classname": "tests.v4_10.test_r1_1_lineage",
+      "name": "test_r1_1_adversarial_api_vector[input_manifest_digest_wrong_rejected]",
+      "time": "0.034"
+    },
+    {
+      "classname": "tests.v4_10.test_r1_1_lineage",
+      "name": "test_r1_1_adversarial_api_vector[old_model_prior_without_boundary_rejected]",
+      "time": "0.046"
+    },
+    {
+      "classname": "tests.v4_10.test_r1_1_lineage",
+      "name": "test_r1_1_adversarial_api_vector[noop_model_boundary_rejected]",
+      "time": "0.081"
+    },
+    {
+      "classname": "tests.v4_10.test_r1_1_lineage",
+      "name": "test_future_published_fact_not_available_by_cutoff_is_rejected",
+      "time": "0.039"
+    },
+    {
+      "classname": "tests.v4_10.test_r1_1_lineage",
+      "name": "test_output_schema_rejects_complete_but_wrong_counter_type",
+      "time": "0.009"
+    },
+    {
+      "classname": "tests.v4_11_r5.test_sealed_d2_authority_r5",
+      "name": "test_tampered_authority_rejected_even_with_new_payload_digest[value-TRUE]",
+      "time": "0.000"
+    },
+    {
+      "classname": "tests.v4_11_r5.test_sealed_d2_authority_r5",
+      "name": "test_tampered_authority_rejected_even_with_new_payload_digest[quality-KNOWN]",
+      "time": "0.000"
+    },
+    {
+      "classname": "tests.v4_11_r5.test_sealed_d2_authority_r5",
+      "name": "test_tampered_authority_rejected_even_with_new_payload_digest[publication_id-RAW_HELPER]",
+      "time": "0.000"
+    },
+    {
+      "classname": "tests.v4_11_r5.test_sealed_d2_authority_r5",
+      "name": "test_tampered_authority_rejected_even_with_new_payload_digest[source_output_digest-RECOMPUTED_SELF_ASSERTED]",
+      "time": "0.000"
+    },
+    {
+      "classname": "tests.v4_11_r5.test_sealed_d2_authority_r5",
+      "name": "test_tampered_authority_rejected_even_with_new_payload_digest[trade_date-2026-09-29]",
+      "time": "0.000"
+    },
+    {
+      "classname": "tests.v4_11_r5.test_sealed_d2_authority_r5",
+      "name": "test_tampered_authority_rejected_even_with_new_payload_digest[producer_contract_id-UNAUTHORIZED]",
+      "time": "0.000"
+    },
+    {
+      "classname": "tests.v4_11_r5.test_sealed_d2_authority_r5",
+      "name": "test_tampered_authority_rejected_even_with_new_payload_digest[parameter_set_id-MODIFIED]",
+      "time": "0.000"
+    },
+    {
+      "classname": "tests.test_v4_12_runtime_r1",
+      "name": "test_provider_or_candidate_digest_replacement_rejected",
+      "time": "0.001"
+    },
+    {
+      "classname": "tests.test_v4_12_runtime_r1",
+      "name": "test_future_source_and_future_date_rejected",
+      "time": "0.002"
+    },
+    {
+      "classname": "tests.test_v4_12_runtime_r1",
+      "name": "test_same_day_prior_snapshot_rejected",
+      "time": "0.007"
+    },
+    {
+      "classname": "tests.test_v4_12_runtime_r1",
+      "name": "test_append_only_store_idempotent_and_conflict_rejected",
+      "time": "0.010"
+    },
+    {
+      "classname": "tests.test_v4_12_multi_anchor_r12",
+      "name": "test_same_day_and_future_set_rejected[2026-09-29]",
+      "time": "0.003"
+    },
+    {
+      "classname": "tests.test_v4_12_multi_anchor_r12",
+      "name": "test_same_day_and_future_set_rejected[2026-09-28]",
+      "time": "0.003"
+    },
+    {
+      "classname": "tests.test_v4_12_multi_anchor_r12",
+      "name": "test_state_set_rejects_cardinality_and_ownership_mutation[duplicate]",
+      "time": "0.004"
+    },
+    {
+      "classname": "tests.test_v4_12_multi_anchor_r12",
+      "name": "test_state_set_rejects_cardinality_and_ownership_mutation[owning]",
+      "time": "0.004"
+    },
+    {
+      "classname": "tests.test_v4_12_multi_anchor_r12",
+      "name": "test_state_set_rejects_cardinality_and_ownership_mutation[event]",
+      "time": "0.004"
+    },
+    {
+      "classname": "tests.test_v4_12_multi_anchor_r12",
+      "name": "test_state_set_rejects_cardinality_and_ownership_mutation[counter]",
+      "time": "0.004"
+    },
+    {
+      "classname": "tests.test_v4_12_multi_anchor_r12",
+      "name": "test_state_set_rejects_cardinality_and_ownership_mutation[new_self_confirm]",
+      "time": "0.004"
+    },
+    {
+      "classname": "tests.test_v4_12_multi_anchor_r12",
+      "name": "test_state_set_rejects_cardinality_and_ownership_mutation[scalar]",
+      "time": "0.004"
+    },
+    {
+      "classname": "tests.test_v4_12_persisted_r11",
+      "name": "test_same_day_and_future_session_rejected[2026-09-29]",
+      "time": "0.002"
+    },
+    {
+      "classname": "tests.test_v4_12_persisted_r11",
+      "name": "test_same_day_and_future_session_rejected[2026-09-28]",
+      "time": "0.002"
+    },
+    {
+      "classname": "tests.test_v4_12_persisted_r11",
+      "name": "test_future_availability_rejected",
+      "time": "0.000"
+    },
+    {
+      "classname": "tests.test_v4_12_persisted_r11",
+      "name": "test_tampering_rejected[manifest]",
+      "time": "0.001"
+    },
+    {
+      "classname": "tests.test_v4_12_persisted_r11",
+      "name": "test_tampering_rejected[bundle]",
+      "time": "0.005"
+    },
+    {
+      "classname": "tests.test_v4_12_persisted_r11",
+      "name": "test_tampering_rejected[row]",
+      "time": "0.014"
+    },
+    {
+      "classname": "tests.test_v4_12_persisted_r11",
+      "name": "test_tampering_rejected[lineage]",
+      "time": "0.010"
+    },
+    {
+      "classname": "tests.test_v4_12_persisted_r11",
+      "name": "test_tampering_rejected[counter]",
+      "time": "0.020"
+    },
+    {
+      "classname": "tests.test_v4_12_persisted_r11",
+      "name": "test_snapshot_revision_conflict_is_rejected",
+      "time": "0.005"
+    },
+    {
+      "classname": "tests.test_v4_12_breakout_episode_r13",
+      "name": "test_episode_shape_rejects[alias]",
+      "time": "0.005"
+    },
+    {
+      "classname": "tests.test_v4_12_breakout_episode_r13",
+      "name": "test_episode_shape_rejects[duplicate]",
+      "time": "0.004"
+    },
+    {
+      "classname": "tests.test_v4_12_breakout_episode_r13",
+      "name": "test_episode_shape_rejects[no_prior]",
+      "time": "0.004"
+    },
+    {
+      "classname": "tests.test_v4_12_breakout_episode_r13",
+      "name": "test_episode_shape_rejects[self_confirm]",
+      "time": "0.005"
+    },
+    {
+      "classname": "tests.test_v4_12_breakout_episode_r13",
+      "name": "test_episode_shape_rejects[bad_id]",
+      "time": "0.004"
+    },
+    {
+      "classname": "tests.test_v4_12_breakout_episode_r13",
+      "name": "test_episode_shape_rejects[multiple_active]",
+      "time": "0.005"
+    },
+    {
+      "classname": "tests.test_r17b_promotion",
+      "name": "test_major_authority_mutations_rejected_at_relevant_gate[external_authority-value0-P01_EXTERNAL_AUDIT_EXACT]",
+      "time": "1.278"
+    },
+    {
+      "classname": "tests.test_r17b_promotion",
+      "name": "test_major_authority_mutations_rejected_at_relevant_gate[audited_sealed_head-wrong-P02_AUDITED_SEALED_HEAD_EXACT]",
+      "time": "1.256"
+    },
+    {
+      "classname": "tests.test_r17b_promotion",
+      "name": "test_major_authority_mutations_rejected_at_relevant_gate[tested_runtime_source-wrong-P03_TESTED_SOURCE_EXACT]",
+      "time": "1.004"
+    },
+    {
+      "classname": "tests.test_r17b_promotion",
+      "name": "test_major_authority_mutations_rejected_at_relevant_gate[runtime_source_bindings-value3-P03_TESTED_SOURCE_EXACT]",
+      "time": "1.027"
+    },
+    {
+      "classname": "tests.test_r17b_promotion",
+      "name": "test_major_authority_mutations_rejected_at_relevant_gate[candidate-value4-P04_R6_MANIFEST_EXACT]",
+      "time": "1.283"
+    },
+    {
+      "classname": "tests.test_r17b_promotion",
+      "name": "test_major_authority_mutations_rejected_at_relevant_gate[artifact_refs-value5-P05_R6_ARTIFACT_REFS_EXACT]",
+      "time": "1.022"
+    },
+    {
+      "classname": "tests.test_r17b_promotion",
+      "name": "test_major_authority_mutations_rejected_at_relevant_gate[contract_refs-value6-P06_CONTRACT_PACKAGE_EXACT]",
+      "time": "1.286"
+    },
+    {
+      "classname": "tests.test_r17b_promotion",
+      "name": "test_major_authority_mutations_rejected_at_relevant_gate[contract_digest-wrong-P06_CONTRACT_PACKAGE_EXACT]",
+      "time": "1.254"
+    },
+    {
+      "classname": "tests.test_r17b_promotion",
+      "name": "test_major_authority_mutations_rejected_at_relevant_gate[formal_entry_contract-value8-P06_CONTRACT_PACKAGE_EXACT]",
+      "time": "1.260"
+    },
+    {
+      "classname": "tests.test_r17b_promotion",
+      "name": "test_major_authority_mutations_rejected_at_relevant_gate[r17a_gate-value9-P08_R17A_GATE_PASS]",
+      "time": "1.304"
+    },
+    {
+      "classname": "tests.test_r17b_promotion",
+      "name": "test_major_authority_mutations_rejected_at_relevant_gate[global_head_parent_archive-value10-P09_PARENT_STAGE_ARCHIVE_EXACT]",
+      "time": "1.231"
+    },
+    {
+      "classname": "tests.test_r17b_promotion",
+      "name": "test_major_authority_mutations_rejected_at_relevant_gate[global_head_parent-value11-P09_PARENT_STAGE_ARCHIVE_EXACT]",
+      "time": "1.282"
+    },
+    {
+      "classname": "tests.test_r17b_promotion",
+      "name": "test_major_authority_mutations_rejected_at_relevant_gate[protected_head_bindings-value12-P11_DATA_HEAD_BYTE_IDENTICAL]",
+      "time": "1.207"
+    },
+    {
+      "classname": "tests.test_r17b_promotion",
+      "name": "test_major_authority_mutations_rejected_at_relevant_gate[production-True-P13_NO_PRODUCTION_SHADOW_FOCUS]",
+      "time": "1.290"
+    },
+    {
+      "classname": "tests.test_r17b_promotion",
+      "name": "test_major_authority_mutations_rejected_at_relevant_gate[shadow-True-P13_NO_PRODUCTION_SHADOW_FOCUS]",
+      "time": "1.282"
+    },
+    {
+      "classname": "tests.test_r17b_promotion",
+      "name": "test_major_authority_mutations_rejected_at_relevant_gate[focus-True-P13_NO_PRODUCTION_SHADOW_FOCUS]",
+      "time": "1.259"
+    },
+    {
+      "classname": "tests.test_r17b_promotion",
+      "name": "test_major_authority_mutations_rejected_at_relevant_gate[global_mandatory_adoption-True-P13_NO_PRODUCTION_SHADOW_FOCUS]",
+      "time": "1.269"
+    },
+    {
+      "classname": "tests.test_r17b_promotion",
+      "name": "test_major_authority_mutations_rejected_at_relevant_gate[capabilities-value17-P14_DEGRADATION_NOT_OVERCLAIMED]",
+      "time": "1.292"
+    },
+    {
+      "classname": "tests.test_r17b_promotion",
+      "name": "test_major_authority_mutations_rejected_at_relevant_gate[ALGORITHM_STATE_REPLAY_PASS-PASS-P15_V4_14_NOT_ACCEPTED]",
+      "time": "1.249"
+    },
+    {
+      "classname": "tests.test_r17b_promotion",
+      "name": "test_new_stage_authority_mutation_rejected[head_sha]",
+      "time": "0.592"
+    },
+    {
+      "classname": "tests.test_r17b_promotion",
+      "name": "test_new_stage_authority_mutation_rejected[stage_range]",
+      "time": "1.256"
+    },
+    {
+      "classname": "tests.test_r17b_promotion",
+      "name": "test_new_stage_authority_mutation_rejected[prior_scope]",
+      "time": "1.299"
+    },
+    {
+      "classname": "tests.test_r17b_promotion",
+      "name": "test_new_stage_authority_mutation_rejected[permissions]",
+      "time": "1.246"
+    },
+    {
+      "classname": "tests.test_r17b_promotion",
+      "name": "test_self_consistent_wrong_formal_head_is_rejected[capability]",
+      "time": "0.006"
+    },
+    {
+      "classname": "tests.test_r17b_promotion",
+      "name": "test_self_consistent_wrong_formal_head_is_rejected[r5]",
+      "time": "0.005"
+    },
+    {
+      "classname": "tests.test_r17b_promotion",
+      "name": "test_self_consistent_wrong_formal_head_is_rejected[package]",
+      "time": "0.005"
+    },
+    {
+      "classname": "tests.test_r17b_promotion",
+      "name": "test_self_consistent_wrong_formal_head_is_rejected[audit]",
+      "time": "0.005"
+    },
+    {
+      "classname": "tests.test_r17b_promotion",
+      "name": "test_self_consistent_wrong_formal_head_is_rejected[entry]",
+      "time": "0.005"
+    },
+    {
+      "classname": "tests.test_r17r1_active_closure",
+      "name": "test_exact_superseded_current_consumer_rejected[config/v4_13_projection_v1.json]",
+      "time": "0.001"
+    },
+    {
+      "classname": "tests.test_r17r1_active_closure",
+      "name": "test_exact_superseded_current_consumer_rejected[config/v4_13_projection_v1_1.json]",
+      "time": "0.001"
+    },
+    {
+      "classname": "tests.test_r17r1_active_closure",
+      "name": "test_exact_superseded_current_consumer_rejected[config/v4_13_dag_edge_registry_v1_1.json]",
+      "time": "0.001"
+    },
+    {
+      "classname": "tests.test_r17r1_active_closure",
+      "name": "test_exact_superseded_current_consumer_rejected[config/v4_13_rotation_structure_enrichment_schema_v1_1.json]",
+      "time": "0.001"
+    },
+    {
+      "classname": "tests.test_r17r1_active_closure",
+      "name": "test_exact_superseded_current_consumer_rejected[config/v4_13_output_schema_v1_1.json]",
+      "time": "0.001"
+    },
+    {
+      "classname": "tests.test_r17r1_active_closure",
+      "name": "test_exact_superseded_current_consumer_rejected[config/v4_13_field_registry_v1_1.json]",
+      "time": "0.001"
+    },
+    {
+      "classname": "tests.test_r17r1_active_closure",
+      "name": "test_exact_superseded_current_consumer_rejected[config/v4_13_machine_vectors_v1_1.json]",
+      "time": "0.001"
+    },
+    {
+      "classname": "tests.test_r17r1_active_closure",
+      "name": "test_exact_superseded_current_consumer_rejected[config/v4_13_accepted_entry_contract_v1.json]",
+      "time": "0.001"
+    },
+    {
+      "classname": "tests.test_r17r1_active_closure",
+      "name": "test_nested_exact_stale_projection_rejected[contract_binding]",
+      "time": "0.001"
+    },
+    {
+      "classname": "tests.test_r17r1_active_closure",
+      "name": "test_nested_exact_stale_projection_rejected[structure_schema]",
+      "time": "0.001"
+    },
+    {
+      "classname": "tests.test_r17c_replay_contract",
+      "name": "test_intrinsic_negative_contract_gates[missing_dimension]",
+      "time": "1.249"
+    },
+    {
+      "classname": "tests.test_r17c_replay_contract",
+      "name": "test_intrinsic_negative_contract_gates[missing_pair]",
+      "time": "1.256"
+    },
+    {
+      "classname": "tests.test_r17c_replay_contract",
+      "name": "test_intrinsic_negative_contract_gates[wrong_expected]",
+      "time": "1.292"
+    },
+    {
+      "classname": "tests.test_r17c_replay_contract",
+      "name": "test_intrinsic_negative_contract_gates[wrong_source_hash]",
+      "time": "0.003"
+    },
+    {
+      "classname": "tests.test_r17c_replay_contract",
+      "name": "test_intrinsic_negative_contract_gates[missing_time_role]",
+      "time": "0.002"
+    },
+    {
+      "classname": "tests.test_r17c_replay_contract",
+      "name": "test_intrinsic_negative_contract_gates[missing_history]",
+      "time": "0.003"
+    },
+    {
+      "classname": "tests.test_r17c_replay_contract",
+      "name": "test_intrinsic_negative_contract_gates[unknown_false]",
+      "time": "1.304"
+    },
+    {
+      "classname": "tests.test_r17c_replay_contract",
+      "name": "test_intrinsic_negative_contract_gates[runtime_true]",
+      "time": "0.003"
+    },
+    {
+      "classname": "tests.test_r17c_replay_contract",
+      "name": "test_intrinsic_negative_contract_gates[replay_granted]",
+      "time": "0.003"
+    },
+    {
+      "classname": "tests.test_r17c_replay_contract",
+      "name": "test_intrinsic_negative_contract_gates[production_true]",
+      "time": "0.002"
+    },
+    {
+      "classname": "tests.test_r17c_replay_contract",
+      "name": "test_intrinsic_negative_contract_gates[missing_non_edge]",
+      "time": "1.271"
+    },
+    {
+      "classname": "tests.test_r17c_replay_contract",
+      "name": "test_intrinsic_negative_contract_gates[feedback_edge]",
+      "time": "1.256"
+    },
+    {
+      "classname": "tests.test_r17c_replay_contract",
+      "name": "test_intrinsic_negative_contract_gates[alias_feedback_edge]",
+      "time": "1.258"
+    },
+    {
+      "classname": "tests.test_r17c_replay_contract",
+      "name": "test_intrinsic_negative_contract_gates[same_day_prior]",
+      "time": "1.277"
+    },
+    {
+      "classname": "tests.test_r17c_replay_contract",
+      "name": "test_intrinsic_negative_contract_gates[different_previous_manifest]",
+      "time": "1.258"
+    },
+    {
+      "classname": "tests.test_r17c_replay_contract",
+      "name": "test_intrinsic_negative_contract_gates[memory_prior]",
+      "time": "1.263"
+    },
+    {
+      "classname": "tests.test_r17c_replay_contract",
+      "name": "test_intrinsic_negative_contract_gates[missing_process_exit]",
+      "time": "1.290"
+    },
+    {
+      "classname": "tests.test_r17c_replay_contract",
+      "name": "test_intrinsic_negative_contract_gates[missing_readback_receipt]",
+      "time": "1.228"
+    },
+    {
+      "classname": "tests.test_r17c_replay_contract",
+      "name": "test_intrinsic_negative_contract_gates[historical_current_membership]",
+      "time": "1.235"
+    },
+    {
+      "classname": "tests.test_r17c_replay_contract",
+      "name": "test_intrinsic_negative_contract_gates[historical_missing_availability]",
+      "time": "1.238"
+    },
+    {
+      "classname": "tests.test_r17c_replay_contract",
+      "name": "test_intrinsic_negative_contract_gates[real_implies_historical]",
+      "time": "1.358"
+    },
+    {
+      "classname": "tests.test_r17c_replay_contract",
+      "name": "test_intrinsic_negative_contract_gates[old_revision_mutable]",
+      "time": "1.300"
+    },
+    {
+      "classname": "tests.test_r17c_replay_contract",
+      "name": "test_intrinsic_negative_contract_gates[duplicate_episode]",
+      "time": "1.283"
+    },
+    {
+      "classname": "tests.test_r17c_replay_contract",
+      "name": "test_intrinsic_negative_contract_gates[revision_in_logical_key]",
+      "time": "1.321"
+    },
+    {
+      "classname": "tests.test_r17c_replay_contract",
+      "name": "test_intrinsic_negative_contract_gates[field_wrong_owner]",
+      "time": "0.426"
+    },
+    {
+      "classname": "tests.test_r17c_replay_contract",
+      "name": "test_intrinsic_negative_contract_gates[duplicate_field]",
+      "time": "1.321"
+    },
+    {
+      "classname": "tests.test_r17c_replay_contract",
+      "name": "test_intrinsic_negative_contract_gates[missing_source_binding]",
+      "time": "0.003"
+    },
+    {
+      "classname": "tests.test_r17c_replay_contract",
+      "name": "test_intrinsic_negative_contract_gates[evidence_class_collapsed]",
+      "time": "1.318"
+    },
+    {
+      "classname": "tests.test_r17c_replay_contract",
+      "name": "test_intrinsic_negative_contract_gates[contract_version_wrong]",
+      "time": "0.002"
+    },
+    {
+      "classname": "tests.test_r17c_replay_contract",
+      "name": "test_source_byte_gate_rejects_self_consistent_wrong_reference",
+      "time": "0.001"
+    },
+    {
+      "classname": "tests.test_r17r1_refreeze",
+      "name": "test_exact_stale_ref_rejected_in_current_replay_consumer[config/v4_13_projection_v1.json]",
+      "time": "0.438"
+    },
+    {
+      "classname": "tests.test_r17r1_refreeze",
+      "name": "test_exact_stale_ref_rejected_in_current_replay_consumer[config/v4_13_dag_edge_registry_v1_1.json]",
+      "time": "0.458"
+    },
+    {
+      "classname": "tests.test_r17r1_refreeze",
+      "name": "test_exact_stale_ref_rejected_in_current_replay_consumer[config/v4_13_rotation_structure_enrichment_schema_v1_1.json]",
+      "time": "0.448"
+    },
+    {
+      "classname": "tests.test_r17r1_refreeze",
+      "name": "test_exact_stale_ref_rejected_in_current_replay_consumer[data/v4/V4_13_ACCEPTED_HEAD.json]",
+      "time": "0.448"
+    },
+    {
+      "classname": "tests.test_r17r1_refreeze",
+      "name": "test_exact_stale_ref_rejected_in_current_replay_consumer[config/v4_14_replay_gate_b_contract_v1.json]",
+      "time": "0.518"
+    },
+    {
+      "classname": "tests.test_r17r1_refreeze",
+      "name": "test_exact_stale_ref_rejected_in_current_replay_consumer[config/v4_14_replay_case_registry_v1.json]",
+      "time": "0.443"
+    },
+    {
+      "classname": "tests.test_r17r1_refreeze",
+      "name": "test_exact_stale_ref_rejected_in_current_replay_consumer[config/v4_14_temporal_non_edge_registry_v1.json]",
+      "time": "0.489"
+    },
+    {
+      "classname": "tests.test_r17r1_refreeze",
+      "name": "test_exact_stale_ref_rejected_in_current_replay_consumer[config/v4_14_quality_degradation_v1.json]",
+      "time": "0.456"
+    },
+    {
+      "classname": "tests.test_r17r1_refreeze",
+      "name": "test_exact_stale_ref_rejected_in_current_replay_consumer[config/v4_14_machine_vectors_v1.json]",
+      "time": "0.459"
+    },
+    {
+      "classname": "tests.test_r17r1_refreeze",
+      "name": "test_whole_contract_semantic_change_is_rejected",
+      "time": "0.003"
+    }
+  ],
+  "deselected": 0,
+  "evidence": {
+    "bytes": 123778,
+    "path": "reports/r17r1b/regression.xml",
+    "sha256": "be51a388cdff2bcfc5122b53b39324feac3d7633ec4a8fbbfee074315c853af0"
+  },
+  "scope": "CONTRACT_AND_AUTHORITY_NEGATIVE_GATES_ONLY_NOT_REPLAY_RUNTIME",
+  "status": "PASS",
+  "tested_source": "11d4eae047d09db65ecb4bbbac127d56853bea47"
+}

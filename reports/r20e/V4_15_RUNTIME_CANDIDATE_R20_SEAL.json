@@ -1,0 +1,126 @@
+{
+  "ALGORITHM_STATE_REPLAY_PASS": "DEGRADED_PASS_CAPABILITY_SCOPED",
+  "Focus": false,
+  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+  "NEXT": "STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT",
+  "Production": false,
+  "R19_AUDIT_01": "CLOSED_LOCAL",
+  "R19_AUDIT_02": "CLOSED_LOCAL",
+  "R20A_CURRENT_STAGE_AUTHORITY": "PASS_LOCAL",
+  "R20B_BYTE_IDENTITY_PORTABILITY": "PASS_LOCAL",
+  "R20C_V4_15_RADAR_COHORT_RUNTIME": "PASS_LOCAL",
+  "R20D_V4_15_SETTLEMENT_RUNTIME": "PASS_LOCAL",
+  "R20E_INDEPENDENT_ORACLE": "PASS_LOCAL",
+  "R20E_V4_15_FULL_PERSISTED_E2E": "PASS_LOCAL",
+  "REAL_ACCEPTED_SOURCE_V4_15": "PASS_CAPABILITY_SCOPED",
+  "Shadow": false,
+  "V4_15_ACCEPTED_HEAD": "NOT_CREATED",
+  "V4_15_RUNTIME_CANDIDATE": "READY_FOR_INDEPENDENT_EXTERNAL_AUDIT",
+  "V4_16": false,
+  "V4_DATA_ACCEPTED_HEAD": "2026-09-30",
+  "V4_STAGE_ACCEPTED_HEAD": "V4_00_TO_V4_14_ACCEPTED",
+  "archival_noncurrent_content_audit": {
+    "bytes": 602,
+    "path": "reports/r20b/historical_content_audit_item.json",
+    "sha256": "890f8214283d6fb1c896a54069738d5e454a6cb2652c62815610862b1e18937d"
+  },
+  "bindings": {
+    "current_authority": {
+      "bytes": 484,
+      "path": "reports/r20a/CURRENT_AUTHORITY_GATE.json",
+      "sha256": "739383521e11225bdba923e63dcf8de517ab86ae7008f47fe9d925902472622c"
+    },
+    "persisted_e2e": {
+      "bytes": 688,
+      "path": "reports/r20e/INDEPENDENT_E2E_GATE.json",
+      "sha256": "2c7041274d18dac9d334a7bade15ac85b1e1e8c96b418930c8d7d6dc0bf864fb"
+    },
+    "portability": {
+      "bytes": 938,
+      "path": "reports/r20b/stage_gate.json",
+      "sha256": "3c699c129a3d387bf1caa4507e6bfed79c31e6ac30a04c7a9d1e92eb5bf5f3c2"
+    },
+    "radar_cohort": {
+      "bytes": 3994,
+      "path": "reports/r20c/INDEPENDENT_RADAR_COHORT_GATE.json",
+      "sha256": "1fea0db40a7cdf050a896f95e5543c45b9fe0a8be49e453b10c2c1452185cbc7"
+    },
+    "settlement": {
+      "bytes": 6014,
+      "path": "reports/r20d/SETTLEMENT_GATE.json",
+      "sha256": "08fa482f46862c704bf3ada4426f69b67a896594d8d1b734c3e62eeba476010a"
+    }
+  },
+  "clean_portability_evidence": {
+    "CLEAN_CURRENT_AUTHORITY_PORTABILITY_RECEIPTS.json": {
+      "bytes": 43895,
+      "path": "reports/r20e/CLEAN_CURRENT_AUTHORITY_PORTABILITY_RECEIPTS.json",
+      "sha256": "3bf100bd91f157d9513d22981df084dfee248019182bc6468394c7bbb03ddc5d"
+    },
+    "HISTORICAL_REGISTERED_BYTE_RECEIPTS.json": {
+      "bytes": 17078,
+      "path": "reports/r20e/HISTORICAL_REGISTERED_BYTE_RECEIPTS.json",
+      "sha256": "0c0ed4446cf2b1d48e9ea198199a37b4011188a73e7962d340016e0f86deac7a"
+    }
+  },
+  "clean_regression": {
+    "bytes": 52872,
+    "path": "reports/r20e/clean_regression/CLEAN_DETACHED_REGRESSION.json",
+    "sha256": "e1d0e9cec89da320e3a85ffc165f2cdf77e39cf4b1e1b9b42cc9e7818d618e75"
+  },
+  "contract_id": "V4_15_RUNTIME_CANDIDATE_R20_SEAL_V1",
+  "execution_baseline": "2020234020e09020aca13fd84cdabde6fbb81f50",
+  "persisted_processes": {
+    "PRODUCER_RECEIPT.json": {
+      "bytes": 58749,
+      "path": "reports/r20e/PRODUCER_RECEIPT.json",
+      "sha256": "5cb082c7da886d771a4aa93c3962ec765c67a40394c51d9f336d473fe8044197"
+    },
+    "SETTLEMENT_RECEIPT.json": {
+      "bytes": 383581,
+      "path": "reports/r20e/SETTLEMENT_RECEIPT.json",
+      "sha256": "4c07ffa7ed081dd297380b24159c0b11d4e3dc9d6b1504be503312a9e2fe608f"
+    }
+  },
+  "protected_heads": {
+    "data/v4/V4_14_ACCEPTED_HEAD.json": {
+      "bytes": 4178,
+      "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+      "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+    },
+    "data/v4/V4_DATA_ACCEPTED_HEAD.json": {
+      "bytes": 16890,
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+    },
+    "data/v4/V4_STAGE_ACCEPTED_HEAD.json": {
+      "bytes": 13840,
+      "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+      "sha256": "0014134e54e84d8b1e9a78aaee9c3f01533dc57195f62ddd3342c3675af8a926"
+    }
+  },
+  "real_capability_evidence": {
+    "bytes": 383581,
+    "path": "reports/r20e/SETTLEMENT_RECEIPT.json",
+    "sha256": "4c07ffa7ed081dd297380b24159c0b11d4e3dc9d6b1504be503312a9e2fe608f"
+  },
+  "real_forward_scope": "REAL_SEPT30_T0_AND_FIVE_PENDING_HORIZONS; MATURE_NUMERICAL_PATHS_ENGINEERING_ONLY",
+  "real_research_universe_membership": "UNKNOWN_NOT_PROJECTED; BENCHMARK_AND_CONTROLS_UNAVAILABLE_IN_REAL_SCOPE",
+  "representation_registry": {
+    "bytes": 3690827,
+    "path": "data/v4/V4_EXACT_BYTE_PORTABILITY_REGISTRY_R1.json",
+    "sha256": "87f3af92e9cf6835e7d190548381fd220cf5a82a8d0ef13c8a1526750961cd44"
+  },
+  "tested_source": "30f2e559a57529cbb16df431863fa6722fa0a13a",
+  "tested_source_governance": {
+    "bundle_only": false,
+    "final_branch_ref": "refs/heads/codex/v4-system-reform",
+    "immutable_tag_ref": "refs/tags/codex/r20-tested-source-20261003-r2",
+    "local_git_object_verified": true,
+    "mode": "IMMUTABLE_COMMIT_PUBLISHED_TAG_AND_FINAL_BRANCH_ANCESTRY",
+    "publication_requirement": "FINAL_ATOMIC_PUSH_MUST_EXPOSE_EXACT_TAG_AND_BRANCH; VERIFY_REMOTE_BEFORE_REPORTING_COMPLETE",
+    "remote_url": "https://github.com/NanOns/a-share-market-structure-research.git",
+    "remote_verification_command": "python -m scripts.verify_r20_remote_source",
+    "tag_commit": "30f2e559a57529cbb16df431863fa6722fa0a13a"
+  }
+}

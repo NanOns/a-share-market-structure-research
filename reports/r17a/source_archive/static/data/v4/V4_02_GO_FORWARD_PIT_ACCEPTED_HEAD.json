@@ -1,0 +1,85 @@
+{
+  "accepted_candidate": {
+    "byte_count": 944823,
+    "path": "reports/v4_02/staging/V4_02_GO_FORWARD_ADJUSTED_T0_CANDIDATE_R3.jsonl.gz",
+    "sha256": "7d87f5164c11f791ad24ad7c05139dca949f1c891523616ece907cd0f28fd8c8"
+  },
+  "candidate_path": "reports/v4_02/staging/V4_02_GO_FORWARD_ADJUSTED_T0_CANDIDATE_R3.jsonl.gz",
+  "candidate_sha256": "7d87f5164c11f791ad24ad7c05139dca949f1c891523616ece907cd0f28fd8c8",
+  "contract_id": "V4_02_GO_FORWARD_PIT_ACCEPTED_HEAD_V1",
+  "evidence_bindings": {
+    "candidate_manifest": {
+      "byte_count": 5354,
+      "path": "reports/v4_02/V4_02_GO_FORWARD_PIT_AMENDMENT_CANDIDATE_MANIFEST_R3.json",
+      "sha256": "dcdde0e74de6662886bffabe38baa4e78344a6d1c7b24b29d3ab716a84b10cc1"
+    },
+    "external_acceptance": {
+      "byte_count": 6824,
+      "path": "docs/evidence/V4_02_GO_FORWARD_PIT_AMENDMENT_R3_FINAL_EXTERNAL_ACCEPTANCE_20260929.md",
+      "sha256": "07d205ac028326e8b041c7b5db762bc11661c46c1c1ce19a90fadec56dcf6f39"
+    },
+    "gbbq_snapshot": {
+      "byte_count": 1333,
+      "path": "data/v4/source_snapshot_store/gbbq/sha256-775d82c58b5b46ec1d21478f86ba8ef90302691982e68d5c4cfcd51fddda666e/manifest.json",
+      "sha256": "f8c799f999482f385a4b1d6153ae9dafe7794aff5ddabee6e718e7fd119bad32"
+    },
+    "independent_postcheck": {
+      "byte_count": 377,
+      "path": "reports/v4_02/V4_02_GO_FORWARD_PIT_AMENDMENT_SEAL_POSTCHECK_R3.json",
+      "sha256": "baff76a6df98a048c6174110456d9383533b504dc458c37b20de88cd3c41539c"
+    },
+    "official_tdx_package": {
+      "byte_count": 551001603,
+      "path": "data/v4/source_snapshots/tdx/20260928/sha256-70b79898325ef6c67ea697f922d38fa3fd523e2ad62879b1b9fcb59fce52bf0c/hsjday.zip",
+      "sha256": "70b79898325ef6c67ea697f922d38fa3fd523e2ad62879b1b9fcb59fce52bf0c"
+    },
+    "publication_time": {
+      "byte_count": 693,
+      "path": "reports/v4_02/V4_02_GO_FORWARD_PUBLICATION_TIME_R3.json",
+      "sha256": "664c8b07c275078a4de41eef7c793f907d175e58acd966497adf936def110217"
+    },
+    "r2_r3_diff": {
+      "byte_count": 507,
+      "path": "reports/v4_02/V4_02_GO_FORWARD_R2_R3_DIFF_R3.json",
+      "sha256": "8e31cd030a44225c8e3888aba4983f51c7aab92652c45f4435346133c4321394"
+    },
+    "remote_lfs_restore": {
+      "byte_count": 2421,
+      "path": "reports/v4_02/V4_02_GO_FORWARD_REMOTE_LFS_RESTORE_R3.json",
+      "sha256": "af0881ba9d3734a0750f868211ebcc4000607fc7f37055aea35767937b184205"
+    },
+    "runtime_tests": {
+      "byte_count": 1636,
+      "path": "reports/v4_02/V4_02_GO_FORWARD_R3_TEST_RECEIPT.json",
+      "sha256": "df81cb9148a7afbe7e4a3cfd0361a180b80ea3d5ca1f684634ab9d9571643f2d"
+    }
+  },
+  "external_acceptance": "EXTERNALLY_ACCEPTED",
+  "external_acceptance_decision": "V4_02_GO_FORWARD_PIT_AMENDMENT_EXTERNAL_ACCEPTANCE_PASS_R3",
+  "first_accepted_target_trade_date": "2026-09-28",
+  "foundation_bindings": {
+    "data/v4/V4_02_ACCEPTED_HEAD.json": {
+      "byte_count": 1602,
+      "path": "data/v4/V4_02_ACCEPTED_HEAD.json",
+      "sha256": "da318a1f82a03f13930af7858ca1640fadbdaedbee85e27d47f9c869c2d6b595"
+    },
+    "data/v4/V4_04_ACCEPTED_HEAD.json": {
+      "byte_count": 6837,
+      "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+      "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+    }
+  },
+  "historical_as_recorded_adjusted_price": "BLOCKED_NO_FIRST_AVAILABILITY_EVIDENCE",
+  "knowledge_lineage": "PIT_OBSERVED_AFTER_FORMAL_PUBLICATION",
+  "logical_digest": "a5600d7f1416434bd54e778c2e7e847e309de1c21d71df5677f92daee1791400",
+  "official_tdx_package_sha256": "70b79898325ef6c67ea697f922d38fa3fd523e2ad62879b1b9fcb59fce52bf0c",
+  "publication_mode": "DELAYED_FORMAL_PUBLICATION",
+  "stage": "V4-02-GO-FORWARD-PIT-AMENDMENT",
+  "stage_record": {
+    "acceptance_result": "FULL_PASS_GO_FORWARD_SCOPE / EXTERNALLY_ACCEPTED",
+    "evidence": "R3 manifest, source, external acceptance and independent checks",
+    "next_stage": "V4-05 Replay Gate A R2 after promotion validation",
+    "stage_contract": "V4_02_GO_FORWARD_PIT_AMENDMENT_R3"
+  },
+  "status": "FULL_PASS_GO_FORWARD_SCOPE"
+}

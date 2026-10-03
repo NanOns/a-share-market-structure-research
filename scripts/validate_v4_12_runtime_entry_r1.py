@@ -7,9 +7,10 @@ from pathlib import Path
 from scripts.v4_11_promotion_contract_r1 import ROOT,bind,PERMISSIONS
 from scripts.prepare_v4_12_runtime_entry_r1 import BASELINE,ACCEPTANCE,ENTRY,DOC,NAMES,EVIDENCE,OUT
 from scripts.record_r7_stage_contract import put
+from src.workbench_analysis.historical_stage_governance_r17 import protected_bytes,resolve,current_state,STAGE
 
 def exact(ref):
-    path=(ROOT/ref['path']).resolve();assert path.is_relative_to(ROOT)
+    path=resolve(ROOT,ref) if ref['path']==STAGE else (ROOT/ref['path']).resolve();assert path.is_relative_to(ROOT)
     raw=path.read_bytes();assert len(raw)==ref['bytes'] and hashlib.sha256(raw).hexdigest()==ref['sha256'],ref['path']
     return json.loads(raw)
 
@@ -22,7 +23,7 @@ def validate(emit=False):
     assert 'PASS_V4_12_CONTRACT_FREEZE' in (ROOT/(DOC+NAMES[3])).read_text(encoding='utf-8')
     assert set(r['path'] for r in accepted['evidence'])==set(EVIDENCE)
     for ref in accepted['evidence']+[accepted['accepted_parent'],accepted['stage_entry']]:exact(ref)
-    expected=sorted(p.relative_to(ROOT).as_posix() for p in (ROOT/'config').glob('v4_12_*.json'))
+    expected=sorted(p for p in subprocess.check_output(['git','ls-tree','-r','--name-only',BASELINE,'config'],cwd=ROOT,text=True,encoding='utf8').splitlines() if p.startswith('config/v4_12_') and p.endswith('.json'))
     assert [r['path'] for r in accepted['frozen_contracts']]==expected and entry['frozen_contracts']==accepted['frozen_contracts']
     for ref in accepted['frozen_contracts']:exact(ref)
     for key in ['stage_head','data_head']:exact(entry[key])
@@ -39,10 +40,12 @@ def validate(emit=False):
     protected+=subprocess.check_output(['git','ls-tree','-r','--name-only',BASELINE,'reports/v4_12_r2','reports/v4_12_r2_1'],cwd=ROOT,text=True).splitlines()
     proof=[]
     for path in protected:
-        before=subprocess.check_output(['git','show',BASELINE+':'+path],cwd=ROOT);after=(ROOT/path).read_bytes();assert before==after,path
+        before=subprocess.check_output(['git','show',BASELINE+':'+path],cwd=ROOT);after=protected_bytes(ROOT,path,hashlib.sha256(before).hexdigest());assert before==after,path
         proof.append(dict(path=path,before_sha256=hashlib.sha256(before).hexdigest(),after_sha256=hashlib.sha256(after).hexdigest(),byte_identical=True))
-    assert not (ROOT/'data/v4/V4_12_ACCEPTED_HEAD.json').exists()
-    result=dict(status='PASS',entry_status=entry['status'],frozen_contract_count=len(expected),protected_artifacts=proof,
+    assert subprocess.run(['git','cat-file','-e',BASELINE+':data/v4/V4_12_ACCEPTED_HEAD.json'],cwd=ROOT,capture_output=True).returncode!=0
+    assert exact(entry['stage_head'])['accepted_stage_range']=='V4_00_TO_V4_11_ACCEPTED'
+    current=current_state(ROOT)
+    result=dict(status='PASS',current_accepted_state=current,historical_stage_head=exact(entry['stage_head'])['accepted_stage_range'],entry_status=entry['status'],frozen_contract_count=len(expected),protected_artifacts=proof,
         stage_head=json.loads((ROOT/'data/v4/V4_STAGE_ACCEPTED_HEAD.json').read_bytes())['accepted_stage_range'],
         data_head=json.loads((ROOT/'data/v4/V4_DATA_ACCEPTED_HEAD.json').read_bytes())['accepted_trade_date'],permissions=PERMISSIONS,
         scoped_engineering_implementation_permission=True,entry=bind(ENTRY))

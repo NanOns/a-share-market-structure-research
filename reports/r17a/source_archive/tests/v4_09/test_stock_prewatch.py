@@ -94,13 +94,6 @@ def test_duplicate_missing_and_board_scope_rejected():
     with pytest.raises(ValueError): build(cores,factors,seeds,context,PACKAGE)
 
 def test_production_and_v4_09_acceptance_stay_disabled():
-    from workbench_analysis.historical_stage_governance_r17 import resolve,current_state,STAGE
-    import subprocess,json
-    historical=json.loads(resolve(ROOT,dict(path=STAGE,sha256='6620089e9a1ca550e89c2c0bb177887528c8e7d160a44c584664f04b91a1c48e',bytes=6789)).read_bytes())
-    assert historical['accepted_stage_range']=='V4_00_TO_V4_08_ACCEPTED'
-    assert 'v4_09_binding' not in historical
-    assert subprocess.run(['git','cat-file','-e','5eca56d3555a826c4cca94d6e3d7ae9d11628be6:data/v4/V4_09_ACCEPTED_HEAD.json'],cwd=ROOT,capture_output=True).returncode!=0
-    assert historical['v4_08_production_permission'] is False
-    assert current_state(ROOT)['status']=='PASS'
-    from workbench_analysis.dm01_publication_history_reader_v1 import validate_v4_09_history
-    assert validate_v4_09_history()['status']=='PASS'
+    from scripts.promote_v4_08_accepted_head import validate
+    assert validate()['status']=='PASS'
+    assert not (ROOT/'data/v4/V4_09_ACCEPTED_HEAD.json').exists()

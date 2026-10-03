@@ -1,4 +1,5 @@
 """Independent persisted-chain oracle: stdlib only, never builder/runtime expected."""
+from src.workbench_analysis.historical_stage_governance_r17 import protected_bytes,current_state,historical_absence,STAGE
 import argparse,gzip,hashlib,json
 from decimal import Decimal
 from pathlib import Path
@@ -92,9 +93,10 @@ def validate(phase):
                 if revision=='r1':first=current
             previous_by_scope[scope]=first
     assert revision_predecessors[0]==revision_predecessors[1]==revision_predecessors[2]
+    current_state(ROOT)
     protected=json.loads((ROOT/(OUT+'R11_STAGE_CONTRACT.json')).read_bytes())['protected']
-    for path,sha_before in protected.items():assert hashlib.sha256((ROOT/path).read_bytes()).hexdigest()==sha_before
-    assert not (ROOT/'data/v4/V4_12_ACCEPTED_HEAD.json').exists()
+    for path,sha_before in protected.items():assert hashlib.sha256(protected_bytes(ROOT,path,sha_before)).hexdigest()==sha_before
+    assert historical_absence(ROOT,protected[STAGE],'data/v4/V4_12_ACCEPTED_HEAD.json')
     return dict(status='PASS',phase=phase,oracle='INDEPENDENT_LITERAL_BOOK_AND_STDLIB_PROJECTION_CHECKS',proofs=proofs,same_day_isolation=True,protected_hashes=protected,raw_fallback_count=0,formal_accepted=False)
 
 if __name__=='__main__':

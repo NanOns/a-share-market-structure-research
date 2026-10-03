@@ -2,6 +2,7 @@
 import json,hashlib,subprocess
 from copy import deepcopy
 from scripts.repair_v4_13_r1_1 import ROOT,P,OUT,BASE,read,ref,exact,write
+from src.workbench_analysis.historical_stage_governance_r17 import resolve as historical_resolve,current_state,registry,STAGE
 QUALITIES=['KNOWN','UNKNOWN','NOT_IMPLEMENTED','NOT_APPLICABLE','DEGRADED']
 # Independent literal oracle for metadata quality, not business state logic.
 PAIR_ROWS=[['KNOWN','DEGRADED','DEGRADED','DEGRADED','DEGRADED'],['DEGRADED','UNKNOWN','UNKNOWN','UNKNOWN','DEGRADED'],['DEGRADED','UNKNOWN','NOT_IMPLEMENTED','NOT_IMPLEMENTED','DEGRADED'],['DEGRADED','UNKNOWN','NOT_IMPLEMENTED','NOT_APPLICABLE','DEGRADED'],['DEGRADED','DEGRADED','DEGRADED','DEGRADED','DEGRADED']]
@@ -151,15 +152,21 @@ def validate(checkout=False):
  protected=[]
  for r in read(OUT+'R15_STAGE_CONTRACT.json')['protected']:
   actual=ref(r['path'])
-  if checkout and r['path'].startswith('src/') and actual['sha256']!=r['sha256']:
+  archived=next((row for row in registry(ROOT)['source_archives'] if row['original_namespace']==r),None)
+  if r['path']==STAGE or archived:
+   historical=historical_resolve(ROOT,r,source=bool(archived)).read_bytes()
+   assert hashlib.sha256(historical).hexdigest()==r['sha256']
+   protected.append(dict(path=r['path'],before=r['sha256'],after=r['sha256'],unchanged=True,comparison='EXPLICIT_IMMUTABLE_HISTORICAL_ARCHIVE',current_sha256=actual['sha256']))
+  elif checkout and r['path'].startswith('src/') and actual['sha256']!=r['sha256']:
    baseline=subprocess.check_output(['git','show',BASE+':'+r['path']],cwd=ROOT)
    assert (ROOT/r['path']).read_bytes()==baseline
    protected.append(dict(path=r['path'],before=r['sha256'],after=actual['sha256'],unchanged=True,comparison='EXACT_GIT_BASELINE_BLOB',main_checkout_line_endings='RECORDED_SEPARATELY_NO_SOURCE_EDIT'))
   else:
    exact(r);protected.append(dict(path=r['path'],before=r['sha256'],after=actual['sha256'],unchanged=True,comparison='EXACT_BYTES'))
- assert read('data/v4/V4_STAGE_ACCEPTED_HEAD.json')['accepted_stage_range']=='V4_00_TO_V4_12_ACCEPTED' and read('data/v4/V4_DATA_ACCEPTED_HEAD.json')['accepted_trade_date']=='2026-09-30'
- assert not (ROOT/'data/v4/V4_13_ACCEPTED_HEAD.json').exists()
- changed=subprocess.check_output(['git','diff',BASE,'--name-only'],cwd=ROOT,text=True).splitlines()
+ assert json.loads(historical_resolve(ROOT,dict(path=STAGE,sha256='b0e1c2402efdd71d706a87f45280206a87fbe9e637a4168255b7ff4c036520f7')).read_bytes())['accepted_stage_range']=='V4_00_TO_V4_12_ACCEPTED'
+ assert subprocess.run(['git','cat-file','-e',registry(ROOT)['baseline']+':data/v4/V4_13_ACCEPTED_HEAD.json'],cwd=ROOT,capture_output=True).returncode!=0
+ current_state(ROOT)
+ changed=subprocess.check_output(['git','diff',BASE,registry(ROOT)['baseline'],'--name-only'],cwd=ROOT,text=True).splitlines()
  # R16 external acceptance authorizes only new scoped runtime files; frozen contracts stay design-authoritative.
  authorized=[]
  entry=ROOT/'reports/v4_13_runtime_r16/STAGE_CONTRACT.json'

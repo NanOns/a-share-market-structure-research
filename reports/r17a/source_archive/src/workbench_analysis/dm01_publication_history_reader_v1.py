@@ -14,22 +14,12 @@ _LOCK=RLock()
 
 class PublicationHistoryView(HistoricalProjectView):
     def __fspath__(self):return str(self.root)
-    def __truediv__(self,path):
-        from .historical_stage_governance_r17 import STAGE,resolve,registry
-        if str(path).replace('\\','/')==STAGE:
-            return resolve(self.root,dict(path=STAGE,sha256='f7607601de402f2b2bdada84dffdefbacad7f9f66e252c57dfdf045060e90e99'))
-        if str(path).replace('\\','/')=='tests/v4_09/test_stock_prewatch.py':
-            ref=next(r['original_namespace'] for r in registry(self.root)['source_archives'] if r['original_namespace']['path']==str(path))
-            return resolve(self.root,ref,source=True)
-        return super().__truediv__(path)
 
 @contextmanager
 def _frozen_readers():
     from scripts import promote_v4_09_accepted_head as v9
     from scripts import validate_v4_10_promotion_r1 as v10
     root=Path(v10.ROOT)
-    from .historical_stage_governance_r17 import current_state
-    current_state(root)
     current=load(root,binding(root,HEAD_PATH))
     if current.get('contract_id')==HEAD_CONTRACT:validate_head_v2(root,current)
     with _LOCK:
@@ -41,8 +31,7 @@ def _frozen_readers():
             for module,original in before:module.ROOT=original
 
 def _scope(result,root,current):
-    from .historical_stage_governance_r17 import current_state
-    return dict(result,current_accepted_state=current_state(root),validation_scope='ACCEPTED_PUBLICATION_HISTORY_ONLY',
+    return dict(result,validation_scope='ACCEPTED_PUBLICATION_HISTORY_ONLY',
         historical_data_head_resolution='EXPLICIT_EXACT_20260924_ORIGINAL_BYTE_ARCHIVE',
         current_data_head=binding(root,HEAD_PATH),current_data_head_date=current['accepted_trade_date'],
         business_reacceptance_performed=False,production_authorization=False)

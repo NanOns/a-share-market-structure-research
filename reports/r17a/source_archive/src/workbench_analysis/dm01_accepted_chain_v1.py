@@ -146,10 +146,7 @@ def validate_head_v2(root,head,*,source_readback=False):
     if head.get('contract_id')!=HEAD_CONTRACT or head.get('version')!='2.0.0':raise AcceptedChainError('DATA_HEAD_V2_CONTRACT_REQUIRED')
     contract=load(root,head['contract'])
     if contract['contract_id']!=HEAD_CONTRACT or set(head)!=set(contract['required_fields']):raise AcceptedChainError('DATA_HEAD_SCHEMA_FIELDS_INVALID')
-    from .historical_stage_governance_r17 import resolve as historical_resolve
-    for ref in contract['runtime_bindings']:
-        if ref['path']=='src/workbench_analysis/dm01_accepted_chain_v1.py':historical_resolve(root,ref,source=True)
-        else:bound_path(root,ref)
+    for ref in contract['runtime_bindings']:bound_path(root,ref)
     if any(head['permissions'].values()) or head['AS_RECORDED'] or head['first_available_at_target_proven'] or head['knowledge_lineage']!='RECONSTRUCTED_CORRECTED':raise AcceptedChainError('DATA_HEAD_PERMISSION_OR_TEMPORAL_OVERCLAIM')
     chain=load(root,head['accepted_chain']);record=load(root,head['external_acceptance_record']);registry=load(root,head['audit_registry'])
     validate_registry_r10(root,registry);nodes=validate_chain(root,chain,source_readback=source_readback)
@@ -159,10 +156,6 @@ def validate_head_v2(root,head,*,source_readback=False):
     expected={cap:permission_from_receipt(root,final,cap) for cap in CAPABILITIES}
     if head['component_permissions']!=expected or head['component_artifacts']!={k:v['artifact'] for k,v in expected.items()}:raise AcceptedChainError('CAPABILITY_PERMISSION_UPGRADE_OR_RECEIPT_MISMATCH')
     if head['calendar']!=final['calendar_binding'] or head['identity']!=final['identity_binding'] or head['external_acceptance_record']!=chain['external_acceptance_record'] or head['external_acceptance']!=record['external_acceptance']:raise AcceptedChainError('DATA_HEAD_AUTHORITY_BINDING_MISMATCH')
-    for key in ('source_authority_governance','source_authority_registry','dev_baseline'):bound_path(root,head[key])
-    from .historical_stage_governance_r17 import HistoricalBindingError
-    if head['stage_head']!=dict(path='data/v4/V4_STAGE_ACCEPTED_HEAD.json',sha256='529c532bd5553ace00fa4813aef07979cfce4e1f18fa5ea66f38fcddd8ed16cb',bytes=8574):
-        raise HistoricalBindingError('DM01_PROMOTION_TIME_STAGE_IDENTITY_CHANGED')
-    historical_resolve(root,head['stage_head'])
+    for key in ('source_authority_governance','source_authority_registry','stage_head','dev_baseline'):bound_path(root,head[key])
     if head['source_authority_governance']!=chain['source_authority_governance'] or head['source_authority_registry']!=chain['source_authority_registry'] or head['stage_accepted_head_sha256']!=head['stage_head']['sha256'] or head['dev_baseline_sha256']!=head['dev_baseline']['sha256']:raise AcceptedChainError('DATA_HEAD_GOVERNANCE_MISMATCH')
     return dict(status='PASS',accepted_trade_date=head['accepted_trade_date'],nodes=nodes,permissions=head['permissions'])

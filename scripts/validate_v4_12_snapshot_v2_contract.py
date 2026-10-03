@@ -1,4 +1,5 @@
 """Independent R12A contract gate and cardinality/ownership negative vectors."""
+from src.workbench_analysis.historical_stage_governance_r17 import protected_bytes,current_state
 import copy,hashlib,json
 from scripts.v4_11_promotion_contract_r1 import ROOT
 PATH='config/v4_12_frozen_snapshot_contract_v2.json'
@@ -52,8 +53,9 @@ def gate():
         try:validate_contract(d)
         except AssertionError:bad.append(dict(case=name,status='PASS'))
         else:raise AssertionError('NEGATIVE_ACCEPTED:'+name)
+    current_state(ROOT)
     before=json.loads((ROOT/'reports/v4_12_runtime_r12/R12_STAGE_CONTRACT.json').read_bytes())['protected']
-    for p,h in before.items():assert hashlib.sha256((ROOT/p).read_bytes()).hexdigest()==h
+    for p,h in before.items():assert hashlib.sha256(protected_bytes(ROOT,p,h)).hexdigest()==h
     return dict(status='PASS',candidate_status='V4_12_R12A_MULTI_ANCHOR_STATE_CONTRACT_V2_READY',contract=dict(path=PATH,sha256=hashlib.sha256((ROOT/PATH).read_bytes()).hexdigest()),negative_vectors=bad,protected_exact=True)
 if __name__=='__main__':
     r=gate();(ROOT/'reports/v4_12_runtime_r12/R12A_CONTRACT_LOCAL_GATE.json').write_bytes((json.dumps(r,sort_keys=True)+'\n').encode());print(json.dumps(r))

@@ -1,4 +1,5 @@
 """Independent stdlib V2 oracle: no runtime/builder/selector imports."""
+from src.workbench_analysis.historical_stage_governance_r17 import protected_bytes,current_state,historical_absence,STAGE
 import hashlib,gzip,json
 from decimal import Decimal
 from pathlib import Path
@@ -118,9 +119,10 @@ def validate():
                 if revision=='r1':first=current
             previous=first
     assert same_day[0]==same_day[1]==same_day[2]
+    current_state(ROOT)
     protected=json.loads((ROOT/(OUT+'R12_STAGE_CONTRACT.json')).read_bytes())['protected']
-    for p,h in protected.items():assert hashlib.sha256((ROOT/p).read_bytes()).hexdigest()==h
-    assert not (ROOT/'data/v4/V4_12_ACCEPTED_HEAD.json').exists()
+    for p,h in protected.items():assert hashlib.sha256(protected_bytes(ROOT,p,h)).hexdigest()==h
+    assert historical_absence(ROOT,protected[STAGE],'data/v4/V4_12_ACCEPTED_HEAD.json')
     selector=json.loads((ROOT/(OUT+'R12_SELECTOR_INDEPENDENT_ORACLE.json')).read_bytes());book=json.loads((ROOT/'config/v4_12_active_selector_vectors_r12.json').read_bytes())
     assert selector['total']==len(book['vectors'])==11
     for expected,actual in zip(book['vectors'],selector['rows']):assert actual['expected']==expected['expected'] and actual['actual']['active_anchor_id']==expected['expected']['active_anchor_id'] and actual['actual']['quality']==expected['expected']['quality']

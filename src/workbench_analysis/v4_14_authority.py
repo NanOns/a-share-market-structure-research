@@ -3,7 +3,7 @@ from pathlib import Path
 import json
 from .v4_14_replay_io import exact,ref,digest
 NAMES=['replay_gate_b_contract','replay_case_registry','temporal_non_edge_registry','quality_degradation','machine_vectors']
-class ReplayAuthority:
+class HistoricalReplayAuthority:
     def __init__(self,root):
         self.root=Path(root).resolve()
         self.external_audit_ref=dict(path='docs/evidence/r18/V4_R17R1_INDEPENDENT_EXTERNAL_AUDIT_R1_20261003.md',sha256='9a8cc8c92599d6aa843e1fdb9eefe498361ba37b55dd2091c13c6eb75f403d43',bytes=3583)
@@ -34,3 +34,28 @@ class ReplayAuthority:
         if target not in dates or dates.index(target)==0:raise ValueError('REPLAY_EXACT_PREVIOUS_MARKET_SESSION_REQUIRED')
         return dates[dates.index(target)-1]
     def bindings(self):return dict(amended_v4_13=self.head_ref,contract_package=self.refs,active_family_closure=self.closure_ref,data=self.data_ref,stage=self.stage_ref,calendar=self.calendar_ref,membership=self.membership_ref,owners=self.owners,external_audit=self.external_audit_ref)
+
+class ReplayAuthority:
+    """Current accepted authority injection; historical replay is explicitly separate."""
+    def __init__(self,root,current_authority=None):
+        from .v4_current_stage_authority import CurrentStageAuthority
+        a=current_authority or CurrentStageAuthority(root)
+        if not isinstance(a,CurrentStageAuthority) or a.root!=Path(root).resolve():raise ValueError('EXPLICIT_CURRENT_V4_14_AUTHORITY_REQUIRED')
+        self.current_authority=a;self.root=a.root;self.stage_ref=a.stage_ref;self.stage=a.stage
+        self.head_ref=a.head_ref;self.head=a.head;self.predecessor_head=a.predecessor
+        self.external_audit_ref=a.external_audit_ref;self.data_ref=a.data_ref;self.data=a.data
+        self.calendar_ref=a.calendar_ref;self.calendar=a.calendar;self.membership_ref=a.membership_ref;self.owners=a.owners
+        package=json.loads(a.read(a.head['bindings']['contract_package']))
+        self.refs=[a.head['bindings']['contract_package']]+package['contract_package']
+        self.config={n:json.loads(a.read(r)) for n,r in zip(NAMES,self.refs)}
+        self.closure_ref=a.predecessor['active_family_closure'];a.read(self.closure_ref)
+        self.package_digest=digest(self.refs)
+    def previous(self,target):
+        dates=self.current_authority.sessions
+        if target not in dates or dates.index(target)==0:raise ValueError('REPLAY_EXACT_PREVIOUS_MARKET_SESSION_REQUIRED')
+        return dates[dates.index(target)-1]
+    def bindings(self):return self.current_authority.bindings()
+    @staticmethod
+    def historical(root):
+        """Caller supplies an explicit archived prepromotion repository context."""
+        return HistoricalReplayAuthority(root)

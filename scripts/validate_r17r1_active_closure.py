@@ -22,6 +22,8 @@ def walk(value,families,root=ROOT,lineage=False,seen=None):
             if path.startswith(('config/v4_13_','config/v4_14_')):
                 obj=json.loads(exact(value,root));family=obj.get('contract_id')
                 if family in families and not lineage:assert value==families[family]['active'],'SUPERSEDED_CURRENT_BINDING: '+path
+                if family=='V4_13_ACCEPTED_CONTRACT_PACKAGE_ENTRY_V1' and not lineage:
+                    assert value==read(HEAD,root)['formal_entry_contract'],'SUPERSEDED_CURRENT_BINDING: '+path
                 key=(path,lineage)
                 if key not in seen:seen.add(key);walk(obj,families,root,lineage,seen)
             elif path=='data/v4/V4_13_ACCEPTED_HEAD.json':
@@ -43,6 +45,8 @@ def validate(root=ROOT):
     assert stage['v4_13_binding']['path']==HEAD;assert json.loads(exact(stage['v4_13_binding'],root))==h
     assert h['amendment_scope']=='FORMAL_ACTIVE_BINDING_CONSISTENCY_REPAIR'
     assert h['supersedes']['path']=='data/v4/V4_13_ACCEPTED_HEAD.json';exact(h['supersedes'],root)
+    for k,value in old.items():
+        if k not in {'version','contract_refs','contract_digest','formal_entry_contract'}:assert h[k]==value,'PRESERVED_HEAD_FIELD_CHANGED: '+k
     for k in ['candidate','artifact_refs','runtime_source_bindings','input_accepted_head_refs','capabilities','production','shadow','focus','global_mandatory_adoption','ALGORITHM_STATE_REPLAY_PASS','knowledge_lineage','AS_RECORDED','accepted_trade_date']:assert h[k]==old[k],k
     assert h['candidate']['sha256']=='a02e7918826627c2b496d89e546d3f5a408e4c68a1a89bc93946e152e7ca42ec';exact(h['candidate'],root)
     for k in ['amendment_authority','amendment_task','amendment_master']:exact(h[k],root)
@@ -61,6 +65,8 @@ def validate(root=ROOT):
     assert all(stage[k]==v for k,v in parent.items() if k!='v4_13_binding')
     assert set(stage)-set(parent)=={'v4_13_package_authority'}
     entry=json.loads(exact(h['formal_entry_contract'],root));closure=json.loads(exact(h['active_family_closure'],root))
+    assert entry['version']=='1.1.0' and entry['contract_id']=='V4_13_ACCEPTED_CONTRACT_PACKAGE_ENTRY_V1'
+    assert entry['supersedes']==old['formal_entry_contract'];exact(entry['supersedes'],root)
     assert stage['v4_13_package_authority']==h['formal_entry_contract']
     assert entry['authority_namespace']==HEAD and entry['contract_refs']==h['contract_refs']
     assert hashlib.sha256(canon(h['contract_refs'])).hexdigest()==h['contract_digest']==entry['contract_digest']

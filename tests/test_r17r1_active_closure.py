@@ -9,7 +9,7 @@ def ref(path):
     raw=(ROOT/path).read_bytes();return dict(path=path,sha256=hashlib.sha256(raw).hexdigest(),bytes=len(raw))
 def families():return v.read(v.CLOSURE)['families']
 def test_complete_active_package():assert v.validate()['family_count']==14
-@pytest.mark.parametrize('path',['config/v4_13_projection_v1.json','config/v4_13_projection_v1_1.json','config/v4_13_dag_edge_registry_v1_1.json','config/v4_13_rotation_structure_enrichment_schema_v1_1.json','config/v4_13_output_schema_v1_1.json','config/v4_13_field_registry_v1_1.json','config/v4_13_machine_vectors_v1_1.json'])
+@pytest.mark.parametrize('path',['config/v4_13_projection_v1.json','config/v4_13_projection_v1_1.json','config/v4_13_dag_edge_registry_v1_1.json','config/v4_13_rotation_structure_enrichment_schema_v1_1.json','config/v4_13_output_schema_v1_1.json','config/v4_13_field_registry_v1_1.json','config/v4_13_machine_vectors_v1_1.json','config/v4_13_accepted_entry_contract_v1.json'])
 def test_exact_superseded_current_consumer_rejected(path):
     r=ref(path);v.exact(r)
     with pytest.raises(AssertionError,match='SUPERSEDED_CURRENT_BINDING'):v.walk({'runtime_consumer':r},families())

@@ -1,0 +1,979 @@
+{
+  "command": [
+    "git",
+    "grep",
+    "-n",
+    "-I",
+    "-E",
+    "V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1([^0-9A-Za-z_]|$)",
+    "a1bb12f19e758784e55a1a93acaad1954861a0fc",
+    "--"
+  ],
+  "contract_id": "PRE16_STALE_R1_CONSUMER_SCAN_V1",
+  "counts": {
+    "CURRENT_RUNTIME_CONSUMER": 0,
+    "GOVERNANCE_REFERENCE_ONLY": 5,
+    "HISTORICAL_EVIDENCE_ONLY": 123,
+    "UNKNOWN": 0
+  },
+  "current_runtime_consumers": 0,
+  "execution_baseline": "a1bb12f19e758784e55a1a93acaad1954861a0fc",
+  "indirect_runtime_data_flow_review": [
+    {
+      "binding": {
+        "bytes": 4782,
+        "path": "src/workbench_analysis/dm01_source_boundary_r2.py",
+        "sha256": "3cb32b7bf263980d4ddb34286bc30a3d982b1fa3c775ecfe613484ca8c3a3249"
+      },
+      "classification": "GOVERNANCE_REFERENCE_ONLY",
+      "data_flow": "Explicit accepted owner / field_rules / current-head inputs; does not interpret historical registry status or protected_bindings as current audit permissions."
+    },
+    {
+      "binding": {
+        "bytes": 8431,
+        "path": "src/workbench_analysis/source_authority_accepted_owners_v1.py",
+        "sha256": "aa775e70a35506349952bb94ccb1ddf56a3b0ff694580218a3639c0ab9dbd457"
+      },
+      "classification": "GOVERNANCE_REFERENCE_ONLY",
+      "data_flow": "Explicit accepted owner / field_rules / current-head inputs; does not interpret historical registry status or protected_bindings as current audit permissions."
+    },
+    {
+      "binding": {
+        "bytes": 12917,
+        "path": "src/workbench_analysis/source_authority_producers_r3.py",
+        "sha256": "83444b236e49469e4108c110c4f60cf4cba5b8f547ec43124467a85b8ad4feab"
+      },
+      "classification": "GOVERNANCE_REFERENCE_ONLY",
+      "data_flow": "Explicit accepted owner / field_rules / current-head inputs; does not interpret historical registry status or protected_bindings as current audit permissions."
+    },
+    {
+      "binding": {
+        "bytes": 14474,
+        "path": "src/workbench_analysis/source_authority_producers_r4.py",
+        "sha256": "0d14a65ecd8c473a4a5471df2e064e7ae13f061b68e9ff7b34d6527527b28f6d"
+      },
+      "classification": "GOVERNANCE_REFERENCE_ONLY",
+      "data_flow": "Explicit accepted owner / field_rules / current-head inputs; does not interpret historical registry status or protected_bindings as current audit permissions."
+    },
+    {
+      "binding": {
+        "bytes": 9308,
+        "path": "src/workbench_analysis/source_authority_governance_r1.py",
+        "sha256": "fd378386f1e28aef580c3558a24591125a8e9c368bed1b05f8880349ba5bc194"
+      },
+      "classification": "GOVERNANCE_REFERENCE_ONLY",
+      "data_flow": "Explicit accepted owner / field_rules / current-head inputs; does not interpret historical registry status or protected_bindings as current audit permissions."
+    },
+    {
+      "binding": {
+        "bytes": 7718,
+        "path": "src/workbench_analysis/v4_current_stage_authority.py",
+        "sha256": "f53ce7b44dd579e79f6b382bffd383871d4a20b3d5a0bf3b6e7a38dc6e0c4995"
+      },
+      "classification": "GOVERNANCE_REFERENCE_ONLY",
+      "data_flow": "Explicit accepted owner / field_rules / current-head inputs; does not interpret historical registry status or protected_bindings as current audit permissions."
+    }
+  ],
+  "matches": [
+    {
+      "classification": "GOVERNANCE_REFERENCE_ONLY",
+      "excerpt": "      \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 354,
+      "path": "config/source_authority_governance_r1.json",
+      "reason": "Historical protected_bindings / Stage provenance metadata, not current status permission."
+    },
+    {
+      "classification": "GOVERNANCE_REFERENCE_ONLY",
+      "excerpt": "      \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 394,
+      "path": "config/source_authority_governance_r2.json",
+      "reason": "Historical protected_bindings / Stage provenance metadata, not current status permission."
+    },
+    {
+      "classification": "GOVERNANCE_REFERENCE_ONLY",
+      "excerpt": "      \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 441,
+      "path": "config/source_authority_governance_r3.json",
+      "reason": "Historical protected_bindings / Stage provenance metadata, not current status permission."
+    },
+    {
+      "classification": "GOVERNANCE_REFERENCE_ONLY",
+      "excerpt": "      \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 452,
+      "path": "config/source_authority_governance_r4.json",
+      "reason": "Historical protected_bindings / Stage provenance metadata, not current status permission."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 93,
+      "path": "data/v4/V4_10_ACCEPTED_HEAD.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "      \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 30708,
+      "path": "data/v4/V4_EXACT_BYTE_PORTABILITY_REGISTRY_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "GOVERNANCE_REFERENCE_ONLY",
+      "excerpt": "    \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 45,
+      "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+      "reason": "Historical protected_bindings / Stage provenance metadata, not current status permission."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 44,
+      "path": "data/v4/stage_head_archive/r17/529c532bd5553ace00fa4813aef07979cfce4e1f18fa5ea66f38fcddd8ed16cb.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 45,
+      "path": "data/v4/stage_head_archive/r17/80c58f2f4ed35baa1fd2b27e6af8b400fadfbefe4ed5d85819d9349c3315e2ac.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 45,
+      "path": "data/v4/stage_head_archive/r17/b0e1c2402efdd71d706a87f45280206a87fbe9e637a4168255b7ff4c036520f7.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json",
+      "line": 1028,
+      "path": "docs/evidence/V4_CROSS_STAGE_INDEPENDENT_AUDIT_REMEDIATION_MASTER_TASK_R1_20261001.md",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json",
+      "line": 1230,
+      "path": "docs/evidence/V4_CROSS_STAGE_INDEPENDENT_AUDIT_REMEDIATION_MASTER_TASK_R1_20261001.md",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "保留原 V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json",
+      "line": 436,
+      "path": "docs/evidence/source_authority/V4_CROSS_STAGE_REMEDIATION_MASTER_AMENDMENT_R2_20261001.md",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\": \"c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3\"",
+      "line": 173,
+      "path": "reports/audits/A01_R2_CLEAN_CHECKOUT_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "      \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 127,
+      "path": "reports/audits/A01_R2_SOURCE_BOUNDARY_STAGE_ENTRY_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\": \"c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3\"",
+      "line": 168,
+      "path": "reports/audits/A08_CLEAN_ATTEMPT_1_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\": \"c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3\"",
+      "line": 168,
+      "path": "reports/audits/A08_CLEAN_CHECKOUT_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "      \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 118,
+      "path": "reports/audits/A08_STAGE_CLOSURE_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "      \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 244,
+      "path": "reports/audits/A08_STAGE_ENTRY_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\": \"c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3\"",
+      "line": 173,
+      "path": "reports/audits/A09_CLEAN_CHECKOUT_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "      \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 118,
+      "path": "reports/audits/A09_STAGE_CLOSURE_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "      \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 244,
+      "path": "reports/audits/A09_STAGE_ENTRY_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\": \"c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3\",",
+      "line": 228,
+      "path": "reports/audits/A10_A12_R3_CLEAN_ATTEMPT_CHECKOUT_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\": \"c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3\",",
+      "line": 228,
+      "path": "reports/audits/A10_A12_R3_CLEAN_ATTEMPT_CHECKOUT_R2.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\": \"c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3\",",
+      "line": 228,
+      "path": "reports/audits/A10_A12_R3_CLEAN_ATTEMPT_CHECKOUT_R3.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\": \"c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3\",",
+      "line": 228,
+      "path": "reports/audits/A10_A12_R3_CLEAN_CHECKOUT_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "      \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 146,
+      "path": "reports/audits/A10_A12_R3_STAGE_CLOSURE_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "      \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 120,
+      "path": "reports/audits/A10_A12_R3_STAGE_ENTRY_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\": \"c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3\"",
+      "line": 168,
+      "path": "reports/audits/A10_CLEAN_CHECKOUT_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\": \"c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3\",",
+      "line": 177,
+      "path": "reports/audits/A10_R2_CLEAN_CHECKOUT_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "      \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 146,
+      "path": "reports/audits/A10_R2_STAGE_CLOSURE_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "      \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 135,
+      "path": "reports/audits/A10_R2_STAGE_ENTRY_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "      \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 118,
+      "path": "reports/audits/A10_STAGE_CLOSURE_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "      \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 159,
+      "path": "reports/audits/A10_STAGE_ENTRY_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\": \"c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3\"",
+      "line": 168,
+      "path": "reports/audits/A11_CLEAN_CHECKOUT_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "      \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 118,
+      "path": "reports/audits/A11_STAGE_CLOSURE_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "      \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 118,
+      "path": "reports/audits/A11_STAGE_ENTRY_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\": \"c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3\"",
+      "line": 168,
+      "path": "reports/audits/A12_CLEAN_CHECKOUT_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\": \"c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3\",",
+      "line": 189,
+      "path": "reports/audits/A12_R2_CLEAN_ATTEMPT_CHECKOUT_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\": \"c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3\",",
+      "line": 189,
+      "path": "reports/audits/A12_R2_CLEAN_CHECKOUT_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "      \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 149,
+      "path": "reports/audits/A12_R2_STAGE_CLOSURE_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "      \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 133,
+      "path": "reports/audits/A12_R2_STAGE_ENTRY_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "      \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 118,
+      "path": "reports/audits/A12_STAGE_CLOSURE_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "      \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 148,
+      "path": "reports/audits/A12_STAGE_ENTRY_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\": \"c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3\",",
+      "line": 625,
+      "path": "reports/audits/A13_CLEAN_ATTEMPT_CHECKOUT_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\": \"c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3\",",
+      "line": 625,
+      "path": "reports/audits/A13_CLEAN_CHECKOUT_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\": \"c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3\",",
+      "line": 666,
+      "path": "reports/audits/A13_FORMALIZATION_CLEAN_CHECKOUT_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\": \"c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3\",",
+      "line": 666,
+      "path": "reports/audits/A13_FORMALIZATION_FAILED_AT_1658BA4_CLEAN_CHECKOUT_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\": \"c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3\",",
+      "line": 666,
+      "path": "reports/audits/A13_FORMALIZATION_INITIAL_CLEAN_CHECKOUT_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "      \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 114,
+      "path": "reports/audits/A13_FORMALIZATION_RAW_AND_BUSINESS_IMMUTABILITY_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "      \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 146,
+      "path": "reports/audits/A13_FORMALIZATION_STAGE_CLOSURE_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "      \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 128,
+      "path": "reports/audits/A13_FORMALIZATION_STAGE_ENTRY_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "      \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 146,
+      "path": "reports/audits/A13_STAGE_CLOSURE_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "      \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 120,
+      "path": "reports/audits/A13_STAGE_ENTRY_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\": \"c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3\",",
+      "line": 665,
+      "path": "reports/audits/DM01_A01_R3_CLEAN_CHECKOUT_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\": \"c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3\",",
+      "line": 665,
+      "path": "reports/audits/DM01_A01_R3_FAILED_AT_1658BA4_CLEAN_CHECKOUT_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\": \"c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3\",",
+      "line": 665,
+      "path": "reports/audits/DM01_A01_R3_INITIAL_CLEAN_CHECKOUT_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\": \"c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3\",",
+      "line": 355,
+      "path": "reports/audits/DM01_A01_R3_PROMOTION_CLEAN_CHECKOUT_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\": \"c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3\",",
+      "line": 227,
+      "path": "reports/audits/DM01_A01_R3_PROMOTION_FAILED_ATTEMPT_CLEAN_CHECKOUT_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\": \"c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3\",",
+      "line": 173,
+      "path": "reports/audits/R3_CLEAN_CHECKOUT_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "      \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 146,
+      "path": "reports/audits/R3_STAGE_CLOSURE_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "      \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 128,
+      "path": "reports/audits/R3_STAGE_ENTRY_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\": \"c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3\",",
+      "line": 175,
+      "path": "reports/audits/R4_CLEAN_CHECKOUT_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "      \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 146,
+      "path": "reports/audits/R4_STAGE_CLOSURE_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "      \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 127,
+      "path": "reports/audits/R4_STAGE_ENTRY_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "  \"contract_id\": \"V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1\",",
+      "line": 10,
+      "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 483,
+      "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R2.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 35,
+      "path": "reports/audits/work_packages/WP-A01-DM01/STATUS_R2.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 25,
+      "path": "reports/audits/work_packages/WP-A01-DM01/STATUS_R2_RUNTIME_CAPTURE_ENGINEERING_PASS_FINAL_BLOCKED.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 2408,
+      "path": "reports/next_round_r1/BATCH_STAGE_ENTRY_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 2579,
+      "path": "reports/next_round_r2/BATCH_STAGE_ENTRY_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 2635,
+      "path": "reports/next_round_r3/BATCH_STAGE_ENTRY_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 44,
+      "path": "reports/next_round_r6/PARENT_STAGE_HEAD_ORIGINAL_BYTES.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 45,
+      "path": "reports/r17b/PARENT_STAGE_HEAD.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "{\"accepted_stage_range\":\"V4_00_TO_V4_13_ACCEPTED\",\"bindings\":{\"phase0\":{\"path\":\"reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json\",\"sha256\":\"313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59\"},\"tdx_archive\":{\"cutoff\":\"2026-09-24\",\"path\":\"data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a",
+      "line": 1,
+      "path": "reports/r17r1a/PARENT_STAGE_HEAD.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "{\"accepted_stage_range\":\"V4_00_TO_V4_13_ACCEPTED\",\"bindings\":{\"phase0\":{\"path\":\"reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json\",\"sha256\":\"313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59\"},\"tdx_archive\":{\"cutoff\":\"2026-09-24\",\"path\":\"data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a",
+      "line": 1,
+      "path": "reports/r18r1r1r1a/sandbox/RB01/after_fault.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "{\"accepted_stage_range\":\"V4_00_TO_V4_13_ACCEPTED\",\"bindings\":{\"phase0\":{\"path\":\"reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json\",\"sha256\":\"313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59\"},\"tdx_archive\":{\"cutoff\":\"2026-09-24\",\"path\":\"data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a",
+      "line": 1,
+      "path": "reports/r18r1r1r1a/sandbox/RB01/before.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "{\"accepted_stage_range\":\"V4_00_TO_V4_13_ACCEPTED\",\"bindings\":{\"phase0\":{\"path\":\"reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json\",\"sha256\":\"313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59\"},\"tdx_archive\":{\"cutoff\":\"2026-09-24\",\"path\":\"data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a",
+      "line": 1,
+      "path": "reports/r18r1r1r1a/sandbox/RB01/first_rollback.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "{\"accepted_stage_range\":\"V4_00_TO_V4_13_ACCEPTED\",\"bindings\":{\"phase0\":{\"path\":\"reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json\",\"sha256\":\"313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59\"},\"tdx_archive\":{\"cutoff\":\"2026-09-24\",\"path\":\"data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a",
+      "line": 1,
+      "path": "reports/r18r1r1r1a/sandbox/RB01/head.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "{\"accepted_stage_range\":\"V4_00_TO_V4_13_ACCEPTED\",\"bindings\":{\"phase0\":{\"path\":\"reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json\",\"sha256\":\"313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59\"},\"tdx_archive\":{\"cutoff\":\"2026-09-24\",\"path\":\"data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a",
+      "line": 1,
+      "path": "reports/r18r1r1r1a/sandbox/RB01/parent_archive.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "{\"accepted_stage_range\":\"V4_00_TO_V4_13_ACCEPTED\",\"bindings\":{\"phase0\":{\"path\":\"reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json\",\"sha256\":\"313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59\"},\"tdx_archive\":{\"cutoff\":\"2026-09-24\",\"path\":\"data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a",
+      "line": 1,
+      "path": "reports/r18r1r1r1a/sandbox/RB01/second_rollback.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "{\"accepted_stage_range\":\"V4_00_TO_V4_13_ACCEPTED\",\"bindings\":{\"phase0\":{\"path\":\"reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json\",\"sha256\":\"313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59\"},\"tdx_archive\":{\"cutoff\":\"2026-09-24\",\"path\":\"data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a",
+      "line": 1,
+      "path": "reports/r18r1r1r1a/sandbox/RB02/before.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "{\"accepted_stage_range\":\"V4_00_TO_V4_13_ACCEPTED\",\"bindings\":{\"phase0\":{\"path\":\"reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json\",\"sha256\":\"313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59\"},\"tdx_archive\":{\"cutoff\":\"2026-09-24\",\"path\":\"data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a",
+      "line": 1,
+      "path": "reports/r18r1r1r1a/sandbox/RB02/first_rollback.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "{\"accepted_stage_range\":\"V4_00_TO_V4_13_ACCEPTED\",\"bindings\":{\"phase0\":{\"path\":\"reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json\",\"sha256\":\"313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59\"},\"tdx_archive\":{\"cutoff\":\"2026-09-24\",\"path\":\"data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a",
+      "line": 1,
+      "path": "reports/r18r1r1r1a/sandbox/RB02/head.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "{\"accepted_stage_range\":\"V4_00_TO_V4_13_ACCEPTED\",\"bindings\":{\"phase0\":{\"path\":\"reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json\",\"sha256\":\"313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59\"},\"tdx_archive\":{\"cutoff\":\"2026-09-24\",\"path\":\"data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a",
+      "line": 1,
+      "path": "reports/r18r1r1r1a/sandbox/RB02/parent_archive.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "{\"accepted_stage_range\":\"V4_00_TO_V4_13_ACCEPTED\",\"bindings\":{\"phase0\":{\"path\":\"reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json\",\"sha256\":\"313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59\"},\"tdx_archive\":{\"cutoff\":\"2026-09-24\",\"path\":\"data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a",
+      "line": 1,
+      "path": "reports/r18r1r1r1a/sandbox/RB02/second_rollback.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "{\"accepted_stage_range\":\"V4_00_TO_V4_13_ACCEPTED\",\"bindings\":{\"phase0\":{\"path\":\"reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json\",\"sha256\":\"313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59\"},\"tdx_archive\":{\"cutoff\":\"2026-09-24\",\"path\":\"data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a",
+      "line": 1,
+      "path": "reports/r18r1r1r1a/sandbox/RB03/after_fault.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "{\"accepted_stage_range\":\"V4_00_TO_V4_13_ACCEPTED\",\"bindings\":{\"phase0\":{\"path\":\"reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json\",\"sha256\":\"313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59\"},\"tdx_archive\":{\"cutoff\":\"2026-09-24\",\"path\":\"data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a",
+      "line": 1,
+      "path": "reports/r18r1r1r1a/sandbox/RB03/before.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "{\"accepted_stage_range\":\"V4_00_TO_V4_13_ACCEPTED\",\"bindings\":{\"phase0\":{\"path\":\"reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json\",\"sha256\":\"313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59\"},\"tdx_archive\":{\"cutoff\":\"2026-09-24\",\"path\":\"data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a",
+      "line": 1,
+      "path": "reports/r18r1r1r1a/sandbox/RB03/first_rollback.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "{\"accepted_stage_range\":\"V4_00_TO_V4_13_ACCEPTED\",\"bindings\":{\"phase0\":{\"path\":\"reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json\",\"sha256\":\"313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59\"},\"tdx_archive\":{\"cutoff\":\"2026-09-24\",\"path\":\"data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a",
+      "line": 1,
+      "path": "reports/r18r1r1r1a/sandbox/RB03/head.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "{\"accepted_stage_range\":\"V4_00_TO_V4_13_ACCEPTED\",\"bindings\":{\"phase0\":{\"path\":\"reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json\",\"sha256\":\"313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59\"},\"tdx_archive\":{\"cutoff\":\"2026-09-24\",\"path\":\"data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a",
+      "line": 1,
+      "path": "reports/r18r1r1r1a/sandbox/RB03/parent_archive.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "{\"accepted_stage_range\":\"V4_00_TO_V4_13_ACCEPTED\",\"bindings\":{\"phase0\":{\"path\":\"reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json\",\"sha256\":\"313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59\"},\"tdx_archive\":{\"cutoff\":\"2026-09-24\",\"path\":\"data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a",
+      "line": 1,
+      "path": "reports/r18r1r1r1a/sandbox/RB03/second_rollback.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "{\"accepted_stage_range\":\"V4_00_TO_V4_13_ACCEPTED\",\"bindings\":{\"phase0\":{\"path\":\"reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json\",\"sha256\":\"313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59\"},\"tdx_archive\":{\"cutoff\":\"2026-09-24\",\"path\":\"data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a",
+      "line": 1,
+      "path": "reports/r18r1r1r1a/sandbox/RB04/after_fault.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "{\"accepted_stage_range\":\"V4_00_TO_V4_13_ACCEPTED\",\"bindings\":{\"phase0\":{\"path\":\"reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json\",\"sha256\":\"313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59\"},\"tdx_archive\":{\"cutoff\":\"2026-09-24\",\"path\":\"data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a",
+      "line": 1,
+      "path": "reports/r18r1r1r1a/sandbox/RB04/before.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "{\"accepted_stage_range\":\"V4_00_TO_V4_13_ACCEPTED\",\"bindings\":{\"phase0\":{\"path\":\"reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json\",\"sha256\":\"313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59\"},\"tdx_archive\":{\"cutoff\":\"2026-09-24\",\"path\":\"data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a",
+      "line": 1,
+      "path": "reports/r18r1r1r1a/sandbox/RB04/first_rollback.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "{\"accepted_stage_range\":\"V4_00_TO_V4_13_ACCEPTED\",\"bindings\":{\"phase0\":{\"path\":\"reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json\",\"sha256\":\"313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59\"},\"tdx_archive\":{\"cutoff\":\"2026-09-24\",\"path\":\"data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a",
+      "line": 1,
+      "path": "reports/r18r1r1r1a/sandbox/RB04/head.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "{\"accepted_stage_range\":\"V4_00_TO_V4_13_ACCEPTED\",\"bindings\":{\"phase0\":{\"path\":\"reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json\",\"sha256\":\"313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59\"},\"tdx_archive\":{\"cutoff\":\"2026-09-24\",\"path\":\"data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a",
+      "line": 1,
+      "path": "reports/r18r1r1r1a/sandbox/RB04/parent_archive.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "{\"accepted_stage_range\":\"V4_00_TO_V4_13_ACCEPTED\",\"bindings\":{\"phase0\":{\"path\":\"reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json\",\"sha256\":\"313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59\"},\"tdx_archive\":{\"cutoff\":\"2026-09-24\",\"path\":\"data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a",
+      "line": 1,
+      "path": "reports/r18r1r1r1a/sandbox/RB04/second_rollback.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "{\"accepted_stage_range\":\"V4_00_TO_V4_13_ACCEPTED\",\"bindings\":{\"phase0\":{\"path\":\"reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json\",\"sha256\":\"313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59\"},\"tdx_archive\":{\"cutoff\":\"2026-09-24\",\"path\":\"data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a",
+      "line": 1,
+      "path": "reports/r18r1r1r1a/sandbox/RB05/before.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "{\"accepted_stage_range\":\"V4_00_TO_V4_13_ACCEPTED\",\"bindings\":{\"phase0\":{\"path\":\"reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json\",\"sha256\":\"313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59\"},\"tdx_archive\":{\"cutoff\":\"2026-09-24\",\"path\":\"data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a",
+      "line": 1,
+      "path": "reports/r18r1r1r1a/sandbox/RB05/faulted_parent.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "{\"accepted_stage_range\":\"V4_00_TO_V4_13_ACCEPTED\",\"bindings\":{\"phase0\":{\"path\":\"reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json\",\"sha256\":\"313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59\"},\"tdx_archive\":{\"cutoff\":\"2026-09-24\",\"path\":\"data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a",
+      "line": 1,
+      "path": "reports/r18r1r1r1a/sandbox/RB05/first_rollback.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "{\"accepted_stage_range\":\"V4_00_TO_V4_13_ACCEPTED\",\"bindings\":{\"phase0\":{\"path\":\"reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json\",\"sha256\":\"313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59\"},\"tdx_archive\":{\"cutoff\":\"2026-09-24\",\"path\":\"data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a",
+      "line": 1,
+      "path": "reports/r18r1r1r1a/sandbox/RB05/head.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "{\"accepted_stage_range\":\"V4_00_TO_V4_13_ACCEPTED\",\"bindings\":{\"phase0\":{\"path\":\"reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json\",\"sha256\":\"313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59\"},\"tdx_archive\":{\"cutoff\":\"2026-09-24\",\"path\":\"data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a",
+      "line": 1,
+      "path": "reports/r18r1r1r1a/sandbox/RB05/parent_archive.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "{\"accepted_stage_range\":\"V4_00_TO_V4_13_ACCEPTED\",\"bindings\":{\"phase0\":{\"path\":\"reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json\",\"sha256\":\"313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59\"},\"tdx_archive\":{\"cutoff\":\"2026-09-24\",\"path\":\"data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a",
+      "line": 1,
+      "path": "reports/r18r1r1r1a/sandbox/RB05/second_rollback.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "{\"accepted_stage_range\":\"V4_00_TO_V4_13_ACCEPTED\",\"bindings\":{\"phase0\":{\"path\":\"reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json\",\"sha256\":\"313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59\"},\"tdx_archive\":{\"cutoff\":\"2026-09-24\",\"path\":\"data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a",
+      "line": 1,
+      "path": "reports/r18r1r1r1a/sandbox/RB06/before.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "{\"accepted_stage_range\":\"V4_00_TO_V4_13_ACCEPTED\",\"bindings\":{\"phase0\":{\"path\":\"reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json\",\"sha256\":\"313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59\"},\"tdx_archive\":{\"cutoff\":\"2026-09-24\",\"path\":\"data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a",
+      "line": 1,
+      "path": "reports/r18r1r1r1a/sandbox/RB06/first_rollback.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "{\"accepted_stage_range\":\"V4_00_TO_V4_13_ACCEPTED\",\"bindings\":{\"phase0\":{\"path\":\"reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json\",\"sha256\":\"313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59\"},\"tdx_archive\":{\"cutoff\":\"2026-09-24\",\"path\":\"data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a",
+      "line": 1,
+      "path": "reports/r18r1r1r1a/sandbox/RB06/head.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "{\"accepted_stage_range\":\"V4_00_TO_V4_13_ACCEPTED\",\"bindings\":{\"phase0\":{\"path\":\"reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json\",\"sha256\":\"313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59\"},\"tdx_archive\":{\"cutoff\":\"2026-09-24\",\"path\":\"data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a",
+      "line": 1,
+      "path": "reports/r18r1r1r1a/sandbox/RB06/parent_archive.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "{\"accepted_stage_range\":\"V4_00_TO_V4_13_ACCEPTED\",\"bindings\":{\"phase0\":{\"path\":\"reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json\",\"sha256\":\"313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59\"},\"tdx_archive\":{\"cutoff\":\"2026-09-24\",\"path\":\"data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a",
+      "line": 1,
+      "path": "reports/r18r1r1r1a/sandbox/RB06/second_rollback.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "{\"accepted_stage_range\":\"V4_00_TO_V4_13_ACCEPTED\",\"bindings\":{\"phase0\":{\"path\":\"reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json\",\"sha256\":\"313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59\"},\"tdx_archive\":{\"cutoff\":\"2026-09-24\",\"path\":\"data/v4/raw_archive/b6b88d777c74f302376513bad35e9c0e35284a",
+      "line": 1,
+      "path": "reports/r19a/PARENT_STAGE_HEAD.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 45,
+      "path": "reports/r20a/PARENT_STAGE_HEAD.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 45,
+      "path": "reports/r20r1r1/engineering_fixtures/sequence/data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 45,
+      "path": "reports/r20r1r2/engineering_fixtures/correction/data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 45,
+      "path": "reports/r20r1r2/engineering_fixtures/correction_r2/data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 45,
+      "path": "reports/r20r1r2/engineering_fixtures/sequence/data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 45,
+      "path": "reports/r20r1r2/engineering_fixtures/sequence_r2/data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 45,
+      "path": "reports/r21/PARENT_STAGE_HEAD.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 89,
+      "path": "reports/v4_10/V4_10_R1_2_STAGE_CANDIDATE_MANIFEST.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 45,
+      "path": "reports/v4_12_promotion_r14/PARENT_STAGE_HEAD.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "      \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 577,
+      "path": "reports/v4_12_r2/R8_AUTHORITY_REPAIR_HANDOFF.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    \"path\": \"reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json\",",
+      "line": 93,
+      "path": "reports/v4_joint/V4_10_ACCEPTED_HEAD_CANDIDATE_R1.json",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    protected+=[bind('data/v4/V4_DEV_BASELINE_HEAD.json'),bind('reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json')]",
+      "line": 21,
+      "path": "scripts/enter_source_authority_remediation_r2.py",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    previous=json.loads((ROOT/'reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json').read_text(encoding='utf8'))",
+      "line": 31,
+      "path": "scripts/enter_source_authority_remediation_r2.py",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "        extends=bind('reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json'),",
+      "line": 34,
+      "path": "scripts/enter_source_authority_remediation_r2.py",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    registry=dict(contract_id='V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1',status='PASS_MASTER_GOVERNANCE_ENTRY',",
+      "line": 44,
+      "path": "scripts/enter_v4_cross_stage_remediation_r1.py",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    atomic_json(ROOT/'reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json',registry)",
+      "line": 50,
+      "path": "scripts/enter_v4_cross_stage_remediation_r1.py",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "    registry=read('reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json')",
+      "line": 69,
+      "path": "scripts/seal_v4_10_r1_2_candidate.py",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    },
+    {
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "excerpt": "        cross_stage_registry=bind('reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json'),open_audits=[dict(audit_id=e['audit_id'],status=e['status']) for e in registry['entries']],",
+      "line": 84,
+      "path": "scripts/seal_v4_10_r1_2_candidate.py",
+      "reason": "Versioned historical evidence, archived entry/seal/validator or test; not live business status selection."
+    }
+  ],
+  "no_latest_discovery": true,
+  "repair_required": false,
+  "scope": "ALL_TRACKED_BASELINE_TEXT_FILES; UNRELATED_UNTRACKED_WORK_NOT_AN_AUTHORITY",
+  "unresolved": 0
+}

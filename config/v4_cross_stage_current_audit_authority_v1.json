@@ -1,0 +1,35 @@
+{
+  "V4_16": false,
+  "admission_rule": "ACCEPTED status requires exact accepted authority and independent external scope; implementation or tests alone never grant acceptance.",
+  "automatic_stage_permission": false,
+  "business_runtime_authority": false,
+  "contract_id": "V4_CROSS_STAGE_CURRENT_AUDIT_AUTHORITY_V1",
+  "current_head": {
+    "bytes": 160505,
+    "path": "data/v4/V4_CROSS_STAGE_CURRENT_AUDIT_HEAD_V1.json",
+    "sha256": "999c359af954814f31e51d6160e9e6cd075f484502b7d8f77e5259707286bc73"
+  },
+  "execution_baseline": "a1bb12f19e758784e55a1a93acaad1954861a0fc",
+  "focus": false,
+  "historical_registry_semantics": "HISTORICAL_GOVERNANCE_SNAPSHOT",
+  "production": false,
+  "requires_explicit_future_stage_binding": true,
+  "shadow": false,
+  "stage_current_authority_unchanged": {
+    "bytes": 4004,
+    "path": "config/v4_current_stage_authority_v2.json",
+    "sha256": "dc57e3957a1301ff3358f5012080027c47550559c4cd5d406065f98e4958a206"
+  },
+  "taxonomy": [
+    "ACCEPTED_SCOPED",
+    "ACCEPTED_FULL_REQUIRED_SCOPE",
+    "OPEN_ENGINEERING",
+    "OPEN_EXTERNAL_REAUDIT",
+    "ACCUMULATION_CONTINUES",
+    "PERMANENT_CAPABILITY_LIMITATION",
+    "BLOCKED_AFFECTED_SCOPE",
+    "NONBLOCKING_VALIDATION_DEBT",
+    "SUPERSEDED_HISTORICAL_STATUS"
+  ],
+  "version": "1.0.0"
+}

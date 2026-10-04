@@ -1,0 +1,16 @@
+{
+  "audit_id": "R22_CLOCK_AUTHORITY_REPAIR_01",
+  "engineering_block": false,
+  "evidence": {
+    "bytes": 2075,
+    "path": "reports/r22/CUTOFF_AUTHORITY_INVENTORY.json",
+    "sha256": "d27c82e616172e16d4fdfb10b55127bdd60a7cc13b14117dff66464716fba0c1"
+  },
+  "global_governance_blocker": false,
+  "priority": "P0_AFFECTED_SCOPE",
+  "required_closure": "SEPARATE_VERSIONED_ACCEPTED_CLOCK_CONTRACT_WITH_MARKET_CALENDAR_TIMEZONE_UTC_AND_EXACT_EXTERNAL_AUTHORITY; NO_CONVENIENT_TIME",
+  "runtime_observation_block": true,
+  "scope": "Accepted V4-00C scheduled cutoff and observation publication deadline",
+  "status": "OPEN_CONTRACT_REPAIR_REQUIREMENT",
+  "version": "1.0.0"
+}

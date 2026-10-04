@@ -1,0 +1,221 @@
+{
+  "NEXT": "STOP_WAIT_R22_INDEPENDENT_EXTERNAL_AUDIT",
+  "REAL_SHADOW_OBSERVATIONS": 0,
+  "V4_16": false,
+  "contract_id": "V4_16_CONTRACT_PACKAGE_V1",
+  "contracts": {
+    "v4_16_machine_vectors_v1": {
+      "bytes": 13843,
+      "path": "config/v4_16_machine_vectors_v1.json",
+      "sha256": "1b84aa8383702e3c151b5ce139421b5afd8dea8a166d1664e07fc6a6d5a9e529"
+    },
+    "v4_16_observation_slot_contract_v1": {
+      "bytes": 8166,
+      "path": "config/v4_16_observation_slot_contract_v1.json",
+      "sha256": "4555c236f0ef8a34fc5aa96f50cb77c78e6bc79c5c94caed4fa416f17a9bbe2a"
+    },
+    "v4_16_realtime_shadow_contract_v1": {
+      "bytes": 14320,
+      "path": "config/v4_16_realtime_shadow_contract_v1.json",
+      "sha256": "059c0c25624daf8120a054e81bd26f642bb49515a0bdafd7618938308c8d6e14"
+    },
+    "v4_16_settlement_worker_contract_v1": {
+      "bytes": 8701,
+      "path": "config/v4_16_settlement_worker_contract_v1.json",
+      "sha256": "6314a1cafac57db464e7c87971d55283b4c6670f044e8779b9699c6c86e38e9b"
+    },
+    "v4_16_shadow_health_contract_v1": {
+      "bytes": 8931,
+      "path": "config/v4_16_shadow_health_contract_v1.json",
+      "sha256": "c7238a0b8b25679ff2c5633384c65134c1010dda7d895f1b360e22b4af1dd81b"
+    },
+    "v4_16_shadow_namespace_contract_v1": {
+      "bytes": 7900,
+      "path": "config/v4_16_shadow_namespace_contract_v1.json",
+      "sha256": "d47dc39b83cf8a4a8dfd70300da2f285a998740099de7ab97bf8a8b7343727f9"
+    }
+  },
+  "current_audit_config": {
+    "bytes": 2683,
+    "path": "config/v4_cross_stage_current_audit_authority_v2.json",
+    "sha256": "5bbe840d0333da231f8730037ab4a207aaeb004e5c3d6daeeca2d5e27b0cfa27"
+  },
+  "current_audit_head": {
+    "bytes": 177804,
+    "path": "data/v4/V4_CROSS_STAGE_CURRENT_AUDIT_HEAD_V2.json",
+    "sha256": "0f5901d410e9fd6d8532e08bc24ac0f18f24a3512e53c3e9e25e72824f85d988"
+  },
+  "dag": [
+    "FROZEN_ACCEPTED_AUTHORITY -> OBSERVATION_SLOT -> SOURCE_FREEZE -> ACCEPTED_SHADOW_PUBLICATION -> COMPLETE_COHORT -> DURABLE_DUE_OUTBOX -> ACCEPTED_FUTURE_SOURCE -> OUTCOME_REVISION -> READBACK"
+  ],
+  "entry_authority": {
+    "architecture": {
+      "bytes": 224998,
+      "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+      "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+    },
+    "audit_config": {
+      "bytes": 2683,
+      "path": "config/v4_cross_stage_current_audit_authority_v2.json",
+      "sha256": "5bbe840d0333da231f8730037ab4a207aaeb004e5c3d6daeeca2d5e27b0cfa27"
+    },
+    "audit_head": {
+      "bytes": 177804,
+      "path": "data/v4/V4_CROSS_STAGE_CURRENT_AUDIT_HEAD_V2.json",
+      "sha256": "0f5901d410e9fd6d8532e08bc24ac0f18f24a3512e53c3e9e25e72824f85d988"
+    },
+    "blocking_scope_matrix": {
+      "bytes": 16136,
+      "path": "reports/pre16_finalization/BLOCKING_SCOPE_MATRIX.json",
+      "sha256": "8e32886b50190702649775cb6f5d734f942b3934334f2db81c5efdf9eb8052a1"
+    },
+    "calendar": {
+      "bytes": 10739,
+      "path": "data/v4/source_evidence/dm01_a01_r3/chain_inputs_r1/calendar_union_2e0938120e3b371aa9c84422c06b4c14de0f8894cc8f3caa9dd9c61299239e74.json",
+      "sha256": "629242b5074002dd8e889fdca5da9e1c05f9ae35357662d5c76a554117fc17f5"
+    },
+    "canonical_issue_map": {
+      "bytes": 4623,
+      "path": "reports/pre16_finalization/CANONICAL_ISSUE_MAP.json",
+      "sha256": "78b35f9e56592d552ce74dbe9d2b82e5685ffe3e9e65ed0d58c5e32e91ccb186"
+    },
+    "cohort": {
+      "bytes": 2081,
+      "path": "config/v4_15_cohort_contract_v1.json",
+      "sha256": "5d4dee2e914ed541227cf54deb5676be3495713ea754ce6b78b078c643bacc8b"
+    },
+    "current_stage": {
+      "bytes": 4004,
+      "path": "config/v4_current_stage_authority_v2.json",
+      "sha256": "dc57e3957a1301ff3358f5012080027c47550559c4cd5d406065f98e4958a206"
+    },
+    "data": {
+      "bytes": 16890,
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+    },
+    "due": {
+      "bytes": 1381,
+      "path": "config/v4_15_due_planner_contract_v1.json",
+      "sha256": "848a6bf0f0d78b7784c6c7db34e20da31f1e20be0aa1e5c91bae2f28a1b50a2f"
+    },
+    "forward_projection": {
+      "bytes": 3016,
+      "path": "config/v4_15_forward_projection_r20r1r2_v1.json",
+      "sha256": "46bce4829308900c0d630732299b2280b3147be165acf80260d5f16c271d5aaa"
+    },
+    "governance_acceptance": {
+      "bytes": 1683,
+      "path": "data/v4/V4_PRE16_GOVERNANCE_ACCEPTED_HEAD_R1.json",
+      "sha256": "231961e104782f1347c4a86d996baf743982cf5b97d87cc289b017b63da8ab8b"
+    },
+    "membership": {
+      "bytes": 2151,
+      "path": "data/v4/V4_08_PIT_MEMBERSHIP_ACCEPTED_HEAD_R1.json",
+      "sha256": "d6374a73b8084ccd383cbb4f75428ed91176e91cc09d87c3329041d57c5bd9ed"
+    },
+    "parameters": {
+      "bytes": 7956,
+      "path": "config/v4_parameter_registry_v1.json",
+      "sha256": "b02d267d95456f557ddf5acf450eb01ff95ba661231e3f88fe84f355e85f0ef7"
+    },
+    "phase0": {
+      "bytes": 14147,
+      "path": "reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json",
+      "sha256": "313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59"
+    },
+    "r21_external_audit": {
+      "bytes": 7426,
+      "path": "docs/evidence/r22/V4_R21_FINAL_INDEPENDENT_EXTERNAL_AUDIT_R1_20261004.md",
+      "sha256": "d4545e994bdabfb25c27d25118008c14b544306344778fb0712e3b1be273789f"
+    },
+    "readback": {
+      "bytes": 1044,
+      "path": "config/v4_15_settlement_readback_contract_v1.json",
+      "sha256": "2fedfa771110b002b258d6ea41c388b7b04b6315bf6d041139a13da07571fc30"
+    },
+    "revision": {
+      "bytes": 1401,
+      "path": "config/v4_15_settlement_revision_contract_v1.json",
+      "sha256": "08e2d13964e9defefdac56f53c2b73bf7cc31963d946784e6f3d77c985c576dd"
+    },
+    "stage": {
+      "bytes": 15303,
+      "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+      "sha256": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0"
+    },
+    "status": {
+      "bytes": 1557,
+      "path": "config/v4_15_outcome_status_contract_v1.json",
+      "sha256": "ce2507c95e06d821c90d01a3e4d737c1476f542ffd6d9a8c2dc495b4330c093e"
+    },
+    "v15": {
+      "bytes": 4778,
+      "path": "data/v4/V4_15_ACCEPTED_HEAD.json",
+      "sha256": "a3480dfc7e1d7b68656ea78e6ed68eb93c3381db9c099b8a6e0cb3a84c9d1d4d"
+    },
+    "v15_package": {
+      "bytes": 9449,
+      "path": "config/v4_15_contract_package_v1.json",
+      "sha256": "d4cf16990b90f663c5ac28e2180e7062bf93386baeb66e130153227e39a4032c"
+    }
+  },
+  "execution_baseline": "b2c3dd81c4bfed2364b6ea2693860114421f990c",
+  "field_registry": {
+    "bytes": 7484,
+    "path": "config/v4_16_field_registry_v1.json",
+    "sha256": "545b0990e1c0ca0905ba7b1a970df715c6cb5d2dc7513d002b5d62a8ec8bc783"
+  },
+  "focus": false,
+  "non_edges": [
+    "PRODUCTION_LEGACY_PRIOR -> SHADOW_V4_PRIOR",
+    "Focus -> enrollment",
+    "UI Top-K -> enrollment",
+    "Forward outcome -> T0 state",
+    "FEP prediction -> Core/Radar",
+    "Corrected outcome -> T0",
+    "future source -> same-day decision"
+  ],
+  "phase0_gate": {
+    "bytes": 285,
+    "path": "reports/pre16_finalization/FINALIZATION_GATE.json",
+    "sha256": "1c319f72189cc4316ce666dc853165a3a6f223bd3b2755d60c3d77e11cd53a5c"
+  },
+  "production": false,
+  "runtime_authorized": false,
+  "runtime_implemented": false,
+  "shadow": false,
+  "slot_capability": "BLOCKED_AFFECTED_SCOPE_PENDING_ACCEPTED_CLOCK",
+  "source_capability_matrix": {
+    "A08_current_PREWATCH": "OPEN_EXTERNAL_REAUDIT_NOT_ACTIVE_IN_SHADOW",
+    "Amount_A_H21": "BLOCKED_FORMAL_CONSUMER",
+    "BaoStock": "OPTIONAL_SUPPLEMENTAL_ONLY",
+    "clock": "BLOCKED_AFFECTED_SCOPE",
+    "historical_Amount_A": "UNAVAILABLE_FORMAL_CONSUMER",
+    "marked_benchmark": "BLOCKED_UNSET_ACCEPTED_NUMERIC_GATES",
+    "membership": "FUTURE_OBSERVED_CAPTURE_ONLY; HISTORICAL_NOT_PIT",
+    "real_maturity": "NOT_GRANTED",
+    "stock_warm": "NOT_APPLICABLE_NO_ACCEPTED_OWNER"
+  },
+  "status": "PASS_READY_FOR_EXTERNAL_AUDIT",
+  "storage_design": {
+    "append_only": true,
+    "apply_permission": false,
+    "foreign_keys": "EXACT_PUBLICATION_MODEL_LINEAGE_SOURCE_DIGEST_REFERENCES",
+    "migration": "DESIGN_ONLY_NO_FORMAL_DB_APPLY",
+    "records": [
+      "observation_slots",
+      "source_freeze_manifests",
+      "accepted_publications",
+      "complete_daily_ledgers",
+      "logical_event_observations",
+      "first_observed_enrollments",
+      "daily_membership_snapshots",
+      "due_outbox",
+      "outcome_revisions",
+      "capability_health_receipts"
+    ],
+    "transaction": "PUBLICATION_MANIFEST_COHORT_OUTBOX_ACCEPTED_HEAD_CAS_ATOMIC"
+  },
+  "version": "1.0.0"
+}

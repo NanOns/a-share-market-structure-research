@@ -1,0 +1,4233 @@
+{
+  "GLOBAL_V4_16_CONTRACT_ENTRY_BLOCKERS": [],
+  "NEXT": "R22_CONTRACT_FREEZE_ONLY_AFTER_PHASE0_PASS",
+  "V4_16": false,
+  "V4_16_entry": "CONTRACT_ENTRY_ONLY_AFTER_FORMALIZATION_GATE; RUNTIME_NOT_AUTHORIZED",
+  "audit_status_authority": true,
+  "blocking_schema": {
+    "legacy_blocks_engineering_stage": "blocks_v4_16_contract_entry",
+    "legacy_blocks_production_cutover": "blocks_production_cutover_for_scope",
+    "legacy_blocks_shadow_entry": "blocks_v4_16_runtime_activation OR blocks_affected_capability_in_shadow; true does not imply global Shadow block",
+    "permission": "Blocker queries never grant permission; stage_permission remains false",
+    "runtime_activation_dependency": "Only GOV_PRE16_01 is a declared global activation hold in this authority. Future contracts must explicitly bind required capabilities; A08 remains blocked for its capability, without inventing an unfrozen global dependency."
+  },
+  "business_runtime_authority": false,
+  "contract_id": "V4_CROSS_STAGE_CURRENT_AUDIT_HEAD_V2",
+  "data_action": "KEEP_EXACT_BYTES",
+  "entries": {
+    "A01": {
+      "affected_capabilities": [
+        "A01"
+      ],
+      "alias_of": null,
+      "audit_id": "A01",
+      "blocking_scope": "CAPABILITY_ONLY",
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_engineering_stage": false,
+      "blocks_production_cutover": true,
+      "blocks_production_cutover_for_scope": true,
+      "blocks_shadow_entry": false,
+      "blocks_v4_16_contract_entry": false,
+      "blocks_v4_16_runtime_activation": false,
+      "canonical_issue_id": "A01",
+      "capability_dimensions": {
+        "AS_RECORDED": false,
+        "accepted_trade_date": "2026-09-30",
+        "external_acceptance": "EXTERNALLY_ACCEPTED_REAL_CONTINUOUS_CHAIN"
+      },
+      "current_authority": {
+        "data": {
+          "bytes": 16890,
+          "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+          "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+        },
+        "data_acceptance": {
+          "bytes": 4864,
+          "path": "reports/audits/DM01_A01_R3_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+          "sha256": "651987915de07e38e9e410013dd54042ee6ab78484608bd2518150704a599f1a"
+        }
+      },
+      "current_state": "ACCEPTED_SCOPED",
+      "evidence_bindings": [
+        {
+          "bytes": 16890,
+          "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+          "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+        },
+        {
+          "bytes": 4864,
+          "path": "reports/audits/DM01_A01_R3_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+          "sha256": "651987915de07e38e9e410013dd54042ee6ab78484608bd2518150704a599f1a"
+        }
+      ],
+      "formal_consumer_permission_granted_by_this_head": false,
+      "limitations": [
+        "AS_RECORDED=false",
+        "historical_first_availability=false",
+        "RECONSTRUCTED_CORRECTED"
+      ],
+      "priority": "P0",
+      "requires_real_observation_accumulation": false,
+      "scope": "DM01 accepted all-nine continuous chain 2026-09-28/29/30; anchor 2026-09-24",
+      "superseded_historical_statuses": [
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 11877,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json",
+            "sha256": "c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 93135,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json",
+            "sha256": "14002b12e89920ee2d57fe1328a53c03f21ebb99842acfcb5c53b44d3f402174"
+          },
+          "status": "ACCEPTED"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 21515,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R2.json",
+            "sha256": "83e2959a26dc3e1e5a64f14c56f3ef428d5b1b6d0d249311bea13cc73e87586e"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 33283,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R3.json",
+            "sha256": "4e224ae63cac14ac85a2b47b29ed4566f55565912b155fd7f940b281fdf6e6d6"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 34157,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R4.json",
+            "sha256": "d641583242ddb30ece8d2811f0b222eb9bbbbdce1bd3f7d9d63575e9d7bc29a7"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 45454,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R5.json",
+            "sha256": "0109d018fedeb8176dd904039d56e0af040c4533443a194e3bc598c9c31019eb"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 47386,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R6.json",
+            "sha256": "a18aaac164f1361b269d7de6b243e1386ea496c7a28452b23fa667cab3f042a4"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 48390,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R7.json",
+            "sha256": "a0d1e92a93f11bdf3c3370c3f19416474c9b6512a80640d18e051bfa6db9a5e2"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 57631,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R8.json",
+            "sha256": "77d9472729c134403a235e3b0ae278a5a2e8512f850245d14f8b107e994abb9b"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 59288,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R9.json",
+            "sha256": "3a12c2b22ded78269361947878eac0f65959f008fafbea233de6222e4cc37d8b"
+          },
+          "status": "OPEN"
+        }
+      ]
+    },
+    "A02": {
+      "affected_capabilities": [
+        "A02"
+      ],
+      "alias_of": null,
+      "audit_id": "A02",
+      "blocking_scope": "CAPABILITY_ONLY",
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_engineering_stage": false,
+      "blocks_production_cutover": true,
+      "blocks_production_cutover_for_scope": true,
+      "blocks_shadow_entry": false,
+      "blocks_v4_16_contract_entry": false,
+      "blocks_v4_16_runtime_activation": false,
+      "canonical_issue_id": "A02",
+      "capability_dimensions": {
+        "AS_RECORDED": false,
+        "historical_first_availability_proven": false,
+        "knowledge_lineage": "RECONSTRUCTED_CORRECTED"
+      },
+      "current_authority": {
+        "a02": {
+          "bytes": 2776,
+          "path": "data/v4/V4_RPS_PIT_HISTORY_ACCEPTED_HEAD_R1.json",
+          "sha256": "4025dd5d3eb27c9086bca8e4861ad33842db8938dda370fb3d7f78b8d783398b"
+        },
+        "a02_acceptance": {
+          "bytes": 8102,
+          "path": "reports/audits/next_round_r2/A02_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+          "sha256": "c75e59f99fa34bac2ecb7357e36368265e0fbd3eeed261d372751eff263477b7"
+        }
+      },
+      "current_state": "ACCEPTED_SCOPED",
+      "evidence_bindings": [
+        {
+          "bytes": 2776,
+          "path": "data/v4/V4_RPS_PIT_HISTORY_ACCEPTED_HEAD_R1.json",
+          "sha256": "4025dd5d3eb27c9086bca8e4861ad33842db8938dda370fb3d7f78b8d783398b"
+        },
+        {
+          "bytes": 8102,
+          "path": "reports/audits/next_round_r2/A02_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+          "sha256": "c75e59f99fa34bac2ecb7357e36368265e0fbd3eeed261d372751eff263477b7"
+        }
+      ],
+      "formal_consumer_permission_granted_by_this_head": false,
+      "limitations": [
+        "Not historical AS_RECORDED",
+        "Not historical first-availability proof"
+      ],
+      "priority": "P1",
+      "requires_real_observation_accumulation": false,
+      "scope": "Accepted RPS producer and separately scoped downstream amendments",
+      "superseded_historical_statuses": [
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 11877,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json",
+            "sha256": "c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 93135,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json",
+            "sha256": "14002b12e89920ee2d57fe1328a53c03f21ebb99842acfcb5c53b44d3f402174"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 5081,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R11_CANDIDATE.json",
+            "sha256": "b37a28713003e3b7e22110879a635c8a36b172eb15ea3404d3eb56a588fd9208"
+          },
+          "status": "CANDIDATE_READY_FOR_EXTERNAL_REAUDIT"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 6931,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R12_FORMALIZATION.json",
+            "sha256": "a6be464c7b2b601e2be2dc749fe1d3dff45b32effb0ac5801e99c6081ee204a4"
+          },
+          "status": "ACCEPTED_SCOPED"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 7414,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R12_FORMALIZATION_R2.json",
+            "sha256": "63f43a506cebd315c244cbe821af05effc4eda8e7b81a17ad88c288ef8246e85"
+          },
+          "status": "ACCEPTED_SCOPED"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 19334,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R13_CONSOLIDATION_R3.json",
+            "sha256": "cd6d909a3a01fba8ad32cb7833de041fb4a9a775f1d3fc8f679f7929ae598856"
+          },
+          "status": "ACCEPTED_SCOPED"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 25172,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R14_BATCH_R3.json",
+            "sha256": "3e81ab57d29d624dee4f4abdf3ba94df58c8d8f3cce6801360dae50f5b84ddda"
+          },
+          "status": "ACCEPTED_SCOPED"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 25810,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R15_BATCH_R3_FINAL.json",
+            "sha256": "7eb26d6d0a9ce3789161185b087c3e6c15f6f4f8d22867a1dba392a77b071473"
+          },
+          "status": "ACCEPTED_SCOPED"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 21515,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R2.json",
+            "sha256": "83e2959a26dc3e1e5a64f14c56f3ef428d5b1b6d0d249311bea13cc73e87586e"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 33283,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R3.json",
+            "sha256": "4e224ae63cac14ac85a2b47b29ed4566f55565912b155fd7f940b281fdf6e6d6"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 34157,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R4.json",
+            "sha256": "d641583242ddb30ece8d2811f0b222eb9bbbbdce1bd3f7d9d63575e9d7bc29a7"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 45454,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R5.json",
+            "sha256": "0109d018fedeb8176dd904039d56e0af040c4533443a194e3bc598c9c31019eb"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 47386,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R6.json",
+            "sha256": "a18aaac164f1361b269d7de6b243e1386ea496c7a28452b23fa667cab3f042a4"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 48390,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R7.json",
+            "sha256": "a0d1e92a93f11bdf3c3370c3f19416474c9b6512a80640d18e051bfa6db9a5e2"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 57631,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R8.json",
+            "sha256": "77d9472729c134403a235e3b0ae278a5a2e8512f850245d14f8b107e994abb9b"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 59288,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R9.json",
+            "sha256": "3a12c2b22ded78269361947878eac0f65959f008fafbea233de6222e4cc37d8b"
+          },
+          "status": "OPEN"
+        }
+      ]
+    },
+    "A03": {
+      "affected_capabilities": [
+        "A03"
+      ],
+      "alias_of": null,
+      "audit_id": "A03",
+      "blocking_scope": "CAPABILITY_ONLY",
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_engineering_stage": false,
+      "blocks_production_cutover": true,
+      "blocks_production_cutover_for_scope": true,
+      "blocks_shadow_entry": false,
+      "blocks_v4_16_contract_entry": false,
+      "blocks_v4_16_runtime_activation": false,
+      "canonical_issue_id": "A03",
+      "capability_dimensions": {
+        "active_global_trust_root": false,
+        "engineering_task": "CLOSED_SCOPED",
+        "formal_consumer_cutover": false,
+        "global_mandatory_adoption": false
+      },
+      "current_authority": {
+        "A03_external": {
+          "bytes": 8324,
+          "path": "docs/evidence/next_round_r3/V4_R2_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R2_20261002.md",
+          "sha256": "9b630344fa2101786f294fd3234bd275cedd25c73ca380706f56128fbad06d01"
+        },
+        "A03_record": {
+          "bytes": 8074,
+          "path": "reports/next_round_r2/scoped_acceptance/A03_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+          "sha256": "ab8b504a46c032767e7d68032472b225898239622e93bae1da3f514903ae826a"
+        },
+        "dispositions": {
+          "bytes": 7460,
+          "path": "data/v4/V4_SOURCE_AUTHORITY_SCOPED_DISPOSITION_REGISTRY_R5_INACTIVE.json",
+          "sha256": "064e5103c64848bf842d1cde9e01ec65a0ebe0b445cc18b435723dcc66e59db5"
+        }
+      },
+      "current_state": "ACCUMULATION_CONTINUES",
+      "evidence_bindings": [
+        {
+          "bytes": 7460,
+          "path": "data/v4/V4_SOURCE_AUTHORITY_SCOPED_DISPOSITION_REGISTRY_R5_INACTIVE.json",
+          "sha256": "064e5103c64848bf842d1cde9e01ec65a0ebe0b445cc18b435723dcc66e59db5"
+        },
+        {
+          "bytes": 8324,
+          "path": "docs/evidence/next_round_r3/V4_R2_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R2_20261002.md",
+          "sha256": "9b630344fa2101786f294fd3234bd275cedd25c73ca380706f56128fbad06d01"
+        },
+        {
+          "bytes": 8074,
+          "path": "reports/next_round_r2/scoped_acceptance/A03_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+          "sha256": "ab8b504a46c032767e7d68032472b225898239622e93bae1da3f514903ae826a"
+        }
+      ],
+      "formal_consumer_permission_granted_by_this_head": false,
+      "limitations": [
+        "FORWARD_ACCUMULATION_CONTINUES",
+        "NO_RETROACTIVE_AS_RECORDED_FABRICATION",
+        "FUTURE_OBSERVATION_COUNT_IS_NOT_ENGINEERING_OPEN_BLOCKER"
+      ],
+      "priority": "P1",
+      "requires_real_observation_accumulation": true,
+      "scope": "SCOPED_ACCEPTED / ACCUMULATION_CONTINUES",
+      "superseded_historical_statuses": [
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 11877,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json",
+            "sha256": "c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 93135,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json",
+            "sha256": "14002b12e89920ee2d57fe1328a53c03f21ebb99842acfcb5c53b44d3f402174"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 5081,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R11_CANDIDATE.json",
+            "sha256": "b37a28713003e3b7e22110879a635c8a36b172eb15ea3404d3eb56a588fd9208"
+          },
+          "status": "CANDIDATE_READY_FOR_EXTERNAL_REAUDIT"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 6931,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R12_FORMALIZATION.json",
+            "sha256": "a6be464c7b2b601e2be2dc749fe1d3dff45b32effb0ac5801e99c6081ee204a4"
+          },
+          "status": "ACCUMULATION_CONTINUES"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 7414,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R12_FORMALIZATION_R2.json",
+            "sha256": "63f43a506cebd315c244cbe821af05effc4eda8e7b81a17ad88c288ef8246e85"
+          },
+          "status": "ACCUMULATION_CONTINUES"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 19334,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R13_CONSOLIDATION_R3.json",
+            "sha256": "cd6d909a3a01fba8ad32cb7833de041fb4a9a775f1d3fc8f679f7929ae598856"
+          },
+          "status": "ACCUMULATION_CONTINUES"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 25172,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R14_BATCH_R3.json",
+            "sha256": "3e81ab57d29d624dee4f4abdf3ba94df58c8d8f3cce6801360dae50f5b84ddda"
+          },
+          "status": "ACCUMULATION_CONTINUES"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 25810,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R15_BATCH_R3_FINAL.json",
+            "sha256": "7eb26d6d0a9ce3789161185b087c3e6c15f6f4f8d22867a1dba392a77b071473"
+          },
+          "status": "ACCUMULATION_CONTINUES"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 21515,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R2.json",
+            "sha256": "83e2959a26dc3e1e5a64f14c56f3ef428d5b1b6d0d249311bea13cc73e87586e"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 33283,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R3.json",
+            "sha256": "4e224ae63cac14ac85a2b47b29ed4566f55565912b155fd7f940b281fdf6e6d6"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 34157,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R4.json",
+            "sha256": "d641583242ddb30ece8d2811f0b222eb9bbbbdce1bd3f7d9d63575e9d7bc29a7"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 45454,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R5.json",
+            "sha256": "0109d018fedeb8176dd904039d56e0af040c4533443a194e3bc598c9c31019eb"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 47386,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R6.json",
+            "sha256": "a18aaac164f1361b269d7de6b243e1386ea496c7a28452b23fa667cab3f042a4"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 48390,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R7.json",
+            "sha256": "a0d1e92a93f11bdf3c3370c3f19416474c9b6512a80640d18e051bfa6db9a5e2"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 57631,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R8.json",
+            "sha256": "77d9472729c134403a235e3b0ae278a5a2e8512f850245d14f8b107e994abb9b"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 59288,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R9.json",
+            "sha256": "3a12c2b22ded78269361947878eac0f65959f008fafbea233de6222e4cc37d8b"
+          },
+          "status": "OPEN"
+        }
+      ]
+    },
+    "A04": {
+      "affected_capabilities": [
+        "A04"
+      ],
+      "alias_of": null,
+      "audit_id": "A04",
+      "blocking_scope": "CAPABILITY_ONLY",
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_engineering_stage": false,
+      "blocks_production_cutover": true,
+      "blocks_production_cutover_for_scope": true,
+      "blocks_shadow_entry": false,
+      "blocks_v4_16_contract_entry": false,
+      "blocks_v4_16_runtime_activation": false,
+      "canonical_issue_id": "A04",
+      "capability_dimensions": {
+        "accepted_sessions": 1,
+        "consumer_auto_activation_after_H21": false,
+        "formal_consumer_enabled": false,
+        "historical_formal_capability": "BLOCKED",
+        "known_amount_a": 0,
+        "missing_H21": 20,
+        "producer_accepted": true
+      },
+      "current_authority": {
+        "a04": {
+          "bytes": 281,
+          "path": "data/v4/A04_AMOUNT_A_GO_FORWARD_PRODUCER_ACCEPTED_HEAD_R1.json",
+          "sha256": "33c8b152af664193aba101f2cf3a52746f2cfc6e135172d1c4180674a7448cbf"
+        },
+        "a04_payload": {
+          "bytes": 8277,
+          "path": "data/v4/scoped_acceptance_r3/26c106c9bc2ae2fe5a87e0f770f9d2a6067ffc4c2642c2c55fba70ada0f8b66b.json",
+          "sha256": "26c106c9bc2ae2fe5a87e0f770f9d2a6067ffc4c2642c2c55fba70ada0f8b66b"
+        },
+        "a04_payload_acceptance": {
+          "bytes": 8324,
+          "path": "docs/evidence/next_round_r3/V4_R2_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R2_20261002.md",
+          "sha256": "9b630344fa2101786f294fd3234bd275cedd25c73ca380706f56128fbad06d01"
+        }
+      },
+      "current_state": "ACCEPTED_SCOPED",
+      "evidence_bindings": [
+        {
+          "bytes": 281,
+          "path": "data/v4/A04_AMOUNT_A_GO_FORWARD_PRODUCER_ACCEPTED_HEAD_R1.json",
+          "sha256": "33c8b152af664193aba101f2cf3a52746f2cfc6e135172d1c4180674a7448cbf"
+        },
+        {
+          "bytes": 8277,
+          "path": "data/v4/scoped_acceptance_r3/26c106c9bc2ae2fe5a87e0f770f9d2a6067ffc4c2642c2c55fba70ada0f8b66b.json",
+          "sha256": "26c106c9bc2ae2fe5a87e0f770f9d2a6067ffc4c2642c2c55fba70ada0f8b66b"
+        },
+        {
+          "bytes": 8324,
+          "path": "docs/evidence/next_round_r3/V4_R2_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R2_20261002.md",
+          "sha256": "9b630344fa2101786f294fd3234bd275cedd25c73ca380706f56128fbad06d01"
+        }
+      ],
+      "formal_consumer_permission_granted_by_this_head": false,
+      "limitations": [
+        "Historical Amount A BLOCKED",
+        "H21 consumer UNKNOWN; no auto activation",
+        "Stock AMR20 not granted"
+      ],
+      "priority": "P1",
+      "requires_real_observation_accumulation": true,
+      "scope": "Go-forward Amount-A producer engineering only",
+      "superseded_historical_statuses": [
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 11877,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json",
+            "sha256": "c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 93135,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json",
+            "sha256": "14002b12e89920ee2d57fe1328a53c03f21ebb99842acfcb5c53b44d3f402174"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 5081,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R11_CANDIDATE.json",
+            "sha256": "b37a28713003e3b7e22110879a635c8a36b172eb15ea3404d3eb56a588fd9208"
+          },
+          "status": "CANDIDATE_READY_FOR_EXTERNAL_REAUDIT"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 6931,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R12_FORMALIZATION.json",
+            "sha256": "a6be464c7b2b601e2be2dc749fe1d3dff45b32effb0ac5801e99c6081ee204a4"
+          },
+          "status": "GO_FORWARD_CANDIDATE_WARMUP"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 7414,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R12_FORMALIZATION_R2.json",
+            "sha256": "63f43a506cebd315c244cbe821af05effc4eda8e7b81a17ad88c288ef8246e85"
+          },
+          "status": "GO_FORWARD_CANDIDATE_WARMUP"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 19334,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R13_CONSOLIDATION_R3.json",
+            "sha256": "cd6d909a3a01fba8ad32cb7833de041fb4a9a775f1d3fc8f679f7929ae598856"
+          },
+          "status": "GO_FORWARD_CANDIDATE_WARMUP"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 25172,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R14_BATCH_R3.json",
+            "sha256": "3e81ab57d29d624dee4f4abdf3ba94df58c8d8f3cce6801360dae50f5b84ddda"
+          },
+          "status": "GO_FORWARD_CANDIDATE_WARMUP"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 25810,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R15_BATCH_R3_FINAL.json",
+            "sha256": "7eb26d6d0a9ce3789161185b087c3e6c15f6f4f8d22867a1dba392a77b071473"
+          },
+          "status": "GO_FORWARD_CANDIDATE_WARMUP"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 21515,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R2.json",
+            "sha256": "83e2959a26dc3e1e5a64f14c56f3ef428d5b1b6d0d249311bea13cc73e87586e"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 33283,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R3.json",
+            "sha256": "4e224ae63cac14ac85a2b47b29ed4566f55565912b155fd7f940b281fdf6e6d6"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 34157,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R4.json",
+            "sha256": "d641583242ddb30ece8d2811f0b222eb9bbbbdce1bd3f7d9d63575e9d7bc29a7"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 45454,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R5.json",
+            "sha256": "0109d018fedeb8176dd904039d56e0af040c4533443a194e3bc598c9c31019eb"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 47386,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R6.json",
+            "sha256": "a18aaac164f1361b269d7de6b243e1386ea496c7a28452b23fa667cab3f042a4"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 48390,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R7.json",
+            "sha256": "a0d1e92a93f11bdf3c3370c3f19416474c9b6512a80640d18e051bfa6db9a5e2"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 57631,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R8.json",
+            "sha256": "77d9472729c134403a235e3b0ae278a5a2e8512f850245d14f8b107e994abb9b"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 59288,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R9.json",
+            "sha256": "3a12c2b22ded78269361947878eac0f65959f008fafbea233de6222e4cc37d8b"
+          },
+          "status": "OPEN"
+        }
+      ]
+    },
+    "A04_H21_CONSUMER": {
+      "affected_capabilities": [
+        "AMOUNT_A_H21_FORMAL_CONSUMER"
+      ],
+      "alias_of": null,
+      "audit_id": "A04_H21_CONSUMER",
+      "blocking_scope": "CAPABILITY_ONLY",
+      "blocks_affected_capability_in_shadow": true,
+      "blocks_engineering_stage": false,
+      "blocks_production_cutover": true,
+      "blocks_production_cutover_for_scope": true,
+      "blocks_shadow_entry": true,
+      "blocks_v4_16_contract_entry": false,
+      "blocks_v4_16_runtime_activation": false,
+      "canonical_issue_id": "A04_H21_CONSUMER",
+      "capability_dimensions": {
+        "accepted_sessions": 1,
+        "formal_consumer_enabled": false,
+        "missing_H21": 20
+      },
+      "current_authority": {
+        "a04_payload": {
+          "bytes": 8277,
+          "path": "data/v4/scoped_acceptance_r3/26c106c9bc2ae2fe5a87e0f770f9d2a6067ffc4c2642c2c55fba70ada0f8b66b.json",
+          "sha256": "26c106c9bc2ae2fe5a87e0f770f9d2a6067ffc4c2642c2c55fba70ada0f8b66b"
+        }
+      },
+      "current_state": "ACCUMULATION_CONTINUES",
+      "evidence_bindings": [
+        {
+          "bytes": 8277,
+          "path": "data/v4/scoped_acceptance_r3/26c106c9bc2ae2fe5a87e0f770f9d2a6067ffc4c2642c2c55fba70ada0f8b66b.json",
+          "sha256": "26c106c9bc2ae2fe5a87e0f770f9d2a6067ffc4c2642c2c55fba70ada0f8b66b"
+        }
+      ],
+      "formal_consumer_permission_granted_by_this_head": false,
+      "limitations": [
+        "H21_COMPLETENESS",
+        "SOURCE_CONSISTENCY",
+        "ARITHMETIC_ORACLE",
+        "CONSUMER_SPECIFIC_EXTERNAL_ACCEPTANCE"
+      ],
+      "priority": "P1",
+      "requires_real_observation_accumulation": true,
+      "scope": "Consumer-specific H21 acceptance remains pending",
+      "superseded_historical_statuses": []
+    },
+    "A04_HISTORICAL_AMOUNT_A": {
+      "affected_capabilities": [
+        "HISTORICAL_AMOUNT_A_FORMAL_CONSUMER"
+      ],
+      "alias_of": null,
+      "audit_id": "A04_HISTORICAL_AMOUNT_A",
+      "blocking_scope": "CAPABILITY_ONLY",
+      "blocks_affected_capability_in_shadow": true,
+      "blocks_engineering_stage": false,
+      "blocks_production_cutover": true,
+      "blocks_production_cutover_for_scope": true,
+      "blocks_shadow_entry": true,
+      "blocks_v4_16_contract_entry": false,
+      "blocks_v4_16_runtime_activation": false,
+      "canonical_issue_id": "A04_HISTORICAL_AMOUNT_A",
+      "capability_dimensions": {},
+      "current_authority": {
+        "a04_payload": {
+          "bytes": 8277,
+          "path": "data/v4/scoped_acceptance_r3/26c106c9bc2ae2fe5a87e0f770f9d2a6067ffc4c2642c2c55fba70ada0f8b66b.json",
+          "sha256": "26c106c9bc2ae2fe5a87e0f770f9d2a6067ffc4c2642c2c55fba70ada0f8b66b"
+        }
+      },
+      "current_state": "BLOCKED_AFFECTED_SCOPE",
+      "evidence_bindings": [
+        {
+          "bytes": 8277,
+          "path": "data/v4/scoped_acceptance_r3/26c106c9bc2ae2fe5a87e0f770f9d2a6067ffc4c2642c2c55fba70ada0f8b66b.json",
+          "sha256": "26c106c9bc2ae2fe5a87e0f770f9d2a6067ffc4c2642c2c55fba70ada0f8b66b"
+        }
+      ],
+      "formal_consumer_permission_granted_by_this_head": false,
+      "limitations": [
+        "Historical reconstruction not accepted; no backfill first availability"
+      ],
+      "priority": "P1",
+      "requires_real_observation_accumulation": false,
+      "scope": "Historical Amount-A formal consumer",
+      "superseded_historical_statuses": []
+    },
+    "A05": {
+      "affected_capabilities": [
+        "A05"
+      ],
+      "alias_of": null,
+      "audit_id": "A05",
+      "blocking_scope": "CAPABILITY_ONLY",
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_engineering_stage": false,
+      "blocks_production_cutover": true,
+      "blocks_production_cutover_for_scope": true,
+      "blocks_shadow_entry": false,
+      "blocks_v4_16_contract_entry": false,
+      "blocks_v4_16_runtime_activation": false,
+      "canonical_issue_id": "A05",
+      "capability_dimensions": {
+        "AS_RECORDED": false,
+        "amount_a_warm_branch_enabled": false,
+        "historical_PIT_equivalent": false,
+        "scope": "CURRENT_SNAPSHOT_ONLY"
+      },
+      "current_authority": {
+        "a05": {
+          "bytes": 281,
+          "path": "data/v4/V4_08_B2_CURRENT_SNAPSHOT_CAPABILITY_AMENDMENT_R1.json",
+          "sha256": "7610ec961bd504122b4564c7bea94d146e4dffc5fcfef65f538897fe3dc73aaa"
+        },
+        "a05_payload": {
+          "bytes": 7530,
+          "path": "data/v4/scoped_acceptance_r3/b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json",
+          "sha256": "b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6"
+        },
+        "a05_payload_acceptance": {
+          "bytes": 2023,
+          "path": "reports/audits/next_round_r2/A05_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+          "sha256": "56e9d6b8e4b0ea41a98a650c6b87bd3f6fcd3e54a72c2c6af7c8010d1d48e765"
+        }
+      },
+      "current_state": "ACCEPTED_SCOPED",
+      "evidence_bindings": [
+        {
+          "bytes": 281,
+          "path": "data/v4/V4_08_B2_CURRENT_SNAPSHOT_CAPABILITY_AMENDMENT_R1.json",
+          "sha256": "7610ec961bd504122b4564c7bea94d146e4dffc5fcfef65f538897fe3dc73aaa"
+        },
+        {
+          "bytes": 7530,
+          "path": "data/v4/scoped_acceptance_r3/b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json",
+          "sha256": "b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6"
+        },
+        {
+          "bytes": 2023,
+          "path": "reports/audits/next_round_r2/A05_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+          "sha256": "56e9d6b8e4b0ea41a98a650c6b87bd3f6fcd3e54a72c2c6af7c8010d1d48e765"
+        }
+      ],
+      "formal_consumer_permission_granted_by_this_head": false,
+      "limitations": [
+        "CURRENT_SNAPSHOT_ONLY",
+        "AS_RECORDED=false",
+        "historical_PIT_equivalent=false",
+        "Amount-A WARM branch disabled"
+      ],
+      "priority": "P1",
+      "requires_real_observation_accumulation": false,
+      "scope": "Current snapshot 2026-09-24 B2 exact scoped amendment",
+      "superseded_historical_statuses": [
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 11877,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json",
+            "sha256": "c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 93135,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json",
+            "sha256": "14002b12e89920ee2d57fe1328a53c03f21ebb99842acfcb5c53b44d3f402174"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 5081,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R11_CANDIDATE.json",
+            "sha256": "b37a28713003e3b7e22110879a635c8a36b172eb15ea3404d3eb56a588fd9208"
+          },
+          "status": "CANDIDATE_READY_FOR_EXTERNAL_REAUDIT"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 6931,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R12_FORMALIZATION.json",
+            "sha256": "a6be464c7b2b601e2be2dc749fe1d3dff45b32effb0ac5801e99c6081ee204a4"
+          },
+          "status": "ACCEPTED_SCOPED"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 7414,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R12_FORMALIZATION_R2.json",
+            "sha256": "63f43a506cebd315c244cbe821af05effc4eda8e7b81a17ad88c288ef8246e85"
+          },
+          "status": "ACCEPTED_SCOPED"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 19334,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R13_CONSOLIDATION_R3.json",
+            "sha256": "cd6d909a3a01fba8ad32cb7833de041fb4a9a775f1d3fc8f679f7929ae598856"
+          },
+          "status": "ACCEPTED_SCOPED"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 25172,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R14_BATCH_R3.json",
+            "sha256": "3e81ab57d29d624dee4f4abdf3ba94df58c8d8f3cce6801360dae50f5b84ddda"
+          },
+          "status": "ACCEPTED_SCOPED"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 25810,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R15_BATCH_R3_FINAL.json",
+            "sha256": "7eb26d6d0a9ce3789161185b087c3e6c15f6f4f8d22867a1dba392a77b071473"
+          },
+          "status": "ACCEPTED_SCOPED"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 21515,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R2.json",
+            "sha256": "83e2959a26dc3e1e5a64f14c56f3ef428d5b1b6d0d249311bea13cc73e87586e"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 33283,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R3.json",
+            "sha256": "4e224ae63cac14ac85a2b47b29ed4566f55565912b155fd7f940b281fdf6e6d6"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 34157,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R4.json",
+            "sha256": "d641583242ddb30ece8d2811f0b222eb9bbbbdce1bd3f7d9d63575e9d7bc29a7"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 45454,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R5.json",
+            "sha256": "0109d018fedeb8176dd904039d56e0af040c4533443a194e3bc598c9c31019eb"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 47386,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R6.json",
+            "sha256": "a18aaac164f1361b269d7de6b243e1386ea496c7a28452b23fa667cab3f042a4"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 48390,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R7.json",
+            "sha256": "a0d1e92a93f11bdf3c3370c3f19416474c9b6512a80640d18e051bfa6db9a5e2"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 57631,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R8.json",
+            "sha256": "77d9472729c134403a235e3b0ae278a5a2e8512f850245d14f8b107e994abb9b"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 59288,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R9.json",
+            "sha256": "3a12c2b22ded78269361947878eac0f65959f008fafbea233de6222e4cc37d8b"
+          },
+          "status": "OPEN"
+        }
+      ]
+    },
+    "A06": {
+      "affected_capabilities": [
+        "A06"
+      ],
+      "alias_of": null,
+      "audit_id": "A06",
+      "blocking_scope": "CAPABILITY_ONLY",
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_engineering_stage": false,
+      "blocks_production_cutover": true,
+      "blocks_production_cutover_for_scope": true,
+      "blocks_shadow_entry": false,
+      "blocks_v4_16_contract_entry": false,
+      "blocks_v4_16_runtime_activation": false,
+      "canonical_issue_id": "A06",
+      "capability_dimensions": {
+        "active_global_trust_root": false,
+        "engineering_task": "CLOSED_SCOPED",
+        "formal_consumer_cutover": false,
+        "global_mandatory_adoption": false
+      },
+      "current_authority": {
+        "A06_external": {
+          "bytes": 8324,
+          "path": "docs/evidence/next_round_r3/V4_R2_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R2_20261002.md",
+          "sha256": "9b630344fa2101786f294fd3234bd275cedd25c73ca380706f56128fbad06d01"
+        },
+        "A06_record": {
+          "bytes": 7892,
+          "path": "reports/next_round_r2/scoped_acceptance/A06_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+          "sha256": "c029fb1d769e080ae5d753fc11b043f1c0ff5cf40b86c31f9af830647035a12b"
+        },
+        "dispositions": {
+          "bytes": 7460,
+          "path": "data/v4/V4_SOURCE_AUTHORITY_SCOPED_DISPOSITION_REGISTRY_R5_INACTIVE.json",
+          "sha256": "064e5103c64848bf842d1cde9e01ec65a0ebe0b445cc18b435723dcc66e59db5"
+        }
+      },
+      "current_state": "ACCEPTED_SCOPED",
+      "evidence_bindings": [
+        {
+          "bytes": 7460,
+          "path": "data/v4/V4_SOURCE_AUTHORITY_SCOPED_DISPOSITION_REGISTRY_R5_INACTIVE.json",
+          "sha256": "064e5103c64848bf842d1cde9e01ec65a0ebe0b445cc18b435723dcc66e59db5"
+        },
+        {
+          "bytes": 8324,
+          "path": "docs/evidence/next_round_r3/V4_R2_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R2_20261002.md",
+          "sha256": "9b630344fa2101786f294fd3234bd275cedd25c73ca380706f56128fbad06d01"
+        },
+        {
+          "bytes": 7892,
+          "path": "reports/next_round_r2/scoped_acceptance/A06_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+          "sha256": "c029fb1d769e080ae5d753fc11b043f1c0ff5cf40b86c31f9af830647035a12b"
+        }
+      ],
+      "formal_consumer_permission_granted_by_this_head": false,
+      "limitations": [
+        "ALL_UNDOCUMENTED_TOLERANCES_NULL",
+        "STRICT_BINDING_FALSE",
+        "BAOSTOCK_SUPPLEMENTAL_ONLY",
+        "TDX_CORE_NEVER_BLOCKED_BY_SUPPLEMENTAL_MISMATCH"
+      ],
+      "priority": "P1",
+      "requires_real_observation_accumulation": false,
+      "scope": "SCOPED_ACCEPTED / FAIL_CLOSED_NO_TOLERANCE",
+      "superseded_historical_statuses": [
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 11877,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json",
+            "sha256": "c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 93135,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json",
+            "sha256": "14002b12e89920ee2d57fe1328a53c03f21ebb99842acfcb5c53b44d3f402174"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 5081,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R11_CANDIDATE.json",
+            "sha256": "b37a28713003e3b7e22110879a635c8a36b172eb15ea3404d3eb56a588fd9208"
+          },
+          "status": "CANDIDATE_READY_FOR_EXTERNAL_REAUDIT"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 6931,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R12_FORMALIZATION.json",
+            "sha256": "a6be464c7b2b601e2be2dc749fe1d3dff45b32effb0ac5801e99c6081ee204a4"
+          },
+          "status": "ACCEPTED_SCOPED"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 7414,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R12_FORMALIZATION_R2.json",
+            "sha256": "63f43a506cebd315c244cbe821af05effc4eda8e7b81a17ad88c288ef8246e85"
+          },
+          "status": "ACCEPTED_SCOPED"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 19334,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R13_CONSOLIDATION_R3.json",
+            "sha256": "cd6d909a3a01fba8ad32cb7833de041fb4a9a775f1d3fc8f679f7929ae598856"
+          },
+          "status": "ACCEPTED_SCOPED"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 25172,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R14_BATCH_R3.json",
+            "sha256": "3e81ab57d29d624dee4f4abdf3ba94df58c8d8f3cce6801360dae50f5b84ddda"
+          },
+          "status": "ACCEPTED_SCOPED"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 25810,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R15_BATCH_R3_FINAL.json",
+            "sha256": "7eb26d6d0a9ce3789161185b087c3e6c15f6f4f8d22867a1dba392a77b071473"
+          },
+          "status": "ACCEPTED_SCOPED"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 21515,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R2.json",
+            "sha256": "83e2959a26dc3e1e5a64f14c56f3ef428d5b1b6d0d249311bea13cc73e87586e"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 33283,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R3.json",
+            "sha256": "4e224ae63cac14ac85a2b47b29ed4566f55565912b155fd7f940b281fdf6e6d6"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 34157,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R4.json",
+            "sha256": "d641583242ddb30ece8d2811f0b222eb9bbbbdce1bd3f7d9d63575e9d7bc29a7"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 45454,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R5.json",
+            "sha256": "0109d018fedeb8176dd904039d56e0af040c4533443a194e3bc598c9c31019eb"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 47386,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R6.json",
+            "sha256": "a18aaac164f1361b269d7de6b243e1386ea496c7a28452b23fa667cab3f042a4"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 48390,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R7.json",
+            "sha256": "a0d1e92a93f11bdf3c3370c3f19416474c9b6512a80640d18e051bfa6db9a5e2"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 57631,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R8.json",
+            "sha256": "77d9472729c134403a235e3b0ae278a5a2e8512f850245d14f8b107e994abb9b"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 59288,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R9.json",
+            "sha256": "3a12c2b22ded78269361947878eac0f65959f008fafbea233de6222e4cc37d8b"
+          },
+          "status": "OPEN"
+        }
+      ]
+    },
+    "A07": {
+      "affected_capabilities": [
+        "A07"
+      ],
+      "alias_of": null,
+      "audit_id": "A07",
+      "blocking_scope": "CAPABILITY_ONLY",
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_engineering_stage": false,
+      "blocks_production_cutover": true,
+      "blocks_production_cutover_for_scope": true,
+      "blocks_shadow_entry": false,
+      "blocks_v4_16_contract_entry": false,
+      "blocks_v4_16_runtime_activation": false,
+      "canonical_issue_id": "A07",
+      "capability_dimensions": {
+        "active_global_trust_root": false,
+        "engineering_task": "CLOSED_SCOPED",
+        "formal_consumer_cutover": false,
+        "global_mandatory_adoption": false
+      },
+      "current_authority": {
+        "A07_external": {
+          "bytes": 8324,
+          "path": "docs/evidence/next_round_r3/V4_R2_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R2_20261002.md",
+          "sha256": "9b630344fa2101786f294fd3234bd275cedd25c73ca380706f56128fbad06d01"
+        },
+        "A07_record": {
+          "bytes": 7943,
+          "path": "reports/next_round_r2/scoped_acceptance/A07_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+          "sha256": "6bc18870beb8460bb5ce7f078c2a39e8d289614f8aef5d9248cdff254e475a55"
+        },
+        "dispositions": {
+          "bytes": 7460,
+          "path": "data/v4/V4_SOURCE_AUTHORITY_SCOPED_DISPOSITION_REGISTRY_R5_INACTIVE.json",
+          "sha256": "064e5103c64848bf842d1cde9e01ec65a0ebe0b445cc18b435723dcc66e59db5"
+        }
+      },
+      "current_state": "PERMANENT_CAPABILITY_LIMITATION",
+      "evidence_bindings": [
+        {
+          "bytes": 7460,
+          "path": "data/v4/V4_SOURCE_AUTHORITY_SCOPED_DISPOSITION_REGISTRY_R5_INACTIVE.json",
+          "sha256": "064e5103c64848bf842d1cde9e01ec65a0ebe0b445cc18b435723dcc66e59db5"
+        },
+        {
+          "bytes": 8324,
+          "path": "docs/evidence/next_round_r3/V4_R2_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R2_20261002.md",
+          "sha256": "9b630344fa2101786f294fd3234bd275cedd25c73ca380706f56128fbad06d01"
+        },
+        {
+          "bytes": 7943,
+          "path": "reports/next_round_r2/scoped_acceptance/A07_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+          "sha256": "6bc18870beb8460bb5ce7f078c2a39e8d289614f8aef5d9248cdff254e475a55"
+        }
+      ],
+      "formal_consumer_permission_granted_by_this_head": false,
+      "limitations": [
+        "PRECAPTURE_HISTORICAL_AS_RECORDED_ABSENCE_PERMANENT",
+        "GO_FORWARD_LINEAGE_BEGINS_AT_REAL_CAPTURE_TIME",
+        "FORMAL_CONSUMER_DISABLED"
+      ],
+      "priority": "P1",
+      "requires_real_observation_accumulation": true,
+      "scope": "SCOPED_ACCEPTED / PERMANENT_PRECAPTURE_LIMITATION",
+      "superseded_historical_statuses": [
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 11877,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json",
+            "sha256": "c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 93135,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json",
+            "sha256": "14002b12e89920ee2d57fe1328a53c03f21ebb99842acfcb5c53b44d3f402174"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 5081,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R11_CANDIDATE.json",
+            "sha256": "b37a28713003e3b7e22110879a635c8a36b172eb15ea3404d3eb56a588fd9208"
+          },
+          "status": "CANDIDATE_READY_FOR_EXTERNAL_REAUDIT"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 6931,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R12_FORMALIZATION.json",
+            "sha256": "a6be464c7b2b601e2be2dc749fe1d3dff45b32effb0ac5801e99c6081ee204a4"
+          },
+          "status": "PERMANENT_CAPABILITY_BLOCK"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 7414,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R12_FORMALIZATION_R2.json",
+            "sha256": "63f43a506cebd315c244cbe821af05effc4eda8e7b81a17ad88c288ef8246e85"
+          },
+          "status": "PERMANENT_CAPABILITY_BLOCK"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 19334,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R13_CONSOLIDATION_R3.json",
+            "sha256": "cd6d909a3a01fba8ad32cb7833de041fb4a9a775f1d3fc8f679f7929ae598856"
+          },
+          "status": "PERMANENT_CAPABILITY_BLOCK"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 25172,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R14_BATCH_R3.json",
+            "sha256": "3e81ab57d29d624dee4f4abdf3ba94df58c8d8f3cce6801360dae50f5b84ddda"
+          },
+          "status": "PERMANENT_CAPABILITY_BLOCK"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 25810,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R15_BATCH_R3_FINAL.json",
+            "sha256": "7eb26d6d0a9ce3789161185b087c3e6c15f6f4f8d22867a1dba392a77b071473"
+          },
+          "status": "PERMANENT_CAPABILITY_BLOCK"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 21515,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R2.json",
+            "sha256": "83e2959a26dc3e1e5a64f14c56f3ef428d5b1b6d0d249311bea13cc73e87586e"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 33283,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R3.json",
+            "sha256": "4e224ae63cac14ac85a2b47b29ed4566f55565912b155fd7f940b281fdf6e6d6"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 34157,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R4.json",
+            "sha256": "d641583242ddb30ece8d2811f0b222eb9bbbbdce1bd3f7d9d63575e9d7bc29a7"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 45454,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R5.json",
+            "sha256": "0109d018fedeb8176dd904039d56e0af040c4533443a194e3bc598c9c31019eb"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 47386,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R6.json",
+            "sha256": "a18aaac164f1361b269d7de6b243e1386ea496c7a28452b23fa667cab3f042a4"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 48390,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R7.json",
+            "sha256": "a0d1e92a93f11bdf3c3370c3f19416474c9b6512a80640d18e051bfa6db9a5e2"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 57631,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R8.json",
+            "sha256": "77d9472729c134403a235e3b0ae278a5a2e8512f850245d14f8b107e994abb9b"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 59288,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R9.json",
+            "sha256": "3a12c2b22ded78269361947878eac0f65959f008fafbea233de6222e4cc37d8b"
+          },
+          "status": "OPEN"
+        }
+      ]
+    },
+    "A08": {
+      "affected_capabilities": [
+        "A08"
+      ],
+      "alias_of": null,
+      "audit_id": "A08",
+      "blocking_scope": "CAPABILITY_ONLY",
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_engineering_stage": false,
+      "blocks_production_cutover": true,
+      "blocks_production_cutover_for_scope": true,
+      "blocks_shadow_entry": false,
+      "blocks_v4_16_contract_entry": false,
+      "blocks_v4_16_runtime_activation": false,
+      "canonical_issue_id": "A08",
+      "capability_dimensions": {
+        "current_runtime_accepted": false,
+        "production_database_deployed": false
+      },
+      "current_authority": {
+        "a08": {
+          "bytes": 2172,
+          "path": "reports/audits/V4_09_N01_HARDENING_ACCEPTED_RECORD_R1.json",
+          "sha256": "4b4377ff88405af89969a6bbe9b2416594f47859ff9436349bd78025ee1515f6"
+        },
+        "a08_acceptance": {
+          "bytes": 17949,
+          "path": "docs/evidence/source_authority/V4_SOURCE_AUTHORITY_8_CARD_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R1_20261001.md",
+          "sha256": "4d8ccf020f7de496c95be25ff88aa1e6341902523c41ef61fd2da872d0e19e76"
+        }
+      },
+      "current_state": "ACCEPTED_SCOPED",
+      "evidence_bindings": [
+        {
+          "bytes": 2172,
+          "path": "reports/audits/V4_09_N01_HARDENING_ACCEPTED_RECORD_R1.json",
+          "sha256": "4b4377ff88405af89969a6bbe9b2416594f47859ff9436349bd78025ee1515f6"
+        },
+        {
+          "bytes": 17949,
+          "path": "docs/evidence/source_authority/V4_SOURCE_AUTHORITY_8_CARD_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R1_20261001.md",
+          "sha256": "4d8ccf020f7de496c95be25ff88aa1e6341902523c41ef61fd2da872d0e19e76"
+        }
+      ],
+      "formal_consumer_permission_granted_by_this_head": false,
+      "limitations": [
+        "No broader current runtime acceptance"
+      ],
+      "priority": "P1",
+      "requires_real_observation_accumulation": false,
+      "scope": "REPAIR_FREEZE_AUTHORITY_HARDENING_AUDIT_ONLY",
+      "superseded_historical_statuses": [
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 11877,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json",
+            "sha256": "c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 93135,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json",
+            "sha256": "14002b12e89920ee2d57fe1328a53c03f21ebb99842acfcb5c53b44d3f402174"
+          },
+          "status": "ACCEPTED"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 21515,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R2.json",
+            "sha256": "83e2959a26dc3e1e5a64f14c56f3ef428d5b1b6d0d249311bea13cc73e87586e"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 33283,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R3.json",
+            "sha256": "4e224ae63cac14ac85a2b47b29ed4566f55565912b155fd7f940b281fdf6e6d6"
+          },
+          "status": "ACCEPTED"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 34157,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R4.json",
+            "sha256": "d641583242ddb30ece8d2811f0b222eb9bbbbdce1bd3f7d9d63575e9d7bc29a7"
+          },
+          "status": "ACCEPTED"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 45454,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R5.json",
+            "sha256": "0109d018fedeb8176dd904039d56e0af040c4533443a194e3bc598c9c31019eb"
+          },
+          "status": "ACCEPTED"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 47386,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R6.json",
+            "sha256": "a18aaac164f1361b269d7de6b243e1386ea496c7a28452b23fa667cab3f042a4"
+          },
+          "status": "ACCEPTED"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 48390,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R7.json",
+            "sha256": "a0d1e92a93f11bdf3c3370c3f19416474c9b6512a80640d18e051bfa6db9a5e2"
+          },
+          "status": "ACCEPTED"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 57631,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R8.json",
+            "sha256": "77d9472729c134403a235e3b0ae278a5a2e8512f850245d14f8b107e994abb9b"
+          },
+          "status": "ACCEPTED"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 59288,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R9.json",
+            "sha256": "3a12c2b22ded78269361947878eac0f65959f008fafbea233de6222e4cc37d8b"
+          },
+          "status": "ACCEPTED"
+        }
+      ]
+    },
+    "A08_CURRENT_RUNTIME": {
+      "affected_capabilities": [
+        "V4_09_N01_CURRENT_RUNTIME_PREWATCH"
+      ],
+      "alias_of": null,
+      "audit_id": "A08_CURRENT_RUNTIME",
+      "blocking_scope": "CAPABILITY_ONLY",
+      "blocks_affected_capability_in_shadow": true,
+      "blocks_engineering_stage": false,
+      "blocks_production_cutover": true,
+      "blocks_production_cutover_for_scope": true,
+      "blocks_shadow_entry": true,
+      "blocks_v4_16_contract_entry": false,
+      "blocks_v4_16_runtime_activation": false,
+      "canonical_issue_id": "A08_CURRENT_RUNTIME",
+      "capability_dimensions": {},
+      "current_authority": {
+        "a08": {
+          "bytes": 2172,
+          "path": "reports/audits/V4_09_N01_HARDENING_ACCEPTED_RECORD_R1.json",
+          "sha256": "4b4377ff88405af89969a6bbe9b2416594f47859ff9436349bd78025ee1515f6"
+        },
+        "a08_acceptance": {
+          "bytes": 17949,
+          "path": "docs/evidence/source_authority/V4_SOURCE_AUTHORITY_8_CARD_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R1_20261001.md",
+          "sha256": "4d8ccf020f7de496c95be25ff88aa1e6341902523c41ef61fd2da872d0e19e76"
+        }
+      },
+      "current_state": "OPEN_EXTERNAL_REAUDIT",
+      "evidence_bindings": [
+        {
+          "bytes": 2172,
+          "path": "reports/audits/V4_09_N01_HARDENING_ACCEPTED_RECORD_R1.json",
+          "sha256": "4b4377ff88405af89969a6bbe9b2416594f47859ff9436349bd78025ee1515f6"
+        },
+        {
+          "bytes": 17949,
+          "path": "docs/evidence/source_authority/V4_SOURCE_AUTHORITY_8_CARD_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R1_20261001.md",
+          "sha256": "4d8ccf020f7de496c95be25ff88aa1e6341902523c41ef61fd2da872d0e19e76"
+        }
+      ],
+      "formal_consumer_permission_granted_by_this_head": false,
+      "limitations": [
+        "Accepted historical publication does not accept current runtime"
+      ],
+      "priority": "P1",
+      "requires_real_observation_accumulation": false,
+      "scope": "Current V4-09 runtime distinct from historical hardening audit",
+      "superseded_historical_statuses": []
+    },
+    "A09": {
+      "affected_capabilities": [
+        "A09"
+      ],
+      "alias_of": null,
+      "audit_id": "A09",
+      "blocking_scope": "CAPABILITY_ONLY",
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_engineering_stage": false,
+      "blocks_production_cutover": true,
+      "blocks_production_cutover_for_scope": true,
+      "blocks_shadow_entry": false,
+      "blocks_v4_16_contract_entry": false,
+      "blocks_v4_16_runtime_activation": false,
+      "canonical_issue_id": "A09",
+      "capability_dimensions": {
+        "current_runtime_accepted": false,
+        "production_database_deployed": false
+      },
+      "current_authority": {
+        "a09": {
+          "bytes": 2418,
+          "path": "reports/audits/V4_09_N02_CONSUMER_IDENTITY_HARDENING_ACCEPTED_RECORD_R1.json",
+          "sha256": "7f8d61ac36cc8b9ce69f190c53e551342135c5c1a56060ccfdc5887cbf0a66b3"
+        },
+        "a09_acceptance": {
+          "bytes": 17949,
+          "path": "docs/evidence/source_authority/V4_SOURCE_AUTHORITY_8_CARD_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R1_20261001.md",
+          "sha256": "4d8ccf020f7de496c95be25ff88aa1e6341902523c41ef61fd2da872d0e19e76"
+        }
+      },
+      "current_state": "ACCEPTED_SCOPED",
+      "evidence_bindings": [
+        {
+          "bytes": 2418,
+          "path": "reports/audits/V4_09_N02_CONSUMER_IDENTITY_HARDENING_ACCEPTED_RECORD_R1.json",
+          "sha256": "7f8d61ac36cc8b9ce69f190c53e551342135c5c1a56060ccfdc5887cbf0a66b3"
+        },
+        {
+          "bytes": 17949,
+          "path": "docs/evidence/source_authority/V4_SOURCE_AUTHORITY_8_CARD_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R1_20261001.md",
+          "sha256": "4d8ccf020f7de496c95be25ff88aa1e6341902523c41ef61fd2da872d0e19e76"
+        }
+      ],
+      "formal_consumer_permission_granted_by_this_head": false,
+      "limitations": [
+        "No production database deployment; separate deployment gate"
+      ],
+      "priority": "P1",
+      "requires_real_observation_accumulation": false,
+      "scope": "ACCEPTED_FUTURE_SCHEMA_HARDENING",
+      "superseded_historical_statuses": [
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 11877,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json",
+            "sha256": "c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 93135,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json",
+            "sha256": "14002b12e89920ee2d57fe1328a53c03f21ebb99842acfcb5c53b44d3f402174"
+          },
+          "status": "ACCEPTED"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 21515,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R2.json",
+            "sha256": "83e2959a26dc3e1e5a64f14c56f3ef428d5b1b6d0d249311bea13cc73e87586e"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 33283,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R3.json",
+            "sha256": "4e224ae63cac14ac85a2b47b29ed4566f55565912b155fd7f940b281fdf6e6d6"
+          },
+          "status": "ACCEPTED"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 34157,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R4.json",
+            "sha256": "d641583242ddb30ece8d2811f0b222eb9bbbbdce1bd3f7d9d63575e9d7bc29a7"
+          },
+          "status": "ACCEPTED"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 45454,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R5.json",
+            "sha256": "0109d018fedeb8176dd904039d56e0af040c4533443a194e3bc598c9c31019eb"
+          },
+          "status": "ACCEPTED"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 47386,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R6.json",
+            "sha256": "a18aaac164f1361b269d7de6b243e1386ea496c7a28452b23fa667cab3f042a4"
+          },
+          "status": "ACCEPTED"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 48390,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R7.json",
+            "sha256": "a0d1e92a93f11bdf3c3370c3f19416474c9b6512a80640d18e051bfa6db9a5e2"
+          },
+          "status": "ACCEPTED"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 57631,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R8.json",
+            "sha256": "77d9472729c134403a235e3b0ae278a5a2e8512f850245d14f8b107e994abb9b"
+          },
+          "status": "ACCEPTED"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 59288,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R9.json",
+            "sha256": "3a12c2b22ded78269361947878eac0f65959f008fafbea233de6222e4cc37d8b"
+          },
+          "status": "ACCEPTED"
+        }
+      ]
+    },
+    "A10_A12_R3_PRODUCER_SOURCE_INSTANCE": {
+      "affected_capabilities": [
+        "A10_A12_R3_PRODUCER_SOURCE_INSTANCE"
+      ],
+      "alias_of": null,
+      "audit_id": "A10_A12_R3_PRODUCER_SOURCE_INSTANCE",
+      "blocking_scope": "CAPABILITY_ONLY",
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_engineering_stage": false,
+      "blocks_production_cutover": true,
+      "blocks_production_cutover_for_scope": true,
+      "blocks_shadow_entry": false,
+      "blocks_v4_16_contract_entry": false,
+      "blocks_v4_16_runtime_activation": false,
+      "canonical_issue_id": "A10_A12_R3_PRODUCER_SOURCE_INSTANCE",
+      "capability_dimensions": {},
+      "current_authority": {
+        "A10_A12_R3_PRODUCER_SOURCE_INSTANCE_external": {
+          "bytes": 10761,
+          "path": "docs/evidence/source_authority/V4_DM01_A01_R3_AND_A13_FORMALIZATION_INDEPENDENT_EXTERNAL_ACCEPTANCE_20261001.md",
+          "sha256": "03fd49c643d21304d2e8460cebbeec4b6b3f794ffd28562fdebf3f1ec38f79ef"
+        },
+        "r10": {
+          "bytes": 93135,
+          "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json",
+          "sha256": "14002b12e89920ee2d57fe1328a53c03f21ebb99842acfcb5c53b44d3f402174"
+        }
+      },
+      "current_state": "ACCEPTED_SCOPED",
+      "evidence_bindings": [
+        {
+          "bytes": 93135,
+          "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json",
+          "sha256": "14002b12e89920ee2d57fe1328a53c03f21ebb99842acfcb5c53b44d3f402174"
+        },
+        {
+          "bytes": 10761,
+          "path": "docs/evidence/source_authority/V4_DM01_A01_R3_AND_A13_FORMALIZATION_INDEPENDENT_EXTERNAL_ACCEPTANCE_20261001.md",
+          "sha256": "03fd49c643d21304d2e8460cebbeec4b6b3f794ffd28562fdebf3f1ec38f79ef"
+        }
+      ],
+      "formal_consumer_permission_granted_by_this_head": false,
+      "limitations": [
+        "Consumer stages require their own contracts; production/shadow/focus remain disabled"
+      ],
+      "priority": "P1",
+      "requires_real_observation_accumulation": false,
+      "scope": "HISTORICAL_RECONSTRUCTED_AND_DAILY_PRODUCER_SOURCE_INSTANCE_AUTHORITY",
+      "superseded_historical_statuses": [
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 93135,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json",
+            "sha256": "14002b12e89920ee2d57fe1328a53c03f21ebb99842acfcb5c53b44d3f402174"
+          },
+          "status": "ACCEPTED_SOURCE_AUTHORITY_SCOPE"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 47386,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R6.json",
+            "sha256": "a18aaac164f1361b269d7de6b243e1386ea496c7a28452b23fa667cab3f042a4"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 48390,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R7.json",
+            "sha256": "a0d1e92a93f11bdf3c3370c3f19416474c9b6512a80640d18e051bfa6db9a5e2"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 57631,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R8.json",
+            "sha256": "77d9472729c134403a235e3b0ae278a5a2e8512f850245d14f8b107e994abb9b"
+          },
+          "status": "ACCEPTED_SOURCE_AUTHORITY_SCOPE"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 59288,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R9.json",
+            "sha256": "3a12c2b22ded78269361947878eac0f65959f008fafbea233de6222e4cc37d8b"
+          },
+          "status": "ACCEPTED_SOURCE_AUTHORITY_SCOPE"
+        }
+      ]
+    },
+    "A12_R2_INTERIOR_DATA_GAP_SCOPE": {
+      "affected_capabilities": [
+        "A12_R2_INTERIOR_DATA_GAP_SCOPE"
+      ],
+      "alias_of": null,
+      "audit_id": "A12_R2_INTERIOR_DATA_GAP_SCOPE",
+      "blocking_scope": "CAPABILITY_ONLY",
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_engineering_stage": false,
+      "blocks_production_cutover": true,
+      "blocks_production_cutover_for_scope": true,
+      "blocks_shadow_entry": false,
+      "blocks_v4_16_contract_entry": false,
+      "blocks_v4_16_runtime_activation": false,
+      "canonical_issue_id": "A12_R2_INTERIOR_DATA_GAP_SCOPE",
+      "capability_dimensions": {},
+      "current_authority": {
+        "A12_R2_INTERIOR_DATA_GAP_SCOPE_external": {
+          "bytes": 10868,
+          "path": "docs/evidence/source_authority/V4_A10_A12_R3_AND_A13_INDEPENDENT_EXTERNAL_ACCEPTANCE_20261001.md",
+          "sha256": "a23789d9de4eb48831125cbb9165964a8dacacb33e9dd30dba0f3bfced681d3a"
+        },
+        "r10": {
+          "bytes": 93135,
+          "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json",
+          "sha256": "14002b12e89920ee2d57fe1328a53c03f21ebb99842acfcb5c53b44d3f402174"
+        }
+      },
+      "current_state": "ACCEPTED_SCOPED",
+      "evidence_bindings": [
+        {
+          "bytes": 93135,
+          "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json",
+          "sha256": "14002b12e89920ee2d57fe1328a53c03f21ebb99842acfcb5c53b44d3f402174"
+        },
+        {
+          "bytes": 10868,
+          "path": "docs/evidence/source_authority/V4_A10_A12_R3_AND_A13_INDEPENDENT_EXTERNAL_ACCEPTANCE_20261001.md",
+          "sha256": "a23789d9de4eb48831125cbb9165964a8dacacb33e9dd30dba0f3bfced681d3a"
+        }
+      ],
+      "formal_consumer_permission_granted_by_this_head": false,
+      "limitations": [
+        "Append future real positive cases; no fabricated example; does not block historical Path B"
+      ],
+      "priority": "P1",
+      "requires_real_observation_accumulation": false,
+      "scope": "Accepted audit-only scope; no deployment",
+      "superseded_historical_statuses": [
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 93135,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json",
+            "sha256": "14002b12e89920ee2d57fe1328a53c03f21ebb99842acfcb5c53b44d3f402174"
+          },
+          "status": "ACCEPTED_NEGATIVE_SCOPE_CENSUS"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 45454,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R5.json",
+            "sha256": "0109d018fedeb8176dd904039d56e0af040c4533443a194e3bc598c9c31019eb"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 47386,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R6.json",
+            "sha256": "a18aaac164f1361b269d7de6b243e1386ea496c7a28452b23fa667cab3f042a4"
+          },
+          "status": "ACCEPTED_NEGATIVE_SCOPE_CENSUS"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 48390,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R7.json",
+            "sha256": "a0d1e92a93f11bdf3c3370c3f19416474c9b6512a80640d18e051bfa6db9a5e2"
+          },
+          "status": "ACCEPTED_NEGATIVE_SCOPE_CENSUS"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 57631,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R8.json",
+            "sha256": "77d9472729c134403a235e3b0ae278a5a2e8512f850245d14f8b107e994abb9b"
+          },
+          "status": "ACCEPTED_NEGATIVE_SCOPE_CENSUS"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 59288,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R9.json",
+            "sha256": "3a12c2b22ded78269361947878eac0f65959f008fafbea233de6222e4cc37d8b"
+          },
+          "status": "ACCEPTED_NEGATIVE_SCOPE_CENSUS"
+        }
+      ]
+    },
+    "A12_R2_POSITIVE_ST_CODE_CHANGE_SCOPE": {
+      "affected_capabilities": [
+        "A12_R2_POSITIVE_ST_CODE_CHANGE_SCOPE"
+      ],
+      "alias_of": null,
+      "audit_id": "A12_R2_POSITIVE_ST_CODE_CHANGE_SCOPE",
+      "blocking_scope": "CAPABILITY_ONLY",
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_engineering_stage": false,
+      "blocks_production_cutover": true,
+      "blocks_production_cutover_for_scope": true,
+      "blocks_shadow_entry": false,
+      "blocks_v4_16_contract_entry": false,
+      "blocks_v4_16_runtime_activation": false,
+      "canonical_issue_id": "A12_R2_POSITIVE_ST_CODE_CHANGE_SCOPE",
+      "capability_dimensions": {},
+      "current_authority": {
+        "A12_R2_POSITIVE_ST_CODE_CHANGE_SCOPE_external": {
+          "bytes": 10868,
+          "path": "docs/evidence/source_authority/V4_A10_A12_R3_AND_A13_INDEPENDENT_EXTERNAL_ACCEPTANCE_20261001.md",
+          "sha256": "a23789d9de4eb48831125cbb9165964a8dacacb33e9dd30dba0f3bfced681d3a"
+        },
+        "r10": {
+          "bytes": 93135,
+          "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json",
+          "sha256": "14002b12e89920ee2d57fe1328a53c03f21ebb99842acfcb5c53b44d3f402174"
+        }
+      },
+      "current_state": "ACCEPTED_SCOPED",
+      "evidence_bindings": [
+        {
+          "bytes": 93135,
+          "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json",
+          "sha256": "14002b12e89920ee2d57fe1328a53c03f21ebb99842acfcb5c53b44d3f402174"
+        },
+        {
+          "bytes": 10868,
+          "path": "docs/evidence/source_authority/V4_A10_A12_R3_AND_A13_INDEPENDENT_EXTERNAL_ACCEPTANCE_20261001.md",
+          "sha256": "a23789d9de4eb48831125cbb9165964a8dacacb33e9dd30dba0f3bfced681d3a"
+        }
+      ],
+      "formal_consumer_permission_granted_by_this_head": false,
+      "limitations": [
+        "Append future real positive cases; no fabricated example; does not block historical Path B"
+      ],
+      "priority": "P1",
+      "requires_real_observation_accumulation": false,
+      "scope": "Accepted audit-only scope; no deployment",
+      "superseded_historical_statuses": [
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 93135,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json",
+            "sha256": "14002b12e89920ee2d57fe1328a53c03f21ebb99842acfcb5c53b44d3f402174"
+          },
+          "status": "ACCEPTED_NEGATIVE_SCOPE_CENSUS"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 45454,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R5.json",
+            "sha256": "0109d018fedeb8176dd904039d56e0af040c4533443a194e3bc598c9c31019eb"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 47386,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R6.json",
+            "sha256": "a18aaac164f1361b269d7de6b243e1386ea496c7a28452b23fa667cab3f042a4"
+          },
+          "status": "ACCEPTED_NEGATIVE_SCOPE_CENSUS"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 48390,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R7.json",
+            "sha256": "a0d1e92a93f11bdf3c3370c3f19416474c9b6512a80640d18e051bfa6db9a5e2"
+          },
+          "status": "ACCEPTED_NEGATIVE_SCOPE_CENSUS"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 57631,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R8.json",
+            "sha256": "77d9472729c134403a235e3b0ae278a5a2e8512f850245d14f8b107e994abb9b"
+          },
+          "status": "ACCEPTED_NEGATIVE_SCOPE_CENSUS"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 59288,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R9.json",
+            "sha256": "3a12c2b22ded78269361947878eac0f65959f008fafbea233de6222e4cc37d8b"
+          },
+          "status": "ACCEPTED_NEGATIVE_SCOPE_CENSUS"
+        }
+      ]
+    },
+    "AUD_A04_AMOUNT_A_FORWARD_CONSUMER": {
+      "affected_capabilities": [
+        "AMOUNT_A_H21_FORMAL_CONSUMER"
+      ],
+      "alias_of": "A04_H21_CONSUMER",
+      "alias_provenance": {
+        "capability_dimensions": {},
+        "limitations": [
+          "Historical pending item retained until exact item/scope closure; accepted V4-10..15 remain PASS_KEEP_NO_REOPEN",
+          "FORWARD_CONSUMER_GATE_RETAINED"
+        ],
+        "scope": "Independent Amount-A consumer H21 warmup; producer scoped acceptance does not authorize formal consumer"
+      },
+      "audit_id": "AUD_A04_AMOUNT_A_FORWARD_CONSUMER",
+      "blocking_scope": "CAPABILITY_ONLY",
+      "blocks_affected_capability_in_shadow": true,
+      "blocks_engineering_stage": false,
+      "blocks_production_cutover": true,
+      "blocks_production_cutover_for_scope": true,
+      "blocks_shadow_entry": true,
+      "blocks_v4_16_contract_entry": false,
+      "blocks_v4_16_runtime_activation": false,
+      "canonical_issue_id": "A04_H21_CONSUMER",
+      "capability_dimensions": {
+        "accepted_sessions": 1,
+        "formal_consumer_enabled": false,
+        "missing_H21": 20
+      },
+      "current_authority": {
+        "audit": {
+          "bytes": 18060,
+          "path": "docs/evidence/pre16_governance/V4_PRE16_STAGE10_TO_STAGE15_INDEPENDENT_ACCEPTANCE_AUDIT_R1_20261004.md",
+          "sha256": "13ba5c07daf51c6f244f347acab6cbfa99f7511f1dff65c344974960ce522b99"
+        },
+        "r15": {
+          "bytes": 25810,
+          "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R15_BATCH_R3_FINAL.json",
+          "sha256": "7eb26d6d0a9ce3789161185b087c3e6c15f6f4f8d22867a1dba392a77b071473"
+        }
+      },
+      "current_state": "ACCUMULATION_CONTINUES",
+      "evidence_bindings": [
+        {
+          "bytes": 25810,
+          "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R15_BATCH_R3_FINAL.json",
+          "sha256": "7eb26d6d0a9ce3789161185b087c3e6c15f6f4f8d22867a1dba392a77b071473"
+        },
+        {
+          "bytes": 18060,
+          "path": "docs/evidence/pre16_governance/V4_PRE16_STAGE10_TO_STAGE15_INDEPENDENT_ACCEPTANCE_AUDIT_R1_20261004.md",
+          "sha256": "13ba5c07daf51c6f244f347acab6cbfa99f7511f1dff65c344974960ce522b99"
+        }
+      ],
+      "formal_consumer_permission_granted_by_this_head": false,
+      "limitations": [
+        "H21_COMPLETENESS",
+        "SOURCE_CONSISTENCY",
+        "ARITHMETIC_ORACLE",
+        "CONSUMER_SPECIFIC_EXTERNAL_ACCEPTANCE"
+      ],
+      "priority": "P1",
+      "requires_real_observation_accumulation": true,
+      "scope": "Consumer-specific H21 acceptance remains pending",
+      "superseded_historical_statuses": []
+    },
+    "AUD_R3C_ACCEPTED_SUSPENSION_STATE_ADMISSION_01": {
+      "affected_capabilities": [
+        "AUD_R3C_ACCEPTED_SUSPENSION_STATE_ADMISSION_01"
+      ],
+      "alias_of": null,
+      "audit_id": "AUD_R3C_ACCEPTED_SUSPENSION_STATE_ADMISSION_01",
+      "blocking_scope": "CAPABILITY_ONLY",
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_engineering_stage": false,
+      "blocks_production_cutover": true,
+      "blocks_production_cutover_for_scope": true,
+      "blocks_shadow_entry": false,
+      "blocks_v4_16_contract_entry": false,
+      "blocks_v4_16_runtime_activation": false,
+      "canonical_issue_id": "AUD_R3C_ACCEPTED_SUSPENSION_STATE_ADMISSION_01",
+      "capability_dimensions": {},
+      "current_authority": {
+        "audit": {
+          "bytes": 18060,
+          "path": "docs/evidence/pre16_governance/V4_PRE16_STAGE10_TO_STAGE15_INDEPENDENT_ACCEPTANCE_AUDIT_R1_20261004.md",
+          "sha256": "13ba5c07daf51c6f244f347acab6cbfa99f7511f1dff65c344974960ce522b99"
+        },
+        "r15": {
+          "bytes": 25810,
+          "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R15_BATCH_R3_FINAL.json",
+          "sha256": "7eb26d6d0a9ce3789161185b087c3e6c15f6f4f8d22867a1dba392a77b071473"
+        }
+      },
+      "current_state": "OPEN_EXTERNAL_REAUDIT",
+      "evidence_bindings": [
+        {
+          "bytes": 25810,
+          "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R15_BATCH_R3_FINAL.json",
+          "sha256": "7eb26d6d0a9ce3789161185b087c3e6c15f6f4f8d22867a1dba392a77b071473"
+        },
+        {
+          "bytes": 18060,
+          "path": "docs/evidence/pre16_governance/V4_PRE16_STAGE10_TO_STAGE15_INDEPENDENT_ACCEPTANCE_AUDIT_R1_20261004.md",
+          "sha256": "13ba5c07daf51c6f244f347acab6cbfa99f7511f1dff65c344974960ce522b99"
+        }
+      ],
+      "formal_consumer_permission_granted_by_this_head": false,
+      "limitations": [
+        "Historical pending item retained until exact item/scope closure; accepted V4-10..15 remain PASS_KEEP_NO_REOPEN",
+        "PENDING_NEXT_INDEPENDENT_AUDIT"
+      ],
+      "priority": "P1",
+      "requires_real_observation_accumulation": false,
+      "scope": "Accepted dated SUSPENDED states admitted explicitly; absent historical states remain UNKNOWN",
+      "superseded_historical_statuses": []
+    },
+    "AUD_R3C_ADJUSTMENT_COORDINATE_EXACTNESS": {
+      "affected_capabilities": [
+        "AUD_R3C_ADJUSTMENT_COORDINATE_EXACTNESS"
+      ],
+      "alias_of": null,
+      "audit_id": "AUD_R3C_ADJUSTMENT_COORDINATE_EXACTNESS",
+      "blocking_scope": "CAPABILITY_ONLY",
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_engineering_stage": false,
+      "blocks_production_cutover": true,
+      "blocks_production_cutover_for_scope": true,
+      "blocks_shadow_entry": false,
+      "blocks_v4_16_contract_entry": false,
+      "blocks_v4_16_runtime_activation": false,
+      "canonical_issue_id": "AUD_R3C_ADJUSTMENT_COORDINATE_EXACTNESS",
+      "capability_dimensions": {},
+      "current_authority": {
+        "audit": {
+          "bytes": 18060,
+          "path": "docs/evidence/pre16_governance/V4_PRE16_STAGE10_TO_STAGE15_INDEPENDENT_ACCEPTANCE_AUDIT_R1_20261004.md",
+          "sha256": "13ba5c07daf51c6f244f347acab6cbfa99f7511f1dff65c344974960ce522b99"
+        },
+        "r15": {
+          "bytes": 25810,
+          "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R15_BATCH_R3_FINAL.json",
+          "sha256": "7eb26d6d0a9ce3789161185b087c3e6c15f6f4f8d22867a1dba392a77b071473"
+        }
+      },
+      "current_state": "OPEN_EXTERNAL_REAUDIT",
+      "evidence_bindings": [
+        {
+          "bytes": 25810,
+          "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R15_BATCH_R3_FINAL.json",
+          "sha256": "7eb26d6d0a9ce3789161185b087c3e6c15f6f4f8d22867a1dba392a77b071473"
+        },
+        {
+          "bytes": 18060,
+          "path": "docs/evidence/pre16_governance/V4_PRE16_STAGE10_TO_STAGE15_INDEPENDENT_ACCEPTANCE_AUDIT_R1_20261004.md",
+          "sha256": "13ba5c07daf51c6f244f347acab6cbfa99f7511f1dff65c344974960ce522b99"
+        }
+      ],
+      "formal_consumer_permission_granted_by_this_head": false,
+      "limitations": [
+        "Historical pending item retained until exact item/scope closure; accepted V4-10..15 remain PASS_KEEP_NO_REOPEN",
+        "PENDING_NEXT_INDEPENDENT_AUDIT"
+      ],
+      "priority": "P1",
+      "requires_real_observation_accumulation": false,
+      "scope": "Signed zero and Decimal precision; final exact identity is unchanged on all actual source bars",
+      "superseded_historical_statuses": []
+    },
+    "AUD_R3C_D2_ADMISSION_AND_PRIOR_AUTHENTICITY": {
+      "affected_capabilities": [
+        "AUD_R3C_D2_ADMISSION_AND_PRIOR_AUTHENTICITY"
+      ],
+      "alias_of": null,
+      "audit_id": "AUD_R3C_D2_ADMISSION_AND_PRIOR_AUTHENTICITY",
+      "blocking_scope": "CAPABILITY_ONLY",
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_engineering_stage": false,
+      "blocks_production_cutover": true,
+      "blocks_production_cutover_for_scope": true,
+      "blocks_shadow_entry": false,
+      "blocks_v4_16_contract_entry": false,
+      "blocks_v4_16_runtime_activation": false,
+      "canonical_issue_id": "AUD_R3C_D2_ADMISSION_AND_PRIOR_AUTHENTICITY",
+      "capability_dimensions": {},
+      "current_authority": {
+        "audit": {
+          "bytes": 18060,
+          "path": "docs/evidence/pre16_governance/V4_PRE16_STAGE10_TO_STAGE15_INDEPENDENT_ACCEPTANCE_AUDIT_R1_20261004.md",
+          "sha256": "13ba5c07daf51c6f244f347acab6cbfa99f7511f1dff65c344974960ce522b99"
+        },
+        "r15": {
+          "bytes": 25810,
+          "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R15_BATCH_R3_FINAL.json",
+          "sha256": "7eb26d6d0a9ce3789161185b087c3e6c15f6f4f8d22867a1dba392a77b071473"
+        }
+      },
+      "current_state": "OPEN_EXTERNAL_REAUDIT",
+      "evidence_bindings": [
+        {
+          "bytes": 25810,
+          "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R15_BATCH_R3_FINAL.json",
+          "sha256": "7eb26d6d0a9ce3789161185b087c3e6c15f6f4f8d22867a1dba392a77b071473"
+        },
+        {
+          "bytes": 18060,
+          "path": "docs/evidence/pre16_governance/V4_PRE16_STAGE10_TO_STAGE15_INDEPENDENT_ACCEPTANCE_AUDIT_R1_20261004.md",
+          "sha256": "13ba5c07daf51c6f244f347acab6cbfa99f7511f1dff65c344974960ce522b99"
+        }
+      ],
+      "formal_consumer_permission_granted_by_this_head": false,
+      "limitations": [
+        "Historical pending item retained until exact item/scope closure; accepted V4-10..15 remain PASS_KEEP_NO_REOPEN",
+        "PENDING_NEXT_INDEPENDENT_AUDIT"
+      ],
+      "priority": "P1",
+      "requires_real_observation_accumulation": false,
+      "scope": "Real sealed-file candidate admission, exact V4-10 business AST, actual prior 9/29 bootstrap; independent of scoped promotions",
+      "superseded_historical_statuses": []
+    },
+    "AUD_R3C_EVENT_PRIOR_UNKNOWN_01": {
+      "affected_capabilities": [
+        "AUD_R3C_EVENT_PRIOR_UNKNOWN_01"
+      ],
+      "alias_of": null,
+      "audit_id": "AUD_R3C_EVENT_PRIOR_UNKNOWN_01",
+      "blocking_scope": "CAPABILITY_ONLY",
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_engineering_stage": false,
+      "blocks_production_cutover": true,
+      "blocks_production_cutover_for_scope": true,
+      "blocks_shadow_entry": false,
+      "blocks_v4_16_contract_entry": false,
+      "blocks_v4_16_runtime_activation": false,
+      "canonical_issue_id": "AUD_R3C_EVENT_PRIOR_UNKNOWN_01",
+      "capability_dimensions": {},
+      "current_authority": {
+        "audit": {
+          "bytes": 18060,
+          "path": "docs/evidence/pre16_governance/V4_PRE16_STAGE10_TO_STAGE15_INDEPENDENT_ACCEPTANCE_AUDIT_R1_20261004.md",
+          "sha256": "13ba5c07daf51c6f244f347acab6cbfa99f7511f1dff65c344974960ce522b99"
+        },
+        "r15": {
+          "bytes": 25810,
+          "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R15_BATCH_R3_FINAL.json",
+          "sha256": "7eb26d6d0a9ce3789161185b087c3e6c15f6f4f8d22867a1dba392a77b071473"
+        }
+      },
+      "current_state": "OPEN_EXTERNAL_REAUDIT",
+      "evidence_bindings": [
+        {
+          "bytes": 25810,
+          "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R15_BATCH_R3_FINAL.json",
+          "sha256": "7eb26d6d0a9ce3789161185b087c3e6c15f6f4f8d22867a1dba392a77b071473"
+        },
+        {
+          "bytes": 18060,
+          "path": "docs/evidence/pre16_governance/V4_PRE16_STAGE10_TO_STAGE15_INDEPENDENT_ACCEPTANCE_AUDIT_R1_20261004.md",
+          "sha256": "13ba5c07daf51c6f244f347acab6cbfa99f7511f1dff65c344974960ce522b99"
+        }
+      ],
+      "formal_consumer_permission_granted_by_this_head": false,
+      "limitations": [
+        "Historical pending item retained until exact item/scope closure; accepted V4-10..15 remain PASS_KEEP_NO_REOPEN",
+        "PENDING_NEXT_INDEPENDENT_AUDIT"
+      ],
+      "priority": "P1",
+      "requires_real_observation_accumulation": false,
+      "scope": "Prior UNKNOWN must never imply known not-confirmed; raw exact predicates retained, effective events fail closed",
+      "superseded_historical_statuses": []
+    },
+    "AUD_R3_GIT_EXACT_BYTE_PORTABILITY": {
+      "affected_capabilities": [
+        "AUD_R3_GIT_EXACT_BYTE_PORTABILITY"
+      ],
+      "alias_of": null,
+      "audit_id": "AUD_R3_GIT_EXACT_BYTE_PORTABILITY",
+      "blocking_scope": "CAPABILITY_ONLY",
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_engineering_stage": false,
+      "blocks_production_cutover": true,
+      "blocks_production_cutover_for_scope": true,
+      "blocks_shadow_entry": false,
+      "blocks_v4_16_contract_entry": false,
+      "blocks_v4_16_runtime_activation": false,
+      "canonical_issue_id": "AUD_R3_GIT_EXACT_BYTE_PORTABILITY",
+      "capability_dimensions": {},
+      "current_authority": {
+        "audit": {
+          "bytes": 18060,
+          "path": "docs/evidence/pre16_governance/V4_PRE16_STAGE10_TO_STAGE15_INDEPENDENT_ACCEPTANCE_AUDIT_R1_20261004.md",
+          "sha256": "13ba5c07daf51c6f244f347acab6cbfa99f7511f1dff65c344974960ce522b99"
+        },
+        "r15": {
+          "bytes": 25810,
+          "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R15_BATCH_R3_FINAL.json",
+          "sha256": "7eb26d6d0a9ce3789161185b087c3e6c15f6f4f8d22867a1dba392a77b071473"
+        }
+      },
+      "current_state": "OPEN_EXTERNAL_REAUDIT",
+      "evidence_bindings": [
+        {
+          "bytes": 25810,
+          "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R15_BATCH_R3_FINAL.json",
+          "sha256": "7eb26d6d0a9ce3789161185b087c3e6c15f6f4f8d22867a1dba392a77b071473"
+        },
+        {
+          "bytes": 18060,
+          "path": "docs/evidence/pre16_governance/V4_PRE16_STAGE10_TO_STAGE15_INDEPENDENT_ACCEPTANCE_AUDIT_R1_20261004.md",
+          "sha256": "13ba5c07daf51c6f244f347acab6cbfa99f7511f1dff65c344974960ce522b99"
+        }
+      ],
+      "formal_consumer_permission_granted_by_this_head": false,
+      "limitations": [
+        "Historical pending item retained until exact item/scope closure; accepted V4-10..15 remain PASS_KEEP_NO_REOPEN",
+        "PENDING_NEXT_INDEPENDENT_AUDIT"
+      ],
+      "priority": "P1",
+      "requires_real_observation_accumulation": false,
+      "scope": "Protection metadata for two pre-existing exact CRLF/LF representations; strict business source admission remains unchanged",
+      "superseded_historical_statuses": []
+    },
+    "AUD_R3_REAL_WINDOW_AND_EPISODE_CAPABILITY": {
+      "affected_capabilities": [
+        "AUD_R3_REAL_WINDOW_AND_EPISODE_CAPABILITY"
+      ],
+      "alias_of": null,
+      "audit_id": "AUD_R3_REAL_WINDOW_AND_EPISODE_CAPABILITY",
+      "blocking_scope": "CAPABILITY_ONLY",
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_engineering_stage": false,
+      "blocks_production_cutover": true,
+      "blocks_production_cutover_for_scope": true,
+      "blocks_shadow_entry": false,
+      "blocks_v4_16_contract_entry": false,
+      "blocks_v4_16_runtime_activation": false,
+      "canonical_issue_id": "AUD_R3_REAL_WINDOW_AND_EPISODE_CAPABILITY",
+      "capability_dimensions": {},
+      "current_authority": {
+        "audit": {
+          "bytes": 18060,
+          "path": "docs/evidence/pre16_governance/V4_PRE16_STAGE10_TO_STAGE15_INDEPENDENT_ACCEPTANCE_AUDIT_R1_20261004.md",
+          "sha256": "13ba5c07daf51c6f244f347acab6cbfa99f7511f1dff65c344974960ce522b99"
+        },
+        "r15": {
+          "bytes": 25810,
+          "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R15_BATCH_R3_FINAL.json",
+          "sha256": "7eb26d6d0a9ce3789161185b087c3e6c15f6f4f8d22867a1dba392a77b071473"
+        }
+      },
+      "current_state": "NONBLOCKING_VALIDATION_DEBT",
+      "evidence_bindings": [
+        {
+          "bytes": 25810,
+          "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R15_BATCH_R3_FINAL.json",
+          "sha256": "7eb26d6d0a9ce3789161185b087c3e6c15f6f4f8d22867a1dba392a77b071473"
+        },
+        {
+          "bytes": 18060,
+          "path": "docs/evidence/pre16_governance/V4_PRE16_STAGE10_TO_STAGE15_INDEPENDENT_ACCEPTANCE_AUDIT_R1_20261004.md",
+          "sha256": "13ba5c07daf51c6f244f347acab6cbfa99f7511f1dff65c344974960ce522b99"
+        }
+      ],
+      "formal_consumer_permission_granted_by_this_head": false,
+      "limitations": [
+        "Historical pending item retained until exact item/scope closure; accepted V4-10..15 remain PASS_KEEP_NO_REOPEN",
+        "PENDING_CAPABILITY_SCOPED_REAUDIT"
+      ],
+      "priority": "P1",
+      "requires_real_observation_accumulation": false,
+      "scope": "Original 101-session coordinate gate, missing observations, frozen episode and LOO admission, V4-12 invalidation unavailable",
+      "superseded_historical_statuses": []
+    },
+    "DM01_R3_ACCEPTED_METADATA_GIT_REPRESENTATION": {
+      "affected_capabilities": [
+        "DM01_R3_ACCEPTED_METADATA_GIT_REPRESENTATION"
+      ],
+      "alias_of": null,
+      "audit_id": "DM01_R3_ACCEPTED_METADATA_GIT_REPRESENTATION",
+      "blocking_scope": "CAPABILITY_ONLY",
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_engineering_stage": false,
+      "blocks_production_cutover": true,
+      "blocks_production_cutover_for_scope": true,
+      "blocks_shadow_entry": false,
+      "blocks_v4_16_contract_entry": false,
+      "blocks_v4_16_runtime_activation": false,
+      "canonical_issue_id": "DM01_R3_ACCEPTED_METADATA_GIT_REPRESENTATION",
+      "capability_dimensions": {},
+      "current_authority": {
+        "DM01_R3_ACCEPTED_METADATA_GIT_REPRESENTATION_external": {
+          "bytes": 10761,
+          "path": "docs/evidence/source_authority/V4_DM01_A01_R3_AND_A13_FORMALIZATION_INDEPENDENT_EXTERNAL_ACCEPTANCE_20261001.md",
+          "sha256": "03fd49c643d21304d2e8460cebbeec4b6b3f794ffd28562fdebf3f1ec38f79ef"
+        },
+        "r10": {
+          "bytes": 93135,
+          "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json",
+          "sha256": "14002b12e89920ee2d57fe1328a53c03f21ebb99842acfcb5c53b44d3f402174"
+        }
+      },
+      "current_state": "ACCEPTED_SCOPED",
+      "evidence_bindings": [
+        {
+          "bytes": 93135,
+          "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json",
+          "sha256": "14002b12e89920ee2d57fe1328a53c03f21ebb99842acfcb5c53b44d3f402174"
+        },
+        {
+          "bytes": 10761,
+          "path": "docs/evidence/source_authority/V4_DM01_A01_R3_AND_A13_FORMALIZATION_INDEPENDENT_EXTERNAL_ACCEPTANCE_20261001.md",
+          "sha256": "03fd49c643d21304d2e8460cebbeec4b6b3f794ffd28562fdebf3f1ec38f79ef"
+        }
+      ],
+      "formal_consumer_permission_granted_by_this_head": false,
+      "limitations": [
+        "Consumer stages require their own contracts; production/shadow/focus remain disabled"
+      ],
+      "priority": "P1",
+      "requires_real_observation_accumulation": false,
+      "scope": "AUDIT_SECTION_12_METADATA_SOURCE_AND_CHECKOUT_DURABILITY",
+      "superseded_historical_statuses": [
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 93135,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json",
+            "sha256": "14002b12e89920ee2d57fe1328a53c03f21ebb99842acfcb5c53b44d3f402174"
+          },
+          "status": "ACCEPTED_SCOPED"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 57631,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R8.json",
+            "sha256": "77d9472729c134403a235e3b0ae278a5a2e8512f850245d14f8b107e994abb9b"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 59288,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R9.json",
+            "sha256": "3a12c2b22ded78269361947878eac0f65959f008fafbea233de6222e4cc37d8b"
+          },
+          "status": "OPEN"
+        }
+      ]
+    },
+    "GOV_PRE16_01": {
+      "affected_capabilities": [
+        "V4_16_CONTRACT_ENTRY",
+        "V4_16_RUNTIME_ACTIVATION"
+      ],
+      "alias_of": null,
+      "audit_id": "GOV_PRE16_01",
+      "blocking_scope": "NONE",
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_engineering_stage": false,
+      "blocks_production_cutover": false,
+      "blocks_production_cutover_for_scope": false,
+      "blocks_shadow_entry": false,
+      "blocks_v4_16_contract_entry": false,
+      "blocks_v4_16_runtime_activation": false,
+      "canonical_issue_id": "GOV_PRE16_01",
+      "capability_dimensions": {},
+      "current_authority": {
+        "audit": {
+          "bytes": 18060,
+          "path": "docs/evidence/pre16_governance/V4_PRE16_STAGE10_TO_STAGE15_INDEPENDENT_ACCEPTANCE_AUDIT_R1_20261004.md",
+          "sha256": "13ba5c07daf51c6f244f347acab6cbfa99f7511f1dff65c344974960ce522b99"
+        }
+      },
+      "current_state": "EXTERNALLY_ACCEPTED_CLOSED",
+      "evidence_bindings": [
+        {
+          "bytes": 18060,
+          "path": "docs/evidence/pre16_governance/V4_PRE16_STAGE10_TO_STAGE15_INDEPENDENT_ACCEPTANCE_AUDIT_R1_20261004.md",
+          "sha256": "13ba5c07daf51c6f244f347acab6cbfa99f7511f1dff65c344974960ce522b99"
+        }
+      ],
+      "external_acceptance": {
+        "bytes": 1683,
+        "path": "data/v4/V4_PRE16_GOVERNANCE_ACCEPTED_HEAD_R1.json",
+        "sha256": "231961e104782f1347c4a86d996baf743982cf5b97d87cc289b017b63da8ab8b"
+      },
+      "formal_consumer_permission_granted_by_this_head": false,
+      "limitations": [
+        "Local reconciliation is not external acceptance",
+        "V4-16 entry HOLD"
+      ],
+      "priority": "P0",
+      "requires_real_observation_accumulation": false,
+      "scope": "This new governance reconciliation requires independent external audit before V4-16 entry",
+      "superseded_historical_statuses": []
+    },
+    "HISTORICAL_PIT_EFFECTIVENESS": {
+      "affected_capabilities": [
+        "HISTORICAL_PIT_EFFECTIVENESS"
+      ],
+      "alias_of": null,
+      "audit_id": "HISTORICAL_PIT_EFFECTIVENESS",
+      "blocking_scope": "CAPABILITY_ONLY",
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_engineering_stage": false,
+      "blocks_production_cutover": true,
+      "blocks_production_cutover_for_scope": true,
+      "blocks_shadow_entry": false,
+      "blocks_v4_16_contract_entry": false,
+      "blocks_v4_16_runtime_activation": false,
+      "canonical_issue_id": "HISTORICAL_PIT_EFFECTIVENESS",
+      "capability_dimensions": {
+        "capability": "NOT_GRANTED"
+      },
+      "current_authority": {
+        "audit": {
+          "bytes": 18060,
+          "path": "docs/evidence/pre16_governance/V4_PRE16_STAGE10_TO_STAGE15_INDEPENDENT_ACCEPTANCE_AUDIT_R1_20261004.md",
+          "sha256": "13ba5c07daf51c6f244f347acab6cbfa99f7511f1dff65c344974960ce522b99"
+        },
+        "v15": {
+          "bytes": 4778,
+          "path": "data/v4/V4_15_ACCEPTED_HEAD.json",
+          "sha256": "a3480dfc7e1d7b68656ea78e6ed68eb93c3381db9c099b8a6e0cb3a84c9d1d4d"
+        }
+      },
+      "current_state": "PERMANENT_CAPABILITY_LIMITATION",
+      "evidence_bindings": [
+        {
+          "bytes": 4778,
+          "path": "data/v4/V4_15_ACCEPTED_HEAD.json",
+          "sha256": "a3480dfc7e1d7b68656ea78e6ed68eb93c3381db9c099b8a6e0cb3a84c9d1d4d"
+        },
+        {
+          "bytes": 18060,
+          "path": "docs/evidence/pre16_governance/V4_PRE16_STAGE10_TO_STAGE15_INDEPENDENT_ACCEPTANCE_AUDIT_R1_20261004.md",
+          "sha256": "13ba5c07daf51c6f244f347acab6cbfa99f7511f1dff65c344974960ce522b99"
+        }
+      ],
+      "formal_consumer_permission_granted_by_this_head": false,
+      "limitations": [
+        "NOT_GRANTED",
+        "Reconstructed evidence cannot prove AS_RECORDED"
+      ],
+      "priority": "P1",
+      "requires_real_observation_accumulation": false,
+      "scope": "Unproven pre-capture historical PIT effectiveness",
+      "superseded_historical_statuses": []
+    },
+    "OFFICIAL_NOTICE_FILENAME_VS_EVENT_SEMANTICS": {
+      "affected_capabilities": [
+        "OFFICIAL_NOTICE_FILENAME_VS_EVENT_SEMANTICS"
+      ],
+      "alias_of": null,
+      "audit_id": "OFFICIAL_NOTICE_FILENAME_VS_EVENT_SEMANTICS",
+      "blocking_scope": "CAPABILITY_ONLY",
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_engineering_stage": false,
+      "blocks_production_cutover": true,
+      "blocks_production_cutover_for_scope": true,
+      "blocks_shadow_entry": false,
+      "blocks_v4_16_contract_entry": false,
+      "blocks_v4_16_runtime_activation": false,
+      "canonical_issue_id": "OFFICIAL_NOTICE_FILENAME_VS_EVENT_SEMANTICS",
+      "capability_dimensions": {},
+      "current_authority": {
+        "OFFICIAL_NOTICE_FILENAME_VS_EVENT_SEMANTICS_external": {
+          "bytes": 10761,
+          "path": "docs/evidence/source_authority/V4_DM01_A01_R3_AND_A13_FORMALIZATION_INDEPENDENT_EXTERNAL_ACCEPTANCE_20261001.md",
+          "sha256": "03fd49c643d21304d2e8460cebbeec4b6b3f794ffd28562fdebf3f1ec38f79ef"
+        },
+        "r10": {
+          "bytes": 93135,
+          "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json",
+          "sha256": "14002b12e89920ee2d57fe1328a53c03f21ebb99842acfcb5c53b44d3f402174"
+        }
+      },
+      "current_state": "ACCEPTED_SCOPED",
+      "evidence_bindings": [
+        {
+          "bytes": 93135,
+          "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json",
+          "sha256": "14002b12e89920ee2d57fe1328a53c03f21ebb99842acfcb5c53b44d3f402174"
+        },
+        {
+          "bytes": 10761,
+          "path": "docs/evidence/source_authority/V4_DM01_A01_R3_AND_A13_FORMALIZATION_INDEPENDENT_EXTERNAL_ACCEPTANCE_20261001.md",
+          "sha256": "03fd49c643d21304d2e8460cebbeec4b6b3f794ffd28562fdebf3f1ec38f79ef"
+        }
+      ],
+      "formal_consumer_permission_granted_by_this_head": false,
+      "limitations": [
+        "Consumer stages require their own contracts; production/shadow/focus remain disabled"
+      ],
+      "priority": "P1",
+      "requires_real_observation_accumulation": false,
+      "scope": "Accepted audit-only scope; no deployment",
+      "superseded_historical_statuses": [
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 93135,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json",
+            "sha256": "14002b12e89920ee2d57fe1328a53c03f21ebb99842acfcb5c53b44d3f402174"
+          },
+          "status": "ACCEPTED"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 45454,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R5.json",
+            "sha256": "0109d018fedeb8176dd904039d56e0af040c4533443a194e3bc598c9c31019eb"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 47386,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R6.json",
+            "sha256": "a18aaac164f1361b269d7de6b243e1386ea496c7a28452b23fa667cab3f042a4"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 48390,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R7.json",
+            "sha256": "a0d1e92a93f11bdf3c3370c3f19416474c9b6512a80640d18e051bfa6db9a5e2"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 57631,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R8.json",
+            "sha256": "77d9472729c134403a235e3b0ae278a5a2e8512f850245d14f8b107e994abb9b"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 59288,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R9.json",
+            "sha256": "3a12c2b22ded78269361947878eac0f65959f008fafbea233de6222e4cc37d8b"
+          },
+          "status": "ACCEPTED"
+        }
+      ]
+    },
+    "OWNER": {
+      "affected_capabilities": [
+        "OWNER"
+      ],
+      "alias_of": null,
+      "audit_id": "OWNER",
+      "blocking_scope": "CAPABILITY_ONLY",
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_engineering_stage": false,
+      "blocks_production_cutover": true,
+      "blocks_production_cutover_for_scope": true,
+      "blocks_shadow_entry": false,
+      "blocks_v4_16_contract_entry": false,
+      "blocks_v4_16_runtime_activation": false,
+      "canonical_issue_id": "OWNER",
+      "capability_dimensions": {
+        "active_global_trust_root": false,
+        "engineering_task": "CLOSED_SCOPED",
+        "formal_consumer_cutover": false,
+        "global_mandatory_adoption": false
+      },
+      "current_authority": {
+        "OWNER_external": {
+          "bytes": 8324,
+          "path": "docs/evidence/next_round_r3/V4_R2_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R2_20261002.md",
+          "sha256": "9b630344fa2101786f294fd3234bd275cedd25c73ca380706f56128fbad06d01"
+        },
+        "OWNER_record": {
+          "bytes": 7533,
+          "path": "reports/next_round_r2/scoped_acceptance/OWNER_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+          "sha256": "5930e82aff6cdc58cfac7d66bb3da8e3b7223a4d94755fb6c08c5ded19db37ab"
+        },
+        "dispositions": {
+          "bytes": 7460,
+          "path": "data/v4/V4_SOURCE_AUTHORITY_SCOPED_DISPOSITION_REGISTRY_R5_INACTIVE.json",
+          "sha256": "064e5103c64848bf842d1cde9e01ec65a0ebe0b445cc18b435723dcc66e59db5"
+        }
+      },
+      "current_state": "ACCEPTED_SCOPED",
+      "evidence_bindings": [
+        {
+          "bytes": 7460,
+          "path": "data/v4/V4_SOURCE_AUTHORITY_SCOPED_DISPOSITION_REGISTRY_R5_INACTIVE.json",
+          "sha256": "064e5103c64848bf842d1cde9e01ec65a0ebe0b445cc18b435723dcc66e59db5"
+        },
+        {
+          "bytes": 8324,
+          "path": "docs/evidence/next_round_r3/V4_R2_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R2_20261002.md",
+          "sha256": "9b630344fa2101786f294fd3234bd275cedd25c73ca380706f56128fbad06d01"
+        },
+        {
+          "bytes": 7533,
+          "path": "reports/next_round_r2/scoped_acceptance/OWNER_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+          "sha256": "5930e82aff6cdc58cfac7d66bb3da8e3b7223a4d94755fb6c08c5ded19db37ab"
+        }
+      ],
+      "formal_consumer_permission_granted_by_this_head": false,
+      "limitations": [
+        "INACTIVE_METADATA",
+        "NO_GLOBAL_AUTHORITY_CONSUMER",
+        "FIELD_LIMITATIONS_PRESERVED"
+      ],
+      "priority": "P1",
+      "requires_real_observation_accumulation": false,
+      "scope": "SCOPED_ACCEPTED_INACTIVE_METADATA",
+      "superseded_historical_statuses": [
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 93135,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json",
+            "sha256": "14002b12e89920ee2d57fe1328a53c03f21ebb99842acfcb5c53b44d3f402174"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 5081,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R11_CANDIDATE.json",
+            "sha256": "b37a28713003e3b7e22110879a635c8a36b172eb15ea3404d3eb56a588fd9208"
+          },
+          "status": "CANDIDATE_READY_FOR_EXTERNAL_REAUDIT"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 6931,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R12_FORMALIZATION.json",
+            "sha256": "a6be464c7b2b601e2be2dc749fe1d3dff45b32effb0ac5801e99c6081ee204a4"
+          },
+          "status": "INACTIVE_ACCEPTED_METADATA"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 7414,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R12_FORMALIZATION_R2.json",
+            "sha256": "63f43a506cebd315c244cbe821af05effc4eda8e7b81a17ad88c288ef8246e85"
+          },
+          "status": "INACTIVE_ACCEPTED_METADATA"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 19334,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R13_CONSOLIDATION_R3.json",
+            "sha256": "cd6d909a3a01fba8ad32cb7833de041fb4a9a775f1d3fc8f679f7929ae598856"
+          },
+          "status": "INACTIVE_ACCEPTED_METADATA"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 25172,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R14_BATCH_R3.json",
+            "sha256": "3e81ab57d29d624dee4f4abdf3ba94df58c8d8f3cce6801360dae50f5b84ddda"
+          },
+          "status": "INACTIVE_ACCEPTED_METADATA"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 25810,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R15_BATCH_R3_FINAL.json",
+            "sha256": "7eb26d6d0a9ce3789161185b087c3e6c15f6f4f8d22867a1dba392a77b071473"
+          },
+          "status": "INACTIVE_ACCEPTED_METADATA"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 34157,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R4.json",
+            "sha256": "d641583242ddb30ece8d2811f0b222eb9bbbbdce1bd3f7d9d63575e9d7bc29a7"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 45454,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R5.json",
+            "sha256": "0109d018fedeb8176dd904039d56e0af040c4533443a194e3bc598c9c31019eb"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 47386,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R6.json",
+            "sha256": "a18aaac164f1361b269d7de6b243e1386ea496c7a28452b23fa667cab3f042a4"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 48390,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R7.json",
+            "sha256": "a0d1e92a93f11bdf3c3370c3f19416474c9b6512a80640d18e051bfa6db9a5e2"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 57631,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R8.json",
+            "sha256": "77d9472729c134403a235e3b0ae278a5a2e8512f850245d14f8b107e994abb9b"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 59288,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R9.json",
+            "sha256": "3a12c2b22ded78269361947878eac0f65959f008fafbea233de6222e4cc37d8b"
+          },
+          "status": "OPEN"
+        }
+      ]
+    },
+    "READER": {
+      "affected_capabilities": [
+        "READER"
+      ],
+      "alias_of": null,
+      "audit_id": "READER",
+      "blocking_scope": "CAPABILITY_ONLY",
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_engineering_stage": false,
+      "blocks_production_cutover": true,
+      "blocks_production_cutover_for_scope": true,
+      "blocks_shadow_entry": false,
+      "blocks_v4_16_contract_entry": false,
+      "blocks_v4_16_runtime_activation": false,
+      "canonical_issue_id": "READER",
+      "capability_dimensions": {
+        "active_global_trust_root": false,
+        "engineering_task": "CLOSED_SCOPED",
+        "formal_consumer_cutover": false,
+        "global_mandatory_adoption": false
+      },
+      "current_authority": {
+        "READER_external": {
+          "bytes": 8324,
+          "path": "docs/evidence/next_round_r3/V4_R2_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R2_20261002.md",
+          "sha256": "9b630344fa2101786f294fd3234bd275cedd25c73ca380706f56128fbad06d01"
+        },
+        "READER_record": {
+          "bytes": 8015,
+          "path": "reports/next_round_r2/scoped_acceptance/READER_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+          "sha256": "a9b57ce16609bc86bf40b5e9fb8542802a57f1f777b636029129479f4f931123"
+        },
+        "dispositions": {
+          "bytes": 7460,
+          "path": "data/v4/V4_SOURCE_AUTHORITY_SCOPED_DISPOSITION_REGISTRY_R5_INACTIVE.json",
+          "sha256": "064e5103c64848bf842d1cde9e01ec65a0ebe0b445cc18b435723dcc66e59db5"
+        }
+      },
+      "current_state": "ACCEPTED_SCOPED",
+      "evidence_bindings": [
+        {
+          "bytes": 7460,
+          "path": "data/v4/V4_SOURCE_AUTHORITY_SCOPED_DISPOSITION_REGISTRY_R5_INACTIVE.json",
+          "sha256": "064e5103c64848bf842d1cde9e01ec65a0ebe0b445cc18b435723dcc66e59db5"
+        },
+        {
+          "bytes": 8324,
+          "path": "docs/evidence/next_round_r3/V4_R2_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R2_20261002.md",
+          "sha256": "9b630344fa2101786f294fd3234bd275cedd25c73ca380706f56128fbad06d01"
+        },
+        {
+          "bytes": 8015,
+          "path": "reports/next_round_r2/scoped_acceptance/READER_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+          "sha256": "a9b57ce16609bc86bf40b5e9fb8542802a57f1f777b636029129479f4f931123"
+        }
+      ],
+      "formal_consumer_permission_granted_by_this_head": false,
+      "limitations": [
+        "ACCEPTED_HISTORY_EXPLICIT_DI_ONLY",
+        "NO_CURRENT_BUSINESS_RUNTIME_SILENT_FALLBACK"
+      ],
+      "priority": "P1",
+      "requires_real_observation_accumulation": false,
+      "scope": "SCOPED_ACCEPTED_HISTORY_ONLY",
+      "superseded_historical_statuses": [
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 6931,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R12_FORMALIZATION.json",
+            "sha256": "a6be464c7b2b601e2be2dc749fe1d3dff45b32effb0ac5801e99c6081ee204a4"
+          },
+          "status": "ACCEPTED_SCOPED"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 7414,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R12_FORMALIZATION_R2.json",
+            "sha256": "63f43a506cebd315c244cbe821af05effc4eda8e7b81a17ad88c288ef8246e85"
+          },
+          "status": "ACCEPTED_SCOPED"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 19334,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R13_CONSOLIDATION_R3.json",
+            "sha256": "cd6d909a3a01fba8ad32cb7833de041fb4a9a775f1d3fc8f679f7929ae598856"
+          },
+          "status": "ACCEPTED_SCOPED"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 25172,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R14_BATCH_R3.json",
+            "sha256": "3e81ab57d29d624dee4f4abdf3ba94df58c8d8f3cce6801360dae50f5b84ddda"
+          },
+          "status": "ACCEPTED_SCOPED"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 25810,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R15_BATCH_R3_FINAL.json",
+            "sha256": "7eb26d6d0a9ce3789161185b087c3e6c15f6f4f8d22867a1dba392a77b071473"
+          },
+          "status": "ACCEPTED_SCOPED"
+        }
+      ]
+    },
+    "REALTIME_ACCEPTED_COHORT_MATURITY": {
+      "affected_capabilities": [
+        "REALTIME_ACCEPTED_COHORT_MATURITY"
+      ],
+      "alias_of": null,
+      "audit_id": "REALTIME_ACCEPTED_COHORT_MATURITY",
+      "blocking_scope": "CAPABILITY_ONLY",
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_engineering_stage": false,
+      "blocks_production_cutover": true,
+      "blocks_production_cutover_for_scope": true,
+      "blocks_shadow_entry": false,
+      "blocks_v4_16_contract_entry": false,
+      "blocks_v4_16_runtime_activation": false,
+      "canonical_issue_id": "REALTIME_ACCEPTED_COHORT_MATURITY",
+      "capability_dimensions": {
+        "PROVED_HORIZONS": [],
+        "UNPROVED_HORIZONS": [
+          1,
+          3,
+          5,
+          10,
+          20
+        ],
+        "capability": "NOT_GRANTED"
+      },
+      "current_authority": {
+        "audit": {
+          "bytes": 18060,
+          "path": "docs/evidence/pre16_governance/V4_PRE16_STAGE10_TO_STAGE15_INDEPENDENT_ACCEPTANCE_AUDIT_R1_20261004.md",
+          "sha256": "13ba5c07daf51c6f244f347acab6cbfa99f7511f1dff65c344974960ce522b99"
+        },
+        "maturity": {
+          "bytes": 1843,
+          "path": "reports/r20r1r2/MATURITY_DEBT_READBACK.json",
+          "sha256": "e40b89ce3d90cf2ad250abe00e111ec55263b25571067c981c645a4ce99c1a52"
+        },
+        "v15": {
+          "bytes": 4778,
+          "path": "data/v4/V4_15_ACCEPTED_HEAD.json",
+          "sha256": "a3480dfc7e1d7b68656ea78e6ed68eb93c3381db9c099b8a6e0cb3a84c9d1d4d"
+        }
+      },
+      "current_state": "NONBLOCKING_VALIDATION_DEBT",
+      "evidence_bindings": [
+        {
+          "bytes": 4778,
+          "path": "data/v4/V4_15_ACCEPTED_HEAD.json",
+          "sha256": "a3480dfc7e1d7b68656ea78e6ed68eb93c3381db9c099b8a6e0cb3a84c9d1d4d"
+        },
+        {
+          "bytes": 1843,
+          "path": "reports/r20r1r2/MATURITY_DEBT_READBACK.json",
+          "sha256": "e40b89ce3d90cf2ad250abe00e111ec55263b25571067c981c645a4ce99c1a52"
+        },
+        {
+          "bytes": 18060,
+          "path": "docs/evidence/pre16_governance/V4_PRE16_STAGE10_TO_STAGE15_INDEPENDENT_ACCEPTANCE_AUDIT_R1_20261004.md",
+          "sha256": "13ba5c07daf51c6f244f347acab6cbfa99f7511f1dff65c344974960ce522b99"
+        }
+      ],
+      "formal_consumer_permission_granted_by_this_head": false,
+      "limitations": [
+        "CURRENT_REAL_MATURITY_EVIDENCE=NONE",
+        "T0 observation scope RECONSTRUCTED_ASOF"
+      ],
+      "priority": "P1",
+      "requires_real_observation_accumulation": true,
+      "scope": "Real forward maturity proof only; independent engineering may continue",
+      "superseded_historical_statuses": []
+    },
+    "REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT_RUNTIME": {
+      "affected_capabilities": [
+        "REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT_RUNTIME"
+      ],
+      "alias_of": null,
+      "audit_id": "REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT_RUNTIME",
+      "blocking_scope": "CAPABILITY_ONLY",
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_engineering_stage": false,
+      "blocks_production_cutover": true,
+      "blocks_production_cutover_for_scope": true,
+      "blocks_shadow_entry": false,
+      "blocks_v4_16_contract_entry": false,
+      "blocks_v4_16_runtime_activation": false,
+      "canonical_issue_id": "REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT_RUNTIME",
+      "capability_dimensions": {
+        "PROVED_HORIZONS": [],
+        "UNPROVED_HORIZONS": [
+          1,
+          3,
+          5,
+          10,
+          20
+        ],
+        "capability": "NOT_GRANTED_PENDING_MATURITY_EVIDENCE"
+      },
+      "current_authority": {
+        "audit": {
+          "bytes": 18060,
+          "path": "docs/evidence/pre16_governance/V4_PRE16_STAGE10_TO_STAGE15_INDEPENDENT_ACCEPTANCE_AUDIT_R1_20261004.md",
+          "sha256": "13ba5c07daf51c6f244f347acab6cbfa99f7511f1dff65c344974960ce522b99"
+        },
+        "maturity": {
+          "bytes": 1843,
+          "path": "reports/r20r1r2/MATURITY_DEBT_READBACK.json",
+          "sha256": "e40b89ce3d90cf2ad250abe00e111ec55263b25571067c981c645a4ce99c1a52"
+        },
+        "v15": {
+          "bytes": 4778,
+          "path": "data/v4/V4_15_ACCEPTED_HEAD.json",
+          "sha256": "a3480dfc7e1d7b68656ea78e6ed68eb93c3381db9c099b8a6e0cb3a84c9d1d4d"
+        }
+      },
+      "current_state": "NONBLOCKING_VALIDATION_DEBT",
+      "evidence_bindings": [
+        {
+          "bytes": 4778,
+          "path": "data/v4/V4_15_ACCEPTED_HEAD.json",
+          "sha256": "a3480dfc7e1d7b68656ea78e6ed68eb93c3381db9c099b8a6e0cb3a84c9d1d4d"
+        },
+        {
+          "bytes": 1843,
+          "path": "reports/r20r1r2/MATURITY_DEBT_READBACK.json",
+          "sha256": "e40b89ce3d90cf2ad250abe00e111ec55263b25571067c981c645a4ce99c1a52"
+        },
+        {
+          "bytes": 18060,
+          "path": "docs/evidence/pre16_governance/V4_PRE16_STAGE10_TO_STAGE15_INDEPENDENT_ACCEPTANCE_AUDIT_R1_20261004.md",
+          "sha256": "13ba5c07daf51c6f244f347acab6cbfa99f7511f1dff65c344974960ce522b99"
+        }
+      ],
+      "formal_consumer_permission_granted_by_this_head": false,
+      "limitations": [
+        "CURRENT_REAL_MATURITY_EVIDENCE=NONE",
+        "T0 observation scope RECONSTRUCTED_ASOF"
+      ],
+      "priority": "P1",
+      "requires_real_observation_accumulation": true,
+      "scope": "Real forward maturity proof only; independent engineering may continue",
+      "superseded_historical_statuses": []
+    },
+    "SOURCE_AUTHORITY_AVAILABILITY_SEMANTICS_GOVERNANCE": {
+      "affected_capabilities": [
+        "SOURCE_AUTHORITY_AVAILABILITY_SEMANTICS_GOVERNANCE"
+      ],
+      "alias_of": null,
+      "audit_id": "SOURCE_AUTHORITY_AVAILABILITY_SEMANTICS_GOVERNANCE",
+      "blocking_scope": "CAPABILITY_ONLY",
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_engineering_stage": false,
+      "blocks_production_cutover": true,
+      "blocks_production_cutover_for_scope": true,
+      "blocks_shadow_entry": false,
+      "blocks_v4_16_contract_entry": false,
+      "blocks_v4_16_runtime_activation": false,
+      "canonical_issue_id": "SOURCE_AUTHORITY_AVAILABILITY_SEMANTICS_GOVERNANCE",
+      "capability_dimensions": {},
+      "current_authority": {
+        "SOURCE_AUTHORITY_AVAILABILITY_SEMANTICS_GOVERNANCE_external": {
+          "bytes": 10761,
+          "path": "docs/evidence/source_authority/V4_DM01_A01_R3_AND_A13_FORMALIZATION_INDEPENDENT_EXTERNAL_ACCEPTANCE_20261001.md",
+          "sha256": "03fd49c643d21304d2e8460cebbeec4b6b3f794ffd28562fdebf3f1ec38f79ef"
+        },
+        "r10": {
+          "bytes": 93135,
+          "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json",
+          "sha256": "14002b12e89920ee2d57fe1328a53c03f21ebb99842acfcb5c53b44d3f402174"
+        }
+      },
+      "current_state": "ACCEPTED_SCOPED",
+      "evidence_bindings": [
+        {
+          "bytes": 93135,
+          "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json",
+          "sha256": "14002b12e89920ee2d57fe1328a53c03f21ebb99842acfcb5c53b44d3f402174"
+        },
+        {
+          "bytes": 10761,
+          "path": "docs/evidence/source_authority/V4_DM01_A01_R3_AND_A13_FORMALIZATION_INDEPENDENT_EXTERNAL_ACCEPTANCE_20261001.md",
+          "sha256": "03fd49c643d21304d2e8460cebbeec4b6b3f794ffd28562fdebf3f1ec38f79ef"
+        }
+      ],
+      "formal_consumer_permission_granted_by_this_head": false,
+      "limitations": [
+        "Per-field/scoped owner bootstrap deferred; no global mandatory adoption"
+      ],
+      "priority": "P0",
+      "requires_real_observation_accumulation": false,
+      "scope": "INFRASTRUCTURE_ONLY",
+      "superseded_historical_statuses": [
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 93135,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json",
+            "sha256": "14002b12e89920ee2d57fe1328a53c03f21ebb99842acfcb5c53b44d3f402174"
+          },
+          "status": "ACCEPTED_INFRASTRUCTURE_SCOPE"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 21515,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R2.json",
+            "sha256": "83e2959a26dc3e1e5a64f14c56f3ef428d5b1b6d0d249311bea13cc73e87586e"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 33283,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R3.json",
+            "sha256": "4e224ae63cac14ac85a2b47b29ed4566f55565912b155fd7f940b281fdf6e6d6"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 34157,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R4.json",
+            "sha256": "d641583242ddb30ece8d2811f0b222eb9bbbbdce1bd3f7d9d63575e9d7bc29a7"
+          },
+          "status": "ACCEPTED_INFRASTRUCTURE_SCOPE"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 45454,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R5.json",
+            "sha256": "0109d018fedeb8176dd904039d56e0af040c4533443a194e3bc598c9c31019eb"
+          },
+          "status": "ACCEPTED_INFRASTRUCTURE_SCOPE"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 47386,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R6.json",
+            "sha256": "a18aaac164f1361b269d7de6b243e1386ea496c7a28452b23fa667cab3f042a4"
+          },
+          "status": "ACCEPTED_INFRASTRUCTURE_SCOPE"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 48390,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R7.json",
+            "sha256": "a0d1e92a93f11bdf3c3370c3f19416474c9b6512a80640d18e051bfa6db9a5e2"
+          },
+          "status": "ACCEPTED_INFRASTRUCTURE_SCOPE"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 57631,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R8.json",
+            "sha256": "77d9472729c134403a235e3b0ae278a5a2e8512f850245d14f8b107e994abb9b"
+          },
+          "status": "ACCEPTED_INFRASTRUCTURE_SCOPE"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 59288,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R9.json",
+            "sha256": "3a12c2b22ded78269361947878eac0f65959f008fafbea233de6222e4cc37d8b"
+          },
+          "status": "ACCEPTED_INFRASTRUCTURE_SCOPE"
+        }
+      ]
+    },
+    "V4_01_IDENTITY_SOURCE_AUTHORITY_RECONCILIATION": {
+      "affected_capabilities": [
+        "V4_01_IDENTITY_SOURCE_AUTHORITY_RECONCILIATION"
+      ],
+      "alias_of": null,
+      "audit_id": "V4_01_IDENTITY_SOURCE_AUTHORITY_RECONCILIATION",
+      "blocking_scope": "CAPABILITY_ONLY",
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_engineering_stage": false,
+      "blocks_production_cutover": true,
+      "blocks_production_cutover_for_scope": true,
+      "blocks_shadow_entry": false,
+      "blocks_v4_16_contract_entry": false,
+      "blocks_v4_16_runtime_activation": false,
+      "canonical_issue_id": "V4_01_IDENTITY_SOURCE_AUTHORITY_RECONCILIATION",
+      "capability_dimensions": {},
+      "current_authority": {
+        "V4_01_IDENTITY_SOURCE_AUTHORITY_RECONCILIATION_external": {
+          "bytes": 10761,
+          "path": "docs/evidence/source_authority/V4_DM01_A01_R3_AND_A13_FORMALIZATION_INDEPENDENT_EXTERNAL_ACCEPTANCE_20261001.md",
+          "sha256": "03fd49c643d21304d2e8460cebbeec4b6b3f794ffd28562fdebf3f1ec38f79ef"
+        },
+        "r10": {
+          "bytes": 93135,
+          "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json",
+          "sha256": "14002b12e89920ee2d57fe1328a53c03f21ebb99842acfcb5c53b44d3f402174"
+        }
+      },
+      "current_state": "ACCEPTED_SCOPED",
+      "evidence_bindings": [
+        {
+          "bytes": 93135,
+          "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json",
+          "sha256": "14002b12e89920ee2d57fe1328a53c03f21ebb99842acfcb5c53b44d3f402174"
+        },
+        {
+          "bytes": 10761,
+          "path": "docs/evidence/source_authority/V4_DM01_A01_R3_AND_A13_FORMALIZATION_INDEPENDENT_EXTERNAL_ACCEPTANCE_20261001.md",
+          "sha256": "03fd49c643d21304d2e8460cebbeec4b6b3f794ffd28562fdebf3f1ec38f79ef"
+        }
+      ],
+      "formal_consumer_permission_granted_by_this_head": false,
+      "limitations": [
+        "Preserve scope and capability limitations; no business promotion or deployment authorized"
+      ],
+      "priority": "P1",
+      "requires_real_observation_accumulation": false,
+      "scope": "RESULT_C_AUDIT_AND_CAPABILITY_DOWNGRADE_ONLY",
+      "superseded_historical_statuses": [
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 93135,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json",
+            "sha256": "14002b12e89920ee2d57fe1328a53c03f21ebb99842acfcb5c53b44d3f402174"
+          },
+          "status": "ACCEPTED"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 21515,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R2.json",
+            "sha256": "83e2959a26dc3e1e5a64f14c56f3ef428d5b1b6d0d249311bea13cc73e87586e"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 33283,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R3.json",
+            "sha256": "4e224ae63cac14ac85a2b47b29ed4566f55565912b155fd7f940b281fdf6e6d6"
+          },
+          "status": "ACCEPTED"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 34157,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R4.json",
+            "sha256": "d641583242ddb30ece8d2811f0b222eb9bbbbdce1bd3f7d9d63575e9d7bc29a7"
+          },
+          "status": "ACCEPTED"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 45454,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R5.json",
+            "sha256": "0109d018fedeb8176dd904039d56e0af040c4533443a194e3bc598c9c31019eb"
+          },
+          "status": "ACCEPTED"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 47386,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R6.json",
+            "sha256": "a18aaac164f1361b269d7de6b243e1386ea496c7a28452b23fa667cab3f042a4"
+          },
+          "status": "ACCEPTED"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 48390,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R7.json",
+            "sha256": "a0d1e92a93f11bdf3c3370c3f19416474c9b6512a80640d18e051bfa6db9a5e2"
+          },
+          "status": "ACCEPTED"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 57631,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R8.json",
+            "sha256": "77d9472729c134403a235e3b0ae278a5a2e8512f850245d14f8b107e994abb9b"
+          },
+          "status": "ACCEPTED"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 59288,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R9.json",
+            "sha256": "3a12c2b22ded78269361947878eac0f65959f008fafbea233de6222e4cc37d8b"
+          },
+          "status": "ACCEPTED"
+        }
+      ]
+    },
+    "V4_02_STATUS_ST_SOURCE_AUTHORITY_DIVERGENCE": {
+      "affected_capabilities": [
+        "V4_02_STATUS_ST_SOURCE_AUTHORITY_DIVERGENCE"
+      ],
+      "alias_of": null,
+      "audit_id": "V4_02_STATUS_ST_SOURCE_AUTHORITY_DIVERGENCE",
+      "blocking_scope": "CAPABILITY_ONLY",
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_engineering_stage": false,
+      "blocks_production_cutover": true,
+      "blocks_production_cutover_for_scope": true,
+      "blocks_shadow_entry": false,
+      "blocks_v4_16_contract_entry": false,
+      "blocks_v4_16_runtime_activation": false,
+      "canonical_issue_id": "V4_02_STATUS_ST_SOURCE_AUTHORITY_DIVERGENCE",
+      "capability_dimensions": {},
+      "current_authority": {
+        "V4_02_STATUS_ST_SOURCE_AUTHORITY_DIVERGENCE_external": {
+          "bytes": 10761,
+          "path": "docs/evidence/source_authority/V4_DM01_A01_R3_AND_A13_FORMALIZATION_INDEPENDENT_EXTERNAL_ACCEPTANCE_20261001.md",
+          "sha256": "03fd49c643d21304d2e8460cebbeec4b6b3f794ffd28562fdebf3f1ec38f79ef"
+        },
+        "r10": {
+          "bytes": 93135,
+          "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json",
+          "sha256": "14002b12e89920ee2d57fe1328a53c03f21ebb99842acfcb5c53b44d3f402174"
+        }
+      },
+      "current_state": "ACCEPTED_SCOPED",
+      "evidence_bindings": [
+        {
+          "bytes": 93135,
+          "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json",
+          "sha256": "14002b12e89920ee2d57fe1328a53c03f21ebb99842acfcb5c53b44d3f402174"
+        },
+        {
+          "bytes": 10761,
+          "path": "docs/evidence/source_authority/V4_DM01_A01_R3_AND_A13_FORMALIZATION_INDEPENDENT_EXTERNAL_ACCEPTANCE_20261001.md",
+          "sha256": "03fd49c643d21304d2e8460cebbeec4b6b3f794ffd28562fdebf3f1ec38f79ef"
+        }
+      ],
+      "formal_consumer_permission_granted_by_this_head": false,
+      "limitations": [
+        "Consumer stages require their own contracts; production/shadow/focus remain disabled"
+      ],
+      "priority": "P0",
+      "requires_real_observation_accumulation": false,
+      "scope": "HISTORICAL_RECONSTRUCTED_AND_DAILY_PRODUCER_SOURCE_INSTANCE_AUTHORITY",
+      "superseded_historical_statuses": [
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 93135,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json",
+            "sha256": "14002b12e89920ee2d57fe1328a53c03f21ebb99842acfcb5c53b44d3f402174"
+          },
+          "status": "ACCEPTED_SOURCE_AUTHORITY_SCOPE"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 21515,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R2.json",
+            "sha256": "83e2959a26dc3e1e5a64f14c56f3ef428d5b1b6d0d249311bea13cc73e87586e"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 33283,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R3.json",
+            "sha256": "4e224ae63cac14ac85a2b47b29ed4566f55565912b155fd7f940b281fdf6e6d6"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 34157,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R4.json",
+            "sha256": "d641583242ddb30ece8d2811f0b222eb9bbbbdce1bd3f7d9d63575e9d7bc29a7"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 45454,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R5.json",
+            "sha256": "0109d018fedeb8176dd904039d56e0af040c4533443a194e3bc598c9c31019eb"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 47386,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R6.json",
+            "sha256": "a18aaac164f1361b269d7de6b243e1386ea496c7a28452b23fa667cab3f042a4"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 48390,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R7.json",
+            "sha256": "a0d1e92a93f11bdf3c3370c3f19416474c9b6512a80640d18e051bfa6db9a5e2"
+          },
+          "status": "OPEN"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 57631,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R8.json",
+            "sha256": "77d9472729c134403a235e3b0ae278a5a2e8512f850245d14f8b107e994abb9b"
+          },
+          "status": "ACCEPTED_SOURCE_AUTHORITY_SCOPE"
+        },
+        {
+          "classification": "SUPERSEDED_HISTORICAL_STATUS",
+          "registry": {
+            "bytes": 59288,
+            "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R9.json",
+            "sha256": "3a12c2b22ded78269361947878eac0f65959f008fafbea233de6222e4cc37d8b"
+          },
+          "status": "ACCEPTED_SOURCE_AUTHORITY_SCOPE"
+        }
+      ]
+    },
+    "V4_12_REAL_OWNER_CAPABILITY": {
+      "affected_capabilities": [
+        "V4_12_REAL_OWNER_CAPABILITY"
+      ],
+      "alias_of": null,
+      "audit_id": "V4_12_REAL_OWNER_CAPABILITY",
+      "blocking_scope": "CAPABILITY_ONLY",
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_engineering_stage": false,
+      "blocks_production_cutover": true,
+      "blocks_production_cutover_for_scope": true,
+      "blocks_shadow_entry": false,
+      "blocks_v4_16_contract_entry": false,
+      "blocks_v4_16_runtime_activation": false,
+      "canonical_issue_id": "V4_12_REAL_OWNER_CAPABILITY",
+      "capability_dimensions": {},
+      "current_authority": {
+        "audit": {
+          "bytes": 18060,
+          "path": "docs/evidence/pre16_governance/V4_PRE16_STAGE10_TO_STAGE15_INDEPENDENT_ACCEPTANCE_AUDIT_R1_20261004.md",
+          "sha256": "13ba5c07daf51c6f244f347acab6cbfa99f7511f1dff65c344974960ce522b99"
+        },
+        "v12": {
+          "bytes": 796484,
+          "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+          "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+        }
+      },
+      "current_state": "NONBLOCKING_VALIDATION_DEBT",
+      "evidence_bindings": [
+        {
+          "bytes": 796484,
+          "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+          "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+        },
+        {
+          "bytes": 18060,
+          "path": "docs/evidence/pre16_governance/V4_PRE16_STAGE10_TO_STAGE15_INDEPENDENT_ACCEPTANCE_AUDIT_R1_20261004.md",
+          "sha256": "13ba5c07daf51c6f244f347acab6cbfa99f7511f1dff65c344974960ce522b99"
+        }
+      ],
+      "formal_consumer_permission_granted_by_this_head": false,
+      "limitations": [
+        "DO_NOT_RECONSTRUCT_FROM_RAW_BARS",
+        "DEGRADED_BY_ACCEPTED_OWNER_CAPABILITY"
+      ],
+      "priority": "P1",
+      "requires_real_observation_accumulation": false,
+      "scope": "Accepted D1 engineering; real target-date owner-dependent signals remain degraded",
+      "superseded_historical_statuses": []
+    },
+    "V4_13_REAL_OWNER_CAPABILITY": {
+      "affected_capabilities": [
+        "V4_13_REAL_OWNER_CAPABILITY"
+      ],
+      "alias_of": null,
+      "audit_id": "V4_13_REAL_OWNER_CAPABILITY",
+      "blocking_scope": "CAPABILITY_ONLY",
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_engineering_stage": false,
+      "blocks_production_cutover": true,
+      "blocks_production_cutover_for_scope": true,
+      "blocks_shadow_entry": false,
+      "blocks_v4_16_contract_entry": false,
+      "blocks_v4_16_runtime_activation": false,
+      "canonical_issue_id": "V4_13_REAL_OWNER_CAPABILITY",
+      "capability_dimensions": {},
+      "current_authority": {
+        "audit": {
+          "bytes": 18060,
+          "path": "docs/evidence/pre16_governance/V4_PRE16_STAGE10_TO_STAGE15_INDEPENDENT_ACCEPTANCE_AUDIT_R1_20261004.md",
+          "sha256": "13ba5c07daf51c6f244f347acab6cbfa99f7511f1dff65c344974960ce522b99"
+        },
+        "v13": {
+          "bytes": 11314,
+          "path": "data/v4/V4_13_ACCEPTED_HEAD_AMENDED_R1.json",
+          "sha256": "98f222ba4d62318ee900a69b8cad7c25359a30bcc7097efe0a55b8ffea09aa65"
+        }
+      },
+      "current_state": "NONBLOCKING_VALIDATION_DEBT",
+      "evidence_bindings": [
+        {
+          "bytes": 11314,
+          "path": "data/v4/V4_13_ACCEPTED_HEAD_AMENDED_R1.json",
+          "sha256": "98f222ba4d62318ee900a69b8cad7c25359a30bcc7097efe0a55b8ffea09aa65"
+        },
+        {
+          "bytes": 18060,
+          "path": "docs/evidence/pre16_governance/V4_PRE16_STAGE10_TO_STAGE15_INDEPENDENT_ACCEPTANCE_AUDIT_R1_20261004.md",
+          "sha256": "13ba5c07daf51c6f244f347acab6cbfa99f7511f1dff65c344974960ce522b99"
+        }
+      ],
+      "formal_consumer_permission_granted_by_this_head": false,
+      "limitations": [
+        "historical_LOO NOT_VERIFIABLE",
+        "legacy_B2 NOT_IMPLEMENTED",
+        "algorithmic_support_sector UNKNOWN_REAL_ACCEPTED_CAPABILITY",
+        "relative_sector_state UNKNOWN_REAL_ACCEPTED_CAPABILITY"
+      ],
+      "priority": "P1",
+      "requires_real_observation_accumulation": false,
+      "scope": "Accepted integration; upstream real signal/LOO/B2 limitations remain",
+      "superseded_historical_statuses": []
+    },
+    "V4_15_FWD_ADJ_VECTOR_01": {
+      "affected_capabilities": [
+        "V4_15_FWD_ADJ_VECTOR_01"
+      ],
+      "alias_of": null,
+      "audit_id": "V4_15_FWD_ADJ_VECTOR_01",
+      "blocking_scope": "CAPABILITY_ONLY",
+      "blocks_affected_capability_in_shadow": false,
+      "blocks_engineering_stage": false,
+      "blocks_production_cutover": true,
+      "blocks_production_cutover_for_scope": true,
+      "blocks_shadow_entry": false,
+      "blocks_v4_16_contract_entry": false,
+      "blocks_v4_16_runtime_activation": false,
+      "canonical_issue_id": "V4_15_FWD_ADJ_VECTOR_01",
+      "capability_dimensions": {},
+      "current_authority": {
+        "audit": {
+          "bytes": 18060,
+          "path": "docs/evidence/pre16_governance/V4_PRE16_STAGE10_TO_STAGE15_INDEPENDENT_ACCEPTANCE_AUDIT_R1_20261004.md",
+          "sha256": "13ba5c07daf51c6f244f347acab6cbfa99f7511f1dff65c344974960ce522b99"
+        },
+        "open_items": {
+          "bytes": 798,
+          "path": "reports/r21/OPEN_AUDIT_ITEMS.json",
+          "sha256": "c27ad36f2d65ed33d78d969f49131f2bd0964190dd3c438b1df9e987fc3d8381"
+        },
+        "v15": {
+          "bytes": 4778,
+          "path": "data/v4/V4_15_ACCEPTED_HEAD.json",
+          "sha256": "a3480dfc7e1d7b68656ea78e6ed68eb93c3381db9c099b8a6e0cb3a84c9d1d4d"
+        }
+      },
+      "current_state": "NONBLOCKING_VALIDATION_DEBT",
+      "evidence_bindings": [
+        {
+          "bytes": 4778,
+          "path": "data/v4/V4_15_ACCEPTED_HEAD.json",
+          "sha256": "a3480dfc7e1d7b68656ea78e6ed68eb93c3381db9c099b8a6e0cb3a84c9d1d4d"
+        },
+        {
+          "bytes": 798,
+          "path": "reports/r21/OPEN_AUDIT_ITEMS.json",
+          "sha256": "c27ad36f2d65ed33d78d969f49131f2bd0964190dd3c438b1df9e987fc3d8381"
+        },
+        {
+          "bytes": 18060,
+          "path": "docs/evidence/pre16_governance/V4_PRE16_STAGE10_TO_STAGE15_INDEPENDENT_ACCEPTANCE_AUDIT_R1_20261004.md",
+          "sha256": "13ba5c07daf51c6f244f347acab6cbfa99f7511f1dff65c344974960ce522b99"
+        }
+      ],
+      "formal_consumer_permission_granted_by_this_head": false,
+      "limitations": [
+        "OPEN_NONBLOCKING_TEST_ENHANCEMENT",
+        "Engineering vector cannot grant real maturity or PIT"
+      ],
+      "priority": "P1",
+      "requires_real_observation_accumulation": false,
+      "scope": "Supported corporate-action nonidentity engineering test enhancement",
+      "superseded_historical_statuses": []
+    }
+  },
+  "execution_baseline": "b2c3dd81c4bfed2364b6ea2693860114421f990c",
+  "external_acceptance": {
+    "bytes": 1683,
+    "path": "data/v4/V4_PRE16_GOVERNANCE_ACCEPTED_HEAD_R1.json",
+    "sha256": "231961e104782f1347c4a86d996baf743982cf5b97d87cc289b017b63da8ab8b"
+  },
+  "focus": false,
+  "formal_consumer_cutover": false,
+  "governance_findings": {
+    "GOV_PRE16_01": "EXTERNALLY_ACCEPTED_CLOSED",
+    "GOV_PRE16_02": "EXTERNALLY_ACCEPTED_CLOSED"
+  },
+  "historical_registries": [
+    {
+      "bytes": 11877,
+      "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json",
+      "sha256": "c03a675be7eb2846aacdf8151772d9c3b393b379eb3868e7bb68c1b3b82194e3"
+    },
+    {
+      "bytes": 93135,
+      "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json",
+      "sha256": "14002b12e89920ee2d57fe1328a53c03f21ebb99842acfcb5c53b44d3f402174"
+    },
+    {
+      "bytes": 5081,
+      "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R11_CANDIDATE.json",
+      "sha256": "b37a28713003e3b7e22110879a635c8a36b172eb15ea3404d3eb56a588fd9208"
+    },
+    {
+      "bytes": 6931,
+      "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R12_FORMALIZATION.json",
+      "sha256": "a6be464c7b2b601e2be2dc749fe1d3dff45b32effb0ac5801e99c6081ee204a4"
+    },
+    {
+      "bytes": 7414,
+      "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R12_FORMALIZATION_R2.json",
+      "sha256": "63f43a506cebd315c244cbe821af05effc4eda8e7b81a17ad88c288ef8246e85"
+    },
+    {
+      "bytes": 19334,
+      "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R13_CONSOLIDATION_R3.json",
+      "sha256": "cd6d909a3a01fba8ad32cb7833de041fb4a9a775f1d3fc8f679f7929ae598856"
+    },
+    {
+      "bytes": 25172,
+      "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R14_BATCH_R3.json",
+      "sha256": "3e81ab57d29d624dee4f4abdf3ba94df58c8d8f3cce6801360dae50f5b84ddda"
+    },
+    {
+      "bytes": 25810,
+      "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R15_BATCH_R3_FINAL.json",
+      "sha256": "7eb26d6d0a9ce3789161185b087c3e6c15f6f4f8d22867a1dba392a77b071473"
+    },
+    {
+      "bytes": 21515,
+      "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R2.json",
+      "sha256": "83e2959a26dc3e1e5a64f14c56f3ef428d5b1b6d0d249311bea13cc73e87586e"
+    },
+    {
+      "bytes": 33283,
+      "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R3.json",
+      "sha256": "4e224ae63cac14ac85a2b47b29ed4566f55565912b155fd7f940b281fdf6e6d6"
+    },
+    {
+      "bytes": 34157,
+      "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R4.json",
+      "sha256": "d641583242ddb30ece8d2811f0b222eb9bbbbdce1bd3f7d9d63575e9d7bc29a7"
+    },
+    {
+      "bytes": 45454,
+      "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R5.json",
+      "sha256": "0109d018fedeb8176dd904039d56e0af040c4533443a194e3bc598c9c31019eb"
+    },
+    {
+      "bytes": 47386,
+      "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R6.json",
+      "sha256": "a18aaac164f1361b269d7de6b243e1386ea496c7a28452b23fa667cab3f042a4"
+    },
+    {
+      "bytes": 48390,
+      "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R7.json",
+      "sha256": "a0d1e92a93f11bdf3c3370c3f19416474c9b6512a80640d18e051bfa6db9a5e2"
+    },
+    {
+      "bytes": 57631,
+      "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R8.json",
+      "sha256": "77d9472729c134403a235e3b0ae278a5a2e8512f850245d14f8b107e994abb9b"
+    },
+    {
+      "bytes": 59288,
+      "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R9.json",
+      "sha256": "3a12c2b22ded78269361947878eac0f65959f008fafbea233de6222e4cc37d8b"
+    }
+  ],
+  "prior_execution_baseline": "a1bb12f19e758784e55a1a93acaad1954861a0fc",
+  "production": false,
+  "repair_authority": {
+    "V4_NEXT_ROUND_EXECUTION_MASTER_PRE16_GOV_R1_1_20261004.md": {
+      "bytes": 1921,
+      "path": "reports/pre16_governance/r1_1_inputs/V4_NEXT_ROUND_EXECUTION_MASTER_PRE16_GOV_R1_1_20261004.md",
+      "sha256": "5cb50813108b70a0040b2fc23da7a7eb51a17ec69ec10a1b035aecc3250929bb"
+    },
+    "V4_PRE16_GOVERNANCE_INDEPENDENT_EXTERNAL_AUDIT_R1_20261004.md": {
+      "bytes": 9290,
+      "path": "reports/pre16_governance/r1_1_inputs/V4_PRE16_GOVERNANCE_INDEPENDENT_EXTERNAL_AUDIT_R1_20261004.md",
+      "sha256": "45c752e831cffcc5bbb3c6f8d13dfe90a4bcb413ada681779ac10148f256a6e7"
+    },
+    "V4_PRE16_GOVERNANCE_R1_1_CANONICAL_BLOCK_SCOPE_REPAIR_TASK_20261004.md": {
+      "bytes": 6514,
+      "path": "reports/pre16_governance/r1_1_inputs/V4_PRE16_GOVERNANCE_R1_1_CANONICAL_BLOCK_SCOPE_REPAIR_TASK_20261004.md",
+      "sha256": "834e26dbde4a1f3044c00b79983991225fb1fba2279067d79c4f352349383c92"
+    }
+  },
+  "rollback": "Remove only the new governance head/config in a separate explicitly authorized revision; all accepted pointers and algorithms are untouched.",
+  "shadow": false,
+  "sources": {
+    "A03_external": {
+      "bytes": 8324,
+      "path": "docs/evidence/next_round_r3/V4_R2_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R2_20261002.md",
+      "sha256": "9b630344fa2101786f294fd3234bd275cedd25c73ca380706f56128fbad06d01"
+    },
+    "A03_record": {
+      "bytes": 8074,
+      "path": "reports/next_round_r2/scoped_acceptance/A03_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+      "sha256": "ab8b504a46c032767e7d68032472b225898239622e93bae1da3f514903ae826a"
+    },
+    "A06_external": {
+      "bytes": 8324,
+      "path": "docs/evidence/next_round_r3/V4_R2_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R2_20261002.md",
+      "sha256": "9b630344fa2101786f294fd3234bd275cedd25c73ca380706f56128fbad06d01"
+    },
+    "A06_record": {
+      "bytes": 7892,
+      "path": "reports/next_round_r2/scoped_acceptance/A06_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+      "sha256": "c029fb1d769e080ae5d753fc11b043f1c0ff5cf40b86c31f9af830647035a12b"
+    },
+    "A07_external": {
+      "bytes": 8324,
+      "path": "docs/evidence/next_round_r3/V4_R2_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R2_20261002.md",
+      "sha256": "9b630344fa2101786f294fd3234bd275cedd25c73ca380706f56128fbad06d01"
+    },
+    "A07_record": {
+      "bytes": 7943,
+      "path": "reports/next_round_r2/scoped_acceptance/A07_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+      "sha256": "6bc18870beb8460bb5ce7f078c2a39e8d289614f8aef5d9248cdff254e475a55"
+    },
+    "A10_A12_R3_PRODUCER_SOURCE_INSTANCE_external": {
+      "bytes": 10761,
+      "path": "docs/evidence/source_authority/V4_DM01_A01_R3_AND_A13_FORMALIZATION_INDEPENDENT_EXTERNAL_ACCEPTANCE_20261001.md",
+      "sha256": "03fd49c643d21304d2e8460cebbeec4b6b3f794ffd28562fdebf3f1ec38f79ef"
+    },
+    "A12_R2_INTERIOR_DATA_GAP_SCOPE_external": {
+      "bytes": 10868,
+      "path": "docs/evidence/source_authority/V4_A10_A12_R3_AND_A13_INDEPENDENT_EXTERNAL_ACCEPTANCE_20261001.md",
+      "sha256": "a23789d9de4eb48831125cbb9165964a8dacacb33e9dd30dba0f3bfced681d3a"
+    },
+    "A12_R2_POSITIVE_ST_CODE_CHANGE_SCOPE_external": {
+      "bytes": 10868,
+      "path": "docs/evidence/source_authority/V4_A10_A12_R3_AND_A13_INDEPENDENT_EXTERNAL_ACCEPTANCE_20261001.md",
+      "sha256": "a23789d9de4eb48831125cbb9165964a8dacacb33e9dd30dba0f3bfced681d3a"
+    },
+    "DM01_R3_ACCEPTED_METADATA_GIT_REPRESENTATION_external": {
+      "bytes": 10761,
+      "path": "docs/evidence/source_authority/V4_DM01_A01_R3_AND_A13_FORMALIZATION_INDEPENDENT_EXTERNAL_ACCEPTANCE_20261001.md",
+      "sha256": "03fd49c643d21304d2e8460cebbeec4b6b3f794ffd28562fdebf3f1ec38f79ef"
+    },
+    "OFFICIAL_NOTICE_FILENAME_VS_EVENT_SEMANTICS_external": {
+      "bytes": 10761,
+      "path": "docs/evidence/source_authority/V4_DM01_A01_R3_AND_A13_FORMALIZATION_INDEPENDENT_EXTERNAL_ACCEPTANCE_20261001.md",
+      "sha256": "03fd49c643d21304d2e8460cebbeec4b6b3f794ffd28562fdebf3f1ec38f79ef"
+    },
+    "OWNER_external": {
+      "bytes": 8324,
+      "path": "docs/evidence/next_round_r3/V4_R2_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R2_20261002.md",
+      "sha256": "9b630344fa2101786f294fd3234bd275cedd25c73ca380706f56128fbad06d01"
+    },
+    "OWNER_record": {
+      "bytes": 7533,
+      "path": "reports/next_round_r2/scoped_acceptance/OWNER_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+      "sha256": "5930e82aff6cdc58cfac7d66bb3da8e3b7223a4d94755fb6c08c5ded19db37ab"
+    },
+    "READER_external": {
+      "bytes": 8324,
+      "path": "docs/evidence/next_round_r3/V4_R2_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R2_20261002.md",
+      "sha256": "9b630344fa2101786f294fd3234bd275cedd25c73ca380706f56128fbad06d01"
+    },
+    "READER_record": {
+      "bytes": 8015,
+      "path": "reports/next_round_r2/scoped_acceptance/READER_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+      "sha256": "a9b57ce16609bc86bf40b5e9fb8542802a57f1f777b636029129479f4f931123"
+    },
+    "SOURCE_AUTHORITY_AVAILABILITY_SEMANTICS_GOVERNANCE_external": {
+      "bytes": 10761,
+      "path": "docs/evidence/source_authority/V4_DM01_A01_R3_AND_A13_FORMALIZATION_INDEPENDENT_EXTERNAL_ACCEPTANCE_20261001.md",
+      "sha256": "03fd49c643d21304d2e8460cebbeec4b6b3f794ffd28562fdebf3f1ec38f79ef"
+    },
+    "V4_01_IDENTITY_SOURCE_AUTHORITY_RECONCILIATION_external": {
+      "bytes": 10761,
+      "path": "docs/evidence/source_authority/V4_DM01_A01_R3_AND_A13_FORMALIZATION_INDEPENDENT_EXTERNAL_ACCEPTANCE_20261001.md",
+      "sha256": "03fd49c643d21304d2e8460cebbeec4b6b3f794ffd28562fdebf3f1ec38f79ef"
+    },
+    "V4_02_STATUS_ST_SOURCE_AUTHORITY_DIVERGENCE_external": {
+      "bytes": 10761,
+      "path": "docs/evidence/source_authority/V4_DM01_A01_R3_AND_A13_FORMALIZATION_INDEPENDENT_EXTERNAL_ACCEPTANCE_20261001.md",
+      "sha256": "03fd49c643d21304d2e8460cebbeec4b6b3f794ffd28562fdebf3f1ec38f79ef"
+    },
+    "a02": {
+      "bytes": 2776,
+      "path": "data/v4/V4_RPS_PIT_HISTORY_ACCEPTED_HEAD_R1.json",
+      "sha256": "4025dd5d3eb27c9086bca8e4861ad33842db8938dda370fb3d7f78b8d783398b"
+    },
+    "a02_acceptance": {
+      "bytes": 8102,
+      "path": "reports/audits/next_round_r2/A02_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+      "sha256": "c75e59f99fa34bac2ecb7357e36368265e0fbd3eeed261d372751eff263477b7"
+    },
+    "a04": {
+      "bytes": 281,
+      "path": "data/v4/A04_AMOUNT_A_GO_FORWARD_PRODUCER_ACCEPTED_HEAD_R1.json",
+      "sha256": "33c8b152af664193aba101f2cf3a52746f2cfc6e135172d1c4180674a7448cbf"
+    },
+    "a04_payload": {
+      "bytes": 8277,
+      "path": "data/v4/scoped_acceptance_r3/26c106c9bc2ae2fe5a87e0f770f9d2a6067ffc4c2642c2c55fba70ada0f8b66b.json",
+      "sha256": "26c106c9bc2ae2fe5a87e0f770f9d2a6067ffc4c2642c2c55fba70ada0f8b66b"
+    },
+    "a04_payload_acceptance": {
+      "bytes": 8324,
+      "path": "docs/evidence/next_round_r3/V4_R2_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R2_20261002.md",
+      "sha256": "9b630344fa2101786f294fd3234bd275cedd25c73ca380706f56128fbad06d01"
+    },
+    "a05": {
+      "bytes": 281,
+      "path": "data/v4/V4_08_B2_CURRENT_SNAPSHOT_CAPABILITY_AMENDMENT_R1.json",
+      "sha256": "7610ec961bd504122b4564c7bea94d146e4dffc5fcfef65f538897fe3dc73aaa"
+    },
+    "a05_payload": {
+      "bytes": 7530,
+      "path": "data/v4/scoped_acceptance_r3/b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6.json",
+      "sha256": "b9d0454284103849952d1a47b06ac9fb4e0fabeb122cc1341e0e658398c1d7c6"
+    },
+    "a05_payload_acceptance": {
+      "bytes": 2023,
+      "path": "reports/audits/next_round_r2/A05_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+      "sha256": "56e9d6b8e4b0ea41a98a650c6b87bd3f6fcd3e54a72c2c6af7c8010d1d48e765"
+    },
+    "a08": {
+      "bytes": 2172,
+      "path": "reports/audits/V4_09_N01_HARDENING_ACCEPTED_RECORD_R1.json",
+      "sha256": "4b4377ff88405af89969a6bbe9b2416594f47859ff9436349bd78025ee1515f6"
+    },
+    "a08_acceptance": {
+      "bytes": 17949,
+      "path": "docs/evidence/source_authority/V4_SOURCE_AUTHORITY_8_CARD_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R1_20261001.md",
+      "sha256": "4d8ccf020f7de496c95be25ff88aa1e6341902523c41ef61fd2da872d0e19e76"
+    },
+    "a09": {
+      "bytes": 2418,
+      "path": "reports/audits/V4_09_N02_CONSUMER_IDENTITY_HARDENING_ACCEPTED_RECORD_R1.json",
+      "sha256": "7f8d61ac36cc8b9ce69f190c53e551342135c5c1a56060ccfdc5887cbf0a66b3"
+    },
+    "a09_acceptance": {
+      "bytes": 17949,
+      "path": "docs/evidence/source_authority/V4_SOURCE_AUTHORITY_8_CARD_BATCH_INDEPENDENT_EXTERNAL_AUDIT_R1_20261001.md",
+      "sha256": "4d8ccf020f7de496c95be25ff88aa1e6341902523c41ef61fd2da872d0e19e76"
+    },
+    "architecture": {
+      "bytes": 224998,
+      "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+      "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+    },
+    "audit": {
+      "bytes": 18060,
+      "path": "docs/evidence/pre16_governance/V4_PRE16_STAGE10_TO_STAGE15_INDEPENDENT_ACCEPTANCE_AUDIT_R1_20261004.md",
+      "sha256": "13ba5c07daf51c6f244f347acab6cbfa99f7511f1dff65c344974960ce522b99"
+    },
+    "data": {
+      "bytes": 16890,
+      "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+      "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+    },
+    "data_acceptance": {
+      "bytes": 4864,
+      "path": "reports/audits/DM01_A01_R3_EXTERNAL_ACCEPTANCE_RECORD_R1.json",
+      "sha256": "651987915de07e38e9e410013dd54042ee6ab78484608bd2518150704a599f1a"
+    },
+    "dispositions": {
+      "bytes": 7460,
+      "path": "data/v4/V4_SOURCE_AUTHORITY_SCOPED_DISPOSITION_REGISTRY_R5_INACTIVE.json",
+      "sha256": "064e5103c64848bf842d1cde9e01ec65a0ebe0b445cc18b435723dcc66e59db5"
+    },
+    "maturity": {
+      "bytes": 1843,
+      "path": "reports/r20r1r2/MATURITY_DEBT_READBACK.json",
+      "sha256": "e40b89ce3d90cf2ad250abe00e111ec55263b25571067c981c645a4ce99c1a52"
+    },
+    "open_items": {
+      "bytes": 798,
+      "path": "reports/r21/OPEN_AUDIT_ITEMS.json",
+      "sha256": "c27ad36f2d65ed33d78d969f49131f2bd0964190dd3c438b1df9e987fc3d8381"
+    },
+    "r10": {
+      "bytes": 93135,
+      "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json",
+      "sha256": "14002b12e89920ee2d57fe1328a53c03f21ebb99842acfcb5c53b44d3f402174"
+    },
+    "r15": {
+      "bytes": 25810,
+      "path": "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R15_BATCH_R3_FINAL.json",
+      "sha256": "7eb26d6d0a9ce3789161185b087c3e6c15f6f4f8d22867a1dba392a77b071473"
+    },
+    "stage": {
+      "bytes": 15303,
+      "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+      "sha256": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0"
+    },
+    "v12": {
+      "bytes": 796484,
+      "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+      "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+    },
+    "v13": {
+      "bytes": 11314,
+      "path": "data/v4/V4_13_ACCEPTED_HEAD_AMENDED_R1.json",
+      "sha256": "98f222ba4d62318ee900a69b8cad7c25359a30bcc7097efe0a55b8ffea09aa65"
+    },
+    "v15": {
+      "bytes": 4778,
+      "path": "data/v4/V4_15_ACCEPTED_HEAD.json",
+      "sha256": "a3480dfc7e1d7b68656ea78e6ed68eb93c3381db9c099b8a6e0cb3a84c9d1d4d"
+    }
+  },
+  "stage_action": "KEEP_EXACT_BYTES",
+  "status": "EXTERNALLY_ACCEPTED_FORMALIZED",
+  "supersedes_current_head": {
+    "bytes": 177258,
+    "path": "data/v4/V4_CROSS_STAGE_CURRENT_AUDIT_HEAD_V1.json",
+    "sha256": "bf124bdcc5ddb679fbb46db7198dc659f60fc1b5ce93c0c754fdaf6063c3baa6"
+  },
+  "supersession_graph": {
+    "data/v4/V4_CROSS_STAGE_CURRENT_AUDIT_HEAD_V1.json": [
+      "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json",
+      "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json",
+      "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R11_CANDIDATE.json",
+      "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R12_FORMALIZATION.json",
+      "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R12_FORMALIZATION_R2.json",
+      "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R13_CONSOLIDATION_R3.json",
+      "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R14_BATCH_R3.json",
+      "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R15_BATCH_R3_FINAL.json",
+      "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R2.json",
+      "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R3.json",
+      "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R4.json",
+      "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R5.json",
+      "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R6.json",
+      "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R7.json",
+      "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R8.json",
+      "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R9.json"
+    ],
+    "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json": [],
+    "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json": [
+      "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R9.json",
+      "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R4.json"
+    ],
+    "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R11_CANDIDATE.json": [
+      "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json"
+    ],
+    "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R12_FORMALIZATION.json": [
+      "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json",
+      "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R11_CANDIDATE.json"
+    ],
+    "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R12_FORMALIZATION_R2.json": [
+      "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R10.json",
+      "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R11_CANDIDATE.json",
+      "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R12_FORMALIZATION.json"
+    ],
+    "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R13_CONSOLIDATION_R3.json": [
+      "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R12_FORMALIZATION_R2.json"
+    ],
+    "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R14_BATCH_R3.json": [
+      "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R13_CONSOLIDATION_R3.json",
+      "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R12_FORMALIZATION_R2.json"
+    ],
+    "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R15_BATCH_R3_FINAL.json": [
+      "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R13_CONSOLIDATION_R3.json",
+      "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R12_FORMALIZATION_R2.json"
+    ],
+    "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R2.json": [
+      "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json"
+    ],
+    "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R3.json": [
+      "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R2.json"
+    ],
+    "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R4.json": [
+      "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R3.json"
+    ],
+    "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R5.json": [
+      "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R3.json",
+      "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R4.json"
+    ],
+    "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R6.json": [
+      "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R5.json",
+      "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R4.json"
+    ],
+    "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R7.json": [
+      "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R6.json",
+      "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R4.json"
+    ],
+    "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R8.json": [
+      "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R7.json",
+      "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R4.json"
+    ],
+    "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R9.json": [
+      "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R8.json",
+      "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R4.json"
+    ]
+  },
+  "version": "2.0.0"
+}

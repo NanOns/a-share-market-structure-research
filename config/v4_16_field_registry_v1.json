@@ -1,0 +1,196 @@
+{
+  "contract_design_only": true,
+  "contract_id": "V4_16_FIELD_REGISTRY_V1",
+  "fields": {
+    "P0_violations": {
+      "UNKNOWN": "NOT_A_STABILITY_PASS",
+      "data_type": "CAPABILITY_SCOPED_RECEIPT",
+      "field_id": "P0_violations",
+      "owner_contract": "V4_16_SHADOW_HEALTH_CONTRACT_V1",
+      "time_basis": "ACTUAL_MARKET_SESSION_RECEIPT"
+    },
+    "accepted_at": {
+      "UNKNOWN": "BLOCK_AFFECTED_SCOPE; NEVER_SYNTHESIZE",
+      "data_type": "UTC_RFC3339_TIMESTAMP",
+      "field_id": "accepted_at",
+      "owner_contract": "V4_16_OBSERVATION_SLOT_CONTRACT_V1",
+      "time_basis": "FROZEN_SLOT"
+    },
+    "capability_scope": {
+      "UNKNOWN": "BLOCK_AFFECTED_SCOPE; NEVER_SYNTHESIZE",
+      "data_type": "FROZEN_IDENTITY_OR_ENUM",
+      "field_id": "capability_scope",
+      "owner_contract": "V4_16_OBSERVATION_SLOT_CONTRACT_V1",
+      "time_basis": "FROZEN_SLOT"
+    },
+    "computation_finished_at": {
+      "UNKNOWN": "BLOCK_AFFECTED_SCOPE; NEVER_SYNTHESIZE",
+      "data_type": "UTC_RFC3339_TIMESTAMP",
+      "field_id": "computation_finished_at",
+      "owner_contract": "V4_16_OBSERVATION_SLOT_CONTRACT_V1",
+      "time_basis": "FROZEN_SLOT"
+    },
+    "computation_started_at": {
+      "UNKNOWN": "BLOCK_AFFECTED_SCOPE; NEVER_SYNTHESIZE",
+      "data_type": "UTC_RFC3339_TIMESTAMP",
+      "field_id": "computation_started_at",
+      "owner_contract": "V4_16_OBSERVATION_SLOT_CONTRACT_V1",
+      "time_basis": "FROZEN_SLOT"
+    },
+    "core_revision": {
+      "UNKNOWN": "BLOCK_AFFECTED_SCOPE; NEVER_SYNTHESIZE",
+      "data_type": "FROZEN_IDENTITY_OR_ENUM",
+      "field_id": "core_revision",
+      "owner_contract": "V4_16_OBSERVATION_SLOT_CONTRACT_V1",
+      "time_basis": "FROZEN_SLOT"
+    },
+    "duplicate_episode_status": {
+      "UNKNOWN": "NOT_A_STABILITY_PASS",
+      "data_type": "CAPABILITY_SCOPED_RECEIPT",
+      "field_id": "duplicate_episode_status",
+      "owner_contract": "V4_16_SHADOW_HEALTH_CONTRACT_V1",
+      "time_basis": "ACTUAL_MARKET_SESSION_RECEIPT"
+    },
+    "execution_mode": {
+      "UNKNOWN": "BLOCK_AFFECTED_SCOPE; NEVER_SYNTHESIZE",
+      "data_type": "FROZEN_IDENTITY_OR_ENUM",
+      "field_id": "execution_mode",
+      "owner_contract": "V4_16_OBSERVATION_SLOT_CONTRACT_V1",
+      "time_basis": "FROZEN_SLOT"
+    },
+    "model_contract_id": {
+      "UNKNOWN": "BLOCK_AFFECTED_SCOPE; NEVER_SYNTHESIZE",
+      "data_type": "FROZEN_IDENTITY_OR_ENUM",
+      "field_id": "model_contract_id",
+      "owner_contract": "V4_16_OBSERVATION_SLOT_CONTRACT_V1",
+      "time_basis": "FROZEN_SLOT"
+    },
+    "namespace": {
+      "UNKNOWN": "BLOCK_AFFECTED_SCOPE; NEVER_SYNTHESIZE",
+      "data_type": "FROZEN_IDENTITY_OR_ENUM",
+      "field_id": "namespace",
+      "owner_contract": "V4_16_OBSERVATION_SLOT_CONTRACT_V1",
+      "time_basis": "FROZEN_SLOT"
+    },
+    "observation_deadline": {
+      "UNKNOWN": "BLOCK_AFFECTED_SCOPE; NEVER_SYNTHESIZE",
+      "data_type": "UTC_RFC3339_TIMESTAMP",
+      "field_id": "observation_deadline",
+      "owner_contract": "V4_16_OBSERVATION_SLOT_CONTRACT_V1",
+      "time_basis": "FROZEN_SLOT"
+    },
+    "parameter_digest": {
+      "UNKNOWN": "NOT_A_STABILITY_PASS",
+      "data_type": "CAPABILITY_SCOPED_RECEIPT",
+      "field_id": "parameter_digest",
+      "owner_contract": "V4_16_SHADOW_HEALTH_CONTRACT_V1",
+      "time_basis": "ACTUAL_MARKET_SESSION_RECEIPT"
+    },
+    "parameter_set_id": {
+      "UNKNOWN": "BLOCK_AFFECTED_SCOPE; NEVER_SYNTHESIZE",
+      "data_type": "FROZEN_IDENTITY_OR_ENUM",
+      "field_id": "parameter_set_id",
+      "owner_contract": "V4_16_OBSERVATION_SLOT_CONTRACT_V1",
+      "time_basis": "FROZEN_SLOT"
+    },
+    "publication_id": {
+      "UNKNOWN": "BLOCK_AFFECTED_SCOPE; NEVER_SYNTHESIZE",
+      "data_type": "FROZEN_IDENTITY_OR_ENUM",
+      "field_id": "publication_id",
+      "owner_contract": "V4_16_OBSERVATION_SLOT_CONTRACT_V1",
+      "time_basis": "FROZEN_SLOT"
+    },
+    "publication_status": {
+      "UNKNOWN": "NOT_A_STABILITY_PASS",
+      "data_type": "CAPABILITY_SCOPED_RECEIPT",
+      "field_id": "publication_status",
+      "owner_contract": "V4_16_SHADOW_HEALTH_CONTRACT_V1",
+      "time_basis": "ACTUAL_MARKET_SESSION_RECEIPT"
+    },
+    "scheduled_cutoff_at": {
+      "UNKNOWN": "BLOCK_AFFECTED_SCOPE; NEVER_SYNTHESIZE",
+      "data_type": "UTC_RFC3339_TIMESTAMP",
+      "field_id": "scheduled_cutoff_at",
+      "owner_contract": "V4_16_OBSERVATION_SLOT_CONTRACT_V1",
+      "time_basis": "FROZEN_SLOT"
+    },
+    "settlement_backlog": {
+      "UNKNOWN": "NOT_A_STABILITY_PASS",
+      "data_type": "CAPABILITY_SCOPED_RECEIPT",
+      "field_id": "settlement_backlog",
+      "owner_contract": "V4_16_SHADOW_HEALTH_CONTRACT_V1",
+      "time_basis": "ACTUAL_MARKET_SESSION_RECEIPT"
+    },
+    "slot_status": {
+      "UNKNOWN": "BLOCK_AFFECTED_SCOPE; NEVER_SYNTHESIZE",
+      "data_type": "FROZEN_IDENTITY_OR_ENUM",
+      "field_id": "slot_status",
+      "owner_contract": "V4_16_OBSERVATION_SLOT_CONTRACT_V1",
+      "time_basis": "FROZEN_SLOT"
+    },
+    "source_manifest_digest": {
+      "UNKNOWN": "BLOCK_AFFECTED_SCOPE; NEVER_SYNTHESIZE",
+      "data_type": "FROZEN_IDENTITY_OR_ENUM",
+      "field_id": "source_manifest_digest",
+      "owner_contract": "V4_16_OBSERVATION_SLOT_CONTRACT_V1",
+      "time_basis": "FROZEN_SLOT"
+    },
+    "source_provider_available_at": {
+      "UNKNOWN": "BLOCK_AFFECTED_SCOPE; NEVER_SYNTHESIZE",
+      "data_type": "UTC_RFC3339_TIMESTAMP",
+      "field_id": "source_provider_available_at",
+      "owner_contract": "V4_16_OBSERVATION_SLOT_CONTRACT_V1",
+      "time_basis": "FROZEN_SLOT"
+    },
+    "source_quality": {
+      "UNKNOWN": "NOT_A_STABILITY_PASS",
+      "data_type": "CAPABILITY_SCOPED_RECEIPT",
+      "field_id": "source_quality",
+      "owner_contract": "V4_16_SHADOW_HEALTH_CONTRACT_V1",
+      "time_basis": "ACTUAL_MARKET_SESSION_RECEIPT"
+    },
+    "state_integrity_status": {
+      "UNKNOWN": "NOT_A_STABILITY_PASS",
+      "data_type": "CAPABILITY_SCOPED_RECEIPT",
+      "field_id": "state_integrity_status",
+      "owner_contract": "V4_16_SHADOW_HEALTH_CONTRACT_V1",
+      "time_basis": "ACTUAL_MARKET_SESSION_RECEIPT"
+    },
+    "state_lineage_id": {
+      "UNKNOWN": "BLOCK_AFFECTED_SCOPE; NEVER_SYNTHESIZE",
+      "data_type": "FROZEN_IDENTITY_OR_ENUM",
+      "field_id": "state_lineage_id",
+      "owner_contract": "V4_16_OBSERVATION_SLOT_CONTRACT_V1",
+      "time_basis": "FROZEN_SLOT"
+    },
+    "status": {
+      "UNKNOWN": "NOT_A_STABILITY_PASS",
+      "data_type": "CAPABILITY_SCOPED_RECEIPT",
+      "field_id": "status",
+      "owner_contract": "V4_16_SHADOW_HEALTH_CONTRACT_V1",
+      "time_basis": "ACTUAL_MARKET_SESSION_RECEIPT"
+    },
+    "system_available_at": {
+      "UNKNOWN": "BLOCK_AFFECTED_SCOPE; NEVER_SYNTHESIZE",
+      "data_type": "UTC_RFC3339_TIMESTAMP",
+      "field_id": "system_available_at",
+      "owner_contract": "V4_16_OBSERVATION_SLOT_CONTRACT_V1",
+      "time_basis": "FROZEN_SLOT"
+    },
+    "temporal_leakage_status": {
+      "UNKNOWN": "NOT_A_STABILITY_PASS",
+      "data_type": "CAPABILITY_SCOPED_RECEIPT",
+      "field_id": "temporal_leakage_status",
+      "owner_contract": "V4_16_SHADOW_HEALTH_CONTRACT_V1",
+      "time_basis": "ACTUAL_MARKET_SESSION_RECEIPT"
+    },
+    "trade_date": {
+      "UNKNOWN": "BLOCK_AFFECTED_SCOPE; NEVER_SYNTHESIZE",
+      "data_type": "FROZEN_IDENTITY_OR_ENUM",
+      "field_id": "trade_date",
+      "owner_contract": "V4_16_OBSERVATION_SLOT_CONTRACT_V1",
+      "time_basis": "FROZEN_SLOT"
+    }
+  },
+  "version": "1.0.0"
+}

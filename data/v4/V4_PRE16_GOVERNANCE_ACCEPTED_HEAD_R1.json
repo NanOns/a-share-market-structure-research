@@ -1,0 +1,41 @@
+{
+  "Data": "2026-09-30",
+  "Stage": "V4_00_TO_V4_15_ACCEPTED",
+  "V4_16": false,
+  "audited_config": {
+    "bytes": 2302,
+    "path": "config/v4_cross_stage_current_audit_authority_v1.json",
+    "sha256": "fafb96be45b936a4e955d71e89f4da946c02e18e16d5c9dfadcf4287692d3886"
+  },
+  "audited_head": {
+    "bytes": 177258,
+    "path": "data/v4/V4_CROSS_STAGE_CURRENT_AUDIT_HEAD_V1.json",
+    "sha256": "bf124bdcc5ddb679fbb46db7198dc659f60fc1b5ce93c0c754fdaf6063c3baa6"
+  },
+  "audited_remote_head": "b2c3dd81c4bfed2364b6ea2693860114421f990c",
+  "candidate_seal": {
+    "bytes": 6114,
+    "path": "reports/pre16_governance_r1_1/PRE16_GOV_R1_1_CANDIDATE_SEAL.json",
+    "sha256": "892fd649e71a41757c2042217aabdfc2db11e6e100ed1bd6c69389091468f6d4"
+  },
+  "closed_findings": {
+    "GOV_PRE16_01": "EXTERNALLY_ACCEPTED_CLOSED",
+    "GOV_PRE16_02": "EXTERNALLY_ACCEPTED_CLOSED"
+  },
+  "contract_id": "V4_PRE16_GOVERNANCE_ACCEPTED_HEAD_R1",
+  "execution_baseline": "b2c3dd81c4bfed2364b6ea2693860114421f990c",
+  "external_authority": {
+    "bytes": 8532,
+    "path": "docs/evidence/r22/V4_PRE16_GOVERNANCE_R1_1_FINAL_INDEPENDENT_EXTERNAL_AUDIT_R1_20261004.md",
+    "sha256": "80f9d86e8eba67125cab4708256e0b0f6d3f14c1206db2650e616465e8e72fc5"
+  },
+  "external_decision": "PASS_FINAL_CANONICAL_BLOCK_SCOPE_REPAIR",
+  "focus": false,
+  "grant": "PRE16_GOVERNANCE_ACCEPTANCE_ONLY; R22 CONTRACT ENTRY SUBJECT TO INDEPENDENT FORMALIZATION GATE",
+  "production": false,
+  "shadow": false,
+  "status": "EXTERNALLY_ACCEPTED_GOVERNANCE_ONLY",
+  "tested_source": "dabb5eb2fcdd4b52cfa4d9d684f9d9a9786c42bf",
+  "tested_tag": "refs/tags/codex/pre16-gov-r1-1-tested-source-20261004-r1",
+  "version": "1.0.0"
+}

@@ -1,0 +1,54 @@
+{
+  "affected_scope": "REALTIME_OBSERVATION_SLOT_AND_ORIGINAL_REALTIME_ENROLLMENT",
+  "command": [
+    "git",
+    "grep",
+    "-n",
+    "-I",
+    "-E",
+    "scheduled_cutoff|observation_deadline|publication_deadline",
+    "b2c3dd81c4bfed2364b6ea2693860114421f990c",
+    "--",
+    "config",
+    "reports/v4_phase0",
+    "data/v4/V4_STAGE_ACCEPTED_HEAD.json"
+  ],
+  "execution_baseline": "b2c3dd81c4bfed2364b6ea2693860114421f990c",
+  "finding": "NO_EXACT_ACCEPTED_SCHEDULED_CUTOFF_AND_OBSERVATION_DEADLINE_VALUES; V4-15 delegates unset policy to V4-00C",
+  "matches": [
+    "b2c3dd81c4bfed2364b6ea2693860114421f990c:config/v4_15_cohort_contract_v1.json:48:    \"observation_deadline\",",
+    "b2c3dd81c4bfed2364b6ea2693860114421f990c:config/v4_15_field_registry_v1.json:699:      \"field_id\": \"observation_deadline\",",
+    "b2c3dd81c4bfed2364b6ea2693860114421f990c:config/v4_15_radar_cohort_field_registry_v1.json:698:      \"field_id\": \"observation_deadline\","
+  ],
+  "numeric_times_invented": false,
+  "observation_deadline": null,
+  "reviewed_bindings": [
+    {
+      "bytes": 14147,
+      "path": "reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json",
+      "sha256": "313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59"
+    },
+    {
+      "bytes": 15303,
+      "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+      "sha256": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0"
+    },
+    {
+      "bytes": 2081,
+      "path": "config/v4_15_cohort_contract_v1.json",
+      "sha256": "5d4dee2e914ed541227cf54deb5676be3495713ea754ce6b78b078c643bacc8b"
+    },
+    {
+      "bytes": 7956,
+      "path": "config/v4_parameter_registry_v1.json",
+      "sha256": "b02d267d95456f557ddf5acf450eb01ff95ba661231e3f88fe84f355e85f0ef7"
+    },
+    {
+      "bytes": 224998,
+      "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+      "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+    }
+  ],
+  "scheduled_cutoff_at": null,
+  "status": "BLOCKED_AFFECTED_SCOPE"
+}

@@ -1,0 +1,11 @@
+{
+  "correction": "Compare explicit semantic retention set instead of arbitrary cardinality",
+  "final_validation": "reports/r27/local-summary.json",
+  "finding": "New rollback test expected six retention groups while the contract has five groups covering all required preservation semantics",
+  "first_static_run": {
+    "failed": 1,
+    "passed": 23,
+    "tests": 24
+  },
+  "scope": "R27 new static contract test authoring; no production contract behavior or historical tests changed"
+}

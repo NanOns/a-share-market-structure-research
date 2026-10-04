@@ -1,0 +1,109 @@
+{
+  "CURRENT_REAL_MATURITY_EVIDENCE": "NONE",
+  "CURRENT_STAGE_AUTHORITY": "V4_15",
+  "Focus": false,
+  "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+  "NEXT": "STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT",
+  "Production": false,
+  "R21_V4_15_PROMOTION": "PASS_LOCAL",
+  "REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT_RUNTIME": "NOT_GRANTED_PENDING_MATURITY_EVIDENCE",
+  "Shadow": false,
+  "V4_14_REPLAY_PREDECESSOR": "PASS",
+  "V4_15_ACCEPTED_HEAD": "CREATED",
+  "V4_16": false,
+  "V4_DATA_ACCEPTED_HEAD": "2026-09-30",
+  "V4_STAGE_ACCEPTED_HEAD": "V4_00_TO_V4_15_ACCEPTED",
+  "accepted_head": {
+    "bytes": 4778,
+    "path": "data/v4/V4_15_ACCEPTED_HEAD.json",
+    "sha256": "a3480dfc7e1d7b68656ea78e6ed68eb93c3381db9c099b8a6e0cb3a84c9d1d4d"
+  },
+  "bindings": {
+    "CURRENT_V4_15_AUTHORITY_GATE.json": {
+      "bytes": 565,
+      "path": "reports/r21/CURRENT_V4_15_AUTHORITY_GATE.json",
+      "sha256": "bc7b41122b9ce72ff56838053593f7a1268f7d6f3fc61f1bf1bf986f573be452"
+    },
+    "LOCAL_TEST_SUMMARY.json": {
+      "bytes": 885,
+      "path": "reports/r21/LOCAL_TEST_SUMMARY.json",
+      "sha256": "2dc43ea35ab23a762fb50a46b0c1e23aacb4082769961bc47b1eede1eb97b334"
+    },
+    "OPEN_AUDIT_ITEMS.json": {
+      "bytes": 798,
+      "path": "reports/r21/OPEN_AUDIT_ITEMS.json",
+      "sha256": "c27ad36f2d65ed33d78d969f49131f2bd0964190dd3c438b1df9e987fc3d8381"
+    },
+    "ROLLBACK_VALIDATION.json": {
+      "bytes": 1613,
+      "path": "reports/r21/ROLLBACK_VALIDATION.json",
+      "sha256": "b3586e89c7d810c6f272ef54905510e43c8fef2769a5a1a5429bbf8596b80ac7"
+    },
+    "SUPERSEDED_CURRENT_STAGE_TESTS.json": {
+      "bytes": 22560,
+      "path": "reports/r21/SUPERSEDED_CURRENT_STAGE_TESTS.json",
+      "sha256": "da80b40a150701fa554a78b80950491b1e4b2826c5ade948164cbf5dea405ae2"
+    },
+    "V4_14_REPLAY_COMPATIBILITY_GATE.json": {
+      "bytes": 565,
+      "path": "reports/r21/V4_14_REPLAY_COMPATIBILITY_GATE.json",
+      "sha256": "bc7b41122b9ce72ff56838053593f7a1268f7d6f3fc61f1bf1bf986f573be452"
+    },
+    "V4_15_PROMOTION_GATE.json": {
+      "bytes": 565,
+      "path": "reports/r21/V4_15_PROMOTION_GATE.json",
+      "sha256": "bc7b41122b9ce72ff56838053593f7a1268f7d6f3fc61f1bf1bf986f573be452"
+    },
+    "clean_regression/CLEAN_DETACHED_REGRESSION.json": {
+      "bytes": 97557,
+      "path": "reports/r21/clean_regression/CLEAN_DETACHED_REGRESSION.json",
+      "sha256": "2f6637d743815bbb1c6d61f3470065f325bf4e739bc542ca2a8d783e216f4768"
+    }
+  },
+  "bundle_only": false,
+  "contract_id": "V4_15_PROMOTION_CANDIDATE_R21_SEAL_V1",
+  "current_authority": {
+    "bytes": 4004,
+    "path": "config/v4_current_stage_authority_v2.json",
+    "sha256": "dc57e3957a1301ff3358f5012080027c47550559c4cd5d406065f98e4958a206"
+  },
+  "execution_baseline": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+  "external_promotion_audit": "PENDING",
+  "externally_audited_runtime_tag": "codex/r20r1r2-tested-source-20261003-r1",
+  "externally_audited_runtime_tested_source": "81d989af438bdeda583a581f1ef7f311205e6139",
+  "parent_archives": [
+    {
+      "bytes": 13840,
+      "path": "reports/r21/PARENT_STAGE_HEAD.json",
+      "sha256": "0014134e54e84d8b1e9a78aaee9c3f01533dc57195f62ddd3342c3675af8a926"
+    },
+    {
+      "bytes": 3803,
+      "path": "reports/r21/PARENT_CURRENT_STAGE_AUTHORITY.json",
+      "sha256": "6039b51afd1c1e660c5bc56955ade30dfdceff671f00ca3dbc14e53ca5fdf76c"
+    },
+    {
+      "bytes": 5364,
+      "path": "reports/r21/PARENT_CURRENT_STAGE_AUTHORITY_READER.py",
+      "sha256": "acc341c83896bd12c3b819368f215ae769267201db25f035dcd503c6183339c3"
+    },
+    {
+      "bytes": 4957,
+      "path": "reports/r21/PARENT_REPLAY_AUTHORITY_READER.py",
+      "sha256": "36b1a3c583441c645b1a0dcf0508f5b19dcf118743289a651e2621af76eeb76b"
+    },
+    {
+      "bytes": 15345,
+      "path": "reports/r21/PARENT_RADAR_COHORT_AUTHORITY_ADAPTER.py",
+      "sha256": "70455e9bfeb909660e9e0a1b72ac8010bbe07cfb4a6f7ff0a52c4be471393d89"
+    }
+  ],
+  "promotion_immutable_tag": "codex/r21-tested-source-20261004-r1",
+  "promotion_tested_source": "78aca3bdaa651455ffbf5320b6d50418855ecfb9",
+  "source_publication": "IMMUTABLE_ANNOTATED_TAG_AND_FINAL_BRANCH_ANCESTRY_ATOMIC_PUSH_REQUIRED",
+  "stage_head": {
+    "bytes": 15303,
+    "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+    "sha256": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0"
+  }
+}

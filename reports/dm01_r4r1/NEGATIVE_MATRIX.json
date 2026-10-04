@@ -1,0 +1,88 @@
+{
+  "additional_typed_mode_vectors": 3,
+  "fixture_disclosures": {
+    "R4R1-01": "Pure metadata projection counterfactual; no real source admission or publication.",
+    "R4R1-02_and_08": "Legacy isolated CAS fixture patches external envelope/native lineage/current parent/calendar and require_real_forward admission; 02 additionally exercises direct false-marker promoter rejection. 08 exercises actual CAS/head composition core, not real-market admission.",
+    "R4R1-07": "Synthetic exact proof structural checks exercised; public first availability and real-forward remain false."
+  },
+  "real_target_evidence": false,
+  "scope": "ENGINEERING_SIMULATION_AND_COUNTERFACTUAL_ONLY",
+  "status": "PASS_12_REQUIRED_VECTORS",
+  "vectors": {
+    "R4R1-01": {
+      "passed_nodes": [
+        "tests.v4_dm01_r4r1.test_lineage::test_R4R1_01_parent_and_target_composition"
+      ],
+      "status": "PASS"
+    },
+    "R4R1-02": {
+      "passed_nodes": [
+        "tests.v4_dm01_r4r1.test_lineage::test_R4R1_02_false_forward_marker_cannot_promote"
+      ],
+      "status": "PASS"
+    },
+    "R4R1-03": {
+      "passed_nodes": [
+        "tests.v4_dm01_r4r1.test_lineage::test_no_first_availability_without_proof[R4R1-03-2026-09-28T08:00:00+00:00]"
+      ],
+      "status": "PASS"
+    },
+    "R4R1-04": {
+      "passed_nodes": [
+        "tests.v4_dm01_r4r1.test_lineage::test_no_first_availability_without_proof[R4R1-04-None]"
+      ],
+      "status": "PASS"
+    },
+    "R4R1-05": {
+      "passed_nodes": [
+        "tests.v4_dm01_r4r1.test_lineage::test_R4R1_05_simulation_cannot_claim_real_forward",
+        "tests.v4_dm01_r4r1.test_lineage::test_R4R1_05_simulation_flag_requires_boolean[1]",
+        "tests.v4_dm01_r4r1.test_lineage::test_R4R1_05_simulation_flag_requires_boolean[None]",
+        "tests.v4_dm01_r4r1.test_lineage::test_R4R1_05_simulation_flag_requires_boolean[false]"
+      ],
+      "status": "PASS"
+    },
+    "R4R1-06": {
+      "passed_nodes": [
+        "tests.v4_dm01_r4r1.test_lineage::test_R4R1_06_before_close_rejected"
+      ],
+      "status": "PASS"
+    },
+    "R4R1-07": {
+      "passed_nodes": [
+        "tests.v4_dm01_r4r1.test_lineage::test_R4R1_07_synthetic_explicit_proof_remains_engineering"
+      ],
+      "status": "PASS"
+    },
+    "R4R1-08": {
+      "passed_nodes": [
+        "tests.v4_dm01_r4r1.test_lineage::test_R4R1_08_promoted_whole_head_keeps_mixed_lineage"
+      ],
+      "status": "PASS"
+    },
+    "R4R1-09": {
+      "passed_nodes": [
+        "tests.v4_dm01_r4r1.test_lineage::test_R4R1_09_whole_head_overclaim_rejected"
+      ],
+      "status": "PASS"
+    },
+    "R4R1-10": {
+      "passed_nodes": [
+        "tests.v4_dm01_r4r1.test_lineage::test_R4R1_10_whole_head_only_not_R25_authority"
+      ],
+      "status": "PASS"
+    },
+    "R4R1-11": {
+      "passed_nodes": [
+        "tests.v4_dm01_r4r1.test_lineage::test_R4R1_11_exact_engineering_target_bridge_no_grant"
+      ],
+      "status": "PASS"
+    },
+    "R4R1-12": {
+      "passed_nodes": [
+        "tests.v4_dm01_r4r1.test_lineage::test_R4R1_12_unknown_identity_rows_are_retained"
+      ],
+      "status": "PASS"
+    }
+  }
+}

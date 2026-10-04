@@ -1,1 +1,54 @@
-{"items":[{"acceptance":"Separate external audit; excluded from R4 production topology","evidence":"docs/evidence/dm01_r4/V4_RUNTIME_RESUME_DM01_GO_FORWARD_READINESS_INDEPENDENT_AUDIT_R1_20261005.md","id":"DM01-R4-AUDIT-STALE-PARALLEL-V1","scope":"Historical parallel generic V1 increment framework","status":"OPEN_P1_DO_NOT_USE"},{"acceptance":"Independent repair/acceptance; R4 must introduce zero additional failures","baseline":"41d40692149055b7518751ff0916dbc0e2ff0d12","evidence":"reports/dm01_r4/attempts/BASELINE_FAILED_CASES_regression.xml","failure_nodes":["tests.upgrade_v3.test_p01_01_lock_scope::test_hot_rank_route_skips_request_scope","tests.upgrade_v3.test_p01_01_lock_scope::test_send_marks_disconnected_client_closed","tests.upgrade_v3.test_v3_unified_entry::test_v3_is_the_single_unified_workbench_entry","tests.v4_09.test_stock_prewatch::test_production_and_v4_09_acceptance_stay_disabled","tests.v4_10.test_accepted_head_r1::test_promotion_and_all_25_independent_checks","tests.v4_10.test_accepted_head_r1::test_changed_authority_or_overclaim_rejected[implementation_commit-wrong]","tests.v4_10.test_accepted_head_r1::test_changed_authority_or_overclaim_rejected[audited_sealed_head-wrong]","tests.v4_10.test_accepted_head_r1::test_changed_authority_or_overclaim_rejected[external_acceptance_decision-wrong]","tests.v4_10.test_accepted_head_r1::test_changed_authority_or_overclaim_rejected[production_permission-True]","tests.v4_10.test_accepted_head_r1::test_changed_authority_or_overclaim_rejected[parent_binding-value4]","tests.v4_10.test_accepted_head_r1::test_changed_authority_or_overclaim_rejected[capabilities-value5]","tests.v4_10.test_accepted_head_r1::test_changed_authority_or_overclaim_rejected[open_audit_registry-value6]","tests.v4_10.test_accepted_head_r1::test_changed_authority_or_overclaim_rejected[global_head_parent_archive-value7]","tests.v4_10.test_promotion::test_promoted_exact","tests.v4_10.test_promotion::test_overclaim_or_wrong_authority_rejected[capabilities-value0]","tests.v4_10.test_promotion::test_overclaim_or_wrong_authority_rejected[implementation_commit-wrong]","tests.v4_10.test_promotion::test_overclaim_or_wrong_authority_rejected[external_acceptance_decision-wrong]","tests.v4_10.test_promotion::test_overclaim_or_wrong_authority_rejected[production_permission-True]","tests.v4_10.test_promotion::test_overclaim_or_wrong_authority_rejected[upstream_binding-value4]","tests.v4_10.test_promotion::test_overclaim_or_wrong_authority_rejected[artifact-value5]","tests.v4_a08.test_repair_freeze_authority::test_historical_archive_does_not_accept_current_runtime_for_new_promotion","tests.v4_dm01_promotion.test_accepted_chain::test_anchor_is_exact_bytes_and_wrong_hash_never_redirects","tests.v4_dm01_promotion.test_accepted_chain::test_business_publication_history_has_explicit_archive_scope","tests.v4_dm01_r3.test_real_authority_and_chain::test_atomic_failure_determinism_and_heads_preserved","tests.v4_registry_r3.test_formalization::test_external_dispositions_and_protected_bytes","tests.v4_registry_r4.test_entry::test_independent_acceptance_exact_evidence"],"id":"DM01-R4-AUDIT-BASELINE-REGRESSION-DEBT","scope":"26 inherited failure nodes including R26-A01 and historical movable Stage/Data pointer assumptions","status":"OPEN_INDEPENDENT_BASELINE_DEBT"}]}
+{
+  "items": [
+    {
+      "acceptance": "Separate external audit; excluded from R4 production topology",
+      "evidence": "docs/evidence/dm01_r4/V4_RUNTIME_RESUME_DM01_GO_FORWARD_READINESS_INDEPENDENT_AUDIT_R1_20261005.md",
+      "id": "DM01-R4-AUDIT-STALE-PARALLEL-V1",
+      "scope": "Historical parallel generic V1 increment framework",
+      "status": "OPEN_P1_DO_NOT_USE"
+    },
+    {
+      "acceptance": "Independent repair/acceptance; R4 must introduce zero additional failures",
+      "baseline": "41d40692149055b7518751ff0916dbc0e2ff0d12",
+      "evidence": "reports/dm01_r4/attempts/BASELINE_FAILED_CASES_regression.xml",
+      "failure_nodes": [
+        "tests.upgrade_v3.test_p01_01_lock_scope::test_hot_rank_route_skips_request_scope",
+        "tests.upgrade_v3.test_p01_01_lock_scope::test_send_marks_disconnected_client_closed",
+        "tests.upgrade_v3.test_v3_unified_entry::test_v3_is_the_single_unified_workbench_entry",
+        "tests.v4_09.test_stock_prewatch::test_production_and_v4_09_acceptance_stay_disabled",
+        "tests.v4_10.test_accepted_head_r1::test_promotion_and_all_25_independent_checks",
+        "tests.v4_10.test_accepted_head_r1::test_changed_authority_or_overclaim_rejected[implementation_commit-wrong]",
+        "tests.v4_10.test_accepted_head_r1::test_changed_authority_or_overclaim_rejected[audited_sealed_head-wrong]",
+        "tests.v4_10.test_accepted_head_r1::test_changed_authority_or_overclaim_rejected[external_acceptance_decision-wrong]",
+        "tests.v4_10.test_accepted_head_r1::test_changed_authority_or_overclaim_rejected[production_permission-True]",
+        "tests.v4_10.test_accepted_head_r1::test_changed_authority_or_overclaim_rejected[parent_binding-value4]",
+        "tests.v4_10.test_accepted_head_r1::test_changed_authority_or_overclaim_rejected[capabilities-value5]",
+        "tests.v4_10.test_accepted_head_r1::test_changed_authority_or_overclaim_rejected[open_audit_registry-value6]",
+        "tests.v4_10.test_accepted_head_r1::test_changed_authority_or_overclaim_rejected[global_head_parent_archive-value7]",
+        "tests.v4_10.test_promotion::test_promoted_exact",
+        "tests.v4_10.test_promotion::test_overclaim_or_wrong_authority_rejected[capabilities-value0]",
+        "tests.v4_10.test_promotion::test_overclaim_or_wrong_authority_rejected[implementation_commit-wrong]",
+        "tests.v4_10.test_promotion::test_overclaim_or_wrong_authority_rejected[external_acceptance_decision-wrong]",
+        "tests.v4_10.test_promotion::test_overclaim_or_wrong_authority_rejected[production_permission-True]",
+        "tests.v4_10.test_promotion::test_overclaim_or_wrong_authority_rejected[upstream_binding-value4]",
+        "tests.v4_10.test_promotion::test_overclaim_or_wrong_authority_rejected[artifact-value5]",
+        "tests.v4_a08.test_repair_freeze_authority::test_historical_archive_does_not_accept_current_runtime_for_new_promotion",
+        "tests.v4_dm01_promotion.test_accepted_chain::test_anchor_is_exact_bytes_and_wrong_hash_never_redirects",
+        "tests.v4_dm01_promotion.test_accepted_chain::test_business_publication_history_has_explicit_archive_scope",
+        "tests.v4_dm01_r3.test_real_authority_and_chain::test_atomic_failure_determinism_and_heads_preserved",
+        "tests.v4_registry_r3.test_formalization::test_external_dispositions_and_protected_bytes",
+        "tests.v4_registry_r4.test_entry::test_independent_acceptance_exact_evidence"
+      ],
+      "id": "DM01-R4-AUDIT-BASELINE-REGRESSION-DEBT",
+      "scope": "26 inherited failure nodes including R26-A01 and historical movable Stage/Data pointer assumptions",
+      "status": "OPEN_INDEPENDENT_BASELINE_DEBT"
+    },
+    {
+      "acceptance": "Independent service/test lifecycle repair and repeat-run stability acceptance; serial successful rechecks do not close this issue",
+      "evidence": "reports/dm01_r4r1/REGRESSION_RECHECK_DISPOSITION.json",
+      "id": "DM01-R4R1-AUDIT-HTTP-DUCKDB-FILE-LOCK",
+      "scope": "Existing HTTP research-context test/service database lifetime under concurrent regression load; outside DM01 numerical runtime",
+      "status": "OPEN_INDEPENDENT_REPRODUCIBILITY_FLAKE"
+    }
+  ]
+}

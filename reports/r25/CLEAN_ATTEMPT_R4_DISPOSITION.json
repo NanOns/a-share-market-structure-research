@@ -14,11 +14,17 @@
     }
   ],
   "failed": 7,
+  "final_clean_regression": {
+    "bytes": 52450,
+    "path": "reports/r25/CLEAN_REGRESSION.json",
+    "sha256": "52945bc3029cc6874ec8000b3b64a789d037610176e1b55d9a303550e2ffa93d"
+  },
+  "final_tested_source": "00c6168160860c29f77a570bee45578f915a4778",
   "immutable_tag": "refs/tags/codex/r25-activation-packet-tested-source-20261004-r4",
   "passed": 419,
   "reason": "Appending authorized temporary-space preference to the frozen root AGENTS.md triggered historical baseline protection",
   "repair": "Restore root AGENTS.md exactly; add scripts/AGENTS.md and versioned workspace policy; preserve historical validators and test suites",
   "skipped": 0,
-  "status": "LOCAL_REPAIR_HISTORICAL_ROOT_GUARDRAILS_RESTORED_PENDING_CLEAN_RETEST",
+  "status": "CLOSED_LOCAL_HISTORICAL_ROOT_GUARDRAILS_RESTORED_FINAL_CLEAN_PASSED",
   "tested_source": "66fc3dc22857fd265b4f313235d98e23072bb903"
 }

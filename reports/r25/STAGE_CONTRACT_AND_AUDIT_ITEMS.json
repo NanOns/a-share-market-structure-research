@@ -4,6 +4,11 @@
   "REAL_SHADOW_EXECUTION": "NOT_STARTED",
   "REAL_SHADOW_OBSERVATIONS": 0,
   "acceptance": "WAIT_ACCEPTED_DAILY_INPUT",
+  "clean_regression": {
+    "bytes": 52450,
+    "path": "reports/r25/CLEAN_REGRESSION.json",
+    "sha256": "52945bc3029cc6874ec8000b3b64a789d037610176e1b55d9a303550e2ffa93d"
+  },
   "execution_authorized": false,
   "execution_baseline": "31db7c17463d7a314c4dbfb10023f701c1a9387b",
   "external_acceptance": null,
@@ -40,17 +45,17 @@
       "scope": "Existing valid latest.json decoy; exact runtime binding wins; governance ValueError rejection"
     },
     {
-      "acceptance": "LOCAL_REPAIR_PENDING_FINAL_CLEAN_REGRESSION",
+      "acceptance": "CLOSED_LOCAL_FINAL_CLEAN_REGRESSION_PASSED_PENDING_EXTERNAL_REVIEW",
       "evidence": {
-        "bytes": 1397,
+        "bytes": 1771,
         "path": "reports/r25/CLEAN_ATTEMPT_R1_DISPOSITION.json",
-        "sha256": "a43f06bbbc67467f303f4afac2d9ab75e97e7c0a159aab10419ec5baf1d72267"
+        "sha256": "f098bb8081fb36333d67ab23404f74e65d867018f0d2548f0887405690ff8d02"
       },
       "id": "R25_TEST_ARTIFACT_ATOMIC_PUBLICATION",
       "scope": "JUnit staging publication must not collide with atomic-output temporary paths"
     },
     {
-      "acceptance": "USER_RULE_IMPLEMENTED_LOCAL_PENDING_FINAL_CLEAN_REGRESSION",
+      "acceptance": "CLOSED_LOCAL_FINAL_CLEAN_REGRESSION_PASSED_PENDING_EXTERNAL_REVIEW",
       "evidence": {
         "bytes": 1841,
         "path": "reports/r25/TEMPORARY_STORAGE_POLICY.json",
@@ -60,11 +65,11 @@
       "scope": "E/F-only temporary storage under new instructions and versioned policy; historical root guardrails untouched"
     },
     {
-      "acceptance": "LOCAL_REPAIR_PENDING_FINAL_CLEAN_REGRESSION",
+      "acceptance": "CLOSED_LOCAL_FINAL_CLEAN_REGRESSION_PASSED_PENDING_EXTERNAL_REVIEW",
       "evidence": {
-        "bytes": 980,
+        "bytes": 1232,
         "path": "reports/r25/CLEAN_ATTEMPT_R4_DISPOSITION.json",
-        "sha256": "32f0d385769259ff8d7ad618ebbeb684a48d927949c23b00d1ae78184d262613"
+        "sha256": "84098e953920824d710001cfc0ffe00e9fd450210789703655c16585b09947dc"
       },
       "id": "R25_HISTORICAL_GUARDRAIL_BYTE_PRESERVATION",
       "scope": "Preserve frozen root AGENTS and all accepted historical validators while retaining user E/F instructions in new files"
@@ -94,5 +99,5 @@
     "sha256": "362c62176c7e34fbc1d9a26bab6e4f1d851fb9d6d40efb2b012fcf9e7feb4a95"
   },
   "v4_17_acceptance_v4_17g": "REQUIRES_REAL_SHADOW_EVIDENCE",
-  "wait_receipt_digest": "f077f403b683c845eae601b713c752e87007ec60cd747f4a15f2b118cd71b6f5"
+  "wait_receipt_digest": "f73a558224e22e31a9ce0578bb5385f0330d423116cbbec2423e53045a596f2a"
 }

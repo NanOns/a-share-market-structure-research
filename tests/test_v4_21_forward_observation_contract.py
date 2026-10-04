@@ -19,6 +19,11 @@ def test_twenty_design_vectors(i):
     if i==1: assert first['real_accepted_sessions']==first['events']==first['observed']==1
     if i in (2,3,4): assert sum(x['real_accepted_sessions']+x['events']+x['observed'] for x in rows)==0
     if i in (5,6): assert first['session_denominator']==2 and first['real_accepted_sessions']==1 and first['consecutive_accepted_sessions']==0
+    if i in (1,5,6):
+        session=scenario(i)['sessions'][-1]
+        assert session['native_session_status']==('MISSED_OBSERVATION_SLOT' if i==5 else 'ACCEPTED_ON_TIME')
+        assert session['projection_evaluable']==(i==1)
+        if i==6: assert session['missed_reason'] is None and session['projection_evaluable_reason']
     if i==7: assert first['events']==first['hidden_eligible']==1
     if i==9: assert first['observed']==0 and first['pending']==first['due_denominator']==1
     if i==10: assert first['observed']==first['pending']==0 and first['right_censored']==1 and 'failure' not in first

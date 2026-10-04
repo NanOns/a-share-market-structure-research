@@ -1,0 +1,910 @@
+{
+  "production_future_authority": "EXPLICIT_SIMULATION_ONLY_NOT_CURRENT_BINDING",
+  "results": {
+    "F21-01": {
+      "result": {
+        "actual_real_rows_written": 0,
+        "breakdown": [
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 1,
+            "due_denominator": 1,
+            "events": 1,
+            "evidence_lane": "SHADOW_REAL",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {
+              "OBSERVED": 1
+            },
+            "observed": 1,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 0,
+            "real_accepted_sessions": 1,
+            "right_censored": 0,
+            "session_denominator": 1,
+            "state_lineage_id": "SIM_LINEAGE"
+          }
+        ],
+        "first_observed_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "idempotency_digest": "0af224aa4f8f37db49e78a55f69f3018ff41376d3bc6ce50037143d07442b464",
+        "latest_corrected_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "production_grant": false,
+        "status": "PASS_DESIGN_ONLY"
+      },
+      "scope": "DESIGN_ONLY"
+    },
+    "F21-02": {
+      "result": {
+        "actual_real_rows_written": 0,
+        "breakdown": [
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 0,
+            "due_denominator": 0,
+            "events": 0,
+            "evidence_lane": "ACTIVATION_SIMULATION",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {},
+            "observed": 0,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 0,
+            "real_accepted_sessions": 0,
+            "right_censored": 0,
+            "session_denominator": 1,
+            "state_lineage_id": "SIM_LINEAGE"
+          }
+        ],
+        "first_observed_revision_view": [],
+        "idempotency_digest": "d410fc48a864d403d9f8d0e03e6faf4e7e112550d4fd06a5d80c56b98833c729",
+        "latest_corrected_revision_view": [],
+        "production_grant": false,
+        "status": "PASS_DESIGN_ONLY"
+      },
+      "scope": "DESIGN_ONLY"
+    },
+    "F21-03": {
+      "result": {
+        "actual_real_rows_written": 0,
+        "breakdown": [
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 0,
+            "due_denominator": 0,
+            "events": 0,
+            "evidence_lane": "HISTORICAL_REPLAY",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {},
+            "observed": 0,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 0,
+            "real_accepted_sessions": 0,
+            "right_censored": 0,
+            "session_denominator": 1,
+            "state_lineage_id": "SIM_LINEAGE"
+          }
+        ],
+        "first_observed_revision_view": [],
+        "idempotency_digest": "7ee48dd9f9a72775bca700cb23d631f1b821b673a8c272bae2d232fd7d085d25",
+        "latest_corrected_revision_view": [],
+        "production_grant": false,
+        "status": "PASS_DESIGN_ONLY"
+      },
+      "scope": "DESIGN_ONLY"
+    },
+    "F21-04": {
+      "result": {
+        "actual_real_rows_written": 0,
+        "breakdown": [
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 0,
+            "due_denominator": 0,
+            "events": 0,
+            "evidence_lane": "RECONSTRUCTED_ASOF",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {},
+            "observed": 0,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 0,
+            "real_accepted_sessions": 0,
+            "right_censored": 0,
+            "session_denominator": 1,
+            "state_lineage_id": "SIM_LINEAGE"
+          }
+        ],
+        "first_observed_revision_view": [],
+        "idempotency_digest": "105019d7ec781869584d2ec54eb3a01e8866de53bf3b9042038d05304e7faec6",
+        "latest_corrected_revision_view": [],
+        "production_grant": false,
+        "status": "PASS_DESIGN_ONLY"
+      },
+      "scope": "DESIGN_ONLY"
+    },
+    "F21-05": {
+      "result": {
+        "actual_real_rows_written": 0,
+        "breakdown": [
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 0,
+            "due_denominator": 1,
+            "events": 1,
+            "evidence_lane": "SHADOW_REAL",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {
+              "OBSERVED": 1
+            },
+            "observed": 1,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 0,
+            "real_accepted_sessions": 1,
+            "right_censored": 0,
+            "session_denominator": 2,
+            "state_lineage_id": "SIM_LINEAGE"
+          }
+        ],
+        "first_observed_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "idempotency_digest": "622b5e512ee69156fad0ff6717069f9255ffd85ceb158a8a1206173bd8c4eba9",
+        "latest_corrected_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "production_grant": false,
+        "status": "PASS_DESIGN_ONLY"
+      },
+      "scope": "DESIGN_ONLY"
+    },
+    "F21-06": {
+      "result": {
+        "actual_real_rows_written": 0,
+        "breakdown": [
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 0,
+            "due_denominator": 1,
+            "events": 1,
+            "evidence_lane": "SHADOW_REAL",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {
+              "OBSERVED": 1
+            },
+            "observed": 1,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 0,
+            "real_accepted_sessions": 1,
+            "right_censored": 0,
+            "session_denominator": 2,
+            "state_lineage_id": "SIM_LINEAGE"
+          }
+        ],
+        "first_observed_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "idempotency_digest": "5a3d6c585eb47e905e8dfca8ba37eb7fd22c271ada9562936c38945f31721535",
+        "latest_corrected_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "production_grant": false,
+        "status": "PASS_DESIGN_ONLY"
+      },
+      "scope": "DESIGN_ONLY"
+    },
+    "F21-07": {
+      "result": {
+        "actual_real_rows_written": 0,
+        "breakdown": [
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 1,
+            "due_denominator": 1,
+            "events": 1,
+            "evidence_lane": "SHADOW_REAL",
+            "hidden_eligible": 1,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {
+              "OBSERVED": 1
+            },
+            "observed": 1,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 0,
+            "real_accepted_sessions": 1,
+            "right_censored": 0,
+            "session_denominator": 1,
+            "state_lineage_id": "SIM_LINEAGE"
+          }
+        ],
+        "first_observed_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "idempotency_digest": "230b159eb186c55850992f5b737dc0f2cdd0f15e25f7c93746489524dd8a2f05",
+        "latest_corrected_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "production_grant": false,
+        "status": "PASS_DESIGN_ONLY"
+      },
+      "scope": "DESIGN_ONLY"
+    },
+    "F21-08": {
+      "result": {
+        "actual_real_rows_written": 0,
+        "errors": [
+          "CONFLICTING_EVENT_CONTENT",
+          "DUPLICATE_ORIGINAL_ENROLLMENT"
+        ],
+        "production_grant": false,
+        "status": "BLOCKED_AFFECTED_SCOPE"
+      },
+      "scope": "DESIGN_ONLY"
+    },
+    "F21-09": {
+      "result": {
+        "actual_real_rows_written": 0,
+        "breakdown": [
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 1,
+            "due_denominator": 1,
+            "events": 1,
+            "evidence_lane": "SHADOW_REAL",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {
+              "PENDING": 1
+            },
+            "observed": 0,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 1,
+            "real_accepted_sessions": 1,
+            "right_censored": 0,
+            "session_denominator": 1,
+            "state_lineage_id": "SIM_LINEAGE"
+          }
+        ],
+        "first_observed_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "PENDING_NOT_DUE"
+          }
+        ],
+        "idempotency_digest": "ab42eb66541266ae931d300229c0de7a02490ebfddbd4310de5d5a774a41d434",
+        "latest_corrected_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "PENDING_NOT_DUE"
+          }
+        ],
+        "production_grant": false,
+        "status": "PASS_DESIGN_ONLY"
+      },
+      "scope": "DESIGN_ONLY"
+    },
+    "F21-10": {
+      "result": {
+        "actual_real_rows_written": 0,
+        "breakdown": [
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 1,
+            "due_denominator": 1,
+            "events": 1,
+            "evidence_lane": "SHADOW_REAL",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {
+              "RIGHT_CENSORED": 1
+            },
+            "observed": 0,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 0,
+            "real_accepted_sessions": 1,
+            "right_censored": 1,
+            "session_denominator": 1,
+            "state_lineage_id": "SIM_LINEAGE"
+          }
+        ],
+        "first_observed_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "RIGHT_CENSORED"
+          }
+        ],
+        "idempotency_digest": "9ea3ac4539bbdda9c6b82ec1fd485a2629163e1201a85675d62f6b70090a334f",
+        "latest_corrected_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "RIGHT_CENSORED"
+          }
+        ],
+        "production_grant": false,
+        "status": "PASS_DESIGN_ONLY"
+      },
+      "scope": "DESIGN_ONLY"
+    },
+    "F21-11": {
+      "result": {
+        "actual_real_rows_written": 0,
+        "breakdown": [
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 1,
+            "due_denominator": 1,
+            "events": 1,
+            "evidence_lane": "SHADOW_REAL",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {
+              "OBSERVED": 1
+            },
+            "observed": 1,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 0,
+            "real_accepted_sessions": 1,
+            "right_censored": 0,
+            "session_denominator": 1,
+            "state_lineage_id": "SIM_LINEAGE"
+          }
+        ],
+        "first_observed_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "idempotency_digest": "880ff2e088a9586153e06c7fd7855c2869f1c3ae5d428488e8595358b67aa471",
+        "latest_corrected_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 2,
+            "status": "OBSERVED"
+          }
+        ],
+        "production_grant": false,
+        "status": "PASS_DESIGN_ONLY"
+      },
+      "scope": "DESIGN_ONLY"
+    },
+    "F21-12": {
+      "result": {
+        "actual_real_rows_written": 0,
+        "breakdown": [
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 1,
+            "due_denominator": 0,
+            "events": 0,
+            "evidence_lane": "SHADOW_REAL",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_CHANGED",
+            "native_status_breakdown": {},
+            "observed": 0,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 0,
+            "real_accepted_sessions": 1,
+            "right_censored": 0,
+            "session_denominator": 1,
+            "state_lineage_id": "SIM_LINEAGE"
+          },
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 1,
+            "due_denominator": 1,
+            "events": 1,
+            "evidence_lane": "SHADOW_REAL",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {
+              "OBSERVED": 1
+            },
+            "observed": 1,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 0,
+            "real_accepted_sessions": 1,
+            "right_censored": 0,
+            "session_denominator": 1,
+            "state_lineage_id": "SIM_LINEAGE"
+          }
+        ],
+        "first_observed_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "idempotency_digest": "d5f144329a0e9795fe8a85953decfc15ab5b0cbbc5cdf1afdbaf8acb4d8484c7",
+        "latest_corrected_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "production_grant": false,
+        "status": "PASS_DESIGN_ONLY"
+      },
+      "scope": "DESIGN_ONLY"
+    },
+    "F21-13": {
+      "result": {
+        "actual_real_rows_written": 0,
+        "breakdown": [
+          {
+            "capability": "SECTOR_STAGE",
+            "consecutive_accepted_sessions": 2,
+            "due_denominator": 0,
+            "events": 0,
+            "evidence_lane": "SHADOW_REAL",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {},
+            "observed": 0,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 0,
+            "real_accepted_sessions": 2,
+            "right_censored": 0,
+            "session_denominator": 2,
+            "state_lineage_id": "SIM_LINEAGE"
+          },
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 1,
+            "due_denominator": 0,
+            "events": 0,
+            "evidence_lane": "SHADOW_REAL",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {},
+            "observed": 0,
+            "parameter_digest": "SIM_CHANGED",
+            "pending": 0,
+            "real_accepted_sessions": 1,
+            "right_censored": 0,
+            "session_denominator": 1,
+            "state_lineage_id": "SIM_LINEAGE"
+          },
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 1,
+            "due_denominator": 1,
+            "events": 1,
+            "evidence_lane": "SHADOW_REAL",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {
+              "OBSERVED": 1
+            },
+            "observed": 1,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 0,
+            "real_accepted_sessions": 1,
+            "right_censored": 0,
+            "session_denominator": 1,
+            "state_lineage_id": "SIM_LINEAGE"
+          }
+        ],
+        "first_observed_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "idempotency_digest": "f2dbdc7c8ba1127ae1609512eae478f37c8c9b8452692dcd1924c69dc5554552",
+        "latest_corrected_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "production_grant": false,
+        "status": "PASS_DESIGN_ONLY"
+      },
+      "scope": "DESIGN_ONLY"
+    },
+    "F21-14": {
+      "result": {
+        "actual_real_rows_written": 0,
+        "breakdown": [
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 1,
+            "due_denominator": 1,
+            "events": 1,
+            "evidence_lane": "SHADOW_REAL",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {
+              "OBSERVED": 1
+            },
+            "observed": 1,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 0,
+            "real_accepted_sessions": 1,
+            "right_censored": 0,
+            "session_denominator": 1,
+            "state_lineage_id": "SIM_LINEAGE"
+          }
+        ],
+        "first_observed_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "idempotency_digest": "0af224aa4f8f37db49e78a55f69f3018ff41376d3bc6ce50037143d07442b464",
+        "latest_corrected_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "production_grant": false,
+        "sector_counts_borrowed": false,
+        "sector_real_events": 0,
+        "status": "PASS_DESIGN_ONLY"
+      },
+      "scope": "DESIGN_ONLY"
+    },
+    "F21-15": {
+      "result": {
+        "actual_real_rows_written": 0,
+        "breakdown": [
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 1,
+            "due_denominator": 1,
+            "events": 1,
+            "evidence_lane": "PRODUCTION_REAL",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {
+              "OBSERVED": 1
+            },
+            "observed": 1,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 0,
+            "real_accepted_sessions": 1,
+            "right_censored": 0,
+            "session_denominator": 1,
+            "state_lineage_id": "SIM_LINEAGE"
+          },
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 1,
+            "due_denominator": 1,
+            "events": 1,
+            "evidence_lane": "SHADOW_REAL",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {
+              "OBSERVED": 1
+            },
+            "observed": 1,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 0,
+            "real_accepted_sessions": 1,
+            "right_censored": 0,
+            "session_denominator": 1,
+            "state_lineage_id": "SIM_LINEAGE"
+          }
+        ],
+        "first_observed_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          },
+          {
+            "due_id": "SIM_PROD_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "idempotency_digest": "9ae893c1ff7e3402b64ccaf8af4587083db2f6c2bd081b11c437bf5d089f5a12",
+        "latest_corrected_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          },
+          {
+            "due_id": "SIM_PROD_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "production_grant": false,
+        "status": "PASS_DESIGN_ONLY"
+      },
+      "scope": "DESIGN_ONLY"
+    },
+    "F21-16": {
+      "result": {
+        "actual_real_rows_written": 0,
+        "breakdown": [
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 1,
+            "due_denominator": 1,
+            "events": 1,
+            "evidence_lane": "PRODUCTION_REAL",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {
+              "OBSERVED": 1
+            },
+            "observed": 1,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 0,
+            "real_accepted_sessions": 1,
+            "right_censored": 0,
+            "session_denominator": 1,
+            "state_lineage_id": "SIM_LINEAGE"
+          },
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 1,
+            "due_denominator": 1,
+            "events": 1,
+            "evidence_lane": "SHADOW_REAL",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {
+              "OBSERVED": 1
+            },
+            "observed": 1,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 0,
+            "real_accepted_sessions": 1,
+            "right_censored": 0,
+            "session_denominator": 1,
+            "state_lineage_id": "SIM_LINEAGE"
+          }
+        ],
+        "first_observed_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          },
+          {
+            "due_id": "SIM_PROD_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "idempotency_digest": "9ae893c1ff7e3402b64ccaf8af4587083db2f6c2bd081b11c437bf5d089f5a12",
+        "latest_corrected_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          },
+          {
+            "due_id": "SIM_PROD_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "production_grant": false,
+        "status": "PASS_DESIGN_ONLY"
+      },
+      "scope": "DESIGN_ONLY"
+    },
+    "F21-17": {
+      "result": {
+        "actual_real_rows_written": 0,
+        "breakdown": [
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 1,
+            "due_denominator": 1,
+            "events": 1,
+            "evidence_lane": "SHADOW_REAL",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {
+              "OBSERVED": 1
+            },
+            "observed": 1,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 0,
+            "real_accepted_sessions": 1,
+            "right_censored": 0,
+            "session_denominator": 1,
+            "state_lineage_id": "SIM_LINEAGE"
+          }
+        ],
+        "first_observed_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "idempotency_digest": "0af224aa4f8f37db49e78a55f69f3018ff41376d3bc6ce50037143d07442b464",
+        "identical_rerun_same_digest": true,
+        "latest_corrected_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "production_grant": false,
+        "status": "PASS_DESIGN_ONLY"
+      },
+      "scope": "DESIGN_ONLY"
+    },
+    "F21-18": {
+      "result": {
+        "actual_real_rows_written": 0,
+        "errors": [
+          "OBSERVATION_HEAD_CAS_CONFLICT"
+        ],
+        "production_grant": false,
+        "status": "BLOCKED_AFFECTED_SCOPE"
+      },
+      "scope": "DESIGN_ONLY"
+    },
+    "F21-19": {
+      "result": {
+        "actual_real_rows_written": 0,
+        "errors": [
+          "SAME_DAY_OUTCOME_FEEDBACK_FORBIDDEN"
+        ],
+        "production_grant": false,
+        "status": "BLOCKED_AFFECTED_SCOPE"
+      },
+      "scope": "DESIGN_ONLY"
+    },
+    "F21-20": {
+      "result": {
+        "actual_real_rows_written": 0,
+        "breakdown": [
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 1,
+            "due_denominator": 1,
+            "events": 1,
+            "evidence_lane": "PRODUCTION_REAL",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {
+              "OBSERVED": 1
+            },
+            "observed": 1,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 0,
+            "real_accepted_sessions": 1,
+            "right_censored": 0,
+            "session_denominator": 1,
+            "state_lineage_id": "SIM_LINEAGE"
+          },
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 1,
+            "due_denominator": 1,
+            "events": 1,
+            "evidence_lane": "SHADOW_REAL",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {
+              "OBSERVED": 1
+            },
+            "observed": 1,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 0,
+            "real_accepted_sessions": 1,
+            "right_censored": 0,
+            "session_denominator": 1,
+            "state_lineage_id": "SIM_LINEAGE"
+          }
+        ],
+        "first_observed_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          },
+          {
+            "due_id": "SIM_PROD_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "idempotency_digest": "9ae893c1ff7e3402b64ccaf8af4587083db2f6c2bd081b11c437bf5d089f5a12",
+        "latest_corrected_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          },
+          {
+            "due_id": "SIM_PROD_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "production_grant": false,
+        "status": "PASS_DESIGN_ONLY"
+      },
+      "scope": "DESIGN_ONLY"
+    }
+  },
+  "status": "PASS_LOCAL_DESIGN_ONLY"
+}

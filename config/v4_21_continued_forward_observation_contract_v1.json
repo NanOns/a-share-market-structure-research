@@ -1,5 +1,5 @@
 {
-  "baseline": "c38c25dd189b3996f53e85dc64bbc142db1c188e",
+  "baseline": "3f0663804bf104dd3e61e65d9927cb7f2081fa3b",
   "capabilities": [
     "STOCK_CORE",
     "STOCK_SECTOR_DEPENDENT",
@@ -204,10 +204,42 @@
     "eligible_population": "ALL_ACCEPTED_ELIGIBLE_LOGICAL_EVENTS_NOT_UI_SELECTION; HIDDEN_OR_EXITED_CONTINUE_FOLLOWUP",
     "metrics": "MFE_MAE_MDD_ONLY_READ_ACCEPTED_V4_15_METRIC_REFS_WITH_QUALITY_AND_UNITS; NO_R30_CALCULATIONS",
     "session": "ONE_CANONICAL_ROW_PER_PARTITION_MARKET_SESSION; RETAIN_ALL_NATIVE_APPEND_REVISIONS_AND_COMPLETE_CALENDAR_DENOMINATOR; SAME_REVISION_CONFLICT_BLOCKED",
-    "session_order": "EXACT_ACCEPTED_CALENDAR_ORDER_NOT_FILE_ORDER; MISSED_OR_NON_EVALUABLE_BREAKS_STREAK_WITH_EXPLICIT_REASON"
+    "session_order": "EXACT_ACCEPTED_CALENDAR_ORDER; MISSED_OBSERVATION_SLOT_OR_PROJECTION_EVALUABLE_FALSE_RESETS_STREAK; NATIVE_STATUS_AND_PROJECTION_DISTINCT"
   },
   "mode": "CONTRACT_DESIGN_ONLY",
-  "next_stage": "STOP_WAIT_R30_INDEPENDENT_EXTERNAL_AUDIT",
+  "native_session_policy": {
+    "accepted_non_evaluable": "NATIVE_ACCEPTED_ON_TIME_RETAIN_DENOMINATOR_WITH_DISTINCT_PROJECTION_REASON_COUNT_ZERO_STREAK_ZERO_NEVER_MISSED",
+    "accepted_rule": "PIT_OBSERVED AND ACCEPTED_REAL_PUBLICATION AND SHADOW AND NATIVE_ACCEPTED_ON_TIME AND PROJECTION_EVALUABLE_TRUE",
+    "compatibility_slot_status": "IF_PRESENT_EXACT_NATIVE_STATUS_ONLY_NO_ALIAS",
+    "fields": [
+      "native_session_authority_id",
+      "native_session_authority_sha256",
+      "native_session_status",
+      "projection_evaluable",
+      "projection_evaluable_reason"
+    ],
+    "missed": "NATIVE_MISSED_OBSERVATION_SLOT_RETAIN_DENOMINATOR_PROJECTION_FALSE_AND_STREAK_ZERO",
+    "production_accepted_binding": null,
+    "production_current_real_gate_count": "NOT_COUNTABLE_FOR_REAL_GATE",
+    "production_design_fixture": "ONLY_EXPLICIT_CONTRACT_DESIGN_SIMULATION_WITH_SIMULATED_AUTHORITY_ID_STATES_AND_EXACT_DIGEST; NEVER_CURRENT_AUTHORITY",
+    "production_native_session_authority": "FUTURE_ACCEPTED_BINDING_REQUIRED",
+    "projection_type": "STRICT_BOOLEAN; FALSE_REQUIRES_EXPLICIT_REASON",
+    "shadow_allowed_statuses": [
+      "ACCEPTED_ON_TIME",
+      "MISSED_OBSERVATION_SLOT"
+    ],
+    "shadow_authority_id": "V4_16_OBSERVATION_SLOT_CONTRACT_V2",
+    "shadow_owner": {
+      "contract_id": "V4_16_OBSERVATION_SLOT_CONTRACT_V2",
+      "native_slot_states": [
+        "ACCEPTED_ON_TIME",
+        "MISSED_OBSERVATION_SLOT"
+      ],
+      "path": "config/v4_16_observation_slot_contract_v2.json",
+      "sha256": "47e0c0bc36373f0d63557769c428f64a422ea434435b9319ce144d43b22bea15"
+    }
+  },
+  "next_stage": "STOP_WAIT_R30R1_INDEPENDENT_EXTERNAL_AUDIT",
   "owner_bindings": [
     {
       "contract_id": "COHORT_V1",
@@ -243,6 +275,15 @@
       "contract_id": "V4_19_FOCUS_SOURCE_CUTOVER_CONTRACT_V1",
       "path": "config/v4_19_focus_source_cutover_contract_v1.json",
       "sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd"
+    },
+    {
+      "contract_id": "V4_16_OBSERVATION_SLOT_CONTRACT_V2",
+      "native_slot_states": [
+        "ACCEPTED_ON_TIME",
+        "MISSED_OBSERVATION_SLOT"
+      ],
+      "path": "config/v4_16_observation_slot_contract_v2.json",
+      "sha256": "47e0c0bc36373f0d63557769c428f64a422ea434435b9319ce144d43b22bea15"
     }
   ],
   "partition_keys": [
@@ -264,6 +305,7 @@
     "cross-capability sample borrowing"
   ],
   "receipt_schema": {
+    "accepted_session_status_derivation": "SHADOW: EXACT_NATIVE_V4_16_SLOT_STATUS; RETAIN_NATIVE_AUTHORITY_ID_SHA_AND_SEPARATE_PROJECTION_EVALUABLE_REASON. PRODUCTION: FUTURE_ACCEPTED_BINDING_REQUIRED; NO_REAL_R30R1_RECEIPT",
     "additional": [
       "contract_digest",
       "exact_source_manifest_digest",
@@ -273,7 +315,12 @@
       "native_status_breakdown",
       "report_cutoff",
       "supersedes",
-      "gate_readback_receipt_refs"
+      "gate_readback_receipt_refs",
+      "native_session_authority_id",
+      "native_session_authority_sha256",
+      "native_session_status",
+      "projection_evaluable",
+      "projection_evaluable_reason"
     ],
     "counts": "NONNEGATIVE_INTEGERS_WITH_EXACT_DENOMINATOR_RECONCILIATION; NO_REAL_COUNTS_FROM_DIAGNOSTIC_LANES",
     "current_real_receipt": null,
@@ -369,7 +416,16 @@
       "market_session_id"
     ],
     "missing": "BLOCKED_AFFECTED_SCOPE_WITH_REASON",
-    "owner": "V4_16_ACCEPTED_SLOT_AND_PUBLICATION_OWNER; V4_21_READ_ONLY_CANONICAL_PROJECTION",
+    "native_owner_binding": {
+      "contract_id": "V4_16_OBSERVATION_SLOT_CONTRACT_V2",
+      "native_slot_states": [
+        "ACCEPTED_ON_TIME",
+        "MISSED_OBSERVATION_SLOT"
+      ],
+      "path": "config/v4_16_observation_slot_contract_v2.json",
+      "sha256": "47e0c0bc36373f0d63557769c428f64a422ea434435b9319ce144d43b22bea15"
+    },
+    "owner": "EXACT_V4_16_OBSERVATION_SLOT_CONTRACT_V2_FOR_SHADOW; FUTURE_ACCEPTED_BINDING_REQUIRED_FOR_PRODUCTION",
     "physical_storage": "DESIGN_ONLY_NOT_CREATED; ACCEPTED_STORAGE_BINDING_REQUIRED",
     "required": [
       "observation_namespace",
@@ -388,18 +444,21 @@
       "market_session_id",
       "market_session_ordinal",
       "calendar_identity",
-      "slot_status",
       "publication_id",
       "publication_revision",
       "source_availability",
-      "evaluable",
       "missed_reason",
       "session_receipt_id",
-      "slot_receipt_digest"
+      "slot_receipt_digest",
+      "native_session_authority_id",
+      "native_session_authority_sha256",
+      "native_session_status",
+      "projection_evaluable",
+      "projection_evaluable_reason"
     ]
   },
   "stage": "V4-21",
-  "status": "LOCAL_DESIGN_PENDING_EXTERNAL_AUDIT",
+  "status": "LOCAL_NATIVE_SESSION_REPAIR_PENDING_EXTERNAL_AUDIT",
   "stratification": {
     "asof": "ACCEPTED_T0_CONTEXT_AND_VERSIONED_QUALITY_REF; UNKNOWN_STRATA_EXPLICIT_NEVER_DROPPED",
     "first_vs_corrected": "SEPARATE_FIRST_OBSERVED_AND_LATEST_CORRECTED_VIEWS; REVISION_NOT_NEW_MATURED_EVENT",
@@ -426,7 +485,7 @@
   },
   "vectors": [
     {
-      "description": "accepted real Shadow session counts",
+      "description": "ACCEPTED_ON_TIME and projection evaluable true counts one",
       "expected_production_grant": false,
       "expected_real_rows_written": 0,
       "expected_status": "PASS_DESIGN_ONLY",
@@ -466,7 +525,7 @@
       "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_FORWARD_EVIDENCE"
     },
     {
-      "description": "missed session denominator/streak break",
+      "description": "MISSED_OBSERVATION_SLOT retained denominator count zero streak breaks",
       "expected_production_grant": false,
       "expected_real_rows_written": 0,
       "expected_status": "PASS_DESIGN_ONLY",
@@ -476,7 +535,7 @@
       "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_FORWARD_EVIDENCE"
     },
     {
-      "description": "non-evaluable session retained",
+      "description": "ACCEPTED_ON_TIME and projection evaluable false retained denominator count zero streak breaks not missed",
       "expected_production_grant": false,
       "expected_real_rows_written": 0,
       "expected_status": "PASS_DESIGN_ONLY",
@@ -626,5 +685,5 @@
       "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_FORWARD_EVIDENCE"
     }
   ],
-  "version": "1.0.0"
+  "version": "1.0.1"
 }

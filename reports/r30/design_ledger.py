@@ -2,6 +2,7 @@
 from copy import deepcopy
 import hashlib
 import json
+from reports.r30r1.session_authority import OWNER,OWNER_SHA,bind_future_production_fixture,session_countable,session_errors
 
 CAPS=('STOCK_CORE','STOCK_SECTOR_DEPENDENT','SECTOR_STAGE','ROTATION','SECTOR_RISK_CHANGE')
 LANES=('SHADOW_REAL','PRODUCTION_REAL','HISTORICAL_REPLAY','RECONSTRUCTED_ASOF','ACTIVATION_SIMULATION')
@@ -24,7 +25,7 @@ def real(row):
 
 def validate(value):
     errors=[]; originals={}; event_ids={}
-    required={'sessions':set(PARTITION)|{'trade_date','market_session_id','slot_status','evaluable','publication_id','publication_revision','evidence_origin','execution_mode','accepted_real_publication'},'events':set(PARTITION)|{'logical_event_id','enrollment_id','eligible','displayed','T0','control_assignment_ids','benchmark_ids','evidence_origin','execution_mode','accepted_real_publication'},'outcomes':set(PARTITION)|{'due_id','enrollment_id','horizon','due_date','status','native_status','outcome_revision','source_identity','evidence_origin','execution_mode','accepted_real_publication'}}
+    required={'sessions':set(PARTITION)|{'trade_date','market_session_id','native_session_authority_id','native_session_authority_sha256','native_session_status','projection_evaluable','projection_evaluable_reason','publication_id','publication_revision','evidence_origin','execution_mode','accepted_real_publication'},'events':set(PARTITION)|{'logical_event_id','enrollment_id','eligible','displayed','T0','control_assignment_ids','benchmark_ids','evidence_origin','execution_mode','accepted_real_publication'},'outcomes':set(PARTITION)|{'due_id','enrollment_id','horizon','due_date','status','native_status','outcome_revision','source_identity','evidence_origin','execution_mode','accepted_real_publication'}}
     for name,fields in required.items():
         for row in value.get(name,[]):
             if not fields <= set(row): errors.append('LEDGER_SCHEMA_INCOMPLETE')
@@ -32,6 +33,7 @@ def validate(value):
     session_ids={}; outcome_ids={}
     if any('market_session_ordinal' not in row for row in value['sessions']): return ['ACCEPTED_CALENDAR_ORDER_REQUIRED']
     for row in value['sessions']:
+        errors.extend(session_errors(row,value))
         key=partition(row)+(row['market_session_id'],row['publication_revision'])
         if key in session_ids and session_ids[key]!=digest(row): errors.append('CONFLICTING_SESSION_CONTENT')
         session_ids[key]=digest(row)
@@ -66,7 +68,7 @@ def readback(value):
     for session in sorted(canonical_sessions.values(),key=lambda row:row['market_session_ordinal']):
         key=partition(session); group=groups.setdefault(key,dict(session_denominator=0,real_accepted_sessions=0,consecutive_accepted_sessions=0,events=0,hidden_eligible=0,due_denominator=0,observed=0,pending=0,right_censored=0,invalidated=0,native_status_breakdown={}))
         group['session_denominator']+=1
-        accepted=real(session) and session['slot_status']=='ACCEPTED' and session['evaluable'] is True
+        accepted=session_countable(session,value)
         group['real_accepted_sessions']+=int(accepted)
         group['consecutive_accepted_sessions']=group['consecutive_accepted_sessions']+1 if accepted else 0
     seen=set()
@@ -91,7 +93,7 @@ def readback(value):
 
 def fixture():
     common=dict(capability='STOCK_CORE',publication_capability='STOCK_CORE',evidence_lane='SHADOW_REAL',model_contract_id='SIM_MODEL',parameter_digest='SIM_PARAMETERS',state_lineage_id='SIM_LINEAGE',evidence_origin='PIT_OBSERVED',execution_mode='SHADOW',accepted_real_publication=True)
-    session=dict(common,trade_date='SIM_T0',market_session_id='SIM_SESSION',market_session_ordinal=1,slot_status='ACCEPTED',evaluable=True,source_availability='AVAILABLE',missed_reason=None,publication_id='SIM_PUB',publication_revision=1)
+    session=dict(common,trade_date='SIM_T0',market_session_id='SIM_SESSION',market_session_ordinal=1,native_session_authority_id=OWNER['contract_id'],native_session_authority_sha256=OWNER_SHA,native_session_status='ACCEPTED_ON_TIME',projection_evaluable=True,projection_evaluable_reason=None,source_availability='AVAILABLE',missed_reason=None,publication_id='SIM_PUB',publication_revision=1)
     event=dict(common,logical_event_id='SIM_EVENT',enrollment_id='SIM_ENROLLMENT',event_type='FIRST_PREWATCH',entity_id='SIM_STOCK',T0='SIM_T0',original_revision=1,eligible=True,displayed=True,control_assignment_ids=['SIM_CONTROL'],benchmark_ids=['SIM_BENCHMARK'])
     outcome=dict(common,due_id='SIM_DUE',enrollment_id='SIM_ENROLLMENT',horizon=5,due_date='SIM_T5',status='OBSERVED',native_status='OBSERVED',outcome_revision=1,source_identity='SIM_SOURCE',observed_at='SIM_T5',right_censor_reason=None,supersedes=None)
     return dict(kind='CONTRACT_DESIGN_SIMULATION',sessions=[session],events=[event],outcomes=[outcome],expected_prior_head='SIM_HEAD',actual_prior_head='SIM_HEAD')
@@ -103,7 +105,7 @@ def scenario(index):
         lane={2:'ACTIVATION_SIMULATION',3:'HISTORICAL_REPLAY',4:'RECONSTRUCTED_ASOF'}[index]
         for row in v['sessions']+v['events']+v['outcomes']: row.update(evidence_lane=lane,evidence_origin=lane,execution_mode='REPLAY',accepted_real_publication=False)
     if index in (5,6):
-        v['sessions'].append(dict(v['sessions'][0],market_session_id='SIM_NEXT',market_session_ordinal=2,trade_date='SIM_NEXT',slot_status='MISSED' if index==5 else 'NON_EVALUABLE',evaluable=False,missed_reason='SIM_UNAVAILABLE'))
+        v['sessions'].append(dict(v['sessions'][0],market_session_id='SIM_NEXT',market_session_ordinal=2,trade_date='SIM_NEXT',native_session_status='MISSED_OBSERVATION_SLOT' if index==5 else 'ACCEPTED_ON_TIME',projection_evaluable=False,projection_evaluable_reason='SIM_UNAVAILABLE',missed_reason='SIM_UNAVAILABLE' if index==5 else None))
     if index==7: v['events'][0]['displayed']=False
     if index==8: v['events'].append(dict(v['events'][0],enrollment_id='SECOND_ORIGINAL'))
     if index==9: v['outcomes'][0].update(status='PENDING_NOT_DUE',native_status='PENDING',observed_at=None)
@@ -122,6 +124,7 @@ def scenario(index):
             if name=='events': new.update(logical_event_id='SIM_PROD_EVENT',enrollment_id='SIM_PROD_ENROLLMENT')
             if name=='outcomes': new.update(due_id='SIM_PROD_DUE',enrollment_id='SIM_PROD_ENROLLMENT')
             v[name].append(new)
+        bind_future_production_fixture(v)
     if index==18: v['actual_prior_head']='OTHER_HEAD'
     if index==19: v['events'][0]['eligibility_inputs_include_outcomes']=True
     return v

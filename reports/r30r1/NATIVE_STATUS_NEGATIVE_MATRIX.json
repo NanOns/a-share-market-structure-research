@@ -1,0 +1,101 @@
+{
+  "status": "PASS_LOCAL",
+  "vectors": {
+    "S21-01": {
+      "expected": "BLOCKED_AFFECTED_SCOPE",
+      "result": {
+        "actual_real_rows_written": 0,
+        "errors": [
+          "UNKNOWN_SHADOW_NATIVE_SESSION_STATUS"
+        ],
+        "production_grant": false,
+        "status": "BLOCKED_AFFECTED_SCOPE"
+      },
+      "scope": "SYNTHETIC_NEGATIVE_NOT_REAL_EVIDENCE"
+    },
+    "S21-02": {
+      "expected": "BLOCKED_AFFECTED_SCOPE",
+      "result": {
+        "actual_real_rows_written": 0,
+        "errors": [
+          "UNKNOWN_SHADOW_NATIVE_SESSION_STATUS"
+        ],
+        "production_grant": false,
+        "status": "BLOCKED_AFFECTED_SCOPE"
+      },
+      "scope": "SYNTHETIC_NEGATIVE_NOT_REAL_EVIDENCE"
+    },
+    "S21-03": {
+      "expected": "BLOCKED_AFFECTED_SCOPE",
+      "result": {
+        "actual_real_rows_written": 0,
+        "errors": [
+          "UNKNOWN_SHADOW_NATIVE_SESSION_STATUS"
+        ],
+        "production_grant": false,
+        "status": "BLOCKED_AFFECTED_SCOPE"
+      },
+      "scope": "SYNTHETIC_NEGATIVE_NOT_REAL_EVIDENCE"
+    },
+    "S21-04": {
+      "expected": "BLOCKED_AFFECTED_SCOPE",
+      "result": {
+        "actual_real_rows_written": 0,
+        "errors": [
+          "UNKNOWN_SHADOW_NATIVE_SESSION_STATUS"
+        ],
+        "production_grant": false,
+        "status": "BLOCKED_AFFECTED_SCOPE"
+      },
+      "scope": "SYNTHETIC_NEGATIVE_NOT_REAL_EVIDENCE"
+    },
+    "S21-05": {
+      "expected": "BLOCKED_AFFECTED_SCOPE",
+      "result": {
+        "actual_real_rows_written": 0,
+        "errors": [
+          "SHADOW_SESSION_OWNER_BINDING_MISMATCH"
+        ],
+        "production_grant": false,
+        "status": "BLOCKED_AFFECTED_SCOPE"
+      },
+      "scope": "SYNTHETIC_NEGATIVE_NOT_REAL_EVIDENCE"
+    },
+    "S21-06": {
+      "expected": "BLOCKED_AFFECTED_SCOPE",
+      "result": {
+        "actual_real_rows_written": 0,
+        "errors": [
+          "PRODUCTION_SESSION_AUTHORITY_REQUIRED_NOT_COUNTABLE"
+        ],
+        "production_grant": false,
+        "status": "BLOCKED_AFFECTED_SCOPE"
+      },
+      "scope": "SYNTHETIC_NEGATIVE_NOT_REAL_EVIDENCE"
+    },
+    "S21-07": {
+      "expected": "BLOCKED_AFFECTED_SCOPE",
+      "result": {
+        "actual_real_rows_written": 0,
+        "errors": [
+          "CLAIMED_REAL_SESSION_COUNT_MISMATCH"
+        ],
+        "production_grant": false,
+        "status": "BLOCKED_AFFECTED_SCOPE"
+      },
+      "scope": "SYNTHETIC_NEGATIVE_NOT_REAL_EVIDENCE"
+    },
+    "S21-08": {
+      "expected": "BLOCKED_AFFECTED_SCOPE",
+      "result": {
+        "actual_real_rows_written": 0,
+        "errors": [
+          "MISSED_SLOT_CANNOT_BE_EVALUABLE"
+        ],
+        "production_grant": false,
+        "status": "BLOCKED_AFFECTED_SCOPE"
+      },
+      "scope": "SYNTHETIC_NEGATIVE_NOT_REAL_EVIDENCE"
+    }
+  }
+}

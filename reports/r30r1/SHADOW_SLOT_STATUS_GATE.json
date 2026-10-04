@@ -1,0 +1,37 @@
+{
+  "contract": "config/v4_21_continued_forward_observation_contract_v1.json",
+  "contract_sha256": "d7fd0c6c48299e6dc495a426350e2f1c535aba2ad231c9559c7eb70a3d08559e",
+  "definition": {
+    "accepted_non_evaluable": "NATIVE_ACCEPTED_ON_TIME_RETAIN_DENOMINATOR_WITH_DISTINCT_PROJECTION_REASON_COUNT_ZERO_STREAK_ZERO_NEVER_MISSED",
+    "accepted_rule": "PIT_OBSERVED AND ACCEPTED_REAL_PUBLICATION AND SHADOW AND NATIVE_ACCEPTED_ON_TIME AND PROJECTION_EVALUABLE_TRUE",
+    "compatibility_slot_status": "IF_PRESENT_EXACT_NATIVE_STATUS_ONLY_NO_ALIAS",
+    "fields": [
+      "native_session_authority_id",
+      "native_session_authority_sha256",
+      "native_session_status",
+      "projection_evaluable",
+      "projection_evaluable_reason"
+    ],
+    "missed": "NATIVE_MISSED_OBSERVATION_SLOT_RETAIN_DENOMINATOR_PROJECTION_FALSE_AND_STREAK_ZERO",
+    "production_accepted_binding": null,
+    "production_current_real_gate_count": "NOT_COUNTABLE_FOR_REAL_GATE",
+    "production_design_fixture": "ONLY_EXPLICIT_CONTRACT_DESIGN_SIMULATION_WITH_SIMULATED_AUTHORITY_ID_STATES_AND_EXACT_DIGEST; NEVER_CURRENT_AUTHORITY",
+    "production_native_session_authority": "FUTURE_ACCEPTED_BINDING_REQUIRED",
+    "projection_type": "STRICT_BOOLEAN; FALSE_REQUIRES_EXPLICIT_REASON",
+    "shadow_allowed_statuses": [
+      "ACCEPTED_ON_TIME",
+      "MISSED_OBSERVATION_SLOT"
+    ],
+    "shadow_authority_id": "V4_16_OBSERVATION_SLOT_CONTRACT_V2",
+    "shadow_owner": {
+      "contract_id": "V4_16_OBSERVATION_SLOT_CONTRACT_V2",
+      "native_slot_states": [
+        "ACCEPTED_ON_TIME",
+        "MISSED_OBSERVATION_SLOT"
+      ],
+      "path": "config/v4_16_observation_slot_contract_v2.json",
+      "sha256": "47e0c0bc36373f0d63557769c428f64a422ea434435b9319ce144d43b22bea15"
+    }
+  },
+  "scope": "CONTRACT_DESIGN_REPAIR_ONLY"
+}

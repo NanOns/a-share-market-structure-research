@@ -44,7 +44,8 @@ def execute(directory,label,include_r26=True):
                  postgres_policy='NONSECRET_UNREACHABLE_MOCK_DSN_FOR_EXISTING_MONKEYPATCHED_REPLAY_TESTS; NO_LIVE_PG',
                  captured_xml_sha256=__import__('hashlib').sha256(raw).hexdigest(),
                  captured_output_sha256=__import__('hashlib').sha256(result.stdout+result.stderr).hexdigest(),
-                 published_text_representation='UTF8_LF; CAPTURED_SOURCE_DIGESTS_RETAINED')
+                 published_text_representation='UTF8_LF; CAPTURED_SOURCE_DIGESTS_RETAINED',
+                 source_worktree_dirty=bool(subprocess.check_output(['git','status','--porcelain'],cwd=directory)))
     atomic('reports/r26/'+label+'-summary.json',summary)
     print(json.dumps({k:v for k,v in summary.items() if k not in ('scope','failures')},ensure_ascii=False),flush=True)
     print(json.dumps(failures,ensure_ascii=False),flush=True)

@@ -53,24 +53,24 @@ def protected():
 def gates():
     contract=read('config/v4_17_shadow_ui_contract_v1.json');source=read('config/v4_17_shadow_ui_source_v1.json')
     assert source['accepted_readback'] is None and source['external_acceptance'] is None
-    assert len(contract['identity_fields'])==10 and len(contract['components'])==6 and len(contract['routes'])==7
+    assert len(contract['identity_fields'])==11 and len(contract['components'])==6 and len(contract['routes'])==7
     tree=ET.parse(ROOT/'reports/r26/feature-tests.xml');tests=tree.findall('.//testcase')
-    assert len(tests)==43 and not tree.findall('.//failure') and not tree.findall('.//error') and not tree.findall('.//skipped')
+    assert len(tests)==44 and not tree.findall('.//failure') and not tree.findall('.//error') and not tree.findall('.//skipped')
     cases=[f'U{i:02}' for i in range(1,19)]
     assert all(any('test_negative_matrix['+case+']'==t.get('name') for t in tests) for case in cases)
     base=dict(status='PASS_LOCAL',engineering_only=True,feature_tests=ref('reports/r26/feature-tests.xml'))
     atomic('reports/r26/SHADOW_UI_CONTRACT_GATE.json',base|dict(contract=ref('config/v4_17_shadow_ui_contract_v1.json'),routes=contract['routes'],no_writes=True,no_fallback=contract['no_fallback']))
-    atomic('reports/r26/CONTEXT_IDENTITY_GATE.json',base|dict(fields=contract['identity_fields'],token=contract['token'],per_component_checks=True,deep_link_mismatch='409_BLOCKED'))
+    atomic('reports/r26/CONTEXT_IDENTITY_GATE.json',base|dict(fields=contract['identity_fields'],token=contract['token'],per_component_checks=True,deep_link_mismatch='409_BLOCKED',same_publication_manifest_rebind='NEW_TOKEN_OLD_TOKEN_409_BLOCKED'))
     atomic('reports/r26/NO_REAL_DATA_GATE.json',base|dict(source=ref('config/v4_17_shadow_ui_source_v1.json'),status_current='NO_REAL_SHADOW_DATA',real_sample_count=0,database_opened=False,simulation_discovery=False))
     atomic('reports/r26/READ_ONLY_API_GATE.json',base|dict(methods_allowed=['GET'],methods_rejected=['POST','PUT','PATCH','DELETE'],write_attempts=24,production_db_bytes_unchanged=True,legacy_GET_POST_ast_unchanged=True))
     atomic('reports/r26/COMPONENT_REGISTRY_GATE.json',base|dict(components=contract['components'],client_registry_matches_contract=True,unknown_values='NULL_WITH_REASON',absent_upstream_fields='UNKNOWN_NO_ALGORITHM_INVENTION'))
-    atomic('reports/r26/CONTEXT_NEGATIVE_MATRIX.json',base|dict(cases=[dict(case=case,status='PASS_LOCAL_FAIL_CLOSED',test_node='tests/test_v4_17_shadow_ui.py::test_negative_matrix['+case+']') for case in cases],supplemental=['native_exact_fact_readonly','native_storage_origin','native_field_path','native_field_kind','contract_failure_isolation','legacy_ast_equivalence']))
+    atomic('reports/r26/CONTEXT_NEGATIVE_MATRIX.json',base|dict(cases=[dict(case=case,status='PASS_LOCAL_FAIL_CLOSED',test_node='tests/test_v4_17_shadow_ui.py::test_negative_matrix['+case+']') for case in cases],supplemental=['native_exact_fact_readonly','native_storage_origin','native_field_path','native_field_kind','contract_failure_isolation','legacy_ast_equivalence','same_publication_readback_manifest_rebind']))
     baseline=read('reports/r26/baseline-final-summary.json');local=read('reports/r26/local-final-v3-summary.json')
     assert baseline['errors']==local['errors']==baseline['skipped']==local['skipped']==0
     assert {f['node'] for f in baseline['failures']}=={f['node'] for f in local['failures']}
     assert baseline['source_commit']==BASE and len(baseline['failures'])==3
     atomic('reports/r26/EXISTING_UI_REGRESSION.json',dict(status='PASS_SCOPED_NO_NEW_FAILURES',baseline_tests=177,baseline_passed=174,baseline_failures=baseline['failures'],current_tests=local['tests'],current_passed=local['passed'],current_failures=local['failures'],new_failures=[],audit_item='R26-A01',baseline_report=ref('reports/r26/baseline-final-tests.xml'),current_report=ref(local['xml']),legacy_static_pages='UNCHANGED_BYTES',legacy_service='AST_IDENTICAL_EXCLUDING_SHADOW_ADDITIONS',not_a_zero_failure_full_suite=True))
-    atomic('reports/r26/LOCAL_TEST_SUMMARY.json',base|dict(feature_tests_count=43,feature_passed=43,feature_failed=0,regression_tests=local['tests'],regression_passed=local['passed'],inherited_failures=3,new_failures=0,errors=0,skipped=0,deselected=0,legacy_cross_audit='R26-A01_OPEN',not_external_acceptance=True))
+    atomic('reports/r26/LOCAL_TEST_SUMMARY.json',base|dict(feature_tests_count=44,feature_passed=44,feature_failed=0,regression_tests=local['tests'],regression_passed=local['passed'],inherited_failures=3,new_failures=0,errors=0,skipped=0,deselected=0,legacy_cross_audit='R26-A01_OPEN',not_external_acceptance=True))
 
 
 if __name__=='__main__':

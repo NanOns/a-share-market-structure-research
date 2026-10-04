@@ -1,0 +1,11 @@
+{
+  "all_changes_engineering_only": true,
+  "identity_field": "readback_manifest_digest",
+  "no_real_activation": true,
+  "reason": "Bind the full exact readback manifest bytes into the context token; same-publication fact/quality/outcome rebindings cannot reuse an old token",
+  "response_context_fields": 11,
+  "status": "PASS_LOCAL",
+  "stored_manifest_context_fields": 10,
+  "superseded_source": "bf1291177156313b4d5bbc3b16ec68ae50c20a27",
+  "test": "test_same_publication_new_readback_manifest_cannot_reuse_old_token"
+}

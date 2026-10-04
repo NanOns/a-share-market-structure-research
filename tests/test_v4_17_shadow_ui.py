@@ -24,7 +24,7 @@ def known(value):
 def fixture():
     context = dict(namespace='SHADOW_V4', trade_date='2026-10-08', publication_id='r26-sim-publication', publication_revision=2,
                    model_contract_id='RESEARCH_STATE_V1', parameter_set_id='R26_VECTOR', state_lineage_id='r26-vector-lineage',
-                   daily_input_digest='d'*64, source_manifest_digest='s'*64, evidence_origin='ACTIVATION_SIMULATION')
+                   daily_input_digest='d'*64, source_manifest_digest='s'*64, evidence_origin='ACTIVATION_SIMULATION',readback_manifest_digest='f'*64)
     token = context_token(context)
     values = {
         'summary': dict(entity_id='SIM_STOCK_A', current_state='PREWATCH', reason_codes=['ENROLLED']),
@@ -170,7 +170,7 @@ def native_vector(tmp_path):
     from workbench_service.shadow_context import canonical,digest
     root=tmp_path/'native-vector';(root/'config').mkdir(parents=True)
     (root/'config/v4_17_shadow_ui_contract_v1.json').write_bytes((ROOT/'config/v4_17_shadow_ui_contract_v1.json').read_bytes())
-    context=fixture()['context'];context['evidence_origin']='PIT_OBSERVED';token=context_token(context)
+    context=fixture()['context'];context['evidence_origin']='PIT_OBSERVED';context.pop('readback_manifest_digest')
     common=dict(publication_id=context['publication_id'],revision=2,trade_date=context['trade_date'])
     records={'publication':dict(common,slot_id='SIM_SLOT',source_manifest_digest=context['source_manifest_digest']),
              'slot':dict(common,slot_id='SIM_SLOT',slot_status='ACCEPTED_ON_TIME',source_manifest_digest=context['source_manifest_digest'],parameter_set_id=context['parameter_set_id'],model_contract_id=context['model_contract_id'],state_lineage_id=context['state_lineage_id']),
@@ -190,21 +190,25 @@ def native_vector(tmp_path):
     def save(name,value):
         raw=canonical(value);(root/name).write_bytes(raw);return dict(path=name,sha256=hashlib.sha256(raw).hexdigest(),bytes=len(raw))
     binding=save('manifest.json',manifest)
-    receipt=save('receipt.json',dict(decision='PASS_REAL_SHADOW_UI_READBACK',readback_sha256=binding['sha256'],context_token=token))
+    receipt=save('receipt.json',dict(decision='PASS_REAL_SHADOW_UI_READBACK',readback_sha256=binding['sha256'],context_token=context_token(dict(context,readback_manifest_digest=binding['sha256']))))
     config=dict(contract_id='V4_17_EXACT_READBACK_SOURCE_V1',accepted_readback=binding,external_acceptance=receipt)
     save('config/v4_17_shadow_ui_source_v1.json',config)
     return root,manifest,config,save
+
+
+def real_token(manifest,config):
+    return context_token(dict(manifest['context'],readback_manifest_digest=config['accepted_readback']['sha256']))
 
 
 def test_native_exact_readonly_storage_projection(tmp_path):
     root,manifest,config,save=native_vector(tmp_path)
     db=root/'synthetic.sqlite';before=db.read_bytes();r=ShadowContextReader(root)
     for name in ('context',*COMPONENTS):
-        status,data=r.handle(PREFIX+name,{} if name=='context' else {'context_token':context_token(manifest['context'])})
+        status,data=r.handle(PREFIX+name,{} if name=='context' else {'context_token':real_token(manifest,config)})
         assert status==200 and data['status']=='READY' and data['real_sample_count']==0
     assert db.read_bytes()==before
     assert not (root/'synthetic.sqlite-journal').exists()
-    health=r.handle(PREFIX+'health',{'context_token':context_token(manifest['context'])})[1]['items'][0]['fields']
+    health=r.handle(PREFIX+'health',{'context_token':real_token(manifest,config)})[1]['items'][0]['fields']
     assert health['slot_status']['value']=='ACCEPTED_ON_TIME' and health['source_receipts']['quality']=='UNKNOWN'
 
 
@@ -227,15 +231,30 @@ def test_native_readback_fail_closed(tmp_path,change):
     elif change=='field_kind':manifest['components']['health'][0]['slot_status']['fact']='health'
     if change!='receipt':
         config['accepted_readback']=save('manifest.json',manifest)
-        config['external_acceptance']=save('receipt.json',dict(decision='PASS_REAL_SHADOW_UI_READBACK',readback_sha256=config['accepted_readback']['sha256'],context_token=context_token(manifest['context'])))
+        config['external_acceptance']=save('receipt.json',dict(decision='PASS_REAL_SHADOW_UI_READBACK',readback_sha256=config['accepted_readback']['sha256'],context_token=real_token(manifest,config)))
     save('config/v4_17_shadow_ui_source_v1.json',config)
     status,data=ShadowContextReader(root).handle(PREFIX+'context',{})
     if change in ('field_path','field_kind'):
         assert status==200
-        status,data=ShadowContextReader(root).handle(PREFIX+'health',{'context_token':context_token(manifest['context'])})
-        assert ShadowContextReader(root).handle(PREFIX+'entity',{'context_token':context_token(manifest['context'])})[0]==200
+        status,data=ShadowContextReader(root).handle(PREFIX+'health',{'context_token':real_token(manifest,config)})
+        assert ShadowContextReader(root).handle(PREFIX+'entity',{'context_token':real_token(manifest,config)})[0]==200
     assert status==409 and data['items']==[]
     if change=='absent_db':assert not (root/'missing.sqlite').exists()
+
+
+def test_same_publication_new_readback_manifest_cannot_reuse_old_token(tmp_path):
+    root,manifest,config,save=native_vector(tmp_path);r=ShadowContextReader(root)
+    original=r.handle(PREFIX+'context',{})[1]
+    manifest['components']['health'][0]['publication_lineage']=dict(fact='publication',path='publication_id',quality='KNOWN')
+    config['accepted_readback']=save('manifest.json',manifest)
+    config['external_acceptance']=save('receipt.json',dict(decision='PASS_REAL_SHADOW_UI_READBACK',readback_sha256=config['accepted_readback']['sha256'],context_token=real_token(manifest,config)))
+    save('config/v4_17_shadow_ui_source_v1.json',config)
+    revised=r.handle(PREFIX+'context',{})[1]
+    assert original['context']['publication_id']==revised['context']['publication_id']
+    assert original['context_token']!=revised['context_token']
+    assert original['context']['readback_manifest_digest']!=revised['context']['readback_manifest_digest']
+    assert r.handle(PREFIX+'health',{'context_token':original['context_token']})[0]==409
+    assert r.handle(PREFIX+'health',{'context_token':revised['context_token']})[0]==200
 
 
 def test_legacy_module_ast_identical_after_removing_additive_shadow_routes():

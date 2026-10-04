@@ -1,7 +1,7 @@
 'use strict';
 // One token per mounted view. No production routes, writes or simulation switch.
 const ShadowUI = (() => {
-  const identity = ['namespace','trade_date','publication_id','publication_revision','model_contract_id','parameter_set_id','state_lineage_id','daily_input_digest','source_manifest_digest','evidence_origin'];
+  const identity = ['namespace','trade_date','publication_id','publication_revision','model_contract_id','parameter_set_id','state_lineage_id','daily_input_digest','source_manifest_digest','evidence_origin','readback_manifest_digest'];
   const registry = {
     summary: ['今日变化 / Why Now', {entity_id:'对象',prior_state:'前一接受状态',current_state:'当前状态',reason_codes:'变化原因',observable_evidence:'可观察证据',risk_unknown:'风险 / 未知'}],
     radar: ['研究雷达', {entity_id:'对象',entity_type:'类型',eligibility:'资格',state:'状态',priority_primitives:'优先级原语',quality:'质量',why_now:'Why Now',not_display_reason:'未展示原因'}],

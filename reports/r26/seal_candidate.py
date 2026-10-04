@@ -7,7 +7,7 @@ import xml.etree.ElementTree as ET
 from run_regression import ROOT,atomic
 from build_evidence import read,ref,protected
 
-TAG='codex/r26-shadow-ui-tested-source-20261004-r1'
+TAG='codex/r26-shadow-ui-tested-source-20261004-r2'
 
 
 def git(args,cwd=ROOT):return subprocess.check_output(['git',*args],cwd=cwd)
@@ -19,11 +19,11 @@ def seal(source,directory,lfs):
     assert git(['rev-parse','HEAD'],directory).decode().strip()==source
     assert git(['status','--porcelain'],directory)==b''
     current=read('reports/r26/clean-summary.json');baseline=read('reports/r26/baseline-final-summary.json')
-    assert current['source_commit']==source and current['tests']==220 and current['passed']==217
+    assert current['source_commit']==source and current['tests']==221 and current['passed']==218
     assert current['errors']==current['skipped']==current['deselected']==0
     assert {(x['node'],x['message']) for x in current['failures']}=={(x['node'],x['message']) for x in baseline['failures']}
     tree=ET.parse(ROOT/current['xml']);new=[t for t in tree.findall('.//testcase') if 'test_v4_17_shadow_ui' in t.get('classname','')]
-    assert len(new)==43 and all(t.find('failure') is None and t.find('error') is None and t.find('skipped') is None for t in new)
+    assert len(new)==44 and all(t.find('failure') is None and t.find('error') is None and t.find('skipped') is None for t in new)
     state=protected()
     saved=read('reports/r26/UNRELATED_WORKTREE_PRESERVATION.json')
     for item in saved['entries']:
@@ -31,7 +31,7 @@ def seal(source,directory,lfs):
         with path.open('rb') as stream:assert hashlib.file_digest(stream,'sha256').hexdigest()==item['sha256'],item['path']
     assert len(lfs)==171
     atomic('reports/r26/CLEAN_REGRESSION.json',dict(status='PASS_SCOPED_NO_NEW_FAILURES',tested_source=source,tested_source_ref='refs/tags/'+TAG,
-                directory=str(directory),clean_before=True,clean_after=True,tests=220,passed=217,R26_feature_passed=43,R26_feature_failed=0,
+                directory=str(directory),clean_before=True,clean_after=True,tests=221,passed=218,R26_feature_passed=44,R26_feature_failed=0,
                 inherited_failures=current['failures'],new_failures=[],errors=0,skipped=0,deselected=0,actual_pytest_exit_code=1,
                 audit_item='R26-A01_OPEN_INDEPENDENT',test_summary=ref('reports/r26/clean-summary.json'),test_xml=ref(current['xml']),
                 temporary_root='E:/codex_tmp/test_temp',LFS_exact_object_and_checkout_proof=lfs,not_zero_failure_comprehensive_suite=True))
@@ -51,7 +51,7 @@ def seal(source,directory,lfs):
                 V4_17_FINAL_ACCEPTANCE='NOT_GRANTED',V4_17G='NOT_GRANTED',R25_REAL_ACTIVATION_PACKET='WAIT_ACCEPTED_DAILY_INPUT',
                 REAL_SHADOW_EXECUTION='NOT_STARTED',REAL_SHADOW_OBSERVATIONS=0,PIT_OBSERVED_REAL_SAMPLES=0,
                 Production=False,Focus_source_cutover=False,NEXT='STOP_WAIT_R26_INDEPENDENT_EXTERNAL_AUDIT',
-                R26_feature_tests='43_PASS',existing_regression='174_PASS_3_INHERITED_FAILURES_NO_NEW_FAILURES',audit_item='R26-A01_OPEN_INDEPENDENT',
+                R26_feature_tests='44_PASS',existing_regression='174_PASS_3_INHERITED_FAILURES_NO_NEW_FAILURES',audit_item='R26-A01_OPEN_INDEPENDENT',
                 protected_baseline_file_count=state['count'],unrelated_worktree_preserved=True,artifacts=artifacts,git_push_is_external_acceptance=False))
     print('PASS_R26_LOCAL_CANDIDATE_SEALED_WAIT_EXTERNAL_AUDIT',source,flush=True)
 

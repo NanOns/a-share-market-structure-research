@@ -14,7 +14,8 @@ from .research_context import ResearchContextError
 
 IDENTITY = ('namespace', 'trade_date', 'publication_id', 'publication_revision',
             'model_contract_id', 'parameter_set_id', 'state_lineage_id',
-            'daily_input_digest', 'source_manifest_digest', 'evidence_origin')
+            'daily_input_digest', 'source_manifest_digest', 'evidence_origin',
+            'readback_manifest_digest')
 COMPONENTS = ('summary', 'radar', 'entity', 'cohort', 'settlement', 'health')
 PREFIX = '/api/v4/shadow/'
 
@@ -77,7 +78,10 @@ class ShadowContextReader:
         receipt = self._exact(authority['external_acceptance'])
         require(receipt['decision'] == 'PASS_REAL_SHADOW_UI_READBACK'
                 and receipt['readback_sha256'] == authority['accepted_readback']['sha256'], 'READBACK_NOT_EXTERNALLY_ACCEPTED')
-        context = manifest['context']
+        require(set(manifest['context']) == set(IDENTITY) - {'readback_manifest_digest'}, 'MANIFEST_CONTEXT_FIELDS_MISMATCH')
+        # The derived field binds every component/fact selection and quality
+        # decision without introducing a self-referential manifest hash.
+        context = dict(manifest['context'], readback_manifest_digest=authority['accepted_readback']['sha256'])
         token = context_token(context)
         require(context['evidence_origin'] == 'PIT_OBSERVED', 'REAL_ORIGIN_REQUIRED')
         require(receipt['context_token'] == token, 'ACCEPTANCE_CONTEXT_MISMATCH')

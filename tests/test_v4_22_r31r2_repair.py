@@ -77,7 +77,7 @@ def test_ledger(vector): ledger_vector(vector)
 def test_build(vector,tmp_path):
     if vector in (1,2):
         subprocess.run(['git','init','-q',str(tmp_path)],check=True)
-        common=Path(subprocess.check_output(['git','rev-parse','--git-common-dir'],cwd=ROOT,text=True).strip())
+        common=Path(subprocess.check_output(['git','rev-parse','--git-common-dir'],cwd=ROOT,text=True,encoding='utf8').strip())
         common=common if common.is_absolute() else ROOT/common
         (tmp_path/'.git/objects/info/alternates').write_bytes(((common.resolve()/'objects').as_posix()+'\n').encode('utf8'))
         p=tmp_path/CONTRACT; p.parent.mkdir(parents=True)

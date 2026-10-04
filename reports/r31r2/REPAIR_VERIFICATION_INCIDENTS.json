@@ -1,0 +1,23 @@
+{
+  "incidents": [
+    {
+      "correction": "Write alternates as UTF8 bytes with LF",
+      "reason": "Windows CRLF in temporary Git object alternate path",
+      "resolved": true
+    },
+    {
+      "correction": "Explicit UTF8 decoding of git common directory",
+      "new_failures": [
+        "R31R2-BUILD-01",
+        "R31R2-BUILD-02"
+      ],
+      "passed": 452,
+      "reason": "Windows default GBK decoding of UTF8 Chinese Git common directory in detached checkout",
+      "resolved_pending_final_clean_test": true,
+      "source": "8ddc4341ba491186f4816a8c51a55df054076edd",
+      "tests": 457
+    }
+  ],
+  "preparation_tags": "Earlier local tags retained immutable; final source uses v3 tag; only final tag will be pushed",
+  "scope": "R31R2_TEST_HARNESS_ONLY"
+}

@@ -60,7 +60,7 @@ E           assert "get('/api/v3/research/today?page='" in "(function () {\n    
 tests\upgrade_v3\test_v3_unified_entry.py:58: AssertionError
 ___________________ test_hot_rank_route_skips_request_scope ___________________
 
-monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000021524C5F690>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001D7F1B2BA10>
 tmp_path = WindowsPath('F:/codex_tmp/test_temp/r31r2-local/test_hot_rank_route_skips_requ0')
 
     def test_hot_rank_route_skips_request_scope(monkeypatch, tmp_path):
@@ -131,7 +131,7 @@ E    AttributeError: '_NoopService' object has no attribute 'status'
 src\workbench_service\app.py:1782: AttributeError
 _________________ test_send_marks_disconnected_client_closed __________________
 
-monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000214B9EC7E00>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001D7F1B894E0>
 tmp_path = WindowsPath('F:/codex_tmp/test_temp/r31r2-local/test_send_marks_disconnected_c0')
 
     def test_send_marks_disconnected_client_closed(monkeypatch, tmp_path):
@@ -195,4 +195,4 @@ src\workbench_service\app.py:1782: AttributeError
 FAILED tests/upgrade_v3/test_v3_unified_entry.py::test_v3_is_the_single_unified_workbench_entry
 FAILED tests/upgrade_v3/test_p01_01_lock_scope.py::test_hot_rank_route_skips_request_scope
 FAILED tests/upgrade_v3/test_p01_01_lock_scope.py::test_send_marks_disconnected_client_closed
-3 failed, 454 passed in 14.66s
+3 failed, 454 passed in 14.18s

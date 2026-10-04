@@ -34,6 +34,17 @@ def run(source,tag):
     atomic('reports/r24r1/CLEAN_REGRESSION.json',dict(tests,status='PASS_LOCAL',tested_source=source,immutable_tag=tag,
         checkout=str(directory),git_status_before='',git_status_after='',verified_lfs_objects=lfs,
         registered_representations=representations,command=cmd,independent_oracle=oracle,protected=protection,no_broad_deselection=True))
+    disposition=read('reports/r24r1/CLEAN_ATTEMPT_R1_DISPOSITION.json')
+    disposition.update(status='CLOSED_LOCAL_CLEAN_RETEST_PASSED_PENDING_EXTERNAL_AUDIT',
+        final_tested_source=source,final_immutable_tag=tag,clean_retest_passed=tests['passed'],
+        clean_retest_evidence=ref('reports/r24r1/CLEAN_REGRESSION.json'))
+    atomic('reports/r24r1/CLEAN_ATTEMPT_R1_DISPOSITION.json',disposition)
+    stage=read('reports/r24r1/STAGE_CONTRACT_AND_AUDIT_ITEMS.json')
+    stage['acceptance']='PASS_LOCAL_READY_FOR_EXTERNAL_AUDIT'
+    for item in stage['separate_audit_items']:
+        if item['id']=='R24R1_HISTORICAL_SOURCE_SCOPE':
+            item.update(acceptance='CLOSED_LOCAL_PENDING_EXTERNAL_AUDIT',evidence=ref('reports/r24r1/CLEAN_ATTEMPT_R1_DISPOSITION.json'))
+    atomic('reports/r24r1/STAGE_CONTRACT_AND_AUDIT_ITEMS.json',stage)
     evidence=[ref('reports/r24r1/'+p.name) for p in sorted((ROOT/'reports/r24r1').glob('*.json')) if p.name!='R24R1_CANDIDATE_SEAL.json']
     seal=dict(status='PASS_LOCAL_READY_FOR_EXTERNAL_AUDIT',execution_baseline=BASE,tested_source=source,immutable_tag=tag,
         post_test_changes='EVIDENCE_ONLY',external_acceptance='NOT_GRANTED',

@@ -1,0 +1,273 @@
+.............................................F.FF....................... [ 18%]
+..............F..F...FF...................F.................FF.......... [ 36%]
+......................................................F................F [ 54%]
+........................................................................ [ 72%]
+........................................................................ [ 90%]
+........................................                                 [100%]
+================================== FAILURES ===================================
+_____________________ test_reader_metadata_not_permission _____________________
+
+    def test_reader_metadata_not_permission():
+>       reader=CurrentAuditStatus();assert reader.stage_permission() is False
+               ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_pre16_governance.py:95: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\pre16_current_audit_reader.py:9: in __init__
+    self.validation=validate(self.root)
+                    ^^^^^^^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:191: in validate
+    p=protected(root)
+      ^^^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:160: in protected
+    require(subprocess.check_output(['git','diff',BASE,'--name-only','--','src'],cwd=root)==b'','BUSINESS_SOURCE_KEEP_ALL')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'BUSINESS_SOURCE_KEEP_ALL'
+
+    def require(ok,reason):
+>       if not ok:raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: BUSINESS_SOURCE_KEEP_ALL
+
+scripts\validate_pre16_governance.py:55: ValueError
+________________________ test_full_independent_oracle _________________________
+
+>   def test_full_independent_oracle():assert o.validate()['PRE16_CROSS_STAGE_GOVERNANCE_RECONCILIATION']=='PASS_LOCAL'
+                                              ^^^^^^^^^^^^
+
+tests\test_pre16_governance.py:105: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_pre16_governance.py:191: in validate
+    p=protected(root)
+      ^^^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:160: in protected
+    require(subprocess.check_output(['git','diff',BASE,'--name-only','--','src'],cwd=root)==b'','BUSINESS_SOURCE_KEEP_ALL')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'BUSINESS_SOURCE_KEEP_ALL'
+
+    def require(ok,reason):
+>       if not ok:raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: BUSINESS_SOURCE_KEEP_ALL
+
+scripts\validate_pre16_governance.py:55: ValueError
+_________________________ test_protected_all_history __________________________
+
+>   def test_protected_all_history():assert len(o.protected(o.ROOT))>=25
+                                                ^^^^^^^^^^^^^^^^^^^
+
+tests\test_pre16_governance.py:107: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_pre16_governance.py:160: in protected
+    require(subprocess.check_output(['git','diff',BASE,'--name-only','--','src'],cwd=root)==b'','BUSINESS_SOURCE_KEEP_ALL')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'BUSINESS_SOURCE_KEEP_ALL'
+
+    def require(ok,reason):
+>       if not ok:raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: BUSINESS_SOURCE_KEEP_ALL
+
+scripts\validate_pre16_governance.py:55: ValueError
+____________________ test_reader_resolves_canonical_issue _____________________
+
+    def test_reader_resolves_canonical_issue():
+>       r=CurrentAuditStatus();assert r.canonical_entry('AUD_A04_AMOUNT_A_FORWARD_CONSUMER')==r.canonical_entry('A04_H21_CONSUMER')
+          ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_pre16_governance.py:187: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\pre16_current_audit_reader.py:9: in __init__
+    self.validation=validate(self.root)
+                    ^^^^^^^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:191: in validate
+    p=protected(root)
+      ^^^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:160: in protected
+    require(subprocess.check_output(['git','diff',BASE,'--name-only','--','src'],cwd=root)==b'','BUSINESS_SOURCE_KEEP_ALL')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'BUSINESS_SOURCE_KEEP_ALL'
+
+    def require(ok,reason):
+>       if not ok:raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: BUSINESS_SOURCE_KEEP_ALL
+
+scripts\validate_pre16_governance.py:55: ValueError
+___________________ test_business_runtime_sources_unchanged ___________________
+
+    def test_business_runtime_sources_unchanged():
+>       assert o.subprocess.check_output(['git','diff',o.REPAIR_BASE,'--name-only','--','src'],cwd=o.ROOT)==b''
+E       AssertionError: assert b'src/workben...uthority.py\n' == b''
+E         
+E         Use -v to get more diff
+
+tests\test_pre16_governance.py:201: AssertionError
+_______________ test_current_reader_never_merges_alias_conflict _______________
+
+    def test_current_reader_never_merges_alias_conflict():
+>       r=CurrentAuditStatus();r.head['entries']['AUD_A04_AMOUNT_A_FORWARD_CONSUMER']['blocks_affected_capability_in_shadow']=False
+          ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_pre16_governance.py:216: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\pre16_current_audit_reader.py:9: in __init__
+    self.validation=validate(self.root)
+                    ^^^^^^^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:191: in validate
+    p=protected(root)
+      ^^^^^^^^^^^^^^^
+scripts\validate_pre16_governance.py:160: in protected
+    require(subprocess.check_output(['git','diff',BASE,'--name-only','--','src'],cwd=root)==b'','BUSINESS_SOURCE_KEEP_ALL')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'BUSINESS_SOURCE_KEEP_ALL'
+
+    def require(ok,reason):
+>       if not ok:raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: BUSINESS_SOURCE_KEEP_ALL
+
+scripts\validate_pre16_governance.py:55: ValueError
+_________________________ test_independent_promotion __________________________
+
+>   def test_independent_promotion():assert oracle.validate()['R21_V4_15_PROMOTION']=='PASS_LOCAL'
+                                            ^^^^^^^^^^^^^^^^^
+
+tests\test_r21_promotion.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_r21_promotion.py:58: in validate
+    require(set(changed)<={'src/workbench_analysis/v4_current_stage_authority.py','src/workbench_analysis/v4_14_authority.py','src/workbench_analysis/v4_15_radar_cohort.py'},'BUSINESS_ALGORITHMS_KEEP')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'BUSINESS_ALGORITHMS_KEEP'
+
+    def require(ok,reason):
+>       if not ok:raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: BUSINESS_ALGORITHMS_KEEP
+
+scripts\validate_r21_promotion.py:6: ValueError
+________________________ test_phase0_independent_gate _________________________
+
+>   def test_phase0_independent_gate():assert f.validate()['PRE16_EXTERNAL_ACCEPTANCE_FORMALIZATION']=='PASS_LOCAL'
+                                              ^^^^^^^^^^^^
+
+tests\test_r22_contracts.py:14: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_pre16_finalization.py:44: in validate
+    require(subprocess.check_output(['git','diff',BASE,'--name-only','--','src','reports/r20','reports/r20r1','reports/r20r1r1','reports/r20r1r2','reports/r21','reports/pre16_governance_r1_1'],cwd=root)==b'','BUSINESS_AND_ACCEPTED_EVIDENCE_KEEP')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'BUSINESS_AND_ACCEPTED_EVIDENCE_KEEP'
+
+    def require(ok,reason):
+>       if not ok:raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: BUSINESS_AND_ACCEPTED_EVIDENCE_KEEP
+
+scripts\validate_pre16_governance.py:55: ValueError
+_________ test_new_current_reader_uses_explicit_v2_and_returns_copies _________
+
+    def test_new_current_reader_uses_explicit_v2_and_returns_copies():
+>       r=FinalCurrentAuditStatus();assert r.global_contract_entry_blockers()==r.runtime_activation_blockers()==[]
+          ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r22_contracts.py:31: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\pre16_final_current_audit_reader.py:8: in __init__
+    self.root=root;self.validation=validate(root);self.head=read(HEAD,root)
+                                   ^^^^^^^^^^^^^^
+scripts\validate_pre16_finalization.py:44: in validate
+    require(subprocess.check_output(['git','diff',BASE,'--name-only','--','src','reports/r20','reports/r20r1','reports/r20r1r1','reports/r20r1r2','reports/r21','reports/pre16_governance_r1_1'],cwd=root)==b'','BUSINESS_AND_ACCEPTED_EVIDENCE_KEEP')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'BUSINESS_AND_ACCEPTED_EVIDENCE_KEEP'
+
+    def require(ok,reason):
+>       if not ok:raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: BUSINESS_AND_ACCEPTED_EVIDENCE_KEEP
+
+scripts\validate_pre16_governance.py:55: ValueError
+_________________________ test_contract_completeness __________________________
+
+>   def test_contract_completeness():assert o.validate()['V4_16_CONTRACT_COMPLETENESS']=='PASS_READY_FOR_EXTERNAL_AUDIT'
+                                            ^^^^^^^^^^^^
+
+tests\test_r22_contracts.py:37: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_r22_contracts.py:108: in validate
+    root=Path(root).resolve();phase0=formalization(root)
+                                     ^^^^^^^^^^^^^^^^^^^
+scripts\validate_pre16_finalization.py:44: in validate
+    require(subprocess.check_output(['git','diff',BASE,'--name-only','--','src','reports/r20','reports/r20r1','reports/r20r1r1','reports/r20r1r2','reports/r21','reports/pre16_governance_r1_1'],cwd=root)==b'','BUSINESS_AND_ACCEPTED_EVIDENCE_KEEP')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'BUSINESS_AND_ACCEPTED_EVIDENCE_KEEP'
+
+    def require(ok,reason):
+>       if not ok:raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: BUSINESS_AND_ACCEPTED_EVIDENCE_KEEP
+
+scripts\validate_pre16_governance.py:55: ValueError
+__________ test_current_stage_and_data_and_protected_bytes_unchanged __________
+
+    def test_current_stage_and_data_and_protected_bytes_unchanged():
+>       result=f.validate();assert len(result['protected_bindings'])==51
+               ^^^^^^^^^^^^
+
+tests\test_r22_contracts.py:116: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_pre16_finalization.py:44: in validate
+    require(subprocess.check_output(['git','diff',BASE,'--name-only','--','src','reports/r20','reports/r20r1','reports/r20r1r1','reports/r20r1r2','reports/r21','reports/pre16_governance_r1_1'],cwd=root)==b'','BUSINESS_AND_ACCEPTED_EVIDENCE_KEEP')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'BUSINESS_AND_ACCEPTED_EVIDENCE_KEEP'
+
+    def require(ok,reason):
+>       if not ok:raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: BUSINESS_AND_ACCEPTED_EVIDENCE_KEEP
+
+scripts\validate_pre16_governance.py:55: ValueError
+_________________________ test_full_independent_gate __________________________
+
+>   def test_full_independent_gate():assert o.validate()['status']=='PASS_LOCAL_READY_FOR_EXTERNAL_AUDIT'
+                                            ^^^^^^^^^^^^
+
+tests\test_r22r1_contracts.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_r22r1_contracts.py:118: in validate
+    previous(root)
+scripts\validate_pre16_finalization.py:44: in validate
+    require(subprocess.check_output(['git','diff',BASE,'--name-only','--','src','reports/r20','reports/r20r1','reports/r20r1r1','reports/r20r1r2','reports/r21','reports/pre16_governance_r1_1'],cwd=root)==b'','BUSINESS_AND_ACCEPTED_EVIDENCE_KEEP')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'BUSINESS_AND_ACCEPTED_EVIDENCE_KEEP'
+
+    def require(ok,reason):
+>       if not ok:raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: BUSINESS_AND_ACCEPTED_EVIDENCE_KEEP
+
+scripts\validate_pre16_governance.py:55: ValueError
+=========================== short test summary info ===========================
+FAILED tests/test_pre16_governance.py::test_reader_metadata_not_permission - ...
+FAILED tests/test_pre16_governance.py::test_full_independent_oracle - ValueEr...
+FAILED tests/test_pre16_governance.py::test_protected_all_history - ValueErro...
+FAILED tests/test_pre16_governance.py::test_reader_resolves_canonical_issue
+FAILED tests/test_pre16_governance.py::test_business_runtime_sources_unchanged
+FAILED tests/test_pre16_governance.py::test_current_reader_never_merges_alias_conflict
+FAILED tests/test_r21_promotion.py::test_independent_promotion - ValueError: ...
+FAILED tests/test_r22_contracts.py::test_phase0_independent_gate - ValueError...
+FAILED tests/test_r22_contracts.py::test_new_current_reader_uses_explicit_v2_and_returns_copies
+FAILED tests/test_r22_contracts.py::test_contract_completeness - ValueError: ...
+FAILED tests/test_r22_contracts.py::test_current_stage_and_data_and_protected_bytes_unchanged
+FAILED tests/test_r22r1_contracts.py::test_full_independent_gate - ValueError...
+12 failed, 388 passed in 308.44s (0:05:08)

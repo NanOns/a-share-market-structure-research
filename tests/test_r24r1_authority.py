@@ -96,7 +96,7 @@ def test_independent_corruption(case,tmp_path):corruption(case,tmp_path)
 def test_oracle_has_no_writer_imports():
     tree=ast.parse((ROOT/'scripts/validate_r24r1_activation.py').read_text())
     imports=[n.module or '' for n in ast.walk(tree) if isinstance(n,ast.ImportFrom)]
-    assert not any(any(s in name for s in ['shadow_runtime','go_forward_authority','owner_projection','simulation']) for name in imports)
+    assert not any(any(s in name for s in ['shadow_runtime','go_forward','owner_projection','simulation']) for name in imports)
 
 @pytest.mark.parametrize('point',['cohort','head'])
 def test_atomic_failure(point):

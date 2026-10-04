@@ -1,0 +1,127 @@
+{
+  "PIT_OBSERVED_REAL_SAMPLES": 0,
+  "REAL_SHADOW_OBSERVATIONS": 0,
+  "V4_16": false,
+  "allowed_capabilities": [
+    "PURE_CORE_STOCK"
+  ],
+  "authority_id": "R24R1_SIMULATION_a4264af4d50f4c34b28e4bbbd8feed48",
+  "blocked_capabilities": [
+    "A04_H21_CONSUMER",
+    "A04_HISTORICAL_AMOUNT_A",
+    "A08_CURRENT_RUNTIME"
+  ],
+  "contract_id": "V4_16_RUNTIME_ACTIVATION_AUTHORITY_V3",
+  "environment_class": "ACTIVATION_SIMULATION",
+  "environment_flags_grant": false,
+  "external_acceptance": {
+    "bytes": 217,
+    "path": "reports/r24r1/activation_simulation/a4264af4d50f4c34b28e4bbbd8feed48/acceptance.json",
+    "sha256": "7d46be1c52a574b52814aca1f8867194543f6b291a39bbc1cad1658150db425f"
+  },
+  "focus": false,
+  "grant": {
+    "authority_id": "R24R1_SIMULATION_a4264af4d50f4c34b28e4bbbd8feed48",
+    "capability_scope": [
+      "PURE_CORE_STOCK"
+    ],
+    "clock": {
+      "bytes": 2642,
+      "path": "config/v4_16_clock_contract_v1.json",
+      "sha256": "3a4dce84edf18afe36749b524a1eff3af569b6e33c4b66eb598e76f583d9821a"
+    },
+    "daily_input_authority": {
+      "bytes": 5136,
+      "path": "reports/r24r1/activation_simulation/a4264af4d50f4c34b28e4bbbd8feed48/daily_input.json",
+      "sha256": "b421a77f57d74e6c1e35030591223b2d196a655e0a19aab10f4e2a29e8d605fa"
+    },
+    "daily_input_boundary": "2026-10-08T13:00:00Z",
+    "daily_input_digest": "90634c049434f4c3dd76282113e28c3beb6f705e41b4cb7c9c32f76067c53b9b",
+    "dependency_set_digest": "aae39068516ea71b35a6a1dfbcdb53b453ca989780b94527e96039b633785b92",
+    "effective_from": "2026-10-08T00:00:00Z",
+    "effective_trade_date": "2026-10-08",
+    "expected_prior_activation_head": null,
+    "first_trade_date": "2026-10-08",
+    "initialization_boundary": {
+      "bytes": 693,
+      "path": "config/v4_16_real_initialization_boundary_v1.json",
+      "sha256": "d46a5304a152fff7240c204f416d2691858f6ddbfbba5c5ba961bc858405e7d3"
+    },
+    "minimum_daily_input_revision": 1,
+    "model_contract_id": "RESEARCH_STATE_V1",
+    "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+    "predecessor": {
+      "bytes": 329,
+      "path": "reports/r24r1/activation_simulation/a4264af4d50f4c34b28e4bbbd8feed48/predecessor.json",
+      "sha256": "ae6c73e8516a0bb6f1bd37787fcf02604e230dadcc0230be119c7154a54d5db2"
+    },
+    "rollback_identity": "R24_APPEND_ONLY_STOP_V1",
+    "runtime_dependency_contract_id": "V4_16_RUNTIME_DEPENDENCIES_V3",
+    "slot": {
+      "bytes": 8464,
+      "path": "config/v4_16_observation_slot_contract_v2.json",
+      "sha256": "47e0c0bc36373f0d63557769c428f64a422ea434435b9319ce144d43b22bea15"
+    },
+    "source_adapters": {
+      "bytes": 541,
+      "path": "config/v4_16_source_readiness_adapters_v1.json",
+      "sha256": "705ad87ea171d0c913f10162b221d19070237b275db08091584adb7ab29b129e"
+    },
+    "source_authority": {
+      "bytes": 2180,
+      "path": "reports/r24r1/activation_simulation/a4264af4d50f4c34b28e4bbbd8feed48/source_authority.json",
+      "sha256": "36fc26c581bb270815a01c741c955c3d4099b7e1826276be9fca3e63fab98db0"
+    },
+    "state_lineage_id": "R24R1_SIMULATION_LINEAGE",
+    "storage": {
+      "bytes": 543,
+      "path": "config/v4_16_go_forward_storage_v1.json",
+      "sha256": "2a987d3b75e4e1ef208bb6747a4a7e46df6666fa9a96a6245a33b1047bd42bed"
+    },
+    "storage_identity": {
+      "database_path": "reports/r24r1/activation_simulation/a4264af4d50f4c34b28e4bbbd8feed48/successor.sqlite",
+      "evidence_origin": "ACTIVATION_SIMULATION",
+      "execution_mode": "SHADOW",
+      "migration": {
+        "bytes": 3679,
+        "path": "migrations/v4_16_r24_real_shadow_v1.sql",
+        "sha256": "ff717666fdbe692aa4c75cf9ddb9759708f107a6149d0dae10014d562a5a8caf"
+      },
+      "namespace": "SHADOW_V4"
+    },
+    "target_trade_date": "2026-10-08"
+  },
+  "production": false,
+  "real_shadow_authorized": true,
+  "required_grant_fields": [
+    "authority_id",
+    "effective_trade_date",
+    "effective_from",
+    "model_contract_id",
+    "parameter_set_id",
+    "state_lineage_id",
+    "capability_scope",
+    "clock",
+    "slot",
+    "runtime_dependency_contract_id",
+    "dependency_set_digest",
+    "storage",
+    "storage_identity",
+    "source_adapters",
+    "source_authority",
+    "rollback_identity",
+    "expected_prior_activation_head",
+    "initialization_boundary",
+    "predecessor",
+    "first_trade_date",
+    "daily_input_authority",
+    "daily_input_digest",
+    "target_trade_date",
+    "daily_input_boundary",
+    "minimum_daily_input_revision"
+  ],
+  "runtime_authorized": true,
+  "shadow": false,
+  "status": "ACTIVATION_CAPABLE_DISABLED_CANDIDATE",
+  "version": "2.0.0"
+}

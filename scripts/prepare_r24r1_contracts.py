@@ -37,7 +37,7 @@ def prepare():
     deps.update(contract_id='V4_16_RUNTIME_DEPENDENCIES_V3',version='3.0.0',execution_baseline='0c9f59fbe723fe0fb0e9d1a6750c339894bc7a5b',
         activation=activation,storage=storage_binding,go_forward_input=forward,realtime_admission=admission,
         runtime_writer=ref('scripts/v4_16_go_forward_shadow_runtime.py'),
-        input_authority_writer=ref('src/workbench_analysis/v4_16_go_forward_authority.py'))
+        input_authority_writer=ref('scripts/v4_16_go_forward_input_authority.py'))
     deps['bindings']=[b for b in deps['bindings'] if b not in [old_activation,old_storage,old_writer]]
     deps['bindings'] += [activation,storage_binding,forward,admission,deps['runtime_writer'],deps['input_authority_writer']]
     atomic('config/v4_16_runtime_dependencies_v3.json',deps)

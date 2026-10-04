@@ -16,7 +16,7 @@
       "evidence": {
         "bytes": 758,
         "path": "reports/r24r1/FORWARD_INPUT_AUTHORITY_GATE.json",
-        "sha256": "bea694a620c95e33cafd4cc3163a93aa4d6e9d3a98cc8a22c31a808c36a573e3"
+        "sha256": "8d072e1679526ed41513dac5df9250bd52852e18235c044184cf1833bb30fe09"
       },
       "id": "R24_P0_FORWARD_AUTHORITY",
       "scope": "Future-session input authority independent of frozen historical Data head"
@@ -40,12 +40,24 @@
       },
       "id": "R24_P1_REALTIME_ADMISSION",
       "scope": "Candidate template versus slot-backed acceptance"
+    },
+    {
+      "acceptance": "CLOSED_LOCAL_PENDING_CLEAN_RETEST_AND_EXTERNAL_AUDIT",
+      "evidence": {
+        "bytes": 433,
+        "path": "reports/r24r1/CLEAN_ATTEMPT_R1_DISPOSITION.json",
+        "sha256": "37d51ac183534f28f3ad1eeeb7d31bc4d962040ea20ec6752f4af3525f8c79e6"
+      },
+      "id": "R24R1_HISTORICAL_SOURCE_SCOPE",
+      "repair": "Successor input authority moved into scripts; accepted business src unchanged",
+      "scope": "Historical Git-based src freeze versus successor orchestration module placement",
+      "targeted_regression_passed": 250
     }
   ],
   "stage_contract": {
-    "bytes": 11538,
+    "bytes": 11520,
     "path": "config/v4_16_runtime_dependencies_v3.json",
-    "sha256": "be2486068880402015a26e575dcfa6b169ac448147de4f15d77406d835bdb1fb"
+    "sha256": "ce4c46162b88d50cd2edee7c22fdf7a65ed971e7e2b69dce5608399bb7350401"
   },
   "status": "PASS_LOCAL",
   "task": {

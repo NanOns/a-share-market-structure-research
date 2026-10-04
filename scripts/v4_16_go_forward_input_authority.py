@@ -5,7 +5,7 @@ The exact, externally accepted per-session head supplies all runtime inputs.
 """
 import copy, hashlib, json
 from datetime import datetime
-from .v4_current_stage_authority import CurrentStageAuthority
+from workbench_analysis.v4_current_stage_authority import CurrentStageAuthority
 
 def canonical(value):
     return json.dumps(value,sort_keys=True,separators=(',',':'),ensure_ascii=False,allow_nan=False)

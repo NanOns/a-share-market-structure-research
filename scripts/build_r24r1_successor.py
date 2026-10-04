@@ -7,7 +7,7 @@ def build():
         'R24 one-session successor':'R24R1 go-forward successor',
         'config/v4_16_runtime_dependencies_v2.json':'config/v4_16_runtime_dependencies_v3.json',
         'reports/r24/activation_simulation':'reports/r24r1/activation_simulation',
-        'from workbench_analysis.v4_current_stage_authority import CurrentStageAuthority':'from workbench_analysis.v4_current_stage_authority import CurrentStageAuthority\nfrom workbench_analysis.v4_16_go_forward_authority import GoForwardInputAuthority',
+        'from workbench_analysis.v4_current_stage_authority import CurrentStageAuthority':'from workbench_analysis.v4_current_stage_authority import CurrentStageAuthority\nfrom scripts.v4_16_go_forward_input_authority import GoForwardInputAuthority',
         'self.authority=CurrentStageAuthority(self.root)':"self.authority=GoForwardInputAuthority(self.root,self.deps['go_forward_input'],self.grant['daily_input_authority'],self.grant,self.grant['daily_input_boundary'],self.simulation)",
         "accepted_data_head=c.deps['accepted_data']":"daily_input_authority=c.grant['daily_input_authority'],daily_input_digest=c.grant['daily_input_digest'],immutable_data_head=c.deps['accepted_data']",
         'store=RealArtifactStore(self.db)':'store=CandidateArtifactStore(self.db)',

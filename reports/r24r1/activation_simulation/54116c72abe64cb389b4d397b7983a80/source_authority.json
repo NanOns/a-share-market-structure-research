@@ -1,0 +1,61 @@
+{
+  "adapter_id": "ACCEPTED_LOCAL_EXACT_BYTES_V1",
+  "contract_id": "R24R1_SIM_SOURCE_AUTHORITY_V1",
+  "environment_class": "ACTIVATION_SIMULATION",
+  "future_binding": {
+    "bytes": 2537,
+    "path": "reports/r24r1/activation_simulation/54116c72abe64cb389b4d397b7983a80/future.json",
+    "sha256": "a72caf0391e1a180d4dafb2fe8d09913dd58094861c77c3137cb2a9bfb121b16"
+  },
+  "owner_heads": {
+    "v4_10": {
+      "byte_count": 5102,
+      "path": "data/v4/V4_10_ACCEPTED_HEAD.json",
+      "sha256": "ad9fc4643652feb3684223817f2e9c300167d128e2e8a07179e86f65094fd1e1"
+    },
+    "v4_11": {
+      "bytes": 14090,
+      "path": "data/v4/V4_11_ACCEPTED_HEAD.json",
+      "sha256": "d8d96dce559eb968e6446f0626766980f6fb045fca1219e3e01fcd0a980b9928"
+    },
+    "v4_12": {
+      "bytes": 796484,
+      "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+      "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+    },
+    "v4_13": {
+      "bytes": 11314,
+      "path": "data/v4/V4_13_ACCEPTED_HEAD_AMENDED_R1.json",
+      "sha256": "98f222ba4d62318ee900a69b8cad7c25359a30bcc7097efe0a55b8ffea09aa65"
+    },
+    "v4_14": {
+      "bytes": 4178,
+      "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+      "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+    }
+  },
+  "sources": {
+    "OWNER_OUTPUT": {
+      "binding": {
+        "bytes": 1227,
+        "path": "reports/r24r1/activation_simulation/54116c72abe64cb389b4d397b7983a80/owner.json",
+        "sha256": "3a022db1529a7a8eb17925f7728398b79f55b24e4ae2c81714619f3cb8112ef1"
+      },
+      "provider": "DETERMINISTIC_SIMULATION",
+      "source_identity": "R24R1_SIM_OWNER_OUTPUT",
+      "source_revision": "R1",
+      "target_trade_date": "2026-10-08"
+    },
+    "T0_SNAPSHOT": {
+      "binding": {
+        "bytes": 1601,
+        "path": "reports/r24r1/activation_simulation/54116c72abe64cb389b4d397b7983a80/snapshot.json",
+        "sha256": "bcaa4a445a0a8191d842aaa1afae975b04bca41a4aa631f2c662617cafa2dcd2"
+      },
+      "provider": "DETERMINISTIC_SIMULATION",
+      "source_identity": "R24R1_SIM_T0_SNAPSHOT",
+      "source_revision": "R1",
+      "target_trade_date": "2026-10-08"
+    }
+  }
+}

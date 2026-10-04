@@ -1,0 +1,135 @@
+{
+  "accepted_at": "2026-10-08T12:59:00Z",
+  "calendar": {
+    "bytes": 160,
+    "path": "reports/r24r1/activation_simulation/a6c97cc9eb1b4d6796b68eb38d7eb36f/calendar.json",
+    "sha256": "0d16ce2bfbd10a69705dfaa8b9d2d9e09b74aa2a511a2e9dcb9adb0ef5b7f5cd"
+  },
+  "contract_id": "V4_16_GO_FORWARD_INPUT_AUTHORITY_V1",
+  "daily_input_digest": "43af95db1637f7402051ba892513b478f1a7aa8f53bf477ef4a611984a9cadd6",
+  "daily_input_id": "SIM_DAY_a6c97cc9eb1b4d6796b68eb38d7eb36f",
+  "day_package": {
+    "bytes": 2420,
+    "path": "reports/r24r1/activation_simulation/a6c97cc9eb1b4d6796b68eb38d7eb36f/package.json",
+    "sha256": "3c74fcce729eb172e87eaca37330cc85545d1bee56660a3b639a12038b7999cc"
+  },
+  "environment_class": "ACTIVATION_SIMULATION",
+  "identity": {
+    "bytes": 154,
+    "path": "reports/r24r1/activation_simulation/a6c97cc9eb1b4d6796b68eb38d7eb36f/identity.json",
+    "sha256": "cc5d9f0dbbcc49158ab2bc49486a7ef1a498dc559dc0c21568abe9d91c40507a"
+  },
+  "immutable_algorithm_bindings": {
+    "cohort": {
+      "bytes": 2081,
+      "path": "config/v4_15_cohort_contract_v1.json",
+      "sha256": "5d4dee2e914ed541227cf54deb5676be3495713ea754ce6b78b078c643bacc8b"
+    },
+    "model": {
+      "bytes": 4926,
+      "path": "config/v4_10_research_state_contract_r1_2.json",
+      "sha256": "33d50256635161f425f4f34ac805ea2f511362be7d71d35b3a62478de5a59127"
+    },
+    "parameters": {
+      "bytes": 435,
+      "path": "config/v4_10_parameter_set_r1_2.json",
+      "sha256": "20b66f9f2d2d4fe6ba8c3dd0583d6fa3d5408daebda09fae7ff27548e800ffd7"
+    },
+    "stage": {
+      "bytes": 15303,
+      "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+      "sha256": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0"
+    },
+    "v4_15": {
+      "bytes": 4778,
+      "path": "data/v4/V4_15_ACCEPTED_HEAD.json",
+      "sha256": "a3480dfc7e1d7b68656ea78e6ed68eb93c3381db9c099b8a6e0cb3a84c9d1d4d"
+    }
+  },
+  "max_source_trade_date": "2026-10-08",
+  "membership": "NOT_REQUIRED_FOR_SCOPE",
+  "model_contract_id": "RESEARCH_STATE_V1",
+  "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+  "previous_trade_date": "2026-09-30",
+  "quality_capability_matrix": {
+    "ADJUSTED_DAILY": {
+      "capability": "PURE_CORE_STOCK",
+      "quality": "ACCEPTED"
+    },
+    "OWNER_OUTPUT": {
+      "capability": "PURE_CORE_STOCK",
+      "quality": "ACCEPTED"
+    },
+    "T0_SNAPSHOT": {
+      "capability": "PURE_CORE_STOCK",
+      "quality": "ACCEPTED"
+    },
+    "TDX_RAW_DAILY": {
+      "capability": "PURE_CORE_STOCK",
+      "quality": "ACCEPTED"
+    }
+  },
+  "revision": 1,
+  "snapshot_identity": "SIM_SNAPSHOT_a6c97cc9eb1b4d6796b68eb38d7eb36f",
+  "source_manifest_digest": "fd0d5466471aebc5ea96979679cfa4ecce1358829dcf401da6419cfcee89d76c",
+  "sources": {
+    "ADJUSTED_DAILY": {
+      "accepted_at": "2026-10-08T12:59:00Z",
+      "binding": {
+        "bytes": 162,
+        "path": "reports/r24r1/activation_simulation/a6c97cc9eb1b4d6796b68eb38d7eb36f/adjusted_daily.json",
+        "sha256": "1070cee53b852fd5bba11d95fb5993341e7eae3ace8f0d209ebaead7ae6595d6"
+      },
+      "capability": "PURE_CORE_STOCK",
+      "max_source_trade_date": "2026-10-08",
+      "provider_observed_at": "2026-10-08T12:58:00Z",
+      "quality": "ACCEPTED",
+      "system_available_at": "2026-10-08T12:58:30Z",
+      "target_trade_date": "2026-10-08"
+    },
+    "OWNER_OUTPUT": {
+      "accepted_at": "2026-10-08T12:59:00Z",
+      "binding": {
+        "bytes": 1227,
+        "path": "reports/r24r1/activation_simulation/a6c97cc9eb1b4d6796b68eb38d7eb36f/owner.json",
+        "sha256": "3a022db1529a7a8eb17925f7728398b79f55b24e4ae2c81714619f3cb8112ef1"
+      },
+      "capability": "PURE_CORE_STOCK",
+      "max_source_trade_date": "2026-10-08",
+      "provider_observed_at": "2026-10-08T12:58:00Z",
+      "quality": "ACCEPTED",
+      "system_available_at": "2026-10-08T12:58:30Z",
+      "target_trade_date": "2026-10-08"
+    },
+    "T0_SNAPSHOT": {
+      "accepted_at": "2026-10-08T12:59:00Z",
+      "binding": {
+        "bytes": 1601,
+        "path": "reports/r24r1/activation_simulation/a6c97cc9eb1b4d6796b68eb38d7eb36f/snapshot.json",
+        "sha256": "bcaa4a445a0a8191d842aaa1afae975b04bca41a4aa631f2c662617cafa2dcd2"
+      },
+      "capability": "PURE_CORE_STOCK",
+      "max_source_trade_date": "2026-10-08",
+      "provider_observed_at": "2026-10-08T12:58:00Z",
+      "quality": "ACCEPTED",
+      "system_available_at": "2026-10-08T12:58:30Z",
+      "target_trade_date": "2026-10-08"
+    },
+    "TDX_RAW_DAILY": {
+      "accepted_at": "2026-10-08T12:59:00Z",
+      "binding": {
+        "bytes": 162,
+        "path": "reports/r24r1/activation_simulation/a6c97cc9eb1b4d6796b68eb38d7eb36f/tdx_raw_daily.json",
+        "sha256": "1070cee53b852fd5bba11d95fb5993341e7eae3ace8f0d209ebaead7ae6595d6"
+      },
+      "capability": "PURE_CORE_STOCK",
+      "max_source_trade_date": "2026-10-08",
+      "provider_observed_at": "2026-10-08T12:58:00Z",
+      "quality": "ACCEPTED",
+      "system_available_at": "2026-10-08T12:58:30Z",
+      "target_trade_date": "2026-10-08"
+    }
+  },
+  "target_session_confirmed": true,
+  "target_trade_date": "2026-10-08"
+}

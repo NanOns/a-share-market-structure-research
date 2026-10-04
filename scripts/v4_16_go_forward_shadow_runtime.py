@@ -11,7 +11,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from scripts.v4_16_shadow_runtime import canonical, digest, check, exact, utc, ClockPolicyResolver
 from workbench_analysis.v4_current_stage_authority import CurrentStageAuthority
-from workbench_analysis.v4_16_go_forward_authority import GoForwardInputAuthority
+from scripts.v4_16_go_forward_input_authority import GoForwardInputAuthority
 from scripts.v4_16_real_owner_projection_v1 import RealOwnerProjectionV1
 from workbench_analysis.v4_15_settlement import SettlementRuntime, AcceptedPriceSource, VectorPriceSource, due_plan
 

@@ -4,7 +4,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 BASE='abe8311d55db3fecc086a77c3ce8a16f4309df54'
 CONTRACT='config/v4_22_independent_audit_contract_v1.json'
-TAG='codex/r31r2-v4-22-audit-contract-failclosed-tested-source-20261005'
+TAG='codex/r31r2-v4-22-audit-contract-failclosed-tested-source-20261005-v2'
 BASE_SHA='d6a45fe4fedf483e8a188d8cab884c4d1cd16f8910c27de9f6a15ee1ba58f9f9'
 def build_bytes(root=ROOT):
     raw=subprocess.check_output(['git','show',BASE+':'+CONTRACT],cwd=root)

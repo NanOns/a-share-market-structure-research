@@ -4,7 +4,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT))
 from reports.r31.audit_oracle import validate_contract,final_verdict
-TAG='codex/r31r2-v4-22-audit-contract-failclosed-tested-source-20261005'
+TAG='codex/r31r2-v4-22-audit-contract-failclosed-tested-source-20261005-v2'
 C=json.loads((ROOT/'config/v4_22_independent_audit_contract_v1.json').read_bytes())
 def sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()
 def write(name,v):

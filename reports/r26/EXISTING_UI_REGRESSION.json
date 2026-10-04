@@ -1,0 +1,50 @@
+{
+  "audit_item": "R26-A01",
+  "baseline_failures": [
+    {
+      "message": "assert \"get('/api/v3/research/today?page='\" in \"(function () {\\n    'use strict';\\n    if ((document.body.dataset.workbenchMode || '') !== 'v3') return;\\n\\n    // V3... · ' + job.job_id, 'warn');\\n        pollResearchBuild(job.job_id, serial, 0);\\n    }).catch(function () {});\\n}());\\n\"",
+      "node": "tests.upgrade_v3.test_v3_unified_entry::test_v3_is_the_single_unified_workbench_entry"
+    },
+    {
+      "message": "AttributeError: '_NoopService' object has no attribute 'status'",
+      "node": "tests.upgrade_v3.test_p01_01_lock_scope::test_hot_rank_route_skips_request_scope"
+    },
+    {
+      "message": "AttributeError: '_NoopService' object has no attribute 'status'",
+      "node": "tests.upgrade_v3.test_p01_01_lock_scope::test_send_marks_disconnected_client_closed"
+    }
+  ],
+  "baseline_passed": 174,
+  "baseline_report": {
+    "bytes": 37956,
+    "path": "reports/r26/baseline-final-tests.xml",
+    "sha256": "1465002231e83b5c474fa23e543b02f199273f0d38dc03cff226fb65b7102344"
+  },
+  "baseline_tests": 177,
+  "current_failures": [
+    {
+      "message": "assert \"get('/api/v3/research/today?page='\" in \"(function () {\\n    'use strict';\\n    if ((document.body.dataset.workbenchMode || '') !== 'v3') return;\\n\\n    // V3... · ' + job.job_id, 'warn');\\n        pollResearchBuild(job.job_id, serial, 0);\\n    }).catch(function () {});\\n}());\\n\"",
+      "node": "tests.upgrade_v3.test_v3_unified_entry::test_v3_is_the_single_unified_workbench_entry"
+    },
+    {
+      "message": "AttributeError: '_NoopService' object has no attribute 'status'",
+      "node": "tests.upgrade_v3.test_p01_01_lock_scope::test_hot_rank_route_skips_request_scope"
+    },
+    {
+      "message": "AttributeError: '_NoopService' object has no attribute 'status'",
+      "node": "tests.upgrade_v3.test_p01_01_lock_scope::test_send_marks_disconnected_client_closed"
+    }
+  ],
+  "current_passed": 217,
+  "current_report": {
+    "bytes": 43260,
+    "path": "reports/r26/local-final-v3-tests.xml",
+    "sha256": "1ad628c7bfab2004f514f514b8c3300cfc12e8bbe167dba04235bfe5cdc3f6ee"
+  },
+  "current_tests": 220,
+  "legacy_service": "AST_IDENTICAL_EXCLUDING_SHADOW_ADDITIONS",
+  "legacy_static_pages": "UNCHANGED_BYTES",
+  "new_failures": [],
+  "not_a_zero_failure_full_suite": true,
+  "status": "PASS_SCOPED_NO_NEW_FAILURES"
+}

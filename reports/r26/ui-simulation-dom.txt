@@ -1,0 +1,222 @@
+- main:
+  - navigation:
+    - link "V3 研究":
+      - /url: /v3
+    - link "Focus 跟踪":
+      - /url: /v3/focus-tracker
+    - generic: 只读导航
+  - heading "V4 Shadow SHADOW · 只读" [level=1]:
+    - text: V4 Shadow
+    - generic: SHADOW · 只读
+  - paragraph: 从已接受研究状态到 Forward 结算的完整观察链
+  - status: ACTIVATION_SIMULATION · NOT_REAL_EVIDENCE · 真实样本 0
+  - region "上下文":
+    - heading "上下文 / 来源身份" [level=2]
+    - term: namespace
+    - definition: SHADOW_V4
+    - term: trade_date
+    - definition: 2026-10-08
+    - term: publication_id
+    - definition: r26-sim-publication
+    - term: publication_revision
+    - definition: "2"
+    - term: model_contract_id
+    - definition: RESEARCH_STATE_V1
+    - term: parameter_set_id
+    - definition: R26_VECTOR
+    - term: state_lineage_id
+    - definition: r26-vector-lineage
+    - term: daily_input_digest
+    - definition: dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+    - term: source_manifest_digest
+    - definition: ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+    - term: evidence_origin
+    - definition: ACTIVATION_SIMULATION
+    - paragraph: 来源质量：DEGRADED
+    - paragraph: context token：shadow-988a0ce7f6ef63db0ee2201a8a21a4b497b80476896e26a300b7e80a9c2877a6
+    - button "刷新同一上下文"
+  - heading "今日变化 / Why Now" [level=2]
+  - textbox "今日变化 / Why Now筛选":
+    - /placeholder: 筛选当前上下文
+  - button "筛选"
+  - button "上一页" [disabled]
+  - button "下一页" [disabled]
+  - paragraph: 共 1 条 · 第 1 页 · DEGRADED
+  - article:
+    - term: 对象
+    - definition: SIM_STOCK_AKNOWN
+    - generic "来源"
+    - term: 前一接受状态
+    - definition: UNKNOWN · SOURCE_FIELD_UNAVAILABLE
+    - term: 当前状态
+    - definition: PREWATCHKNOWN
+    - generic "来源"
+    - term: 变化原因
+    - definition: "[ \"ENROLLED\" ]KNOWN"
+    - generic "来源"
+    - term: 可观察证据
+    - definition: UNKNOWN · SOURCE_FIELD_UNAVAILABLE
+    - term: 风险 / 未知
+    - definition: UNKNOWN · SOURCE_FIELD_UNAVAILABLE
+  - heading "研究雷达" [level=2]
+  - textbox "研究雷达筛选":
+    - /placeholder: 筛选当前上下文
+  - button "筛选"
+  - button "上一页" [disabled]
+  - button "下一页" [disabled]
+  - paragraph: 共 1 条 · 第 1 页 · DEGRADED
+  - article:
+    - term: 对象
+    - definition: SIM_STOCK_AKNOWN
+    - generic "来源"
+    - term: 类型
+    - definition: STOCKKNOWN
+    - generic "来源"
+    - term: 资格
+    - definition: TRUEKNOWN
+    - generic "来源"
+    - term: 状态
+    - definition: PREWATCHKNOWN
+    - generic "来源"
+    - term: 优先级原语
+    - definition: ELIGIBLEKNOWN
+    - generic "来源"
+    - term: 质量
+    - definition: UNKNOWN · SOURCE_FIELD_UNAVAILABLE
+    - term: Why Now
+    - definition: UNKNOWN · SOURCE_FIELD_UNAVAILABLE
+    - term: 未展示原因
+    - definition: UNKNOWN · SOURCE_FIELD_UNAVAILABLE
+  - heading "股票 / 板块状态" [level=2]
+  - textbox "股票 / 板块状态筛选":
+    - /placeholder: 筛选当前上下文
+  - button "筛选"
+  - button "上一页" [disabled]
+  - button "下一页" [disabled]
+  - paragraph: 共 1 条 · 第 1 页 · DEGRADED
+  - article:
+    - term: 对象
+    - definition: SIM_STOCK_AKNOWN
+    - generic "来源"
+    - term: 类型
+    - definition: STOCKKNOWN
+    - generic "来源"
+    - term: 趋势
+    - definition: OBSERVED_VECTOR_ONLYKNOWN
+    - generic "来源"
+    - term: 位置
+    - definition: UNKNOWN · SOURCE_FIELD_UNAVAILABLE
+    - term: 相对状态
+    - definition: UNKNOWN · SOURCE_FIELD_UNAVAILABLE
+    - term: 结构
+    - definition: UNKNOWN · SOURCE_FIELD_UNAVAILABLE
+    - term: 突破
+    - definition: UNKNOWN · SOURCE_FIELD_UNAVAILABLE
+    - term: 回撤
+    - definition: UNKNOWN · SOURCE_FIELD_UNAVAILABLE
+    - term: 恢复
+    - definition: UNKNOWN · SOURCE_FIELD_UNAVAILABLE
+    - term: 支持
+    - definition: UNKNOWN · SOURCE_FIELD_UNAVAILABLE
+    - term: 接受
+    - definition: UNKNOWN · SOURCE_FIELD_UNAVAILABLE
+    - term: 授权板块上下文
+    - definition: UNKNOWN · SOURCE_FIELD_UNAVAILABLE
+  - heading "Cohort / Forward" [level=2]
+  - textbox "Cohort / Forward筛选":
+    - /placeholder: 筛选当前上下文
+  - button "筛选"
+  - button "上一页" [disabled]
+  - button "下一页" [disabled]
+  - paragraph: 共 1 条 · 第 1 页 · DEGRADED
+  - article:
+    - term: 对象
+    - definition: SIM_STOCK_AKNOWN
+    - generic "来源"
+    - term: 入组身份
+    - definition: SIM_ENROLLMENTKNOWN
+    - generic "来源"
+    - term: 冻结 T0
+    - definition: 2026-10-08KNOWN
+    - generic "来源"
+    - term: 样本分层
+    - definition: FIRST_OBSERVEDKNOWN
+    - generic "来源"
+    - term: 期限
+    - definition: 5KNOWN
+    - generic "来源"
+    - term: 到期日
+    - definition: 2026-10-15KNOWN
+    - generic "来源"
+    - term: 待结算 / 已观察
+    - definition: PENDINGKNOWN
+    - generic "来源"
+    - term: 基准身份
+    - definition: "{ \"market\": \"SIM_MARKET\" }KNOWN"
+    - generic "来源"
+    - term: 控制身份
+    - definition: "{ \"A\": \"SIM_A\" }KNOWN"
+    - generic "来源"
+  - heading "结算与修订" [level=2]
+  - textbox "结算与修订筛选":
+    - /placeholder: 筛选当前上下文
+  - button "筛选"
+  - button "上一页" [disabled]
+  - button "下一页" [disabled]
+  - paragraph: 共 1 条 · 第 1 页 · DEGRADED
+  - article:
+    - term: 入组身份
+    - definition: SIM_ENROLLMENTKNOWN
+    - generic "来源"
+    - term: 期限
+    - definition: 5KNOWN
+    - generic "来源"
+    - term: 观察状态
+    - definition: PENDINGKNOWN
+    - generic "来源"
+    - term: 价格路径结果
+    - definition: RIGHT_CENSORED · PENDING_ENDPOINT
+    - term: 结果修订
+    - definition: SIM_REV_2KNOWN
+    - generic "来源"
+    - term: 精确绑定修订
+    - definition: SIM_REV_2KNOWN
+    - generic "来源"
+    - term: 右删失
+    - definition: RIGHT_CENSOREDKNOWN
+    - generic "来源"
+    - term: 修订原因
+    - definition: ACCEPTED_EVALUATION_SOURCE_REVISIONKNOWN
+    - generic "来源"
+  - heading "运行健康 / 来源质量" [level=2]
+  - textbox "运行健康 / 来源质量筛选":
+    - /placeholder: 筛选当前上下文
+  - button "筛选"
+  - button "上一页" [disabled]
+  - button "下一页" [disabled]
+  - paragraph: 共 1 条 · 第 1 页 · DEGRADED
+  - article:
+    - term: 观察窗口
+    - definition: ACCEPTED_ON_TIMEKNOWN
+    - generic "来源"
+    - term: 可见性回执
+    - definition: "[ \"SIM_RECEIPT\" ]KNOWN"
+    - generic "来源"
+    - term: 发布身份 / 修订
+    - definition: r26-sim-publication/rev2KNOWN
+    - generic "来源"
+    - term: 时钟 / 缺失
+    - definition: UNKNOWN · SOURCE_FIELD_UNAVAILABLE
+    - term: 能力范围
+    - definition: "[ \"PURE_CORE_STOCK\" ]KNOWN"
+    - generic "来源"
+    - term: 受阻能力
+    - definition: "[ \"A04_H21_CONSUMER\" ]KNOWN"
+    - generic "来源"
+    - term: 停止新接受
+    - definition: falseKNOWN
+    - generic "来源"
+    - term: 保留已接受事实
+    - definition: trueKNOWN
+    - generic "来源"
+  - generic: R26 工程预览 · 真实 Shadow 读取、V4-17 最终验收及 V4-17G 均未授权。R25 等待已接受当日输入。

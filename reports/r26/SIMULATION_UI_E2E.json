@@ -1,0 +1,55 @@
+{
+  "artifacts": [
+    {
+      "bytes": 5596,
+      "path": "reports/r26/ui-real-dom.txt",
+      "sha256": "5d789c94830f7f88686f5778cc5000355dbf3237bf00f6c97e0cc01cac663812"
+    },
+    {
+      "bytes": 7355,
+      "path": "reports/r26/ui-simulation-dom.txt",
+      "sha256": "477d4c17e8e86f98f989e4d2b9dac530a5b682f01654cb1f96ececb38456dfd6"
+    },
+    {
+      "bytes": 7364,
+      "path": "reports/r26/ui-refreshed-dom.txt",
+      "sha256": "8d6cdf7f2990a876fcb1295c316a0f4f57d862a742fce4e9e6908f591e3daec2"
+    },
+    {
+      "bytes": 6833,
+      "path": "reports/r26/ui-filtered-dom.txt",
+      "sha256": "7c55f29b2bc51f604e11ef38376a18d908bc5f111dfd44fd3f3f9418303b6dd7"
+    },
+    {
+      "bytes": 666,
+      "path": "reports/r26/ui-deeplink-blocked-dom.txt",
+      "sha256": "5f9812ed829f7eca951de05255f9d886a69130dff91dac562f9e8c15b0dc4070"
+    },
+    {
+      "bytes": 341447,
+      "path": "reports/r26/ui-real.png",
+      "sha256": "1182c834d3646e95d49b12599a7cdc0201b77696b49c348524b3263e6ec588ad"
+    },
+    {
+      "bytes": 376277,
+      "path": "reports/r26/ui-simulation.png",
+      "sha256": "3c4d2bf3db09ecd9d4aab96d42178f16c24939a7f899a8eccfd2893e0156450b"
+    },
+    {
+      "bytes": 18618,
+      "path": "reports/r26/ui-real-preview.png",
+      "sha256": "d51a861457263de0f19ff8c1f9f6f4f6f4e4fd35730454bb20ded20d89fd41c2"
+    }
+  ],
+  "components": 6,
+  "deep_link_mismatch": "BLOCKED_CONTEXT_TOKEN_MISMATCH",
+  "deep_link_valid": "PASS_DETERMINISTIC",
+  "evidence_origin": "NOT_REAL_EVIDENCE",
+  "filter": "PASS_SAME_TOKEN_NO_RECORDS",
+  "pending_right_censor": "VISIBLE_NO_OBSERVED_RETURN",
+  "real_page": "NO_REAL_SHADOW_DATA; real_sample_count=0",
+  "refresh": "PASS_SAME_TOKEN",
+  "simulation_label": "ACTIVATION_SIMULATION / NOT_REAL_EVIDENCE",
+  "status": "PASS_LOCAL_BROWSER_ENGINEERING_ONLY",
+  "tool": "computer-use cua_repl in-app browser"
+}

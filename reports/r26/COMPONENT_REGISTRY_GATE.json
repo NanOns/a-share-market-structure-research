@@ -1,0 +1,576 @@
+{
+  "absent_upstream_fields": "UNKNOWN_NO_ALGORITHM_INVENTION",
+  "client_registry_matches_contract": true,
+  "components": {
+    "cohort": {
+      "fields": {
+        "T0": {
+          "fact_kinds": [
+            "enrollment",
+            "due",
+            "artifact"
+          ],
+          "label": "冻结 T0",
+          "paths": [
+            "T0",
+            "value.T0"
+          ]
+        },
+        "benchmark_ids": {
+          "fact_kinds": [
+            "enrollment",
+            "due",
+            "artifact"
+          ],
+          "label": "基准身份",
+          "paths": [
+            "benchmark_ids",
+            "value.benchmark_ids"
+          ]
+        },
+        "cohort_namespace": {
+          "fact_kinds": [
+            "enrollment",
+            "due",
+            "artifact"
+          ],
+          "label": "样本分层",
+          "paths": [
+            "cohort_namespace",
+            "value.cohort_namespace"
+          ]
+        },
+        "control_assignment_ids": {
+          "fact_kinds": [
+            "enrollment",
+            "due",
+            "artifact"
+          ],
+          "label": "控制身份",
+          "paths": [
+            "control_assignment_ids",
+            "value.control_assignment_ids"
+          ]
+        },
+        "due_date": {
+          "fact_kinds": [
+            "enrollment",
+            "due",
+            "artifact"
+          ],
+          "label": "到期日",
+          "paths": [
+            "due_date",
+            "value.due_date"
+          ]
+        },
+        "enrollment_id": {
+          "fact_kinds": [
+            "enrollment",
+            "due",
+            "artifact"
+          ],
+          "label": "入组身份",
+          "paths": [
+            "enrollment_id",
+            "value.enrollment_id"
+          ]
+        },
+        "entity_id": {
+          "fact_kinds": [
+            "enrollment",
+            "due",
+            "artifact"
+          ],
+          "label": "对象",
+          "paths": [
+            "entity_id",
+            "value.entity_id"
+          ]
+        },
+        "horizon": {
+          "fact_kinds": [
+            "enrollment",
+            "due",
+            "artifact"
+          ],
+          "label": "期限",
+          "paths": [
+            "horizon",
+            "value.horizon"
+          ]
+        },
+        "outcome_status": {
+          "fact_kinds": [
+            "enrollment",
+            "due",
+            "artifact"
+          ],
+          "label": "待结算 / 已观察",
+          "paths": [
+            "outcome_status",
+            "value.outcome_status"
+          ]
+        }
+      },
+      "title": "Cohort / Forward"
+    },
+    "entity": {
+      "fields": {
+        "acceptance": {
+          "fact_kinds": [
+            "artifact"
+          ],
+          "label": "接受",
+          "paths": [
+            "value.acceptance"
+          ]
+        },
+        "breakout": {
+          "fact_kinds": [
+            "artifact"
+          ],
+          "label": "突破",
+          "paths": [
+            "value.breakout"
+          ]
+        },
+        "entity_id": {
+          "fact_kinds": [
+            "artifact"
+          ],
+          "label": "对象",
+          "paths": [
+            "value.entity_id"
+          ]
+        },
+        "entity_type": {
+          "fact_kinds": [
+            "artifact"
+          ],
+          "label": "类型",
+          "paths": [
+            "value.entity_type"
+          ]
+        },
+        "position": {
+          "fact_kinds": [
+            "artifact"
+          ],
+          "label": "位置",
+          "paths": [
+            "value.position"
+          ]
+        },
+        "pullback": {
+          "fact_kinds": [
+            "artifact"
+          ],
+          "label": "回撤",
+          "paths": [
+            "value.pullback"
+          ]
+        },
+        "recovery": {
+          "fact_kinds": [
+            "artifact"
+          ],
+          "label": "恢复",
+          "paths": [
+            "value.recovery"
+          ]
+        },
+        "relative_state": {
+          "fact_kinds": [
+            "artifact"
+          ],
+          "label": "相对状态",
+          "paths": [
+            "value.relative_state"
+          ]
+        },
+        "sector_context": {
+          "fact_kinds": [
+            "artifact"
+          ],
+          "label": "授权板块上下文",
+          "paths": [
+            "value.sector_context"
+          ]
+        },
+        "structure": {
+          "fact_kinds": [
+            "artifact"
+          ],
+          "label": "结构",
+          "paths": [
+            "value.structure"
+          ]
+        },
+        "support": {
+          "fact_kinds": [
+            "artifact"
+          ],
+          "label": "支持",
+          "paths": [
+            "value.support"
+          ]
+        },
+        "trend": {
+          "fact_kinds": [
+            "artifact"
+          ],
+          "label": "趋势",
+          "paths": [
+            "value.trend"
+          ]
+        }
+      },
+      "title": "股票 / 板块状态"
+    },
+    "health": {
+      "fields": {
+        "blocked_capabilities": {
+          "fact_kinds": [
+            "artifact"
+          ],
+          "label": "受阻能力",
+          "paths": [
+            "value.blocked_capabilities"
+          ]
+        },
+        "capability_scope": {
+          "fact_kinds": [
+            "slot"
+          ],
+          "label": "能力范围",
+          "paths": [
+            "capability_scope"
+          ]
+        },
+        "late_missing_unknown": {
+          "fact_kinds": [
+            "health",
+            "slot"
+          ],
+          "label": "时钟 / 缺失",
+          "paths": [
+            "clock_compliance",
+            "field_quality"
+          ]
+        },
+        "publication_lineage": {
+          "fact_kinds": [
+            "publication",
+            "state"
+          ],
+          "label": "发布身份 / 修订",
+          "paths": [
+            "publication_id",
+            "revision"
+          ]
+        },
+        "rollback": {
+          "fact_kinds": [
+            "control"
+          ],
+          "label": "保留已接受事实",
+          "paths": [
+            "preserve_accepted_observations"
+          ]
+        },
+        "slot_status": {
+          "fact_kinds": [
+            "slot"
+          ],
+          "label": "观察窗口",
+          "paths": [
+            "slot_status"
+          ]
+        },
+        "source_receipts": {
+          "fact_kinds": [
+            "slot",
+            "receipt"
+          ],
+          "label": "可见性回执",
+          "paths": [
+            "visibility_receipt_ids",
+            "receipt_id"
+          ]
+        },
+        "stop_state": {
+          "fact_kinds": [
+            "control"
+          ],
+          "label": "停止新接受",
+          "paths": [
+            "stop_new_acceptance"
+          ]
+        }
+      },
+      "title": "运行健康 / 来源质量"
+    },
+    "radar": {
+      "fields": {
+        "eligibility": {
+          "fact_kinds": [
+            "artifact"
+          ],
+          "label": "资格",
+          "paths": [
+            "value.eligibility_state"
+          ]
+        },
+        "entity_id": {
+          "fact_kinds": [
+            "artifact"
+          ],
+          "label": "对象",
+          "paths": [
+            "value.entity_id"
+          ]
+        },
+        "entity_type": {
+          "fact_kinds": [
+            "artifact"
+          ],
+          "label": "类型",
+          "paths": [
+            "value.entity_type"
+          ]
+        },
+        "not_display_reason": {
+          "fact_kinds": [
+            "artifact"
+          ],
+          "label": "未展示原因",
+          "paths": [
+            "value.diagnostics",
+            "value.not_display_reason"
+          ]
+        },
+        "priority_primitives": {
+          "fact_kinds": [
+            "artifact"
+          ],
+          "label": "优先级原语",
+          "paths": [
+            "value.priority_bucket",
+            "value.priority_primitives"
+          ]
+        },
+        "quality": {
+          "fact_kinds": [
+            "artifact"
+          ],
+          "label": "质量",
+          "paths": [
+            "value.quality"
+          ]
+        },
+        "state": {
+          "fact_kinds": [
+            "artifact"
+          ],
+          "label": "状态",
+          "paths": [
+            "value.signal_type"
+          ]
+        },
+        "why_now": {
+          "fact_kinds": [
+            "observation",
+            "artifact"
+          ],
+          "label": "Why Now",
+          "paths": [
+            "why_now",
+            "value.why_now"
+          ]
+        }
+      },
+      "title": "研究雷达"
+    },
+    "settlement": {
+      "fields": {
+        "bound_outcome_revision": {
+          "fact_kinds": [
+            "outcome",
+            "due",
+            "artifact"
+          ],
+          "label": "精确绑定修订",
+          "paths": [
+            "outcome_revision_id",
+            "value.outcome_revision_id"
+          ]
+        },
+        "enrollment_id": {
+          "fact_kinds": [
+            "outcome",
+            "due",
+            "artifact"
+          ],
+          "label": "入组身份",
+          "paths": [
+            "enrollment_id",
+            "value.enrollment_id"
+          ]
+        },
+        "horizon": {
+          "fact_kinds": [
+            "outcome",
+            "due",
+            "artifact"
+          ],
+          "label": "期限",
+          "paths": [
+            "horizon",
+            "value.horizon"
+          ]
+        },
+        "outcome": {
+          "fact_kinds": [
+            "outcome",
+            "due",
+            "artifact"
+          ],
+          "label": "价格路径结果",
+          "paths": [
+            "R_N",
+            "value.R_N"
+          ]
+        },
+        "outcome_revision": {
+          "fact_kinds": [
+            "outcome",
+            "due",
+            "artifact"
+          ],
+          "label": "结果修订",
+          "paths": [
+            "outcome_revision_id",
+            "value.outcome_revision_id"
+          ]
+        },
+        "outcome_status": {
+          "fact_kinds": [
+            "outcome",
+            "due",
+            "artifact"
+          ],
+          "label": "观察状态",
+          "paths": [
+            "outcome_status",
+            "value.outcome_status"
+          ]
+        },
+        "revision_reason": {
+          "fact_kinds": [
+            "outcome",
+            "due",
+            "artifact"
+          ],
+          "label": "修订原因",
+          "paths": [
+            "revision_reason",
+            "value.revision_reason"
+          ]
+        },
+        "right_censor": {
+          "fact_kinds": [
+            "outcome",
+            "due",
+            "artifact"
+          ],
+          "label": "右删失",
+          "paths": [
+            "censoring_state",
+            "value.censoring_state"
+          ]
+        }
+      },
+      "title": "结算与修订"
+    },
+    "summary": {
+      "fields": {
+        "current_state": {
+          "fact_kinds": [
+            "observation",
+            "artifact"
+          ],
+          "label": "当前状态",
+          "paths": [
+            "why_now.current_stage",
+            "value.why_now.current_stage"
+          ]
+        },
+        "entity_id": {
+          "fact_kinds": [
+            "observation",
+            "artifact"
+          ],
+          "label": "对象",
+          "paths": [
+            "entity_id",
+            "value.entity_id"
+          ]
+        },
+        "observable_evidence": {
+          "fact_kinds": [
+            "observation",
+            "artifact"
+          ],
+          "label": "可观察证据",
+          "paths": [
+            "why_now.newly_satisfied_rules",
+            "value.why_now.newly_satisfied_rules"
+          ]
+        },
+        "prior_state": {
+          "fact_kinds": [
+            "observation",
+            "artifact"
+          ],
+          "label": "前一接受状态",
+          "paths": [
+            "why_now.previous_stage",
+            "value.why_now.previous_stage"
+          ]
+        },
+        "reason_codes": {
+          "fact_kinds": [
+            "observation",
+            "artifact"
+          ],
+          "label": "变化原因",
+          "paths": [
+            "why_now.changed_facts",
+            "value.why_now.changed_facts"
+          ]
+        },
+        "risk_unknown": {
+          "fact_kinds": [
+            "observation",
+            "artifact"
+          ],
+          "label": "风险 / 未知",
+          "paths": [
+            "why_now.new_risk_flags",
+            "value.why_now.new_risk_flags"
+          ]
+        }
+      },
+      "title": "今日变化 / Why Now"
+    }
+  },
+  "engineering_only": true,
+  "feature_tests": {
+    "bytes": 4917,
+    "path": "reports/r26/feature-tests.xml",
+    "sha256": "464d02db19db0d32abc317c2134cc7352595d4c565184ae24568fd551ce24d5c"
+  },
+  "status": "PASS_LOCAL",
+  "unknown_values": "NULL_WITH_REASON"
+}

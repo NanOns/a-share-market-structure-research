@@ -1752,7 +1752,11 @@ class Api:
    sector_member_count=(len(grouped.get(sector,())) if sector else None)
    return {'publication_id':p,'page':page,'page_size':size,'total':total,'sector_member_count':sector_member_count,'sector_member_rank_basis':'stock_rs20_pct_desc_then_ret20_desc_then_security_id','items':items}
 
-def make_handler(root,db):
+def make_handler(root,db,*,shadow_simulation_fixture=None):
+ from .shadow_context import ShadowContextReader, PREFIX as shadow_prefix
+ shadow_reader=None
+ try:shadow_reader=ShadowContextReader(root,simulation_fixture=shadow_simulation_fixture)
+ except (OSError,ValueError,KeyError,TypeError):pass
  pg_api = str(os.environ.get('WORKBENCH_API_BACKEND','')).lower() == 'postgresql'
  api_provider = PostgresDuckDBApiConnectionProvider() if pg_api else DuckDBApiConnectionProvider(db)
  api=Api(db,root=root,connection_provider=api_provider)
@@ -1963,6 +1967,18 @@ def make_handler(root,db):
    return True
   def do_GET(self):
    path=urlparse(self.path).path
+   if path.startswith(shadow_prefix):
+    if shadow_reader is None:
+     return self._send(409,{'status':'BLOCKED','code':'SHADOW_CONTRACT_INVALID','items':[]})
+    values=parse_qs(urlparse(self.path).query,keep_blank_values=True)
+    if any(len(v)!=1 for v in values.values()):
+     return self._send(409,{'status':'BLOCKED','code':'DUPLICATE_CONTEXT_PARAMETER','items':[]})
+    status,body=shadow_reader.handle(path,{k:v[0] for k,v in values.items()})
+    return self._send(status,body)
+   if path in ('/v4/shadow','/v4/shadow/'):
+    return self._send(200,(static/'shadow-v4.html').read_bytes(),'text/html; charset=utf-8')
+   if path=='/v4/shadow.js':
+    return self._send(200,(static/'shadow-v4.js').read_bytes(),'application/javascript; charset=utf-8')
    allowed_while_database_exclusive=(
     path in ('/api/jobs','/api/operations/status','/api/operations/restart-status','/','/index.html','/v3','/v3/','/v3/index.html','/v2','/v2/','/v2/index.html')
     or path in ('/v3/focus-tracker','/v3/focus-tracker/')
@@ -2175,6 +2191,8 @@ def make_handler(root,db):
     self._send(status,{'code':code,'message':'请求参数或发布版本无效','retryable':False,'next_action':'重新选择日期'})
    except Exception:self._send(500,{'code':'INTERNAL_ERROR','message':'读取失败','retryable':True,'next_action':'稍后重试'})
   def do_POST(self):
+   if urlparse(self.path).path.startswith(shadow_prefix):
+    return self._send(405,{'status':'BLOCKED','code':'SHADOW_READ_ONLY','items':[]})
    try:
     if self.headers.get('X-CSRF-Token')!=csrf: return self._send(403,{'code':'CSRF_REJECTED','message':'会话校验失败，请刷新页面','retryable':True})
     origin=self.headers.get('Origin');expected='http://'+self.headers.get('Host','')
@@ -2249,6 +2267,13 @@ def make_handler(root,db):
    except ConfigValidationError as e:self._send(400,{'code':str(e),'message':'配置校验未通过，未应用任何变更','retryable':False})
    except (ValueError,KeyError) as e:self._send(400,{'code':str(e).strip("'"),'message':'无法提交生成任务','retryable':False})
    except Exception as e:self._send(500,{'code':'JOB_SUBMIT_FAILED','message':'任务提交失败','retryable':True,'detail':str(e)})
+  def _shadow_write_rejected(self):
+   if urlparse(self.path).path.startswith(shadow_prefix):
+    return self._send(405,{'status':'BLOCKED','code':'SHADOW_READ_ONLY','items':[]})
+   return self.send_error(501,"Unsupported method (%r)" % self.command)
+  do_PUT=_shadow_write_rejected
+  do_PATCH=_shadow_write_rejected
+  do_DELETE=_shadow_write_rejected
   def log_message(self,*_): pass
  return Handler
 

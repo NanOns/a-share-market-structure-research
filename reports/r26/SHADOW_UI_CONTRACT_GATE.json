@@ -1,0 +1,76 @@
+{
+  "contract": {
+    "bytes": 15177,
+    "path": "config/v4_17_shadow_ui_contract_v1.json",
+    "sha256": "bf71d141136ffd2059000442007ce3d4d012df5cdddc2790be7f942cc7be3f01"
+  },
+  "engineering_only": true,
+  "feature_tests": {
+    "bytes": 4917,
+    "path": "reports/r26/feature-tests.xml",
+    "sha256": "464d02db19db0d32abc317c2134cc7352595d4c565184ae24568fd551ce24d5c"
+  },
+  "no_fallback": [
+    "SIMULATION",
+    "LEGACY_FOCUS",
+    "V3",
+    "LATEST_FILE",
+    "LATEST_DB",
+    "MTIME",
+    "ENV_GRANT",
+    "QUERY_GRANT"
+  ],
+  "no_writes": true,
+  "routes": {
+    "/api/v4/shadow/cohort": {
+      "component": "cohort",
+      "context_token_required": true,
+      "methods": [
+        "GET"
+      ]
+    },
+    "/api/v4/shadow/context": {
+      "component": "context",
+      "context_token_required": false,
+      "methods": [
+        "GET"
+      ]
+    },
+    "/api/v4/shadow/entity": {
+      "component": "entity",
+      "context_token_required": true,
+      "methods": [
+        "GET"
+      ]
+    },
+    "/api/v4/shadow/health": {
+      "component": "health",
+      "context_token_required": true,
+      "methods": [
+        "GET"
+      ]
+    },
+    "/api/v4/shadow/radar": {
+      "component": "radar",
+      "context_token_required": true,
+      "methods": [
+        "GET"
+      ]
+    },
+    "/api/v4/shadow/settlement": {
+      "component": "settlement",
+      "context_token_required": true,
+      "methods": [
+        "GET"
+      ]
+    },
+    "/api/v4/shadow/summary": {
+      "component": "summary",
+      "context_token_required": true,
+      "methods": [
+        "GET"
+      ]
+    }
+  },
+  "status": "PASS_LOCAL"
+}

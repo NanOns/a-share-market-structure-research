@@ -1,6 +1,11 @@
 {
   "NEXT": "STOP_WAIT_R24_INDEPENDENT_EXTERNAL_AUDIT",
-  "acceptance": "PASS_LOCAL_PENDING_CLEAN_REGRESSION_AND_EXTERNAL_AUDIT",
+  "acceptance": "PASS_LOCAL_READY_FOR_EXTERNAL_AUDIT",
+  "clean_regression": {
+    "bytes": 49850,
+    "path": "reports/r24/CLEAN_REGRESSION.json",
+    "sha256": "1e3d8ec2a9f9d83f994f287eb6a6a2656f597e2896a4dbc2532ee7b771434d00"
+  },
   "execution_baseline": "b6b3105e713187462f49054e62fa70df8b9bd292",
   "external_acceptance": "NOT_GRANTED",
   "latest_upgrade_document": {
@@ -52,5 +57,6 @@
     "bytes": 11639,
     "path": "docs/evidence/r24/V4_16_R24_REAL_SHADOW_ACTIVATION_READINESS_TASK_20261004.md",
     "sha256": "81b348eb3470257447a38c6d65573b09baa18da1f41f72c816f54e215e1a22bb"
-  }
+  },
+  "tested_source": "c97b1d091370a236243fe2e7ce06a1dc6281cbf6"
 }

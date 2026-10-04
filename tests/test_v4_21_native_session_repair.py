@@ -37,6 +37,7 @@ def test_exact_owner_and_statuses_read_from_accepted_contract():
     assert binding['contract_id']==owner['contract_id'] and binding['sha256']==hashlib.sha256(source.read_bytes()).hexdigest()
     assert binding in c['owner_bindings']
     assert policy['production_accepted_binding'] is None and policy['production_current_real_gate_count']=='NOT_COUNTABLE_FOR_REAL_GATE'
+    assert set(policy['fields']) <= set(c['receipt_schema']['required'])
 
 
 def test_missing_or_wrong_owner_and_compatibility_alias_rejected():
@@ -50,6 +51,8 @@ def test_missing_or_wrong_owner_and_compatibility_alias_rejected():
 
 
 def test_receipt_keeps_native_and_projection_states_distinct():
+    invalid=fixture()['sessions'][0]; invalid['native_session_status']='ACCEPTED'
+    with pytest.raises(ValueError,match='UNKNOWN_SHADOW_NATIVE_SESSION_STATUS'): receipt_session_status(invalid)
     accepted=receipt_session_status(scenario(1)['sessions'][-1]); missed=receipt_session_status(scenario(5)['sessions'][-1]); quality=receipt_session_status(scenario(6)['sessions'][-1])
     assert accepted['accepted_session_status']==quality['accepted_session_status']=='ACCEPTED_ON_TIME'
     assert missed['accepted_session_status']=='MISSED_OBSERVATION_SLOT'

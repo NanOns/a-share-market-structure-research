@@ -47,7 +47,9 @@ def session_countable(row,value):
     return row.get('evidence_origin')=='PIT_OBSERVED' and row.get('accepted_real_publication') is True and row.get('execution_mode')==('SHADOW' if lane=='SHADOW_REAL' else 'PRODUCTION') and row.get('native_session_status')==accepted and row.get('projection_evaluable') is True
 
 
-def receipt_session_status(row):
+def receipt_session_status(row,value=None):
+    errors=session_errors(row,value or {})
+    if errors: raise ValueError(','.join(errors))
     return {k:row[k] for k in ('native_session_authority_id','native_session_authority_sha256','native_session_status','projection_evaluable','projection_evaluable_reason')}|{'accepted_session_status':row['native_session_status']}
 
 

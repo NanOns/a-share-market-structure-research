@@ -22,7 +22,7 @@ def protected():
     assert all(v['unchanged'] for v in sections.values())
     assert c['owner_bindings'][:-1]==old['owner_bindings']
     for key in old['receipt_schema']:
-        if key=='additional': assert c['receipt_schema'][key][:len(old['receipt_schema'][key])]==old['receipt_schema'][key]
+        if key in ('additional','required'): assert c['receipt_schema'][key][:len(old['receipt_schema'][key])]==old['receipt_schema'][key]
         else: assert c['receipt_schema'][key]==old['receipt_schema'][key]
     assert all(c['vectors'][i]==old['vectors'][i] for i in range(20) if i not in (0,4,5))
     result=dict(baseline=BASE,tracked_count=len(b['tracked']),allowed_changed_files=list(ALLOWED),unexpected_changed=changed,unrelated_count=len(b['unrelated']),unrelated_changed=unrelated,PASS_KEEP_sections=sections,status='PASS' if not changed and not unrelated else 'FAIL',production_databases_opened=False,actual_real_rows_written=0,tdx_writes=False,settlement_owner_changed=False,Focus_default_UI_route_changed=False)

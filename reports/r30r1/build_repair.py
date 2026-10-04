@@ -51,6 +51,7 @@ def build():
     c['session_ledger']['native_owner_binding']=binding
     c['ledger_rules']['session_order']='EXACT_ACCEPTED_CALENDAR_ORDER; MISSED_OBSERVATION_SLOT_OR_PROJECTION_EVALUABLE_FALSE_RESETS_STREAK; NATIVE_STATUS_AND_PROJECTION_DISTINCT'
     c['receipt_schema']['additional'].extend(c['native_session_policy']['fields'])
+    c['receipt_schema']['required'].extend(c['native_session_policy']['fields'])
     c['receipt_schema']['accepted_session_status_derivation']='SHADOW: EXACT_NATIVE_V4_16_SLOT_STATUS; RETAIN_NATIVE_AUTHORITY_ID_SHA_AND_SEPARATE_PROJECTION_EVALUABLE_REASON. PRODUCTION: FUTURE_ACCEPTED_BINDING_REQUIRED; NO_REAL_R30R1_RECEIPT'
     for index,desc in {0:'ACCEPTED_ON_TIME and projection evaluable true counts one',4:'MISSED_OBSERVATION_SLOT retained denominator count zero streak breaks',5:'ACCEPTED_ON_TIME and projection evaluable false retained denominator count zero streak breaks not missed'}.items(): c['vectors'][index]['description']=desc
     write(CONTRACT,c)

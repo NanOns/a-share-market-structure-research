@@ -1,6 +1,6 @@
 {
   "contract": "config/v4_21_continued_forward_observation_contract_v1.json",
-  "contract_sha256": "d7fd0c6c48299e6dc495a426350e2f1c535aba2ad231c9559c7eb70a3d08559e",
+  "contract_sha256": "45e4d0d16c30c6fb12c24a7d798624bcb1d8c17f1e1e671199914c5b6e40f510",
   "definition": {
     "accepted_session_status_derivation": "SHADOW: EXACT_NATIVE_V4_16_SLOT_STATUS; RETAIN_NATIVE_AUTHORITY_ID_SHA_AND_SEPARATE_PROJECTION_EVALUABLE_REASON. PRODUCTION: FUTURE_ACCEPTED_BINDING_REQUIRED; NO_REAL_R30R1_RECEIPT",
     "additional": [
@@ -42,7 +42,12 @@
       "quality_summary",
       "prior_observation_head",
       "receipt_digest",
-      "accepted_at"
+      "accepted_at",
+      "native_session_authority_id",
+      "native_session_authority_sha256",
+      "native_session_status",
+      "projection_evaluable",
+      "projection_evaluable_reason"
     ]
   },
   "scope": "CONTRACT_DESIGN_REPAIR_ONLY"

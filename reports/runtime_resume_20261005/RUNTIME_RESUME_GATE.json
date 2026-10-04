@@ -1,0 +1,44 @@
+{
+  "AFTER_R25_READY_EXTERNAL_AUDIT": "SEPARATE_FIRST_REAL_SHADOW_EXECUTION_AUTHORIZATION",
+  "NOW": "WAIT_EXACT_ACCEPTED_TARGET_SESSION_INPUT",
+  "WHEN_READY": "RETRY_R25_FIRST_REAL_SHADOW_ACTIVATION_PACKET",
+  "commit_push_is_runtime_authorization": false,
+  "next_stage_requirements": [
+    "Exact externally accepted target and previous market session",
+    "Exact accepted TDX_RAW_DAILY, ADJUSTED_DAILY, OWNER_OUTPUT, T0_SNAPSHOT",
+    "Exact source manifest and daily input digest",
+    "Existing accepted R25 selection/preflight only",
+    "Independent external audit of READY packet",
+    "Separate authorization against exact accepted packet/digest before Real Shadow"
+  ],
+  "no_retry_reason": "No exact accepted target-session input bound; wall-clock date advancement is not authority",
+  "nonblocking_carry": {
+    "bytes": 2007,
+    "path": "reports/runtime_resume_20261005/NONBLOCKING_AUDIT_CARRY.json",
+    "sha256": "6aaa81687cacfe4decebf8ba361ec56be251a5dbec61781399ce9eb70fe67dbf"
+  },
+  "state": {
+    "DEFAULT_UI_CUTOVER": false,
+    "Focus_source_cutover": false,
+    "MIGRATION_REPLAY_PASS": "NOT_GRANTED",
+    "PIT_OBSERVED_REAL_SAMPLES": 0,
+    "R25": "WAIT_ACCEPTED_DAILY_INPUT",
+    "REAL_CONTINUED_FORWARD_OBSERVATION": "NOT_STARTED",
+    "REAL_SHADOW_EXECUTION": "NOT_STARTED",
+    "REAL_SHADOW_OBSERVATIONS": 0,
+    "V4_17G": "NOT_GRANTED",
+    "V4_22_ACCEPTED_HEAD": "NOT_CREATED",
+    "V4_22_CONTRACT_DESIGN": "EXTERNALLY_ACCEPTED_SCOPED",
+    "V4_22_FINAL_AUDIT_ENTRY": "BLOCKED_WAIT_REAL_GATES",
+    "V4_22_FINAL_PASS": "NOT_GRANTED",
+    "production_permission": {
+      "ROTATION": false,
+      "SECTOR_RISK_CHANGE": false,
+      "SECTOR_STAGE": false,
+      "STOCK_CORE": false,
+      "STOCK_SECTOR_DEPENDENT": false
+    }
+  },
+  "status": "PASS_AUTHORITY_SYNC_VALID_WAIT",
+  "verification": "Read-only exact binding/state/byte checks; no implementation change requiring regression rerun"
+}

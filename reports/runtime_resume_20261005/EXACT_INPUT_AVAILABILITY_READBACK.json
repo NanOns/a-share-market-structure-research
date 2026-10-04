@@ -1,0 +1,57 @@
+{
+  "accepted_required_target_families": {
+    "ADJUSTED_DAILY": "NOT_BOUND_TO_EXACT_ACCEPTED_TARGET_SESSION",
+    "OWNER_OUTPUT": "NOT_BOUND_TO_EXACT_ACCEPTED_TARGET_SESSION",
+    "T0_SNAPSHOT": "NOT_BOUND_TO_EXACT_ACCEPTED_TARGET_SESSION",
+    "TDX_RAW_DAILY": "NOT_BOUND_TO_EXACT_ACCEPTED_TARGET_SESSION"
+  },
+  "accepted_trade_date": "2026-09-30",
+  "calendar_opportunity_from_task": "2026-10-08",
+  "calendar_opportunity_is_authority": false,
+  "daily_input_digest": null,
+  "exact_target_session_authority": null,
+  "first_available_at_target_proven": false,
+  "historical_data_head": {
+    "bytes": 16890,
+    "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+    "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+  },
+  "knowledge_lineage": "RECONSTRUCTED_CORRECTED",
+  "previous_trade_date": null,
+  "r25_daily_gate": {
+    "bytes": 1224,
+    "path": "reports/r25/DAILY_INPUT_REAL_GATE.json",
+    "sha256": "77faa1d4aecec381a281d953dac14029f29e94f2acd8ecfda740dd37d21c7e4f"
+  },
+  "r25_packet": {
+    "bytes": 1297,
+    "path": "reports/r25/ACTIVATION_PACKET_MANIFEST.json",
+    "sha256": "f83f77fdf73402f3cc0eff727ed38f2f016cda3b386ee3cdc395ddfaf3b9ea1e"
+  },
+  "r25_preflight_entrypoint": {
+    "bytes": 17901,
+    "path": "scripts/validate_r25_preflight.py",
+    "sha256": "eb043ee060dc13c4189c4249f4ab4b2f009c474acab1d6ad2655001a75bf9b19"
+  },
+  "r25_preflight_executed": false,
+  "r25_selection": {
+    "bytes": 2770,
+    "path": "reports/r25/TARGET_SESSION_SELECTION.json",
+    "sha256": "370d4c1daaebb7cf370311d7fa1d1236339f8de0043029bab3b7933cb1455bc3"
+  },
+  "readback_scope": "EXPLICIT_ACCEPTED_R25_BINDINGS_AND_PROTECTED_HEADS_ONLY; NO_GLOB_LATEST_MTIME_DISCOVERY",
+  "reasons": [
+    "NO_EXACT_ACCEPTED_REAL_SESSION_DAILY_INPUT_SUPPLIED",
+    "FROZEN_DATA_HEAD_IS_HISTORICAL_ONLY",
+    "NO_TARGET_DATE_ACCEPTED_OWNER_OUTPUT_AND_T0_SNAPSHOT_BOUND_TO_REAL_AUTHORITY"
+  ],
+  "source_manifest_digest": null,
+  "status": "WAIT_ACCEPTED_DAILY_INPUT",
+  "target_trade_date": null,
+  "upstream_entrypoint": {
+    "bytes": 13556,
+    "path": "scripts/run_v4_dm01_daily_increment.py",
+    "sha256": "ae9f964dd5e0a6ebffa2fbfb71eddb0e6386f4da50568891e4b68ddfd6e4df19"
+  },
+  "upstream_executed": false
+}

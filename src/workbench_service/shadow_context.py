@@ -8,6 +8,7 @@ import copy
 import hashlib
 import json
 import sqlite3
+from contextlib import closing
 from pathlib import Path
 
 from .research_context import ResearchContextError
@@ -88,7 +89,7 @@ class ShadowContextReader:
         path = (self.root / manifest['database_path']).resolve()
         require(not Path(manifest['database_path']).is_absolute() and path.is_relative_to(self.root), 'DATABASE_OUTSIDE_REPOSITORY')
         # mode=ro never creates a missing SQLite file; no runtime writer import.
-        with sqlite3.connect(path.as_uri() + '?mode=ro', uri=True) as connection:
+        with closing(sqlite3.connect(path.as_uri() + '?mode=ro', uri=True)) as connection:
             connection.execute('PRAGMA query_only=ON')
             connection.execute('BEGIN')
             require(connection.execute('SELECT environment,evidence_origin FROM storage_identity WHERE singleton=1').fetchall()

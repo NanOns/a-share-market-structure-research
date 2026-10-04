@@ -200,8 +200,13 @@ def real_token(manifest,config):
     return context_token(dict(manifest['context'],readback_manifest_digest=config['accepted_readback']['sha256']))
 
 
-def test_native_exact_readonly_storage_projection(tmp_path):
+def test_native_exact_readonly_storage_projection(tmp_path,monkeypatch):
     root,manifest,config,save=native_vector(tmp_path)
+    import sqlite3
+    original=sqlite3.connect;connections=[]
+    def tracked(*args,**kwargs):
+        connection=original(*args,**kwargs);connections.append(connection);return connection
+    monkeypatch.setattr(sqlite3,'connect',tracked)
     db=root/'synthetic.sqlite';before=db.read_bytes();r=ShadowContextReader(root)
     for name in ('context',*COMPONENTS):
         status,data=r.handle(PREFIX+name,{} if name=='context' else {'context_token':real_token(manifest,config)})
@@ -210,6 +215,9 @@ def test_native_exact_readonly_storage_projection(tmp_path):
     assert not (root/'synthetic.sqlite-journal').exists()
     health=r.handle(PREFIX+'health',{'context_token':real_token(manifest,config)})[1]['items'][0]['fields']
     assert health['slot_status']['value']=='ACCEPTED_ON_TIME' and health['source_receipts']['quality']=='UNKNOWN'
+    assert len(connections)==8
+    for connection in connections:
+        with pytest.raises(sqlite3.ProgrammingError,match='closed'):connection.execute('SELECT 1')
 
 
 @pytest.mark.parametrize('change',['receipt','fact_digest','slot_model','storage_origin','path_escape','absent_db','field_path','field_kind'])

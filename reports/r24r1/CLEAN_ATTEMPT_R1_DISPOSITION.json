@@ -1,10 +1,18 @@
 {
   "cause": "New orchestration adapter under src was detected only after Git tracked it",
+  "clean_retest_evidence": {
+    "bytes": 57771,
+    "path": "reports/r24r1/CLEAN_REGRESSION.json",
+    "sha256": "b67570bf4d5ed2c22512396b29f23ec01c9a5d45f1a2200496a95b95e7873ca3"
+  },
+  "clean_retest_passed": 400,
   "external_acceptance": "NOT_GRANTED",
   "failed": 12,
+  "final_immutable_tag": "refs/tags/codex/r24r1-go-forward-tested-source-20261004-r2",
+  "final_tested_source": "c127a02afdfd1eb04ab666f13d517869e81dc458",
   "passed": 388,
   "repair": "Move successor adapter into scripts; preserve all historical guards and business src bytes",
   "scope": "Historical source-scope governance",
-  "status": "FAILED_AND_REPAIRED_PENDING_RETEST",
+  "status": "CLOSED_LOCAL_CLEAN_RETEST_PASSED_PENDING_EXTERNAL_AUDIT",
   "tested_source": "2cedacb6139d85eb7a39ea8e0c088bbd1e332eeb"
 }

@@ -4,7 +4,7 @@ from pathlib import Path
 from scripts.r24r1_io import ROOT, BASE, ref, read, atomic
 from scripts.r24r1_protection import protected_bytes
 from scripts.validate_r24r1_activation import inspect, protected
-from tests.test_r24r1_authority import positive, daily_negative, F_CASES, corruption
+from tests.test_r24r1_authority import positive, daily_negative, F_CASES, corruption, test_independent_daily_oracle_rejects_fractional_late_acceptance, test_fractional_second_readiness_uses_latest_instant
 from tests.test_r24r1_a20 import negative, REASONS
 
 def run():
@@ -13,6 +13,8 @@ def run():
     context=x['context']; oracle=inspect(ROOT/context['database'],context['manifest'])
     f=[daily_negative(case) for case in F_CASES]
     a=[negative(case) for case in REASONS]
+    for field in ['source','daily']:test_independent_daily_oracle_rejects_fractional_late_acceptance(field)
+    test_fractional_second_readiness_uses_latest_instant()
     with tempfile.TemporaryDirectory(prefix='r24r1-oracle-') as temporary:
         c=[corruption(case,Path(temporary)) for case in ['C01','C02','C03','C04']]
         s=[corruption(case,Path(temporary)) for case in ['S01','S02','S03','S04']]
@@ -30,6 +32,9 @@ def run():
         'INDEPENDENT_R24R1_ORACLE':dict(oracle=oracle,context=context,validator=ref('scripts/validate_r24r1_activation.py'),writer_imported=False,
             checks=['daily_head_digest','exact_target_previous_session','source_max_date','internal_receipts','18_field_slot','source_manifest','owner_event','cohort_key','publication_CAS','schema','storage_origin']),
         'A01_A20_REGRESSION':dict(count=len(a),cases=a),
+        'UTC_BOUNDARY_REGRESSION':dict(count=3,parsed_UTC_comparison=True,parsed_UTC_readiness_aggregation=True,
+            cases=['SOURCE_ACCEPTED_1MS_LATE_REJECTED_BY_WRITER_AND_ORACLE','DAILY_HEAD_ACCEPTED_1MS_LATE_REJECTED_BY_WRITER_AND_ORACLE','SECOND_MANDATORY_SOURCE_1MS_LATE_MISSED_SLOT'],
+            tests=ref('tests/test_r24r1_authority.py')),
         'PROTECTED_BYTES':dict(before=before,after=after,unchanged=True,disabled_authority=protected()),
     }
     for name,payload in reports.items():atomic('reports/r24r1/'+name+'.json',dict(common,**payload))
@@ -41,7 +46,9 @@ def run():
         separate_audit_items=[dict(id=i,scope=scope,acceptance='CLOSED_LOCAL_PENDING_EXTERNAL_AUDIT',evidence=ref('reports/r24r1/'+e+'.json')) for i,scope,e in [
             ('R24_P0_FORWARD_AUTHORITY','Future-session input authority independent of frozen historical Data head','FORWARD_INPUT_AUTHORITY_GATE'),
             ('R24_P0_COHORT_IDENTITY','Persisted COHORT_V1 key identity and original uniqueness','COHORT_IDENTITY_GATE'),
-            ('R24_P1_REALTIME_ADMISSION','Candidate template versus slot-backed acceptance','REALTIME_ADMISSION_GATE')]]))
+            ('R24_P1_REALTIME_ADMISSION','Candidate template versus slot-backed acceptance','REALTIME_ADMISSION_GATE'),
+            ('R24R1_HISTORICAL_SOURCE_SCOPE','Successor orchestration outside frozen business src; initial clean failure retained','CLEAN_ATTEMPT_R1_DISPOSITION'),
+            ('R24R1_ORACLE_UTC_BOUNDARY','UTC instant comparison and aggregation including fractional seconds','UTC_BOUNDARY_REGRESSION')]]))
     print(dict(status='PASS_LOCAL',future_session=context['request']['trade_date'],daily_cases=len(f),identity_cases=len(c),admission_cases=len(s),a20=len(a)),flush=True)
 
 if __name__=='__main__':run()

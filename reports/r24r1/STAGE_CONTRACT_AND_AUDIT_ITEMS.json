@@ -16,7 +16,7 @@
       "evidence": {
         "bytes": 758,
         "path": "reports/r24r1/FORWARD_INPUT_AUTHORITY_GATE.json",
-        "sha256": "8d072e1679526ed41513dac5df9250bd52852e18235c044184cf1833bb30fe09"
+        "sha256": "774af00e883edb70975e98240855f077c4a0504396af4bb07a3165f851e1bec4"
       },
       "id": "R24_P0_FORWARD_AUTHORITY",
       "scope": "Future-session input authority independent of frozen historical Data head"
@@ -42,22 +42,30 @@
       "scope": "Candidate template versus slot-backed acceptance"
     },
     {
-      "acceptance": "CLOSED_LOCAL_PENDING_CLEAN_RETEST_AND_EXTERNAL_AUDIT",
+      "acceptance": "CLOSED_LOCAL_PENDING_EXTERNAL_AUDIT",
       "evidence": {
-        "bytes": 433,
+        "bytes": 826,
         "path": "reports/r24r1/CLEAN_ATTEMPT_R1_DISPOSITION.json",
-        "sha256": "37d51ac183534f28f3ad1eeeb7d31bc4d962040ea20ec6752f4af3525f8c79e6"
+        "sha256": "bf7e5d6976db3f247496cb8ef088d33741cda97b636d6ca9e4ae36c535575920"
       },
       "id": "R24R1_HISTORICAL_SOURCE_SCOPE",
-      "repair": "Successor input authority moved into scripts; accepted business src unchanged",
-      "scope": "Historical Git-based src freeze versus successor orchestration module placement",
-      "targeted_regression_passed": 250
+      "scope": "Successor orchestration outside frozen business src; initial clean failure retained"
+    },
+    {
+      "acceptance": "CLOSED_LOCAL_PENDING_EXTERNAL_AUDIT",
+      "evidence": {
+        "bytes": 710,
+        "path": "reports/r24r1/UTC_BOUNDARY_REGRESSION.json",
+        "sha256": "239d5bcdf63b31022e50b2649776bf7317730cee5370fafd2a7c2d710ce1501e"
+      },
+      "id": "R24R1_ORACLE_UTC_BOUNDARY",
+      "scope": "UTC instant comparison and aggregation including fractional seconds"
     }
   ],
   "stage_contract": {
     "bytes": 11520,
     "path": "config/v4_16_runtime_dependencies_v3.json",
-    "sha256": "ce4c46162b88d50cd2edee7c22fdf7a65ed971e7e2b69dce5608399bb7350401"
+    "sha256": "8032fc4b0c31631bbe6d7b9de4d2f23e8f6797aede99ddbe28ee2dde111935fd"
   },
   "status": "PASS_LOCAL",
   "task": {

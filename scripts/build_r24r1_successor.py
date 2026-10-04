@@ -20,6 +20,8 @@ def build():
         'self.clock=ClockPolicyResolver(self)':"check(set(self.adapters['mandatory_families'])<=self.sources['sources'].keys(),'MISSING_MANDATORY_SOURCE')\n        self.clock=ClockPolicyResolver(self)",
         'def acquire():':'def acquire():\n            validate_daily_revision(self.db,c.authority.daily)',
         'def accept():':'def accept():\n            validate_daily_revision(self.db,c.authority.daily)',
+        "provider=max(p['first_observed_at'] for p in receipts)":"provider=max((p['first_observed_at'] for p in receipts),key=utc)",
+        "system=max(p['system_available_at'] for p in receipts)":"system=max((p['system_available_at'] for p in receipts),key=utc)",
         "check(row['entity_type']=='STOCK','UNGRANTED_SECTOR_CAPABILITY')":"check(row['entity_type']=='STOCK','UNGRANTED_SECTOR_CAPABILITY')\n                check(row['entity_id'] in c.authority.universe,'OWNER_OUTSIDE_ACCEPTED_UNIVERSE')",
         "self.origin='ACTIVATION_SIMULATION' if self.simulation else 'PIT_OBSERVED'":"check(utc(self.grant['daily_input_boundary'])<=utc(self.clock.resolve(self.grant['target_trade_date'],self.authority.sessions)['scheduled_cutoff_at']),'DAILY_BOUNDARY_AFTER_SLOT_CUTOFF')\n        self.origin='ACTIVATION_SIMULATION' if self.simulation else 'PIT_OBSERVED'",
     }

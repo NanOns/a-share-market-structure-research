@@ -90,10 +90,10 @@ def inspect(path,manifest,root=ROOT, test_only_storage_copy=False):
             check(slot['slot_status']=='ACCEPTED_ON_TIME','SLOT_STATUS')
             receipts=[receipt_map[i] for i in slot['visibility_receipt_ids']]
             check({r['source_family'] for r in receipts}==set(exact(root,deps['source_adapters'])['mandatory_families']) and len(receipts)==2,'MANDATORY_SOURCE_SET')
-            check(slot['source_provider_available_at']==max(r['first_observed_at'] for r in receipts),'PROVIDER_AGGREGATE')
-            check(slot['system_available_at']==max(r['system_available_at'] for r in receipts),'SYSTEM_AGGREGATE')
-            check(slot['source_provider_available_at']<=slot['system_available_at']<=slot['scheduled_cutoff_at'] and
-                  slot['system_available_at']<=slot['computation_started_at']<=slot['computation_finished_at']<=slot['accepted_at']<=slot['observation_deadline'],'SLOT_CHRONOLOGY')
+            check(slot['source_provider_available_at']==max((r['first_observed_at'] for r in receipts),key=timestamp),'PROVIDER_AGGREGATE')
+            check(slot['system_available_at']==max((r['system_available_at'] for r in receipts),key=timestamp),'SYSTEM_AGGREGATE')
+            check(timestamp(slot['source_provider_available_at'])<=timestamp(slot['system_available_at'])<=timestamp(slot['scheduled_cutoff_at']) and
+                  timestamp(slot['system_available_at'])<=timestamp(slot['computation_started_at'])<=timestamp(slot['computation_finished_at'])<=timestamp(slot['accepted_at'])<=timestamp(slot['observation_deadline']),'SLOT_CHRONOLOGY')
             check(slot['core_revision']==slot['publication_id'] and slot['source_manifest_digest'] in manifests,'SLOT_MANIFEST')
             manifest_payload=manifests[slot['source_manifest_digest']]
             check(manifest_payload['receipt_ids']==slot['visibility_receipt_ids'],'MANIFEST_VISIBILITY')
@@ -184,7 +184,7 @@ def inspect_daily(root,deps,grant,runtime_sources):
     check(d['daily_input_digest']==grant['daily_input_digest']==digest({k:v for k,v in d.items() if k!='daily_input_digest'}),'DAILY_DIGEST')
     target=d['target_trade_date']; boundary=grant['daily_input_boundary']
     check(target==grant['target_trade_date'] and d['target_session_confirmed'] and d['revision']>=grant['minimum_daily_input_revision'],'DAILY_TARGET_REVISION')
-    check(d['accepted_at']<=boundary,'DAILY_BOUNDARY')
+    check(timestamp(d['accepted_at'])<=timestamp(boundary),'DAILY_BOUNDARY')
     sessions=exact(root,d['calendar'])['session_dates']
     check(target in sessions and sessions.index(target)>0 and sessions[sessions.index(target)-1]==d['previous_trade_date'],'DAILY_CALENDAR_PRIOR')
     identity=exact(root,d['identity'])
@@ -201,7 +201,7 @@ def inspect_daily(root,deps,grant,runtime_sources):
         payload=exact(root,s['binding'])
         check(max(payload_dates(payload),default=target)==s['max_source_trade_date'],'DAILY_PAYLOAD_MAX_DATE')
         check(payload['trade_date']==s['target_trade_date']==target and s['max_source_trade_date']<=target and payload.get('max_source_trade_date',target)<=target,'DAILY_SOURCE_DATE')
-        check(s['provider_observed_at']<=s['system_available_at']<=s['accepted_at']<=boundary,'DAILY_SOURCE_BOUNDARY')
+        check(timestamp(s['provider_observed_at'])<=timestamp(s['system_available_at'])<=timestamp(s['accepted_at'])<=timestamp(boundary),'DAILY_SOURCE_BOUNDARY')
         check(s['quality']=='ACCEPTED' and s['capability']=='PURE_CORE_STOCK','DAILY_QUALITY')
     for family,s in runtime_sources['sources'].items():check(s['binding']==sources[family]['binding'],'DAILY_RUNTIME_SOURCE')
     check(d['max_source_trade_date']==max(s['max_source_trade_date'] for s in sources.values())<=target,'DAILY_MAX_SOURCE_DATE')
@@ -221,3 +221,7 @@ def payload_dates(value):
     elif isinstance(value,list):
         for v in value:result.extend(payload_dates(v))
     return result
+
+def timestamp(value):
+    check(isinstance(value,str) and value.endswith('Z'),'UTC_TIMESTAMP_REQUIRED')
+    return datetime.fromisoformat(value.replace('Z','+00:00'))

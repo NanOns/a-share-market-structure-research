@@ -318,8 +318,8 @@ class OneSessionLaunchController:
                 receipts.append(adapter.acquire(family,r['trade_date'],c.sources['sources'][family]['binding'],clock=clock))
             return times,receipts
         times,receipts=self.db.transaction(acquire)
-        provider=max(p['first_observed_at'] for p in receipts)
-        system=max(p['system_available_at'] for p in receipts)
+        provider=max((p['first_observed_at'] for p in receipts),key=utc)
+        system=max((p['system_available_at'] for p in receipts),key=utc)
         if utc(system)>utc(times['scheduled_cutoff_at']):
             self.db.transaction(lambda:self.db.append('missed_slot',slot_id,dict(slot_id=slot_id,slot_status='MISSED_OBSERVATION_SLOT',trade_date=r['trade_date'])))
             return dict(slot_status='MISSED_OBSERVATION_SLOT')

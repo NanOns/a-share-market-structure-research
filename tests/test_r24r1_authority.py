@@ -121,3 +121,27 @@ def test_nested_future_source_row_cannot_hide_behind_declared_max():
         d['sources']['ADJUSTED_DAILY']['binding']=atomic(base+'/future_row.json',dict(trade_date=TARGET,max_source_trade_date=TARGET,rows=[dict(trade_date='2026-10-09')]))
     x=prepare(mutate=mutate)
     with pytest.raises(ValueError,match='SOURCE_PAYLOAD_MAX_DATE_MISMATCH'):controller(x)
+
+@pytest.mark.parametrize('field',['source','daily'])
+def test_independent_daily_oracle_rejects_fractional_late_acceptance(field):
+    def mutate(d,g,base):
+        if field=='source':d['sources']['OWNER_OUTPUT']['accepted_at']=TARGET+'T13:00:00.001Z'
+        else:d['accepted_at']=TARGET+'T13:00:00.001Z'
+    x=prepare(mutate=mutate)
+    with pytest.raises(ValueError):controller(x)
+    from scripts.validate_r24r1_activation import inspect_daily,exact
+    deps=read(x['manifest']); grant=read(deps['activation']['path'])['grant']
+    with pytest.raises(ValueError):inspect_daily(ROOT,deps,grant,exact(ROOT,grant['source_authority']))
+
+def test_fractional_second_readiness_uses_latest_instant():
+    x=prepare(); db=controller(x).database(ROOT/x['database'])
+    class Clock:
+        def __init__(self):self.count=0
+        def __call__(self):
+            self.count+=1
+            return TARGET+('T13:00:00Z' if self.count<=4 else 'T13:00:00.001Z' if self.count<=8 else 'T14:00:00Z')
+    try:
+        result=OneSessionLaunchController(db).run(x['request'],clock=Clock())
+        assert result['slot_status']=='MISSED_OBSERVATION_SLOT'
+        assert not db.rows('publication') and not db.rows('enrollment')
+    finally:db.close()

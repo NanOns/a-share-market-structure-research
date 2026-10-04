@@ -1,0 +1,21 @@
+{
+  "NEXT": "STOP_WAIT_R24R1_INDEPENDENT_EXTERNAL_AUDIT",
+  "cases": [
+    "SOURCE_ACCEPTED_1MS_LATE_REJECTED_BY_WRITER_AND_ORACLE",
+    "DAILY_HEAD_ACCEPTED_1MS_LATE_REJECTED_BY_WRITER_AND_ORACLE",
+    "SECOND_MANDATORY_SOURCE_1MS_LATE_MISSED_SLOT"
+  ],
+  "count": 3,
+  "execution_baseline": "0c9f59fbe723fe0fb0e9d1a6750c339894bc7a5b",
+  "external_acceptance": "NOT_GRANTED",
+  "parsed_UTC_comparison": true,
+  "parsed_UTC_readiness_aggregation": true,
+  "real_shadow_authorized": false,
+  "runtime_authorized": false,
+  "status": "PASS_LOCAL",
+  "tests": {
+    "bytes": 9016,
+    "path": "tests/test_r24r1_authority.py",
+    "sha256": "71430d089b2cd687e2b5847fca98d7bfb3e83b2010ca3be7505c88bdc1e7d21c"
+  }
+}

@@ -46,6 +46,12 @@ def inspect_daily(root,deps,grant,runtime_sources):
     return d
 '''
     p=p.replace("sources=d['sources'];", "sources=d['sources'];")
+    p=p.replace("d['accepted_at']<=boundary", "timestamp(d['accepted_at'])<=timestamp(boundary)")
+    p=p.replace("s['provider_observed_at']<=s['system_available_at']<=s['accepted_at']<=boundary", "timestamp(s['provider_observed_at'])<=timestamp(s['system_available_at'])<=timestamp(s['accepted_at'])<=timestamp(boundary)")
+    p=p.replace("slot['source_provider_available_at']<=slot['system_available_at']<=slot['scheduled_cutoff_at']", "timestamp(slot['source_provider_available_at'])<=timestamp(slot['system_available_at'])<=timestamp(slot['scheduled_cutoff_at'])")
+    p=p.replace("slot['system_available_at']<=slot['computation_started_at']<=slot['computation_finished_at']<=slot['accepted_at']<=slot['observation_deadline']", "timestamp(slot['system_available_at'])<=timestamp(slot['computation_started_at'])<=timestamp(slot['computation_finished_at'])<=timestamp(slot['accepted_at'])<=timestamp(slot['observation_deadline'])")
+    p=p.replace("max(r['first_observed_at'] for r in receipts)", "max((r['first_observed_at'] for r in receipts),key=timestamp)")
+    p=p.replace("max(r['system_available_at'] for r in receipts)", "max((r['system_available_at'] for r in receipts),key=timestamp)")
     p=p.replace("check(payload['trade_date']==s['target_trade_date']==target", "check(max(payload_dates(payload),default=target)==s['max_source_trade_date'],'DAILY_PAYLOAD_MAX_DATE')\n        check(payload['trade_date']==s['target_trade_date']==target")
     p=p.replace("a=admissions[0]", "a=admissions[0]\n            owner=exact(root,sources['sources']['OWNER_OUTPUT']['binding'])\n            event=a['owner_event']\n            event_key=['model_contract_id','state_lineage_id','entity_type','entity_id','episode_id','event_type','event_trade_date']\n            check(event['logical_event_id']==digest([event[k] for k in event_key]),'OWNER_EVENT_KEY')\n            check(any(all(row.get(k)==event[k] for k in ['model_contract_id','state_lineage_id','entity_type','entity_id','episode_id']) for row in owner['rows']),'OWNER_EVENT_ROW')\n            check(any(ev.get('entity_id')==event['entity_id'] and ev.get('entity_type')==event['entity_type'] and ev.get('event_trade_date')==event['event_trade_date'] and event['event_type'] in ev.get('event_types',[]) for ev in owner.get('events',[])),'OWNER_EXPLICIT_EVENT')")
     p+='''
@@ -59,6 +65,10 @@ def payload_dates(value):
     elif isinstance(value,list):
         for v in value:result.extend(payload_dates(v))
     return result
+
+def timestamp(value):
+    check(isinstance(value,str) and value.endswith('Z'),'UTC_TIMESTAMP_REQUIRED')
+    return datetime.fromisoformat(value.replace('Z','+00:00'))
 '''
     Path('scripts/validate_r24r1_activation.py').write_text(p,encoding='utf8',newline='\n')
 

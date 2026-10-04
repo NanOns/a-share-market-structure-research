@@ -1,0 +1,157 @@
+........................................................................ [ 16%]
+..........................................F.................FF.......... [ 33%]
+......................................................F................F [ 50%]
+........................................................................ [ 67%]
+.................F.............F........................................ [ 84%]
+..................................................................       [100%]
+================================== FAILURES ===================================
+________________________ test_phase0_independent_gate _________________________
+
+>   def test_phase0_independent_gate():assert f.validate()['PRE16_EXTERNAL_ACCEPTANCE_FORMALIZATION']=='PASS_LOCAL'
+                                              ^^^^^^^^^^^^
+
+tests\test_r22_contracts.py:14: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_pre16_finalization.py:47: in validate
+    require((changed & existing)<={'.gitattributes'},'ALL_EXISTING_BASELINE_ARTIFACTS_KEEP')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'ALL_EXISTING_BASELINE_ARTIFACTS_KEEP'
+
+    def require(ok,reason):
+>       if not ok:raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ALL_EXISTING_BASELINE_ARTIFACTS_KEEP
+
+scripts\validate_pre16_governance.py:55: ValueError
+_________ test_new_current_reader_uses_explicit_v2_and_returns_copies _________
+
+    def test_new_current_reader_uses_explicit_v2_and_returns_copies():
+>       r=FinalCurrentAuditStatus();assert r.global_contract_entry_blockers()==r.runtime_activation_blockers()==[]
+          ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r22_contracts.py:31: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\pre16_final_current_audit_reader.py:8: in __init__
+    self.root=root;self.validation=validate(root);self.head=read(HEAD,root)
+                                   ^^^^^^^^^^^^^^
+scripts\validate_pre16_finalization.py:47: in validate
+    require((changed & existing)<={'.gitattributes'},'ALL_EXISTING_BASELINE_ARTIFACTS_KEEP')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'ALL_EXISTING_BASELINE_ARTIFACTS_KEEP'
+
+    def require(ok,reason):
+>       if not ok:raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ALL_EXISTING_BASELINE_ARTIFACTS_KEEP
+
+scripts\validate_pre16_governance.py:55: ValueError
+_________________________ test_contract_completeness __________________________
+
+>   def test_contract_completeness():assert o.validate()['V4_16_CONTRACT_COMPLETENESS']=='PASS_READY_FOR_EXTERNAL_AUDIT'
+                                            ^^^^^^^^^^^^
+
+tests\test_r22_contracts.py:37: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_r22_contracts.py:108: in validate
+    root=Path(root).resolve();phase0=formalization(root)
+                                     ^^^^^^^^^^^^^^^^^^^
+scripts\validate_pre16_finalization.py:47: in validate
+    require((changed & existing)<={'.gitattributes'},'ALL_EXISTING_BASELINE_ARTIFACTS_KEEP')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'ALL_EXISTING_BASELINE_ARTIFACTS_KEEP'
+
+    def require(ok,reason):
+>       if not ok:raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ALL_EXISTING_BASELINE_ARTIFACTS_KEEP
+
+scripts\validate_pre16_governance.py:55: ValueError
+__________ test_current_stage_and_data_and_protected_bytes_unchanged __________
+
+    def test_current_stage_and_data_and_protected_bytes_unchanged():
+>       result=f.validate();assert len(result['protected_bindings'])==51
+               ^^^^^^^^^^^^
+
+tests\test_r22_contracts.py:116: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_pre16_finalization.py:47: in validate
+    require((changed & existing)<={'.gitattributes'},'ALL_EXISTING_BASELINE_ARTIFACTS_KEEP')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'ALL_EXISTING_BASELINE_ARTIFACTS_KEEP'
+
+    def require(ok,reason):
+>       if not ok:raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: ALL_EXISTING_BASELINE_ARTIFACTS_KEEP
+
+scripts\validate_pre16_governance.py:55: ValueError
+_________________________ test_full_independent_gate __________________________
+
+>   def test_full_independent_gate():assert o.validate()['status']=='PASS_LOCAL_READY_FOR_EXTERNAL_AUDIT'
+                                            ^^^^^^^^^^^^
+
+tests\test_r22r1_contracts.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_r22r1_contracts.py:114: in validate
+    require(set(changed)&existing<={'.gitattributes'},'HISTORICAL_BASELINE_MODIFIED')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, message = 'HISTORICAL_BASELINE_MODIFIED'
+
+    def require(condition,message):
+>       if not condition:raise ValueError(message)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: HISTORICAL_BASELINE_MODIFIED
+
+scripts\validate_r22r1_contracts.py:10: ValueError
+__________________________ test_protected_authority ___________________________
+
+>   def test_protected_authority():assert oracle.protected()['status']=='PASS_LOCAL'
+                                          ^^^^^^^^^^^^^^^^^^
+
+tests\test_r23_runtime.py:124: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_r23_runtime.py:94: in protected
+    require((changed&existing)<={'.gitattributes'},'HISTORICAL_BASELINE_MUTATION')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = False, message = 'HISTORICAL_BASELINE_MUTATION'
+
+    def require(value,message):
+>       if not value:raise ValueError(message)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: HISTORICAL_BASELINE_MUTATION
+
+scripts\validate_r23_runtime.py:6: ValueError
+___________________________ test_protected_baseline ___________________________
+
+>   def test_protected_baseline():assert oracle.protected()['status']=='PASS_LOCAL'
+                                         ^^^^^^^^^^^^^^^^^^
+
+tests\test_r23r1_runtime.py:84: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_r23r1_runtime.py:95: in protected
+    require((changed&existing)<=allowed,'PROTECTED_BASELINE_MUTATION')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'PROTECTED_BASELINE_MUTATION'
+
+    def require(ok,reason):
+>       if not ok:raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: PROTECTED_BASELINE_MUTATION
+
+scripts\validate_r23r1_runtime.py:8: ValueError
+=========================== short test summary info ===========================
+FAILED tests/test_r22_contracts.py::test_phase0_independent_gate - ValueError...
+FAILED tests/test_r22_contracts.py::test_new_current_reader_uses_explicit_v2_and_returns_copies
+FAILED tests/test_r22_contracts.py::test_contract_completeness - ValueError: ...
+FAILED tests/test_r22_contracts.py::test_current_stage_and_data_and_protected_bytes_unchanged
+FAILED tests/test_r22r1_contracts.py::test_full_independent_gate - ValueError...
+FAILED tests/test_r23_runtime.py::test_protected_authority - ValueError: HIST...
+FAILED tests/test_r23r1_runtime.py::test_protected_baseline - ValueError: PRO...
+7 failed, 419 passed in 297.19s (0:04:57)

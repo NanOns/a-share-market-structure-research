@@ -24,6 +24,9 @@ def approved_directory(path):
 
 def environment(root=ROOT):
     contract = read('config/v4_16_r25_packet_preflight_v1.json', root)
+    policy = read('config/project_workspace_storage_policy_v1.json', root)
+    assert policy['allowed_temporary_drives'] == ['E:', 'F:']
+    assert contract['test_temporary_root'] == policy['test_temporary_root']
     temporary = approved_directory(contract['test_temporary_root'])
     return dict(os.environ, TMP=str(temporary), TEMP=str(temporary), TMPDIR=str(temporary),
                 PYTHONPATH='src'+os.pathsep+'.')
@@ -31,6 +34,8 @@ def environment(root=ROOT):
 
 def prepare(source):
     contract = read('config/v4_16_r25_packet_preflight_v1.json')
+    policy = read('config/project_workspace_storage_policy_v1.json')
+    assert contract['regression_workspace_root'] == policy['regression_workspace_root']
     workspace = approved_directory(contract['regression_workspace_root'])
     directory = (workspace / ('r25-'+source[:12])).resolve()
     if directory.drive.upper() not in ('E:', 'F:') or directory.parent != workspace:

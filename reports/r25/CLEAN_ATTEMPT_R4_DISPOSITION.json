@@ -1,0 +1,24 @@
+{
+  "deselected": 0,
+  "errors": 0,
+  "evidence": [
+    {
+      "bytes": 7883,
+      "path": "reports/r25/clean_attempt_r4/clean_runner.log",
+      "sha256": "e96ed56175d8ac3f111d137305d577b0a5437f4073ad8acae0eacd2f3bcadb31"
+    },
+    {
+      "bytes": 57483,
+      "path": "reports/r25/clean_attempt_r4/clean_tests.xml",
+      "sha256": "78182e1b1e3e74b654d009bfea59d2cf3d1a4149e2af4e22973fd268c9ca6e9a"
+    }
+  ],
+  "failed": 7,
+  "immutable_tag": "refs/tags/codex/r25-activation-packet-tested-source-20261004-r4",
+  "passed": 419,
+  "reason": "Appending authorized temporary-space preference to the frozen root AGENTS.md triggered historical baseline protection",
+  "repair": "Restore root AGENTS.md exactly; add scripts/AGENTS.md and versioned workspace policy; preserve historical validators and test suites",
+  "skipped": 0,
+  "status": "LOCAL_REPAIR_HISTORICAL_ROOT_GUARDRAILS_RESTORED_PENDING_CLEAN_RETEST",
+  "tested_source": "66fc3dc22857fd265b4f313235d98e23072bb903"
+}

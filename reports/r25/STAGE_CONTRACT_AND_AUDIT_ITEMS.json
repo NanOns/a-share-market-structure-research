@@ -52,12 +52,22 @@
     {
       "acceptance": "USER_RULE_IMPLEMENTED_LOCAL_PENDING_FINAL_CLEAN_REGRESSION",
       "evidence": {
-        "bytes": 1593,
+        "bytes": 1841,
         "path": "reports/r25/TEMPORARY_STORAGE_POLICY.json",
-        "sha256": "a5a5ff7dc174dd3126559a021cb2abefab78fccf2289a475238e0edb64d355ae"
+        "sha256": "362c62176c7e34fbc1d9a26bab6e4f1d851fb9d6d40efb2b012fcf9e7feb4a95"
       },
       "id": "R25_TEMPORARY_STORAGE_POLICY",
-      "scope": "User-authorized E/F temporary workspaces and test directories; prohibit C allocation"
+      "scope": "E/F-only temporary storage under new instructions and versioned policy; historical root guardrails untouched"
+    },
+    {
+      "acceptance": "LOCAL_REPAIR_PENDING_FINAL_CLEAN_REGRESSION",
+      "evidence": {
+        "bytes": 980,
+        "path": "reports/r25/CLEAN_ATTEMPT_R4_DISPOSITION.json",
+        "sha256": "32f0d385769259ff8d7ad618ebbeb684a48d927949c23b00d1ae78184d262613"
+      },
+      "id": "R25_HISTORICAL_GUARDRAIL_BYTE_PRESERVATION",
+      "scope": "Preserve frozen root AGENTS and all accepted historical validators while retaining user E/F instructions in new files"
     }
   ],
   "stage_contract": {
@@ -79,10 +89,10 @@
   ],
   "user_authorization": "Standing user request to execute supplied stages, then commit relevant code/evidence and push. Documents define task scope; packet preparation only.",
   "user_temporary_storage_rule": {
-    "bytes": 1593,
+    "bytes": 1841,
     "path": "reports/r25/TEMPORARY_STORAGE_POLICY.json",
-    "sha256": "a5a5ff7dc174dd3126559a021cb2abefab78fccf2289a475238e0edb64d355ae"
+    "sha256": "362c62176c7e34fbc1d9a26bab6e4f1d851fb9d6d40efb2b012fcf9e7feb4a95"
   },
   "v4_17_acceptance_v4_17g": "REQUIRES_REAL_SHADOW_EVIDENCE",
-  "wait_receipt_digest": "f0611743425027885eea57ab2645708852713dddcc497189258f7d53b915b2c8"
+  "wait_receipt_digest": "f077f403b683c845eae601b713c752e87007ec60cd747f4a15f2b118cd71b6f5"
 }

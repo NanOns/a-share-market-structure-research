@@ -1,0 +1,40 @@
+{
+  "business_source_changed": false,
+  "evidence": [
+    {
+      "bytes": 519,
+      "path": "reports/r25/clean_attempt_r1/clean_runner.log",
+      "sha256": "ff28fe5ab177274e1184dd733f0a8d902d8b0c0f873f08e7523a1c941736cdb1"
+    },
+    {
+      "bytes": 50709,
+      "path": "reports/r25/clean_attempt_r1/clean_tests.xml",
+      "sha256": "de94ed47238dde75db3774438ea4570404141cc6e53759a1f4906501c28a23ce"
+    }
+  ],
+  "fix_scope": "SEAL_ORCHESTRATION_ONLY_DISTINCT_JUNIT_STAGING_NAME",
+  "immutable_tag": "refs/tags/codex/r25-activation-packet-tested-source-20261004-r1",
+  "real_execution_started": false,
+  "seal_error": "FileNotFoundError during cleanup: JUnit staging name collided with atomic publication temporary name; publication itself succeeded",
+  "status": "LOCAL_TESTS_PASSED_SEAL_REPAIR_PENDING_FINAL_CLEAN_RETEST",
+  "tested_source": "17b3b04867809614b278cbe9653cd518cbc84425",
+  "tests": {
+    "deselected": 0,
+    "errors": 0,
+    "failures": 0,
+    "passed": 425,
+    "skipped": 0,
+    "suites": [
+      "tests/test_pre16_governance.py",
+      "tests/test_r21_promotion.py",
+      "tests/test_r22_contracts.py",
+      "tests/test_r22r1_contracts.py",
+      "tests/test_r23_runtime.py",
+      "tests/test_r23r1_runtime.py",
+      "tests/test_r24_activation.py",
+      "tests/test_r24r1_authority.py",
+      "tests/test_r24r1_a20.py",
+      "tests/test_r25_packet.py"
+    ]
+  }
+}

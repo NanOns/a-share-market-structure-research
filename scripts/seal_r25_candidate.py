@@ -26,7 +26,7 @@ def summary(path):
 def local():
     before = protected()
     xml = ROOT / 'reports/r25/local_tests.xml'
-    staging_xml = xml.with_suffix('.xml.tmp')
+    staging_xml = xml.with_suffix('.junit-staging.xml')
     cmd = [sys.executable, '-m', 'pytest', *SUITES, '-q', '--junitxml='+str(staging_xml)]
     result = subprocess.run(cmd, cwd=ROOT, env=dict(os.environ, PYTHONPATH='src'+os.pathsep+'.'), capture_output=True)
     atomic('reports/r25/local_runner.log', result.stdout+result.stderr, raw=True)
@@ -50,7 +50,7 @@ def clean(source, tag):
     assert subprocess.check_output(['git', 'status', '--porcelain'], cwd=directory) == b''
     print('Running all ten stage suites without deselection', flush=True)
     xml = ROOT / 'reports/r25/clean_tests.xml'
-    staging_xml = xml.with_suffix('.xml.tmp')
+    staging_xml = xml.with_suffix('.junit-staging.xml')
     cmd = [sys.executable, '-m', 'pytest', *SUITES, '-q', '--junitxml='+str(staging_xml)]
     result = subprocess.run(cmd, cwd=directory, env=dict(os.environ, PYTHONPATH='src'+os.pathsep+'.'), capture_output=True)
     atomic('reports/r25/clean_runner.log', result.stdout+result.stderr, raw=True)
@@ -66,8 +66,14 @@ def clean(source, tag):
     atomic('reports/r25/CLEAN_REGRESSION.json', dict(tests, status='PASS_LOCAL_ENGINEERING_ONLY', tested_source=source, immutable_tag=tag,
            checkout=str(directory), git_status_before='', git_status_after='', command=cmd, verified_lfs_objects=lfs,
            registered_representations=representations, independent_selection=inventory, no_broad_deselection=True, real_packet_ready=False))
+    disposition = read('reports/r25/CLEAN_ATTEMPT_R1_DISPOSITION.json')
+    disposition.update(status='CLOSED_LOCAL_FINAL_CLEAN_RETEST_PASSED_PENDING_EXTERNAL_REVIEW',
+                       final_tested_source=source, final_immutable_tag=tag, final_passed=tests['passed'],
+                       final_clean_regression=ref('reports/r25/CLEAN_REGRESSION.json'))
+    atomic('reports/r25/CLEAN_ATTEMPT_R1_DISPOSITION.json', disposition)
     evidence = [ref('reports/r25/'+name+'.json') for name in REPORTS+['LOCAL_TEST_SUMMARY', 'CLEAN_REGRESSION']]
     evidence += [ref('reports/r25/DEVELOPMENT_CHECK_DISPOSITION.json'), ref('docs/evidence/r25/R25_EXECUTION_DISPOSITION_20261004.md'), ref('config/v4_16_r25_packet_preflight_v1.json')]
+    evidence += [ref('reports/r25/CLEAN_ATTEMPT_R1_DISPOSITION.json')]
     evidence += [ref('reports/r25/'+name) for name in ['local_tests.xml', 'local_runner.log', 'clean_tests.xml', 'clean_runner.log']]
     seal = dict(status='WAIT_ACCEPTED_DAILY_INPUT', R25_REAL_ACTIVATION_PACKET='WAIT_ACCEPTED_DAILY_INPUT', execution_baseline=BASE,
                 tested_source=source, immutable_tag=tag, post_test_changes='EVIDENCE_ONLY', target_trade_date=None,

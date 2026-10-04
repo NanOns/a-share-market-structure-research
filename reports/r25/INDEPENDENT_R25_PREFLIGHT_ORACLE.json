@@ -1,0 +1,107 @@
+{
+  "NEXT": "RETRY_ON_NEXT_ELIGIBLE_ACCEPTED_MARKET_SESSION",
+  "PIT_OBSERVED_REAL_SAMPLES": 0,
+  "REAL_SHADOW_EXECUTION": "NOT_STARTED",
+  "REAL_SHADOW_OBSERVATIONS": 0,
+  "database_imported": false,
+  "execution_authorized": false,
+  "execution_baseline": "31db7c17463d7a314c4dbfb10023f701c1a9387b",
+  "external_acceptance": null,
+  "persisted_exact_inventory": {
+    "exact_daily_input_authority": null,
+    "excluded_inputs": [
+      "R23_ISOLATED_SEED",
+      "R24_ACTIVATION_SIMULATION",
+      "R24R1_ACTIVATION_SIMULATION",
+      "LEGACY_PRIOR"
+    ],
+    "historical_accepted_trade_date": "2026-09-30",
+    "input_selection": "EXPLICIT_ACCEPTED_BINDINGS_ONLY",
+    "inventory": [
+      {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      {
+        "bytes": 2053,
+        "path": "config/v4_16_go_forward_input_authority_v1.json",
+        "sha256": "660d36616e0e28db5ed541e8f6111ccfe48140bb3e88c8a14647d67b26e32a07"
+      },
+      {
+        "bytes": 1335,
+        "path": "config/v4_16_runtime_activation_authority_v3.json",
+        "sha256": "2dda7facec4e5b2d706cc4dd3910f1e2415ce924145f145222c7d9f65eb6c2fb"
+      }
+    ],
+    "next": "RETRY_ON_NEXT_ELIGIBLE_ACCEPTED_MARKET_SESSION",
+    "previous_trade_date": null,
+    "protected": {
+      "Data": "2026-09-30",
+      "PIT_OBSERVED_REAL_SAMPLES": 0,
+      "REAL_SHADOW_OBSERVATIONS": 0,
+      "Stage": "V4_00_TO_V4_15_ACCEPTED",
+      "V4_16_ACCEPTED_HEAD": "NOT_CREATED",
+      "bindings": [
+        {
+          "bytes": 15303,
+          "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+          "sha256": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0"
+        },
+        {
+          "bytes": 16890,
+          "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+          "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+        },
+        {
+          "bytes": 4778,
+          "path": "data/v4/V4_15_ACCEPTED_HEAD.json",
+          "sha256": "a3480dfc7e1d7b68656ea78e6ed68eb93c3381db9c099b8a6e0cb3a84c9d1d4d"
+        },
+        {
+          "bytes": 1335,
+          "path": "config/v4_16_runtime_activation_authority_v3.json",
+          "sha256": "2dda7facec4e5b2d706cc4dd3910f1e2415ce924145f145222c7d9f65eb6c2fb"
+        }
+      ],
+      "execution_baseline": "31db7c17463d7a314c4dbfb10023f701c1a9387b",
+      "historical_git_diff": [],
+      "protected_path_count": 15413,
+      "real_database_created": false
+    },
+    "reasons": [
+      "NO_EXACT_ACCEPTED_REAL_SESSION_DAILY_INPUT_SUPPLIED",
+      "FROZEN_DATA_HEAD_IS_HISTORICAL_ONLY",
+      "NO_TARGET_DATE_ACCEPTED_OWNER_OUTPUT_AND_T0_SNAPSHOT_BOUND_TO_REAL_AUTHORITY"
+    ],
+    "selected_from_wall_clock": false,
+    "status": "WAIT_ACCEPTED_DAILY_INPUT",
+    "target_trade_date": null
+  },
+  "real_packet_checked": false,
+  "result": "WAIT_INDEPENDENTLY_RECOMPUTED",
+  "status": "WAIT_ACCEPTED_DAILY_INPUT",
+  "synthetic_target_checks_only": true,
+  "target_checks": [
+    "calendar_previous_session",
+    "daily_digest",
+    "source_manifest",
+    "nested_source_dates",
+    "UTC_timestamp_boundary",
+    "model_parameters",
+    "capability",
+    "storage_root",
+    "predecessor",
+    "authority_digest",
+    "dependency_digest",
+    "protected_state"
+  ],
+  "target_trade_date": null,
+  "validator": {
+    "bytes": 17901,
+    "path": "scripts/validate_r25_preflight.py",
+    "sha256": "eb043ee060dc13c4189c4249f4ab4b2f009c474acab1d6ad2655001a75bf9b19"
+  },
+  "wait_receipt_digest": "90a43c5819a7430b5d6e9e915b3b9c762388d1d4d68d0688ce8ffd0eebad9a05",
+  "writer_imported": false
+}

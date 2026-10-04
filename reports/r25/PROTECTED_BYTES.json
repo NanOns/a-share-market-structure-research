@@ -1,0 +1,80 @@
+{
+  "NEXT": "RETRY_ON_NEXT_ELIGIBLE_ACCEPTED_MARKET_SESSION",
+  "PIT_OBSERVED_REAL_SAMPLES": 0,
+  "REAL_SHADOW_EXECUTION": "NOT_STARTED",
+  "REAL_SHADOW_OBSERVATIONS": 0,
+  "after": {
+    "Data": "2026-09-30",
+    "PIT_OBSERVED_REAL_SAMPLES": 0,
+    "REAL_SHADOW_OBSERVATIONS": 0,
+    "Stage": "V4_00_TO_V4_15_ACCEPTED",
+    "V4_16_ACCEPTED_HEAD": "NOT_CREATED",
+    "bindings": [
+      {
+        "bytes": 15303,
+        "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+        "sha256": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0"
+      },
+      {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      {
+        "bytes": 4778,
+        "path": "data/v4/V4_15_ACCEPTED_HEAD.json",
+        "sha256": "a3480dfc7e1d7b68656ea78e6ed68eb93c3381db9c099b8a6e0cb3a84c9d1d4d"
+      },
+      {
+        "bytes": 1335,
+        "path": "config/v4_16_runtime_activation_authority_v3.json",
+        "sha256": "2dda7facec4e5b2d706cc4dd3910f1e2415ce924145f145222c7d9f65eb6c2fb"
+      }
+    ],
+    "execution_baseline": "31db7c17463d7a314c4dbfb10023f701c1a9387b",
+    "historical_git_diff": [],
+    "protected_path_count": 15413,
+    "real_database_created": false
+  },
+  "before": {
+    "Data": "2026-09-30",
+    "PIT_OBSERVED_REAL_SAMPLES": 0,
+    "REAL_SHADOW_OBSERVATIONS": 0,
+    "Stage": "V4_00_TO_V4_15_ACCEPTED",
+    "V4_16_ACCEPTED_HEAD": "NOT_CREATED",
+    "bindings": [
+      {
+        "bytes": 15303,
+        "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+        "sha256": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0"
+      },
+      {
+        "bytes": 16890,
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      {
+        "bytes": 4778,
+        "path": "data/v4/V4_15_ACCEPTED_HEAD.json",
+        "sha256": "a3480dfc7e1d7b68656ea78e6ed68eb93c3381db9c099b8a6e0cb3a84c9d1d4d"
+      },
+      {
+        "bytes": 1335,
+        "path": "config/v4_16_runtime_activation_authority_v3.json",
+        "sha256": "2dda7facec4e5b2d706cc4dd3910f1e2415ce924145f145222c7d9f65eb6c2fb"
+      }
+    ],
+    "execution_baseline": "31db7c17463d7a314c4dbfb10023f701c1a9387b",
+    "historical_git_diff": [],
+    "protected_path_count": 15413,
+    "real_database_created": false
+  },
+  "execution_authorized": false,
+  "execution_baseline": "31db7c17463d7a314c4dbfb10023f701c1a9387b",
+  "external_acceptance": null,
+  "result": "PASS_LOCAL",
+  "status": "WAIT_ACCEPTED_DAILY_INPUT",
+  "target_trade_date": null,
+  "unchanged": true,
+  "wait_receipt_digest": "db1ba5d822ac7d8d1820d72d4ccc386f183b2b09a627485499c500feb5e88e2b"
+}

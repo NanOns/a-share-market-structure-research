@@ -1,0 +1,40 @@
+{
+  "command": [
+    "E:\\python\\python.exe",
+    "-m",
+    "pytest",
+    "tests/test_pre16_governance.py",
+    "tests/test_r21_promotion.py",
+    "tests/test_r22_contracts.py",
+    "tests/test_r22r1_contracts.py",
+    "tests/test_r23_runtime.py",
+    "tests/test_r23r1_runtime.py",
+    "tests/test_r24_activation.py",
+    "tests/test_r24r1_authority.py",
+    "tests/test_r24r1_a20.py",
+    "tests/test_r25_packet.py",
+    "-q",
+    "--junitxml=E:\\codex work\\大A交易\\reports\\r25\\local_tests.xml"
+  ],
+  "deselected": 0,
+  "errors": 0,
+  "failures": 0,
+  "no_broad_deselection": true,
+  "passed": 425,
+  "protected_unchanged": true,
+  "real_packet_ready": false,
+  "skipped": 0,
+  "status": "PASS_LOCAL_ENGINEERING_ONLY",
+  "suites": [
+    "tests/test_pre16_governance.py",
+    "tests/test_r21_promotion.py",
+    "tests/test_r22_contracts.py",
+    "tests/test_r22r1_contracts.py",
+    "tests/test_r23_runtime.py",
+    "tests/test_r23r1_runtime.py",
+    "tests/test_r24_activation.py",
+    "tests/test_r24r1_authority.py",
+    "tests/test_r24r1_a20.py",
+    "tests/test_r25_packet.py"
+  ]
+}

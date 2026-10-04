@@ -1,0 +1,120 @@
+{
+  "NEXT": "RETRY_ON_NEXT_ELIGIBLE_ACCEPTED_MARKET_SESSION",
+  "PIT_OBSERVED_REAL_SAMPLES": 0,
+  "REAL_SHADOW_EXECUTION": "NOT_STARTED",
+  "REAL_SHADOW_OBSERVATIONS": 0,
+  "cases": [
+    {
+      "case": "R25-01",
+      "real_storage_opened": false,
+      "rejection": "TARGET_SOURCE_NOT_READY",
+      "status": "PASS_ENGINEERING_NEGATIVE_NOT_REAL"
+    },
+    {
+      "case": "R25-02",
+      "real_storage_opened": false,
+      "rejection": "STALE_DAY_PACKAGE",
+      "status": "PASS_ENGINEERING_NEGATIVE_NOT_REAL"
+    },
+    {
+      "case": "R25-03",
+      "real_storage_opened": false,
+      "rejection": "TARGET_NOT_CONFIRMED",
+      "status": "PASS_ENGINEERING_NEGATIVE_NOT_REAL"
+    },
+    {
+      "case": "R25-04",
+      "real_storage_opened": false,
+      "rejection": "PREVIOUS_SESSION_MISMATCH",
+      "status": "PASS_ENGINEERING_NEGATIVE_NOT_REAL"
+    },
+    {
+      "case": "R25-05",
+      "real_storage_opened": false,
+      "rejection": "DAILY_DIGEST_MISMATCH",
+      "status": "PASS_ENGINEERING_NEGATIVE_NOT_REAL"
+    },
+    {
+      "case": "R25-06",
+      "real_storage_opened": false,
+      "rejection": "NESTED_SOURCE_FUTURE_OR_MISMATCH",
+      "status": "PASS_ENGINEERING_NEGATIVE_NOT_REAL"
+    },
+    {
+      "case": "R25-07",
+      "real_storage_opened": false,
+      "rejection": "MODEL_PARAMETER_MISMATCH",
+      "status": "PASS_ENGINEERING_NEGATIVE_NOT_REAL"
+    },
+    {
+      "case": "R25-08",
+      "real_storage_opened": false,
+      "rejection": "CAPABILITY_EXPANSION_FORBIDDEN",
+      "status": "PASS_ENGINEERING_NEGATIVE_NOT_REAL"
+    },
+    {
+      "case": "R25-09",
+      "real_storage_opened": false,
+      "rejection": "STORAGE_OUTSIDE_REAL_ROOT",
+      "status": "PASS_ENGINEERING_NEGATIVE_NOT_REAL"
+    },
+    {
+      "case": "R25-10",
+      "real_storage_opened": false,
+      "rejection": "STORAGE_CLASS_COLLISION",
+      "status": "PASS_ENGINEERING_NEGATIVE_NOT_REAL"
+    },
+    {
+      "case": "R25-11",
+      "real_storage_opened": false,
+      "rejection": "PREDECESSOR_MISMATCH",
+      "status": "PASS_ENGINEERING_NEGATIVE_NOT_REAL"
+    },
+    {
+      "case": "R25-12",
+      "real_storage_opened": false,
+      "rejection": "PREDECESSOR_COUNTED_AS_REAL",
+      "status": "PASS_ENGINEERING_NEGATIVE_NOT_REAL"
+    },
+    {
+      "case": "R25-13",
+      "real_storage_opened": false,
+      "rejection": "RUNTIME_READINESS_PREFILLED",
+      "status": "PASS_ENGINEERING_NEGATIVE_NOT_REAL"
+    },
+    {
+      "case": "R25-14",
+      "real_storage_opened": false,
+      "rejection": "CANDIDATE_EXECUTION_FORBIDDEN",
+      "status": "PASS_ENGINEERING_NEGATIVE_NOT_REAL"
+    },
+    {
+      "case": "R25-15",
+      "real_storage_opened": false,
+      "rejection": "COMMITTED_AUTHORITY_MUTATED",
+      "status": "PASS_ENGINEERING_NEGATIVE_NOT_REAL"
+    },
+    {
+      "case": "R25-16",
+      "real_storage_opened": false,
+      "rejection": "GRANT_DAILY_INPUT_MISMATCH",
+      "status": "PASS_ENGINEERING_NEGATIVE_NOT_REAL"
+    }
+  ],
+  "count": 16,
+  "execution_authorized": false,
+  "execution_baseline": "31db7c17463d7a314c4dbfb10023f701c1a9387b",
+  "external_acceptance": null,
+  "real_packet_tested": false,
+  "result": "PASS_LOCAL_ENGINEERING_NEGATIVES_ONLY",
+  "status": "WAIT_ACCEPTED_DAILY_INPUT",
+  "synthetic_vectors_location": "REMOVED_TEMPORARY_DIRECTORIES",
+  "target_trade_date": null,
+  "tests": {
+    "bytes": 12270,
+    "path": "tests/test_r25_packet.py",
+    "sha256": "8aab75d24e1ea7d2062584d1f32c3429233b3bb23ac30820f6eb314d7a6f124e"
+  },
+  "vector_class": "ENGINEERING_VECTOR_NOT_REAL",
+  "wait_receipt_digest": "fd3725fcb29a1eb706a675b08afcb322ef6fbbbca94ff35e1c185c7d6874e639"
+}

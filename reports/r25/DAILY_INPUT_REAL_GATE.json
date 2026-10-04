@@ -1,0 +1,35 @@
+{
+  "NEXT": "RETRY_ON_NEXT_ELIGIBLE_ACCEPTED_MARKET_SESSION",
+  "PIT_OBSERVED_REAL_SAMPLES": 0,
+  "REAL_SHADOW_EXECUTION": "NOT_STARTED",
+  "REAL_SHADOW_OBSERVATIONS": 0,
+  "accepted_contract": {
+    "bytes": 2053,
+    "path": "config/v4_16_go_forward_input_authority_v1.json",
+    "sha256": "660d36616e0e28db5ed541e8f6111ccfe48140bb3e88c8a14647d67b26e32a07"
+  },
+  "daily_input_authority": null,
+  "daily_input_digest": null,
+  "execution_authorized": false,
+  "execution_baseline": "31db7c17463d7a314c4dbfb10023f701c1a9387b",
+  "external_acceptance": null,
+  "historical_data_head": {
+    "bytes": 16890,
+    "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+    "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+  },
+  "mandatory_families": [
+    "TDX_RAW_DAILY",
+    "ADJUSTED_DAILY",
+    "OWNER_OUTPUT",
+    "T0_SNAPSHOT"
+  ],
+  "reasons": [
+    "NO_EXACT_ACCEPTED_REAL_SESSION_DAILY_INPUT_SUPPLIED",
+    "FROZEN_DATA_HEAD_IS_HISTORICAL_ONLY",
+    "NO_TARGET_DATE_ACCEPTED_OWNER_OUTPUT_AND_T0_SNAPSHOT_BOUND_TO_REAL_AUTHORITY"
+  ],
+  "status": "WAIT_ACCEPTED_DAILY_INPUT",
+  "target_trade_date": null,
+  "wait_receipt_digest": "60e867790ec66d23bb11186cacd0cbbfa9a7f484bc83a4172f8a6f61e7486525"
+}

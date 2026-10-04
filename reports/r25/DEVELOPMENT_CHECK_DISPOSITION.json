@@ -1,0 +1,19 @@
+{
+  "correction": "Validate exact raw bytes for non-JSON dependencies; parse JSON only for JSON objects",
+  "final_seal_orchestration": "JUnit is staged then published atomically; final source validated in clean full regression",
+  "full_local_regression": {
+    "bytes": 1098,
+    "path": "reports/r25/LOCAL_TEST_SUMMARY.json",
+    "sha256": "161356d37a32819616c92227cf2c2fda9c95b6df88c9b1656b95d1bdcda046ee"
+  },
+  "initial_targeted_result": {
+    "cause": "Exact dependency validation incorrectly JSON-parsed Python/SQL bindings",
+    "failed": 1,
+    "passed": 21
+  },
+  "status": "CLOSED_LOCAL",
+  "targeted_retest": {
+    "failed": 0,
+    "passed": 22
+  }
+}

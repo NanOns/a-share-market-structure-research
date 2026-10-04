@@ -1,0 +1,63 @@
+{
+  "NEXT": "RETRY_ON_NEXT_ELIGIBLE_ACCEPTED_MARKET_SESSION",
+  "PIT_OBSERVED_REAL_SAMPLES": 0,
+  "REAL_SHADOW_EXECUTION": "NOT_STARTED",
+  "REAL_SHADOW_OBSERVATIONS": 0,
+  "acceptance": "WAIT_ACCEPTED_DAILY_INPUT",
+  "execution_authorized": false,
+  "execution_baseline": "31db7c17463d7a314c4dbfb10023f701c1a9387b",
+  "external_acceptance": null,
+  "latest_upgrade_document": {
+    "bytes": 224998,
+    "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+    "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+  },
+  "master": {
+    "bytes": 1924,
+    "path": "docs/evidence/r25/V4_NEXT_ROUND_EXECUTION_MASTER_R25_20261004.md",
+    "sha256": "a35ef1d319289a95d030972766759d0b8540f55c7e44696aa6bbb7d3f1c9653c"
+  },
+  "phase0": {
+    "binding": {
+      "bytes": 14147,
+      "path": "reports/v4_phase0/V4_PHASE0_FINAL_RECEIPT_R5_20260928.json",
+      "sha256": "313304495faee8c081794ec1bf4f19803ed8a634ac98187347d9190b5ebe5b59"
+    },
+    "scanner_started": false,
+    "status": "FULL_PASS"
+  },
+  "r24r1_closed_external_items": [
+    "R24_FORWARD_DAILY_INPUT_AUTHORITY",
+    "R24_COHORT_ENROLLMENT_IDENTITY",
+    "R24_REALTIME_ADMISSION_WRAPPER_SEMANTICS"
+  ],
+  "separate_audit_items": [
+    {
+      "acceptance": "CLOSED_LOCAL_PENDING_EXTERNAL_AUDIT",
+      "evidence_path": "reports/r25/F12_GOVERNANCE.json",
+      "id": "R25_F12_EXPLICIT_BINDING_GOVERNANCE",
+      "inherited_external_finding": "F12_P2_NONBLOCKING",
+      "scope": "Existing valid latest.json decoy; exact runtime binding wins; governance ValueError rejection"
+    }
+  ],
+  "stage_contract": {
+    "bytes": 1399,
+    "path": "config/v4_16_r25_packet_preflight_v1.json",
+    "sha256": "1ed03b983f933529769b2e71dcc53860056179d93fbd957b87dfb4dc57cd52ca"
+  },
+  "status": "WAIT_ACCEPTED_DAILY_INPUT",
+  "target_trade_date": null,
+  "task": {
+    "bytes": 7952,
+    "path": "docs/evidence/r25/V4_16_R25_FIRST_REAL_SHADOW_ACTIVATION_PACKET_TASK_20261004.md",
+    "sha256": "43e9e7defd689bdbc964d4b21d93e3ad32fccefacaf853a0e5a1bf49b1033c2c"
+  },
+  "unrelated_v4_17_engineering": "NOT_BLOCKED_BY_WAIT",
+  "upgrade_sections": [
+    "77B",
+    "78"
+  ],
+  "user_authorization": "Standing user request to execute supplied stages, then commit relevant code/evidence and push. Documents define task scope; packet preparation only.",
+  "v4_17_acceptance_v4_17g": "REQUIRES_REAL_SHADOW_EVIDENCE",
+  "wait_receipt_digest": "baff9a0453059ffacd02218ec4cbb845c72c139c4f55802723585d6573d463ad"
+}

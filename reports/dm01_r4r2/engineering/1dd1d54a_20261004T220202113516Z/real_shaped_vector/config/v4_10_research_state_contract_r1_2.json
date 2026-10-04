@@ -1,0 +1,163 @@
+{
+  "authority": {
+    "master": {
+      "byte_count": 224998,
+      "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+      "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+    },
+    "sections": [
+      "30",
+      "31",
+      "32",
+      "33",
+      "78"
+    ],
+    "task": {
+      "byte_count": 10958,
+      "path": "docs/evidence/V4_09_ACCEPTED_HEAD_PROMOTION_AND_V4_10_STATE_REDUCER_ENTRY_TASK_20260930.md",
+      "sha256": "e2641232650218d4fa6e9977c10ab1f5461d72943d82b2024ea93ece46dcfbbd"
+    }
+  },
+  "axes": {
+    "health": [
+      "IMPROVING",
+      "STABLE",
+      "WEAKENING",
+      "DAMAGED",
+      "EXHAUSTED",
+      "UNKNOWN"
+    ],
+    "maturity": [
+      "NONE",
+      "SEED",
+      "PREWATCH",
+      "WARM",
+      "CONFIRMED"
+    ],
+    "scenario": {
+      "SECTOR": [
+        "BASE_BUILD",
+        "BREADTH_BUILD",
+        "RECOVERY_BUILD",
+        "BROADENING",
+        "REACCELERATING",
+        "SUSTAINED",
+        "NONE"
+      ],
+      "STOCK": [
+        "SETUP",
+        "LAUNCH_CONFIRM",
+        "RECOVERY_TURN",
+        "STRONG_PULLBACK",
+        "TREND_CONTINUE",
+        "NONE"
+      ]
+    },
+    "tracking": [
+      "ACTIVE",
+      "FOLLOWUP",
+      "CLOSED"
+    ],
+    "validity": [
+      "VALID",
+      "INVALIDATED",
+      "UNKNOWN"
+    ]
+  },
+  "business_contract_unchanged": true,
+  "canonicalization_contract_id": "V4_10_CANONICAL_JSON_R1_1",
+  "contract_id": "RESEARCH_STATE_V1",
+  "controlled_publisher_contract": "V4_10_CONTROLLED_STATE_PUBLISHER_R1_2",
+  "db_hardening": "024 immutable boundary prior ledger, implemented-status authority, controlled reducer publisher role",
+  "engineering_revision": "R1.2",
+  "expiry_semantics": {
+    "applicable": [
+      "SEED",
+      "PREWATCH"
+    ],
+    "first_qualifying_session_count": 1,
+    "improvement_baseline": "freeze until >=3pp cumulative improvement or stage upgrade",
+    "same_session_revision": "does not advance counters",
+    "stage_upgrade": "reset count to 1",
+    "unknown_suspension": "pause count; market_age advances"
+  },
+  "hard_invalidation_scope": "associated episode and frozen creation contract only",
+  "input_required_fields": [
+    "interface_contract_id",
+    "entity_id",
+    "entity_type",
+    "trade_date",
+    "session_index",
+    "calendar_publication_id",
+    "calendar_binding",
+    "mode",
+    "cutoff",
+    "input_publication_ids",
+    "input_provenance",
+    "input_publication_manifest_digest",
+    "prior_state",
+    "prior_state_binding",
+    "model_boundary"
+  ],
+  "interface_contract_id": "V4_10_STATE_REDUCER_INTERFACE_R1_1",
+  "lineage": "exact prior payload digest, prior publication ID, entity/type, monotone bound market-calendar session index",
+  "missing_inputs": {
+    "confirmation": "NOT_IMPLEMENTED_V4_11",
+    "frozen_episode_invalidation": "NOT_IMPLEMENTED_V4_12",
+    "sector_legacy_warm": "NOT_IMPLEMENTED_UNACCEPTED_EXTRACTION",
+    "stock_warm": "NOT_APPLICABLE",
+    "structure_anchor_support": "NOT_IMPLEMENTED_V4_12"
+  },
+  "model_boundary": "immutable OLD source authority + exact migration manifest; from tuple must differ from current",
+  "next_stage": "STOP_FOR_INDEPENDENT_EXTERNAL_REAUDIT; V4-11 BLOCKED",
+  "permissions": {
+    "focus_cutover": false,
+    "production": false,
+    "shadow": false
+  },
+  "prior_authenticity": "full R1.1 output schema + content-address + trusted PostgreSQL engineering publication existence + frozen calendar",
+  "producer_contracts": {
+    "PREWATCH": "STOCK_PREWATCH_V1",
+    "SEED": "BASE_SEED_V1"
+  },
+  "producer_parameters": {
+    "PREWATCH": "V4_09_STOCK_PREWATCH_PARAMETER_SET_V1",
+    "SEED": "V4_07_BASE_SEED_PARAMETER_SET_V1"
+  },
+  "provenance_contract_id": "V4_10_STATE_INPUT_PROVENANCE_V1",
+  "repair_task": {
+    "byte_count": 17930,
+    "path": "docs/evidence/V4_10_R1_2_EXTERNAL_REAUDIT_REPAIR_TASK_20261001.md",
+    "sha256": "cc5e2ade7b7435a6b8982802a73421aefe87e8a59bce1dc1092fb569d5ea3868"
+  },
+  "risk_domain": [
+    "LOW",
+    "MEDIUM",
+    "HIGH",
+    "EXTREME",
+    "UNKNOWN"
+  ],
+  "rule_order": [
+    "R1_MODEL_BOUNDARY",
+    "R2_HARD_INVALIDATION",
+    "R3_REQUIRED_UNKNOWN",
+    "R4_STAGE_SELECTION",
+    "R5_HYSTERESIS",
+    "R6_HEALTH",
+    "R7_TRACKING",
+    "R8_EXPIRY",
+    "R9_REENTRY"
+  ],
+  "scope": "INTERFACE_AND_INDEPENDENT_SYNTHETIC_VECTORS_ONLY",
+  "supersedes_candidate": {
+    "byte_count": 76278,
+    "path": "reports/v4_10/V4_10_R1_1_STAGE_CANDIDATE_MANIFEST.json",
+    "sha256": "58951545202c0f0eab9bf573f726f48cb5e9c51ee6326b37cdaec9cc9912b01a"
+  },
+  "unknown_semantics": {
+    "health_history": "health UNKNOWN only; expiry cannot increment without improvement history",
+    "required": "preserve last-known maturity/tracking/scenario; STALE; health/validity/eligibility UNKNOWN; no enrollment/exit",
+    "scenario": "preserve prior axis value with scenario_status UNKNOWN"
+  },
+  "version": "1.0.0"
+}

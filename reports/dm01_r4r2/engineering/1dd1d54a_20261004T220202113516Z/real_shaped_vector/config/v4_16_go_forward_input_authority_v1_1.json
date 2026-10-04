@@ -1,0 +1,90 @@
+{
+  "authority_layers": [
+    "IMMUTABLE_ALGORITHM_STAGE",
+    "EXACT_ACCEPTED_SESSION_INPUT"
+  ],
+  "bridge_contract_id": "DM01_R25_TARGET_SESSION_PIT_BINDING_R4R1_V1",
+  "contract_id": "V4_16_GO_FORWARD_INPUT_AUTHORITY_V1_1",
+  "frozen_data_head_role": "HISTORICAL_ACCEPTANCE_ONLY",
+  "immutable_algorithm_bindings": {
+    "cohort": {
+      "bytes": 2081,
+      "path": "config/v4_15_cohort_contract_v1.json",
+      "sha256": "5d4dee2e914ed541227cf54deb5676be3495713ea754ce6b78b078c643bacc8b"
+    },
+    "model": {
+      "bytes": 4926,
+      "path": "config/v4_10_research_state_contract_r1_2.json",
+      "sha256": "33d50256635161f425f4f34ac805ea2f511362be7d71d35b3a62478de5a59127"
+    },
+    "parameters": {
+      "bytes": 435,
+      "path": "config/v4_10_parameter_set_r1_2.json",
+      "sha256": "20b66f9f2d2d4fe6ba8c3dd0583d6fa3d5408daebda09fae7ff27548e800ffd7"
+    },
+    "stage": {
+      "bytes": 15303,
+      "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+      "sha256": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0"
+    },
+    "v4_15": {
+      "bytes": 4778,
+      "path": "data/v4/V4_15_ACCEPTED_HEAD.json",
+      "sha256": "a3480dfc7e1d7b68656ea78e6ed68eb93c3381db9c099b8a6e0cb3a84c9d1d4d"
+    }
+  },
+  "immutable_data_head_predecessor": {
+    "bytes": 16890,
+    "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+    "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+  },
+  "immutable_data_head_readback": {
+    "bytes": 16890,
+    "path": "data/v4/r25_r4r2/historical_data_head_20260930.json",
+    "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+  },
+  "implicit_resolution": "FORBIDDEN",
+  "mandatory_pure_core_sources": [
+    "TDX_RAW_DAILY",
+    "ADJUSTED_DAILY",
+    "OWNER_OUTPUT",
+    "T0_SNAPSHOT"
+  ],
+  "membership_required_capabilities": [
+    "SECTOR_ENHANCED"
+  ],
+  "model_identity": {
+    "model_contract_id": "RESEARCH_STATE_V1",
+    "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1"
+  },
+  "predecessor": {
+    "bytes": 2053,
+    "path": "config/v4_16_go_forward_input_authority_v1.json",
+    "sha256": "660d36616e0e28db5ed541e8f6111ccfe48140bb3e88c8a14647d67b26e32a07"
+  },
+  "required_fields": [
+    "daily_input_id",
+    "revision",
+    "target_trade_date",
+    "accepted_at",
+    "calendar",
+    "previous_trade_date",
+    "target_session_confirmed",
+    "identity",
+    "membership",
+    "sources",
+    "day_package",
+    "snapshot_identity",
+    "max_source_trade_date",
+    "quality_capability_matrix",
+    "source_manifest_digest",
+    "daily_input_digest",
+    "model_contract_id",
+    "parameter_set_id",
+    "immutable_algorithm_bindings",
+    "environment_class",
+    "target_session_pit_binding"
+  ],
+  "required_real_bridge": true,
+  "version": "1.1.0"
+}

@@ -126,6 +126,9 @@ def test_R4R2_12_real_shaped_parity(vector,monkeypatch):
     packetref=produce_packet(v['root'],daily=packet['candidate']['grant']['daily_input_authority'],candidate=put(v['root'],'reports/r25/activation_candidate/authority.json',packet['candidate']),sources=packet['candidate']['grant']['source_authority'],predecessor=packet['candidate']['grant']['predecessor'],output='reports/r25/activation_candidate/engineering_packet.json',engineering=True)
     result=inspect_packet(v['root'],packetref,test_only=True)
     assert result['status']=='PASS_ENGINEERING_VECTOR_NOT_REAL' and result['execution_authorized'] is False
+    from scripts.validate_r25_preflight import packet_protected
+    state=packet_protected(v['root'],packet['daily'])
+    assert state['Data']==v['b']['target_trade_date']!='2026-09-30' and state['runtime_authorized'] is False and state['REAL_SHADOW_OBSERVATIONS']==0
     with pytest.raises(ValueError):inspect_packet(v['root'],packetref)
     with pytest.raises((ValueError,FileNotFoundError)):GoForwardInputAuthority(v['root'],o.binding(v['root'],o.CONTRACT_PATH),put(v['root'],'daily.json',v['d']),{},'2026-09-28T13:00:00Z')
     # Explicit synthetic authorization seam only; exercise the entire input

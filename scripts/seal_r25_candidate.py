@@ -5,8 +5,9 @@ import sys
 import xml.etree.ElementTree as ET
 
 from scripts.r25_io import ROOT, BASE, atomic, read, ref
-from scripts.validate_r25_preflight import selection, protected
-from scripts.validate_r20_clean_detached import prepare_current, historical_representations
+from scripts.validate_r25_preflight import selection, protected, digest
+from scripts.validate_r20_clean_detached import historical_representations
+from scripts.r25_clean_checkout import prepare, environment
 from scripts.run_r25_evidence import REPORTS, DOCUMENTS
 
 SUITES = [
@@ -28,7 +29,7 @@ def local():
     xml = ROOT / 'reports/r25/local_tests.xml'
     staging_xml = xml.with_suffix('.junit-staging.xml')
     cmd = [sys.executable, '-m', 'pytest', *SUITES, '-q', '--junitxml='+str(staging_xml)]
-    result = subprocess.run(cmd, cwd=ROOT, env=dict(os.environ, PYTHONPATH='src'+os.pathsep+'.'), capture_output=True)
+    result = subprocess.run(cmd, cwd=ROOT, env=environment(), capture_output=True)
     atomic('reports/r25/local_runner.log', result.stdout+result.stderr, raw=True)
     assert result.returncode == 0, 'LOCAL_REGRESSION_FAILED'
     assert b'deselected' not in result.stdout
@@ -45,14 +46,14 @@ def clean(source, tag):
     assert subprocess.check_output(['git', 'rev-parse', tag], cwd=ROOT, text=True).strip() == source
     subprocess.run(['git', 'merge-base', '--is-ancestor', BASE, source], cwd=ROOT, check=True)
     print('Preparing exact clean detached R25 source and LFS objects', flush=True)
-    directory, lfs = prepare_current(source)
+    directory, lfs = prepare(source)
     representations = historical_representations(directory, read('data/v4/V4_EXACT_BYTE_PORTABILITY_REGISTRY_R1.json'))
     assert subprocess.check_output(['git', 'status', '--porcelain'], cwd=directory) == b''
     print('Running all ten stage suites without deselection', flush=True)
     xml = ROOT / 'reports/r25/clean_tests.xml'
     staging_xml = xml.with_suffix('.junit-staging.xml')
     cmd = [sys.executable, '-m', 'pytest', *SUITES, '-q', '--junitxml='+str(staging_xml)]
-    result = subprocess.run(cmd, cwd=directory, env=dict(os.environ, PYTHONPATH='src'+os.pathsep+'.'), capture_output=True)
+    result = subprocess.run(cmd, cwd=directory, env=environment(), capture_output=True)
     atomic('reports/r25/clean_runner.log', result.stdout+result.stderr, raw=True)
     assert result.returncode == 0, 'CLEAN_REGRESSION_FAILED'
     assert b'deselected' not in result.stdout
@@ -71,9 +72,20 @@ def clean(source, tag):
                        final_tested_source=source, final_immutable_tag=tag, final_passed=tests['passed'],
                        final_clean_regression=ref('reports/r25/CLEAN_REGRESSION.json'))
     atomic('reports/r25/CLEAN_ATTEMPT_R1_DISPOSITION.json', disposition)
+    stage = read('reports/r25/STAGE_CONTRACT_AND_AUDIT_ITEMS.json')
+    for item in stage['separate_audit_items']:
+        if item['id'] in ('R25_TEST_ARTIFACT_ATOMIC_PUBLICATION', 'R25_TEMPORARY_STORAGE_POLICY'):
+            item['acceptance'] = 'CLOSED_LOCAL_FINAL_CLEAN_REGRESSION_PASSED_PENDING_EXTERNAL_REVIEW'
+            item['evidence'] = ref(item['evidence']['path'])
+    stage['clean_regression'] = ref('reports/r25/CLEAN_REGRESSION.json')
+    stage.pop('wait_receipt_digest', None)
+    stage['wait_receipt_digest'] = digest(stage)
+    atomic('reports/r25/STAGE_CONTRACT_AND_AUDIT_ITEMS.json', stage)
     evidence = [ref('reports/r25/'+name+'.json') for name in REPORTS+['LOCAL_TEST_SUMMARY', 'CLEAN_REGRESSION']]
     evidence += [ref('reports/r25/DEVELOPMENT_CHECK_DISPOSITION.json'), ref('docs/evidence/r25/R25_EXECUTION_DISPOSITION_20261004.md'), ref('config/v4_16_r25_packet_preflight_v1.json')]
     evidence += [ref('reports/r25/CLEAN_ATTEMPT_R1_DISPOSITION.json')]
+    evidence += [ref('reports/r25/'+name+'.json') for name in ['CLEAN_ATTEMPT_R2_INTERRUPTION', 'TEMPORARY_STORAGE_POLICY', 'TARGETED_TEST_SUMMARY']]
+    evidence += [ref('reports/r25/targeted_tests.xml'), ref('AGENTS.md'), ref('scripts/r25_clean_checkout.py')]
     evidence += [ref('reports/r25/'+name) for name in ['local_tests.xml', 'local_runner.log', 'clean_tests.xml', 'clean_runner.log']]
     seal = dict(status='WAIT_ACCEPTED_DAILY_INPUT', R25_REAL_ACTIVATION_PACKET='WAIT_ACCEPTED_DAILY_INPUT', execution_baseline=BASE,
                 tested_source=source, immutable_tag=tag, post_test_changes='EVIDENCE_ONLY', target_trade_date=None,

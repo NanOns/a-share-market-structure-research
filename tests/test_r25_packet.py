@@ -176,6 +176,12 @@ def test_actual_authority_inventory_waits_without_target():
     assert result['status'] == 'WAIT_ACCEPTED_DAILY_INPUT' and result['target_trade_date'] is None
 
 
+def test_user_c_drive_temporary_space_prohibition():
+    from scripts.r25_clean_checkout import approved_directory
+    with pytest.raises(ValueError, match='USER_REQUIRES_TEMPORARY_SPACE_ON_E_OR_F'):
+        approved_directory('C:/Users/lps/r25-temporary-space-must-not-be-created')
+
+
 @pytest.mark.parametrize('field', ['source', 'daily'])
 def test_fractional_boundary_rejected(field, tmp_path):
     v = vector(tmp_path)

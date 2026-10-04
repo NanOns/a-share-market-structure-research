@@ -19,12 +19,19 @@
   "deselected": 0,
   "errors": 0,
   "failures": 0,
+  "final_exact_source_full_regression": "reports/r25/CLEAN_REGRESSION.json",
   "no_broad_deselection": true,
   "passed": 425,
   "protected_unchanged": true,
   "real_packet_ready": false,
   "skipped": 0,
+  "source_scope": "Initial R25 full local regression before seal temporary-name correction and user E/F steering",
   "status": "PASS_LOCAL_ENGINEERING_ONLY",
+  "subsequent_targeted_regression": {
+    "bytes": 452,
+    "path": "reports/r25/TARGETED_TEST_SUMMARY.json",
+    "sha256": "32144245dd1719e85fe2d754b95dbf85b30d3f4b4888dbd3ac2c0bfcef105154"
+  },
   "suites": [
     "tests/test_pre16_governance.py",
     "tests/test_r21_promotion.py",

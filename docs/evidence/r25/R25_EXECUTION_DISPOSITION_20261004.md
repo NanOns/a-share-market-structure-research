@@ -31,3 +31,9 @@ Retry requires an explicit accepted target-session input authority and exact ups
 WAIT is a valid source-availability exit, not a stage failure or permission to advance. Unrelated V4-17 UI engineering remains possible; V4-17 acceptance and V4-17G still require real Shadow evidence.
 
 Local and clean full regression receipts and the final R25_CANDIDATE_SEAL.json record the tested source/tag. Passing tests and Git push do not constitute external acceptance.
+
+## User temporary-storage steering
+
+The user requires temporary workspaces on E: or F:, and plans a dedicated 3 TB mechanical project/database/stock-data disk later. Current R25 checkouts and test temporary directories use E:. AGENTS.md records this standing rule; the R25 checkout helper rejects C: allocations and independently verifies every LFS object and hydrated target. The future disk, database and TDX source paths have not been reconfigured.
+
+R1 clean tests passed 425, then sealing failed due to a JUnit/atomic-write temporary-name collision; the logs are preserved. R2 was interrupted when the user prohibited C: temporary allocation, with no pass claim. Both current-stage C: checkouts were removed after confirming committed identities and clean Git status, releasing approximately 18.3 GB. An attempted batch relocation of older C: temporary checkouts was rejected by automatic approval review with blocked by policy; those older checkouts remain unchanged. Final full clean regression runs on E: against the final immutable source tag.

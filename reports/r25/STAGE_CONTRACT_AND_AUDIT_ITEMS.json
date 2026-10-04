@@ -38,12 +38,32 @@
       "id": "R25_F12_EXPLICIT_BINDING_GOVERNANCE",
       "inherited_external_finding": "F12_P2_NONBLOCKING",
       "scope": "Existing valid latest.json decoy; exact runtime binding wins; governance ValueError rejection"
+    },
+    {
+      "acceptance": "LOCAL_REPAIR_PENDING_FINAL_CLEAN_REGRESSION",
+      "evidence": {
+        "bytes": 1397,
+        "path": "reports/r25/CLEAN_ATTEMPT_R1_DISPOSITION.json",
+        "sha256": "a43f06bbbc67467f303f4afac2d9ab75e97e7c0a159aab10419ec5baf1d72267"
+      },
+      "id": "R25_TEST_ARTIFACT_ATOMIC_PUBLICATION",
+      "scope": "JUnit staging publication must not collide with atomic-output temporary paths"
+    },
+    {
+      "acceptance": "USER_RULE_IMPLEMENTED_LOCAL_PENDING_FINAL_CLEAN_REGRESSION",
+      "evidence": {
+        "bytes": 1630,
+        "path": "reports/r25/TEMPORARY_STORAGE_POLICY.json",
+        "sha256": "cc840cd62d426444499a383b522f58b7d59a841cf24ba045f7d4c02253b337a8"
+      },
+      "id": "R25_TEMPORARY_STORAGE_POLICY",
+      "scope": "User-authorized E/F temporary workspaces and test directories; prohibit C allocation"
     }
   ],
   "stage_contract": {
-    "bytes": 1399,
+    "bytes": 1578,
     "path": "config/v4_16_r25_packet_preflight_v1.json",
-    "sha256": "1ed03b983f933529769b2e71dcc53860056179d93fbd957b87dfb4dc57cd52ca"
+    "sha256": "0a0082115425783de91850ccd4f2b2872d54f0c828edfe8d5e1066f529daf04e"
   },
   "status": "WAIT_ACCEPTED_DAILY_INPUT",
   "target_trade_date": null,
@@ -58,6 +78,11 @@
     "78"
   ],
   "user_authorization": "Standing user request to execute supplied stages, then commit relevant code/evidence and push. Documents define task scope; packet preparation only.",
+  "user_temporary_storage_rule": {
+    "bytes": 1630,
+    "path": "reports/r25/TEMPORARY_STORAGE_POLICY.json",
+    "sha256": "cc840cd62d426444499a383b522f58b7d59a841cf24ba045f7d4c02253b337a8"
+  },
   "v4_17_acceptance_v4_17g": "REQUIRES_REAL_SHADOW_EVIDENCE",
-  "wait_receipt_digest": "baff9a0453059ffacd02218ec4cbb845c72c139c4f55802723585d6573d463ad"
+  "wait_receipt_digest": "c37257dbeef6948b01216fd909cf27f2559867510f01c9d807c2229b28e64676"
 }

@@ -4,6 +4,7 @@ from pathlib import Path
 
 from scripts.r25_io import ROOT, BASE, atomic, read, ref
 from scripts.validate_r25_preflight import selection, protected, digest
+from scripts.r25_clean_checkout import environment
 from tests.test_r25_packet import negative, REASONS, f12_governance
 
 DOCUMENTS = [
@@ -21,6 +22,8 @@ REPORTS = [
 
 
 def run():
+    # tempfile caches its default; explicitly bind the user's E/F preference.
+    tempfile.tempdir = environment()['TEMP']
     for name in DOCUMENTS:
         original = Path('D:/Users/lps/Desktop/阶段任务') / name
         output = 'docs/evidence/r25/' + name

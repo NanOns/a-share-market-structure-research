@@ -103,7 +103,10 @@ def protected(root=ROOT):
     names = subprocess.check_output(['git', 'ls-tree', '-r', '--name-only', BASE], cwd=root, text=True, encoding='utf8').splitlines()
     # All historical tracked objects are protected, including earlier tests and evidence.
     changed = subprocess.check_output(['git', 'diff', '--name-only', BASE], cwd=root, text=True, encoding='utf8').splitlines()
-    check(not set(names) & set(changed) - {'.gitattributes'}, 'HISTORICAL_PROTECTED_BYTES_CHANGED')
+    check(not set(names) & set(changed) - {'.gitattributes', 'AGENTS.md'}, 'HISTORICAL_PROTECTED_BYTES_CHANGED')
+    original_rules = subprocess.check_output(['git', 'show', BASE+':AGENTS.md'], cwd=root).replace(b'\r\n', b'\n').rstrip()
+    current_rules = (root/'AGENTS.md').read_bytes().replace(b'\r\n', b'\n').rstrip()
+    check(current_rules.startswith(original_rules+b'\n10. Use E: or F:'), 'EXISTING_PROJECT_GUARDRAILS_CHANGED')
     disabled(load(root, 'config/v4_16_runtime_activation_authority_v3.json'))
     check(not (root / 'data/v4/V4_16_ACCEPTED_HEAD.json').exists(), 'V4_16_ACCEPTED_HEAD_FORBIDDEN')
     check(not (root / 'data/v4/shadow_real_v1').exists(), 'REAL_STORAGE_FORBIDDEN_IN_R25')

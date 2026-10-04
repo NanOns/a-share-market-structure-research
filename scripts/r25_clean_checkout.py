@@ -32,7 +32,7 @@ def environment(root=ROOT):
 def prepare(source):
     contract = read('config/v4_16_r25_packet_preflight_v1.json')
     workspace = approved_directory(contract['regression_workspace_root'])
-    directory = (workspace / ('r25-clean-'+source[:12])).resolve()
+    directory = (workspace / ('r25-'+source[:12])).resolve()
     if directory.drive.upper() not in ('E:', 'F:') or directory.parent != workspace:
         raise ValueError('USER_REQUIRES_TEMPORARY_SPACE_ON_E_OR_F')
     env = dict(environment(), GIT_LFS_SKIP_SMUDGE='1')
@@ -40,7 +40,7 @@ def prepare(source):
         assert call(['git', 'rev-parse', 'HEAD'], cwd=directory, text=True).strip() == source
         assert call(['git', 'status', '--porcelain'], cwd=directory) == b''
     else:
-        subprocess.run(['git', 'worktree', 'add', '--detach', str(directory), source], cwd=ROOT, env=env, check=True)
+        subprocess.run(['git', '-c', 'core.longpaths=true', 'worktree', 'add', '--detach', str(directory), source], cwd=ROOT, env=env, check=True)
     common = Path(call(['git', 'rev-parse', '--git-common-dir'], text=True).strip())
     if not common.is_absolute():
         common = (ROOT/common).resolve()

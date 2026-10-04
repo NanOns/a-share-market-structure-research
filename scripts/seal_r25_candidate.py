@@ -72,6 +72,10 @@ def clean(source, tag):
                        final_tested_source=source, final_immutable_tag=tag, final_passed=tests['passed'],
                        final_clean_regression=ref('reports/r25/CLEAN_REGRESSION.json'))
     atomic('reports/r25/CLEAN_ATTEMPT_R1_DISPOSITION.json', disposition)
+    preparation = read('reports/r25/CLEAN_ATTEMPT_R3_DISPOSITION.json')
+    preparation.update(status='CLOSED_LOCAL_E_DRIVE_SHORT_PATH_PREPARATION_AND_FULL_REGRESSION_PASSED',
+                       final_tested_source=source, final_clean_regression=ref('reports/r25/CLEAN_REGRESSION.json'))
+    atomic('reports/r25/CLEAN_ATTEMPT_R3_DISPOSITION.json', preparation)
     stage = read('reports/r25/STAGE_CONTRACT_AND_AUDIT_ITEMS.json')
     for item in stage['separate_audit_items']:
         if item['id'] in ('R25_TEST_ARTIFACT_ATOMIC_PUBLICATION', 'R25_TEMPORARY_STORAGE_POLICY'):
@@ -84,7 +88,7 @@ def clean(source, tag):
     evidence = [ref('reports/r25/'+name+'.json') for name in REPORTS+['LOCAL_TEST_SUMMARY', 'CLEAN_REGRESSION']]
     evidence += [ref('reports/r25/DEVELOPMENT_CHECK_DISPOSITION.json'), ref('docs/evidence/r25/R25_EXECUTION_DISPOSITION_20261004.md'), ref('config/v4_16_r25_packet_preflight_v1.json')]
     evidence += [ref('reports/r25/CLEAN_ATTEMPT_R1_DISPOSITION.json')]
-    evidence += [ref('reports/r25/'+name+'.json') for name in ['CLEAN_ATTEMPT_R2_INTERRUPTION', 'TEMPORARY_STORAGE_POLICY', 'TARGETED_TEST_SUMMARY']]
+    evidence += [ref('reports/r25/'+name+'.json') for name in ['CLEAN_ATTEMPT_R2_INTERRUPTION', 'CLEAN_ATTEMPT_R3_DISPOSITION', 'TEMPORARY_STORAGE_POLICY', 'TARGETED_TEST_SUMMARY']]
     evidence += [ref('reports/r25/targeted_tests.xml'), ref('AGENTS.md'), ref('scripts/r25_clean_checkout.py')]
     evidence += [ref('reports/r25/'+name) for name in ['local_tests.xml', 'local_runner.log', 'clean_tests.xml', 'clean_runner.log']]
     seal = dict(status='WAIT_ACCEPTED_DAILY_INPUT', R25_REAL_ACTIVATION_PACKET='WAIT_ACCEPTED_DAILY_INPUT', execution_baseline=BASE,

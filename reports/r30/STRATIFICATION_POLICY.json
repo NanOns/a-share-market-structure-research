@@ -1,0 +1,30 @@
+{
+  "contract": "config/v4_21_continued_forward_observation_contract_v1.json",
+  "contract_sha256": "9614a78f51200d554710bdb7a300fd4375d8d26e07994605f2313007bdfceffa",
+  "definition": {
+    "asof": "ACCEPTED_T0_CONTEXT_AND_VERSIONED_QUALITY_REF; UNKNOWN_STRATA_EXPLICIT_NEVER_DROPPED",
+    "first_vs_corrected": "SEPARATE_FIRST_OBSERVED_AND_LATEST_CORRECTED_VIEWS; REVISION_NOT_NEW_MATURED_EVENT",
+    "keys": [
+      "capability",
+      "execution_lane",
+      "model_contract_id",
+      "parameter_digest",
+      "state_lineage_id",
+      "market_regime",
+      "sector_context_where_valid",
+      "event_type",
+      "signal_date",
+      "horizon",
+      "quality_stratum"
+    ],
+    "purpose": "READ_ONLY_ANALYSIS_NEVER_CHANGE_ELIGIBILITY",
+    "thresholds": "NO_POST_OUTCOME_THRESHOLD_RETUNING_OR_WINNER_REGIME_SELECTION",
+    "windows": [
+      "exact accepted session/date range",
+      "explicit report_cutoff and available_at",
+      "cumulative exact partition"
+    ]
+  },
+  "scope": "CONTRACT_DESIGN_ONLY",
+  "section": "stratification"
+}

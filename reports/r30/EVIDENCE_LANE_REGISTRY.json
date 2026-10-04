@@ -1,0 +1,38 @@
+{
+  "contract": "config/v4_21_continued_forward_observation_contract_v1.json",
+  "contract_sha256": "9614a78f51200d554710bdb7a300fd4375d8d26e07994605f2313007bdfceffa",
+  "definition": {
+    "ACTIVATION_SIMULATION": {
+      "namespace": "ACTIVATION_SIMULATION",
+      "real_eligible": false,
+      "required_origin": "EXACT_NATIVE_DIAGNOSTIC_ORIGIN",
+      "required_publication": "DIAGNOSTIC_ONLY_NEVER_REAL_GATE"
+    },
+    "HISTORICAL_REPLAY": {
+      "namespace": "REPLAY",
+      "real_eligible": false,
+      "required_origin": "EXACT_NATIVE_DIAGNOSTIC_ORIGIN",
+      "required_publication": "DIAGNOSTIC_ONLY_NEVER_REAL_GATE"
+    },
+    "PRODUCTION_REAL": {
+      "namespace": "V4_PRODUCTION_FUTURE",
+      "real_eligible": true,
+      "required_origin": "PIT_OBSERVED",
+      "required_publication": "EXACT_ACCEPTED_REAL_PUBLICATION_WITH_OWNER_CAPABILITY_AND_ASOF_VISIBILITY_PROOF"
+    },
+    "RECONSTRUCTED_ASOF": {
+      "namespace": "RECONSTRUCTED_ASOF",
+      "real_eligible": false,
+      "required_origin": "EXACT_NATIVE_DIAGNOSTIC_ORIGIN",
+      "required_publication": "DIAGNOSTIC_ONLY_NEVER_REAL_GATE"
+    },
+    "SHADOW_REAL": {
+      "namespace": "SHADOW_V4",
+      "real_eligible": true,
+      "required_origin": "PIT_OBSERVED",
+      "required_publication": "EXACT_ACCEPTED_REAL_PUBLICATION_WITH_OWNER_CAPABILITY_AND_ASOF_VISIBILITY_PROOF"
+    }
+  },
+  "scope": "CONTRACT_DESIGN_ONLY",
+  "section": "evidence_lanes"
+}

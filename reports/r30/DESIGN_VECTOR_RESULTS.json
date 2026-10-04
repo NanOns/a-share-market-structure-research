@@ -1,0 +1,949 @@
+{
+  "results": {
+    "F21-01": {
+      "actual": {
+        "actual_real_rows_written": 0,
+        "breakdown": [
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 1,
+            "due_denominator": 1,
+            "events": 1,
+            "evidence_lane": "SHADOW_REAL",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {
+              "OBSERVED": 1
+            },
+            "observed": 1,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 0,
+            "real_accepted_sessions": 1,
+            "right_censored": 0,
+            "session_denominator": 1,
+            "state_lineage_id": "SIM_LINEAGE"
+          }
+        ],
+        "first_observed_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "idempotency_digest": "96fba5d6aa526f8abb0d493087dce3b0ff06cd8fbc8ee33257ae93758e8614ac",
+        "latest_corrected_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "production_grant": false,
+        "status": "PASS_DESIGN_ONLY"
+      },
+      "expected_status": "PASS_DESIGN_ONLY",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py::test_twenty_design_vectors",
+      "status": "PASS_DESIGN_SIMULATION_ONLY"
+    },
+    "F21-02": {
+      "actual": {
+        "actual_real_rows_written": 0,
+        "breakdown": [
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 0,
+            "due_denominator": 0,
+            "events": 0,
+            "evidence_lane": "ACTIVATION_SIMULATION",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {},
+            "observed": 0,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 0,
+            "real_accepted_sessions": 0,
+            "right_censored": 0,
+            "session_denominator": 1,
+            "state_lineage_id": "SIM_LINEAGE"
+          }
+        ],
+        "first_observed_revision_view": [],
+        "idempotency_digest": "f7dda6414cd38b333c321a5e19b97b08cce86cb900002606ed41b0206424b6d6",
+        "latest_corrected_revision_view": [],
+        "production_grant": false,
+        "status": "PASS_DESIGN_ONLY"
+      },
+      "expected_status": "PASS_DESIGN_ONLY",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py::test_twenty_design_vectors",
+      "status": "PASS_DESIGN_SIMULATION_ONLY"
+    },
+    "F21-03": {
+      "actual": {
+        "actual_real_rows_written": 0,
+        "breakdown": [
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 0,
+            "due_denominator": 0,
+            "events": 0,
+            "evidence_lane": "HISTORICAL_REPLAY",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {},
+            "observed": 0,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 0,
+            "real_accepted_sessions": 0,
+            "right_censored": 0,
+            "session_denominator": 1,
+            "state_lineage_id": "SIM_LINEAGE"
+          }
+        ],
+        "first_observed_revision_view": [],
+        "idempotency_digest": "f6f7a88229dca4122529258a28a2e6e1e88f4ab2069e47d394e5d81279b4071e",
+        "latest_corrected_revision_view": [],
+        "production_grant": false,
+        "status": "PASS_DESIGN_ONLY"
+      },
+      "expected_status": "PASS_DESIGN_ONLY",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py::test_twenty_design_vectors",
+      "status": "PASS_DESIGN_SIMULATION_ONLY"
+    },
+    "F21-04": {
+      "actual": {
+        "actual_real_rows_written": 0,
+        "breakdown": [
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 0,
+            "due_denominator": 0,
+            "events": 0,
+            "evidence_lane": "RECONSTRUCTED_ASOF",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {},
+            "observed": 0,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 0,
+            "real_accepted_sessions": 0,
+            "right_censored": 0,
+            "session_denominator": 1,
+            "state_lineage_id": "SIM_LINEAGE"
+          }
+        ],
+        "first_observed_revision_view": [],
+        "idempotency_digest": "4b1ead89346cc6911a04eb8df4328da4260b3317946c7f2ecc917be5d94ea9f2",
+        "latest_corrected_revision_view": [],
+        "production_grant": false,
+        "status": "PASS_DESIGN_ONLY"
+      },
+      "expected_status": "PASS_DESIGN_ONLY",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py::test_twenty_design_vectors",
+      "status": "PASS_DESIGN_SIMULATION_ONLY"
+    },
+    "F21-05": {
+      "actual": {
+        "actual_real_rows_written": 0,
+        "breakdown": [
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 0,
+            "due_denominator": 1,
+            "events": 1,
+            "evidence_lane": "SHADOW_REAL",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {
+              "OBSERVED": 1
+            },
+            "observed": 1,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 0,
+            "real_accepted_sessions": 1,
+            "right_censored": 0,
+            "session_denominator": 2,
+            "state_lineage_id": "SIM_LINEAGE"
+          }
+        ],
+        "first_observed_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "idempotency_digest": "8d2f09ecb12adbacb4ee56f5d3311135a07e3bbad965d0d26d6024e3c9b04a8d",
+        "latest_corrected_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "production_grant": false,
+        "status": "PASS_DESIGN_ONLY"
+      },
+      "expected_status": "PASS_DESIGN_ONLY",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py::test_twenty_design_vectors",
+      "status": "PASS_DESIGN_SIMULATION_ONLY"
+    },
+    "F21-06": {
+      "actual": {
+        "actual_real_rows_written": 0,
+        "breakdown": [
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 0,
+            "due_denominator": 1,
+            "events": 1,
+            "evidence_lane": "SHADOW_REAL",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {
+              "OBSERVED": 1
+            },
+            "observed": 1,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 0,
+            "real_accepted_sessions": 1,
+            "right_censored": 0,
+            "session_denominator": 2,
+            "state_lineage_id": "SIM_LINEAGE"
+          }
+        ],
+        "first_observed_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "idempotency_digest": "32bdf2e2908015ee88faee66a539135fcd7e8335d6a03744afaf4dea08ed38f7",
+        "latest_corrected_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "production_grant": false,
+        "status": "PASS_DESIGN_ONLY"
+      },
+      "expected_status": "PASS_DESIGN_ONLY",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py::test_twenty_design_vectors",
+      "status": "PASS_DESIGN_SIMULATION_ONLY"
+    },
+    "F21-07": {
+      "actual": {
+        "actual_real_rows_written": 0,
+        "breakdown": [
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 1,
+            "due_denominator": 1,
+            "events": 1,
+            "evidence_lane": "SHADOW_REAL",
+            "hidden_eligible": 1,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {
+              "OBSERVED": 1
+            },
+            "observed": 1,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 0,
+            "real_accepted_sessions": 1,
+            "right_censored": 0,
+            "session_denominator": 1,
+            "state_lineage_id": "SIM_LINEAGE"
+          }
+        ],
+        "first_observed_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "idempotency_digest": "08037c8e97ae3a4ed98a143482ee270392dc71b48b4c43a55c7b5ceef5819fb3",
+        "latest_corrected_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "production_grant": false,
+        "status": "PASS_DESIGN_ONLY"
+      },
+      "expected_status": "PASS_DESIGN_ONLY",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py::test_twenty_design_vectors",
+      "status": "PASS_DESIGN_SIMULATION_ONLY"
+    },
+    "F21-08": {
+      "actual": {
+        "actual_real_rows_written": 0,
+        "errors": [
+          "CONFLICTING_EVENT_CONTENT",
+          "DUPLICATE_ORIGINAL_ENROLLMENT"
+        ],
+        "production_grant": false,
+        "status": "BLOCKED_AFFECTED_SCOPE"
+      },
+      "expected_status": "BLOCKED_AFFECTED_SCOPE",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py::test_twenty_design_vectors",
+      "status": "PASS_DESIGN_SIMULATION_ONLY"
+    },
+    "F21-09": {
+      "actual": {
+        "actual_real_rows_written": 0,
+        "breakdown": [
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 1,
+            "due_denominator": 1,
+            "events": 1,
+            "evidence_lane": "SHADOW_REAL",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {
+              "PENDING": 1
+            },
+            "observed": 0,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 1,
+            "real_accepted_sessions": 1,
+            "right_censored": 0,
+            "session_denominator": 1,
+            "state_lineage_id": "SIM_LINEAGE"
+          }
+        ],
+        "first_observed_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "PENDING_NOT_DUE"
+          }
+        ],
+        "idempotency_digest": "41bbf754e20760ea2536262a73450545a09251d791324b40ad3a8ff1eb8dbb8a",
+        "latest_corrected_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "PENDING_NOT_DUE"
+          }
+        ],
+        "production_grant": false,
+        "status": "PASS_DESIGN_ONLY"
+      },
+      "expected_status": "PASS_DESIGN_ONLY",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py::test_twenty_design_vectors",
+      "status": "PASS_DESIGN_SIMULATION_ONLY"
+    },
+    "F21-10": {
+      "actual": {
+        "actual_real_rows_written": 0,
+        "breakdown": [
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 1,
+            "due_denominator": 1,
+            "events": 1,
+            "evidence_lane": "SHADOW_REAL",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {
+              "RIGHT_CENSORED": 1
+            },
+            "observed": 0,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 0,
+            "real_accepted_sessions": 1,
+            "right_censored": 1,
+            "session_denominator": 1,
+            "state_lineage_id": "SIM_LINEAGE"
+          }
+        ],
+        "first_observed_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "RIGHT_CENSORED"
+          }
+        ],
+        "idempotency_digest": "2f25b3eb481f9bea3bc8723f44dd17627806a85fef65a5d5973b4e3416155d9d",
+        "latest_corrected_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "RIGHT_CENSORED"
+          }
+        ],
+        "production_grant": false,
+        "status": "PASS_DESIGN_ONLY"
+      },
+      "expected_status": "PASS_DESIGN_ONLY",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py::test_twenty_design_vectors",
+      "status": "PASS_DESIGN_SIMULATION_ONLY"
+    },
+    "F21-11": {
+      "actual": {
+        "actual_real_rows_written": 0,
+        "breakdown": [
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 1,
+            "due_denominator": 1,
+            "events": 1,
+            "evidence_lane": "SHADOW_REAL",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {
+              "OBSERVED": 1
+            },
+            "observed": 1,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 0,
+            "real_accepted_sessions": 1,
+            "right_censored": 0,
+            "session_denominator": 1,
+            "state_lineage_id": "SIM_LINEAGE"
+          }
+        ],
+        "first_observed_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "idempotency_digest": "ffa919090b7659061fb306e116d00dee33ff1ee4bea8f48d488d033430fa836c",
+        "latest_corrected_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 2,
+            "status": "OBSERVED"
+          }
+        ],
+        "production_grant": false,
+        "status": "PASS_DESIGN_ONLY"
+      },
+      "expected_status": "PASS_DESIGN_ONLY",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py::test_twenty_design_vectors",
+      "status": "PASS_DESIGN_SIMULATION_ONLY"
+    },
+    "F21-12": {
+      "actual": {
+        "actual_real_rows_written": 0,
+        "breakdown": [
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 1,
+            "due_denominator": 0,
+            "events": 0,
+            "evidence_lane": "SHADOW_REAL",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_CHANGED",
+            "native_status_breakdown": {},
+            "observed": 0,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 0,
+            "real_accepted_sessions": 1,
+            "right_censored": 0,
+            "session_denominator": 1,
+            "state_lineage_id": "SIM_LINEAGE"
+          },
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 1,
+            "due_denominator": 1,
+            "events": 1,
+            "evidence_lane": "SHADOW_REAL",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {
+              "OBSERVED": 1
+            },
+            "observed": 1,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 0,
+            "real_accepted_sessions": 1,
+            "right_censored": 0,
+            "session_denominator": 1,
+            "state_lineage_id": "SIM_LINEAGE"
+          }
+        ],
+        "first_observed_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "idempotency_digest": "c7153e9873c39fb7f751c78e11b713df1b63072f0f5555e7feb948063c7f8c82",
+        "latest_corrected_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "production_grant": false,
+        "status": "PASS_DESIGN_ONLY"
+      },
+      "expected_status": "PASS_DESIGN_ONLY",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py::test_twenty_design_vectors",
+      "status": "PASS_DESIGN_SIMULATION_ONLY"
+    },
+    "F21-13": {
+      "actual": {
+        "actual_real_rows_written": 0,
+        "breakdown": [
+          {
+            "capability": "SECTOR_STAGE",
+            "consecutive_accepted_sessions": 2,
+            "due_denominator": 0,
+            "events": 0,
+            "evidence_lane": "SHADOW_REAL",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {},
+            "observed": 0,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 0,
+            "real_accepted_sessions": 2,
+            "right_censored": 0,
+            "session_denominator": 2,
+            "state_lineage_id": "SIM_LINEAGE"
+          },
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 1,
+            "due_denominator": 0,
+            "events": 0,
+            "evidence_lane": "SHADOW_REAL",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {},
+            "observed": 0,
+            "parameter_digest": "SIM_CHANGED",
+            "pending": 0,
+            "real_accepted_sessions": 1,
+            "right_censored": 0,
+            "session_denominator": 1,
+            "state_lineage_id": "SIM_LINEAGE"
+          },
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 1,
+            "due_denominator": 1,
+            "events": 1,
+            "evidence_lane": "SHADOW_REAL",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {
+              "OBSERVED": 1
+            },
+            "observed": 1,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 0,
+            "real_accepted_sessions": 1,
+            "right_censored": 0,
+            "session_denominator": 1,
+            "state_lineage_id": "SIM_LINEAGE"
+          }
+        ],
+        "first_observed_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "idempotency_digest": "077b6b94b24164feb70582248f5287186a6f6a7626861ebd2de6966444c36d94",
+        "latest_corrected_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "production_grant": false,
+        "status": "PASS_DESIGN_ONLY"
+      },
+      "expected_status": "PASS_DESIGN_ONLY",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py::test_twenty_design_vectors",
+      "status": "PASS_DESIGN_SIMULATION_ONLY"
+    },
+    "F21-14": {
+      "actual": {
+        "actual_real_rows_written": 0,
+        "breakdown": [
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 1,
+            "due_denominator": 1,
+            "events": 1,
+            "evidence_lane": "SHADOW_REAL",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {
+              "OBSERVED": 1
+            },
+            "observed": 1,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 0,
+            "real_accepted_sessions": 1,
+            "right_censored": 0,
+            "session_denominator": 1,
+            "state_lineage_id": "SIM_LINEAGE"
+          }
+        ],
+        "first_observed_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "idempotency_digest": "96fba5d6aa526f8abb0d493087dce3b0ff06cd8fbc8ee33257ae93758e8614ac",
+        "latest_corrected_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "production_grant": false,
+        "sector_counts_borrowed": false,
+        "sector_real_events": 0,
+        "status": "PASS_DESIGN_ONLY"
+      },
+      "expected_status": "PASS_DESIGN_ONLY",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py::test_twenty_design_vectors",
+      "status": "PASS_DESIGN_SIMULATION_ONLY"
+    },
+    "F21-15": {
+      "actual": {
+        "actual_real_rows_written": 0,
+        "breakdown": [
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 1,
+            "due_denominator": 1,
+            "events": 1,
+            "evidence_lane": "PRODUCTION_REAL",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {
+              "OBSERVED": 1
+            },
+            "observed": 1,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 0,
+            "real_accepted_sessions": 1,
+            "right_censored": 0,
+            "session_denominator": 1,
+            "state_lineage_id": "SIM_LINEAGE"
+          },
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 1,
+            "due_denominator": 1,
+            "events": 1,
+            "evidence_lane": "SHADOW_REAL",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {
+              "OBSERVED": 1
+            },
+            "observed": 1,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 0,
+            "real_accepted_sessions": 1,
+            "right_censored": 0,
+            "session_denominator": 1,
+            "state_lineage_id": "SIM_LINEAGE"
+          }
+        ],
+        "first_observed_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          },
+          {
+            "due_id": "SIM_PROD_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "idempotency_digest": "8bb4775a42343fddd32612f6f57d44bd6528e2a744fac298609f490426b2819b",
+        "latest_corrected_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          },
+          {
+            "due_id": "SIM_PROD_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "production_grant": false,
+        "status": "PASS_DESIGN_ONLY"
+      },
+      "expected_status": "PASS_DESIGN_ONLY",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py::test_twenty_design_vectors",
+      "status": "PASS_DESIGN_SIMULATION_ONLY"
+    },
+    "F21-16": {
+      "actual": {
+        "actual_real_rows_written": 0,
+        "breakdown": [
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 1,
+            "due_denominator": 1,
+            "events": 1,
+            "evidence_lane": "PRODUCTION_REAL",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {
+              "OBSERVED": 1
+            },
+            "observed": 1,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 0,
+            "real_accepted_sessions": 1,
+            "right_censored": 0,
+            "session_denominator": 1,
+            "state_lineage_id": "SIM_LINEAGE"
+          },
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 1,
+            "due_denominator": 1,
+            "events": 1,
+            "evidence_lane": "SHADOW_REAL",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {
+              "OBSERVED": 1
+            },
+            "observed": 1,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 0,
+            "real_accepted_sessions": 1,
+            "right_censored": 0,
+            "session_denominator": 1,
+            "state_lineage_id": "SIM_LINEAGE"
+          }
+        ],
+        "first_observed_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          },
+          {
+            "due_id": "SIM_PROD_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "idempotency_digest": "8bb4775a42343fddd32612f6f57d44bd6528e2a744fac298609f490426b2819b",
+        "latest_corrected_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          },
+          {
+            "due_id": "SIM_PROD_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "production_grant": false,
+        "status": "PASS_DESIGN_ONLY"
+      },
+      "expected_status": "PASS_DESIGN_ONLY",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py::test_twenty_design_vectors",
+      "status": "PASS_DESIGN_SIMULATION_ONLY"
+    },
+    "F21-17": {
+      "actual": {
+        "actual_real_rows_written": 0,
+        "breakdown": [
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 1,
+            "due_denominator": 1,
+            "events": 1,
+            "evidence_lane": "SHADOW_REAL",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {
+              "OBSERVED": 1
+            },
+            "observed": 1,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 0,
+            "real_accepted_sessions": 1,
+            "right_censored": 0,
+            "session_denominator": 1,
+            "state_lineage_id": "SIM_LINEAGE"
+          }
+        ],
+        "first_observed_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "idempotency_digest": "96fba5d6aa526f8abb0d493087dce3b0ff06cd8fbc8ee33257ae93758e8614ac",
+        "identical_rerun_same_digest": true,
+        "latest_corrected_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "production_grant": false,
+        "status": "PASS_DESIGN_ONLY"
+      },
+      "expected_status": "PASS_DESIGN_ONLY",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py::test_twenty_design_vectors",
+      "status": "PASS_DESIGN_SIMULATION_ONLY"
+    },
+    "F21-18": {
+      "actual": {
+        "actual_real_rows_written": 0,
+        "errors": [
+          "OBSERVATION_HEAD_CAS_CONFLICT"
+        ],
+        "production_grant": false,
+        "status": "BLOCKED_AFFECTED_SCOPE"
+      },
+      "expected_status": "BLOCKED_AFFECTED_SCOPE",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py::test_twenty_design_vectors",
+      "status": "PASS_DESIGN_SIMULATION_ONLY"
+    },
+    "F21-19": {
+      "actual": {
+        "actual_real_rows_written": 0,
+        "errors": [
+          "SAME_DAY_OUTCOME_FEEDBACK_FORBIDDEN"
+        ],
+        "production_grant": false,
+        "status": "BLOCKED_AFFECTED_SCOPE"
+      },
+      "expected_status": "BLOCKED_AFFECTED_SCOPE",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py::test_twenty_design_vectors",
+      "status": "PASS_DESIGN_SIMULATION_ONLY"
+    },
+    "F21-20": {
+      "actual": {
+        "actual_real_rows_written": 0,
+        "breakdown": [
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 1,
+            "due_denominator": 1,
+            "events": 1,
+            "evidence_lane": "PRODUCTION_REAL",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {
+              "OBSERVED": 1
+            },
+            "observed": 1,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 0,
+            "real_accepted_sessions": 1,
+            "right_censored": 0,
+            "session_denominator": 1,
+            "state_lineage_id": "SIM_LINEAGE"
+          },
+          {
+            "capability": "STOCK_CORE",
+            "consecutive_accepted_sessions": 1,
+            "due_denominator": 1,
+            "events": 1,
+            "evidence_lane": "SHADOW_REAL",
+            "hidden_eligible": 0,
+            "invalidated": 0,
+            "model_contract_id": "SIM_MODEL",
+            "native_status_breakdown": {
+              "OBSERVED": 1
+            },
+            "observed": 1,
+            "parameter_digest": "SIM_PARAMETERS",
+            "pending": 0,
+            "real_accepted_sessions": 1,
+            "right_censored": 0,
+            "session_denominator": 1,
+            "state_lineage_id": "SIM_LINEAGE"
+          }
+        ],
+        "first_observed_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          },
+          {
+            "due_id": "SIM_PROD_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "idempotency_digest": "8bb4775a42343fddd32612f6f57d44bd6528e2a744fac298609f490426b2819b",
+        "latest_corrected_revision_view": [
+          {
+            "due_id": "SIM_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          },
+          {
+            "due_id": "SIM_PROD_DUE",
+            "revision": 1,
+            "status": "OBSERVED"
+          }
+        ],
+        "production_grant": false,
+        "status": "PASS_DESIGN_ONLY"
+      },
+      "expected_status": "PASS_DESIGN_ONLY",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py::test_twenty_design_vectors",
+      "status": "PASS_DESIGN_SIMULATION_ONLY"
+    }
+  },
+  "scope": "SYNTHETIC_DESIGN_NOT_REAL_FORWARD_EVIDENCE"
+}

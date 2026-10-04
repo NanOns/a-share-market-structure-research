@@ -1,0 +1,43 @@
+{
+  "contract": "config/v4_21_continued_forward_observation_contract_v1.json",
+  "contract_sha256": "9614a78f51200d554710bdb7a300fd4375d8d26e07994605f2313007bdfceffa",
+  "definition": {
+    "append_only": true,
+    "identity_key": [
+      "logical_event_id",
+      "enrollment_id"
+    ],
+    "missing": "BLOCKED_AFFECTED_SCOPE_WITH_REASON",
+    "owner": "COHORT_V1_AND_V4_15_CONTROL_ASSIGNMENT; NO_SECOND_ORIGINAL",
+    "physical_storage": "DESIGN_ONLY_NOT_CREATED; ACCEPTED_STORAGE_BINDING_REQUIRED",
+    "required": [
+      "observation_namespace",
+      "evidence_lane",
+      "capability",
+      "model_contract_id",
+      "parameter_digest",
+      "state_lineage_id",
+      "source_publication",
+      "source_digest",
+      "evidence_origin",
+      "execution_mode",
+      "accepted_at",
+      "source_quality",
+      "logical_event_id",
+      "event_type",
+      "entity_id",
+      "T0",
+      "enrollment_id",
+      "cohort_namespace",
+      "original_revision",
+      "eligible",
+      "displayed",
+      "control_assignment_ids",
+      "benchmark_ids",
+      "calendar_identity",
+      "adjustment_identity"
+    ]
+  },
+  "scope": "CONTRACT_DESIGN_ONLY",
+  "section": "event_cohort_ledger"
+}

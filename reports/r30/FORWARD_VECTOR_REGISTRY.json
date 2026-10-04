@@ -1,0 +1,208 @@
+{
+  "contract": "config/v4_21_continued_forward_observation_contract_v1.json",
+  "contract_sha256": "9614a78f51200d554710bdb7a300fd4375d8d26e07994605f2313007bdfceffa",
+  "definition": [
+    {
+      "description": "accepted real Shadow session counts",
+      "expected_production_grant": false,
+      "expected_real_rows_written": 0,
+      "expected_status": "PASS_DESIGN_ONLY",
+      "fixture": "reports/r30/design_ledger.py::scenario",
+      "id": "F21-01",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_FORWARD_EVIDENCE"
+    },
+    {
+      "description": "simulation does not count",
+      "expected_production_grant": false,
+      "expected_real_rows_written": 0,
+      "expected_status": "PASS_DESIGN_ONLY",
+      "fixture": "reports/r30/design_ledger.py::scenario",
+      "id": "F21-02",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_FORWARD_EVIDENCE"
+    },
+    {
+      "description": "historical replay does not count",
+      "expected_production_grant": false,
+      "expected_real_rows_written": 0,
+      "expected_status": "PASS_DESIGN_ONLY",
+      "fixture": "reports/r30/design_ledger.py::scenario",
+      "id": "F21-03",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_FORWARD_EVIDENCE"
+    },
+    {
+      "description": "reconstructed asof does not count",
+      "expected_production_grant": false,
+      "expected_real_rows_written": 0,
+      "expected_status": "PASS_DESIGN_ONLY",
+      "fixture": "reports/r30/design_ledger.py::scenario",
+      "id": "F21-04",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_FORWARD_EVIDENCE"
+    },
+    {
+      "description": "missed session denominator/streak break",
+      "expected_production_grant": false,
+      "expected_real_rows_written": 0,
+      "expected_status": "PASS_DESIGN_ONLY",
+      "fixture": "reports/r30/design_ledger.py::scenario",
+      "id": "F21-05",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_FORWARD_EVIDENCE"
+    },
+    {
+      "description": "non-evaluable session retained",
+      "expected_production_grant": false,
+      "expected_real_rows_written": 0,
+      "expected_status": "PASS_DESIGN_ONLY",
+      "fixture": "reports/r30/design_ledger.py::scenario",
+      "id": "F21-06",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_FORWARD_EVIDENCE"
+    },
+    {
+      "description": "hidden eligible event retained",
+      "expected_production_grant": false,
+      "expected_real_rows_written": 0,
+      "expected_status": "PASS_DESIGN_ONLY",
+      "fixture": "reports/r30/design_ledger.py::scenario",
+      "id": "F21-07",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_FORWARD_EVIDENCE"
+    },
+    {
+      "description": "duplicate original rejected",
+      "expected_production_grant": false,
+      "expected_real_rows_written": 0,
+      "expected_status": "BLOCKED_AFFECTED_SCOPE",
+      "fixture": "reports/r30/design_ledger.py::scenario",
+      "id": "F21-08",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_FORWARD_EVIDENCE"
+    },
+    {
+      "description": "T5 pending not observed",
+      "expected_production_grant": false,
+      "expected_real_rows_written": 0,
+      "expected_status": "PASS_DESIGN_ONLY",
+      "fixture": "reports/r30/design_ledger.py::scenario",
+      "id": "F21-09",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_FORWARD_EVIDENCE"
+    },
+    {
+      "description": "right censor not failure",
+      "expected_production_grant": false,
+      "expected_real_rows_written": 0,
+      "expected_status": "PASS_DESIGN_ONLY",
+      "fixture": "reports/r30/design_ledger.py::scenario",
+      "id": "F21-10",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_FORWARD_EVIDENCE"
+    },
+    {
+      "description": "correction supersedes without double count",
+      "expected_production_grant": false,
+      "expected_real_rows_written": 0,
+      "expected_status": "PASS_DESIGN_ONLY",
+      "fixture": "reports/r30/design_ledger.py::scenario",
+      "id": "F21-11",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_FORWARD_EVIDENCE"
+    },
+    {
+      "description": "model change new partition",
+      "expected_production_grant": false,
+      "expected_real_rows_written": 0,
+      "expected_status": "PASS_DESIGN_ONLY",
+      "fixture": "reports/r30/design_ledger.py::scenario",
+      "id": "F21-12",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_FORWARD_EVIDENCE"
+    },
+    {
+      "description": "parameter change affected partition only",
+      "expected_production_grant": false,
+      "expected_real_rows_written": 0,
+      "expected_status": "PASS_DESIGN_ONLY",
+      "fixture": "reports/r30/design_ledger.py::scenario",
+      "id": "F21-13",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_FORWARD_EVIDENCE"
+    },
+    {
+      "description": "Stock counts cannot satisfy Sector",
+      "expected_production_grant": false,
+      "expected_real_rows_written": 0,
+      "expected_status": "PASS_DESIGN_ONLY",
+      "fixture": "reports/r30/design_ledger.py::scenario",
+      "id": "F21-14",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_FORWARD_EVIDENCE"
+    },
+    {
+      "description": "Shadow rows not relabeled Production",
+      "expected_production_grant": false,
+      "expected_real_rows_written": 0,
+      "expected_status": "PASS_DESIGN_ONLY",
+      "fixture": "reports/r30/design_ledger.py::scenario",
+      "id": "F21-15",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_FORWARD_EVIDENCE"
+    },
+    {
+      "description": "Production same lineage separate lane",
+      "expected_production_grant": false,
+      "expected_real_rows_written": 0,
+      "expected_status": "PASS_DESIGN_ONLY",
+      "fixture": "reports/r30/design_ledger.py::scenario",
+      "id": "F21-16",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_FORWARD_EVIDENCE"
+    },
+    {
+      "description": "identical source rerun idempotent",
+      "expected_production_grant": false,
+      "expected_real_rows_written": 0,
+      "expected_status": "PASS_DESIGN_ONLY",
+      "fixture": "reports/r30/design_ledger.py::scenario",
+      "id": "F21-17",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_FORWARD_EVIDENCE"
+    },
+    {
+      "description": "stale prior-head CAS conflict",
+      "expected_production_grant": false,
+      "expected_real_rows_written": 0,
+      "expected_status": "BLOCKED_AFFECTED_SCOPE",
+      "fixture": "reports/r30/design_ledger.py::scenario",
+      "id": "F21-18",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_FORWARD_EVIDENCE"
+    },
+    {
+      "description": "same-day outcome feedback rejected",
+      "expected_production_grant": false,
+      "expected_real_rows_written": 0,
+      "expected_status": "BLOCKED_AFFECTED_SCOPE",
+      "fixture": "reports/r30/design_ledger.py::scenario",
+      "id": "F21-19",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_FORWARD_EVIDENCE"
+    },
+    {
+      "description": "aggregate lane/model/capability breakdown",
+      "expected_production_grant": false,
+      "expected_real_rows_written": 0,
+      "expected_status": "PASS_DESIGN_ONLY",
+      "fixture": "reports/r30/design_ledger.py::scenario",
+      "id": "F21-20",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_FORWARD_EVIDENCE"
+    }
+  ],
+  "scope": "CONTRACT_DESIGN_ONLY",
+  "section": "vectors"
+}

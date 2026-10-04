@@ -1,0 +1,23 @@
+{
+  "contract": "config/v4_21_continued_forward_observation_contract_v1.json",
+  "contract_sha256": "9614a78f51200d554710bdb7a300fd4375d8d26e07994605f2313007bdfceffa",
+  "definition": {
+    "auto_grant": false,
+    "binding": "EXACT_ACCEPTED_AUTHORITY_RECEIPT_DIGEST_CAPABILITY_MODEL_PARAMETER_LINEAGE_AND_ASOF_HEAD; MISSING_UNKNOWN_NOT_GRANTED",
+    "fields": [
+      "SHADOW_STABLE_PASS[capability]",
+      "FORWARD_GATE[capability]",
+      "MIGRATION_REPLAY_PASS[capability]",
+      "production_permission[capability]"
+    ],
+    "owners": {
+      "FORWARD_GATE": "V4_17G",
+      "MIGRATION_REPLAY_PASS": "V4_18_RUNTIME",
+      "SHADOW_STABLE_PASS": "V4_17G",
+      "production_permission": "V4_19"
+    },
+    "read_only": true
+  },
+  "scope": "CONTRACT_DESIGN_ONLY",
+  "section": "gate_readback"
+}

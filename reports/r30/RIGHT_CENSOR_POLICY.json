@@ -1,0 +1,47 @@
+{
+  "contract": "config/v4_21_continued_forward_observation_contract_v1.json",
+  "contract_sha256": "9614a78f51200d554710bdb7a300fd4375d8d26e07994605f2313007bdfceffa",
+  "definition": {
+    "denominator": "KEEP_PENDING_CENSORED_INVALIDATED_AND_ALL_SOURCE_UNAVAILABLE_ROWS_WITH_REASON; ANY_EXCLUSION_REQUIRES_EXPLICIT_VERSIONED_OWNER_RULE_AND_FULL_DENOMINATOR_RECONCILIATION",
+    "mapping": {
+      "INVALIDATED_BY_CONTRACT": "ONLY_EXPLICIT_ACCEPTED_OWNER_RETRACTION_OR_CONTRACT_INVALIDATION_RECEIPT; NEVER_EVENT_FAILURE",
+      "OBSERVED": "NATIVE_OBSERVED_WITH_ACCEPTED_VERIFIED_ENDPOINT_COMMON_BASIS",
+      "PENDING_NOT_DUE": "NATIVE_PENDING_AND_OWNER_DUE_STATE_NOT_YET_DUE",
+      "PENDING_SOURCE_UNAVAILABLE": "DUE_BUT_REQUIRED_ACCEPTED_SOURCE_UNAVAILABLE_KEEP_NATIVE_REASON_STATUS",
+      "RIGHT_CENSORED": "NATIVE_RIGHT_CENSORED_REPORT_CUTOFF_UNFINISHED_TIME_TO_EVENT_ONLY"
+    },
+    "native_statuses": [
+      "PENDING",
+      "RIGHT_CENSORED",
+      "OBSERVED",
+      "SUSPENDED_AT_HORIZON",
+      "MATURED_DATA_MISSING",
+      "DELISTED_BEFORE_HORIZON",
+      "IDENTITY_UNKNOWN",
+      "ADJUSTMENT_UNKNOWN"
+    ],
+    "preserve_native": [
+      "SUSPENDED_AT_HORIZON",
+      "MATURED_DATA_MISSING",
+      "DELISTED_BEFORE_HORIZON",
+      "IDENTITY_UNKNOWN",
+      "ADJUSTMENT_UNKNOWN"
+    ],
+    "prohibited": [
+      "pending converted to success/failure",
+      "censor treated as competing event",
+      "matured missing treated as censor",
+      "delisting terminal return imputed zero or minus100",
+      "missing metric filled zero"
+    ],
+    "states": [
+      "PENDING_NOT_DUE",
+      "PENDING_SOURCE_UNAVAILABLE",
+      "RIGHT_CENSORED",
+      "OBSERVED",
+      "INVALIDATED_BY_CONTRACT"
+    ]
+  },
+  "scope": "CONTRACT_DESIGN_ONLY",
+  "section": "right_censor"
+}

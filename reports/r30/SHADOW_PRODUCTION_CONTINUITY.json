@@ -1,0 +1,19 @@
+{
+  "contract": "config/v4_21_continued_forward_observation_contract_v1.json",
+  "contract_sha256": "9614a78f51200d554710bdb7a300fd4375d8d26e07994605f2313007bdfceffa",
+  "definition": {
+    "combined": "ONLY_EXPLICIT_COMPATIBLE_REPORT_WITH_PER_LANE_DENOMINATORS_AND_GLOBAL_LOGICAL_EVENT_DUE_DEDUP; NEVER_COMBINE_LANES_TO_SATISFY_CAPABILITY_GATES",
+    "compatible_keys": [
+      "capability",
+      "model_contract_id",
+      "parameter_digest",
+      "state_lineage_id"
+    ],
+    "lanes_remain_distinct": true,
+    "migration": "EXACT_ACCEPTED_V4_18_LINEAGE_MAPPING_AND_V4_19_PRODUCTION_ROUTE_REQUIRED; NO_SHADOW_RELABEL",
+    "model_parameter_change": "NEW_PARTITION_COHORT_BOUNDARY; RESET_AFFECTED_CONSECUTIVE_WINDOW_ONLY; PRESERVE_PRIOR_PARTITIONS",
+    "original_enrollment": "KEEP_ORIGINAL_EVENT_AND_ENROLLMENT_LANE_IMMUTABLE; FOLLOWUP_EVALUATION_EXECUTION_LANE_RECORDED_SEPARATELY"
+  },
+  "scope": "CONTRACT_DESIGN_ONLY",
+  "section": "continuity"
+}

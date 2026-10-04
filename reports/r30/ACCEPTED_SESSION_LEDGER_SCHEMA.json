@@ -1,0 +1,46 @@
+{
+  "contract": "config/v4_21_continued_forward_observation_contract_v1.json",
+  "contract_sha256": "9614a78f51200d554710bdb7a300fd4375d8d26e07994605f2313007bdfceffa",
+  "definition": {
+    "append_only": true,
+    "identity_key": [
+      "capability",
+      "evidence_lane",
+      "model_contract_id",
+      "parameter_digest",
+      "state_lineage_id",
+      "market_session_id"
+    ],
+    "missing": "BLOCKED_AFFECTED_SCOPE_WITH_REASON",
+    "owner": "V4_16_ACCEPTED_SLOT_AND_PUBLICATION_OWNER; V4_21_READ_ONLY_CANONICAL_PROJECTION",
+    "physical_storage": "DESIGN_ONLY_NOT_CREATED; ACCEPTED_STORAGE_BINDING_REQUIRED",
+    "required": [
+      "observation_namespace",
+      "evidence_lane",
+      "capability",
+      "model_contract_id",
+      "parameter_digest",
+      "state_lineage_id",
+      "source_publication",
+      "source_digest",
+      "evidence_origin",
+      "execution_mode",
+      "accepted_at",
+      "source_quality",
+      "trade_date",
+      "market_session_id",
+      "market_session_ordinal",
+      "calendar_identity",
+      "slot_status",
+      "publication_id",
+      "publication_revision",
+      "source_availability",
+      "evaluable",
+      "missed_reason",
+      "session_receipt_id",
+      "slot_receipt_digest"
+    ]
+  },
+  "scope": "CONTRACT_DESIGN_ONLY",
+  "section": "session_ledger"
+}

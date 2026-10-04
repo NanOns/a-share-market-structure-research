@@ -1,0 +1,44 @@
+{
+  "contract": "config/v4_21_continued_forward_observation_contract_v1.json",
+  "contract_sha256": "9614a78f51200d554710bdb7a300fd4375d8d26e07994605f2313007bdfceffa",
+  "definition": {
+    "additional": [
+      "contract_digest",
+      "exact_source_manifest_digest",
+      "ledger_revision_refs",
+      "outcome_view",
+      "invalidated_outcomes",
+      "native_status_breakdown",
+      "report_cutoff",
+      "supersedes",
+      "gate_readback_receipt_refs"
+    ],
+    "counts": "NONNEGATIVE_INTEGERS_WITH_EXACT_DENOMINATOR_RECONCILIATION; NO_REAL_COUNTS_FROM_DIAGNOSTIC_LANES",
+    "current_real_receipt": null,
+    "digest": "SHA256_CANONICAL_TYPED_JSON_EXCLUDING_receipt_digest",
+    "required": [
+      "receipt_id",
+      "trade_date",
+      "capability",
+      "evidence_lane",
+      "model_contract_id",
+      "parameter_digest",
+      "state_lineage_id",
+      "publication_id",
+      "publication_revision",
+      "accepted_session_status",
+      "new_events",
+      "eligible_population_count",
+      "due_count",
+      "observed_outcomes",
+      "pending_outcomes",
+      "right_censored_outcomes",
+      "quality_summary",
+      "prior_observation_head",
+      "receipt_digest",
+      "accepted_at"
+    ]
+  },
+  "scope": "CONTRACT_DESIGN_ONLY",
+  "section": "receipt_schema"
+}

@@ -1,0 +1,630 @@
+{
+  "baseline": "c38c25dd189b3996f53e85dc64bbc142db1c188e",
+  "capabilities": [
+    "STOCK_CORE",
+    "STOCK_SECTOR_DEPENDENT",
+    "SECTOR_STAGE",
+    "ROTATION",
+    "SECTOR_RISK_CHANGE"
+  ],
+  "continuity": {
+    "combined": "ONLY_EXPLICIT_COMPATIBLE_REPORT_WITH_PER_LANE_DENOMINATORS_AND_GLOBAL_LOGICAL_EVENT_DUE_DEDUP; NEVER_COMBINE_LANES_TO_SATISFY_CAPABILITY_GATES",
+    "compatible_keys": [
+      "capability",
+      "model_contract_id",
+      "parameter_digest",
+      "state_lineage_id"
+    ],
+    "lanes_remain_distinct": true,
+    "migration": "EXACT_ACCEPTED_V4_18_LINEAGE_MAPPING_AND_V4_19_PRODUCTION_ROUTE_REQUIRED; NO_SHADOW_RELABEL",
+    "model_parameter_change": "NEW_PARTITION_COHORT_BOUNDARY; RESET_AFFECTED_CONSECUTIVE_WINDOW_ONLY; PRESERVE_PRIOR_PARTITIONS",
+    "original_enrollment": "KEEP_ORIGINAL_EVENT_AND_ENROLLMENT_LANE_IMMUTABLE; FOLLOWUP_EVALUATION_EXECUTION_LANE_RECORDED_SEPARATELY"
+  },
+  "contract_id": "V4_21_CONTINUED_FORWARD_OBSERVATION_CONTRACT_V1",
+  "current_state": {
+    "DEFAULT_UI_CUTOVER": false,
+    "Focus_source_cutover": false,
+    "MIGRATION_REPLAY_PASS": "NOT_GRANTED",
+    "PIT_OBSERVED_REAL_SAMPLES": 0,
+    "R25": "WAIT_ACCEPTED_DAILY_INPUT",
+    "R28_P2_TRANSITIVE_ROLLBACK_VECTOR_COVERAGE": "CLOSED_EXTERNAL_R29",
+    "REAL_CONTINUED_FORWARD_OBSERVATION": "NOT_STARTED",
+    "REAL_SHADOW_OBSERVATIONS": 0,
+    "V4_17G": "NOT_GRANTED",
+    "V4_21_ACCEPTED_HEAD": "NOT_CREATED",
+    "production_permission": {
+      "ROTATION": false,
+      "SECTOR_RISK_CHANGE": false,
+      "SECTOR_STAGE": false,
+      "STOCK_CORE": false,
+      "STOCK_SECTOR_DEPENDENT": false
+    }
+  },
+  "daily_operation": [
+    "accepted exact target-session publication",
+    "append canonical accepted-session projection including misses",
+    "append eligible event/cohort references under existing owner",
+    "process already-due obligations through existing settlement owner",
+    "append accepted outcome revision references",
+    "refresh read-only exact-partition aggregates",
+    "emit future observation receipt"
+  ],
+  "due_outcome_ledger": {
+    "append_only": true,
+    "identity_key": [
+      "enrollment_id",
+      "horizon",
+      "outcome_contract_id",
+      "evaluation_source_digest"
+    ],
+    "missing": "BLOCKED_AFFECTED_SCOPE_WITH_REASON",
+    "owner": "DUE_PLANNER_V1_OUTCOME_STATUS_V1_OUTCOME_REVISION_V1; KEEP_NATIVE_DUE_ID_AND_DATE",
+    "physical_storage": "DESIGN_ONLY_NOT_CREATED; ACCEPTED_STORAGE_BINDING_REQUIRED",
+    "required": [
+      "observation_namespace",
+      "evidence_lane",
+      "capability",
+      "model_contract_id",
+      "parameter_digest",
+      "state_lineage_id",
+      "source_publication",
+      "source_digest",
+      "evidence_origin",
+      "execution_mode",
+      "accepted_at",
+      "source_quality",
+      "due_id",
+      "enrollment_id",
+      "horizon",
+      "due_date",
+      "status",
+      "native_status",
+      "outcome_id",
+      "outcome_contract_id",
+      "evaluation_source_digest",
+      "outcome_revision",
+      "source_identity",
+      "observed_at",
+      "right_censor_reason",
+      "reason_codes",
+      "suspension_handling",
+      "delisting_handling",
+      "missing_handling",
+      "benchmark_control_outcome_refs",
+      "accepted_metric_refs",
+      "supersedes",
+      "first_observed_id",
+      "latest_corrected_id"
+    ]
+  },
+  "event_cohort_ledger": {
+    "append_only": true,
+    "identity_key": [
+      "logical_event_id",
+      "enrollment_id"
+    ],
+    "missing": "BLOCKED_AFFECTED_SCOPE_WITH_REASON",
+    "owner": "COHORT_V1_AND_V4_15_CONTROL_ASSIGNMENT; NO_SECOND_ORIGINAL",
+    "physical_storage": "DESIGN_ONLY_NOT_CREATED; ACCEPTED_STORAGE_BINDING_REQUIRED",
+    "required": [
+      "observation_namespace",
+      "evidence_lane",
+      "capability",
+      "model_contract_id",
+      "parameter_digest",
+      "state_lineage_id",
+      "source_publication",
+      "source_digest",
+      "evidence_origin",
+      "execution_mode",
+      "accepted_at",
+      "source_quality",
+      "logical_event_id",
+      "event_type",
+      "entity_id",
+      "T0",
+      "enrollment_id",
+      "cohort_namespace",
+      "original_revision",
+      "eligible",
+      "displayed",
+      "control_assignment_ids",
+      "benchmark_ids",
+      "calendar_identity",
+      "adjustment_identity"
+    ]
+  },
+  "evidence_lanes": {
+    "ACTIVATION_SIMULATION": {
+      "namespace": "ACTIVATION_SIMULATION",
+      "real_eligible": false,
+      "required_origin": "EXACT_NATIVE_DIAGNOSTIC_ORIGIN",
+      "required_publication": "DIAGNOSTIC_ONLY_NEVER_REAL_GATE"
+    },
+    "HISTORICAL_REPLAY": {
+      "namespace": "REPLAY",
+      "real_eligible": false,
+      "required_origin": "EXACT_NATIVE_DIAGNOSTIC_ORIGIN",
+      "required_publication": "DIAGNOSTIC_ONLY_NEVER_REAL_GATE"
+    },
+    "PRODUCTION_REAL": {
+      "namespace": "V4_PRODUCTION_FUTURE",
+      "real_eligible": true,
+      "required_origin": "PIT_OBSERVED",
+      "required_publication": "EXACT_ACCEPTED_REAL_PUBLICATION_WITH_OWNER_CAPABILITY_AND_ASOF_VISIBILITY_PROOF"
+    },
+    "RECONSTRUCTED_ASOF": {
+      "namespace": "RECONSTRUCTED_ASOF",
+      "real_eligible": false,
+      "required_origin": "EXACT_NATIVE_DIAGNOSTIC_ORIGIN",
+      "required_publication": "DIAGNOSTIC_ONLY_NEVER_REAL_GATE"
+    },
+    "SHADOW_REAL": {
+      "namespace": "SHADOW_V4",
+      "real_eligible": true,
+      "required_origin": "PIT_OBSERVED",
+      "required_publication": "EXACT_ACCEPTED_REAL_PUBLICATION_WITH_OWNER_CAPABILITY_AND_ASOF_VISIBILITY_PROOF"
+    }
+  },
+  "gate_readback": {
+    "auto_grant": false,
+    "binding": "EXACT_ACCEPTED_AUTHORITY_RECEIPT_DIGEST_CAPABILITY_MODEL_PARAMETER_LINEAGE_AND_ASOF_HEAD; MISSING_UNKNOWN_NOT_GRANTED",
+    "fields": [
+      "SHADOW_STABLE_PASS[capability]",
+      "FORWARD_GATE[capability]",
+      "MIGRATION_REPLAY_PASS[capability]",
+      "production_permission[capability]"
+    ],
+    "owners": {
+      "FORWARD_GATE": "V4_17G",
+      "MIGRATION_REPLAY_PASS": "V4_18_RUNTIME",
+      "SHADOW_STABLE_PASS": "V4_17G",
+      "production_permission": "V4_19"
+    },
+    "read_only": true
+  },
+  "implementation_entry": {
+    "receipts": [
+      null,
+      null,
+      null,
+      null
+    ],
+    "required_all": [
+      "accepted real V4_16 Shadow publication",
+      "accepted V4_15 settlement owner/runtime binding",
+      "accepted observation storage contract",
+      "accepted capability/model/lineage binding"
+    ],
+    "status": "BLOCKED_WAIT_REAL_OBSERVATION"
+  },
+  "ledger_rules": {
+    "control_benchmark": "FROZEN_T0_IDENTITIES_NO_REDRAW_NO_FUTURE_REFILL",
+    "duplicate": "IDENTICAL_NATIVE_ID_CONTENT_IDEMPOTENT; SAME_ID_DIFFERENT_CONTENT_OR_SECOND_ORIGINAL_BLOCKED",
+    "eligible_population": "ALL_ACCEPTED_ELIGIBLE_LOGICAL_EVENTS_NOT_UI_SELECTION; HIDDEN_OR_EXITED_CONTINUE_FOLLOWUP",
+    "metrics": "MFE_MAE_MDD_ONLY_READ_ACCEPTED_V4_15_METRIC_REFS_WITH_QUALITY_AND_UNITS; NO_R30_CALCULATIONS",
+    "session": "ONE_CANONICAL_ROW_PER_PARTITION_MARKET_SESSION; RETAIN_ALL_NATIVE_APPEND_REVISIONS_AND_COMPLETE_CALENDAR_DENOMINATOR; SAME_REVISION_CONFLICT_BLOCKED",
+    "session_order": "EXACT_ACCEPTED_CALENDAR_ORDER_NOT_FILE_ORDER; MISSED_OR_NON_EVALUABLE_BREAKS_STREAK_WITH_EXPLICIT_REASON"
+  },
+  "mode": "CONTRACT_DESIGN_ONLY",
+  "next_stage": "STOP_WAIT_R30_INDEPENDENT_EXTERNAL_AUDIT",
+  "owner_bindings": [
+    {
+      "contract_id": "COHORT_V1",
+      "path": "config/v4_15_cohort_contract_v1.json",
+      "sha256": "5d4dee2e914ed541227cf54deb5676be3495713ea754ce6b78b078c643bacc8b"
+    },
+    {
+      "contract_id": "CONTROL_ASSIGNMENT_V1",
+      "path": "config/v4_15_control_assignment_contract_v1.json",
+      "sha256": "18ea0bd6ada6e0132fe2da1cfc1ee346bb02945e23249ab4fdef342325058cb6"
+    },
+    {
+      "contract_id": "DUE_PLANNER_V1",
+      "path": "config/v4_15_due_planner_contract_v1.json",
+      "sha256": "848a6bf0f0d78b7784c6c7db34e20da31f1e20be0aa1e5c91bae2f28a1b50a2f"
+    },
+    {
+      "contract_id": "OUTCOME_STATUS_V1",
+      "path": "config/v4_15_outcome_status_contract_v1.json",
+      "sha256": "ce2507c95e06d821c90d01a3e4d737c1476f542ffd6d9a8c2dc495b4330c093e"
+    },
+    {
+      "contract_id": "OUTCOME_REVISION_V1",
+      "path": "config/v4_15_settlement_revision_contract_v1.json",
+      "sha256": "08e2d13964e9defefdac56f53c2b73bf7cc31963d946784e6f3d77c985c576dd"
+    },
+    {
+      "contract_id": "V4_16_SETTLEMENT_WORKER_CONTRACT_V1",
+      "path": "config/v4_16_settlement_worker_contract_v1.json",
+      "sha256": "6314a1cafac57db464e7c87971d55283b4c6670f044e8779b9699c6c86e38e9b"
+    },
+    {
+      "contract_id": "V4_19_FOCUS_SOURCE_CUTOVER_CONTRACT_V1",
+      "path": "config/v4_19_focus_source_cutover_contract_v1.json",
+      "sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd"
+    }
+  ],
+  "partition_keys": [
+    "capability",
+    "evidence_lane",
+    "model_contract_id",
+    "parameter_digest",
+    "state_lineage_id"
+  ],
+  "prohibited": [
+    "new settlement engine",
+    "real observation writer in R30",
+    "same-day outcome feedback to T0 eligibility",
+    "lower thresholds for small sample",
+    "change event definitions after outcomes",
+    "drop failed events from denominator",
+    "change model boundary to preserve streak",
+    "winning regimes only",
+    "cross-capability sample borrowing"
+  ],
+  "receipt_schema": {
+    "additional": [
+      "contract_digest",
+      "exact_source_manifest_digest",
+      "ledger_revision_refs",
+      "outcome_view",
+      "invalidated_outcomes",
+      "native_status_breakdown",
+      "report_cutoff",
+      "supersedes",
+      "gate_readback_receipt_refs"
+    ],
+    "counts": "NONNEGATIVE_INTEGERS_WITH_EXACT_DENOMINATOR_RECONCILIATION; NO_REAL_COUNTS_FROM_DIAGNOSTIC_LANES",
+    "current_real_receipt": null,
+    "digest": "SHA256_CANONICAL_TYPED_JSON_EXCLUDING_receipt_digest",
+    "required": [
+      "receipt_id",
+      "trade_date",
+      "capability",
+      "evidence_lane",
+      "model_contract_id",
+      "parameter_digest",
+      "state_lineage_id",
+      "publication_id",
+      "publication_revision",
+      "accepted_session_status",
+      "new_events",
+      "eligible_population_count",
+      "due_count",
+      "observed_outcomes",
+      "pending_outcomes",
+      "right_censored_outcomes",
+      "quality_summary",
+      "prior_observation_head",
+      "receipt_digest",
+      "accepted_at"
+    ]
+  },
+  "recovery": {
+    "cas": "EXPECTED_PRIOR_OBSERVATION_HEAD_MISMATCH_BLOCKS_AFFECTED_SCOPE_WITH_NO_PARTIAL_ACCEPTANCE",
+    "changed_source": "APPEND_SUPERSEDING_RECEIPT_AND_SOURCE_REVISION; NEVER_OVERWRITE_OLD_EVIDENCE",
+    "encoding": "SHA256_UTF8_SORTED_COMPACT_TYPED_JSON_NO_NAN_OF_CONTRACT_PARTITION_EXACT_INPUT_IDS_AND_DIGESTS",
+    "identical": "SAME_RECEIPT_NO_DUPLICATE_SESSION_EVENT_DUE_OR_DOUBLE_COUNT",
+    "identities": [
+      "session_receipt_id",
+      "event_ledger_id",
+      "due_id",
+      "outcome_id",
+      "aggregate_snapshot_id",
+      "expected_prior_observation_head"
+    ],
+    "implemented": false,
+    "recovery": "RESUME_FROM_EXACT_ACCEPTED_RECEIPT_AND_OUTBOX_CHECKPOINT; DO_NOT_RERUN_T0_SELECTION_OR_RECOMPUTE_SETTLEMENT"
+  },
+  "right_censor": {
+    "denominator": "KEEP_PENDING_CENSORED_INVALIDATED_AND_ALL_SOURCE_UNAVAILABLE_ROWS_WITH_REASON; ANY_EXCLUSION_REQUIRES_EXPLICIT_VERSIONED_OWNER_RULE_AND_FULL_DENOMINATOR_RECONCILIATION",
+    "mapping": {
+      "INVALIDATED_BY_CONTRACT": "ONLY_EXPLICIT_ACCEPTED_OWNER_RETRACTION_OR_CONTRACT_INVALIDATION_RECEIPT; NEVER_EVENT_FAILURE",
+      "OBSERVED": "NATIVE_OBSERVED_WITH_ACCEPTED_VERIFIED_ENDPOINT_COMMON_BASIS",
+      "PENDING_NOT_DUE": "NATIVE_PENDING_AND_OWNER_DUE_STATE_NOT_YET_DUE",
+      "PENDING_SOURCE_UNAVAILABLE": "DUE_BUT_REQUIRED_ACCEPTED_SOURCE_UNAVAILABLE_KEEP_NATIVE_REASON_STATUS",
+      "RIGHT_CENSORED": "NATIVE_RIGHT_CENSORED_REPORT_CUTOFF_UNFINISHED_TIME_TO_EVENT_ONLY"
+    },
+    "native_statuses": [
+      "PENDING",
+      "RIGHT_CENSORED",
+      "OBSERVED",
+      "SUSPENDED_AT_HORIZON",
+      "MATURED_DATA_MISSING",
+      "DELISTED_BEFORE_HORIZON",
+      "IDENTITY_UNKNOWN",
+      "ADJUSTMENT_UNKNOWN"
+    ],
+    "preserve_native": [
+      "SUSPENDED_AT_HORIZON",
+      "MATURED_DATA_MISSING",
+      "DELISTED_BEFORE_HORIZON",
+      "IDENTITY_UNKNOWN",
+      "ADJUSTMENT_UNKNOWN"
+    ],
+    "prohibited": [
+      "pending converted to success/failure",
+      "censor treated as competing event",
+      "matured missing treated as censor",
+      "delisting terminal return imputed zero or minus100",
+      "missing metric filled zero"
+    ],
+    "states": [
+      "PENDING_NOT_DUE",
+      "PENDING_SOURCE_UNAVAILABLE",
+      "RIGHT_CENSORED",
+      "OBSERVED",
+      "INVALIDATED_BY_CONTRACT"
+    ]
+  },
+  "session_ledger": {
+    "append_only": true,
+    "identity_key": [
+      "capability",
+      "evidence_lane",
+      "model_contract_id",
+      "parameter_digest",
+      "state_lineage_id",
+      "market_session_id"
+    ],
+    "missing": "BLOCKED_AFFECTED_SCOPE_WITH_REASON",
+    "owner": "V4_16_ACCEPTED_SLOT_AND_PUBLICATION_OWNER; V4_21_READ_ONLY_CANONICAL_PROJECTION",
+    "physical_storage": "DESIGN_ONLY_NOT_CREATED; ACCEPTED_STORAGE_BINDING_REQUIRED",
+    "required": [
+      "observation_namespace",
+      "evidence_lane",
+      "capability",
+      "model_contract_id",
+      "parameter_digest",
+      "state_lineage_id",
+      "source_publication",
+      "source_digest",
+      "evidence_origin",
+      "execution_mode",
+      "accepted_at",
+      "source_quality",
+      "trade_date",
+      "market_session_id",
+      "market_session_ordinal",
+      "calendar_identity",
+      "slot_status",
+      "publication_id",
+      "publication_revision",
+      "source_availability",
+      "evaluable",
+      "missed_reason",
+      "session_receipt_id",
+      "slot_receipt_digest"
+    ]
+  },
+  "stage": "V4-21",
+  "status": "LOCAL_DESIGN_PENDING_EXTERNAL_AUDIT",
+  "stratification": {
+    "asof": "ACCEPTED_T0_CONTEXT_AND_VERSIONED_QUALITY_REF; UNKNOWN_STRATA_EXPLICIT_NEVER_DROPPED",
+    "first_vs_corrected": "SEPARATE_FIRST_OBSERVED_AND_LATEST_CORRECTED_VIEWS; REVISION_NOT_NEW_MATURED_EVENT",
+    "keys": [
+      "capability",
+      "execution_lane",
+      "model_contract_id",
+      "parameter_digest",
+      "state_lineage_id",
+      "market_regime",
+      "sector_context_where_valid",
+      "event_type",
+      "signal_date",
+      "horizon",
+      "quality_stratum"
+    ],
+    "purpose": "READ_ONLY_ANALYSIS_NEVER_CHANGE_ELIGIBILITY",
+    "thresholds": "NO_POST_OUTCOME_THRESHOLD_RETUNING_OR_WINNER_REGIME_SELECTION",
+    "windows": [
+      "exact accepted session/date range",
+      "explicit report_cutoff and available_at",
+      "cumulative exact partition"
+    ]
+  },
+  "vectors": [
+    {
+      "description": "accepted real Shadow session counts",
+      "expected_production_grant": false,
+      "expected_real_rows_written": 0,
+      "expected_status": "PASS_DESIGN_ONLY",
+      "fixture": "reports/r30/design_ledger.py::scenario",
+      "id": "F21-01",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_FORWARD_EVIDENCE"
+    },
+    {
+      "description": "simulation does not count",
+      "expected_production_grant": false,
+      "expected_real_rows_written": 0,
+      "expected_status": "PASS_DESIGN_ONLY",
+      "fixture": "reports/r30/design_ledger.py::scenario",
+      "id": "F21-02",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_FORWARD_EVIDENCE"
+    },
+    {
+      "description": "historical replay does not count",
+      "expected_production_grant": false,
+      "expected_real_rows_written": 0,
+      "expected_status": "PASS_DESIGN_ONLY",
+      "fixture": "reports/r30/design_ledger.py::scenario",
+      "id": "F21-03",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_FORWARD_EVIDENCE"
+    },
+    {
+      "description": "reconstructed asof does not count",
+      "expected_production_grant": false,
+      "expected_real_rows_written": 0,
+      "expected_status": "PASS_DESIGN_ONLY",
+      "fixture": "reports/r30/design_ledger.py::scenario",
+      "id": "F21-04",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_FORWARD_EVIDENCE"
+    },
+    {
+      "description": "missed session denominator/streak break",
+      "expected_production_grant": false,
+      "expected_real_rows_written": 0,
+      "expected_status": "PASS_DESIGN_ONLY",
+      "fixture": "reports/r30/design_ledger.py::scenario",
+      "id": "F21-05",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_FORWARD_EVIDENCE"
+    },
+    {
+      "description": "non-evaluable session retained",
+      "expected_production_grant": false,
+      "expected_real_rows_written": 0,
+      "expected_status": "PASS_DESIGN_ONLY",
+      "fixture": "reports/r30/design_ledger.py::scenario",
+      "id": "F21-06",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_FORWARD_EVIDENCE"
+    },
+    {
+      "description": "hidden eligible event retained",
+      "expected_production_grant": false,
+      "expected_real_rows_written": 0,
+      "expected_status": "PASS_DESIGN_ONLY",
+      "fixture": "reports/r30/design_ledger.py::scenario",
+      "id": "F21-07",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_FORWARD_EVIDENCE"
+    },
+    {
+      "description": "duplicate original rejected",
+      "expected_production_grant": false,
+      "expected_real_rows_written": 0,
+      "expected_status": "BLOCKED_AFFECTED_SCOPE",
+      "fixture": "reports/r30/design_ledger.py::scenario",
+      "id": "F21-08",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_FORWARD_EVIDENCE"
+    },
+    {
+      "description": "T5 pending not observed",
+      "expected_production_grant": false,
+      "expected_real_rows_written": 0,
+      "expected_status": "PASS_DESIGN_ONLY",
+      "fixture": "reports/r30/design_ledger.py::scenario",
+      "id": "F21-09",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_FORWARD_EVIDENCE"
+    },
+    {
+      "description": "right censor not failure",
+      "expected_production_grant": false,
+      "expected_real_rows_written": 0,
+      "expected_status": "PASS_DESIGN_ONLY",
+      "fixture": "reports/r30/design_ledger.py::scenario",
+      "id": "F21-10",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_FORWARD_EVIDENCE"
+    },
+    {
+      "description": "correction supersedes without double count",
+      "expected_production_grant": false,
+      "expected_real_rows_written": 0,
+      "expected_status": "PASS_DESIGN_ONLY",
+      "fixture": "reports/r30/design_ledger.py::scenario",
+      "id": "F21-11",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_FORWARD_EVIDENCE"
+    },
+    {
+      "description": "model change new partition",
+      "expected_production_grant": false,
+      "expected_real_rows_written": 0,
+      "expected_status": "PASS_DESIGN_ONLY",
+      "fixture": "reports/r30/design_ledger.py::scenario",
+      "id": "F21-12",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_FORWARD_EVIDENCE"
+    },
+    {
+      "description": "parameter change affected partition only",
+      "expected_production_grant": false,
+      "expected_real_rows_written": 0,
+      "expected_status": "PASS_DESIGN_ONLY",
+      "fixture": "reports/r30/design_ledger.py::scenario",
+      "id": "F21-13",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_FORWARD_EVIDENCE"
+    },
+    {
+      "description": "Stock counts cannot satisfy Sector",
+      "expected_production_grant": false,
+      "expected_real_rows_written": 0,
+      "expected_status": "PASS_DESIGN_ONLY",
+      "fixture": "reports/r30/design_ledger.py::scenario",
+      "id": "F21-14",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_FORWARD_EVIDENCE"
+    },
+    {
+      "description": "Shadow rows not relabeled Production",
+      "expected_production_grant": false,
+      "expected_real_rows_written": 0,
+      "expected_status": "PASS_DESIGN_ONLY",
+      "fixture": "reports/r30/design_ledger.py::scenario",
+      "id": "F21-15",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_FORWARD_EVIDENCE"
+    },
+    {
+      "description": "Production same lineage separate lane",
+      "expected_production_grant": false,
+      "expected_real_rows_written": 0,
+      "expected_status": "PASS_DESIGN_ONLY",
+      "fixture": "reports/r30/design_ledger.py::scenario",
+      "id": "F21-16",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_FORWARD_EVIDENCE"
+    },
+    {
+      "description": "identical source rerun idempotent",
+      "expected_production_grant": false,
+      "expected_real_rows_written": 0,
+      "expected_status": "PASS_DESIGN_ONLY",
+      "fixture": "reports/r30/design_ledger.py::scenario",
+      "id": "F21-17",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_FORWARD_EVIDENCE"
+    },
+    {
+      "description": "stale prior-head CAS conflict",
+      "expected_production_grant": false,
+      "expected_real_rows_written": 0,
+      "expected_status": "BLOCKED_AFFECTED_SCOPE",
+      "fixture": "reports/r30/design_ledger.py::scenario",
+      "id": "F21-18",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_FORWARD_EVIDENCE"
+    },
+    {
+      "description": "same-day outcome feedback rejected",
+      "expected_production_grant": false,
+      "expected_real_rows_written": 0,
+      "expected_status": "BLOCKED_AFFECTED_SCOPE",
+      "fixture": "reports/r30/design_ledger.py::scenario",
+      "id": "F21-19",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_FORWARD_EVIDENCE"
+    },
+    {
+      "description": "aggregate lane/model/capability breakdown",
+      "expected_production_grant": false,
+      "expected_real_rows_written": 0,
+      "expected_status": "PASS_DESIGN_ONLY",
+      "fixture": "reports/r30/design_ledger.py::scenario",
+      "id": "F21-20",
+      "independent_assertions": "tests/test_v4_21_forward_observation_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_FORWARD_EVIDENCE"
+    }
+  ],
+  "version": "1.0.0"
+}

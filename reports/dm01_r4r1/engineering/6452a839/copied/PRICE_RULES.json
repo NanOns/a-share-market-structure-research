@@ -1,0 +1,371 @@
+{
+  "acceptance": {
+    "historical_limit_output_is_diagnostic_non_pit": true,
+    "missing_or_unavailable_source_capture_fails_closed": true
+  },
+  "contract_id": "PRICE_LIMIT_RULE_R3",
+  "rules": [
+    {
+      "audit_status": "VERIFIED",
+      "board": "MAIN",
+      "clause_mapping_sha256": "3804ca5df4ca4da91f09ed478a0327165f3cbf2ac52a682809c1ae3bd2a5927d",
+      "exchange": "SH",
+      "limit_ratio": "0.10",
+      "risk_status": "NORMAL",
+      "rounding": "HALF_UP",
+      "rounding_mode": "HALF_UP",
+      "rule_id": "SSE_MAIN_NORMAL_20230704_V1",
+      "rule_verified": true,
+      "source_capture_path": "data/v4/source_evidence/v4_02_r3/sse_2023_trade_rule.html",
+      "source_capture_sha256": "0a634408b2842a6cba4f4686d6013716aa5bf5cddf547139945d0eb7c6d9a27c",
+      "source_evidence_id": "SSE_2023",
+      "source_ref": "https://www.sse.com.cn/lawandrules/sselawsrules2025/repeal/rules/c/c_20250612_10824490.shtml",
+      "source_sha256": "3804ca5df4ca4da91f09ed478a0327165f3cbf2ac52a682809c1ae3bd2a5927d",
+      "special_period_policy": {
+        "no_limit_listing_phases": [
+          "IPO_FIRST_5_TRADING_DAYS",
+          "DELISTING_FIRST_DAY",
+          "RELISTING_FIRST_DAY"
+        ],
+        "unknown_phase_policy": "UNKNOWN"
+      },
+      "tick": "0.01",
+      "valid_from": "2023-07-04",
+      "valid_to": null
+    },
+    {
+      "audit_status": "VERIFIED",
+      "board": "MAIN",
+      "clause_mapping_sha256": "6811bd0fd39d17d549a546d2dd72997ddfd7c1881ae2e7d07f7713821c5b6045",
+      "exchange": "SH",
+      "limit_ratio": "0.05",
+      "risk_status": "RISK_WARNING",
+      "rounding": "HALF_UP",
+      "rounding_mode": "HALF_UP",
+      "rule_id": "SSE_MAIN_RISK_WARNING_20230704_20260705_V1",
+      "rule_verified": true,
+      "source_capture_path": "data/v4/source_evidence/v4_02_r3/sse_2023_trade_rule.html",
+      "source_capture_sha256": "0a634408b2842a6cba4f4686d6013716aa5bf5cddf547139945d0eb7c6d9a27c",
+      "source_evidence_id": "SSE_2023",
+      "source_ref": "https://www.sse.com.cn/lawandrules/sselawsrules2025/repeal/rules/c/c_20250612_10824490.shtml",
+      "source_sha256": "6811bd0fd39d17d549a546d2dd72997ddfd7c1881ae2e7d07f7713821c5b6045",
+      "special_period_policy": {
+        "no_limit_listing_phases": [
+          "IPO_FIRST_5_TRADING_DAYS",
+          "DELISTING_FIRST_DAY",
+          "RELISTING_FIRST_DAY"
+        ],
+        "unknown_phase_policy": "UNKNOWN"
+      },
+      "tick": "0.01",
+      "valid_from": "2023-07-04",
+      "valid_to": "2026-07-05"
+    },
+    {
+      "audit_status": "VERIFIED",
+      "board": "MAIN",
+      "clause_mapping_sha256": "6d3b28474a8a9997a8b237dff54b4fa2c0dac70df636ec1b87b29a2844eaf003",
+      "exchange": "SH",
+      "limit_ratio": "0.10",
+      "risk_status": "RISK_WARNING",
+      "rounding": "HALF_UP",
+      "rounding_mode": "HALF_UP",
+      "rule_id": "SSE_MAIN_RISK_WARNING_20260706_V1",
+      "rule_verified": true,
+      "source_capture_path": "data/v4/source_evidence/v4_02_r3/sse_2023_trade_rule.html",
+      "source_capture_sha256": "0a634408b2842a6cba4f4686d6013716aa5bf5cddf547139945d0eb7c6d9a27c",
+      "source_evidence_id": "SSE_2023",
+      "source_ref": "https://www.sse.com.cn/lawandrules/sselawsrules2025/repeal/rules/c/c_20250612_10824490.shtml",
+      "source_sha256": "6d3b28474a8a9997a8b237dff54b4fa2c0dac70df636ec1b87b29a2844eaf003",
+      "special_period_policy": {
+        "no_limit_listing_phases": [
+          "IPO_FIRST_5_TRADING_DAYS",
+          "DELISTING_FIRST_DAY",
+          "RELISTING_FIRST_DAY"
+        ],
+        "unknown_phase_policy": "UNKNOWN"
+      },
+      "tick": "0.01",
+      "valid_from": "2026-07-06",
+      "valid_to": null
+    },
+    {
+      "audit_status": "VERIFIED",
+      "board": "STAR",
+      "clause_mapping_sha256": "8396aa0f51502192cf7a547c36987918159681e73de0c4ec75516147b00b3f94",
+      "exchange": "SH",
+      "limit_ratio": "0.20",
+      "risk_status": "NORMAL",
+      "rounding": "HALF_UP",
+      "rounding_mode": "HALF_UP",
+      "rule_id": "SSE_STAR_NORMAL_20230704_V1",
+      "rule_verified": true,
+      "source_capture_path": "data/v4/source_evidence/v4_02_r3/sse_star_2019_qa.html",
+      "source_capture_sha256": "439eb02654a85b8dffd85fc5b923565ae20354022b4fee2d1937095687335e1c",
+      "source_evidence_id": "SSE_STAR",
+      "source_ref": "https://star.sse.com.cn/star/media/news/c/c_20190719_4866789.shtml",
+      "source_sha256": "8396aa0f51502192cf7a547c36987918159681e73de0c4ec75516147b00b3f94",
+      "special_period_policy": {
+        "no_limit_listing_phases": [
+          "IPO_FIRST_5_TRADING_DAYS",
+          "DELISTING_FIRST_DAY",
+          "RELISTING_FIRST_DAY"
+        ],
+        "unknown_phase_policy": "UNKNOWN"
+      },
+      "tick": "0.01",
+      "valid_from": "2023-07-04",
+      "valid_to": null
+    },
+    {
+      "audit_status": "VERIFIED",
+      "board": "STAR",
+      "clause_mapping_sha256": "ac5064116f049a5ff01efc8ed3752a38929f54677ebce94c84c110146e58b3e0",
+      "exchange": "SH",
+      "limit_ratio": "0.20",
+      "risk_status": "RISK_WARNING",
+      "rounding": "HALF_UP",
+      "rounding_mode": "HALF_UP",
+      "rule_id": "SSE_STAR_RISK_WARNING_20230704_V1",
+      "rule_verified": true,
+      "source_capture_path": "data/v4/source_evidence/v4_02_r3/sse_2026_rule.html",
+      "source_capture_sha256": "428032a0963a9bb110f9d9992fd24a8d3c880f7b34fafb86b94fc55d3291dd81",
+      "source_evidence_id": "SSE_2026",
+      "source_ref": "https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/c_20260424_10816482.shtml",
+      "source_sha256": "ac5064116f049a5ff01efc8ed3752a38929f54677ebce94c84c110146e58b3e0",
+      "special_period_policy": {
+        "no_limit_listing_phases": [
+          "IPO_FIRST_5_TRADING_DAYS",
+          "DELISTING_FIRST_DAY",
+          "RELISTING_FIRST_DAY"
+        ],
+        "unknown_phase_policy": "UNKNOWN"
+      },
+      "tick": "0.01",
+      "valid_from": "2023-07-04",
+      "valid_to": null
+    },
+    {
+      "audit_status": "VERIFIED",
+      "board": "MAIN",
+      "clause_mapping_sha256": "1e3bd5443ac98d7412cce99de62a509346fe6d147c94f3e2425208e8f7f6f0d2",
+      "exchange": "SZ",
+      "limit_ratio": "0.10",
+      "risk_status": "NORMAL",
+      "rounding": "HALF_UP",
+      "rounding_mode": "HALF_UP",
+      "rule_id": "SZSE_MAIN_NORMAL_20230704_V1",
+      "rule_verified": true,
+      "source_capture_path": "data/v4/source_evidence/v4_02_r3/szse_2023_trade_rule_notice.html",
+      "source_capture_sha256": "7f4405a3e7021976db2d4ecbb1b02434f603110b2de46233f5a8b71f2059794a",
+      "source_evidence_id": "SZSE_2023",
+      "source_ref": "https://www.szse.cn/lawrules/rule/repeal/rules/t20230217_598773.html",
+      "source_sha256": "1e3bd5443ac98d7412cce99de62a509346fe6d147c94f3e2425208e8f7f6f0d2",
+      "special_period_policy": {
+        "no_limit_listing_phases": [
+          "IPO_FIRST_5_TRADING_DAYS",
+          "DELISTING_FIRST_DAY",
+          "RELISTING_FIRST_DAY"
+        ],
+        "unknown_phase_policy": "UNKNOWN"
+      },
+      "tick": "0.01",
+      "valid_from": "2023-07-04",
+      "valid_to": null
+    },
+    {
+      "audit_status": "VERIFIED",
+      "board": "MAIN",
+      "clause_mapping_sha256": "da1cf1269482246ba6e872f9ea5422bac4a3c77d4868a967bad933529a0095e5",
+      "exchange": "SZ",
+      "limit_ratio": "0.05",
+      "risk_status": "RISK_WARNING",
+      "rounding": "HALF_UP",
+      "rounding_mode": "HALF_UP",
+      "rule_id": "SZSE_MAIN_RISK_WARNING_20230704_20260705_V1",
+      "rule_verified": true,
+      "source_capture_path": "data/v4/source_evidence/v4_02_r3/szse_2023_trade_rule_notice.html",
+      "source_capture_sha256": "7f4405a3e7021976db2d4ecbb1b02434f603110b2de46233f5a8b71f2059794a",
+      "source_evidence_id": "SZSE_2023",
+      "source_ref": "https://www.szse.cn/lawrules/rule/repeal/rules/t20230217_598773.html",
+      "source_sha256": "da1cf1269482246ba6e872f9ea5422bac4a3c77d4868a967bad933529a0095e5",
+      "special_period_policy": {
+        "no_limit_listing_phases": [
+          "IPO_FIRST_5_TRADING_DAYS",
+          "DELISTING_FIRST_DAY",
+          "RELISTING_FIRST_DAY"
+        ],
+        "unknown_phase_policy": "UNKNOWN"
+      },
+      "tick": "0.01",
+      "valid_from": "2023-07-04",
+      "valid_to": "2026-07-05"
+    },
+    {
+      "audit_status": "VERIFIED",
+      "board": "MAIN",
+      "clause_mapping_sha256": "2ae78b3401c537776e381bd4c7d8ae6660e37923243fb7fc993b7bbe0259b213",
+      "exchange": "SZ",
+      "limit_ratio": "0.10",
+      "risk_status": "RISK_WARNING",
+      "rounding": "HALF_UP",
+      "rounding_mode": "HALF_UP",
+      "rule_id": "SZSE_MAIN_RISK_WARNING_20260706_V1",
+      "rule_verified": true,
+      "source_capture_path": "data/v4/source_evidence/v4_02_r3/szse_2023_trade_rule_notice.html",
+      "source_capture_sha256": "7f4405a3e7021976db2d4ecbb1b02434f603110b2de46233f5a8b71f2059794a",
+      "source_evidence_id": "SZSE_2023",
+      "source_ref": "https://www.szse.cn/lawrules/rule/repeal/rules/t20230217_598773.html",
+      "source_sha256": "2ae78b3401c537776e381bd4c7d8ae6660e37923243fb7fc993b7bbe0259b213",
+      "special_period_policy": {
+        "no_limit_listing_phases": [
+          "IPO_FIRST_5_TRADING_DAYS",
+          "DELISTING_FIRST_DAY",
+          "RELISTING_FIRST_DAY"
+        ],
+        "unknown_phase_policy": "UNKNOWN"
+      },
+      "tick": "0.01",
+      "valid_from": "2026-07-06",
+      "valid_to": null
+    },
+    {
+      "audit_status": "VERIFIED",
+      "board": "GROWTH",
+      "clause_mapping_sha256": "b2829387a2014bdce4fc87e8102c0c713199b90d88ca11fe630fc93e1ab79160",
+      "exchange": "SZ",
+      "limit_ratio": "0.20",
+      "risk_status": "NORMAL",
+      "rounding": "HALF_UP",
+      "rounding_mode": "HALF_UP",
+      "rule_id": "SZSE_GROWTH_NORMAL_20230704_V1",
+      "rule_verified": true,
+      "source_capture_path": "data/v4/source_evidence/v4_02_r3/szse_2023_trade_rule_notice.html",
+      "source_capture_sha256": "7f4405a3e7021976db2d4ecbb1b02434f603110b2de46233f5a8b71f2059794a",
+      "source_evidence_id": "SZSE_2023",
+      "source_ref": "https://www.szse.cn/lawrules/rule/repeal/rules/t20230217_598773.html",
+      "source_sha256": "b2829387a2014bdce4fc87e8102c0c713199b90d88ca11fe630fc93e1ab79160",
+      "special_period_policy": {
+        "no_limit_listing_phases": [
+          "IPO_FIRST_5_TRADING_DAYS",
+          "DELISTING_FIRST_DAY",
+          "RELISTING_FIRST_DAY"
+        ],
+        "unknown_phase_policy": "UNKNOWN"
+      },
+      "tick": "0.01",
+      "valid_from": "2023-07-04",
+      "valid_to": null
+    },
+    {
+      "audit_status": "VERIFIED",
+      "board": "GROWTH",
+      "clause_mapping_sha256": "5a20be3ff478f322f1404e265deb2d1a331be28313413103c63eaaa87615ca23",
+      "exchange": "SZ",
+      "limit_ratio": "0.20",
+      "risk_status": "RISK_WARNING",
+      "rounding": "HALF_UP",
+      "rounding_mode": "HALF_UP",
+      "rule_id": "SZSE_GROWTH_RISK_WARNING_20230704_V1",
+      "rule_verified": true,
+      "source_capture_path": "data/v4/source_evidence/v4_02_r3/szse_2023_trade_rule_notice.html",
+      "source_capture_sha256": "7f4405a3e7021976db2d4ecbb1b02434f603110b2de46233f5a8b71f2059794a",
+      "source_evidence_id": "SZSE_2023",
+      "source_ref": "https://www.szse.cn/lawrules/rule/repeal/rules/t20230217_598773.html",
+      "source_sha256": "5a20be3ff478f322f1404e265deb2d1a331be28313413103c63eaaa87615ca23",
+      "special_period_policy": {
+        "no_limit_listing_phases": [
+          "IPO_FIRST_5_TRADING_DAYS",
+          "DELISTING_FIRST_DAY",
+          "RELISTING_FIRST_DAY"
+        ],
+        "unknown_phase_policy": "UNKNOWN"
+      },
+      "tick": "0.01",
+      "valid_from": "2023-07-04",
+      "valid_to": null
+    }
+  ],
+  "scope": {
+    "end_date": "2026-09-24",
+    "optional_degraded_boards": [
+      "BSE"
+    ],
+    "required_boards": [
+      "SH_MAIN",
+      "SZ_MAIN",
+      "CHINEXT",
+      "STAR"
+    ],
+    "start_date": "2023-07-04"
+  },
+  "source_evidence": {
+    "captures": {
+      "SSE_2023": {
+        "clauses": [
+          "2023年修订交易规则发布、生效版本",
+          "涨跌幅限制价格以前收盘价为基准",
+          "A股最小价格变动单位与规则取整"
+        ],
+        "source_capture_bytes": 35712,
+        "source_capture_path": "data/v4/source_evidence/v4_02_r3/sse_2023_trade_rule.html",
+        "source_capture_sha256": "0a634408b2842a6cba4f4686d6013716aa5bf5cddf547139945d0eb7c6d9a27c",
+        "source_ref": "https://www.sse.com.cn/lawandrules/sselawsrules2025/repeal/rules/c/c_20250612_10824490.shtml"
+      },
+      "SSE_2026": {
+        "clauses": [
+          "主板通常涨跌幅10%",
+          "科创板通常涨跌幅20%",
+          "涨跌幅价以前收盘价为基准"
+        ],
+        "source_capture_bytes": 34826,
+        "source_capture_path": "data/v4/source_evidence/v4_02_r3/sse_2026_rule.html",
+        "source_capture_sha256": "428032a0963a9bb110f9d9992fd24a8d3c880f7b34fafb86b94fc55d3291dd81",
+        "source_ref": "https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/c_20260424_10816482.shtml"
+      },
+      "SSE_MAIN_RISK_2026": {
+        "clauses": [
+          "上交所主板风险警示股票比例变更及生效日期2026-07-06"
+        ],
+        "source_capture_bytes": 28607,
+        "source_capture_path": "data/v4/source_evidence/v4_02_r3/sse_star_2026_notice.html",
+        "source_capture_sha256": "18223769e90665229ef7eead3c7e68c7397787a7913340773a57e8127546f09b",
+        "source_ref": "https://star.sse.com.cn/aboutus/mediacenter/hotandd/c/c_20260424_10816474.shtml"
+      },
+      "SSE_STAR": {
+        "clauses": [
+          "科创板上市交易价格限制规则说明"
+        ],
+        "source_capture_bytes": 13590,
+        "source_capture_path": "data/v4/source_evidence/v4_02_r3/sse_star_2019_qa.html",
+        "source_capture_sha256": "439eb02654a85b8dffd85fc5b923565ae20354022b4fee2d1937095687335e1c",
+        "source_ref": "https://star.sse.com.cn/star/media/news/c/c_20190719_4866789.shtml"
+      },
+      "SZSE_2023": {
+        "attachment_capture_note": "官方通知可访问；所链接2023规则PDF在本次定向捕获时返回404，保留官方通知与2026规则修订本作为可复核来源。",
+        "clauses": [
+          "2023年修订交易规则发布通知及附件指引",
+          "主板通常涨跌幅10%",
+          "创业板通常涨跌幅20%",
+          "涨跌幅限制价格以前收盘价为基准"
+        ],
+        "source_capture_bytes": 15560,
+        "source_capture_path": "data/v4/source_evidence/v4_02_r3/szse_2023_trade_rule_notice.html",
+        "source_capture_sha256": "7f4405a3e7021976db2d4ecbb1b02434f603110b2de46233f5a8b71f2059794a",
+        "source_ref": "https://www.szse.cn/lawrules/rule/repeal/rules/t20230217_598773.html"
+      },
+      "SZSE_2026": {
+        "clauses": [
+          "深交所主板风险警示股票比例自2026-07-06调整为10%"
+        ],
+        "source_capture_bytes": 19403,
+        "source_capture_path": "data/v4/source_evidence/v4_02_r3/szse_2026_st_notice.html",
+        "source_capture_sha256": "fe4df31efcc2c8ecab178c11d3569d8bec2c528c45e65c8ba35bc6b742ce79de",
+        "source_ref": "https://www.szse.cn/lawrules/service/member/t20260630_621404.html"
+      }
+    },
+    "normalization": "source_ref + source_capture_path + source_capture_sha256 + clause_mapping_sha256",
+    "rounding": "HALF_UP_TO_CNY_0_01"
+  },
+  "version": "3.0.0"
+}

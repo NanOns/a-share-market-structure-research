@@ -21,7 +21,9 @@ def runtime():
 
 
 def observation(freeze, root):
-    r=runtime(); simulation=freeze.get('engineering_simulation') is True
+    r=runtime(); flag=freeze.get('engineering_simulation',False)
+    r.require(type(flag) is bool,'ENGINEERING_SIMULATION_FLAG_MUST_BE_BOOLEAN')
+    simulation=flag
     r.validate_lineage(freeze,root,simulation=simulation)
     now=datetime.fromisoformat(freeze['observed_at'].replace('Z','+00:00'))
     local=now.astimezone(ZoneInfo('Asia/Shanghai'))

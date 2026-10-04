@@ -58,6 +58,13 @@ def test_R4R1_05_simulation_cannot_claim_real_forward(env):
         l.require_real_forward(candidate,env['freeze'],env['parent'],env['calendar'],env['root'])
 
 
+@pytest.mark.parametrize('flag',[1,None,'false'])
+def test_R4R1_05_simulation_flag_requires_boolean(env,flag):
+    env['freeze']['engineering_simulation']=flag;rehash(env['freeze'])
+    with pytest.raises(ValueError,match='ENGINEERING_SIMULATION_FLAG_MUST_BE_BOOLEAN'):
+        l.observation(env['freeze'],env['root'])
+
+
 def test_R4R1_06_before_close_rejected(env):
     env['freeze']['observed_at']='2026-09-28T06:59:00+00:00'
     for e in env['freeze']['availability_evidence'].values():

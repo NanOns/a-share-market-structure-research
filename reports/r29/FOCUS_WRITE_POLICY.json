@@ -1,0 +1,18 @@
+{
+  "contract": "config/v4_20_default_ui_cutover_contract_v1.json",
+  "contract_sha256": "a2378c9d4baea3a8781b0ed0546b83932dc7b2494bd69c41cd3ead4de0e722fe",
+  "definition": {
+    "check_time": "RECHECK_AT_WRITE_CAS_NOT_JUST_PAGE_RENDER",
+    "implemented": false,
+    "legacy": "RETAIN_EXISTING_LEGACY_WRITE_AUTHORITY_UNTIL_EXACT_CAPABILITY_ROUTE_CUTOVER; ENDPOINT_CHECKS_EXACT_CURRENT_LEGACY_ROUTE",
+    "shadow": "READ_ONLY_REJECT_ALL_ALGORITHM_FOCUS_WRITES",
+    "user_pins": "PRODUCT_STATE_OWNERSHIP_PRESERVED; NEVER_ALGORITHM_EVIDENCE_OR_PERMISSION; SEPARATE_AUTHORIZED_PRODUCT_ENDPOINT",
+    "v4_required_all": [
+      "exact capability accepted active production permission",
+      "exact active accepted V4_19 Focus source route",
+      "endpoint authority source/model/parameter/lineage/context/permission/route-head agreement"
+    ]
+  },
+  "scope": "CONTRACT_DESIGN_ONLY",
+  "section": "focus_write"
+}

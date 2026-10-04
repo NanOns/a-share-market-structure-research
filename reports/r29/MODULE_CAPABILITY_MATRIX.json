@@ -1,0 +1,307 @@
+{
+  "contract": "config/v4_20_default_ui_cutover_contract_v1.json",
+  "contract_sha256": "a2378c9d4baea3a8781b0ed0546b83932dc7b2494bd69c41cd3ead4de0e722fe",
+  "definition": {
+    "data_diagnostics": {
+      "context_identity_fields": [
+        "module",
+        "trade_date",
+        "source_mode",
+        "namespace",
+        "publication_id",
+        "publication_revision",
+        "capability_scope",
+        "model_contract_id",
+        "parameter_digest",
+        "state_lineage_id",
+        "permission_receipt_digests",
+        "route_heads",
+        "native_context_digest"
+      ],
+      "default_source": "LEGACY_PRODUCTION_CURRENT; FUTURE_EXACT_PRODUCTION_V4_ONLY_IF_ALL_REQUIRED_PERMISSIONS_ACTIVE",
+      "fallback_source": "EXACT_LEGACY_PRODUCTION",
+      "optional_capabilities": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "product_module": "Data / Diagnostics",
+      "required_capabilities": [],
+      "resolution_granularity": "PER_COMPONENT_OR_FOCUS_ITEM; EMPTY_REQUIRED_LIST_NEVER_GRANTS_V4_BY_VACUOUS_TRUTH",
+      "shadow_only_subcomponents": [
+        "explicit_shadow_STOCK_CORE",
+        "explicit_shadow_STOCK_SECTOR_DEPENDENT",
+        "explicit_shadow_SECTOR_STAGE",
+        "explicit_shadow_ROTATION",
+        "explicit_shadow_SECTOR_RISK_CHANGE"
+      ],
+      "write_permissions": "SHADOW_READ_ONLY; LEGACY_EXISTING_ENDPOINT_AUTHORITY; V4_FOCUS_REQUIRES_EXACT_CAPABILITY_PERMISSION_ACTIVE_V4_19_ROUTE_AND_ENDPOINT_AGREEMENT"
+    },
+    "focus_tracking": {
+      "component_mapping": "PER_ITEM_EXACT_SOURCE_CAPABILITY; PRESERVE_LEGACY_USER_WORK_AND_PIN_AUTHORITY",
+      "context_identity_fields": [
+        "module",
+        "trade_date",
+        "source_mode",
+        "namespace",
+        "publication_id",
+        "publication_revision",
+        "capability_scope",
+        "model_contract_id",
+        "parameter_digest",
+        "state_lineage_id",
+        "permission_receipt_digests",
+        "route_heads",
+        "native_context_digest"
+      ],
+      "default_source": "LEGACY_PRODUCTION_CURRENT; FUTURE_EXACT_PRODUCTION_V4_ONLY_IF_ALL_REQUIRED_PERMISSIONS_ACTIVE",
+      "fallback_source": "EXACT_LEGACY_PRODUCTION",
+      "optional_capabilities": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "product_module": "Focus Tracking",
+      "required_capabilities": [],
+      "resolution_granularity": "PER_COMPONENT_OR_FOCUS_ITEM; EMPTY_REQUIRED_LIST_NEVER_GRANTS_V4_BY_VACUOUS_TRUTH",
+      "shadow_only_subcomponents": [
+        "explicit_shadow_STOCK_CORE",
+        "explicit_shadow_STOCK_SECTOR_DEPENDENT",
+        "explicit_shadow_SECTOR_STAGE",
+        "explicit_shadow_ROTATION",
+        "explicit_shadow_SECTOR_RISK_CHANGE"
+      ],
+      "write_permissions": "SHADOW_READ_ONLY; LEGACY_EXISTING_ENDPOINT_AUTHORITY; V4_FOCUS_REQUIRES_EXACT_CAPABILITY_PERMISSION_ACTIVE_V4_19_ROUTE_AND_ENDPOINT_AGREEMENT"
+    },
+    "market_events": {
+      "component_mapping": "PER_EVENT_NATIVE_PUBLICATION_AND_CAPABILITY; NO_MARKET_PAGE_GLOBAL_GRANT",
+      "context_identity_fields": [
+        "module",
+        "trade_date",
+        "source_mode",
+        "namespace",
+        "publication_id",
+        "publication_revision",
+        "capability_scope",
+        "model_contract_id",
+        "parameter_digest",
+        "state_lineage_id",
+        "permission_receipt_digests",
+        "route_heads",
+        "native_context_digest"
+      ],
+      "default_source": "LEGACY_PRODUCTION_CURRENT; FUTURE_EXACT_PRODUCTION_V4_ONLY_IF_ALL_REQUIRED_PERMISSIONS_ACTIVE",
+      "fallback_source": "EXACT_LEGACY_PRODUCTION",
+      "optional_capabilities": [
+        "STOCK_CORE",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "product_module": "Market / Events",
+      "required_capabilities": [],
+      "resolution_granularity": "PER_COMPONENT_OR_FOCUS_ITEM; EMPTY_REQUIRED_LIST_NEVER_GRANTS_V4_BY_VACUOUS_TRUTH",
+      "shadow_only_subcomponents": [
+        "explicit_shadow_STOCK_CORE",
+        "explicit_shadow_SECTOR_STAGE",
+        "explicit_shadow_ROTATION",
+        "explicit_shadow_SECTOR_RISK_CHANGE"
+      ],
+      "write_permissions": "SHADOW_READ_ONLY; LEGACY_EXISTING_ENDPOINT_AUTHORITY; V4_FOCUS_REQUIRES_EXACT_CAPABILITY_PERMISSION_ACTIVE_V4_19_ROUTE_AND_ENDPOINT_AGREEMENT"
+    },
+    "rotation": {
+      "context_identity_fields": [
+        "module",
+        "trade_date",
+        "source_mode",
+        "namespace",
+        "publication_id",
+        "publication_revision",
+        "capability_scope",
+        "model_contract_id",
+        "parameter_digest",
+        "state_lineage_id",
+        "permission_receipt_digests",
+        "route_heads",
+        "native_context_digest"
+      ],
+      "default_source": "LEGACY_PRODUCTION_CURRENT; FUTURE_EXACT_PRODUCTION_V4_ONLY_IF_ALL_REQUIRED_PERMISSIONS_ACTIVE",
+      "fallback_source": "EXACT_LEGACY_PRODUCTION",
+      "optional_capabilities": [],
+      "product_module": "Sector Research / Rotation",
+      "required_capabilities": [
+        "ROTATION"
+      ],
+      "resolution_granularity": "MODULE_AND_SEPARATE_OPTIONAL_COMPONENTS",
+      "shadow_only_subcomponents": [],
+      "write_permissions": "SHADOW_READ_ONLY; LEGACY_EXISTING_ENDPOINT_AUTHORITY; V4_FOCUS_REQUIRES_EXACT_CAPABILITY_PERMISSION_ACTIVE_V4_19_ROUTE_AND_ENDPOINT_AGREEMENT"
+    },
+    "sector_research": {
+      "context_identity_fields": [
+        "module",
+        "trade_date",
+        "source_mode",
+        "namespace",
+        "publication_id",
+        "publication_revision",
+        "capability_scope",
+        "model_contract_id",
+        "parameter_digest",
+        "state_lineage_id",
+        "permission_receipt_digests",
+        "route_heads",
+        "native_context_digest"
+      ],
+      "default_source": "LEGACY_PRODUCTION_CURRENT; FUTURE_EXACT_PRODUCTION_V4_ONLY_IF_ALL_REQUIRED_PERMISSIONS_ACTIVE",
+      "fallback_source": "EXACT_LEGACY_PRODUCTION",
+      "optional_capabilities": [
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "product_module": "Sector Research",
+      "required_capabilities": [
+        "SECTOR_STAGE"
+      ],
+      "resolution_granularity": "MODULE_AND_SEPARATE_OPTIONAL_COMPONENTS",
+      "shadow_only_subcomponents": [
+        "explicit_shadow_ROTATION",
+        "explicit_shadow_SECTOR_RISK_CHANGE"
+      ],
+      "write_permissions": "SHADOW_READ_ONLY; LEGACY_EXISTING_ENDPOINT_AUTHORITY; V4_FOCUS_REQUIRES_EXACT_CAPABILITY_PERMISSION_ACTIVE_V4_19_ROUTE_AND_ENDPOINT_AGREEMENT"
+    },
+    "sector_risk_change": {
+      "context_identity_fields": [
+        "module",
+        "trade_date",
+        "source_mode",
+        "namespace",
+        "publication_id",
+        "publication_revision",
+        "capability_scope",
+        "model_contract_id",
+        "parameter_digest",
+        "state_lineage_id",
+        "permission_receipt_digests",
+        "route_heads",
+        "native_context_digest"
+      ],
+      "default_source": "LEGACY_PRODUCTION_CURRENT; FUTURE_EXACT_PRODUCTION_V4_ONLY_IF_ALL_REQUIRED_PERMISSIONS_ACTIVE",
+      "fallback_source": "EXACT_LEGACY_PRODUCTION",
+      "optional_capabilities": [],
+      "product_module": "Sector Research / Risk Change",
+      "required_capabilities": [
+        "SECTOR_RISK_CHANGE"
+      ],
+      "resolution_granularity": "MODULE_AND_SEPARATE_OPTIONAL_COMPONENTS",
+      "shadow_only_subcomponents": [],
+      "write_permissions": "SHADOW_READ_ONLY; LEGACY_EXISTING_ENDPOINT_AUTHORITY; V4_FOCUS_REQUIRES_EXACT_CAPABILITY_PERMISSION_ACTIVE_V4_19_ROUTE_AND_ENDPOINT_AGREEMENT"
+    },
+    "stock_research": {
+      "context_identity_fields": [
+        "module",
+        "trade_date",
+        "source_mode",
+        "namespace",
+        "publication_id",
+        "publication_revision",
+        "capability_scope",
+        "model_contract_id",
+        "parameter_digest",
+        "state_lineage_id",
+        "permission_receipt_digests",
+        "route_heads",
+        "native_context_digest"
+      ],
+      "default_source": "LEGACY_PRODUCTION_CURRENT; FUTURE_EXACT_PRODUCTION_V4_ONLY_IF_ALL_REQUIRED_PERMISSIONS_ACTIVE",
+      "fallback_source": "EXACT_LEGACY_PRODUCTION",
+      "optional_capabilities": [
+        "STOCK_SECTOR_DEPENDENT"
+      ],
+      "product_module": "Stock Research",
+      "required_capabilities": [
+        "STOCK_CORE"
+      ],
+      "resolution_granularity": "MODULE_AND_SEPARATE_OPTIONAL_COMPONENTS",
+      "shadow_only_subcomponents": [
+        "explicit_shadow_STOCK_SECTOR_DEPENDENT"
+      ],
+      "write_permissions": "SHADOW_READ_ONLY; LEGACY_EXISTING_ENDPOINT_AUTHORITY; V4_FOCUS_REQUIRES_EXACT_CAPABILITY_PERMISSION_ACTIVE_V4_19_ROUTE_AND_ENDPOINT_AGREEMENT"
+    },
+    "stock_sector_dependent": {
+      "context_identity_fields": [
+        "module",
+        "trade_date",
+        "source_mode",
+        "namespace",
+        "publication_id",
+        "publication_revision",
+        "capability_scope",
+        "model_contract_id",
+        "parameter_digest",
+        "state_lineage_id",
+        "permission_receipt_digests",
+        "route_heads",
+        "native_context_digest"
+      ],
+      "default_source": "LEGACY_PRODUCTION_CURRENT; FUTURE_EXACT_PRODUCTION_V4_ONLY_IF_ALL_REQUIRED_PERMISSIONS_ACTIVE",
+      "fallback_source": "EXACT_LEGACY_PRODUCTION",
+      "optional_capabilities": [],
+      "product_module": "Stock Research / Sector-dependent",
+      "required_capabilities": [
+        "STOCK_SECTOR_DEPENDENT"
+      ],
+      "resolution_granularity": "MODULE_AND_SEPARATE_OPTIONAL_COMPONENTS",
+      "shadow_only_subcomponents": [],
+      "write_permissions": "SHADOW_READ_ONLY; LEGACY_EXISTING_ENDPOINT_AUTHORITY; V4_FOCUS_REQUIRES_EXACT_CAPABILITY_PERMISSION_ACTIVE_V4_19_ROUTE_AND_ENDPOINT_AGREEMENT"
+    },
+    "today_overview": {
+      "component_mapping": {
+        "rotation": "rotation",
+        "sector_risk": "sector_risk_change",
+        "sector_stage": "sector_research",
+        "stock_core": "stock_research"
+      },
+      "context_identity_fields": [
+        "module",
+        "trade_date",
+        "source_mode",
+        "namespace",
+        "publication_id",
+        "publication_revision",
+        "capability_scope",
+        "model_contract_id",
+        "parameter_digest",
+        "state_lineage_id",
+        "permission_receipt_digests",
+        "route_heads",
+        "native_context_digest"
+      ],
+      "default_source": "LEGACY_PRODUCTION_CURRENT; FUTURE_EXACT_PRODUCTION_V4_ONLY_IF_ALL_REQUIRED_PERMISSIONS_ACTIVE",
+      "fallback_source": "EXACT_LEGACY_PRODUCTION",
+      "optional_capabilities": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "product_module": "Today Overview",
+      "required_capabilities": [],
+      "resolution_granularity": "PER_COMPONENT_OR_FOCUS_ITEM; EMPTY_REQUIRED_LIST_NEVER_GRANTS_V4_BY_VACUOUS_TRUTH",
+      "shadow_only_subcomponents": [
+        "explicit_shadow_STOCK_CORE",
+        "explicit_shadow_STOCK_SECTOR_DEPENDENT",
+        "explicit_shadow_SECTOR_STAGE",
+        "explicit_shadow_ROTATION",
+        "explicit_shadow_SECTOR_RISK_CHANGE"
+      ],
+      "write_permissions": "SHADOW_READ_ONLY; LEGACY_EXISTING_ENDPOINT_AUTHORITY; V4_FOCUS_REQUIRES_EXACT_CAPABILITY_PERMISSION_ACTIVE_V4_19_ROUTE_AND_ENDPOINT_AGREEMENT"
+    }
+  },
+  "scope": "CONTRACT_DESIGN_ONLY",
+  "section": "module_registry"
+}

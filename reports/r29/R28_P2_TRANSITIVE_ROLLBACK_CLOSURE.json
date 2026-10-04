@@ -1,0 +1,19 @@
+{
+  "affected_capabilities": [
+    "ROTATION",
+    "SECTOR_RISK_CHANGE",
+    "SECTOR_STAGE",
+    "STOCK_SECTOR_DEPENDENT"
+  ],
+  "evidence": [
+    "reports/r29/DESIGN_VECTOR_RESULTS.json#U20-18",
+    "tests/test_v4_20_default_ui_contract.py::test_r28_p2_transitive_rollback_independent_stock_preserved"
+  ],
+  "independent_stock_core": "PRESERVED_PRODUCTION_V4_IN_SYNTHETIC_DESIGN",
+  "item": "R28_P2_ROLLBACK_TRANSITIVE_VECTOR_COVERAGE",
+  "local_acceptance": "COVERAGE_CLOSED_LOCAL_PENDING_R29_EXTERNAL_AUDIT",
+  "origin": "docs/evidence/r29/V4_R28_V4_19_FOCUS_SOURCE_CUTOVER_CONTRACT_DESIGN_FINAL_INDEPENDENT_EXTERNAL_AUDIT_R1_20261004.md",
+  "r28_frozen_contract_reopened": false,
+  "runtime_acceptance": "NOT_GRANTED",
+  "scope": "Sector Stage rollback cascades to Rotation/Sector Risk/Stock Sector Dependent while independent Stock Core remains valid"
+}

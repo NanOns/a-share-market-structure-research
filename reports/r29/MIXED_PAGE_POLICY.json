@@ -1,0 +1,53 @@
+{
+  "contract": "config/v4_20_default_ui_cutover_contract_v1.json",
+  "contract_sha256": "a2378c9d4baea3a8781b0ed0546b83932dc7b2494bd69c41cd3ead4de0e722fe",
+  "definition": {
+    "component_fields": [
+      "module",
+      "trade_date",
+      "source_mode",
+      "namespace",
+      "publication_id",
+      "publication_revision",
+      "capability_scope",
+      "model_contract_id",
+      "parameter_digest",
+      "state_lineage_id",
+      "permission_receipt_digests",
+      "route_heads",
+      "native_context_digest"
+    ],
+    "consistency": "PAGE_SNAPSHOT_PINS_ALL_READ_HEADS; ROUTE_CHANGE_MARKS_LIVE_SESSION_STALE_REQUIRES_EXPLICIT_NEW_PAGE_CONTEXT; HISTORICAL_CONTEXT_READ_ONLY",
+    "mixed": "PRESERVE_NATIVE_MODULE_NAMESPACES_AND_MODE_LABELS; SHARED_PAGE_TOKEN_NEVER_IMPLIED_PERMISSION",
+    "native_legacy_fields": [
+      "run_id",
+      "publication_id",
+      "local_date",
+      "mode",
+      "snapshot_id",
+      "algorithm_version"
+    ],
+    "native_shadow_fields": [
+      "namespace",
+      "trade_date",
+      "publication_id",
+      "publication_revision",
+      "model_contract_id",
+      "parameter_set_id",
+      "state_lineage_id",
+      "daily_input_digest",
+      "source_manifest_digest",
+      "evidence_origin",
+      "readback_manifest_digest"
+    ],
+    "page_fields": [
+      "module_context_manifest",
+      "route_head_versions",
+      "permission_receipt_heads",
+      "manifest_digest"
+    ],
+    "token": "DESIGN: SHA256_UTF8_SORTED_COMPACT_TYPED_JSON_NO_NAN_OF_EXACT_SUBCONTEXT_MANIFEST; FUTURE_TOKEN_PREFIX_UICTX_V1"
+  },
+  "scope": "CONTRACT_DESIGN_ONLY",
+  "section": "context_composition"
+}

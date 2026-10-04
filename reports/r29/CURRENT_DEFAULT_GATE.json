@@ -1,0 +1,35 @@
+{
+  "contract": "config/v4_20_default_ui_cutover_contract_v1.json",
+  "contract_sha256": "a2378c9d4baea3a8781b0ed0546b83932dc7b2494bd69c41cd3ead4de0e722fe",
+  "definition": {
+    "DEFAULT_UI_CUTOVER": false,
+    "Focus_source_cutover": false,
+    "MIGRATION_REPLAY_PASS": "NOT_GRANTED",
+    "R25": "WAIT_ACCEPTED_DAILY_INPUT",
+    "V4_17G": "NOT_GRANTED",
+    "V4_19_CONTRACT_DESIGN": "EXTERNALLY_ACCEPTED",
+    "V4_19_IMPLEMENTATION_ENTRY": "BLOCKED_WAIT_REAL_GATES",
+    "V4_20_ACCEPTED_HEAD": "NOT_CREATED",
+    "default_modules": {
+      "data_diagnostics": "LEGACY_PRODUCTION",
+      "focus_tracking": "LEGACY_PRODUCTION",
+      "market_events": "LEGACY_PRODUCTION",
+      "rotation": "LEGACY_PRODUCTION",
+      "sector_research": "LEGACY_PRODUCTION",
+      "sector_risk_change": "LEGACY_PRODUCTION",
+      "stock_research": "LEGACY_PRODUCTION",
+      "stock_sector_dependent": "LEGACY_PRODUCTION",
+      "today_overview": "LEGACY_PRODUCTION"
+    },
+    "explicit_shadow_page": "EXISTING_ENGINEERING_READ_ONLY_NOT_DEFAULT",
+    "production_permission": {
+      "ROTATION": false,
+      "SECTOR_RISK_CHANGE": false,
+      "SECTOR_STAGE": false,
+      "STOCK_CORE": false,
+      "STOCK_SECTOR_DEPENDENT": false
+    }
+  },
+  "scope": "CONTRACT_DESIGN_ONLY",
+  "section": "current_state"
+}

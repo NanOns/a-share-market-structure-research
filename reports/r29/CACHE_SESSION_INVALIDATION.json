@@ -1,0 +1,23 @@
+{
+  "contract": "config/v4_20_default_ui_cutover_contract_v1.json",
+  "contract_sha256": "a2378c9d4baea3a8781b0ed0546b83932dc7b2494bd69c41cd3ead4de0e722fe",
+  "definition": {
+    "cache_namespace_fields": [
+      "contract_version",
+      "module",
+      "source_mode",
+      "native_context_digest",
+      "publication_id",
+      "publication_revision",
+      "route_head/version",
+      "permission_receipt_head",
+      "capability_scope"
+    ],
+    "no_silent_merge": true,
+    "permission_change": "REVOCATION_SUPERSESSION_MODEL_OR_DEPENDENCY_CHANGE_INVALIDATES_AFFECTED_LIVE_BINDINGS",
+    "route_change": "INVALIDATE_AFFECTED_MODULE_AND_TRANSITIVE_CONSUMER_LIVE_CACHE_SESSION_BINDINGS; PRESERVE_ARCHIVED_HISTORICAL_CONTEXT",
+    "session": "TOKEN_PINS_EXACT_HEADS; STALE_TOKEN_CANNOT_WRITE_OR_MERGE_WITH_NEW_PAGE; EXPLICIT_REFRESH_CREATES_NEW_TOKEN"
+  },
+  "scope": "CONTRACT_DESIGN_ONLY",
+  "section": "cache_session"
+}

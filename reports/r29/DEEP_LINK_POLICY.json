@@ -1,0 +1,22 @@
+{
+  "contract": "config/v4_20_default_ui_cutover_contract_v1.json",
+  "contract_sha256": "a2378c9d4baea3a8781b0ed0546b83932dc7b2494bd69c41cd3ead4de0e722fe",
+  "definition": {
+    "after_cutover_or_rollback": "REPRODUCE_OLD_NATIVE_CONTEXT_READ_ONLY; WRITE_REQUIRES_FRESH_CURRENT_ENDPOINT_AUTHORITY",
+    "required": [
+      "module",
+      "trade_date",
+      "source_mode",
+      "publication_id",
+      "publication_revision",
+      "capability_scope",
+      "permission_receipt_digests",
+      "context_digest"
+    ],
+    "resolve": "EXACT_ACCEPTED_ARCHIVED_CONTEXT_BY_TOKEN_AND_DIGEST; NOT_NEW_DEFAULT",
+    "tampering": "DIGEST_OR_IDENTITY_MISMATCH_REJECTED",
+    "unavailable": "EXACT_CONTEXT_UNAVAILABLE_WITH_REASON; NO_LATEST_FALLBACK"
+  },
+  "scope": "CONTRACT_DESIGN_ONLY",
+  "section": "deep_links"
+}

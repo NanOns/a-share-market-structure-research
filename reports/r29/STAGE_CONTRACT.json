@@ -1,0 +1,47 @@
+{
+  "acceptance": "PENDING_LOCAL_DESIGN_VALIDATION",
+  "allowed": [
+    "config/v4_20_*",
+    "reports/r29/*",
+    "docs/evidence/r29/*",
+    "tests/test_v4_20_default_ui_contract.py"
+  ],
+  "baseline": "7f637644546a59b4cd28650def63be942f81b32a",
+  "documents": [
+    {
+      "copy": "docs/evidence/r29/V4_NEXT_ROUND_EXECUTION_MASTER_R29_20261004.md",
+      "original_sha256": "f625348952d9f94ad2ec8f35ef7804fd957dfcd38d2b78153c5503492263172c",
+      "source": "D:\\Users\\lps\\Desktop\\阶段任务\\V4_NEXT_ROUND_EXECUTION_MASTER_R29_20261004.md"
+    },
+    {
+      "copy": "docs/evidence/r29/V4_20_R29_DEFAULT_UI_CUTOVER_CONTRACT_DESIGN_TASK_20261004.md",
+      "original_sha256": "f13013e095a107009895131b3f16efae6fe22fc6d7ba46c4147f253488cdecc9",
+      "source": "D:\\Users\\lps\\Desktop\\阶段任务\\V4_20_R29_DEFAULT_UI_CUTOVER_CONTRACT_DESIGN_TASK_20261004.md"
+    },
+    {
+      "copy": "docs/evidence/r29/V4_R28_V4_19_FOCUS_SOURCE_CUTOVER_CONTRACT_DESIGN_FINAL_INDEPENDENT_EXTERNAL_AUDIT_R1_20261004.md",
+      "original_sha256": "9e571a010c35c2a32df036fd2e1f0509bb11002e70e245af3399fa0396b2c944",
+      "source": "D:\\Users\\lps\\Desktop\\阶段任务\\V4_R28_V4_19_FOCUS_SOURCE_CUTOVER_CONTRACT_DESIGN_FINAL_INDEPENDENT_EXTERNAL_AUDIT_R1_20261004.md"
+    }
+  ],
+  "forbidden": [
+    "actual router/default page changes",
+    "Focus source mutation",
+    "permission grants",
+    "accepted heads",
+    "TDX writes"
+  ],
+  "mode": "CONTRACT_DESIGN_ONLY",
+  "next": "STOP_WAIT_R29_INDEPENDENT_EXTERNAL_AUDIT",
+  "stage": "V4-20",
+  "upgrade": {
+    "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+    "sections": [
+      "52A",
+      "78/V4-20",
+      "81.4",
+      "83"
+    ],
+    "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "contract": "config/v4_20_default_ui_cutover_contract_v1.json",
+  "contract_sha256": "a2378c9d4baea3a8781b0ed0546b83932dc7b2494bd69c41cd3ead4de0e722fe",
+  "definition": {
+    "default": "ALL_REQUIRED_ACTIVE_ACCEPTED_PERMISSIONS -> EXACT_ACCEPTED_V4_PRODUCTION_PUBLICATION; OTHERWISE_EXACT_LEGACY_PRODUCTION_ROUTE",
+    "empty_required": "COMPOSITE_OR_DIAGNOSTIC_CONTAINER_REMAINS_LEGACY; RESOLVE_CHILDREN_OR_ITEMS_INDEPENDENTLY",
+    "explicit_shadow": "SHADOW_V4_EXACT_READ_ONLY_ENGINEERING_CONTEXT; NEVER_PRODUCTION_FALLBACK",
+    "forbidden": [
+      "latest publication",
+      "mtime",
+      "page-local source choice",
+      "browser session as authority",
+      "global V4 flag"
+    ],
+    "implemented_in_router": false,
+    "inputs": [
+      "module contract",
+      "accepted capability permission heads",
+      "exact accepted route heads",
+      "exact publication bindings"
+    ],
+    "missing_legacy": "UNKNOWN_NO_DISPLAY_NO_WRITE",
+    "v4_binding_conflict": "UNKNOWN_AFFECTED_MODULE_NO_DISPLAY_NO_WRITE; NEVER_GUESS_ANOTHER_PUBLICATION"
+  },
+  "scope": "CONTRACT_DESIGN_ONLY",
+  "section": "source_resolution"
+}

@@ -1,0 +1,31 @@
+{
+  "contract": "config/v4_20_default_ui_cutover_contract_v1.json",
+  "contract_sha256": "a2378c9d4baea3a8781b0ed0546b83932dc7b2494bd69c41cd3ead4de0e722fe",
+  "definition": {
+    "implemented": false,
+    "independent_stock_core": "REMAINS_ON_ITS_VALID_SOURCE",
+    "missing_previous_route": "BLOCKED_AFFECTED_SCOPE_NO_GUESS",
+    "preserve": [
+      "historical deep-link native contexts",
+      "user pins/manual work",
+      "accepted V4 history",
+      "pending settlement ownership"
+    ],
+    "primary": "FOLLOW_ACCEPTED_V4_19_CAPABILITY_ROUTE_ROLLBACK",
+    "scope": "AFFECTED_CAPABILITY_PLUS_TRANSITIVE_CONSUMERS",
+    "sector_stage_affected": [
+      "SECTOR_STAGE",
+      "ROTATION",
+      "SECTOR_RISK_CHANGE",
+      "STOCK_SECTOR_DEPENDENT"
+    ],
+    "steps": [
+      "fence affected module writes",
+      "restore exact previous accepted UI source via routing authority",
+      "invalidate affected V4 live cache/session bindings",
+      "append scoped UI rollback receipt linked to V4_19 rollback"
+    ]
+  },
+  "scope": "CONTRACT_DESIGN_ONLY",
+  "section": "rollback"
+}

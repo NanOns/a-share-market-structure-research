@@ -1,0 +1,288 @@
+{
+  "contract": "config/v4_20_default_ui_cutover_contract_v1.json",
+  "contract_sha256": "a2378c9d4baea3a8781b0ed0546b83932dc7b2494bd69c41cd3ead4de0e722fe",
+  "definition": [
+    {
+      "description": "all permissions false -> Legacy defaults",
+      "expected_actual_default_cutover": false,
+      "expected_actual_route_changes": [],
+      "fixture": "reports/r29/design_resolver.py::vector_result",
+      "future_evidence": [
+        "exact accepted permission and route heads",
+        "immutable native module/publication context manifest",
+        "independent default/cache/deep-link/write/rollback reconciliation"
+      ],
+      "id": "U20-01",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_UI_RUNTIME",
+      "oracle": "tests/test_v4_20_default_ui_contract.py"
+    },
+    {
+      "description": "only STOCK_CORE -> stock V4 sector Legacy",
+      "expected_actual_default_cutover": false,
+      "expected_actual_route_changes": [],
+      "fixture": "reports/r29/design_resolver.py::vector_result",
+      "future_evidence": [
+        "exact accepted permission and route heads",
+        "immutable native module/publication context manifest",
+        "independent default/cache/deep-link/write/rollback reconciliation"
+      ],
+      "id": "U20-02",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_UI_RUNTIME",
+      "oracle": "tests/test_v4_20_default_ui_contract.py"
+    },
+    {
+      "description": "only SECTOR_STAGE -> sector V4 stock Legacy",
+      "expected_actual_default_cutover": false,
+      "expected_actual_route_changes": [],
+      "fixture": "reports/r29/design_resolver.py::vector_result",
+      "future_evidence": [
+        "exact accepted permission and route heads",
+        "immutable native module/publication context manifest",
+        "independent default/cache/deep-link/write/rollback reconciliation"
+      ],
+      "id": "U20-03",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_UI_RUNTIME",
+      "oracle": "tests/test_v4_20_default_ui_contract.py"
+    },
+    {
+      "description": "STOCK_SECTOR_DEPENDENT requires both dependencies",
+      "expected_actual_default_cutover": false,
+      "expected_actual_route_changes": [],
+      "fixture": "reports/r29/design_resolver.py::vector_result",
+      "future_evidence": [
+        "exact accepted permission and route heads",
+        "immutable native module/publication context manifest",
+        "independent default/cache/deep-link/write/rollback reconciliation"
+      ],
+      "id": "U20-04",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_UI_RUNTIME",
+      "oracle": "tests/test_v4_20_default_ui_contract.py"
+    },
+    {
+      "description": "ROTATION false despite shared sector source",
+      "expected_actual_default_cutover": false,
+      "expected_actual_route_changes": [],
+      "fixture": "reports/r29/design_resolver.py::vector_result",
+      "future_evidence": [
+        "exact accepted permission and route heads",
+        "immutable native module/publication context manifest",
+        "independent default/cache/deep-link/write/rollback reconciliation"
+      ],
+      "id": "U20-05",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_UI_RUNTIME",
+      "oracle": "tests/test_v4_20_default_ui_contract.py"
+    },
+    {
+      "description": "explicit Shadow never production fallback",
+      "expected_actual_default_cutover": false,
+      "expected_actual_route_changes": [],
+      "fixture": "reports/r29/design_resolver.py::vector_result",
+      "future_evidence": [
+        "exact accepted permission and route heads",
+        "immutable native module/publication context manifest",
+        "independent default/cache/deep-link/write/rollback reconciliation"
+      ],
+      "id": "U20-06",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_UI_RUNTIME",
+      "oracle": "tests/test_v4_20_default_ui_contract.py"
+    },
+    {
+      "description": "stale permission blocks V4 default",
+      "expected_actual_default_cutover": false,
+      "expected_actual_route_changes": [],
+      "fixture": "reports/r29/design_resolver.py::vector_result",
+      "future_evidence": [
+        "exact accepted permission and route heads",
+        "immutable native module/publication context manifest",
+        "independent default/cache/deep-link/write/rollback reconciliation"
+      ],
+      "id": "U20-07",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_UI_RUNTIME",
+      "oracle": "tests/test_v4_20_default_ui_contract.py"
+    },
+    {
+      "description": "publication capability mismatch",
+      "expected_actual_default_cutover": false,
+      "expected_actual_route_changes": [],
+      "fixture": "reports/r29/design_resolver.py::vector_result",
+      "future_evidence": [
+        "exact accepted permission and route heads",
+        "immutable native module/publication context manifest",
+        "independent default/cache/deep-link/write/rollback reconciliation"
+      ],
+      "id": "U20-08",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_UI_RUNTIME",
+      "oracle": "tests/test_v4_20_default_ui_contract.py"
+    },
+    {
+      "description": "route head changed after page creation",
+      "expected_actual_default_cutover": false,
+      "expected_actual_route_changes": [],
+      "fixture": "reports/r29/design_resolver.py::vector_result",
+      "future_evidence": [
+        "exact accepted permission and route heads",
+        "immutable native module/publication context manifest",
+        "independent default/cache/deep-link/write/rollback reconciliation"
+      ],
+      "id": "U20-09",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_UI_RUNTIME",
+      "oracle": "tests/test_v4_20_default_ui_contract.py"
+    },
+    {
+      "description": "old deep link reproduces old context",
+      "expected_actual_default_cutover": false,
+      "expected_actual_route_changes": [],
+      "fixture": "reports/r29/design_resolver.py::vector_result",
+      "future_evidence": [
+        "exact accepted permission and route heads",
+        "immutable native module/publication context manifest",
+        "independent default/cache/deep-link/write/rollback reconciliation"
+      ],
+      "id": "U20-10",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_UI_RUNTIME",
+      "oracle": "tests/test_v4_20_default_ui_contract.py"
+    },
+    {
+      "description": "latest/mtime discovery forbidden",
+      "expected_actual_default_cutover": false,
+      "expected_actual_route_changes": [],
+      "fixture": "reports/r29/design_resolver.py::vector_result",
+      "future_evidence": [
+        "exact accepted permission and route heads",
+        "immutable native module/publication context manifest",
+        "independent default/cache/deep-link/write/rollback reconciliation"
+      ],
+      "id": "U20-11",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_UI_RUNTIME",
+      "oracle": "tests/test_v4_20_default_ui_contract.py"
+    },
+    {
+      "description": "mixed page exposes module mode labels",
+      "expected_actual_default_cutover": false,
+      "expected_actual_route_changes": [],
+      "fixture": "reports/r29/design_resolver.py::vector_result",
+      "future_evidence": [
+        "exact accepted permission and route heads",
+        "immutable native module/publication context manifest",
+        "independent default/cache/deep-link/write/rollback reconciliation"
+      ],
+      "id": "U20-12",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_UI_RUNTIME",
+      "oracle": "tests/test_v4_20_default_ui_contract.py"
+    },
+    {
+      "description": "global V4 label rejected",
+      "expected_actual_default_cutover": false,
+      "expected_actual_route_changes": [],
+      "fixture": "reports/r29/design_resolver.py::vector_result",
+      "future_evidence": [
+        "exact accepted permission and route heads",
+        "immutable native module/publication context manifest",
+        "independent default/cache/deep-link/write/rollback reconciliation"
+      ],
+      "id": "U20-13",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_UI_RUNTIME",
+      "oracle": "tests/test_v4_20_default_ui_contract.py"
+    },
+    {
+      "description": "Shadow Focus write rejected",
+      "expected_actual_default_cutover": false,
+      "expected_actual_route_changes": [],
+      "fixture": "reports/r29/design_resolver.py::vector_result",
+      "future_evidence": [
+        "exact accepted permission and route heads",
+        "immutable native module/publication context manifest",
+        "independent default/cache/deep-link/write/rollback reconciliation"
+      ],
+      "id": "U20-14",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_UI_RUNTIME",
+      "oracle": "tests/test_v4_20_default_ui_contract.py"
+    },
+    {
+      "description": "user pin preserved during cutover",
+      "expected_actual_default_cutover": false,
+      "expected_actual_route_changes": [],
+      "fixture": "reports/r29/design_resolver.py::vector_result",
+      "future_evidence": [
+        "exact accepted permission and route heads",
+        "immutable native module/publication context manifest",
+        "independent default/cache/deep-link/write/rollback reconciliation"
+      ],
+      "id": "U20-15",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_UI_RUNTIME",
+      "oracle": "tests/test_v4_20_default_ui_contract.py"
+    },
+    {
+      "description": "cache invalidation on route change",
+      "expected_actual_default_cutover": false,
+      "expected_actual_route_changes": [],
+      "fixture": "reports/r29/design_resolver.py::vector_result",
+      "future_evidence": [
+        "exact accepted permission and route heads",
+        "immutable native module/publication context manifest",
+        "independent default/cache/deep-link/write/rollback reconciliation"
+      ],
+      "id": "U20-16",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_UI_RUNTIME",
+      "oracle": "tests/test_v4_20_default_ui_contract.py"
+    },
+    {
+      "description": "single rollback affects dependents only",
+      "expected_actual_default_cutover": false,
+      "expected_actual_route_changes": [],
+      "fixture": "reports/r29/design_resolver.py::vector_result",
+      "future_evidence": [
+        "exact accepted permission and route heads",
+        "immutable native module/publication context manifest",
+        "independent default/cache/deep-link/write/rollback reconciliation"
+      ],
+      "id": "U20-17",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_UI_RUNTIME",
+      "oracle": "tests/test_v4_20_default_ui_contract.py"
+    },
+    {
+      "description": "Sector rollback cascades to all three consumers",
+      "expected_actual_default_cutover": false,
+      "expected_actual_route_changes": [],
+      "fixture": "reports/r29/design_resolver.py::vector_result",
+      "future_evidence": [
+        "exact accepted permission and route heads",
+        "immutable native module/publication context manifest",
+        "independent default/cache/deep-link/write/rollback reconciliation"
+      ],
+      "id": "U20-18",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_UI_RUNTIME",
+      "oracle": "tests/test_v4_20_default_ui_contract.py"
+    },
+    {
+      "description": "Stock Core survives Sector rollback",
+      "expected_actual_default_cutover": false,
+      "expected_actual_route_changes": [],
+      "fixture": "reports/r29/design_resolver.py::vector_result",
+      "future_evidence": [
+        "exact accepted permission and route heads",
+        "immutable native module/publication context manifest",
+        "independent default/cache/deep-link/write/rollback reconciliation"
+      ],
+      "id": "U20-19",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_UI_RUNTIME",
+      "oracle": "tests/test_v4_20_default_ui_contract.py"
+    },
+    {
+      "description": "UNKNOWN permission -> Legacy/NO_PERMISSION",
+      "expected_actual_default_cutover": false,
+      "expected_actual_route_changes": [],
+      "fixture": "reports/r29/design_resolver.py::vector_result",
+      "future_evidence": [
+        "exact accepted permission and route heads",
+        "immutable native module/publication context manifest",
+        "independent default/cache/deep-link/write/rollback reconciliation"
+      ],
+      "id": "U20-20",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_UI_RUNTIME",
+      "oracle": "tests/test_v4_20_default_ui_contract.py"
+    }
+  ],
+  "scope": "CONTRACT_DESIGN_ONLY",
+  "section": "vectors"
+}

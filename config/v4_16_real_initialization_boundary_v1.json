@@ -1,0 +1,24 @@
+{
+  "contract_id": "V4_16_REAL_INITIALIZATION_BOUNDARY_V1",
+  "counts_as_prior_real_observation": false,
+  "engineering_seed_forbidden": true,
+  "first_trade_date": "EXACT_FUTURE_ACTIVATION_GRANT_FIELD_REQUIRED",
+  "initialization_fields": [
+    "model_contract_id",
+    "parameter_set_id",
+    "state_lineage_id",
+    "trade_date",
+    "owner_state"
+  ],
+  "predecessor": "EXACT_ACCEPTED_GRANT_BINDING_REQUIRED",
+  "predecessor_evidence_classes": [
+    "RECONSTRUCTED_ASOF"
+  ],
+  "subsequent_prior": "IMMEDIATELY_PREVIOUS_ACCEPTED_SHADOW_MARKET_SESSION",
+  "unknown_fields": [
+    "FIRST_OBSERVED",
+    "prior_real_observation_id",
+    "prior_real_enrollment_id"
+  ],
+  "version": "1.0.0"
+}

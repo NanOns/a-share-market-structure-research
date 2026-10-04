@@ -1,0 +1,113 @@
+{
+  "PIT_OBSERVED_REAL_SAMPLES": 0,
+  "REAL_SHADOW_OBSERVATIONS": 0,
+  "V4_16": false,
+  "allowed_capabilities": [
+    "PURE_CORE_STOCK"
+  ],
+  "authority_id": "R24_SIMULATION_2eee70f4537847dcaf58bd1749b11bb9",
+  "blocked_capabilities": [
+    "A04_H21_CONSUMER",
+    "A04_HISTORICAL_AMOUNT_A",
+    "A08_CURRENT_RUNTIME"
+  ],
+  "contract_id": "V4_16_RUNTIME_ACTIVATION_AUTHORITY_V2",
+  "environment_class": "ACTIVATION_SIMULATION",
+  "environment_flags_grant": false,
+  "external_acceptance": {
+    "bytes": 215,
+    "path": "reports/r24/activation_simulation/2eee70f4537847dcaf58bd1749b11bb9/acceptance.json",
+    "sha256": "db0d1717566b03f9045369860765d5feefc517c15796221b60080a82db0dcfbe"
+  },
+  "focus": false,
+  "grant": {
+    "authority_id": "R24_SIMULATION_2eee70f4537847dcaf58bd1749b11bb9",
+    "capability_scope": [
+      "PURE_CORE_STOCK"
+    ],
+    "clock": {
+      "bytes": 2642,
+      "path": "config/v4_16_clock_contract_v1.json",
+      "sha256": "3a4dce84edf18afe36749b524a1eff3af569b6e33c4b66eb598e76f583d9821a"
+    },
+    "dependency_set_digest": "b1685f6dbdfcc0594aa6aea8d3af308e64b3477659b5759bfd8201292e4769ae",
+    "effective_from": "2026-09-28T00:00:00Z",
+    "effective_trade_date": "2026-09-28",
+    "expected_prior_activation_head": null,
+    "first_trade_date": "2026-09-28",
+    "initialization_boundary": {
+      "bytes": 693,
+      "path": "config/v4_16_real_initialization_boundary_v1.json",
+      "sha256": "d46a5304a152fff7240c204f416d2691858f6ddbfbba5c5ba961bc858405e7d3"
+    },
+    "model_contract_id": "RESEARCH_STATE_V1",
+    "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+    "predecessor": {
+      "bytes": 325,
+      "path": "reports/r24/activation_simulation/2eee70f4537847dcaf58bd1749b11bb9/predecessor.json",
+      "sha256": "a3be6d68f6419adc1d68f7fabf595a355c85c89c2753287d7b7c4f2d0dd89358"
+    },
+    "rollback_identity": "R24_APPEND_ONLY_STOP_V1",
+    "runtime_dependency_contract_id": "V4_16_RUNTIME_DEPENDENCIES_V2",
+    "slot": {
+      "bytes": 8464,
+      "path": "config/v4_16_observation_slot_contract_v2.json",
+      "sha256": "47e0c0bc36373f0d63557769c428f64a422ea434435b9319ce144d43b22bea15"
+    },
+    "source_adapters": {
+      "bytes": 541,
+      "path": "config/v4_16_source_readiness_adapters_v1.json",
+      "sha256": "705ad87ea171d0c913f10162b221d19070237b275db08091584adb7ab29b129e"
+    },
+    "source_authority": {
+      "bytes": 2129,
+      "path": "reports/r24/activation_simulation/2eee70f4537847dcaf58bd1749b11bb9/source_authority.json",
+      "sha256": "361375f12677ea0fae336b18180bb84a83c70f77c60e5f9035f9b0b73d0b512b"
+    },
+    "state_lineage_id": "R24_SIMULATION_LINEAGE",
+    "storage": {
+      "bytes": 535,
+      "path": "config/v4_16_real_storage_contract_v1.json",
+      "sha256": "cf821b7da70d9448d418393a5adb6780421bf6dff73f1fb1fe9adea4156a4efc"
+    },
+    "storage_identity": {
+      "database_path": "reports/r24/activation_simulation/2eee70f4537847dcaf58bd1749b11bb9/successor.sqlite",
+      "evidence_origin": "ACTIVATION_SIMULATION",
+      "execution_mode": "SHADOW",
+      "migration": {
+        "bytes": 3679,
+        "path": "migrations/v4_16_r24_real_shadow_v1.sql",
+        "sha256": "ff717666fdbe692aa4c75cf9ddb9759708f107a6149d0dae10014d562a5a8caf"
+      },
+      "namespace": "SHADOW_V4"
+    }
+  },
+  "production": false,
+  "real_shadow_authorized": true,
+  "required_grant_fields": [
+    "authority_id",
+    "effective_trade_date",
+    "effective_from",
+    "model_contract_id",
+    "parameter_set_id",
+    "state_lineage_id",
+    "capability_scope",
+    "clock",
+    "slot",
+    "runtime_dependency_contract_id",
+    "dependency_set_digest",
+    "storage",
+    "storage_identity",
+    "source_adapters",
+    "source_authority",
+    "rollback_identity",
+    "expected_prior_activation_head",
+    "initialization_boundary",
+    "predecessor",
+    "first_trade_date"
+  ],
+  "runtime_authorized": true,
+  "shadow": false,
+  "status": "ACTIVATION_CAPABLE_DISABLED_CANDIDATE",
+  "version": "2.0.0"
+}

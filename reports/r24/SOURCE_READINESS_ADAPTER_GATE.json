@@ -1,0 +1,145 @@
+{
+  "NEXT": "STOP_WAIT_R24_INDEPENDENT_EXTERNAL_AUDIT",
+  "acquisition_survives_publication_rollback": true,
+  "contract": {
+    "bytes": 541,
+    "path": "config/v4_16_source_readiness_adapters_v1.json",
+    "sha256": "705ad87ea171d0c913f10162b221d19070237b275db08091584adb7ab29b129e"
+  },
+  "execution_baseline": "b6b3105e713187462f49054e62fa70df8b9bd292",
+  "external_acceptance": "NOT_GRANTED",
+  "internal_acquisition_clock": true,
+  "negative_cases": [
+    {
+      "before_consumption": true,
+      "case": "A09",
+      "context": {
+        "base": "reports/r24/activation_simulation/9205f9c47124423bb60597114e729a6a",
+        "database": "reports/r24/activation_simulation/9205f9c47124423bb60597114e729a6a/successor.sqlite",
+        "manifest": "reports/r24/activation_simulation/9205f9c47124423bb60597114e729a6a/dependencies.json",
+        "request": {
+          "accepted_at": "2026-09-28T14:00:00Z",
+          "capabilities": [
+            "PURE_CORE_STOCK"
+          ],
+          "expected_head": null,
+          "model_contract_id": "RESEARCH_STATE_V1",
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "revision": 1,
+          "state_lineage_id": "R24_SIMULATION_LINEAGE",
+          "trade_date": "2026-09-28"
+        }
+      },
+      "database_created": false,
+      "manifest_binding": {
+        "bytes": 10456,
+        "path": "reports/r24/activation_simulation/9205f9c47124423bb60597114e729a6a/dependencies.json",
+        "sha256": "050a1bac25d5bbd100df4ce3fbdaa5025ed66797a9772cbf185a74d7259cb634"
+      },
+      "rejection": "UNACCEPTED_SOURCE_ADAPTER",
+      "status": "PASS_LOCAL"
+    },
+    {
+      "case": "A10",
+      "context": {
+        "base": "reports/r24/activation_simulation/ef87de989b564708b484412a78b2ea77",
+        "database": "reports/r24/activation_simulation/ef87de989b564708b484412a78b2ea77/successor.sqlite",
+        "manifest": "reports/r24/activation_simulation/ef87de989b564708b484412a78b2ea77/dependencies.json",
+        "request": {
+          "accepted_at": "2026-09-28T14:00:00Z",
+          "capabilities": [
+            "PURE_CORE_STOCK"
+          ],
+          "expected_head": null,
+          "model_contract_id": "RESEARCH_STATE_V1",
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "revision": 1,
+          "state_lineage_id": "R24_SIMULATION_LINEAGE",
+          "trade_date": "2026-09-28"
+        }
+      },
+      "database_binding": {
+        "bytes": 57344,
+        "path": "reports/r24/activation_simulation/ef87de989b564708b484412a78b2ea77/successor.sqlite",
+        "sha256": "6756672fef7b6de6619e9d3659224eaca814260bf23fc13df553fd945acc6141"
+      },
+      "manifest_binding": {
+        "bytes": 10456,
+        "path": "reports/r24/activation_simulation/ef87de989b564708b484412a78b2ea77/dependencies.json",
+        "sha256": "c8226864cbf9ca316346f2c4db0902f99df662e8bea5a8113642780a51a19207"
+      },
+      "partial_publication_visible": false,
+      "rejection": "MISSING_MANDATORY_SOURCE",
+      "status": "PASS_LOCAL"
+    },
+    {
+      "case": "A11",
+      "context": {
+        "base": "reports/r24/activation_simulation/d202a1acca9a479f872715d004fcc39c",
+        "database": "reports/r24/activation_simulation/d202a1acca9a479f872715d004fcc39c/successor.sqlite",
+        "manifest": "reports/r24/activation_simulation/d202a1acca9a479f872715d004fcc39c/dependencies.json",
+        "request": {
+          "accepted_at": "2026-09-28T14:00:00Z",
+          "capabilities": [
+            "PURE_CORE_STOCK"
+          ],
+          "expected_head": null,
+          "model_contract_id": "RESEARCH_STATE_V1",
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "revision": 1,
+          "state_lineage_id": "R24_SIMULATION_LINEAGE",
+          "trade_date": "2026-09-28"
+        }
+      },
+      "database_binding": {
+        "bytes": 57344,
+        "path": "reports/r24/activation_simulation/d202a1acca9a479f872715d004fcc39c/successor.sqlite",
+        "sha256": "3e5cffb56398f8eb7e13e64516cebc954b3f91c2fb34bf36a7bd72653255fa97"
+      },
+      "manifest_binding": {
+        "bytes": 10456,
+        "path": "reports/r24/activation_simulation/d202a1acca9a479f872715d004fcc39c/dependencies.json",
+        "sha256": "58abf6f21438a8914da4d65df22d43ac701f906493fd926c018576739e33c922"
+      },
+      "partial_publication_visible": false,
+      "rejection": "MISSED_OBSERVATION_SLOT",
+      "status": "PASS_LOCAL"
+    },
+    {
+      "case": "A12",
+      "context": {
+        "base": "reports/r24/activation_simulation/7fa0a997c1944f9fa57e31bec469ff6e",
+        "database": "reports/r24/activation_simulation/7fa0a997c1944f9fa57e31bec469ff6e/successor.sqlite",
+        "manifest": "reports/r24/activation_simulation/7fa0a997c1944f9fa57e31bec469ff6e/dependencies.json",
+        "request": {
+          "accepted_at": "2026-09-28T14:00:00Z",
+          "capabilities": [
+            "PURE_CORE_STOCK"
+          ],
+          "expected_head": null,
+          "model_contract_id": "RESEARCH_STATE_V1",
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "revision": 1,
+          "state_lineage_id": "R24_SIMULATION_LINEAGE",
+          "trade_date": "2026-09-28"
+        }
+      },
+      "database_binding": {
+        "bytes": 57344,
+        "path": "reports/r24/activation_simulation/7fa0a997c1944f9fa57e31bec469ff6e/successor.sqlite",
+        "sha256": "6756672fef7b6de6619e9d3659224eaca814260bf23fc13df553fd945acc6141"
+      },
+      "manifest_binding": {
+        "bytes": 10456,
+        "path": "reports/r24/activation_simulation/7fa0a997c1944f9fa57e31bec469ff6e/dependencies.json",
+        "sha256": "9539f35b9708c885c93c4256c5006aa32cc0321677dfafb66bb2bc3422f2957d"
+      },
+      "partial_publication_visible": false,
+      "rejection": "CALLER_BACKDATED_READINESS_FORBIDDEN",
+      "status": "PASS_LOCAL"
+    }
+  ],
+  "real_shadow_authorized": false,
+  "runtime_authorized": false,
+  "status": "PASS_LOCAL"
+}

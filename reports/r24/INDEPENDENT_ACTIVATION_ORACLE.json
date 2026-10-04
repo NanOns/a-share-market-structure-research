@@ -1,0 +1,63 @@
+{
+  "NEXT": "STOP_WAIT_R24_INDEPENDENT_EXTERNAL_AUDIT",
+  "database_binding": {
+    "bytes": 143360,
+    "path": "reports/r24/activation_simulation/persisted_positive_78b39f824c754cedb90b51b4e788efac/successor.sqlite",
+    "sha256": "b5a437b6bcbbfa9694ae772ad101c617049a1f9b4cba157590ebe71cb0128a6a"
+  },
+  "execution_baseline": "b6b3105e713187462f49054e62fa70df8b9bd292",
+  "external_acceptance": "NOT_GRANTED",
+  "oracle": {
+    "due_items": 5,
+    "enrollments": 1,
+    "evidence_class": "NOT_REAL_EVIDENCE",
+    "evidence_origin": "ACTIVATION_SIMULATION",
+    "observations": 2,
+    "outcomes": 1,
+    "protected": {
+      "PIT_OBSERVED_REAL_SAMPLES": 0,
+      "REAL_SHADOW_OBSERVATIONS": 0,
+      "V4_16_ACCEPTED_HEAD": "NOT_CREATED",
+      "bindings": [
+        {
+          "bytes": 15303,
+          "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+          "sha256": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0"
+        },
+        {
+          "bytes": 16890,
+          "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+          "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+        },
+        {
+          "bytes": 4778,
+          "path": "data/v4/V4_15_ACCEPTED_HEAD.json",
+          "sha256": "a3480dfc7e1d7b68656ea78e6ed68eb93c3381db9c099b8a6e0cb3a84c9d1d4d"
+        },
+        {
+          "bytes": 832,
+          "path": "config/v4_16_runtime_activation_authority_v1.json",
+          "sha256": "88a8b01a66b0e17cd0a4eb009822a41be018885cdd9f59613a7bbd6b9ac28b59"
+        },
+        {
+          "bytes": 10644,
+          "path": "migrations/v4_16_r23_shadow_v1.sql",
+          "sha256": "9ad5b30db8bc7d8fb4df052132719a71af03d5fcb301fb7fa8b5d5e37c5d32d2"
+        }
+      ],
+      "committed_authority": {
+        "bytes": 1190,
+        "path": "config/v4_16_runtime_activation_authority_v2.json",
+        "sha256": "b2a80300ae5020f946d0867e2784fd64c621ce70d495b68c62a173a1d5cbd7c4"
+      }
+    },
+    "publications": 2,
+    "required_slot_field_count": 18,
+    "rollback": true,
+    "status": "PASS_LOCAL"
+  },
+  "real_shadow_authorized": false,
+  "runtime_authorized": false,
+  "status": "PASS_LOCAL",
+  "writer_imported": false
+}

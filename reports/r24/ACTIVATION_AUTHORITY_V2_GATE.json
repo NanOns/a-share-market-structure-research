@@ -1,0 +1,78 @@
+{
+  "NEXT": "STOP_WAIT_R24_INDEPENDENT_EXTERNAL_AUDIT",
+  "authority": {
+    "bytes": 1190,
+    "path": "config/v4_16_runtime_activation_authority_v2.json",
+    "sha256": "b2a80300ae5020f946d0867e2784fd64c621ce70d495b68c62a173a1d5cbd7c4"
+  },
+  "disabled_before_consumption_cases": [
+    {
+      "before_consumption": true,
+      "case": "A01",
+      "rejection": "REAL_SHADOW_NOT_AUTHORIZED_BEFORE_CONSUMPTION",
+      "status": "PASS_LOCAL"
+    },
+    {
+      "before_consumption": true,
+      "case": "A02",
+      "context": {
+        "base": "reports/r24/activation_simulation/7168109386c741b39bb28514ceb1168c",
+        "database": "reports/r24/activation_simulation/7168109386c741b39bb28514ceb1168c/successor.sqlite",
+        "manifest": "reports/r24/activation_simulation/7168109386c741b39bb28514ceb1168c/dependencies.json",
+        "request": {
+          "accepted_at": "2026-09-28T14:00:00Z",
+          "capabilities": [
+            "PURE_CORE_STOCK"
+          ],
+          "expected_head": null,
+          "model_contract_id": "RESEARCH_STATE_V1",
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "revision": 1,
+          "state_lineage_id": "R24_SIMULATION_LINEAGE",
+          "trade_date": "2026-09-28"
+        }
+      },
+      "database_created": false,
+      "manifest_binding": {
+        "bytes": 10456,
+        "path": "reports/r24/activation_simulation/7168109386c741b39bb28514ceb1168c/dependencies.json",
+        "sha256": "fb8c4074631c2902ba5f9cbdf1eef378ac29d8fbbbc06a4e08b7941f2d2615d1"
+      },
+      "rejection": "EXACT_DEPENDENCY_MISMATCH",
+      "status": "PASS_LOCAL"
+    },
+    {
+      "before_consumption": true,
+      "case": "A20",
+      "rejection": "REAL_SHADOW_NOT_AUTHORIZED_BEFORE_CONSUMPTION",
+      "status": "PASS_LOCAL"
+    }
+  ],
+  "execution_baseline": "b6b3105e713187462f49054e62fa70df8b9bd292",
+  "external_acceptance": "NOT_GRANTED",
+  "real_shadow_authorized": false,
+  "required_grant_fields": [
+    "authority_id",
+    "effective_trade_date",
+    "effective_from",
+    "model_contract_id",
+    "parameter_set_id",
+    "state_lineage_id",
+    "capability_scope",
+    "clock",
+    "slot",
+    "runtime_dependency_contract_id",
+    "dependency_set_digest",
+    "storage",
+    "storage_identity",
+    "source_adapters",
+    "source_authority",
+    "rollback_identity",
+    "expected_prior_activation_head",
+    "initialization_boundary",
+    "predecessor",
+    "first_trade_date"
+  ],
+  "runtime_authorized": false,
+  "status": "PASS_LOCAL"
+}

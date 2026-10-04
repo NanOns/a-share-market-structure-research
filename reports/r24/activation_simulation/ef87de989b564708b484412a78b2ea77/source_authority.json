@@ -1,0 +1,50 @@
+{
+  "adapter_id": "ACCEPTED_LOCAL_EXACT_BYTES_V1",
+  "contract_id": "R24_SIM_SOURCE_AUTHORITY_V1",
+  "environment_class": "ACTIVATION_SIMULATION",
+  "future_binding": {
+    "bytes": 2494,
+    "path": "config/v4_16_r23_future_fixture_v1.json",
+    "sha256": "26073d53e47192ea20b954a742e28a8762f2b4638ee7f5e9cd1e09c15484512a"
+  },
+  "owner_heads": {
+    "v4_10": {
+      "byte_count": 5102,
+      "path": "data/v4/V4_10_ACCEPTED_HEAD.json",
+      "sha256": "ad9fc4643652feb3684223817f2e9c300167d128e2e8a07179e86f65094fd1e1"
+    },
+    "v4_11": {
+      "bytes": 14090,
+      "path": "data/v4/V4_11_ACCEPTED_HEAD.json",
+      "sha256": "d8d96dce559eb968e6446f0626766980f6fb045fca1219e3e01fcd0a980b9928"
+    },
+    "v4_12": {
+      "bytes": 796484,
+      "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+      "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+    },
+    "v4_13": {
+      "bytes": 11314,
+      "path": "data/v4/V4_13_ACCEPTED_HEAD_AMENDED_R1.json",
+      "sha256": "98f222ba4d62318ee900a69b8cad7c25359a30bcc7097efe0a55b8ffea09aa65"
+    },
+    "v4_14": {
+      "bytes": 4178,
+      "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+      "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+    }
+  },
+  "sources": {
+    "OWNER_OUTPUT": {
+      "binding": {
+        "bytes": 1215,
+        "path": "reports/r24/activation_simulation/ef87de989b564708b484412a78b2ea77/owner.json",
+        "sha256": "7c4cffd1b12df808f5d6a4949eda23c6f3e13939edb8bdd8f5a1e5c3935f9375"
+      },
+      "provider": "DETERMINISTIC_SIMULATION",
+      "source_identity": "R24_SIM_OWNER_OUTPUT",
+      "source_revision": "R1",
+      "target_trade_date": "2026-09-28"
+    }
+  }
+}

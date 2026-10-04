@@ -1,7 +1,7 @@
-"""Disabled V4-16 engineering orchestration. No provider/network/live scheduler.
+"""V4-16 engineering orchestration and gated R24 real entry dispatch.
 
 Every database is isolated; durable artifacts have SHADOW_V4 namespace and
-ENGINEERING_FIXTURE origin. Real activation fails before opening a database.
+ENGINEERING_FIXTURE origin. The committed real authority rejects before storage.
 Accepted business semantics are delegated to exact V4-15 implementations.
 """
 import copy,hashlib,json,sqlite3
@@ -25,11 +25,16 @@ def exact(root,binding):
 
 class ShadowRuntimeController:
     MODES={'CONTRACT_TEST','ENGINEERING_FIXTURE','DRY_RUN_NO_ACCEPT','REAL_SHADOW'}
+    def __new__(cls, root, mode='ENGINEERING_FIXTURE', **kwargs):
+        if mode == 'REAL_SHADOW':
+            from scripts.v4_16_real_shadow_runtime import RealShadowController
+            return RealShadowController(root, **kwargs)
+        return super().__new__(cls)
     def __init__(self,root,mode='ENGINEERING_FIXTURE'):
         self.root=Path(root).resolve();check(mode in self.MODES,'UNKNOWN_MODE')
         self.mode=mode
-        # REAL_SHADOW is physically unavailable in this candidate, even if a
-        # caller edits the disabled config or sets environment flags.
+        # Real entry is dispatched by __new__ to the separately contracted
+        # successor. This initializer owns only the historical engineering path.
         check(mode!='REAL_SHADOW','REAL_SHADOW_NOT_AUTHORIZED_BEFORE_CONSUMPTION')
         self.deps=json.loads((self.root/'config/v4_16_runtime_dependencies_v1.json').read_bytes())
         self.activation=json.loads(exact(self.root,self.deps['activation']))

@@ -1,0 +1,48 @@
+{
+  "PIT_OBSERVED_REAL_SAMPLES": 0,
+  "REAL_SHADOW_OBSERVATIONS": 0,
+  "V4_16": false,
+  "allowed_capabilities": [
+    "PURE_CORE_STOCK"
+  ],
+  "authority_id": "R24_DISABLED_CANDIDATE",
+  "blocked_capabilities": [
+    "A04_H21_CONSUMER",
+    "A04_HISTORICAL_AMOUNT_A",
+    "A08_CURRENT_RUNTIME"
+  ],
+  "contract_id": "V4_16_RUNTIME_ACTIVATION_AUTHORITY_V2",
+  "environment_class": "REAL",
+  "environment_flags_grant": false,
+  "external_acceptance": null,
+  "focus": false,
+  "grant": null,
+  "production": false,
+  "real_shadow_authorized": false,
+  "required_grant_fields": [
+    "authority_id",
+    "effective_trade_date",
+    "effective_from",
+    "model_contract_id",
+    "parameter_set_id",
+    "state_lineage_id",
+    "capability_scope",
+    "clock",
+    "slot",
+    "runtime_dependency_contract_id",
+    "dependency_set_digest",
+    "storage",
+    "storage_identity",
+    "source_adapters",
+    "source_authority",
+    "rollback_identity",
+    "expected_prior_activation_head",
+    "initialization_boundary",
+    "predecessor",
+    "first_trade_date"
+  ],
+  "runtime_authorized": false,
+  "shadow": false,
+  "status": "ACTIVATION_CAPABLE_DISABLED_CANDIDATE",
+  "version": "2.0.0"
+}

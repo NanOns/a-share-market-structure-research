@@ -1,0 +1,360 @@
+{
+  "contract": {
+    "bytes": 255656,
+    "contract_id": "V4_22_INDEPENDENT_AUDIT_CONTRACT_V1",
+    "path": "config/v4_22_independent_audit_contract_v1.json",
+    "sha256": "5bbe13866852439c7f86a5df0ffd7887085b8c5922b4b1c3ba122daa9287d8ef"
+  },
+  "domains": [
+    {
+      "authority_bindings": [
+        {
+          "bytes": 16890,
+          "contract_id": "V4_DATA_ACCEPTED_HEAD_V2",
+          "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+          "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+        },
+        {
+          "bytes": 15303,
+          "contract_id": "V4_STAGE_ACCEPTED_HEAD_V1",
+          "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+          "sha256": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0"
+        }
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "domain": "A22-DATA",
+      "optional": false,
+      "required_evidence_classes": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK"
+      ]
+    },
+    {
+      "authority_bindings": [
+        {
+          "bytes": 4178,
+          "contract_id": "V4_14_ACCEPTED_HEAD_V1",
+          "path": "data/v4/V4_14_ACCEPTED_HEAD.json",
+          "sha256": "830d68d2139fd7f1b1adaf426f23b7d9ee1f4ac463763c5bd0bd35c5b4a58589"
+        },
+        {
+          "bytes": 4778,
+          "contract_id": "V4_15_ACCEPTED_HEAD_V1",
+          "path": "data/v4/V4_15_ACCEPTED_HEAD.json",
+          "sha256": "a3480dfc7e1d7b68656ea78e6ed68eb93c3381db9c099b8a6e0cb3a84c9d1d4d"
+        }
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "domain": "A22-ALGORITHM",
+      "optional": false,
+      "required_evidence_classes": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK"
+      ]
+    },
+    {
+      "authority_bindings": [
+        {
+          "bytes": 2642,
+          "contract_id": "V4_16_CLOCK_CONTRACT_V1",
+          "path": "config/v4_16_clock_contract_v1.json",
+          "sha256": "3a4dce84edf18afe36749b524a1eff3af569b6e33c4b66eb598e76f583d9821a"
+        },
+        {
+          "bytes": 8464,
+          "contract_id": "V4_16_OBSERVATION_SLOT_CONTRACT_V2",
+          "path": "config/v4_16_observation_slot_contract_v2.json",
+          "sha256": "47e0c0bc36373f0d63557769c428f64a422ea434435b9319ce144d43b22bea15"
+        },
+        {
+          "bytes": 2053,
+          "contract_id": "V4_16_GO_FORWARD_INPUT_AUTHORITY_V1",
+          "path": "config/v4_16_go_forward_input_authority_v1.json",
+          "sha256": "660d36616e0e28db5ed541e8f6111ccfe48140bb3e88c8a14647d67b26e32a07"
+        },
+        {
+          "bytes": 1224,
+          "path": "reports/r25/DAILY_INPUT_REAL_GATE.json",
+          "sha256": "77faa1d4aecec381a281d953dac14029f29e94f2acd8ecfda740dd37d21c7e4f"
+        }
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "domain": "A22-PUBLICATION",
+      "optional": false,
+      "required_evidence_classes": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK"
+      ]
+    },
+    {
+      "authority_bindings": [
+        {
+          "bytes": 8931,
+          "contract_id": "V4_16_SHADOW_HEALTH_CONTRACT_V1",
+          "path": "config/v4_16_shadow_health_contract_v1.json",
+          "sha256": "c7238a0b8b25679ff2c5633384c65134c1010dda7d895f1b360e22b4af1dd81b"
+        },
+        {
+          "bytes": 30858,
+          "contract_id": "V4_19_FOCUS_SOURCE_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_19_focus_source_cutover_contract_v1.json",
+          "sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd"
+        }
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "domain": "A22-SHADOW",
+      "optional": false,
+      "required_evidence_classes": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK"
+      ]
+    },
+    {
+      "authority_bindings": [
+        {
+          "bytes": 15386,
+          "contract_id": "V4_17_SHADOW_UI_V1",
+          "path": "config/v4_17_shadow_ui_contract_v1.json",
+          "sha256": "c2e9d5eebdda99845ed2560c751572f76d653e0c6ef640d2e76f429ba71cdcd1"
+        },
+        {
+          "bytes": 31339,
+          "contract_id": "V4_20_DEFAULT_UI_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_20_default_ui_cutover_contract_v1.json",
+          "sha256": "a2378c9d4baea3a8781b0ed0546b83932dc7b2494bd69c41cd3ead4de0e722fe"
+        }
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "domain": "A22-UI",
+      "optional": false,
+      "required_evidence_classes": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK"
+      ]
+    },
+    {
+      "authority_bindings": [
+        {
+          "bytes": 26522,
+          "contract_id": "V4_21_CONTINUED_FORWARD_OBSERVATION_CONTRACT_V1",
+          "path": "config/v4_21_continued_forward_observation_contract_v1.json",
+          "sha256": "45e4d0d16c30c6fb12c24a7d798624bcb1d8c17f1e1e671199914c5b6e40f510"
+        },
+        {
+          "bytes": 2081,
+          "contract_id": "COHORT_V1",
+          "path": "config/v4_15_cohort_contract_v1.json",
+          "sha256": "5d4dee2e914ed541227cf54deb5676be3495713ea754ce6b78b078c643bacc8b"
+        },
+        {
+          "bytes": 1381,
+          "contract_id": "DUE_PLANNER_V1",
+          "path": "config/v4_15_due_planner_contract_v1.json",
+          "sha256": "848a6bf0f0d78b7784c6c7db34e20da31f1e20be0aa1e5c91bae2f28a1b50a2f"
+        },
+        {
+          "bytes": 1557,
+          "contract_id": "OUTCOME_STATUS_V1",
+          "path": "config/v4_15_outcome_status_contract_v1.json",
+          "sha256": "ce2507c95e06d821c90d01a3e4d737c1476f542ffd6d9a8c2dc495b4330c093e"
+        },
+        {
+          "bytes": 1401,
+          "contract_id": "OUTCOME_REVISION_V1",
+          "path": "config/v4_15_settlement_revision_contract_v1.json",
+          "sha256": "08e2d13964e9defefdac56f53c2b73bf7cc31963d946784e6f3d77c985c576dd"
+        }
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "domain": "A22-FORWARD",
+      "optional": false,
+      "required_evidence_classes": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK"
+      ]
+    },
+    {
+      "authority_bindings": [
+        {
+          "bytes": 175188,
+          "contract_id": "V4_18_MIGRATION_REPLAY_CONTRACT_V1",
+          "path": "config/v4_18_migration_replay_contract_v1.json",
+          "sha256": "186d53ae5e4281ce1ff83609326673610f390ebc03061a947b5ae83dda996a02"
+        }
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "domain": "A22-MIGRATION",
+      "optional": false,
+      "required_evidence_classes": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK"
+      ]
+    },
+    {
+      "authority_bindings": [
+        {
+          "bytes": 30858,
+          "contract_id": "V4_19_FOCUS_SOURCE_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_19_focus_source_cutover_contract_v1.json",
+          "sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd"
+        },
+        {
+          "bytes": 31339,
+          "contract_id": "V4_20_DEFAULT_UI_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_20_default_ui_cutover_contract_v1.json",
+          "sha256": "a2378c9d4baea3a8781b0ed0546b83932dc7b2494bd69c41cd3ead4de0e722fe"
+        }
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "domain": "A22-CUTOVER",
+      "optional": false,
+      "required_evidence_classes": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK"
+      ]
+    },
+    {
+      "authority_bindings": [
+        {
+          "bytes": 175188,
+          "contract_id": "V4_18_MIGRATION_REPLAY_CONTRACT_V1",
+          "path": "config/v4_18_migration_replay_contract_v1.json",
+          "sha256": "186d53ae5e4281ce1ff83609326673610f390ebc03061a947b5ae83dda996a02"
+        },
+        {
+          "bytes": 30858,
+          "contract_id": "V4_19_FOCUS_SOURCE_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_19_focus_source_cutover_contract_v1.json",
+          "sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd"
+        },
+        {
+          "bytes": 31339,
+          "contract_id": "V4_20_DEFAULT_UI_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_20_default_ui_cutover_contract_v1.json",
+          "sha256": "a2378c9d4baea3a8781b0ed0546b83932dc7b2494bd69c41cd3ead4de0e722fe"
+        }
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "domain": "A22-ROLLBACK",
+      "optional": false,
+      "required_evidence_classes": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK"
+      ]
+    },
+    {
+      "authority_bindings": [
+        {
+          "bytes": 8310,
+          "path": "docs/evidence/r31/V4_R30R1_V4_21_NATIVE_SESSION_REPAIR_FINAL_INDEPENDENT_EXTERNAL_AUDIT_R1_20261004.md",
+          "sha256": "ce01633c65782a073112b0646bb72b883eef5dc4d92e530b736b9a397e22bc2f"
+        },
+        {
+          "bytes": 224998,
+          "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+          "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+        }
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "domain": "A22-GOVERNANCE",
+      "optional": false,
+      "required_evidence_classes": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK"
+      ]
+    },
+    {
+      "authority_bindings": [
+        {
+          "bytes": 3472,
+          "path": "reports/r30r1/CLEAN_REGRESSION.json",
+          "sha256": "8df72cc493881069741842f87c096e5f7a0adca65222e6efd40d2d277f5068ab"
+        }
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "domain": "A22-REGRESSION",
+      "optional": false,
+      "required_evidence_classes": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK"
+      ]
+    }
+  ]
+}

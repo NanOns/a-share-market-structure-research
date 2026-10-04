@@ -1,0 +1,558 @@
+{
+  "items": [
+    {
+      "accepted_fact_scope": "FUTURE_RUNTIME_AUDIT",
+      "audit_execution": "NOT_RUN_R31_CONTRACT_DESIGN_ONLY",
+      "authority": [
+        {
+          "bytes": 175188,
+          "contract_id": "V4_18_MIGRATION_REPLAY_CONTRACT_V1",
+          "path": "config/v4_18_migration_replay_contract_v1.json",
+          "sha256": "186d53ae5e4281ce1ff83609326673610f390ebc03061a947b5ae83dda996a02"
+        },
+        {
+          "bytes": 30858,
+          "contract_id": "V4_19_FOCUS_SOURCE_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_19_focus_source_cutover_contract_v1.json",
+          "sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd"
+        },
+        {
+          "bytes": 31339,
+          "contract_id": "V4_20_DEFAULT_UI_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_20_default_ui_cutover_contract_v1.json",
+          "sha256": "a2378c9d4baea3a8781b0ed0546b83932dc7b2494bd69c41cd3ead4de0e722fe"
+        }
+      ],
+      "blocking_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "check": "capability-scoped rollback",
+      "current_status": "WAIT_REAL_EVIDENCE",
+      "disposition_rule": "PASS_ONLY_AFTER_EXACT_SCOPED_INDEPENDENT_AUDIT; CONTRACT_DESIGN_OR_PRIOR_STAGE_ACCEPTANCE_IS_NOT_THIS_AUDIT",
+      "domain": "A22-ROLLBACK",
+      "evidence_refs": [
+        {
+          "bytes": 175188,
+          "contract_id": "V4_18_MIGRATION_REPLAY_CONTRACT_V1",
+          "path": "config/v4_18_migration_replay_contract_v1.json",
+          "sha256": "186d53ae5e4281ce1ff83609326673610f390ebc03061a947b5ae83dda996a02"
+        },
+        {
+          "bytes": 30858,
+          "contract_id": "V4_19_FOCUS_SOURCE_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_19_focus_source_cutover_contract_v1.json",
+          "sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd"
+        },
+        {
+          "bytes": 31339,
+          "contract_id": "V4_20_DEFAULT_UI_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_20_default_ui_cutover_contract_v1.json",
+          "sha256": "a2378c9d4baea3a8781b0ed0546b83932dc7b2494bd69c41cd3ead4de0e722fe"
+        }
+      ],
+      "item_id": "A22-ROLLBACK-01",
+      "required_evidence": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK",
+        "REAL_PIT_RUNTIME_RECEIPT"
+      ]
+    },
+    {
+      "accepted_fact_scope": "FUTURE_RUNTIME_AUDIT",
+      "audit_execution": "NOT_RUN_R31_CONTRACT_DESIGN_ONLY",
+      "authority": [
+        {
+          "bytes": 175188,
+          "contract_id": "V4_18_MIGRATION_REPLAY_CONTRACT_V1",
+          "path": "config/v4_18_migration_replay_contract_v1.json",
+          "sha256": "186d53ae5e4281ce1ff83609326673610f390ebc03061a947b5ae83dda996a02"
+        },
+        {
+          "bytes": 30858,
+          "contract_id": "V4_19_FOCUS_SOURCE_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_19_focus_source_cutover_contract_v1.json",
+          "sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd"
+        },
+        {
+          "bytes": 31339,
+          "contract_id": "V4_20_DEFAULT_UI_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_20_default_ui_cutover_contract_v1.json",
+          "sha256": "a2378c9d4baea3a8781b0ed0546b83932dc7b2494bd69c41cd3ead4de0e722fe"
+        }
+      ],
+      "blocking_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "check": "route CAS",
+      "current_status": "WAIT_REAL_EVIDENCE",
+      "disposition_rule": "PASS_ONLY_AFTER_EXACT_SCOPED_INDEPENDENT_AUDIT; CONTRACT_DESIGN_OR_PRIOR_STAGE_ACCEPTANCE_IS_NOT_THIS_AUDIT",
+      "domain": "A22-ROLLBACK",
+      "evidence_refs": [
+        {
+          "bytes": 175188,
+          "contract_id": "V4_18_MIGRATION_REPLAY_CONTRACT_V1",
+          "path": "config/v4_18_migration_replay_contract_v1.json",
+          "sha256": "186d53ae5e4281ce1ff83609326673610f390ebc03061a947b5ae83dda996a02"
+        },
+        {
+          "bytes": 30858,
+          "contract_id": "V4_19_FOCUS_SOURCE_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_19_focus_source_cutover_contract_v1.json",
+          "sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd"
+        },
+        {
+          "bytes": 31339,
+          "contract_id": "V4_20_DEFAULT_UI_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_20_default_ui_cutover_contract_v1.json",
+          "sha256": "a2378c9d4baea3a8781b0ed0546b83932dc7b2494bd69c41cd3ead4de0e722fe"
+        }
+      ],
+      "item_id": "A22-ROLLBACK-02",
+      "required_evidence": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK",
+        "REAL_PIT_RUNTIME_RECEIPT"
+      ]
+    },
+    {
+      "accepted_fact_scope": "FUTURE_RUNTIME_AUDIT",
+      "audit_execution": "NOT_RUN_R31_CONTRACT_DESIGN_ONLY",
+      "authority": [
+        {
+          "bytes": 175188,
+          "contract_id": "V4_18_MIGRATION_REPLAY_CONTRACT_V1",
+          "path": "config/v4_18_migration_replay_contract_v1.json",
+          "sha256": "186d53ae5e4281ce1ff83609326673610f390ebc03061a947b5ae83dda996a02"
+        },
+        {
+          "bytes": 30858,
+          "contract_id": "V4_19_FOCUS_SOURCE_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_19_focus_source_cutover_contract_v1.json",
+          "sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd"
+        },
+        {
+          "bytes": 31339,
+          "contract_id": "V4_20_DEFAULT_UI_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_20_default_ui_cutover_contract_v1.json",
+          "sha256": "a2378c9d4baea3a8781b0ed0546b83932dc7b2494bd69c41cd3ead4de0e722fe"
+        }
+      ],
+      "blocking_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "check": "accepted history preservation",
+      "current_status": "WAIT_REAL_EVIDENCE",
+      "disposition_rule": "PASS_ONLY_AFTER_EXACT_SCOPED_INDEPENDENT_AUDIT; CONTRACT_DESIGN_OR_PRIOR_STAGE_ACCEPTANCE_IS_NOT_THIS_AUDIT",
+      "domain": "A22-ROLLBACK",
+      "evidence_refs": [
+        {
+          "bytes": 175188,
+          "contract_id": "V4_18_MIGRATION_REPLAY_CONTRACT_V1",
+          "path": "config/v4_18_migration_replay_contract_v1.json",
+          "sha256": "186d53ae5e4281ce1ff83609326673610f390ebc03061a947b5ae83dda996a02"
+        },
+        {
+          "bytes": 30858,
+          "contract_id": "V4_19_FOCUS_SOURCE_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_19_focus_source_cutover_contract_v1.json",
+          "sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd"
+        },
+        {
+          "bytes": 31339,
+          "contract_id": "V4_20_DEFAULT_UI_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_20_default_ui_cutover_contract_v1.json",
+          "sha256": "a2378c9d4baea3a8781b0ed0546b83932dc7b2494bd69c41cd3ead4de0e722fe"
+        }
+      ],
+      "item_id": "A22-ROLLBACK-03",
+      "required_evidence": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK",
+        "REAL_PIT_RUNTIME_RECEIPT"
+      ]
+    },
+    {
+      "accepted_fact_scope": "FUTURE_RUNTIME_AUDIT",
+      "audit_execution": "NOT_RUN_R31_CONTRACT_DESIGN_ONLY",
+      "authority": [
+        {
+          "bytes": 175188,
+          "contract_id": "V4_18_MIGRATION_REPLAY_CONTRACT_V1",
+          "path": "config/v4_18_migration_replay_contract_v1.json",
+          "sha256": "186d53ae5e4281ce1ff83609326673610f390ebc03061a947b5ae83dda996a02"
+        },
+        {
+          "bytes": 30858,
+          "contract_id": "V4_19_FOCUS_SOURCE_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_19_focus_source_cutover_contract_v1.json",
+          "sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd"
+        },
+        {
+          "bytes": 31339,
+          "contract_id": "V4_20_DEFAULT_UI_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_20_default_ui_cutover_contract_v1.json",
+          "sha256": "a2378c9d4baea3a8781b0ed0546b83932dc7b2494bd69c41cd3ead4de0e722fe"
+        }
+      ],
+      "blocking_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "check": "pending settlement preservation",
+      "current_status": "WAIT_REAL_EVIDENCE",
+      "disposition_rule": "PASS_ONLY_AFTER_EXACT_SCOPED_INDEPENDENT_AUDIT; CONTRACT_DESIGN_OR_PRIOR_STAGE_ACCEPTANCE_IS_NOT_THIS_AUDIT",
+      "domain": "A22-ROLLBACK",
+      "evidence_refs": [
+        {
+          "bytes": 175188,
+          "contract_id": "V4_18_MIGRATION_REPLAY_CONTRACT_V1",
+          "path": "config/v4_18_migration_replay_contract_v1.json",
+          "sha256": "186d53ae5e4281ce1ff83609326673610f390ebc03061a947b5ae83dda996a02"
+        },
+        {
+          "bytes": 30858,
+          "contract_id": "V4_19_FOCUS_SOURCE_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_19_focus_source_cutover_contract_v1.json",
+          "sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd"
+        },
+        {
+          "bytes": 31339,
+          "contract_id": "V4_20_DEFAULT_UI_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_20_default_ui_cutover_contract_v1.json",
+          "sha256": "a2378c9d4baea3a8781b0ed0546b83932dc7b2494bd69c41cd3ead4de0e722fe"
+        }
+      ],
+      "item_id": "A22-ROLLBACK-04",
+      "required_evidence": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK",
+        "REAL_PIT_RUNTIME_RECEIPT"
+      ]
+    },
+    {
+      "accepted_fact_scope": "FUTURE_RUNTIME_AUDIT",
+      "audit_execution": "NOT_RUN_R31_CONTRACT_DESIGN_ONLY",
+      "authority": [
+        {
+          "bytes": 175188,
+          "contract_id": "V4_18_MIGRATION_REPLAY_CONTRACT_V1",
+          "path": "config/v4_18_migration_replay_contract_v1.json",
+          "sha256": "186d53ae5e4281ce1ff83609326673610f390ebc03061a947b5ae83dda996a02"
+        },
+        {
+          "bytes": 30858,
+          "contract_id": "V4_19_FOCUS_SOURCE_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_19_focus_source_cutover_contract_v1.json",
+          "sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd"
+        },
+        {
+          "bytes": 31339,
+          "contract_id": "V4_20_DEFAULT_UI_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_20_default_ui_cutover_contract_v1.json",
+          "sha256": "a2378c9d4baea3a8781b0ed0546b83932dc7b2494bd69c41cd3ead4de0e722fe"
+        }
+      ],
+      "blocking_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "check": "user pin/manual work preservation",
+      "current_status": "WAIT_REAL_EVIDENCE",
+      "disposition_rule": "PASS_ONLY_AFTER_EXACT_SCOPED_INDEPENDENT_AUDIT; CONTRACT_DESIGN_OR_PRIOR_STAGE_ACCEPTANCE_IS_NOT_THIS_AUDIT",
+      "domain": "A22-ROLLBACK",
+      "evidence_refs": [
+        {
+          "bytes": 175188,
+          "contract_id": "V4_18_MIGRATION_REPLAY_CONTRACT_V1",
+          "path": "config/v4_18_migration_replay_contract_v1.json",
+          "sha256": "186d53ae5e4281ce1ff83609326673610f390ebc03061a947b5ae83dda996a02"
+        },
+        {
+          "bytes": 30858,
+          "contract_id": "V4_19_FOCUS_SOURCE_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_19_focus_source_cutover_contract_v1.json",
+          "sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd"
+        },
+        {
+          "bytes": 31339,
+          "contract_id": "V4_20_DEFAULT_UI_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_20_default_ui_cutover_contract_v1.json",
+          "sha256": "a2378c9d4baea3a8781b0ed0546b83932dc7b2494bd69c41cd3ead4de0e722fe"
+        }
+      ],
+      "item_id": "A22-ROLLBACK-05",
+      "required_evidence": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK",
+        "REAL_PIT_RUNTIME_RECEIPT"
+      ]
+    },
+    {
+      "accepted_fact_scope": "FUTURE_RUNTIME_AUDIT",
+      "audit_execution": "NOT_RUN_R31_CONTRACT_DESIGN_ONLY",
+      "authority": [
+        {
+          "bytes": 175188,
+          "contract_id": "V4_18_MIGRATION_REPLAY_CONTRACT_V1",
+          "path": "config/v4_18_migration_replay_contract_v1.json",
+          "sha256": "186d53ae5e4281ce1ff83609326673610f390ebc03061a947b5ae83dda996a02"
+        },
+        {
+          "bytes": 30858,
+          "contract_id": "V4_19_FOCUS_SOURCE_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_19_focus_source_cutover_contract_v1.json",
+          "sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd"
+        },
+        {
+          "bytes": 31339,
+          "contract_id": "V4_20_DEFAULT_UI_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_20_default_ui_cutover_contract_v1.json",
+          "sha256": "a2378c9d4baea3a8781b0ed0546b83932dc7b2494bd69c41cd3ead4de0e722fe"
+        }
+      ],
+      "blocking_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "check": "Shadow/Production evidence retention",
+      "current_status": "WAIT_REAL_EVIDENCE",
+      "disposition_rule": "PASS_ONLY_AFTER_EXACT_SCOPED_INDEPENDENT_AUDIT; CONTRACT_DESIGN_OR_PRIOR_STAGE_ACCEPTANCE_IS_NOT_THIS_AUDIT",
+      "domain": "A22-ROLLBACK",
+      "evidence_refs": [
+        {
+          "bytes": 175188,
+          "contract_id": "V4_18_MIGRATION_REPLAY_CONTRACT_V1",
+          "path": "config/v4_18_migration_replay_contract_v1.json",
+          "sha256": "186d53ae5e4281ce1ff83609326673610f390ebc03061a947b5ae83dda996a02"
+        },
+        {
+          "bytes": 30858,
+          "contract_id": "V4_19_FOCUS_SOURCE_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_19_focus_source_cutover_contract_v1.json",
+          "sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd"
+        },
+        {
+          "bytes": 31339,
+          "contract_id": "V4_20_DEFAULT_UI_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_20_default_ui_cutover_contract_v1.json",
+          "sha256": "a2378c9d4baea3a8781b0ed0546b83932dc7b2494bd69c41cd3ead4de0e722fe"
+        }
+      ],
+      "item_id": "A22-ROLLBACK-06",
+      "required_evidence": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK",
+        "REAL_PIT_RUNTIME_RECEIPT"
+      ]
+    },
+    {
+      "accepted_fact_scope": "FUTURE_RUNTIME_AUDIT",
+      "audit_execution": "NOT_RUN_R31_CONTRACT_DESIGN_ONLY",
+      "authority": [
+        {
+          "bytes": 175188,
+          "contract_id": "V4_18_MIGRATION_REPLAY_CONTRACT_V1",
+          "path": "config/v4_18_migration_replay_contract_v1.json",
+          "sha256": "186d53ae5e4281ce1ff83609326673610f390ebc03061a947b5ae83dda996a02"
+        },
+        {
+          "bytes": 30858,
+          "contract_id": "V4_19_FOCUS_SOURCE_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_19_focus_source_cutover_contract_v1.json",
+          "sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd"
+        },
+        {
+          "bytes": 31339,
+          "contract_id": "V4_20_DEFAULT_UI_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_20_default_ui_cutover_contract_v1.json",
+          "sha256": "a2378c9d4baea3a8781b0ed0546b83932dc7b2494bd69c41cd3ead4de0e722fe"
+        }
+      ],
+      "blocking_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "check": "Legacy recovery path",
+      "current_status": "WAIT_REAL_EVIDENCE",
+      "disposition_rule": "PASS_ONLY_AFTER_EXACT_SCOPED_INDEPENDENT_AUDIT; CONTRACT_DESIGN_OR_PRIOR_STAGE_ACCEPTANCE_IS_NOT_THIS_AUDIT",
+      "domain": "A22-ROLLBACK",
+      "evidence_refs": [
+        {
+          "bytes": 175188,
+          "contract_id": "V4_18_MIGRATION_REPLAY_CONTRACT_V1",
+          "path": "config/v4_18_migration_replay_contract_v1.json",
+          "sha256": "186d53ae5e4281ce1ff83609326673610f390ebc03061a947b5ae83dda996a02"
+        },
+        {
+          "bytes": 30858,
+          "contract_id": "V4_19_FOCUS_SOURCE_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_19_focus_source_cutover_contract_v1.json",
+          "sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd"
+        },
+        {
+          "bytes": 31339,
+          "contract_id": "V4_20_DEFAULT_UI_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_20_default_ui_cutover_contract_v1.json",
+          "sha256": "a2378c9d4baea3a8781b0ed0546b83932dc7b2494bd69c41cd3ead4de0e722fe"
+        }
+      ],
+      "item_id": "A22-ROLLBACK-07",
+      "required_evidence": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK",
+        "REAL_PIT_RUNTIME_RECEIPT"
+      ]
+    },
+    {
+      "accepted_fact_scope": "FUTURE_RUNTIME_AUDIT",
+      "audit_execution": "NOT_RUN_R31_CONTRACT_DESIGN_ONLY",
+      "authority": [
+        {
+          "bytes": 175188,
+          "contract_id": "V4_18_MIGRATION_REPLAY_CONTRACT_V1",
+          "path": "config/v4_18_migration_replay_contract_v1.json",
+          "sha256": "186d53ae5e4281ce1ff83609326673610f390ebc03061a947b5ae83dda996a02"
+        },
+        {
+          "bytes": 30858,
+          "contract_id": "V4_19_FOCUS_SOURCE_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_19_focus_source_cutover_contract_v1.json",
+          "sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd"
+        },
+        {
+          "bytes": 31339,
+          "contract_id": "V4_20_DEFAULT_UI_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_20_default_ui_cutover_contract_v1.json",
+          "sha256": "a2378c9d4baea3a8781b0ed0546b83932dc7b2494bd69c41cd3ead4de0e722fe"
+        }
+      ],
+      "blocking_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "check": "cutover-gap reconciliation",
+      "current_status": "WAIT_REAL_EVIDENCE",
+      "disposition_rule": "PASS_ONLY_AFTER_EXACT_SCOPED_INDEPENDENT_AUDIT; CONTRACT_DESIGN_OR_PRIOR_STAGE_ACCEPTANCE_IS_NOT_THIS_AUDIT",
+      "domain": "A22-ROLLBACK",
+      "evidence_refs": [
+        {
+          "bytes": 175188,
+          "contract_id": "V4_18_MIGRATION_REPLAY_CONTRACT_V1",
+          "path": "config/v4_18_migration_replay_contract_v1.json",
+          "sha256": "186d53ae5e4281ce1ff83609326673610f390ebc03061a947b5ae83dda996a02"
+        },
+        {
+          "bytes": 30858,
+          "contract_id": "V4_19_FOCUS_SOURCE_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_19_focus_source_cutover_contract_v1.json",
+          "sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd"
+        },
+        {
+          "bytes": 31339,
+          "contract_id": "V4_20_DEFAULT_UI_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_20_default_ui_cutover_contract_v1.json",
+          "sha256": "a2378c9d4baea3a8781b0ed0546b83932dc7b2494bd69c41cd3ead4de0e722fe"
+        }
+      ],
+      "item_id": "A22-ROLLBACK-08",
+      "required_evidence": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK",
+        "REAL_PIT_RUNTIME_RECEIPT"
+      ]
+    }
+  ],
+  "mode": "CONTRACT_DESIGN_ONLY",
+  "runtime_audit_executed": false
+}

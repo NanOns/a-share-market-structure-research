@@ -1,0 +1,98 @@
+{
+  "OPEN_10": "OPEN_NONBLOCKING_DEBT_PENDING_EXPLICIT_INDEPENDENT_EXTERNAL_DISPOSITION",
+  "V4_21_business_modified": false,
+  "positive": {
+    "actual_real_rows_written": 0,
+    "findings": [],
+    "input_sha256": "24bd9e50d2ed5e69fbfb19538330e126d3b079aa891edd1b7ef672859dafc14d",
+    "production_grant": false,
+    "scope": "INDEPENDENT_DESIGN_ORACLE_NOT_REAL_AUDIT",
+    "status": "PASS_DESIGN_ONLY"
+  },
+  "real_evidence_created": false,
+  "status": "PASS_LOCAL_INDEPENDENT_DESIGN_VECTORS",
+  "vectors": {
+    "A22-V421-REFINT-01": {
+      "acceptance": "PASS_LOCAL_DESIGN_VECTOR_ONLY",
+      "expected": "BLOCKED_AFFECTED_SCOPE",
+      "input": {
+        "events": [
+          {
+            "capability": "STOCK_CORE",
+            "evidence_lane": "SHADOW_REAL",
+            "logical_event_id": "SIM_EVENT",
+            "model_contract_id": "SIM_MODEL",
+            "parameter_digest": "SIM_PARAMETERS",
+            "state_lineage_id": "SIM_LINEAGE"
+          }
+        ],
+        "kind": "CONTRACT_DESIGN_SIMULATION",
+        "outcomes": [],
+        "sessions": []
+      },
+      "result": {
+        "actual_real_rows_written": 0,
+        "findings": [
+          {
+            "ledger": "events",
+            "partition": {
+              "capability": "STOCK_CORE",
+              "evidence_lane": "SHADOW_REAL",
+              "model_contract_id": "SIM_MODEL",
+              "parameter_digest": "SIM_PARAMETERS",
+              "state_lineage_id": "SIM_LINEAGE"
+            },
+            "reason": "ORPHAN_REAL_ROW_WITHOUT_ACCEPTED_SESSION_PARTITION",
+            "row_index": 0,
+            "vector": "A22-V421-REFINT-01"
+          }
+        ],
+        "input_sha256": "1f81e9c6b9109b7da8b4d5c24b328bdf66d867009f25952bd5fce51106dd840a",
+        "production_grant": false,
+        "scope": "INDEPENDENT_DESIGN_ORACLE_NOT_REAL_AUDIT",
+        "status": "BLOCKED_AFFECTED_SCOPE"
+      }
+    },
+    "A22-V421-REFINT-02": {
+      "acceptance": "PASS_LOCAL_DESIGN_VECTOR_ONLY",
+      "expected": "BLOCKED_AFFECTED_SCOPE",
+      "input": {
+        "events": [],
+        "kind": "CONTRACT_DESIGN_SIMULATION",
+        "outcomes": [
+          {
+            "capability": "STOCK_CORE",
+            "due_id": "SIM_DUE",
+            "evidence_lane": "SHADOW_REAL",
+            "model_contract_id": "SIM_MODEL",
+            "parameter_digest": "SIM_PARAMETERS",
+            "state_lineage_id": "SIM_LINEAGE"
+          }
+        ],
+        "sessions": []
+      },
+      "result": {
+        "actual_real_rows_written": 0,
+        "findings": [
+          {
+            "ledger": "outcomes",
+            "partition": {
+              "capability": "STOCK_CORE",
+              "evidence_lane": "SHADOW_REAL",
+              "model_contract_id": "SIM_MODEL",
+              "parameter_digest": "SIM_PARAMETERS",
+              "state_lineage_id": "SIM_LINEAGE"
+            },
+            "reason": "ORPHAN_REAL_ROW_WITHOUT_ACCEPTED_SESSION_PARTITION",
+            "row_index": 0,
+            "vector": "A22-V421-REFINT-02"
+          }
+        ],
+        "input_sha256": "07b730bb701add66c6bd3edb2cbefb5d995cb29905f99e6df4b63ab5414a8313",
+        "production_grant": false,
+        "scope": "INDEPENDENT_DESIGN_ORACLE_NOT_REAL_AUDIT",
+        "status": "BLOCKED_AFFECTED_SCOPE"
+      }
+    }
+  }
+}

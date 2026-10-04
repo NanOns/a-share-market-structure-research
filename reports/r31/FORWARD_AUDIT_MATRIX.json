@@ -1,0 +1,1308 @@
+{
+  "items": [
+    {
+      "accepted_fact_scope": "FUTURE_RUNTIME_AUDIT",
+      "audit_execution": "NOT_RUN_R31_CONTRACT_DESIGN_ONLY",
+      "authority": [
+        {
+          "bytes": 26522,
+          "contract_id": "V4_21_CONTINUED_FORWARD_OBSERVATION_CONTRACT_V1",
+          "path": "config/v4_21_continued_forward_observation_contract_v1.json",
+          "sha256": "45e4d0d16c30c6fb12c24a7d798624bcb1d8c17f1e1e671199914c5b6e40f510"
+        },
+        {
+          "bytes": 2081,
+          "contract_id": "COHORT_V1",
+          "path": "config/v4_15_cohort_contract_v1.json",
+          "sha256": "5d4dee2e914ed541227cf54deb5676be3495713ea754ce6b78b078c643bacc8b"
+        },
+        {
+          "bytes": 1381,
+          "contract_id": "DUE_PLANNER_V1",
+          "path": "config/v4_15_due_planner_contract_v1.json",
+          "sha256": "848a6bf0f0d78b7784c6c7db34e20da31f1e20be0aa1e5c91bae2f28a1b50a2f"
+        },
+        {
+          "bytes": 1557,
+          "contract_id": "OUTCOME_STATUS_V1",
+          "path": "config/v4_15_outcome_status_contract_v1.json",
+          "sha256": "ce2507c95e06d821c90d01a3e4d737c1476f542ffd6d9a8c2dc495b4330c093e"
+        },
+        {
+          "bytes": 1401,
+          "contract_id": "OUTCOME_REVISION_V1",
+          "path": "config/v4_15_settlement_revision_contract_v1.json",
+          "sha256": "08e2d13964e9defefdac56f53c2b73bf7cc31963d946784e6f3d77c985c576dd"
+        }
+      ],
+      "blocking_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "check": "evidence lanes",
+      "current_status": "WAIT_REAL_EVIDENCE",
+      "disposition_rule": "PASS_ONLY_AFTER_EXACT_SCOPED_INDEPENDENT_AUDIT; CONTRACT_DESIGN_OR_PRIOR_STAGE_ACCEPTANCE_IS_NOT_THIS_AUDIT",
+      "domain": "A22-FORWARD",
+      "evidence_refs": [
+        {
+          "bytes": 26522,
+          "contract_id": "V4_21_CONTINUED_FORWARD_OBSERVATION_CONTRACT_V1",
+          "path": "config/v4_21_continued_forward_observation_contract_v1.json",
+          "sha256": "45e4d0d16c30c6fb12c24a7d798624bcb1d8c17f1e1e671199914c5b6e40f510"
+        },
+        {
+          "bytes": 2081,
+          "contract_id": "COHORT_V1",
+          "path": "config/v4_15_cohort_contract_v1.json",
+          "sha256": "5d4dee2e914ed541227cf54deb5676be3495713ea754ce6b78b078c643bacc8b"
+        },
+        {
+          "bytes": 1381,
+          "contract_id": "DUE_PLANNER_V1",
+          "path": "config/v4_15_due_planner_contract_v1.json",
+          "sha256": "848a6bf0f0d78b7784c6c7db34e20da31f1e20be0aa1e5c91bae2f28a1b50a2f"
+        },
+        {
+          "bytes": 1557,
+          "contract_id": "OUTCOME_STATUS_V1",
+          "path": "config/v4_15_outcome_status_contract_v1.json",
+          "sha256": "ce2507c95e06d821c90d01a3e4d737c1476f542ffd6d9a8c2dc495b4330c093e"
+        },
+        {
+          "bytes": 1401,
+          "contract_id": "OUTCOME_REVISION_V1",
+          "path": "config/v4_15_settlement_revision_contract_v1.json",
+          "sha256": "08e2d13964e9defefdac56f53c2b73bf7cc31963d946784e6f3d77c985c576dd"
+        }
+      ],
+      "item_id": "A22-FORWARD-01",
+      "required_evidence": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK",
+        "REAL_PIT_RUNTIME_RECEIPT"
+      ]
+    },
+    {
+      "accepted_fact_scope": "FUTURE_RUNTIME_AUDIT",
+      "audit_execution": "NOT_RUN_R31_CONTRACT_DESIGN_ONLY",
+      "authority": [
+        {
+          "bytes": 26522,
+          "contract_id": "V4_21_CONTINUED_FORWARD_OBSERVATION_CONTRACT_V1",
+          "path": "config/v4_21_continued_forward_observation_contract_v1.json",
+          "sha256": "45e4d0d16c30c6fb12c24a7d798624bcb1d8c17f1e1e671199914c5b6e40f510"
+        },
+        {
+          "bytes": 2081,
+          "contract_id": "COHORT_V1",
+          "path": "config/v4_15_cohort_contract_v1.json",
+          "sha256": "5d4dee2e914ed541227cf54deb5676be3495713ea754ce6b78b078c643bacc8b"
+        },
+        {
+          "bytes": 1381,
+          "contract_id": "DUE_PLANNER_V1",
+          "path": "config/v4_15_due_planner_contract_v1.json",
+          "sha256": "848a6bf0f0d78b7784c6c7db34e20da31f1e20be0aa1e5c91bae2f28a1b50a2f"
+        },
+        {
+          "bytes": 1557,
+          "contract_id": "OUTCOME_STATUS_V1",
+          "path": "config/v4_15_outcome_status_contract_v1.json",
+          "sha256": "ce2507c95e06d821c90d01a3e4d737c1476f542ffd6d9a8c2dc495b4330c093e"
+        },
+        {
+          "bytes": 1401,
+          "contract_id": "OUTCOME_REVISION_V1",
+          "path": "config/v4_15_settlement_revision_contract_v1.json",
+          "sha256": "08e2d13964e9defefdac56f53c2b73bf7cc31963d946784e6f3d77c985c576dd"
+        }
+      ],
+      "blocking_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "check": "native session authority",
+      "current_status": "WAIT_REAL_EVIDENCE",
+      "disposition_rule": "PASS_ONLY_AFTER_EXACT_SCOPED_INDEPENDENT_AUDIT; CONTRACT_DESIGN_OR_PRIOR_STAGE_ACCEPTANCE_IS_NOT_THIS_AUDIT",
+      "domain": "A22-FORWARD",
+      "evidence_refs": [
+        {
+          "bytes": 26522,
+          "contract_id": "V4_21_CONTINUED_FORWARD_OBSERVATION_CONTRACT_V1",
+          "path": "config/v4_21_continued_forward_observation_contract_v1.json",
+          "sha256": "45e4d0d16c30c6fb12c24a7d798624bcb1d8c17f1e1e671199914c5b6e40f510"
+        },
+        {
+          "bytes": 2081,
+          "contract_id": "COHORT_V1",
+          "path": "config/v4_15_cohort_contract_v1.json",
+          "sha256": "5d4dee2e914ed541227cf54deb5676be3495713ea754ce6b78b078c643bacc8b"
+        },
+        {
+          "bytes": 1381,
+          "contract_id": "DUE_PLANNER_V1",
+          "path": "config/v4_15_due_planner_contract_v1.json",
+          "sha256": "848a6bf0f0d78b7784c6c7db34e20da31f1e20be0aa1e5c91bae2f28a1b50a2f"
+        },
+        {
+          "bytes": 1557,
+          "contract_id": "OUTCOME_STATUS_V1",
+          "path": "config/v4_15_outcome_status_contract_v1.json",
+          "sha256": "ce2507c95e06d821c90d01a3e4d737c1476f542ffd6d9a8c2dc495b4330c093e"
+        },
+        {
+          "bytes": 1401,
+          "contract_id": "OUTCOME_REVISION_V1",
+          "path": "config/v4_15_settlement_revision_contract_v1.json",
+          "sha256": "08e2d13964e9defefdac56f53c2b73bf7cc31963d946784e6f3d77c985c576dd"
+        }
+      ],
+      "item_id": "A22-FORWARD-02",
+      "required_evidence": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK",
+        "REAL_PIT_RUNTIME_RECEIPT"
+      ]
+    },
+    {
+      "accepted_fact_scope": "FUTURE_RUNTIME_AUDIT",
+      "audit_execution": "NOT_RUN_R31_CONTRACT_DESIGN_ONLY",
+      "authority": [
+        {
+          "bytes": 26522,
+          "contract_id": "V4_21_CONTINUED_FORWARD_OBSERVATION_CONTRACT_V1",
+          "path": "config/v4_21_continued_forward_observation_contract_v1.json",
+          "sha256": "45e4d0d16c30c6fb12c24a7d798624bcb1d8c17f1e1e671199914c5b6e40f510"
+        },
+        {
+          "bytes": 2081,
+          "contract_id": "COHORT_V1",
+          "path": "config/v4_15_cohort_contract_v1.json",
+          "sha256": "5d4dee2e914ed541227cf54deb5676be3495713ea754ce6b78b078c643bacc8b"
+        },
+        {
+          "bytes": 1381,
+          "contract_id": "DUE_PLANNER_V1",
+          "path": "config/v4_15_due_planner_contract_v1.json",
+          "sha256": "848a6bf0f0d78b7784c6c7db34e20da31f1e20be0aa1e5c91bae2f28a1b50a2f"
+        },
+        {
+          "bytes": 1557,
+          "contract_id": "OUTCOME_STATUS_V1",
+          "path": "config/v4_15_outcome_status_contract_v1.json",
+          "sha256": "ce2507c95e06d821c90d01a3e4d737c1476f542ffd6d9a8c2dc495b4330c093e"
+        },
+        {
+          "bytes": 1401,
+          "contract_id": "OUTCOME_REVISION_V1",
+          "path": "config/v4_15_settlement_revision_contract_v1.json",
+          "sha256": "08e2d13964e9defefdac56f53c2b73bf7cc31963d946784e6f3d77c985c576dd"
+        }
+      ],
+      "blocking_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "check": "accepted-session denominator",
+      "current_status": "WAIT_REAL_EVIDENCE",
+      "disposition_rule": "PASS_ONLY_AFTER_EXACT_SCOPED_INDEPENDENT_AUDIT; CONTRACT_DESIGN_OR_PRIOR_STAGE_ACCEPTANCE_IS_NOT_THIS_AUDIT",
+      "domain": "A22-FORWARD",
+      "evidence_refs": [
+        {
+          "bytes": 26522,
+          "contract_id": "V4_21_CONTINUED_FORWARD_OBSERVATION_CONTRACT_V1",
+          "path": "config/v4_21_continued_forward_observation_contract_v1.json",
+          "sha256": "45e4d0d16c30c6fb12c24a7d798624bcb1d8c17f1e1e671199914c5b6e40f510"
+        },
+        {
+          "bytes": 2081,
+          "contract_id": "COHORT_V1",
+          "path": "config/v4_15_cohort_contract_v1.json",
+          "sha256": "5d4dee2e914ed541227cf54deb5676be3495713ea754ce6b78b078c643bacc8b"
+        },
+        {
+          "bytes": 1381,
+          "contract_id": "DUE_PLANNER_V1",
+          "path": "config/v4_15_due_planner_contract_v1.json",
+          "sha256": "848a6bf0f0d78b7784c6c7db34e20da31f1e20be0aa1e5c91bae2f28a1b50a2f"
+        },
+        {
+          "bytes": 1557,
+          "contract_id": "OUTCOME_STATUS_V1",
+          "path": "config/v4_15_outcome_status_contract_v1.json",
+          "sha256": "ce2507c95e06d821c90d01a3e4d737c1476f542ffd6d9a8c2dc495b4330c093e"
+        },
+        {
+          "bytes": 1401,
+          "contract_id": "OUTCOME_REVISION_V1",
+          "path": "config/v4_15_settlement_revision_contract_v1.json",
+          "sha256": "08e2d13964e9defefdac56f53c2b73bf7cc31963d946784e6f3d77c985c576dd"
+        }
+      ],
+      "item_id": "A22-FORWARD-03",
+      "required_evidence": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK",
+        "REAL_PIT_RUNTIME_RECEIPT"
+      ]
+    },
+    {
+      "accepted_fact_scope": "FUTURE_RUNTIME_AUDIT",
+      "audit_execution": "NOT_RUN_R31_CONTRACT_DESIGN_ONLY",
+      "authority": [
+        {
+          "bytes": 26522,
+          "contract_id": "V4_21_CONTINUED_FORWARD_OBSERVATION_CONTRACT_V1",
+          "path": "config/v4_21_continued_forward_observation_contract_v1.json",
+          "sha256": "45e4d0d16c30c6fb12c24a7d798624bcb1d8c17f1e1e671199914c5b6e40f510"
+        },
+        {
+          "bytes": 2081,
+          "contract_id": "COHORT_V1",
+          "path": "config/v4_15_cohort_contract_v1.json",
+          "sha256": "5d4dee2e914ed541227cf54deb5676be3495713ea754ce6b78b078c643bacc8b"
+        },
+        {
+          "bytes": 1381,
+          "contract_id": "DUE_PLANNER_V1",
+          "path": "config/v4_15_due_planner_contract_v1.json",
+          "sha256": "848a6bf0f0d78b7784c6c7db34e20da31f1e20be0aa1e5c91bae2f28a1b50a2f"
+        },
+        {
+          "bytes": 1557,
+          "contract_id": "OUTCOME_STATUS_V1",
+          "path": "config/v4_15_outcome_status_contract_v1.json",
+          "sha256": "ce2507c95e06d821c90d01a3e4d737c1476f542ffd6d9a8c2dc495b4330c093e"
+        },
+        {
+          "bytes": 1401,
+          "contract_id": "OUTCOME_REVISION_V1",
+          "path": "config/v4_15_settlement_revision_contract_v1.json",
+          "sha256": "08e2d13964e9defefdac56f53c2b73bf7cc31963d946784e6f3d77c985c576dd"
+        }
+      ],
+      "blocking_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "check": "event/cohort ledger",
+      "current_status": "WAIT_REAL_EVIDENCE",
+      "disposition_rule": "PASS_ONLY_AFTER_EXACT_SCOPED_INDEPENDENT_AUDIT; CONTRACT_DESIGN_OR_PRIOR_STAGE_ACCEPTANCE_IS_NOT_THIS_AUDIT",
+      "domain": "A22-FORWARD",
+      "evidence_refs": [
+        {
+          "bytes": 26522,
+          "contract_id": "V4_21_CONTINUED_FORWARD_OBSERVATION_CONTRACT_V1",
+          "path": "config/v4_21_continued_forward_observation_contract_v1.json",
+          "sha256": "45e4d0d16c30c6fb12c24a7d798624bcb1d8c17f1e1e671199914c5b6e40f510"
+        },
+        {
+          "bytes": 2081,
+          "contract_id": "COHORT_V1",
+          "path": "config/v4_15_cohort_contract_v1.json",
+          "sha256": "5d4dee2e914ed541227cf54deb5676be3495713ea754ce6b78b078c643bacc8b"
+        },
+        {
+          "bytes": 1381,
+          "contract_id": "DUE_PLANNER_V1",
+          "path": "config/v4_15_due_planner_contract_v1.json",
+          "sha256": "848a6bf0f0d78b7784c6c7db34e20da31f1e20be0aa1e5c91bae2f28a1b50a2f"
+        },
+        {
+          "bytes": 1557,
+          "contract_id": "OUTCOME_STATUS_V1",
+          "path": "config/v4_15_outcome_status_contract_v1.json",
+          "sha256": "ce2507c95e06d821c90d01a3e4d737c1476f542ffd6d9a8c2dc495b4330c093e"
+        },
+        {
+          "bytes": 1401,
+          "contract_id": "OUTCOME_REVISION_V1",
+          "path": "config/v4_15_settlement_revision_contract_v1.json",
+          "sha256": "08e2d13964e9defefdac56f53c2b73bf7cc31963d946784e6f3d77c985c576dd"
+        }
+      ],
+      "item_id": "A22-FORWARD-04",
+      "required_evidence": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK",
+        "REAL_PIT_RUNTIME_RECEIPT"
+      ]
+    },
+    {
+      "accepted_fact_scope": "FUTURE_RUNTIME_AUDIT",
+      "audit_execution": "NOT_RUN_R31_CONTRACT_DESIGN_ONLY",
+      "authority": [
+        {
+          "bytes": 26522,
+          "contract_id": "V4_21_CONTINUED_FORWARD_OBSERVATION_CONTRACT_V1",
+          "path": "config/v4_21_continued_forward_observation_contract_v1.json",
+          "sha256": "45e4d0d16c30c6fb12c24a7d798624bcb1d8c17f1e1e671199914c5b6e40f510"
+        },
+        {
+          "bytes": 2081,
+          "contract_id": "COHORT_V1",
+          "path": "config/v4_15_cohort_contract_v1.json",
+          "sha256": "5d4dee2e914ed541227cf54deb5676be3495713ea754ce6b78b078c643bacc8b"
+        },
+        {
+          "bytes": 1381,
+          "contract_id": "DUE_PLANNER_V1",
+          "path": "config/v4_15_due_planner_contract_v1.json",
+          "sha256": "848a6bf0f0d78b7784c6c7db34e20da31f1e20be0aa1e5c91bae2f28a1b50a2f"
+        },
+        {
+          "bytes": 1557,
+          "contract_id": "OUTCOME_STATUS_V1",
+          "path": "config/v4_15_outcome_status_contract_v1.json",
+          "sha256": "ce2507c95e06d821c90d01a3e4d737c1476f542ffd6d9a8c2dc495b4330c093e"
+        },
+        {
+          "bytes": 1401,
+          "contract_id": "OUTCOME_REVISION_V1",
+          "path": "config/v4_15_settlement_revision_contract_v1.json",
+          "sha256": "08e2d13964e9defefdac56f53c2b73bf7cc31963d946784e6f3d77c985c576dd"
+        }
+      ],
+      "blocking_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "check": "due/outcome ledger",
+      "current_status": "WAIT_REAL_EVIDENCE",
+      "disposition_rule": "PASS_ONLY_AFTER_EXACT_SCOPED_INDEPENDENT_AUDIT; CONTRACT_DESIGN_OR_PRIOR_STAGE_ACCEPTANCE_IS_NOT_THIS_AUDIT",
+      "domain": "A22-FORWARD",
+      "evidence_refs": [
+        {
+          "bytes": 26522,
+          "contract_id": "V4_21_CONTINUED_FORWARD_OBSERVATION_CONTRACT_V1",
+          "path": "config/v4_21_continued_forward_observation_contract_v1.json",
+          "sha256": "45e4d0d16c30c6fb12c24a7d798624bcb1d8c17f1e1e671199914c5b6e40f510"
+        },
+        {
+          "bytes": 2081,
+          "contract_id": "COHORT_V1",
+          "path": "config/v4_15_cohort_contract_v1.json",
+          "sha256": "5d4dee2e914ed541227cf54deb5676be3495713ea754ce6b78b078c643bacc8b"
+        },
+        {
+          "bytes": 1381,
+          "contract_id": "DUE_PLANNER_V1",
+          "path": "config/v4_15_due_planner_contract_v1.json",
+          "sha256": "848a6bf0f0d78b7784c6c7db34e20da31f1e20be0aa1e5c91bae2f28a1b50a2f"
+        },
+        {
+          "bytes": 1557,
+          "contract_id": "OUTCOME_STATUS_V1",
+          "path": "config/v4_15_outcome_status_contract_v1.json",
+          "sha256": "ce2507c95e06d821c90d01a3e4d737c1476f542ffd6d9a8c2dc495b4330c093e"
+        },
+        {
+          "bytes": 1401,
+          "contract_id": "OUTCOME_REVISION_V1",
+          "path": "config/v4_15_settlement_revision_contract_v1.json",
+          "sha256": "08e2d13964e9defefdac56f53c2b73bf7cc31963d946784e6f3d77c985c576dd"
+        }
+      ],
+      "item_id": "A22-FORWARD-05",
+      "required_evidence": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK",
+        "REAL_PIT_RUNTIME_RECEIPT"
+      ]
+    },
+    {
+      "accepted_fact_scope": "FUTURE_RUNTIME_AUDIT",
+      "audit_execution": "NOT_RUN_R31_CONTRACT_DESIGN_ONLY",
+      "authority": [
+        {
+          "bytes": 26522,
+          "contract_id": "V4_21_CONTINUED_FORWARD_OBSERVATION_CONTRACT_V1",
+          "path": "config/v4_21_continued_forward_observation_contract_v1.json",
+          "sha256": "45e4d0d16c30c6fb12c24a7d798624bcb1d8c17f1e1e671199914c5b6e40f510"
+        },
+        {
+          "bytes": 2081,
+          "contract_id": "COHORT_V1",
+          "path": "config/v4_15_cohort_contract_v1.json",
+          "sha256": "5d4dee2e914ed541227cf54deb5676be3495713ea754ce6b78b078c643bacc8b"
+        },
+        {
+          "bytes": 1381,
+          "contract_id": "DUE_PLANNER_V1",
+          "path": "config/v4_15_due_planner_contract_v1.json",
+          "sha256": "848a6bf0f0d78b7784c6c7db34e20da31f1e20be0aa1e5c91bae2f28a1b50a2f"
+        },
+        {
+          "bytes": 1557,
+          "contract_id": "OUTCOME_STATUS_V1",
+          "path": "config/v4_15_outcome_status_contract_v1.json",
+          "sha256": "ce2507c95e06d821c90d01a3e4d737c1476f542ffd6d9a8c2dc495b4330c093e"
+        },
+        {
+          "bytes": 1401,
+          "contract_id": "OUTCOME_REVISION_V1",
+          "path": "config/v4_15_settlement_revision_contract_v1.json",
+          "sha256": "08e2d13964e9defefdac56f53c2b73bf7cc31963d946784e6f3d77c985c576dd"
+        }
+      ],
+      "blocking_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "check": "right censor",
+      "current_status": "WAIT_REAL_EVIDENCE",
+      "disposition_rule": "PASS_ONLY_AFTER_EXACT_SCOPED_INDEPENDENT_AUDIT; CONTRACT_DESIGN_OR_PRIOR_STAGE_ACCEPTANCE_IS_NOT_THIS_AUDIT",
+      "domain": "A22-FORWARD",
+      "evidence_refs": [
+        {
+          "bytes": 26522,
+          "contract_id": "V4_21_CONTINUED_FORWARD_OBSERVATION_CONTRACT_V1",
+          "path": "config/v4_21_continued_forward_observation_contract_v1.json",
+          "sha256": "45e4d0d16c30c6fb12c24a7d798624bcb1d8c17f1e1e671199914c5b6e40f510"
+        },
+        {
+          "bytes": 2081,
+          "contract_id": "COHORT_V1",
+          "path": "config/v4_15_cohort_contract_v1.json",
+          "sha256": "5d4dee2e914ed541227cf54deb5676be3495713ea754ce6b78b078c643bacc8b"
+        },
+        {
+          "bytes": 1381,
+          "contract_id": "DUE_PLANNER_V1",
+          "path": "config/v4_15_due_planner_contract_v1.json",
+          "sha256": "848a6bf0f0d78b7784c6c7db34e20da31f1e20be0aa1e5c91bae2f28a1b50a2f"
+        },
+        {
+          "bytes": 1557,
+          "contract_id": "OUTCOME_STATUS_V1",
+          "path": "config/v4_15_outcome_status_contract_v1.json",
+          "sha256": "ce2507c95e06d821c90d01a3e4d737c1476f542ffd6d9a8c2dc495b4330c093e"
+        },
+        {
+          "bytes": 1401,
+          "contract_id": "OUTCOME_REVISION_V1",
+          "path": "config/v4_15_settlement_revision_contract_v1.json",
+          "sha256": "08e2d13964e9defefdac56f53c2b73bf7cc31963d946784e6f3d77c985c576dd"
+        }
+      ],
+      "item_id": "A22-FORWARD-06",
+      "required_evidence": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK",
+        "REAL_PIT_RUNTIME_RECEIPT"
+      ]
+    },
+    {
+      "accepted_fact_scope": "FUTURE_RUNTIME_AUDIT",
+      "audit_execution": "NOT_RUN_R31_CONTRACT_DESIGN_ONLY",
+      "authority": [
+        {
+          "bytes": 26522,
+          "contract_id": "V4_21_CONTINUED_FORWARD_OBSERVATION_CONTRACT_V1",
+          "path": "config/v4_21_continued_forward_observation_contract_v1.json",
+          "sha256": "45e4d0d16c30c6fb12c24a7d798624bcb1d8c17f1e1e671199914c5b6e40f510"
+        },
+        {
+          "bytes": 2081,
+          "contract_id": "COHORT_V1",
+          "path": "config/v4_15_cohort_contract_v1.json",
+          "sha256": "5d4dee2e914ed541227cf54deb5676be3495713ea754ce6b78b078c643bacc8b"
+        },
+        {
+          "bytes": 1381,
+          "contract_id": "DUE_PLANNER_V1",
+          "path": "config/v4_15_due_planner_contract_v1.json",
+          "sha256": "848a6bf0f0d78b7784c6c7db34e20da31f1e20be0aa1e5c91bae2f28a1b50a2f"
+        },
+        {
+          "bytes": 1557,
+          "contract_id": "OUTCOME_STATUS_V1",
+          "path": "config/v4_15_outcome_status_contract_v1.json",
+          "sha256": "ce2507c95e06d821c90d01a3e4d737c1476f542ffd6d9a8c2dc495b4330c093e"
+        },
+        {
+          "bytes": 1401,
+          "contract_id": "OUTCOME_REVISION_V1",
+          "path": "config/v4_15_settlement_revision_contract_v1.json",
+          "sha256": "08e2d13964e9defefdac56f53c2b73bf7cc31963d946784e6f3d77c985c576dd"
+        }
+      ],
+      "blocking_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "check": "model/parameter partitions",
+      "current_status": "WAIT_REAL_EVIDENCE",
+      "disposition_rule": "PASS_ONLY_AFTER_EXACT_SCOPED_INDEPENDENT_AUDIT; CONTRACT_DESIGN_OR_PRIOR_STAGE_ACCEPTANCE_IS_NOT_THIS_AUDIT",
+      "domain": "A22-FORWARD",
+      "evidence_refs": [
+        {
+          "bytes": 26522,
+          "contract_id": "V4_21_CONTINUED_FORWARD_OBSERVATION_CONTRACT_V1",
+          "path": "config/v4_21_continued_forward_observation_contract_v1.json",
+          "sha256": "45e4d0d16c30c6fb12c24a7d798624bcb1d8c17f1e1e671199914c5b6e40f510"
+        },
+        {
+          "bytes": 2081,
+          "contract_id": "COHORT_V1",
+          "path": "config/v4_15_cohort_contract_v1.json",
+          "sha256": "5d4dee2e914ed541227cf54deb5676be3495713ea754ce6b78b078c643bacc8b"
+        },
+        {
+          "bytes": 1381,
+          "contract_id": "DUE_PLANNER_V1",
+          "path": "config/v4_15_due_planner_contract_v1.json",
+          "sha256": "848a6bf0f0d78b7784c6c7db34e20da31f1e20be0aa1e5c91bae2f28a1b50a2f"
+        },
+        {
+          "bytes": 1557,
+          "contract_id": "OUTCOME_STATUS_V1",
+          "path": "config/v4_15_outcome_status_contract_v1.json",
+          "sha256": "ce2507c95e06d821c90d01a3e4d737c1476f542ffd6d9a8c2dc495b4330c093e"
+        },
+        {
+          "bytes": 1401,
+          "contract_id": "OUTCOME_REVISION_V1",
+          "path": "config/v4_15_settlement_revision_contract_v1.json",
+          "sha256": "08e2d13964e9defefdac56f53c2b73bf7cc31963d946784e6f3d77c985c576dd"
+        }
+      ],
+      "item_id": "A22-FORWARD-07",
+      "required_evidence": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK",
+        "REAL_PIT_RUNTIME_RECEIPT"
+      ]
+    },
+    {
+      "accepted_fact_scope": "FUTURE_RUNTIME_AUDIT",
+      "audit_execution": "NOT_RUN_R31_CONTRACT_DESIGN_ONLY",
+      "authority": [
+        {
+          "bytes": 26522,
+          "contract_id": "V4_21_CONTINUED_FORWARD_OBSERVATION_CONTRACT_V1",
+          "path": "config/v4_21_continued_forward_observation_contract_v1.json",
+          "sha256": "45e4d0d16c30c6fb12c24a7d798624bcb1d8c17f1e1e671199914c5b6e40f510"
+        },
+        {
+          "bytes": 2081,
+          "contract_id": "COHORT_V1",
+          "path": "config/v4_15_cohort_contract_v1.json",
+          "sha256": "5d4dee2e914ed541227cf54deb5676be3495713ea754ce6b78b078c643bacc8b"
+        },
+        {
+          "bytes": 1381,
+          "contract_id": "DUE_PLANNER_V1",
+          "path": "config/v4_15_due_planner_contract_v1.json",
+          "sha256": "848a6bf0f0d78b7784c6c7db34e20da31f1e20be0aa1e5c91bae2f28a1b50a2f"
+        },
+        {
+          "bytes": 1557,
+          "contract_id": "OUTCOME_STATUS_V1",
+          "path": "config/v4_15_outcome_status_contract_v1.json",
+          "sha256": "ce2507c95e06d821c90d01a3e4d737c1476f542ffd6d9a8c2dc495b4330c093e"
+        },
+        {
+          "bytes": 1401,
+          "contract_id": "OUTCOME_REVISION_V1",
+          "path": "config/v4_15_settlement_revision_contract_v1.json",
+          "sha256": "08e2d13964e9defefdac56f53c2b73bf7cc31963d946784e6f3d77c985c576dd"
+        }
+      ],
+      "blocking_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "check": "Shadow/Production continuity",
+      "current_status": "WAIT_REAL_EVIDENCE",
+      "disposition_rule": "PASS_ONLY_AFTER_EXACT_SCOPED_INDEPENDENT_AUDIT; CONTRACT_DESIGN_OR_PRIOR_STAGE_ACCEPTANCE_IS_NOT_THIS_AUDIT",
+      "domain": "A22-FORWARD",
+      "evidence_refs": [
+        {
+          "bytes": 26522,
+          "contract_id": "V4_21_CONTINUED_FORWARD_OBSERVATION_CONTRACT_V1",
+          "path": "config/v4_21_continued_forward_observation_contract_v1.json",
+          "sha256": "45e4d0d16c30c6fb12c24a7d798624bcb1d8c17f1e1e671199914c5b6e40f510"
+        },
+        {
+          "bytes": 2081,
+          "contract_id": "COHORT_V1",
+          "path": "config/v4_15_cohort_contract_v1.json",
+          "sha256": "5d4dee2e914ed541227cf54deb5676be3495713ea754ce6b78b078c643bacc8b"
+        },
+        {
+          "bytes": 1381,
+          "contract_id": "DUE_PLANNER_V1",
+          "path": "config/v4_15_due_planner_contract_v1.json",
+          "sha256": "848a6bf0f0d78b7784c6c7db34e20da31f1e20be0aa1e5c91bae2f28a1b50a2f"
+        },
+        {
+          "bytes": 1557,
+          "contract_id": "OUTCOME_STATUS_V1",
+          "path": "config/v4_15_outcome_status_contract_v1.json",
+          "sha256": "ce2507c95e06d821c90d01a3e4d737c1476f542ffd6d9a8c2dc495b4330c093e"
+        },
+        {
+          "bytes": 1401,
+          "contract_id": "OUTCOME_REVISION_V1",
+          "path": "config/v4_15_settlement_revision_contract_v1.json",
+          "sha256": "08e2d13964e9defefdac56f53c2b73bf7cc31963d946784e6f3d77c985c576dd"
+        }
+      ],
+      "item_id": "A22-FORWARD-08",
+      "required_evidence": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK",
+        "REAL_PIT_RUNTIME_RECEIPT"
+      ]
+    },
+    {
+      "accepted_fact_scope": "FUTURE_RUNTIME_AUDIT",
+      "audit_execution": "NOT_RUN_R31_CONTRACT_DESIGN_ONLY",
+      "authority": [
+        {
+          "bytes": 26522,
+          "contract_id": "V4_21_CONTINUED_FORWARD_OBSERVATION_CONTRACT_V1",
+          "path": "config/v4_21_continued_forward_observation_contract_v1.json",
+          "sha256": "45e4d0d16c30c6fb12c24a7d798624bcb1d8c17f1e1e671199914c5b6e40f510"
+        },
+        {
+          "bytes": 2081,
+          "contract_id": "COHORT_V1",
+          "path": "config/v4_15_cohort_contract_v1.json",
+          "sha256": "5d4dee2e914ed541227cf54deb5676be3495713ea754ce6b78b078c643bacc8b"
+        },
+        {
+          "bytes": 1381,
+          "contract_id": "DUE_PLANNER_V1",
+          "path": "config/v4_15_due_planner_contract_v1.json",
+          "sha256": "848a6bf0f0d78b7784c6c7db34e20da31f1e20be0aa1e5c91bae2f28a1b50a2f"
+        },
+        {
+          "bytes": 1557,
+          "contract_id": "OUTCOME_STATUS_V1",
+          "path": "config/v4_15_outcome_status_contract_v1.json",
+          "sha256": "ce2507c95e06d821c90d01a3e4d737c1476f542ffd6d9a8c2dc495b4330c093e"
+        },
+        {
+          "bytes": 1401,
+          "contract_id": "OUTCOME_REVISION_V1",
+          "path": "config/v4_15_settlement_revision_contract_v1.json",
+          "sha256": "08e2d13964e9defefdac56f53c2b73bf7cc31963d946784e6f3d77c985c576dd"
+        }
+      ],
+      "blocking_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "check": "gate readback ownership",
+      "current_status": "WAIT_REAL_EVIDENCE",
+      "disposition_rule": "PASS_ONLY_AFTER_EXACT_SCOPED_INDEPENDENT_AUDIT; CONTRACT_DESIGN_OR_PRIOR_STAGE_ACCEPTANCE_IS_NOT_THIS_AUDIT",
+      "domain": "A22-FORWARD",
+      "evidence_refs": [
+        {
+          "bytes": 26522,
+          "contract_id": "V4_21_CONTINUED_FORWARD_OBSERVATION_CONTRACT_V1",
+          "path": "config/v4_21_continued_forward_observation_contract_v1.json",
+          "sha256": "45e4d0d16c30c6fb12c24a7d798624bcb1d8c17f1e1e671199914c5b6e40f510"
+        },
+        {
+          "bytes": 2081,
+          "contract_id": "COHORT_V1",
+          "path": "config/v4_15_cohort_contract_v1.json",
+          "sha256": "5d4dee2e914ed541227cf54deb5676be3495713ea754ce6b78b078c643bacc8b"
+        },
+        {
+          "bytes": 1381,
+          "contract_id": "DUE_PLANNER_V1",
+          "path": "config/v4_15_due_planner_contract_v1.json",
+          "sha256": "848a6bf0f0d78b7784c6c7db34e20da31f1e20be0aa1e5c91bae2f28a1b50a2f"
+        },
+        {
+          "bytes": 1557,
+          "contract_id": "OUTCOME_STATUS_V1",
+          "path": "config/v4_15_outcome_status_contract_v1.json",
+          "sha256": "ce2507c95e06d821c90d01a3e4d737c1476f542ffd6d9a8c2dc495b4330c093e"
+        },
+        {
+          "bytes": 1401,
+          "contract_id": "OUTCOME_REVISION_V1",
+          "path": "config/v4_15_settlement_revision_contract_v1.json",
+          "sha256": "08e2d13964e9defefdac56f53c2b73bf7cc31963d946784e6f3d77c985c576dd"
+        }
+      ],
+      "item_id": "A22-FORWARD-09",
+      "required_evidence": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK",
+        "REAL_PIT_RUNTIME_RECEIPT"
+      ]
+    },
+    {
+      "accepted_fact_scope": "FUTURE_RUNTIME_AUDIT",
+      "audit_execution": "NOT_RUN_R31_CONTRACT_DESIGN_ONLY",
+      "authority": [
+        {
+          "bytes": 26522,
+          "contract_id": "V4_21_CONTINUED_FORWARD_OBSERVATION_CONTRACT_V1",
+          "path": "config/v4_21_continued_forward_observation_contract_v1.json",
+          "sha256": "45e4d0d16c30c6fb12c24a7d798624bcb1d8c17f1e1e671199914c5b6e40f510"
+        },
+        {
+          "bytes": 2081,
+          "contract_id": "COHORT_V1",
+          "path": "config/v4_15_cohort_contract_v1.json",
+          "sha256": "5d4dee2e914ed541227cf54deb5676be3495713ea754ce6b78b078c643bacc8b"
+        },
+        {
+          "bytes": 1381,
+          "contract_id": "DUE_PLANNER_V1",
+          "path": "config/v4_15_due_planner_contract_v1.json",
+          "sha256": "848a6bf0f0d78b7784c6c7db34e20da31f1e20be0aa1e5c91bae2f28a1b50a2f"
+        },
+        {
+          "bytes": 1557,
+          "contract_id": "OUTCOME_STATUS_V1",
+          "path": "config/v4_15_outcome_status_contract_v1.json",
+          "sha256": "ce2507c95e06d821c90d01a3e4d737c1476f542ffd6d9a8c2dc495b4330c093e"
+        },
+        {
+          "bytes": 1401,
+          "contract_id": "OUTCOME_REVISION_V1",
+          "path": "config/v4_15_settlement_revision_contract_v1.json",
+          "sha256": "08e2d13964e9defefdac56f53c2b73bf7cc31963d946784e6f3d77c985c576dd"
+        }
+      ],
+      "blocking_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "check": "complete Validation Cohort",
+      "current_status": "WAIT_REAL_EVIDENCE",
+      "disposition_rule": "PASS_ONLY_AFTER_EXACT_SCOPED_INDEPENDENT_AUDIT; CONTRACT_DESIGN_OR_PRIOR_STAGE_ACCEPTANCE_IS_NOT_THIS_AUDIT",
+      "domain": "A22-FORWARD",
+      "evidence_refs": [
+        {
+          "bytes": 26522,
+          "contract_id": "V4_21_CONTINUED_FORWARD_OBSERVATION_CONTRACT_V1",
+          "path": "config/v4_21_continued_forward_observation_contract_v1.json",
+          "sha256": "45e4d0d16c30c6fb12c24a7d798624bcb1d8c17f1e1e671199914c5b6e40f510"
+        },
+        {
+          "bytes": 2081,
+          "contract_id": "COHORT_V1",
+          "path": "config/v4_15_cohort_contract_v1.json",
+          "sha256": "5d4dee2e914ed541227cf54deb5676be3495713ea754ce6b78b078c643bacc8b"
+        },
+        {
+          "bytes": 1381,
+          "contract_id": "DUE_PLANNER_V1",
+          "path": "config/v4_15_due_planner_contract_v1.json",
+          "sha256": "848a6bf0f0d78b7784c6c7db34e20da31f1e20be0aa1e5c91bae2f28a1b50a2f"
+        },
+        {
+          "bytes": 1557,
+          "contract_id": "OUTCOME_STATUS_V1",
+          "path": "config/v4_15_outcome_status_contract_v1.json",
+          "sha256": "ce2507c95e06d821c90d01a3e4d737c1476f542ffd6d9a8c2dc495b4330c093e"
+        },
+        {
+          "bytes": 1401,
+          "contract_id": "OUTCOME_REVISION_V1",
+          "path": "config/v4_15_settlement_revision_contract_v1.json",
+          "sha256": "08e2d13964e9defefdac56f53c2b73bf7cc31963d946784e6f3d77c985c576dd"
+        }
+      ],
+      "item_id": "A22-FORWARD-10",
+      "required_evidence": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK",
+        "REAL_PIT_RUNTIME_RECEIPT"
+      ]
+    },
+    {
+      "accepted_fact_scope": "FUTURE_RUNTIME_AUDIT",
+      "audit_execution": "NOT_RUN_R31_CONTRACT_DESIGN_ONLY",
+      "authority": [
+        {
+          "bytes": 26522,
+          "contract_id": "V4_21_CONTINUED_FORWARD_OBSERVATION_CONTRACT_V1",
+          "path": "config/v4_21_continued_forward_observation_contract_v1.json",
+          "sha256": "45e4d0d16c30c6fb12c24a7d798624bcb1d8c17f1e1e671199914c5b6e40f510"
+        },
+        {
+          "bytes": 2081,
+          "contract_id": "COHORT_V1",
+          "path": "config/v4_15_cohort_contract_v1.json",
+          "sha256": "5d4dee2e914ed541227cf54deb5676be3495713ea754ce6b78b078c643bacc8b"
+        },
+        {
+          "bytes": 1381,
+          "contract_id": "DUE_PLANNER_V1",
+          "path": "config/v4_15_due_planner_contract_v1.json",
+          "sha256": "848a6bf0f0d78b7784c6c7db34e20da31f1e20be0aa1e5c91bae2f28a1b50a2f"
+        },
+        {
+          "bytes": 1557,
+          "contract_id": "OUTCOME_STATUS_V1",
+          "path": "config/v4_15_outcome_status_contract_v1.json",
+          "sha256": "ce2507c95e06d821c90d01a3e4d737c1476f542ffd6d9a8c2dc495b4330c093e"
+        },
+        {
+          "bytes": 1401,
+          "contract_id": "OUTCOME_REVISION_V1",
+          "path": "config/v4_15_settlement_revision_contract_v1.json",
+          "sha256": "08e2d13964e9defefdac56f53c2b73bf7cc31963d946784e6f3d77c985c576dd"
+        }
+      ],
+      "blocking_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "check": "controls/benchmarks",
+      "current_status": "WAIT_REAL_EVIDENCE",
+      "disposition_rule": "PASS_ONLY_AFTER_EXACT_SCOPED_INDEPENDENT_AUDIT; CONTRACT_DESIGN_OR_PRIOR_STAGE_ACCEPTANCE_IS_NOT_THIS_AUDIT",
+      "domain": "A22-FORWARD",
+      "evidence_refs": [
+        {
+          "bytes": 26522,
+          "contract_id": "V4_21_CONTINUED_FORWARD_OBSERVATION_CONTRACT_V1",
+          "path": "config/v4_21_continued_forward_observation_contract_v1.json",
+          "sha256": "45e4d0d16c30c6fb12c24a7d798624bcb1d8c17f1e1e671199914c5b6e40f510"
+        },
+        {
+          "bytes": 2081,
+          "contract_id": "COHORT_V1",
+          "path": "config/v4_15_cohort_contract_v1.json",
+          "sha256": "5d4dee2e914ed541227cf54deb5676be3495713ea754ce6b78b078c643bacc8b"
+        },
+        {
+          "bytes": 1381,
+          "contract_id": "DUE_PLANNER_V1",
+          "path": "config/v4_15_due_planner_contract_v1.json",
+          "sha256": "848a6bf0f0d78b7784c6c7db34e20da31f1e20be0aa1e5c91bae2f28a1b50a2f"
+        },
+        {
+          "bytes": 1557,
+          "contract_id": "OUTCOME_STATUS_V1",
+          "path": "config/v4_15_outcome_status_contract_v1.json",
+          "sha256": "ce2507c95e06d821c90d01a3e4d737c1476f542ffd6d9a8c2dc495b4330c093e"
+        },
+        {
+          "bytes": 1401,
+          "contract_id": "OUTCOME_REVISION_V1",
+          "path": "config/v4_15_settlement_revision_contract_v1.json",
+          "sha256": "08e2d13964e9defefdac56f53c2b73bf7cc31963d946784e6f3d77c985c576dd"
+        }
+      ],
+      "item_id": "A22-FORWARD-11",
+      "required_evidence": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK",
+        "REAL_PIT_RUNTIME_RECEIPT"
+      ]
+    },
+    {
+      "accepted_fact_scope": "FUTURE_RUNTIME_AUDIT",
+      "audit_execution": "NOT_RUN_R31_CONTRACT_DESIGN_ONLY",
+      "authority": [
+        {
+          "bytes": 26522,
+          "contract_id": "V4_21_CONTINUED_FORWARD_OBSERVATION_CONTRACT_V1",
+          "path": "config/v4_21_continued_forward_observation_contract_v1.json",
+          "sha256": "45e4d0d16c30c6fb12c24a7d798624bcb1d8c17f1e1e671199914c5b6e40f510"
+        },
+        {
+          "bytes": 2081,
+          "contract_id": "COHORT_V1",
+          "path": "config/v4_15_cohort_contract_v1.json",
+          "sha256": "5d4dee2e914ed541227cf54deb5676be3495713ea754ce6b78b078c643bacc8b"
+        },
+        {
+          "bytes": 1381,
+          "contract_id": "DUE_PLANNER_V1",
+          "path": "config/v4_15_due_planner_contract_v1.json",
+          "sha256": "848a6bf0f0d78b7784c6c7db34e20da31f1e20be0aa1e5c91bae2f28a1b50a2f"
+        },
+        {
+          "bytes": 1557,
+          "contract_id": "OUTCOME_STATUS_V1",
+          "path": "config/v4_15_outcome_status_contract_v1.json",
+          "sha256": "ce2507c95e06d821c90d01a3e4d737c1476f542ffd6d9a8c2dc495b4330c093e"
+        },
+        {
+          "bytes": 1401,
+          "contract_id": "OUTCOME_REVISION_V1",
+          "path": "config/v4_15_settlement_revision_contract_v1.json",
+          "sha256": "08e2d13964e9defefdac56f53c2b73bf7cc31963d946784e6f3d77c985c576dd"
+        }
+      ],
+      "blocking_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "check": "observed vs corrected revisions",
+      "current_status": "WAIT_REAL_EVIDENCE",
+      "disposition_rule": "PASS_ONLY_AFTER_EXACT_SCOPED_INDEPENDENT_AUDIT; CONTRACT_DESIGN_OR_PRIOR_STAGE_ACCEPTANCE_IS_NOT_THIS_AUDIT",
+      "domain": "A22-FORWARD",
+      "evidence_refs": [
+        {
+          "bytes": 26522,
+          "contract_id": "V4_21_CONTINUED_FORWARD_OBSERVATION_CONTRACT_V1",
+          "path": "config/v4_21_continued_forward_observation_contract_v1.json",
+          "sha256": "45e4d0d16c30c6fb12c24a7d798624bcb1d8c17f1e1e671199914c5b6e40f510"
+        },
+        {
+          "bytes": 2081,
+          "contract_id": "COHORT_V1",
+          "path": "config/v4_15_cohort_contract_v1.json",
+          "sha256": "5d4dee2e914ed541227cf54deb5676be3495713ea754ce6b78b078c643bacc8b"
+        },
+        {
+          "bytes": 1381,
+          "contract_id": "DUE_PLANNER_V1",
+          "path": "config/v4_15_due_planner_contract_v1.json",
+          "sha256": "848a6bf0f0d78b7784c6c7db34e20da31f1e20be0aa1e5c91bae2f28a1b50a2f"
+        },
+        {
+          "bytes": 1557,
+          "contract_id": "OUTCOME_STATUS_V1",
+          "path": "config/v4_15_outcome_status_contract_v1.json",
+          "sha256": "ce2507c95e06d821c90d01a3e4d737c1476f542ffd6d9a8c2dc495b4330c093e"
+        },
+        {
+          "bytes": 1401,
+          "contract_id": "OUTCOME_REVISION_V1",
+          "path": "config/v4_15_settlement_revision_contract_v1.json",
+          "sha256": "08e2d13964e9defefdac56f53c2b73bf7cc31963d946784e6f3d77c985c576dd"
+        }
+      ],
+      "item_id": "A22-FORWARD-12",
+      "required_evidence": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK",
+        "REAL_PIT_RUNTIME_RECEIPT"
+      ]
+    },
+    {
+      "accepted_fact_scope": "FUTURE_RUNTIME_AUDIT",
+      "audit_execution": "NOT_RUN_R31_CONTRACT_DESIGN_ONLY",
+      "authority": [
+        {
+          "bytes": 26522,
+          "contract_id": "V4_21_CONTINUED_FORWARD_OBSERVATION_CONTRACT_V1",
+          "path": "config/v4_21_continued_forward_observation_contract_v1.json",
+          "sha256": "45e4d0d16c30c6fb12c24a7d798624bcb1d8c17f1e1e671199914c5b6e40f510"
+        },
+        {
+          "bytes": 2081,
+          "contract_id": "COHORT_V1",
+          "path": "config/v4_15_cohort_contract_v1.json",
+          "sha256": "5d4dee2e914ed541227cf54deb5676be3495713ea754ce6b78b078c643bacc8b"
+        },
+        {
+          "bytes": 1381,
+          "contract_id": "DUE_PLANNER_V1",
+          "path": "config/v4_15_due_planner_contract_v1.json",
+          "sha256": "848a6bf0f0d78b7784c6c7db34e20da31f1e20be0aa1e5c91bae2f28a1b50a2f"
+        },
+        {
+          "bytes": 1557,
+          "contract_id": "OUTCOME_STATUS_V1",
+          "path": "config/v4_15_outcome_status_contract_v1.json",
+          "sha256": "ce2507c95e06d821c90d01a3e4d737c1476f542ffd6d9a8c2dc495b4330c093e"
+        },
+        {
+          "bytes": 1401,
+          "contract_id": "OUTCOME_REVISION_V1",
+          "path": "config/v4_15_settlement_revision_contract_v1.json",
+          "sha256": "08e2d13964e9defefdac56f53c2b73bf7cc31963d946784e6f3d77c985c576dd"
+        }
+      ],
+      "blocking_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "check": "exact FORWARD_GATE receipts",
+      "current_status": "WAIT_REAL_EVIDENCE",
+      "disposition_rule": "PASS_ONLY_AFTER_EXACT_SCOPED_INDEPENDENT_AUDIT; CONTRACT_DESIGN_OR_PRIOR_STAGE_ACCEPTANCE_IS_NOT_THIS_AUDIT",
+      "domain": "A22-FORWARD",
+      "evidence_refs": [
+        {
+          "bytes": 26522,
+          "contract_id": "V4_21_CONTINUED_FORWARD_OBSERVATION_CONTRACT_V1",
+          "path": "config/v4_21_continued_forward_observation_contract_v1.json",
+          "sha256": "45e4d0d16c30c6fb12c24a7d798624bcb1d8c17f1e1e671199914c5b6e40f510"
+        },
+        {
+          "bytes": 2081,
+          "contract_id": "COHORT_V1",
+          "path": "config/v4_15_cohort_contract_v1.json",
+          "sha256": "5d4dee2e914ed541227cf54deb5676be3495713ea754ce6b78b078c643bacc8b"
+        },
+        {
+          "bytes": 1381,
+          "contract_id": "DUE_PLANNER_V1",
+          "path": "config/v4_15_due_planner_contract_v1.json",
+          "sha256": "848a6bf0f0d78b7784c6c7db34e20da31f1e20be0aa1e5c91bae2f28a1b50a2f"
+        },
+        {
+          "bytes": 1557,
+          "contract_id": "OUTCOME_STATUS_V1",
+          "path": "config/v4_15_outcome_status_contract_v1.json",
+          "sha256": "ce2507c95e06d821c90d01a3e4d737c1476f542ffd6d9a8c2dc495b4330c093e"
+        },
+        {
+          "bytes": 1401,
+          "contract_id": "OUTCOME_REVISION_V1",
+          "path": "config/v4_15_settlement_revision_contract_v1.json",
+          "sha256": "08e2d13964e9defefdac56f53c2b73bf7cc31963d946784e6f3d77c985c576dd"
+        }
+      ],
+      "item_id": "A22-FORWARD-13",
+      "required_evidence": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK",
+        "REAL_PIT_RUNTIME_RECEIPT"
+      ]
+    },
+    {
+      "accepted_fact_scope": "FUTURE_RUNTIME_AUDIT",
+      "audit_execution": "NOT_RUN_R31_CONTRACT_DESIGN_ONLY",
+      "authority": [
+        {
+          "bytes": 26522,
+          "contract_id": "V4_21_CONTINUED_FORWARD_OBSERVATION_CONTRACT_V1",
+          "path": "config/v4_21_continued_forward_observation_contract_v1.json",
+          "sha256": "45e4d0d16c30c6fb12c24a7d798624bcb1d8c17f1e1e671199914c5b6e40f510"
+        },
+        {
+          "bytes": 2081,
+          "contract_id": "COHORT_V1",
+          "path": "config/v4_15_cohort_contract_v1.json",
+          "sha256": "5d4dee2e914ed541227cf54deb5676be3495713ea754ce6b78b078c643bacc8b"
+        },
+        {
+          "bytes": 1381,
+          "contract_id": "DUE_PLANNER_V1",
+          "path": "config/v4_15_due_planner_contract_v1.json",
+          "sha256": "848a6bf0f0d78b7784c6c7db34e20da31f1e20be0aa1e5c91bae2f28a1b50a2f"
+        },
+        {
+          "bytes": 1557,
+          "contract_id": "OUTCOME_STATUS_V1",
+          "path": "config/v4_15_outcome_status_contract_v1.json",
+          "sha256": "ce2507c95e06d821c90d01a3e4d737c1476f542ffd6d9a8c2dc495b4330c093e"
+        },
+        {
+          "bytes": 1401,
+          "contract_id": "OUTCOME_REVISION_V1",
+          "path": "config/v4_15_settlement_revision_contract_v1.json",
+          "sha256": "08e2d13964e9defefdac56f53c2b73bf7cc31963d946784e6f3d77c985c576dd"
+        }
+      ],
+      "blocking_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "check": "no new settlement owner",
+      "current_status": "WAIT_REAL_EVIDENCE",
+      "disposition_rule": "PASS_ONLY_AFTER_EXACT_SCOPED_INDEPENDENT_AUDIT; CONTRACT_DESIGN_OR_PRIOR_STAGE_ACCEPTANCE_IS_NOT_THIS_AUDIT",
+      "domain": "A22-FORWARD",
+      "evidence_refs": [
+        {
+          "bytes": 26522,
+          "contract_id": "V4_21_CONTINUED_FORWARD_OBSERVATION_CONTRACT_V1",
+          "path": "config/v4_21_continued_forward_observation_contract_v1.json",
+          "sha256": "45e4d0d16c30c6fb12c24a7d798624bcb1d8c17f1e1e671199914c5b6e40f510"
+        },
+        {
+          "bytes": 2081,
+          "contract_id": "COHORT_V1",
+          "path": "config/v4_15_cohort_contract_v1.json",
+          "sha256": "5d4dee2e914ed541227cf54deb5676be3495713ea754ce6b78b078c643bacc8b"
+        },
+        {
+          "bytes": 1381,
+          "contract_id": "DUE_PLANNER_V1",
+          "path": "config/v4_15_due_planner_contract_v1.json",
+          "sha256": "848a6bf0f0d78b7784c6c7db34e20da31f1e20be0aa1e5c91bae2f28a1b50a2f"
+        },
+        {
+          "bytes": 1557,
+          "contract_id": "OUTCOME_STATUS_V1",
+          "path": "config/v4_15_outcome_status_contract_v1.json",
+          "sha256": "ce2507c95e06d821c90d01a3e4d737c1476f542ffd6d9a8c2dc495b4330c093e"
+        },
+        {
+          "bytes": 1401,
+          "contract_id": "OUTCOME_REVISION_V1",
+          "path": "config/v4_15_settlement_revision_contract_v1.json",
+          "sha256": "08e2d13964e9defefdac56f53c2b73bf7cc31963d946784e6f3d77c985c576dd"
+        }
+      ],
+      "item_id": "A22-FORWARD-14",
+      "required_evidence": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK",
+        "REAL_PIT_RUNTIME_RECEIPT"
+      ]
+    }
+  ],
+  "mode": "CONTRACT_DESIGN_ONLY",
+  "runtime_audit_executed": false
+}

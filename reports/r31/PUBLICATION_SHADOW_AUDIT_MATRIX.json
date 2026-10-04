@@ -1,0 +1,1116 @@
+{
+  "items": [
+    {
+      "accepted_fact_scope": "FUTURE_RUNTIME_AUDIT",
+      "audit_execution": "NOT_RUN_R31_CONTRACT_DESIGN_ONLY",
+      "authority": [
+        {
+          "bytes": 2642,
+          "contract_id": "V4_16_CLOCK_CONTRACT_V1",
+          "path": "config/v4_16_clock_contract_v1.json",
+          "sha256": "3a4dce84edf18afe36749b524a1eff3af569b6e33c4b66eb598e76f583d9821a"
+        },
+        {
+          "bytes": 8464,
+          "contract_id": "V4_16_OBSERVATION_SLOT_CONTRACT_V2",
+          "path": "config/v4_16_observation_slot_contract_v2.json",
+          "sha256": "47e0c0bc36373f0d63557769c428f64a422ea434435b9319ce144d43b22bea15"
+        },
+        {
+          "bytes": 2053,
+          "contract_id": "V4_16_GO_FORWARD_INPUT_AUTHORITY_V1",
+          "path": "config/v4_16_go_forward_input_authority_v1.json",
+          "sha256": "660d36616e0e28db5ed541e8f6111ccfe48140bb3e88c8a14647d67b26e32a07"
+        },
+        {
+          "bytes": 1224,
+          "path": "reports/r25/DAILY_INPUT_REAL_GATE.json",
+          "sha256": "77faa1d4aecec381a281d953dac14029f29e94f2acd8ecfda740dd37d21c7e4f"
+        }
+      ],
+      "blocking_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "check": "clock authority",
+      "current_status": "WAIT_REAL_EVIDENCE",
+      "disposition_rule": "PASS_ONLY_AFTER_EXACT_SCOPED_INDEPENDENT_AUDIT; CONTRACT_DESIGN_OR_PRIOR_STAGE_ACCEPTANCE_IS_NOT_THIS_AUDIT",
+      "domain": "A22-PUBLICATION",
+      "evidence_refs": [
+        {
+          "bytes": 2642,
+          "contract_id": "V4_16_CLOCK_CONTRACT_V1",
+          "path": "config/v4_16_clock_contract_v1.json",
+          "sha256": "3a4dce84edf18afe36749b524a1eff3af569b6e33c4b66eb598e76f583d9821a"
+        },
+        {
+          "bytes": 8464,
+          "contract_id": "V4_16_OBSERVATION_SLOT_CONTRACT_V2",
+          "path": "config/v4_16_observation_slot_contract_v2.json",
+          "sha256": "47e0c0bc36373f0d63557769c428f64a422ea434435b9319ce144d43b22bea15"
+        },
+        {
+          "bytes": 2053,
+          "contract_id": "V4_16_GO_FORWARD_INPUT_AUTHORITY_V1",
+          "path": "config/v4_16_go_forward_input_authority_v1.json",
+          "sha256": "660d36616e0e28db5ed541e8f6111ccfe48140bb3e88c8a14647d67b26e32a07"
+        },
+        {
+          "bytes": 1224,
+          "path": "reports/r25/DAILY_INPUT_REAL_GATE.json",
+          "sha256": "77faa1d4aecec381a281d953dac14029f29e94f2acd8ecfda740dd37d21c7e4f"
+        }
+      ],
+      "item_id": "A22-PUBLICATION-01",
+      "required_evidence": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK",
+        "REAL_PIT_RUNTIME_RECEIPT"
+      ]
+    },
+    {
+      "accepted_fact_scope": "FUTURE_RUNTIME_AUDIT",
+      "audit_execution": "NOT_RUN_R31_CONTRACT_DESIGN_ONLY",
+      "authority": [
+        {
+          "bytes": 2642,
+          "contract_id": "V4_16_CLOCK_CONTRACT_V1",
+          "path": "config/v4_16_clock_contract_v1.json",
+          "sha256": "3a4dce84edf18afe36749b524a1eff3af569b6e33c4b66eb598e76f583d9821a"
+        },
+        {
+          "bytes": 8464,
+          "contract_id": "V4_16_OBSERVATION_SLOT_CONTRACT_V2",
+          "path": "config/v4_16_observation_slot_contract_v2.json",
+          "sha256": "47e0c0bc36373f0d63557769c428f64a422ea434435b9319ce144d43b22bea15"
+        },
+        {
+          "bytes": 2053,
+          "contract_id": "V4_16_GO_FORWARD_INPUT_AUTHORITY_V1",
+          "path": "config/v4_16_go_forward_input_authority_v1.json",
+          "sha256": "660d36616e0e28db5ed541e8f6111ccfe48140bb3e88c8a14647d67b26e32a07"
+        },
+        {
+          "bytes": 1224,
+          "path": "reports/r25/DAILY_INPUT_REAL_GATE.json",
+          "sha256": "77faa1d4aecec381a281d953dac14029f29e94f2acd8ecfda740dd37d21c7e4f"
+        }
+      ],
+      "blocking_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "check": "source readiness",
+      "current_status": "WAIT_REAL_EVIDENCE",
+      "disposition_rule": "PASS_ONLY_AFTER_EXACT_SCOPED_INDEPENDENT_AUDIT; CONTRACT_DESIGN_OR_PRIOR_STAGE_ACCEPTANCE_IS_NOT_THIS_AUDIT",
+      "domain": "A22-PUBLICATION",
+      "evidence_refs": [
+        {
+          "bytes": 2642,
+          "contract_id": "V4_16_CLOCK_CONTRACT_V1",
+          "path": "config/v4_16_clock_contract_v1.json",
+          "sha256": "3a4dce84edf18afe36749b524a1eff3af569b6e33c4b66eb598e76f583d9821a"
+        },
+        {
+          "bytes": 8464,
+          "contract_id": "V4_16_OBSERVATION_SLOT_CONTRACT_V2",
+          "path": "config/v4_16_observation_slot_contract_v2.json",
+          "sha256": "47e0c0bc36373f0d63557769c428f64a422ea434435b9319ce144d43b22bea15"
+        },
+        {
+          "bytes": 2053,
+          "contract_id": "V4_16_GO_FORWARD_INPUT_AUTHORITY_V1",
+          "path": "config/v4_16_go_forward_input_authority_v1.json",
+          "sha256": "660d36616e0e28db5ed541e8f6111ccfe48140bb3e88c8a14647d67b26e32a07"
+        },
+        {
+          "bytes": 1224,
+          "path": "reports/r25/DAILY_INPUT_REAL_GATE.json",
+          "sha256": "77faa1d4aecec381a281d953dac14029f29e94f2acd8ecfda740dd37d21c7e4f"
+        }
+      ],
+      "item_id": "A22-PUBLICATION-02",
+      "required_evidence": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK",
+        "REAL_PIT_RUNTIME_RECEIPT"
+      ]
+    },
+    {
+      "accepted_fact_scope": "FUTURE_RUNTIME_AUDIT",
+      "audit_execution": "NOT_RUN_R31_CONTRACT_DESIGN_ONLY",
+      "authority": [
+        {
+          "bytes": 2642,
+          "contract_id": "V4_16_CLOCK_CONTRACT_V1",
+          "path": "config/v4_16_clock_contract_v1.json",
+          "sha256": "3a4dce84edf18afe36749b524a1eff3af569b6e33c4b66eb598e76f583d9821a"
+        },
+        {
+          "bytes": 8464,
+          "contract_id": "V4_16_OBSERVATION_SLOT_CONTRACT_V2",
+          "path": "config/v4_16_observation_slot_contract_v2.json",
+          "sha256": "47e0c0bc36373f0d63557769c428f64a422ea434435b9319ce144d43b22bea15"
+        },
+        {
+          "bytes": 2053,
+          "contract_id": "V4_16_GO_FORWARD_INPUT_AUTHORITY_V1",
+          "path": "config/v4_16_go_forward_input_authority_v1.json",
+          "sha256": "660d36616e0e28db5ed541e8f6111ccfe48140bb3e88c8a14647d67b26e32a07"
+        },
+        {
+          "bytes": 1224,
+          "path": "reports/r25/DAILY_INPUT_REAL_GATE.json",
+          "sha256": "77faa1d4aecec381a281d953dac14029f29e94f2acd8ecfda740dd37d21c7e4f"
+        }
+      ],
+      "blocking_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "check": "Observation Slot V2",
+      "current_status": "WAIT_REAL_EVIDENCE",
+      "disposition_rule": "PASS_ONLY_AFTER_EXACT_SCOPED_INDEPENDENT_AUDIT; CONTRACT_DESIGN_OR_PRIOR_STAGE_ACCEPTANCE_IS_NOT_THIS_AUDIT",
+      "domain": "A22-PUBLICATION",
+      "evidence_refs": [
+        {
+          "bytes": 2642,
+          "contract_id": "V4_16_CLOCK_CONTRACT_V1",
+          "path": "config/v4_16_clock_contract_v1.json",
+          "sha256": "3a4dce84edf18afe36749b524a1eff3af569b6e33c4b66eb598e76f583d9821a"
+        },
+        {
+          "bytes": 8464,
+          "contract_id": "V4_16_OBSERVATION_SLOT_CONTRACT_V2",
+          "path": "config/v4_16_observation_slot_contract_v2.json",
+          "sha256": "47e0c0bc36373f0d63557769c428f64a422ea434435b9319ce144d43b22bea15"
+        },
+        {
+          "bytes": 2053,
+          "contract_id": "V4_16_GO_FORWARD_INPUT_AUTHORITY_V1",
+          "path": "config/v4_16_go_forward_input_authority_v1.json",
+          "sha256": "660d36616e0e28db5ed541e8f6111ccfe48140bb3e88c8a14647d67b26e32a07"
+        },
+        {
+          "bytes": 1224,
+          "path": "reports/r25/DAILY_INPUT_REAL_GATE.json",
+          "sha256": "77faa1d4aecec381a281d953dac14029f29e94f2acd8ecfda740dd37d21c7e4f"
+        }
+      ],
+      "item_id": "A22-PUBLICATION-03",
+      "required_evidence": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK",
+        "REAL_PIT_RUNTIME_RECEIPT"
+      ]
+    },
+    {
+      "accepted_fact_scope": "FUTURE_RUNTIME_AUDIT",
+      "audit_execution": "NOT_RUN_R31_CONTRACT_DESIGN_ONLY",
+      "authority": [
+        {
+          "bytes": 2642,
+          "contract_id": "V4_16_CLOCK_CONTRACT_V1",
+          "path": "config/v4_16_clock_contract_v1.json",
+          "sha256": "3a4dce84edf18afe36749b524a1eff3af569b6e33c4b66eb598e76f583d9821a"
+        },
+        {
+          "bytes": 8464,
+          "contract_id": "V4_16_OBSERVATION_SLOT_CONTRACT_V2",
+          "path": "config/v4_16_observation_slot_contract_v2.json",
+          "sha256": "47e0c0bc36373f0d63557769c428f64a422ea434435b9319ce144d43b22bea15"
+        },
+        {
+          "bytes": 2053,
+          "contract_id": "V4_16_GO_FORWARD_INPUT_AUTHORITY_V1",
+          "path": "config/v4_16_go_forward_input_authority_v1.json",
+          "sha256": "660d36616e0e28db5ed541e8f6111ccfe48140bb3e88c8a14647d67b26e32a07"
+        },
+        {
+          "bytes": 1224,
+          "path": "reports/r25/DAILY_INPUT_REAL_GATE.json",
+          "sha256": "77faa1d4aecec381a281d953dac14029f29e94f2acd8ecfda740dd37d21c7e4f"
+        }
+      ],
+      "blocking_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "check": "exact daily-input authority",
+      "current_status": "WAIT_REAL_EVIDENCE",
+      "disposition_rule": "PASS_ONLY_AFTER_EXACT_SCOPED_INDEPENDENT_AUDIT; CONTRACT_DESIGN_OR_PRIOR_STAGE_ACCEPTANCE_IS_NOT_THIS_AUDIT",
+      "domain": "A22-PUBLICATION",
+      "evidence_refs": [
+        {
+          "bytes": 2642,
+          "contract_id": "V4_16_CLOCK_CONTRACT_V1",
+          "path": "config/v4_16_clock_contract_v1.json",
+          "sha256": "3a4dce84edf18afe36749b524a1eff3af569b6e33c4b66eb598e76f583d9821a"
+        },
+        {
+          "bytes": 8464,
+          "contract_id": "V4_16_OBSERVATION_SLOT_CONTRACT_V2",
+          "path": "config/v4_16_observation_slot_contract_v2.json",
+          "sha256": "47e0c0bc36373f0d63557769c428f64a422ea434435b9319ce144d43b22bea15"
+        },
+        {
+          "bytes": 2053,
+          "contract_id": "V4_16_GO_FORWARD_INPUT_AUTHORITY_V1",
+          "path": "config/v4_16_go_forward_input_authority_v1.json",
+          "sha256": "660d36616e0e28db5ed541e8f6111ccfe48140bb3e88c8a14647d67b26e32a07"
+        },
+        {
+          "bytes": 1224,
+          "path": "reports/r25/DAILY_INPUT_REAL_GATE.json",
+          "sha256": "77faa1d4aecec381a281d953dac14029f29e94f2acd8ecfda740dd37d21c7e4f"
+        }
+      ],
+      "item_id": "A22-PUBLICATION-04",
+      "required_evidence": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK",
+        "REAL_PIT_RUNTIME_RECEIPT"
+      ]
+    },
+    {
+      "accepted_fact_scope": "FUTURE_RUNTIME_AUDIT",
+      "audit_execution": "NOT_RUN_R31_CONTRACT_DESIGN_ONLY",
+      "authority": [
+        {
+          "bytes": 2642,
+          "contract_id": "V4_16_CLOCK_CONTRACT_V1",
+          "path": "config/v4_16_clock_contract_v1.json",
+          "sha256": "3a4dce84edf18afe36749b524a1eff3af569b6e33c4b66eb598e76f583d9821a"
+        },
+        {
+          "bytes": 8464,
+          "contract_id": "V4_16_OBSERVATION_SLOT_CONTRACT_V2",
+          "path": "config/v4_16_observation_slot_contract_v2.json",
+          "sha256": "47e0c0bc36373f0d63557769c428f64a422ea434435b9319ce144d43b22bea15"
+        },
+        {
+          "bytes": 2053,
+          "contract_id": "V4_16_GO_FORWARD_INPUT_AUTHORITY_V1",
+          "path": "config/v4_16_go_forward_input_authority_v1.json",
+          "sha256": "660d36616e0e28db5ed541e8f6111ccfe48140bb3e88c8a14647d67b26e32a07"
+        },
+        {
+          "bytes": 1224,
+          "path": "reports/r25/DAILY_INPUT_REAL_GATE.json",
+          "sha256": "77faa1d4aecec381a281d953dac14029f29e94f2acd8ecfda740dd37d21c7e4f"
+        }
+      ],
+      "blocking_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "check": "Shadow publication identity",
+      "current_status": "WAIT_REAL_EVIDENCE",
+      "disposition_rule": "PASS_ONLY_AFTER_EXACT_SCOPED_INDEPENDENT_AUDIT; CONTRACT_DESIGN_OR_PRIOR_STAGE_ACCEPTANCE_IS_NOT_THIS_AUDIT",
+      "domain": "A22-PUBLICATION",
+      "evidence_refs": [
+        {
+          "bytes": 2642,
+          "contract_id": "V4_16_CLOCK_CONTRACT_V1",
+          "path": "config/v4_16_clock_contract_v1.json",
+          "sha256": "3a4dce84edf18afe36749b524a1eff3af569b6e33c4b66eb598e76f583d9821a"
+        },
+        {
+          "bytes": 8464,
+          "contract_id": "V4_16_OBSERVATION_SLOT_CONTRACT_V2",
+          "path": "config/v4_16_observation_slot_contract_v2.json",
+          "sha256": "47e0c0bc36373f0d63557769c428f64a422ea434435b9319ce144d43b22bea15"
+        },
+        {
+          "bytes": 2053,
+          "contract_id": "V4_16_GO_FORWARD_INPUT_AUTHORITY_V1",
+          "path": "config/v4_16_go_forward_input_authority_v1.json",
+          "sha256": "660d36616e0e28db5ed541e8f6111ccfe48140bb3e88c8a14647d67b26e32a07"
+        },
+        {
+          "bytes": 1224,
+          "path": "reports/r25/DAILY_INPUT_REAL_GATE.json",
+          "sha256": "77faa1d4aecec381a281d953dac14029f29e94f2acd8ecfda740dd37d21c7e4f"
+        }
+      ],
+      "item_id": "A22-PUBLICATION-05",
+      "required_evidence": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK",
+        "REAL_PIT_RUNTIME_RECEIPT"
+      ]
+    },
+    {
+      "accepted_fact_scope": "FUTURE_RUNTIME_AUDIT",
+      "audit_execution": "NOT_RUN_R31_CONTRACT_DESIGN_ONLY",
+      "authority": [
+        {
+          "bytes": 2642,
+          "contract_id": "V4_16_CLOCK_CONTRACT_V1",
+          "path": "config/v4_16_clock_contract_v1.json",
+          "sha256": "3a4dce84edf18afe36749b524a1eff3af569b6e33c4b66eb598e76f583d9821a"
+        },
+        {
+          "bytes": 8464,
+          "contract_id": "V4_16_OBSERVATION_SLOT_CONTRACT_V2",
+          "path": "config/v4_16_observation_slot_contract_v2.json",
+          "sha256": "47e0c0bc36373f0d63557769c428f64a422ea434435b9319ce144d43b22bea15"
+        },
+        {
+          "bytes": 2053,
+          "contract_id": "V4_16_GO_FORWARD_INPUT_AUTHORITY_V1",
+          "path": "config/v4_16_go_forward_input_authority_v1.json",
+          "sha256": "660d36616e0e28db5ed541e8f6111ccfe48140bb3e88c8a14647d67b26e32a07"
+        },
+        {
+          "bytes": 1224,
+          "path": "reports/r25/DAILY_INPUT_REAL_GATE.json",
+          "sha256": "77faa1d4aecec381a281d953dac14029f29e94f2acd8ecfda740dd37d21c7e4f"
+        }
+      ],
+      "blocking_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "check": "state lineage",
+      "current_status": "WAIT_REAL_EVIDENCE",
+      "disposition_rule": "PASS_ONLY_AFTER_EXACT_SCOPED_INDEPENDENT_AUDIT; CONTRACT_DESIGN_OR_PRIOR_STAGE_ACCEPTANCE_IS_NOT_THIS_AUDIT",
+      "domain": "A22-PUBLICATION",
+      "evidence_refs": [
+        {
+          "bytes": 2642,
+          "contract_id": "V4_16_CLOCK_CONTRACT_V1",
+          "path": "config/v4_16_clock_contract_v1.json",
+          "sha256": "3a4dce84edf18afe36749b524a1eff3af569b6e33c4b66eb598e76f583d9821a"
+        },
+        {
+          "bytes": 8464,
+          "contract_id": "V4_16_OBSERVATION_SLOT_CONTRACT_V2",
+          "path": "config/v4_16_observation_slot_contract_v2.json",
+          "sha256": "47e0c0bc36373f0d63557769c428f64a422ea434435b9319ce144d43b22bea15"
+        },
+        {
+          "bytes": 2053,
+          "contract_id": "V4_16_GO_FORWARD_INPUT_AUTHORITY_V1",
+          "path": "config/v4_16_go_forward_input_authority_v1.json",
+          "sha256": "660d36616e0e28db5ed541e8f6111ccfe48140bb3e88c8a14647d67b26e32a07"
+        },
+        {
+          "bytes": 1224,
+          "path": "reports/r25/DAILY_INPUT_REAL_GATE.json",
+          "sha256": "77faa1d4aecec381a281d953dac14029f29e94f2acd8ecfda740dd37d21c7e4f"
+        }
+      ],
+      "item_id": "A22-PUBLICATION-06",
+      "required_evidence": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK",
+        "REAL_PIT_RUNTIME_RECEIPT"
+      ]
+    },
+    {
+      "accepted_fact_scope": "FUTURE_RUNTIME_AUDIT",
+      "audit_execution": "NOT_RUN_R31_CONTRACT_DESIGN_ONLY",
+      "authority": [
+        {
+          "bytes": 2642,
+          "contract_id": "V4_16_CLOCK_CONTRACT_V1",
+          "path": "config/v4_16_clock_contract_v1.json",
+          "sha256": "3a4dce84edf18afe36749b524a1eff3af569b6e33c4b66eb598e76f583d9821a"
+        },
+        {
+          "bytes": 8464,
+          "contract_id": "V4_16_OBSERVATION_SLOT_CONTRACT_V2",
+          "path": "config/v4_16_observation_slot_contract_v2.json",
+          "sha256": "47e0c0bc36373f0d63557769c428f64a422ea434435b9319ce144d43b22bea15"
+        },
+        {
+          "bytes": 2053,
+          "contract_id": "V4_16_GO_FORWARD_INPUT_AUTHORITY_V1",
+          "path": "config/v4_16_go_forward_input_authority_v1.json",
+          "sha256": "660d36616e0e28db5ed541e8f6111ccfe48140bb3e88c8a14647d67b26e32a07"
+        },
+        {
+          "bytes": 1224,
+          "path": "reports/r25/DAILY_INPUT_REAL_GATE.json",
+          "sha256": "77faa1d4aecec381a281d953dac14029f29e94f2acd8ecfda740dd37d21c7e4f"
+        }
+      ],
+      "blocking_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "check": "accepted session status/native authority",
+      "current_status": "WAIT_REAL_EVIDENCE",
+      "disposition_rule": "PASS_ONLY_AFTER_EXACT_SCOPED_INDEPENDENT_AUDIT; CONTRACT_DESIGN_OR_PRIOR_STAGE_ACCEPTANCE_IS_NOT_THIS_AUDIT",
+      "domain": "A22-PUBLICATION",
+      "evidence_refs": [
+        {
+          "bytes": 2642,
+          "contract_id": "V4_16_CLOCK_CONTRACT_V1",
+          "path": "config/v4_16_clock_contract_v1.json",
+          "sha256": "3a4dce84edf18afe36749b524a1eff3af569b6e33c4b66eb598e76f583d9821a"
+        },
+        {
+          "bytes": 8464,
+          "contract_id": "V4_16_OBSERVATION_SLOT_CONTRACT_V2",
+          "path": "config/v4_16_observation_slot_contract_v2.json",
+          "sha256": "47e0c0bc36373f0d63557769c428f64a422ea434435b9319ce144d43b22bea15"
+        },
+        {
+          "bytes": 2053,
+          "contract_id": "V4_16_GO_FORWARD_INPUT_AUTHORITY_V1",
+          "path": "config/v4_16_go_forward_input_authority_v1.json",
+          "sha256": "660d36616e0e28db5ed541e8f6111ccfe48140bb3e88c8a14647d67b26e32a07"
+        },
+        {
+          "bytes": 1224,
+          "path": "reports/r25/DAILY_INPUT_REAL_GATE.json",
+          "sha256": "77faa1d4aecec381a281d953dac14029f29e94f2acd8ecfda740dd37d21c7e4f"
+        }
+      ],
+      "item_id": "A22-PUBLICATION-07",
+      "required_evidence": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK",
+        "REAL_PIT_RUNTIME_RECEIPT"
+      ]
+    },
+    {
+      "accepted_fact_scope": "FUTURE_RUNTIME_AUDIT",
+      "audit_execution": "NOT_RUN_R31_CONTRACT_DESIGN_ONLY",
+      "authority": [
+        {
+          "bytes": 2642,
+          "contract_id": "V4_16_CLOCK_CONTRACT_V1",
+          "path": "config/v4_16_clock_contract_v1.json",
+          "sha256": "3a4dce84edf18afe36749b524a1eff3af569b6e33c4b66eb598e76f583d9821a"
+        },
+        {
+          "bytes": 8464,
+          "contract_id": "V4_16_OBSERVATION_SLOT_CONTRACT_V2",
+          "path": "config/v4_16_observation_slot_contract_v2.json",
+          "sha256": "47e0c0bc36373f0d63557769c428f64a422ea434435b9319ce144d43b22bea15"
+        },
+        {
+          "bytes": 2053,
+          "contract_id": "V4_16_GO_FORWARD_INPUT_AUTHORITY_V1",
+          "path": "config/v4_16_go_forward_input_authority_v1.json",
+          "sha256": "660d36616e0e28db5ed541e8f6111ccfe48140bb3e88c8a14647d67b26e32a07"
+        },
+        {
+          "bytes": 1224,
+          "path": "reports/r25/DAILY_INPUT_REAL_GATE.json",
+          "sha256": "77faa1d4aecec381a281d953dac14029f29e94f2acd8ecfda740dd37d21c7e4f"
+        }
+      ],
+      "blocking_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "check": "same-day revision",
+      "current_status": "WAIT_REAL_EVIDENCE",
+      "disposition_rule": "PASS_ONLY_AFTER_EXACT_SCOPED_INDEPENDENT_AUDIT; CONTRACT_DESIGN_OR_PRIOR_STAGE_ACCEPTANCE_IS_NOT_THIS_AUDIT",
+      "domain": "A22-PUBLICATION",
+      "evidence_refs": [
+        {
+          "bytes": 2642,
+          "contract_id": "V4_16_CLOCK_CONTRACT_V1",
+          "path": "config/v4_16_clock_contract_v1.json",
+          "sha256": "3a4dce84edf18afe36749b524a1eff3af569b6e33c4b66eb598e76f583d9821a"
+        },
+        {
+          "bytes": 8464,
+          "contract_id": "V4_16_OBSERVATION_SLOT_CONTRACT_V2",
+          "path": "config/v4_16_observation_slot_contract_v2.json",
+          "sha256": "47e0c0bc36373f0d63557769c428f64a422ea434435b9319ce144d43b22bea15"
+        },
+        {
+          "bytes": 2053,
+          "contract_id": "V4_16_GO_FORWARD_INPUT_AUTHORITY_V1",
+          "path": "config/v4_16_go_forward_input_authority_v1.json",
+          "sha256": "660d36616e0e28db5ed541e8f6111ccfe48140bb3e88c8a14647d67b26e32a07"
+        },
+        {
+          "bytes": 1224,
+          "path": "reports/r25/DAILY_INPUT_REAL_GATE.json",
+          "sha256": "77faa1d4aecec381a281d953dac14029f29e94f2acd8ecfda740dd37d21c7e4f"
+        }
+      ],
+      "item_id": "A22-PUBLICATION-08",
+      "required_evidence": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK",
+        "REAL_PIT_RUNTIME_RECEIPT"
+      ]
+    },
+    {
+      "accepted_fact_scope": "FUTURE_RUNTIME_AUDIT",
+      "audit_execution": "NOT_RUN_R31_CONTRACT_DESIGN_ONLY",
+      "authority": [
+        {
+          "bytes": 2642,
+          "contract_id": "V4_16_CLOCK_CONTRACT_V1",
+          "path": "config/v4_16_clock_contract_v1.json",
+          "sha256": "3a4dce84edf18afe36749b524a1eff3af569b6e33c4b66eb598e76f583d9821a"
+        },
+        {
+          "bytes": 8464,
+          "contract_id": "V4_16_OBSERVATION_SLOT_CONTRACT_V2",
+          "path": "config/v4_16_observation_slot_contract_v2.json",
+          "sha256": "47e0c0bc36373f0d63557769c428f64a422ea434435b9319ce144d43b22bea15"
+        },
+        {
+          "bytes": 2053,
+          "contract_id": "V4_16_GO_FORWARD_INPUT_AUTHORITY_V1",
+          "path": "config/v4_16_go_forward_input_authority_v1.json",
+          "sha256": "660d36616e0e28db5ed541e8f6111ccfe48140bb3e88c8a14647d67b26e32a07"
+        },
+        {
+          "bytes": 1224,
+          "path": "reports/r25/DAILY_INPUT_REAL_GATE.json",
+          "sha256": "77faa1d4aecec381a281d953dac14029f29e94f2acd8ecfda740dd37d21c7e4f"
+        }
+      ],
+      "blocking_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "check": "CAS",
+      "current_status": "WAIT_REAL_EVIDENCE",
+      "disposition_rule": "PASS_ONLY_AFTER_EXACT_SCOPED_INDEPENDENT_AUDIT; CONTRACT_DESIGN_OR_PRIOR_STAGE_ACCEPTANCE_IS_NOT_THIS_AUDIT",
+      "domain": "A22-PUBLICATION",
+      "evidence_refs": [
+        {
+          "bytes": 2642,
+          "contract_id": "V4_16_CLOCK_CONTRACT_V1",
+          "path": "config/v4_16_clock_contract_v1.json",
+          "sha256": "3a4dce84edf18afe36749b524a1eff3af569b6e33c4b66eb598e76f583d9821a"
+        },
+        {
+          "bytes": 8464,
+          "contract_id": "V4_16_OBSERVATION_SLOT_CONTRACT_V2",
+          "path": "config/v4_16_observation_slot_contract_v2.json",
+          "sha256": "47e0c0bc36373f0d63557769c428f64a422ea434435b9319ce144d43b22bea15"
+        },
+        {
+          "bytes": 2053,
+          "contract_id": "V4_16_GO_FORWARD_INPUT_AUTHORITY_V1",
+          "path": "config/v4_16_go_forward_input_authority_v1.json",
+          "sha256": "660d36616e0e28db5ed541e8f6111ccfe48140bb3e88c8a14647d67b26e32a07"
+        },
+        {
+          "bytes": 1224,
+          "path": "reports/r25/DAILY_INPUT_REAL_GATE.json",
+          "sha256": "77faa1d4aecec381a281d953dac14029f29e94f2acd8ecfda740dd37d21c7e4f"
+        }
+      ],
+      "item_id": "A22-PUBLICATION-09",
+      "required_evidence": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK",
+        "REAL_PIT_RUNTIME_RECEIPT"
+      ]
+    },
+    {
+      "accepted_fact_scope": "FUTURE_RUNTIME_AUDIT",
+      "audit_execution": "NOT_RUN_R31_CONTRACT_DESIGN_ONLY",
+      "authority": [
+        {
+          "bytes": 8931,
+          "contract_id": "V4_16_SHADOW_HEALTH_CONTRACT_V1",
+          "path": "config/v4_16_shadow_health_contract_v1.json",
+          "sha256": "c7238a0b8b25679ff2c5633384c65134c1010dda7d895f1b360e22b4af1dd81b"
+        },
+        {
+          "bytes": 30858,
+          "contract_id": "V4_19_FOCUS_SOURCE_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_19_focus_source_cutover_contract_v1.json",
+          "sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd"
+        }
+      ],
+      "blocking_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "check": "exact SHADOW_STABLE_PASS receipts",
+      "current_status": "WAIT_REAL_EVIDENCE",
+      "disposition_rule": "PASS_ONLY_AFTER_EXACT_SCOPED_INDEPENDENT_AUDIT; CONTRACT_DESIGN_OR_PRIOR_STAGE_ACCEPTANCE_IS_NOT_THIS_AUDIT",
+      "domain": "A22-SHADOW",
+      "evidence_refs": [
+        {
+          "bytes": 8931,
+          "contract_id": "V4_16_SHADOW_HEALTH_CONTRACT_V1",
+          "path": "config/v4_16_shadow_health_contract_v1.json",
+          "sha256": "c7238a0b8b25679ff2c5633384c65134c1010dda7d895f1b360e22b4af1dd81b"
+        },
+        {
+          "bytes": 30858,
+          "contract_id": "V4_19_FOCUS_SOURCE_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_19_focus_source_cutover_contract_v1.json",
+          "sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd"
+        }
+      ],
+      "item_id": "A22-SHADOW-01",
+      "required_evidence": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK",
+        "REAL_PIT_RUNTIME_RECEIPT"
+      ]
+    },
+    {
+      "accepted_fact_scope": "FUTURE_RUNTIME_AUDIT",
+      "audit_execution": "NOT_RUN_R31_CONTRACT_DESIGN_ONLY",
+      "authority": [
+        {
+          "bytes": 8931,
+          "contract_id": "V4_16_SHADOW_HEALTH_CONTRACT_V1",
+          "path": "config/v4_16_shadow_health_contract_v1.json",
+          "sha256": "c7238a0b8b25679ff2c5633384c65134c1010dda7d895f1b360e22b4af1dd81b"
+        },
+        {
+          "bytes": 30858,
+          "contract_id": "V4_19_FOCUS_SOURCE_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_19_focus_source_cutover_contract_v1.json",
+          "sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd"
+        }
+      ],
+      "blocking_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "check": "real PIT sessions only",
+      "current_status": "WAIT_REAL_EVIDENCE",
+      "disposition_rule": "PASS_ONLY_AFTER_EXACT_SCOPED_INDEPENDENT_AUDIT; CONTRACT_DESIGN_OR_PRIOR_STAGE_ACCEPTANCE_IS_NOT_THIS_AUDIT",
+      "domain": "A22-SHADOW",
+      "evidence_refs": [
+        {
+          "bytes": 8931,
+          "contract_id": "V4_16_SHADOW_HEALTH_CONTRACT_V1",
+          "path": "config/v4_16_shadow_health_contract_v1.json",
+          "sha256": "c7238a0b8b25679ff2c5633384c65134c1010dda7d895f1b360e22b4af1dd81b"
+        },
+        {
+          "bytes": 30858,
+          "contract_id": "V4_19_FOCUS_SOURCE_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_19_focus_source_cutover_contract_v1.json",
+          "sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd"
+        }
+      ],
+      "item_id": "A22-SHADOW-02",
+      "required_evidence": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK",
+        "REAL_PIT_RUNTIME_RECEIPT"
+      ]
+    },
+    {
+      "accepted_fact_scope": "FUTURE_RUNTIME_AUDIT",
+      "audit_execution": "NOT_RUN_R31_CONTRACT_DESIGN_ONLY",
+      "authority": [
+        {
+          "bytes": 8931,
+          "contract_id": "V4_16_SHADOW_HEALTH_CONTRACT_V1",
+          "path": "config/v4_16_shadow_health_contract_v1.json",
+          "sha256": "c7238a0b8b25679ff2c5633384c65134c1010dda7d895f1b360e22b4af1dd81b"
+        },
+        {
+          "bytes": 30858,
+          "contract_id": "V4_19_FOCUS_SOURCE_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_19_focus_source_cutover_contract_v1.json",
+          "sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd"
+        }
+      ],
+      "blocking_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "check": "model/parameter partition",
+      "current_status": "WAIT_REAL_EVIDENCE",
+      "disposition_rule": "PASS_ONLY_AFTER_EXACT_SCOPED_INDEPENDENT_AUDIT; CONTRACT_DESIGN_OR_PRIOR_STAGE_ACCEPTANCE_IS_NOT_THIS_AUDIT",
+      "domain": "A22-SHADOW",
+      "evidence_refs": [
+        {
+          "bytes": 8931,
+          "contract_id": "V4_16_SHADOW_HEALTH_CONTRACT_V1",
+          "path": "config/v4_16_shadow_health_contract_v1.json",
+          "sha256": "c7238a0b8b25679ff2c5633384c65134c1010dda7d895f1b360e22b4af1dd81b"
+        },
+        {
+          "bytes": 30858,
+          "contract_id": "V4_19_FOCUS_SOURCE_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_19_focus_source_cutover_contract_v1.json",
+          "sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd"
+        }
+      ],
+      "item_id": "A22-SHADOW-03",
+      "required_evidence": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK",
+        "REAL_PIT_RUNTIME_RECEIPT"
+      ]
+    },
+    {
+      "accepted_fact_scope": "FUTURE_RUNTIME_AUDIT",
+      "audit_execution": "NOT_RUN_R31_CONTRACT_DESIGN_ONLY",
+      "authority": [
+        {
+          "bytes": 8931,
+          "contract_id": "V4_16_SHADOW_HEALTH_CONTRACT_V1",
+          "path": "config/v4_16_shadow_health_contract_v1.json",
+          "sha256": "c7238a0b8b25679ff2c5633384c65134c1010dda7d895f1b360e22b4af1dd81b"
+        },
+        {
+          "bytes": 30858,
+          "contract_id": "V4_19_FOCUS_SOURCE_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_19_focus_source_cutover_contract_v1.json",
+          "sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd"
+        }
+      ],
+      "blocking_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "check": "20 consecutive accepted-session semantics",
+      "current_status": "WAIT_REAL_EVIDENCE",
+      "disposition_rule": "PASS_ONLY_AFTER_EXACT_SCOPED_INDEPENDENT_AUDIT; CONTRACT_DESIGN_OR_PRIOR_STAGE_ACCEPTANCE_IS_NOT_THIS_AUDIT",
+      "domain": "A22-SHADOW",
+      "evidence_refs": [
+        {
+          "bytes": 8931,
+          "contract_id": "V4_16_SHADOW_HEALTH_CONTRACT_V1",
+          "path": "config/v4_16_shadow_health_contract_v1.json",
+          "sha256": "c7238a0b8b25679ff2c5633384c65134c1010dda7d895f1b360e22b4af1dd81b"
+        },
+        {
+          "bytes": 30858,
+          "contract_id": "V4_19_FOCUS_SOURCE_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_19_focus_source_cutover_contract_v1.json",
+          "sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd"
+        }
+      ],
+      "item_id": "A22-SHADOW-04",
+      "required_evidence": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK",
+        "REAL_PIT_RUNTIME_RECEIPT"
+      ]
+    },
+    {
+      "accepted_fact_scope": "FUTURE_RUNTIME_AUDIT",
+      "audit_execution": "NOT_RUN_R31_CONTRACT_DESIGN_ONLY",
+      "authority": [
+        {
+          "bytes": 8931,
+          "contract_id": "V4_16_SHADOW_HEALTH_CONTRACT_V1",
+          "path": "config/v4_16_shadow_health_contract_v1.json",
+          "sha256": "c7238a0b8b25679ff2c5633384c65134c1010dda7d895f1b360e22b4af1dd81b"
+        },
+        {
+          "bytes": 30858,
+          "contract_id": "V4_19_FOCUS_SOURCE_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_19_focus_source_cutover_contract_v1.json",
+          "sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd"
+        }
+      ],
+      "blocking_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "check": "no historical replay sample inflation",
+      "current_status": "WAIT_REAL_EVIDENCE",
+      "disposition_rule": "PASS_ONLY_AFTER_EXACT_SCOPED_INDEPENDENT_AUDIT; CONTRACT_DESIGN_OR_PRIOR_STAGE_ACCEPTANCE_IS_NOT_THIS_AUDIT",
+      "domain": "A22-SHADOW",
+      "evidence_refs": [
+        {
+          "bytes": 8931,
+          "contract_id": "V4_16_SHADOW_HEALTH_CONTRACT_V1",
+          "path": "config/v4_16_shadow_health_contract_v1.json",
+          "sha256": "c7238a0b8b25679ff2c5633384c65134c1010dda7d895f1b360e22b4af1dd81b"
+        },
+        {
+          "bytes": 30858,
+          "contract_id": "V4_19_FOCUS_SOURCE_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_19_focus_source_cutover_contract_v1.json",
+          "sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd"
+        }
+      ],
+      "item_id": "A22-SHADOW-05",
+      "required_evidence": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK",
+        "REAL_PIT_RUNTIME_RECEIPT"
+      ]
+    },
+    {
+      "accepted_fact_scope": "FUTURE_RUNTIME_AUDIT",
+      "audit_execution": "NOT_RUN_R31_CONTRACT_DESIGN_ONLY",
+      "authority": [
+        {
+          "bytes": 8931,
+          "contract_id": "V4_16_SHADOW_HEALTH_CONTRACT_V1",
+          "path": "config/v4_16_shadow_health_contract_v1.json",
+          "sha256": "c7238a0b8b25679ff2c5633384c65134c1010dda7d895f1b360e22b4af1dd81b"
+        },
+        {
+          "bytes": 30858,
+          "contract_id": "V4_19_FOCUS_SOURCE_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_19_focus_source_cutover_contract_v1.json",
+          "sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd"
+        }
+      ],
+      "blocking_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "check": "complete slot denominator/P0 log",
+      "current_status": "WAIT_REAL_EVIDENCE",
+      "disposition_rule": "PASS_ONLY_AFTER_EXACT_SCOPED_INDEPENDENT_AUDIT; CONTRACT_DESIGN_OR_PRIOR_STAGE_ACCEPTANCE_IS_NOT_THIS_AUDIT",
+      "domain": "A22-SHADOW",
+      "evidence_refs": [
+        {
+          "bytes": 8931,
+          "contract_id": "V4_16_SHADOW_HEALTH_CONTRACT_V1",
+          "path": "config/v4_16_shadow_health_contract_v1.json",
+          "sha256": "c7238a0b8b25679ff2c5633384c65134c1010dda7d895f1b360e22b4af1dd81b"
+        },
+        {
+          "bytes": 30858,
+          "contract_id": "V4_19_FOCUS_SOURCE_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_19_focus_source_cutover_contract_v1.json",
+          "sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd"
+        }
+      ],
+      "item_id": "A22-SHADOW-06",
+      "required_evidence": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK",
+        "REAL_PIT_RUNTIME_RECEIPT"
+      ]
+    },
+    {
+      "accepted_fact_scope": "FUTURE_RUNTIME_AUDIT",
+      "audit_execution": "NOT_RUN_R31_CONTRACT_DESIGN_ONLY",
+      "authority": [
+        {
+          "bytes": 8931,
+          "contract_id": "V4_16_SHADOW_HEALTH_CONTRACT_V1",
+          "path": "config/v4_16_shadow_health_contract_v1.json",
+          "sha256": "c7238a0b8b25679ff2c5633384c65134c1010dda7d895f1b360e22b4af1dd81b"
+        },
+        {
+          "bytes": 30858,
+          "contract_id": "V4_19_FOCUS_SOURCE_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_19_focus_source_cutover_contract_v1.json",
+          "sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd"
+        }
+      ],
+      "blocking_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "capability_scope": [
+        "STOCK_CORE",
+        "STOCK_SECTOR_DEPENDENT",
+        "SECTOR_STAGE",
+        "ROTATION",
+        "SECTOR_RISK_CHANGE"
+      ],
+      "check": "accepted rollback drill",
+      "current_status": "WAIT_REAL_EVIDENCE",
+      "disposition_rule": "PASS_ONLY_AFTER_EXACT_SCOPED_INDEPENDENT_AUDIT; CONTRACT_DESIGN_OR_PRIOR_STAGE_ACCEPTANCE_IS_NOT_THIS_AUDIT",
+      "domain": "A22-SHADOW",
+      "evidence_refs": [
+        {
+          "bytes": 8931,
+          "contract_id": "V4_16_SHADOW_HEALTH_CONTRACT_V1",
+          "path": "config/v4_16_shadow_health_contract_v1.json",
+          "sha256": "c7238a0b8b25679ff2c5633384c65134c1010dda7d895f1b360e22b4af1dd81b"
+        },
+        {
+          "bytes": 30858,
+          "contract_id": "V4_19_FOCUS_SOURCE_CUTOVER_CONTRACT_V1",
+          "path": "config/v4_19_focus_source_cutover_contract_v1.json",
+          "sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd"
+        }
+      ],
+      "item_id": "A22-SHADOW-07",
+      "required_evidence": [
+        "EXACT_ACCEPTED_AUTHORITY",
+        "INDEPENDENT_RAW_READBACK",
+        "INDEPENDENT_RECHECK",
+        "REAL_PIT_RUNTIME_RECEIPT"
+      ]
+    }
+  ],
+  "mode": "CONTRACT_DESIGN_ONLY",
+  "runtime_audit_executed": false
+}

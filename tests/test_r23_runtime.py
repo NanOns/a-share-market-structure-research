@@ -26,7 +26,7 @@ def test_negative_e2e_families(engineering,number):
     if number in (13,14,22,24,9,11):tx.accept(r)
     if number==2:r['scheduled_cutoff_at']='2026-09-28T13:00:01Z'
     elif number==3:
-        late=receipt(c,'owner','R23_OWNER_LATE','OWNER_OUTPUT','LATE');late['system_available_at']='2026-09-28T13:00:01Z'
+        late=receipt(c,'owner','R23_OWNER_LATE','OWNER_OUTPUT','LATE');late['system_available_at']='2026-09-28T13:00:01Z';late['created_at']='2026-09-28T13:00:01Z'
         SourceReadinessReceiptRegistry(db).register(late,c.registry['bindings']['owner']);r['receipt_ids'][0]='R23_OWNER_LATE'
     elif number==4:r['receipt_ids'][0]='MISSING'
     elif number in (5,6):
@@ -100,7 +100,7 @@ def test_blocked_to_ready_and_missed_terminal(engineering):
     c,db=engineering;r=request(c);p=ObservationSlotPlanner(db)
     assert p.record(dict(r,receipt_ids=[]))['slot_status']=='BLOCKED_SOURCE_NOT_READY'
     assert p.record(r)['slot_status']=='PLANNED'
-    late=receipt(c,'owner','R23_OWNER_LATE','OWNER_OUTPUT','LATE');late['system_available_at']='2026-09-28T13:00:01Z';SourceReadinessReceiptRegistry(db).register(late,c.registry['bindings']['owner'])
+    late=receipt(c,'owner','R23_OWNER_LATE','OWNER_OUTPUT','LATE');late['system_available_at']='2026-09-28T13:00:01Z';late['created_at']='2026-09-28T13:00:01Z';SourceReadinessReceiptRegistry(db).register(late,c.registry['bindings']['owner'])
     assert p.record(dict(r,receipt_ids=['R23_OWNER_LATE','R23_SNAPSHOT_1']))['slot_status']=='MISSED_OBSERVATION_SLOT'
     assert p.record(r)['slot_status']=='MISSED_OBSERVATION_SLOT'
     reject(lambda:ShadowPublicationAcceptanceTransaction(db).accept(r))

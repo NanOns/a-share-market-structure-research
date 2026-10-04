@@ -1,0 +1,323 @@
+{
+  "count": 32,
+  "prior_immutable_evidence": {
+    "cases": [
+      {
+        "actual_rejections": [
+          "REAL_SHADOW_NOT_AUTHORIZED_BEFORE_CONSUMPTION"
+        ],
+        "case": "N01",
+        "evidence_origin": "ENGINEERING_FIXTURE",
+        "status": "PASS_LOCAL",
+        "visible_originals": 0
+      },
+      {
+        "actual_rejections": [
+          "CLOCK_MISMATCH"
+        ],
+        "case": "N02",
+        "evidence_origin": "ENGINEERING_FIXTURE",
+        "status": "PASS_LOCAL",
+        "visible_originals": 0
+      },
+      {
+        "actual_rejections": [
+          "MISSED_OBSERVATION_SLOT"
+        ],
+        "case": "N03",
+        "evidence_origin": "ENGINEERING_FIXTURE",
+        "status": "PASS_LOCAL",
+        "visible_originals": 0
+      },
+      {
+        "actual_rejections": [
+          "MISSING_DURABLE_RECORD"
+        ],
+        "case": "N04",
+        "evidence_origin": "ENGINEERING_FIXTURE",
+        "status": "PASS_LOCAL",
+        "visible_originals": 0
+      },
+      {
+        "actual_rejections": [
+          "SOURCE_DIGEST_MISMATCH"
+        ],
+        "case": "N05",
+        "evidence_origin": "ENGINEERING_FIXTURE",
+        "status": "PASS_LOCAL",
+        "visible_originals": 0
+      },
+      {
+        "actual_rejections": [
+          "BACKDATED_OR_UNREGISTERED_READINESS"
+        ],
+        "case": "N06",
+        "evidence_origin": "ENGINEERING_FIXTURE",
+        "status": "PASS_LOCAL",
+        "visible_originals": 0
+      },
+      {
+        "actual_rejections": [
+          "LEGACY_PRIOR_FORBIDDEN"
+        ],
+        "case": "N07",
+        "evidence_origin": "ENGINEERING_FIXTURE",
+        "status": "PASS_LOCAL",
+        "visible_originals": 0
+      },
+      {
+        "actual_rejections": [
+          "GAP_FAIL_CLOSED"
+        ],
+        "case": "N08",
+        "evidence_origin": "ENGINEERING_FIXTURE",
+        "status": "PASS_LOCAL",
+        "visible_originals": 0
+      },
+      {
+        "actual_rejections": [
+          "CORRECTION_NEW_ORIGINAL_FORBIDDEN"
+        ],
+        "case": "N09",
+        "evidence_origin": "ENGINEERING_FIXTURE",
+        "status": "PASS_LOCAL",
+        "visible_originals": 1
+      },
+      {
+        "actual_rejections": [
+          "INJECTED_TRANSACTION_FAILURE"
+        ],
+        "case": "N10",
+        "evidence_origin": "ENGINEERING_FIXTURE",
+        "status": "PASS_LOCAL",
+        "visible_originals": 0
+      },
+      {
+        "actual_rejections": [
+          "UNIQUE constraint failed: index 'shadow_original_event'"
+        ],
+        "case": "N11",
+        "evidence_origin": "ENGINEERING_FIXTURE",
+        "status": "PASS_LOCAL",
+        "visible_originals": 1
+      },
+      {
+        "actual_rejections": [
+          "NO_RAW_PROVIDER_FALLBACK"
+        ],
+        "case": "N12",
+        "evidence_origin": "ENGINEERING_FIXTURE",
+        "status": "PASS_LOCAL",
+        "visible_originals": 0
+      },
+      {
+        "actual_rejections": [
+          "PRE_DUE_FUTURE_READ_FORBIDDEN"
+        ],
+        "case": "N13",
+        "evidence_origin": "ENGINEERING_FIXTURE",
+        "status": "PASS_LOCAL",
+        "visible_originals": 1
+      },
+      {
+        "actual_rejections": [
+          "UNACCEPTED_FUTURE_DATA_HEAD"
+        ],
+        "case": "N14",
+        "evidence_origin": "ENGINEERING_FIXTURE",
+        "status": "PASS_LOCAL",
+        "visible_originals": 1
+      },
+      {
+        "actual_rejections": [
+          "MEMBERSHIP_REPLAY_CANNOT_CLAIM_PIT"
+        ],
+        "case": "N15",
+        "evidence_origin": "ENGINEERING_FIXTURE",
+        "status": "PASS_LOCAL",
+        "visible_originals": 0
+      },
+      {
+        "actual_rejections": [
+          "BLOCKED_A04_A08_CAPABILITY"
+        ],
+        "case": "N16",
+        "evidence_origin": "ENGINEERING_FIXTURE",
+        "status": "PASS_LOCAL",
+        "visible_originals": 0
+      },
+      {
+        "actual_rejections": [
+          "BLOCKED_A04_A08_CAPABILITY"
+        ],
+        "case": "N17",
+        "evidence_origin": "ENGINEERING_FIXTURE",
+        "status": "PASS_LOCAL",
+        "visible_originals": 0
+      },
+      {
+        "actual_rejections": [],
+        "case": "N18",
+        "evidence_origin": "ENGINEERING_FIXTURE",
+        "status": "PASS_LOCAL",
+        "visible_originals": 1
+      },
+      {
+        "actual_rejections": [
+          "PARAMETER_CHANGE_WITHOUT_NEW_IDENTITY"
+        ],
+        "case": "N19",
+        "evidence_origin": "ENGINEERING_FIXTURE",
+        "status": "PASS_LOCAL",
+        "visible_originals": 0
+      },
+      {
+        "actual_rejections": [
+          "CLOCK_POLICY_CHANGE_WITHOUT_NEW_VERSION"
+        ],
+        "case": "N20",
+        "evidence_origin": "ENGINEERING_FIXTURE",
+        "status": "PASS_LOCAL",
+        "visible_originals": 0
+      },
+      {
+        "actual_rejections": [
+          "FORBIDDEN_FEEDBACK_OR_REAL_COUNTER"
+        ],
+        "case": "N21",
+        "evidence_origin": "ENGINEERING_FIXTURE",
+        "status": "PASS_LOCAL",
+        "visible_originals": 0
+      },
+      {
+        "actual_rejections": [
+          "CONTROL_BENCHMARK_REDRAW_FORBIDDEN"
+        ],
+        "case": "N22",
+        "evidence_origin": "ENGINEERING_FIXTURE",
+        "status": "PASS_LOCAL",
+        "visible_originals": 1
+      },
+      {
+        "actual_rejections": [
+          "FORBIDDEN_FEEDBACK_OR_REAL_COUNTER"
+        ],
+        "case": "N23",
+        "evidence_origin": "ENGINEERING_FIXTURE",
+        "status": "PASS_LOCAL",
+        "visible_originals": 0
+      },
+      {
+        "actual_rejections": [
+          "ROLLBACK_DELETE_FORBIDDEN"
+        ],
+        "case": "N24",
+        "evidence_origin": "ENGINEERING_FIXTURE",
+        "status": "PASS_LOCAL",
+        "visible_originals": 1
+      }
+    ],
+    "count": 24,
+    "expected_authored_independently": true,
+    "status": "PASS_LOCAL"
+  },
+  "repair_cases": [
+    {
+      "case": "N25",
+      "database_binding": {
+        "bytes": 249856,
+        "path": "reports/r23r1/persisted/N25.sqlite",
+        "sha256": "ef0c6f7e9f325b3228b05cc039088c8d6b3be5753ebfb1470b27535241bff1e1"
+      },
+      "rejection": "MISSING_SLOT_FIELD",
+      "row_digests_recomputed": true,
+      "status": "PASS_LOCAL",
+      "test_only_corruption": true
+    },
+    {
+      "case": "N26",
+      "database_binding": {
+        "bytes": 249856,
+        "path": "reports/r23r1/persisted/N26.sqlite",
+        "sha256": "244397fbb2e67fde9d01acd083ed9ed39615a1f40270648eccb6b5f841f1bc08"
+      },
+      "rejection": "VISIBILITY_AGGREGATE_source_provider_available_at",
+      "row_digests_recomputed": true,
+      "status": "PASS_LOCAL",
+      "test_only_corruption": true
+    },
+    {
+      "case": "N27",
+      "database_binding": {
+        "bytes": 249856,
+        "path": "reports/r23r1/persisted/N27.sqlite",
+        "sha256": "c62bdc8dd9591fdb40cb02dabe4c9a6ea7d540a41011dae3407c479c61f4ba7e"
+      },
+      "rejection": "VISIBILITY_AGGREGATE_system_available_at",
+      "row_digests_recomputed": true,
+      "status": "PASS_LOCAL",
+      "test_only_corruption": true
+    },
+    {
+      "case": "N28",
+      "database_binding": {
+        "bytes": 249856,
+        "path": "reports/r23r1/persisted/N28.sqlite",
+        "sha256": "fbd8a84e59833822bf4e4e5688bd822be188f44095723ff307dbe6d56dafc01f"
+      },
+      "rejection": "MANIFEST_BINDING",
+      "row_digests_recomputed": true,
+      "status": "PASS_LOCAL",
+      "test_only_corruption": true
+    },
+    {
+      "case": "N29",
+      "database_binding": {
+        "bytes": 249856,
+        "path": "reports/r23r1/persisted/N29.sqlite",
+        "sha256": "42971a5afef6ec15791e2de5ba742da196a725d53f6c0532f95cd9d487a12057"
+      },
+      "rejection": "CAPABILITY_SCOPE",
+      "row_digests_recomputed": true,
+      "status": "PASS_LOCAL",
+      "test_only_corruption": true
+    },
+    {
+      "case": "N30",
+      "database_binding": {
+        "bytes": 249856,
+        "path": "reports/r23r1/persisted/N30.sqlite",
+        "sha256": "6cbb04980db44e76ba41b15f48123a7aa4f83238961433a57b2ec35369a449b3"
+      },
+      "rejection": "OBSERVATION_PREDECESSOR",
+      "row_digests_recomputed": true,
+      "status": "PASS_LOCAL",
+      "test_only_corruption": true
+    },
+    {
+      "case": "N31",
+      "database_binding": {
+        "bytes": 249856,
+        "path": "reports/r23r1/persisted/N31.sqlite",
+        "sha256": "33a9f95f5b17e7f126b293df5dcd7195f830503b7832c992bb3889056f40046e"
+      },
+      "rejection": "OBSERVATION_PREDECESSOR",
+      "row_digests_recomputed": true,
+      "status": "PASS_LOCAL",
+      "test_only_corruption": true
+    },
+    {
+      "case": "N32",
+      "database_binding": {
+        "bytes": 249856,
+        "path": "reports/r23r1/persisted/N32.sqlite",
+        "sha256": "a3594ac00190cb27b228228c044d4063e917f0c453bcfd3c8a4d53cfa8a4674f"
+      },
+      "rejection": "OBSERVATION_PREDECESSOR",
+      "row_digests_recomputed": true,
+      "status": "PASS_LOCAL",
+      "test_only_corruption": true
+    }
+  ],
+  "status": "PASS_LOCAL"
+}

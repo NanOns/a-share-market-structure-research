@@ -1,0 +1,50 @@
+{
+  "NEXT": "STOP_WAIT_R23R1_INDEPENDENT_EXTERNAL_AUDIT",
+  "authority": [
+    {
+      "bytes": 6886,
+      "path": "docs/evidence/r23r1/V4_16_R23R1_OBSERVATION_SLOT_RUNTIME_COMPLETENESS_REPAIR_TASK_20261004.md",
+      "sha256": "48362a2ede617ebcc09a8e7654d015feef3d8c42dd4afe7b96b8875556a48904"
+    },
+    {
+      "bytes": 2050,
+      "path": "docs/evidence/r23r1/V4_NEXT_ROUND_EXECUTION_MASTER_R23R1_20261004.md",
+      "sha256": "2626362da953a3134417e01a31b28b3f1d9888165b319618edf3701b866da013"
+    },
+    {
+      "bytes": 8890,
+      "path": "docs/evidence/r23r1/V4_R23_REALTIME_SHADOW_RUNTIME_ENGINEERING_INDEPENDENT_EXTERNAL_AUDIT_R1_20261004.md",
+      "sha256": "c54d0b1827cd41e1c066c17877dad830a60b20f5085cbe1ec41dedd8a165b7f0"
+    }
+  ],
+  "baseline": "9724b0b2091b0d1e0ca55af17e1fc8c3948fdf42",
+  "items": [
+    {
+      "evidence": {
+        "bytes": 990,
+        "path": "reports/r23r1/SLOT_CONTRACT_FIELD_GATE.json",
+        "sha256": "0f2fb6f40c501bb889d0a9dcd12eecda817543fe4692af34a4eb070be97df95b"
+      },
+      "id": "R23-SLOT-01",
+      "scope": "Persisted Slot V2 fields and frozen visibility",
+      "status": "CLOSED_LOCAL_PENDING_EXTERNAL_AUDIT"
+    },
+    {
+      "evidence": {
+        "bytes": 993,
+        "path": "reports/r23r1/OBSERVATION_SUPERSEDES_GATE.json",
+        "sha256": "16e30fd6133580118cb17295ce3171c1fd344f1e516913ef77261b69d948adf3"
+      },
+      "id": "R23-OBSERVATION-LINEAGE-P1",
+      "scope": "Shadow wrapper same-day supersedes lineage",
+      "status": "CLOSED_LOCAL_PENDING_EXTERNAL_AUDIT"
+    }
+  ],
+  "real_shadow_authorized": false,
+  "runtime_authorized": false,
+  "stage_contract": {
+    "bytes": 1150,
+    "path": "config/v4_16_r23r1_slot_runtime_policy_v1.json",
+    "sha256": "427798478357a7411b8f969d3acc7f9220145900e16ade8f0f041dfffa83b4c4"
+  }
+}

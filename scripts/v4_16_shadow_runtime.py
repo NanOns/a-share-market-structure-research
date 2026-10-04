@@ -35,6 +35,7 @@ class ShadowRuntimeController:
         self.activation=json.loads(exact(self.root,self.deps['activation']))
         check(self.activation['runtime_authorized'] is False and self.activation['real_shadow_authorized'] is False,'CANDIDATE_ACTIVATION_MUST_BE_DISABLED')
         for binding in self.deps['bindings']:exact(self.root,binding)
+        self.slot_runtime_policy=json.loads(exact(self.root,dict(path='config/v4_16_r23r1_slot_runtime_policy_v1.json',sha256='427798478357a7411b8f969d3acc7f9220145900e16ade8f0f041dfffa83b4c4',bytes=1150)))
         from workbench_analysis.v4_portable_exact import PortableExact
         portable=PortableExact(self.root)
         self.portability_receipts=[]
@@ -126,7 +127,7 @@ class SourceReadinessReceiptRegistry:
         raw=exact(self.db.controller.root,consumed_binding)
         check(r['accepted'] is True and r['integrity_pass'] is True,'SOURCE_NOT_ACCEPTED')
         first,system,integrity,created=(utc(r[k]) for k in ('first_observed_at','system_available_at','integrity_passed_at','created_at'))
-        check(first<=system and first<=integrity<=system and first<=created,'READINESS_ORDER')
+        check(first<=integrity<=system<=created,'READINESS_ORDER')
         check(r.get('provider_at',r['first_observed_at'])==r['first_observed_at'],'BACKDATED_READINESS')
         # Engineering first observation is independently frozen in the fixture registry.
         expected=self.db.controller.registry['readiness_observations'].get(r['receipt_id'])
@@ -136,11 +137,44 @@ class SourceReadinessReceiptRegistry:
 
 class ObservationSlotPlanner:
     def __init__(self,db):self.db=db
+    def validate(self,slot):
+        fields=json.loads(exact(self.db.controller.root,self.db.controller.deps['slot']))['fields']
+        check(set(fields)<=slot.keys(),'MISSING_SLOT_FIELD')
+        check(slot['execution_mode']=='SHADOW' and slot['namespace']=='SHADOW_V4','SLOT_NAMESPACE')
+        check(slot['parameter_set_id']==self.db.controller.registry['parameter_set_id'],'PARAMETER_CHANGE_WITHOUT_NEW_IDENTITY')
+        check(slot['capability_scope']==sorted(set(slot['capability_scope'])),'SLOT_SCOPE')
+        check(slot['field_quality']=={k:('NOT_YET_AVAILABLE' if slot[k] is None else 'KNOWN') for k in fields},'SLOT_FIELD_QUALITY')
+        if slot['slot_status']=='ACCEPTED_ON_TIME':
+            check(all(slot[k] is not None for k in fields),'NULL_ACCEPTED_SLOT_FIELD')
+            check(slot['core_revision']==slot['publication_id'],'CORE_REVISION_IDENTITY')
+            provider,system,cutoff,start,finish,accepted,deadline=(utc(slot[k]) for k in ('source_provider_available_at','system_available_at','scheduled_cutoff_at','computation_started_at','computation_finished_at','accepted_at','observation_deadline'))
+            check(provider<=system<=cutoff and system<=start<=finish<=accepted<=deadline,'SLOT_TIME_ORDER')
+        return slot
+    def quality(self,slot):
+        fields=json.loads(exact(self.db.controller.root,self.db.controller.deps['slot']))['fields']
+        slot['quality_contract']='V4_16_R23R1_SLOT_RUNTIME_POLICY_V1'
+        slot['field_quality']={k:('NOT_YET_AVAILABLE' if slot[k] is None else 'KNOWN') for k in fields}
+        return self.validate(slot)
+    def visibility(self,slot,receipt_ids):
+        receipts=[]
+        for key in receipt_ids:
+            try:receipts.append(self.db.get('shadow_source_readiness_receipts',key))
+            except ValueError as error:
+                if str(error)!='MISSING_DURABLE_RECORD':raise
+        for field,source in [('source_provider_available_at','first_observed_at'),('system_available_at','system_available_at')]:
+            slot[field]=max((r[source] for r in receipts),key=utc,default=None)
+        slot['visibility_receipt_ids']=[r['receipt_id'] for r in receipts]
+        slot['visibility_complete']=len(receipts)==len(receipt_ids) and bool(receipt_ids)
     def plan(self,request):
+        check(isinstance(request.get('capabilities'),list) and bool(request['capabilities']) and all(isinstance(k,str) and k for k in request['capabilities']),'EXPLICIT_CAPABILITY_SCOPE_REQUIRED')
         identity=[request[k] for k in ('model_contract_id','state_lineage_id','trade_date')]
         times=self.db.controller.clock.resolve(request['trade_date'],self.db.controller.authority.sessions)
         for k,v in times.items():check(request.get(k,v)==v,'CLOCK_MISMATCH')
-        return dict(slot_id=digest(identity),**dict(zip(('model_contract_id','state_lineage_id','trade_date'),identity)),**times,slot_status='PLANNED',evidence_origin='ENGINEERING_FIXTURE')
+        fields=json.loads(exact(self.db.controller.root,self.db.controller.deps['slot']))['fields']
+        slot=dict.fromkeys(fields)
+        slot.update(slot_id=digest(identity),**dict(zip(('model_contract_id','state_lineage_id','trade_date'),identity)),**times,parameter_set_id=request['parameter_set_id'],execution_mode='SHADOW',namespace='SHADOW_V4',capability_scope=sorted(set(request.get('capabilities',[]))),slot_status='PLANNED',evidence_origin='ENGINEERING_FIXTURE')
+        self.visibility(slot,request.get('receipt_ids',[]))
+        return self.quality(slot)
     def ready(self,slot,receipt_ids):
         if not receipt_ids:return 'BLOCKED_SOURCE_NOT_READY'
         for key in receipt_ids:
@@ -159,6 +193,7 @@ class ObservationSlotPlanner:
         existing=next((p for p in history if p['slot_status']==state),None)
         if existing:return existing
         slot.update(slot_status=state,revision=-len(history),sample_class='ENGINEERING_ONLY')
+        self.quality(slot)
         self.db.append('shadow_observation_slots',digest([slot['slot_id'],state]),slot);return slot
 
 class ShadowPriorStateReader:
@@ -325,11 +360,20 @@ class ShadowPublicationAcceptanceTransaction:
             check(not request.get('force_new_original'),'CORRECTION_NEW_ORIGINAL_FORBIDDEN')
             enrollments=RealtimeCohortEnrollmentWriter(self.db,adapter).write(radar,request,slot)
             for obs_ref in radar['observations']:
-                obs=adapter.store.read(obs_ref);self.db.append('shadow_observations',obs['observation_id'],dict(obs,slot_id=slot['slot_id'],evidence_origin='ENGINEERING_FIXTURE'))
+                obs=adapter.store.read(obs_ref)
+                previous=[p for p in self.db.rows('shadow_observations') if p['logical_event_id']==obs['logical_event_id'] and p['slot_id']==slot['slot_id']]
+                predecessor=max(previous,key=lambda p:p['revision']) if previous else None
+                check(predecessor is None or predecessor['revision']<revision,'OBSERVATION_REVISION_ORDER')
+                expected=predecessor['observation_id'] if predecessor and obs['source_correction'] else None
+                check(obs.get('supersedes_observation') in (None,expected),'OBSERVATION_PREDECESSOR_MISMATCH')
+                self.db.append('shadow_observations',obs['observation_id'],dict(obs,slot_id=slot['slot_id'],revision=revision,shadow_publication_id=publication_id,supersedes_observation=expected,evidence_origin='ENGINEERING_FIXTURE'))
             if fail_at=='cohort':raise ValueError('INJECTED_TRANSACTION_FAILURE')
             DueOutboxScheduler(self.db).write(enrollments)
             membership=DailyMembershipSnapshotWriter(self.db).write(request)
             slot.update(slot_status='ACCEPTED_ON_TIME',sample_class='ENGINEERING_ONLY',accepted_at=request['accepted_at'],publication_id=publication_id,revision=revision)
+            slot.update(core_revision=publication_id,source_manifest_digest=freeze['source_manifest_digest'],computation_started_at=request['computation_started_at'],computation_finished_at=request['computation_finished_at'])
+            slot['evaluated_request']=copy.deepcopy(request)
+            ObservationSlotPlanner(self.db).quality(slot)
             self.db.append('shadow_observation_slots',digest([slot['slot_id'],revision]),slot)
             health=ShadowHealthReceiptWriter(self.db).write(publication_id,slot,membership)
             p=dict(publication_id=publication_id,slot_id=slot['slot_id'],revision=revision,request_digest=digest(request),source_manifest_digest=freeze['source_manifest_digest'],prior_session_state_head=prior,radar_publication=radar_ref,trade_date=slot['trade_date'],accepted_at=request['accepted_at'],evidence_origin='ENGINEERING_FIXTURE',enrollment_ids=[e['enrollment_id'] for e in enrollments])

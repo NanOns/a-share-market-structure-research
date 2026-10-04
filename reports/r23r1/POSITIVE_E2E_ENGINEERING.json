@@ -1,0 +1,1010 @@
+{
+  "PIT_OBSERVED_REAL_SAMPLES": 0,
+  "REAL_SHADOW_OBSERVATIONS": 0,
+  "database": "reports/r23r1/persisted/positive.sqlite",
+  "database_binding": {
+    "bytes": 249856,
+    "path": "reports/r23r1/persisted/positive.sqlite",
+    "sha256": "b0e73881124823c22db3a92d7078e07cc1a03ab616ac8edf9eff7952668d5fa6"
+  },
+  "evidence_origin": "ENGINEERING_FIXTURE",
+  "first_publication": "8e48954c2030a026ed951666e1c8eefaeaaa425f45d92e7251e1cc92058fc094",
+  "idempotent_rerun": true,
+  "readback": {
+    "PIT_OBSERVED_REAL_SAMPLES": 0,
+    "REAL_SHADOW_OBSERVATIONS": 0,
+    "due": [
+      {
+        "due_date": "2026-09-29",
+        "enrollment_id": "297d3dcc4b9ca0e991af95051aeaec04d535b30d6ef417297a604996cf453a5e",
+        "evidence_origin": "ENGINEERING_FIXTURE",
+        "frozen_t0": {
+          "bytes": 6903,
+          "path": "sqlite:dd78c325a95f5dac9e3c36d478ccb40b43b4ccb572f7831e722f536e55166d7b",
+          "sha256": "657c10ec1444d1c358127c16c8cb8eabfc45c1c04ff4ede8cae0487ed44b2161"
+        },
+        "horizon": 1,
+        "outcome_status": "PENDING"
+      },
+      {
+        "due_date": null,
+        "enrollment_id": "297d3dcc4b9ca0e991af95051aeaec04d535b30d6ef417297a604996cf453a5e",
+        "evidence_origin": "ENGINEERING_FIXTURE",
+        "frozen_t0": {
+          "bytes": 6903,
+          "path": "sqlite:dd78c325a95f5dac9e3c36d478ccb40b43b4ccb572f7831e722f536e55166d7b",
+          "sha256": "657c10ec1444d1c358127c16c8cb8eabfc45c1c04ff4ede8cae0487ed44b2161"
+        },
+        "horizon": 3,
+        "outcome_status": "PENDING"
+      },
+      {
+        "due_date": null,
+        "enrollment_id": "297d3dcc4b9ca0e991af95051aeaec04d535b30d6ef417297a604996cf453a5e",
+        "evidence_origin": "ENGINEERING_FIXTURE",
+        "frozen_t0": {
+          "bytes": 6903,
+          "path": "sqlite:dd78c325a95f5dac9e3c36d478ccb40b43b4ccb572f7831e722f536e55166d7b",
+          "sha256": "657c10ec1444d1c358127c16c8cb8eabfc45c1c04ff4ede8cae0487ed44b2161"
+        },
+        "horizon": 5,
+        "outcome_status": "PENDING"
+      },
+      {
+        "due_date": null,
+        "enrollment_id": "297d3dcc4b9ca0e991af95051aeaec04d535b30d6ef417297a604996cf453a5e",
+        "evidence_origin": "ENGINEERING_FIXTURE",
+        "frozen_t0": {
+          "bytes": 6903,
+          "path": "sqlite:dd78c325a95f5dac9e3c36d478ccb40b43b4ccb572f7831e722f536e55166d7b",
+          "sha256": "657c10ec1444d1c358127c16c8cb8eabfc45c1c04ff4ede8cae0487ed44b2161"
+        },
+        "horizon": 10,
+        "outcome_status": "PENDING"
+      },
+      {
+        "due_date": null,
+        "enrollment_id": "297d3dcc4b9ca0e991af95051aeaec04d535b30d6ef417297a604996cf453a5e",
+        "evidence_origin": "ENGINEERING_FIXTURE",
+        "frozen_t0": {
+          "bytes": 6903,
+          "path": "sqlite:dd78c325a95f5dac9e3c36d478ccb40b43b4ccb572f7831e722f536e55166d7b",
+          "sha256": "657c10ec1444d1c358127c16c8cb8eabfc45c1c04ff4ede8cae0487ed44b2161"
+        },
+        "horizon": 20,
+        "outcome_status": "PENDING"
+      }
+    ],
+    "enrollments": [
+      {
+        "FIRST_OBSERVED": "297d3dcc4b9ca0e991af95051aeaec04d535b30d6ef417297a604996cf453a5e",
+        "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+        "T0": "2026-09-28",
+        "accepted_at": "2026-09-28",
+        "adjustment_identity": "R23_FIXTURE_IDENTITY",
+        "benchmark_ids": {
+          "market": "6f0c12791ebaf5830d6e01d4a911d415ced579b14e07e301df38e8e9dd2f34b9",
+          "sector": "5aa68992795d505f39c8403d11c63b486d987bbc588ce932729f2f568ee0f974"
+        },
+        "calendar_identity": {
+          "bytes": 10739,
+          "path": "data/v4/source_evidence/dm01_a01_r3/chain_inputs_r1/calendar_union_2e0938120e3b371aa9c84422c06b4c14de0f8894cc8f3caa9dd9c61299239e74.json",
+          "sha256": "629242b5074002dd8e889fdca5da9e1c05f9ae35357662d5c76a554117fc17f5"
+        },
+        "cohort_namespace": "ENGINEERING_SYNTHETIC",
+        "comparison_reference": 10,
+        "comparison_reference_source": null,
+        "contract_digest": "d4cf16990b90f663c5ac28e2180e7062bf93386baeb66e130153227e39a4032c",
+        "control_assignment_ids": {
+          "A": "838d2b8445fcf1a28fc52a472b2521a0def5c3bf52c920d608c414f45802bc35",
+          "B": "d8558a947ae8c445979b5cb690a01c6e2aa1670bb15d40bed9d05163c8f71c87",
+          "C": "85a034e1416fa18f20541215c0b5a3ee3bcdcba25a69df50bff5efc408da490b"
+        },
+        "eligibility_source": {
+          "bytes": 1011,
+          "path": "config/v4_16_r23_owner_fixture_v1.json",
+          "sha256": "93f47a031787a80a68b34fa1790954f9d41a9dbf53b8b0f14b3dfe9a7d5d0428"
+        },
+        "enrollment_id": "297d3dcc4b9ca0e991af95051aeaec04d535b30d6ef417297a604996cf453a5e",
+        "entity_id": "S",
+        "entity_type": "STOCK",
+        "episode_id": "R23_EP_S",
+        "evidence_class": "ENGINEERING_SYNTHETIC",
+        "evidence_origin": "ENGINEERING_FIXTURE",
+        "frozen_t0": {
+          "bytes": 6903,
+          "path": "sqlite:dd78c325a95f5dac9e3c36d478ccb40b43b4ccb572f7831e722f536e55166d7b",
+          "sha256": "657c10ec1444d1c358127c16c8cb8eabfc45c1c04ff4ede8cae0487ed44b2161"
+        },
+        "logical_event_id": "a07147ac15189b8110bf7273bd9002612e5eb7d7d0d39f193e5fa10d9dc295b5",
+        "model_contract_id": "RESEARCH_STATE_V1",
+        "observation_deadline": null,
+        "observation_slot": null,
+        "parameter_digest": "20b66f9f2d2d4fe6ba8c3dd0583d6fa3d5408daebda09fae7ff27548e800ffd7",
+        "parameter_identity_quality": "KNOWN",
+        "parameter_source": {
+          "byte_count": 435,
+          "path": "config/v4_10_parameter_set_r1_2.json",
+          "sha256": "20b66f9f2d2d4fe6ba8c3dd0583d6fa3d5408daebda09fae7ff27548e800ffd7"
+        },
+        "primary_industry": "I",
+        "settlement_continues": true,
+        "signal_reference": 10,
+        "signal_type": "FIRST_PREWATCH",
+        "slot_id": "3a87a286799a1930a1da495ef6457bfd29ce605b8c23989a667dd6ddaf682b5c",
+        "source_digest": "93f47a031787a80a68b34fa1790954f9d41a9dbf53b8b0f14b3dfe9a7d5d0428",
+        "source_publication": {
+          "bytes": 1011,
+          "path": "config/v4_16_r23_owner_fixture_v1.json",
+          "sha256": "93f47a031787a80a68b34fa1790954f9d41a9dbf53b8b0f14b3dfe9a7d5d0428"
+        },
+        "state_lineage_id": "R23_ENGINEERING_LINEAGE",
+        "t0_transform": null
+      }
+    ],
+    "evidence_origin": "ENGINEERING_FIXTURE",
+    "health": [
+      {
+        "FORWARD_SUPPORTED": "NOT_GRANTED",
+        "PIT_OBSERVED_REAL_SAMPLES": 0,
+        "PROVISIONAL_FORWARD_EVIDENCE": "NOT_GRANTED",
+        "REAL_SHADOW_OBSERVATIONS": 0,
+        "SHADOW_STABLE": "NOT_GRANTED",
+        "capability_states": {
+          "A04_H21_CONSUMER": "BLOCKED_AFFECTED_SCOPE",
+          "A04_HISTORICAL_AMOUNT_A": "BLOCKED_AFFECTED_SCOPE",
+          "A08_CURRENT_RUNTIME": "BLOCKED_AFFECTED_SCOPE"
+        },
+        "clock_compliance": true,
+        "duplicate_episode": false,
+        "evidence_origin": "ENGINEERING_FIXTURE",
+        "membership_status": "SECTOR_SCOPE_UNKNOWN_PURE_CORE_CONTINUES",
+        "model_identity": "RESEARCH_STATE_V1",
+        "publication_id": "8e48954c2030a026ed951666e1c8eefaeaaa425f45d92e7251e1cc92058fc094",
+        "publication_success": true,
+        "settlement_backlog": 5,
+        "slot_id": "3a87a286799a1930a1da495ef6457bfd29ce605b8c23989a667dd6ddaf682b5c",
+        "source_quality": "ENGINEERING_ONLY",
+        "state_integrity": true,
+        "temporal_leakage": false
+      },
+      {
+        "FORWARD_SUPPORTED": "NOT_GRANTED",
+        "PIT_OBSERVED_REAL_SAMPLES": 0,
+        "PROVISIONAL_FORWARD_EVIDENCE": "NOT_GRANTED",
+        "REAL_SHADOW_OBSERVATIONS": 0,
+        "SHADOW_STABLE": "NOT_GRANTED",
+        "capability_states": {
+          "A04_H21_CONSUMER": "BLOCKED_AFFECTED_SCOPE",
+          "A04_HISTORICAL_AMOUNT_A": "BLOCKED_AFFECTED_SCOPE",
+          "A08_CURRENT_RUNTIME": "BLOCKED_AFFECTED_SCOPE"
+        },
+        "clock_compliance": true,
+        "duplicate_episode": false,
+        "evidence_origin": "ENGINEERING_FIXTURE",
+        "membership_status": "SECTOR_SCOPE_UNKNOWN_PURE_CORE_CONTINUES",
+        "model_identity": "RESEARCH_STATE_V1",
+        "publication_id": "e1c3c6028ba45440cb7a4687119a46e9f914e82ba14ed188627b92b4585d24be",
+        "publication_success": true,
+        "settlement_backlog": 5,
+        "slot_id": "3a87a286799a1930a1da495ef6457bfd29ce605b8c23989a667dd6ddaf682b5c",
+        "source_quality": "ENGINEERING_ONLY",
+        "state_integrity": true,
+        "temporal_leakage": false
+      }
+    ],
+    "namespace": "SHADOW_V4",
+    "observations": [
+      {
+        "conflict": {
+          "hypotheses": [],
+          "opposing_evidence": [],
+          "quality": "HYPOTHESIS_SET_INCOMPLETE",
+          "supporting_evidence": [
+            {
+              "accepted_fact_or_event_id": "93f47a031787a80a68b34fa1790954f9d41a9dbf53b8b0f14b3dfe9a7d5d0428",
+              "predicate_id": "ACCEPTED_OWNER_EVENT",
+              "quality": "KNOWN",
+              "source_digest": "93f47a031787a80a68b34fa1790954f9d41a9dbf53b8b0f14b3dfe9a7d5d0428"
+            }
+          ],
+          "unknown_evidence": []
+        },
+        "evidence_origin": "ENGINEERING_FIXTURE",
+        "logical_event_id": "a07147ac15189b8110bf7273bd9002612e5eb7d7d0d39f193e5fa10d9dc295b5",
+        "observation_id": "081afce9c4ed4c6dd63dd3982568cb86d557b267d9882349d04c03924d24f14b",
+        "observation_state": "ASSERTED",
+        "publication_id": "R23_OWNER_FIXTURE_1",
+        "revision": 1,
+        "shadow_publication_id": "8e48954c2030a026ed951666e1c8eefaeaaa425f45d92e7251e1cc92058fc094",
+        "slot_id": "3a87a286799a1930a1da495ef6457bfd29ce605b8c23989a667dd6ddaf682b5c",
+        "source_correction": false,
+        "source_publication": {
+          "bytes": 1011,
+          "path": "config/v4_16_r23_owner_fixture_v1.json",
+          "sha256": "93f47a031787a80a68b34fa1790954f9d41a9dbf53b8b0f14b3dfe9a7d5d0428"
+        },
+        "supersedes_observation": null,
+        "why_now": {
+          "changed_domains": [],
+          "changed_facts": [],
+          "current_stage": "PREWATCH",
+          "new_risk_flags": [],
+          "newly_satisfied_rules": [
+            {
+              "accepted_fact_or_event_id": "93f47a031787a80a68b34fa1790954f9d41a9dbf53b8b0f14b3dfe9a7d5d0428",
+              "predicate_id": "ACCEPTED_OWNER_EVENT",
+              "quality": "KNOWN",
+              "source_digest": "93f47a031787a80a68b34fa1790954f9d41a9dbf53b8b0f14b3dfe9a7d5d0428",
+              "value": "ACCEPTED_OWNER_EVENT"
+            }
+          ],
+          "previous_stage": null
+        }
+      },
+      {
+        "conflict": {
+          "hypotheses": [],
+          "opposing_evidence": [],
+          "quality": "HYPOTHESIS_SET_INCOMPLETE",
+          "supporting_evidence": [
+            {
+              "accepted_fact_or_event_id": "bca1eddbf29f2256bbdb298c155d7f600f4e2242c21e55da65f3bdbca6d16288",
+              "predicate_id": "ACCEPTED_OWNER_EVENT",
+              "quality": "KNOWN",
+              "source_digest": "bca1eddbf29f2256bbdb298c155d7f600f4e2242c21e55da65f3bdbca6d16288"
+            }
+          ],
+          "unknown_evidence": []
+        },
+        "evidence_origin": "ENGINEERING_FIXTURE",
+        "logical_event_id": "a07147ac15189b8110bf7273bd9002612e5eb7d7d0d39f193e5fa10d9dc295b5",
+        "observation_id": "a27e21381170aa02c1e9c5fb5a3a459582fc33b2820c8fdd668119940c4f1efc",
+        "observation_state": "CORRECTED",
+        "publication_id": "R23_OWNER_FIXTURE_2",
+        "revision": 2,
+        "shadow_publication_id": "e1c3c6028ba45440cb7a4687119a46e9f914e82ba14ed188627b92b4585d24be",
+        "slot_id": "3a87a286799a1930a1da495ef6457bfd29ce605b8c23989a667dd6ddaf682b5c",
+        "source_correction": true,
+        "source_publication": {
+          "bytes": 1082,
+          "path": "config/v4_16_r23_owner_revision_fixture_v1.json",
+          "sha256": "bca1eddbf29f2256bbdb298c155d7f600f4e2242c21e55da65f3bdbca6d16288"
+        },
+        "supersedes_observation": "081afce9c4ed4c6dd63dd3982568cb86d557b267d9882349d04c03924d24f14b",
+        "why_now": {
+          "changed_domains": [],
+          "changed_facts": [],
+          "current_stage": "PREWATCH",
+          "new_risk_flags": [],
+          "newly_satisfied_rules": [
+            {
+              "accepted_fact_or_event_id": "bca1eddbf29f2256bbdb298c155d7f600f4e2242c21e55da65f3bdbca6d16288",
+              "predicate_id": "ACCEPTED_OWNER_EVENT",
+              "quality": "KNOWN",
+              "source_digest": "bca1eddbf29f2256bbdb298c155d7f600f4e2242c21e55da65f3bdbca6d16288",
+              "value": "ACCEPTED_OWNER_EVENT"
+            }
+          ],
+          "previous_stage": null
+        }
+      }
+    ],
+    "outcomes": [
+      {
+        "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+        "MAE_N": -0.09999999999999998,
+        "MFE_N": 0.19999999999999996,
+        "PATH_MDD_CLOSE_N": 0,
+        "R_N": 0.10000000000000009,
+        "actual_count": 1,
+        "available_at": "2026-09-29",
+        "controls": {
+          "A": {
+            "ITT_RETAINED": true,
+            "assignment_digest": "0e4c1ea2e067d4de5cee1ffd576807370c202be015705a4324ae518f264adcb1",
+            "control_assignment_id": "838d2b8445fcf1a28fc52a472b2521a0def5c3bf52c920d608c414f45802bc35",
+            "outcomes": []
+          },
+          "B": {
+            "ITT_RETAINED": true,
+            "assignment_digest": "0e4c1ea2e067d4de5cee1ffd576807370c202be015705a4324ae518f264adcb1",
+            "control_assignment_id": "d8558a947ae8c445979b5cb690a01c6e2aa1670bb15d40bed9d05163c8f71c87",
+            "outcomes": [
+              {
+                "MAE_N": -0.09999999999999998,
+                "MFE_N": 0.19999999999999996,
+                "PATH_MDD_CLOSE_N": 0,
+                "R_N": 0.10000000000000009,
+                "actual_count": 1,
+                "available_at": "2026-09-29",
+                "evaluation_adjustment_identity": "R23_FIXTURE_IDENTITY",
+                "evaluation_basis_date": "2026-09-29",
+                "evaluation_comparison_reference": 10,
+                "outcome_status": "OBSERVED",
+                "path_quality": "OBSERVED",
+                "reason_codes": [],
+                "security_id": "S",
+                "source_asof": "2026-09-29",
+                "transform_coefficients": {
+                  "alpha": 1,
+                  "beta": 0
+                },
+                "transform_digest": "096da03c8876a95068515ff52c91819639a66c37252b52912ac3561a2ff74f91"
+              }
+            ]
+          },
+          "C": {
+            "ITT_RETAINED": true,
+            "assignment_digest": "0e4c1ea2e067d4de5cee1ffd576807370c202be015705a4324ae518f264adcb1",
+            "control_assignment_id": "85a034e1416fa18f20541215c0b5a3ee3bcdcba25a69df50bff5efc408da490b",
+            "outcomes": [
+              {
+                "MAE_N": -0.09999999999999998,
+                "MFE_N": 0.19999999999999996,
+                "PATH_MDD_CLOSE_N": 0,
+                "R_N": 0.10000000000000009,
+                "actual_count": 1,
+                "available_at": "2026-09-29",
+                "evaluation_adjustment_identity": "R23_FIXTURE_IDENTITY",
+                "evaluation_basis_date": "2026-09-29",
+                "evaluation_comparison_reference": 10,
+                "outcome_status": "OBSERVED",
+                "path_quality": "OBSERVED",
+                "reason_codes": [],
+                "security_id": "C1",
+                "source_asof": "2026-09-29",
+                "transform_coefficients": {
+                  "alpha": 1,
+                  "beta": 0
+                },
+                "transform_digest": "096da03c8876a95068515ff52c91819639a66c37252b52912ac3561a2ff74f91"
+              },
+              {
+                "MAE_N": -0.09999999999999998,
+                "MFE_N": 0.19999999999999996,
+                "PATH_MDD_CLOSE_N": 0,
+                "R_N": 0.10000000000000009,
+                "actual_count": 1,
+                "available_at": "2026-09-29",
+                "evaluation_adjustment_identity": "R23_FIXTURE_IDENTITY",
+                "evaluation_basis_date": "2026-09-29",
+                "evaluation_comparison_reference": 10,
+                "outcome_status": "OBSERVED",
+                "path_quality": "OBSERVED",
+                "reason_codes": [],
+                "security_id": "C2",
+                "source_asof": "2026-09-29",
+                "transform_coefficients": {
+                  "alpha": 1,
+                  "beta": 0
+                },
+                "transform_digest": "096da03c8876a95068515ff52c91819639a66c37252b52912ac3561a2ff74f91"
+              },
+              {
+                "MAE_N": -0.09999999999999998,
+                "MFE_N": 0.19999999999999996,
+                "PATH_MDD_CLOSE_N": 0,
+                "R_N": 0.10000000000000009,
+                "actual_count": 1,
+                "available_at": "2026-09-29",
+                "evaluation_adjustment_identity": "R23_FIXTURE_IDENTITY",
+                "evaluation_basis_date": "2026-09-29",
+                "evaluation_comparison_reference": 10,
+                "outcome_status": "OBSERVED",
+                "path_quality": "OBSERVED",
+                "reason_codes": [],
+                "security_id": "C3",
+                "source_asof": "2026-09-29",
+                "transform_coefficients": {
+                  "alpha": 1,
+                  "beta": 0
+                },
+                "transform_digest": "096da03c8876a95068515ff52c91819639a66c37252b52912ac3561a2ff74f91"
+              }
+            ]
+          }
+        },
+        "due_date": "2026-09-29",
+        "enrollment_id": "297d3dcc4b9ca0e991af95051aeaec04d535b30d6ef417297a604996cf453a5e",
+        "evaluation_adjustment_identity": "R23_FIXTURE_IDENTITY",
+        "evaluation_basis_date": "2026-09-29",
+        "evaluation_comparison_reference": 10,
+        "evaluation_revision": 1,
+        "evaluation_source": {
+          "bytes": 2494,
+          "path": "config/v4_16_r23_future_fixture_v1.json",
+          "sha256": "26073d53e47192ea20b954a742e28a8762f2b4638ee7f5e9cd1e09c15484512a"
+        },
+        "evaluation_source_digest": "26073d53e47192ea20b954a742e28a8762f2b4638ee7f5e9cd1e09c15484512a",
+        "evaluation_source_identity": {
+          "bytes": 2494,
+          "path": "config/v4_16_r23_future_fixture_v1.json",
+          "sha256": "26073d53e47192ea20b954a742e28a8762f2b4638ee7f5e9cd1e09c15484512a"
+        },
+        "evidence_class": "ENGINEERING_VECTOR",
+        "evidence_origin": "ENGINEERING_FIXTURE",
+        "first_observed_id": "22a4e07f6abc6dced79199f0c492f2b34416274df5b053a55c4dc6822686fa33",
+        "frozen_t0": {
+          "bytes": 6903,
+          "path": "sqlite:dd78c325a95f5dac9e3c36d478ccb40b43b4ccb572f7831e722f536e55166d7b",
+          "sha256": "657c10ec1444d1c358127c16c8cb8eabfc45c1c04ff4ede8cae0487ed44b2161"
+        },
+        "future_read_count": 12,
+        "horizon": 1,
+        "latest_corrected_id": "22a4e07f6abc6dced79199f0c492f2b34416274df5b053a55c4dc6822686fa33",
+        "market_benchmark": {
+          "benchmark_delisted_weight": 0,
+          "benchmark_endpoint_coverage": 1.0,
+          "benchmark_id": "6f0c12791ebaf5830d6e01d4a911d415ced579b14e07e301df38e8e9dd2f34b9",
+          "benchmark_missing_weight": 0.0,
+          "benchmark_quality": "OBSERVED",
+          "benchmark_suspended_weight": 0,
+          "benchmark_unknown_weight": 0,
+          "constituents": [
+            {
+              "original_weight": 0.25,
+              "security_id": "C1",
+              "state": "ACTUAL_ENDPOINT"
+            },
+            {
+              "original_weight": 0.25,
+              "security_id": "C2",
+              "state": "ACTUAL_ENDPOINT"
+            },
+            {
+              "original_weight": 0.25,
+              "security_id": "C3",
+              "state": "ACTUAL_ENDPOINT"
+            },
+            {
+              "original_weight": 0.25,
+              "security_id": "S",
+              "state": "ACTUAL_ENDPOINT"
+            }
+          ],
+          "marked_permission": false,
+          "observed_contribution": 1.1,
+          "relative_market_return_marked": null,
+          "relative_return": 0.0,
+          "return": 0.10000000000000009
+        },
+        "outcome_contract_id": "FORWARD_PRICE_PATH_V1",
+        "outcome_revision_id": "22a4e07f6abc6dced79199f0c492f2b34416274df5b053a55c4dc6822686fa33",
+        "outcome_status": "OBSERVED",
+        "path_quality": "OBSERVED",
+        "price_path": [
+          {
+            "T0_basis_verified": true,
+            "T0_transform_coefficients": {
+              "alpha": 1,
+              "beta": 0
+            },
+            "adjustment_identity": "R23_FIXTURE_IDENTITY",
+            "available_at": "2026-09-29",
+            "close": 11,
+            "evaluation_basis_date": "2026-09-29",
+            "high": 12,
+            "low": 9,
+            "source_asof": "2026-09-29",
+            "trade_date": "2026-09-29",
+            "transform_coefficients": {
+              "alpha": 1,
+              "beta": 0
+            },
+            "verified_adjustment": true,
+            "verified_identity": true
+          }
+        ],
+        "reason_codes": [],
+        "report_cutoff": "2026-09-29",
+        "revision_reason": "FIRST_OBSERVED",
+        "revision_sequence": 1,
+        "sector_benchmark": {
+          "MAE_CLOSE": 0,
+          "MFE_CLOSE": 0.09999999999999987,
+          "benchmark_delisted_weight": 0,
+          "benchmark_endpoint_coverage": 1.0,
+          "benchmark_id": "5aa68992795d505f39c8403d11c63b486d987bbc588ce932729f2f568ee0f974",
+          "benchmark_missing_weight": 0.0,
+          "benchmark_quality": "OBSERVED",
+          "benchmark_suspended_weight": 0,
+          "benchmark_unknown_weight": 0,
+          "constituents": [
+            {
+              "original_weight": 0.3333333333333333,
+              "security_id": "C1",
+              "state": "ACTUAL_ENDPOINT"
+            },
+            {
+              "original_weight": 0.3333333333333333,
+              "security_id": "C2",
+              "state": "ACTUAL_ENDPOINT"
+            },
+            {
+              "original_weight": 0.3333333333333333,
+              "security_id": "C3",
+              "state": "ACTUAL_ENDPOINT"
+            }
+          ],
+          "marked_permission": false,
+          "observed_contribution": 1.0999999999999999,
+          "relative_market_return_marked": null,
+          "relative_return": 2.220446049250313e-16,
+          "return": 0.09999999999999987
+        },
+        "source_asof": "2026-09-29",
+        "supersedes": null,
+        "transform_coefficients": {
+          "alpha": 1,
+          "beta": 0
+        },
+        "transform_digest": "096da03c8876a95068515ff52c91819639a66c37252b52912ac3561a2ff74f91"
+      },
+      {
+        "HISTORICAL_PIT_EFFECTIVENESS": "NOT_GRANTED",
+        "MAE_N": -0.09999999999999998,
+        "MFE_N": 0.30000000000000004,
+        "PATH_MDD_CLOSE_N": 0,
+        "R_N": 0.19999999999999996,
+        "actual_count": 1,
+        "available_at": "2026-09-29",
+        "controls": {
+          "A": {
+            "ITT_RETAINED": true,
+            "assignment_digest": "0e4c1ea2e067d4de5cee1ffd576807370c202be015705a4324ae518f264adcb1",
+            "control_assignment_id": "838d2b8445fcf1a28fc52a472b2521a0def5c3bf52c920d608c414f45802bc35",
+            "outcomes": []
+          },
+          "B": {
+            "ITT_RETAINED": true,
+            "assignment_digest": "0e4c1ea2e067d4de5cee1ffd576807370c202be015705a4324ae518f264adcb1",
+            "control_assignment_id": "d8558a947ae8c445979b5cb690a01c6e2aa1670bb15d40bed9d05163c8f71c87",
+            "outcomes": [
+              {
+                "MAE_N": -0.09999999999999998,
+                "MFE_N": 0.30000000000000004,
+                "PATH_MDD_CLOSE_N": 0,
+                "R_N": 0.19999999999999996,
+                "actual_count": 1,
+                "available_at": "2026-09-29",
+                "evaluation_adjustment_identity": "R23_FIXTURE_IDENTITY",
+                "evaluation_basis_date": "2026-09-29",
+                "evaluation_comparison_reference": 10,
+                "outcome_status": "OBSERVED",
+                "path_quality": "OBSERVED",
+                "reason_codes": [],
+                "security_id": "S",
+                "source_asof": "2026-09-29",
+                "transform_coefficients": {
+                  "alpha": 1,
+                  "beta": 0
+                },
+                "transform_digest": "096da03c8876a95068515ff52c91819639a66c37252b52912ac3561a2ff74f91"
+              }
+            ]
+          },
+          "C": {
+            "ITT_RETAINED": true,
+            "assignment_digest": "0e4c1ea2e067d4de5cee1ffd576807370c202be015705a4324ae518f264adcb1",
+            "control_assignment_id": "85a034e1416fa18f20541215c0b5a3ee3bcdcba25a69df50bff5efc408da490b",
+            "outcomes": [
+              {
+                "MAE_N": -0.09999999999999998,
+                "MFE_N": 0.30000000000000004,
+                "PATH_MDD_CLOSE_N": 0,
+                "R_N": 0.19999999999999996,
+                "actual_count": 1,
+                "available_at": "2026-09-29",
+                "evaluation_adjustment_identity": "R23_FIXTURE_IDENTITY",
+                "evaluation_basis_date": "2026-09-29",
+                "evaluation_comparison_reference": 10,
+                "outcome_status": "OBSERVED",
+                "path_quality": "OBSERVED",
+                "reason_codes": [],
+                "security_id": "C1",
+                "source_asof": "2026-09-29",
+                "transform_coefficients": {
+                  "alpha": 1,
+                  "beta": 0
+                },
+                "transform_digest": "096da03c8876a95068515ff52c91819639a66c37252b52912ac3561a2ff74f91"
+              },
+              {
+                "MAE_N": -0.09999999999999998,
+                "MFE_N": 0.30000000000000004,
+                "PATH_MDD_CLOSE_N": 0,
+                "R_N": 0.19999999999999996,
+                "actual_count": 1,
+                "available_at": "2026-09-29",
+                "evaluation_adjustment_identity": "R23_FIXTURE_IDENTITY",
+                "evaluation_basis_date": "2026-09-29",
+                "evaluation_comparison_reference": 10,
+                "outcome_status": "OBSERVED",
+                "path_quality": "OBSERVED",
+                "reason_codes": [],
+                "security_id": "C2",
+                "source_asof": "2026-09-29",
+                "transform_coefficients": {
+                  "alpha": 1,
+                  "beta": 0
+                },
+                "transform_digest": "096da03c8876a95068515ff52c91819639a66c37252b52912ac3561a2ff74f91"
+              },
+              {
+                "MAE_N": -0.09999999999999998,
+                "MFE_N": 0.30000000000000004,
+                "PATH_MDD_CLOSE_N": 0,
+                "R_N": 0.19999999999999996,
+                "actual_count": 1,
+                "available_at": "2026-09-29",
+                "evaluation_adjustment_identity": "R23_FIXTURE_IDENTITY",
+                "evaluation_basis_date": "2026-09-29",
+                "evaluation_comparison_reference": 10,
+                "outcome_status": "OBSERVED",
+                "path_quality": "OBSERVED",
+                "reason_codes": [],
+                "security_id": "C3",
+                "source_asof": "2026-09-29",
+                "transform_coefficients": {
+                  "alpha": 1,
+                  "beta": 0
+                },
+                "transform_digest": "096da03c8876a95068515ff52c91819639a66c37252b52912ac3561a2ff74f91"
+              }
+            ]
+          }
+        },
+        "due_date": "2026-09-29",
+        "enrollment_id": "297d3dcc4b9ca0e991af95051aeaec04d535b30d6ef417297a604996cf453a5e",
+        "evaluation_adjustment_identity": "R23_FIXTURE_IDENTITY",
+        "evaluation_basis_date": "2026-09-29",
+        "evaluation_comparison_reference": 10,
+        "evaluation_revision": 2,
+        "evaluation_source": {
+          "bytes": 2494,
+          "path": "config/v4_16_r23_future_correction_fixture_v1.json",
+          "sha256": "edae9e22a491b818d43c5b4b3700cc48c53c3e9bddc89919d5b0066e8d507a74"
+        },
+        "evaluation_source_digest": "edae9e22a491b818d43c5b4b3700cc48c53c3e9bddc89919d5b0066e8d507a74",
+        "evaluation_source_identity": {
+          "bytes": 2494,
+          "path": "config/v4_16_r23_future_correction_fixture_v1.json",
+          "sha256": "edae9e22a491b818d43c5b4b3700cc48c53c3e9bddc89919d5b0066e8d507a74"
+        },
+        "evidence_class": "ENGINEERING_VECTOR",
+        "evidence_origin": "ENGINEERING_FIXTURE",
+        "first_observed_id": "22a4e07f6abc6dced79199f0c492f2b34416274df5b053a55c4dc6822686fa33",
+        "frozen_t0": {
+          "bytes": 6903,
+          "path": "sqlite:dd78c325a95f5dac9e3c36d478ccb40b43b4ccb572f7831e722f536e55166d7b",
+          "sha256": "657c10ec1444d1c358127c16c8cb8eabfc45c1c04ff4ede8cae0487ed44b2161"
+        },
+        "future_read_count": 12,
+        "horizon": 1,
+        "latest_corrected_id": "019ec7d2ce50fb9b306fad254cffc1c582662a0c5856b6c48b617dae6d2c7a2b",
+        "market_benchmark": {
+          "benchmark_delisted_weight": 0,
+          "benchmark_endpoint_coverage": 1.0,
+          "benchmark_id": "6f0c12791ebaf5830d6e01d4a911d415ced579b14e07e301df38e8e9dd2f34b9",
+          "benchmark_missing_weight": 0.0,
+          "benchmark_quality": "OBSERVED",
+          "benchmark_suspended_weight": 0,
+          "benchmark_unknown_weight": 0,
+          "constituents": [
+            {
+              "original_weight": 0.25,
+              "security_id": "C1",
+              "state": "ACTUAL_ENDPOINT"
+            },
+            {
+              "original_weight": 0.25,
+              "security_id": "C2",
+              "state": "ACTUAL_ENDPOINT"
+            },
+            {
+              "original_weight": 0.25,
+              "security_id": "C3",
+              "state": "ACTUAL_ENDPOINT"
+            },
+            {
+              "original_weight": 0.25,
+              "security_id": "S",
+              "state": "ACTUAL_ENDPOINT"
+            }
+          ],
+          "marked_permission": false,
+          "observed_contribution": 1.2,
+          "relative_market_return_marked": null,
+          "relative_return": 0.0,
+          "return": 0.19999999999999996
+        },
+        "outcome_contract_id": "FORWARD_PRICE_PATH_V1",
+        "outcome_revision_id": "019ec7d2ce50fb9b306fad254cffc1c582662a0c5856b6c48b617dae6d2c7a2b",
+        "outcome_status": "OBSERVED",
+        "path_quality": "OBSERVED",
+        "price_path": [
+          {
+            "T0_basis_verified": true,
+            "T0_transform_coefficients": {
+              "alpha": 1,
+              "beta": 0
+            },
+            "adjustment_identity": "R23_FIXTURE_IDENTITY",
+            "available_at": "2026-09-29",
+            "close": 12,
+            "evaluation_basis_date": "2026-09-29",
+            "high": 13,
+            "low": 9,
+            "source_asof": "2026-09-29",
+            "trade_date": "2026-09-29",
+            "transform_coefficients": {
+              "alpha": 1,
+              "beta": 0
+            },
+            "verified_adjustment": true,
+            "verified_identity": true
+          }
+        ],
+        "reason_codes": [],
+        "report_cutoff": "2026-09-29",
+        "revision_reason": "ACCEPTED_EVALUATION_SOURCE_REVISION",
+        "revision_sequence": 2,
+        "sector_benchmark": {
+          "MAE_CLOSE": 0,
+          "MFE_CLOSE": 0.20000000000000018,
+          "benchmark_delisted_weight": 0,
+          "benchmark_endpoint_coverage": 1.0,
+          "benchmark_id": "5aa68992795d505f39c8403d11c63b486d987bbc588ce932729f2f568ee0f974",
+          "benchmark_missing_weight": 0.0,
+          "benchmark_quality": "OBSERVED",
+          "benchmark_suspended_weight": 0,
+          "benchmark_unknown_weight": 0,
+          "constituents": [
+            {
+              "original_weight": 0.3333333333333333,
+              "security_id": "C1",
+              "state": "ACTUAL_ENDPOINT"
+            },
+            {
+              "original_weight": 0.3333333333333333,
+              "security_id": "C2",
+              "state": "ACTUAL_ENDPOINT"
+            },
+            {
+              "original_weight": 0.3333333333333333,
+              "security_id": "C3",
+              "state": "ACTUAL_ENDPOINT"
+            }
+          ],
+          "marked_permission": false,
+          "observed_contribution": 1.2000000000000002,
+          "relative_market_return_marked": null,
+          "relative_return": -2.220446049250313e-16,
+          "return": 0.20000000000000018
+        },
+        "source_asof": "2026-09-29",
+        "supersedes": {
+          "bytes": 6434,
+          "path": "sqlite:783c4ad226af5f2bbcd85a32e7d71a22c58b124c51664da8d1c03e973cea6281",
+          "sha256": "1c186ec1ebcbf9f5f11b06aa5d44cf92262ebdf320f87921a466644851ef8e9e"
+        },
+        "transform_coefficients": {
+          "alpha": 1,
+          "beta": 0
+        },
+        "transform_digest": "096da03c8876a95068515ff52c91819639a66c37252b52912ac3561a2ff74f91"
+      }
+    ],
+    "publications": [
+      {
+        "accepted_at": "2026-09-28T14:00:00Z",
+        "enrollment_ids": [
+          "297d3dcc4b9ca0e991af95051aeaec04d535b30d6ef417297a604996cf453a5e"
+        ],
+        "evidence_origin": "ENGINEERING_FIXTURE",
+        "prior_session_state_head": {
+          "evidence_origin": "ENGINEERING_FIXTURE",
+          "initialization_authority": "ENGINEERING_FIXTURE_ONLY_NOT_REAL_RUNTIME_SEED",
+          "model_contract_id": "RESEARCH_STATE_V1",
+          "publication_id": "R23_ISOLATED_SEED",
+          "revision": 1,
+          "state_lineage_id": "R23_ENGINEERING_LINEAGE",
+          "trade_date": "2026-09-24"
+        },
+        "publication_id": "8e48954c2030a026ed951666e1c8eefaeaaa425f45d92e7251e1cc92058fc094",
+        "radar_publication": {
+          "bytes": 4349,
+          "path": "sqlite:85d65e56718142a25cff97804875767fef14d0b7a348254e3e499210e3e5967c",
+          "sha256": "9e8294ed9240b9f61149e690eee620dc7cb59005d2317cdc3ea969083e5c5a53"
+        },
+        "request_digest": "4439f2aab81db6bd297fbae3a678589c45c71db16bb4b1d0a29856efbbd8bfc3",
+        "revision": 1,
+        "slot_id": "3a87a286799a1930a1da495ef6457bfd29ce605b8c23989a667dd6ddaf682b5c",
+        "source_manifest_digest": "dd88b0d282325a18321b5dae62ded18a9d64b3aeb6155d5723b625a3c40ae5ff",
+        "trade_date": "2026-09-28"
+      },
+      {
+        "accepted_at": "2026-09-28T14:00:00Z",
+        "enrollment_ids": [],
+        "evidence_origin": "ENGINEERING_FIXTURE",
+        "prior_session_state_head": {
+          "evidence_origin": "ENGINEERING_FIXTURE",
+          "initialization_authority": "ENGINEERING_FIXTURE_ONLY_NOT_REAL_RUNTIME_SEED",
+          "model_contract_id": "RESEARCH_STATE_V1",
+          "publication_id": "R23_ISOLATED_SEED",
+          "revision": 1,
+          "state_lineage_id": "R23_ENGINEERING_LINEAGE",
+          "trade_date": "2026-09-24"
+        },
+        "publication_id": "e1c3c6028ba45440cb7a4687119a46e9f914e82ba14ed188627b92b4585d24be",
+        "radar_publication": {
+          "bytes": 4187,
+          "path": "sqlite:36f935048f60b48bc8dd4943a466834db1ca3fd02d80a46277cd6399906cadf2",
+          "sha256": "de9f156859991d3af5b9aa4dcc4882ec4045da82d2c64fc23e412fe817e466ec"
+        },
+        "request_digest": "a34c21784d4c452468717b03ecabd042a254cc98363dfd2846550a4cfad4d62d",
+        "revision": 2,
+        "slot_id": "3a87a286799a1930a1da495ef6457bfd29ce605b8c23989a667dd6ddaf682b5c",
+        "source_manifest_digest": "534f854b0bcb2d452dcd3ae4732be2a0576d385c9a113e7c69cc3591a0614804",
+        "trade_date": "2026-09-28"
+      }
+    ]
+  },
+  "revision_publication": "e1c3c6028ba45440cb7a4687119a46e9f914e82ba14ed188627b92b4585d24be",
+  "rollback": {
+    "evidence_origin": "ENGINEERING_FIXTURE",
+    "legacy_mutated": false,
+    "preserve_accepted_artifacts": true,
+    "preserve_pending_obligations": true,
+    "reader_selection": "LEGACY_UNCHANGED",
+    "restart_requires": "NEW_EXPLICIT_ACCEPTED_AUTHORITY",
+    "stop_new_acceptance": true
+  },
+  "source_reads": [
+    {
+      "basis_date": "2026-09-29",
+      "cutoff": "2026-09-29",
+      "security_id": "S",
+      "trade_date": "2026-09-29"
+    },
+    {
+      "basis_date": "2026-09-29",
+      "cutoff": "2026-09-29",
+      "security_id": "C1",
+      "trade_date": "2026-09-29"
+    },
+    {
+      "basis_date": "2026-09-29",
+      "cutoff": "2026-09-29",
+      "security_id": "C2",
+      "trade_date": "2026-09-29"
+    },
+    {
+      "basis_date": "2026-09-29",
+      "cutoff": "2026-09-29",
+      "security_id": "C3",
+      "trade_date": "2026-09-29"
+    },
+    {
+      "basis_date": "2026-09-29",
+      "cutoff": "2026-09-29",
+      "security_id": "S",
+      "trade_date": "2026-09-29"
+    },
+    {
+      "basis_date": "2026-09-29",
+      "cutoff": "2026-09-29",
+      "security_id": "C1",
+      "trade_date": "2026-09-29"
+    },
+    {
+      "basis_date": "2026-09-29",
+      "cutoff": "2026-09-29",
+      "security_id": "C2",
+      "trade_date": "2026-09-29"
+    },
+    {
+      "basis_date": "2026-09-29",
+      "cutoff": "2026-09-29",
+      "security_id": "C3",
+      "trade_date": "2026-09-29"
+    },
+    {
+      "basis_date": "2026-09-29",
+      "cutoff": "2026-09-29",
+      "security_id": "S",
+      "trade_date": "2026-09-29"
+    },
+    {
+      "basis_date": "2026-09-29",
+      "cutoff": "2026-09-29",
+      "security_id": "C1",
+      "trade_date": "2026-09-29"
+    },
+    {
+      "basis_date": "2026-09-29",
+      "cutoff": "2026-09-29",
+      "security_id": "C2",
+      "trade_date": "2026-09-29"
+    },
+    {
+      "basis_date": "2026-09-29",
+      "cutoff": "2026-09-29",
+      "security_id": "C3",
+      "trade_date": "2026-09-29"
+    },
+    {
+      "basis_date": "2026-09-29",
+      "cutoff": "2026-09-29",
+      "security_id": "S",
+      "trade_date": "2026-09-29"
+    },
+    {
+      "basis_date": "2026-09-29",
+      "cutoff": "2026-09-29",
+      "security_id": "C1",
+      "trade_date": "2026-09-29"
+    },
+    {
+      "basis_date": "2026-09-29",
+      "cutoff": "2026-09-29",
+      "security_id": "C2",
+      "trade_date": "2026-09-29"
+    },
+    {
+      "basis_date": "2026-09-29",
+      "cutoff": "2026-09-29",
+      "security_id": "C3",
+      "trade_date": "2026-09-29"
+    },
+    {
+      "basis_date": "2026-09-29",
+      "cutoff": "2026-09-29",
+      "security_id": "S",
+      "trade_date": "2026-09-29"
+    },
+    {
+      "basis_date": "2026-09-29",
+      "cutoff": "2026-09-29",
+      "security_id": "C1",
+      "trade_date": "2026-09-29"
+    },
+    {
+      "basis_date": "2026-09-29",
+      "cutoff": "2026-09-29",
+      "security_id": "C2",
+      "trade_date": "2026-09-29"
+    },
+    {
+      "basis_date": "2026-09-29",
+      "cutoff": "2026-09-29",
+      "security_id": "C3",
+      "trade_date": "2026-09-29"
+    },
+    {
+      "basis_date": "2026-09-29",
+      "cutoff": "2026-09-29",
+      "security_id": "S",
+      "trade_date": "2026-09-29"
+    },
+    {
+      "basis_date": "2026-09-29",
+      "cutoff": "2026-09-29",
+      "security_id": "C1",
+      "trade_date": "2026-09-29"
+    },
+    {
+      "basis_date": "2026-09-29",
+      "cutoff": "2026-09-29",
+      "security_id": "C2",
+      "trade_date": "2026-09-29"
+    },
+    {
+      "basis_date": "2026-09-29",
+      "cutoff": "2026-09-29",
+      "security_id": "C3",
+      "trade_date": "2026-09-29"
+    }
+  ]
+}

@@ -32,6 +32,12 @@ def source_trade_dates(payload):
 
 class GoForwardInputAuthority(CurrentStageAuthority):
     def __init__(self, root, contract_binding, daily_binding, grant, boundary, simulation=False):
+        if not simulation:
+            from workbench_analysis.dm01_runtime_r4 import read as exact_read
+            from workbench_analysis.dm01_lineage_r4r1 import validate_r25_binding
+            preview=exact_read(root,daily_binding)
+            require(isinstance(preview.get('target_session_pit_binding'),dict),'R25_EXACT_TARGET_SESSION_BINDING_REQUIRED')
+            validate_r25_binding(root,preview['target_session_pit_binding'])
         # Explicit immutable algorithm view. Never invoke its target-date gate.
         immutable=CurrentStageAuthority(root)
         self.__dict__=copy.copy(immutable.__dict__)

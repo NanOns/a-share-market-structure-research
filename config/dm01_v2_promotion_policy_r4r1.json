@@ -1,0 +1,35 @@
+{
+  "acceptance_head": "data/v4/DM01_R4_RUNTIME_ACCEPTANCE_HEAD_V1.json",
+  "allowed_component_statuses": [
+    "FULL_PASS",
+    "DEGRADED_PASS"
+  ],
+  "contract_id": "DM01_ROUTINE_V2_PROMOTION_POLICY_R4R1_V1",
+  "external_acceptance": null,
+  "output_contract_id": "V4_DATA_ACCEPTED_HEAD_V2",
+  "permissions": {
+    "focus": false,
+    "production": false,
+    "shadow": false
+  },
+  "r25_auto_grant": false,
+  "real_forward_evidence_required": true,
+  "real_shadow_counter_increment": 0,
+  "required": [
+    "Exact current accepted V2 parent",
+    "Next accepted market session",
+    "Exact accepted calendar and identity",
+    "Exact source manifest and runtime availability",
+    "All nine immutable components",
+    "Independent per-component and cross-component recheck PASS",
+    "Exact candidate binding",
+    "Immediate parent CAS",
+    "Protected Stage/R25/runtime bytes unchanged"
+  ],
+  "same_day_revision": "NEW_IMMUTABLE_CANDIDATE_FROM_SAME_FROZEN_PREVIOUS_PARENT; NO_OVERWRITE_OR_AUTOMATIC_REPROMOTION",
+  "stale_v1_promoter": "FORBIDDEN",
+  "version": "4.1.0",
+  "whole_head_AS_RECORDED": false,
+  "whole_head_first_available_at_target_proven": false,
+  "whole_head_lineage": "MIXED_ACCEPTED_PARENT_PLUS_TARGET_SESSION_PIT"
+}

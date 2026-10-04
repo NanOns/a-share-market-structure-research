@@ -144,6 +144,11 @@ def promotion_fixture(env,monkeypatch):
     """Isolated state machine test; replaced PIT admissions are not PIT acceptance evidence."""
     result=build(env);marker=r.read(env['root'],result['candidate'])
     marker['knowledge_lineage']='PIT_OBSERVED'
+    # R4R1: this isolated CAS test explicitly replaces the new admission layer.
+    # It supplies an admitted marker only to exercise the unchanged CAS core.
+    marker['real_forward_evidence']=True
+    from workbench_analysis import dm01_lineage_r4r1
+    monkeypatch.setattr(dm01_lineage_r4r1,'require_real_forward',lambda *a,**kw:{})
     monkeypatch.setattr(r,'accepted_envelope',lambda root:{})
     monkeypatch.setattr(r,'validate_lineage',lambda *a,**kw:True)
     monkeypatch.setattr(r,'current_parent',lambda root:env['parent'])

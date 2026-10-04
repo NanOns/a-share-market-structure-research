@@ -1,0 +1,25 @@
+{
+  "contract_id": "DM01_LINEAGE_COMPOSITION_R4R1_V1",
+  "version": "4.1.0",
+  "classes": [
+    "TARGET_SESSION_PIT_OBSERVATION",
+    "INHERITED_ACCEPTED_PARENT_RECONSTRUCTED",
+    "DERIVED_FROM_MIXED_PARENT_AND_TARGET",
+    "STATIC_ACCEPTED_AUTHORITY_KNOWN_BEFORE_TARGET"
+  ],
+  "as_recorded_scope": "TARGET_SESSION_OBSERVATION_ONLY",
+  "whole_head_AS_RECORDED": false,
+  "first_availability": "EXPLICIT_EXACT_NATIVE_CONTENT_PROOF_AND_ACCEPTED_AUTHORITY_ONLY; NEVER_RECEIVE_TIME",
+  "accepted_first_availability_authorities": [],
+  "R25_binding_contract": "DM01_R25_TARGET_SESSION_PIT_BINDING_R4R1_V1",
+  "R25_required_bindings": [
+    "target_trade_date",
+    "target_session_source_manifest",
+    "target_session_all_nine_receipts",
+    "target_session_observation_receipt",
+    "candidate",
+    "parent_data_head",
+    "child_data_head"
+  ],
+  "engineering_grants": false
+}

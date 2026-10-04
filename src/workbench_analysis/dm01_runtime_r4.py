@@ -20,8 +20,8 @@ from .daily_data_head import CAPABILITIES
 from .daily_source_freeze import ensure_outside_tdx, source_freeze_complete_v2
 
 ROOT = Path(__file__).resolve().parents[2]
-CONTRACT = 'config/dm01_go_forward_runtime_contract_r4.json'
-POLICY = 'config/dm01_v2_promotion_policy_r4.json'
+CONTRACT = 'config/dm01_go_forward_runtime_contract_r4r1.json'
+POLICY = 'config/dm01_v2_promotion_policy_r4r1.json'
 CALENDAR = 'data/v4/DM01_R4_CALENDAR_HEAD_V1.json'
 HEAD = 'data/v4/V4_DATA_ACCEPTED_HEAD.json'
 ACCEPTANCE = 'data/v4/DM01_R4_RUNTIME_ACCEPTANCE_HEAD_V1.json'
@@ -76,8 +76,8 @@ def accepted_envelope(root):
     for name, key in ((CONTRACT, 'runtime_contract'), (POLICY, 'promotion_policy'), (CALENDAR, 'calendar_head')):
         require(a[key] == ref(root, Path(root) / name), 'R4_ACCEPTED_ENVELOPE_DIGEST_MISMATCH')
     document = path(root, a['independent_external_authority']).read_text(encoding='utf8')
-    require(a.get('external_verdict') == 'PASS_DM01_R4_GO_FORWARD_RUNTIME' and
-            'PASS_DM01_R4_GO_FORWARD_RUNTIME' in document and
+    require(a.get('external_verdict') == 'PASS_DM01_R4R1_GO_FORWARD_RUNTIME' and
+            'PASS_DM01_R4R1_GO_FORWARD_RUNTIME' in document and
             a['runtime_contract']['sha256'] in document and
             a['promotion_policy']['sha256'] in document and
             a['calendar_head']['sha256'] in document, 'R4_EXTERNAL_DISPOSITION_MISSING')
@@ -124,13 +124,15 @@ def current_parent(root=ROOT):
                 record['permissions'] == candidate['permissions'] == PERMISSIONS and
                 record['policy'] == ref(root, root/POLICY) and record['envelope'] == ref(root, root/ACCEPTANCE) and
                 candidate['target_trade_date'] == head['accepted_trade_date'] and
-                candidate['knowledge_lineage'] == 'PIT_OBSERVED' and head['AS_RECORDED'] is True,
+                candidate.get('real_forward_evidence') is True and head['AS_RECORDED'] is False,
                 'V2_PARENT_ACCEPTANCE_RECORD_MISMATCH')
         archive = read(root, chain['parent_head'])
         require(chain['parent'] == archive['accepted_chain'] and
                 record['parent'] == chain['parent_head'] == head['parent_archive'] and
                 chain['parent_head']['sha256'] == head['parent_head_sha256'] == candidate['parent_data_head_digest'],
                 'V2_PARENT_CHAIN_LINKAGE_MISMATCH')
+        from .dm01_lineage_r4r1 import validate_head_lineage
+        validate_head_lineage(head,archive)
     require(set(head['component_artifacts']) == set(head['component_permissions']) == set(CAPABILITIES), 'V2_PARENT_NINE_COMPONENTS_REQUIRED')
     components = head['component_artifacts']
     for cap in CAPABILITIES:
@@ -221,16 +223,23 @@ def _context(root, cap, target, parent, freeze, cal, identity, staging):
     return dict(root=Path(root), cap=cap, target=target, parent=parent, freeze=freeze, calendar=cal, identity=identity, staging=Path(staging), contract=c)
 
 def _finish(c, rows, extra=None):
+    from .dm01_lineage_r4r1 import observation, annotate_rows, first_availability
     kernels._unique(rows, c['cap'].startswith('PERIOD_'))
     rows = sorted(rows, key=lambda r:(kernels._key(r), r.get('period_type',''), r.get('period_key','')))
     simulated = bool(c['freeze'].get('engineering_simulation'))
-    for row in rows:
-        if c['cap'].startswith('PERIOD_') and row.get('period_view') == 'CLOSED_ONLY' and row.get('as_of_date') != c['target']: continue
-        row.update(knowledge_lineage='CONTRACT_DESIGN_OR_ENGINEERING_SIMULATION' if simulated else 'PIT_OBSERVED', AS_RECORDED=not simulated, first_available_at_target_proven=not simulated, availability_evidence_digest=digest(c['freeze']['availability_evidence']))
-    payload = dict(contract_id='DM01_'+c['cap']+'_ARTIFACT_R4', trade_date=c['target'], rows=rows, **(extra or {}))
+    observed=observation(c['freeze'],c['root']);comp=annotate_rows(c,rows,observed)
+    payload = dict(contract_id='DM01_'+c['cap']+'_ARTIFACT_R4R1', trade_date=c['target'], rows=rows, lineage_composition=comp, **(extra or {}))
     artifact = atomic(c['root'], c['staging']/c['cap']/'artifact.json', payload, immutable=True)
     unknown = Counter(str(r['unknown_reason']) for r in rows if r.get('unknown_reason'))
-    receipt = dict(component_id=c['cap'], contract_id='DM01_'+c['cap']+'_INCREMENT_R4', version='4.0.0', status='DEGRADED_PASS' if unknown else 'FULL_PASS', target_trade_date=c['target'], trade_date=c['target'], parent_data_head_digest=c['parent']['binding']['sha256'], source_revision=c['freeze']['manifest_sha256'], calendar_publication_id=c['calendar']['publication_id'], identity_publication_id=c['identity']['publication_id'], runtime_bindings=c['contract']['capabilities'][c['cap']]['runtime_bindings'], accepted_owner_stage=c['contract']['capabilities'][c['cap']]['owner_stage'], accepted_algorithm_contract=c['contract']['capabilities'][c['cap']]['accepted_algorithm_contract'], artifact_path=str((c['root']/artifact['path']).resolve()), artifact_sha256=artifact['sha256'], artifact_bytes=artifact['bytes'], logical_digest=digest(rows), row_count=len(rows), quality_counts=dict(Counter(str(r.get('quality') or r.get('status') or 'READY') for r in rows)), unknown_reason_counts=dict(unknown), candidate_only=True, knowledge_lineage='CONTRACT_DESIGN_OR_ENGINEERING_SIMULATION' if simulated else 'PIT_OBSERVED', AS_RECORDED=not simulated, first_available_at_target_proven=not simulated)
+    receipt = dict(component_id=c['cap'], contract_id='DM01_'+c['cap']+'_INCREMENT_R4', version='4.0.0', status='DEGRADED_PASS' if unknown else 'FULL_PASS', target_trade_date=c['target'], trade_date=c['target'], parent_data_head_digest=c['parent']['binding']['sha256'], source_revision=c['freeze']['manifest_sha256'], calendar_publication_id=c['calendar']['publication_id'], identity_publication_id=c['identity']['publication_id'], runtime_bindings=c['contract']['capabilities'][c['cap']]['runtime_bindings'], accepted_owner_stage=c['contract']['capabilities'][c['cap']]['owner_stage'], accepted_algorithm_contract=c['contract']['capabilities'][c['cap']]['accepted_algorithm_contract'], artifact_path=str((c['root']/artifact['path']).resolve()), artifact_sha256=artifact['sha256'], artifact_bytes=artifact['bytes'], logical_digest=digest(rows), row_count=len(rows), quality_counts=dict(Counter(str(r.get('quality') or r.get('status') or 'READY') for r in rows)), unknown_reason_counts=dict(unknown), candidate_only=True, knowledge_lineage='CONTRACT_DESIGN_OR_ENGINEERING_SIMULATION' if simulated else 'MIXED_ACCEPTED_PARENT_PLUS_TARGET_SESSION_PIT', AS_RECORDED=False, first_available_at_target_proven=False)
+    receipt.update(contract_id='DM01_'+c['cap']+'_INCREMENT_R4R1',version='4.1.0',lineage_composition=comp,
+        target_identity_unknown_count=sum(r.get('security_id') is None for r in rows),
+        knowledge_lineage='CONTRACT_DESIGN_OR_ENGINEERING_SIMULATION' if simulated else
+            ('MIXED_ACCEPTED_PARENT_PLUS_TARGET_SESSION_PIT' if comp['contains_inherited_parent_state'] else 'PIT_OBSERVED'),
+        AS_RECORDED=bool(not simulated and not comp['contains_inherited_parent_state']),first_available_at_target_proven=False,
+        target_session_observation_proven=observed['target_session_observation_proven'],
+        target_session_observed_at=observed['target_session_observed_at'],target_session_received_at=observed['target_session_received_at'],
+        first_availability_by_source=first_availability(c['freeze'],c['root']))
     post = check_component(receipt,payload,c['freeze'],c['parent'],c['calendar'],c['identity'])
     require(post['status']=='PASS', 'COMPONENT_POSTCHECK_FAIL:'+c['cap'])
     receipt['postcheck_digest']=digest(post)
@@ -290,7 +299,14 @@ def build_candidate(*, parent, freeze, cal, identity, root=ROOT, builders=None):
     postref=atomic(root,staging/'cross_postcheck.json',post,immutable=True)
     freeze_ref=atomic(root,staging/'source_manifest.json',freeze,immutable=True)
     parent_ref=atomic(root,staging/'parent_context.json',parent,immutable=True)
-    marker_value=dict(contract_id='DM01_ATOMIC_GO_FORWARD_CANDIDATE_R4',candidate_id=run_id,target_trade_date=target,parent_data_head_digest=parent['binding']['sha256'],parent_context=parent_ref,components=receipts,source_manifest=freeze_ref,source_manifest_digest=freeze['manifest_sha256'],calendar=cal['binding'],identity=identity['binding'],cross_postcheck=postref,postcheck_digest=digest(post),protected_heads=protected,permissions=PERMISSIONS,knowledge_lineage='CONTRACT_DESIGN_OR_ENGINEERING_SIMULATION' if freeze.get('engineering_simulation') else 'PIT_OBSERVED',real_forward_evidence=False,external_acceptance='PENDING',data_head_moved=False)
+    from .dm01_lineage_r4r1 import forward_admission, composition
+    observed=forward_admission(parent,freeze,cal,receipts,post,root)
+    observation_ref=atomic(root,staging/'target_session_observation.json',observed,immutable=True)
+    marker_value=dict(contract_id='DM01_ATOMIC_GO_FORWARD_CANDIDATE_R4',candidate_id=run_id,target_trade_date=target,parent_data_head_digest=parent['binding']['sha256'],parent_context=parent_ref,components=receipts,source_manifest=freeze_ref,source_manifest_digest=freeze['manifest_sha256'],calendar=cal['binding'],identity=identity['binding'],cross_postcheck=postref,postcheck_digest=digest(post),protected_heads=protected,permissions=PERMISSIONS,knowledge_lineage='CONTRACT_DESIGN_OR_ENGINEERING_SIMULATION' if freeze.get('engineering_simulation') else 'MIXED_ACCEPTED_PARENT_PLUS_TARGET_SESSION_PIT',real_forward_evidence=observed['real_forward_evidence'],external_acceptance='PENDING',data_head_moved=False)
+    marker_value.update(knowledge_lineage='CONTRACT_DESIGN_OR_ENGINEERING_SIMULATION' if freeze.get('engineering_simulation') else 'MIXED_ACCEPTED_PARENT_PLUS_TARGET_SESSION_PIT',
+        engineering_simulation=bool(freeze.get('engineering_simulation')),real_forward_evidence=observed['real_forward_evidence'],
+        target_session_observation_proven=observed['target_session_observation_proven'],target_session_observation_receipt=observation_ref,
+        lineage_composition=composition(parent,'ALL_NINE',observed),AS_RECORDED=False,first_available_at_target_proven=False)
     result=atomic(root,marker,marker_value,immutable=True)
     return dict(status='ALL_NINE_CANDIDATE_READY',candidate=result,candidate_id=run_id)
 
@@ -311,8 +327,11 @@ def promote(candidate_binding, *, expected_parent_sha, root=ROOT):
     require(sha(root/HEAD)==expected_parent_sha==candidate['parent_data_head_digest'], 'BLOCKED_DATA_HEAD_PARENT_MOVED')
     parent=current_parent(root); cal=calendar(root); freeze=read(root,candidate['source_manifest']); identity_payload=read(root,candidate['identity'])
     identity=dict(binding=candidate['identity'],publication_id=candidate['identity']['sha256'],records=identity_payload['records'])
-    require(candidate['knowledge_lineage']=='PIT_OBSERVED' and candidate['permissions']==PERMISSIONS, 'SIMULATED_OR_ESCALATED_PROMOTION_FORBIDDEN')
+    require(candidate['knowledge_lineage'] in ('PIT_OBSERVED','MIXED_ACCEPTED_PARENT_PLUS_TARGET_SESSION_PIT') and candidate['permissions']==PERMISSIONS, 'SIMULATED_OR_ESCALATED_PROMOTION_FORBIDDEN')
+    require(candidate.get('real_forward_evidence') is True,'REAL_FORWARD_EVIDENCE_REQUIRED')
     validate_lineage(freeze,root)
+    from .dm01_lineage_r4r1 import require_real_forward, head_lineage, validate_head_lineage
+    require_real_forward(candidate,freeze,parent,cal,root)
     require(freeze['manifest_sha256']==candidate['source_manifest_digest'] and candidate['calendar']==cal['binding'] and freeze['calendar_publication_id']==cal['publication_id'] and freeze['identity_publication_id']==candidate['identity']['sha256'], 'CANDIDATE_SOURCE_IDENTITY_MISMATCH')
     require(target==kernels.resolve_target_session(head['accepted_trade_date'],cal,freeze['observed_at'],target), 'PROMOTION_SKIPPED_SESSION')
     require(set(candidate['components'])==set(CAPABILITIES), 'PARTIAL_PROMOTION_FORBIDDEN')
@@ -335,7 +354,9 @@ def promote(candidate_binding, *, expected_parent_sha, root=ROOT):
     for cap,permission in permissions.items():
         if head['component_permissions'][cap]['status']=='DEGRADED_PASS':
             permission['status']='DEGRADED_PASS'
-    next_head.update(accepted_trade_date=target,source_revision=freeze['manifest_sha256'],canonical_data_revision=candidate['candidate_id'],manifest_path=chain['path'],manifest_sha256=chain['sha256'],parent_head_sha256=expected_parent_sha,component_permissions=permissions,component_artifacts=artifacts,accepted_chain=chain,final_candidate=candidate_binding,external_acceptance_record=record,calendar=candidate['calendar'],identity=candidate['identity'],parent_archive=archive,external_acceptance='ACCEPTED_UNDER_DM01_R4_MACHINE_POLICY',permissions=PERMISSIONS,knowledge_lineage='PIT_OBSERVED',AS_RECORDED=True,first_available_at_target_proven=True,promoted_at_utc=freeze['observed_at'])
+    next_head.update(accepted_trade_date=target,source_revision=freeze['manifest_sha256'],canonical_data_revision=candidate['candidate_id'],manifest_path=chain['path'],manifest_sha256=chain['sha256'],parent_head_sha256=expected_parent_sha,component_permissions=permissions,component_artifacts=artifacts,accepted_chain=chain,final_candidate=candidate_binding,external_acceptance_record=record,calendar=candidate['calendar'],identity=candidate['identity'],parent_archive=archive,external_acceptance='ACCEPTED_UNDER_DM01_R4_MACHINE_POLICY',permissions=PERMISSIONS,promoted_at_utc=freeze['observed_at'])
+    next_head.update(head_lineage(head,candidate,candidate['target_session_observation_receipt']))
+    validate_head_lineage(next_head,head)
     lock=root/'data/v4/DM01_R4_PROMOTION.lock'
     try:
         descriptor=os.open(lock,os.O_CREAT|os.O_EXCL|os.O_WRONLY)

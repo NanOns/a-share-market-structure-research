@@ -4,10 +4,11 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--output',required=True,type=Path)
-    parser.add_argument('--basetemp',required=True,type=Path);args=parser.parse_args()
+    parser.add_argument('--basetemp',required=True,type=Path)
+    parser.add_argument('--scope',type=Path,default=ROOT/'reports/dm01_r4/REGRESSION_SCOPE.json');args=parser.parse_args()
     if args.basetemp.resolve().drive.upper() not in ('E:','F:'):raise ValueError('E_F_TEST_STORAGE_REQUIRED')
     args.output.mkdir(parents=True,exist_ok=True)
-    scope=json.loads((ROOT/'reports/dm01_r4/REGRESSION_SCOPE.json').read_bytes())['scope']
+    scope=json.loads(args.scope.read_bytes())['scope']
     xml=args.output/'regression.xml';log=args.output/'regression.log'
     command=[sys.executable,'-B','-m','pytest',*scope,'-q','--basetemp='+str(args.basetemp),'--junitxml='+str(xml)]
     env=dict(os.environ,PYTHONPATH=str(ROOT/'src')+os.pathsep+str(ROOT),PYTHONDONTWRITEBYTECODE='1')

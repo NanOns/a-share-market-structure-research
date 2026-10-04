@@ -1,0 +1,3348 @@
+{
+  "contract": "config/v4_18_migration_replay_contract_v1.json",
+  "contract_sha256": "186d53ae5e4281ce1ff83609326673610f390ebc03061a947b5ae83dda996a02",
+  "definition": [
+    {
+      "declaration": "migrations/v4_16_r24_real_shadow_v1.sql",
+      "declaration_sha256": "ff717666fdbe692aa4c75cf9ddb9759708f107a6149d0dae10014d562a5a8caf",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "storage_identity",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "migrations/v4_16_r24_real_shadow_v1.sql",
+      "declaration_sha256": "ff717666fdbe692aa4c75cf9ddb9759708f107a6149d0dae10014d562a5a8caf",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "facts",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "migrations/v4_16_r24_real_shadow_v1.sql",
+      "declaration_sha256": "ff717666fdbe692aa4c75cf9ddb9759708f107a6149d0dae10014d562a5a8caf",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "publication_heads",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "migrations/v4_16_r24_real_shadow_v1.sql",
+      "declaration_sha256": "ff717666fdbe692aa4c75cf9ddb9759708f107a6149d0dae10014d562a5a8caf",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "activation_head",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/focus_basket_schema_v1.sql",
+      "declaration_sha256": "3b5f037911aa86d2dd7465d5e9535cee56d045745d845c994545225700daa7a4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "V3_FOCUS",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "workbench.focus_episode_baskets",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/focus_frozen_fact_revisions_v1.sql",
+      "declaration_sha256": "c56e3c5ac3e941a52998a3553d78b2f636f428524fa49a5c450da71f57f834ef",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "V3_FOCUS",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "workbench.focus_episode_frozen_fact_revisions",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/focus_frozen_invalidation_facts_v1.sql",
+      "declaration_sha256": "4c354047f05a2078defb137a9f6ab539f8cbad6e9f08dc4ef08132e2dfef75ee",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "V3_FOCUS",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "workbench.focus_episode_frozen_facts",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/focus_outcomes_schema_v1.sql",
+      "declaration_sha256": "947ca6124d1ba8878534820a49de95d12d6b36bfdece4d4a20f0824ad9dfe992",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "V3_FOCUS",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "workbench.focus_outcome_settlement_batches",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/focus_outcomes_schema_v1.sql",
+      "declaration_sha256": "947ca6124d1ba8878534820a49de95d12d6b36bfdece4d4a20f0824ad9dfe992",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "V3_FOCUS",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "workbench.focus_outcome_settlement_tasks",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/focus_outcomes_schema_v1.sql",
+      "declaration_sha256": "947ca6124d1ba8878534820a49de95d12d6b36bfdece4d4a20f0824ad9dfe992",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "V3_FOCUS",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "workbench.focus_episode_followup_events",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/focus_publication_identity_migrations_v1.sql",
+      "declaration_sha256": "00624f53cf5c9c3c4ab5c16213df7f449e27b83dc041bb71816652f60c7524b3",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "workbench.publication_source_identity_migrations",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/focus_schema_v1.sql",
+      "declaration_sha256": "c680b361a262101b8ae323855ee7670ce2af5493e460c47e935140cb544f304d",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "V3_FOCUS",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "workbench.focus_runs",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/focus_schema_v1.sql",
+      "declaration_sha256": "c680b361a262101b8ae323855ee7670ce2af5493e460c47e935140cb544f304d",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "V3_FOCUS",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "workbench.focus_daily_items",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/focus_schema_v1.sql",
+      "declaration_sha256": "c680b361a262101b8ae323855ee7670ce2af5493e460c47e935140cb544f304d",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "V3_FOCUS",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "workbench.focus_episodes",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/focus_schema_v1.sql",
+      "declaration_sha256": "c680b361a262101b8ae323855ee7670ce2af5493e460c47e935140cb544f304d",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "V3_FOCUS",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "workbench.focus_episode_segments",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/focus_schema_v1.sql",
+      "declaration_sha256": "c680b361a262101b8ae323855ee7670ce2af5493e460c47e935140cb544f304d",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "V3_FOCUS",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "workbench.focus_episode_transitions",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/focus_schema_v1.sql",
+      "declaration_sha256": "c680b361a262101b8ae323855ee7670ce2af5493e460c47e935140cb544f304d",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "V3_FOCUS",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "workbench.focus_episode_anchors",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/focus_schema_v1.sql",
+      "declaration_sha256": "c680b361a262101b8ae323855ee7670ce2af5493e460c47e935140cb544f304d",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "V3_FOCUS",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "workbench.focus_episode_observations",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/focus_schema_v1.sql",
+      "declaration_sha256": "c680b361a262101b8ae323855ee7670ce2af5493e460c47e935140cb544f304d",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "V3_FOCUS",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "workbench.focus_episode_outcomes",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/focus_schema_v1.sql",
+      "declaration_sha256": "c680b361a262101b8ae323855ee7670ce2af5493e460c47e935140cb544f304d",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "V3_FOCUS",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "workbench.focus_outcome_heads",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/focus_schema_v1.sql",
+      "declaration_sha256": "c680b361a262101b8ae323855ee7670ce2af5493e460c47e935140cb544f304d",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "V3_FOCUS",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "workbench.focus_stock_sector_links",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/focus_schema_v1.sql",
+      "declaration_sha256": "c680b361a262101b8ae323855ee7670ce2af5493e460c47e935140cb544f304d",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "V3_FOCUS",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "workbench.focus_current_projection",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/focus_schema_v1.sql",
+      "declaration_sha256": "c680b361a262101b8ae323855ee7670ce2af5493e460c47e935140cb544f304d",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "V3_FOCUS",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "workbench.focus_trade_date_heads",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/focus_schema_v1.sql",
+      "declaration_sha256": "c680b361a262101b8ae323855ee7670ce2af5493e460c47e935140cb544f304d",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "V3_FOCUS",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "workbench.focus_state_evaluations",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/focus_schema_v1.sql",
+      "declaration_sha256": "c680b361a262101b8ae323855ee7670ce2af5493e460c47e935140cb544f304d",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "V3_FOCUS",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "workbench.focus_state_evaluation_facts",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/focus_statistics_schema_v1.sql",
+      "declaration_sha256": "8c7d453f46dbb8f95e87b703cc0780b8612cf44aa3362f34c2cf7349d40aa970",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "V3_FOCUS",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "workbench.focus_statistics_batches",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/focus_statistics_schema_v1.sql",
+      "declaration_sha256": "8c7d453f46dbb8f95e87b703cc0780b8612cf44aa3362f34c2cf7349d40aa970",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "V3_FOCUS",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "workbench.focus_statistics_rows",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/focus_statistics_schema_v1.sql",
+      "declaration_sha256": "8c7d453f46dbb8f95e87b703cc0780b8612cf44aa3362f34c2cf7349d40aa970",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "V3_FOCUS",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "workbench.focus_statistics_heads",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/focus_target_audit_schema_v1.sql",
+      "declaration_sha256": "14140adc4b5a9fcf98de75fa422b1fc257765c9ec62bb1df30ef0a6ea67a8535",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "V3_FOCUS",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "workbench.focus_target_data_audits",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/focus_technical_identity_v2.sql",
+      "declaration_sha256": "be1b23a8215456469bc0039e235bc401c0e327ed502835f993df7d46d1d9e04d",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "V3_FOCUS",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "workbench.focus_technical_identity_migrations",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/007_history_identity.sql",
+      "declaration_sha256": "f028f687e54e1b77f97b2c44374e66686e3b66807996837c7e0a08ac60d94c35",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "analysis_slices",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/007_history_identity.sql",
+      "declaration_sha256": "f028f687e54e1b77f97b2c44374e66686e3b66807996837c7e0a08ac60d94c35",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "analysis_slice_dependencies",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/007_history_identity.sql",
+      "declaration_sha256": "f028f687e54e1b77f97b2c44374e66686e3b66807996837c7e0a08ac60d94c35",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "analysis_snapshots",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/007_history_identity.sql",
+      "declaration_sha256": "f028f687e54e1b77f97b2c44374e66686e3b66807996837c7e0a08ac60d94c35",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "analysis_snapshot_entries",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/007_history_identity.sql",
+      "declaration_sha256": "f028f687e54e1b77f97b2c44374e66686e3b66807996837c7e0a08ac60d94c35",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "publication_analysis_snapshots",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/007_history_identity.sql",
+      "declaration_sha256": "f028f687e54e1b77f97b2c44374e66686e3b66807996837c7e0a08ac60d94c35",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "analysis_daily_basis",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/007_history_identity.sql",
+      "declaration_sha256": "f028f687e54e1b77f97b2c44374e66686e3b66807996837c7e0a08ac60d94c35",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "membership_snapshot_metadata",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/007_history_identity.sql",
+      "declaration_sha256": "f028f687e54e1b77f97b2c44374e66686e3b66807996837c7e0a08ac60d94c35",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "sector_semantic_versions",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/007_history_identity.sql",
+      "declaration_sha256": "f028f687e54e1b77f97b2c44374e66686e3b66807996837c7e0a08ac60d94c35",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "security_metadata_versions",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/007_history_identity.sql",
+      "declaration_sha256": "f028f687e54e1b77f97b2c44374e66686e3b66807996837c7e0a08ac60d94c35",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "universe_state_daily",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/007_history_identity.sql",
+      "declaration_sha256": "f028f687e54e1b77f97b2c44374e66686e3b66807996837c7e0a08ac60d94c35",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "market_reference_daily",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/007_history_identity.sql",
+      "declaration_sha256": "f028f687e54e1b77f97b2c44374e66686e3b66807996837c7e0a08ac60d94c35",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "limit_rule_versions",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/007_history_identity.sql",
+      "declaration_sha256": "f028f687e54e1b77f97b2c44374e66686e3b66807996837c7e0a08ac60d94c35",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "schema_migration_checks",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/008_m8_contract_completion.sql",
+      "declaration_sha256": "7e832c3eecdf22d1c29f5b6b1cf68ae2e2baa0834804b30905e82de03a17ec41",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "market_reference_daily_v2",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/008_m8_contract_completion.sql",
+      "declaration_sha256": "7e832c3eecdf22d1c29f5b6b1cf68ae2e2baa0834804b30905e82de03a17ec41",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "historical_coverage_daily",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/008_technical_history.sql",
+      "declaration_sha256": "e9a8c2ddba960a5b38ccad72bb41d0df4c5de2ea2cff95ebcaa6b3e802787ece",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "stock_technical_daily",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/008_technical_history_rps.sql",
+      "declaration_sha256": "50556f5310f5560340b1fe8bd578e3f49be4865380bcb9b526b786ad3ed33cbc",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "stock_high_daily",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/008_technical_history_rps.sql",
+      "declaration_sha256": "50556f5310f5560340b1fe8bd578e3f49be4865380bcb9b526b786ad3ed33cbc",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "stock_strength_daily",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/009_sector_base_history.sql",
+      "declaration_sha256": "5ea25b379e10861b7aa32cee3beeba42a5ddb3f60554da1f07061bcd1edaff55",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "sector_base_daily",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/010_historical_structure.sql",
+      "declaration_sha256": "56c784dd14df12504100be577312cabd3dd134280dfdeae6b461dfba766a7c8e",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "historical_structure_daily",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/010_historical_structure.sql",
+      "declaration_sha256": "56c784dd14df12504100be577312cabd3dd134280dfdeae6b461dfba766a7c8e",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "stock_structure_summary_daily",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/011_m9_sector_cycle.sql",
+      "declaration_sha256": "4949cb26b5f7a2bd3000bfcbb10aebea8ebe96cecde88476dc5670d5a2712a65",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "sector_cycle_daily",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/012_m9_member_state.sql",
+      "declaration_sha256": "891f5750867d25d7fcd2ee1da5732f0e2a99a720602812c311f651ec3668fd03",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "sector_member_state_daily",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/012_m9_member_state.sql",
+      "declaration_sha256": "891f5750867d25d7fcd2ee1da5732f0e2a99a720602812c311f651ec3668fd03",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "sector_membership_changes",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/013_m9_representative_state.sql",
+      "declaration_sha256": "a499d9c306ec29f6a322c5c8dcf5a51d4467893032af28ba3d17cb5ebde85ae2",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "representative_state_daily",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/014_m10_mainline.sql",
+      "declaration_sha256": "71dd7e50c532fcc6c7a2ee719b34ad29e3005051b4fef198b622b434b79884ef",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "mainline_daily",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/015_m9_sector_hierarchy.sql",
+      "declaration_sha256": "f627dde1f55de97ef4bfbd0e0cc5eb61a42dbe0c80c904e6acbf211e8cbf1c53",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "tdx_sector_hierarchy_versions",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/015_m9_sector_hierarchy.sql",
+      "declaration_sha256": "f627dde1f55de97ef4bfbd0e0cc5eb61a42dbe0c80c904e6acbf211e8cbf1c53",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "tdx_sector_hierarchy_nodes",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/015_m9_sector_hierarchy.sql",
+      "declaration_sha256": "f627dde1f55de97ef4bfbd0e0cc5eb61a42dbe0c80c904e6acbf211e8cbf1c53",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "analysis_snapshot_hierarchy",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/019_m11_association.sql",
+      "declaration_sha256": "0f0bc1d43e01622090692287b287c25ec7191882765a0f934f0094c7c15fde96",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "stock_sector_associations_daily",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/020_m13_limit_ladder.sql",
+      "declaration_sha256": "060310903a74d6e11b24b692216fb1f2dc4fc53d1030223e2f01df71b222ec5b",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "limit_ladder_daily",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/021_m13_limit_promotion.sql",
+      "declaration_sha256": "df8fdfaf10f66bb7ad1e880420380fb7c87267de4785001f3810815366706524",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "limit_promotion_daily",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/022_m13_market_cycle.sql",
+      "declaration_sha256": "6e0a7000893923243a976d9984c56c3a4ee00fcc5520a6f84aa6fd42edd2be57",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "market_cycle_daily",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/023_m8c_audit_v11.sql",
+      "declaration_sha256": "91549ba981bc66e329a71e0ff34395ed4d74308303492df9e87dc38bcd218ed7",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "analysis_snapshot_audit_status",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/023_m8c_audit_v11.sql",
+      "declaration_sha256": "91549ba981bc66e329a71e0ff34395ed4d74308303492df9e87dc38bcd218ed7",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "m8c_rule_audit_events",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/024_m14_online.sql",
+      "declaration_sha256": "da18538b4f85ab38deb7b8490f8e470d25b794aa0e122eb89916a767f83fe843",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "data_sources",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/024_m14_online.sql",
+      "declaration_sha256": "da18538b4f85ab38deb7b8490f8e470d25b794aa0e122eb89916a767f83fe843",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "online_fetch_runs",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/024_m14_online.sql",
+      "declaration_sha256": "da18538b4f85ab38deb7b8490f8e470d25b794aa0e122eb89916a767f83fe843",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "online_payloads",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/024_m14_online.sql",
+      "declaration_sha256": "da18538b4f85ab38deb7b8490f8e470d25b794aa0e122eb89916a767f83fe843",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "online_batches",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/024_m14_online.sql",
+      "declaration_sha256": "da18538b4f85ab38deb7b8490f8e470d25b794aa0e122eb89916a767f83fe843",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "online_rank_entries",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/024_m14_online.sql",
+      "declaration_sha256": "da18538b4f85ab38deb7b8490f8e470d25b794aa0e122eb89916a767f83fe843",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "online_security_map",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/024_m14_online.sql",
+      "declaration_sha256": "da18538b4f85ab38deb7b8490f8e470d25b794aa0e122eb89916a767f83fe843",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "online_evidence",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/024_m14_online.sql",
+      "declaration_sha256": "da18538b4f85ab38deb7b8490f8e470d25b794aa0e122eb89916a767f83fe843",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "online_quote_entries",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/025_v3_relations.sql",
+      "declaration_sha256": "751cf388cb0b374ff213ec13efead27d1aed25a104343e55a0d69ee50fe893e4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "relation_revisions",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/025_v3_relations.sql",
+      "declaration_sha256": "751cf388cb0b374ff213ec13efead27d1aed25a104343e55a0d69ee50fe893e4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "relation_edge_intervals",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/025_v3_relations.sql",
+      "declaration_sha256": "751cf388cb0b374ff213ec13efead27d1aed25a104343e55a0d69ee50fe893e4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "relation_observations",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/025_v3_relations.sql",
+      "declaration_sha256": "751cf388cb0b374ff213ec13efead27d1aed25a104343e55a0d69ee50fe893e4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "relation_snapshot_bindings",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/025_v3_relations.sql",
+      "declaration_sha256": "751cf388cb0b374ff213ec13efead27d1aed25a104343e55a0d69ee50fe893e4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "relation_publication_bindings",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/025_v3_relations.sql",
+      "declaration_sha256": "751cf388cb0b374ff213ec13efead27d1aed25a104343e55a0d69ee50fe893e4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "sector_attribute_versions",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/025_v3_relations.sql",
+      "declaration_sha256": "751cf388cb0b374ff213ec13efead27d1aed25a104343e55a0d69ee50fe893e4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "sector_attribute_revisions",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/025_v3_relations.sql",
+      "declaration_sha256": "751cf388cb0b374ff213ec13efead27d1aed25a104343e55a0d69ee50fe893e4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "sector_attribute_revision_bindings",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/026_v3_result_objects.sql",
+      "declaration_sha256": "5ce178a6d7971c1bf9bfda4722986f08a946fd179c2ae5f82338ebc076c1e38d",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "analysis_result_objects",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/026_v3_result_objects.sql",
+      "declaration_sha256": "5ce178a6d7971c1bf9bfda4722986f08a946fd179c2ae5f82338ebc076c1e38d",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "analysis_slice_result_bindings",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/027_v3_technical_result_rows.sql",
+      "declaration_sha256": "3baf7d554a27d3c3a830f672036f5af2b9511863d32341b5834d4b7eaeb1680c",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "technical_result_rows",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/028_v3_strength_result_rows.sql",
+      "declaration_sha256": "b8442f7dc2f974281f2c51f448e78875057946ca883aba7b62cb4b9f34b59700",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "strength_result_rows",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/029_v3_high_result_rows.sql",
+      "declaration_sha256": "68c0b1af6b4cdd30cd36ce8d85a93cc327f3c8c30886a3b8b291edbefc3d611a",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "high_result_rows",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/030_v3_member_state_result_rows.sql",
+      "declaration_sha256": "1c4740ebe4ae4e9039973bdf4896731cc742324cec97d12fa395b7d18930cdd3",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "member_state_result_rows",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/031_v3_structure_result_rows.sql",
+      "declaration_sha256": "90746b7e7b1f262cd169eb68fb9817bffde1e3995a5b0d36d205fcd9d9cac0be",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "structure_result_rows",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/032_v3_structure_summary_result_rows.sql",
+      "declaration_sha256": "b8a7f6e7405acad562c1c1c6ee73fbb01c9c66ca929d013b14a14ce1350d3cef",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "structure_summary_result_rows",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/033_v3_online_events.sql",
+      "declaration_sha256": "b23f0d3474a9b0f8c1c6ba593873185dc9d252ce9cd23b79aee56221603d8a1b",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "online_event_bundles",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/033_v3_online_events.sql",
+      "declaration_sha256": "b23f0d3474a9b0f8c1c6ba593873185dc9d252ce9cd23b79aee56221603d8a1b",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "online_event_header",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/033_v3_online_events.sql",
+      "declaration_sha256": "b23f0d3474a9b0f8c1c6ba593873185dc9d252ce9cd23b79aee56221603d8a1b",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "online_pool_entries",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/034_v3_signal_outcomes.sql",
+      "declaration_sha256": "ca2b1259f50ac53183ab7c727b27f7570a63b0347a4b63fb66ee74ebdf6eb910",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "research_signal_outcomes",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/035_v3_3_research_registry.sql",
+      "declaration_sha256": "5da3a1569f1812170194088deaa682c39b07f85903442d72c7979e81e3714648",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "research_runs_v3_3",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/035_v3_3_research_registry.sql",
+      "declaration_sha256": "5da3a1569f1812170194088deaa682c39b07f85903442d72c7979e81e3714648",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "research_candidates_v3_3",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/v4_postgres/001_v4_phase0_foundation.sql",
+      "declaration_sha256": "391bf52595fc9da86bbce175b667a5b15c18684c4fbfb8e54cdcf65872dff260",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "v4_meta.schema_migrations",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/v4_postgres/001_v4_phase0_foundation.sql",
+      "declaration_sha256": "391bf52595fc9da86bbce175b667a5b15c18684c4fbfb8e54cdcf65872dff260",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "v4.source_packages",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/v4_postgres/001_v4_phase0_foundation.sql",
+      "declaration_sha256": "391bf52595fc9da86bbce175b667a5b15c18684c4fbfb8e54cdcf65872dff260",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "v4.source_revisions",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/v4_postgres/001_v4_phase0_foundation.sql",
+      "declaration_sha256": "391bf52595fc9da86bbce175b667a5b15c18684c4fbfb8e54cdcf65872dff260",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "v4.security_lifecycle_facts",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/v4_postgres/001_v4_phase0_foundation.sql",
+      "declaration_sha256": "391bf52595fc9da86bbce175b667a5b15c18684c4fbfb8e54cdcf65872dff260",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "v4.universe_snapshots",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/v4_postgres/001_v4_phase0_foundation.sql",
+      "declaration_sha256": "391bf52595fc9da86bbce175b667a5b15c18684c4fbfb8e54cdcf65872dff260",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "v4.universe_members",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/v4_postgres/001_v4_phase0_foundation.sql",
+      "declaration_sha256": "391bf52595fc9da86bbce175b667a5b15c18684c4fbfb8e54cdcf65872dff260",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "v4.model_namespaces",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/v4_postgres/001_v4_phase0_foundation.sql",
+      "declaration_sha256": "391bf52595fc9da86bbce175b667a5b15c18684c4fbfb8e54cdcf65872dff260",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "v4.publications",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/v4_postgres/001_v4_phase0_foundation.sql",
+      "declaration_sha256": "391bf52595fc9da86bbce175b667a5b15c18684c4fbfb8e54cdcf65872dff260",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "v4.publication_heads",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/v4_postgres/001_v4_phase0_foundation.sql",
+      "declaration_sha256": "391bf52595fc9da86bbce175b667a5b15c18684c4fbfb8e54cdcf65872dff260",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "v4.publication_consumed_sources",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/v4_postgres/001_v4_phase0_foundation.sql",
+      "declaration_sha256": "391bf52595fc9da86bbce175b667a5b15c18684c4fbfb8e54cdcf65872dff260",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "v4.publication_revision_events",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/v4_postgres/001_v4_phase0_foundation.sql",
+      "declaration_sha256": "391bf52595fc9da86bbce175b667a5b15c18684c4fbfb8e54cdcf65872dff260",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "v4.namespace_migrations",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/v4_postgres/001_v4_phase0_foundation.sql",
+      "declaration_sha256": "391bf52595fc9da86bbce175b667a5b15c18684c4fbfb8e54cdcf65872dff260",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "v4.event_observations",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/v4_postgres/002_namespace_integrity.sql",
+      "declaration_sha256": "d8dcc13609ea73923dd68ad21d9c91eed69128047203a481764edeb72ea45dac",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "v4.state_heads",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/v4_postgres/003_phase0_contract_alignment.sql",
+      "declaration_sha256": "e1e2886c04c45121530e1fcf506297921c9cca2eecec3ee06be77e2520887d77",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "v4.security_membership_facts",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/v4_postgres/005_market_session_publication_chain.sql",
+      "declaration_sha256": "54d32de8e20afc773638b38aa555c47a5c5e8cb9b0bba82bb60fbd820a2d3b66",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "v4.market_calendar_sessions",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/v4_postgres/010_security_lifecycle_history_r5.sql",
+      "declaration_sha256": "a7f9bc76db45b4f6297ed299be2576d299d243daa45b3b13a5f9e42dccf7b87f",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "v4.security_lifecycle_history",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/v4_postgres/011_security_membership_interval_r6_2.sql",
+      "declaration_sha256": "a562a409a012c32ce7ce879b6377704079e47289de2db0a24c589070e06957e1",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "v4.security_membership_interval_history",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/v4_postgres/012_provider_lifecycle_fact_r6_2.sql",
+      "declaration_sha256": "3e206b8c20959f862f9d293a42a215af624416905f23083c17ca6e2ec22f9b70",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "v4.provider_lifecycle_fact_history",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/v4_postgres/013_v4_06_stock_profile_enrichments.sql",
+      "declaration_sha256": "6aa326f725ad98179b112be6b6f34346c5fbc70d69c4798d2259f01d3c3337e1",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "v4.supplemental_enrichment_manifests",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/v4_postgres/013_v4_06_stock_profile_enrichments.sql",
+      "declaration_sha256": "6aa326f725ad98179b112be6b6f34346c5fbc70d69c4798d2259f01d3c3337e1",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "v4.stock_profile_enrichments",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/v4_postgres/015_v4_07_base_seed_results.sql",
+      "declaration_sha256": "ebab277fe04a9bb1567d6c7b7ed8a306bbe8e6a5f083e84f8ab5d213e4a131b3",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "v4.base_seed_results",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/v4_postgres/016_v4_08_sector_membership.sql",
+      "declaration_sha256": "45db743c2d223308d8b95a1dbe4cb7548f3ff553c04a021058be1ed7d34cb6e5",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "v4.sector_membership_type_policy",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/v4_postgres/016_v4_08_sector_membership.sql",
+      "declaration_sha256": "45db743c2d223308d8b95a1dbe4cb7548f3ff553c04a021058be1ed7d34cb6e5",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "v4.sector_membership_source_revisions",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/v4_postgres/016_v4_08_sector_membership.sql",
+      "declaration_sha256": "45db743c2d223308d8b95a1dbe4cb7548f3ff553c04a021058be1ed7d34cb6e5",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "v4.sector_membership_snapshots",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/v4_postgres/016_v4_08_sector_membership.sql",
+      "declaration_sha256": "45db743c2d223308d8b95a1dbe4cb7548f3ff553c04a021058be1ed7d34cb6e5",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "v4.sector_membership_facts",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/v4_postgres/020_v4_08_sector_rotation_r5.sql",
+      "declaration_sha256": "3e7a877c73976f6665b053d6eab1da03bd232a77e8145b07ac7c34124d78c9a1",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "v4.sector_algorithm_publications_r5",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/v4_postgres/020_v4_08_sector_rotation_r5.sql",
+      "declaration_sha256": "3e7a877c73976f6665b053d6eab1da03bd232a77e8145b07ac7c34124d78c9a1",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "v4.sector_algorithm_results_r5",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/v4_postgres/021_v4_09_stock_prewatch.sql",
+      "declaration_sha256": "dcbcd468b7651c233a636c81e81bdbd1dc5b7ca85c42d4769c52b42ef5b7dc1c",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "v4.stock_prewatch_publications",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/v4_postgres/021_v4_09_stock_prewatch.sql",
+      "declaration_sha256": "dcbcd468b7651c233a636c81e81bdbd1dc5b7ca85c42d4769c52b42ef5b7dc1c",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "v4.stock_prewatch_results",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/v4_postgres/022_v4_10_research_state_interface.sql",
+      "declaration_sha256": "cfa37902a75b100e05813e3fb0b63e3884bf369d4c1913067e5714eb9004a732",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "v4.research_state_engineering_publications",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/v4_postgres/022_v4_10_research_state_interface.sql",
+      "declaration_sha256": "cfa37902a75b100e05813e3fb0b63e3884bf369d4c1913067e5714eb9004a732",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "v4.research_state_engineering_results",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/v4_postgres/023_v4_10_research_state_lineage_hardening.sql",
+      "declaration_sha256": "e308a42738d32a8a02dd4c1859a1e5de3d561044ca148bd13949932113a3a97b",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "v4.research_state_lineage_ledger",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/v4_postgres/023_v4_10_research_state_lineage_hardening.sql",
+      "declaration_sha256": "e308a42738d32a8a02dd4c1859a1e5de3d561044ca148bd13949932113a3a97b",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "v4.research_state_field_policy_r1_1",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/v4_postgres/023_v4_10_research_state_lineage_hardening.sql",
+      "declaration_sha256": "e308a42738d32a8a02dd4c1859a1e5de3d561044ca148bd13949932113a3a97b",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "v4.research_state_input_manifests",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/v4_postgres/024_v4_10_research_state_authority_hardening.sql",
+      "declaration_sha256": "08058023f24231bd313523e860e2d6262c9035b395e5e27045fb754dcad69624",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "v4.research_state_boundary_prior_publications",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/v4_postgres/024_v4_10_research_state_authority_hardening.sql",
+      "declaration_sha256": "08058023f24231bd313523e860e2d6262c9035b395e5e27045fb754dcad69624",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "v4.research_state_field_policy_r1_2",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/v4_postgres/026_confirmation_events_candidate_r1.sql",
+      "declaration_sha256": "5c2499ed7b606fdb72cc52db0e5af3bd67ed672480ee37840297a448323ea8e4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "v4.confirmation_candidate_publications_r1",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/v4_postgres/026_confirmation_events_candidate_r1.sql",
+      "declaration_sha256": "5c2499ed7b606fdb72cc52db0e5af3bd67ed672480ee37840297a448323ea8e4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "v4.confirmation_candidate_facts_r1",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/v4_postgres/026_confirmation_events_candidate_r1.sql",
+      "declaration_sha256": "5c2499ed7b606fdb72cc52db0e5af3bd67ed672480ee37840297a448323ea8e4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "v4.confirmation_candidate_event_publications_r1",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/migrations/v4_postgres/026_confirmation_events_candidate_r1.sql",
+      "declaration_sha256": "5c2499ed7b606fdb72cc52db0e5af3bd67ed672480ee37840297a448323ea8e4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "v4.confirmation_candidate_events_r1",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/research_runs_schema.sql",
+      "declaration_sha256": "e565995d7164b6199d7bc30033020d3e658d65fcb83604b97dc4e2c4505846bd",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "research_runs",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/research_runs_schema.sql",
+      "declaration_sha256": "e565995d7164b6199d7bc30033020d3e658d65fcb83604b97dc4e2c4505846bd",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "research_stock_states",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/research_runs_schema.sql",
+      "declaration_sha256": "e565995d7164b6199d7bc30033020d3e658d65fcb83604b97dc4e2c4505846bd",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "research_sector_states",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/research_runs_schema.sql",
+      "declaration_sha256": "e565995d7164b6199d7bc30033020d3e658d65fcb83604b97dc4e2c4505846bd",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "research_sector_signal_state",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/research_runs_schema.sql",
+      "declaration_sha256": "e565995d7164b6199d7bc30033020d3e658d65fcb83604b97dc4e2c4505846bd",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "research_signal_outcomes",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/research_runs_schema.sql",
+      "declaration_sha256": "e565995d7164b6199d7bc30033020d3e658d65fcb83604b97dc4e2c4505846bd",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "research_sector_member_roles",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/research_runs_schema.sql",
+      "declaration_sha256": "e565995d7164b6199d7bc30033020d3e658d65fcb83604b97dc4e2c4505846bd",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "research_shortlist",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/schema.sql",
+      "declaration_sha256": "b3532f2490952df088ce1a22e697fa854d093d1dbc9a0d9c286e35c09cec82f4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "schema_migrations",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/schema.sql",
+      "declaration_sha256": "b3532f2490952df088ce1a22e697fa854d093d1dbc9a0d9c286e35c09cec82f4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "publications",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/schema.sql",
+      "declaration_sha256": "b3532f2490952df088ce1a22e697fa854d093d1dbc9a0d9c286e35c09cec82f4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "publication_heads",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/schema.sql",
+      "declaration_sha256": "b3532f2490952df088ce1a22e697fa854d093d1dbc9a0d9c286e35c09cec82f4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "publication_artifacts",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/schema.sql",
+      "declaration_sha256": "b3532f2490952df088ce1a22e697fa854d093d1dbc9a0d9c286e35c09cec82f4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "market_daily",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/schema.sql",
+      "declaration_sha256": "b3532f2490952df088ce1a22e697fa854d093d1dbc9a0d9c286e35c09cec82f4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "sector_daily",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/schema.sql",
+      "declaration_sha256": "b3532f2490952df088ce1a22e697fa854d093d1dbc9a0d9c286e35c09cec82f4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "stock_daily",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/schema.sql",
+      "declaration_sha256": "b3532f2490952df088ce1a22e697fa854d093d1dbc9a0d9c286e35c09cec82f4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "candidate_daily",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/schema.sql",
+      "declaration_sha256": "b3532f2490952df088ce1a22e697fa854d093d1dbc9a0d9c286e35c09cec82f4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "structure_details",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/schema.sql",
+      "declaration_sha256": "b3532f2490952df088ce1a22e697fa854d093d1dbc9a0d9c286e35c09cec82f4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "queue_memberships",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/schema.sql",
+      "declaration_sha256": "b3532f2490952df088ce1a22e697fa854d093d1dbc9a0d9c286e35c09cec82f4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "unified_board",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/schema.sql",
+      "declaration_sha256": "b3532f2490952df088ce1a22e697fa854d093d1dbc9a0d9c286e35c09cec82f4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "queue_rankings",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/schema.sql",
+      "declaration_sha256": "b3532f2490952df088ce1a22e697fa854d093d1dbc9a0d9c286e35c09cec82f4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "membership_snapshots",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/schema.sql",
+      "declaration_sha256": "b3532f2490952df088ce1a22e697fa854d093d1dbc9a0d9c286e35c09cec82f4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "membership_entries",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/schema.sql",
+      "declaration_sha256": "b3532f2490952df088ce1a22e697fa854d093d1dbc9a0d9c286e35c09cec82f4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "publication_memberships",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/schema.sql",
+      "declaration_sha256": "b3532f2490952df088ce1a22e697fa854d093d1dbc9a0d9c286e35c09cec82f4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "audit_receipts",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/schema.sql",
+      "declaration_sha256": "b3532f2490952df088ce1a22e697fa854d093d1dbc9a0d9c286e35c09cec82f4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "jobs",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/schema.sql",
+      "declaration_sha256": "b3532f2490952df088ce1a22e697fa854d093d1dbc9a0d9c286e35c09cec82f4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "job_attempts",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/schema.sql",
+      "declaration_sha256": "b3532f2490952df088ce1a22e697fa854d093d1dbc9a0d9c286e35c09cec82f4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "job_events",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/schema.sql",
+      "declaration_sha256": "b3532f2490952df088ce1a22e697fa854d093d1dbc9a0d9c286e35c09cec82f4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "source_packages",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/schema.sql",
+      "declaration_sha256": "b3532f2490952df088ce1a22e697fa854d093d1dbc9a0d9c286e35c09cec82f4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "source_files",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/schema.sql",
+      "declaration_sha256": "b3532f2490952df088ce1a22e697fa854d093d1dbc9a0d9c286e35c09cec82f4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "metadata_snapshots",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/schema.sql",
+      "declaration_sha256": "b3532f2490952df088ce1a22e697fa854d093d1dbc9a0d9c286e35c09cec82f4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "source_bundles",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/schema.sql",
+      "declaration_sha256": "b3532f2490952df088ce1a22e697fa854d093d1dbc9a0d9c286e35c09cec82f4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "security_versions",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/schema.sql",
+      "declaration_sha256": "b3532f2490952df088ce1a22e697fa854d093d1dbc9a0d9c286e35c09cec82f4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "sector_versions",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/schema.sql",
+      "declaration_sha256": "b3532f2490952df088ce1a22e697fa854d093d1dbc9a0d9c286e35c09cec82f4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "observations",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/schema.sql",
+      "declaration_sha256": "b3532f2490952df088ce1a22e697fa854d093d1dbc9a0d9c286e35c09cec82f4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "outcomes",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/schema.sql",
+      "declaration_sha256": "b3532f2490952df088ce1a22e697fa854d093d1dbc9a0d9c286e35c09cec82f4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "state_transitions",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/schema.sql",
+      "declaration_sha256": "b3532f2490952df088ce1a22e697fa854d093d1dbc9a0d9c286e35c09cec82f4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "config_versions",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/schema.sql",
+      "declaration_sha256": "b3532f2490952df088ce1a22e697fa854d093d1dbc9a0d9c286e35c09cec82f4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "storage_objects",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/schema.sql",
+      "declaration_sha256": "b3532f2490952df088ce1a22e697fa854d093d1dbc9a0d9c286e35c09cec82f4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "leases",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/schema.sql",
+      "declaration_sha256": "b3532f2490952df088ce1a22e697fa854d093d1dbc9a0d9c286e35c09cec82f4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "cleanup_jobs",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "declaration": "src/workbench_db/schema.sql",
+      "declaration_sha256": "b3532f2490952df088ce1a22e697fa854d093d1dbc9a0d9c286e35c09cec82f4",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "namespace",
+        "accepted_snapshot_digest",
+        "table",
+        "native_primary_key",
+        "row_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "KEEP_SOURCE_AND_REFERENCE; RESTORE_ACCEPTED_LEGACY_ROUTING_ONLY",
+      "source_binding": "ACCEPTED_SNAPSHOT_EXACT_TABLE_PK_AND_ROW_DIGEST; DECLARATION_IS_NOT_DEPLOYMENT_PROOF",
+      "state_or_table": "backup_catalog",
+      "target_identity_rule": "PRESERVE_NATIVE_ID_IN_NAMESPACE_QUALIFIED_REFERENCE; NEVER_RELABEL_HISTORY",
+      "write_target": null
+    },
+    {
+      "adapter_status": "FUTURE_EXACT_SNAPSHOT_BINDING_REQUIRED",
+      "declaration": "DESIGN_ONLY_NOT_CREATED",
+      "disposition": "CARRY",
+      "immutable_source_identity": [
+        "model_contract_id",
+        "parameter_set_id",
+        "state_lineage_id",
+        "publication_id",
+        "publication_revision",
+        "state_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "PRESERVE_FACTS_OBLIGATIONS_AND_USER_WORK; RECONCILE_GAP",
+      "state_or_table": "SEMANTIC:prestate",
+      "target_identity_rule": "NAMESPACE_QUALIFIED_MAPPING_WITH_NATIVE_ID_UNCHANGED; PHYSICAL_TARGET_SCHEMA_REQUIRES_EXTERNAL_ACCEPTANCE",
+      "write_target": "V4_PRODUCTION_FUTURE"
+    },
+    {
+      "adapter_status": "FUTURE_EXACT_SNAPSHOT_BINDING_REQUIRED",
+      "declaration": "DESIGN_ONLY_NOT_CREATED",
+      "disposition": "CARRY",
+      "immutable_source_identity": [
+        "logical_event_id",
+        "episode_id",
+        "T0",
+        "current_state",
+        "enrollment_id",
+        "control_assignment_ids",
+        "benchmark_ids",
+        "source_lineage"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "PRESERVE_FACTS_OBLIGATIONS_AND_USER_WORK; RECONCILE_GAP",
+      "state_or_table": "SEMANTIC:open_episode",
+      "target_identity_rule": "NAMESPACE_QUALIFIED_MAPPING_WITH_NATIVE_ID_UNCHANGED; PHYSICAL_TARGET_SCHEMA_REQUIRES_EXTERNAL_ACCEPTANCE",
+      "write_target": "V4_PRODUCTION_FUTURE"
+    },
+    {
+      "adapter_status": "FUTURE_EXACT_SNAPSHOT_BINDING_REQUIRED",
+      "declaration": "DESIGN_ONLY_NOT_CREATED",
+      "disposition": "CARRY",
+      "immutable_source_identity": [
+        "enrollment_id",
+        "horizon",
+        "due_date",
+        "frozen_T0",
+        "control_assignment_ids",
+        "benchmark_ids",
+        "outcome_status",
+        "evaluation_revision",
+        "future_source_policy"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "PRESERVE_FACTS_OBLIGATIONS_AND_USER_WORK; RECONCILE_GAP",
+      "state_or_table": "SEMANTIC:pending_settlement",
+      "target_identity_rule": "NAMESPACE_QUALIFIED_MAPPING_WITH_NATIVE_ID_UNCHANGED; PHYSICAL_TARGET_SCHEMA_REQUIRES_EXTERNAL_ACCEPTANCE",
+      "write_target": "V4_PRODUCTION_FUTURE"
+    },
+    {
+      "adapter_status": "FUTURE_EXACT_SNAPSHOT_BINDING_REQUIRED",
+      "declaration": "DESIGN_ONLY_NOT_CREATED",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "publication_id",
+        "logical_event_id",
+        "eligibility_contract_id"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "PRESERVE_FACTS_OBLIGATIONS_AND_USER_WORK; RECONCILE_GAP",
+      "state_or_table": "SEMANTIC:algorithm_eligibility",
+      "target_identity_rule": "NAMESPACE_QUALIFIED_MAPPING_WITH_NATIVE_ID_UNCHANGED; PHYSICAL_TARGET_SCHEMA_REQUIRES_EXTERNAL_ACCEPTANCE",
+      "write_target": null
+    },
+    {
+      "adapter_status": "FUTURE_EXACT_SNAPSHOT_BINDING_REQUIRED",
+      "declaration": "DESIGN_ONLY_NOT_CREATED",
+      "disposition": "NOT_MIGRATED",
+      "immutable_source_identity": [
+        "focus_run_id",
+        "source_item_key",
+        "source_item_digest"
+      ],
+      "read_source": "V3_FOCUS",
+      "rollback": "PRESERVE_FACTS_OBLIGATIONS_AND_USER_WORK; RECONCILE_GAP",
+      "state_or_table": "SEMANTIC:system_selected_focus",
+      "target_identity_rule": "NAMESPACE_QUALIFIED_MAPPING_WITH_NATIVE_ID_UNCHANGED; PHYSICAL_TARGET_SCHEMA_REQUIRES_EXTERNAL_ACCEPTANCE",
+      "write_target": null
+    },
+    {
+      "adapter_status": "UNBOUND_BLOCKS_AFFECTED_SCOPE; USER_WORK_NATIVE_EXPORT_MUST_BE_INDEPENDENTLY_ACCEPTED",
+      "declaration": "DESIGN_ONLY_NOT_CREATED",
+      "disposition": "CARRY",
+      "immutable_source_identity": [
+        "user_pin_id",
+        "user_identity",
+        "entity_id",
+        "created_at",
+        "revision",
+        "source_namespace"
+      ],
+      "read_source": "V3_FOCUS",
+      "rollback": "PRESERVE_FACTS_OBLIGATIONS_AND_USER_WORK; RECONCILE_GAP",
+      "state_or_table": "SEMANTIC:user_pin",
+      "target_identity_rule": "NAMESPACE_QUALIFIED_MAPPING_WITH_NATIVE_ID_UNCHANGED; PHYSICAL_TARGET_SCHEMA_REQUIRES_EXTERNAL_ACCEPTANCE",
+      "write_target": "V4_PRODUCTION_FUTURE"
+    },
+    {
+      "adapter_status": "UNBOUND_BLOCKS_AFFECTED_SCOPE; USER_WORK_NATIVE_EXPORT_MUST_BE_INDEPENDENTLY_ACCEPTED",
+      "declaration": "DESIGN_ONLY_NOT_CREATED",
+      "disposition": "CARRY",
+      "immutable_source_identity": [
+        "user_work_id",
+        "user_identity",
+        "entity_id",
+        "revision",
+        "content_digest"
+      ],
+      "read_source": "V3_FOCUS",
+      "rollback": "PRESERVE_FACTS_OBLIGATIONS_AND_USER_WORK; RECONCILE_GAP",
+      "state_or_table": "SEMANTIC:manual_notes_followup",
+      "target_identity_rule": "NAMESPACE_QUALIFIED_MAPPING_WITH_NATIVE_ID_UNCHANGED; PHYSICAL_TARGET_SCHEMA_REQUIRES_EXTERNAL_ACCEPTANCE",
+      "write_target": "V4_PRODUCTION_FUTURE"
+    },
+    {
+      "adapter_status": "FUTURE_EXACT_SNAPSHOT_BINDING_REQUIRED",
+      "declaration": "DESIGN_ONLY_NOT_CREATED",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "context_token",
+        "publication_id",
+        "publication_revision",
+        "readback_manifest_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "PRESERVE_FACTS_OBLIGATIONS_AND_USER_WORK; RECONCILE_GAP",
+      "state_or_table": "SEMANTIC:historical_shadow_context",
+      "target_identity_rule": "NAMESPACE_QUALIFIED_MAPPING_WITH_NATIVE_ID_UNCHANGED; PHYSICAL_TARGET_SCHEMA_REQUIRES_EXTERNAL_ACCEPTANCE",
+      "write_target": null
+    },
+    {
+      "adapter_status": "FUTURE_EXACT_SNAPSHOT_BINDING_REQUIRED",
+      "declaration": "DESIGN_ONLY_NOT_CREATED",
+      "disposition": "CARRY",
+      "immutable_source_identity": [
+        "source_sequence",
+        "native_id",
+        "revision",
+        "payload_digest"
+      ],
+      "read_source": "LEGACY_PRODUCTION",
+      "rollback": "PRESERVE_FACTS_OBLIGATIONS_AND_USER_WORK; RECONCILE_GAP",
+      "state_or_table": "SEMANTIC:legacy_gap_activity",
+      "target_identity_rule": "NAMESPACE_QUALIFIED_MAPPING_WITH_NATIVE_ID_UNCHANGED; PHYSICAL_TARGET_SCHEMA_REQUIRES_EXTERNAL_ACCEPTANCE",
+      "write_target": "V4_PRODUCTION_FUTURE"
+    },
+    {
+      "adapter_status": "FUTURE_EXACT_SNAPSHOT_BINDING_REQUIRED",
+      "declaration": "DESIGN_ONLY_NOT_CREATED",
+      "disposition": "REFERENCE",
+      "immutable_source_identity": [
+        "source_sequence",
+        "native_id",
+        "revision",
+        "payload_digest"
+      ],
+      "read_source": "SHADOW_V4",
+      "rollback": "PRESERVE_FACTS_OBLIGATIONS_AND_USER_WORK; RECONCILE_GAP",
+      "state_or_table": "SEMANTIC:shadow_gap_activity",
+      "target_identity_rule": "NAMESPACE_QUALIFIED_MAPPING_WITH_NATIVE_ID_UNCHANGED; PHYSICAL_TARGET_SCHEMA_REQUIRES_EXTERNAL_ACCEPTANCE",
+      "write_target": null
+    }
+  ],
+  "scope": "DESIGN_COMPLETENESS_ONLY_NOT_RUNTIME_ACCEPTANCE",
+  "section": "namespace_matrix"
+}

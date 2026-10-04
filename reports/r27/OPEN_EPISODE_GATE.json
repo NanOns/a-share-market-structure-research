@@ -1,0 +1,21 @@
+{
+  "contract": "config/v4_18_migration_replay_contract_v1.json",
+  "contract_sha256": "186d53ae5e4281ce1ff83609326673610f390ebc03061a947b5ae83dda996a02",
+  "definition": {
+    "exit": "FOLLOWUP_AND_SETTLEMENT_CONTINUE_AFTER_EXIT_OR_INVALIDATION",
+    "missing_original": "BLOCKED_AFFECTED_SCOPE",
+    "original": "ONE_ORIGINAL_PER_LOGICAL_EVENT; REPLAY_MUST_REFERENCE_EXISTING_ENROLLMENT",
+    "preserve": [
+      "logical_event_id",
+      "episode_id",
+      "T0",
+      "current_state",
+      "enrollment_id",
+      "control_assignment_ids",
+      "benchmark_ids",
+      "source_lineage"
+    ]
+  },
+  "scope": "DESIGN_COMPLETENESS_ONLY_NOT_RUNTIME_ACCEPTANCE",
+  "section": "open_episode"
+}

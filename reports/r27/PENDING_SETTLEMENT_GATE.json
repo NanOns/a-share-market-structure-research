@@ -1,0 +1,26 @@
+{
+  "contract": "config/v4_18_migration_replay_contract_v1.json",
+  "contract_sha256": "186d53ae5e4281ce1ff83609326673610f390ebc03061a947b5ae83dda996a02",
+  "definition": {
+    "identity_contracts": [
+      "COHORT_V1",
+      "OUTCOME_REVISION_V1"
+    ],
+    "preserve": [
+      "enrollment_id",
+      "horizon",
+      "due_date",
+      "frozen_T0",
+      "control_assignment_ids",
+      "benchmark_ids",
+      "outcome_status",
+      "evaluation_revision",
+      "future_source_policy"
+    ],
+    "revisions": "APPEND; KEEP_FIRST_OBSERVED_AND_LATEST_CORRECTED_SEPARATE; NEVER_OVERWRITE_FROZEN_T0",
+    "source_policy": "ONLY_ACCEPTED_AS_OF_EVALUATION_AVAILABLE_AT; NEVER_USE_FUTURE_SOURCE_FOR_T0",
+    "unavailable": "KEEP_DUE_BACKLOG_WITH_REASON; NEVER_REDRAW_CONTROLS_OR_BENCHMARKS"
+  },
+  "scope": "DESIGN_COMPLETENESS_ONLY_NOT_RUNTIME_ACCEPTANCE",
+  "section": "pending_settlement"
+}

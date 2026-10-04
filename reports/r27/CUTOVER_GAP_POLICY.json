@@ -1,0 +1,33 @@
+{
+  "contract": "config/v4_18_migration_replay_contract_v1.json",
+  "contract_sha256": "186d53ae5e4281ce1ff83609326673610f390ebc03061a947b5ae83dda996a02",
+  "definition": {
+    "acceptance": "ALL_SOURCE_ACTIVITY_ACCOUNTED_EXACTLY_ONCE_OR_EXPLICIT_REFERENCE; COUNT_AND_DIGEST_EQUALITY; GAPS_CONFLICTS_BLOCK_AFFECTED_SCOPE",
+    "activity": [
+      "Legacy writes",
+      "Shadow publications",
+      "outcomes and corrections",
+      "user pins",
+      "manual notes",
+      "followup observations"
+    ],
+    "concurrent": "FENCE_NEW_WRITES_WITH_ACCEPTED_AUTHORITY; RESCAN_FINAL_WATERMARK_BEFORE_CAS",
+    "forbidden": "RESTORE_ONE_BACKUP_AND_IGNORE_GAP",
+    "interval": "(ACCEPTED_SNAPSHOT_WATERMARK, FINAL_CUTOVER_WATERMARK] PER_SOURCE_NAMESPACE",
+    "manifest_fields": [
+      "source_namespace",
+      "snapshot_digest",
+      "start_watermark",
+      "end_watermark",
+      "ordered_native_ids_and_revisions",
+      "payload_digests",
+      "counts_by_kind",
+      "missing_ranges",
+      "mapping_dispositions",
+      "reconciliation_digest",
+      "authority_receipt"
+    ]
+  },
+  "scope": "DESIGN_COMPLETENESS_ONLY_NOT_RUNTIME_ACCEPTANCE",
+  "section": "gap_policy"
+}

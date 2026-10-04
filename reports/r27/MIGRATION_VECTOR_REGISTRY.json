@@ -1,0 +1,308 @@
+{
+  "contract": "config/v4_18_migration_replay_contract_v1.json",
+  "contract_sha256": "186d53ae5e4281ce1ff83609326673610f390ebc03061a947b5ae83dda996a02",
+  "definition": [
+    {
+      "affected_scope": "exact namespace and entity/episode/enrollment/user ownership key",
+      "contract_section": "prestate",
+      "evidence_required": [
+        "accepted source snapshot and native identity rows",
+        "future target receipts or rejection receipt",
+        "independent set/digest comparison"
+      ],
+      "execution": "DECLARATIVE_CONTRACT_VECTOR_NOT_RUNTIME_TEST",
+      "expected": "PASS_DESIGN_EXPECTATION",
+      "given": "same model exact accepted Shadow head",
+      "id": "M01",
+      "independent_oracle": "target predecessor digest equals source state digest",
+      "name": "clean pre-state inheritance"
+    },
+    {
+      "affected_scope": "exact namespace and entity/episode/enrollment/user ownership key",
+      "contract_section": "prestate",
+      "evidence_required": [
+        "accepted source snapshot and native identity rows",
+        "future target receipts or rejection receipt",
+        "independent set/digest comparison"
+      ],
+      "execution": "DECLARATIVE_CONTRACT_VECTOR_NOT_RUNTIME_TEST",
+      "expected": "PASS_DESIGN_EXPECTATION",
+      "given": "empty production head and accepted Shadow predecessor",
+      "id": "M02",
+      "independent_oracle": "explicit null expected target; exact Shadow predecessor mapping",
+      "name": "first production predecessor"
+    },
+    {
+      "affected_scope": "exact namespace and entity/episode/enrollment/user ownership key",
+      "contract_section": "open_episode",
+      "evidence_required": [
+        "accepted source snapshot and native identity rows",
+        "future target receipts or rejection receipt",
+        "independent set/digest comparison"
+      ],
+      "execution": "DECLARATIVE_CONTRACT_VECTOR_NOT_RUNTIME_TEST",
+      "expected": "PASS_DESIGN_EXPECTATION",
+      "given": "open episode with original enrollment and frozen T0",
+      "id": "M03",
+      "independent_oracle": "event episode T0 enrollment controls benchmarks source lineage equal",
+      "name": "open episode preserved"
+    },
+    {
+      "affected_scope": "exact namespace and entity/episode/enrollment/user ownership key",
+      "contract_section": "open_episode",
+      "evidence_required": [
+        "accepted source snapshot and native identity rows",
+        "future target receipts or rejection receipt",
+        "independent set/digest comparison"
+      ],
+      "execution": "DECLARATIVE_CONTRACT_VECTOR_NOT_RUNTIME_TEST",
+      "expected": "BLOCKED_AFFECTED_SCOPE",
+      "given": "same logical event with second original enrollment",
+      "id": "M04",
+      "independent_oracle": "no accepted second original",
+      "name": "duplicate original rejected"
+    },
+    {
+      "affected_scope": "exact namespace and entity/episode/enrollment/user ownership key",
+      "contract_section": "pending_settlement",
+      "evidence_required": [
+        "accepted source snapshot and native identity rows",
+        "future target receipts or rejection receipt",
+        "independent set/digest comparison"
+      ],
+      "execution": "DECLARATIVE_CONTRACT_VECTOR_NOT_RUNTIME_TEST",
+      "expected": "PASS_DESIGN_EXPECTATION",
+      "given": "unsettled accepted due obligation",
+      "id": "M05",
+      "independent_oracle": "same enrollment horizon due date frozen references and status",
+      "name": "pending due preserved"
+    },
+    {
+      "affected_scope": "exact namespace and entity/episode/enrollment/user ownership key",
+      "contract_section": "pending_settlement",
+      "evidence_required": [
+        "accepted source snapshot and native identity rows",
+        "future target receipts or rejection receipt",
+        "independent set/digest comparison"
+      ],
+      "execution": "DECLARATIVE_CONTRACT_VECTOR_NOT_RUNTIME_TEST",
+      "expected": "PASS_DESIGN_EXPECTATION",
+      "given": "first observed plus corrected outcome revision",
+      "id": "M06",
+      "independent_oracle": "all revisions retained; first observed unchanged",
+      "name": "settlement revision preserved"
+    },
+    {
+      "affected_scope": "exact namespace and entity/episode/enrollment/user ownership key",
+      "contract_section": "focus_user_state",
+      "evidence_required": [
+        "accepted source snapshot and native identity rows",
+        "future target receipts or rejection receipt",
+        "independent set/digest comparison"
+      ],
+      "execution": "DECLARATIVE_CONTRACT_VECTOR_NOT_RUNTIME_TEST",
+      "expected": "PASS_DESIGN_EXPECTATION",
+      "given": "native user pin with unambiguous owner and revision",
+      "id": "M07",
+      "independent_oracle": "pin id owner entity revision preserved",
+      "name": "user pin preserved"
+    },
+    {
+      "affected_scope": "exact namespace and entity/episode/enrollment/user ownership key",
+      "contract_section": "focus_user_state",
+      "evidence_required": [
+        "accepted source snapshot and native identity rows",
+        "future target receipts or rejection receipt",
+        "independent set/digest comparison"
+      ],
+      "execution": "DECLARATIVE_CONTRACT_VECTOR_NOT_RUNTIME_TEST",
+      "expected": "PASS_DESIGN_EXPECTATION",
+      "given": "pinned entity without algorithm eligibility",
+      "id": "M08",
+      "independent_oracle": "no enrollment or algorithm evidence created from pin",
+      "name": "algorithm Focus vs user pin separated"
+    },
+    {
+      "affected_scope": "exact namespace and entity/episode/enrollment/user ownership key",
+      "contract_section": "unknown_conflicts",
+      "evidence_required": [
+        "accepted source snapshot and native identity rows",
+        "future target receipts or rejection receipt",
+        "independent set/digest comparison"
+      ],
+      "execution": "DECLARATIVE_CONTRACT_VECTOR_NOT_RUNTIME_TEST",
+      "expected": "BLOCKED_AFFECTED_SCOPE",
+      "given": "Shadow fact submitted as production fact",
+      "id": "M09",
+      "independent_oracle": "no history relabel or target acceptance",
+      "name": "namespace mismatch blocked"
+    },
+    {
+      "affected_scope": "exact namespace and entity/episode/enrollment/user ownership key",
+      "contract_section": "idempotency",
+      "evidence_required": [
+        "accepted source snapshot and native identity rows",
+        "future target receipts or rejection receipt",
+        "independent set/digest comparison"
+      ],
+      "execution": "DECLARATIVE_CONTRACT_VECTOR_NOT_RUNTIME_TEST",
+      "expected": "PASS_DESIGN_EXPECTATION",
+      "given": "identical migration run plan and source digests",
+      "id": "M10",
+      "independent_oracle": "same receipt; no extra event enrollment due or user pin",
+      "name": "rerun idempotent"
+    },
+    {
+      "affected_scope": "exact namespace and entity/episode/enrollment/user ownership key",
+      "contract_section": "idempotency",
+      "evidence_required": [
+        "accepted source snapshot and native identity rows",
+        "future target receipts or rejection receipt",
+        "independent set/digest comparison"
+      ],
+      "execution": "DECLARATIVE_CONTRACT_VECTOR_NOT_RUNTIME_TEST",
+      "expected": "BLOCKED_AFFECTED_SCOPE",
+      "given": "source digest changed without accepted gap receipt",
+      "id": "M11",
+      "independent_oracle": "stale plan rejected before target acceptance",
+      "name": "source head changed after snapshot"
+    },
+    {
+      "affected_scope": "exact namespace and entity/episode/enrollment/user ownership key",
+      "contract_section": "idempotency",
+      "evidence_required": [
+        "accepted source snapshot and native identity rows",
+        "future target receipts or rejection receipt",
+        "independent set/digest comparison"
+      ],
+      "execution": "DECLARATIVE_CONTRACT_VECTOR_NOT_RUNTIME_TEST",
+      "expected": "BLOCKED_AFFECTED_SCOPE",
+      "given": "actual target head differs from expected head",
+      "id": "M12",
+      "independent_oracle": "no partial append or head acceptance",
+      "name": "target-head CAS conflict"
+    },
+    {
+      "affected_scope": "exact namespace and entity/episode/enrollment/user ownership key",
+      "contract_section": "gap_policy",
+      "evidence_required": [
+        "accepted source snapshot and native identity rows",
+        "future target receipts or rejection receipt",
+        "independent set/digest comparison"
+      ],
+      "execution": "DECLARATIVE_CONTRACT_VECTOR_NOT_RUNTIME_TEST",
+      "expected": "PASS_DESIGN_EXPECTATION",
+      "given": "Legacy outcome pin and note writes after snapshot",
+      "id": "M13",
+      "independent_oracle": "ordered ids revisions counts digests reconciled through final watermark",
+      "name": "Legacy cutover-gap activity"
+    },
+    {
+      "affected_scope": "exact namespace and entity/episode/enrollment/user ownership key",
+      "contract_section": "gap_policy",
+      "evidence_required": [
+        "accepted source snapshot and native identity rows",
+        "future target receipts or rejection receipt",
+        "independent set/digest comparison"
+      ],
+      "execution": "DECLARATIVE_CONTRACT_VECTOR_NOT_RUNTIME_TEST",
+      "expected": "PASS_DESIGN_EXPECTATION",
+      "given": "Shadow publication and outcome revisions after snapshot",
+      "id": "M14",
+      "independent_oracle": "exact reference coverage; no production history relabel",
+      "name": "Shadow cutover-gap activity"
+    },
+    {
+      "affected_scope": "exact namespace and entity/episode/enrollment/user ownership key",
+      "contract_section": "rollback",
+      "evidence_required": [
+        "accepted source snapshot and native identity rows",
+        "future target receipts or rejection receipt",
+        "independent set/digest comparison"
+      ],
+      "execution": "DECLARATIVE_CONTRACT_VECTOR_NOT_RUNTIME_TEST",
+      "expected": "PASS_DESIGN_EXPECTATION",
+      "given": "accepted V4 history before rollback",
+      "id": "M15",
+      "independent_oracle": "accepted fact digests retained after routing restore",
+      "name": "rollback preserves V4 history"
+    },
+    {
+      "affected_scope": "exact namespace and entity/episode/enrollment/user ownership key",
+      "contract_section": "rollback",
+      "evidence_required": [
+        "accepted source snapshot and native identity rows",
+        "future target receipts or rejection receipt",
+        "independent set/digest comparison"
+      ],
+      "execution": "DECLARATIVE_CONTRACT_VECTOR_NOT_RUNTIME_TEST",
+      "expected": "PASS_DESIGN_EXPECTATION",
+      "given": "accepted uncompleted due when rollback begins",
+      "id": "M16",
+      "independent_oracle": "same due id frozen references retained; exactly one authorized owner",
+      "name": "rollback preserves pending settlement"
+    },
+    {
+      "affected_scope": "exact namespace and entity/episode/enrollment/user ownership key",
+      "contract_section": "rollback",
+      "evidence_required": [
+        "accepted source snapshot and native identity rows",
+        "future target receipts or rejection receipt",
+        "independent set/digest comparison"
+      ],
+      "execution": "DECLARATIVE_CONTRACT_VECTOR_NOT_RUNTIME_TEST",
+      "expected": "PASS_DESIGN_EXPECTATION",
+      "given": "pins notes followup created during cutover gap",
+      "id": "M17",
+      "independent_oracle": "user work union retained with owner and revision",
+      "name": "rollback preserves user pins"
+    },
+    {
+      "affected_scope": "exact namespace and entity/episode/enrollment/user ownership key",
+      "contract_section": "prestate",
+      "evidence_required": [
+        "accepted source snapshot and native identity rows",
+        "future target receipts or rejection receipt",
+        "independent set/digest comparison"
+      ],
+      "execution": "DECLARATIVE_CONTRACT_VECTOR_NOT_RUNTIME_TEST",
+      "expected": "PASS_DESIGN_EXPECTATION",
+      "given": "RECONSTRUCTED_ASOF initialization",
+      "id": "M18",
+      "independent_oracle": "origin unchanged; real observed sample count unchanged",
+      "name": "reconstructed initialization not promoted to PIT"
+    },
+    {
+      "affected_scope": "exact namespace and entity/episode/enrollment/user ownership key",
+      "contract_section": "historical_context",
+      "evidence_required": [
+        "accepted source snapshot and native identity rows",
+        "future target receipts or rejection receipt",
+        "independent set/digest comparison"
+      ],
+      "execution": "DECLARATIVE_CONTRACT_VECTOR_NOT_RUNTIME_TEST",
+      "expected": "PASS_DESIGN_EXPECTATION",
+      "given": "old exact Shadow context token after cutover or rollback",
+      "id": "M19",
+      "independent_oracle": "same 11-field identity and readback manifest digest",
+      "name": "historical context token remains queryable"
+    },
+    {
+      "affected_scope": "exact namespace and entity/episode/enrollment/user ownership key",
+      "contract_section": "historical_context",
+      "evidence_required": [
+        "accepted source snapshot and native identity rows",
+        "future target receipts or rejection receipt",
+        "independent set/digest comparison"
+      ],
+      "execution": "DECLARATIVE_CONTRACT_VECTOR_NOT_RUNTIME_TEST",
+      "expected": "BLOCKED_AFFECTED_SCOPE",
+      "given": "snapshot inferred using newest path or mtime",
+      "id": "M20",
+      "independent_oracle": "no source accepted without explicit pinned authority",
+      "name": "implicit latest/mtime migration source forbidden"
+    }
+  ],
+  "scope": "DESIGN_COMPLETENESS_ONLY_NOT_RUNTIME_ACCEPTANCE",
+  "section": "vectors"
+}

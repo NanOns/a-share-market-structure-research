@@ -1,0 +1,30 @@
+{
+  "contract": "config/v4_18_migration_replay_contract_v1.json",
+  "contract_sha256": "186d53ae5e4281ce1ff83609326673610f390ebc03061a947b5ae83dda996a02",
+  "definition": {
+    "forbidden": [
+      "delete accepted facts",
+      "redraw controls",
+      "drop due obligations",
+      "backup-only restore"
+    ],
+    "order": [
+      "stop new V4 production writes under authority fence",
+      "capture final watermarks and preserve accepted V4/Shadow facts",
+      "reconcile all cutover-gap activity including user work and due obligations",
+      "restore accepted Legacy read/write source using CAS",
+      "append rollback receipt with final gap manifest and pending ownership mapping"
+    ],
+    "owner": "EXPLICIT_EXTERNALLY_ACCEPTED_CUTOVER_ROLLBACK_AUTHORITY_ID; UNBOUND_BLOCKS_IMPLEMENTATION",
+    "retain": [
+      "accepted V4 history",
+      "Shadow history and context tokens",
+      "pending settlements and revisions",
+      "user pins notes followup",
+      "outbox and accepted receipts"
+    ],
+    "settlement_owner": "EXACTLY_ONE_AUTHORIZED_WORKER_PER_EXISTING_DUE_ID; TRANSFER_OWNERSHIP_RECEIPT_NO_NEW_ENROLLMENT"
+  },
+  "scope": "DESIGN_COMPLETENESS_ONLY_NOT_RUNTIME_ACCEPTANCE",
+  "section": "rollback"
+}

@@ -1,0 +1,24 @@
+{
+  "contract": "config/v4_18_migration_replay_contract_v1.json",
+  "contract_sha256": "186d53ae5e4281ce1ff83609326673610f390ebc03061a947b5ae83dda996a02",
+  "definition": {
+    "real_observations": 0,
+    "receipts": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "required_all": [
+      "externally accepted real V4-16 Shadow publication",
+      "accepted V4-17 real readback binding",
+      "accepted migration source snapshot",
+      "accepted target storage contract",
+      "accepted cutover/rollback authority"
+    ],
+    "status": "BLOCKED_WAIT_REAL_SHADOW_GATE"
+  },
+  "scope": "DESIGN_COMPLETENESS_ONLY_NOT_RUNTIME_ACCEPTANCE",
+  "section": "implementation_entry"
+}

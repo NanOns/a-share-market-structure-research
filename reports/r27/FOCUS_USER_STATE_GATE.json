@@ -1,0 +1,23 @@
+{
+  "contract": "config/v4_18_migration_replay_contract_v1.json",
+  "contract_sha256": "186d53ae5e4281ce1ff83609326673610f390ebc03061a947b5ae83dda996a02",
+  "definition": {
+    "algorithm_evidence_excludes": [
+      "user_pin",
+      "manual_notes_followup",
+      "UI_TOP_K",
+      "display_cap"
+    ],
+    "lanes": [
+      "algorithm_eligibility",
+      "system_selected_focus",
+      "user_pin",
+      "manual_notes_followup"
+    ],
+    "permissions": "USER_OWNERSHIP_AND_ACCESS_SCOPE_UNCHANGED; AMBIGUOUS_OWNER_BLOCKED",
+    "preserve_user_work": true,
+    "unbound_native_user_export": "BLOCKED_AFFECTED_SCOPE; NO_INVENTED_EXISTING_USER_PIN_TABLE"
+  },
+  "scope": "DESIGN_COMPLETENESS_ONLY_NOT_RUNTIME_ACCEPTANCE",
+  "section": "focus_user_state"
+}

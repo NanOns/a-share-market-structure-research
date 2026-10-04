@@ -20,7 +20,8 @@ from workbench_analysis.baostock_runtime_acceptance import (  # noqa: E402
     runtime_acceptance_error,
 )
 from workbench_analysis.baostock_supplemental import package_metadata  # noqa: E402
-from workbench_analysis.dm01_accepted_builder_registry import validate_registry  # noqa: E402
+from workbench_analysis.dm01_runtime_r4 import session_gate, validate_registry, BUILDERS, current_parent, calendar, build_candidate, promote, ref, POLICY, HEAD
+from workbench_analysis.dm01_sources_r4 import project_source_freeze  # noqa: E402
 
 
 def _runtime_acceptance(target_date: str) -> tuple[dict | None, str | None]:
@@ -99,8 +100,16 @@ def main() -> int:
     args = parser.parse_args()
     now = datetime.now(timezone.utc).replace(microsecond=0)
     local = now.astimezone(ZoneInfo("Asia/Shanghai"))
-    builder_registry_result = validate_registry(project_root=ROOT)
-    official_sessions = json.loads((ROOT / "reports/v4_dm01/2026-09-28/calendar_bridge_receipt.json").read_text(encoding="utf-8")).get("official_sessions_after_base_cutoff", [])
+    try:
+        gate = session_gate(args.target_date, now.isoformat(), ROOT)
+        if gate['status'] == 'WAIT_MARKET_CLOSE':
+            print(json.dumps(gate)); return 0
+        builder_registry_result = validate_registry(BUILDERS, ROOT)
+    except (ValueError, OSError, KeyError) as error:
+        print(json.dumps(dict(status='BLOCKED',reason=str(error),source_requests=0,data_head_moved=False))); return 2
+    official_sessions = calendar(ROOT)['session_dates']
+    candidate_result = None
+    promotion_result = None
     bao = None
     bao_smoke = None
     bao_error = None
@@ -133,7 +142,7 @@ def main() -> int:
                 gbbq_probe = json.loads(gbbq_probe_path.read_text(encoding="utf-8"))
         if tdx and tdx.get("status") in {"TDX_PACKAGE_READY", "NOOP_SOURCE_ALREADY_FROZEN"}:
             delta_code, tdx_delta_build = _run_json_cli(
-                "scripts/build_tdx_snapshot_delta.py", "--target-date", args.target_date,
+                "scripts/build_dm01_r4_tdx_delta.py", "--target-date", args.target_date,
                 "--current-snapshot-id", str(tdx.get("snapshot_id") or ""),
             )
             if delta_code != 0:
@@ -179,13 +188,18 @@ def main() -> int:
                 "--gbbq-probe-receipt", str(gbbq_probe_path),
             )
             if freeze_code == 0 and source_freeze.get("status") == "SOURCE_FREEZE_READY":
-                readiness = {**readiness, "status": "BLOCKED_COMPONENT_BUILDERS_NOT_WIRED",
-                             "source_freeze_path": source_freeze.get("manifest_path"),
-                             "next_blocker": "NO_REAL_ACCEPTED_COMPONENT_BUILDER_CALLABLES",
-                             "builder_registry_status": builder_registry_result.get("status"),
-                             "builder_registry_errors": builder_registry_result.get("errors", []),
-                             "runtime_api_blockers": builder_registry_result.get("runtime_api_blockers", []),
-                             "unwired_capabilities": builder_registry_result.get("missing_builders", [])}
+                freeze_path = Path(source_freeze['manifest_path'])
+                freeze = json.loads(freeze_path.read_bytes())
+                bao_path = ROOT / 'data/v4/source_snapshots/baostock' / args.target_date.replace('-','') / str(bao['snapshot_id']) / 'daily_update.json'
+                settings = json.loads((ROOT/'config/baostock_supplemental_contract_v1.json').read_bytes())['dm01_daily_updates']
+                runtime_path = ROOT / settings['runtime_acceptance_manifest_template'].replace('{YYYYMMDD}',args.target_date.replace('-',''))
+                try:
+                    freeze,parent,cal,identity = project_source_freeze(ROOT,freeze,ref(ROOT,tdx_capture_path),ref(ROOT,bao_path),ref(ROOT,runtime_path))
+                    candidate_result = build_candidate(parent=parent,freeze=freeze,cal=cal,identity=identity,root=ROOT,builders=BUILDERS)
+                    promotion_result = promote(candidate_result['candidate'],expected_parent_sha=parent['binding']['sha256'],root=ROOT)
+                    readiness = dict(readiness,status=promotion_result['status'])
+                except (ValueError,OSError,KeyError,TypeError) as error:
+                    readiness = dict(readiness,status='BLOCKED_R4_ALL_NINE_OR_PROMOTION',reason=str(error),head_moved=False)
             else:
                 readiness = {**readiness, "status": "BLOCKED_SOURCE_FREEZE_V2_INVALID",
                              "source_freeze_error": source_freeze.get("reason") or source_freeze.get("status"),
@@ -214,8 +228,9 @@ def main() -> int:
         "special_phase_source_receipt": special_phase_receipt,
         "source_freeze": source_freeze,
         "accepted_builder_registry": builder_registry_result,
-        "component_builds": [],
-        "data_head_moved": False,
+        "component_builds": candidate_result,
+        "promotion": promotion_result,
+        "data_head_moved": bool(promotion_result and promotion_result["status"]=="PROMOTED_V2"),
         "stage_accepted_head_moved": False,
         "dev_baseline_head_moved": False,
         "tdx_root_write_count": 0,
@@ -228,7 +243,7 @@ def main() -> int:
     digest = write_json_atomic(path, result, tdx_root=Path("D:/new_tdx"))
     print(json.dumps({"status": readiness["status"], "target_date": args.target_date,
                       "receipt": str(path), "receipt_sha256": digest}, ensure_ascii=False))
-    return 0 if readiness["status"].startswith("WAIT_") else 2
+    return 0 if readiness["status"].startswith("WAIT_") or readiness["status"] in ("PROMOTED_V2", "NOOP_IDENTICAL_PROMOTION") else 2
 
 
 if __name__ == "__main__":

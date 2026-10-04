@@ -20,10 +20,12 @@ def main() -> int:
     parser.add_argument("--target-date", required=True)
     args = parser.parse_args()
     now = datetime.now(timezone.utc).replace(microsecond=0)
+    from workbench_analysis.dm01_runtime_r4 import session_gate
+    gate = session_gate(args.target_date, now.isoformat())
     local = now.astimezone(ZoneInfo("Asia/Shanghai"))
     lifecycle_path = ROOT / "reports/v4_dm01" / args.target_date / "current_lifecycle_snapshot.json"
     receipt_path = ROOT / "reports/v4_dm01" / args.target_date / "special_phase_source_manifest_receipt_v1.json"
-    if local.date().isoformat() == args.target_date and local.time() < time(15, 0):
+    if gate['status'] == 'WAIT_MARKET_CLOSE':
         result = {"contract_id": "SPECIAL_PHASE_SOURCE_MANIFEST_V1", "status": "WAIT_MARKET_CLOSE",
                   "trade_date": args.target_date, "observed_at": now.isoformat(), "tdx_root_write_count": 0}
     elif not lifecycle_path.is_file():

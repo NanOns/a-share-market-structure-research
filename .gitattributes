@@ -214,3 +214,21 @@ scripts/v4_16_go_forward_shadow_runtime.py -text
 scripts/v4_16_go_forward_input_authority.py -text
 reports/r25/** -text whitespace=-trailing-space,space-before-tab,cr-at-eol
 docs/evidence/r25/** -text whitespace=-trailing-space,space-before-tab,cr-at-eol
+
+# DM01-R4 exact runtime and captured authority evidence across clean checkouts.
+docs/evidence/dm01_r4/** -text
+reports/dm01_r4/** -text
+data/v4/dm01_r4/** -text
+data/v4/source_evidence/dm01_r4/** -text
+data/v4/DM01_R4_CALENDAR_HEAD_V1.json -text
+config/dm01_go_forward_runtime_contract_r4.json -text
+config/dm01_v2_promotion_policy_r4.json -text
+src/workbench_analysis/dm01_runtime_r4.py -text
+src/workbench_analysis/dm01_sources_r4.py -text
+scripts/run_v4_dm01_daily_increment.py -text
+scripts/build_v4_dm01_lifecycle_snapshot.py -text
+scripts/build_v4_dm01_special_phase_manifest.py -text
+scripts/freeze_v4_dm01_daily_sources.py -text
+scripts/probe_v4_dm01_gbbq_revision.py -text
+scripts/build_dm01_r4_tdx_delta.py -text
+scripts/verify_dm01_r4_runtime.py -text

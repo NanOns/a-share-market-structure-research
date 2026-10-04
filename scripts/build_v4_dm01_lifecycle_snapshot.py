@@ -79,9 +79,9 @@ def select_baostock_snapshot(target_date: str, snapshot_id: str | None) -> tuple
             matches.append((record, path))
     if not matches:
         raise ValueError("LIFECYCLE_BAOSTOCK_TARGET_SNAPSHOT_MISSING")
-    if snapshot_id is None and len(matches) != 1:
+    if len(matches) != 1:
         raise ValueError("LIFECYCLE_BAOSTOCK_TARGET_SNAPSHOT_AMBIGUOUS_REQUIRE_SNAPSHOT_ID")
-    record, path = matches[-1]
+    record, path = matches[0]
     if not record["snapshot_id"].startswith("sha256-") or path.parent.name != record["snapshot_id"]:
         raise ValueError("LIFECYCLE_BAOSTOCK_SNAPSHOT_IDENTITY_MISMATCH")
     return record, path
@@ -93,10 +93,12 @@ def main() -> int:
     parser.add_argument("--baostock-snapshot-id")
     args = parser.parse_args()
     now = datetime.now(timezone.utc).replace(microsecond=0)
+    from workbench_analysis.dm01_runtime_r4 import session_gate
+    gate = session_gate(args.target_date, now.isoformat())
     local = now.astimezone(SHANGHAI)
     output = ROOT / "reports/v4_dm01" / args.target_date / "current_lifecycle_snapshot.json"
     receipt_path = ROOT / "reports/v4_dm01" / args.target_date / "current_lifecycle_snapshot_receipt.json"
-    if local.date().isoformat() == args.target_date and local.time() < time(15, 0):
+    if gate['status'] == 'WAIT_MARKET_CLOSE':
         result = {"contract_id": "CURRENT_LIFECYCLE_SNAPSHOT_V1", "status": "WAIT_MARKET_CLOSE",
                   "trade_date": args.target_date, "observed_at": now.isoformat(), "tdx_root_write_count": 0}
     else:
@@ -104,21 +106,18 @@ def main() -> int:
             head_path = ROOT / "data/v4/V4_DATA_ACCEPTED_HEAD.json"
             head = json.loads(head_path.read_text(encoding="utf-8"))
             baseline_date = str(head.get("accepted_trade_date") or "")
-            bootstrap_path = (ROOT / str(head.get("manifest_path") or "")).resolve()
-            if not bootstrap_path.is_file() or sha256(bootstrap_path) != head.get("manifest_sha256"):
-                raise ValueError("LIFECYCLE_BOOTSTRAP_MANIFEST_DIGEST_MISMATCH")
-            bootstrap = json.loads(bootstrap_path.read_text(encoding="utf-8"))
-            universe_path, _ = relative_input(ROOT, bootstrap, "v4_01_universe")
-            identity_path, _ = relative_input(ROOT, bootstrap, "v4_01_identity_map")
-            universe_rows = accepted_parent_rows(universe_path, baseline_date)
-            identity_doc = json.loads(identity_path.read_text(encoding="utf-8"))
-            identity_records = identity_doc.get("records")
-            if not isinstance(identity_records, list) or not identity_records:
-                raise ValueError("LIFECYCLE_ACCEPTED_IDENTITY_MAP_EMPTY")
-            calendar_path = ROOT / "reports/v4_dm01/2026-09-28/calendar_bridge_receipt.json"
-            calendar = json.loads(calendar_path.read_text(encoding="utf-8"))
-            if calendar.get("status") != "PASS" or args.target_date not in calendar.get("official_sessions_after_base_cutoff", []):
-                raise ValueError("LIFECYCLE_OFFICIAL_SESSION_BRIDGE_NOT_ACCEPTED")
+            from workbench_analysis.dm01_runtime_r4 import current_parent, calendar as accepted_calendar
+            from workbench_analysis.dm01_sources_r4 import identity_projection
+            parent = current_parent(ROOT)
+            universe_path = ROOT / parent['components']['IDENTITY_UNIVERSE']['path']
+            universe_rows = json.loads(universe_path.read_bytes())['rows']
+            identity = identity_projection(ROOT, args.target_date, now.isoformat())
+            identity_path = Path(identity['binding']['path'])
+            identity_records = identity['records']
+            cal = accepted_calendar(ROOT)
+            calendar_path = ROOT / cal['binding']['path']
+            calendar = dict(status='PASS', latest_completed_official_session=baseline_date, official_sessions_after_base_cutoff=[d for d in cal['session_dates'] if d > baseline_date])
+            bootstrap_path = ROOT / head['accepted_chain']['path']
             bao, bao_path = select_baostock_snapshot(args.target_date, args.baostock_snapshot_id)
             config = json.loads((ROOT / "config/baostock_supplemental_contract_v1.json").read_text(encoding="utf-8"))
             runtime_template = config["dm01_daily_updates"]["runtime_acceptance_manifest_template"]

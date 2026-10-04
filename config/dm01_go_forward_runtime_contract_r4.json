@@ -1,0 +1,756 @@
+{
+  "accepted_identity_head": {
+    "bytes": 1099,
+    "path": "data/v4/V4_01_GO_FORWARD_IDENTITY_ACCEPTED_HEAD_R1.json",
+    "sha256": "496d537f7c6b9c78cac3a084330f09132814165d2967e8991ffa1d6319092214"
+  },
+  "accepted_kernels": {
+    "bytes": 23358,
+    "path": "config/dm01_incremental_builders_contract_r3_3.json",
+    "sha256": "44f42e22f51a13ed36177da2c0a1228996020e795a17f0f41597a4c17d2f9178"
+  },
+  "accepted_phase_bindings": {
+    "event_store": {
+      "byte_count": 20336,
+      "path": "data/v4/bootstrap/special_price_phase_events_r4.jsonl",
+      "sha256": "bb357ad505a6ace734b6b47f4581efa34c582d8bbf82111d933af037ae9ad522"
+    },
+    "policy": {
+      "byte_count": 4532,
+      "path": "config/special_price_phase_policy_r6.json",
+      "sha256": "cffd66e633ee2a34c712ee628dcace2026b49764bc9f593dacd90fe39e183c79"
+    },
+    "rules": {
+      "byte_count": 15757,
+      "path": "config/v4_02_price_limit_rules_r3.json",
+      "sha256": "68679333821c50cc8cbed5ff4cd001447cc6571d79b0d074a60b6bb81bdb01e0"
+    }
+  },
+  "baseline": "41d40692149055b7518751ff0916dbc0e2ff0d12",
+  "calendar_head": "data/v4/DM01_R4_CALENDAR_HEAD_V1.json",
+  "capabilities": {
+    "ADJUSTED_DAILY": {
+      "accepted_algorithm_contract": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+      "builder_callable": "build_adjusted_daily",
+      "incremental_input_contract": [
+        "RAW_DAILY_INCREMENT_V1",
+        "accepted GBBQ snapshot and per-security dispositions",
+        "target-date cutoff"
+      ],
+      "output_contract": {
+        "adjustment_readiness_explicit": true,
+        "format": "json",
+        "id": "DM01_ADJUSTED_DAILY_ARTIFACT_R4",
+        "key": [
+          "security_id|source_security_key",
+          "trade_date"
+        ]
+      },
+      "owner_stage": "V4-02",
+      "runtime_bindings": [
+        {
+          "callables": [
+            "build_affine_factors",
+            "adjust_ohlc"
+          ],
+          "path": "src/adjustment/tdx_adjustment.py",
+          "sha256": "de8ce814dbdfc2fad7b16f619e1f1085a4dc539591d2bfe6dff876d805e8f6e0"
+        },
+        {
+          "callables": [
+            "read_gbbq"
+          ],
+          "path": "src/tdx/gbbq_reader.py",
+          "sha256": "8b2b4736bfcec6bed5ae62c58b777c8306792aefd82b362970886c354672d03b"
+        },
+        {
+          "byte_count": 8287,
+          "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+          "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+        },
+        {
+          "bytes": 34138,
+          "path": "src/workbench_analysis/dm01_incremental_component_builders_r3_3.py",
+          "sha256": "3db9b445aa011889fd5df1df03f4270424bd8ffcb12f59d99b8a577f3a4caf4a"
+        }
+      ],
+      "signature": [
+        "target_trade_date",
+        "parent_data_head",
+        "source_freeze",
+        "calendar_binding",
+        "identity_binding",
+        "staging_root"
+      ],
+      "target_date_artifact_builder_exported": true,
+      "unknown_policy": "Explicit UNKNOWN with reason; unsupported scope never widened; no fallback 0/FALSE",
+      "wrapper_callable": "workbench_analysis.dm01_runtime_r4.build_adjusted_daily"
+    },
+    "IDENTITY_UNIVERSE": {
+      "accepted_algorithm_contract": "SECURITY_IDENTITY_EVENT_DISCOVERY_V1",
+      "builder_callable": "build_identity_universe",
+      "incremental_input_contract": [
+        "accepted V4_DATA_ACCEPTED_HEAD.IDENTITY_UNIVERSE",
+        "BAOSTOCK_DAILY_UPDATE_V1.roster",
+        "official_session_bridge",
+        "dated_identity_records"
+      ],
+      "output_contract": {
+        "absence_is_delisting_evidence": false,
+        "format": "json",
+        "id": "DM01_IDENTITY_UNIVERSE_ARTIFACT_R4",
+        "key": [
+          "security_id|source_security_key",
+          "trade_date"
+        ]
+      },
+      "owner_stage": "V4-01 R8.1 baseline + DM-01 daily lifecycle adapter",
+      "runtime_bindings": [
+        {
+          "callables": [
+            "discover_identity_events"
+          ],
+          "path": "src/workbench_analysis/security_identity_event_discovery.py",
+          "sha256": "a647c85cdb8e2fe1051a7242f6e56e974b501f7186bff2666da265905d38a6fb"
+        },
+        {
+          "callables": [
+            "build_current_lifecycle_snapshot"
+          ],
+          "path": "src/workbench_analysis/daily_source_manifests.py",
+          "sha256": "652ad628cfa7e65df3c941e46333d066be9eee7440442787c988bd9c93d613c0"
+        },
+        {
+          "byte_count": 8287,
+          "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+          "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+        },
+        {
+          "bytes": 34138,
+          "path": "src/workbench_analysis/dm01_incremental_component_builders_r3_3.py",
+          "sha256": "3db9b445aa011889fd5df1df03f4270424bd8ffcb12f59d99b8a577f3a4caf4a"
+        }
+      ],
+      "signature": [
+        "target_trade_date",
+        "parent_data_head",
+        "source_freeze",
+        "calendar_binding",
+        "identity_binding",
+        "staging_root"
+      ],
+      "target_date_artifact_builder_exported": true,
+      "unknown_policy": "Explicit UNKNOWN with reason; unsupported scope never widened; no fallback 0/FALSE",
+      "wrapper_callable": "workbench_analysis.dm01_runtime_r4.build_identity_universe"
+    },
+    "ISST": {
+      "accepted_algorithm_contract": "V4_02_FULL_MARKET_DATED_ISST_V1",
+      "builder_callable": "build_isst",
+      "incremental_input_contract": [
+        "IDENTITY_UNIVERSE_INCREMENT_V1",
+        "BAOSTOCK_DAILY_UPDATE_V1.isST"
+      ],
+      "output_contract": {
+        "format": "json",
+        "id": "DM01_ISST_ARTIFACT_R4",
+        "key": [
+          "security_id|source_security_key",
+          "trade_date"
+        ],
+        "unknown_is_explicit": true
+      },
+      "owner_stage": "V4-02",
+      "runtime_bindings": [
+        {
+          "callables": [
+            "main"
+          ],
+          "path": "scripts/build_v4_02_full_market_isst.py",
+          "sha256": "093887b52748ff9965fcfb73e312b0791d32baedf9a53740bc08156d31ba84cf"
+        },
+        {
+          "byte_count": 8287,
+          "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+          "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+        },
+        {
+          "bytes": 34138,
+          "path": "src/workbench_analysis/dm01_incremental_component_builders_r3_3.py",
+          "sha256": "3db9b445aa011889fd5df1df03f4270424bd8ffcb12f59d99b8a577f3a4caf4a"
+        }
+      ],
+      "signature": [
+        "target_trade_date",
+        "parent_data_head",
+        "source_freeze",
+        "calendar_binding",
+        "identity_binding",
+        "staging_root"
+      ],
+      "target_date_artifact_builder_exported": true,
+      "unknown_policy": "Explicit UNKNOWN with reason; unsupported scope never widened; no fallback 0/FALSE",
+      "wrapper_callable": "workbench_analysis.dm01_runtime_r4.build_isst"
+    },
+    "PERIOD_ADJUSTED": {
+      "accepted_algorithm_contract": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+      "builder_callable": "build_period_adjusted",
+      "incremental_input_contract": [
+        "parent adjusted weekly/monthly aggregate",
+        "ADJUSTED_DAILY_INCREMENT_V1",
+        "accepted exchange calendar",
+        "TRADING_STATUS_INCREMENT_V1"
+      ],
+      "output_contract": {
+        "as_of_only": true,
+        "format": "json",
+        "id": "DM01_PERIOD_ADJUSTED_ARTIFACT_R4",
+        "key": [
+          "security_id",
+          "period_type",
+          "period_end_date",
+          "as_of_date"
+        ]
+      },
+      "owner_stage": "V4-02",
+      "runtime_bindings": [
+        {
+          "callables": [
+            "period_key",
+            "natural_period_end",
+            "schemas",
+            "main"
+          ],
+          "path": "scripts/build_v4_02_formal_periods.py",
+          "sha256": "afa3a28729ebd27c050fb65e3a1f453599fdb2f111dff63478e2dab57c28b26e"
+        },
+        {
+          "callables": [
+            "build_affine_factors",
+            "adjust_ohlc"
+          ],
+          "path": "src/adjustment/tdx_adjustment.py",
+          "sha256": "de8ce814dbdfc2fad7b16f619e1f1085a4dc539591d2bfe6dff876d805e8f6e0"
+        },
+        {
+          "byte_count": 8287,
+          "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+          "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+        },
+        {
+          "bytes": 34138,
+          "path": "src/workbench_analysis/dm01_incremental_component_builders_r3_3.py",
+          "sha256": "3db9b445aa011889fd5df1df03f4270424bd8ffcb12f59d99b8a577f3a4caf4a"
+        }
+      ],
+      "signature": [
+        "target_trade_date",
+        "parent_data_head",
+        "source_freeze",
+        "calendar_binding",
+        "identity_binding",
+        "staging_root"
+      ],
+      "target_date_artifact_builder_exported": true,
+      "unknown_policy": "Explicit UNKNOWN with reason; unsupported scope never widened; no fallback 0/FALSE",
+      "wrapper_callable": "workbench_analysis.dm01_runtime_r4.build_period_adjusted"
+    },
+    "PERIOD_RAW": {
+      "accepted_algorithm_contract": "V4_02_FORMAL_RAW_QFQ_PERIODS_V1",
+      "builder_callable": "build_period_raw",
+      "incremental_input_contract": [
+        "parent raw weekly/monthly aggregate",
+        "RAW_DAILY_INCREMENT_V1",
+        "accepted exchange calendar",
+        "TRADING_STATUS_INCREMENT_V1"
+      ],
+      "output_contract": {
+        "as_of_only": true,
+        "format": "json",
+        "id": "DM01_PERIOD_RAW_ARTIFACT_R4",
+        "key": [
+          "security_id",
+          "period_type",
+          "period_end_date",
+          "as_of_date"
+        ]
+      },
+      "owner_stage": "V4-02",
+      "runtime_bindings": [
+        {
+          "callables": [
+            "period_key",
+            "natural_period_end",
+            "schemas",
+            "main"
+          ],
+          "path": "scripts/build_v4_02_formal_periods.py",
+          "sha256": "afa3a28729ebd27c050fb65e3a1f453599fdb2f111dff63478e2dab57c28b26e"
+        },
+        {
+          "byte_count": 8287,
+          "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+          "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+        },
+        {
+          "bytes": 34138,
+          "path": "src/workbench_analysis/dm01_incremental_component_builders_r3_3.py",
+          "sha256": "3db9b445aa011889fd5df1df03f4270424bd8ffcb12f59d99b8a577f3a4caf4a"
+        }
+      ],
+      "signature": [
+        "target_trade_date",
+        "parent_data_head",
+        "source_freeze",
+        "calendar_binding",
+        "identity_binding",
+        "staging_root"
+      ],
+      "target_date_artifact_builder_exported": true,
+      "unknown_policy": "Explicit UNKNOWN with reason; unsupported scope never widened; no fallback 0/FALSE",
+      "wrapper_callable": "workbench_analysis.dm01_runtime_r4.build_period_raw"
+    },
+    "PRICE_LIMIT": {
+      "accepted_algorithm_contract": "R3_PRICE_LIMIT_BASE + SPECIAL_PRICE_PHASE_EVENT_V1 + SPECIAL_PRICE_PHASE_POLICY_V2",
+      "builder_callable": "build_price_limit",
+      "incremental_input_contract": [
+        "target-date canonical daily",
+        "target-date dated aliases",
+        "accepted rules and policy",
+        "fail-closed facts"
+      ],
+      "output_contract": {
+        "format": "json",
+        "id": "DM01_PRICE_LIMIT_ARTIFACT_R4",
+        "key": [
+          "security_id",
+          "trade_date"
+        ],
+        "unknown_is_explicit": true
+      },
+      "owner_stage": "V4-02 R6 externally accepted",
+      "runtime_bindings": [
+        {
+          "callables": [
+            "run_builder",
+            "apply_row_runtime"
+          ],
+          "path": "scripts/build_v4_02_price_limits_generic.py",
+          "sha256": "e39405d604299a610b11ac8b0672a2bb63c943d49c6dc267555bf3138230ba28"
+        },
+        {
+          "callables": [
+            "SpecialPhaseEventStore",
+            "PhasePolicyRegistry",
+            "apply_phase_event"
+          ],
+          "path": "src/workbench_analysis/special_price_phases.py",
+          "sha256": "7e64ca1acd9d1d7c9138915cf3f82ffedb40ea6b3b99349c0857458a09f0db93"
+        },
+        {
+          "byte_count": 8287,
+          "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+          "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+        },
+        {
+          "bytes": 34138,
+          "path": "src/workbench_analysis/dm01_incremental_component_builders_r3_3.py",
+          "sha256": "3db9b445aa011889fd5df1df03f4270424bd8ffcb12f59d99b8a577f3a4caf4a"
+        }
+      ],
+      "signature": [
+        "target_trade_date",
+        "parent_data_head",
+        "source_freeze",
+        "calendar_binding",
+        "identity_binding",
+        "staging_root"
+      ],
+      "target_date_artifact_builder_exported": true,
+      "unknown_policy": "Explicit UNKNOWN with reason; unsupported scope never widened; no fallback 0/FALSE",
+      "wrapper_callable": "workbench_analysis.dm01_runtime_r4.build_price_limit"
+    },
+    "RAW_DAILY": {
+      "accepted_algorithm_contract": "V4_02_RAW_CANONICAL_FORMAL_ACCEPTANCE_V1",
+      "builder_callable": "build_raw_daily",
+      "incremental_input_contract": [
+        "TDX_PACKAGE_DELTA_V1.target_bars",
+        "CURRENT_LIFECYCLE_SNAPSHOT_V1.source_rows"
+      ],
+      "output_contract": {
+        "authority": "TDX_OFFICIAL_PACKAGE",
+        "format": "json",
+        "id": "DM01_RAW_DAILY_ARTIFACT_R4",
+        "key": [
+          "security_id|source_security_key",
+          "trade_date"
+        ]
+      },
+      "owner_stage": "V4-02",
+      "runtime_bindings": [
+        {
+          "callables": [
+            "date_identity",
+            "check_raw_quality"
+          ],
+          "path": "scripts/v4_02_build_raw_selected_v2.py",
+          "sha256": "128325a48c818378d78116f9785f50bedba348f401ce164802a81e0e7ab88cf6"
+        },
+        {
+          "byte_count": 8287,
+          "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+          "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+        },
+        {
+          "bytes": 34138,
+          "path": "src/workbench_analysis/dm01_incremental_component_builders_r3_3.py",
+          "sha256": "3db9b445aa011889fd5df1df03f4270424bd8ffcb12f59d99b8a577f3a4caf4a"
+        }
+      ],
+      "signature": [
+        "target_trade_date",
+        "parent_data_head",
+        "source_freeze",
+        "calendar_binding",
+        "identity_binding",
+        "staging_root"
+      ],
+      "target_date_artifact_builder_exported": true,
+      "unknown_policy": "Explicit UNKNOWN with reason; unsupported scope never widened; no fallback 0/FALSE",
+      "wrapper_callable": "workbench_analysis.dm01_runtime_r4.build_raw_daily"
+    },
+    "SPECIAL_PHASE": {
+      "accepted_algorithm_contract": "SPECIAL_PHASE_SOURCE_MANIFEST_V1 + SPECIAL_PRICE_PHASE_EVENT_V1 + SPECIAL_PRICE_PHASE_POLICY_V2",
+      "builder_callable": "build_special_phase",
+      "incremental_input_contract": [
+        "CURRENT_LIFECYCLE_SNAPSHOT_V1",
+        "SPECIAL_PHASE_SOURCE_MANIFEST_V1",
+        "accepted event store",
+        "accepted policy"
+      ],
+      "output_contract": {
+        "format": "json",
+        "id": "DM01_SPECIAL_PHASE_ARTIFACT_R4",
+        "key": [
+          "security_id",
+          "trade_date"
+        ],
+        "no_event_manifest_is_valid": true
+      },
+      "owner_stage": "V4-02 R6 externally accepted",
+      "runtime_bindings": [
+        {
+          "callables": [
+            "compile_event_phase_index",
+            "apply_row_runtime"
+          ],
+          "path": "scripts/build_v4_02_price_limits_generic.py",
+          "sha256": "e39405d604299a610b11ac8b0672a2bb63c943d49c6dc267555bf3138230ba28"
+        },
+        {
+          "callables": [
+            "SpecialPhaseEventStore",
+            "PhasePolicyRegistry",
+            "resolve_event_phase"
+          ],
+          "path": "src/workbench_analysis/special_price_phases.py",
+          "sha256": "7e64ca1acd9d1d7c9138915cf3f82ffedb40ea6b3b99349c0857458a09f0db93"
+        },
+        {
+          "callables": [
+            "build_special_phase_source_manifest"
+          ],
+          "path": "src/workbench_analysis/daily_source_manifests.py",
+          "sha256": "652ad628cfa7e65df3c941e46333d066be9eee7440442787c988bd9c93d613c0"
+        },
+        {
+          "byte_count": 8287,
+          "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+          "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+        },
+        {
+          "bytes": 34138,
+          "path": "src/workbench_analysis/dm01_incremental_component_builders_r3_3.py",
+          "sha256": "3db9b445aa011889fd5df1df03f4270424bd8ffcb12f59d99b8a577f3a4caf4a"
+        }
+      ],
+      "signature": [
+        "target_trade_date",
+        "parent_data_head",
+        "source_freeze",
+        "calendar_binding",
+        "identity_binding",
+        "staging_root"
+      ],
+      "target_date_artifact_builder_exported": true,
+      "unknown_policy": "Explicit UNKNOWN with reason; unsupported scope never widened; no fallback 0/FALSE",
+      "wrapper_callable": "workbench_analysis.dm01_runtime_r4.build_special_phase"
+    },
+    "TRADING_STATUS": {
+      "accepted_algorithm_contract": "V4_02_DATED_TRADING_STATUS_V1",
+      "builder_callable": "build_trading_status",
+      "incremental_input_contract": [
+        "RAW_DAILY_INCREMENT_V1",
+        "IDENTITY_UNIVERSE_INCREMENT_V1",
+        "BAOSTOCK_DAILY_UPDATE_V1.tradestatus"
+      ],
+      "output_contract": {
+        "format": "json",
+        "id": "DM01_TRADING_STATUS_ARTIFACT_R4",
+        "key": [
+          "security_id|source_security_key",
+          "trade_date"
+        ],
+        "local_tdx_bar_precedence": true
+      },
+      "owner_stage": "V4-02",
+      "runtime_bindings": [
+        {
+          "callables": [
+            "main"
+          ],
+          "path": "scripts/build_v4_02_dated_trading_status.py",
+          "sha256": "e4e9fbf6722affdfc999b29a670bb03a8a6421882df821ad73c638831ba089cf"
+        },
+        {
+          "byte_count": 8287,
+          "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+          "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+        },
+        {
+          "bytes": 34138,
+          "path": "src/workbench_analysis/dm01_incremental_component_builders_r3_3.py",
+          "sha256": "3db9b445aa011889fd5df1df03f4270424bd8ffcb12f59d99b8a577f3a4caf4a"
+        }
+      ],
+      "signature": [
+        "target_trade_date",
+        "parent_data_head",
+        "source_freeze",
+        "calendar_binding",
+        "identity_binding",
+        "staging_root"
+      ],
+      "target_date_artifact_builder_exported": true,
+      "unknown_policy": "Explicit UNKNOWN with reason; unsupported scope never widened; no fallback 0/FALSE",
+      "wrapper_callable": "workbench_analysis.dm01_runtime_r4.build_trading_status"
+    }
+  },
+  "contract_id": "DM01_GO_FORWARD_RUNTIME_R4_V1",
+  "external_acceptance_contract": {
+    "authority_document_requires_exact_sha256": [
+      "runtime_contract",
+      "promotion_policy",
+      "calendar_head"
+    ],
+    "external_verdict": "PASS_DM01_R4_GO_FORWARD_RUNTIME",
+    "path": "data/v4/DM01_R4_RUNTIME_ACCEPTANCE_HEAD_V1.json",
+    "permission_grants": false,
+    "status": "EXTERNALLY_ACCEPTED_DM01_R4_RUNTIME"
+  },
+  "external_acceptance_head": "data/v4/DM01_R4_RUNTIME_ACCEPTANCE_HEAD_V1.json",
+  "gbbq_classification_binding": {
+    "byte_count": 4334,
+    "path": "config/v4_02_gbbq_price_impact_classification_v1.json",
+    "sha256": "c39ff7e14209d250139352dcf78b326c7579721681fd467bac68d21d2515681c"
+  },
+  "gbbq_dispositions": {
+    "bytes": 418837,
+    "path": "data/v4/source_evidence/dm01_a01_r3/chain_inputs_r1/2026-09-30/gbbq_dispositions_75b4297f6d0e8d7392f960e7aac02d4920250972995771dd3bb63991403b7eee.json",
+    "sha256": "2a84c5388bafa64c229d060987d12d44cb97bdc9f61dad21b826ea94ea3e2b42"
+  },
+  "identity_known_at": "2026-10-01T10:15:06.061971+00:00",
+  "kernel_reuse": "EXACT_ACCEPTED_R3_3_FUNCTION_CODE_WITH_PRIVATE_ADMISSION_AND_PUBLICATION_HOOKS; NO_GLOBAL_MONKEYPATCH",
+  "next": "STOP_WAIT_DM01_R4_INDEPENDENT_EXTERNAL_AUDIT",
+  "parent_protocol": "CURRENT_EXACT_EXTERNALLY_ACCEPTED_V2_POINTER_AND_COMPONENTS; CAS",
+  "price_rules": {
+    "byte_count": 15757,
+    "path": "config/v4_02_price_limit_rules_r3.json",
+    "sha256": "68679333821c50cc8cbed5ff4cd001447cc6571d79b0d074a60b6bb81bdb01e0"
+  },
+  "producer_governance": {
+    "bytes": 18060,
+    "path": "config/source_authority_governance_r4.json",
+    "sha256": "d69aa9141110b40e7790f0605b02bdc9d6b75f39c128a81a4d23c24bae9cc740"
+  },
+  "protected_runtime_paths": [
+    "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+    "data/v4/V4_DEV_BASELINE_HEAD.json",
+    "data/v4/V4_15_ACCEPTED_HEAD.json",
+    "config/v4_16_runtime_activation_authority_v3.json",
+    "reports/r25/DAILY_INPUT_REAL_GATE.json"
+  ],
+  "read_only_tdx_roots": [
+    "D:/new_tdx"
+  ],
+  "real_runtime_enabled": false,
+  "runtime_bindings": [
+    {
+      "bytes": 15102,
+      "path": "scripts/build_v4_02_dated_trading_status.py",
+      "sha256": "e4e9fbf6722affdfc999b29a670bb03a8a6421882df821ad73c638831ba089cf"
+    },
+    {
+      "bytes": 26773,
+      "path": "scripts/build_v4_02_formal_periods.py",
+      "sha256": "afa3a28729ebd27c050fb65e3a1f453599fdb2f111dff63478e2dab57c28b26e"
+    },
+    {
+      "bytes": 13741,
+      "path": "scripts/build_v4_02_full_market_isst.py",
+      "sha256": "093887b52748ff9965fcfb73e312b0791d32baedf9a53740bc08156d31ba84cf"
+    },
+    {
+      "bytes": 23842,
+      "path": "scripts/build_v4_02_price_limits.py",
+      "sha256": "5425106e729a3f6ecc7d103512fed7e296482c52a56168b27a98b766a534302d"
+    },
+    {
+      "bytes": 15441,
+      "path": "scripts/build_v4_02_price_limits_generic.py",
+      "sha256": "e39405d604299a610b11ac8b0672a2bb63c943d49c6dc267555bf3138230ba28"
+    },
+    {
+      "bytes": 9738,
+      "path": "scripts/build_v4_dm01_lifecycle_snapshot.py",
+      "sha256": "1cd78c072af1ae4c31b66f44ed8b45bf5b347bc1c04fd9664b300fafd1277eac"
+    },
+    {
+      "bytes": 4308,
+      "path": "scripts/build_v4_dm01_special_phase_manifest.py",
+      "sha256": "9490a4edce6684ec365cda0452e27bf79e1a74d5d5e0b354c9e367b139945365"
+    },
+    {
+      "bytes": 12980,
+      "path": "scripts/freeze_v4_dm01_daily_sources.py",
+      "sha256": "c4b2bd5b6226b1aee05511cbe32ffea58e001670997d67cea6e80e4e26135a1d"
+    },
+    {
+      "bytes": 2523,
+      "path": "scripts/probe_v4_dm01_gbbq_revision.py",
+      "sha256": "a69105347debf9f2271695de7cfb2ded69c38cca26e2c461db7ddb7bb4d4d3e9"
+    },
+    {
+      "bytes": 25477,
+      "path": "scripts/run_dm01_a01_r3_chain.py",
+      "sha256": "f6a1bde29b5479e726bed25a39076470bd68ed3da7f52959114348df2fc042a2"
+    },
+    {
+      "bytes": 7878,
+      "path": "scripts/run_dm01_a01_r3_durable_receipt_chain.py",
+      "sha256": "25e7eee3bcc15757dca8aa71d9c4b5e30d73f70599d2d2967fa1be47022541a4"
+    },
+    {
+      "bytes": 15017,
+      "path": "scripts/run_v4_dm01_daily_increment.py",
+      "sha256": "93ea183eda06549dd1afc81f3f7b698f4b571d1055e8a9bd1d6dc0093a0a4d79"
+    },
+    {
+      "bytes": 25823,
+      "path": "scripts/v4_02_build_raw_selected_v2.py",
+      "sha256": "128325a48c818378d78116f9785f50bedba348f401ce164802a81e0e7ab88cf6"
+    },
+    {
+      "bytes": 5366,
+      "path": "src/adjustment/tdx_adjustment.py",
+      "sha256": "de8ce814dbdfc2fad7b16f619e1f1085a4dc539591d2bfe6dff876d805e8f6e0"
+    },
+    {
+      "bytes": 12869,
+      "path": "src/tdx/gbbq_reader.py",
+      "sha256": "8b2b4736bfcec6bed5ae62c58b777c8306792aefd82b362970886c354672d03b"
+    },
+    {
+      "bytes": 16691,
+      "path": "src/workbench_analysis/daily_source_manifests.py",
+      "sha256": "652ad628cfa7e65df3c941e46333d066be9eee7440442787c988bd9c93d613c0"
+    },
+    {
+      "bytes": 15358,
+      "path": "src/workbench_analysis/dm01_accepted_builder_registry.py",
+      "sha256": "5e3b461544ff1a6bd2fe0e169b63a3d7fb57f264f4d71971a79ad23ac9832166"
+    },
+    {
+      "bytes": 6382,
+      "path": "src/workbench_analysis/dm01_candidate_orchestrator_r3_3.py",
+      "sha256": "3539a88c922753258dff3bd2b705dde0699c3cf53a6e3e535087ec5f14ac7ff0"
+    },
+    {
+      "bytes": 10078,
+      "path": "src/workbench_analysis/dm01_chain_contract_r3_3.py",
+      "sha256": "35c551ff3fd0087a89a0573924a5f30130df792be46dd9b03992575630505bd3"
+    },
+    {
+      "bytes": 8287,
+      "path": "src/workbench_analysis/dm01_extracted_domain_r1.py",
+      "sha256": "b66a53f2585f8743b4c8ea2c01079eff25336cdf248ea2c6018bde7388632459"
+    },
+    {
+      "bytes": 34138,
+      "path": "src/workbench_analysis/dm01_incremental_component_builders_r3_3.py",
+      "sha256": "3db9b445aa011889fd5df1df03f4270424bd8ffcb12f59d99b8a577f3a4caf4a"
+    },
+    {
+      "bytes": 16335,
+      "path": "src/workbench_analysis/dm01_independent_postcheck_r3_3.py",
+      "sha256": "79c71f3f72b09cf30a5745d5ba3bae52ad0b22e0422cf333c058d1b9c99d2163"
+    },
+    {
+      "bytes": 28741,
+      "path": "src/workbench_analysis/dm01_runtime_r4.py",
+      "sha256": "e19207d82bfa541ad32cd60348b89d39916e811d70d276071d21a587b234838f"
+    },
+    {
+      "bytes": 6673,
+      "path": "src/workbench_analysis/dm01_sources_r4.py",
+      "sha256": "c49c458b4a2a3a68fa29bf7f3324d93a14a3736512a73e36d5a4a68fe82dc690"
+    },
+    {
+      "bytes": 11701,
+      "path": "src/workbench_analysis/limit_rules.py",
+      "sha256": "c39b23628fc9258c42b8c7a529fe7d5f6fd58576dbbbc6699f0767371dc6fbcd"
+    },
+    {
+      "bytes": 2150,
+      "path": "src/workbench_analysis/price_reference_state.py",
+      "sha256": "9c969dab4996ab319e3c8b896e5fde53c4d528ced86ca0d63f9dfcfa4e4dd0f8"
+    },
+    {
+      "bytes": 37946,
+      "path": "src/workbench_analysis/security_identity_event_discovery.py",
+      "sha256": "a647c85cdb8e2fe1051a7242f6e56e974b501f7186bff2666da265905d38a6fb"
+    },
+    {
+      "bytes": 14474,
+      "path": "src/workbench_analysis/source_authority_producers_r4.py",
+      "sha256": "0d14a65ecd8c473a4a5471df2e064e7ae13f061b68e9ff7b34d6527527b28f6d"
+    },
+    {
+      "bytes": 19357,
+      "path": "src/workbench_analysis/special_price_phases.py",
+      "sha256": "7e64ca1acd9d1d7c9138915cf3f82ffedb40ea6b3b99349c0857458a09f0db93"
+    },
+    {
+      "bytes": 2725,
+      "path": "src/workbench_analysis/v4_02_closure.py",
+      "sha256": "d747ba919765cc3b046715f1b72fff68ec80ea6685fe415403f16bff7d126cd6"
+    },
+    {
+      "bytes": 2013,
+      "path": "scripts/build_dm01_r4_tdx_delta.py",
+      "sha256": "e68d8fea58d3d19abdee96dc4742dd029bb481e2214a445519d95bffd7671015"
+    },
+    {
+      "bytes": 13535,
+      "path": "src/workbench_analysis/tdx_snapshot_delta.py",
+      "sha256": "b46d0f7e91de019f3d1986735faaf0a433753b5657c257f1fd8f533181733f45"
+    },
+    {
+      "bytes": 4511,
+      "path": "scripts/verify_dm01_r4_runtime.py",
+      "sha256": "c7dd2df4c330f0211b93ec611f20be5cd4226e09e905b0593d60540e342a8de4"
+    }
+  ],
+  "status": "LOCAL_READY_FOR_INDEPENDENT_EXTERNAL_AUDIT",
+  "version": "4.0.0",
+  "wrapper_module": "workbench_analysis.dm01_runtime_r4"
+}

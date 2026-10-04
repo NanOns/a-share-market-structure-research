@@ -48,6 +48,9 @@ def main() -> int:
     args = parser.parse_args()
     now = datetime.now(timezone.utc).replace(microsecond=0).isoformat()
     try:
+        from workbench_analysis.dm01_runtime_r4 import session_gate, calendar as accepted_calendar
+        gate = session_gate(args.target_date, now)
+        if gate['status'] == 'WAIT_MARKET_CLOSE': raise ValueError('WAIT_MARKET_CLOSE')
         tdx_capture = json.loads(args.tdx_capture_receipt.read_text(encoding="utf-8"))
         if (tdx_capture.get("target_date") != args.target_date or tdx_capture.get("update_date") != args.target_date
                 or tdx_capture.get("status") not in {"TDX_PACKAGE_READY", "NOOP_SOURCE_ALREADY_FROZEN"}):
@@ -127,11 +130,9 @@ def main() -> int:
         if args.target_date < str(gbbq_manifest.get("first_eligible_formal_trade_date") or "9999-99-99"):
             raise ValueError("FREEZE_GBBQ_NOT_PIT_ELIGIBLE_FOR_TARGET_DATE")
 
-        calendar_path = ROOT / "reports/v4_dm01/2026-09-28/calendar_bridge_receipt.json"
-        calendar = json.loads(calendar_path.read_text(encoding="utf-8"))
-        if (calendar.get("status") != "PASS"
-                or args.target_date not in calendar.get("official_sessions_after_base_cutoff", [])):
-            raise ValueError("FREEZE_OFFICIAL_CALENDAR_BRIDGE_NOT_ACCEPTED")
+        cal = accepted_calendar(ROOT)
+        calendar_path = ROOT / cal['binding']['path']
+        calendar = dict(status='PASS', calendar_revision=cal['publication_id'], official_sessions_after_base_cutoff=cal['session_dates'])
         lifecycle_path = ROOT / "reports/v4_dm01" / args.target_date / "current_lifecycle_snapshot.json"
         lifecycle = json.loads(lifecycle_path.read_text(encoding="utf-8"))
         if lifecycle.get("trade_date") != args.target_date or lifecycle.get("status") not in {"READY", "DEGRADED_PASS"}:

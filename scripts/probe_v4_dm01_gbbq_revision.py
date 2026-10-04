@@ -19,12 +19,14 @@ def main() -> int:
     parser.add_argument("--target-date", required=True)
     args = parser.parse_args()
     now = datetime.now(timezone.utc).replace(microsecond=0)
+    from workbench_analysis.dm01_runtime_r4 import session_gate, calendar
+    gate = session_gate(args.target_date, now.isoformat())
     local_now = now.astimezone(ZoneInfo("Asia/Shanghai"))
-    if local_now.date().isoformat() == args.target_date and local_now.time() < time(15, 0):
+    if gate['status'] == 'WAIT_MARKET_CLOSE':
         result = {"contract_id": "GBBQ_SOURCE_REVISION_PROBE_V1", "status": "WAIT_MARKET_CLOSE",
                   "trade_date": args.target_date, "observed_at": now.isoformat(), "tdx_root_write_count": 0}
     else:
-        calendar = json.loads((ROOT / "reports/v4_dm01/2026-09-28/calendar_bridge_receipt.json").read_text(encoding="utf-8"))
+        calendar = calendar(ROOT)
         accepted_root = ROOT / "data/v4/source_snapshot_store/gbbq/sha256-775d82c58b5b46ec1d21478f86ba8ef90302691982e68d5c4cfcd51fddda666e"
         result = probe_gbbq_source_revision(
             target_date=args.target_date,
@@ -33,7 +35,7 @@ def main() -> int:
             output_snapshot_root=ROOT / "data/v4/source_snapshot_store",
             observed_at=now.isoformat(),
             official_sessions_after_target=[
-                day for day in calendar.get("official_sessions_after_base_cutoff", []) if day > args.target_date
+                day for day in calendar.get("session_dates", []) if day > args.target_date
             ],
             tdx_root=Path("D:/new_tdx"),
         )

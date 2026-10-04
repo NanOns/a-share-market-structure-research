@@ -1,0 +1,56 @@
+{
+  "NEXT": "STOP_WAIT_R24R1_INDEPENDENT_EXTERNAL_AUDIT",
+  "acceptance": "PASS_LOCAL_PENDING_CLEAN_REGRESSION_AND_EXTERNAL_AUDIT",
+  "execution_baseline": "0c9f59fbe723fe0fb0e9d1a6750c339894bc7a5b",
+  "external_acceptance": "NOT_GRANTED",
+  "latest_upgrade_document": {
+    "bytes": 224998,
+    "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+    "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+  },
+  "real_shadow_authorized": false,
+  "runtime_authorized": false,
+  "separate_audit_items": [
+    {
+      "acceptance": "CLOSED_LOCAL_PENDING_EXTERNAL_AUDIT",
+      "evidence": {
+        "bytes": 758,
+        "path": "reports/r24r1/FORWARD_INPUT_AUTHORITY_GATE.json",
+        "sha256": "bea694a620c95e33cafd4cc3163a93aa4d6e9d3a98cc8a22c31a808c36a573e3"
+      },
+      "id": "R24_P0_FORWARD_AUTHORITY",
+      "scope": "Future-session input authority independent of frozen historical Data head"
+    },
+    {
+      "acceptance": "CLOSED_LOCAL_PENDING_EXTERNAL_AUDIT",
+      "evidence": {
+        "bytes": 2616,
+        "path": "reports/r24r1/COHORT_IDENTITY_GATE.json",
+        "sha256": "044451bbe5b667a949c8cb018324c036fa0831054ffba95e4f6c5eb090929b05"
+      },
+      "id": "R24_P0_COHORT_IDENTITY",
+      "scope": "Persisted COHORT_V1 key identity and original uniqueness"
+    },
+    {
+      "acceptance": "CLOSED_LOCAL_PENDING_EXTERNAL_AUDIT",
+      "evidence": {
+        "bytes": 1080,
+        "path": "reports/r24r1/REALTIME_ADMISSION_GATE.json",
+        "sha256": "9cb9edda3bff440cc433c06cc30347b48b29570815d81c91cf99b4fa36919d53"
+      },
+      "id": "R24_P1_REALTIME_ADMISSION",
+      "scope": "Candidate template versus slot-backed acceptance"
+    }
+  ],
+  "stage_contract": {
+    "bytes": 11538,
+    "path": "config/v4_16_runtime_dependencies_v3.json",
+    "sha256": "be2486068880402015a26e575dcfa6b169ac448147de4f15d77406d835bdb1fb"
+  },
+  "status": "PASS_LOCAL",
+  "task": {
+    "bytes": 9673,
+    "path": "docs/evidence/r24r1/V4_16_R24R1_GO_FORWARD_INPUT_AUTHORITY_AND_COHORT_IDENTITY_REPAIR_TASK_20261004.md",
+    "sha256": "990d441d986eb4281e8c22cabdc0500b0a623588f4de0452953ec1b2062c34d4"
+  }
+}

@@ -27,6 +27,10 @@ class ShadowRuntimeController:
     MODES={'CONTRACT_TEST','ENGINEERING_FIXTURE','DRY_RUN_NO_ACCEPT','REAL_SHADOW'}
     def __new__(cls, root, mode='ENGINEERING_FIXTURE', **kwargs):
         if mode == 'REAL_SHADOW':
+            path = kwargs.get('simulation_dependencies')
+            if path is None or str(path).startswith('reports/r24r1/activation_simulation/'):
+                from scripts.v4_16_go_forward_shadow_runtime import RealShadowController
+                return RealShadowController(root, **kwargs)
             from scripts.v4_16_real_shadow_runtime import RealShadowController
             return RealShadowController(root, **kwargs)
         return super().__new__(cls)

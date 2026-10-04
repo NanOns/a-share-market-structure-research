@@ -1,0 +1,332 @@
+{
+  "NEXT": "STOP_WAIT_R24R1_INDEPENDENT_EXTERNAL_AUDIT",
+  "cases": [
+    {
+      "case": "F01",
+      "context": {
+        "base": "reports/r24r1/activation_simulation/1acbeff24b1d4adebd00d6d193f5d01d",
+        "database": "reports/r24r1/activation_simulation/1acbeff24b1d4adebd00d6d193f5d01d/successor.sqlite",
+        "manifest": "reports/r24r1/activation_simulation/1acbeff24b1d4adebd00d6d193f5d01d/dependencies.json",
+        "request": {
+          "accepted_at": "2026-10-08T14:00:00Z",
+          "capabilities": [
+            "PURE_CORE_STOCK"
+          ],
+          "expected_head": null,
+          "model_contract_id": "RESEARCH_STATE_V1",
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "revision": 1,
+          "state_lineage_id": "R24R1_SIMULATION_LINEAGE",
+          "trade_date": "2026-10-08"
+        }
+      },
+      "database_created": false,
+      "rejection": "TARGET_NOT_ACCEPTED_SESSION",
+      "status": "PASS_LOCAL"
+    },
+    {
+      "case": "F02",
+      "context": {
+        "base": "reports/r24r1/activation_simulation/558a031a0325470d832f4042b3c944ad",
+        "database": "reports/r24r1/activation_simulation/558a031a0325470d832f4042b3c944ad/successor.sqlite",
+        "manifest": "reports/r24r1/activation_simulation/558a031a0325470d832f4042b3c944ad/dependencies.json",
+        "request": {
+          "accepted_at": "2026-10-08T14:00:00Z",
+          "capabilities": [
+            "PURE_CORE_STOCK"
+          ],
+          "expected_head": null,
+          "model_contract_id": "RESEARCH_STATE_V1",
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "revision": 1,
+          "state_lineage_id": "R24R1_SIMULATION_LINEAGE",
+          "trade_date": "2026-10-08"
+        }
+      },
+      "database_created": false,
+      "rejection": "PREVIOUS_SESSION_MISMATCH",
+      "status": "PASS_LOCAL"
+    },
+    {
+      "case": "F03",
+      "context": {
+        "base": "reports/r24r1/activation_simulation/8e24b879f0274a288f2f4ee5cecf9936",
+        "database": "reports/r24r1/activation_simulation/8e24b879f0274a288f2f4ee5cecf9936/successor.sqlite",
+        "manifest": "reports/r24r1/activation_simulation/8e24b879f0274a288f2f4ee5cecf9936/dependencies.json",
+        "request": {
+          "accepted_at": "2026-10-08T14:00:00Z",
+          "capabilities": [
+            "PURE_CORE_STOCK"
+          ],
+          "expected_head": null,
+          "model_contract_id": "RESEARCH_STATE_V1",
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "revision": 1,
+          "state_lineage_id": "R24R1_SIMULATION_LINEAGE",
+          "trade_date": "2026-10-08"
+        }
+      },
+      "database_created": false,
+      "rejection": "GRANT_DAILY_INPUT_MISMATCH",
+      "status": "PASS_LOCAL"
+    },
+    {
+      "case": "F04",
+      "context": {
+        "base": "reports/r24r1/activation_simulation/4ed73d1d7a0541e498f1f4bfedca4283",
+        "database": "reports/r24r1/activation_simulation/4ed73d1d7a0541e498f1f4bfedca4283/successor.sqlite",
+        "manifest": "reports/r24r1/activation_simulation/4ed73d1d7a0541e498f1f4bfedca4283/dependencies.json",
+        "request": {
+          "accepted_at": "2026-10-08T14:00:00Z",
+          "capabilities": [
+            "PURE_CORE_STOCK"
+          ],
+          "expected_head": null,
+          "model_contract_id": "RESEARCH_STATE_V1",
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "revision": 1,
+          "state_lineage_id": "R24R1_SIMULATION_LINEAGE",
+          "trade_date": "2026-10-08"
+        }
+      },
+      "database_created": false,
+      "rejection": "SOURCE_DATE_OR_FUTURE_LEAK",
+      "status": "PASS_LOCAL"
+    },
+    {
+      "case": "F05",
+      "context": {
+        "base": "reports/r24r1/activation_simulation/c0ba9a3948f0403b9bbe0200911219ba",
+        "database": "reports/r24r1/activation_simulation/c0ba9a3948f0403b9bbe0200911219ba/successor.sqlite",
+        "manifest": "reports/r24r1/activation_simulation/c0ba9a3948f0403b9bbe0200911219ba/dependencies.json",
+        "request": {
+          "accepted_at": "2026-10-08T14:00:00Z",
+          "capabilities": [
+            "PURE_CORE_STOCK"
+          ],
+          "expected_head": null,
+          "model_contract_id": "RESEARCH_STATE_V1",
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "revision": 1,
+          "state_lineage_id": "R24R1_SIMULATION_LINEAGE",
+          "trade_date": "2026-10-08"
+        }
+      },
+      "database_created": false,
+      "rejection": "SOURCE_DATE_OR_FUTURE_LEAK",
+      "status": "PASS_LOCAL"
+    },
+    {
+      "case": "F06",
+      "context": {
+        "base": "reports/r24r1/activation_simulation/cd88282e7e17413caa4286b86d877871",
+        "database": "reports/r24r1/activation_simulation/cd88282e7e17413caa4286b86d877871/successor.sqlite",
+        "manifest": "reports/r24r1/activation_simulation/cd88282e7e17413caa4286b86d877871/dependencies.json",
+        "request": {
+          "accepted_at": "2026-10-08T14:00:00Z",
+          "capabilities": [
+            "PURE_CORE_STOCK"
+          ],
+          "expected_head": null,
+          "model_contract_id": "RESEARCH_STATE_V1",
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "revision": 1,
+          "state_lineage_id": "R24R1_SIMULATION_LINEAGE",
+          "trade_date": "2026-10-08"
+        }
+      },
+      "database_created": false,
+      "rejection": "SOURCE_ACCEPTANCE_BOUNDARY",
+      "status": "PASS_LOCAL"
+    },
+    {
+      "case": "F07",
+      "context": {
+        "base": "reports/r24r1/activation_simulation/68c9c16af6e1468495c1d8110a63693f",
+        "database": "reports/r24r1/activation_simulation/68c9c16af6e1468495c1d8110a63693f/successor.sqlite",
+        "manifest": "reports/r24r1/activation_simulation/68c9c16af6e1468495c1d8110a63693f/dependencies.json",
+        "request": {
+          "accepted_at": "2026-10-08T14:00:00Z",
+          "capabilities": [
+            "PURE_CORE_STOCK"
+          ],
+          "expected_head": null,
+          "model_contract_id": "RESEARCH_STATE_V1",
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "revision": 1,
+          "state_lineage_id": "R24R1_SIMULATION_LINEAGE",
+          "trade_date": "2026-10-08"
+        }
+      },
+      "database_created": false,
+      "rejection": "MANDATORY_PURE_CORE_MISSING",
+      "status": "PASS_LOCAL"
+    },
+    {
+      "case": "F08",
+      "context": {
+        "base": "reports/r24r1/activation_simulation/1fe26c50027a4e36bb913fca304debe0",
+        "database": "reports/r24r1/activation_simulation/1fe26c50027a4e36bb913fca304debe0/successor.sqlite",
+        "manifest": "reports/r24r1/activation_simulation/1fe26c50027a4e36bb913fca304debe0/dependencies.json",
+        "request": {
+          "accepted_at": "2026-10-08T14:00:00Z",
+          "capabilities": [
+            "PURE_CORE_STOCK"
+          ],
+          "expected_head": null,
+          "model_contract_id": "RESEARCH_STATE_V1",
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "revision": 1,
+          "state_lineage_id": "R24R1_SIMULATION_LINEAGE",
+          "trade_date": "2026-10-08"
+        }
+      },
+      "database_created": false,
+      "rejection": "STALE_DAY_PACKAGE",
+      "status": "PASS_LOCAL"
+    },
+    {
+      "case": "F09",
+      "context": {
+        "base": "reports/r24r1/activation_simulation/ee2cd75833764499ae7f7bd9d57aba3f",
+        "database": "reports/r24r1/activation_simulation/ee2cd75833764499ae7f7bd9d57aba3f/successor.sqlite",
+        "manifest": "reports/r24r1/activation_simulation/ee2cd75833764499ae7f7bd9d57aba3f/dependencies.json",
+        "request": {
+          "accepted_at": "2026-10-08T14:00:00Z",
+          "capabilities": [
+            "PURE_CORE_STOCK"
+          ],
+          "expected_head": null,
+          "model_contract_id": "RESEARCH_STATE_V1",
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "revision": 1,
+          "state_lineage_id": "R24R1_SIMULATION_LINEAGE",
+          "trade_date": "2026-10-08"
+        }
+      },
+      "database_created": false,
+      "rejection": "UNACCEPTED_IDENTITY_UNIVERSE",
+      "status": "PASS_LOCAL"
+    },
+    {
+      "case": "F10",
+      "context": {
+        "base": "reports/r24r1/activation_simulation/b7945a0dec6c48cca8839092d66e310a",
+        "database": "reports/r24r1/activation_simulation/b7945a0dec6c48cca8839092d66e310a/successor.sqlite",
+        "manifest": "reports/r24r1/activation_simulation/b7945a0dec6c48cca8839092d66e310a/dependencies.json",
+        "request": {
+          "accepted_at": "2026-10-08T14:00:00Z",
+          "capabilities": [
+            "PURE_CORE_STOCK"
+          ],
+          "expected_head": null,
+          "model_contract_id": "RESEARCH_STATE_V1",
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "revision": 1,
+          "state_lineage_id": "R24R1_SIMULATION_LINEAGE",
+          "trade_date": "2026-10-08"
+        }
+      },
+      "database_created": false,
+      "rejection": "REQUIRED_MEMBERSHIP_MISSING",
+      "status": "PASS_LOCAL"
+    },
+    {
+      "case": "F11",
+      "context": {
+        "base": "reports/r24r1/activation_simulation/63fc3fc370b144caacbef13c76e2f718",
+        "database": "reports/r24r1/activation_simulation/63fc3fc370b144caacbef13c76e2f718/successor.sqlite",
+        "manifest": "reports/r24r1/activation_simulation/63fc3fc370b144caacbef13c76e2f718/dependencies.json",
+        "request": {
+          "accepted_at": "2026-10-08T14:00:00Z",
+          "capabilities": [
+            "PURE_CORE_STOCK"
+          ],
+          "expected_head": null,
+          "model_contract_id": "RESEARCH_STATE_V1",
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "revision": 1,
+          "state_lineage_id": "R24R1_SIMULATION_LINEAGE",
+          "trade_date": "2026-10-08"
+        }
+      },
+      "result": "PURE_CORE_CONTINUES_WITHOUT_MEMBERSHIP",
+      "status": "PASS_LOCAL"
+    },
+    {
+      "case": "F12",
+      "context": {
+        "base": "reports/r24r1/activation_simulation/0b78464c1c9246ad87b7ee0f6a6c949f",
+        "database": "reports/r24r1/activation_simulation/0b78464c1c9246ad87b7ee0f6a6c949f/successor.sqlite",
+        "manifest": "reports/r24r1/activation_simulation/0b78464c1c9246ad87b7ee0f6a6c949f/dependencies.json",
+        "request": {
+          "accepted_at": "2026-10-08T14:00:00Z",
+          "capabilities": [
+            "PURE_CORE_STOCK"
+          ],
+          "expected_head": null,
+          "model_contract_id": "RESEARCH_STATE_V1",
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "revision": 1,
+          "state_lineage_id": "R24R1_SIMULATION_LINEAGE",
+          "trade_date": "2026-10-08"
+        }
+      },
+      "database_created": false,
+      "rejection": "[Errno 2] No such file or directory: 'E:\\\\codex work\\\\大A交易\\\\reports\\\\r24r1\\\\activation_simulation\\\\0b78464c1c9246ad87b7ee0f6a6c949f\\\\latest.json'",
+      "status": "PASS_LOCAL"
+    },
+    {
+      "case": "F13",
+      "context": {
+        "base": "reports/r24r1/activation_simulation/aeed09c01f2b449db4d3175e34d6f01f",
+        "database": "reports/r24r1/activation_simulation/aeed09c01f2b449db4d3175e34d6f01f/successor.sqlite",
+        "manifest": "reports/r24r1/activation_simulation/aeed09c01f2b449db4d3175e34d6f01f/dependencies.json",
+        "request": {
+          "accepted_at": "2026-10-08T14:00:00Z",
+          "capabilities": [
+            "PURE_CORE_STOCK"
+          ],
+          "expected_head": null,
+          "model_contract_id": "RESEARCH_STATE_V1",
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "revision": 1,
+          "state_lineage_id": "R24R1_SIMULATION_LINEAGE",
+          "trade_date": "2026-10-08"
+        }
+      },
+      "database_created": false,
+      "rejection": "DAILY_REVISION_ROLLBACK",
+      "status": "PASS_LOCAL"
+    },
+    {
+      "case": "F14",
+      "context": {
+        "base": "reports/r24r1/activation_simulation/0ce910cb575b4a47945c25a57ad06705",
+        "database": "reports/r24r1/activation_simulation/0ce910cb575b4a47945c25a57ad06705/successor.sqlite",
+        "manifest": "reports/r24r1/activation_simulation/0ce910cb575b4a47945c25a57ad06705/dependencies.json",
+        "request": {
+          "accepted_at": "2026-10-08T14:00:00Z",
+          "capabilities": [
+            "PURE_CORE_STOCK"
+          ],
+          "expected_head": null,
+          "model_contract_id": "RESEARCH_STATE_V1",
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "revision": 1,
+          "state_lineage_id": "R24R1_SIMULATION_LINEAGE",
+          "trade_date": "2026-10-08"
+        }
+      },
+      "database_created": false,
+      "rejection": "MODEL_PARAMETER_MISMATCH",
+      "status": "PASS_LOCAL"
+    }
+  ],
+  "count": 14,
+  "execution_baseline": "0c9f59fbe723fe0fb0e9d1a6750c339894bc7a5b",
+  "external_acceptance": "NOT_GRANTED",
+  "real_shadow_authorized": false,
+  "runtime_authorized": false,
+  "status": "PASS_LOCAL"
+}

@@ -1,0 +1,37 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "tests/test_pre16_governance.py",
+    "tests/test_r21_promotion.py",
+    "tests/test_r22_contracts.py",
+    "tests/test_r22r1_contracts.py",
+    "tests/test_r23_runtime.py",
+    "tests/test_r23r1_runtime.py",
+    "tests/test_r24_activation.py",
+    "tests/test_r24r1_authority.py",
+    "tests/test_r24r1_a20.py",
+    "-q",
+    "--junitxml=reports/r24r1/local_tests.xml"
+  ],
+  "deselected": 0,
+  "elapsed_seconds": 342.32,
+  "errors": 0,
+  "external_acceptance": "NOT_GRANTED",
+  "failures": 0,
+  "passed": 400,
+  "skipped": 0,
+  "status": "PASS_LOCAL",
+  "suites": [
+    "tests/test_pre16_governance.py",
+    "tests/test_r21_promotion.py",
+    "tests/test_r22_contracts.py",
+    "tests/test_r22r1_contracts.py",
+    "tests/test_r23_runtime.py",
+    "tests/test_r23r1_runtime.py",
+    "tests/test_r24_activation.py",
+    "tests/test_r24r1_authority.py",
+    "tests/test_r24r1_a20.py"
+  ]
+}

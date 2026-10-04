@@ -1,0 +1,604 @@
+{
+  "NEXT": "STOP_WAIT_R24R1_INDEPENDENT_EXTERNAL_AUDIT",
+  "cases": [
+    {
+      "before_consumption": true,
+      "case": "A01",
+      "rejection": "REAL_SHADOW_NOT_AUTHORIZED_BEFORE_CONSUMPTION",
+      "status": "PASS_LOCAL"
+    },
+    {
+      "before_consumption": true,
+      "case": "A02",
+      "context": {
+        "base": "reports/r24r1/activation_simulation/163ff8843a924d8f8504951208170912",
+        "database": "reports/r24r1/activation_simulation/163ff8843a924d8f8504951208170912/successor.sqlite",
+        "manifest": "reports/r24r1/activation_simulation/163ff8843a924d8f8504951208170912/dependencies.json",
+        "request": {
+          "accepted_at": "2026-10-08T14:00:00Z",
+          "capabilities": [
+            "PURE_CORE_STOCK"
+          ],
+          "expected_head": null,
+          "model_contract_id": "RESEARCH_STATE_V1",
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "revision": 1,
+          "state_lineage_id": "R24R1_SIMULATION_LINEAGE",
+          "trade_date": "2026-10-08"
+        }
+      },
+      "database_created": false,
+      "manifest_binding": {
+        "bytes": 11606,
+        "path": "reports/r24r1/activation_simulation/163ff8843a924d8f8504951208170912/dependencies.json",
+        "sha256": "d3f41891a6ee136d12315b927af4681587c8b5e27cd804c2356bde943f2e135c"
+      },
+      "rejection": "EXACT_DEPENDENCY_MISMATCH",
+      "status": "PASS_LOCAL"
+    },
+    {
+      "case": "A03",
+      "context": {
+        "base": "reports/r24r1/activation_simulation/c96d2032033743aeafdfc83f1dd743b7",
+        "database": "reports/r24r1/activation_simulation/c96d2032033743aeafdfc83f1dd743b7/successor.sqlite",
+        "manifest": "reports/r24r1/activation_simulation/c96d2032033743aeafdfc83f1dd743b7/dependencies.json",
+        "request": {
+          "accepted_at": "2026-10-08T14:00:00Z",
+          "capabilities": [
+            "PURE_CORE_STOCK"
+          ],
+          "expected_head": null,
+          "model_contract_id": "RESEARCH_STATE_V1",
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "revision": 1,
+          "state_lineage_id": "R24R1_SIMULATION_LINEAGE",
+          "trade_date": "2026-09-30"
+        }
+      },
+      "database_binding": {
+        "bytes": 57344,
+        "path": "reports/r24r1/activation_simulation/c96d2032033743aeafdfc83f1dd743b7/successor.sqlite",
+        "sha256": "6756672fef7b6de6619e9d3659224eaca814260bf23fc13df553fd945acc6141"
+      },
+      "manifest_binding": {
+        "bytes": 11606,
+        "path": "reports/r24r1/activation_simulation/c96d2032033743aeafdfc83f1dd743b7/dependencies.json",
+        "sha256": "b603eabfe55ca020c16c78b86eafe9121ad6efc6aed49be592c06dc019c2ef48"
+      },
+      "partial_publication_visible": false,
+      "rejection": "EXACT_TARGET_DAILY_INPUT_REQUIRED",
+      "status": "PASS_LOCAL"
+    },
+    {
+      "case": "A04",
+      "context": {
+        "base": "reports/r24r1/activation_simulation/5950876a86534810bd6e23312538378d",
+        "database": "reports/r24r1/activation_simulation/5950876a86534810bd6e23312538378d/successor.sqlite",
+        "manifest": "reports/r24r1/activation_simulation/5950876a86534810bd6e23312538378d/dependencies.json",
+        "request": {
+          "accepted_at": "2026-10-08T14:00:00Z",
+          "capabilities": [
+            "PURE_CORE_STOCK"
+          ],
+          "expected_head": null,
+          "model_contract_id": "OTHER",
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "revision": 1,
+          "state_lineage_id": "R24R1_SIMULATION_LINEAGE",
+          "trade_date": "2026-10-08"
+        }
+      },
+      "database_binding": {
+        "bytes": 57344,
+        "path": "reports/r24r1/activation_simulation/5950876a86534810bd6e23312538378d/successor.sqlite",
+        "sha256": "6756672fef7b6de6619e9d3659224eaca814260bf23fc13df553fd945acc6141"
+      },
+      "manifest_binding": {
+        "bytes": 11606,
+        "path": "reports/r24r1/activation_simulation/5950876a86534810bd6e23312538378d/dependencies.json",
+        "sha256": "81a46855d13b666590d319e72fdd6d530a1031e4675786d1ee425c8b0e9f1037"
+      },
+      "partial_publication_visible": false,
+      "rejection": "WRONG_MODEL_CONTRACT_ID",
+      "status": "PASS_LOCAL"
+    },
+    {
+      "case": "A05",
+      "context": {
+        "base": "reports/r24r1/activation_simulation/33749b4b82f64817983abd815f0cdfc0",
+        "database": "reports/r24r1/activation_simulation/33749b4b82f64817983abd815f0cdfc0/successor.sqlite",
+        "manifest": "reports/r24r1/activation_simulation/33749b4b82f64817983abd815f0cdfc0/dependencies.json",
+        "request": {
+          "accepted_at": "2026-10-08T14:00:00Z",
+          "capabilities": [
+            "PURE_CORE_STOCK"
+          ],
+          "expected_head": null,
+          "model_contract_id": "RESEARCH_STATE_V1",
+          "parameter_set_id": "OTHER",
+          "revision": 1,
+          "state_lineage_id": "R24R1_SIMULATION_LINEAGE",
+          "trade_date": "2026-10-08"
+        }
+      },
+      "database_binding": {
+        "bytes": 57344,
+        "path": "reports/r24r1/activation_simulation/33749b4b82f64817983abd815f0cdfc0/successor.sqlite",
+        "sha256": "6756672fef7b6de6619e9d3659224eaca814260bf23fc13df553fd945acc6141"
+      },
+      "manifest_binding": {
+        "bytes": 11606,
+        "path": "reports/r24r1/activation_simulation/33749b4b82f64817983abd815f0cdfc0/dependencies.json",
+        "sha256": "5f7f4444715d17b2b1b7720aa860dc2503675cd8c912ebf4430802e127176371"
+      },
+      "partial_publication_visible": false,
+      "rejection": "WRONG_PARAMETER_SET_ID",
+      "status": "PASS_LOCAL"
+    },
+    {
+      "case": "A06",
+      "context": {
+        "base": "reports/r24r1/activation_simulation/15d2cf809cf142e0b33b02db67f38b51",
+        "database": "reports/r24r1/activation_simulation/15d2cf809cf142e0b33b02db67f38b51/successor.sqlite",
+        "manifest": "reports/r24r1/activation_simulation/15d2cf809cf142e0b33b02db67f38b51/dependencies.json",
+        "request": {
+          "accepted_at": "2026-10-08T14:00:00Z",
+          "capabilities": [
+            "PURE_CORE_STOCK"
+          ],
+          "expected_head": null,
+          "model_contract_id": "RESEARCH_STATE_V1",
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "revision": 1,
+          "state_lineage_id": "OTHER",
+          "trade_date": "2026-10-08"
+        }
+      },
+      "database_binding": {
+        "bytes": 57344,
+        "path": "reports/r24r1/activation_simulation/15d2cf809cf142e0b33b02db67f38b51/successor.sqlite",
+        "sha256": "6756672fef7b6de6619e9d3659224eaca814260bf23fc13df553fd945acc6141"
+      },
+      "manifest_binding": {
+        "bytes": 11606,
+        "path": "reports/r24r1/activation_simulation/15d2cf809cf142e0b33b02db67f38b51/dependencies.json",
+        "sha256": "f0fb7ba4d21d72db7f3910751f9a4738d935e9211f22fd715214117371eb93e2"
+      },
+      "partial_publication_visible": false,
+      "rejection": "WRONG_STATE_LINEAGE_ID",
+      "status": "PASS_LOCAL"
+    },
+    {
+      "case": "A07",
+      "context": {
+        "base": "reports/r24r1/activation_simulation/1e053c313fae4d358c044e4ad449ab72",
+        "database": "reports/r24r1/activation_simulation/1e053c313fae4d358c044e4ad449ab72/successor.sqlite",
+        "manifest": "reports/r24r1/activation_simulation/1e053c313fae4d358c044e4ad449ab72/dependencies.json",
+        "request": {
+          "accepted_at": "2026-10-08T14:00:00Z",
+          "capabilities": [
+            "A04_H21_CONSUMER"
+          ],
+          "expected_head": null,
+          "model_contract_id": "RESEARCH_STATE_V1",
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "revision": 1,
+          "state_lineage_id": "R24R1_SIMULATION_LINEAGE",
+          "trade_date": "2026-10-08"
+        }
+      },
+      "database_binding": {
+        "bytes": 57344,
+        "path": "reports/r24r1/activation_simulation/1e053c313fae4d358c044e4ad449ab72/successor.sqlite",
+        "sha256": "6756672fef7b6de6619e9d3659224eaca814260bf23fc13df553fd945acc6141"
+      },
+      "manifest_binding": {
+        "bytes": 11606,
+        "path": "reports/r24r1/activation_simulation/1e053c313fae4d358c044e4ad449ab72/dependencies.json",
+        "sha256": "a1aa64483eacbf653f473c54bc1ab1ea81594c9c5ccfc2352252fd49aad617b5"
+      },
+      "partial_publication_visible": false,
+      "rejection": "UNGRANTED_CAPABILITY",
+      "status": "PASS_LOCAL"
+    },
+    {
+      "before_consumption": true,
+      "case": "A08",
+      "context": {
+        "base": "reports/r24r1/activation_simulation/248801cf9c754bc9a28c514d449fc0a2",
+        "database": "reports/r24r1/activation_simulation/248801cf9c754bc9a28c514d449fc0a2/successor.sqlite",
+        "manifest": "reports/r24r1/activation_simulation/248801cf9c754bc9a28c514d449fc0a2/dependencies.json",
+        "request": {
+          "accepted_at": "2026-10-08T14:00:00Z",
+          "capabilities": [
+            "PURE_CORE_STOCK"
+          ],
+          "expected_head": null,
+          "model_contract_id": "RESEARCH_STATE_V1",
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "revision": 1,
+          "state_lineage_id": "R24R1_SIMULATION_LINEAGE",
+          "trade_date": "2026-10-08"
+        }
+      },
+      "database_created": false,
+      "manifest_binding": {
+        "bytes": 11606,
+        "path": "reports/r24r1/activation_simulation/248801cf9c754bc9a28c514d449fc0a2/dependencies.json",
+        "sha256": "b649b48333a872adca8a9185735e8b4d79deb9d3573472a40ddcc3ef93675e02"
+      },
+      "rejection": "UNACCEPTED_STORAGE",
+      "status": "PASS_LOCAL"
+    },
+    {
+      "before_consumption": true,
+      "case": "A09",
+      "context": {
+        "base": "reports/r24r1/activation_simulation/72f736f7ae6b4e1abd4768435c7c21c3",
+        "database": "reports/r24r1/activation_simulation/72f736f7ae6b4e1abd4768435c7c21c3/successor.sqlite",
+        "manifest": "reports/r24r1/activation_simulation/72f736f7ae6b4e1abd4768435c7c21c3/dependencies.json",
+        "request": {
+          "accepted_at": "2026-10-08T14:00:00Z",
+          "capabilities": [
+            "PURE_CORE_STOCK"
+          ],
+          "expected_head": null,
+          "model_contract_id": "RESEARCH_STATE_V1",
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "revision": 1,
+          "state_lineage_id": "R24R1_SIMULATION_LINEAGE",
+          "trade_date": "2026-10-08"
+        }
+      },
+      "database_created": false,
+      "manifest_binding": {
+        "bytes": 11606,
+        "path": "reports/r24r1/activation_simulation/72f736f7ae6b4e1abd4768435c7c21c3/dependencies.json",
+        "sha256": "a93d7f276c49e70ea8b321304f0ca64691c60d2ce7e8f097b8875a36c4b9373d"
+      },
+      "rejection": "UNACCEPTED_SOURCE_ADAPTER",
+      "status": "PASS_LOCAL"
+    },
+    {
+      "before_consumption": true,
+      "case": "A10",
+      "context": {
+        "base": "reports/r24r1/activation_simulation/1dfa41a292014904b344b860755d01bc",
+        "database": "reports/r24r1/activation_simulation/1dfa41a292014904b344b860755d01bc/successor.sqlite",
+        "manifest": "reports/r24r1/activation_simulation/1dfa41a292014904b344b860755d01bc/dependencies.json",
+        "request": {
+          "accepted_at": "2026-10-08T14:00:00Z",
+          "capabilities": [
+            "PURE_CORE_STOCK"
+          ],
+          "expected_head": null,
+          "model_contract_id": "RESEARCH_STATE_V1",
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "revision": 1,
+          "state_lineage_id": "R24R1_SIMULATION_LINEAGE",
+          "trade_date": "2026-10-08"
+        }
+      },
+      "database_created": false,
+      "manifest_binding": {
+        "bytes": 11606,
+        "path": "reports/r24r1/activation_simulation/1dfa41a292014904b344b860755d01bc/dependencies.json",
+        "sha256": "bedcc77d3bfb2f2d42b8da64f6335748fc6818dafde5a612f06b433f93c02b2e"
+      },
+      "rejection": "MISSING_MANDATORY_SOURCE",
+      "status": "PASS_LOCAL"
+    },
+    {
+      "case": "A11",
+      "context": {
+        "base": "reports/r24r1/activation_simulation/b3abd4a15d6048c3b7569d9381239ae2",
+        "database": "reports/r24r1/activation_simulation/b3abd4a15d6048c3b7569d9381239ae2/successor.sqlite",
+        "manifest": "reports/r24r1/activation_simulation/b3abd4a15d6048c3b7569d9381239ae2/dependencies.json",
+        "request": {
+          "accepted_at": "2026-10-08T14:00:00Z",
+          "capabilities": [
+            "PURE_CORE_STOCK"
+          ],
+          "expected_head": null,
+          "model_contract_id": "RESEARCH_STATE_V1",
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "revision": 1,
+          "state_lineage_id": "R24R1_SIMULATION_LINEAGE",
+          "trade_date": "2026-10-08"
+        }
+      },
+      "database_binding": {
+        "bytes": 57344,
+        "path": "reports/r24r1/activation_simulation/b3abd4a15d6048c3b7569d9381239ae2/successor.sqlite",
+        "sha256": "e805f17433d835a23e0c45ce1f9655262bc6de2989162f3fc507d4e1f0e0a69d"
+      },
+      "manifest_binding": {
+        "bytes": 11606,
+        "path": "reports/r24r1/activation_simulation/b3abd4a15d6048c3b7569d9381239ae2/dependencies.json",
+        "sha256": "05bf9b05b0ac89b3111f7d90e58a2300279f2d491bd690230284c5b054061157"
+      },
+      "partial_publication_visible": false,
+      "rejection": "MISSED_OBSERVATION_SLOT",
+      "status": "PASS_LOCAL"
+    },
+    {
+      "case": "A12",
+      "context": {
+        "base": "reports/r24r1/activation_simulation/b640ae40e36c4a659ade77546d32f6e1",
+        "database": "reports/r24r1/activation_simulation/b640ae40e36c4a659ade77546d32f6e1/successor.sqlite",
+        "manifest": "reports/r24r1/activation_simulation/b640ae40e36c4a659ade77546d32f6e1/dependencies.json",
+        "request": {
+          "accepted_at": "2026-10-08T14:00:00Z",
+          "capabilities": [
+            "PURE_CORE_STOCK"
+          ],
+          "expected_head": null,
+          "model_contract_id": "RESEARCH_STATE_V1",
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "revision": 1,
+          "state_lineage_id": "R24R1_SIMULATION_LINEAGE",
+          "trade_date": "2026-10-08"
+        }
+      },
+      "database_binding": {
+        "bytes": 57344,
+        "path": "reports/r24r1/activation_simulation/b640ae40e36c4a659ade77546d32f6e1/successor.sqlite",
+        "sha256": "6756672fef7b6de6619e9d3659224eaca814260bf23fc13df553fd945acc6141"
+      },
+      "manifest_binding": {
+        "bytes": 11606,
+        "path": "reports/r24r1/activation_simulation/b640ae40e36c4a659ade77546d32f6e1/dependencies.json",
+        "sha256": "25f8dcd5e91a17cff6598d3cd46eb2184b86a1391c5c7a313a14e535fc36299d"
+      },
+      "partial_publication_visible": false,
+      "rejection": "CALLER_BACKDATED_READINESS_FORBIDDEN",
+      "status": "PASS_LOCAL"
+    },
+    {
+      "case": "A13",
+      "context": {
+        "base": "reports/r24r1/activation_simulation/07bb9cebe7f743c2ae66beabad9e2a47",
+        "database": "reports/r24r1/activation_simulation/07bb9cebe7f743c2ae66beabad9e2a47/successor.sqlite",
+        "manifest": "reports/r24r1/activation_simulation/07bb9cebe7f743c2ae66beabad9e2a47/dependencies.json",
+        "request": {
+          "accepted_at": "2026-10-08T14:00:00Z",
+          "capabilities": [
+            "PURE_CORE_STOCK"
+          ],
+          "expected_head": null,
+          "model_contract_id": "RESEARCH_STATE_V1",
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "revision": 1,
+          "state_lineage_id": "R24R1_SIMULATION_LINEAGE",
+          "trade_date": "2026-10-09"
+        }
+      },
+      "database_binding": {
+        "bytes": 57344,
+        "path": "reports/r24r1/activation_simulation/07bb9cebe7f743c2ae66beabad9e2a47/successor.sqlite",
+        "sha256": "6756672fef7b6de6619e9d3659224eaca814260bf23fc13df553fd945acc6141"
+      },
+      "manifest_binding": {
+        "bytes": 11606,
+        "path": "reports/r24r1/activation_simulation/07bb9cebe7f743c2ae66beabad9e2a47/dependencies.json",
+        "sha256": "3548137465bff181e49d5e0cb532c8f1365c749f83c1bb35834e653845a2a113"
+      },
+      "partial_publication_visible": false,
+      "rejection": "EXACT_TARGET_DAILY_INPUT_REQUIRED",
+      "status": "PASS_LOCAL"
+    },
+    {
+      "case": "A14",
+      "context": {
+        "base": "reports/r24r1/activation_simulation/e79c342719144a3ea19e0a70fdc36bb3",
+        "database": "reports/r24r1/activation_simulation/e79c342719144a3ea19e0a70fdc36bb3/successor.sqlite",
+        "manifest": "reports/r24r1/activation_simulation/e79c342719144a3ea19e0a70fdc36bb3/dependencies.json",
+        "request": {
+          "accepted_at": "2026-10-08T14:00:00Z",
+          "capabilities": [
+            "PURE_CORE_STOCK"
+          ],
+          "expected_head": null,
+          "model_contract_id": "RESEARCH_STATE_V1",
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "revision": 1,
+          "state_lineage_id": "R24R1_SIMULATION_LINEAGE",
+          "trade_date": "2026-10-08"
+        }
+      },
+      "database_binding": {
+        "bytes": 57344,
+        "path": "reports/r24r1/activation_simulation/e79c342719144a3ea19e0a70fdc36bb3/successor.sqlite",
+        "sha256": "6756672fef7b6de6619e9d3659224eaca814260bf23fc13df553fd945acc6141"
+      },
+      "manifest_binding": {
+        "bytes": 11606,
+        "path": "reports/r24r1/activation_simulation/e79c342719144a3ea19e0a70fdc36bb3/dependencies.json",
+        "sha256": "2a45691af063ef9c00c308ecc0573cbd0deda26f9ce0e61124f21dcb428e4615"
+      },
+      "partial_publication_visible": false,
+      "rejection": "ENGINEERING_SEED_FORBIDDEN",
+      "status": "PASS_LOCAL"
+    },
+    {
+      "case": "A15",
+      "context": {
+        "base": "reports/r24r1/activation_simulation/1d487f0741a148a1b688a2429617407a",
+        "database": "reports/r24r1/activation_simulation/1d487f0741a148a1b688a2429617407a/successor.sqlite",
+        "manifest": "reports/r24r1/activation_simulation/1d487f0741a148a1b688a2429617407a/dependencies.json",
+        "request": {
+          "accepted_at": "2026-10-08T14:00:00Z",
+          "capabilities": [
+            "PURE_CORE_STOCK"
+          ],
+          "expected_head": null,
+          "model_contract_id": "RESEARCH_STATE_V1",
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "prior_namespace": "LEGACY",
+          "revision": 1,
+          "state_lineage_id": "R24R1_SIMULATION_LINEAGE",
+          "trade_date": "2026-10-08"
+        }
+      },
+      "database_binding": {
+        "bytes": 57344,
+        "path": "reports/r24r1/activation_simulation/1d487f0741a148a1b688a2429617407a/successor.sqlite",
+        "sha256": "6756672fef7b6de6619e9d3659224eaca814260bf23fc13df553fd945acc6141"
+      },
+      "manifest_binding": {
+        "bytes": 11606,
+        "path": "reports/r24r1/activation_simulation/1d487f0741a148a1b688a2429617407a/dependencies.json",
+        "sha256": "e805e9494f227cfdec067bf110720e31d6d864521d7ad54b303ea46250364afe"
+      },
+      "partial_publication_visible": false,
+      "rejection": "CROSS_NAMESPACE_PRIOR",
+      "status": "PASS_LOCAL"
+    },
+    {
+      "case": "A16",
+      "context": {
+        "base": "reports/r24r1/activation_simulation/91b264c356ba42c0b1d168fa02e2dc91",
+        "database": "reports/r24r1/activation_simulation/91b264c356ba42c0b1d168fa02e2dc91/successor.sqlite",
+        "manifest": "reports/r24r1/activation_simulation/91b264c356ba42c0b1d168fa02e2dc91/dependencies.json",
+        "request": {
+          "accepted_at": "2026-10-08T14:00:00Z",
+          "capabilities": [
+            "PURE_CORE_STOCK"
+          ],
+          "expected_head": null,
+          "model_contract_id": "RESEARCH_STATE_V1",
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "revision": 1,
+          "state_lineage_id": "R24R1_SIMULATION_LINEAGE",
+          "trade_date": "2026-10-08"
+        }
+      },
+      "database_binding": {
+        "bytes": 57344,
+        "path": "reports/r24r1/activation_simulation/91b264c356ba42c0b1d168fa02e2dc91/successor.sqlite",
+        "sha256": "1b456cf9ccf8079cdfb6e1058017e187f6c0023591adfa1f271e64a582f01a8a"
+      },
+      "manifest_binding": {
+        "bytes": 11606,
+        "path": "reports/r24r1/activation_simulation/91b264c356ba42c0b1d168fa02e2dc91/dependencies.json",
+        "sha256": "395ef3d211d67bf6a5538961bef7d917da5334b243d4a06ace3bc028af8434ba"
+      },
+      "partial_publication_visible": false,
+      "rejection": "INJECTED_TRANSACTION_FAILURE",
+      "status": "PASS_LOCAL"
+    },
+    {
+      "case": "A17",
+      "context": {
+        "base": "reports/r24r1/activation_simulation/2835d31c0a974554ba880fcde2b7e12e",
+        "database": "reports/r24r1/activation_simulation/2835d31c0a974554ba880fcde2b7e12e/successor.sqlite",
+        "manifest": "reports/r24r1/activation_simulation/2835d31c0a974554ba880fcde2b7e12e/dependencies.json",
+        "request": {
+          "accepted_at": "2026-10-08T14:00:00Z",
+          "capabilities": [
+            "PURE_CORE_STOCK"
+          ],
+          "expected_head": "fa23b725d5b1529aac6e2a5688a43e57e492173ae91125c33b88d5c2ab26bcd2",
+          "force_new_original": true,
+          "model_contract_id": "RESEARCH_STATE_V1",
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "revision": 2,
+          "state_lineage_id": "R24R1_SIMULATION_LINEAGE",
+          "trade_date": "2026-10-08"
+        }
+      },
+      "database_binding": {
+        "bytes": 122880,
+        "path": "reports/r24r1/activation_simulation/2835d31c0a974554ba880fcde2b7e12e/successor.sqlite",
+        "sha256": "5d86f820c4cef2d5eb23e0029e981e12734aad4e1bb2892cabe1b6dbf6d9d885"
+      },
+      "manifest_binding": {
+        "bytes": 11606,
+        "path": "reports/r24r1/activation_simulation/2835d31c0a974554ba880fcde2b7e12e/dependencies.json",
+        "sha256": "7b3ff78532fdfcbd12a6f834e72285e105aab6779a232fd70281c7a001dbd569"
+      },
+      "partial_publication_visible": false,
+      "rejection": "SECOND_ORIGINAL_ENROLLMENT_FORBIDDEN",
+      "status": "PASS_LOCAL"
+    },
+    {
+      "case": "A18",
+      "context": {
+        "base": "reports/r24r1/activation_simulation/6ef3b9ddeba6406398de75a30970295d",
+        "database": "reports/r24r1/activation_simulation/6ef3b9ddeba6406398de75a30970295d/successor.sqlite",
+        "manifest": "reports/r24r1/activation_simulation/6ef3b9ddeba6406398de75a30970295d/dependencies.json",
+        "request": {
+          "accepted_at": "2026-10-08T14:00:00Z",
+          "capabilities": [
+            "PURE_CORE_STOCK"
+          ],
+          "expected_head": "fa23b725d5b1529aac6e2a5688a43e57e492173ae91125c33b88d5c2ab26bcd2",
+          "model_contract_id": "RESEARCH_STATE_V1",
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "revision": 2,
+          "state_lineage_id": "R24R1_SIMULATION_LINEAGE",
+          "supersedes_observation": "MISSING",
+          "trade_date": "2026-10-08"
+        }
+      },
+      "database_binding": {
+        "bytes": 122880,
+        "path": "reports/r24r1/activation_simulation/6ef3b9ddeba6406398de75a30970295d/successor.sqlite",
+        "sha256": "c70cc27d4e4b8cf0ed033f516126cf2e35248cb51c178ac40693dd496bc63470"
+      },
+      "manifest_binding": {
+        "bytes": 11606,
+        "path": "reports/r24r1/activation_simulation/6ef3b9ddeba6406398de75a30970295d/dependencies.json",
+        "sha256": "197a6f1311b9d62091d1a1b6f1a44ff1d08627b8f7b2dd5ed7a0a9ca59dbf8a0"
+      },
+      "partial_publication_visible": false,
+      "rejection": "INVALID_SUPERSEDES_CHAIN",
+      "status": "PASS_LOCAL"
+    },
+    {
+      "case": "A19",
+      "context": {
+        "base": "reports/r24r1/activation_simulation/21c5ba0fc6484aa8bc8408bacd302145",
+        "database": "reports/r24r1/activation_simulation/21c5ba0fc6484aa8bc8408bacd302145/successor.sqlite",
+        "manifest": "reports/r24r1/activation_simulation/21c5ba0fc6484aa8bc8408bacd302145/dependencies.json",
+        "request": {
+          "accepted_at": "2026-10-08T14:00:00Z",
+          "capabilities": [
+            "PURE_CORE_STOCK"
+          ],
+          "expected_head": null,
+          "model_contract_id": "RESEARCH_STATE_V1",
+          "parameter_set_id": "V4_10_STATE_REDUCER_PARAMETER_SET_V1",
+          "revision": 1,
+          "state_lineage_id": "R24R1_SIMULATION_LINEAGE",
+          "trade_date": "2026-10-08"
+        }
+      },
+      "database_binding": {
+        "bytes": 57344,
+        "path": "reports/r24r1/activation_simulation/21c5ba0fc6484aa8bc8408bacd302145/successor.sqlite",
+        "sha256": "f6a34ff6afcd8bb3b64cee95433e90862ec6311171b47a91f509f64f530ff7d6"
+      },
+      "manifest_binding": {
+        "bytes": 11606,
+        "path": "reports/r24r1/activation_simulation/21c5ba0fc6484aa8bc8408bacd302145/dependencies.json",
+        "sha256": "042a3dff65fd305e992208179b44b961bb3e5c0f32d58046b7cd2478eeb977b9"
+      },
+      "partial_publication_visible": false,
+      "rejection": "ACTIVATION_HEAD_CAS_CONFLICT",
+      "status": "PASS_LOCAL"
+    },
+    {
+      "before_consumption": true,
+      "case": "A20",
+      "rejection": "REAL_SHADOW_NOT_AUTHORIZED_BEFORE_CONSUMPTION",
+      "status": "PASS_LOCAL"
+    }
+  ],
+  "count": 20,
+  "execution_baseline": "0c9f59fbe723fe0fb0e9d1a6750c339894bc7a5b",
+  "external_acceptance": "NOT_GRANTED",
+  "real_shadow_authorized": false,
+  "runtime_authorized": false,
+  "status": "PASS_LOCAL"
+}

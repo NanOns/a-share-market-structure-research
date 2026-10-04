@@ -24,7 +24,7 @@ def read_binding(root, binding):
     raw = path.read_bytes()
     if hashlib.sha256(raw).hexdigest() != binding['sha256']:
         raise ValueError('AUTHORITY_DIGEST_MISMATCH')
-    value = json.loads(raw)
+    value = json.loads(raw) if path.suffix == '.json' else {}
     if binding.get('contract_id') and value.get('contract_id') != binding['contract_id']:
         raise ValueError('AUTHORITY_ID_MISMATCH')
     return value
@@ -32,10 +32,18 @@ def read_binding(root, binding):
 
 def referential_integrity(value, shadow_owner, production_owner=None):
     """Check supplied design/readback rows, without invoking V4-21 business code."""
+    root = Path(__file__).resolve().parents[2]
+    contract = json.loads((root / 'config/v4_22_independent_audit_contract_v1.json').read_bytes())
+    try:
+        schema = read_binding(root, contract['ledger_schema_binding'])
+    except (ValueError, OSError, KeyError):
+        return dict(status='BLOCKED_AFFECTED_SCOPE', findings=[dict(reason='LEDGER_SCHEMA_AUTHORITY_INVALID')], actual_real_rows_written=0, production_grant=False)
+    linkage = PARTITION + ('source_publication', 'source_digest')
     findings = []
-    accepted = set()
+    accepted = {}
+    countable = 0
     for row in value.get('sessions', []):
-        if not all(k in row for k in PARTITION):
+        if not all(k in row for k in schema['session_ledger']['required']):
             findings.append(dict(vector='SESSION_SCHEMA', partition=None, reason='MISSING_PARTITION'))
             continue
         if row['evidence_lane'] not in REAL_LANES:
@@ -45,17 +53,30 @@ def referential_integrity(value, shadow_owner, production_owner=None):
         valid = row['capability'] in CAPABILITIES and owner is not None and row.get('native_session_authority_id') == owner['contract_id'] and row.get('native_session_authority_sha256') == owner['sha256'] and row.get('native_session_status') in owner['accepted_statuses'] and row.get('evidence_origin') == 'PIT_OBSERVED' and row.get('accepted_real_publication') is True and row.get('execution_mode') == mode
         # Projection evaluability is a separate dimension. Accepted native rows
         # remain referential parents even when projection_evaluable is false.
-        if valid:
-            accepted.add(tuple(row[k] for k in PARTITION))
+        valid = valid and all(row.get(k) not in (None, '') for k in linkage + ('trade_date','market_session_id','publication_id','publication_revision','session_receipt_id','slot_receipt_digest')) and type(row.get('projection_evaluable')) is bool
+        key = tuple(row.get(k) for k in linkage)
+        if valid and key not in accepted:
+            accepted[key] = row
+            countable += int(row['projection_evaluable'])
+        elif valid:
+            accepted[key] = None
+            findings.append(dict(vector='SESSION_AMBIGUITY', reason='MULTIPLE_SESSION_PARENTS'))
         else:
             findings.append(dict(vector='SESSION_AUTHORITY', partition={k: row[k] for k in PARTITION}, reason='NO_EXACT_ACCEPTED_NATIVE_SESSION_AUTHORITY'))
     for ledger, vector in (('events', 'A22-V421-REFINT-01'), ('outcomes', 'A22-V421-REFINT-02')):
         for index, row in enumerate(value.get(ledger, [])):
             if row.get('evidence_lane') not in REAL_LANES:
                 continue
-            if not all(k in row for k in PARTITION) or tuple(row[k] for k in PARTITION) not in accepted:
+            required = schema['event_cohort_ledger' if ledger == 'events' else 'due_outcome_ledger']['required']
+            parent = accepted.get(tuple(row.get(k) for k in linkage))
+            valid = all(k in row for k in required) and parent is not None
+            if valid:
+                valid = row.get('observation_namespace') == parent.get('observation_namespace') and row.get('execution_mode') == parent.get('execution_mode') and row.get('evidence_origin') == 'PIT_OBSERVED'
+                if ledger == 'events':
+                    valid = valid and row.get('T0') == parent['trade_date'] and row.get('calendar_identity') == parent['calendar_identity']
+            if not valid:
                 findings.append(dict(vector=vector, ledger=ledger, row_index=index, partition={k: row.get(k) for k in PARTITION}, reason='ORPHAN_REAL_ROW_WITHOUT_ACCEPTED_SESSION_PARTITION'))
-    return dict(status='BLOCKED_AFFECTED_SCOPE' if findings else 'PASS_DESIGN_ONLY', findings=findings, input_sha256=digest(value), actual_real_rows_written=0, production_grant=False, scope='INDEPENDENT_DESIGN_ORACLE_NOT_REAL_AUDIT')
+    return dict(status='BLOCKED_AFFECTED_SCOPE' if findings else 'PASS_DESIGN_ONLY', findings=findings, input_sha256=digest(value), design_countable_sessions=countable, actual_real_rows_written=0, production_grant=False, scope='INDEPENDENT_DESIGN_ORACLE_NOT_REAL_AUDIT')
 
 
 def governance(branch, expected_branch, tested_source, tag_source, annotated, clean, delta):
@@ -89,19 +110,28 @@ def validate_contract(contract, root):
             errors.append('BLOCKING_SCOPE_OUTSIDE_CAPABILITY')
     if not {f'OPEN-{i:02}' for i in range(1,11)} <= identifiers:
         errors.append('OPEN_ITEM_DISAPPEARED')
+    domains = {d['domain']: d['authority_bindings'] for d in contract['audit_domains']}
+    for item in contract['audit_items'] + contract['open_items']:
+        allowed = domains.get(item['domain'], []) + contract.get('item_cross_domain_authorizations', {}).get(item['item_id'], [])
+        authorities = item.get('authority', {})
+        authorities = authorities if isinstance(authorities, list) else [authorities]
+        for b in authorities + item.get('evidence_refs', []):
+            try:
+                read_binding(root, b)
+                if b not in allowed:
+                    raise ValueError('ITEM_DOMAIN_AUTHORITY_DIVERGENCE')
+            except (ValueError, OSError, KeyError, TypeError):
+                errors.append('ITEM_AUTHORITY_BINDING_INVALID')
     for domain in contract['audit_domains']:
         for b in domain['authority_bindings']:
             try:
-                if b['path'].endswith('.json'):
-                    read_binding(root,b)
-                elif hashlib.sha256((Path(root)/b['path']).read_bytes()).hexdigest() != b['sha256']:
-                    raise ValueError('AUTHORITY_DIGEST_MISMATCH')
+                read_binding(root,b)
             except (ValueError, OSError, KeyError):
                 errors.append('AUTHORITY_BINDING_INVALID')
     return sorted(set(errors))
 
 
-def final_verdict(contract, audit_items, gate_receipts, source_governance, unresolved_blockers=()):
+def final_verdict(contract, audit_items, gate_receipts, source_governance, unresolved_blockers=(), open_item_receipts=None):
     """Evaluate the frozen formula only; never grant acceptance or permissions."""
     required = {item['item_id']: item for item in contract['audit_items'] if item['blocking_scope']}
     seen = {}
@@ -125,6 +155,17 @@ def final_verdict(contract, audit_items, gate_receipts, source_governance, unres
                 missing.append(identifier + ':EXACT_INDEPENDENT_AUDIT_RECEIPT')
             elif digest(actual) != binding['canonical_sha256'] or actual.get('authority') != binding['authority']:
                 failed = True
+    closures = open_item_receipts or {}
+    for item in contract['open_items']:
+        if not item['blocking_scope'] and item['item_id'] != 'OPEN-10':
+            continue
+        identifier = item['item_id']
+        receipt = closures.get(identifier)
+        binding = contract.get('open_item_closure_bindings', {}).get(identifier)
+        if receipt is None or binding is None:
+            missing.append(identifier + ':EXACT_INDEPENDENT_DISPOSITION')
+        elif not closure_allowed(item, receipt) or receipt.get('explicit_disposition') not in ('CLOSED','INDEPENDENTLY_DISPOSED') or binding.get('item_id') != identifier or binding.get('capability_scope') != item['capability_scope'] or binding.get('authority') != item['authority'] or receipt.get('authority') != binding.get('authority') or digest(receipt) != binding.get('canonical_sha256'):
+            failed = True
     bindings = contract['runtime_receipt_bindings']
     for capability in contract['capabilities']:
         for gate in contract['required_real_gates']:

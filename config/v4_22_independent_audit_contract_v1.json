@@ -6424,6 +6424,78 @@
       "no writes/grants/settlement calculations"
     ]
   },
+  "item_cross_domain_authorizations": {
+    "OPEN-01": [
+      {
+        "bytes": 8310,
+        "path": "docs/evidence/r31/V4_R30R1_V4_21_NATIVE_SESSION_REPAIR_FINAL_INDEPENDENT_EXTERNAL_AUDIT_R1_20261004.md",
+        "sha256": "ce01633c65782a073112b0646bb72b883eef5dc4d92e530b736b9a397e22bc2f"
+      }
+    ],
+    "OPEN-02": [
+      {
+        "bytes": 8310,
+        "path": "docs/evidence/r31/V4_R30R1_V4_21_NATIVE_SESSION_REPAIR_FINAL_INDEPENDENT_EXTERNAL_AUDIT_R1_20261004.md",
+        "sha256": "ce01633c65782a073112b0646bb72b883eef5dc4d92e530b736b9a397e22bc2f"
+      }
+    ],
+    "OPEN-03": [
+      {
+        "bytes": 8310,
+        "path": "docs/evidence/r31/V4_R30R1_V4_21_NATIVE_SESSION_REPAIR_FINAL_INDEPENDENT_EXTERNAL_AUDIT_R1_20261004.md",
+        "sha256": "ce01633c65782a073112b0646bb72b883eef5dc4d92e530b736b9a397e22bc2f"
+      }
+    ],
+    "OPEN-04": [
+      {
+        "bytes": 8310,
+        "path": "docs/evidence/r31/V4_R30R1_V4_21_NATIVE_SESSION_REPAIR_FINAL_INDEPENDENT_EXTERNAL_AUDIT_R1_20261004.md",
+        "sha256": "ce01633c65782a073112b0646bb72b883eef5dc4d92e530b736b9a397e22bc2f"
+      }
+    ],
+    "OPEN-05": [
+      {
+        "bytes": 8310,
+        "path": "docs/evidence/r31/V4_R30R1_V4_21_NATIVE_SESSION_REPAIR_FINAL_INDEPENDENT_EXTERNAL_AUDIT_R1_20261004.md",
+        "sha256": "ce01633c65782a073112b0646bb72b883eef5dc4d92e530b736b9a397e22bc2f"
+      }
+    ],
+    "OPEN-06": [
+      {
+        "bytes": 8310,
+        "path": "docs/evidence/r31/V4_R30R1_V4_21_NATIVE_SESSION_REPAIR_FINAL_INDEPENDENT_EXTERNAL_AUDIT_R1_20261004.md",
+        "sha256": "ce01633c65782a073112b0646bb72b883eef5dc4d92e530b736b9a397e22bc2f"
+      }
+    ],
+    "OPEN-07": [
+      {
+        "bytes": 8310,
+        "path": "docs/evidence/r31/V4_R30R1_V4_21_NATIVE_SESSION_REPAIR_FINAL_INDEPENDENT_EXTERNAL_AUDIT_R1_20261004.md",
+        "sha256": "ce01633c65782a073112b0646bb72b883eef5dc4d92e530b736b9a397e22bc2f"
+      }
+    ],
+    "OPEN-08": [
+      {
+        "bytes": 8310,
+        "path": "docs/evidence/r31/V4_R30R1_V4_21_NATIVE_SESSION_REPAIR_FINAL_INDEPENDENT_EXTERNAL_AUDIT_R1_20261004.md",
+        "sha256": "ce01633c65782a073112b0646bb72b883eef5dc4d92e530b736b9a397e22bc2f"
+      }
+    ],
+    "OPEN-09": [
+      {
+        "bytes": 8310,
+        "path": "docs/evidence/r31/V4_R30R1_V4_21_NATIVE_SESSION_REPAIR_FINAL_INDEPENDENT_EXTERNAL_AUDIT_R1_20261004.md",
+        "sha256": "ce01633c65782a073112b0646bb72b883eef5dc4d92e530b736b9a397e22bc2f"
+      }
+    ],
+    "OPEN-10": [
+      {
+        "bytes": 8310,
+        "path": "docs/evidence/r31/V4_R30R1_V4_21_NATIVE_SESSION_REPAIR_FINAL_INDEPENDENT_EXTERNAL_AUDIT_R1_20261004.md",
+        "sha256": "ce01633c65782a073112b0646bb72b883eef5dc4d92e530b736b9a397e22bc2f"
+      }
+    ]
+  },
   "item_required_fields": [
     "item_id",
     "domain",
@@ -6435,8 +6507,15 @@
     "disposition_rule",
     "evidence_refs"
   ],
+  "ledger_schema_binding": {
+    "bytes": 26522,
+    "contract_id": "V4_21_CONTINUED_FORWARD_OBSERVATION_CONTRACT_V1",
+    "path": "config/v4_21_continued_forward_observation_contract_v1.json",
+    "sha256": "45e4d0d16c30c6fb12c24a7d798624bcb1d8c17f1e1e671199914c5b6e40f510"
+  },
   "mode": "CONTRACT_DESIGN_ONLY",
   "next_stage": "STOP_WAIT_R31_INDEPENDENT_EXTERNAL_AUDIT",
+  "open_item_closure_bindings": {},
   "open_items": [
     {
       "authority": {
@@ -7035,6 +7114,15 @@
     "accepted_native_parent": "EXACT_ACCEPTED_AUTHORITY_AND_NATIVE_ACCEPTED_STATUS; PROJECTION_EVALUABLE_IS_SEPARATE",
     "effect": "INDEPENDENT_AUDIT_ONLY; NO_V4_21_BUSINESS_SEMANTICS_CHANGE",
     "orphan_result": "BLOCKED_AFFECTED_SCOPE",
+    "parent_identity": [
+      "capability",
+      "evidence_lane",
+      "model_contract_id",
+      "parameter_digest",
+      "state_lineage_id",
+      "source_publication",
+      "source_digest"
+    ],
     "partition": [
       "capability",
       "evidence_lane",
@@ -7100,5 +7188,5 @@
     "clean_checkout_required": true,
     "forbid_post_test_implementation_drift": true
   },
-  "version": "1.0.0"
+  "version": "1.0.1"
 }

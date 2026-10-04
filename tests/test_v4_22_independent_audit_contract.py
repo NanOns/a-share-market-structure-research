@@ -14,8 +14,12 @@ C=json.loads((ROOT/'config/v4_22_independent_audit_contract_v1.json').read_bytes
 def ledger():
     owner=C['shadow_session_owner']
     common=dict(capability='STOCK_CORE',evidence_lane='SHADOW_REAL',model_contract_id='SIM_MODEL',parameter_digest='SIM_PARAMETERS',state_lineage_id='SIM_LINEAGE')
-    session=dict(common,native_session_authority_id=owner['contract_id'],native_session_authority_sha256=owner['sha256'],native_session_status='ACCEPTED_ON_TIME',projection_evaluable=True,evidence_origin='PIT_OBSERVED',accepted_real_publication=True,execution_mode='SHADOW')
-    return dict(kind='CONTRACT_DESIGN_SIMULATION',sessions=[session],events=[dict(common,logical_event_id='SIM_EVENT')],outcomes=[dict(common,due_id='SIM_DUE')])
+    schema=read_binding(ROOT,C['ledger_schema_binding'])
+    rows={name:{k:'SIM_'+k for k in schema[key]['required']} for name,key in [('sessions','session_ledger'),('events','event_cohort_ledger'),('outcomes','due_outcome_ledger')]}
+    for row in rows.values(): row.update(common,observation_namespace='SIM_NS',source_publication='SIM_PUB',source_digest='SIM_DIGEST',evidence_origin='PIT_OBSERVED',execution_mode='SHADOW')
+    rows['sessions'].update(native_session_authority_id=owner['contract_id'],native_session_authority_sha256=owner['sha256'],native_session_status='ACCEPTED_ON_TIME',projection_evaluable=True,projection_evaluable_reason=None,accepted_real_publication=True,trade_date='2026-10-05',calendar_identity='SIM_CAL',publication_id='SIM_PUB',publication_revision=1)
+    rows['events'].update(T0='2026-10-05',calendar_identity='SIM_CAL')
+    return dict(kind='CONTRACT_DESIGN_SIMULATION',**{k:[v] for k,v in rows.items()})
 
 
 def evaluate(value):
@@ -120,7 +124,7 @@ def test_current_real_gates_not_ready_even_if_design_items_pass():
     items=[dict(i,current_status='PASS',independent_recheck=True) for i in C['audit_items'] if i['blocking_scope']]
     result=final_verdict(C,items,{},dict(status='PASS'))
     assert result['formula_result']=='FINAL_AUDIT_NOT_READY' and result['acceptance_granted'] is False
-    assert len(result['missing'])==len(items)+len(C['capabilities'])*len(C['required_real_gates'])
+    assert len(result['missing'])==len(items)+len(C['capabilities'])*len(C['required_real_gates'])+9
 
 
 def future_simulation():
@@ -139,7 +143,7 @@ def future_simulation():
 def test_formula_future_simulation_is_never_an_acceptance_grant():
     c,items,receipts=future_simulation()
     result=final_verdict(c,items,receipts,dict(status='PASS'))
-    assert result['formula_result']=='V4_22_FINAL_PASS'
+    assert result['formula_result']=='FINAL_AUDIT_NOT_READY'
     assert result['acceptance_granted'] is False and result['production_grant'] is False
     assert result['evaluation_scope'].startswith('CONTRACT_DESIGN_ONLY')
 

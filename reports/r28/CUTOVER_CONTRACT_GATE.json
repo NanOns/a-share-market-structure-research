@@ -1,0 +1,28 @@
+{
+  "V4_19_ACCEPTED_HEAD": "NOT_CREATED",
+  "bindings": {
+    "CAPABILITY_REGISTRY.json": "EXACT_SECTION_AND_SHA256",
+    "CURRENT_PERMISSION_GATE.json": "EXACT_SECTION_AND_SHA256",
+    "CUTOVER_RECEIPT_SCHEMA.json": "EXACT_SECTION_AND_SHA256",
+    "CUTOVER_VECTOR_REGISTRY.json": "EXACT_SECTION_AND_SHA256",
+    "FOCUS_ROUTING_GATE.json": "EXACT_SECTION_AND_SHA256",
+    "MIXED_MODE_UI_POLICY.json": "EXACT_SECTION_AND_SHA256",
+    "PERMISSION_FORMULA_GATE.json": "EXACT_SECTION_AND_SHA256",
+    "ROLLBACK_POLICY.json": "EXACT_SECTION_AND_SHA256"
+  },
+  "capabilities": 5,
+  "design_vectors": 20,
+  "focus_source_cutover": false,
+  "implementation_entry": "BLOCKED_WAIT_REAL_GATES",
+  "next_stage": "STOP_WAIT_R28_INDEPENDENT_EXTERNAL_AUDIT",
+  "production_permission": {
+    "ROTATION": false,
+    "SECTOR_RISK_CHANGE": false,
+    "SECTOR_STAGE": false,
+    "STOCK_CORE": false,
+    "STOCK_SECTOR_DEPENDENT": false
+  },
+  "protected": "PASS",
+  "scope": "CUTOVER_V2_CONTRACT_DESIGN_ONLY",
+  "status": "PASS_LOCAL_READY_FOR_EXTERNAL_AUDIT"
+}

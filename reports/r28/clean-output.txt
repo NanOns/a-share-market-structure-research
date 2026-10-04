@@ -1,0 +1,195 @@
+........................................................................ [ 25%]
+........................................................................ [ 51%]
+............................F.F.F....................................... [ 77%]
+................................................................         [100%]
+================================== FAILURES ===================================
+________________ test_v3_is_the_single_unified_workbench_entry ________________
+
+tmp_path = WindowsPath('E:/codex_tmp/test_temp/r28-clean/test_v3_is_the_single_unified_0')
+
+    def test_v3_is_the_single_unified_workbench_entry(tmp_path):
+        db = tmp_path / "entry.duckdb"
+        with WorkbenchRepository(ROOT, db):
+            pass
+        server = ThreadingHTTPServer(("127.0.0.1", 0), app.make_handler(ROOT, db))
+        thread = threading.Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        try:
+            response = urllib.request.urlopen(f"http://127.0.0.1:{server.server_port}/")
+            page = response.read().decode("utf-8")
+            assert response.status == 200
+            assert 'data-workbench-mode="v3"' in page
+            assert 'data-workbench-base="/"' in page
+            assert "<title>统一研究工作台</title>" in page
+            assert "V3 单一入口" not in page
+            for label in ("研究首页", "板块研究", "个股研究", "联动筛选", "市场与事件", "数据 / 运维"):
+                assert label in page
+            assert "旧功能 / 历史工作台" not in page
+            assert "/v2?page=" not in page
+            assert "/v2/v3-unified.js" in page
+            assert "一键生成本地数据" in page
+            assert "id=\"v3-build-research\"" in page
+            assert "进入数据能力" in page
+            assert "href=\"/operations\"" in page
+            assert "进入运维中心" in page
+            assert "今日总览 · 本地收盘数据" in page
+            assert 'id="v3-local-market"' in page
+            assert 'id="v3-local-sectors"' in page
+            assert 'data-v3-page="linkage"' not in page
+            assert '[data-workbench-mode="v3"] #v3-legacy-overview { display: none; }' in page
+            assert 'href="/v3/online"' not in page
+            assert "在线事件与热度工作台" in page
+            assert 'id="v3-online-trade-date"' in page
+            assert '<option value="super_stock" selected>强势股</option>' in page
+            assert '<option value="limit_up">涨停</option>' not in page
+            assert 'id="v3-online-pool-refresh"' not in page
+            assert 'id="v3-online-topic-members"' not in page
+            assert "刷新全部在线数据" in page
+            assert 'href="/v3/events"' not in page
+            assert 'class="panel local-limit-panel"' in page
+            assert '[data-workbench-mode="v3"] .hot-rank-panel, [data-workbench-mode="v3"] .local-limit-panel { display: none; }' in page
+            script = (ROOT / "src/workbench_service/static/v2/v3-unified.js").read_text(encoding="utf-8")
+            assert "post('/api/jobs'" in script
+            assert "get('/api/jobs?job_id='" in script
+>           assert "get('/api/v3/research/today?page='" in script
+E           assert "get('/api/v3/research/today?page='" in "(function () {\n    'use strict';\n    if ((document.body.dataset.workbenchMode || '') !== 'v3') return;\n\n    // V3... · ' + job.job_id, 'warn');\n        pollResearchBuild(job.job_id, serial, 0);\n    }).catch(function () {});\n}());\n"
+
+tests\upgrade_v3\test_v3_unified_entry.py:58: AssertionError
+___________________ test_hot_rank_route_skips_request_scope ___________________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000019217764DE0>
+tmp_path = WindowsPath('E:/codex_tmp/test_temp/r28-clean/test_hot_rank_route_skips_requ0')
+
+    def test_hot_rank_route_skips_request_scope(monkeypatch, tmp_path):
+        scope_events = []
+    
+        class _Api:
+            def __init__(self, *args, **kwargs):
+                pass
+    
+            @contextmanager
+            def request_scope(self):
+                scope_events.append("enter")
+                yield
+                scope_events.append("exit")
+    
+        monkeypatch.setattr(app, "Api", _Api)
+        for name in (
+            "HistoryJobService",
+            "AnalysisActivationService",
+            "OperationsConfig",
+            "StorageGovernance",
+            "BackupService",
+            "MaintenanceService",
+        ):
+            monkeypatch.setattr(app, name, _NoopService)
+    
+>       handler_type = app.make_handler(tmp_path, tmp_path / "test.duckdb")
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\upgrade_v3\test_p01_01_lock_scope.py:41: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('E:/codex_tmp/test_temp/r28-clean/test_hot_rank_route_skips_requ0')
+db = WindowsPath('E:/codex_tmp/test_temp/r28-clean/test_hot_rank_route_skips_requ0/test.duckdb')
+shadow_simulation_fixture = None
+
+    def make_handler(root,db,*,shadow_simulation_fixture=None):
+     from .shadow_context import ShadowContextReader, PREFIX as shadow_prefix
+     shadow_reader=None
+     try:shadow_reader=ShadowContextReader(root,simulation_fixture=shadow_simulation_fixture)
+     except (OSError,ValueError,KeyError,TypeError):pass
+     pg_api = str(os.environ.get('WORKBENCH_API_BACKEND','')).lower() == 'postgresql'
+     api_provider = PostgresDuckDBApiConnectionProvider() if pg_api else DuckDBApiConnectionProvider(db)
+     api=Api(db,root=root,connection_provider=api_provider)
+     focus_tracker_api=FocusTrackerReadAPI(env_file=Path(root)/'config/.env')
+     pg_repository = PostgresRepository() if pg_api else None
+     if pg_repository:
+      pg_repository.open()
+     pg_history_repository = None
+     if pg_api:
+      pg_history_repository = PostgresRepository()
+      pg_history_repository.open()
+     pg_ops_repository = None
+     if pg_api:
+      pg_ops_repository = PostgresRepository()
+      pg_ops_repository.open()
+     pg_ops_write = PostgresWriteRepository(pg_ops_repository) if pg_ops_repository else None
+     pg_config_store = PostgresConfigVersionStore(pg_ops_repository) if pg_ops_repository else None
+     pg_backup_catalog = PostgresBackupCatalogRepository(pg_ops_repository) if pg_ops_repository else None
+     pg_publisher_factory = PostgresPublicationBackendFactory() if pg_api else None
+     def new_publisher():
+      return OneClickPublisher(root,db,postgres_backend_factory=pg_publisher_factory)
+     research=ResearchQueries(lambda: api._con(),root=root); today_research=TodayResearchBundleReader(root,database_path=None if pg_api else db,repository=pg_repository); turnover_enrichment=TurnoverEnrichmentService(root,today_research); events=OnlineEventQueries(lambda: api._con()); p09=P09OnlineProducts(); history=HistoryJobService(root,db,repository=PostgresHistoryJobRepository(pg_history_repository) if pg_history_repository else None); history.recover_interrupted(background=True); activation=AnalysisActivationService(root,db,repository=PostgresAnalysisActivationRepository() if pg_api else None); operations=OperationsConfig(root,db,version_store=pg_config_store) if pg_config_store else OperationsConfig(root,db); storage=StorageGovernance(root,db,storage_repository=pg_ops_write) if pg_ops_write else StorageGovernance(root,db); backups=BackupService(root,db,catalog=pg_backup_catalog) if pg_backup_catalog else BackupService(root,db); maintenance=MaintenanceService(root,db,metadata_reader=PostgresOperationsMetadataReader(pg_ops_repository) if pg_ops_repository else None); static=Path(root)/'src/workbench_service/static';csrf=secrets.token_urlsafe(24);publishers={};daily_jobs={};research_jobs={};daily_jobs_lock=threading.Lock()
+>    last_operations_status=maintenance.status()
+                            ^^^^^^^^^^^^^^^^^^
+E    AttributeError: '_NoopService' object has no attribute 'status'
+
+src\workbench_service\app.py:1782: AttributeError
+_________________ test_send_marks_disconnected_client_closed __________________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001921778E4A0>
+tmp_path = WindowsPath('E:/codex_tmp/test_temp/r28-clean/test_send_marks_disconnected_c0')
+
+    def test_send_marks_disconnected_client_closed(monkeypatch, tmp_path):
+        class _Api:
+            def __init__(self, *args, **kwargs):
+                pass
+    
+        monkeypatch.setattr(app, "Api", _Api)
+        for name in (
+            "HistoryJobService",
+            "AnalysisActivationService",
+            "OperationsConfig",
+            "StorageGovernance",
+            "BackupService",
+            "MaintenanceService",
+        ):
+            monkeypatch.setattr(app, name, _NoopService)
+>       handler_type = app.make_handler(tmp_path, tmp_path / "test.duckdb")
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\upgrade_v3\test_p01_01_lock_scope.py:116: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('E:/codex_tmp/test_temp/r28-clean/test_send_marks_disconnected_c0')
+db = WindowsPath('E:/codex_tmp/test_temp/r28-clean/test_send_marks_disconnected_c0/test.duckdb')
+shadow_simulation_fixture = None
+
+    def make_handler(root,db,*,shadow_simulation_fixture=None):
+     from .shadow_context import ShadowContextReader, PREFIX as shadow_prefix
+     shadow_reader=None
+     try:shadow_reader=ShadowContextReader(root,simulation_fixture=shadow_simulation_fixture)
+     except (OSError,ValueError,KeyError,TypeError):pass
+     pg_api = str(os.environ.get('WORKBENCH_API_BACKEND','')).lower() == 'postgresql'
+     api_provider = PostgresDuckDBApiConnectionProvider() if pg_api else DuckDBApiConnectionProvider(db)
+     api=Api(db,root=root,connection_provider=api_provider)
+     focus_tracker_api=FocusTrackerReadAPI(env_file=Path(root)/'config/.env')
+     pg_repository = PostgresRepository() if pg_api else None
+     if pg_repository:
+      pg_repository.open()
+     pg_history_repository = None
+     if pg_api:
+      pg_history_repository = PostgresRepository()
+      pg_history_repository.open()
+     pg_ops_repository = None
+     if pg_api:
+      pg_ops_repository = PostgresRepository()
+      pg_ops_repository.open()
+     pg_ops_write = PostgresWriteRepository(pg_ops_repository) if pg_ops_repository else None
+     pg_config_store = PostgresConfigVersionStore(pg_ops_repository) if pg_ops_repository else None
+     pg_backup_catalog = PostgresBackupCatalogRepository(pg_ops_repository) if pg_ops_repository else None
+     pg_publisher_factory = PostgresPublicationBackendFactory() if pg_api else None
+     def new_publisher():
+      return OneClickPublisher(root,db,postgres_backend_factory=pg_publisher_factory)
+     research=ResearchQueries(lambda: api._con(),root=root); today_research=TodayResearchBundleReader(root,database_path=None if pg_api else db,repository=pg_repository); turnover_enrichment=TurnoverEnrichmentService(root,today_research); events=OnlineEventQueries(lambda: api._con()); p09=P09OnlineProducts(); history=HistoryJobService(root,db,repository=PostgresHistoryJobRepository(pg_history_repository) if pg_history_repository else None); history.recover_interrupted(background=True); activation=AnalysisActivationService(root,db,repository=PostgresAnalysisActivationRepository() if pg_api else None); operations=OperationsConfig(root,db,version_store=pg_config_store) if pg_config_store else OperationsConfig(root,db); storage=StorageGovernance(root,db,storage_repository=pg_ops_write) if pg_ops_write else StorageGovernance(root,db); backups=BackupService(root,db,catalog=pg_backup_catalog) if pg_backup_catalog else BackupService(root,db); maintenance=MaintenanceService(root,db,metadata_reader=PostgresOperationsMetadataReader(pg_ops_repository) if pg_ops_repository else None); static=Path(root)/'src/workbench_service/static';csrf=secrets.token_urlsafe(24);publishers={};daily_jobs={};research_jobs={};daily_jobs_lock=threading.Lock()
+>    last_operations_status=maintenance.status()
+                            ^^^^^^^^^^^^^^^^^^
+E    AttributeError: '_NoopService' object has no attribute 'status'
+
+src\workbench_service\app.py:1782: AttributeError
+=========================== short test summary info ===========================
+FAILED tests/upgrade_v3/test_v3_unified_entry.py::test_v3_is_the_single_unified_workbench_entry
+FAILED tests/upgrade_v3/test_p01_01_lock_scope.py::test_hot_rank_route_skips_request_scope
+FAILED tests/upgrade_v3/test_p01_01_lock_scope.py::test_send_marks_disconnected_client_closed
+3 failed, 277 passed in 13.65s

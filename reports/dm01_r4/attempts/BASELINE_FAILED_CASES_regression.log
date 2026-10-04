@@ -1,0 +1,940 @@
+FFFFFFFFFFFFFFFFFFFFFFFFFF                                               [100%]
+================================== FAILURES ===================================
+___________________ test_hot_rank_route_skips_request_scope ___________________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001A17FA92650>
+tmp_path = WindowsPath('E:/codex_tmp/test_temp/dm01-r4-baseline/test_hot_rank_route_skips_requ0')
+
+    def test_hot_rank_route_skips_request_scope(monkeypatch, tmp_path):
+        scope_events = []
+    
+        class _Api:
+            def __init__(self, *args, **kwargs):
+                pass
+    
+            @contextmanager
+            def request_scope(self):
+                scope_events.append("enter")
+                yield
+                scope_events.append("exit")
+    
+        monkeypatch.setattr(app, "Api", _Api)
+        for name in (
+            "HistoryJobService",
+            "AnalysisActivationService",
+            "OperationsConfig",
+            "StorageGovernance",
+            "BackupService",
+            "MaintenanceService",
+        ):
+            monkeypatch.setattr(app, name, _NoopService)
+    
+>       handler_type = app.make_handler(tmp_path, tmp_path / "test.duckdb")
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\upgrade_v3\test_p01_01_lock_scope.py:41: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('E:/codex_tmp/test_temp/dm01-r4-baseline/test_hot_rank_route_skips_requ0')
+db = WindowsPath('E:/codex_tmp/test_temp/dm01-r4-baseline/test_hot_rank_route_skips_requ0/test.duckdb')
+shadow_simulation_fixture = None
+
+    def make_handler(root,db,*,shadow_simulation_fixture=None):
+     from .shadow_context import ShadowContextReader, PREFIX as shadow_prefix
+     shadow_reader=None
+     try:shadow_reader=ShadowContextReader(root,simulation_fixture=shadow_simulation_fixture)
+     except (OSError,ValueError,KeyError,TypeError):pass
+     pg_api = str(os.environ.get('WORKBENCH_API_BACKEND','')).lower() == 'postgresql'
+     api_provider = PostgresDuckDBApiConnectionProvider() if pg_api else DuckDBApiConnectionProvider(db)
+     api=Api(db,root=root,connection_provider=api_provider)
+     focus_tracker_api=FocusTrackerReadAPI(env_file=Path(root)/'config/.env')
+     pg_repository = PostgresRepository() if pg_api else None
+     if pg_repository:
+      pg_repository.open()
+     pg_history_repository = None
+     if pg_api:
+      pg_history_repository = PostgresRepository()
+      pg_history_repository.open()
+     pg_ops_repository = None
+     if pg_api:
+      pg_ops_repository = PostgresRepository()
+      pg_ops_repository.open()
+     pg_ops_write = PostgresWriteRepository(pg_ops_repository) if pg_ops_repository else None
+     pg_config_store = PostgresConfigVersionStore(pg_ops_repository) if pg_ops_repository else None
+     pg_backup_catalog = PostgresBackupCatalogRepository(pg_ops_repository) if pg_ops_repository else None
+     pg_publisher_factory = PostgresPublicationBackendFactory() if pg_api else None
+     def new_publisher():
+      return OneClickPublisher(root,db,postgres_backend_factory=pg_publisher_factory)
+     research=ResearchQueries(lambda: api._con(),root=root); today_research=TodayResearchBundleReader(root,database_path=None if pg_api else db,repository=pg_repository); turnover_enrichment=TurnoverEnrichmentService(root,today_research); events=OnlineEventQueries(lambda: api._con()); p09=P09OnlineProducts(); history=HistoryJobService(root,db,repository=PostgresHistoryJobRepository(pg_history_repository) if pg_history_repository else None); history.recover_interrupted(background=True); activation=AnalysisActivationService(root,db,repository=PostgresAnalysisActivationRepository() if pg_api else None); operations=OperationsConfig(root,db,version_store=pg_config_store) if pg_config_store else OperationsConfig(root,db); storage=StorageGovernance(root,db,storage_repository=pg_ops_write) if pg_ops_write else StorageGovernance(root,db); backups=BackupService(root,db,catalog=pg_backup_catalog) if pg_backup_catalog else BackupService(root,db); maintenance=MaintenanceService(root,db,metadata_reader=PostgresOperationsMetadataReader(pg_ops_repository) if pg_ops_repository else None); static=Path(root)/'src/workbench_service/static';csrf=secrets.token_urlsafe(24);publishers={};daily_jobs={};research_jobs={};daily_jobs_lock=threading.Lock()
+>    last_operations_status=maintenance.status()
+                            ^^^^^^^^^^^^^^^^^^
+E    AttributeError: '_NoopService' object has no attribute 'status'
+
+src\workbench_service\app.py:1782: AttributeError
+_________________ test_send_marks_disconnected_client_closed __________________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001A17FCEB360>
+tmp_path = WindowsPath('E:/codex_tmp/test_temp/dm01-r4-baseline/test_send_marks_disconnected_c0')
+
+    def test_send_marks_disconnected_client_closed(monkeypatch, tmp_path):
+        class _Api:
+            def __init__(self, *args, **kwargs):
+                pass
+    
+        monkeypatch.setattr(app, "Api", _Api)
+        for name in (
+            "HistoryJobService",
+            "AnalysisActivationService",
+            "OperationsConfig",
+            "StorageGovernance",
+            "BackupService",
+            "MaintenanceService",
+        ):
+            monkeypatch.setattr(app, name, _NoopService)
+>       handler_type = app.make_handler(tmp_path, tmp_path / "test.duckdb")
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\upgrade_v3\test_p01_01_lock_scope.py:116: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('E:/codex_tmp/test_temp/dm01-r4-baseline/test_send_marks_disconnected_c0')
+db = WindowsPath('E:/codex_tmp/test_temp/dm01-r4-baseline/test_send_marks_disconnected_c0/test.duckdb')
+shadow_simulation_fixture = None
+
+    def make_handler(root,db,*,shadow_simulation_fixture=None):
+     from .shadow_context import ShadowContextReader, PREFIX as shadow_prefix
+     shadow_reader=None
+     try:shadow_reader=ShadowContextReader(root,simulation_fixture=shadow_simulation_fixture)
+     except (OSError,ValueError,KeyError,TypeError):pass
+     pg_api = str(os.environ.get('WORKBENCH_API_BACKEND','')).lower() == 'postgresql'
+     api_provider = PostgresDuckDBApiConnectionProvider() if pg_api else DuckDBApiConnectionProvider(db)
+     api=Api(db,root=root,connection_provider=api_provider)
+     focus_tracker_api=FocusTrackerReadAPI(env_file=Path(root)/'config/.env')
+     pg_repository = PostgresRepository() if pg_api else None
+     if pg_repository:
+      pg_repository.open()
+     pg_history_repository = None
+     if pg_api:
+      pg_history_repository = PostgresRepository()
+      pg_history_repository.open()
+     pg_ops_repository = None
+     if pg_api:
+      pg_ops_repository = PostgresRepository()
+      pg_ops_repository.open()
+     pg_ops_write = PostgresWriteRepository(pg_ops_repository) if pg_ops_repository else None
+     pg_config_store = PostgresConfigVersionStore(pg_ops_repository) if pg_ops_repository else None
+     pg_backup_catalog = PostgresBackupCatalogRepository(pg_ops_repository) if pg_ops_repository else None
+     pg_publisher_factory = PostgresPublicationBackendFactory() if pg_api else None
+     def new_publisher():
+      return OneClickPublisher(root,db,postgres_backend_factory=pg_publisher_factory)
+     research=ResearchQueries(lambda: api._con(),root=root); today_research=TodayResearchBundleReader(root,database_path=None if pg_api else db,repository=pg_repository); turnover_enrichment=TurnoverEnrichmentService(root,today_research); events=OnlineEventQueries(lambda: api._con()); p09=P09OnlineProducts(); history=HistoryJobService(root,db,repository=PostgresHistoryJobRepository(pg_history_repository) if pg_history_repository else None); history.recover_interrupted(background=True); activation=AnalysisActivationService(root,db,repository=PostgresAnalysisActivationRepository() if pg_api else None); operations=OperationsConfig(root,db,version_store=pg_config_store) if pg_config_store else OperationsConfig(root,db); storage=StorageGovernance(root,db,storage_repository=pg_ops_write) if pg_ops_write else StorageGovernance(root,db); backups=BackupService(root,db,catalog=pg_backup_catalog) if pg_backup_catalog else BackupService(root,db); maintenance=MaintenanceService(root,db,metadata_reader=PostgresOperationsMetadataReader(pg_ops_repository) if pg_ops_repository else None); static=Path(root)/'src/workbench_service/static';csrf=secrets.token_urlsafe(24);publishers={};daily_jobs={};research_jobs={};daily_jobs_lock=threading.Lock()
+>    last_operations_status=maintenance.status()
+                            ^^^^^^^^^^^^^^^^^^
+E    AttributeError: '_NoopService' object has no attribute 'status'
+
+src\workbench_service\app.py:1782: AttributeError
+________________ test_v3_is_the_single_unified_workbench_entry ________________
+
+tmp_path = WindowsPath('E:/codex_tmp/test_temp/dm01-r4-baseline/test_v3_is_the_single_unified_0')
+
+    def test_v3_is_the_single_unified_workbench_entry(tmp_path):
+        db = tmp_path / "entry.duckdb"
+        with WorkbenchRepository(ROOT, db):
+            pass
+        server = ThreadingHTTPServer(("127.0.0.1", 0), app.make_handler(ROOT, db))
+        thread = threading.Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        try:
+            response = urllib.request.urlopen(f"http://127.0.0.1:{server.server_port}/")
+            page = response.read().decode("utf-8")
+            assert response.status == 200
+            assert 'data-workbench-mode="v3"' in page
+            assert 'data-workbench-base="/"' in page
+            assert "<title>统一研究工作台</title>" in page
+            assert "V3 单一入口" not in page
+            for label in ("研究首页", "板块研究", "个股研究", "联动筛选", "市场与事件", "数据 / 运维"):
+                assert label in page
+            assert "旧功能 / 历史工作台" not in page
+            assert "/v2?page=" not in page
+            assert "/v2/v3-unified.js" in page
+            assert "一键生成本地数据" in page
+            assert "id=\"v3-build-research\"" in page
+            assert "进入数据能力" in page
+            assert "href=\"/operations\"" in page
+            assert "进入运维中心" in page
+            assert "今日总览 · 本地收盘数据" in page
+            assert 'id="v3-local-market"' in page
+            assert 'id="v3-local-sectors"' in page
+            assert 'data-v3-page="linkage"' not in page
+            assert '[data-workbench-mode="v3"] #v3-legacy-overview { display: none; }' in page
+            assert 'href="/v3/online"' not in page
+            assert "在线事件与热度工作台" in page
+            assert 'id="v3-online-trade-date"' in page
+            assert '<option value="super_stock" selected>强势股</option>' in page
+            assert '<option value="limit_up">涨停</option>' not in page
+            assert 'id="v3-online-pool-refresh"' not in page
+            assert 'id="v3-online-topic-members"' not in page
+            assert "刷新全部在线数据" in page
+            assert 'href="/v3/events"' not in page
+            assert 'class="panel local-limit-panel"' in page
+            assert '[data-workbench-mode="v3"] .hot-rank-panel, [data-workbench-mode="v3"] .local-limit-panel { display: none; }' in page
+            script = (ROOT / "src/workbench_service/static/v2/v3-unified.js").read_text(encoding="utf-8")
+            assert "post('/api/jobs'" in script
+            assert "get('/api/jobs?job_id='" in script
+>           assert "get('/api/v3/research/today?page='" in script
+E           assert "get('/api/v3/research/today?page='" in "(function () {\n    'use strict';\n    if ((document.body.dataset.workbenchMode || '') !== 'v3') return;\n\n    // V3... · ' + job.job_id, 'warn');\n        pollResearchBuild(job.job_id, serial, 0);\n    }).catch(function () {});\n}());\n"
+
+tests\upgrade_v3\test_v3_unified_entry.py:58: AssertionError
+_____________ test_production_and_v4_09_acceptance_stay_disabled ______________
+
+    def test_production_and_v4_09_acceptance_stay_disabled():
+        from workbench_analysis.historical_stage_governance_r17 import resolve,current_state,STAGE
+        import subprocess,json
+        historical=json.loads(resolve(ROOT,dict(path=STAGE,sha256='6620089e9a1ca550e89c2c0bb177887528c8e7d160a44c584664f04b91a1c48e',bytes=6789)).read_bytes())
+        assert historical['accepted_stage_range']=='V4_00_TO_V4_08_ACCEPTED'
+        assert 'v4_09_binding' not in historical
+        assert subprocess.run(['git','cat-file','-e','5eca56d3555a826c4cca94d6e3d7ae9d11628be6:data/v4/V4_09_ACCEPTED_HEAD.json'],cwd=ROOT,capture_output=True).returncode!=0
+        assert historical['v4_08_production_permission'] is False
+>       assert current_state(ROOT)['status']=='PASS'
+               ^^^^^^^^^^^^^^^^^^^
+
+tests\v4_09\test_stock_prewatch.py:104: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('E:/codex_tmp/dm01-r4-baseline')
+
+    def current_state(root):
+        root=Path(root);s=json.loads((root/STAGE).read_bytes());d=json.loads((root/'data/v4/V4_DATA_ACCEPTED_HEAD.json').read_bytes())
+>       if s['accepted_stage_range'] not in ('V4_00_TO_V4_12_ACCEPTED','V4_00_TO_V4_13_ACCEPTED'):raise HistoricalBindingError('CURRENT_STAGE_NOT_ACCEPTED')
+                                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       workbench_analysis.historical_stage_governance_r17.HistoricalBindingError: CURRENT_STAGE_NOT_ACCEPTED
+
+src\workbench_analysis\historical_stage_governance_r17.py:51: HistoricalBindingError
+________________ test_promotion_and_all_25_independent_checks _________________
+
+    def test_promotion_and_all_25_independent_checks():
+>       result=validate()
+               ^^^^^^^^^^
+
+tests\v4_10\test_accepted_head_r1.py:7: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\dm01_publication_history_reader_v1.py:51: in validate_v4_10_history
+    with _frozen_readers() as (root,v9,v10,current):
+         ^^^^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:32: in _frozen_readers
+    current_state(root)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('E:/codex_tmp/dm01-r4-baseline')
+
+    def current_state(root):
+        root=Path(root);s=json.loads((root/STAGE).read_bytes());d=json.loads((root/'data/v4/V4_DATA_ACCEPTED_HEAD.json').read_bytes())
+>       if s['accepted_stage_range'] not in ('V4_00_TO_V4_12_ACCEPTED','V4_00_TO_V4_13_ACCEPTED'):raise HistoricalBindingError('CURRENT_STAGE_NOT_ACCEPTED')
+                                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       workbench_analysis.historical_stage_governance_r17.HistoricalBindingError: CURRENT_STAGE_NOT_ACCEPTED
+
+src\workbench_analysis\historical_stage_governance_r17.py:51: HistoricalBindingError
+__ test_changed_authority_or_overclaim_rejected[implementation_commit-wrong] __
+
+field = 'implementation_commit', value = 'wrong'
+
+    @pytest.mark.parametrize('field,value',[
+        ('implementation_commit','wrong'),('audited_sealed_head','wrong'),
+        ('external_acceptance_decision','wrong'),('production_permission',True),
+        ('parent_binding',{}),('capabilities',{'FULL_D0_D1_D2_DAG':'ACCEPTED'}),
+        ('open_audit_registry',{}),('global_head_parent_archive',{})])
+    def test_changed_authority_or_overclaim_rejected(field,value):
+        h=deepcopy(read(CANDIDATE));h[field]=value
+>       assert validate(h)['status']=='FAIL'
+               ^^^^^^^^^^^
+
+tests\v4_10\test_accepted_head_r1.py:18: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\dm01_publication_history_reader_v1.py:51: in validate_v4_10_history
+    with _frozen_readers() as (root,v9,v10,current):
+         ^^^^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:32: in _frozen_readers
+    current_state(root)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('E:/codex_tmp/dm01-r4-baseline')
+
+    def current_state(root):
+        root=Path(root);s=json.loads((root/STAGE).read_bytes());d=json.loads((root/'data/v4/V4_DATA_ACCEPTED_HEAD.json').read_bytes())
+>       if s['accepted_stage_range'] not in ('V4_00_TO_V4_12_ACCEPTED','V4_00_TO_V4_13_ACCEPTED'):raise HistoricalBindingError('CURRENT_STAGE_NOT_ACCEPTED')
+                                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       workbench_analysis.historical_stage_governance_r17.HistoricalBindingError: CURRENT_STAGE_NOT_ACCEPTED
+
+src\workbench_analysis\historical_stage_governance_r17.py:51: HistoricalBindingError
+___ test_changed_authority_or_overclaim_rejected[audited_sealed_head-wrong] ___
+
+field = 'audited_sealed_head', value = 'wrong'
+
+    @pytest.mark.parametrize('field,value',[
+        ('implementation_commit','wrong'),('audited_sealed_head','wrong'),
+        ('external_acceptance_decision','wrong'),('production_permission',True),
+        ('parent_binding',{}),('capabilities',{'FULL_D0_D1_D2_DAG':'ACCEPTED'}),
+        ('open_audit_registry',{}),('global_head_parent_archive',{})])
+    def test_changed_authority_or_overclaim_rejected(field,value):
+        h=deepcopy(read(CANDIDATE));h[field]=value
+>       assert validate(h)['status']=='FAIL'
+               ^^^^^^^^^^^
+
+tests\v4_10\test_accepted_head_r1.py:18: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\dm01_publication_history_reader_v1.py:51: in validate_v4_10_history
+    with _frozen_readers() as (root,v9,v10,current):
+         ^^^^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:32: in _frozen_readers
+    current_state(root)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('E:/codex_tmp/dm01-r4-baseline')
+
+    def current_state(root):
+        root=Path(root);s=json.loads((root/STAGE).read_bytes());d=json.loads((root/'data/v4/V4_DATA_ACCEPTED_HEAD.json').read_bytes())
+>       if s['accepted_stage_range'] not in ('V4_00_TO_V4_12_ACCEPTED','V4_00_TO_V4_13_ACCEPTED'):raise HistoricalBindingError('CURRENT_STAGE_NOT_ACCEPTED')
+                                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       workbench_analysis.historical_stage_governance_r17.HistoricalBindingError: CURRENT_STAGE_NOT_ACCEPTED
+
+src\workbench_analysis\historical_stage_governance_r17.py:51: HistoricalBindingError
+_ test_changed_authority_or_overclaim_rejected[external_acceptance_decision-wrong] _
+
+field = 'external_acceptance_decision', value = 'wrong'
+
+    @pytest.mark.parametrize('field,value',[
+        ('implementation_commit','wrong'),('audited_sealed_head','wrong'),
+        ('external_acceptance_decision','wrong'),('production_permission',True),
+        ('parent_binding',{}),('capabilities',{'FULL_D0_D1_D2_DAG':'ACCEPTED'}),
+        ('open_audit_registry',{}),('global_head_parent_archive',{})])
+    def test_changed_authority_or_overclaim_rejected(field,value):
+        h=deepcopy(read(CANDIDATE));h[field]=value
+>       assert validate(h)['status']=='FAIL'
+               ^^^^^^^^^^^
+
+tests\v4_10\test_accepted_head_r1.py:18: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\dm01_publication_history_reader_v1.py:51: in validate_v4_10_history
+    with _frozen_readers() as (root,v9,v10,current):
+         ^^^^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:32: in _frozen_readers
+    current_state(root)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('E:/codex_tmp/dm01-r4-baseline')
+
+    def current_state(root):
+        root=Path(root);s=json.loads((root/STAGE).read_bytes());d=json.loads((root/'data/v4/V4_DATA_ACCEPTED_HEAD.json').read_bytes())
+>       if s['accepted_stage_range'] not in ('V4_00_TO_V4_12_ACCEPTED','V4_00_TO_V4_13_ACCEPTED'):raise HistoricalBindingError('CURRENT_STAGE_NOT_ACCEPTED')
+                                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       workbench_analysis.historical_stage_governance_r17.HistoricalBindingError: CURRENT_STAGE_NOT_ACCEPTED
+
+src\workbench_analysis\historical_stage_governance_r17.py:51: HistoricalBindingError
+__ test_changed_authority_or_overclaim_rejected[production_permission-True] ___
+
+field = 'production_permission', value = True
+
+    @pytest.mark.parametrize('field,value',[
+        ('implementation_commit','wrong'),('audited_sealed_head','wrong'),
+        ('external_acceptance_decision','wrong'),('production_permission',True),
+        ('parent_binding',{}),('capabilities',{'FULL_D0_D1_D2_DAG':'ACCEPTED'}),
+        ('open_audit_registry',{}),('global_head_parent_archive',{})])
+    def test_changed_authority_or_overclaim_rejected(field,value):
+        h=deepcopy(read(CANDIDATE));h[field]=value
+>       assert validate(h)['status']=='FAIL'
+               ^^^^^^^^^^^
+
+tests\v4_10\test_accepted_head_r1.py:18: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\dm01_publication_history_reader_v1.py:51: in validate_v4_10_history
+    with _frozen_readers() as (root,v9,v10,current):
+         ^^^^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:32: in _frozen_readers
+    current_state(root)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('E:/codex_tmp/dm01-r4-baseline')
+
+    def current_state(root):
+        root=Path(root);s=json.loads((root/STAGE).read_bytes());d=json.loads((root/'data/v4/V4_DATA_ACCEPTED_HEAD.json').read_bytes())
+>       if s['accepted_stage_range'] not in ('V4_00_TO_V4_12_ACCEPTED','V4_00_TO_V4_13_ACCEPTED'):raise HistoricalBindingError('CURRENT_STAGE_NOT_ACCEPTED')
+                                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       workbench_analysis.historical_stage_governance_r17.HistoricalBindingError: CURRENT_STAGE_NOT_ACCEPTED
+
+src\workbench_analysis\historical_stage_governance_r17.py:51: HistoricalBindingError
+_____ test_changed_authority_or_overclaim_rejected[parent_binding-value4] _____
+
+field = 'parent_binding', value = {}
+
+    @pytest.mark.parametrize('field,value',[
+        ('implementation_commit','wrong'),('audited_sealed_head','wrong'),
+        ('external_acceptance_decision','wrong'),('production_permission',True),
+        ('parent_binding',{}),('capabilities',{'FULL_D0_D1_D2_DAG':'ACCEPTED'}),
+        ('open_audit_registry',{}),('global_head_parent_archive',{})])
+    def test_changed_authority_or_overclaim_rejected(field,value):
+        h=deepcopy(read(CANDIDATE));h[field]=value
+>       assert validate(h)['status']=='FAIL'
+               ^^^^^^^^^^^
+
+tests\v4_10\test_accepted_head_r1.py:18: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\dm01_publication_history_reader_v1.py:51: in validate_v4_10_history
+    with _frozen_readers() as (root,v9,v10,current):
+         ^^^^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:32: in _frozen_readers
+    current_state(root)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('E:/codex_tmp/dm01-r4-baseline')
+
+    def current_state(root):
+        root=Path(root);s=json.loads((root/STAGE).read_bytes());d=json.loads((root/'data/v4/V4_DATA_ACCEPTED_HEAD.json').read_bytes())
+>       if s['accepted_stage_range'] not in ('V4_00_TO_V4_12_ACCEPTED','V4_00_TO_V4_13_ACCEPTED'):raise HistoricalBindingError('CURRENT_STAGE_NOT_ACCEPTED')
+                                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       workbench_analysis.historical_stage_governance_r17.HistoricalBindingError: CURRENT_STAGE_NOT_ACCEPTED
+
+src\workbench_analysis\historical_stage_governance_r17.py:51: HistoricalBindingError
+______ test_changed_authority_or_overclaim_rejected[capabilities-value5] ______
+
+field = 'capabilities', value = {'FULL_D0_D1_D2_DAG': 'ACCEPTED'}
+
+    @pytest.mark.parametrize('field,value',[
+        ('implementation_commit','wrong'),('audited_sealed_head','wrong'),
+        ('external_acceptance_decision','wrong'),('production_permission',True),
+        ('parent_binding',{}),('capabilities',{'FULL_D0_D1_D2_DAG':'ACCEPTED'}),
+        ('open_audit_registry',{}),('global_head_parent_archive',{})])
+    def test_changed_authority_or_overclaim_rejected(field,value):
+        h=deepcopy(read(CANDIDATE));h[field]=value
+>       assert validate(h)['status']=='FAIL'
+               ^^^^^^^^^^^
+
+tests\v4_10\test_accepted_head_r1.py:18: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\dm01_publication_history_reader_v1.py:51: in validate_v4_10_history
+    with _frozen_readers() as (root,v9,v10,current):
+         ^^^^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:32: in _frozen_readers
+    current_state(root)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('E:/codex_tmp/dm01-r4-baseline')
+
+    def current_state(root):
+        root=Path(root);s=json.loads((root/STAGE).read_bytes());d=json.loads((root/'data/v4/V4_DATA_ACCEPTED_HEAD.json').read_bytes())
+>       if s['accepted_stage_range'] not in ('V4_00_TO_V4_12_ACCEPTED','V4_00_TO_V4_13_ACCEPTED'):raise HistoricalBindingError('CURRENT_STAGE_NOT_ACCEPTED')
+                                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       workbench_analysis.historical_stage_governance_r17.HistoricalBindingError: CURRENT_STAGE_NOT_ACCEPTED
+
+src\workbench_analysis\historical_stage_governance_r17.py:51: HistoricalBindingError
+__ test_changed_authority_or_overclaim_rejected[open_audit_registry-value6] ___
+
+field = 'open_audit_registry', value = {}
+
+    @pytest.mark.parametrize('field,value',[
+        ('implementation_commit','wrong'),('audited_sealed_head','wrong'),
+        ('external_acceptance_decision','wrong'),('production_permission',True),
+        ('parent_binding',{}),('capabilities',{'FULL_D0_D1_D2_DAG':'ACCEPTED'}),
+        ('open_audit_registry',{}),('global_head_parent_archive',{})])
+    def test_changed_authority_or_overclaim_rejected(field,value):
+        h=deepcopy(read(CANDIDATE));h[field]=value
+>       assert validate(h)['status']=='FAIL'
+               ^^^^^^^^^^^
+
+tests\v4_10\test_accepted_head_r1.py:18: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\dm01_publication_history_reader_v1.py:51: in validate_v4_10_history
+    with _frozen_readers() as (root,v9,v10,current):
+         ^^^^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:32: in _frozen_readers
+    current_state(root)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('E:/codex_tmp/dm01-r4-baseline')
+
+    def current_state(root):
+        root=Path(root);s=json.loads((root/STAGE).read_bytes());d=json.loads((root/'data/v4/V4_DATA_ACCEPTED_HEAD.json').read_bytes())
+>       if s['accepted_stage_range'] not in ('V4_00_TO_V4_12_ACCEPTED','V4_00_TO_V4_13_ACCEPTED'):raise HistoricalBindingError('CURRENT_STAGE_NOT_ACCEPTED')
+                                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       workbench_analysis.historical_stage_governance_r17.HistoricalBindingError: CURRENT_STAGE_NOT_ACCEPTED
+
+src\workbench_analysis\historical_stage_governance_r17.py:51: HistoricalBindingError
+_ test_changed_authority_or_overclaim_rejected[global_head_parent_archive-value7] _
+
+field = 'global_head_parent_archive', value = {}
+
+    @pytest.mark.parametrize('field,value',[
+        ('implementation_commit','wrong'),('audited_sealed_head','wrong'),
+        ('external_acceptance_decision','wrong'),('production_permission',True),
+        ('parent_binding',{}),('capabilities',{'FULL_D0_D1_D2_DAG':'ACCEPTED'}),
+        ('open_audit_registry',{}),('global_head_parent_archive',{})])
+    def test_changed_authority_or_overclaim_rejected(field,value):
+        h=deepcopy(read(CANDIDATE));h[field]=value
+>       assert validate(h)['status']=='FAIL'
+               ^^^^^^^^^^^
+
+tests\v4_10\test_accepted_head_r1.py:18: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\dm01_publication_history_reader_v1.py:51: in validate_v4_10_history
+    with _frozen_readers() as (root,v9,v10,current):
+         ^^^^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:32: in _frozen_readers
+    current_state(root)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('E:/codex_tmp/dm01-r4-baseline')
+
+    def current_state(root):
+        root=Path(root);s=json.loads((root/STAGE).read_bytes());d=json.loads((root/'data/v4/V4_DATA_ACCEPTED_HEAD.json').read_bytes())
+>       if s['accepted_stage_range'] not in ('V4_00_TO_V4_12_ACCEPTED','V4_00_TO_V4_13_ACCEPTED'):raise HistoricalBindingError('CURRENT_STAGE_NOT_ACCEPTED')
+                                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       workbench_analysis.historical_stage_governance_r17.HistoricalBindingError: CURRENT_STAGE_NOT_ACCEPTED
+
+src\workbench_analysis\historical_stage_governance_r17.py:51: HistoricalBindingError
+_____________________________ test_promoted_exact _____________________________
+
+    def test_promoted_exact():
+>       assert validate()['status'] == 'PASS'
+               ^^^^^^^^^^
+
+tests\v4_10\test_promotion.py:7: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\dm01_publication_history_reader_v1.py:55: in validate_v4_09_history
+    with _frozen_readers() as (root,v9,v10,current):
+         ^^^^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:32: in _frozen_readers
+    current_state(root)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('E:/codex_tmp/dm01-r4-baseline')
+
+    def current_state(root):
+        root=Path(root);s=json.loads((root/STAGE).read_bytes());d=json.loads((root/'data/v4/V4_DATA_ACCEPTED_HEAD.json').read_bytes())
+>       if s['accepted_stage_range'] not in ('V4_00_TO_V4_12_ACCEPTED','V4_00_TO_V4_13_ACCEPTED'):raise HistoricalBindingError('CURRENT_STAGE_NOT_ACCEPTED')
+                                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       workbench_analysis.historical_stage_governance_r17.HistoricalBindingError: CURRENT_STAGE_NOT_ACCEPTED
+
+src\workbench_analysis\historical_stage_governance_r17.py:51: HistoricalBindingError
+_______ test_overclaim_or_wrong_authority_rejected[capabilities-value0] _______
+
+field = 'capabilities'
+value = {'REAL_SIGNAL_CAPABILITY': 'REAL_SIGNAL_FULL_PASS'}
+
+    @pytest.mark.parametrize('field,value', [('capabilities', {'REAL_SIGNAL_CAPABILITY':'REAL_SIGNAL_FULL_PASS'}),
+        ('implementation_commit','wrong'), ('external_acceptance_decision','wrong'), ('production_permission', True),
+        ('upstream_binding', {'path':'data/v4/V4_08_ACCEPTED_HEAD.json'}), ('artifact', {'sha256':'self-consistent-wrong'})])
+    def test_overclaim_or_wrong_authority_rejected(field, value):
+        h=deepcopy(read(HEAD)); h[field]=value
+>       assert validate_head(h, read(GLOBAL), read(RECEIPT))['status']=='FAIL'
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\test_promotion.py:14: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\dm01_publication_history_reader_v1.py:59: in validate_v4_09_history_head
+    with _frozen_readers() as (root,v9,v10,current):
+         ^^^^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:32: in _frozen_readers
+    current_state(root)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('E:/codex_tmp/dm01-r4-baseline')
+
+    def current_state(root):
+        root=Path(root);s=json.loads((root/STAGE).read_bytes());d=json.loads((root/'data/v4/V4_DATA_ACCEPTED_HEAD.json').read_bytes())
+>       if s['accepted_stage_range'] not in ('V4_00_TO_V4_12_ACCEPTED','V4_00_TO_V4_13_ACCEPTED'):raise HistoricalBindingError('CURRENT_STAGE_NOT_ACCEPTED')
+                                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       workbench_analysis.historical_stage_governance_r17.HistoricalBindingError: CURRENT_STAGE_NOT_ACCEPTED
+
+src\workbench_analysis\historical_stage_governance_r17.py:51: HistoricalBindingError
+___ test_overclaim_or_wrong_authority_rejected[implementation_commit-wrong] ___
+
+field = 'implementation_commit', value = 'wrong'
+
+    @pytest.mark.parametrize('field,value', [('capabilities', {'REAL_SIGNAL_CAPABILITY':'REAL_SIGNAL_FULL_PASS'}),
+        ('implementation_commit','wrong'), ('external_acceptance_decision','wrong'), ('production_permission', True),
+        ('upstream_binding', {'path':'data/v4/V4_08_ACCEPTED_HEAD.json'}), ('artifact', {'sha256':'self-consistent-wrong'})])
+    def test_overclaim_or_wrong_authority_rejected(field, value):
+        h=deepcopy(read(HEAD)); h[field]=value
+>       assert validate_head(h, read(GLOBAL), read(RECEIPT))['status']=='FAIL'
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\test_promotion.py:14: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\dm01_publication_history_reader_v1.py:59: in validate_v4_09_history_head
+    with _frozen_readers() as (root,v9,v10,current):
+         ^^^^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:32: in _frozen_readers
+    current_state(root)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('E:/codex_tmp/dm01-r4-baseline')
+
+    def current_state(root):
+        root=Path(root);s=json.loads((root/STAGE).read_bytes());d=json.loads((root/'data/v4/V4_DATA_ACCEPTED_HEAD.json').read_bytes())
+>       if s['accepted_stage_range'] not in ('V4_00_TO_V4_12_ACCEPTED','V4_00_TO_V4_13_ACCEPTED'):raise HistoricalBindingError('CURRENT_STAGE_NOT_ACCEPTED')
+                                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       workbench_analysis.historical_stage_governance_r17.HistoricalBindingError: CURRENT_STAGE_NOT_ACCEPTED
+
+src\workbench_analysis\historical_stage_governance_r17.py:51: HistoricalBindingError
+_ test_overclaim_or_wrong_authority_rejected[external_acceptance_decision-wrong] _
+
+field = 'external_acceptance_decision', value = 'wrong'
+
+    @pytest.mark.parametrize('field,value', [('capabilities', {'REAL_SIGNAL_CAPABILITY':'REAL_SIGNAL_FULL_PASS'}),
+        ('implementation_commit','wrong'), ('external_acceptance_decision','wrong'), ('production_permission', True),
+        ('upstream_binding', {'path':'data/v4/V4_08_ACCEPTED_HEAD.json'}), ('artifact', {'sha256':'self-consistent-wrong'})])
+    def test_overclaim_or_wrong_authority_rejected(field, value):
+        h=deepcopy(read(HEAD)); h[field]=value
+>       assert validate_head(h, read(GLOBAL), read(RECEIPT))['status']=='FAIL'
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\test_promotion.py:14: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\dm01_publication_history_reader_v1.py:59: in validate_v4_09_history_head
+    with _frozen_readers() as (root,v9,v10,current):
+         ^^^^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:32: in _frozen_readers
+    current_state(root)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('E:/codex_tmp/dm01-r4-baseline')
+
+    def current_state(root):
+        root=Path(root);s=json.loads((root/STAGE).read_bytes());d=json.loads((root/'data/v4/V4_DATA_ACCEPTED_HEAD.json').read_bytes())
+>       if s['accepted_stage_range'] not in ('V4_00_TO_V4_12_ACCEPTED','V4_00_TO_V4_13_ACCEPTED'):raise HistoricalBindingError('CURRENT_STAGE_NOT_ACCEPTED')
+                                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       workbench_analysis.historical_stage_governance_r17.HistoricalBindingError: CURRENT_STAGE_NOT_ACCEPTED
+
+src\workbench_analysis\historical_stage_governance_r17.py:51: HistoricalBindingError
+___ test_overclaim_or_wrong_authority_rejected[production_permission-True] ____
+
+field = 'production_permission', value = True
+
+    @pytest.mark.parametrize('field,value', [('capabilities', {'REAL_SIGNAL_CAPABILITY':'REAL_SIGNAL_FULL_PASS'}),
+        ('implementation_commit','wrong'), ('external_acceptance_decision','wrong'), ('production_permission', True),
+        ('upstream_binding', {'path':'data/v4/V4_08_ACCEPTED_HEAD.json'}), ('artifact', {'sha256':'self-consistent-wrong'})])
+    def test_overclaim_or_wrong_authority_rejected(field, value):
+        h=deepcopy(read(HEAD)); h[field]=value
+>       assert validate_head(h, read(GLOBAL), read(RECEIPT))['status']=='FAIL'
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\test_promotion.py:14: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\dm01_publication_history_reader_v1.py:59: in validate_v4_09_history_head
+    with _frozen_readers() as (root,v9,v10,current):
+         ^^^^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:32: in _frozen_readers
+    current_state(root)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('E:/codex_tmp/dm01-r4-baseline')
+
+    def current_state(root):
+        root=Path(root);s=json.loads((root/STAGE).read_bytes());d=json.loads((root/'data/v4/V4_DATA_ACCEPTED_HEAD.json').read_bytes())
+>       if s['accepted_stage_range'] not in ('V4_00_TO_V4_12_ACCEPTED','V4_00_TO_V4_13_ACCEPTED'):raise HistoricalBindingError('CURRENT_STAGE_NOT_ACCEPTED')
+                                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       workbench_analysis.historical_stage_governance_r17.HistoricalBindingError: CURRENT_STAGE_NOT_ACCEPTED
+
+src\workbench_analysis\historical_stage_governance_r17.py:51: HistoricalBindingError
+_____ test_overclaim_or_wrong_authority_rejected[upstream_binding-value4] _____
+
+field = 'upstream_binding', value = {'path': 'data/v4/V4_08_ACCEPTED_HEAD.json'}
+
+    @pytest.mark.parametrize('field,value', [('capabilities', {'REAL_SIGNAL_CAPABILITY':'REAL_SIGNAL_FULL_PASS'}),
+        ('implementation_commit','wrong'), ('external_acceptance_decision','wrong'), ('production_permission', True),
+        ('upstream_binding', {'path':'data/v4/V4_08_ACCEPTED_HEAD.json'}), ('artifact', {'sha256':'self-consistent-wrong'})])
+    def test_overclaim_or_wrong_authority_rejected(field, value):
+        h=deepcopy(read(HEAD)); h[field]=value
+>       assert validate_head(h, read(GLOBAL), read(RECEIPT))['status']=='FAIL'
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\test_promotion.py:14: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\dm01_publication_history_reader_v1.py:59: in validate_v4_09_history_head
+    with _frozen_readers() as (root,v9,v10,current):
+         ^^^^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:32: in _frozen_readers
+    current_state(root)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('E:/codex_tmp/dm01-r4-baseline')
+
+    def current_state(root):
+        root=Path(root);s=json.loads((root/STAGE).read_bytes());d=json.loads((root/'data/v4/V4_DATA_ACCEPTED_HEAD.json').read_bytes())
+>       if s['accepted_stage_range'] not in ('V4_00_TO_V4_12_ACCEPTED','V4_00_TO_V4_13_ACCEPTED'):raise HistoricalBindingError('CURRENT_STAGE_NOT_ACCEPTED')
+                                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       workbench_analysis.historical_stage_governance_r17.HistoricalBindingError: CURRENT_STAGE_NOT_ACCEPTED
+
+src\workbench_analysis\historical_stage_governance_r17.py:51: HistoricalBindingError
+_________ test_overclaim_or_wrong_authority_rejected[artifact-value5] _________
+
+field = 'artifact', value = {'sha256': 'self-consistent-wrong'}
+
+    @pytest.mark.parametrize('field,value', [('capabilities', {'REAL_SIGNAL_CAPABILITY':'REAL_SIGNAL_FULL_PASS'}),
+        ('implementation_commit','wrong'), ('external_acceptance_decision','wrong'), ('production_permission', True),
+        ('upstream_binding', {'path':'data/v4/V4_08_ACCEPTED_HEAD.json'}), ('artifact', {'sha256':'self-consistent-wrong'})])
+    def test_overclaim_or_wrong_authority_rejected(field, value):
+        h=deepcopy(read(HEAD)); h[field]=value
+>       assert validate_head(h, read(GLOBAL), read(RECEIPT))['status']=='FAIL'
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\v4_10\test_promotion.py:14: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\dm01_publication_history_reader_v1.py:59: in validate_v4_09_history_head
+    with _frozen_readers() as (root,v9,v10,current):
+         ^^^^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:32: in _frozen_readers
+    current_state(root)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('E:/codex_tmp/dm01-r4-baseline')
+
+    def current_state(root):
+        root=Path(root);s=json.loads((root/STAGE).read_bytes());d=json.loads((root/'data/v4/V4_DATA_ACCEPTED_HEAD.json').read_bytes())
+>       if s['accepted_stage_range'] not in ('V4_00_TO_V4_12_ACCEPTED','V4_00_TO_V4_13_ACCEPTED'):raise HistoricalBindingError('CURRENT_STAGE_NOT_ACCEPTED')
+                                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       workbench_analysis.historical_stage_governance_r17.HistoricalBindingError: CURRENT_STAGE_NOT_ACCEPTED
+
+src\workbench_analysis\historical_stage_governance_r17.py:51: HistoricalBindingError
+__ test_historical_archive_does_not_accept_current_runtime_for_new_promotion __
+
+    def test_historical_archive_does_not_accept_current_runtime_for_new_promotion():
+        from scripts.promote_v4_09_accepted_head import source_checks
+        from workbench_analysis.dm01_publication_history_reader_v1 import validate_v4_09_history as validate
+>       result=validate()
+               ^^^^^^^^^^
+
+tests\v4_a08\test_repair_freeze_authority.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\dm01_publication_history_reader_v1.py:55: in validate_v4_09_history
+    with _frozen_readers() as (root,v9,v10,current):
+         ^^^^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:32: in _frozen_readers
+    current_state(root)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('E:/codex_tmp/dm01-r4-baseline')
+
+    def current_state(root):
+        root=Path(root);s=json.loads((root/STAGE).read_bytes());d=json.loads((root/'data/v4/V4_DATA_ACCEPTED_HEAD.json').read_bytes())
+>       if s['accepted_stage_range'] not in ('V4_00_TO_V4_12_ACCEPTED','V4_00_TO_V4_13_ACCEPTED'):raise HistoricalBindingError('CURRENT_STAGE_NOT_ACCEPTED')
+                                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       workbench_analysis.historical_stage_governance_r17.HistoricalBindingError: CURRENT_STAGE_NOT_ACCEPTED
+
+src\workbench_analysis\historical_stage_governance_r17.py:51: HistoricalBindingError
+__________ test_anchor_is_exact_bytes_and_wrong_hash_never_redirects __________
+
+head = {'AS_RECORDED': False, 'accepted_chain': {'bytes': 182128, 'path': 'data/v4/DM01_A01_R3_ACCEPTED_CHAIN_20260924_202609...DIT_REMEDIATION_REGISTRY_R10.json', 'sha256': '14002b12e89920ee2d57fe1328a53c03f21ebb99842acfcb5c53b44d3f402174'}, ...}
+
+    def test_anchor_is_exact_bytes_and_wrong_hash_never_redirects(head):
+        archive=load(ROOT,head['parent_archive']);assert archive['accepted_trade_date']=='2026-09-24'
+        p=resolve_frozen_binding(ROOT,dict(path=HEAD_PATH,sha256=ANCHOR_SHA,bytes=2478))
+        assert binding(ROOT,p.relative_to(ROOT).as_posix())['sha256']==ANCHOR_SHA
+        with pytest.raises(AcceptedChainError):resolve_frozen_binding(ROOT,dict(path=HEAD_PATH,sha256='0'*64))
+>       assert validate_historical_incremental_registry(ROOT)['status']=='PASS_ENGINEERING_EXPORTS'
+E       AssertionError: assert 'BLOCKED' == 'PASS_ENGINEERING_EXPORTS'
+E         
+E         - PASS_ENGINEERING_EXPORTS
+E         + BLOCKED
+
+tests\v4_dm01_promotion\test_accepted_chain.py:81: AssertionError
+________ test_business_publication_history_has_explicit_archive_scope _________
+
+head = {'AS_RECORDED': False, 'accepted_chain': {'bytes': 182128, 'path': 'data/v4/DM01_A01_R3_ACCEPTED_CHAIN_20260924_202609...DIT_REMEDIATION_REGISTRY_R10.json', 'sha256': '14002b12e89920ee2d57fe1328a53c03f21ebb99842acfcb5c53b44d3f402174'}, ...}
+
+    def test_business_publication_history_has_explicit_archive_scope(head):
+        from workbench_analysis.dm01_publication_history_reader_v1 import validate_v4_09_history,validate_v4_10_history
+        from scripts import validate_v4_10_promotion_r1 as original
+        saved_root=original.ROOT
+        for reader in (validate_v4_09_history,validate_v4_10_history):
+>           result=reader()
+                   ^^^^^^^^
+
+tests\v4_dm01_promotion\test_accepted_chain.py:103: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\workbench_analysis\dm01_publication_history_reader_v1.py:55: in validate_v4_09_history
+    with _frozen_readers() as (root,v9,v10,current):
+         ^^^^^^^^^^^^^^^^^
+E:\python\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_publication_history_reader_v1.py:32: in _frozen_readers
+    current_state(root)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('E:/codex_tmp/dm01-r4-baseline')
+
+    def current_state(root):
+        root=Path(root);s=json.loads((root/STAGE).read_bytes());d=json.loads((root/'data/v4/V4_DATA_ACCEPTED_HEAD.json').read_bytes())
+>       if s['accepted_stage_range'] not in ('V4_00_TO_V4_12_ACCEPTED','V4_00_TO_V4_13_ACCEPTED'):raise HistoricalBindingError('CURRENT_STAGE_NOT_ACCEPTED')
+                                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       workbench_analysis.historical_stage_governance_r17.HistoricalBindingError: CURRENT_STAGE_NOT_ACCEPTED
+
+src\workbench_analysis\historical_stage_governance_r17.py:51: HistoricalBindingError
+_____________ test_atomic_failure_determinism_and_heads_preserved _____________
+
+    def test_atomic_failure_determinism_and_heads_preserved():
+        atomic=read(P+'ATOMIC_FAILURE_PROBES_R1.json');det=read(P+'DETERMINISM_R1.json')
+        assert atomic['status']=='PASS' and not atomic['partial_candidates_visible']
+        for binding in atomic['failure_bindings']:
+            assert not (ROOT/binding['path']).parent.joinpath('PROMOTION_CANDIDATE.json').exists()
+        assert det['status']=='PASS' and det['old_candidates_immutable']
+        for binding in read(P+'STAGE_ENTRY_R1.json')['protected_bindings']:
+            from workbench_analysis.dm01_accepted_chain_v1 import resolve_frozen_binding, HEAD_PATH, ANCHOR_SHA
+            path=resolve_frozen_binding(ROOT,binding) if binding['path']==HEAD_PATH else ROOT/binding['path']
+            actual=hashlib.sha256(path.read_bytes()).hexdigest()
+>           assert actual in (binding['sha256'],binding.get('git_sha256'))
+E           AssertionError: assert '936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0' in ('529c532bd5553ace00fa4813aef07979cfce4e1f18fa5ea66f38fcddd8ed16cb', '529c532bd5553ace00fa4813aef07979cfce4e1f18fa5ea66f38fcddd8ed16cb')
+
+tests\v4_dm01_r3\test_real_authority_and_chain.py:127: AssertionError
+_______________ test_external_dispositions_and_protected_bytes ________________
+
+    def test_external_dispositions_and_protected_bytes():
+        r = read('reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R3.json')
+        exact(r['external_authority']['document'])
+        assert r['external_authority']['audited_head'] == '1655f84d1a47faca43c281d66e7704f2fa56b1b8'
+        entries = {e['work_package']: e for e in r['entries']}
+        for wp in ['WP-A08-V4-09-N01', 'WP-A09-V4-09-N02', 'WP-A11-V4-01-IDENTITY-AUTHORITY']:
+            assert entries[wp]['status'] == 'ACCEPTED'
+            t = entries[wp]['transition']
+            assert t['previous_status'] == 'OPEN' and t['new_status'] == 'ACCEPTED'
+            for b in t['evidence_bindings']:
+                exact(b)
+        expected = {'WP-A10-SOURCE-AUTHORITY-GOVERNANCE': 'BLOCKED_R2_OWNER_ACCEPTANCE_GATE',
+            'WP-A12-V4-02-STATUS-ST-AUTHORITY': 'BLOCKED_R2_REAL_DATED_OWNER_SEMANTICS',
+            'WP-A01-DM01': 'PARTIAL_ENGINEERING_PASS_FINAL_ALL_NINE_BLOCKED'}
+        for wp, status in expected.items():
+            assert entries[wp]['status'] == 'OPEN' and entries[wp]['implementation_status'] == status
+            assert entries[wp]['external_acceptance'] == 'BLOCKED'
+        assert entries['WP-A01-DM01']['depends_on'] == ['A10-R2_EXTERNAL_ACCEPTANCE', 'A12-R2_EXTERNAL_ACCEPTANCE']
+        assert not r['accepted_source_authority_owners'] and not any(r['permissions'].values())
+        for b in read('reports/audits/R3_STAGE_ENTRY_R1.json')['protected_bindings']:
+            if 'git_sha256' in b:
+                import subprocess
+                baseline = subprocess.check_output(['git', 'show', b['git_baseline_commit'] + ':' + b['path']], cwd=ROOT)
+                current = (ROOT / b['path']).read_bytes()
+                assert hashlib.sha256(baseline).hexdigest() == b['git_sha256']
+                assert current.replace(b'\r\n', b'\n') == baseline.replace(b'\r\n', b'\n')
+                assert hashlib.sha256(current).hexdigest() in (b['sha256'], b['git_sha256'])
+            else:
+>               exact(b)
+
+tests\v4_registry_r3\test_formalization.py:42: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\v4_registry_r3\test_formalization.py:12: in exact
+    assert hashlib.sha256(resolve_frozen_binding(ROOT,binding).read_bytes()).hexdigest() == binding['sha256']
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\dm01_accepted_chain_v1.py:53: in resolve_frozen_binding
+    return bound_path(root,ref)
+           ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('E:/codex_tmp/dm01-r4-baseline')
+ref = {'bytes': 8574, 'path': 'data/v4/V4_STAGE_ACCEPTED_HEAD.json', 'sha256': '529c532bd5553ace00fa4813aef07979cfce4e1f18fa5ea66f38fcddd8ed16cb'}
+
+    def bound_path(root,ref):
+        root=Path(root).resolve();path=(root/ref['path']).resolve()
+        if not path.is_relative_to(root) or not path.is_file() or sha(path)!=ref['sha256']:
+>           raise AcceptedChainError('EXACT_BINDING_INVALID:'+str(ref.get('path')))
+E           workbench_analysis.dm01_accepted_chain_v1.AcceptedChainError: EXACT_BINDING_INVALID:data/v4/V4_STAGE_ACCEPTED_HEAD.json
+
+src\workbench_analysis\dm01_accepted_chain_v1.py:24: AcceptedChainError
+_________________ test_independent_acceptance_exact_evidence __________________
+
+    def test_independent_acceptance_exact_evidence():
+        for path in ['reports/audits/SOURCE_AUTHORITY_REGISTRY_R3_EXTERNAL_CONFIRMATION_R1.json',
+                     'reports/audits/A10_R2_EXTERNAL_ACCEPTANCE_RECORD_R1.json']:
+            record=read(path)
+            assert record['external_authority']['audited_head']=='699d3503d2d8ddbd37997441eec59308aec1990f'
+            for b in [record['external_authority']['document'],*record['evidence_bindings']]:
+                assert hashlib.sha256((ROOT/b['path']).read_bytes()).hexdigest()==b['sha256']
+        for b in read('reports/audits/R4_STAGE_ENTRY_R1.json')['protected_bindings']:
+            p=resolve_frozen_binding(ROOT,b) if b['path']==HEAD_PATH else ROOT/b['path']
+>           assert hashlib.sha256(p.read_bytes()).hexdigest() in (b['sha256'],b.get('git_sha256'))
+E           assert '936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0' in ('529c532bd5553ace00fa4813aef07979cfce4e1f18fa5ea66f38fcddd8ed16cb', None)
+E            +  where '936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0' = <built-in method hexdigest of _hashlib.HASH object at 0x000001A17FF28D10>()
+E            +    where <built-in method hexdigest of _hashlib.HASH object at 0x000001A17FF28D10> = <sha256 _hashlib.HASH object @ 0x000001A17FF28D10>.hexdigest
+E            +      where <sha256 _hashlib.HASH object @ 0x000001A17FF28D10> = <built-in function openssl_sha256>(b'{\n  "accepted_stage_range": "V4_00_TO_V4_15_ACCEPTED",\n  "bindings": {\n    "phase0": {\n      "path": "reports/v4...E",\n  "v4_15_external_acceptance": "PASS_FINAL_V4_15_RUNTIME_CANDIDATE_CAPABILITY_SCOPED",\n  "version": "2.5.0"\n}\n')
+E            +        where <built-in function openssl_sha256> = hashlib.sha256
+E            +        and   b'{\n  "accepted_stage_range": "V4_00_TO_V4_15_ACCEPTED",\n  "bindings": {\n    "phase0": {\n      "path": "reports/v4...E",\n  "v4_15_external_acceptance": "PASS_FINAL_V4_15_RUNTIME_CANDIDATE_CAPABILITY_SCOPED",\n  "version": "2.5.0"\n}\n' = read_bytes()
+E            +          where read_bytes = WindowsPath('E:/codex_tmp/dm01-r4-baseline/data/v4/V4_STAGE_ACCEPTED_HEAD.json').read_bytes
+
+tests\v4_registry_r4\test_entry.py:32: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/upgrade_v3/test_p01_01_lock_scope.py::test_hot_rank_route_skips_request_scope
+FAILED tests/upgrade_v3/test_p01_01_lock_scope.py::test_send_marks_disconnected_client_closed
+FAILED tests/upgrade_v3/test_v3_unified_entry.py::test_v3_is_the_single_unified_workbench_entry
+FAILED tests/v4_09/test_stock_prewatch.py::test_production_and_v4_09_acceptance_stay_disabled
+FAILED tests/v4_10/test_accepted_head_r1.py::test_promotion_and_all_25_independent_checks
+FAILED tests/v4_10/test_accepted_head_r1.py::test_changed_authority_or_overclaim_rejected[implementation_commit-wrong]
+FAILED tests/v4_10/test_accepted_head_r1.py::test_changed_authority_or_overclaim_rejected[audited_sealed_head-wrong]
+FAILED tests/v4_10/test_accepted_head_r1.py::test_changed_authority_or_overclaim_rejected[external_acceptance_decision-wrong]
+FAILED tests/v4_10/test_accepted_head_r1.py::test_changed_authority_or_overclaim_rejected[production_permission-True]
+FAILED tests/v4_10/test_accepted_head_r1.py::test_changed_authority_or_overclaim_rejected[parent_binding-value4]
+FAILED tests/v4_10/test_accepted_head_r1.py::test_changed_authority_or_overclaim_rejected[capabilities-value5]
+FAILED tests/v4_10/test_accepted_head_r1.py::test_changed_authority_or_overclaim_rejected[open_audit_registry-value6]
+FAILED tests/v4_10/test_accepted_head_r1.py::test_changed_authority_or_overclaim_rejected[global_head_parent_archive-value7]
+FAILED tests/v4_10/test_promotion.py::test_promoted_exact - workbench_analysi...
+FAILED tests/v4_10/test_promotion.py::test_overclaim_or_wrong_authority_rejected[capabilities-value0]
+FAILED tests/v4_10/test_promotion.py::test_overclaim_or_wrong_authority_rejected[implementation_commit-wrong]
+FAILED tests/v4_10/test_promotion.py::test_overclaim_or_wrong_authority_rejected[external_acceptance_decision-wrong]
+FAILED tests/v4_10/test_promotion.py::test_overclaim_or_wrong_authority_rejected[production_permission-True]
+FAILED tests/v4_10/test_promotion.py::test_overclaim_or_wrong_authority_rejected[upstream_binding-value4]
+FAILED tests/v4_10/test_promotion.py::test_overclaim_or_wrong_authority_rejected[artifact-value5]
+FAILED tests/v4_a08/test_repair_freeze_authority.py::test_historical_archive_does_not_accept_current_runtime_for_new_promotion
+FAILED tests/v4_dm01_promotion/test_accepted_chain.py::test_anchor_is_exact_bytes_and_wrong_hash_never_redirects
+FAILED tests/v4_dm01_promotion/test_accepted_chain.py::test_business_publication_history_has_explicit_archive_scope
+FAILED tests/v4_dm01_r3/test_real_authority_and_chain.py::test_atomic_failure_determinism_and_heads_preserved
+FAILED tests/v4_registry_r3/test_formalization.py::test_external_dispositions_and_protected_bytes
+FAILED tests/v4_registry_r4/test_entry.py::test_independent_acceptance_exact_evidence
+26 failed in 4.00s

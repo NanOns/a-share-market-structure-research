@@ -95,4 +95,3 @@ def negative(case):
 
 @pytest.mark.parametrize('case',list(REASONS))
 def test_negative_activation(case):negative(case)
-

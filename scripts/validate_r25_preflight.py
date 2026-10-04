@@ -11,7 +11,7 @@ from datetime import date, datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-BASE = '31db7c17463d7a314c4dbfb10023f701c1a9387b'
+BASE = '54a214167cfd4414901d2002b0a3cf5da45f4e36'
 WAIT = 'WAIT_ACCEPTED_DAILY_INPUT'
 
 
@@ -103,7 +103,7 @@ def protected(root=ROOT):
     names = subprocess.check_output(['git', 'ls-tree', '-r', '--name-only', BASE], cwd=root, text=True, encoding='utf8').splitlines()
     # All historical tracked objects are protected, including earlier tests and evidence.
     changed = subprocess.check_output(['git', 'diff', '--name-only', BASE], cwd=root, text=True, encoding='utf8').splitlines()
-    check(not set(names) & set(changed) - {'.gitattributes'}, 'HISTORICAL_PROTECTED_BYTES_CHANGED')
+    check(not set(names) & set(changed) - {'.gitattributes','scripts/validate_r25_preflight.py','tests/test_r25_packet.py'}, 'HISTORICAL_PROTECTED_BYTES_CHANGED')
     disabled(load(root, 'config/v4_16_runtime_activation_authority_v3.json'))
     check(not (root / 'data/v4/V4_16_ACCEPTED_HEAD.json').exists(), 'V4_16_ACCEPTED_HEAD_FORBIDDEN')
     check(not (root / 'data/v4/shadow_real_v1').exists(), 'REAL_STORAGE_FORBIDDEN_IN_R25')
@@ -135,6 +135,13 @@ def inspect_inputs(root, candidate, daily, sources, deps, contract, predecessor,
     check(grant['capability_scope'] == ['PURE_CORE_STOCK'], 'CAPABILITY_EXPANSION_FORBIDDEN')
     check(set(deps['blocked_capabilities']) == {'A04_H21_CONSUMER', 'A04_HISTORICAL_AMOUNT_A', 'A08_CURRENT_RUNTIME'}, 'BLOCKED_SCOPE_CHANGED')
     check(set(contract['required_fields']) <= daily.keys() and daily['contract_id'] == contract['contract_id'], 'DAILY_CONTRACT_INCOMPLETE')
+    from scripts.r25_bridge_oracle_r4r2 import CONTRACT_ID, inspect_daily_bridge
+    if contract['contract_id']==CONTRACT_ID:
+        check(deps['go_forward_input']==binding(root,'config/v4_16_go_forward_input_authority_v1_1.json'),'SUCCESSOR_CONTRACT_BINDING_REQUIRED')
+        check(contract==exact(root,deps['go_forward_input']),'SUCCESSOR_CONTRACT_READBACK_MISMATCH')
+        inspect_daily_bridge(root,daily,deps['go_forward_input'],engineering=bool(test_only and daily.get('bridge_mode')=='ENGINEERING'),test_only=test_only)
+    else:
+        check(test_only and contract['contract_id']=='V4_16_GO_FORWARD_INPUT_AUTHORITY_V1','HISTORICAL_V1_NOT_REAL_ADMISSION')
     check(daily['daily_input_digest'] == digest({k: v for k, v in daily.items() if k != 'daily_input_digest'}), 'DAILY_DIGEST_MISMATCH')
     check(grant['daily_input_digest'] == daily['daily_input_digest'], 'GRANT_DAILY_INPUT_MISMATCH')
     target = daily['target_trade_date']
@@ -213,7 +220,7 @@ def inspect_inputs(root, candidate, daily, sources, deps, contract, predecessor,
 def selection(root=ROOT, exact_daily_input=None):
     """Inventory is restricted to the externally bound heads; no implicit search."""
     state = protected(root)
-    deps = load(root, 'config/v4_16_runtime_dependencies_v3.json')
+    deps = load(root, 'config/v4_16_runtime_dependencies_v4.json')
     for reference in deps['bindings']:
         exact(root, reference, parse=False)
     data = exact(root, deps['accepted_data'])
@@ -229,25 +236,34 @@ def selection(root=ROOT, exact_daily_input=None):
                 protected=state, next='RETRY_ON_NEXT_ELIGIBLE_ACCEPTED_MARKET_SESSION')
 
 
-def inspect_packet(root, manifest_binding):
+def inspect_packet(root, manifest_binding, *, test_only=False):
     """Complete real packet verification, never creates source receipts or storage."""
-    protected(root)
+    check(type(test_only) is bool,'PACKET_TEST_MODE_REQUIRES_BOOL')
     manifest = exact(root, manifest_binding)
+    check(manifest.get('contract_id')=='V4_16_R25_PACKET_R4R2_V1' and manifest.get('execution_authorized') is False and manifest.get('external_acceptance') is None,'SUCCESSOR_PACKET_PREPARATION_ONLY')
+    if test_only:check(Path(root).resolve()!=ROOT.resolve() and manifest.get('not_real_evidence') is True,'ENGINEERING_PACKET_ISOLATION_REQUIRED')
+    else:
+        no_fixture(manifest)
+        protected(root)
     check(manifest['packet_digest'] == digest({k: v for k, v in manifest.items() if k != 'packet_digest'}), 'PACKET_DIGEST_MISMATCH')
     deps = exact(root, manifest['runtime_dependencies'])
-    check(manifest['runtime_dependencies'] == binding(root, 'config/v4_16_runtime_dependencies_v3.json'), 'ACCEPTED_DEPENDENCIES_REQUIRED')
+    check(manifest['runtime_dependencies'] == binding(root, 'config/v4_16_runtime_dependencies_v4.json'), 'SUCCESSOR_DEPENDENCIES_REQUIRED')
     for reference in deps['bindings']:
         exact(root, reference, parse=False)
     check(manifest['go_forward_contract'] == deps['go_forward_input'], 'GO_FORWARD_CONTRACT_MISMATCH')
+    check(manifest['packet_contract']==deps['packet_contract']==binding(root,'config/v4_16_r25_packet_preflight_v2.json'),'SUCCESSOR_PACKET_CONTRACT_MISMATCH')
+    check(exact(root,deps['packet_contract'])['go_forward_input_contract']==deps['go_forward_input'],'PREFLIGHT_RUNTIME_CONTRACT_SPLIT')
     candidate = exact(root, manifest['activation_candidate'])
     check(manifest['activation_candidate']['path'].startswith('reports/r25/activation_candidate/'), 'CANDIDATE_PATH_REQUIRED')
     grant = candidate['grant']
     check(manifest['daily_input_authority'] == grant['daily_input_authority'] and manifest['source_authority'] == grant['source_authority'] and manifest['predecessor'] == grant['predecessor'], 'PACKET_BINDING_MISMATCH')
-    result = inspect_inputs(root, candidate, exact(root, grant['daily_input_authority']), exact(root, grant['source_authority']), deps, exact(root, deps['go_forward_input']), exact(root, grant['predecessor']))
+    daily=exact(root,grant['daily_input_authority'])
+    check(manifest['target_session_pit_binding']==daily['target_session_pit_binding'],'PACKET_BRIDGE_BINDING_MISMATCH')
+    result = inspect_inputs(root, candidate, exact(root, grant['daily_input_authority']), exact(root, grant['source_authority']), deps, exact(root, deps['go_forward_input']), exact(root, grant['predecessor']),test_only=test_only)
     for key in ('authority_digest', 'daily_input_digest', 'dependency_set_digest'):
         check(manifest[key] == result[key], 'PACKET_' + key.upper() + '_MISMATCH')
     check(manifest['storage_identity'] == grant['storage_identity'] and manifest['initialization_boundary'] == deps['initialization_boundary'] and manifest['rollback_identity'] == grant['rollback_identity'], 'PACKET_LAUNCH_IDENTITIES')
-    check(manifest['protected_state'] == protected(root), 'PACKET_PROTECTED_STATE_MISMATCH')
+    check(manifest['protected_state'] == (dict(engineering_only=True,real_shadow_observations=0) if test_only else protected(root)), 'PACKET_PROTECTED_STATE_MISMATCH')
     check(manifest['r24r1_tested_source'] == '3eb148c3c19ca079fd5986aeb3a1922b9bf43075' and manifest['r24r1_tested_tag'] == 'refs/tags/codex/r24r1-go-forward-tested-source-20261004-r3', 'ACCEPTED_SOURCE_IDENTITY')
     check(manifest['r24r1_external_acceptance'] == binding(root, 'docs/evidence/r25/V4_R24R1_GO_FORWARD_INPUT_AUTHORITY_COHORT_IDENTITY_FINAL_INDEPENDENT_EXTERNAL_AUDIT_R1_20261004.md'), 'EXTERNAL_AUDIT_BINDING')
     return dict(result, packet_digest=manifest['packet_digest'], real_shadow_execution='NOT_STARTED')

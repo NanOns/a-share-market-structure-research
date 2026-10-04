@@ -1,0 +1,539 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="18" skipped="0" tests="142" time="201.286" timestamp="2026-10-05T05:08:03.878326+08:00" hostname="DESKTOP-PMEP5GE"><testcase classname="tests.test_r25_packet" name="test_target_negative[R25-01]" time="0.122" /><testcase classname="tests.test_r25_packet" name="test_target_negative[R25-02]" time="0.031" /><testcase classname="tests.test_r25_packet" name="test_target_negative[R25-03]" time="0.028" /><testcase classname="tests.test_r25_packet" name="test_target_negative[R25-04]" time="0.024" /><testcase classname="tests.test_r25_packet" name="test_target_negative[R25-05]" time="0.013" /><testcase classname="tests.test_r25_packet" name="test_target_negative[R25-06]" time="0.032" /><testcase classname="tests.test_r25_packet" name="test_target_negative[R25-07]" time="0.014" /><testcase classname="tests.test_r25_packet" name="test_target_negative[R25-08]" time="0.014" /><testcase classname="tests.test_r25_packet" name="test_target_negative[R25-09]" time="0.036" /><testcase classname="tests.test_r25_packet" name="test_target_negative[R25-10]" time="0.026" /><testcase classname="tests.test_r25_packet" name="test_target_negative[R25-11]" time="0.032" /><testcase classname="tests.test_r25_packet" name="test_target_negative[R25-12]" time="0.029" /><testcase classname="tests.test_r25_packet" name="test_target_negative[R25-13]" time="0.187" /><testcase classname="tests.test_r25_packet" name="test_target_negative[R25-14]" time="0.191" /><testcase classname="tests.test_r25_packet" name="test_target_negative[R25-15]" time="0.217" /><testcase classname="tests.test_r25_packet" name="test_target_negative[R25-16]" time="0.041" /><testcase classname="tests.test_r25_packet" name="test_vector_is_positive_only_in_test_mode" time="0.030" /><testcase classname="tests.test_r25_packet" name="test_f12_valid_latest_decoy" time="0.030"><failure message="ValueError: EXACT_DEPENDENCY_MISMATCH">def test_f12_valid_latest_decoy():
+&gt;       f12_governance()
+
+tests\test_r25_packet.py:162: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_r25_packet.py:149: in f12_governance
+    c = controller(x)
+        ^^^^^^^^^^^^^
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:33: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'EXACT_DEPENDENCY_MISMATCH'
+
+    def check(ok,reason):
+&gt;       if not ok:raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: EXACT_DEPENDENCY_MISMATCH
+
+scripts\v4_16_shadow_runtime.py:17: ValueError</failure></testcase><testcase classname="tests.test_r25_packet" name="test_oracle_has_no_writer_or_sqlite_imports" time="0.005" /><testcase classname="tests.test_r25_packet" name="test_actual_authority_inventory_waits_without_target" time="0.102"><failure message="ValueError: HISTORICAL_PROTECTED_BYTES_CHANGED">def test_actual_authority_inventory_waits_without_target():
+&gt;       result = selection()
+                 ^^^^^^^^^^^
+
+tests\test_r25_packet.py:175: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_r25_preflight.py:215: in selection
+    state = protected(root)
+            ^^^^^^^^^^^^^^^
+scripts\validate_r25_preflight.py:106: in protected
+    check(not set(names) &amp; set(changed) - {'.gitattributes'}, 'HISTORICAL_PROTECTED_BYTES_CHANGED')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, reason = 'HISTORICAL_PROTECTED_BYTES_CHANGED'
+
+    def check(condition, reason):
+        if not condition:
+&gt;           raise ValueError(reason)
+E           ValueError: HISTORICAL_PROTECTED_BYTES_CHANGED
+
+scripts\validate_r25_preflight.py:20: ValueError</failure></testcase><testcase classname="tests.test_r25_packet" name="test_user_c_drive_temporary_space_prohibition" time="0.002" /><testcase classname="tests.test_r25_packet" name="test_fractional_boundary_rejected[source]" time="0.023" /><testcase classname="tests.test_r25_packet" name="test_fractional_boundary_rejected[daily]" time="0.014" /><testcase classname="tests.test_r24r1_authority" name="test_daily_negative[F01]" time="0.026" /><testcase classname="tests.test_r24r1_authority" name="test_daily_negative[F02]" time="0.024" /><testcase classname="tests.test_r24r1_authority" name="test_daily_negative[F03]" time="0.027" /><testcase classname="tests.test_r24r1_authority" name="test_daily_negative[F04]" time="0.023" /><testcase classname="tests.test_r24r1_authority" name="test_daily_negative[F05]" time="0.024" /><testcase classname="tests.test_r24r1_authority" name="test_daily_negative[F06]" time="0.024" /><testcase classname="tests.test_r24r1_authority" name="test_daily_negative[F07]" time="0.024" /><testcase classname="tests.test_r24r1_authority" name="test_daily_negative[F08]" time="0.026" /><testcase classname="tests.test_r24r1_authority" name="test_daily_negative[F09]" time="0.024" /><testcase classname="tests.test_r24r1_authority" name="test_daily_negative[F10]" time="0.027" /><testcase classname="tests.test_r24r1_authority" name="test_daily_negative[F11]" time="0.024"><failure message="ValueError: EXACT_DEPENDENCY_MISMATCH">case = 'F11'
+
+    @pytest.mark.parametrize('case',F_CASES)
+&gt;   def test_daily_negative(case):daily_negative(case)
+                                  ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r24r1_authority.py:36: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_r24r1_authority.py:29: in daily_negative
+    c=controller(x); assert c.authority.membership_ref=='NOT_REQUIRED_FOR_SCOPE'
+      ^^^^^^^^^^^^^
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:33: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'EXACT_DEPENDENCY_MISMATCH'
+
+    def check(ok,reason):
+&gt;       if not ok:raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: EXACT_DEPENDENCY_MISMATCH
+
+scripts\v4_16_shadow_runtime.py:17: ValueError</failure></testcase><testcase classname="tests.test_r24r1_authority" name="test_daily_negative[F12]" time="0.027" /><testcase classname="tests.test_r24r1_authority" name="test_daily_negative[F13]" time="0.023" /><testcase classname="tests.test_r24r1_authority" name="test_daily_negative[F14]" time="0.023" /><testcase classname="tests.test_r24r1_authority" name="test_future_reachability" time="0.023"><failure message="ValueError: EXACT_DEPENDENCY_MISMATCH">&gt;   def test_future_reachability():positive()
+                                   ^^^^^^^^^^
+
+tests\test_r24r1_authority.py:70: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_r24r1_authority.py:39: in positive
+    before=protected(); x=prepare(name); c=controller(x)
+                                           ^^^^^^^^^^^^^
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:33: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'EXACT_DEPENDENCY_MISMATCH'
+
+    def check(ok,reason):
+&gt;       if not ok:raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: EXACT_DEPENDENCY_MISMATCH
+
+scripts\v4_16_shadow_runtime.py:17: ValueError</failure></testcase><testcase classname="tests.test_r24r1_authority" name="test_independent_corruption[C01]" time="0.024"><failure message="ValueError: EXACT_DEPENDENCY_MISMATCH">case = 'C01'
+tmp_path = WindowsPath('E:/codex_tmp/test_temp/dm01-r4r2-entry/test_independent_corruption_C00')
+
+    @pytest.mark.parametrize('case',['C01','C02','C03','C04','S01','S02','S03','S04'])
+&gt;   def test_independent_corruption(case,tmp_path):corruption(case,tmp_path)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r24r1_authority.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_r24r1_authority.py:73: in corruption
+    x=positive()['context']; target=tmp_path/(case+'.sqlite'); shutil.copyfile(ROOT/x['database'],target)
+      ^^^^^^^^^^
+tests\test_r24r1_authority.py:39: in positive
+    before=protected(); x=prepare(name); c=controller(x)
+                                           ^^^^^^^^^^^^^
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:33: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'EXACT_DEPENDENCY_MISMATCH'
+
+    def check(ok,reason):
+&gt;       if not ok:raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: EXACT_DEPENDENCY_MISMATCH
+
+scripts\v4_16_shadow_runtime.py:17: ValueError</failure></testcase><testcase classname="tests.test_r24r1_authority" name="test_independent_corruption[C02]" time="0.024"><failure message="ValueError: EXACT_DEPENDENCY_MISMATCH">case = 'C02'
+tmp_path = WindowsPath('E:/codex_tmp/test_temp/dm01-r4r2-entry/test_independent_corruption_C01')
+
+    @pytest.mark.parametrize('case',['C01','C02','C03','C04','S01','S02','S03','S04'])
+&gt;   def test_independent_corruption(case,tmp_path):corruption(case,tmp_path)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r24r1_authority.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_r24r1_authority.py:73: in corruption
+    x=positive()['context']; target=tmp_path/(case+'.sqlite'); shutil.copyfile(ROOT/x['database'],target)
+      ^^^^^^^^^^
+tests\test_r24r1_authority.py:39: in positive
+    before=protected(); x=prepare(name); c=controller(x)
+                                           ^^^^^^^^^^^^^
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:33: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'EXACT_DEPENDENCY_MISMATCH'
+
+    def check(ok,reason):
+&gt;       if not ok:raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: EXACT_DEPENDENCY_MISMATCH
+
+scripts\v4_16_shadow_runtime.py:17: ValueError</failure></testcase><testcase classname="tests.test_r24r1_authority" name="test_independent_corruption[C03]" time="0.026"><failure message="ValueError: EXACT_DEPENDENCY_MISMATCH">case = 'C03'
+tmp_path = WindowsPath('E:/codex_tmp/test_temp/dm01-r4r2-entry/test_independent_corruption_C02')
+
+    @pytest.mark.parametrize('case',['C01','C02','C03','C04','S01','S02','S03','S04'])
+&gt;   def test_independent_corruption(case,tmp_path):corruption(case,tmp_path)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r24r1_authority.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_r24r1_authority.py:73: in corruption
+    x=positive()['context']; target=tmp_path/(case+'.sqlite'); shutil.copyfile(ROOT/x['database'],target)
+      ^^^^^^^^^^
+tests\test_r24r1_authority.py:39: in positive
+    before=protected(); x=prepare(name); c=controller(x)
+                                           ^^^^^^^^^^^^^
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:33: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'EXACT_DEPENDENCY_MISMATCH'
+
+    def check(ok,reason):
+&gt;       if not ok:raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: EXACT_DEPENDENCY_MISMATCH
+
+scripts\v4_16_shadow_runtime.py:17: ValueError</failure></testcase><testcase classname="tests.test_r24r1_authority" name="test_independent_corruption[C04]" time="0.023"><failure message="ValueError: EXACT_DEPENDENCY_MISMATCH">case = 'C04'
+tmp_path = WindowsPath('E:/codex_tmp/test_temp/dm01-r4r2-entry/test_independent_corruption_C03')
+
+    @pytest.mark.parametrize('case',['C01','C02','C03','C04','S01','S02','S03','S04'])
+&gt;   def test_independent_corruption(case,tmp_path):corruption(case,tmp_path)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r24r1_authority.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_r24r1_authority.py:73: in corruption
+    x=positive()['context']; target=tmp_path/(case+'.sqlite'); shutil.copyfile(ROOT/x['database'],target)
+      ^^^^^^^^^^
+tests\test_r24r1_authority.py:39: in positive
+    before=protected(); x=prepare(name); c=controller(x)
+                                           ^^^^^^^^^^^^^
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:33: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'EXACT_DEPENDENCY_MISMATCH'
+
+    def check(ok,reason):
+&gt;       if not ok:raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: EXACT_DEPENDENCY_MISMATCH
+
+scripts\v4_16_shadow_runtime.py:17: ValueError</failure></testcase><testcase classname="tests.test_r24r1_authority" name="test_independent_corruption[S01]" time="0.023"><failure message="ValueError: EXACT_DEPENDENCY_MISMATCH">case = 'S01'
+tmp_path = WindowsPath('E:/codex_tmp/test_temp/dm01-r4r2-entry/test_independent_corruption_S00')
+
+    @pytest.mark.parametrize('case',['C01','C02','C03','C04','S01','S02','S03','S04'])
+&gt;   def test_independent_corruption(case,tmp_path):corruption(case,tmp_path)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r24r1_authority.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_r24r1_authority.py:73: in corruption
+    x=positive()['context']; target=tmp_path/(case+'.sqlite'); shutil.copyfile(ROOT/x['database'],target)
+      ^^^^^^^^^^
+tests\test_r24r1_authority.py:39: in positive
+    before=protected(); x=prepare(name); c=controller(x)
+                                           ^^^^^^^^^^^^^
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:33: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'EXACT_DEPENDENCY_MISMATCH'
+
+    def check(ok,reason):
+&gt;       if not ok:raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: EXACT_DEPENDENCY_MISMATCH
+
+scripts\v4_16_shadow_runtime.py:17: ValueError</failure></testcase><testcase classname="tests.test_r24r1_authority" name="test_independent_corruption[S02]" time="0.027"><failure message="ValueError: EXACT_DEPENDENCY_MISMATCH">case = 'S02'
+tmp_path = WindowsPath('E:/codex_tmp/test_temp/dm01-r4r2-entry/test_independent_corruption_S01')
+
+    @pytest.mark.parametrize('case',['C01','C02','C03','C04','S01','S02','S03','S04'])
+&gt;   def test_independent_corruption(case,tmp_path):corruption(case,tmp_path)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r24r1_authority.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_r24r1_authority.py:73: in corruption
+    x=positive()['context']; target=tmp_path/(case+'.sqlite'); shutil.copyfile(ROOT/x['database'],target)
+      ^^^^^^^^^^
+tests\test_r24r1_authority.py:39: in positive
+    before=protected(); x=prepare(name); c=controller(x)
+                                           ^^^^^^^^^^^^^
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:33: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'EXACT_DEPENDENCY_MISMATCH'
+
+    def check(ok,reason):
+&gt;       if not ok:raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: EXACT_DEPENDENCY_MISMATCH
+
+scripts\v4_16_shadow_runtime.py:17: ValueError</failure></testcase><testcase classname="tests.test_r24r1_authority" name="test_independent_corruption[S03]" time="0.024"><failure message="ValueError: EXACT_DEPENDENCY_MISMATCH">case = 'S03'
+tmp_path = WindowsPath('E:/codex_tmp/test_temp/dm01-r4r2-entry/test_independent_corruption_S02')
+
+    @pytest.mark.parametrize('case',['C01','C02','C03','C04','S01','S02','S03','S04'])
+&gt;   def test_independent_corruption(case,tmp_path):corruption(case,tmp_path)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r24r1_authority.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_r24r1_authority.py:73: in corruption
+    x=positive()['context']; target=tmp_path/(case+'.sqlite'); shutil.copyfile(ROOT/x['database'],target)
+      ^^^^^^^^^^
+tests\test_r24r1_authority.py:39: in positive
+    before=protected(); x=prepare(name); c=controller(x)
+                                           ^^^^^^^^^^^^^
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:33: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'EXACT_DEPENDENCY_MISMATCH'
+
+    def check(ok,reason):
+&gt;       if not ok:raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: EXACT_DEPENDENCY_MISMATCH
+
+scripts\v4_16_shadow_runtime.py:17: ValueError</failure></testcase><testcase classname="tests.test_r24r1_authority" name="test_independent_corruption[S04]" time="0.026"><failure message="ValueError: EXACT_DEPENDENCY_MISMATCH">case = 'S04'
+tmp_path = WindowsPath('E:/codex_tmp/test_temp/dm01-r4r2-entry/test_independent_corruption_S03')
+
+    @pytest.mark.parametrize('case',['C01','C02','C03','C04','S01','S02','S03','S04'])
+&gt;   def test_independent_corruption(case,tmp_path):corruption(case,tmp_path)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_r24r1_authority.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_r24r1_authority.py:73: in corruption
+    x=positive()['context']; target=tmp_path/(case+'.sqlite'); shutil.copyfile(ROOT/x['database'],target)
+      ^^^^^^^^^^
+tests\test_r24r1_authority.py:39: in positive
+    before=protected(); x=prepare(name); c=controller(x)
+                                           ^^^^^^^^^^^^^
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:33: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'EXACT_DEPENDENCY_MISMATCH'
+
+    def check(ok,reason):
+&gt;       if not ok:raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: EXACT_DEPENDENCY_MISMATCH
+
+scripts\v4_16_shadow_runtime.py:17: ValueError</failure></testcase><testcase classname="tests.test_r24r1_authority" name="test_oracle_has_no_writer_imports" time="0.005" /><testcase classname="tests.test_r24r1_authority" name="test_atomic_failure[cohort]" time="0.031"><failure message="ValueError: EXACT_DEPENDENCY_MISMATCH">point = 'cohort'
+
+    @pytest.mark.parametrize('point',['cohort','head'])
+    def test_atomic_failure(point):
+&gt;       x=prepare(); db=controller(x).database(ROOT/x['database'])
+                        ^^^^^^^^^^^^^
+
+tests\test_r24r1_authority.py:103: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:33: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'EXACT_DEPENDENCY_MISMATCH'
+
+    def check(ok,reason):
+&gt;       if not ok:raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: EXACT_DEPENDENCY_MISMATCH
+
+scripts\v4_16_shadow_runtime.py:17: ValueError</failure></testcase><testcase classname="tests.test_r24r1_authority" name="test_atomic_failure[head]" time="0.029"><failure message="ValueError: EXACT_DEPENDENCY_MISMATCH">point = 'head'
+
+    @pytest.mark.parametrize('point',['cohort','head'])
+    def test_atomic_failure(point):
+&gt;       x=prepare(); db=controller(x).database(ROOT/x['database'])
+                        ^^^^^^^^^^^^^
+
+tests\test_r24r1_authority.py:103: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:33: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'EXACT_DEPENDENCY_MISMATCH'
+
+    def check(ok,reason):
+&gt;       if not ok:raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: EXACT_DEPENDENCY_MISMATCH
+
+scripts\v4_16_shadow_runtime.py:17: ValueError</failure></testcase><testcase classname="tests.test_r24r1_authority" name="test_duplicate_logical_event_is_rejected_by_storage" time="0.025"><failure message="ValueError: EXACT_DEPENDENCY_MISMATCH">def test_duplicate_logical_event_is_rejected_by_storage():
+&gt;       x=prepare(); db=controller(x).database(ROOT/x['database'])
+                        ^^^^^^^^^^^^^
+
+tests\test_r24r1_authority.py:111: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:33: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'EXACT_DEPENDENCY_MISMATCH'
+
+    def check(ok,reason):
+&gt;       if not ok:raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: EXACT_DEPENDENCY_MISMATCH
+
+scripts\v4_16_shadow_runtime.py:17: ValueError</failure></testcase><testcase classname="tests.test_r24r1_authority" name="test_nested_future_source_row_cannot_hide_behind_declared_max" time="0.028"><failure message="AssertionError: Regex pattern did not match.&#10;  Expected regex: 'SOURCE_PAYLOAD_MAX_DATE_MISMATCH'&#10;  Actual message: 'EXACT_DEPENDENCY_MISMATCH'">def test_nested_future_source_row_cannot_hide_behind_declared_max():
+        def mutate(d,g,base):
+            d['sources']['ADJUSTED_DAILY']['binding']=atomic(base+'/future_row.json',dict(trade_date=TARGET,max_source_trade_date=TARGET,rows=[dict(trade_date='2026-10-09')]))
+        x=prepare(mutate=mutate)
+&gt;       with pytest.raises(ValueError,match='SOURCE_PAYLOAD_MAX_DATE_MISMATCH'):controller(x)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'SOURCE_PAYLOAD_MAX_DATE_MISMATCH'
+E         Actual message: 'EXACT_DEPENDENCY_MISMATCH'
+
+tests\test_r24r1_authority.py:123: AssertionError</failure></testcase><testcase classname="tests.test_r24r1_authority" name="test_independent_daily_oracle_rejects_fractional_late_acceptance[source]" time="0.027" /><testcase classname="tests.test_r24r1_authority" name="test_independent_daily_oracle_rejects_fractional_late_acceptance[daily]" time="0.023" /><testcase classname="tests.test_r24r1_authority" name="test_fractional_second_readiness_uses_latest_instant" time="0.023"><failure message="ValueError: EXACT_DEPENDENCY_MISMATCH">def test_fractional_second_readiness_uses_latest_instant():
+&gt;       x=prepare(); db=controller(x).database(ROOT/x['database'])
+                        ^^^^^^^^^^^^^
+
+tests\test_r24r1_authority.py:137: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\r24r1_simulation.py:74: in controller
+    return ShadowRuntimeController(ROOT,mode='REAL_SHADOW',simulation_dependencies=context['manifest'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:33: in __new__
+    return RealShadowController(root, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_go_forward_shadow_runtime.py:44: in __init__
+    for binding in self.deps['bindings']: exact(self.root,binding)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\v4_16_shadow_runtime.py:23: in exact
+    raw=p.read_bytes();check(len(raw)==binding.get('bytes',binding.get('byte_count')) and hashlib.sha256(raw).hexdigest()==binding['sha256'],'EXACT_DEPENDENCY_MISMATCH')
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ok = False, reason = 'EXACT_DEPENDENCY_MISMATCH'
+
+    def check(ok,reason):
+&gt;       if not ok:raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: EXACT_DEPENDENCY_MISMATCH
+
+scripts\v4_16_shadow_runtime.py:17: ValueError</failure></testcase><testcase classname="tests.test_r24_activation" name="test_negative_activation[A01]" time="0.003" /><testcase classname="tests.test_r24_activation" name="test_negative_activation[A02]" time="0.013" /><testcase classname="tests.test_r24_activation" name="test_negative_activation[A03]" time="1.789" /><testcase classname="tests.test_r24_activation" name="test_negative_activation[A04]" time="1.916" /><testcase classname="tests.test_r24_activation" name="test_negative_activation[A05]" time="1.646" /><testcase classname="tests.test_r24_activation" name="test_negative_activation[A06]" time="1.633" /><testcase classname="tests.test_r24_activation" name="test_negative_activation[A07]" time="1.847" /><testcase classname="tests.test_r24_activation" name="test_negative_activation[A08]" time="0.036" /><testcase classname="tests.test_r24_activation" name="test_negative_activation[A09]" time="0.029" /><testcase classname="tests.test_r24_activation" name="test_negative_activation[A10]" time="1.802" /><testcase classname="tests.test_r24_activation" name="test_negative_activation[A11]" time="1.823" /><testcase classname="tests.test_r24_activation" name="test_negative_activation[A12]" time="1.952" /><testcase classname="tests.test_r24_activation" name="test_negative_activation[A13]" time="1.736" /><testcase classname="tests.test_r24_activation" name="test_negative_activation[A14]" time="1.749" /><testcase classname="tests.test_r24_activation" name="test_negative_activation[A15]" time="1.825" /><testcase classname="tests.test_r24_activation" name="test_negative_activation[A16]" time="1.884" /><testcase classname="tests.test_r24_activation" name="test_negative_activation[A17]" time="2.154" /><testcase classname="tests.test_r24_activation" name="test_negative_activation[A18]" time="2.035" /><testcase classname="tests.test_r24_activation" name="test_negative_activation[A19]" time="1.895" /><testcase classname="tests.test_r24_activation" name="test_negative_activation[A20]" time="0.002" /><testcase classname="tests.test_r24_activation" name="test_activation_simulation_e2e" time="3.834" /><testcase classname="tests.test_r24_activation" name="test_owner_projection_preserves_accepted_semantics" time="0.007" /><testcase classname="tests.test_r24_activation" name="test_authority_rejects_before_source_or_storage" time="0.001" /><testcase classname="tests.test_r24_activation" name="test_independent_oracle_corruption[aggregate]" time="3.822" /><testcase classname="tests.test_r24_activation" name="test_independent_oracle_corruption[manifest]" time="3.752" /><testcase classname="tests.test_r24_activation" name="test_independent_oracle_corruption[supersedes]" time="4.052" /><testcase classname="tests.test_r24_activation" name="test_independent_oracle_corruption[origin]" time="3.942" /><testcase classname="tests.test_r24_activation" name="test_independent_oracle_corruption[source]" time="4.223" /><testcase classname="tests.test_r24_activation" name="test_independent_oracle_corruption[scope]" time="3.858" /><testcase classname="tests.test_r24_activation" name="test_oracle_rejects_schema_with_same_trigger_name" time="4.125" /><testcase classname="tests.test_r24_activation" name="test_oracle_rechecks_slot_identity_against_rebound_authority" time="3.946" /><testcase classname="tests.test_r24_activation" name="test_activation_oracle_has_no_writer_import" time="0.004" /><testcase classname="tests.test_r23_runtime" name="test_negative_e2e_families[N01]" time="2.409" /><testcase classname="tests.test_r23_runtime" name="test_negative_e2e_families[N02]" time="2.615" /><testcase classname="tests.test_r23_runtime" name="test_negative_e2e_families[N03]" time="2.954" /><testcase classname="tests.test_r23_runtime" name="test_negative_e2e_families[N04]" time="2.778" /><testcase classname="tests.test_r23_runtime" name="test_negative_e2e_families[N05]" time="2.444" /><testcase classname="tests.test_r23_runtime" name="test_negative_e2e_families[N06]" time="2.668" /><testcase classname="tests.test_r23_runtime" name="test_negative_e2e_families[N07]" time="2.881" /><testcase classname="tests.test_r23_runtime" name="test_negative_e2e_families[N08]" time="2.424" /><testcase classname="tests.test_r23_runtime" name="test_negative_e2e_families[N09]" time="2.702" /><testcase classname="tests.test_r23_runtime" name="test_negative_e2e_families[N10]" time="2.835" /><testcase classname="tests.test_r23_runtime" name="test_negative_e2e_families[N11]" time="2.676" /><testcase classname="tests.test_r23_runtime" name="test_negative_e2e_families[N12]" time="2.571" /><testcase classname="tests.test_r23_runtime" name="test_negative_e2e_families[N13]" time="2.520" /><testcase classname="tests.test_r23_runtime" name="test_negative_e2e_families[N14]" time="3.042" /><testcase classname="tests.test_r23_runtime" name="test_negative_e2e_families[N15]" time="2.395" /><testcase classname="tests.test_r23_runtime" name="test_negative_e2e_families[N16]" time="2.622" /><testcase classname="tests.test_r23_runtime" name="test_negative_e2e_families[N17]" time="2.503" /><testcase classname="tests.test_r23_runtime" name="test_negative_e2e_families[N18]" time="2.652" /><testcase classname="tests.test_r23_runtime" name="test_negative_e2e_families[N19]" time="2.401" /><testcase classname="tests.test_r23_runtime" name="test_negative_e2e_families[N20]" time="2.599" /><testcase classname="tests.test_r23_runtime" name="test_negative_e2e_families[N21]" time="2.556" /><testcase classname="tests.test_r23_runtime" name="test_negative_e2e_families[N22]" time="2.974" /><testcase classname="tests.test_r23_runtime" name="test_negative_e2e_families[N23]" time="2.557" /><testcase classname="tests.test_r23_runtime" name="test_negative_e2e_families[N24]" time="2.499" /><testcase classname="tests.test_r23_runtime" name="test_complete_independent_persisted_positive_e2e" time="3.036" /><testcase classname="tests.test_r23_runtime" name="test_real_rejected_before_database_creation" time="0.001" /><testcase classname="tests.test_r23_runtime" name="test_dry_run_contract_resolution_no_accept" time="2.379" /><testcase classname="tests.test_r23_runtime" name="test_db_cannot_be_production_path" time="2.304" /><testcase classname="tests.test_r23_runtime" name="test_immutable_storage_sql_triggers[shadow_artifacts]" time="2.221" /><testcase classname="tests.test_r23_runtime" name="test_immutable_storage_sql_triggers[shadow_control_receipts]" time="2.417" /><testcase classname="tests.test_r23_runtime" name="test_immutable_storage_sql_triggers[shadow_due_outbox]" time="2.603" /><testcase classname="tests.test_r23_runtime" name="test_immutable_storage_sql_triggers[shadow_first_enrollments]" time="2.373" /><testcase classname="tests.test_r23_runtime" name="test_immutable_storage_sql_triggers[shadow_health_receipts]" time="2.481" /><testcase classname="tests.test_r23_runtime" name="test_immutable_storage_sql_triggers[shadow_membership_snapshots]" time="2.562" /><testcase classname="tests.test_r23_runtime" name="test_immutable_storage_sql_triggers[shadow_observation_slots]" time="2.450" /><testcase classname="tests.test_r23_runtime" name="test_immutable_storage_sql_triggers[shadow_observations]" time="2.512" /><testcase classname="tests.test_r23_runtime" name="test_immutable_storage_sql_triggers[shadow_outcome_revisions]" time="2.235" /><testcase classname="tests.test_r23_runtime" name="test_immutable_storage_sql_triggers[shadow_publications]" time="2.519" /><testcase classname="tests.test_r23_runtime" name="test_immutable_storage_sql_triggers[shadow_runtime_operations]" time="2.584" /><testcase classname="tests.test_r23_runtime" name="test_immutable_storage_sql_triggers[shadow_source_freeze_manifests]" time="2.220" /><testcase classname="tests.test_r23_runtime" name="test_immutable_storage_sql_triggers[shadow_source_readiness_receipts]" time="2.481" /><testcase classname="tests.test_r23_runtime" name="test_immutable_storage_sql_triggers[shadow_state_heads]" time="2.517" /><testcase classname="tests.test_r23_runtime" name="test_immutable_storage_sql_triggers[shadow_transaction_receipts]" time="2.569" /><testcase classname="tests.test_r23_runtime" name="test_database_namespace_and_origin_constraints" time="2.417" /><testcase classname="tests.test_r23_runtime" name="test_receipt_idempotency_and_append_only" time="2.486" /><testcase classname="tests.test_r23_runtime" name="test_first_manifest_freeze_and_head_cas" time="2.420" /><testcase classname="tests.test_r23_runtime" name="test_prior_uses_explicit_accepted_head_not_latest_state" time="2.404" /><testcase classname="tests.test_r23_runtime" name="test_early_publication_allowed" time="2.586" /><testcase classname="tests.test_r23_runtime" name="test_planner_blocked_missing_and_nonmarket" time="2.494" /><testcase classname="tests.test_r23_runtime" name="test_blocked_to_ready_and_missed_terminal" time="2.644" /><testcase classname="tests.test_r23_runtime" name="test_stop_preserves_obligations_and_rejects_restart" time="2.558" /><testcase classname="tests.test_r23_runtime" name="test_health_never_grants_real_capability" time="2.461" /><testcase classname="tests.test_r23_runtime" name="test_exact_accepted_producer_callable_wiring" time="2.616" /><testcase classname="tests.test_r23_runtime" name="test_daily_membership_non_pit_capture" time="2.376" /><testcase classname="tests.test_r23_runtime" name="test_independent_oracle_no_runtime_import" time="0.005" /><testcase classname="tests.test_r23_runtime" name="test_protected_authority" time="0.099"><failure message="ValueError: HISTORICAL_BASELINE_MUTATION">&gt;   def test_protected_authority():assert oracle.protected()['status']=='PASS_LOCAL'
+                                          ^^^^^^^^^^^^^^^^^^
+
+tests\test_r23_runtime.py:124: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_r23_runtime.py:94: in protected
+    require((changed&amp;existing)&lt;={'.gitattributes'},'HISTORICAL_BASELINE_MUTATION')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = False, message = 'HISTORICAL_BASELINE_MUTATION'
+
+    def require(value,message):
+&gt;       if not value:raise ValueError(message)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: HISTORICAL_BASELINE_MUTATION
+
+scripts\validate_r23_runtime.py:6: ValueError</failure></testcase></testsuite></testsuites>

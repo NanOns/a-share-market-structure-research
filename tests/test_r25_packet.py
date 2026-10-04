@@ -31,7 +31,7 @@ REASONS = {
 }
 
 
-def vector(root):
+def vector(root, *, successor=False, target='2030-01-03', previous='2030-01-02', bridge=None, calendar_binding=None, source_bindings=None):
     """Synthetic protocol vector, never a real daily input or activation packet."""
     from scripts.validate_r25_preflight import dependency_digest
     root = Path(root)
@@ -42,19 +42,23 @@ def vector(root):
         target.write_text(json.dumps(value, sort_keys=True), encoding='utf8')
         return binding(root, path)
 
-    deps = json.loads((ROOT / 'config/v4_16_runtime_dependencies_v3.json').read_bytes())
+    deps = json.loads((ROOT / ('config/v4_16_runtime_dependencies_v4.json' if successor else 'config/v4_16_runtime_dependencies_v3.json')).read_bytes())
     contract = json.loads((ROOT / deps['go_forward_input']['path']).read_bytes())
     refs = [deps[k] for k in ('activation', 'storage', 'source_adapters', 'initialization_boundary', 'clock')]
     refs += list(contract['immutable_algorithm_bindings'].values())
+    if successor:refs += [deps['go_forward_input'],contract['predecessor'],contract['immutable_data_head_readback']]
     for reference in refs:
-        target = root / reference['path']
-        target.parent.mkdir(parents=True, exist_ok=True)
-        target.write_bytes((ROOT / reference['path']).read_bytes())
-    target, previous = '2030-01-03', '2030-01-02'  # fictional vector sessions, never target selection
+        copy_target = root / reference['path']
+        copy_target.parent.mkdir(parents=True, exist_ok=True)
+        copy_target.write_bytes((ROOT / reference['path']).read_bytes())
+    # Caller dates remain explicit engineering vectors, never target selection.
     sources = {}
     for family in contract['mandatory_pure_core_sources']:
         sources[family] = dict(binding=put(f'vector/{family}.json', dict(trade_date=target, rows=[dict(trade_date=target)], evidence_class='ENGINEERING_VECTOR')),
                                target_trade_date=target, max_source_trade_date=target, provider_observed_at=target+'T00:01:00Z', system_available_at=target+'T00:02:00Z', accepted_at=target+'T00:03:00Z', quality='ACCEPTED', capability='PURE_CORE_STOCK')
+        if successor:
+            sources[family].update(provider_observed_at=target+'T10:01:00Z',system_available_at=target+'T10:02:00Z',accepted_at=target+'T10:03:00Z')
+        if source_bindings and family in source_bindings:sources[family]['binding']=source_bindings[family]
     daily = dict(contract_id=contract['contract_id'], daily_input_id='R25_ENGINEERING_VECTOR', revision=1, target_trade_date=target, previous_trade_date=previous,
                  target_session_confirmed=True, accepted_at=target+'T00:04:00Z', environment_class='REAL', test_vector=True, evidence_class='ENGINEERING_VECTOR',
                  calendar=put('vector/calendar.json', dict(session_dates=[previous, target], fixture_only=True)),
@@ -63,6 +67,9 @@ def vector(root):
                  quality_capability_matrix={k: dict(quality=v['quality'], capability=v['capability']) for k,v in sources.items()},
                  day_package=put('vector/package.json', dict(trade_date=target, sources=sources, snapshot_identity='ENGINEERING_VECTOR_ONLY')),
                  immutable_algorithm_bindings=contract['immutable_algorithm_bindings'], **contract['model_identity'])
+    if bridge is not None:daily['target_session_pit_binding']=bridge
+    if calendar_binding is not None:daily['calendar']=calendar_binding
+    if successor:daily['accepted_at']=target+'T10:04:00Z'
     daily['daily_input_digest'] = digest(daily)
     source_authority = dict(environment_class='REAL', evidence_class='ENGINEERING_VECTOR', adapter_id='ACCEPTED_LOCAL_EXACT_BYTES_V1', owner_heads=deps['owner_heads'],
                             future_settlement_source_policy='EXACT_ACCEPTED_DUE_ENDPOINT_ONLY_NO_PREFETCH',
@@ -77,6 +84,7 @@ def vector(root):
                  storage_identity=dict(database_path='data/v4/shadow_real_v1/VECTOR_NEVER_CREATED.sqlite', namespace='SHADOW_V4', execution_mode='SHADOW', evidence_origin='PIT_OBSERVED', migration=deps['migration']),
                  **contract['model_identity'], **{k: deps[k] for k in ('clock', 'slot', 'storage', 'source_adapters', 'initialization_boundary')})
     candidate = dict(authority_id=grant['authority_id'], environment_class='REAL', evidence_class='ENGINEERING_VECTOR', external_acceptance=None, execution_authorized=False, grant=grant)
+    if successor:grant['daily_input_boundary']=target+'T13:00:00Z'
     return dict(root=root, candidate=candidate, daily=daily, sources=source_authority, deps=deps, contract=contract, predecessor=predecessor, put=put)
 
 

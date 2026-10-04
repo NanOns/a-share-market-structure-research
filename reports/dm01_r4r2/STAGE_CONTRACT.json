@@ -1,6 +1,7 @@
 {
-  "acceptance": "PENDING_LOCAL_VERIFICATION",
+  "acceptance": "PASS_READY_FOR_INDEPENDENT_EXTERNAL_AUDIT",
   "baseline": "54a214167cfd4414901d2002b0a3cf5da45f4e36",
+  "external_acceptance": false,
   "next": "STOP_WAIT_DM01_R4R2_INDEPENDENT_EXTERNAL_AUDIT",
   "pass_keep": "All DM01 R4R1 semantic/numeric/calendar/CAS source bytes",
   "scope": [
@@ -8,5 +9,6 @@
     "exact bridge producer",
     "independent preflight/runtime parity"
   ],
-  "stage": "DM01_R4R2"
+  "stage": "DM01_R4R2",
+  "tested_source": "46bbc77164723ca272e0ae7ca896bd0b66f2fd80"
 }

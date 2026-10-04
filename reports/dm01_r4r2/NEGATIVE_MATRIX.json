@@ -1,0 +1,114 @@
+{
+  "actual_real_evidence": false,
+  "disclosures": {
+    "R4R2-11": "Actual deterministic bridge and daily producer; full daily preflight with engineering-only bridge mode.",
+    "R4R2-12": "Full packet producer -> independent packet/daily preflight -> runtime bridge checks -> complete frozen input constructor. Exact literal reads executed. External/native acceptance and immutable algorithm view supplied only via explicit test seams. No controller, DB, real readiness or grant. Future packet state binds the exact target child instead of hardcoded 2026-09-30.",
+    "immutability": "Fixture ZIP creation timestamps require a fresh explicit engineering namespace; exact producer output is deterministic for fixed supplied inputs. No latest/glob/mtime input selection."
+  },
+  "extra_vectors": [
+    "pre-close/future separately parameterized",
+    "output traversal cannot target heads"
+  ],
+  "positive_scope": "ISOLATED_ENGINEERING_OR_REAL_SHAPED_SYNTHETIC_ONLY",
+  "real_grant": false,
+  "status": "PASS_16_REQUIRED_VECTORS",
+  "vectors": {
+    "R4R2-01": {
+      "passed_nodes": [
+        "tests.v4_dm01_r4r2.test_bridge::test_negative[1]"
+      ],
+      "status": "PASS"
+    },
+    "R4R2-02": {
+      "passed_nodes": [
+        "tests.v4_dm01_r4r2.test_bridge::test_negative[2]"
+      ],
+      "status": "PASS"
+    },
+    "R4R2-03": {
+      "passed_nodes": [
+        "tests.v4_dm01_r4r2.test_bridge::test_negative[3]"
+      ],
+      "status": "PASS"
+    },
+    "R4R2-04": {
+      "passed_nodes": [
+        "tests.v4_dm01_r4r2.test_bridge::test_negative[4]"
+      ],
+      "status": "PASS"
+    },
+    "R4R2-05": {
+      "passed_nodes": [
+        "tests.v4_dm01_r4r2.test_bridge::test_negative[5]"
+      ],
+      "status": "PASS"
+    },
+    "R4R2-06": {
+      "passed_nodes": [
+        "tests.v4_dm01_r4r2.test_bridge::test_negative[6]"
+      ],
+      "status": "PASS"
+    },
+    "R4R2-07": {
+      "passed_nodes": [
+        "tests.v4_dm01_r4r2.test_bridge::test_negative[7]"
+      ],
+      "status": "PASS"
+    },
+    "R4R2-08": {
+      "passed_nodes": [
+        "tests.v4_dm01_r4r2.test_bridge::test_negative[8]"
+      ],
+      "status": "PASS"
+    },
+    "R4R2-09": {
+      "passed_nodes": [
+        "tests.v4_dm01_r4r2.test_bridge::test_negative[9]"
+      ],
+      "status": "PASS"
+    },
+    "R4R2-10": {
+      "passed_nodes": [
+        "tests.v4_dm01_r4r2.test_bridge::test_negative[10]"
+      ],
+      "status": "PASS"
+    },
+    "R4R2-11": {
+      "passed_nodes": [
+        "tests.v4_dm01_r4r2.test_bridge::test_R4R2_11_engineering_producer"
+      ],
+      "status": "PASS"
+    },
+    "R4R2-12": {
+      "passed_nodes": [
+        "tests.v4_dm01_r4r2.test_bridge::test_R4R2_12_real_shaped_parity"
+      ],
+      "status": "PASS"
+    },
+    "R4R2-13": {
+      "passed_nodes": [
+        "tests.v4_dm01_r4r2.test_bridge::test_negative[13]"
+      ],
+      "status": "PASS"
+    },
+    "R4R2-14": {
+      "passed_nodes": [
+        "tests.v4_dm01_r4r2.test_bridge::test_R4R2_14_old_V1_historical_only"
+      ],
+      "status": "PASS"
+    },
+    "R4R2-15": {
+      "passed_nodes": [
+        "tests.v4_dm01_r4r2.test_bridge::test_R4R2_15_contract_parity"
+      ],
+      "status": "PASS"
+    },
+    "R4R2-16": {
+      "passed_nodes": [
+        "tests.v4_dm01_r4r2.test_bridge::test_R4R2_16_future_wait[2026-10-08-2026-10-05T00:00:00Z]",
+        "tests.v4_dm01_r4r2.test_bridge::test_R4R2_16_future_wait[2026-09-28-2026-09-28T06:00:00Z]"
+      ],
+      "status": "PASS"
+    }
+  }
+}

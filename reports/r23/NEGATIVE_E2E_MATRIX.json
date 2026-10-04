@@ -1,0 +1,221 @@
+{
+  "cases": [
+    {
+      "actual_rejections": [
+        "REAL_SHADOW_NOT_AUTHORIZED_BEFORE_CONSUMPTION"
+      ],
+      "case": "N01",
+      "evidence_origin": "ENGINEERING_FIXTURE",
+      "status": "PASS_LOCAL",
+      "visible_originals": 0
+    },
+    {
+      "actual_rejections": [
+        "CLOCK_MISMATCH"
+      ],
+      "case": "N02",
+      "evidence_origin": "ENGINEERING_FIXTURE",
+      "status": "PASS_LOCAL",
+      "visible_originals": 0
+    },
+    {
+      "actual_rejections": [
+        "MISSED_OBSERVATION_SLOT"
+      ],
+      "case": "N03",
+      "evidence_origin": "ENGINEERING_FIXTURE",
+      "status": "PASS_LOCAL",
+      "visible_originals": 0
+    },
+    {
+      "actual_rejections": [
+        "MISSING_DURABLE_RECORD"
+      ],
+      "case": "N04",
+      "evidence_origin": "ENGINEERING_FIXTURE",
+      "status": "PASS_LOCAL",
+      "visible_originals": 0
+    },
+    {
+      "actual_rejections": [
+        "SOURCE_DIGEST_MISMATCH"
+      ],
+      "case": "N05",
+      "evidence_origin": "ENGINEERING_FIXTURE",
+      "status": "PASS_LOCAL",
+      "visible_originals": 0
+    },
+    {
+      "actual_rejections": [
+        "BACKDATED_OR_UNREGISTERED_READINESS"
+      ],
+      "case": "N06",
+      "evidence_origin": "ENGINEERING_FIXTURE",
+      "status": "PASS_LOCAL",
+      "visible_originals": 0
+    },
+    {
+      "actual_rejections": [
+        "LEGACY_PRIOR_FORBIDDEN"
+      ],
+      "case": "N07",
+      "evidence_origin": "ENGINEERING_FIXTURE",
+      "status": "PASS_LOCAL",
+      "visible_originals": 0
+    },
+    {
+      "actual_rejections": [
+        "GAP_FAIL_CLOSED"
+      ],
+      "case": "N08",
+      "evidence_origin": "ENGINEERING_FIXTURE",
+      "status": "PASS_LOCAL",
+      "visible_originals": 0
+    },
+    {
+      "actual_rejections": [
+        "CORRECTION_NEW_ORIGINAL_FORBIDDEN"
+      ],
+      "case": "N09",
+      "evidence_origin": "ENGINEERING_FIXTURE",
+      "status": "PASS_LOCAL",
+      "visible_originals": 1
+    },
+    {
+      "actual_rejections": [
+        "INJECTED_TRANSACTION_FAILURE"
+      ],
+      "case": "N10",
+      "evidence_origin": "ENGINEERING_FIXTURE",
+      "status": "PASS_LOCAL",
+      "visible_originals": 0
+    },
+    {
+      "actual_rejections": [
+        "UNIQUE constraint failed: index 'shadow_original_event'"
+      ],
+      "case": "N11",
+      "evidence_origin": "ENGINEERING_FIXTURE",
+      "status": "PASS_LOCAL",
+      "visible_originals": 1
+    },
+    {
+      "actual_rejections": [
+        "NO_RAW_PROVIDER_FALLBACK"
+      ],
+      "case": "N12",
+      "evidence_origin": "ENGINEERING_FIXTURE",
+      "status": "PASS_LOCAL",
+      "visible_originals": 0
+    },
+    {
+      "actual_rejections": [
+        "PRE_DUE_FUTURE_READ_FORBIDDEN"
+      ],
+      "case": "N13",
+      "evidence_origin": "ENGINEERING_FIXTURE",
+      "status": "PASS_LOCAL",
+      "visible_originals": 1
+    },
+    {
+      "actual_rejections": [
+        "UNACCEPTED_FUTURE_DATA_HEAD"
+      ],
+      "case": "N14",
+      "evidence_origin": "ENGINEERING_FIXTURE",
+      "status": "PASS_LOCAL",
+      "visible_originals": 1
+    },
+    {
+      "actual_rejections": [
+        "MEMBERSHIP_REPLAY_CANNOT_CLAIM_PIT"
+      ],
+      "case": "N15",
+      "evidence_origin": "ENGINEERING_FIXTURE",
+      "status": "PASS_LOCAL",
+      "visible_originals": 0
+    },
+    {
+      "actual_rejections": [
+        "BLOCKED_A04_A08_CAPABILITY"
+      ],
+      "case": "N16",
+      "evidence_origin": "ENGINEERING_FIXTURE",
+      "status": "PASS_LOCAL",
+      "visible_originals": 0
+    },
+    {
+      "actual_rejections": [
+        "BLOCKED_A04_A08_CAPABILITY"
+      ],
+      "case": "N17",
+      "evidence_origin": "ENGINEERING_FIXTURE",
+      "status": "PASS_LOCAL",
+      "visible_originals": 0
+    },
+    {
+      "actual_rejections": [],
+      "case": "N18",
+      "evidence_origin": "ENGINEERING_FIXTURE",
+      "status": "PASS_LOCAL",
+      "visible_originals": 1
+    },
+    {
+      "actual_rejections": [
+        "PARAMETER_CHANGE_WITHOUT_NEW_IDENTITY"
+      ],
+      "case": "N19",
+      "evidence_origin": "ENGINEERING_FIXTURE",
+      "status": "PASS_LOCAL",
+      "visible_originals": 0
+    },
+    {
+      "actual_rejections": [
+        "CLOCK_POLICY_CHANGE_WITHOUT_NEW_VERSION"
+      ],
+      "case": "N20",
+      "evidence_origin": "ENGINEERING_FIXTURE",
+      "status": "PASS_LOCAL",
+      "visible_originals": 0
+    },
+    {
+      "actual_rejections": [
+        "FORBIDDEN_FEEDBACK_OR_REAL_COUNTER"
+      ],
+      "case": "N21",
+      "evidence_origin": "ENGINEERING_FIXTURE",
+      "status": "PASS_LOCAL",
+      "visible_originals": 0
+    },
+    {
+      "actual_rejections": [
+        "CONTROL_BENCHMARK_REDRAW_FORBIDDEN"
+      ],
+      "case": "N22",
+      "evidence_origin": "ENGINEERING_FIXTURE",
+      "status": "PASS_LOCAL",
+      "visible_originals": 1
+    },
+    {
+      "actual_rejections": [
+        "FORBIDDEN_FEEDBACK_OR_REAL_COUNTER"
+      ],
+      "case": "N23",
+      "evidence_origin": "ENGINEERING_FIXTURE",
+      "status": "PASS_LOCAL",
+      "visible_originals": 0
+    },
+    {
+      "actual_rejections": [
+        "ROLLBACK_DELETE_FORBIDDEN"
+      ],
+      "case": "N24",
+      "evidence_origin": "ENGINEERING_FIXTURE",
+      "status": "PASS_LOCAL",
+      "visible_originals": 1
+    }
+  ],
+  "count": 24,
+  "expected_authored_independently": true,
+  "status": "PASS_LOCAL"
+}

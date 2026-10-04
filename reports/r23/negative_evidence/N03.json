@@ -1,0 +1,48 @@
+{
+  "after": {
+    "shadow_artifacts": 0,
+    "shadow_control_receipts": 0,
+    "shadow_due_outbox": 0,
+    "shadow_first_enrollments": 0,
+    "shadow_health_receipts": 0,
+    "shadow_membership_snapshots": 0,
+    "shadow_observation_slots": 0,
+    "shadow_observations": 0,
+    "shadow_outcome_revisions": 0,
+    "shadow_publications": 0,
+    "shadow_runtime_operations": 0,
+    "shadow_source_freeze_manifests": 0,
+    "shadow_source_readiness_receipts": 4,
+    "shadow_state_heads": 1,
+    "shadow_transaction_receipts": 0
+  },
+  "before": {
+    "shadow_artifacts": 0,
+    "shadow_control_receipts": 0,
+    "shadow_due_outbox": 0,
+    "shadow_first_enrollments": 0,
+    "shadow_health_receipts": 0,
+    "shadow_membership_snapshots": 0,
+    "shadow_observation_slots": 0,
+    "shadow_observations": 0,
+    "shadow_outcome_revisions": 0,
+    "shadow_publications": 0,
+    "shadow_runtime_operations": 0,
+    "shadow_source_freeze_manifests": 0,
+    "shadow_source_readiness_receipts": 3,
+    "shadow_state_heads": 1,
+    "shadow_transaction_receipts": 0
+  },
+  "case": "N03",
+  "database": "reports/r23/negative_evidence/N03.sqlite",
+  "database_binding": {
+    "bytes": 176128,
+    "path": "reports/r23/negative_evidence/N03.sqlite",
+    "sha256": "a672ae9a7ff50016cb9ee263fba9ff4ab0c97a0cb12dd380859b58ae87815733"
+  },
+  "evidence_origin": "ENGINEERING_FIXTURE",
+  "expected": "FAIL_CLOSED",
+  "rejections": [
+    "MISSED_OBSERVATION_SLOT"
+  ]
+}

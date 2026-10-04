@@ -1,0 +1,27 @@
+{
+  "business_dependency_policy": "EXACT_V4_10_TO_14_OWNER_FIXTURE_OUTPUTS; V4_15_RADAR_COHORT_AND_SETTLEMENT_EXECUTABLE_ADAPTERS; NO_BUSINESS_REIMPLEMENTATION",
+  "components": [
+    "ShadowRuntimeController",
+    "ClockPolicyResolver",
+    "SourceReadinessReceiptRegistry",
+    "ObservationSlotPlanner",
+    "MandatorySourceFreezeBuilder",
+    "ShadowPriorStateReader",
+    "ShadowPublicationBuilder",
+    "ShadowPublicationAcceptanceTransaction",
+    "RealtimeCohortEnrollmentWriter",
+    "DailyMembershipSnapshotWriter",
+    "DueOutboxScheduler",
+    "SettlementWorkerOrchestrator",
+    "ShadowHealthReceiptWriter",
+    "ShadowReadbackReader",
+    "RollbackController"
+  ],
+  "implementation": {
+    "bytes": 30399,
+    "path": "src/workbench_analysis/v4_16_shadow_runtime.py",
+    "sha256": "ef536b0a4fd962a8aa696163ec1ebbb5712f4c8fd6fa620e1364d7b471408c96"
+  },
+  "runtime_activation": "NOT_AUTHORIZED",
+  "status": "PASS_LOCAL"
+}

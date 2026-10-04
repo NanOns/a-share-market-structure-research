@@ -1,0 +1,286 @@
+{
+  "actual_sqlite_schema": [
+    {
+      "name": "shadow_artifact_identity",
+      "sql": "CREATE UNIQUE INDEX shadow_artifact_identity ON shadow_artifacts(json_extract(payload,'$.kind'),json_extract(payload,'$.key'))",
+      "type": "index"
+    },
+    {
+      "name": "shadow_due_identity",
+      "sql": "CREATE UNIQUE INDEX shadow_due_identity ON shadow_due_outbox(json_extract(payload,'$.enrollment_id'),json_extract(payload,'$.horizon'))",
+      "type": "index"
+    },
+    {
+      "name": "shadow_original_event",
+      "sql": "CREATE UNIQUE INDEX shadow_original_event ON shadow_first_enrollments(json_extract(payload,'$.logical_event_id'))",
+      "type": "index"
+    },
+    {
+      "name": "shadow_pub_revision",
+      "sql": "CREATE UNIQUE INDEX shadow_pub_revision ON shadow_publications(json_extract(payload,'$.slot_id'),json_extract(payload,'$.revision'))",
+      "type": "index"
+    },
+    {
+      "name": "shadow_receipt_identity",
+      "sql": "CREATE UNIQUE INDEX shadow_receipt_identity ON shadow_source_readiness_receipts(json_extract(payload,'$.source_identity'),json_extract(payload,'$.source_revision'),json_extract(payload,'$.target_trade_date'))",
+      "type": "index"
+    },
+    {
+      "name": "shadow_slot_revision",
+      "sql": "CREATE UNIQUE INDEX shadow_slot_revision ON shadow_observation_slots(json_extract(payload,'$.slot_id'),json_extract(payload,'$.revision'))",
+      "type": "index"
+    },
+    {
+      "name": "shadow_artifacts",
+      "sql": "CREATE TABLE shadow_artifacts(id TEXT PRIMARY KEY, namespace TEXT NOT NULL CHECK(namespace='SHADOW_V4'), evidence_origin TEXT NOT NULL CHECK(evidence_origin='ENGINEERING_FIXTURE'), payload TEXT NOT NULL CHECK(json_valid(payload)), digest TEXT NOT NULL CHECK(length(digest)=64))",
+      "type": "table"
+    },
+    {
+      "name": "shadow_control_receipts",
+      "sql": "CREATE TABLE shadow_control_receipts(id TEXT PRIMARY KEY, namespace TEXT NOT NULL CHECK(namespace='SHADOW_V4'), evidence_origin TEXT NOT NULL CHECK(evidence_origin='ENGINEERING_FIXTURE'), payload TEXT NOT NULL CHECK(json_valid(payload)), digest TEXT NOT NULL CHECK(length(digest)=64))",
+      "type": "table"
+    },
+    {
+      "name": "shadow_due_outbox",
+      "sql": "CREATE TABLE shadow_due_outbox(id TEXT PRIMARY KEY, namespace TEXT NOT NULL CHECK(namespace='SHADOW_V4'), evidence_origin TEXT NOT NULL CHECK(evidence_origin='ENGINEERING_FIXTURE'), payload TEXT NOT NULL CHECK(json_valid(payload)), digest TEXT NOT NULL CHECK(length(digest)=64))",
+      "type": "table"
+    },
+    {
+      "name": "shadow_first_enrollments",
+      "sql": "CREATE TABLE shadow_first_enrollments(id TEXT PRIMARY KEY, namespace TEXT NOT NULL CHECK(namespace='SHADOW_V4'), evidence_origin TEXT NOT NULL CHECK(evidence_origin='ENGINEERING_FIXTURE'), payload TEXT NOT NULL CHECK(json_valid(payload)), digest TEXT NOT NULL CHECK(length(digest)=64))",
+      "type": "table"
+    },
+    {
+      "name": "shadow_health_receipts",
+      "sql": "CREATE TABLE shadow_health_receipts(id TEXT PRIMARY KEY, namespace TEXT NOT NULL CHECK(namespace='SHADOW_V4'), evidence_origin TEXT NOT NULL CHECK(evidence_origin='ENGINEERING_FIXTURE'), payload TEXT NOT NULL CHECK(json_valid(payload)), digest TEXT NOT NULL CHECK(length(digest)=64))",
+      "type": "table"
+    },
+    {
+      "name": "shadow_membership_snapshots",
+      "sql": "CREATE TABLE shadow_membership_snapshots(id TEXT PRIMARY KEY, namespace TEXT NOT NULL CHECK(namespace='SHADOW_V4'), evidence_origin TEXT NOT NULL CHECK(evidence_origin='ENGINEERING_FIXTURE'), payload TEXT NOT NULL CHECK(json_valid(payload)), digest TEXT NOT NULL CHECK(length(digest)=64))",
+      "type": "table"
+    },
+    {
+      "name": "shadow_observation_slots",
+      "sql": "CREATE TABLE shadow_observation_slots(id TEXT PRIMARY KEY, namespace TEXT NOT NULL CHECK(namespace='SHADOW_V4'), evidence_origin TEXT NOT NULL CHECK(evidence_origin='ENGINEERING_FIXTURE'), payload TEXT NOT NULL CHECK(json_valid(payload)), digest TEXT NOT NULL CHECK(length(digest)=64))",
+      "type": "table"
+    },
+    {
+      "name": "shadow_observations",
+      "sql": "CREATE TABLE shadow_observations(id TEXT PRIMARY KEY, namespace TEXT NOT NULL CHECK(namespace='SHADOW_V4'), evidence_origin TEXT NOT NULL CHECK(evidence_origin='ENGINEERING_FIXTURE'), payload TEXT NOT NULL CHECK(json_valid(payload)), digest TEXT NOT NULL CHECK(length(digest)=64))",
+      "type": "table"
+    },
+    {
+      "name": "shadow_outcome_revisions",
+      "sql": "CREATE TABLE shadow_outcome_revisions(id TEXT PRIMARY KEY, namespace TEXT NOT NULL CHECK(namespace='SHADOW_V4'), evidence_origin TEXT NOT NULL CHECK(evidence_origin='ENGINEERING_FIXTURE'), payload TEXT NOT NULL CHECK(json_valid(payload)), digest TEXT NOT NULL CHECK(length(digest)=64))",
+      "type": "table"
+    },
+    {
+      "name": "shadow_publication_heads",
+      "sql": "CREATE TABLE shadow_publication_heads(slot_id TEXT PRIMARY KEY, publication_id TEXT NOT NULL REFERENCES shadow_publications(id), revision INTEGER NOT NULL CHECK(revision>0))",
+      "type": "table"
+    },
+    {
+      "name": "shadow_publications",
+      "sql": "CREATE TABLE shadow_publications(id TEXT PRIMARY KEY, namespace TEXT NOT NULL CHECK(namespace='SHADOW_V4'), evidence_origin TEXT NOT NULL CHECK(evidence_origin='ENGINEERING_FIXTURE'), payload TEXT NOT NULL CHECK(json_valid(payload)), digest TEXT NOT NULL CHECK(length(digest)=64))",
+      "type": "table"
+    },
+    {
+      "name": "shadow_runtime_operations",
+      "sql": "CREATE TABLE shadow_runtime_operations(id TEXT PRIMARY KEY,namespace TEXT NOT NULL CHECK(namespace='SHADOW_V4'),evidence_origin TEXT NOT NULL CHECK(evidence_origin='ENGINEERING_FIXTURE'),payload TEXT NOT NULL CHECK(json_valid(payload)),digest TEXT NOT NULL CHECK(length(digest)=64))",
+      "type": "table"
+    },
+    {
+      "name": "shadow_source_freeze_manifests",
+      "sql": "CREATE TABLE shadow_source_freeze_manifests(id TEXT PRIMARY KEY, namespace TEXT NOT NULL CHECK(namespace='SHADOW_V4'), evidence_origin TEXT NOT NULL CHECK(evidence_origin='ENGINEERING_FIXTURE'), payload TEXT NOT NULL CHECK(json_valid(payload)), digest TEXT NOT NULL CHECK(length(digest)=64))",
+      "type": "table"
+    },
+    {
+      "name": "shadow_source_readiness_receipts",
+      "sql": "CREATE TABLE shadow_source_readiness_receipts(id TEXT PRIMARY KEY, namespace TEXT NOT NULL CHECK(namespace='SHADOW_V4'), evidence_origin TEXT NOT NULL CHECK(evidence_origin='ENGINEERING_FIXTURE'), payload TEXT NOT NULL CHECK(json_valid(payload)), digest TEXT NOT NULL CHECK(length(digest)=64))",
+      "type": "table"
+    },
+    {
+      "name": "shadow_state_heads",
+      "sql": "CREATE TABLE shadow_state_heads(id TEXT PRIMARY KEY, namespace TEXT NOT NULL CHECK(namespace='SHADOW_V4'), evidence_origin TEXT NOT NULL CHECK(evidence_origin='ENGINEERING_FIXTURE'), payload TEXT NOT NULL CHECK(json_valid(payload)), digest TEXT NOT NULL CHECK(length(digest)=64))",
+      "type": "table"
+    },
+    {
+      "name": "shadow_transaction_receipts",
+      "sql": "CREATE TABLE shadow_transaction_receipts(id TEXT PRIMARY KEY, namespace TEXT NOT NULL CHECK(namespace='SHADOW_V4'), evidence_origin TEXT NOT NULL CHECK(evidence_origin='ENGINEERING_FIXTURE'), payload TEXT NOT NULL CHECK(json_valid(payload)), digest TEXT NOT NULL CHECK(length(digest)=64))",
+      "type": "table"
+    },
+    {
+      "name": "shadow_artifacts_no_delete",
+      "sql": "CREATE TRIGGER shadow_artifacts_no_delete BEFORE DELETE ON shadow_artifacts BEGIN SELECT RAISE(ABORT,'APPEND_ONLY'); END",
+      "type": "trigger"
+    },
+    {
+      "name": "shadow_artifacts_no_update",
+      "sql": "CREATE TRIGGER shadow_artifacts_no_update BEFORE UPDATE ON shadow_artifacts BEGIN SELECT RAISE(ABORT,'APPEND_ONLY'); END",
+      "type": "trigger"
+    },
+    {
+      "name": "shadow_control_receipts_no_delete",
+      "sql": "CREATE TRIGGER shadow_control_receipts_no_delete BEFORE DELETE ON shadow_control_receipts BEGIN SELECT RAISE(ABORT,'APPEND_ONLY'); END",
+      "type": "trigger"
+    },
+    {
+      "name": "shadow_control_receipts_no_update",
+      "sql": "CREATE TRIGGER shadow_control_receipts_no_update BEFORE UPDATE ON shadow_control_receipts BEGIN SELECT RAISE(ABORT,'APPEND_ONLY'); END",
+      "type": "trigger"
+    },
+    {
+      "name": "shadow_due_outbox_no_delete",
+      "sql": "CREATE TRIGGER shadow_due_outbox_no_delete BEFORE DELETE ON shadow_due_outbox BEGIN SELECT RAISE(ABORT,'APPEND_ONLY'); END",
+      "type": "trigger"
+    },
+    {
+      "name": "shadow_due_outbox_no_update",
+      "sql": "CREATE TRIGGER shadow_due_outbox_no_update BEFORE UPDATE ON shadow_due_outbox BEGIN SELECT RAISE(ABORT,'APPEND_ONLY'); END",
+      "type": "trigger"
+    },
+    {
+      "name": "shadow_first_enrollments_no_delete",
+      "sql": "CREATE TRIGGER shadow_first_enrollments_no_delete BEFORE DELETE ON shadow_first_enrollments BEGIN SELECT RAISE(ABORT,'APPEND_ONLY'); END",
+      "type": "trigger"
+    },
+    {
+      "name": "shadow_first_enrollments_no_update",
+      "sql": "CREATE TRIGGER shadow_first_enrollments_no_update BEFORE UPDATE ON shadow_first_enrollments BEGIN SELECT RAISE(ABORT,'APPEND_ONLY'); END",
+      "type": "trigger"
+    },
+    {
+      "name": "shadow_head_cas",
+      "sql": "CREATE TRIGGER shadow_head_cas BEFORE UPDATE ON shadow_publication_heads WHEN NEW.slot_id!=OLD.slot_id OR NEW.revision!=OLD.revision+1 BEGIN SELECT RAISE(ABORT,'HEAD_CAS'); END",
+      "type": "trigger"
+    },
+    {
+      "name": "shadow_head_no_delete",
+      "sql": "CREATE TRIGGER shadow_head_no_delete BEFORE DELETE ON shadow_publication_heads BEGIN SELECT RAISE(ABORT,'HEAD_DELETE_FORBIDDEN'); END",
+      "type": "trigger"
+    },
+    {
+      "name": "shadow_health_receipts_no_delete",
+      "sql": "CREATE TRIGGER shadow_health_receipts_no_delete BEFORE DELETE ON shadow_health_receipts BEGIN SELECT RAISE(ABORT,'APPEND_ONLY'); END",
+      "type": "trigger"
+    },
+    {
+      "name": "shadow_health_receipts_no_update",
+      "sql": "CREATE TRIGGER shadow_health_receipts_no_update BEFORE UPDATE ON shadow_health_receipts BEGIN SELECT RAISE(ABORT,'APPEND_ONLY'); END",
+      "type": "trigger"
+    },
+    {
+      "name": "shadow_membership_snapshots_no_delete",
+      "sql": "CREATE TRIGGER shadow_membership_snapshots_no_delete BEFORE DELETE ON shadow_membership_snapshots BEGIN SELECT RAISE(ABORT,'APPEND_ONLY'); END",
+      "type": "trigger"
+    },
+    {
+      "name": "shadow_membership_snapshots_no_update",
+      "sql": "CREATE TRIGGER shadow_membership_snapshots_no_update BEFORE UPDATE ON shadow_membership_snapshots BEGIN SELECT RAISE(ABORT,'APPEND_ONLY'); END",
+      "type": "trigger"
+    },
+    {
+      "name": "shadow_observation_slots_no_delete",
+      "sql": "CREATE TRIGGER shadow_observation_slots_no_delete BEFORE DELETE ON shadow_observation_slots BEGIN SELECT RAISE(ABORT,'APPEND_ONLY'); END",
+      "type": "trigger"
+    },
+    {
+      "name": "shadow_observation_slots_no_update",
+      "sql": "CREATE TRIGGER shadow_observation_slots_no_update BEFORE UPDATE ON shadow_observation_slots BEGIN SELECT RAISE(ABORT,'APPEND_ONLY'); END",
+      "type": "trigger"
+    },
+    {
+      "name": "shadow_observations_no_delete",
+      "sql": "CREATE TRIGGER shadow_observations_no_delete BEFORE DELETE ON shadow_observations BEGIN SELECT RAISE(ABORT,'APPEND_ONLY'); END",
+      "type": "trigger"
+    },
+    {
+      "name": "shadow_observations_no_update",
+      "sql": "CREATE TRIGGER shadow_observations_no_update BEFORE UPDATE ON shadow_observations BEGIN SELECT RAISE(ABORT,'APPEND_ONLY'); END",
+      "type": "trigger"
+    },
+    {
+      "name": "shadow_operations_no_delete",
+      "sql": "CREATE TRIGGER shadow_operations_no_delete BEFORE DELETE ON shadow_runtime_operations BEGIN SELECT RAISE(ABORT,'APPEND_ONLY'); END",
+      "type": "trigger"
+    },
+    {
+      "name": "shadow_operations_no_update",
+      "sql": "CREATE TRIGGER shadow_operations_no_update BEFORE UPDATE ON shadow_runtime_operations BEGIN SELECT RAISE(ABORT,'APPEND_ONLY'); END",
+      "type": "trigger"
+    },
+    {
+      "name": "shadow_outcome_revisions_no_delete",
+      "sql": "CREATE TRIGGER shadow_outcome_revisions_no_delete BEFORE DELETE ON shadow_outcome_revisions BEGIN SELECT RAISE(ABORT,'APPEND_ONLY'); END",
+      "type": "trigger"
+    },
+    {
+      "name": "shadow_outcome_revisions_no_update",
+      "sql": "CREATE TRIGGER shadow_outcome_revisions_no_update BEFORE UPDATE ON shadow_outcome_revisions BEGIN SELECT RAISE(ABORT,'APPEND_ONLY'); END",
+      "type": "trigger"
+    },
+    {
+      "name": "shadow_publications_no_delete",
+      "sql": "CREATE TRIGGER shadow_publications_no_delete BEFORE DELETE ON shadow_publications BEGIN SELECT RAISE(ABORT,'APPEND_ONLY'); END",
+      "type": "trigger"
+    },
+    {
+      "name": "shadow_publications_no_update",
+      "sql": "CREATE TRIGGER shadow_publications_no_update BEFORE UPDATE ON shadow_publications BEGIN SELECT RAISE(ABORT,'APPEND_ONLY'); END",
+      "type": "trigger"
+    },
+    {
+      "name": "shadow_source_freeze_manifests_no_delete",
+      "sql": "CREATE TRIGGER shadow_source_freeze_manifests_no_delete BEFORE DELETE ON shadow_source_freeze_manifests BEGIN SELECT RAISE(ABORT,'APPEND_ONLY'); END",
+      "type": "trigger"
+    },
+    {
+      "name": "shadow_source_freeze_manifests_no_update",
+      "sql": "CREATE TRIGGER shadow_source_freeze_manifests_no_update BEFORE UPDATE ON shadow_source_freeze_manifests BEGIN SELECT RAISE(ABORT,'APPEND_ONLY'); END",
+      "type": "trigger"
+    },
+    {
+      "name": "shadow_source_readiness_receipts_no_delete",
+      "sql": "CREATE TRIGGER shadow_source_readiness_receipts_no_delete BEFORE DELETE ON shadow_source_readiness_receipts BEGIN SELECT RAISE(ABORT,'APPEND_ONLY'); END",
+      "type": "trigger"
+    },
+    {
+      "name": "shadow_source_readiness_receipts_no_update",
+      "sql": "CREATE TRIGGER shadow_source_readiness_receipts_no_update BEFORE UPDATE ON shadow_source_readiness_receipts BEGIN SELECT RAISE(ABORT,'APPEND_ONLY'); END",
+      "type": "trigger"
+    },
+    {
+      "name": "shadow_state_heads_no_delete",
+      "sql": "CREATE TRIGGER shadow_state_heads_no_delete BEFORE DELETE ON shadow_state_heads BEGIN SELECT RAISE(ABORT,'APPEND_ONLY'); END",
+      "type": "trigger"
+    },
+    {
+      "name": "shadow_state_heads_no_update",
+      "sql": "CREATE TRIGGER shadow_state_heads_no_update BEFORE UPDATE ON shadow_state_heads BEGIN SELECT RAISE(ABORT,'APPEND_ONLY'); END",
+      "type": "trigger"
+    },
+    {
+      "name": "shadow_transaction_receipts_no_delete",
+      "sql": "CREATE TRIGGER shadow_transaction_receipts_no_delete BEFORE DELETE ON shadow_transaction_receipts BEGIN SELECT RAISE(ABORT,'APPEND_ONLY'); END",
+      "type": "trigger"
+    },
+    {
+      "name": "shadow_transaction_receipts_no_update",
+      "sql": "CREATE TRIGGER shadow_transaction_receipts_no_update BEFORE UPDATE ON shadow_transaction_receipts BEGIN SELECT RAISE(ABORT,'APPEND_ONLY'); END",
+      "type": "trigger"
+    }
+  ],
+  "database": {
+    "bytes": 237568,
+    "path": "reports\\r23\\isolated_db\\positive_e2e_v1.sqlite",
+    "sha256": "10346bc5fdf5d17a7d559ce2113f4be51796b08fc4d0789daab502f817290f52"
+  },
+  "migration": {
+    "bytes": 10644,
+    "path": "migrations/v4_16_r23_shadow_v1.sql",
+    "sha256": "9ad5b30db8bc7d8fb4df052132719a71af03d5fcb301fb7fa8b5d5e37c5d32d2"
+  },
+  "production_migration_applied": false,
+  "status": "PASS_LOCAL"
+}

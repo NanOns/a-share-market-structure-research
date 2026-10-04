@@ -1,0 +1,19 @@
+# R23 runtime engineering execution record
+
+Baseline: 942997f8a5bce06e34a6e37d013e4d27e7175438. The execution master, runtime task and R22R1 final external audit are archived exactly beside this record. External clock/governance acceptance authorizes engineering entry only; the new activation authority is false. REAL_SHADOW fails before source consumption or SQLite connection, independent of environment flags.
+
+All 15 components are implemented in v4_16_shadow_runtime.py. SQLite migration V1 is exercised exclusively beneath reports/r23/isolated_db. No production migration, scheduler, network/provider request or current market observation is used. Engineering fixtures have fixed bytes, readiness receipts, timestamps, calendar sessions and an explicit non-real seed boundary. The accepted calendar identifies 2026-09-24 as the exact predecessor of 2026-09-28; no previous-calendar-day shortcut is used.
+
+Exact versioned dependencies bind V3 directly by digest and preserve historical metadata as provenance, never permission or predecessor discovery. V4-10..14 accepted producer callables are exposed through version-bound adapters. The positive engineering chain consumes explicit owner output fixtures rather than fabricating live producer acceptance; V4-15 Radar/Cohort and Settlement machinery executes unchanged through a SQLite implementation of its accepted append/read/refs store protocol. Calendar/universe/membership accepted references in the manifest bind immutable authority context; the consumed synthetic universe and owner outputs are explicitly bound separately by their engineering fixture receipts/digests. No synthetic issuer is represented as real accepted-source membership.
+
+Receipts, manifests, publication/state/observation revisions, enrollment T0, controls, benchmark baskets, due outbox, outcomes and health are durable. All immutable tables have SQL update/delete rejection triggers; unique indexes protect logical identities and head updates use transactions, FK constraints and CAS. Faults after cohort writes or after head update roll back the whole batch. Planned/blocked/missed slot states are append-only; a missed slot cannot be upgraded retrospectively.
+
+The persisted positive E2E proves original publication, idempotent rerun, same-day correction with one original enrollment/T0, five frozen due horizons, T+1 engineering settlement and append-only corrected outcome, readback, and stop-shadow preservation. It proves reachability only. Daily membership capture has its own persisted engineering-only database and exact SQL readback. Negative N01..N24 evidence includes isolated SQLite snapshots and independently checked rejection reasons/counts. The independent oracle imports no runtime writer/orchestrator and computes literal identities and numeric expected values independently.
+
+A04_H21_CONSUMER, A04_HISTORICAL_AMOUNT_A and A08_CURRENT_RUNTIME remain disabled. HISTORICAL_PIT_EFFECTIVENESS, real cohort maturity and real matured accepted-source settlement remain ungranted. Health receipts grant no stable/provisional/forward status. Stop preserves observations and pending obligations; restart requires separate future authority. Legacy code, reads/writes/default UI and Focus remain unchanged.
+
+All original baseline files are protected; only additive .gitattributes is edited. Stage=V4_00_TO_V4_15_ACCEPTED, Data=2026-09-30. No V4_16_ACCEPTED_HEAD. Production=false, Shadow=false, Focus=false, V4_16=false. REAL_SHADOW_OBSERVATIONS=0 and PIT_OBSERVED_REAL_SAMPLES=0.
+
+All prior PRE16/R21/R22/R22R1 suites and R23 tests run without deselection. The exact tested source receives an immutable Git tag; clean detached regression and independent persisted-evidence inspection precede the evidence-only seal commit. Push is delivery, not external acceptance.
+
+NEXT=STOP_WAIT_R23_INDEPENDENT_EXTERNAL_AUDIT

@@ -1,0 +1,98 @@
+{
+  "Data": "2026-09-30",
+  "Focus": false,
+  "NEXT": "STOP_WAIT_R24R1_INDEPENDENT_EXTERNAL_AUDIT",
+  "PIT_OBSERVED_REAL_SAMPLES": 0,
+  "Production": false,
+  "R24R1_COHORT_IDENTITY": "PASS_LOCAL_READY_FOR_EXTERNAL_AUDIT",
+  "R24R1_FORWARD_DAILY_INPUT_AUTHORITY": "PASS_LOCAL_READY_FOR_EXTERNAL_AUDIT",
+  "R24R1_REALTIME_ADMISSION": "PASS_LOCAL_READY_FOR_EXTERNAL_AUDIT",
+  "REAL_SHADOW_OBSERVATIONS": 0,
+  "REAL_SHADOW_RUNTIME": "FUTURE_SESSION_ACTIVATION_CAPABLE_DISABLED_CANDIDATE",
+  "Shadow": false,
+  "Stage": "V4_00_TO_V4_15_ACCEPTED",
+  "V4_16": false,
+  "V4_16_ACCEPTED_HEAD": "NOT_CREATED",
+  "V4_16_REAL_SHADOW_RUNTIME": "FUTURE_SESSION_ACTIVATION_CAPABLE_DISABLED_CANDIDATE",
+  "evidence": [
+    {
+      "bytes": 25457,
+      "path": "reports/r24r1/A01_A20_REGRESSION.json",
+      "sha256": "5738013803468c14d68ff6e02c13a96bb8cd85625950e74dc44f8c6c5ed041c1"
+    },
+    {
+      "bytes": 826,
+      "path": "reports/r24r1/CLEAN_ATTEMPT_R1_DISPOSITION.json",
+      "sha256": "9c0b9e2793a269f174ad10b5965515a9e2e793a5f9c65d1a4e34e58566221820"
+    },
+    {
+      "bytes": 57771,
+      "path": "reports/r24r1/clean_attempt_r2_receipt.json",
+      "sha256": "b67570bf4d5ed2c22512396b29f23ec01c9a5d45f1a2200496a95b95e7873ca3"
+    },
+    {
+      "bytes": 57771,
+      "path": "reports/r24r1/CLEAN_REGRESSION.json",
+      "sha256": "1cdb0199bfc96dd11ef9d293f45dadb7381e7fdbc367ebc6f4e3cda6b9910b7e"
+    },
+    {
+      "bytes": 2616,
+      "path": "reports/r24r1/COHORT_IDENTITY_GATE.json",
+      "sha256": "044451bbe5b667a949c8cb018324c036fa0831054ffba95e4f6c5eb090929b05"
+    },
+    {
+      "bytes": 13080,
+      "path": "reports/r24r1/DAILY_INPUT_NEGATIVE_MATRIX.json",
+      "sha256": "745532fe78edf291e7809f0e930cc2eadd0d3084e9d7b0e156b19d7dd0c49452"
+    },
+    {
+      "bytes": 758,
+      "path": "reports/r24r1/FORWARD_INPUT_AUTHORITY_GATE.json",
+      "sha256": "774af00e883edb70975e98240855f077c4a0504396af4bb07a3165f851e1bec4"
+    },
+    {
+      "bytes": 3242,
+      "path": "reports/r24r1/FUTURE_SESSION_REACHABILITY_GATE.json",
+      "sha256": "54a4a1e51fdc5b5ebdb41fd000e737d1048ea2019d5713e501ee3d3a57eda237"
+    },
+    {
+      "bytes": 3106,
+      "path": "reports/r24r1/INDEPENDENT_R24R1_ORACLE.json",
+      "sha256": "c16c3b2942e5f73b2a566f4d5a5fc0a4f625da381edc8aa76ade3b0763b76fcf"
+    },
+    {
+      "bytes": 1134,
+      "path": "reports/r24r1/LOCAL_TEST_SUMMARY.json",
+      "sha256": "f932192a78763b63ea4ef9caf10f7066eb3cb33faf5648a7198c8aec78202c9f"
+    },
+    {
+      "bytes": 19672,
+      "path": "reports/r24r1/PROTECTED_BYTES.json",
+      "sha256": "c0f5cbd9168c4ed74528c9387cc0a3125e17879f328e3f28bf5b0e86a01ee205"
+    },
+    {
+      "bytes": 1080,
+      "path": "reports/r24r1/REALTIME_ADMISSION_GATE.json",
+      "sha256": "9cb9edda3bff440cc433c06cc30347b48b29570815d81c91cf99b4fa36919d53"
+    },
+    {
+      "bytes": 2995,
+      "path": "reports/r24r1/STAGE_CONTRACT_AND_AUDIT_ITEMS.json",
+      "sha256": "ff7eb15bc8261b1f174fb5f119d4feb9aef1e21dd7519567c9372fed49d63b7e"
+    },
+    {
+      "bytes": 710,
+      "path": "reports/r24r1/UTC_BOUNDARY_REGRESSION.json",
+      "sha256": "239d5bcdf63b31022e50b2649776bf7317730cee5370fafd2a7c2d710ce1501e"
+    }
+  ],
+  "execution_baseline": "0c9f59fbe723fe0fb0e9d1a6750c339894bc7a5b",
+  "external_acceptance": "NOT_GRANTED",
+  "grant": null,
+  "immutable_tag": "refs/tags/codex/r24r1-go-forward-tested-source-20261004-r3",
+  "post_test_changes": "EVIDENCE_ONLY",
+  "real_shadow_authorized": false,
+  "runtime_authorized": false,
+  "status": "PASS_LOCAL_READY_FOR_EXTERNAL_AUDIT",
+  "tested_source": "3eb148c3c19ca079fd5986aeb3a1922b9bf43075"
+}

@@ -129,3 +129,89 @@ def test_consumer_inventory_complete():
     s=o.read('reports/pre16_governance/CONSUMER_SCAN.json',o.ROOT)
     assert sum(s['counts'].values())==len(s['matches'])==128
     assert s['counts']['CURRENT_RUNTIME_CONSUMER']==s['counts']['UNKNOWN']==0
+
+def test_a04_h21_single_canonical_issue(h):
+    matches=[e for e in h['entries'].values() if e['canonical_issue_id']=='A04_H21_CONSUMER']
+    assert len(matches)==2 and sum(e['alias_of'] is None for e in matches)==1
+
+def test_a04_h21_alias_consistent(h):
+    assert o.verify_blocking(h)['AMOUNT_A_H21']=='ONE_CANONICAL_CURRENT_ISSUE'
+    assert h['entries']['AUD_A04_AMOUNT_A_FORWARD_CONSUMER']['alias_of']=='A04_H21_CONSUMER'
+
+def test_alias_cycle_rejected(h):
+    h['entries']['A04_H21_CONSUMER']['alias_of']='AUD_A04_AMOUNT_A_FORWARD_CONSUMER'
+    with pytest.raises(ValueError,match='ALIAS_CYCLE'):o.verify_blocking(h)
+
+def test_alias_target_missing_rejected(h):
+    h['entries']['AUD_A04_AMOUNT_A_FORWARD_CONSUMER']['alias_of']='MISSING'
+    with pytest.raises(ValueError,match='ALIAS_TARGET_MISSING'):o.verify_blocking(h)
+
+@pytest.mark.parametrize('field,value',[('blocking_scope','NONE'),('blocks_v4_16_contract_entry',True),('blocks_v4_16_runtime_activation',True),('blocks_affected_capability_in_shadow',False),('blocks_production_cutover_for_scope',False),('blocks_shadow_entry',False),('affected_capabilities',[])])
+def test_alias_block_semantics_mismatch_rejected(h,field,value):
+    h['entries']['AUD_A04_AMOUNT_A_FORWARD_CONSUMER'][field]=value
+    with pytest.raises(ValueError,match='ALIAS_BLOCK_SEMANTICS_MISMATCH'):o.verify_blocking(h)
+
+def test_alias_state_mismatch_rejected(h):
+    h['entries']['AUD_A04_AMOUNT_A_FORWARD_CONSUMER']['current_state']='ACCEPTED_SCOPED'
+    with pytest.raises(ValueError,match='ALIAS_STATE_MISMATCH'):o.verify_blocking(h)
+
+def test_duplicate_logical_identity_rejected(h):
+    h['entries']['A04_H21_CONSUMER']['canonical_issue_id']='AUD_A04_AMOUNT_A_FORWARD_CONSUMER'
+    with pytest.raises(ValueError,match='CANONICAL_LOGICAL_IDENTITY'):o.verify_blocking(h)
+
+def test_only_gov_pre16_blocks_global_contract_entry(h):
+    assert [k for k,e in h['entries'].items() if e['blocks_v4_16_contract_entry']]==['GOV_PRE16_01']
+
+def test_a04_h21_does_not_block_contract_entry(h):assert h['entries']['A04_H21_CONSUMER']['blocks_v4_16_contract_entry'] is False
+
+def test_historical_amount_a_does_not_block_contract_entry(h):assert h['entries']['A04_HISTORICAL_AMOUNT_A']['blocks_v4_16_contract_entry'] is False
+
+def test_a08_current_runtime_does_not_block_contract_entry(h):assert h['entries']['A08_CURRENT_RUNTIME']['blocks_v4_16_contract_entry'] is False
+
+def test_a08_current_runtime_remains_shadow_capability_blocked(h):
+    e=h['entries']['A08_CURRENT_RUNTIME'];assert e['blocks_affected_capability_in_shadow'] and e['affected_capabilities']==['V4_09_N01_CURRENT_RUNTIME_PREWATCH']
+    e['current_state']='ACCEPTED_SCOPED'
+    with pytest.raises(ValueError,match='DERIVED_STATE_A08_CURRENT_RUNTIME'):o.verify_entries(h,o.ROOT)
+
+@pytest.mark.parametrize('key',['A03','A04_H21_CONSUMER','A04_HISTORICAL_AMOUNT_A','A07','HISTORICAL_PIT_EFFECTIVENESS','REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT_RUNTIME'])
+def test_accumulation_does_not_block_unrelated_engineering(h,key):
+    assert h['entries'][key]['blocks_v4_16_contract_entry'] is False
+    h['entries'][key]['blocks_v4_16_contract_entry']=True
+    with pytest.raises(ValueError,match='EXACT_CONTRACT_BLOCK'):o.verify_blocking(h)
+
+def test_capability_only_block_not_global_shadow_block(h):
+    for key in ['A04_H21_CONSUMER','A04_HISTORICAL_AMOUNT_A','A08_CURRENT_RUNTIME']:
+        e=h['entries'][key];assert e['blocking_scope']=='CAPABILITY_ONLY' and not e['blocks_v4_16_runtime_activation']
+
+def test_reader_resolves_canonical_issue():
+    r=CurrentAuditStatus();assert r.canonical_entry('AUD_A04_AMOUNT_A_FORWARD_CONSUMER')==r.canonical_entry('A04_H21_CONSUMER')
+    assert r.global_contract_entry_blockers()==['GOV_PRE16_01'] and r.runtime_activation_blockers()==['GOV_PRE16_01']
+    assert r.capability_shadow_blockers()==['A04_H21_CONSUMER','A04_HISTORICAL_AMOUNT_A','A08_CURRENT_RUNTIME']
+    assert len(r.production_cutover_blockers())==35
+    item=r.canonical_entry('AUD_A04_AMOUNT_A_FORWARD_CONSUMER');item['affected_capabilities'].append('MUTATED')
+    assert 'MUTATED' not in r.canonical_entry('A04_H21_CONSUMER')['affected_capabilities']
+    ids=r.global_contract_entry_blockers();ids.clear();assert r.global_contract_entry_blockers()==['GOV_PRE16_01']
+    assert r.stage_permission() is False
+
+def test_stage_head_unchanged():assert (o.ROOT/'data/v4/V4_STAGE_ACCEPTED_HEAD.json').read_bytes()==o.frozen('data/v4/V4_STAGE_ACCEPTED_HEAD.json',o.ROOT)
+
+def test_data_head_unchanged():assert (o.ROOT/'data/v4/V4_DATA_ACCEPTED_HEAD.json').read_bytes()==o.frozen('data/v4/V4_DATA_ACCEPTED_HEAD.json',o.ROOT)
+
+def test_business_runtime_sources_unchanged():
+    assert o.subprocess.check_output(['git','diff',o.REPAIR_BASE,'--name-only','--','src'],cwd=o.ROOT)==b''
+
+def test_audited_core_cannot_change(h):
+    h['entries']['A05']['scope']='ANY_DATE_UNRESTRICTED'
+    with pytest.raises(ValueError,match='AUDITED_ENTRY_CORE_KEEP'):o.verify_blocking(h)
+
+def test_missing_blocking_schema_rejected(h):
+    del h['entries']['A02']['alias_of']
+    with pytest.raises(ValueError,match='COMPLETE_BLOCKING_SCHEMA'):o.verify_blocking(h)
+
+def test_unregistered_alias_rejected(h):
+    h['entries']['A03']['alias_of']='A04_H21_CONSUMER'
+    with pytest.raises(ValueError,match='CANONICAL_LOGICAL_IDENTITY'):o.verify_blocking(h)
+
+def test_current_reader_never_merges_alias_conflict():
+    r=CurrentAuditStatus();r.head['entries']['AUD_A04_AMOUNT_A_FORWARD_CONSUMER']['blocks_affected_capability_in_shadow']=False
+    with pytest.raises(ValueError,match='ALIAS_BLOCK_SEMANTICS_MISMATCH'):r.canonical_entry('AUD_A04_AMOUNT_A_FORWARD_CONSUMER')

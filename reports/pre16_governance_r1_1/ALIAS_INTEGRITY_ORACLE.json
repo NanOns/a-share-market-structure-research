@@ -1,0 +1,30 @@
+{
+  "A08_CURRENT_RUNTIME": "NO_CONTRACT_ENTRY_BLOCK_SHADOW_CAPABILITY_LIMIT_RETAINED",
+  "AMOUNT_A_H21": "ONE_CANONICAL_CURRENT_ISSUE",
+  "GLOBAL_V4_16_CONTRACT_ENTRY_BLOCKERS": [
+    "GOV_PRE16_01"
+  ],
+  "PRE16_GOV_R1_1": "PASS_LOCAL",
+  "alias_references": 1,
+  "canonical_issues": 35,
+  "current_status_oracle": {
+    "CURRENT_CROSS_STAGE_AUDIT_AUTHORITY": "READY_FOR_INDEPENDENT_EXTERNAL_AUDIT",
+    "CURRENT_STAGE_AUTHORITY": "V4_15",
+    "Focus": false,
+    "GLOBAL_V4_16_CONTRACT_ENTRY_BLOCKERS": [
+      "GOV_PRE16_01"
+    ],
+    "NEXT": "STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT",
+    "PRE16_CROSS_STAGE_GOVERNANCE_RECONCILIATION": "PASS_LOCAL",
+    "PRE16_GOV_R1_1": "PASS_LOCAL",
+    "Production": false,
+    "Shadow": false,
+    "V4_10_TO_V4_15": "PASS_KEEP_NO_REOPEN",
+    "V4_16": false,
+    "V4_DATA_ACCEPTED_HEAD": "2026-09-30",
+    "V4_STAGE_ACCEPTED_HEAD": "V4_00_TO_V4_15_ACCEPTED",
+    "entries_verified": 36,
+    "historical_registries_verified": 16
+  },
+  "oracle": "scripts/validate_pre16_governance.py; independent from builder; derives exact audited baseline and external scoped evidence"
+}

@@ -5,6 +5,52 @@ Never imports the status builder, business evaluators or status label writer.
 import hashlib,json,subprocess
 from pathlib import Path
 from scripts.pre16_governance_io import ROOT,BASE,HEAD,CONTRACT,R1,R10,R15,DISPOSITION,AUDIT,ARCH
+REPAIR_BASE='0109d7f6c8b9f4cea6cde32b2342e4b6d4e0526b'
+REPAIR_AUDIT='reports/pre16_governance/r1_1_inputs/V4_PRE16_GOVERNANCE_INDEPENDENT_EXTERNAL_AUDIT_R1_20261004.md'
+
+def verify_blocking(h,root=ROOT):
+    entries=h['entries'];canonical='A04_H21_CONSUMER';alias='AUD_A04_AMOUNT_A_FORWARD_CONSUMER'
+    required=['canonical_issue_id','alias_of','blocking_scope','blocks_v4_16_contract_entry','blocks_v4_16_runtime_activation','blocks_affected_capability_in_shadow','blocks_production_cutover_for_scope','affected_capabilities']
+    for key,e in entries.items():require(all(f in e for f in required),'COMPLETE_BLOCKING_SCHEMA_'+key)
+    # Resolve the actual graph before comparing expected identity; no merge/fallback.
+    for key in entries:
+        seen=set();node=key
+        while True:
+            require(node in entries,'ALIAS_TARGET_MISSING')
+            require(node not in seen,'ALIAS_CYCLE');seen.add(node)
+            target=entries[node].get('alias_of')
+            if target is None:break
+            require(isinstance(target,str),'ALIAS_TARGET_TYPE');node=target
+    fields=['current_state','scope','limitations','capability_dimensions','blocking_scope','blocks_v4_16_contract_entry','blocks_v4_16_runtime_activation','blocks_affected_capability_in_shadow','blocks_production_cutover_for_scope','affected_capabilities','blocks_engineering_stage','blocks_shadow_entry','blocks_production_cutover','requires_real_observation_accumulation','formal_consumer_permission_granted_by_this_head']
+    for key,e in entries.items():
+        expected=canonical if key==alias else key
+        require(e.get('canonical_issue_id')==expected and e.get('alias_of')==(canonical if key==alias else None),'CANONICAL_LOGICAL_IDENTITY_'+key)
+        if e['alias_of'] is not None:
+            require(e['current_state']==entries[expected]['current_state'],'ALIAS_STATE_MISMATCH')
+            require(all(e[f]==entries[expected][f] for f in fields),'ALIAS_BLOCK_SEMANTICS_MISMATCH')
+        global_hold=expected=='GOV_PRE16_01'
+        capability_hold=expected in ['A04_H21_CONSUMER','A04_HISTORICAL_AMOUNT_A','A08_CURRENT_RUNTIME']
+        require(e.get('blocking_scope')==('GLOBAL_STAGE' if global_hold else 'CAPABILITY_ONLY'),'EXACT_BLOCKING_SCOPE_'+key)
+        require(e.get('blocks_v4_16_contract_entry') is global_hold,'EXACT_CONTRACT_BLOCK_'+key)
+        require(e.get('blocks_v4_16_runtime_activation') is global_hold,'EXACT_RUNTIME_BLOCK_'+key)
+        require(e.get('blocks_affected_capability_in_shadow') is capability_hold,'EXACT_CAPABILITY_SHADOW_BLOCK_'+key)
+        require(e.get('blocks_production_cutover_for_scope') is True,'EXACT_PRODUCTION_SCOPE_BLOCK_'+key)
+        caps={'GOV_PRE16_01':['V4_16_CONTRACT_ENTRY','V4_16_RUNTIME_ACTIVATION'],'A04_H21_CONSUMER':['AMOUNT_A_H21_FORMAL_CONSUMER'],'A04_HISTORICAL_AMOUNT_A':['HISTORICAL_AMOUNT_A_FORMAL_CONSUMER'],'A08_CURRENT_RUNTIME':['V4_09_N01_CURRENT_RUNTIME_PREWATCH']}.get(expected,[expected])
+        require(e.get('affected_capabilities')==caps,'EXACT_AFFECTED_CAPABILITIES_'+key)
+        require(e['blocks_engineering_stage'] is e['blocks_v4_16_contract_entry'] and e['blocks_shadow_entry'] is (global_hold or capability_hold) and e['blocks_production_cutover'] is e['blocks_production_cutover_for_scope'],'LEGACY_BLOCKER_DERIVATION_'+key)
+    require(h.get('GLOBAL_V4_16_CONTRACT_ENTRY_BLOCKERS')==['GOV_PRE16_01'],'ONLY_GOV_GLOBAL_CONTRACT_BLOCK')
+    # Independently preserve the externally audited core, not just selected labels.
+    old=json.loads(subprocess.check_output(['git','show',REPAIR_BASE+':'+HEAD],cwd=root))
+    require(set(entries)==set(old['entries']),'COMPLETE_CANONICAL_ITEM_SET')
+    for key,value in old.items():
+        if key not in ['entries','version','execution_baseline']:require(h[key]==value,'AUDITED_CORE_KEEP_'+key)
+    for key,e in entries.items():
+        prior=old['entries'][key]
+        for field,value in prior.items():
+            if field in ['blocks_shadow_entry'] or (key==alias and field in fields):continue
+            require(e[field]==value,'AUDITED_ENTRY_CORE_KEEP_'+key+'_'+field)
+        if key==alias:require(e.get('alias_provenance')=={f:prior[f] for f in ['scope','limitations','capability_dimensions']},'ALIAS_PROVENANCE_KEEP')
+    return dict(PRE16_GOV_R1_1='PASS_LOCAL',GLOBAL_V4_16_CONTRACT_ENTRY_BLOCKERS=['GOV_PRE16_01'],canonical_issues=35,alias_references=1,AMOUNT_A_H21='ONE_CANONICAL_CURRENT_ISSUE',A08_CURRENT_RUNTIME='NO_CONTRACT_ENTRY_BLOCK_SHADOW_CAPABILITY_LIMIT_RETAINED')
 def require(ok,reason):
     if not ok:raise ValueError(reason)
 def read(path,root):return json.loads((root/path).read_bytes())
@@ -58,7 +104,7 @@ def verify_entries(h,root):
         e=h['entries'][key];require(e['audit_id']==key and e['current_state']==state,'DERIVED_STATE_'+key)
         require(e['scope'] and e['limitations'] and e['current_authority'] and e['evidence_bindings'],'REQUIRED_ENTRY_FIELDS_'+key)
         require(e['blocks_engineering_stage'] is (key=='GOV_PRE16_01'),'ENGINEERING_BLOCK_SCOPE_'+key)
-        require(e['blocks_shadow_entry'] is (key in ['A04_HISTORICAL_AMOUNT_A','A04_H21_CONSUMER','A08_CURRENT_RUNTIME','GOV_PRE16_01']),'SHADOW_BLOCK_SCOPE_'+key)
+        require(e['blocks_shadow_entry'] is (key in ['A04_HISTORICAL_AMOUNT_A','A04_H21_CONSUMER','AUD_A04_AMOUNT_A_FORWARD_CONSUMER','A08_CURRENT_RUNTIME','GOV_PRE16_01']),'SHADOW_BLOCK_SCOPE_'+key)
         require(e['blocks_production_cutover'] is True and e['formal_consumer_permission_granted_by_this_head'] is False,'NO_CONSUMER_PERMISSION_'+key)
         require(e['requires_real_observation_accumulation'] is (key in ['A03','A04','A07','A04_H21_CONSUMER','REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT_RUNTIME','REALTIME_ACCEPTED_COHORT_MATURITY','AUD_A04_AMOUNT_A_FORWARD_CONSUMER']),'ACCUMULATION_SCOPE_'+key)
         for b in e['evidence_bindings']:exact(b,root)
@@ -104,6 +150,7 @@ def verify_entries(h,root):
     require(v15['HISTORICAL_PIT_EFFECTIVENESS']=='NOT_GRANTED' and h['entries']['HISTORICAL_PIT_EFFECTIVENESS']['capability_dimensions']=={'capability':'NOT_GRANTED'},'HISTORICAL_PIT_NOT_GRANTED')
     for key in ['REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT_RUNTIME','REALTIME_ACCEPTED_COHORT_MATURITY']:
         require(h['entries'][key]['capability_dimensions']==dict(capability=v15[key],PROVED_HORIZONS=[],UNPROVED_HORIZONS=[1,3,5,10,20]),'NONBLOCKING_DEBT_NOT_PASS')
+    verify_blocking(h,root)
     return True
 def protected(root):
     names=subprocess.check_output(['git','ls-tree','-r','--name-only',BASE,'--','data/v4','config','src','reports/audits'],cwd=root).decode('utf8').splitlines()
@@ -120,7 +167,12 @@ def validate(root=ROOT,head=None):
         raw=exact(b,root)
         if b['path']!=AUDIT:require(raw==frozen(b['path'],root),'PINNED_ACCEPTED_SOURCE')
     require(binding(AUDIT,root)['sha256']=='13ba5c07daf51c6f244f347acab6cbfa99f7511f1dff65c344974960ce522b99','EXACT_PRE16_AUDIT')
-    require(h['execution_baseline']==BASE and h['status']=='READY_FOR_INDEPENDENT_EXTERNAL_AUDIT','CANDIDATE_ONLY')
+    require(h['execution_baseline']==REPAIR_BASE and h['version']=='1.1.0' and h['status']=='READY_FOR_INDEPENDENT_EXTERNAL_AUDIT','CANDIDATE_ONLY')
+    repair_hashes={'V4_PRE16_GOVERNANCE_INDEPENDENT_EXTERNAL_AUDIT_R1_20261004.md':'45c752e831cffcc5bbb3c6f8d13dfe90a4bcb413ada681779ac10148f256a6e7','V4_PRE16_GOVERNANCE_R1_1_CANONICAL_BLOCK_SCOPE_REPAIR_TASK_20261004.md':'834e26dbde4a1f3044c00b79983991225fb1fba2279067d79c4f352349383c92','V4_NEXT_ROUND_EXECUTION_MASTER_PRE16_GOV_R1_1_20261004.md':'5cb50813108b70a0040b2fc23da7a7eb51a17ec69ec10a1b035aecc3250929bb'}
+    require(set(h['repair_authority'])==set(repair_hashes),'EXACT_REPAIR_AUTHORITY_SET')
+    for name,digest in repair_hashes.items():
+        b=h['repair_authority'][name];require(b['path']=='reports/pre16_governance/r1_1_inputs/'+name and b['sha256']==digest,'EXACT_REPAIR_AUTHORITY');exact(b,root)
+    require(exact(h['supersedes_current_head'],root)==subprocess.check_output(['git','show',REPAIR_BASE+':'+HEAD],cwd=root),'EXACT_PREVIOUS_CURRENT_HEAD')
     require(h['audit_status_authority'] is True and h['business_runtime_authority'] is False and h['formal_consumer_cutover'] is False,'STATUS_NOT_RUNTIME_AUTHORITY')
     require(all(h[k] is False for k in ['production','shadow','focus','V4_16']) and h['V4_16_entry']=='HOLD_PENDING_INDEPENDENT_GOVERNANCE_AUDIT','PERMISSIONS_FALSE')
     verify_entries(h,root);acyclic(h['supersession_graph'])
@@ -129,6 +181,12 @@ def validate(root=ROOT,head=None):
     require({b['path'] for b in h['historical_registries']}==required_regs,'ALL_REGISTRIES_CLASSIFIED')
     require(h['supersession_graph'][HEAD]==[b['path'] for b in h['historical_registries']],'CURRENT_EXPLICIT_SUPERSESSION')
     c=read(CONTRACT,root);require(json.loads(exact(c['current_head'],root))==h and c['current_head']['path']==HEAD,'UNIQUE_EXACT_CURRENT_HEAD')
+    require(c['version']=='1.1.0' and c['execution_baseline']==REPAIR_BASE and c['blocking_schema']==h['blocking_schema'],'EXACT_REPAIR_CONTRACT')
+    previous_config=subprocess.check_output(['git','show',REPAIR_BASE+':'+CONTRACT],cwd=root)
+    require(exact(c['supersedes_current_config'],root)==previous_config,'EXACT_PREVIOUS_CURRENT_CONFIG')
+    for key,value in json.loads(previous_config).items():
+        if key not in ['version','execution_baseline','current_head']:require(c[key]==value,'AUDITED_CONFIG_CORE_KEEP_'+key)
+    require(h['blocking_schema']['legacy_blocks_shadow_entry']=='blocks_v4_16_runtime_activation OR blocks_affected_capability_in_shadow; true does not imply global Shadow block' and h['blocking_schema']['legacy_blocks_engineering_stage']=='blocks_v4_16_contract_entry' and h['blocking_schema']['legacy_blocks_production_cutover']=='blocks_production_cutover_for_scope','EXACT_LEGACY_SCHEMA')
     require(c['requires_explicit_future_stage_binding'] is True and c['business_runtime_authority'] is False and c['automatic_stage_permission'] is False and all(c[k] is False for k in ['production','shadow','focus','V4_16']),'CONTRACT_NOT_PERMISSION')
     p=protected(root)
     stage=read('data/v4/V4_STAGE_ACCEPTED_HEAD.json',root);require(stage['accepted_stage_range']=='V4_00_TO_V4_15_ACCEPTED','CURRENT_STAGE_15')
@@ -144,9 +202,7 @@ def validate(root=ROOT,head=None):
     counts={k:sum(e['classification']==k for e in scan['matches']) for k in ['HISTORICAL_EVIDENCE_ONLY','GOVERNANCE_REFERENCE_ONLY','CURRENT_RUNTIME_CONSUMER','UNKNOWN']}
     require(scan['counts']==counts and counts['CURRENT_RUNTIME_CONSUMER']==counts['UNKNOWN']==0,'CONSUMER_CLASSES_FAIL_CLOSED')
     for e in scan['indirect_runtime_data_flow_review']:exact(e['binding'],root)
-    return dict(PRE16_CROSS_STAGE_GOVERNANCE_RECONCILIATION='PASS_LOCAL',CURRENT_CROSS_STAGE_AUDIT_AUTHORITY='READY_FOR_INDEPENDENT_EXTERNAL_AUDIT',V4_10_TO_V4_15='PASS_KEEP_NO_REOPEN',V4_STAGE_ACCEPTED_HEAD=stage['accepted_stage_range'],CURRENT_STAGE_AUTHORITY='V4_15',V4_DATA_ACCEPTED_HEAD='2026-09-30',Production=False,Shadow=False,Focus=False,V4_16=False,entries_verified=len(h['entries']),historical_registries_verified=len(required_regs),protected_bytes=p,NEXT='STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT')
+    return dict(PRE16_GOV_R1_1='PASS_LOCAL',GLOBAL_V4_16_CONTRACT_ENTRY_BLOCKERS=['GOV_PRE16_01'],PRE16_CROSS_STAGE_GOVERNANCE_RECONCILIATION='PASS_LOCAL',CURRENT_CROSS_STAGE_AUDIT_AUTHORITY='READY_FOR_INDEPENDENT_EXTERNAL_AUDIT',V4_10_TO_V4_15='PASS_KEEP_NO_REOPEN',V4_STAGE_ACCEPTED_HEAD=stage['accepted_stage_range'],CURRENT_STAGE_AUTHORITY='V4_15',V4_DATA_ACCEPTED_HEAD='2026-09-30',Production=False,Shadow=False,Focus=False,V4_16=False,entries_verified=len(h['entries']),historical_registries_verified=len(required_regs),protected_bytes=p,NEXT='STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT')
 if __name__=='__main__':
-    from scripts.pre16_governance_io import atomic
-    r=validate();atomic('reports/pre16_governance/INDEPENDENT_CURRENT_STATUS_ORACLE.json',r)
-    atomic('reports/pre16_governance/PROTECTED_BYTES.json',dict(status='PASS_LOCAL',bindings=r['protected_bytes'],baseline=BASE,business_sources_unchanged=True))
-    print(json.dumps({k:v for k,v in r.items() if k!='protected_bytes'}))
+    # Print only: evidence persistence is separate from independent evaluation.
+    r=validate();print(json.dumps({k:v for k,v in r.items() if k!='protected_bytes'}))

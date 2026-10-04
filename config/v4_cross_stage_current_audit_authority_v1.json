@@ -1,15 +1,23 @@
 {
   "V4_16": false,
   "admission_rule": "ACCEPTED status requires exact accepted authority and independent external scope; implementation or tests alone never grant acceptance.",
+  "alias_rule": "One canonical issue; aliases resolve deterministically and cannot override state or blocking semantics",
   "automatic_stage_permission": false,
+  "blocking_schema": {
+    "legacy_blocks_engineering_stage": "blocks_v4_16_contract_entry",
+    "legacy_blocks_production_cutover": "blocks_production_cutover_for_scope",
+    "legacy_blocks_shadow_entry": "blocks_v4_16_runtime_activation OR blocks_affected_capability_in_shadow; true does not imply global Shadow block",
+    "permission": "Blocker queries never grant permission; stage_permission remains false",
+    "runtime_activation_dependency": "Only GOV_PRE16_01 is a declared global activation hold in this authority. Future contracts must explicitly bind required capabilities; A08 remains blocked for its capability, without inventing an unfrozen global dependency."
+  },
   "business_runtime_authority": false,
   "contract_id": "V4_CROSS_STAGE_CURRENT_AUDIT_AUTHORITY_V1",
   "current_head": {
-    "bytes": 160505,
+    "bytes": 177258,
     "path": "data/v4/V4_CROSS_STAGE_CURRENT_AUDIT_HEAD_V1.json",
-    "sha256": "999c359af954814f31e51d6160e9e6cd075f484502b7d8f77e5259707286bc73"
+    "sha256": "bf124bdcc5ddb679fbb46db7198dc659f60fc1b5ce93c0c754fdaf6063c3baa6"
   },
-  "execution_baseline": "a1bb12f19e758784e55a1a93acaad1954861a0fc",
+  "execution_baseline": "0109d7f6c8b9f4cea6cde32b2342e4b6d4e0526b",
   "focus": false,
   "historical_registry_semantics": "HISTORICAL_GOVERNANCE_SNAPSHOT",
   "production": false,
@@ -19,6 +27,11 @@
     "bytes": 4004,
     "path": "config/v4_current_stage_authority_v2.json",
     "sha256": "dc57e3957a1301ff3358f5012080027c47550559c4cd5d406065f98e4958a206"
+  },
+  "supersedes_current_config": {
+    "bytes": 1286,
+    "path": "reports/pre16_governance_r1_1/PREVIOUS_CURRENT_CONFIG.json",
+    "sha256": "cbbb8809750c9ba8352bca60b14eff479f9b11ab87e8546cbc6eedb18875ba05"
   },
   "taxonomy": [
     "ACCEPTED_SCOPED",
@@ -31,5 +44,5 @@
     "NONBLOCKING_VALIDATION_DEBT",
     "SUPERSEDED_HISTORICAL_STATUS"
   ],
-  "version": "1.0.0"
+  "version": "1.1.0"
 }

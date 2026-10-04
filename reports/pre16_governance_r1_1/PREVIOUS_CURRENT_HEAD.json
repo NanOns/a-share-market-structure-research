@@ -1,37 +1,17 @@
 {
-  "GLOBAL_V4_16_CONTRACT_ENTRY_BLOCKERS": [
-    "GOV_PRE16_01"
-  ],
   "NEXT": "STOP_WAIT_INDEPENDENT_EXTERNAL_AUDIT",
   "V4_16": false,
   "V4_16_entry": "HOLD_PENDING_INDEPENDENT_GOVERNANCE_AUDIT",
   "audit_status_authority": true,
-  "blocking_schema": {
-    "legacy_blocks_engineering_stage": "blocks_v4_16_contract_entry",
-    "legacy_blocks_production_cutover": "blocks_production_cutover_for_scope",
-    "legacy_blocks_shadow_entry": "blocks_v4_16_runtime_activation OR blocks_affected_capability_in_shadow; true does not imply global Shadow block",
-    "permission": "Blocker queries never grant permission; stage_permission remains false",
-    "runtime_activation_dependency": "Only GOV_PRE16_01 is a declared global activation hold in this authority. Future contracts must explicitly bind required capabilities; A08 remains blocked for its capability, without inventing an unfrozen global dependency."
-  },
   "business_runtime_authority": false,
   "contract_id": "V4_CROSS_STAGE_CURRENT_AUDIT_HEAD_V1",
   "data_action": "KEEP_EXACT_BYTES",
   "entries": {
     "A01": {
-      "affected_capabilities": [
-        "A01"
-      ],
-      "alias_of": null,
       "audit_id": "A01",
-      "blocking_scope": "CAPABILITY_ONLY",
-      "blocks_affected_capability_in_shadow": false,
       "blocks_engineering_stage": false,
       "blocks_production_cutover": true,
-      "blocks_production_cutover_for_scope": true,
       "blocks_shadow_entry": false,
-      "blocks_v4_16_contract_entry": false,
-      "blocks_v4_16_runtime_activation": false,
-      "canonical_issue_id": "A01",
       "capability_dimensions": {
         "AS_RECORDED": false,
         "accepted_trade_date": "2026-09-30",
@@ -165,20 +145,10 @@
       ]
     },
     "A02": {
-      "affected_capabilities": [
-        "A02"
-      ],
-      "alias_of": null,
       "audit_id": "A02",
-      "blocking_scope": "CAPABILITY_ONLY",
-      "blocks_affected_capability_in_shadow": false,
       "blocks_engineering_stage": false,
       "blocks_production_cutover": true,
-      "blocks_production_cutover_for_scope": true,
       "blocks_shadow_entry": false,
-      "blocks_v4_16_contract_entry": false,
-      "blocks_v4_16_runtime_activation": false,
-      "canonical_issue_id": "A02",
       "capability_dimensions": {
         "AS_RECORDED": false,
         "historical_first_availability_proven": false,
@@ -365,20 +335,10 @@
       ]
     },
     "A03": {
-      "affected_capabilities": [
-        "A03"
-      ],
-      "alias_of": null,
       "audit_id": "A03",
-      "blocking_scope": "CAPABILITY_ONLY",
-      "blocks_affected_capability_in_shadow": false,
       "blocks_engineering_stage": false,
       "blocks_production_cutover": true,
-      "blocks_production_cutover_for_scope": true,
       "blocks_shadow_entry": false,
-      "blocks_v4_16_contract_entry": false,
-      "blocks_v4_16_runtime_activation": false,
-      "canonical_issue_id": "A03",
       "capability_dimensions": {
         "active_global_trust_root": false,
         "engineering_task": "CLOSED_SCOPED",
@@ -577,20 +537,10 @@
       ]
     },
     "A04": {
-      "affected_capabilities": [
-        "A04"
-      ],
-      "alias_of": null,
       "audit_id": "A04",
-      "blocking_scope": "CAPABILITY_ONLY",
-      "blocks_affected_capability_in_shadow": false,
       "blocks_engineering_stage": false,
       "blocks_production_cutover": true,
-      "blocks_production_cutover_for_scope": true,
       "blocks_shadow_entry": false,
-      "blocks_v4_16_contract_entry": false,
-      "blocks_v4_16_runtime_activation": false,
-      "canonical_issue_id": "A04",
       "capability_dimensions": {
         "accepted_sessions": 1,
         "consumer_auto_activation_after_H21": false,
@@ -792,20 +742,10 @@
       ]
     },
     "A04_H21_CONSUMER": {
-      "affected_capabilities": [
-        "AMOUNT_A_H21_FORMAL_CONSUMER"
-      ],
-      "alias_of": null,
       "audit_id": "A04_H21_CONSUMER",
-      "blocking_scope": "CAPABILITY_ONLY",
-      "blocks_affected_capability_in_shadow": true,
       "blocks_engineering_stage": false,
       "blocks_production_cutover": true,
-      "blocks_production_cutover_for_scope": true,
       "blocks_shadow_entry": true,
-      "blocks_v4_16_contract_entry": false,
-      "blocks_v4_16_runtime_activation": false,
-      "canonical_issue_id": "A04_H21_CONSUMER",
       "capability_dimensions": {
         "accepted_sessions": 1,
         "formal_consumer_enabled": false,
@@ -839,20 +779,10 @@
       "superseded_historical_statuses": []
     },
     "A04_HISTORICAL_AMOUNT_A": {
-      "affected_capabilities": [
-        "HISTORICAL_AMOUNT_A_FORMAL_CONSUMER"
-      ],
-      "alias_of": null,
       "audit_id": "A04_HISTORICAL_AMOUNT_A",
-      "blocking_scope": "CAPABILITY_ONLY",
-      "blocks_affected_capability_in_shadow": true,
       "blocks_engineering_stage": false,
       "blocks_production_cutover": true,
-      "blocks_production_cutover_for_scope": true,
       "blocks_shadow_entry": true,
-      "blocks_v4_16_contract_entry": false,
-      "blocks_v4_16_runtime_activation": false,
-      "canonical_issue_id": "A04_HISTORICAL_AMOUNT_A",
       "capability_dimensions": {},
       "current_authority": {
         "a04_payload": {
@@ -879,20 +809,10 @@
       "superseded_historical_statuses": []
     },
     "A05": {
-      "affected_capabilities": [
-        "A05"
-      ],
-      "alias_of": null,
       "audit_id": "A05",
-      "blocking_scope": "CAPABILITY_ONLY",
-      "blocks_affected_capability_in_shadow": false,
       "blocks_engineering_stage": false,
       "blocks_production_cutover": true,
-      "blocks_production_cutover_for_scope": true,
       "blocks_shadow_entry": false,
-      "blocks_v4_16_contract_entry": false,
-      "blocks_v4_16_runtime_activation": false,
-      "canonical_issue_id": "A05",
       "capability_dimensions": {
         "AS_RECORDED": false,
         "amount_a_warm_branch_enabled": false,
@@ -1092,20 +1012,10 @@
       ]
     },
     "A06": {
-      "affected_capabilities": [
-        "A06"
-      ],
-      "alias_of": null,
       "audit_id": "A06",
-      "blocking_scope": "CAPABILITY_ONLY",
-      "blocks_affected_capability_in_shadow": false,
       "blocks_engineering_stage": false,
       "blocks_production_cutover": true,
-      "blocks_production_cutover_for_scope": true,
       "blocks_shadow_entry": false,
-      "blocks_v4_16_contract_entry": false,
-      "blocks_v4_16_runtime_activation": false,
-      "canonical_issue_id": "A06",
       "capability_dimensions": {
         "active_global_trust_root": false,
         "engineering_task": "CLOSED_SCOPED",
@@ -1305,20 +1215,10 @@
       ]
     },
     "A07": {
-      "affected_capabilities": [
-        "A07"
-      ],
-      "alias_of": null,
       "audit_id": "A07",
-      "blocking_scope": "CAPABILITY_ONLY",
-      "blocks_affected_capability_in_shadow": false,
       "blocks_engineering_stage": false,
       "blocks_production_cutover": true,
-      "blocks_production_cutover_for_scope": true,
       "blocks_shadow_entry": false,
-      "blocks_v4_16_contract_entry": false,
-      "blocks_v4_16_runtime_activation": false,
-      "canonical_issue_id": "A07",
       "capability_dimensions": {
         "active_global_trust_root": false,
         "engineering_task": "CLOSED_SCOPED",
@@ -1517,20 +1417,10 @@
       ]
     },
     "A08": {
-      "affected_capabilities": [
-        "A08"
-      ],
-      "alias_of": null,
       "audit_id": "A08",
-      "blocking_scope": "CAPABILITY_ONLY",
-      "blocks_affected_capability_in_shadow": false,
       "blocks_engineering_stage": false,
       "blocks_production_cutover": true,
-      "blocks_production_cutover_for_scope": true,
       "blocks_shadow_entry": false,
-      "blocks_v4_16_contract_entry": false,
-      "blocks_v4_16_runtime_activation": false,
-      "canonical_issue_id": "A08",
       "capability_dimensions": {
         "current_runtime_accepted": false,
         "production_database_deployed": false
@@ -1661,20 +1551,10 @@
       ]
     },
     "A08_CURRENT_RUNTIME": {
-      "affected_capabilities": [
-        "V4_09_N01_CURRENT_RUNTIME_PREWATCH"
-      ],
-      "alias_of": null,
       "audit_id": "A08_CURRENT_RUNTIME",
-      "blocking_scope": "CAPABILITY_ONLY",
-      "blocks_affected_capability_in_shadow": true,
       "blocks_engineering_stage": false,
       "blocks_production_cutover": true,
-      "blocks_production_cutover_for_scope": true,
       "blocks_shadow_entry": true,
-      "blocks_v4_16_contract_entry": false,
-      "blocks_v4_16_runtime_activation": false,
-      "canonical_issue_id": "A08_CURRENT_RUNTIME",
       "capability_dimensions": {},
       "current_authority": {
         "a08": {
@@ -1711,20 +1591,10 @@
       "superseded_historical_statuses": []
     },
     "A09": {
-      "affected_capabilities": [
-        "A09"
-      ],
-      "alias_of": null,
       "audit_id": "A09",
-      "blocking_scope": "CAPABILITY_ONLY",
-      "blocks_affected_capability_in_shadow": false,
       "blocks_engineering_stage": false,
       "blocks_production_cutover": true,
-      "blocks_production_cutover_for_scope": true,
       "blocks_shadow_entry": false,
-      "blocks_v4_16_contract_entry": false,
-      "blocks_v4_16_runtime_activation": false,
-      "canonical_issue_id": "A09",
       "capability_dimensions": {
         "current_runtime_accepted": false,
         "production_database_deployed": false
@@ -1855,20 +1725,10 @@
       ]
     },
     "A10_A12_R3_PRODUCER_SOURCE_INSTANCE": {
-      "affected_capabilities": [
-        "A10_A12_R3_PRODUCER_SOURCE_INSTANCE"
-      ],
-      "alias_of": null,
       "audit_id": "A10_A12_R3_PRODUCER_SOURCE_INSTANCE",
-      "blocking_scope": "CAPABILITY_ONLY",
-      "blocks_affected_capability_in_shadow": false,
       "blocks_engineering_stage": false,
       "blocks_production_cutover": true,
-      "blocks_production_cutover_for_scope": true,
       "blocks_shadow_entry": false,
-      "blocks_v4_16_contract_entry": false,
-      "blocks_v4_16_runtime_activation": false,
-      "canonical_issue_id": "A10_A12_R3_PRODUCER_SOURCE_INSTANCE",
       "capability_dimensions": {},
       "current_authority": {
         "A10_A12_R3_PRODUCER_SOURCE_INSTANCE_external": {
@@ -1951,20 +1811,10 @@
       ]
     },
     "A12_R2_INTERIOR_DATA_GAP_SCOPE": {
-      "affected_capabilities": [
-        "A12_R2_INTERIOR_DATA_GAP_SCOPE"
-      ],
-      "alias_of": null,
       "audit_id": "A12_R2_INTERIOR_DATA_GAP_SCOPE",
-      "blocking_scope": "CAPABILITY_ONLY",
-      "blocks_affected_capability_in_shadow": false,
       "blocks_engineering_stage": false,
       "blocks_production_cutover": true,
-      "blocks_production_cutover_for_scope": true,
       "blocks_shadow_entry": false,
-      "blocks_v4_16_contract_entry": false,
-      "blocks_v4_16_runtime_activation": false,
-      "canonical_issue_id": "A12_R2_INTERIOR_DATA_GAP_SCOPE",
       "capability_dimensions": {},
       "current_authority": {
         "A12_R2_INTERIOR_DATA_GAP_SCOPE_external": {
@@ -2056,20 +1906,10 @@
       ]
     },
     "A12_R2_POSITIVE_ST_CODE_CHANGE_SCOPE": {
-      "affected_capabilities": [
-        "A12_R2_POSITIVE_ST_CODE_CHANGE_SCOPE"
-      ],
-      "alias_of": null,
       "audit_id": "A12_R2_POSITIVE_ST_CODE_CHANGE_SCOPE",
-      "blocking_scope": "CAPABILITY_ONLY",
-      "blocks_affected_capability_in_shadow": false,
       "blocks_engineering_stage": false,
       "blocks_production_cutover": true,
-      "blocks_production_cutover_for_scope": true,
       "blocks_shadow_entry": false,
-      "blocks_v4_16_contract_entry": false,
-      "blocks_v4_16_runtime_activation": false,
-      "canonical_issue_id": "A12_R2_POSITIVE_ST_CODE_CHANGE_SCOPE",
       "capability_dimensions": {},
       "current_authority": {
         "A12_R2_POSITIVE_ST_CODE_CHANGE_SCOPE_external": {
@@ -2161,33 +2001,11 @@
       ]
     },
     "AUD_A04_AMOUNT_A_FORWARD_CONSUMER": {
-      "affected_capabilities": [
-        "AMOUNT_A_H21_FORMAL_CONSUMER"
-      ],
-      "alias_of": "A04_H21_CONSUMER",
-      "alias_provenance": {
-        "capability_dimensions": {},
-        "limitations": [
-          "Historical pending item retained until exact item/scope closure; accepted V4-10..15 remain PASS_KEEP_NO_REOPEN",
-          "FORWARD_CONSUMER_GATE_RETAINED"
-        ],
-        "scope": "Independent Amount-A consumer H21 warmup; producer scoped acceptance does not authorize formal consumer"
-      },
       "audit_id": "AUD_A04_AMOUNT_A_FORWARD_CONSUMER",
-      "blocking_scope": "CAPABILITY_ONLY",
-      "blocks_affected_capability_in_shadow": true,
       "blocks_engineering_stage": false,
       "blocks_production_cutover": true,
-      "blocks_production_cutover_for_scope": true,
-      "blocks_shadow_entry": true,
-      "blocks_v4_16_contract_entry": false,
-      "blocks_v4_16_runtime_activation": false,
-      "canonical_issue_id": "A04_H21_CONSUMER",
-      "capability_dimensions": {
-        "accepted_sessions": 1,
-        "formal_consumer_enabled": false,
-        "missing_H21": 20
-      },
+      "blocks_shadow_entry": false,
+      "capability_dimensions": {},
       "current_authority": {
         "audit": {
           "bytes": 18060,
@@ -2215,31 +2033,19 @@
       ],
       "formal_consumer_permission_granted_by_this_head": false,
       "limitations": [
-        "H21_COMPLETENESS",
-        "SOURCE_CONSISTENCY",
-        "ARITHMETIC_ORACLE",
-        "CONSUMER_SPECIFIC_EXTERNAL_ACCEPTANCE"
+        "Historical pending item retained until exact item/scope closure; accepted V4-10..15 remain PASS_KEEP_NO_REOPEN",
+        "FORWARD_CONSUMER_GATE_RETAINED"
       ],
       "priority": "P1",
       "requires_real_observation_accumulation": true,
-      "scope": "Consumer-specific H21 acceptance remains pending",
+      "scope": "Independent Amount-A consumer H21 warmup; producer scoped acceptance does not authorize formal consumer",
       "superseded_historical_statuses": []
     },
     "AUD_R3C_ACCEPTED_SUSPENSION_STATE_ADMISSION_01": {
-      "affected_capabilities": [
-        "AUD_R3C_ACCEPTED_SUSPENSION_STATE_ADMISSION_01"
-      ],
-      "alias_of": null,
       "audit_id": "AUD_R3C_ACCEPTED_SUSPENSION_STATE_ADMISSION_01",
-      "blocking_scope": "CAPABILITY_ONLY",
-      "blocks_affected_capability_in_shadow": false,
       "blocks_engineering_stage": false,
       "blocks_production_cutover": true,
-      "blocks_production_cutover_for_scope": true,
       "blocks_shadow_entry": false,
-      "blocks_v4_16_contract_entry": false,
-      "blocks_v4_16_runtime_activation": false,
-      "canonical_issue_id": "AUD_R3C_ACCEPTED_SUSPENSION_STATE_ADMISSION_01",
       "capability_dimensions": {},
       "current_authority": {
         "audit": {
@@ -2277,20 +2083,10 @@
       "superseded_historical_statuses": []
     },
     "AUD_R3C_ADJUSTMENT_COORDINATE_EXACTNESS": {
-      "affected_capabilities": [
-        "AUD_R3C_ADJUSTMENT_COORDINATE_EXACTNESS"
-      ],
-      "alias_of": null,
       "audit_id": "AUD_R3C_ADJUSTMENT_COORDINATE_EXACTNESS",
-      "blocking_scope": "CAPABILITY_ONLY",
-      "blocks_affected_capability_in_shadow": false,
       "blocks_engineering_stage": false,
       "blocks_production_cutover": true,
-      "blocks_production_cutover_for_scope": true,
       "blocks_shadow_entry": false,
-      "blocks_v4_16_contract_entry": false,
-      "blocks_v4_16_runtime_activation": false,
-      "canonical_issue_id": "AUD_R3C_ADJUSTMENT_COORDINATE_EXACTNESS",
       "capability_dimensions": {},
       "current_authority": {
         "audit": {
@@ -2328,20 +2124,10 @@
       "superseded_historical_statuses": []
     },
     "AUD_R3C_D2_ADMISSION_AND_PRIOR_AUTHENTICITY": {
-      "affected_capabilities": [
-        "AUD_R3C_D2_ADMISSION_AND_PRIOR_AUTHENTICITY"
-      ],
-      "alias_of": null,
       "audit_id": "AUD_R3C_D2_ADMISSION_AND_PRIOR_AUTHENTICITY",
-      "blocking_scope": "CAPABILITY_ONLY",
-      "blocks_affected_capability_in_shadow": false,
       "blocks_engineering_stage": false,
       "blocks_production_cutover": true,
-      "blocks_production_cutover_for_scope": true,
       "blocks_shadow_entry": false,
-      "blocks_v4_16_contract_entry": false,
-      "blocks_v4_16_runtime_activation": false,
-      "canonical_issue_id": "AUD_R3C_D2_ADMISSION_AND_PRIOR_AUTHENTICITY",
       "capability_dimensions": {},
       "current_authority": {
         "audit": {
@@ -2379,20 +2165,10 @@
       "superseded_historical_statuses": []
     },
     "AUD_R3C_EVENT_PRIOR_UNKNOWN_01": {
-      "affected_capabilities": [
-        "AUD_R3C_EVENT_PRIOR_UNKNOWN_01"
-      ],
-      "alias_of": null,
       "audit_id": "AUD_R3C_EVENT_PRIOR_UNKNOWN_01",
-      "blocking_scope": "CAPABILITY_ONLY",
-      "blocks_affected_capability_in_shadow": false,
       "blocks_engineering_stage": false,
       "blocks_production_cutover": true,
-      "blocks_production_cutover_for_scope": true,
       "blocks_shadow_entry": false,
-      "blocks_v4_16_contract_entry": false,
-      "blocks_v4_16_runtime_activation": false,
-      "canonical_issue_id": "AUD_R3C_EVENT_PRIOR_UNKNOWN_01",
       "capability_dimensions": {},
       "current_authority": {
         "audit": {
@@ -2430,20 +2206,10 @@
       "superseded_historical_statuses": []
     },
     "AUD_R3_GIT_EXACT_BYTE_PORTABILITY": {
-      "affected_capabilities": [
-        "AUD_R3_GIT_EXACT_BYTE_PORTABILITY"
-      ],
-      "alias_of": null,
       "audit_id": "AUD_R3_GIT_EXACT_BYTE_PORTABILITY",
-      "blocking_scope": "CAPABILITY_ONLY",
-      "blocks_affected_capability_in_shadow": false,
       "blocks_engineering_stage": false,
       "blocks_production_cutover": true,
-      "blocks_production_cutover_for_scope": true,
       "blocks_shadow_entry": false,
-      "blocks_v4_16_contract_entry": false,
-      "blocks_v4_16_runtime_activation": false,
-      "canonical_issue_id": "AUD_R3_GIT_EXACT_BYTE_PORTABILITY",
       "capability_dimensions": {},
       "current_authority": {
         "audit": {
@@ -2481,20 +2247,10 @@
       "superseded_historical_statuses": []
     },
     "AUD_R3_REAL_WINDOW_AND_EPISODE_CAPABILITY": {
-      "affected_capabilities": [
-        "AUD_R3_REAL_WINDOW_AND_EPISODE_CAPABILITY"
-      ],
-      "alias_of": null,
       "audit_id": "AUD_R3_REAL_WINDOW_AND_EPISODE_CAPABILITY",
-      "blocking_scope": "CAPABILITY_ONLY",
-      "blocks_affected_capability_in_shadow": false,
       "blocks_engineering_stage": false,
       "blocks_production_cutover": true,
-      "blocks_production_cutover_for_scope": true,
       "blocks_shadow_entry": false,
-      "blocks_v4_16_contract_entry": false,
-      "blocks_v4_16_runtime_activation": false,
-      "canonical_issue_id": "AUD_R3_REAL_WINDOW_AND_EPISODE_CAPABILITY",
       "capability_dimensions": {},
       "current_authority": {
         "audit": {
@@ -2532,20 +2288,10 @@
       "superseded_historical_statuses": []
     },
     "DM01_R3_ACCEPTED_METADATA_GIT_REPRESENTATION": {
-      "affected_capabilities": [
-        "DM01_R3_ACCEPTED_METADATA_GIT_REPRESENTATION"
-      ],
-      "alias_of": null,
       "audit_id": "DM01_R3_ACCEPTED_METADATA_GIT_REPRESENTATION",
-      "blocking_scope": "CAPABILITY_ONLY",
-      "blocks_affected_capability_in_shadow": false,
       "blocks_engineering_stage": false,
       "blocks_production_cutover": true,
-      "blocks_production_cutover_for_scope": true,
       "blocks_shadow_entry": false,
-      "blocks_v4_16_contract_entry": false,
-      "blocks_v4_16_runtime_activation": false,
-      "canonical_issue_id": "DM01_R3_ACCEPTED_METADATA_GIT_REPRESENTATION",
       "capability_dimensions": {},
       "current_authority": {
         "DM01_R3_ACCEPTED_METADATA_GIT_REPRESENTATION_external": {
@@ -2610,21 +2356,10 @@
       ]
     },
     "GOV_PRE16_01": {
-      "affected_capabilities": [
-        "V4_16_CONTRACT_ENTRY",
-        "V4_16_RUNTIME_ACTIVATION"
-      ],
-      "alias_of": null,
       "audit_id": "GOV_PRE16_01",
-      "blocking_scope": "GLOBAL_STAGE",
-      "blocks_affected_capability_in_shadow": false,
       "blocks_engineering_stage": true,
       "blocks_production_cutover": true,
-      "blocks_production_cutover_for_scope": true,
       "blocks_shadow_entry": true,
-      "blocks_v4_16_contract_entry": true,
-      "blocks_v4_16_runtime_activation": true,
-      "canonical_issue_id": "GOV_PRE16_01",
       "capability_dimensions": {},
       "current_authority": {
         "audit": {
@@ -2652,20 +2387,10 @@
       "superseded_historical_statuses": []
     },
     "HISTORICAL_PIT_EFFECTIVENESS": {
-      "affected_capabilities": [
-        "HISTORICAL_PIT_EFFECTIVENESS"
-      ],
-      "alias_of": null,
       "audit_id": "HISTORICAL_PIT_EFFECTIVENESS",
-      "blocking_scope": "CAPABILITY_ONLY",
-      "blocks_affected_capability_in_shadow": false,
       "blocks_engineering_stage": false,
       "blocks_production_cutover": true,
-      "blocks_production_cutover_for_scope": true,
       "blocks_shadow_entry": false,
-      "blocks_v4_16_contract_entry": false,
-      "blocks_v4_16_runtime_activation": false,
-      "canonical_issue_id": "HISTORICAL_PIT_EFFECTIVENESS",
       "capability_dimensions": {
         "capability": "NOT_GRANTED"
       },
@@ -2705,20 +2430,10 @@
       "superseded_historical_statuses": []
     },
     "OFFICIAL_NOTICE_FILENAME_VS_EVENT_SEMANTICS": {
-      "affected_capabilities": [
-        "OFFICIAL_NOTICE_FILENAME_VS_EVENT_SEMANTICS"
-      ],
-      "alias_of": null,
       "audit_id": "OFFICIAL_NOTICE_FILENAME_VS_EVENT_SEMANTICS",
-      "blocking_scope": "CAPABILITY_ONLY",
-      "blocks_affected_capability_in_shadow": false,
       "blocks_engineering_stage": false,
       "blocks_production_cutover": true,
-      "blocks_production_cutover_for_scope": true,
       "blocks_shadow_entry": false,
-      "blocks_v4_16_contract_entry": false,
-      "blocks_v4_16_runtime_activation": false,
-      "canonical_issue_id": "OFFICIAL_NOTICE_FILENAME_VS_EVENT_SEMANTICS",
       "capability_dimensions": {},
       "current_authority": {
         "OFFICIAL_NOTICE_FILENAME_VS_EVENT_SEMANTICS_external": {
@@ -2810,20 +2525,10 @@
       ]
     },
     "OWNER": {
-      "affected_capabilities": [
-        "OWNER"
-      ],
-      "alias_of": null,
       "audit_id": "OWNER",
-      "blocking_scope": "CAPABILITY_ONLY",
-      "blocks_affected_capability_in_shadow": false,
       "blocks_engineering_stage": false,
       "blocks_production_cutover": true,
-      "blocks_production_cutover_for_scope": true,
       "blocks_shadow_entry": false,
-      "blocks_v4_16_contract_entry": false,
-      "blocks_v4_16_runtime_activation": false,
-      "canonical_issue_id": "OWNER",
       "capability_dimensions": {
         "active_global_trust_root": false,
         "engineering_task": "CLOSED_SCOPED",
@@ -2995,20 +2700,10 @@
       ]
     },
     "READER": {
-      "affected_capabilities": [
-        "READER"
-      ],
-      "alias_of": null,
       "audit_id": "READER",
-      "blocking_scope": "CAPABILITY_ONLY",
-      "blocks_affected_capability_in_shadow": false,
       "blocks_engineering_stage": false,
       "blocks_production_cutover": true,
-      "blocks_production_cutover_for_scope": true,
       "blocks_shadow_entry": false,
-      "blocks_v4_16_contract_entry": false,
-      "blocks_v4_16_runtime_activation": false,
-      "canonical_issue_id": "READER",
       "capability_dimensions": {
         "active_global_trust_root": false,
         "engineering_task": "CLOSED_SCOPED",
@@ -3107,20 +2802,10 @@
       ]
     },
     "REALTIME_ACCEPTED_COHORT_MATURITY": {
-      "affected_capabilities": [
-        "REALTIME_ACCEPTED_COHORT_MATURITY"
-      ],
-      "alias_of": null,
       "audit_id": "REALTIME_ACCEPTED_COHORT_MATURITY",
-      "blocking_scope": "CAPABILITY_ONLY",
-      "blocks_affected_capability_in_shadow": false,
       "blocks_engineering_stage": false,
       "blocks_production_cutover": true,
-      "blocks_production_cutover_for_scope": true,
       "blocks_shadow_entry": false,
-      "blocks_v4_16_contract_entry": false,
-      "blocks_v4_16_runtime_activation": false,
-      "canonical_issue_id": "REALTIME_ACCEPTED_COHORT_MATURITY",
       "capability_dimensions": {
         "PROVED_HORIZONS": [],
         "UNPROVED_HORIZONS": [
@@ -3178,20 +2863,10 @@
       "superseded_historical_statuses": []
     },
     "REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT_RUNTIME": {
-      "affected_capabilities": [
-        "REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT_RUNTIME"
-      ],
-      "alias_of": null,
       "audit_id": "REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT_RUNTIME",
-      "blocking_scope": "CAPABILITY_ONLY",
-      "blocks_affected_capability_in_shadow": false,
       "blocks_engineering_stage": false,
       "blocks_production_cutover": true,
-      "blocks_production_cutover_for_scope": true,
       "blocks_shadow_entry": false,
-      "blocks_v4_16_contract_entry": false,
-      "blocks_v4_16_runtime_activation": false,
-      "canonical_issue_id": "REAL_MATURED_ACCEPTED_SOURCE_SETTLEMENT_RUNTIME",
       "capability_dimensions": {
         "PROVED_HORIZONS": [],
         "UNPROVED_HORIZONS": [
@@ -3249,20 +2924,10 @@
       "superseded_historical_statuses": []
     },
     "SOURCE_AUTHORITY_AVAILABILITY_SEMANTICS_GOVERNANCE": {
-      "affected_capabilities": [
-        "SOURCE_AUTHORITY_AVAILABILITY_SEMANTICS_GOVERNANCE"
-      ],
-      "alias_of": null,
       "audit_id": "SOURCE_AUTHORITY_AVAILABILITY_SEMANTICS_GOVERNANCE",
-      "blocking_scope": "CAPABILITY_ONLY",
-      "blocks_affected_capability_in_shadow": false,
       "blocks_engineering_stage": false,
       "blocks_production_cutover": true,
-      "blocks_production_cutover_for_scope": true,
       "blocks_shadow_entry": false,
-      "blocks_v4_16_contract_entry": false,
-      "blocks_v4_16_runtime_activation": false,
-      "canonical_issue_id": "SOURCE_AUTHORITY_AVAILABILITY_SEMANTICS_GOVERNANCE",
       "capability_dimensions": {},
       "current_authority": {
         "SOURCE_AUTHORITY_AVAILABILITY_SEMANTICS_GOVERNANCE_external": {
@@ -3381,20 +3046,10 @@
       ]
     },
     "V4_01_IDENTITY_SOURCE_AUTHORITY_RECONCILIATION": {
-      "affected_capabilities": [
-        "V4_01_IDENTITY_SOURCE_AUTHORITY_RECONCILIATION"
-      ],
-      "alias_of": null,
       "audit_id": "V4_01_IDENTITY_SOURCE_AUTHORITY_RECONCILIATION",
-      "blocking_scope": "CAPABILITY_ONLY",
-      "blocks_affected_capability_in_shadow": false,
       "blocks_engineering_stage": false,
       "blocks_production_cutover": true,
-      "blocks_production_cutover_for_scope": true,
       "blocks_shadow_entry": false,
-      "blocks_v4_16_contract_entry": false,
-      "blocks_v4_16_runtime_activation": false,
-      "canonical_issue_id": "V4_01_IDENTITY_SOURCE_AUTHORITY_RECONCILIATION",
       "capability_dimensions": {},
       "current_authority": {
         "V4_01_IDENTITY_SOURCE_AUTHORITY_RECONCILIATION_external": {
@@ -3513,20 +3168,10 @@
       ]
     },
     "V4_02_STATUS_ST_SOURCE_AUTHORITY_DIVERGENCE": {
-      "affected_capabilities": [
-        "V4_02_STATUS_ST_SOURCE_AUTHORITY_DIVERGENCE"
-      ],
-      "alias_of": null,
       "audit_id": "V4_02_STATUS_ST_SOURCE_AUTHORITY_DIVERGENCE",
-      "blocking_scope": "CAPABILITY_ONLY",
-      "blocks_affected_capability_in_shadow": false,
       "blocks_engineering_stage": false,
       "blocks_production_cutover": true,
-      "blocks_production_cutover_for_scope": true,
       "blocks_shadow_entry": false,
-      "blocks_v4_16_contract_entry": false,
-      "blocks_v4_16_runtime_activation": false,
-      "canonical_issue_id": "V4_02_STATUS_ST_SOURCE_AUTHORITY_DIVERGENCE",
       "capability_dimensions": {},
       "current_authority": {
         "V4_02_STATUS_ST_SOURCE_AUTHORITY_DIVERGENCE_external": {
@@ -3645,20 +3290,10 @@
       ]
     },
     "V4_12_REAL_OWNER_CAPABILITY": {
-      "affected_capabilities": [
-        "V4_12_REAL_OWNER_CAPABILITY"
-      ],
-      "alias_of": null,
       "audit_id": "V4_12_REAL_OWNER_CAPABILITY",
-      "blocking_scope": "CAPABILITY_ONLY",
-      "blocks_affected_capability_in_shadow": false,
       "blocks_engineering_stage": false,
       "blocks_production_cutover": true,
-      "blocks_production_cutover_for_scope": true,
       "blocks_shadow_entry": false,
-      "blocks_v4_16_contract_entry": false,
-      "blocks_v4_16_runtime_activation": false,
-      "canonical_issue_id": "V4_12_REAL_OWNER_CAPABILITY",
       "capability_dimensions": {},
       "current_authority": {
         "audit": {
@@ -3696,20 +3331,10 @@
       "superseded_historical_statuses": []
     },
     "V4_13_REAL_OWNER_CAPABILITY": {
-      "affected_capabilities": [
-        "V4_13_REAL_OWNER_CAPABILITY"
-      ],
-      "alias_of": null,
       "audit_id": "V4_13_REAL_OWNER_CAPABILITY",
-      "blocking_scope": "CAPABILITY_ONLY",
-      "blocks_affected_capability_in_shadow": false,
       "blocks_engineering_stage": false,
       "blocks_production_cutover": true,
-      "blocks_production_cutover_for_scope": true,
       "blocks_shadow_entry": false,
-      "blocks_v4_16_contract_entry": false,
-      "blocks_v4_16_runtime_activation": false,
-      "canonical_issue_id": "V4_13_REAL_OWNER_CAPABILITY",
       "capability_dimensions": {},
       "current_authority": {
         "audit": {
@@ -3749,20 +3374,10 @@
       "superseded_historical_statuses": []
     },
     "V4_15_FWD_ADJ_VECTOR_01": {
-      "affected_capabilities": [
-        "V4_15_FWD_ADJ_VECTOR_01"
-      ],
-      "alias_of": null,
       "audit_id": "V4_15_FWD_ADJ_VECTOR_01",
-      "blocking_scope": "CAPABILITY_ONLY",
-      "blocks_affected_capability_in_shadow": false,
       "blocks_engineering_stage": false,
       "blocks_production_cutover": true,
-      "blocks_production_cutover_for_scope": true,
       "blocks_shadow_entry": false,
-      "blocks_v4_16_contract_entry": false,
-      "blocks_v4_16_runtime_activation": false,
-      "canonical_issue_id": "V4_15_FWD_ADJ_VECTOR_01",
       "capability_dimensions": {},
       "current_authority": {
         "audit": {
@@ -3810,7 +3425,7 @@
       "superseded_historical_statuses": []
     }
   },
-  "execution_baseline": "0109d7f6c8b9f4cea6cde32b2342e4b6d4e0526b",
+  "execution_baseline": "a1bb12f19e758784e55a1a93acaad1954861a0fc",
   "focus": false,
   "formal_consumer_cutover": false,
   "historical_registries": [
@@ -3895,25 +3510,7 @@
       "sha256": "3a12c2b22ded78269361947878eac0f65959f008fafbea233de6222e4cc37d8b"
     }
   ],
-  "prior_execution_baseline": "a1bb12f19e758784e55a1a93acaad1954861a0fc",
   "production": false,
-  "repair_authority": {
-    "V4_NEXT_ROUND_EXECUTION_MASTER_PRE16_GOV_R1_1_20261004.md": {
-      "bytes": 1921,
-      "path": "reports/pre16_governance/r1_1_inputs/V4_NEXT_ROUND_EXECUTION_MASTER_PRE16_GOV_R1_1_20261004.md",
-      "sha256": "5cb50813108b70a0040b2fc23da7a7eb51a17ec69ec10a1b035aecc3250929bb"
-    },
-    "V4_PRE16_GOVERNANCE_INDEPENDENT_EXTERNAL_AUDIT_R1_20261004.md": {
-      "bytes": 9290,
-      "path": "reports/pre16_governance/r1_1_inputs/V4_PRE16_GOVERNANCE_INDEPENDENT_EXTERNAL_AUDIT_R1_20261004.md",
-      "sha256": "45c752e831cffcc5bbb3c6f8d13dfe90a4bcb413ada681779ac10148f256a6e7"
-    },
-    "V4_PRE16_GOVERNANCE_R1_1_CANONICAL_BLOCK_SCOPE_REPAIR_TASK_20261004.md": {
-      "bytes": 6514,
-      "path": "reports/pre16_governance/r1_1_inputs/V4_PRE16_GOVERNANCE_R1_1_CANONICAL_BLOCK_SCOPE_REPAIR_TASK_20261004.md",
-      "sha256": "834e26dbde4a1f3044c00b79983991225fb1fba2279067d79c4f352349383c92"
-    }
-  },
   "rollback": "Remove only the new governance head/config in a separate explicitly authorized revision; all accepted pointers and algorithms are untouched.",
   "shadow": false,
   "sources": {
@@ -4135,11 +3732,6 @@
   },
   "stage_action": "KEEP_EXACT_BYTES",
   "status": "READY_FOR_INDEPENDENT_EXTERNAL_AUDIT",
-  "supersedes_current_head": {
-    "bytes": 160505,
-    "path": "reports/pre16_governance_r1_1/PREVIOUS_CURRENT_HEAD.json",
-    "sha256": "999c359af954814f31e51d6160e9e6cd075f484502b7d8f77e5259707286bc73"
-  },
   "supersession_graph": {
     "data/v4/V4_CROSS_STAGE_CURRENT_AUDIT_HEAD_V1.json": [
       "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R1.json",
@@ -4217,5 +3809,5 @@
       "reports/audits/V4_CROSS_STAGE_OPEN_AUDIT_REMEDIATION_REGISTRY_R4.json"
     ]
   },
-  "version": "1.1.0"
+  "version": "1.0.0"
 }

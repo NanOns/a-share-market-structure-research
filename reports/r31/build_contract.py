@@ -77,7 +77,15 @@ def snapshot():
     write('reports/r31/PROTECTED_BASELINE.json', dict(baseline=BASE, tracked={n:sha(ROOT/n) for n in tracked if n and (ROOT/n).is_file()}, unrelated={n:sha(ROOT/n) for n in others if n and not new(n)}))
 
 
+def historical_guard():
+    """Historical reconstruction only; never downgrade a repaired contract."""
+    p = ROOT / CONTRACT
+    if p.exists() and json.loads(p.read_bytes()).get("version") != "1.0.0":
+        raise ValueError("HISTORICAL_ONLY_REFUSE_NEWER_CANONICAL_CONTRACT")
+
+
 def build():
+    historical_guard()
     documents = []
     for name in ('V4_NEXT_ROUND_EXECUTION_MASTER_R31_20261004.md', 'V4_22_R31_INDEPENDENT_AUDIT_CONTRACT_DESIGN_TASK_20261004.md', 'V4_R30R1_V4_21_NATIVE_SESSION_REPAIR_FINAL_INDEPENDENT_EXTERNAL_AUDIT_R1_20261004.md'):
         source = Path('D:/Users/lps/Desktop/阶段任务') / name
@@ -131,6 +139,7 @@ def build():
 
 if __name__ == '__main__':
     import sys
+    historical_guard()
     if '--snapshot' in sys.argv:
         snapshot()
     build()

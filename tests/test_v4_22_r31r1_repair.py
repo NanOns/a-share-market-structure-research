@@ -25,7 +25,7 @@ def test_final(vector):
     if vector==4: c['open_item_closure_bindings']['OPEN-01']['canonical_sha256']='WRONG'
     if vector==6: closures.pop('OPEN-10')
     r=final_verdict(c,items,gates,dict(status='PASS'),open_item_receipts=closures)
-    assert (r['formula_result']=='V4_22_FINAL_PASS') == (vector==5)
+    assert r['formula_result']!='V4_22_FINAL_PASS'  # R31R2 rejects unreadable SIM_ONLY closure evidence.
     assert r['acceptance_granted'] is False and r['production_grant'] is False
     assert c['open_items'][8]['current_status']=='OPEN_NONBLOCKING_DEBT'
 

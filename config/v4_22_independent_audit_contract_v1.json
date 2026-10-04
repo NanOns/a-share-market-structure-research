@@ -6337,7 +6337,7 @@
       }
     ]
   },
-  "baseline": "791543c3bdbd4b80b2679b447d257cc27dd504ad",
+  "baseline": "abe8311d55db3fecc086a77c3ce8a16f4309df54",
   "capabilities": [
     "STOCK_CORE",
     "STOCK_SECTOR_DEPENDENT",
@@ -6345,6 +6345,7 @@
     "ROTATION",
     "SECTOR_RISK_CHANGE"
   ],
+  "closure_authority_authorizations": {},
   "contract_id": "V4_22_INDEPENDENT_AUDIT_CONTRACT_V1",
   "cross_stage_carry": {
     "binding": {
@@ -6514,7 +6515,19 @@
     "sha256": "45e4d0d16c30c6fb12c24a7d798624bcb1d8c17f1e1e671199914c5b6e40f510"
   },
   "mode": "CONTRACT_DESIGN_ONLY",
-  "next_stage": "STOP_WAIT_R31_INDEPENDENT_EXTERNAL_AUDIT",
+  "next_stage": "STOP_WAIT_R31R2_INDEPENDENT_EXTERNAL_AUDIT",
+  "open_item_closure_binding_schema": {
+    "authority_rule": "EXACT_AUTHORIZED_AUTHORITY_FILE_WITH_MATCHING_CLOSURE_AUTHORIZATION; OPENER_IS_NOT_AUTOMATIC_CLOSER",
+    "current_real_closures": "NONE",
+    "evidence_rule": "NONEMPTY_ARRAY_OF_REPO_CONTAINED_EXACT_PATH_SHA256_AND_CONTRACT_ID_WHERE_PRESENT; INDEPENDENT_READBACK",
+    "required": [
+      "item_id",
+      "capability_scope",
+      "canonical_sha256",
+      "closure_authority",
+      "exact_evidence"
+    ]
+  },
   "open_item_closure_bindings": {},
   "open_items": [
     {
@@ -7130,10 +7143,19 @@
       "parameter_digest",
       "state_lineage_id"
     ],
+    "schema_order": "ALL_REQUIRED_FIELDS_THEN_EXACT_V421_LANE_REGISTRY_THEN_LANE_SEMANTICS_THEN_REAL_PARENT_LOGIC",
     "vectors": [
       "A22-V421-REFINT-01",
       "A22-V421-REFINT-02"
     ]
+  },
+  "repair_provenance": {
+    "baseline": "abe8311d55db3fecc086a77c3ce8a16f4309df54",
+    "baseline_contract_sha256": "d6a45fe4fedf483e8a188d8cab884c4d1cd16f8910c27de9f6a15ee1ba58f9f9",
+    "builder": "reports/r31r2/build_contract.py",
+    "builder_model": "B_HISTORICAL_ONLY_PLUS_DETERMINISTIC_REPAIR",
+    "external_authority": "docs/evidence/r31r2/V4_R31R1_V4_22_AUDIT_CONTRACT_REPAIR_INDEPENDENT_EXTERNAL_AUDIT_R1_20261005.md",
+    "stage": "R31R2"
   },
   "required_real_gates": [
     "SHADOW_STABLE_PASS",
@@ -7153,7 +7175,7 @@
     "path": "config/v4_16_observation_slot_contract_v2.json",
     "sha256": "47e0c0bc36373f0d63557769c428f64a422ea434435b9319ce144d43b22bea15"
   },
-  "status": "LOCAL_CONTRACT_CANDIDATE_NOT_EXTERNAL_ACCEPTANCE",
+  "status": "LOCAL_R31R2_CONTRACT_CANDIDATE_NOT_EXTERNAL_ACCEPTANCE",
   "status_semantics": {
     "BLOCKED": "EXPLICIT_PREREQUISITE_OR_AUTHORITY_BLOCKER",
     "FAIL": "OBSERVED_CONTRACT_VIOLATION",
@@ -7174,8 +7196,8 @@
   ],
   "tested_source_governance": {
     "allowed_post_test_delta_prefixes": [
-      "reports/r31/",
-      "docs/evidence/r31/"
+      "reports/r31r2/",
+      "docs/evidence/r31r2/"
     ],
     "allowed_post_test_delta_suffixes": [
       ".json",
@@ -7183,10 +7205,21 @@
       ".txt",
       ".md"
     ],
-    "annotated_tag": "codex/r31-independent-audit-contract-tested-source-20261004",
+    "annotated_tag": "codex/r31r2-v4-22-audit-contract-failclosed-tested-source-20261005",
     "branch": "codex/v4-system-reform",
     "clean_checkout_required": true,
+    "explicit_closure_allowlist": [
+      "reports/r31r2/clean-tests.xml",
+      "reports/r31r2/clean-output.txt",
+      "reports/r31r2/clean-summary.json",
+      "reports/r31r2/CLEAN_REGRESSION.json",
+      "reports/r31r2/LOCAL_TEST_SUMMARY.json",
+      "reports/r31r2/TESTED_SOURCE_GOVERNANCE.json",
+      "reports/r31r2/R31R2_CANDIDATE_SEAL.json",
+      "reports/r31r2/CLEAN_CHECKOUT_PROOF.json",
+      "docs/evidence/r31r2/R31R2_REPAIR_ACCEPTANCE.md"
+    ],
     "forbid_post_test_implementation_drift": true
   },
-  "version": "1.0.1"
+  "version": "1.0.2"
 }

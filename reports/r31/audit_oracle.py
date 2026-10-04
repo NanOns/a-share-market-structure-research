@@ -14,6 +14,8 @@ def digest(value):
 
 def read_binding(root, binding):
     """Exact immutable file readback. No latest, glob, mtime or fallback lookup."""
+    if not isinstance(binding, dict) or not isinstance(binding.get('path'), str) or not binding['path'] or not isinstance(binding.get('sha256'), str) or len(binding['sha256']) != 64 or any(ch not in '0123456789abcdef' for ch in binding['sha256']):
+        raise ValueError('MALFORMED_EXACT_BINDING')
     root = Path(root).resolve()
     name = Path(binding['path'])
     if name.is_absolute() or '..' in name.parts:
@@ -25,6 +27,8 @@ def read_binding(root, binding):
     if hashlib.sha256(raw).hexdigest() != binding['sha256']:
         raise ValueError('AUTHORITY_DIGEST_MISMATCH')
     value = json.loads(raw) if path.suffix == '.json' else {}
+    if value.get('contract_id') and binding.get('contract_id') != value['contract_id']:
+        raise ValueError('AUTHORITY_ID_MISSING_OR_MISMATCH')
     if binding.get('contract_id') and value.get('contract_id') != binding['contract_id']:
         raise ValueError('AUTHORITY_ID_MISMATCH')
     return value
@@ -38,15 +42,32 @@ def referential_integrity(value, shadow_owner, production_owner=None):
         schema = read_binding(root, contract['ledger_schema_binding'])
     except (ValueError, OSError, KeyError):
         return dict(status='BLOCKED_AFFECTED_SCOPE', findings=[dict(reason='LEDGER_SCHEMA_AUTHORITY_INVALID')], actual_real_rows_written=0, production_grant=False)
+    def row_error(row, required):
+        if not isinstance(row, dict) or not all(k in row for k in required):
+            return 'MISSING_REQUIRED_FIELD'
+        lane = schema['evidence_lanes'].get(row['evidence_lane']) if isinstance(row['evidence_lane'], str) else None
+        if lane is None:
+            return 'UNKNOWN_EVIDENCE_LANE'
+        if row['observation_namespace'] != lane['namespace']:
+            return 'LANE_NAMESPACE_MISMATCH'
+        if not all(isinstance(row.get(k), str) and row[k] for k in PARTITION + ('source_publication','source_digest')):
+            return 'MISSING_PUBLICATION_PROVENANCE'
+        if lane['real_eligible']:
+            if row['evidence_origin'] != lane['required_origin'] or row.get('accepted_real_publication') is not True:
+                return 'REAL_LANE_ORIGIN_OR_PUBLICATION_INVALID'
+        elif row['evidence_origin'] != row['evidence_lane'] or row.get('accepted_real_publication') is not False:
+            return 'DIAGNOSTIC_LANE_ORIGIN_OR_PUBLICATION_INVALID'
+        return None
     linkage = PARTITION + ('source_publication', 'source_digest')
     findings = []
     accepted = {}
     countable = 0
     for row in value.get('sessions', []):
-        if not all(k in row for k in schema['session_ledger']['required']):
-            findings.append(dict(vector='SESSION_SCHEMA', partition=None, reason='MISSING_PARTITION'))
+        error = row_error(row, schema['session_ledger']['required'])
+        if error:
+            findings.append(dict(vector='SESSION_SCHEMA', partition=None, reason=error))
             continue
-        if row['evidence_lane'] not in REAL_LANES:
+        if not schema['evidence_lanes'][row['evidence_lane']]['real_eligible']:
             continue
         owner = shadow_owner if row['evidence_lane'] == 'SHADOW_REAL' else production_owner
         mode = 'SHADOW' if row['evidence_lane'] == 'SHADOW_REAL' else 'PRODUCTION'
@@ -65,9 +86,13 @@ def referential_integrity(value, shadow_owner, production_owner=None):
             findings.append(dict(vector='SESSION_AUTHORITY', partition={k: row[k] for k in PARTITION}, reason='NO_EXACT_ACCEPTED_NATIVE_SESSION_AUTHORITY'))
     for ledger, vector in (('events', 'A22-V421-REFINT-01'), ('outcomes', 'A22-V421-REFINT-02')):
         for index, row in enumerate(value.get(ledger, [])):
-            if row.get('evidence_lane') not in REAL_LANES:
-                continue
             required = schema['event_cohort_ledger' if ledger == 'events' else 'due_outcome_ledger']['required']
+            error = row_error(row, required)
+            if error:
+                findings.append(dict(vector=vector, ledger=ledger, row_index=index, reason=error))
+                continue
+            if not schema['evidence_lanes'][row['evidence_lane']]['real_eligible']:
+                continue
             parent = accepted.get(tuple(row.get(k) for k in linkage))
             valid = all(k in row for k in required) and parent is not None
             if valid:
@@ -89,6 +114,32 @@ def governance(branch, expected_branch, tested_source, tag_source, annotated, cl
 def closure_allowed(item, disposition):
     required = ('explicit_disposition', 'exact_evidence', 'authority', 'date_source', 'independent_recheck')
     return all(disposition.get(k) for k in required) and disposition.get('item_id') == item['item_id'] and disposition.get('capability_scope') == item['capability_scope'] and disposition.get('independent_recheck') is True
+
+
+def verify_closure(contract, item, receipt, binding, root):
+    """Canonical receipt plus independent authority authorization and all raw evidence."""
+    try:
+        if not isinstance(receipt, dict) or not isinstance(binding, dict):
+            return False
+        if not closure_allowed(item, receipt) or receipt.get('explicit_disposition') not in ('CLOSED','INDEPENDENTLY_DISPOSED'):
+            return False
+        if binding.get('item_id') != item['item_id'] or binding.get('capability_scope') != item['capability_scope'] or digest(receipt) != binding.get('canonical_sha256'):
+            return False
+        authority = binding.get('closure_authority')
+        evidence = binding.get('exact_evidence')
+        if not isinstance(evidence, list) or not evidence or receipt.get('closure_authority') != authority or receipt.get('authority') != authority or receipt.get('exact_evidence') != evidence:
+            return False
+        if authority not in contract.get('closure_authority_authorizations', {}).get(item['item_id'], []):
+            return False
+        owner = read_binding(root, authority)
+        for ref in evidence:
+            read_binding(root, ref)
+        expected = {k: receipt[k] for k in ('item_id','capability_scope','explicit_disposition','exact_evidence','date_source','independent_recheck')}
+        if expected not in owner.get('closure_authorizations', []):
+            return False
+        return True
+    except (ValueError, OSError, KeyError, TypeError, AttributeError):
+        return False
 
 
 def validate_contract(contract, root):
@@ -131,7 +182,7 @@ def validate_contract(contract, root):
     return sorted(set(errors))
 
 
-def final_verdict(contract, audit_items, gate_receipts, source_governance, unresolved_blockers=(), open_item_receipts=None):
+def final_verdict(contract, audit_items, gate_receipts, source_governance, unresolved_blockers=(), open_item_receipts=None, evidence_root=None):
     """Evaluate the frozen formula only; never grant acceptance or permissions."""
     required = {item['item_id']: item for item in contract['audit_items'] if item['blocking_scope']}
     seen = {}
@@ -162,9 +213,11 @@ def final_verdict(contract, audit_items, gate_receipts, source_governance, unres
         identifier = item['item_id']
         receipt = closures.get(identifier)
         binding = contract.get('open_item_closure_bindings', {}).get(identifier)
-        if receipt is None or binding is None:
+        if receipt is None and binding is None:
             missing.append(identifier + ':EXACT_INDEPENDENT_DISPOSITION')
-        elif not closure_allowed(item, receipt) or receipt.get('explicit_disposition') not in ('CLOSED','INDEPENDENTLY_DISPOSED') or binding.get('item_id') != identifier or binding.get('capability_scope') != item['capability_scope'] or binding.get('authority') != item['authority'] or receipt.get('authority') != binding.get('authority') or digest(receipt) != binding.get('canonical_sha256'):
+        elif receipt is None or binding is None:
+            failed = True
+        elif not verify_closure(contract, item, receipt, binding, evidence_root or Path(__file__).resolve().parents[2]):
             failed = True
     bindings = contract['runtime_receipt_bindings']
     for capability in contract['capabilities']:

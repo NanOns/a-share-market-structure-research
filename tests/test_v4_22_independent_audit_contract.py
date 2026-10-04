@@ -16,7 +16,7 @@ def ledger():
     common=dict(capability='STOCK_CORE',evidence_lane='SHADOW_REAL',model_contract_id='SIM_MODEL',parameter_digest='SIM_PARAMETERS',state_lineage_id='SIM_LINEAGE')
     schema=read_binding(ROOT,C['ledger_schema_binding'])
     rows={name:{k:'SIM_'+k for k in schema[key]['required']} for name,key in [('sessions','session_ledger'),('events','event_cohort_ledger'),('outcomes','due_outcome_ledger')]}
-    for row in rows.values(): row.update(common,observation_namespace='SIM_NS',source_publication='SIM_PUB',source_digest='SIM_DIGEST',evidence_origin='PIT_OBSERVED',execution_mode='SHADOW')
+    for row in rows.values(): row.update(common,observation_namespace='SHADOW_V4',source_publication='SIM_PUB',source_digest='SIM_DIGEST',evidence_origin='PIT_OBSERVED',execution_mode='SHADOW',accepted_real_publication=True)
     rows['sessions'].update(native_session_authority_id=owner['contract_id'],native_session_authority_sha256=owner['sha256'],native_session_status='ACCEPTED_ON_TIME',projection_evaluable=True,projection_evaluable_reason=None,accepted_real_publication=True,trade_date='2026-10-05',calendar_identity='SIM_CAL',publication_id='SIM_PUB',publication_revision=1)
     rows['events'].update(T0='2026-10-05',calendar_identity='SIM_CAL')
     return dict(kind='CONTRACT_DESIGN_SIMULATION',**{k:[v] for k,v in rows.items()})
@@ -67,7 +67,7 @@ def test_production_real_missing_native_authority_is_blocked():
 
 def test_non_real_lanes_do_not_inflate_or_block_real_partition():
     value=ledger(); value['sessions']=[]
-    for name in ('events','outcomes'): value[name][0]['evidence_lane']='HISTORICAL_REPLAY'
+    for name in ('events','outcomes'): value[name][0].update(evidence_lane='HISTORICAL_REPLAY',observation_namespace='REPLAY',evidence_origin='HISTORICAL_REPLAY',accepted_real_publication=False)
     assert evaluate(value)['status']=='PASS_DESIGN_ONLY'
 
 

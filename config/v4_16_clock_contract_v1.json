@@ -1,0 +1,55 @@
+{
+  "V4_16": false,
+  "backdating_allowed": false,
+  "calendar_authority": {
+    "bytes": 10739,
+    "path": "data/v4/source_evidence/dm01_a01_r3/chain_inputs_r1/calendar_union_2e0938120e3b371aa9c84422c06b4c14de0f8894cc8f3caa9dd9c61299239e74.json",
+    "sha256": "629242b5074002dd8e889fdca5da9e1c05f9ae35357662d5c76a554117fc17f5"
+  },
+  "contract_id": "V4_16_CLOCK_CONTRACT_V1",
+  "execution_baseline": "3fd69721fa8f61aa278b275cb9250bb6829c85a5",
+  "external_policy": {
+    "bytes": 8094,
+    "path": "docs/evidence/r22r1/V4_R22_V4_16_CONTRACT_FREEZE_FINAL_INDEPENDENT_EXTERNAL_AUDIT_R1_20261004.md",
+    "sha256": "f75d8a6c3d75e312c67a32afb783400717afb27f5815cc01d50e4f5ea231ce71"
+  },
+  "focus": false,
+  "historical_v4_00c_claim": false,
+  "local_receipt": "ACCEPTED_LOCAL_OBSERVATION_ACQUISITION_RECEIPT",
+  "market_session_only": true,
+  "missing_late_mandatory": "MISSED_OBSERVATION_SLOT; PIT_OBSERVED=false; RECONSTRUCTED_ASOF_OR_CORRECTED_ONLY",
+  "observation_publication_deadline_local": "22:30:00",
+  "observation_publication_deadline_utc": "14:30:00Z",
+  "optional_baostock": "SUPPLEMENTAL_ONLY; CANNOT_MOVE_CORE_CLOCK_OR_INVALIDATE_PURE_CORE",
+  "policy_origin": "POST_REV4_V4_16_EXTERNAL_GOVERNANCE_POLICY",
+  "production": false,
+  "publication_before_cutoff_allowed": true,
+  "real_shadow_observations": 0,
+  "remote_receipt": "FIRST_ACCEPTED_PROVIDER_READINESS_OBSERVATION_RECEIPT",
+  "revision_rule": {
+    "new_policy_identity_required": true,
+    "new_version_required": true,
+    "reset_affected_shadow_stability_window": true,
+    "rewrite_old_slots": false
+  },
+  "runtime_authorized": false,
+  "scheduled_source_cutoff_local": "21:00:00",
+  "scheduled_source_cutoff_utc": "13:00:00Z",
+  "shadow": false,
+  "source_provider_available_at": "EARLIEST_PROJECT_OBSERVED_AUTHORITATIVE_READINESS_FOR_EXACT_CONSUMED_MANDATORY_SOURCE",
+  "status": "CLOCK_BOUND_CANDIDATE_PENDING_EXTERNAL_AUDIT",
+  "system_available_at": "EXACT_BYTES_LOCALLY_AVAILABLE_AND_REQUIRED_ACCEPTANCE_INTEGRITY_PASSED",
+  "task": {
+    "bytes": 6863,
+    "path": "docs/evidence/r22r1/V4_16_R22R1_CLOCK_AUTHORITY_AND_GOVERNANCE_NORMALIZATION_TASK_20261004.md",
+    "sha256": "2443837f80f3635147b9b27e4f7d73fed819344afb8ec739c73cec21b6294689"
+  },
+  "timestamp_storage": "UTC_RFC3339",
+  "timezone": "Asia/Shanghai",
+  "values_are": "EX_ANTE_POLICY_NOT_HISTORICAL_AVAILABILITY",
+  "version": "1.0.0",
+  "visibility_order": [
+    "source_provider_available_at <= system_available_at <= scheduled_cutoff_at < observation_deadline",
+    "system_available_at <= computation_started_at <= computation_finished_at <= accepted_at <= observation_deadline"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "NEXT": "STOP_WAIT_R22R1_INDEPENDENT_EXTERNAL_AUDIT",
+  "baseline_external_state": "OPEN_P0_AFFECTED_SCOPE",
+  "current_local_state": "REPAIRED_LOCAL_READY_FOR_EXTERNAL_AUDIT",
+  "engineering_global_block": false,
+  "evidence": [
+    {
+      "bytes": 2642,
+      "path": "config/v4_16_clock_contract_v1.json",
+      "sha256": "3a4dce84edf18afe36749b524a1eff3af569b6e33c4b66eb598e76f583d9821a"
+    },
+    {
+      "bytes": 8464,
+      "path": "config/v4_16_observation_slot_contract_v2.json",
+      "sha256": "47e0c0bc36373f0d63557769c428f64a422ea434435b9319ce144d43b22bea15"
+    },
+    {
+      "bytes": 257,
+      "path": "reports/r22r1/CLOCK_POLICY_GATE.json",
+      "sha256": "978d8c30e1aa8b46284667908af6612184d8cecc6f6fa476a36b4255b9de41b9"
+    }
+  ],
+  "external_closure": "NOT_GRANTED_PENDING_R22R1_AUDIT",
+  "issue_id": "R22_CLOCK_AUTHORITY_REPAIR_01",
+  "realtime_observation_block": true,
+  "runtime_authorized": false,
+  "scope": "CLOCK_POLICY_AND_SOURCE_VISIBILITY_CONTRACT_ONLY"
+}

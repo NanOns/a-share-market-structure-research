@@ -177,3 +177,27 @@ def test_independent_oracle_corruption(tmp_path,mutation):
     conn.execute("CREATE TRIGGER no_fact_update BEFORE UPDATE ON facts BEGIN SELECT RAISE(ABORT,'APPEND_ONLY'); END")
     conn.commit();conn.close()
     with pytest.raises(ValueError):inspect(target,result['context']['manifest'],test_only_storage_copy=True)
+
+def test_oracle_rejects_schema_with_same_trigger_name(tmp_path):
+    import shutil
+    result=positive()
+    target=tmp_path/'corrupt.sqlite';shutil.copyfile(ROOT/result['context']['database'],target)
+    conn=sqlite3.connect(target)
+    conn.execute('DROP TRIGGER no_fact_delete')
+    conn.execute('CREATE TRIGGER no_fact_delete BEFORE DELETE ON facts BEGIN SELECT 1; END')
+    conn.commit();conn.close()
+    with pytest.raises(ValueError,match='STORAGE_SCHEMA_SEMANTICS'):
+        inspect(target,result['context']['manifest'],test_only_storage_copy=True)
+
+def test_oracle_rechecks_slot_identity_against_rebound_authority():
+    result=positive()
+    x=result['context']
+    regrant(x,lambda a:a['grant'].update(model_contract_id='OTHER_MODEL'))
+    with pytest.raises(ValueError,match='SLOT_ACTIVATION_IDENTITY'):
+        inspect(ROOT/x['database'],x['manifest'])
+
+def test_activation_oracle_has_no_writer_import():
+    import ast
+    source=(ROOT/'scripts/validate_r24_activation.py').read_text(encoding='utf-8')
+    imports=[n.module or '' for n in ast.walk(ast.parse(source)) if isinstance(n,ast.ImportFrom)]
+    assert not any('shadow_runtime' in name or 'r24_simulation' in name or 'run_r24' in name for name in imports)

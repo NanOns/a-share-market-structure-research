@@ -1,5 +1,5 @@
 """Independent persisted-state oracle. Does not import runtime or writer."""
-import hashlib, json, sqlite3
+import hashlib, json, sqlite3, re
 from datetime import datetime
 from pathlib import Path
 from scripts.r24_io import ROOT, read, ref
@@ -28,9 +28,18 @@ def inspect(path,manifest,root=ROOT, test_only_storage_copy=False):
     deps=read(manifest,root)
     authority=exact(root,deps['activation'])
     check(authority['environment_class']=='ACTIVATION_SIMULATION','SIMULATION_AUTHORITY_REQUIRED')
+    check(authority['runtime_authorized'] is True and authority['real_shadow_authorized'] is True,'SIMULATION_AUTHORITY_DISABLED')
     acceptance=exact(root,authority['external_acceptance'])
     check(acceptance['authority_digest']==digest({k:v for k,v in authority.items() if k!='external_acceptance'}),'ACCEPTANCE_DIGEST')
     check(acceptance['decision']=='SIMULATION_ONLY_NOT_REAL_ACCEPTANCE','SIMULATION_ACCEPTANCE')
+    grant=authority['grant']
+    check(set(authority['required_grant_fields'])<=grant.keys(),'GRANT_COMPLETENESS')
+    check(acceptance['authority_id']==authority['authority_id']==grant['authority_id'],'GRANT_AUTHORITY_IDENTITY')
+    for key in ('clock','slot','storage','source_adapters','initialization_boundary'):
+        check(grant[key]==deps[key],'GRANT_DEPENDENCY_BINDING')
+    dependency_set={k:v for k,v in deps.items() if k not in ('activation','bindings')}
+    dependency_set['bindings']=[b for b in deps['bindings'] if b!=deps['activation']]
+    check(grant['runtime_dependency_contract_id']==deps['contract_id'] and grant['dependency_set_digest']==digest(dependency_set),'GRANT_DEPENDENCY_SET')
     for binding in deps['bindings']:check(ref(binding['path'],root)==binding,'EXACT_BINDING_MISMATCH')
     sources=exact(root,authority['grant']['source_authority'])
     check(test_only_storage_copy or Path(path).resolve()==(root/authority['grant']['storage_identity']['database_path']).resolve(),'ORACLE_STORAGE_IDENTITY')
@@ -40,12 +49,25 @@ def inspect(path,manifest,root=ROOT, test_only_storage_copy=False):
         check(conn.execute('SELECT * FROM storage_identity').fetchall()==[(1,'ACTIVATION_SIMULATION','ACTIVATION_SIMULATION')],'STORAGE_IDENTITY')
         schema=[r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type IN ('index','trigger')")]
         check(set(['no_fact_update','no_fact_delete','origin_guard','unique_original_event','unique_slot_revision','unique_publication_revision','unique_due'])<=set(schema),'STORAGE_CONSTRAINTS_MISSING')
+        expected=sqlite3.connect(':memory:')
+        try:
+            expected.executescript((root/deps['migration']['path']).read_text(encoding='utf-8'))
+            def schema_signature(database):
+                return sorted((typ,name,table,re.sub(r'\s+','',sql or '').replace('IFNOTEXISTS',''))
+                    for typ,name,table,sql in database.execute('SELECT type,name,tbl_name,sql FROM sqlite_master'))
+            check(schema_signature(conn)==schema_signature(expected),'STORAGE_SCHEMA_SEMANTICS')
+        finally:expected.close()
         rows={}
         for kind,key,namespace,mode,origin,raw,sha in conn.execute('SELECT * FROM facts ORDER BY rowid'):
             p=json.loads(raw)
             check(hashlib.sha256(raw.encode()).hexdigest()==sha,'ROW_DIGEST')
             check((namespace,mode,origin)==('SHADOW_V4','SHADOW','ACTIVATION_SIMULATION'),'ROW_ORIGIN')
             check(p['evidence_class']=='NOT_REAL_EVIDENCE','SIMULATION_MISCLASSIFIED')
+            identity_field={'receipt':'receipt_id','publication':'publication_id','enrollment':'enrollment_id','observation':'observation_id'}.get(kind)
+            if identity_field:check(key==p[identity_field],'FACT_IDENTITY')
+            if kind=='manifest':
+                value={k:v for k,v in p.items() if k not in ('namespace','execution_mode','evidence_origin','evidence_class')}
+                check(key==digest(value),'MANIFEST_FACT_IDENTITY')
             rows.setdefault(kind,[]).append(p)
         receipt_map={r['receipt_id']:r for r in rows.get('receipt',[])}
         for receipt in receipt_map.values():
@@ -75,6 +97,10 @@ def inspect(path,manifest,root=ROOT, test_only_storage_copy=False):
             check(manifest_payload['receipt_ids']==slot['visibility_receipt_ids'],'MANIFEST_VISIBILITY')
             for k in ('trade_date','model_contract_id','parameter_set_id','state_lineage_id','capability_scope'):
                 check(slot[k]==manifest_payload[k],'MANIFEST_IDENTITY')
+            for k in ('model_contract_id','parameter_set_id','state_lineage_id'):
+                check(slot[k]==grant[k],'SLOT_ACTIVATION_IDENTITY')
+            check(slot['slot_id']==digest([slot[k] for k in ('model_contract_id','state_lineage_id','trade_date')]),'SLOT_IDENTITY')
+            check(slot['publication_id']==digest([slot['slot_id'],slot['revision']]),'PUBLICATION_REVISION_IDENTITY')
             check(slot['capability_scope']==sorted(set(slot['capability_scope'])) and set(slot['capability_scope'])<=set(authority['grant']['capability_scope']),'CAPABILITY_SCOPE')
             check(pubs[slot['publication_id']]['source_manifest_digest']==slot['source_manifest_digest'],'PUBLICATION_MANIFEST')
         obs={p['observation_id']:p for p in rows.get('observation',[])}
@@ -96,6 +122,7 @@ def inspect(path,manifest,root=ROOT, test_only_storage_copy=False):
         check(len({p['logical_event_id'] for p in enrollments})==len(enrollments),'SECOND_ORIGINAL')
         for e in enrollments:
             check(e['FIRST_OBSERVED']==e['enrollment_id'] and e['cohort_namespace']=='FIRST_OBSERVED','FIRST_OBSERVED_IDENTITY')
+            check(e['enrollment_id']==digest([e['logical_event_id'],'SHADOW_V4_FIRST_OBSERVED']),'ENROLLMENT_IDENTITY')
             check(e['slot_status']=='ACCEPTED_ON_TIME' and any(s['slot_id']==e['slot_id'] and s['revision']==1 and s['trade_date']==e['T0'] for s in rows.get('slot',[])),'ENROLLMENT_SLOT')
             check(len([d for d in rows.get('due',[]) if d['enrollment_id']==e['enrollment_id']])==5,'DUE_OBLIGATIONS')
             frozen=artifact(e['frozen_t0'])
@@ -111,6 +138,7 @@ def inspect(path,manifest,root=ROOT, test_only_storage_copy=False):
             check(outcome['revision_sequence']>=1 and outcome['first_observed_id'],'OUTCOME_REVISION')
         for slot_id,pid,revision in conn.execute('SELECT * FROM publication_heads'):
             check(pid in pubs and pubs[pid]['slot_id']==slot_id and pubs[pid]['revision']==revision,'HEAD_READBACK')
+            check(revision==max(p['revision'] for p in pubs.values() if p['slot_id']==slot_id),'HEAD_NOT_LATEST_ACCEPTED_REVISION')
         check(all(p['REAL_SHADOW_OBSERVATIONS']==p['PIT_OBSERVED_REAL_SAMPLES']==0 for p in rows.get('health',[])),'REAL_COUNTERS')
         check(conn.execute('SELECT authority_id FROM activation_head WHERE singleton=1').fetchone()==(authority['authority_id'],),'ACTIVATION_HEAD')
         check(all(p['preserve_accepted_observations'] and p['preserve_pending_obligations'] and not p['legacy_mutated'] for p in rows.get('control',[])),'ROLLBACK_POLICY')

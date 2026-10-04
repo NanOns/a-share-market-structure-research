@@ -68,3 +68,12 @@ Separate audit items: R23R1 dependency-manifest style (closed locally through th
 successor manifest); R24 owner calendar successor (independent semantic-equivalence
 evidence, pending external audit). Existing cross-stage capability audit gates
 remain governed by V4_CROSS_STAGE_CURRENT_AUDIT_HEAD_V3.
+
+R24_ORACLE_BINDING_SCHEMA is tracked separately: the oracle compares the entire
+persisted SQLite schema against the exact versioned migration and independently
+recomputes activation dependency sets and slot/fact identities. Tests replace an
+append-only trigger with a harmless trigger of the same name, and rebind an
+authority to another model while preserving valid digests. Both are rejected.
+Local closure is independent from the stage gate and remains pending external
+audit. The strengthened source uses the R2 immutable tested-source tag; R1 stays
+immutable as a previous local tested source.

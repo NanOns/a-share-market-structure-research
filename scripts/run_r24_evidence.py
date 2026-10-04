@@ -41,7 +41,9 @@ def run():
       'SOURCE_READINESS_ADAPTER_GATE':dict(contract=deps['source_adapters'],negative_cases=[n for n in negatives if n['case'] in ('A09','A10','A11','A12')],internal_acquisition_clock=True,acquisition_survives_publication_rollback=True),
       'ACTIVATION_SIMULATION_E2E':positive_result,
       'NEGATIVE_ACTIVATION_MATRIX':dict(count=len(negatives),cases=negatives),
-      'INDEPENDENT_ACTIVATION_ORACLE':dict(oracle=oracle,writer_imported=False,database_binding=positive_result['database_binding']),
+      'INDEPENDENT_ACTIVATION_ORACLE':dict(oracle=oracle,writer_imported=False,database_binding=positive_result['database_binding'],
+          validator=ref('scripts/validate_r24_activation.py'),tests=ref('tests/test_r24_activation.py'),
+          independent_checks=['EXACT_SCHEMA_SEMANTICS','AUTHORITY_DEPENDENCY_SET','SLOT_ACTIVATION_IDENTITIES','FACT_IDENTITIES','SOURCE_MANIFEST','ROLLBACK_AND_COUNTERS']),
       'LEGACY_ISOLATION_GATE':dict(before=before,after=protected(),unchanged=True,real_database_absent=True),
       'ROLLBACK_GATE':dict(persisted_database=positive_result['database_binding'],oracle=oracle,accepted_enrollment_preserved=True,pending_obligations_preserved=True,settlement_continues_after_stop=True),
       'PROTECTED_BYTES':dict(before=before,after=protected(),compared_to_baseline=True),
@@ -53,7 +55,8 @@ def run():
         latest_upgrade_document=ref('docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md'),
         acceptance='PASS_LOCAL_PENDING_CLEAN_REGRESSION_AND_EXTERNAL_AUDIT',
         separate_audit_items=[dict(id='R23R1_DEPENDENCY_MANIFEST_STYLE',scope='slot policy registration',acceptance='CLOSED_LOCAL_SUCCESSOR_REGISTERED',evidence=ref('reports/r24/DEPENDENCY_MANIFEST_V2_GATE.json')),
-          dict(id='R24_OWNER_CALENDAR_SUCCESSOR',scope='historical date ceiling removal only; no business algorithm changes',acceptance='PASS_LOCAL_PENDING_EXTERNAL_AUDIT',evidence=ref('reports/r24/OWNER_ADAPTER_SEMANTIC_EQUIVALENCE.json'))]))
+          dict(id='R24_OWNER_CALENDAR_SUCCESSOR',scope='historical date ceiling removal only; no business algorithm changes',acceptance='PASS_LOCAL_PENDING_EXTERNAL_AUDIT',evidence=ref('reports/r24/OWNER_ADAPTER_SEMANTIC_EQUIVALENCE.json')),
+          dict(id='R24_ORACLE_BINDING_SCHEMA',scope='independent successor schema semantics and activation identity binding',acceptance='CLOSED_LOCAL_PENDING_EXTERNAL_AUDIT',evidence=ref('reports/r24/INDEPENDENT_ACTIVATION_ORACLE.json'))]))
     print(dict(status='PASS_LOCAL',negative_cases=len(negatives),oracle=oracle))
 
 if __name__=='__main__':run()

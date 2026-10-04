@@ -42,11 +42,11 @@ class ReplayAuthority:
         a=current_authority or CurrentStageAuthority(root)
         if not isinstance(a,CurrentStageAuthority) or a.root!=Path(root).resolve():raise ValueError('EXPLICIT_CURRENT_V4_14_AUTHORITY_REQUIRED')
         self.current_authority=a;self.root=a.root;self.stage_ref=a.stage_ref;self.stage=a.stage
-        self.head_ref=a.replay_head_ref;self.head=a.replay_head;self.predecessor_head=a.predecessor
+        self.head_ref=a.head_ref;self.head=a.head;self.predecessor_head=a.predecessor
         self.external_audit_ref=a.external_audit_ref;self.data_ref=a.data_ref;self.data=a.data
         self.calendar_ref=a.calendar_ref;self.calendar=a.calendar;self.membership_ref=a.membership_ref;self.owners=a.owners
-        package=json.loads(a.read(self.head['bindings']['contract_package']))
-        self.refs=[self.head['bindings']['contract_package']]+package['contract_package']
+        package=json.loads(a.read(a.head['bindings']['contract_package']))
+        self.refs=[a.head['bindings']['contract_package']]+package['contract_package']
         self.config={n:json.loads(a.read(r)) for n,r in zip(NAMES,self.refs)}
         self.closure_ref=a.predecessor['active_family_closure'];a.read(self.closure_ref)
         self.package_digest=digest(self.refs)

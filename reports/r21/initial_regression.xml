@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="25" failures="11" skipped="0" tests="231" time="198.594" timestamp="2026-10-04T09:09:26.650422+08:00" hostname="DESKTOP-PMEP5GE"><testcase classname="tests.test_r20a_current" name="test_current_reader_injected_without_historical_validator" time="0.385"><failure message="ValueError: UNREGISTERED_ACCEPTED_BINDING">tests\test_r20a_current.py:12: in test_current_reader_injected_without_historical_validator
+    a=CurrentStageAuthority(ROOT);r=ReplayAuthority(ROOT,a)
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:17: in __init__
+    self.stage_ref=ref(self.root,self.contract['stage_namespace']);self.stage=json.loads(self.read(self.stage_ref))
+                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:62: in read
+    raw,receipt=self.exact_reader.read(binding);self.portability_receipts.append(receipt);return raw
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_portable_exact.py:35: in read
+    if requested not in accepted:raise ValueError('UNREGISTERED_ACCEPTED_BINDING')
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: UNREGISTERED_ACCEPTED_BINDING</failure></testcase><testcase classname="tests.test_r20a_current" name="test_independent_gate" time="0.030"><failure message="ValueError: CURRENT_METADATA_COHERENCE_EXACT">tests\test_r20a_current.py:16: in test_independent_gate
+    def test_independent_gate():assert oracle.validate()['R20A_CURRENT_STAGE_AUTHORITY']=='PASS_LOCAL'
+                                       ^^^^^^^^^^^^^^^^^
+scripts\validate_r20a_current.py:33: in validate
+    require(stage==expected,'CURRENT_METADATA_COHERENCE_EXACT')
+scripts\validate_r20a_current.py:8: in require
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: CURRENT_METADATA_COHERENCE_EXACT</failure></testcase><testcase classname="tests.test_r20a_current" name="test_independent_current_negatives[range]" time="0.024" /><testcase classname="tests.test_r20a_current" name="test_independent_current_negatives[entry]" time="0.023" /><testcase classname="tests.test_r20a_current" name="test_independent_current_negatives[binding]" time="0.023" /><testcase classname="tests.test_r20a_current" name="test_independent_current_negatives[digest]" time="0.022" /><testcase classname="tests.test_r20a_current" name="test_independent_current_negatives[data]" time="0.023" /><testcase classname="tests.test_r20a_current" name="test_independent_current_negatives[production]" time="0.024" /><testcase classname="tests.test_r20a_current" name="test_independent_current_negatives[shadow]" time="0.022" /><testcase classname="tests.test_r20a_current" name="test_independent_current_negatives[focus]" time="0.022" /><testcase classname="tests.test_r20a_current" name="test_independent_current_negatives[pit]" time="0.025" /><testcase classname="tests.test_r20a_current" name="test_reader_no_latest_resolution" time="0.000" /><testcase classname="tests.test_r20b_portability" name="test_explicit_cross_platform" time="0.169" /><testcase classname="tests.test_r20b_portability" name="test_mutation_rejected[{&quot;x&quot;:2}\n]" time="0.084" /><testcase classname="tests.test_r20b_portability" name="test_mutation_rejected[{ &quot;x&quot;:1}\n]" time="0.090" /><testcase classname="tests.test_r20b_portability" name="test_mutation_rejected[\xef\xbb\xbf{&quot;x&quot;:1}\n]" time="0.092" /><testcase classname="tests.test_r20b_portability" name="test_mutation_rejected[{&quot;y&quot;:1}\n]" time="0.088" /><testcase classname="tests.test_r20b_portability" name="test_unregistered_normalization" time="0.062" /><testcase classname="tests.test_r20b_portability" name="test_binary_exact" time="0.110" /><testcase classname="tests.test_r20b_portability" name="test_escape_duplicate_missing_blob" time="0.092" /><testcase classname="tests.test_r20b_portability" name="test_lfs_missing_identity" time="0.087" /><testcase classname="tests.test_r20b_portability" name="test_bundle_only_future_seal_rejected" time="0.001" /><testcase classname="tests.test_r20b_portability" name="test_lfs_pointer_and_object_exact" time="0.119" /><testcase classname="tests.test_r20b_portability" name="test_windows_escape_on_every_host[C:\\absolute.json]" time="0.062" /><testcase classname="tests.test_r20b_portability" name="test_windows_escape_on_every_host[C:drive_relative.json]" time="0.060" /><testcase classname="tests.test_r20b_portability" name="test_windows_escape_on_every_host[..\\escape.json]" time="0.061" /><testcase classname="tests.test_r20b_portability" name="test_windows_escape_on_every_host[\\\\server\\share\\artifact.json]" time="0.061" /><testcase classname="tests.test_r20c_runtime" name="test_first_persistent_revision_and_correction" time="0.392"><error message="failed on setup with &quot;ValueError: UNREGISTERED_ACCEPTED_BINDING&quot;">tests\test_r20c_runtime.py:10: in runtime
+    a=CurrentStageAuthority(ROOT);return RadarCohortRuntime(a,Store(tmp_path))
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:17: in __init__
+    self.stage_ref=ref(self.root,self.contract['stage_namespace']);self.stage=json.loads(self.read(self.stage_ref))
+                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:62: in read
+    raw,receipt=self.exact_reader.read(binding);self.portability_receipts.append(receipt);return raw
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_portable_exact.py:35: in read
+    if requested not in accepted:raise ValueError('UNREGISTERED_ACCEPTED_BINDING')
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: UNREGISTERED_ACCEPTED_BINDING</error></testcase><testcase classname="tests.test_r20c_runtime" name="test_frozen_event_families[FIRST_PREWATCH-STOCK-TRUE-True]" time="0.390"><error message="failed on setup with &quot;ValueError: UNREGISTERED_ACCEPTED_BINDING&quot;">tests\test_r20c_runtime.py:10: in runtime
+    a=CurrentStageAuthority(ROOT);return RadarCohortRuntime(a,Store(tmp_path))
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:17: in __init__
+    self.stage_ref=ref(self.root,self.contract['stage_namespace']);self.stage=json.loads(self.read(self.stage_ref))
+                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:62: in read
+    raw,receipt=self.exact_reader.read(binding);self.portability_receipts.append(receipt);return raw
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_portable_exact.py:35: in read
+    if requested not in accepted:raise ValueError('UNREGISTERED_ACCEPTED_BINDING')
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: UNREGISTERED_ACCEPTED_BINDING</error></testcase><testcase classname="tests.test_r20c_runtime" name="test_frozen_event_families[REENTRY_PREWATCH-STOCK-TRUE-True]" time="0.392"><error message="failed on setup with &quot;ValueError: UNREGISTERED_ACCEPTED_BINDING&quot;">tests\test_r20c_runtime.py:10: in runtime
+    a=CurrentStageAuthority(ROOT);return RadarCohortRuntime(a,Store(tmp_path))
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:17: in __init__
+    self.stage_ref=ref(self.root,self.contract['stage_namespace']);self.stage=json.loads(self.read(self.stage_ref))
+                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:62: in read
+    raw,receipt=self.exact_reader.read(binding);self.portability_receipts.append(receipt);return raw
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_portable_exact.py:35: in read
+    if requested not in accepted:raise ValueError('UNREGISTERED_ACCEPTED_BINDING')
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: UNREGISTERED_ACCEPTED_BINDING</error></testcase><testcase classname="tests.test_r20c_runtime" name="test_frozen_event_families[NEW_CONFIRMED-STOCK-TRUE-True]" time="0.389"><error message="failed on setup with &quot;ValueError: UNREGISTERED_ACCEPTED_BINDING&quot;">tests\test_r20c_runtime.py:10: in runtime
+    a=CurrentStageAuthority(ROOT);return RadarCohortRuntime(a,Store(tmp_path))
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:17: in __init__
+    self.stage_ref=ref(self.root,self.contract['stage_namespace']);self.stage=json.loads(self.read(self.stage_ref))
+                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:62: in read
+    raw,receipt=self.exact_reader.read(binding);self.portability_receipts.append(receipt);return raw
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_portable_exact.py:35: in read
+    if requested not in accepted:raise ValueError('UNREGISTERED_ACCEPTED_BINDING')
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: UNREGISTERED_ACCEPTED_BINDING</error></testcase><testcase classname="tests.test_r20c_runtime" name="test_frozen_event_families[REACCELERATION_EVENT-STOCK-TRUE-True]" time="0.400"><error message="failed on setup with &quot;ValueError: UNREGISTERED_ACCEPTED_BINDING&quot;">tests\test_r20c_runtime.py:10: in runtime
+    a=CurrentStageAuthority(ROOT);return RadarCohortRuntime(a,Store(tmp_path))
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:17: in __init__
+    self.stage_ref=ref(self.root,self.contract['stage_namespace']);self.stage=json.loads(self.read(self.stage_ref))
+                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:62: in read
+    raw,receipt=self.exact_reader.read(binding);self.portability_receipts.append(receipt);return raw
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_portable_exact.py:35: in read
+    if requested not in accepted:raise ValueError('UNREGISTERED_ACCEPTED_BINDING')
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: UNREGISTERED_ACCEPTED_BINDING</error></testcase><testcase classname="tests.test_r20c_runtime" name="test_frozen_event_families[UPGRADE_TO_WARM-SECTOR-TRUE-True]" time="0.392"><error message="failed on setup with &quot;ValueError: UNREGISTERED_ACCEPTED_BINDING&quot;">tests\test_r20c_runtime.py:10: in runtime
+    a=CurrentStageAuthority(ROOT);return RadarCohortRuntime(a,Store(tmp_path))
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:17: in __init__
+    self.stage_ref=ref(self.root,self.contract['stage_namespace']);self.stage=json.loads(self.read(self.stage_ref))
+                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:62: in read
+    raw,receipt=self.exact_reader.read(binding);self.portability_receipts.append(receipt);return raw
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_portable_exact.py:35: in read
+    if requested not in accepted:raise ValueError('UNREGISTERED_ACCEPTED_BINDING')
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: UNREGISTERED_ACCEPTED_BINDING</error></testcase><testcase classname="tests.test_r20c_runtime" name="test_frozen_event_families[INVALIDATION-STOCK-FALSE-False]" time="0.389"><error message="failed on setup with &quot;ValueError: UNREGISTERED_ACCEPTED_BINDING&quot;">tests\test_r20c_runtime.py:10: in runtime
+    a=CurrentStageAuthority(ROOT);return RadarCohortRuntime(a,Store(tmp_path))
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:17: in __init__
+    self.stage_ref=ref(self.root,self.contract['stage_namespace']);self.stage=json.loads(self.read(self.stage_ref))
+                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:62: in read
+    raw,receipt=self.exact_reader.read(binding);self.portability_receipts.append(receipt);return raw
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_portable_exact.py:35: in read
+    if requested not in accepted:raise ValueError('UNREGISTERED_ACCEPTED_BINDING')
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: UNREGISTERED_ACCEPTED_BINDING</error></testcase><testcase classname="tests.test_r20c_runtime" name="test_frozen_event_families[UPGRADE_TO_WARM-STOCK-TRUE-False]" time="0.387"><error message="failed on setup with &quot;ValueError: UNREGISTERED_ACCEPTED_BINDING&quot;">tests\test_r20c_runtime.py:10: in runtime
+    a=CurrentStageAuthority(ROOT);return RadarCohortRuntime(a,Store(tmp_path))
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:17: in __init__
+    self.stage_ref=ref(self.root,self.contract['stage_namespace']);self.stage=json.loads(self.read(self.stage_ref))
+                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:62: in read
+    raw,receipt=self.exact_reader.read(binding);self.portability_receipts.append(receipt);return raw
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_portable_exact.py:35: in read
+    if requested not in accepted:raise ValueError('UNREGISTERED_ACCEPTED_BINDING')
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: UNREGISTERED_ACCEPTED_BINDING</error></testcase><testcase classname="tests.test_r20c_runtime" name="test_focus_display_and_multisector_do_not_filter" time="0.406"><error message="failed on setup with &quot;ValueError: UNREGISTERED_ACCEPTED_BINDING&quot;">tests\test_r20c_runtime.py:10: in runtime
+    a=CurrentStageAuthority(ROOT);return RadarCohortRuntime(a,Store(tmp_path))
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:17: in __init__
+    self.stage_ref=ref(self.root,self.contract['stage_namespace']);self.stage=json.loads(self.read(self.stage_ref))
+                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:62: in read
+    raw,receipt=self.exact_reader.read(binding);self.portability_receipts.append(receipt);return raw
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_portable_exact.py:35: in read
+    if requested not in accepted:raise ValueError('UNREGISTERED_ACCEPTED_BINDING')
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: UNREGISTERED_ACCEPTED_BINDING</error></testcase><testcase classname="tests.test_r20c_runtime" name="test_forbidden_metadata[focus_filter]" time="0.406"><error message="failed on setup with &quot;ValueError: UNREGISTERED_ACCEPTED_BINDING&quot;">tests\test_r20c_runtime.py:10: in runtime
+    a=CurrentStageAuthority(ROOT);return RadarCohortRuntime(a,Store(tmp_path))
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:17: in __init__
+    self.stage_ref=ref(self.root,self.contract['stage_namespace']);self.stage=json.loads(self.read(self.stage_ref))
+                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:62: in read
+    raw,receipt=self.exact_reader.read(binding);self.portability_receipts.append(receipt);return raw
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_portable_exact.py:35: in read
+    if requested not in accepted:raise ValueError('UNREGISTERED_ACCEPTED_BINDING')
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: UNREGISTERED_ACCEPTED_BINDING</error></testcase><testcase classname="tests.test_r20c_runtime" name="test_forbidden_metadata[ui_top_k_filter]" time="0.377"><error message="failed on setup with &quot;ValueError: UNREGISTERED_ACCEPTED_BINDING&quot;">tests\test_r20c_runtime.py:10: in runtime
+    a=CurrentStageAuthority(ROOT);return RadarCohortRuntime(a,Store(tmp_path))
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:17: in __init__
+    self.stage_ref=ref(self.root,self.contract['stage_namespace']);self.stage=json.loads(self.read(self.stage_ref))
+                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:62: in read
+    raw,receipt=self.exact_reader.read(binding);self.portability_receipts.append(receipt);return raw
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_portable_exact.py:35: in read
+    if requested not in accepted:raise ValueError('UNREGISTERED_ACCEPTED_BINDING')
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: UNREGISTERED_ACCEPTED_BINDING</error></testcase><testcase classname="tests.test_r20c_runtime" name="test_forbidden_metadata[future_source]" time="0.374"><error message="failed on setup with &quot;ValueError: UNREGISTERED_ACCEPTED_BINDING&quot;">tests\test_r20c_runtime.py:10: in runtime
+    a=CurrentStageAuthority(ROOT);return RadarCohortRuntime(a,Store(tmp_path))
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:17: in __init__
+    self.stage_ref=ref(self.root,self.contract['stage_namespace']);self.stage=json.loads(self.read(self.stage_ref))
+                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:62: in read
+    raw,receipt=self.exact_reader.read(binding);self.portability_receipts.append(receipt);return raw
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_portable_exact.py:35: in read
+    if requested not in accepted:raise ValueError('UNREGISTERED_ACCEPTED_BINDING')
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: UNREGISTERED_ACCEPTED_BINDING</error></testcase><testcase classname="tests.test_r20c_runtime" name="test_forbidden_metadata[fep_prediction]" time="0.374"><error message="failed on setup with &quot;ValueError: UNREGISTERED_ACCEPTED_BINDING&quot;">tests\test_r20c_runtime.py:10: in runtime
+    a=CurrentStageAuthority(ROOT);return RadarCohortRuntime(a,Store(tmp_path))
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:17: in __init__
+    self.stage_ref=ref(self.root,self.contract['stage_namespace']);self.stage=json.loads(self.read(self.stage_ref))
+                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:62: in read
+    raw,receipt=self.exact_reader.read(binding);self.portability_receipts.append(receipt);return raw
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_portable_exact.py:35: in read
+    if requested not in accepted:raise ValueError('UNREGISTERED_ACCEPTED_BINDING')
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: UNREGISTERED_ACCEPTED_BINDING</error></testcase><testcase classname="tests.test_r20c_runtime" name="test_forbidden_metadata[reset_T0]" time="0.379"><error message="failed on setup with &quot;ValueError: UNREGISTERED_ACCEPTED_BINDING&quot;">tests\test_r20c_runtime.py:10: in runtime
+    a=CurrentStageAuthority(ROOT);return RadarCohortRuntime(a,Store(tmp_path))
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:17: in __init__
+    self.stage_ref=ref(self.root,self.contract['stage_namespace']);self.stage=json.loads(self.read(self.stage_ref))
+                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:62: in read
+    raw,receipt=self.exact_reader.read(binding);self.portability_receipts.append(receipt);return raw
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_portable_exact.py:35: in read
+    if requested not in accepted:raise ValueError('UNREGISTERED_ACCEPTED_BINDING')
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: UNREGISTERED_ACCEPTED_BINDING</error></testcase><testcase classname="tests.test_r20c_runtime" name="test_forbidden_metadata[redraw_controls]" time="0.376"><error message="failed on setup with &quot;ValueError: UNREGISTERED_ACCEPTED_BINDING&quot;">tests\test_r20c_runtime.py:10: in runtime
+    a=CurrentStageAuthority(ROOT);return RadarCohortRuntime(a,Store(tmp_path))
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:17: in __init__
+    self.stage_ref=ref(self.root,self.contract['stage_namespace']);self.stage=json.loads(self.read(self.stage_ref))
+                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:62: in read
+    raw,receipt=self.exact_reader.read(binding);self.portability_receipts.append(receipt);return raw
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_portable_exact.py:35: in read
+    if requested not in accepted:raise ValueError('UNREGISTERED_ACCEPTED_BINDING')
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: UNREGISTERED_ACCEPTED_BINDING</error></testcase><testcase classname="tests.test_r20c_runtime" name="test_forbidden_metadata[qualification_source]" time="0.371"><error message="failed on setup with &quot;ValueError: UNREGISTERED_ACCEPTED_BINDING&quot;">tests\test_r20c_runtime.py:10: in runtime
+    a=CurrentStageAuthority(ROOT);return RadarCohortRuntime(a,Store(tmp_path))
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:17: in __init__
+    self.stage_ref=ref(self.root,self.contract['stage_namespace']);self.stage=json.loads(self.read(self.stage_ref))
+                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:62: in read
+    raw,receipt=self.exact_reader.read(binding);self.portability_receipts.append(receipt);return raw
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_portable_exact.py:35: in read
+    if requested not in accepted:raise ValueError('UNREGISTERED_ACCEPTED_BINDING')
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: UNREGISTERED_ACCEPTED_BINDING</error></testcase><testcase classname="tests.test_r20c_runtime" name="test_changed_byte_overwrite_rejected" time="0.380"><error message="failed on setup with &quot;ValueError: UNREGISTERED_ACCEPTED_BINDING&quot;">tests\test_r20c_runtime.py:10: in runtime
+    a=CurrentStageAuthority(ROOT);return RadarCohortRuntime(a,Store(tmp_path))
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:17: in __init__
+    self.stage_ref=ref(self.root,self.contract['stage_namespace']);self.stage=json.loads(self.read(self.stage_ref))
+                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:62: in read
+    raw,receipt=self.exact_reader.read(binding);self.portability_receipts.append(receipt);return raw
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_portable_exact.py:35: in read
+    if requested not in accepted:raise ValueError('UNREGISTERED_ACCEPTED_BINDING')
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: UNREGISTERED_ACCEPTED_BINDING</error></testcase><testcase classname="tests.test_r20c_runtime" name="test_illegal_episode_revision" time="0.378"><error message="failed on setup with &quot;ValueError: UNREGISTERED_ACCEPTED_BINDING&quot;">tests\test_r20c_runtime.py:10: in runtime
+    a=CurrentStageAuthority(ROOT);return RadarCohortRuntime(a,Store(tmp_path))
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:17: in __init__
+    self.stage_ref=ref(self.root,self.contract['stage_namespace']);self.stage=json.loads(self.read(self.stage_ref))
+                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:62: in read
+    raw,receipt=self.exact_reader.read(binding);self.portability_receipts.append(receipt);return raw
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_portable_exact.py:35: in read
+    if requested not in accepted:raise ValueError('UNREGISTERED_ACCEPTED_BINDING')
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: UNREGISTERED_ACCEPTED_BINDING</error></testcase><testcase classname="tests.test_r20c_runtime" name="test_formal_exit_reentry_preserves_old" time="0.384"><error message="failed on setup with &quot;ValueError: UNREGISTERED_ACCEPTED_BINDING&quot;">tests\test_r20c_runtime.py:10: in runtime
+    a=CurrentStageAuthority(ROOT);return RadarCohortRuntime(a,Store(tmp_path))
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:17: in __init__
+    self.stage_ref=ref(self.root,self.contract['stage_namespace']);self.stage=json.loads(self.read(self.stage_ref))
+                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:62: in read
+    raw,receipt=self.exact_reader.read(binding);self.portability_receipts.append(receipt);return raw
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_portable_exact.py:35: in read
+    if requested not in accepted:raise ValueError('UNREGISTERED_ACCEPTED_BINDING')
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: UNREGISTERED_ACCEPTED_BINDING</error></testcase><testcase classname="tests.test_r20c_runtime" name="test_no_current_authority_and_namespace_escape" time="0.374"><error message="failed on setup with &quot;ValueError: UNREGISTERED_ACCEPTED_BINDING&quot;">tests\test_r20c_runtime.py:10: in runtime
+    a=CurrentStageAuthority(ROOT);return RadarCohortRuntime(a,Store(tmp_path))
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:17: in __init__
+    self.stage_ref=ref(self.root,self.contract['stage_namespace']);self.stage=json.loads(self.read(self.stage_ref))
+                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:62: in read
+    raw,receipt=self.exact_reader.read(binding);self.portability_receipts.append(receipt);return raw
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_portable_exact.py:35: in read
+    if requested not in accepted:raise ValueError('UNREGISTERED_ACCEPTED_BINDING')
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: UNREGISTERED_ACCEPTED_BINDING</error></testcase><testcase classname="tests.test_r20c_runtime" name="test_unsealed_publication_rejected" time="0.377"><error message="failed on setup with &quot;ValueError: UNREGISTERED_ACCEPTED_BINDING&quot;">tests\test_r20c_runtime.py:10: in runtime
+    a=CurrentStageAuthority(ROOT);return RadarCohortRuntime(a,Store(tmp_path))
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:17: in __init__
+    self.stage_ref=ref(self.root,self.contract['stage_namespace']);self.stage=json.loads(self.read(self.stage_ref))
+                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:62: in read
+    raw,receipt=self.exact_reader.read(binding);self.portability_receipts.append(receipt);return raw
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_portable_exact.py:35: in read
+    if requested not in accepted:raise ValueError('UNREGISTERED_ACCEPTED_BINDING')
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: UNREGISTERED_ACCEPTED_BINDING</error></testcase><testcase classname="tests.test_r20c_runtime" name="test_future_event_rejected" time="0.377"><error message="failed on setup with &quot;ValueError: UNREGISTERED_ACCEPTED_BINDING&quot;">tests\test_r20c_runtime.py:10: in runtime
+    a=CurrentStageAuthority(ROOT);return RadarCohortRuntime(a,Store(tmp_path))
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:17: in __init__
+    self.stage_ref=ref(self.root,self.contract['stage_namespace']);self.stage=json.loads(self.read(self.stage_ref))
+                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:62: in read
+    raw,receipt=self.exact_reader.read(binding);self.portability_receipts.append(receipt);return raw
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_portable_exact.py:35: in read
+    if requested not in accepted:raise ValueError('UNREGISTERED_ACCEPTED_BINDING')
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: UNREGISTERED_ACCEPTED_BINDING</error></testcase><testcase classname="tests.test_r20c_runtime" name="test_duplicate_entity_rejected" time="0.374"><error message="failed on setup with &quot;ValueError: UNREGISTERED_ACCEPTED_BINDING&quot;">tests\test_r20c_runtime.py:10: in runtime
+    a=CurrentStageAuthority(ROOT);return RadarCohortRuntime(a,Store(tmp_path))
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:17: in __init__
+    self.stage_ref=ref(self.root,self.contract['stage_namespace']);self.stage=json.loads(self.read(self.stage_ref))
+                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:62: in read
+    raw,receipt=self.exact_reader.read(binding);self.portability_receipts.append(receipt);return raw
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_portable_exact.py:35: in read
+    if requested not in accepted:raise ValueError('UNREGISTERED_ACCEPTED_BINDING')
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: UNREGISTERED_ACCEPTED_BINDING</error></testcase><testcase classname="tests.test_r20c_runtime" name="test_diagnostics_never_primary_enrollment[SEED]" time="0.372"><error message="failed on setup with &quot;ValueError: UNREGISTERED_ACCEPTED_BINDING&quot;">tests\test_r20c_runtime.py:10: in runtime
+    a=CurrentStageAuthority(ROOT);return RadarCohortRuntime(a,Store(tmp_path))
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:17: in __init__
+    self.stage_ref=ref(self.root,self.contract['stage_namespace']);self.stage=json.loads(self.read(self.stage_ref))
+                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:62: in read
+    raw,receipt=self.exact_reader.read(binding);self.portability_receipts.append(receipt);return raw
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_portable_exact.py:35: in read
+    if requested not in accepted:raise ValueError('UNREGISTERED_ACCEPTED_BINDING')
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: UNREGISTERED_ACCEPTED_BINDING</error></testcase><testcase classname="tests.test_r20c_runtime" name="test_diagnostics_never_primary_enrollment[NEAR_MISS]" time="0.376"><error message="failed on setup with &quot;ValueError: UNREGISTERED_ACCEPTED_BINDING&quot;">tests\test_r20c_runtime.py:10: in runtime
+    a=CurrentStageAuthority(ROOT);return RadarCohortRuntime(a,Store(tmp_path))
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:17: in __init__
+    self.stage_ref=ref(self.root,self.contract['stage_namespace']);self.stage=json.loads(self.read(self.stage_ref))
+                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:62: in read
+    raw,receipt=self.exact_reader.read(binding);self.portability_receipts.append(receipt);return raw
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_portable_exact.py:35: in read
+    if requested not in accepted:raise ValueError('UNREGISTERED_ACCEPTED_BINDING')
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: UNREGISTERED_ACCEPTED_BINDING</error></testcase><testcase classname="tests.test_r20d_settlement" name="test_independent_formula_examples[closes0-expected0]" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_independent_formula_examples[closes1-expected1]" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_independent_formula_examples[closes2-expected2]" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_independent_formula_examples[closes3-expected3]" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_no_coercion[update0-IDENTITY_UNKNOWN]" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_no_coercion[update1-ADJUSTMENT_UNKNOWN]" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_no_coercion[update2-ADJUSTMENT_UNKNOWN]" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_no_coercion[update3-SUSPENDED_AT_HORIZON]" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_no_coercion[update4-DELISTED_BEFORE_HORIZON]" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_no_coercion[update5-MATURED_DATA_MISSING]" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_terminal_evidence_and_gaps" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_affine_common_basis_and_exclude_t0_extrema" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_calendar" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_fixed_benchmark_no_reweight" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_controls" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_unknown_delta_does_not_invent_ranking" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_benchmark_mixed_basis_and_distinct_t0_transform" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_availability_no_future" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_persisted_revision_readback" time="0.373"><failure message="ValueError: UNREGISTERED_ACCEPTED_BINDING">tests\test_r20d_settlement.py:52: in test_persisted_revision_readback
+    auth=CurrentStageAuthority(ROOT);store=Store(tmp_path,'reports/v4_15_runtime_r20/test');runtime=SettlementRuntime(auth,store)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:17: in __init__
+    self.stage_ref=ref(self.root,self.contract['stage_namespace']);self.stage=json.loads(self.read(self.stage_ref))
+                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:62: in read
+    raw,receipt=self.exact_reader.read(binding);self.portability_receipts.append(receipt);return raw
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_portable_exact.py:35: in read
+    if requested not in accepted:raise ValueError('UNREGISTERED_ACCEPTED_BINDING')
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: UNREGISTERED_ACCEPTED_BINDING</failure></testcase><testcase classname="tests.test_r20d_settlement" name="test_strict_accepted_projection" time="0.381"><failure message="ValueError: UNREGISTERED_ACCEPTED_BINDING">tests\test_r20d_settlement.py:64: in test_strict_accepted_projection
+    auth=CurrentStageAuthority(ROOT);source=AcceptedPriceSource(auth,auth.data['component_artifacts']['ADJUSTED_DAILY']);assert source.evidence_class=='REAL_ACCEPTED_SOURCE_CAPABILITY_SCOPED';assert len(source.rows)&gt;5000
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:17: in __init__
+    self.stage_ref=ref(self.root,self.contract['stage_namespace']);self.stage=json.loads(self.read(self.stage_ref))
+                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:62: in read
+    raw,receipt=self.exact_reader.read(binding);self.portability_receipts.append(receipt);return raw
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_portable_exact.py:35: in read
+    if requested not in accepted:raise ValueError('UNREGISTERED_ACCEPTED_BINDING')
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: UNREGISTERED_ACCEPTED_BINDING</failure></testcase><testcase classname="tests.test_r20d_settlement" name="test_all_horizons_independent_arithmetic[1]" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_all_horizons_independent_arithmetic[3]" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_all_horizons_independent_arithmetic[5]" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_all_horizons_independent_arithmetic[10]" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_all_horizons_independent_arithmetic[20]" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_sector_runtime_and_rotation" time="0.381"><failure message="ValueError: UNREGISTERED_ACCEPTED_BINDING">tests\test_r20d_settlement.py:72: in test_sector_runtime_and_rotation
+    auth=CurrentStageAuthority(ROOT);store=Store(tmp_path,'reports/v4_15_runtime_r20/sector');runtime=SettlementRuntime(auth,store)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:17: in __init__
+    self.stage_ref=ref(self.root,self.contract['stage_namespace']);self.stage=json.loads(self.read(self.stage_ref))
+                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:62: in read
+    raw,receipt=self.exact_reader.read(binding);self.portability_receipts.append(receipt);return raw
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_portable_exact.py:35: in read
+    if requested not in accepted:raise ValueError('UNREGISTERED_ACCEPTED_BINDING')
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: UNREGISTERED_ACCEPTED_BINDING</failure></testcase><testcase classname="tests.test_r20d_settlement" name="test_reconstruction_does_not_fake_available_t0" time="0.369"><failure message="ValueError: UNREGISTERED_ACCEPTED_BINDING">tests\test_r20d_settlement.py:80: in test_reconstruction_does_not_fake_available_t0
+    auth=CurrentStageAuthority(ROOT);store=Store(tmp_path,'reports/v4_15_runtime_r20/reconstructed');runtime=SettlementRuntime(auth,store)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:17: in __init__
+    self.stage_ref=ref(self.root,self.contract['stage_namespace']);self.stage=json.loads(self.read(self.stage_ref))
+                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_current_stage_authority.py:62: in read
+    raw,receipt=self.exact_reader.read(binding);self.portability_receipts.append(receipt);return raw
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\workbench_analysis\v4_portable_exact.py:35: in read
+    if requested not in accepted:raise ValueError('UNREGISTERED_ACCEPTED_BINDING')
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: UNREGISTERED_ACCEPTED_BINDING</failure></testcase><testcase classname="tests.test_r20d_settlement" name="test_bad_affine[0-0]" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_bad_affine[-1-0]" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_bad_affine[nan-0]" time="0.000" /><testcase classname="tests.test_r20d_settlement" name="test_bad_affine[1-inf]" time="0.000" /><testcase classname="tests.test_r20e_persisted" name="test_full_independent_disk_oracle" time="0.025"><failure message="ValueError: CURRENT_METADATA_COHERENCE_EXACT">tests\test_r20e_persisted.py:16: in test_full_independent_disk_oracle
+    result=oracle.validate()
+           ^^^^^^^^^^^^^^^^^
+scripts\validate_r20e_oracle.py:25: in validate
+    current_gate()
+scripts\validate_r20a_current.py:33: in validate
+    require(stage==expected,'CURRENT_METADATA_COHERENCE_EXACT')
+scripts\validate_r20a_current.py:8: in require
+    if not ok:raise ValueError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: CURRENT_METADATA_COHERENCE_EXACT</failure></testcase><testcase classname="tests.test_r20e_persisted" name="test_current_authority_negatives[stage_pointer_reverted_to_v4_13]" time="0.031" /><testcase classname="tests.test_r20e_persisted" name="test_current_authority_negatives[stale_v4_14_entry]" time="0.023" /><testcase classname="tests.test_r20e_persisted" name="test_current_authority_negatives[v4_14_head_digest_mutated]" time="0.025" /><testcase classname="tests.test_r20e_persisted" name="test_persisted_semantic_negatives[future_source_before_T0_freeze]" time="0.034" /><testcase classname="tests.test_r20e_persisted" name="test_persisted_semantic_negatives[Focus_filters_enrollment]" time="0.025" /><testcase classname="tests.test_r20e_persisted" name="test_persisted_semantic_negatives[UI_filters_enrollment]" time="0.025" /><testcase classname="tests.test_r20e_persisted" name="test_persisted_semantic_negatives[same_day_revision_new_logical_event]" time="0.027" /><testcase classname="tests.test_r20e_persisted" name="test_persisted_semantic_negatives[source_correction_resets_T0]" time="0.024" /><testcase classname="tests.test_r20e_persisted" name="test_persisted_semantic_negatives[source_correction_redraws_controls]" time="0.024" /><testcase classname="tests.test_r20e_persisted" name="test_persisted_semantic_negatives[benchmark_reweights_missing_member]" time="0.026" /><testcase classname="tests.test_r20e_persisted" name="test_persisted_semantic_negatives[marked_threshold_invented]" time="0.024" /><testcase classname="tests.test_r20e_persisted" name="test_persisted_semantic_negatives[control_future_refill]" time="0.025" /><testcase classname="tests.test_r20e_persisted" name="test_persisted_semantic_negatives[control_assignment_changed_after_crossing]" time="0.025" /><testcase classname="tests.test_r20e_persisted" name="test_persisted_semantic_negatives[same_source_creates_duplicate_revision]" time="0.024" /><testcase classname="tests.test_r20e_persisted" name="test_persisted_semantic_negatives[corrected_source_overwrites_first_observed]" time="0.039" /><testcase classname="tests.test_r20e_persisted" name="test_persisted_semantic_negatives[mixed_adjustment_basis]" time="0.024" /><testcase classname="tests.test_r20e_persisted" name="test_persisted_semantic_negatives[unregistered_CRLF_normalization]" time="0.028" /><testcase classname="tests.test_r20e_persisted" name="test_persisted_semantic_negatives[binary_normalization]" time="0.030" /><testcase classname="tests.test_r20e_persisted" name="test_persisted_semantic_negatives[FEP_feedback]" time="0.025" /><testcase classname="tests.test_r20e_persisted" name="test_persisted_semantic_negatives[raw_provider_fallback]" time="0.025" /><testcase classname="tests.test_r20e_persisted" name="test_changed_byte_overwrite_fails_closed" time="0.008" /><testcase classname="tests.test_r20e_persisted" name="test_oracle_does_not_import_evaluators_or_resolver" time="0.000" /><testcase classname="tests.test_r20e_persisted" name="test_real_quote_does_not_grant_research_universe_or_controls" time="0.008" /><testcase classname="tests.test_r20r1_scope" name="test_independent_exact_feasibility" time="0.002"><failure message="ValueError: CURRENT_EXACT_V4_14">tests\test_r20r1_scope.py:12: in test_independent_exact_feasibility
+    result=inspect()
+           ^^^^^^^^^
+scripts\validate_r20r1_feasibility.py:18: in inspect
+    require(stage['accepted_stage_range']=='V4_00_TO_V4_14_ACCEPTED' and stage['v4_14_binding']==bindings['head'],'CURRENT_EXACT_V4_14')
+scripts\validate_r20r1_feasibility.py:7: in require
+    if not condition:raise ValueError(message)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: CURRENT_EXACT_V4_14</failure></testcase><testcase classname="tests.test_r20r1_scope" name="test_current_real_outcomes_are_pending" time="0.002"><failure message="ValueError: CURRENT_EXACT_V4_14">tests\test_r20r1_scope.py:21: in test_current_real_outcomes_are_pending
+    result=inspect();outcomes=[exact(r['binding']) for r in result['real_outcomes']]
+           ^^^^^^^^^
+scripts\validate_r20r1_feasibility.py:18: in inspect
+    require(stage['accepted_stage_range']=='V4_00_TO_V4_14_ACCEPTED' and stage['v4_14_binding']==bindings['head'],'CURRENT_EXACT_V4_14')
+scripts\validate_r20r1_feasibility.py:7: in require
+    if not condition:raise ValueError(message)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: CURRENT_EXACT_V4_14</failure></testcase><testcase classname="tests.test_r20r1_scope" name="test_pending_or_zero_read_count_never_pass[outcomes0-1]" time="0.000" /><testcase classname="tests.test_r20r1_scope" name="test_pending_or_zero_read_count_never_pass[outcomes1-0]" time="0.000" /><testcase classname="tests.test_r20r1_scope" name="test_pending_or_zero_read_count_never_pass[outcomes2-1]" time="0.000" /><testcase classname="tests.test_r20r1_scope" name="test_pending_or_zero_read_count_never_pass[outcomes3-0]" time="0.000" /><testcase classname="tests.test_r20r1_scope" name="test_ineligible_evidence_never_grants_real_maturity[ENGINEERING_SYNTHETIC]" time="0.000" /><testcase classname="tests.test_r20r1_scope" name="test_ineligible_evidence_never_grants_real_maturity[MACHINE_VECTOR]" time="0.000" /><testcase classname="tests.test_r20r1_scope" name="test_ineligible_evidence_never_grants_real_maturity[HISTORICAL_PRICES_ONLY]" time="0.000" /><testcase classname="tests.test_r20r1_scope" name="test_ineligible_evidence_never_grants_real_maturity[RECONSTRUCTED_ASOF]" time="0.000" /><testcase classname="tests.test_r20r1_scope" name="test_ineligible_evidence_never_grants_real_maturity[RAW_PROVIDER_FALLBACK]" time="0.000" /><testcase classname="tests.test_r20r1_scope" name="test_reconstructed_and_synthetic_lineage_cannot_upgrade[RECONSTRUCTED_ASOF]" time="0.000" /><testcase classname="tests.test_r20r1_scope" name="test_reconstructed_and_synthetic_lineage_cannot_upgrade[SYNTHETIC]" time="0.000" /><testcase classname="tests.test_r20r1_scope" name="test_reconstructed_and_synthetic_lineage_cannot_upgrade[CORRECTED_RECONSTRUCTION]" time="0.000" /><testcase classname="tests.test_r20r1_scope" name="test_reconstructed_and_synthetic_lineage_cannot_upgrade[ENGINEERING_VECTOR]" time="0.000" /><testcase classname="tests.test_r20r1_scope" name="test_claimed_booleans_are_not_exact_maturity_proof[raw_provider_fallback]" time="0.000" /><testcase classname="tests.test_r20r1_scope" name="test_claimed_booleans_are_not_exact_maturity_proof[historical_prices_only]" time="0.000" /><testcase classname="tests.test_r20r1_scope" name="test_claimed_booleans_are_not_exact_maturity_proof[T0_freeze_before_future_read]" time="0.000" /><testcase classname="tests.test_r20r1_scope" name="test_claimed_booleans_are_not_exact_maturity_proof[independent_exact_maturity_proof]" time="0.000" /><testcase classname="tests.test_r20r1_scope" name="test_claimed_booleans_are_not_exact_maturity_proof[caller_asserted_pass_without_bound_evidence]" time="0.000" /><testcase classname="tests.test_r20r1_scope" name="test_real_denial_is_explicit_and_pit_denied" time="0.000" /><testcase classname="tests.test_r20r1_scope" name="test_independent_oracle" time="0.002"><failure message="ValueError: CURRENT_EXACT_V4_14">tests\test_r20r1_scope.py:45: in test_independent_oracle
+    def test_independent_oracle():assert validate()['R20R1_INDEPENDENT_ORACLE']=='PASS_LOCAL'
+                                         ^^^^^^^^^^
+scripts\validate_r20r1_oracle.py:12: in validate
+    expected=inspect(root);recorded=load('reports/r20r1/REAL_MATURITY_FEASIBILITY_GATE.json')
+             ^^^^^^^^^^^^^
+scripts\validate_r20r1_feasibility.py:18: in inspect
+    require(stage['accepted_stage_range']=='V4_00_TO_V4_14_ACCEPTED' and stage['v4_14_binding']==bindings['head'],'CURRENT_EXACT_V4_14')
+scripts\validate_r20r1_feasibility.py:7: in require
+    if not condition:raise ValueError(message)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: CURRENT_EXACT_V4_14</failure></testcase><testcase classname="tests.test_r20r1_scope" name="test_independent_scope_oracle_rejects_widening[matured_pass]" time="0.002" /><testcase classname="tests.test_r20r1_scope" name="test_independent_scope_oracle_rejects_widening[historical_pit_pass]" time="0.002" /><testcase classname="tests.test_r20r1_scope" name="test_independent_scope_oracle_rejects_widening[generic_label]" time="0.002" /><testcase classname="tests.test_r20r1_scope" name="test_independent_scope_oracle_rejects_widening[remove_binding]" time="0.002" /><testcase classname="tests.test_r20r1_scope" name="test_independent_scope_oracle_rejects_widening[change_binding]" time="0.002" /><testcase classname="tests.test_r20r1_scope" name="test_independent_scope_oracle_rejects_widening[production]" time="0.002" /><testcase classname="tests.test_r20r1_scope" name="test_independent_scope_oracle_rejects_widening[shadow]" time="0.002" /><testcase classname="tests.test_r20r1_scope" name="test_independent_scope_oracle_rejects_widening[focus]" time="0.002" /><testcase classname="tests.test_r20r1_scope" name="test_independent_scope_oracle_rejects_widening[V4_16]" time="0.002" /><testcase classname="tests.test_r20r1_scope" name="test_independent_scope_oracle_rejects_widening[accepted_head]" time="0.002" /><testcase classname="tests.test_r20r1_scope" name="test_independent_scope_oracle_rejects_widening[stage_advance]" time="0.002" /><testcase classname="tests.test_r20r1_scope" name="test_independent_scope_oracle_rejects_widening[data_advance]" time="0.002" /><testcase classname="tests.test_r20r1_scope" name="test_independent_scope_oracle_rejects_widening[supersession_rewrite]" time="0.002" /><testcase classname="tests.test_r20r1_scope" name="test_independent_scope_oracle_rejects_widening[new_T0_scope]" time="0.002" /><testcase classname="tests.test_r20r1_scope" name="test_validation_debt_is_separate_and_fail_closed[close_debt]" time="0.002" /><testcase classname="tests.test_r20r1_scope" name="test_validation_debt_is_separate_and_fail_closed[invent_coverage]" time="0.002" /><testcase classname="tests.test_r20r1_scope" name="test_validation_debt_is_separate_and_fail_closed[invent_reads]" time="0.002" /><testcase classname="tests.test_r20r1_scope" name="test_validation_debt_is_separate_and_fail_closed[block_unrelated]" time="0.002" /><testcase classname="tests.test_r20r1_scope" name="test_validation_debt_is_separate_and_fail_closed[permit_next_stage]" time="0.002" /><testcase classname="tests.test_r20r1_scope" name="test_validation_debt_is_separate_and_fail_closed[unbound_evidence]" time="0.002" /><testcase classname="tests.test_r20r1_scope" name="test_exact_bytes_and_path_escape_fail_closed" time="0.001" /><testcase classname="tests.test_r20r1_scope" name="test_oracles_are_independent_of_writer_and_evaluators" time="0.000" /><testcase classname="tests.test_r20r1_scope" name="test_debt_increment_without_actual_maturity_stays_open_and_is_idempotent" time="0.004" /><testcase classname="tests.test_r20r1_scope" name="test_incremental_debt_requires_real_authority_before_accepting_prices[synthetic_owner]" time="0.002" /><testcase classname="tests.test_r20r1_scope" name="test_incremental_debt_requires_real_authority_before_accepting_prices[unsealed_owner]" time="0.003" /><testcase classname="tests.test_r20r1_scope" name="test_incremental_debt_requires_real_authority_before_accepting_prices[reconstructed_lineage]" time="0.017" /><testcase classname="tests.test_r20r1_scope" name="test_incremental_debt_requires_real_authority_before_accepting_prices[fabricated_earlier_T0]" time="0.017" /><testcase classname="tests.test_r20r1_scope" name="test_incremental_debt_requires_real_authority_before_accepting_prices[wrong_head]" time="0.002" /><testcase classname="tests.test_r20r1_scope" name="test_incremental_debt_requires_real_authority_before_accepting_prices[wrong_data]" time="0.016" /><testcase classname="tests.test_r20r1r1_maturity" name="test_current_exact_authority_no_real_maturity" time="0.002"><failure message="ValueError: CURRENT_EXACT_V4_14">tests\test_r20r1r1_maturity.py:15: in test_current_exact_authority_no_real_maturity
+    result=validate();assert result['CURRENT_REAL_MATURITY_EVIDENCE']=='NONE'
+           ^^^^^^^^^^
+scripts\validate_r20r1r1_oracle.py:86: in validate
+    previous_scope();current=state_oracle(ROOT)
+    ^^^^^^^^^^^^^^^^
+scripts\validate_r20r1_oracle.py:12: in validate
+    expected=inspect(root);recorded=load('reports/r20r1/REAL_MATURITY_FEASIBILITY_GATE.json')
+             ^^^^^^^^^^^^^
+scripts\validate_r20r1_feasibility.py:18: in inspect
+    require(stage['accepted_stage_range']=='V4_00_TO_V4_14_ACCEPTED' and stage['v4_14_binding']==bindings['head'],'CURRENT_EXACT_V4_14')
+scripts\validate_r20r1_feasibility.py:7: in require
+    if not condition:raise ValueError(message)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: CURRENT_EXACT_V4_14</failure></testcase><testcase classname="tests.test_r20r1r1_maturity" name="test_positive_reconstructed_t1_is_reachable" time="0.265" /><testcase classname="tests.test_r20r1r1_maturity" name="test_incremental_all_horizons_and_old_snapshots_revalidate" time="1.256" /><testcase classname="tests.test_r20r1r1_maturity" name="test_duplicate_exact_packet_is_idempotent" time="0.217" /><testcase classname="tests.test_r20r1r1_maturity" name="test_negative_packets_fail_closed[synthetic_owner]" time="0.095" /><testcase classname="tests.test_r20r1r1_maturity" name="test_negative_packets_fail_closed[unsealed_owner]" time="0.079" /><testcase classname="tests.test_r20r1r1_maturity" name="test_negative_packets_fail_closed[enrollment_mismatch]" time="0.099" /><testcase classname="tests.test_r20r1r1_maturity" name="test_negative_packets_fail_closed[freeze_mismatch]" time="0.093" /><testcase classname="tests.test_r20r1r1_maturity" name="test_negative_packets_fail_closed[raw_provider]" time="0.096" /><testcase classname="tests.test_r20r1r1_maturity" name="test_negative_packets_fail_closed[prices_only]" time="0.092" /><testcase classname="tests.test_r20r1r1_maturity" name="test_negative_packets_fail_closed[unaccepted_endpoint]" time="0.094" /><testcase classname="tests.test_r20r1r1_maturity" name="test_negative_packets_fail_closed[before_freeze]" time="0.111" /><testcase classname="tests.test_r20r1r1_maturity" name="test_negative_packets_fail_closed[wrong_horizon]" time="0.106" /><testcase classname="tests.test_r20r1r1_maturity" name="test_negative_packets_fail_closed[wrong_due]" time="0.107" /><testcase classname="tests.test_r20r1r1_maturity" name="test_negative_packets_fail_closed[corrupted_outcome]" time="0.102" /><testcase classname="tests.test_r20r1r1_maturity" name="test_negative_packets_fail_closed[boolean_proof]" time="0.077" /><testcase classname="tests.test_r20r1r1_maturity" name="test_negative_packets_fail_closed[PIT_upgrade]" time="0.090" /><testcase classname="tests.test_r20r1r1_maturity" name="test_negative_packets_fail_closed[realtime_upgrade]" time="0.093" /><testcase classname="tests.test_r20r1r1_maturity" name="test_negative_packets_fail_closed[incomplete_path]" time="0.094" /><testcase classname="tests.test_r20r1r1_maturity" name="test_negative_packets_fail_closed[T0_in_path]" time="0.100" /><testcase classname="tests.test_r20r1r1_maturity" name="test_negative_packets_fail_closed[corrupt_exact_bytes]" time="0.096" /><testcase classname="tests.test_r20r1r1_maturity" name="test_negative_packets_fail_closed[unknown_data_snapshot]" time="0.092" /><testcase classname="tests.test_r20r1r1_maturity" name="test_negative_packets_fail_closed[nonfinite_outcome]" time="0.100" /><testcase classname="tests.test_r20r1r1_maturity" name="test_mixed_accepted_basis_rejected_even_after_exact_rebinding" time="0.115" /><testcase classname="tests.test_r20r1r1_maturity" name="test_independent_coverage_oracle_rejects_overclaims[full_after_t1]" time="0.143" /><testcase classname="tests.test_r20r1r1_maturity" name="test_independent_coverage_oracle_rejects_overclaims[global_unblock_after_t1]" time="0.145" /><testcase classname="tests.test_r20r1r1_maturity" name="test_independent_coverage_oracle_rejects_overclaims[invent_horizon]" time="0.144" /><testcase classname="tests.test_r20r1r1_maturity" name="test_independent_coverage_oracle_rejects_overclaims[PIT_upgrade]" time="0.142" /><testcase classname="tests.test_r20r1r1_maturity" name="test_independent_coverage_oracle_rejects_overclaims[stage_authorized]" time="0.152" /><testcase classname="tests.test_r20r1r1_maturity" name="test_readback_tamper_cannot_invent_coverage" time="0.134" /><testcase classname="tests.test_r20r1r1_maturity" name="test_corrected_source_appends_and_preserves_first_observed" time="0.287" /><testcase classname="tests.test_r20r1r1_maturity" name="test_duplicate_packet_cannot_change_existing_receipt" time="0.182" /><testcase classname="tests.test_r20r1r1_maturity" name="test_corrected_source_cannot_overwrite_first_observation" time="0.138" /><testcase classname="tests.test_r20r1r1_maturity" name="test_fixture_cannot_write_current_repository" time="0.001" /><testcase classname="tests.test_r20r1r1_maturity" name="test_independent_oracle_has_no_writer_or_evaluator_imports" time="0.000" /><testcase classname="tests.test_r20r1r2_dm01" name="test_production_shaped_batch_positive[1]" time="7.656" /><testcase classname="tests.test_r20r1r2_dm01" name="test_production_shaped_batch_positive[3]" time="7.819" /><testcase classname="tests.test_r20r1r2_dm01" name="test_production_shaped_batch_positive[5]" time="7.819" /><testcase classname="tests.test_r20r1r2_dm01" name="test_production_shaped_batch_positive[10]" time="8.779" /><testcase classname="tests.test_r20r1r2_dm01" name="test_production_shaped_batch_positive[20]" time="9.807" /><testcase classname="tests.test_r20r1r2_dm01" name="test_incremental_coverage_and_duplicate_preserve_pass_keep" time="12.283" /><testcase classname="tests.test_r20r1r2_dm01" name="test_native_schema_semantic_negatives[invented_source_fields]" time="4.046" /><testcase classname="tests.test_r20r1r2_dm01" name="test_native_schema_semantic_negatives[unknown_adjustment]" time="3.804" /><testcase classname="tests.test_r20r1r2_dm01" name="test_native_schema_semantic_negatives[missing_qfq]" time="3.777" /><testcase classname="tests.test_r20r1r2_dm01" name="test_native_schema_semantic_negatives[ambiguous_identity]" time="4.563" /><testcase classname="tests.test_r20r1r2_dm01" name="test_native_schema_semantic_negatives[wrong_artifact_date]" time="3.689" /><testcase classname="tests.test_r20r1r2_dm01" name="test_native_schema_semantic_negatives[receipt_date]" time="3.746" /><testcase classname="tests.test_r20r1r2_dm01" name="test_native_schema_semantic_negatives[parent_component]" time="4.035" /><testcase classname="tests.test_r20r1r2_dm01" name="test_native_schema_semantic_negatives[parent_digest]" time="3.725" /><testcase classname="tests.test_r20r1r2_dm01" name="test_native_schema_semantic_negatives[wrong_target]" time="3.733" /><testcase classname="tests.test_r20r1r2_dm01" name="test_native_schema_semantic_negatives[wrong_source_revision]" time="3.859" /><testcase classname="tests.test_r20r1r2_dm01" name="test_native_schema_semantic_negatives[wrong_source_bar]" time="4.008" /><testcase classname="tests.test_r20r1r2_dm01" name="test_native_schema_semantic_negatives[unbound_source_inputs]" time="3.761" /><testcase classname="tests.test_r20r1r2_dm01" name="test_production_authority_negatives[missing_receipt]" time="3.757" /><testcase classname="tests.test_r20r1r2_dm01" name="test_production_authority_negatives[receipt_artifact_bytes]" time="4.068" /><testcase classname="tests.test_r20r1r2_dm01" name="test_production_authority_negatives[chain_membership]" time="3.811" /><testcase classname="tests.test_r20r1r2_dm01" name="test_production_authority_negatives[missing_session]" time="3.979" /><testcase classname="tests.test_r20r1r2_dm01" name="test_production_authority_negatives[chain_parent]" time="4.233" /><testcase classname="tests.test_r20r1r2_dm01" name="test_production_authority_negatives[incomplete_final_components]" time="3.893" /><testcase classname="tests.test_r20r1r2_dm01" name="test_production_authority_negatives[invented_head_list]" time="3.776" /><testcase classname="tests.test_r20r1r2_dm01" name="test_projection_deterministic_source_immutable_and_t0_mapping" time="7.795" /><testcase classname="tests.test_r20r1r2_dm01" name="test_projection_digest_tracks_exact_descriptor_changes" time="3.766" /><testcase classname="tests.test_r20r1r2_dm01" name="test_independent_oracle_fail_closed[projection_missing]" time="3.655" /><testcase classname="tests.test_r20r1r2_dm01" name="test_independent_oracle_fail_closed[projection_t0_math]" time="3.681" /><testcase classname="tests.test_r20r1r2_dm01" name="test_independent_oracle_fail_closed[outcome_math]" time="7.329" /><testcase classname="tests.test_r20r1r2_dm01" name="test_independent_oracle_fail_closed[pit]" time="3.957" /><testcase classname="tests.test_r20r1r2_dm01" name="test_independent_oracle_fail_closed[one_horizon_full]" time="4.240" /><testcase classname="tests.test_r20r1r2_dm01" name="test_independent_oracle_fail_closed[one_horizon_global_unblock]" time="3.884" /><testcase classname="tests.test_r20r1r2_dm01" name="test_active_admission_rejects_old_fixture_shortcut" time="0.140" /><testcase classname="tests.test_r20r1r2_dm01" name="test_oracle_import_independence" time="0.000" /><testcase classname="tests.test_r20r1r2_dm01" name="test_current_real_fail_closed" time="0.002" /><testcase classname="tests.test_r20r1r2_dm01" name="test_production_same_day_correction_append_only" time="8.085" /><testcase classname="tests.test_r20r1r2_dm01" name="test_prior_same_day_revision_requires_explicit_accepted_record_binding" time="4.262" /></testsuite></testsuites>

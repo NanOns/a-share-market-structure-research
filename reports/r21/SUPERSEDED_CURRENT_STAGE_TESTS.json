@@ -1,0 +1,338 @@
+{
+  "all_registered_cases_rerun": true,
+  "contract_id": "R21_INDIVIDUAL_CURRENT_STAGE_SUPERSESSION_V1",
+  "entries": [
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20a_current.py::test_independent_gate",
+      "reason": "R20A oracle requires exact pre-promotion current Stage14 and absence of Head15."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20a_current.py::test_independent_current_negatives[range]",
+      "reason": "R20A negative oracle first requires exact current Stage14; run in archived context to avoid vacuous early rejection."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20a_current.py::test_independent_current_negatives[entry]",
+      "reason": "R20A negative oracle first requires exact current Stage14; run in archived context to avoid vacuous early rejection."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20a_current.py::test_independent_current_negatives[binding]",
+      "reason": "R20A negative oracle first requires exact current Stage14; run in archived context to avoid vacuous early rejection."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20a_current.py::test_independent_current_negatives[digest]",
+      "reason": "R20A negative oracle first requires exact current Stage14; run in archived context to avoid vacuous early rejection."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20a_current.py::test_independent_current_negatives[data]",
+      "reason": "R20A negative oracle first requires exact current Stage14; run in archived context to avoid vacuous early rejection."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20a_current.py::test_independent_current_negatives[production]",
+      "reason": "R20A negative oracle first requires exact current Stage14; run in archived context to avoid vacuous early rejection."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20a_current.py::test_independent_current_negatives[shadow]",
+      "reason": "R20A negative oracle first requires exact current Stage14; run in archived context to avoid vacuous early rejection."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20a_current.py::test_independent_current_negatives[focus]",
+      "reason": "R20A negative oracle first requires exact current Stage14; run in archived context to avoid vacuous early rejection."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20a_current.py::test_independent_current_negatives[pit]",
+      "reason": "R20A negative oracle first requires exact current Stage14; run in archived context to avoid vacuous early rejection."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20e_persisted.py::test_full_independent_disk_oracle",
+      "reason": "Historical persisted oracle explicitly invokes the Stage14 current gate."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20e_persisted.py::test_current_authority_negatives[stage_pointer_reverted_to_v4_13]",
+      "reason": "Historical current authority gate requires Stage14; archived context ensures intended attack is evaluated."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20e_persisted.py::test_current_authority_negatives[stale_v4_14_entry]",
+      "reason": "Historical current authority gate requires Stage14; archived context ensures intended attack is evaluated."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20e_persisted.py::test_current_authority_negatives[v4_14_head_digest_mutated]",
+      "reason": "Historical current authority gate requires Stage14; archived context ensures intended attack is evaluated."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20e_persisted.py::test_persisted_semantic_negatives[future_source_before_T0_freeze]",
+      "reason": "Historical persisted oracle invokes Stage14 gate before semantic assertions; archived context prevents vacuous pass."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20e_persisted.py::test_persisted_semantic_negatives[Focus_filters_enrollment]",
+      "reason": "Historical persisted oracle invokes Stage14 gate before semantic assertions; archived context prevents vacuous pass."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20e_persisted.py::test_persisted_semantic_negatives[UI_filters_enrollment]",
+      "reason": "Historical persisted oracle invokes Stage14 gate before semantic assertions; archived context prevents vacuous pass."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20e_persisted.py::test_persisted_semantic_negatives[same_day_revision_new_logical_event]",
+      "reason": "Historical persisted oracle invokes Stage14 gate before semantic assertions; archived context prevents vacuous pass."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20e_persisted.py::test_persisted_semantic_negatives[source_correction_resets_T0]",
+      "reason": "Historical persisted oracle invokes Stage14 gate before semantic assertions; archived context prevents vacuous pass."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20e_persisted.py::test_persisted_semantic_negatives[source_correction_redraws_controls]",
+      "reason": "Historical persisted oracle invokes Stage14 gate before semantic assertions; archived context prevents vacuous pass."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20e_persisted.py::test_persisted_semantic_negatives[benchmark_reweights_missing_member]",
+      "reason": "Historical persisted oracle invokes Stage14 gate before semantic assertions; archived context prevents vacuous pass."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20e_persisted.py::test_persisted_semantic_negatives[marked_threshold_invented]",
+      "reason": "Historical persisted oracle invokes Stage14 gate before semantic assertions; archived context prevents vacuous pass."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20e_persisted.py::test_persisted_semantic_negatives[control_future_refill]",
+      "reason": "Historical persisted oracle invokes Stage14 gate before semantic assertions; archived context prevents vacuous pass."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20e_persisted.py::test_persisted_semantic_negatives[control_assignment_changed_after_crossing]",
+      "reason": "Historical persisted oracle invokes Stage14 gate before semantic assertions; archived context prevents vacuous pass."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20e_persisted.py::test_persisted_semantic_negatives[same_source_creates_duplicate_revision]",
+      "reason": "Historical persisted oracle invokes Stage14 gate before semantic assertions; archived context prevents vacuous pass."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20e_persisted.py::test_persisted_semantic_negatives[corrected_source_overwrites_first_observed]",
+      "reason": "Historical persisted oracle invokes Stage14 gate before semantic assertions; archived context prevents vacuous pass."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20e_persisted.py::test_persisted_semantic_negatives[mixed_adjustment_basis]",
+      "reason": "Historical persisted oracle invokes Stage14 gate before semantic assertions; archived context prevents vacuous pass."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20e_persisted.py::test_persisted_semantic_negatives[unregistered_CRLF_normalization]",
+      "reason": "Historical persisted oracle invokes Stage14 gate before semantic assertions; archived context prevents vacuous pass."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20e_persisted.py::test_persisted_semantic_negatives[binary_normalization]",
+      "reason": "Historical persisted oracle invokes Stage14 gate before semantic assertions; archived context prevents vacuous pass."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20e_persisted.py::test_persisted_semantic_negatives[FEP_feedback]",
+      "reason": "Historical persisted oracle invokes Stage14 gate before semantic assertions; archived context prevents vacuous pass."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20e_persisted.py::test_persisted_semantic_negatives[raw_provider_fallback]",
+      "reason": "Historical persisted oracle invokes Stage14 gate before semantic assertions; archived context prevents vacuous pass."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20r1_scope.py::test_independent_exact_feasibility",
+      "reason": "Historical feasibility binds exact Stage14, requires Head15 absent."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20r1_scope.py::test_current_real_outcomes_are_pending",
+      "reason": "Historical feasibility binds exact Stage14 before reading pending outcomes."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20r1_scope.py::test_independent_oracle",
+      "reason": "Historical scope oracle requires exact Stage14 and source/data immutability against pre-promotion baseline."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20r1_scope.py::test_independent_scope_oracle_rejects_widening[matured_pass]",
+      "reason": "Historical scope oracle first verifies Stage14 feasibility; archived context prevents vacuous attack pass."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20r1_scope.py::test_independent_scope_oracle_rejects_widening[historical_pit_pass]",
+      "reason": "Historical scope oracle first verifies Stage14 feasibility; archived context prevents vacuous attack pass."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20r1_scope.py::test_independent_scope_oracle_rejects_widening[generic_label]",
+      "reason": "Historical scope oracle first verifies Stage14 feasibility; archived context prevents vacuous attack pass."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20r1_scope.py::test_independent_scope_oracle_rejects_widening[remove_binding]",
+      "reason": "Historical scope oracle first verifies Stage14 feasibility; archived context prevents vacuous attack pass."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20r1_scope.py::test_independent_scope_oracle_rejects_widening[change_binding]",
+      "reason": "Historical scope oracle first verifies Stage14 feasibility; archived context prevents vacuous attack pass."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20r1_scope.py::test_independent_scope_oracle_rejects_widening[production]",
+      "reason": "Historical scope oracle first verifies Stage14 feasibility; archived context prevents vacuous attack pass."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20r1_scope.py::test_independent_scope_oracle_rejects_widening[shadow]",
+      "reason": "Historical scope oracle first verifies Stage14 feasibility; archived context prevents vacuous attack pass."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20r1_scope.py::test_independent_scope_oracle_rejects_widening[focus]",
+      "reason": "Historical scope oracle first verifies Stage14 feasibility; archived context prevents vacuous attack pass."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20r1_scope.py::test_independent_scope_oracle_rejects_widening[V4_16]",
+      "reason": "Historical scope oracle first verifies Stage14 feasibility; archived context prevents vacuous attack pass."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20r1_scope.py::test_independent_scope_oracle_rejects_widening[accepted_head]",
+      "reason": "Historical scope oracle first verifies Stage14 feasibility; archived context prevents vacuous attack pass."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20r1_scope.py::test_independent_scope_oracle_rejects_widening[stage_advance]",
+      "reason": "Historical scope oracle first verifies Stage14 feasibility; archived context prevents vacuous attack pass."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20r1_scope.py::test_independent_scope_oracle_rejects_widening[data_advance]",
+      "reason": "Historical scope oracle first verifies Stage14 feasibility; archived context prevents vacuous attack pass."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20r1_scope.py::test_independent_scope_oracle_rejects_widening[supersession_rewrite]",
+      "reason": "Historical scope oracle first verifies Stage14 feasibility; archived context prevents vacuous attack pass."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20r1_scope.py::test_independent_scope_oracle_rejects_widening[new_T0_scope]",
+      "reason": "Historical scope oracle first verifies Stage14 feasibility; archived context prevents vacuous attack pass."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20r1_scope.py::test_validation_debt_is_separate_and_fail_closed[close_debt]",
+      "reason": "Historical debt oracle first verifies Stage14 feasibility; archived context prevents vacuous attack pass."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20r1_scope.py::test_validation_debt_is_separate_and_fail_closed[invent_coverage]",
+      "reason": "Historical debt oracle first verifies Stage14 feasibility; archived context prevents vacuous attack pass."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20r1_scope.py::test_validation_debt_is_separate_and_fail_closed[invent_reads]",
+      "reason": "Historical debt oracle first verifies Stage14 feasibility; archived context prevents vacuous attack pass."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20r1_scope.py::test_validation_debt_is_separate_and_fail_closed[block_unrelated]",
+      "reason": "Historical debt oracle first verifies Stage14 feasibility; archived context prevents vacuous attack pass."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20r1_scope.py::test_validation_debt_is_separate_and_fail_closed[permit_next_stage]",
+      "reason": "Historical debt oracle first verifies Stage14 feasibility; archived context prevents vacuous attack pass."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20r1_scope.py::test_validation_debt_is_separate_and_fail_closed[unbound_evidence]",
+      "reason": "Historical debt oracle first verifies Stage14 feasibility; archived context prevents vacuous attack pass."
+    },
+    {
+      "action": "SUPERSEDED_CURRENT_STAGE_TEST_RERUN_UNCHANGED_IN_EXACT_ARCHIVED_CONTEXT",
+      "historical_context": "14b183dedf8a55b12e9368229482ab4bdb3395b1",
+      "nodeid": "tests/test_r20r1r1_maturity.py::test_current_exact_authority_no_real_maturity",
+      "reason": "Historical closure explicitly invokes Stage14 scope oracle and forbids Head15."
+    }
+  ],
+  "no_historical_assertions_modified": true,
+  "no_pattern_deselection": true
+}

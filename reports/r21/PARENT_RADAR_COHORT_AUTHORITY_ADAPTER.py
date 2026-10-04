@@ -15,7 +15,6 @@ def _time(value):return datetime.fromisoformat(value.replace('Z','+00:00'))
 
 class RadarCohortRuntime:
     def __init__(self,authority,store):
-        if isinstance(authority,CurrentStageAuthority):authority=authority.publication_authority()
         if not isinstance(authority,CurrentStageAuthority) or authority.head['stage']!='V4-14':raise ValueError('CURRENT_V4_14_REQUIRED')
         self.authority=authority;self.store=store
         self.registry=authority.contracts['cohort_revision_policy']

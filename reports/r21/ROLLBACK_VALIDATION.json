@@ -1,0 +1,38 @@
+{
+  "isolated_restoration": true,
+  "recipe": "In an isolated checkout restore the five exact archived files; remove only R21-created Head/entry/v2 artifacts before exposing restored Stage. Validate the historical V4-14 reader. Never overwrite Data or historical evidence.",
+  "restored": [
+    {
+      "archive": "reports/r21/PARENT_STAGE_HEAD.json",
+      "bytes": 13840,
+      "sha256": "0014134e54e84d8b1e9a78aaee9c3f01533dc57195f62ddd3342c3675af8a926",
+      "target": "data/v4/V4_STAGE_ACCEPTED_HEAD.json"
+    },
+    {
+      "archive": "reports/r21/PARENT_CURRENT_STAGE_AUTHORITY.json",
+      "bytes": 3803,
+      "sha256": "6039b51afd1c1e660c5bc56955ade30dfdceff671f00ca3dbc14e53ca5fdf76c",
+      "target": "config/v4_current_stage_authority_v1.json"
+    },
+    {
+      "archive": "reports/r21/PARENT_CURRENT_STAGE_AUTHORITY_READER.py",
+      "bytes": 5364,
+      "sha256": "acc341c83896bd12c3b819368f215ae769267201db25f035dcd503c6183339c3",
+      "target": "src/workbench_analysis/v4_current_stage_authority.py"
+    },
+    {
+      "archive": "reports/r21/PARENT_REPLAY_AUTHORITY_READER.py",
+      "bytes": 4957,
+      "sha256": "36b1a3c583441c645b1a0dcf0508f5b19dcf118743289a651e2621af76eeb76b",
+      "target": "src/workbench_analysis/v4_14_authority.py"
+    },
+    {
+      "archive": "reports/r21/PARENT_RADAR_COHORT_AUTHORITY_ADAPTER.py",
+      "bytes": 15345,
+      "sha256": "70455e9bfeb909660e9e0a1b72ac8010bbe07cfb4a6f7ff0a52c4be471393d89",
+      "target": "src/workbench_analysis/v4_15_radar_cohort.py"
+    }
+  ],
+  "status": "PASS_LOCAL",
+  "successful_current_promotion_not_rolled_back": true
+}

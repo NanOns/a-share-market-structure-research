@@ -1,0 +1,86 @@
+{
+  "Focus": false,
+  "NEXT": "STOP_WAIT_R23R1_INDEPENDENT_EXTERNAL_AUDIT",
+  "PIT_OBSERVED_REAL_SAMPLES": 0,
+  "Production": false,
+  "R23R1_SLOT_RUNTIME_COMPLETENESS": "PASS_LOCAL_READY_FOR_EXTERNAL_AUDIT",
+  "R23_RUNTIME_ENGINEERING": "PASS_LOCAL_READY_FOR_EXTERNAL_AUDIT",
+  "R23_RUNTIME_IMPLEMENTED": "ENGINEERING_CANDIDATE_DISABLED",
+  "REAL_SHADOW_OBSERVATIONS": 0,
+  "Shadow": false,
+  "V4_16": false,
+  "V4_16_ACCEPTED_HEAD": "NOT_CREATED",
+  "V4_16_RUNTIME_ACTIVATION": "NOT_AUTHORIZED",
+  "V4_DATA_ACCEPTED_HEAD": "2026-09-30",
+  "V4_STAGE_ACCEPTED_HEAD": "V4_00_TO_V4_15_ACCEPTED",
+  "evidence": [
+    {
+      "bytes": 51210,
+      "path": "reports/r23r1/CLEAN_REGRESSION.json",
+      "sha256": "0b009447fe63ee58a5bd4fd372a12b2c0f55e741ccf895c25b8a473d95683871"
+    },
+    {
+      "bytes": 952,
+      "path": "reports/r23r1/INDEPENDENT_RUNTIME_ORACLE.json",
+      "sha256": "4c9114d1f1057520da9141c87a3932ca2aa32c9dcf338afb257476d2b8fee169"
+    },
+    {
+      "bytes": 704,
+      "path": "reports/r23r1/LOCAL_TEST_SUMMARY.json",
+      "sha256": "d6ba3cef3e9ea5fc6130f80c073b1dec5f04ecb0a1f96c806ee516625748ac5b"
+    },
+    {
+      "bytes": 8964,
+      "path": "reports/r23r1/NEGATIVE_E2E_MATRIX.json",
+      "sha256": "64b4562a80a4c8b9eb8d953eb1337be19b3a60fd969dba406c076e555ad541a1"
+    },
+    {
+      "bytes": 993,
+      "path": "reports/r23r1/OBSERVATION_SUPERSEDES_GATE.json",
+      "sha256": "16e30fd6133580118cb17295ce3171c1fd344f1e516913ef77261b69d948adf3"
+    },
+    {
+      "bytes": 39326,
+      "path": "reports/r23r1/POSITIVE_E2E_ENGINEERING.json",
+      "sha256": "548cb0df7f15ea939b40053fa1be97d86baa3ec20185ca9ccb862f2f05a45040"
+    },
+    {
+      "bytes": 376,
+      "path": "reports/r23r1/PROTECTED_BYTES.json",
+      "sha256": "24de71a2cdeea1cc1d36efca5cf0cc5a473ddb5ee9565af8153a49ba74260598"
+    },
+    {
+      "bytes": 996,
+      "path": "reports/r23r1/RECEIPT_TIMESTAMP_HYGIENE_GATE.json",
+      "sha256": "97ca379d50443ffb2f2d9fdf3c9b28f70d81011dac8c9814a6938b1b15f11243"
+    },
+    {
+      "bytes": 990,
+      "path": "reports/r23r1/SLOT_CONTRACT_FIELD_GATE.json",
+      "sha256": "0f2fb6f40c501bb889d0a9dcd12eecda817543fe4692af34a4eb070be97df95b"
+    },
+    {
+      "bytes": 984,
+      "path": "reports/r23r1/SLOT_REVISION_GATE.json",
+      "sha256": "73cfa5f6fa6fa91300492eb61f3a2a122d08c2a558ae0dac03d8452bbaaf8764"
+    },
+    {
+      "bytes": 1000,
+      "path": "reports/r23r1/SLOT_VISIBILITY_AGGREGATION_ORACLE.json",
+      "sha256": "5ceea4b9ca450f43e3681341e57345f3e699928a5e395d21dd10275ab7aacefd"
+    },
+    {
+      "bytes": 1810,
+      "path": "reports/r23r1/STAGE_CONTRACT_AND_AUDIT_ITEMS.json",
+      "sha256": "ca305fd664d3fc6540c5da0f25937093718e16622d12ef2e7cf185f5b538b0d3"
+    }
+  ],
+  "execution_baseline": "9724b0b2091b0d1e0ca55af17e1fc8c3948fdf42",
+  "external_acceptance": "NOT_GRANTED",
+  "immutable_tag": "codex/r23r1-slot-tested-source-20261004-r1",
+  "post_test_changes": "EVIDENCE_ONLY",
+  "real_shadow_authorized": false,
+  "runtime_authorized": false,
+  "status": "PASS_LOCAL_READY_FOR_EXTERNAL_AUDIT",
+  "tested_source": "ee12bb7d0f1c89fe8f32aa55aaa385bcb5438ff4"
+}

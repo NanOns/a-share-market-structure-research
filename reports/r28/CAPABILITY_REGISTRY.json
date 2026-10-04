@@ -1,0 +1,115 @@
+{
+  "contract": "config/v4_19_focus_source_cutover_contract_v1.json",
+  "contract_sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd",
+  "definition": {
+    "ROTATION": {
+      "accepted_receipts": {
+        "dependencies": null,
+        "forward": null,
+        "migration": null,
+        "shadow": null
+      },
+      "fallback_mode": "LEGACY_PRODUCTION_FOR_EXISTING_FOCUS; SHADOW_V4_READ_ONLY_DIAGNOSTICS",
+      "focus_eligibility": "V4_ACCEPTED_PUBLICATION_ONLY_AFTER_ALL_CAPABILITY_GATES_AND_ATOMIC_ROUTE_CAS",
+      "forward_gate": "ROTATION_SEPARATELY_FROZEN_FORWARD_GATE",
+      "migration_gate": "EXTERNALLY_ACCEPTED_V4_18_RUNTIME_REPLAY_EXACT_CAPABILITY",
+      "production_permission": false,
+      "required_dependencies": [
+        "SECTOR_STAGE"
+      ],
+      "rollback_scope": {
+        "affected_consumers": "TRANSITIVE_DEPENDENTS_FAIL_CLOSED; INDEPENDENT_CAPABILITIES_REMAIN_VALID",
+        "primary": "ROTATION"
+      },
+      "shadow_gate": "SHADOW_STABLE_PASS_EXACT_CAPABILITY_MODEL_PARAMETER_LINEAGE",
+      "ui_label": "SHADOW / NOT_GRANTED"
+    },
+    "SECTOR_RISK_CHANGE": {
+      "accepted_receipts": {
+        "dependencies": null,
+        "forward": null,
+        "migration": null,
+        "shadow": null
+      },
+      "fallback_mode": "LEGACY_PRODUCTION_FOR_EXISTING_FOCUS; SHADOW_V4_READ_ONLY_DIAGNOSTICS",
+      "focus_eligibility": "V4_ACCEPTED_PUBLICATION_ONLY_AFTER_ALL_CAPABILITY_GATES_AND_ATOMIC_ROUTE_CAS",
+      "forward_gate": "SECTOR_RISK_CHANGE_SEPARATELY_FROZEN_FORWARD_GATE",
+      "migration_gate": "EXTERNALLY_ACCEPTED_V4_18_RUNTIME_REPLAY_EXACT_CAPABILITY",
+      "production_permission": false,
+      "required_dependencies": [
+        "SECTOR_STAGE"
+      ],
+      "rollback_scope": {
+        "affected_consumers": "TRANSITIVE_DEPENDENTS_FAIL_CLOSED; INDEPENDENT_CAPABILITIES_REMAIN_VALID",
+        "primary": "SECTOR_RISK_CHANGE"
+      },
+      "shadow_gate": "SHADOW_STABLE_PASS_EXACT_CAPABILITY_MODEL_PARAMETER_LINEAGE",
+      "ui_label": "SHADOW / NOT_GRANTED"
+    },
+    "SECTOR_STAGE": {
+      "accepted_receipts": {
+        "dependencies": null,
+        "forward": null,
+        "migration": null,
+        "shadow": null
+      },
+      "fallback_mode": "LEGACY_PRODUCTION_FOR_EXISTING_FOCUS; SHADOW_V4_READ_ONLY_DIAGNOSTICS",
+      "focus_eligibility": "V4_ACCEPTED_PUBLICATION_ONLY_AFTER_ALL_CAPABILITY_GATES_AND_ATOMIC_ROUTE_CAS",
+      "forward_gate": "SECTOR_STAGE_SEPARATELY_FROZEN_FORWARD_GATE",
+      "migration_gate": "EXTERNALLY_ACCEPTED_V4_18_RUNTIME_REPLAY_EXACT_CAPABILITY",
+      "production_permission": false,
+      "required_dependencies": [],
+      "rollback_scope": {
+        "affected_consumers": "TRANSITIVE_DEPENDENTS_FAIL_CLOSED; INDEPENDENT_CAPABILITIES_REMAIN_VALID",
+        "primary": "SECTOR_STAGE"
+      },
+      "shadow_gate": "SHADOW_STABLE_PASS_EXACT_CAPABILITY_MODEL_PARAMETER_LINEAGE",
+      "ui_label": "SHADOW / NOT_GRANTED"
+    },
+    "STOCK_CORE": {
+      "accepted_receipts": {
+        "dependencies": null,
+        "forward": null,
+        "migration": null,
+        "shadow": null
+      },
+      "fallback_mode": "LEGACY_PRODUCTION_FOR_EXISTING_FOCUS; SHADOW_V4_READ_ONLY_DIAGNOSTICS",
+      "focus_eligibility": "V4_ACCEPTED_PUBLICATION_ONLY_AFTER_ALL_CAPABILITY_GATES_AND_ATOMIC_ROUTE_CAS",
+      "forward_gate": "STOCK_PROVISIONAL_FORWARD_GATE",
+      "migration_gate": "EXTERNALLY_ACCEPTED_V4_18_RUNTIME_REPLAY_EXACT_CAPABILITY",
+      "production_permission": false,
+      "required_dependencies": [],
+      "rollback_scope": {
+        "affected_consumers": "TRANSITIVE_DEPENDENTS_FAIL_CLOSED; INDEPENDENT_CAPABILITIES_REMAIN_VALID",
+        "primary": "STOCK_CORE"
+      },
+      "shadow_gate": "SHADOW_STABLE_PASS_EXACT_CAPABILITY_MODEL_PARAMETER_LINEAGE",
+      "ui_label": "SHADOW / NOT_GRANTED"
+    },
+    "STOCK_SECTOR_DEPENDENT": {
+      "accepted_receipts": {
+        "dependencies": null,
+        "forward": null,
+        "migration": null,
+        "shadow": null
+      },
+      "fallback_mode": "LEGACY_PRODUCTION_FOR_EXISTING_FOCUS; SHADOW_V4_READ_ONLY_DIAGNOSTICS",
+      "focus_eligibility": "V4_ACCEPTED_PUBLICATION_ONLY_AFTER_ALL_CAPABILITY_GATES_AND_ATOMIC_ROUTE_CAS",
+      "forward_gate": "STOCK_PROVISIONAL_FORWARD_GATE",
+      "migration_gate": "EXTERNALLY_ACCEPTED_V4_18_RUNTIME_REPLAY_EXACT_CAPABILITY",
+      "production_permission": false,
+      "required_dependencies": [
+        "STOCK_CORE",
+        "SECTOR_STAGE"
+      ],
+      "rollback_scope": {
+        "affected_consumers": "TRANSITIVE_DEPENDENTS_FAIL_CLOSED; INDEPENDENT_CAPABILITIES_REMAIN_VALID",
+        "primary": "STOCK_SECTOR_DEPENDENT"
+      },
+      "shadow_gate": "SHADOW_STABLE_PASS_EXACT_CAPABILITY_MODEL_PARAMETER_LINEAGE",
+      "ui_label": "SHADOW / NOT_GRANTED"
+    }
+  },
+  "scope": "CONTRACT_DESIGN_ONLY",
+  "section": "capability_registry"
+}

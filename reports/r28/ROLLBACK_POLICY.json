@@ -1,0 +1,25 @@
+{
+  "contract": "config/v4_19_focus_source_cutover_contract_v1.json",
+  "contract_sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd",
+  "definition": {
+    "authority": "EXACT_ACCEPTED_CAPABILITY_ROLLBACK_AUTHORITY; ALL_DEPENDENT_ROUTE_HEADS_CAS_ATOMIC_OR_NO_PARTIAL_CHANGE",
+    "implemented": false,
+    "migration_binding": "R27_EXACTLY_ONE_AUTHORIZED_WORKER_PER_EXISTING_DUE_ID; RETAIN_GAP_ACTIVITY; NO_BACKUP_ONLY_RESTORE",
+    "order": [
+      "fence new V4 Focus writes for affected capability",
+      "capture final cutover gap watermarks and ownership",
+      "restore exact previous accepted route with CAS",
+      "append rollback receipt and gap reconciliation manifest"
+    ],
+    "preserve": [
+      "accepted V4 facts",
+      "historical Shadow context",
+      "user pins/manual work",
+      "pending settlement ownership and frozen identities",
+      "outbox and receipts"
+    ],
+    "scope": "AFFECTED_CAPABILITY_AND_TRANSITIVE_DEPENDENT_CONSUMERS_ONLY; INDEPENDENT_VALID_CAPABILITIES_UNCHANGED"
+  },
+  "scope": "CONTRACT_DESIGN_ONLY",
+  "section": "rollback"
+}

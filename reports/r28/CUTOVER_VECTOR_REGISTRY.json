@@ -1,0 +1,388 @@
+{
+  "contract": "config/v4_19_focus_source_cutover_contract_v1.json",
+  "contract_sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd",
+  "definition": [
+    {
+      "description": "STOCK_CORE all gates pass -> hypothetical true",
+      "expected": {
+        "actual_production_grant": false,
+        "actual_route_changes": [],
+        "design_action": "ELIGIBLE_DESIGN_PROPOSAL",
+        "reason": null,
+        "stock_core_permission": true
+      },
+      "fixture_source": "reports/r28/design_oracle.py::scenario",
+      "future_evidence": [
+        "accepted gate and dependency receipts",
+        "exact source publication and route-head snapshot",
+        "independent identity/count/route reconciliation"
+      ],
+      "id": "C01",
+      "independent_expected_source": "tests/test_v4_19_focus_cutover_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_GATE"
+    },
+    {
+      "description": "stock gate pass, sector insufficient -> sector false",
+      "expected": {
+        "actual_production_grant": false,
+        "actual_route_changes": [],
+        "design_action": "ELIGIBLE_DESIGN_PROPOSAL",
+        "reason": null,
+        "stock_core_permission": true
+      },
+      "fixture_source": "reports/r28/design_oracle.py::scenario",
+      "future_evidence": [
+        "accepted gate and dependency receipts",
+        "exact source publication and route-head snapshot",
+        "independent identity/count/route reconciliation"
+      ],
+      "id": "C02",
+      "independent_expected_source": "tests/test_v4_19_focus_cutover_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_GATE"
+    },
+    {
+      "description": "sector pass, stock insufficient -> sector scope true if dependencies permit",
+      "expected": {
+        "actual_production_grant": false,
+        "actual_route_changes": [],
+        "design_action": "NO_CUTOVER",
+        "reason": "CAPABILITY_PERMISSION_FALSE",
+        "stock_core_permission": false
+      },
+      "fixture_source": "reports/r28/design_oracle.py::scenario",
+      "future_evidence": [
+        "accepted gate and dependency receipts",
+        "exact source publication and route-head snapshot",
+        "independent identity/count/route reconciliation"
+      ],
+      "id": "C03",
+      "independent_expected_source": "tests/test_v4_19_focus_cutover_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_GATE"
+    },
+    {
+      "description": "STOCK_SECTOR_DEPENDENT blocked by Sector dependency",
+      "expected": {
+        "actual_production_grant": false,
+        "actual_route_changes": [],
+        "design_action": "ELIGIBLE_DESIGN_PROPOSAL",
+        "reason": null,
+        "stock_core_permission": true
+      },
+      "fixture_source": "reports/r28/design_oracle.py::scenario",
+      "future_evidence": [
+        "accepted gate and dependency receipts",
+        "exact source publication and route-head snapshot",
+        "independent identity/count/route reconciliation"
+      ],
+      "id": "C04",
+      "independent_expected_source": "tests/test_v4_19_focus_cutover_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_GATE"
+    },
+    {
+      "description": "migration missing -> false",
+      "expected": {
+        "actual_production_grant": false,
+        "actual_route_changes": [],
+        "design_action": "NO_CUTOVER",
+        "reason": "CAPABILITY_PERMISSION_FALSE",
+        "stock_core_permission": false
+      },
+      "fixture_source": "reports/r28/design_oracle.py::scenario",
+      "future_evidence": [
+        "accepted gate and dependency receipts",
+        "exact source publication and route-head snapshot",
+        "independent identity/count/route reconciliation"
+      ],
+      "id": "C05",
+      "independent_expected_source": "tests/test_v4_19_focus_cutover_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_GATE"
+    },
+    {
+      "description": "shadow stable missing -> false",
+      "expected": {
+        "actual_production_grant": false,
+        "actual_route_changes": [],
+        "design_action": "NO_CUTOVER",
+        "reason": "CAPABILITY_PERMISSION_FALSE",
+        "stock_core_permission": false
+      },
+      "fixture_source": "reports/r28/design_oracle.py::scenario",
+      "future_evidence": [
+        "accepted gate and dependency receipts",
+        "exact source publication and route-head snapshot",
+        "independent identity/count/route reconciliation"
+      ],
+      "id": "C06",
+      "independent_expected_source": "tests/test_v4_19_focus_cutover_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_GATE"
+    },
+    {
+      "description": "forward missing -> false",
+      "expected": {
+        "actual_production_grant": false,
+        "actual_route_changes": [],
+        "design_action": "NO_CUTOVER",
+        "reason": "CAPABILITY_PERMISSION_FALSE",
+        "stock_core_permission": false
+      },
+      "fixture_source": "reports/r28/design_oracle.py::scenario",
+      "future_evidence": [
+        "accepted gate and dependency receipts",
+        "exact source publication and route-head snapshot",
+        "independent identity/count/route reconciliation"
+      ],
+      "id": "C07",
+      "independent_expected_source": "tests/test_v4_19_focus_cutover_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_GATE"
+    },
+    {
+      "description": "model/parameter digest mismatch",
+      "expected": {
+        "actual_production_grant": false,
+        "actual_route_changes": [],
+        "design_action": "NO_CUTOVER",
+        "reason": "CAPABILITY_PERMISSION_FALSE",
+        "stock_core_permission": false
+      },
+      "fixture_source": "reports/r28/design_oracle.py::scenario",
+      "future_evidence": [
+        "accepted gate and dependency receipts",
+        "exact source publication and route-head snapshot",
+        "independent identity/count/route reconciliation"
+      ],
+      "id": "C08",
+      "independent_expected_source": "tests/test_v4_19_focus_cutover_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_GATE"
+    },
+    {
+      "description": "source publication capability mismatch",
+      "expected": {
+        "actual_production_grant": false,
+        "actual_route_changes": [],
+        "design_action": "NO_CUTOVER",
+        "reason": "SOURCE_PUBLICATION_IDENTITY_MISMATCH",
+        "stock_core_permission": true
+      },
+      "fixture_source": "reports/r28/design_oracle.py::scenario",
+      "future_evidence": [
+        "accepted gate and dependency receipts",
+        "exact source publication and route-head snapshot",
+        "independent identity/count/route reconciliation"
+      ],
+      "id": "C09",
+      "independent_expected_source": "tests/test_v4_19_focus_cutover_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_GATE"
+    },
+    {
+      "description": "route-head CAS conflict",
+      "expected": {
+        "actual_production_grant": false,
+        "actual_route_changes": [],
+        "design_action": "NO_CUTOVER",
+        "reason": "ROUTE_CAS_CONFLICT",
+        "stock_core_permission": true
+      },
+      "fixture_source": "reports/r28/design_oracle.py::scenario",
+      "future_evidence": [
+        "accepted gate and dependency receipts",
+        "exact source publication and route-head snapshot",
+        "independent identity/count/route reconciliation"
+      ],
+      "id": "C10",
+      "independent_expected_source": "tests/test_v4_19_focus_cutover_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_GATE"
+    },
+    {
+      "description": "mixed UI labels production/shadow correctly",
+      "expected": {
+        "actual_production_grant": false,
+        "actual_route_changes": [],
+        "design_action": "ELIGIBLE_DESIGN_PROPOSAL",
+        "reason": null,
+        "stock_core_permission": true
+      },
+      "fixture_source": "reports/r28/design_oracle.py::scenario",
+      "future_evidence": [
+        "accepted gate and dependency receipts",
+        "exact source publication and route-head snapshot",
+        "independent identity/count/route reconciliation"
+      ],
+      "id": "C11",
+      "independent_expected_source": "tests/test_v4_19_focus_cutover_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_GATE"
+    },
+    {
+      "description": "user pin creates no permission",
+      "expected": {
+        "actual_production_grant": false,
+        "actual_route_changes": [],
+        "design_action": "NO_CUTOVER",
+        "reason": "CAPABILITY_PERMISSION_FALSE",
+        "stock_core_permission": false
+      },
+      "fixture_source": "reports/r28/design_oracle.py::scenario",
+      "future_evidence": [
+        "accepted gate and dependency receipts",
+        "exact source publication and route-head snapshot",
+        "independent identity/count/route reconciliation"
+      ],
+      "id": "C12",
+      "independent_expected_source": "tests/test_v4_19_focus_cutover_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_GATE"
+    },
+    {
+      "description": "historical replay cannot satisfy Shadow sessions",
+      "expected": {
+        "actual_production_grant": false,
+        "actual_route_changes": [],
+        "design_action": "NO_CUTOVER",
+        "reason": "CAPABILITY_PERMISSION_FALSE",
+        "stock_core_permission": false
+      },
+      "fixture_source": "reports/r28/design_oracle.py::scenario",
+      "future_evidence": [
+        "accepted gate and dependency receipts",
+        "exact source publication and route-head snapshot",
+        "independent identity/count/route reconciliation"
+      ],
+      "id": "C13",
+      "independent_expected_source": "tests/test_v4_19_focus_cutover_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_GATE"
+    },
+    {
+      "description": "RECONSTRUCTED_ASOF cannot satisfy real gate",
+      "expected": {
+        "actual_production_grant": false,
+        "actual_route_changes": [],
+        "design_action": "NO_CUTOVER",
+        "reason": "CAPABILITY_PERMISSION_FALSE",
+        "stock_core_permission": false
+      },
+      "fixture_source": "reports/r28/design_oracle.py::scenario",
+      "future_evidence": [
+        "accepted gate and dependency receipts",
+        "exact source publication and route-head snapshot",
+        "independent identity/count/route reconciliation"
+      ],
+      "id": "C14",
+      "independent_expected_source": "tests/test_v4_19_focus_cutover_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_GATE"
+    },
+    {
+      "description": "rollback one capability only",
+      "expected": {
+        "actual_production_grant": false,
+        "actual_route_changes": [],
+        "design_action": "ELIGIBLE_DESIGN_PROPOSAL",
+        "reason": null,
+        "stock_core_permission": true
+      },
+      "fixture_source": "reports/r28/design_oracle.py::scenario",
+      "future_evidence": [
+        "accepted gate and dependency receipts",
+        "exact source publication and route-head snapshot",
+        "independent identity/count/route reconciliation"
+      ],
+      "id": "C15",
+      "independent_expected_source": "tests/test_v4_19_focus_cutover_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_GATE"
+    },
+    {
+      "description": "global-pass attempt rejected",
+      "expected": {
+        "actual_production_grant": false,
+        "actual_route_changes": [],
+        "design_action": "NO_CUTOVER",
+        "reason": "GLOBAL_PROMOTION_FORBIDDEN",
+        "stock_core_permission": false
+      },
+      "fixture_source": "reports/r28/design_oracle.py::scenario",
+      "future_evidence": [
+        "accepted gate and dependency receipts",
+        "exact source publication and route-head snapshot",
+        "independent identity/count/route reconciliation"
+      ],
+      "id": "C16",
+      "independent_expected_source": "tests/test_v4_19_focus_cutover_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_GATE"
+    },
+    {
+      "description": "receipt missing dependency scope",
+      "expected": {
+        "actual_production_grant": false,
+        "actual_route_changes": [],
+        "design_action": "NO_CUTOVER",
+        "reason": "RECEIPT_SCHEMA_INCOMPLETE",
+        "stock_core_permission": true
+      },
+      "fixture_source": "reports/r28/design_oracle.py::scenario",
+      "future_evidence": [
+        "accepted gate and dependency receipts",
+        "exact source publication and route-head snapshot",
+        "independent identity/count/route reconciliation"
+      ],
+      "id": "C17",
+      "independent_expected_source": "tests/test_v4_19_focus_cutover_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_GATE"
+    },
+    {
+      "description": "stale permission receipt",
+      "expected": {
+        "actual_production_grant": false,
+        "actual_route_changes": [],
+        "design_action": "NO_CUTOVER",
+        "reason": "CAPABILITY_PERMISSION_FALSE",
+        "stock_core_permission": false
+      },
+      "fixture_source": "reports/r28/design_oracle.py::scenario",
+      "future_evidence": [
+        "accepted gate and dependency receipts",
+        "exact source publication and route-head snapshot",
+        "independent identity/count/route reconciliation"
+      ],
+      "id": "C18",
+      "independent_expected_source": "tests/test_v4_19_focus_cutover_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_GATE"
+    },
+    {
+      "description": "corrected outcome does not double-count event",
+      "expected": {
+        "actual_production_grant": false,
+        "actual_route_changes": [],
+        "design_action": "NO_CUTOVER",
+        "reason": "CAPABILITY_PERMISSION_FALSE",
+        "stock_core_permission": false
+      },
+      "fixture_source": "reports/r28/design_oracle.py::scenario",
+      "future_evidence": [
+        "accepted gate and dependency receipts",
+        "exact source publication and route-head snapshot",
+        "independent identity/count/route reconciliation"
+      ],
+      "id": "C19",
+      "independent_expected_source": "tests/test_v4_19_focus_cutover_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_GATE"
+    },
+    {
+      "description": "shared source implies no permission inheritance",
+      "expected": {
+        "actual_production_grant": false,
+        "actual_route_changes": [],
+        "design_action": "ELIGIBLE_DESIGN_PROPOSAL",
+        "reason": null,
+        "stock_core_permission": true
+      },
+      "fixture_source": "reports/r28/design_oracle.py::scenario",
+      "future_evidence": [
+        "accepted gate and dependency receipts",
+        "exact source publication and route-head snapshot",
+        "independent identity/count/route reconciliation"
+      ],
+      "id": "C20",
+      "independent_expected_source": "tests/test_v4_19_focus_cutover_contract.py",
+      "kind": "CONTRACT_DESIGN_SIMULATION_NOT_REAL_GATE"
+    }
+  ],
+  "scope": "CONTRACT_DESIGN_ONLY",
+  "section": "vectors"
+}

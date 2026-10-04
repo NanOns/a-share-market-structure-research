@@ -1,0 +1,24 @@
+{
+  "contract": "config/v4_19_focus_source_cutover_contract_v1.json",
+  "contract_sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd",
+  "definition": {
+    "MIGRATION_REPLAY_PASS": "NOT_GRANTED",
+    "R25": "WAIT_ACCEPTED_DAILY_INPUT",
+    "REAL_SHADOW_OBSERVATIONS": 0,
+    "V4_17G": "NOT_GRANTED",
+    "V4_17_FINAL_ACCEPTANCE": "NOT_GRANTED",
+    "V4_18_CONTRACT_DESIGN": "EXTERNALLY_ACCEPTED",
+    "V4_18_IMPLEMENTATION_ENTRY": "BLOCKED_WAIT_REAL_SHADOW_GATE",
+    "V4_19_ACCEPTED_HEAD": "NOT_CREATED",
+    "focus_source_cutover": false,
+    "production_permission": {
+      "ROTATION": false,
+      "SECTOR_RISK_CHANGE": false,
+      "SECTOR_STAGE": false,
+      "STOCK_CORE": false,
+      "STOCK_SECTOR_DEPENDENT": false
+    }
+  },
+  "scope": "CONTRACT_DESIGN_ONLY",
+  "section": "current_state"
+}

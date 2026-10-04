@@ -1,0 +1,71 @@
+{
+  "contract": "config/v4_19_focus_source_cutover_contract_v1.json",
+  "contract_sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd",
+  "definition": {
+    "additional_required": [
+      "receipt_id",
+      "request_id",
+      "contract_digest",
+      "gate_receipt_digests",
+      "dependency_receipt_digests",
+      "previous_receipt_digest",
+      "accepted_at",
+      "external_authority_receipt",
+      "evidence_class"
+    ],
+    "digest": "SHA256_UTF8_SORTED_COMPACT_JSON_ALL_FIELDS_EXCEPT_receipt_digest; NO_NAN; TYPES_AND_NULL_EXPLICIT",
+    "evidence_class": "PROVISIONAL_AFTER_VALID_FUTURE_CUTOVER; NOT_LONG_TERM_ADVANTAGE_PROOF",
+    "freshness": "VERIFY_NOT_SUPERSEDED_NOT_REVOKED_AND_EXACT_ACTIVE_RECEIPT_HEAD_AT_CAS; NO_ARBITRARY_AGE_THRESHOLD",
+    "identity_binding": [
+      "capability",
+      "model_contract_id",
+      "parameter_digest",
+      "state_lineage_id",
+      "source_publication",
+      "contract_digest"
+    ],
+    "r28_receipt": "NO_REAL_CUTOVER_RECEIPT_CREATED",
+    "required": [
+      "capability",
+      "status",
+      "shadow_sessions",
+      "unique_signal_dates",
+      "matured_events",
+      "forward_quality",
+      "migration_gate",
+      "production_permission",
+      "dependency_scope",
+      "parameter_digest",
+      "model_contract_id",
+      "state_lineage_id",
+      "source_publication",
+      "cutover_authority_id",
+      "previous_route",
+      "new_route",
+      "expected_route_head",
+      "receipt_digest"
+    ],
+    "types": {
+      "capability": "string",
+      "cutover_authority_id": "string",
+      "dependency_scope": "exact_capability_dependency_receipt_map",
+      "expected_route_head": "exact_bound_accepted_reference",
+      "forward_quality": "exact_bound_accepted_reference",
+      "matured_events": "object_per_event_type",
+      "migration_gate": "exact_bound_accepted_reference",
+      "model_contract_id": "string",
+      "new_route": "string",
+      "parameter_digest": "string",
+      "previous_route": "string",
+      "production_permission": "boolean",
+      "receipt_digest": "string",
+      "shadow_sessions": "integer",
+      "source_publication": "exact_bound_accepted_reference",
+      "state_lineage_id": "string",
+      "status": "string",
+      "unique_signal_dates": "integer"
+    }
+  },
+  "scope": "CONTRACT_DESIGN_ONLY",
+  "section": "receipt_schema"
+}

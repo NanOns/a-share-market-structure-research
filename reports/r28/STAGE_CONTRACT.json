@@ -1,0 +1,49 @@
+{
+  "acceptance": "PENDING_LOCAL_CONTRACT_VALIDATION",
+  "allowed": [
+    "config/v4_19_*",
+    "reports/r28/*",
+    "docs/evidence/r28/*",
+    "tests/test_v4_19_focus_cutover_contract.py"
+  ],
+  "baseline": "94635fa369c60b3f8182cb4d813751a453682d88",
+  "documents": [
+    {
+      "copy": "docs/evidence/r28/V4_NEXT_ROUND_EXECUTION_MASTER_R28_20261004.md",
+      "original_sha256": "33567a8112dae3268a5499675a6d288c07a5d39d443a2f9bd1cd0bac92fd39c0",
+      "source": "D:\\Users\\lps\\Desktop\\阶段任务\\V4_NEXT_ROUND_EXECUTION_MASTER_R28_20261004.md"
+    },
+    {
+      "copy": "docs/evidence/r28/V4_19_R28_FOCUS_SOURCE_CUTOVER_CONTRACT_DESIGN_TASK_20261004.md",
+      "original_sha256": "a96c88dab281422acf7e104c21081d5fa30942a725be9121f7d4c0e263df73fc",
+      "source": "D:\\Users\\lps\\Desktop\\阶段任务\\V4_19_R28_FOCUS_SOURCE_CUTOVER_CONTRACT_DESIGN_TASK_20261004.md"
+    },
+    {
+      "copy": "docs/evidence/r28/V4_R27_V4_18_MIGRATION_REPLAY_CONTRACT_DESIGN_FINAL_INDEPENDENT_EXTERNAL_AUDIT_R1_20261004.md",
+      "original_sha256": "72fc72bd307823f7bbd5254d501f3a1aceb44fe7e0ff1542b0d1e0046a13cd7a",
+      "source": "D:\\Users\\lps\\Desktop\\阶段任务\\V4_R27_V4_18_MIGRATION_REPLAY_CONTRACT_DESIGN_FINAL_INDEPENDENT_EXTERNAL_AUDIT_R1_20261004.md"
+    }
+  ],
+  "forbidden": [
+    "production writer",
+    "routing mutation",
+    "permission grant",
+    "accepted heads",
+    "TDX writes"
+  ],
+  "mode": "CONTRACT_DESIGN_ONLY",
+  "next": "STOP_WAIT_R28_INDEPENDENT_EXTERNAL_AUDIT",
+  "stage": "V4-19",
+  "upgrade": {
+    "path": "docs/evidence/A_SHARE_RESEARCH_SYSTEM_V4_2_2_FINAL_EXECUTABLE_CONTRACT_REV4_FEP_R2_20260930.md",
+    "sections": [
+      "51A",
+      "52A",
+      "72",
+      "78",
+      "81.4",
+      "83"
+    ],
+    "sha256": "203ff46075b4039d1e2d45d54fd76ce09509535739cd6aaef4dc394de1015205"
+  }
+}

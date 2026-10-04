@@ -1,0 +1,39 @@
+{
+  "contract": "config/v4_19_focus_source_cutover_contract_v1.json",
+  "contract_sha256": "c1c884fefd264311d915874a31571006a19b33c635acdff6dad322fb2e3ba8bd",
+  "definition": {
+    "dependency_graph": {
+      "ROTATION": [
+        "SECTOR_STAGE"
+      ],
+      "SECTOR_RISK_CHANGE": [
+        "SECTOR_STAGE"
+      ],
+      "SECTOR_STAGE": [],
+      "STOCK_CORE": [],
+      "STOCK_SECTOR_DEPENDENT": [
+        "STOCK_CORE",
+        "SECTOR_STAGE"
+      ]
+    },
+    "global_permission": "FORBIDDEN",
+    "missing_unknown_stale_or_conflicting": "FALSE_NO_CUTOVER",
+    "operator": "AND",
+    "shared_raw_source": "READ_CAPABILITY_ONLY_NEVER_PERMISSION_INHERITANCE",
+    "terms": [
+      "SHADOW_STABLE_PASS[capability]",
+      "FORWARD_GATE[capability]",
+      "MIGRATION_REPLAY_PASS[capability]",
+      "ALL(required_dependency_permissions)"
+    ],
+    "topological_order": [
+      "STOCK_CORE",
+      "SECTOR_STAGE",
+      "STOCK_SECTOR_DEPENDENT",
+      "ROTATION",
+      "SECTOR_RISK_CHANGE"
+    ]
+  },
+  "scope": "CONTRACT_DESIGN_ONLY",
+  "section": "permission_formula"
+}

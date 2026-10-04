@@ -1,0 +1,119 @@
+{
+  "contract_dependency_graph": {
+    "ROTATION": [
+      "SECTOR_STAGE"
+    ],
+    "SECTOR_RISK_CHANGE": [
+      "SECTOR_STAGE"
+    ],
+    "SECTOR_STAGE": [],
+    "STOCK_CORE": [],
+    "STOCK_SECTOR_DEPENDENT": [
+      "STOCK_CORE",
+      "SECTOR_STAGE"
+    ]
+  },
+  "current_permissions": {
+    "ROTATION": false,
+    "SECTOR_RISK_CHANGE": false,
+    "SECTOR_STAGE": false,
+    "STOCK_CORE": false,
+    "STOCK_SECTOR_DEPENDENT": false
+  },
+  "examples": {
+    "C02": {
+      "design_action": "ELIGIBLE_DESIGN_PROPOSAL",
+      "hypothetical_permissions": {
+        "ROTATION": false,
+        "SECTOR_RISK_CHANGE": false,
+        "SECTOR_STAGE": false,
+        "STOCK_CORE": true,
+        "STOCK_SECTOR_DEPENDENT": false
+      },
+      "production_grant": false,
+      "reason": null,
+      "route_changes": []
+    },
+    "C03": {
+      "design_action": "NO_CUTOVER",
+      "hypothetical_permissions": {
+        "ROTATION": true,
+        "SECTOR_RISK_CHANGE": true,
+        "SECTOR_STAGE": true,
+        "STOCK_CORE": false,
+        "STOCK_SECTOR_DEPENDENT": false
+      },
+      "production_grant": false,
+      "reason": "CAPABILITY_PERMISSION_FALSE",
+      "route_changes": []
+    },
+    "C04": {
+      "design_action": "ELIGIBLE_DESIGN_PROPOSAL",
+      "hypothetical_permissions": {
+        "ROTATION": false,
+        "SECTOR_RISK_CHANGE": false,
+        "SECTOR_STAGE": false,
+        "STOCK_CORE": true,
+        "STOCK_SECTOR_DEPENDENT": false
+      },
+      "production_grant": false,
+      "reason": null,
+      "route_changes": []
+    },
+    "C11": {
+      "design_action": "ELIGIBLE_DESIGN_PROPOSAL",
+      "hypothetical_permissions": {
+        "ROTATION": false,
+        "SECTOR_RISK_CHANGE": false,
+        "SECTOR_STAGE": false,
+        "STOCK_CORE": true,
+        "STOCK_SECTOR_DEPENDENT": false
+      },
+      "module_labels": {
+        "ROTATION": "SHADOW",
+        "SECTOR_RISK_CHANGE": "SHADOW",
+        "SECTOR_STAGE": "SHADOW",
+        "STOCK_CORE": "PRODUCTION",
+        "STOCK_SECTOR_DEPENDENT": "SHADOW"
+      },
+      "production_grant": false,
+      "reason": null,
+      "route_changes": []
+    },
+    "C15": {
+      "design_action": "ELIGIBLE_DESIGN_PROPOSAL",
+      "hypothetical_permissions": {
+        "ROTATION": true,
+        "SECTOR_RISK_CHANGE": true,
+        "SECTOR_STAGE": true,
+        "STOCK_CORE": true,
+        "STOCK_SECTOR_DEPENDENT": true
+      },
+      "production_grant": false,
+      "reason": null,
+      "rollback_affected": [
+        "ROTATION"
+      ],
+      "rollback_preserves": [
+        "accepted V4 facts",
+        "user pins/manual work",
+        "pending settlement ownership"
+      ],
+      "route_changes": []
+    },
+    "C20": {
+      "design_action": "ELIGIBLE_DESIGN_PROPOSAL",
+      "hypothetical_permissions": {
+        "ROTATION": false,
+        "SECTOR_RISK_CHANGE": false,
+        "SECTOR_STAGE": false,
+        "STOCK_CORE": true,
+        "STOCK_SECTOR_DEPENDENT": false
+      },
+      "production_grant": false,
+      "reason": null,
+      "route_changes": []
+    }
+  },
+  "scope": "HYPOTHETICAL_EXAMPLES_NEVER_ACTUAL_GRANTS"
+}

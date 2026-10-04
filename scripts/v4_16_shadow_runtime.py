@@ -7,9 +7,9 @@ Accepted business semantics are delegated to exact V4-15 implementations.
 import copy,hashlib,json,sqlite3
 from pathlib import Path
 from datetime import datetime,date,time,timezone,timedelta
-from .v4_current_stage_authority import CurrentStageAuthority
-from .v4_15_radar_cohort import RadarCohortRuntime
-from .v4_15_settlement import SettlementRuntime,VectorPriceSource,AcceptedPriceSource,due_plan
+from workbench_analysis.v4_current_stage_authority import CurrentStageAuthority
+from workbench_analysis.v4_15_radar_cohort import RadarCohortRuntime
+from workbench_analysis.v4_15_settlement import SettlementRuntime,VectorPriceSource,AcceptedPriceSource,due_plan
 
 def canonical(value):return json.dumps(value,sort_keys=True,separators=(',',':'),ensure_ascii=False,allow_nan=False)
 def digest(value):return hashlib.sha256(canonical(value).encode()).hexdigest()
@@ -35,7 +35,7 @@ class ShadowRuntimeController:
         self.activation=json.loads(exact(self.root,self.deps['activation']))
         check(self.activation['runtime_authorized'] is False and self.activation['real_shadow_authorized'] is False,'CANDIDATE_ACTIVATION_MUST_BE_DISABLED')
         for binding in self.deps['bindings']:exact(self.root,binding)
-        from .v4_portable_exact import PortableExact
+        from workbench_analysis.v4_portable_exact import PortableExact
         portable=PortableExact(self.root)
         self.portability_receipts=[]
         for binding in self.deps['owner_heads'].values():
@@ -230,13 +230,13 @@ candidate accepts only version-bound immutable engineering owner output fixtures
             from src.v4.confirmation import detect_confirmation
             return detect_confirmation
         if stage=='v4_12':
-            from .v4_12_structure_engine import StructureEngine
+            from workbench_analysis.v4_12_structure_engine import StructureEngine
             return StructureEngine
         if stage=='v4_13':
-            from .v4_13_profile_runtime import ProfileRuntime
+            from workbench_analysis.v4_13_profile_runtime import ProfileRuntime
             return ProfileRuntime
         if stage=='v4_14':
-            from .v4_14_precall_runtime import replay
+            from workbench_analysis.v4_14_precall_runtime import replay
             return replay
 
 class RealtimeCohortEnrollmentWriter:

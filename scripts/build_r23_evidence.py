@@ -22,7 +22,7 @@ def build():
     atomic('reports/r23/STORAGE_SCHEMA_GATE.json',dict(status='PASS_LOCAL',migration=ref('migrations/v4_16_r23_shadow_v1.sql'),actual_sqlite_schema=schema,database=result['database'],production_migration_applied=False))
     db.close()
     inventory=['ShadowRuntimeController','ClockPolicyResolver','SourceReadinessReceiptRegistry','ObservationSlotPlanner','MandatorySourceFreezeBuilder','ShadowPriorStateReader','ShadowPublicationBuilder','ShadowPublicationAcceptanceTransaction','RealtimeCohortEnrollmentWriter','DailyMembershipSnapshotWriter','DueOutboxScheduler','SettlementWorkerOrchestrator','ShadowHealthReceiptWriter','ShadowReadbackReader','RollbackController']
-    atomic('reports/r23/RUNTIME_COMPONENT_INVENTORY.json',dict(status='PASS_LOCAL',components=inventory,implementation=ref('src/workbench_analysis/v4_16_shadow_runtime.py'),business_dependency_policy=read(DEPS)['accepted_producer_scope'],runtime_activation='NOT_AUTHORIZED'))
+    atomic('reports/r23/RUNTIME_COMPONENT_INVENTORY.json',dict(status='PASS_LOCAL',components=inventory,implementation=ref('scripts/v4_16_shadow_runtime.py'),business_dependency_policy=read(DEPS)['accepted_producer_scope'],runtime_activation='NOT_AUTHORIZED'))
     atomic('reports/r23/R22R1_EXTERNAL_ACCEPTANCE_BINDING.json',dict(status='FORMALIZED',accepted_head=ref(ACCEPT),external_authority=ref(AUDIT),engineering_entry_only=True,runtime_authorized=False))
     atomic('reports/r23/PROTECTED_BYTES.json',oracle.protected())
     atomic('reports/r23/ROLLBACK_DRILL.json',dict(status='PASS_LOCAL',receipt=positive['rollback'],negative_deletion_attempt='N24',persisted_database=result['database'],pending_obligations=5,accepted_observations_preserved=2))

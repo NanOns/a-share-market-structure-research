@@ -4,7 +4,7 @@ import pytest
 from scripts.r23_io import ROOT,AUTH,DEPS,read,atomic,ref
 from scripts.run_r23_engineering import prepare,request,receipt,positive
 from scripts import validate_r23_runtime as oracle
-from workbench_analysis.v4_16_shadow_runtime import *
+from scripts.v4_16_shadow_runtime import *
 
 REJECTIONS=[]
 @pytest.fixture

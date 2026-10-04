@@ -17,3 +17,5 @@ All original baseline files are protected; only additive .gitattributes is edite
 All prior PRE16/R21/R22/R22R1 suites and R23 tests run without deselection. The exact tested source receives an immutable Git tag; clean detached regression and independent persisted-evidence inspection precede the evidence-only seal commit. Push is delivery, not external acceptance.
 
 NEXT=STOP_WAIT_R23_INDEPENDENT_EXTERNAL_AUDIT
+
+Regression revision R2: the first committed candidate added the new module under src, which historical PRE16/R21 validators correctly reject as any src delta. The module is relocated to scripts/v4_16_shadow_runtime.py; no old guard or accepted business file is changed. First-attempt logs are preserved in ATTEMPT_R1_DISPOSITION and attempt_r1_* artifacts. All suites are rerun; the final tested source uses immutable tag codex/r23-runtime-tested-source-20261004-r2.

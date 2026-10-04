@@ -1,7 +1,7 @@
 """Engineering-only persisted E2E driver. No current market data consumption."""
 import copy,json,uuid
 from scripts.r23_io import *
-from workbench_analysis.v4_16_shadow_runtime import *
+from scripts.v4_16_shadow_runtime import *
 
 def receipt(controller,key,receipt_id,family,revision='R1'):
     return dict(receipt_id=receipt_id,receipt_kind='ACCEPTED_LOCAL_OBSERVATION_ACQUISITION',source_family=family,source_identity='R23_'+family,source_revision=revision,source_digest=controller.registry['bindings'][key]['sha256'],first_observed_at='2026-09-28T12:59:00Z',system_available_at='2026-09-28T12:59:00Z',integrity_passed_at='2026-09-28T12:59:00Z',accepted=True,integrity_pass=True,target_trade_date='2026-09-28',created_at='2026-09-28T12:59:00Z',evidence_origin='ENGINEERING_FIXTURE')

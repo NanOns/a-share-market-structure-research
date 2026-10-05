@@ -1,0 +1,189 @@
+{
+  "artifact_type": "CONDITIONAL_STATISTICS_BASELINE",
+  "contract_id": "CONDITIONAL_EXPECTANCY_V1",
+  "contract_digest": "23ef69de6a41b9517afc50cc689d251f12b54c7a742a8d8bde51f46be025c906",
+  "dataset_id": "E2_E1_OWNER_ENGINEERING_NO_LABEL_V1",
+  "dataset_digest": "ed138a8875c95a63a4d6c2455954525bbe0e872652f547f2a8ff43ddef6c6766",
+  "e1_dataset_digest": "759bfeefcad44bef0a44ab98210a37783b667504b2ff3dc60a165be199922f9d",
+  "feature_contract_id": "FEP_FEATURE_OWNER_V1",
+  "target_contract_id": "FEP_E1_TARGETS_V1",
+  "fold_id": "E2_ENGINEERING",
+  "partition_name": "FIT",
+  "label_revision_selections": [
+    {
+      "fold_id": "E2_ENGINEERING",
+      "partition_name": "FIT",
+      "observation_id": "7402d22e42df49c7dd0deb90190315c26842f3c93b792f14940f9d867e563fe8",
+      "target_id": "ABS_RETURN_N:T1",
+      "eligibility": "MISSING_LABEL",
+      "selected_label_revision": null,
+      "selected_label_digest": null,
+      "selection_reason": "NO_ASOF_REVISION"
+    }
+  ],
+  "complete_denominator_digest": "964e3d0e2a78831d6937b688f1c949f0f828ea748386fdaa4bd1ae167b1612c8",
+  "scope": "FEP_STOCK_ENTRY_CORE",
+  "base_identity": "ab6cd0889331622f202c2d2d781e36295da534097966412925d7d60f2825bbe0",
+  "base_partition": {
+    "entity_type": "STOCK",
+    "observation_scope": "FEP_STOCK_ENTRY_CORE",
+    "signal_type": "ENTRY",
+    "target": "ABS_RETURN_N:T1",
+    "horizon": 1,
+    "feature_variant": "CORE",
+    "evidence_origin": "RECONSTRUCTED_ASOF",
+    "label_quality_policy": "E1_VISIBLE_TRAINABLE_ONLY",
+    "contract_versions": {
+      "feature": "FEP_FEATURE_OWNER_V1",
+      "target": "FEP_E1_TARGETS_V1"
+    }
+  },
+  "support_policy_id": "FEP_E2_SUPPORT_POLICY_V1",
+  "support_policy_digest": "97b5d90014e1cf28c163c9fe5889c9882840d6f06d275709468dda707a921bef",
+  "selected_level": null,
+  "condition_tuple": {},
+  "support_state": "NOT_EVALUABLE",
+  "counts": {
+    "rows": 0,
+    "dates": 0,
+    "blocks": 0,
+    "entities": 0,
+    "episodes": 0
+  },
+  "statistics": {},
+  "weight_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+  "denominator_summary": {
+    "expected": 1,
+    "eligible": 0,
+    "statuses": {
+      "MISSING_LABEL": 1
+    },
+    "missing_fraction": 1.0,
+    "representativeness_total_variation": {
+      "trade_date": null,
+      "sector": null,
+      "regime": null,
+      "risk": null,
+      "feature_support": null
+    },
+    "estimand": "COMPLETE_CASE_DESCRIPTIVE"
+  },
+  "backoff_trace": [
+    {
+      "level": "L4",
+      "state": "NOT_EVALUABLE",
+      "counts": {
+        "rows": 0,
+        "dates": 0,
+        "blocks": 0,
+        "entities": 0,
+        "episodes": 0
+      },
+      "diagnostic": {
+        "expected": 1,
+        "eligible": 0,
+        "statuses": {
+          "MISSING_LABEL": 1
+        },
+        "missing_fraction": 1.0,
+        "representativeness_total_variation": {
+          "trade_date": null,
+          "sector": null,
+          "regime": null,
+          "risk": null,
+          "feature_support": null
+        },
+        "estimand": "COMPLETE_CASE_DESCRIPTIVE"
+      }
+    },
+    {
+      "level": "L3",
+      "state": "NOT_EVALUABLE",
+      "counts": {
+        "rows": 0,
+        "dates": 0,
+        "blocks": 0,
+        "entities": 0,
+        "episodes": 0
+      },
+      "diagnostic": {
+        "expected": 1,
+        "eligible": 0,
+        "statuses": {
+          "MISSING_LABEL": 1
+        },
+        "missing_fraction": 1.0,
+        "representativeness_total_variation": {
+          "trade_date": null,
+          "sector": null,
+          "regime": null,
+          "risk": null,
+          "feature_support": null
+        },
+        "estimand": "COMPLETE_CASE_DESCRIPTIVE"
+      }
+    },
+    {
+      "level": "L2",
+      "state": "NOT_EVALUABLE",
+      "counts": {
+        "rows": 0,
+        "dates": 0,
+        "blocks": 0,
+        "entities": 0,
+        "episodes": 0
+      },
+      "diagnostic": {
+        "expected": 1,
+        "eligible": 0,
+        "statuses": {
+          "MISSING_LABEL": 1
+        },
+        "missing_fraction": 1.0,
+        "representativeness_total_variation": {
+          "trade_date": null,
+          "sector": null,
+          "regime": null,
+          "risk": null,
+          "feature_support": null
+        },
+        "estimand": "COMPLETE_CASE_DESCRIPTIVE"
+      }
+    },
+    {
+      "level": "L1",
+      "state": "NOT_EVALUABLE",
+      "counts": {
+        "rows": 0,
+        "dates": 0,
+        "blocks": 0,
+        "entities": 0,
+        "episodes": 0
+      },
+      "diagnostic": {
+        "expected": 1,
+        "eligible": 0,
+        "statuses": {
+          "MISSING_LABEL": 1
+        },
+        "missing_fraction": 1.0,
+        "representativeness_total_variation": {
+          "trade_date": null,
+          "sector": null,
+          "regime": null,
+          "risk": null,
+          "feature_support": null
+        },
+        "estimand": "COMPLETE_CASE_DESCRIPTIVE"
+      }
+    }
+  ],
+  "diagnostic_only": true,
+  "full_population_claim": false,
+  "production": false,
+  "MODEL_DISPLAY": "UNGRANTED",
+  "PRIORITY_USE": "UNGRANTED",
+  "logical_digest": "c66588e25c8b59e68f800c087e3da757aa18d87235dfdab337fcfd5f6270786f",
+  "artifact_id": "FEP_E2:c66588e25c8b59e68f800c087e3da757aa18d87235dfdab337fcfd5f6270786f",
+  "created_at": "2026-10-05T09:49:22.604806+00:00"
+}

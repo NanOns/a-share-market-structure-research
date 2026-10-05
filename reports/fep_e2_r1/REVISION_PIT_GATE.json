@@ -1,0 +1,274 @@
+{
+  "status": "PASS_ENGINEERING_COUNTERFACTUAL",
+  "source_latest_revision": 3,
+  "early_cutoff": "2026-10-01T12:00:00Z",
+  "early_selected_revision": 1,
+  "late_cutoff": "2026-10-02T12:00:00Z",
+  "late_selected_revision": 2,
+  "early_artifact_unchanged": true,
+  "early_artifact": {
+    "artifact_type": "CONDITIONAL_STATISTICS_BASELINE",
+    "contract_id": "CONDITIONAL_EXPECTANCY_V1",
+    "contract_digest": "77811746f2b55a0ec267ce02de081539b8edcc3f7ca7638ec96949eb2f3c9ea2",
+    "dataset_id": "ENGINEERING_VECTOR",
+    "dataset_digest": "8a794b72a7fc5fa6e8684ce69a86fd173c73d9a50448945afa753a0337889d06",
+    "e1_dataset_digest": "bc96afad07dddbfb8ea3c698cfcf96bad9c7af1fd60f3d1f08fafe1a5e1ddbbc",
+    "feature_contract_id": "FEATURE_V1",
+    "target_contract_id": "TARGET_V1",
+    "fold_id": "f1",
+    "partition_name": "FIT",
+    "label_revision_selections": [
+      {
+        "fold_id": "f1",
+        "partition_name": "FIT",
+        "observation_id": "o0",
+        "target_id": "target",
+        "eligibility": "ELIGIBLE",
+        "selected_label_revision": 1,
+        "selected_label_digest": "ffe616e28103a848cc8a18531f5ba096e153b50c6d597297ad5cb69e39496f6a",
+        "selection_reason": "LATEST_VISIBLE_TRAINABLE"
+      },
+      {
+        "fold_id": "f1",
+        "partition_name": "FIT",
+        "observation_id": "o1",
+        "target_id": "target",
+        "eligibility": "ELIGIBLE",
+        "selected_label_revision": 1,
+        "selected_label_digest": "44896b09365746b5f7167ee4d64988a38f7f4628803cbf86224e74eeb7c69e9d",
+        "selection_reason": "LATEST_VISIBLE_TRAINABLE"
+      }
+    ],
+    "complete_denominator_digest": "b5c0edd830d1a3fc91c9982bdb1650ee2922348050295a1020d8e54e713d9ddd",
+    "scope": "FEP_STOCK_ENTRY_CORE",
+    "base_identity": "dcd957db55e344a6a8fc5265e303977f94d7227935baa22e6e9be90bd301fd2d",
+    "base_partition": {
+      "entity_type": "STOCK",
+      "observation_scope": "FEP_STOCK_ENTRY_CORE",
+      "signal_type": "ENTRY",
+      "target": "target",
+      "horizon": 1,
+      "feature_variant": "CORE",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "label_quality_policy": "ENGINEERING",
+      "contract_versions": {
+        "feature": "V1",
+        "target": "V1"
+      }
+    },
+    "support_policy_id": "TEST_ONLY_NOT_ADMITTED",
+    "support_policy_digest": "6472dab2696017c23ed39844975fa86f1ca88bb64b53d527b46a5a9e54eca416",
+    "selected_level": "L4",
+    "condition_tuple": {
+      "regime": "R",
+      "trend": "T",
+      "position": "P",
+      "risk": "K"
+    },
+    "support_state": "SUPPORTED",
+    "counts": {
+      "rows": 2,
+      "dates": 2,
+      "blocks": 2,
+      "entities": 2,
+      "episodes": 2
+    },
+    "statistics": {
+      "weighted_mean": 0.05,
+      "positive_empirical_frequency": 0.5,
+      "p25": -0.1,
+      "p50": -0.1,
+      "p75": 0.2,
+      "minimum": -0.1,
+      "maximum": 0.2,
+      "dispersion_is_confidence_interval": false
+    },
+    "weight_digest": "d867ef7e2f31bfeb41d66efd4bf0adcf7975e93fb75608fd36f64d701ca7ef15",
+    "denominator_summary": {
+      "expected": 2,
+      "eligible": 2,
+      "statuses": {
+        "ELIGIBLE": 2
+      },
+      "missing_fraction": 0.0,
+      "representativeness_total_variation": {
+        "trade_date": 0.0,
+        "sector": 0.0,
+        "regime": 0.0,
+        "risk": 0.0,
+        "feature_support": 0.0
+      },
+      "estimand": "COMPLETE_CASE_DESCRIPTIVE"
+    },
+    "backoff_trace": [
+      {
+        "level": "L4",
+        "state": "SUPPORTED",
+        "counts": {
+          "rows": 2,
+          "dates": 2,
+          "blocks": 2,
+          "entities": 2,
+          "episodes": 2
+        },
+        "diagnostic": {
+          "expected": 2,
+          "eligible": 2,
+          "statuses": {
+            "ELIGIBLE": 2
+          },
+          "missing_fraction": 0.0,
+          "representativeness_total_variation": {
+            "trade_date": 0.0,
+            "sector": 0.0,
+            "regime": 0.0,
+            "risk": 0.0,
+            "feature_support": 0.0
+          },
+          "estimand": "COMPLETE_CASE_DESCRIPTIVE"
+        }
+      }
+    ],
+    "diagnostic_only": false,
+    "full_population_claim": false,
+    "production": false,
+    "MODEL_DISPLAY": "UNGRANTED",
+    "PRIORITY_USE": "UNGRANTED",
+    "logical_digest": "4ccbb9f5f2c8febc7abb1c16f134725ee3d47dcbf3ad4ff65ae85e0db69e7142",
+    "artifact_id": "FEP_E2:4ccbb9f5f2c8febc7abb1c16f134725ee3d47dcbf3ad4ff65ae85e0db69e7142",
+    "created_at": "2026-10-05T10:00:00Z"
+  },
+  "late_artifact": {
+    "artifact_type": "CONDITIONAL_STATISTICS_BASELINE",
+    "contract_id": "CONDITIONAL_EXPECTANCY_V1",
+    "contract_digest": "77811746f2b55a0ec267ce02de081539b8edcc3f7ca7638ec96949eb2f3c9ea2",
+    "dataset_id": "ENGINEERING_VECTOR",
+    "dataset_digest": "b438b820a72f4fe93db80c7e690f6f377a2804a487db5c6b5fb84abaa74325b8",
+    "e1_dataset_digest": "9079bf430e19fd768608818bf9e1fb92fcbc5a5cb81f81e31a16d3810fdfc99e",
+    "feature_contract_id": "FEATURE_V1",
+    "target_contract_id": "TARGET_V1",
+    "fold_id": "f1",
+    "partition_name": "FIT",
+    "label_revision_selections": [
+      {
+        "fold_id": "f1",
+        "partition_name": "FIT",
+        "observation_id": "o0",
+        "target_id": "target",
+        "eligibility": "ELIGIBLE",
+        "selected_label_revision": 2,
+        "selected_label_digest": "25f51e965c8950a9330c19b74b3be36cf425b06ac3183ff4c781cb5f90145d60",
+        "selection_reason": "LATEST_VISIBLE_TRAINABLE"
+      },
+      {
+        "fold_id": "f1",
+        "partition_name": "FIT",
+        "observation_id": "o1",
+        "target_id": "target",
+        "eligibility": "ELIGIBLE",
+        "selected_label_revision": 2,
+        "selected_label_digest": "f3e360d89952f40d3b79d0b07dd0b94f1cbf9017cba5d2a5f8128e4146d6e3c1",
+        "selection_reason": "LATEST_VISIBLE_TRAINABLE"
+      }
+    ],
+    "complete_denominator_digest": "71677c0ed6114ed7a7678709aaef4d2726379c229f9172edefa4313cbadd7a1b",
+    "scope": "FEP_STOCK_ENTRY_CORE",
+    "base_identity": "dcd957db55e344a6a8fc5265e303977f94d7227935baa22e6e9be90bd301fd2d",
+    "base_partition": {
+      "entity_type": "STOCK",
+      "observation_scope": "FEP_STOCK_ENTRY_CORE",
+      "signal_type": "ENTRY",
+      "target": "target",
+      "horizon": 1,
+      "feature_variant": "CORE",
+      "evidence_origin": "RECONSTRUCTED_ASOF",
+      "label_quality_policy": "ENGINEERING",
+      "contract_versions": {
+        "feature": "V1",
+        "target": "V1"
+      }
+    },
+    "support_policy_id": "TEST_ONLY_NOT_ADMITTED",
+    "support_policy_digest": "6472dab2696017c23ed39844975fa86f1ca88bb64b53d527b46a5a9e54eca416",
+    "selected_level": "L4",
+    "condition_tuple": {
+      "regime": "R",
+      "trend": "T",
+      "position": "P",
+      "risk": "K"
+    },
+    "support_state": "SUPPORTED",
+    "counts": {
+      "rows": 2,
+      "dates": 2,
+      "blocks": 2,
+      "entities": 2,
+      "episodes": 2
+    },
+    "statistics": {
+      "weighted_mean": 0.1,
+      "positive_empirical_frequency": 0.5,
+      "p25": -0.2,
+      "p50": -0.2,
+      "p75": 0.4,
+      "minimum": -0.2,
+      "maximum": 0.4,
+      "dispersion_is_confidence_interval": false
+    },
+    "weight_digest": "d867ef7e2f31bfeb41d66efd4bf0adcf7975e93fb75608fd36f64d701ca7ef15",
+    "denominator_summary": {
+      "expected": 2,
+      "eligible": 2,
+      "statuses": {
+        "ELIGIBLE": 2
+      },
+      "missing_fraction": 0.0,
+      "representativeness_total_variation": {
+        "trade_date": 0.0,
+        "sector": 0.0,
+        "regime": 0.0,
+        "risk": 0.0,
+        "feature_support": 0.0
+      },
+      "estimand": "COMPLETE_CASE_DESCRIPTIVE"
+    },
+    "backoff_trace": [
+      {
+        "level": "L4",
+        "state": "SUPPORTED",
+        "counts": {
+          "rows": 2,
+          "dates": 2,
+          "blocks": 2,
+          "entities": 2,
+          "episodes": 2
+        },
+        "diagnostic": {
+          "expected": 2,
+          "eligible": 2,
+          "statuses": {
+            "ELIGIBLE": 2
+          },
+          "missing_fraction": 0.0,
+          "representativeness_total_variation": {
+            "trade_date": 0.0,
+            "sector": 0.0,
+            "regime": 0.0,
+            "risk": 0.0,
+            "feature_support": 0.0
+          },
+          "estimand": "COMPLETE_CASE_DESCRIPTIVE"
+        }
+      }
+    ],
+    "diagnostic_only": false,
+    "full_population_claim": false,
+    "production": false,
+    "MODEL_DISPLAY": "UNGRANTED",
+    "PRIORITY_USE": "UNGRANTED",
+    "logical_digest": "ca372d8aeda809b368992f23149f6f7125541f41c19eb50fe914e7923e21e163",
+    "artifact_id": "FEP_E2:ca372d8aeda809b368992f23149f6f7125541f41c19eb50fe914e7923e21e163",
+    "created_at": "2026-10-05T10:00:00Z"
+  },
+  "policy_scope": "TEST_ONLY_NOT_ADMITTED"
+}

@@ -1,0 +1,37 @@
+{
+  "items": [
+    {
+      "audit_id": "FEP_E1_BASELINE_52_FAILURES",
+      "status": "OPEN_EXISTING_OWNER_DEBT",
+      "scope": "43 registered + 9 independently reproduced pre-FEP failures",
+      "evidence": {
+        "path": "reports/fep_e2_r1/SCOPED_REGRESSION_SUMMARY.json",
+        "bytes": 17626,
+        "sha256": "41f93549fa3653ce42619be18d9e923c2403fae4d2567aa2840fa82431838123"
+      },
+      "acceptance": "Separate owner-stage repair; zero new active failures required by E2"
+    },
+    {
+      "audit_id": "FEP_E1_LEGACY_MIGRATION_REGISTRATION_GAP",
+      "status": "OPEN_EXISTING_INFRASTRUCTURE_DEBT",
+      "scope": "014..027 registration",
+      "evidence": {
+        "path": "reports/fep_e1_r2_final/INDEPENDENT_AUDIT_ITEMS.json",
+        "bytes": 1355,
+        "sha256": "24c5374bf8c40561b117f3e6651e167cba045bcc5cbd29c1d76c752570bd21a8"
+      },
+      "acceptance": "Independent infrastructure owner repair"
+    },
+    {
+      "audit_id": "FEP_E2_SUPPORT_THRESHOLD_EVIDENCE_GAP",
+      "status": "OPEN_BLOCKING_E2",
+      "scope": "No exact-bound multi-date mature outcome population for threshold discovery",
+      "evidence": {
+        "path": "reports/fep_e2_r1/SUPPORT_POLICY_DISCOVERY.json",
+        "bytes": 1168,
+        "sha256": "70a360222ba46a159a4c515c048de72dfd57594a37f91bd2f169e629bd6373f7"
+      },
+      "acceptance": "External disposition or exact-bound historical engineering dataset with dependence/class/missingness inventory; preregister justified thresholds before outcome statistics"
+    }
+  ]
+}

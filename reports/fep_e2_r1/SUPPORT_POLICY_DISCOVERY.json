@@ -1,0 +1,44 @@
+{
+  "dependence": {
+    "rows": 0,
+    "dates": 0,
+    "blocks": 0,
+    "entities": 0,
+    "episodes": 0
+  },
+  "coverage": {
+    "expected": 1,
+    "eligible": 0,
+    "statuses": {
+      "MISSING_LABEL": 1
+    },
+    "missing_fraction": 1.0,
+    "representativeness_total_variation": {
+      "trade_date": null,
+      "sector": null,
+      "regime": null,
+      "risk": null,
+      "feature_support": null
+    },
+    "estimand": "COMPLETE_CASE_DESCRIPTIVE"
+  },
+  "class_counts": {},
+  "input_digest": "964e3d0e2a78831d6937b688f1c949f0f828ea748386fdaa4bd1ae167b1612c8",
+  "excluded": [
+    "outcome",
+    "mean",
+    "positive_rate",
+    "quantile",
+    "best_backoff",
+    "Priority"
+  ],
+  "discovered_at": "2026-10-05T09:49:22.602904+00:00",
+  "status": "INSUFFICIENT_THRESHOLD_EVIDENCE",
+  "reason": "0 eligible labels; one expected date/entity. No multi-date historical outcome population exact-bound in E1 acceptance.",
+  "block_simulation": {
+    "eligible_intervals": [],
+    "non_overlap_blocks": 0
+  },
+  "class_feasibility": "NO_ADMITTED_OUTCOME_CLASSES",
+  "threshold_derivation": "UNSET; unit-test policies are counterexamples, not admission evidence"
+}

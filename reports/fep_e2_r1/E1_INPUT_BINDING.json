@@ -1,0 +1,122 @@
+{
+  "dataset": {
+    "dataset_id": "E2_E1_OWNER_ENGINEERING_NO_LABEL_V1",
+    "feature_contract_id": "FEP_FEATURE_OWNER_V1",
+    "target_contract_id": "FEP_E1_TARGETS_V1",
+    "fold_id": "E2_ENGINEERING",
+    "partition_name": "FIT",
+    "target": "ABS_RETURN_N:T1",
+    "target_kind": "CONTINUOUS",
+    "classes": [],
+    "e1_dataset_digest": "759bfeefcad44bef0a44ab98210a37783b667504b2ff3dc60a165be199922f9d",
+    "e1_frozen_payload": {
+      "denominator": [
+        {
+          "observation_id": "7402d22e42df49c7dd0deb90190315c26842f3c93b792f14940f9d867e563fe8",
+          "target_id": "ABS_RETURN_N:T1",
+          "scope_id": "FEP_STOCK_ENTRY_CORE",
+          "horizon": 1,
+          "status": "EXPECTED"
+        }
+      ],
+      "folds": [
+        {
+          "fold_id": "E2_ENGINEERING",
+          "partition_name": "FIT",
+          "observation_ids": [
+            "7402d22e42df49c7dd0deb90190315c26842f3c93b792f14940f9d867e563fe8"
+          ],
+          "fold_dataset_cutoff": "2026-10-05T09:49:22.601556+00:00",
+          "phase_started_at": "2026-10-05T09:49:22.601556+00:00"
+        }
+      ],
+      "selections": [
+        {
+          "fold_id": "E2_ENGINEERING",
+          "partition_name": "FIT",
+          "observation_id": "7402d22e42df49c7dd0deb90190315c26842f3c93b792f14940f9d867e563fe8",
+          "target_id": "ABS_RETURN_N:T1",
+          "eligibility": "MISSING_LABEL",
+          "selected_label_revision": null,
+          "selected_label_digest": null,
+          "selection_reason": "NO_ASOF_REVISION"
+        }
+      ],
+      "rows": [],
+      "digest": "759bfeefcad44bef0a44ab98210a37783b667504b2ff3dc60a165be199922f9d"
+    },
+    "selections": [
+      {
+        "fold_id": "E2_ENGINEERING",
+        "partition_name": "FIT",
+        "observation_id": "7402d22e42df49c7dd0deb90190315c26842f3c93b792f14940f9d867e563fe8",
+        "target_id": "ABS_RETURN_N:T1",
+        "eligibility": "MISSING_LABEL",
+        "selected_label_revision": null,
+        "selected_label_digest": null,
+        "selection_reason": "NO_ASOF_REVISION"
+      }
+    ],
+    "denominator": [
+      {
+        "observation_id": "7402d22e42df49c7dd0deb90190315c26842f3c93b792f14940f9d867e563fe8",
+        "entity_id": "SEC-00096141BD5420F5CB3120E687CDA5B9",
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "ENTRY",
+        "target": "ABS_RETURN_N:T1",
+        "horizon": 1,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_ASOF",
+        "label_quality_policy": "E1_VISIBLE_TRAINABLE_ONLY",
+        "contract_versions": {
+          "feature": "FEP_FEATURE_OWNER_V1",
+          "target": "FEP_E1_TARGETS_V1"
+        },
+        "trade_date": "2026-09-24",
+        "date_ordinal": 0,
+        "label_end_ordinal": 1,
+        "episode_start": 0,
+        "episode_end": 1,
+        "regime": "MISSING",
+        "trend": "MISSING",
+        "position": "MISSING",
+        "risk": "MISSING",
+        "feature_support": "NOT_PROJECTED",
+        "sector": "UNAVAILABLE",
+        "support_class": "UNAVAILABLE",
+        "status": "MISSING_LABEL"
+      }
+    ],
+    "rows": [],
+    "digest": "ed138a8875c95a63a4d6c2455954525bbe0e872652f547f2a8ff43ddef6c6766"
+  },
+  "sources": [
+    {
+      "path": "reports/fep_e1_r2_final/ENGINEERING_OBSERVATION.json",
+      "bytes": 485,
+      "sha256": "c4a8724dc4bbd95bd5aaebee0bb335552153698d6e2fdc3720308f731dd4a5e6"
+    },
+    {
+      "path": "reports/fep_e1_r2_final/ENGINEERING_SNAPSHOT.json",
+      "bytes": 27779,
+      "sha256": "5e48ded147c0a5f98921de57bd1f37e3b8a28631550c3e5a7afef04d3dd87559"
+    },
+    {
+      "path": "config/fep_feature_owner_contract_v1.json",
+      "bytes": 84680,
+      "sha256": "bd9bb9eba32658ba0430debeac2207633a4c7e777ffe946503736c6527566a69"
+    },
+    {
+      "path": "config/fep_target_registry_v1.json",
+      "bytes": 25479,
+      "sha256": "1ac08f5c30e2c6748346fcc5bdbc48c1a148f67cd656fad3357710925a48eeec"
+    },
+    {
+      "path": "reports/fep_e1_r2_final/FEP_E1_R2_CANDIDATE_SEAL.json",
+      "bytes": 11009,
+      "sha256": "cc4b2ca3abce16339959f17c0d1ecbc023a48d818fcfdd69e20e5f0ac0b58a9f"
+    }
+  ],
+  "source_boundary": "Accepted single engineering observation; zero admitted mature label bindings. No synthetic labels substituted."
+}

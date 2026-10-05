@@ -1,0 +1,1493 @@
+2026-10-05 14:20:34.959 CST [42348] LOG:  starting PostgreSQL 18.6 on x86_64-windows, compiled by msvc-19.44.35228, 64-bit
+2026-10-05 14:20:34.960 CST [42348] LOG:  listening on IPv4 address "127.0.0.1", port 55488
+2026-10-05 14:20:35.000 CST [9172] LOG:  database system was shut down at 2026-10-05 14:20:15 CST
+2026-10-05 14:20:35.009 CST [42348] LOG:  database system is ready to accept connections
+2026-10-05 14:20:36.825 CST [22116] ERROR:  FEP_CAS_CONFLICT
+2026-10-05 14:20:36.825 CST [22116] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE
+2026-10-05 14:20:36.825 CST [22116] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:20:36.921 CST [46720] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 14:20:36.921 CST [46720] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 14:20:36.921 CST [46720] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:20:36.968 CST [32956] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 14:20:36.968 CST [32956] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 14:20:36.968 CST [32956] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:20:37.129 CST [37792] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 14:20:37.129 CST [37792] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 14:20:37.129 CST [37792] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:20:37.283 CST [44808] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 14:20:37.283 CST [44808] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 14:20:37.283 CST [44808] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:20:37.330 CST [32524] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 14:20:37.330 CST [32524] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 14:20:37.330 CST [32524] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:20:37.384 CST [45872] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 14:20:37.384 CST [45872] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 14:20:37.384 CST [45872] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:20:37.431 CST [28124] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 14:20:37.431 CST [28124] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 14:20:37.431 CST [28124] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:20:37.474 CST [53380] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 14:20:37.474 CST [53380] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 14:20:37.474 CST [53380] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:20:37.517 CST [35072] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 14:20:37.517 CST [35072] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 14:20:37.517 CST [35072] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:20:37.564 CST [54888] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 14:20:37.564 CST [54888] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 14:20:37.564 CST [54888] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:20:37.606 CST [54776] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 14:20:37.606 CST [54776] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 14:20:37.606 CST [54776] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:20:37.656 CST [54984] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 14:20:37.656 CST [54984] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 14:20:37.656 CST [54984] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:20:37.701 CST [53884] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 14:20:37.701 CST [53884] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 14:20:37.701 CST [53884] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:20:37.744 CST [4060] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 14:20:37.744 CST [4060] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 14:20:37.744 CST [4060] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:20:37.802 CST [44964] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 14:20:37.802 CST [44964] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 14:20:37.802 CST [44964] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:20:37.804 CST [44964] ERROR:  FEP_CAS_CONFLICT
+2026-10-05 14:20:37.804 CST [44964] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE
+2026-10-05 14:20:37.804 CST [44964] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:20:37.855 CST [34892] ERROR:  FEP_CAS_CONFLICT
+2026-10-05 14:20:37.855 CST [34892] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE
+2026-10-05 14:20:37.855 CST [34892] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:20:37.911 CST [51620] ERROR:  FEP_HEAD_ACTIVATION_INVALID
+2026-10-05 14:20:37.911 CST [51620] CONTEXT:  PL/pgSQL function validate_deployment_head() line 6 at RAISE
+2026-10-05 14:20:37.911 CST [51620] STATEMENT:  insert into fep.deployment_heads values ($1,'SHADOW_INFERENCE','ABS:T5',5,'FEATURE','set1','g1','future',1,$2)
+2026-10-05 14:20:38.058 CST [48252] ERROR:  permission denied for function cas_deploy
+2026-10-05 14:20:38.058 CST [48252] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:20:38.118 CST [42136] ERROR:  permission denied for table deployment_heads
+2026-10-05 14:20:38.118 CST [42136] STATEMENT:  update fep.deployment_heads set head_version=2
+2026-10-05 14:20:38.118 CST [42136] ERROR:  permission denied for table deployment_heads
+2026-10-05 14:20:38.118 CST [42136] STATEMENT:  delete from fep.deployment_heads
+2026-10-05 14:20:38.119 CST [42136] ERROR:  permission denied for table contracts
+2026-10-05 14:20:38.119 CST [42136] STATEMENT:  update fep.contracts set version='x'
+2026-10-05 14:20:38.119 CST [42136] ERROR:  must be owner of table deployment_heads
+2026-10-05 14:20:38.119 CST [42136] STATEMENT:  alter table fep.deployment_heads disable trigger all
+2026-10-05 14:20:38.120 CST [42136] ERROR:  permission denied to set role "fep_cas_owner"
+2026-10-05 14:20:38.120 CST [42136] STATEMENT:  set role fep_cas_owner
+2026-10-05 14:20:38.768 CST [53140] ERROR:  FEP_CAS_CONFLICT
+2026-10-05 14:20:38.768 CST [53140] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE
+2026-10-05 14:20:38.768 CST [53140] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:20:38.960 CST [53492] ERROR:  query returned no rows
+2026-10-05 14:20:38.960 CST [53492] CONTEXT:  PL/pgSQL function validate_observation() line 4 at SQL statement
+2026-10-05 14:20:38.960 CST [53492] STATEMENT:  insert into fep.observations values ($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:20:39.106 CST [36968] ERROR:  insert or update on table "label_revisions" violates foreign key constraint "label_revisions_observation_id_scope_id_fkey"
+2026-10-05 14:20:39.106 CST [36968] DETAIL:  Key (observation_id, scope_id)=(o, OTHER) is not present in table "observations".
+2026-10-05 14:20:39.106 CST [36968] STATEMENT:  insert into fep.label_revisions values ('o','OTHER','ABS:T5',1,2,$1,.2,null,'OBSERVED',true,$2,null)
+2026-10-05 14:20:39.152 CST [47056] ERROR:  insert or update on table "dataset_rows" violates foreign key constraint "dataset_rows_snapshot_id_observation_id_fkey"
+2026-10-05 14:20:39.152 CST [47056] DETAIL:  Key (snapshot_id, observation_id)=(snap, other) is not present in table "snapshots".
+2026-10-05 14:20:39.152 CST [47056] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 14:20:39.187 CST [53636] ERROR:  FEP_SNAPSHOT_FEATURE_CONTRACT_MISMATCH
+2026-10-05 14:20:39.187 CST [53636] CONTEXT:  PL/pgSQL function validate_snapshot() line 6 at RAISE
+2026-10-05 14:20:39.187 CST [53636] STATEMENT:  insert into fep.snapshots values ('wrong','o',1,'WINDOW',$1,$2,$3)
+2026-10-05 14:20:39.229 CST [55048] ERROR:  insert or update on table "dataset_fold_label_selection" violates foreign key constraint "dataset_fold_label_selection_observation_id_target_id_sele_fkey"
+2026-10-05 14:20:39.229 CST [55048] DETAIL:  Key (observation_id, target_id, selected_label_revision, selected_label_digest)=(o, ABS:T5, 1, d78ed9efa6ae77434392252f5e55039c106c229f28150fb5fbffbedbc40e15df) is not present in table "label_revisions".
+2026-10-05 14:20:39.229 CST [55048] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 14:20:39.272 CST [54000] ERROR:  query returned no rows
+2026-10-05 14:20:39.272 CST [54000] CONTEXT:  PL/pgSQL function validate_dataset_row() line 6 at SQL statement
+2026-10-05 14:20:39.272 CST [54000] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 14:20:39.318 CST [37508] ERROR:  FEP_FOLD_REVISION_NOT_VISIBLE
+2026-10-05 14:20:39.318 CST [37508] CONTEXT:  PL/pgSQL function validate_fold_label_selection() line 11 at RAISE
+2026-10-05 14:20:39.318 CST [37508] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 14:20:39.373 CST [39312] ERROR:  FEP_FOLD_LABEL_NOT_TRAINABLE
+2026-10-05 14:20:39.373 CST [39312] CONTEXT:  PL/pgSQL function validate_fold_label_selection() line 14 at RAISE
+2026-10-05 14:20:39.373 CST [39312] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 14:20:39.423 CST [49840] ERROR:  FEP_FOLD_REVISION_NOT_VISIBLE
+2026-10-05 14:20:39.423 CST [49840] CONTEXT:  PL/pgSQL function validate_fold_label_selection() line 11 at RAISE
+2026-10-05 14:20:39.423 CST [49840] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 14:20:39.469 CST [41580] ERROR:  FEP_FOLD_REVISION_NOT_VISIBLE
+2026-10-05 14:20:39.469 CST [41580] CONTEXT:  PL/pgSQL function validate_fold_label_selection() line 11 at RAISE
+2026-10-05 14:20:39.469 CST [41580] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 14:20:39.553 CST [51896] ERROR:  FEP_RECONSTRUCTION_NOT_PIT
+2026-10-05 14:20:39.553 CST [51896] CONTEXT:  PL/pgSQL function validate_observation_revision() line 12 at RAISE
+2026-10-05 14:20:39.553 CST [51896] STATEMENT:  insert into fep.observation_revisions values ('o',2,'PUB',$1,$2,$3,'NONE','PIT_OBSERVED','REPLAY',1,$4)
+2026-10-05 14:20:39.633 CST [53712] ERROR:  FEP_DENOMINATOR_INCOMPLETE
+2026-10-05 14:20:39.633 CST [53712] CONTEXT:  PL/pgSQL function validate_denominator_complete() line 11 at RAISE
+2026-10-05 14:20:39.633 CST [53712] STATEMENT:  set constraints all immediate
+2026-10-05 14:20:39.705 CST [51372] ERROR:  FEP_FOLD_PHASE_OVERLAP
+2026-10-05 14:20:39.705 CST [51372] CONTEXT:  PL/pgSQL function validate_dataset_row() line 15 at RAISE
+2026-10-05 14:20:39.705 CST [51372] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 14:20:39.856 CST [29396] ERROR:  FEP_FOLD_PHASE_OVERLAP
+2026-10-05 14:20:39.856 CST [29396] CONTEXT:  PL/pgSQL function validate_dataset_row() line 15 at RAISE
+2026-10-05 14:20:39.856 CST [29396] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 14:20:39.911 CST [52156] ERROR:  FEP_FOLD_PHASE_OVERLAP
+2026-10-05 14:20:39.911 CST [52156] CONTEXT:  PL/pgSQL function validate_dataset_row() line 15 at RAISE
+2026-10-05 14:20:39.911 CST [52156] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 14:20:40.017 CST [18348] ERROR:  FEP_APPEND_ONLY
+2026-10-05 14:20:40.017 CST [18348] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-05 14:20:40.017 CST [18348] STATEMENT:  update fep.contracts set version='2' where contract_id='OBS'
+2026-10-05 14:20:40.057 CST [46824] ERROR:  FEP_APPEND_ONLY
+2026-10-05 14:20:40.057 CST [46824] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-05 14:20:40.057 CST [46824] STATEMENT:  delete from fep.contracts where contract_id='OBS'
+2026-10-05 14:20:40.134 CST [35812] ERROR:  FEP_LABEL_EXACT_SOURCE_MISMATCH
+2026-10-05 14:20:40.134 CST [35812] CONTEXT:  PL/pgSQL function validate_label_revision() line 14 at RAISE
+2026-10-05 14:20:40.134 CST [35812] STATEMENT:  insert into fep.label_revisions values ('o',$1,'ABS:T5',5,2,$2,.9,null,'OBSERVED',true,$3,1)
+2026-10-05 14:20:40.174 CST [49768] ERROR:  FEP_UPSTREAM_EXACT_AUTHORITY_REQUIRED
+2026-10-05 14:20:40.174 CST [49768] CONTEXT:  PL/pgSQL function validate_label_binding() line 12 at RAISE
+2026-10-05 14:20:40.174 CST [49768] STATEMENT:  insert into fep.label_source_bindings values ('missing','OBS','key','r',$1,'2026-09-08',$2,$3,$4,$5)
+2026-10-05 14:20:40.320 CST [1744] ERROR:  duplicate key value violates unique constraint "prediction_slots_observation_id_target_id_horizon_model_fam_key"
+2026-10-05 14:20:40.320 CST [1744] DETAIL:  Key (observation_id, target_id, horizon, model_family_scope)=(o, ABS:T5, 5, CORE) already exists.
+2026-10-05 14:20:40.320 CST [1744] STATEMENT:  insert into fep.prediction_slots values ($1,'o',$2,'ABS:T5',5,'CORE',$3,$4,'NO_ACTIVE_MODEL')
+2026-10-05 14:20:40.426 CST [46180] ERROR:  type "nonexistent_type" does not exist at character 37
+2026-10-05 14:20:40.426 CST [46180] STATEMENT:  create table fep.rollback_probe (id nonexistent_type)
+2026-10-05 14:20:40.611 CST [53688] ERROR:  FEP_DENOMINATOR_INCOMPLETE
+2026-10-05 14:20:40.611 CST [53688] CONTEXT:  PL/pgSQL function validate_denominator_complete() line 11 at RAISE
+2026-10-05 14:20:40.611 CST [53688] STATEMENT:  insert into fep.datasets values ($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:08.829 CST [50372] ERROR:  FEP_CAS_CONFLICT
+2026-10-05 14:24:08.829 CST [50372] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE
+2026-10-05 14:24:08.829 CST [50372] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:08.930 CST [47632] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 14:24:08.930 CST [47632] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 14:24:08.930 CST [47632] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:08.984 CST [54844] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 14:24:08.984 CST [54844] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 14:24:08.984 CST [54844] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:09.033 CST [42492] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 14:24:09.033 CST [42492] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 14:24:09.033 CST [42492] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:09.082 CST [27980] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 14:24:09.082 CST [27980] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 14:24:09.082 CST [27980] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:09.132 CST [54628] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 14:24:09.132 CST [54628] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 14:24:09.132 CST [54628] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:09.181 CST [44000] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 14:24:09.181 CST [44000] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 14:24:09.181 CST [44000] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:09.233 CST [19972] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 14:24:09.233 CST [19972] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 14:24:09.233 CST [19972] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:09.299 CST [36224] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 14:24:09.299 CST [36224] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 14:24:09.299 CST [36224] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:09.353 CST [31452] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 14:24:09.353 CST [31452] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 14:24:09.353 CST [31452] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:09.405 CST [12900] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 14:24:09.405 CST [12900] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 14:24:09.405 CST [12900] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:09.456 CST [48852] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 14:24:09.456 CST [48852] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 14:24:09.456 CST [48852] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:09.512 CST [52548] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 14:24:09.512 CST [52548] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 14:24:09.512 CST [52548] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:09.557 CST [42580] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 14:24:09.557 CST [42580] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 14:24:09.557 CST [42580] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:09.602 CST [54684] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 14:24:09.602 CST [54684] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 14:24:09.602 CST [54684] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:09.652 CST [53940] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 14:24:09.652 CST [53940] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 14:24:09.652 CST [53940] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:09.653 CST [53940] ERROR:  FEP_CAS_CONFLICT
+2026-10-05 14:24:09.653 CST [53940] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE
+2026-10-05 14:24:09.653 CST [53940] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:09.703 CST [53976] ERROR:  FEP_CAS_CONFLICT
+2026-10-05 14:24:09.703 CST [53976] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE
+2026-10-05 14:24:09.703 CST [53976] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:09.760 CST [46128] ERROR:  FEP_HEAD_ACTIVATION_INVALID
+2026-10-05 14:24:09.760 CST [46128] CONTEXT:  PL/pgSQL function validate_deployment_head() line 6 at RAISE
+2026-10-05 14:24:09.760 CST [46128] STATEMENT:  insert into fep.deployment_heads values ($1,'SHADOW_INFERENCE','ABS:T5',5,'FEATURE','set1','g1','future',1,$2)
+2026-10-05 14:24:09.804 CST [18376] ERROR:  permission denied for function cas_deploy
+2026-10-05 14:24:09.804 CST [18376] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:09.856 CST [4060] ERROR:  permission denied for table deployment_heads
+2026-10-05 14:24:09.856 CST [4060] STATEMENT:  update fep.deployment_heads set head_version=2
+2026-10-05 14:24:09.857 CST [4060] ERROR:  permission denied for table deployment_heads
+2026-10-05 14:24:09.857 CST [4060] STATEMENT:  delete from fep.deployment_heads
+2026-10-05 14:24:09.857 CST [4060] ERROR:  permission denied for table contracts
+2026-10-05 14:24:09.857 CST [4060] STATEMENT:  update fep.contracts set version='x'
+2026-10-05 14:24:09.858 CST [4060] ERROR:  must be owner of table deployment_heads
+2026-10-05 14:24:09.858 CST [4060] STATEMENT:  alter table fep.deployment_heads disable trigger all
+2026-10-05 14:24:09.859 CST [4060] ERROR:  permission denied to set role "fep_cas_owner"
+2026-10-05 14:24:09.859 CST [4060] STATEMENT:  set role fep_cas_owner
+2026-10-05 14:24:10.327 CST [54512] ERROR:  FEP_CAS_CONFLICT
+2026-10-05 14:24:10.327 CST [54512] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE
+2026-10-05 14:24:10.327 CST [54512] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:10.547 CST [38940] ERROR:  query returned no rows
+2026-10-05 14:24:10.547 CST [38940] CONTEXT:  PL/pgSQL function validate_observation() line 4 at SQL statement
+2026-10-05 14:24:10.547 CST [38940] STATEMENT:  insert into fep.observations values ($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:24:10.592 CST [33592] ERROR:  insert or update on table "label_revisions" violates foreign key constraint "label_revisions_observation_id_scope_id_fkey"
+2026-10-05 14:24:10.592 CST [33592] DETAIL:  Key (observation_id, scope_id)=(o, OTHER) is not present in table "observations".
+2026-10-05 14:24:10.592 CST [33592] STATEMENT:  insert into fep.label_revisions values ('o','OTHER','ABS:T5',1,2,$1,.2,null,'OBSERVED',true,$2,null)
+2026-10-05 14:24:10.653 CST [36224] ERROR:  insert or update on table "dataset_rows" violates foreign key constraint "dataset_rows_snapshot_id_observation_id_fkey"
+2026-10-05 14:24:10.653 CST [36224] DETAIL:  Key (snapshot_id, observation_id)=(snap, other) is not present in table "snapshots".
+2026-10-05 14:24:10.653 CST [36224] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 14:24:10.708 CST [23652] ERROR:  FEP_SNAPSHOT_FEATURE_CONTRACT_MISMATCH
+2026-10-05 14:24:10.708 CST [23652] CONTEXT:  PL/pgSQL function validate_snapshot() line 6 at RAISE
+2026-10-05 14:24:10.708 CST [23652] STATEMENT:  insert into fep.snapshots values ('wrong','o',1,'WINDOW',$1,$2,$3)
+2026-10-05 14:24:10.766 CST [48560] ERROR:  insert or update on table "dataset_fold_label_selection" violates foreign key constraint "dataset_fold_label_selection_observation_id_target_id_sele_fkey"
+2026-10-05 14:24:10.766 CST [48560] DETAIL:  Key (observation_id, target_id, selected_label_revision, selected_label_digest)=(o, ABS:T5, 1, d78ed9efa6ae77434392252f5e55039c106c229f28150fb5fbffbedbc40e15df) is not present in table "label_revisions".
+2026-10-05 14:24:10.766 CST [48560] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 14:24:10.926 CST [9172] ERROR:  query returned no rows
+2026-10-05 14:24:10.926 CST [9172] CONTEXT:  PL/pgSQL function validate_dataset_row() line 6 at SQL statement
+2026-10-05 14:24:10.926 CST [9172] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 14:24:10.969 CST [14420] ERROR:  FEP_FOLD_REVISION_NOT_VISIBLE
+2026-10-05 14:24:10.969 CST [14420] CONTEXT:  PL/pgSQL function validate_fold_label_selection() line 11 at RAISE
+2026-10-05 14:24:10.969 CST [14420] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 14:24:11.013 CST [33628] ERROR:  FEP_FOLD_LABEL_NOT_TRAINABLE
+2026-10-05 14:24:11.013 CST [33628] CONTEXT:  PL/pgSQL function validate_fold_label_selection() line 14 at RAISE
+2026-10-05 14:24:11.013 CST [33628] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 14:24:11.057 CST [35536] ERROR:  FEP_FOLD_REVISION_NOT_VISIBLE
+2026-10-05 14:24:11.057 CST [35536] CONTEXT:  PL/pgSQL function validate_fold_label_selection() line 11 at RAISE
+2026-10-05 14:24:11.057 CST [35536] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 14:24:11.101 CST [54300] ERROR:  FEP_FOLD_REVISION_NOT_VISIBLE
+2026-10-05 14:24:11.101 CST [54300] CONTEXT:  PL/pgSQL function validate_fold_label_selection() line 11 at RAISE
+2026-10-05 14:24:11.101 CST [54300] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 14:24:11.185 CST [50372] ERROR:  FEP_RECONSTRUCTION_NOT_PIT
+2026-10-05 14:24:11.185 CST [50372] CONTEXT:  PL/pgSQL function validate_observation_revision() line 12 at RAISE
+2026-10-05 14:24:11.185 CST [50372] STATEMENT:  insert into fep.observation_revisions values ('o',2,'PUB',$1,$2,$3,'NONE','PIT_OBSERVED','REPLAY',1,$4)
+2026-10-05 14:24:11.265 CST [55164] ERROR:  FEP_DENOMINATOR_INCOMPLETE
+2026-10-05 14:24:11.265 CST [55164] CONTEXT:  PL/pgSQL function validate_denominator_complete() line 11 at RAISE
+2026-10-05 14:24:11.265 CST [55164] STATEMENT:  set constraints all immediate
+2026-10-05 14:24:11.354 CST [45124] ERROR:  FEP_FOLD_PHASE_OVERLAP
+2026-10-05 14:24:11.354 CST [45124] CONTEXT:  PL/pgSQL function validate_dataset_row() line 15 at RAISE
+2026-10-05 14:24:11.354 CST [45124] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 14:24:11.408 CST [44992] ERROR:  FEP_FOLD_PHASE_OVERLAP
+2026-10-05 14:24:11.408 CST [44992] CONTEXT:  PL/pgSQL function validate_dataset_row() line 15 at RAISE
+2026-10-05 14:24:11.408 CST [44992] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 14:24:11.462 CST [3904] ERROR:  FEP_FOLD_PHASE_OVERLAP
+2026-10-05 14:24:11.462 CST [3904] CONTEXT:  PL/pgSQL function validate_dataset_row() line 15 at RAISE
+2026-10-05 14:24:11.462 CST [3904] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 14:24:11.557 CST [40756] ERROR:  FEP_APPEND_ONLY
+2026-10-05 14:24:11.557 CST [40756] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-05 14:24:11.557 CST [40756] STATEMENT:  update fep.contracts set version='2' where contract_id='OBS'
+2026-10-05 14:24:11.613 CST [33520] ERROR:  FEP_APPEND_ONLY
+2026-10-05 14:24:11.613 CST [33520] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-05 14:24:11.613 CST [33520] STATEMENT:  delete from fep.contracts where contract_id='OBS'
+2026-10-05 14:24:11.688 CST [13716] ERROR:  FEP_LABEL_EXACT_SOURCE_MISMATCH
+2026-10-05 14:24:11.688 CST [13716] CONTEXT:  PL/pgSQL function validate_label_revision() line 14 at RAISE
+2026-10-05 14:24:11.688 CST [13716] STATEMENT:  insert into fep.label_revisions values ('o',$1,'ABS:T5',5,2,$2,.9,null,'OBSERVED',true,$3,1)
+2026-10-05 14:24:11.745 CST [54244] ERROR:  FEP_UPSTREAM_EXACT_AUTHORITY_REQUIRED
+2026-10-05 14:24:11.745 CST [54244] CONTEXT:  PL/pgSQL function validate_label_binding() line 12 at RAISE
+2026-10-05 14:24:11.745 CST [54244] STATEMENT:  insert into fep.label_source_bindings values ('missing','OBS','key','r',$1,'2026-09-08',$2,$3,$4,$5)
+2026-10-05 14:24:11.789 CST [38636] ERROR:  duplicate key value violates unique constraint "prediction_slots_observation_id_target_id_horizon_model_fam_key"
+2026-10-05 14:24:11.789 CST [38636] DETAIL:  Key (observation_id, target_id, horizon, model_family_scope)=(o, ABS:T5, 5, CORE) already exists.
+2026-10-05 14:24:11.789 CST [38636] STATEMENT:  insert into fep.prediction_slots values ($1,'o',$2,'ABS:T5',5,'CORE',$3,$4,'NO_ACTIVE_MODEL')
+2026-10-05 14:24:11.929 CST [21868] ERROR:  type "nonexistent_type" does not exist at character 37
+2026-10-05 14:24:11.929 CST [21868] STATEMENT:  create table fep.rollback_probe (id nonexistent_type)
+2026-10-05 14:24:12.130 CST [53888] ERROR:  FEP_DENOMINATOR_INCOMPLETE
+2026-10-05 14:24:12.130 CST [53888] CONTEXT:  PL/pgSQL function validate_denominator_complete() line 11 at RAISE
+2026-10-05 14:24:12.130 CST [53888] STATEMENT:  insert into fep.datasets values ($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 14:25:35.005 CST [34600] LOG:  checkpoint starting: time
+2026-10-05 14:27:42.027 CST [48688] WARNING:  there is already a transaction in progress
+2026-10-05 14:27:42.036 CST [48688] ERROR:  duplicate key value violates unique constraint "publications_pkey"
+2026-10-05 14:27:42.036 CST [48688] DETAIL:  Key (publication_id)=(PUB-ROOT-ba83e31a592341ae8c4e20e3bf3f7955) already exists.
+2026-10-05 14:27:42.036 CST [48688] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 14:27:42.053 CST [50008] WARNING:  there is already a transaction in progress
+2026-10-05 14:27:42.060 CST [50008] ERROR:  V4_SAME_DAY_PARENT_INVALID
+2026-10-05 14:27:42.060 CST [50008] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 26 at RAISE
+2026-10-05 14:27:42.060 CST [50008] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 14:27:42.061 CST [50008] ERROR:  V4_SAME_DAY_PARENT_INVALID
+2026-10-05 14:27:42.061 CST [50008] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 26 at RAISE
+2026-10-05 14:27:42.061 CST [50008] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 14:27:42.062 CST [50008] ERROR:  V4_SAME_DAY_PARENT_INVALID
+2026-10-05 14:27:42.062 CST [50008] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 26 at RAISE
+2026-10-05 14:27:42.062 CST [50008] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 14:27:42.087 CST [31380] WARNING:  there is already a transaction in progress
+2026-10-05 14:27:42.095 CST [31380] ERROR:  duplicate key value violates unique constraint "uq_publication_namespace_date_lineage_revision"
+2026-10-05 14:27:42.095 CST [31380] DETAIL:  Key (model_namespace_id, trade_date, publication_lineage_id, revision_no)=(NS-4b7784098b33447ca8a2f4751c7fe74c, 2026-09-24, L-4b7784098b33447ca8a2f4751c7fe74c, 2) already exists.
+2026-10-05 14:27:42.095 CST [31380] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 14:27:42.096 CST [31380] ERROR:  duplicate key value violates unique constraint "uq_publication_namespace_trade_date_core"
+2026-10-05 14:27:42.096 CST [31380] DETAIL:  Key (model_namespace_id, trade_date, core_revision)=(NS-4b7784098b33447ca8a2f4751c7fe74c, 2026-09-24, 1) already exists.
+2026-10-05 14:27:42.096 CST [31380] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 14:27:42.118 CST [45580] WARNING:  there is already a transaction in progress
+2026-10-05 14:27:42.128 CST [45580] ERROR:  V4_PRIOR_SESSION_ACCEPTED_STATE_INVALID
+2026-10-05 14:27:42.128 CST [45580] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 71 at RAISE
+2026-10-05 14:27:42.128 CST [45580] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 14:27:42.128 CST [45580] ERROR:  V4_PRIOR_SESSION_ACCEPTED_STATE_INVALID
+2026-10-05 14:27:42.128 CST [45580] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 71 at RAISE
+2026-10-05 14:27:42.128 CST [45580] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 14:27:42.148 CST [14588] WARNING:  there is already a transaction in progress
+2026-10-05 14:27:42.159 CST [14588] ERROR:  V4_PRIOR_SESSION_ACCEPTED_STATE_INVALID
+2026-10-05 14:27:42.159 CST [14588] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 71 at RAISE
+2026-10-05 14:27:42.159 CST [14588] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 14:27:42.160 CST [14588] ERROR:  V4_PRIOR_SESSION_ACCEPTED_STATE_INVALID
+2026-10-05 14:27:42.160 CST [14588] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 71 at RAISE
+2026-10-05 14:27:42.160 CST [14588] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 14:27:42.282 CST [14100] WARNING:  there is already a transaction in progress
+2026-10-05 14:27:42.293 CST [14100] ERROR:  V4_PRIOR_SESSION_ACCEPTED_STATE_INVALID
+2026-10-05 14:27:42.293 CST [14100] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 71 at RAISE
+2026-10-05 14:27:42.293 CST [14100] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 14:27:42.321 CST [44592] WARNING:  there is already a transaction in progress
+2026-10-05 14:27:42.332 CST [44592] ERROR:  V4_PRIOR_SESSION_ACCEPTED_STATE_INVALID
+2026-10-05 14:27:42.332 CST [44592] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 71 at RAISE
+2026-10-05 14:27:42.332 CST [44592] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 14:27:42.349 CST [33252] WARNING:  there is already a transaction in progress
+2026-10-05 14:27:42.360 CST [33252] ERROR:  V4_PRIOR_SESSION_ACCEPTED_STATE_INVALID
+2026-10-05 14:27:42.360 CST [33252] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 71 at RAISE
+2026-10-05 14:27:42.360 CST [33252] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 14:27:42.377 CST [53612] WARNING:  there is already a transaction in progress
+2026-10-05 14:27:42.387 CST [53612] ERROR:  V4_PRIOR_SESSION_ACCEPTED_STATE_INVALID
+2026-10-05 14:27:42.387 CST [53612] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 71 at RAISE
+2026-10-05 14:27:42.387 CST [53612] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 14:27:42.404 CST [22896] WARNING:  there is already a transaction in progress
+2026-10-05 14:27:42.415 CST [22896] ERROR:  V4_SAME_DAY_PARENT_INVALID
+2026-10-05 14:27:42.415 CST [22896] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 26 at RAISE
+2026-10-05 14:27:42.415 CST [22896] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 14:27:42.545 CST [32876] WARNING:  there is already a transaction in progress
+2026-10-05 14:27:42.556 CST [32876] ERROR:  V4_SAME_DAY_PARENT_INVALID
+2026-10-05 14:27:42.556 CST [32876] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 26 at RAISE
+2026-10-05 14:27:42.556 CST [32876] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 14:27:42.681 CST [31760] WARNING:  there is already a transaction in progress
+2026-10-05 14:27:42.693 CST [31760] ERROR:  V4_SAME_DAY_PARENT_INVALID
+2026-10-05 14:27:42.693 CST [31760] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 26 at RAISE
+2026-10-05 14:27:42.693 CST [31760] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 14:27:42.720 CST [43252] WARNING:  there is already a transaction in progress
+2026-10-05 14:27:42.731 CST [43252] ERROR:  V4_SAME_DAY_PARENT_INVALID
+2026-10-05 14:27:42.731 CST [43252] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 26 at RAISE
+2026-10-05 14:27:42.731 CST [43252] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 14:27:42.750 CST [46824] WARNING:  there is already a transaction in progress
+2026-10-05 14:27:42.760 CST [46824] ERROR:  V4_SAME_DAY_PARENT_INVALID
+2026-10-05 14:27:42.760 CST [46824] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 26 at RAISE
+2026-10-05 14:27:42.760 CST [46824] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 14:27:42.761 CST [46824] ERROR:  V4_SAME_DAY_PARENT_INVALID
+2026-10-05 14:27:42.761 CST [46824] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 26 at RAISE
+2026-10-05 14:27:42.761 CST [46824] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 14:27:42.762 CST [46824] ERROR:  V4_SAME_DAY_PARENT_INVALID
+2026-10-05 14:27:42.762 CST [46824] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 26 at RAISE
+2026-10-05 14:27:42.762 CST [46824] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 14:27:42.763 CST [46824] ERROR:  V4_SAME_DAY_PARENT_INVALID
+2026-10-05 14:27:42.763 CST [46824] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 26 at RAISE
+2026-10-05 14:27:42.763 CST [46824] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 14:27:42.780 CST [49588] WARNING:  there is already a transaction in progress
+2026-10-05 14:27:42.790 CST [49588] ERROR:  V4_PRIOR_SESSION_GAP_INVALID
+2026-10-05 14:27:42.790 CST [49588] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 94 at RAISE
+2026-10-05 14:27:42.790 CST [49588] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 14:27:42.793 CST [49588] ERROR:  V4_PUBLICATION_HEAD_FROZEN_BY_NEXT_SESSION
+2026-10-05 14:27:42.793 CST [49588] CONTEXT:  PL/pgSQL function v4.validate_publication_head() line 71 at RAISE
+2026-10-05 14:27:42.793 CST [49588] STATEMENT:  update v4.publication_heads set publication_id=$1,state_head_id=$2,state_logical_digest=$3 where trade_date=$4 and model_namespace_id=$5
+2026-10-05 14:27:42.795 CST [49588] ERROR:  V4_PUBLICATION_HEAD_FROZEN_BY_NEXT_SESSION
+2026-10-05 14:27:42.795 CST [49588] CONTEXT:  PL/pgSQL function v4.validate_publication_head() line 30 at RAISE
+2026-10-05 14:27:42.795 CST [49588] STATEMENT:  delete from v4.publication_heads where trade_date=$1 and model_namespace_id=$2
+2026-10-05 14:27:42.811 CST [16012] WARNING:  there is already a transaction in progress
+2026-10-05 14:27:42.841 CST [46556] WARNING:  there is already a transaction in progress
+2026-10-05 14:27:42.849 CST [46556] ERROR:  V4_MARKET_CALENDAR_INSERT_INVALIDATES_INITIAL_BOUNDARY
+2026-10-05 14:27:42.849 CST [46556] CONTEXT:  PL/pgSQL function v4.validate_market_calendar_session_insert() line 12 at RAISE
+2026-10-05 14:27:42.849 CST [46556] STATEMENT:  insert into v4.market_calendar_sessions(market_calendar_id,session_no,trade_date,calendar_digest) values ($1,$2,$3,$4) on conflict do nothing
+2026-10-05 14:27:42.966 CST [41488] WARNING:  there is already a transaction in progress
+2026-10-05 14:27:42.974 CST [41488] ERROR:  V4_APPEND_ONLY_TABLE:v4.security_lifecycle_history
+2026-10-05 14:27:42.974 CST [41488] CONTEXT:  PL/pgSQL function v4.reject_append_only_mutation() line 3 at RAISE
+2026-10-05 14:27:42.974 CST [41488] STATEMENT:  delete from v4.security_lifecycle_history where lifecycle_fact_key=$1
+2026-10-05 14:27:43.236 CST [32368] WARNING:  there is already a transaction in progress
+2026-10-05 14:27:43.240 CST [32368] ERROR:  V4_FACT_SOURCE_REVISION_MISMATCH
+2026-10-05 14:27:43.240 CST [32368] CONTEXT:  PL/pgSQL function v4.validate_fact_source_revision() line 11 at RAISE
+2026-10-05 14:27:43.240 CST [32368] STATEMENT:  insert into v4.security_lifecycle_facts(security_id,security_type,effective_from,observed_at,
+	                            ingested_at,system_available_at,source_revision_id,provider_available_at,supersedes_revision_id,
+	                            source_identity,quality) values ($1,'A_STOCK',$2,$3,$4,$5,$6,$7,null,'bad','OBSERVED')
+2026-10-05 14:27:43.259 CST [49604] WARNING:  there is already a transaction in progress
+2026-10-05 14:27:43.264 CST [49604] ERROR:  V4_APPEND_ONLY_TABLE:v4.security_membership_facts
+2026-10-05 14:27:43.264 CST [49604] CONTEXT:  PL/pgSQL function v4.reject_append_only_mutation() line 3 at RAISE
+2026-10-05 14:27:43.264 CST [49604] STATEMENT:  delete from v4.security_membership_facts where membership_id=$1
+2026-10-05 14:27:43.392 CST [53420] WARNING:  there is already a transaction in progress
+2026-10-05 14:27:43.414 CST [54388] WARNING:  there is already a transaction in progress
+2026-10-05 14:27:43.418 CST [54388] ERROR:  duplicate key value violates unique constraint "source_revisions_logical_fact_id_revision_no_key"
+2026-10-05 14:27:43.418 CST [54388] DETAIL:  Key (logical_fact_id, revision_no)=(fact-6ba932974d3f4fa9a512f0a02617d71b, 2) already exists.
+2026-10-05 14:27:43.418 CST [54388] STATEMENT:  insert into v4.source_revisions(source_revision_id,logical_fact_id,revision_no,payload,digest,
+	             provider_available_at,observed_at,ingested_at,system_available_at,supersedes_revision_id)
+	           values ($1,$2,$3,'{}',$4,$5,$6,$7,$8,$9)
+2026-10-05 14:27:43.582 CST [36844] ERROR:  type "this_is_not_a_type" does not exist at character 55
+2026-10-05 14:27:43.582 CST [36844] STATEMENT:  CREATE TABLE v4_meta.__intentionally_invalid_ddl ( id this_is_not_a_type )
+2026-10-05 14:30:09.361 CST [34600] LOG:  checkpoint complete: wrote 6287 buffers (38.4%), wrote 4 SLRU buffers; 0 WAL file(s) added, 0 removed, 2 recycled; write=270.058 s, sync=4.276 s, total=274.357 s; sync files=2778, longest=0.006 s, average=0.002 s; distance=31251 kB, estimate=31251 kB; lsn=0/36C92F0, redo lsn=0/36781B0
+2026-10-05 14:31:55.873 CST [42348] LOG:  received fast shutdown request
+2026-10-05 14:31:55.876 CST [42348] LOG:  aborting any active transactions
+2026-10-05 14:31:55.882 CST [42348] LOG:  background worker "logical replication launcher" (PID 47068) exited with exit code 1
+2026-10-05 14:31:55.883 CST [34600] LOG:  shutting down
+2026-10-05 14:31:55.885 CST [34600] LOG:  checkpoint starting: shutdown immediate
+2026-10-05 14:31:56.007 CST [34600] LOG:  checkpoint complete: wrote 73 buffers (0.4%), wrote 2 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.012 s, sync=0.101 s, total=0.125 s; sync files=51, longest=0.003 s, average=0.002 s; distance=324 kB, estimate=28159 kB; lsn=0/36C93A0, redo lsn=0/36C93A0
+2026-10-05 14:31:56.060 CST [42348] LOG:  database system is shut down
+2026-10-05 17:07:45.611 CST [46728] LOG:  starting PostgreSQL 18.6 on x86_64-windows, compiled by msvc-19.44.35228, 64-bit
+2026-10-05 17:07:45.612 CST [46728] LOG:  listening on IPv4 address "127.0.0.1", port 55488
+2026-10-05 17:07:45.683 CST [40532] LOG:  database system was shut down at 2026-10-05 14:31:56 CST
+2026-10-05 17:07:45.694 CST [46728] LOG:  database system is ready to accept connections
+2026-10-05 17:11:23.042 CST [51120] ERROR:  FEP_CAS_CONFLICT
+2026-10-05 17:11:23.042 CST [51120] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE
+2026-10-05 17:11:23.042 CST [51120] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:11:23.257 CST [38952] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 17:11:23.257 CST [38952] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 17:11:23.257 CST [38952] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:11:23.310 CST [12988] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 17:11:23.310 CST [12988] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 17:11:23.310 CST [12988] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:11:23.366 CST [54220] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 17:11:23.366 CST [54220] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 17:11:23.366 CST [54220] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:11:23.415 CST [41084] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 17:11:23.415 CST [41084] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 17:11:23.415 CST [41084] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:11:23.463 CST [33104] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 17:11:23.463 CST [33104] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 17:11:23.463 CST [33104] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:11:23.623 CST [1716] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 17:11:23.623 CST [1716] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 17:11:23.623 CST [1716] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:11:23.671 CST [36644] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 17:11:23.671 CST [36644] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 17:11:23.671 CST [36644] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:11:23.719 CST [53944] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 17:11:23.719 CST [53944] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 17:11:23.719 CST [53944] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:11:23.773 CST [42588] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 17:11:23.773 CST [42588] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 17:11:23.773 CST [42588] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:11:23.818 CST [49460] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 17:11:23.818 CST [49460] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 17:11:23.818 CST [49460] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:11:23.860 CST [50592] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 17:11:23.860 CST [50592] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 17:11:23.860 CST [50592] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:11:23.908 CST [51976] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 17:11:23.908 CST [51976] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 17:11:23.908 CST [51976] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:11:23.961 CST [42064] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 17:11:23.961 CST [42064] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 17:11:23.961 CST [42064] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:11:24.011 CST [34188] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 17:11:24.011 CST [34188] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 17:11:24.011 CST [34188] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:11:24.070 CST [45544] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 17:11:24.070 CST [45544] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 17:11:24.070 CST [45544] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:11:24.071 CST [45544] ERROR:  FEP_CAS_CONFLICT
+2026-10-05 17:11:24.071 CST [45544] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE
+2026-10-05 17:11:24.071 CST [45544] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:11:24.123 CST [51884] ERROR:  FEP_CAS_CONFLICT
+2026-10-05 17:11:24.123 CST [51884] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE
+2026-10-05 17:11:24.123 CST [51884] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:11:24.169 CST [52052] ERROR:  FEP_HEAD_ACTIVATION_INVALID
+2026-10-05 17:11:24.169 CST [52052] CONTEXT:  PL/pgSQL function validate_deployment_head() line 6 at RAISE
+2026-10-05 17:11:24.169 CST [52052] STATEMENT:  insert into fep.deployment_heads values ($1,'SHADOW_INFERENCE','ABS:T5',5,'FEATURE','set1','g1','future',1,$2)
+2026-10-05 17:11:24.218 CST [38868] ERROR:  permission denied for function cas_deploy
+2026-10-05 17:11:24.218 CST [38868] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:11:24.388 CST [54136] ERROR:  permission denied for table deployment_heads
+2026-10-05 17:11:24.388 CST [54136] STATEMENT:  update fep.deployment_heads set head_version=2
+2026-10-05 17:11:24.389 CST [54136] ERROR:  permission denied for table deployment_heads
+2026-10-05 17:11:24.389 CST [54136] STATEMENT:  delete from fep.deployment_heads
+2026-10-05 17:11:24.390 CST [54136] ERROR:  permission denied for table contracts
+2026-10-05 17:11:24.390 CST [54136] STATEMENT:  update fep.contracts set version='x'
+2026-10-05 17:11:24.391 CST [54136] ERROR:  must be owner of table deployment_heads
+2026-10-05 17:11:24.391 CST [54136] STATEMENT:  alter table fep.deployment_heads disable trigger all
+2026-10-05 17:11:24.392 CST [54136] ERROR:  permission denied to set role "fep_cas_owner"
+2026-10-05 17:11:24.392 CST [54136] STATEMENT:  set role fep_cas_owner
+2026-10-05 17:11:25.588 CST [38948] ERROR:  FEP_CAS_CONFLICT
+2026-10-05 17:11:25.588 CST [38948] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE
+2026-10-05 17:11:25.588 CST [38948] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:11:25.683 CST [29052] ERROR:  query returned no rows
+2026-10-05 17:11:25.683 CST [29052] CONTEXT:  PL/pgSQL function validate_observation() line 4 at SQL statement
+2026-10-05 17:11:25.683 CST [29052] STATEMENT:  insert into fep.observations values ($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:11:25.732 CST [52076] ERROR:  insert or update on table "label_revisions" violates foreign key constraint "label_revisions_observation_id_scope_id_fkey"
+2026-10-05 17:11:25.732 CST [52076] DETAIL:  Key (observation_id, scope_id)=(o, OTHER) is not present in table "observations".
+2026-10-05 17:11:25.732 CST [52076] STATEMENT:  insert into fep.label_revisions values ('o','OTHER','ABS:T5',1,2,$1,.2,null,'OBSERVED',true,$2,null)
+2026-10-05 17:11:25.892 CST [36832] ERROR:  insert or update on table "dataset_rows" violates foreign key constraint "dataset_rows_snapshot_id_observation_id_fkey"
+2026-10-05 17:11:25.892 CST [36832] DETAIL:  Key (snapshot_id, observation_id)=(snap, other) is not present in table "snapshots".
+2026-10-05 17:11:25.892 CST [36832] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 17:11:25.934 CST [45340] ERROR:  FEP_SNAPSHOT_FEATURE_CONTRACT_MISMATCH
+2026-10-05 17:11:25.934 CST [45340] CONTEXT:  PL/pgSQL function validate_snapshot() line 6 at RAISE
+2026-10-05 17:11:25.934 CST [45340] STATEMENT:  insert into fep.snapshots values ('wrong','o',1,'WINDOW',$1,$2,$3)
+2026-10-05 17:11:25.982 CST [50420] ERROR:  insert or update on table "dataset_fold_label_selection" violates foreign key constraint "dataset_fold_label_selection_observation_id_target_id_sele_fkey"
+2026-10-05 17:11:25.982 CST [50420] DETAIL:  Key (observation_id, target_id, selected_label_revision, selected_label_digest)=(o, ABS:T5, 1, d78ed9efa6ae77434392252f5e55039c106c229f28150fb5fbffbedbc40e15df) is not present in table "label_revisions".
+2026-10-05 17:11:25.982 CST [50420] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 17:11:26.033 CST [51920] ERROR:  query returned no rows
+2026-10-05 17:11:26.033 CST [51920] CONTEXT:  PL/pgSQL function validate_dataset_row() line 6 at SQL statement
+2026-10-05 17:11:26.033 CST [51920] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 17:11:26.077 CST [48500] ERROR:  FEP_FOLD_REVISION_NOT_VISIBLE
+2026-10-05 17:11:26.077 CST [48500] CONTEXT:  PL/pgSQL function validate_fold_label_selection() line 11 at RAISE
+2026-10-05 17:11:26.077 CST [48500] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 17:11:26.228 CST [42356] ERROR:  FEP_FOLD_LABEL_NOT_TRAINABLE
+2026-10-05 17:11:26.228 CST [42356] CONTEXT:  PL/pgSQL function validate_fold_label_selection() line 14 at RAISE
+2026-10-05 17:11:26.228 CST [42356] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 17:11:26.274 CST [46344] ERROR:  FEP_FOLD_REVISION_NOT_VISIBLE
+2026-10-05 17:11:26.274 CST [46344] CONTEXT:  PL/pgSQL function validate_fold_label_selection() line 11 at RAISE
+2026-10-05 17:11:26.274 CST [46344] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 17:11:26.322 CST [5648] ERROR:  FEP_FOLD_REVISION_NOT_VISIBLE
+2026-10-05 17:11:26.322 CST [5648] CONTEXT:  PL/pgSQL function validate_fold_label_selection() line 11 at RAISE
+2026-10-05 17:11:26.322 CST [5648] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 17:11:26.531 CST [30496] ERROR:  FEP_RECONSTRUCTION_NOT_PIT
+2026-10-05 17:11:26.531 CST [30496] CONTEXT:  PL/pgSQL function validate_observation_revision() line 12 at RAISE
+2026-10-05 17:11:26.531 CST [30496] STATEMENT:  insert into fep.observation_revisions values ('o',2,'PUB',$1,$2,$3,'NONE','PIT_OBSERVED','REPLAY',1,$4)
+2026-10-05 17:11:26.732 CST [43652] ERROR:  FEP_DENOMINATOR_INCOMPLETE
+2026-10-05 17:11:26.732 CST [43652] CONTEXT:  PL/pgSQL function validate_denominator_complete() line 11 at RAISE
+2026-10-05 17:11:26.732 CST [43652] STATEMENT:  set constraints all immediate
+2026-10-05 17:11:26.938 CST [16336] ERROR:  FEP_FOLD_PHASE_OVERLAP
+2026-10-05 17:11:26.938 CST [16336] CONTEXT:  PL/pgSQL function validate_dataset_row() line 15 at RAISE
+2026-10-05 17:11:26.938 CST [16336] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 17:11:26.997 CST [23076] ERROR:  FEP_FOLD_PHASE_OVERLAP
+2026-10-05 17:11:26.997 CST [23076] CONTEXT:  PL/pgSQL function validate_dataset_row() line 15 at RAISE
+2026-10-05 17:11:26.997 CST [23076] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 17:11:27.166 CST [52448] ERROR:  FEP_FOLD_PHASE_OVERLAP
+2026-10-05 17:11:27.166 CST [52448] CONTEXT:  PL/pgSQL function validate_dataset_row() line 15 at RAISE
+2026-10-05 17:11:27.166 CST [52448] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 17:11:27.275 CST [46260] ERROR:  FEP_APPEND_ONLY
+2026-10-05 17:11:27.275 CST [46260] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-05 17:11:27.275 CST [46260] STATEMENT:  update fep.contracts set version='2' where contract_id='OBS'
+2026-10-05 17:11:27.315 CST [20124] ERROR:  FEP_APPEND_ONLY
+2026-10-05 17:11:27.315 CST [20124] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-05 17:11:27.315 CST [20124] STATEMENT:  delete from fep.contracts where contract_id='OBS'
+2026-10-05 17:11:27.403 CST [37336] ERROR:  FEP_LABEL_EXACT_SOURCE_MISMATCH
+2026-10-05 17:11:27.403 CST [37336] CONTEXT:  PL/pgSQL function validate_label_revision() line 14 at RAISE
+2026-10-05 17:11:27.403 CST [37336] STATEMENT:  insert into fep.label_revisions values ('o',$1,'ABS:T5',5,2,$2,.9,null,'OBSERVED',true,$3,1)
+2026-10-05 17:11:27.445 CST [25564] ERROR:  FEP_UPSTREAM_EXACT_AUTHORITY_REQUIRED
+2026-10-05 17:11:27.445 CST [25564] CONTEXT:  PL/pgSQL function validate_label_binding() line 12 at RAISE
+2026-10-05 17:11:27.445 CST [25564] STATEMENT:  insert into fep.label_source_bindings values ('missing','OBS','key','r',$1,'2026-09-08',$2,$3,$4,$5)
+2026-10-05 17:11:27.484 CST [3540] ERROR:  duplicate key value violates unique constraint "prediction_slots_observation_id_target_id_horizon_model_fam_key"
+2026-10-05 17:11:27.484 CST [3540] DETAIL:  Key (observation_id, target_id, horizon, model_family_scope)=(o, ABS:T5, 5, CORE) already exists.
+2026-10-05 17:11:27.484 CST [3540] STATEMENT:  insert into fep.prediction_slots values ($1,'o',$2,'ABS:T5',5,'CORE',$3,$4,'NO_ACTIVE_MODEL')
+2026-10-05 17:11:29.609 CST [36664] ERROR:  type "nonexistent_type" does not exist at character 37
+2026-10-05 17:11:29.609 CST [36664] STATEMENT:  create table fep.rollback_probe (id nonexistent_type)
+2026-10-05 17:11:29.718 CST [22680] ERROR:  FEP_DENOMINATOR_INCOMPLETE
+2026-10-05 17:11:29.718 CST [22680] CONTEXT:  PL/pgSQL function validate_denominator_complete() line 11 at RAISE
+2026-10-05 17:11:29.718 CST [22680] STATEMENT:  insert into fep.datasets values ($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:12:45.793 CST [52436] LOG:  checkpoint starting: time
+2026-10-05 17:16:00.311 CST [52436] LOG:  checkpoint complete: wrote 1798 buffers (11.0%), wrote 4 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=194.363 s, sync=0.152 s, total=194.519 s; sync files=846, longest=0.001 s, average=0.001 s; distance=8429 kB, estimate=8429 kB; lsn=0/3F04858, redo lsn=0/3F047C8
+2026-10-05 17:19:58.488 CST [26696] WARNING:  there is already a transaction in progress
+2026-10-05 17:19:58.497 CST [26696] ERROR:  duplicate key value violates unique constraint "publications_pkey"
+2026-10-05 17:19:58.497 CST [26696] DETAIL:  Key (publication_id)=(PUB-ROOT-d5ed7eea895d4ad2836894cc8eece604) already exists.
+2026-10-05 17:19:58.497 CST [26696] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:19:58.515 CST [47632] WARNING:  there is already a transaction in progress
+2026-10-05 17:19:58.522 CST [47632] ERROR:  V4_SAME_DAY_PARENT_INVALID
+2026-10-05 17:19:58.522 CST [47632] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 26 at RAISE
+2026-10-05 17:19:58.522 CST [47632] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:19:58.523 CST [47632] ERROR:  V4_SAME_DAY_PARENT_INVALID
+2026-10-05 17:19:58.523 CST [47632] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 26 at RAISE
+2026-10-05 17:19:58.523 CST [47632] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:19:58.524 CST [47632] ERROR:  V4_SAME_DAY_PARENT_INVALID
+2026-10-05 17:19:58.524 CST [47632] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 26 at RAISE
+2026-10-05 17:19:58.524 CST [47632] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:19:58.542 CST [45200] WARNING:  there is already a transaction in progress
+2026-10-05 17:19:58.550 CST [45200] ERROR:  duplicate key value violates unique constraint "uq_publication_namespace_date_lineage_revision"
+2026-10-05 17:19:58.550 CST [45200] DETAIL:  Key (model_namespace_id, trade_date, publication_lineage_id, revision_no)=(NS-58b591ed2ecc4980ad7fc28f5f9cead5, 2026-09-24, L-58b591ed2ecc4980ad7fc28f5f9cead5, 2) already exists.
+2026-10-05 17:19:58.550 CST [45200] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:19:58.551 CST [45200] ERROR:  duplicate key value violates unique constraint "uq_publication_namespace_trade_date_core"
+2026-10-05 17:19:58.551 CST [45200] DETAIL:  Key (model_namespace_id, trade_date, core_revision)=(NS-58b591ed2ecc4980ad7fc28f5f9cead5, 2026-09-24, 1) already exists.
+2026-10-05 17:19:58.551 CST [45200] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:19:58.574 CST [48164] WARNING:  there is already a transaction in progress
+2026-10-05 17:19:58.584 CST [48164] ERROR:  V4_PRIOR_SESSION_ACCEPTED_STATE_INVALID
+2026-10-05 17:19:58.584 CST [48164] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 71 at RAISE
+2026-10-05 17:19:58.584 CST [48164] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:19:58.585 CST [48164] ERROR:  V4_PRIOR_SESSION_ACCEPTED_STATE_INVALID
+2026-10-05 17:19:58.585 CST [48164] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 71 at RAISE
+2026-10-05 17:19:58.585 CST [48164] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:19:58.605 CST [27592] WARNING:  there is already a transaction in progress
+2026-10-05 17:19:58.616 CST [27592] ERROR:  V4_PRIOR_SESSION_ACCEPTED_STATE_INVALID
+2026-10-05 17:19:58.616 CST [27592] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 71 at RAISE
+2026-10-05 17:19:58.616 CST [27592] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:19:58.617 CST [27592] ERROR:  V4_PRIOR_SESSION_ACCEPTED_STATE_INVALID
+2026-10-05 17:19:58.617 CST [27592] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 71 at RAISE
+2026-10-05 17:19:58.617 CST [27592] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:19:58.634 CST [48504] WARNING:  there is already a transaction in progress
+2026-10-05 17:19:58.646 CST [48504] ERROR:  V4_PRIOR_SESSION_ACCEPTED_STATE_INVALID
+2026-10-05 17:19:58.646 CST [48504] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 71 at RAISE
+2026-10-05 17:19:58.646 CST [48504] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:19:58.668 CST [16164] WARNING:  there is already a transaction in progress
+2026-10-05 17:19:58.679 CST [16164] ERROR:  V4_PRIOR_SESSION_ACCEPTED_STATE_INVALID
+2026-10-05 17:19:58.679 CST [16164] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 71 at RAISE
+2026-10-05 17:19:58.679 CST [16164] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:19:58.699 CST [53212] WARNING:  there is already a transaction in progress
+2026-10-05 17:19:58.710 CST [53212] ERROR:  V4_PRIOR_SESSION_ACCEPTED_STATE_INVALID
+2026-10-05 17:19:58.710 CST [53212] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 71 at RAISE
+2026-10-05 17:19:58.710 CST [53212] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:19:58.729 CST [12564] WARNING:  there is already a transaction in progress
+2026-10-05 17:19:58.739 CST [12564] ERROR:  V4_PRIOR_SESSION_ACCEPTED_STATE_INVALID
+2026-10-05 17:19:58.739 CST [12564] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 71 at RAISE
+2026-10-05 17:19:58.739 CST [12564] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:19:58.761 CST [11656] WARNING:  there is already a transaction in progress
+2026-10-05 17:19:58.772 CST [11656] ERROR:  V4_SAME_DAY_PARENT_INVALID
+2026-10-05 17:19:58.772 CST [11656] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 26 at RAISE
+2026-10-05 17:19:58.772 CST [11656] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:19:58.792 CST [49588] WARNING:  there is already a transaction in progress
+2026-10-05 17:19:58.803 CST [49588] ERROR:  V4_SAME_DAY_PARENT_INVALID
+2026-10-05 17:19:58.803 CST [49588] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 26 at RAISE
+2026-10-05 17:19:58.803 CST [49588] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:19:58.824 CST [39148] WARNING:  there is already a transaction in progress
+2026-10-05 17:19:58.834 CST [39148] ERROR:  V4_SAME_DAY_PARENT_INVALID
+2026-10-05 17:19:58.834 CST [39148] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 26 at RAISE
+2026-10-05 17:19:58.834 CST [39148] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:19:58.854 CST [49772] WARNING:  there is already a transaction in progress
+2026-10-05 17:19:58.866 CST [49772] ERROR:  V4_SAME_DAY_PARENT_INVALID
+2026-10-05 17:19:58.866 CST [49772] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 26 at RAISE
+2026-10-05 17:19:58.866 CST [49772] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:19:58.886 CST [44348] WARNING:  there is already a transaction in progress
+2026-10-05 17:19:58.897 CST [44348] ERROR:  V4_SAME_DAY_PARENT_INVALID
+2026-10-05 17:19:58.897 CST [44348] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 26 at RAISE
+2026-10-05 17:19:58.897 CST [44348] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:19:58.898 CST [44348] ERROR:  V4_SAME_DAY_PARENT_INVALID
+2026-10-05 17:19:58.898 CST [44348] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 26 at RAISE
+2026-10-05 17:19:58.898 CST [44348] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:19:58.899 CST [44348] ERROR:  V4_SAME_DAY_PARENT_INVALID
+2026-10-05 17:19:58.899 CST [44348] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 26 at RAISE
+2026-10-05 17:19:58.899 CST [44348] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:19:58.900 CST [44348] ERROR:  V4_SAME_DAY_PARENT_INVALID
+2026-10-05 17:19:58.900 CST [44348] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 26 at RAISE
+2026-10-05 17:19:58.900 CST [44348] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:19:58.917 CST [43872] WARNING:  there is already a transaction in progress
+2026-10-05 17:19:58.928 CST [43872] ERROR:  V4_PRIOR_SESSION_GAP_INVALID
+2026-10-05 17:19:58.928 CST [43872] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 94 at RAISE
+2026-10-05 17:19:58.928 CST [43872] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:19:58.931 CST [43872] ERROR:  V4_PUBLICATION_HEAD_FROZEN_BY_NEXT_SESSION
+2026-10-05 17:19:58.931 CST [43872] CONTEXT:  PL/pgSQL function v4.validate_publication_head() line 71 at RAISE
+2026-10-05 17:19:58.931 CST [43872] STATEMENT:  update v4.publication_heads set publication_id=$1,state_head_id=$2,state_logical_digest=$3 where trade_date=$4 and model_namespace_id=$5
+2026-10-05 17:19:58.932 CST [43872] ERROR:  V4_PUBLICATION_HEAD_FROZEN_BY_NEXT_SESSION
+2026-10-05 17:19:58.932 CST [43872] CONTEXT:  PL/pgSQL function v4.validate_publication_head() line 30 at RAISE
+2026-10-05 17:19:58.932 CST [43872] STATEMENT:  delete from v4.publication_heads where trade_date=$1 and model_namespace_id=$2
+2026-10-05 17:19:58.951 CST [54244] WARNING:  there is already a transaction in progress
+2026-10-05 17:19:58.980 CST [54524] WARNING:  there is already a transaction in progress
+2026-10-05 17:19:58.988 CST [54524] ERROR:  V4_MARKET_CALENDAR_INSERT_INVALIDATES_INITIAL_BOUNDARY
+2026-10-05 17:19:58.988 CST [54524] CONTEXT:  PL/pgSQL function v4.validate_market_calendar_session_insert() line 12 at RAISE
+2026-10-05 17:19:58.988 CST [54524] STATEMENT:  insert into v4.market_calendar_sessions(market_calendar_id,session_no,trade_date,calendar_digest) values ($1,$2,$3,$4) on conflict do nothing
+2026-10-05 17:19:59.209 CST [41896] WARNING:  there is already a transaction in progress
+2026-10-05 17:19:59.216 CST [41896] ERROR:  V4_APPEND_ONLY_TABLE:v4.security_lifecycle_history
+2026-10-05 17:19:59.216 CST [41896] CONTEXT:  PL/pgSQL function v4.reject_append_only_mutation() line 3 at RAISE
+2026-10-05 17:19:59.216 CST [41896] STATEMENT:  delete from v4.security_lifecycle_history where lifecycle_fact_key=$1
+2026-10-05 17:19:59.375 CST [24748] WARNING:  there is already a transaction in progress
+2026-10-05 17:19:59.380 CST [24748] ERROR:  V4_FACT_SOURCE_REVISION_MISMATCH
+2026-10-05 17:19:59.380 CST [24748] CONTEXT:  PL/pgSQL function v4.validate_fact_source_revision() line 11 at RAISE
+2026-10-05 17:19:59.380 CST [24748] STATEMENT:  insert into v4.security_lifecycle_facts(security_id,security_type,effective_from,observed_at,
+	                            ingested_at,system_available_at,source_revision_id,provider_available_at,supersedes_revision_id,
+	                            source_identity,quality) values ($1,'A_STOCK',$2,$3,$4,$5,$6,$7,null,'bad','OBSERVED')
+2026-10-05 17:19:59.399 CST [47340] WARNING:  there is already a transaction in progress
+2026-10-05 17:19:59.405 CST [47340] ERROR:  V4_APPEND_ONLY_TABLE:v4.security_membership_facts
+2026-10-05 17:19:59.405 CST [47340] CONTEXT:  PL/pgSQL function v4.reject_append_only_mutation() line 3 at RAISE
+2026-10-05 17:19:59.405 CST [47340] STATEMENT:  delete from v4.security_membership_facts where membership_id=$1
+2026-10-05 17:19:59.431 CST [54828] WARNING:  there is already a transaction in progress
+2026-10-05 17:19:59.451 CST [53700] WARNING:  there is already a transaction in progress
+2026-10-05 17:19:59.454 CST [53700] ERROR:  duplicate key value violates unique constraint "source_revisions_logical_fact_id_revision_no_key"
+2026-10-05 17:19:59.454 CST [53700] DETAIL:  Key (logical_fact_id, revision_no)=(fact-206700e2890c4b0980ed92a9f08019f4, 2) already exists.
+2026-10-05 17:19:59.454 CST [53700] STATEMENT:  insert into v4.source_revisions(source_revision_id,logical_fact_id,revision_no,payload,digest,
+	             provider_available_at,observed_at,ingested_at,system_available_at,supersedes_revision_id)
+	           values ($1,$2,$3,'{}',$4,$5,$6,$7,$8,$9)
+2026-10-05 17:19:59.490 CST [6632] ERROR:  type "this_is_not_a_type" does not exist at character 55
+2026-10-05 17:19:59.490 CST [6632] STATEMENT:  CREATE TABLE v4_meta.__intentionally_invalid_ddl ( id this_is_not_a_type )
+2026-10-05 17:22:45.352 CST [52436] LOG:  checkpoint starting: time
+2026-10-05 17:22:54.622 CST [52436] LOG:  checkpoint complete: wrote 84 buffers (0.5%), wrote 2 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=9.119 s, sync=0.138 s, total=9.270 s; sync files=74, longest=0.004 s, average=0.002 s; distance=385 kB, estimate=7624 kB; lsn=0/3F64DD0, redo lsn=0/3F64D40
+2026-10-05 17:24:39.586 CST [46672] ERROR:  FEP_CAS_CONFLICT
+2026-10-05 17:24:39.586 CST [46672] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE
+2026-10-05 17:24:39.586 CST [46672] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:24:39.691 CST [9020] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 17:24:39.691 CST [9020] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 17:24:39.691 CST [9020] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:24:39.746 CST [47832] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 17:24:39.746 CST [47832] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 17:24:39.746 CST [47832] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:24:39.801 CST [50780] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 17:24:39.801 CST [50780] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 17:24:39.801 CST [50780] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:24:39.850 CST [33876] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 17:24:39.850 CST [33876] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 17:24:39.850 CST [33876] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:24:39.903 CST [33464] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 17:24:39.903 CST [33464] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 17:24:39.903 CST [33464] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:24:39.959 CST [51896] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 17:24:39.959 CST [51896] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 17:24:39.959 CST [51896] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:24:40.012 CST [24600] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 17:24:40.012 CST [24600] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 17:24:40.012 CST [24600] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:24:40.056 CST [53408] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 17:24:40.056 CST [53408] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 17:24:40.056 CST [53408] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:24:40.213 CST [37636] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 17:24:40.213 CST [37636] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 17:24:40.213 CST [37636] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:24:40.262 CST [47308] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 17:24:40.262 CST [47308] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 17:24:40.262 CST [47308] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:24:40.311 CST [14316] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 17:24:40.311 CST [14316] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 17:24:40.311 CST [14316] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:24:40.358 CST [21880] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 17:24:40.358 CST [21880] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 17:24:40.358 CST [21880] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:24:40.405 CST [46716] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 17:24:40.405 CST [46716] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 17:24:40.405 CST [46716] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:24:40.451 CST [54384] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 17:24:40.451 CST [54384] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 17:24:40.451 CST [54384] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:24:40.506 CST [27944] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 17:24:40.506 CST [27944] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 17:24:40.506 CST [27944] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:24:40.509 CST [27944] ERROR:  FEP_CAS_CONFLICT
+2026-10-05 17:24:40.509 CST [27944] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE
+2026-10-05 17:24:40.509 CST [27944] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:24:40.569 CST [44992] ERROR:  FEP_CAS_CONFLICT
+2026-10-05 17:24:40.569 CST [44992] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE
+2026-10-05 17:24:40.569 CST [44992] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:24:40.622 CST [3872] ERROR:  FEP_HEAD_ACTIVATION_INVALID
+2026-10-05 17:24:40.622 CST [3872] CONTEXT:  PL/pgSQL function validate_deployment_head() line 6 at RAISE
+2026-10-05 17:24:40.622 CST [3872] STATEMENT:  insert into fep.deployment_heads values ($1,'SHADOW_INFERENCE','ABS:T5',5,'FEATURE','set1','g1','future',1,$2)
+2026-10-05 17:24:40.779 CST [18548] ERROR:  permission denied for function cas_deploy
+2026-10-05 17:24:40.779 CST [18548] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:24:40.942 CST [31792] ERROR:  permission denied for table deployment_heads
+2026-10-05 17:24:40.942 CST [31792] STATEMENT:  update fep.deployment_heads set head_version=2
+2026-10-05 17:24:40.943 CST [31792] ERROR:  permission denied for table deployment_heads
+2026-10-05 17:24:40.943 CST [31792] STATEMENT:  delete from fep.deployment_heads
+2026-10-05 17:24:40.944 CST [31792] ERROR:  permission denied for table contracts
+2026-10-05 17:24:40.944 CST [31792] STATEMENT:  update fep.contracts set version='x'
+2026-10-05 17:24:40.944 CST [31792] ERROR:  must be owner of table deployment_heads
+2026-10-05 17:24:40.944 CST [31792] STATEMENT:  alter table fep.deployment_heads disable trigger all
+2026-10-05 17:24:40.946 CST [31792] ERROR:  permission denied to set role "fep_cas_owner"
+2026-10-05 17:24:40.946 CST [31792] STATEMENT:  set role fep_cas_owner
+2026-10-05 17:24:41.411 CST [51836] ERROR:  FEP_CAS_CONFLICT
+2026-10-05 17:24:41.411 CST [51836] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE
+2026-10-05 17:24:41.411 CST [51836] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:24:41.634 CST [45528] ERROR:  query returned no rows
+2026-10-05 17:24:41.634 CST [45528] CONTEXT:  PL/pgSQL function validate_observation() line 4 at SQL statement
+2026-10-05 17:24:41.634 CST [45528] STATEMENT:  insert into fep.observations values ($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:24:41.675 CST [27360] ERROR:  insert or update on table "label_revisions" violates foreign key constraint "label_revisions_observation_id_scope_id_fkey"
+2026-10-05 17:24:41.675 CST [27360] DETAIL:  Key (observation_id, scope_id)=(o, OTHER) is not present in table "observations".
+2026-10-05 17:24:41.675 CST [27360] STATEMENT:  insert into fep.label_revisions values ('o','OTHER','ABS:T5',1,2,$1,.2,null,'OBSERVED',true,$2,null)
+2026-10-05 17:24:41.722 CST [39628] ERROR:  insert or update on table "dataset_rows" violates foreign key constraint "dataset_rows_snapshot_id_observation_id_fkey"
+2026-10-05 17:24:41.722 CST [39628] DETAIL:  Key (snapshot_id, observation_id)=(snap, other) is not present in table "snapshots".
+2026-10-05 17:24:41.722 CST [39628] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 17:24:41.761 CST [55048] ERROR:  FEP_SNAPSHOT_FEATURE_CONTRACT_MISMATCH
+2026-10-05 17:24:41.761 CST [55048] CONTEXT:  PL/pgSQL function validate_snapshot() line 6 at RAISE
+2026-10-05 17:24:41.761 CST [55048] STATEMENT:  insert into fep.snapshots values ('wrong','o',1,'WINDOW',$1,$2,$3)
+2026-10-05 17:24:41.919 CST [37096] ERROR:  insert or update on table "dataset_fold_label_selection" violates foreign key constraint "dataset_fold_label_selection_observation_id_target_id_sele_fkey"
+2026-10-05 17:24:41.919 CST [37096] DETAIL:  Key (observation_id, target_id, selected_label_revision, selected_label_digest)=(o, ABS:T5, 1, d78ed9efa6ae77434392252f5e55039c106c229f28150fb5fbffbedbc40e15df) is not present in table "label_revisions".
+2026-10-05 17:24:41.919 CST [37096] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 17:24:42.074 CST [38360] ERROR:  query returned no rows
+2026-10-05 17:24:42.074 CST [38360] CONTEXT:  PL/pgSQL function validate_dataset_row() line 6 at SQL statement
+2026-10-05 17:24:42.074 CST [38360] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 17:24:42.121 CST [6052] ERROR:  FEP_FOLD_REVISION_NOT_VISIBLE
+2026-10-05 17:24:42.121 CST [6052] CONTEXT:  PL/pgSQL function validate_fold_label_selection() line 11 at RAISE
+2026-10-05 17:24:42.121 CST [6052] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 17:24:42.282 CST [11868] ERROR:  FEP_FOLD_LABEL_NOT_TRAINABLE
+2026-10-05 17:24:42.282 CST [11868] CONTEXT:  PL/pgSQL function validate_fold_label_selection() line 14 at RAISE
+2026-10-05 17:24:42.282 CST [11868] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 17:24:42.338 CST [53340] ERROR:  FEP_FOLD_REVISION_NOT_VISIBLE
+2026-10-05 17:24:42.338 CST [53340] CONTEXT:  PL/pgSQL function validate_fold_label_selection() line 11 at RAISE
+2026-10-05 17:24:42.338 CST [53340] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 17:24:42.385 CST [7668] ERROR:  FEP_FOLD_REVISION_NOT_VISIBLE
+2026-10-05 17:24:42.385 CST [7668] CONTEXT:  PL/pgSQL function validate_fold_label_selection() line 11 at RAISE
+2026-10-05 17:24:42.385 CST [7668] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 17:24:42.472 CST [51288] ERROR:  FEP_RECONSTRUCTION_NOT_PIT
+2026-10-05 17:24:42.472 CST [51288] CONTEXT:  PL/pgSQL function validate_observation_revision() line 12 at RAISE
+2026-10-05 17:24:42.472 CST [51288] STATEMENT:  insert into fep.observation_revisions values ('o',2,'PUB',$1,$2,$3,'NONE','PIT_OBSERVED','REPLAY',1,$4)
+2026-10-05 17:24:42.565 CST [30488] ERROR:  FEP_DENOMINATOR_INCOMPLETE
+2026-10-05 17:24:42.565 CST [30488] CONTEXT:  PL/pgSQL function validate_denominator_complete() line 11 at RAISE
+2026-10-05 17:24:42.565 CST [30488] STATEMENT:  set constraints all immediate
+2026-10-05 17:24:42.752 CST [46752] ERROR:  FEP_FOLD_PHASE_OVERLAP
+2026-10-05 17:24:42.752 CST [46752] CONTEXT:  PL/pgSQL function validate_dataset_row() line 15 at RAISE
+2026-10-05 17:24:42.752 CST [46752] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 17:24:42.810 CST [47768] ERROR:  FEP_FOLD_PHASE_OVERLAP
+2026-10-05 17:24:42.810 CST [47768] CONTEXT:  PL/pgSQL function validate_dataset_row() line 15 at RAISE
+2026-10-05 17:24:42.810 CST [47768] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 17:24:42.868 CST [53680] ERROR:  FEP_FOLD_PHASE_OVERLAP
+2026-10-05 17:24:42.868 CST [53680] CONTEXT:  PL/pgSQL function validate_dataset_row() line 15 at RAISE
+2026-10-05 17:24:42.868 CST [53680] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 17:24:42.966 CST [53984] ERROR:  FEP_APPEND_ONLY
+2026-10-05 17:24:42.966 CST [53984] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-05 17:24:42.966 CST [53984] STATEMENT:  update fep.contracts set version='2' where contract_id='OBS'
+2026-10-05 17:24:43.015 CST [19972] ERROR:  FEP_APPEND_ONLY
+2026-10-05 17:24:43.015 CST [19972] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-05 17:24:43.015 CST [19972] STATEMENT:  delete from fep.contracts where contract_id='OBS'
+2026-10-05 17:24:43.094 CST [55132] ERROR:  FEP_LABEL_EXACT_SOURCE_MISMATCH
+2026-10-05 17:24:43.094 CST [55132] CONTEXT:  PL/pgSQL function validate_label_revision() line 14 at RAISE
+2026-10-05 17:24:43.094 CST [55132] STATEMENT:  insert into fep.label_revisions values ('o',$1,'ABS:T5',5,2,$2,.9,null,'OBSERVED',true,$3,1)
+2026-10-05 17:24:43.135 CST [36356] ERROR:  FEP_UPSTREAM_EXACT_AUTHORITY_REQUIRED
+2026-10-05 17:24:43.135 CST [36356] CONTEXT:  PL/pgSQL function validate_label_binding() line 12 at RAISE
+2026-10-05 17:24:43.135 CST [36356] STATEMENT:  insert into fep.label_source_bindings values ('missing','OBS','key','r',$1,'2026-09-08',$2,$3,$4,$5)
+2026-10-05 17:24:43.173 CST [50564] ERROR:  duplicate key value violates unique constraint "prediction_slots_observation_id_target_id_horizon_model_fam_key"
+2026-10-05 17:24:43.173 CST [50564] DETAIL:  Key (observation_id, target_id, horizon, model_family_scope)=(o, ABS:T5, 5, CORE) already exists.
+2026-10-05 17:24:43.173 CST [50564] STATEMENT:  insert into fep.prediction_slots values ($1,'o',$2,'ABS:T5',5,'CORE',$3,$4,'NO_ACTIVE_MODEL')
+2026-10-05 17:24:45.222 CST [20920] ERROR:  type "nonexistent_type" does not exist at character 37
+2026-10-05 17:24:45.222 CST [20920] STATEMENT:  create table fep.rollback_probe (id nonexistent_type)
+2026-10-05 17:24:45.463 CST [6676] ERROR:  FEP_DENOMINATOR_INCOMPLETE
+2026-10-05 17:24:45.463 CST [6676] CONTEXT:  PL/pgSQL function validate_denominator_complete() line 11 at RAISE
+2026-10-05 17:24:45.463 CST [6676] STATEMENT:  insert into fep.datasets values ($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:26:05.210 CST [46728] LOG:  received fast shutdown request
+2026-10-05 17:26:05.214 CST [46728] LOG:  aborting any active transactions
+2026-10-05 17:26:05.222 CST [46728] LOG:  background worker "logical replication launcher" (PID 39440) exited with exit code 1
+2026-10-05 17:26:05.224 CST [52436] LOG:  shutting down
+2026-10-05 17:26:05.226 CST [52436] LOG:  checkpoint starting: shutdown immediate
+2026-10-05 17:26:06.848 CST [52436] LOG:  checkpoint complete: wrote 1774 buffers (10.8%), wrote 4 SLRU buffers; 0 WAL file(s) added, 0 removed, 1 recycled; write=0.183 s, sync=1.422 s, total=1.625 s; sync files=842, longest=0.007 s, average=0.002 s; distance=8340 kB, estimate=8340 kB; lsn=0/4789E00, redo lsn=0/4789E00
+2026-10-05 17:26:07.523 CST [46728] LOG:  database system is shut down
+2026-10-05 17:49:23.067 CST [28652] LOG:  starting PostgreSQL 18.6 on x86_64-windows, compiled by msvc-19.44.35228, 64-bit
+2026-10-05 17:49:23.068 CST [28652] LOG:  listening on IPv4 address "127.0.0.1", port 55488
+2026-10-05 17:49:23.105 CST [38336] LOG:  database system was shut down at 2026-10-05 17:26:06 CST
+2026-10-05 17:49:23.113 CST [28652] LOG:  database system is ready to accept connections
+2026-10-05 17:49:32.638 CST [36124] ERROR:  FEP_CAS_CONFLICT
+2026-10-05 17:49:32.638 CST [36124] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE
+2026-10-05 17:49:32.638 CST [36124] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:49:32.740 CST [45536] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 17:49:32.740 CST [45536] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 17:49:32.740 CST [45536] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:49:32.787 CST [42844] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 17:49:32.787 CST [42844] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 17:49:32.787 CST [42844] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:49:32.843 CST [23220] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 17:49:32.843 CST [23220] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 17:49:32.843 CST [23220] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:49:32.890 CST [52740] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 17:49:32.890 CST [52740] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 17:49:32.890 CST [52740] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:49:32.937 CST [55056] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 17:49:32.937 CST [55056] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 17:49:32.937 CST [55056] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:49:32.984 CST [23696] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 17:49:32.984 CST [23696] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 17:49:32.984 CST [23696] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:49:33.030 CST [37292] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 17:49:33.030 CST [37292] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 17:49:33.030 CST [37292] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:49:33.074 CST [31748] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 17:49:33.074 CST [31748] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 17:49:33.074 CST [31748] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:49:33.120 CST [45656] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 17:49:33.120 CST [45656] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 17:49:33.120 CST [45656] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:49:33.163 CST [38336] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 17:49:33.163 CST [38336] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 17:49:33.163 CST [38336] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:49:33.212 CST [53880] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 17:49:33.212 CST [53880] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 17:49:33.212 CST [53880] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:49:33.256 CST [40552] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 17:49:33.256 CST [40552] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 17:49:33.256 CST [40552] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:49:33.301 CST [49624] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 17:49:33.301 CST [49624] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 17:49:33.301 CST [49624] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:49:33.355 CST [43856] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 17:49:33.355 CST [43856] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 17:49:33.355 CST [43856] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:49:33.406 CST [30848] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 17:49:33.406 CST [30848] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 17:49:33.406 CST [30848] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:49:33.407 CST [30848] ERROR:  FEP_CAS_CONFLICT
+2026-10-05 17:49:33.407 CST [30848] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE
+2026-10-05 17:49:33.407 CST [30848] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:49:33.459 CST [53268] ERROR:  FEP_CAS_CONFLICT
+2026-10-05 17:49:33.459 CST [53268] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE
+2026-10-05 17:49:33.459 CST [53268] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:49:33.513 CST [50648] ERROR:  FEP_HEAD_ACTIVATION_INVALID
+2026-10-05 17:49:33.513 CST [50648] CONTEXT:  PL/pgSQL function validate_deployment_head() line 6 at RAISE
+2026-10-05 17:49:33.513 CST [50648] STATEMENT:  insert into fep.deployment_heads values ($1,'SHADOW_INFERENCE','ABS:T5',5,'FEATURE','set1','g1','future',1,$2)
+2026-10-05 17:49:33.556 CST [14444] ERROR:  permission denied for function cas_deploy
+2026-10-05 17:49:33.556 CST [14444] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:49:33.606 CST [7180] ERROR:  permission denied for table deployment_heads
+2026-10-05 17:49:33.606 CST [7180] STATEMENT:  update fep.deployment_heads set head_version=2
+2026-10-05 17:49:33.606 CST [7180] ERROR:  permission denied for table deployment_heads
+2026-10-05 17:49:33.606 CST [7180] STATEMENT:  delete from fep.deployment_heads
+2026-10-05 17:49:33.607 CST [7180] ERROR:  permission denied for table contracts
+2026-10-05 17:49:33.607 CST [7180] STATEMENT:  update fep.contracts set version='x'
+2026-10-05 17:49:33.608 CST [7180] ERROR:  must be owner of table deployment_heads
+2026-10-05 17:49:33.608 CST [7180] STATEMENT:  alter table fep.deployment_heads disable trigger all
+2026-10-05 17:49:33.609 CST [7180] ERROR:  permission denied to set role "fep_cas_owner"
+2026-10-05 17:49:33.609 CST [7180] STATEMENT:  set role fep_cas_owner
+2026-10-05 17:49:34.186 CST [42132] ERROR:  FEP_CAS_CONFLICT
+2026-10-05 17:49:34.186 CST [42132] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE
+2026-10-05 17:49:34.186 CST [42132] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:49:34.377 CST [44336] ERROR:  query returned no rows
+2026-10-05 17:49:34.377 CST [44336] CONTEXT:  PL/pgSQL function validate_observation() line 4 at SQL statement
+2026-10-05 17:49:34.377 CST [44336] STATEMENT:  insert into fep.observations values ($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:49:34.414 CST [52604] ERROR:  insert or update on table "label_revisions" violates foreign key constraint "label_revisions_observation_id_scope_id_fkey"
+2026-10-05 17:49:34.414 CST [52604] DETAIL:  Key (observation_id, scope_id)=(o, OTHER) is not present in table "observations".
+2026-10-05 17:49:34.414 CST [52604] STATEMENT:  insert into fep.label_revisions values ('o','OTHER','ABS:T5',1,2,$1,.2,null,'OBSERVED',true,$2,null)
+2026-10-05 17:49:34.472 CST [32576] ERROR:  insert or update on table "dataset_rows" violates foreign key constraint "dataset_rows_snapshot_id_observation_id_fkey"
+2026-10-05 17:49:34.472 CST [32576] DETAIL:  Key (snapshot_id, observation_id)=(snap, other) is not present in table "snapshots".
+2026-10-05 17:49:34.472 CST [32576] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 17:49:34.507 CST [52868] ERROR:  FEP_SNAPSHOT_FEATURE_CONTRACT_MISMATCH
+2026-10-05 17:49:34.507 CST [52868] CONTEXT:  PL/pgSQL function validate_snapshot() line 6 at RAISE
+2026-10-05 17:49:34.507 CST [52868] STATEMENT:  insert into fep.snapshots values ('wrong','o',1,'WINDOW',$1,$2,$3)
+2026-10-05 17:49:34.662 CST [50984] ERROR:  insert or update on table "dataset_fold_label_selection" violates foreign key constraint "dataset_fold_label_selection_observation_id_target_id_sele_fkey"
+2026-10-05 17:49:34.662 CST [50984] DETAIL:  Key (observation_id, target_id, selected_label_revision, selected_label_digest)=(o, ABS:T5, 1, d78ed9efa6ae77434392252f5e55039c106c229f28150fb5fbffbedbc40e15df) is not present in table "label_revisions".
+2026-10-05 17:49:34.662 CST [50984] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 17:49:34.705 CST [50268] ERROR:  query returned no rows
+2026-10-05 17:49:34.705 CST [50268] CONTEXT:  PL/pgSQL function validate_dataset_row() line 6 at SQL statement
+2026-10-05 17:49:34.705 CST [50268] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 17:49:34.863 CST [54644] ERROR:  FEP_FOLD_REVISION_NOT_VISIBLE
+2026-10-05 17:49:34.863 CST [54644] CONTEXT:  PL/pgSQL function validate_fold_label_selection() line 11 at RAISE
+2026-10-05 17:49:34.863 CST [54644] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 17:49:34.917 CST [54164] ERROR:  FEP_FOLD_LABEL_NOT_TRAINABLE
+2026-10-05 17:49:34.917 CST [54164] CONTEXT:  PL/pgSQL function validate_fold_label_selection() line 14 at RAISE
+2026-10-05 17:49:34.917 CST [54164] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 17:49:35.064 CST [32844] ERROR:  FEP_FOLD_REVISION_NOT_VISIBLE
+2026-10-05 17:49:35.064 CST [32844] CONTEXT:  PL/pgSQL function validate_fold_label_selection() line 11 at RAISE
+2026-10-05 17:49:35.064 CST [32844] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 17:49:35.116 CST [53700] ERROR:  FEP_FOLD_REVISION_NOT_VISIBLE
+2026-10-05 17:49:35.116 CST [53700] CONTEXT:  PL/pgSQL function validate_fold_label_selection() line 11 at RAISE
+2026-10-05 17:49:35.116 CST [53700] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 17:49:35.203 CST [34828] ERROR:  FEP_RECONSTRUCTION_NOT_PIT
+2026-10-05 17:49:35.203 CST [34828] CONTEXT:  PL/pgSQL function validate_observation_revision() line 12 at RAISE
+2026-10-05 17:49:35.203 CST [34828] STATEMENT:  insert into fep.observation_revisions values ('o',2,'PUB',$1,$2,$3,'NONE','PIT_OBSERVED','REPLAY',1,$4)
+2026-10-05 17:49:35.404 CST [54180] ERROR:  FEP_DENOMINATOR_INCOMPLETE
+2026-10-05 17:49:35.404 CST [54180] CONTEXT:  PL/pgSQL function validate_denominator_complete() line 11 at RAISE
+2026-10-05 17:49:35.404 CST [54180] STATEMENT:  set constraints all immediate
+2026-10-05 17:49:35.601 CST [43024] ERROR:  FEP_FOLD_PHASE_OVERLAP
+2026-10-05 17:49:35.601 CST [43024] CONTEXT:  PL/pgSQL function validate_dataset_row() line 15 at RAISE
+2026-10-05 17:49:35.601 CST [43024] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 17:49:35.660 CST [53780] ERROR:  FEP_FOLD_PHASE_OVERLAP
+2026-10-05 17:49:35.660 CST [53780] CONTEXT:  PL/pgSQL function validate_dataset_row() line 15 at RAISE
+2026-10-05 17:49:35.660 CST [53780] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 17:49:35.717 CST [12164] ERROR:  FEP_FOLD_PHASE_OVERLAP
+2026-10-05 17:49:35.717 CST [12164] CONTEXT:  PL/pgSQL function validate_dataset_row() line 15 at RAISE
+2026-10-05 17:49:35.717 CST [12164] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 17:49:35.804 CST [54684] ERROR:  FEP_APPEND_ONLY
+2026-10-05 17:49:35.804 CST [54684] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-05 17:49:35.804 CST [54684] STATEMENT:  update fep.contracts set version='2' where contract_id='OBS'
+2026-10-05 17:49:35.937 CST [51416] ERROR:  FEP_APPEND_ONLY
+2026-10-05 17:49:35.937 CST [51416] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-05 17:49:35.937 CST [51416] STATEMENT:  delete from fep.contracts where contract_id='OBS'
+2026-10-05 17:49:36.112 CST [43752] ERROR:  FEP_LABEL_EXACT_SOURCE_MISMATCH
+2026-10-05 17:49:36.112 CST [43752] CONTEXT:  PL/pgSQL function validate_label_revision() line 14 at RAISE
+2026-10-05 17:49:36.112 CST [43752] STATEMENT:  insert into fep.label_revisions values ('o',$1,'ABS:T5',5,2,$2,.9,null,'OBSERVED',true,$3,1)
+2026-10-05 17:49:36.148 CST [40476] ERROR:  FEP_UPSTREAM_EXACT_AUTHORITY_REQUIRED
+2026-10-05 17:49:36.148 CST [40476] CONTEXT:  PL/pgSQL function validate_label_binding() line 12 at RAISE
+2026-10-05 17:49:36.148 CST [40476] STATEMENT:  insert into fep.label_source_bindings values ('missing','OBS','key','r',$1,'2026-09-08',$2,$3,$4,$5)
+2026-10-05 17:49:36.183 CST [49824] ERROR:  duplicate key value violates unique constraint "prediction_slots_observation_id_target_id_horizon_model_fam_key"
+2026-10-05 17:49:36.183 CST [49824] DETAIL:  Key (observation_id, target_id, horizon, model_family_scope)=(o, ABS:T5, 5, CORE) already exists.
+2026-10-05 17:49:36.183 CST [49824] STATEMENT:  insert into fep.prediction_slots values ($1,'o',$2,'ABS:T5',5,'CORE',$3,$4,'NO_ACTIVE_MODEL')
+2026-10-05 17:49:37.444 CST [35280] ERROR:  type "nonexistent_type" does not exist at character 37
+2026-10-05 17:49:37.444 CST [35280] STATEMENT:  create table fep.rollback_probe (id nonexistent_type)
+2026-10-05 17:49:37.642 CST [30412] ERROR:  FEP_DENOMINATOR_INCOMPLETE
+2026-10-05 17:49:37.642 CST [30412] CONTEXT:  PL/pgSQL function validate_denominator_complete() line 11 at RAISE
+2026-10-05 17:49:37.642 CST [30412] STATEMENT:  insert into fep.datasets values ($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 17:54:23.099 CST [9616] LOG:  checkpoint starting: time
+2026-10-05 17:56:25.737 CST [41588] WARNING:  there is already a transaction in progress
+2026-10-05 17:56:25.746 CST [41588] ERROR:  duplicate key value violates unique constraint "publications_pkey"
+2026-10-05 17:56:25.746 CST [41588] DETAIL:  Key (publication_id)=(PUB-ROOT-bea5787484174cfb8837b45874d4d74b) already exists.
+2026-10-05 17:56:25.746 CST [41588] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:56:25.767 CST [33176] WARNING:  there is already a transaction in progress
+2026-10-05 17:56:25.775 CST [33176] ERROR:  V4_SAME_DAY_PARENT_INVALID
+2026-10-05 17:56:25.775 CST [33176] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 26 at RAISE
+2026-10-05 17:56:25.775 CST [33176] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:56:25.776 CST [33176] ERROR:  V4_SAME_DAY_PARENT_INVALID
+2026-10-05 17:56:25.776 CST [33176] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 26 at RAISE
+2026-10-05 17:56:25.776 CST [33176] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:56:25.777 CST [33176] ERROR:  V4_SAME_DAY_PARENT_INVALID
+2026-10-05 17:56:25.777 CST [33176] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 26 at RAISE
+2026-10-05 17:56:25.777 CST [33176] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:56:25.799 CST [27376] WARNING:  there is already a transaction in progress
+2026-10-05 17:56:25.808 CST [27376] ERROR:  duplicate key value violates unique constraint "uq_publication_namespace_date_lineage_revision"
+2026-10-05 17:56:25.808 CST [27376] DETAIL:  Key (model_namespace_id, trade_date, publication_lineage_id, revision_no)=(NS-522121be757b4d7ea499c6fd003210c3, 2026-09-24, L-522121be757b4d7ea499c6fd003210c3, 2) already exists.
+2026-10-05 17:56:25.808 CST [27376] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:56:25.809 CST [27376] ERROR:  duplicate key value violates unique constraint "uq_publication_namespace_trade_date_core"
+2026-10-05 17:56:25.809 CST [27376] DETAIL:  Key (model_namespace_id, trade_date, core_revision)=(NS-522121be757b4d7ea499c6fd003210c3, 2026-09-24, 1) already exists.
+2026-10-05 17:56:25.809 CST [27376] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:56:25.827 CST [40292] WARNING:  there is already a transaction in progress
+2026-10-05 17:56:25.838 CST [40292] ERROR:  V4_PRIOR_SESSION_ACCEPTED_STATE_INVALID
+2026-10-05 17:56:25.838 CST [40292] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 71 at RAISE
+2026-10-05 17:56:25.838 CST [40292] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:56:25.839 CST [40292] ERROR:  V4_PRIOR_SESSION_ACCEPTED_STATE_INVALID
+2026-10-05 17:56:25.839 CST [40292] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 71 at RAISE
+2026-10-05 17:56:25.839 CST [40292] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:56:25.859 CST [39620] WARNING:  there is already a transaction in progress
+2026-10-05 17:56:25.871 CST [39620] ERROR:  V4_PRIOR_SESSION_ACCEPTED_STATE_INVALID
+2026-10-05 17:56:25.871 CST [39620] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 71 at RAISE
+2026-10-05 17:56:25.871 CST [39620] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:56:25.873 CST [39620] ERROR:  V4_PRIOR_SESSION_ACCEPTED_STATE_INVALID
+2026-10-05 17:56:25.873 CST [39620] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 71 at RAISE
+2026-10-05 17:56:25.873 CST [39620] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:56:25.995 CST [37308] WARNING:  there is already a transaction in progress
+2026-10-05 17:56:26.007 CST [37308] ERROR:  V4_PRIOR_SESSION_ACCEPTED_STATE_INVALID
+2026-10-05 17:56:26.007 CST [37308] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 71 at RAISE
+2026-10-05 17:56:26.007 CST [37308] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:56:26.024 CST [24164] WARNING:  there is already a transaction in progress
+2026-10-05 17:56:26.036 CST [24164] ERROR:  V4_PRIOR_SESSION_ACCEPTED_STATE_INVALID
+2026-10-05 17:56:26.036 CST [24164] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 71 at RAISE
+2026-10-05 17:56:26.036 CST [24164] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:56:26.054 CST [38040] WARNING:  there is already a transaction in progress
+2026-10-05 17:56:26.065 CST [38040] ERROR:  V4_PRIOR_SESSION_ACCEPTED_STATE_INVALID
+2026-10-05 17:56:26.065 CST [38040] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 71 at RAISE
+2026-10-05 17:56:26.065 CST [38040] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:56:26.093 CST [53896] WARNING:  there is already a transaction in progress
+2026-10-05 17:56:26.103 CST [53896] ERROR:  V4_PRIOR_SESSION_ACCEPTED_STATE_INVALID
+2026-10-05 17:56:26.103 CST [53896] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 71 at RAISE
+2026-10-05 17:56:26.103 CST [53896] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:56:26.124 CST [11608] WARNING:  there is already a transaction in progress
+2026-10-05 17:56:26.135 CST [11608] ERROR:  V4_SAME_DAY_PARENT_INVALID
+2026-10-05 17:56:26.135 CST [11608] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 26 at RAISE
+2026-10-05 17:56:26.135 CST [11608] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:56:26.154 CST [55076] WARNING:  there is already a transaction in progress
+2026-10-05 17:56:26.165 CST [55076] ERROR:  V4_SAME_DAY_PARENT_INVALID
+2026-10-05 17:56:26.165 CST [55076] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 26 at RAISE
+2026-10-05 17:56:26.165 CST [55076] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:56:26.294 CST [51464] WARNING:  there is already a transaction in progress
+2026-10-05 17:56:26.305 CST [51464] ERROR:  V4_SAME_DAY_PARENT_INVALID
+2026-10-05 17:56:26.305 CST [51464] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 26 at RAISE
+2026-10-05 17:56:26.305 CST [51464] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:56:26.428 CST [47032] WARNING:  there is already a transaction in progress
+2026-10-05 17:56:26.440 CST [47032] ERROR:  V4_SAME_DAY_PARENT_INVALID
+2026-10-05 17:56:26.440 CST [47032] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 26 at RAISE
+2026-10-05 17:56:26.440 CST [47032] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:56:26.463 CST [53768] WARNING:  there is already a transaction in progress
+2026-10-05 17:56:26.474 CST [53768] ERROR:  V4_SAME_DAY_PARENT_INVALID
+2026-10-05 17:56:26.474 CST [53768] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 26 at RAISE
+2026-10-05 17:56:26.474 CST [53768] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:56:26.475 CST [53768] ERROR:  V4_SAME_DAY_PARENT_INVALID
+2026-10-05 17:56:26.475 CST [53768] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 26 at RAISE
+2026-10-05 17:56:26.475 CST [53768] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:56:26.477 CST [53768] ERROR:  V4_SAME_DAY_PARENT_INVALID
+2026-10-05 17:56:26.477 CST [53768] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 26 at RAISE
+2026-10-05 17:56:26.477 CST [53768] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:56:26.478 CST [53768] ERROR:  V4_SAME_DAY_PARENT_INVALID
+2026-10-05 17:56:26.478 CST [53768] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 26 at RAISE
+2026-10-05 17:56:26.478 CST [53768] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:56:26.497 CST [42916] WARNING:  there is already a transaction in progress
+2026-10-05 17:56:26.507 CST [42916] ERROR:  V4_PRIOR_SESSION_GAP_INVALID
+2026-10-05 17:56:26.507 CST [42916] CONTEXT:  PL/pgSQL function v4.validate_publication_identity() line 94 at RAISE
+2026-10-05 17:56:26.507 CST [42916] STATEMENT:  insert into v4.publications(
+	             publication_id,publication_lineage_id,trade_date,market_calendar_id,revision_no,status,model_namespace_id,
+	             core_revision,source_manifest_sha256,computation_identity_sha256,same_day_revision_parent_id,
+	             prior_session_publication_id,prior_session_state_logical_digest,prior_session_state_head,prior_session_gap_reason,accepted_at)
+	           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,case when $16='ACCEPTED' then now() else null end)
+2026-10-05 17:56:26.511 CST [42916] ERROR:  V4_PUBLICATION_HEAD_FROZEN_BY_NEXT_SESSION
+2026-10-05 17:56:26.511 CST [42916] CONTEXT:  PL/pgSQL function v4.validate_publication_head() line 71 at RAISE
+2026-10-05 17:56:26.511 CST [42916] STATEMENT:  update v4.publication_heads set publication_id=$1,state_head_id=$2,state_logical_digest=$3 where trade_date=$4 and model_namespace_id=$5
+2026-10-05 17:56:26.512 CST [42916] ERROR:  V4_PUBLICATION_HEAD_FROZEN_BY_NEXT_SESSION
+2026-10-05 17:56:26.512 CST [42916] CONTEXT:  PL/pgSQL function v4.validate_publication_head() line 30 at RAISE
+2026-10-05 17:56:26.512 CST [42916] STATEMENT:  delete from v4.publication_heads where trade_date=$1 and model_namespace_id=$2
+2026-10-05 17:56:26.534 CST [36676] WARNING:  there is already a transaction in progress
+2026-10-05 17:56:26.571 CST [9080] WARNING:  there is already a transaction in progress
+2026-10-05 17:56:26.579 CST [9080] ERROR:  V4_MARKET_CALENDAR_INSERT_INVALIDATES_INITIAL_BOUNDARY
+2026-10-05 17:56:26.579 CST [9080] CONTEXT:  PL/pgSQL function v4.validate_market_calendar_session_insert() line 12 at RAISE
+2026-10-05 17:56:26.579 CST [9080] STATEMENT:  insert into v4.market_calendar_sessions(market_calendar_id,session_no,trade_date,calendar_digest) values ($1,$2,$3,$4) on conflict do nothing
+2026-10-05 17:56:26.788 CST [50180] WARNING:  there is already a transaction in progress
+2026-10-05 17:56:26.798 CST [50180] ERROR:  V4_APPEND_ONLY_TABLE:v4.security_lifecycle_history
+2026-10-05 17:56:26.798 CST [50180] CONTEXT:  PL/pgSQL function v4.reject_append_only_mutation() line 3 at RAISE
+2026-10-05 17:56:26.798 CST [50180] STATEMENT:  delete from v4.security_lifecycle_history where lifecycle_fact_key=$1
+2026-10-05 17:56:26.962 CST [49768] WARNING:  there is already a transaction in progress
+2026-10-05 17:56:26.968 CST [49768] ERROR:  V4_FACT_SOURCE_REVISION_MISMATCH
+2026-10-05 17:56:26.968 CST [49768] CONTEXT:  PL/pgSQL function v4.validate_fact_source_revision() line 11 at RAISE
+2026-10-05 17:56:26.968 CST [49768] STATEMENT:  insert into v4.security_lifecycle_facts(security_id,security_type,effective_from,observed_at,
+	                            ingested_at,system_available_at,source_revision_id,provider_available_at,supersedes_revision_id,
+	                            source_identity,quality) values ($1,'A_STOCK',$2,$3,$4,$5,$6,$7,null,'bad','OBSERVED')
+2026-10-05 17:56:27.089 CST [49528] WARNING:  there is already a transaction in progress
+2026-10-05 17:56:27.097 CST [49528] ERROR:  V4_APPEND_ONLY_TABLE:v4.security_membership_facts
+2026-10-05 17:56:27.097 CST [49528] CONTEXT:  PL/pgSQL function v4.reject_append_only_mutation() line 3 at RAISE
+2026-10-05 17:56:27.097 CST [49528] STATEMENT:  delete from v4.security_membership_facts where membership_id=$1
+2026-10-05 17:56:27.117 CST [53576] WARNING:  there is already a transaction in progress
+2026-10-05 17:56:27.144 CST [52876] WARNING:  there is already a transaction in progress
+2026-10-05 17:56:27.147 CST [52876] ERROR:  duplicate key value violates unique constraint "source_revisions_logical_fact_id_revision_no_key"
+2026-10-05 17:56:27.147 CST [52876] DETAIL:  Key (logical_fact_id, revision_no)=(fact-6e4ffcc632e145f1af4c7d0c00cbf8fc, 2) already exists.
+2026-10-05 17:56:27.147 CST [52876] STATEMENT:  insert into v4.source_revisions(source_revision_id,logical_fact_id,revision_no,payload,digest,
+	             provider_available_at,observed_at,ingested_at,system_available_at,supersedes_revision_id)
+	           values ($1,$2,$3,'{}',$4,$5,$6,$7,$8,$9)
+2026-10-05 17:56:27.178 CST [42856] ERROR:  type "this_is_not_a_type" does not exist at character 55
+2026-10-05 17:56:27.178 CST [42856] STATEMENT:  CREATE TABLE v4_meta.__intentionally_invalid_ddl ( id this_is_not_a_type )
+2026-10-05 17:57:34.382 CST [9616] LOG:  checkpoint complete: wrote 1754 buffers (10.7%), wrote 4 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=190.183 s, sync=1.095 s, total=191.283 s; sync files=826, longest=0.004 s, average=0.002 s; distance=7757 kB, estimate=7757 kB; lsn=0/4F8DAA8, redo lsn=0/4F1D368
+2026-10-05 18:00:28.755 CST [52796] ERROR:  FEP_CAS_CONFLICT
+2026-10-05 18:00:28.755 CST [52796] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE
+2026-10-05 18:00:28.755 CST [52796] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 18:00:28.860 CST [43500] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 18:00:28.860 CST [43500] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 18:00:28.860 CST [43500] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 18:00:28.907 CST [52116] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 18:00:28.907 CST [52116] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 18:00:28.907 CST [52116] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 18:00:29.056 CST [35516] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 18:00:29.056 CST [35516] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 18:00:29.056 CST [35516] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 18:00:29.109 CST [52984] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 18:00:29.109 CST [52984] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 18:00:29.109 CST [52984] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 18:00:29.159 CST [54204] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 18:00:29.159 CST [54204] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 18:00:29.159 CST [54204] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 18:00:29.207 CST [51416] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 18:00:29.207 CST [51416] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 18:00:29.207 CST [51416] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 18:00:29.366 CST [54484] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 18:00:29.366 CST [54484] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 18:00:29.366 CST [54484] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 18:00:29.414 CST [54580] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 18:00:29.414 CST [54580] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 18:00:29.414 CST [54580] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 18:00:29.458 CST [54316] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 18:00:29.458 CST [54316] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 18:00:29.458 CST [54316] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 18:00:29.506 CST [39156] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 18:00:29.506 CST [39156] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 18:00:29.506 CST [39156] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 18:00:29.551 CST [40856] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 18:00:29.551 CST [40856] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 18:00:29.551 CST [40856] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 18:00:29.705 CST [49160] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 18:00:29.705 CST [49160] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 18:00:29.705 CST [49160] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 18:00:29.861 CST [54700] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 18:00:29.861 CST [54700] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 18:00:29.861 CST [54700] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 18:00:29.912 CST [33876] ERROR:  FEP_REQUIRED_CAS_PARAMETER_NULL
+2026-10-05 18:00:29.912 CST [33876] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE
+2026-10-05 18:00:29.912 CST [33876] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 18:00:29.967 CST [55072] ERROR:  FEP_IDEMPOTENCY_CONFLICT
+2026-10-05 18:00:29.967 CST [55072] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE
+2026-10-05 18:00:29.967 CST [55072] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 18:00:29.968 CST [55072] ERROR:  FEP_CAS_CONFLICT
+2026-10-05 18:00:29.968 CST [55072] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE
+2026-10-05 18:00:29.968 CST [55072] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 18:00:30.027 CST [51780] ERROR:  FEP_CAS_CONFLICT
+2026-10-05 18:00:30.027 CST [51780] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE
+2026-10-05 18:00:30.027 CST [51780] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 18:00:30.074 CST [48472] ERROR:  FEP_HEAD_ACTIVATION_INVALID
+2026-10-05 18:00:30.074 CST [48472] CONTEXT:  PL/pgSQL function validate_deployment_head() line 6 at RAISE
+2026-10-05 18:00:30.074 CST [48472] STATEMENT:  insert into fep.deployment_heads values ($1,'SHADOW_INFERENCE','ABS:T5',5,'FEATURE','set1','g1','future',1,$2)
+2026-10-05 18:00:30.117 CST [53680] ERROR:  permission denied for function cas_deploy
+2026-10-05 18:00:30.117 CST [53680] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 18:00:30.167 CST [46612] ERROR:  permission denied for table deployment_heads
+2026-10-05 18:00:30.167 CST [46612] STATEMENT:  update fep.deployment_heads set head_version=2
+2026-10-05 18:00:30.168 CST [46612] ERROR:  permission denied for table deployment_heads
+2026-10-05 18:00:30.168 CST [46612] STATEMENT:  delete from fep.deployment_heads
+2026-10-05 18:00:30.168 CST [46612] ERROR:  permission denied for table contracts
+2026-10-05 18:00:30.168 CST [46612] STATEMENT:  update fep.contracts set version='x'
+2026-10-05 18:00:30.169 CST [46612] ERROR:  must be owner of table deployment_heads
+2026-10-05 18:00:30.169 CST [46612] STATEMENT:  alter table fep.deployment_heads disable trigger all
+2026-10-05 18:00:30.170 CST [46612] ERROR:  permission denied to set role "fep_cas_owner"
+2026-10-05 18:00:30.170 CST [46612] STATEMENT:  set role fep_cas_owner
+2026-10-05 18:00:30.644 CST [54508] ERROR:  FEP_CAS_CONFLICT
+2026-10-05 18:00:30.644 CST [54508] CONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE
+2026-10-05 18:00:30.644 CST [54508] STATEMENT:  select fep.cas_deploy($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 18:00:30.850 CST [54308] ERROR:  query returned no rows
+2026-10-05 18:00:30.850 CST [54308] CONTEXT:  PL/pgSQL function validate_observation() line 4 at SQL statement
+2026-10-05 18:00:30.850 CST [54308] STATEMENT:  insert into fep.observations values ($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 18:00:31.000 CST [49824] ERROR:  insert or update on table "label_revisions" violates foreign key constraint "label_revisions_observation_id_scope_id_fkey"
+2026-10-05 18:00:31.000 CST [49824] DETAIL:  Key (observation_id, scope_id)=(o, OTHER) is not present in table "observations".
+2026-10-05 18:00:31.000 CST [49824] STATEMENT:  insert into fep.label_revisions values ('o','OTHER','ABS:T5',1,2,$1,.2,null,'OBSERVED',true,$2,null)
+2026-10-05 18:00:31.046 CST [51084] ERROR:  insert or update on table "dataset_rows" violates foreign key constraint "dataset_rows_snapshot_id_observation_id_fkey"
+2026-10-05 18:00:31.046 CST [51084] DETAIL:  Key (snapshot_id, observation_id)=(snap, other) is not present in table "snapshots".
+2026-10-05 18:00:31.046 CST [51084] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 18:00:31.082 CST [50268] ERROR:  FEP_SNAPSHOT_FEATURE_CONTRACT_MISMATCH
+2026-10-05 18:00:31.082 CST [50268] CONTEXT:  PL/pgSQL function validate_snapshot() line 6 at RAISE
+2026-10-05 18:00:31.082 CST [50268] STATEMENT:  insert into fep.snapshots values ('wrong','o',1,'WINDOW',$1,$2,$3)
+2026-10-05 18:00:31.123 CST [7868] ERROR:  insert or update on table "dataset_fold_label_selection" violates foreign key constraint "dataset_fold_label_selection_observation_id_target_id_sele_fkey"
+2026-10-05 18:00:31.123 CST [7868] DETAIL:  Key (observation_id, target_id, selected_label_revision, selected_label_digest)=(o, ABS:T5, 1, d78ed9efa6ae77434392252f5e55039c106c229f28150fb5fbffbedbc40e15df) is not present in table "label_revisions".
+2026-10-05 18:00:31.123 CST [7868] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 18:00:31.170 CST [49588] ERROR:  query returned no rows
+2026-10-05 18:00:31.170 CST [49588] CONTEXT:  PL/pgSQL function validate_dataset_row() line 6 at SQL statement
+2026-10-05 18:00:31.170 CST [49588] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 18:00:31.216 CST [37428] ERROR:  FEP_FOLD_REVISION_NOT_VISIBLE
+2026-10-05 18:00:31.216 CST [37428] CONTEXT:  PL/pgSQL function validate_fold_label_selection() line 11 at RAISE
+2026-10-05 18:00:31.216 CST [37428] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 18:00:31.263 CST [18376] ERROR:  FEP_FOLD_LABEL_NOT_TRAINABLE
+2026-10-05 18:00:31.263 CST [18376] CONTEXT:  PL/pgSQL function validate_fold_label_selection() line 14 at RAISE
+2026-10-05 18:00:31.263 CST [18376] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 18:00:31.310 CST [30564] ERROR:  FEP_FOLD_REVISION_NOT_VISIBLE
+2026-10-05 18:00:31.310 CST [30564] CONTEXT:  PL/pgSQL function validate_fold_label_selection() line 11 at RAISE
+2026-10-05 18:00:31.310 CST [30564] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 18:00:31.358 CST [54836] ERROR:  FEP_FOLD_REVISION_NOT_VISIBLE
+2026-10-05 18:00:31.358 CST [54836] CONTEXT:  PL/pgSQL function validate_fold_label_selection() line 11 at RAISE
+2026-10-05 18:00:31.358 CST [54836] STATEMENT:  insert into fep.dataset_fold_label_selection values ($1,$2,$3,$4,'ABS:T5',$5,$6,'EXACT_ASOF',$7)
+2026-10-05 18:00:31.442 CST [54572] ERROR:  FEP_RECONSTRUCTION_NOT_PIT
+2026-10-05 18:00:31.442 CST [54572] CONTEXT:  PL/pgSQL function validate_observation_revision() line 12 at RAISE
+2026-10-05 18:00:31.442 CST [54572] STATEMENT:  insert into fep.observation_revisions values ('o',2,'PUB',$1,$2,$3,'NONE','PIT_OBSERVED','REPLAY',1,$4)
+2026-10-05 18:00:31.733 CST [49136] ERROR:  FEP_DENOMINATOR_INCOMPLETE
+2026-10-05 18:00:31.733 CST [49136] CONTEXT:  PL/pgSQL function validate_denominator_complete() line 11 at RAISE
+2026-10-05 18:00:31.733 CST [49136] STATEMENT:  set constraints all immediate
+2026-10-05 18:00:31.811 CST [30456] ERROR:  FEP_FOLD_PHASE_OVERLAP
+2026-10-05 18:00:31.811 CST [30456] CONTEXT:  PL/pgSQL function validate_dataset_row() line 15 at RAISE
+2026-10-05 18:00:31.811 CST [30456] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 18:00:31.862 CST [44568] ERROR:  FEP_FOLD_PHASE_OVERLAP
+2026-10-05 18:00:31.862 CST [44568] CONTEXT:  PL/pgSQL function validate_dataset_row() line 15 at RAISE
+2026-10-05 18:00:31.862 CST [44568] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 18:00:31.926 CST [47172] ERROR:  FEP_FOLD_PHASE_OVERLAP
+2026-10-05 18:00:31.926 CST [47172] CONTEXT:  PL/pgSQL function validate_dataset_row() line 15 at RAISE
+2026-10-05 18:00:31.926 CST [47172] STATEMENT:  insert into fep.dataset_rows values ($1,$2,'FEATURE',$3,$4,'ABS:T5',$5,$6,1,$7,$8,null)
+2026-10-05 18:00:32.015 CST [28096] ERROR:  FEP_APPEND_ONLY
+2026-10-05 18:00:32.015 CST [28096] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-05 18:00:32.015 CST [28096] STATEMENT:  update fep.contracts set version='2' where contract_id='OBS'
+2026-10-05 18:00:32.051 CST [9172] ERROR:  FEP_APPEND_ONLY
+2026-10-05 18:00:32.051 CST [9172] CONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE
+2026-10-05 18:00:32.051 CST [9172] STATEMENT:  delete from fep.contracts where contract_id='OBS'
+2026-10-05 18:00:32.228 CST [47988] ERROR:  FEP_LABEL_EXACT_SOURCE_MISMATCH
+2026-10-05 18:00:32.228 CST [47988] CONTEXT:  PL/pgSQL function validate_label_revision() line 14 at RAISE
+2026-10-05 18:00:32.228 CST [47988] STATEMENT:  insert into fep.label_revisions values ('o',$1,'ABS:T5',5,2,$2,.9,null,'OBSERVED',true,$3,1)
+2026-10-05 18:00:32.260 CST [36968] ERROR:  FEP_UPSTREAM_EXACT_AUTHORITY_REQUIRED
+2026-10-05 18:00:32.260 CST [36968] CONTEXT:  PL/pgSQL function validate_label_binding() line 12 at RAISE
+2026-10-05 18:00:32.260 CST [36968] STATEMENT:  insert into fep.label_source_bindings values ('missing','OBS','key','r',$1,'2026-09-08',$2,$3,$4,$5)
+2026-10-05 18:00:32.294 CST [53572] ERROR:  duplicate key value violates unique constraint "prediction_slots_observation_id_target_id_horizon_model_fam_key"
+2026-10-05 18:00:32.294 CST [53572] DETAIL:  Key (observation_id, target_id, horizon, model_family_scope)=(o, ABS:T5, 5, CORE) already exists.
+2026-10-05 18:00:32.294 CST [53572] STATEMENT:  insert into fep.prediction_slots values ($1,'o',$2,'ABS:T5',5,'CORE',$3,$4,'NO_ACTIVE_MODEL')
+2026-10-05 18:00:33.727 CST [29984] ERROR:  type "nonexistent_type" does not exist at character 37
+2026-10-05 18:00:33.727 CST [29984] STATEMENT:  create table fep.rollback_probe (id nonexistent_type)
+2026-10-05 18:00:33.935 CST [4608] ERROR:  FEP_DENOMINATOR_INCOMPLETE
+2026-10-05 18:00:33.935 CST [4608] CONTEXT:  PL/pgSQL function validate_denominator_complete() line 11 at RAISE
+2026-10-05 18:00:33.935 CST [4608] STATEMENT:  insert into fep.datasets values ($1,$2,$3,$4,$5,$6,$7,$8)
+2026-10-05 18:01:43.975 CST [28652] LOG:  received fast shutdown request
+2026-10-05 18:01:43.980 CST [28652] LOG:  aborting any active transactions
+2026-10-05 18:01:43.986 CST [28652] LOG:  background worker "logical replication launcher" (PID 50420) exited with exit code 1
+2026-10-05 18:01:43.987 CST [9616] LOG:  shutting down
+2026-10-05 18:01:43.989 CST [9616] LOG:  checkpoint starting: shutdown immediate
+2026-10-05 18:01:45.479 CST [9616] LOG:  checkpoint complete: wrote 1820 buffers (11.1%), wrote 4 SLRU buffers; 0 WAL file(s) added, 0 removed, 1 recycled; write=0.157 s, sync=1.317 s, total=1.493 s; sync files=880, longest=0.005 s, average=0.002 s; distance=8663 kB, estimate=8663 kB; lsn=0/57931B0, redo lsn=0/57931B0
+2026-10-05 18:01:46.068 CST [28652] LOG:  database system is shut down

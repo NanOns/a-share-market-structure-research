@@ -1,0 +1,106 @@
+{
+  "status": "BLOCKED",
+  "gates": [
+    {
+      "gate": "E2-A01",
+      "status": "PASS_ENGINEERING_MECHANICS",
+      "evidence": "E1_INPUT_BINDING.json"
+    },
+    {
+      "gate": "E2-A02",
+      "status": "PASS_ENGINEERING_MECHANICS",
+      "evidence": "SUPPORT_POLICY_DISCOVERY.json"
+    },
+    {
+      "gate": "E2-A03",
+      "status": "BLOCKED_UNSET_THRESHOLDS",
+      "evidence": "SUPPORT_POLICY_FREEZE.json"
+    },
+    {
+      "gate": "E2-A04",
+      "status": "PASS_ENGINEERING_MECHANICS",
+      "evidence": "BACKOFF_GATE.json"
+    },
+    {
+      "gate": "E2-A05",
+      "status": "PASS_ENGINEERING_MECHANICS",
+      "evidence": "WEIGHTING_GATE.json"
+    },
+    {
+      "gate": "E2-A06",
+      "status": "PASS_ENGINEERING_MECHANICS",
+      "evidence": "WEIGHTED_QUANTILE_GATE.json"
+    },
+    {
+      "gate": "E2-A07",
+      "status": "PASS_ENGINEERING_MECHANICS",
+      "evidence": "CONTINUOUS_BASELINE_GATE.json"
+    },
+    {
+      "gate": "E2-A08",
+      "status": "PASS_ENGINEERING_MECHANICS",
+      "evidence": "CATEGORICAL_BASELINE_GATE.json"
+    },
+    {
+      "gate": "E2-A09",
+      "status": "PASS_ENGINEERING_MECHANICS",
+      "evidence": "SUPPORT_DIMENSIONS_READBACK.json"
+    },
+    {
+      "gate": "E2-A10",
+      "status": "PASS_ENGINEERING_MECHANICS",
+      "evidence": "MISSINGNESS_GATE.json"
+    },
+    {
+      "gate": "E2-A11",
+      "status": "PASS_ENGINEERING_MECHANICS",
+      "evidence": "REPRESENTATIVENESS_GATE.json"
+    },
+    {
+      "gate": "E2-A12",
+      "status": "PASS_ENGINEERING_MECHANICS",
+      "evidence": "SCOPE_ISOLATION_GATE.json"
+    },
+    {
+      "gate": "E2-A13",
+      "status": "PASS_ENGINEERING_MECHANICS",
+      "evidence": "REVISION_PIT_GATE.json"
+    },
+    {
+      "gate": "E2-A14",
+      "status": "PASS_ENGINEERING_MECHANICS",
+      "evidence": "NEGATIVE_MATRIX.json"
+    },
+    {
+      "gate": "E2-A15",
+      "status": "PASS_ENGINEERING_MECHANICS",
+      "evidence": "DETERMINISM_GATE.json"
+    },
+    {
+      "gate": "E2-A16",
+      "status": "PASS_ENGINEERING_MECHANICS",
+      "evidence": "REGISTRY_READBACK.json"
+    },
+    {
+      "gate": "E2-A17",
+      "status": "PASS_ENGINEERING_MECHANICS",
+      "evidence": "PROTECTED_STATE_READBACK.json"
+    },
+    {
+      "gate": "E2-A18",
+      "status": "PASS_ENGINEERING_MECHANICS",
+      "evidence": "FINAL_DATABASE_READBACK.json"
+    },
+    {
+      "gate": "E2-A19",
+      "status": "PASS_ENGINEERING_MECHANICS",
+      "evidence": "PROTECTED_STATE_READBACK.json"
+    },
+    {
+      "gate": "E2-A20",
+      "status": "PASS_ENGINEERING_MECHANICS",
+      "evidence": "SCOPED_REGRESSION_SUMMARY.json"
+    }
+  ],
+  "distinction": "Algorithm tests pass; no defensible admitted support thresholds frozen. Test-only parameters never constitute acceptance."
+}

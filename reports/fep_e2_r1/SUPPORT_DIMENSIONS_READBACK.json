@@ -1,0 +1,38 @@
+{
+  "status": "PASS_ENGINEERING_COUNTERFACTUAL",
+  "states": {
+    "rows": "THIN_ROWS",
+    "dates": "THIN_DATES",
+    "blocks": "THIN_BLOCKS",
+    "entities": "THIN_ENTITIES",
+    "episodes": "THIN_EPISODES",
+    "class": "THIN_CLASS",
+    "missingness": "MISSINGNESS_FAIL"
+  },
+  "denominator_diagnostic": {
+    "expected": 9,
+    "eligible": 1,
+    "statuses": {
+      "ADJUSTMENT_UNKNOWN": 1,
+      "DELISTED": 1,
+      "ELIGIBLE": 1,
+      "IDENTITY_UNKNOWN": 1,
+      "MATURED_DATA_MISSING": 1,
+      "OTHER_EXPLICIT_REASON": 1,
+      "PENDING": 1,
+      "RIGHT_CENSORED": 1,
+      "SUSPENDED": 1
+    },
+    "missing_fraction": 0.8888888888888888,
+    "representativeness_total_variation": {
+      "trade_date": 0.0,
+      "sector": 0.0,
+      "regime": 0.0,
+      "risk": 0.0,
+      "feature_support": 0.0
+    },
+    "estimand": "COMPLETE_CASE_DESCRIPTIVE"
+  },
+  "all_explicit_missing_reasons_preserved": true,
+  "policy_scope": "TEST_ONLY_NOT_ADMITTED"
+}

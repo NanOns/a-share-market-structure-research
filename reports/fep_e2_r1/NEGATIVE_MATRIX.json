@@ -1,0 +1,154 @@
+{
+  "status": "PASS_ENGINEERING_VECTORS_ONLY",
+  "vectors": [
+    "E2-01",
+    "E2-02",
+    "E2-03",
+    "E2-04",
+    "E2-05",
+    "E2-06",
+    "E2-07",
+    "E2-08",
+    "E2-09",
+    "E2-10",
+    "E2-11",
+    "E2-12",
+    "E2-13",
+    "E2-14",
+    "E2-15",
+    "E2-16",
+    "E2-17",
+    "E2-18",
+    "E2-19",
+    "E2-20"
+  ],
+  "measured_cases": [
+    {
+      "node": "tests.fep_e2.test_conditional::test_e2_01_bucket_weight",
+      "status": "PASS",
+      "seconds": "0.000"
+    },
+    {
+      "node": "tests.fep_e2.test_conditional::test_e2_02_quantile",
+      "status": "PASS",
+      "seconds": "0.000"
+    },
+    {
+      "node": "tests.fep_e2.test_conditional::test_e2_03_negative_supported",
+      "status": "PASS",
+      "seconds": "0.001"
+    },
+    {
+      "node": "tests.fep_e2.test_conditional::test_e2_04_fallback",
+      "status": "PASS",
+      "seconds": "0.001"
+    },
+    {
+      "node": "tests.fep_e2.test_conditional::test_e2_05_thin",
+      "status": "PASS",
+      "seconds": "0.001"
+    },
+    {
+      "node": "tests.fep_e2.test_conditional::test_e2_06_one_date",
+      "status": "PASS",
+      "seconds": "0.001"
+    },
+    {
+      "node": "tests.fep_e2.test_conditional::test_e2_07_overlap",
+      "status": "PASS",
+      "seconds": "0.000"
+    },
+    {
+      "node": "tests.fep_e2.test_conditional::test_e2_08_09_10_cross_base[observation_scope-DAILY]",
+      "status": "PASS",
+      "seconds": "0.001"
+    },
+    {
+      "node": "tests.fep_e2.test_conditional::test_e2_08_09_10_cross_base[target-other]",
+      "status": "PASS",
+      "seconds": "0.001"
+    },
+    {
+      "node": "tests.fep_e2.test_conditional::test_e2_08_09_10_cross_base[horizon-3]",
+      "status": "PASS",
+      "seconds": "0.001"
+    },
+    {
+      "node": "tests.fep_e2.test_conditional::test_e2_08_09_10_cross_base[evidence_origin-PIT_OBSERVED]",
+      "status": "PASS",
+      "seconds": "0.001"
+    },
+    {
+      "node": "tests.fep_e2.test_conditional::test_e2_08_09_10_cross_base[feature_variant-SECTOR]",
+      "status": "PASS",
+      "seconds": "0.001"
+    },
+    {
+      "node": "tests.fep_e2.test_conditional::test_e2_08_09_10_cross_base[contract_versions-value5]",
+      "status": "PASS",
+      "seconds": "0.001"
+    },
+    {
+      "node": "tests.fep_e2.test_conditional::test_e2_11_categorical",
+      "status": "PASS",
+      "seconds": "0.000"
+    },
+    {
+      "node": "tests.fep_e2.test_conditional::test_e2_12_any_overlap",
+      "status": "PASS",
+      "seconds": "0.000"
+    },
+    {
+      "node": "tests.fep_e2.test_conditional::test_e2_13_missing_denominator",
+      "status": "PASS",
+      "seconds": "0.001"
+    },
+    {
+      "node": "tests.fep_e2.test_conditional::test_e2_14_representativeness",
+      "status": "PASS",
+      "seconds": "0.001"
+    },
+    {
+      "node": "tests.fep_e2.test_conditional::test_e2_15_revision",
+      "status": "PASS",
+      "seconds": "0.002"
+    },
+    {
+      "node": "tests.fep_e2.test_conditional::test_e2_16_timestamp",
+      "status": "PASS",
+      "seconds": "0.001"
+    },
+    {
+      "node": "tests.fep_e2.test_conditional::test_e2_17_policy",
+      "status": "PASS",
+      "seconds": "0.001"
+    },
+    {
+      "node": "tests.fep_e2.test_conditional::test_e2_18_no_grants",
+      "status": "PASS",
+      "seconds": "0.001"
+    },
+    {
+      "node": "tests.fep_e2.test_conditional::test_e2_19_20_isolation_and_registry",
+      "status": "PASS",
+      "seconds": "0.008"
+    },
+    {
+      "node": "tests.fep_e2.test_conditional::test_discovery_no_outcome_performance",
+      "status": "PASS",
+      "seconds": "0.000"
+    },
+    {
+      "node": "tests.fep_e2.test_conditional::test_unset_and_freeze",
+      "status": "PASS",
+      "seconds": "0.001"
+    }
+  ],
+  "evidence": {
+    "path": "reports/fep_e2_r1/targeted.xml",
+    "bytes": 13771,
+    "sha256": "5c9c95c1bea03f1f65d20616e76c954b3ae1a32d7d8cdfc1c7ed1c2a2685a7ee"
+  },
+  "policy_scope": "TEST_ONLY_NOT_ADMITTED",
+  "no_threshold_acceptance_from_test_fixtures": true
+}

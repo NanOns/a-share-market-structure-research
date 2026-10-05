@@ -1,0 +1,36 @@
+{
+  "denominator": [
+    {
+      "observation_id": "7402d22e42df49c7dd0deb90190315c26842f3c93b792f14940f9d867e563fe8",
+      "target_id": "ABS_RETURN_N:T1",
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "horizon": 1,
+      "status": "EXPECTED"
+    }
+  ],
+  "folds": [
+    {
+      "fold_id": "E2_ENGINEERING",
+      "partition_name": "FIT",
+      "observation_ids": [
+        "7402d22e42df49c7dd0deb90190315c26842f3c93b792f14940f9d867e563fe8"
+      ],
+      "fold_dataset_cutoff": "2026-10-05T09:49:22.601556+00:00",
+      "phase_started_at": "2026-10-05T09:49:22.601556+00:00"
+    }
+  ],
+  "selections": [
+    {
+      "fold_id": "E2_ENGINEERING",
+      "partition_name": "FIT",
+      "observation_id": "7402d22e42df49c7dd0deb90190315c26842f3c93b792f14940f9d867e563fe8",
+      "target_id": "ABS_RETURN_N:T1",
+      "eligibility": "MISSING_LABEL",
+      "selected_label_revision": null,
+      "selected_label_digest": null,
+      "selection_reason": "NO_ASOF_REVISION"
+    }
+  ],
+  "rows": [],
+  "digest": "759bfeefcad44bef0a44ab98210a37783b667504b2ff3dc60a165be199922f9d"
+}

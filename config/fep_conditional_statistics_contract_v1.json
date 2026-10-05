@@ -1,0 +1,39 @@
+{
+  "contract_id": "CONDITIONAL_EXPECTANCY_V1",
+  "version": "1.0.0",
+  "scope": "FEP_STOCK_ENTRY_CORE",
+  "levels": [
+    [
+      "L4",
+      [
+        "regime",
+        "trend",
+        "position",
+        "risk"
+      ]
+    ],
+    [
+      "L3",
+      [
+        "regime",
+        "trend",
+        "risk"
+      ]
+    ],
+    [
+      "L2",
+      [
+        "regime"
+      ]
+    ],
+    [
+      "L1",
+      []
+    ]
+  ],
+  "weighting": "BUCKET_EQUAL_DATE_RATIONAL_V1",
+  "quantile": "INVERSE_EMPIRICAL_CDF_V1",
+  "estimand": "COMPLETE_CASE_DESCRIPTIVE",
+  "artifact_type": "CONDITIONAL_STATISTICS_BASELINE",
+  "production": false
+}

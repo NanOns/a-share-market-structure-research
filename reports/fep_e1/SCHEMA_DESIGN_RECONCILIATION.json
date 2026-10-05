@@ -1,0 +1,17 @@
+{
+  "status": "PASS_EXACT_TABLE_DOMAIN_KEY_DDL",
+  "design_schema": {
+    "path": "docs/evidence/fep_e1/FEP_R2_SCHEMA_DESIGN_20260930.sql",
+    "bytes": 40388,
+    "sha256": "536ee33f89e38b427b06ceffcb5e760964b0b4b64829b2a54d91c172f252a138"
+  },
+  "migration_binding": {
+    "path": "src/workbench_db/migrations/v4_postgres/028_fep_schema_v1.sql",
+    "bytes": 22956,
+    "sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356"
+  },
+  "tables": 33,
+  "primary_composite_keys_preserved": true,
+  "existing_v4_migrations_unchanged": true,
+  "roles_and_validation": "E1 implementation additions; reference CAS request/head serialization hardened"
+}

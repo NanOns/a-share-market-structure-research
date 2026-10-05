@@ -1,0 +1,92 @@
+.....................FFF...................................              [100%]
+================================== FAILURES ===================================
+______________________ test_E1_32_application_direct_dml ______________________
+
+ready = <psycopg.Connection [INTRANS] (host=127.0.0.1 port=55483 user=fep_e1_admin database=fep_e1_upgrade) at 0x1fb9c3015e0>
+
+    def test_E1_32_application_direct_dml(ready):
+        cas(ready)
+        with ready.transaction():
+            ready.execute('set local role fep_application')
+            for sql in ["update fep.deployment_heads set head_version=2",'delete from fep.deployment_heads',
+                        "update fep.contracts set version='x'","alter table fep.deployment_heads disable trigger all",'set role fep_cas_owner']:
+>               rejected(ready,lambda sql=sql:ready.execute(sql),match='permission denied|must be owner')
+
+tests\fep\test_cas_roles.py:93: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+p = <psycopg.Connection [INTRANS] (host=127.0.0.1 port=55483 user=fep_e1_admin database=fep_e1_upgrade) at 0x1fb9c3015e0>
+fn = <function test_E1_32_application_direct_dml.<locals>.<lambda> at 0x000001FB9C29C180>
+match = 'permission denied|must be owner'
+
+    def rejected(p, fn, match=None):
+>       with pytest.raises((psycopg.Error, ValueError), match=match):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (Error, ValueError)
+
+tests\fep\conftest.py:113: Failed
+________________________ test_E1_33_search_path_hijack ________________________
+
+ready = <psycopg.Connection [INERROR] (host=127.0.0.1 port=55483 user=fep_e1_admin database=fep_e1_upgrade) at 0x1fb9c208b90>
+
+    def test_E1_33_search_path_hijack(ready):
+        ready.execute('create schema evil')
+        ready.execute('create table evil.deployment_heads (head_version integer)')
+        ready.execute("create function evil.clock_timestamp() returns timestamptz language sql as 'select ''2100-01-01''::timestamptz'")
+        ready.execute('grant usage on schema evil to fep_deployer')
+        with ready.transaction():
+            ready.execute('set local role fep_deployer')
+            ready.execute('set local search_path=evil,public,fep')
+            assert cas(ready)==1
+>       assert ready.execute('select count(*) from evil.deployment_heads').fetchone()[0]==0
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\fep\test_cas_roles.py:105: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <psycopg.Connection [INERROR] (host=127.0.0.1 port=55483 user=fep_e1_admin database=fep_e1_upgrade) at 0x1fb9c208b90>
+query = 'select count(*) from evil.deployment_heads', params = None
+prepare = None, binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -> Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.InsufficientPrivilege: permission denied for table deployment_heads
+
+E:\python\Lib\site-packages\psycopg\connection.py:304: InsufficientPrivilege
+______________________ test_read_only_no_role_escalation ______________________
+
+pg = <psycopg.Connection [INTRANS] (host=127.0.0.1 port=55483 user=fep_e1_admin database=fep_e1_upgrade) at 0x1fb9c209220>
+
+    def test_read_only_no_role_escalation(pg):
+        memberships=pg.execute("select count(*) from pg_auth_members m join pg_roles r on r.oid=m.member where r.rolname like 'fep_%'").fetchone()[0]
+>       assert memberships==0
+E       assert 2 == 0
+
+tests\fep\test_cas_roles.py:112: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/fep/test_cas_roles.py::test_E1_32_application_direct_dml - Faile...
+FAILED tests/fep/test_cas_roles.py::test_E1_33_search_path_hijack - psycopg.e...
+FAILED tests/fep/test_cas_roles.py::test_read_only_no_role_escalation - asser...
+3 failed, 56 passed in 4.24s

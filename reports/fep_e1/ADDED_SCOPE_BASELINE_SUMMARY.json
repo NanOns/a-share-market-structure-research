@@ -1,0 +1,42 @@
+{
+  "command": [
+    "E:\\python\\python.exe",
+    "-B",
+    "-m",
+    "pytest",
+    "tests/test_r20a_current.py",
+    "tests/test_r20b_portability.py",
+    "tests/test_r20c_runtime.py",
+    "tests/test_r20d_settlement.py",
+    "tests/test_r20e_persisted.py",
+    "tests/test_r20r1_scope.py",
+    "tests/test_r20r1r1_maturity.py",
+    "tests/test_r20r1r2_dm01.py",
+    "tests/test_r21_promotion.py",
+    "tests/v4_publication_reader_di_r1",
+    "tests/phase5/test_priority_ties.py",
+    "tests/phase5/test_priority_score_range.py",
+    "tests/phase5/test_priority_rating_boundaries.py",
+    "tests/phase5/test_priority_percentile.py",
+    "-q",
+    "--basetemp=E:/codex_tmp/test_temp/fep-e1-baseline-extra",
+    "--junitxml=E:\\codex work\\大A交易\\reports\\fep_e1\\baseline_extra.xml"
+  ],
+  "exit_code": 1,
+  "failed_nodes": [
+    "tests.test_r20a_current::test_independent_gate",
+    "tests.test_r20e_persisted::test_full_independent_disk_oracle",
+    "tests.test_r20r1_scope::test_current_real_outcomes_are_pending",
+    "tests.test_r20r1_scope::test_independent_exact_feasibility",
+    "tests.test_r20r1_scope::test_independent_oracle",
+    "tests.test_r20r1r1_maturity::test_current_exact_authority_no_real_maturity",
+    "tests.test_r21_promotion::test_independent_promotion",
+    "tests.v4_publication_reader_di_r1.test_explicit_views::test_exact_outputs_and_two_history_plus_current_concurrency",
+    "tests.v4_publication_reader_di_r1.test_explicit_views::test_wrong_candidate_hash_behavior_exact"
+  ],
+  "baseline_source": "ce44488ae972cf0f4d9f4af34cb03d81be436387",
+  "existing_tracked_source_config_tests": "EXACT_BASELINE_BYTES_UNMODIFIED",
+  "postgres": "ISOLATED_PRE_FEP_SCHEMA_TEMPLATE_001_TO_027",
+  "passed": 255,
+  "purpose": "Independent baseline measurement for newly added regression scopes; no FEP imports/production data writes"
+}

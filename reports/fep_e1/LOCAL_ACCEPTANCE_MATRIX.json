@@ -1,0 +1,199 @@
+{
+  "status": "BLOCKED",
+  "gates": [
+    {
+      "id": "E1-A01",
+      "item": "Design authority exact binding",
+      "status": "PASS",
+      "scope": "ISOLATED_ENGINEERING"
+    },
+    {
+      "id": "E1-A02",
+      "item": "Migration sequence discovery",
+      "status": "PASS",
+      "scope": "ISOLATED_ENGINEERING"
+    },
+    {
+      "id": "E1-A03",
+      "item": "Real PostgreSQL fresh migration",
+      "status": "PASS",
+      "scope": "ISOLATED_ENGINEERING"
+    },
+    {
+      "id": "E1-A04",
+      "item": "Real PostgreSQL upgrade migration",
+      "status": "PASS",
+      "scope": "ISOLATED_ENGINEERING"
+    },
+    {
+      "id": "E1-A05",
+      "item": "33-table inventory",
+      "status": "PASS",
+      "scope": "ISOLATED_ENGINEERING"
+    },
+    {
+      "id": "E1-A06",
+      "item": "32 append-only guards and controlled head",
+      "status": "PASS",
+      "scope": "ISOLATED_ENGINEERING"
+    },
+    {
+      "id": "E1-A07",
+      "item": "FK unique check integrity",
+      "status": "PASS",
+      "scope": "ISOLATED_ENGINEERING"
+    },
+    {
+      "id": "E1-A08",
+      "item": "Least privilege roles",
+      "status": "PASS",
+      "scope": "ISOLATED_ENGINEERING"
+    },
+    {
+      "id": "E1-A09",
+      "item": "SECURITY DEFINER fixed search_path",
+      "status": "PASS",
+      "scope": "ISOLATED_ENGINEERING"
+    },
+    {
+      "id": "E1-A10",
+      "item": "CAS concurrency idempotency rollback",
+      "status": "PASS",
+      "scope": "ISOLATED_ENGINEERING"
+    },
+    {
+      "id": "E1-A11",
+      "item": "Observation identity/revision real source admission",
+      "status": "NOT_VERIFIABLE",
+      "scope": "REAL_INTERFACE_OR_CROSS_STAGE_AUTHORITY"
+    },
+    {
+      "id": "E1-A12",
+      "item": "Feature registry complete mapping",
+      "status": "FAIL",
+      "scope": "REAL_INTERFACE_OR_CROSS_STAGE_AUTHORITY"
+    },
+    {
+      "id": "E1-A13",
+      "item": "Snapshot exact dependency manifest real path",
+      "status": "NOT_VERIFIABLE",
+      "scope": "REAL_INTERFACE_OR_CROSS_STAGE_AUTHORITY"
+    },
+    {
+      "id": "E1-A14",
+      "item": "V4-15 exact label three-time authority",
+      "status": "FAIL",
+      "scope": "REAL_INTERFACE_OR_CROSS_STAGE_AUTHORITY"
+    },
+    {
+      "id": "E1-A15",
+      "item": "Three-time engineering semantics",
+      "status": "PASS",
+      "scope": "ISOLATED_ENGINEERING"
+    },
+    {
+      "id": "E1-A16",
+      "item": "Complete denominator engineering",
+      "status": "PASS",
+      "scope": "ISOLATED_ENGINEERING"
+    },
+    {
+      "id": "E1-A17",
+      "item": "Per-fold as-of revision selection",
+      "status": "PASS",
+      "scope": "ISOLATED_ENGINEERING"
+    },
+    {
+      "id": "E1-A18",
+      "item": "Fold partition leakage guards",
+      "status": "PASS",
+      "scope": "ISOLATED_ENGINEERING"
+    },
+    {
+      "id": "E1-A19",
+      "item": "Dataset-row exact composite FK",
+      "status": "PASS",
+      "scope": "ISOLATED_ENGINEERING"
+    },
+    {
+      "id": "E1-A20",
+      "item": "Pending UNKNOWN preservation",
+      "status": "PASS",
+      "scope": "ISOLATED_ENGINEERING"
+    },
+    {
+      "id": "E1-A21",
+      "item": "Slot no-model semantics",
+      "status": "PASS",
+      "scope": "ISOLATED_ENGINEERING"
+    },
+    {
+      "id": "E1-A22",
+      "item": "Permission skeleton no actual grants",
+      "status": "PASS",
+      "scope": "ISOLATED_ENGINEERING"
+    },
+    {
+      "id": "E1-A23",
+      "item": "Existing accepted bytes unchanged",
+      "status": "PASS",
+      "scope": "ISOLATED_ENGINEERING"
+    },
+    {
+      "id": "E1-A24",
+      "item": "Core failure isolation",
+      "status": "PASS",
+      "scope": "ISOLATED_ENGINEERING"
+    },
+    {
+      "id": "E1-A25",
+      "item": "Deterministic schema rebuild/readback",
+      "status": "PASS",
+      "scope": "ISOLATED_ENGINEERING"
+    },
+    {
+      "id": "E1-A26",
+      "item": "40 negative vectors",
+      "status": "PASS",
+      "scope": "ISOLATED_ENGINEERING"
+    },
+    {
+      "id": "E1-A27",
+      "item": "Targeted tests",
+      "status": "PASS",
+      "scope": "ISOLATED_ENGINEERING"
+    },
+    {
+      "id": "E1-A28",
+      "item": "Scoped regression no new failures",
+      "status": "FAIL",
+      "scope": "REAL_INTERFACE_OR_CROSS_STAGE_AUTHORITY"
+    },
+    {
+      "id": "E1-A29",
+      "item": "Evidence completeness including external raw authority",
+      "status": "NOT_VERIFIABLE",
+      "scope": "REAL_INTERFACE_OR_CROSS_STAGE_AUTHORITY"
+    },
+    {
+      "id": "E1-A30",
+      "item": "Production Model Priority permissions false",
+      "status": "PASS",
+      "scope": "ISOLATED_ENGINEERING"
+    }
+  ],
+  "blockers": [
+    "FEP_E1_FEATURE_MAPPING_INCOMPLETE",
+    "FEP_E1_CONTRACT_CONFLICT_THREE_TIME_SOURCE",
+    "FEP_E1_CONTRACT_CONFLICT_V4_18_NAMESPACE_INVENTORY"
+  ],
+  "nonpassing_gates": [
+    "E1-A11",
+    "E1-A12",
+    "E1-A13",
+    "E1-A14",
+    "E1-A28",
+    "E1-A29"
+  ],
+  "sample_count_not_a_blocker": true
+}

@@ -1,0 +1,41 @@
+{
+  "contract_id": "V4_15E1_FEP_IMPLEMENTATION_R1",
+  "authority": {
+    "path": "reports/fep_e1/TASK_AUTHORITY.md",
+    "bytes": 32608,
+    "sha256": "a1aa6a62ca4b1dda46493162e63348642444b31bc0a16a40e4c36301663d83d5"
+  },
+  "sequence": [
+    "inventory",
+    "migration",
+    "schema/roles",
+    "adapter",
+    "dataset",
+    "negatives",
+    "regression",
+    "candidate seal"
+  ],
+  "capability_gates": {
+    "REAL_TRAINING_LABELS": "BLOCKED_MISSING_THREE_TIME_SOURCE_CONTRACT",
+    "REAL_FEATURE_SNAPSHOT": "BLOCKED_UNPROVEN_FIELD_MAPPING",
+    "DATABASE_ENGINEERING": "UNDER_VERIFICATION",
+    "DATASET_ENGINEERING_FIXTURES": "UNDER_VERIFICATION"
+  },
+  "next": "STOP_WAIT_EXTERNAL_REPAIR_DISPOSITION",
+  "status": "BLOCKED",
+  "acceptance_matrix": {
+    "path": "reports/fep_e1/LOCAL_ACCEPTANCE_MATRIX.json",
+    "bytes": 4917,
+    "sha256": "586a43567bfe058b5e0f913f966bc1d05bcd0ad0b8029e6dbdbe61889f4b8664"
+  },
+  "evidence": {
+    "path": "reports/fep_e1/DATABASE_PROOF_READBACK.json",
+    "bytes": 2453,
+    "sha256": "51d66485eb48aa2867b87701a6ff7f5e6f028d2689023369e32dba6bf1b8201d"
+  },
+  "blockers": [
+    "FEP_E1_FEATURE_MAPPING_INCOMPLETE",
+    "FEP_E1_CONTRACT_CONFLICT_THREE_TIME_SOURCE",
+    "FEP_E1_CONTRACT_CONFLICT_V4_18_NAMESPACE_INVENTORY"
+  ]
+}

@@ -1,0 +1,110 @@
+{
+  "status": "PASS_NO_REAL_DATA_OR_GRANTS",
+  "databases": {
+    "fep_e1_fresh": {
+      "table_counts": {
+        "acceptance_receipts": 0,
+        "activations": 0,
+        "contracts": 0,
+        "dataset_eligibility_ledger": 0,
+        "dataset_fold_cutoffs": 0,
+        "dataset_fold_label_selection": 0,
+        "dataset_rows": 0,
+        "datasets": 0,
+        "deployment_change_receipts": 0,
+        "deployment_heads": 0,
+        "feature_values": 0,
+        "field_registry": 0,
+        "field_scope": 0,
+        "label_revisions": 0,
+        "label_source_bindings": 0,
+        "model_set_members": 0,
+        "model_sets": 0,
+        "models": 0,
+        "observation_revisions": 0,
+        "observations": 0,
+        "permission_keys": 0,
+        "prediction_runs": 0,
+        "prediction_slots": 0,
+        "predictions": 0,
+        "priority_projection": 0,
+        "priority_projection_grants": 0,
+        "reports": 0,
+        "scopes": 0,
+        "slot_model_bindings": 0,
+        "slot_receipts": 0,
+        "snapshots": 0,
+        "targets": 0,
+        "training_runs": 0
+      },
+      "cas_function_acl": [
+        "fep_cas_owner",
+        true,
+        [
+          "search_path=pg_catalog, fep"
+        ],
+        "{fep_cas_owner=X/fep_cas_owner,fep_deployer=X/fep_cas_owner}"
+      ],
+      "execute_checks": {
+        "fep_application": false,
+        "fep_adapter": false,
+        "fep_deployer": true,
+        "fep_auditor": false
+      }
+    },
+    "fep_e1_upgrade": {
+      "table_counts": {
+        "acceptance_receipts": 0,
+        "activations": 0,
+        "contracts": 0,
+        "dataset_eligibility_ledger": 0,
+        "dataset_fold_cutoffs": 0,
+        "dataset_fold_label_selection": 0,
+        "dataset_rows": 0,
+        "datasets": 0,
+        "deployment_change_receipts": 0,
+        "deployment_heads": 0,
+        "feature_values": 0,
+        "field_registry": 0,
+        "field_scope": 0,
+        "label_revisions": 0,
+        "label_source_bindings": 0,
+        "model_set_members": 0,
+        "model_sets": 0,
+        "models": 0,
+        "observation_revisions": 0,
+        "observations": 0,
+        "permission_keys": 0,
+        "prediction_runs": 0,
+        "prediction_slots": 0,
+        "predictions": 0,
+        "priority_projection": 0,
+        "priority_projection_grants": 0,
+        "reports": 0,
+        "scopes": 0,
+        "slot_model_bindings": 0,
+        "slot_receipts": 0,
+        "snapshots": 0,
+        "targets": 0,
+        "training_runs": 0
+      },
+      "cas_function_acl": [
+        "fep_cas_owner",
+        true,
+        [
+          "search_path=pg_catalog, fep"
+        ],
+        "{fep_cas_owner=X/fep_cas_owner,fep_deployer=X/fep_cas_owner}"
+      ],
+      "execute_checks": {
+        "fep_application": false,
+        "fep_adapter": false,
+        "fep_deployer": true,
+        "fep_auditor": false
+      }
+    }
+  },
+  "committed_CAS_engineering_rows": "Only in explicitly named concurrency databases, retained for audit",
+  "actual_production_grants": 0,
+  "actual_model_artifacts": 0
+}

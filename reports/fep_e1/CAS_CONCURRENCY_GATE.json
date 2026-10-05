@@ -1,0 +1,88 @@
+{
+  "status": "PASS",
+  "fresh": {
+    "evidence_class": "ENGINEERING_FIXTURE",
+    "isolated_database": "fep_e1_fresh_concurrency_775dbf1b",
+    "concurrent_cas": [
+      {
+        "status": "PASS",
+        "version": 1,
+        "transaction_id": 1124,
+        "session_pid": 37188
+      },
+      {
+        "status": "BLOCK",
+        "exception": "FEP_CAS_CONFLICT\nCONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE",
+        "sqlstate": "P0001",
+        "transaction_id": 1123,
+        "session_pid": 29936
+      }
+    ],
+    "identical_request_replay": [
+      {
+        "status": "PASS",
+        "version": 2,
+        "transaction_id": 1126,
+        "session_pid": 43368
+      },
+      {
+        "status": "PASS",
+        "version": 2,
+        "transaction_id": 1125,
+        "session_pid": 42844
+      }
+    ],
+    "rollback_counts": {
+      "activations": 1,
+      "deployment_change_receipts": 1,
+      "deployment_heads": 1
+    }
+  },
+  "upgrade": {
+    "evidence_class": "ENGINEERING_FIXTURE",
+    "isolated_database": "fep_e1_upgrade_concurrency_6528a4ac",
+    "concurrent_cas": [
+      {
+        "status": "PASS",
+        "version": 1,
+        "transaction_id": 1093,
+        "session_pid": 48832
+      },
+      {
+        "status": "BLOCK",
+        "exception": "FEP_CAS_CONFLICT\nCONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE",
+        "sqlstate": "P0001",
+        "transaction_id": 1094,
+        "session_pid": 19468
+      }
+    ],
+    "identical_request_replay": [
+      {
+        "status": "PASS",
+        "version": 2,
+        "transaction_id": 1095,
+        "session_pid": 14144
+      },
+      {
+        "status": "PASS",
+        "version": 2,
+        "transaction_id": 1096,
+        "session_pid": 51316
+      }
+    ],
+    "rollback_counts": {
+      "activations": 1,
+      "deployment_change_receipts": 1,
+      "deployment_heads": 1
+    }
+  },
+  "dedicated_owner": "fep_cas_owner",
+  "PUBLIC_execute": false,
+  "head_key": [
+    "scope_id",
+    "capability",
+    "target_id",
+    "horizon",
+    "feature_contract_id"
+  ]
+}

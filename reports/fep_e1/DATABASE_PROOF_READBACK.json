@@ -1,0 +1,66 @@
+{
+  "status": "PASS_ENGINEERING_PROOF_RETAINED",
+  "raw_archive": {
+    "path": "reports/fep_e1/RAW_POSTGRES_AND_TEST_EVIDENCE.zip",
+    "bytes": 216956,
+    "sha256": "b4e1367a0106644461f673a544ee7f8c3bac3ce1e75074bae308aab39262eb4f"
+  },
+  "fresh_environment": {
+    "path": "reports/fep_e1/POSTGRES_ENVIRONMENT.json",
+    "bytes": 513,
+    "sha256": "1aa68e3993f9e5f9a6a18378df3486ee58117b4c46e8b34c774d4c7d546e231b"
+  },
+  "upgrade_environment": {
+    "path": "reports/fep_e1/POSTGRES_UPGRADE_ENVIRONMENT.json",
+    "bytes": 327,
+    "sha256": "ec81dd426520b20819e3f9d4bd0b3da945b28730317267b5cc5c4c87febc5f5d"
+  },
+  "migration_execution": {
+    "path": "reports/fep_e1/MIGRATION_EXECUTION.json",
+    "bytes": 27928,
+    "sha256": "2ae4945a45603c5d1c8ba4d5baeb24885d2ded7e30558d91c47f3ffc791af65a"
+  },
+  "exact_final_migration_files": [
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/028_fep_schema_v1.sql",
+      "bytes": 22956,
+      "sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/029_fep_append_only_v1.sql",
+      "bytes": 4285,
+      "sha256": "efb9bb078cb758b67919a86fe8f67d5020c9e39b34b04c72db2ab5e3ee761b5b"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/030_fep_validation_cas_v1.sql",
+      "bytes": 17761,
+      "sha256": "b516a275813ab9d5b15279a876f9526597d5069ddf5773903812ff13c9579296"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/031_fep_roles_v1.sql",
+      "bytes": 2815,
+      "sha256": "59e660f6e6b0d62f207dd1c6d6a16ed26c7d41525d65870ef3aacbc341e0c3b8"
+    }
+  ],
+  "command": "E:/python/python.exe -B -m scripts.run_fep_e1_acceptance",
+  "library_bindings": [
+    {
+      "path": "scripts/run_fep_e1_acceptance.py",
+      "bytes": 8889,
+      "sha256": "3a471c85412a178ff7175fbc233e1e191100099b7b52a5b24510f2f7acab54ed"
+    },
+    {
+      "path": "src/workbench_analysis/fep_e1/db.py",
+      "bytes": 2718,
+      "sha256": "f301ad2ccad2b6586ccea11030ea46c0403d2102432b27f8cc86c738e5703448"
+    }
+  ],
+  "local_failed_databases_retained": true,
+  "original_failed_attempts_retained": true,
+  "resource_policy": {
+    "path": "config/fep_policy_v1.json",
+    "bytes": 907,
+    "sha256": "3e804277776e9bbfb7937d506b3ed8c72d0d0d23bc00745730e30fe2fdc05264"
+  },
+  "schemas": "V4 and FEP in the same isolated databases; no parallel production database or publication system"
+}

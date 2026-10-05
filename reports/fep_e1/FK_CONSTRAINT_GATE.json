@@ -1,0 +1,2877 @@
+{
+  "status": "PASS_ISOLATED_POSTGRESQL_ENGINEERING",
+  "evidence_class": "ENGINEERING_FIXTURE",
+  "inventory": {
+    "sql": "select c.relname,k.conname,k.contype,pg_get_constraintdef(k.oid) from pg_constraint k join pg_class c on c.oid=k.conrelid join pg_namespace n on n.oid=c.relnamespace where n.nspname='fep' order by c.relname,k.conname",
+    "rows": [
+      [
+        "acceptance_receipts",
+        "acceptance_receipts_accepted_at_not_null",
+        "n",
+        "NOT NULL accepted_at"
+      ],
+      [
+        "acceptance_receipts",
+        "acceptance_receipts_activation_id_grant_id_fkey",
+        "f",
+        "FOREIGN KEY (activation_id, grant_id) REFERENCES fep.activations(activation_id, grant_id)"
+      ],
+      [
+        "acceptance_receipts",
+        "acceptance_receipts_activation_id_not_null",
+        "n",
+        "NOT NULL activation_id"
+      ],
+      [
+        "acceptance_receipts",
+        "acceptance_receipts_checks_not_null",
+        "n",
+        "NOT NULL checks"
+      ],
+      [
+        "acceptance_receipts",
+        "acceptance_receipts_grant_id_fkey",
+        "f",
+        "FOREIGN KEY (grant_id) REFERENCES fep.permission_keys(grant_id)"
+      ],
+      [
+        "acceptance_receipts",
+        "acceptance_receipts_grant_id_not_null",
+        "n",
+        "NOT NULL grant_id"
+      ],
+      [
+        "acceptance_receipts",
+        "acceptance_receipts_pkey",
+        "p",
+        "PRIMARY KEY (receipt_id)"
+      ],
+      [
+        "acceptance_receipts",
+        "acceptance_receipts_receipt_id_not_null",
+        "n",
+        "NOT NULL receipt_id"
+      ],
+      [
+        "acceptance_receipts",
+        "acceptance_receipts_receipt_id_run_id_grant_id_key",
+        "u",
+        "UNIQUE (receipt_id, run_id, grant_id)"
+      ],
+      [
+        "acceptance_receipts",
+        "acceptance_receipts_run_id_fkey",
+        "f",
+        "FOREIGN KEY (run_id) REFERENCES fep.prediction_runs(run_id)"
+      ],
+      [
+        "acceptance_receipts",
+        "acceptance_receipts_run_id_grant_id_key",
+        "u",
+        "UNIQUE (run_id, grant_id)"
+      ],
+      [
+        "acceptance_receipts",
+        "acceptance_receipts_run_id_not_null",
+        "n",
+        "NOT NULL run_id"
+      ],
+      [
+        "acceptance_receipts",
+        "acceptance_receipts_validation_contract_id_fkey",
+        "f",
+        "FOREIGN KEY (validation_contract_id) REFERENCES fep.contracts(contract_id)"
+      ],
+      [
+        "acceptance_receipts",
+        "acceptance_receipts_validation_contract_id_not_null",
+        "n",
+        "NOT NULL validation_contract_id"
+      ],
+      [
+        "activations",
+        "activations_action_check",
+        "c",
+        "CHECK ((action = ANY (ARRAY['ALLOW'::text, 'REVOKE'::text])))"
+      ],
+      [
+        "activations",
+        "activations_action_not_null",
+        "n",
+        "NOT NULL action"
+      ],
+      [
+        "activations",
+        "activations_activation_id_grant_id_key",
+        "u",
+        "UNIQUE (activation_id, grant_id)"
+      ],
+      [
+        "activations",
+        "activations_activation_id_not_null",
+        "n",
+        "NOT NULL activation_id"
+      ],
+      [
+        "activations",
+        "activations_check",
+        "c",
+        "CHECK ((recorded_at <= effective_at))"
+      ],
+      [
+        "activations",
+        "activations_effective_at_not_null",
+        "n",
+        "NOT NULL effective_at"
+      ],
+      [
+        "activations",
+        "activations_expected_head_version_check",
+        "c",
+        "CHECK ((expected_head_version >= 0))"
+      ],
+      [
+        "activations",
+        "activations_expected_head_version_not_null",
+        "n",
+        "NOT NULL expected_head_version"
+      ],
+      [
+        "activations",
+        "activations_grant_id_fkey",
+        "f",
+        "FOREIGN KEY (grant_id) REFERENCES fep.permission_keys(grant_id)"
+      ],
+      [
+        "activations",
+        "activations_grant_id_not_null",
+        "n",
+        "NOT NULL grant_id"
+      ],
+      [
+        "activations",
+        "activations_pkey",
+        "p",
+        "PRIMARY KEY (activation_id)"
+      ],
+      [
+        "activations",
+        "activations_prior_activation_id_fkey",
+        "f",
+        "FOREIGN KEY (prior_activation_id) REFERENCES fep.activations(activation_id)"
+      ],
+      [
+        "activations",
+        "activations_receipt_digest_not_null",
+        "n",
+        "NOT NULL receipt_digest"
+      ],
+      [
+        "activations",
+        "activations_recorded_at_not_null",
+        "n",
+        "NOT NULL recorded_at"
+      ],
+      [
+        "contracts",
+        "contracts_body_check",
+        "c",
+        "CHECK ((jsonb_typeof(body) = 'object'::text))"
+      ],
+      [
+        "contracts",
+        "contracts_body_not_null",
+        "n",
+        "NOT NULL body"
+      ],
+      [
+        "contracts",
+        "contracts_contract_id_not_null",
+        "n",
+        "NOT NULL contract_id"
+      ],
+      [
+        "contracts",
+        "contracts_created_at_not_null",
+        "n",
+        "NOT NULL created_at"
+      ],
+      [
+        "contracts",
+        "contracts_digest_key",
+        "u",
+        "UNIQUE (digest)"
+      ],
+      [
+        "contracts",
+        "contracts_digest_not_null",
+        "n",
+        "NOT NULL digest"
+      ],
+      [
+        "contracts",
+        "contracts_family_not_null",
+        "n",
+        "NOT NULL family"
+      ],
+      [
+        "contracts",
+        "contracts_family_version_key",
+        "u",
+        "UNIQUE (family, version)"
+      ],
+      [
+        "contracts",
+        "contracts_pkey",
+        "p",
+        "PRIMARY KEY (contract_id)"
+      ],
+      [
+        "contracts",
+        "contracts_version_not_null",
+        "n",
+        "NOT NULL version"
+      ],
+      [
+        "dataset_eligibility_ledger",
+        "dataset_eligibility_ledger_dataset_id_fkey",
+        "f",
+        "FOREIGN KEY (dataset_id) REFERENCES fep.datasets(dataset_id)"
+      ],
+      [
+        "dataset_eligibility_ledger",
+        "dataset_eligibility_ledger_dataset_id_not_null",
+        "n",
+        "NOT NULL dataset_id"
+      ],
+      [
+        "dataset_eligibility_ledger",
+        "dataset_eligibility_ledger_horizon_not_null",
+        "n",
+        "NOT NULL horizon"
+      ],
+      [
+        "dataset_eligibility_ledger",
+        "dataset_eligibility_ledger_observation_id_not_null",
+        "n",
+        "NOT NULL observation_id"
+      ],
+      [
+        "dataset_eligibility_ledger",
+        "dataset_eligibility_ledger_observation_id_scope_id_fkey",
+        "f",
+        "FOREIGN KEY (observation_id, scope_id) REFERENCES fep.observations(observation_id, scope_id)"
+      ],
+      [
+        "dataset_eligibility_ledger",
+        "dataset_eligibility_ledger_pkey",
+        "p",
+        "PRIMARY KEY (dataset_id, observation_id, target_id)"
+      ],
+      [
+        "dataset_eligibility_ledger",
+        "dataset_eligibility_ledger_scope_id_not_null",
+        "n",
+        "NOT NULL scope_id"
+      ],
+      [
+        "dataset_eligibility_ledger",
+        "dataset_eligibility_ledger_status_check",
+        "c",
+        "CHECK ((status = ANY (ARRAY['EXPECTED'::text, 'SCOPE_EXCLUDED'::text])))"
+      ],
+      [
+        "dataset_eligibility_ledger",
+        "dataset_eligibility_ledger_status_not_null",
+        "n",
+        "NOT NULL status"
+      ],
+      [
+        "dataset_eligibility_ledger",
+        "dataset_eligibility_ledger_target_id_fkey",
+        "f",
+        "FOREIGN KEY (target_id) REFERENCES fep.targets(target_id)"
+      ],
+      [
+        "dataset_eligibility_ledger",
+        "dataset_eligibility_ledger_target_id_not_null",
+        "n",
+        "NOT NULL target_id"
+      ],
+      [
+        "dataset_eligibility_ledger",
+        "dataset_eligibility_ledger_target_id_scope_id_horizon_fkey",
+        "f",
+        "FOREIGN KEY (target_id, scope_id, horizon) REFERENCES fep.targets(target_id, scope_id, horizon)"
+      ],
+      [
+        "dataset_eligibility_ledger",
+        "denominator_ledger_complete",
+        "t",
+        "TRIGGER DEFERRABLE INITIALLY DEFERRED"
+      ],
+      [
+        "dataset_fold_cutoffs",
+        "dataset_fold_cutoffs_check",
+        "c",
+        "CHECK ((fold_dataset_cutoff <= phase_started_at))"
+      ],
+      [
+        "dataset_fold_cutoffs",
+        "dataset_fold_cutoffs_dataset_id_fkey",
+        "f",
+        "FOREIGN KEY (dataset_id) REFERENCES fep.datasets(dataset_id)"
+      ],
+      [
+        "dataset_fold_cutoffs",
+        "dataset_fold_cutoffs_dataset_id_not_null",
+        "n",
+        "NOT NULL dataset_id"
+      ],
+      [
+        "dataset_fold_cutoffs",
+        "dataset_fold_cutoffs_fold_dataset_cutoff_not_null",
+        "n",
+        "NOT NULL fold_dataset_cutoff"
+      ],
+      [
+        "dataset_fold_cutoffs",
+        "dataset_fold_cutoffs_fold_id_not_null",
+        "n",
+        "NOT NULL fold_id"
+      ],
+      [
+        "dataset_fold_cutoffs",
+        "dataset_fold_cutoffs_partition_name_check",
+        "c",
+        "CHECK ((partition_name = ANY (ARRAY['FIT'::text, 'TUNE'::text, 'CALIBRATION'::text, 'OUTER_TEST'::text])))"
+      ],
+      [
+        "dataset_fold_cutoffs",
+        "dataset_fold_cutoffs_partition_name_not_null",
+        "n",
+        "NOT NULL partition_name"
+      ],
+      [
+        "dataset_fold_cutoffs",
+        "dataset_fold_cutoffs_phase_started_at_not_null",
+        "n",
+        "NOT NULL phase_started_at"
+      ],
+      [
+        "dataset_fold_cutoffs",
+        "dataset_fold_cutoffs_pkey",
+        "p",
+        "PRIMARY KEY (dataset_id, fold_id, partition_name)"
+      ],
+      [
+        "dataset_fold_cutoffs",
+        "dataset_fold_cutoffs_selection_policy_contract_id_fkey",
+        "f",
+        "FOREIGN KEY (selection_policy_contract_id) REFERENCES fep.contracts(contract_id)"
+      ],
+      [
+        "dataset_fold_cutoffs",
+        "dataset_fold_cutoffs_selection_policy_contract_id_not_null",
+        "n",
+        "NOT NULL selection_policy_contract_id"
+      ],
+      [
+        "dataset_fold_cutoffs",
+        "dataset_fold_cutoffs_split_digest_not_null",
+        "n",
+        "NOT NULL split_digest"
+      ],
+      [
+        "dataset_fold_label_selection",
+        "dataset_fold_label_selection_check",
+        "c",
+        "CHECK (((selected_label_revision IS NULL) = (selected_label_digest IS NULL)))"
+      ],
+      [
+        "dataset_fold_label_selection",
+        "dataset_fold_label_selection_check1",
+        "c",
+        "CHECK (((eligibility <> 'ELIGIBLE'::text) OR (selected_label_revision IS NOT NULL)))"
+      ],
+      [
+        "dataset_fold_label_selection",
+        "dataset_fold_label_selection_dataset_id_fold_id_partition__fkey",
+        "f",
+        "FOREIGN KEY (dataset_id, fold_id, partition_name) REFERENCES fep.dataset_fold_cutoffs(dataset_id, fold_id, partition_name)"
+      ],
+      [
+        "dataset_fold_label_selection",
+        "dataset_fold_label_selection_dataset_id_fold_id_partition_n_key",
+        "u",
+        "UNIQUE (dataset_id, fold_id, partition_name, observation_id, target_id, selected_label_revision, selected_label_digest)"
+      ],
+      [
+        "dataset_fold_label_selection",
+        "dataset_fold_label_selection_dataset_id_not_null",
+        "n",
+        "NOT NULL dataset_id"
+      ],
+      [
+        "dataset_fold_label_selection",
+        "dataset_fold_label_selection_dataset_id_observation_id_tar_fkey",
+        "f",
+        "FOREIGN KEY (dataset_id, observation_id, target_id) REFERENCES fep.dataset_eligibility_ledger(dataset_id, observation_id, target_id)"
+      ],
+      [
+        "dataset_fold_label_selection",
+        "dataset_fold_label_selection_eligibility_check",
+        "c",
+        "CHECK ((eligibility = ANY (ARRAY['ELIGIBLE'::text, 'PENDING'::text, 'MISSING_LABEL'::text, 'QUALITY_EXCLUDED'::text, 'SCOPE_EXCLUDED'::text])))"
+      ],
+      [
+        "dataset_fold_label_selection",
+        "dataset_fold_label_selection_eligibility_not_null",
+        "n",
+        "NOT NULL eligibility"
+      ],
+      [
+        "dataset_fold_label_selection",
+        "dataset_fold_label_selection_fold_id_not_null",
+        "n",
+        "NOT NULL fold_id"
+      ],
+      [
+        "dataset_fold_label_selection",
+        "dataset_fold_label_selection_observation_id_not_null",
+        "n",
+        "NOT NULL observation_id"
+      ],
+      [
+        "dataset_fold_label_selection",
+        "dataset_fold_label_selection_observation_id_target_id_sele_fkey",
+        "f",
+        "FOREIGN KEY (observation_id, target_id, selected_label_revision, selected_label_digest) REFERENCES fep.label_revisions(observation_id, target_id, revision, target_digest)"
+      ],
+      [
+        "dataset_fold_label_selection",
+        "dataset_fold_label_selection_partition_name_not_null",
+        "n",
+        "NOT NULL partition_name"
+      ],
+      [
+        "dataset_fold_label_selection",
+        "dataset_fold_label_selection_pkey",
+        "p",
+        "PRIMARY KEY (dataset_id, fold_id, partition_name, observation_id, target_id)"
+      ],
+      [
+        "dataset_fold_label_selection",
+        "dataset_fold_label_selection_selection_reason_not_null",
+        "n",
+        "NOT NULL selection_reason"
+      ],
+      [
+        "dataset_fold_label_selection",
+        "dataset_fold_label_selection_target_id_not_null",
+        "n",
+        "NOT NULL target_id"
+      ],
+      [
+        "dataset_rows",
+        "dataset_rows_dataset_id_fold_id_partition_name_observation_fkey",
+        "f",
+        "FOREIGN KEY (dataset_id, fold_id, partition_name, observation_id, target_id, label_revision, selected_label_digest) REFERENCES fep.dataset_fold_label_selection(dataset_id, fold_id, partition_name, observation_id, target_id, selected_label_revision, selected_label_digest)"
+      ],
+      [
+        "dataset_rows",
+        "dataset_rows_dataset_id_not_null",
+        "n",
+        "NOT NULL dataset_id"
+      ],
+      [
+        "dataset_rows",
+        "dataset_rows_dataset_id_observation_id_target_id_fkey",
+        "f",
+        "FOREIGN KEY (dataset_id, observation_id, target_id) REFERENCES fep.dataset_eligibility_ledger(dataset_id, observation_id, target_id)"
+      ],
+      [
+        "dataset_rows",
+        "dataset_rows_dataset_id_scope_id_feature_contract_id_fkey",
+        "f",
+        "FOREIGN KEY (dataset_id, scope_id, feature_contract_id) REFERENCES fep.datasets(dataset_id, scope_id, feature_contract_id)"
+      ],
+      [
+        "dataset_rows",
+        "dataset_rows_feature_contract_id_not_null",
+        "n",
+        "NOT NULL feature_contract_id"
+      ],
+      [
+        "dataset_rows",
+        "dataset_rows_fold_id_not_null",
+        "n",
+        "NOT NULL fold_id"
+      ],
+      [
+        "dataset_rows",
+        "dataset_rows_label_revision_not_null",
+        "n",
+        "NOT NULL label_revision"
+      ],
+      [
+        "dataset_rows",
+        "dataset_rows_observation_id_not_null",
+        "n",
+        "NOT NULL observation_id"
+      ],
+      [
+        "dataset_rows",
+        "dataset_rows_observation_id_scope_id_fkey",
+        "f",
+        "FOREIGN KEY (observation_id, scope_id) REFERENCES fep.observations(observation_id, scope_id)"
+      ],
+      [
+        "dataset_rows",
+        "dataset_rows_observation_id_target_id_label_revision_fkey",
+        "f",
+        "FOREIGN KEY (observation_id, target_id, label_revision) REFERENCES fep.label_revisions(observation_id, target_id, revision)"
+      ],
+      [
+        "dataset_rows",
+        "dataset_rows_partition_name_check",
+        "c",
+        "CHECK ((partition_name = ANY (ARRAY['FIT'::text, 'TUNE'::text, 'CALIBRATION'::text, 'OUTER_TEST'::text])))"
+      ],
+      [
+        "dataset_rows",
+        "dataset_rows_partition_name_not_null",
+        "n",
+        "NOT NULL partition_name"
+      ],
+      [
+        "dataset_rows",
+        "dataset_rows_pkey",
+        "p",
+        "PRIMARY KEY (dataset_id, observation_id, target_id, fold_id, partition_name)"
+      ],
+      [
+        "dataset_rows",
+        "dataset_rows_scope_id_not_null",
+        "n",
+        "NOT NULL scope_id"
+      ],
+      [
+        "dataset_rows",
+        "dataset_rows_selected_label_digest_not_null",
+        "n",
+        "NOT NULL selected_label_digest"
+      ],
+      [
+        "dataset_rows",
+        "dataset_rows_snapshot_id_feature_contract_id_fkey",
+        "f",
+        "FOREIGN KEY (snapshot_id, feature_contract_id) REFERENCES fep.snapshots(snapshot_id, feature_contract_id)"
+      ],
+      [
+        "dataset_rows",
+        "dataset_rows_snapshot_id_not_null",
+        "n",
+        "NOT NULL snapshot_id"
+      ],
+      [
+        "dataset_rows",
+        "dataset_rows_snapshot_id_observation_id_fkey",
+        "f",
+        "FOREIGN KEY (snapshot_id, observation_id) REFERENCES fep.snapshots(snapshot_id, observation_id)"
+      ],
+      [
+        "dataset_rows",
+        "dataset_rows_target_id_not_null",
+        "n",
+        "NOT NULL target_id"
+      ],
+      [
+        "dataset_rows",
+        "dataset_rows_weight_check",
+        "c",
+        "CHECK (((weight > (0)::double precision) AND (weight < 'Infinity'::double precision)))"
+      ],
+      [
+        "dataset_rows",
+        "dataset_rows_weight_not_null",
+        "n",
+        "NOT NULL weight"
+      ],
+      [
+        "datasets",
+        "datasets_created_at_not_null",
+        "n",
+        "NOT NULL created_at"
+      ],
+      [
+        "datasets",
+        "datasets_dataset_cutoff_not_null",
+        "n",
+        "NOT NULL dataset_cutoff"
+      ],
+      [
+        "datasets",
+        "datasets_dataset_id_not_null",
+        "n",
+        "NOT NULL dataset_id"
+      ],
+      [
+        "datasets",
+        "datasets_dataset_id_scope_id_feature_contract_id_key",
+        "u",
+        "UNIQUE (dataset_id, scope_id, feature_contract_id)"
+      ],
+      [
+        "datasets",
+        "datasets_digest_key",
+        "u",
+        "UNIQUE (digest)"
+      ],
+      [
+        "datasets",
+        "datasets_digest_not_null",
+        "n",
+        "NOT NULL digest"
+      ],
+      [
+        "datasets",
+        "datasets_feature_contract_id_fkey",
+        "f",
+        "FOREIGN KEY (feature_contract_id) REFERENCES fep.contracts(contract_id)"
+      ],
+      [
+        "datasets",
+        "datasets_feature_contract_id_not_null",
+        "n",
+        "NOT NULL feature_contract_id"
+      ],
+      [
+        "datasets",
+        "datasets_manifest_not_null",
+        "n",
+        "NOT NULL manifest"
+      ],
+      [
+        "datasets",
+        "datasets_pkey",
+        "p",
+        "PRIMARY KEY (dataset_id)"
+      ],
+      [
+        "datasets",
+        "datasets_policy_contract_id_fkey",
+        "f",
+        "FOREIGN KEY (policy_contract_id) REFERENCES fep.contracts(contract_id)"
+      ],
+      [
+        "datasets",
+        "datasets_policy_contract_id_not_null",
+        "n",
+        "NOT NULL policy_contract_id"
+      ],
+      [
+        "datasets",
+        "datasets_scope_id_fkey",
+        "f",
+        "FOREIGN KEY (scope_id) REFERENCES fep.scopes(scope_id)"
+      ],
+      [
+        "datasets",
+        "datasets_scope_id_not_null",
+        "n",
+        "NOT NULL scope_id"
+      ],
+      [
+        "datasets",
+        "denominator_complete",
+        "t",
+        "TRIGGER DEFERRABLE INITIALLY DEFERRED"
+      ],
+      [
+        "deployment_change_receipts",
+        "deployment_change_receipts_accepted_at_not_null",
+        "n",
+        "NOT NULL accepted_at"
+      ],
+      [
+        "deployment_change_receipts",
+        "deployment_change_receipts_activation_id_fkey",
+        "f",
+        "FOREIGN KEY (activation_id) REFERENCES fep.activations(activation_id)"
+      ],
+      [
+        "deployment_change_receipts",
+        "deployment_change_receipts_activation_id_grant_id_fkey",
+        "f",
+        "FOREIGN KEY (activation_id, grant_id) REFERENCES fep.activations(activation_id, grant_id)"
+      ],
+      [
+        "deployment_change_receipts",
+        "deployment_change_receipts_activation_id_not_null",
+        "n",
+        "NOT NULL activation_id"
+      ],
+      [
+        "deployment_change_receipts",
+        "deployment_change_receipts_check",
+        "c",
+        "CHECK ((new_head_version = (expected_head_version + 1)))"
+      ],
+      [
+        "deployment_change_receipts",
+        "deployment_change_receipts_checks_not_null",
+        "n",
+        "NOT NULL checks"
+      ],
+      [
+        "deployment_change_receipts",
+        "deployment_change_receipts_expected_head_version_not_null",
+        "n",
+        "NOT NULL expected_head_version"
+      ],
+      [
+        "deployment_change_receipts",
+        "deployment_change_receipts_grant_id_fkey",
+        "f",
+        "FOREIGN KEY (grant_id) REFERENCES fep.permission_keys(grant_id)"
+      ],
+      [
+        "deployment_change_receipts",
+        "deployment_change_receipts_grant_id_not_null",
+        "n",
+        "NOT NULL grant_id"
+      ],
+      [
+        "deployment_change_receipts",
+        "deployment_change_receipts_new_head_version_not_null",
+        "n",
+        "NOT NULL new_head_version"
+      ],
+      [
+        "deployment_change_receipts",
+        "deployment_change_receipts_pkey",
+        "p",
+        "PRIMARY KEY (activation_id)"
+      ],
+      [
+        "deployment_change_receipts",
+        "deployment_change_receipts_request_id_key",
+        "u",
+        "UNIQUE (request_id)"
+      ],
+      [
+        "deployment_change_receipts",
+        "deployment_change_receipts_request_id_not_null",
+        "n",
+        "NOT NULL request_id"
+      ],
+      [
+        "deployment_heads",
+        "deployment_heads_activation_id_grant_id_fkey",
+        "f",
+        "FOREIGN KEY (activation_id, grant_id) REFERENCES fep.activations(activation_id, grant_id)"
+      ],
+      [
+        "deployment_heads",
+        "deployment_heads_activation_id_not_null",
+        "n",
+        "NOT NULL activation_id"
+      ],
+      [
+        "deployment_heads",
+        "deployment_heads_capability_not_null",
+        "n",
+        "NOT NULL capability"
+      ],
+      [
+        "deployment_heads",
+        "deployment_heads_feature_contract_id_not_null",
+        "n",
+        "NOT NULL feature_contract_id"
+      ],
+      [
+        "deployment_heads",
+        "deployment_heads_grant_id_not_null",
+        "n",
+        "NOT NULL grant_id"
+      ],
+      [
+        "deployment_heads",
+        "deployment_heads_grant_id_scope_id_target_id_horizon_featu_fkey",
+        "f",
+        "FOREIGN KEY (grant_id, scope_id, target_id, horizon, feature_contract_id, model_set_id, capability) REFERENCES fep.permission_keys(grant_id, scope_id, target_id, horizon, feature_contract_id, model_set_id, capability)"
+      ],
+      [
+        "deployment_heads",
+        "deployment_heads_head_version_check",
+        "c",
+        "CHECK ((head_version > 0))"
+      ],
+      [
+        "deployment_heads",
+        "deployment_heads_head_version_not_null",
+        "n",
+        "NOT NULL head_version"
+      ],
+      [
+        "deployment_heads",
+        "deployment_heads_horizon_not_null",
+        "n",
+        "NOT NULL horizon"
+      ],
+      [
+        "deployment_heads",
+        "deployment_heads_model_set_id_not_null",
+        "n",
+        "NOT NULL model_set_id"
+      ],
+      [
+        "deployment_heads",
+        "deployment_heads_pkey",
+        "p",
+        "PRIMARY KEY (scope_id, capability, target_id, horizon, feature_contract_id)"
+      ],
+      [
+        "deployment_heads",
+        "deployment_heads_scope_id_not_null",
+        "n",
+        "NOT NULL scope_id"
+      ],
+      [
+        "deployment_heads",
+        "deployment_heads_target_id_not_null",
+        "n",
+        "NOT NULL target_id"
+      ],
+      [
+        "deployment_heads",
+        "deployment_heads_updated_at_not_null",
+        "n",
+        "NOT NULL updated_at"
+      ],
+      [
+        "feature_values",
+        "feature_values_feature_contract_id_field_name_fkey",
+        "f",
+        "FOREIGN KEY (feature_contract_id, field_name) REFERENCES fep.field_registry(feature_contract_id, field_name)"
+      ],
+      [
+        "feature_values",
+        "feature_values_feature_contract_id_not_null",
+        "n",
+        "NOT NULL feature_contract_id"
+      ],
+      [
+        "feature_values",
+        "feature_values_field_name_not_null",
+        "n",
+        "NOT NULL field_name"
+      ],
+      [
+        "feature_values",
+        "feature_values_pkey",
+        "p",
+        "PRIMARY KEY (snapshot_id, field_name)"
+      ],
+      [
+        "feature_values",
+        "feature_values_quality_not_null",
+        "n",
+        "NOT NULL quality"
+      ],
+      [
+        "feature_values",
+        "feature_values_snapshot_id_feature_contract_id_fkey",
+        "f",
+        "FOREIGN KEY (snapshot_id, feature_contract_id) REFERENCES fep.snapshots(snapshot_id, feature_contract_id)"
+      ],
+      [
+        "feature_values",
+        "feature_values_snapshot_id_not_null",
+        "n",
+        "NOT NULL snapshot_id"
+      ],
+      [
+        "feature_values",
+        "feature_values_source_digest_not_null",
+        "n",
+        "NOT NULL source_digest"
+      ],
+      [
+        "field_registry",
+        "field_registry_availability_rule_not_null",
+        "n",
+        "NOT NULL availability_rule"
+      ],
+      [
+        "field_registry",
+        "field_registry_data_type_not_null",
+        "n",
+        "NOT NULL data_type"
+      ],
+      [
+        "field_registry",
+        "field_registry_feature_contract_id_fkey",
+        "f",
+        "FOREIGN KEY (feature_contract_id) REFERENCES fep.contracts(contract_id)"
+      ],
+      [
+        "field_registry",
+        "field_registry_feature_contract_id_not_null",
+        "n",
+        "NOT NULL feature_contract_id"
+      ],
+      [
+        "field_registry",
+        "field_registry_field_name_not_null",
+        "n",
+        "NOT NULL field_name"
+      ],
+      [
+        "field_registry",
+        "field_registry_nullable_not_null",
+        "n",
+        "NOT NULL nullable"
+      ],
+      [
+        "field_registry",
+        "field_registry_pkey",
+        "p",
+        "PRIMARY KEY (feature_contract_id, field_name)"
+      ],
+      [
+        "field_registry",
+        "field_registry_producer_not_null",
+        "n",
+        "NOT NULL producer"
+      ],
+      [
+        "field_registry",
+        "field_registry_quality_allowlist_not_null",
+        "n",
+        "NOT NULL quality_allowlist"
+      ],
+      [
+        "field_registry",
+        "field_registry_required_not_null",
+        "n",
+        "NOT NULL required"
+      ],
+      [
+        "field_registry",
+        "field_registry_source_field_not_null",
+        "n",
+        "NOT NULL source_field"
+      ],
+      [
+        "field_registry",
+        "field_registry_unit_not_null",
+        "n",
+        "NOT NULL unit"
+      ],
+      [
+        "field_registry",
+        "field_registry_window_contract_id_fkey",
+        "f",
+        "FOREIGN KEY (window_contract_id) REFERENCES fep.contracts(contract_id)"
+      ],
+      [
+        "field_registry",
+        "field_registry_window_contract_id_not_null",
+        "n",
+        "NOT NULL window_contract_id"
+      ],
+      [
+        "field_scope",
+        "field_scope_feature_contract_id_field_name_fkey",
+        "f",
+        "FOREIGN KEY (feature_contract_id, field_name) REFERENCES fep.field_registry(feature_contract_id, field_name)"
+      ],
+      [
+        "field_scope",
+        "field_scope_feature_contract_id_not_null",
+        "n",
+        "NOT NULL feature_contract_id"
+      ],
+      [
+        "field_scope",
+        "field_scope_field_name_not_null",
+        "n",
+        "NOT NULL field_name"
+      ],
+      [
+        "field_scope",
+        "field_scope_pkey",
+        "p",
+        "PRIMARY KEY (feature_contract_id, field_name, scope_id)"
+      ],
+      [
+        "field_scope",
+        "field_scope_scope_id_fkey",
+        "f",
+        "FOREIGN KEY (scope_id) REFERENCES fep.scopes(scope_id)"
+      ],
+      [
+        "field_scope",
+        "field_scope_scope_id_not_null",
+        "n",
+        "NOT NULL scope_id"
+      ],
+      [
+        "label_revisions",
+        "label_revisions_binding_id_fkey",
+        "f",
+        "FOREIGN KEY (binding_id) REFERENCES fep.label_source_bindings(binding_id)"
+      ],
+      [
+        "label_revisions",
+        "label_revisions_binding_id_not_null",
+        "n",
+        "NOT NULL binding_id"
+      ],
+      [
+        "label_revisions",
+        "label_revisions_check",
+        "c",
+        "CHECK (((supersedes_revision IS NULL) OR (supersedes_revision < revision)))"
+      ],
+      [
+        "label_revisions",
+        "label_revisions_check1",
+        "c",
+        "CHECK ((NOT ((numeric_value IS NOT NULL) AND (class_value IS NOT NULL))))"
+      ],
+      [
+        "label_revisions",
+        "label_revisions_check2",
+        "c",
+        "CHECK (((NOT training_allowed) OR (numeric_value IS NOT NULL) OR (class_value IS NOT NULL)))"
+      ],
+      [
+        "label_revisions",
+        "label_revisions_horizon_not_null",
+        "n",
+        "NOT NULL horizon"
+      ],
+      [
+        "label_revisions",
+        "label_revisions_numeric_value_check",
+        "c",
+        "CHECK (((numeric_value IS NULL) OR ((numeric_value > '-Infinity'::double precision) AND (numeric_value < 'Infinity'::double precision))))"
+      ],
+      [
+        "label_revisions",
+        "label_revisions_observation_id_not_null",
+        "n",
+        "NOT NULL observation_id"
+      ],
+      [
+        "label_revisions",
+        "label_revisions_observation_id_scope_id_fkey",
+        "f",
+        "FOREIGN KEY (observation_id, scope_id) REFERENCES fep.observations(observation_id, scope_id)"
+      ],
+      [
+        "label_revisions",
+        "label_revisions_observation_id_target_id_revision_target_di_key",
+        "u",
+        "UNIQUE (observation_id, target_id, revision, target_digest)"
+      ],
+      [
+        "label_revisions",
+        "label_revisions_observation_id_target_id_supersedes_revisi_fkey",
+        "f",
+        "FOREIGN KEY (observation_id, target_id, supersedes_revision) REFERENCES fep.label_revisions(observation_id, target_id, revision)"
+      ],
+      [
+        "label_revisions",
+        "label_revisions_pkey",
+        "p",
+        "PRIMARY KEY (observation_id, target_id, revision)"
+      ],
+      [
+        "label_revisions",
+        "label_revisions_quality_not_null",
+        "n",
+        "NOT NULL quality"
+      ],
+      [
+        "label_revisions",
+        "label_revisions_revision_check",
+        "c",
+        "CHECK ((revision > 0))"
+      ],
+      [
+        "label_revisions",
+        "label_revisions_revision_not_null",
+        "n",
+        "NOT NULL revision"
+      ],
+      [
+        "label_revisions",
+        "label_revisions_scope_id_not_null",
+        "n",
+        "NOT NULL scope_id"
+      ],
+      [
+        "label_revisions",
+        "label_revisions_target_digest_not_null",
+        "n",
+        "NOT NULL target_digest"
+      ],
+      [
+        "label_revisions",
+        "label_revisions_target_id_not_null",
+        "n",
+        "NOT NULL target_id"
+      ],
+      [
+        "label_revisions",
+        "label_revisions_target_id_scope_id_horizon_fkey",
+        "f",
+        "FOREIGN KEY (target_id, scope_id, horizon) REFERENCES fep.targets(target_id, scope_id, horizon)"
+      ],
+      [
+        "label_revisions",
+        "label_revisions_training_allowed_not_null",
+        "n",
+        "NOT NULL training_allowed"
+      ],
+      [
+        "label_source_bindings",
+        "label_source_bindings_authority_contract_id_fkey",
+        "f",
+        "FOREIGN KEY (authority_contract_id) REFERENCES fep.contracts(contract_id)"
+      ],
+      [
+        "label_source_bindings",
+        "label_source_bindings_authority_contract_id_not_null",
+        "n",
+        "NOT NULL authority_contract_id"
+      ],
+      [
+        "label_source_bindings",
+        "label_source_bindings_authority_contract_id_upstream_key_up_key",
+        "u",
+        "UNIQUE (authority_contract_id, upstream_key, upstream_revision, source_digest)"
+      ],
+      [
+        "label_source_bindings",
+        "label_source_bindings_binding_id_not_null",
+        "n",
+        "NOT NULL binding_id"
+      ],
+      [
+        "label_source_bindings",
+        "label_source_bindings_check",
+        "c",
+        "CHECK ((label_revision_available_at >= source_fact_available_at))"
+      ],
+      [
+        "label_source_bindings",
+        "label_source_bindings_created_at_not_null",
+        "n",
+        "NOT NULL created_at"
+      ],
+      [
+        "label_source_bindings",
+        "label_source_bindings_label_event_end_not_null",
+        "n",
+        "NOT NULL label_event_end"
+      ],
+      [
+        "label_source_bindings",
+        "label_source_bindings_label_revision_available_at_not_null",
+        "n",
+        "NOT NULL label_revision_available_at"
+      ],
+      [
+        "label_source_bindings",
+        "label_source_bindings_label_training_mature_at_not_null",
+        "n",
+        "NOT NULL label_training_mature_at"
+      ],
+      [
+        "label_source_bindings",
+        "label_source_bindings_pkey",
+        "p",
+        "PRIMARY KEY (binding_id)"
+      ],
+      [
+        "label_source_bindings",
+        "label_source_bindings_source_digest_not_null",
+        "n",
+        "NOT NULL source_digest"
+      ],
+      [
+        "label_source_bindings",
+        "label_source_bindings_source_fact_available_at_not_null",
+        "n",
+        "NOT NULL source_fact_available_at"
+      ],
+      [
+        "label_source_bindings",
+        "label_source_bindings_upstream_key_not_null",
+        "n",
+        "NOT NULL upstream_key"
+      ],
+      [
+        "label_source_bindings",
+        "label_source_bindings_upstream_revision_not_null",
+        "n",
+        "NOT NULL upstream_revision"
+      ],
+      [
+        "model_set_members",
+        "model_set_members_feature_contract_id_not_null",
+        "n",
+        "NOT NULL feature_contract_id"
+      ],
+      [
+        "model_set_members",
+        "model_set_members_horizon_not_null",
+        "n",
+        "NOT NULL horizon"
+      ],
+      [
+        "model_set_members",
+        "model_set_members_model_id_not_null",
+        "n",
+        "NOT NULL model_id"
+      ],
+      [
+        "model_set_members",
+        "model_set_members_model_id_scope_id_target_id_horizon_feat_fkey",
+        "f",
+        "FOREIGN KEY (model_id, scope_id, target_id, horizon, feature_contract_id) REFERENCES fep.models(model_id, scope_id, target_id, horizon, feature_contract_id)"
+      ],
+      [
+        "model_set_members",
+        "model_set_members_model_set_id_fkey",
+        "f",
+        "FOREIGN KEY (model_set_id) REFERENCES fep.model_sets(model_set_id)"
+      ],
+      [
+        "model_set_members",
+        "model_set_members_model_set_id_model_id_key",
+        "u",
+        "UNIQUE (model_set_id, model_id)"
+      ],
+      [
+        "model_set_members",
+        "model_set_members_model_set_id_not_null",
+        "n",
+        "NOT NULL model_set_id"
+      ],
+      [
+        "model_set_members",
+        "model_set_members_model_set_id_scope_id_target_id_horizon_f_key",
+        "u",
+        "UNIQUE (model_set_id, scope_id, target_id, horizon, feature_contract_id, role)"
+      ],
+      [
+        "model_set_members",
+        "model_set_members_pkey",
+        "p",
+        "PRIMARY KEY (model_set_id, scope_id, target_id, horizon, role)"
+      ],
+      [
+        "model_set_members",
+        "model_set_members_role_check",
+        "c",
+        "CHECK ((role = ANY (ARRAY['CHAMPION'::text, 'BASELINE'::text, 'CHALLENGER'::text])))"
+      ],
+      [
+        "model_set_members",
+        "model_set_members_role_not_null",
+        "n",
+        "NOT NULL role"
+      ],
+      [
+        "model_set_members",
+        "model_set_members_scope_id_not_null",
+        "n",
+        "NOT NULL scope_id"
+      ],
+      [
+        "model_set_members",
+        "model_set_members_target_id_not_null",
+        "n",
+        "NOT NULL target_id"
+      ],
+      [
+        "model_sets",
+        "model_sets_accepted_at_not_null",
+        "n",
+        "NOT NULL accepted_at"
+      ],
+      [
+        "model_sets",
+        "model_sets_digest_key",
+        "u",
+        "UNIQUE (digest)"
+      ],
+      [
+        "model_sets",
+        "model_sets_digest_not_null",
+        "n",
+        "NOT NULL digest"
+      ],
+      [
+        "model_sets",
+        "model_sets_model_set_id_not_null",
+        "n",
+        "NOT NULL model_set_id"
+      ],
+      [
+        "model_sets",
+        "model_sets_pkey",
+        "p",
+        "PRIMARY KEY (model_set_id)"
+      ],
+      [
+        "model_sets",
+        "model_sets_policy_contract_id_fkey",
+        "f",
+        "FOREIGN KEY (policy_contract_id) REFERENCES fep.contracts(contract_id)"
+      ],
+      [
+        "model_sets",
+        "model_sets_policy_contract_id_not_null",
+        "n",
+        "NOT NULL policy_contract_id"
+      ],
+      [
+        "models",
+        "models_accepted_at_not_null",
+        "n",
+        "NOT NULL accepted_at"
+      ],
+      [
+        "models",
+        "models_calibration_digest_not_null",
+        "n",
+        "NOT NULL calibration_digest"
+      ],
+      [
+        "models",
+        "models_family_not_null",
+        "n",
+        "NOT NULL family"
+      ],
+      [
+        "models",
+        "models_feature_contract_id_fkey",
+        "f",
+        "FOREIGN KEY (feature_contract_id) REFERENCES fep.contracts(contract_id)"
+      ],
+      [
+        "models",
+        "models_feature_contract_id_not_null",
+        "n",
+        "NOT NULL feature_contract_id"
+      ],
+      [
+        "models",
+        "models_horizon_not_null",
+        "n",
+        "NOT NULL horizon"
+      ],
+      [
+        "models",
+        "models_model_digest_key",
+        "u",
+        "UNIQUE (model_digest)"
+      ],
+      [
+        "models",
+        "models_model_digest_not_null",
+        "n",
+        "NOT NULL model_digest"
+      ],
+      [
+        "models",
+        "models_model_id_not_null",
+        "n",
+        "NOT NULL model_id"
+      ],
+      [
+        "models",
+        "models_model_id_scope_id_target_id_horizon_feature_contract_key",
+        "u",
+        "UNIQUE (model_id, scope_id, target_id, horizon, feature_contract_id)"
+      ],
+      [
+        "models",
+        "models_ood_digest_not_null",
+        "n",
+        "NOT NULL ood_digest"
+      ],
+      [
+        "models",
+        "models_pkey",
+        "p",
+        "PRIMARY KEY (model_id)"
+      ],
+      [
+        "models",
+        "models_scope_id_not_null",
+        "n",
+        "NOT NULL scope_id"
+      ],
+      [
+        "models",
+        "models_target_id_not_null",
+        "n",
+        "NOT NULL target_id"
+      ],
+      [
+        "models",
+        "models_target_id_scope_id_horizon_fkey",
+        "f",
+        "FOREIGN KEY (target_id, scope_id, horizon) REFERENCES fep.targets(target_id, scope_id, horizon)"
+      ],
+      [
+        "models",
+        "models_training_run_id_fkey",
+        "f",
+        "FOREIGN KEY (training_run_id) REFERENCES fep.training_runs(training_run_id)"
+      ],
+      [
+        "models",
+        "models_training_run_id_not_null",
+        "n",
+        "NOT NULL training_run_id"
+      ],
+      [
+        "models",
+        "models_transform_digest_not_null",
+        "n",
+        "NOT NULL transform_digest"
+      ],
+      [
+        "observation_revisions",
+        "observation_revisions_check",
+        "c",
+        "CHECK (((supersedes_revision IS NULL) OR (supersedes_revision < revision)))"
+      ],
+      [
+        "observation_revisions",
+        "observation_revisions_created_at_not_null",
+        "n",
+        "NOT NULL created_at"
+      ],
+      [
+        "observation_revisions",
+        "observation_revisions_dependency_digest_not_null",
+        "n",
+        "NOT NULL dependency_digest"
+      ],
+      [
+        "observation_revisions",
+        "observation_revisions_dependency_manifest_not_null",
+        "n",
+        "NOT NULL dependency_manifest"
+      ],
+      [
+        "observation_revisions",
+        "observation_revisions_enrichment_token_not_null",
+        "n",
+        "NOT NULL enrichment_token"
+      ],
+      [
+        "observation_revisions",
+        "observation_revisions_evidence_origin_check",
+        "c",
+        "CHECK ((evidence_origin = ANY (ARRAY['PIT_OBSERVED'::text, 'RECONSTRUCTED_ASOF'::text, 'RECONSTRUCTED_CORRECTED'::text, 'DIAGNOSTIC_NON_PIT'::text])))"
+      ],
+      [
+        "observation_revisions",
+        "observation_revisions_evidence_origin_not_null",
+        "n",
+        "NOT NULL evidence_origin"
+      ],
+      [
+        "observation_revisions",
+        "observation_revisions_execution_mode_check",
+        "c",
+        "CHECK ((execution_mode = ANY (ARRAY['SHADOW'::text, 'PRODUCTION'::text, 'REPLAY'::text])))"
+      ],
+      [
+        "observation_revisions",
+        "observation_revisions_execution_mode_not_null",
+        "n",
+        "NOT NULL execution_mode"
+      ],
+      [
+        "observation_revisions",
+        "observation_revisions_feature_cutoff_not_null",
+        "n",
+        "NOT NULL feature_cutoff"
+      ],
+      [
+        "observation_revisions",
+        "observation_revisions_observation_id_dependency_digest_key",
+        "u",
+        "UNIQUE (observation_id, dependency_digest)"
+      ],
+      [
+        "observation_revisions",
+        "observation_revisions_observation_id_fkey",
+        "f",
+        "FOREIGN KEY (observation_id) REFERENCES fep.observations(observation_id)"
+      ],
+      [
+        "observation_revisions",
+        "observation_revisions_observation_id_not_null",
+        "n",
+        "NOT NULL observation_id"
+      ],
+      [
+        "observation_revisions",
+        "observation_revisions_observation_id_supersedes_revision_fkey",
+        "f",
+        "FOREIGN KEY (observation_id, supersedes_revision) REFERENCES fep.observation_revisions(observation_id, revision)"
+      ],
+      [
+        "observation_revisions",
+        "observation_revisions_pkey",
+        "p",
+        "PRIMARY KEY (observation_id, revision)"
+      ],
+      [
+        "observation_revisions",
+        "observation_revisions_publication_id_fkey",
+        "f",
+        "FOREIGN KEY (publication_id) REFERENCES v4.publications(publication_id)"
+      ],
+      [
+        "observation_revisions",
+        "observation_revisions_publication_id_not_null",
+        "n",
+        "NOT NULL publication_id"
+      ],
+      [
+        "observation_revisions",
+        "observation_revisions_revision_check",
+        "c",
+        "CHECK ((revision > 0))"
+      ],
+      [
+        "observation_revisions",
+        "observation_revisions_revision_not_null",
+        "n",
+        "NOT NULL revision"
+      ],
+      [
+        "observations",
+        "observations_core_signal_contract_id_not_null",
+        "n",
+        "NOT NULL core_signal_contract_id"
+      ],
+      [
+        "observations",
+        "observations_entity_id_not_null",
+        "n",
+        "NOT NULL entity_id"
+      ],
+      [
+        "observations",
+        "observations_observation_id_not_null",
+        "n",
+        "NOT NULL observation_id"
+      ],
+      [
+        "observations",
+        "observations_observation_id_scope_id_key",
+        "u",
+        "UNIQUE (observation_id, scope_id)"
+      ],
+      [
+        "observations",
+        "observations_pkey",
+        "p",
+        "PRIMARY KEY (observation_id)"
+      ],
+      [
+        "observations",
+        "observations_scope_id_entity_id_trade_date_signal_key_key",
+        "u",
+        "UNIQUE (scope_id, entity_id, trade_date, signal_key)"
+      ],
+      [
+        "observations",
+        "observations_scope_id_fkey",
+        "f",
+        "FOREIGN KEY (scope_id) REFERENCES fep.scopes(scope_id)"
+      ],
+      [
+        "observations",
+        "observations_scope_id_not_null",
+        "n",
+        "NOT NULL scope_id"
+      ],
+      [
+        "observations",
+        "observations_signal_key_not_null",
+        "n",
+        "NOT NULL signal_key"
+      ],
+      [
+        "observations",
+        "observations_slot_deadline_not_null",
+        "n",
+        "NOT NULL slot_deadline"
+      ],
+      [
+        "observations",
+        "observations_trade_date_not_null",
+        "n",
+        "NOT NULL trade_date"
+      ],
+      [
+        "permission_keys",
+        "permission_keys_capability_check",
+        "c",
+        "CHECK ((capability = ANY (ARRAY['SHADOW_INFERENCE'::text, 'DESCRIPTIVE_DISPLAY'::text, 'MODEL_DISPLAY'::text, 'PRIORITY_USE'::text])))"
+      ],
+      [
+        "permission_keys",
+        "permission_keys_capability_not_null",
+        "n",
+        "NOT NULL capability"
+      ],
+      [
+        "permission_keys",
+        "permission_keys_feature_contract_id_not_null",
+        "n",
+        "NOT NULL feature_contract_id"
+      ],
+      [
+        "permission_keys",
+        "permission_keys_grant_id_not_null",
+        "n",
+        "NOT NULL grant_id"
+      ],
+      [
+        "permission_keys",
+        "permission_keys_grant_id_scope_id_target_id_horizon_feature_key",
+        "u",
+        "UNIQUE (grant_id, scope_id, target_id, horizon, feature_contract_id, model_set_id, capability)"
+      ],
+      [
+        "permission_keys",
+        "permission_keys_horizon_not_null",
+        "n",
+        "NOT NULL horizon"
+      ],
+      [
+        "permission_keys",
+        "permission_keys_model_role_check",
+        "c",
+        "CHECK ((model_role = 'CHAMPION'::text))"
+      ],
+      [
+        "permission_keys",
+        "permission_keys_model_role_not_null",
+        "n",
+        "NOT NULL model_role"
+      ],
+      [
+        "permission_keys",
+        "permission_keys_model_set_id_not_null",
+        "n",
+        "NOT NULL model_set_id"
+      ],
+      [
+        "permission_keys",
+        "permission_keys_model_set_id_scope_id_target_id_horizon_fe_fkey",
+        "f",
+        "FOREIGN KEY (model_set_id, scope_id, target_id, horizon, feature_contract_id, model_role) REFERENCES fep.model_set_members(model_set_id, scope_id, target_id, horizon, feature_contract_id, role)"
+      ],
+      [
+        "permission_keys",
+        "permission_keys_pkey",
+        "p",
+        "PRIMARY KEY (grant_id)"
+      ],
+      [
+        "permission_keys",
+        "permission_keys_scope_id_not_null",
+        "n",
+        "NOT NULL scope_id"
+      ],
+      [
+        "permission_keys",
+        "permission_keys_scope_id_target_id_horizon_feature_contract_key",
+        "u",
+        "UNIQUE (scope_id, target_id, horizon, feature_contract_id, model_set_id, capability)"
+      ],
+      [
+        "permission_keys",
+        "permission_keys_target_id_not_null",
+        "n",
+        "NOT NULL target_id"
+      ],
+      [
+        "permission_keys",
+        "permission_keys_target_id_scope_id_horizon_fkey",
+        "f",
+        "FOREIGN KEY (target_id, scope_id, horizon) REFERENCES fep.targets(target_id, scope_id, horizon)"
+      ],
+      [
+        "prediction_runs",
+        "prediction_runs_check",
+        "c",
+        "CHECK ((started_at <= finished_at))"
+      ],
+      [
+        "prediction_runs",
+        "prediction_runs_counts_not_null",
+        "n",
+        "NOT NULL counts"
+      ],
+      [
+        "prediction_runs",
+        "prediction_runs_finished_at_not_null",
+        "n",
+        "NOT NULL finished_at"
+      ],
+      [
+        "prediction_runs",
+        "prediction_runs_input_digest_not_null",
+        "n",
+        "NOT NULL input_digest"
+      ],
+      [
+        "prediction_runs",
+        "prediction_runs_model_set_id_fkey",
+        "f",
+        "FOREIGN KEY (model_set_id) REFERENCES fep.model_sets(model_set_id)"
+      ],
+      [
+        "prediction_runs",
+        "prediction_runs_model_set_id_not_null",
+        "n",
+        "NOT NULL model_set_id"
+      ],
+      [
+        "prediction_runs",
+        "prediction_runs_output_digest_not_null",
+        "n",
+        "NOT NULL output_digest"
+      ],
+      [
+        "prediction_runs",
+        "prediction_runs_pkey",
+        "p",
+        "PRIMARY KEY (run_id)"
+      ],
+      [
+        "prediction_runs",
+        "prediction_runs_publication_id_fkey",
+        "f",
+        "FOREIGN KEY (publication_id) REFERENCES v4.publications(publication_id)"
+      ],
+      [
+        "prediction_runs",
+        "prediction_runs_publication_id_not_null",
+        "n",
+        "NOT NULL publication_id"
+      ],
+      [
+        "prediction_runs",
+        "prediction_runs_run_id_model_set_id_key",
+        "u",
+        "UNIQUE (run_id, model_set_id)"
+      ],
+      [
+        "prediction_runs",
+        "prediction_runs_run_id_not_null",
+        "n",
+        "NOT NULL run_id"
+      ],
+      [
+        "prediction_runs",
+        "prediction_runs_started_at_not_null",
+        "n",
+        "NOT NULL started_at"
+      ],
+      [
+        "prediction_slots",
+        "prediction_slots_check",
+        "c",
+        "CHECK ((selection_cutoff <= deadline))"
+      ],
+      [
+        "prediction_slots",
+        "prediction_slots_deadline_not_null",
+        "n",
+        "NOT NULL deadline"
+      ],
+      [
+        "prediction_slots",
+        "prediction_slots_horizon_not_null",
+        "n",
+        "NOT NULL horizon"
+      ],
+      [
+        "prediction_slots",
+        "prediction_slots_model_family_scope_not_null",
+        "n",
+        "NOT NULL model_family_scope"
+      ],
+      [
+        "prediction_slots",
+        "prediction_slots_observation_id_not_null",
+        "n",
+        "NOT NULL observation_id"
+      ],
+      [
+        "prediction_slots",
+        "prediction_slots_observation_id_scope_id_fkey",
+        "f",
+        "FOREIGN KEY (observation_id, scope_id) REFERENCES fep.observations(observation_id, scope_id)"
+      ],
+      [
+        "prediction_slots",
+        "prediction_slots_observation_id_target_id_horizon_model_fam_key",
+        "u",
+        "UNIQUE (observation_id, target_id, horizon, model_family_scope)"
+      ],
+      [
+        "prediction_slots",
+        "prediction_slots_pkey",
+        "p",
+        "PRIMARY KEY (slot_id)"
+      ],
+      [
+        "prediction_slots",
+        "prediction_slots_scope_id_not_null",
+        "n",
+        "NOT NULL scope_id"
+      ],
+      [
+        "prediction_slots",
+        "prediction_slots_selection_cutoff_not_null",
+        "n",
+        "NOT NULL selection_cutoff"
+      ],
+      [
+        "prediction_slots",
+        "prediction_slots_selection_status_check",
+        "c",
+        "CHECK ((selection_status = ANY (ARRAY['PLANNED'::text, 'NO_ACTIVE_MODEL'::text, 'SELECTED'::text])))"
+      ],
+      [
+        "prediction_slots",
+        "prediction_slots_selection_status_not_null",
+        "n",
+        "NOT NULL selection_status"
+      ],
+      [
+        "prediction_slots",
+        "prediction_slots_slot_id_not_null",
+        "n",
+        "NOT NULL slot_id"
+      ],
+      [
+        "prediction_slots",
+        "prediction_slots_slot_id_observation_id_scope_id_target_id__key",
+        "u",
+        "UNIQUE (slot_id, observation_id, scope_id, target_id, horizon)"
+      ],
+      [
+        "prediction_slots",
+        "prediction_slots_target_id_not_null",
+        "n",
+        "NOT NULL target_id"
+      ],
+      [
+        "prediction_slots",
+        "prediction_slots_target_id_scope_id_horizon_fkey",
+        "f",
+        "FOREIGN KEY (target_id, scope_id, horizon) REFERENCES fep.targets(target_id, scope_id, horizon)"
+      ],
+      [
+        "predictions",
+        "predictions_accepted_at_not_null",
+        "n",
+        "NOT NULL accepted_at"
+      ],
+      [
+        "predictions",
+        "predictions_check",
+        "c",
+        "CHECK (((supersedes_id IS NULL) OR (supersedes_id <> prediction_id)))"
+      ],
+      [
+        "predictions",
+        "predictions_feature_contract_id_not_null",
+        "n",
+        "NOT NULL feature_contract_id"
+      ],
+      [
+        "predictions",
+        "predictions_horizon_not_null",
+        "n",
+        "NOT NULL horizon"
+      ],
+      [
+        "predictions",
+        "predictions_model_id_not_null",
+        "n",
+        "NOT NULL model_id"
+      ],
+      [
+        "predictions",
+        "predictions_model_id_scope_id_target_id_horizon_feature_co_fkey",
+        "f",
+        "FOREIGN KEY (model_id, scope_id, target_id, horizon, feature_contract_id) REFERENCES fep.models(model_id, scope_id, target_id, horizon, feature_contract_id)"
+      ],
+      [
+        "predictions",
+        "predictions_model_set_id_model_id_fkey",
+        "f",
+        "FOREIGN KEY (model_set_id, model_id) REFERENCES fep.model_set_members(model_set_id, model_id)"
+      ],
+      [
+        "predictions",
+        "predictions_model_set_id_not_null",
+        "n",
+        "NOT NULL model_set_id"
+      ],
+      [
+        "predictions",
+        "predictions_observation_id_not_null",
+        "n",
+        "NOT NULL observation_id"
+      ],
+      [
+        "predictions",
+        "predictions_output_digest_not_null",
+        "n",
+        "NOT NULL output_digest"
+      ],
+      [
+        "predictions",
+        "predictions_outputs_not_null",
+        "n",
+        "NOT NULL outputs"
+      ],
+      [
+        "predictions",
+        "predictions_pkey",
+        "p",
+        "PRIMARY KEY (prediction_id)"
+      ],
+      [
+        "predictions",
+        "predictions_prediction_evidence_check",
+        "c",
+        "CHECK ((prediction_evidence = ANY (ARRAY['FIRST_OBSERVED'::text, 'LATE_RECONSTRUCTION'::text, 'CORRECTED_RECONSTRUCTION'::text, 'HISTORICAL_SIMULATION'::text])))"
+      ],
+      [
+        "predictions",
+        "predictions_prediction_evidence_not_null",
+        "n",
+        "NOT NULL prediction_evidence"
+      ],
+      [
+        "predictions",
+        "predictions_prediction_id_not_null",
+        "n",
+        "NOT NULL prediction_id"
+      ],
+      [
+        "predictions",
+        "predictions_prediction_id_slot_id_model_id_key",
+        "u",
+        "UNIQUE (prediction_id, slot_id, model_id)"
+      ],
+      [
+        "predictions",
+        "predictions_quality_not_null",
+        "n",
+        "NOT NULL quality"
+      ],
+      [
+        "predictions",
+        "predictions_revision_check",
+        "c",
+        "CHECK ((revision > 0))"
+      ],
+      [
+        "predictions",
+        "predictions_revision_not_null",
+        "n",
+        "NOT NULL revision"
+      ],
+      [
+        "predictions",
+        "predictions_run_id_model_set_id_fkey",
+        "f",
+        "FOREIGN KEY (run_id, model_set_id) REFERENCES fep.prediction_runs(run_id, model_set_id)"
+      ],
+      [
+        "predictions",
+        "predictions_run_id_not_null",
+        "n",
+        "NOT NULL run_id"
+      ],
+      [
+        "predictions",
+        "predictions_scope_id_not_null",
+        "n",
+        "NOT NULL scope_id"
+      ],
+      [
+        "predictions",
+        "predictions_slot_id_model_id_revision_key",
+        "u",
+        "UNIQUE (slot_id, model_id, revision)"
+      ],
+      [
+        "predictions",
+        "predictions_slot_id_not_null",
+        "n",
+        "NOT NULL slot_id"
+      ],
+      [
+        "predictions",
+        "predictions_slot_id_observation_id_scope_id_target_id_hori_fkey",
+        "f",
+        "FOREIGN KEY (slot_id, observation_id, scope_id, target_id, horizon, model_set_id) REFERENCES fep.slot_model_bindings(slot_id, observation_id, scope_id, target_id, horizon, model_set_id)"
+      ],
+      [
+        "predictions",
+        "predictions_snapshot_id_feature_contract_id_fkey",
+        "f",
+        "FOREIGN KEY (snapshot_id, feature_contract_id) REFERENCES fep.snapshots(snapshot_id, feature_contract_id)"
+      ],
+      [
+        "predictions",
+        "predictions_snapshot_id_not_null",
+        "n",
+        "NOT NULL snapshot_id"
+      ],
+      [
+        "predictions",
+        "predictions_snapshot_id_observation_id_fkey",
+        "f",
+        "FOREIGN KEY (snapshot_id, observation_id) REFERENCES fep.snapshots(snapshot_id, observation_id)"
+      ],
+      [
+        "predictions",
+        "predictions_supersedes_id_slot_id_model_id_fkey",
+        "f",
+        "FOREIGN KEY (supersedes_id, slot_id, model_id) REFERENCES fep.predictions(prediction_id, slot_id, model_id)"
+      ],
+      [
+        "predictions",
+        "predictions_support_not_null",
+        "n",
+        "NOT NULL support"
+      ],
+      [
+        "predictions",
+        "predictions_target_id_not_null",
+        "n",
+        "NOT NULL target_id"
+      ],
+      [
+        "priority_projection",
+        "priority_projection_axis_state_not_null",
+        "n",
+        "NOT NULL axis_state"
+      ],
+      [
+        "priority_projection",
+        "priority_projection_axis_values_not_null",
+        "n",
+        "NOT NULL axis_values"
+      ],
+      [
+        "priority_projection",
+        "priority_projection_core_rank_identity_not_null",
+        "n",
+        "NOT NULL core_rank_identity"
+      ],
+      [
+        "priority_projection",
+        "priority_projection_observation_id_fkey",
+        "f",
+        "FOREIGN KEY (observation_id) REFERENCES fep.observations(observation_id)"
+      ],
+      [
+        "priority_projection",
+        "priority_projection_observation_id_not_null",
+        "n",
+        "NOT NULL observation_id"
+      ],
+      [
+        "priority_projection",
+        "priority_projection_pkey",
+        "p",
+        "PRIMARY KEY (projection_id)"
+      ],
+      [
+        "priority_projection",
+        "priority_projection_prediction_refs_not_null",
+        "n",
+        "NOT NULL prediction_refs"
+      ],
+      [
+        "priority_projection",
+        "priority_projection_priority_contract_id_fkey",
+        "f",
+        "FOREIGN KEY (priority_contract_id) REFERENCES fep.contracts(contract_id)"
+      ],
+      [
+        "priority_projection",
+        "priority_projection_priority_contract_id_not_null",
+        "n",
+        "NOT NULL priority_contract_id"
+      ],
+      [
+        "priority_projection",
+        "priority_projection_projection_id_not_null",
+        "n",
+        "NOT NULL projection_id"
+      ],
+      [
+        "priority_projection",
+        "priority_projection_projection_id_run_id_key",
+        "u",
+        "UNIQUE (projection_id, run_id)"
+      ],
+      [
+        "priority_projection",
+        "priority_projection_run_id_fkey",
+        "f",
+        "FOREIGN KEY (run_id) REFERENCES fep.prediction_runs(run_id)"
+      ],
+      [
+        "priority_projection",
+        "priority_projection_run_id_not_null",
+        "n",
+        "NOT NULL run_id"
+      ],
+      [
+        "priority_projection",
+        "priority_projection_run_id_observation_id_priority_contract_key",
+        "u",
+        "UNIQUE (run_id, observation_id, priority_contract_id)"
+      ],
+      [
+        "priority_projection_grants",
+        "priority_projection_grants_grant_id_fkey",
+        "f",
+        "FOREIGN KEY (grant_id) REFERENCES fep.permission_keys(grant_id)"
+      ],
+      [
+        "priority_projection_grants",
+        "priority_projection_grants_grant_id_not_null",
+        "n",
+        "NOT NULL grant_id"
+      ],
+      [
+        "priority_projection_grants",
+        "priority_projection_grants_permission_receipt_id_not_null",
+        "n",
+        "NOT NULL permission_receipt_id"
+      ],
+      [
+        "priority_projection_grants",
+        "priority_projection_grants_permission_receipt_id_run_id_gr_fkey",
+        "f",
+        "FOREIGN KEY (permission_receipt_id, run_id, grant_id) REFERENCES fep.acceptance_receipts(receipt_id, run_id, grant_id)"
+      ],
+      [
+        "priority_projection_grants",
+        "priority_projection_grants_pkey",
+        "p",
+        "PRIMARY KEY (projection_id, grant_id)"
+      ],
+      [
+        "priority_projection_grants",
+        "priority_projection_grants_projection_id_fkey",
+        "f",
+        "FOREIGN KEY (projection_id) REFERENCES fep.priority_projection(projection_id)"
+      ],
+      [
+        "priority_projection_grants",
+        "priority_projection_grants_projection_id_not_null",
+        "n",
+        "NOT NULL projection_id"
+      ],
+      [
+        "priority_projection_grants",
+        "priority_projection_grants_projection_id_run_id_fkey",
+        "f",
+        "FOREIGN KEY (projection_id, run_id) REFERENCES fep.priority_projection(projection_id, run_id)"
+      ],
+      [
+        "priority_projection_grants",
+        "priority_projection_grants_run_id_not_null",
+        "n",
+        "NOT NULL run_id"
+      ],
+      [
+        "reports",
+        "reports_contract_id_fkey",
+        "f",
+        "FOREIGN KEY (contract_id) REFERENCES fep.contracts(contract_id)"
+      ],
+      [
+        "reports",
+        "reports_contract_id_not_null",
+        "n",
+        "NOT NULL contract_id"
+      ],
+      [
+        "reports",
+        "reports_cutoff_not_null",
+        "n",
+        "NOT NULL cutoff"
+      ],
+      [
+        "reports",
+        "reports_dataset_id_fkey",
+        "f",
+        "FOREIGN KEY (dataset_id) REFERENCES fep.datasets(dataset_id)"
+      ],
+      [
+        "reports",
+        "reports_digest_key",
+        "u",
+        "UNIQUE (digest)"
+      ],
+      [
+        "reports",
+        "reports_digest_not_null",
+        "n",
+        "NOT NULL digest"
+      ],
+      [
+        "reports",
+        "reports_kind_check",
+        "c",
+        "CHECK ((kind = ANY (ARRAY['CALIBRATION'::text, 'EVALUATION'::text, 'DRIFT'::text, 'PROMOTION'::text, 'MISSINGNESS'::text])))"
+      ],
+      [
+        "reports",
+        "reports_kind_not_null",
+        "n",
+        "NOT NULL kind"
+      ],
+      [
+        "reports",
+        "reports_manifest_not_null",
+        "n",
+        "NOT NULL manifest"
+      ],
+      [
+        "reports",
+        "reports_model_id_fkey",
+        "f",
+        "FOREIGN KEY (model_id) REFERENCES fep.models(model_id)"
+      ],
+      [
+        "reports",
+        "reports_pkey",
+        "p",
+        "PRIMARY KEY (report_id)"
+      ],
+      [
+        "reports",
+        "reports_report_id_not_null",
+        "n",
+        "NOT NULL report_id"
+      ],
+      [
+        "reports",
+        "reports_results_not_null",
+        "n",
+        "NOT NULL results"
+      ],
+      [
+        "scopes",
+        "scopes_digest_key",
+        "u",
+        "UNIQUE (digest)"
+      ],
+      [
+        "scopes",
+        "scopes_digest_not_null",
+        "n",
+        "NOT NULL digest"
+      ],
+      [
+        "scopes",
+        "scopes_entity_type_check",
+        "c",
+        "CHECK ((entity_type = ANY (ARRAY['STOCK'::text, 'SECTOR'::text, 'MARKET'::text])))"
+      ],
+      [
+        "scopes",
+        "scopes_entity_type_not_null",
+        "n",
+        "NOT NULL entity_type"
+      ],
+      [
+        "scopes",
+        "scopes_feature_variant_not_null",
+        "n",
+        "NOT NULL feature_variant"
+      ],
+      [
+        "scopes",
+        "scopes_namespace_id_fkey",
+        "f",
+        "FOREIGN KEY (namespace_id) REFERENCES v4.model_namespaces(namespace_id)"
+      ],
+      [
+        "scopes",
+        "scopes_namespace_id_not_null",
+        "n",
+        "NOT NULL namespace_id"
+      ],
+      [
+        "scopes",
+        "scopes_observation_contract_id_fkey",
+        "f",
+        "FOREIGN KEY (observation_contract_id) REFERENCES fep.contracts(contract_id)"
+      ],
+      [
+        "scopes",
+        "scopes_observation_contract_id_not_null",
+        "n",
+        "NOT NULL observation_contract_id"
+      ],
+      [
+        "scopes",
+        "scopes_observation_kind_check",
+        "c",
+        "CHECK ((observation_kind = ANY (ARRAY['ENTRY'::text, 'DAILY_LANDMARK'::text, 'MARKET_WIDE'::text, 'MARKET_DAY'::text, 'ROTATION_ENTRY'::text])))"
+      ],
+      [
+        "scopes",
+        "scopes_observation_kind_not_null",
+        "n",
+        "NOT NULL observation_kind"
+      ],
+      [
+        "scopes",
+        "scopes_pkey",
+        "p",
+        "PRIMARY KEY (scope_id)"
+      ],
+      [
+        "scopes",
+        "scopes_scope_id_not_null",
+        "n",
+        "NOT NULL scope_id"
+      ],
+      [
+        "scopes",
+        "scopes_signal_type_not_null",
+        "n",
+        "NOT NULL signal_type"
+      ],
+      [
+        "slot_model_bindings",
+        "slot_model_bindings_horizon_not_null",
+        "n",
+        "NOT NULL horizon"
+      ],
+      [
+        "slot_model_bindings",
+        "slot_model_bindings_model_set_id_fkey",
+        "f",
+        "FOREIGN KEY (model_set_id) REFERENCES fep.model_sets(model_set_id)"
+      ],
+      [
+        "slot_model_bindings",
+        "slot_model_bindings_model_set_id_not_null",
+        "n",
+        "NOT NULL model_set_id"
+      ],
+      [
+        "slot_model_bindings",
+        "slot_model_bindings_observation_id_not_null",
+        "n",
+        "NOT NULL observation_id"
+      ],
+      [
+        "slot_model_bindings",
+        "slot_model_bindings_pkey",
+        "p",
+        "PRIMARY KEY (slot_id)"
+      ],
+      [
+        "slot_model_bindings",
+        "slot_model_bindings_scope_id_not_null",
+        "n",
+        "NOT NULL scope_id"
+      ],
+      [
+        "slot_model_bindings",
+        "slot_model_bindings_selected_at_not_null",
+        "n",
+        "NOT NULL selected_at"
+      ],
+      [
+        "slot_model_bindings",
+        "slot_model_bindings_selection_receipt_digest_not_null",
+        "n",
+        "NOT NULL selection_receipt_digest"
+      ],
+      [
+        "slot_model_bindings",
+        "slot_model_bindings_slot_id_not_null",
+        "n",
+        "NOT NULL slot_id"
+      ],
+      [
+        "slot_model_bindings",
+        "slot_model_bindings_slot_id_observation_id_scope_id_target__key",
+        "u",
+        "UNIQUE (slot_id, observation_id, scope_id, target_id, horizon, model_set_id)"
+      ],
+      [
+        "slot_model_bindings",
+        "slot_model_bindings_slot_id_observation_id_scope_id_target_fkey",
+        "f",
+        "FOREIGN KEY (slot_id, observation_id, scope_id, target_id, horizon) REFERENCES fep.prediction_slots(slot_id, observation_id, scope_id, target_id, horizon)"
+      ],
+      [
+        "slot_model_bindings",
+        "slot_model_bindings_target_id_not_null",
+        "n",
+        "NOT NULL target_id"
+      ],
+      [
+        "slot_receipts",
+        "slot_receipts_payload_not_null",
+        "n",
+        "NOT NULL payload"
+      ],
+      [
+        "slot_receipts",
+        "slot_receipts_pkey",
+        "p",
+        "PRIMARY KEY (receipt_id)"
+      ],
+      [
+        "slot_receipts",
+        "slot_receipts_receipt_digest_not_null",
+        "n",
+        "NOT NULL receipt_digest"
+      ],
+      [
+        "slot_receipts",
+        "slot_receipts_receipt_id_not_null",
+        "n",
+        "NOT NULL receipt_id"
+      ],
+      [
+        "slot_receipts",
+        "slot_receipts_recorded_at_not_null",
+        "n",
+        "NOT NULL recorded_at"
+      ],
+      [
+        "slot_receipts",
+        "slot_receipts_slot_id_fkey",
+        "f",
+        "FOREIGN KEY (slot_id) REFERENCES fep.prediction_slots(slot_id)"
+      ],
+      [
+        "slot_receipts",
+        "slot_receipts_slot_id_not_null",
+        "n",
+        "NOT NULL slot_id"
+      ],
+      [
+        "slot_receipts",
+        "slot_receipts_status_check",
+        "c",
+        "CHECK ((status = ANY (ARRAY['MISSED'::text, 'FAILED'::text, 'PARTIAL'::text, 'ACCEPTED'::text])))"
+      ],
+      [
+        "slot_receipts",
+        "slot_receipts_status_not_null",
+        "n",
+        "NOT NULL status"
+      ],
+      [
+        "snapshots",
+        "snapshots_created_at_not_null",
+        "n",
+        "NOT NULL created_at"
+      ],
+      [
+        "snapshots",
+        "snapshots_feature_contract_id_fkey",
+        "f",
+        "FOREIGN KEY (feature_contract_id) REFERENCES fep.contracts(contract_id)"
+      ],
+      [
+        "snapshots",
+        "snapshots_feature_contract_id_not_null",
+        "n",
+        "NOT NULL feature_contract_id"
+      ],
+      [
+        "snapshots",
+        "snapshots_feature_digest_not_null",
+        "n",
+        "NOT NULL feature_digest"
+      ],
+      [
+        "snapshots",
+        "snapshots_observation_id_not_null",
+        "n",
+        "NOT NULL observation_id"
+      ],
+      [
+        "snapshots",
+        "snapshots_observation_id_observation_revision_feature_contr_key",
+        "u",
+        "UNIQUE (observation_id, observation_revision, feature_contract_id)"
+      ],
+      [
+        "snapshots",
+        "snapshots_observation_id_observation_revision_fkey",
+        "f",
+        "FOREIGN KEY (observation_id, observation_revision) REFERENCES fep.observation_revisions(observation_id, revision)"
+      ],
+      [
+        "snapshots",
+        "snapshots_observation_revision_not_null",
+        "n",
+        "NOT NULL observation_revision"
+      ],
+      [
+        "snapshots",
+        "snapshots_pkey",
+        "p",
+        "PRIMARY KEY (snapshot_id)"
+      ],
+      [
+        "snapshots",
+        "snapshots_quality_digest_not_null",
+        "n",
+        "NOT NULL quality_digest"
+      ],
+      [
+        "snapshots",
+        "snapshots_snapshot_id_feature_contract_id_key",
+        "u",
+        "UNIQUE (snapshot_id, feature_contract_id)"
+      ],
+      [
+        "snapshots",
+        "snapshots_snapshot_id_not_null",
+        "n",
+        "NOT NULL snapshot_id"
+      ],
+      [
+        "snapshots",
+        "snapshots_snapshot_id_observation_id_key",
+        "u",
+        "UNIQUE (snapshot_id, observation_id)"
+      ],
+      [
+        "targets",
+        "targets_allowed_quality_not_null",
+        "n",
+        "NOT NULL allowed_quality"
+      ],
+      [
+        "targets",
+        "targets_contract_id_fkey",
+        "f",
+        "FOREIGN KEY (contract_id) REFERENCES fep.contracts(contract_id)"
+      ],
+      [
+        "targets",
+        "targets_contract_id_not_null",
+        "n",
+        "NOT NULL contract_id"
+      ],
+      [
+        "targets",
+        "targets_enabled_not_null",
+        "n",
+        "NOT NULL enabled"
+      ],
+      [
+        "targets",
+        "targets_formula_not_null",
+        "n",
+        "NOT NULL formula"
+      ],
+      [
+        "targets",
+        "targets_horizon_check",
+        "c",
+        "CHECK ((horizon = ANY (ARRAY[1, 3, 5, 10, 20])))"
+      ],
+      [
+        "targets",
+        "targets_horizon_not_null",
+        "n",
+        "NOT NULL horizon"
+      ],
+      [
+        "targets",
+        "targets_pkey",
+        "p",
+        "PRIMARY KEY (target_id)"
+      ],
+      [
+        "targets",
+        "targets_risk_set_not_null",
+        "n",
+        "NOT NULL risk_set"
+      ],
+      [
+        "targets",
+        "targets_scope_id_fkey",
+        "f",
+        "FOREIGN KEY (scope_id) REFERENCES fep.scopes(scope_id)"
+      ],
+      [
+        "targets",
+        "targets_scope_id_not_null",
+        "n",
+        "NOT NULL scope_id"
+      ],
+      [
+        "targets",
+        "targets_target_id_not_null",
+        "n",
+        "NOT NULL target_id"
+      ],
+      [
+        "targets",
+        "targets_target_id_scope_id_horizon_key",
+        "u",
+        "UNIQUE (target_id, scope_id, horizon)"
+      ],
+      [
+        "targets",
+        "targets_unit_not_null",
+        "n",
+        "NOT NULL unit"
+      ],
+      [
+        "targets",
+        "targets_value_kind_check",
+        "c",
+        "CHECK ((value_kind = ANY (ARRAY['NUMERIC'::text, 'BINARY'::text, 'CLASS'::text])))"
+      ],
+      [
+        "targets",
+        "targets_value_kind_not_null",
+        "n",
+        "NOT NULL value_kind"
+      ],
+      [
+        "training_runs",
+        "training_runs_artifact_digest_not_null",
+        "n",
+        "NOT NULL artifact_digest"
+      ],
+      [
+        "training_runs",
+        "training_runs_artifact_path_not_null",
+        "n",
+        "NOT NULL artifact_path"
+      ],
+      [
+        "training_runs",
+        "training_runs_calibration_finished_at_not_null",
+        "n",
+        "NOT NULL calibration_finished_at"
+      ],
+      [
+        "training_runs",
+        "training_runs_check",
+        "c",
+        "CHECK (((fit_started_at <= fit_finished_at) AND (fit_finished_at <= calibration_finished_at)))"
+      ],
+      [
+        "training_runs",
+        "training_runs_code_commit_not_null",
+        "n",
+        "NOT NULL code_commit"
+      ],
+      [
+        "training_runs",
+        "training_runs_dataset_id_fkey",
+        "f",
+        "FOREIGN KEY (dataset_id) REFERENCES fep.datasets(dataset_id)"
+      ],
+      [
+        "training_runs",
+        "training_runs_dataset_id_not_null",
+        "n",
+        "NOT NULL dataset_id"
+      ],
+      [
+        "training_runs",
+        "training_runs_experiment_lineage_not_null",
+        "n",
+        "NOT NULL experiment_lineage"
+      ],
+      [
+        "training_runs",
+        "training_runs_fit_finished_at_not_null",
+        "n",
+        "NOT NULL fit_finished_at"
+      ],
+      [
+        "training_runs",
+        "training_runs_fit_started_at_not_null",
+        "n",
+        "NOT NULL fit_started_at"
+      ],
+      [
+        "training_runs",
+        "training_runs_fold_id_not_null",
+        "n",
+        "NOT NULL fold_id"
+      ],
+      [
+        "training_runs",
+        "training_runs_parameter_contract_id_fkey",
+        "f",
+        "FOREIGN KEY (parameter_contract_id) REFERENCES fep.contracts(contract_id)"
+      ],
+      [
+        "training_runs",
+        "training_runs_parameter_contract_id_not_null",
+        "n",
+        "NOT NULL parameter_contract_id"
+      ],
+      [
+        "training_runs",
+        "training_runs_phase_manifest_check",
+        "c",
+        "CHECK ((jsonb_typeof(phase_manifest) = 'object'::text))"
+      ],
+      [
+        "training_runs",
+        "training_runs_phase_manifest_not_null",
+        "n",
+        "NOT NULL phase_manifest"
+      ],
+      [
+        "training_runs",
+        "training_runs_pkey",
+        "p",
+        "PRIMARY KEY (training_run_id)"
+      ],
+      [
+        "training_runs",
+        "training_runs_runtime_manifest_not_null",
+        "n",
+        "NOT NULL runtime_manifest"
+      ],
+      [
+        "training_runs",
+        "training_runs_split_manifest_not_null",
+        "n",
+        "NOT NULL split_manifest"
+      ],
+      [
+        "training_runs",
+        "training_runs_training_run_id_not_null",
+        "n",
+        "NOT NULL training_run_id"
+      ]
+    ]
+  },
+  "roles": {
+    "sql": "select rolname,rolsuper,rolinherit,rolcreaterole,rolcreatedb,rolcanlogin,rolbypassrls from pg_roles where rolname like 'fep_%' order by rolname",
+    "rows": [
+      [
+        "fep_adapter",
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        "fep_application",
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        "fep_auditor",
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        "fep_cas_owner",
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        "fep_deployer",
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        "fep_e1_admin",
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        "fep_schema_owner",
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    ]
+  },
+  "schema_inventory_binding": {
+    "path": "reports/fep_e1/SCHEMA_INVENTORY.json",
+    "bytes": 423908,
+    "sha256": "bb0777645edfa6c6523f70a76211a6f731713c0419ac94057a565cd2ea8d1466"
+  },
+  "targeted_tests_binding": {
+    "path": "reports/fep_e1/TARGETED_TEST_SUMMARY.json",
+    "bytes": 1028,
+    "sha256": "cd0b74423f4ed5d4f4c159ff372f78d367b35bfe316186a1f219030694058ba8"
+  }
+}

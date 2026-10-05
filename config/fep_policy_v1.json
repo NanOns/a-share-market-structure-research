@@ -1,0 +1,30 @@
+{
+  "contract_id": "FEP_POLICY_V1",
+  "version": "1.0.0",
+  "owner_stage": "V4-15E1",
+  "observation_scopes": [
+    "FEP_STOCK_ENTRY_CORE"
+  ],
+  "slot_deadline_semantics": "UNSET_PENDING_ACCEPTED_EVENT_SLOT_TIMING",
+  "model_selection_cutoff_semantics": "selection_cutoff<=deadline; actual deadline UNSET",
+  "sampling_weight": "1/(D*n_d), separate scope/fold/partition/target",
+  "cpu_thread_budget": 2,
+  "database_max_connections": 16,
+  "shared_buffers_mb": 128,
+  "batch_size": "UNSET",
+  "runtime_deadline": "UNSET",
+  "retention": "RETAIN_EVIDENCE_NO_AUTOMATIC_DELETE",
+  "rollback_budget": "UNSET",
+  "later_owner_parameters": {
+    "status": "OWNER_STAGE_NOT_REACHED",
+    "minimum_rows": "UNSET",
+    "training_window": "UNSET",
+    "calibration": "UNSET",
+    "priority_tuple": "UNSET"
+  },
+  "permissions": {
+    "model_display": false,
+    "priority_use": false,
+    "production": false
+  }
+}

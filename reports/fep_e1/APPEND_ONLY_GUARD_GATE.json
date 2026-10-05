@@ -1,0 +1,312 @@
+{
+  "status": "PASS_ISOLATED_POSTGRESQL_ENGINEERING",
+  "evidence_class": "ENGINEERING_FIXTURE",
+  "inventory": {
+    "sql": "select c.relname,t.tgname,pg_get_triggerdef(t.oid) from pg_trigger t join pg_class c on c.oid=t.tgrelid join pg_namespace n on n.oid=c.relnamespace where n.nspname='fep' and not t.tgisinternal order by c.relname,t.tgname",
+    "rows": [
+      [
+        "acceptance_receipts",
+        "acceptance_grant_guard",
+        "CREATE TRIGGER acceptance_grant_guard BEFORE INSERT ON fep.acceptance_receipts FOR EACH ROW EXECUTE FUNCTION fep.validate_acceptance_grant()"
+      ],
+      [
+        "acceptance_receipts",
+        "immutable",
+        "CREATE TRIGGER immutable BEFORE DELETE OR UPDATE ON fep.acceptance_receipts FOR EACH ROW EXECUTE FUNCTION fep.reject_mutation()"
+      ],
+      [
+        "activations",
+        "immutable",
+        "CREATE TRIGGER immutable BEFORE DELETE OR UPDATE ON fep.activations FOR EACH ROW EXECUTE FUNCTION fep.reject_mutation()"
+      ],
+      [
+        "contracts",
+        "immutable",
+        "CREATE TRIGGER immutable BEFORE DELETE OR UPDATE ON fep.contracts FOR EACH ROW EXECUTE FUNCTION fep.reject_mutation()"
+      ],
+      [
+        "dataset_eligibility_ledger",
+        "denominator_ledger_complete",
+        "CREATE CONSTRAINT TRIGGER denominator_ledger_complete AFTER INSERT ON fep.dataset_eligibility_ledger DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION fep.validate_denominator_complete()"
+      ],
+      [
+        "dataset_eligibility_ledger",
+        "immutable",
+        "CREATE TRIGGER immutable BEFORE DELETE OR UPDATE ON fep.dataset_eligibility_ledger FOR EACH ROW EXECUTE FUNCTION fep.reject_mutation()"
+      ],
+      [
+        "dataset_fold_cutoffs",
+        "fold_cutoff_guard",
+        "CREATE TRIGGER fold_cutoff_guard BEFORE INSERT ON fep.dataset_fold_cutoffs FOR EACH ROW EXECUTE FUNCTION fep.validate_fold_cutoff()"
+      ],
+      [
+        "dataset_fold_cutoffs",
+        "immutable",
+        "CREATE TRIGGER immutable BEFORE DELETE OR UPDATE ON fep.dataset_fold_cutoffs FOR EACH ROW EXECUTE FUNCTION fep.reject_mutation()"
+      ],
+      [
+        "dataset_fold_label_selection",
+        "fold_label_guard",
+        "CREATE TRIGGER fold_label_guard BEFORE INSERT ON fep.dataset_fold_label_selection FOR EACH ROW EXECUTE FUNCTION fep.validate_fold_label_selection()"
+      ],
+      [
+        "dataset_fold_label_selection",
+        "immutable",
+        "CREATE TRIGGER immutable BEFORE DELETE OR UPDATE ON fep.dataset_fold_label_selection FOR EACH ROW EXECUTE FUNCTION fep.reject_mutation()"
+      ],
+      [
+        "dataset_rows",
+        "dataset_row_guard",
+        "CREATE TRIGGER dataset_row_guard BEFORE INSERT ON fep.dataset_rows FOR EACH ROW EXECUTE FUNCTION fep.validate_dataset_row()"
+      ],
+      [
+        "dataset_rows",
+        "immutable",
+        "CREATE TRIGGER immutable BEFORE DELETE OR UPDATE ON fep.dataset_rows FOR EACH ROW EXECUTE FUNCTION fep.reject_mutation()"
+      ],
+      [
+        "datasets",
+        "denominator_complete",
+        "CREATE CONSTRAINT TRIGGER denominator_complete AFTER INSERT ON fep.datasets DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION fep.validate_denominator_complete()"
+      ],
+      [
+        "datasets",
+        "immutable",
+        "CREATE TRIGGER immutable BEFORE DELETE OR UPDATE ON fep.datasets FOR EACH ROW EXECUTE FUNCTION fep.reject_mutation()"
+      ],
+      [
+        "deployment_change_receipts",
+        "immutable",
+        "CREATE TRIGGER immutable BEFORE DELETE OR UPDATE ON fep.deployment_change_receipts FOR EACH ROW EXECUTE FUNCTION fep.reject_mutation()"
+      ],
+      [
+        "deployment_heads",
+        "controlled_head",
+        "CREATE TRIGGER controlled_head BEFORE INSERT OR DELETE OR UPDATE ON fep.deployment_heads FOR EACH ROW EXECUTE FUNCTION fep.validate_deployment_head()"
+      ],
+      [
+        "feature_values",
+        "feature_value_guard",
+        "CREATE TRIGGER feature_value_guard BEFORE INSERT ON fep.feature_values FOR EACH ROW EXECUTE FUNCTION fep.validate_feature_value()"
+      ],
+      [
+        "feature_values",
+        "immutable",
+        "CREATE TRIGGER immutable BEFORE DELETE OR UPDATE ON fep.feature_values FOR EACH ROW EXECUTE FUNCTION fep.reject_mutation()"
+      ],
+      [
+        "field_registry",
+        "immutable",
+        "CREATE TRIGGER immutable BEFORE DELETE OR UPDATE ON fep.field_registry FOR EACH ROW EXECUTE FUNCTION fep.reject_mutation()"
+      ],
+      [
+        "field_scope",
+        "immutable",
+        "CREATE TRIGGER immutable BEFORE DELETE OR UPDATE ON fep.field_scope FOR EACH ROW EXECUTE FUNCTION fep.reject_mutation()"
+      ],
+      [
+        "label_revisions",
+        "immutable",
+        "CREATE TRIGGER immutable BEFORE DELETE OR UPDATE ON fep.label_revisions FOR EACH ROW EXECUTE FUNCTION fep.reject_mutation()"
+      ],
+      [
+        "label_revisions",
+        "label_revision_guard",
+        "CREATE TRIGGER label_revision_guard BEFORE INSERT ON fep.label_revisions FOR EACH ROW EXECUTE FUNCTION fep.validate_label_revision()"
+      ],
+      [
+        "label_source_bindings",
+        "immutable",
+        "CREATE TRIGGER immutable BEFORE DELETE OR UPDATE ON fep.label_source_bindings FOR EACH ROW EXECUTE FUNCTION fep.reject_mutation()"
+      ],
+      [
+        "label_source_bindings",
+        "label_binding_guard",
+        "CREATE TRIGGER label_binding_guard BEFORE INSERT ON fep.label_source_bindings FOR EACH ROW EXECUTE FUNCTION fep.validate_label_binding()"
+      ],
+      [
+        "model_set_members",
+        "immutable",
+        "CREATE TRIGGER immutable BEFORE DELETE OR UPDATE ON fep.model_set_members FOR EACH ROW EXECUTE FUNCTION fep.reject_mutation()"
+      ],
+      [
+        "model_sets",
+        "immutable",
+        "CREATE TRIGGER immutable BEFORE DELETE OR UPDATE ON fep.model_sets FOR EACH ROW EXECUTE FUNCTION fep.reject_mutation()"
+      ],
+      [
+        "models",
+        "immutable",
+        "CREATE TRIGGER immutable BEFORE DELETE OR UPDATE ON fep.models FOR EACH ROW EXECUTE FUNCTION fep.reject_mutation()"
+      ],
+      [
+        "observation_revisions",
+        "immutable",
+        "CREATE TRIGGER immutable BEFORE DELETE OR UPDATE ON fep.observation_revisions FOR EACH ROW EXECUTE FUNCTION fep.reject_mutation()"
+      ],
+      [
+        "observation_revisions",
+        "observation_revision_guard",
+        "CREATE TRIGGER observation_revision_guard BEFORE INSERT ON fep.observation_revisions FOR EACH ROW EXECUTE FUNCTION fep.validate_observation_revision()"
+      ],
+      [
+        "observations",
+        "immutable",
+        "CREATE TRIGGER immutable BEFORE DELETE OR UPDATE ON fep.observations FOR EACH ROW EXECUTE FUNCTION fep.reject_mutation()"
+      ],
+      [
+        "observations",
+        "observation_identity",
+        "CREATE TRIGGER observation_identity BEFORE INSERT ON fep.observations FOR EACH ROW EXECUTE FUNCTION fep.validate_observation()"
+      ],
+      [
+        "permission_keys",
+        "immutable",
+        "CREATE TRIGGER immutable BEFORE DELETE OR UPDATE ON fep.permission_keys FOR EACH ROW EXECUTE FUNCTION fep.reject_mutation()"
+      ],
+      [
+        "prediction_runs",
+        "immutable",
+        "CREATE TRIGGER immutable BEFORE DELETE OR UPDATE ON fep.prediction_runs FOR EACH ROW EXECUTE FUNCTION fep.reject_mutation()"
+      ],
+      [
+        "prediction_slots",
+        "immutable",
+        "CREATE TRIGGER immutable BEFORE DELETE OR UPDATE ON fep.prediction_slots FOR EACH ROW EXECUTE FUNCTION fep.reject_mutation()"
+      ],
+      [
+        "predictions",
+        "immutable",
+        "CREATE TRIGGER immutable BEFORE DELETE OR UPDATE ON fep.predictions FOR EACH ROW EXECUTE FUNCTION fep.reject_mutation()"
+      ],
+      [
+        "priority_projection",
+        "immutable",
+        "CREATE TRIGGER immutable BEFORE DELETE OR UPDATE ON fep.priority_projection FOR EACH ROW EXECUTE FUNCTION fep.reject_mutation()"
+      ],
+      [
+        "priority_projection_grants",
+        "immutable",
+        "CREATE TRIGGER immutable BEFORE DELETE OR UPDATE ON fep.priority_projection_grants FOR EACH ROW EXECUTE FUNCTION fep.reject_mutation()"
+      ],
+      [
+        "reports",
+        "immutable",
+        "CREATE TRIGGER immutable BEFORE DELETE OR UPDATE ON fep.reports FOR EACH ROW EXECUTE FUNCTION fep.reject_mutation()"
+      ],
+      [
+        "scopes",
+        "immutable",
+        "CREATE TRIGGER immutable BEFORE DELETE OR UPDATE ON fep.scopes FOR EACH ROW EXECUTE FUNCTION fep.reject_mutation()"
+      ],
+      [
+        "slot_model_bindings",
+        "immutable",
+        "CREATE TRIGGER immutable BEFORE DELETE OR UPDATE ON fep.slot_model_bindings FOR EACH ROW EXECUTE FUNCTION fep.reject_mutation()"
+      ],
+      [
+        "slot_receipts",
+        "immutable",
+        "CREATE TRIGGER immutable BEFORE DELETE OR UPDATE ON fep.slot_receipts FOR EACH ROW EXECUTE FUNCTION fep.reject_mutation()"
+      ],
+      [
+        "snapshots",
+        "immutable",
+        "CREATE TRIGGER immutable BEFORE DELETE OR UPDATE ON fep.snapshots FOR EACH ROW EXECUTE FUNCTION fep.reject_mutation()"
+      ],
+      [
+        "snapshots",
+        "snapshot_guard",
+        "CREATE TRIGGER snapshot_guard BEFORE INSERT ON fep.snapshots FOR EACH ROW EXECUTE FUNCTION fep.validate_snapshot()"
+      ],
+      [
+        "targets",
+        "immutable",
+        "CREATE TRIGGER immutable BEFORE DELETE OR UPDATE ON fep.targets FOR EACH ROW EXECUTE FUNCTION fep.reject_mutation()"
+      ],
+      [
+        "training_runs",
+        "immutable",
+        "CREATE TRIGGER immutable BEFORE DELETE OR UPDATE ON fep.training_runs FOR EACH ROW EXECUTE FUNCTION fep.reject_mutation()"
+      ]
+    ]
+  },
+  "roles": {
+    "sql": "select rolname,rolsuper,rolinherit,rolcreaterole,rolcreatedb,rolcanlogin,rolbypassrls from pg_roles where rolname like 'fep_%' order by rolname",
+    "rows": [
+      [
+        "fep_adapter",
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        "fep_application",
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        "fep_auditor",
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        "fep_cas_owner",
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        "fep_deployer",
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        "fep_e1_admin",
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        "fep_schema_owner",
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    ]
+  },
+  "schema_inventory_binding": {
+    "path": "reports/fep_e1/SCHEMA_INVENTORY.json",
+    "bytes": 423908,
+    "sha256": "bb0777645edfa6c6523f70a76211a6f731713c0419ac94057a565cd2ea8d1466"
+  },
+  "targeted_tests_binding": {
+    "path": "reports/fep_e1/TARGETED_TEST_SUMMARY.json",
+    "bytes": 1028,
+    "sha256": "cd0b74423f4ed5d4f4c159ff372f78d367b35bfe316186a1f219030694058ba8"
+  }
+}

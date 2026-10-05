@@ -1,0 +1,47 @@
+{
+  "databases": {
+    "fep_e1_fresh": {
+      "command": [
+        "E:\\python\\python.exe",
+        "-B",
+        "-m",
+        "pytest",
+        "tests/fep",
+        "-q",
+        "--basetemp=E:/codex_tmp/test_temp/fep_e1_fresh",
+        "--junitxml=E:\\codex work\\大A交易\\reports\\fep_e1\\fep_e1_fresh.xml"
+      ],
+      "exit_code": 1,
+      "tests": 59,
+      "passed": 56,
+      "skipped": 0,
+      "failed_nodes": [
+        "tests.fep.test_cas_roles::test_E1_32_application_direct_dml",
+        "tests.fep.test_cas_roles::test_E1_33_search_path_hijack",
+        "tests.fep.test_cas_roles::test_read_only_no_role_escalation"
+      ]
+    },
+    "fep_e1_upgrade": {
+      "command": [
+        "E:\\python\\python.exe",
+        "-B",
+        "-m",
+        "pytest",
+        "tests/fep",
+        "-q",
+        "--basetemp=E:/codex_tmp/test_temp/fep_e1_upgrade",
+        "--junitxml=E:\\codex work\\大A交易\\reports\\fep_e1\\fep_e1_upgrade.xml"
+      ],
+      "exit_code": 1,
+      "tests": 59,
+      "passed": 56,
+      "skipped": 0,
+      "failed_nodes": [
+        "tests.fep.test_cas_roles::test_E1_32_application_direct_dml",
+        "tests.fep.test_cas_roles::test_E1_33_search_path_hijack",
+        "tests.fep.test_cas_roles::test_read_only_no_role_escalation"
+      ]
+    }
+  },
+  "same_fresh_upgrade_schema": true
+}

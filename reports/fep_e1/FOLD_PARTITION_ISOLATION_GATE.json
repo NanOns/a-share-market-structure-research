@@ -1,0 +1,51 @@
+{
+  "status": "PASS_ENGINEERING_FIXTURES_REAL_ADMISSION_BLOCKED",
+  "tests": [
+    {
+      "database": "fep_e1_fresh",
+      "node": "tests.fep.test_database::test_phase_overlap[E1_16-SEC-A-2026-09-01-local-1-o]",
+      "status": "PASS"
+    },
+    {
+      "database": "fep_e1_fresh",
+      "node": "tests.fep.test_database::test_phase_overlap[E1_17-SEC-B-2026-09-01-local-2-o2]",
+      "status": "PASS"
+    },
+    {
+      "database": "fep_e1_fresh",
+      "node": "tests.fep.test_database::test_phase_overlap[E1_18-SEC-A-2026-09-02-local-1-o2]",
+      "status": "PASS"
+    },
+    {
+      "database": "fep_e1_fresh",
+      "node": "tests.fep.test_database::test_E1_19_distinct_entity_local_episode",
+      "status": "PASS"
+    },
+    {
+      "database": "fep_e1_upgrade",
+      "node": "tests.fep.test_database::test_phase_overlap[E1_16-SEC-A-2026-09-01-local-1-o]",
+      "status": "PASS"
+    },
+    {
+      "database": "fep_e1_upgrade",
+      "node": "tests.fep.test_database::test_phase_overlap[E1_17-SEC-B-2026-09-01-local-2-o2]",
+      "status": "PASS"
+    },
+    {
+      "database": "fep_e1_upgrade",
+      "node": "tests.fep.test_database::test_phase_overlap[E1_18-SEC-A-2026-09-02-local-1-o2]",
+      "status": "PASS"
+    },
+    {
+      "database": "fep_e1_upgrade",
+      "node": "tests.fep.test_database::test_E1_19_distinct_entity_local_episode",
+      "status": "PASS"
+    }
+  ],
+  "real_admission": "BLOCKED_MISSING_EVENT_SLOT_FEATURE_LABEL_AUTHORITY",
+  "test_log_binding": {
+    "path": "reports/fep_e1/fep_e1_upgrade.log",
+    "bytes": 9853,
+    "sha256": "a9884b1a3f05297073ce3ea6d630f494eed0b38d74f88f62757ce5739eb2e1c2"
+  }
+}

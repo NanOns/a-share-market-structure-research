@@ -1,0 +1,819 @@
+{
+  "contract_id": "FEP_E1_TARGETS_V1",
+  "version": "1.0.0",
+  "design_module_binding": {
+    "path": "docs/evidence/fep_e1/FEP_R2_MODULE_DESIGN_20260930.md",
+    "bytes": 36627,
+    "sha256": "f01ac9c550a71b8edb73436969e39172f6809404df9e19ffbfff2306c9456014"
+  },
+  "targets": [
+    {
+      "target_id": "ABS_RETURN_N:T1",
+      "family": "ABS_RETURN_N",
+      "horizon": 1,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/ABS_RETURN_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": true
+    },
+    {
+      "target_id": "ABS_RETURN_N:T3",
+      "family": "ABS_RETURN_N",
+      "horizon": 3,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/ABS_RETURN_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": true
+    },
+    {
+      "target_id": "ABS_RETURN_N:T5",
+      "family": "ABS_RETURN_N",
+      "horizon": 5,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/ABS_RETURN_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": true
+    },
+    {
+      "target_id": "ABS_RETURN_N:T10",
+      "family": "ABS_RETURN_N",
+      "horizon": 10,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/ABS_RETURN_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": true
+    },
+    {
+      "target_id": "ABS_RETURN_N:T20",
+      "family": "ABS_RETURN_N",
+      "horizon": 20,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/ABS_RETURN_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": true
+    },
+    {
+      "target_id": "POSITIVE_ABS_N:T1",
+      "family": "POSITIVE_ABS_N",
+      "horizon": 1,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/POSITIVE_ABS_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "POSITIVE_ABS_N:T3",
+      "family": "POSITIVE_ABS_N",
+      "horizon": 3,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/POSITIVE_ABS_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "POSITIVE_ABS_N:T5",
+      "family": "POSITIVE_ABS_N",
+      "horizon": 5,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/POSITIVE_ABS_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "POSITIVE_ABS_N:T10",
+      "family": "POSITIVE_ABS_N",
+      "horizon": 10,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/POSITIVE_ABS_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "POSITIVE_ABS_N:T20",
+      "family": "POSITIVE_ABS_N",
+      "horizon": 20,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/POSITIVE_ABS_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "MARKET_EXCESS_N:T1",
+      "family": "MARKET_EXCESS_N",
+      "horizon": 1,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/MARKET_EXCESS_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "MARKET_EXCESS_N:T3",
+      "family": "MARKET_EXCESS_N",
+      "horizon": 3,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/MARKET_EXCESS_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "MARKET_EXCESS_N:T5",
+      "family": "MARKET_EXCESS_N",
+      "horizon": 5,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/MARKET_EXCESS_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "MARKET_EXCESS_N:T10",
+      "family": "MARKET_EXCESS_N",
+      "horizon": 10,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/MARKET_EXCESS_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "MARKET_EXCESS_N:T20",
+      "family": "MARKET_EXCESS_N",
+      "horizon": 20,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/MARKET_EXCESS_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "POSITIVE_MARKET_EXCESS_N:T1",
+      "family": "POSITIVE_MARKET_EXCESS_N",
+      "horizon": 1,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/POSITIVE_MARKET_EXCESS_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "POSITIVE_MARKET_EXCESS_N:T3",
+      "family": "POSITIVE_MARKET_EXCESS_N",
+      "horizon": 3,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/POSITIVE_MARKET_EXCESS_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "POSITIVE_MARKET_EXCESS_N:T5",
+      "family": "POSITIVE_MARKET_EXCESS_N",
+      "horizon": 5,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/POSITIVE_MARKET_EXCESS_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "POSITIVE_MARKET_EXCESS_N:T10",
+      "family": "POSITIVE_MARKET_EXCESS_N",
+      "horizon": 10,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/POSITIVE_MARKET_EXCESS_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "POSITIVE_MARKET_EXCESS_N:T20",
+      "family": "POSITIVE_MARKET_EXCESS_N",
+      "horizon": 20,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/POSITIVE_MARKET_EXCESS_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "SECTOR_EXCESS_N:T1",
+      "family": "SECTOR_EXCESS_N",
+      "horizon": 1,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/SECTOR_EXCESS_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "SECTOR_EXCESS_N:T3",
+      "family": "SECTOR_EXCESS_N",
+      "horizon": 3,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/SECTOR_EXCESS_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "SECTOR_EXCESS_N:T5",
+      "family": "SECTOR_EXCESS_N",
+      "horizon": 5,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/SECTOR_EXCESS_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "SECTOR_EXCESS_N:T10",
+      "family": "SECTOR_EXCESS_N",
+      "horizon": 10,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/SECTOR_EXCESS_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "SECTOR_EXCESS_N:T20",
+      "family": "SECTOR_EXCESS_N",
+      "horizon": 20,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/SECTOR_EXCESS_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "MFE_N:T1",
+      "family": "MFE_N",
+      "horizon": 1,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/MFE_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": true
+    },
+    {
+      "target_id": "MFE_N:T3",
+      "family": "MFE_N",
+      "horizon": 3,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/MFE_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": true
+    },
+    {
+      "target_id": "MFE_N:T5",
+      "family": "MFE_N",
+      "horizon": 5,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/MFE_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": true
+    },
+    {
+      "target_id": "MFE_N:T10",
+      "family": "MFE_N",
+      "horizon": 10,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/MFE_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": true
+    },
+    {
+      "target_id": "MFE_N:T20",
+      "family": "MFE_N",
+      "horizon": 20,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/MFE_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": true
+    },
+    {
+      "target_id": "MAE_N:T1",
+      "family": "MAE_N",
+      "horizon": 1,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/MAE_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": true
+    },
+    {
+      "target_id": "MAE_N:T3",
+      "family": "MAE_N",
+      "horizon": 3,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/MAE_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": true
+    },
+    {
+      "target_id": "MAE_N:T5",
+      "family": "MAE_N",
+      "horizon": 5,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/MAE_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": true
+    },
+    {
+      "target_id": "MAE_N:T10",
+      "family": "MAE_N",
+      "horizon": 10,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/MAE_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": true
+    },
+    {
+      "target_id": "MAE_N:T20",
+      "family": "MAE_N",
+      "horizon": 20,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/MAE_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": true
+    },
+    {
+      "target_id": "PATH_MDD_CLOSE_N:T1",
+      "family": "PATH_MDD_CLOSE_N",
+      "horizon": 1,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/PATH_MDD_CLOSE_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": true
+    },
+    {
+      "target_id": "PATH_MDD_CLOSE_N:T3",
+      "family": "PATH_MDD_CLOSE_N",
+      "horizon": 3,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/PATH_MDD_CLOSE_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": true
+    },
+    {
+      "target_id": "PATH_MDD_CLOSE_N:T5",
+      "family": "PATH_MDD_CLOSE_N",
+      "horizon": 5,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/PATH_MDD_CLOSE_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": true
+    },
+    {
+      "target_id": "PATH_MDD_CLOSE_N:T10",
+      "family": "PATH_MDD_CLOSE_N",
+      "horizon": 10,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/PATH_MDD_CLOSE_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": true
+    },
+    {
+      "target_id": "PATH_MDD_CLOSE_N:T20",
+      "family": "PATH_MDD_CLOSE_N",
+      "horizon": 20,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/PATH_MDD_CLOSE_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": true
+    },
+    {
+      "target_id": "MFE_ATR_N:T1",
+      "family": "MFE_ATR_N",
+      "horizon": 1,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/MFE_ATR_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "MFE_ATR_N:T3",
+      "family": "MFE_ATR_N",
+      "horizon": 3,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/MFE_ATR_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "MFE_ATR_N:T5",
+      "family": "MFE_ATR_N",
+      "horizon": 5,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/MFE_ATR_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "MFE_ATR_N:T10",
+      "family": "MFE_ATR_N",
+      "horizon": 10,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/MFE_ATR_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "MFE_ATR_N:T20",
+      "family": "MFE_ATR_N",
+      "horizon": 20,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/MFE_ATR_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "MAE_ATR_N:T1",
+      "family": "MAE_ATR_N",
+      "horizon": 1,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/MAE_ATR_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "MAE_ATR_N:T3",
+      "family": "MAE_ATR_N",
+      "horizon": 3,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/MAE_ATR_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "MAE_ATR_N:T5",
+      "family": "MAE_ATR_N",
+      "horizon": 5,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/MAE_ATR_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "MAE_ATR_N:T10",
+      "family": "MAE_ATR_N",
+      "horizon": 10,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/MAE_ATR_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "MAE_ATR_N:T20",
+      "family": "MAE_ATR_N",
+      "horizon": 20,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/MAE_ATR_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "PATH_MDD_ATR_N:T1",
+      "family": "PATH_MDD_ATR_N",
+      "horizon": 1,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/PATH_MDD_ATR_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "PATH_MDD_ATR_N:T3",
+      "family": "PATH_MDD_ATR_N",
+      "horizon": 3,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/PATH_MDD_ATR_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "PATH_MDD_ATR_N:T5",
+      "family": "PATH_MDD_ATR_N",
+      "horizon": 5,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/PATH_MDD_ATR_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "PATH_MDD_ATR_N:T10",
+      "family": "PATH_MDD_ATR_N",
+      "horizon": 10,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/PATH_MDD_ATR_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "PATH_MDD_ATR_N:T20",
+      "family": "PATH_MDD_ATR_N",
+      "horizon": 20,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/PATH_MDD_ATR_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "FIRST_EXIT_PREWATCH_N:T1",
+      "family": "FIRST_EXIT_PREWATCH_N",
+      "horizon": 1,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/FIRST_EXIT_PREWATCH_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "FIRST_EXIT_PREWATCH_N:T3",
+      "family": "FIRST_EXIT_PREWATCH_N",
+      "horizon": 3,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/FIRST_EXIT_PREWATCH_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "FIRST_EXIT_PREWATCH_N:T5",
+      "family": "FIRST_EXIT_PREWATCH_N",
+      "horizon": 5,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/FIRST_EXIT_PREWATCH_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "FIRST_EXIT_PREWATCH_N:T10",
+      "family": "FIRST_EXIT_PREWATCH_N",
+      "horizon": 10,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/FIRST_EXIT_PREWATCH_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "FIRST_EXIT_PREWATCH_N:T20",
+      "family": "FIRST_EXIT_PREWATCH_N",
+      "horizon": 20,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/FIRST_EXIT_PREWATCH_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "ANY_CONFIRM_N:T1",
+      "family": "ANY_CONFIRM_N",
+      "horizon": 1,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/ANY_CONFIRM_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "ANY_CONFIRM_N:T3",
+      "family": "ANY_CONFIRM_N",
+      "horizon": 3,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/ANY_CONFIRM_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "ANY_CONFIRM_N:T5",
+      "family": "ANY_CONFIRM_N",
+      "horizon": 5,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/ANY_CONFIRM_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "ANY_CONFIRM_N:T10",
+      "family": "ANY_CONFIRM_N",
+      "horizon": 10,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/ANY_CONFIRM_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "ANY_CONFIRM_N:T20",
+      "family": "ANY_CONFIRM_N",
+      "horizon": 20,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/ANY_CONFIRM_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "ANY_INVALIDATE_N:T1",
+      "family": "ANY_INVALIDATE_N",
+      "horizon": 1,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/ANY_INVALIDATE_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "ANY_INVALIDATE_N:T3",
+      "family": "ANY_INVALIDATE_N",
+      "horizon": 3,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/ANY_INVALIDATE_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "ANY_INVALIDATE_N:T5",
+      "family": "ANY_INVALIDATE_N",
+      "horizon": 5,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/ANY_INVALIDATE_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "ANY_INVALIDATE_N:T10",
+      "family": "ANY_INVALIDATE_N",
+      "horizon": 10,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/ANY_INVALIDATE_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "ANY_INVALIDATE_N:T20",
+      "family": "ANY_INVALIDATE_N",
+      "horizon": 20,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/ANY_INVALIDATE_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "ANY_EXPIRE_N:T1",
+      "family": "ANY_EXPIRE_N",
+      "horizon": 1,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/ANY_EXPIRE_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "ANY_EXPIRE_N:T3",
+      "family": "ANY_EXPIRE_N",
+      "horizon": 3,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/ANY_EXPIRE_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "ANY_EXPIRE_N:T5",
+      "family": "ANY_EXPIRE_N",
+      "horizon": 5,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/ANY_EXPIRE_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "ANY_EXPIRE_N:T10",
+      "family": "ANY_EXPIRE_N",
+      "horizon": 10,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/ANY_EXPIRE_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "ANY_EXPIRE_N:T20",
+      "family": "ANY_EXPIRE_N",
+      "horizon": 20,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/ANY_EXPIRE_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "TREND_TRANSITION_N:T1",
+      "family": "TREND_TRANSITION_N",
+      "horizon": 1,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/TREND_TRANSITION_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "TREND_TRANSITION_N:T3",
+      "family": "TREND_TRANSITION_N",
+      "horizon": 3,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/TREND_TRANSITION_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "TREND_TRANSITION_N:T5",
+      "family": "TREND_TRANSITION_N",
+      "horizon": 5,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/TREND_TRANSITION_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "TREND_TRANSITION_N:T10",
+      "family": "TREND_TRANSITION_N",
+      "horizon": 10,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/TREND_TRANSITION_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    },
+    {
+      "target_id": "TREND_TRANSITION_N:T20",
+      "family": "TREND_TRANSITION_N",
+      "horizon": 20,
+      "scope_id": "FEP_STOCK_ENTRY_CORE",
+      "definition_reference": "FEP.5/TREND_TRANSITION_N",
+      "status": "REGISTERED_NOT_ENABLED",
+      "training_allowed": false,
+      "engineering_adapter": false
+    }
+  ],
+  "deferred": [
+    "BREAKOUT_SUCCESS/FAILED",
+    "TREND_ACCELERATE/FLATTEN/BREAK",
+    "RPS_CONTINUE/DECAY",
+    "breadth continuation",
+    "regime continuation",
+    "rotation continuation"
+  ]
+}

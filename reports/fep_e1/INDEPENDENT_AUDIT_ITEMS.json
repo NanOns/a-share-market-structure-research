@@ -1,0 +1,129 @@
+{
+  "contract_id": "FEP_E1_INDEPENDENT_AUDIT_REGISTRY_V1",
+  "items": [
+    {
+      "id": "FEP_E1_CONTRACT_CONFLICT_THREE_TIME_SOURCE",
+      "scope": "V4-15 exact outcome adapter authority; no recomputation",
+      "evidence": {
+        "path": "src/workbench_analysis/v4_15_settlement.py",
+        "bytes": 23641,
+        "sha256": "b24b31d4670160ca41e620e86ca9b6fa4d393a0112ea4251eda02edb38457697"
+      },
+      "difference": {
+        "required": [
+          "source_fact_available_at",
+          "label_training_mature_at",
+          "label_revision_available_at"
+        ],
+        "current": [
+          "report_cutoff",
+          "evaluation_revision",
+          "evaluation_source_digest",
+          "evidence_class"
+        ],
+        "prohibited_inference": "report_cutoff must not substitute three independent timestamps"
+      },
+      "affected_capability": "REAL_TRAINING_LABEL_ADAPTER",
+      "acceptance": "Versioned owner authority must provide exact row/revision/digest and all three independently audited timestamps",
+      "status": "OPEN"
+    },
+    {
+      "id": "FEP_E1_FEATURE_MAPPING_INCOMPLETE",
+      "scope": "Every feature family exact producer row/path/type/units/quality/availability",
+      "evidence": {
+        "path": "config/fep_feature_registry_v1.json",
+        "bytes": 58786,
+        "sha256": "1bd374fbb7322ce8a27b31b7f098eb357046a097b2235beb44470360196ab092"
+      },
+      "acceptance": "All required field paths and quality/availability mappings independently verified against accepted publications; missing features remain NOT_IMPLEMENTED",
+      "status": "OPEN"
+    },
+    {
+      "id": "FEP_E1_EXTERNAL_DESIGN_RAW_RECEIPT_MISSING",
+      "scope": "External design evidence availability independent of implementation task authorization",
+      "evidence": {
+        "path": "reports/fep_e1/DESIGN_AUTHORITY_READBACK.json",
+        "bytes": 1427,
+        "sha256": "14618b7e80ec2197579e39de933d5db48d13bececf8cdb2ba8915de509b02e77"
+      },
+      "acceptance": "Provide original V4_2_2_FEP_R2_EXTERNAL_DESIGN_ACCEPTANCE_20260930.md and bind its exact bytes",
+      "status": "OPEN"
+    },
+    {
+      "id": "FEP_E1_LEGACY_MIGRATION_REGISTRATION_GAP",
+      "scope": "Historical apply_v4_phase0_schema.py has no registration for 014..027; not modified by E1",
+      "evidence": {
+        "path": "scripts/apply_v4_phase0_schema.py",
+        "bytes": 4345,
+        "sha256": "9298d935405f083472dd41bf77a9f6bdeb16848a3fc17e1ffeb5fbd4af20f638"
+      },
+      "acceptance": "Separate owner repair of legacy migration service; FEP successor uses explicit ledger on isolated fixture bootstrap only",
+      "status": "OPEN"
+    },
+    {
+      "id": "FEP_E1_CONTRACT_CONFLICT_V4_18_NAMESPACE_INVENTORY",
+      "scope": "Cross-cutting schema discovery versus frozen V4-18 namespace matrix; independent of E1 DB structural gates",
+      "evidence": {
+        "test_node": "tests.test_v4_18_migration_contract::test_all_declared_tables_have_explicit_namespace_rules",
+        "matrix_path": "config/v4_18_migration_replay_contract_v1.json",
+        "matrix_sha256": "186d53ae5e4281ce1ff83609326673610f390ebc03061a947b5ae83dda996a02",
+        "new_declarations": [
+          "fep.contracts",
+          "fep.scopes",
+          "fep.field_registry",
+          "fep.field_scope",
+          "fep.targets",
+          "fep.observations",
+          "fep.observation_revisions",
+          "fep.snapshots",
+          "fep.feature_values",
+          "fep.label_source_bindings",
+          "fep.label_revisions",
+          "fep.datasets",
+          "fep.dataset_eligibility_ledger",
+          "fep.dataset_fold_cutoffs",
+          "fep.dataset_fold_label_selection",
+          "fep.dataset_rows",
+          "fep.training_runs",
+          "fep.models",
+          "fep.model_sets",
+          "fep.model_set_members",
+          "fep.permission_keys",
+          "fep.activations",
+          "fep.deployment_heads",
+          "fep.deployment_change_receipts",
+          "fep.prediction_slots",
+          "fep.slot_model_bindings",
+          "fep.prediction_runs",
+          "fep.predictions",
+          "fep.slot_receipts",
+          "fep.acceptance_receipts",
+          "fep.reports",
+          "fep.priority_projection",
+          "fep.priority_projection_grants"
+        ],
+        "fep_namespace_contract": "config/fep_namespace_contract_v1.json"
+      },
+      "acceptance": "Owner-authorized versioned V4-18 namespace reconciliation and exact regression readback; do not waive/delete/deselect the new failure or modify frozen matrix in this stage",
+      "status": "OPEN_NEW_ACTIVE_FAILURE"
+    },
+    {
+      "id": "FEP_E1_ADDED_SCOPE_BASELINE_DEBT",
+      "scope": "Nine pre-existing failures newly measured in V4-15/publication regression scopes",
+      "evidence": "reports/fep_e1/ADDED_SCOPE_BASELINE_SUMMARY.json",
+      "failure_nodes": [
+        "tests.test_r20a_current::test_independent_gate",
+        "tests.test_r20e_persisted::test_full_independent_disk_oracle",
+        "tests.test_r20r1_scope::test_current_real_outcomes_are_pending",
+        "tests.test_r20r1_scope::test_independent_exact_feasibility",
+        "tests.test_r20r1_scope::test_independent_oracle",
+        "tests.test_r20r1r1_maturity::test_current_exact_authority_no_real_maturity",
+        "tests.test_r21_promotion::test_independent_promotion",
+        "tests.v4_publication_reader_di_r1.test_explicit_views::test_exact_outputs_and_two_history_plus_current_concurrency",
+        "tests.v4_publication_reader_di_r1.test_explicit_views::test_wrong_candidate_hash_behavior_exact"
+      ],
+      "acceptance": "Separate owner-stage debt repair and baseline comparison; not counted as FEP-introduced failures",
+      "status": "OPEN_EXISTING_DEBT"
+    }
+  ]
+}

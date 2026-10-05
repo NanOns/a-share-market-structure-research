@@ -1,0 +1,30 @@
+{
+  "contract_id": "FEP_E2_ENTRY_EVENT_STRATA_V1_1",
+  "observation_scope": "FEP_STOCK_ENTRY_CORE",
+  "formal_signals": [
+    "FIRST_PREWATCH",
+    "NEW_CONFIRMED",
+    "REENTRY"
+  ],
+  "umbrella_only": "ENTRY",
+  "observation_identity": "Exact V4-15 enrollment identity: logical event + reconstructed cohort namespace",
+  "first_prewatch": "Accepted Radar ENROLLED + maturity PREWATCH + no parent episode; initial SEED upgrade is not an ENROLLED event",
+  "completeness": "Every entity/date from frozen R1R1 scan; FULL_OWNER_EVALUATION required before any first episode",
+  "no_prior_owner_fabrication": true,
+  "heuristic": "ENGINEERING_SUPPORT_HEURISTIC",
+  "lineage": {
+    "evidence_origin": "RECONSTRUCTED_CORRECTED",
+    "execution_mode": "HISTORICAL_SIMULATION",
+    "AS_RECORDED": false,
+    "FIRST_OBSERVED": false,
+    "REAL_OOS": false,
+    "production": false,
+    "shadow": false
+  },
+  "window": {
+    "path": "reports/fep_e2_r1r1/HISTORICAL_WINDOW_FREEZE.json",
+    "bytes": 598,
+    "sha256": "d9bfb329ddbd038810b47e0c8d08c5ed77cce50d0396308805ed2302908ae94c"
+  },
+  "frozen_at": "2026-10-05T13:03:51.040921+00:00"
+}

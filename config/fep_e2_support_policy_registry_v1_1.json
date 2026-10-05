@@ -1,0 +1,135 @@
+{
+  "contract_id": "FEP_E2_SUPPORT_POLICY_REGISTRY_V1_1",
+  "version": "1.1.0",
+  "policies": [
+    {
+      "policy_id": "FEP_E2_FIRST_PREWATCH_CORE_ABS_RETURN_T1_RECONSTRUCTED_V1_1",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "FIRST_PREWATCH",
+        "target": "ABS_RETURN_N:T1",
+        "horizon": 1,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "CONTINUOUS"
+      },
+      "freeze_before_statistics_at": "2026-10-05T13:06:14.641919+00:00",
+      "values": {
+        "rows": 68,
+        "dates": 15,
+        "blocks": 12,
+        "entities": 68,
+        "episodes": 68,
+        "class_min": 12,
+        "max_missing_fraction": 0.08333333333333333,
+        "max_total_variation": 0.08333333333333333
+      },
+      "required_classes": [
+        "POS",
+        "NEG"
+      ],
+      "representation_dimensions": {
+        "trade_date": "ASSESSED",
+        "sector": "UNAVAILABLE_NOT_GATED",
+        "regime": "UNAVAILABLE_NOT_GATED",
+        "risk": "ASSESSED",
+        "feature_support": "ASSESSED"
+      },
+      "derivation": {
+        "contract": "INDEPENDENT_REPETITION_SQRT_BUDGET_V1",
+        "support_discovery_digest": "0e66e7d401763508d23028e2f3c4f6098b78acd0f901ca9e81065c52e9757625",
+        "count_rule": "ceil(sqrt(available independent inventory)), lower bound 2; class budget from nonoverlap blocks",
+        "completeness_budget": "Missingness and total variation each <=1/ceil(sqrt(independent blocks)); at most one repetition-budget unit can be unrepresented. Engineering quality budget, not predictive power",
+        "performance_inputs_used": false,
+        "limitations": "Engineering descriptive capability only; no confidence or effectiveness claim",
+        "classification": "ENGINEERING_SUPPORT_HEURISTIC"
+      }
+    },
+    {
+      "policy_id": "UNSET:NEW_CONFIRMED",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "NEW_CONFIRMED",
+        "target": "ABS_RETURN_N:T1",
+        "horizon": 1,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "CONTINUOUS"
+      },
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T13:06:14.641919+00:00",
+      "reason": "OWNER_REQUIRED_INPUT_UNAVAILABLE_OR_STRATUM_NOT_ADMITTED"
+    },
+    {
+      "policy_id": "UNSET:REENTRY",
+      "applicability": {
+        "entity_type": "STOCK",
+        "observation_scope": "FEP_STOCK_ENTRY_CORE",
+        "signal_type": "REENTRY",
+        "target": "ABS_RETURN_N:T1",
+        "horizon": 1,
+        "feature_variant": "CORE",
+        "evidence_origin": "RECONSTRUCTED_CORRECTED",
+        "label_quality_policy": "ENGINEERING_HISTORICAL_REPLAY",
+        "contract_versions": {
+          "feature": "FEP_E2_HISTORICAL_CORE_FEATURE_V1",
+          "target": "FORWARD_PRICE_PATH_V1"
+        },
+        "target_kind": "CONTINUOUS"
+      },
+      "status": "UNSET_DIAGNOSTIC_ONLY",
+      "values": {
+        "rows": "UNSET",
+        "dates": "UNSET",
+        "blocks": "UNSET",
+        "entities": "UNSET",
+        "episodes": "UNSET",
+        "class_min": "UNSET",
+        "max_missing_fraction": "UNSET",
+        "max_total_variation": "UNSET"
+      },
+      "required_classes": [],
+      "freeze_before_statistics_at": "2026-10-05T13:06:14.641919+00:00",
+      "reason": "OWNER_REQUIRED_INPUT_UNAVAILABLE_OR_STRATUM_NOT_ADMITTED"
+    }
+  ],
+  "predecessor": {
+    "path": "config/fep_e2_support_policy_registry_v1.json",
+    "bytes": 90532,
+    "sha256": "2dbc502893c04f2bab4134dc4ba3a639a41dfa618906f592fd637ac196d5e2b6"
+  },
+  "pooled_disposition": {
+    "path": "reports/fep_e2_r1r2/POOLED_BASELINE_SUPERSESSION.json",
+    "bytes": 608,
+    "sha256": "e5a9a1350e260af9799de1cd9476f925616b750164fcb61d11a5b3522f72a0b2"
+  },
+  "default": "UNSET_NOT_EVALUABLE",
+  "disabled_signals": [
+    "ENTRY"
+  ],
+  "disabled_targets": "All except FIRST_PREWATCH ABS_RETURN_N:T1",
+  "frozen_at": "2026-10-05T13:06:14.641919+00:00"
+}

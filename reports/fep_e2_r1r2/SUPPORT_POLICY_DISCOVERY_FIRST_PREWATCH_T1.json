@@ -1,0 +1,53 @@
+{
+  "discovery": {
+    "dependence": {
+      "rows": 4552,
+      "dates": 220,
+      "blocks": 142,
+      "entities": 4552,
+      "episodes": 4552
+    },
+    "coverage": {
+      "expected": 4553,
+      "eligible": 4552,
+      "statuses": {
+        "ELIGIBLE": 4552,
+        "PENDING": 1
+      },
+      "missing_fraction": 0.00021963540522729197,
+      "representativeness_total_variation": {
+        "trade_date": 0.00021963540522732056,
+        "sector": null,
+        "regime": null,
+        "risk": 2.8467682136131987e-06,
+        "feature_support": 0.00020453305860253929
+      },
+      "dimension_status": {
+        "trade_date": "ASSESSED",
+        "sector": "UNAVAILABLE_NOT_GATED",
+        "regime": "UNAVAILABLE_NOT_GATED",
+        "risk": "ASSESSED",
+        "feature_support": "ASSESSED"
+      },
+      "estimand": "COMPLETE_CASE_DESCRIPTIVE"
+    },
+    "class_counts": {
+      "NEG": 2118,
+      "POS": 2271,
+      "ZERO": 163
+    },
+    "input_digest": "52aff87a1bdb8a6bd1516e928347628d42cc543cada4989d868fc09984c9ce89",
+    "excluded": [
+      "outcome",
+      "mean",
+      "positive_rate",
+      "quantile",
+      "best_backoff",
+      "Priority"
+    ]
+  },
+  "sealed_at": "2026-10-05T13:06:14.640891+00:00",
+  "dataset_digest": "785cdee6efb53e4c636427d97bcbf9c17da5f9c7526f3e63bc8c3fc3140575be",
+  "numeric_outcomes_consumed": false,
+  "pooled_thresholds_reused": false
+}

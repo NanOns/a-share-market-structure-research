@@ -1,0 +1,190 @@
+{
+  "status": "PASS_ENGINEERING_CAPABILITY_SCOPED",
+  "artifact": {
+    "path": "reports/fep_e2_r1r2/registry/f790f96b8bd29772cff55c0bec2296214c86409cb00dd12762804e268a11113f.json",
+    "bytes": 1694279,
+    "sha256": "604a31b32a3947ccf1c2423df672b76487c50df219dd57d7a22631b6343b565e"
+  },
+  "logical_digest": "f790f96b8bd29772cff55c0bec2296214c86409cb00dd12762804e268a11113f",
+  "rebuilt_logical_digest": "f790f96b8bd29772cff55c0bec2296214c86409cb00dd12762804e268a11113f",
+  "signal_type": "FIRST_PREWATCH",
+  "selected_level": "L1",
+  "support_state": "SUPPORTED",
+  "counts": {
+    "rows": 4552,
+    "dates": 220,
+    "blocks": 142,
+    "entities": 4552,
+    "episodes": 4552
+  },
+  "denominator": {
+    "expected": 4553,
+    "eligible": 4552,
+    "statuses": {
+      "ELIGIBLE": 4552,
+      "PENDING": 1
+    },
+    "missing_fraction": 0.00021963540522729197,
+    "representativeness_total_variation": {
+      "trade_date": 0.00021963540522732056,
+      "sector": null,
+      "regime": null,
+      "risk": 2.8467682136131987e-06,
+      "feature_support": 0.00020453305860253929
+    },
+    "dimension_status": {
+      "trade_date": "ASSESSED",
+      "sector": "UNAVAILABLE_NOT_GATED",
+      "regime": "UNAVAILABLE_NOT_GATED",
+      "risk": "ASSESSED",
+      "feature_support": "ASSESSED"
+    },
+    "estimand": "COMPLETE_CASE_DESCRIPTIVE"
+  },
+  "statistics": {
+    "weighted_mean": 0.003404863698480643,
+    "positive_empirical_frequency": 0.48309390972349975,
+    "p25": -0.01634062140391257,
+    "p50": -0.0007220216606498298,
+    "p75": 0.020247173284249076,
+    "minimum": -0.1119567055640116,
+    "maximum": 0.20849724626278499,
+    "dispersion_is_confidence_interval": false
+  },
+  "backoff_trace": [
+    {
+      "level": "L4",
+      "state": "NOT_EVALUABLE_CONDITION_UNAVAILABLE",
+      "counts": {
+        "rows": 0,
+        "dates": 0,
+        "blocks": 0,
+        "entities": 0,
+        "episodes": 0
+      },
+      "diagnostic": {
+        "expected": 0,
+        "eligible": 0,
+        "statuses": {},
+        "missing_fraction": null,
+        "representativeness_total_variation": {
+          "trade_date": null,
+          "sector": null,
+          "regime": null,
+          "risk": null,
+          "feature_support": null
+        },
+        "dimension_status": {
+          "trade_date": "INSUFFICIENT_SUPPORT",
+          "sector": "UNAVAILABLE_NOT_GATED",
+          "regime": "UNAVAILABLE_NOT_GATED",
+          "risk": "INSUFFICIENT_SUPPORT",
+          "feature_support": "INSUFFICIENT_SUPPORT"
+        },
+        "estimand": "COMPLETE_CASE_DESCRIPTIVE"
+      }
+    },
+    {
+      "level": "L3",
+      "state": "NOT_EVALUABLE_CONDITION_UNAVAILABLE",
+      "counts": {
+        "rows": 0,
+        "dates": 0,
+        "blocks": 0,
+        "entities": 0,
+        "episodes": 0
+      },
+      "diagnostic": {
+        "expected": 0,
+        "eligible": 0,
+        "statuses": {},
+        "missing_fraction": null,
+        "representativeness_total_variation": {
+          "trade_date": null,
+          "sector": null,
+          "regime": null,
+          "risk": null,
+          "feature_support": null
+        },
+        "dimension_status": {
+          "trade_date": "INSUFFICIENT_SUPPORT",
+          "sector": "UNAVAILABLE_NOT_GATED",
+          "regime": "UNAVAILABLE_NOT_GATED",
+          "risk": "INSUFFICIENT_SUPPORT",
+          "feature_support": "INSUFFICIENT_SUPPORT"
+        },
+        "estimand": "COMPLETE_CASE_DESCRIPTIVE"
+      }
+    },
+    {
+      "level": "L2",
+      "state": "NOT_EVALUABLE_CONDITION_UNAVAILABLE",
+      "counts": {
+        "rows": 4552,
+        "dates": 220,
+        "blocks": 142,
+        "entities": 4552,
+        "episodes": 4552
+      },
+      "diagnostic": {
+        "expected": 4553,
+        "eligible": 4552,
+        "statuses": {
+          "ELIGIBLE": 4552,
+          "PENDING": 1
+        },
+        "missing_fraction": 0.00021963540522729197,
+        "representativeness_total_variation": {
+          "trade_date": 0.00021963540522732056,
+          "sector": null,
+          "regime": null,
+          "risk": 2.8467682136131987e-06,
+          "feature_support": 0.00020453305860253929
+        },
+        "dimension_status": {
+          "trade_date": "ASSESSED",
+          "sector": "UNAVAILABLE_NOT_GATED",
+          "regime": "UNAVAILABLE_NOT_GATED",
+          "risk": "ASSESSED",
+          "feature_support": "ASSESSED"
+        },
+        "estimand": "COMPLETE_CASE_DESCRIPTIVE"
+      }
+    },
+    {
+      "level": "L1",
+      "state": "SUPPORTED",
+      "counts": {
+        "rows": 4552,
+        "dates": 220,
+        "blocks": 142,
+        "entities": 4552,
+        "episodes": 4552
+      },
+      "diagnostic": {
+        "expected": 4553,
+        "eligible": 4552,
+        "statuses": {
+          "ELIGIBLE": 4552,
+          "PENDING": 1
+        },
+        "missing_fraction": 0.00021963540522729197,
+        "representativeness_total_variation": {
+          "trade_date": 0.00021963540522732056,
+          "sector": null,
+          "regime": null,
+          "risk": 2.8467682136131987e-06,
+          "feature_support": 0.00020453305860253929
+        },
+        "dimension_status": {
+          "trade_date": "ASSESSED",
+          "sector": "UNAVAILABLE_NOT_GATED",
+          "regime": "UNAVAILABLE_NOT_GATED",
+          "risk": "ASSESSED",
+          "feature_support": "ASSESSED"
+        },
+        "estimand": "COMPLETE_CASE_DESCRIPTIVE"
+      }
+    }
+  ]
+}

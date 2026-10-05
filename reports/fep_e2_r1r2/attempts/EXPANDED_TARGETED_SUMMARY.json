@@ -1,0 +1,26 @@
+{
+  "command": [
+    "E:\\python\\python.exe",
+    "-B",
+    "-m",
+    "pytest",
+    "tests/fep_e2",
+    "tests/fep",
+    "tests/test_r25_packet.py",
+    "tests/test_r20d_settlement.py",
+    "-q",
+    "--basetemp=E:/codex_tmp/test_temp/e2-r1r2-targeted",
+    "--junitxml=E:\\codex work\\大A交易\\reports\\fep_e2_r1r2\\targeted.xml"
+  ],
+  "exit_code": 1,
+  "passed": 215,
+  "skipped": 1,
+  "failed_nodes": [
+    "tests.test_r25_packet::test_f12_valid_latest_decoy"
+  ],
+  "introduced_active_failures": [
+    "tests.test_r25_packet::test_f12_valid_latest_decoy"
+  ],
+  "existing_debt_nodes": [],
+  "full_final_run": true
+}

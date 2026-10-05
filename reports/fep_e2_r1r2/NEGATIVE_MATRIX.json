@@ -1,0 +1,91 @@
+{
+  "status": "PASS",
+  "case_count": 21,
+  "cases": [
+    {
+      "node": "tests.fep_e2.test_r1r2_event_strata::test_01_pooled_entry_policy_rejected",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e2.test_r1r2_event_strata::test_02_exact_first_signal",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e2.test_r1r2_event_strata::test_03_policy_cannot_serve_reentry",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e2.test_r1r2_event_strata::test_04_same_entity_different_episodes",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e2.test_r1r2_event_strata::test_05_same_episode_different_events_not_independent_episodes",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e2.test_r1r2_event_strata::test_06_missing_invalidation_never_false",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e2.test_r1r2_event_strata::test_07_reentry_without_owner_not_enabled",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e2.test_r1r2_event_strata::test_08_gap_ledger_keeps_all_opportunities",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e2.test_r1r2_event_strata::test_09_pooled_superseded_preserved",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e2.test_r1r2_event_strata::test_10_freeze_before_statistics",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e2.test_r1r2_event_strata::test_11_discovery_no_performance",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e2.test_r1r2_event_strata::test_12_13_pass_keep_owner_bytes[src/workbench_analysis/fep_e2/historical_labels.py]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e2.test_r1r2_event_strata::test_12_13_pass_keep_owner_bytes[src/workbench_analysis/v4_15_settlement.py]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e2.test_r1r2_event_strata::test_12_13_pass_keep_owner_bytes[src/workbench_analysis/fep_e2/historical_dataset.py]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e2.test_r1r2_event_strata::test_12_13_pass_keep_owner_bytes[src/workbench_analysis/fep_e2/historical_owners.py]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e2.test_r1r2_event_strata::test_14_first_observed_not_granted",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e2.test_r1r2_event_strata::test_15_priority_unchanged",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e2.test_r1r2_event_strata::test_16_owner_episode_mismatch",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e2.test_r1r2_event_strata::test_17_parent_episode_not_first",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e2.test_r1r2_event_strata::test_18_pooled_policy_creation_rejected",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep_e2.test_r1r2_event_strata::test_19_event_projection_keeps_revision_and_denominator",
+      "status": "PASS"
+    }
+  ],
+  "synthetic_vectors_are_tests_only": true
+}

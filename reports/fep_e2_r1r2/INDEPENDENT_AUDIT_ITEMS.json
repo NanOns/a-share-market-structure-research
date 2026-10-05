@@ -1,0 +1,22 @@
+{
+  "items": [
+    {
+      "audit_id": "FEP_E2_PRIOR_EPISODE_OWNER_CAPABILITY",
+      "status": "OPEN_BLOCKS_AFFECTED_EVENT_STRATA",
+      "scope": "Accepted frozen episode invalidation/closure input owner; REENTRY and affected NEW_CONFIRMED",
+      "evidence": [
+        {
+          "path": "reports/fep_e2_r1r2/REENTRY_OWNER_INPUT_GATE.json",
+          "bytes": 466,
+          "sha256": "1cf2c37bcfa2dbaad7adb4de89053a32d000578a58970b3167570b097da2b079"
+        },
+        {
+          "path": "reports/fep_e2_r1r2/EVENT_DENOMINATOR_LEDGER.json",
+          "bytes": 934360,
+          "sha256": "7ab7f29ff0f00fe6dff8b9795300a6688ad6c9a1d87d6df45d1249b293557d1b"
+        }
+      ],
+      "acceptance": "Separate versioned owner-input audit; current FIRST_PREWATCH gate does not close this issue"
+    }
+  ]
+}

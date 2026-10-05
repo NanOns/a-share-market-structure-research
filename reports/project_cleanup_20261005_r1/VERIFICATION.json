@@ -1,0 +1,50 @@
+{
+  "status": "PASS",
+  "main_tracked_files_unchanged": true,
+  "e2_all_54_seal_bindings_unchanged": true,
+  "r25": {
+    "execution_baseline": "54a214167cfd4414901d2002b0a3cf5da45f4e36",
+    "protected_path_count": 16139,
+    "historical_git_diff": [],
+    "bindings": [
+      {
+        "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+        "bytes": 15303,
+        "sha256": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0"
+      },
+      {
+        "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+        "bytes": 16890,
+        "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+      },
+      {
+        "path": "data/v4/V4_15_ACCEPTED_HEAD.json",
+        "bytes": 4778,
+        "sha256": "a3480dfc7e1d7b68656ea78e6ed68eb93c3381db9c099b8a6e0cb3a84c9d1d4d"
+      },
+      {
+        "path": "config/v4_16_runtime_activation_authority_v3.json",
+        "bytes": 1335,
+        "sha256": "2dda7facec4e5b2d706cc4dd3910f1e2415ce924145f145222c7d9f65eb6c2fb"
+      }
+    ],
+    "Stage": "V4_00_TO_V4_15_ACCEPTED",
+    "Data": "2026-09-30",
+    "V4_16_ACCEPTED_HEAD": "NOT_CREATED",
+    "REAL_SHADOW_OBSERVATIONS": 0,
+    "PIT_OBSERVED_REAL_SAMPLES": 0,
+    "real_database_created": false
+  },
+  "r25_status": "WAIT_ACCEPTED_DAILY_INPUT",
+  "final_fixture_directories_retained": [
+    "E:\\codex_tmp\\fep_e1_r1_pg18_fresh",
+    "E:\\codex_tmp\\fep_e1_r1_pg18_upgrade"
+  ],
+  "uncertain_items_preserved": [
+    "managed Codex worktrees",
+    "six other E regression worktrees with unique receipts",
+    "live PostgreSQL service",
+    "main runtime/data/reports",
+    "shared Codex app caches"
+  ]
+}

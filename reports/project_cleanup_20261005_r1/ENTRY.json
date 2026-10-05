@@ -1,0 +1,32 @@
+{
+  "governing_document": "config/project_workspace_storage_policy_v1.json",
+  "contract": "PROJECT_DERIVED_TEMPORARY_STORAGE_CLEANUP_R1",
+  "stage": "MAINTENANCE_NOT_E3",
+  "original_status": [
+    "?? artifacts/fep_20260930/",
+    "?? artifacts/fep_r2_20260930/",
+    "?? docs/audits/FEP_CROSS_AUDIT_AND_INTEGRATION_20260930.md",
+    "?? docs/audits/FEP_INTEGRATION_REVIEW_20260930.md",
+    "?? docs/audits/FEP_INTEGRATION_SECOND_REVIEW_20260930.md",
+    "?? docs/audits/FEP_R2_EXTERNAL_PATCH_DISPOSITION_20260930.md",
+    "?? docs/audits/FEP_R2_INTEGRATION_REVIEW_20260930.md",
+    "?? docs/audits/FEP_R2_TEMPORAL_REVIEW_20260930.md",
+    "?? docs/audits/FEP_STATISTICS_REVIEW_20260930.md",
+    "?? docs/audits/FEP_TEMPORAL_REVIEW_20260930.md",
+    "?? docs/design/",
+    "?? tmp/"
+  ],
+  "entered_at": "2026-10-05T18:10:58.9789535+08:00",
+  "free_before": {
+    "C": 23803285504,
+    "E": 53822623744
+  },
+  "preserve": [
+    "TDX roots",
+    "main source/data/runtime/reports/.git",
+    "unrelated changes",
+    "managed Codex worktrees",
+    "two final E1 PostgreSQL fixture instances",
+    "other worktrees with unique receipts"
+  ]
+}

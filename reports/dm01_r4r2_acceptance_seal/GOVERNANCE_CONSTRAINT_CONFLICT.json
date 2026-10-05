@@ -1,1 +1,17 @@
-{"external_acceptance_bindings_modified":false,"failure":"HISTORICAL_PROTECTED_BYTES_CHANGED","final_pass":false,"historical_baseline":"54a214167cfd4414901d2002b0a3cf5da45f4e36","historical_check":"scripts/validate_r25_preflight.py::protected","pinned_dependency":"config/v4_16_runtime_dependencies_v4.json","preflight_exact_sha256":"89907094d1de4c11000ecb530f80316ce03bc98c0ec82e9d2d9a6aa3921c7afb","preflight_modified":false,"reason":"Authorized single assertion update changes a historical path outside the frozen protected() allowed set.","runtime_dependency_modified":false,"status":"BLOCKED_SCOPE_CONFLICT"}
+{
+  "external_acceptance_bindings_modified": false,
+  "failure": "HISTORICAL_PROTECTED_BYTES_CHANGED",
+  "final_pass": false,
+  "historical_baseline": "54a214167cfd4414901d2002b0a3cf5da45f4e36",
+  "historical_check": "scripts/validate_r25_preflight.py::protected",
+  "pinned_dependency": "config/v4_16_runtime_dependencies_v4.json",
+  "preflight_exact_sha256": "89907094d1de4c11000ecb530f80316ce03bc98c0ec82e9d2d9a6aa3921c7afb",
+  "preflight_modified": false,
+  "reason": "Authorized single assertion update changes a historical path outside the frozen protected() allowed set.",
+  "runtime_dependency_modified": false,
+  "status": "RESOLVED_LOCAL_PENDING_FINAL_INDEPENDENT_READBACK",
+  "resolution": "Exact historical bytes restored; only the registered superseded node deselected.",
+  "current_protected": "PASS",
+  "current_selection": "WAIT_ACCEPTED_DAILY_INPUT",
+  "next": "STOP_WAIT_FINAL_INDEPENDENT_READBACK"
+}

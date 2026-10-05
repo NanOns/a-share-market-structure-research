@@ -1,11 +1,29 @@
-# DM01 R4R2 Acceptance Head 封印执行记录
+# DM01 R4R2 Acceptance Seal Governance Reconciliation R1
 
-机器接受头已按正式外部审计创建，真实 accepted_envelope()、审计原文与全部扩展字节绑定通过。仅更新用户明确授权的旧测试缺席断言；运行时源码、算法、依赖配置、Data/Stage Head 和权限均未改动。
+Execution baseline: `57ddef0dc21b48c27ccaab0b4d12b08616f85765`.
+Authority: the three task/master/final audit documents copied into this report directory and bound in RECONCILIATION_ENTRY.json.
 
-专项结果：R4 25、R4R1 15、R4R2 18 全部通过；封印检查 2 通过、1 被治理门拦截。完整范围：2136 通过、45 失败、3 跳过、0 错误。保留 43 项历史债务，另外 2 个失败节点因授权测试修正触发 HISTORICAL_PROTECTED_BYTES_CHANGED；未宣称全绿或最终通过。
+Historical R4 test restored exactly: 12735 bytes, SHA256 `22c96a78c97495b0a98c2cc10e639ab371b518c4c8546d63deedb24286884eec`.
+Only `tests/v4_dm01_r4/test_runtime.py::test_current_real_v2_parent_and_future_wait` is deselected, registered as SUPERSEDED_PRE_SEAL_ASSERTION. The registry is evidence only; successor current-state coverage remains in tests/v4_dm01_r4r2/test_acceptance_seal.py.
 
-阻塞原因：validate_r25_preflight.py::protected 将上述历史测试路径锁定到旧字节；该脚本自身又被外部审计接受的 runtime_dependencies_v4 精确绑定。治理门与本轮授权修正冲突，修复会涉及禁止修改的运行时和审计绑定，已单独登记。原始失败与修正后回归证据均保留。
+R25 protected() PASS; selection() WAIT_ACCEPTED_DAILY_INPUT; target_trade_date null.
+Accepted envelope EXTERNALLY_ACCEPTED_DM01_R4_RUNTIME; all extension bindings unchanged; production/shadow/focus false.
+2026-10-08 WAIT_MARKET_CLOSE; source_requests 0; bridge_created false; r25_grant false.
 
-未来会话桥接仍 WAIT_MARKET_CLOSE、零源请求、无桥接产物。真实 R25/Shadow 未启动，无真实 DB 和计数增加。
+Targeted: R4 24 PASS + 1 SUPERSEDED_PRE_SEAL_ASSERTION; R4R1 15 PASS; R4R2 bridge 18 PASS; Acceptance Seal 3 PASS.
+Wider scoped regression: 43 existing registered debt failures, 0 new active failure nodes. These debts remain separately registered and open. The suite is not all green.
+Initial targeted attempt lacked inherited PYTHONPATH for an entrypoint subprocess; raw evidence is retained under attempts. Corrected runs use the repository root and src in PYTHONPATH with no source edits.
 
-状态：BLOCKED_GOVERNANCE_PROTECTION_CONFLICT，未签发 PASS_LOCAL_READY_FOR_FINAL_READBACK，未设为活动恢复入口。交付授权单点修改和阻塞证据；STOP_WAIT / final readback。推送不构成该治理冲突的验收。
+Protected Stage V4_00_TO_V4_15_ACCEPTED; Data 2026-09-30; V4_16_ACCEPTED_HEAD absent; runtime_authorized/real_shadow_authorized false; observations and PIT samples 0. No real database, target package, Shadow start, TDX writes or source capture.
+
+DM01_R4R2_ACCEPTANCE_SEAL_GOVERNANCE_RECONCILIATION = PASS_LOCAL_READY_FOR_FINAL_READBACK
+DM01_R4_RUNTIME_ACCEPTANCE_HEAD = CREATED_EXTERNALLY_ACCEPTED
+R25_PROTECTED_WAIT_SELECTION = PASS_WAIT_ACCEPTED_DAILY_INPUT
+DM01_R4_GO_FORWARD_RUNTIME = EXTERNALLY_ACCEPTED_SCOPED_READY_FOR_NEXT_REAL_SESSION
+REAL_TARGET_SESSION_PACKAGE = NOT_CREATED
+REAL_SHADOW_EXECUTION = NOT_STARTED
+REAL_SHADOW_OBSERVATIONS = 0
+NEXT = STOP_WAIT_FINAL_INDEPENDENT_READBACK
+
+This local result and Git delivery do not establish final external acceptance or permission to enter R25/Shadow.
+Current regression outputs are reconciliation_targeted.* and reconciliation_wider.*; older output files remain historical evidence of the prior blocked seal.

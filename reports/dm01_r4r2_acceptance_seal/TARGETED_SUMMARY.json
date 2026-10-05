@@ -1,1 +1,27 @@
-{"R4":25,"R4R1":15,"R4R2":18,"acceptance_seal_failed":1,"acceptance_seal_passed":2,"errors":0,"failed":1,"failure":"tests.v4_dm01_r4r2.test_acceptance_seal::test_sealed_future_wait_has_no_source_or_publication","passed":60,"reason":"HISTORICAL_PROTECTED_BYTES_CHANGED","skipped":0,"status":"BLOCKED_GOVERNANCE_PROTECTION_CONFLICT","total":61}
+{
+  "command": [
+    "E:\\python\\python.exe",
+    "-B",
+    "-m",
+    "pytest",
+    "tests/v4_dm01_r4",
+    "tests/v4_dm01_r4r1",
+    "tests/v4_dm01_r4r2",
+    "--deselect=tests/v4_dm01_r4/test_runtime.py::test_current_real_v2_parent_and_future_wait",
+    "-q",
+    "--basetemp=E:/codex_tmp/test_temp/dm01-reconciliation-targeted",
+    "--junitxml=E:\\codex work\\大A交易\\reports\\dm01_r4r2_acceptance_seal\\reconciliation_targeted.xml"
+  ],
+  "exit_code": 0,
+  "tests": 60,
+  "passed": 60,
+  "skipped": 0,
+  "failed_nodes": [],
+  "deselected_node": "tests/v4_dm01_r4/test_runtime.py::test_current_real_v2_parent_and_future_wait",
+  "accounting": {
+    "R4": "24 PASS + 1 SUPERSEDED_PRE_SEAL_ASSERTION",
+    "R4R1": "15 PASS",
+    "R4R2_bridge": "18 PASS",
+    "Acceptance_Seal": "3 PASS"
+  }
+}

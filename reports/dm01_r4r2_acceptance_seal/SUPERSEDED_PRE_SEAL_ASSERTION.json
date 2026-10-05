@@ -1,0 +1,14 @@
+{
+  "contract_id": "DM01_R4R2_SUPERSEDED_PRE_SEAL_ASSERTION_V1",
+  "node": "tests/v4_dm01_r4/test_runtime.py::test_current_real_v2_parent_and_future_wait",
+  "status": "SUPERSEDED_PRE_SEAL_ASSERTION",
+  "reason": "The assertion requires PENDING_DM01_R4_EXTERNAL_ACCEPTANCE, which was correct before the externally accepted runtime head existed and is no longer a current-state invariant after the seal.",
+  "replacement_current_state_test": "tests/v4_dm01_r4r2/test_acceptance_seal.py",
+  "historical_test_bytes": "PRESERVED_EXACTLY",
+  "historical_binding": {
+    "path": "tests/v4_dm01_r4/test_runtime.py",
+    "bytes": 12735,
+    "sha256": "22c96a78c97495b0a98c2cc10e639ab371b518c4c8546d63deedb24286884eec"
+  },
+  "registry_role": "EVIDENCE_ONLY"
+}

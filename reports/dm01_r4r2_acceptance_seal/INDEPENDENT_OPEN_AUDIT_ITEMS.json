@@ -1,1 +1,26 @@
-{"legacy_debt_count":43,"legacy_register":{"bytes":7698,"path":"reports/dm01_r4r2/INDEPENDENT_OPEN_AUDIT_ITEMS.json","sha256":"c5ce5e99c3b95b33d2e2062ce708c9aad8e981e7c1d5d53ece02268ce75906f4"},"seal_scope_blocker":{"acceptance":"Requires authoritative resolution consistent with exact audited runtime/dependency bindings; not waived locally.","evidence":{"bytes":614,"path":"reports/dm01_r4r2_acceptance_seal/GOVERNANCE_CONSTRAINT_CONFLICT.json","sha256":"4dc25123b13f661600b3e93be7034c006185cb54b1f50784b8f5940161e75ce1"},"failure_nodes":["tests.test_r25_packet::test_actual_authority_inventory_waits_without_target","tests.v4_dm01_r4r2.test_acceptance_seal::test_sealed_future_wait_has_no_source_or_publication"],"id":"DM01_R4R2_ACCEPTANCE_SEAL_AUTHORIZED_TEST_VS_FROZEN_HISTORY","next":"STOP_WAIT_FINAL_READBACK_SCOPE_RESOLUTION","scope":"Acceptance head formalization and historical git protection"},"status":"OPEN"}
+{
+  "legacy_debt_count": 43,
+  "legacy_register": {
+    "bytes": 7698,
+    "path": "reports/dm01_r4r2/INDEPENDENT_OPEN_AUDIT_ITEMS.json",
+    "sha256": "c5ce5e99c3b95b33d2e2062ce708c9aad8e981e7c1d5d53ece02268ce75906f4"
+  },
+  "seal_scope_blocker": {
+    "acceptance": "Historical baseline SHA256 restored; protected()/selection() pass; final external readback pending",
+    "evidence": {
+      "bytes": 614,
+      "path": "reports/dm01_r4r2_acceptance_seal/GOVERNANCE_CONSTRAINT_CONFLICT.json",
+      "sha256": "4dc25123b13f661600b3e93be7034c006185cb54b1f50784b8f5940161e75ce1"
+    },
+    "failure_nodes": [
+      "tests.test_r25_packet::test_actual_authority_inventory_waits_without_target",
+      "tests.v4_dm01_r4r2.test_acceptance_seal::test_sealed_future_wait_has_no_source_or_publication"
+    ],
+    "id": "DM01_R4R2_ACCEPTANCE_SEAL_AUTHORIZED_TEST_VS_FROZEN_HISTORY",
+    "next": "STOP_WAIT_FINAL_INDEPENDENT_READBACK",
+    "scope": "Acceptance head formalization and historical git protection",
+    "status": "RESOLVED_LOCAL_PENDING_FINAL_INDEPENDENT_READBACK"
+  },
+  "status": "43_LEGACY_DEBTS_REMAIN_OPEN",
+  "new_active_failure_nodes": 0
+}

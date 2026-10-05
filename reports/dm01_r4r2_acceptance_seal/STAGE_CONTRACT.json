@@ -1,1 +1,26 @@
-{"DM01_R4_RUNTIME_ACCEPTANCE_HEAD":"CREATED_EXTERNALLY_ACCEPTED","R25":"BLOCKED_HISTORICAL_PROTECTED_BYTES_CHANGED","acceptance_head_readback":"PASS_REAL_REPOSITORY_BYTES","active_recovery_entry":"NOT_ACTIVATED","baseline":"3a562b9d3cd447e365993164988386f8a04cc018","commit_push":"AUTHORIZED_CODE_AND_BLOCKING_EVIDENCE_DELIVERY","final_pass":false,"independent_external_authority":{"bytes":10423,"path":"docs/evidence/dm01_r4r2/V4_DM01_R4R2_R25_BRIDGE_INTEGRATION_FINAL_INDEPENDENT_EXTERNAL_AUDIT_R1_20261005.md","sha256":"b6ee5940f5a01d889d535615483c1e91cad12fdc7f021cf7633009872f7405ed"},"master_document_sha256":"d4971ad1f26de2bdc20c2ad922463d1f6214111d7c656c94d0f2568a78976484","next":"STOP_WAIT_FINAL_READBACK_SCOPE_RESOLUTION","old_assertion_authorization":"RECEIVED_AND_APPLIED_ONLY_SINGLE_ASSERTION","stage":"DM01_R4R2_EXTERNAL_ACCEPTANCE_HEAD_SEAL","status":"BLOCKED_GOVERNANCE_PROTECTION_CONFLICT","stop":"STOP_WAIT / final readback","task_document_sha256":"60ad565265aee703ce6a90f84d180fd2cefdc7cf4a6a889e030614ade932e63a"}
+{
+  "contract_id": "DM01_R4R2_ACCEPTANCE_SEAL_GOVERNANCE_RECONCILIATION_R1",
+  "baseline": "57ddef0dc21b48c27ccaab0b4d12b08616f85765",
+  "status": "PASS_LOCAL_READY_FOR_FINAL_READBACK",
+  "documents": {
+    "DM01_R4R2_ACCEPTANCE_SEAL_GOVERNANCE_RECONCILIATION_R1_TASK_20261005.md": {
+      "bytes": 4574,
+      "sha256": "f9e8a40ed1d04f58149e034a413a52eed5423e4b749a58890580b7ae5fb21674"
+    },
+    "V4_DM01_R4R2_ACCEPTANCE_SEAL_FINAL_READBACK_AUDIT_R1_20261005.md": {
+      "bytes": 5661,
+      "sha256": "32c24ef25c9cb52959a988536e4deafd55d708b51da3c258890f491940c9a6f0"
+    },
+    "V4_RUNTIME_EXECUTION_MASTER_DM01_R4R2_ACCEPTANCE_SEAL_GOVERNANCE_R1_20261005.md": {
+      "bytes": 912,
+      "sha256": "5d045003bf482a9c85d834a4c16699751d6ab84a13eb821b5cbd010de3a0c542"
+    }
+  },
+  "acceptance": "Local reconciliation complete; final independent readback pending",
+  "next": "STOP_WAIT_FINAL_INDEPENDENT_READBACK",
+  "runtime_source_changes": [],
+  "allowed_changes": [
+    "tests/v4_dm01_r4/test_runtime.py: exact baseline restoration",
+    "reports/dm01_r4r2_acceptance_seal/*"
+  ]
+}

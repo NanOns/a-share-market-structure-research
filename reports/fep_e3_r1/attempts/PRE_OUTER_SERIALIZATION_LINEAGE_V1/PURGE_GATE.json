@@ -1,0 +1,27 @@
+{
+  "status": "PASS_EXPLICIT_DUAL_CLOCK_PURGE",
+  "ledger": {
+    "path": "reports/fep_e3_r1/PURGE_ROW_LEDGER.jsonl.gz",
+    "bytes": 600687,
+    "sha256": "1a9f65c1dac63ae7ea7da308847e195afd2a39de5de2ebeb22d2f45ebe442d5e"
+  },
+  "rows": 4553,
+  "excluded": 254,
+  "reason_counts": {
+    "pos60:QUALITY_UNAVAILABLE": 186,
+    "prior60_percentile:QUALITY_UNAVAILABLE": 186,
+    "slope60:QUALITY_UNAVAILABLE": 189,
+    "LABEL_EVENT_END_CROSSES_BOUNDARY": 65,
+    "E2_LABEL_PENDING": 1
+  },
+  "feature_invalid_counts": {
+    "pos60:QUALITY_UNAVAILABLE": 186,
+    "prior60_percentile:QUALITY_UNAVAILABLE": 186,
+    "slope60:QUALITY_UNAVAILABLE": 189
+  },
+  "minimum_gap_target_sessions": 1,
+  "episode_crossing_not_shared": 4348,
+  "explanation": "Different securities/unique episode identities with long followup are not shared episodes. Shared episode observations crossing partitions are excluded; no entity lifetime ban.",
+  "availability_semantics": "Dual clocks: ordered historical event dates, fixed actual engineering knowledge snapshot before every phase; NOT historical availability/PIT or REAL_OOS",
+  "frozen_knowledge_cutoff": "2026-10-05T14:04:39.077481+00:00"
+}

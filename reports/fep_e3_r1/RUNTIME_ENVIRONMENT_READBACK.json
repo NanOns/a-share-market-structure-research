@@ -1,0 +1,22 @@
+{
+  "status": "PASS_ISOLATED_PINNED_E_ONLY",
+  "python": "3.13.14 (tags/v3.13.14:fd17997, Jun 10 2026, 13:03:48) [MSC v.1944 64 bit (AMD64)]",
+  "packages": {
+    "numpy": "2.2.6",
+    "scipy": "1.16.2",
+    "scikit-learn": "1.7.2",
+    "threadpoolctl": "3.6.0",
+    "joblib": "1.5.2"
+  },
+  "requirements": {
+    "path": "requirements-fep-e3-r1.txt",
+    "bytes": 165,
+    "sha256": "c719995878790808d7ce27c4a4a0b16ff59f050218cfa4b8ae52f111de159a47"
+  },
+  "install_command": "python -m pip install --target E:/codex_tmp/fep_e3_deps -r requirements-fep-e3-r1.txt",
+  "PYTHONPATH": "E:/codex_tmp/fep_e3_deps;repository root;repository src",
+  "TEMP": "E:/codex_tmp",
+  "cpu_threads": 2,
+  "parallel_trials": 1,
+  "random_sampling": "NONE: deterministic linear solvers; no random split/search"
+}

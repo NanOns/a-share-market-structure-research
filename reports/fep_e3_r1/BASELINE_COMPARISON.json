@@ -1,0 +1,166 @@
+{
+  "status": "PASS_SAME_OUTER_POPULATION",
+  "result": {
+    "primary_metric": "DATE_BALANCED_MAE",
+    "model": {
+      "DATE_BALANCED_MAE": 0.026498264228947403,
+      "DATE_BALANCED_HUBER_LOSS": 0.0002202852452350726,
+      "DATE_BALANCED_RMSE": 0.03398685337346804,
+      "weighted_sign_hit_rate": 0.5,
+      "spearman_by_date": [
+        {
+          "trade_date": "2024-11-08",
+          "rho": 0.9999999999999999,
+          "rows": 2
+        },
+        {
+          "trade_date": "2024-11-18",
+          "rho": 0.9999999999999999,
+          "rows": 2
+        },
+        {
+          "trade_date": "2024-11-20",
+          "rho": 1.0,
+          "rows": 4
+        },
+        {
+          "trade_date": "2024-11-22",
+          "rho": -0.9999999999999999,
+          "rows": 2
+        },
+        {
+          "trade_date": "2024-11-25",
+          "rho": 1.0,
+          "rows": 3
+        },
+        {
+          "trade_date": "2024-11-26",
+          "rho": -0.9999999999999999,
+          "rows": 2
+        },
+        {
+          "trade_date": "2024-12-04",
+          "rho": 0.9999999999999999,
+          "rows": 2
+        },
+        {
+          "trade_date": "2025-06-19",
+          "rho": 0.9999999999999999,
+          "rows": 2
+        }
+      ],
+      "mean_date_spearman": 0.5,
+      "aggregate_spearman": -0.06284498445739808
+    },
+    "baseline": {
+      "DATE_BALANCED_MAE": 0.025383327234252982,
+      "DATE_BALANCED_HUBER_LOSS": 0.00020826180767950873,
+      "DATE_BALANCED_RMSE": 0.03169687487931192,
+      "weighted_sign_hit_rate": 0.5428571428571428,
+      "spearman_by_date": [],
+      "mean_date_spearman": null,
+      "aggregate_spearman": null
+    },
+    "absolute_improvement_delta": -0.001114936994694421,
+    "relative_improvement_delta": -0.04392398933382907,
+    "MODEL_EFFECTIVENESS": "NO_INCREMENT",
+    "rows": 46,
+    "dates": 35,
+    "blocks": 24,
+    "entities": 46,
+    "episodes": 46,
+    "exact_outer_observation_ids": [
+      "00fb44aeab9139ccf885520329fcc90bed5786d2127b42f37c5efa9b14772c62",
+      "080ab9f4537e596b0410b6e2c4fb8bb2a2cfb9f65a744e92e6fdcfb2e3dccabe",
+      "1463d6f8a5f9c6145234228f12f0f8ffffb029cda4c4de5826544d79177dbebd",
+      "14ad09cab732c563a3e1f0fbd417b8ab37257b6a6cf3d3bdb0c9dbb14d57c450",
+      "1960a62a650a7abd8789befa17167796951a5b9cac7f5a0cd6e3b773896cc25f",
+      "1cd3b71c7303b2d9a6a10d955d7fc93499c5b7db13075d435dc0a20a1ec78dc1",
+      "21a336e5b22195d79d56a02cdb9897049e866b93e30610ac5459ec3451c546df",
+      "24e789eec09b5adddd3a6cbd3cf386bfe61db62ab35a6c9c343f69ffcf889bc1",
+      "27a75c2a5477db95899a1237b5030fe25274acb289c99248706cc026b7f48424",
+      "2b9575c4a139854a463581f9803a7021b219abeb113f9e1d4bebdff58188dc4a",
+      "2c0b2e28275f9140ec62aa224fe1f1bc3182ff3db97805187a9a00565d268507",
+      "35f655816d162f6ba68fef6f9803af48ade57ede9f736a35be76b3e3204f48b8",
+      "3d3e7ce0a85046ea2374b4ffe651b3697f09ba1c686c58d4bbaf8d6a51ad664a",
+      "4211f95f92c690784012861451500d46e85d43fc8c6065b85c2e3bc76be4c249",
+      "4ab932cee9d0e3f1f1045c49a10e035f8d8d28bf500effbc3e15bafdafb2d555",
+      "5155308131f3ae7bd1ff06fcbbb9e24489a5fa57c8f2e036b77d1ca243863937",
+      "5169c4db5b52223c604d7b8af9d23e1d29a118abb94603cf4456c3a5020b9e9c",
+      "550182e6b4ee598dfd514c9edea61b9b07ba38df58972c342592c6b365001029",
+      "56ab47720d987ac8a727fc1b6f1d279598eda9c84b1fab5fc8fe3f9c88920780",
+      "6d78eb0533ea3d5741620ca3cbf94276a3f847b54d11a2ee4d8bb028b3a3f88d",
+      "6ef0f9aa9590b85a76866e46627ad52c1795dae3924dca020a5af556fbc817ef",
+      "7ea177d8f2f96871aac74da5af893f6e49750877a68926056ba1f9ad08863fb0",
+      "852fb81b4b1006eaa1e9553a5d5e33dd3967e69006f79d82a3d49b1d456b30d0",
+      "85537c7f8104c9cf3d49b736bfce4e262e545d4ececda121e0774221bcd248ab",
+      "8be3b92459a8d4580564466dacf5f3788efee1e8f808919ed662b3abfc9ba1e3",
+      "90f6b1ad76e147dac84da8b6068b3f0007db81ba05d1d709288b7dfca3bba961",
+      "9e358b3fbfcac8777bf401ddb3ef14fafd360522023e93a1d4fce02f83b54400",
+      "a20298d4b05bd8699a63486a3ddf6f53027807cc7b3c3f5d509283bb117f3edb",
+      "b3c108641cf90634faf1eadd30a7411b7eb6c25a8227288b72af229ecf54489c",
+      "b83616fc9a41c35a1ba1e8913ada44ad9471e853923443fca4ff10eb130e58bc",
+      "b8ae586a73f23b5aceca69aa1eb123b840109fa85fe5c221b790d0788b310492",
+      "b90e8163c91efcec0aabaf2d5e447dd20b451b1a0475998d1fe8ad35e4415160",
+      "bd0012197f60949dbc0fde4fa89c6ed45f7826a60ccd85f6943000e42d7f8fe2",
+      "bdbba0fce4eb25667a4ed10ea2d2c60e7f044ec511bcb213722b61f968cfacbd",
+      "c9644488050153d75c6263513bb2d10e24147a0ab46216d0f505edc1dfcc6337",
+      "cb50792a1a570ce71908525d2a90f41947c0d209a5ad091121adbdadb17c9d90",
+      "d3c07cf9277407115e8d31474bb56abffa1625ec196444d0d6c12a3e7405ff30",
+      "d464605b673223e39b70ef6f9e8b8ddecac8be1c4bd96b7be7ee6ff77830f4c5",
+      "d546c54207ad095a93af37330fef245c959696a662180bc01fed3e4d6ad06da7",
+      "d589b899b3259e15d1fd88b04d75c222f9184b5dcf4463b014bff2041dafc4d0",
+      "de5f984d6456b61e109c21b7520d3d4d64ab69072e343775de9286b96d4075ed",
+      "e06893e2f3efbf909495ad3bd1444ea38bbbc415082c4358f5fa932436495c21",
+      "ea6bef97087b0cf493d69fcdb28be1d4e20601bb1a4623a1a23b34af2ae4c7dd",
+      "eb6348ffc87bb645b54641cf834e40621df46dac2c98fa6da7637ed1288f02ed",
+      "f34c6e1c6711c61920127e5853c35ef83de0747098c02c5cf55fc72e0c71f154",
+      "f828498087a5a0c58926dd1aeacc98f0123c94dec507a7fb8508c6d490aa28e3"
+    ],
+    "same_date_balanced_weight_digest": "96f0187c04dfb1f3f33f348870fd8702e766bcc14830ca2da5a1236e1b7fbc62",
+    "real_OOS": false,
+    "model_display": "UNGRANTED",
+    "priority_use": "UNGRANTED",
+    "coverage": 0.22439024390243903,
+    "outer_total": 205,
+    "quantile_diagnostics": {
+      "probability_calibration": "NOT_APPLICABLE_REGRESSION",
+      "role": "CALIBRATION_DIAGNOSTIC_ONLY",
+      "raw_crossing_rows": 0,
+      "weighted_raw_crossing_frequency": 0.0,
+      "coherent_crossing_rows": 0,
+      "rearrangement": "PRE_REGISTERED_INCREASING_REARRANGEMENT_V1",
+      "mean_interval_width": 0.029635709011319556,
+      "empirical_middle_interval_coverage": 0.3642857142857143,
+      "quantiles": {
+        "0.25": {
+          "raw_pinball": 0.009785906746791114,
+          "coherent_pinball": 0.009785906746791114,
+          "empirical_coverage": 0.22857142857142856
+        },
+        "0.5": {
+          "raw_pinball": 0.012523282125312717,
+          "coherent_pinball": 0.012523282125312717,
+          "empirical_coverage": 0.5142857142857143
+        },
+        "0.75": {
+          "raw_pinball": 0.011090778218304995,
+          "coherent_pinball": 0.011090778218304995,
+          "empirical_coverage": 0.5928571428571427
+        }
+      },
+      "coverage_is_predictive_probability": false
+    },
+    "pretest_baseline": {
+      "path": "reports/fep_e3_r1/registry/serialization_v1_1/pretest_E2_baseline_a7de4e0e9a63074353c0cf43b5e6d1a05ab16066375731e9d5e1a00fbe4ed88c.json",
+      "bytes": 1710715,
+      "sha256": "e65b784b41aea611e3ab943b6aca483d85d7e5d1df2bf96d702cb48643c54f43"
+    },
+    "baseline_does_not_consume_outer_labels": true
+  },
+  "baseline_pretest_only": {
+    "path": "reports/fep_e3_r1/registry/serialization_v1_1/pretest_E2_baseline_a7de4e0e9a63074353c0cf43b5e6d1a05ab16066375731e9d5e1a00fbe4ed88c.json",
+    "bytes": 1710715,
+    "sha256": "e65b784b41aea611e3ab943b6aca483d85d7e5d1df2bf96d702cb48643c54f43"
+  }
+}

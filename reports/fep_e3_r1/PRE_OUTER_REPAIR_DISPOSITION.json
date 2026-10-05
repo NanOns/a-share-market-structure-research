@@ -1,0 +1,23 @@
+{
+  "status": "SUPERSEDED_PRE_OUTER_SERIALIZATION_LINEAGE",
+  "original_lineage": "FEP_E3_R1_FIRST_PREWATCH_T1",
+  "outer_opened": false,
+  "original_trials": 12,
+  "all_original_trial_files_retained": true,
+  "old_registry": "reports/fep_e3_r1/registry",
+  "archive": "reports/fep_e3_r1/attempts/PRE_OUTER_SERIALIZATION_LINEAGE_V1",
+  "reason": "Serialize numeric mapping with sorted JSON keys changed prediction column order; original TRAIN/INTERNAL_TUNE raw objects were unaffected, calibration quarantined",
+  "repair": "Always order transform columns by immutable feature_terms; new lineage with independently frozen budget12 before any outer scoring",
+  "original_implementation_bindings": [
+    {
+      "path": "src/workbench_analysis/fep_e3/protocol.py",
+      "bytes": 11601,
+      "sha256": "130b5237424c48fb4f45d3d27c78e19a0fc0f1f0d7c2b51a3fafa9e25eb81843"
+    },
+    {
+      "path": "src/workbench_analysis/fep_e3/models.py",
+      "bytes": 9218,
+      "sha256": "7fd0b6f9cdbd4540d91d96efa78c4e6f5d2af9a22601060d08520f2986555894"
+    }
+  ]
+}

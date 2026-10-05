@@ -1,0 +1,31 @@
+{
+  "stage": "V4-15E3.R1",
+  "baseline": "7a10c0a3b1563532b7f1eda5af9b90f204fd03d6",
+  "entered_at": "2026-10-05T14:10:04.381305+00:00",
+  "authority": [
+    {
+      "path": "reports/fep_e3_r1/V4_FEP_EXECUTION_MASTER_V4_15E3_R1_20261005.md",
+      "bytes": 1101,
+      "sha256": "7205f06c361fbad4c4311c4a8e03df133b733c5fc95d23d1973f16b3a9512c29"
+    },
+    {
+      "path": "reports/fep_e3_r1/V4_15E3_INTERPRETABLE_MODEL_TIME_SPLIT_IMPLEMENTATION_TASK_R1_20261005.md",
+      "bytes": 14329,
+      "sha256": "f530e1173a62f37d63c029ecd206ca43de8c8408bdf77ee600582387197f945d"
+    },
+    {
+      "path": "reports/fep_e3_r1/V4_15E2_FINAL_CAPABILITY_SCOPED_INDEPENDENT_EXTERNAL_AUDIT_R1_20261005.md",
+      "bytes": 8739,
+      "sha256": "3ce235fb681f1c8be03fc08fa4541ef9ad115e61e30da6e22516da71af331dca"
+    }
+  ],
+  "admitted_scope": {
+    "observation_scope": "FEP_STOCK_ENTRY_CORE",
+    "signal_type": "FIRST_PREWATCH",
+    "target": "ABS_RETURN_N:T1",
+    "horizon": 1,
+    "feature_variant": "CORE",
+    "evidence_origin": "RECONSTRUCTED_CORRECTED"
+  },
+  "next": "STOP_WAIT_V4_15E3_INDEPENDENT_EXTERNAL_AUDIT"
+}

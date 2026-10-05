@@ -1,0 +1,296 @@
+{
+  "stage": "V4-15E3.R1",
+  "baseline": "7a10c0a3b1563532b7f1eda5af9b90f204fd03d6",
+  "status": "PASS_READY_FOR_INDEPENDENT_EXTERNAL_AUDIT",
+  "model_engineering": "PASS_LOCAL_FIRST_PREWATCH_T1",
+  "effectiveness": "NO_INCREMENT",
+  "code_bindings": [
+    {
+      "path": "src/workbench_analysis/fep_e3/__init__.py",
+      "bytes": 84,
+      "sha256": "fd235a3a7e0a5df355324fdde94388cbc9afe78155d987af3042134ef9412596"
+    },
+    {
+      "path": "src/workbench_analysis/fep_e3/protocol.py",
+      "bytes": 11601,
+      "sha256": "130b5237424c48fb4f45d3d27c78e19a0fc0f1f0d7c2b51a3fafa9e25eb81843"
+    },
+    {
+      "path": "src/workbench_analysis/fep_e3/models.py",
+      "bytes": 9322,
+      "sha256": "d324cb010a66b6ce6813c4816f3cb9bd5794ebcf11d4cdd8a2cbed4ec4af1d28"
+    },
+    {
+      "path": "scripts/run_fep_e3_r1.py",
+      "bytes": 35254,
+      "sha256": "c72cb85154a1cceb5c048bcc05bd294ddd462f2e17028d6065454fb2f7b18239"
+    },
+    {
+      "path": "tests/fep_e3/test_e3_contract.py",
+      "bytes": 8015,
+      "sha256": "0584349f5b38376ba42dd442f82e8a43a1c8eda16751fb3ca0fda7469f89d822"
+    },
+    {
+      "path": "config/fep_e3_experiment_protocol_v1.json",
+      "bytes": 10943,
+      "sha256": "abc77d291dea9377f59ee95f19886055d2bde88abb2c9d64da19289b845b8841"
+    },
+    {
+      "path": "config/fep_e3_experiment_protocol_v1_1.json",
+      "bytes": 11351,
+      "sha256": "f7e13068a684f9374e54cb5339f77d8f87f47dbba51dcbd27d75d86b29583695"
+    },
+    {
+      "path": "requirements-fep-e3-r1.txt",
+      "bytes": 165,
+      "sha256": "c719995878790808d7ce27c4a4a0b16ff59f050218cfa4b8ae52f111de159a47"
+    }
+  ],
+  "evidence_bindings": [
+    {
+      "path": "reports/fep_e3_r1/.gitattributes",
+      "bytes": 8,
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
+    },
+    {
+      "path": "reports/fep_e3_r1/BASELINE_COMPARISON.json",
+      "bytes": 7309,
+      "sha256": "63d0efd7073738137fd9dd333d3c0f49f582439cadc092f3b77a6f9b7e871dc7"
+    },
+    {
+      "path": "reports/fep_e3_r1/CALIBRATION_DIAGNOSTIC_GATE.json",
+      "bytes": 1426,
+      "sha256": "91e22e20557788359f3f6e6c250a7ce6a14434d62c5caca0d5062d335c5b33f0"
+    },
+    {
+      "path": "reports/fep_e3_r1/CALIBRATION_RESIDUAL_DISTRIBUTION.json",
+      "bytes": 331,
+      "sha256": "6dd5824eb96d7cd82ef6309cccb774ec889ed7e09476f2db68af82cfd4372385"
+    },
+    {
+      "path": "reports/fep_e3_r1/CAS_CONCURRENCY_fep_e1_fresh.json",
+      "bytes": 886,
+      "sha256": "4f0828f514237374babe26d4abb6a655e6912f87851ddd079b2d9936c1bd7f4a"
+    },
+    {
+      "path": "reports/fep_e3_r1/CAS_CONCURRENCY_fep_e1_upgrade.json",
+      "bytes": 927,
+      "sha256": "3ba1a53d36ca98f2ae64344cdb74d121f0f68dea1c30d2a57f34f7150d074edf"
+    },
+    {
+      "path": "reports/fep_e3_r1/COHERENCE_GATE.json",
+      "bytes": 227,
+      "sha256": "d4c1403e2c56d7e459f88d7d83d96f68873479337a9d3a17c9b4073364f51a09"
+    },
+    {
+      "path": "reports/fep_e3_r1/COMPLETION_REPORT.md",
+      "bytes": 2085,
+      "sha256": "cd62e60f3c098dda90f2d2a19cee8b06ca4ea501801ee944b61d3e5bb3ad4200"
+    },
+    {
+      "path": "reports/fep_e3_r1/DATE_SPLIT_GATE.json",
+      "bytes": 4785,
+      "sha256": "cefe409c81f743e7789fa4db345ec5c01245c076cdf3e514be1dc8bbaec0684e"
+    },
+    {
+      "path": "reports/fep_e3_r1/E2_INPUT_BINDING.json",
+      "bytes": 8109,
+      "sha256": "ba7620f8bb12dfa2c13c4fabee291436d5689290d753eafe44bbe353bf0bb86b"
+    },
+    {
+      "path": "reports/fep_e3_r1/ENTRY_BASELINE.json",
+      "bytes": 1113,
+      "sha256": "23941086139d9e42f24aef2a5e4a08c70a9121312adf2ddb6387d79b1a38f379"
+    },
+    {
+      "path": "reports/fep_e3_r1/EXACT_MODEL_ROWS.jsonl.gz",
+      "bytes": 15848102,
+      "sha256": "13f1e526528587458d6e6bc86830192c647a22c63e53c7ec06339aad3e8f34f4"
+    },
+    {
+      "path": "reports/fep_e3_r1/EXPERIMENT_PROTOCOL_DISCOVERY.json",
+      "bytes": 5889,
+      "sha256": "3465b3855bb2fb843c16e5a4a1fc8941556b59ef22c03fa9a5c45fd0e5561a7a"
+    },
+    {
+      "path": "reports/fep_e3_r1/EXPERIMENT_PROTOCOL_FREEZE.json",
+      "bytes": 651,
+      "sha256": "cba66ea50d552e6e43a83a1e91a011f99af4cdb15eebf005af1f836b39a458b0"
+    },
+    {
+      "path": "reports/fep_e3_r1/FEATURE_MANIFEST.json",
+      "bytes": 18548,
+      "sha256": "b3ddf5df832351c77a1dcd9cdba0e39a9e55d996e13ad9e014c10f72fa45ec40"
+    },
+    {
+      "path": "reports/fep_e3_r1/FOLD_MANIFEST.json",
+      "bytes": 660426,
+      "sha256": "08740fc17f8a6e16a5759511757168feda6389fa3b09ca5fdd0fb5504ada252d"
+    },
+    {
+      "path": "reports/fep_e3_r1/INDEPENDENT_AUDIT_ITEMS.json",
+      "bytes": 1205,
+      "sha256": "b4d424554041b4926ac0fda2512231474400e718a7c03b59d51819deb38d0277"
+    },
+    {
+      "path": "reports/fep_e3_r1/INITIAL_SPLIT_FEASIBILITY_ATTEMPT.json",
+      "bytes": 456,
+      "sha256": "96ded85dc866879cf12b8e8f9bb9faf1f64f4771f13439026012a1f16e620fa6"
+    },
+    {
+      "path": "reports/fep_e3_r1/LOCAL_ACCEPTANCE_MATRIX.json",
+      "bytes": 831,
+      "sha256": "2b5cbb6c5ff482853f0ae49e052157566ee6a241fa60602fa1dbff3ebe6ad0c9"
+    },
+    {
+      "path": "reports/fep_e3_r1/MODEL_REGISTRY_GATE.json",
+      "bytes": 11212,
+      "sha256": "d5b5970584bfaa0c0deeffef25b9a70ec8f326e7c7a86013d041f747994736e6"
+    },
+    {
+      "path": "reports/fep_e3_r1/NEGATIVE_MATRIX.json",
+      "bytes": 4054,
+      "sha256": "1756ac1fc59e3b784b7af7d54b9b360812142bec289eb19215100dad273772c3"
+    },
+    {
+      "path": "reports/fep_e3_r1/OOD_REFERENCE_GATE.json",
+      "bytes": 445,
+      "sha256": "953cd6655c603069e2d98e1fa34bc1a43a08ff786bc7304f39e5fd06ff55086c"
+    },
+    {
+      "path": "reports/fep_e3_r1/OUTER_TEST_EVALUATION.json",
+      "bytes": 7289,
+      "sha256": "06420d063ffcdb617742668dfc7b8b38b417d4931f930385e78e7a56ca03d87e"
+    },
+    {
+      "path": "reports/fep_e3_r1/OUTER_TEST_OPEN.json",
+      "bytes": 3003,
+      "sha256": "6148c9f5b5b3dd00181b0a5045b625e70f5c058588882c7a6c4a9d562f14a1a7"
+    },
+    {
+      "path": "reports/fep_e3_r1/OUTER_TEST_SEAL.json",
+      "bytes": 2177,
+      "sha256": "360fea9251a2a9ded3996ec51184a38daac45be1100205381b6a8c19021d93a9"
+    },
+    {
+      "path": "reports/fep_e3_r1/POINT_MODEL_GATE.json",
+      "bytes": 599,
+      "sha256": "d7818751a21149ba5e967faa0b03c0d5f31cee7f5de255a49dbde29e43d90776"
+    },
+    {
+      "path": "reports/fep_e3_r1/PRE_FREEZE_LABEL_END_READBACK.json",
+      "bytes": 383,
+      "sha256": "5c5a1ae75e1f2b0937385a1a51f267baa9238f7c5988794f8d033316d96eef72"
+    },
+    {
+      "path": "reports/fep_e3_r1/PRE_OUTER_REPAIR_DISPOSITION.json",
+      "bytes": 1054,
+      "sha256": "08e5defa5996d8ec8d3014947998faee454e7aa615c67acb6d1fa7a07904a412"
+    },
+    {
+      "path": "reports/fep_e3_r1/PREPROCESSING_GATE.json",
+      "bytes": 451,
+      "sha256": "2af483afb6cdde0798a3e4d1c2618e8341a14f5e8b783823ae4deb47815e1ff2"
+    },
+    {
+      "path": "reports/fep_e3_r1/PRETEST_DEPENDENCIES.json",
+      "bytes": 2948,
+      "sha256": "7dbd62b5be2b186065827b631117acabc77af0131035bd947425993989a5bf92"
+    },
+    {
+      "path": "reports/fep_e3_r1/PROTECTED_STATE_READBACK.json",
+      "bytes": 11719,
+      "sha256": "63e09911bb70c5e7b1c9d83d1af6ee10baf66d551d8a6f0d15b9694fe9b5b245"
+    },
+    {
+      "path": "reports/fep_e3_r1/PURGE_GATE.json",
+      "bytes": 1173,
+      "sha256": "df797ab64ee46a7c00d90e511588da7df2558a53fc77b77e1299d17243623186"
+    },
+    {
+      "path": "reports/fep_e3_r1/PURGE_ROW_LEDGER.jsonl.gz",
+      "bytes": 600687,
+      "sha256": "1a9f65c1dac63ae7ea7da308847e195afd2a39de5de2ebeb22d2f45ebe442d5e"
+    },
+    {
+      "path": "reports/fep_e3_r1/QUANTILE_MODEL_GATE.json",
+      "bytes": 1607,
+      "sha256": "c36ea6df7abe60d96072b527922ca8c44299a0dbe578821025495152718ebe90"
+    },
+    {
+      "path": "reports/fep_e3_r1/RUNTIME_ENVIRONMENT_READBACK.json",
+      "bytes": 795,
+      "sha256": "4f94cedc0bf2013d4154bb0e2268ef74ba6211fc5834f271a57eeb920d0539d9"
+    },
+    {
+      "path": "reports/fep_e3_r1/scoped.log",
+      "bytes": 108094,
+      "sha256": "aa7a334adf0276fcda87d6e7015bd3c6eaf1962c9b486f3460f36a87baa99cc9"
+    },
+    {
+      "path": "reports/fep_e3_r1/scoped.xml",
+      "bytes": 455520,
+      "sha256": "2fd01bcc7de73b86070877315e3ca8a72016844f1fa84853fbcfa4059743b044"
+    },
+    {
+      "path": "reports/fep_e3_r1/SCOPED_REGRESSION_SUMMARY.json",
+      "bytes": 17646,
+      "sha256": "8c7e459789151e9644d41fe7d45d4af17961d6462f5206dba0fb3e66631bb0b5"
+    },
+    {
+      "path": "reports/fep_e3_r1/SERIALIZATION_ROUNDTRIP_GATE.json",
+      "bytes": 554,
+      "sha256": "17b24c5703884272dd3a877be4aac45f52001c05ce5277fd24dd5004c50b4a31"
+    },
+    {
+      "path": "reports/fep_e3_r1/targeted.log",
+      "bytes": 357,
+      "sha256": "3f316865a1cb9a2746ff1d8ef08b658ce5ecacc08c775e038b622ae7fc791a5a"
+    },
+    {
+      "path": "reports/fep_e3_r1/targeted.xml",
+      "bytes": 26333,
+      "sha256": "eeee70af866e4555ade7680a8770e9aced0702bee4671be36b2271fb7a6240c0"
+    },
+    {
+      "path": "reports/fep_e3_r1/TARGETED_SUMMARY.json",
+      "bytes": 572,
+      "sha256": "3884ad646a122bf7c16a8f0be52e89a64275c6f987b22cecf70be7e1cd110ece"
+    },
+    {
+      "path": "reports/fep_e3_r1/TRAINING_TRIAL_LEDGER.json",
+      "bytes": 52226,
+      "sha256": "4dba860286b7a55a52cc4a22a265139fd38691a4d62ec9cfd803f7fe6e27a18a"
+    },
+    {
+      "path": "reports/fep_e3_r1/TRANSACTION_ROLLBACK_GATE.json",
+      "bytes": 4620,
+      "sha256": "153b13f2871d3ca524c7986bd707aa9225ba31e2a34f7a8ca8126e5c5d254430"
+    },
+    {
+      "path": "reports/fep_e3_r1/V4_15E2_FINAL_CAPABILITY_SCOPED_INDEPENDENT_EXTERNAL_AUDIT_R1_20261005.md",
+      "bytes": 8739,
+      "sha256": "3ce235fb681f1c8be03fc08fa4541ef9ad115e61e30da6e22516da71af331dca"
+    },
+    {
+      "path": "reports/fep_e3_r1/V4_15E3_INTERPRETABLE_MODEL_TIME_SPLIT_IMPLEMENTATION_TASK_R1_20261005.md",
+      "bytes": 14329,
+      "sha256": "f530e1173a62f37d63c029ecd206ca43de8c8408bdf77ee600582387197f945d"
+    },
+    {
+      "path": "reports/fep_e3_r1/V4_FEP_EXECUTION_MASTER_V4_15E3_R1_20261005.md",
+      "bytes": 1101,
+      "sha256": "7205f06c361fbad4c4311c4a8e03df133b733c5fc95d23d1973f16b3a9512c29"
+    }
+  ],
+  "external_acceptance": false,
+  "REAL_OOS": "NOT_GRANTED",
+  "FIRST_OBSERVED": "NOT_GRANTED",
+  "MODEL_DISPLAY": "UNGRANTED",
+  "PRIORITY_USE": "UNGRANTED",
+  "production": false,
+  "shadow": false,
+  "next": "STOP_WAIT_V4_15E3_INDEPENDENT_EXTERNAL_AUDIT",
+  "sealed_at": "2026-10-05T14:28:48.753764+00:00",
+  "logical_digest": "161e503a2126688981caa4f7264f1bda7f8f0bc3c94c3b3c69655d52080b71a3"
+}

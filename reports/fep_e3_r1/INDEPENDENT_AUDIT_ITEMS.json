@@ -1,0 +1,34 @@
+{
+  "items": [
+    {
+      "audit_id": "FEP_E3_RECONSTRUCTED_DUAL_CLOCK_AND_JOINT_OOD",
+      "status": "OPEN_EXTERNAL_REVIEW",
+      "scope": "Historical event-time split with fixed pre-phase reconstruction knowledge snapshot; JOINT_OOD remains UNSET; no PIT or real OOS promotion",
+      "evidence": [
+        {
+          "path": "reports/fep_e3_r1/PURGE_GATE.json",
+          "bytes": 1173,
+          "sha256": "df797ab64ee46a7c00d90e511588da7df2558a53fc77b77e1299d17243623186"
+        },
+        {
+          "path": "reports/fep_e3_r1/OOD_REFERENCE_GATE.json",
+          "bytes": 445,
+          "sha256": "953cd6655c603069e2d98e1fa34bc1a43a08ff786bc7304f39e5fd06ff55086c"
+        }
+      ],
+      "acceptance": "Independent E3 audit; no global OOD/display/effectiveness grant"
+    },
+    {
+      "audit_id": "FEP_E2_PRIOR_EPISODE_OWNER_CAPABILITY",
+      "status": "OPEN_BLOCKS_OTHER_EVENT_STRATA",
+      "scope": "REENTRY/NEW_CONFIRMED owner debt unchanged",
+      "evidence": [
+        {
+          "path": "reports/fep_e2_r1r2/INDEPENDENT_AUDIT_ITEMS.json",
+          "bytes": 807,
+          "sha256": "7acba5aa3c1bfdf0114bdbe0caa3417232c643509939349d6f9d4e2328ddf219"
+        }
+      ]
+    }
+  ]
+}

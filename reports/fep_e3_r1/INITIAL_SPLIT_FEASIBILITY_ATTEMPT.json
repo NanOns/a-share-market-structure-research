@@ -1,0 +1,11 @@
+{
+  "status": "BLOCKED_BEFORE_PROTOCOL_FREEZE",
+  "rule": "Tail periods each require max(2*(parameter upper bound+1),ceil(sqrt(global complete-case rows)))",
+  "dates": 221,
+  "eligible_complete_case": 4364,
+  "global_sqrt_rows": 67,
+  "reason": "Sparse later FIRST_PREWATCH dates consume too much history under global-row sqrt reservation; TRAIN dates insufficient",
+  "model_trials": 0,
+  "outer_opened": false,
+  "outcome_performance_consumed": false
+}

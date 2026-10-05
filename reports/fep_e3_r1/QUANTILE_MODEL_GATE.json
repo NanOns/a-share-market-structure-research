@@ -1,0 +1,49 @@
+{
+  "status": "PASS_LINEAR_QUANTILES_ENGINEERING",
+  "selected": {
+    "q25": {
+      "artifact": {
+        "path": "reports/fep_e3_r1/registry/serialization_v1_1/model_q25_109ebe50b17f2fdd3ababe3db4de780a0d5f634e4dafc88dba05bca5ae4f4e61.json",
+        "bytes": 1760,
+        "sha256": "4ab27d33180d64e0b8556f13288855c000e0c8634551504251ab8aa613bb7e72"
+      },
+      "logical_digest": "109ebe50b17f2fdd3ababe3db4de780a0d5f634e4dafc88dba05bca5ae4f4e61",
+      "trial_index": 7,
+      "parameters": {
+        "quantile": 0.25,
+        "alpha": 0.01
+      }
+    },
+    "q50": {
+      "artifact": {
+        "path": "reports/fep_e3_r1/registry/serialization_v1_1/model_q50_072bfb554e035edc936c6597b9371023ffbda176215eb136b91e24a42bbb1cf6.json",
+        "bytes": 1817,
+        "sha256": "8365a34dd6247c6b4d05f60e7369706dc460e1b90cf08a3c62fb9001c56e4d22"
+      },
+      "logical_digest": "072bfb554e035edc936c6597b9371023ffbda176215eb136b91e24a42bbb1cf6",
+      "trial_index": 9,
+      "parameters": {
+        "quantile": 0.5,
+        "alpha": 0.01
+      }
+    },
+    "q75": {
+      "artifact": {
+        "path": "reports/fep_e3_r1/registry/serialization_v1_1/model_q75_bd327f1751447a9bd435b5d0d23e070399b74df48eaa4e72eb1ac1659e6cfcaa.json",
+        "bytes": 1847,
+        "sha256": "0c8a3e4a10266f70a893c3d99696f3f8190e59fb88876b602432709f2040c6db"
+      },
+      "logical_digest": "bd327f1751447a9bd435b5d0d23e070399b74df48eaa4e72eb1ac1659e6cfcaa",
+      "trial_index": 11,
+      "parameters": {
+        "quantile": 0.75,
+        "alpha": 0.01
+      }
+    }
+  },
+  "levels": [
+    0.25,
+    0.5,
+    0.75
+  ]
+}

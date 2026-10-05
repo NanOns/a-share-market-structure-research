@@ -1,0 +1,429 @@
+{
+  "contract_id": "FEP_E3_INTERPRETABLE_FIRST_PREWATCH_T1_V1_1",
+  "lineage_id": "FEP_E3_R1_FIRST_PREWATCH_T1_SERIALIZATION_V1_1",
+  "scope": {
+    "observation_scope": "FEP_STOCK_ENTRY_CORE",
+    "signal_type": "FIRST_PREWATCH",
+    "target": "ABS_RETURN_N:T1",
+    "horizon": 1,
+    "feature_variant": "CORE",
+    "evidence_origin": "RECONSTRUCTED_CORRECTED"
+  },
+  "predecessor_protocol": {
+    "path": "config/fep_e3_experiment_protocol_v1.json",
+    "bytes": 10943,
+    "sha256": "abc77d291dea9377f59ee95f19886055d2bde88abb2c9d64da19289b845b8841"
+  },
+  "pre_outer_repair": {
+    "path": "reports/fep_e3_r1/PRE_OUTER_REPAIR_DISPOSITION.json",
+    "bytes": 1054,
+    "sha256": "08e5defa5996d8ec8d3014947998faee454e7aa615c67acb6d1fa7a07904a412"
+  },
+  "primary_metric": "DATE_BALANCED_MAE",
+  "secondary_metrics": [
+    "DATE_BALANCED_HUBER_LOSS",
+    "DATE_BALANCED_RMSE",
+    "WEIGHTED_SIGN_HIT",
+    "SPEARMAN",
+    "PINBALL",
+    "EMPIRICAL_QUANTILE_COVERAGE"
+  ],
+  "model_families": [
+    "HUBER_LINEAR",
+    "QUANTILE_LINEAR"
+  ],
+  "feature_manifest_digest": "4ef9e023bd83126d0e8531f4e78a019851892a5dae6084c19dfcc551517ea340",
+  "split": {
+    "rule": "RIGHT_TO_LEFT_MINIMUM_SUPPORT_CHRONOLOGICAL_V1",
+    "groups": {
+      "OUTER_TEST": [
+        "2024-11-08",
+        "2024-11-11",
+        "2024-11-12",
+        "2024-11-13",
+        "2024-11-14",
+        "2024-11-18",
+        "2024-11-19",
+        "2024-11-20",
+        "2024-11-21",
+        "2024-11-22",
+        "2024-11-25",
+        "2024-11-26",
+        "2024-11-27",
+        "2024-11-29",
+        "2024-12-02",
+        "2024-12-04",
+        "2024-12-05",
+        "2024-12-11",
+        "2024-12-12",
+        "2024-12-13",
+        "2024-12-16",
+        "2024-12-20",
+        "2024-12-23",
+        "2024-12-24",
+        "2024-12-26",
+        "2024-12-30",
+        "2025-01-02",
+        "2025-01-06",
+        "2025-01-09",
+        "2025-01-20",
+        "2025-02-07",
+        "2025-02-11",
+        "2025-02-12",
+        "2025-02-17",
+        "2025-02-19",
+        "2025-02-21",
+        "2025-02-24",
+        "2025-02-25",
+        "2025-02-26",
+        "2025-02-27",
+        "2025-03-05",
+        "2025-03-06",
+        "2025-03-07",
+        "2025-03-11",
+        "2025-03-12",
+        "2025-03-21",
+        "2025-03-31",
+        "2025-04-15",
+        "2025-04-16",
+        "2025-04-22",
+        "2025-04-25",
+        "2025-04-30",
+        "2025-05-06",
+        "2025-05-12",
+        "2025-05-21",
+        "2025-05-23",
+        "2025-05-26",
+        "2025-05-29",
+        "2025-05-30",
+        "2025-06-03",
+        "2025-06-05",
+        "2025-06-06",
+        "2025-06-09",
+        "2025-06-11",
+        "2025-06-18",
+        "2025-06-19",
+        "2025-06-27",
+        "2025-06-30",
+        "2025-07-03",
+        "2025-07-09",
+        "2025-07-18",
+        "2025-07-28",
+        "2025-08-04",
+        "2025-08-05",
+        "2025-08-06",
+        "2025-08-20",
+        "2025-08-25",
+        "2025-08-29",
+        "2025-09-09",
+        "2025-09-10",
+        "2025-09-15",
+        "2025-09-16",
+        "2025-10-22",
+        "2025-11-04",
+        "2025-11-06",
+        "2025-11-12",
+        "2025-11-14",
+        "2025-11-18",
+        "2025-11-21",
+        "2025-11-25",
+        "2025-11-28",
+        "2025-12-01",
+        "2025-12-02",
+        "2025-12-10",
+        "2025-12-11",
+        "2025-12-19",
+        "2025-12-23",
+        "2025-12-26",
+        "2025-12-29",
+        "2026-01-06",
+        "2026-01-08",
+        "2026-01-12",
+        "2026-01-22",
+        "2026-01-23",
+        "2026-01-29",
+        "2026-02-02",
+        "2026-02-03",
+        "2026-02-05",
+        "2026-02-12",
+        "2026-02-13",
+        "2026-02-24",
+        "2026-02-26",
+        "2026-02-27",
+        "2026-03-10",
+        "2026-03-11",
+        "2026-03-16",
+        "2026-03-17",
+        "2026-03-24",
+        "2026-03-27",
+        "2026-03-30",
+        "2026-04-02",
+        "2026-04-10",
+        "2026-04-29",
+        "2026-05-21",
+        "2026-05-29",
+        "2026-06-01",
+        "2026-06-02",
+        "2026-06-03",
+        "2026-06-04",
+        "2026-06-08",
+        "2026-06-15",
+        "2026-06-16",
+        "2026-06-17",
+        "2026-06-18",
+        "2026-06-22",
+        "2026-06-29",
+        "2026-07-06",
+        "2026-07-14",
+        "2026-07-20",
+        "2026-08-03",
+        "2026-08-05",
+        "2026-08-06",
+        "2026-08-13",
+        "2026-08-28",
+        "2026-08-31",
+        "2026-09-03",
+        "2026-09-09",
+        "2026-09-11",
+        "2026-09-14",
+        "2026-09-24"
+      ],
+      "CALIBRATION": [
+        "2024-10-17",
+        "2024-10-18",
+        "2024-10-21",
+        "2024-10-22",
+        "2024-10-23",
+        "2024-10-24",
+        "2024-10-25",
+        "2024-10-28",
+        "2024-10-29",
+        "2024-10-30",
+        "2024-10-31",
+        "2024-11-01",
+        "2024-11-04",
+        "2024-11-05",
+        "2024-11-06",
+        "2024-11-07"
+      ],
+      "INTERNAL_TUNE": [
+        "2024-09-05",
+        "2024-09-06",
+        "2024-09-09",
+        "2024-09-10",
+        "2024-09-11",
+        "2024-09-12",
+        "2024-09-13",
+        "2024-09-18",
+        "2024-09-19",
+        "2024-09-20",
+        "2024-09-23",
+        "2024-09-24",
+        "2024-09-25",
+        "2024-09-26",
+        "2024-10-11",
+        "2024-10-15",
+        "2024-10-16"
+      ],
+      "TRAIN": [
+        "2024-07-15",
+        "2024-07-16",
+        "2024-07-17",
+        "2024-07-18",
+        "2024-07-19",
+        "2024-07-22",
+        "2024-07-23",
+        "2024-07-24",
+        "2024-07-25",
+        "2024-07-26",
+        "2024-07-29",
+        "2024-07-30",
+        "2024-07-31",
+        "2024-08-01",
+        "2024-08-02",
+        "2024-08-05",
+        "2024-08-06",
+        "2024-08-07",
+        "2024-08-08",
+        "2024-08-09",
+        "2024-08-12",
+        "2024-08-13",
+        "2024-08-14",
+        "2024-08-15",
+        "2024-08-16",
+        "2024-08-19",
+        "2024-08-20",
+        "2024-08-21",
+        "2024-08-22",
+        "2024-08-23",
+        "2024-08-26",
+        "2024-08-27",
+        "2024-08-28",
+        "2024-08-29",
+        "2024-08-30",
+        "2024-09-02",
+        "2024-09-03",
+        "2024-09-04"
+      ]
+    },
+    "minimum": {
+      "dates": 15,
+      "rows": 46,
+      "blocks": 7
+    },
+    "train_minimum": {
+      "dates": 30,
+      "rows": 92
+    },
+    "support_heuristic_only": true,
+    "derivation": "Evaluation rows >=2*(maximum encoded feature dimension+intercept); TRAIN rows >=4*(dimension+intercept). Dates >=ceil(sqrt(available date groups)), TRAIN dates twice that; independent blocks >=ceil(sqrt(minimum evaluation rows)). Feasibility heuristic, not statistical power.",
+    "outcome_performance_consumed": false,
+    "knowledge_cutoff": "2026-10-05T14:10:15.046180+00:00"
+  },
+  "maximum_target_span": 1,
+  "purge": "Strict label_event_end before later boundary; shared entity/episode intervals grouped/purged; real availability <= fixed pre-phase knowledge cutoff",
+  "temporal_semantics": "Dual clocks: ordered historical event dates, fixed actual engineering knowledge snapshot before every phase; NOT historical availability/PIT or REAL_OOS",
+  "knowledge_cutoff": "2026-10-05T14:10:15.046180+00:00",
+  "probability_calibration": "NOT_APPLICABLE_REGRESSION",
+  "preprocessing": "TRAIN weighted scaler + TRAIN category vocabulary; required complete case; no imputer/winsor/selector",
+  "point_grid": [
+    {
+      "alpha": 0.0001,
+      "epsilon": 1.35
+    },
+    {
+      "alpha": 0.0001,
+      "epsilon": 1.75
+    },
+    {
+      "alpha": 0.01,
+      "epsilon": 1.35
+    },
+    {
+      "alpha": 0.01,
+      "epsilon": 1.75
+    },
+    {
+      "alpha": 1.0,
+      "epsilon": 1.35
+    },
+    {
+      "alpha": 1.0,
+      "epsilon": 1.75
+    }
+  ],
+  "quantile_grid": [
+    {
+      "quantile": 0.25,
+      "alpha": 0.0001
+    },
+    {
+      "quantile": 0.25,
+      "alpha": 0.01
+    },
+    {
+      "quantile": 0.5,
+      "alpha": 0.0001
+    },
+    {
+      "quantile": 0.5,
+      "alpha": 0.01
+    },
+    {
+      "quantile": 0.75,
+      "alpha": 0.0001
+    },
+    {
+      "quantile": 0.75,
+      "alpha": 0.01
+    }
+  ],
+  "tuning": {
+    "partition": "INTERNAL_TUNE",
+    "maximum_trials": 12,
+    "point_selection": "DATE_BALANCED_MAE",
+    "quantile_selection": "DATE_BALANCED_PINBALL_PER_Q",
+    "tie_break": "EXACT_METRIC_THEN_GRID_ORDINAL"
+  },
+  "quantiles": [
+    0.25,
+    0.5,
+    0.75
+  ],
+  "rearrangement": "PRE_REGISTERED_INCREASING_REARRANGEMENT_V1",
+  "calibration": "Independent diagnostics only; no model/hyperparameter/feature adjustment",
+  "ood": "TRAIN observed numeric envelopes/category sets/schema/quality; hard missing/category/schema block; marginal ranges diagnostic; JOINT_OOD UNSET",
+  "baseline": "Exact accepted E2 event baseline mechanics on TRAIN admitted complete-case rows, before test; L1 weighted mean predictor, never full-history mean",
+  "random_seed": 20261005,
+  "cpu_threads": 2,
+  "parallel_trials": 1,
+  "solver": {
+    "huber_max_iter": 2000,
+    "huber_tol": 1e-08,
+    "quantile": "HIGHS",
+    "huber_diagnostic_delta": 0.01
+  },
+  "runtime": {
+    "numpy": "2.2.6",
+    "scipy": "1.16.2",
+    "scikit-learn": "1.7.2",
+    "threadpoolctl": "3.6.0",
+    "joblib": "1.5.2"
+  },
+  "implementation_bindings": [
+    {
+      "path": "src/workbench_analysis/fep_e3/protocol.py",
+      "bytes": 11601,
+      "sha256": "130b5237424c48fb4f45d3d27c78e19a0fc0f1f0d7c2b51a3fafa9e25eb81843"
+    },
+    {
+      "path": "src/workbench_analysis/fep_e3/models.py",
+      "bytes": 9322,
+      "sha256": "d324cb010a66b6ce6813c4816f3cb9bd5794ebcf11d4cdd8a2cbed4ec4af1d28"
+    }
+  ],
+  "model_rows_binding": {
+    "path": "reports/fep_e3_r1/EXACT_MODEL_ROWS.jsonl.gz",
+    "bytes": 15848102,
+    "sha256": "13f1e526528587458d6e6bc86830192c647a22c63e53c7ec06339aad3e8f34f4"
+  },
+  "purge_ledger_binding": {
+    "path": "reports/fep_e3_r1/PURGE_ROW_LEDGER.jsonl.gz",
+    "bytes": 600687,
+    "sha256": "1a9f65c1dac63ae7ea7da308847e195afd2a39de5de2ebeb22d2f45ebe442d5e"
+  },
+  "fold_retained_ids_digest": "f8a27e578e153638034af66f5d78ac8252c57dd75d342db5b1b4480c02fcb64a",
+  "fold_all_date_ids_digest": "ed51f5710f0749e585210a86f2a01012912335a3cd543ebee751730bbb522827",
+  "e2_bindings": [
+    {
+      "path": "reports/fep_e2_r1r2/FIRST_PREWATCH_E2_DATASET.json.gz",
+      "bytes": 70775126,
+      "sha256": "8428b1be71a31c1eee493f0b1627c6f4ee1b5783aa1b2acc7cfe510758427d35"
+    },
+    {
+      "path": "reports/fep_e2_r1r2/CONDITIONAL_BASELINE_FIRST_PREWATCH_T1.json",
+      "bytes": 5415,
+      "sha256": "dfddf09ac5c31e750d4dc2ee02d844d365f533ed708ceaf0f24937cfc8eea1f7"
+    },
+    {
+      "path": "reports/fep_e2_r1r2/FEP_E2_R1R2_CANDIDATE_SEAL.json",
+      "bytes": 7594,
+      "sha256": "4f2a7cee34d97e58f05459bcdaf707c6aab63a3c87b652d74039da274e093685"
+    },
+    {
+      "path": "config/fep_e2_support_policy_registry_v1_1.json",
+      "bytes": 4886,
+      "sha256": "6093a4cc6e329c6f2549d96e188645e95bd5006fde2b58c58df2eeef2fbd981f"
+    }
+  ],
+  "evidence_class": "HISTORICAL_SIMULATION",
+  "evidence_origin": "RECONSTRUCTED_CORRECTED",
+  "REAL_OOS": false,
+  "FIRST_OBSERVED": false,
+  "MODEL_DISPLAY": "UNGRANTED",
+  "PRIORITY_USE": "UNGRANTED",
+  "production": false,
+  "shadow": false,
+  "focus": false,
+  "logical_digest": "91c0ca1d3a3d472bb6f9e2559159053ed7b963469fa446e1b543ca014da7b26b"
+}

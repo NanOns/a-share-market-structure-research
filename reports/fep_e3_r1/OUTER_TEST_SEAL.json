@@ -1,0 +1,42 @@
+{
+  "status": "SEALED_ONE_SHOT",
+  "outer_test_opened_at": "2026-10-05T14:14:11.335296+00:00",
+  "opening_receipt": {
+    "path": "reports/fep_e3_r1/OUTER_TEST_OPEN.json",
+    "bytes": 3003,
+    "sha256": "6148c9f5b5b3dd00181b0a5045b625e70f5c058588882c7a6c4a9d562f14a1a7"
+  },
+  "experiment_contract_digest": "91c0ca1d3a3d472bb6f9e2559159053ed7b963469fa446e1b543ca014da7b26b",
+  "model_artifact_digest": "2fbce41a003eee70b2310e116b09d37ba332485076f755f3957ca7759836e438",
+  "preprocessing": {
+    "path": "reports/fep_e3_r1/registry/serialization_v1_1/preprocessing_a3b3768383f34cac2dc6d1da45cac4ffeea8e610d21070184c6cab7e86c14bbc.json",
+    "bytes": 263313,
+    "sha256": "35b33315ee1f69f34245d2dc403a1605a6d64595065d650c8941c6a7787dfd32"
+  },
+  "OOD_reference": {
+    "path": "reports/fep_e3_r1/registry/serialization_v1_1/ood_0ae367c7975961a64c741fea3db804ca36e445033081085c16c07ded0e1b4412.json",
+    "bytes": 3068,
+    "sha256": "471618c17afeb1837cc70b5f4ab3a1c563c4a5a38d235510a43e0a0be7b26a60"
+  },
+  "calibration": {
+    "path": "reports/fep_e3_r1/registry/serialization_v1_1/calibration_d6aaedbd23bc62bbc41ef849a476c26ab44c3b2c51964a3bd5d5abca60cd1682.json",
+    "bytes": 138472,
+    "sha256": "f22962b0beebef96af56dbe72eb98293fc9ec83d9dbd714baf4b95482b044893"
+  },
+  "prediction_artifact": {
+    "path": "reports/fep_e3_r1/registry/serialization_v1_1/outer_predictions_0988779703e2d2ceb619124654991aa2c5999d1fa236b552bfa36395f139d430.json",
+    "bytes": 92790,
+    "sha256": "f42ea9e3273f4fbef3cb7d801d903672c2c9f91447578167eee4c494f0f6386a"
+  },
+  "prediction_digest": "0988779703e2d2ceb619124654991aa2c5999d1fa236b552bfa36395f139d430",
+  "evaluation_artifact": {
+    "path": "reports/fep_e3_r1/registry/serialization_v1_1/outer_evaluation_9838d4ac959a0fd8c70350be0f4c9d782cdc707feb7be8065478cc615ca23b55.json",
+    "bytes": 6193,
+    "sha256": "4de7610463b86d053a1d8c7e91f6d08a0c185875f3d6f9984987c1d921b2d298"
+  },
+  "evaluation_digest": "9838d4ac959a0fd8c70350be0f4c9d782cdc707feb7be8065478cc615ca23b55",
+  "future_model_changes": "NEW_LINEAGE_REQUIRED_TEST_PREVIOUSLY_SEEN",
+  "MODEL_DISPLAY": "UNGRANTED",
+  "PRIORITY_USE": "UNGRANTED",
+  "production": false
+}

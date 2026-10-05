@@ -1,0 +1,50 @@
+.{"expected_block": true, "transaction_id": 870, "sqlstate": "P0001", "exception": "FEP_CAS_CONFLICT\nCONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE"}
+..{"expected_block": true, "transaction_id": 873, "sqlstate": "P0001", "exception": "FEP_IDEMPOTENCY_CONFLICT\nCONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE"}
+.{"expected_block": true, "transaction_id": 874, "sqlstate": "P0001", "exception": "FEP_IDEMPOTENCY_CONFLICT\nCONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE"}
+.{"expected_block": true, "transaction_id": 875, "sqlstate": "P0001", "exception": "FEP_IDEMPOTENCY_CONFLICT\nCONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE"}
+.{"expected_block": true, "transaction_id": 876, "sqlstate": "P0001", "exception": "FEP_IDEMPOTENCY_CONFLICT\nCONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE"}
+.{"expected_block": true, "transaction_id": 877, "sqlstate": "P0001", "exception": "FEP_IDEMPOTENCY_CONFLICT\nCONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE"}
+.{"expected_block": true, "transaction_id": 878, "sqlstate": "P0001", "exception": "FEP_IDEMPOTENCY_CONFLICT\nCONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE"}
+.{"expected_block": true, "transaction_id": 879, "sqlstate": "P0001", "exception": "FEP_IDEMPOTENCY_CONFLICT\nCONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE"}
+.{"expected_block": true, "transaction_id": 880, "sqlstate": "P0001", "exception": "FEP_REQUIRED_CAS_PARAMETER_NULL\nCONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE"}
+.{"expected_block": true, "transaction_id": 881, "sqlstate": "P0001", "exception": "FEP_REQUIRED_CAS_PARAMETER_NULL\nCONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE"}
+.{"expected_block": true, "transaction_id": 882, "sqlstate": "P0001", "exception": "FEP_REQUIRED_CAS_PARAMETER_NULL\nCONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE"}
+.{"expected_block": true, "transaction_id": 883, "sqlstate": "P0001", "exception": "FEP_REQUIRED_CAS_PARAMETER_NULL\nCONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE"}
+.{"expected_block": true, "transaction_id": 884, "sqlstate": "P0001", "exception": "FEP_REQUIRED_CAS_PARAMETER_NULL\nCONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE"}
+.{"expected_block": true, "transaction_id": 885, "sqlstate": "P0001", "exception": "FEP_REQUIRED_CAS_PARAMETER_NULL\nCONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE"}
+.{"expected_block": true, "transaction_id": 886, "sqlstate": "P0001", "exception": "FEP_REQUIRED_CAS_PARAMETER_NULL\nCONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 6 at RAISE"}
+.{"expected_block": true, "transaction_id": 887, "sqlstate": "P0001", "exception": "FEP_IDEMPOTENCY_CONFLICT\nCONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 17 at RAISE"}
+{"expected_block": true, "transaction_id": 887, "sqlstate": "P0001", "exception": "FEP_CAS_CONFLICT\nCONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE"}
+.{"expected_block": true, "transaction_id": 889, "sqlstate": "P0001", "exception": "FEP_CAS_CONFLICT\nCONTEXT:  PL/pgSQL function cas_deploy(text,text,text,bigint,text,text,sha256,jsonb) line 39 at RAISE"}
+.{"expected_block": true, "transaction_id": 891, "sqlstate": "P0001", "exception": "FEP_HEAD_ACTIVATION_INVALID\nCONTEXT:  PL/pgSQL function validate_deployment_head() line 6 at RAISE"}
+.{"expected_block": true, "transaction_id": 892, "sqlstate": "42501", "exception": "permission denied for function cas_deploy"}
+.{"expected_block": true, "transaction_id": 893, "sqlstate": "42501", "exception": "permission denied for table deployment_heads"}
+{"expected_block": true, "transaction_id": 893, "sqlstate": "42501", "exception": "permission denied for table deployment_heads"}
+{"expected_block": true, "transaction_id": 893, "sqlstate": "42501", "exception": "permission denied for table contracts"}
+{"expected_block": true, "transaction_id": 893, "sqlstate": "42501", "exception": "must be owner of table deployment_heads"}
+{"expected_block": true, "transaction_id": 893, "sqlstate": "42501", "exception": "permission denied to set role \"fep_cas_owner\""}
+....{"expected_block": true, "transaction_id": 902, "sqlstate": "P0002", "exception": "query returned no rows\nCONTEXT:  PL/pgSQL function validate_observation() line 4 at SQL statement"}
+.{"expected_block": true, "transaction_id": 903, "sqlstate": "23503", "exception": "insert or update on table \"label_revisions\" violates foreign key constraint \"label_revisions_observation_id_scope_id_fkey\"\nDETAIL:  Key (observation_id, scope_id)=(o, OTHER) is not present in table \"observations\"."}
+.{"expected_block": true, "transaction_id": 905, "sqlstate": "23503", "exception": "insert or update on table \"dataset_rows\" violates foreign key constraint \"dataset_rows_snapshot_id_observation_id_fkey\"\nDETAIL:  Key (snapshot_id, observation_id)=(snap, other) is not present in table \"snapshots\"."}
+.{"expected_block": true, "transaction_id": 907, "sqlstate": "P0001", "exception": "FEP_SNAPSHOT_FEATURE_CONTRACT_MISMATCH\nCONTEXT:  PL/pgSQL function validate_snapshot() line 6 at RAISE"}
+.{"expected_block": true, "transaction_id": 908, "sqlstate": "23503", "exception": "insert or update on table \"dataset_fold_label_selection\" violates foreign key constraint \"dataset_fold_label_selection_observation_id_target_id_sele_fkey\"\nDETAIL:  Key (observation_id, target_id, selected_label_revision, selected_label_digest)=(o, ABS:T5, 1, d78ed9efa6ae77434392252f5e55039c106c229f28150fb5fbffbedbc40e15df) is not present in table \"label_revisions\"."}
+.{"expected_block": true, "transaction_id": 910, "sqlstate": "P0002", "exception": "query returned no rows\nCONTEXT:  PL/pgSQL function validate_dataset_row() line 6 at SQL statement"}
+.{"expected_block": true, "transaction_id": 911, "sqlstate": "P0001", "exception": "FEP_FOLD_REVISION_NOT_VISIBLE\nCONTEXT:  PL/pgSQL function validate_fold_label_selection() line 11 at RAISE"}
+.{"expected_block": true, "transaction_id": 912, "sqlstate": "P0001", "exception": "FEP_FOLD_LABEL_NOT_TRAINABLE\nCONTEXT:  PL/pgSQL function validate_fold_label_selection() line 14 at RAISE"}
+.{"expected_block": true, "transaction_id": 913, "sqlstate": "P0001", "exception": "FEP_FOLD_REVISION_NOT_VISIBLE\nCONTEXT:  PL/pgSQL function validate_fold_label_selection() line 11 at RAISE"}
+.{"expected_block": true, "transaction_id": 914, "sqlstate": "P0001", "exception": "FEP_FOLD_REVISION_NOT_VISIBLE\nCONTEXT:  PL/pgSQL function validate_fold_label_selection() line 11 at RAISE"}
+..{"expected_block": true, "transaction_id": 916, "sqlstate": "P0001", "exception": "FEP_RECONSTRUCTION_NOT_PIT\nCONTEXT:  PL/pgSQL function validate_observation_revision() line 12 at RAISE"}
+..{"expected_block": true, "transaction_id": 918, "sqlstate": "P0001", "exception": "FEP_DENOMINATOR_INCOMPLETE\nCONTEXT:  PL/pgSQL function validate_denominator_complete() line 11 at RAISE"}
+..{"expected_block": true, "transaction_id": 920, "sqlstate": "P0001", "exception": "FEP_FOLD_PHASE_OVERLAP\nCONTEXT:  PL/pgSQL function validate_dataset_row() line 15 at RAISE"}
+.{"expected_block": true, "transaction_id": 921, "sqlstate": "P0001", "exception": "FEP_FOLD_PHASE_OVERLAP\nCONTEXT:  PL/pgSQL function validate_dataset_row() line 15 at RAISE"}
+.{"expected_block": true, "transaction_id": 922, "sqlstate": "P0001", "exception": "FEP_FOLD_PHASE_OVERLAP\nCONTEXT:  PL/pgSQL function validate_dataset_row() line 15 at RAISE"}
+..{"expected_block": true, "transaction_id": 924, "sqlstate": "P0001", "exception": "FEP_APPEND_ONLY\nCONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE"}
+.{"expected_block": true, "transaction_id": 926, "sqlstate": "P0001", "exception": "FEP_APPEND_ONLY\nCONTEXT:  PL/pgSQL function reject_mutation() line 2 at RAISE"}
+.{"expected_block": true, "transaction_id": 928, "sqlstate": null, "exception": "FEP_UNGUARDED_TABLE_INVENTORY"}
+.{"expected_block": true, "transaction_id": 930, "sqlstate": "P0001", "exception": "FEP_LABEL_EXACT_SOURCE_MISMATCH\nCONTEXT:  PL/pgSQL function validate_label_revision() line 14 at RAISE"}
+.{"expected_block": true, "transaction_id": 931, "sqlstate": "P0001", "exception": "FEP_UPSTREAM_EXACT_AUTHORITY_REQUIRED\nCONTEXT:  PL/pgSQL function validate_label_binding() line 12 at RAISE"}
+.{"expected_block": true, "transaction_id": 932, "sqlstate": "23505", "exception": "duplicate key value violates unique constraint \"prediction_slots_observation_id_target_id_horizon_model_fam_key\"\nDETAIL:  Key (observation_id, target_id, horizon, model_family_scope)=(o, ABS:T5, 5, CORE) already exists."}
+..........{"expected_block": true, "transaction_id": 941, "sqlstate": "42704", "exception": "type \"nonexistent_type\" does not exist\nLINE 1: create table fep.rollback_probe (id nonexistent_type)\n                                            ^"}
+..{"expected_block": true, "transaction_id": 942, "sqlstate": "P0001", "exception": "FEP_DENOMINATOR_INCOMPLETE\nCONTEXT:  PL/pgSQL function validate_denominator_complete() line 11 at RAISE"}
+..................
+79 passed in 4.51s

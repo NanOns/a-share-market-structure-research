@@ -1,0 +1,41 @@
+{
+  "databases": {
+    "fep_e1_fresh": {
+      "command": [
+        "E:\\python\\python.exe",
+        "-B",
+        "-m",
+        "pytest",
+        "tests/fep",
+        "-q",
+        "-s",
+        "--basetemp=E:/codex_tmp/test_temp/fep_e1_fresh",
+        "--junitxml=E:\\codex work\\大A交易\\reports\\fep_e1_r1_repair\\fep_e1_fresh.xml"
+      ],
+      "exit_code": 0,
+      "tests": 79,
+      "passed": 78,
+      "skipped": 1,
+      "failed_nodes": []
+    },
+    "fep_e1_upgrade": {
+      "command": [
+        "E:\\python\\python.exe",
+        "-B",
+        "-m",
+        "pytest",
+        "tests/fep",
+        "-q",
+        "-s",
+        "--basetemp=E:/codex_tmp/test_temp/fep_e1_upgrade",
+        "--junitxml=E:\\codex work\\大A交易\\reports\\fep_e1_r1_repair\\fep_e1_upgrade.xml"
+      ],
+      "exit_code": 0,
+      "tests": 79,
+      "passed": 79,
+      "skipped": 0,
+      "failed_nodes": []
+    }
+  },
+  "same_fresh_upgrade_schema": true
+}

@@ -9,6 +9,18 @@ TIMES = ('source_fact_available_at', 'label_training_mature_at', 'label_revision
 FIELDS = {'ABS_RETURN_N': 'R_N', 'MFE_N': 'MFE_N', 'MAE_N': 'MAE_N', 'PATH_MDD_CLOSE_N': 'PATH_MDD_CLOSE_N'}
 
 
+def project_with_owner_time(root, row, target, *, authority_head, cutoff):
+    """Use the additive exact owner registry; never insert a pending binding."""
+    from ..v4_15_fep_label_time import resolve
+    authority = resolve(root, row, cutoff)
+    if not authority['training_allowed']:
+        return dict(training_allowed=False, quality='PENDING',
+                    reason=authority['reason'], upstream_key=row['outcome_revision_id'],
+                    time_authority=authority)
+    return project(row, target, authority_head=authority_head,
+                   time_authority=authority['binding'])
+
+
 def read_source(store, binding, upstream_key, upstream_revision, source_digest):
     if binding not in store.refs('outcomes'):
         raise ValueError('FEP_UPSTREAM_ROW_NOT_REGISTERED')

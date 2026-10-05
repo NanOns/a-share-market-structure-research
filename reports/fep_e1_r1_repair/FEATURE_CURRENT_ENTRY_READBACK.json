@@ -1,0 +1,313 @@
+{
+  "status": "BLOCKED_NO_EXACT_CURRENT_ENTRY_47_FIELD_ADMISSION",
+  "target_trade_date": "2026-09-30",
+  "accepted_data_head": {
+    "path": "data/v4/V4_DATA_ACCEPTED_HEAD.json",
+    "bytes": 16890,
+    "sha256": "38e7c9b69aa1b47224aa367bcc58bd3e9963d7c80185c180b5ce02ab48ff3e40"
+  },
+  "accepted_stage_head": {
+    "path": "data/v4/V4_STAGE_ACCEPTED_HEAD.json",
+    "bytes": 15303,
+    "sha256": "936a23f219c364eca4799ec6167dfa2916b56914f04e207f819923cf7f25c6f0"
+  },
+  "dependency_manifest": [
+    {
+      "owner_stage": "V4-03",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "artifact": {
+        "path": "reports/v4_03/staging/V4_03_FULL_SCOPE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 24462765,
+        "sha256": "9b6a1f16d90c2c5d08f1cc981edcceb737c29cab1792cad84bf25d62a7fd1e2e"
+      },
+      "evidence_scope": "ACCEPTED_HISTORICAL",
+      "row_digest": "efc3586dda8fe058eb2f048f921ea4387a937f73dc26fd80af78032bb6330231",
+      "root_keys": [
+        "board_scope",
+        "evidence_origin",
+        "fields",
+        "membership_basis",
+        "security_id",
+        "source_digest",
+        "trade_date",
+        "universe_snapshot_id"
+      ],
+      "trade_date": "2026-09-24",
+      "entity": "SEC-00096141BD5420F5CB3120E687CDA5B9"
+    },
+    {
+      "owner_stage": "V4-03",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "artifact": {
+        "path": "reports/v4_03/staging/V4_03_MARKET_REFERENCE_PATH_CANDIDATE_R3.jsonl.gz",
+        "bytes": 234720,
+        "sha256": "898a6554eaefae1206d5a228e2b99f78743ef2d749d40579862c9a5de1bdaedb"
+      },
+      "evidence_scope": "ACCEPTED_HISTORICAL",
+      "row_digest": "1f869b3ec5e301fa19e689dcc1b9c54b9e2add7238f4c7aabcc734942bd7c3f4",
+      "root_keys": [
+        "adjustment_basis_id",
+        "contract_id",
+        "contract_version",
+        "coverage",
+        "end_session",
+        "evaluable_count",
+        "evaluable_set_identity",
+        "evidence_origin",
+        "input_digest",
+        "input_source_digest",
+        "level",
+        "market_calendar_id",
+        "missing_count",
+        "output_digest",
+        "parameter_set_id",
+        "path_identity",
+        "quality_state",
+        "rebase_policy",
+        "reference_return",
+        "series_version",
+        "start_session",
+        "start_universe_snapshot_id",
+        "trade_date",
+        "universe_count",
+        "unknown_reason",
+        "window_identity"
+      ],
+      "trade_date": "2023-07-04",
+      "entity": null
+    },
+    {
+      "owner_stage": "V4-03",
+      "owner_head": {
+        "path": "data/v4/V4_03_ACCEPTED_HEAD_AMENDED_R1.json",
+        "bytes": 4924,
+        "sha256": "70b856675f0153920c786acba80b3e2f020fd114f2159c795cf7f50e5a783035"
+      },
+      "artifact": {
+        "path": "reports/v4_03/staging/V4_03_MARKET_REGIME_NATIVE_CANDIDATE_R3.jsonl.gz",
+        "bytes": 356287,
+        "sha256": "89aae8484aa98837c3d6c685d48365edae2913ac506dd12916f8c56e92a9b139"
+      },
+      "evidence_scope": "ACCEPTED_HISTORICAL",
+      "row_digest": "16eb9dcf602cd2a92874f0cc3e672bebba2e6bcbcb0240a71b8361d0a2d5f2c2",
+      "root_keys": [
+        "axis_quality",
+        "breadth_axis",
+        "evidence_origin",
+        "identity",
+        "input_digest",
+        "output_digest",
+        "parameter_set_id",
+        "participation_axis",
+        "producer_contracts",
+        "raw",
+        "stress_change",
+        "stress_level",
+        "trade_date",
+        "trend_axis"
+      ],
+      "trade_date": "2023-07-04",
+      "entity": null
+    },
+    {
+      "owner_stage": "V4-04",
+      "owner_head": {
+        "path": "data/v4/V4_04_ACCEPTED_HEAD.json",
+        "bytes": 6837,
+        "sha256": "1d8a0611dc80e3c3bea86175f75096eeac53f04af126137892cbc8a14dc0bd7a"
+      },
+      "artifact": {
+        "path": "reports/v4_04/staging/V4_04_FULL_MARKET_CORE_PROFILE_CANDIDATE_R4.jsonl.gz",
+        "bytes": 48963733,
+        "sha256": "b1ce4e4cb227f7cc25271005debfc9fc7bfaf61d39e20c96592921dd361e3b52"
+      },
+      "evidence_scope": "ACCEPTED_HISTORICAL",
+      "row_digest": "7587ddfc4980ef0ebe600cef1748c9eabba348167693119ab6f0240538a9c24d",
+      "root_keys": [
+        "accepted_v4_03_field_window_mapping_digest",
+        "board",
+        "contract_digest",
+        "derived_fields",
+        "field_window_mapping_digest",
+        "field_window_mapping_id",
+        "output_digest",
+        "period_lineage",
+        "primitive_quality",
+        "profile_component_status",
+        "profile_quality",
+        "publication_id",
+        "security_id",
+        "source_asof",
+        "source_cutoff",
+        "source_digest",
+        "states",
+        "symbol",
+        "technical_window_identity",
+        "trade_date",
+        "trading_status"
+      ],
+      "trade_date": "2026-09-24",
+      "entity": "SEC-002610CF9EBB4227722834AADA8F757E"
+    },
+    {
+      "owner_stage": "V4-11",
+      "owner_head": {
+        "path": "data/v4/V4_11_ACCEPTED_HEAD.json",
+        "bytes": 14090,
+        "sha256": "d8d96dce559eb968e6446f0626766980f6fb045fca1219e3e01fcd0a980b9928"
+      },
+      "artifact": {
+        "path": "data/v4/confirmation_candidates_r5/SEALED_OWNER_PUBLICATION_2026-09-30_R5.json.gz",
+        "bytes": 880494,
+        "sha256": "bc06ff1e449925ef52da7fbce883314e77908cbbd00a06331734109a20905a58"
+      },
+      "evidence_scope": "ACCEPTED_ENGINEERING_RECONSTRUCTED",
+      "row_digest": "0a70aba835838633db2f4446526379325557f4ac27162af89078d549a3a94ec5",
+      "root_keys": [
+        "prewatch",
+        "prewatch_facts",
+        "prewatch_required_reasons",
+        "prewatch_source_projection",
+        "producer_contract_id",
+        "security_id",
+        "seed",
+        "seed_facts",
+        "source_output_digest",
+        "trade_date"
+      ],
+      "trade_date": "2026-09-30",
+      "entity": "SEC-00096141BD5420F5CB3120E687CDA5B9"
+    },
+    {
+      "owner_stage": "V4-11",
+      "owner_head": {
+        "path": "data/v4/V4_11_ACCEPTED_HEAD.json",
+        "bytes": 14090,
+        "sha256": "d8d96dce559eb968e6446f0626766980f6fb045fca1219e3e01fcd0a980b9928"
+      },
+      "artifact": {
+        "path": "data/v4/confirmation_candidates_r5/TARGET_CORE_OWNER_RECORDS_2026-09-30_R5.json.gz",
+        "bytes": 32275532,
+        "sha256": "6fe25d6c5faa20cd54061c58cf57d4c57cc28956f30ebed69fe416f133dc8d97"
+      },
+      "evidence_scope": "BOUND_RECONSTRUCTED_CORE_CANDIDATE",
+      "row_digest": "0d78f1d0521245bdbfe3698508365e151545cfaf062635a0e9ab825b1ee0eeb6",
+      "root_keys": [
+        "core",
+        "factor"
+      ],
+      "trade_date": null,
+      "entity": null
+    },
+    {
+      "owner_stage": "V4-12",
+      "owner_head": {
+        "path": "data/v4/V4_12_ACCEPTED_HEAD.json",
+        "bytes": 796484,
+        "sha256": "7201f1b320feeeccf645f3b7bf6ee5ef41f925ad2da6d61ecaedc5838aca2181"
+      },
+      "artifact": {
+        "path": "reports/v4_12_runtime_r13/real/2026-09-30/r1/runtime_security.jsonl.gz",
+        "bytes": 32785793,
+        "sha256": "ea489cd86c02ebbe91febf1ce4ace8d1da4ac54c92204c7bb706a3e7bcaa6f38"
+      },
+      "evidence_scope": "ACCEPTED_ENGINEERING_RECONSTRUCTED",
+      "row_digest": "8f53d84738ab340036173af076798b03fe52ee6030821336912800f40030f5ea",
+      "root_keys": [
+        "active_breakout_episode_id",
+        "active_projection",
+        "active_selection",
+        "anchor_states",
+        "anchors",
+        "basic_breakout_state",
+        "breakout_episode_id",
+        "breakout_episode_set_quality",
+        "breakout_episodes",
+        "breakout_input_bindings",
+        "breakout_owner_anchor_id",
+        "breakout_projection_quality",
+        "breakout_projection_reason",
+        "common_F0_bind_count",
+        "common_facts",
+        "contexts",
+        "creation_observation",
+        "episode_contract",
+        "events",
+        "global_state_observations",
+        "identity",
+        "observations",
+        "prior_state_ref",
+        "transitions"
+      ],
+      "trade_date": null,
+      "entity": null
+    },
+    {
+      "owner_stage": "V4-13",
+      "owner_head": {
+        "path": "data/v4/V4_13_ACCEPTED_HEAD.json",
+        "bytes": 8023,
+        "sha256": "f9d48096162d6c6de9f353251cc24715fb017243596131e45e6fcbaa5abb373c"
+      },
+      "artifact": {
+        "path": "reports/v4_13_runtime_r16/real/2026-09-30/r6/profile_advanced.jsonl.gz",
+        "bytes": 37627535,
+        "sha256": "7bb9150180bcaf3c4f7de2a2589edae5f763611f32d1e2bc1011c45c66ee1ce6"
+      },
+      "evidence_scope": "ACCEPTED_ENGINEERING_RECONSTRUCTED",
+      "row_digest": "14bf284e4d441d62d08512276357c15ec959b9d5a3d30b73967413c63e3053e8",
+      "root_keys": [
+        "AS_RECORDED",
+        "contract_digest",
+        "cutoff",
+        "fields",
+        "formal_accepted",
+        "knowledge_lineage",
+        "loo_history_digest",
+        "loo_identity",
+        "membership_digest",
+        "membership_source_revision",
+        "prior_session_ref",
+        "raw_qualification_after",
+        "raw_qualification_before",
+        "revision",
+        "security_id",
+        "source_refs",
+        "structure_source_digest",
+        "trade_date"
+      ],
+      "trade_date": "2026-09-30",
+      "entity": "SEC-00096141BD5420F5CB3120E687CDA5B9"
+    }
+  ],
+  "manifest_digest": "0297d01bf9a5aacc743e06fd8bef920dc2e7ca4bf17d0bbf8894fe44358e785c",
+  "logical_entry_observation": "NOT_PROVEN_NO_FIRST_OBSERVED_EVENT",
+  "source_lineage": "RECONSTRUCTED_CORRECTED_RETAINED",
+  "publication_lifecycle": {
+    "owner": "V4-12",
+    "exact_manifest": {
+      "path": "reports/v4_12_runtime_r13/real/2026-09-30/r1/runtime_manifest.json",
+      "bytes": 2066,
+      "sha256": "0ae1fd6f7e90b520e691820df883e995c77ca39af591b28d769eef6e0a7a7ab1"
+    },
+    "available_at": "2026-10-02T06:00:00+00:00",
+    "scope": "ENGINEERING_RECONSTRUCTED_ONLY"
+  },
+  "feature_side_complete": false,
+  "prediction_deadline": "NOT_ENABLED",
+  "model_deadline": "NOT_ENABLED",
+  "snapshots_inserted": 0,
+  "timing_contract": {
+    "path": "config/fep_entry_observation_timing_v1.json",
+    "bytes": 1033,
+    "sha256": "d0387474e5a2150a01d534d8a6793601d7944c657d36e95f67b1e638bfa84374"
+  }
+}

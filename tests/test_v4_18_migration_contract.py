@@ -5,7 +5,7 @@ import re
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
-C = json.loads((ROOT/'config/v4_18_migration_replay_contract_v1.json').read_text(encoding='utf8'))
+C = json.loads((ROOT/'config/v4_18_migration_replay_contract_v1_1.json').read_text(encoding='utf8'))
 
 
 def test_permissions_are_design_only():

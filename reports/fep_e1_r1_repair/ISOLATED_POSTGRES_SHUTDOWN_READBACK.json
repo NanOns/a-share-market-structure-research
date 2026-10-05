@@ -1,0 +1,28 @@
+{
+  "status": "PASS",
+  "instances": [
+    {
+      "data_directory": "E:\\codex_tmp\\fep_e1_r1_pg18_fresh",
+      "state": "STOPPED",
+      "postmaster_pid_present": false,
+      "data_retained": true,
+      "log": {
+        "path": "reports/fep_e1_r1_repair/postgres_fresh.log",
+        "bytes": 53454,
+        "sha256": "b381ed3ba677528105bc41abb409b39c783692692a8c2d79cf07fdac14339663"
+      }
+    },
+    {
+      "data_directory": "E:\\codex_tmp\\fep_e1_r1_pg18_upgrade",
+      "state": "STOPPED",
+      "postmaster_pid_present": false,
+      "data_retained": true,
+      "log": {
+        "path": "reports/fep_e1_r1_repair/postgres_upgrade.log",
+        "bytes": 30917,
+        "sha256": "bbb099f626ff02d5148e6231f25bd936898f6ca22e0dcf404f85aafd36408f15"
+      }
+    }
+  ],
+  "production_instances_touched": false
+}

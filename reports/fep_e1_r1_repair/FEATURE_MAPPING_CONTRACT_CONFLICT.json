@@ -1,0 +1,29 @@
+{
+  "audit_id": "FEP_E1_FEATURE_MAPPING_CONTRACT_CONFLICT",
+  "status": "OPEN_BLOCKING_P0",
+  "scope": "47 required current ENTRY fields and observation/publication identity",
+  "missing_current_core_fields": [
+    "rel_market_1",
+    "rel_market_3",
+    "rel_market_5",
+    "rps20",
+    "rps20_delta3",
+    "rps5",
+    "rps5_delta1"
+  ],
+  "engineering_reconstructed_paths": 40,
+  "evidence": [
+    {
+      "path": "config/fep_feature_source_map_v1.json",
+      "bytes": 415614,
+      "sha256": "0b58b286c430cd09f361a469a490a595a39e56cc0df4efc7a7598987ba304d02"
+    },
+    {
+      "path": "reports/fep_e1_r1_repair/CURRENT_CORE_OWNER_FULL_FIELD_INVENTORY.json",
+      "bytes": 1586,
+      "sha256": "74805590ebb75bdae74732668d5fbb8de5143de08311a56d38e90da2529b77f8"
+    }
+  ],
+  "owner_disposition_required": "Provide exact accepted 2026-09-30 factor publication for missing market-relative/RPS fields and exact observation lifecycle; preserve reconstructed evidence class; no alias or reduced 47-field contract",
+  "acceptance": "47/47 exact accepted owner value/quality/digest/availability mappings; immutable complete manifest"
+}

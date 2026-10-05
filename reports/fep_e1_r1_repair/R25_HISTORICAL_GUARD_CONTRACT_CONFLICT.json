@@ -1,0 +1,18 @@
+{
+  "audit_id": "FEP_E1_R1_R25_HISTORICAL_GUARD_CONTRACT_CONFLICT",
+  "status": "OPEN_CROSS_STAGE_BLOCKING",
+  "scope": "R25 literal all-historical-byte guard versus E1R1 explicitly authorized active V4-18 static test successor",
+  "changed_historical_paths": [
+    "tests/test_v4_18_migration_contract.py"
+  ],
+  "rejection": "HISTORICAL_PROTECTED_BYTES_CHANGED",
+  "proposed_guard_patch": "NOT_RETAINED; preflight is exact-bound by existing V4-16 dependencies, so an in-place patch produces EXACT_BINDING_MISMATCH",
+  "required_owner_disposition": "Versioned R25 dependency/preflight authority reconciliation with exact approved test predecessor/successor bytes; no in-place frozen dependency rewrite",
+  "acceptance": "R25 WAIT behavior and original restrictions preserved; scoped regression has zero introduced failures",
+  "current_gate": "BLOCKED",
+  "namespace_inventory": "CLOSED_SEPARATELY",
+  "introduced_nodes": [
+    "tests.test_r25_packet::test_actual_authority_inventory_waits_without_target",
+    "tests.v4_dm01_r4r2.test_acceptance_seal::test_sealed_future_wait_has_no_source_or_publication"
+  ]
+}

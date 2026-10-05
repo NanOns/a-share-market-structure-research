@@ -1,0 +1,73 @@
+{
+  "status": "PASS",
+  "exact_unchanged_migrations": [
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/028_fep_schema_v1.sql",
+      "bytes": 22956,
+      "sha256": "7dbd9e874cbbc3b10cf5bff84d923ca19d46ccf3625670da075dead559078356"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/029_fep_append_only_v1.sql",
+      "bytes": 4285,
+      "sha256": "efb9bb078cb758b67919a86fe8f67d5020c9e39b34b04c72db2ab5e3ee761b5b"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/030_fep_validation_cas_v1.sql",
+      "bytes": 17761,
+      "sha256": "b516a275813ab9d5b15279a876f9526597d5069ddf5773903812ff13c9579296"
+    },
+    {
+      "path": "src/workbench_db/migrations/v4_postgres/031_fep_roles_v1.sql",
+      "bytes": 2815,
+      "sha256": "59e660f6e6b0d62f207dd1c6d6a16ed26c7d41525d65870ef3aacbc341e0c3b8"
+    }
+  ],
+  "fresh_upgrade": {
+    "databases": {
+      "fep_e1_fresh": {
+        "command": [
+          "E:\\python\\python.exe",
+          "-B",
+          "-m",
+          "pytest",
+          "tests/fep",
+          "-q",
+          "-s",
+          "--basetemp=E:/codex_tmp/test_temp/fep_e1_fresh",
+          "--junitxml=E:\\codex work\\大A交易\\reports\\fep_e1_r1_repair\\fep_e1_fresh.xml"
+        ],
+        "exit_code": 0,
+        "tests": 79,
+        "passed": 78,
+        "skipped": 1,
+        "failed_nodes": []
+      },
+      "fep_e1_upgrade": {
+        "command": [
+          "E:\\python\\python.exe",
+          "-B",
+          "-m",
+          "pytest",
+          "tests/fep",
+          "-q",
+          "-s",
+          "--basetemp=E:/codex_tmp/test_temp/fep_e1_upgrade",
+          "--junitxml=E:\\codex work\\大A交易\\reports\\fep_e1_r1_repair\\fep_e1_upgrade.xml"
+        ],
+        "exit_code": 0,
+        "tests": 79,
+        "passed": 79,
+        "skipped": 0,
+        "failed_nodes": []
+      }
+    },
+    "same_fresh_upgrade_schema": true
+  },
+  "inventory": {
+    "same_fresh_upgrade_schema": true,
+    "table_count": 33,
+    "immutable_guard_count": 32
+  },
+  "rebuild": "NEW_EMPTY_ISOLATED_CLUSTERS_ON_E_DRIVE",
+  "historical_migrations_modified": false
+}

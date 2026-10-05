@@ -1,0 +1,74 @@
+{
+  "status": "PASS_ENGINEERING",
+  "evidence_class": "ENGINEERING_FIXTURE",
+  "vectors": [
+    {
+      "node": "tests.fep.test_r1_label_time::test_source_t2_mature_t5_revision_t6[3-False]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep.test_r1_label_time::test_source_t2_mature_t5_revision_t6[5-False]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep.test_r1_label_time::test_source_t2_mature_t5_revision_t6[6-True]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep.test_r1_label_time::test_time_authority_counterfactuals[missing_source]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep.test_r1_label_time::test_time_authority_counterfactuals[missing_maturity]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep.test_r1_label_time::test_time_authority_counterfactuals[missing_revision]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep.test_r1_label_time::test_time_authority_counterfactuals[tampered_bytes]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep.test_r1_label_time::test_time_authority_counterfactuals[wrong_row]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep.test_r1_label_time::test_time_authority_counterfactuals[wrong_class]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep.test_r1_label_time::test_time_authority_counterfactuals[revision_before_source]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep.test_r1_label_time::test_time_authority_counterfactuals[incomplete_window]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep.test_r1_label_time::test_time_authority_counterfactuals[naive_time]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep.test_r1_label_time::test_time_authority_counterfactuals[missing_fact]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep.test_r1_label_time::test_time_authority_counterfactuals[duplicate_fact]",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep.test_r1_label_time::test_real_pending_never_binds_calendar_or_caller_times",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep.test_r1_label_time::test_unaccepted_real_time_sidecars_cannot_grant_training",
+      "status": "PASS"
+    },
+    {
+      "node": "tests.fep.test_r1_label_time::test_namespace_successor_preserves_v1_and_permissions",
+      "status": "PASS"
+    }
+  ]
+}

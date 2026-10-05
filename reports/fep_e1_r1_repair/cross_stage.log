@@ -1,0 +1,28 @@
+F........................                                                [100%]
+================================== FAILURES ===================================
+____________ test_actual_authority_inventory_waits_without_target _____________
+
+    def test_actual_authority_inventory_waits_without_target():
+>       result = selection()
+                 ^^^^^^^^^^^
+
+tests\test_r25_packet.py:183: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_r25_preflight.py:247: in selection
+    state = protected(root)
+            ^^^^^^^^^^^^^^^
+scripts\validate_r25_preflight.py:106: in protected
+    check(not set(names) & set(changed) - {'.gitattributes','scripts/validate_r25_preflight.py','tests/test_r25_packet.py'}, 'HISTORICAL_PROTECTED_BYTES_CHANGED')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, reason = 'HISTORICAL_PROTECTED_BYTES_CHANGED'
+
+    def check(condition, reason):
+        if not condition:
+>           raise ValueError(reason)
+E           ValueError: HISTORICAL_PROTECTED_BYTES_CHANGED
+
+scripts\validate_r25_preflight.py:20: ValueError
+=========================== short test summary info ===========================
+FAILED tests/test_r25_packet.py::test_actual_authority_inventory_waits_without_target
+1 failed, 24 passed in 0.26s

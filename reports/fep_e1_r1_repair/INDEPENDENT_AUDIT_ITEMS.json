@@ -1,0 +1,53 @@
+{
+  "items": [
+    {
+      "audit_id": "FEP_E1_FEATURE_MAPPING_CONTRACT_CONFLICT",
+      "status": "OPEN_BLOCKING_P0",
+      "scope": "47-field current ENTRY accepted owner admission",
+      "evidence": "FEATURE_MAPPING_CONTRACT_CONFLICT.json",
+      "acceptance": "47/47 exact owner mappings"
+    },
+    {
+      "audit_id": "FEP_E1_R1_R25_HISTORICAL_GUARD_CONTRACT_CONFLICT",
+      "status": "OPEN_CROSS_STAGE_BLOCKING",
+      "scope": "R25 historical guard and exact-bound dependency successor",
+      "evidence": "R25_HISTORICAL_GUARD_CONTRACT_CONFLICT.json",
+      "acceptance": "Zero introduced regression failures with original WAIT and permissions preserved"
+    },
+    {
+      "audit_id": "FEP_E1_CONTRACT_CONFLICT_THREE_TIME_SOURCE",
+      "status": "CLOSED_ENGINEERING_REAL_PENDING",
+      "scope": "Additive label time authority, no real maturity grant",
+      "evidence": "LABEL_TIME_AUTHORITY_GATE.json",
+      "acceptance": "T2/T5/T6 PIT and negative matrix PASS; real pending creates no binding"
+    },
+    {
+      "audit_id": "FEP_E1_CONTRACT_CONFLICT_V4_18_NAMESPACE_INVENTORY",
+      "status": "CLOSED_LOCAL",
+      "scope": "33 explicit FEP declarations in versioned successor",
+      "evidence": "V4_18_NAMESPACE_SUCCESSOR_GATE.json",
+      "acceptance": "Undeselected inventory test PASS; V1 unchanged and no V4-18 execution grant"
+    },
+    {
+      "audit_id": "FEP_E1_EXTERNAL_DESIGN_RAW_RECEIPT",
+      "status": "CLOSED_EXACT_RAW",
+      "scope": "External design evidence provenance",
+      "evidence": "EXTERNAL_DESIGN_RECEIPT_READBACK.json",
+      "acceptance": "14019 bytes / cd279e26... exact receipt"
+    },
+    {
+      "audit_id": "FEP_E1_LEGACY_MIGRATION_REGISTRATION_GAP",
+      "status": "OPEN_EXISTING_INFRASTRUCTURE_DEBT",
+      "scope": "Historical 014..027 registration",
+      "evidence": "../fep_e1/INDEPENDENT_AUDIT_ITEMS.json",
+      "acceptance": "Separately scoped owner repair; not changed by E1R1"
+    },
+    {
+      "audit_id": "FEP_E1_BASELINE_52_FAILURES",
+      "status": "OPEN_EXISTING_OWNER_DEBT",
+      "scope": "43 registered plus 9 independently reproduced baseline failures",
+      "evidence": "SCOPED_REGRESSION_SUMMARY.json",
+      "acceptance": "Separate owner-stage acceptance"
+    }
+  ]
+}

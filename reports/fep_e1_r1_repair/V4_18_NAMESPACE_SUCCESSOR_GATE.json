@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "predecessor": {
+    "path": "config/v4_18_migration_replay_contract_v1.json",
+    "bytes": 175188,
+    "sha256": "186d53ae5e4281ce1ff83609326673610f390ebc03061a947b5ae83dda996a02"
+  },
+  "successor": {
+    "path": "config/v4_18_migration_replay_contract_v1_1.json",
+    "bytes": 196580,
+    "sha256": "17aa316974184c64787a5ac71bf9d4e0e20007e6233cf1d9ab2c0a25037e7c70"
+  },
+  "added_tables": 33,
+  "production_cutover": false,
+  "migration_execution": "NOT_GRANTED",
+  "accepted_head": "NOT_CREATED",
+  "introduced_namespace_failure": "CLOSED",
+  "static_test": "tests.test_v4_18_migration_contract::test_all_declared_tables_have_explicit_namespace_rules"
+}

@@ -1,0 +1,62 @@
+{
+  "status": "PASS_HGB_QUANTILE_ENGINEERING",
+  "selected": {
+    "q25": {
+      "artifact": {
+        "path": "reports/fep_e4_r1/registry/model_q25_2e8d1f1feb482da66d90f80fa60d717ee9e44d6e0745358de2828fe214d16705.json",
+        "bytes": 314729,
+        "sha256": "3611753861a5e6e01673b6ce268333c04c1fdb640da157276beb21f4d64bf49f"
+      },
+      "logical_digest": "2e8d1f1feb482da66d90f80fa60d717ee9e44d6e0745358de2828fe214d16705",
+      "trial_index": 5,
+      "parameters": {
+        "learning_rate": 0.1,
+        "max_leaf_nodes": 15,
+        "max_depth": 4,
+        "min_samples_leaf": 40,
+        "l2_regularization": 1.0,
+        "quantile": 0.25
+      }
+    },
+    "q50": {
+      "artifact": {
+        "path": "reports/fep_e4_r1/registry/model_q50_828a46de72a94c0f8b16f4ef04ca572ff175669fc26fc6ce740e53dc39b9d810.json",
+        "bytes": 195872,
+        "sha256": "0a246b2226e1119f3edb30d43f8b2c58e9610f22581721adcf05ad4dec7b31c9"
+      },
+      "logical_digest": "828a46de72a94c0f8b16f4ef04ca572ff175669fc26fc6ce740e53dc39b9d810",
+      "trial_index": 6,
+      "parameters": {
+        "learning_rate": 0.05,
+        "max_leaf_nodes": 7,
+        "max_depth": 3,
+        "min_samples_leaf": 40,
+        "l2_regularization": 1.0,
+        "quantile": 0.5
+      }
+    },
+    "q75": {
+      "artifact": {
+        "path": "reports/fep_e4_r1/registry/model_q75_d6b9f944f175461e66f9e75c0c084f1f067678a6e8ef66644c8babdebc503133.json",
+        "bytes": 314763,
+        "sha256": "bf66831b0a35bd10db2c87dab285576035532d72bb911361992ae18b4973c248"
+      },
+      "logical_digest": "d6b9f944f175461e66f9e75c0c084f1f067678a6e8ef66644c8babdebc503133",
+      "trial_index": 9,
+      "parameters": {
+        "learning_rate": 0.1,
+        "max_leaf_nodes": 15,
+        "max_depth": 4,
+        "min_samples_leaf": 40,
+        "l2_regularization": 1.0,
+        "quantile": 0.75
+      }
+    }
+  },
+  "levels": [
+    0.25,
+    0.5,
+    0.75
+  ],
+  "TRAIN_only": true
+}

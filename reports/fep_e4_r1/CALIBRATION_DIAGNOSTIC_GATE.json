@@ -1,0 +1,39 @@
+{
+  "status": "PASS_EXACT_E3_CALIBRATION_DIAGNOSTIC",
+  "artifact": {
+    "path": "reports/fep_e4_r1/registry/calibration_c340de6dd53ff86fe823352612cf3ddd42c1182ac12df69e2c22eb0964bb14b1.json",
+    "bytes": 136046,
+    "sha256": "e2ad400bd3bc9935e2c4eabce3a1e30601e709ca15cb3f8e73ba09d3c990b6db"
+  },
+  "rows": 213,
+  "diagnostics": {
+    "probability_calibration": "NOT_APPLICABLE_REGRESSION",
+    "role": "CALIBRATION_DIAGNOSTIC_ONLY",
+    "raw_crossing_rows": 3,
+    "weighted_raw_crossing_frequency": 0.010895563899318592,
+    "coherent_crossing_rows": 0,
+    "rearrangement": "PRE_REGISTERED_INCREASING_REARRANGEMENT_V1",
+    "mean_interval_width": 0.035877035321660214,
+    "empirical_middle_interval_coverage": 0.34632849364513946,
+    "quantiles": {
+      "0.25": {
+        "raw_pinball": 0.010486124808082291,
+        "coherent_pinball": 0.010486124808082291,
+        "empirical_coverage": 0.09999999999999999
+      },
+      "0.5": {
+        "raw_pinball": 0.012005888885729624,
+        "coherent_pinball": 0.012014188594967064,
+        "empirical_coverage": 0.1906606334841629
+      },
+      "0.75": {
+        "raw_pinball": 0.011536465245005303,
+        "coherent_pinball": 0.011523185476091779,
+        "empirical_coverage": 0.44632849364513943
+      }
+    },
+    "coverage_is_predictive_probability": false
+  },
+  "selection": false,
+  "probability_calibration": "NOT_APPLICABLE_REGRESSION"
+}

@@ -1,0 +1,24 @@
+{
+  "command": [
+    "E:\\python\\python.exe",
+    "-B",
+    "-m",
+    "pytest",
+    "tests/fep_e4",
+    "tests/fep_e3",
+    "tests/fep_e2",
+    "tests/fep",
+    "tests/test_r20d_settlement.py",
+    "tests/test_r25_packet.py::test_actual_authority_inventory_waits_without_target",
+    "-q",
+    "--basetemp=E:/codex_tmp/test_temp/e4-targeted",
+    "--junitxml=E:\\codex work\\大A交易\\reports\\fep_e4_r1\\targeted.xml"
+  ],
+  "exit_code": 0,
+  "passed": 256,
+  "skipped": 1,
+  "failed_nodes": [],
+  "introduced_active_failures": [],
+  "existing_debt_nodes": [],
+  "full_final_run": true
+}

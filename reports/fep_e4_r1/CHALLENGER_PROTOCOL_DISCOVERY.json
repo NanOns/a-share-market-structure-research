@@ -1,0 +1,17 @@
+{
+  "status": "PASS_ENGINEERING_RESOURCE_BOUNDED",
+  "selection_outcome_performance_consumed": false,
+  "trial_fits": 0,
+  "reasoning": "Small depth/leaf grid, fixed 100 iterations, minimum leaf 40 and two threads bound complexity; 4 point and 2 per quantile.",
+  "point_trials": 4,
+  "quantile_trials": 6,
+  "total_fits": 10,
+  "upper_bounds": {
+    "point": 8,
+    "quantile": 12,
+    "total": 20
+  },
+  "train_rows": 3893,
+  "automatic_early_stopping": false,
+  "random_validation_split": false
+}

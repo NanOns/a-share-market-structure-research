@@ -1,0 +1,251 @@
+{
+  "stage": "V4-15E4.R1",
+  "baseline": "77c7c2c85a5ff0bbd27bb664900673de7a3bff5a",
+  "status": "PASS_READY_FOR_INDEPENDENT_EXTERNAL_AUDIT",
+  "effectiveness": "MIXED",
+  "code_bindings": [
+    {
+      "path": "src/workbench_analysis/fep_e4/__init__.py",
+      "bytes": 81,
+      "sha256": "33d81898477d80726181e66751f2c35541fd1dc485316cd23f9884cb2b6ddd74"
+    },
+    {
+      "path": "src/workbench_analysis/fep_e4/challenger.py",
+      "bytes": 6902,
+      "sha256": "1435a377da0903d1176e95f17c04ae7e750bbf5b2aefdb3887931d15d74bb068"
+    },
+    {
+      "path": "scripts/run_fep_e4_r1.py",
+      "bytes": 25350,
+      "sha256": "b4dd6d082c4f49827de1ab1ad9f2f5582332f934f5101258a753f756841f37b1"
+    },
+    {
+      "path": "tests/fep_e4/test_e4_contract.py",
+      "bytes": 5647,
+      "sha256": "a6ea6dd40767e76cef4dffa5f2f333da279cb016af6f5c2c286c64f653fe322c"
+    },
+    {
+      "path": "config/fep_e4_challenger_protocol_v1.json",
+      "bytes": 37729,
+      "sha256": "ad40acc259b2c7bfcfa7b874d0826862167a01626e4041e69a5bb3c1ecf5451b"
+    },
+    {
+      "path": "scripts/seal_fep_e4_r1_readback.py",
+      "bytes": 7372,
+      "sha256": "6d50fdd530ded78ca057ecafdc7c1fece7e2f52a4b68b2c75060ee38932bda39"
+    }
+  ],
+  "evidence_bindings": [
+    {
+      "path": "reports/fep_e4_r1/.gitattributes",
+      "bytes": 8,
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
+    },
+    {
+      "path": "reports/fep_e4_r1/BASELINE_E3_E4_COMPARISON.json",
+      "bytes": 9944,
+      "sha256": "9ea89f30e5e9102e22a7027807572481f0d9e9d75974b9b39dceb62e9e31cba4"
+    },
+    {
+      "path": "reports/fep_e4_r1/CALIBRATION_DIAGNOSTIC_GATE.json",
+      "bytes": 1406,
+      "sha256": "8ab590068c597b89368eec11e143ebed8a0acd51b3d3bd0a6d47f74076d47953"
+    },
+    {
+      "path": "reports/fep_e4_r1/CALIBRATION_E3_E4_DIAGNOSTIC_COMPARISON.json",
+      "bytes": 2694,
+      "sha256": "93812d6cd224b9af401818b61e25abbd5c725b3e7fc16e476c42321e52a314f4"
+    },
+    {
+      "path": "reports/fep_e4_r1/CAS_CONCURRENCY_fep_e1_fresh.json",
+      "bytes": 887,
+      "sha256": "8289221e64eab688dd2203cd252cb85e7661927d96c0af95b691920992281e52"
+    },
+    {
+      "path": "reports/fep_e4_r1/CAS_CONCURRENCY_fep_e1_upgrade.json",
+      "bytes": 927,
+      "sha256": "3ba1a53d36ca98f2ae64344cdb74d121f0f68dea1c30d2a57f34f7150d074edf"
+    },
+    {
+      "path": "reports/fep_e4_r1/CHALLENGER_PROTOCOL_DISCOVERY.json",
+      "bytes": 500,
+      "sha256": "4b585df1f94b700f873e506353bffe32a8298918f2084df34dd7bd004d487f1d"
+    },
+    {
+      "path": "reports/fep_e4_r1/CHALLENGER_PROTOCOL_FREEZE.json",
+      "bytes": 386,
+      "sha256": "bb6291b500edfb849772639c4f1067b231febb64f933ecdbb3d1fa468b150fd5"
+    },
+    {
+      "path": "reports/fep_e4_r1/COMPLETION_REPORT.md",
+      "bytes": 2123,
+      "sha256": "562a616fbddbff3534610adaede6fe9d283ce0aabda22d267f7a27bfeb4870e6"
+    },
+    {
+      "path": "reports/fep_e4_r1/E3_INPUT_BINDING.json",
+      "bytes": 32329,
+      "sha256": "d7ee372a41d000a20dc67bd4b6fae98a85d42d185d8e14802aab06acf54e786c"
+    },
+    {
+      "path": "reports/fep_e4_r1/ENTRY_BASELINE.json",
+      "bytes": 969,
+      "sha256": "43cf9bea89ff0a2199660e35a11e15163680b654df843941225bfc8ef7059df8"
+    },
+    {
+      "path": "reports/fep_e4_r1/FEATURE_IMPORTANCE_DIAGNOSTIC.json",
+      "bytes": 399,
+      "sha256": "8c32069094595d494e2e69de511a3459a527a368c3708eafa1c2a2e002f781f2"
+    },
+    {
+      "path": "reports/fep_e4_r1/FEATURE_REUSE_GATE.json",
+      "bytes": 911,
+      "sha256": "fbb3a77aed24af4ab8d673b2f3bef4bd8f3eb4e9e8e446e805d7e38b6c002e96"
+    },
+    {
+      "path": "reports/fep_e4_r1/FINAL_EXIT_READBACK.json",
+      "bytes": 9132,
+      "sha256": "a257e538c413dd93989a44f39f3571ee697e36fc2474b47c9aed9ebabd958ac1"
+    },
+    {
+      "path": "reports/fep_e4_r1/FOLD_REUSE_GATE.json",
+      "bytes": 342,
+      "sha256": "31e25fb8fb1cd602ef5fb875ad21b4f0c98e787329fbcbfb42769f0b5e9a872a"
+    },
+    {
+      "path": "reports/fep_e4_r1/INDEPENDENT_AUDIT_ITEMS.json",
+      "bytes": 795,
+      "sha256": "15498f8cc0a24fb247b069b3b1585a042522f85816339ce4a5f15dc60439cb34"
+    },
+    {
+      "path": "reports/fep_e4_r1/LOCAL_ACCEPTANCE_MATRIX.json",
+      "bytes": 1264,
+      "sha256": "b6e070ffe031b2cfa6bf2abd862773640cb24e628af40ac9924de39561120974"
+    },
+    {
+      "path": "reports/fep_e4_r1/MODEL_REGISTRY_GATE.json",
+      "bytes": 6591,
+      "sha256": "8ff45e67c5c58aa57bc3f47fcc49f90ec7904138ac58720015a48fd967092988"
+    },
+    {
+      "path": "reports/fep_e4_r1/NEGATIVE_MATRIX.json",
+      "bytes": 3970,
+      "sha256": "3ce75d29199241c9ca168b8eae67c0c3e911bd2aadef22caadf4cc9a1b33828b"
+    },
+    {
+      "path": "reports/fep_e4_r1/OOD_REUSE_GATE.json",
+      "bytes": 399,
+      "sha256": "1d33fb3338ab24df6237c3862fc52b79e5a6c1c4ee0c9e458a311cc0242a8d28"
+    },
+    {
+      "path": "reports/fep_e4_r1/POINT_CHALLENGER_GATE.json",
+      "bytes": 675,
+      "sha256": "9db497bf8904063714837c6ee0e5bfecfec0ad1f2691ece819c823f6875b4eea"
+    },
+    {
+      "path": "reports/fep_e4_r1/PROTECTED_STATE_READBACK.json",
+      "bytes": 11905,
+      "sha256": "8ffe7fe305b0b10c354f941d5218599f1d5cefee4390f6274a10524114163a9a"
+    },
+    {
+      "path": "reports/fep_e4_r1/QUANTILE_CHALLENGER_GATE.json",
+      "bytes": 1954,
+      "sha256": "5721d99fd07fcde8f3adc21cb6b09ef474be9a2dda41432752ae4a22afe54ce5"
+    },
+    {
+      "path": "reports/fep_e4_r1/scoped.log",
+      "bytes": 108175,
+      "sha256": "0883c7799ab319792f416f3bc485f016aa6d79f7300e6da12d3e07a987a853c3"
+    },
+    {
+      "path": "reports/fep_e4_r1/scoped.xml",
+      "bytes": 459099,
+      "sha256": "9c7160e88e32f57f9878ddb20c836a8d701e87b10cd0ef7cb7ab20512d0230e6"
+    },
+    {
+      "path": "reports/fep_e4_r1/SCOPED_REGRESSION_SUMMARY.json",
+      "bytes": 17666,
+      "sha256": "3b46a55a80b49bc71666ca63dc41809163dda446ecc422d6eb55622afa98b31a"
+    },
+    {
+      "path": "reports/fep_e4_r1/SEEN_OUTER_DIAGNOSTIC_EVALUATION.json",
+      "bytes": 10198,
+      "sha256": "34d4f7116b57114dbc3fdd6fa0edfd0ccbbd7bd7cab9b26548f5f9d5d0b71e3a"
+    },
+    {
+      "path": "reports/fep_e4_r1/SEEN_OUTER_DIAGNOSTIC_OPEN.json",
+      "bytes": 3214,
+      "sha256": "1270ae840ff524673bccbf4ac5a05e5e4049a521a46ade6407d74bbfb36623ce"
+    },
+    {
+      "path": "reports/fep_e4_r1/SEEN_OUTER_POPULATION_GATE.json",
+      "bytes": 685,
+      "sha256": "d29adf67e6f1c5ed276e8bfa3da048af89f08d1dd3fdbfcb07e3e651cd34aa39"
+    },
+    {
+      "path": "reports/fep_e4_r1/SELECTED_DEPENDENCIES.json",
+      "bytes": 3088,
+      "sha256": "fe3796442d486f51236f234ba53dda8d2ab673bcb4293c9ce5630dd0a22f5c90"
+    },
+    {
+      "path": "reports/fep_e4_r1/targeted.log",
+      "bytes": 357,
+      "sha256": "b18b650eb38ed1a8d82b6b7240dcdfda0318720fd39b2033aca6022425c90ddd"
+    },
+    {
+      "path": "reports/fep_e4_r1/targeted.xml",
+      "bytes": 29912,
+      "sha256": "f4c6b1f5c7c7aba9478aaf2d1a1e397d2ed9f9f19efb5f2883e286ec1c0c8bd1"
+    },
+    {
+      "path": "reports/fep_e4_r1/TARGETED_SUMMARY.json",
+      "bytes": 592,
+      "sha256": "8f3be434775186bc51d076e10b7b2ac105e0af919ac37bc7ab53e34a70dcc28d"
+    },
+    {
+      "path": "reports/fep_e4_r1/TRAINING_TRIAL_LEDGER.json",
+      "bytes": 4820,
+      "sha256": "d5f712804874b4d2496662c8a0d34bbfb9d7f8f9fa1213937c0bd2f112862481"
+    },
+    {
+      "path": "reports/fep_e4_r1/TRANSACTION_ROLLBACK_GATE.json",
+      "bytes": 4620,
+      "sha256": "153b13f2871d3ca524c7986bd707aa9225ba31e2a34f7a8ca8126e5c5d254430"
+    },
+    {
+      "path": "reports/fep_e4_r1/V4_15E3_FINAL_INDEPENDENT_EXTERNAL_AUDIT_R1_20261005.md",
+      "bytes": 7095,
+      "sha256": "1050b3ee5e089fd62a2d09e9573b95436f0f751efef208de2107ae421a01d7d9"
+    },
+    {
+      "path": "reports/fep_e4_r1/V4_15E4_TREE_CHALLENGER_ENGINEERING_TASK_R1_20261005.md",
+      "bytes": 7166,
+      "sha256": "4285fbd36ef9dd47dca03cb48f2fb4abc9e2bd138b83def97398f5072cdfde5f"
+    },
+    {
+      "path": "reports/fep_e4_r1/V4_FEP_EXECUTION_MASTER_V4_15E4_R1_20261005.md",
+      "bytes": 1195,
+      "sha256": "45d8b3aaae94a00dc69d95ec149e8b9d90958bc516efd443287fe574241cfff0"
+    }
+  ],
+  "external_acceptance": false,
+  "next": "STOP_WAIT_V4_15E4_INDEPENDENT_EXTERNAL_AUDIT",
+  "sealed_at": "2026-10-05T15:19:20.803645+00:00",
+  "SEEN_OUTER_DIAGNOSTIC_ONLY": true,
+  "TEST_PREVIOUSLY_SEEN": true,
+  "REAL_OOS": false,
+  "PROMOTION_EVIDENCE": false,
+  "CHAMPION": false,
+  "PROMOTION": "UNGRANTED",
+  "MODEL_DISPLAY": "UNGRANTED",
+  "PRIORITY_USE": "UNGRANTED",
+  "production": false,
+  "shadow": false,
+  "focus": false,
+  "logical_digest": "0e72dd40fc469902249e6a249d3ba23df805915893109483ff027bdbc0f3b8ef",
+  "final_readback": {
+    "path": "reports/fep_e4_r1/FINAL_EXIT_READBACK.json",
+    "bytes": 9132,
+    "sha256": "a257e538c413dd93989a44f39f3571ee697e36fc2474b47c9aed9ebabd958ac1"
+  },
+  "FEP_PRODUCTION": "UNGRANTED"
+}

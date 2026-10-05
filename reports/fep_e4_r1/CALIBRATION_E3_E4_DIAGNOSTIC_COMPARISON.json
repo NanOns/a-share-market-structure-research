@@ -1,0 +1,73 @@
+{
+  "status": "PASS_EXACT_CALIBRATION_COMPARISON",
+  "E3": {
+    "probability_calibration": "NOT_APPLICABLE_REGRESSION",
+    "role": "CALIBRATION_DIAGNOSTIC_ONLY",
+    "raw_crossing_rows": 0,
+    "weighted_raw_crossing_frequency": 0.0,
+    "coherent_crossing_rows": 0,
+    "rearrangement": "PRE_REGISTERED_INCREASING_REARRANGEMENT_V1",
+    "mean_interval_width": 0.03413096909614458,
+    "empirical_middle_interval_coverage": 0.39600801673642727,
+    "quantiles": {
+      "0.25": {
+        "raw_pinball": 0.009598802153993717,
+        "coherent_pinball": 0.009598802153993717,
+        "empirical_coverage": 0.09999999999999999
+      },
+      "0.5": {
+        "raw_pinball": 0.011986022217068593,
+        "coherent_pinball": 0.011986022217068593,
+        "empirical_coverage": 0.1861407742584213
+      },
+      "0.75": {
+        "raw_pinball": 0.010536244741434055,
+        "coherent_pinball": 0.010536244741434055,
+        "empirical_coverage": 0.49600801673642725
+      }
+    },
+    "coverage_is_predictive_probability": false
+  },
+  "E4": {
+    "probability_calibration": "NOT_APPLICABLE_REGRESSION",
+    "role": "CALIBRATION_DIAGNOSTIC_ONLY",
+    "raw_crossing_rows": 3,
+    "weighted_raw_crossing_frequency": 0.010895563899318592,
+    "coherent_crossing_rows": 0,
+    "rearrangement": "PRE_REGISTERED_INCREASING_REARRANGEMENT_V1",
+    "mean_interval_width": 0.035877035321660214,
+    "empirical_middle_interval_coverage": 0.34632849364513946,
+    "quantiles": {
+      "0.25": {
+        "raw_pinball": 0.010486124808082291,
+        "coherent_pinball": 0.010486124808082291,
+        "empirical_coverage": 0.09999999999999999
+      },
+      "0.5": {
+        "raw_pinball": 0.012005888885729624,
+        "coherent_pinball": 0.012014188594967064,
+        "empirical_coverage": 0.1906606334841629
+      },
+      "0.75": {
+        "raw_pinball": 0.011536465245005303,
+        "coherent_pinball": 0.011523185476091779,
+        "empirical_coverage": 0.44632849364513943
+      }
+    },
+    "coverage_is_predictive_probability": false
+  },
+  "population": "EXACT_E3_213",
+  "selection": false,
+  "model_adjustment": false,
+  "probability_calibration": "NOT_APPLICABLE_REGRESSION",
+  "E3_artifact": {
+    "path": "reports/fep_e3_r1/registry/serialization_v1_1/calibration_d6aaedbd23bc62bbc41ef849a476c26ab44c3b2c51964a3bd5d5abca60cd1682.json",
+    "bytes": 138472,
+    "sha256": "f22962b0beebef96af56dbe72eb98293fc9ec83d9dbd714baf4b95482b044893"
+  },
+  "E4_artifact": {
+    "path": "reports/fep_e4_r1/registry/calibration_c340de6dd53ff86fe823352612cf3ddd42c1182ac12df69e2c22eb0964bb14b1.json",
+    "bytes": 136046,
+    "sha256": "e2ad400bd3bc9935e2c4eabce3a1e30601e709ca15cb3f8e73ba09d3c990b6db"
+  }
+}

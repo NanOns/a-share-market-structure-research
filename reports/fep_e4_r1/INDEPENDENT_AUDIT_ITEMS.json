@@ -1,0 +1,22 @@
+{
+  "items": [
+    {
+      "audit_id": "FEP_E4_SEEN_HISTORICAL_DIAGNOSTIC_LIMITATION",
+      "status": "OPEN_EXTERNAL_REVIEW",
+      "scope": "Seen historical rows, low exact E3 coverage, dual clocks and marginal-only JOINT_OOD UNSET; no promotion or independent OOS",
+      "evidence": [
+        {
+          "path": "reports/fep_e4_r1/SEEN_OUTER_POPULATION_GATE.json",
+          "bytes": 685,
+          "sha256": "d29adf67e6f1c5ed276e8bfa3da048af89f08d1dd3fdbfcb07e3e651cd34aa39"
+        },
+        {
+          "path": "reports/fep_e4_r1/BASELINE_E3_E4_COMPARISON.json",
+          "bytes": 9944,
+          "sha256": "9ea89f30e5e9102e22a7027807572481f0d9e9d75974b9b39dceb62e9e31cba4"
+        }
+      ],
+      "acceptance": "Independent E4 audit only; upstream limitations stay open"
+    }
+  ]
+}
